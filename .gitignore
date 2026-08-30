@@ -1,0 +1,96 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Local env files. Only the documented templates are shared: the root sample
+# and the web app's committed Vite defaults (.env.production holds placeholders
+# that env.sh replaces at container start).
+.env
+.env.*
+!.env.sample
+!.env.example
+!apps/web/.env.development
+!apps/web/.env.production
+
+# Testing
+coverage
+
+# Turbo
+.turbo
+
+# Vercel
+.vercel
+
+# Build outputs
+.next/
+out/
+build
+dist
+.source
+
+# Next.js generated types
+next-env.d.ts
+
+# Debug and logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Keys
+*.pem
+
+# DB
+*.db
+
+# Cache
+.cache/
+
+# Local worktrees
+.worktrees/
+
+# Overrides
+compose.override.yml
+
+# Editors and IDEs
+.idea
+.vscode/
+*.swp
+*.swo
+*~
+
+# TanStack Router generated cache
+.tanstack/
+
+# TypeScript incremental build state
+*.tsbuildinfo
+
+# Playwright output anywhere, plus end-to-end auth state
+test-results/
+playwright-report/
+blob-report/
+tests/e2e/.auth/
+
+# Playwright MCP screenshots and logs from manual QA
+.playwright-mcp/
+
+# Local agent and tool state, notes and scratch files
+.mcp.json
+.kiro/
+.agents/
+.claude/
+PENDING_WORK.md
+tmp/
+.tmp/
+scratch/
+
+# Local test logins (never commit)
+creds.md

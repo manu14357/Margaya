@@ -1,0 +1,23 @@
+# Normalize text files to LF in the repository and in checkouts.
+* text=auto eol=lf
+
+# Husky hooks must use LF, otherwise a CRLF checkout makes the shell pass a
+# trailing carriage return to commitlint and every commit fails on Unix.
+.husky/* text eol=lf
+apps/docs/openapi.json text eol=lf
+*.sh text eol=lf
+
+# Binary assets are never normalized or diffed as text.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.zip binary
+*.tgz binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.pdf binary
