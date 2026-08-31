@@ -1,0 +1,65 @@
+{
+	"type": "doc",
+	"content": [
+		{
+			"type": "paragraph",
+			"content": [
+				{ "type": "text", "text": "Ping " },
+				{
+					"type": "margayaMention",
+					"attrs": { "id": "user_ann", "label": "Ann <Lead>" }
+				},
+				{ "type": "text", "text": " and " },
+				{ "type": "margayaMention", "attrs": { "id": "", "label": "someone" } },
+				{ "type": "text", "text": ", see " },
+				{
+					"type": "margayaPageLink",
+					"attrs": { "pageId": "page_spec", "title": "Specs & \"Notes\" <v2>" }
+				},
+				{ "type": "text", "text": "." }
+			]
+		},
+		{
+			"type": "paragraph",
+			"content": [
+				{
+					"type": "margayaIssueLink",
+					"attrs": {
+						"url": "https://margaya.test/dashboard/workspace/w1/project/p1/task/t1?a=1&b=\"2\"",
+						"issueKey": "WEB-12",
+						"taskId": "task_1"
+					}
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"content": [
+				{
+					"type": "attachmentCard",
+					"attrs": {
+						"url": "https://margaya.test/api/asset/asset_1",
+						"filename": "Q3 \"final\" <draft>.pdf",
+						"mimeType": "application/pdf",
+						"size": 2048
+					}
+				}
+			]
+		},
+		{
+			"type": "embedBlock",
+			"attrs": {
+				"url": "https://www.youtube.com/watch?v=abc&t=1",
+				"mode": "embed"
+			}
+		},
+		{
+			"type": "embedBlock",
+			"attrs": { "url": "https://example.com/a", "mode": "link" }
+		},
+		{
+			"type": "paragraph",
+			"content": [{ "type": "text", "text": "End." }]
+		}
+	]
+}
