@@ -1,0 +1,68 @@
+{
+	"name": "@margaya/mcp",
+	"version": "1.1.0",
+	"mcpName": "io.github.manu14357/margaya",
+	"description": "Official MCP (Model Context Protocol) server for Margaya, the open source project management platform: manage tasks, projects, and labels from Claude, Cursor, and other MCP clients",
+	"license": "MIT",
+	"author": "Margaya (https://margaya.app)",
+	"homepage": "https://margaya.app/docs/core/integrations/mcp",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/manu14357/Margaya/",
+		"directory": "packages/mcp"
+	},
+	"type": "module",
+	"bin": {
+		"margaya-mcp": "dist/index.js"
+	},
+	"exports": {
+		".": {
+			"import": "./dist/server.js",
+			"types": "./dist/server.d.ts"
+		}
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"keywords": [
+		"mcp",
+		"mcp-server",
+		"model-context-protocol",
+		"margaya",
+		"margaya-mcp",
+		"project-management",
+		"tasks",
+		"kanban",
+		"ai-agents",
+		"claude",
+		"stdio"
+	],
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"prepublishOnly": "pnpm run build",
+		"dev": "tsx watch src/index.ts",
+		"lint": "biome check --write .",
+		"start": "node dist/index.js",
+		"test": "vitest run --config vitest.config.ts",
+		"test:watch": "vitest --config vitest.config.ts"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "^1.30.0",
+		"open": "^11.0.0",
+		"prompts": "^2.4.2",
+		"zod": "^4.4.3"
+	},
+	"devDependencies": {
+		"@margaya/typescript-config": "workspace:*",
+		"@types/node": "^26.1.2",
+		"@types/prompts": "^2.4.9",
+		"tsx": "^4.23.9",
+		"typescript": "^7.0.2",
+		"vitest": "^4.1.11"
+	}
+}
