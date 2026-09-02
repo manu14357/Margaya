@@ -1,0 +1,15 @@
+{
+	"extends": "@margaya/typescript-config/react-library.json",
+	"compilerOptions": {
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"noEmit": true,
+		"declaration": false,
+		"declarationMap": false,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"types": []
+	},
+	"include": ["src/**/*", "vitest.config.ts"]
+}
