@@ -1,0 +1,2 @@
+CREATE INDEX "intake_item_project_triagedAt_idx" ON "intake_item" USING btree ("project_id","triaged_at") WHERE "intake_item"."triaged_at" is not null;--> statement-breakpoint
+CREATE INDEX "task_projectId_createdAt_idx" ON "task" USING btree ("project_id","created_at");
