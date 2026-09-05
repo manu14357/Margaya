@@ -1,0 +1,41 @@
+import { and, eq, ne } from "drizzle-orm";
+import { HTTPException } from "hono/http-exception";
+import db from "../../database";
+import { columnTable } from "../../database/schema";
+import { publishEvent } from "../../events";
+
+async function reorderColumns(
+  projectId: string,
+  columns: Array<{ id: string; position: number }>,
+  userId: string,
+) {
+  for (const col of columns) {
+    const [updated] = await db
+      .update(columnTable)
+      .set({ position: col.position })
+      .where(
+        and(eq(columnTable.id, col.id), eq(columnTable.projectId, projectId)),
+      )
+      .returning({ id: columnTable.id });
+
+    if (!updated) {
+      throw new HTTPException(400, {
+        message: `Column ${col.id} does not belong to this project`,
+      });
+    }
+  }
+
+  const updated = await db.query.columnTable.findMany({
+    where: and(
+      eq(columnTable.projectId, projectId),
+      ne(columnTable.group, "triage"),
+    ),
+    orderBy: (columns, { asc }) => [asc(columns.position)],
+  });
+
+  await publishEvent("column.reordered", { projectId, userId });
+
+  return updated;
+}
+
+export default reorderColumns;
