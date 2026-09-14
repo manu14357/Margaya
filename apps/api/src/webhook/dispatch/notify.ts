@@ -1,0 +1,47 @@
+import { sendNotificationEmail } from "@margaya/email";
+import { eq } from "drizzle-orm";
+import db from "../../database";
+import { userTable, workspaceWebhookTable } from "../../database/schema";
+
+// The best-effort email to a webhook's creator after Margaya disabled it
+// (K11). Failures are logged and swallowed; without SMTP nothing is sent.
+
+function hostOf(url: string): string {
+  try {
+    return new URL(url).host;
+  } catch {
+    return "the endpoint";
+  }
+}
+
+export function webhookDetailUrl(webhookId: string): string {
+  const clientUrl = (
+    process.env.MARGAYA_CLIENT_URL || "http://localhost:5173"
+  ).replace(/\/+$/, "");
+  return `${clientUrl}/dashboard/settings/workspace/webhooks/${webhookId}`;
+}
+
+export async function notifyWebhookDisabled(webhookId: string): Promise<void> {
+  try {
+    const [row] = await db
+      .select({
+        url: workspaceWebhookTable.url,
+        email: userTable.email,
+        locale: userTable.locale,
+      })
+      .from(workspaceWebhookTable)
+      .innerJoin(userTable, eq(userTable.id, workspaceWebhookTable.createdBy))
+      .where(eq(workspaceWebhookTable.id, webhookId))
+      .limit(1);
+    if (!row?.email) return;
+    await sendNotificationEmail(row.email, "A Margaya webhook was disabled", {
+      title: "Webhook disabled",
+      message: `Deliveries to ${hostOf(row.url)} failed repeatedly for more than a day, so Margaya disabled the webhook. Fix the endpoint, then enable it again in workspace settings.`,
+      actionUrl: webhookDetailUrl(webhookId),
+      actionLabel: "Open webhook settings",
+      locale: row.locale ?? null,
+    });
+  } catch {
+    console.error(`webhooks: could not email about disabled ${webhookId}`);
+  }
+}
