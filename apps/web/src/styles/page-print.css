@@ -1,0 +1,147 @@
+/* Print / Save as PDF for a page: only the page's reading column (title and
+   content) prints, on white, with the app around it hidden. It applies to
+   the browser's own print command too, whenever a page is open. The light
+   theme is switched on for printing by `useLightThemeWhilePrinting`. */
+@media print {
+  @page {
+    margin: 16mm 14mm;
+  }
+
+  html:has([data-slot="page-reading"]),
+  body:has([data-slot="page-reading"]) {
+    height: auto !important;
+    overflow: visible !important;
+    background: white !important;
+    color-scheme: light;
+  }
+
+  /* Everything that neither is nor holds the reading column goes... */
+  body:has([data-slot="page-reading"])
+    *:not(
+      [data-slot="page-reading"],
+      [data-slot="page-reading"] *,
+      :has([data-slot="page-reading"])
+    ) {
+    display: none !important;
+  }
+
+  /* ...and the column's ancestors stop scrolling and clipping, so a long
+     page runs over as many sheets as it needs. */
+  body:has([data-slot="page-reading"]) :has([data-slot="page-reading"]) {
+    display: block !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    background: transparent !important;
+  }
+
+  [data-slot="page-reading"] {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white;
+    color: black;
+  }
+
+  /* Chrome inside the column: ancestors, banners, buttons and editor tools. */
+  [data-slot="page-reading"] :is(
+      header nav,
+      header [data-slot="button"],
+      .margaya-block-handle,
+      .margaya-image-toolbar,
+      .margaya-image-resize,
+      .margaya-callout-switch,
+      .margaya-codeblock-language,
+      .margaya-editor-quick-attach,
+      .margaya-editor-drop-indicator,
+      .margaya-collab-caret,
+      .margaya-tiptap-bubble,
+      .margaya-tiptap-slash-menu
+    ) {
+    display: none !important;
+  }
+
+  [data-slot="page-reading"] .margaya-callout-icon {
+    display: inline-flex !important;
+  }
+
+  [data-slot="page-reading"] .margaya-collab-selection {
+    background: none !important;
+  }
+
+  [data-slot="page-reading"] .ProseMirror {
+    padding-bottom: 0 !important;
+  }
+
+  [data-slot="page-reading"] .ProseMirror .is-editor-empty::before {
+    content: none !important;
+  }
+
+  /* Keep blocks that read as one piece on one sheet. */
+  [data-slot="page-reading"] :is(
+      pre,
+      blockquote,
+      tr,
+      .margaya-callout,
+      .margaya-image-node,
+      .margaya-mermaid-preview,
+      [data-type="margaya-embed"]
+    ) {
+    break-inside: avoid;
+  }
+
+  [data-slot="page-reading"] :is(h1, h2, h3) {
+    break-after: avoid;
+  }
+
+  [data-slot="page-reading"] p {
+    orphans: 3;
+    widows: 3;
+  }
+
+  [data-slot="page-reading"] pre {
+    white-space: pre-wrap !important;
+    overflow-wrap: anywhere;
+  }
+
+  [data-slot="page-reading"] .tableWrapper {
+    overflow: visible !important;
+  }
+
+  [data-slot="page-reading"] img {
+    max-width: 100% !important;
+  }
+
+  [data-slot="page-reading"] :is(.margaya-callout, pre, code, th) {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Paper has no hover: write web links out after their text. */
+  [data-slot="page-reading"] .ProseMirror a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    overflow-wrap: anywhere;
+    color: #555;
+  }
+
+  /* A video can't play on paper; its address prints instead. */
+  [data-slot="page-reading"] [data-type="margaya-embed"] iframe {
+    display: none !important;
+  }
+
+  [data-slot="page-reading"] [data-type="margaya-embed"][data-mode="embed"]::after {
+    content: attr(data-url);
+    display: block;
+    padding: 0.5rem 0.7rem;
+    overflow-wrap: anywhere;
+  }
+}

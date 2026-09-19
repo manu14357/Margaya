@@ -1,0 +1,414 @@
+/* The rich-text editor's rules (page editor, task description, bubble and
+   slash menus), moved out of index.css unchanged. They join the same
+   `components` layer; this file loads right after index.css. */
+@layer components {
+  .margaya-tiptap-shell {
+    position: relative;
+  }
+
+  .margaya-tiptap-shell:focus-within {
+    outline: none;
+  }
+
+  .margaya-tiptap-shell.is-drag-active {
+    z-index: 90;
+  }
+
+  .margaya-tiptap-bubble {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.1rem;
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius) - 2px);
+    background: var(--popover);
+    padding: 0.2rem 0.24rem;
+    box-shadow:
+      0 8px 24px --alpha(var(--color-black) / 14%),
+      0 1px 2px --alpha(var(--color-black) / 9%);
+  }
+
+  .margaya-tiptap-bubble-btn {
+    height: 1.6rem;
+    width: 1.6rem;
+    padding: 0;
+  }
+
+  .margaya-tiptap-bubble-separator {
+    display: block;
+    width: 1px;
+    height: 1rem;
+    background: color-mix(in srgb, var(--border) 84%, transparent);
+    margin: 0 0.15rem;
+  }
+
+  /* The public board's renderer is also a comment editor, whose own rule won
+     this tie while both lived in index.css; :where() keeps the specificity. */
+  .margaya-tiptap-content:where(:not(.margaya-comment-editor-content)) .ProseMirror {
+    min-height: 1.85rem;
+    padding: 0.2rem 0 2.9rem;
+    font-family: var(--font-sans);
+    font-size: 0.965rem;
+    line-height: 1.72;
+    white-space: pre-wrap;
+    color: var(--foreground);
+    caret-color: var(--foreground);
+    outline: none;
+  }
+
+  .margaya-tiptap-slash-menu {
+    position: fixed;
+    z-index: 50;
+    min-width: 16rem;
+    border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+    border-radius: 0.5rem;
+    background: var(--popover);
+    padding: 0.32rem;
+    box-shadow:
+      0 10px 28px --alpha(var(--color-black) / 18%),
+      0 1px 2px --alpha(var(--color-black) / 10%);
+  }
+
+  .margaya-tiptap-slash-group + .margaya-tiptap-slash-group {
+    margin-top: 0.2rem;
+    border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+    padding-top: 0.2rem;
+  }
+
+  .margaya-tiptap-slash-group-title {
+    padding: 0.22rem 0.42rem 0.3rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--foreground) 48%, transparent);
+  }
+
+  .margaya-tiptap-slash-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+    border-radius: 0.35rem;
+    padding: 0.4rem 0.45rem;
+    text-align: left;
+    font-size: 0.79rem;
+    color: color-mix(in srgb, var(--foreground) 88%, transparent);
+  }
+
+  .margaya-tiptap-slash-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .margaya-tiptap-slash-shortcut {
+    flex-shrink: 0;
+    font-size: 0.68rem;
+    color: color-mix(in srgb, var(--foreground) 52%, transparent);
+  }
+
+  .margaya-tiptap-slash-item:hover,
+  .margaya-tiptap-slash-item.is-selected {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  .margaya-tiptap-slash-empty {
+    padding: 0.4rem 0.55rem;
+    font-size: 0.76rem;
+    color: color-mix(in srgb, var(--foreground) 56%, transparent);
+  }
+
+  .margaya-tiptap-content .ProseMirror p {
+    margin: 0.2rem 0;
+  }
+
+  .margaya-tiptap-content .ProseMirror h1,
+  .margaya-tiptap-content .ProseMirror h2,
+  .margaya-tiptap-content .ProseMirror h3 {
+    margin: 1.05rem 0 0.45rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.26;
+    color: var(--foreground);
+  }
+
+  .margaya-tiptap-content .ProseMirror h1 {
+    font-size: 1.24rem;
+  }
+
+  .margaya-tiptap-content .ProseMirror h2 {
+    font-size: 1.12rem;
+  }
+
+  .margaya-tiptap-content .ProseMirror h3 {
+    font-size: 1.02rem;
+  }
+
+  .margaya-tiptap-content .ProseMirror ul,
+  .margaya-tiptap-content .ProseMirror ol {
+    margin: 0.3rem 0;
+    padding-inline-start: 1.35rem;
+  }
+
+  .margaya-tiptap-content .ProseMirror ul {
+    list-style-type: disc;
+  }
+
+  .margaya-tiptap-content .ProseMirror ol {
+    list-style-type: decimal;
+  }
+
+  .margaya-tiptap-content .ProseMirror ul ul {
+    list-style-type: circle;
+  }
+
+  .margaya-tiptap-content .ProseMirror ul ul ul {
+    list-style-type: square;
+  }
+
+  .margaya-tiptap-content .ProseMirror ol ol {
+    list-style-type: lower-alpha;
+  }
+
+  .margaya-tiptap-content .ProseMirror li::marker {
+    color: color-mix(in srgb, var(--foreground) 70%, transparent);
+  }
+
+  .margaya-tiptap-content .ProseMirror li {
+    margin: 0.1rem 0;
+  }
+
+  .margaya-tiptap-content .ProseMirror ul[data-type="taskList"] {
+    list-style: none;
+    margin: 0.3rem 0;
+    padding-inline-start: 0;
+  }
+
+  .margaya-tiptap-content .ProseMirror li[data-type="taskItem"] {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.45rem;
+    margin: 0.18rem 0;
+    text-align: left;
+  }
+
+  .margaya-tiptap-content
+    .ProseMirror
+    li[data-type="taskItem"]
+    > :is(label, .margaya-task-item-checkbox) {
+    margin-top: 0.15rem;
+    display: inline-flex;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .margaya-tiptap-content .ProseMirror li[data-type="taskItem"] > div {
+    flex: 0 1 auto;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .margaya-tiptap-content .ProseMirror li[data-type="taskItem"] > div > * {
+    margin-inline: 0;
+  }
+
+  .margaya-tiptap-content .ProseMirror li[data-type="taskItem"] ul,
+  .margaya-tiptap-content .ProseMirror li[data-type="taskItem"] ol {
+    margin-top: 0.2rem;
+  }
+
+  .margaya-tiptap-content .ProseMirror li[data-type="taskItem"] [data-slot="checkbox"] {
+    margin-top: 0;
+  }
+
+  .margaya-tiptap-content .ProseMirror li[data-type="taskItem"] > div p {
+    margin: 0;
+    line-height: 1.45;
+  }
+
+  .margaya-tiptap-content .ProseMirror li[data-type="taskItem"][data-checked="true"] > div p {
+    color: color-mix(in srgb, var(--foreground) 62%, transparent);
+    text-decoration: line-through;
+  }
+
+  .margaya-tiptap-content .ProseMirror a {
+    color: var(--primary);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    text-decoration-color: color-mix(
+      in srgb,
+      var(--primary) 68%,
+      transparent
+    );
+    transition:
+      color 0.12s ease,
+      text-decoration-color 0.12s ease;
+  }
+
+  .margaya-tiptap-content .ProseMirror a:hover {
+    color: color-mix(in srgb, var(--primary) 84%, var(--foreground));
+    text-decoration-color: currentColor;
+  }
+
+  .margaya-tiptap-content .ProseMirror :not(pre) > code {
+    border: 1px solid var(--border);
+    border-radius: 0.34rem;
+    background: var(--code-highlight);
+    font-family: var(--font-mono);
+    font-size: 0.84em;
+    padding: 0.11rem 0.32rem;
+  }
+
+  .margaya-tiptap-content .ProseMirror pre {
+    margin: 0.45rem 0;
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius) - 3px);
+    background: var(--code);
+    padding: 0.75rem 0.9rem;
+  }
+
+  .margaya-tiptap-content .ProseMirror pre code {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--code-foreground);
+  }
+
+  .margaya-tiptap-content .ProseMirror blockquote {
+    margin: 0.5rem 0;
+    border-left: 2px solid var(--border);
+    padding-left: 0.75rem;
+    color: color-mix(in srgb, var(--foreground) 78%, transparent);
+  }
+
+  .margaya-tiptap-content .ProseMirror img.margaya-editor-image {
+    display: block;
+    max-width: min(100%, 44rem);
+    width: auto;
+    height: auto;
+    margin: 0.75rem 0;
+    border: 1px solid color-mix(in srgb, var(--border) 76%, transparent);
+    border-radius: calc(var(--radius) - 2px);
+    background: color-mix(in srgb, var(--accent) 22%, transparent);
+    object-fit: contain;
+    overflow: hidden;
+  }
+
+  .margaya-tiptap-content .ProseMirror .is-editor-empty:first-child::before {
+    pointer-events: none;
+    content: attr(data-placeholder);
+    height: 0;
+    float: left;
+    color: color-mix(in srgb, var(--foreground) 40%, transparent);
+  }
+
+  .margaya-tiptap-content .ProseMirror table {
+    border-collapse: collapse;
+    margin: 0.7rem 0;
+    overflow: hidden;
+    table-layout: fixed;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius) - 3px);
+  }
+
+  .margaya-tiptap-content .ProseMirror table td,
+  .margaya-tiptap-content .ProseMirror table th {
+    min-width: 1em;
+    border: 1px solid color-mix(in srgb, var(--border) 84%, transparent);
+    padding: 0.45rem 0.55rem;
+    vertical-align: top;
+  }
+
+  .margaya-tiptap-content .ProseMirror table th {
+    background: color-mix(in srgb, var(--accent) 70%, transparent);
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .margaya-tiptap-content .ProseMirror .selectedCell:after {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    content: "";
+    background: color-mix(in srgb, var(--primary) 16%, transparent);
+  }
+
+  .margaya-tiptap-content .ProseMirror .tableWrapper {
+    overflow-x: auto;
+  }
+
+  .margaya-tiptap-content .ProseMirror [data-type="margaya-embed"] {
+    margin: 0.65rem 0;
+    border: 1px solid color-mix(in srgb, var(--border) 76%, transparent);
+    border-radius: calc(var(--radius) - 2px);
+    background: color-mix(in srgb, var(--accent) 28%, transparent);
+    overflow: hidden;
+    transition:
+      border-color 0.12s ease,
+      box-shadow 0.12s ease;
+  }
+
+  .margaya-tiptap-content .ProseMirror [data-type="margaya-embed"] iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    display: block;
+    background: black;
+  }
+
+  .margaya-tiptap-content .ProseMirror [data-type="margaya-embed"] > a {
+    display: block;
+    padding: 0.6rem 0.7rem;
+    color: var(--foreground);
+    text-decoration: none;
+    font-size: 0.82rem;
+    word-break: break-word;
+  }
+
+  .margaya-tiptap-content .ProseMirror
+    [data-type="margaya-embed"].ProseMirror-selectednode {
+    border-color: color-mix(in srgb, var(--ring) 82%, var(--border));
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--ring) 38%, transparent),
+      0 0 0 1px color-mix(in srgb, var(--ring) 70%, transparent) inset;
+  }
+
+  .margaya-tiptap-content .ProseMirror [data-type="margaya-embed"] .margaya-embed-unsupported {
+    padding: 0.62rem 0.72rem;
+    font-size: 0.78rem;
+    color: color-mix(in srgb, var(--foreground) 62%, transparent);
+  }
+
+  .margaya-tiptap-content .ProseMirror [data-type="margaya-embed"]:focus-within {
+    border-color: color-mix(in srgb, var(--ring) 80%, var(--border));
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--ring) 34%, transparent);
+  }
+
+  .margaya-tiptap-prose a {
+    color: color-mix(in srgb, var(--foreground) 88%, #4c9aff 12%);
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--ring) 44%, transparent);
+    text-underline-offset: 2px;
+  }
+
+  .margaya-tiptap-content .ProseMirror ::selection {
+    background: color-mix(in srgb, var(--primary) 18%, transparent);
+  }
+
+  .margaya-comment-editor-shell .margaya-tiptap-slash-menu {
+    position: absolute;
+    z-index: 120;
+    opacity: 1;
+    background-color: var(--popover);
+    background-image: none;
+    backdrop-filter: none;
+  }
+}

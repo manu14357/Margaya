@@ -1,0 +1,234 @@
+/* Callouts, sized and aligned images, and the block handle, in every rich
+   text editor. Colours come from the semantic tokens only, which the light
+   and dark themes both define. */
+@layer components {
+  .ProseMirror .margaya-callout {
+    --callout-tone: var(--info);
+    --callout-ink: var(--info-foreground);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    margin: 0.6rem 0;
+    border: 1px solid color-mix(in srgb, var(--callout-tone) 34%, transparent);
+    border-radius: calc(var(--radius) - 2px);
+    background: color-mix(in srgb, var(--callout-tone) 9%, transparent);
+    padding: 0.5rem 0.8rem;
+  }
+
+  .ProseMirror .margaya-callout[data-variant="warning"] {
+    --callout-tone: var(--warning);
+    --callout-ink: var(--warning-foreground);
+  }
+
+  .ProseMirror .margaya-callout[data-variant="success"] {
+    --callout-tone: var(--success);
+    --callout-ink: var(--success-foreground);
+  }
+
+  .ProseMirror .margaya-callout[data-variant="danger"] {
+    --callout-tone: var(--destructive);
+    --callout-ink: var(--destructive-foreground);
+  }
+
+  .ProseMirror .margaya-callout-aside {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    min-height: 1lh;
+    margin-top: 0.2rem;
+    color: var(--callout-ink);
+    user-select: none;
+  }
+
+  .ProseMirror .margaya-callout-icon {
+    display: inline-flex;
+  }
+
+  .ProseMirror .margaya-callout-switch {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 1.4rem;
+    height: 1.4rem;
+    margin: -0.2rem;
+    border-radius: 0.35rem;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .ProseMirror .margaya-callout-switch:hover,
+  .ProseMirror .margaya-callout-switch[aria-expanded="true"] {
+    background: color-mix(in srgb, var(--callout-tone) 18%, transparent);
+  }
+
+  .ProseMirror .margaya-callout-switch:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 1px;
+  }
+
+  .ProseMirror[contenteditable="true"] .margaya-callout-icon {
+    display: none;
+  }
+
+  .ProseMirror[contenteditable="true"] .margaya-callout-switch {
+    display: inline-flex;
+  }
+
+  .ProseMirror .margaya-callout-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ProseMirror .margaya-callout-content :is(p, ul, ol, pre, blockquote):first-child {
+    margin-top: 0.2rem;
+  }
+
+  .ProseMirror .margaya-callout-content :is(p, ul, ol, pre, blockquote):last-child {
+    margin-bottom: 0.2rem;
+  }
+
+  [data-callout-icon="info"] {
+    color: var(--info-foreground);
+  }
+
+  [data-callout-icon="warning"] {
+    color: var(--warning-foreground);
+  }
+
+  [data-callout-icon="success"] {
+    color: var(--success-foreground);
+  }
+
+  [data-callout-icon="danger"] {
+    color: var(--destructive-foreground);
+  }
+
+  .ProseMirror .margaya-image-node {
+    position: relative;
+    margin: 0.75rem 0;
+    line-height: 0;
+  }
+
+  .ProseMirror .margaya-image-node[data-align="center"] {
+    text-align: center;
+  }
+
+  .ProseMirror .margaya-image-node[data-align="right"] {
+    text-align: right;
+  }
+
+  .ProseMirror .margaya-image-node .margaya-image-frame {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    vertical-align: top;
+  }
+
+  .ProseMirror .margaya-image-node .margaya-image-frame > img.margaya-editor-image {
+    margin: 0;
+  }
+
+  .ProseMirror .margaya-image-node .margaya-image-frame[style*="width"] > img.margaya-editor-image {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .ProseMirror .margaya-image-node.is-editing img.margaya-editor-image {
+    outline: 2px solid color-mix(in srgb, var(--ring) 72%, transparent);
+    outline-offset: 2px;
+  }
+
+  .ProseMirror[contenteditable="false"] .margaya-image-node img.margaya-editor-image {
+    cursor: zoom-in;
+  }
+
+  .ProseMirror .margaya-image-resize {
+    position: absolute;
+    top: 50%;
+    width: 0.45rem;
+    height: 2.4rem;
+    max-height: 70%;
+    transform: translateY(-50%);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--background);
+    box-shadow: 0 1px 3px color-mix(in srgb, var(--foreground) 18%, transparent);
+    cursor: ew-resize;
+    touch-action: none;
+  }
+
+  .ProseMirror .margaya-image-resize.is-left {
+    left: 0.4rem;
+  }
+
+  .ProseMirror .margaya-image-resize.is-right {
+    right: 0.4rem;
+  }
+
+  .ProseMirror .margaya-image-resize:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 1px;
+  }
+
+  .ProseMirror .margaya-image-toolbar {
+    position: absolute;
+    bottom: calc(100% + 0.35rem);
+    left: 0;
+    z-index: 20;
+    line-height: normal;
+  }
+
+  .ProseMirror .margaya-image-node[data-align="center"] .margaya-image-toolbar {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .ProseMirror .margaya-image-node[data-align="right"] .margaya-image-toolbar {
+    right: 0;
+    left: auto;
+  }
+
+  .ProseMirror[contenteditable="false"] :is(.margaya-image-toolbar, .margaya-image-resize) {
+    display: none;
+  }
+
+  .margaya-block-handle {
+    position: absolute;
+    z-index: 15;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.35rem;
+    color: var(--muted-foreground);
+    cursor: grab;
+    opacity: 0.75;
+    transition:
+      opacity 0.12s ease,
+      background-color 0.12s ease;
+  }
+
+  .margaya-block-handle:hover,
+  .margaya-block-handle:focus-visible,
+  .margaya-block-handle[aria-expanded="true"] {
+    background: var(--accent);
+    color: var(--foreground);
+    opacity: 1;
+  }
+
+  .margaya-block-handle:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 1px;
+  }
+
+  .margaya-block-handle:active {
+    cursor: grabbing;
+  }
+
+  @media (pointer: coarse), (max-width: 639px) {
+    .margaya-block-handle {
+      display: none;
+    }
+  }
+}
