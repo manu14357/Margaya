@@ -1,0 +1,17 @@
+import { client } from "@margaya/libs";
+import { HttpError } from "@/lib/http-error";
+
+/** Restores the page and its sub-pages (to the top level under an archived parent). */
+async function unarchivePage(pageId: string) {
+  const response = await client.page[":id"].unarchive.$post({
+    param: { id: pageId },
+  });
+
+  if (!response.ok) {
+    throw new HttpError(response.status, await response.text());
+  }
+
+  return response.json();
+}
+
+export default unarchivePage;
