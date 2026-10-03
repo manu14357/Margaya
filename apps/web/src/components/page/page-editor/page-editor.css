@@ -1,0 +1,74 @@
+/* Page editor additions: page link chips and collaborator carets. Colors
+   come from existing tokens and the per-user --collab-color variable. */
+
+.margaya-page-link-node {
+  display: inline;
+}
+
+.margaya-page-link-chip {
+  display: inline-flex;
+  max-width: min(26rem, 85vw);
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
+  border-radius: 0.45rem;
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  padding: 0.12rem 0.42rem;
+  color: var(--foreground);
+  text-decoration: none;
+  line-height: 1.3;
+  vertical-align: baseline;
+  transform: translateY(-0.02rem);
+}
+
+.margaya-page-link-chip:hover {
+  border-color: color-mix(in srgb, var(--ring) 56%, var(--border));
+  background: color-mix(in srgb, var(--accent) 34%, transparent);
+}
+
+.margaya-page-link-chip.is-unavailable {
+  color: var(--muted-foreground);
+  font-style: italic;
+  cursor: default;
+}
+
+.margaya-page-link-chip.is-unavailable:hover {
+  border-color: color-mix(in srgb, var(--border) 78%, transparent);
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.margaya-collab-caret {
+  position: relative;
+  margin-left: -1px;
+  margin-right: -1px;
+  border-left: 1px solid var(--collab-color);
+  border-right: 1px solid var(--collab-color);
+  word-break: normal;
+  pointer-events: none;
+}
+
+.margaya-collab-caret-label {
+  position: absolute;
+  top: -1.35em;
+  left: -1px;
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 0.3rem 0.3rem 0.3rem 0;
+  background: var(--collab-color);
+  padding: 0.05rem 0.35rem;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 500;
+  line-height: 1.3;
+  user-select: none;
+}
+
+.margaya-collab-selection {
+  background: color-mix(in srgb, var(--collab-color) 22%, transparent);
+}
+
+.margaya-page-editor .ProseMirror[contenteditable="false"] .margaya-collab-caret-label {
+  opacity: 0.85;
+}
