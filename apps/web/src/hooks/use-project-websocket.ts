@@ -1,0 +1,451 @@
+import { windowId } from "@margaya/libs";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { getApiUrl } from "@/fetchers/get-api-url";
+import { invalidateEstimateQueries } from "@/hooks/mutations/estimate/invalidate-estimate-queries";
+import { invalidateIntakeQueries } from "@/hooks/mutations/intake/invalidate-intake-queries";
+import { invalidatePlanningProgress } from "@/hooks/mutations/task/invalidate-planning-progress";
+import { archiveQueryKeys } from "@/hooks/queries/archive/archive-query-keys";
+import { intakeQueryKeys } from "@/hooks/queries/intake/intake-query-keys";
+import { moduleQueryKeys } from "@/hooks/queries/module/module-query-keys";
+import { descriptionVersionKeys } from "@/hooks/queries/task-description-version/keys";
+import { trashQueryKeys } from "@/hooks/queries/trash/trash-query-keys";
+import { authClient } from "@/lib/auth-client";
+import { handlePageHint } from "@/lib/pages/page-realtime";
+import { onSignOut } from "@/lib/sign-out";
+import { invalidateTaskQueries } from "@/lib/task-query/cache";
+
+export function getWsUrl(projectId: string) {
+  const base = getApiUrl("ws");
+  const wsBase = base.replace(/^http/, "ws");
+  return `${wsBase}/${encodeURIComponent(projectId)}?windowId=${encodeURIComponent(windowId)}`;
+}
+
+/** Messages that change which tasks a task query returns, or their groups. */
+const TASK_QUERY_HINTS = new Set([
+  "TASK_UPDATED",
+  "TASK_CREATED",
+  "TASK_DELETED",
+  "TASK_RESTORED",
+  "TASK_LABEL_UPDATED",
+  "TASK_MOVED",
+  "TASK_RELATION_UPDATED",
+  "COLUMNS_UPDATED",
+  "CYCLE_UPDATED",
+  "MODULE_UPDATED",
+  "ESTIMATE_TASKS_REMAPPED",
+  "TASKS_CHANGED",
+]);
+
+/** Messages that change archived counts or lists (B11 Archives). */
+const ARCHIVE_HINTS = new Set([
+  "TASK_UPDATED",
+  "TASK_DELETED",
+  "TASK_RESTORED",
+  "TASKS_CHANGED",
+  "PROJECT_UPDATED",
+  "CYCLE_UPDATED",
+  "MODULE_UPDATED",
+]);
+
+/** Messages that change a trash list (C7). */
+const TRASH_HINTS = new Set([
+  "TASK_DELETED",
+  "TASK_RESTORED",
+  "TASK_PURGED",
+  "PROJECT_UPDATED",
+]);
+
+const MAX_RETRIES = 5;
+const BASE_DELAY = 1000; // 1 second
+
+// Cloudflare closes idle WebSocket connections after 100 seconds of no traffic.
+// We send a lightweight ping every 30 seconds to keep the connection alive.
+const WS_PING_INTERVAL_MS = 30_000;
+
+export function useProjectWebSocket(projectId: string) {
+  const queryClient = useQueryClient();
+  const { data: session } = authClient.useSession();
+
+  useEffect(() => {
+    if (!projectId || !session?.user?.id) return;
+
+    // Each effect owns its sockets and timers. Late events from an old project
+    // or session must not alter the next effect's connection or reconnect it.
+    let disposed = false;
+    let activeSocket: WebSocket | null = null;
+    let retries = 0;
+    let retryTimeout: ReturnType<typeof setTimeout> | null = null;
+    let pingInterval: ReturnType<typeof setInterval> | null = null;
+
+    function clearPing() {
+      if (pingInterval !== null) {
+        clearInterval(pingInterval);
+        pingInterval = null;
+      }
+    }
+
+    function connect() {
+      if (disposed) return;
+      retryTimeout = null;
+      const url = getWsUrl(projectId);
+      const ws = new WebSocket(url);
+      activeSocket = ws;
+
+      ws.onopen = () => {
+        if (disposed || activeSocket !== ws) return;
+        retries = 0; // Reset retries on successful connection
+        // Start keepalive pings to prevent Cloudflare idle timeout (100s)
+        clearPing();
+        pingInterval = setInterval(() => {
+          if (ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: "ping" }));
+          }
+        }, WS_PING_INTERVAL_MS);
+      };
+
+      ws.onmessage = (event) => {
+        if (disposed || activeSocket !== ws) return;
+        try {
+          const message = JSON.parse(event.data);
+          // Task query results (filters, spreadsheets, views) follow every
+          // change to the project's tasks and what groups them; only
+          // mounted queries refetch.
+          if (TASK_QUERY_HINTS.has(message.type)) {
+            void invalidateTaskQueries(queryClient, message.projectId);
+          }
+          // Archive counts and lists (archive, restore, delete, automation).
+          if (ARCHIVE_HINTS.has(message.type)) {
+            queryClient.invalidateQueries({
+              queryKey: archiveQueryKeys.all(),
+            });
+          }
+          // Trash lists (C7): a task moved to the trash, restored or deleted
+          // permanently, or the project itself trashed or restored.
+          if (TRASH_HINTS.has(message.type)) {
+            queryClient.invalidateQueries({ queryKey: trashQueryKeys.all() });
+          }
+          // A project view was created, changed or deleted: its lists, open
+          // views and favorites refresh (the hint carries no view data).
+          // Intake requests changed (submitted, triaged, edited, deleted, or
+          // a snooze ended): the queue, its badge and the request refresh.
+          if (message.type === "INTAKE_UPDATED") {
+            invalidateIntakeQueries(queryClient, {
+              projectId: message.projectId,
+              taskId: message.taskId,
+            });
+            return;
+          }
+          if (message.type === "VIEWS_UPDATED") {
+            queryClient.invalidateQueries({ queryKey: ["views"] });
+            queryClient.invalidateQueries({ queryKey: ["favorites"] });
+            return;
+          }
+          // Pages changed (lists, trees, headers, favorites); open editors
+          // get content over their own page socket.
+          if (handlePageHint(queryClient, message)) return;
+          // Column and project-setting changes are refetch hints; statistics
+          // live on the project queries, so those refresh too.
+          if (message.type === "COLUMNS_UPDATED") {
+            queryClient.invalidateQueries({
+              queryKey: ["columns", message.projectId],
+            });
+            queryClient.invalidateQueries({
+              queryKey: ["tasks", message.projectId],
+            });
+            queryClient.invalidateQueries({ queryKey: ["projects"] });
+            // A column group change moves module counts and progress.
+            queryClient.invalidateQueries({
+              queryKey: moduleQueryKeys.lists(message.projectId),
+            });
+            queryClient.invalidateQueries({
+              queryKey: moduleQueryKeys.progresses(message.projectId),
+            });
+            return;
+          }
+          // Settings, automations, or the archive state: favorites hide
+          // archived projects.
+          if (message.type === "PROJECT_UPDATED") {
+            queryClient.invalidateQueries({ queryKey: ["projects"] });
+            queryClient.invalidateQueries({ queryKey: ["favorites"] });
+            return;
+          }
+          // The automation job archived or closed many tasks at once: one
+          // hint for all of them, so everything showing tasks refreshes by
+          // prefix; only mounted queries refetch.
+          if (message.type === "TASKS_CHANGED") {
+            queryClient.invalidateQueries({
+              queryKey: ["tasks", message.projectId],
+            });
+            for (const queryKey of [
+              ["task"],
+              ["activities"],
+              ["task-relations"],
+              ["projects"],
+            ]) {
+              queryClient.invalidateQueries({ queryKey });
+            }
+            invalidatePlanningProgress(queryClient, message.projectId);
+            return;
+          }
+          // Cycle changes refresh the list, detail and progress queries, and
+          // favorites, whose names and archive state may have changed.
+          if (message.type === "CYCLE_UPDATED") {
+            queryClient.invalidateQueries({
+              queryKey: ["cycles", message.projectId],
+            });
+            queryClient.invalidateQueries({ queryKey: ["favorites"] });
+            return;
+          }
+          // Module changes refresh every module query of the project, the
+          // favorites (names, archive state) and task activity (membership
+          // entries); only mounted queries refetch.
+          if (message.type === "MODULE_UPDATED") {
+            queryClient.invalidateQueries({
+              queryKey: moduleQueryKeys.all(message.projectId),
+            });
+            queryClient.invalidateQueries({ queryKey: ["favorites"] });
+            queryClient.invalidateQueries({ queryKey: ["activities"] });
+            return;
+          }
+          // Estimate system changes refresh the systems and the cycle and
+          // module progress whose estimate totals follow them. A remap also
+          // moved tasks between values: one hint for any number of tasks,
+          // so the board, open tasks and activity feeds refresh by prefix.
+          if (
+            message.type === "ESTIMATE_UPDATED" ||
+            message.type === "ESTIMATE_TASKS_REMAPPED"
+          ) {
+            invalidateEstimateQueries(queryClient, message.projectId);
+            if (message.type === "ESTIMATE_TASKS_REMAPPED") {
+              queryClient.invalidateQueries({
+                queryKey: ["tasks", message.projectId],
+              });
+              queryClient.invalidateQueries({ queryKey: ["task"] });
+              queryClient.invalidateQueries({ queryKey: ["activities"] });
+            }
+            return;
+          }
+          // The project's public board was published, unpublished, changed,
+          // got a new link, or someone was blocked (B12 §5). The project
+          // queries carry the isPublic mirror.
+          if (message.type === "PUBLICATION_UPDATED") {
+            for (const key of [
+              "publication",
+              "public-comments",
+              "publication-blocks",
+            ]) {
+              queryClient.invalidateQueries({
+                queryKey: [key, message.projectId],
+              });
+            }
+            queryClient.invalidateQueries({ queryKey: ["projects"] });
+            return;
+          }
+          // Someone voted on the public board: the task's read-only summary.
+          if (message.type === "VOTES_UPDATED") {
+            if (message.taskId) {
+              queryClient.invalidateQueries({
+                queryKey: ["task-votes", message.taskId],
+              });
+            }
+            return;
+          }
+          // Links and attachments are not part of the board payload, so the
+          // board is not refetched for them; the task's panel and its
+          // history are.
+          if (message.type === "TASK_LINKS_UPDATED") {
+            if (message.taskId) {
+              queryClient.invalidateQueries({
+                queryKey: ["task-links", message.taskId],
+              });
+              queryClient.invalidateQueries({
+                queryKey: ["activities", message.taskId],
+              });
+            }
+            return;
+          }
+          // Reactions are not part of the board or the activity feed.
+          if (message.type === "REACTIONS_UPDATED") {
+            if (message.taskId) {
+              queryClient.invalidateQueries({
+                queryKey: ["reactions", message.taskId],
+              });
+            }
+            return;
+          }
+          if (message.type === "TASK_ATTACHMENTS_UPDATED") {
+            if (message.taskId) {
+              queryClient.invalidateQueries({
+                queryKey: ["task-attachments", message.taskId],
+              });
+              queryClient.invalidateQueries({
+                queryKey: ["activities", message.taskId],
+              });
+            }
+            return;
+          }
+          if (
+            message.type === "TASK_UPDATED" ||
+            message.type === "TASK_CREATED" ||
+            message.type === "TASK_DELETED" ||
+            message.type === "TASK_RESTORED" ||
+            message.type === "TASK_LABEL_UPDATED" ||
+            message.type === "TASK_MOVED" ||
+            message.type === "TASK_RELATION_UPDATED" ||
+            message.type === "COMMENT_UPDATED"
+          ) {
+            queryClient.invalidateQueries({
+              queryKey: ["tasks", message.projectId],
+            });
+            // Cycle and module counts, progress and charts follow task
+            // status. The module task map only changes when a task leaves
+            // the project.
+            invalidatePlanningProgress(queryClient, message.projectId);
+            if (
+              message.type === "TASK_DELETED" ||
+              message.type === "TASK_RESTORED" ||
+              message.type === "TASK_MOVED"
+            ) {
+              queryClient.invalidateQueries({
+                queryKey: moduleQueryKeys.taskMap(message.projectId),
+              });
+            }
+            // Relations to a trashed task hide while it is in the trash and
+            // come back with a restore, on the other tasks too (C7).
+            if (
+              message.type === "TASK_DELETED" ||
+              message.type === "TASK_RESTORED"
+            ) {
+              queryClient.invalidateQueries({ queryKey: ["task-relations"] });
+            }
+            // Intake rows show their task's title and priority, and a
+            // deleted request's task takes the request along.
+            if (
+              message.type === "TASK_UPDATED" ||
+              message.type === "TASK_DELETED"
+            ) {
+              queryClient.invalidateQueries({
+                queryKey: intakeQueryKeys.lists(message.projectId),
+              });
+              queryClient.invalidateQueries({
+                queryKey: intakeQueryKeys.summary(message.projectId),
+              });
+            }
+
+            if (message.type === "TASK_RELATION_UPDATED") {
+              // Both tasks list the relation and record it in their history.
+              for (const relatedTaskId of [
+                message.sourceTaskId,
+                message.targetTaskId,
+              ]) {
+                if (!relatedTaskId) continue;
+                queryClient.invalidateQueries({
+                  queryKey: ["task", relatedTaskId],
+                });
+                queryClient.invalidateQueries({
+                  queryKey: ["task-relations", relatedTaskId],
+                });
+                queryClient.invalidateQueries({
+                  queryKey: ["activities", relatedTaskId],
+                });
+              }
+              if (!message.sourceTaskId && !message.targetTaskId) {
+                queryClient.invalidateQueries({
+                  queryKey: ["task-relations"],
+                });
+              }
+              // The timeline's dependency lines.
+              queryClient.invalidateQueries({
+                queryKey: ["task-relations", "project"],
+              });
+            } else {
+              queryClient.invalidateQueries({
+                queryKey: ["task", message.taskId],
+              });
+            }
+
+            // Another user's edit (an estimate, a label, a date) adds a
+            // history entry; an open activity feed refreshes with it.
+            if (message.taskId && message.type !== "TASK_RELATION_UPDATED") {
+              queryClient.invalidateQueries({
+                queryKey: ["activities", message.taskId],
+              });
+            }
+
+            // A description edit adds or updates a saved version; an open
+            // history list catches up.
+            if (message.taskId && message.type === "TASK_UPDATED") {
+              queryClient.invalidateQueries({
+                queryKey: descriptionVersionKeys.list(message.taskId),
+              });
+            }
+
+            if (message.type === "TASK_LABEL_UPDATED") {
+              queryClient.invalidateQueries({
+                queryKey: ["labels", message.taskId],
+              });
+            }
+
+            if (message.type === "COMMENT_UPDATED") {
+              queryClient.invalidateQueries({
+                queryKey: ["comments", message.taskId],
+              });
+              // The Publish page lists the project's public comments.
+              queryClient.invalidateQueries({
+                queryKey: ["public-comments", message.projectId],
+              });
+              // A deleted comment takes its reactions along.
+              queryClient.invalidateQueries({
+                queryKey: ["reactions", message.taskId],
+              });
+            }
+
+            // Commenting, being mentioned or being assigned subscribes
+            // people silently; an open subscribe button catches up.
+            if (
+              message.taskId &&
+              (message.type === "COMMENT_UPDATED" ||
+                message.type === "TASK_UPDATED")
+            ) {
+              queryClient.invalidateQueries({
+                queryKey: ["task-subscription", message.taskId],
+              });
+            }
+          }
+        } catch {
+          // Ignore malformed messages
+        }
+      };
+
+      ws.onclose = () => {
+        if (disposed || activeSocket !== ws) return;
+        clearPing();
+        activeSocket = null;
+
+        if (retries < MAX_RETRIES) {
+          const delay = BASE_DELAY * 2 ** retries; // 1s, 2s, 4s, 8s, 16s
+          retries += 1;
+          retryTimeout = setTimeout(connect, delay);
+        }
+      };
+    }
+    function dispose() {
+      disposed = true;
+      clearPing();
+      if (retryTimeout !== null) {
+        clearTimeout(retryTimeout);
+      }
+      activeSocket?.close();
+    }
+
+    // Close before the session ends, so no reconnect races the sign-out.
+    const stopOnSignOut = onSignOut(dispose);
+    connect();
+
+    return () => {
+      stopOnSignOut();
+      dispose();
+    };
+  }, [projectId, session?.user?.id, queryClient]);
+}
