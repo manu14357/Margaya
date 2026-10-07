@@ -1,0 +1,855 @@
+{
+	"$schema": "https://mintlify.com/docs.json",
+	"theme": "almond",
+	"name": "Margaya",
+	"colors": {
+		"primary": "#111111",
+		"light": "#fafafa",
+		"dark": "#1f1f1f"
+	},
+	"appearance": {
+		"default": "dark"
+	},
+	"icons": {
+		"library": "lucide"
+	},
+	"styling": {
+		"codeblocks": {
+			"theme": {
+				"light": "min-light",
+				"dark": "min-dark"
+			}
+		}
+	},
+	"fonts": {
+		"family": "Geist Variable",
+		"source": "/fonts/geist.woff2",
+		"format": "woff2"
+	},
+	"favicon": "/favicon.svg",
+	"logo": {
+		"light": "/logo/dark.svg",
+		"dark": "/logo/light.svg"
+	},
+	"redirects": [
+		{
+			"source": "/core/guide/migrating-from-v1",
+			"destination": "/core/installation/environment-variables"
+		}
+	],
+	"navigation": {
+		"tabs": [
+			{
+				"tab": "Guides",
+				"groups": [
+					{
+						"group": "Overview",
+						"pages": ["index", "core/index"]
+					},
+					{
+						"group": "Functional Guides",
+						"pages": [
+							"core/functional/index",
+							"core/functional/create-workspace-and-project",
+							"core/functional/plan-and-execute-tasks",
+							"core/functional/description-history",
+							"core/functional/keyboard-shortcuts",
+							"core/functional/multiple-assignees",
+							"core/functional/backlog-planning",
+							"core/functional/collaborate-with-team",
+							"core/functional/configure-workflows",
+							"core/functional/project-features-and-column-groups",
+							"core/functional/cycles",
+							"core/functional/modules",
+							"core/functional/estimates",
+							"core/functional/views",
+							"core/functional/intake",
+							"core/functional/publish-a-project-board",
+							"core/functional/drafts",
+							"core/functional/pages",
+							"core/functional/archives",
+							"core/functional/trash-and-restore",
+							"core/functional/automations",
+							"core/functional/analytics",
+							"core/functional/export-tasks",
+							"core/functional/webhooks",
+							"core/functional/audit-log",
+							"core/functional/import-tasks-from-csv",
+							"core/functional/import-from-jira",
+							"core/functional/home",
+							"core/functional/your-work",
+							"core/functional/member-profiles",
+							"core/functional/inbox",
+							"core/functional/account-notifications",
+							"core/functional/manage-your-account",
+							"core/functional/account-security",
+							"core/functional/personalize-your-workspace",
+							"core/functional/favorites-and-recent-items",
+							"core/functional/manage-workspace-labels"
+						]
+					},
+					{
+						"group": "Installation",
+						"pages": [
+							"core/installation/index",
+							"core/installation/docker-compose",
+							"core/installation/object-storage-and-image-uploads",
+							"core/installation/storage-backends",
+							"core/installation/environment-variables",
+							"core/installation/instance-admin",
+							"core/installation/start-services",
+							"core/installation/migration"
+						]
+					},
+					{
+						"group": "GitHub Integration",
+						"pages": [
+							"core/integrations/github/setup",
+							"core/integrations/github/configuration",
+							"core/integrations/github/troubleshooting"
+						]
+					},
+					{
+						"group": "Gitea Integration",
+						"pages": ["core/integrations/gitea/setup"]
+					},
+					{
+						"group": "Integrations",
+						"pages": [
+							"core/integrations/mcp",
+							"core/integrations/mcp-stateless",
+							"core/integrations/discord",
+							"core/integrations/slack",
+							"core/integrations/mattermost",
+							"core/integrations/telegram",
+							"core/integrations/outgoing-webhooks"
+						]
+					},
+					{
+						"group": "Authentication Providers",
+						"pages": [
+							"core/social-providers/github",
+							"core/social-providers/google",
+							"core/social-providers/discord",
+							"core/social-providers/custom-oauth"
+						]
+					},
+					{
+						"group": "Deployment & Operations",
+						"pages": [
+							"core/reverse-proxy/nginx",
+							"core/deployments/railway",
+							"core/deployments/coolify"
+						]
+					}
+				]
+			},
+			{
+				"tab": "API Reference",
+				"openapi": "openapi.json",
+				"groups": [
+					{
+						"group": "Overview",
+						"pages": ["api-reference/introduction"]
+					},
+					{
+						"group": "Projects",
+						"pages": [
+							"api-reference/endpoints/projects/getPublicProject",
+							"api-reference/endpoints/projects/getPublicProjectDescriptionPage",
+							"api-reference/endpoints/projects/getPublicTaskDescriptionPage",
+							"api-reference/endpoints/projects/listProjects",
+							"api-reference/endpoints/projects/createProject",
+							"api-reference/endpoints/projects/getProject",
+							"api-reference/endpoints/projects/updateProject",
+							"api-reference/endpoints/projects/deleteProject",
+							"api-reference/endpoints/projects/reorderProjects",
+							"api-reference/endpoints/projects/updateProjectFeatures",
+							"api-reference/endpoints/projects/archiveProject",
+							"api-reference/endpoints/projects/unarchiveProject",
+							"api-reference/endpoints/projects/previewProjectAutomation",
+							"api-reference/endpoints/projects/getProjectAutomations",
+							"api-reference/endpoints/projects/updateProjectAutomations"
+						]
+					},
+					{
+						"group": "Tasks",
+						"pages": [
+							"api-reference/endpoints/tasks/getTaskDescriptionPage",
+							"api-reference/endpoints/tasks/findDeferredTaskDescriptions",
+							"api-reference/endpoints/tasks/listTasks",
+							"api-reference/endpoints/tasks/bulkUpdateTasks",
+							"api-reference/endpoints/tasks/createTask",
+							"api-reference/endpoints/tasks/getTask",
+							"api-reference/endpoints/tasks/updateTask",
+							"api-reference/endpoints/tasks/deleteTask",
+							"api-reference/endpoints/tasks/moveTask",
+							"api-reference/endpoints/tasks/exportTasks",
+							"api-reference/endpoints/tasks/importTasks",
+							"api-reference/endpoints/tasks/previewJiraImport",
+							"api-reference/endpoints/tasks/importJiraIssues",
+							"api-reference/endpoints/tasks/updateTaskStatus",
+							"api-reference/endpoints/tasks/updateTaskPriority",
+							"api-reference/endpoints/tasks/updateTaskEstimate",
+							"api-reference/endpoints/tasks/updateTaskAssignee",
+							"api-reference/endpoints/tasks/setTaskAssignees",
+							"api-reference/endpoints/tasks/updateTaskAssignees",
+							"api-reference/endpoints/tasks/updateTaskDueDate",
+							"api-reference/endpoints/tasks/updateTaskTitle",
+							"api-reference/endpoints/tasks/createTaskImageUpload",
+							"api-reference/endpoints/tasks/finalizeTaskImageUpload",
+							"api-reference/endpoints/tasks/updateTaskDescription",
+							"api-reference/endpoints/tasks/copyTask",
+							"api-reference/endpoints/tasks/archiveTask",
+							"api-reference/endpoints/tasks/unarchiveTask",
+							"api-reference/endpoints/tasks/listTaskDescriptionVersions",
+							"api-reference/endpoints/tasks/getTaskDescriptionVersion",
+							"api-reference/endpoints/tasks/restoreTaskDescriptionVersion",
+							"api-reference/endpoints/tasks/queryTasks"
+						]
+					},
+					{
+						"group": "Columns",
+						"pages": [
+							"api-reference/endpoints/columns/getColumns",
+							"api-reference/endpoints/columns/createColumn",
+							"api-reference/endpoints/columns/reorderColumns",
+							"api-reference/endpoints/columns/updateColumn",
+							"api-reference/endpoints/columns/deleteColumn"
+						]
+					},
+					{
+						"group": "Cycles",
+						"pages": [
+							"api-reference/endpoints/cycles/listCycles",
+							"api-reference/endpoints/cycles/createCycle",
+							"api-reference/endpoints/cycles/setTaskCycle",
+							"api-reference/endpoints/cycles/getCycle",
+							"api-reference/endpoints/cycles/updateCycle",
+							"api-reference/endpoints/cycles/deleteCycle",
+							"api-reference/endpoints/cycles/archiveCycle",
+							"api-reference/endpoints/cycles/unarchiveCycle",
+							"api-reference/endpoints/cycles/addCycleTasks",
+							"api-reference/endpoints/cycles/removeCycleTasks",
+							"api-reference/endpoints/cycles/transferCycleTasks",
+							"api-reference/endpoints/cycles/getCycleProgress"
+						]
+					},
+					{
+						"group": "Modules",
+						"pages": [
+							"api-reference/endpoints/modules/listModules",
+							"api-reference/endpoints/modules/createModule",
+							"api-reference/endpoints/modules/reorderModules",
+							"api-reference/endpoints/modules/getModuleTaskMap",
+							"api-reference/endpoints/modules/getTaskModules",
+							"api-reference/endpoints/modules/setTaskModules",
+							"api-reference/endpoints/modules/getModule",
+							"api-reference/endpoints/modules/updateModule",
+							"api-reference/endpoints/modules/deleteModule",
+							"api-reference/endpoints/modules/archiveModule",
+							"api-reference/endpoints/modules/unarchiveModule",
+							"api-reference/endpoints/modules/getModuleProgress",
+							"api-reference/endpoints/modules/listModuleTasks",
+							"api-reference/endpoints/modules/addModuleTasks",
+							"api-reference/endpoints/modules/removeModuleTasks",
+							"api-reference/endpoints/modules/listModuleLinks",
+							"api-reference/endpoints/modules/createModuleLink",
+							"api-reference/endpoints/modules/updateModuleLink",
+							"api-reference/endpoints/modules/deleteModuleLink"
+						]
+					},
+					{
+						"group": "Estimates",
+						"pages": [
+							"api-reference/endpoints/estimates/listEstimates",
+							"api-reference/endpoints/estimates/createEstimate",
+							"api-reference/endpoints/estimates/getEstimateTotals",
+							"api-reference/endpoints/estimates/reorderEstimatePoints",
+							"api-reference/endpoints/estimates/updateEstimate",
+							"api-reference/endpoints/estimates/deleteEstimate",
+							"api-reference/endpoints/estimates/activateEstimate",
+							"api-reference/endpoints/estimates/createEstimatePoint",
+							"api-reference/endpoints/estimates/updateEstimatePoint",
+							"api-reference/endpoints/estimates/deleteEstimatePoint"
+						]
+					},
+					{
+						"group": "Views",
+						"pages": [
+							"api-reference/endpoints/views/listViews",
+							"api-reference/endpoints/views/createView",
+							"api-reference/endpoints/views/listBuiltInViews",
+							"api-reference/endpoints/views/getView",
+							"api-reference/endpoints/views/updateView",
+							"api-reference/endpoints/views/deleteView",
+							"api-reference/endpoints/views/lockView",
+							"api-reference/endpoints/views/unlockView",
+							"api-reference/endpoints/views/duplicateView"
+						]
+					},
+					{
+						"group": "Intake",
+						"pages": [
+							"api-reference/endpoints/intake/listIntakeItems",
+							"api-reference/endpoints/intake/createIntakeItem",
+							"api-reference/endpoints/intake/getIntakeSummary",
+							"api-reference/endpoints/intake/getIntakeItemByTask",
+							"api-reference/endpoints/intake/getIntakeItem",
+							"api-reference/endpoints/intake/updateIntakeItem",
+							"api-reference/endpoints/intake/deleteIntakeItem",
+							"api-reference/endpoints/intake/acceptIntakeItem",
+							"api-reference/endpoints/intake/declineIntakeItem",
+							"api-reference/endpoints/intake/snoozeIntakeItem",
+							"api-reference/endpoints/intake/unsnoozeIntakeItem",
+							"api-reference/endpoints/intake/markIntakeItemDuplicate",
+							"api-reference/endpoints/intake/reopenIntakeItem"
+						]
+					},
+					{
+						"group": "Pages",
+						"pages": [
+							"api-reference/endpoints/pages/listPages",
+							"api-reference/endpoints/pages/createPage",
+							"api-reference/endpoints/pages/listTaskPageReferences",
+							"api-reference/endpoints/pages/getPage",
+							"api-reference/endpoints/pages/updatePage",
+							"api-reference/endpoints/pages/deletePage",
+							"api-reference/endpoints/pages/replacePageContent",
+							"api-reference/endpoints/pages/movePageInTree",
+							"api-reference/endpoints/pages/lockPage",
+							"api-reference/endpoints/pages/unlockPage",
+							"api-reference/endpoints/pages/updatePageAccess",
+							"api-reference/endpoints/pages/archivePage",
+							"api-reference/endpoints/pages/unarchivePage",
+							"api-reference/endpoints/pages/duplicatePage",
+							"api-reference/endpoints/pages/movePageToProject",
+							"api-reference/endpoints/pages/listPageVersions",
+							"api-reference/endpoints/pages/getPageVersion",
+							"api-reference/endpoints/pages/restorePageVersion",
+							"api-reference/endpoints/pages/listPageBacklinks",
+							"api-reference/endpoints/pages/createPageAssetUpload",
+							"api-reference/endpoints/pages/finalizePageAssetUpload"
+						]
+					},
+					{
+						"group": "Drafts",
+						"pages": [
+							"api-reference/endpoints/drafts/countTaskDrafts",
+							"api-reference/endpoints/drafts/listTaskDrafts",
+							"api-reference/endpoints/drafts/createTaskDraft",
+							"api-reference/endpoints/drafts/getTaskDraft",
+							"api-reference/endpoints/drafts/updateTaskDraft",
+							"api-reference/endpoints/drafts/deleteTaskDraft",
+							"api-reference/endpoints/drafts/publishTaskDraft"
+						]
+					},
+					{
+						"group": "Archives",
+						"pages": [
+							"api-reference/endpoints/archives/getArchiveSummary",
+							"api-reference/endpoints/archives/listArchived"
+						]
+					},
+					{
+						"group": "Analytics",
+						"pages": [
+							"api-reference/endpoints/analytics/getAnalyticsOverview",
+							"api-reference/endpoints/analytics/queryAnalyticsChart",
+							"api-reference/endpoints/analytics/queryAnalyticsTrend",
+							"api-reference/endpoints/analytics/getAnalyticsCycles",
+							"api-reference/endpoints/analytics/getAnalyticsModules",
+							"api-reference/endpoints/analytics/getAnalyticsIntake"
+						]
+					},
+					{
+						"group": "Exports",
+						"pages": [
+							"api-reference/endpoints/exports/createTaskExport",
+							"api-reference/endpoints/exports/listTaskExports",
+							"api-reference/endpoints/exports/getTaskExport",
+							"api-reference/endpoints/exports/downloadTaskExport",
+							"api-reference/endpoints/exports/deleteTaskExport"
+						]
+					},
+					{
+						"group": "Audit log",
+						"pages": [
+							"api-reference/endpoints/audit-log/listAuditLog",
+							"api-reference/endpoints/audit-log/exportAuditLog"
+						]
+					},
+					{
+						"group": "Webhooks",
+						"pages": [
+							"api-reference/endpoints/webhooks/listWebhookEvents",
+							"api-reference/endpoints/webhooks/listWebhooks",
+							"api-reference/endpoints/webhooks/createWebhook",
+							"api-reference/endpoints/webhooks/getWebhook",
+							"api-reference/endpoints/webhooks/updateWebhook",
+							"api-reference/endpoints/webhooks/deleteWebhook",
+							"api-reference/endpoints/webhooks/rotateWebhookSecret",
+							"api-reference/endpoints/webhooks/testWebhook",
+							"api-reference/endpoints/webhooks/listWebhookDeliveries",
+							"api-reference/endpoints/webhooks/getWebhookDelivery",
+							"api-reference/endpoints/webhooks/redeliverWebhookDelivery"
+						]
+					},
+					{
+						"group": "Publishing",
+						"pages": [
+							"api-reference/endpoints/publishing/getProjectPublication",
+							"api-reference/endpoints/publishing/updateProjectPublication",
+							"api-reference/endpoints/publishing/publishProject",
+							"api-reference/endpoints/publishing/unpublishProject",
+							"api-reference/endpoints/publishing/rotateProjectPublicationLink",
+							"api-reference/endpoints/publishing/listProjectPublicComments",
+							"api-reference/endpoints/publishing/setCommentVisibility",
+							"api-reference/endpoints/publishing/moderatorDeleteComment",
+							"api-reference/endpoints/publishing/listPublicBoardBlocks",
+							"api-reference/endpoints/publishing/blockPublicBoardParticipant",
+							"api-reference/endpoints/publishing/unblockPublicBoardParticipant",
+							"api-reference/endpoints/publishing/getTaskVotes"
+						]
+					},
+					{
+						"group": "Public Boards",
+						"pages": [
+							"api-reference/endpoints/public-boards/getPublicBoard",
+							"api-reference/endpoints/public-boards/listPublicBoardTasks",
+							"api-reference/endpoints/public-boards/getPublicBoardTask",
+							"api-reference/endpoints/public-boards/getPublicBoardTaskDescription",
+							"api-reference/endpoints/public-boards/listPublicBoardComments",
+							"api-reference/endpoints/public-boards/createPublicBoardComment",
+							"api-reference/endpoints/public-boards/updatePublicBoardComment",
+							"api-reference/endpoints/public-boards/deletePublicBoardComment",
+							"api-reference/endpoints/public-boards/addPublicBoardTaskReaction",
+							"api-reference/endpoints/public-boards/removePublicBoardTaskReaction",
+							"api-reference/endpoints/public-boards/addPublicBoardCommentReaction",
+							"api-reference/endpoints/public-boards/removePublicBoardCommentReaction",
+							"api-reference/endpoints/public-boards/setPublicBoardVote",
+							"api-reference/endpoints/public-boards/removePublicBoardVote",
+							"api-reference/endpoints/public-boards/submitPublicBoardRequest",
+							"api-reference/endpoints/public-boards/listMyPublicBoardRequests",
+							"api-reference/endpoints/public-boards/withdrawPublicBoardRequest"
+						]
+					},
+					{
+						"group": "Custom Fields",
+						"pages": [
+							"api-reference/endpoints/custom-fields/getCustomFieldsByProject",
+							"api-reference/endpoints/custom-fields/getCustomFieldValuesByProject",
+							"api-reference/endpoints/custom-fields/getCustomFieldValuesByTask",
+							"api-reference/endpoints/custom-fields/getCustomFieldFilterValues",
+							"api-reference/endpoints/custom-fields/createCustomField",
+							"api-reference/endpoints/custom-fields/reorderCustomFields",
+							"api-reference/endpoints/custom-fields/setCustomFieldValue",
+							"api-reference/endpoints/custom-fields/deleteCustomField"
+						]
+					},
+					{
+						"group": "Labels",
+						"pages": [
+							"api-reference/endpoints/labels/getTaskLabels",
+							"api-reference/endpoints/labels/getWorkspaceLabels",
+							"api-reference/endpoints/labels/createLabel",
+							"api-reference/endpoints/labels/getLabel",
+							"api-reference/endpoints/labels/updateLabel",
+							"api-reference/endpoints/labels/deleteLabel",
+							"api-reference/endpoints/labels/attachLabelToTask",
+							"api-reference/endpoints/labels/detachLabelFromTask"
+						]
+					},
+					{
+						"group": "Activity",
+						"pages": [
+							"api-reference/endpoints/activity/getActivities",
+							"api-reference/endpoints/activity/createActivity",
+							"api-reference/endpoints/activity/createComment",
+							"api-reference/endpoints/activity/updateComment",
+							"api-reference/endpoints/activity/deleteComment",
+							"api-reference/endpoints/activity/getMyActivity",
+							"api-reference/endpoints/activity/getMemberActivity"
+						]
+					},
+					{
+						"group": "Comments",
+						"pages": [
+							"api-reference/endpoints/comments/getTaskComments",
+							"api-reference/endpoints/comments/createTaskComment",
+							"api-reference/endpoints/comments/updateTaskComment",
+							"api-reference/endpoints/comments/deleteTaskComment"
+						]
+					},
+					{
+						"group": "Subscriptions",
+						"pages": [
+							"api-reference/endpoints/subscriptions/getTaskSubscription",
+							"api-reference/endpoints/subscriptions/subscribeToTask",
+							"api-reference/endpoints/subscriptions/unsubscribeFromTask"
+						]
+					},
+					{
+						"group": "Reactions",
+						"pages": [
+							"api-reference/endpoints/reactions/getTaskReactions",
+							"api-reference/endpoints/reactions/addTaskReaction",
+							"api-reference/endpoints/reactions/removeTaskReaction",
+							"api-reference/endpoints/reactions/addCommentReaction",
+							"api-reference/endpoints/reactions/removeCommentReaction"
+						]
+					},
+					{
+						"group": "Time Entries",
+						"pages": [
+							"api-reference/endpoints/time-entries/getTaskTimeEntries",
+							"api-reference/endpoints/time-entries/getTimeEntry",
+							"api-reference/endpoints/time-entries/updateTimeEntry",
+							"api-reference/endpoints/time-entries/createTimeEntry",
+							"api-reference/endpoints/time-entries/deleteTimeEntry"
+						]
+					},
+					{
+						"group": "Task Relations",
+						"pages": [
+							"api-reference/endpoints/task-relations/getTaskRelations",
+							"api-reference/endpoints/task-relations/getProjectDependencies",
+							"api-reference/endpoints/task-relations/createTaskRelation",
+							"api-reference/endpoints/task-relations/setTaskParent",
+							"api-reference/endpoints/task-relations/deleteTaskRelation"
+						]
+					},
+					{
+						"group": "Task Links",
+						"pages": [
+							"api-reference/endpoints/task-links/listTaskLinks",
+							"api-reference/endpoints/task-links/createTaskLink",
+							"api-reference/endpoints/task-links/updateTaskLink",
+							"api-reference/endpoints/task-links/deleteTaskLink"
+						]
+					},
+					{
+						"group": "Task Attachments",
+						"pages": [
+							"api-reference/endpoints/task-attachments/listTaskAttachments",
+							"api-reference/endpoints/task-attachments/createTaskAttachmentUpload",
+							"api-reference/endpoints/task-attachments/finalizeTaskAttachment",
+							"api-reference/endpoints/task-attachments/deleteTaskAttachment"
+						]
+					},
+					{
+						"group": "External Links",
+						"pages": [
+							"api-reference/endpoints/external-links/getExternalLinksByTask"
+						]
+					},
+					{
+						"group": "Favorites",
+						"pages": [
+							"api-reference/endpoints/favorites/listFavorites",
+							"api-reference/endpoints/favorites/createFavorite",
+							"api-reference/endpoints/favorites/reorderFavorites",
+							"api-reference/endpoints/favorites/deleteFavoriteByEntity",
+							"api-reference/endpoints/favorites/deleteFavorite"
+						]
+					},
+					{
+						"group": "Recent Visits",
+						"pages": [
+							"api-reference/endpoints/recent-visits/recordRecentVisit",
+							"api-reference/endpoints/recent-visits/listRecentVisits"
+						]
+					},
+					{
+						"group": "Home",
+						"pages": [
+							"api-reference/endpoints/home/getHomePreferences",
+							"api-reference/endpoints/home/updateHomePreferences"
+						]
+					},
+					{
+						"group": "Stickies",
+						"pages": [
+							"api-reference/endpoints/stickies/listStickies",
+							"api-reference/endpoints/stickies/createSticky",
+							"api-reference/endpoints/stickies/reorderStickies",
+							"api-reference/endpoints/stickies/updateSticky",
+							"api-reference/endpoints/stickies/deleteSticky"
+						]
+					},
+					{
+						"group": "Quick Links",
+						"pages": [
+							"api-reference/endpoints/quick-links/listQuickLinks",
+							"api-reference/endpoints/quick-links/createQuickLink",
+							"api-reference/endpoints/quick-links/updateQuickLink",
+							"api-reference/endpoints/quick-links/deleteQuickLink"
+						]
+					},
+					{
+						"group": "Search",
+						"pages": ["api-reference/endpoints/search/globalSearch"]
+					},
+					{
+						"group": "Workflow Rules",
+						"pages": [
+							"api-reference/endpoints/workflow-rules/getWorkflowRules",
+							"api-reference/endpoints/workflow-rules/upsertWorkflowRule",
+							"api-reference/endpoints/workflow-rules/deleteWorkflowRule"
+						]
+					},
+					{
+						"group": "Notifications",
+						"pages": [
+							"api-reference/endpoints/notifications/listNotifications",
+							"api-reference/endpoints/notifications/createNotification",
+							"api-reference/endpoints/notifications/markNotificationAsRead",
+							"api-reference/endpoints/notifications/markAllNotificationsAsRead",
+							"api-reference/endpoints/notifications/clearAllNotifications",
+							"api-reference/endpoints/notifications/listInboxNotifications",
+							"api-reference/endpoints/notifications/getInboxCounts",
+							"api-reference/endpoints/notifications/markNotificationAsUnread",
+							"api-reference/endpoints/notifications/archiveNotification",
+							"api-reference/endpoints/notifications/unarchiveNotification",
+							"api-reference/endpoints/notifications/snoozeNotification",
+							"api-reference/endpoints/notifications/unsnoozeNotification"
+						]
+					},
+					{
+						"group": "Notification Preferences",
+						"pages": [
+							"api-reference/endpoints/notification-preferences/getNotificationPreferences",
+							"api-reference/endpoints/notification-preferences/updateNotificationPreferences",
+							"api-reference/endpoints/notification-preferences/upsertNotificationPreferenceWorkspaceRule",
+							"api-reference/endpoints/notification-preferences/deleteNotificationPreferenceWorkspaceRule"
+						]
+					},
+					{
+						"group": "Invitations",
+						"pages": [
+							"api-reference/endpoints/invitations/getUserPendingInvitations",
+							"api-reference/endpoints/invitations/getInvitationDetails"
+						]
+					},
+					{
+						"group": "Workspaces",
+						"pages": [
+							"api-reference/endpoints/workspaces/getWorkspaceMembers",
+							"api-reference/endpoints/workspaces/getWorkspaceMember"
+						]
+					},
+					{
+						"group": "GitHub",
+						"pages": [
+							"api-reference/endpoints/github/getGitHubAppInfo",
+							"api-reference/endpoints/github/listGitHubRepositories",
+							"api-reference/endpoints/github/verifyGitHubInstallation",
+							"api-reference/endpoints/github/getGitHubIntegration",
+							"api-reference/endpoints/github/createGitHubIntegration",
+							"api-reference/endpoints/github/updateGitHubIntegration",
+							"api-reference/endpoints/github/deleteGitHubIntegration",
+							"api-reference/endpoints/github/importGitHubIssues"
+						]
+					},
+					{
+						"group": "Gitea",
+						"pages": [
+							"api-reference/endpoints/gitea/listGiteaRepositories",
+							"api-reference/endpoints/gitea/verifyGiteaAccess",
+							"api-reference/endpoints/gitea/getGiteaIntegration",
+							"api-reference/endpoints/gitea/createGiteaIntegration",
+							"api-reference/endpoints/gitea/updateGiteaIntegration",
+							"api-reference/endpoints/gitea/deleteGiteaIntegration",
+							"api-reference/endpoints/gitea/importGiteaIssues"
+						]
+					},
+					{
+						"group": "Slack",
+						"pages": [
+							"api-reference/endpoints/slack/getSlackIntegration",
+							"api-reference/endpoints/slack/createSlackIntegration",
+							"api-reference/endpoints/slack/updateSlackIntegration",
+							"api-reference/endpoints/slack/deleteSlackIntegration"
+						]
+					},
+					{
+						"group": "Discord",
+						"pages": [
+							"api-reference/endpoints/discord/getDiscordIntegration",
+							"api-reference/endpoints/discord/createDiscordIntegration",
+							"api-reference/endpoints/discord/updateDiscordIntegration",
+							"api-reference/endpoints/discord/deleteDiscordIntegration"
+						]
+					},
+					{
+						"group": "Mattermost",
+						"pages": [
+							"api-reference/endpoints/mattermost/getMattermostIntegration",
+							"api-reference/endpoints/mattermost/createMattermostIntegration",
+							"api-reference/endpoints/mattermost/updateMattermostIntegration",
+							"api-reference/endpoints/mattermost/deleteMattermostIntegration"
+						]
+					},
+					{
+						"group": "Telegram",
+						"pages": [
+							"api-reference/endpoints/telegram/getTelegramIntegration",
+							"api-reference/endpoints/telegram/createTelegramIntegration",
+							"api-reference/endpoints/telegram/updateTelegramIntegration",
+							"api-reference/endpoints/telegram/deleteTelegramIntegration"
+						]
+					},
+					{
+						"group": "Generic Webhook",
+						"pages": [
+							"api-reference/endpoints/generic-webhook/getGenericWebhookIntegration",
+							"api-reference/endpoints/generic-webhook/createGenericWebhookIntegration",
+							"api-reference/endpoints/generic-webhook/updateGenericWebhookIntegration",
+							"api-reference/endpoints/generic-webhook/deleteGenericWebhookIntegration"
+						]
+					},
+					{
+						"group": "MCP",
+						"pages": [
+							"api-reference/endpoints/mcp/registerMcpOAuthClient",
+							"api-reference/endpoints/mcp/authorizeMcpOAuthClient",
+							"api-reference/endpoints/mcp/getMcpAuthorizationRequest",
+							"api-reference/endpoints/mcp/decideMcpAuthorizationRequest"
+						]
+					},
+					{
+						"group": "Instance",
+						"pages": ["api-reference/endpoints/instance/getInstanceStatus"]
+					},
+					{
+						"group": "Instance Admin",
+						"pages": [
+							"api-reference/endpoints/instance-admin/getInstanceOverview",
+							"api-reference/endpoints/instance-admin/getInstanceSettings",
+							"api-reference/endpoints/instance-admin/updateInstanceSettings",
+							"api-reference/endpoints/instance-admin/listInstanceWorkspaces",
+							"api-reference/endpoints/instance-admin/sendInstanceTestEmail",
+							"api-reference/endpoints/instance-admin/listInstanceAdmins",
+							"api-reference/endpoints/instance-admin/addInstanceAdmin",
+							"api-reference/endpoints/instance-admin/removeInstanceAdmin",
+							"api-reference/endpoints/instance-admin/listInstancePublicBoards"
+						]
+					},
+					{
+						"group": "Config",
+						"pages": ["api-reference/endpoints/config/getConfig"]
+					},
+					{
+						"group": "Authentication",
+						"pages": [
+							"api-reference/authentication",
+							"api-reference/endpoints/authentication/getSession",
+							"api-reference/endpoints/authentication/getDeviceAuthorizationPage",
+							"api-reference/endpoints/authentication/getOAuthIdToken"
+						]
+					},
+					{
+						"group": "User",
+						"pages": [
+							"api-reference/endpoints/user/getUserAvatar",
+							"api-reference/endpoints/user/uploadUserAvatar",
+							"api-reference/endpoints/user/deleteUserAvatar"
+						]
+					},
+					{
+						"group": "Assets",
+						"pages": ["api-reference/endpoints/assets/getAsset"]
+					},
+					{
+						"group": "Organization Management",
+						"pages": [
+							"api-reference/endpoints/organization-management/acceptOrganizationInvitation",
+							"api-reference/endpoints/organization-management/addOrganizationTeamMember",
+							"api-reference/endpoints/organization-management/cancelOrganizationInvitation",
+							"api-reference/endpoints/organization-management/checkOrganizationSlug",
+							"api-reference/endpoints/organization-management/createOrganization",
+							"api-reference/endpoints/organization-management/createOrganizationRole",
+							"api-reference/endpoints/organization-management/createOrganizationTeam",
+							"api-reference/endpoints/organization-management/deleteOrganization",
+							"api-reference/endpoints/organization-management/deleteOrganizationRole",
+							"api-reference/endpoints/organization-management/getOrganizationActiveMember",
+							"api-reference/endpoints/organization-management/getOrganizationActiveMemberRole",
+							"api-reference/endpoints/organization-management/getOrganizationFullOrganization",
+							"api-reference/endpoints/organization-management/getOrganizationInvitation",
+							"api-reference/endpoints/organization-management/getOrganizationRole",
+							"api-reference/endpoints/organization-management/hasOrganizationPermission",
+							"api-reference/endpoints/organization-management/inviteOrganizationMember",
+							"api-reference/endpoints/organization-management/leaveOrganization",
+							"api-reference/endpoints/organization-management/listOrganization",
+							"api-reference/endpoints/organization-management/listOrganizationInvitations",
+							"api-reference/endpoints/organization-management/listOrganizationMembers",
+							"api-reference/endpoints/organization-management/listOrganizationRoles",
+							"api-reference/endpoints/organization-management/listOrganizationTeamMembers",
+							"api-reference/endpoints/organization-management/listOrganizationTeams",
+							"api-reference/endpoints/organization-management/listOrganizationUserInvitations",
+							"api-reference/endpoints/organization-management/listOrganizationUserTeams",
+							"api-reference/endpoints/organization-management/rejectOrganizationInvitation",
+							"api-reference/endpoints/organization-management/removeOrganizationMember",
+							"api-reference/endpoints/organization-management/removeOrganizationTeam",
+							"api-reference/endpoints/organization-management/removeOrganizationTeamMember",
+							"api-reference/endpoints/organization-management/setOrganizationActive",
+							"api-reference/endpoints/organization-management/setOrganizationActiveTeam",
+							"api-reference/endpoints/organization-management/updateOrganization",
+							"api-reference/endpoints/organization-management/updateOrganizationMemberRole",
+							"api-reference/endpoints/organization-management/updateOrganizationRole",
+							"api-reference/endpoints/organization-management/updateOrganizationTeam"
+						]
+					}
+				]
+			}
+		],
+		"global": {
+			"anchors": [
+				{
+					"anchor": "Website",
+					"href": "https://margaya.app",
+					"icon": "globe"
+				},
+				{
+					"anchor": "GitHub",
+					"href": "https://github.com/manu14357/Margaya",
+					"icon": "github"
+				}
+			]
+		}
+	},
+	"navbar": {
+		"links": [
+			{
+				"label": "GitHub",
+				"href": "https://github.com/manu14357/Margaya"
+			}
+		],
+		"primary": {
+			"type": "button",
+			"label": "Open Margaya",
+			"href": "https://margaya.app"
+		}
+	},
+	"contextual": {
+		"options": ["copy", "view", "chatgpt", "claude", "cursor"]
+	},
+	"footer": {
+		"socials": {
+			"website": "https://margaya.app",
+			"github": "https://github.com/manu14357/Margaya",
+			"x": "https://x.com/margaya"
+		}
+	},
+	"seo": {
+		"indexing": "all",
+		"metatags": {
+			"og:site_name": "Margaya Docs",
+			"og:type": "website",
+			"og:image": "https://margaya.app/og-image.png",
+			"twitter:card": "summary_large_image",
+			"twitter:site": "@margaya",
+			"twitter:image": "https://margaya.app/og-image.png"
+		}
+	}
+}
