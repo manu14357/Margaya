@@ -1,0 +1,70 @@
+---
+title: Automate Task Cleanup
+description: Let a project archive closed tasks and close stale open ones on a schedule, with a preview of what each rule will take
+---
+
+Scheduled automations tidy up tasks nobody has touched for a while. Each project has two rules, both off by default. Margaya checks them every hour.
+
+## Open the settings
+
+1. Go to **Settings**.
+2. Open **Projects** and select your project.
+3. Open the **Workflow** tab.
+4. Find **Scheduled automations**.
+
+Anyone who can see the project can view these settings. Changing them needs permission to update projects.
+
+## Auto-archive closed tasks
+
+Archives tasks in a **Completed** or **Cancelled** column group that have not been updated for a while. Archived tasks keep their column and history, and you can bring them back from [Archives](/core/functional/archives).
+
+1. Turn on **Auto-archive closed tasks**.
+2. Pick **Archive after**: 1 to 12 months. The default is 3.
+
+## Auto-close stale tasks
+
+Moves open tasks, including planned ones, that have not been updated for a while to a Cancelled column. Tasks in Triage are left alone.
+
+1. Make sure the project has a column in the **Cancelled** group. Without one the switch is off-limits and the page says to add one. See [Project features and column groups](/core/functional/project-features-and-column-groups).
+2. Turn on **Auto-close stale tasks**.
+3. Pick **Close after**: 1 to 12 months.
+4. Pick **Move to**, the Cancelled column that receives the tasks. It defaults to the first one.
+
+If that column is later deleted or moved out of the Cancelled group, auto-close pauses and the page shows "Auto-close is paused. Choose a column in the Cancelled group." Pick a valid column to resume. Closed tasks land at the bottom of the column and are no longer marked completed.
+
+## What counts as untouched
+
+A task is untouched when it hasn't been updated for N calendar months. Margaya counts back N months from now on the same day and time, on the workspace's clock: the time zone set in **Settings -> Workspace -> General** (UTC unless changed). If that month is shorter, the last day of that month is used: three months before May 31 is February 28.
+
+Auto-close also skips tasks that:
+
+- have a start or due date that hasn't passed yet. A one-day grace absorbs time zones, so a date that passed less than a day ago still protects a task.
+- belong to a cycle that isn't completed yet (judged by today's date in the workspace time zone), when Cycles is on for the project. A cycle without an end date counts as running.
+- belong to a module that is still running, when Modules is on: not archived, not completed or cancelled, and with no target date or one that hasn't passed.
+
+Auto-archive applies the same untouched rule and the same cycle and module checks. Archived tasks and projects that are archived are never processed.
+
+## Preview before you commit
+
+Under a rule that is on, a line shows how many tasks match right now, such as "12 tasks match right now" or "10,000+ tasks match right now". It also shows when the rule last ran, or "Nothing archived yet" and "Nothing closed yet".
+
+When you turn a rule on or lower its months, and tasks already match, a dialog asks you to confirm. It says how many tasks will be archived or moved to which column within the next hour. Raising the months, turning a rule off and changing the column save without asking. Turning a rule off keeps its months and column for next time.
+
+## How changes appear
+
+- Each affected task gets a history entry with **Automation** as the actor, such as "archived this task after 3 months without updates" or "closed this task after 3 months without updates, moving it to Cancelled".
+- No notifications are sent to anyone.
+- Large backlogs are processed in batches over several hourly runs, so the count can take a few hours to reach zero.
+
+To undo an auto-archive, restore the tasks from Archives. To undo an auto-close, move the tasks back as you would any other task.
+
+## Tips
+
+- Start with a longer period such as 6 or 12 months and check the preview before shortening it.
+- Keep long-running work in a cycle or module you still use, so it is never closed by accident.
+
+## Next
+
+- [Archive and restore work](/core/functional/archives)
+- [Configure project workflows](/core/functional/configure-workflows)
+- [Turn on project features and column groups](/core/functional/project-features-and-column-groups)

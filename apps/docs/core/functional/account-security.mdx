@@ -1,0 +1,68 @@
+---
+title: Account Security
+description: Reset a forgotten password, change it, verify your email, review where you're signed in and leave a workspace
+---
+
+Password, email verification and your signed-in devices live under **Settings -> Account -> Security**.
+
+## Forgot your password
+
+When your server can send email and password sign-in is on, the sign-in screen shows **Forgot password?** next to the password field.
+
+1. Select **Forgot password?** and enter your account email.
+2. Open the email titled **Reset your Margaya password** and select **Reset password**.
+3. Enter a new password twice and select **Set new password**.
+4. Sign in with the new password.
+
+- The confirmation looks the same whether or not an account uses that email, so the form never reveals who has an account.
+- A reset link works once and expires after **1 hour**. An old or used link shows **This reset link is invalid or has expired**; request a new one from there.
+- Setting a new password signs out **every** session of your account, on every device.
+- Passwords need at least 8 characters.
+
+<Note>
+  Without email configured on the server, the link is not shown. Ask an instance admin to reset access for you.
+</Note>
+
+## Change your password
+
+The **Password** section appears when your account signs in with a password (accounts that only use GitHub, Google, Discord or single sign-on don't have one).
+
+1. Enter your **Current password**, then the **New password** twice.
+2. Keep **Sign out other sessions** checked (the default) to sign out every other device. Your current device stays signed in.
+3. Select **Change password**.
+
+A wrong current password is refused and nothing changes.
+
+## Verify your email
+
+Workspace invitations sent to your address only show in Margaya once the address is verified, so that someone who registers with your email can't see them. Accounts created with a password start unverified; accounts from GitHub, Google and most single sign-on providers, or from an email code, are usually verified already.
+
+1. Open **Invitations** in the Home panel, or **Settings -> Account -> Security**.
+2. Under **Verify your email**, select **Send code**.
+3. Enter the 6-digit code from the email (it expires after 5 minutes) and select **Verify**.
+
+Your pending invitations appear right away. The emailed invitation link works whether or not your address is verified. Verification needs email to be configured on the server.
+
+## Active sessions
+
+**Active sessions** lists every device signed in to your account, newest activity first, with:
+
+- the browser and operating system, read from the browser's user agent;
+- when the session started and when it was last active (refreshed about once a day of use, so this is approximate);
+- the IP address it signed in from, when known;
+- a **This device** badge on the session you are using.
+
+Select **Sign out** on a session you don't recognize, or **Sign out all other sessions** to keep only this one. Signed-out devices must sign in again. To end the current session, use **Sign out** in the account menu.
+
+## Leave a workspace
+
+1. Switch to the workspace and go to **Settings -> Workspace -> General**.
+2. Under **Danger zone**, select **Leave workspace** and confirm.
+
+You lose access to its projects, tasks and pages at once; someone has to invite you again for you to come back. Margaya then opens another of your workspaces, or workspace setup if you have none left.
+
+The **only owner** of a workspace can't leave it. Transfer ownership to another member first (**Transfer ownership** on the same page), or delete the workspace.
+
+## Sign-in limits
+
+To slow down password guessing, the server limits how often one address can try to sign in, request codes or reset a password. When you hit a limit you'll see **Too many requests**; wait a minute and try again. See [Environment variables](/core/installation/environment-variables#sign-in-rate-limiting) for self-hosting details.

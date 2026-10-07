@@ -1,0 +1,58 @@
+---
+title: Estimate Task Size
+description: Size tasks with points, categories, or time, and roll estimates up across the board
+---
+
+Estimates let your team size tasks with a consistent set of values, then see totals roll up by column, assignee, or priority. A project can have several estimate systems saved, but only one is active at a time.
+
+## Turn on Estimates
+
+1. Go to **Settings**.
+2. Open **Projects** and select your project.
+3. Open the **Features** tab.
+4. Turn on **Estimates**.
+
+## Create your estimate system
+
+1. Open **Settings -> Projects -> [your project] -> Estimates**.
+2. Click **Add estimate system**.
+3. Choose a type: **Points**, **Categories**, or **Time**. The type can't be changed later; create another system if you need a different one.
+4. Start from a template or choose **Custom**:
+   - Points: Fibonacci (1, 2, 3, 5, 8, 13), Linear (1-6), or Squares (1, 4, 9, 16, 25, 36)
+   - Categories: T-shirt sizes (XS-XXL), or Easy to hard
+   - Time: Hours, or Short tasks
+5. Adjust the values if needed, then create the system.
+
+Every system needs 2 to 10 distinct values. Points and time values are whole numbers or up to 2 decimals and are kept in ascending order; category values are plain text kept in the order you set.
+
+## Estimate a task
+
+Open a task and set its **Estimate** from the task's property panel. Only values from the project's active estimate system are offered.
+
+## See totals
+
+Estimate totals appear on the board and in cycle and module progress reports, broken down by column group (backlog, not started, started, completed, cancelled). Only visible tasks (not archived, not in triage) count toward totals.
+
+## Switch systems
+
+Switching the active system lets you map each value of the old system to a value in the new one (or to "No estimate"). Tasks on unmapped values lose their estimate. The old system isn't deleted, so you can switch back to it later from **Other estimate systems**.
+
+## Delete values or the system
+
+Deleting a value that's in use lets you move its tasks to another value first, or clear their estimate. Deleting the active system leaves every task that used it without an estimate (recorded in the task's activity), and the project has no active system until you create or switch to another one.
+
+## Permissions
+
+Creating, renaming, switching, and deleting estimate systems needs the **project:update** permission (the same one used for other project settings). Anyone with access to the project can view estimates and set a task's estimate as part of normal task editing.
+
+## Tips
+
+- Pick a type that matches how your team talks about size: Points for relative sizing, Time for effort in hours or minutes, Categories for a simple scale like T-shirt sizes.
+- Keep the active system stable once your team is using it; switching mid-cycle means remapping in-flight estimates.
+- Use the totals in cycle and module progress reports to sanity-check scope before committing to dates.
+
+## Next
+
+- [Plan work in Cycles](/core/functional/cycles)
+- [Group work with Modules](/core/functional/modules)
+- [Turn on project features and column groups](/core/functional/project-features-and-column-groups)

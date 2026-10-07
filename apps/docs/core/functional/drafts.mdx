@@ -1,0 +1,66 @@
+---
+title: Save Tasks as Drafts
+description: Save a half-written task privately, finish it later, and publish it to a project when it is ready
+---
+
+A draft is a task you have started but not published. It stays private to you, never appears on a board, in search or in reminders, and becomes a real task only when you publish it.
+
+## Save a draft
+
+1. Open the create task dialog, for example with **New task**.
+2. Fill in whatever you have. Anything counts: a title, a description, a project, a priority, assignees, labels, dates and more.
+3. Click **Save as draft**. A "Saved to drafts" message offers **View drafts**.
+
+You don't need a title or a project to save a draft; you only need them to publish it. **Save as draft** stays disabled while the dialog is empty.
+
+Drafts can't hold files. Once you start attaching a file in the dialog, **Save as draft** is turned off. To attach files, publish the draft first and add them to the task.
+
+You can keep up to 1,000 drafts in a workspace.
+
+## Drafts are private
+
+Only the person who wrote a draft can see, edit, publish or delete it. Admins and owners can't open someone else's draft, and anyone else who asks for it gets the same "not found" answer as for a draft that doesn't exist.
+
+## The Drafts page
+
+Choose **Drafts** in the sidebar, under your personal pages. It shows a count of your drafts while you have any, and it stays out of the way until you save your first one.
+
+- **Search** drafts by title.
+- Use the project filter to show **All projects**, drafts with **No project**, or one project.
+- Drafts are listed most recently edited first.
+- **New draft** opens the create task dialog with **Save as draft** as the main action.
+
+Open a draft, or use its **...** menu, to:
+
+- **Edit** it in the same dialog. Use **Save draft** to keep your changes. If you close with unsaved changes, you are asked whether to save them.
+- **Publish** it as a task.
+- **Delete** it. This can't be undone.
+
+## Publish a draft
+
+Publishing needs a project and a title. If either is missing, **Publish** is disabled with the hint "Choose a project and add a title to publish". You need permission to create tasks in the workspace to edit and publish.
+
+When you publish, Margaya creates the task in the project and deletes the draft. A message such as "Published WEB-12" has an **Open** action that takes you to the task. A draft without a column lands in the project's entry column.
+
+A draft can wait a long time, so some of its properties may no longer be valid when you publish. Margaya publishes the task anyway and drops what it can't keep. The message names the dropped properties, for example "Some properties couldn't be kept: cycle, assignees". These can be dropped:
+
+- **Status** - the column no longer exists. The task goes to the entry column instead.
+- **Assignees** - someone who can no longer be assigned.
+- **Cycle** - the cycle is completed, archived, or Cycles is off for the project.
+- **Modules** - modules that are archived, or Modules is off.
+- **Estimate** - the point isn't in the project's active estimate, or Estimates is off.
+
+Values of custom fields that were deleted are dropped without a mention.
+
+If the server refuses the publish, the message says why and the draft stays, so you can fix it in the editor.
+
+## Tips
+
+- Changing the project in the dialog clears the status, cycle, modules and estimate, because they belong to the old project.
+- Save a draft whenever you are interrupted, so the work isn't lost when you close the dialog.
+
+## Next
+
+- [Plan and execute tasks in Board/List](/core/functional/plan-and-execute-tasks)
+- [Plan work in Backlog](/core/functional/backlog-planning)
+- [Archive and restore work](/core/functional/archives)

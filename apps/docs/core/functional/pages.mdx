@@ -1,0 +1,198 @@
+---
+title: Write Docs with Pages
+description: Write specs, notes and docs next to your tasks, edit them together live, and keep version history, backlinks and private drafts
+---
+
+Pages are project docs. Each project has its own page tree, so specs and notes live right next to the tasks they describe. Several people can edit the same page at once and see each other's cursors.
+
+## Turn Pages on or off
+
+Pages is a project feature and is **on by default**. To change it, open the project's feature settings and switch **Pages** on or off. See [Turn on project features](/core/functional/project-features-and-column-groups).
+
+## The Pages tab
+
+Open the project's **Pages** tab. The list has three tabs:
+
+- **Public** - pages everyone in the project's workspace with page access can see.
+- **Private** - your own private pages. Nobody else sees them.
+- **Archived** - archived pages, ready to restore or delete.
+
+Above the list:
+
+- **Search pages** matches page titles.
+- **Owner** filters by who owns the page.
+- The sort menu offers **Last edited** (the default), **Created** and **Name**, ascending or descending. Your choice is remembered in your browser.
+- **Clear filters** resets search and owner.
+
+Each row shows the page's icon, title, parent path, owner, and when it was edited or archived. A lock marks locked pages.
+
+## Create a page
+
+- Choose **New page** in the Pages tab. A page created from the **Private** tab is private; otherwise it is public.
+- Choose the **+** in the page tree panel to add a page at the top level.
+- Use **New sub-page** in a page's menu to create one under it.
+- Use **Create page** in the command palette.
+
+A new page is named **Untitled** and opens right away, so type a title and start writing. The title can be up to 255 characters. Click **Add icon** to give the page an emoji or an icon. A project holds up to 5,000 pages.
+
+## Public and private pages
+
+New pages are public unless created on the **Private** tab. A **private** page is visible only to its owner. **Admins and owners do not see other people's private pages**, and anyone else who asks for one gets "Page not found".
+
+The owner can switch a page between **Make private** and **Make public** from its menu. Only the owner can change who can see a page, and not while it is archived.
+
+Private pages also affect nesting:
+
+- Only your own pages can go under a private page.
+- A private page can't hold sub-pages that belong to other people.
+- To put a page under a private parent, make the parent public first, or move out the other people's pages.
+
+A link to a private or deleted page shows as "Private or deleted page" for anyone who can't open it.
+
+## Nest pages in the tree
+
+The page tree panel shows the project's pages. Toggle it with the tree button in the header.
+
+- Pages nest up to **5 levels** deep. A move that would push any sub-page past level 5 is refused.
+- **Drag and drop** a page to reorder it or move it under another page. A page can't be dropped inside itself. Invalid drops are announced as "can't go there".
+- Keyboard: pick up a page with Space, move it with the arrow keys, drop it with Space, or cancel with Escape.
+- Expand and collapse a branch with its arrow. Archived pages are not shown in the tree.
+
+Moving needs permission to manage the page, and the page must not be locked or archived.
+
+## Write in the editor
+
+Click into the page and write. The placeholder reads "Write something, or press / for commands".
+
+**Slash menu.** Type `/` and filter by name:
+
+| Group | Commands |
+| --- | --- |
+| Text | Text, Heading 1, Heading 2, Heading 3 |
+| Lists | Bulleted list, Numbered list, To-do list |
+| Insert | Quote, Callout, Code block, Divider, Table (3 by 3), File, Link to page |
+
+**Formatting.** Select text to open the formatting bubble menu. The shortcuts shown in the slash menu also work, for example Ctrl+Alt+1 for Heading 1.
+
+**Code blocks.** Hover a code block to pick its language and copy it. A code block set to `mermaid` renders as a diagram.
+
+**Embeds.** Paste a YouTube link and choose **Embed video** or **Keep as link**.
+
+**Uploads.** Choose **File** in the slash menu to attach a file. Images appear inline and other files appear as attachment cards. Uploads use the same size limits as task attachments.
+
+**Callouts.** Choose **Callout** in the slash menu to put the current block in a colored box. Click the callout's icon to switch its style: **Info**, **Warning**, **Success** or **Danger**. A callout holds paragraphs, lists and other blocks. In markdown a callout is a GitHub alert, so it reads the same on GitHub:
+
+```markdown
+> [!WARNING]
+> Freeze starts on Friday.
+```
+
+`[!NOTE]` is Info, `[!WARNING]` is Warning, `[!TIP]` is Success and `[!CAUTION]` is Danger. `[!IMPORTANT]` reads as Info. A quote without an alert marker stays a plain quote. Callouts work in task descriptions and comments too.
+
+**Images.** Click an image to select it. Drag the handles on its sides to resize it, or focus the right handle and use the arrow keys (Home and End jump to the smallest and full width). The toolbar above the image aligns it left, center or right, resets it to its original size, opens it full screen and downloads it. Double-click an image to open it full screen; in read-only views a single click does. The full-screen view has a **Download** button. Width is stored as a share of the text column, so an image keeps its proportions on any screen and in print. An image with a width or alignment is written to markdown as an `<img>` tag (`width="50%"`, `data-align="center"`); other images stay `![alt](url)`.
+
+**Move blocks.** Hover a block, or put the cursor in it, and a handle appears to its left. Drag the handle to move the block. Click it for **Move up**, **Move down**, **Duplicate** and **Delete**. From the keyboard, **Alt+Shift+Up** and **Alt+Shift+Down** move the current block and **Alt+Shift+M** opens its menu. The handle acts on whole top-level blocks: a list or table moves as one. The handle is hidden on read-only pages and on small touch screens.
+
+**Page links.** Choose **Link to page** and pick a page. If the linked page is later deleted or made private, the link shows "Private or deleted page" to people who can't open it.
+
+**@mentions.** Type `@` and choose a member. Mentioning someone who wasn't mentioned before sends them a notification naming the page ("mentioned you in Release plan"), if they can see the page. You are never notified for your own mentions, and duplicating a page doesn't notify again.
+
+Top-right, **Full width** in the page menu widens the page.
+
+## Backlinks
+
+The **Info** panel lists **Linked from**: the pages that link to this page. It shows "No pages link here yet" when there are none.
+
+Pages that mention or link a task are tracked too. When the project has Pages turned on, the task detail (both the side sheet and the full task page) shows a **Mentioned in pages** section listing those pages, each linking to the page. It only lists pages you can open, leaves out archived pages, and stays hidden when no page mentions the task. The same list is available from the Pages API.
+
+## Live editing and presence
+
+When several people have a page open, edits merge as everyone types and each person's cursor and name show in their own color. The header shows avatars of who is on the page. Up to 100 connections can be open on one page at a time; beyond that you see "Too many people have this page open right now".
+
+A badge in the header shows the sync state:
+
+- **Saved**
+- **Not saved yet** - "We'll keep retrying. Don't close this tab."
+- **Offline** - "You can keep editing. Changes sync when the connection is back."
+- **Can't connect**, with **Retry**
+
+### Offline
+
+If the connection drops, you can keep editing. Changes are kept in memory in the open tab and sync when the connection returns. If you try to close or reload the tab with unsynced changes, the browser warns you first. Closing the tab discards anything not yet synced.
+
+If the page was locked or archived, or your permission was removed, while you were offline, your offline changes are rejected and a message says why.
+
+### Stored copy
+
+If live editing can't connect, Margaya shows the last saved version with the banner "Showing the last saved version. Live editing resumes when the connection is back." Use **Retry** to reconnect. In this state edits are saved through a plain save request instead, and if the page changed elsewhere you see "This page changed elsewhere, so your last edit wasn't saved" with the latest version.
+
+A page has a size limit. If it grows too large, a banner asks you to copy your recent changes and **Reload**.
+
+## Lock a page
+
+The owner or a page manager can **Lock** a page from the header or its menu. A locked page is read-only for everyone, the owner included, and shows "This page is locked. Unlock it to make changes."
+
+A lock blocks:
+
+- editing the content, title, icon and width
+- restoring a version
+- moving the page in the tree or to another project
+
+Still available on a locked page: reading, copying the link, markdown copy and download, viewing version history, duplicating, archiving, changing public or private, and **Unlock**. The Info panel shows who locked it.
+
+## Archive, restore and delete
+
+1. **Archive** hides a page, and all of its sub-pages, from the tree and moves it to the **Archived** tab. An archived page is read-only.
+2. **Restore** brings the page and its sub-pages back. If the page's parent is still archived, it returns at the top level.
+3. **Delete** is permanent and removes the page, its version history and its uploaded files. **A page must be archived before it can be deleted.** Its sub-pages move to the top level and stay archived. Links to the page elsewhere are cleaned up.
+
+Only the page owner or a page manager can archive or delete.
+
+## Duplicate and move
+
+- **Duplicate** copies one page, without its sub-pages or version history, as "Title (copy)". You own the copy, and it appears right after the original with the same visibility. Duplicating needs permission to create pages.
+- **Move to project** moves the page and its sub-pages to another project. Only projects with Pages turned on are listed, and the target project must have room for them. The page can't be locked or archived.
+
+## Version history
+
+Open **Version history** from the page menu, or the **History** tab of the side panel.
+
+- Versions are saved as you edit. Edits by the same person within 10 minutes update the newest version, and a different person or a longer pause starts a new one. Margaya keeps the newest 20.
+- Choose a version to preview it, view only. **Back to current** returns to the live page.
+- **Restore** replaces the content with that version. The current content is saved to the history first, so you can undo the restore. Restoring needs edit access to an unlocked page.
+- Other people editing see "{name} restored an earlier version".
+
+## Outline and Info
+
+The side panel (toggle it in the header) has three tabs:
+
+- **Outline** - the page's headings. Add headings to fill it.
+- **Info** - words, characters, paragraphs and reading time, plus who created and last edited the page, who locked it, and **Linked from**.
+- **History** - version history.
+
+## Export to markdown
+
+From the page menu choose **Copy as markdown** or **Download as markdown**.
+
+## Print or save as PDF
+
+From the page menu choose **Print / Save as PDF**, then pick a printer or **Save as PDF** in your browser's print dialog. Only the page title and content print, in the light theme, without the app's panels, toolbars, comments or block handles. Callouts, code blocks and images are kept on one sheet where they fit, web links print with their address, and embedded videos print as their link. The browser's own print command (Ctrl+P or Cmd+P) on an open page gives the same result.
+
+## Who can do what
+
+| Action | Viewer | Member | Admin | Owner |
+| --- | --- | --- | --- | --- |
+| See Pages and public pages | Yes | Yes | Yes | Yes |
+| Create, duplicate and edit pages | No | Yes | Yes | Yes |
+| Lock, archive and move your own pages | No | Yes | Yes | Yes |
+| Lock, archive, move and delete any page they can see | No | No | Yes | Yes |
+| Delete your own archived pages | No | Yes | Yes | Yes |
+| See other people's private pages | No | No | No | No |
+
+These come from the workspace **Pages** permissions: **View pages**, **Create pages**, **Edit pages** and **Manage all pages**. Custom roles can mix them. A viewer sees the banner "You can view this page but not edit it."
+
+## Next
+
+- [Plan and execute tasks in Board/List](/core/functional/plan-and-execute-tasks)
+- [Save and share views](/core/functional/views)
+- [Archive and restore work](/core/functional/archives)

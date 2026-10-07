@@ -1,0 +1,78 @@
+---
+title: Personalize Your Workspace
+description: Tune display and preference settings for your team's day-to-day workflow
+---
+
+Margaya includes account and workspace preferences that improve clarity without adding noise.
+
+## Open preferences
+
+1. Go to **Settings**.
+2. Open **Account -> Preferences**.
+
+## Configure appearance defaults
+
+Set the defaults your team prefers:
+
+- Theme (light/dark)
+- Default task view (board/list)
+- Compact mode
+- Sidebar default open/closed
+
+## Set your time zone
+
+**Time zone** in **Account -> Preferences** is used for times the server writes for you: due-date reminders (which mention the due day) and email digests. Choose **Automatic (browser)** to save the time zone your browser reports, or pick one from the searchable list. Until you choose, the server uses UTC. The app itself always shows dates and times in your browser's time zone.
+
+## Configure task display options
+
+Toggle the fields you want visible in views:
+
+- Task numbers
+- Assignees
+- Due dates
+- Labels
+- Priority indicators
+
+If needed, use **Reset** in preferences to return to defaults.
+
+## Tune workspace and project settings
+
+Also review:
+
+- **Settings -> Workspace** for workspace-level details (see [Manage workspace labels](/core/functional/manage-workspace-labels)), including the workspace **Time zone** (see below)
+- **Settings -> Projects -> General** for each project's **Project lead** and **Default assignee** (see below)
+- **Settings -> Projects** for project general, visibility, integrations, and workflow (see [Outgoing webhooks](/core/integrations/outgoing-webhooks))
+
+## Workspace time zone
+
+Workspace admins set **Time zone** in **Settings -> Workspace -> General** (it needs the same permission as the other workspace settings). It defines "today" for everything the server works out by day:
+
+- cycle status and day boundaries: a cycle ending on a day ends at midnight in this time zone
+- project automations (auto-archive and auto-close)
+- analytics, when a request does not name its own time zone
+
+Pick a zone from the searchable list, or use the suggested browser time zone shown under it. Nothing changes until you save. Dates without a time, such as cycle start and end dates, keep their stored values.
+
+Existing workspaces start on **UTC**, which is exactly how Margaya behaved before time zones existed.
+
+## Project lead and default assignee
+
+In **Settings -> Projects -> General -> People**, anyone who can manage projects can set:
+
+- **Project lead**: shown next to the project name in the project header.
+- **Default assignee**: prefilled as the assignee when you create a task in the create dialog or the quick-add bar (remove it if the task is for someone else), and assigned to accepted intake requests, including public-board requests, that have no assignee.
+
+Both must be workspace members. When someone leaves or is removed from the workspace, they stop being lead or default assignee of every project. Through the API or MCP, a task created without any assignee field gets the default assignee; sending an empty `assigneeIds` list creates it unassigned.
+
+## Suggested baseline for most teams
+
+- Default view: Board
+- Compact mode: Off initially
+- Show assignees, due dates, labels, and priority: On
+
+Adjust once your team has 1-2 weeks of active usage.
+
+## Next
+
+- [Configure project workflows](/core/functional/configure-workflows)
+- [Collaborate with your team](/core/functional/collaborate-with-team)

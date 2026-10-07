@@ -1,0 +1,55 @@
+---
+title: Turn On Project Features and Column Groups
+description: Enable planning features per project and map workflow columns to backlog, started, completed, or cancelled
+---
+
+Two project-level settings shape how much of Margaya shows up in a project: which planning features are turned on, and what each workflow column means for reporting. Turned-off features stay completely out of the way, so routine work never gets heavier because a feature exists.
+
+## Open project features
+
+1. Go to **Settings**.
+2. Open **Projects** and select your project.
+3. Open the **Features** tab.
+
+## Turn a feature on or off
+
+Each row shows a feature with a switch: **Cycles**, **Modules**, **Views**, **Intake**, **Estimates**, and **Time tracking**. Turning a feature on takes effect immediately. Turning one off asks you to confirm first, since it hides that feature and its data for everyone on the project until it's turned back on; nothing is deleted.
+
+## Column groups
+
+Every column in a project's workflow belongs to one group, which is what actually drives status logic and reporting:
+
+- **Backlog** - captured, not planned yet
+- **Not started** - planned, work not begun
+- **Started** - work in progress
+- **Completed** - done
+- **Cancelled** - closed without doing the work
+
+A task's group comes from the column it's currently in, and progress calculations (cycle and module burndown, estimate totals) are based on these groups rather than column names, so you can rename or add columns freely without breaking reporting.
+
+## Set a column's group
+
+1. Go to **Settings -> Projects -> [your project] -> Workflow -> Columns**.
+2. For each column, choose its group from the picker next to it.
+3. Optionally click **Sort by group** to reorder the board so columns follow group order (Backlog, Not started, Started, Completed, Cancelled).
+
+If no column is in the Completed group, Margaya warns you that tasks can't be marked complete until one exists.
+
+## Permissions
+
+Turning features on or off, and changing column groups, both need the **project:update** permission (the same permission used for other project settings). Without it, the Features page and column editor are shown read-only.
+
+## Tips
+
+- Turn on only the features your team actually uses; each one adds a view and settings page, so leaving unused ones off keeps the project simpler.
+- Give every project at least one Completed-group column so cycle and module progress can reach 100%.
+- Column groups matter more than column names: two columns can both be "Started" even if one is named "In Progress" and the other "In Review".
+
+## Next
+
+- [Configure project workflows](/core/functional/configure-workflows)
+- [Plan work in Cycles](/core/functional/cycles)
+- [Group work with Modules](/core/functional/modules)
+- [Estimate task size](/core/functional/estimates)
+- [Save and share views](/core/functional/views)
+- [Review requests with Intake](/core/functional/intake)

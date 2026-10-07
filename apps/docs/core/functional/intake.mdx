@@ -1,0 +1,70 @@
+---
+title: Review Requests with Intake
+description: Collect requests in a review queue, then accept, decline, snooze or close them as duplicates before they reach the board
+---
+
+Intake gives a project a queue for incoming requests, such as bug reports or ideas from people outside the team. Requests wait there for review and never clutter the board, search or reminders until someone accepts them.
+
+## Turn on Intake
+
+1. Go to **Settings**.
+2. Open **Projects** and select your project.
+3. Open the **Features** tab.
+4. Turn on **Intake**.
+
+The project gets an **Intake** tab. Its badge shows how many requests are waiting for review.
+
+## Submit a request
+
+1. Open the project's **Intake** tab and click **New request**. You can also run **New request** from the command palette.
+2. Describe what you need in the title, add details, steps to reproduce or links, and set a **Priority** if you know it.
+3. Click **Submit request**. Turn on **Create more** to submit several in a row.
+
+While a request is open, its requester can still **Edit request** or **Withdraw request**. Requests can also be submitted through the [API](/api-reference/endpoints/intake/createIntakeItem); they show "via API".
+
+## Review the queue
+
+The **Open** tab lists requests waiting for a decision; **Closed** lists accepted, declined and duplicate ones. Search by title, **Filter** by status, priority or who submitted it, and **Sort** by submission date, last activity or task key.
+
+Each request has a status:
+
+- **Pending** - waiting for review
+- **Snoozed** - hidden until the snooze ends
+- **Accepted** - added to the board
+- **Declined** - closed without adding it to the board
+- **Duplicate** - already covered by another task
+
+Select a request to read it, see its activity and set its **Properties** (priority, assignee, labels and due date) before you decide.
+
+## Accept, decline, snooze or mark as duplicate
+
+- **Accept** moves the request onto the board. Pick the **Column** it lands in, or **Backlog**. From then on it is an ordinary task, and its details show which request it came from. If the request has no assignee and the project has a [default assignee](/core/functional/personalize-your-workspace#project-lead-and-default-assignee), it is assigned to them.
+- **Decline** closes the request without adding it to the board. Add an optional reason: the requester sees it in their notification.
+- **Snooze** hides the request until **Tomorrow**, **In 3 days**, **Next week**, **In 2 weeks** or a date you pick. It comes back as pending on its own; **Unsnooze** brings it back now.
+- **Mark as duplicate** closes the request in favor of an existing task in the same project. Search for that task by key or title.
+
+**Reopen** puts a declined or duplicate request back into review. The requester is notified in their [inbox](/core/functional/inbox) when a request is accepted, declined or marked as a duplicate.
+
+## Permissions
+
+Intake uses the workspace **Intake** permissions:
+
+- **create** - submit requests. Without **read**, you only see your own requests.
+- **read** - see every request in the queue.
+- **triage** - accept, decline, snooze, mark as duplicate and reopen.
+
+Every built-in role, Viewer included, has **create** and **read**. Members, Admins and Owners also have **triage**.
+
+Deleting someone else's request needs **task:delete**, and editing it needs **task:update**.
+
+## Tips
+
+- Share the Intake tab with people who report issues but shouldn't change the board directly: the Viewer role can submit requests.
+- Snooze requests that depend on something else instead of leaving them pending.
+- Always add a reason when you decline, so the requester knows what happens next.
+
+## Next
+
+- [Turn on project features and column groups](/core/functional/project-features-and-column-groups)
+- [Plan work in Backlog](/core/functional/backlog-planning)
+- [Stay on top of your inbox](/core/functional/inbox)

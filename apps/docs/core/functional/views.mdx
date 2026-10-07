@@ -1,0 +1,124 @@
+---
+title: Save and Share Views
+description: Filter, group and lay out tasks, save the result as a view, and work in the spreadsheet or with archived tasks
+---
+
+A view is a saved set of filters, display options and shown properties. Save the lists you check every day, such as "My open bugs" or "Due this week", and share them with the team or keep them private.
+
+## Turn on Views
+
+Project views need the **Views** feature:
+
+1. Go to **Settings**.
+2. Open **Projects** and select your project.
+3. Open the **Features** tab.
+4. Turn on **Views**.
+
+The project then gets a **Views** tab. Workspace views, which cover every project, are always available from **All tasks** in the sidebar.
+
+## Built-in views
+
+**All tasks** opens the workspace's built-in views as tabs:
+
+- **All tasks** - every task you can see
+- **Assigned to me**
+- **Created by me**
+- **Subscribed** - tasks you watch (see [Inbox and notifications](/core/functional/inbox))
+
+Built-in views can't be changed or deleted. Adjust one and use **Save as new view** to keep your version. Press `g` then `a` to open All tasks from anywhere in the workspace.
+
+## Filter tasks
+
+Click **Filter** and pick a property: status or group, priority, assignee, created by, labels, cycle, module, estimate, parent, project, custom fields, subscribed, mentions, or one of the dates (start, due, created, updated, completed).
+
+- Set conditions use **is**, **is not** or **is none of**. **Me** always means whoever opens the view, so one shared view works for everyone.
+- Date conditions accept presets (**Today**, **This week**, **Overdue** and more), an exact date, a range, or a rolling window such as "in the last 2 weeks".
+- **Match all** and **Match any** decide how conditions combine.
+- **Clear all filters** starts over.
+
+## Change the layout and display
+
+Pick a layout from the toolbar. Project views can use **List**, **Board**, **Spreadsheet**, **Calendar** or **Gantt**; workspace views use **List**, **Board** or **Spreadsheet**. Status belongs to a single project, so workspace views can't filter or group by status.
+
+Open **Display** to choose:
+
+- **Group by** and **Sub-group by**
+- **Order by**, for example **Due date**, **Priority** or **Manual**
+- **Show sub-tasks** and **Show empty groups**
+- **Properties** - what each row or card shows, such as key, labels, estimate or dates
+
+## Work in the spreadsheet
+
+The **Spreadsheet** layout shows one row per task and one column per property:
+
+- Click a column header to **Sort ascending**, **Sort descending**, **Clear sort** or **Hide column**. Choose the columns under **Display** > **Columns**.
+- Edit a property directly in its cell. Custom field values are read-only here.
+- Type in the **New task** row and press Enter to add a task.
+- Expand a task's sub-tasks with **Show sub-tasks**, and select rows to update many tasks at once.
+
+## Plan in the calendar
+
+The **Calendar** layout places every task that has a start date, a due date or both. A task with both dates spans the days between them. The filters you set on the project's other layouts apply here too.
+
+- Switch between **Month** and **Week**. Week shows one week with more room for each day. Weeks start on the day chosen in your preferences.
+- Turn off **Show weekends** to hide Saturday and Sunday. Your browser remembers this choice and the Month or Week choice.
+- Drag a task to another day to reschedule it. A task with only a due date moves to the day you drop it on. A task with a start date keeps its length, and both dates move by the same number of days. If the change can't be saved, the task goes back to its old day.
+- Hover over a day, or tab to it, and click **+** to create a task due that day.
+- When a day has more tasks than fit, click **+N more** to see them all.
+
+You need permission to edit tasks to drag them, and permission to create tasks to use **+**. Without a mouse, open the task and change its dates in the task panel.
+
+## Plan on the timeline
+
+The **Gantt** layout draws each dated task as a bar from its start date to its due date.
+
+- Drag a bar to move it, or drag either end to change its start or due date.
+- Choose a zoom level: **Week**, **Month** (the default) or **Quarter**. Your browser remembers it. Use the arrows or the date field to move through time, and **Jump to today** to come back.
+- Tasks that match your filters but have no dates are listed under **No dates**. Drag one onto the timeline to start it on the day you drop it, with a one-week span. Or click **Schedule** to start it today with a one-week span.
+- Lines connect related tasks whose bars are both on screen: **blocks** relations, and **starts before** and **finishes before** relations. A line turns red when the dates break it, for example when a blocking task ends after the task it blocks starts. That task also shows a warning icon in the list. Dates are never changed for you; move the bars yourself to resolve it.
+
+Changes other people make to task dates show up in both layouts right away.
+
+## Save a view
+
+1. Set the filters, layout and display you want on any task list.
+2. Click **Save view**.
+3. Give it a **Name** and an optional **Description**.
+4. Under **Who can see it**, choose **Workspace** (everyone in the workspace) or **Private** (only you).
+5. Click **Create view**.
+
+When you change a saved view, it shows **Unsaved changes**. Click **Save** to update it, **Save as new view** to keep the original, or **Reset** to go back.
+
+From a view's menu you can also **Edit**, **Duplicate**, **Copy link**, **Delete** or add it to your favorites. Deleting a view never affects its tasks.
+
+## Lock a view
+
+**Lock** makes a view read-only for everyone, its owner included, until someone **Unlocks** it. Lock shared views the team relies on so nobody changes them by accident.
+
+## Archived tasks
+
+Archive tasks you are done with but want to keep. Choose **Archive** from a task's menu, select several tasks and archive them together, or archive every task in a column from the column's menu. An archived task keeps its column, dates and history, but leaves the board, progress charts, reminders and default lists.
+
+To find archived tasks, add the **Archived** filter:
+
+- **Hide archived** (the default)
+- **Show archived too**
+- **Only archived**
+
+Archived tasks carry an **Archived** badge. Open one and choose **Restore** to put it back in its column.
+
+## Permissions
+
+Views use the workspace **View** permissions. Viewers can see shared views. Members can create views and edit or delete their own. Admins and Owners can edit and delete any view. Only a view's owner can make it private. Archiving and restoring tasks needs **task:update**.
+
+## Tips
+
+- Use **Me** in filters so one shared view shows each person their own work.
+- Keep personal experiments private, and share a view once it is useful to others.
+- Lock views that dashboards or meetings depend on.
+
+## Next
+
+- [Track your work](/core/functional/your-work)
+- [Review requests with Intake](/core/functional/intake)
+- [Turn on project features and column groups](/core/functional/project-features-and-column-groups)

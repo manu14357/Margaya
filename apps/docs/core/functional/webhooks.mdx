@@ -1,0 +1,128 @@
+---
+title: Workspace Webhooks
+description: Send workspace events to your own services as signed HTTP requests, verify their signatures, and debug deliveries
+---
+
+Workspace webhooks send what happens in a workspace (tasks, comments, cycles, modules, pages, views, intake, estimates and more) to an HTTPS endpoint you run. Each request is a signed JSON document, so your service can trust where it came from.
+
+<Info>
+Workspace webhooks cover a whole workspace and are managed by workspace admins. The per-project [outgoing webhooks](/core/integrations/outgoing-webhooks) and your personal notification webhooks keep working as before.
+</Info>
+
+## Create a webhook
+
+1. Open **Settings** > **Workspace** > **Webhooks**. You need the **manage settings** permission (workspace **Admins** and **Owners**).
+2. Select **Create webhook**.
+3. Enter the **Endpoint URL**. It must be `http` or `https`, carry no username or password, resolve to a public address and not point at this Margaya instance.
+4. Keep **All events**, or select **Choose events** to pick whole families (for example **Tasks**) or single events.
+5. Select **Create**, then copy the **signing secret**. It is shown only once.
+
+Use **Send test** to deliver a `webhook.ping` event and see your endpoint's answer right away.
+
+## Events
+
+Subscribe with `*` (every event, including events added later), a family such as `task.*`, or exact names such as `task.status_changed`. `GET /api/webhook/events` lists the full catalog.
+
+| Family | Examples |
+| --- | --- |
+| Projects | `project.created`, `project.updated`, `project.archived`, `project.deleted` (moved to the trash), `project.restored`, `project.purged`, and the public board: `project.published`, `project.unpublished`, `project.publication_updated`, `project.public_link_rotated` |
+| Statuses | `column.created`, `column.updated`, `column.deleted` |
+| Tasks | `task.created`, `task.status_changed`, `task.assignee_changed`, `task.label_added`, `task.moved`, `task.vote_changed`, `task.deleted` (moved to the trash), `task.restored`, `task.purged` and more |
+| Comments, Reactions | `comment.created`, `reaction.added` |
+| Time tracking | `time_entry.created` |
+| Cycles, Modules | `cycle.tasks_changed`, `module.updated` |
+| Pages, Views | `page.content_updated`, `view.created` |
+| Intake, Estimates | `intake.item_updated`, `estimate.activated` |
+
+What never leaves Margaya:
+
+- **Private pages and private views.** When a page or view becomes private, one event with only its id tells your service to drop it.
+- **Requests waiting in [Intake](/core/functional/intake).** Their tasks are announced (`task.created`) once accepted; until then only the `intake.*` events describe them.
+- Drafts, favorites, recent items, stickies, notifications, subscriptions and export progress.
+- Public board moderation (blocking and unblocking participants) and instance settings or instance admin changes.
+- The public board's link token and settings values.
+- Email addresses. People appear as `{ id, name }`.
+
+## The request
+
+Margaya sends a `POST` with a JSON body:
+
+```json
+{
+  "id": "…",
+  "event": "task.status_changed",
+  "version": 1,
+  "occurredAt": "2026-10-06T12:00:00.000Z",
+  "webhookId": "…",
+  "workspace": { "id": "…", "name": "Acme", "slug": "acme" },
+  "project": { "id": "…", "name": "Website", "slug": "web" },
+  "actor": { "id": "…", "name": "Ada" },
+  "data": { "id": "…", "key": "WEB-12", "title": "Fix login", "status": "done" },
+  "changes": { "status": { "old": "in-progress", "new": "done" } }
+}
+```
+
+Comment data carries `visibility` (`internal` or `public`) and `origin` (`app`, or `public_board` for feedback posted on the public board), so your service can keep internal discussion apart. `data` is the entity when the event was queued (page content is never included; read it with `GET /api/page/{id}`). Deleted entities carry their identifiers only. A body over 256 KB keeps only `data.id` and `data.projectId` and sets `dataTruncated: true`. Redelivered copies set `redelivery: true`.
+
+| Header | Value |
+| --- | --- |
+| `X-Margaya-Event` | The event name |
+| `X-Margaya-Delivery` | The delivery id, the same on every attempt; use it to ignore duplicates |
+| `X-Margaya-Webhook-Id` | The webhook id |
+| `X-Margaya-Attempt` | The attempt number, from 1 |
+| `X-Margaya-Timestamp` | Unix seconds when the attempt was sent |
+| `X-Margaya-Signature-256` | `v1=` and the hex HMAC-SHA256 signature |
+
+## Verify signatures
+
+1. Read the raw body before parsing it.
+2. Build the signed text: the `X-Margaya-Timestamp` value, a period, then the raw body.
+3. Compute HMAC-SHA256 of that text with your secret, as hex.
+4. Compare it in constant time with **each** `v1=` entry of `X-Margaya-Signature-256` (they are comma-separated) and accept if any matches.
+5. Reject timestamps more than 5 minutes away from your clock.
+6. Ignore a `X-Margaya-Delivery` id you already processed.
+7. Answer with any `2xx` within 10 seconds, and do slow work in the background.
+
+```js
+import { createHmac, timingSafeEqual } from "node:crypto";
+
+function verify(secret, timestamp, rawBody, header) {
+  const expected = createHmac("sha256", secret)
+    .update(`${timestamp}.${rawBody}`)
+    .digest("hex");
+  return header.split(",").some((entry) => {
+    const given = entry.trim().replace(/^v1=/, "");
+    return (
+      given.length === expected.length &&
+      timingSafeEqual(Buffer.from(given), Buffer.from(expected))
+    );
+  });
+}
+```
+
+### Rotate the secret
+
+**Rotate secret** creates a new secret, shown once. Choose how long the previous secret stays valid (up to 72 hours, 24 by default): meanwhile every request carries both signatures, the new one first, so you can deploy the new secret without dropping events.
+
+Secrets are stored encrypted with a key derived from the instance's `AUTH_SECRET`. If an administrator changes `AUTH_SECRET`, the webhook shows that its secret can't be read and deliveries fail with "Signing secret unavailable" until you rotate it.
+
+## Retries, ordering and auto-disable
+
+- Delivery is **at least once** and **not ordered**. Use `occurredAt` and the delivery id.
+- Network errors, timeouts (10 seconds), `408`, `429` and `5xx` answers are retried up to 6 attempts in total, about 1 minute, 5 minutes, 30 minutes, 2 hours and 6 hours apart. A longer `Retry-After` on `429` or `503` is honored, up to 6 hours.
+- Any other `4xx` answer fails at once. Redirects are never followed and fail at once.
+- Page content changes are combined: a page sends at most one `page.content_updated` per minute, with the latest version.
+- When at least 5 deliveries in a row have failed and the first of them is more than a day old, Margaya disables the webhook, cancels its waiting deliveries and emails the person who created it. Fix the endpoint, then **Enable** it again.
+
+## Delivery log
+
+The **Deliveries** tab lists recent deliveries with their status, response code, attempts and duration. Open one to see the request headers (with the signature masked), the body, every attempt and the first 2 KB of the last response. **Redeliver** sends a finished delivery again as a new delivery. The log is kept for 14 days (`WEBHOOK_DELIVERY_RETENTION_DAYS` on self-hosted instances, 1 to 90).
+
+## Limits and network rules
+
+- At most **20** webhooks per workspace, and one per URL.
+- Endpoints that resolve to private, loopback or link-local addresses are refused, when the webhook is saved and again before every attempt. Self-hosted instances that must reach internal receivers can set `MARGAYA_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS=true`.
+
+## Use the API
+
+Everything on the settings page is available with an API key whose role has **manage settings**: `GET/POST /api/webhook`, `PATCH/DELETE /api/webhook/{id}`, `POST /api/webhook/{id}/rotate-secret`, `POST /api/webhook/{id}/test` and the delivery routes under `/api/webhook/{id}/deliveries`. See the **Webhooks** section of the API reference.

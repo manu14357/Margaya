@@ -1,0 +1,69 @@
+---
+title: Plan Work in Cycles
+description: Run time-boxed iterations with automatic status, burndown tracking, and carryover
+---
+
+A cycle is a time-boxed stretch of a project's work, like a sprint. Cycle status is derived automatically from its dates, so you never have to update it by hand.
+
+## Turn on Cycles
+
+1. Go to **Settings**.
+2. Open **Projects** and select your project.
+3. Open the **Features** tab.
+4. Turn on **Cycles**.
+
+## Cycle status
+
+Status is computed from today's date, not set by hand. "Today" is the date in the workspace's time zone (**Settings -> Workspace -> General -> Time zone**, UTC unless changed), so a cycle that ends on a given day ends at midnight in that time zone:
+
+- **Draft** - no dates yet
+- **Upcoming** - dates set, start date in the future
+- **Active** - today falls between the start and end date
+- **Completed** - the end date has passed
+- **Archived** - manually archived after completion
+
+## Create a cycle
+
+1. Open the project's **Cycles** view.
+2. Click **New cycle**.
+3. Add a **Name** (e.g. "Sprint 12") and optional **Description**.
+4. Set **Dates**, or leave them empty to save it as a draft.
+5. Set an **Owner**. It defaults to you.
+
+Dated cycles can span at most 366 days, and a cycle's dates can't overlap another dated cycle in the same project, archived ones included. If the dialog reports an overlap, pick different dates or clear them to keep the cycle as a draft.
+
+Once a cycle is active, its start date is locked and its end date can't move into the past.
+
+## Add and remove tasks
+
+- Drag tasks into a cycle from the backlog or board, or use **Add existing tasks** to pull in tasks already in the project.
+- A task can only be in one cycle at a time; adding it to a cycle moves it out of any other.
+- Tasks can always leave a cycle, even a completed or archived one.
+
+## Track progress
+
+Open a cycle to see its counts, completion percentage, and a burndown/burn-up chart, broken down by assignee, label, and priority. Cancelled tasks are tracked separately and never count as in-progress work.
+
+## Carry work forward
+
+When a cycle completes, use **Transfer** to move its unfinished tasks (backlog, not started, or started) into a draft, upcoming, or active cycle. Completed and cancelled tasks stay behind, and the source cycle's progress report freezes at the moment of transfer so its historical numbers never change.
+
+## Archive a cycle
+
+Archiving is only available for completed cycles. An archived cycle leaves the default list and its favorites are hidden until you restore it with **Unarchive**; nothing about the cycle or its data is deleted.
+
+## Permissions
+
+Working with cycles needs workspace **Cycle** permissions (read, create, update, delete). The built-in Viewer role can only read cycles; Member can create and update them; Admin and Owner can also delete them. Deleting a specific cycle is also allowed for its owner if they have cycle update rights, even without the delete permission. All of this is on top of the Cycles feature being turned on for the project.
+
+## Tips
+
+- Keep cycles short and consistent (one or two weeks) so status and burndown stay meaningful.
+- Use **Transfer** instead of manually moving tasks one by one when closing out a cycle.
+- A cycle's tasks stay in the project when the cycle is deleted; only the grouping goes away.
+
+## Next
+
+- [Group work with Modules](/core/functional/modules)
+- [Turn on project features and column groups](/core/functional/project-features-and-column-groups)
+- [Plan work in Backlog](/core/functional/backlog-planning)

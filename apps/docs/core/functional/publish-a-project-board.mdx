@@ -1,0 +1,119 @@
+---
+title: Publish a Project Board
+description: Share a project as a public board anyone can open, choose what visitors can do, and moderate their comments
+---
+
+Publishing turns a project into a public board: a page anyone with the link can open, with no account needed. Visitors see the project's board or list and can search and filter it. You decide whether they can also vote, react, comment or send requests. A new board is read-only until you turn those on.
+
+## Publish a project
+
+1. Open the **...** menu of the project in the sidebar and choose **Publish...**. You can also go to **Settings**, open **Projects**, select the project and open the **Publish** tab.
+2. Click **Publish**. The status changes to **Live** and shows who published it and when.
+3. Copy the **Public link**, or click **Open** to see the board.
+
+The project shows a **Public** badge next to its name while it is live. Clicking it opens the board.
+
+You need the **project:share** permission, which Admins and Owners have. Without it the Publish page is read-only. Archived projects can't be published, and the board stops working while its project is archived.
+
+## Unpublish or rotate the link
+
+Use the **...** menu in the status card:
+
+- **Unpublish...** stops the link working. Settings, comments, reactions, votes and blocked people are kept. The link stays the same when you publish again.
+- **Rotate link...** creates a new link. The old link stops working right away, so share the new one with everyone who should keep access.
+
+## Choose what the board shows
+
+Each control on the Publish page saves as soon as you change it, whether or not the board is live.
+
+**Layouts**
+
+- Offer **Board**, **List** or both. At least one must stay on.
+- **Default layout** is the one visitors see first. With both on, visitors can switch.
+
+**Participation**
+
+Everything here is off until you turn it on.
+
+- **Comments** - visitors can read public comments, and signed-in people can add them.
+- **Reactions** - people can react to tasks and public comments.
+- **Votes** - signed-in accounts can upvote or downvote tasks.
+- **Requests** - signed-in accounts can send requests to the project's [Intake](/core/functional/intake). This needs Intake turned on in the project's **Features** tab. If Intake is later turned off, requests stop working on the board.
+- **Allow guests** - guests can comment and react, but never vote or send requests.
+
+**Content**
+
+Visitors always see titles, columns, priorities, labels and due dates.
+
+- **Show assignees** - show the names and avatars of assignees. Off by default.
+- **Show backlog** - show tasks that aren't on the board yet as a **Backlog** column. Off by default.
+
+## What visitors see
+
+- **Board** and **List** layouts, with the project's name, icon and description at the top. The footer says **Read-only** when nothing on the board can be done by visitors.
+- **Search tasks** by text, **Filter** by status, priority and labels, and **Sort** by manual order, newest, recently updated, due date or priority. **Most votes** appears when votes are on. Active filters show as chips, with **Clear filters**. On small screens these controls move into a **Filters** sheet.
+- A task opens in a **peek** over the board, with its own link (**Copy link**) that you can share. It shows the status, priority, due date, labels, assignees (if shown), description, links to related pull requests and issues, and the comments, votes and reactions you turned on.
+
+Tasks in the Intake queue and archived tasks never appear. Tasks in the backlog appear only if **Show backlog** is on.
+
+## Guests and signed-in accounts
+
+Anyone can read the board. To take part, a visitor has to sign in:
+
+- **Visitors** who aren't signed in see **Sign in** where a control would be. If the board allows guests and the server has guest access on, they can also click **Continue as guest**.
+- **Guests** can comment and react on boards that allow guests. They never vote or send requests: they are asked to sign in with an account instead.
+- **Accounts** can do everything you turned on, including votes and requests. Signing in sends them back to the board view they were on.
+
+Guest access is a server setting, so **Allow guests** has no effect while it is off. See [Instance administration](/core/installation/instance-admin).
+
+## Votes, reactions and comments
+
+- **Votes** - upvote or downvote a task. Clicking your own vote again removes it; clicking the other arrow switches it. Inside Margaya, a task shows a read-only summary such as "▲ 12 · ▼ 2" while votes are on.
+- **Reactions** - one of eight reactions (thumbs up, thumbs down, smile, boom, confused, heart, airplane, eyes) on tasks and on comments.
+- **Comments** - written in Markdown. HTML, images and mentions are removed, and a comment can have at most 5,000 characters and 10 links. Files can't be attached. Each comment shows its author, a **Member** or **Guest** badge where it applies, and **edited** after changes. You can **Edit** and **Delete** your own comments from the comment's menu.
+
+## Requests
+
+When **Requests** is on, signed-in accounts see a **Submit a request** button. A request has a title (up to 255 characters) and optional details. It goes to the project's Intake queue as a new request, where the team can accept, decline or close it as a duplicate. It shows on the board only once accepted.
+
+Accounts open **My requests** from their avatar menu to see each request's status (**In review**, **Accepted**, **Declined** or **Duplicate**), the team's reason for a decline, and a link to the task once it is on the board. A request can be withdrawn while it is still in review.
+
+## Internal and public comments
+
+On a task in Margaya, the comment box offers an **Internal** and **Public** switch while the project's board is live with comments on. Every comment starts as **Internal**: only your team sees it. **Public** comments also show on the board.
+
+- Public comments carry a **Public** badge. Comments from people outside the workspace also carry an **External** badge (a signed-in account) or a **Guest** badge.
+- From the **...** menu on your own comment, choose **Make public** or **Make internal**. Comments imported from other tools never go public.
+- Making a comment public needs a live board with comments on. Your own comments need permission to update tasks.
+
+## Moderation and blocking
+
+People with **project:share** can moderate public comments, from a comment's **...** menu or from the **Moderation** section of the Publish page. It lists **Recent public comments**, newest first.
+
+- **Hide from board** makes the comment internal. It stays visible to your team.
+- **Delete...** removes it for everyone. Only public comments can be removed this way.
+- **Block person...** (for external and guest authors) stops them from commenting, reacting, voting and sending requests. They can still read the board. Tick **Also hide their public comments** to make all their public comments internal.
+
+**Blocked people** on the Publish page lists everyone blocked, who blocked them, and **Unblock**.
+
+## Turn public boards off for the instance
+
+An instance admin can turn public boards off under **Settings > Instance > Public boards**. With **Allow public boards** off, every public link answers "not found" and **Publish** is disabled. Nothing is deleted, and turning it back on restores the boards. **Allow public participation** off makes all boards read-only. The same page lists every published board and can unpublish one. See [Instance administration](/core/installation/instance-admin#public-boards).
+
+## Privacy
+
+- Boards are marked so search engines don't index them, and responses are not cached by intermediaries.
+- Archived tasks and Intake requests are never shown. Public data is limited to what the board displays: no user ids or emails.
+- Anyone with the link can read the board. Rotate the link or unpublish if it was shared by mistake.
+
+## Tips
+
+- Turn on one thing at a time. A read-only board is a safe starting point.
+- Leave **Show assignees** off if you don't want teammates' names public.
+- Turn on **Requests** and use [Intake](/core/functional/intake) to keep feedback out of the board until you accept it.
+
+## Next
+
+- [Review requests with Intake](/core/functional/intake)
+- [Turn on project features and column groups](/core/functional/project-features-and-column-groups)
+- [Outgoing webhooks](/core/functional/webhooks)

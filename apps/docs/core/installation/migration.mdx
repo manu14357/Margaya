@@ -1,0 +1,78 @@
+---
+title: Upgrading Margaya
+description: How to upgrade a self-hosted Margaya deployment to a newer version.
+---
+
+## Upgrading
+
+Margaya ships as a single container that bundles the web app and the API. Upgrading an existing deployment is a normal image pull and restart:
+
+```bash
+docker compose pull margaya
+docker compose up -d margaya
+```
+
+Database migrations run automatically at container startup, so there is no separate migration step to run by hand. Postgres, your Compose volumes, and your `.env` file are untouched by an upgrade.
+
+## Before you upgrade
+
+- **Back up your database.** A quick `pg_dump` of the `margaya` database gives you a rollback path if something goes wrong.
+- **Check the release notes** for the version you're upgrading to, in case a release calls out a required environment variable change or a breaking behavior change.
+- **Pin your image tag** in production (for example `ghcr.io/manu14357/margaya:1.2.0`) rather than tracking `latest`, so upgrades happen deliberately instead of on every restart.
+
+## Steps
+
+<Steps>
+<Step>
+**Pull the new image**
+
+```bash
+docker compose pull margaya
+```
+</Step>
+
+<Step>
+**Recreate the container**
+
+```bash
+docker compose up -d margaya
+```
+
+The container runs its startup migrations against `DATABASE_URL` before it starts serving traffic. Watch the logs during the first startup after an upgrade:
+
+```bash
+docker compose logs -f margaya
+```
+</Step>
+
+<Step>
+**Verify**
+
+```bash
+docker compose ps
+curl -s https://your-margaya-instance.com/api/health
+```
+
+You want the `margaya` container reporting healthy and `{"status":"ok"}` from the health endpoint.
+</Step>
+</Steps>
+
+## Upgrade notes
+
+- **Workspace time zones.** Workspaces gain a time zone setting that defines "today" for cycle status, automations and analytics. Every existing workspace starts on **UTC**, so behavior is unchanged until an admin picks another zone in **Settings -> Workspace -> General**. Users can also set their own time zone for reminders and email digests; until they do, UTC is used.
+
+## Rollback
+
+If an upgrade causes problems, redeploy the previous image tag:
+
+```bash
+docker compose pull margaya   # with the previous tag set in compose.yml or .env
+docker compose up -d margaya
+```
+
+Restore your database backup only if the new version's migrations changed data in a way the previous version can't read. Most releases are forward-compatible at the schema level; check the release notes if you're unsure.
+
+## Next
+
+- [Environment variables](/core/installation/environment-variables)
+- [Start the services](/core/installation/start-services)

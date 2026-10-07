@@ -1,0 +1,43 @@
+---
+title: Description History
+description: See earlier versions of a task's description and restore one
+---
+
+Margaya keeps the history of every task description, so an accidental deletion or an unwanted rewrite is never final.
+
+## How versions are saved
+
+- Each change to a description is saved as a version, with its author and time.
+- Edits by the same person within 10 minutes are merged into one version, so autosaving while you type does not flood the history.
+- The latest **50** versions of each task are kept; older ones are removed as new ones arrive.
+- The first edit of a task created before history existed also keeps the text it replaced, shown as **Earlier version**.
+- Versions are deleted with the task when it is deleted permanently.
+
+## View the history
+
+1. Open a task.
+2. Below the description, click **History**.
+3. Pick a version on the left. It is shown read-only on the right, with its author, time and size.
+
+## Restore a version
+
+1. Select an older version.
+2. Click **Restore** and confirm.
+
+The description is replaced with that version and saved like any edit: it appears in the task's activity, people watching the task see the change live, and mentions in it are handled as usual. The restore itself becomes a new version, so the text you replaced stays in the history.
+
+## Permissions
+
+- Viewing the history needs **task: read**.
+- Restoring needs **task: update**.
+
+## API
+
+- `GET /task/{id}/description-versions` lists versions (author, time, size, preview).
+- `GET /task/{id}/description-versions/{versionId}` returns one version's markdown.
+- `POST /task/{id}/description-versions/{versionId}/restore` restores it.
+
+## Next
+
+- [Plan and execute tasks](/core/functional/plan-and-execute-tasks)
+- [Pages](/core/functional/pages)

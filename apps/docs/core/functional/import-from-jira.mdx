@@ -1,0 +1,77 @@
+---
+title: Import from Jira
+description: Move a Jira project into Margaya from Jira's CSV export, with statuses, people, sub-tasks, links and comments
+---
+
+The Jira import reads the CSV file Jira exports and creates one task per issue in a Margaya project. It works from the file alone: Margaya never connects to your Jira site, and no Jira account or API token is needed.
+
+## Export your issues from Jira
+
+1. In Jira, open **Filters** > **View all issues** (or the issue search) and filter to the issues you want, for example `project = WEB`.
+2. Choose **Export** > **Export CSV (all fields)**.
+3. Keep the downloaded `.csv` file as it is. Opening and saving it in a spreadsheet can change its dates and separators.
+
+A file holds at most **5 MB** and **5,000 issues**. Export a large project in parts (for example by creation date) and import the files one after the other.
+
+## Import the file
+
+1. Open **Settings** > **Projects** > your project > **General**.
+2. In **Tasks import/export**, choose **Import**, then **Jira (CSV export)**.
+3. **Upload** the file. Margaya reads it and shows how many issues it holds, the columns it found, and how many issues were imported into this project before.
+4. **Map**:
+   - pick the column each Jira status goes to (suggested by name, then by Jira's status category; anything can go to the **Backlog**);
+   - check the priority mapping;
+   - see which assignees and reporters match workspace members;
+   - choose the options below.
+5. Choose **Import**. The summary lists the tasks created, updated and skipped, the comments and relations added, the people who didn't match a member, warnings, and the rows that failed with their line numbers.
+
+Dates in the export have no time zone; they are read in your browser's time zone.
+
+## Options
+
+| Option | Default | What it does |
+|---|---|---|
+| Issues imported before | Skip them | **Skip** leaves issues imported into this project before as they are. **Update** rewrites their title, description, status, priority, due date and assignee, and adds new labels and comments. Updating needs permission to update tasks. |
+| Add the issue type as a label | On | Adds a label such as **Bug** or **Story**. |
+| Import comments | On | Imports comments with their Jira author's name. Needs the **Manage workspace settings** permission, like any comment imported with an external author; otherwise comments are skipped. |
+| Put sprints in cycles | Off | Puts each issue in a cycle named after its last sprint, creating missing cycles without dates. Needs the project's Cycles feature. |
+| Put components in modules | Off | Adds each issue to modules named after its components, creating missing modules. Needs the project's Modules feature. |
+
+## How fields are mapped
+
+| Jira | Margaya |
+|---|---|
+| Summary | Title. Issues without a summary are not imported. |
+| Description | Description, with Jira's wiki markup converted to Markdown: headings, bold, italic, strikethrough, underline, monospace, code and noformat blocks, quotes, links, nested lists and tables. Images become a text placeholder such as `[image: screenshot.png]`. |
+| Issue key | Kept as the task's import reference: the activity shows "imported this task from Jira WEB-12". Margaya numbers the task itself. |
+| Status | The column chosen in **Map**. |
+| Priority | Highest → Urgent, High → High, Medium → Medium, Low and Lowest → Low, unless changed in **Map**. |
+| Assignee | The workspace member with that email, or else that exact name. Unmatched people leave the task unassigned and are listed in the summary. |
+| Reporter | The task's creator when the reporter is a member; otherwise you. |
+| Labels | Labels; new names are created as workspace labels. |
+| Due date, Created, Updated | Due date, creation and last-update dates. A completed issue's **Resolved** date becomes its completion date. |
+| Story Points, Original estimate | The estimate, when the project's Estimates feature is on and its active system has exactly that value: story points for a points system, the original estimate in minutes for a time system. Otherwise skipped with a warning. |
+| Parent | Sub-tasks: the parent becomes the task's parent when both are in the file. |
+| Issue links (Blocks, Relates, Duplicate) | Blocking, related and duplicate relations when both issues are in the file. Other link types are reported and skipped. |
+| Comments | Comments, with their author's name and date. They notify nobody. |
+| Sprint | A cycle, when **Put sprints in cycles** is on. |
+| Component/s | Modules, when **Put components in modules** is on. |
+| Attachments | Not downloaded. Their names and links are listed at the end of the description. |
+| Issue Type | A label, when **Add the issue type as a label** is on. |
+
+## Running it again
+
+Each imported task remembers its Jira issue key, so the same file, or a newer export, can be imported again:
+
+- issues imported before are **skipped**, or **updated** when you choose so;
+- new issues are created, and their sub-task and link relations to earlier issues are added;
+- comments that were already imported are not added twice.
+
+## Limits and permissions
+
+- At most 5 MB and 5,000 issues per file; one Jira import per project runs at a time.
+- Importing needs permission to create tasks in the project, like the other imports.
+- Each issue is imported on its own: a row that fails is listed in the summary and the others still import.
+- Only the CSV export is supported. Jira's XML export is not.
+
+For scripts, the import is available through the API as `POST /jira-import/{projectId}/preview` and `POST /jira-import/{projectId}`.

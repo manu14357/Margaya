@@ -1,0 +1,39 @@
+---
+title: Assign Multiple People to a Task
+description: Add up to 20 assignees to a task, keep their order, and pick people by search or number keys
+---
+
+Tasks can have more than one assignee. Assignees keep the order they were added in, so the first assignee (still available as a single value for older integrations) stays predictable.
+
+## Assign people to a task
+
+1. Open a task and select its **Assignees** property.
+2. Pick anyone from the workspace member list. Rows show up to 9 with number-key shortcuts; once a project has more members than that, a search field appears instead.
+3. Toggle as many people as you need, up to 20 per task.
+
+Assignees keep the order they had when you opened the picker, so rows don't jump around as you make selections; every change you make is applied at once when you close the picker.
+
+## Change or clear assignees
+
+- Toggling someone off removes just that person; everyone else stays assigned.
+- Use **Clear assignees** to unassign everyone on the task at once.
+- People who are no longer workspace members show as "No longer a member" and can be removed but not re-added.
+
+## Bulk assign across tasks
+
+Select several tasks in Board or List view to reach the bulk toolbar's assignee actions: **Add assignee** adds one person to every selected task, **Remove assignee** lists whoever is on any selected task so you can take them off all of them, and **Clear assignees** removes everyone from every selected task at once. Each action reports back how many of the selected tasks actually changed.
+
+## Permissions
+
+Changing who is assigned to a task needs the **task:assign** permission, which is separate from the general task update permission. In the built-in roles, only Admin and Owner include task:assign by default; Viewer and Member do not, so a workspace admin needs to grant it through a custom role if members should be able to reassign tasks themselves. Anyone who can only read a task still sees its assignees. Every assignee must be a member of the workspace.
+
+## Tips
+
+- Use one primary assignee plus collaborators rather than assigning everyone "just in case"; it keeps ownership clear.
+- The search field (shown once a project has more than 8 members) filters as you type, so you don't need to scroll a long member list.
+- Bulk-assign from List view when you need to add a reviewer or collaborator to many tasks at once.
+
+## Next
+
+- [Plan and execute tasks in Board and List](/core/functional/plan-and-execute-tasks)
+- [Collaborate with your team](/core/functional/collaborate-with-team)

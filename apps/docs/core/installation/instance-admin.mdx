@@ -1,0 +1,183 @@
+---
+title: Instance administration
+description: Manage sign-up, sign-in, email, workspaces, public boards and admins for the whole Margaya installation from Settings > Instance
+---
+
+Instance administration covers settings that belong to the whole installation rather than to one workspace. Instance admins manage them in the app, without editing `.env` or restarting the server.
+
+## Who is an instance admin
+
+The first account created on a new instance is its instance admin. Admins can add more admins on the [Admins](#admins) page. Guests and banned accounts can't be admins.
+
+Instance admins see an **Instance** tab in **Settings**. A person who has just been made an admin sees the tab once their browser refreshes its session, for example after they reload the page. The API checks the role on every request, so the tab is only a shortcut: non-admins who open an Instance page are sent back to their account settings.
+
+<Info>
+Instance settings are separate from workspace roles. Being an instance admin doesn't change a person's role in any workspace.
+</Info>
+
+## Where each setting comes from
+
+Every setting has one effective value. Margaya picks it in this order, highest first:
+
+1. **Global lock.** With `MARGAYA_LOCK_INSTANCE_SETTINGS=true`, values saved in the app are ignored and every page is read-only. A setting still takes its environment variable when one is set; otherwise it uses the default.
+2. **Environment variable.** A variable that is set (present and not blank) wins over anything saved. `DISABLE_X=false` counts as set.
+3. **Saved value.** What an admin saved in the app.
+4. **Default.**
+
+Next to each setting a badge shows which one is in effect:
+
+| Badge | Meaning |
+| --- | --- |
+| **Default** | Nothing is set or saved. Margaya uses the built-in default. |
+| **Saved here** | An admin saved the value in the app. Hover for who saved it and when. |
+| **Environment: VARIABLE** | The named variable sets the value. The control is read-only. Remove the variable and restart the server to manage the setting in the app. |
+
+<Warning>
+Nothing is copied from the environment into the database. If you remove a variable and restart, the setting falls back to its saved value, or to the default if none was saved.
+</Warning>
+
+### Settings that lock as a group
+
+- **OAuth providers.** When a provider's client ID variable is set, the whole provider (client ID and secret, plus the endpoints, scopes and PKCE for custom OAuth) comes from the environment. The provider's on/off switch has no variable, so you can always turn a provider off in the app.
+- **SMTP.** When `SMTP_HOST` is set, host, port, security, username, password and From all come from the environment.
+
+### Secrets are write-only
+
+The SMTP password and OAuth client secrets are never shown again after saving. A secret field shows only that a value is **Saved**:
+
+- **Replace** lets you type a new value.
+- **Clear** removes the saved value.
+
+Saved secrets are encrypted with a key derived from `AUTH_SECRET`. If you change `AUTH_SECRET`, the saved secrets can't be read any more: the field says so and you must enter them again.
+
+### Changes take effect quickly
+
+A saved change applies at once on the API instance that saved it, and within 10 seconds on other API instances. Redis isn't needed for this. Each admin can make up to 30 setting changes a minute.
+
+## General
+
+- **Instance name** is shown on the sign-in screen and on public boards. It takes 1 to 80 characters. The default is `Margaya`.
+- **Show the product landing page** decides what signed-out visitors see when they open the app's root address. When it is on (the default), they see the Margaya landing page with links to sign in and sign up. When it is off, they go straight to sign-in. Signed-in people always go to their dashboard.
+- **Overview** shows the version, the number of accounts, guests, workspaces, projects and public boards, and which server services are set up: realtime (in memory or Redis), email, file storage, captcha, error reporting, cloud mode and demo mode. It never shows their values.
+
+## Authentication
+
+### Sign-up
+
+| Switch | What it does |
+| --- | --- |
+| **Anyone can sign up** | When off, people need an invitation to create an account. |
+| **Email sign-up** | Create accounts with an email address. Turn off to allow only single sign-on. |
+| **Guest access** | Let people try Margaya without an account. It also needs open sign-up and email sign-in; a note appears when it is on but inactive for that reason. |
+
+### Sign-in methods
+
+Each method has a status (**Active**, **Turned off**, **Not configured** or **Needs email setup**) and a switch:
+
+- **Email and password**
+- **Email code**, a one-time code sent by email. It needs [email set up](#email).
+- **GitHub**, **Google**, **Discord** and **Custom OAuth / OIDC**. A provider is active when it has credentials and its switch is on. Turning one off asks for confirmation, because people who only sign in with it won't be able to sign in.
+
+<Warning>
+The last working sign-in method can't be turned off. Its switch is disabled, and a change that would leave no way to sign in is refused.
+</Warning>
+
+### Configure an OAuth provider
+
+Select **Configure** on a provider to open its panel:
+
+1. Copy the **Callback URL** and add it to your OAuth app. It is `<API URL>/api/auth/callback/<provider>` for GitHub, Google and Discord, and `<API URL>/api/auth/oauth2/callback/custom` for custom OAuth. The API URL comes from `MARGAYA_API_URL`.
+2. Enter the **Client ID** and **Client secret**.
+3. Select **Save**.
+
+For **Custom OAuth / OIDC** the panel also has:
+
+- **Button label** (up to 40 characters), for example "Continue with Okta".
+- **Discovery URL**, or the **Authorization URL**, **Token URL** and **User info URL**. Without environment variables, a custom provider counts as configured when it has a client ID, a secret, and either the discovery URL or all three endpoints.
+- **Scopes**, comma separated (default `profile,email`).
+- **Use PKCE** (on by default).
+- **Sign in automatically**, which skips the sign-in screen and goes straight to this provider.
+- **Logout URL**.
+
+URLs must be absolute `http` or `https` URLs. For provider setup details, see [Authentication Providers](/core/social-providers/github).
+
+## Email
+
+Configure the SMTP server Margaya uses for sign-in codes, invitations and notifications. The page shows **Email is set up** once a host and a From address are set.
+
+| Field | Notes |
+| --- | --- |
+| **Host** | A hostname or IP address, without a scheme or port. |
+| **Port** | 1 to 65535. Leave empty for the default port of the security mode. |
+| **Security** | **TLS** (usually port 465), **STARTTLS** (usually port 587) or **None** (unencrypted; use only for a local relay). |
+| **Username**, **Password** | The password is a write-only secret. |
+| **From** | An address, or a name and an address: `Margaya <no-reply@example.com>`. |
+
+**Remove email settings** clears the saved SMTP settings, and Margaya stops sending email until you set it up again. It appears only when there are saved settings and the environment doesn't manage email.
+
+### Send a test email
+
+**Send test email** is enabled once email is set up and your changes are saved, because the test uses the saved settings. Choose a recipient (your own address by default) and select **Send**. Margaya verifies the connection and credentials, then sends a short message. Admins can send up to 5 tests a minute.
+
+If it fails, the dialog shows one of these categories. Server error text is never shown; details are in the API logs.
+
+| Message | What to check |
+| --- | --- |
+| The SMTP server rejected the username or password. | Username and password. |
+| Couldn't connect to the SMTP server. | Host and port. |
+| The SMTP server didn't answer in time. | The server and network path. The test gives up after about 15 seconds. |
+| The secure connection failed. | The security setting and the server certificate. |
+| The server refused the sender address. | The From address. |
+| The server refused the recipient address. | The recipient. |
+| Couldn't send the test email. | Anything else: check the settings and the server logs. |
+
+## Workspaces
+
+- **Only instance admins can create workspaces** restricts workspace creation. Everyone else can still join workspaces they're invited to.
+- **All workspaces** lists every workspace with its owner, member count, project count and creation date. Search by name or slug, use **Load more** for further pages, and select **Open** to go to a workspace.
+- **Create workspace** creates one from this page.
+
+## Public boards
+
+- **Allow public boards.** When off, every public link answers "not found". Nothing is deleted, and turning it back on restores the boards.
+- **Allow public participation.** When off, public boards are read-only: no comments, reactions, votes or requests.
+- **Published boards** lists every published board with its workspace, publish date and enabled features (comments, reactions, votes, requests, guests). Search by project or workspace name. From a row you can open the board, open the project settings or **Unpublish** it. Unpublishing stops the link working until someone publishes the board again; settings, comments, reactions and votes are kept.
+
+## Admins
+
+The page lists every instance admin, and marks your own row.
+
+- **Add admin** makes an existing account an instance admin by email. It fails if no account uses that email, or if the account is a guest or banned.
+- **Remove admin** makes an admin a regular account again. They keep their account and their workspaces.
+
+<Warning>
+The last active instance admin can't be removed. The button is disabled for the only admin, and the API refuses the request.
+</Warning>
+
+## Environment variables
+
+Setting one of these variables locks its setting in the app and shows it with an **Environment** badge.
+
+| Setting | Variable | Notes |
+| --- | --- | --- |
+| Global lock | `MARGAYA_LOCK_INSTANCE_SETTINGS` | `true` makes every page read-only. |
+| Instance name | `MARGAYA_INSTANCE_NAME` | |
+| Show the product landing page | `MARGAYA_PUBLIC_LANDING` | `false` sends signed-out visitors straight to sign-in. |
+| Anyone can sign up | `DISABLE_REGISTRATION` | `true` means invitation only. |
+| Email sign-up | `DISABLE_PASSWORD_REGISTRATION` | `true` turns it off. |
+| Guest access | `DISABLE_GUEST_ACCESS` | `true` turns it off. |
+| Email and password sign-in | `DISABLE_LOGIN_FORM` | `true` turns it off. |
+| Email code sign-in | `DISABLE_EMAIL_OTP_SIGN_IN` | `true` turns it off. |
+| Restrict workspace creation | `DISABLE_WORKSPACE_CREATION` | `true` limits it to instance admins. |
+| GitHub | `GITHUB_OAUTH_CLIENT_ID`, `GITHUB_OAUTH_CLIENT_SECRET` | The older `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` also lock it. |
+| Google | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | |
+| Discord | `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET` | |
+| Custom OAuth / OIDC | `CUSTOM_OAUTH_CLIENT_ID`, `CUSTOM_OAUTH_CLIENT_SECRET`, `CUSTOM_OAUTH_DISCOVERY_URL`, `CUSTOM_OAUTH_AUTHORIZATION_URL`, `CUSTOM_OAUTH_TOKEN_URL`, `CUSTOM_OAUTH_USER_INFO_URL`, `CUSTOM_OAUTH_SCOPES`, `CUSTOM_OAUTH_RESPONSE_TYPE`, `CUSTOM_AUTH_PKCE` | These lock as a group when `CUSTOM_OAUTH_CLIENT_ID` is set. |
+| Custom OAuth automatic sign-in | `CUSTOM_OAUTH_AUTO_LOGIN` | Locks only this switch. |
+| Custom OAuth logout URL | `CUSTOM_OAUTH_LOGOUT_URL` | Locks only this field. |
+| SMTP | `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM` | These lock as a group when `SMTP_HOST` is set. |
+| Public boards | `DISABLE_PUBLIC_BOARDS` | `true` turns them off. |
+
+These settings have no variable and are always managed in the app: each provider's on/off switch, the custom OAuth button label and public participation.
+
+For every variable, see [Environment variables](/core/installation/environment-variables).

@@ -1,0 +1,117 @@
+---
+title: Understand Your Work with Analytics
+description: See how many tasks are open, created and completed, break work down by assignee, label or cycle, and export any table as CSV
+---
+
+Analytics summarizes the tasks in your projects as headline numbers, charts and tables. It is read-only: nothing you do here changes a task.
+
+## Open Analytics
+
+- **Workspace:** select **Analytics** in the sidebar. It covers every project in the workspace. Use the project picker in the header to narrow it to some projects, and **Clear selection** to go back to **All projects**.
+- **Project:** open the project's **Analytics** tab. It covers that project only.
+- **Cycle or module:** open the **...** menu of a cycle or module and choose **Open in analytics**. The project's Analytics opens on the **Tasks** tab, filtered to that cycle or module, with a chip such as **Cycle: Sprint 4** in the toolbar. Click the chip's **x** to remove the filter. A cycle with dates also starts the **Created vs completed** chart on the cycle's own dates.
+
+If the workspace has no projects yet, Analytics suggests creating one.
+
+## Who can see it
+
+Analytics needs the workspace **Analytics** permission (**read**) and task read access.
+
+- **Member**, **Admin** and **Owner** have it.
+- **Viewer** does not by default. Ask a workspace admin to grant it, or add it to a custom role.
+- Without it, the sidebar entry is hidden and the page tells you to ask an admin.
+
+Some tabs need more, and each one appears only when it applies:
+
+| Tab | Shown when |
+| --- | --- |
+| **Overview** | You are in the workspace scope |
+| **Tasks** | Always |
+| **Cycles** | A project in scope has **Cycles** on, and you can read cycles |
+| **Modules** | A project in scope has **Modules** on, and you can read modules |
+| **Intake** | A project in scope has **Intake** on, and you can read intake |
+
+Turn features on under **Settings** > **Projects** > **Features**; see [Turn on project features](/core/functional/project-features-and-column-groups). Every built-in role can read cycles, modules and intake.
+
+## Overview
+
+The workspace's first tab shows:
+
+- Tiles for **Members**, **Projects**, **Open tasks** (with how many are overdue) and **Completed tasks** (with the percentage complete). Tiles for **Cycles running**, **Modules in progress** and **Open requests** appear when the matching feature is on and you can read it.
+- **Project progress**, with the projects that have the most open tasks first.
+- **Tasks by group**, a donut of backlog, unstarted, started, completed and cancelled tasks.
+- **Workload**, the open tasks of each assignee. It shows the ten busiest assignees, plus tasks without one.
+
+## Tasks
+
+The **Tasks** tab is the place to dig in. Everything on it counts the same set of tasks, so the tiles, charts and table always agree.
+
+### Filter the tasks
+
+Use the toolbar to search and **Filter** with the same conditions as in [Views](/core/functional/views). The filters you set are remembered for each scope. The **Filter** menu also has an **Archived** option: **Hide archived** (the default), **Show archived too** or **Only archived**.
+
+The tiles show **Total**, one tile per workflow group, and **Completion**, such as "12 of 20".
+
+### Created vs completed
+
+This chart plots tasks created and tasks completed per week or month, with a **Created**, **Completed** and **Net** summary.
+
+- Pick a **Period**: **Last 30 days**, **Last 90 days**, **Last 6 months**, **Last 12 months** or a **Custom range**.
+- Group dates by **Week** or **Month**. Weeks are offered for ranges up to two years and are the default up to 90 days; longer ranges default to months.
+- Switch between **Chart** and **Table**. Where your projects use a points estimate, a **Points** toggle sums points instead of counting tasks.
+
+### Build a custom chart
+
+**Custom chart** compares tasks by whatever you choose:
+
+- **X-axis**: status (only with a single project), group, priority, assignee, created by, label, cycle, module, estimate, project, or a date: created, completed, start or due. Cycle, module and estimate appear only when a project in scope uses them, and project only when several projects are in scope.
+- **Metric**: **Tasks**, or **Estimate points** where available.
+- **Segment**: split each bar by a second category. Dates can only be on the X-axis.
+- **Options**: **Show tasks with no value**, **Sort by value** and **Count sub-tasks**.
+
+The filters above also apply to the chart. The chart has its own table and **Export CSV** button.
+
+### Breakdown
+
+**Breakdown** is a table with one row per **Group rows by** choice (project, assignee, label, priority, cycle, module or created by), a column per workflow group, a **Progress** bar and a **Total** row. Click a column header to sort.
+
+## Cycles
+
+The **Cycles** tab shows the number of current, upcoming and draft cycles, and cycles completed in the last 180 days. A **Velocity** chart compares completed with committed work for the last 12 completed cycles. It needs exactly one project with Cycles on, so select a single project in the workspace scope. **Avg. completed (last 3)** appears alongside it.
+
+The **Cycles** table lists each cycle with its status, dates, progress, **Done**, **Committed**, **Cancelled** and **Pending**. A cycle whose unfinished work was transferred shows **Numbers frozen at transfer**: its numbers stay as they were.
+
+## Modules
+
+The **Modules** tab lists each module that is not archived with its status, lead, target date, progress, **Done**, **Committed** and **Pending**. A module is **Overdue** when its target date has passed and it is not completed or cancelled. A tile counts the overdue ones.
+
+## Intake
+
+The **Intake** tab shows how many requests are **Open**, **Snoozed**, **Accepted**, **Declined** or **Duplicate**, and the **Median time to triage**. **Requests over time** plots **Submitted** and **Triaged** per week or month, with the same period and **Week**/**Month** controls as Tasks. **Triaged** counts a request on the day of its latest decision. With several projects in scope, a **By project** table is added. See [Review requests with Intake](/core/functional/intake).
+
+## How numbers are counted
+
+- **Totals count distinct tasks.** A task with several assignees, labels or modules counts once in each of their buckets, so the buckets can add up to more than the total. The chart says so when this applies.
+- **None buckets.** Tasks without a value fall into a bucket such as **Unassigned**, **No label**, **No cycle**, **No module**, **No estimate** or **No due date**. Turn off **Show tasks with no value** to hide it in the custom chart. A feature that is off in a project counts as none.
+- **Left out.** Archived tasks are excluded unless you choose **Show archived too** or **Only archived**. Tasks still waiting in Intake never count.
+- **Completion %** is completed tasks divided by all tasks except cancelled ones.
+- **Completed** counts the day a task was completed, and only while it is still completed. A reopened task stops counting.
+- **Points** come only from projects that have Estimates on with an active points system. Time and category estimates never add points, and other projects contribute 0.
+- **Weeks and months** follow your browser's time zone and the week start in your account preferences. Two people in different time zones can see a task land in different buckets.
+- **Top categories.** A chart shows at most 50 categories, keeping the ones with the most; a note such as "Showing the top 50 of 73 labels" says so. A segment keeps its top 5 values (8 for labels) and folds the rest into **Other**.
+
+## Export to CSV
+
+Click **Export CSV** on a table. It saves what is on screen: the current sort and translated labels, with the **Total** row last. The file is named `{workspace or project}-analytics-{section}-{date}.csv`. The export happens in your browser, so it contains only the rows and columns you see. Every field is quoted and the file is UTF-8 with a byte-order mark, so spreadsheet apps read names correctly. The toast says how many rows were exported.
+
+## Refresh
+
+Numbers are not live. Analytics reloads when you return to the page after a minute or more, and when you click **Refresh** in the header; hover over it to see when the oldest number was updated. Changes made by teammates do not appear until then.
+
+If a section says **This took too long. Narrow the filters and try again.**, narrow the filters, choose fewer projects or shorten the period, then click **Retry**. Other sections still load.
+
+## Next
+
+- [Save and share views](/core/functional/views)
+- [Plan work with cycles](/core/functional/cycles)
+- [Review requests with Intake](/core/functional/intake)

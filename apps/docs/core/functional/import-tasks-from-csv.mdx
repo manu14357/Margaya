@@ -1,0 +1,50 @@
+---
+title: Import Tasks from CSV
+description: Bring tasks in from a spreadsheet or another tool's CSV export, map its columns to Margaya fields, and review what will happen before importing
+---
+
+The CSV import turns the rows of a spreadsheet, or the CSV export of another tool, into tasks of one project. Your browser reads the file and maps its columns; Margaya then creates the tasks in batches.
+
+Moving from Jira? Its CSV export has its own import, which also brings sub-tasks, issue links and comments: see [Import from Jira](/core/functional/import-from-jira).
+
+## Import a CSV file
+
+1. Open **Settings** > **Projects** > your project > **General**.
+2. In **Tasks import/export**, choose **Import** and pick a `.csv` file (at most 5 MB and 5,000 rows).
+3. Check the detected **delimiter** (comma, semicolon or tab) and whether the **first row contains column names**.
+4. **Map columns**: for each Margaya field, pick the CSV column to read it from, or **Don't import**. Columns are matched by their header names automatically; **Title** is required.
+5. **Review** what will happen: how many tasks will be imported, how many rows are skipped because they have no title, and which values don't match anything in the project (for example a status that isn't a column, or a person who isn't a workspace member).
+6. Choose **Import**. A progress bar follows the batches, and the result lists any tasks that failed or were imported with warnings, with their row numbers.
+
+## Fields you can map
+
+| Field | Accepted values |
+|---|---|
+| Title | Any text. Rows without a title are skipped. |
+| Description | Any text. |
+| Status | A column of the project, by its name or slug. Anything else puts the task in the **Backlog**. |
+| Priority | urgent, high, medium, low or no priority. |
+| Assignees | Workspace members by email or exact name, separated by commas or semicolons. |
+| Labels | Label names separated by commas. A label named like an existing workspace label gets its color; new labels are created. |
+| Start date, Due date | ISO dates (`2026-10-31`) or `MM/DD/YYYY` / `DD/MM/YYYY`, as chosen in Review. |
+| Estimate | A value of the project's active estimate system (when estimates are on). |
+| Cycle | A cycle that still takes tasks (when cycles are on). |
+| Modules | Active module names, separated by commas (when modules are on). |
+
+## What happens to values that don't fit
+
+A value that can't be used is left out and reported as a warning; the task is still created. For example:
+
+- a status that matches no column sends the task to the Backlog;
+- a cycle that is completed or archived is skipped;
+- a module of another project, or an archived one, is skipped;
+- an estimate is skipped when the project has estimates turned off;
+- a task can have at most 20 labels and 20 modules.
+
+## Who can import
+
+Anyone who can create tasks in the workspace (members, admins and owners by default) can import into a project.
+
+## Use the API
+
+Imports go through `POST /api/task/import/{projectId}` with a list of tasks, at most 5,000 per request and 16 MiB per body. Besides title, description, status, priority, dates and assignees, each task can carry `labels` (names, or `{ name, color }`), `cycleId`, `moduleIds` and `estimatePointId`. Each task is reported on its own with its warnings, so a partial import still answers 200. See **Import tasks** in the API reference.

@@ -1,0 +1,59 @@
+---
+title: Group Work with Modules
+description: Track a feature or larger piece of work across tasks, with a lead, members, and progress
+---
+
+A module groups the tasks for one feature or larger piece of work and tracks them through to completion, independent of your columns or cycles. Unlike cycles, a module's status is set by hand rather than derived from dates.
+
+## Turn on Modules
+
+1. Go to **Settings**.
+2. Open **Projects** and select your project.
+3. Open the **Features** tab.
+4. Turn on **Modules**.
+
+## Module status
+
+Set the status yourself as work progresses: **Backlog**, **Planned**, **In progress**, **Paused**, **Completed**, or **Cancelled**. New modules start in Backlog.
+
+## Create a module
+
+1. Open the project's **Modules** view.
+2. Click **New module**.
+3. Add a **Name** (unique within the project) and optional **Description**.
+4. Optionally set a **Start date** and **Target date**.
+5. Optionally set a **Lead** and add **Members**.
+
+The lead is not automatically added to the members list, so add them separately if they should also appear as a member.
+
+## Add tasks to a module
+
+Add existing tasks from the module page, or set a task's modules from the task itself. A task can belong to several active modules at once, and adding or removing tasks is idempotent, so repeating the same change is harmless.
+
+## Reference links
+
+Add links to related resources (specs, designs, discussions) from the module's **Links** section. Links must be http or https, each URL can only be added once, and a module can hold up to 100 links.
+
+## Track progress
+
+A module's page shows its task count, completion percentage, and a burndown/burn-up chart broken down by assignee, label, and priority. Cancelled tasks are tracked separately and never count as in-progress work.
+
+## Archive a module
+
+Only completed or cancelled modules can be archived. Archiving makes a module read-only and removes it from pickers, the default list, and favorites, until you restore it with **Unarchive**.
+
+## Permissions
+
+Working with modules needs workspace **Module** permissions (read, create, update, delete). The built-in Viewer role can only read modules; Member can create and update them; Admin and Owner can also delete them. Deleting a specific module is also allowed for the person who created it, if they have module update rights, even without the delete permission. All of this is on top of the Modules feature being turned on for the project.
+
+## Tips
+
+- Use modules for work that cuts across cycles, such as a feature that spans several sprints.
+- Give every module a lead so there's a clear point of contact even if several people are members.
+- Set a target date if the module has a real deadline; leave it empty for ongoing work.
+
+## Next
+
+- [Plan work in Cycles](/core/functional/cycles)
+- [Estimate task size](/core/functional/estimates)
+- [Turn on project features and column groups](/core/functional/project-features-and-column-groups)

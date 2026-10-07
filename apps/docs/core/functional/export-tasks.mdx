@@ -1,0 +1,55 @@
+---
+title: Export Tasks to CSV, Excel or JSON
+description: Export the tasks of some or all projects in the background, download the file for a week, and manage who holds copies
+---
+
+Exports turn the tasks of your projects into a file you can open in a spreadsheet or keep as an archive. They run in the background, so you can keep working while the file is built.
+
+## Start an export
+
+1. Open **Settings** > **Workspace** > **Exports**.
+2. Under **New export**, pick the **Projects**. Leave it on **All projects** to export every project that is not archived. Archived projects are listed separately and are only included when you pick them.
+3. Pick the **Format**: **CSV**, **Excel (.xlsx)** or **JSON**.
+4. Turn on **One file per project** to keep projects apart. Excel puts each project on its own sheet; CSV and JSON files are zipped together.
+5. Leave **Include archived tasks** on to export archived tasks too. They show when they were archived in the **Archived at** column.
+6. Select **Export**.
+
+From a project's settings (**Settings** > **Projects** > a project > **General**), the **Export** menu also starts a CSV or Excel export of that project only.
+
+You get a notification in the app when the file is ready, with a **Download** button. The **Previous exports** table shows each export's status: **Queued**, **Processing**, **Ready**, **Failed** or **Expired**.
+
+## What is exported
+
+Every task on a board of the chosen projects, in project order and then by task number. Requests still waiting in [Intake](/core/functional/intake) are not tasks yet and are left out; drafts never are tasks.
+
+| Column | Contains |
+| --- | --- |
+| **Project**, **Key**, **Number**, **Parent** | Where the task lives, its key such as WEB-12, and its parent's key |
+| **Title**, **Description** | The description as Markdown |
+| **Status**, **Status group**, **Priority** | The column name (Backlog for backlog tasks) and its group |
+| **Assignees**, **Assignee emails**, **Subscribers**, **Created by** | People, by name; emails make the file easy to import again |
+| **Start date**, **Due date**, **Completed at**, **Created at**, **Updated at**, **Archived at** | ISO 8601 times in UTC |
+| **Estimate**, **Labels**, **Cycle**, **Modules** | Empty for a project that has the feature turned off |
+| **Links**, **Relations**, **Comments** | JSON text; comments are the newest 200, newest first |
+| **Sub-tasks**, **Link count**, **Attachment count**, **Time logged (minutes)** | Counts; time is empty when time tracking is off |
+| **Custom: {field}** | One column per custom field name, at most 50 |
+
+JSON files carry the same data as structured values, with every custom field. CSV files are UTF-8 with a byte-order mark, so spreadsheets read accents correctly, and text that a spreadsheet could run as a formula is prefixed with an apostrophe.
+
+## Limits
+
+- At most **3** exports in progress per person and workspace.
+- At most **50,000** tasks per export, and 200 MB of data before compression.
+- Without object storage (S3), files are kept in the database and can be at most **25 MB**. Ask your administrator to configure storage for larger exports, or export fewer projects.
+
+## How long files are kept
+
+A file can be downloaded for **7 days** after it is ready; then it is deleted and the export shows **Expired**. The history row is removed after 90 days. Self-hosted instances can change the download window with `EXPORT_RETENTION_DAYS` (1 to 30 days).
+
+## Who can export
+
+Anyone who can read tasks can export, including **Viewers**. You see and download your own exports. Workspace **Admins** and **Owners** (the **manage settings** permission) can switch to **All exports** to see, download and delete everyone's, so they can manage who holds copies of workspace data. Deleting an export deletes its file for everyone.
+
+## Use the API
+
+Exports are available through the API with an API key that can read tasks: start one with `POST /api/task-export`, follow its status with `GET /api/task-export/{id}` (or the `EXPORT_UPDATED` message on the user WebSocket), and download the file from `GET /api/task-export/{id}/download`. See the **Exports** section of the API reference.

@@ -1,0 +1,54 @@
+---
+title: Audit Log
+description: See who changed members, roles, API keys, webhooks, integrations, settings and projects in a workspace, filter the history and export it as CSV
+---
+
+The audit log is a read-only history of administrative changes in a workspace: who did what, when, to what, and from where. Use it to review access changes, investigate an incident or answer a compliance question.
+
+<Info>
+Routine work such as editing, moving or commenting on tasks is not recorded here. That history lives in each task's activity feed.
+</Info>
+
+## Open the audit log
+
+Open **Settings** > **Workspace** > **Audit log**. You need the **View audit log** permission (`audit_log:read`). Workspace **Owners** and **Admins** have it by default; Members and Viewers do not. Admins can grant it to a custom role under **Settings** > **Workspace** > **Roles**.
+
+Each row shows:
+
+- **Time**: how long ago it happened. Hover it to see the exact date and time.
+- **Actor**: the person who acted, an API key (key icon and key name) when the change came through the API, or **System** for scheduled jobs.
+- **Action**: what happened, for example "Changed a member's role".
+- **Target**: what the action was about, by its name at the time, so entries stay readable after the target is deleted.
+
+Expand a row to see its details: the fields that changed with their values before and after, the client IP address and the browser and operating system.
+
+## What is recorded
+
+| Area | Actions |
+| --- | --- |
+| Members and invitations | Invitation sent, revoked, accepted or declined; member removed; member left; role changed |
+| Roles | Custom role created, changed (permissions added and removed) or deleted |
+| API keys | Key created or revoked. A key belongs to a person and works in every workspace they are in, so each of those workspaces records it |
+| Webhooks | Webhook created, changed, deleted, signing secret rotated |
+| Integrations | Slack, Discord, Mattermost, Telegram, GitHub, Gitea and generic webhook integrations connected, changed or disconnected |
+| Workspace settings | Workspace created; name, slug, logo, description or time zone changed; ownership transferred |
+| Projects | Project created, moved to the trash, restored, permanently deleted, archived or unarchived; features turned on or off; settings changed (including the lead and default assignee) |
+| Public boards | Board published or unpublished, link replaced, settings changed |
+| Exports and imports | Export started or downloaded; tasks imported from a file, Jira, GitHub or Gitea |
+| Trash | Tasks permanently deleted, project trash emptied (one entry per request, with the number of tasks) |
+
+## Filter and export
+
+Filter by **actor**, by **action** category and by **date** (last 24 hours, 7, 30 or 90 days). Select **Export CSV** to download the filtered entries, newest first, up to 10,000 rows per file. Narrow the date range to export older entries.
+
+The API offers the same: `GET /api/audit-log?workspaceId=…` with `actorId`, `actorType`, `action` (an action such as `member.role_changed` or a prefix such as `member`), `targetType`, `from` and `to`, paged with `cursor`; and `GET /api/audit-log/export` for CSV. API keys need the `audit_log:read` scope.
+
+## Privacy and secrets
+
+- Entries record the client IP address and user agent of the request. Behind a reverse proxy, the IP is the client address taken from `X-Forwarded-For`, trusted only from the proxies in `TRUSTED_PROXIES`.
+- Secrets are never recorded: no API key values, webhook signing secrets, OAuth or session tokens, passwords, SMTP or notification channel credentials, and no incoming-webhook URLs (they carry a token). A changed secret appears only as "Changed (value hidden)". Endpoint URLs are reduced to their host.
+- The log is append-only: nobody can edit or delete single entries. Entries are deleted with their workspace, and when they are older than the retention period.
+
+## Retention
+
+Self-hosted instances set the retention period with `AUDIT_LOG_RETENTION_DAYS` (default `365`; `0` keeps entries forever). An hourly job removes older entries, on one instance at a time. In Helm, set it through `extraEnv`. See [Environment variables](/core/installation/environment-variables) for the rest of the configuration.
