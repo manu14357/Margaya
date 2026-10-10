@@ -1,0 +1,877 @@
+@import "tailwindcss";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+
+/* The landing package lives outside this app; Tailwind must scan its classes. */
+@source "../../../packages/landing/src";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --animate-skeleton: skeleton 2s -1s infinite linear;
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-heading);
+  --font-mono: var(--font-mono);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning: var(--warning);
+  --color-success-foreground: var(--success-foreground);
+  --color-success: var(--success);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar: var(--sidebar);
+  --color-ring: var(--ring);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-input: var(--input);
+  --color-info-foreground: var(--info-foreground);
+  --color-info: var(--info);
+  --color-foreground: var(--foreground);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive: var(--destructive);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-code-foreground: var(--code-foreground);
+  --color-code-highlight: var(--code-highlight);
+  --color-code: var(--code);
+  --color-border: var(--border);
+  --color-background: var(--background);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  @keyframes skeleton {
+    to {
+      background-position: -200% 0;
+    }
+  }
+}
+
+:root {
+  --font-sans:
+    "Geist Variable",
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
+  --font-heading: var(--font-sans);
+  --font-mono:
+    "Geist Mono Variable",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Liberation Mono",
+    "Courier New",
+    monospace;
+  --radius: 0.625rem;
+  --accent: --alpha(var(--color-black) / 4%);
+  --accent-foreground: var(--color-neutral-800);
+  --background: var(--color-white);
+  --border: --alpha(var(--color-black) / 8%);
+  --card: var(--color-white);
+  --card-foreground: var(--color-neutral-800);
+  --destructive: var(--color-red-500);
+  --destructive-foreground: var(--color-red-700);
+  --foreground: var(--color-neutral-800);
+  --info: var(--color-blue-500);
+  --info-foreground: var(--color-blue-700);
+  --input: --alpha(var(--color-black) / 10%);
+  --muted: --alpha(var(--color-black) / 4%);
+  --muted-foreground: color-mix(in srgb, var(--color-neutral-500) 90%, var(--color-black));
+  --popover: var(--color-white);
+  --popover-foreground: var(--color-neutral-800);
+  --primary: var(--color-neutral-800);
+  --primary-foreground: var(--color-neutral-50);
+  --ring: var(--color-neutral-400);
+  --secondary: --alpha(var(--color-black) / 4%);
+  --secondary-foreground: var(--color-neutral-800);
+  --success: var(--color-emerald-500);
+  --success-foreground: var(--color-emerald-700);
+  --warning: var(--color-amber-500);
+  --warning-foreground: var(--color-amber-700);
+  --chart-1: var(--color-orange-600);
+  --chart-2: var(--color-teal-600);
+  --chart-3: var(--color-cyan-900);
+  --chart-4: var(--color-amber-400);
+  --chart-5: var(--color-amber-500);
+  --sidebar: var(--color-neutral-50);
+  --sidebar-foreground: color-mix(
+    in srgb,
+    var(--color-neutral-800) 64%,
+    var(--sidebar)
+  );
+  --sidebar-primary: var(--color-neutral-800);
+  --sidebar-primary-foreground: var(--color-neutral-50);
+  --sidebar-accent: --alpha(var(--color-black) / 4%);
+  --sidebar-accent-foreground: var(--color-neutral-800);
+  --sidebar-border: --alpha(var(--color-black) / 6%);
+  --sidebar-ring: var(--color-neutral-400);
+  --code: var(--color-white);
+  --code-foreground: var(--foreground);
+  --code-highlight: --alpha(var(--color-black) / 4%);
+}
+
+.dark {
+  --accent: --alpha(var(--color-white) / 4%);
+  --accent-foreground: var(--color-neutral-100);
+  --background: color-mix(
+    in srgb,
+    var(--color-neutral-950) 96%,
+    var(--color-white)
+  );
+  --border: --alpha(var(--color-white) / 6%);
+  --card: color-mix(in srgb, var(--background) 98%, var(--color-white));
+  --card-foreground: var(--color-neutral-100);
+  --destructive: color-mix(in srgb, var(--color-red-500) 90%, var(--color-white));
+  --destructive-foreground: var(--color-red-400);
+  --foreground: var(--color-neutral-100);
+  --info: var(--color-blue-500);
+  --info-foreground: var(--color-blue-400);
+  --input: --alpha(var(--color-white) / 8%);
+  --muted: --alpha(var(--color-white) / 4%);
+  --muted-foreground: color-mix(in srgb, var(--color-neutral-500) 90%, var(--color-white));
+  --popover: color-mix(in srgb, var(--background) 98%, var(--color-white));
+  --popover-foreground: var(--color-neutral-100);
+  --primary: var(--color-neutral-100);
+  --primary-foreground: var(--color-neutral-800);
+  --ring: var(--color-neutral-500);
+  --secondary: --alpha(var(--color-white) / 4%);
+  --secondary-foreground: var(--color-neutral-100);
+  --success: var(--color-emerald-500);
+  --success-foreground: var(--color-emerald-400);
+  --warning: var(--color-amber-500);
+  --warning-foreground: var(--color-amber-400);
+  --chart-1: var(--color-blue-700);
+  --chart-2: var(--color-emerald-500);
+  --chart-3: var(--color-amber-500);
+  --chart-4: var(--color-purple-500);
+  --chart-5: var(--color-rose-500);
+  --sidebar: color-mix(
+    in srgb,
+    var(--color-neutral-950) 97%,
+    var(--color-white)
+  );
+  --sidebar-foreground: color-mix(
+    in srgb,
+    var(--color-neutral-100) 64%,
+    var(--sidebar)
+  );
+  --sidebar-primary: var(--color-neutral-100);
+  --sidebar-primary-foreground: var(--color-neutral-800);
+  --sidebar-accent: --alpha(var(--color-white) / 4%);
+  --sidebar-accent-foreground: var(--color-neutral-100);
+  --sidebar-border: --alpha(var(--color-white) / 5%);
+  --sidebar-ring: var(--color-neutral-400);
+  --code: color-mix(in srgb, var(--background) 98%, var(--color-white));
+  --code-foreground: var(--foreground);
+  --code-highlight: --alpha(var(--color-white) / 4%);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  .blocknote-transparent .bn-container {
+    --bn-font-family: var(--font-sans);
+    --bn-border-radius: var(--radius);
+    --bn-colors-menu-background: var(--popover);
+    --bn-colors-menu-text: var(--popover-foreground);
+    --bn-colors-hovered-background: var(--accent);
+    --bn-colors-hovered-text: var(--accent-foreground);
+    --bn-colors-selected-background: var(--accent);
+    --bn-colors-selected-text: var(--accent-foreground);
+    --bn-colors-border: var(--border);
+    --bn-colors-shadow: --alpha(var(--color-black) / 12%);
+  }
+
+  .blocknote-transparent .bn-suggestion-menu {
+    min-width: 18rem;
+    max-width: 28rem;
+    max-height: min(24rem, 60vh);
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--popover);
+    color: var(--popover-foreground);
+    box-shadow:
+      0 8px 24px --alpha(var(--color-black) / 10%),
+      0 1px 2px --alpha(var(--color-black) / 8%);
+    padding: 0.25rem;
+  }
+
+  .blocknote-transparent .bn-suggestion-menu-loader {
+    color: var(--muted-foreground);
+    font-size: 0.8125rem;
+    padding: 0.5rem;
+  }
+
+  .margaya-slash-menu {
+    min-width: 17rem;
+    max-width: 22rem;
+    max-height: min(20rem, 56vh);
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--popover);
+    color: var(--popover-foreground);
+    box-shadow:
+      0 8px 24px --alpha(var(--color-black) / 10%),
+      0 1px 2px --alpha(var(--color-black) / 8%);
+    padding: 0.25rem;
+  }
+
+  .margaya-slash-menu-label {
+    color: var(--muted-foreground);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.375rem 0.5rem 0.25rem;
+  }
+
+  .margaya-slash-menu-item {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    width: 100%;
+    height: 2rem;
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    padding: 0 0.5rem;
+    border-radius: calc(var(--radius) - 4px);
+    color: var(--popover-foreground);
+    text-align: left;
+    transition: background-color 0.12s ease;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .margaya-slash-menu-item:hover,
+  .margaya-slash-menu-item.is-selected {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  .margaya-slash-menu-icon {
+    width: 1.125rem;
+    min-width: 1.125rem;
+    height: 1.125rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.85;
+    color: var(--muted-foreground);
+  }
+
+  .margaya-slash-menu-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .margaya-slash-menu-shortcut {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.25rem;
+    padding: 0 0.375rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--input);
+    background: var(--muted);
+    color: var(--muted-foreground);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .margaya-slash-menu-item.is-selected .margaya-slash-menu-shortcut {
+    color: color-mix(in srgb, var(--accent-foreground) 72%, transparent);
+  }
+
+  .dark .blocknote-transparent .bn-container {
+    --bn-colors-shadow: --alpha(var(--color-black) / 44%);
+  }
+}
+
+@layer components {
+  /* Rendered markdown for blog posts. Scoped so it never leaks into the app UI. */
+  .blog-prose {
+    @apply text-[1.0625rem] text-foreground/80 leading-[1.75];
+  }
+
+  .blog-prose > *:first-child {
+    @apply mt-0;
+  }
+
+  .blog-prose p {
+    @apply mt-5;
+  }
+
+  .blog-prose h2 {
+    @apply mt-14 scroll-mt-24 text-balance font-medium text-2xl text-foreground leading-tight md:text-3xl;
+  }
+
+  .blog-prose h3 {
+    @apply mt-10 scroll-mt-24 text-balance font-medium text-foreground text-lg leading-snug md:text-xl;
+  }
+
+  .blog-prose h4 {
+    @apply mt-8 scroll-mt-24 font-medium text-base text-foreground;
+  }
+
+  .blog-prose h2 + p,
+  .blog-prose h3 + p,
+  .blog-prose h4 + p {
+    @apply mt-4;
+  }
+
+  .blog-prose a {
+    @apply text-foreground underline decoration-border underline-offset-4 transition-colors hover:decoration-current;
+  }
+
+  .blog-prose strong {
+    @apply font-medium text-foreground;
+  }
+
+  .blog-prose ul,
+  .blog-prose ol {
+    @apply mt-5 space-y-2 pl-5;
+  }
+
+  .blog-prose ul {
+    @apply list-disc;
+  }
+
+  .blog-prose ol {
+    @apply list-decimal;
+  }
+
+  .blog-prose li::marker {
+    @apply text-foreground/35;
+  }
+
+  .blog-prose li > ul,
+  .blog-prose li > ol {
+    @apply mt-2;
+  }
+
+  .blog-prose blockquote {
+    @apply mt-6 border-border border-l-2 pl-5 text-foreground/65;
+  }
+
+  .blog-prose blockquote p {
+    @apply mt-3 first:mt-0;
+  }
+
+  .blog-prose code {
+    @apply rounded-md border border-border/70 bg-muted px-1.5 py-0.5 font-mono text-[0.8125em] text-foreground;
+  }
+
+  .blog-prose pre {
+    @apply mt-6 overflow-x-auto rounded-xl border border-border/70 bg-card p-4 text-sm leading-relaxed;
+  }
+
+  .blog-prose pre code {
+    @apply border-0 bg-transparent p-0 text-[0.875rem];
+  }
+
+  .blog-prose-table {
+    @apply mt-8 overflow-x-auto rounded-xl border border-border/70;
+  }
+
+  .blog-prose table {
+    @apply w-full border-collapse text-left text-sm;
+  }
+
+  .blog-prose th,
+  .blog-prose td {
+    @apply border-border/70 border-b px-4 py-3 align-top;
+  }
+
+  .blog-prose thead th {
+    @apply bg-muted/50 font-medium text-foreground;
+  }
+
+  .blog-prose tbody tr:last-child th,
+  .blog-prose tbody tr:last-child td {
+    @apply border-b-0;
+  }
+
+  .blog-prose hr {
+    @apply my-12 border-border/70;
+  }
+
+  .blog-prose img {
+    @apply mt-8 w-full rounded-xl border border-border/70;
+  }
+
+  .blog-prose figcaption {
+    @apply mt-3 text-center text-foreground/50 text-sm;
+  }
+}
+
+@layer components {
+  /* Documentation (/docs): chrome, rendered MDX and the API reference. */
+  .docs-sidebar {
+    @apply hidden;
+  }
+
+  .docs-sidebar[data-open="true"] {
+    @apply block border-b;
+  }
+
+  @media (min-width: 64rem) {
+    .docs-sidebar {
+      @apply block border-b-0;
+    }
+
+    .docs-sidebar-scroll {
+      @apply sticky top-16 max-h-[calc(100dvh-4rem)] overflow-y-auto;
+    }
+  }
+
+  .docs-sidebar-scroll {
+    @apply space-y-6 px-4 py-6 md:px-6;
+  }
+
+  .docs-nav-heading {
+    @apply mb-2 font-medium text-foreground text-sm;
+  }
+
+  .docs-sidebar-compact {
+    @apply space-y-1;
+  }
+
+  .docs-sidebar-compact > .docs-nav-group {
+    @apply py-3;
+  }
+
+  .docs-nav-group-link {
+    @apply block rounded-md py-1 text-muted-foreground text-sm transition-colors hover:text-foreground;
+  }
+
+  .docs-nav-list {
+    @apply space-y-0.5 border-l;
+  }
+
+  .docs-nav-link {
+    @apply -ml-px flex items-center gap-2 border-transparent border-l py-1 pr-2 pl-3 text-muted-foreground text-sm transition-colors hover:border-foreground/40 hover:text-foreground;
+  }
+
+  .docs-nav-link[aria-current="page"] {
+    @apply border-foreground font-medium text-foreground;
+  }
+
+  .docs-tab {
+    @apply rounded-md px-3 py-1.5 font-medium text-muted-foreground text-sm transition-colors hover:text-foreground;
+  }
+
+  .docs-tab[aria-current="true"] {
+    @apply bg-accent text-foreground;
+  }
+
+  .docs-toc {
+    @apply sticky top-16 max-h-[calc(100dvh-4rem)] self-start overflow-y-auto px-6 py-12;
+  }
+
+  .docs-pager-link {
+    @apply flex flex-col gap-1 rounded-lg border px-4 py-3 text-sm transition-colors hover:border-foreground/30;
+  }
+
+  .docs-prose {
+    @apply text-[0.9375rem] text-foreground/85 leading-7;
+  }
+
+  .docs-prose > *:first-child {
+    @apply mt-0;
+  }
+
+  .docs-prose p,
+  .docs-prose ul,
+  .docs-prose ol,
+  .docs-prose blockquote {
+    @apply mt-4;
+  }
+
+  .docs-prose h2,
+  .docs-operation h2 {
+    @apply mt-12 scroll-mt-24 font-semibold text-foreground text-xl tracking-tight;
+  }
+
+  .docs-prose h3 {
+    @apply mt-8 scroll-mt-24 font-semibold text-base text-foreground;
+  }
+
+  .docs-prose h4 {
+    @apply mt-6 scroll-mt-24 font-semibold text-foreground text-sm;
+  }
+
+  .docs-prose a {
+    @apply text-foreground underline decoration-foreground/30 underline-offset-4 transition-colors hover:decoration-current;
+  }
+
+  .docs-prose strong {
+    @apply font-semibold text-foreground;
+  }
+
+  .docs-prose ul,
+  .docs-prose ol {
+    @apply space-y-1.5 pl-5;
+  }
+
+  .docs-prose ul {
+    @apply list-disc;
+  }
+
+  .docs-prose ol {
+    @apply list-decimal;
+  }
+
+  .docs-prose li::marker {
+    @apply text-foreground/40;
+  }
+
+  .docs-prose li > ul,
+  .docs-prose li > ol {
+    @apply mt-1.5;
+  }
+
+  .docs-prose blockquote {
+    @apply border-border border-l-2 pl-4 text-foreground/70;
+  }
+
+  .docs-prose code,
+  .docs-operation code {
+    @apply rounded border border-border/70 bg-muted px-1 py-0.5 font-mono text-[0.8125em] text-foreground;
+  }
+
+  .docs-code {
+    @apply mt-5 overflow-hidden rounded-lg border bg-card;
+  }
+
+  .docs-code-header {
+    @apply border-b bg-muted/60 px-4 py-1.5 font-mono text-muted-foreground text-xs;
+  }
+
+  .docs-code pre {
+    @apply overflow-x-auto p-4 text-[0.8125rem] leading-relaxed;
+  }
+
+  .docs-prose .docs-code code,
+  .docs-operation .docs-code code {
+    @apply border-0 bg-transparent p-0 text-[0.8125rem];
+  }
+
+  .docs-table {
+    @apply mt-5 overflow-x-auto rounded-lg border;
+  }
+
+  .docs-prose table {
+    @apply w-full border-collapse text-left text-sm;
+  }
+
+  .docs-prose th,
+  .docs-prose td {
+    @apply border-b px-3 py-2 align-top;
+  }
+
+  .docs-prose thead th {
+    @apply bg-muted/50 font-medium text-foreground;
+  }
+
+  .docs-prose tbody tr:last-child td {
+    @apply border-b-0;
+  }
+
+  .docs-prose hr {
+    @apply my-10;
+  }
+
+  .docs-prose img {
+    @apply mt-5 rounded-lg border;
+  }
+
+  .docs-callout {
+    @apply mt-5 rounded-lg border border-l-4 px-4 py-3 text-sm leading-6;
+  }
+
+  .docs-callout > *:first-child {
+    @apply mt-0;
+  }
+
+  .docs-callout p {
+    @apply mt-2;
+  }
+
+  .docs-callout-note,
+  .docs-callout-info {
+    @apply border-info/40 bg-info/5;
+  }
+
+  .docs-callout-tip,
+  .docs-callout-check {
+    @apply border-success/40 bg-success/5;
+  }
+
+  .docs-callout-warning,
+  .docs-callout-danger {
+    @apply border-warning/50 bg-warning/5;
+  }
+
+  .docs-steps {
+    counter-reset: docs-step;
+    @apply mt-6 list-none space-y-6 pl-0;
+  }
+
+  .docs-prose .docs-steps {
+    @apply list-none pl-0;
+  }
+
+  .docs-step {
+    counter-increment: docs-step;
+    @apply relative ml-3 border-l pb-1 pl-8;
+  }
+
+  .docs-step::before {
+    content: counter(docs-step);
+    @apply absolute -left-3 top-0 flex size-6 items-center justify-center rounded-full border bg-background font-medium text-foreground text-xs;
+  }
+
+  .docs-step > *:first-child {
+    @apply mt-0;
+  }
+
+  .docs-step-title {
+    @apply scroll-mt-24 font-semibold text-foreground;
+  }
+
+  .docs-card-group {
+    @apply mt-5 grid gap-4 sm:grid-cols-2;
+  }
+
+  .docs-card {
+    @apply relative mt-5 rounded-lg border p-4 text-sm transition-colors hover:border-foreground/30;
+  }
+
+  .docs-card-group > .docs-card {
+    @apply mt-0;
+  }
+
+  .docs-card > p {
+    @apply mt-1.5 text-muted-foreground;
+  }
+
+  .docs-card > p.docs-card-title {
+    @apply mt-0 font-semibold text-base text-foreground;
+  }
+
+  .docs-prose .docs-card-link {
+    @apply no-underline;
+  }
+
+  .docs-card-link::after {
+    content: "";
+    @apply absolute inset-0 rounded-lg;
+  }
+
+  .docs-accordion {
+    @apply mt-4 rounded-lg border px-4 py-2;
+  }
+
+  .docs-accordion > summary {
+    @apply cursor-pointer font-medium text-foreground;
+  }
+
+  .docs-method {
+    @apply inline-flex shrink-0 items-center justify-center rounded-md px-2 py-0.5 font-mono font-semibold text-xs;
+  }
+
+  .docs-method-small {
+    @apply w-12 px-0 py-0 text-[0.625rem] leading-4;
+  }
+
+  .docs-method-get {
+    @apply bg-emerald-500/12 text-emerald-700 dark:text-emerald-400;
+  }
+
+  .docs-method-post {
+    @apply bg-blue-500/12 text-blue-700 dark:text-blue-400;
+  }
+
+  .docs-method-put {
+    @apply bg-amber-500/15 text-amber-700 dark:text-amber-400;
+  }
+
+  .docs-method-patch {
+    @apply bg-violet-500/12 text-violet-700 dark:text-violet-400;
+  }
+
+  .docs-method-delete {
+    @apply bg-red-500/12 text-red-700 dark:text-red-400;
+  }
+
+  .docs-endpoint {
+    @apply mt-6 flex flex-wrap items-center gap-3 rounded-lg border bg-card px-3 py-2.5;
+  }
+
+  .docs-endpoint-path {
+    @apply break-all font-mono text-foreground text-sm;
+  }
+
+  .docs-operation section > h2 {
+    @apply mb-3;
+  }
+
+  .docs-fields {
+    @apply divide-y border-y;
+  }
+
+  .docs-field {
+    @apply py-3;
+  }
+
+  .docs-field-head {
+    @apply flex flex-wrap items-center gap-x-2 gap-y-1 text-xs;
+  }
+
+  .docs-operation code.docs-field-name {
+    @apply border-0 bg-transparent p-0 font-semibold text-foreground text-sm;
+  }
+
+  .docs-field-type {
+    @apply font-mono text-muted-foreground;
+  }
+
+  .docs-field-required {
+    @apply rounded bg-red-500/10 px-1.5 py-0.5 font-medium text-red-700 dark:text-red-400;
+  }
+
+  .docs-field-meta {
+    @apply rounded bg-muted px-1.5 py-0.5 text-muted-foreground text-xs;
+  }
+
+  .docs-field-description,
+  .docs-field-values,
+  .docs-schema-note {
+    @apply mt-1.5 text-foreground/80 text-sm leading-6;
+  }
+
+  .docs-field-description a {
+    @apply underline underline-offset-4;
+  }
+
+  .docs-field-children {
+    @apply mt-2 rounded-lg border px-3 py-1.5;
+  }
+
+  .docs-field-children > summary {
+    @apply cursor-pointer text-muted-foreground text-xs hover:text-foreground;
+  }
+
+  .docs-field-children[open] > summary {
+    @apply mb-1;
+  }
+
+  .docs-field-children .docs-fields {
+    @apply border-b-0;
+  }
+
+  .docs-field-variant {
+    @apply mt-3;
+  }
+
+  .docs-field-variant-title {
+    @apply font-medium text-foreground text-xs;
+  }
+
+  .docs-field-variant-title > span {
+    @apply font-mono text-muted-foreground;
+  }
+
+  .docs-responses {
+    @apply divide-y border-y;
+  }
+
+  .docs-response {
+    @apply py-3;
+  }
+
+  .docs-response-head {
+    @apply flex items-start gap-3 text-foreground/85 text-sm;
+  }
+
+  .docs-status {
+    @apply shrink-0 rounded px-1.5 py-0.5 font-mono font-semibold text-xs;
+  }
+
+  .docs-status-2xx {
+    @apply bg-emerald-500/12 text-emerald-700 dark:text-emerald-400;
+  }
+
+  .docs-status-3xx {
+    @apply bg-blue-500/12 text-blue-700 dark:text-blue-400;
+  }
+
+  .docs-status-4xx,
+  .docs-status-5xx {
+    @apply bg-red-500/10 text-red-700 dark:text-red-400;
+  }
+
+  .docs-search-dialog {
+    @apply mx-auto mt-[10vh] w-[min(40rem,calc(100vw-2rem))] max-w-none overflow-hidden rounded-xl border bg-popover p-0 text-popover-foreground shadow-2xl;
+  }
+
+  .docs-search-dialog::backdrop {
+    @apply bg-black/40;
+  }
+
+  .docs-search-result {
+    @apply block rounded-md px-3 py-2;
+  }
+
+  .docs-search-result[aria-selected="true"] {
+    @apply bg-accent;
+  }
+}
