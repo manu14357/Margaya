@@ -1,0 +1,209 @@
+{
+	"description": "Real Margaya UI with fictional Studio North project data, captured by apps/site/scripts/press/capture.mjs.",
+	"viewport": {
+		"width": 1728,
+		"height": 1000
+	},
+	"deviceScaleFactor": 2,
+	"date": "2026-10-15T07:53:55.966Z",
+	"screenshots": [
+		{
+			"file": "board-light.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "light",
+			"view": "board",
+			"title": "Board",
+			"description": "Tasks moving across workflow columns."
+		},
+		{
+			"file": "board-dark.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "dark",
+			"view": "board",
+			"title": "Board",
+			"description": "Tasks moving across workflow columns."
+		},
+		{
+			"file": "list-light.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "light",
+			"view": "list",
+			"title": "List",
+			"description": "Every task grouped by status in a dense list."
+		},
+		{
+			"file": "list-dark.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "dark",
+			"view": "list",
+			"title": "List",
+			"description": "Every task grouped by status in a dense list."
+		},
+		{
+			"file": "spreadsheet-light.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "light",
+			"view": "spreadsheet",
+			"title": "Spreadsheet",
+			"description": "Edit task fields inline, like a sheet."
+		},
+		{
+			"file": "spreadsheet-dark.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "dark",
+			"view": "spreadsheet",
+			"title": "Spreadsheet",
+			"description": "Edit task fields inline, like a sheet."
+		},
+		{
+			"file": "calendar-light.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "light",
+			"view": "calendar",
+			"title": "Calendar",
+			"description": "Start and due dates on a month calendar."
+		},
+		{
+			"file": "calendar-dark.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "dark",
+			"view": "calendar",
+			"title": "Calendar",
+			"description": "Start and due dates on a month calendar."
+		},
+		{
+			"file": "gantt-light.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "light",
+			"view": "gantt",
+			"title": "Gantt",
+			"description": "Schedules and dependencies on a timeline."
+		},
+		{
+			"file": "gantt-dark.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "dark",
+			"view": "gantt",
+			"title": "Gantt",
+			"description": "Schedules and dependencies on a timeline."
+		},
+		{
+			"file": "task-light.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "light",
+			"view": "task",
+			"title": "Task",
+			"description": "Task details, sub-tasks and discussion."
+		},
+		{
+			"file": "task-dark.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "dark",
+			"view": "task",
+			"title": "Task",
+			"description": "Task details, sub-tasks and discussion."
+		},
+		{
+			"file": "page-light.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "light",
+			"view": "page",
+			"title": "Page",
+			"description": "Project documents in the block editor."
+		},
+		{
+			"file": "page-dark.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "dark",
+			"view": "page",
+			"title": "Page",
+			"description": "Project documents in the block editor."
+		},
+		{
+			"file": "cycles-light.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "light",
+			"view": "cycles",
+			"title": "Cycles",
+			"description": "A sprint with its burndown and progress."
+		},
+		{
+			"file": "cycles-dark.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "dark",
+			"view": "cycles",
+			"title": "Cycles",
+			"description": "A sprint with its burndown and progress."
+		},
+		{
+			"file": "analytics-light.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "light",
+			"view": "analytics",
+			"title": "Analytics",
+			"description": "Workload and progress across the workspace."
+		},
+		{
+			"file": "analytics-dark.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "dark",
+			"view": "analytics",
+			"title": "Analytics",
+			"description": "Workload and progress across the workspace."
+		},
+		{
+			"file": "inbox-light.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "light",
+			"view": "inbox",
+			"title": "Inbox",
+			"description": "Mentions, assignments and updates in one place."
+		},
+		{
+			"file": "inbox-dark.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "dark",
+			"view": "inbox",
+			"title": "Inbox",
+			"description": "Mentions, assignments and updates in one place."
+		},
+		{
+			"file": "home-light.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "light",
+			"view": "home",
+			"title": "Home",
+			"description": "A personal overview of the workspace."
+		},
+		{
+			"file": "home-dark.png",
+			"width": 3456,
+			"height": 2000,
+			"theme": "dark",
+			"view": "home",
+			"title": "Home",
+			"description": "A personal overview of the workspace."
+		}
+	]
+}
