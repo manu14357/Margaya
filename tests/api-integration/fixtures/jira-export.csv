@@ -1,0 +1,14 @@
+Summary,Issue key,Issue id,Parent id,Issue Type,Status,Status Category,Priority,Assignee,Assignee Id,Reporter,Reporter Id,Created,Updated,Due date,Labels,Labels,Description,Custom field (Story Points),Sprint,Sprint,Component/s,Component/s,Comment,Comment,Attachment,Outward issue link (Blocks),Inward issue link (Blocks),Outward issue link (Relates),Outward issue link (Duplicate)
+Checkout redesign,WEB-1,10001,,Story,In Progress,In Progress,Highest,ben@example.test,acc-ben,Ben Builder,acc-ben,02/Jan/24 9:15 AM,05/Jan/24 4:30 PM,31/Jan/24 12:00 AM,frontend,checkout,"h2. Goal
+Make *checkout* faster.
+
+# Measure
+# Ship {{v2}}
+
+See [the spec|https://docs.example.test/checkout].",5,Sprint 1,Sprint 2,Web,API,"03/Jan/24 10:00 AM;acc-ben;Started on the _layout_.","04/Jan/24 11:30 AM;acc-grace;Please keep the old flow; we need it.","02/Jan/24 9:20 AM;acc-ben;mockup.png;https://jira.example.test/secure/attachment/1/mockup.png",WEB-3,,WEB-4,
+Payment step,WEB-2,10002,10001,Sub-task,To Do,To Do,Medium,Grace Ghost,acc-grace,Grace Ghost,acc-grace,03/Jan/24 8:00 AM,03/Jan/24 8:00 AM,,,,"Split the payment form.",,Sprint 2,,Web,,"06/Jan/24 2:00 PM;acc-grace;Line one
+line two",,,,,,
+Totals are wrong,WEB-3,10003,,Bug,Done,Done,Low,,,Ben Builder,acc-ben,20/Dec/23 3:00 PM,22/Dec/23 10:00 AM,,regression,,"||Case||Expected||
+|1 item|*10*|",,,,,,,,,,WEB-1,,
+Totals wrong again,WEB-4,10004,,Task,Selected for Development,To Do,Lowest,,,Ben Builder,acc-ben,21/Dec/23 9:00 AM,21/Dec/23 9:00 AM,,,,,,,,,,,,,,,,WEB-3
+,WEB-5,10005,,Task,To Do,To Do,Low,,,,,21/Dec/23 9:00 AM,21/Dec/23 9:00 AM,,,,,,,,,,,,,,,,
