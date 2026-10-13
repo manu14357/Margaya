@@ -1,0 +1,24 @@
+{
+  "name": "@margaya/e2e",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "report": "playwright show-report",
+    "seed": "tsx scripts/seed.ts",
+    "seed:e2e": "tsx scripts/seed.ts --target e2e",
+    "db:reset": "tsx scripts/reset-database.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "^26.1.2",
+    "@types/pg": "^8.20.4",
+    "pg": "^8.22.0",
+    "tsx": "^4.23.9",
+    "typescript": "^7.0.2"
+  }
+}
