@@ -1,0 +1,71 @@
+name: Validate Helm chart
+
+on:
+  workflow_call:
+
+env:
+  CHART_PATH: charts/margaya
+
+jobs:
+  validate:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: default
+            args: >-
+              --set margaya.env.authSecret=secure-auth-secret-at-least-32-characters
+          - name: ingress
+            args: >-
+              --set ingress.enabled=true
+              --set margaya.env.authSecret=secure-auth-secret-at-least-32-characters
+              --set postgresql.auth.password=secure-db-password
+          - name: gateway
+            args: >-
+              --set gateway.enabled=true
+              --set gateway.parentRefs[0].name=gateway
+              --set margaya.env.authSecret=secure-auth-secret-at-least-32-characters
+              --set postgresql.auth.password=secure-db-password
+          - name: autoscaling
+            args: >-
+              --set autoscaling.enabled=true
+              --set margaya.resources.requests.cpu=100m
+              --set margaya.env.authSecret=secure-auth-secret-at-least-32-characters
+          - name: external-database
+            args: >-
+              --set postgresql.enabled=false
+              --set margaya.env.database.external.enabled=true
+              --set margaya.env.database.external.host=db.example.com
+              --set margaya.env.database.external.password=secure-db-password
+              --set margaya.env.authSecret=secure-auth-secret-at-least-32-characters
+          - name: redis-and-s3
+            args: >-
+              --set replicaCount=3
+              --set margaya.env.redis.existingSecret.name=margaya-redis
+              --set margaya.env.s3.endpoint=https://files.example.com
+              --set margaya.env.s3.bucket=margaya-uploads
+              --set margaya.env.s3.existingSecret.name=margaya-s3
+              --set margaya.env.authSecret=secure-auth-secret-at-least-32-characters
+          - name: bundled-postgresql-secret
+            args: >-
+              --set postgresql.auth.existingSecret=margaya-secrets
+              --set margaya.env.authSecret=secure-auth-secret-at-least-32-characters
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Helm
+        uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5
+
+      - name: Lint chart
+        run: helm lint "$CHART_PATH" --set margaya.env.clientUrl=https://margaya.example.com ${{ matrix.args }}
+
+      - name: Render chart (${{ matrix.name }})
+        run: helm template margaya "$CHART_PATH" --set margaya.env.clientUrl=https://margaya.example.com ${{ matrix.args }}
