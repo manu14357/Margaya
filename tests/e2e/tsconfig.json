@@ -1,0 +1,13 @@
+{
+  "extends": "../../packages/typescript-config/base.json",
+  "compilerOptions": {
+    "declaration": false,
+    "declarationMap": false,
+    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "types": ["node"]
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "playwright-report", "test-results", ".auth"]
+}

@@ -1,0 +1,2 @@
+Margaya e2e attachment fixture.
+A small plain-text file used by the task attachment spec.
