@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Margaya Documentation
+    url: https://margaya.app/docs/core
+    about: Check our documentation for answers to common questions
+  - name: Ask a question
+    url: https://github.com/manu14357/Margaya/discussions
+    about: Ask questions and get help from the community in GitHub Discussions
+  - name: Report a security vulnerability
+    url: https://github.com/manu14357/Margaya/security/advisories/new
+    about: Report security issues privately, never in a public issue
