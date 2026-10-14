@@ -1,0 +1,30 @@
+apiVersion: v2
+name: margaya
+description: Margaya - All you need. Nothing you don't. Open source project management that works for you.
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - project-management
+  - kanban
+  - task-management
+  - productivity
+  - collaboration
+home: https://margaya.app
+sources:
+  - https://github.com/manu14357/Margaya
+icon: https://raw.githubusercontent.com/manu14357/Margaya/main/apps/web/public/web-app-manifest-512x512.png
+maintainers:
+  - name: Margaya Team
+    url: https://github.com/manu14357
+    email: info@margaya.app
+annotations:
+  artifacthub.io/license: MIT
+  artifacthub.io/containsSecurityUpdates: "false"
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/features: |
+    - Simple & Fast: Minimalist interface with powerful features
+    - Self-hosted: Full control over your data
+    - Customizable: Make it yours with extensive customization options
+    - Open Source: MIT licensed
+kubeVersion: ">=1.23.0-0"

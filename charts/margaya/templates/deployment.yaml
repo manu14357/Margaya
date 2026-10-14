@@ -1,0 +1,169 @@
+{{- $corsOrigins := .Values.margaya.env.corsOrigins -}}
+{{- $corsOriginsValue := "" -}}
+{{- if kindIs "slice" $corsOrigins -}}
+  {{- $corsOriginsValue = join "," $corsOrigins -}}
+{{- else if $corsOrigins -}}
+  {{- $corsOriginsValue = $corsOrigins -}}
+{{- else if .Values.margaya.env.clientUrl -}}
+  {{- $corsOriginsValue = .Values.margaya.env.clientUrl | trim | trimSuffix "/" -}}
+{{- end }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "margaya.fullname" . }}
+  labels:
+    {{- include "margaya.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "margaya.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "margaya.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: margaya
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "margaya.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      enableServiceLinks: {{ default false .Values.enableServiceLinks }}
+      containers:
+        - name: margaya
+          securityContext:
+            {{- toYaml .Values.margaya.securityContext | nindent 12 }}
+          image: "{{ .Values.margaya.image.repository }}:{{ .Values.margaya.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.margaya.image.pullPolicy }}
+          ports:
+            - name: margaya
+              containerPort: {{ .Values.margaya.service.targetPort }}
+              protocol: TCP
+          env:
+            - name: MARGAYA_CLIENT_URL
+              value: {{ .Values.margaya.env.clientUrl | trim | trimSuffix "/" | quote }}
+            - name: CORS_ORIGINS
+              value: {{ $corsOriginsValue | quote }}
+            - name: AUTH_SECRET
+              {{- if .Values.margaya.env.existingSecret.enabled }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.margaya.env.existingSecret.name }}
+                  key: {{ .Values.margaya.env.existingSecret.key }}
+              {{- else }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "margaya.fullname" . }}-auth
+                  key: auth-secret
+              {{- end }}
+            {{- if and (not .Values.margaya.env.database.external.enabled) .Values.postgresql.auth.existingSecret }}
+            - name: MARGAYA_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgresql.auth.existingSecret }}
+                  key: {{ .Values.postgresql.auth.secretKeys.userPasswordKey }}
+            {{- end }}
+            - name: DATABASE_URL
+              {{- if .Values.margaya.env.database.external.enabled }}
+              {{- if .Values.margaya.env.database.external.existingSecret.enabled }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.margaya.env.database.external.existingSecret.name }}
+                  key: {{ .Values.margaya.env.database.external.existingSecret.passwordKey }}
+              {{- else }}
+              value: "postgresql://{{ include "margaya.urlencodeUserinfo" .Values.margaya.env.database.external.username }}:{{ include "margaya.urlencodeUserinfo" .Values.margaya.env.database.external.password }}@{{ .Values.margaya.env.database.external.host }}:{{ .Values.margaya.env.database.external.port }}/{{ .Values.margaya.env.database.external.database }}"
+              {{- end }}
+              {{- else }}
+              {{- if .Values.postgresql.auth.existingSecret }}
+              value: "postgresql://{{ include "margaya.urlencodeUserinfo" .Values.postgresql.auth.username }}:$(MARGAYA_POSTGRES_PASSWORD)@{{ include "margaya.fullname" . }}-postgresql:{{ .Values.postgresql.service.port }}/{{ .Values.postgresql.auth.database }}"
+              {{- else }}
+              value: "postgresql://{{ include "margaya.urlencodeUserinfo" .Values.postgresql.auth.username }}:{{ include "margaya.urlencodeUserinfo" .Values.postgresql.auth.password }}@{{ include "margaya.fullname" . }}-postgresql:{{ .Values.postgresql.service.port }}/{{ .Values.postgresql.auth.database }}"
+              {{- end }}
+              {{- end }}
+            - name: DISABLE_REGISTRATION
+              value: {{ .Values.margaya.env.disableRegistration | quote }}
+            - name: DISABLE_PASSWORD_REGISTRATION
+              value: {{ .Values.margaya.env.disablePasswordRegistration | quote }}
+            - name: DISABLE_EMAIL_OTP_SIGN_IN
+              value: {{ .Values.margaya.env.disableEmailOtpSignIn | quote }}
+            - name: AUTH_RATE_LIMIT_ENABLED
+              value: {{ ne (toString .Values.margaya.env.authRateLimitEnabled) "false" | quote }}
+            {{- with .Values.margaya.env.redis }}
+            {{- if .existingSecret.name }}
+            - name: REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .existingSecret.name }}
+                  key: {{ .existingSecret.key }}
+            {{- else if .url }}
+            - name: REDIS_URL
+              value: {{ .url | quote }}
+            {{- end }}
+            {{- end }}
+            {{- with .Values.margaya.env.s3 }}
+            {{- if .endpoint }}
+            - name: S3_ENDPOINT
+              value: {{ .endpoint | quote }}
+            - name: S3_BUCKET
+              value: {{ .bucket | quote }}
+            - name: S3_REGION
+              value: {{ .region | default "us-east-1" | quote }}
+            - name: S3_FORCE_PATH_STYLE
+              value: {{ .forcePathStyle | toString | quote }}
+            {{- with .keyPrefix }}
+            - name: S3_KEY_PREFIX
+              value: {{ . | quote }}
+            {{- end }}
+            {{- if .existingSecret.name }}
+            - name: S3_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .existingSecret.name }}
+                  key: {{ .existingSecret.accessKeyIdKey }}
+            - name: S3_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .existingSecret.name }}
+                  key: {{ .existingSecret.secretAccessKeyKey }}
+            {{- end }}
+            {{- end }}
+            {{- end }}
+            {{- with .Values.margaya.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- with .Values.margaya.extraEnvFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          livenessProbe:
+            {{- toYaml .Values.margaya.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.margaya.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.margaya.resources | nindent 12 }}
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

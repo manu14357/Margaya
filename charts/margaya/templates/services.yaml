@@ -1,0 +1,40 @@
+# Margaya Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "margaya.fullname" . }}-margaya
+  labels:
+    {{- include "margaya.labels" . | nindent 4 }}
+    app.kubernetes.io/component: margaya
+spec:
+  type: {{ .Values.margaya.service.type }}
+  ports:
+    - port: {{ .Values.margaya.service.port }}
+      targetPort: margaya
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "margaya.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: margaya
+
+{{- if .Values.postgresql.enabled }}
+---
+# PostgreSQL Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "margaya.fullname" . }}-postgresql
+  labels:
+    {{- include "margaya.labels" . | nindent 4 }}
+    app.kubernetes.io/component: postgresql
+spec:
+  type: {{ .Values.postgresql.service.type }}
+  ports:
+    - port: {{ .Values.postgresql.service.port }}
+      targetPort: postgresql
+      protocol: TCP
+      name: postgresql
+  selector:
+    {{- include "margaya.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: postgresql
+{{- end }}

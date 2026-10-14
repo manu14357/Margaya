@@ -1,0 +1,41 @@
+{{- $publicExposureEnabled := or .Values.ingress.enabled .Values.gateway.enabled -}}
+{{- if and (not .Values.margaya.env.existingSecret.enabled) (or (not .Values.margaya.env.authSecret) (lt (len (.Values.margaya.env.authSecret | toString)) 32)) -}}
+{{- fail "margaya.env.authSecret must be explicitly set to at least 32 characters or provided via margaya.env.existingSecret" -}}
+{{- end -}}
+{{- if and $publicExposureEnabled .Values.postgresql.enabled (not .Values.postgresql.auth.existingSecret) (eq .Values.postgresql.auth.password "margaya_password") -}}
+{{- fail "postgresql.auth.password must be changed or provided via postgresql.auth.existingSecret before enabling ingress or gateway" -}}
+{{- end -}}
+{{- if and .Values.autoscaling.enabled .Values.autoscaling.targetCPUUtilizationPercentage (not (dig "requests" "cpu" "" .Values.margaya.resources)) -}}
+{{- fail "margaya.resources.requests.cpu must be set when autoscaling CPU utilization is enabled" -}}
+{{- end -}}
+
+{{- /* An unquoted number in YAML reaches the templates as a float (12345678 renders as 1.2345678e+07), so credentials must be strings. */ -}}
+{{- range $field, $value := dict "postgresql.auth.username" .Values.postgresql.auth.username "postgresql.auth.password" .Values.postgresql.auth.password "postgresql.auth.database" .Values.postgresql.auth.database "margaya.env.database.external.username" .Values.margaya.env.database.external.username "margaya.env.database.external.password" .Values.margaya.env.database.external.password "margaya.env.database.external.database" .Values.margaya.env.database.external.database -}}
+{{- if not (kindIs "string" $value) -}}
+{{- fail (printf "%s must be a string; quote numeric values in YAML (for example password: \"12345678\")" $field) -}}
+{{- end -}}
+{{- end -}}
+{{- with .Values.margaya.env.redis -}}
+{{- if and .existingSecret.name (not .existingSecret.key) -}}
+{{- fail "margaya.env.redis.existingSecret.key must be set when margaya.env.redis.existingSecret.name is set" -}}
+{{- end -}}
+{{- end -}}
+{{- with .Values.margaya.env.s3 -}}
+{{- if and .endpoint (not .bucket) -}}
+{{- fail "margaya.env.s3.bucket is required when margaya.env.s3.endpoint is set" -}}
+{{- end -}}
+{{- if and .existingSecret.name (or (not .existingSecret.accessKeyIdKey) (not .existingSecret.secretAccessKeyKey)) -}}
+{{- fail "margaya.env.s3.existingSecret needs accessKeyIdKey and secretAccessKeyKey" -}}
+{{- end -}}
+{{- end -}}
+{{- if and .Values.margaya.env.existingSecret.enabled (or (not .Values.margaya.env.existingSecret.name) (not .Values.margaya.env.existingSecret.key)) -}}
+{{- fail "margaya.env.existingSecret requires a non-empty name and key" -}}
+{{- end -}}
+{{- $clientUrl := .Values.margaya.env.clientUrl | trim -}}
+{{- if not $clientUrl -}}
+{{- fail "margaya.env.clientUrl is required: set the public HTTP(S) origin used to access Margaya (for example https://margaya.example.com)" -}}
+{{- end -}}
+{{- $parsedClientUrl := urlParse $clientUrl -}}
+{{- if or (not (has $parsedClientUrl.scheme (list "http" "https"))) (not $parsedClientUrl.host) $parsedClientUrl.userinfo $parsedClientUrl.query $parsedClientUrl.fragment (not (has $parsedClientUrl.path (list "" "/"))) -}}
+{{- fail "margaya.env.clientUrl must be an HTTP(S) origin without credentials, a path, a query or a fragment" -}}
+{{- end -}}

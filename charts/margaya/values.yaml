@@ -1,0 +1,269 @@
+# Global values
+nameOverride: ""
+fullnameOverride: ""
+replicaCount: 1
+# Autoscaling configuration
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+# Pod configuration
+podAnnotations: {}
+podSecurityContext: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+topologySpreadConstraints: []
+imagePullSecrets: []
+enableServiceLinks: false
+# Service account configuration
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+# PostgreSQL database configuration
+postgresql:
+  # Set to true to deploy PostgreSQL as part of this chart
+  enabled: true
+  image:
+    repository: postgres
+    tag: 16-alpine
+    pullPolicy: IfNotPresent
+  # Database configuration
+  auth:
+    database: margaya
+    username: margaya_user
+    password: margaya_password
+    # Use existing secret for database credentials (optional)
+    existingSecret: ""
+    secretKeys:
+      adminPasswordKey: postgres-password
+      userPasswordKey: password
+  # Persistence for PostgreSQL data
+  persistence:
+    enabled: true
+    size: 8Gi
+    storageClass: ""
+    accessMode: ReadWriteOnce
+  # PostgreSQL service configuration
+  service:
+    type: ClusterIP
+    port: 5432
+  # Resources for PostgreSQL
+  resources: {}
+  # resources:
+  #   limits:
+  #     cpu: 500m
+  #     memory: 512Mi
+  #   requests:
+  #     cpu: 100m
+  #     memory: 128Mi
+# Margaya application configuration (combined API + web frontend)
+margaya:
+  image:
+    repository: ghcr.io/manu14357/margaya
+    # Defaults to Chart.appVersion when empty.
+    tag: ""
+    pullPolicy: IfNotPresent
+  securityContext: {}
+  service:
+    type: ClusterIP
+    port: 5173
+    targetPort: 5173
+  # Resources are optional and disabled by default
+  resources: {}
+  # resources:
+  #   limits:
+  #     cpu: 500m
+  #     memory: 512Mi
+  #   requests:
+  #     cpu: 100m
+  #     memory: 128Mi
+
+  env:
+    # Public URL of this Margaya instance (e.g. https://margaya.example.com)
+    # Required public HTTP(S) origin, e.g. https://margaya.example.com.
+    # MARGAYA_API_URL is derived automatically as clientUrl/api if not set
+    clientUrl: ""
+    # Allowed CORS origins. Accepts a comma-separated string or YAML list.
+    # Defaults to clientUrl when left empty.
+    corsOrigins: []
+    # Required Better Auth secret (minimum 32 characters), unless existingSecret is enabled.
+    # Generate with: openssl rand -hex 32
+    authSecret: ""
+    existingSecret:
+      enabled: false
+      name: ""
+      key: auth-secret
+    disableRegistration: false
+    disablePasswordRegistration: false
+    disableEmailOtpSignIn: false
+    # Per-IP limits on sign-in, email codes, magic links and password
+    # reset/change. Counted in memory by each replica; keep it on.
+    authRateLimitEnabled: true
+    # Redis or Valkey pub/sub that relays realtime updates (boards, inbox,
+    # page co-editing) between replicas. Required when replicaCount > 1 or
+    # autoscaling is enabled; a single replica works without it. Sets
+    # REDIS_URL. For Sentinel or Cluster, use extraEnv (REDIS_SENTINELS,
+    # REDIS_CLUSTER_NODES, ...) instead.
+    redis:
+      # e.g. redis://margaya-redis:6379 (put URLs with a password in a Secret)
+      url: ""
+      existingSecret:
+        # Secret holding the full redis:// or rediss:// URL; takes precedence over url
+        name: ""
+        key: redis-url
+    # S3-compatible object storage (S3, R2, MinIO, ...) for attachments,
+    # description/comment images and task exports. Uploads answer 503 until
+    # endpoint and bucket are set. The browser uploads straight to the
+    # endpoint, so it must be reachable from users' browsers.
+    s3:
+      endpoint: ""
+      bucket: ""
+      region: us-east-1
+      # true for MinIO and most self-hosted backends, false for AWS S3 and R2
+      forcePathStyle: true
+      keyPrefix: ""
+      existingSecret:
+        # Secret with the access key pair. Leave name empty to use the pod's
+        # IAM role / IRSA through the AWS default credential chain.
+        name: ""
+        accessKeyIdKey: access-key-id
+        secretAccessKeyKey: secret-access-key
+    # Database configuration
+    database:
+      # Use external PostgreSQL (set postgresql.enabled to false)
+      # Important: when using external postgres, make sure you have set up the db user correctly:
+      #   CREATE DATABASE margaya;
+      #   CREATE USER margaya_user WITH PASSWORD 'your_password';
+      #   GRANT ALL PRIVILEGES ON DATABASE margaya TO margaya_user;
+      #   \c margaya;
+      #   GRANT USAGE ON SCHEMA public TO margaya_user;
+      #   GRANT CREATE ON SCHEMA public TO margaya_user;
+      #   ALTER SCHEMA public OWNER TO margaya_user;
+      external:
+        enabled: false
+        host: ""
+        port: 5432
+        database: margaya
+        username: margaya_user
+        password: ""
+        # Use existing secret for external database credentials in the form of a uri, e.g.: "postgresql://user:pass@host:port/db"
+        existingSecret:
+          enabled: false
+          name: ""
+          passwordKey: postgres_uri
+  # Additional environment variables for the margaya container.
+  # Each entry is a standard Kubernetes EnvVar (supports `value` or `valueFrom`).
+  # Useful for CUSTOM_OAUTH_*, SMTP_*, etc. without editing the chart.
+  # extraEnv entries are appended after chart-defined vars; duplicate names override.
+  extraEnv: []
+  # extraEnv:
+  #   # Public website and docs (<url>/docs) the app links to; default https://margaya.app
+  #   - name: MARGAYA_PUBLIC_SITE_URL
+  #     value: "https://www.example.com"
+  #   - name: CUSTOM_OAUTH_DISCOVERY_URL
+  #     value: "https://idp.example.com/.well-known/openid-configuration"
+  #   - name: CUSTOM_OAUTH_CLIENT_ID
+  #     valueFrom:
+  #       secretKeyRef:
+  #         name: oauth-secret
+  #         key: client-id
+  #   # Behind an ingress controller: proxy addresses whose X-Forwarded-For
+  #   # is trusted, so sign-in rate limits count each client, not the proxy.
+  #   - name: TRUSTED_PROXIES
+  #     value: "10.0.0.0/8"
+  #   # Outgoing email (sign-in codes, invitations, notifications).
+  #   - name: SMTP_HOST
+  #     value: "smtp.example.com"
+  #   - name: SMTP_PASSWORD
+  #     valueFrom:
+  #       secretKeyRef:
+  #         name: margaya-smtp
+  #         key: password
+  #   # Requests per minute for each API key (default 600; 0 disables it),
+  #   # counted per replica.
+  #   - name: API_KEY_RATE_LIMIT_PER_MINUTE
+  #     value: "600"
+  #   # Encrypts secrets users save in notification settings (webhook signing
+  #   # secrets, ntfy/Gotify tokens); without it saving one answers 503.
+  #   - name: NOTIFICATION_SECRET_ENCRYPTION_KEY
+  #     valueFrom:
+  #       secretKeyRef:
+  #         name: margaya-notification-secrets
+  #         key: encryption-key
+  #   # Seconds email notifications wait to be sent as one email per person
+  #   # (default 300); 0 sends each one immediately.
+  #   - name: EMAIL_NOTIFICATION_BATCH_WINDOW_SECONDS
+  #     value: "300"
+  #   # Days a deleted task or project stays in the trash (default 30; 0
+  #   # turns the automatic purge off).
+  #   - name: TRASH_RETENTION_DAYS
+  #     value: "30"
+  #   # Days the workspace webhook delivery log is kept (1-90, default 14).
+  #   - name: WEBHOOK_DELIVERY_RETENTION_DAYS
+  #     value: "14"
+  #   # Days workspace audit log entries are kept (default 365; 0 = forever).
+  #   - name: AUDIT_LOG_RETENTION_DAYS
+  #     value: "365"
+  #   # Turns every published project board off (links answer 404).
+  #   - name: DISABLE_PUBLIC_BOARDS
+  #     value: "true"
+  #   # Name on the sign-in screen and public boards (locks it in the panel).
+  #   - name: MARGAYA_INSTANCE_NAME
+  #     value: "Margaya"
+  #   # Show signed-out visitors the product landing page at the web root
+  #   # (default true; false sends them to sign-in). Locks it in the panel.
+  #   - name: MARGAYA_PUBLIC_LANDING
+  #     value: "false"
+  #   # Ignore settings saved in the instance admin panel and make it
+  #   # read-only. Any variable set here always locks its own setting.
+  #   - name: MARGAYA_LOCK_INSTANCE_SETTINGS
+  #     value: "true"
+  extraEnvFrom: []
+  # extraEnvFrom:
+  #   - secretRef:
+  #       name: oauth-secret
+  livenessProbe:
+    httpGet:
+      path: /api/health
+      port: margaya
+    initialDelaySeconds: 60
+    periodSeconds: 10
+  readinessProbe:
+    httpGet:
+      path: /api/health
+      port: margaya
+    initialDelaySeconds: 30
+    periodSeconds: 10
+# Ingress configuration
+ingress:
+  enabled: false
+  className: nginx
+  annotations: {}
+  hosts:
+    - host: margaya.local
+      paths:
+        - path: /
+          pathType: Prefix
+          service: margaya
+          port: 5173
+  tls: []
+
+# Gateway API configuration
+gateway:
+  enabled: false
+  annotations: {}
+  labels: {}
+  parentRefs: []
+  hostnames: []
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - service: margaya
+          port: 5173

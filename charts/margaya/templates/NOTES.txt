@@ -1,0 +1,80 @@
+Thank you for installing {{ .Chart.Name }}.
+
+Your release is named {{ .Release.Name }}.
+
+To learn more about the release, try:
+
+  $ helm status {{ .Release.Name }}
+  $ helm get all {{ .Release.Name }}
+
+{{- if .Values.ingress.enabled }}
+You can access the application using these URLs:
+{{- range .Values.ingress.hosts }}
+  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ .host }}
+{{- end }}
+{{- else if .Values.gateway.enabled }}
+
+An HTTPRoute has been created for Gateway API.
+{{- if .Values.gateway.hostnames }}
+Configured hostnames:
+{{- range .Values.gateway.hostnames }}
+  - {{ . }}
+{{- end }}
+{{- else }}
+No hostnames were set on the HTTPRoute. Configure .Values.gateway.hostnames if your Gateway requires them.
+{{- end }}
+
+Attach the route by setting .Values.gateway.parentRefs to your Gateway listener references.
+{{- else }}
+
+To access the application, set up port forwarding:
+
+$ kubectl port-forward svc/{{ include "margaya.fullname" . }}-margaya 5173:{{ .Values.margaya.service.port }} -n {{ .Release.Namespace }}
+
+Then access the application at http://localhost:5173
+
+Alternatively, expose the service using an Ingress by setting .Values.ingress.enabled=true
+or Gateway API by setting .Values.gateway.enabled=true
+{{- end }}
+
+NOTES:
+1. Margaya is configured with PostgreSQL database for persistence.
+   {{- if .Values.postgresql.enabled }}
+     {{- if .Values.postgresql.persistence.enabled }}
+   A PersistentVolumeClaim is used to store the PostgreSQL database files.
+     {{- else }}
+   WARNING: Persistence is disabled. Your database data will be lost when the PostgreSQL pod is terminated.
+   To enable persistence, set .Values.postgresql.persistence.enabled=true
+     {{- end }}
+   {{- else }}
+   Using an external database connection.
+   {{- end }}
+
+2. Important environment variables:
+   - AUTH_SECRET: Secret key for Better Auth
+   - MARGAYA_CLIENT_URL: Public URL of this instance (currently set to: "{{ .Values.margaya.env.clientUrl }}")
+   - DATABASE_URL: Derived from postgresql.auth values unless margaya.env.database.external.enabled=true
+
+   You can customize these values in your values.yaml file.
+
+3. The margaya image combines the API and web frontend in a single container.
+   nginx runs on port 5173 and proxies /api/ requests to the internal Node API.
+{{- $redisEnv := list "REDIS_URL" "REDIS_SENTINELS" "REDIS_CLUSTER_NODES" }}
+{{- $hasRedis := or .Values.margaya.env.redis.url .Values.margaya.env.redis.existingSecret.name }}
+{{- range .Values.margaya.extraEnv }}
+{{- if has .name $redisEnv }}{{ $hasRedis = true }}{{ end }}
+{{- end }}
+{{- if and (not $hasRedis) (or .Values.autoscaling.enabled (gt (int .Values.replicaCount) 1)) }}
+
+WARNING: more than one replica can run but no Redis is configured. Realtime
+updates (boards, inbox, page co-editing) only reach users connected to the
+same pod. Set margaya.env.redis.url or margaya.env.redis.existingSecret.
+{{- end }}
+{{- if not .Values.margaya.env.s3.endpoint }}
+{{- $hasS3 := false }}
+{{- range .Values.margaya.extraEnv }}{{ if eq .name "S3_ENDPOINT" }}{{ $hasS3 = true }}{{ end }}{{ end }}
+{{- if not $hasS3 }}
+
+File uploads are off: set margaya.env.s3 to enable attachments and images.
+{{- end }}
+{{- end }}
