@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-margaya}
+      POSTGRES_DB: ${POSTGRES_DB:-margaya}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  margaya:
+    image: ghcr.io/manu14357/margaya:latest
+    ports:
+      - "5173:5173"
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:5173/api/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+      retries: 3
+
+#  Optional for HA Setup
+#  redis:
+#    image: valkey/valkey
+#    ports:
+#      - "6379:6379"
+
+#  Optional: host the public website and documentation (/docs) yourself.
+#  Build it from a checkout of this repository, then point the app's links
+#  at it by setting MARGAYA_PUBLIC_SITE_URL in .env (e.g. http://localhost:3001).
+#  site:
+#    build:
+#      context: .
+#      dockerfile: apps/site/Dockerfile
+#    ports:
+#      - "3001:3001"
+#    restart: unless-stopped
+
+volumes:
+  postgres_data:

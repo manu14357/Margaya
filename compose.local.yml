@@ -1,0 +1,60 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    env_file:
+      - .env.local
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U margaya -d margaya"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    ports:
+      - "1337:1337"
+    env_file:
+      - .env.local
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+#  Optional
+#  redis:
+#    image: valkey/valkey
+#    ports:
+#      - "6379:6379"
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    ports:
+      - "5173:5173"
+    env_file:
+      - .env.local
+    environment:
+      MARGAYA_PUBLIC_SITE_URL: ${MARGAYA_PUBLIC_SITE_URL:-http://localhost:3001}
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  # Public website; it also serves the documentation at /docs.
+  site:
+    build:
+      context: .
+      dockerfile: apps/site/Dockerfile
+    ports:
+      - "3001:3001"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

@@ -1,0 +1,19 @@
+# Local end-to-end test services. LOCAL DEVELOPMENT AND TESTING ONLY.
+#
+#   docker compose -f compose.e2e.yml up -d
+#
+# MailPit catches every email the API sends while SMTP points at it:
+#   SMTP   127.0.0.1:1025
+#   UI/API http://127.0.0.1:8025
+services:
+  mailpit:
+    image: axllent/mailpit:v1.31.2
+    container_name: margaya-e2e-mailpit
+    ports:
+      - "127.0.0.1:1025:1025"
+      - "127.0.0.1:8025:8025"
+    environment:
+      MP_MAX_MESSAGES: "5000"
+      MP_SMTP_AUTH_ACCEPT_ANY: "true"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "true"
+    restart: unless-stopped
