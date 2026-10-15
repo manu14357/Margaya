@@ -21,6 +21,11 @@ services:
       - "5173:5173"
     env_file:
       - .env
+    environment:
+      # Attachments and images when no S3 bucket is configured.
+      MARGAYA_STORAGE_DIR: ${MARGAYA_STORAGE_DIR:-/app/apps/api/data/uploads}
+    volumes:
+      - uploads_data:/app/apps/api/data/uploads
     depends_on:
       postgres:
         condition: service_healthy
@@ -31,6 +36,18 @@ services:
       timeout: 5s
       start_period: 60s
       retries: 3
+
+  # Optional local AI model (profile "ai-local"; never started by default).
+  # Start it with: docker compose --profile ai-local up -d
+  # then pull a model: docker compose exec ollama ollama pull llama3.3
+  # and point Margaya at it: MARGAYA_AI_LOCAL_BASE_URL=http://ollama:11434/v1
+  # with MARGAYA_AI_LOCAL_MODEL=llama3.3 (or set both in Instance → AI).
+  ollama:
+    image: ollama/ollama:0.40.8
+    profiles: ["ai-local"]
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
 
 #  Optional for HA Setup
 #  redis:
@@ -51,3 +68,5 @@ services:
 
 volumes:
   postgres_data:
+  uploads_data:
+  ollama_data:

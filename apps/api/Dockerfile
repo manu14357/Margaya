@@ -77,7 +77,7 @@ FROM node:24.19.0-alpine AS runtime
 # Set up user in a single layer
 RUN addgroup -g 1001 appuser && \
   adduser -u 1001 -G appuser -D appuser && \
-  mkdir -p /app/apps/api/data && \
+  mkdir -p /app/apps/api/data/uploads && \
   chown -R appuser:appuser /app
 
 WORKDIR /app

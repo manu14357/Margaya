@@ -1,0 +1,13 @@
+# Optional: PostgreSQL with the pgvector extension, for semantic search.
+# Margaya works without it (search stays full-text); see the docs page
+# "AI setup" > "Enable semantic search".
+#
+#   docker compose -f compose.yml -f compose.pgvector.yml up -d
+#
+# The image is the same PostgreSQL 16 with pgvector added. Switching an
+# existing database from postgres:16-alpine keeps your data; run
+# `REINDEX DATABASE <your database>;` once afterwards, because the two images sort
+# text with different C libraries.
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
