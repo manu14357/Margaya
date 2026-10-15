@@ -29,7 +29,8 @@
 			"!tests/e2e/.auth",
 			"!tests/e2e/playwright-report",
 			"!tests/e2e/test-results",
-			"!tests/e2e/blob-report"
+			"!tests/e2e/blob-report",
+			"!tests/e2e/.web-dist"
 		]
 	},
 	"formatter": {
