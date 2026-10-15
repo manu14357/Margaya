@@ -12,7 +12,7 @@
   },
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "esbuild src/index.ts --bundle --platform=node --outdir=dist --format=esm --packages=external --external:fs --external:path --external:crypto --external:os --external:util --external:stream --external:buffer --external:events --external:url --external:querystring --external:http --external:https --external:net --external:tls --external:zlib --external:@modelcontextprotocol/sdk",
+    "build": "esbuild src/index.ts src/cli/admin.ts --bundle --platform=node --outdir=dist --format=esm --packages=external --external:fs --external:path --external:crypto --external:os --external:util --external:stream --external:buffer --external:events --external:url --external:querystring --external:http --external:https --external:net --external:tls --external:zlib --external:@modelcontextprotocol/sdk",
     "lint": "biome check --write .",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "npm run test:unit",
@@ -23,9 +23,11 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "openapi:export": "tsx scripts/export-openapi.ts"
+    "openapi:export": "tsx scripts/export-openapi.ts",
+    "admin": "tsx src/cli/admin.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "0.135.0",
     "@aws-sdk/client-s3": "^3.1104.0",
     "@aws-sdk/s3-request-presigner": "^3.1104.0",
     "@better-auth/api-key": "^1.6.26",
@@ -33,8 +35,8 @@
     "@hono/node-server": "^2.1.0",
     "@hono/node-ws": "^1.3.1",
     "@hono/zod-openapi": "^1.6.1",
-    "@margaya/email": "workspace:*",
     "@margaya/editor-schema": "workspace:*",
+    "@margaya/email": "workspace:*",
     "@margaya/permissions": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.30.0",
     "@modelcontextprotocol/server": "2.0.0",
@@ -52,8 +54,8 @@
     "drizzle-orm": "^0.45.2",
     "hono": "^4.13.8",
     "ioredis": "^6.0.0",
-    "octokit": "^5.0.5",
     "lib0": "0.2.117",
+    "octokit": "^5.0.5",
     "pg": "^8.22.0",
     "valibot": "^1.4.2",
     "y-protocols": "1.0.7",
