@@ -78,6 +78,7 @@ test-results/
 playwright-report/
 blob-report/
 tests/e2e/.auth/
+tests/e2e/.web-dist/
 
 # Playwright MCP screenshots and logs from manual QA
 .playwright-mcp/
