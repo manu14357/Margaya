@@ -59,10 +59,15 @@ Margaya supports many optional configuration options including:
 - Redis for horizontal scaling
 - Private-network notification receivers (`MARGAYA_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS=true` lets ntfy/Gotify/webhook destinations resolve to private addresses; off by default to prevent SSRF)
 - `TRASH_RETENTION_DAYS` - Days a deleted task or project stays in the trash, where it can be restored, before it is deleted permanently (default 30; `0` turns the automatic purge off and keeps the trash until someone empties it). An hourly job on one instance at a time does the purge. Set it in Helm through `extraEnv`.
+- `WORKSPACE_DELETION_GRACE_DAYS` - Days a workspace scheduled for deletion stays read-only, with its API keys and webhooks paused, before it is deleted for good (default 14; `0` deletes it at the next hourly purge). Its owner can cancel until then. Set it in Helm through `extraEnv`.
+- File uploads (attachments, description and comment images) work out of the box: without S3 they go to the built-in local file store. `MARGAYA_STORAGE_DIR` sets its folder (default `./data/uploads` relative to the API's working directory; the Compose files set `/app/apps/api/data/uploads` on the `uploads_data` volume). Files are served only through the API's authorized download route, never listed. Setting `S3_ENDPOINT` and `S3_BUCKET` switches uploads to S3 (unchanged presigned flow). `MARGAYA_LOCAL_STORAGE=false` turns the local store off, so uploads answer 503 until S3 is set. `S3_MAX_IMAGE_UPLOAD_BYTES` (default 10 MiB) and `S3_PRESIGN_TTL_SECONDS` (default 300) apply to both stores. The local store belongs to one machine: with several API instances, use S3 or a shared volume. Switching between the stores later does not move existing files. Uploads never finalized within a day are deleted by an hourly sweep (both stores).
 - `EXPORT_RETENTION_DAYS` - Days a finished task export stays downloadable (1 to 30, default 7). Export files are stored in S3 when it is configured, otherwise in the database, where one file can be at most 25 MB. Set it in Helm through `extraEnv`.
 - `API_KEY_RATE_LIMIT_PER_MINUTE` - Requests each API key may make per minute (default `600`; `0` turns the limit off). Every API-key response carries `X-RateLimit-Limit`, `X-RateLimit-Remaining` and `X-RateLimit-Reset`; over the limit the API answers 429 with `Retry-After`. Counted in memory per API instance, so with several instances a key can make up to that many times the limit. Sessions and MCP sign-ins are not limited by it.
 - `WEBHOOK_DELIVERY_RETENTION_DAYS` - Days the workspace webhook delivery log is kept (1 to 90, default 14). Webhook signing secrets need no extra key: they are encrypted with a key derived from `AUTH_SECRET`, so changing `AUTH_SECRET` makes them unreadable. Deliveries then fail with "Signing secret unavailable" until an admin rotates each webhook's secret. Webhook endpoints follow `MARGAYA_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS` like the other webhooks. Set it in Helm through `extraEnv`.
 - `AUDIT_LOG_RETENTION_DAYS` - Days workspace audit log entries are kept (default 365; `0` keeps them forever). An hourly job on one instance at a time deletes older entries. Entries record the client IP address and user agent, so pick a period that matches your privacy policy. Set it in Helm through `extraEnv`.
+- `AUTOMATION_RUN_RETENTION_DAYS` - Days the run history of project automation rules is kept (default 30; `0` keeps it forever). A daily job on one instance at a time deletes older runs. Set it in Helm through `extraEnv`.
+- `INSTANCE_AUDIT_LOG_RETENTION_DAYS` - Days instance audit trail entries (Settings > Instance > Admins) are kept (default 365; `0` keeps them forever). The same kind of hourly job deletes older ones. Set it in Helm through `extraEnv`.
+- `API_REQUEST_LOG_ENABLED` / `API_REQUEST_LOG_RETENTION_DAYS` - Every REST request made with an API key is logged for the key's owner (Settings > Account > Developer, the activity icon on a key): time, method, route template, status and duration. Bodies, query strings, headers and IP addresses are never stored. Rows are written in batches every two seconds and kept 14 days by default (at most 365). Set `API_REQUEST_LOG_ENABLED=false` to turn the log off. Set them in Helm through `extraEnv`.
 - `DISABLE_PUBLIC_BOARDS` - Set to `true` to turn off published project boards on this server: every public board link and public board API answers 404, and publishing answers 409. Publications and their settings are kept, so setting it back to `false` restores them. Public board writes (comments, reactions, votes, requests) are rate limited per IP, per account and per board; like `API_KEY_RATE_LIMIT_PER_MINUTE` the counts are per API instance unless Redis is configured, in which case they are shared. Set it in Helm through `extraEnv`.
 - `MARGAYA_INSTANCE_NAME` - The name shown on the sign-in screen and on public boards (1 to 80 characters, default `Margaya`). Setting it locks the name in the admin panel.
 - `MARGAYA_PUBLIC_LANDING` - Whether signed-out visitors to the web app's root (`/`) see the product landing page (default `true`). Set it to `false` to send them straight to sign-in, as before. Signed-in users always go to their dashboard. Setting it locks the switch under Settings > Instance > General. Set it in Helm through `extraEnv`.
@@ -81,6 +86,27 @@ Each setting resolves in this order:
 4. The built-in default.
 
 An installation that never saves anything in the panel behaves exactly as before. Nothing is copied from the environment into the database: removing a variable and restarting hands that setting to the panel. Saved secrets (SMTP password, OAuth client secrets) are never shown again and are encrypted with a key derived from `AUTH_SECRET`; after changing `AUTH_SECRET` the panel marks them unreadable and they must be entered again. Changes apply at once on the API instance that saved them and within 10 seconds on the others; Redis is not needed. The panel refuses a change that would leave no way to sign in, and Better Auth's admin endpoints refuse to demote, ban or remove the last instance admin.
+
+#### AI (optional)
+
+AI is off by default and needs no variables: instance admins can set everything under Settings > Instance > AI. A variable set here locks its setting in that panel, as for other instance settings. Each workspace must still opt in, and each project can opt out. See the docs page "AI Setup".
+
+- `MARGAYA_AI_ENABLED` - `true` allows AI on this server (`false` locks it off)
+- `MARGAYA_AI_PROVIDER` - `anthropic` (default) or `openai_compatible`
+- `ANTHROPIC_API_KEY` - the Anthropic API key
+- `MARGAYA_AI_OPENAI_BASE_URL`, `MARGAYA_AI_OPENAI_API_KEY` - an OpenAI-compatible endpoint, including the version path (e.g. `https://api.openai.com/v1`); it must be a public address
+- `MARGAYA_AI_MODEL_FAST`, `MARGAYA_AI_MODEL_BALANCED`, `MARGAYA_AI_MODEL_DEEP` - model names per tier; empty uses `claude-haiku-5-5`, `claude-sonnet-5-5` and `claude-opus-5-5` with Anthropic
+- `MARGAYA_AI_LOCAL_BASE_URL`, `MARGAYA_AI_LOCAL_MODEL` - your own OpenAI-compatible server (Ollama, vLLM), e.g. `http://ollama:11434/v1`; private addresses are allowed here only, and data from restricted projects only goes here
+- `MARGAYA_AI_LOCAL_API_KEY` - optional key for that server, only when it requires one (for example vLLM started with `--api-key`); stored encrypted when set in the panel
+- `MARGAYA_AI_LOCAL_ONLY` - `true` sends every AI request to the local model
+- `MARGAYA_AI_EMBEDDINGS_BASE_URL`, `MARGAYA_AI_EMBEDDINGS_MODEL`, `MARGAYA_AI_EMBEDDINGS_API_KEY` - optional OpenAI-compatible embeddings endpoint for semantic search (also needs pgvector: `compose.pgvector.yml` or Helm `postgresql.pgvector.enabled`)
+- `MARGAYA_AI_SEMANTIC_MIN_SIMILARITY` - how close in meaning a semantic search result must be, -1 to 1 (default 0.3)
+- `MARGAYA_AI_WORKSPACE_RPM` (default 120), `MARGAYA_AI_USER_RPM` (default 30), `MARGAYA_AI_USER_CONCURRENCY` (default 2) - request limits, counted per API process (or in Redis when configured)
+- `MARGAYA_AI_TIMEOUT_MS` - wall-clock limit per AI request (default 600000)
+- `MARGAYA_AI_LOCAL_REASONING_TOKENS` - extra output tokens added to every local-model call so reasoning models have room to think before answering (default 4096; 0 turns it off)
+- `MARGAYA_AI_ALLOW_FAKE` - `true` lets a production server use the deterministic `fake` provider (development and tests use it without this)
+
+Keys saved in the panel are encrypted with a key derived from `AUTH_SECRET`. Prompts and answers are never stored; the AI usage ledger keeps counts only. For a local model with Docker Compose, start the optional service with `docker compose --profile ai-local up -d`.
 
 #### Redis Configuration
 
@@ -124,6 +150,51 @@ When SMTP is configured, the sign-in screen also offers "Forgot password?" (whil
 #### Sign-in rate limiting
 
 - `AUTH_RATE_LIMIT_ENABLED` - Per-IP limits on sign-in, email codes, magic links, password reset and password change (default: `true`). Set to `false` only for test environments. The counts live in memory in each API instance and reset on restart; with several API replicas each counts separately. Behind a reverse proxy, set `TRUSTED_PROXIES` so clients are counted by their own address rather than the proxy's.
+
+#### Security hardening
+
+These protections are always on; only the API-key switch below is a variable.
+
+- **Cross-site request guard.** A state-changing request (POST, PUT, PATCH, DELETE) that carries a session cookie must come from a trusted origin: `MARGAYA_CLIENT_URL`, `MARGAYA_API_URL` or a `CORS_ORIGINS` entry, checked through the `Origin` header (or `Referer`, or `Sec-Fetch-Site`). Others get 403 "Cross-site request refused". Requests with an API key or a Bearer token, MCP, OAuth callbacks and signed webhooks are not affected. If the web app is reached at an address not listed in those variables, add it to `CORS_ORIGINS`. Scripts should authenticate with an API key rather than a copied session cookie.
+- **Passwords.** New passwords (sign-up, reset, change, admin set, recovery CLI) need at least 10 characters, may not be a common password (a small list ships with the server; nothing is looked up online) and may not be the account's email address. Existing passwords keep working until they are changed.
+- **Email change.** Users change their address under Settings > Account > Personal information. A 6-digit code goes to the new address; the change happens only once it is entered, then the old address gets a notice and other sessions are signed out. It needs SMTP.
+- **Instance admins.** Changing instance settings or admins (and Better Auth's `/api/auth/admin/*` account actions) needs a recent sign-in: a session opened in the last 10 minutes, or the password confirmed in the app. Admins without a password sign in again. Every such change lands in the instance audit trail (Settings > Instance > Admins), which stores which settings changed but never their values.
+- **Scoped API keys.** A new key can have full access (as before), be read-only (GET requests and task queries only), or be limited to chosen permission areas, and optionally to chosen projects. Other projects answer 404 to a project-limited key, and workspace-wide routes refuse it except the project list. Scoped keys work on the REST API and MCP but are refused on `/api/auth/*`. A key never exceeds its owner's role, and a banned owner's keys stop working. Keys created before scoping keep full access.
+- **Two-factor authentication.** Anyone with a password can turn on TOTP under Settings > Account > Security (any authenticator app, plus 10 one-time recovery codes). Password sign-in then asks for a code; "trust this device" skips it for 30 days. Email links and email codes are not sent to such accounts, so they can't skip the second step. OAuth and OIDC sign-in rely on the provider's own checks. No new variable.
+- `ALLOW_INSTANCE_ADMIN_API_KEYS` - An instance admin's API keys act like any member's keys: they reach only the workspaces the admin belongs to and cannot use `/api/auth/admin/*`. Set to `true` to give them the admin's instance-wide reach again (default `false`). Set it in Helm through `extraEnv`.
+- **Security headers.** The API sends `Content-Security-Policy: default-src 'none'; frame-ancestors 'none'`, `X-Frame-Options: DENY`, `nosniff` and a referrer policy, plus `Strict-Transport-Security` when `MARGAYA_API_URL` is `https://`. The web image's nginx sends a page content policy (own scripts, the Turnstile captcha, YouTube embeds; API and WebSocket calls to any HTTPS or HTTP host so a separate API and S3 uploads work), `frame-ancestors 'self'`, a permissions policy, and HSTS when the request arrived with `X-Forwarded-Proto: https`. TLS itself is still up to your reverse proxy.
+
+#### Sign-in policy
+
+These are instance settings (Settings > Instance > Authentication). Each variable below, when set, locks its setting in the panel, like the other sign-in variables.
+
+- `ALLOWED_EMAIL_DOMAINS` - Comma-separated domains new accounts must use, for example `example.com,example.org` (exact match, no subdomains). Applies to every sign-up method, OAuth and invitations included; inviting a new address outside the list is refused. Existing accounts are not affected. Empty allows any domain.
+- `ALLOW_INVITED_PASSWORD_REGISTRATION` - With password sign-up off (`DISABLE_PASSWORD_REGISTRATION=true` or the panel switch), `true` still lets people with a valid invitation create a password account (default `false`).
+- `REQUIRED_SIGN_IN_PROVIDER` - `github`, `google`, `discord` or `custom`: everyone signs in through that provider. Other providers, password sign-in, email codes and magic links are refused for everyone except instance admins, who keep password sign-in (and password reset) as a way back in. The panel refuses a provider that isn't set up and turned on. Existing sessions are not ended.
+- `SESSION_LIFETIME_HOURS` - How long a session lasts without use, 1 to 8760 (default 168, a week). Use extends it, at most once a day. A change applies to new sessions and refreshes on every API instance within 10 seconds.
+
+#### Instance user management
+
+Settings > Instance > Users lists every account (search, admins, banned), shows each one's workspaces, and can ban or unban (for good, or for 7 or 30 days, signing the person out everywhere), reset a password (email a link, which needs SMTP, or set one now), sign someone out everywhere, and promote or demote instance admins. Every action needs the recent sign-in above and lands in the instance audit trail. You can't ban yourself or the last instance admin.
+
+#### Admin recovery CLI
+
+When no instance admin can sign in (a forgotten password on a server without SMTP, a demoted or banned admin), run the recovery CLI next to the database. It needs shell access to the API container and talks to PostgreSQL directly; every run is recorded in the instance audit trail as "Recovery CLI".
+
+```bash
+# Bundled image (Docker Compose)
+docker compose exec margaya node apps/api/dist/cli/admin.js list-admins
+docker compose exec margaya node apps/api/dist/cli/admin.js promote-admin you@example.com
+docker compose exec -e MARGAYA_NEW_PASSWORD='a long new passphrase' margaya node apps/api/dist/cli/admin.js reset-password you@example.com
+
+# Kubernetes
+kubectl exec -it deploy/<release>-margaya -- node apps/api/dist/cli/admin.js promote-admin you@example.com
+
+# Development
+pnpm --filter @margaya/api admin promote-admin you@example.com
+```
+
+Commands: `list-admins`, `promote-admin <email>`, `demote-admin <email>` (never the last admin), `reset-password <email>` (uses `MARGAYA_NEW_PASSWORD` when set, otherwise prints a generated password once, and signs the account out everywhere) and `unban-user <email>`. In the separate API image (`apps/api/Dockerfile`) the path is `dist/cli/admin.js`.
 
 #### Cloud-mode abuse mitigations
 
