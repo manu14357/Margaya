@@ -1,6 +1,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { relations, sql } from "drizzle-orm";
 import {
+  bigint,
   boolean,
   check,
   customType,
@@ -18,6 +19,11 @@ import {
   unique,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
+import type {
+  BriefAudience,
+  BriefScopeType,
+  BriefSnapshot,
+} from "../ai-brief/types";
 import type { ColumnGroup } from "../column/groups";
 import type { CycleProgressSnapshot } from "../cycle/types";
 import type {
@@ -57,31 +63,68 @@ const bytea = customType<{ data: Buffer; driverData: Buffer }>({
   },
 });
 
-export const userTable = pgTable("user", {
-  id: text("id")
-    .$defaultFn(() => createId())
-    .primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
-  emailVerified: boolean("email_verified")
-    .$defaultFn(() => false)
-    .notNull(),
-  image: text("image"),
-  locale: text("locale"),
-  // IANA zone for server-rendered user-facing times (reminders, digests).
-  // Null means "not chosen yet": the server falls back to UTC.
-  timezone: text("timezone"),
-  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { mode: "date" })
-    .defaultNow()
-    .$onUpdate(() => /* @__PURE__ */ new Date())
-    .notNull(),
-  isAnonymous: boolean("is_anonymous").default(false),
-  role: text("role"),
-  banned: boolean("banned").default(false),
-  banReason: text("ban_reason"),
-  banExpires: timestamp("ban_expires", { mode: "date" }),
-});
+export const userTable = pgTable(
+  "user",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    name: text("name").notNull(),
+    email: text("email").notNull().unique(),
+    emailVerified: boolean("email_verified")
+      .$defaultFn(() => false)
+      .notNull(),
+    image: text("image"),
+    locale: text("locale"),
+    // IANA zone for server-rendered user-facing times (reminders, digests).
+    // Null means "not chosen yet": the server falls back to UTC.
+    timezone: text("timezone"),
+    // Per-user web preferences (theme, week start, display toggles). Null means
+    // "never saved": the client keeps its defaults. Validated on write.
+    preferences: jsonb("preferences").$type<Record<string, unknown>>(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+    isAnonymous: boolean("is_anonymous").default(false),
+    role: text("role"),
+    banned: boolean("banned").default(false),
+    banReason: text("ban_reason"),
+    banExpires: timestamp("ban_expires", { mode: "date" }),
+    // Better Auth's two-factor plugin: TOTP is on once the first code checks.
+    twoFactorEnabled: boolean("two_factor_enabled").default(false),
+    // "agent" for AI agents (ai-agent/): workspace members that can't sign in,
+    // receive invitations or email, and are never billed as seats.
+    kind: text("kind").$type<"human" | "agent">().notNull().default("human"),
+  },
+  (table) => [
+    check("user_kind_check", sql`${table.kind} in ('human', 'agent')`),
+    index("user_kind_agent_idx")
+      .on(table.kind)
+      .where(sql`${table.kind} = 'agent'`),
+  ],
+);
+
+// Better Auth's two-factor plugin: the encrypted TOTP secret and recovery
+// codes of one account. Deleted with the account.
+export const twoFactorTable = pgTable(
+  "two_factor",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    secret: text("secret").notNull(),
+    backupCodes: text("backup_codes").notNull(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id, { onDelete: "cascade" }),
+    verified: boolean("verified").default(true),
+    failedVerificationCount: integer("failed_verification_count").default(0),
+    lockedUntil: timestamp("locked_until", { mode: "date" }),
+  },
+  (table) => [index("two_factor_user_id_idx").on(table.userId)],
+);
 
 export const sessionTable = pgTable(
   "session",
@@ -190,6 +233,19 @@ export const workspaceTable = pgTable("workspace", {
   // IANA zone that defines "today" and day boundaries for server-side date
   // logic (cycles, automations, reminders). UTC keeps legacy behaviour.
   timezone: text("timezone").notNull().default("UTC"),
+  // Pages may be published to a public link only while this is on.
+  allowPublicPages: boolean("allow_public_pages").notNull().default(false),
+  // External agents may hand work to the workspace over A2A only while this
+  // is on.
+  allowA2a: boolean("allow_a2a").notNull().default(false),
+  // Set while a deletion is pending: the workspace is read-only, and the
+  // purge job deletes it once `deletionDueAt` has passed. Null otherwise.
+  deletionScheduledAt: timestamp("deletion_scheduled_at", { mode: "date" }),
+  deletionDueAt: timestamp("deletion_due_at", { mode: "date" }),
+  deletionScheduledById: text("deletion_scheduled_by_id").references(
+    () => userTable.id,
+    { onDelete: "set null", onUpdate: "cascade" },
+  ),
   createdAt: timestamp("created_at", { mode: "date" }).notNull(),
 });
 
@@ -383,6 +439,14 @@ export const projectTable = pgTable(
     timeTrackingEnabled: boolean("time_tracking_enabled")
       .notNull()
       .default(true),
+    // AI features (ai/): effective only while the instance and the workspace
+    // have AI on. Off excludes the project from AI context and AI routes.
+    aiEnabled: boolean("ai_enabled").notNull().default(true),
+    // Triage Copilot (ai-triage/): apply suggested labels at once, each
+    // application audited. Off: people accept every suggestion themselves.
+    aiTriageAutoApplyLabels: boolean("ai_triage_auto_apply_labels")
+      .notNull()
+      .default(false),
     // Optional project lead and default assignee. Both must be workspace
     // members; the API clears them when the member leaves the workspace.
     leadUserId: text("lead_user_id").references(() => userTable.id, {
@@ -399,6 +463,12 @@ export const projectTable = pgTable(
     deletedBy: text("deleted_by").references(() => userTable.id, {
       onDelete: "set null",
     }),
+    // "open": reachable through workspace roles. "restricted": only its
+    // project members, plus workspace owners and admins (project/visibility.ts).
+    visibility: text("visibility")
+      .$type<"open" | "restricted">()
+      .notNull()
+      .default("open"),
   },
   (table) => [
     unique("project_workspace_id_id_unique").on(table.workspaceId, table.id),
@@ -410,6 +480,38 @@ export const projectTable = pgTable(
     index("project_workspaceId_deletedAt_idx")
       .on(table.workspaceId, table.deletedAt)
       .where(sql`${table.deletedAt} is not null`),
+    // Visibility filters look up a workspace's restricted projects only.
+    index("project_workspaceId_restricted_idx")
+      .on(table.workspaceId)
+      .where(sql`${table.visibility} = 'restricted'`),
+  ],
+);
+
+// Members of a restricted project. `role` is a workspace role name (a
+// built-in or custom role); a member's rights there are what both their
+// workspace role and this role grant. Rows on an open project are kept but
+// grant nothing extra.
+export const projectMemberTable = pgTable(
+  "project_member",
+  {
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id, { onDelete: "cascade" }),
+    role: text("role").notNull().default("member"),
+    addedBy: text("added_by").references(() => userTable.id, {
+      onDelete: "set null",
+    }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.projectId, table.userId] }),
+    index("project_member_userId_idx").on(table.userId),
   ],
 );
 
@@ -634,6 +736,17 @@ export const jobLeaseTable = pgTable("job_lease", {
   owner: text("owner").notNull(),
   expiresAt: timestamp("expires_at", { mode: "date" }).notNull(),
 });
+
+// Object keys handed out for a browser upload. A key that never became an
+// asset row within a day is an abandoned upload; the sweep removes its bytes.
+export const storageUploadTable = pgTable(
+  "storage_upload",
+  {
+    objectKey: text("object_key").primaryKey(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (table) => [index("storage_upload_createdAt_idx").on(table.createdAt)],
+);
 
 export const taskReminderSentTable = pgTable(
   "task_reminder_sent",
@@ -1367,6 +1480,36 @@ export const apikeyTable = pgTable(
   ],
 );
 
+// Requests made with an API key, for the key owner: metadata only (method,
+// route template, status, duration), never bodies, query strings or
+// headers. Kept API_REQUEST_LOG_RETENTION_DAYS (api-key/request-log.ts).
+export const apiRequestLogTable = pgTable(
+  "api_request_log",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    apiKeyId: text("api_key_id")
+      .notNull()
+      .references(() => apikeyTable.id, { onDelete: "cascade" }),
+    method: text("method").notNull(),
+    route: text("route").notNull(),
+    status: integer("status").notNull(),
+    durationMs: integer("duration_ms").notNull(),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("api_request_log_key_created_idx").on(
+      table.apiKeyId,
+      table.createdAt.desc(),
+      table.id.desc(),
+    ),
+    index("api_request_log_created_idx").on(table.createdAt),
+  ],
+);
+
 export const deviceCodeTable = pgTable(
   "device_code",
   {
@@ -1824,6 +1967,15 @@ export const cycleTable = pgTable(
     // The progress report frozen by the first transfer of unfinished tasks,
     // so a completed cycle keeps its numbers after that work leaves.
     progressSnapshot: jsonb("progress_snapshot").$type<CycleProgressSnapshot>(),
+    // Auto-rollover (opt-in per project): set once the job has handled this
+    // ended cycle, whether or not anything moved, so it never runs twice.
+    rolledOverAt: timestamp("rolled_over_at", { mode: "date" }),
+    rolloverResult: jsonb("rollover_result").$type<{
+      outcome: "moved" | "nothing_to_move" | "no_next_cycle";
+      movedCount: number;
+      targetCycleId: string | null;
+      targetCycleName: string | null;
+    }>(),
     createdBy: text("created_by").references(() => userTable.id, {
       onDelete: "set null",
       onUpdate: "cascade",
@@ -2435,6 +2587,11 @@ export const taskDraftTable = pgTable(
     cycleId: text("cycle_id"),
     moduleIds: jsonb("module_ids").$type<string[]>().notNull().default([]),
     estimatePointId: text("estimate_point_id"),
+    // The chosen parent; a deleted parent leaves a top-level draft.
+    parentTaskId: text("parent_task_id").references(() => taskTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { mode: "date" })
       .defaultNow()
@@ -2480,6 +2637,20 @@ export const projectAutomationTable = pgTable(
     lastArchivedCount: integer("last_archived_count").notNull().default(0),
     lastClosedAt: timestamp("last_closed_at", { mode: "date" }),
     lastClosedCount: integer("last_closed_count").notNull().default(0),
+    // Cycle auto-rollover: off by default. `cycleRolloverSince` is the first
+    // end date (workspace day) that rolls over, so turning it on never moves
+    // the work of cycles that ended long ago.
+    cycleRolloverEnabled: boolean("cycle_rollover_enabled")
+      .notNull()
+      .default(false),
+    cycleRolloverSince: date("cycle_rollover_since", { mode: "string" }),
+    lastRolledOverAt: timestamp("last_rolled_over_at", { mode: "date" }),
+    lastRolledOverCount: integer("last_rolled_over_count").notNull().default(0),
+    // Flow anomaly alerts: off by default. The daily check runs once per
+    // workspace day (`flowAlertsCheckedOn`); alerts go to the project lead.
+    flowAlertsEnabled: boolean("flow_alerts_enabled").notNull().default(false),
+    flowAlertsCheckedOn: date("flow_alerts_checked_on", { mode: "string" }),
+    lastFlowAlertAt: timestamp("last_flow_alert_at", { mode: "date" }),
     updatedBy: text("updated_by").references(() => userTable.id, {
       onDelete: "set null",
       onUpdate: "cascade",
@@ -2501,6 +2672,216 @@ export const projectAutomationTable = pgTable(
       .where(sql`${table.autoArchiveEnabled} or ${table.autoCloseEnabled}`),
     index("project_automation_closeColumnId_idx").on(table.autoCloseColumnId),
     index("project_automation_updatedBy_idx").on(table.updatedBy),
+    // The flow alert job's queue: opted-in projects, least recently checked.
+    index("project_automation_flow_alerts_idx")
+      .on(table.flowAlertsCheckedOn)
+      .where(sql`${table.flowAlertsEnabled}`),
+  ],
+);
+
+// One row per flow anomaly a project raised: metric and week window. The
+// unique key makes "at most one notification per anomaly per window" hold
+// across reruns and instances.
+export const flowAlertTable = pgTable(
+  "flow_alert",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    metric: text("metric")
+      .$type<"wip" | "cycle_time" | "throughput">()
+      .notNull(),
+    direction: text("direction").$type<"high" | "low">().notNull(),
+    windowStart: date("window_start", { mode: "string" }).notNull(),
+    windowEnd: date("window_end", { mode: "string" }).notNull(),
+    value: doublePrecision("value").notNull(),
+    baselineMedian: doublePrecision("baseline_median").notNull(),
+    baselineScale: doublePrecision("baseline_scale").notNull(),
+    notifiedUserId: text("notified_user_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (table) => [
+    unique("flow_alert_project_metric_window_unique").on(
+      table.projectId,
+      table.metric,
+      table.windowStart,
+    ),
+    index("flow_alert_projectId_createdAt_idx").on(
+      table.projectId,
+      table.createdAt,
+    ),
+    index("flow_alert_notifiedUserId_idx").on(table.notifiedUserId),
+    check(
+      "flow_alert_metric_check",
+      sql`${table.metric} in ('wip', 'cycle_time', 'throughput')`,
+    ),
+    check(
+      "flow_alert_direction_check",
+      sql`${table.direction} in ('high', 'low')`,
+    ),
+  ],
+);
+
+// Task templates: optional per-project presets for new tasks. Columns,
+// labels (workspace label ids), members and estimate points can go stale;
+// the API drops stale references on read, so a template never blocks a
+// create.
+export const taskTemplateTable = pgTable(
+  "task_template",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    name: text("name").notNull(),
+    titlePattern: text("title_pattern").notNull().default(""),
+    description: text("description").notNull().default(""),
+    columnId: text("column_id").references(() => columnTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    priority: text("priority"),
+    labelIds: jsonb("label_ids").$type<string[]>().notNull().default([]),
+    assigneeIds: jsonb("assignee_ids").$type<string[]>().notNull().default([]),
+    estimatePointId: text("estimate_point_id").references(
+      () => estimatePointTable.id,
+      { onDelete: "set null", onUpdate: "cascade" },
+    ),
+    // Sub-task titles, created under the new task in this order.
+    subtasks: jsonb("subtasks").$type<string[]>().notNull().default([]),
+    position: integer("position").notNull().default(0),
+    createdBy: text("created_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("task_template_projectId_position_idx").on(
+      table.projectId,
+      table.position,
+    ),
+    uniqueIndex("task_template_project_name_unique").on(
+      table.projectId,
+      sql`lower(${table.name})`,
+    ),
+    index("task_template_columnId_idx").on(table.columnId),
+    index("task_template_estimatePointId_idx").on(table.estimatePointId),
+    index("task_template_createdBy_idx").on(table.createdBy),
+  ],
+);
+
+// Recurring tasks (opt-in). One rule per series, held by the series' current
+// task. Completing that task (trigger `completion`) or reaching
+// `next_run_date` in the workspace's time zone (trigger `schedule`) creates
+// the next instance and moves the rule onto it, in one transaction under the
+// rule's row lock, so one occurrence never yields two tasks. Dates are
+// workspace-local calendar dates.
+export const taskRecurrenceTable = pgTable(
+  "task_recurrence",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    taskId: text("task_id")
+      .notNull()
+      .references(() => taskTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    // daily | weekly | monthly | yearly
+    frequency: text("frequency").notNull(),
+    interval: integer("interval").notNull().default(1),
+    // Weekly only: 0 Sunday to 6 Saturday.
+    weekdays: integer("weekdays").array(),
+    // Monthly only: 1 to 31, clamped to the month's last day.
+    monthDay: integer("month_day"),
+    // completion | schedule
+    trigger: text("trigger").notNull().default("completion"),
+    // The current instance's occurrence date; the pattern counts from it.
+    anchorDate: date("anchor_date", { mode: "string" }).notNull(),
+    endDate: date("end_date", { mode: "string" }),
+    maxOccurrences: integer("max_occurrences"),
+    // Instances so far, the first task included.
+    occurrenceCount: integer("occurrence_count").notNull().default(1),
+    // Schedule trigger only: when the job creates the next instance. Null
+    // once the series has ended.
+    nextRunDate: date("next_run_date", { mode: "string" }),
+    createdBy: text("created_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    uniqueIndex("task_recurrence_taskId_unique").on(table.taskId),
+    index("task_recurrence_nextRunDate_idx")
+      .on(table.nextRunDate)
+      .where(sql`${table.nextRunDate} is not null`),
+    index("task_recurrence_createdBy_idx").on(table.createdBy),
+  ],
+);
+
+// Saved analytics reports: a named chart-builder configuration. Private
+// reports are visible to their owner only; workspace reports to everyone
+// with analytics access. The scope is re-checked against the viewer on use.
+export const analyticsReportTable = pgTable(
+  "analytics_report",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    ownerId: text("owner_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    name: text("name").notNull(),
+    visibility: text("visibility")
+      .$type<"private" | "workspace">()
+      .notNull()
+      .default("private"),
+    config: jsonb("config").$type<Record<string, unknown>>().notNull(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("analytics_report_workspaceId_idx").on(table.workspaceId),
+    index("analytics_report_ownerId_idx").on(table.ownerId),
+    check(
+      "analytics_report_visibility_check",
+      sql`${table.visibility} in ('private', 'workspace')`,
+    ),
   ],
 );
 
@@ -2543,6 +2924,14 @@ export const pageTable = pgTable(
     lockedAt: timestamp("locked_at", { mode: "date" }),
     archivedAt: timestamp("archived_at", { mode: "date" }),
     isFullWidth: boolean("is_full_width").notNull().default(false),
+    // The read-only public link: set while published, cleared (revoked) on
+    // unpublish. A later publish issues a new token.
+    publicToken: text("public_token").unique("page_public_token_unique"),
+    publishedAt: timestamp("published_at", { mode: "date" }),
+    publishedById: text("published_by_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
     contentYjs: bytea("content_yjs"),
     contentMarkdown: text("content_markdown").notNull().default(""),
     contentText: text("content_text").notNull().default(""),
@@ -2581,6 +2970,50 @@ export const pageTable = pgTable(
     check("page_access_check", sql`${table.access} in ('public', 'private')`),
     check(
       "page_logo_check",
+      sql`(${table.logoKind} is null and ${table.logoValue} is null) or (${table.logoKind} in ('emoji', 'icon') and ${table.logoValue} is not null)`,
+    ),
+  ],
+);
+
+// Saved page templates: markdown that "New page from template" copies. A
+// null `projectId` makes the template available in every project of the
+// workspace.
+export const pageTemplateTable = pgTable(
+  "page_template",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    projectId: text("project_id").references(() => projectTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+    name: text("name").notNull(),
+    logoKind: text("logo_kind").$type<PageLogoKind>(),
+    logoValue: text("logo_value"),
+    contentMarkdown: text("content_markdown").notNull().default(""),
+    createdById: text("created_by_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (table) => [
+    index("page_template_workspace_project_idx").on(
+      table.workspaceId,
+      table.projectId,
+    ),
+    index("page_template_project_idx").on(table.projectId),
+    index("page_template_createdById_idx").on(table.createdById),
+    check(
+      "page_template_logo_check",
       sql`(${table.logoKind} is null and ${table.logoValue} is null) or (${table.logoKind} in ('emoji', 'icon') and ${table.logoValue} is not null)`,
     ),
   ],
@@ -3130,7 +3563,7 @@ export const auditLogTable = pgTable(
         onUpdate: "cascade",
       }),
     actorType: text("actor_type")
-      .$type<"user" | "api_key" | "system">()
+      .$type<"user" | "api_key" | "agent" | "automation" | "system">()
       .notNull(),
     actorUserId: text("actor_user_id").references(() => userTable.id, {
       onDelete: "set null",
@@ -3168,4 +3601,1064 @@ export const auditLogTable = pgTable(
     ),
     index("audit_log_created_idx").on(table.createdAt),
   ],
+);
+
+// Instance-level audit trail: what instance admins (and the recovery CLI)
+// changed. Never holds secret values, only which keys changed.
+export const instanceAuditLogTable = pgTable(
+  "instance_audit_log",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    actorType: text("actor_type").$type<"user" | "system">().notNull(),
+    actorUserId: text("actor_user_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    actorName: text("actor_name"),
+    action: text("action").notNull(),
+    targetType: text("target_type"),
+    targetId: text("target_id"),
+    targetLabel: text("target_label"),
+    metadata: jsonb("metadata").$type<Record<string, unknown>>(),
+    ipAddress: text("ip_address"),
+    userAgent: text("user_agent"),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (table) => [
+    index("instance_audit_log_created_idx").on(
+      table.createdAt.desc(),
+      table.id.desc(),
+    ),
+  ],
+);
+
+// AI (ai/): a workspace's opt-in and policy. No row means AI is off for the
+// workspace. An own provider key is sealed with the secret box (purpose
+// "ai-workspace-key") and never returned; only its last four characters are
+// kept for display.
+export const workspaceAiSettingTable = pgTable(
+  "workspace_ai_setting",
+  {
+    workspaceId: text("workspace_id")
+      .primaryKey()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    enabled: boolean("enabled").notNull().default(false),
+    // The provider the workspace's own key is for; null uses the instance's.
+    provider: text("provider").$type<"anthropic" | "openai_compatible">(),
+    secret: text("secret"),
+    secretLast4: text("secret_last4"),
+    // Null means no cap.
+    monthlyCapMicros: bigint("monthly_cap_micros", { mode: "number" }),
+    userDailyCapTokens: integer("user_daily_cap_tokens"),
+    requireApprovalForWrites: boolean("require_approval_for_writes")
+      .notNull()
+      .default(false),
+    // Restricted projects stay out of AI context unless this is on.
+    includeRestricted: boolean("include_restricted").notNull().default(false),
+    // Every call goes to the instance's local endpoint.
+    localOnly: boolean("local_only").notNull().default(false),
+    redactPii: boolean("redact_pii").notNull().default(false),
+    embeddingsEnabled: boolean("embeddings_enabled").notNull().default(false),
+    // Translate-on-read (ai-translate/): comments in another language are
+    // translated for each reader without a click.
+    autoTranslateComments: boolean("auto_translate_comments")
+      .notNull()
+      .default(false),
+    // Ask may add web search results (cloud destinations only).
+    webSearchEnabled: boolean("web_search_enabled").notNull().default(false),
+    // Chat history kept on the server (opt-in; the default is the browser).
+    storeConversations: boolean("store_conversations").notNull().default(false),
+    // Build mode may apply its plan without the Confirm step.
+    allowAutopilot: boolean("allow_autopilot").notNull().default(false),
+    updatedBy: text("updated_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    check(
+      "workspace_ai_setting_secret_sealed_check",
+      sql`${table.secret} is null or ${table.secret} like 'sbx:v1:%'`,
+    ),
+    check(
+      "workspace_ai_setting_caps_check",
+      sql`(${table.monthlyCapMicros} is null or ${table.monthlyCapMicros} >= 0) and (${table.userDailyCapTokens} is null or ${table.userDailyCapTokens} >= 0)`,
+    ),
+  ],
+);
+
+// The AI ledger: one row per model call, counts only (no prompt or answer
+// text). Budgets are checked against it before each call.
+export const aiUsageTable = pgTable(
+  "ai_usage",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    userId: text("user_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    // Agents and runs come later; no foreign keys yet.
+    agentId: text("agent_id"),
+    runId: text("run_id"),
+    feature: text("feature").notNull(),
+    provider: text("provider").notNull(),
+    model: text("model").notNull(),
+    tier: text("tier").notNull(),
+    dataTier: text("data_tier").notNull(),
+    status: text("status")
+      .$type<"ok" | "error" | "refused" | "cancelled">()
+      .notNull(),
+    inputTokens: integer("input_tokens").notNull().default(0),
+    outputTokens: integer("output_tokens").notNull().default(0),
+    cacheReadTokens: integer("cache_read_tokens").notNull().default(0),
+    cacheWriteTokens: integer("cache_write_tokens").notNull().default(0),
+    costMicros: bigint("cost_micros", { mode: "number" }).notNull().default(0),
+    durationMs: integer("duration_ms").notNull().default(0),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("ai_usage_workspace_created_idx").on(
+      table.workspaceId,
+      table.createdAt,
+    ),
+    index("ai_usage_user_created_idx").on(table.userId, table.createdAt),
+  ],
+);
+
+// Translate-on-read (ai-translate/): one cached translation per source and
+// reader language. content_hash is of the source text, so an edited source
+// never gets a stale translation; the row is replaced on the next read.
+// Exactly one source is set, and the row goes with it.
+export const aiTranslationTable = pgTable(
+  "ai_translation",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    commentId: text("comment_id").references(() => activityTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+    taskId: text("task_id").references(() => taskTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+    pageId: text("page_id").references(() => pageTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+    targetLocale: text("target_locale").notNull(),
+    contentHash: text("content_hash").notNull(),
+    // ISO 639-1 code the model detected; null when it could not tell.
+    sourceLanguage: text("source_language"),
+    text: text("text").notNull(),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    check(
+      "ai_translation_one_source_check",
+      sql`num_nonnulls(${table.commentId}, ${table.taskId}, ${table.pageId}) = 1`,
+    ),
+    unique("ai_translation_comment_locale_unique").on(
+      table.commentId,
+      table.targetLocale,
+    ),
+    unique("ai_translation_task_locale_unique").on(
+      table.taskId,
+      table.targetLocale,
+    ),
+    unique("ai_translation_page_locale_unique").on(
+      table.pageId,
+      table.targetLocale,
+    ),
+    index("ai_translation_workspace_idx").on(table.workspaceId),
+  ],
+);
+
+// Stakeholder briefs (ai-brief/): the computed facts each brief was written
+// from, so the next brief of the scope can show what changed. The brief's
+// text is not kept here; it lives in the Page it was saved as, if any.
+// shared_at marks briefs that were saved or copied: the next diff is
+// against the latest of those.
+export const aiBriefTable = pgTable(
+  "ai_brief",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    scopeType: text("scope_type").$type<BriefScopeType>().notNull(),
+    // The cycle, module or project id (no foreign key: three tables).
+    scopeId: text("scope_id").notNull(),
+    audience: text("audience").$type<BriefAudience>().notNull(),
+    facts: jsonb("facts").$type<BriefSnapshot>().notNull(),
+    pageId: text("page_id").references(() => pageTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdBy: text("created_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    sharedAt: timestamp("shared_at", { mode: "date", withTimezone: true }),
+  },
+  (table) => [
+    index("ai_brief_scope_shared_idx").on(
+      table.scopeType,
+      table.scopeId,
+      table.sharedAt,
+    ),
+    index("ai_brief_project_idx").on(table.projectId),
+  ],
+);
+
+// AI agents (ai-agent/): one row per agent, 1:1 with its `user` row
+// (kind 'agent'), which is also the agent's workspace_member row and role.
+// Instructions are written by workspace admins, so they are trusted.
+export const agentTable = pgTable(
+  "agent",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .unique("agent_user_id_unique")
+      .references(() => userTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    name: text("name").notNull(),
+    description: text("description"),
+    instructions: text("instructions").notNull().default(""),
+    modelTier: text("model_tier")
+      .$type<"fast" | "balanced" | "deep">()
+      .notNull()
+      .default("balanced"),
+    // Null follows the workspace's routing; "local" always uses the
+    // instance's local model.
+    providerOverride: text("provider_override").$type<"local">(),
+    ownerId: text("owner_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    enabled: boolean("enabled").notNull().default(true),
+    // Null means no agent-level cap (the workspace's caps still apply).
+    monthlyBudgetMicros: bigint("monthly_budget_micros", { mode: "number" }),
+    // Null: every project the agent's role reaches; otherwise only these.
+    projectIds: jsonb("project_ids").$type<string[]>(),
+    // Saved prompts (ai_skill ids) the agent may follow.
+    skillIds: jsonb("skill_ids").$type<string[]>().notNull().default([]),
+    // The agent may use web search and the workspace's connectors.
+    webAccess: boolean("web_access").notNull().default(false),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("agent_workspace_idx").on(table.workspaceId),
+    check(
+      "agent_model_tier_check",
+      sql`${table.modelTier} in ('fast', 'balanced', 'deep')`,
+    ),
+    check(
+      "agent_budget_check",
+      sql`${table.monthlyBudgetMicros} is null or ${table.monthlyBudgetMicros} >= 0`,
+    ),
+  ],
+);
+
+/** ai_run.input: the request text and, while paused, the open question. */
+export type AiRunInput = {
+  prompt?: string;
+  /** A follow-up run: the earlier run's summary. */
+  context?: string;
+  question?: string;
+  options?: string[];
+  /** ISO instant the question was asked; it expires after 24 hours. */
+  askedAt?: string;
+  answers?: { question: string; answer: string }[];
+};
+
+// One agent run: a Postgres queue claimed with FOR UPDATE SKIP LOCKED under
+// a lease (ai-agent/runner.ts). The principal is the person whose rights cap
+// the run. dedupe_key makes triggers idempotent (one run per mention).
+export const aiRunTable = pgTable(
+  "ai_run",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    projectId: text("project_id").references(() => projectTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    taskId: text("task_id").references(() => taskTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    agentId: text("agent_id").references(() => agentTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    principalUserId: text("principal_user_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    trigger: text("trigger")
+      .$type<
+        "mention" | "assign" | "manual" | "schedule" | "automation" | "chat"
+      >()
+      .notNull(),
+    triggerRef: jsonb("trigger_ref").$type<Record<string, string>>(),
+    dedupeKey: text("dedupe_key").unique("ai_run_dedupe_key_unique"),
+    status: text("status")
+      .$type<
+        | "queued"
+        | "running"
+        | "awaiting_approval"
+        | "needs_input"
+        | "succeeded"
+        | "failed"
+        | "cancelled"
+      >()
+      .notNull()
+      .default("queued"),
+    lockedUntil: timestamp("locked_until", {
+      mode: "date",
+      withTimezone: true,
+    }),
+    attemptCount: integer("attempt_count").notNull().default(0),
+    // The manual request text; cleared when the run ends unless the
+    // instance stores prompts.
+    // While paused for a person (needs_input) also the agent's question and
+    // the answers so far; a follow-up ("chat") run carries the earlier
+    // summary as context.
+    input: jsonb("input").$type<AiRunInput>(),
+    outputSummary: text("output_summary"),
+    // A stable code (AI_BUDGET_EXCEEDED, INTERRUPTED, ...), never raw text.
+    error: text("error"),
+    tokenIn: integer("token_in").notNull().default(0),
+    tokenOut: integer("token_out").notNull().default(0),
+    costMicros: bigint("cost_micros", { mode: "number" }).notNull().default(0),
+    toolCalls: integer("tool_calls").notNull().default(0),
+    // The run's short-lived internal key (no foreign key: revoked keys go).
+    apiKeyId: text("api_key_id"),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    startedAt: timestamp("started_at", { mode: "date", withTimezone: true }),
+    finishedAt: timestamp("finished_at", { mode: "date", withTimezone: true }),
+  },
+  (table) => [
+    index("ai_run_status_locked_idx").on(table.status, table.lockedUntil),
+    index("ai_run_workspace_created_idx").on(
+      table.workspaceId,
+      table.createdAt.desc(),
+    ),
+    index("ai_run_agent_created_idx").on(table.agentId, table.createdAt),
+    index("ai_run_task_idx").on(table.taskId),
+    index("ai_run_api_key_idx").on(table.apiKeyId),
+  ],
+);
+
+// One step of a run: a model call or a tool call. Arguments are redacted;
+// no prompt or answer bodies. Write steps carry a `change` (the change set
+// entry with before and after values) used for review and undo.
+export const aiRunStepTable = pgTable(
+  "ai_run_step",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    runId: text("run_id")
+      .notNull()
+      .references(() => aiRunTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    seq: integer("seq").notNull(),
+    kind: text("kind").$type<"model" | "tool">().notNull(),
+    toolName: text("tool_name"),
+    risk: text("risk").$type<"read" | "write" | "destructive">(),
+    args: jsonb("args").$type<Record<string, unknown>>(),
+    resultStatus: text("result_status")
+      .$type<
+        | "ok"
+        | "error"
+        | "denied"
+        | "pending"
+        | "applied"
+        | "rejected"
+        | "expired"
+        | "reverted"
+      >()
+      .notNull(),
+    resultRef: jsonb("result_ref").$type<Record<string, unknown>>(),
+    change: jsonb("change").$type<Record<string, unknown>>(),
+    tokenIn: integer("token_in").notNull().default(0),
+    tokenOut: integer("token_out").notNull().default(0),
+    costMicros: bigint("cost_micros", { mode: "number" }).notNull().default(0),
+    appliedAt: timestamp("applied_at", { mode: "date", withTimezone: true }),
+    revertedAt: timestamp("reverted_at", { mode: "date", withTimezone: true }),
+    revertedBy: text("reverted_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [unique("ai_run_step_run_seq_unique").on(table.runId, table.seq)],
+);
+
+// A write an agent proposed that waits for its principal (Agent Desk).
+// Expires after 24 hours; approving applies it through the API.
+export const aiApprovalTable = pgTable(
+  "ai_approval",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    runId: text("run_id")
+      .notNull()
+      .references(() => aiRunTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    stepId: text("step_id")
+      .notNull()
+      .unique("ai_approval_step_unique")
+      .references(() => aiRunStepTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    requestedForUserId: text("requested_for_user_id")
+      .notNull()
+      .references(() => userTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    toolName: text("tool_name").notNull(),
+    argsPreview: jsonb("args_preview").$type<Record<string, unknown>>(),
+    status: text("status")
+      .$type<"pending" | "approved" | "rejected" | "expired">()
+      .notNull()
+      .default("pending"),
+    decidedBy: text("decided_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    decidedAt: timestamp("decided_at", { mode: "date", withTimezone: true }),
+    expiresAt: timestamp("expires_at", {
+      mode: "date",
+      withTimezone: true,
+    }).notNull(),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("ai_approval_requested_status_idx").on(
+      table.requestedForUserId,
+      table.status,
+    ),
+    index("ai_approval_workspace_status_idx").on(
+      table.workspaceId,
+      table.status,
+    ),
+    index("ai_approval_status_expires_idx").on(table.status, table.expiresAt),
+  ],
+);
+
+// Coding-agent handoff (C4). Profiles are issue templates (a mention and an
+// optional assignee) that reuse the project's GitHub or Gitea credentials;
+// no third-party AI key is ever stored. Built-in profiles carry `builtin`
+// and are seeded per workspace on first read; people may edit or disable
+// them but not delete them.
+export const codingAgentProfileTable = pgTable(
+  "coding_agent_profile",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    builtin: text("builtin").$type<"claude_code" | "copilot" | "codex">(),
+    name: text("name").notNull(),
+    mention: text("mention").notNull().default(""),
+    assignee: text("assignee"),
+    enabled: boolean("enabled").notNull().default(true),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("coding_agent_profile_workspace_idx").on(table.workspaceId),
+    unique("coding_agent_profile_builtin_unique").on(
+      table.workspaceId,
+      table.builtin,
+    ),
+  ],
+);
+
+// One task handed to a coding agent: the issue it was sent through and the
+// pull request that came back. The timeline is the four timestamps; `state`
+// is the latest step. Webhooks of the existing integrations move it.
+export const codingHandoffTable = pgTable(
+  "coding_handoff",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    taskId: text("task_id")
+      .notNull()
+      .references(() => taskTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    integrationId: text("integration_id")
+      .notNull()
+      .references(() => integrationTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    provider: text("provider").$type<"github" | "gitea">().notNull(),
+    profileId: text("profile_id").references(() => codingAgentProfileTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    profileName: text("profile_name").notNull(),
+    issueNumber: integer("issue_number").notNull(),
+    issueUrl: text("issue_url").notNull(),
+    prNumber: integer("pr_number"),
+    prUrl: text("pr_url"),
+    prTitle: text("pr_title"),
+    state: text("state")
+      .$type<
+        "issue_created" | "working" | "ready_for_review" | "merged" | "closed"
+      >()
+      .notNull()
+      .default("issue_created"),
+    createdBy: text("created_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    workingAt: timestamp("working_at", { mode: "date", withTimezone: true }),
+    readyAt: timestamp("ready_at", { mode: "date", withTimezone: true }),
+    finishedAt: timestamp("finished_at", { mode: "date", withTimezone: true }),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("coding_handoff_task_idx").on(table.taskId, table.createdAt),
+    index("coding_handoff_integration_issue_idx").on(
+      table.integrationId,
+      table.issueNumber,
+    ),
+  ],
+);
+
+// Project automations ("When → If → Then", automation-rule/): one row per
+// rule. trigger, conditions and actions are validated JSON (see
+// automation-rule/vocabulary.ts); trigger_type mirrors trigger.type so the
+// engine finds a project's rules for an event with one indexed read. Rules
+// run without a model and act as the system actor "Automation".
+export const automationRuleTable = pgTable(
+  "automation_rule",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    name: text("name").notNull(),
+    enabled: boolean("enabled").notNull().default(true),
+    triggerType: text("trigger_type").notNull(),
+    trigger: jsonb("trigger").$type<Record<string, unknown>>().notNull(),
+    // Null means no conditions: every matching event runs the actions.
+    conditions: jsonb("conditions").$type<Record<string, unknown>>(),
+    actions: jsonb("actions").$type<Record<string, unknown>[]>().notNull(),
+    createdBy: text("created_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    updatedBy: text("updated_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    runCount: integer("run_count").notNull().default(0),
+    failureCount: integer("failure_count").notNull().default(0),
+    lastRunAt: timestamp("last_run_at", { mode: "date", withTimezone: true }),
+    lastOutcome: text("last_outcome"),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("automation_rule_project_trigger_idx").on(
+      table.projectId,
+      table.enabled,
+      table.triggerType,
+    ),
+  ],
+);
+
+// One automation run: a rule whose trigger and conditions matched a task,
+// or a run the loop guard or rate limit skipped. Kept for
+// AUTOMATION_RUN_RETENTION_DAYS (automation-rule/retention.ts). dedupe_key
+// makes scheduled triggers (due date passed) fire once per task and date.
+export const automationRunTable = pgTable(
+  "automation_run",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    ruleId: text("rule_id")
+      .notNull()
+      .references(() => automationRuleTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    taskId: text("task_id").references(() => taskTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    triggerType: text("trigger_type").notNull(),
+    outcome: text("outcome")
+      .$type<"success" | "partial" | "failed" | "skipped">()
+      .notNull(),
+    // A stable code (LOOP_DEPTH, RATE_LIMITED, ...) or a short message.
+    error: text("error"),
+    actions: jsonb("actions").$type<Record<string, unknown>[]>(),
+    depth: integer("depth").notNull().default(0),
+    dedupeKey: text("dedupe_key").unique("automation_run_dedupe_key_unique"),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("automation_run_rule_created_idx").on(
+      table.ruleId,
+      table.createdAt.desc(),
+    ),
+    index("automation_run_project_created_idx").on(
+      table.projectId,
+      table.createdAt.desc(),
+    ),
+    index("automation_run_task_created_idx").on(table.taskId, table.createdAt),
+    index("automation_run_created_idx").on(table.createdAt),
+  ],
+);
+
+// Work an external agent handed to the workspace over A2A (a2a/). The row
+// maps the A2A task onto what Margaya made of it (a task, an intake request,
+// an agent run or an answer); its state is read live from that. No message
+// or answer bodies are stored.
+export const a2aTaskTable = pgTable(
+  "a2a_task",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    // The person whose credential sent the work; only they can read it.
+    userId: text("user_id").references(() => userTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+    apiKeyId: text("api_key_id"),
+    contextId: text("context_id").notNull(),
+    skill: text("skill")
+      .$type<"create_task" | "triage_request" | "ask_workspace" | "run_agent">()
+      .notNull(),
+    refKind: text("ref_kind")
+      .$type<"task" | "intake" | "ai_run" | "answer">()
+      .notNull(),
+    refId: text("ref_id"),
+    projectId: text("project_id").references(() => projectTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    // Set once an outcome no longer depends on anything else (an answer, a
+    // cancellation, a failure before anything was made).
+    finalState: text("final_state"),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("a2a_task_user_created_idx").on(
+      table.userId,
+      table.workspaceId,
+      table.createdAt.desc(),
+    ),
+    index("a2a_task_context_idx").on(table.contextId),
+  ],
+);
+
+// --- AI chat, memory, skills, schedules and connectors (2026-10-26) ---
+
+/**
+ * A thumbs up or down on an AI answer. Holds no prompt or answer text: only
+ * what was rated, by whom and with which model, plus an optional reason.
+ */
+export const aiFeedbackTable = pgTable(
+  "ai_feedback",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    userId: text("user_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    feature: text("feature").notNull(),
+    rating: smallint("rating").notNull(),
+    reason: text("reason"),
+    provider: text("provider"),
+    model: text("model"),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("ai_feedback_workspace_created_idx").on(
+      table.workspaceId,
+      table.createdAt,
+    ),
+  ],
+);
+
+/** Ask conversations kept on the server when the workspace opts in. */
+export const aiConversationTable = pgTable(
+  "ai_conversation",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    projectId: text("project_id").references(() => projectTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    title: text("title").notNull(),
+    pinned: boolean("pinned").notNull().default(false),
+    turns: jsonb("turns").$type<Record<string, unknown>[]>().notNull(),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("ai_conversation_owner_idx").on(
+      table.workspaceId,
+      table.userId,
+      table.updatedAt,
+    ),
+  ],
+);
+
+/**
+ * Facts the AI should remember (for example the team's release day), for
+ * the workspace, a project or one person. Shown and editable in settings.
+ */
+export const aiMemoryNoteTable = pgTable(
+  "ai_memory_note",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    scope: text("scope").$type<"workspace" | "project" | "user">().notNull(),
+    projectId: text("project_id").references(() => projectTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+    // The person a "user" note belongs to.
+    userId: text("user_id").references(() => userTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+    content: text("content").notNull(),
+    createdBy: text("created_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("ai_memory_note_workspace_idx").on(table.workspaceId, table.scope),
+  ],
+);
+
+/** Saved, reusable prompts ("skills"), used from "/" and by agents. */
+export const aiSkillTable = pgTable(
+  "ai_skill",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    name: text("name").notNull(),
+    description: text("description"),
+    prompt: text("prompt").notNull(),
+    // Shared with the workspace, or private to its creator.
+    shared: boolean("shared").notNull().default(true),
+    createdBy: text("created_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [index("ai_skill_workspace_idx").on(table.workspaceId)],
+);
+
+/** An agent run on a schedule (cron in a time zone). */
+export const agentScheduleTable = pgTable(
+  "agent_schedule",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    agentId: text("agent_id")
+      .notNull()
+      .references(() => agentTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    // The task the run works on; null lets the run create its own output.
+    taskId: text("task_id").references(() => taskTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    cron: text("cron").notNull(),
+    timezone: text("timezone").notNull().default("UTC"),
+    prompt: text("prompt").notNull(),
+    enabled: boolean("enabled").notNull().default(true),
+    // The person whose rights cap the scheduled runs.
+    createdBy: text("created_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    lastRunAt: timestamp("last_run_at", { mode: "date", withTimezone: true }),
+    nextRunAt: timestamp("next_run_at", { mode: "date", withTimezone: true }),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("agent_schedule_due_idx").on(table.enabled, table.nextRunAt),
+    index("agent_schedule_agent_idx").on(table.agentId),
+  ],
+);
+
+/**
+ * An outside MCP server the AI may call (code hosting, error tracking, …).
+ * Personal to its owner, or shared with the workspace when userId is null.
+ */
+export const aiConnectorTable = pgTable(
+  "ai_connector",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    userId: text("user_id").references(() => userTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+    name: text("name").notNull(),
+    url: text("url").notNull(),
+    authType: text("auth_type").$type<"none" | "header">().notNull(),
+    // Sealed like other stored credentials; never returned by the API.
+    secret: text("secret"),
+    headerName: text("header_name"),
+    enabled: boolean("enabled").notNull().default(true),
+    createdBy: text("created_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [index("ai_connector_workspace_idx").on(table.workspaceId)],
 );

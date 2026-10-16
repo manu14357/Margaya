@@ -2,8 +2,15 @@ import { relations } from "drizzle-orm";
 import {
   accountTable,
   activityTable,
+  agentTable,
+  aiApprovalTable,
+  aiRunStepTable,
+  aiRunTable,
+  analyticsReportTable,
   apikeyTable,
   assetTable,
+  automationRuleTable,
+  automationRunTable,
   columnTable,
   commentTable,
   customFieldDefinitionTable,
@@ -14,6 +21,7 @@ import {
   estimateTable,
   externalLinkTable,
   favoriteTable,
+  flowAlertTable,
   githubIntegrationTable,
   homePreferenceTable,
   instanceSettingTable,
@@ -28,8 +36,10 @@ import {
   notificationTable,
   pageReferenceTable,
   pageTable,
+  pageTemplateTable,
   pageVersionTable,
   projectAutomationTable,
+  projectMemberTable,
   projectPublicationTable,
   projectTable,
   publicBoardBlockTable,
@@ -49,6 +59,7 @@ import {
   taskReminderSentTable,
   taskSubscriberTable,
   taskTable,
+  taskTemplateTable,
   taskVoteTable,
   teamMemberTable,
   teamTable,
@@ -150,6 +161,21 @@ export const projectTableRelations = relations(
     githubIntegration: many(githubIntegrationTable),
     integrations: many(integrationTable),
     notificationWorkspaceProjects: many(userNotificationWorkspaceProjectTable),
+    members: many(projectMemberTable),
+  }),
+);
+
+export const projectMemberTableRelations = relations(
+  projectMemberTable,
+  ({ one }) => ({
+    project: one(projectTable, {
+      fields: [projectMemberTable.projectId],
+      references: [projectTable.id],
+    }),
+    user: one(userTable, {
+      fields: [projectMemberTable.userId],
+      references: [userTable.id],
+    }),
   }),
 );
 
@@ -805,6 +831,10 @@ export const taskDraftTableRelations = relations(taskDraftTable, ({ one }) => ({
     fields: [taskDraftTable.createdBy],
     references: [userTable.id],
   }),
+  parentTask: one(taskTable, {
+    fields: [taskDraftTable.parentTaskId],
+    references: [taskTable.id],
+  }),
 }));
 
 export const projectAutomationTableRelations = relations(
@@ -820,6 +850,42 @@ export const projectAutomationTableRelations = relations(
     }),
     updatedByUser: one(userTable, {
       fields: [projectAutomationTable.updatedBy],
+      references: [userTable.id],
+    }),
+  }),
+);
+
+export const taskTemplateTableRelations = relations(
+  taskTemplateTable,
+  ({ one }) => ({
+    project: one(projectTable, {
+      fields: [taskTemplateTable.projectId],
+      references: [projectTable.id],
+    }),
+    column: one(columnTable, {
+      fields: [taskTemplateTable.columnId],
+      references: [columnTable.id],
+    }),
+    estimatePoint: one(estimatePointTable, {
+      fields: [taskTemplateTable.estimatePointId],
+      references: [estimatePointTable.id],
+    }),
+    creator: one(userTable, {
+      fields: [taskTemplateTable.createdBy],
+      references: [userTable.id],
+    }),
+  }),
+);
+
+export const analyticsReportTableRelations = relations(
+  analyticsReportTable,
+  ({ one }) => ({
+    workspace: one(workspaceTable, {
+      fields: [analyticsReportTable.workspaceId],
+      references: [workspaceTable.id],
+    }),
+    owner: one(userTable, {
+      fields: [analyticsReportTable.ownerId],
       references: [userTable.id],
     }),
   }),
@@ -848,6 +914,20 @@ export const pageTableRelations = relations(pageTable, ({ one, many }) => ({
   references: many(pageReferenceTable),
   assets: many(assetTable),
 }));
+
+export const pageTemplateTableRelations = relations(
+  pageTemplateTable,
+  ({ one }) => ({
+    workspace: one(workspaceTable, {
+      fields: [pageTemplateTable.workspaceId],
+      references: [workspaceTable.id],
+    }),
+    project: one(projectTable, {
+      fields: [pageTemplateTable.projectId],
+      references: [projectTable.id],
+    }),
+  }),
+);
 
 export const pageVersionTableRelations = relations(
   pageVersionTable,
@@ -977,6 +1057,110 @@ export const instanceSettingTableRelations = relations(
     updatedByUser: one(userTable, {
       fields: [instanceSettingTable.updatedBy],
       references: [userTable.id],
+    }),
+  }),
+);
+
+export const agentTableRelations = relations(agentTable, ({ one, many }) => ({
+  user: one(userTable, {
+    fields: [agentTable.userId],
+    references: [userTable.id],
+    relationName: "agentUser",
+  }),
+  workspace: one(workspaceTable, {
+    fields: [agentTable.workspaceId],
+    references: [workspaceTable.id],
+  }),
+  owner: one(userTable, {
+    fields: [agentTable.ownerId],
+    references: [userTable.id],
+    relationName: "agentOwner",
+  }),
+  runs: many(aiRunTable),
+}));
+
+export const aiRunTableRelations = relations(aiRunTable, ({ one, many }) => ({
+  agent: one(agentTable, {
+    fields: [aiRunTable.agentId],
+    references: [agentTable.id],
+  }),
+  workspace: one(workspaceTable, {
+    fields: [aiRunTable.workspaceId],
+    references: [workspaceTable.id],
+  }),
+  task: one(taskTable, {
+    fields: [aiRunTable.taskId],
+    references: [taskTable.id],
+  }),
+  principal: one(userTable, {
+    fields: [aiRunTable.principalUserId],
+    references: [userTable.id],
+  }),
+  steps: many(aiRunStepTable),
+  approvals: many(aiApprovalTable),
+}));
+
+export const aiRunStepTableRelations = relations(aiRunStepTable, ({ one }) => ({
+  run: one(aiRunTable, {
+    fields: [aiRunStepTable.runId],
+    references: [aiRunTable.id],
+  }),
+}));
+
+export const aiApprovalTableRelations = relations(
+  aiApprovalTable,
+  ({ one }) => ({
+    run: one(aiRunTable, {
+      fields: [aiApprovalTable.runId],
+      references: [aiRunTable.id],
+    }),
+    step: one(aiRunStepTable, {
+      fields: [aiApprovalTable.stepId],
+      references: [aiRunStepTable.id],
+    }),
+    requestedFor: one(userTable, {
+      fields: [aiApprovalTable.requestedForUserId],
+      references: [userTable.id],
+    }),
+  }),
+);
+
+export const flowAlertTableRelations = relations(flowAlertTable, ({ one }) => ({
+  project: one(projectTable, {
+    fields: [flowAlertTable.projectId],
+    references: [projectTable.id],
+  }),
+  notifiedUser: one(userTable, {
+    fields: [flowAlertTable.notifiedUserId],
+    references: [userTable.id],
+  }),
+}));
+
+export const automationRuleTableRelations = relations(
+  automationRuleTable,
+  ({ one, many }) => ({
+    project: one(projectTable, {
+      fields: [automationRuleTable.projectId],
+      references: [projectTable.id],
+    }),
+    creator: one(userTable, {
+      fields: [automationRuleTable.createdBy],
+      references: [userTable.id],
+    }),
+    runs: many(automationRunTable),
+  }),
+);
+
+export const automationRunTableRelations = relations(
+  automationRunTable,
+  ({ one }) => ({
+    rule: one(automationRuleTable, {
+      fields: [automationRunTable.ruleId],
+      references: [automationRuleTable.id],
+    }),
+    task: one(taskTable, {
+      fields: [automationRunTable.taskId],
+      references: [taskTable.id],
     }),
   }),
 );
