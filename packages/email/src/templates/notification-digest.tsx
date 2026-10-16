@@ -24,6 +24,27 @@ export type DigestMention = {
   url: string | null;
 };
 
+/** My brief in the digest (opt-in): blocked and followed tasks. */
+export type DigestBrief = {
+  blocked: Array<{
+    title: string;
+    url: string;
+    projectName: string;
+    /** Keys of the open blockers the reader can see. */
+    blockers: string[];
+    /** Blockers in projects the reader can't see. */
+    hiddenBlockers: number;
+  }>;
+  moreBlocked: number;
+  following: Array<{
+    title: string;
+    url: string;
+    projectName: string;
+    changes: number;
+  }>;
+  moreFollowing: number;
+};
+
 export type DigestWorkspace = {
   name: string;
   inboxUrl: string;
@@ -35,6 +56,8 @@ export type DigestWorkspace = {
   mentionCount: number;
   /** Unread inbox notifications that arrived since the last digest. */
   unreadCount: number;
+  /** Present when the reader added My brief to the digest. */
+  brief?: DigestBrief;
 };
 
 export type NotificationDigestEmailProps = {
@@ -63,6 +86,12 @@ const messages = {
     openInbox: "Open inbox",
     manage: "Manage notification settings",
     footer: "You chose to receive this digest.",
+    blockedHeading: "Blocked",
+    waitingOn: (keys: string) => `Waiting on ${keys}`,
+    hiddenBlockers: (count: number) =>
+      count === 1 ? "1 task you can't see" : `${count} tasks you can't see`,
+    followingHeading: "Changes on tasks you follow",
+    changes: (count: number) => (count === 1 ? "1 change" : `${count} changes`),
   },
   de: {
     title: {
@@ -85,6 +114,15 @@ const messages = {
     openInbox: "Posteingang oeffnen",
     manage: "Benachrichtigungseinstellungen verwalten",
     footer: "Du hast diese Zusammenfassung abonniert.",
+    blockedHeading: "Blockiert",
+    waitingOn: (keys: string) => `Wartet auf ${keys}`,
+    hiddenBlockers: (count: number) =>
+      count === 1
+        ? "1 Aufgabe, die du nicht sehen kannst"
+        : `${count} Aufgaben, die du nicht sehen kannst`,
+    followingHeading: "Aenderungen an Aufgaben, denen du folgst",
+    changes: (count: number) =>
+      count === 1 ? "1 Aenderung" : `${count} Aenderungen`,
   },
   vi: {
     title: {
@@ -103,6 +141,11 @@ const messages = {
     openInbox: "Mở hộp thư",
     manage: "Quản lý cài đặt thông báo",
     footer: "Bạn đã chọn nhận bản tóm tắt này.",
+    blockedHeading: "Đang bị chặn",
+    waitingOn: (keys: string) => `Đang chờ ${keys}`,
+    hiddenBlockers: (count: number) => `${count} công việc bạn không xem được`,
+    followingHeading: "Thay đổi trên công việc bạn theo dõi",
+    changes: (count: number) => `${count} thay đổi`,
   },
   ja: {
     title: { daily: "毎日のダイジェスト", weekly: "毎週のダイジェスト" },
@@ -118,6 +161,11 @@ const messages = {
     openInbox: "受信トレイを開く",
     manage: "通知設定を管理",
     footer: "このダイジェストの受信を選択しています。",
+    blockedHeading: "ブロック中",
+    waitingOn: (keys: string) => `${keys} を待っています`,
+    hiddenBlockers: (count: number) => `表示できないタスク ${count} 件`,
+    followingHeading: "フォロー中のタスクの変更",
+    changes: (count: number) => `${count} 件の変更`,
   },
 } as const;
 
@@ -170,11 +218,11 @@ const NotificationDigestEmail = ({
                 {workspace.dueTasks.map((task) => (
                   <Text key={task.url} style={line}>
                     {"• "}
-                    <Link href={task.url} style={{ color: "#262626" }}>
+                    <Link href={task.url} style={{ color: "#047857" }}>
                       {task.title}
                     </Link>
                     <span
-                      style={{ color: task.overdue ? "#b91c1c" : "#737373" }}
+                      style={{ color: task.overdue ? "#b91c1c" : "#5f6b65" }}
                     >
                       {` · ${task.overdue ? copy.overdue : copy.due} ${task.dueLabel} · ${task.projectName}`}
                     </span>
@@ -196,17 +244,67 @@ const NotificationDigestEmail = ({
                   <Text key={mention.id} style={line}>
                     {"• "}
                     {mention.url ? (
-                      <Link href={mention.url} style={{ color: "#262626" }}>
+                      <Link href={mention.url} style={{ color: "#047857" }}>
                         {mention.title}
                       </Link>
                     ) : (
                       mention.title
                     )}
-                    <span style={{ color: "#737373" }}>
+                    <span style={{ color: "#5f6b65" }}>
                       {` · ${mention.detail}`}
                     </span>
                   </Text>
                 ))}
+              </>
+            ) : null}
+            {workspace.brief && workspace.brief.blocked.length > 0 ? (
+              <>
+                <Text style={sectionHeading}>{copy.blockedHeading}</Text>
+                {workspace.brief.blocked.map((task) => {
+                  const waiting = [
+                    ...task.blockers,
+                    ...(task.hiddenBlockers > 0
+                      ? [copy.hiddenBlockers(task.hiddenBlockers)]
+                      : []),
+                  ].join(", ");
+                  return (
+                    <Text key={task.url} style={line}>
+                      {"• "}
+                      <Link href={task.url} style={{ color: "#047857" }}>
+                        {task.title}
+                      </Link>
+                      <span style={{ color: "#5f6b65" }}>
+                        {` · ${copy.waitingOn(waiting)} · ${task.projectName}`}
+                      </span>
+                    </Text>
+                  );
+                })}
+                {workspace.brief.moreBlocked > 0 ? (
+                  <Text style={{ ...styles.muted, margin: "4px 0 0" }}>
+                    {copy.more(workspace.brief.moreBlocked)}
+                  </Text>
+                ) : null}
+              </>
+            ) : null}
+            {workspace.brief && workspace.brief.following.length > 0 ? (
+              <>
+                <Text style={sectionHeading}>{copy.followingHeading}</Text>
+                {workspace.brief.following.map((task) => (
+                  <Text key={task.url} style={line}>
+                    {"• "}
+                    <Link href={task.url} style={{ color: "#047857" }}>
+                      {task.title}
+                    </Link>
+                    <span style={{ color: "#5f6b65" }}>
+                      {` · ${copy.changes(task.changes)} · ${task.projectName}`}
+                    </span>
+                  </Text>
+                ))}
+                {workspace.brief.moreFollowing > 0 ? (
+                  <Text style={{ ...styles.muted, margin: "4px 0 0" }}>
+                    {copy.more(workspace.brief.moreFollowing)}
+                  </Text>
+                ) : null}
               </>
             ) : null}
             {workspace.unreadCount > 0 ? (

@@ -10,7 +10,7 @@ export type OtpEmailProps = {
   otp: string;
   locale?: string | null;
   /** What the code is for; sign-in when omitted. */
-  purpose?: "sign-in" | "email-verification";
+  purpose?: "sign-in" | "email-verification" | "email-change";
 };
 
 const messages = {
@@ -19,6 +19,8 @@ const messages = {
     title: "Your verification code",
     subtitle: "Enter this one-time code to finish signing in.",
     verifySubtitle: "Enter this one-time code to verify your email address.",
+    changeSubtitle:
+      "Enter this one-time code to confirm this as the new email address of your Margaya account.",
     code: "is your Margaya verification code.",
     expiry: `This code expires in ${OTP_EXPIRY_SECONDS / 60} minutes.`,
     ignore: "If you didn't request this, you can ignore this email.",
@@ -30,6 +32,8 @@ const messages = {
     subtitle: "Gib diesen Einmalcode ein, um die Anmeldung abzuschließen.",
     verifySubtitle:
       "Gib diesen Einmalcode ein, um deine E-Mail-Adresse zu bestätigen.",
+    changeSubtitle:
+      "Gib diesen Einmalcode ein, um diese Adresse als neue E-Mail-Adresse deines Margaya-Kontos zu bestätigen.",
     code: "ist dein Margaya Bestätigungscode.",
     expiry: `Dieser Code läuft in ${OTP_EXPIRY_SECONDS / 60} Minuten ab.`,
     ignore:
@@ -42,6 +46,8 @@ const messages = {
     subtitle: "Nhập mã dùng một lần này để hoàn tất đăng nhập.",
     verifySubtitle:
       "Nhập mã dùng một lần này để xác minh địa chỉ email của bạn.",
+    changeSubtitle:
+      "Nhập mã dùng một lần này để xác nhận đây là địa chỉ email mới cho tài khoản Margaya của bạn.",
     code: "là mã xác minh Margaya của bạn.",
     expiry: `Mã này sẽ hết hạn sau ${OTP_EXPIRY_SECONDS / 60} phút.`,
     ignore: "Nếu bạn không yêu cầu điều này, bạn có thể bỏ qua email này.",
@@ -54,6 +60,8 @@ const messages = {
       "サインインを完了するには、このワンタイムコードを入力してください。",
     verifySubtitle:
       "メールアドレスを確認するには、このワンタイムコードを入力してください。",
+    changeSubtitle:
+      "このアドレスを Margaya アカウントの新しいメールアドレスとして確認するには、このワンタイムコードを入力してください。",
     code: "はあなたの Margaya 確認コードです。",
     expiry: `このコードの有効期限は${OTP_EXPIRY_SECONDS / 60}分です。`,
     ignore: "心当たりがない場合は、このメールを無視してかまいません。",
@@ -69,7 +77,11 @@ const OtpEmail = ({ otp, locale, purpose }: OtpEmailProps) => {
       preview={copy.preview}
       title={copy.title}
       subtitle={
-        purpose === "email-verification" ? copy.verifySubtitle : copy.subtitle
+        purpose === "email-verification"
+          ? copy.verifySubtitle
+          : purpose === "email-change"
+            ? copy.changeSubtitle
+            : copy.subtitle
       }
     >
       <Section>

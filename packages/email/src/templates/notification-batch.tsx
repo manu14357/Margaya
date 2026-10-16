@@ -112,7 +112,7 @@ const NotificationBatchEmail = ({
           <Section key={group.id} style={groupStyle}>
             <Text style={groupTitle}>
               {group.url ? (
-                <Link href={group.url} style={{ color: "#262626" }}>
+                <Link href={group.url} style={{ color: "#047857" }}>
                   {group.title}
                 </Link>
               ) : (
@@ -127,7 +127,7 @@ const NotificationBatchEmail = ({
                 {"• "}
                 {change.detail}
                 {change.actorName ? (
-                  <span style={{ color: "#737373" }}>
+                  <span style={{ color: "#5f6b65" }}>
                     {` (${copy.by} ${change.actorName})`}
                   </span>
                 ) : null}

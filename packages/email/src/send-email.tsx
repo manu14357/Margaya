@@ -3,6 +3,9 @@ import { config } from "dotenv-mono";
 import type { ReactElement } from "react";
 import { assertSupportedSmtpEnv, isSmtpConfigured } from "./smtp-config";
 import { getSmtpFrom, getSmtpTransport } from "./smtp-transport";
+import EmailChangedEmail, {
+  type EmailChangedEmailProps,
+} from "./templates/email-changed";
 import type { MagicLinkEmailProps } from "./templates/magic-link";
 import MagicLinkEmail from "./templates/magic-link";
 import NotificationEmail, {
@@ -83,6 +86,26 @@ export const sendPasswordResetEmail = async (
     });
   } catch (error) {
     console.error("Error sending password reset email", error);
+  }
+};
+
+/** Tells the previous address that the account's email changed. */
+export const sendEmailChangedEmail = async (
+  to: string,
+  subject: string,
+  data: EmailChangedEmailProps,
+) => {
+  if (!isSmtpConfigured()) return;
+  const emailTemplate = await render(EmailChangedEmail(data));
+  try {
+    await getSmtpTransport().sendMail({
+      from: getSmtpFrom(),
+      to,
+      subject,
+      html: emailTemplate,
+    });
+  } catch (error) {
+    console.error("Error sending email-changed notice", error);
   }
 };
 

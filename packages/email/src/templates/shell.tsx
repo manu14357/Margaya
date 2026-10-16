@@ -46,13 +46,13 @@ export function EmailShell({
 export const styles = {
   paragraph: {
     margin: "0 0 14px",
-    color: "#262626",
+    color: "#1c1f1d",
     fontSize: "14px",
     lineHeight: "22px",
   },
   muted: {
     margin: "0",
-    color: "#737373",
+    color: "#5f6b65",
     fontSize: "13px",
     lineHeight: "20px",
   },
@@ -61,9 +61,9 @@ export const styles = {
     margin: "8px 0 14px",
     padding: "11px 20px",
     borderRadius: "10px",
-    border: "1px solid #262626",
-    color: "#fafafa",
-    backgroundColor: "#262626",
+    border: "1px solid #047857",
+    color: "#ffffff",
+    backgroundColor: "#047857",
     textDecoration: "none",
     fontSize: "14px",
     fontWeight: "600",
@@ -76,7 +76,7 @@ export const styles = {
     borderRadius: "10px",
     border: "1px solid rgba(0, 0, 0, 0.1)",
     backgroundColor: "rgba(0, 0, 0, 0.04)",
-    color: "#171717",
+    color: "#1c1f1d",
     fontSize: "30px",
     letterSpacing: "8px",
     fontWeight: "600",
@@ -87,14 +87,14 @@ export const styles = {
   },
   footer: {
     margin: "0",
-    color: "#737373",
+    color: "#5f6b65",
     fontSize: "12px",
     lineHeight: "18px",
   },
 };
 
 const main = {
-  backgroundColor: "#ffffff",
+  backgroundColor: "#fafaf7",
   margin: "0",
   padding: "20px 12px",
   fontFamily:
@@ -117,7 +117,7 @@ const content = {
 
 const badge = {
   margin: "0 0 8px",
-  color: "#262626",
+  color: "#1c1f1d",
   fontWeight: "600",
   fontSize: "12px",
   letterSpacing: "0.1em",
@@ -126,7 +126,7 @@ const badge = {
 
 const heading = {
   margin: "0 0 8px",
-  color: "#262626",
+  color: "#1c1f1d",
   fontSize: "24px",
   lineHeight: "31px",
   fontFamily:
@@ -135,7 +135,7 @@ const heading = {
 
 const subtitleText = {
   margin: "0 0 18px",
-  color: "#525252",
+  color: "#3e4943",
   fontSize: "14px",
   lineHeight: "22px",
 };

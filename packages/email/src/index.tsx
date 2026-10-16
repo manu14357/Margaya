@@ -7,6 +7,7 @@ export {
 export { OTP_EXPIRY_SECONDS } from "./otp-expiry";
 export {
   type EmailResult,
+  sendEmailChangedEmail,
   sendMagicLinkEmail,
   sendNotificationBatchEmail,
   sendNotificationDigestEmail,
@@ -29,6 +30,7 @@ export type {
   NotificationBatchGroup,
 } from "./templates/notification-batch";
 export type {
+  DigestBrief,
   DigestMention,
   DigestTask,
   DigestWorkspace,
