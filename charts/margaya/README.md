@@ -83,6 +83,9 @@ When CPU autoscaling is enabled, set `margaya.resources.requests.cpu`; Kubernete
 | `postgresql.image.repository`       | PostgreSQL image repository                                                                                        | `postgres`                      |
 | `postgresql.image.tag`              | PostgreSQL image tag                                                                                               | `16-alpine`                     |
 | `postgresql.image.pullPolicy`       | PostgreSQL image pull policy                                                                                      | `IfNotPresent`                  |
+| `postgresql.pgvector.enabled`       | Use PostgreSQL with the pgvector extension, for optional AI semantic search (search stays full-text without it)    | `false`                         |
+| `postgresql.pgvector.image.repository` | pgvector image repository                                                                                       | `pgvector/pgvector`             |
+| `postgresql.pgvector.image.tag`     | pgvector image tag (PostgreSQL 16)                                                                                 | `pg16`                          |
 | `postgresql.auth.database`          | PostgreSQL database name                                                                                           | `margaya`                       |
 | `postgresql.auth.username`          | PostgreSQL username                                                                                                | `margaya_user`                  |
 | `postgresql.auth.password`          | PostgreSQL password                                                                                                | `margaya_password`              |
@@ -117,7 +120,14 @@ When CPU autoscaling is enabled, set `margaya.resources.requests.cpu`; Kubernete
 | `margaya.env.redis.url`             | Redis/Valkey URL (`REDIS_URL`) that relays realtime updates between replicas. Required with more than one replica | `""`                            |
 | `margaya.env.redis.existingSecret.name` | Secret holding the full Redis URL; takes precedence over `url`                                                 | `""`                            |
 | `margaya.env.redis.existingSecret.key` | Key of that Secret                                                                                              | `redis-url`                     |
-| `margaya.env.s3.endpoint`           | S3-compatible endpoint (`S3_ENDPOINT`), reachable from users' browsers. Uploads are off while empty               | `""`                            |
+| `margaya.env.localStorage.enabled`  | Store uploads on a volume while `s3.endpoint` is empty                                                              | `true`                          |
+| `margaya.env.localStorage.path`     | Mount path and `MARGAYA_STORAGE_DIR`                                                                               | `/app/apps/api/data/uploads`    |
+| `margaya.env.localStorage.persistence.enabled` | PersistentVolumeClaim for uploads (`false` uses an emptyDir)                                            | `true`                          |
+| `margaya.env.localStorage.persistence.size` | Claim size                                                                                                 | `10Gi`                          |
+| `margaya.env.localStorage.persistence.storageClass` | Storage class (`-` for none)                                                                        | `""`                            |
+| `margaya.env.localStorage.persistence.accessMode` | `ReadWriteMany` lets several replicas share the store                                                  | `ReadWriteOnce`                 |
+| `margaya.env.localStorage.persistence.existingClaim` | Use this claim instead of creating one                                                              | `""`                            |
+| `margaya.env.s3.endpoint`           | S3-compatible endpoint (`S3_ENDPOINT`), reachable from users' browsers. The local store is used while empty       | `""`                            |
 | `margaya.env.s3.bucket`             | Bucket (`S3_BUCKET`); required with `endpoint`                                                                    | `""`                            |
 | `margaya.env.s3.region`             | Signing region (`S3_REGION`)                                                                                       | `us-east-1`                     |
 | `margaya.env.s3.forcePathStyle`     | Path-style URLs (`S3_FORCE_PATH_STYLE`): `true` for MinIO, `false` for AWS S3 and R2                              | `true`                          |
@@ -137,7 +147,7 @@ When CPU autoscaling is enabled, set `margaya.resources.requests.cpu`; Kubernete
 | `margaya.extraEnv`                  | Additional Kubernetes EnvVar entries appended to the Margaya container                                             | `[]`                            |
 | `margaya.extraEnvFrom`              | Additional Kubernetes EnvFromSource entries appended to the Margaya container                                      | `[]`                            |
 | `margaya.resources`                 | Resource requests and limits for the Margaya container (optional, disabled by default)                             | `{}`                            |
-| `podSecurityContext`                | Security context applied at the Pod level                                                                          | `{}`                            |
+| `podSecurityContext`                | Security context applied at the Pod level                                                                          | `{fsGroup: 1001}`               |
 | `securityContext`                   | Security context applied at the container level                                                                    | `{}`                            |
 ### Ingress parameters
 | Name                                | Description                                                                                                        | Value                           |
@@ -294,9 +304,24 @@ margaya:
 
 Scheduled jobs need nothing extra: they coordinate through PostgreSQL, so any number of replicas runs each job once at a time. Sign-in and API key rate limits are counted per replica. Behind an ingress controller, also set `TRUSTED_PROXIES` through `extraEnv` (see `values.yaml`) so those limits count clients rather than the controller. For Redis Sentinel or Cluster, set `REDIS_SENTINELS` or `REDIS_CLUSTER_NODES` and their companions through `extraEnv` instead.
 
-### File uploads (S3-compatible storage)
+### File uploads
 
-Attachments, images and task exports need S3-compatible storage. Exports fall back to PostgreSQL without it; uploads are off.
+Without S3, attachments and description or comment images go to a built-in file store on a PersistentVolumeClaim (`<release>-uploads`, 10Gi, kept on `helm uninstall`). Files are served only through the API's authorized download route; there is no public listing. Uploads never finalized within a day are swept hourly. Task exports keep using PostgreSQL.
+
+A pod's disk is its own, so with `replicaCount > 1` or autoscaling the local store is used only when `margaya.env.localStorage.persistence.accessMode` is `ReadWriteMany`; otherwise uploads stay off until S3 is set. `podSecurityContext.fsGroup: 1001` (the default) lets the image's user write to the volume.
+
+```yaml
+margaya:
+  env:
+    localStorage:
+      enabled: true
+      persistence:
+        size: 20Gi
+        storageClass: fast-ssd
+        # existingClaim: my-uploads
+```
+
+With S3-compatible storage, uploads, images and task exports go to the bucket instead and the local store is not mounted:
 
 ```yaml
 margaya:
@@ -478,6 +503,14 @@ For production deployments, consider the following security recommendations:
 4. Use a dedicated storage class for the PostgreSQL database
 5. Consider using a network policy to restrict traffic between components
 6. Regularly update PostgreSQL and application images
+
+Cookie-authenticated writes are accepted only from `MARGAYA_CLIENT_URL`, `MARGAYA_API_URL` or a `CORS_ORIGINS` entry, so list every address people use to reach the web app. The API sends HSTS when `MARGAYA_API_URL` is `https://`; the bundled nginx sends it when the ingress passes `X-Forwarded-Proto: https`. An instance admin's API keys reach only the admin's own workspaces unless `ALLOW_INSTANCE_ADMIN_API_KEYS=true` is set through `extraEnv`.
+
+If no instance admin can sign in, use the recovery CLI in the pod (see `ENVIRONMENT_SETUP.md`):
+
+```bash
+kubectl exec -it deploy/<release>-margaya -- node apps/api/dist/cli/admin.js promote-admin you@example.com
+```
 ### Pod Security Context
 On clusters with Pod Security Admission enforcement, set the following to satisfy the `restricted` policy:
 ```yaml

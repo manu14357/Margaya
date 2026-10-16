@@ -110,3 +110,21 @@ Web component selector labels
 app.kubernetes.io/name: {{ include "margaya.name" . }}-web
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{/*
+"true" when uploads use the built-in local store: no S3 endpoint, the store
+is enabled, and either one replica or a ReadWriteMany claim (a local disk is
+per pod, so several replicas need a shared volume).
+*/}}
+{{- define "margaya.localStorage.active" -}}
+{{- $local := .Values.margaya.env.localStorage -}}
+{{- $multi := or (gt (int .Values.replicaCount) 1) .Values.autoscaling.enabled -}}
+{{- $shared := and $local.persistence.enabled (eq $local.persistence.accessMode "ReadWriteMany") -}}
+{{- if and $local.enabled (not .Values.margaya.env.s3.endpoint) (or (not $multi) $shared) -}}
+true
+{{- end -}}
+{{- end }}
+
+{{- define "margaya.localStorage.claimName" -}}
+{{- .Values.margaya.env.localStorage.persistence.existingClaim | default (printf "%s-uploads" (include "margaya.fullname" .)) -}}
+{{- end }}

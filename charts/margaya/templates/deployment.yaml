@@ -109,6 +109,25 @@ spec:
               value: {{ .url | quote }}
             {{- end }}
             {{- end }}
+            {{- with .Values.margaya.env.ai }}
+            {{- $plain := dict "MARGAYA_AI_ENABLED" .enabled "MARGAYA_AI_PROVIDER" .provider "MARGAYA_AI_OPENAI_BASE_URL" .openaiBaseUrl "MARGAYA_AI_MODEL_FAST" .models.fast "MARGAYA_AI_MODEL_BALANCED" .models.balanced "MARGAYA_AI_MODEL_DEEP" .models.deep "MARGAYA_AI_LOCAL_BASE_URL" .localBaseUrl "MARGAYA_AI_LOCAL_MODEL" .localModel "MARGAYA_AI_LOCAL_ONLY" .localOnly "MARGAYA_AI_EMBEDDINGS_BASE_URL" .embeddingsBaseUrl "MARGAYA_AI_EMBEDDINGS_MODEL" .embeddingsModel }}
+            {{- range $name, $value := $plain }}
+            {{- if ne (toString $value) "" }}
+            - name: {{ $name }}
+              value: {{ toString $value | quote }}
+            {{- end }}
+            {{- end }}
+            {{- $secrets := dict "ANTHROPIC_API_KEY" .anthropicApiKey.existingSecret "MARGAYA_AI_OPENAI_API_KEY" .openaiApiKey.existingSecret "MARGAYA_AI_EMBEDDINGS_API_KEY" .embeddingsApiKey.existingSecret }}
+            {{- range $name, $ref := $secrets }}
+            {{- if $ref.name }}
+            - name: {{ $name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $ref.name }}
+                  key: {{ $ref.key }}
+            {{- end }}
+            {{- end }}
+            {{- end }}
             {{- with .Values.margaya.env.s3 }}
             {{- if .endpoint }}
             - name: S3_ENDPOINT
@@ -137,6 +156,13 @@ spec:
             {{- end }}
             {{- end }}
             {{- end }}
+            {{- if include "margaya.localStorage.active" . }}
+            - name: MARGAYA_STORAGE_DIR
+              value: {{ .Values.margaya.env.localStorage.path | quote }}
+            {{- else }}
+            - name: MARGAYA_LOCAL_STORAGE
+              value: "false"
+            {{- end }}
             {{- with .Values.margaya.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -150,6 +176,21 @@ spec:
             {{- toYaml .Values.margaya.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.margaya.resources | nindent 12 }}
+          {{- if include "margaya.localStorage.active" . }}
+          volumeMounts:
+            - name: uploads
+              mountPath: {{ .Values.margaya.env.localStorage.path }}
+          {{- end }}
+      {{- if include "margaya.localStorage.active" . }}
+      volumes:
+        - name: uploads
+          {{- if .Values.margaya.env.localStorage.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "margaya.localStorage.claimName" . }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+      {{- end }}
 
       {{- with .Values.nodeSelector }}
       nodeSelector:

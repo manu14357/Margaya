@@ -20,3 +20,30 @@ spec:
     requests:
       storage: {{ .Values.postgresql.persistence.size | default "8Gi" }}
 {{- end }}
+{{- $uploads := .Values.margaya.env.localStorage.persistence }}
+{{- if and (include "margaya.localStorage.active" .) $uploads.enabled (not $uploads.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "margaya.localStorage.claimName" . }}
+  labels:
+    {{- include "margaya.labels" . | nindent 4 }}
+    app.kubernetes.io/component: uploads
+  annotations:
+    # Uploaded files outlive a helm uninstall.
+    helm.sh/resource-policy: keep
+spec:
+  accessModes:
+    - {{ $uploads.accessMode | default "ReadWriteOnce" }}
+  {{- if $uploads.storageClass }}
+  {{- if (eq "-" $uploads.storageClass) }}
+  storageClassName: ""
+  {{- else }}
+  storageClassName: {{ $uploads.storageClass }}
+  {{- end }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ $uploads.size | default "10Gi" }}
+{{- end }}

@@ -22,7 +22,12 @@ spec:
     spec:
       containers:
         - name: postgresql
+          {{- $pgvector := .Values.postgresql.pgvector | default dict }}
+          {{- if $pgvector.enabled }}
+          image: "{{ $pgvector.image.repository }}:{{ $pgvector.image.tag }}"
+          {{- else }}
           image: "{{ .Values.postgresql.image.repository }}:{{ .Values.postgresql.image.tag }}"
+          {{- end }}
           imagePullPolicy: {{ .Values.postgresql.image.pullPolicy }}
           ports:
             - name: postgresql

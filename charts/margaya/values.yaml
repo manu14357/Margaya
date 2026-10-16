@@ -11,7 +11,9 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 # Pod configuration
 podAnnotations: {}
-podSecurityContext: {}
+# fsGroup lets the image's user (uid 1001) write to the uploads volume.
+podSecurityContext:
+  fsGroup: 1001
 nodeSelector: {}
 tolerations: []
 affinity: {}
@@ -31,6 +33,15 @@ postgresql:
     repository: postgres
     tag: 16-alpine
     pullPolicy: IfNotPresent
+  # Optional: PostgreSQL 16 with the pgvector extension, for AI semantic
+  # search. Off by default; without it search stays full-text. Switching an
+  # existing database keeps the data; run REINDEX DATABASE once afterwards
+  # (the images sort text with different C libraries).
+  pgvector:
+    enabled: false
+    image:
+      repository: pgvector/pgvector
+      tag: pg16
   # Database configuration
   auth:
     database: margaya
@@ -115,9 +126,63 @@ margaya:
         # Secret holding the full redis:// or rediss:// URL; takes precedence over url
         name: ""
         key: redis-url
+    # AI (off by default). Anything set here is locked in Instance → AI;
+    # leave a value empty to manage it in the panel instead. Keys belong in
+    # Secrets. See the docs page "AI setup".
+    ai:
+      # "true" or "false" locks the switch; empty lets instance admins decide.
+      enabled: ""
+      # anthropic (default) or openai_compatible.
+      provider: ""
+      anthropicApiKey:
+        existingSecret:
+          name: ""
+          key: anthropic-api-key
+      # OpenAI-compatible cloud endpoint, e.g. https://api.openai.com/v1
+      openaiBaseUrl: ""
+      openaiApiKey:
+        existingSecret:
+          name: ""
+          key: openai-api-key
+      # Model names per tier; empty uses the provider default
+      # (claude-haiku-5-5, claude-sonnet-5-5, claude-opus-5-5).
+      models:
+        fast: ""
+        balanced: ""
+        deep: ""
+      # Your own OpenAI-compatible server (Ollama, vLLM), e.g.
+      # http://ollama.ai.svc:11434/v1. Restricted data only goes here.
+      localBaseUrl: ""
+      localModel: ""
+      # "true" sends every AI call to the local model.
+      localOnly: ""
+      # Optional embeddings endpoint (OpenAI-compatible).
+      embeddingsBaseUrl: ""
+      embeddingsModel: ""
+      embeddingsApiKey:
+        existingSecret:
+          name: ""
+          key: embeddings-api-key
+    # Built-in file store, used for attachments and description/comment
+    # images while s3.endpoint is empty. Files are written under `path` and
+    # served only through the API's authorized download route. A local disk
+    # belongs to one pod: with replicaCount > 1 or autoscaling it is used
+    # only on a ReadWriteMany claim (otherwise uploads stay off until S3 is
+    # set). Task exports keep using PostgreSQL without S3.
+    localStorage:
+      enabled: true
+      path: /app/apps/api/data/uploads
+      persistence:
+        # false keeps files in an emptyDir: they are lost when the pod goes.
+        enabled: true
+        size: 10Gi
+        storageClass: ""
+        accessMode: ReadWriteOnce
+        # Use an existing PersistentVolumeClaim instead of creating one.
+        existingClaim: ""
     # S3-compatible object storage (S3, R2, MinIO, ...) for attachments,
-    # description/comment images and task exports. Uploads answer 503 until
-    # endpoint and bucket are set. The browser uploads straight to the
+    # description/comment images and task exports. Without it, the local
+    # store above holds uploads. The browser uploads straight to the
     # endpoint, so it must be reachable from users' browsers.
     s3:
       endpoint: ""
@@ -208,6 +273,25 @@ margaya:
   #   # Days workspace audit log entries are kept (default 365; 0 = forever).
   #   - name: AUDIT_LOG_RETENTION_DAYS
   #     value: "365"
+  #   # Days instance audit trail entries are kept (default 365; 0 = forever).
+  #   - name: INSTANCE_AUDIT_LOG_RETENTION_DAYS
+  #     value: "365"
+  #   # Days the per-key API request log is kept (default 14, at most 365);
+  #   # API_REQUEST_LOG_ENABLED=false turns the log off.
+  #   - name: API_REQUEST_LOG_RETENTION_DAYS
+  #     value: "14"
+  #   # Sign-in policy (each locks its setting in the instance panel):
+  #   # domains new accounts must use, password sign-up kept for invitations,
+  #   # one required sign-in provider (admins keep password sign-in), and the
+  #   # session lifetime in hours (default 168).
+  #   - name: ALLOWED_EMAIL_DOMAINS
+  #     value: "example.com"
+  #   - name: ALLOW_INVITED_PASSWORD_REGISTRATION
+  #     value: "true"
+  #   - name: REQUIRED_SIGN_IN_PROVIDER
+  #     value: "custom"
+  #   - name: SESSION_LIFETIME_HOURS
+  #     value: "168"
   #   # Turns every published project board off (links answer 404).
   #   - name: DISABLE_PUBLIC_BOARDS
   #     value: "true"
