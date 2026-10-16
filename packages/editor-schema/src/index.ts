@@ -49,3 +49,4 @@ export {
   jsonToPlainText,
   referencesFromJson,
 } from "./projections.js";
+export { MargayaTable } from "./table.js";

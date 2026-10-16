@@ -1,6 +1,5 @@
 import type { AnyExtension } from "@tiptap/core";
 import { getSchema } from "@tiptap/core";
-import { Table } from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
@@ -11,6 +10,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { Callout } from "./callout.js";
 import { MargayaImage } from "./image.js";
 import { CUSTOM_NODES, StandaloneInlineTags } from "./nodes.js";
+import { MargayaTable } from "./table.js";
 
 /**
  * The headless page document schema: a superset of the web page editor's
@@ -30,7 +30,7 @@ export function createPageExtensions(): AnyExtension[] {
     TaskList,
     TaskItem.configure({ nested: true }),
     MargayaImage,
-    Table,
+    MargayaTable,
     TableRow,
     TableHeader,
     TableCell,
