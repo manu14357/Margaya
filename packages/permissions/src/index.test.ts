@@ -5,7 +5,9 @@ import {
   builtInRoles,
   DEFAULT_ROLE_NAMES,
   defaultRolePayloads,
+  grantsWithin,
   member,
+  mergeStatements,
   owner,
   statement,
   viewer,
@@ -225,6 +227,30 @@ describe("default-role seed payloads", () => {
   });
 });
 
+describe("grantsWithin (invitation role ceiling)", () => {
+  it("orders the default roles viewer < member < admin < owner", () => {
+    const order = [viewer, member, admin, owner].map((r) => r.statements);
+    for (const [i, lower] of order.entries()) {
+      for (const [j, higher] of order.entries()) {
+        expect(grantsWithin(lower, higher)).toBe(i <= j);
+      }
+    }
+  });
+
+  it("treats a custom role as above you when it grants any action you lack", () => {
+    const reporter = { task: ["read"], analytics: ["read"] };
+    expect(grantsWithin(reporter, member.statements)).toBe(true);
+    expect(grantsWithin(reporter, viewer.statements)).toBe(false);
+    expect(grantsWithin({}, viewer.statements)).toBe(true);
+  });
+
+  it("merges the statements of several roles", () => {
+    expect(
+      mergeStatements({ task: ["read"] }, { task: ["read", "update"] }),
+    ).toEqual({ task: ["read", "update"] });
+  });
+});
+
 describe("audit log permission", () => {
   it("is granted to owners and admins only", () => {
     expect(statement.audit_log).toEqual(["read"]);
@@ -234,5 +260,17 @@ describe("audit log permission", () => {
     expect(viewer.statements).not.toHaveProperty("audit_log");
     expect(defaultRolePayloads.admin.audit_log).toEqual(["read"]);
     expect(defaultRolePayloads.member).not.toHaveProperty("audit_log");
+  });
+});
+
+describe("AI permissions", () => {
+  it("lets members use AI and admins and owners also manage it", () => {
+    expect(statement.ai).toEqual(["use", "manage"]);
+    expect(viewer.statements).not.toHaveProperty("ai");
+    expect(member.statements.ai).toEqual(["use"]);
+    expect(admin.statements.ai).toEqual(["use", "manage"]);
+    expect(owner.statements.ai).toEqual(["use", "manage"]);
+    expect(defaultRolePayloads.member.ai).toEqual(["use"]);
+    expect(defaultRolePayloads.viewer).not.toHaveProperty("ai");
   });
 });

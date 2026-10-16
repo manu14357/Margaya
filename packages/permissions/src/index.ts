@@ -25,6 +25,9 @@ export const statement = {
   page: ["create", "read", "update", "delete"],
   // The workspace audit log; owners and admins only by default.
   audit_log: ["read"],
+  // use: AI features (only while AI is on for the instance, workspace and
+  // project); manage: the workspace's AI settings, keys, caps and usage.
+  ai: ["use", "manage"],
 } as const;
 
 export const ac = createAccessControl(statement);
@@ -54,6 +57,7 @@ export const member = ac.newRole({
   intake: ["create", "read", "triage"],
   analytics: ["read"],
   page: ["create", "read", "update"],
+  ai: ["use"],
 });
 
 export const admin = ac.newRole({
@@ -69,6 +73,7 @@ export const admin = ac.newRole({
   analytics: ["read"],
   page: ["create", "read", "update", "delete"],
   audit_log: ["read"],
+  ai: ["use", "manage"],
 });
 
 export const owner = ac.newRole({
@@ -84,6 +89,7 @@ export const owner = ac.newRole({
   analytics: ["read"],
   page: ["create", "read", "update", "delete"],
   audit_log: ["read"],
+  ai: ["use", "manage"],
 });
 
 export const builtInRoles = { viewer, member, admin, owner } as const;
@@ -120,3 +126,39 @@ export const defaultRolePayloads: Record<
   member: toMutablePayload(member.statements),
   admin: toMutablePayload(admin.statements),
 };
+
+export type PermissionStatements = Record<string, readonly string[]>;
+
+/** Every action granted by any of the sets (a member may hold "a,b" roles). */
+export function mergeStatements(
+  ...sets: PermissionStatements[]
+): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  for (const set of sets) {
+    for (const [resource, actions] of Object.entries(set)) {
+      const merged = new Set([...(out[resource] ?? []), ...actions]);
+      out[resource] = [...merged];
+    }
+  }
+  return out;
+}
+
+/**
+ * The role ceiling for invitations: a role is within yours when every
+ * resource action it grants is one your own role grants too. Built-in and
+ * custom roles follow the same rule, so an edited `member` row that gains an
+ * action an admin lacks is above that admin. Owners and instance admins skip
+ * the check entirely (the caller decides that).
+ */
+export function grantsWithin(
+  candidate: PermissionStatements,
+  ceiling: PermissionStatements,
+): boolean {
+  for (const [resource, actions] of Object.entries(candidate)) {
+    const allowed = ceiling[resource] ?? [];
+    for (const action of actions) {
+      if (!allowed.includes(action)) return false;
+    }
+  }
+  return true;
+}
