@@ -102,6 +102,7 @@ describe("registerTools", () => {
           text: JSON.stringify([{ id: "task-1" }], null, 2),
         },
       ],
+      structuredContent: { items: [{ id: "task-1" }] },
       isError: false,
     });
   });

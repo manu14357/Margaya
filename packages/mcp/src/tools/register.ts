@@ -4,6 +4,8 @@ import { z } from "zod";
 import type { MargayaClient } from "../margaya/client.js";
 import { buildFullTaskUpdateBody } from "../margaya/task-helpers.js";
 import { errorResult, textResult } from "../utils/mcp-result.js";
+import { mcpToolAnnotations } from "./annotations.js";
+import { mcpToolOutputSchema } from "./output.js";
 import { registerPlanningTools } from "./planning-tools.js";
 
 const prioritySchema = z.enum([
@@ -136,11 +138,46 @@ function run(fn: () => Promise<unknown>): Promise<CallToolResult> {
     );
 }
 
+/** The server with each registration's annotations (and output schema) filled in by name. */
+function withToolAnnotations(server: McpServer): McpServer {
+  const register = server.registerTool.bind(server) as (
+    name: string,
+    config: Record<string, unknown>,
+    callback: unknown,
+  ) => unknown;
+  return new Proxy(server, {
+    get(target, property, receiver) {
+      if (property !== "registerTool") {
+        return Reflect.get(target, property, receiver);
+      }
+      return (
+        name: string,
+        config: Record<string, unknown>,
+        callback: unknown,
+      ) =>
+        register(
+          name,
+          {
+            ...config,
+            annotations: mcpToolAnnotations(name),
+            // Declared only for tools with a stable shape (output.ts).
+            ...(mcpToolOutputSchema(name)
+              ? { outputSchema: mcpToolOutputSchema(name) }
+              : {}),
+          },
+          callback,
+        );
+    },
+  });
+}
+
 export function registerTools(
-  server: McpServer,
+  mcpServer: McpServer,
   ctx: { client: MargayaClient },
 ): void {
   const { client } = ctx;
+  // Every tool carries readOnlyHint / destructiveHint (annotations.ts).
+  const server = withToolAnnotations(mcpServer);
 
   server.registerTool(
     "whoami",
@@ -392,6 +429,9 @@ export function registerTools(
         userId: optionalNonEmptyString.describe(
           "Single assignee; assigneeIds takes precedence",
         ),
+        parentId: optionalNonEmptyString.describe(
+          "Create the task as a subtask of this task (same project)",
+        ),
       }),
     },
     async (args) => {
@@ -411,6 +451,9 @@ export function registerTools(
         body.assigneeIds = args.assigneeIds;
       } else if (args.userId !== undefined) {
         body.userId = args.userId;
+      }
+      if (args.parentId !== undefined) {
+        body.parentId = args.parentId;
       }
       return run(() =>
         client.json(`/api/task/${encodeURIComponent(args.projectId)}`, {
@@ -774,7 +817,7 @@ export function registerTools(
     "search",
     {
       description:
-        "Search across tasks, projects, workspaces, comments, activities and pages.",
+        'Ranked full-text search across tasks, projects, workspaces, comments, activities, pages, cycles, modules, saved views and intake requests. Supports "quoted phrases", or and -exclude; the last word also matches as a prefix, and an exact task key (WEB-12) comes first. Task, comment and page results include a highlighted snippet.',
       inputSchema: z.object({
         q: nonEmptyString.describe("Search query"),
         type: z
@@ -786,6 +829,10 @@ export function registerTools(
             "comments",
             "activities",
             "pages",
+            "cycles",
+            "modules",
+            "views",
+            "intake",
           ])
           .optional()
           .describe("Restrict results to one kind. Defaults to all."),

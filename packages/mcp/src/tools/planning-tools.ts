@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-// Cycle, module, page and intake tools (B13 K27). This file is kept byte-identical
+// Cycle, module, page, intake, task template and task repeat tools (B13 K27). This file is kept byte-identical
 // in apps/api/src/mcp/planning-tools.ts (the HTTP MCP server) and
 // packages/mcp/src/tools/planning-tools.ts (the stdio package); it depends on
 // zod only, and each catalog adapts its own registrar, client and results.
@@ -996,6 +996,143 @@ function registerPageTools<Result>({
   );
 }
 
+function registerTemplateTools<Result>({
+  register,
+  client,
+  run,
+}: PlanningToolAdapters<Result>) {
+  register(
+    "list_task_templates",
+    {
+      description:
+        "List a project's task templates: name, title pattern, default status, priority, labels, assignees, estimate and sub-task titles.",
+      inputSchema: z.object({ projectId: nonEmptyString }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(`/api/task-template/project/${id(args.projectId)}`),
+      ),
+  );
+
+  register(
+    "create_task_from_template",
+    {
+      description:
+        "Create a task from a task template. The title is merged into the template's title pattern; status (a column slug) overrides the template's column. The template's sub-tasks are created under the new task.",
+      inputSchema: z.object({
+        templateId: nonEmptyString,
+        title: z.string().max(500).optional(),
+        status: optionalNonEmptyString,
+      }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(
+          `/api/task-template/${id(args.templateId)}/apply`,
+          jsonBody("POST", defined({ title: args.title, status: args.status })),
+        ),
+      ),
+  );
+}
+
+function registerRecurrenceTools<Result>({
+  register,
+  client,
+  run,
+}: PlanningToolAdapters<Result>) {
+  register(
+    "get_task_recurrence",
+    {
+      description:
+        "Get a task's repeat rule (frequency, interval, weekdays, day of month, trigger, end date or count, next date), or null when it does not repeat. Only the series' current instance holds the rule.",
+      inputSchema: z.object({ taskId: nonEmptyString }),
+    },
+    async (args) =>
+      run(() => client.json(`/api/task-recurrence/${id(args.taskId)}`)),
+  );
+
+  register(
+    "set_task_recurrence",
+    {
+      description:
+        "Make a task repeat, or replace its repeat rule. daily, weekly (weekdays 0 Sunday to 6 Saturday), monthly (monthDay 1-31) or yearly, every `interval` periods. trigger completion (default) creates the next instance when this one is completed; schedule creates it on its date in the workspace's time zone. Optionally end on endDate (YYYY-MM-DD) or after maxOccurrences instances, not both. The next instance copies title, description, labels, assignees, priority and estimate, with its dates moved.",
+      inputSchema: z.object({
+        taskId: nonEmptyString,
+        frequency: z.enum(["daily", "weekly", "monthly", "yearly"]),
+        interval: z.number().int().min(1).max(365).optional(),
+        weekdays: z
+          .array(z.number().int().min(0).max(6))
+          .min(1)
+          .max(7)
+          .optional(),
+        monthDay: z.number().int().min(1).max(31).optional(),
+        trigger: z.enum(["completion", "schedule"]).optional(),
+        endDate: nullableOptionalDateOnly,
+        maxOccurrences: z.number().int().min(2).max(1000).nullable().optional(),
+      }),
+    },
+    async ({ taskId, ...rule }) =>
+      run(() =>
+        client.json(
+          `/api/task-recurrence/${id(taskId)}`,
+          jsonBody("PUT", defined(rule)),
+        ),
+      ),
+  );
+
+  register(
+    "remove_task_recurrence",
+    {
+      description:
+        "Stop a task repeating: no further instances are created. Instances created already stay.",
+      inputSchema: z.object({ taskId: nonEmptyString }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(`/api/task-recurrence/${id(args.taskId)}`, {
+          method: "DELETE",
+        }),
+      ),
+  );
+}
+
+function registerAutomationTools<Result>({
+  register,
+  client,
+  run,
+}: PlanningToolAdapters<Result>) {
+  register(
+    "list_automation_rules",
+    {
+      description:
+        "List a project's automation rules (When a task changes, If it meets conditions, Then act on it) with their trigger, conditions, actions, on/off state and run counters.",
+      inputSchema: z.object({ projectId: nonEmptyString }),
+    },
+    async (args) =>
+      run(() => client.json(`/api/automation-rule/${id(args.projectId)}`)),
+  );
+
+  register(
+    "set_automation_rule_enabled",
+    {
+      description:
+        "Turn one automation rule of a project on or off. Needs permission to manage the project (project:update).",
+      inputSchema: z.object({
+        projectId: nonEmptyString,
+        ruleId: nonEmptyString,
+        enabled: z.boolean(),
+      }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(
+          `/api/automation-rule/${id(args.projectId)}/${id(args.ruleId)}`,
+          jsonBody("PATCH", { enabled: args.enabled }),
+        ),
+      ),
+  );
+}
+
 /** The tools this module registers, in order (for tests and docs). */
 export const PLANNING_TOOL_NAMES = [
   "list_cycles",
@@ -1031,9 +1168,19 @@ export const PLANNING_TOOL_NAMES = [
   "update_intake_item",
   "triage_intake_item",
   "delete_intake_item",
+  "list_task_templates",
+  "create_task_from_template",
+  "get_task_recurrence",
+  "set_task_recurrence",
+  "remove_task_recurrence",
+  "list_automation_rules",
+  "set_automation_rule_enabled",
 ] as const;
 
-/** Registers the cycle (9), module (11), page (7) and intake (6) tools. */
+/**
+ * Registers the cycle (9), module (11), page (7), intake (6), task
+ * template (2), task repeat (3) and automation rule (2) tools.
+ */
 export function registerPlanningTools<Result>(
   adapters: PlanningToolAdapters<Result>,
 ): void {
@@ -1041,4 +1188,7 @@ export function registerPlanningTools<Result>(
   registerModuleTools(adapters);
   registerPageTools(adapters);
   registerIntakeTools(adapters);
+  registerTemplateTools(adapters);
+  registerRecurrenceTools(adapters);
+  registerAutomationTools(adapters);
 }

@@ -1,8 +1,11 @@
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+import { structuredOf } from "../tools/output.js";
 
 export function textResult(data: unknown, isError = false): CallToolResult {
   const text =
     typeof data === "string" ? data : (JSON.stringify(data, null, 2) ?? "");
+  // The same JSON as structured content (output.ts); errors stay text.
+  const structuredContent = isError ? undefined : structuredOf(data);
   return {
     content: [
       {
@@ -10,6 +13,7 @@ export function textResult(data: unknown, isError = false): CallToolResult {
         text,
       },
     ],
+    ...(structuredContent ? { structuredContent } : {}),
     isError,
   };
 }
