@@ -1,12 +1,17 @@
-import { and, count, eq, inArray, isNotNull, sql } from "drizzle-orm";
+import { and, count, eq, inArray, isNotNull, ne, sql } from "drizzle-orm";
 import { isBillingEnabled } from "../billing/config";
 import { syncWorkspaceSeats } from "../billing/controllers/sync-seats";
 import db from "../database";
-import { workspaceBillingTable, workspaceUserTable } from "../database/schema";
+import {
+  userTable,
+  workspaceBillingTable,
+  workspaceUserTable,
+} from "../database/schema";
 import { SEAT_RECONCILIATION_LEASE, withJobLease } from "./leader-lock";
 
 const BATCH_SIZE = 100;
 
+// Agents are workspace members but never seats.
 async function findDriftedWorkspaces() {
   return db
     .select({ workspaceId: workspaceBillingTable.workspaceId })
@@ -14,6 +19,13 @@ async function findDriftedWorkspaces() {
     .innerJoin(
       workspaceUserTable,
       eq(workspaceUserTable.workspaceId, workspaceBillingTable.workspaceId),
+    )
+    .innerJoin(
+      userTable,
+      and(
+        eq(userTable.id, workspaceUserTable.userId),
+        ne(userTable.kind, "agent"),
+      ),
     )
     .where(
       and(

@@ -1,6 +1,10 @@
 import { randomUUID } from "node:crypto";
+import { eq } from "drizzle-orm";
 import type { WSContext } from "hono/ws";
+import db from "../database";
+import { workspaceUserTable } from "../database/schema";
 import { subscribeToEvent } from "../events";
+import { mayStayConnected } from "../project/visibility";
 import { isRedisConfigured } from "../redis";
 import type {
   BroadcastAdapter,
@@ -203,11 +207,59 @@ export function publishDocBroadcast(message: Omit<DocBroadcast, "origin">) {
   });
 }
 
+/**
+ * Access to a restricted project changed (a member removed, the project
+ * restricted). Each instance re-checks its own connections to the project
+ * and closes those that lost access, so they stop receiving its events; the
+ * rest get the hint. It reaches other instances as a project broadcast, so
+ * the in-memory and Redis adapters both carry it.
+ */
+export const PROJECT_ACCESS_CHANGED = "PROJECT_ACCESS_CHANGED";
+/** Close code for a project socket whose access was revoked. */
+export const PROJECT_ACCESS_REVOKED_CLOSE_CODE = 4404;
+
+async function recheckProjectConnections(
+  projectId: string,
+  message: ProjectBroadcastMessage,
+) {
+  const connections = projectConnections.get(projectId);
+  if (!connections) return;
+  const verdicts = new Map<string, Promise<boolean>>();
+  for (const conn of [...connections]) {
+    let verdict = verdicts.get(conn.userId);
+    if (!verdict) {
+      // Fails closed: a socket that cannot be re-checked is dropped and the
+      // client reconnects through the normal access check.
+      verdict = mayStayConnected(conn.userId, projectId).catch(() => false);
+      verdicts.set(conn.userId, verdict);
+    }
+    if (await verdict) continue;
+    connections.delete(conn);
+    try {
+      conn.ws.close(
+        PROJECT_ACCESS_REVOKED_CLOSE_CODE,
+        "Project access revoked",
+      );
+    } catch {
+      // Already closed.
+    }
+  }
+  if (connections.size === 0) {
+    projectConnections.delete(projectId);
+  }
+  deliverToLocalConnections(projectId, message, undefined, true);
+}
+
 function deliverToLocalConnections(
   projectId: string,
   message: ProjectBroadcastMessage,
   excludeInitiatorId?: string,
+  rechecked = false,
 ) {
+  if (message.type === PROJECT_ACCESS_CHANGED && !rechecked) {
+    void recheckProjectConnections(projectId, message);
+    return;
+  }
   const connections = projectConnections.get(projectId);
   if (!connections) return;
 
@@ -329,6 +381,7 @@ const taskUpdateEvents = [
   "task.description_changed",
   "task.cycle_changed",
   "task.estimate_changed",
+  "task.recurrence_changed",
   "task.label_assigned",
   "task.label_unassigned",
   "task.label_created",
@@ -340,6 +393,7 @@ const taskUpdateEvents = [
   "task.link_deleted",
   "task.attachment_added",
   "task.attachment_removed",
+  "task.coding_handoff_updated",
   "comment.created",
   "comment.deleted",
   "comment.updated",
@@ -600,10 +654,11 @@ subscribeToEvent<PageHintEvent>(
   },
 );
 
-// Scheduled automation settings, the project's archive state (B11) and its
-// trash state (C7).
+// Scheduled automation settings, task templates, the project's archive
+// state (B11) and its trash state (C7).
 for (const eventName of [
   "project.automations_updated",
+  "project.task_templates_updated",
   "project.archived",
   "project.unarchived",
   "project.deleted",
@@ -621,6 +676,31 @@ for (const eventName of [
     },
   );
 }
+
+// Project access changed (PLAN 5.1): sockets that lost access are closed
+// (see recheckProjectConnections). The affected people get a user-channel
+// hint so their project lists, favourites and views refresh: the member for
+// a membership change, every workspace member for a visibility switch.
+subscribeToEvent<{
+  projectId?: string;
+  workspaceId?: string;
+  action?: string;
+  memberUserId?: string;
+}>("project.access_changed", async (data) => {
+  const { projectId, workspaceId, action, memberUserId } = data;
+  if (!projectId || !workspaceId) return;
+  broadcastToProject(projectId, { type: PROJECT_ACCESS_CHANGED, projectId });
+  const hint = { type: PROJECT_ACCESS_CHANGED, workspaceId, projectId };
+  if (action !== "visibility") {
+    if (memberUserId) broadcastToUser(memberUserId, hint);
+    return;
+  }
+  const members = await db
+    .select({ userId: workspaceUserTable.userId })
+    .from(workspaceUserTable)
+    .where(eq(workspaceUserTable.workspaceId, workspaceId));
+  for (const { userId } of members) broadcastToUser(userId, hint);
+});
 
 // One hint per project and rule when the automation job archives or closes
 // many tasks at once, instead of one message per task. No initiator.
@@ -759,6 +839,11 @@ for (const eventName of taskUpdateEvents) {
       case "task.attachment_added":
       case "task.attachment_removed":
         type = "TASK_ATTACHMENTS_UPDATED";
+        break;
+      // A coding-agent handoff moved (issue sent, pull request opened,
+      // ready, merged or closed): only the task panel refetches.
+      case "task.coding_handoff_updated":
+        type = "CODING_HANDOFF_UPDATED";
         break;
       case "task.label_assigned":
       case "task.label_unassigned":

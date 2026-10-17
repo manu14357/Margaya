@@ -1,5 +1,6 @@
 import { HTTPException } from "hono/http-exception";
 import type { WSContext } from "hono/ws";
+import { isTrustedOrigin } from "../utils/trusted-origins";
 
 // Two inbound limits apply to every WebSocket:
 //
@@ -30,34 +31,8 @@ export function assertWebSocketOrigin(headers: Headers) {
     ) {
       return;
     }
-  } else {
-    const configured = [
-      process.env.MARGAYA_CLIENT_URL,
-      process.env.MARGAYA_API_URL,
-      ...(process.env.CORS_ORIGINS ?? "").split(","),
-    ];
-    if (process.env.NODE_ENV !== "production") {
-      if (!process.env.MARGAYA_CLIENT_URL)
-        configured.push("http://localhost:5173");
-      if (!process.env.MARGAYA_API_URL)
-        configured.push("http://localhost:1337");
-    }
-    for (const value of configured) {
-      if (!value?.trim()) continue;
-      try {
-        const url = new URL(value.trim());
-        if (
-          (url.protocol === "https:" || url.protocol === "http:") &&
-          !url.username &&
-          !url.password &&
-          url.origin === origin
-        ) {
-          return;
-        }
-      } catch {
-        // Invalid entries and wildcards do not grant access.
-      }
-    }
+  } else if (isTrustedOrigin(origin)) {
+    return;
   }
   throw new HTTPException(403, { message: "WebSocket origin is not allowed" });
 }
