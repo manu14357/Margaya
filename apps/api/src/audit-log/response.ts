@@ -8,7 +8,12 @@ export const auditLogEntrySchema = z
     }),
     actor: z
       .object({
-        type: z.enum(["user", "api_key", "system"]),
+        type: z
+          .enum(["user", "api_key", "agent", "automation", "system"])
+          .openapi({
+            description:
+              "agent: an AI agent acting for a person (metadata.onBehalfOf, metadata.aiRunId). automation: a project automation rule (metadata.ruleId, metadata.ruleName).",
+          }),
         userId: z.string().nullable().openapi({
           description: "The user, or the owner of the API key.",
         }),

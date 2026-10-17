@@ -61,6 +61,40 @@ function project(
 const list = (value: unknown) =>
   Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
 
+/** An entry about the event's workspace (deletion, settings). */
+function workspaceEntry(
+  action: AuditAction,
+  data: EventData,
+  metadata?: Record<string, unknown>,
+): AuditInput | null {
+  const workspaceId = str(data.workspaceId);
+  if (!workspaceId) return null;
+  return {
+    workspaceId,
+    action,
+    target: {
+      type: "workspace",
+      id: workspaceId,
+      label: str(data.workspaceName),
+    },
+    metadata: metadata ?? null,
+    actor: { userId: str(data.userId) },
+  };
+}
+
+/** An entry about a page (publishing); the title is the label. */
+function pageEntry(action: AuditAction, data: EventData): AuditInput | null {
+  const workspaceId = str(data.workspaceId);
+  const pageId = str(data.pageId);
+  if (!workspaceId || !pageId) return null;
+  return {
+    workspaceId,
+    action,
+    target: { type: "page", id: pageId, label: str(data.title) },
+    actor: { userId: str(data.userId) },
+  };
+}
+
 export const EVENT_ACTIONS: Record<string, Mapper> = {
   "workspace.created": async (data) => {
     const workspaceId = str(data.workspaceId);
@@ -76,6 +110,19 @@ export const EVENT_ACTIONS: Record<string, Mapper> = {
       actor: { userId: str(data.ownerId) },
     };
   },
+  "workspace.deletion_scheduled": async (data) =>
+    workspaceEntry("workspace.deletion_scheduled", data, {
+      dueAt: data.dueAt ?? null,
+    }),
+  "workspace.deletion_cancelled": async (data) =>
+    workspaceEntry("workspace.deletion_cancelled", data),
+  "workspace.public_pages_changed": async (data) =>
+    workspaceEntry("workspace.public_pages_changed", data, {
+      allowPublicPages: data.allowPublicPages ?? null,
+      revokedLinks: list(data.revokedPageIds).length,
+    }),
+  "page.published": async (data) => pageEntry("page.published", data),
+  "page.unpublished": async (data) => pageEntry("page.unpublished", data),
   "project.created": project("project.created", (data) => ({
     slug: data.slug ?? null,
   })),
@@ -92,6 +139,14 @@ export const EVENT_ACTIONS: Record<string, Mapper> = {
   "project.updated": project("project.settings_changed", (data) => ({
     changed: list(data.changed),
   })),
+  // Restricted projects: the visibility switch and member changes.
+  "project.access_changed": project("project.settings_changed", (data) => ({
+    changed: [data.action === "visibility" ? "visibility" : "members"],
+    action: data.action ?? null,
+    visibility: data.visibility ?? null,
+    memberUserId: data.memberUserId ?? null,
+    role: data.role ?? null,
+  })),
   "project.features_updated": project("project.feature_toggled", (data) => ({
     enabled: list(data.enabled),
     disabled: list(data.disabled),
@@ -100,6 +155,14 @@ export const EVENT_ACTIONS: Record<string, Mapper> = {
     "project.settings_changed",
     (data) => ({
       changed: ["automations", ...list(data.changed)],
+    }),
+  ),
+  "project.task_templates_updated": project(
+    "project.settings_changed",
+    (data) => ({
+      changed: ["taskTemplates"],
+      action: data.action ?? null,
+      templateId: data.templateId ?? null,
     }),
   ),
   "publication.published": project("public_board.published"),

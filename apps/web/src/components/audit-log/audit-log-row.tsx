@@ -1,4 +1,4 @@
-import { ChevronRight, KeyRound, ServerCog } from "lucide-react";
+import { Bot, ChevronRight, KeyRound, ServerCog } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,11 @@ const TARGET_TYPE_KEYS: Record<string, string> = {
   workspace: "settings:workspaceAuditLog.targets.workspace",
   project: "settings:workspaceAuditLog.targets.project",
   export: "settings:workspaceAuditLog.targets.export",
+  page: "settings:workspaceAuditLog.targets.page",
+  agent: "settings:workspaceAuditLog.targets.agent",
+  agent_run: "settings:workspaceAuditLog.targets.agentRun",
+  task: "settings:workspaceAuditLog.targets.task",
+  coding_agent_profile: "settings:workspaceAuditLog.targets.codingAgentProfile",
 };
 
 const COLUMN_COUNT = 5;
@@ -57,7 +62,55 @@ function ActorCell({ entry }: { entry: AuditLogEntry }) {
       </span>
     );
   }
+  if (actor.type === "automation") {
+    // A project automation rule: "Automation", with the rule's name.
+    const meta = (entry.metadata ?? {}) as Record<string, unknown>;
+    const ruleName = typeof meta.ruleName === "string" ? meta.ruleName : null;
+    return (
+      <span className="flex min-w-0 items-center gap-2">
+        <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-muted">
+          <Bot className="size-3.5" aria-hidden />
+        </span>
+        <span className="min-w-0">
+          <span className="block truncate">
+            {t("settings:workspaceAuditLog.actor.automation")}
+          </span>
+          {ruleName && (
+            <span className="block truncate text-muted-foreground text-xs">
+              {ruleName}
+            </span>
+          )}
+        </span>
+      </span>
+    );
+  }
   const name = actor.name ?? t("settings:workspaceAuditLog.actor.deletedUser");
+  if (actor.type === "agent") {
+    // "Agent X on behalf of Y".
+    const meta = (entry.metadata ?? {}) as Record<string, unknown>;
+    const onBehalfOf =
+      typeof meta.onBehalfOfName === "string" ? meta.onBehalfOfName : null;
+    return (
+      <span className="flex min-w-0 items-center gap-2">
+        <Avatar className="size-6">
+          {actor.image && <AvatarImage src={actor.image} alt="" />}
+          <AvatarFallback className="text-[10px]">
+            <Bot className="size-3.5" aria-hidden />
+          </AvatarFallback>
+        </Avatar>
+        <span className="min-w-0">
+          <span className="block truncate">{name}</span>
+          <span className="block truncate text-muted-foreground text-xs">
+            {onBehalfOf
+              ? t("settings:workspaceAuditLog.actor.agentFor", {
+                  name: onBehalfOf,
+                })
+              : t("settings:workspaceAuditLog.actor.agent")}
+          </span>
+        </span>
+      </span>
+    );
+  }
   return (
     <span className="flex min-w-0 items-center gap-2">
       <Avatar className="size-6">

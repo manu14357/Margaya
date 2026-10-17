@@ -6,6 +6,7 @@ import { diffFields, redactUrl } from "./redact";
 import {
   apiKeySnapshot,
   integrationSnapshot,
+  invitationRole,
   memberSnapshot,
   permissionChanges,
   projectLabel,
@@ -564,6 +565,22 @@ const transferRules: HttpRule[] = [
   },
   {
     method: "POST",
+    path: /^\/api\/external-import\/(trello|linear|asana)\/([^/]+)$/,
+    after: async ({ c, match, response }) => {
+      const project = await projectLabel(match[2]);
+      const workspaceId =
+        (c.get("workspaceId") as string | undefined) ?? project?.workspaceId;
+      if (!workspaceId) return null;
+      return {
+        workspaceId,
+        action: "import.run",
+        target: { type: "project", id: match[2], label: project?.name },
+        metadata: { source: match[1], ...counts(response) },
+      };
+    },
+  },
+  {
+    method: "POST",
     path: /^\/api\/task\/import\/([^/]+)$/,
     after: async ({ c, match, response }) => {
       const project = await projectLabel(match[1]);
@@ -659,8 +676,35 @@ const workspaceRules: HttpRule[] = [
   },
 ];
 
+// Margaya's own invitation routes (Better Auth has no role change for one).
+const invitationRules: HttpRule[] = [
+  {
+    method: "PATCH",
+    path: /^\/api\/invitation\/([^/]+)\/role$/,
+    before: async ({ match }) => invitationRole(match[1]),
+    after: async ({ response, before }) => {
+      const workspaceId = str(response.workspaceId);
+      if (!workspaceId) return null;
+      const previous = (before as string | null) ?? null;
+      const next = str(response.role);
+      if (previous === next) return null;
+      return {
+        workspaceId,
+        action: "member.invitation_role_changed",
+        target: {
+          type: "invitation",
+          id: str(response.id),
+          label: str(response.email),
+        },
+        metadata: { changes: { role: { before: previous, after: next } } },
+      };
+    },
+  },
+];
+
 export const HTTP_RULES: HttpRule[] = [
   ...authRules,
+  ...invitationRules,
   ...workspaceRules,
   ...webhookRules,
   ...integrationRules,

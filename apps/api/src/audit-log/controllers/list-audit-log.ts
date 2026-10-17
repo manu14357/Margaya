@@ -2,6 +2,7 @@ import { and, eq, gte, like, lt, type SQL, sql } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { auditLogTable, userTable } from "../../database/schema";
+import { textArray } from "../../task-query/context";
 import type { AuditLogFilter, ListAuditLogInput } from "../schema";
 import { auditLogRetentionDays } from "../settings";
 
@@ -60,6 +61,12 @@ export function auditFilterConditions(
       ? gte(auditLogTable.createdAt, new Date(filter.from))
       : undefined,
     filter.to ? lt(auditLogTable.createdAt, new Date(filter.to)) : undefined,
+    filter.hiddenProjectIds?.length
+      ? sql`not (
+          (${auditLogTable.targetType} = 'project' and ${auditLogTable.targetId} = any(${textArray(filter.hiddenProjectIds)}))
+          or coalesce(${auditLogTable.metadata}->>'projectId', '') = any(${textArray(filter.hiddenProjectIds)})
+        )`
+      : undefined,
   ];
   return and(...conditions);
 }
@@ -92,7 +99,12 @@ export function toAuditEntry(row: AuditEntryRow) {
     id: row.id,
     action: row.action,
     actor: {
-      type: (row.actorType ?? "system") as "user" | "api_key" | "system",
+      type: (row.actorType ?? "system") as
+        | "user"
+        | "api_key"
+        | "agent"
+        | "automation"
+        | "system",
       userId: row.actorUserId,
       apiKeyId: row.apiKeyId,
       name: row.actorName,

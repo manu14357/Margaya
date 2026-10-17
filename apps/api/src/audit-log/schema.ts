@@ -14,9 +14,12 @@ export const auditLogFilterQuery = z.object({
     description:
       "Only entries by this user, including entries made with their API keys.",
   }),
-  actorType: z.enum(["user", "api_key", "system"]).optional().openapi({
-    description: "Only entries by this kind of actor.",
-  }),
+  actorType: z
+    .enum(["user", "api_key", "agent", "automation", "system"])
+    .optional()
+    .openapi({
+      description: "Only entries by this kind of actor.",
+    }),
   action: z
     .string()
     .min(1)
@@ -45,5 +48,9 @@ export const listAuditLogQuery = auditLogFilterQuery.extend({
   limit: z.coerce.number().int().min(1).max(100).optional().default(50),
 });
 
-export type AuditLogFilter = z.infer<typeof auditLogFilterQuery>;
-export type ListAuditLogInput = z.infer<typeof listAuditLogQuery>;
+export type AuditLogFilter = z.infer<typeof auditLogFilterQuery> & {
+  /** Restricted projects the reader may not see: their entries are left out. */
+  hiddenProjectIds?: readonly string[];
+};
+export type ListAuditLogInput = z.infer<typeof listAuditLogQuery> &
+  Pick<AuditLogFilter, "hiddenProjectIds">;

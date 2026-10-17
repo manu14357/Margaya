@@ -4,6 +4,7 @@ import db from "../database";
 import {
   apikeyTable,
   integrationTable,
+  invitationTable,
   projectTable,
   userTable,
   workspaceRoleTable,
@@ -25,6 +26,17 @@ export async function userLabel(userId: string | null | undefined) {
     .where(eq(userTable.id, userId))
     .limit(1);
   return user ? user.name || user.email : null;
+}
+
+/** The role a pending invitation grants, before a change to it. */
+export async function invitationRole(invitationId: string | undefined) {
+  if (!invitationId) return null;
+  const [row] = await db
+    .select({ role: invitationTable.role })
+    .from(invitationTable)
+    .where(eq(invitationTable.id, invitationId))
+    .limit(1);
+  return row ? (row.role ?? null) : null;
 }
 
 export async function projectLabel(projectId: string | null | undefined) {

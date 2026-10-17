@@ -1,4 +1,6 @@
 import { eq, inArray } from "drizzle-orm";
+import { currentAgentVia } from "../ai-agent/attribution";
+import { currentAutomation } from "../automation-rule/context";
 import db from "../database";
 import {
   apikeyTable,
@@ -60,12 +62,17 @@ async function actorOf(hint: AuditActorHint | null): Promise<{
   }
   if (userId) {
     const [user] = await db
-      .select({ name: userTable.name, email: userTable.email })
+      .select({
+        name: userTable.name,
+        email: userTable.email,
+        kind: userTable.kind,
+      })
       .from(userTable)
       .where(eq(userTable.id, userId))
       .limit(1);
     return {
-      actorType: "user",
+      // Background agent work (approvals, the run itself) names the agent.
+      actorType: user?.kind === "agent" ? "agent" : "user",
       // A user deleted meanwhile keeps the name, not a dangling reference.
       actorUserId: user ? userId : null,
       apiKeyId: null,
@@ -103,14 +110,48 @@ async function write(inputs: AuditInput[]) {
     const key = `${hint?.userId ?? ""}|${hint?.apiKeyId ?? ""}`;
     const actor = actors.get(key) ?? (await actorOf(hint));
     actors.set(key, actor);
+    // An agent's run key: "agent X on behalf of Y" (ai-agent/attribution).
+    const via = fromRequest ? currentAgentVia() : null;
+    // A project automation rule acts as the system actor "Automation".
+    const rule = currentAutomation();
     rows.push({
       workspaceId: input.workspaceId,
       ...actor,
+      ...(rule
+        ? {
+            actorType: "automation" as const,
+            actorUserId: null,
+            apiKeyId: null,
+            actorName: "Automation",
+          }
+        : {}),
+      ...(via
+        ? {
+            actorType: "agent" as const,
+            actorUserId: via.agentUserId,
+            actorName: via.agentName,
+          }
+        : {}),
       action: input.action,
       targetType: input.target?.type ?? null,
       targetId: input.target?.id ?? null,
       targetLabel: input.target?.label?.slice(0, MAX_LABEL) ?? null,
-      metadata: redactMetadata(input.metadata),
+      metadata: redactMetadata(
+        rule
+          ? {
+              ...(input.metadata ?? {}),
+              ruleId: rule.ruleId,
+              ruleName: rule.ruleName,
+            }
+          : via
+            ? {
+                ...(input.metadata ?? {}),
+                onBehalfOf: via.onBehalfOf,
+                onBehalfOfName: via.onBehalfOfName,
+                aiRunId: via.runId,
+              }
+            : input.metadata,
+      ),
       ipAddress: store?.ip ?? null,
       userAgent: store?.userAgent ?? null,
     });

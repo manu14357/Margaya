@@ -15,6 +15,7 @@ import { listAuditLog } from "./controllers/list-audit-log";
 import { auditLogPageSchema } from "./response";
 import { auditLogFilterQuery, listAuditLogQuery } from "./schema";
 import "./capture-events";
+import { requestHiddenProjectIds } from "../project/visibility";
 
 export { auditCapture } from "./capture-http";
 
@@ -66,12 +67,21 @@ const exportAuditLogRoute = createRoute({
 
 const auditLog = apiRouter<BaseVariables & { workspaceId: string }>()
   .openapi(listAuditLogRoute, async (c) =>
-    c.json(await listAuditLog(c.get("workspaceId"), c.req.valid("query")), 200),
+    c.json(
+      await listAuditLog(c.get("workspaceId"), {
+        ...c.req.valid("query"),
+        hiddenProjectIds: await requestHiddenProjectIds(c),
+      }),
+      200,
+    ),
   )
   .openapi(exportAuditLogRoute, async (c) => {
     const date = new Date().toISOString().slice(0, 10);
     return new Response(
-      exportAuditLogCsv(c.get("workspaceId"), c.req.valid("query")),
+      exportAuditLogCsv(c.get("workspaceId"), {
+        ...c.req.valid("query"),
+        hiddenProjectIds: await requestHiddenProjectIds(c),
+      }),
       {
         status: 200,
         headers: {
