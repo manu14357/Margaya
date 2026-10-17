@@ -15,7 +15,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { authClient } from "@/lib/auth-client";
-import { newPasswordPairSchema } from "@/lib/password-rules";
+import {
+  newPasswordPairSchema,
+  passwordHint,
+  passwordPolicyMessage,
+} from "@/lib/password-rules";
 import { toast } from "@/lib/toast";
 
 type ResetPasswordValues = {
@@ -79,6 +83,11 @@ export function ResetPasswordForm({ token }: { token?: string }) {
         setStatus("invalid");
         return;
       }
+      const policy = passwordPolicyMessage(t, error?.code);
+      if (policy) {
+        form.setError("newPassword", { message: policy });
+        return;
+      }
       if (error) {
         toast.error(error.message || t("auth:resetPassword.failed"));
         return;
@@ -125,7 +134,7 @@ export function ResetPasswordForm({ token }: { token?: string }) {
         <FormField
           control={form.control}
           name="newPassword"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel className="text-sm font-medium">
                 {t("auth:resetPassword.newPassword")}
@@ -133,6 +142,11 @@ export function ResetPasswordForm({ token }: { token?: string }) {
               <FormControl>
                 <PasswordInput autoComplete="new-password" {...field} />
               </FormControl>
+              {fieldState.error ? null : (
+                <p className="text-xs text-muted-foreground">
+                  {passwordHint(t)}
+                </p>
+              )}
               <FormMessage />
             </FormItem>
           )}

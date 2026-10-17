@@ -36,6 +36,12 @@ const signInSearchSchema = z.object({
   error: z.string().optional(),
 });
 
+const PROVIDER_NAMES = {
+  github: "GitHub",
+  google: "Google",
+  discord: "Discord",
+} as const;
+
 export const Route = createFileRoute("/auth/sign-in")({
   component: SignIn,
   validateSearch: signInSearchSchema,
@@ -50,6 +56,16 @@ function SignIn() {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [isDiscordLoading, setIsDiscordLoading] = useState(false);
   const [isGuestLoading, setIsGuestLoading] = useState(false);
+  // With email codes on, password sign-in is one click away: accounts with
+  // two-factor (and admins under a required provider) sign in that way.
+  const [usePassword, setUsePassword] = useState(false);
+  const providerName = (
+    provider: "github" | "google" | "discord" | "custom",
+  ) =>
+    provider === "custom"
+      ? (customOAuthLabel(config) ??
+        t("accountSecurity:platform.policy.customProvider"))
+      : PROVIDER_NAMES[provider];
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [captchaKey, setCaptchaKey] = useState(0);
   const resetCaptcha = useCallback(() => {
@@ -510,16 +526,38 @@ function SignIn() {
               {!config?.disableLoginForm && <AuthDivider />}
             </>
           )}
+          {config?.requiredSignInProvider && (
+            <Alert>
+              <AlertDescription>
+                {t("accountSecurity:platform.policy.signInNotice", {
+                  provider: providerName(config.requiredSignInProvider),
+                })}
+              </AlertDescription>
+            </Alert>
+          )}
           {!config?.disableLoginForm &&
-            (config?.hasSmtp && !config?.disableEmailOtpSignIn ? (
-              <OtpSignInForm
-                turnstileToken={captchaConfigured ? turnstileToken : undefined}
-                onAttemptComplete={resetCaptcha}
-                invitationId={invitationId}
-                defaultEmail={defaultEmail}
-                redirect={getSafeRedirectPath()}
-                onSuccess={handleSignInSuccess}
-              />
+            (config?.hasSmtp &&
+            !config?.disableEmailOtpSignIn &&
+            !usePassword ? (
+              <div className="space-y-2">
+                <OtpSignInForm
+                  turnstileToken={
+                    captchaConfigured ? turnstileToken : undefined
+                  }
+                  onAttemptComplete={resetCaptcha}
+                  invitationId={invitationId}
+                  defaultEmail={defaultEmail}
+                  redirect={getSafeRedirectPath()}
+                  onSuccess={handleSignInSuccess}
+                />
+                <button
+                  type="button"
+                  className="w-full text-center text-xs text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+                  onClick={() => setUsePassword(true)}
+                >
+                  {t("accountSecurity:platform.challenge.usePassword")}
+                </button>
+              </div>
             ) : (
               <SignInForm
                 defaultEmail={defaultEmail}

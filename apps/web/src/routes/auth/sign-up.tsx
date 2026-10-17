@@ -229,7 +229,9 @@ function SignUp() {
               </>
             );
           })()}
-          {(!config?.disablePasswordRegistration || isInstanceAdminSetup) && (
+          {(!config?.disablePasswordRegistration ||
+            isInstanceAdminSetup ||
+            (config?.passwordSignUpForInvitations && !!invitationId)) && (
             <SignUpForm
               invitationId={invitationId}
               defaultEmail={prefillEmail}

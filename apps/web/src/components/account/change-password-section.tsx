@@ -19,7 +19,11 @@ import useChangePassword, {
   ChangePasswordError,
   INVALID_PASSWORD,
 } from "@/hooks/mutations/use-change-password";
-import { newPasswordField } from "@/lib/password-rules";
+import {
+  newPasswordField,
+  passwordHint,
+  passwordPolicyMessage,
+} from "@/lib/password-rules";
 import { toast } from "@/lib/toast";
 
 type ChangePasswordValues = {
@@ -84,6 +88,14 @@ export function ChangePasswordSection() {
         });
         return;
       }
+      const policy =
+        error instanceof ChangePasswordError
+          ? passwordPolicyMessage(t, error.code)
+          : null;
+      if (policy) {
+        form.setError("newPassword", { message: policy });
+        return;
+      }
       toast.error(
         error instanceof Error && error.message
           ? error.message
@@ -100,12 +112,15 @@ export function ChangePasswordSection() {
     <FormField
       control={form.control}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <FormItem>
           <FormLabel className="text-sm font-medium">{label}</FormLabel>
           <FormControl>
             <PasswordInput autoComplete={autoComplete} {...field} />
           </FormControl>
+          {name === "newPassword" && !fieldState.error ? (
+            <p className="text-xs text-muted-foreground">{passwordHint(t)}</p>
+          ) : null}
           <FormMessage />
         </FormItem>
       )}

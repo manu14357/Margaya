@@ -2,6 +2,7 @@ import { CheckCircle, Trash2 } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { EmailDigestSettings } from "@/components/account/email-digest-settings";
+import MyBriefEmailSetting from "@/components/insight/my-brief-email-setting";
 import { SettingsSection } from "@/components/settings-layout";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -1214,6 +1215,7 @@ export function NotificationPreferencesSettings() {
         onSave={updatePreferences}
         preferences={preferences}
       />
+      <MyBriefEmailSetting />
 
       <SettingsSection
         title={t("settings:notificationsPage.workspaceRulesTitle")}

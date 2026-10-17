@@ -16,6 +16,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
+import {
+  newPasswordField,
+  passwordHint,
+  passwordPolicyMessage,
+} from "@/lib/password-rules";
 import { toast } from "@/lib/toast";
 
 export type SignUpFormValues = {
@@ -56,9 +61,7 @@ export function SignUpForm({
     () =>
       z.object({
         email: z.email(),
-        password: z.string().min(8, {
-          message: t("auth:signUpForm.passwordTooShort"),
-        }),
+        password: newPasswordField(t),
         name: z.string(),
       }),
     [t],
@@ -95,6 +98,11 @@ export function SignUpForm({
       );
 
       if (result.error) {
+        const policy = passwordPolicyMessage(t, result.error.code);
+        if (policy) {
+          form.setError("password", { message: policy });
+          return;
+        }
         toast.error(result.error.message || t("auth:signUpForm.failedSignUp"));
         return;
       }
@@ -200,6 +208,11 @@ export function SignUpForm({
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
+                {fieldState.error ? null : (
+                  <p className="text-xs text-muted-foreground">
+                    {passwordHint(t)}
+                  </p>
+                )}
                 <FormMessage>{fieldState.error?.message}</FormMessage>
               </FormItem>
             )}

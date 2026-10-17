@@ -106,7 +106,7 @@ describe("ResetPasswordForm", () => {
 
     fill("short", "short");
     expect(
-      await screen.findByText("auth:signUpForm.passwordTooShort"),
+      await screen.findByText("accountSecurity:password.tooShort"),
     ).toBeInTheDocument();
 
     fill("a long new passphrase", "a different passphrase");
@@ -129,6 +129,21 @@ describe("ResetPasswordForm", () => {
       newPassword: "a long new passphrase",
       token: "reset-token",
     });
+  });
+
+  it("shows the server's password policy refusal under the field", async () => {
+    resetPassword.mockResolvedValue({
+      data: null,
+      error: { code: "PASSWORD_TOO_COMMON", message: "Too common" },
+    });
+    render(<ResetPasswordForm token="reset-token" />);
+
+    fill("password2024!", "password2024!");
+
+    expect(
+      await screen.findByText("accountSecurity:password.tooCommon"),
+    ).toBeInTheDocument();
+    expect(toastError).not.toHaveBeenCalled();
   });
 
   it("tells the visitor when the link has expired", async () => {

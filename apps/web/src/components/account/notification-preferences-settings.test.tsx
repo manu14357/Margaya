@@ -53,6 +53,9 @@ vi.mock(
   }),
 );
 
+vi.mock("@/components/insight/my-brief-email-setting", () => ({
+  default: () => null,
+}));
 vi.mock("@/hooks/queries/workspace/use-get-workspaces", () => ({
   default: () => ({ data: [] }),
 }));

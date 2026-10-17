@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "@/lib/toast";
+import { TwoFactorChallenge } from "./two-factor-challenge";
 
 export type SignInFormValues = {
   email: string;
@@ -43,6 +44,7 @@ export function SignInForm({
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const [needsCode, setNeedsCode] = useState(false);
   const form = useForm<SignInFormValues>({
     resolver: standardSchemaResolver(signInSchema),
     defaultValues: {
@@ -63,6 +65,15 @@ export function SignInForm({
         toast.error(result.error.message || t("auth:signInForm.failedSignIn"));
         return;
       }
+      // Two-factor accounts get a session only after the code step.
+      if (
+        result.data &&
+        "twoFactorRedirect" in result.data &&
+        result.data.twoFactorRedirect
+      ) {
+        setNeedsCode(true);
+        return;
+      }
 
       toast.success(t("auth:signInForm.signedInSuccess"));
       setTimeout(() => {
@@ -78,6 +89,21 @@ export function SignInForm({
       setIsPending(false);
     }
   };
+
+  if (needsCode) {
+    return (
+      <TwoFactorChallenge
+        onSuccess={() => {
+          toast.success(t("auth:signInForm.signedInSuccess"));
+          setTimeout(() => onSuccess?.(), 500);
+        }}
+        onBack={() => {
+          setNeedsCode(false);
+          form.setValue("password", "");
+        }}
+      />
+    );
+  }
 
   return (
     <Form {...form}>
