@@ -2,6 +2,8 @@ import * as Sentry from "@sentry/node";
 import { APIError } from "better-auth/api";
 import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
+import { resolveAgentVia } from "../ai-agent/attribution";
+import { readOnlyKeyAllows } from "../api-key/scope";
 import { auth } from "../auth";
 import { enforceApiKeyRateLimit } from "./api-key-rate-limit";
 import { touchApiKeyLastUsed } from "./api-key-usage";
@@ -87,8 +89,16 @@ async function useApiKey(c: Context, key: VerifiedApiKey) {
     userId: key.userId,
     enabled: key.enabled,
     permissions: key.permissions,
+    projectIds: key.projectIds,
+    readOnly: key.readOnly,
+    // An agent run's key: who the agent acts for (ai-agent/attribution.ts).
+    agentRun: key.metadata ? await resolveAgentVia(key) : null,
   });
   attachUserToScope(key.userId);
+  // A read-only key never changes anything, whatever the route checks.
+  if (key.readOnly && !readOnlyKeyAllows(c.req.method, c.req.path)) {
+    throw new HTTPException(403, { message: "This API key is read-only" });
+  }
 }
 
 export async function authenticateApiRequest(c: Context): Promise<void> {

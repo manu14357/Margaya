@@ -3,11 +3,12 @@ import { and, eq } from "drizzle-orm";
 import type { Context, Next } from "hono";
 import { HTTPException } from "hono/http-exception";
 import db, { schema } from "../database";
+import { projectReach } from "../project/visibility";
 import { isInstanceAdmin } from "./is-instance-admin";
 
 type PermissionMap = Record<string, string[]>;
 
-function builtInRoleStatements(
+export function builtInRoleStatements(
   role: string,
 ): Record<string, readonly string[]> | null {
   if (role in builtInRoles) {
@@ -50,7 +51,7 @@ function parsePermissionStatements(
   return result;
 }
 
-async function customRoleStatements(
+export async function customRoleStatements(
   workspaceId: string,
   role: string,
 ): Promise<Record<string, readonly string[]> | null> {
@@ -128,7 +129,37 @@ export async function hasWorkspacePermission(
     (await customRoleStatements(workspaceId, member.role)) ??
     builtInRoleStatements(member.role);
 
-  return Boolean(statements && satisfies(statements, permissions));
+  if (!statements || !satisfies(statements, permissions)) return false;
+  const ceilings = await projectRoleCeilings(c, workspaceId);
+  return ceilings.every((ceiling) => satisfies(ceiling, permissions));
+}
+
+/**
+ * In a restricted project, a project member's rights are what both their
+ * workspace role and their project role grant: one statement set per
+ * project the request acts on. Empty for open projects and for workspace
+ * owners and admins (project/visibility.ts).
+ */
+async function projectRoleCeilings(
+  c: Context,
+  workspaceId: string,
+): Promise<Record<string, readonly string[]>[]> {
+  const userId = c.get("userId") as string | undefined;
+  if (!userId) return [];
+  const many = c.get("projectIds") as string[] | undefined;
+  const one = c.get("projectId") as string | null | undefined;
+  const projectIds = many?.length ? many : one ? [one] : [];
+  const ceilings: Record<string, readonly string[]>[] = [];
+  for (const projectId of projectIds) {
+    const reach = await projectReach(userId, projectId);
+    if (!reach?.projectRole) continue;
+    ceilings.push(
+      (await customRoleStatements(workspaceId, reach.projectRole)) ??
+        builtInRoleStatements(reach.projectRole) ??
+        {},
+    );
+  }
+  return ceilings;
 }
 
 /**
@@ -167,10 +198,12 @@ export async function workspacePermissionChecker(
     ? ((await customRoleStatements(workspaceId, member.role)) ??
       builtInRoleStatements(member.role))
     : null;
+  const ceilings = statements ? await projectRoleCeilings(c, workspaceId) : [];
 
   return (permissions) =>
     withinKeyScope(permissions) &&
-    Boolean(statements && satisfies(statements, permissions));
+    Boolean(statements && satisfies(statements, permissions)) &&
+    ceilings.every((ceiling) => satisfies(ceiling, permissions));
 }
 
 export function requireWorkspacePermission(permissions: PermissionMap) {

@@ -40,5 +40,16 @@ export const configSchema = z
       description:
         "Whether signed-out visitors to the web app's root see the product landing page. When false they go straight to sign-in.",
     }),
+    passwordSignUpForInvitations: z.boolean().openapi({
+      description:
+        "Password sign-up is off, but people with a valid invitation may still create a password account.",
+    }),
+    requiredSignInProvider: z
+      .enum(["github", "google", "discord", "custom"])
+      .nullable()
+      .openapi({
+        description:
+          "Everyone signs in through this provider; instance admins keep password sign-in. Null when there is no requirement.",
+      }),
   })
   .openapi("Config");

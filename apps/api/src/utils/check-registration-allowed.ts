@@ -60,7 +60,8 @@ export async function checkRegistrationAllowed(
   };
 }
 
-async function findValidInvitation(
+/** A pending, unexpired invitation by id and/or email, or null. */
+export async function findValidInvitation(
   email?: string,
   invitationId?: string,
 ): Promise<RegistrationCheckResult["invitation"] | null> {

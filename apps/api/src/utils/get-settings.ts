@@ -33,6 +33,8 @@ function getSettings() {
     publicBoardsEnabled: fields.publicBoardsEnabled,
     passwordResetEnabled: fields.passwordResetEnabled,
     publicLandingEnabled: fields.publicLandingEnabled,
+    passwordSignUpForInvitations: fields.passwordSignUpForInvitations,
+    requiredSignInProvider: fields.requiredSignInProvider,
   };
 }
 

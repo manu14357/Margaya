@@ -20,8 +20,14 @@ export function boundedRequestBody(
     let timeout: ReturnType<typeof setTimeout> | undefined;
     try {
       const read = async () => {
-        // A fixed buffer also bounds memory for adversarial one-byte chunks.
-        const bytes = new Uint8Array(maxBytes);
+        // One growing buffer (copying chunks in) bounds memory even for
+        // adversarial one-byte chunks; it starts at the declared length or
+        // 64 KB rather than the full limit, so small bodies stay small.
+        const initial =
+          Number.isFinite(declared) && declared > 0
+            ? Math.min(declared, maxBytes)
+            : Math.min(64 * 1024, maxBytes);
+        let bytes = new Uint8Array(initial);
         let size = 0;
         for (;;) {
           const { done, value } = await reader.read();
@@ -31,6 +37,16 @@ export function boundedRequestBody(
             throw new HTTPException(413, {
               message: "Request body is too large",
             });
+          }
+          if (size + value.byteLength > bytes.byteLength) {
+            const grown = new Uint8Array(
+              Math.min(
+                maxBytes,
+                Math.max(bytes.byteLength * 2, size + value.byteLength),
+              ),
+            );
+            grown.set(bytes.subarray(0, size));
+            bytes = grown;
           }
           bytes.set(value, size);
           size += value.byteLength;

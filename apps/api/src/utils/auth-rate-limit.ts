@@ -48,6 +48,10 @@ export function authRateLimitConfig() {
     customRules: {
       // Every page load reads the session; it is not a guessing surface.
       "/get-session": false as const,
+      // A page load checks ~40 workspace capabilities at once, and a 429
+      // here hides actions the user is allowed to take. It only reads the
+      // caller's own role, so there is nothing to guess.
+      "/organization/has-permission": false as const,
       ...credentialRules,
       ...(isCloud() ? cloudOnlyRules : {}),
     },

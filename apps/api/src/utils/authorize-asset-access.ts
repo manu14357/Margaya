@@ -5,6 +5,8 @@ import { validateWorkspaceAccess } from "./validate-workspace-access";
 
 type AssetAccessTarget = {
   workspaceId: string;
+  /** Files of a restricted project are its members' only. */
+  projectId?: string | null;
   isPublic: boolean | null;
   surface: string;
   /** Set for files uploaded into a page. */
@@ -35,7 +37,12 @@ export async function authorizeAssetAccess(
   }
 
   const { userId, apiKeyId } = await resolveAssetBearerOrCookie(c);
-  await validateWorkspaceAccess(userId, asset.workspaceId, apiKeyId);
+  await validateWorkspaceAccess(
+    userId,
+    asset.workspaceId,
+    apiKeyId,
+    asset.projectId,
+  );
 
   // A private page's files are its owner's only, like the page itself.
   if (asset.pageAccess === "private" && asset.pageOwnerId !== userId) {

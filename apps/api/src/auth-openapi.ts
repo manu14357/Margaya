@@ -291,7 +291,8 @@ export function organizationRoutes(registry: OpenAPIHono["openAPIRegistry"]) {
     tags: ["Organization Management"],
     operationId: "deleteOrganization",
     summary: "Delete Organization",
-    description: "Delete an organization",
+    description:
+      "Delete an organization. Workspaces are deleted after a grace period: schedule it with POST /api/workspace/{workspaceId}/deletion. This route answers 409 until a scheduled deletion is due.",
     request: {
       body: {
         required: true,

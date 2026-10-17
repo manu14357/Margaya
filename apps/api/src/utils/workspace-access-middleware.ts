@@ -2,6 +2,7 @@ import { and, eq, inArray, isNull } from "drizzle-orm";
 import type { Context, Next } from "hono";
 import { HTTPException } from "hono/http-exception";
 import db, { schema } from "../database";
+import { canSeeProject } from "../project/visibility";
 import { validateWorkspaceAccess } from "./validate-workspace-access";
 
 type WorkspaceIdSource =
@@ -60,6 +61,11 @@ export function workspaceAccessMiddleware(
 
     let workspaceId: string | null = null;
     let unknownLookup = false;
+    // Only resolved for project-limited API keys (validateWorkspaceAccess).
+    const projectScoped = Boolean(c.get("apiKey")?.projectIds?.length);
+    let projectId: string | null = null;
+    // Every project a multi-task request touches.
+    let projectIds: string[] = [];
 
     for (const source of config.sources) {
       if (source.type === "query") {
@@ -83,13 +89,16 @@ export function workspaceAccessMiddleware(
           const found = await lookupWorkspaceId(source.resource, id);
           // A trashed task or project (C7) reads as gone, and must not fall
           // through to a later source such as `?workspaceId=`.
-          if (found === TRASHED) {
+          if (found.workspaceId === TRASHED) {
             throw new HTTPException(404, {
               message: TRASHED_MESSAGE[source.resource],
             });
           }
-          workspaceId = found;
+          workspaceId = found.workspaceId;
           unknownLookup = !workspaceId;
+          // The project decides restricted access (project/visibility.ts)
+          // and a project-limited key's scope.
+          if (workspaceId) projectId = found.projectId;
         }
       } else if (source.type === "lookupMany") {
         const body = await readJsonObjectBody(c);
@@ -100,7 +109,10 @@ export function workspaceAccessMiddleware(
           );
           if (taskIds.length > 0) {
             const tasks = await db
-              .select({ workspaceId: schema.projectTable.workspaceId })
+              .select({
+                workspaceId: schema.projectTable.workspaceId,
+                projectId: schema.taskTable.projectId,
+              })
               .from(schema.taskTable)
               .innerJoin(
                 schema.projectTable,
@@ -125,6 +137,10 @@ export function workspaceAccessMiddleware(
               });
             }
             workspaceId = workspaceIds[0] ?? null;
+            projectIds = [...new Set(tasks.map((task) => task.projectId))];
+            if (projectScoped) {
+              projectId = sharedTaskProject(projectIds, c);
+            }
           }
         }
       }
@@ -147,12 +163,34 @@ export function workspaceAccessMiddleware(
     const apiKey = c.get("apiKey");
     const apiKeyId = apiKey?.id;
 
-    await validateWorkspaceAccess(userId, workspaceId, apiKeyId);
+    await validateWorkspaceAccess(userId, workspaceId, apiKeyId, projectId);
+    // Each task of a bulk request must be in a project the caller can see;
+    // a hidden one reads as missing, like an unknown task.
+    for (const id of projectIds) {
+      if (id !== projectId && !(await canSeeProject(userId, id))) {
+        throw new HTTPException(404, { message: "No tasks found" });
+      }
+    }
 
     c.set("workspaceId", workspaceId);
+    if (projectId) c.set("projectId", projectId);
+    if (projectIds.length > 0) c.set("projectIds", projectIds);
 
     return next();
   };
+}
+
+/**
+ * The one project several tasks share, for a project-limited key. Tasks
+ * spread over several projects must all be inside the key: each is checked
+ * here, and the first is returned for the final check.
+ */
+function sharedTaskProject(projectIds: string[], c: Context): string | null {
+  const allowed = c.get("apiKey")?.projectIds ?? [];
+  if (projectIds.some((id) => !allowed.includes(id))) {
+    throw new HTTPException(404, { message: "No tasks found" });
+  }
+  return projectIds[0] ?? null;
 }
 
 // Lookup result for a resource that exists but is in the trash, or whose
@@ -186,31 +224,55 @@ const TRASHED_MESSAGE: Record<LookupResource, string> = {
   trashedProject: "Project not found in the trash",
 };
 
+/** A looked-up resource's workspace, and its project when it has one. */
+type Lookup = {
+  workspaceId: string | null | typeof TRASHED;
+  projectId: string | null;
+};
+
+const NO_LOOKUP: Lookup = { workspaceId: null, projectId: null };
+
 /** The workspace, or TRASHED when any of the given trash stamps is set. */
 function liveWorkspace(
   row:
     | {
         workspaceId: string | null;
+        projectId?: string | null;
         taskDeletedAt?: Date | null;
         projectDeletedAt?: Date | null;
       }
     | undefined,
-): string | null | typeof TRASHED {
-  if (!row?.workspaceId) return null;
-  if (row.taskDeletedAt || row.projectDeletedAt) return TRASHED;
-  return row.workspaceId;
+): Lookup {
+  if (!row?.workspaceId) return NO_LOOKUP;
+  const projectId = row.projectId ?? null;
+  if (row.taskDeletedAt || row.projectDeletedAt) {
+    return { workspaceId: TRASHED, projectId };
+  }
+  return { workspaceId: row.workspaceId, projectId };
+}
+
+/** A trash-route lookup: only a trashed row counts. */
+function trashedWorkspace(
+  row:
+    | { workspaceId: string; projectId: string; deletedAt: Date | null }
+    | undefined,
+): Lookup {
+  return row?.deletedAt
+    ? { workspaceId: row.workspaceId, projectId: row.projectId }
+    : NO_LOOKUP;
 }
 
 async function lookupWorkspaceId(
   resource: LookupResource,
   id: string,
-): Promise<string | null | typeof TRASHED> {
+): Promise<Lookup> {
   try {
     switch (resource) {
       case "project": {
         const [project] = await db
           .select({
             workspaceId: schema.projectTable.workspaceId,
+            projectId: schema.projectTable.id,
             projectDeletedAt: schema.projectTable.deletedAt,
           })
           .from(schema.projectTable)
@@ -223,6 +285,7 @@ async function lookupWorkspaceId(
         const [task] = await db
           .select({
             workspaceId: schema.projectTable.workspaceId,
+            projectId: schema.projectTable.id,
             taskDeletedAt: schema.taskTable.deletedAt,
             projectDeletedAt: schema.projectTable.deletedAt,
           })
@@ -240,6 +303,7 @@ async function lookupWorkspaceId(
         const [label] = await db
           .select({
             workspaceId: schema.labelTable.workspaceId,
+            projectId: schema.projectTable.id,
             taskId: schema.labelTable.taskId,
             taskWorkspaceId: schema.projectTable.workspaceId,
             taskDeletedAt: schema.taskTable.deletedAt,
@@ -259,7 +323,7 @@ async function lookupWorkspaceId(
         // Older releases allowed inconsistent label/task references. Never use
         // such a row to authorize reads, mutations or external provider sync.
         if (label?.taskId && label.taskWorkspaceId !== label.workspaceId) {
-          return null;
+          return NO_LOOKUP;
         }
         // A label on a trashed task reads as gone (C7). Workspace labels have
         // no task, so the stamps stay null.
@@ -270,6 +334,7 @@ async function lookupWorkspaceId(
         const [timeEntry] = await db
           .select({
             workspaceId: schema.projectTable.workspaceId,
+            projectId: schema.projectTable.id,
             taskDeletedAt: schema.taskTable.deletedAt,
             projectDeletedAt: schema.projectTable.deletedAt,
           })
@@ -291,6 +356,7 @@ async function lookupWorkspaceId(
         const [activity] = await db
           .select({
             workspaceId: schema.projectTable.workspaceId,
+            projectId: schema.projectTable.id,
             taskDeletedAt: schema.taskTable.deletedAt,
             projectDeletedAt: schema.projectTable.deletedAt,
           })
@@ -312,6 +378,7 @@ async function lookupWorkspaceId(
         const [comment] = await db
           .select({
             workspaceId: schema.projectTable.workspaceId,
+            projectId: schema.projectTable.id,
             taskDeletedAt: schema.taskTable.deletedAt,
             projectDeletedAt: schema.projectTable.deletedAt,
           })
@@ -338,6 +405,7 @@ async function lookupWorkspaceId(
         const [column] = await db
           .select({
             workspaceId: schema.projectTable.workspaceId,
+            projectId: schema.projectTable.id,
             projectDeletedAt: schema.projectTable.deletedAt,
           })
           .from(schema.columnTable)
@@ -354,6 +422,7 @@ async function lookupWorkspaceId(
         const [workflowRule] = await db
           .select({
             workspaceId: schema.projectTable.workspaceId,
+            projectId: schema.projectTable.id,
             projectDeletedAt: schema.projectTable.deletedAt,
           })
           .from(schema.workflowRuleTable)
@@ -370,6 +439,7 @@ async function lookupWorkspaceId(
         const [field] = await db
           .select({
             workspaceId: schema.projectTable.workspaceId,
+            projectId: schema.projectTable.id,
             projectDeletedAt: schema.projectTable.deletedAt,
           })
           .from(schema.customFieldDefinitionTable)
@@ -390,6 +460,7 @@ async function lookupWorkspaceId(
         const [task] = await db
           .select({
             workspaceId: schema.projectTable.workspaceId,
+            projectId: schema.projectTable.id,
             taskDeletedAt: schema.taskTable.deletedAt,
           })
           .from(schema.taskTable)
@@ -399,27 +470,32 @@ async function lookupWorkspaceId(
           )
           .where(eq(schema.taskTable.id, id))
           .limit(1);
-        return task?.taskDeletedAt ? task.workspaceId : null;
+        return trashedWorkspace(
+          task && { ...task, deletedAt: task.taskDeletedAt },
+        );
       }
 
       case "trashedProject": {
         const [project] = await db
           .select({
             workspaceId: schema.projectTable.workspaceId,
+            projectId: schema.projectTable.id,
             projectDeletedAt: schema.projectTable.deletedAt,
           })
           .from(schema.projectTable)
           .where(eq(schema.projectTable.id, id))
           .limit(1);
-        return project?.projectDeletedAt ? project.workspaceId : null;
+        return trashedWorkspace(
+          project && { ...project, deletedAt: project.projectDeletedAt },
+        );
       }
 
       default:
-        return null;
+        return NO_LOOKUP;
     }
   } catch (error) {
     console.error(`Error looking up workspaceId for ${resource}:`, error);
-    return null;
+    return NO_LOOKUP;
   }
 }
 
@@ -447,12 +523,13 @@ export const workspaceAccess = {
       ],
     }),
 
-  fromTaskId: (idKey = "taskId") =>
+  fromTaskId: (idKey = "taskId", options: { notFoundMessage?: string } = {}) =>
     workspaceAccessMiddleware({
       sources: [
         { type: "lookup", resource: "task", idKey },
         { type: "query", key: "workspaceId" },
       ],
+      ...options,
     }),
 
   fromTasks: (idKey = "taskIds") =>
@@ -527,11 +604,15 @@ export const workspaceAccess = {
       notFoundMessage: "Project not found in the trash",
     }),
 
-  fromProjectId: (idKey = "projectId") =>
+  fromProjectId: (
+    idKey = "projectId",
+    options: { notFoundMessage?: string } = {},
+  ) =>
     workspaceAccessMiddleware({
       sources: [
         { type: "lookup", resource: "project", idKey },
         { type: "query", key: "workspaceId" },
       ],
+      ...options,
     }),
 };

@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { and, eq, exists, gt, isNull, or, sql } from "drizzle-orm";
+import { decodeScope } from "../api-key/scope";
 import db, { schema } from "../database";
 
 async function hashApiKey(key: string): Promise<string> {
@@ -52,9 +53,13 @@ export async function verifyApiKey(key: string) {
             .select({ id: schema.userTable.id })
             .from(schema.userTable)
             .where(
-              eq(
-                schema.userTable.id,
-                sql`coalesce(${schema.apikeyTable.referenceId}, ${schema.apikeyTable.userId})`,
+              and(
+                eq(
+                  schema.userTable.id,
+                  sql`coalesce(${schema.apikeyTable.referenceId}, ${schema.apikeyTable.userId})`,
+                ),
+                // A banned owner's keys stop working until the ban ends.
+                sql`(${schema.userTable.banned} is not true or (${schema.userTable.banExpires} is not null and ${schema.userTable.banExpires} <= now()))`,
               ),
             ),
         ),
@@ -70,6 +75,8 @@ export async function verifyApiKey(key: string) {
     return null;
   }
 
+  const scope = decodeScope(parsePermissions(apiKey.permissions));
+
   return {
     valid: true,
     key: {
@@ -80,7 +87,11 @@ export async function verifyApiKey(key: string) {
       start: apiKey.start,
       enabled: apiKey.enabled ?? false,
       expiresAt: apiKey.expiresAt,
-      permissions: parsePermissions(apiKey.permissions),
+      // Statements only; the scope markers are split out (api-key/scope.ts).
+      permissions: scope.permissions,
+      projectIds: scope.projectIds,
+      readOnly: scope.readOnly,
+      scoped: apiKey.permissions !== null,
       refillInterval: apiKey.refillInterval,
       refillAmount: apiKey.refillAmount,
       lastRefillAt: apiKey.lastRefillAt,

@@ -1,6 +1,7 @@
 import { apiKey } from "@better-auth/api-key";
 import {
   OTP_EXPIRY_SECONDS,
+  sendEmailChangedEmail,
   sendMagicLinkEmail,
   sendOtpEmail,
   sendPasswordResetEmail,
@@ -31,11 +32,18 @@ import {
   magicLink,
   openAPI,
   organization,
+  twoFactor,
 } from "better-auth/plugins";
 import type { AccessControl } from "better-auth/plugins/access";
 import type { UserWithAnonymous } from "better-auth/plugins/anonymous";
 import { config } from "dotenv-mono";
 import { eq } from "drizzle-orm";
+import {
+  refuseAgentInvitation,
+  refuseAgentManagerRole,
+  refuseAgentMember,
+  refuseAgentSession,
+} from "./ai-agent/guards";
 import {
   findBillableWorkspaces,
   formatBillableWorkspacesMessage,
@@ -51,6 +59,13 @@ import { getInstanceSettings } from "./instance-settings/snapshot";
 import { clearMemberProjectRoles } from "./project/people";
 import { purgeWorkspaceExports } from "./task-export/storage";
 import deleteAccountData from "./user/controllers/delete-account-data";
+import {
+  type AfterHookContext,
+  afterAccountSecurityRules,
+  type BeforeHookContext,
+  EMAIL_CHANGE_PATHS,
+  enforceAccountSecurityRules,
+} from "./utils/account-security-hooks";
 import { authRateLimitConfig } from "./utils/auth-rate-limit";
 import { resolveAuthSecret } from "./utils/auth-secret";
 import { checkRegistrationAllowed } from "./utils/check-registration-allowed";
@@ -69,12 +84,29 @@ import { isCloud } from "./utils/is-cloud";
 import { isDisposableEmail } from "./utils/is-disposable-email";
 import { isLocalSignInPath } from "./utils/is-local-sign-in-path";
 import {
+  PASSWORD_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH,
+} from "./utils/password-policy";
+import {
   assertGuestRegistrationAllowed,
   assertUserRegistrationAllowed,
+  invitedPasswordSignUpAllowed,
   normalizeInvitationId,
 } from "./utils/registration-policy";
+import {
+  memberRoleChangeError,
+  roleCeilingError,
+  splitRoles,
+} from "./utils/role-ceiling";
+import { enforceSignInPolicy, sessionTimingOf } from "./utils/sign-in-policy";
 import { authCaptchaPaths, verifyTurnstile } from "./utils/verify-turnstile";
 import { afterWorkspaceMemberRemoved } from "./utils/workspace-member-removed";
+import { publishMembersChanged } from "./workspace/members-realtime";
+import {
+  isWorkspacePendingDeletion,
+  WORKSPACE_LOCKED_MESSAGE,
+} from "./workspace-deletion/lock";
+import { isWorkspaceDeletionDue } from "./workspace-deletion/service";
 
 config();
 
@@ -103,6 +135,15 @@ const localSignUpDisabledAtStartup =
 
 const apiUrl = process.env.MARGAYA_API_URL || "http://localhost:1337";
 const clientUrl = process.env.MARGAYA_CLIENT_URL || "http://localhost:5173";
+
+const SCHEDULE_DELETION_MESSAGE =
+  "Workspaces are deleted after a grace period. Schedule the deletion with POST /api/workspace/{workspaceId}/deletion instead.";
+
+async function assertOrganizationWritable(workspaceId: string | undefined) {
+  if (workspaceId && (await isWorkspacePendingDeletion(workspaceId))) {
+    throw new APIError("LOCKED", { message: WORKSPACE_LOCKED_MESSAGE });
+  }
+}
 
 const trustedOrigins = [clientUrl];
 try {
@@ -158,6 +199,8 @@ function getAuthEmailCopy(locale?: string | null) {
       otpSubject: "Bestätigungscode für Margaya",
       verifyEmailSubject: "Bestätige deine E-Mail-Adresse für Margaya",
       passwordResetSubject: "Setze dein Margaya-Passwort zurück",
+      changeEmailSubject: "Bestätige deine neue E-Mail-Adresse für Margaya",
+      emailChangedSubject: "Deine Margaya-E-Mail-Adresse wurde geändert",
     };
   }
 
@@ -167,6 +210,8 @@ function getAuthEmailCopy(locale?: string | null) {
       otpSubject: "Mã xác minh Margaya",
       verifyEmailSubject: "Xác minh email của bạn cho Margaya",
       passwordResetSubject: "Đặt lại mật khẩu Margaya của bạn",
+      changeEmailSubject: "Xác nhận địa chỉ email mới cho Margaya",
+      emailChangedSubject: "Địa chỉ email Margaya của bạn đã được thay đổi",
     };
   }
 
@@ -176,6 +221,8 @@ function getAuthEmailCopy(locale?: string | null) {
       otpSubject: "Margaya 認証コード",
       verifyEmailSubject: "Margaya メールアドレスの確認",
       passwordResetSubject: "Margaya パスワードのリセット",
+      changeEmailSubject: "Margaya 新しいメールアドレスの確認",
+      emailChangedSubject: "Margaya のメールアドレスが変更されました",
     };
   }
 
@@ -184,6 +231,8 @@ function getAuthEmailCopy(locale?: string | null) {
     otpSubject: "Authentication code for Margaya",
     verifyEmailSubject: "Verify your email for Margaya",
     passwordResetSubject: "Reset your Margaya password",
+    changeEmailSubject: "Confirm your new email for Margaya",
+    emailChangedSubject: "Your Margaya email address was changed",
   };
 }
 
@@ -254,6 +303,15 @@ function requestedOAuthProvider(
     : null;
 }
 
+// Better Auth's custom-role endpoints have no organization hooks, so the
+// read-only rule for a workspace pending deletion is enforced in the before
+// hook instead.
+const CUSTOM_ROLE_WRITE_PATHS = new Set([
+  "/organization/create-role",
+  "/organization/update-role",
+  "/organization/delete-role",
+]);
+
 const ADMIN_DEMOTION_PATHS = new Set([
   "/admin/set-role",
   "/admin/remove-user",
@@ -285,8 +343,13 @@ async function assertKeepsAnInstanceAdmin(ctx: {
  * Builds a Better Auth instance. Only the OAuth credentials and endpoints
  * come from the arguments; every switch is read per request in the hooks.
  */
-function createAuthInstance(oauth: OAuthBuildConfig) {
+function createAuthInstance(
+  oauth: OAuthBuildConfig,
+  sessionLifetimeHours: number,
+) {
   return betterAuth({
+    // The issuer authenticator apps show next to the code.
+    appName: "Margaya",
     baseURL: baseURLWithoutPath,
     trustedOrigins,
     secret: authSecret,
@@ -307,6 +370,7 @@ function createAuthInstance(oauth: OAuthBuildConfig) {
         teamMember: schema.teamMemberTable,
         apikey: schema.apikeyTable,
         deviceCode: schema.deviceCodeTable,
+        twoFactor: schema.twoFactorTable,
       },
     }),
     user: {
@@ -339,6 +403,9 @@ function createAuthInstance(oauth: OAuthBuildConfig) {
     emailAndPassword: {
       enabled: true,
       autoSignIn: true,
+      // Backstops for the full policy in the before hook (password-policy.ts).
+      minPasswordLength: PASSWORD_MIN_LENGTH,
+      maxPasswordLength: PASSWORD_MAX_LENGTH,
       // The reset email says the link lasts an hour.
       resetPasswordTokenExpiresIn: 60 * 60,
       // Whoever had the old password loses every session it opened.
@@ -418,7 +485,7 @@ function createAuthInstance(oauth: OAuthBuildConfig) {
       emailOTP({
         expiresIn: OTP_EXPIRY_SECONDS,
         disableSignUp: localSignUpDisabledAtStartup,
-        async sendVerificationOTP({ email, otp, type }) {
+        async sendVerificationOTP({ email, otp, type }, ctx) {
           if (type === "sign-in") {
             const locale = await getUserLocale(email);
             const copy = getAuthEmailCopy(locale);
@@ -434,8 +501,27 @@ function createAuthInstance(oauth: OAuthBuildConfig) {
               locale,
               purpose: "email-verification",
             });
+          } else if (type === "change-email") {
+            // The new address has no account yet: the requester's locale.
+            const locale =
+              (
+                ctx as
+                  | { context?: { session?: { user?: { locale?: unknown } } } }
+                  | undefined
+              )?.context?.session?.user?.locale ?? null;
+            const copy = getAuthEmailCopy(
+              typeof locale === "string" ? locale : null,
+            );
+            await sendOtpEmail(email, copy.changeEmailSubject, {
+              otp,
+              locale: typeof locale === "string" ? locale : null,
+              purpose: "email-change",
+            });
           }
         },
+        // A signed-in user moves their account to a new address: a code goes
+        // to the new address, and the change happens only once it is entered.
+        changeEmail: { enabled: true },
       }),
       organization({
         // `ac` is created with a narrow `statement` shape (project/task/label/
@@ -590,6 +676,13 @@ function createAuthInstance(oauth: OAuthBuildConfig) {
                 ),
               });
             }
+            // Workspaces go through the grace period: Better Auth's delete
+            // only proceeds once a scheduled deletion is due.
+            if (!(await isWorkspaceDeletionDue(organization.id))) {
+              throw new APIError("CONFLICT", {
+                message: SCHEDULE_DELETION_MESSAGE,
+              });
+            }
             // Export rows cascade with the workspace; stored objects don't.
             await purgeWorkspaceExports(organization.id).catch((error) => {
               console.error(
@@ -598,10 +691,48 @@ function createAuthInstance(oauth: OAuthBuildConfig) {
               );
             });
           },
+          // A workspace pending deletion is read-only.
+          // (The update hook's `organization` is the patch, without an id.)
+          beforeUpdateOrganization: async ({ member }) => {
+            await assertOrganizationWritable(member?.organizationId);
+          },
+          beforeCreateInvitation: async ({ invitation }) => {
+            await assertOrganizationWritable(invitation?.organizationId);
+            await refuseAgentInvitation(invitation?.email);
+          },
+          beforeAcceptInvitation: async ({ invitation }) => {
+            await assertOrganizationWritable(invitation?.organizationId);
+          },
+          beforeAddMember: async ({ member }) => {
+            await assertOrganizationWritable(member?.organizationId);
+            await refuseAgentMember(member?.userId);
+          },
+          beforeUpdateMemberRole: async ({ member, newRole }) => {
+            await assertOrganizationWritable(member?.organizationId);
+            await refuseAgentManagerRole(member?.userId, newRole);
+          },
           afterAddMember: async ({ member }) => {
             if (member?.organizationId) {
               void syncWorkspaceSeats(member.organizationId).catch((error) => {
                 console.error("Seat sync after member add failed:", error);
+              });
+              void publishMembersChanged({
+                workspaceId: member.organizationId,
+              });
+            }
+          },
+          // Accepting an invitation adds the member without afterAddMember.
+          afterAcceptInvitation: async ({ member }) => {
+            if (member?.organizationId) {
+              void publishMembersChanged({
+                workspaceId: member.organizationId,
+              });
+            }
+          },
+          afterUpdateMemberRole: async ({ member }) => {
+            if (member?.organizationId) {
+              void publishMembersChanged({
+                workspaceId: member.organizationId,
               });
             }
           },
@@ -613,7 +744,7 @@ function createAuthInstance(oauth: OAuthBuildConfig) {
               );
             }
             if (member?.organizationId) {
-              afterWorkspaceMemberRemoved(member.organizationId);
+              afterWorkspaceMemberRemoved(member.organizationId, member.userId);
             }
           },
         },
@@ -686,9 +817,19 @@ function createAuthInstance(oauth: OAuthBuildConfig) {
         defaultRole: "user",
         adminRoles: ["admin"],
       }),
+      // TOTP with recovery codes. It challenges password sign-in only:
+      // email-link and code sign-in are refused for accounts that use it
+      // (sign-in-policy.ts), and OAuth providers apply their own checks.
+      twoFactor({
+        issuer: "Margaya",
+        backupCodeOptions: { amount: 10, length: 10 },
+      }),
       openAPI(),
     ],
     session: {
+      // The instance's session lifetime (auth.sessionLifetimeHours); a
+      // change rebuilds this instance (see currentAuth).
+      ...sessionTimingOf(sessionLifetimeHours),
       // Off so that signing out, revoking a session or banning a user takes
       // effect on the next request. With the signed session_data cache on, a
       // copied cookie pair kept authorizing API calls (and Better Auth's own
@@ -703,6 +844,14 @@ function createAuthInstance(oauth: OAuthBuildConfig) {
     // per API instance. See utils/auth-rate-limit.ts for the rules.
     rateLimit: authRateLimitConfig(),
     databaseHooks: {
+      // Agent users (ai-agent/) never get a session.
+      session: {
+        create: {
+          before: async (session) => {
+            await refuseAgentSession(session);
+          },
+        },
+      },
       user: {
         create: {
           before: async (user, ctx) => {
@@ -738,13 +887,25 @@ function createAuthInstance(oauth: OAuthBuildConfig) {
         const { effective, derived } = getInstanceSettings();
 
         const verifyingEmail = isEmailVerificationRequest(ctx.path, ctx.body);
+        // Verifying or changing the signed-in user's own address is account
+        // management, not signing in: the sign-in switches don't apply.
+        const accountEmailRequest =
+          verifyingEmail || EMAIL_CHANGE_PATHS.has(ctx.path);
         if (
           emailCodeSignInOffAtStartup &&
           isEmailCodePath(ctx.path) &&
-          !verifyingEmail
+          !accountEmailRequest
         ) {
           return unregisteredEndpointResponse();
         }
+
+        await enforceAccountSecurityRules(
+          ctx as unknown as BeforeHookContext,
+          () =>
+            getSessionFromCtx(ctx, { disableRefresh: true }).catch(
+              () => null,
+            ) as ReturnType<Parameters<typeof enforceAccountSecurityRules>[1]>,
+        );
 
         // Codes for verifying an address go only to the signed-in user's own
         // address, so this path cannot mail codes to strangers.
@@ -766,7 +927,7 @@ function createAuthInstance(oauth: OAuthBuildConfig) {
         if (
           !effective.emailSignIn &&
           isLocalSignInPath(ctx.path) &&
-          !verifyingEmail
+          !accountEmailRequest
         ) {
           throw new APIError("FORBIDDEN", {
             message:
@@ -777,7 +938,7 @@ function createAuthInstance(oauth: OAuthBuildConfig) {
         if (
           !effective.emailCodeSignIn &&
           isEmailCodePath(ctx.path) &&
-          !verifyingEmail
+          !accountEmailRequest
         ) {
           throw new APIError("FORBIDDEN", {
             message: "Email codes are turned off on this server.",
@@ -796,6 +957,28 @@ function createAuthInstance(oauth: OAuthBuildConfig) {
           throw new APIError("FORBIDDEN", {
             message: "This sign-in method is turned off.",
           });
+        }
+
+        // The required provider, allowed domains for invitations, and no
+        // email link or code sign-in for accounts with two-factor on. A
+        // Response answers like a success without doing anything.
+        const policy = await enforceSignInPolicy({
+          path: ctx.path,
+          body: ctx.body,
+          provider,
+          accountEmailRequest,
+        });
+        if (policy) return policy;
+
+        if (CUSTOM_ROLE_WRITE_PATHS.has(ctx.path)) {
+          const session = await getSessionFromCtx(ctx, {
+            disableRefresh: true,
+          }).catch(() => null);
+          const workspaceId =
+            ctx.body?.organizationId ?? session?.session.activeOrganizationId;
+          if (typeof workspaceId === "string") {
+            await assertOrganizationWritable(workspaceId);
+          }
         }
 
         if (ADMIN_DEMOTION_PATHS.has(ctx.path)) {
@@ -846,6 +1029,55 @@ function createAuthInstance(oauth: OAuthBuildConfig) {
           }
         }
 
+        // Better Auth only stops non-owners from inviting owners; every other
+        // role up to the inviter's own is enforced here (see role-ceiling.ts).
+        if (ctx.path === "/organization/invite-member") {
+          const session = await getSessionFromCtx(ctx, {
+            disableRefresh: true,
+          }).catch(() => null);
+          const workspaceId =
+            ctx.body?.organizationId ?? session?.session.activeOrganizationId;
+          if (session?.user && typeof workspaceId === "string") {
+            const refusal = await roleCeilingError({
+              workspaceId,
+              userId: session.user.id,
+              roles: splitRoles(ctx.body?.role),
+              instanceAdmin:
+                (session.user as { role?: string | null }).role === "admin",
+            });
+            if (refusal) {
+              throw new APIError(
+                refusal.status === 403 ? "FORBIDDEN" : "BAD_REQUEST",
+                { message: refusal.message },
+              );
+            }
+          }
+        }
+
+        // The same ceiling for an existing member's role. Better Auth only
+        // protects the owner role here.
+        if (ctx.path === "/organization/update-member-role") {
+          const session = await getSessionFromCtx(ctx, {
+            disableRefresh: true,
+          }).catch(() => null);
+          const memberId = ctx.body?.memberId;
+          if (session?.user && typeof memberId === "string") {
+            const refusal = await memberRoleChangeError({
+              memberId,
+              userId: session.user.id,
+              roles: splitRoles(ctx.body?.role),
+              instanceAdmin:
+                (session.user as { role?: string | null }).role === "admin",
+            });
+            if (refusal) {
+              throw new APIError(
+                refusal.status === 403 ? "FORBIDDEN" : "BAD_REQUEST",
+                { message: refusal.message },
+              );
+            }
+          }
+        }
+
         const isSignUpPath =
           ctx.path === "/sign-up/email" ||
           ctx.path.startsWith("/callback/") ||
@@ -858,7 +1090,11 @@ function createAuthInstance(oauth: OAuthBuildConfig) {
         const isInstanceAdminSetup = !(await hasRegisteredUsers());
 
         if (ctx.path === "/sign-up/email") {
-          if (!effective.emailSignUp && !isInstanceAdminSetup) {
+          if (
+            !effective.emailSignUp &&
+            !isInstanceAdminSetup &&
+            !(await invitedPasswordSignUpAllowed(ctx.body, ctx.headers))
+          ) {
             throw new APIError("FORBIDDEN", {
               message:
                 "Password registration is currently disabled. Please use a configured social or OIDC sign-in method.",
@@ -902,6 +1138,23 @@ function createAuthInstance(oauth: OAuthBuildConfig) {
         }
       }),
       after: createAuthMiddleware(async (ctx) => {
+        await afterAccountSecurityRules(
+          ctx as unknown as AfterHookContext,
+          async ({ previousEmail, newEmail, userId }) => {
+            const [row] = await db
+              .select({ locale: schema.userTable.locale })
+              .from(schema.userTable)
+              .where(eq(schema.userTable.id, userId))
+              .limit(1);
+            const locale = row?.locale ?? null;
+            await sendEmailChangedEmail(
+              previousEmail,
+              getAuthEmailCopy(locale).emailChangedSubject,
+              { newEmail, locale },
+            );
+          },
+        );
+
         // Leaving runs the same follow-up as an admin removing the member;
         // Better Auth calls afterRemoveMember only for the latter.
         if (ctx.path === "/organization/leave") {
@@ -919,7 +1172,10 @@ function createAuthInstance(oauth: OAuthBuildConfig) {
                 left.userId,
               );
             }
-            afterWorkspaceMemberRemoved(left.organizationId);
+            afterWorkspaceMemberRemoved(
+              left.organizationId,
+              typeof left.userId === "string" ? left.userId : null,
+            );
           }
           return;
         }
@@ -976,18 +1232,20 @@ let generation = 0;
 
 function currentAuth(): AuthInstance {
   const settings = getInstanceSettings();
-  if (current?.fingerprint === settings.oauthFingerprint) {
+  const hours = settings.effective.sessionLifetimeHours;
+  const fingerprint = `${settings.oauthFingerprint}:${hours}`;
+  if (current?.fingerprint === fingerprint) {
     return current.instance;
   }
   const rebuilding = current !== null;
   current = {
-    instance: createAuthInstance(settings.oauth),
-    fingerprint: settings.oauthFingerprint,
+    instance: createAuthInstance(settings.oauth, hours),
+    fingerprint,
   };
   generation += 1;
   if (rebuilding) {
     console.info(
-      "Rebuilt the authentication service after a sign-in provider change",
+      "Rebuilt the authentication service after a sign-in provider or session lifetime change",
     );
   }
   return current.instance;
