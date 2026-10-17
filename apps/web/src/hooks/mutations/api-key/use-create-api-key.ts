@@ -1,28 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { authClient } from "@/lib/auth-client";
-import type {
-  CreateApiKeyClientRequest,
-  CreateApiKeyResponse,
-} from "@/types/api-key";
+import {
+  type CreateApiKeyInput,
+  createApiKey,
+} from "@/fetchers/api-key/api-keys";
 
+// Keys are created through the API so their scope (read-only, areas,
+// projects) is set on the server, where it can't be widened later.
 function useCreateApiKey() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: CreateApiKeyClientRequest) => {
-      const result = await authClient.apiKey.create({
-        name: data.name,
-        expiresIn: data.expiresIn,
-        prefix: data.prefix,
-        metadata: data.metadata,
-      });
-
-      if (result.error) {
-        throw new Error(result.error.message);
-      }
-
-      return result.data as CreateApiKeyResponse;
-    },
+    mutationFn: (data: CreateApiKeyInput) => createApiKey(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["api-keys"] });
     },
