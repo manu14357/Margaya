@@ -12,6 +12,7 @@ import {
 import { alias } from "drizzle-orm/pg-core";
 import db from "../database";
 import { projectTable, taskTable, userTable } from "../database/schema";
+import { notHiddenProject } from "../project/visibility";
 import { escapeLikePattern } from "../search/like-pattern";
 import { DEFAULT_TRASH_PAGE_SIZE } from "./schema";
 import { purgeAtFor, trashRetentionDays } from "./settings";
@@ -124,13 +125,19 @@ export async function listProjectTrash(
 }
 
 /** A workspace's trashed projects, newest first, with their task counts. */
-export async function listWorkspaceTrash(workspaceId: string, query: Paging) {
+export async function listWorkspaceTrash(
+  workspaceId: string,
+  query: Paging,
+  /** Restricted projects the caller may not see (project/visibility.ts). */
+  hidden: readonly string[] = [],
+) {
   const { page, limit, offset } = paging(query);
   const days = trashRetentionDays();
   const text = query.search?.trim();
   const where = and(
     eq(projectTable.workspaceId, workspaceId),
     isNotNull(projectTable.deletedAt),
+    notHiddenProject(projectTable.id, hidden),
     text ? ilike(projectTable.name, `%${escapeLikePattern(text)}%`) : undefined,
   );
 

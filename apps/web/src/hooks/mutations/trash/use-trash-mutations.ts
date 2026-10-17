@@ -14,7 +14,10 @@ import { trashQueryKeys } from "@/hooks/queries/trash/trash-query-keys";
 import { invalidateTaskQueries } from "@/lib/task-query/cache";
 
 /** The trash lists, plus the boards and lists a restored task returns to. */
-function refreshAfterTaskChange(queryClient: QueryClient, projectId: string) {
+export function refreshAfterTaskChange(
+  queryClient: QueryClient,
+  projectId: string,
+) {
   void queryClient.invalidateQueries({ queryKey: trashQueryKeys.all() });
   void queryClient.invalidateQueries({ queryKey: ["tasks", projectId] });
   void queryClient.invalidateQueries({ queryKey: archiveQueryKeys.all() });

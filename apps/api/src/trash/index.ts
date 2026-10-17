@@ -7,6 +7,7 @@ import {
   jsonResponse,
 } from "../openapi";
 import { projectSchema } from "../project/response";
+import { requestHiddenProjectIds } from "../project/visibility";
 import { taskSchema } from "../task/response";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
@@ -220,7 +221,14 @@ const trash = apiRouter<BaseVariables & { workspaceId: string }>()
   })
   .openapi(listWorkspaceTrashRoute, async (c) => {
     const query = c.req.valid("query");
-    return c.json(await listWorkspaceTrash(query.workspaceId, query), 200);
+    return c.json(
+      await listWorkspaceTrash(
+        query.workspaceId,
+        query,
+        await requestHiddenProjectIds(c),
+      ),
+      200,
+    );
   })
   .openapi(restoreProjectRoute, async (c) => {
     const project = await restoreTrashedProject(
