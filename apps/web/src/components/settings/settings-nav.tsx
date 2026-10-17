@@ -3,6 +3,7 @@ import type { LucideIcon } from "lucide-react";
 import {
   Bell,
   Blocks,
+  Bot,
   Building2,
   Code,
   CreditCard,
@@ -12,6 +13,7 @@ import {
   Globe,
   KeyRound,
   Mail,
+  NotebookPen,
   Plug,
   Ruler,
   ScrollText,
@@ -20,10 +22,13 @@ import {
   Shield,
   ShieldCheck,
   SlidersHorizontal,
+  Sparkles,
   Tag,
   Trash2,
   User,
   UserRound,
+  Users,
+  Wand2,
   Webhook,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -40,6 +45,7 @@ import {
   SelectTrigger,
 } from "@/components/ui/select";
 import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import { useAiAvailability } from "@/hooks/queries/ai/use-ai";
 import useGetConfig from "@/hooks/queries/config/use-get-config";
 import useGetProjects from "@/hooks/queries/project/use-get-projects";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
@@ -99,6 +105,11 @@ export function useSettingsNav() {
   const { canManageWebhooks, canReadAuditLog, isCheckingPermissions } =
     useWorkspacePermission();
   const { data: config } = useGetConfig();
+  // AI settings show only once the instance has AI on, to ai:manage holders.
+  const ai = useAiAvailability();
+  const showAiSettings = Boolean(ai.data?.instanceEnabled && ai.canManage);
+  // Skills and memory notes are for everyone who uses AI (ai:use).
+  const showAiLibrary = Boolean(ai.data?.instanceEnabled && ai.canUse);
   const { data: projects } = useGetProjects({
     workspaceId: workspace?.id ?? "",
   });
@@ -235,6 +246,38 @@ export function useSettingsNav() {
             },
           ]
         : []),
+      ...(showAiSettings
+        ? [
+            {
+              id: "ai",
+              label: t("ai:workspace.navLabel"),
+              icon: Sparkles,
+              to: "/dashboard/settings/workspace/ai",
+            },
+            {
+              id: "agents",
+              label: t("ai:agents.navLabel"),
+              icon: Bot,
+              to: "/dashboard/settings/workspace/agents",
+            },
+          ]
+        : []),
+      ...(showAiLibrary
+        ? [
+            {
+              id: "ai-skills",
+              label: t("ai:skills.navLabel"),
+              icon: Wand2,
+              to: "/dashboard/settings/workspace/ai-skills",
+            },
+            {
+              id: "ai-memory",
+              label: t("ai:memory.navLabel"),
+              icon: NotebookPen,
+              to: "/dashboard/settings/workspace/ai-memory",
+            },
+          ]
+        : []),
       ...(config?.billingEnabled
         ? [
             {
@@ -291,7 +334,9 @@ export function useSettingsNav() {
       ["email", Mail, "instanceAdmin:nav.email"],
       ["workspaces", Building2, "instanceAdmin:nav.workspaces"],
       ["publicBoards", Globe, "instanceAdmin:nav.publicBoards"],
+      ["users", Users, "accountSecurity:platform.users.nav"],
       ["admins", ShieldCheck, "instanceAdmin:nav.admins"],
+      ["ai", Sparkles, "instanceAdmin:nav.ai"],
     ] as const;
     items = instancePages.map(([id, icon, labelKey]) => ({
       id,
@@ -337,7 +382,7 @@ function ProjectPicker({
         className={cn("font-normal", className)}
       >
         <span className="flex min-w-0 items-center gap-2">
-          {project && <ProjectTile icon={project.icon} />}
+          {project && <ProjectTile icon={project.icon} seed={project.id} />}
           <span className="truncate text-foreground">
             {project?.name ||
               (projects && projects.length === 0
@@ -356,7 +401,7 @@ function ProjectPicker({
         {projects?.map((candidate) => (
           <SelectItem key={candidate.id} value={candidate.id}>
             <span className="flex min-w-0 items-center gap-2">
-              <ProjectTile icon={candidate.icon} />
+              <ProjectTile icon={candidate.icon} seed={candidate.id} />
               <span className="truncate">{candidate.name}</span>
             </span>
           </SelectItem>

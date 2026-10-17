@@ -9,6 +9,7 @@ import {
 import { writeSettingChanges } from "../../instance-settings/store";
 import { planSettingsPatch } from "../../instance-settings/validate";
 import { enforceRateLimits } from "../../utils/rate-limit";
+import { recordInstanceAudit } from "../audit";
 import { settingsWriteLimiter } from "../limits";
 
 /** The A2 shape. Secret values never leave the server. */
@@ -72,5 +73,12 @@ export async function updateInstanceSettings(
   const keys = plan.changes.map((change) => change.key);
   console.info("Instance settings updated", { keys, userId });
   await publishEvent("instance.settings_updated", { keys, userId });
+  // Keys only: values may be secrets (SMTP password, OAuth client secrets).
+  await recordInstanceAudit({
+    action: "instance.settings_updated",
+    target: { type: "settings", label: keys.join(", ") },
+    metadata: { keys },
+    actor: { userId },
+  });
   return serializeInstanceSettings(next);
 }

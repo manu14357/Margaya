@@ -13,7 +13,7 @@ import {
 import { cn } from "@/lib/cn";
 import { formatDateMedium } from "@/lib/format";
 import { toast } from "@/lib/toast";
-import type { CreateApiKeyResponse } from "@/types/api-key";
+import type { ApiKeyAccess, CreateApiKeyResponse } from "@/types/api-key";
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
 import {
@@ -42,6 +42,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { type ApiKeyAreas, ApiKeyScopeFields } from "./api-key-scope-fields";
 
 const EXPIRATION_SECONDS = {
   "1d": 86400,
@@ -74,6 +75,9 @@ export function CreateApiKeyDialog({
   const { mutateAsync: createApiKey } = useCreateApiKey();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [access, setAccess] = useState<ApiKeyAccess>("full");
+  const [areas, setAreas] = useState<ApiKeyAreas>({});
+  const [projectIds, setProjectIds] = useState<string[] | null>(null);
 
   const createApiKeySchema = useMemo(
     () =>
@@ -162,12 +166,24 @@ export function CreateApiKeyDialog({
 
     setIsSubmitting(true);
     try {
+      if (access === "custom" && Object.keys(areas).length === 0) {
+        toast.error(t("accountSecurity:platform.apiKeys.areasRequired"));
+        return;
+      }
+      if (projectIds !== null && projectIds.length === 0) {
+        toast.error(t("accountSecurity:platform.apiKeys.projectsRequired"));
+        return;
+      }
       const result = await createApiKey({
         name: data.name,
         expiresIn: expiresInValue ?? null,
+        ...(access === "full" ? {} : { access }),
+        ...(access === "custom" ? { areas } : {}),
+        ...(projectIds ? { projectIds } : {}),
       });
 
       form.reset();
+      resetScope();
       onSuccess(result);
       onClose();
     } catch (error) {
@@ -181,16 +197,23 @@ export function CreateApiKeyDialog({
     }
   };
 
+  const resetScope = () => {
+    setAccess("full");
+    setAreas({});
+    setProjectIds(null);
+  };
+
   const handleClose = () => {
     if (!isSubmitting) {
       form.reset();
+      resetScope();
       onClose();
     }
   };
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-lg p-0 gap-0">
+      <DialogContent className="sm:max-w-lg p-0 gap-0 max-h-[90dvh] overflow-y-auto">
         <DialogHeader className="px-6 py-5 border-b border-border">
           <DialogTitle>{t("settings:apiKey.createDialog.title")}</DialogTitle>
           <DialogDescription>
@@ -329,6 +352,16 @@ export function CreateApiKeyDialog({
                   )}
                 />
               )}
+
+              <ApiKeyScopeFields
+                access={access}
+                onAccessChange={setAccess}
+                areas={areas}
+                onAreasChange={setAreas}
+                projectIds={projectIds}
+                onProjectIdsChange={setProjectIds}
+                disabled={isSubmitting}
+              />
             </div>
 
             <DialogFooter className="gap-2 sm:gap-2">

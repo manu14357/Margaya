@@ -61,6 +61,13 @@ export type EffectiveSettings = {
   guestAccess: boolean;
   emailSignIn: boolean;
   emailCodeSignIn: boolean;
+  /** Invited people may still sign up with a password when emailSignUp is off. */
+  emailSignUpForInvitations: boolean;
+  /** Lower-case domains new accounts must use; empty allows any. */
+  allowedEmailDomains: string[];
+  /** Everyone but instance admins signs in through this provider. */
+  requiredProvider: OAuthProviderId | null;
+  sessionLifetimeHours: number;
   restrictWorkspaceCreation: boolean;
   oauthEnabled: Record<OAuthProviderId, boolean>;
   customOAuth: { autoSignIn: boolean; logoutUrl: string; buttonLabel: string };
@@ -211,6 +218,17 @@ function scopesOf(value: string): string[] {
     .filter(Boolean);
 }
 
+function requiredProviderOf(value: string): OAuthProviderId | null {
+  return (OAUTH_PROVIDERS as readonly string[]).includes(value)
+    ? (value as OAuthProviderId)
+    : null;
+}
+
+function sessionHoursOf(settings: Record<string, ResolvedSetting>): number {
+  const hours = Number(settings["auth.sessionLifetimeHours"]?.value);
+  return Number.isInteger(hours) && hours >= 1 ? hours : 168;
+}
+
 function buildOAuth(
   settings: Record<string, ResolvedSetting>,
 ): OAuthBuildConfig {
@@ -321,6 +339,12 @@ export function resolveInstanceSettings({
     guestAccess: flag(settings, "auth.guestAccess"),
     emailSignIn: flag(settings, "auth.emailSignIn"),
     emailCodeSignIn: flag(settings, "auth.emailCodeSignIn"),
+    emailSignUpForInvitations: flag(settings, "auth.emailSignUpForInvitations"),
+    allowedEmailDomains: scopesOf(str(settings, "auth.allowedEmailDomains")),
+    requiredProvider: requiredProviderOf(
+      str(settings, "auth.requiredProvider"),
+    ),
+    sessionLifetimeHours: sessionHoursOf(settings),
     restrictWorkspaceCreation: flag(settings, "workspaces.restrictCreation"),
     oauthEnabled: {
       github: flag(settings, "oauth.github.enabled"),

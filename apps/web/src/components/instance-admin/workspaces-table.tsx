@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -94,8 +95,15 @@ export function WorkspacesTable({ q }: WorkspacesTableProps) {
                       </AvatarFallback>
                     </Avatar>
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-medium">
-                        {workspace.name}
+                      <p className="flex min-w-0 items-center gap-2 text-sm font-medium">
+                        <span className="truncate">{workspace.name}</span>
+                        {workspace.deletionDueAt && (
+                          <Badge variant="warning" className="shrink-0">
+                            {t("settings:workspaceDeletion.admin.badge", {
+                              date: formatDateMedium(workspace.deletionDueAt),
+                            })}
+                          </Badge>
+                        )}
                       </p>
                       <p className="truncate text-xs text-muted-foreground">
                         {workspace.slug}

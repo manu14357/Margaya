@@ -7,9 +7,9 @@ import { toast } from "@/lib/toast";
 import TimezoneSelect from "./timezone-select";
 
 /**
- * The account time zone for server-rendered times (reminders, digests).
- * "Automatic" stores the browser's zone when chosen; the app itself keeps
- * rendering in the browser's zone either way.
+ * The account time zone for server-rendered times (reminders, digests) and
+ * the days task filters and analytics count in. "Automatic" stores the
+ * browser's zone when chosen; times on screen stay in the browser's zone.
  */
 export default function AccountTimezoneSetting() {
   const { t } = useTranslation();

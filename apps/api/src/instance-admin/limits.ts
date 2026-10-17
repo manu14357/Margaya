@@ -8,6 +8,13 @@ export const testEmailLimiter = createRateLimiter({
   max: 5,
 });
 
+// Password confirmations for the re-authentication window.
+export const reauthLimiter = createRateLimiter({
+  name: "admin-reauth",
+  windowSeconds: 60,
+  max: 5,
+});
+
 export const settingsWriteLimiter = createRateLimiter({
   name: "admin-settings-write",
   windowSeconds: 60,

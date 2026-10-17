@@ -38,5 +38,12 @@ export function configFieldsOf(snapshot: InstanceSettingsSnapshot) {
     publicBoardsEnabled: effective.publicBoards.enabled,
     passwordResetEnabled: effective.emailSignIn && derived.smtpConfigured,
     publicLandingEnabled: effective.publicLanding,
+    passwordSignUpForInvitations:
+      !effective.emailSignUp && effective.emailSignUpForInvitations,
+    requiredSignInProvider:
+      effective.requiredProvider &&
+      derived.providers[effective.requiredProvider].active
+        ? effective.requiredProvider
+        : null,
   };
 }

@@ -24,13 +24,20 @@ export const updateInstanceSettingsBody = z
 
 const cursor = z.string().max(512).optional();
 
-export const listInstanceWorkspacesQuery = z.object({
+export const listInstancePublicBoardsQuery = z.object({
   search: z.string().trim().max(100).optional(),
   cursor,
   limit: z.coerce.number().int().min(1).max(100).default(25),
 });
 
-export const listInstancePublicBoardsQuery = listInstanceWorkspacesQuery;
+export const listInstanceWorkspacesQuery = listInstancePublicBoardsQuery.extend(
+  {
+    pendingDeletion: z.enum(["true", "false"]).optional().openapi({
+      description:
+        "true lists only workspaces scheduled for deletion (read-only until they are purged or the deletion is cancelled).",
+    }),
+  },
+);
 
 export const sendInstanceTestEmailBody = z
   .object({
@@ -47,3 +54,59 @@ export const addInstanceAdminBody = z
 export const instanceAdminParam = z.object({
   userId: z.string().min(1).max(128),
 });
+
+export const confirmInstanceAdminBody = z
+  .object({
+    password: z.string().min(1).max(256).openapi({
+      description: "The caller's current password.",
+    }),
+  })
+  .strict();
+
+export const listInstanceAuditQuery = z.object({
+  cursor,
+  limit: z.coerce.number().int().min(1).max(100).default(50),
+  action: z.string().trim().max(500).optional().openapi({
+    description:
+      "Comma-separated action names to keep, for example user.banned.",
+  }),
+});
+
+export const listInstanceUsersQuery = z.object({
+  search: z.string().trim().max(100).optional().openapi({
+    description: "Matches the name or email.",
+  }),
+  status: z.enum(["all", "admins", "banned"]).default("all"),
+  cursor,
+  limit: z.coerce.number().int().min(1).max(100).default(25),
+});
+
+export const instanceUserParam = z.object({
+  userId: z.string().min(1).max(128),
+});
+
+export const banInstanceUserBody = z
+  .object({
+    reason: z.string().trim().max(500).optional(),
+    expiresInDays: z
+      .number()
+      .int()
+      .min(1)
+      .max(3650)
+      .nullable()
+      .optional()
+      .openapi({
+        description:
+          "Days until the ban lifts; omitted or null bans until unbanned.",
+      }),
+  })
+  .strict();
+
+export const resetInstanceUserPasswordBody = z
+  .object({
+    password: z.string().min(1).max(256).optional().openapi({
+      description:
+        "A new password to set now (the account is signed out everywhere). Omit it to email a reset link instead.",
+    }),
+  })
+  .strict();

@@ -4,6 +4,7 @@ import { SettingsPage, SettingsSection } from "@/components/settings-layout";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LockedCallout } from "./locked-callout";
+import { ReauthDialog } from "./reauth-dialog";
 
 type InstancePageProps = {
   title: string;
@@ -36,6 +37,8 @@ export function InstancePage({
       }
     >
       {children}
+      {/* Instance changes may ask for the password again (lib/reauth.ts). */}
+      <ReauthDialog />
     </SettingsPage>
   );
 }

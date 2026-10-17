@@ -102,6 +102,10 @@ export const instanceWorkspacePageSchema = z
           .nullable(),
         memberCount: z.number().int(),
         projectCount: z.number().int(),
+        deletionDueAt: nullableResponseTimestamp.openapi({
+          description:
+            "Set while a deletion is pending: when the workspace will be deleted.",
+        }),
       }),
     ),
     nextCursor: z.string().nullable(),
@@ -161,3 +165,93 @@ export const instancePublicBoardPageSchema = z
     nextCursor: z.string().nullable(),
   })
   .openapi("InstancePublicBoardPage");
+
+export const instanceReauthResultSchema = z
+  .object({
+    reauthenticatedUntil: z.string().openapi({
+      description:
+        "When the confirmation stops covering instance-admin changes (ISO 8601).",
+    }),
+  })
+  .openapi("InstanceReauthResult");
+
+export const instanceAuditEntrySchema = z
+  .object({
+    id: z.string(),
+    actorType: z.enum(["user", "system"]).openapi({
+      description: "system: the recovery CLI or the server itself.",
+    }),
+    actorUserId: z.string().nullable(),
+    actorName: z.string().nullable(),
+    action: z.string().openapi({
+      description:
+        "A stable action name such as instance.settings_updated or user.banned.",
+    }),
+    targetType: z.string().nullable(),
+    targetId: z.string().nullable(),
+    targetLabel: z.string().nullable(),
+    metadata: z.record(z.string(), z.unknown()).nullable().openapi({
+      description:
+        "Details such as the setting keys that changed. Secret values are never stored.",
+    }),
+    ipAddress: z.string().nullable(),
+    createdAt: responseTimestamp,
+  })
+  .openapi("InstanceAuditEntry");
+
+export const instanceAuditPageSchema = z
+  .object({
+    items: z.array(instanceAuditEntrySchema),
+    nextCursor: z.string().nullable(),
+  })
+  .openapi("InstanceAuditPage");
+
+export const instanceUserPageSchema = z
+  .object({
+    items: z.array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        email: z.string(),
+        image: z.string().nullable(),
+        isAdmin: z.boolean(),
+        banned: yes("Banned now (a timed ban that ran out reads false)."),
+        banReason: z.string().nullable(),
+        banExpires: nullableResponseTimestamp,
+        twoFactorEnabled: z.boolean(),
+        workspaceCount: z.number().int(),
+        lastActiveAt: nullableResponseTimestamp.openapi({
+          description: "The latest session activity, or null.",
+        }),
+        createdAt: responseTimestamp,
+      }),
+    ),
+    nextCursor: z.string().nullable(),
+  })
+  .openapi("InstanceUserPage");
+
+export const instanceUserDetailSchema = z
+  .object({
+    id: z.string(),
+    workspaces: z.array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        slug: z.string(),
+        role: z.string(),
+        joinedAt: responseTimestamp,
+      }),
+    ),
+    activeSessions: z.number().int(),
+    hasPassword: z.boolean(),
+  })
+  .openapi("InstanceUserDetail");
+
+export const instanceUserActionSchema = z
+  .object({
+    userId: z.string(),
+    banned: z.boolean().optional(),
+    revoked: z.number().int().optional(),
+    method: z.enum(["email", "set"]).optional(),
+  })
+  .openapi("InstanceUserActionResult");

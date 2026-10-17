@@ -40,3 +40,14 @@ export async function sendInstanceTestEmail(to?: string) {
   }
   return response.json();
 }
+
+/** Opens the recent sign-in window for instance changes (10 minutes). */
+export async function confirmInstanceAdminPassword(password: string) {
+  const response = await client["instance-admin"].reauth.$post({
+    json: { password },
+  });
+  if (!response.ok) {
+    throw new HttpError(response.status, await response.text());
+  }
+  return response.json();
+}

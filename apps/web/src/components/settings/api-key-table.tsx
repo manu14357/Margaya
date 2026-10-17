@@ -1,4 +1,4 @@
-import { Trash2 } from "lucide-react";
+import { Activity, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useDeleteApiKey from "@/hooks/mutations/api-key/use-delete-api-key";
@@ -27,6 +27,7 @@ import {
   TableRow,
 } from "../ui/table";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { ApiKeyRequestsSheet } from "./api-key-requests-sheet";
 
 type ApiKeyTableProps = {
   apiKeys: ApiKey[];
@@ -73,8 +74,39 @@ function LastUsed({ value }: { value: Date | string | null | undefined }) {
   );
 }
 
+const SCOPE_KEYS = {
+  full: "accountSecurity:platform.apiKeys.scopeFull",
+  read: "accountSecurity:platform.apiKeys.scopeRead",
+  custom: "accountSecurity:platform.apiKeys.scopeCustom",
+} as const;
+
+/** Full access, read-only or custom, and the projects it is limited to. */
+function ScopeSummary({ scope }: { scope: ApiKey["scope"] | undefined }) {
+  const { t } = useTranslation();
+  if (!scope) return null;
+  const projects = scope.projects?.map(
+    (project) =>
+      project.name ?? t("accountSecurity:platform.apiKeys.deletedProject"),
+  );
+  return (
+    <div className="space-y-0.5">
+      <Badge variant={scope.access === "full" ? "outline" : "secondary"}>
+        {t(SCOPE_KEYS[scope.access])}
+      </Badge>
+      {projects && projects.length > 0 && (
+        <p className="max-w-56 truncate text-xs text-muted-foreground">
+          {t("accountSecurity:platform.apiKeys.scopeProjects", {
+            projects: projects.join(", "),
+          })}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export function ApiKeyTable({ apiKeys, isLoading }: ApiKeyTableProps) {
   const { t } = useTranslation();
+  const [requestsKey, setRequestsKey] = useState<ApiKey | null>(null);
   const { mutateAsync: deleteApiKey } = useDeleteApiKey();
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
@@ -149,10 +181,13 @@ export function ApiKeyTable({ apiKeys, isLoading }: ApiKeyTableProps) {
             <TableRow>
               <TableHead>{t("settings:apiKey.table.columnName")}</TableHead>
               <TableHead>{t("settings:apiKey.table.columnKey")}</TableHead>
+              <TableHead>
+                {t("accountSecurity:platform.apiKeys.columnScope")}
+              </TableHead>
               <TableHead>{t("settings:apiKey.table.columnCreated")}</TableHead>
               <TableHead>{t("settings:apiKey.table.columnExpires")}</TableHead>
               <TableHead>{t("settings:apiKey.table.columnLastUsed")}</TableHead>
-              <TableHead className="w-[90px] text-right">
+              <TableHead className="w-[110px] text-right">
                 {t("settings:apiKey.table.columnActions")}
               </TableHead>
             </TableRow>
@@ -182,6 +217,9 @@ export function ApiKeyTable({ apiKeys, isLoading }: ApiKeyTableProps) {
                       {apiKey.start}...
                     </code>
                   </TableCell>
+                  <TableCell>
+                    <ScopeSummary scope={apiKey.scope} />
+                  </TableCell>
                   <TableCell className="text-muted-foreground">
                     {formatDate(apiKey.createdAt)}
                   </TableCell>
@@ -201,7 +239,23 @@ export function ApiKeyTable({ apiKeys, isLoading }: ApiKeyTableProps) {
                   <TableCell>
                     <LastUsed value={apiKey.lastRequest} />
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="whitespace-nowrap text-right">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => setRequestsKey(apiKey)}
+                      aria-label={t(
+                        "accountSecurity:platform.apiKeys.requestsAria",
+                        {
+                          name:
+                            apiKey.name ||
+                            t("settings:apiKey.table.deleteAriaFallback"),
+                        },
+                      )}
+                    >
+                      <Activity className="h-4 w-4" />
+                    </Button>
                     <Button
                       variant="ghost"
                       size="icon"
@@ -223,6 +277,13 @@ export function ApiKeyTable({ apiKeys, isLoading }: ApiKeyTableProps) {
           </TableBody>
         </Table>
       </Frame>
+
+      {requestsKey && (
+        <ApiKeyRequestsSheet
+          apiKey={requestsKey}
+          onClose={() => setRequestsKey(null)}
+        />
+      )}
 
       <AlertDialog
         open={Boolean(pendingDeleteKey)}

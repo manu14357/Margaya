@@ -104,6 +104,18 @@ export function planSettingsPatch(input: {
   if (after < 1 && after < before) {
     return reject(409, "Keep at least one way to sign in");
   }
+  // A required provider must work, or only instance admins could sign in.
+  // Refused only when this change breaks it, like the rule above.
+  const required = candidate.effective.requiredProvider;
+  const wasWorking =
+    !current.effective.requiredProvider ||
+    current.derived.providers[current.effective.requiredProvider].active;
+  if (required && !candidate.derived.providers[required].active && wasWorking) {
+    return reject(
+      409,
+      "Set up and turn on this sign-in provider before requiring it",
+    );
+  }
 
   return { ok: true, changes, candidate };
 }

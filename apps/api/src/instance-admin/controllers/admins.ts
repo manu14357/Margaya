@@ -9,6 +9,7 @@ import {
 } from "../../utils/instance-admins";
 import { nonAnonymousUser } from "../../utils/instance-bootstrap";
 import { enforceRateLimits } from "../../utils/rate-limit";
+import { recordInstanceAudit, userTargetLabel } from "../audit";
 import { settingsWriteLimiter } from "../limits";
 
 const LAST_ADMIN = "There must be at least one instance admin";
@@ -92,6 +93,15 @@ export async function addInstanceAdmin(email: string, callerId: string) {
       targetUserId: result.target.id,
       userId: callerId,
     });
+    await recordInstanceAudit({
+      action: "instance.admin_added",
+      target: {
+        type: "user",
+        id: result.target.id,
+        label: result.target.email,
+      },
+      actor: { userId: callerId },
+    });
   }
   const { id, name, email: address, image } = result.target;
   return view({ id, name, email: address, image }, callerId);
@@ -126,6 +136,11 @@ export async function removeInstanceAdmin(userId: string, callerId: string) {
   await publishEvent("instance.admin_removed", {
     targetUserId: userId,
     userId: callerId,
+  });
+  await recordInstanceAudit({
+    action: "instance.admin_removed",
+    target: { type: "user", id: userId, label: await userTargetLabel(userId) },
+    actor: { userId: callerId },
   });
   return { userId };
 }

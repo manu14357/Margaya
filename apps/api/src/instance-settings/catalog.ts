@@ -18,6 +18,7 @@ export const SETTING_GROUPS = [
   "oauth.custom",
   "smtp",
   "publicBoards",
+  "ai",
 ] as const;
 export type SettingGroup = (typeof SETTING_GROUPS)[number];
 
@@ -186,7 +187,328 @@ function oauthGroup(
   ];
 }
 
+// A bare domain such as example.com: labels of letters, digits and hyphens.
+const DOMAIN =
+  /^(?=.{1,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/;
+
+/** Comma- or space-separated domains, normalized to "a.com,b.org". */
+const emailDomains = z
+  .string()
+  .max(2000, "at most 2000 characters")
+  .transform((value) => [
+    ...new Set(
+      value
+        .split(/[\s,]+/)
+        .map((token) => token.trim().toLowerCase().replace(/^@/, ""))
+        .filter(Boolean),
+    ),
+  ])
+  .refine((domains) => domains.length <= 50, {
+    message: "list at most 50 domains",
+  })
+  .refine((domains) => domains.every((domain) => DOMAIN.test(domain)), {
+    message: "list domains such as example.com, separated by commas",
+  })
+  .transform((domains) => domains.join(","));
+
+export const REQUIRED_PROVIDER_VALUES = [
+  "",
+  "github",
+  "google",
+  "discord",
+  "custom",
+] as const;
+
 const CUSTOM_LOCK = ["CUSTOM_OAUTH_CLIENT_ID"] as const;
+
+export const AI_PROVIDER_VALUES = [
+  "anthropic",
+  "openai_compatible",
+  "fake",
+] as const;
+export const AI_RESTRICTED_ROUTES = ["blocked", "local", "cloud"] as const;
+export const AI_PRIVATE_ROUTES = ["local", "cloud"] as const;
+export const AI_LOCAL_THINKING_VALUES = ["off", "on"] as const;
+export const AI_WEB_SEARCH_PROVIDERS = [
+  "off",
+  "searxng",
+  "brave",
+  "tavily",
+] as const;
+
+/** An env value from a fixed list (lower-cased), or the fallback. */
+function oneOf(name: string, values: readonly string[], fallback: string) {
+  return (env: Env) => {
+    if (!isEnvSet(env, name)) return undefined;
+    const value = env[name]?.trim().toLowerCase() ?? "";
+    return values.includes(value) ? value : fallback;
+  };
+}
+
+const modelName = text(128).refine(
+  (value) => !value || /^[A-Za-z0-9._:/@-]+$/.test(value),
+  { message: "use letters, digits and . _ : / @ - only" },
+);
+
+// AI (ai/settings.ts). Off by default; each workspace opts in after this.
+// Model names left empty use the provider's defaults for the tier.
+const AI_SETTINGS: SettingDefinition[] = [
+  {
+    key: "ai.enabled",
+    group: "ai",
+    secret: false,
+    default: false,
+    schema: bool,
+    envVar: "MARGAYA_AI_ENABLED",
+    readEnv: enabledFlag("MARGAYA_AI_ENABLED"),
+  },
+  {
+    key: "ai.provider",
+    group: "ai",
+    secret: false,
+    default: "anthropic",
+    schema: z.enum(AI_PROVIDER_VALUES),
+    envVar: "MARGAYA_AI_PROVIDER",
+    readEnv: oneOf("MARGAYA_AI_PROVIDER", AI_PROVIDER_VALUES, "anthropic"),
+  },
+  {
+    key: "ai.anthropic.apiKey",
+    group: "ai",
+    secret: true,
+    default: "",
+    schema: text(512),
+    envVar: "ANTHROPIC_API_KEY",
+    readEnv: trimmed("ANTHROPIC_API_KEY"),
+  },
+  {
+    key: "ai.openai.baseUrl",
+    group: "ai",
+    secret: false,
+    default: "",
+    schema: optionalUrl,
+    envVar: "MARGAYA_AI_OPENAI_BASE_URL",
+    readEnv: trimmed("MARGAYA_AI_OPENAI_BASE_URL"),
+  },
+  {
+    key: "ai.openai.apiKey",
+    group: "ai",
+    secret: true,
+    default: "",
+    schema: text(512),
+    envVar: "MARGAYA_AI_OPENAI_API_KEY",
+    readEnv: trimmed("MARGAYA_AI_OPENAI_API_KEY"),
+  },
+  ...(["fast", "balanced", "deep"] as const).map(
+    (tier): SettingDefinition => ({
+      key: `ai.models.${tier}`,
+      group: "ai",
+      secret: false,
+      default: "",
+      schema: modelName,
+      envVar: `MARGAYA_AI_MODEL_${tier.toUpperCase()}`,
+      readEnv: trimmed(`MARGAYA_AI_MODEL_${tier.toUpperCase()}`),
+    }),
+  ),
+  {
+    // An OpenAI-compatible endpoint on the operator's own network (Ollama,
+    // vLLM, LM Studio). Private addresses are allowed here only.
+    key: "ai.local.baseUrl",
+    group: "ai",
+    secret: false,
+    default: "",
+    schema: optionalUrl,
+    envVar: "MARGAYA_AI_LOCAL_BASE_URL",
+    readEnv: trimmed("MARGAYA_AI_LOCAL_BASE_URL"),
+  },
+  {
+    key: "ai.local.model",
+    group: "ai",
+    secret: false,
+    default: "",
+    schema: modelName,
+    envVar: "MARGAYA_AI_LOCAL_MODEL",
+    readEnv: trimmed("MARGAYA_AI_LOCAL_MODEL"),
+  },
+  {
+    // Optional: local servers started with an API key (e.g. vLLM --api-key).
+    key: "ai.local.apiKey",
+    group: "ai",
+    secret: true,
+    default: "",
+    schema: text(512),
+    envVar: "MARGAYA_AI_LOCAL_API_KEY",
+    readEnv: trimmed("MARGAYA_AI_LOCAL_API_KEY"),
+  },
+  {
+    key: "ai.localOnly",
+    group: "ai",
+    secret: false,
+    default: false,
+    schema: bool,
+    envVar: "MARGAYA_AI_LOCAL_ONLY",
+    readEnv: enabledFlag("MARGAYA_AI_LOCAL_ONLY"),
+  },
+  {
+    // Where data from restricted projects may go.
+    key: "ai.route.restricted",
+    group: "ai",
+    secret: false,
+    default: "local",
+    schema: z.enum(AI_RESTRICTED_ROUTES),
+    envVar: null,
+  },
+  {
+    // Where other workspace data may go.
+    key: "ai.route.private",
+    group: "ai",
+    secret: false,
+    default: "cloud",
+    schema: z.enum(AI_PRIVATE_ROUTES),
+    envVar: null,
+  },
+  {
+    key: "ai.redaction.enabled",
+    group: "ai",
+    secret: false,
+    default: false,
+    schema: bool,
+    envVar: null,
+  },
+  {
+    // Recorded only: zero data retention is an agreement with the provider.
+    key: "ai.zeroRetention",
+    group: "ai",
+    secret: false,
+    default: false,
+    schema: bool,
+    envVar: null,
+  },
+  {
+    key: "ai.allowWorkspaceKeys",
+    group: "ai",
+    secret: false,
+    default: true,
+    schema: bool,
+    envVar: null,
+  },
+  {
+    // Embeddings always use an OpenAI-compatible endpoint.
+    key: "ai.embeddings.baseUrl",
+    group: "ai",
+    secret: false,
+    default: "",
+    schema: optionalUrl,
+    envVar: "MARGAYA_AI_EMBEDDINGS_BASE_URL",
+    readEnv: trimmed("MARGAYA_AI_EMBEDDINGS_BASE_URL"),
+  },
+  {
+    key: "ai.embeddings.model",
+    group: "ai",
+    secret: false,
+    default: "",
+    schema: modelName,
+    envVar: "MARGAYA_AI_EMBEDDINGS_MODEL",
+    readEnv: trimmed("MARGAYA_AI_EMBEDDINGS_MODEL"),
+  },
+  {
+    key: "ai.embeddings.apiKey",
+    group: "ai",
+    secret: true,
+    default: "",
+    schema: text(512),
+    envVar: "MARGAYA_AI_EMBEDDINGS_API_KEY",
+    readEnv: trimmed("MARGAYA_AI_EMBEDDINGS_API_KEY"),
+  },
+  {
+    // Send a reasoning model's thinking text to the person who asked. The
+    // duration is always sent; the text is never stored or logged.
+    key: "ai.showReasoning",
+    group: "ai",
+    secret: false,
+    default: false,
+    schema: bool,
+    envVar: "MARGAYA_AI_SHOW_REASONING",
+    readEnv: enabledFlag("MARGAYA_AI_SHOW_REASONING"),
+  },
+  {
+    // "off" asks local reasoning models to skip thinking (faster, and
+    // structured answers stay clean); "on" lets them think.
+    key: "ai.local.thinking",
+    group: "ai",
+    secret: false,
+    default: "off",
+    schema: z.enum(AI_LOCAL_THINKING_VALUES),
+    envVar: "MARGAYA_AI_LOCAL_THINKING",
+    readEnv: oneOf(
+      "MARGAYA_AI_LOCAL_THINKING",
+      AI_LOCAL_THINKING_VALUES,
+      "off",
+    ),
+  },
+  {
+    // Web search for Ask and agents; each workspace still opts in.
+    key: "ai.webSearch.provider",
+    group: "ai",
+    secret: false,
+    default: "off",
+    schema: z.enum(AI_WEB_SEARCH_PROVIDERS),
+    envVar: "MARGAYA_AI_WEB_SEARCH_PROVIDER",
+    readEnv: oneOf(
+      "MARGAYA_AI_WEB_SEARCH_PROVIDER",
+      AI_WEB_SEARCH_PROVIDERS,
+      "off",
+    ),
+  },
+  {
+    // The SearXNG base URL (its JSON API must be enabled).
+    key: "ai.webSearch.url",
+    group: "ai",
+    secret: false,
+    default: "",
+    schema: optionalUrl,
+    envVar: "MARGAYA_AI_WEB_SEARCH_URL",
+    readEnv: trimmed("MARGAYA_AI_WEB_SEARCH_URL"),
+  },
+  {
+    // Brave Search or Tavily API key.
+    key: "ai.webSearch.apiKey",
+    group: "ai",
+    secret: true,
+    default: "",
+    schema: text(512),
+    envVar: "MARGAYA_AI_WEB_SEARCH_API_KEY",
+    readEnv: trimmed("MARGAYA_AI_WEB_SEARCH_API_KEY"),
+  },
+  {
+    // An OpenAI-compatible speech-to-text endpoint (/audio/transcriptions),
+    // e.g. a local Whisper server or https://api.openai.com/v1.
+    key: "ai.speech.baseUrl",
+    group: "ai",
+    secret: false,
+    default: "",
+    schema: optionalUrl,
+    envVar: "MARGAYA_AI_SPEECH_BASE_URL",
+    readEnv: trimmed("MARGAYA_AI_SPEECH_BASE_URL"),
+  },
+  {
+    key: "ai.speech.model",
+    group: "ai",
+    secret: false,
+    default: "",
+    schema: modelName,
+    envVar: "MARGAYA_AI_SPEECH_MODEL",
+    readEnv: trimmed("MARGAYA_AI_SPEECH_MODEL"),
+  },
+  {
+    key: "ai.speech.apiKey",
+    group: "ai",
+    secret: true,
+    default: "",
+    schema: text(512),
+    envVar: "MARGAYA_AI_SPEECH_API_KEY",
+    readEnv: trimmed("MARGAYA_AI_SPEECH_API_KEY"),
+  },
+];
 const SMTP_LOCK = ["SMTP_HOST"] as const;
 
 export const SETTINGS_CATALOG: readonly SettingDefinition[] = [
@@ -242,6 +564,65 @@ export const SETTINGS_CATALOG: readonly SettingDefinition[] = [
     schema: bool,
     envVar: "DISABLE_GUEST_ACCESS",
     readEnv: disabledFlag("DISABLE_GUEST_ACCESS"),
+  },
+  {
+    // With password sign-up off, people holding a valid invitation may still
+    // create a password account.
+    key: "auth.emailSignUpForInvitations",
+    group: "signUp",
+    secret: false,
+    default: false,
+    schema: bool,
+    envVar: "ALLOW_INVITED_PASSWORD_REGISTRATION",
+    readEnv: enabledFlag("ALLOW_INVITED_PASSWORD_REGISTRATION"),
+  },
+  {
+    // New accounts (every sign-up method, invitations included) must use an
+    // address at one of these domains. Empty allows any domain.
+    key: "auth.allowedEmailDomains",
+    group: "signUp",
+    secret: false,
+    default: "",
+    schema: emailDomains,
+    envVar: "ALLOWED_EMAIL_DOMAINS",
+    readEnv: (env) => {
+      if (!isEnvSet(env, "ALLOWED_EMAIL_DOMAINS")) return undefined;
+      const parsed = emailDomains.safeParse(env.ALLOWED_EMAIL_DOMAINS);
+      return parsed.success ? parsed.data : "";
+    },
+  },
+  {
+    // Everyone signs in through this provider; instance admins keep password
+    // sign-in as a way back in. Empty means no requirement.
+    key: "auth.requiredProvider",
+    group: "signIn",
+    secret: false,
+    default: "",
+    schema: z.enum(REQUIRED_PROVIDER_VALUES),
+    envVar: "REQUIRED_SIGN_IN_PROVIDER",
+    readEnv: (env) => {
+      if (!isEnvSet(env, "REQUIRED_SIGN_IN_PROVIDER")) return undefined;
+      const value = env.REQUIRED_SIGN_IN_PROVIDER?.trim().toLowerCase() ?? "";
+      return (REQUIRED_PROVIDER_VALUES as readonly string[]).includes(value)
+        ? value
+        : "";
+    },
+  },
+  {
+    // How long a session lasts without use; each day of use extends it.
+    key: "auth.sessionLifetimeHours",
+    group: "signIn",
+    secret: false,
+    default: 168,
+    schema: z.number().int().min(1).max(8760),
+    envVar: "SESSION_LIFETIME_HOURS",
+    readEnv: (env) => {
+      if (!isEnvSet(env, "SESSION_LIFETIME_HOURS")) return undefined;
+      const value = Number(env.SESSION_LIFETIME_HOURS?.trim());
+      return Number.isInteger(value) && value >= 1 && value <= 8760
+        ? value
+        : 168;
+    },
   },
   {
     key: "auth.emailSignIn",
@@ -477,6 +858,7 @@ export const SETTINGS_CATALOG: readonly SettingDefinition[] = [
     schema: bool,
     envVar: null,
   },
+  ...AI_SETTINGS,
 ];
 
 export const LOCK_VARIABLE = "MARGAYA_LOCK_INSTANCE_SETTINGS";

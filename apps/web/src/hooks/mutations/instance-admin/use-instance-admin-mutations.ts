@@ -1,27 +1,36 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   addInstanceAdmin,
+  banInstanceUser,
   removeInstanceAdmin,
+  resetInstanceUserPassword,
+  revokeInstanceUserSessions,
+  unbanInstanceUser,
 } from "@/fetchers/instance-admin/instance-lists";
 import {
+  confirmInstanceAdminPassword,
   sendInstanceTestEmail,
   updateInstanceSettings,
 } from "@/fetchers/instance-admin/instance-settings";
 import { unpublishProject } from "@/fetchers/publication/project-publication";
 import { instanceAdminKeys } from "@/hooks/queries/instance-admin/use-instance-admin";
+import { withReauth } from "@/lib/reauth";
 import type { InstanceSettingsPatch } from "@/types/instance-admin";
 
 export function useUpdateInstanceSettings() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (values: InstanceSettingsPatch) =>
-      updateInstanceSettings(values),
+      withReauth(() => updateInstanceSettings(values)),
     onSuccess: (settings) => {
       queryClient.setQueryData(instanceAdminKeys.settings(), settings);
       // The sign-in screen, workspace creation and public boards read /config.
       void queryClient.invalidateQueries({ queryKey: ["config"] });
       void queryClient.invalidateQueries({
         queryKey: instanceAdminKeys.overview(),
+      });
+      void queryClient.invalidateQueries({
+        queryKey: instanceAdminKeys.auditLog(),
       });
     },
   });
@@ -36,10 +45,13 @@ export function useSendInstanceTestEmail() {
 export function useAddInstanceAdmin() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (email: string) => addInstanceAdmin(email),
+    mutationFn: (email: string) => withReauth(() => addInstanceAdmin(email)),
     onSuccess: () => {
       void queryClient.invalidateQueries({
         queryKey: instanceAdminKeys.admins(),
+      });
+      void queryClient.invalidateQueries({
+        queryKey: instanceAdminKeys.auditLog(),
       });
     },
   });
@@ -48,10 +60,14 @@ export function useAddInstanceAdmin() {
 export function useRemoveInstanceAdmin() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (userId: string) => removeInstanceAdmin(userId),
+    mutationFn: (userId: string) =>
+      withReauth(() => removeInstanceAdmin(userId)),
     onSettled: () => {
       void queryClient.invalidateQueries({
         queryKey: instanceAdminKeys.admins(),
+      });
+      void queryClient.invalidateQueries({
+        queryKey: instanceAdminKeys.auditLog(),
       });
     },
   });
@@ -70,6 +86,64 @@ export function useUnpublishInstanceBoard() {
       });
       void queryClient.invalidateQueries({
         queryKey: ["publication", projectId],
+      });
+    },
+  });
+}
+
+export function useConfirmInstanceAdminPassword() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (password: string) => confirmInstanceAdminPassword(password),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: instanceAdminKeys.auditLog(),
+      });
+    },
+  });
+}
+
+type UserAction =
+  | {
+      type: "ban";
+      userId: string;
+      reason?: string;
+      expiresInDays?: number | null;
+    }
+  | { type: "unban"; userId: string }
+  | { type: "revokeSessions"; userId: string }
+  | { type: "resetPassword"; userId: string; password?: string };
+
+function runUserAction(action: UserAction) {
+  switch (action.type) {
+    case "ban":
+      return banInstanceUser(action.userId, {
+        reason: action.reason,
+        expiresInDays: action.expiresInDays ?? null,
+      });
+    case "unban":
+      return unbanInstanceUser(action.userId);
+    case "revokeSessions":
+      return revokeInstanceUserSessions(action.userId);
+    case "resetPassword":
+      return resetInstanceUserPassword(
+        action.userId,
+        action.password ? { password: action.password } : {},
+      );
+  }
+}
+
+/** Ban, unban, sign out everywhere and reset a password (4.12). */
+export function useInstanceUserAction() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (action: UserAction) => withReauth(() => runUserAction(action)),
+    onSettled: () => {
+      void queryClient.invalidateQueries({
+        queryKey: instanceAdminKeys.users(),
+      });
+      void queryClient.invalidateQueries({
+        queryKey: instanceAdminKeys.auditLog(),
       });
     },
   });

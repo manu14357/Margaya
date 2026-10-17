@@ -26,18 +26,26 @@ import {
 } from "../../publication/keyset";
 
 type PageQuery = { search?: string; cursor?: string; limit: number };
+type WorkspacePageQuery = PageQuery & { pendingDeletion?: "true" | "false" };
 
 function likePattern(search: string) {
   return `%${search.replace(/[\\%_]/g, (char) => `\\${char}`)}%`;
 }
 
-/** A4: every workspace, newest first, with owner and counts. */
+/**
+ * A4: every workspace, newest first, with owner and counts. With
+ * `pendingDeletion`, only workspaces scheduled for deletion.
+ */
 export async function listInstanceWorkspaces({
   search,
   cursor,
   limit,
-}: PageQuery) {
+  pendingDeletion,
+}: WorkspacePageQuery) {
   const conditions = [];
+  if (pendingDeletion === "true") {
+    conditions.push(isNotNull(workspaceTable.deletionDueAt));
+  }
   if (search) {
     const pattern = likePattern(search);
     conditions.push(
@@ -65,6 +73,7 @@ export async function listInstanceWorkspaces({
       slug: workspaceTable.slug,
       logo: workspaceTable.logo,
       createdAt: workspaceTable.createdAt,
+      deletionDueAt: workspaceTable.deletionDueAt,
       at: timeKey(workspaceTable.createdAt),
       // Qualified by hand: drizzle renders bare column names in a
       // single-table select, which a correlated subquery would capture.
@@ -120,6 +129,7 @@ export async function listInstanceWorkspaces({
       owner: owners.get(row.id) ?? null,
       memberCount: Number(row.memberCount),
       projectCount: Number(row.projectCount),
+      deletionDueAt: row.deletionDueAt,
     })),
     nextCursor:
       rows.length > limit && last ? encodeKeyset(last.at, last.id) : null,
