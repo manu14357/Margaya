@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import db from "../../database";
-import { integrationTable } from "../../database/schema";
+import { integrationTable, projectTable } from "../../database/schema";
+import { isWorkspacePendingDeletion } from "../../workspace-deletion/lock";
 import type { GiteaConfig } from "./config";
 import { verifyGiteaSignature } from "./utils/verify-signature";
 import { handleGiteaIssueClosed } from "./webhooks/issue-closed";
@@ -99,6 +100,19 @@ export async function handleGiteaWebhookRequest(
 
   if (!verifyGiteaSignature(rawBody, secret, signatureHeader)) {
     return { success: false, error: "Invalid webhook signature" };
+  }
+
+  // A workspace pending deletion is read-only: its webhooks are paused. The
+  // delivery is acknowledged so Gitea does not report a broken hook.
+  const project = await db.query.projectTable.findFirst({
+    columns: { workspaceId: true },
+    where: eq(projectTable.id, integration.projectId),
+  });
+  if (project && (await isWorkspacePendingDeletion(project.workspaceId))) {
+    console.log(
+      `[Gitea Webhook] Skipped: workspace ${project.workspaceId} is scheduled for deletion`,
+    );
+    return { success: true };
   }
 
   const event = eventHeader || undefined;

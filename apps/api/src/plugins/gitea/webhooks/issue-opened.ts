@@ -1,4 +1,5 @@
 import { and, eq } from "drizzle-orm";
+import { isHandoffIssue } from "../../../coding-agent/marker";
 import db from "../../../database";
 import { columnTable, projectTable, taskTable } from "../../../database/schema";
 import { publishEvent } from "../../../events";
@@ -50,6 +51,8 @@ export async function handleGiteaIssueOpened(
   integrationId?: string,
 ) {
   const { issue, repository } = payload;
+
+  if (isHandoffIssue(issue.body)) return;
 
   const baseUrl = baseUrlFromRepositoryHtmlUrl(repository.html_url);
   if (!baseUrl) {

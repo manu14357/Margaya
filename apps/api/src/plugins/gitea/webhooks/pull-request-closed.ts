@@ -1,4 +1,5 @@
 import { and, eq } from "drizzle-orm";
+import { syncHandoffPullRequest } from "../../../coding-agent/handoffs";
 import db from "../../../database";
 import { externalLinkTable } from "../../../database/schema";
 import { publishEvent } from "../../../events";
@@ -83,6 +84,19 @@ export async function handleGiteaPullRequestClosed(
         state: "closed",
         merged: pull_request.merged,
         mergedAt: pull_request.merged_at,
+      },
+    });
+
+    await syncHandoffPullRequest({
+      integrationId: integration.id,
+      taskId: task.id,
+      pr: {
+        number: pull_request.number,
+        url: pull_request.html_url,
+        title: pull_request.title,
+        draft: false,
+        state: "closed",
+        merged: Boolean(pull_request.merged),
       },
     });
 

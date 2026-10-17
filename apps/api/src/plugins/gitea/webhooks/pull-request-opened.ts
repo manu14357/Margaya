@@ -1,9 +1,14 @@
+import {
+  findHandoffTaskForPullRequest,
+  syncHandoffPullRequest,
+} from "../../../coding-agent/handoffs";
 import { publishEvent } from "../../../events";
 import {
   createExternalLink,
   findExternalLink,
 } from "../../github/services/link-manager";
 import {
+  findTaskById,
   findTaskByNumber,
   isTaskInFinalState,
   updateTaskStatus,
@@ -74,19 +79,37 @@ export async function handleGiteaPullRequestOpened(
     const projectSlug = integration.project.slug;
     const branchName = pull_request.head.ref;
 
-    const taskNumber = extractTaskNumberGitea(
-      branchName,
-      pull_request.title,
-      pull_request.body ?? undefined,
-      config,
-      projectSlug,
-    );
+    // A pull request for a coding-agent handoff names the handoff issue
+    // ("Closes #12"), which is not a task number.
+    const handoffTaskId = await findHandoffTaskForPullRequest(integration.id, {
+      title: pull_request.title,
+      body: pull_request.body,
+      branch: branchName,
+    });
+    const handoffTask = handoffTaskId
+      ? await findTaskById(handoffTaskId)
+      : null;
 
-    if (!taskNumber) {
+    const taskNumber = handoffTask
+      ? null
+      : extractTaskNumberGitea(
+          branchName,
+          pull_request.title,
+          pull_request.body ?? undefined,
+          config,
+          projectSlug,
+        );
+
+    if (!handoffTask && !taskNumber) {
       continue;
     }
 
-    const task = await findTaskByNumber(integration.projectId, taskNumber);
+    const task =
+      handoffTask?.projectId === integration.projectId
+        ? handoffTask
+        : taskNumber
+          ? await findTaskByNumber(integration.projectId, taskNumber)
+          : null;
 
     if (!task) {
       continue;
@@ -98,7 +121,24 @@ export async function handleGiteaPullRequestOpened(
       pull_request.number.toString(),
     );
 
+    const snapshot = {
+      number: pull_request.number,
+      url: pull_request.html_url,
+      title: pull_request.title,
+      // Gitea marks work in progress with a title prefix.
+      draft:
+        Boolean(pull_request.draft) ||
+        /^\s*(?:\[wip\]|wip:)/i.test(pull_request.title),
+      state: "open" as const,
+      merged: false,
+    };
+
     if (existingLink) {
+      await syncHandoffPullRequest({
+        integrationId: integration.id,
+        taskId: existingLink.taskId,
+        pr: snapshot,
+      });
       continue;
     }
 
@@ -116,6 +156,12 @@ export async function handleGiteaPullRequestOpened(
         branch: branchName,
         author: pull_request.user?.login ?? pull_request.user?.username,
       },
+    });
+
+    await syncHandoffPullRequest({
+      integrationId: integration.id,
+      taskId: task.id,
+      pr: snapshot,
     });
 
     const targetStatus = await resolveTargetStatus(

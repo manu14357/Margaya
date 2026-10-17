@@ -1,8 +1,13 @@
+import {
+  findHandoffTaskForPullRequest,
+  syncHandoffPullRequest,
+} from "../../../coding-agent/handoffs";
 import { publishEvent } from "../../../events";
 import type { GitHubConfig } from "../config";
 import { createExternalLink, findExternalLink } from "../services/link-manager";
 import {
   findAllIntegrationsByRepo,
+  findTaskById,
   findTaskByNumber,
   isTaskInFinalState,
   updateTaskStatus,
@@ -47,19 +52,37 @@ export async function handlePullRequestOpened(payload: PROpenedPayload) {
     const projectSlug = integration.project.slug;
     const branchName = pull_request.head.ref;
 
-    const taskNumber = extractTaskNumber(
-      branchName,
-      pull_request.title,
-      pull_request.body ?? undefined,
-      config,
-      projectSlug,
-    );
+    // A pull request for a coding-agent handoff names the handoff issue
+    // ("Closes #12"), which is not a task number.
+    const handoffTaskId = await findHandoffTaskForPullRequest(integration.id, {
+      title: pull_request.title,
+      body: pull_request.body,
+      branch: branchName,
+    });
+    const handoffTask = handoffTaskId
+      ? await findTaskById(handoffTaskId)
+      : null;
 
-    if (taskNumber === null) {
+    const taskNumber = handoffTask
+      ? null
+      : extractTaskNumber(
+          branchName,
+          pull_request.title,
+          pull_request.body ?? undefined,
+          config,
+          projectSlug,
+        );
+
+    if (!handoffTask && taskNumber === null) {
       continue;
     }
 
-    const task = await findTaskByNumber(integration.projectId, taskNumber);
+    const task =
+      handoffTask?.projectId === integration.projectId
+        ? handoffTask
+        : taskNumber === null
+          ? null
+          : await findTaskByNumber(integration.projectId, taskNumber);
 
     if (!task) {
       continue;
@@ -71,7 +94,21 @@ export async function handlePullRequestOpened(payload: PROpenedPayload) {
       pull_request.number.toString(),
     );
 
+    const snapshot = {
+      number: pull_request.number,
+      url: pull_request.html_url,
+      title: pull_request.title,
+      draft: Boolean(pull_request.draft),
+      state: "open" as const,
+      merged: false,
+    };
+
     if (existingLink) {
+      await syncHandoffPullRequest({
+        integrationId: integration.id,
+        taskId: existingLink.taskId,
+        pr: snapshot,
+      });
       continue;
     }
 
@@ -89,6 +126,12 @@ export async function handlePullRequestOpened(payload: PROpenedPayload) {
         branch: branchName,
         author: pull_request.user?.login,
       },
+    });
+
+    await syncHandoffPullRequest({
+      integrationId: integration.id,
+      taskId: task.id,
+      pr: snapshot,
     });
 
     const targetStatus = await resolveTargetStatus(

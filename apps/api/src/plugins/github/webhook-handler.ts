@@ -8,6 +8,7 @@ import { handleIssueReopened } from "./webhooks/issue-reopened";
 import { handleLabelCreated } from "./webhooks/label-created";
 import { handlePullRequestClosed } from "./webhooks/pull-request-closed";
 import { handlePullRequestOpened } from "./webhooks/pull-request-opened";
+import { handlePullRequestReady } from "./webhooks/pull-request-ready";
 import { handlePush } from "./webhooks/push";
 
 export async function handleGitHubWebhook(
@@ -199,6 +200,25 @@ export function setupWebhookHandlers() {
       throw error;
     }
   });
+
+  // Draft changes keep linked pull requests (and coding-agent handoffs)
+  // current; they never move the task.
+  githubApp.webhooks.on(
+    ["pull_request.ready_for_review", "pull_request.converted_to_draft"],
+    async ({ payload }) => {
+      try {
+        await handlePullRequestReady(
+          payload as Parameters<typeof handlePullRequestReady>[0],
+        );
+      } catch (error) {
+        console.error(
+          "[GitHub Webhook] pull_request draft change handler error:",
+          error,
+        );
+        throw error;
+      }
+    },
+  );
 
   githubApp.webhooks.on("label.created", async ({ payload }) => {
     console.log("[GitHub Webhook] Handling label.created");

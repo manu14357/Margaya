@@ -1,4 +1,5 @@
 import { and, eq } from "drizzle-orm";
+import { isHandoffIssue } from "../../../coding-agent/marker";
 import db from "../../../database";
 import {
   columnTable,
@@ -51,6 +52,8 @@ export async function handleIssueOpened(payload: IssueOpenedPayload) {
   }
 
   const { issue, repository } = payload;
+
+  if (isHandoffIssue(issue.body)) return;
 
   const appName = process.env.GITHUB_APP_NAME;
   if (appName && issue.user?.login === `${appName}[bot]`) {

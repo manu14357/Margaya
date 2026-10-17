@@ -15,6 +15,7 @@ import {
   parseStatusInput,
   taskGroupOf,
 } from "../../../task/scope";
+import { workspacesPendingDeletion } from "../../../workspace-deletion/lock";
 import { type GitHubConfig, hasVerifiedGitHubBinding } from "../config";
 
 export type TaskRow = InferSelectModel<typeof taskTable>;
@@ -178,7 +179,7 @@ export async function findAllIntegrationsByRepo(source: GitHubWebhookSource) {
     ),
     with: { project: true },
   });
-  return integrations.filter((integration) => {
+  const matching = integrations.filter((integration) => {
     // A trashed project's integrations stay quiet (C7).
     if (integration.project?.deletedAt) return false;
     try {
@@ -192,4 +193,14 @@ export async function findAllIntegrationsByRepo(source: GitHubWebhookSource) {
       return false;
     }
   });
+  // A workspace pending deletion is read-only: its webhooks are paused.
+  const paused = await workspacesPendingDeletion(
+    matching.flatMap((integration) =>
+      integration.project ? [integration.project.workspaceId] : [],
+    ),
+  );
+  return matching.filter(
+    (integration) =>
+      !integration.project || !paused.has(integration.project.workspaceId),
+  );
 }
