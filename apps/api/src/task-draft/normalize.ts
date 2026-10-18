@@ -23,6 +23,7 @@ export type DraftValues = {
   cycleId: string | null;
   moduleIds: string[];
   estimatePointId: string | null;
+  parentTaskId: string | null;
 };
 
 export type DraftKey = keyof DraftValues;
@@ -42,6 +43,7 @@ export const EMPTY_DRAFT: DraftValues = {
   cycleId: null,
   moduleIds: [],
   estimatePointId: null,
+  parentTaskId: null,
 };
 
 function emptyValue(key: DraftKey): unknown {
@@ -56,6 +58,7 @@ export const PROJECT_BOUND_KEYS = [
   "cycleId",
   "moduleIds",
   "estimatePointId",
+  "parentTaskId",
 ] as const satisfies readonly DraftKey[];
 
 /** Trims names; a later label with the same name (any case) replaces it. */
@@ -124,6 +127,8 @@ export function parseDraftPatch(patch: TaskDraftPatch): DraftChanges {
     changes.moduleIds = normalizeIds(patch.moduleIds);
   if (patch.estimatePointId !== undefined)
     changes.estimatePointId = patch.estimatePointId;
+  if (patch.parentTaskId !== undefined)
+    changes.parentTaskId = patch.parentTaskId;
   return changes;
 }
 

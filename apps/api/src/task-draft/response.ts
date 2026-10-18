@@ -11,6 +11,14 @@ const draftProjectSchema = z
   })
   .openapi("TaskDraftProject");
 
+const draftParentSchema = z
+  .object({
+    id: z.string(),
+    key: z.string().openapi({ description: "The parent's task key." }),
+    title: z.string(),
+  })
+  .openapi("TaskDraftParent");
+
 const draftShape = {
   id: z.string(),
   workspaceId: z.string(),
@@ -34,6 +42,11 @@ const draftShape = {
   cycleId: z.string().nullable(),
   moduleIds: z.array(z.string()),
   estimatePointId: z.string().nullable(),
+  parentTaskId: z.string().nullable().openapi({
+    description:
+      "The chosen parent; null when none, or when it left the draft's project or was deleted.",
+  }),
+  parentTask: draftParentSchema.nullable(),
   createdAt: responseTimestamp,
   updatedAt: responseTimestamp,
 };
@@ -78,6 +91,7 @@ export const DROPPED_DRAFT_FIELDS = [
   "cycle",
   "modules",
   "estimate",
+  "parent",
 ] as const;
 
 export type DroppedDraftField = (typeof DROPPED_DRAFT_FIELDS)[number];

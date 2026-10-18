@@ -1,7 +1,9 @@
 import { and, eq, inArray } from "drizzle-orm";
 import db from "../../database";
-import { projectTable, taskDraftTable } from "../../database/schema";
+import { projectTable, taskDraftTable, taskTable } from "../../database/schema";
 import { publishEvent } from "../../events";
+import { liveTaskCondition } from "../../task/scope";
+import { formatTaskKey } from "../../task-activity/task-snapshot";
 import { type DraftValues, visibleDraftValues } from "../normalize";
 
 export type DraftRow = typeof taskDraftTable.$inferSelect;
@@ -34,6 +36,7 @@ export function draftValuesOf(
     cycleId: row.cycleId,
     moduleIds: row.moduleIds ?? [],
     estimatePointId: row.estimatePointId,
+    parentTaskId: row.parentTaskId,
   };
 }
 
@@ -69,11 +72,72 @@ export async function loadDraftProjects(
   );
 }
 
+export type DraftParentSummary = { id: string; key: string; title: string };
+
+/**
+ * The drafts' parents that are still live tasks of the draft's project, in
+ * one query. A parent that moved or was trashed shows as none.
+ */
+export async function loadDraftParents(
+  rows: readonly { projectId: string | null; parentTaskId: string | null }[],
+): Promise<Map<string, DraftParentSummary & { projectId: string }>> {
+  const ids = [
+    ...new Set(
+      rows.map((row) => row.parentTaskId).filter((id): id is string => !!id),
+    ),
+  ];
+  if (ids.length === 0) return new Map();
+  const found = await db
+    .select({
+      id: taskTable.id,
+      title: taskTable.title,
+      number: taskTable.number,
+      projectId: taskTable.projectId,
+      slug: projectTable.slug,
+    })
+    .from(taskTable)
+    .innerJoin(projectTable, eq(projectTable.id, taskTable.projectId))
+    .where(and(inArray(taskTable.id, ids), liveTaskCondition));
+  return new Map(
+    found.map((task) => [
+      task.id,
+      {
+        id: task.id,
+        key: formatTaskKey(task.slug, task.number),
+        title: task.title,
+        projectId: task.projectId,
+      },
+    ]),
+  );
+}
+
+export type DraftLookups = {
+  projects: Map<string, DraftProjectSummary>;
+  parents: Map<string, DraftParentSummary & { projectId: string }>;
+};
+
+export async function loadDraftLookups(
+  rows: readonly { projectId: string | null; parentTaskId: string | null }[],
+): Promise<DraftLookups> {
+  const [projects, parents] = await Promise.all([
+    loadDraftProjects(rows.map((row) => row.projectId)),
+    loadDraftParents(rows),
+  ]);
+  return { projects, parents };
+}
+
 function responseFields(
   row: Omit<DraftRow, "description">,
-  projects: Map<string, DraftProjectSummary>,
+  { projects, parents }: DraftLookups,
 ) {
   const values = visibleDraftValues(draftValuesOf(row));
+  const parent = values.parentTaskId
+    ? parents.get(values.parentTaskId)
+    : undefined;
+  const parentTask =
+    parent && parent.projectId === values.projectId
+      ? { id: parent.id, key: parent.key, title: parent.title }
+      : null;
   return {
     id: row.id,
     workspaceId: row.workspaceId,
@@ -90,31 +154,30 @@ function responseFields(
     cycleId: values.cycleId,
     moduleIds: values.moduleIds,
     estimatePointId: values.estimatePointId,
+    parentTaskId: parentTask?.id ?? null,
+    parentTask,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
   };
 }
 
 /** The public shape: never the owner id. */
-export function toTaskDraft(
-  row: DraftRow,
-  projects: Map<string, DraftProjectSummary>,
-) {
-  return { ...responseFields(row, projects), description: row.description };
+export function toTaskDraft(row: DraftRow, lookups: DraftLookups) {
+  return { ...responseFields(row, lookups), description: row.description };
 }
 
 export function toTaskDraftSummary(
   row: Omit<DraftRow, "description"> & { hasDescription: boolean },
-  projects: Map<string, DraftProjectSummary>,
+  lookups: DraftLookups,
 ) {
   return {
-    ...responseFields(row, projects),
+    ...responseFields(row, lookups),
     hasDescription: row.hasDescription,
   };
 }
 
 export async function draftResponse(row: DraftRow) {
-  return toTaskDraft(row, await loadDraftProjects([row.projectId]));
+  return toTaskDraft(row, await loadDraftLookups([row]));
 }
 
 export type DraftChange = "created" | "updated" | "deleted" | "published";

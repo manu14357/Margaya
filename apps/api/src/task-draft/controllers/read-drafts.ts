@@ -13,12 +13,13 @@ import {
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { taskDraftTable } from "../../database/schema";
+import { hiddenProjectIds, notHiddenProject } from "../../project/visibility";
 import { escapeLikePattern } from "../../search/like-pattern";
 import { DEFAULT_DRAFT_PAGE_SIZE } from "../schema";
 import {
   DRAFT_NOT_FOUND,
   draftResponse,
-  loadDraftProjects,
+  loadDraftLookups,
   ownDrafts,
   toTaskDraftSummary,
 } from "./shared";
@@ -42,7 +43,15 @@ export async function listTaskDrafts({
   page?: number;
   limit?: number;
 }) {
-  const conditions: (SQL | undefined)[] = [ownDrafts(userId, workspaceId)];
+  const conditions: (SQL | undefined)[] = [
+    ownDrafts(userId, workspaceId),
+    // Drafts aimed at a restricted project the caller has lost stay hidden.
+    notHiddenProject(
+      taskDraftTable.projectId,
+      await hiddenProjectIds(userId, workspaceId),
+      { nullable: true },
+    ),
+  ];
   if (projectId === "none") {
     conditions.push(isNull(taskDraftTable.projectId));
   } else if (projectId) {
@@ -69,10 +78,10 @@ export async function listTaskDrafts({
     db.select({ value: count() }).from(taskDraftTable).where(where),
   ]);
 
-  const projects = await loadDraftProjects(rows.map((row) => row.projectId));
+  const lookups = await loadDraftLookups(rows);
   const totalCount = total?.value ?? 0;
   return {
-    drafts: rows.map((row) => toTaskDraftSummary(row, projects)),
+    drafts: rows.map((row) => toTaskDraftSummary(row, lookups)),
     total: totalCount,
     page,
     limit,

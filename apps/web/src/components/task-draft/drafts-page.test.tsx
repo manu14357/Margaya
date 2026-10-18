@@ -129,6 +129,8 @@ function draftRow(overrides: Row = {}): Row {
     cycleId: null,
     moduleIds: [],
     estimatePointId: null,
+    parentTaskId: null,
+    parentTask: null,
     hasDescription: false,
     createdAt: "2026-08-01T00:00:00.000Z",
     updatedAt: "2026-08-01T00:00:00.000Z",

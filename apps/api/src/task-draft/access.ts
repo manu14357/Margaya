@@ -39,6 +39,7 @@ export function draftAccess(idKey = "id") {
       userId,
       draft.workspaceId,
       c.get("apiKey")?.id,
+      draft.projectId,
     );
 
     c.set("workspaceId", draft.workspaceId);

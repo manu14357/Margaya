@@ -11,12 +11,16 @@ import {
 import {
   type KeyboardEvent,
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import CreateTaskModal from "@/components/shared/modals/create-task-modal";
+import CaptureTemplateButton from "@/components/project/task-templates/capture-template-button";
+import CreateTaskModal, {
+  type CreateTaskPrefill,
+} from "@/components/shared/modals/create-task-modal";
 import useCreateLabel from "@/hooks/mutations/label/use-create-label";
 import useCreateTask from "@/hooks/mutations/task/use-create-task";
 import useGetLabelsByWorkspace from "@/hooks/queries/label/use-get-labels-by-workspace";
@@ -29,6 +33,7 @@ import { formatDateMedium } from "@/lib/format";
 import { getPriorityLabel } from "@/lib/i18n/domain";
 import { resolveLabelColor } from "@/lib/label-color";
 import { getPriorityIcon } from "@/lib/priority";
+import { runCreateModalSlots } from "@/lib/task-property-slots";
 import { toast } from "@/lib/toast";
 import {
   type CaptureLabel,
@@ -40,17 +45,81 @@ import {
 import useCaptureFocus from "./capture-store";
 import DefaultAssigneeChip from "./default-assignee-chip";
 
+/**
+ * What a new task starts with: its column, plus the value of the group the
+ * bar sits in, so the task shows up where it was typed. Typed tokens win
+ * over the group's priority and due date and add to its assignee and label.
+ */
+export type CapturePrefill = {
+  /** The column slug new tasks land in. */
+  status: string;
+  /** Where the task lands (a column or group), for the label and preview. */
+  targetName: string;
+  priority?: string;
+  /** The group's assignees; an empty list skips the project default. */
+  assigneeIds?: readonly string[];
+  labels?: readonly CaptureLabel[];
+  /** Applied after the create (needs cycle:update). */
+  cycleId?: string;
+  /** Applied after the create (needs module:update). */
+  moduleId?: string;
+  /** Applied after the create (needs task:update). */
+  estimatePointId?: string;
+  /** YYYY-MM-DD: a calendar day. */
+  dueDate?: string;
+};
+
 type CaptureBarProps = {
   projectId: string;
   workspaceId: string;
-  /** The column slug new tasks land in. */
-  status: string;
-  /** The column's display name, for the label and the preview line. */
-  statusName: string;
   className?: string;
-};
+  /** The input's accessible name, when "Add task to {target}" doesn't fit. */
+  inputLabel?: string;
+  /** Focus on mount (a bar opened from a "+" trigger). */
+  autoFocus?: boolean;
+  /** After the task and its group values are saved. */
+  onCreated?: (task: { id: string; projectId: string }) => void;
+  /** Ctrl Enter hands off here instead of opening the composer in place. */
+  onOpenComposer?: (handoff: {
+    status: string;
+    prefill: CreateTaskPrefill;
+  }) => void;
+  /** Escape on an empty bar; without it the bar only blurs. */
+  onDismiss?: () => void;
+} & (
+  | {
+      /** The column slug new tasks land in. */
+      status: string;
+      /** The column's display name, for the label and the preview line. */
+      statusName: string;
+      prefill?: undefined;
+    }
+  | { prefill: CapturePrefill; status?: undefined; statusName?: undefined }
+);
 
 const EMPTY_MEMBERS: CaptureMember[] = [];
+
+const PRIORITIES = ["no-priority", "low", "medium", "high", "urgent"] as const;
+type Priority = (typeof PRIORITIES)[number];
+
+/** A group's priority key as the create body's priority. */
+function asPriority(value: string | undefined): Priority {
+  return PRIORITIES.find((priority) => priority === value) ?? "no-priority";
+}
+
+function mergeLabels(
+  typed: readonly CaptureLabel[],
+  group: readonly CaptureLabel[] | undefined,
+): CaptureLabel[] {
+  const merged = [...typed];
+  for (const label of group ?? []) {
+    const name = label.name.toLowerCase();
+    if (!merged.some((entry) => entry.name.toLowerCase() === name)) {
+      merged.push({ name: label.name, color: label.color });
+    }
+  }
+  return merged;
+}
 
 function TokenChip({
   token,
@@ -121,17 +190,30 @@ function TokenChip({
 export default function CaptureBar({
   projectId,
   workspaceId,
-  status,
+  status: statusProp,
   statusName,
+  prefill,
   className,
+  inputLabel,
+  autoFocus = false,
+  onCreated,
+  onOpenComposer,
+  onDismiss,
 }: CaptureBarProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const hintId = useId();
+  const target: CapturePrefill = prefill ?? {
+    status: statusProp ?? "",
+    targetName: statusName ?? "",
+  };
+  const { status } = target;
   const inputRef = useRef<HTMLInputElement>(null);
   const [text, setText] = useState("");
   const [ignored, setIgnored] = useState<ReadonlySet<string>>(() => new Set());
   const [focused, setFocused] = useState(false);
   const [composerOpen, setComposerOpen] = useState(false);
+  const [templateMenuOpen, setTemplateMenuOpen] = useState(false);
   const [pending, setPending] = useState(0);
   // The project's default assignee applies until removed for this entry.
   const [defaultDismissed, setDefaultDismissed] = useState(false);
@@ -168,11 +250,14 @@ export default function CaptureBar({
     [text, people, labels, allowNewLabels, ignored],
   );
 
-  const candidates = captureAssignees(
-    parsed.assigneeIds,
-    defaultAssigneeUserId,
-    defaultDismissed,
-  );
+  // A group's assignee replaces the project default.
+  const candidates = target.assigneeIds
+    ? []
+    : captureAssignees(
+        parsed.assigneeIds,
+        defaultAssigneeUserId,
+        defaultDismissed,
+      );
   // The default shows as a removable chip; it applies only while visible.
   const defaultAssignee =
     parsed.assigneeIds.length === 0 && candidates.length > 0
@@ -180,12 +265,18 @@ export default function CaptureBar({
       : undefined;
   const assigneeIds = defaultAssignee
     ? [defaultAssignee.id]
-    : parsed.assigneeIds;
+    : [...new Set([...(target.assigneeIds ?? []), ...parsed.assigneeIds])];
+  const labelsToAdd = mergeLabels(parsed.labels, target.labels);
+  const priorityToSet = parsed.priority ?? target.priority;
+  const dueDay = parsed.dueDate ?? target.dueDate;
 
   // `C`, the shell's Create button and the list's group menus focus a bar.
+  // Group bars (with a prefill) are not column bars, so they don't answer.
+  const answersFocusRequests = !prefill;
   const request = useCaptureFocus((state) => state.request);
   const handledRequest = useRef(useCaptureFocus.getState().request?.id);
   useEffect(() => {
+    if (!answersFocusRequests) return;
     if (!request || request.id === handledRequest.current) return;
     if (request.projectId !== projectId || request.status !== status) return;
     handledRequest.current = request.id;
@@ -193,7 +284,14 @@ export default function CaptureBar({
     if (!input) return;
     input.scrollIntoView?.({ block: "nearest" });
     input.focus();
-  }, [request, projectId, status]);
+  }, [answersFocusRequests, request, projectId, status]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: only on mount
+  useEffect(() => {
+    if (!autoFocus) return;
+    inputRef.current?.scrollIntoView?.({ block: "nearest" });
+    inputRef.current?.focus();
+  }, []);
 
   const reset = () => {
     setText("");
@@ -202,7 +300,7 @@ export default function CaptureBar({
   };
 
   const submit = async () => {
-    const { title, priority, dueDate } = parsed;
+    const { title } = parsed;
     if (!title) return;
     const typed = text;
     const typedIgnored = ignored;
@@ -217,10 +315,23 @@ export default function CaptureBar({
         projectId,
         status,
         assigneeIds,
-        priority: priority ?? "no-priority",
-        dueDate: dueDate ? dueDateToIso(dueDate) : undefined,
+        priority: asPriority(priorityToSet),
+        dueDate: dueDay ? dueDateToIso(dueDay) : undefined,
       });
-      for (const label of parsed.labels) {
+      // The group's cycle, module and estimate go through the same steps as
+      // the composer's pickers; each says so itself when it fails.
+      const groupValues: Record<string, unknown> = {
+        ...(target.cycleId ? { cycle: target.cycleId } : {}),
+        ...(target.moduleId ? { module: [target.moduleId] } : {}),
+        ...(target.estimatePointId ? { estimate: target.estimatePointId } : {}),
+      };
+      if (Object.keys(groupValues).length > 0) {
+        await runCreateModalSlots({
+          task: { id: task.id, projectId },
+          values: groupValues,
+        });
+      }
+      for (const label of labelsToAdd) {
         try {
           await createLabel({
             name: label.name,
@@ -232,6 +343,7 @@ export default function CaptureBar({
           toast.error(t("tasks:capture.labelError", { name: label.name }));
         }
       }
+      onCreated?.({ id: task.id, projectId });
       toast.success(t("common:modals.createTask.successCreated"), {
         action: {
           label: t("tasks:capture.open"),
@@ -255,7 +367,22 @@ export default function CaptureBar({
     }
   };
 
-  const openComposer = () => setComposerOpen(true);
+  const composerPrefill: CreateTaskPrefill = {
+    title: parsed.title,
+    priority: priorityToSet,
+    assigneeIds,
+    dueDate: dueDay ? parseISO(dueDay) : undefined,
+    labels: labelsToAdd,
+  };
+
+  const openComposer = () => {
+    if (onOpenComposer) {
+      onOpenComposer({ status, prefill: composerPrefill });
+      reset();
+      return;
+    }
+    setComposerOpen(true);
+  };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.nativeEvent.isComposing) return;
@@ -273,11 +400,35 @@ export default function CaptureBar({
       event.preventDefault();
       event.stopPropagation();
       if (text) reset();
+      else if (onDismiss) onDismiss();
       else inputRef.current?.blur();
     }
   };
 
-  const active = focused || text.length > 0;
+  // An open template menu holds focus outside the input; the bar stays open.
+  const active = focused || text.length > 0 || templateMenuOpen;
+  // A template sets its own values, so it is offered only where the column
+  // alone decides where the task shows up (not in a day or person group).
+  const offersTemplates =
+    target.priority === undefined &&
+    target.assigneeIds === undefined &&
+    target.labels === undefined &&
+    !target.cycleId &&
+    !target.moduleId &&
+    !target.estimatePointId &&
+    !target.dueDate;
+
+  const createdFromTemplate = (task: { id: string; projectId: string }) => {
+    reset();
+    inputRef.current?.focus();
+    onCreated?.(task);
+    toast.success(t("common:modals.createTask.successCreated"), {
+      action: {
+        label: t("tasks:capture.open"),
+        onClick: () => navigate({ to: ".", search: { taskId: task.id } }),
+      },
+    });
+  };
 
   return (
     <div
@@ -304,8 +455,11 @@ export default function CaptureBar({
           value={text}
           maxLength={500}
           data-capture-input={status}
-          aria-label={t("tasks:capture.ariaLabel", { column: statusName })}
-          aria-describedby={active ? `capture-hint-${status}` : undefined}
+          aria-label={
+            inputLabel ??
+            t("tasks:capture.ariaLabel", { column: target.targetName })
+          }
+          aria-describedby={active ? hintId : undefined}
           placeholder={t("tasks:capture.placeholder")}
           className="h-full min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
           onChange={(event) => setText(event.target.value)}
@@ -317,6 +471,16 @@ export default function CaptureBar({
         />
         {active && (
           <>
+            {offersTemplates && (
+              <CaptureTemplateButton
+                projectId={projectId}
+                workspaceId={workspaceId}
+                status={status}
+                title={parsed.title}
+                onCreated={createdFromTemplate}
+                onOpenChange={setTemplateMenuOpen}
+              />
+            )}
             <button
               type="button"
               className="flex size-6 shrink-0 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground"
@@ -342,13 +506,13 @@ export default function CaptureBar({
       </div>
       {active && (
         <div
-          id={`capture-hint-${status}`}
+          id={hintId}
           className="flex flex-wrap items-center gap-1 border-border/60 border-t px-2 py-1.5"
         >
           {parsed.tokens.length > 0 || defaultAssignee ? (
             <>
               <span className="me-0.5 text-muted-foreground text-xs">
-                {t("tasks:capture.preview", { column: statusName })}
+                {t("tasks:capture.preview", { column: target.targetName })}
               </span>
               {defaultAssignee && (
                 <DefaultAssigneeChip
@@ -387,13 +551,7 @@ export default function CaptureBar({
           open
           projectId={projectId}
           status={status}
-          prefill={{
-            title: parsed.title,
-            priority: parsed.priority ?? undefined,
-            assigneeIds,
-            dueDate: parsed.dueDate ? parseISO(parsed.dueDate) : undefined,
-            labels: parsed.labels,
-          }}
+          prefill={composerPrefill}
           onClose={() => {
             setComposerOpen(false);
             reset();

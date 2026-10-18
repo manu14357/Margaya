@@ -99,6 +99,10 @@ const draftFields = {
     description:
       "A point of the project's active estimate. Needs a project with estimates on.",
   }),
+  parentTaskId: nullableId.openapi({
+    description:
+      "A task of the draft's project that becomes the parent when publishing. Needs a project, and task:update to set.",
+  }),
 };
 
 export const createTaskDraftBody = z

@@ -15,7 +15,24 @@ const mocks = vi.hoisted(() => ({
   createLabel: vi.fn(),
   canCreateLabels: true,
   composer: vi.fn(),
+  runSlots: vi.fn(),
   defaultAssigneeUserId: null as string | null,
+  templates: [] as Array<Record<string, unknown>>,
+  applyTemplate: vi.fn(),
+}));
+
+vi.mock("@/hooks/queries/task-template/use-task-templates", () => ({
+  useTaskTemplates: () => ({ data: mocks.templates }),
+}));
+vi.mock("@/hooks/mutations/task-template/use-apply-task-template", () => ({
+  useApplyTaskTemplate: () => ({
+    mutateAsync: mocks.applyTemplate,
+    isPending: false,
+  }),
+}));
+
+vi.mock("@/lib/task-property-slots", () => ({
+  runCreateModalSlots: mocks.runSlots,
 }));
 
 vi.mock("@tanstack/react-router", () => ({ useNavigate: () => vi.fn() }));
@@ -57,6 +74,7 @@ vi.mock("@/hooks/queries/project/use-project-people", () => ({
 vi.mock("@/hooks/use-workspace-permission", () => ({
   useWorkspacePermission: () => ({
     canCreateLabels: () => mocks.canCreateLabels,
+    canUpdateTasks: () => true,
   }),
 }));
 vi.mock("@/components/shared/modals/create-task-modal", () => ({
@@ -71,6 +89,7 @@ afterEach(() => {
   vi.clearAllMocks();
   mocks.canCreateLabels = true;
   mocks.defaultAssigneeUserId = null;
+  mocks.templates = [];
 });
 
 function renderBar() {
@@ -240,6 +259,123 @@ describe("CaptureBar", () => {
     expect(mocks.createTask.mock.calls[0][0].assigneeIds).toEqual(["u-ana"]);
   });
 
+  it("creates with a group's values and reports the new task", async () => {
+    mocks.defaultAssigneeUserId = "u-ravi";
+    mocks.createTask.mockResolvedValue({ id: "t9" });
+    mocks.createLabel.mockResolvedValue({});
+    mocks.runSlots.mockResolvedValue([]);
+    const onCreated = vi.fn();
+    render(
+      <CaptureBar
+        projectId="p1"
+        workspaceId="w1"
+        prefill={{
+          status: "to-do",
+          targetName: "High",
+          priority: "high",
+          assigneeIds: ["u-ana"],
+          labels: [{ name: "Bug", color: "red" }],
+          cycleId: "c1",
+          moduleId: "m1",
+        }}
+        onCreated={onCreated}
+      />,
+    );
+    const input = screen.getByRole("textbox", {
+      name: 'tasks:capture.ariaLabel {"column":"High"}',
+    });
+    // The group's assignee replaces the project default.
+    fireEvent.change(input, { target: { value: "Fix it #bug" } });
+    expect(document.querySelector('[data-token="default-assignee"]')).toBe(
+      null,
+    );
+    fireEvent.keyDown(input, { key: "Enter" });
+    await waitFor(() => expect(onCreated).toHaveBeenCalledTimes(1));
+
+    expect(mocks.createTask.mock.calls[0][0]).toMatchObject({
+      title: "Fix it",
+      projectId: "p1",
+      status: "to-do",
+      priority: "high",
+      assigneeIds: ["u-ana"],
+    });
+    expect(mocks.runSlots).toHaveBeenCalledWith({
+      task: { id: "t9", projectId: "p1" },
+      values: { cycle: "c1", module: ["m1"] },
+    });
+    // "#bug" and the group's Bug are one label.
+    expect(mocks.createLabel).toHaveBeenCalledTimes(1);
+    expect(onCreated).toHaveBeenCalledWith({ id: "t9", projectId: "p1" });
+  });
+
+  it("lets typed tokens win over the group's priority and due date", async () => {
+    mocks.createTask.mockResolvedValue({ id: "t1" });
+    render(
+      <CaptureBar
+        projectId="p1"
+        workspaceId="w1"
+        prefill={{
+          status: "to-do",
+          targetName: "To do",
+          priority: "low",
+          dueDate: "2026-10-21",
+        }}
+      />,
+    );
+    const input = screen.getByRole("textbox");
+    fireEvent.change(input, { target: { value: "Ship !urgent" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+    await waitFor(() => expect(mocks.createTask).toHaveBeenCalledTimes(1));
+    const request = mocks.createTask.mock.calls[0][0];
+    expect(request.priority).toBe("urgent");
+    const due = new Date(request.dueDate);
+    expect([due.getFullYear(), due.getMonth(), due.getDate()]).toEqual([
+      2026, 9, 21,
+    ]);
+    expect(mocks.runSlots).not.toHaveBeenCalled();
+  });
+
+  it("hands Ctrl Enter to the host and names the input after it", () => {
+    const onOpenComposer = vi.fn();
+    render(
+      <CaptureBar
+        projectId="p1"
+        workspaceId="w1"
+        prefill={{
+          status: "to-do",
+          targetName: "To do",
+          dueDate: "2026-10-21",
+        }}
+        inputLabel="Add task due Wednesday"
+        onOpenComposer={onOpenComposer}
+      />,
+    );
+    const input = screen.getByRole("textbox", {
+      name: "Add task due Wednesday",
+    });
+    fireEvent.change(input, { target: { value: "Plan" } });
+    fireEvent.keyDown(input, { key: "Enter", ctrlKey: true });
+    expect(screen.queryByTestId("composer")).toBe(null);
+    const handoff = onOpenComposer.mock.calls[0][0];
+    expect(handoff.status).toBe("to-do");
+    expect(handoff.prefill.title).toBe("Plan");
+    expect(handoff.prefill.dueDate.getDate()).toBe(21);
+    expect((input as HTMLInputElement).value).toBe("");
+  });
+
+  it("leaves column focus requests to the column bars", () => {
+    render(
+      <CaptureBar
+        projectId="p1"
+        workspaceId="w1"
+        prefill={{ status: "in-progress", targetName: "High" }}
+      />,
+    );
+    const input = screen.getByRole("textbox");
+    act(() => focusCapture("p1", "in-progress"));
+    expect(document.activeElement).not.toBe(input);
+  });
+
   it("clears on the first Escape and focuses on a matching request", () => {
     const input = renderBar();
     fireEvent.change(input, { target: { value: "draft" } });
@@ -250,5 +386,37 @@ describe("CaptureBar", () => {
     expect(document.activeElement).not.toBe(input);
     act(() => focusCapture("p1", "in-progress"));
     expect(document.activeElement).toBe(input);
+  });
+
+  it("offers templates only when the project has some", async () => {
+    const input = renderBar();
+    fireEvent.change(input, { target: { value: "crash" } });
+    expect(
+      screen.queryByRole("button", { name: "templates:use.quickAdd" }),
+    ).toBeNull();
+    cleanup();
+
+    mocks.templates = [
+      { id: "tpl1", name: "Bug report", titlePattern: "Bug:", subtasks: [] },
+    ];
+    mocks.applyTemplate.mockResolvedValue({ id: "t9", subtaskIds: [] });
+    const next = renderBar();
+    fireEvent.change(next, { target: { value: "crash @ana" } });
+    fireEvent.click(
+      screen.getByRole("button", { name: "templates:use.quickAdd" }),
+    );
+    fireEvent.click(
+      await screen.findByRole("menuitem", { name: /Bug report/ }),
+    );
+    await waitFor(() =>
+      expect(mocks.applyTemplate).toHaveBeenCalledWith({
+        templateId: "tpl1",
+        projectId: "p1",
+        workspaceId: "w1",
+        input: { title: "crash", status: "in-progress" },
+      }),
+    );
+    await waitFor(() => expect((next as HTMLInputElement).value).toBe(""));
+    expect(mocks.createTask).not.toHaveBeenCalled();
   });
 });

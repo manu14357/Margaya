@@ -1,3 +1,5 @@
+import type { Context } from "hono";
+import { HTTPException } from "hono/http-exception";
 import { requireEntitlement } from "../billing/require-entitlement-middleware";
 import {
   apiRouter,
@@ -7,7 +9,10 @@ import {
   jsonResponse,
 } from "../openapi";
 import { boundedRequestBody } from "../utils/bounded-request-body";
-import { requireWorkspacePermission } from "../utils/require-workspace-permission";
+import {
+  hasWorkspacePermission,
+  requireWorkspacePermission,
+} from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import { draftAccess } from "./access";
 import { publishTaskDraft } from "./controllers/publish-draft";
@@ -43,6 +48,20 @@ import {
 const TAGS = ["Drafts"];
 const createTasks = requireWorkspacePermission({ task: ["create"] });
 const notFound = errorResponse("No draft with this id belongs to the caller");
+
+// Choosing a parent changes that task's subtasks once published, which the
+// relation routes guard with task:update; the draft asks for it up front.
+async function assertCanSetParent(
+  c: Context,
+  parentTaskId: string | null | undefined,
+) {
+  if (
+    parentTaskId &&
+    !(await hasWorkspacePermission(c, { task: ["update"] }))
+  ) {
+    throw new HTTPException(403, { message: "Insufficient permissions" });
+  }
+}
 
 function jsonBody<T>(schema: T, required = true) {
   return { required, content: { "application/json": { schema } } };
@@ -88,7 +107,7 @@ const createTaskDraftRoute = createRoute({
   tags: TAGS,
   summary: "Create draft",
   description:
-    "Save a task as a private draft. Every field is optional; a project and a title are needed only to publish. At most 1,000 drafts per user and workspace. Needs task:create.",
+    "Save a task as a private draft. Every field is optional; a project and a title are needed only to publish. At most 1,000 drafts per user and workspace. Needs task:create, and task:update to set `parentTaskId`.",
   middleware: [
     boundedRequestBody(TASK_DRAFT_BODY_BYTES),
     workspaceAccess.fromBody(),
@@ -102,7 +121,7 @@ const createTaskDraftRoute = createRoute({
       "Invalid body, or a value that doesn't fit the draft's project or workspace",
     ),
     403: errorResponse(
-      "No workspace access, missing task:create permission, or a feature of the project is off",
+      "No workspace access, missing task:create permission (or task:update with `parentTaskId`), or a feature of the project is off",
     ),
     404: errorResponse("Project not found"),
     409: errorResponse(
@@ -135,7 +154,7 @@ const updateTaskDraftRoute = createRoute({
   tags: TAGS,
   summary: "Update draft",
   description:
-    "Change some fields of the caller's draft. A new project clears status, custom fields, cycle, modules and estimate unless they are sent too. Sending only stored values changes nothing. Needs task:create.",
+    "Change some fields of the caller's draft. A new project clears status, custom fields, cycle, modules, estimate and parent unless they are sent too. Sending only stored values changes nothing. Needs task:create, and task:update to set `parentTaskId`.",
   middleware: [
     boundedRequestBody(TASK_DRAFT_BODY_BYTES),
     draftAccess(),
@@ -149,7 +168,7 @@ const updateTaskDraftRoute = createRoute({
       "Invalid body, nothing to change, or a value that doesn't fit the draft's project or workspace",
     ),
     403: errorResponse(
-      "No workspace access, missing task:create permission, or a feature of the project is off",
+      "No workspace access, missing task:create permission (or task:update with `parentTaskId`), or a feature of the project is off",
     ),
     404: errorResponse("Draft or project not found"),
     409: errorResponse("The project is archived"),
@@ -181,7 +200,7 @@ const publishTaskDraftRoute = createRoute({
   tags: TAGS,
   summary: "Publish draft",
   description:
-    "Turn the caller's draft into a task and delete the draft. An optional body is saved to the draft first, like an update, and kept even if publishing fails. The task gets the next number, the caller as creator, the draft's labels, cycle, modules and estimate; values that stopped being valid are left out and listed in `dropped`. Publishes task.created and the label and membership events. Needs task:create.",
+    "Turn the caller's draft into a task and delete the draft. An optional body is saved to the draft first, like an update, and kept even if publishing fails. The task gets the next number, the caller as creator, the draft's labels, cycle, modules, estimate and parent; values that stopped being valid (or a parent the caller may no longer link, which needs task:update) are left out and listed in `dropped`. Publishes task.created and the label, membership and relation events. Needs task:create.",
   middleware: [
     boundedRequestBody(TASK_DRAFT_BODY_BYTES),
     draftAccess(),
@@ -198,7 +217,7 @@ const publishTaskDraftRoute = createRoute({
       "No project, a blank title, a required custom field without a value, or an invalid patch",
     ),
     403: errorResponse(
-      "No workspace access, missing task:create permission, or a feature of the project is off",
+      "No workspace access, missing task:create permission (or task:update with `parentTaskId`), or a feature of the project is off",
     ),
     404: errorResponse("Draft or project not found"),
     409: errorResponse("The project is archived"),
@@ -228,6 +247,7 @@ const taskDraft = apiRouter<
   })
   .openapi(createTaskDraftRoute, async (c) => {
     const { workspaceId: _workspaceId, ...patch } = c.req.valid("json");
+    await assertCanSetParent(c, patch.parentTaskId);
     return c.json(
       await createTaskDraft({
         userId: c.get("userId"),
@@ -240,31 +260,36 @@ const taskDraft = apiRouter<
   .openapi(getTaskDraftRoute, async (c) =>
     c.json(await getTaskDraft(c.req.valid("param").id, c.get("userId")), 200),
   )
-  .openapi(updateTaskDraftRoute, async (c) =>
-    c.json(
+  .openapi(updateTaskDraftRoute, async (c) => {
+    const patch = c.req.valid("json");
+    await assertCanSetParent(c, patch.parentTaskId);
+    return c.json(
       await updateTaskDraft({
         draftId: c.req.valid("param").id,
         userId: c.get("userId"),
-        patch: c.req.valid("json"),
+        patch,
       }),
       200,
-    ),
-  )
+    );
+  })
   .openapi(deleteTaskDraftRoute, async (c) =>
     c.json(
       await deleteTaskDraft(c.req.valid("param").id, c.get("userId")),
       200,
     ),
   )
-  .openapi(publishTaskDraftRoute, async (c) =>
-    c.json(
+  .openapi(publishTaskDraftRoute, async (c) => {
+    const patch = c.req.valid("json") ?? {};
+    await assertCanSetParent(c, patch.parentTaskId);
+    return c.json(
       await publishTaskDraft({
         draftId: c.req.valid("param").id,
         userId: c.get("userId"),
-        patch: c.req.valid("json") ?? {},
+        patch,
+        canLinkParent: await hasWorkspacePermission(c, { task: ["update"] }),
       }),
       200,
-    ),
-  );
+    );
+  });
 
 export default taskDraft;

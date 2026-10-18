@@ -15,6 +15,7 @@ import {
   moduleTable,
   moduleTaskTable,
   taskDraftTable,
+  taskRelationTable,
 } from "../../database/schema";
 import { shareProjectEstimates } from "../../estimate/write";
 import { publishEvent } from "../../events";
@@ -29,6 +30,20 @@ import {
   prepareTaskCreate,
   publishTaskCreated,
 } from "../../task/controllers/create-task";
+import {
+  formatTaskKey,
+  type TaskSnapshot,
+} from "../../task-activity/task-snapshot";
+import {
+  type LockedRelationTask,
+  lockRelationGraph,
+  lockRelationTasks,
+  snapshotOfLocked,
+} from "../../task-relation/checks";
+import {
+  publishRelationEvent,
+  type RelationRow,
+} from "../../task-relation/events";
 import { projectToday } from "../../utils/timezone";
 import type { DraftValues } from "../normalize";
 import { loadPublishFacts, loadPublishProject } from "../publish-facts";
@@ -112,8 +127,38 @@ export async function joinModules(
   return entries;
 }
 
+/**
+ * The draft's parent, locked like a create with a parent does, when it may
+ * still take the new task: a live task of the same project, not waiting in
+ * intake. Null means the parent is dropped.
+ */
+async function lockDraftParent(
+  tx: Transaction,
+  parentTaskId: string,
+  projectId: string,
+  workspaceId: string,
+): Promise<LockedRelationTask | null> {
+  await lockRelationGraph(tx, workspaceId);
+  const parent = (await lockRelationTasks(tx, [parentTaskId])).get(
+    parentTaskId,
+  );
+  if (
+    !parent ||
+    parent.workspaceId !== workspaceId ||
+    parent.projectId !== projectId ||
+    parent.inTriage
+  ) {
+    return null;
+  }
+  return parent;
+}
+
 type PublishResult = {
   task: Task;
+  parentLink: {
+    relation: RelationRow;
+    snapshots: Map<string, TaskSnapshot>;
+  } | null;
   assigneeIds: string[];
   currentUserId: string;
   key: string;
@@ -133,6 +178,7 @@ async function publishLockedDraft(
   tx: Transaction,
   draftId: string,
   userId: string,
+  canLinkParent: boolean,
 ): Promise<PublishResult> {
   // A concurrent publish or delete waits here and then finds nothing.
   const [row] = await tx
@@ -181,7 +227,49 @@ async function publishLockedDraft(
     customFields: plan.customFieldValues,
     estimatePointId: plan.estimatePointId,
   });
+  let parent: LockedRelationTask | null = null;
+  if (draft.parentTaskId) {
+    parent =
+      canLinkParent && prepared.column?.group !== "triage"
+        ? await lockDraftParent(
+            tx,
+            draft.parentTaskId,
+            project.id,
+            row.workspaceId,
+          )
+        : null;
+    if (!parent) dropped.push("parent");
+  }
   const task = await insertTaskInTransaction(tx, prepared);
+
+  let parentLink: PublishResult["parentLink"] = null;
+  if (parent) {
+    const [relation] = await tx
+      .insert(taskRelationTable)
+      .values({
+        sourceTaskId: parent.id,
+        targetTaskId: task.id,
+        relationType: "subtask",
+      })
+      .returning();
+    if (relation) {
+      parentLink = {
+        relation,
+        snapshots: new Map<string, TaskSnapshot>([
+          [parent.id, snapshotOfLocked(parent)],
+          [
+            task.id,
+            {
+              id: task.id,
+              key: formatTaskKey(parent.slug, task.number),
+              title: task.title,
+              projectId: task.projectId,
+            },
+          ],
+        ]),
+      };
+    }
+  }
 
   // The "created" row is written here, a moment before the membership rows
   // below, so the history reads in order; task.created then skips it.
@@ -232,6 +320,7 @@ async function publishLockedDraft(
   );
   return {
     task,
+    parentLink,
     assigneeIds: prepared.assigneeIds,
     currentUserId: userId,
     key: `${project.slug}-${task.number}`,
@@ -247,6 +336,15 @@ async function publishAfterCommit(result: PublishResult, draftId: string) {
   const { task, currentUserId: userId } = result;
   try {
     await publishTaskCreated(task, result, { source: "draft" });
+    // The event the create route sends for a subtask created with its parent.
+    if (result.parentLink) {
+      await publishRelationEvent("task-relation.created", {
+        relation: result.parentLink.relation,
+        userId,
+        origin: "user",
+        snapshots: result.parentLink.snapshots,
+      });
+    }
     for (const label of result.labels) {
       await publishEvent("task.label_created", {
         projectId: task.projectId,
@@ -289,16 +387,19 @@ export async function publishTaskDraft({
   draftId,
   userId,
   patch,
+  canLinkParent = false,
 }: {
   draftId: string;
   userId: string;
   patch: TaskDraftPatch;
+  /** task:update: without it a stored parent is dropped, not linked. */
+  canLinkParent?: boolean;
 }) {
   const hasPatch = Object.values(patch).some((value) => value !== undefined);
   if (hasPatch) await applyTaskDraftPatch({ draftId, userId, patch });
 
   const result = await db.transaction((tx) =>
-    publishLockedDraft(tx, draftId, userId),
+    publishLockedDraft(tx, draftId, userId, canLinkParent),
   );
   await publishAfterCommit(result, draftId);
 

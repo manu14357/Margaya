@@ -8,8 +8,11 @@ import {
   estimateTable,
   moduleTable,
   projectTable,
+  taskTable,
 } from "../database/schema";
 import { featureDisabledMessage } from "../project/features";
+import { hiddenForCurrentRequest } from "../project/visibility";
+import { liveTaskCondition } from "../task/scope";
 import {
   assertValidTaskStatus,
   validateCustomFieldValue,
@@ -194,6 +197,27 @@ async function assertEstimatePoint(
   if (!point) badRequest(notFound);
 }
 
+async function assertParentTask(
+  parentTaskId: string,
+  project: DraftProject | null,
+) {
+  const notFound = "Parent task not found in this project";
+  if (!project) badRequest(notFound);
+  // Intake and other parent rules are checked again when publishing.
+  const [parent] = await db
+    .select({ id: taskTable.id })
+    .from(taskTable)
+    .where(
+      and(
+        eq(taskTable.id, parentTaskId),
+        eq(taskTable.projectId, project.id),
+        liveTaskCondition,
+      ),
+    )
+    .limit(1);
+  if (!parent) badRequest(notFound);
+}
+
 async function assertAssignees(assigneeIds: string[], workspaceId: string) {
   const assignable = await filterAssignableUsers(assigneeIds, workspaceId);
   if (assigneeIds.some((id) => !assignable.has(id))) {
@@ -220,7 +244,9 @@ export async function validateDraftChanges({
     : null;
 
   if (changes.projectId) {
-    if (!project) {
+    // A restricted project the caller cannot see reads as missing.
+    const hidden = await hiddenForCurrentRequest(workspaceId);
+    if (!project || hidden.includes(next.projectId ?? "")) {
       throw new HTTPException(404, { message: PROJECT_NOT_FOUND });
     }
     if (project.archivedAt) {
@@ -244,6 +270,9 @@ export async function validateDraftChanges({
   }
   if (changes.estimatePointId) {
     await assertEstimatePoint(changes.estimatePointId, project);
+  }
+  if (changes.parentTaskId) {
+    await assertParentTask(changes.parentTaskId, project);
   }
   return project;
 }
