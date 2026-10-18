@@ -15,6 +15,7 @@ import {
   validateTaskAssetUploadInput,
   verifyTaskAssetUpload,
 } from "../storage/s3";
+import { recordPendingUpload } from "../storage/upload-sweep";
 import type { PageRecord } from "./controllers/shared";
 
 // Files uploaded into a page (§3.2 #20-21, §3.7). Rows carry `pageId`, the
@@ -48,12 +49,14 @@ export async function createPageAssetUpload(
 ) {
   assertUploadInput(input.contentType, input.size);
   try {
-    return await createPageAssetUploadUrl({
+    const upload = await createPageAssetUploadUrl({
       workspaceId: page.workspaceId,
       projectId: projectOf(page),
       pageId: page.id,
       ...input,
     });
+    await recordPendingUpload(upload.key);
+    return upload;
   } catch (error) {
     throw new HTTPException(503, {
       message:

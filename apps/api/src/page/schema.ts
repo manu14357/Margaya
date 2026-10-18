@@ -68,8 +68,16 @@ export const createPageBody = z
     logoValue: logoValue.optional(),
     isFullWidth: z.boolean().optional(),
     content: markdown.optional(),
+    templateId: z.string().min(1).optional().openapi({
+      description:
+        "Start from a saved template of this project or of the workspace: its content (and logo, unless one is given) is copied, and its name is the title unless title is given. Not together with content.",
+    }),
   })
   .strict()
+  .refine(
+    (body) => body.templateId === undefined || body.content === undefined,
+    "Send either content or templateId, not both",
+  )
   .openapi("CreatePageInput");
 
 export const updatePageBody = z
@@ -137,6 +145,25 @@ export const finalizePageAssetUploadBody = z
     size: z.number(),
   })
   .openapi("FinalizePageAssetUploadInput");
+
+export const projectTemplatesParam = z.object({ projectId: z.string() });
+
+export const pageTemplateParam = z.object({ templateId: z.string() });
+
+export const savePageTemplateBody = z
+  .object({
+    name: z
+      .string()
+      .trim()
+      .min(1, "Name the template")
+      .max(PAGE_LIMITS.titleLength, "Keep the name under 255 characters"),
+    scope: z.enum(["project", "workspace"]).openapi({
+      description:
+        "project: offered in this page's project only. workspace: offered in every project of the workspace.",
+    }),
+  })
+  .strict()
+  .openapi("SavePageTemplateInput");
 
 export type CreatePageInput = z.infer<typeof createPageBody>;
 export type UpdatePageInput = z.infer<typeof updatePageBody>;

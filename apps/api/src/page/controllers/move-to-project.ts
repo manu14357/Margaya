@@ -10,6 +10,7 @@ import {
 } from "../../database/schema";
 import { publishEvent } from "../../events";
 import { featureDisabledMessage } from "../../project/features";
+import { canSeeProject } from "../../project/visibility";
 import {
   canManagePage,
   childrenMap,
@@ -65,7 +66,8 @@ async function movePageToProject({
       ),
     )
     .limit(1);
-  if (!target) {
+  // A restricted target the caller cannot see reads as missing.
+  if (!target || !(await canSeeProject(caller.userId, targetProjectId))) {
     throw new HTTPException(404, { message: PAGE_MESSAGES.projectNotFound });
   }
   if (!target.pagesEnabled) {

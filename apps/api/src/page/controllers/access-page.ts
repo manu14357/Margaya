@@ -114,9 +114,15 @@ async function updatePageAccess({
     const affected = rows
       .filter((row) => row.access !== "private")
       .map((row) => row.id);
+    // A private page can't stay on a public link: the links are revoked.
     await tx
       .update(pageTable)
-      .set({ access: "private" })
+      .set({
+        access: "private",
+        publicToken: null,
+        publishedAt: null,
+        publishedById: null,
+      })
       .where(inArray(pageTable.id, affected));
     return { page, affected };
   });

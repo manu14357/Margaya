@@ -54,6 +54,21 @@ import {
 } from "./routes";
 import "../notification/page-mentions";
 import db from "../database";
+import { hasWorkspacePermission } from "../utils/require-workspace-permission";
+import { getPagePublication, publishPage, unpublishPage } from "./publication";
+import {
+  deletePageTemplateRoute,
+  getPagePublicationRoute,
+  listPageTemplatesRoute,
+  publishPageRoute,
+  savePageTemplateRoute,
+  unpublishPageRoute,
+} from "./sharing-routes";
+import {
+  deletePageTemplate,
+  listPageTemplates,
+  savePageAsTemplate,
+} from "./templates";
 
 type PageVariables = BaseVariables & {
   workspaceId: string;
@@ -77,6 +92,25 @@ const page = apiRouter<PageVariables>()
         workspaceId: c.get("workspaceId"),
         projectId: c.req.valid("param").projectId,
         input: c.req.valid("json") ?? {},
+        caller: await pageCallerOf(c),
+      }),
+      200,
+    ),
+  )
+  .openapi(listPageTemplatesRoute, async (c) =>
+    c.json(
+      await listPageTemplates(
+        c.req.valid("param").projectId,
+        await pageCallerOf(c),
+      ),
+      200,
+    ),
+  )
+  .openapi(deletePageTemplateRoute, async (c) =>
+    c.json(
+      await deletePageTemplate({
+        templateId: c.req.valid("param").templateId,
+        workspaceId: c.get("workspaceId"),
         caller: await pageCallerOf(c),
       }),
       200,
@@ -203,6 +237,38 @@ const page = apiRouter<PageVariables>()
         targetProjectId: c.req.valid("json").projectId,
         caller: await pageCallerOf(c),
       }),
+      200,
+    ),
+  )
+  .openapi(savePageTemplateRoute, async (c) =>
+    c.json(
+      await savePageAsTemplate({
+        pageId: c.req.valid("param").id,
+        ...c.req.valid("json"),
+        caller: await pageCallerOf(c),
+      }),
+      200,
+    ),
+  )
+  .openapi(getPagePublicationRoute, async (c) =>
+    c.json(
+      await getPagePublication(
+        c.req.valid("param").id,
+        await pageCallerOf(c),
+        await hasWorkspacePermission(c, { project: ["share"] }),
+      ),
+      200,
+    ),
+  )
+  .openapi(publishPageRoute, async (c) =>
+    c.json(
+      await publishPage(c.req.valid("param").id, await pageCallerOf(c)),
+      200,
+    ),
+  )
+  .openapi(unpublishPageRoute, async (c) =>
+    c.json(
+      await unpublishPage(c.req.valid("param").id, await pageCallerOf(c)),
       200,
     ),
   )

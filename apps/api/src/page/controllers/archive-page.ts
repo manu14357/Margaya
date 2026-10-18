@@ -52,7 +52,13 @@ async function setPageArchived({
     if (archived) {
       const rows = await tx
         .update(pageTable)
-        .set({ archivedAt: new Date() })
+        // Archiving revokes public links; restoring doesn't bring them back.
+        .set({
+          archivedAt: new Date(),
+          publicToken: null,
+          publishedAt: null,
+          publishedById: null,
+        })
         .where(
           and(inArray(pageTable.id, subtree), isNull(pageTable.archivedAt)),
         )

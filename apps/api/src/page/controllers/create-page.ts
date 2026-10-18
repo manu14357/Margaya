@@ -14,6 +14,7 @@ import {
   placeAmongSiblings,
 } from "../rules";
 import type { CreatePageInput } from "../schema";
+import { loadUsableTemplate } from "../templates";
 import {
   assertProjectPageRoom,
   nextPosition,
@@ -48,8 +49,17 @@ async function createPage({
   input: CreatePageInput;
   caller: PageCaller;
 }) {
-  const logo = readLogo(input) ?? { logoKind: null, logoValue: null };
-  const json = markdownToJson(input.content ?? "");
+  const template = input.templateId
+    ? await loadUsableTemplate(input.templateId, workspaceId, projectId)
+    : null;
+  const logo =
+    readLogo(input) ??
+    (template?.logoKind && template.logoValue
+      ? { logoKind: template.logoKind, logoValue: template.logoValue }
+      : { logoKind: null, logoValue: null });
+  const json = markdownToJson(
+    template ? template.contentMarkdown : (input.content ?? ""),
+  );
   const content = buildPageContent(json);
 
   const { page, newlyMentionedUserIds } = await db.transaction(async (tx) => {
@@ -107,7 +117,7 @@ async function createPage({
         projectId,
         parentId,
         position,
-        title: input.title ?? "",
+        title: input.title ?? template?.name ?? "",
         ...logo,
         access,
         ownerId: caller.userId,
@@ -138,7 +148,8 @@ async function createPage({
   await publishEvent("page.created", {
     ...pageEventPayload(page, caller.userId),
     parentId: page.parentId,
-    newlyMentionedUserIds,
+    // Mentions copied from a template are not new: nobody is notified.
+    newlyMentionedUserIds: template ? [] : newlyMentionedUserIds,
   });
   return getPageResponse(page.id, caller);
 }

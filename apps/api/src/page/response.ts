@@ -141,3 +141,53 @@ export const pageVersionDetailSchema = z
 // Page uploads answer with the task upload schemas (TaskImageUpload,
 // TaskImageAsset).
 export { finalizedAssetSchema, imageUploadSchema } from "../task/response";
+
+export const pageTemplateSchema = z
+  .object({
+    id: z.string(),
+    name: z.string(),
+    scope: z.enum(["project", "workspace"]).openapi({
+      description:
+        "project: offered in its project only. workspace: offered in every project of the workspace.",
+    }),
+    projectId: z.string().nullable(),
+    logoKind: z.enum(PAGE_LOGO_KINDS).nullable(),
+    logoValue: z.string().nullable(),
+    createdById: z.string().nullable(),
+    createdAt: responseTimestamp,
+    canDelete: z.boolean().openapi({
+      description: "Who saved it (with page:create), or page:delete.",
+    }),
+  })
+  .openapi("PageTemplate");
+
+export const pageTemplateListSchema = z.array(pageTemplateSchema);
+
+export const deletedPageTemplateSchema = z
+  .object({ id: z.string() })
+  .openapi("DeletedPageTemplate");
+
+export const pagePublicationSchema = z
+  .object({
+    published: z.boolean(),
+    token: z.string().nullable().openapi({
+      description:
+        "The unguessable link token while published. Unpublishing revokes it; publishing again issues a new one.",
+    }),
+    path: z.string().nullable().openapi({
+      description:
+        "The web path of the public page, e.g. /public-page/{token}.",
+    }),
+    publishedAt: nullableResponseTimestamp,
+    allowed: z.boolean().openapi({
+      description: "Whether the workspace allows public pages.",
+    }),
+    canPublish: z.boolean().openapi({
+      description:
+        "Allowed, project:share, and the page is visible to the workspace and not archived.",
+    }),
+    canUnpublish: z.boolean().openapi({
+      description: "Published, and the caller has project:share.",
+    }),
+  })
+  .openapi("PagePublication");

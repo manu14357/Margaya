@@ -1,4 +1,4 @@
-import { and, desc, eq, ilike, isNull, or, type SQL, sql } from "drizzle-orm";
+import { and, desc, eq, isNull, or, type SQL, sql } from "drizzle-orm";
 import db from "../database";
 import {
   pageTable,
@@ -7,7 +7,16 @@ import {
   workspaceTable,
 } from "../database/schema";
 import { projectFeatureEnabledCondition } from "../project/features";
-import { escapeLikePattern } from "../search/like-pattern";
+import { notHiddenProject } from "../project/visibility";
+import {
+  headlineOf,
+  indexedMatch,
+  parseHeadline,
+  parseTextQuery,
+  type SearchSnippet,
+  type TextQuery,
+  tieredScore,
+} from "../search/text-query";
 import { buildSearchSnippet } from "./snippet";
 
 export type PageSearchResult = {
@@ -15,6 +24,7 @@ export type PageSearchResult = {
   type: "page";
   title: string;
   content?: string;
+  snippet?: SearchSnippet;
   projectId?: string;
   projectName?: string;
   projectSlug?: string;
@@ -26,11 +36,16 @@ export type PageSearchResult = {
   relevanceScore: number;
 };
 
+const pageSearchTsv = sql`${pageTable}.search_tsv`;
+const pagePendingTsv = sql`margaya_page_search_tsv(${pageTable.title}, ${pageTable.contentText})`;
+
 /**
- * Pages matching `query` by title (score 3) or content (score 2), in the
+ * Pages matching `query` by full text, ranked: a title match scores 3 and a
+ * content match 2, plus the `ts_rank` (below 1). Only pages in the
  * workspace's projects with Pages on, not archived, and visible to the
- * caller (public, or their own). The content field is a ~160 character
- * snippet around the first match.
+ * caller (public, or their own). `content` is a ~160 character plain
+ * snippet around the first literal match; `snippet` is the highlighted
+ * `ts_headline` excerpt.
  */
 export async function searchPages({
   userId,
@@ -38,16 +53,21 @@ export async function searchPages({
   projectId,
   query,
   limit,
+  hidden = [],
 }: {
   userId: string;
   workspaceId: string;
   projectId?: string;
-  query: string;
+  query: string | TextQuery;
   limit: number;
+  /** Restricted projects the caller may not see (project/visibility.ts). */
+  hidden?: readonly string[];
 }): Promise<PageSearchResult[]> {
-  const lowered = query.toLowerCase();
-  const pattern = `%${escapeLikePattern(lowered)}%`;
-  const relevance = sql<number>`case when ${pageTable.title} ilike ${pattern} then 3 else 2 end`;
+  const text = typeof query === "string" ? parseTextQuery(query) : query;
+  const tsv = sql`coalesce(${pageSearchTsv}, ${pagePendingTsv})`;
+  const relevance = tieredScore(tsv, sql`${pageTable.title}`, text, {
+    titleWeighted: true,
+  });
 
   const rows = await db
     .select({
@@ -63,6 +83,7 @@ export async function searchPages({
       userName: userTable.name,
       createdAt: pageTable.createdAt,
       relevanceScore: relevance.as("relevanceScore"),
+      headline: headlineOf(sql`${pageTable.contentText}`, text).as("headline"),
     })
     .from(pageTable)
     .innerJoin(projectTable, eq(projectTable.id, pageTable.projectId))
@@ -73,12 +94,13 @@ export async function searchPages({
         eq(pageTable.workspaceId, workspaceId),
         projectId ? eq(pageTable.projectId, projectId) : undefined,
         projectFeatureEnabledCondition("pages"),
+        notHiddenProject(projectTable.id, hidden),
         isNull(pageTable.archivedAt),
         or(eq(pageTable.access, "public"), eq(pageTable.ownerId, userId)),
-        or(
-          ilike(pageTable.title, pattern),
-          ilike(pageTable.contentText, pattern),
-        ),
+        indexedMatch(pageSearchTsv, pagePendingTsv, text, [
+          sql`${pageTable.title}`,
+          sql`${pageTable.contentText}`,
+        ]),
       ) as SQL,
     )
     .orderBy(desc(relevance), desc(pageTable.createdAt))
@@ -89,8 +111,9 @@ export async function searchPages({
     type: "page" as const,
     title: row.title || "Untitled",
     content: row.contentText
-      ? buildSearchSnippet(row.contentText, query)
+      ? buildSearchSnippet(row.contentText, text.raw)
       : undefined,
+    snippet: row.contentText ? parseHeadline(row.headline) : undefined,
     projectId: row.projectId ?? undefined,
     projectName: row.projectName,
     projectSlug: row.projectSlug,
@@ -99,6 +122,6 @@ export async function searchPages({
     userId: row.userId ?? undefined,
     userName: row.userName ?? undefined,
     createdAt: row.createdAt,
-    relevanceScore: row.relevanceScore,
+    relevanceScore: Number(row.relevanceScore),
   }));
 }

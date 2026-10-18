@@ -39,6 +39,7 @@ export function pageAccess(idKey = "id") {
         userId,
         page.workspaceId,
         c.get("apiKey")?.id,
+        page.projectId,
       );
     } catch (error) {
       if (error instanceof HTTPException && error.status === 403) {

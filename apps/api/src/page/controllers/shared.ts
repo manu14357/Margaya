@@ -12,7 +12,9 @@ import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { pageTable } from "../../database/schema";
+import { projectVisibleSql } from "../../project/visibility";
 import { workspacePermissionChecker } from "../../utils/require-workspace-permission";
+import { isWorkspacePendingDeletion } from "../../workspace-deletion/lock";
 import {
   canSeePage,
   depthOf,
@@ -42,14 +44,22 @@ export type PageSummaryRecord = Omit<
   "contentYjs" | "contentMarkdown" | "contentText"
 >;
 
-/** The caller's page permissions, read once per request. */
+/**
+ * The caller's page permissions, read once per request. A workspace pending
+ * deletion is read-only, so nobody may create or edit (this also keeps page
+ * sockets from writing).
+ */
 export async function pageCallerOf(c: Context): Promise<PageCaller> {
-  const can = await workspacePermissionChecker(c);
+  const workspaceId = c.get("workspaceId") as string | undefined;
+  const [can, locked] = await Promise.all([
+    workspacePermissionChecker(c),
+    workspaceId ? isWorkspacePendingDeletion(workspaceId) : false,
+  ]);
   return {
     userId: c.get("userId"),
     canRead: can({ page: ["read"] }),
-    canCreate: can({ page: ["create"] }),
-    canUpdate: can({ page: ["update"] }),
+    canCreate: !locked && can({ page: ["create"] }),
+    canUpdate: !locked && can({ page: ["update"] }),
     isManager: can({ page: ["delete"] }),
   };
 }
@@ -61,7 +71,11 @@ export function visiblePageCondition(caller: PageCaller): SQL {
     eq(pageTable.ownerId, caller.userId),
   ];
   if (caller.isManager) conditions.push(isNull(pageTable.ownerId));
-  return or(...conditions) as SQL;
+  // Pages of a restricted project the caller cannot see stay hidden.
+  return and(
+    or(...conditions),
+    projectVisibleSql(pageTable.projectId, caller.userId),
+  ) as SQL;
 }
 
 /** Parent of every page in the project (all pages, visible or not). */

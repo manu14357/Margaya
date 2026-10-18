@@ -47,7 +47,12 @@ export async function authorizePageSocket(
     | { id: string; permissions?: Record<string, string[]> | null }
     | undefined;
   try {
-    await validateWorkspaceAccess(userId, meta.workspaceId, apiKey?.id);
+    await validateWorkspaceAccess(
+      userId,
+      meta.workspaceId,
+      apiKey?.id,
+      meta.projectId,
+    );
   } catch (error) {
     if (error instanceof HTTPException && error.status === 403) {
       throw notFound();
@@ -161,10 +166,13 @@ export async function revalidatePageConnection(
   };
   if (meta.workspaceId !== identity.workspaceId) return lost;
   try {
+    // Also closes the socket once the page's restricted project is out of
+    // reach (removed from it, or the project restricted).
     await validateWorkspaceAccess(
       identity.userId,
       meta.workspaceId,
       identity.apiKeyId ?? undefined,
+      meta.projectId,
     );
   } catch (error) {
     if (error instanceof HTTPException) return lost;

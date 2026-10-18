@@ -90,7 +90,7 @@ export const createPageRoute = createRoute({
     403: errorResponse(
       "No workspace access, missing page:create, or the project's Pages feature is off",
     ),
-    404: errorResponse("Parent page not found"),
+    404: errorResponse("Parent page or template not found"),
     409: errorResponse(
       "The parent is archived or someone else's private page, or the project has 5,000 pages",
     ),

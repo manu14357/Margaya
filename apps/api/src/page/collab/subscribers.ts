@@ -61,3 +61,26 @@ subscribeToEvent<{ projectId?: string; disabled?: string[] }>(
     ]);
   },
 );
+
+// Restricted projects: someone lost access (removed, or the project was
+// restricted). Every room of the project, here and elsewhere, re-checks its
+// connections and closes those that can no longer see the project.
+subscribeToEvent<{ projectId?: string; action?: string; visibility?: string }>(
+  "project.access_changed",
+  async ({ projectId, action, visibility }) => {
+    if (!projectId) return;
+    const lostAccess =
+      action === "member_removed" ||
+      action === "member_role_changed" ||
+      (action === "visibility" && visibility === "restricted");
+    if (!lostAccess) return;
+    const rows = await db
+      .select({ id: pageTable.id })
+      .from(pageTable)
+      .where(eq(pageTable.projectId, projectId));
+    await refreshPageRooms([
+      ...rows.map((row) => row.id),
+      ...pageRoomIdsOfProject(projectId),
+    ]);
+  },
+);
