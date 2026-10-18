@@ -1,4 +1,5 @@
 import type { Editor } from "@tiptap/core";
+import type { LucideIcon } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { EditorRange } from "./use-editor-asset-upload";
 
@@ -9,6 +10,8 @@ export type SlashCommand = {
   label: string;
   group: SlashCommandGroup;
   shortcut?: string;
+  /** Shown in a 20px cell before the label (the page editor's menu). */
+  icon?: LucideIcon;
   search: string;
   run: (editor: Editor, range: EditorRange) => void;
 };

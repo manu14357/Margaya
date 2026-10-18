@@ -15,6 +15,21 @@ type SlashMenuProps = {
 
 const GROUPS: SlashCommandGroup[] = ["text", "lists", "insert"];
 
+/** The label with the part matching the query in bold. */
+export function highlightMatch(label: string, query: string) {
+  const needle = query.trim().toLowerCase();
+  const start = needle ? label.toLowerCase().indexOf(needle) : -1;
+  if (start < 0) return label;
+  const end = start + needle.length;
+  return (
+    <>
+      {label.slice(0, start)}
+      <mark>{label.slice(start, end)}</mark>
+      {label.slice(end)}
+    </>
+  );
+}
+
 /** The "/" menu, grouped Text · Lists · Insert (the task editor's look). */
 export default function SlashMenu({
   menu,
@@ -59,8 +74,16 @@ export default function SlashMenu({
                       onRun(command);
                     }}
                   >
+                    {command.icon && (
+                      <span
+                        className="margaya-tiptap-slash-icon"
+                        aria-hidden="true"
+                      >
+                        <command.icon className="size-3.5" />
+                      </span>
+                    )}
                     <span className="margaya-tiptap-slash-label">
-                      {command.label}
+                      {highlightMatch(command.label, menu.query)}
                     </span>
                     {command.shortcut && (
                       <span className="margaya-tiptap-slash-shortcut">

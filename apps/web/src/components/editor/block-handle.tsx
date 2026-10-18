@@ -5,6 +5,7 @@ import {
   ArrowUp,
   CopyPlus,
   GripVertical,
+  Sparkles,
   Trash2,
 } from "lucide-react";
 import type { DragEvent, RefObject } from "react";
@@ -16,14 +17,20 @@ import {
   MenuPopup,
   MenuSeparator,
   MenuShortcut,
+  MenuSub,
+  MenuSubPopup,
+  MenuSubTrigger,
 } from "@/components/ui/menu";
+import { blockRange, type EditorAiRange } from "./ai/editor-ai-apply";
+import { EditorAiMenuItems } from "./ai/editor-ai-menu";
+import type { EditorAiRequest } from "./ai/use-editor-ai";
 import {
   type BlockCommand,
   runBlockCommand,
   topBlockAt,
 } from "./block-commands";
 
-const HANDLE_SIZE = 24;
+const HANDLE_SIZE = 20;
 
 type Shown = { pos: number; top: number; left: number };
 
@@ -34,6 +41,8 @@ type BlockHandleProps = {
   editable: boolean;
   /** Filled with the keyboard entry point (Alt+Shift+M). */
   openMenuRef: { current: () => boolean };
+  /** Editor block AI on the block; the "AI" submenu shows when given. */
+  onAi?: (request: EditorAiRequest, range: EditorAiRange) => void;
 };
 
 /**
@@ -47,6 +56,7 @@ export default function BlockHandle({
   shellRef,
   editable,
   openMenuRef,
+  onAi,
 }: BlockHandleProps) {
   const { t } = useTranslation();
   const [shown, setShown] = useState<Shown | null>(null);
@@ -182,6 +192,14 @@ export default function BlockHandle({
     runBlockCommand(editor, command, current.pos);
   };
 
+  const runAi = (request: EditorAiRequest) => {
+    const current = shownRef.current;
+    if (!editor || !current || !onAi) return;
+    const range = blockRange(editor, current.pos);
+    setMenuOpen(false);
+    if (range) onAi(request, range);
+  };
+
   const onDragStart = (event: DragEvent<HTMLButtonElement>) => {
     const current = shownRef.current;
     if (!editor || !current || !event.dataTransfer) return;
@@ -266,6 +284,20 @@ export default function BlockHandle({
             return focusEditor ? editor.view.dom : handleRef.current;
           }}
         >
+          {onAi && (
+            <>
+              <MenuSub>
+                <MenuSubTrigger>
+                  <Sparkles />
+                  {t("ai:writing.aiButton")}
+                </MenuSubTrigger>
+                <MenuSubPopup className="w-56">
+                  <EditorAiMenuItems onRun={runAi} />
+                </MenuSubPopup>
+              </MenuSub>
+              <MenuSeparator />
+            </>
+          )}
           <MenuItem disabled={isFirst} onClick={() => run("moveUp")}>
             <ArrowUp />
             {t("tasks:detail.editor.block.moveUp")}

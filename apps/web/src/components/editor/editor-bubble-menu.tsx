@@ -3,6 +3,10 @@ import { useEditorState } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import type { LucideIcon } from "lucide-react";
 import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
   BetweenHorizontalEnd,
   BetweenHorizontalStart,
   BetweenVerticalEnd,
@@ -18,16 +22,34 @@ import {
   List,
   ListOrdered,
   ListTodo,
+  PanelTop,
   Quote,
   Rows3,
   Strikethrough,
   Table2,
   Underline as UnderlineIcon,
+  UnfoldHorizontal,
 } from "lucide-react";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
+import { EditorAiBubbleButton } from "./ai/editor-ai-menu";
+import type { EditorAi } from "./ai/use-editor-ai";
+import {
+  moveSelectionLine,
+  tableAtSelection,
+  toggleTableFullWidth,
+} from "./extensions/table-tools";
+import TextStyleMenu, { currentTextStyle } from "./text-style-menu";
+
+const PAGE_MARK_LABELS: Record<string, string> = {
+  bold: "pages:toolbar.bold",
+  italic: "pages:toolbar.italic",
+  underline: "pages:toolbar.underline",
+  strike: "pages:toolbar.strike",
+  code: "pages:toolbar.inlineCode",
+};
 
 type BubbleButton = {
   key: string;
@@ -38,7 +60,13 @@ type BubbleButton = {
   onClick: () => void;
 };
 
-function BubbleButtons({ groups }: { groups: BubbleButton[][] }) {
+function BubbleButtons({
+  groups,
+  iconClassName = "size-3.5",
+}: {
+  groups: BubbleButton[][];
+  iconClassName?: string;
+}) {
   return groups.map((group, index) => (
     <Fragment key={group[0]?.key ?? index}>
       {index > 0 && <span className="margaya-tiptap-bubble-separator" />}
@@ -57,7 +85,7 @@ function BubbleButtons({ groups }: { groups: BubbleButton[][] }) {
           )}
           onClick={onClick}
         >
-          <Icon className="size-3.5" />
+          <Icon className={iconClassName} />
         </Button>
       ))}
     </Fragment>
@@ -66,14 +94,20 @@ function BubbleButtons({ groups }: { groups: BubbleButton[][] }) {
 
 /**
  * The formatting bubble over a text selection and the table bubble inside a
- * table, as in the task description editor.
+ * table, as in the task description editor. The page variant leads with a
+ * "Text ▾" turn-into menu, then link, then the marks.
  */
 export default function EditorBubbleMenu({
   editor,
   onSetLink,
+  variant = "default",
+  ai,
 }: {
   editor: Editor;
   onSetLink: () => void;
+  variant?: "default" | "page";
+  /** Editor block AI; leads the selection bubble when given. */
+  ai?: EditorAi;
 }) {
   const { t } = useTranslation();
   // Re-render on every transaction so the active marks stay current.
@@ -164,6 +198,23 @@ export default function EditorBubbleMenu({
     ],
   ];
 
+  const isPage = variant === "page";
+  const [, marks] = formatting;
+  const pageMarks: BubbleButton[] = (marks ?? [])
+    .filter((button) => button.key !== "link")
+    .map((button) => ({
+      ...button,
+      title: t(PAGE_MARK_LABELS[button.key] ?? ""),
+    }));
+  const pageLink: BubbleButton = {
+    key: "link",
+    Icon: Link2,
+    isActive: editor.isActive("link"),
+    title: t("pages:toolbar.link"),
+    onClick: onSetLink,
+  };
+  const bubbleClass = cn("margaya-tiptap-bubble", isPage && "is-page");
+
   const table: BubbleButton[][] = [
     [
       {
@@ -221,6 +272,55 @@ export default function EditorBubbleMenu({
     ],
     [
       {
+        key: "row-up",
+        Icon: ArrowUp,
+        title: t("tasks:editor.table.moveRowUp"),
+        onClick: () => moveSelectionLine(editor, "up"),
+      },
+      {
+        key: "row-down",
+        Icon: ArrowDown,
+        title: t("tasks:editor.table.moveRowDown"),
+        onClick: () => moveSelectionLine(editor, "down"),
+      },
+      {
+        key: "col-left",
+        Icon: ArrowLeft,
+        title: t("tasks:editor.table.moveColumnLeft"),
+        onClick: () => moveSelectionLine(editor, "left"),
+      },
+      {
+        key: "col-right",
+        Icon: ArrowRight,
+        title: t("tasks:editor.table.moveColumnRight"),
+        onClick: () => moveSelectionLine(editor, "right"),
+      },
+    ],
+    [
+      {
+        key: "header-row",
+        Icon: PanelTop,
+        title: t("tasks:editor.table.toggleHeaderRow"),
+        onClick: () => chain().toggleHeaderRow().run(),
+      },
+      ...(isPage
+        ? [
+            {
+              key: "full-width",
+              Icon: UnfoldHorizontal,
+              isActive: Boolean(
+                tableAtSelection(editor.state)?.node.attrs.fullWidth,
+              ),
+              title: t("tasks:editor.table.fullWidth"),
+              onClick: () => {
+                toggleTableFullWidth(editor);
+              },
+            },
+          ]
+        : []),
+    ],
+    [
+      {
         key: "table-delete",
         Icon: Grid2x2X,
         destructive: true,
@@ -236,7 +336,7 @@ export default function EditorBubbleMenu({
     <>
       <BubbleMenu
         editor={editor}
-        className="margaya-tiptap-bubble"
+        className={bubbleClass}
         shouldShow={({ editor: activeEditor, from, to }) => {
           if (activeEditor.isActive("embedBlock")) return false;
           if (activeEditor.isActive("image")) return false;
@@ -244,12 +344,29 @@ export default function EditorBubbleMenu({
           return from !== to;
         }}
       >
-        <BubbleButtons groups={formatting} />
+        {ai && (
+          <>
+            <EditorAiBubbleButton editor={editor} ai={ai} />
+            <span className="margaya-tiptap-bubble-separator" />
+          </>
+        )}
+        {isPage ? (
+          <>
+            <TextStyleMenu editor={editor} current={currentTextStyle(editor)} />
+            <span className="margaya-tiptap-bubble-separator" />
+            <BubbleButtons
+              groups={[[pageLink], pageMarks]}
+              iconClassName="size-4"
+            />
+          </>
+        ) : (
+          <BubbleButtons groups={formatting} />
+        )}
       </BubbleMenu>
       <BubbleMenu
         editor={editor}
         pluginKey="margaya-table-bubble"
-        className="margaya-tiptap-bubble"
+        className={bubbleClass}
         shouldShow={({ editor: activeEditor, from, to }) =>
           activeEditor.isActive("table") && from === to
         }
