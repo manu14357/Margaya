@@ -10,6 +10,7 @@ async function getWorkspaceMembers(workspaceId: string) {
       email: userTable.email,
       image: userTable.image,
       role: workspaceUserTable.role,
+      kind: userTable.kind,
     })
     .from(workspaceUserTable)
     .innerJoin(userTable, eq(workspaceUserTable.userId, userTable.id))

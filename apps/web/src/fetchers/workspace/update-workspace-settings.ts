@@ -3,14 +3,16 @@ import { HttpError } from "@/lib/http-error";
 
 async function updateWorkspaceSettings({
   workspaceId,
-  timezone,
+  ...json
 }: {
   workspaceId: string;
-  timezone: string;
+  timezone?: string;
+  allowPublicPages?: boolean;
+  allowA2a?: boolean;
 }) {
   const response = await client.workspace[":workspaceId"].settings.$patch({
     param: { workspaceId },
-    json: { timezone },
+    json,
   });
 
   if (!response.ok) {

@@ -19,6 +19,7 @@ async function getWorkspaceMember(workspaceId: string, userId: string) {
       email: userTable.email,
       image: userTable.image,
       role: workspaceUserTable.role,
+      kind: userTable.kind,
       joinedAt: workspaceUserTable.joinedAt,
     })
     .from(workspaceUserTable)

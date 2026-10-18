@@ -6,12 +6,22 @@ import {
   jsonResponse,
 } from "../openapi";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
+import {
+  cancelWorkspaceDeletion,
+  getWorkspaceDeletion,
+  scheduleWorkspaceDeletion,
+} from "../workspace-deletion/service";
 import getWorkspaceMemberCtrl from "./controllers/get-workspace-member";
 import getWorkspaceMembersCtrl from "./controllers/get-workspace-members";
 import {
   getWorkspaceSettings,
   updateWorkspaceSettings,
 } from "./controllers/workspace-settings";
+import {
+  cancelWorkspaceDeletionRoute,
+  getWorkspaceDeletionRoute,
+  scheduleWorkspaceDeletionRoute,
+} from "./deletion-routes";
 import {
   workspaceMemberListSchema,
   workspaceMemberProfileSchema,
@@ -65,7 +75,28 @@ const workspace = apiRouter<BaseVariables & { workspaceId: string }>()
       await updateWorkspaceSettings({
         workspaceId: c.get("workspaceId"),
         userId: c.get("userId"),
-        timezone: c.req.valid("json").timezone,
+        ...c.req.valid("json"),
+      }),
+      200,
+    ),
+  )
+  .openapi(getWorkspaceDeletionRoute, async (c) =>
+    c.json(await getWorkspaceDeletion(c.get("workspaceId")), 200),
+  )
+  .openapi(scheduleWorkspaceDeletionRoute, async (c) =>
+    c.json(
+      await scheduleWorkspaceDeletion({
+        workspaceId: c.get("workspaceId"),
+        userId: c.get("userId"),
+      }),
+      200,
+    ),
+  )
+  .openapi(cancelWorkspaceDeletionRoute, async (c) =>
+    c.json(
+      await cancelWorkspaceDeletion({
+        workspaceId: c.get("workspaceId"),
+        userId: c.get("userId"),
       }),
       200,
     ),
