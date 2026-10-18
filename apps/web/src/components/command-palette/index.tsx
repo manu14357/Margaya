@@ -2,13 +2,17 @@ import { useLocation, useNavigate } from "@tanstack/react-router";
 import {
   ArrowDownIcon,
   ArrowUpIcon,
+  Boxes,
   CornerDownLeftIcon,
   FolderKanban,
+  Inbox,
+  IterationCw,
+  Layers,
+  type LucideIcon,
   X,
 } from "lucide-react";
 import {
   Fragment,
-  type ReactNode,
   useCallback,
   useEffect,
   useMemo,
@@ -50,9 +54,16 @@ import { useProjectFeatures } from "@/hooks/use-project-features";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { authClient } from "@/lib/auth-client";
 import { getEntityIcon, getEntityPath } from "@/lib/entity-links";
+import {
+  type PlanningResultType,
+  planningResultPath,
+} from "@/lib/search-result-path";
 import { useUserPreferencesStore } from "@/store/user-preferences";
+import { useAskCommands } from "../ai/ask/use-ask-commands";
+import { useBuildWithAiCommand } from "../ai-build/use-build-with-ai-command";
 import { usePageCommands } from "../page/use-page-commands";
 import CreateProjectModal from "../shared/modals/create-project-modal";
+import { EntityCommandsSource } from "./entity-commands";
 import {
   isPalettePrefix,
   matchesTerm,
@@ -60,35 +71,38 @@ import {
   parsePaletteQuery,
 } from "./palette-query";
 import usePaletteRequests from "./palette-store";
+import type {
+  PaletteActionItem,
+  PaletteGroup,
+  PaletteSubmenu,
+} from "./palette-types";
 import { openTaskGroupItems } from "./task-group";
+import { usePreferenceCommands } from "./use-preference-commands";
 import { useViewCommands } from "./use-view-commands";
-
-type PaletteActionItem = {
-  value: string;
-  label: string;
-  shortcut?: string;
-  /** Secondary text on the right, e.g. a task key or a project name. */
-  hint?: string;
-  icon?: ReactNode;
-  /** Runs only once the palette has fully closed (see TaskGroupItem). */
-  afterClose?: boolean;
-  onRun: () => void;
-};
-
-type PaletteGroup = {
-  value: string;
-  label: string;
-  items: PaletteActionItem[];
-};
 
 type SearchResult = {
   id: string;
   title: string;
-  type: "task" | "project" | "workspace" | "comment" | "activity" | "page";
+  type:
+    | "task"
+    | "project"
+    | "workspace"
+    | "comment"
+    | "activity"
+    | "page"
+    | PlanningResultType;
   projectId?: string;
   projectName?: string;
   projectSlug?: string;
   taskNumber?: number;
+  status?: string;
+};
+
+const PLANNING_RESULT_ICONS: Record<PlanningResultType, LucideIcon> = {
+  cycle: IterationCw,
+  module: Boxes,
+  view: Layers,
+  intake: Inbox,
 };
 
 // Plain-text search starts at this many characters, as typing settles.
@@ -127,6 +141,13 @@ function CommandPalette() {
   const [query, setQuery] = useState("");
   const queryRef = useRef(query);
   queryRef.current = query;
+  // A sub-list (languages, time zones, a module's statuses) shown in place
+  // of the root; Backspace in an empty field goes back.
+  const [submenu, setSubmenu] = useState<PaletteSubmenu | null>(null);
+  const submenuRef = useRef(submenu);
+  submenuRef.current = submenu;
+  // The open page's, cycle's or module's commands (EntityCommandsSource).
+  const [entityGroup, setEntityGroup] = useState<PaletteGroup | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
@@ -163,7 +184,14 @@ function CommandPalette() {
 
   const handleOpenChange = useCallback((next: boolean) => {
     setOpen(next);
-    if (!next) setQuery("");
+    if (!next) {
+      setQuery("");
+      setSubmenu(null);
+    }
+  }, []);
+  const openSubmenu = useCallback((next: PaletteSubmenu) => {
+    setSubmenu(next);
+    setQuery("");
   }, []);
 
   // Requests from the shell (top-bar field, rail Create menu, mobile tabs).
@@ -258,12 +286,18 @@ function CommandPalette() {
     projectId: projectIdFromRoute,
     open,
   });
+  const buildWithAi = useBuildWithAiCommand(projectIdFromRoute);
   const pageCommands = usePageCommands({
     workspaceId,
     projectId: projectIdFromRoute,
   });
+  const preferenceCommands = usePreferenceCommands({ open });
 
   const { mode, term } = parsePaletteQuery(query);
+  const askCommands = useAskCommands({
+    projectId: projectIdFromRoute,
+    term: open && mode === "all" ? term : "",
+  });
 
   // Data for the prefixed modes loads only while it can show.
   const { data: projects } = useGetProjects({
@@ -432,6 +466,7 @@ function CommandPalette() {
             shortcut: shortcuts.search.prefix,
             onRun: () => setIsSearchOpen(true),
           },
+          ...askCommands.items,
           {
             value: "members",
             label: t("navigation:commandPalette.members", {
@@ -506,6 +541,7 @@ function CommandPalette() {
             shortcut: `${shortcuts.project.prefix} ${shortcuts.project.create}`,
             onRun: () => setIsCreateProjectOpen(true),
           },
+          ...buildWithAi.items,
         ],
       },
       {
@@ -550,6 +586,17 @@ function CommandPalette() {
             onRun: () => setTheme("system"),
           },
           {
+            value: "theme-light-contrast",
+            label: t("navigation:commandPalette.lightContrastTheme"),
+            onRun: () => setTheme("light-contrast"),
+          },
+          {
+            value: "theme-dark-contrast",
+            label: t("navigation:commandPalette.darkContrastTheme"),
+            onRun: () => setTheme("dark-contrast"),
+          },
+          ...preferenceCommands,
+          {
             value: "keyboard-shortcuts",
             label: t("navigation:commandPalette.keyboardShortcuts"),
             shortcut: "?",
@@ -584,7 +631,10 @@ function CommandPalette() {
       projectIdFromRoute,
       viewCommands.items,
       viewCommands.label,
+      buildWithAi.items,
       pageCommands,
+      preferenceCommands,
+      askCommands.items,
     ],
   );
 
@@ -609,7 +659,31 @@ function CommandPalette() {
   const resultItems = useMemo<PaletteActionItem[]>(() => {
     const results = (searchData?.results ?? []) as SearchResult[];
     return results.flatMap((result) => {
-      if (!workspaceId || !result.projectId) return [];
+      if (!workspaceId) return [];
+      // Cycles, modules, views and intake requests: plain-text search only.
+      const planningPath =
+        mode === "all" ? planningResultPath(result, workspaceId) : null;
+      if (planningPath) {
+        const Icon = PLANNING_RESULT_ICONS[result.type as PlanningResultType];
+        const key =
+          result.type === "intake" &&
+          result.projectSlug &&
+          result.taskNumber != null
+            ? `${result.projectSlug}-${result.taskNumber}`
+            : undefined;
+        return [
+          {
+            value: `${result.type}:${result.id}`,
+            label: result.title,
+            hint: key ?? result.projectName,
+            icon: Icon ? (
+              <Icon aria-hidden className="size-4 opacity-72" />
+            ) : undefined,
+            onRun: () => navigate({ href: planningPath }),
+          },
+        ];
+      }
+      if (!result.projectId) return [];
       const projectId = result.projectId;
       if (result.type === "task") {
         const key =
@@ -652,6 +726,22 @@ function CommandPalette() {
       items.filter((item) => matchesTerm(term, item.label, item.hint));
     const withItems = (groups: PaletteGroup[]) =>
       groups.filter((group) => group.items.length > 0);
+    if (submenu) {
+      // Prefix characters mean nothing here: the whole field filters.
+      const needle = query.trim();
+      return withItems([
+        {
+          value: "submenu",
+          label: submenu.label,
+          items: submenu.items
+            .filter((item) => matchesTerm(needle, item.label, item.hint))
+            .slice(0, 60),
+        },
+      ]);
+    }
+    const contextGroups = [taskGroup, entityGroup].filter(
+      (group): group is PaletteGroup => group !== null,
+    );
     const allItems = groupedItems.flatMap((group) =>
       group.value === "views" ? [] : group.items,
     );
@@ -661,9 +751,10 @@ function CommandPalette() {
     switch (mode as PaletteMode) {
       case "actions":
         return withItems([
-          ...(taskGroup
-            ? [{ ...taskGroup, items: filterItems(taskGroup.items) }]
-            : []),
+          ...contextGroups.map((group) => ({
+            ...group,
+            items: filterItems(group.items),
+          })),
           {
             value: "actions",
             label: t("navigation:commandPalette.prefixes.actions"),
@@ -739,7 +830,7 @@ function CommandPalette() {
             ];
           });
           return withItems([
-            ...(taskGroup ? [taskGroup] : []),
+            ...contextGroups,
             {
               value: "recent",
               label: t("navigation:commandPalette.recent"),
@@ -749,9 +840,10 @@ function CommandPalette() {
           ]);
         }
         return withItems([
-          ...(taskGroup
-            ? [{ ...taskGroup, items: filterItems(taskGroup.items) }]
-            : []),
+          ...contextGroups.map((group) => ({
+            ...group,
+            items: filterItems(group.items),
+          })),
           ...groupedItems.map((group) => ({
             ...group,
             items: filterItems(group.items),
@@ -766,10 +858,16 @@ function CommandPalette() {
             label: t("navigation:search.groups.fallback"),
             items: resultItems,
           },
+          {
+            value: "ask",
+            label: t("ai:ask.title"),
+            items: askCommands.askItems,
+          },
         ]);
       }
     }
   }, [
+    askCommands.askItems,
     mode,
     term,
     t,
@@ -781,6 +879,9 @@ function CommandPalette() {
     workspaceId,
     navigate,
     taskGroup,
+    entityGroup,
+    submenu,
+    query,
   ]);
 
   const shortcutHandlers = useMemo(() => {
@@ -803,6 +904,13 @@ function CommandPalette() {
     if (!open) return;
 
     const onKeyDown = (event: KeyboardEvent) => {
+      if (submenuRef.current) {
+        if (event.key === "Backspace" && queryRef.current === "") {
+          event.preventDefault();
+          setSubmenu(null);
+        }
+        return;
+      }
       if (
         event.metaKey ||
         event.ctrlKey ||
@@ -834,8 +942,9 @@ function CommandPalette() {
     };
   }, [open, shortcutHandlers, runCommand]);
 
-  const placeholder =
-    mode === "actions"
+  const placeholder = submenu
+    ? submenu.label
+    : mode === "actions"
       ? t("navigation:commandPalette.placeholders.actions")
       : mode === "tasks"
         ? t("navigation:commandPalette.placeholders.tasks")
@@ -904,7 +1013,9 @@ function CommandPalette() {
                               key={item.value}
                               value={item.value}
                               onClick={() =>
-                                runCommand(item.onRun, item.afterClose)
+                                item.submenu
+                                  ? openSubmenu(item.submenu())
+                                  : runCommand(item.onRun, item.afterClose)
                               }
                               className="gap-2 px-3"
                             >
@@ -977,6 +1088,11 @@ function CommandPalette() {
         </CommandDialogPopup>
       </CommandDialog>
 
+      <EntityCommandsSource
+        pathname={location.pathname}
+        workspaceId={workspaceId}
+        onGroup={setEntityGroup}
+      />
       <SearchCommandMenu open={isSearchOpen} setOpen={setIsSearchOpen} />
       <CreateTaskModal
         open={isCreateTaskOpen}
@@ -1000,6 +1116,7 @@ function CommandPalette() {
         onClose={() => setIsCreateProjectOpen(false)}
       />
       {viewCommands.dialog}
+      {buildWithAi.dialog}
     </>
   );
 }

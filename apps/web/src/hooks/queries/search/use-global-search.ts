@@ -9,7 +9,12 @@ type SearchParams = {
     | "projects"
     | "workspaces"
     | "comments"
-    | "activities";
+    | "activities"
+    | "pages"
+    | "cycles"
+    | "modules"
+    | "views"
+    | "intake";
   workspaceId: string | undefined;
   projectId?: string;
   limit?: number;

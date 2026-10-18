@@ -1,10 +1,11 @@
+import type { Context } from "hono";
 import {
   apiRouter,
   createRoute,
   errorResponse,
   jsonResponse,
 } from "../openapi";
-import { hasWorkspacePermission } from "../utils/require-workspace-permission";
+import { workspacePermissionChecker } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import globalSearch from "./controllers/global-search";
 import { searchResponseSchema } from "./response";
@@ -17,7 +18,7 @@ const globalSearchRoute = createRoute({
   tags: ["Search"],
   summary: "Global search",
   description:
-    "Search across tasks, projects, workspaces, comments, activities and pages in one workspace. Pages need page:read and appear only when public or the caller's own, not archived, in projects with Pages on. Results are ranked by relevance and returned as a single flat list, each entry tagged with its `type`.",
+    "Search across tasks, projects, workspaces, comments, activities, pages, cycles, modules, saved views and intake requests in one workspace. Pages need page:read and appear only when public or the caller's own, not archived, in projects with Pages on. Cycles, modules and views need cycle:read, module:read and view:read; archived cycles and modules, other people's private views, and projects with the feature off are left out. Intake requests not yet accepted appear with intake:read, or only the caller's own with intake:create alone. Matching is PostgreSQL full-text search: `q` takes web-search syntax (\"quoted phrases\", `or`, `-exclude`), the last word also matches as a prefix, and accents are ignored where the server supports it. A whole-query task key such as `WEB-12` ranks first. Chinese, Japanese and Thai text also matches by substring. Results are ranked by relevance and returned as a single flat list, each entry tagged with its `type`; task, comment and page results carry a highlighted `snippet`.",
   middleware: [workspaceAccess.fromQuery()] as const,
   request: { query: searchQuery },
   responses: {
@@ -28,6 +29,23 @@ const globalSearchRoute = createRoute({
     403: errorResponse("No access to the workspace"),
   },
 });
+
+/** What the caller may find beyond tasks, projects and comments. */
+async function searchPermissions(c: Context) {
+  const can = await workspacePermissionChecker(c);
+  const intakeVisibility: "all" | "own" | "none" = can({ intake: ["read"] })
+    ? "all"
+    : can({ intake: ["create"] })
+      ? "own"
+      : "none";
+  return {
+    canReadPages: can({ page: ["read"] }),
+    canReadCycles: can({ cycle: ["read"] }),
+    canReadModules: can({ module: ["read"] }),
+    canReadViews: can({ view: ["read"] }),
+    intakeVisibility,
+  };
+}
 
 const search = apiRouter().openapi(globalSearchRoute, async (c) => {
   const { q, type, workspaceId, projectId, limit, userEmail } =
@@ -42,7 +60,7 @@ const search = apiRouter().openapi(globalSearchRoute, async (c) => {
       workspaceId,
       projectId,
       limit,
-      canReadPages: await hasWorkspacePermission(c, { page: ["read"] }),
+      ...(await searchPermissions(c)),
     }),
     200,
   );

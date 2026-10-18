@@ -17,6 +17,10 @@ const m = vi.hoisted(() => ({
   modifierShortcuts: {} as Handlers,
   openView: vi.fn(),
   searchQueries: [] as Array<{ q: string; type?: string }>,
+  setWeekStart: vi.fn(),
+  lockPage: vi.fn(),
+  openAsk: vi.fn(),
+  openBuild: vi.fn(),
 }));
 
 vi.mock("./use-view-commands", () => ({
@@ -30,6 +34,76 @@ vi.mock("./use-view-commands", () => ({
 vi.mock("../page/use-page-commands", () => ({
   usePageCommands: () => [],
 }));
+
+vi.mock("../ai/ask/use-ask-commands", () => ({
+  useAskCommands: ({ term }: { term: string }) => ({
+    items: [{ value: "ask-ai", label: "Ask AI…", onRun: m.openAsk }],
+    askItems: term
+      ? [
+          {
+            value: `ask-ai:${term}`,
+            label: `Ask AI: ${term}`,
+            onRun: m.openAsk,
+          },
+        ]
+      : [],
+  }),
+}));
+
+vi.mock("../ai-build/use-build-with-ai-command", () => ({
+  useBuildWithAiCommand: (projectId: string | undefined) => ({
+    items: [
+      {
+        value: "build-with-ai",
+        label: "Build with AI…",
+        onRun: () => m.openBuild(projectId),
+      },
+    ],
+    dialog: null,
+  }),
+}));
+
+vi.mock("./use-preference-commands", () => ({
+  usePreferenceCommands: () => [
+    {
+      value: "preference-week-start",
+      label: "First day of week",
+      hint: "Sunday",
+      onRun: () => {},
+      submenu: () => ({
+        label: "First day of week",
+        items: [
+          { value: "week-start:0", label: "Sunday", onRun: () => {} },
+          {
+            value: "week-start:1",
+            label: "Monday",
+            onRun: () => m.setWeekStart(1),
+          },
+        ],
+      }),
+    },
+  ],
+}));
+
+vi.mock("./entity-commands", async () => {
+  const { useEffect } = await import("react");
+  return {
+    EntityCommandsSource: ({
+      onGroup,
+    }: {
+      onGroup: (group: unknown) => void;
+    }) => {
+      useEffect(() => {
+        onGroup({
+          value: "this-page",
+          label: "Roadmap notes",
+          items: [{ value: "page:lock", label: "Lock", onRun: m.lockPage }],
+        });
+      }, [onGroup]);
+      return null;
+    },
+  };
+});
 
 vi.mock("@tanstack/react-router", () => ({
   useNavigate: () => m.navigate,
@@ -113,6 +187,13 @@ vi.mock("@/hooks/queries/search/use-global-search", () => ({
                 projectSlug: "WEB",
                 taskNumber: 2,
               },
+              {
+                id: "c9",
+                title: "Login sprint",
+                type: "cycle",
+                projectId: "p1",
+                projectName: "Website relaunch",
+              },
             ],
           }
         : undefined,
@@ -156,6 +237,27 @@ function typeQuery(value: string) {
 }
 
 describe("CommandPalette", () => {
+  it("offers Ask AI, and asks AI about the typed text", async () => {
+    render(<CommandPalette />);
+    openPalette();
+    expect(screen.getByRole("option", { name: "Ask AI…" })).toBeTruthy();
+
+    typeQuery("why did we drop sso");
+    fireEvent.click(
+      await screen.findByRole("option", {
+        name: "Ask AI: why did we drop sso",
+      }),
+    );
+    await waitFor(() => expect(m.openAsk).toHaveBeenCalled());
+  });
+
+  it("offers Build with AI among the actions", async () => {
+    render(<CommandPalette />);
+    openPalette();
+    fireEvent.click(screen.getByRole("option", { name: "Build with AI…" }));
+    await waitFor(() => expect(m.openBuild).toHaveBeenCalled());
+  });
+
   it("opens the workspace members page from the Members command", () => {
     render(<CommandPalette />);
     act(() => {
@@ -368,5 +470,48 @@ describe("CommandPalette", () => {
     before.remove();
     picker.remove();
     Reflect.deleteProperty(HTMLElement.prototype, "getAnimations");
+  });
+
+  it("opens a preference list in place and runs a choice", () => {
+    render(<CommandPalette />);
+    openPalette();
+
+    fireEvent.click(screen.getByRole("option", { name: /First day of week/ }));
+    expect(
+      screen.getByPlaceholderText("First day of week"),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: "Members" })).toBeNull();
+
+    fireEvent.click(screen.getByRole("option", { name: "Monday" }));
+    expect(m.setWeekStart).toHaveBeenCalledWith(1);
+  });
+
+  it("goes back from a preference list with Backspace in an empty field", () => {
+    render(<CommandPalette />);
+    openPalette();
+
+    fireEvent.click(screen.getByRole("option", { name: /First day of week/ }));
+    fireEvent.keyDown(document, { key: "Backspace" });
+    expect(screen.getByRole("option", { name: "Members" })).toBeInTheDocument();
+  });
+
+  it("lists the open page's commands first", () => {
+    render(<CommandPalette />);
+    openPalette();
+
+    expect(screen.getByText("Roadmap notes")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("option", { name: "Lock" }));
+    expect(m.lockPage).toHaveBeenCalledTimes(1);
+  });
+
+  it("opens cycles found by search", () => {
+    render(<CommandPalette />);
+    openPalette();
+    typeQuery("login");
+
+    fireEvent.click(screen.getByRole("option", { name: /Login sprint/ }));
+    expect(m.navigate).toHaveBeenCalledWith({
+      href: "/dashboard/workspace/w1/project/p1/cycles/c9",
+    });
   });
 });
