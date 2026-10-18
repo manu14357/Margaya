@@ -12,6 +12,16 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { createId } from "@paralleldrive/cuid2";
 import { config } from "dotenv-mono";
+import { auditContext } from "../audit-log/context";
+import { normalizeApiServerUrl } from "../utils/openapi-spec";
+import {
+  copyLocalObject,
+  deleteLocalObject,
+  readLocalObject,
+  statLocalObject,
+  writeLocalObject,
+} from "./local";
+import { signUploadToken } from "./upload-token";
 
 config();
 
@@ -134,16 +144,37 @@ export function resolveS3Credentials(
   return undefined;
 }
 
+export type StorageDriver = "s3" | "local" | "none";
+
+/**
+ * Where files go: S3-compatible storage when S3_ENDPOINT or S3_BUCKET is
+ * set (a half-done setup fails loudly rather than falling back), else the
+ * built-in local store under MARGAYA_STORAGE_DIR. MARGAYA_LOCAL_STORAGE=false
+ * turns the local store off, so uploads stay off until S3 is configured.
+ */
+export function storageDriver(): StorageDriver {
+  if (env("S3_ENDPOINT") || env("S3_BUCKET")) return "s3";
+  return parseBoolean(process.env.MARGAYA_LOCAL_STORAGE, true)
+    ? "local"
+    : "none";
+}
+
+function usesLocalStorage() {
+  return storageDriver() === "local";
+}
+
+const NOT_CONFIGURED_MESSAGE =
+  "S3 uploads are not configured. Set S3_ENDPOINT and S3_BUCKET (and either both S3_ACCESS_KEY_ID and S3_SECRET_ACCESS_KEY, or neither to use the default AWS credential provider chain / IAM role).";
+
 function getStorageConfig(): StorageConfig {
+  if (storageDriver() === "none") throw new Error(NOT_CONFIGURED_MESSAGE);
   const endpoint = env("S3_ENDPOINT");
   const bucket = env("S3_BUCKET");
   const accessKeyId = env("S3_ACCESS_KEY_ID");
   const secretAccessKey = env("S3_SECRET_ACCESS_KEY");
 
   if (!endpoint || !bucket) {
-    throw new Error(
-      "S3 uploads are not configured. Set S3_ENDPOINT and S3_BUCKET (and either both S3_ACCESS_KEY_ID and S3_SECRET_ACCESS_KEY, or neither to use the default AWS credential provider chain / IAM role).",
-    );
+    throw new Error(NOT_CONFIGURED_MESSAGE);
   }
 
   // Validate the access key pair early so misconfiguration surfaces here rather
@@ -175,6 +206,34 @@ function getMaxImageUploadBytes() {
     process.env.S3_MAX_IMAGE_UPLOAD_BYTES,
     DEFAULT_MAX_IMAGE_UPLOAD_BYTES,
   );
+}
+
+/** S3_KEY_PREFIX for S3; local keys are already relative to their folder. */
+function activeKeyPrefix() {
+  return usesLocalStorage() ? "" : getStorageConfig().keyPrefix;
+}
+
+/** Where the browser sends bytes: MARGAYA_API_URL, else this request's origin. */
+function requestApiBaseUrl() {
+  const configured = env("MARGAYA_API_URL");
+  const c = auditContext.getStore()?.c;
+  const origin = configured || (c ? new URL(c.req.url).origin : "");
+  return origin ? normalizeApiServerUrl(origin) : "/api";
+}
+
+/** The local store's presigned-PUT equivalent (see upload-token.ts). */
+function localUploadUrl(key: string, contentType: string, size: number) {
+  const ttlSeconds = parsePositiveInt(
+    process.env.S3_PRESIGN_TTL_SECONDS,
+    DEFAULT_PRESIGN_TTL_SECONDS,
+  );
+  const token = signUploadToken({
+    key,
+    contentType,
+    size,
+    expiresAt: Date.now() + ttlSeconds * 1000,
+  });
+  return `${requestApiBaseUrl()}/storage/upload/${token}`;
 }
 
 function getClient(config: StorageConfig) {
@@ -302,6 +361,14 @@ export async function createPageAssetUploadUrl(
   },
 ): Promise<TaskImageUploadUrl> {
   validateTaskAssetUploadInput(context.contentType, context.size);
+  if (usesLocalStorage()) {
+    const key = `${buildPageObjectKeyPrefix(context)}/${buildObjectFileName(context.filename)}`;
+    return {
+      key,
+      uploadUrl: localUploadUrl(key, context.contentType, context.size),
+      headers: { "Content-Type": context.contentType },
+    };
+  }
   const config = getStorageConfig();
   const key = applyKeyPrefix(
     config.keyPrefix,
@@ -328,8 +395,7 @@ export function assertPageAssetKeyMatchesContext(
   key: string,
   context: PageAssetContext,
 ) {
-  const config = getStorageConfig();
-  const fullPrefix = `${applyKeyPrefix(config.keyPrefix, buildPageObjectKeyPrefix(context))}/`;
+  const fullPrefix = `${applyKeyPrefix(activeKeyPrefix(), buildPageObjectKeyPrefix(context))}/`;
   if (!key.startsWith(fullPrefix)) return false;
   const suffix = key.slice(fullPrefix.length);
   return /^[A-Za-z0-9._-]+$/.test(suffix) && !suffix.startsWith(".");
@@ -343,7 +409,7 @@ export function applyKeyPrefix(prefix: string, key: string) {
 
 /** A fresh object key for this context, with S3_KEY_PREFIX applied. */
 export function buildStorageObjectKey(context: TaskImageUploadContext) {
-  return applyKeyPrefix(getStorageConfig().keyPrefix, buildObjectKey(context));
+  return applyKeyPrefix(activeKeyPrefix(), buildObjectKey(context));
 }
 
 export function validateTaskAssetUploadInput(
@@ -371,6 +437,14 @@ export async function createTaskImageUploadUrl(
   context: TaskImageUploadContext & { size: number },
 ): Promise<TaskImageUploadUrl> {
   validateTaskAssetUploadInput(context.contentType, context.size);
+  if (usesLocalStorage()) {
+    const key = buildObjectKey(context);
+    return {
+      key,
+      uploadUrl: localUploadUrl(key, context.contentType, context.size),
+      headers: { "Content-Type": context.contentType },
+    };
+  }
   const config = getStorageConfig();
   const client = getClient(config);
   const rawKey = buildObjectKey(context);
@@ -406,6 +480,7 @@ export async function verifyTaskAssetUpload(
   key: string,
   expected: { size: number; contentType: string },
 ) {
+  if (usesLocalStorage()) return verifyLocalUpload(key, expected);
   const config = getStorageConfig();
   const client = getClient(config);
   const abortSignal = AbortSignal.timeout(10_000);
@@ -460,17 +535,57 @@ export async function verifyTaskAssetUpload(
   return { size, contentType: object.ContentType };
 }
 
-export function assertStorageConfigured() {
+async function verifyLocalUpload(
+  key: string,
+  expected: { size: number; contentType: string },
+) {
+  let object: Awaited<ReturnType<typeof statLocalObject>>;
+  try {
+    object = await statLocalObject(key);
+  } catch {
+    throw new Error("Unable to verify uploaded object.");
+  }
+  if (!object) {
+    throw new InvalidUploadedAssetError("Uploaded object was not found.");
+  }
+  if (object.size > getMaxImageUploadBytes()) {
+    await deleteLocalObject(key);
+    throw new InvalidUploadedAssetError(
+      "Uploaded object exceeds the maximum upload size.",
+    );
+  }
+  if (
+    object.size !== expected.size ||
+    !object.contentType ||
+    object.contentType.toLowerCase() !== expected.contentType.toLowerCase()
+  ) {
+    throw new InvalidUploadedAssetError(
+      "Uploaded object does not match the declared size and content type.",
+    );
+  }
+  return { size: object.size, contentType: object.contentType };
+}
+
+/**
+ * Throws when uploads are off or S3 is misconfigured. Returns the S3
+ * settings, or null when the local store is in use.
+ */
+export function assertStorageConfigured(): StorageConfig | null {
+  if (usesLocalStorage()) return null;
   return getStorageConfig();
+}
+
+/** The largest file an upload may carry (S3_MAX_IMAGE_UPLOAD_BYTES). */
+export function maxUploadBytes() {
+  return getMaxImageUploadBytes();
 }
 
 export function assertTaskImageKeyMatchesContext(
   key: string,
   context: Omit<TaskImageUploadContext, "filename" | "contentType">,
 ) {
-  const config = getStorageConfig();
   const objectPrefix = buildObjectKeyPrefix(context);
-  const fullPrefix = `${applyKeyPrefix(config.keyPrefix, objectPrefix)}/`;
+  const fullPrefix = `${applyKeyPrefix(activeKeyPrefix(), objectPrefix)}/`;
 
   if (!key.startsWith(fullPrefix)) {
     return false;
@@ -483,6 +598,7 @@ export function assertTaskImageKeyMatchesContext(
 }
 
 export async function getPrivateObject(key: string): Promise<AssetObject> {
+  if (usesLocalStorage()) return readLocalObject(key);
   const config = getStorageConfig();
   const client = getClient(config);
   const response = await client.send(
@@ -519,6 +635,14 @@ export async function copyS3Object(
   sourceKey: string,
   destinationKey: string,
 ): Promise<void> {
+  if (usesLocalStorage()) {
+    try {
+      await copyLocalObject(sourceKey, destinationKey);
+    } catch {
+      throw new Error("Unable to copy the stored object.");
+    }
+    return;
+  }
   const config = getStorageConfig();
   const client = getClient(config);
   const encodedSource = sourceKey
@@ -540,6 +664,7 @@ export async function copyS3Object(
 }
 
 export async function deleteS3Object(key: string): Promise<void> {
+  if (usesLocalStorage()) return deleteLocalObject(key);
   const config = getStorageConfig();
   const client = getClient(config);
   await client.send(
@@ -552,7 +677,7 @@ export async function deleteS3Object(key: string): Promise<void> {
 
 /** `key` with S3_KEY_PREFIX applied, for objects the server writes itself. */
 export function buildPrivateObjectKey(key: string): string {
-  return applyKeyPrefix(getStorageConfig().keyPrefix, key);
+  return applyKeyPrefix(activeKeyPrefix(), key);
 }
 
 /**
@@ -565,6 +690,18 @@ export async function putPrivateObject(
   body: Uint8Array,
   contentType: string,
 ): Promise<void> {
+  if (usesLocalStorage()) {
+    try {
+      await writeLocalObject(key, body, {
+        contentType,
+        maxBytes: body.byteLength,
+        overwrite: true,
+      });
+    } catch {
+      throw new Error("Unable to store the object.");
+    }
+    return;
+  }
   const config = getStorageConfig();
   const client = getClient(config);
   try {

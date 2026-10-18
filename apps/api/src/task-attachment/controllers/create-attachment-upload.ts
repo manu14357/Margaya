@@ -4,6 +4,7 @@ import {
   createTaskImageUploadUrl,
   validateTaskAssetUploadInput,
 } from "../../storage/s3";
+import { recordPendingUpload } from "../../storage/upload-sweep";
 import {
   normalizeAttachmentContentType,
   sanitizeAttachmentFilename,
@@ -42,9 +43,10 @@ async function createAttachmentUpload({
   // Checked early for a quick answer; finalize re-checks under the lock.
   assertBelowAttachmentCap(await countAttachments(taskId));
 
+  let upload: Awaited<ReturnType<typeof createTaskImageUploadUrl>>;
   try {
     assertStorageConfigured();
-    return await createTaskImageUploadUrl({
+    upload = await createTaskImageUploadUrl({
       workspaceId: context.workspaceId,
       projectId: context.projectId,
       taskId: context.taskId,
@@ -57,6 +59,8 @@ async function createAttachmentUpload({
     // The storage error can name the configuration; never echo it.
     throw new HTTPException(503, { message: UPLOADS_NOT_CONFIGURED });
   }
+  await recordPendingUpload(upload.key);
+  return upload;
 }
 
 export default createAttachmentUpload;
