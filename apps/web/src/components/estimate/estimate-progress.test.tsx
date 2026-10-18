@@ -75,7 +75,7 @@ describe("EstimateProgressSummary", () => {
     render(<EstimateProgressSummary estimates={pointTotals} />);
     expect(
       screen.getByText(
-        'tasks:estimate.totals.points {"completed":"8","total":"16"}',
+        'tasks:estimate.totals.points {"completed":"8","total":"16","count":16}',
       ),
     ).toBeInTheDocument();
     expect(

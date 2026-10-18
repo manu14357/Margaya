@@ -58,6 +58,9 @@ vi.mock("./switch-estimate-dialog", () => ({
   ),
 }));
 vi.mock("./delete-estimate-dialog", () => ({ default: () => null }));
+vi.mock("@/components/insight/estimate-calibration-card", () => ({
+  default: () => null,
+}));
 
 afterEach(() => {
   cleanup();

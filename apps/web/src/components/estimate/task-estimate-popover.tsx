@@ -1,5 +1,6 @@
 import { type ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
+import EstimateSuggestion from "@/components/insight/estimate-suggestion";
 import {
   Popover,
   PopoverContent,
@@ -56,7 +57,14 @@ export default function TaskEstimatePopover({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
-      <PopoverContent className="w-48 p-0" align="start">
+      <PopoverContent className="w-56 p-0" align="start">
+        <EstimateSuggestion
+          task={task}
+          estimate={estimate}
+          open={open}
+          currentPointId={current}
+          onPick={handleSelect}
+        />
         <EstimateOptionList
           estimate={estimate}
           selectedId={current}

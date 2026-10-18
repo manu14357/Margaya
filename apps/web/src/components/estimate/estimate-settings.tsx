@@ -1,6 +1,7 @@
 import { Plus, Ruler } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import EstimateCalibrationCard from "@/components/insight/estimate-calibration-card";
 import { Button } from "@/components/ui/button";
 import {
   Empty,
@@ -144,6 +145,7 @@ export default function EstimateSettings({ projectId }: EstimateSettingsProps) {
               onDelete={(estimate) => setDeleteTargetId(estimate.id)}
             />
           )}
+          {active && <EstimateCalibrationCard projectId={projectId} />}
         </div>
       )}
 

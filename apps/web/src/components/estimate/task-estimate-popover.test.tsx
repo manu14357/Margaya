@@ -30,6 +30,11 @@ vi.mock("@/hooks/mutations/estimate/use-update-task-estimate", () => ({
   useUpdateTaskEstimate: () => ({ mutate: state.mutate }),
 }));
 
+// The history-based suggestion has its own tests (components/insight).
+vi.mock("@/components/insight/estimate-suggestion", () => ({
+  default: () => null,
+}));
+
 vi.mock("@/hooks/use-numbered-shortcuts", () => ({
   useNumberedShortcuts: vi.fn(),
 }));

@@ -41,6 +41,7 @@ export default function EstimateProgressSummary({
       : t("tasks:estimate.totals.points", {
           completed: formatEstimateNumber(completed),
           total: formatEstimateNumber(total),
+          count: total,
         });
 
   return (
