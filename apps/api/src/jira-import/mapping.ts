@@ -19,6 +19,13 @@ const CATEGORY_GROUPS: Record<string, ColumnGroup[]> = {
   indeterminate: ["started"],
   done: ["completed"],
   complete: ["completed"],
+  // Workflow state types other trackers export.
+  backlog: ["backlog", "unstarted"],
+  unstarted: ["unstarted", "backlog"],
+  started: ["started"],
+  completed: ["completed"],
+  cancelled: ["cancelled", "completed"],
+  canceled: ["cancelled", "completed"],
 };
 
 /** Common status names whose category the export may leave out. */
@@ -40,6 +47,10 @@ const STATUS_GROUPS: Record<string, ColumnGroup[]> = {
   resolved: ["completed"],
   closed: ["completed"],
   done: ["completed"],
+  completed: ["completed"],
+  complete: ["completed"],
+  doing: ["started"],
+  duplicate: ["cancelled", "completed"],
   "won't do": ["cancelled", "completed"],
   "won't fix": ["cancelled", "completed"],
   cancelled: ["cancelled", "completed"],

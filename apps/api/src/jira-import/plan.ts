@@ -44,9 +44,13 @@ export type PlannedTask = {
   status: string;
   priority: MargayaPriority;
   assigneeId: string | null;
+  /** Several assignees (Trello cards); wins over assigneeId when set. */
+  assigneeIds?: string[];
   reporterId: string | null;
   labels: string[];
   dueDate: Date | null;
+  /** Left out by the Jira import, which has no start date. */
+  startDate?: Date | null;
   createdAt: Date | null;
   updatedAt: Date | null;
   resolvedAt: Date | null;

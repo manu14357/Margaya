@@ -5,11 +5,13 @@ import { getDatabasePool } from "../database";
 /**
  * One Jira import per project at a time, across API instances: two runs of
  * the same file would both miss each other's keys and create duplicates. A
- * session lock spans the import's many short transactions.
+ * session lock spans the import's many short transactions. The Trello,
+ * Linear and Asana importers share the lock: one import per project.
  */
 export async function withJiraImportLock<T>(
   projectId: string,
   run: () => Promise<T>,
+  busyMessage = "Another Jira import into this project is running. Try again when it finishes.",
 ): Promise<T> {
   const lockKey = `jira-import:${projectId}`;
   let client: PoolClient | undefined;
@@ -23,10 +25,7 @@ export async function withJiraImportLock<T>(
     );
     locked = rows[0]?.acquired === true;
     if (!locked) {
-      throw new HTTPException(409, {
-        message:
-          "Another Jira import into this project is running. Try again when it finishes.",
-      });
+      throw new HTTPException(409, { message: busyMessage });
     }
     return await run();
   } finally {

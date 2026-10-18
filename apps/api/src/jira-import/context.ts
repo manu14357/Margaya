@@ -93,6 +93,7 @@ export async function loadMembers(
 export async function loadImportedKeys(
   projectId: string,
   keys: readonly string[],
+  source: string = JIRA_SOURCE,
 ): Promise<Map<string, string>> {
   const wanted = [...new Set(keys.filter(Boolean))];
   const found = new Map<string, string>();
@@ -105,7 +106,7 @@ export async function loadImportedKeys(
       and(
         eq(taskTable.projectId, projectId),
         eq(activityTable.type, IMPORTED_ACTIVITY),
-        eq(activityTable.externalSource, JIRA_SOURCE),
+        eq(activityTable.externalSource, source),
         inArray(activityTable.externalUrl, wanted),
       ),
     );

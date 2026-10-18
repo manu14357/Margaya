@@ -30,13 +30,34 @@ import type { PlannedComment, PlannedTask } from "./plan";
 
 // Writes one imported issue: a new task, or an update of the task an earlier
 // import created. Each runs in its own transaction, so a failing issue
-// leaves nothing half-written and the others still import.
+// leaves nothing half-written and the others still import. The Trello,
+// Linear and Asana importers write through here too, with their source.
+
+/** The tool an import reads: its activity source id and display name. */
+export type ImportSource = { id: string; label: string };
+
+export const JIRA_IMPORT_SOURCE: ImportSource = {
+  id: JIRA_SOURCE,
+  label: "Jira",
+};
 
 export type ImportTarget = {
   projectId: string;
   workspaceId: string;
   userId: string;
+  /** Defaults to Jira. */
+  source?: ImportSource;
 };
+
+/** The eventData field holding a comment's hash, for re-import dedup. */
+function commentHashField(source: ImportSource) {
+  return source.id === JIRA_SOURCE ? "jiraComment" : "importComment";
+}
+
+function assigneeIdsOf(planned: PlannedTask): string[] {
+  if (planned.assigneeIds) return planned.assigneeIds;
+  return planned.assigneeId ? [planned.assigneeId] : [];
+}
 
 export type ResolvedStatus = {
   status: string;
@@ -49,17 +70,19 @@ async function insertComments(
   taskId: string,
   comments: readonly PlannedComment[],
   userId: string,
+  source: ImportSource,
 ): Promise<number> {
   if (comments.length === 0) return 0;
+  const hashField = commentHashField(source);
   // Re-imports skip comments an earlier run brought in.
   const existing = await tx
-    .select({ hash: sql<string>`${activityTable.eventData}->>'jiraComment'` })
+    .select({ hash: sql<string>`${activityTable.eventData}->>${hashField}` })
     .from(activityTable)
     .where(
       and(
         eq(activityTable.taskId, taskId),
         eq(activityTable.type, "comment"),
-        eq(activityTable.externalSource, JIRA_SOURCE),
+        eq(activityTable.externalSource, source.id),
       ),
     );
   const seen = new Set(existing.map((row) => row.hash));
@@ -74,8 +97,8 @@ async function insertComments(
       userId,
       content: comment.content,
       externalUserName: comment.author,
-      externalSource: JIRA_SOURCE,
-      eventData: { jiraComment: comment.hash },
+      externalSource: source.id,
+      eventData: { [hashField]: comment.hash },
       ...(comment.createdAt ? { createdAt: comment.createdAt } : {}),
     })),
   );
@@ -95,7 +118,8 @@ export async function createImportedTask({
   status: ResolvedStatus;
   extras: ImportExtrasPlan;
 }) {
-  const assigneeIds = planned.assigneeId ? [planned.assigneeId] : [];
+  const source = target.source ?? JIRA_IMPORT_SOURCE;
+  const assigneeIds = assigneeIdsOf(planned);
   const now = new Date();
   const result = await db.transaction(async (tx) => {
     const number = await claimTaskNumber(target.projectId, tx);
@@ -120,6 +144,7 @@ export async function createImportedTask({
         // The reporter, when they're a member; else whoever imports.
         createdBy: planned.reporterId ?? target.userId,
         dueDate: planned.dueDate,
+        startDate: planned.startDate ?? null,
         priority: planned.priority,
         number,
         estimatePointId,
@@ -140,16 +165,19 @@ export async function createImportedTask({
       taskId: task.id,
       type: IMPORTED_ACTIVITY,
       userId: target.userId,
-      content: key ? `Imported from Jira ${key}` : "Imported from Jira",
-      externalSource: JIRA_SOURCE,
+      content: key
+        ? `Imported from ${source.label} ${key}`
+        : `Imported from ${source.label}`,
+      externalSource: source.id,
       externalUrl: key || null,
-      eventData: { source: JIRA_SOURCE, key: key || null },
+      eventData: { source: source.id, key: key || null },
     });
     const comments = await insertComments(
       tx,
       task.id,
       planned.comments,
       target.userId,
+      source,
     );
     return { task, applied, comments };
   });
@@ -240,6 +268,9 @@ export async function updateImportedTask({
         description: planned.description,
         priority: planned.priority,
         dueDate: planned.dueDate,
+        ...(planned.startDate !== undefined
+          ? { startDate: planned.startDate }
+          : {}),
         ...(estimatePointId ? { estimatePointId } : {}),
         ...(statusChanged
           ? {
@@ -256,8 +287,9 @@ export async function updateImportedTask({
       .returning();
     if (!task) return null;
 
-    if (planned.assigneeId) {
-      await setTaskAssignees(tx, taskId, [planned.assigneeId]);
+    const assigneeIds = assigneeIdsOf(planned);
+    if (assigneeIds.length > 0) {
+      await setTaskAssignees(tx, taskId, assigneeIds);
     }
     await newMemberships(tx, taskId, extras);
     const applied: AppliedExtras = await applyImportExtras(
@@ -272,6 +304,7 @@ export async function updateImportedTask({
       taskId,
       planned.comments,
       target.userId,
+      target.source ?? JIRA_IMPORT_SOURCE,
     );
     return { task, applied, comments };
   });

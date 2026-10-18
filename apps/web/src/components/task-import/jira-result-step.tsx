@@ -13,9 +13,19 @@ import {
 } from "@/components/ui/collapsible";
 import type { JiraImportResult } from "@/fetchers/jira-import/jira-import";
 
-/** Step 3: what the import did, then people, warnings and failed rows. */
-export function JiraResultStep({ result }: { result: JiraImportResult }) {
+/**
+ * Step 3: what the import did, then people, warnings and failed rows. Jira
+ * speaks of issues; the other importers (Trello, Linear, Asana) of items.
+ */
+export function JiraResultStep({
+  result,
+  wording = "jira",
+}: {
+  result: JiraImportResult;
+  wording?: "jira" | "external";
+}) {
   const { t } = useTranslation();
+  const jira = wording === "jira";
 
   return (
     <div className="space-y-4 text-sm">
@@ -37,17 +47,25 @@ export function JiraResultStep({ result }: { result: JiraImportResult }) {
         {result.skipped > 0 && (
           <li className="flex items-center gap-2">
             <SkipForward className="size-4 text-muted-foreground" />
-            {t("settings:tasksImportExport.jira.result.skipped", {
-              count: result.skipped,
-            })}
+            {jira
+              ? t("settings:tasksImportExport.jira.result.skipped", {
+                  count: result.skipped,
+                })
+              : t("settings:tasksImportExport.external.result.skipped", {
+                  count: result.skipped,
+                })}
           </li>
         )}
         {result.failed > 0 && (
           <li className="flex items-center gap-2 font-medium text-destructive-foreground">
             <CircleX className="size-4 text-destructive" />
-            {t("settings:tasksImportExport.jira.result.failed", {
-              count: result.failed,
-            })}
+            {jira
+              ? t("settings:tasksImportExport.jira.result.failed", {
+                  count: result.failed,
+                })
+              : t("settings:tasksImportExport.external.result.failed", {
+                  count: result.failed,
+                })}
           </li>
         )}
       </ul>
@@ -62,9 +80,13 @@ export function JiraResultStep({ result }: { result: JiraImportResult }) {
       {result.unmatchedPeople.length > 0 && (
         <div className="space-y-1">
           <p className="font-medium">
-            {t("settings:tasksImportExport.jira.result.unmatched", {
-              count: result.unmatchedPeople.length,
-            })}
+            {jira
+              ? t("settings:tasksImportExport.jira.result.unmatched", {
+                  count: result.unmatchedPeople.length,
+                })
+              : t("settings:tasksImportExport.external.result.unmatched", {
+                  count: result.unmatchedPeople.length,
+                })}
           </p>
           <p className="text-muted-foreground">
             {result.unmatchedPeople.join(", ")}
