@@ -6,7 +6,13 @@ import { projectTable } from "../../database/schema";
 async function reorderProjects(
   workspaceId: string,
   projects: Array<{ id: string; position: number }>,
+  /**
+   * Restricted projects the caller may not see: they hold their place like
+   * archived ones, can't be sent, and are left out of the answer.
+   */
+  hidden: readonly string[] = [],
 ) {
+  const hiddenIds = new Set(hidden);
   const ids = projects.map((project) => project.id);
   const uniqueIds = new Set(ids);
 
@@ -40,7 +46,9 @@ async function reorderProjects(
 
     // Verify ownership of the whole batch before writing anything, so a
     // smuggled foreign id cannot leave the workspace half-renumbered.
-    const ownedIds = new Set(existing.map((project) => project.id));
+    const ownedIds = new Set(
+      existing.map((project) => project.id).filter((id) => !hiddenIds.has(id)),
+    );
     const foreignId = ids.find((id) => !ownedIds.has(id));
 
     if (foreignId) {
@@ -84,7 +92,7 @@ async function reorderProjects(
         .where(eq(projectTable.id, id));
     }
 
-    return tx.query.projectTable.findMany({
+    const reordered = await tx.query.projectTable.findMany({
       where: eq(projectTable.workspaceId, workspaceId),
       orderBy: [
         asc(projectTable.position),
@@ -92,6 +100,7 @@ async function reorderProjects(
         asc(projectTable.id),
       ],
     });
+    return reordered.filter((project) => !hiddenIds.has(project.id));
   });
 }
 

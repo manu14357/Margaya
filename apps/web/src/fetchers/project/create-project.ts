@@ -11,9 +11,15 @@ async function createProject({
   slug,
   workspaceId,
   icon,
+  fromProjectId,
+  copy,
+  visibility,
 }: CreateProjectRequest) {
   const response = await client.project.$post({
-    json: { name, slug, icon, workspaceId },
+    // `copy` only means something with a source project.
+    json: fromProjectId
+      ? { name, slug, icon, workspaceId, fromProjectId, copy, visibility }
+      : { name, slug, icon, workspaceId, visibility },
   });
 
   if (!response.ok) {

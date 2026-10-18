@@ -1,3 +1,4 @@
+import { HTTPException } from "hono/http-exception";
 import { requireEntitlement } from "../billing/require-entitlement-middleware";
 import {
   apiRouter,
@@ -12,6 +13,7 @@ import {
   requireWorkspacePermission,
 } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
+import projectAccessRoutes from "./access-routes";
 import archiveProjectCtrl from "./controllers/archive-project";
 import createProjectCtrl from "./controllers/create-project";
 import deleteProjectCtrl from "./controllers/delete-project";
@@ -31,6 +33,7 @@ import {
   updateProjectFeaturesBody,
   workspaceIdQuery,
 } from "./schema";
+import { assertProjectVisible, requestHiddenProjectIds } from "./visibility";
 
 const listProjectsRoute = createRoute({
   method: "get",
@@ -56,7 +59,7 @@ const createProjectRoute = createRoute({
   tags: ["Projects"],
   summary: "Create project",
   description:
-    "Create a project in a workspace. The slug becomes the prefix of its task identifiers and must be unique in the workspace, ignoring case. New projects start with cycles, modules, views, pages and time tracking turned on.",
+    "Create a project in a workspace. The slug becomes the prefix of its task identifiers and must be unique in the workspace, ignoring case. New projects start with cycles, modules, views, pages and time tracking turned on. With fromProjectId the project starts from another project's setup instead (and optionally its task templates and open tasks); no tasks are copied unless copy.openTasks is true.",
   middleware: [
     workspaceAccess.fromBody(),
     requireWorkspacePermission({ project: ["create"] }),
@@ -70,9 +73,14 @@ const createProjectRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The created project", projectSchema),
-    400: errorResponse("Invalid body, or workspace ID could not be determined"),
+    400: errorResponse(
+      "Invalid body, workspace ID could not be determined, copy without fromProjectId, or more than 500 open tasks to copy",
+    ),
     403: errorResponse(
-      "No workspace access, or missing project:create permission",
+      "No workspace access, missing project:create permission, or task:create when copying open tasks",
+    ),
+    404: errorResponse(
+      "The source project is not a live project of the workspace",
     ),
     409: errorResponse("Another project in the workspace already uses the key"),
   },
@@ -267,18 +275,52 @@ const project = apiRouter<BaseVariables & { workspaceId: string }>()
     const projects = await getProjectsCtrl(
       workspaceId,
       includeArchived === "true",
+      await requestHiddenProjectIds(c),
     );
-    return c.json(projects, 200);
+    // A project-limited API key sees only its own projects.
+    const scope = c.get("apiKey")?.projectIds;
+    return c.json(
+      scope
+        ? projects.filter((project) => scope.includes(project.id))
+        : projects,
+      200,
+    );
   })
   .openapi(createProjectRoute, async (c) => {
-    const { name, icon, slug } = c.req.valid("json");
+    const { name, icon, slug, fromProjectId, copy, visibility } =
+      c.req.valid("json");
     const workspaceId = c.get("workspaceId");
+    // A restricted source the caller cannot see reads as missing.
+    if (fromProjectId) {
+      await assertProjectVisible(c.get("userId"), fromProjectId);
+    }
+    if (copy && !fromProjectId) {
+      throw new HTTPException(400, {
+        message: "copy: needs fromProjectId",
+      });
+    }
+    if (
+      copy?.openTasks &&
+      !(await hasWorkspacePermission(c, { task: ["create"] }))
+    ) {
+      throw new HTTPException(403, {
+        message: "Copying open tasks needs the task:create permission",
+      });
+    }
     const newProject = await createProjectCtrl(
       workspaceId,
       name,
       icon,
       slug,
       c.get("userId"),
+      fromProjectId
+        ? {
+            projectId: fromProjectId,
+            taskTemplates: copy?.taskTemplates ?? false,
+            openTasks: copy?.openTasks ?? false,
+          }
+        : undefined,
+      { visibility },
     );
     return c.json(newProject, 200);
   })
@@ -291,7 +333,11 @@ const project = apiRouter<BaseVariables & { workspaceId: string }>()
   .openapi(reorderProjectsRoute, async (c) => {
     const workspaceId = c.get("workspaceId");
     const { projects } = c.req.valid("json");
-    const reordered = await reorderProjectsCtrl(workspaceId, projects);
+    const reordered = await reorderProjectsCtrl(
+      workspaceId,
+      projects,
+      await requestHiddenProjectIds(c),
+    );
     return c.json(reordered, 200);
   })
   .openapi(updateProjectRoute, async (c) => {
@@ -358,6 +404,7 @@ const project = apiRouter<BaseVariables & { workspaceId: string }>()
       c.get("userId"),
     );
     return c.json(unarchivedProject, 200);
-  });
+  })
+  .route("/", projectAccessRoutes);
 
 export default project;

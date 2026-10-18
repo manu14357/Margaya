@@ -23,6 +23,24 @@ export const updateProjectAutomationsBody = z
       })
       .strict()
       .optional(),
+    cycleRollover: z
+      .object({
+        enabled: z.boolean().optional().openapi({
+          description:
+            "When a cycle ends (in the workspace's time zone), move its unfinished tasks to the next cycle. Turning it on applies to cycles ending from yesterday on.",
+        }),
+      })
+      .strict()
+      .optional(),
+    flowAlerts: z
+      .object({
+        enabled: z.boolean().optional().openapi({
+          description:
+            "Once a day, compare the last 7 days' work in progress, cycle time and throughput with the 8 weeks before, and notify the project lead of a sustained harmful change (at most once per metric per week).",
+        }),
+      })
+      .strict()
+      .optional(),
   })
   .strict()
   .openapi("UpdateProjectAutomationsBody", {

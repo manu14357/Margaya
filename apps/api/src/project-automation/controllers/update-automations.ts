@@ -3,6 +3,8 @@ import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { columnTable, projectAutomationTable } from "../../database/schema";
 import { publishEvent } from "../../events";
+import { shiftDate } from "../../utils/calendar-date";
+import { projectToday } from "../../utils/timezone";
 import {
   type AutomationPatch,
   hasAutomationChanges,
@@ -69,12 +71,23 @@ export async function updateProjectAutomations({
   }
 
   if (changed.length > 0) {
+    // Turning rollover on covers cycles ending from yesterday (workspace
+    // day) on, so a cycle that just ended still rolls; older ones never do.
+    const rolloverStart =
+      next.cycleRolloverEnabled && !current.cycleRolloverEnabled
+        ? { cycleRolloverSince: shiftDate(await projectToday(projectId), -1) }
+        : {};
     await db
       .insert(projectAutomationTable)
-      .values({ projectId, ...next, updatedBy: userId })
+      .values({ projectId, ...next, ...rolloverStart, updatedBy: userId })
       .onConflictDoUpdate({
         target: projectAutomationTable.projectId,
-        set: { ...next, updatedBy: userId, updatedAt: new Date() },
+        set: {
+          ...next,
+          ...rolloverStart,
+          updatedBy: userId,
+          updatedAt: new Date(),
+        },
       });
     await publishEvent("project.automations_updated", {
       projectId,

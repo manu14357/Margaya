@@ -2,6 +2,36 @@ import { z } from "../openapi";
 
 export const projectParam = z.object({ id: z.string() });
 
+export const projectMemberParam = z.object({
+  id: z.string(),
+  userId: z.string(),
+});
+
+export const projectVisibilitySchema = z.enum(["open", "restricted"]).openapi({
+  description:
+    "open: reached through workspace roles. restricted: only by project members, and by workspace owners and admins.",
+});
+
+const projectRoleField = z.string().min(1).max(64).openapi({
+  description:
+    "A workspace role name (viewer, member, admin, or a custom role). In a restricted project it caps the member's rights: they get what both roles grant.",
+});
+
+export const updateProjectVisibilityBody = z
+  .object({ visibility: projectVisibilitySchema })
+  .strict();
+
+export const addProjectMemberBody = z
+  .object({
+    userId: z.string().min(1),
+    role: projectRoleField.optional().default("member"),
+  })
+  .strict();
+
+export const updateProjectMemberBody = z
+  .object({ role: projectRoleField })
+  .strict();
+
 export const workspaceIdQuery = z.object({ workspaceId: z.string() });
 
 export const listProjectsQuery = z.object({
@@ -16,6 +46,27 @@ export const createProjectBody = z.object({
   workspaceId: z.string(),
   icon: z.string(),
   slug: z.string(),
+  visibility: projectVisibilitySchema.optional().openapi({
+    description:
+      "Defaults to open. A restricted project starts with its creator as its only member (besides workspace owners and admins).",
+  }),
+  fromProjectId: z.string().min(1).optional().openapi({
+    description:
+      "Start from this project of the same workspace: copies its statuses, custom fields, estimate systems, feature toggles, description, lead, default assignee and scheduled automations. Integrations, webhooks, public boards and members are never copied.",
+  }),
+  copy: z
+    .object({
+      taskTemplates: z.boolean().optional().openapi({
+        description: "Also copy the source's task templates.",
+      }),
+      openTasks: z.boolean().optional().openapi({
+        description:
+          "Also copy its open tasks (at most 500; needs task:create) with assignees, labels, custom field values, estimates and sub-task links. Comments, attachments, history, cycles and modules are not copied.",
+      }),
+    })
+    .strict()
+    .optional()
+    .openapi({ description: "Only with fromProjectId." }),
 });
 
 const projectMemberField = (description: string) =>
@@ -55,6 +106,9 @@ export const updateProjectFeaturesBody = z
     intakeEnabled: featureFlag("The request review queue."),
     estimatesEnabled: featureFlag("Task size estimates."),
     timeTrackingEnabled: featureFlag("Time entries logged on tasks."),
+    aiEnabled: featureFlag(
+      "AI features for this project (when the workspace has AI on). Off keeps the project out of AI context.",
+    ),
   })
   .openapi({
     minProperties: 1,

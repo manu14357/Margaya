@@ -15,6 +15,7 @@ export const PROJECT_FEATURE_KEYS = [
   "intake",
   "estimates",
   "timeTracking",
+  "ai",
 ] as const;
 
 export type ProjectFeature = (typeof PROJECT_FEATURE_KEYS)[number];
@@ -27,6 +28,7 @@ export const PROJECT_FEATURES = {
   intake: { field: "intakeEnabled", label: "Intake" },
   estimates: { field: "estimatesEnabled", label: "Estimates" },
   timeTracking: { field: "timeTrackingEnabled", label: "Time tracking" },
+  ai: { field: "aiEnabled", label: "AI" },
 } as const satisfies Record<
   ProjectFeature,
   { field: keyof typeof projectTable.$inferSelect; label: string }

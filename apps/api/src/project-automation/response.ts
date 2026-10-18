@@ -28,6 +28,22 @@ export const projectAutomationsSchema = z
       lastClosedAt: nullableResponseTimestamp,
       lastClosedCount: z.number().int(),
     }),
+    cycleRollover: z.object({
+      enabled: z.boolean(),
+      since: z.string().nullable().openapi({
+        description:
+          "The first cycle end date (YYYY-MM-DD) that rolls over; set when the rule is turned on.",
+      }),
+      lastRolledOverAt: nullableResponseTimestamp,
+      lastRolledOverCount: z.number().int(),
+    }),
+    flowAlerts: z.object({
+      enabled: z.boolean(),
+      lastCheckedOn: z.string().nullable().openapi({
+        description: "The workspace day (YYYY-MM-DD) of the last daily check.",
+      }),
+      lastAlertAt: nullableResponseTimestamp,
+    }),
     lastCheckedAt: nullableResponseTimestamp,
     updatedAt: nullableResponseTimestamp.openapi({
       description:
@@ -37,7 +53,7 @@ export const projectAutomationsSchema = z
   })
   .openapi("ProjectAutomations", {
     description:
-      "Scheduled automations of a project, checked every hour. Auto-close is paused while its column is missing or no longer in the Cancelled group.",
+      "Scheduled automations of a project, checked every hour. Auto-close is paused while its column is missing or no longer in the Cancelled group. Cycle rollover and flow alerts are off by default.",
   });
 
 export const automationPreviewSchema = z

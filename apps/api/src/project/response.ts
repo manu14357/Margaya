@@ -37,9 +37,16 @@ export const projectSchema = z
     intakeEnabled: featureFlag("Intake"),
     estimatesEnabled: featureFlag("Estimates"),
     timeTrackingEnabled: featureFlag("Time tracking"),
+    aiEnabled: featureFlag(
+      "AI (effective only while the instance and the workspace have AI on)",
+    ),
     leadUserId: z.string().nullable().openapi({
       description:
         "The project lead, a workspace member; null when none. Cleared when the member leaves the workspace.",
+    }),
+    visibility: z.enum(["open", "restricted"]).openapi({
+      description:
+        "open: reached through workspace roles. restricted: only by its project members, and by workspace owners and admins; anyone else gets 404.",
     }),
     defaultAssigneeUserId: z.string().nullable().openapi({
       description:
@@ -79,3 +86,29 @@ export const projectListItemSchema = projectSchema
   .openapi("ProjectListItem");
 
 export const projectListSchema = z.array(projectListItemSchema);
+
+export const projectMemberSchema = z
+  .object({
+    userId: z.string(),
+    role: z.string().openapi({
+      description:
+        "Project role: a workspace role name that caps the member's rights in a restricted project.",
+    }),
+    addedAt: responseTimestamp,
+    name: z.string(),
+    email: z.string(),
+    image: z.string().nullable(),
+  })
+  .openapi("ProjectMember");
+
+export const projectAccessSchema = z
+  .object({
+    visibility: z.enum(["open", "restricted"]),
+    leadUserId: z.string().nullable(),
+    members: z.array(projectMemberSchema),
+    canManage: z.boolean().openapi({
+      description:
+        "Whether the caller may change visibility and members (project:share, or the project lead).",
+    }),
+  })
+  .openapi("ProjectAccess");

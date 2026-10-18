@@ -11,6 +11,8 @@ export type AutomationSettings = {
   autoCloseEnabled: boolean;
   autoCloseMonths: number;
   autoCloseColumnId: string | null;
+  cycleRolloverEnabled: boolean;
+  flowAlertsEnabled: boolean;
 };
 
 export const DEFAULT_AUTOMATION_SETTINGS: AutomationSettings = {
@@ -19,11 +21,15 @@ export const DEFAULT_AUTOMATION_SETTINGS: AutomationSettings = {
   autoCloseEnabled: false,
   autoCloseMonths: DEFAULT_AUTOMATION_MONTHS,
   autoCloseColumnId: null,
+  cycleRolloverEnabled: false,
+  flowAlertsEnabled: false,
 };
 
 export type AutomationPatch = {
   autoArchive?: { enabled?: boolean; months?: number };
   autoClose?: { enabled?: boolean; months?: number; columnId?: string | null };
+  cycleRollover?: { enabled?: boolean };
+  flowAlerts?: { enabled?: boolean };
 };
 
 const KEY_NAMES: Record<keyof AutomationSettings, string> = {
@@ -32,11 +38,18 @@ const KEY_NAMES: Record<keyof AutomationSettings, string> = {
   autoCloseEnabled: "autoClose.enabled",
   autoCloseMonths: "autoClose.months",
   autoCloseColumnId: "autoClose.columnId",
+  cycleRolloverEnabled: "cycleRollover.enabled",
+  flowAlertsEnabled: "flowAlerts.enabled",
 };
 
 /** True when the patch carries at least one setting. */
 export function hasAutomationChanges(patch: AutomationPatch): boolean {
-  return [patch.autoArchive, patch.autoClose].some(
+  return [
+    patch.autoArchive,
+    patch.autoClose,
+    patch.cycleRollover,
+    patch.flowAlerts,
+  ].some(
     (rule) =>
       rule !== undefined &&
       Object.values(rule).some((value) => value !== undefined),
@@ -62,6 +75,9 @@ export function mergeAutomationPatch(
       patch.autoClose?.columnId !== undefined
         ? patch.autoClose.columnId
         : current.autoCloseColumnId,
+    cycleRolloverEnabled:
+      patch.cycleRollover?.enabled ?? current.cycleRolloverEnabled,
+    flowAlertsEnabled: patch.flowAlerts?.enabled ?? current.flowAlertsEnabled,
   };
   const changed = (Object.keys(KEY_NAMES) as (keyof AutomationSettings)[])
     .filter((key) => next[key] !== current[key])

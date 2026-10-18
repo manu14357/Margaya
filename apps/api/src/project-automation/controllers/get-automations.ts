@@ -21,6 +21,8 @@ export function settingsOf(row: AutomationRow | null): AutomationSettings {
     autoCloseEnabled: row.autoCloseEnabled,
     autoCloseMonths: row.autoCloseMonths,
     autoCloseColumnId: row.autoCloseColumnId,
+    cycleRolloverEnabled: row.cycleRolloverEnabled,
+    flowAlertsEnabled: row.flowAlertsEnabled,
   };
 }
 
@@ -89,6 +91,17 @@ export async function getProjectAutomations(projectId: string) {
       pausedReason,
       lastClosedAt: row?.lastClosedAt ?? null,
       lastClosedCount: row?.lastClosedCount ?? 0,
+    },
+    cycleRollover: {
+      enabled: settings.cycleRolloverEnabled,
+      since: row?.cycleRolloverSince ?? null,
+      lastRolledOverAt: row?.lastRolledOverAt ?? null,
+      lastRolledOverCount: row?.lastRolledOverCount ?? 0,
+    },
+    flowAlerts: {
+      enabled: settings.flowAlertsEnabled,
+      lastCheckedOn: row?.flowAlertsCheckedOn ?? null,
+      lastAlertAt: row?.lastFlowAlertAt ?? null,
     },
     lastCheckedAt: row?.lastCheckedAt ?? null,
     updatedAt: row?.updatedAt ?? null,

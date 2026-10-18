@@ -15,6 +15,7 @@ import {
   CsvImportDialog,
   isCsvFile,
 } from "@/components/task-import/csv-import-dialog";
+import { ExternalImportDialog } from "@/components/task-import/external-import-dialog";
 import { ImportDropZone } from "@/components/task-import/import-drop-zone";
 import { JiraImportDialog } from "@/components/task-import/jira-import-dialog";
 import { Button } from "@/components/ui/button";
@@ -30,6 +31,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/menu";
+import type { ExternalImportSource } from "@/fetchers/external-import/external-import";
 import useExportTasks from "@/hooks/mutations/task/use-export-tasks";
 import useImportTasks from "@/hooks/mutations/task/use-import-tasks";
 import { useCreateTaskExport } from "@/hooks/mutations/task-export/use-create-task-export";
@@ -48,12 +50,32 @@ function isJsonFile(file: File) {
   );
 }
 
+const EXTERNAL_SOURCES = [
+  {
+    source: "trello",
+    labelKey: "settings:tasksImportExport.external.sources.trello",
+  },
+  {
+    source: "linear",
+    labelKey: "settings:tasksImportExport.external.sources.linear",
+  },
+  {
+    source: "asana",
+    labelKey: "settings:tasksImportExport.external.sources.asana",
+  },
+] as const satisfies ReadonlyArray<{
+  source: ExternalImportSource;
+  labelKey: string;
+}>;
+
 export function TasksImportExport({ project }: TasksImportExportProps) {
   const { t } = useTranslation();
   const [isImportOpen, setIsImportOpen] = useState(false);
   // A CSV picked in the import dialog continues in the mapping dialog.
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [isJiraOpen, setIsJiraOpen] = useState(false);
+  const [externalSource, setExternalSource] =
+    useState<ExternalImportSource | null>(null);
 
   const { mutateAsync: exportTasksMutation, isPending: isExporting } =
     useExportTasks();
@@ -282,6 +304,27 @@ export function TasksImportExport({ project }: TasksImportExportProps) {
                 </Button>
               </div>
 
+              <div className="mb-4 space-y-2 rounded-md border border-border p-3">
+                <p className="text-sm text-muted-foreground">
+                  {t("settings:tasksImportExport.external.sourceHint")}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {EXTERNAL_SOURCES.map(({ source, labelKey }) => (
+                    <Button
+                      key={source}
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setIsImportOpen(false);
+                        setExternalSource(source);
+                      }}
+                    >
+                      {t(labelKey)}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
               <div className="flex justify-end gap-2">
                 <DialogClose
                   render={
@@ -308,6 +351,14 @@ export function TasksImportExport({ project }: TasksImportExportProps) {
       <JiraImportDialog
         open={isJiraOpen}
         onOpenChange={setIsJiraOpen}
+        project={project}
+      />
+
+      <ExternalImportDialog
+        source={externalSource}
+        onOpenChange={(open) => {
+          if (!open) setExternalSource(null);
+        }}
         project={project}
       />
     </div>

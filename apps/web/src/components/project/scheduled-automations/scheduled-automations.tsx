@@ -1,4 +1,4 @@
-import { Archive, CircleX } from "lucide-react";
+import { Activity, Archive, CircleX, Redo2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useUpdateProjectAutomations } from "@/hooks/mutations/project-automation/use-update-project-automations";
 import { useGetColumns } from "@/hooks/queries/column/use-get-columns";
+import useGetProject from "@/hooks/queries/project/use-get-project";
 import { useFetchAutomationPreview } from "@/hooks/queries/project-automation/use-automation-preview";
 import { useProjectAutomations } from "@/hooks/queries/project-automation/use-project-automations";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
@@ -15,6 +16,7 @@ import {
   isBroaderChange,
   type RuleSetting,
 } from "@/lib/automation";
+import { formatRelativeTime } from "@/lib/format";
 import { toast } from "@/lib/toast";
 import type {
   AutomationRule,
@@ -33,6 +35,10 @@ type ToastKey =
   | "settings:projectAutomations.toast.archiveOff"
   | "settings:projectAutomations.toast.closeOn"
   | "settings:projectAutomations.toast.closeOff"
+  | "settings:projectAutomations.toast.rolloverOn"
+  | "settings:projectAutomations.toast.rolloverOff"
+  | "settings:projectAutomations.toast.flowAlertsOn"
+  | "settings:projectAutomations.toast.flowAlertsOff"
   | "settings:projectAutomations.toast.updated";
 
 function toastKeyFor(
@@ -68,6 +74,7 @@ export default function ScheduledAutomations({
     projectId,
   );
   const { data: columns } = useGetColumns(projectId);
+  const { data: project } = useGetProject({ id: projectId, workspaceId });
   const cancelled = useMemo(() => cancelledColumns(columns ?? []), [columns]);
   const { canUpdateProjects, isCheckingPermissions } = useWorkspacePermission();
   const canEdit = !isCheckingPermissions && canUpdateProjects();
@@ -153,6 +160,8 @@ export default function ScheduledAutomations({
     const defaultColumn = validColumn ?? cancelled[0];
     const noCancelledColumn = cancelled.length === 0;
     const paused = close.enabled && close.state === "paused";
+    const rollover = data.cycleRollover;
+    const cyclesOff = project?.cyclesEnabled === false;
 
     body = (
       <div className="space-y-3">
@@ -250,6 +259,72 @@ export default function ScheduledAutomations({
                   ),
               }}
             />
+          </AutomationRuleRow>
+          <Separator />
+          <AutomationRuleRow
+            id="cycle-rollover"
+            icon={Redo2}
+            title={t("settings:projectAutomations.cycleRollover.title")}
+            description={t(
+              "settings:projectAutomations.cycleRollover.description",
+            )}
+            enabled={rollover.enabled}
+            // Turning off stays possible while cycles are off.
+            disabled={!canEdit || (cyclesOff && !rollover.enabled)}
+            hint={
+              cyclesOff
+                ? t("settings:projectAutomations.cycleRollover.cyclesOff")
+                : undefined
+            }
+            onToggle={(enabled) =>
+              void save(
+                { cycleRollover: { enabled } },
+                enabled
+                  ? "settings:projectAutomations.toast.rolloverOn"
+                  : "settings:projectAutomations.toast.rolloverOff",
+              )
+            }
+          >
+            <p className="text-muted-foreground text-xs">
+              {rollover.lastRolledOverAt && rollover.lastRolledOverCount > 0
+                ? t("settings:projectAutomations.cycleRollover.last", {
+                    count: rollover.lastRolledOverCount,
+                    time: formatRelativeTime(rollover.lastRolledOverAt),
+                  })
+                : t("settings:projectAutomations.cycleRollover.never")}
+            </p>
+          </AutomationRuleRow>
+          <Separator />
+          <AutomationRuleRow
+            id="flow-alerts"
+            icon={Activity}
+            title={t("settings:projectAutomations.flowAlerts.title")}
+            description={t(
+              "settings:projectAutomations.flowAlerts.description",
+            )}
+            enabled={data.flowAlerts.enabled}
+            disabled={!canEdit}
+            hint={
+              project && !project.leadUserId
+                ? t("settings:projectAutomations.flowAlerts.noLead")
+                : undefined
+            }
+            onToggle={(enabled) =>
+              void save(
+                { flowAlerts: { enabled } },
+                enabled
+                  ? "settings:projectAutomations.toast.flowAlertsOn"
+                  : "settings:projectAutomations.toast.flowAlertsOff",
+              )
+            }
+          >
+            <p className="text-muted-foreground text-xs">
+              {data.flowAlerts.lastAlertAt
+                ? t("settings:projectAutomations.flowAlerts.last", {
+                    time: formatRelativeTime(data.flowAlerts.lastAlertAt),
+                  })
+                : t("settings:projectAutomations.flowAlerts.never")}
+            </p>
           </AutomationRuleRow>
         </div>
         {!canEdit && !isCheckingPermissions && (

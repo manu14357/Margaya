@@ -48,7 +48,7 @@ const getRoute = createRoute({
   tags: TAGS,
   summary: "Get scheduled automations",
   description:
-    "The project's auto-archive and auto-close settings, the auto-close state and what each rule did last. Both rules are off until first set.",
+    "The project's auto-archive, auto-close, cycle rollover and flow alert settings, the auto-close state and what each rule did last. Every rule is off until first set.",
   middleware: [...readMiddleware] as const,
   request: { params: automationProjectParam },
   responses: {
@@ -65,7 +65,7 @@ const updateRoute = createRoute({
   tags: TAGS,
   summary: "Update scheduled automations",
   description:
-    "Turn auto-archive or auto-close on or off, or change their months (1-12) or the auto-close column (a column of this project in the Cancelled group). The hourly job applies them, records each change in the task's history and sends no notifications. Publishes project.automations_updated when something changed.",
+    "Turn auto-archive or auto-close on or off, or change their months (1-12) or the auto-close column (a column of this project in the Cancelled group). The hourly job applies them, records each change in the task's history and sends no notifications. Also turns cycle rollover on or off: when a cycle ends in the workspace's time zone, its unfinished tasks move to the next cycle (the first one starting after it), each with a history entry, and the project lead gets one summary notification; each ended cycle is handled once. Also turns flow alerts on or off: once a day, work in progress, cycle time and throughput of the last 7 days are compared with the 8 weeks before (median and MAD), and the project lead gets one notification per harmful anomaly per metric and week. Publishes project.automations_updated when something changed.",
   middleware: [
     workspaceAccess.fromProject("projectId"),
     requireWorkspacePermission({ project: ["update"] }),

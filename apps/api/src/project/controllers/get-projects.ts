@@ -6,6 +6,7 @@ import {
   taskColumnJoin,
   taskGroupSql,
 } from "../../task/scope";
+import { notHiddenProject } from "../visibility";
 
 type ProjectStatistics = {
   completionPercentage: number;
@@ -22,6 +23,7 @@ const EMPTY_STATISTICS: ProjectStatistics = {
 async function getProjectStatistics(
   workspaceId: string,
   includeArchived: boolean,
+  hidden: readonly string[],
 ) {
   const statisticsByProject = new Map<string, ProjectStatistics>();
 
@@ -59,6 +61,7 @@ async function getProjectStatistics(
         isNull(projectTable.deletedAt),
         isNull(taskTable.deletedAt),
         includeArchived ? undefined : isNull(projectTable.archivedAt),
+        notHiddenProject(projectTable.id, hidden),
       ),
     )
     .groupBy(taskTable.projectId);
@@ -80,12 +83,18 @@ async function getProjectStatistics(
   return statisticsByProject;
 }
 
-async function getProjects(workspaceId: string, includeArchived = false) {
+async function getProjects(
+  workspaceId: string,
+  includeArchived = false,
+  /** Restricted projects the caller may not see (project/visibility.ts). */
+  hidden: readonly string[] = [],
+) {
   const projects = await db.query.projectTable.findMany({
     where: and(
       eq(projectTable.workspaceId, workspaceId),
       isNull(projectTable.deletedAt),
       includeArchived ? undefined : isNull(projectTable.archivedAt),
+      notHiddenProject(projectTable.id, hidden),
     ),
     // `id` is the deterministic tie-breaker: without it, rows sharing both a
     // position and a createdAt come back in an unspecified order.
@@ -99,6 +108,7 @@ async function getProjects(workspaceId: string, includeArchived = false) {
   const statisticsByProject = await getProjectStatistics(
     workspaceId,
     includeArchived,
+    hidden,
   );
 
   return projects.map((project) => ({
