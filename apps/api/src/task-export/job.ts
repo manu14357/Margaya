@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../database";
 import { type taskExportTable, workspaceTable } from "../database/schema";
+import { hiddenProjectIds } from "../project/visibility";
 import { sanitizePathSegment } from "../storage/s3";
 import { validateWorkspaceAccess } from "../utils/validate-workspace-access";
 import {
@@ -149,7 +150,15 @@ export async function buildExport(
 ): Promise<BuiltExport> {
   await assertRequesterAccess(row);
 
-  const projects = await loadExportProjects(row.workspaceId, row.projectIds);
+  // Re-checked at run time: projects restricted since the request, or that
+  // the requester left, are not exported.
+  const hidden = row.requestedBy
+    ? new Set(await hiddenProjectIds(row.requestedBy, row.workspaceId))
+    : new Set<string>();
+  const projects = await loadExportProjects(
+    row.workspaceId,
+    row.projectIds.filter((id) => !hidden.has(id)),
+  );
   if (projects.length === 0) throw new ExportFailure(PROJECTS_GONE);
 
   const total = await countExportTasks(

@@ -3,6 +3,7 @@ import type { Context, Next } from "hono";
 import { HTTPException } from "hono/http-exception";
 import db from "../database";
 import { taskExportTable } from "../database/schema";
+import { hiddenProjectIds } from "../project/visibility";
 import { hasWorkspacePermission } from "../utils/require-workspace-permission";
 import { validateWorkspaceAccess } from "../utils/validate-workspace-access";
 
@@ -39,6 +40,14 @@ export function taskExportAccess(idKey = "id") {
     }
 
     await validateWorkspaceAccess(userId, row.workspaceId, c.get("apiKey")?.id);
+    // Someone else's export holds data of its projects: all of them must be
+    // visible to the caller (restricted projects, project/visibility.ts).
+    if (row.requestedBy !== userId) {
+      const hidden = await hiddenProjectIds(userId, row.workspaceId);
+      if (row.projectIds.some((id) => hidden.includes(id))) {
+        throw new HTTPException(404, { message: EXPORT_NOT_FOUND });
+      }
+    }
     c.set("taskExport", row);
     return next();
   };

@@ -2,6 +2,8 @@ import { and, desc, eq, getTableColumns, type SQL, sql } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { taskExportTable } from "../../database/schema";
+import { hiddenProjectIds } from "../../project/visibility";
+import { textArray } from "../../task-query/context";
 import { toTaskExportResponses } from "../serialize";
 
 export const INVALID_CURSOR = "Invalid cursor";
@@ -48,10 +50,19 @@ export async function listTaskExports(input: {
   limit: number;
 }) {
   const after = input.cursor ? decodeExportCursor(input.cursor) : null;
+  // Other people's exports of a restricted project the caller cannot see
+  // are left out (their own stay: they ran with the access they had).
+  const hidden =
+    input.scope === "all"
+      ? await hiddenProjectIds(input.userId, input.workspaceId)
+      : [];
   const conditions: (SQL | undefined)[] = [
     eq(taskExportTable.workspaceId, input.workspaceId),
     input.scope === "mine"
       ? eq(taskExportTable.requestedBy, input.userId)
+      : undefined,
+    hidden.length > 0
+      ? sql`(${taskExportTable.requestedBy} = ${input.userId} or not (${taskExportTable.projectIds} && ${textArray(hidden)}))`
       : undefined,
     after
       ? sql`(${taskExportTable.createdAt}, ${taskExportTable.id}) < (${after.createdAt}::timestamptz, ${after.id}::text)`

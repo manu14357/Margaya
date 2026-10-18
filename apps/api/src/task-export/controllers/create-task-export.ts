@@ -2,6 +2,7 @@ import { and, asc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { projectTable, taskExportTable } from "../../database/schema";
+import { hiddenProjectIds, notHiddenProject } from "../../project/visibility";
 import { textArray } from "../../task-query/context";
 import {
   LOCK_NAMESPACE,
@@ -29,6 +30,8 @@ const projectOrder = [
 export async function resolveExportProjectIds(
   workspaceId: string,
   requested: readonly string[] | undefined,
+  /** Restricted projects the requester may not see: read as missing. */
+  hidden: readonly string[] = [],
 ): Promise<string[]> {
   const unique = [...new Set(requested ?? [])];
   if (unique.length > 0) {
@@ -41,6 +44,7 @@ export async function resolveExportProjectIds(
           sql`${projectTable.id} = any(${textArray(unique)})`,
           // A trashed project reads as gone (C7).
           isNull(projectTable.deletedAt),
+          notHiddenProject(projectTable.id, hidden),
         ),
       )
       .orderBy(...projectOrder);
@@ -58,6 +62,7 @@ export async function resolveExportProjectIds(
         eq(projectTable.workspaceId, workspaceId),
         isNull(projectTable.archivedAt),
         isNull(projectTable.deletedAt),
+        notHiddenProject(projectTable.id, hidden),
       ),
     )
     .orderBy(...projectOrder);
@@ -78,6 +83,7 @@ export async function createTaskExport(input: {
   const projectIds = await resolveExportProjectIds(
     input.workspaceId,
     input.projectIds,
+    await hiddenProjectIds(input.userId, input.workspaceId),
   );
 
   const row = await db.transaction(async (tx) => {

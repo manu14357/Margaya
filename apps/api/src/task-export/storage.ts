@@ -7,13 +7,15 @@ import {
   deleteS3Object,
   getPrivateObject,
   sanitizePathSegment,
+  storageDriver,
 } from "../storage/s3";
 import type { TaskExportStorage } from "./types";
 
 // Export files go to the S3-compatible storage when it is configured, else
 // to Postgres (`task_export_file`), so exports work on the smallest install
-// and across instances. Downloads always pass through the authorized API
-// route; there are no public or presigned URLs.
+// and across instances. The built-in local file store is not used: it is
+// per instance, and a download may reach another one. Downloads always pass
+// through the authorized API route; there are no public or presigned URLs.
 
 type StoredFile = {
   id: string;
@@ -22,6 +24,7 @@ type StoredFile = {
 };
 
 export function isObjectStorageConfigured(): boolean {
+  if (storageDriver() !== "s3") return false;
   try {
     assertStorageConfigured();
     return true;
