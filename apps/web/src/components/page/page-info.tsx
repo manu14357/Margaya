@@ -38,14 +38,13 @@ function PersonRow({
   const { t } = useTranslation();
   const name = person?.name ?? t("pages:history.unknownUser");
   return (
-    <div className="space-y-1">
-      <p className="text-muted-foreground text-xs">{label}</p>
-      <div className="flex items-center gap-2 text-sm">
-        <MemberAvatar name={name} image={person?.image} />
-        <span className="truncate">{name}</span>
-        <span className="text-muted-foreground">·</span>
+    <div className="space-y-2">
+      <p className="font-medium text-[11px] text-muted-foreground">{label}</p>
+      <div className="flex items-center gap-2 font-medium text-[13px]">
+        <MemberAvatar name={name} image={person?.image} className="size-5" />
+        <span className="min-w-0 truncate">{name}</span>
         <span
-          className="shrink-0 text-muted-foreground text-xs"
+          className="ms-auto shrink-0 font-normal text-muted-foreground text-xs tabular-nums"
           title={detailTitle}
         >
           {detail}
@@ -101,17 +100,15 @@ export default function PageInfo({
         {cells.map((cell) => (
           <div
             key={cell.label}
-            className="rounded-md border border-border/70 bg-card/60 px-2.5 py-1.5"
+            className="flex flex-col-reverse gap-1.5 rounded-md bg-muted p-2"
           >
             <dt className="text-muted-foreground text-xs">{cell.label}</dt>
-            <dd className="font-semibold text-base tabular-nums">
-              {cell.value}
-            </dd>
+            <dd className="font-semibold text-sm tabular-nums">{cell.value}</dd>
           </div>
         ))}
       </dl>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         <PersonRow
           label={t("pages:info.createdBy")}
           person={getMember(page.ownerId ?? page.createdById)}
@@ -134,7 +131,7 @@ export default function PageInfo({
         )}
       </div>
 
-      <div className="space-y-1.5">
+      <div className="space-y-1.5 border-border border-t pt-3">
         <p className="font-medium text-[11px] text-muted-foreground uppercase tracking-wide">
           {t("pages:info.linkedFrom")}
         </p>

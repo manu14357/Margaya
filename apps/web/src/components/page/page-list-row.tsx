@@ -26,8 +26,9 @@ type PageListRowProps = {
 };
 
 /**
- * One 36px page row; the whole row opens the page. The parent path follows
- * the title; edited time, access, owner and actions sit in fixed columns.
+ * One 44px page row; the whole row opens the page. The parent path follows
+ * the title; then the edited time, access, owner, favorite and the menu,
+ * whose slot is reserved so nothing shifts when it fades in.
  */
 export default function PageListRow({
   page,
@@ -48,7 +49,7 @@ export default function PageListRow({
     <>
       <ContextMenu>
         <ContextMenuTrigger asChild>
-          <div className="group/page-row relative flex h-9 items-center gap-3 px-4 hover:bg-accent focus-within:bg-accent">
+          <div className="group/page-row relative flex h-11 items-center gap-3 px-4 transition-colors duration-150 focus-within:bg-accent/60 hover:bg-accent/60">
             <Link
               to="/dashboard/workspace/$workspaceId/project/$projectId/pages/$pageId"
               params={{
@@ -56,7 +57,7 @@ export default function PageListRow({
                 projectId: page.projectId ?? "",
                 pageId: page.id,
               }}
-              className="absolute inset-0 rounded-none outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="absolute inset-0 rounded-none outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
               aria-label={title}
             />
             <PageLogo logoKind={page.logoKind} logoValue={page.logoValue} />
@@ -75,7 +76,7 @@ export default function PageListRow({
               )}
             </div>
             <TooltipProvider>
-              <span className="hidden w-32 shrink-0 truncate text-muted-foreground text-xs tabular-nums sm:block">
+              <span className="hidden max-w-36 shrink-0 truncate text-muted-foreground text-xs tabular-nums sm:block">
                 {page.archivedAt
                   ? t("pages:list.archivedOn", {
                       date: formatDateMedium(page.archivedAt),
@@ -84,7 +85,7 @@ export default function PageListRow({
                       time: formatRelativeTime(page.updatedAt),
                     })}
               </span>
-              <div className="relative flex w-30 shrink-0 items-center justify-end gap-2 text-muted-foreground text-xs">
+              <div className="relative flex shrink-0 items-center justify-end gap-3 text-muted-foreground text-xs">
                 <Tooltip>
                   <TooltipTrigger
                     render={
@@ -100,25 +101,31 @@ export default function PageListRow({
                   <TooltipContent>{accessLabel}</TooltipContent>
                 </Tooltip>
                 {owner && (
-                  <Tooltip>
-                    <TooltipTrigger
-                      render={
-                        <span
-                          className="inline-flex"
-                          role="img"
-                          aria-label={t("pages:list.ownedBy", {
-                            name: owner.name,
-                          })}
-                        />
-                      }
-                    >
-                      <MemberAvatar name={owner.name} image={owner.image} />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      {t("pages:list.ownedBy", { name: owner.name })}
-                    </TooltipContent>
-                  </Tooltip>
+                  <span className="hidden min-[480px]:inline-flex">
+                    <Tooltip>
+                      <TooltipTrigger
+                        render={
+                          <span
+                            className="inline-flex"
+                            role="img"
+                            aria-label={t("pages:list.ownedBy", {
+                              name: owner.name,
+                            })}
+                          />
+                        }
+                      >
+                        <MemberAvatar name={owner.name} image={owner.image} />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        {t("pages:list.ownedBy", { name: owner.name })}
+                      </TooltipContent>
+                    </Tooltip>
+                  </span>
                 )}
+                <span
+                  aria-hidden="true"
+                  className="hidden h-4 w-px bg-border min-[480px]:block"
+                />
                 <FavoriteButton
                   workspaceId={workspaceId}
                   entityType="page"
@@ -130,7 +137,7 @@ export default function PageListRow({
                     feature: "pages",
                   }}
                 />
-                <span className="inline-flex opacity-0 group-focus-within/page-row:opacity-100 group-hover/page-row:opacity-100 has-data-popup-open:opacity-100 pointer-coarse:opacity-100">
+                <span className="-mx-1 inline-flex size-7 items-center justify-center opacity-0 transition-opacity duration-150 group-focus-within/page-row:opacity-100 group-hover/page-row:opacity-100 has-data-popup-open:opacity-100 pointer-coarse:opacity-100">
                   <PageRowActions
                     page={page}
                     workspaceId={workspaceId}

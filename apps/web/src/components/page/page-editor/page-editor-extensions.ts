@@ -2,7 +2,6 @@ import type { AnyExtension } from "@tiptap/core";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCaret from "@tiptap/extension-collaboration-caret";
 import Placeholder from "@tiptap/extension-placeholder";
-import { Table } from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
@@ -14,6 +13,7 @@ import type * as Y from "yjs";
 import { BlockKeymap } from "@/components/editor/extensions/block-keymap";
 import { Callout } from "@/components/editor/extensions/callout";
 import { EditorImage } from "@/components/editor/extensions/editor-image";
+import { MargayaEditorTable } from "@/components/editor/extensions/table-tools";
 import { AttachmentCard } from "@/components/task/extensions/attachment-card";
 import { EmbedBlock } from "@/components/task/extensions/embed-block";
 import { MargayaIssueLink } from "@/components/task/extensions/margaya-issue-link";
@@ -45,6 +45,8 @@ export type PageCollaborationBinding = {
 
 export type PageEditorExtensionOptions = {
   placeholder: string;
+  /** The hint on the focused empty line, after the first one. */
+  emptyLinePlaceholder?: string;
   workspaceId: string;
   projectId: string;
   getMembers: () => MentionMember[];
@@ -143,11 +145,17 @@ export function createPageEditorExtensions(
       HTMLAttributes: { class: "margaya-editor-image", loading: "lazy" },
     }),
     Callout,
-    Table.configure({ resizable: true }),
+    MargayaEditorTable.configure({ resizable: true }),
     TableRow,
     TableHeader,
     TableCell,
-    Placeholder.configure({ placeholder: options.placeholder }),
+    Placeholder.configure({
+      placeholder: ({ editor, node }) => {
+        if (editor.isEmpty) return options.placeholder;
+        if (node.type.name !== "paragraph") return "";
+        return options.emptyLinePlaceholder ?? "";
+      },
+    }),
     BlockKeymap.configure({ onOpenMenu: options.onOpenBlockMenu ?? null }),
   );
 

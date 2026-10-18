@@ -39,7 +39,7 @@ export default function PageBanners({
   const { t } = useTranslation();
 
   return (
-    <div className="space-y-2 empty:hidden print:hidden">
+    <div className="my-4 space-y-2 empty:hidden print:hidden">
       {tooLarge && (
         <Alert variant="error">
           <FileWarning />

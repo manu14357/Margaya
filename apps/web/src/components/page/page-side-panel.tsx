@@ -1,5 +1,5 @@
 import type { Editor } from "@tiptap/core";
-import { X } from "lucide-react";
+import { PanelRightClose } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -11,9 +11,11 @@ import PageOutline from "./page-outline";
 import PageVersionList from "./page-version-list";
 import type { PageMember } from "./use-page-members";
 
-const WIDE_QUERY = "(min-width: 1280px)";
+const WIDE_QUERY = "(min-width: 1024px)";
+/** Matches the pane's width transition in page-editor.css. */
+const PANE_TRANSITION_MS = 250;
 
-/** True at the `xl` breakpoint and up, where the panel sits beside the page. */
+/** True at the `lg` breakpoint and up, where the panel sits beside the page. */
 export function useIsWideLayout() {
   const [isWide, setIsWide] = useState(() =>
     typeof window === "undefined" || !window.matchMedia
@@ -31,63 +33,108 @@ export function useIsWideLayout() {
   return isWide;
 }
 
+/**
+ * Keeps the docked pane mounted while it animates: it mounts closed, opens
+ * on the next frame, and unmounts once the closing transition has run.
+ */
+function usePaneTransition(panel: PagePanel | undefined) {
+  const [shownPanel, setShownPanel] = useState(panel);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (panel) {
+      setShownPanel(panel);
+      const frame = window.requestAnimationFrame(() => setOpen(true));
+      return () => window.cancelAnimationFrame(frame);
+    }
+    setOpen(false);
+    const timer = window.setTimeout(
+      () => setShownPanel(undefined),
+      PANE_TRANSITION_MS,
+    );
+    return () => window.clearTimeout(timer);
+  }, [panel]);
+
+  return { shownPanel: panel ?? shownPanel, open: Boolean(panel) && open };
+}
+
 type PageSidePanelProps = {
   page: Page;
   workspaceId: string;
   editor: Editor | null;
   panel: PagePanel | undefined;
   onPanelChange: (panel: PagePanel | undefined) => void;
+  /** Close: after the panel closes, focus returns to its toggle. */
+  onClose?: () => void;
   versionId?: string;
   onVersionSelect: (versionId: string | undefined) => void;
   getMember: (userId: string | null | undefined) => PageMember | null;
 };
 
-const PANELS: PagePanel[] = ["outline", "info", "history"];
+export const PANELS: PagePanel[] = ["outline", "info", "history"];
 const PANEL_KEYS: Record<PagePanel, string> = {
   outline: "pages:panel.outline",
   info: "pages:panel.info",
   history: "pages:panel.history",
 };
 
-/** Outline · Info · History (§1.11, §1.12), beside the page or in a sheet. */
+/**
+ * Outline · Info · History (§1.11, §1.12): docked beside the page from
+ * 1024px, where it slides open and the text column re-centres; a sheet
+ * below that.
+ */
 export default function PageSidePanel({
   page,
   workspaceId,
   editor,
   panel,
   onPanelChange,
+  onClose,
   versionId,
   onVersionSelect,
   getMember,
 }: PageSidePanelProps) {
   const { t } = useTranslation();
   const isWide = useIsWideLayout();
-  if (!panel) return null;
+  const { shownPanel, open } = usePaneTransition(panel);
+  const close = () => {
+    onPanelChange(undefined);
+    onClose?.();
+  };
+
+  if (!shownPanel) return null;
 
   const content = (
     <Tabs
-      value={panel}
+      value={shownPanel}
       onValueChange={(value) => onPanelChange(value as PagePanel)}
       className="flex h-full min-h-0 flex-col gap-0"
     >
-      <div className="flex items-center justify-between gap-2 border-border/80 border-b px-2">
-        <TabsList variant="underline" className="h-10 gap-1 py-0">
+      <div className="flex h-10 shrink-0 items-center px-3">
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          aria-label={t("pages:panel.close")}
+          className="text-muted-foreground"
+          onClick={close}
+        >
+          <PanelRightClose className="size-4" />
+        </Button>
+      </div>
+      <div className="shrink-0 px-3 pt-2">
+        <TabsList className="h-7 w-full rounded-md">
           {PANELS.map((value) => (
-            <TabsTab key={value} value={value} className="h-8 px-2 text-xs">
+            <TabsTab
+              key={value}
+              value={value}
+              className="h-6 px-2 text-xs sm:h-6 sm:text-xs"
+            >
               {t(PANEL_KEYS[value])}
             </TabsTab>
           ))}
         </TabsList>
-        <Button
-          variant="ghost"
-          size="icon-xs"
-          aria-label={t("pages:panel.close")}
-          onClick={() => onPanelChange(undefined)}
-        >
-          <X className="size-4" />
-        </Button>
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto p-3">
+      <div className="min-h-0 flex-1 overflow-y-auto px-4 py-2">
         <TabsPanel value="outline">
           <PageOutline editor={editor} />
         </TabsPanel>
@@ -114,19 +161,23 @@ export default function PageSidePanel({
   if (isWide) {
     return (
       <aside
-        aria-label={t(PANEL_KEYS[panel])}
-        className="hidden w-72 shrink-0 border-border/80 border-l xl:flex xl:flex-col"
+        aria-label={t(PANEL_KEYS[shownPanel])}
+        data-open={open}
+        data-slot="page-side-panel"
+        className="margaya-page-pane hidden shrink-0 border-border/80 border-l bg-background lg:flex lg:flex-col"
       >
-        {content}
+        <div className="flex h-full min-h-0 flex-col">{content}</div>
       </aside>
     );
   }
 
+  if (!panel) return null;
+
   return (
     <Sheet
       open
-      onOpenChange={(open) => {
-        if (!open) onPanelChange(undefined);
+      onOpenChange={(next) => {
+        if (!next) close();
       }}
     >
       <SheetContent side="right" className="p-0" showCloseButton={false}>

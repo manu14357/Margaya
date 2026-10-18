@@ -1,6 +1,5 @@
 import type { Editor } from "@tiptap/core";
 import { ListTree } from "lucide-react";
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Empty,
@@ -10,38 +9,67 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { cn } from "@/lib/cn";
-import {
-  type OutlineHeading,
-  outlineFromDoc,
-} from "@/lib/pages/editor-document";
-import { useEditorRevision } from "./use-editor-revision";
+import type { OutlineHeading } from "@/lib/pages/editor-document";
+import { jumpToHeading, usePageHeadings } from "./use-page-headings";
 
-const INDENT: Record<OutlineHeading["level"], string> = {
-  1: "ps-2",
-  2: "ps-5",
-  3: "ps-8",
+const LEVEL_CLASS: Record<OutlineHeading["level"], string> = {
+  1: "ps-1 font-medium text-[13px] text-foreground/80",
+  2: "ps-3 text-muted-foreground text-xs",
+  3: "ps-6 text-muted-foreground text-xs",
 };
+
+type OutlineRowsProps = {
+  headings: OutlineHeading[];
+  activePos: number | null;
+  onJump: (heading: OutlineHeading) => void;
+  /** Hidden rows (a closed hover card) stay out of the tab order. */
+  tabIndex?: number;
+};
+
+/** The heading rows shared by the side pane and the floating outline. */
+export function OutlineRows({
+  headings,
+  activePos,
+  onJump,
+  tabIndex,
+}: OutlineRowsProps) {
+  const { t } = useTranslation();
+  return (
+    <ul className="space-y-px">
+      {headings.map((heading) => {
+        const active = heading.pos === activePos;
+        return (
+          <li key={heading.pos}>
+            <button
+              type="button"
+              tabIndex={tabIndex}
+              aria-current={active ? "location" : undefined}
+              onClick={() => onJump(heading)}
+              className={cn(
+                "w-full truncate rounded-md py-1 pe-2 text-left outline-none transition-colors duration-150 hover:bg-accent/50 hover:text-primary focus-visible:ring-2 focus-visible:ring-ring",
+                LEVEL_CLASS[heading.level],
+                active && "font-medium text-foreground",
+              )}
+            >
+              {heading.text}
+              {active && (
+                <span className="sr-only">
+                  {" "}
+                  ({t("pages:detail.currentSection")})
+                </span>
+              )}
+            </button>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
 
 /** H1-H3 of the live document; a click jumps to the heading. */
 export default function PageOutline({ editor }: { editor: Editor | null }) {
   const { t } = useTranslation();
-  const revision = useEditorRevision(editor);
-  // biome-ignore lint/correctness/useExhaustiveDependencies: revision tracks document changes
-  const headings = useMemo(
-    () =>
-      editor && !editor.isDestroyed ? outlineFromDoc(editor.state.doc) : [],
-    [editor, revision],
-  );
-
-  const jumpTo = (heading: OutlineHeading) => {
-    if (!editor || editor.isDestroyed) return;
-    const inside = heading.pos + 1;
-    editor.chain().focus().setTextSelection(inside).run();
-    const dom = editor.view.nodeDOM(heading.pos);
-    if (dom instanceof HTMLElement) {
-      dom.scrollIntoView({ block: "center", behavior: "smooth" });
-    }
-  };
+  const { headings, activePos } = usePageHeadings(editor);
 
   if (headings.length === 0) {
     return (
@@ -61,23 +89,11 @@ export default function PageOutline({ editor }: { editor: Editor | null }) {
 
   return (
     <nav aria-label={t("pages:panel.outline")}>
-      <ul className="space-y-0.5">
-        {headings.map((heading) => (
-          <li key={heading.pos}>
-            <button
-              type="button"
-              onClick={() => jumpTo(heading)}
-              className={cn(
-                "w-full truncate rounded-md py-1 pe-2 text-left text-sm hover:bg-accent",
-                INDENT[heading.level],
-                heading.level === 1 ? "font-medium" : "text-muted-foreground",
-              )}
-            >
-              {heading.text}
-            </button>
-          </li>
-        ))}
-      </ul>
+      <OutlineRows
+        headings={headings}
+        activePos={activePos}
+        onJump={(heading) => jumpToHeading(editor, heading)}
+      />
     </nav>
   );
 }

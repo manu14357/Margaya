@@ -72,3 +72,559 @@
 .margaya-page-editor .ProseMirror[contenteditable="false"] .margaya-collab-caret-label {
   opacity: 0.85;
 }
+
+/* Pages layout and document typography. Everything below is scoped to the
+   page screen (.margaya-page-main) or the page editor (.margaya-page-editor),
+   so task descriptions and comments keep their compact editor. It sits in
+   the components layer beside editor.css, so Tailwind utilities still win,
+   and the extra class gives these rules the edge over the shared ones. */
+@layer components {
+  .margaya-page-main {
+    --page-col: 720px;
+    --page-col-wide: 1152px;
+    --page-gutter: 20px;
+    --page-gutter-wide: 96px;
+    --page-runway: 256px;
+    --page-ease: cubic-bezier(0.23, 1, 0.32, 1);
+    container-type: inline-size;
+    container-name: page-main;
+  }
+
+  /* The one column the title, banners and body share. Its max width counts
+     the gutters, so the text itself is --page-col wide. */
+  .margaya-page-column {
+    --page-col-current: var(--page-col);
+    --page-gutter-current: var(--page-gutter);
+    width: 100%;
+    max-width: calc(var(--page-col-current) + 2 * var(--page-gutter-current));
+    margin-inline: auto;
+    padding-inline: var(--page-gutter-current);
+    transition: max-width 200ms var(--page-ease);
+  }
+
+  .margaya-page-main[data-full-width="true"] .margaya-page-column {
+    --page-col-current: var(--page-col-wide);
+  }
+
+  @container page-main (min-width: 912px) and (max-width: 1344px) {
+    .margaya-page-main[data-full-width="true"] .margaya-page-column {
+      --page-gutter-current: var(--page-gutter-wide);
+    }
+  }
+
+  .margaya-page-column[data-slot="page-reading"] {
+    padding-bottom: var(--page-runway);
+  }
+
+  /* The formatting toolbar row collapses by its grid row; its first control
+     lines up 8px left of the text column. */
+  .margaya-page-format-row {
+    display: grid;
+    grid-template-rows: 1fr;
+    opacity: 1;
+    transition:
+      grid-template-rows 200ms var(--page-ease),
+      opacity 200ms var(--page-ease);
+  }
+
+  .margaya-page-format-row[data-open="false"] {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+
+  .margaya-page-format-row > div {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .margaya-page-format-inner {
+    --page-col-current: var(--page-col);
+    padding-inline-start: max(
+      calc(var(--page-gutter) - 8px),
+      calc((100cqw - var(--page-col-current)) / 2 - 8px)
+    );
+    transition: padding-inline-start 200ms var(--page-ease);
+  }
+
+  .margaya-page-main[data-full-width="true"] .margaya-page-format-inner {
+    --page-col-current: var(--page-col-wide);
+  }
+
+  @container page-main (min-width: 912px) and (max-width: 1344px) {
+    .margaya-page-main[data-full-width="true"] .margaya-page-format-inner {
+      padding-inline-start: calc(var(--page-gutter-wide) - 8px);
+    }
+  }
+
+  /* The floating outline needs room beside the text. */
+  @container page-main (max-width: 929px) {
+    .margaya-page-minimap {
+      display: none;
+    }
+  }
+
+  .margaya-page-logo-grow {
+    overflow: hidden;
+    animation: margaya-page-logo-grow 200ms var(--page-ease) both;
+  }
+
+  @keyframes margaya-page-logo-grow {
+    from {
+      max-height: 0;
+      opacity: 0;
+    }
+    to {
+      max-height: 3.5rem;
+      opacity: 1;
+    }
+  }
+
+  @keyframes margaya-page-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* The docked side pane opens by growing its width; its content keeps a
+     fixed width so it doesn't reflow on the way. */
+  .margaya-page-pane {
+    width: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition:
+      width 250ms var(--page-ease),
+      opacity 250ms var(--page-ease);
+  }
+
+  .margaya-page-pane[data-open="true"] {
+    width: 18rem;
+    opacity: 1;
+  }
+
+  .margaya-page-pane > div {
+    width: 18rem;
+  }
+
+  /* "Unlocked" holds for 600ms, then fades over 200ms. */
+  .margaya-page-unlocked {
+    animation: margaya-page-unlocked 800ms linear both;
+  }
+
+  @keyframes margaya-page-unlocked {
+    0%,
+    75% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* Document type scale. */
+  .margaya-page-editor {
+    --doc-body: 1rem;
+    --doc-body-lh: 1.5rem;
+    --doc-h1: 1.75rem;
+    --doc-h1-lh: 2.25rem;
+    --doc-h2: 1.5rem;
+    --doc-h2-lh: 2rem;
+    --doc-h3: 1.375rem;
+    --doc-h3-lh: 1.75rem;
+    --doc-h4: 1.25rem;
+    --doc-h4-lh: 1.5rem;
+    --doc-h5: 1.125rem;
+    --doc-h5-lh: 1.5rem;
+    --doc-h6: 1rem;
+    --doc-h6-lh: 1.5rem;
+    --doc-h-gap-top: 28px;
+    --doc-h-gap-top-small: 20px;
+    --doc-h-gap-bottom: 4px;
+    --doc-p-gap: 8px;
+    --doc-p-edge: 4px;
+    --doc-list-indent: 28px;
+    --doc-list-gap: 8px;
+    --doc-block-surface: var(--muted);
+    --doc-rule: color-mix(in srgb, var(--foreground) 20%, transparent);
+    --doc-selected-block: color-mix(in srgb, var(--primary) 12%, transparent);
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror {
+    min-height: var(--doc-body-lh);
+    padding: 0 0 1rem;
+    font-size: var(--doc-body);
+    line-height: var(--doc-body-lh);
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror > :first-child {
+    margin-top: 0;
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror :is(h1, h2, h3, h4, h5, h6) {
+    margin: var(--doc-h-gap-top) 0 var(--doc-h-gap-bottom);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--foreground);
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror h1 {
+    font-size: var(--doc-h1);
+    line-height: var(--doc-h1-lh);
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror h2 {
+    font-size: var(--doc-h2);
+    line-height: var(--doc-h2-lh);
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror h3 {
+    font-size: var(--doc-h3);
+    line-height: var(--doc-h3-lh);
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror h4 {
+    font-size: var(--doc-h4);
+    line-height: var(--doc-h4-lh);
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror h5 {
+    margin-top: var(--doc-h-gap-top-small);
+    font-size: var(--doc-h5);
+    line-height: var(--doc-h5-lh);
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror h6 {
+    margin-top: var(--doc-h-gap-top-small);
+    font-size: var(--doc-h6);
+    line-height: var(--doc-h6-lh);
+  }
+
+  /* 4px at the edges and 8px between paragraphs (the margins collapse). */
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror p {
+    margin: var(--doc-p-edge) 0;
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror p + p {
+    margin-top: var(--doc-p-gap);
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror :is(td, th, li) p,
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror .margaya-callout-content p {
+    margin: 0;
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror :is(ul, ol) {
+    margin: var(--doc-p-edge) 0;
+    padding-inline-start: var(--doc-list-indent);
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror li {
+    margin: 0;
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror li + li {
+    margin-top: var(--doc-list-gap);
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror li > :is(ul, ol) {
+    margin-top: 6px;
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror ul[data-type="taskList"] {
+    padding-inline-start: 0;
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror li[data-type="taskItem"] {
+    gap: 8px;
+    margin: 0;
+  }
+
+  .margaya-page-editor
+    .margaya-tiptap-content
+    .ProseMirror
+    li[data-type="taskItem"]
+    + li[data-type="taskItem"] {
+    margin-top: var(--doc-list-gap);
+  }
+
+  .margaya-page-editor
+    .margaya-tiptap-content
+    .ProseMirror
+    li[data-type="taskItem"]
+    > :is(label, .margaya-task-item-checkbox) {
+    margin-top: 4px;
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror li[data-type="taskItem"] > div p {
+    line-height: var(--doc-body-lh);
+  }
+
+  /* Done to-dos dim instead of being struck through. */
+  .margaya-page-editor
+    .margaya-tiptap-content
+    .ProseMirror
+    li[data-type="taskItem"][data-checked="true"]
+    > div
+    p {
+    color: var(--muted-foreground);
+    text-decoration: none;
+  }
+
+  .margaya-page-editor
+    .margaya-tiptap-content
+    .ProseMirror
+    li[data-type="taskItem"][data-checked="true"]
+    > div
+    :is(strong, em, a, code, s, u) {
+    opacity: 0.6;
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror :not(pre) > code {
+    border: 0;
+    border-radius: 4px;
+    background: var(--doc-block-surface);
+    font-size: 0.85em;
+    padding: 2px 5px;
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror pre {
+    margin: 8px 0;
+    border: 0;
+    border-radius: 8px;
+    background: var(--doc-block-surface);
+    padding: 16px;
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror pre code {
+    font-size: 0.85rem;
+    line-height: 1.5rem;
+    white-space: pre-wrap;
+    tab-size: 2;
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror blockquote {
+    margin: 8px 0;
+    border-left: 3px solid var(--doc-rule);
+    padding-left: 16px;
+    color: var(--foreground);
+    font-style: normal;
+  }
+
+  /* A 1px rule inside a 25px band, so the divider is easy to select. */
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror hr {
+    height: 25px;
+    margin: 0;
+    border: 0;
+    background: linear-gradient(var(--border), var(--border)) center / 100% 1px
+      no-repeat;
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror table {
+    margin: 8px 0;
+    border-radius: 0;
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror table :is(td, th) {
+    border: 1px solid var(--border);
+    padding: 8px 10px;
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror table th {
+    background: var(--doc-block-surface);
+    font-weight: 500;
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror .selectedCell::after {
+    background: var(--doc-selected-block);
+  }
+
+  .margaya-page-editor .margaya-tiptap-content .ProseMirror img.margaya-editor-image {
+    border: 0;
+    border-radius: 8px;
+    background: var(--doc-block-surface);
+  }
+
+  .margaya-page-editor
+    .margaya-tiptap-content
+    .ProseMirror[contenteditable="true"]
+    img.margaya-editor-image:hover {
+    filter: brightness(0.95);
+  }
+
+  /* A dragged or selected block. Images and embeds keep their own outline. */
+  .margaya-page-editor
+    .margaya-tiptap-content
+    .ProseMirror
+    > .ProseMirror-selectednode:not(.margaya-image-node, [data-type="margaya-embed"]) {
+    outline: none;
+    border-radius: 6px;
+    background: var(--doc-selected-block);
+    box-shadow: 0 0 0 4px var(--doc-selected-block);
+  }
+
+  /* The hint on the focused empty line; the first-line hint stays as is. */
+  .margaya-page-editor
+    .margaya-tiptap-content
+    .ProseMirror.ProseMirror-focused
+    p.is-empty:not(.is-editor-empty)::before {
+    pointer-events: none;
+    content: attr(data-placeholder);
+    height: 0;
+    float: left;
+    color: color-mix(in srgb, var(--muted-foreground) 60%, transparent);
+  }
+
+  .margaya-page-editor .ProseMirror .margaya-callout {
+    gap: 12px;
+    margin: 8px 0;
+    border: 0;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--callout-tone) 8%, transparent);
+    padding: 12px 16px;
+  }
+
+  .dark .margaya-page-editor .ProseMirror .margaya-callout {
+    background: color-mix(in srgb, var(--callout-tone) 14%, transparent);
+  }
+
+  .margaya-page-editor .ProseMirror .margaya-callout-aside {
+    margin-top: 0;
+  }
+
+  .margaya-page-editor .ProseMirror .margaya-callout-switch {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0 -0.125rem;
+  }
+
+  .margaya-page-editor
+    .ProseMirror
+    .margaya-callout-content
+    :is(p, ul, ol, pre, blockquote):first-child {
+    margin-top: 0;
+  }
+
+  .margaya-page-editor
+    .ProseMirror
+    .margaya-callout-content
+    :is(p, ul, ol, pre, blockquote):last-child {
+    margin-bottom: 0;
+  }
+
+  /* The page's slash menu: an icon cell before each command. */
+  .margaya-page-editor .margaya-tiptap-slash-menu {
+    min-width: 14rem;
+    max-height: 20rem;
+    overflow-y: auto;
+    border-color: color-mix(in srgb, var(--border) 80%, transparent);
+    padding: 6px;
+  }
+
+  .margaya-page-editor .margaya-tiptap-slash-group + .margaya-tiptap-slash-group {
+    margin-top: 4px;
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .margaya-page-editor .margaya-tiptap-slash-group-title {
+    padding: 6px 8px 4px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--muted-foreground);
+  }
+
+  .margaya-page-editor .margaya-tiptap-slash-item {
+    height: 1.75rem;
+    gap: 8px;
+    border-radius: 6px;
+    padding: 0 8px;
+    font-size: 0.8125rem;
+    color: var(--foreground);
+  }
+
+  .margaya-tiptap-slash-icon {
+    display: inline-flex;
+    width: 1.25rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted-foreground);
+  }
+
+  .margaya-page-editor .margaya-tiptap-slash-label {
+    flex: 1;
+  }
+
+  .margaya-page-editor .margaya-tiptap-slash-label mark {
+    background: none;
+    color: inherit;
+    font-weight: 600;
+  }
+
+  .margaya-page-editor .margaya-tiptap-slash-shortcut {
+    font-size: 0.6875rem;
+    color: var(--muted-foreground);
+  }
+
+  .margaya-page-editor .margaya-tiptap-slash-empty {
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+  }
+
+  /* The page's bubble menu: a turn-into dropdown, then 28px mark buttons. */
+  .margaya-tiptap-bubble.is-page {
+    gap: 2px;
+    border-radius: 8px;
+    padding: 4px;
+  }
+
+  .margaya-tiptap-bubble.is-page .margaya-tiptap-bubble-btn {
+    height: 1.75rem;
+    width: 1.75rem;
+  }
+
+  .margaya-tiptap-bubble.is-page .margaya-tiptap-bubble-separator {
+    margin: 0 4px;
+  }
+
+  /* Reduced motion keeps the fades and drops the width, padding, height and
+     movement transitions. */
+  @media (prefers-reduced-motion: reduce) {
+    .margaya-page-column,
+    .margaya-page-format-inner {
+      transition: none;
+    }
+
+    .margaya-page-format-row,
+    .margaya-page-pane {
+      transition: opacity 200ms linear;
+    }
+
+    .margaya-page-logo-grow {
+      animation-name: margaya-page-fade-in;
+    }
+
+    .margaya-page-minimap-card {
+      translate: none !important;
+    }
+  }
+}
+
+/* A full-width table steps out of the text column to the page's width. */
+@layer components {
+  .margaya-page-main .ProseMirror .tableWrapper.is-full-width {
+    --table-full: calc(100cqw - 2 * var(--page-gutter));
+    width: var(--table-full);
+    max-width: none;
+    margin-inline: calc((100% - var(--table-full)) / 2);
+  }
+
+  .margaya-page-main .ProseMirror .tableWrapper.is-full-width table {
+    width: 100% !important;
+  }
+}

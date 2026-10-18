@@ -1,4 +1,10 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from "@testing-library/react";
 import type { ReactNode } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { PageSummary } from "@/types/page";
@@ -9,6 +15,7 @@ const state = vi.hoisted(() => ({
   pages: [] as unknown[],
   isLoading: false,
   isError: false,
+  favorites: [] as { entityType: string; entityId: string }[],
 }));
 
 vi.mock("@/lib/i18n", () => ({
@@ -38,6 +45,10 @@ vi.mock("@/hooks/queries/page/use-get-pages", () => ({
     isError: state.isError,
     refetch: vi.fn(),
   }),
+}));
+
+vi.mock("@/hooks/queries/favorite/use-get-favorites", () => ({
+  default: () => ({ data: state.favorites }),
 }));
 
 vi.mock("./use-page-members", () => ({
@@ -124,8 +135,27 @@ afterEach(() => {
   state.pages = [];
   state.isLoading = false;
   state.isError = false;
+  state.favorites = [];
   window.localStorage.clear();
 });
+
+/** Opens the collapsed search and returns its field. */
+async function openSearch() {
+  await act(async () => {
+    fireEvent.click(
+      screen.getByRole("button", { name: "pages:list.searchPlaceholder" }),
+    );
+  });
+  return screen.getByRole("textbox", { name: "pages:list.searchPlaceholder" });
+}
+
+async function openFilters() {
+  await act(async () => {
+    fireEvent.click(
+      screen.getByRole("button", { name: /pages:filters.button/ }),
+    );
+  });
+}
 
 describe("PagesList", () => {
   it("counts pages per tab and lists the active tab's pages", () => {
@@ -174,16 +204,121 @@ describe("PagesList", () => {
     else expect(newPage).not.toBeNull();
   });
 
-  it("shows No matching pages for a search without results", () => {
+  it("shows No matching pages for a search without results", async () => {
     state.pages = [makePage({ id: "a", title: "Alpha" })];
     renderList();
-    fireEvent.change(
-      screen.getByRole("textbox", { name: "pages:list.searchPlaceholder" }),
-      { target: { value: "zzz" } },
-    );
+    fireEvent.change(await openSearch(), { target: { value: "zzz" } });
     expect(
       screen.getByText("pages:list.empty.noMatch.title"),
     ).toBeInTheDocument();
+  });
+
+  it("opens the search from its icon and collapses it with Escape", async () => {
+    state.pages = [
+      makePage({ id: "a", title: "Alpha" }),
+      makePage({ id: "b", title: "Beta" }),
+    ];
+    renderList();
+    expect(
+      screen.queryByRole("textbox", { name: "pages:list.searchPlaceholder" }),
+    ).toBeNull();
+    const field = await openSearch();
+    fireEvent.change(field, { target: { value: "alp" } });
+    expect(screen.getAllByRole("listitem")).toHaveLength(1);
+    // The first Escape clears the text, the second closes the field.
+    fireEvent.keyDown(field, { key: "Escape" });
+    expect(field).toHaveValue("");
+    expect(screen.getAllByRole("listitem")).toHaveLength(2);
+    fireEvent.keyDown(field, { key: "Escape" });
+    expect(
+      screen.queryByRole("textbox", { name: "pages:list.searchPlaceholder" }),
+    ).toBeNull();
+    expect(
+      screen.getByRole("button", { name: "pages:list.searchPlaceholder" }),
+    ).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("renders no column header above the rows", () => {
+    state.pages = [makePage({ id: "a", title: "Alpha" })];
+    renderList();
+    // The old sticky header named the columns ("Name").
+    expect(screen.queryByText("pages:list.sort.name")).toBeNull();
+    expect(screen.getAllByRole("listitem")).toHaveLength(1);
+  });
+
+  it("filters by favorites, creator and created date, with removable chips", async () => {
+    const now = Date.now();
+    const daysAgo = (days: number) =>
+      new Date(now - days * 24 * 60 * 60 * 1000).toISOString();
+    state.pages = [
+      makePage({
+        id: "a",
+        title: "Alpha",
+        ownerId: "u1",
+        createdAt: daysAgo(0),
+      }),
+      makePage({
+        id: "b",
+        title: "Beta",
+        ownerId: "u2",
+        createdAt: daysAgo(3),
+      }),
+      makePage({
+        id: "c",
+        title: "Gamma",
+        ownerId: "u2",
+        createdAt: daysAgo(90),
+      }),
+    ];
+    state.favorites = [
+      { entityType: "page", entityId: "b" },
+      { entityType: "page", entityId: "c" },
+      { entityType: "task", entityId: "a" },
+    ];
+    renderList();
+    const titles = () =>
+      screen.getAllByRole("listitem").map((item) => item.textContent ?? "");
+
+    await openFilters();
+    await act(async () => {
+      fireEvent.click(
+        screen.getByRole("checkbox", { name: "pages:filters.favorites" }),
+      );
+    });
+    expect(titles().join(" ")).not.toContain("Alpha");
+    expect(titles()).toHaveLength(2);
+
+    await act(async () => {
+      fireEvent.click(
+        screen.getByRole("radio", { name: "pages:filters.date.last7" }),
+      );
+    });
+    expect(titles()).toHaveLength(1);
+    expect(titles()[0]).toContain("Beta");
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole("checkbox", { name: /Member u1/ }));
+    });
+    expect(
+      screen.getByText("pages:list.empty.noMatch.title"),
+    ).toBeInTheDocument();
+
+    // Three chips; each removes its own filter.
+    const removeButtons = () =>
+      screen.queryAllByRole("button", { name: "pages:filters.remove" });
+    expect(removeButtons()).toHaveLength(3);
+    await act(async () => {
+      fireEvent.click(removeButtons()[0] as HTMLElement);
+    });
+    expect(removeButtons()).toHaveLength(2);
+
+    await act(async () => {
+      fireEvent.click(
+        screen.getByRole("button", { name: "common:actions.clearAll" }),
+      );
+    });
+    expect(removeButtons()).toHaveLength(0);
+    expect(screen.getAllByRole("listitem")).toHaveLength(3);
   });
 
   it("renders the row menu gated by capabilities", async () => {

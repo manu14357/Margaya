@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useUpdatePage } from "@/hooks/mutations/page/use-update-page";
 import { cn } from "@/lib/cn";
@@ -18,9 +24,15 @@ type PageTitleInputProps = {
   autoFocus?: boolean;
 };
 
+/** Titles are one line of text; pasted or typed line breaks become spaces. */
+export function singleLineTitle(value: string) {
+  return value.replace(/\s*[\r\n]+\s*/g, " ");
+}
+
 /**
- * The page title: saved 600 ms after typing stops, on blur and on Enter.
- * While it has focus, refetched titles don't overwrite what is typed.
+ * The page title: a textarea that wraps long titles and grows with them,
+ * saved 600 ms after typing stops, on blur and on Enter. While it has
+ * focus, refetched titles don't overwrite what is typed.
  */
 export default function PageTitleInput({
   pageId,
@@ -75,9 +87,35 @@ export default function PageTitleInput({
     [],
   );
 
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  // Grow with the text: one row per wrapped line, never a scrollbar.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: re-measure when the text changes
+  useLayoutEffect(() => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  }, [value]);
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (!textarea || typeof ResizeObserver === "undefined") return;
+    let width = textarea.clientWidth;
+    const observer = new ResizeObserver(() => {
+      if (textarea.clientWidth === width) return;
+      width = textarea.clientWidth;
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    });
+    observer.observe(textarea);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <input
-      type="text"
+    <textarea
+      ref={textareaRef}
+      rows={1}
       // biome-ignore lint/a11y/noAutofocus: a new page starts at its title
       autoFocus={autoFocus && canEdit}
       value={value}
@@ -93,7 +131,7 @@ export default function PageTitleInput({
         save(value);
       }}
       onChange={(event) => {
-        const next = event.target.value;
+        const next = singleLineTitle(event.target.value);
         setValue(next);
         if (timerRef.current) clearTimeout(timerRef.current);
         timerRef.current = setTimeout(() => save(next), TITLE_SAVE_DEBOUNCE_MS);
@@ -105,7 +143,7 @@ export default function PageTitleInput({
         onEnter?.();
       }}
       className={cn(
-        "w-full border-0 bg-transparent p-0 font-bold text-[2rem] leading-tight tracking-tight outline-none placeholder:text-muted-foreground/50 print:hidden",
+        "my-3 block w-full resize-none overflow-hidden border-0 bg-transparent p-0 font-bold text-[2rem] text-foreground leading-[2.375rem] tracking-[-0.02em] outline-none placeholder:text-muted-foreground/50",
         !canEdit && "cursor-default",
       )}
     />

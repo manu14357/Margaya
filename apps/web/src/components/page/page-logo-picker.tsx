@@ -37,6 +37,8 @@ type PageLogoPickerProps = {
   canEdit: boolean;
   /** Shows "Add icon" even without hover (an empty title). */
   emphasizeAdd?: boolean;
+  /** Grows the icon box open: the icon was just set, not loaded with the page. */
+  grow?: boolean;
 };
 
 /** The page's emoji or icon, and the picker that changes it. */
@@ -44,6 +46,7 @@ export default function PageLogoPicker({
   page,
   canEdit,
   emphasizeAdd,
+  grow,
 }: PageLogoPickerProps) {
   const { t } = useTranslation();
   const updatePage = useUpdatePage();
@@ -81,11 +84,13 @@ export default function PageLogoPicker({
 
   if (!canEdit) {
     return hasLogo ? (
-      <PageLogo
-        logoKind={page.logoKind}
-        logoValue={page.logoValue}
-        className="size-12 text-4xl"
-      />
+      <span className="-ms-2 mt-2 inline-flex size-14 items-center justify-center">
+        <PageLogo
+          logoKind={page.logoKind}
+          logoValue={page.logoValue}
+          className="size-12 text-4xl"
+        />
+      </span>
     ) : null;
   }
 
@@ -93,17 +98,20 @@ export default function PageLogoPicker({
     <button
       type="button"
       aria-label={t("pages:editor.addIcon")}
-      className="inline-flex size-14 items-center justify-center rounded-lg hover:bg-accent"
+      className={cn(
+        "-ms-2 mt-2 inline-flex size-14 items-center justify-center rounded-lg outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring",
+        grow && "margaya-page-logo-grow",
+      )}
     />
   ) : (
     <Button
       variant="ghost"
-      size="xs"
+      size="sm"
       className={cn(
-        "gap-1 text-muted-foreground transition-opacity",
+        "h-7 gap-1 px-1.5 font-medium text-[13px] text-muted-foreground transition-opacity duration-150 sm:h-7",
         emphasizeAdd
           ? "opacity-100"
-          : "opacity-0 focus-visible:opacity-100 group-hover/page-head:opacity-100",
+          : "opacity-0 focus-visible:opacity-100 group-focus-within/page-head:opacity-100 group-hover/page-head:opacity-100 pointer-coarse:opacity-100",
       )}
     />
   );
@@ -119,7 +127,7 @@ export default function PageLogoPicker({
           />
         ) : (
           <>
-            <SmilePlus className="size-3.5" />
+            <SmilePlus className="size-4" />
             {t("pages:editor.addIcon")}
           </>
         )}

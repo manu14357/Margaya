@@ -1,5 +1,21 @@
 import type { Editor } from "@tiptap/core";
 import type { TFunction } from "i18next";
+import {
+  Braces,
+  FileText,
+  Heading1,
+  Heading2,
+  Heading3,
+  List,
+  ListOrdered,
+  ListTodo,
+  MessageSquareQuote,
+  Minus,
+  Paperclip,
+  Pilcrow,
+  Quote,
+  Table2,
+} from "lucide-react";
 import { calloutSlashCommand } from "@/components/editor/callout-slash-command";
 import type { EditorRange } from "@/components/editor/use-editor-asset-upload";
 import type { SlashCommand } from "@/components/editor/use-slash-menu";
@@ -26,6 +42,7 @@ export function pageSlashCommands(
   return [
     {
       id: "paragraph",
+      icon: Pilcrow,
       label: t("tasks:detail.editor.slash.commands.paragraph"),
       group: "text",
       search: "text paragraph normal",
@@ -34,6 +51,7 @@ export function pageSlashCommands(
     },
     {
       id: "heading-1",
+      icon: Heading1,
       label: t("pages:editor.slash.commands.heading-1"),
       group: "text",
       shortcut: "Ctrl Alt 1",
@@ -42,6 +60,7 @@ export function pageSlashCommands(
     },
     {
       id: "heading-2",
+      icon: Heading2,
       label: t("pages:editor.slash.commands.heading-2"),
       group: "text",
       shortcut: "Ctrl Alt 2",
@@ -50,6 +69,7 @@ export function pageSlashCommands(
     },
     {
       id: "heading-3",
+      icon: Heading3,
       label: t("pages:editor.slash.commands.heading-3"),
       group: "text",
       shortcut: "Ctrl Alt 3",
@@ -58,6 +78,7 @@ export function pageSlashCommands(
     },
     {
       id: "bullet-list",
+      icon: List,
       label: t("tasks:detail.editor.slash.commands.bullet-list"),
       group: "lists",
       shortcut: "Ctrl Alt 8",
@@ -67,6 +88,7 @@ export function pageSlashCommands(
     },
     {
       id: "ordered-list",
+      icon: ListOrdered,
       label: t("tasks:detail.editor.slash.commands.ordered-list"),
       group: "lists",
       shortcut: "Ctrl Alt 9",
@@ -76,6 +98,7 @@ export function pageSlashCommands(
     },
     {
       id: "task-list",
+      icon: ListTodo,
       label: t("tasks:detail.editor.slash.commands.task-list"),
       group: "lists",
       search: "todo to-do checklist checkbox task list",
@@ -84,15 +107,17 @@ export function pageSlashCommands(
     },
     {
       id: "blockquote",
+      icon: Quote,
       label: t("tasks:detail.editor.slash.commands.blockquote"),
       group: "insert",
       search: "quote blockquote",
       run: (editor, range) =>
         editor.chain().focus().deleteRange(range).toggleBlockquote().run(),
     },
-    calloutSlashCommand(t),
+    { ...calloutSlashCommand(t), icon: MessageSquareQuote },
     {
       id: "code-block",
+      icon: Braces,
       label: t("tasks:detail.editor.slash.commands.code-block"),
       group: "insert",
       shortcut: "Ctrl Alt \\",
@@ -102,6 +127,7 @@ export function pageSlashCommands(
     },
     {
       id: "divider",
+      icon: Minus,
       label: t("pages:editor.slash.commands.divider"),
       group: "insert",
       search: "divider horizontal rule line separator hr",
@@ -110,6 +136,7 @@ export function pageSlashCommands(
     },
     {
       id: "table",
+      icon: Table2,
       label: t("tasks:detail.editor.slash.commands.table"),
       group: "insert",
       search: "table grid",
@@ -123,6 +150,7 @@ export function pageSlashCommands(
     },
     {
       id: "file",
+      icon: Paperclip,
       label: t("tasks:detail.editor.slash.commands.file"),
       group: "insert",
       search: "file attachment image photo picture upload",
@@ -133,6 +161,7 @@ export function pageSlashCommands(
     },
     {
       id: "page-link",
+      icon: FileText,
       label: t("pages:editor.slash.commands.page-link"),
       group: "insert",
       search: "page link wiki doc mention",

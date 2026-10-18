@@ -6,12 +6,20 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import { Paperclip } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  AiBlockPanel,
+  aiBlockSlashCommand,
+  useAiBlock,
+} from "@/components/editor/ai/ai-block";
+import EditorAiPreview from "@/components/editor/ai/editor-ai-preview";
+import { useEditorAi } from "@/components/editor/ai/use-editor-ai";
 import BlockHandle from "@/components/editor/block-handle";
 import { useCodeBlockToolbar } from "@/components/editor/code-block-toolbar";
 import EditorBubbleMenu from "@/components/editor/editor-bubble-menu";
 import { useEmbedComposer } from "@/components/editor/embed-composer";
 import { useImagePreview } from "@/components/editor/image-preview-dialog";
 import SlashMenu from "@/components/editor/slash-menu";
+import TableHandles from "@/components/editor/table-handles";
 import {
   type EditorRange,
   useEditorAssetUpload,
@@ -19,6 +27,7 @@ import {
 import { useShiki, useShikiRefresh } from "@/components/editor/use-shiki";
 import { useSlashMenu } from "@/components/editor/use-slash-menu";
 import type { MentionMember } from "@/components/task/extensions/mention-list";
+import { useAiAvailability } from "@/hooks/queries/ai/use-ai";
 import { useGetPages } from "@/hooks/queries/page/use-get-pages";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useGetActiveWorkspaceUsers } from "@/hooks/queries/workspace-users/use-get-active-workspace-users";
@@ -33,6 +42,7 @@ import {
 import { parsePageUrl } from "@/lib/pages/page-paths";
 import { uploadPageAsset } from "@/lib/pages/upload-page-asset";
 import type { PageSummary } from "@/types/page";
+import { promptForLink, registerFilePicker } from "./page-editor-actions";
 import {
   createPageEditorExtensions,
   type PageCollaborationBinding,
@@ -147,6 +157,7 @@ export default function PageEditor({
       editable: editableRef.current,
       extensions: createPageEditorExtensions({
         placeholder: t("pages:editor.placeholder"),
+        emptyLinePlaceholder: t("pages:detail.emptyLinePlaceholder"),
         workspaceId,
         projectId,
         getMembers: () => membersRef.current,
@@ -317,6 +328,16 @@ export default function PageEditor({
   );
   editorRef.current = editor;
 
+  const { available: aiAvailable } = useAiAvailability(projectId || null);
+  const aiTarget = useMemo(
+    () => ({ kind: "page" as const, id: pageId }),
+    [pageId],
+  );
+  const ai = useEditorAi({ editor, workspaceId, target: aiTarget });
+  const aiEnabled = aiAvailable && editable;
+  const aiBlock = useAiBlock({ editor, workspaceId, pageId });
+  const openAiBlock = aiBlock.open;
+
   const embed = useEmbedComposer({
     editor,
     canEdit: () => editableRef.current,
@@ -343,13 +364,15 @@ export default function PageEditor({
   );
 
   const commands = useMemo(
-    () =>
-      pageSlashCommands(t, {
+    () => [
+      ...pageSlashCommands(t, {
         onFile: (active) => openFilePicker(active),
         onPageLink: (active, range) =>
           setPageLinkPicker({ range, ...positionAt(active.view, range.to) }),
       }),
-    [openFilePicker, positionAt, t],
+      ...(aiEnabled ? [aiBlockSlashCommand(t, openAiBlock)] : []),
+    ],
+    [openFilePicker, positionAt, t, aiEnabled, openAiBlock],
   );
   const slash = useSlashMenu({
     editor,
@@ -368,16 +391,17 @@ export default function PageEditor({
 
   const setLink = useCallback(() => {
     if (!editableRef.current || !editor) return;
-    const previous = editor.getAttributes("link").href as string | undefined;
-    const url = window.prompt(
-      t("tasks:detail.editor.enterUrl"),
-      previous || "",
-    );
-    if (url === null) return;
-    const chain = editor.chain().focus().extendMarkRange("link");
-    if (url.trim() === "") chain.unsetLink().run();
-    else chain.setLink({ href: url }).run();
+    promptForLink(editor, t);
   }, [editor, t]);
+
+  // The formatting toolbar above the canvas inserts images through this
+  // editor's file input.
+  useEffect(() => {
+    if (!editor) return;
+    return registerFilePicker(editor, () => {
+      if (editableRef.current) openFilePicker(editor);
+    });
+  }, [editor, openFilePicker]);
 
   const insertPageLink = (page: PageSummary) => {
     const picker = pageLinkPicker;
@@ -418,9 +442,18 @@ export default function PageEditor({
         shellRef={shellRef}
         editable={editable}
         openMenuRef={openBlockMenuRef}
+        onAi={aiEnabled ? ai.begin : undefined}
       />
       {editor && editable && (
-        <EditorBubbleMenu editor={editor} onSetLink={setLink} />
+        <>
+          <EditorBubbleMenu
+            editor={editor}
+            onSetLink={setLink}
+            variant="page"
+            ai={aiEnabled ? ai : undefined}
+          />
+          <TableHandles editor={editor} />
+        </>
       )}
       {editor && editable && slash.menu && (
         <SlashMenu
@@ -438,6 +471,12 @@ export default function PageEditor({
           onSelect={insertPageLink}
           onClose={() => setPageLinkPicker(null)}
         />
+      )}
+      {editor && aiEnabled && (
+        <AiBlockPanel editor={editor} block={aiBlock} shellRef={shellRef} />
+      )}
+      {editor && aiEnabled && (
+        <EditorAiPreview editor={editor} ai={ai} shellRef={shellRef} />
       )}
       {editable && embed.element}
       <EditorContent

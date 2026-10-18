@@ -1,4 +1,4 @@
-import { ArrowLeft, History } from "lucide-react";
+import { ArrowLeft, Eye } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useRestorePageVersion } from "@/hooks/mutations/page/use-restore-page-version";
 import { useGetPageVersion } from "@/hooks/queries/page/use-get-page-version";
-import { cn } from "@/lib/cn";
 import { formatDateTime } from "@/lib/format";
 import { pageErrorMessage } from "@/lib/pages/page-errors";
 import { toast } from "@/lib/toast";
@@ -65,26 +64,26 @@ export default function PageVersionPreview({
 
   return (
     <div className="flex min-h-full flex-col">
-      <div className="sticky top-0 z-10 flex min-h-10 flex-wrap items-center gap-2 border-border/80 border-b bg-[color-mix(in_srgb,var(--info)_8%,var(--background))] px-2 py-1.5 md:px-3 dark:bg-[color-mix(in_srgb,var(--info)_16%,var(--background))]">
-        <Button variant="ghost" size="xs" className="gap-1" onClick={onClose}>
+      <div className="sticky top-0 z-10 flex h-12 shrink-0 items-center gap-2 border-border/80 border-b bg-background px-3">
+        <Button variant="ghost" size="sm" className="gap-1" onClick={onClose}>
           <ArrowLeft className="size-3.5" />
           {t("pages:history.backToCurrent")}
         </Button>
-        <span aria-hidden="true" className="h-4 w-px bg-border" />
-        <span className="inline-flex min-w-0 items-center gap-1.5 font-medium text-[13px]">
-          <History className="size-3.5 shrink-0 text-info-foreground" />
-          <span className="truncate">
-            {version.data
-              ? t("pages:history.previewTitle", {
-                  date: formatDateTime(version.data.lastSavedAt),
-                })
-              : null}
-          </span>
+        <span aria-hidden="true" className="h-4 w-px shrink-0 bg-border" />
+        <span className="min-w-0 truncate font-medium text-sm tabular-nums">
+          {version.data
+            ? t("pages:history.previewTitle", {
+                date: formatDateTime(version.data.lastSavedAt),
+              })
+            : null}
         </span>
-        <Badge variant="outline">{t("pages:history.viewOnly")}</Badge>
+        <Badge variant="info" className="shrink-0 gap-1">
+          <Eye className="size-3" aria-hidden="true" />
+          {t("pages:history.viewOnly")}
+        </Badge>
         {canRestore && (
           <Button
-            size="xs"
+            size="sm"
             className="ms-auto"
             disabled={!version.data}
             onClick={() => setConfirmOpen(true)}
@@ -93,12 +92,7 @@ export default function PageVersionPreview({
           </Button>
         )}
       </div>
-      <div
-        className={cn(
-          "mx-auto w-full px-4 pt-6 pb-24 sm:px-10 md:pt-10",
-          page.isFullWidth ? "max-w-6xl" : "max-w-3xl",
-        )}
-      >
+      <div className="margaya-page-column pt-8 pb-24">
         {version.isLoading ? (
           <div className="space-y-3">
             <Skeleton className="h-9 w-2/3" />
@@ -122,7 +116,7 @@ export default function PageVersionPreview({
           </div>
         ) : (
           <div className="space-y-4">
-            <h1 className="font-bold text-[2rem] leading-tight tracking-tight">
+            <h1 className="font-bold text-[2rem] leading-[2.375rem] tracking-[-0.02em]">
               {version.data.title.trim() || t("pages:list.untitled")}
             </h1>
             <PageEditor

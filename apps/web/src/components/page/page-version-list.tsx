@@ -1,4 +1,3 @@
-import { History } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetPageVersions } from "@/hooks/queries/page/use-get-page-versions";
@@ -14,7 +13,16 @@ type PageVersionListProps = {
   getMember: (userId: string | null | undefined) => PageMember | null;
 };
 
-/** "Current version", then saved versions, newest first (§1.11). */
+const entryClass = (selected: boolean) =>
+  cn(
+    "flex min-w-0 flex-1 flex-col gap-1 rounded-md px-2 py-1 text-left outline-none transition-colors duration-150 hover:bg-accent/50 focus-visible:ring-2 focus-visible:ring-ring",
+    selected && "bg-accent hover:bg-accent",
+  );
+
+/**
+ * The version timeline (§1.11): "Current version", then saved versions,
+ * newest first, on a line down the left gutter.
+ */
 export default function PageVersionList({
   pageId,
   selectedVersionId,
@@ -24,38 +32,43 @@ export default function PageVersionList({
   const { t } = useTranslation();
   const versions = useGetPageVersions(pageId, true);
 
-  const rowClass = (selected: boolean) =>
-    cn(
-      "relative flex w-full flex-col gap-0.5 rounded-md px-2.5 py-1.5 text-left hover:bg-accent",
-      selected &&
-        "bg-secondary before:absolute before:inset-y-2 before:start-0 before:w-0.5 before:rounded-full before:bg-primary",
-    );
-
   return (
-    <ol className="space-y-0.5" aria-label={t("pages:history.title")}>
-      <li>
+    <ol className="relative space-y-1" aria-label={t("pages:history.title")}>
+      <span
+        aria-hidden="true"
+        className="absolute start-[11.5px] top-3 bottom-3 w-px bg-border"
+      />
+      <li className="relative flex items-start gap-4">
+        <span aria-hidden="true" className="flex w-6 shrink-0 justify-center">
+          <span className="flex size-6 items-center justify-center rounded-full bg-muted">
+            <span className="size-2.5 rounded-full bg-foreground/40" />
+          </span>
+        </span>
         <button
           type="button"
-          className={rowClass(!selectedVersionId)}
+          className={cn(entryClass(!selectedVersionId), "min-h-6 py-1")}
           aria-current={!selectedVersionId ? "true" : undefined}
           onClick={() => onSelect(undefined)}
         >
-          <span className="flex items-center gap-2 font-medium text-sm">
-            <History className="size-3.5 text-muted-foreground" />
+          <span className="font-medium text-xs">
             {t("pages:history.current")}
           </span>
         </button>
       </li>
       {versions.isLoading &&
-        Array.from({ length: 5 }, (_, index) => (
+        Array.from({ length: 3 }, (_, index) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton rows
-          <li key={index}>
-            <Skeleton className="h-10 w-full" />
+          <li key={index} className="relative flex gap-4">
+            <span className="w-6 shrink-0" />
+            <Skeleton className="h-10 flex-1" />
           </li>
         ))}
       {!versions.isLoading && (versions.data ?? []).length === 0 && (
-        <li className="px-2.5 py-3 text-muted-foreground text-xs">
-          {t("pages:history.empty")}
+        <li className="relative flex gap-4">
+          <span className="w-6 shrink-0" />
+          <p className="py-2 text-muted-foreground text-xs">
+            {t("pages:history.empty")}
+          </p>
         </li>
       )}
       {(versions.data ?? []).map((version) => {
@@ -66,25 +79,31 @@ export default function PageVersionList({
         ).length;
         const selected = version.id === selectedVersionId;
         return (
-          <li key={version.id}>
+          <li key={version.id} className="relative flex items-start gap-4">
+            <span
+              aria-hidden="true"
+              className="flex h-6 w-6 shrink-0 items-center justify-center bg-background"
+            >
+              <span className="size-2 rounded-full bg-foreground/25" />
+            </span>
             <button
               type="button"
-              className={rowClass(selected)}
+              className={entryClass(selected)}
               aria-current={selected ? "true" : undefined}
               onClick={() => onSelect(version.id)}
             >
-              <span className="font-medium text-sm">
+              <span className="text-[11px] text-muted-foreground tabular-nums">
                 {formatDateTime(version.lastSavedAt)}
               </span>
-              <span className="flex items-center gap-1.5 text-muted-foreground text-xs">
+              <span className="flex min-w-0 items-center gap-1.5 text-xs">
                 <MemberAvatar
                   name={ownerName}
                   image={owner?.image}
                   className="size-4"
                 />
-                <span className="truncate">{ownerName}</span>
+                <span className="truncate font-medium">{ownerName}</span>
                 {others > 0 && (
-                  <span className="shrink-0">
+                  <span className="shrink-0 text-muted-foreground">
                     {t("pages:history.others", { count: others })}
                   </span>
                 )}

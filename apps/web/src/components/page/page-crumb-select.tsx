@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { ChevronsUpDown, Search } from "lucide-react";
+import { ChevronsUpDown, Globe, Lock, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -21,11 +21,13 @@ type PageCrumbSelectProps = {
   title?: string;
   logoKind?: string | null;
   logoValue?: string | null;
+  className?: string;
 };
 
 /**
- * "{page} ▾" at the start of the document bar: a searchable switcher over
- * the project's page tree. The Pages tab leads back to the list.
+ * "{page} ▾" in the top bar's breadcrumbs (in the canvas on phones): a
+ * searchable switcher over the project's page tree. The Pages tab leads
+ * back to the list.
  */
 export default function PageCrumbSelect({
   workspaceId,
@@ -34,6 +36,7 @@ export default function PageCrumbSelect({
   title,
   logoKind = null,
   logoValue = null,
+  className,
 }: PageCrumbSelectProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -54,7 +57,7 @@ export default function PageCrumbSelect({
   }, [pages, query, untitled]);
 
   return (
-    <div className="flex min-w-0 items-center">
+    <div className={cn("flex min-w-0 items-center", className)}>
       <Popover
         open={open}
         onOpenChange={(next) => {
@@ -74,7 +77,7 @@ export default function PageCrumbSelect({
           <PageLogo
             logoKind={logoKind}
             logoValue={logoValue}
-            className="size-3.5"
+            className="size-4"
           />
           <span className="min-w-0 truncate">{title?.trim() || untitled}</span>
           <ChevronsUpDown className="size-3 text-foreground/70" />
@@ -121,9 +124,20 @@ export default function PageCrumbSelect({
                     logoKind={page.logoKind}
                     logoValue={page.logoValue}
                   />
-                  <span className="truncate">
+                  <span className="min-w-0 flex-1 truncate">
                     {page.title.trim() || untitled}
                   </span>
+                  {page.access === "private" ? (
+                    <Lock
+                      className="size-3.5 shrink-0 text-muted-foreground"
+                      aria-label={t("pages:list.access.private")}
+                    />
+                  ) : (
+                    <Globe
+                      className="size-3.5 shrink-0 text-muted-foreground"
+                      aria-label={t("pages:list.access.public")}
+                    />
+                  )}
                 </button>
               ))
             )}
