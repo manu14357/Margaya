@@ -14,6 +14,7 @@ import {
   taskTable,
 } from "../../database/schema";
 import { publishEvent } from "../../events";
+import { canSeeProject } from "../../project/visibility";
 import { setTaskAssignees } from "../../task/assignee-writes";
 import { claimTaskNumber } from "../../task/controllers/claim-task-numbers";
 import { nextTaskPosition } from "../../task/controllers/next-task-position";
@@ -42,7 +43,11 @@ import {
 } from "../copy-planning";
 import { type CopySource, loadCopySource } from "../copy-source";
 
-async function loadTargetProject(projectId: string, workspaceId: string) {
+async function loadTargetProject(
+  projectId: string,
+  workspaceId: string,
+  userId: string,
+) {
   const [project] = await db
     .select({
       id: projectTable.id,
@@ -61,7 +66,10 @@ async function loadTargetProject(projectId: string, workspaceId: string) {
       ),
     )
     .limit(1);
-  if (!project) throw new HTTPException(404, { message: "Project not found" });
+  // A restricted target the caller cannot see reads as missing.
+  if (!project || !(await canSeeProject(userId, project.id))) {
+    throw new HTTPException(404, { message: "Project not found" });
+  }
   if (project.archivedAt) {
     throw new HTTPException(409, { message: "This project is archived" });
   }
@@ -113,6 +121,7 @@ async function copyTask({
   const target = await loadTargetProject(
     projectId ?? source.task.projectId,
     workspaceId,
+    userId,
   );
   const sameProject = target.id === source.task.projectId;
 
