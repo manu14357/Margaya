@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
+import AiFilterButton from "@/components/ai/filters/ai-filter-button";
 import { FilterBar } from "@/components/common/filter-bar";
 import {
   Popover,
@@ -270,6 +271,11 @@ export default function TaskToolbar({
           onOpenChange={setMenuOpen}
           onEditDate={(subject) => setEditing(subject)}
           disabled={nested}
+        />
+        <AiFilterButton
+          workspaceId={workspaceId}
+          scope={scope}
+          onApply={(next) => handle.setFilters(next)}
         />
 
         {conditions.length > 0 && (

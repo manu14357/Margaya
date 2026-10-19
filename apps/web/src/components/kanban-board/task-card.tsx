@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { type CSSProperties, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { RecurringIndicator } from "@/components/task/recurring-indicator";
 import {
   AlertDialog,
   AlertDialogClose,
@@ -43,6 +44,7 @@ import { getExternalWebUrl, openExternalWebUrl } from "@/lib/external-url";
 import { getTaskItemStats } from "@/lib/get-task-item-stats";
 import { getPriorityIcon } from "@/lib/priority";
 import { TaskPropertySlotOutlet } from "@/lib/task-property-slots";
+import { toastTaskTrashed } from "@/lib/task-undo";
 import { toast } from "@/lib/toast";
 import useBulkSelectionStore from "@/store/bulk-selection";
 import useProjectStore from "@/store/project";
@@ -58,9 +60,15 @@ const CARD_STACK_MAX = 2;
 type TaskCardProps = {
   task: Task;
   disableDragDrop?: boolean;
+  /** The copy held under the pointer while dragging (the drag overlay). */
+  overlay?: boolean;
 };
 
-function TaskCard({ task, disableDragDrop = false }: TaskCardProps) {
+function TaskCard({
+  task,
+  disableDragDrop = false,
+  overlay = false,
+}: TaskCardProps) {
   const { t } = useTranslation();
   const {
     attributes,
@@ -69,7 +77,11 @@ function TaskCard({ task, disableDragDrop = false }: TaskCardProps) {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: task.id, disabled: disableDragDrop });
+  } = useSortable({
+    // The overlay copy must not register as the dragged card itself.
+    id: overlay ? `overlay:${task.id}` : task.id,
+    disabled: disableDragDrop || overlay,
+  });
   const { project } = useProjectStore();
   const taskIsCompleted = isTaskCompleted(task.status, project?.columns);
   const { data: workspace } = useActiveWorkspace();
@@ -159,7 +171,6 @@ function TaskCard({ task, disableDragDrop = false }: TaskCardProps) {
     transform: CSS.Transform.toString(transform),
     transition:
       transition || "transform 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-    opacity: isDragging ? 0.6 : 1,
     touchAction: isDragging ? "none" : "auto",
     zIndex: isDragging ? 999 : "auto",
   };
@@ -199,8 +210,11 @@ function TaskCard({ task, disableDragDrop = false }: TaskCardProps) {
 
   const handleDeleteTask = async () => {
     try {
-      await deleteTask(task.id);
-      toast.success(t("tasks:delete.success"));
+      const deleted = await deleteTask(task.id);
+      toastTaskTrashed(
+        { taskId: deleted.id, projectId: deleted.projectId },
+        { t },
+      );
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : t("tasks:delete.error"),
@@ -216,16 +230,19 @@ function TaskCard({ task, disableDragDrop = false }: TaskCardProps) {
           <div
             onClick={handleTaskCardClick}
             data-selected={isTaskSelected || undefined}
+            data-dragging={isDragging || undefined}
             className={cn(
               "group relative rounded-lg border bg-background px-2.5 py-2 shadow-xs/5 transition-[background-color,border-color,box-shadow,scale] duration-150 ease-out active:scale-[0.98]",
               disableDragDrop ? "cursor-default" : "cursor-move",
+              // In place of the dragged card: a neutral dashed slot.
               isDragging
-                ? "border-ring/40 shadow-lg"
+                ? "border-foreground/25 border-dashed bg-muted/40 shadow-none *:invisible"
                 : "hover:border-border/90 hover:shadow-sm",
-              isTaskSelected
-                ? "border-ring/40 bg-accent/50 shadow-sm ring-1 ring-inset ring-ring/30"
-                : "border-border/80",
-              isTaskFocused && "ring-2 ring-inset ring-ring/50",
+              !isDragging &&
+                (isTaskSelected
+                  ? "border-ring/40 bg-accent/50 shadow-sm ring-1 ring-inset ring-ring/30"
+                  : "border-border/80"),
+              isTaskFocused && !isDragging && "ring-2 ring-inset ring-ring/50",
             )}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -336,6 +353,8 @@ function TaskCard({ task, disableDragDrop = false }: TaskCardProps) {
                     <span>{format(new Date(task.dueDate), "MMM d")}</span>
                   </div>
                 )}
+
+                {task.isRecurring && <RecurringIndicator className="h-5" />}
 
                 <TaskPropertySlotOutlet
                   location="cardChip"

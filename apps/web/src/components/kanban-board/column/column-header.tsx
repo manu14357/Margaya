@@ -2,7 +2,6 @@ import { produce } from "immer";
 import { Archive, Plus } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import CreateTaskModal from "@/components/shared/modals/create-task-modal";
 import { useBulkOperations } from "@/hooks/mutations/task/use-bulk-operations";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { getColumnIcon } from "@/lib/column";
@@ -13,18 +12,30 @@ import { ArchiveTasksModal } from "../../shared/modals/archive-tasks-modal";
 
 type ColumnHeaderProps = {
   column: ProjectWithTasks["columns"][number];
+  canCreate: boolean;
+  onAddTask: () => void;
 };
 
-export function ColumnHeader({ column }: ColumnHeaderProps) {
+const actionClass =
+  "flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground";
+
+/**
+ * The column's name, count and actions. A small dot in the status colour
+ * (`--col`, from the column's tone) is the header's only colour; a column
+ * with its own icon shows that icon instead.
+ */
+export function ColumnHeader({
+  column,
+  canCreate,
+  onAddTask,
+}: ColumnHeaderProps) {
   const { t } = useTranslation();
   const { project, setProject } = useProjectStore();
   const { bulkArchive } = useBulkOperations();
-  const { canUpdateTasks, canCreateTasks } = useWorkspacePermission();
+  const { canUpdateTasks } = useWorkspacePermission();
   const canTask = canUpdateTasks();
-  const canCreate = canCreateTasks();
 
   const [isArchiveModalOpen, setIsArchiveModalOpen] = useState(false);
-  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
 
   const handleConfirmArchive = () => {
     if (!column.isFinal || !project) return;
@@ -54,9 +65,23 @@ export function ColumnHeader({ column }: ColumnHeaderProps) {
   return (
     <div className="flex h-7 items-center justify-between gap-1.5">
       <div className="flex min-w-0 items-center gap-1.5">
-        <span className="flex shrink-0 text-muted-foreground">
-          {getColumnIcon(column.id, column.isFinal, column.icon, column.group)}
-        </span>
+        {column.icon ? (
+          <span className="flex shrink-0 text-muted-foreground">
+            {getColumnIcon(
+              column.id,
+              column.isFinal,
+              column.icon,
+              column.group,
+              { neutral: true },
+            )}
+          </span>
+        ) : (
+          <span
+            aria-hidden
+            data-status-dot
+            className="mx-0.5 size-2 shrink-0 rounded-full bg-[var(--col,var(--muted-foreground))]"
+          />
+        )}
         <h3 className="truncate font-medium text-[13px] text-foreground">
           {column.name}
         </h3>
@@ -70,7 +95,7 @@ export function ColumnHeader({ column }: ColumnHeaderProps) {
           <button
             type="button"
             onClick={() => setIsArchiveModalOpen(true)}
-            className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            className={actionClass}
             title={t("tasks:listView.archiveAllTooltip")}
           >
             <Archive className="size-3.5" />
@@ -79,21 +104,14 @@ export function ColumnHeader({ column }: ColumnHeaderProps) {
         {canCreate && (
           <button
             type="button"
-            onClick={() => setIsTaskModalOpen(true)}
-            className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            onClick={onAddTask}
+            className={actionClass}
             title={t("tasks:kanban.addTask")}
           >
             <Plus className="size-3.5" />
           </button>
         )}
       </div>
-
-      <CreateTaskModal
-        open={isTaskModalOpen}
-        onClose={() => setIsTaskModalOpen(false)}
-        projectId={project?.id}
-        status={column.id}
-      />
 
       <ArchiveTasksModal
         open={isArchiveModalOpen}

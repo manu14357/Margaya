@@ -2,7 +2,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import queryTasks from "@/fetchers/task-query/query-tasks";
 import useGetTask from "@/hooks/queries/task/use-get-task";
 import { scopeKeyOf, taskQueryKeys } from "@/lib/task-query/cache";
-import { browserTimeZone } from "@/lib/task-query/request";
+import { userTimeZone } from "@/lib/task-query/request";
 import type { TaskQueryRequest } from "@/types/task-query";
 import type { FilterOption } from "./registry";
 
@@ -23,7 +23,7 @@ export function useParentSearchOptions(
     display: { orderBy: { field: "updatedAt", direction: "desc" } },
     page: { limit: PARENT_SEARCH_LIMIT },
     mode: "rows",
-    context: { timeZone: browserTimeZone() },
+    context: { timeZone: userTimeZone() },
   };
   const { data, isFetching } = useQuery({
     queryKey: taskQueryKeys.request(

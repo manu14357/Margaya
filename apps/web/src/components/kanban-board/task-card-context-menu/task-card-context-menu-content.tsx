@@ -26,6 +26,7 @@ import { getPriorityLabel } from "@/lib/i18n/domain";
 import { getPriorityIcon } from "@/lib/priority";
 import { formatTaskKey, shareableTaskUrl } from "@/lib/task-key";
 import { TaskPropertySlotOutlet } from "@/lib/task-property-slots";
+import { toastTaskArchived, toastTaskStatusChanged } from "@/lib/task-undo";
 import { toast } from "@/lib/toast";
 import useCopyTaskDialog from "@/store/copy-task-dialog";
 import useProjectStore from "@/store/project";
@@ -120,9 +121,11 @@ export default function TaskCardContextMenuContent({
         projectId: taskProjectId,
         archived,
       });
-      toast.success(
-        t(archived ? "tasks:archive.archived" : "tasks:archive.restored"),
-      );
+      if (archived) {
+        toastTaskArchived({ taskId: task.id, projectId: taskProjectId }, { t });
+      } else {
+        toast.success(t("tasks:archive.restored"));
+      }
     } catch (error) {
       toast.error(
         error instanceof Error && error.message
@@ -140,7 +143,16 @@ export default function TaskCardContextMenuContent({
           break;
         case "status":
           await updateTaskStatus({ ...task, status: value as string });
-          break;
+          toastTaskStatusChanged(
+            {
+              taskId: task.id,
+              projectId: task.projectId,
+              previousStatus: task.status,
+              nextStatus: value as string,
+            },
+            { t },
+          );
+          return;
         case "title":
           await updateTaskTitle({ ...task, title: value as string });
           break;
@@ -156,12 +168,11 @@ export default function TaskCardContextMenuContent({
             [field]: value,
           });
       }
+      toast.success(t("tasks:update.success"));
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : t("tasks:update.error"),
       );
-    } finally {
-      toast.success(t("tasks:update.success"));
     }
   };
 

@@ -164,9 +164,80 @@ function renderBoard(groupBy: "project" | "priority") {
   return card;
 }
 
+vi.mock("@/components/task-draft/quick-add", () => ({
+  default: ({
+    projectId,
+    prefill,
+  }: {
+    projectId: string;
+    prefill: { status: string; targetName: string; priority?: string };
+  }) => (
+    <div data-testid="quick-add">
+      {`${projectId}:${prefill.status}:${prefill.priority ?? ""}:${prefill.targetName}`}
+    </div>
+  ),
+}));
+
+const CAN_ALL = { updateCycles: true, updateModules: true, updateTasks: true };
+
+function renderQuickAddBoard(
+  groupBy: "project" | "priority",
+  scopeProjectId: string | null,
+) {
+  const data = boardData(groupBy);
+  data.meta.columns = [
+    {
+      projectId: "p1",
+      slug: "to-do",
+      name: "To do",
+      icon: null,
+      group: "unstarted",
+      position: 0,
+      isFinal: false,
+    },
+  ];
+  render(
+    <GroupedBoard
+      query={
+        {
+          loadMore: vi.fn(),
+          isLoadingMore: () => false,
+        } as unknown as TaskQueryHandle
+      }
+      data={data}
+      properties={{ ...DEFAULT_DISPLAY_PROPERTIES, customFields: [] }}
+      workspaceId="w1"
+      singleProject={scopeProjectId !== null}
+      canUpdate
+      canAssign
+      quickAdd={{ scopeProjectId, can: CAN_ALL }}
+    />,
+  );
+}
+
 describe("GroupedBoard", () => {
   it("lets cards move between priority groups", () => {
     expect(renderBoard("priority")).toHaveAttribute("aria-disabled", "false");
+  });
+
+  it("offers a quick add per column that takes the group's value", () => {
+    renderQuickAddBoard("priority", "p1");
+    expect(screen.getByTestId("quick-add").textContent).toMatch(
+      /^p1:to-do:low:/,
+    );
+  });
+
+  it("on cross-project boards offers it only in project groups", () => {
+    renderQuickAddBoard("priority", null);
+    expect(screen.queryByTestId("quick-add")).toBe(null);
+    cleanup();
+    renderQuickAddBoard("project", null);
+    expect(screen.getByTestId("quick-add").textContent).toMatch(/^p1:to-do::/);
+  });
+
+  it("renders no quick add without the context", () => {
+    renderBoard("priority");
+    expect(screen.queryByTestId("quick-add")).toBe(null);
   });
 
   it("does not drag when grouped by project", () => {

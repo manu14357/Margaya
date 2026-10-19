@@ -1,5 +1,10 @@
 import { ChevronRight } from "lucide-react";
-import { type ComponentProps, useEffect, useMemo } from "react";
+import {
+  type ComponentProps,
+  type CSSProperties,
+  useEffect,
+  useMemo,
+} from "react";
 import { useTranslation } from "react-i18next";
 import {
   isBooleanRecord,
@@ -8,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import type { TaskQueryHandle } from "@/hooks/queries/task-query/use-task-query";
 import { cn } from "@/lib/cn";
+import type { CaptureGrouping } from "@/lib/task-query/capture-target";
 import type {
   MergedGroup,
   MergedSubGroup,
@@ -16,6 +22,7 @@ import type {
 import type { DisplayProperties, GroupByKey } from "@/lib/task-query/model";
 import useBulkSelectionStore from "@/store/bulk-selection";
 import { useGroupPresentation } from "./group-label";
+import GroupQuickAdd, { type QuickAddContext } from "./group-quick-add";
 import QueryTaskRow from "./query-task-row";
 
 type GroupedListProps = {
@@ -26,6 +33,8 @@ type GroupedListProps = {
   /** Keeps each list's open and closed sections apart. */
   storageKey: string;
   rowEnd?: ComponentProps<typeof QueryTaskRow>["rowEnd"];
+  /** A quick add at the foot of each group; null for none. */
+  quickAdd?: QuickAddContext | null;
 };
 
 const EMPTY_STATE: Record<string, boolean> = {};
@@ -75,7 +84,7 @@ function Section({
   data: MergedTaskQueryResult;
 }) {
   const present = useGroupPresentation();
-  const { label, icon } = present(groupBy, group.key, data.meta);
+  const { label, icon, tone } = present(groupBy, group.key, data.meta);
   return (
     <div className="border-border/50 border-b">
       <button
@@ -83,14 +92,23 @@ function Section({
         aria-expanded={!collapsed}
         onClick={() => onToggle(sectionKey)}
         className={cn(
-          "sticky z-10 flex h-8 w-full items-center gap-1.5 border-border/50 border-b bg-muted/80 text-left font-medium text-[13px] text-foreground backdrop-blur supports-[backdrop-filter]:bg-muted/70",
-          depth > 0 && "bg-muted/40",
+          "sticky z-10 flex h-8 w-full items-center gap-1.5 border-border/50 border-b text-left font-medium text-[13px] text-foreground",
+          !tone &&
+            "bg-muted/80 backdrop-blur supports-[backdrop-filter]:bg-muted/70",
+          !tone && depth > 0 && "bg-muted/40",
+          tone && "shadow-[inset_3px_0_0_var(--group-color)]",
         )}
-        style={{
-          paddingLeft: 12 + depth * 16,
-          paddingRight: 12,
-          top: depth * 32,
-        }}
+        style={
+          {
+            paddingLeft: 12 + depth * 16,
+            paddingRight: 12,
+            top: depth * 32,
+            ...(tone && {
+              "--group-color": tone.color,
+              backgroundColor: tone.tint,
+            }),
+          } as CSSProperties
+        }
       >
         <ChevronRight
           className={cn(
@@ -104,7 +122,15 @@ function Section({
           </span>
         )}
         <span className="truncate">{label}</span>
-        <span className="font-normal text-muted-foreground text-xs tabular-nums">
+        <span
+          className={cn(
+            "rounded-full bg-card px-1.5 font-medium text-[11px] tabular-nums leading-4 ring-1",
+            tone
+              ? "ring-(--group-color)/30"
+              : "text-muted-foreground ring-border",
+          )}
+          style={tone ? { color: tone.foreground } : undefined}
+        >
           {group.count}
         </span>
       </button>
@@ -121,6 +147,7 @@ export default function GroupedList({
   workspaceId,
   storageKey,
   rowEnd,
+  quickAdd = null,
 }: GroupedListProps) {
   const { t } = useTranslation();
   const [collapsedMap, setCollapsedMap] = useStoredState<
@@ -168,6 +195,17 @@ export default function GroupedList({
       ) : null;
     });
 
+  const groupQuickAdd = (groupings: readonly CaptureGrouping[]) =>
+    quickAdd ? (
+      <GroupQuickAdd
+        context={quickAdd}
+        groupings={groupings}
+        meta={data.meta}
+        workspaceId={workspaceId}
+        className="mx-1.5 my-1 w-auto md:mx-2.5"
+      />
+    ) : null;
+
   const ungrouped = !data.groupBy;
   const hiddenGroups = data.groups.filter(
     (group) =>
@@ -200,6 +238,10 @@ export default function GroupedList({
                       onClick={() => query.loadMore(group.key, cell.key)}
                     />
                   )}
+                  {groupQuickAdd([
+                    { by: data.groupBy, key: group.key },
+                    { by: data.subGroupBy, key: cell.key },
+                  ])}
                 </div>
               </Section>
             );
@@ -219,6 +261,7 @@ export default function GroupedList({
                 onClick={() => query.loadMore(group.key)}
               />
             )}
+            {groupQuickAdd([{ by: data.groupBy, key: group.key }])}
           </div>
         );
         if (ungrouped) return <div key={group.key}>{groupRows}</div>;

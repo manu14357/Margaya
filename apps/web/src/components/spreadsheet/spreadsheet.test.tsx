@@ -31,6 +31,7 @@ vi.mock("@/hooks/use-workspace-permission", () => ({
   useWorkspacePermission: () => ({
     canUpdateTasks: () => state.canUpdate,
     canAssignTasks: () => state.canUpdate,
+    canCreateTasks: () => state.canUpdate,
   }),
 }));
 
@@ -45,6 +46,20 @@ vi.mock("@/components/task-layouts/delete-task-dialog", () => ({
 
 vi.mock("@/components/task/task-shortcuts/focused-task-shortcuts", () => ({
   default: () => null,
+}));
+
+vi.mock("@/components/task-draft/quick-add", () => ({
+  default: ({
+    projectId,
+    prefill,
+  }: {
+    projectId: string;
+    prefill: { status: string; targetName: string };
+  }) => (
+    <div data-testid="quick-add">
+      {`${projectId}:${prefill.status}:${prefill.targetName}`}
+    </div>
+  ),
 }));
 
 class FakeObserver {
@@ -248,6 +263,28 @@ describe("Spreadsheet", () => {
     const query = handle(null);
     renderSpreadsheet(query);
     expect(state.observed).toHaveLength(0);
+  });
+
+  it("ends a project's sheet with a quick add into its entry column", () => {
+    renderSpreadsheet(handle(null), { quickAdd: true });
+    const quickAdd = screen.getByTestId("quick-add");
+    expect(quickAdd.textContent).toBe("p1:to-do:To do");
+    expect(quickAdd.closest("tr")).toHaveAttribute(
+      "data-spreadsheet-quick-add",
+    );
+  });
+
+  it("has no quick add without task:create or outside a project", () => {
+    state.canUpdate = false;
+    renderSpreadsheet(handle(null), { quickAdd: true });
+    expect(screen.queryByTestId("quick-add")).toBe(null);
+    cleanup();
+    state.canUpdate = true;
+    renderSpreadsheet(handle(null), {
+      quickAdd: true,
+      scope: { kind: "workspace" },
+    });
+    expect(screen.queryByTestId("quick-add")).toBe(null);
   });
 
   it("shows a selected row as checked and selected", () => {

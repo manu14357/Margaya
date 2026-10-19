@@ -15,6 +15,7 @@ import type {
   TaskLayout,
   TaskQueryScope,
 } from "@/lib/task-query/model";
+import ScheduleLayoutBody from "./schedule-layout-body";
 import TaskQueryView from "./task-query-view";
 
 type TaskListSurfaceProps = {
@@ -35,6 +36,8 @@ type TaskListSurfaceProps = {
   emptyDescription?: string;
   taskId?: string;
   onCloseTask: () => void;
+  /** A quick add in each group and spreadsheet (off for others' work). */
+  quickAdd?: boolean;
 };
 
 /**
@@ -56,12 +59,18 @@ export default function TaskListSurface({
   emptyDescription,
   taskId,
   onCloseTask,
+  quickAdd = true,
 }: TaskListSurfaceProps) {
   const { t } = useTranslation();
   const layout = layouts.includes(handle.display.layout)
     ? handle.display.layout
     : (layouts[0] ?? "list");
   const isSpreadsheet = layout === "spreadsheet";
+  // Calendar and Gantt draw a project's loaded tasks, not query rows.
+  const scheduleLayout =
+    scope.kind === "project" && (layout === "calendar" || layout === "gantt")
+      ? layout
+      : null;
   const displayConfig = useDisplayConfig({ workspaceId, scope, layout });
   const rows = useTaskQueryRows({
     workspaceId,
@@ -70,6 +79,7 @@ export default function TaskListSurface({
     baseConditions,
     limit: isSpreadsheet ? 100 : 50,
     ungrouped: isSpreadsheet,
+    enabled: !scheduleLayout,
   });
 
   // The sheet needs the task's own project: from the rows, else the task.
@@ -80,6 +90,9 @@ export default function TaskListSurface({
     task?.projectId ??
     (scope.kind === "project" ? scope.projectId : "");
   const scopeKind = scope.kind === "project" ? "project" : "workspace";
+  const scopeProjectId = scope.kind === "project" ? scope.projectId : undefined;
+  // A new task is never archived, so an archive-only list offers no add.
+  const offersQuickAdd = quickAdd && handle.state.archived !== "only";
 
   return (
     <div className="relative flex h-full min-h-0 flex-col overflow-hidden">
@@ -113,7 +126,17 @@ export default function TaskListSurface({
         }
       />
       <div className="flex min-h-0 flex-1 overflow-hidden bg-background">
-        {isSpreadsheet ? (
+        {scheduleLayout && scope.kind === "project" ? (
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+            <ScheduleLayoutBody
+              layout={scheduleLayout}
+              workspaceId={workspaceId}
+              projectId={scope.projectId}
+              state={handle.state}
+              baseConditions={baseConditions}
+            />
+          </div>
+        ) : isSpreadsheet ? (
           <Spreadsheet
             query={rows}
             workspaceId={workspaceId}
@@ -139,6 +162,7 @@ export default function TaskListSurface({
             onClearFilters={
               handle.hasActiveFilters ? handle.clearFilters : undefined
             }
+            quickAdd={offersQuickAdd}
           />
         ) : (
           <TaskQueryView
@@ -155,6 +179,8 @@ export default function TaskListSurface({
             emptyDescription={
               handle.hasActiveFilters ? undefined : emptyDescription
             }
+            quickAdd={offersQuickAdd}
+            projectId={scopeProjectId}
           />
         )}
       </div>

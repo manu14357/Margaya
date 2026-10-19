@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
+import { LabelChips } from "@/components/shared/label-chips";
 import AssigneeAvatarStack from "@/components/task/assignee-avatar-stack";
 import TaskAssigneePopover from "@/components/task/task-assignee-popover";
 import TaskDueDatePopover from "@/components/task/task-due-date-popover";
@@ -20,7 +21,6 @@ import { getColumnIcon } from "@/lib/column";
 import { formatEstimateValue } from "@/lib/estimate/format";
 import { formatDateShort, formatRelativeTime } from "@/lib/format";
 import { getPriorityLabel } from "@/lib/i18n/domain";
-import { resolveLabelColor } from "@/lib/label-color";
 import { getPriorityIcon } from "@/lib/priority";
 import { columnOfRow, rowToTask } from "@/lib/task-query/row-task";
 import type { TaskQueryMeta, TaskQueryRow } from "@/types/task-query";
@@ -188,25 +188,11 @@ export default function SpreadsheetCell({
         labels.length === 0 ? (
           <Muted>{t("tasks:filters.values.noLabel")}</Muted>
         ) : (
-          <span className="flex min-w-0 items-center gap-1">
-            {labels.slice(0, 2).map((label) => (
-              <span
-                key={label.name}
-                className="inline-flex min-w-0 items-center gap-1 rounded border border-border px-1.5 py-0.5 text-[11px]"
-              >
-                <span
-                  className="size-1.5 shrink-0 rounded-full"
-                  style={{ backgroundColor: resolveLabelColor(label.color) }}
-                />
-                <span className="truncate">{label.name}</span>
-              </span>
-            ))}
-            {labels.length > 2 && (
-              <span className="text-muted-foreground text-xs">
-                +{labels.length - 2}
-              </span>
-            )}
-          </span>
+          <LabelChips
+            labels={labels.map((label) => ({ ...label, id: label.name }))}
+            max={2}
+            className="flex-nowrap items-center"
+          />
         );
       return (
         <LazyEditor

@@ -74,7 +74,9 @@ export default function QueryTaskRow({
             }}
             className={cn(
               "group relative flex min-h-9 cursor-pointer items-center gap-1.5 px-2 py-0.5 transition-colors md:gap-2 md:px-3",
-              selected ? "bg-accent/45" : "hover:bg-accent/60",
+              selected
+                ? "bg-accent/45"
+                : "hover:bg-accent/70 hover:shadow-[inset_2px_0_0_var(--primary)]",
             )}
           >
             {properties.priority && (

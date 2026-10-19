@@ -27,6 +27,7 @@ import type { DisplayProperties, GroupByKey } from "@/lib/task-query/model";
 import { rowToTask } from "@/lib/task-query/row-task";
 import { toast } from "@/lib/toast";
 import { useGroupPresentation } from "./group-label";
+import GroupQuickAdd, { type QuickAddContext } from "./group-quick-add";
 import QueryTaskCard, { QueryTaskCardBody } from "./query-task-card";
 
 type GroupedBoardProps = {
@@ -38,6 +39,8 @@ type GroupedBoardProps = {
   singleProject: boolean;
   canUpdate: boolean;
   canAssign: boolean;
+  /** A quick add at the foot of each column or cell; null for none. */
+  quickAdd?: QuickAddContext | null;
 };
 
 type Place = { group: string; sub: string | null };
@@ -96,6 +99,7 @@ export default function GroupedBoard({
   singleProject,
   canUpdate,
   canAssign,
+  quickAdd = null,
 }: GroupedBoardProps) {
   const { t } = useTranslation();
   const present = useGroupPresentation();
@@ -248,6 +252,20 @@ export default function GroupedBoard({
     );
   };
 
+  const cellQuickAdd = (group: string, sub?: string, className?: string) =>
+    quickAdd ? (
+      <GroupQuickAdd
+        context={quickAdd}
+        groupings={[
+          { by: groupBy, key: group },
+          ...(sub !== undefined ? [{ by: subGroupBy, key: sub }] : []),
+        ]}
+        meta={data.meta}
+        workspaceId={workspaceId}
+        className={className}
+      />
+    ) : null;
+
   const activeRow = active ? data.tasks[active.taskId] : undefined;
 
   return (
@@ -288,6 +306,11 @@ export default function GroupedBoard({
                         )}
                       </Cell>
                     </div>
+                    {cellQuickAdd(
+                      group.key,
+                      undefined,
+                      "mx-1.5 mb-1.5 w-auto shrink-0",
+                    )}
                   </div>
                 );
               })}
@@ -357,6 +380,7 @@ export default function GroupedBoard({
                                     laneKey,
                                   )}
                               </Cell>
+                              {cellQuickAdd(group.key, laneKey, "mt-1")}
                             </div>
                           );
                         })}

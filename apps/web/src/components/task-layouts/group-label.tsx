@@ -18,7 +18,33 @@ import type { TaskQueryMeta } from "@/types/task-query";
 export const NONE_GROUP = "none";
 export const ALL_GROUP = "all";
 
-export type GroupPresentation = { label: string; icon: ReactNode };
+/** A group header's hue: an edge and count colour, plus a soft band. */
+export type GroupTone = { color: string; tint: string; foreground: string };
+
+export type GroupPresentation = {
+  label: string;
+  icon: ReactNode;
+  tone?: GroupTone;
+};
+
+const PRIORITY_TONE_KEYS = ["urgent", "high", "medium", "low"] as const;
+
+function priorityTone(key: string): GroupTone | undefined {
+  if (!(PRIORITY_TONE_KEYS as readonly string[]).includes(key))
+    return undefined;
+  const color = `var(--priority-${key})`;
+  return {
+    color,
+    tint: `color-mix(in srgb, ${color} 8%, var(--card))`,
+    foreground: "var(--foreground)",
+  };
+}
+
+function groupTone(group: string | null | undefined): GroupTone | undefined {
+  if (!isColumnGroup(group)) return undefined;
+  const { color, tint, foreground } = COLUMN_GROUP_META[group];
+  return { color, tint, foreground };
+}
 
 const NONE_LABEL_KEYS: Partial<Record<GroupByKey, string>> = {
   assignee: "tasks:groups.noAssignee",
@@ -58,6 +84,7 @@ export function useGroupPresentation() {
           return {
             label: t("tasks:groups.planned"),
             icon: <CircleDashed className="size-3.5 text-muted-foreground" />,
+            tone: groupTone("backlog"),
           };
         }
         const column = meta.columns.find((candidate) => candidate.slug === key);
@@ -69,6 +96,9 @@ export function useGroupPresentation() {
             column?.icon ?? undefined,
             column?.group,
           ),
+          tone: groupTone(
+            column?.group ?? (column?.isFinal ? "completed" : null),
+          ),
         };
       }
       case "group": {
@@ -78,10 +108,15 @@ export function useGroupPresentation() {
         return {
           label: t(groupMeta.labelKey),
           icon: <Icon className={`size-3.5 ${groupMeta.iconClassName}`} />,
+          tone: groupTone(key),
         };
       }
       case "priority":
-        return { label: getPriorityLabel(key), icon: getPriorityIcon(key) };
+        return {
+          label: getPriorityLabel(key),
+          icon: getPriorityIcon(key),
+          tone: priorityTone(key),
+        };
       case "assignee":
       case "createdBy": {
         const user = meta.users.find((candidate) => candidate.id === key);

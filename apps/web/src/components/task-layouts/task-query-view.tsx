@@ -1,11 +1,13 @@
-import type { ComponentProps } from "react";
+import { type ComponentProps, useMemo } from "react";
 import { ErrorDisplay } from "@/components/ui/error-display";
 import type { TaskQueryHandle } from "@/hooks/queries/task-query/use-task-query";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import type { DisplayProperties } from "@/lib/task-query/model";
+import type { QuickAddContext } from "./group-quick-add";
 import GroupedBoard from "./grouped-board";
 import GroupedList from "./grouped-list";
 import { QueryEmpty, QueryRowsSkeleton } from "./query-states";
+import { useCreatedTaskCheck } from "./use-created-task-check";
 
 type TaskQueryViewProps = {
   query: TaskQueryHandle;
@@ -20,6 +22,10 @@ type TaskQueryViewProps = {
   emptyDescription?: string;
   /** List layout only: the end of each row (see QueryTaskRow). */
   rowEnd?: ComponentProps<typeof GroupedList>["rowEnd"];
+  /** Offer a quick add at the foot of each group (with task:create). */
+  quickAdd?: boolean;
+  /** The list's own project; cross-project lists add only in project groups. */
+  projectId?: string;
 };
 
 /** Query mode: a grouped list or board over task query rows (B4 §6.6). */
@@ -34,9 +40,40 @@ export default function TaskQueryView({
   emptyTitle,
   emptyDescription,
   rowEnd,
+  quickAdd = false,
+  projectId,
 }: TaskQueryViewProps) {
-  const { canUpdateTasks, canAssignTasks } = useWorkspacePermission();
+  const {
+    canUpdateTasks,
+    canAssignTasks,
+    canCreateTasks,
+    canUpdateCycles,
+    canUpdateModules,
+  } = useWorkspacePermission();
   const { data } = query;
+  const checkCreated = useCreatedTaskCheck(query, workspaceId);
+  const canCreate = quickAdd && canCreateTasks();
+  const updateCycles = canUpdateCycles();
+  const updateModules = canUpdateModules();
+  const updateTasks = canUpdateTasks();
+  const quickAddContext = useMemo<QuickAddContext | null>(
+    () =>
+      canCreate
+        ? {
+            scopeProjectId: projectId ?? null,
+            can: { updateCycles, updateModules, updateTasks },
+            onCreated: (task) => void checkCreated(task),
+          }
+        : null,
+    [
+      canCreate,
+      projectId,
+      updateCycles,
+      updateModules,
+      updateTasks,
+      checkCreated,
+    ],
+  );
 
   if (!data) {
     if (query.isError) {
@@ -74,6 +111,7 @@ export default function TaskQueryView({
       singleProject={singleProject}
       canUpdate={canUpdateTasks()}
       canAssign={canAssignTasks()}
+      quickAdd={quickAddContext}
     />
   ) : (
     <GroupedList
@@ -83,6 +121,7 @@ export default function TaskQueryView({
       workspaceId={workspaceId}
       storageKey={storageKey}
       rowEnd={rowEnd}
+      quickAdd={quickAddContext}
     />
   );
 }

@@ -16,8 +16,9 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { produce } from "immer";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useUpdateTask } from "@/hooks/mutations/task/use-update-task";
+import { useGetColumns } from "@/hooks/queries/column/use-get-columns";
 import { useRegisterShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { placementWrites } from "@/lib/placement-writes";
 import useBulkSelectionStore from "@/store/bulk-selection";
@@ -27,6 +28,7 @@ import BulkToolbar from "../bulk-selection/bulk-toolbar";
 import { useCaptureHost } from "../task-draft/use-capture-host";
 import { BoardStageStrip } from "./board-stage-strip";
 import Column from "./column";
+import { columnTones } from "./column/column-tone";
 import TaskCard from "./task-card";
 
 type KanbanBoardProps = {
@@ -57,6 +59,17 @@ function KanbanBoard({
   const { mutate: updateTask } = useUpdateTask();
   const navigate = useNavigate();
   useCaptureHost(capture ? project : undefined);
+  // The board payload carries no column colours; the (shared, cached)
+  // column list does.
+  const { data: columnRecords } = useGetColumns(project?.id ?? "");
+  const tones = useMemo(
+    () =>
+      columnTones(
+        project?.columns ?? [],
+        new Map(columnRecords?.map((record) => [record.slug, record.color])),
+      ),
+    [project?.columns, columnRecords],
+  );
 
   useEffect(() => {
     if (project?.columns) {
@@ -262,6 +275,7 @@ function KanbanBoard({
               >
                 <Column
                   column={column}
+                  tone={tones.get(column.id)}
                   disableDragDrop={disableDragDrop}
                   capture={capture}
                 />
@@ -272,10 +286,8 @@ function KanbanBoard({
       </div>
       <DragOverlay dropAnimation={dropAnimation}>
         {activeTask ? (
-          <div className="transform rotate-1 scale-[1.03] shadow-lg">
-            <div className="ring-2 ring-ring/35 rounded-lg">
-              <TaskCard task={activeTask} />
-            </div>
+          <div className="scale-[1.02] cursor-grabbing rounded-lg shadow-lg">
+            <TaskCard task={activeTask} overlay />
           </div>
         ) : null}
       </DragOverlay>

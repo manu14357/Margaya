@@ -39,6 +39,7 @@ export function BoardStageStrip({
               column.isFinal,
               column.icon,
               column.group,
+              { neutral: true },
             )}
           </span>
           {column.name}

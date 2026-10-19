@@ -82,4 +82,9 @@ describe("TaskCard", () => {
     act(() => useBulkSelectionStore.getState().clearSelection());
     expect(card()).toBeNull();
   });
+
+  it("never renders the drag overlay copy as the dragged slot", () => {
+    const { container } = render(<TaskCard task={task} overlay />);
+    expect(container.querySelector("[data-dragging]")).toBeNull();
+  });
 });

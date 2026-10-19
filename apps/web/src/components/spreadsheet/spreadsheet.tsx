@@ -1,16 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import FocusedTaskShortcuts from "@/components/task/task-shortcuts/focused-task-shortcuts";
+import QuickAdd from "@/components/task-draft/quick-add";
 import {
   QueryEmpty,
   QueryRowsSkeleton,
 } from "@/components/task-layouts/query-states";
+import { useCreatedTaskCheck } from "@/components/task-layouts/use-created-task-check";
 import { useTaskOpen } from "@/components/task-layouts/use-task-open";
 import { ErrorDisplay } from "@/components/ui/error-display";
 import { Spinner } from "@/components/ui/spinner";
 import type { TaskQueryHandle } from "@/hooks/queries/task-query/use-task-query";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { assigneesOfTask } from "@/lib/task-assignees";
+import { captureTargetFor } from "@/lib/task-query/capture-target";
 import type {
   DisplayProperties,
   DisplayPropertyKey,
@@ -39,6 +42,8 @@ export type SpreadsheetProps = {
   onHideColumn: (property: DisplayPropertyKey) => void;
   onHideCustomField?: (fieldId: string) => void;
   onClearFilters?: () => void;
+  /** A last "add task" row, in a project's spreadsheet (task:create). */
+  quickAdd?: boolean;
 };
 
 /**
@@ -57,12 +62,15 @@ export default function Spreadsheet({
   onHideColumn,
   onHideCustomField,
   onClearFilters,
+  quickAdd = false,
 }: SpreadsheetProps) {
   const { t } = useTranslation();
-  const { canUpdateTasks, canAssignTasks } = useWorkspacePermission();
+  const { canUpdateTasks, canAssignTasks, canCreateTasks } =
+    useWorkspacePermission();
   const canEdit = canUpdateTasks();
   const canAssign = canAssignTasks();
   const openTask = useTaskOpen(workspaceId);
+  const checkCreated = useCreatedTaskCheck(query, workspaceId);
   const scrollRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLTableRowElement>(null);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
@@ -134,6 +142,22 @@ export default function Spreadsheet({
   }
 
   if (data.totalCount === 0) return <QueryEmpty onClear={onClearFilters} />;
+
+  // Only in one project's spreadsheet: a new task needs a project and column.
+  const entryTarget =
+    quickAdd && canCreateTasks() && scope.kind === "project"
+      ? captureTargetFor({
+          groupings: [],
+          meta: data.meta,
+          scopeProjectId: scope.projectId,
+          can: {
+            updateCycles: false,
+            updateModules: false,
+            updateTasks: false,
+          },
+        })
+      : null;
+  const columnCount = columns.length + customFieldIds.length + 2;
 
   const rowProps = {
     meta: data.meta,
@@ -242,11 +266,37 @@ export default function Spreadsheet({
           })}
           {hasMore && (
             <tr ref={sentinelRef}>
-              <td colSpan={columns.length + customFieldIds.length + 2}>
+              <td colSpan={columnCount}>
                 <div className="flex h-9 items-center px-3 text-muted-foreground text-xs">
                   {isLoadingMore && <Spinner className="size-3.5" />}
                 </div>
               </td>
+            </tr>
+          )}
+          {entryTarget && (
+            <tr data-spreadsheet-quick-add>
+              <td
+                className="sticky left-0 z-10 border-border/60 border-b bg-background px-1 py-1 align-top"
+                style={{
+                  width: FIRST_COLUMN_WIDTH,
+                  minWidth: FIRST_COLUMN_WIDTH,
+                  maxWidth: FIRST_COLUMN_WIDTH,
+                }}
+              >
+                <QuickAdd
+                  projectId={entryTarget.projectId}
+                  workspaceId={workspaceId}
+                  prefill={{
+                    status: entryTarget.status,
+                    targetName: entryTarget.statusName,
+                  }}
+                  onCreated={(task) => void checkCreated(task)}
+                />
+              </td>
+              <td
+                colSpan={columnCount - 1}
+                className="border-border/60 border-b"
+              />
             </tr>
           )}
         </tbody>

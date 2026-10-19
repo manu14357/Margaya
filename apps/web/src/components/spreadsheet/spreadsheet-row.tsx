@@ -68,14 +68,16 @@ export default function SpreadsheetRow({
             aria-selected={selected}
             className={cn(
               "group h-9 text-sm",
-              selected ? "bg-accent/45" : "hover:bg-accent/40",
+              selected ? "bg-accent/45" : "hover:bg-accent/60",
               focused && "outline-2 outline-ring/50 -outline-offset-2",
             )}
           >
             <td
               className={cn(
                 "sticky left-0 z-[5] border-border border-b p-0",
-                selected ? "bg-accent" : "bg-background group-hover:bg-accent",
+                selected
+                  ? "bg-accent"
+                  : "bg-background group-hover:bg-accent group-hover:shadow-[inset_2px_0_0_var(--primary)]",
               )}
               style={{
                 width: FIRST_COLUMN_WIDTH,

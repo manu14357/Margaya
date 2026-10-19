@@ -10,7 +10,7 @@ import {
   Ruler,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { TaskLabels } from "@/components/kanban-board/task-labels";
+import { LabelChips } from "@/components/shared/label-chips";
 import { cn } from "@/lib/cn";
 import { dueDateStatusColors, getDueDateStatus } from "@/lib/due-date-status";
 import { formatEstimateValue } from "@/lib/estimate/format";
@@ -34,7 +34,7 @@ export function DueDateChip({ row }: { row: TaskQueryRow }) {
   return (
     <span
       className={cn(
-        "flex h-5.5 shrink-0 items-center gap-1 rounded px-2 py-1 text-[10px]",
+        "flex h-5.5 shrink-0 items-center gap-1 rounded-full px-2 py-1 font-medium text-[10px]",
         dueDateStatusColors[status],
       )}
     >
@@ -73,12 +73,13 @@ export default function TaskChips({
   return (
     <>
       {properties.labels && row.labels && row.labels.length > 0 && (
-        <TaskLabels
+        <LabelChips
           labels={row.labels.map((label) => ({
             id: label.name,
             name: label.name,
             color: label.color,
           }))}
+          max={3}
         />
       )}
       {properties.cycle && cycle && (
