@@ -25,6 +25,13 @@ export function greetingName(
 
 const PERIOD_ICONS = { morning: Sun, afternoon: CloudSun, evening: Moon };
 
+// Sunrise amber, daylight blue, dusk violet: area hues reused for the sky.
+const PERIOD_TONES = {
+  morning: "var(--area-projects)",
+  afternoon: "var(--area-inbox)",
+  evening: "var(--area-work)",
+};
+
 const PERIOD_KEYS = {
   morning: "home:greeting.morning",
   afternoon: "home:greeting.afternoon",
@@ -50,14 +57,31 @@ export default function HomeGreeting() {
   }).format(now);
 
   return (
-    <div className="min-w-0 space-y-0.5">
-      <h1 className="truncate font-semibold text-xl leading-7">
-        {t(PERIOD_KEYS[period], { name: greetingName(session?.user) })}
-      </h1>
-      <p className="flex items-center gap-1.5 text-[13px] text-muted-foreground">
-        <Icon className="size-3.5" aria-hidden="true" />
-        <span>{t("home:greeting.dateTime", { date, time })}</span>
-      </p>
+    <div
+      className="relative flex min-w-0 items-center gap-3 overflow-hidden rounded-2xl border px-4 py-4 sm:px-5"
+      style={{
+        backgroundImage:
+          "linear-gradient(120deg, color-mix(in srgb, var(--area-home) 6%, var(--card)) 0%, var(--card) 55%, color-mix(in srgb, var(--area-work) 4%, var(--card)) 100%)",
+      }}
+    >
+      <span
+        aria-hidden
+        className="flex size-10 shrink-0 items-center justify-center rounded-xl shadow-xs"
+        style={{
+          backgroundColor: `color-mix(in srgb, ${PERIOD_TONES[period]} 18%, var(--card))`,
+          color: PERIOD_TONES[period],
+        }}
+      >
+        <Icon className="size-5" />
+      </span>
+      <div className="min-w-0 space-y-0.5">
+        <h1 className="truncate font-semibold text-xl leading-7">
+          {t(PERIOD_KEYS[period], { name: greetingName(session?.user) })}
+        </h1>
+        <p className="truncate text-[13px] text-muted-foreground">
+          {t("home:greeting.dateTime", { date, time })}
+        </p>
+      </div>
     </div>
   );
 }

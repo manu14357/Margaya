@@ -1,12 +1,23 @@
 // The Home widget catalog. The web keeps the same keys with their components;
 // later slices append keys here, and stored rows pick them up on read.
-export const HOME_WIDGET_KEYS = ["quick-links", "recents", "stickies"] as const;
+export const HOME_WIDGET_KEYS = [
+  "quick-links",
+  "recents",
+  "stickies",
+  "risks",
+  "my-brief",
+] as const;
 
 export type HomeWidgetKey = (typeof HOME_WIDGET_KEYS)[number];
 export type HomeWidget = { key: HomeWidgetKey; enabled: boolean };
 
+/** Opt-in widgets: hidden until the person turns them on (My brief, #18). */
+export const OPT_IN_HOME_WIDGETS: ReadonlySet<HomeWidgetKey> = new Set([
+  "my-brief",
+]);
+
 export const DEFAULT_HOME_WIDGETS: readonly HomeWidget[] = HOME_WIDGET_KEYS.map(
-  (key) => ({ key, enabled: true }),
+  (key) => ({ key, enabled: !OPT_IN_HOME_WIDGETS.has(key) }),
 );
 
 function isHomeWidgetKey(value: unknown): value is HomeWidgetKey {
@@ -15,7 +26,8 @@ function isHomeWidgetKey(value: unknown): value is HomeWidgetKey {
 
 /**
  * A stored list made current: unknown keys dropped, the first of duplicate
- * keys kept, and missing known keys appended in default order, enabled.
+ * keys kept, and missing known keys appended in default order, enabled
+ * unless they are opt-in.
  */
 export function normalizeHomeWidgets(stored: unknown): HomeWidget[] {
   const widgets: HomeWidget[] = [];
@@ -28,7 +40,9 @@ export function normalizeHomeWidgets(stored: unknown): HomeWidget[] {
     widgets.push({ key, enabled: enabled !== false });
   }
   for (const key of HOME_WIDGET_KEYS) {
-    if (!seen.has(key)) widgets.push({ key, enabled: true });
+    if (!seen.has(key)) {
+      widgets.push({ key, enabled: !OPT_IN_HOME_WIDGETS.has(key) });
+    }
   }
   return widgets;
 }

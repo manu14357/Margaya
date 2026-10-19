@@ -1,3 +1,4 @@
+import { History } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -72,6 +73,8 @@ export default function RecentsWidget({
   return (
     <WidgetSection
       title={t("home:widgets.recents")}
+      icon={History}
+      tone="var(--area-work)"
       actions={
         <Tabs
           value={tab}

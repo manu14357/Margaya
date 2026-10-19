@@ -26,7 +26,19 @@ describe("normalizeHomeWidgets", () => {
       { key: "stickies", enabled: false },
       { key: "recents", enabled: false },
       { key: "quick-links", enabled: true },
+      { key: "risks", enabled: true },
+      { key: "my-brief", enabled: false },
     ]);
+  });
+
+  it("keeps opt-in widgets off until turned on", () => {
+    expect(DEFAULT_HOME_WIDGETS.at(-1)).toEqual({
+      key: "my-brief",
+      enabled: false,
+    });
+    expect(
+      normalizeHomeWidgets([{ key: "my-brief", enabled: true }])[0],
+    ).toEqual({ key: "my-brief", enabled: true });
   });
 });
 
@@ -36,6 +48,8 @@ describe("widget list edits", () => {
       { key: "quick-links", enabled: true },
       { key: "recents", enabled: false },
       { key: "stickies", enabled: true },
+      { key: "risks", enabled: true },
+      { key: "my-brief", enabled: false },
     ]);
   });
 
@@ -44,11 +58,11 @@ describe("widget list edits", () => {
       moveWidget(DEFAULT_HOME_WIDGETS, "stickies", "quick-links").map(
         (widget) => widget.key,
       ),
-    ).toEqual(["stickies", "quick-links", "recents"]);
+    ).toEqual(["stickies", "quick-links", "recents", "risks", "my-brief"]);
     expect(
       moveWidget(DEFAULT_HOME_WIDGETS, "stickies", "unknown").map(
         (widget) => widget.key,
       ),
-    ).toEqual(["quick-links", "recents", "stickies"]);
+    ).toEqual(["quick-links", "recents", "stickies", "risks", "my-brief"]);
   });
 });

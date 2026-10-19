@@ -16,7 +16,14 @@ const SNIPPET_LIMIT = 120;
 
 /** A comment's first line, shortened: the list stays one line per entry. */
 function commentSnippet(content: string | null) {
-  const firstLine = (content ?? "").trim().split("\n")[0] ?? "";
+  // Comments store @mentions as <margaya-mention label="…"> tags.
+  const text = (content ?? "")
+    .replace(
+      /<margaya-mention[^>]*\blabel="([^"]*)"[^>]*>(?:<\/margaya-mention>)?/gi,
+      "@$1",
+    )
+    .replace(/<[^>]+>/g, "");
+  const firstLine = text.trim().split("\n")[0] ?? "";
   return firstLine.length > SNIPPET_LIMIT
     ? `${firstLine.slice(0, SNIPPET_LIMIT)}…`
     : firstLine;

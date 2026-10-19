@@ -12,6 +12,7 @@ import { useTaskAssignees } from "@/hooks/use-task-assignees";
 import { COLUMN_GROUP_META, isColumnGroup } from "@/lib/column-groups";
 import { getEntityIcon, getEntityPath } from "@/lib/entity-links";
 import { formatDateTime, formatRelativeTime } from "@/lib/format";
+import { identityColor } from "@/lib/identity-color";
 import { getPriorityIcon } from "@/lib/priority";
 
 export type RecentVisit = Awaited<ReturnType<typeof getRecentVisits>>[number];
@@ -109,6 +110,15 @@ export default function RecentRow({
   const { entity } = visit;
   const path = getEntityPath(entity, workspaceId) ?? "";
   const Icon = getEntityIcon(entity);
+  // Projects wear their identity hue; tasks and pages their area's.
+  const tone =
+    entity.type === "project"
+      ? identityColor(entity.id)
+      : entity.type === "task"
+        ? "var(--area-work)"
+        : entity.type === "page"
+          ? "var(--area-pages)"
+          : "var(--area-settings)";
   const showKey = entity.type === "task" || entity.type === "project";
   const ownerId = stringDetail(entity.details, "ownerId");
 
@@ -137,8 +147,14 @@ export default function RecentRow({
         onClick={handleClick}
         className="flex h-11 items-center gap-3 rounded-md px-2 outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
       >
-        <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted">
-          <Icon className="size-4 text-muted-foreground" aria-hidden />
+        <span
+          className="flex size-8 shrink-0 items-center justify-center rounded-md"
+          style={{
+            backgroundColor: `color-mix(in srgb, ${tone} 12%, var(--card))`,
+            color: tone,
+          }}
+        >
+          <Icon className="size-4" aria-hidden />
         </span>
         <span className="flex min-w-0 flex-1 items-baseline gap-2">
           {showKey && entity.key && (

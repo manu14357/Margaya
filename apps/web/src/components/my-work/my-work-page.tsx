@@ -1,15 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
-import {
-  Bell,
-  LayoutDashboard,
-  type LucideIcon,
-  PenLine,
-  UserRoundCheck,
-} from "lucide-react";
 import { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Layout from "@/components/common/layout";
-import type { ViewTab } from "@/components/common/view-tabs";
 import PageTitle from "@/components/page-title";
 import TaskListSurface from "@/components/task-layouts/task-list-surface";
 import { useTaskQueryState } from "@/hooks/use-task-query-state";
@@ -20,16 +12,9 @@ import {
   myWorkBaseConditions,
   myWorkDefaultState,
   presetFilters,
-  visibleMyWorkTabs,
 } from "@/lib/task-query/my-work";
 import MyWorkSummary from "./my-work-summary";
-
-const TAB_ICONS: Record<MyWorkTab, LucideIcon> = {
-  summary: LayoutDashboard,
-  assigned: UserRoundCheck,
-  created: PenLine,
-  subscribed: Bell,
-};
+import { MyWorkTabs } from "./my-work-tabs";
 
 const LAYOUTS: readonly TaskLayout[] = ["list", "board", "spreadsheet"];
 const SCOPE: TaskQueryScope = { kind: "workspace" };
@@ -136,22 +121,15 @@ export default function MyWorkPage({
       },
     });
 
-  const tabs: ViewTab[] = visibleMyWorkTabs().map((key) => ({
-    value: key,
-    label: t(`myWork:tabs.${key}`),
-    icon: TAB_ICONS[key],
-    onSelect: () => openTab(key),
-  }));
-
   return (
     <>
       <PageTitle title={t("myWork:title")} />
       <Layout>
         <Layout.TopBar title={t("myWork:title")} />
-        <Layout.ViewTabs
-          label={t("myWork:viewsLabel")}
-          tabs={tabs}
+        <MyWorkTabs
+          workspaceId={workspaceId}
           value={tab}
+          onSelectTab={(next) => openTab(next)}
         />
         {tab === "summary" ? (
           <Layout.ContentArea width="wide">

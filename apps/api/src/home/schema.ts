@@ -6,7 +6,8 @@ export const HOME_PREFERENCES_BODY_BYTES = 4 * 1024;
 export const workspaceIdQuery = z.object({ workspaceId: z.string() });
 
 export const homeWidgetKey = z.enum(HOME_WIDGET_KEYS).openapi({
-  description: "A Home widget: quick-links, recents or stickies.",
+  description:
+    "A Home widget: quick-links, recents, stickies, risks (the top risks of your current cycles; shown to people with analytics:read) or my-brief (your daily brief; opt-in, off until you turn it on).",
 });
 
 export const homeWidgetSchema = z

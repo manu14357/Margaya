@@ -14,6 +14,7 @@ import ManageWidgetsDialog from "./manage-widgets-dialog";
 const mocks = vi.hoisted(() => ({
   update: vi.fn(),
   toastError: vi.fn(),
+  canReadAnalytics: true,
 }));
 
 vi.mock("react-i18next", async (importOriginal) => ({
@@ -27,6 +28,12 @@ vi.mock("@/fetchers/home/update-home-preferences", () => ({
   default: mocks.update,
 }));
 vi.mock("@/lib/toast", () => ({ toast: { error: mocks.toastError } }));
+vi.mock("@/hooks/use-workspace-permission", () => ({
+  useWorkspacePermission: () => ({
+    canReadAnalytics: () => mocks.canReadAnalytics,
+    isCheckingPermissions: false,
+  }),
+}));
 
 let queryClient: QueryClient;
 
@@ -80,9 +87,41 @@ describe("ManageWidgetsDialog", () => {
           { key: "quick-links", enabled: true },
           { key: "recents", enabled: false },
           { key: "stickies", enabled: true },
+          { key: "risks", enabled: true },
+          { key: "my-brief", enabled: false },
         ],
       }),
     );
+  });
+
+  it("hides the risks row without analytics:read but keeps it in the list", async () => {
+    mocks.canReadAnalytics = false;
+    mocks.update.mockResolvedValue(saved);
+    renderDialog();
+    expect(
+      screen.queryByRole("switch", {
+        name: "home:manage.toggle:home:widgets.risks",
+      }),
+    ).toBeNull();
+
+    fireEvent.click(
+      screen.getByRole("switch", {
+        name: "home:manage.toggle:home:widgets.stickies",
+      }),
+    );
+    await waitFor(() =>
+      expect(mocks.update).toHaveBeenCalledWith({
+        workspaceId: "ws-1",
+        widgets: [
+          { key: "quick-links", enabled: true },
+          { key: "recents", enabled: true },
+          { key: "stickies", enabled: false },
+          { key: "risks", enabled: true },
+          { key: "my-brief", enabled: false },
+        ],
+      }),
+    );
+    mocks.canReadAnalytics = true;
   });
 
   it("rolls the cache back and toasts when saving fails", async () => {

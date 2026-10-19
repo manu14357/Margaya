@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import useUpdateHomePreferences from "@/hooks/mutations/home/use-update-home-preferences";
+import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { cn } from "@/lib/cn";
 import { toast } from "@/lib/toast";
 import {
@@ -118,6 +119,13 @@ export default function ManageWidgetsDialog({
 }: ManageWidgetsDialogProps) {
   const { t } = useTranslation();
   const updatePreferences = useUpdateHomePreferences();
+  const { canReadAnalytics, isCheckingPermissions } = useWorkspacePermission();
+  // The risks widget needs analytics:read; without it the row is left out,
+  // but the saved list still names it.
+  const listed = widgets.filter(
+    (widget) =>
+      widget.key !== "risks" || (!isCheckingPermissions && canReadAnalytics()),
+  );
 
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 4 } }),
@@ -161,11 +169,11 @@ export default function ManageWidgetsDialog({
             }
           >
             <SortableContext
-              items={widgets.map((widget) => widget.key)}
+              items={listed.map((widget) => widget.key)}
               strategy={verticalListSortingStrategy}
             >
               <ul className="space-y-0.5">
-                {widgets.map((widget) => (
+                {listed.map((widget) => (
                   <WidgetRow
                     key={widget.key}
                     widget={widget}

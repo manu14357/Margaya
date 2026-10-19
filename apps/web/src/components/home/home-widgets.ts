@@ -1,7 +1,13 @@
 // The Home widget catalog. The API keeps the same keys (api/home/widgets.ts);
 // home-page.tsx maps each key to its component.
 
-export const HOME_WIDGET_KEYS = ["quick-links", "recents", "stickies"] as const;
+export const HOME_WIDGET_KEYS = [
+  "quick-links",
+  "recents",
+  "stickies",
+  "risks",
+  "my-brief",
+] as const;
 
 export type HomeWidgetKey = (typeof HOME_WIDGET_KEYS)[number];
 export type HomeWidget = { key: HomeWidgetKey; enabled: boolean };
@@ -10,10 +16,17 @@ export const HOME_WIDGET_LABEL_KEYS: Record<HomeWidgetKey, string> = {
   "quick-links": "home:widgets.quickLinks",
   recents: "home:widgets.recents",
   stickies: "home:widgets.stickies",
+  risks: "home:widgets.risks",
+  "my-brief": "home:widgets.myBrief",
 };
 
+/** Opt-in widgets stay hidden until the person turns them on (My brief). */
+export const OPT_IN_HOME_WIDGETS: ReadonlySet<HomeWidgetKey> = new Set([
+  "my-brief",
+]);
+
 export const DEFAULT_HOME_WIDGETS: readonly HomeWidget[] = HOME_WIDGET_KEYS.map(
-  (key) => ({ key, enabled: true }),
+  (key) => ({ key, enabled: !OPT_IN_HOME_WIDGETS.has(key) }),
 );
 
 export function isHomeWidgetKey(value: unknown): value is HomeWidgetKey {
@@ -23,7 +36,7 @@ export function isHomeWidgetKey(value: unknown): value is HomeWidgetKey {
 /**
  * The list made current, as the API reads it: unknown keys dropped, the
  * first of duplicate keys kept, missing keys appended in default order,
- * enabled.
+ * enabled unless they are opt-in.
  */
 export function normalizeHomeWidgets(stored: unknown): HomeWidget[] {
   const widgets: HomeWidget[] = [];
@@ -36,7 +49,9 @@ export function normalizeHomeWidgets(stored: unknown): HomeWidget[] {
     widgets.push({ key, enabled: enabled !== false });
   }
   for (const key of HOME_WIDGET_KEYS) {
-    if (!seen.has(key)) widgets.push({ key, enabled: true });
+    if (!seen.has(key)) {
+      widgets.push({ key, enabled: !OPT_IN_HOME_WIDGETS.has(key) });
+    }
   }
   return widgets;
 }

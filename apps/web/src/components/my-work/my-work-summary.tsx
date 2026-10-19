@@ -2,13 +2,13 @@ import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import GroupProgressBar from "@/components/charts/group-progress-bar";
+import { ProjectTile } from "@/components/context-panel/panel-primitives";
 import MyWorkActivity from "@/components/my-work/my-work-activity";
 import useAuth from "@/components/providers/auth-provider/hooks/use-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import icons from "@/constants/project-icons";
 import { useMyWorkSummary } from "@/hooks/queries/task-query/use-my-work-summary";
 import { useGetActiveWorkspaceUser } from "@/hooks/queries/workspace-users/use-active-workspace-user";
 import { cn } from "@/lib/cn";
@@ -33,11 +33,14 @@ export function StatTile({
   value,
   onClick,
   tone,
+  accent,
 }: {
   label: string;
   value: ReactNode;
   onClick?: () => void;
   tone?: "danger";
+  /** The number's hue (a CSS colour); `tone="danger"` wins. */
+  accent?: string;
 }) {
   const content = (
     <>
@@ -49,13 +52,14 @@ export function StatTile({
           "font-semibold text-xl tabular-nums",
           tone === "danger" && "text-destructive-foreground",
         )}
+        style={tone !== "danger" && accent ? { color: accent } : undefined}
       >
         {value}
       </span>
     </>
   );
   return (
-    <Card className="p-0">
+    <Card className="overflow-hidden p-0">
       {onClick ? (
         <button
           type="button"
@@ -117,6 +121,7 @@ export default function MyWorkSummary({
     tab?: MyWorkListTab;
     preset?: string;
     tone?: "danger";
+    accent?: string;
   }> = [
     {
       key: "assignedOpen",
@@ -124,6 +129,7 @@ export default function MyWorkSummary({
       value: summary.counts.assignedOpen,
       tab: "assigned",
       preset: "open",
+      accent: "var(--area-work)",
     },
     {
       key: "overdue",
@@ -139,6 +145,7 @@ export default function MyWorkSummary({
       value: summary.counts.dueThisWeek,
       tab: "assigned",
       preset: "dueThisWeek",
+      accent: "var(--status-started-fg)",
     },
     {
       key: "completed30",
@@ -146,18 +153,21 @@ export default function MyWorkSummary({
       value: summary.counts.completed30,
       tab: "assigned",
       preset: "completed30",
+      accent: "var(--status-completed-fg)",
     },
     {
       key: "created",
       label: t("myWork:stats.created"),
       value: summary.counts.created,
       tab: "created",
+      accent: "var(--area-inbox)",
     },
     {
       key: "subscribed",
       label: t("myWork:stats.subscribed"),
       value: summary.counts.subscribed,
       tab: summary.counts.subscribed === null ? undefined : "subscribed",
+      accent: "var(--area-analytics)",
     },
   ];
 
@@ -206,6 +216,7 @@ export default function MyWorkSummary({
               key={tile.key}
               label={tile.label}
               tone={tile.tone}
+              accent={tile.accent}
               value={
                 isLoading ? (
                   <Skeleton className="mt-1 h-6 w-10" />
@@ -259,7 +270,10 @@ export default function MyWorkSummary({
                       <span className="min-w-0 flex-1 truncate">
                         {t(meta.labelKey)}
                       </span>
-                      <span className="text-muted-foreground tabular-nums">
+                      <span
+                        className="font-medium tabular-nums"
+                        style={{ color: meta.foreground }}
+                      >
                         {isLoading ? "" : summary.groups[group]}
                       </span>
                     </button>
@@ -291,9 +305,10 @@ export default function MyWorkSummary({
                   </span>
                   <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
                     <span
-                      className="block h-full rounded-full bg-primary/60"
+                      className="block h-full rounded-full"
                       style={{
                         width: `${(entry.count / maxPriority) * 100}%`,
+                        backgroundColor: `var(--priority-${entry.priority === "no-priority" ? "none" : entry.priority})`,
                       }}
                     />
                   </span>
@@ -323,9 +338,6 @@ export default function MyWorkSummary({
                 </p>
               )}
               {summary.projects.map((project) => {
-                const Icon =
-                  icons[(project.icon ?? "Layout") as keyof typeof icons] ??
-                  icons.Layout;
                 return (
                   <button
                     key={project.projectId}
@@ -336,7 +348,10 @@ export default function MyWorkSummary({
                     className="grid h-8 w-full grid-cols-[1fr_auto_auto] items-center gap-x-4 border-border/40 border-b px-3 text-left text-sm last:border-b-0 hover:bg-accent/40"
                   >
                     <span className="flex min-w-0 items-center gap-2">
-                      <Icon className="size-3.5 shrink-0 text-muted-foreground" />
+                      <ProjectTile
+                        icon={project.icon}
+                        seed={project.projectId}
+                      />
                       <span className="truncate">{project.name}</span>
                     </span>
                     <span className="w-14 text-right tabular-nums">

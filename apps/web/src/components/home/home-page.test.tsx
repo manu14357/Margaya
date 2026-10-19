@@ -37,6 +37,12 @@ vi.mock("./recents-widget", () => ({
 vi.mock("@/components/sticky/stickies-widget", () => ({
   default: () => <section>widget:stickies</section>,
 }));
+vi.mock("@/components/delivery/home-risks-widget", () => ({
+  default: () => <section>widget:risks</section>,
+}));
+vi.mock("@/components/insight/my-brief-widget", () => ({
+  default: () => <section>widget:my-brief</section>,
+}));
 vi.mock("@/components/task/task-details-sheet", () => ({
   default: ({ taskId }: { taskId?: string }) =>
     taskId ? <aside>sheet:{taskId}</aside> : null,
@@ -77,7 +83,12 @@ describe("HomePage", () => {
       },
     };
     renderHome();
-    expect(widgetOrder()).toEqual(["widget:stickies", "widget:recents"]);
+    // Keys missing from a stored list are appended, on.
+    expect(widgetOrder()).toEqual([
+      "widget:stickies",
+      "widget:recents",
+      "widget:risks",
+    ]);
   });
 
   it("shows the empty state with Manage widgets when every widget is off", () => {
@@ -88,6 +99,7 @@ describe("HomePage", () => {
           { key: "quick-links", enabled: false },
           { key: "recents", enabled: false },
           { key: "stickies", enabled: false },
+          { key: "risks", enabled: false },
         ],
       },
     };
@@ -109,7 +121,17 @@ describe("HomePage", () => {
       "widget:quick-links",
       "widget:recents",
       "widget:stickies",
+      "widget:risks",
     ]);
+  });
+
+  it("shows My brief only once the person turned it on", () => {
+    mocks.preferences = {
+      isLoading: false,
+      data: { widgets: [{ key: "my-brief", enabled: true }] },
+    };
+    renderHome();
+    expect(widgetOrder()[0]).toBe("widget:my-brief");
   });
 
   it("opens the task sheet only when both search params are set", () => {
