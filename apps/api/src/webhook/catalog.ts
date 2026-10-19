@@ -967,6 +967,22 @@ const ENTRIES: Record<string, EntryInput> = {
  */
 export const WEBHOOK_EXCLUDED_EVENTS: Readonly<Record<string, string>> = {
   "task-relation.refresh": "UI refresh hint, not a change",
+  "ai.settings_updated": "workspace AI settings; recorded in the audit log",
+  "ai.approval_requested":
+    "internal agent approval, delivered to the inbox of the person asked",
+  "ai.run_updated":
+    "agent run progress; the resulting task changes have their own events",
+  "agent.changed": "agent configuration; recorded in the audit log",
+  "workspace.members_changed":
+    "UI refresh hint; membership changes are in the audit log",
+  "task.coding_handoff_updated":
+    "UI refresh hint; the linked pull request and task changes carry the facts",
+  "project.access_changed":
+    "access control for restricted projects; recorded in the audit log",
+  "task.recurrence_changed":
+    "repeat settings; each new instance arrives as task.created",
+  "project.task_templates_updated":
+    "project settings; templates hold no task data until applied",
   "column.reordered": "ordering only",
   "module.reordered": "ordering only",
   "page.reordered": "ordering only",
@@ -981,6 +997,14 @@ export const WEBHOOK_EXCLUDED_EVENTS: Readonly<Record<string, string>> = {
   "mcp.authorization_code_issued": "internal",
   "workspace.created": "before any webhook can exist",
   "workspace.settings_updated": "workspace configuration",
+  "workspace.public_pages_changed": "workspace configuration",
+  "workspace.deletion_scheduled":
+    "webhooks are paused while a deletion is pending",
+  "workspace.deletion_cancelled":
+    "webhooks are paused while a deletion is pending",
+  "page.published": "public links are not shared with webhooks",
+  "page.unpublished": "public links are not shared with webhooks",
+  "page_template.changed": "template library configuration",
   "export.status_changed": "internal export progress (B13b)",
   "integration.created": "integration configuration",
   "integration.updated": "integration configuration",

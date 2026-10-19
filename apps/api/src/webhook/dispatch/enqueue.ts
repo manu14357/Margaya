@@ -96,16 +96,19 @@ async function loadContext(
   source: MappedSource,
   payload: Payload,
 ): Promise<Context | null> {
-  const [workspace] = await db
+  const [row] = await db
     .select({
       id: workspaceTable.id,
       name: workspaceTable.name,
       slug: workspaceTable.slug,
+      deletionDueAt: workspaceTable.deletionDueAt,
     })
     .from(workspaceTable)
     .where(eq(workspaceTable.id, workspaceId))
     .limit(1);
-  if (!workspace) return null;
+  // Webhooks are paused while the workspace is pending deletion.
+  if (!row || row.deletionDueAt) return null;
+  const workspace = { id: row.id, name: row.name, slug: row.slug };
 
   const projectColumns = {
     id: projectTable.id,
