@@ -91,12 +91,12 @@ describe("CalendarTaskBar", () => {
   });
 
   it.each([
-    ["to-do", "bg-slate-500/15"],
-    ["in-progress", "bg-blue-500/15"],
-    ["in-review", "bg-amber-500/15"],
-    ["done", "bg-emerald-500/15"],
-    ["custom-status", "bg-primary/12"],
-  ])("uses the %s status color", (status, expectedClass) => {
+    ["to-do", "unstarted"],
+    ["in-progress", "started"],
+    ["in-review", "review"],
+    ["done", "completed"],
+    ["custom-status", "unstarted"],
+  ])("colours the %s status with the %s tone", (status, tone) => {
     render(
       <CalendarTaskBar
         segment={{
@@ -110,6 +110,54 @@ describe("CalendarTaskBar", () => {
 
     const taskBar = screen.getByRole("button");
     expect(taskBar).toHaveAttribute("data-task-status", status);
-    expect(taskBar).toHaveClass(expectedClass);
+    expect(taskBar).toHaveAttribute("data-tone", tone);
+    expect(taskBar.style.getPropertyValue("--tone")).toBe(
+      `var(--status-${tone})`,
+    );
+  });
+
+  it("takes the tone from the project's columns", () => {
+    render(
+      <CalendarTaskBar
+        segment={{ ...segment, task: { ...segment.task, status: "shipped" } }}
+        tones={new Map([["shipped", { tone: "completed" }]])}
+        onOpenTask={vi.fn()}
+      />,
+    );
+
+    const taskBar = screen.getByRole("button");
+    expect(taskBar).toHaveAttribute("data-tone", "completed");
+    expect(taskBar).toHaveClass("line-through");
+  });
+
+  it("marks an open task past its due date as overdue", () => {
+    render(
+      <CalendarTaskBar
+        segment={{
+          ...segment,
+          task: { ...segment.task, status: "to-do", dueDate: "2020-01-01" },
+        }}
+        onOpenTask={vi.fn()}
+      />,
+    );
+
+    const taskBar = screen.getByRole("button");
+    expect(taskBar).toHaveAttribute("data-overdue", "true");
+    expect(taskBar).toHaveClass("border-l-destructive");
+    expect(taskBar.getAttribute("aria-label")).toContain("Overdue");
+  });
+
+  it("never marks a finished task overdue", () => {
+    render(
+      <CalendarTaskBar
+        segment={{
+          ...segment,
+          task: { ...segment.task, status: "done", dueDate: "2020-01-01" },
+        }}
+        onOpenTask={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByRole("button")).not.toHaveAttribute("data-overdue");
   });
 });

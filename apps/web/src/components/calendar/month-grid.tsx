@@ -18,7 +18,7 @@ import CalendarDayCell from "./calendar-day-cell";
 import CalendarTaskBar, {
   type CalendarDragData,
   type CalendarTask,
-  getCalendarTaskStatusClass,
+  calendarChipClass,
 } from "./calendar-task-bar";
 import DayOverflowPopover from "./day-overflow-popover";
 import {
@@ -26,6 +26,7 @@ import {
   toVisibleColumns,
   visibleDayIndexes,
 } from "./month-grid-model";
+import { isClosedTone, type ToneInfo, toneOf, toneStyle } from "./status-tone";
 
 type MonthGridProps = {
   weeks: Date[][];
@@ -39,8 +40,10 @@ type MonthGridProps = {
   /** Drag to reschedule: only for people who can edit task dates. */
   canEditDates?: boolean;
   onReschedule?: (taskId: string, grabbedDay: Date, dropDay: Date) => void;
-  /** Present when the viewer can create tasks. */
-  onCreateTask?: (day: Date) => void;
+  /** Present when the viewer can create tasks; gets the "+" to anchor to. */
+  onCreateTask?: (day: Date, anchor: HTMLElement) => void;
+  /** Status tones by slug, from the project's columns. */
+  tones?: ReadonlyMap<string, ToneInfo>;
 };
 
 function pointerClientX(event: Event): number | null {
@@ -64,7 +67,11 @@ export default function MonthGrid({
   canEditDates = false,
   onReschedule,
   onCreateTask,
+  tones,
 }: MonthGridProps): JSX.Element {
+  // Without a month to dim against, this is the week view: one tall row with
+  // the dates in the column headers.
+  const isWeekView = !visibleMonth;
   const weekdayTemplate = weeks[0] ?? [];
   const visibleIndexes = useMemo(
     () => visibleDayIndexes(weekdayTemplate, showWeekends),
@@ -133,12 +140,37 @@ export default function MonthGrid({
         >
           {visibleIndexes.map((dayIndex) => {
             const day = weekdayTemplate[dayIndex];
+            const today = isWeekView && isToday(day);
             return (
               <div
                 key={`weekday-${day.toISOString()}`}
-                className="border-r border-border/60 px-1 py-2 text-center text-[11px] font-medium uppercase tracking-wide text-muted-foreground"
+                className={cn(
+                  "flex items-center justify-center gap-1.5 border-r border-border/60 px-1 text-center",
+                  isWeekView ? "py-1.5" : "py-2",
+                  today && "bg-(color:--today-tint)",
+                )}
               >
-                {formatDate(day, { weekday: "short" })}
+                <span
+                  data-weekday-label
+                  className={cn(
+                    "text-[11px] font-medium uppercase tracking-wide",
+                    today ? "text-(color:--today)" : "text-muted-foreground",
+                  )}
+                >
+                  {formatDate(day, { weekday: "short" })}
+                </span>
+                {isWeekView ? (
+                  <span
+                    className={cn(
+                      "flex size-7 items-center justify-center rounded-full text-sm font-semibold tabular-nums",
+                      today
+                        ? "bg-(color:--today) text-background"
+                        : "text-foreground",
+                    )}
+                  >
+                    {format(day, "d")}
+                  </span>
+                ) : null}
               </div>
             );
           })}
@@ -152,12 +184,16 @@ export default function MonthGrid({
             return (
               <div
                 key={`week-${week[0].toISOString()}`}
-                className="relative grid min-h-24 flex-1 border-b border-border/70 sm:min-h-28"
+                className={cn(
+                  "relative grid flex-1 border-b border-border/70",
+                  isWeekView ? "min-h-96" : "min-h-24 sm:min-h-28",
+                )}
                 style={{
                   gridTemplateColumns: columnTemplate,
                   // Row 1 carries the date numbers, then one row per lane,
-                  // then a trailing row for the per-day overflow hint.
-                  gridTemplateRows: `auto repeat(${maxLanes}, min-content) auto`,
+                  // then a trailing row for the per-day overflow hint, which takes
+                  // the spare height so the lanes stay at the top.
+                  gridTemplateRows: `auto repeat(${maxLanes}, min-content) minmax(auto, 1fr)`,
                 }}
               >
                 {visibleIndexes.map((dayIndex, position) => (
@@ -167,6 +203,10 @@ export default function MonthGrid({
                     column={position + 1}
                     canDrop={canDrag}
                     onCreateTask={onCreateTask}
+                    outsideMonth={
+                      visibleMonth !== undefined &&
+                      !isSameMonth(week[dayIndex], visibleMonth)
+                    }
                   />
                 ))}
 
@@ -176,19 +216,22 @@ export default function MonthGrid({
                     <div
                       key={`number-${day.toISOString()}`}
                       style={{ gridColumn: position + 1, gridRow: 1 }}
-                      className="pointer-events-none z-10 flex justify-end px-1 py-1"
+                      className="pointer-events-none z-10 flex h-7 justify-end px-1 py-1"
                     >
-                      <span
-                        className={cn(
-                          "flex size-5 items-center justify-center rounded-full text-[11px] font-medium",
-                          visibleMonth &&
+                      {/* The week view shows its dates in the column headers. */}
+                      {visibleMonth ? (
+                        <span
+                          className={cn(
+                            "flex size-5 items-center justify-center rounded-full text-[11px] font-medium tabular-nums",
                             !isSameMonth(day, visibleMonth) &&
-                            "text-muted-foreground/60",
-                          isToday(day) && "bg-primary text-primary-foreground",
-                        )}
-                      >
-                        {format(day, "d")}
-                      </span>
+                              "text-muted-foreground",
+                            isToday(day) &&
+                              "bg-(color:--today) font-semibold text-background",
+                          )}
+                        >
+                          {format(day, "d")}
+                        </span>
+                      ) : null}
                     </div>
                   );
                 })}
@@ -207,6 +250,7 @@ export default function MonthGrid({
                       onOpenTask={onOpenTask}
                       canDrag={canDrag}
                       dragDays={dragDays}
+                      tones={tones}
                     />
                   );
                 })}
@@ -228,6 +272,7 @@ export default function MonthGrid({
                         hiddenCount={hiddenCountByDay[dayIndex]}
                         projectSlug={projectSlug}
                         onOpenTask={onOpenTask}
+                        tones={tones}
                       />
                     </div>
                   ) : null;
@@ -240,11 +285,15 @@ export default function MonthGrid({
 
       <DragOverlay dropAnimation={null}>
         {draggedTask ? (
-          <div className="max-w-48 rounded-md bg-background shadow-md">
+          <div className="max-w-48 rounded-[4px] bg-background shadow-lg ring-2 ring-primary/40">
             <div
+              style={toneStyle(toneOf(draggedTask.status, tones))}
               className={cn(
-                "flex h-6 items-center rounded-md border px-1.5 text-[11px] font-medium text-foreground sm:h-5",
-                getCalendarTaskStatusClass(draggedTask.status),
+                "flex h-6 items-center rounded-[4px] px-1.5 text-[11px] font-medium sm:h-5",
+                calendarChipClass({
+                  closed: isClosedTone(toneOf(draggedTask.status, tones).tone),
+                  overdue: false,
+                }),
               )}
             >
               <span className="truncate">{draggedTask.title}</span>

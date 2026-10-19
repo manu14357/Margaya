@@ -151,3 +151,90 @@ export function barHorizontalBox(
     right: (last + 1) * pixelsPerDay - inset,
   };
 }
+
+type Point = { x: number; y: number };
+
+/** The corners of a connector built by `dependencyPath` (M, H and V only). */
+export function connectorPoints(d: string): Point[] {
+  const tokens = d.trim().split(/\s+/);
+  const points: Point[] = [];
+  let x = 0;
+  let y = 0;
+  for (let index = 0; index < tokens.length; index += 1) {
+    const command = tokens[index];
+    if (command === "M") {
+      x = Number(tokens[++index]);
+      y = Number(tokens[++index]);
+    } else if (command === "H") {
+      x = Number(tokens[++index]);
+    } else if (command === "V") {
+      y = Number(tokens[++index]);
+    } else {
+      continue;
+    }
+    points.push({ x, y });
+  }
+  return points;
+}
+
+/**
+ * The same connector with each corner rounded by up to `radius`, never more
+ * than half of either neighbouring run, so short steps stay crisp and the
+ * last run (where the arrowhead sits) stays straight.
+ */
+export function roundedConnectorPath(points: readonly Point[], radius = 4) {
+  if (points.length === 0) return "";
+  const [first] = points;
+  let path = `M ${first.x} ${first.y}`;
+  for (let index = 1; index < points.length - 1; index += 1) {
+    const previous = points[index - 1];
+    const corner = points[index];
+    const next = points[index + 1];
+    const inLength = Math.hypot(corner.x - previous.x, corner.y - previous.y);
+    const outLength = Math.hypot(next.x - corner.x, next.y - corner.y);
+    const r = Math.min(radius, inLength / 2, outLength / 2);
+    if (r <= 0) {
+      path += ` L ${corner.x} ${corner.y}`;
+      continue;
+    }
+    const before = {
+      x: corner.x - ((corner.x - previous.x) / inLength) * r,
+      y: corner.y - ((corner.y - previous.y) / inLength) * r,
+    };
+    const after = {
+      x: corner.x + ((next.x - corner.x) / outLength) * r,
+      y: corner.y + ((next.y - corner.y) / outLength) * r,
+    };
+    path += ` L ${before.x} ${before.y} Q ${corner.x} ${corner.y} ${after.x} ${after.y}`;
+  }
+  const last = points[points.length - 1];
+  if (points.length > 1) path += ` L ${last.x} ${last.y}`;
+  return path;
+}
+
+/** The point halfway along a connector, where a conflict's marker sits. */
+export function connectorMidpoint(points: readonly Point[]): Point | null {
+  if (points.length === 0) return null;
+  let total = 0;
+  for (let index = 1; index < points.length; index += 1) {
+    total += Math.hypot(
+      points[index].x - points[index - 1].x,
+      points[index].y - points[index - 1].y,
+    );
+  }
+  let remaining = total / 2;
+  for (let index = 1; index < points.length; index += 1) {
+    const from = points[index - 1];
+    const to = points[index];
+    const length = Math.hypot(to.x - from.x, to.y - from.y);
+    if (length >= remaining && length > 0) {
+      const share = remaining / length;
+      return {
+        x: from.x + (to.x - from.x) * share,
+        y: from.y + (to.y - from.y) * share,
+      };
+    }
+    remaining -= length;
+  }
+  return points[points.length - 1];
+}

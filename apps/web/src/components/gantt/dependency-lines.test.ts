@@ -2,9 +2,12 @@ import { describe, expect, it } from "vitest";
 import {
   barHorizontalBox,
   buildDependencyLines,
+  connectorMidpoint,
+  connectorPoints,
   type DependencyRelation,
   dependencyPath,
   isDependencyConflict,
+  roundedConnectorPath,
 } from "./dependency-lines";
 
 const day = (month: number, date: number) => new Date(2026, month - 1, date);
@@ -129,5 +132,30 @@ describe("barHorizontalBox", () => {
     expect(
       barHorizontalBox(span(day(11, 1), day(11, 2)), rangeStart, 30, 40),
     ).toBeNull();
+  });
+});
+
+describe("rounded connectors", () => {
+  it("reads the corners of an orthogonal connector", () => {
+    expect(connectorPoints("M 100 20 H 108 V 60 H 200")).toEqual([
+      { x: 100, y: 20 },
+      { x: 108, y: 20 },
+      { x: 108, y: 60 },
+      { x: 200, y: 60 },
+    ]);
+  });
+
+  it("rounds each corner without eating short runs", () => {
+    const points = connectorPoints("M 100 20 H 108 V 60 H 200");
+    expect(roundedConnectorPath(points, 6)).toBe(
+      "M 100 20 L 104 20 Q 108 20 108 24 L 108 54 Q 108 60 114 60 L 200 60",
+    );
+  });
+
+  it("finds the halfway point along the connector", () => {
+    expect(connectorMidpoint(connectorPoints("M 0 0 H 10 V 20 H 30"))).toEqual({
+      x: 10,
+      y: 15,
+    });
   });
 });

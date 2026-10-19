@@ -4,7 +4,10 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/format";
 import type { CalendarMode } from "@/store/schedule-view-preferences";
-import ViewChoice, { viewChoiceButtonClass } from "./view-choice";
+import ViewChoice, {
+  VIEW_CHOICE_TRAY_CLASS,
+  viewChoiceButtonClass,
+} from "./view-choice";
 
 type CalendarToolbarProps = {
   /** The visible month, or the first day of the visible week. */
@@ -58,14 +61,16 @@ export default function CalendarToolbar({
           { value: "week", label: t("tasks:calendar.week") },
         ]}
       />
-      <button
-        type="button"
-        aria-pressed={showWeekends}
-        onClick={() => onShowWeekendsChange(!showWeekends)}
-        className={viewChoiceButtonClass(showWeekends)}
-      >
-        {t("tasks:calendar.showWeekends")}
-      </button>
+      <span className={VIEW_CHOICE_TRAY_CLASS}>
+        <button
+          type="button"
+          aria-pressed={showWeekends}
+          onClick={() => onShowWeekendsChange(!showWeekends)}
+          className={viewChoiceButtonClass(showWeekends)}
+        >
+          {t("tasks:calendar.showWeekends")}
+        </button>
+      </span>
       <span
         className="hidden truncate font-medium text-foreground text-xs sm:inline"
         data-testid="calendar-month-label"

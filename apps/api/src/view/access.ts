@@ -7,7 +7,9 @@ import {
   assertProjectFeatureEnabled,
   featureDisabledMessage,
 } from "../project/features";
+import { canSeeProject } from "../project/visibility";
 import { PROJECT_NOT_FOUND } from "../task-query/context";
+import { hasWorkspacePermission } from "../utils/require-workspace-permission";
 import { validateWorkspaceAccess } from "../utils/validate-workspace-access";
 
 export { visibleViewCondition } from "./visibility";
@@ -47,6 +49,7 @@ export function viewAccess(idKey = "id") {
       userId,
       view.workspaceId,
       c.get("apiKey")?.id,
+      view.projectId,
     );
 
     c.set("workspaceId", view.workspaceId);
@@ -95,7 +98,8 @@ export function viewProjectScope(location: "query" | "body") {
           ),
         )
         .limit(1);
-      if (!project) {
+      // A restricted project the caller cannot see reads as missing.
+      if (!project || !(await canSeeProject(c.get("userId"), projectId))) {
         throw new HTTPException(404, { message: PROJECT_NOT_FOUND });
       }
       if (!project.viewsEnabled) {
@@ -105,6 +109,15 @@ export function viewProjectScope(location: "query" | "body") {
       }
     }
     c.set("projectId", projectId);
+    // In a restricted project the project role caps the right too.
+    if (
+      projectId &&
+      !(await hasWorkspacePermission(c, {
+        view: [location === "body" ? "create" : "read"],
+      }))
+    ) {
+      throw new HTTPException(403, { message: "Insufficient permissions" });
+    }
     return next();
   };
 }

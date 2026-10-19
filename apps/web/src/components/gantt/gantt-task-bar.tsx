@@ -1,6 +1,13 @@
 import { addDays, differenceInCalendarDays } from "date-fns";
-import { useCallback, useEffect, useState } from "react";
+import { Check } from "lucide-react";
+import { type CSSProperties, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  isClosedTone,
+  PriorityDot,
+  type ToneInfo,
+  toneStyle,
+} from "@/components/calendar/status-tone";
 import AssigneeAvatarStack from "@/components/task/assignee-avatar-stack";
 import { useUpdateTaskDates } from "@/hooks/mutations/task/use-update-task-dates";
 import { cn } from "@/lib/cn";
@@ -12,6 +19,10 @@ import type Task from "@/types/task";
 
 const CLICK_MOVE_THRESHOLD_PX = 4;
 const MOBILE_MOVE_THRESHOLD_PX = 14;
+// A rough average glyph width of the bar's 12px medium text. Only decides
+// whether the title goes inside the bar or beside it, so it errs wide.
+const TITLE_CHAR_PX = 6.6;
+const AVATAR_PX = 12;
 
 type ScheduledTask = Task & {
   scheduleStart: Date;
@@ -30,6 +41,8 @@ type GanttTaskBarProps = {
   /** Without task:update the bar only opens the task. */
   canEdit?: boolean;
   onOpenTask: () => void;
+  /** The task's status colour; the default columns' tone otherwise. */
+  tone?: ToneInfo;
 };
 
 function getBarGridColumns(
@@ -59,6 +72,7 @@ export function GanttTaskBar({
   isMobile = false,
   canEdit = true,
   onOpenTask,
+  tone = { tone: "unstarted" },
 }: GanttTaskBarProps) {
   const { t } = useTranslation();
   const showAssignees = useUserPreferencesStore((state) => state.showAssignees);
@@ -297,6 +311,37 @@ export function GanttTaskBar({
     return null;
   }
 
+  const done = tone.tone === "completed";
+  const cancelled = tone.tone === "cancelled";
+  const closed = isClosedTone(tone.tone);
+  const visibleAssignees = showAssignees ? assignees.slice(0, 2) : [];
+  // Whether the title (with its dot, check and faces) fits inside the bar;
+  // otherwise it reads beside the bar, to the right.
+  const handlesPx = isMobile ? 88 : 16;
+  const barWidthPx = (lineEnd - lineStart) * pixelsPerDay - 8;
+  const contentPx =
+    task.title.length * TITLE_CHAR_PX +
+    20 +
+    (done || task.priority ? 14 : 0) +
+    (visibleAssignees.length > 0 ? visibleAssignees.length * AVATAR_PX + 8 : 0);
+  const titleInside = barWidthPx - handlesPx >= contentPx;
+  const faces =
+    visibleAssignees.length > 0 ? (
+      <AssigneeAvatarStack
+        assignees={assignees}
+        max={2}
+        size="xs"
+        ring="background"
+        decorative
+        className="shrink-0"
+      />
+    ) : null;
+  const leading = done ? (
+    <Check aria-hidden="true" strokeWidth={3} className="size-3 shrink-0" />
+  ) : (
+    <PriorityDot priority={task.priority} className="ring-1 ring-background" />
+  );
+
   return (
     <div
       className="pointer-events-none absolute inset-0 z-[1] grid items-center"
@@ -305,61 +350,100 @@ export function GanttTaskBar({
       }}
     >
       <div
-        style={{ gridColumn: `${lineStart} / ${lineEnd}` }}
-        className="group pointer-events-auto relative mx-1 flex min-h-[44px] min-w-0 items-stretch overflow-hidden rounded-md border border-primary/25 bg-background text-left text-sm font-medium leading-none text-foreground shadow-sm transition-colors hover:border-primary/40 sm:h-11 sm:min-h-0"
+        style={
+          {
+            ...toneStyle(tone),
+            // Text on a solid (done) bar: the tone, darkened to an ink.
+            "--tone-ink": "color-mix(in srgb, var(--tone) 22%, #000)",
+            gridColumn: `${lineStart} / ${lineEnd}`,
+          } as CSSProperties
+        }
+        data-tone={tone.tone}
+        data-done={done || undefined}
+        className="relative mx-1 flex min-w-0 items-center"
       >
-        <button
-          type="button"
-          aria-label={t("tasks:gantt.resizeStart")}
-          disabled={!canEdit || !startIsVisible}
-          onPointerDown={handleResizeLeftPointerDown}
+        <div
           className={cn(
-            "relative z-20 shrink-0 cursor-ew-resize touch-none border-r border-primary/15 bg-primary/8 hover:bg-primary/18",
-            "min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 sm:w-2",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
+            "group pointer-events-auto relative flex min-h-[44px] w-full min-w-0 items-stretch overflow-hidden rounded-md border text-left text-xs font-medium leading-none shadow-xs transition-[box-shadow,border-color] hover:shadow-md sm:h-7 sm:min-h-0",
+            done
+              ? "border-(color:--tone) bg-(color:--tone) text-(color:--tone-ink)"
+              : "border-(color:--tone)/40 bg-(color:--tone-tint) text-(color:--tone-fg) hover:border-(color:--tone)/70",
+            cancelled && "text-muted-foreground line-through",
           )}
-        />
-        <button
-          type="button"
-          aria-label={t("tasks:gantt.taskAriaLabel", { title: task.title })}
-          title={task.title}
-          className={cn(
-            "relative z-10 min-h-[44px] min-w-0 flex-1 touch-manipulation overflow-hidden px-2 text-left sm:min-h-0 sm:px-2.5",
-            canEdit && "cursor-grab active:cursor-grabbing",
-          )}
-          onPointerDown={handleMovePointerDown}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              onOpenTask();
-            }
-          }}
         >
-          <div className="absolute inset-0 z-0 bg-primary/12 transition-colors group-hover:bg-primary/18" />
-          <span className="relative z-10 flex min-w-0 items-center gap-1.5">
-            <span className="min-w-0 flex-1 truncate">{task.title}</span>
-            {showAssignees && assignees.length > 0 && (
-              <AssigneeAvatarStack
-                assignees={assignees}
-                max={2}
-                size="xs"
-                ring="background"
-                decorative
+          <button
+            type="button"
+            aria-label={t("tasks:gantt.resizeStart")}
+            disabled={!canEdit || !startIsVisible}
+            onPointerDown={handleResizeLeftPointerDown}
+            className={cn(
+              "relative z-20 shrink-0 cursor-ew-resize touch-none hover:bg-(color:--tone)/25 disabled:cursor-default",
+              "min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 sm:w-2",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+            )}
+          >
+            {/* The solid cap that marks the status on an open bar. */}
+            {done || !startIsVisible ? null : (
+              <span
+                aria-hidden="true"
+                className="absolute inset-y-0 left-0 w-1 bg-(color:--tone)"
               />
             )}
+          </button>
+          <button
+            type="button"
+            aria-label={t("tasks:gantt.taskAriaLabel", { title: task.title })}
+            title={task.title}
+            className={cn(
+              "relative z-10 flex min-h-[44px] min-w-0 flex-1 touch-manipulation items-center gap-1.5 overflow-hidden px-1.5 text-left sm:min-h-0",
+              canEdit && "cursor-grab active:cursor-grabbing",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+            )}
+            onPointerDown={handleMovePointerDown}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onOpenTask();
+              }
+            }}
+          >
+            {titleInside ? (
+              <>
+                {leading}
+                <span className="min-w-0 flex-1 truncate">{task.title}</span>
+                {faces}
+              </>
+            ) : done && barWidthPx - handlesPx >= 16 ? (
+              leading
+            ) : null}
+          </button>
+          <button
+            type="button"
+            aria-label={t("tasks:gantt.resizeDue")}
+            disabled={!canEdit || !endIsVisible}
+            onPointerDown={handleResizeRightPointerDown}
+            className={cn(
+              "relative z-20 shrink-0 cursor-ew-resize touch-none hover:bg-(color:--tone)/25 disabled:cursor-default",
+              "min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 sm:w-2",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+            )}
+          />
+        </div>
+        {titleInside ? null : (
+          // Beside the bar: the bar's own button already names the task.
+          <span
+            aria-hidden="true"
+            className={cn(
+              "pointer-events-none absolute left-full ml-1.5 flex items-center gap-1.5 whitespace-nowrap rounded-sm bg-background/85 px-1 text-xs font-medium text-foreground",
+              closed && "text-muted-foreground",
+              cancelled && "line-through",
+            )}
+          >
+            {done ? null : <PriorityDot priority={task.priority} />}
+            {task.title}
+            {faces}
           </span>
-        </button>
-        <button
-          type="button"
-          aria-label={t("tasks:gantt.resizeDue")}
-          disabled={!canEdit || !endIsVisible}
-          onPointerDown={handleResizeRightPointerDown}
-          className={cn(
-            "relative z-20 shrink-0 cursor-ew-resize touch-none border-l border-primary/15 bg-primary/8 hover:bg-primary/18",
-            "min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 sm:w-2",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
-          )}
-        />
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,10 @@
 import { type JSX, memo, useId } from "react";
-import type { DependencyLine } from "./dependency-lines";
+import {
+  connectorMidpoint,
+  connectorPoints,
+  type DependencyLine,
+  roundedConnectorPath,
+} from "./dependency-lines";
 
 type GanttDependencyLayerProps = {
   lines: DependencyLine[];
@@ -12,23 +17,31 @@ function ArrowMarker({ id }: { id: string }) {
   return (
     <marker
       id={id}
-      viewBox="0 0 6 6"
-      refX="5"
-      refY="3"
-      markerWidth="6"
-      markerHeight="6"
+      viewBox="0 0 8 8"
+      refX="7"
+      refY="4"
+      markerWidth="7"
+      markerHeight="7"
+      markerUnits="userSpaceOnUse"
       orient="auto-start-reverse"
     >
-      <path d="M 0 0 L 6 3 L 0 6 z" fill="currentColor" />
+      <path
+        d="M 0.5 0.5 L 7.5 4 L 0.5 7.5 z"
+        fill="currentColor"
+        stroke="currentColor"
+        strokeLinejoin="round"
+      />
     </marker>
   );
 }
 
 /**
- * Connectors between related bars, drawn under the bars. Purely visual: a
+ * Connectors between related bars, drawn under the bars, with rounded
+ * corners and an arrowhead at the dependent's edge. Purely visual: a
  * conflict is also flagged in the task list, which is what screen readers
- * get. Each group sets its colour through `currentColor`, so the arrowheads
- * defined inside it match its lines.
+ * get; here it is drawn in the conflict colour with a warning dot halfway
+ * along. Each group sets its colour through `currentColor`, so the
+ * arrowheads defined inside it match its lines.
  */
 function GanttDependencyLayer({
   lines,
@@ -48,7 +61,7 @@ function GanttDependencyLayer({
       className="pointer-events-none absolute top-0 z-[5] h-full overflow-visible"
       style={{ left, width: `${widthRem}rem` }}
     >
-      <g className="text-muted-foreground">
+      <g style={{ color: "var(--dependency)" }}>
         <defs>
           <ArrowMarker id={okArrow} />
         </defs>
@@ -57,35 +70,61 @@ function GanttDependencyLayer({
           .map((line) => (
             <path
               key={line.id}
-              d={line.d}
+              d={roundedConnectorPath(connectorPoints(line.d))}
               fill="none"
               stroke="currentColor"
-              strokeWidth={1.25}
+              strokeWidth={1.5}
+              strokeLinecap="round"
               strokeLinejoin="round"
               markerEnd={`url(#${okArrow})`}
               data-relation-type={line.type}
             />
           ))}
       </g>
-      <g className="text-destructive">
+      <g style={{ color: "var(--dependency-conflict)" }}>
         <defs>
           <ArrowMarker id={conflictArrow} />
         </defs>
         {lines
           .filter((line) => line.conflict)
-          .map((line) => (
-            <path
-              key={line.id}
-              d={line.d}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.75}
-              strokeLinejoin="round"
-              markerEnd={`url(#${conflictArrow})`}
-              data-relation-type={line.type}
-              data-conflict="true"
-            />
-          ))}
+          .map((line) => {
+            const points = connectorPoints(line.d);
+            const middle = connectorMidpoint(points);
+            return (
+              <g key={line.id}>
+                <path
+                  d={roundedConnectorPath(points)}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.75}
+                  strokeDasharray="5 3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  markerEnd={`url(#${conflictArrow})`}
+                  data-relation-type={line.type}
+                  data-conflict="true"
+                />
+                {middle ? (
+                  <g data-conflict-marker="true">
+                    <circle
+                      cx={middle.x}
+                      cy={middle.y}
+                      r={6}
+                      fill="currentColor"
+                      stroke="var(--background)"
+                      strokeWidth={1.5}
+                    />
+                    <path
+                      d={`M ${middle.x} ${middle.y - 3} V ${middle.y + 0.5} M ${middle.x} ${middle.y + 2.5} V ${middle.y + 2.6}`}
+                      stroke="var(--background)"
+                      strokeWidth={1.5}
+                      strokeLinecap="round"
+                    />
+                  </g>
+                ) : null}
+              </g>
+            );
+          })}
       </g>
     </svg>
   );

@@ -48,7 +48,7 @@ const tasks: CalendarTask[] = [
 
 function headers(container: HTMLElement) {
   return Array.from(
-    container.querySelectorAll(".sticky > div"),
+    container.querySelectorAll("[data-weekday-label]"),
     (cell) => cell.textContent,
   );
 }
@@ -111,7 +111,10 @@ describe("MonthGrid display choices", () => {
         name: "tasks:calendar.addTaskOn:2026-10-14",
       }),
     );
-    expect(onCreateTask).toHaveBeenCalledWith(WEDNESDAY);
+    expect(onCreateTask).toHaveBeenCalledWith(
+      WEDNESDAY,
+      expect.any(HTMLButtonElement),
+    );
 
     rerender(
       <MonthGrid

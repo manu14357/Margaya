@@ -42,7 +42,10 @@ vi.mock("@/hooks/queries/task-relation/use-get-project-dependencies", () => ({
   useGetProjectDependencies: () => ({ data: undefined }),
 }));
 vi.mock("@/hooks/use-workspace-permission", () => ({
-  useWorkspacePermission: () => ({ canUpdateTasks: () => true }),
+  useWorkspacePermission: () => ({
+    canUpdateTasks: () => true,
+    canCreateTasks: () => false,
+  }),
 }));
 vi.mock("@/hooks/use-mobile", () => ({ useIsMobile: () => false }));
 vi.mock("@/store/user-preferences", () => ({
@@ -50,6 +53,7 @@ vi.mock("@/store/user-preferences", () => ({
 }));
 vi.mock("@/lib/i18n/domain", () => ({
   getStatusLabel: (status: string) => status,
+  getPriorityLabel: (priority: string) => priority,
 }));
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),

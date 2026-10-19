@@ -3,19 +3,24 @@ import { useCallback, useMemo } from "react";
 import TaskListSurface from "@/components/task-layouts/task-list-surface";
 import { useTaskQueryState } from "@/hooks/use-task-query-state";
 import type { TaskLayout, TaskQueryScope } from "@/lib/task-query/model";
-import { viewScopeOf, viewToState } from "@/lib/task-query/view-state";
+import {
+  PROJECT_VIEW_LAYOUTS,
+  viewScopeOf,
+  viewToState,
+  WORKSPACE_VIEW_LAYOUTS,
+} from "@/lib/task-query/view-state";
 import type { SavedView } from "@/types/view";
 import SaveViewActions from "./save-view-actions";
 
 /**
- * The layouts a view page offers. Calendar and gantt stay on the project's
- * own pages; a view saved with them opens as a list.
+ * The layouts a view page offers: a project's view also has its Calendar and
+ * Gantt; a workspace view spans projects, so it keeps to the task lists.
  */
-export const VIEW_PAGE_LAYOUTS: readonly TaskLayout[] = [
-  "list",
-  "board",
-  "spreadsheet",
-];
+export function viewPageLayouts(
+  view: Pick<SavedView, "projectId">,
+): readonly TaskLayout[] {
+  return view.projectId ? PROJECT_VIEW_LAYOUTS : WORKSPACE_VIEW_LAYOUTS;
+}
 
 type SavedViewBodyProps = {
   view: SavedView;
@@ -37,12 +42,13 @@ export default function SavedViewBody({ view, taskId }: SavedViewBodyProps) {
     [view.projectId],
   );
   const baseline = useMemo(() => viewToState(view), [view]);
+  const layouts = viewPageLayouts(view);
   const handle = useTaskQueryState({
     storageScope: `view:${view.id}`,
     scope: scopeKind,
     workspaceId: view.workspaceId,
     baseline,
-    allowedLayouts: VIEW_PAGE_LAYOUTS,
+    allowedLayouts: layouts,
   });
 
   const closeTask = useCallback(() => {
@@ -61,7 +67,7 @@ export default function SavedViewBody({ view, taskId }: SavedViewBodyProps) {
       workspaceId={view.workspaceId}
       scope={scope}
       handle={handle}
-      layouts={VIEW_PAGE_LAYOUTS}
+      layouts={layouts}
       storageKey={`view:${view.id}`}
       showCount
       actions={

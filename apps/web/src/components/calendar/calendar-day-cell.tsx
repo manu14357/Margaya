@@ -1,5 +1,5 @@
 import { useDroppable } from "@dnd-kit/core";
-import { format, isWeekend } from "date-fns";
+import { format, isToday, isWeekend } from "date-fns";
 import { Plus } from "lucide-react";
 import type { JSX } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,8 +11,10 @@ type CalendarDayCellProps = {
   column: number;
   /** Drops are only accepted from people who can edit dates. */
   canDrop: boolean;
-  /** Present when the viewer can create tasks. */
-  onCreateTask?: (day: Date) => void;
+  /** Present when the viewer can create tasks; gets the "+" to anchor to. */
+  onCreateTask?: (day: Date, anchor: HTMLElement) => void;
+  /** A day of the neighbouring month in the month view: dimmed. */
+  outsideMonth?: boolean;
 };
 
 /**
@@ -24,6 +26,7 @@ export default function CalendarDayCell({
   column,
   canDrop,
   onCreateTask,
+  outsideMonth = false,
 }: CalendarDayCellProps): JSX.Element {
   const { t } = useTranslation();
   const { setNodeRef, isOver } = useDroppable({
@@ -37,10 +40,14 @@ export default function CalendarDayCell({
       ref={setNodeRef}
       style={{ gridColumn: column, gridRow: "1 / -1" }}
       data-calendar-day={format(day, "yyyy-MM-dd")}
+      data-today={isToday(day) || undefined}
       className={cn(
-        "group/day relative min-w-0 border-r border-border/60 transition-colors",
-        isWeekend(day) && "bg-muted/25",
-        isOver && "bg-accent/60",
+        "group/day relative min-w-0 border-r border-border/60 transition-[background-color,box-shadow]",
+        isWeekend(day) && "bg-(color:--weekend-tint)",
+        outsideMonth && "bg-muted/50",
+        isToday(day) && "bg-(color:--today-tint)",
+        // The day a dragged task would land on glows in the primary colour.
+        isOver && "bg-primary/10 shadow-[inset_0_0_0_2px_var(--primary)]",
       )}
     >
       {onCreateTask ? (
@@ -53,8 +60,8 @@ export default function CalendarDayCell({
               day: "numeric",
             }),
           })}
-          onClick={() => onCreateTask(day)}
-          className="absolute top-1 left-1 z-20 flex size-5 items-center justify-center rounded-sm text-muted-foreground opacity-0 transition-opacity hover:bg-accent hover:text-foreground focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group-hover/day:opacity-100 [@media(hover:none)]:opacity-100"
+          onClick={(event) => onCreateTask(day, event.currentTarget)}
+          className="absolute top-1 left-1 z-20 flex size-5 items-center justify-center rounded-sm text-primary opacity-0 transition-opacity hover:bg-primary hover:text-primary-foreground focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group-hover/day:opacity-100 [@media(hover:none)]:opacity-100"
         >
           <Plus className="size-3.5" />
         </button>
