@@ -17,6 +17,7 @@ import {
   storeIntakeSort,
   toIntakeSearch,
 } from "@/lib/intake-search";
+import { shortcutKey } from "@/lib/shortcut-key";
 import type { IntakeFilters, IntakeItem, IntakeTab } from "@/types/intake";
 import IntakeDetail, {
   type IntakeTriageCommand,
@@ -242,7 +243,8 @@ export default function IntakeScreen({
   useEffect(() => {
     const onKeyDown = (event: globalThis.KeyboardEvent) => {
       const previous = lastKey.current;
-      lastKey.current = { key: event.key, at: Date.now() };
+      const key = shortcutKey(event);
+      lastKey.current = { key, at: Date.now() };
       if (event.defaultPrevented || event.ctrlKey || event.metaKey) return;
       if (event.altKey || isEditingTarget(event.target) || hasOpenOverlay()) {
         return;
@@ -254,12 +256,12 @@ export default function IntakeScreen({
       ) {
         return;
       }
-      if (event.key === "j" || event.key === "k") {
+      if (!event.shiftKey && (key === "j" || key === "k")) {
         event.preventDefault();
-        moveRef.current(event.key === "j" ? 1 : -1);
+        moveRef.current(key === "j" ? 1 : -1);
         return;
       }
-      const command = TRIAGE_KEYS[event.key];
+      const command = TRIAGE_KEYS[key];
       if (!command || event.shiftKey) return;
       // Enter on a focused button or link is that control's own click.
       if (

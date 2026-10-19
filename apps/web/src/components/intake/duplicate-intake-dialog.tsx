@@ -1,9 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import TaskPickerDialog, {
   type PickerTask,
 } from "@/components/task/task-picker-dialog";
+import { checkDuplicatesWithAi } from "@/fetchers/ai/build";
 import { useTriageIntakeItem } from "@/hooks/mutations/intake/use-triage-intake-item";
+import { useAiAvailability } from "@/hooks/queries/ai/use-ai";
 import { useGetTasks } from "@/hooks/queries/task/use-get-tasks";
 import { formatIntakeKey } from "@/lib/intake";
 import { formatTaskKey } from "@/lib/task-key";
@@ -15,6 +18,8 @@ type DuplicateIntakeDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   item: IntakeItem;
+  /** The request's description, for the AI duplicate check. */
+  description?: string;
   onMarked?: (item: IntakeItem) => void;
 };
 
@@ -27,16 +32,36 @@ export default function DuplicateIntakeDialog({
   open,
   onOpenChange,
   item,
+  description,
   onMarked,
 }: DuplicateIntakeDialogProps) {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const { data: board, isLoading } = useGetTasks(open ? item.projectId : "");
   const triage = useTriageIntakeItem();
+  const { available: aiAvailable } = useAiAvailability(item.projectId);
+  const aiCheck = useMutation({ mutationFn: checkDuplicatesWithAi });
+  const aiCheckRef = useRef(aiCheck);
+  aiCheckRef.current = aiCheck;
 
   useEffect(() => {
     if (open) setQuery("");
   }, [open]);
+
+  // AI suggestions on open: the request's text against the project's tasks,
+  // re-ranked by the duplicate check. Picking one marks the duplicate.
+  useEffect(() => {
+    if (!open || !aiAvailable) return;
+    const title = item.task.title.trim().slice(0, 255);
+    if (!title) return;
+    aiCheckRef.current.mutate({
+      projectId: item.projectId,
+      title,
+      ...(description?.trim()
+        ? { description: description.trim().slice(0, 4000) }
+        : {}),
+    });
+  }, [open, aiAvailable, item.projectId, item.task.title, description]);
 
   const candidates = useMemo(() => {
     const slug = board?.slug ?? "";
@@ -67,6 +92,29 @@ export default function DuplicateIntakeDialog({
   const items = candidates.filter((task) =>
     matchesTaskQuery(query, task.key, task.title),
   );
+
+  const suggested = useMemo(() => {
+    if (!open) return [];
+    const byId = new Map(candidates.map((task) => [task.id, task]));
+    return (aiCheck.data?.tasks ?? [])
+      .filter((task) => task.id !== item.taskId)
+      .map((task): PickerTask => {
+        const known = byId.get(task.id);
+        const verdict = t(`ai:duplicates.verdict.${task.verdict}`);
+        return {
+          ...(known ?? {
+            id: task.id,
+            key: task.key,
+            title: task.title,
+            projectId: item.projectId,
+            status: task.status,
+          }),
+          label: `${task.key} ${task.title}`,
+          hint: task.reason ? `${verdict}: ${task.reason}` : verdict,
+        };
+      })
+      .filter((task) => matchesTaskQuery(query, task.key, task.title));
+  }, [aiCheck.data, candidates, item.projectId, item.taskId, open, query, t]);
 
   const handlePick = (task: PickerTask) => {
     if (triage.isPending) return;
@@ -106,6 +154,11 @@ export default function DuplicateIntakeDialog({
       placeholder={t("intake:duplicate.searchPlaceholder")}
       groups={[
         {
+          value: "ai",
+          label: t("intake:duplicate.aiSuggestions"),
+          items: suggested,
+        },
+        {
           value: "project",
           label: t("intake:duplicate.title", {
             key: formatIntakeKey(item.task.key),
@@ -114,7 +167,10 @@ export default function DuplicateIntakeDialog({
         },
       ]}
       onPick={handlePick}
-      status={status}
+      status={
+        status ??
+        (aiCheck.isPending ? t("intake:duplicate.aiChecking") : undefined)
+      }
       footer={
         <span className="text-muted-foreground/60">
           {t("intake:duplicate.description")}

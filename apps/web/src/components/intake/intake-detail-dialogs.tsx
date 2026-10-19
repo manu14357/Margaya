@@ -59,6 +59,7 @@ export default function IntakeDetailDialogs({
         open={dialog === "duplicate"}
         onOpenChange={openChange}
         item={item}
+        description={description}
         onMarked={onChanged}
       />
       <SnoozeIntakeDialog

@@ -2,6 +2,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { type RefObject, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import DescriptionTranslation from "@/components/ai/translate/description-translation";
+import TriageSuggestions from "@/components/ai/triage/triage-suggestions";
 import useAuth from "@/components/providers/auth-provider/hooks/use-auth";
 import TaskDescription from "@/components/task/task-description";
 import {
@@ -243,7 +245,25 @@ export default function IntakeDetail({
             <div className="flex min-w-0 max-w-3xl flex-1 flex-col gap-3">
               <TaskTitle taskId={item.taskId} />
               <TaskDescription taskId={item.taskId} />
+              {task?.description ? (
+                <DescriptionTranslation
+                  kind="task"
+                  id={item.taskId}
+                  text={task.description}
+                  projectId={item.projectId}
+                />
+              ) : null}
               <IntakeRequestMeta item={item} />
+              {task && (status === "pending" || status === "snoozed") && (
+                <TriageSuggestions
+                  task={task}
+                  workspaceId={workspaceId}
+                  intakeItemId={item.id}
+                  onEditDuplicate={
+                    canTriage ? () => setDialog("duplicate") : undefined
+                  }
+                />
+              )}
               <span className="block h-px w-full shrink-0 bg-border" />
               <IntakeActivityFeed
                 taskId={item.taskId}

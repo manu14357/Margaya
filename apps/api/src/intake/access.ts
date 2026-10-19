@@ -55,6 +55,7 @@ export function intakeItemAccess(idKey = "id") {
       userId,
       item.workspaceId,
       c.get("apiKey")?.id,
+      item.projectId,
     );
     await assertProjectFeatureEnabled(item.projectId, "intake");
 
