@@ -41,7 +41,12 @@ export function KpiTile({
   );
 }
 
-/** Tiles two per row on phones, four on tablets, up to seven on wide screens. */
+/**
+ * Tiles two per row on phones, four on tablets, and one row on wide screens.
+ * The row's tile count varies with the project features turned on, so wide
+ * screens share the width among the tiles present instead of leaving empty
+ * columns (and truncated labels) beside them.
+ */
 export function KpiRow({
   children,
   className,
@@ -52,7 +57,7 @@ export function KpiRow({
   return (
     <div
       className={cn(
-        "grid grid-cols-2 gap-3 sm:grid-cols-4 xl:grid-cols-7",
+        "grid grid-cols-2 gap-3 sm:grid-cols-4 xl:grid-cols-[repeat(auto-fit,minmax(7.5rem,1fr))]",
         className,
       )}
     >

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import BarChart from "@/components/charts/bar-chart";
 import { useAnalyticsChart } from "@/hooks/queries/analytics/use-analytics-chart";
+import { useAnalyticsReports } from "@/hooks/queries/analytics-report/use-analytics-reports";
 import {
   type BuilderState,
   loadBuilderState,
@@ -18,6 +19,15 @@ import {
   segmentOptions,
 } from "@/lib/analytics/dimensions";
 import { periodTitle } from "@/lib/analytics/labels";
+import {
+  builderStateOfReport,
+  isSameReportConfig,
+  type ReportNote,
+  type ReportTarget,
+  type ReportTaskSet,
+  reportConfigOf,
+  reportNotes,
+} from "@/lib/analytics/report-config";
 import { sortBucketsByValue } from "@/lib/analytics/sort";
 import { chartTableModel, TOTAL_ROW_ID } from "@/lib/analytics/table-model";
 import { highestBar } from "@/lib/charts/bar-layout";
@@ -27,12 +37,14 @@ import type {
   AnalyticsDimension,
   AnalyticsTaskSet,
 } from "@/types/analytics";
+import type { AnalyticsReport } from "@/types/analytics-report";
 import { useAnalyticsScope } from "./analytics-context";
 import AnalyticsDataTable, { useSortedTable } from "./analytics-data-table";
 import AnalyticsSection from "./analytics-section";
 import BuilderControls from "./builder-controls";
 import CategoryLabel from "./category-label";
 import ExportCsvButton from "./export-csv-button";
+import ReportActions, { ReportStatus } from "./report-actions";
 import { useLabelOf } from "./use-label-of";
 
 /** The notes under the chart: truncation and many-valued counting. */
@@ -80,6 +92,14 @@ type CustomChartCardProps = {
   availability: DimensionAvailability;
   /** A scope project has estimates on, so points may exist. */
   pointsPossible: boolean;
+  /**
+   * Saved reports: the task set a save stores (scope, toolbar filters,
+   * archived) and how the page applies an opened report's task set.
+   */
+  reports?: {
+    taskSet: ReportTaskSet;
+    onOpen: (report: AnalyticsReport) => ReportTarget;
+  };
 };
 
 /** The chart builder (B8 §1.5): pick an x-axis, metric and segment. */
@@ -87,6 +107,7 @@ export default function CustomChartCard({
   base,
   availability,
   pointsPossible,
+  reports,
 }: CustomChartCardProps) {
   const { t } = useTranslation();
   const { scopeKey } = useAnalyticsScope();
@@ -108,6 +129,43 @@ export default function CustomChartCard({
   const update = (next: BuilderState) => {
     setStored({ scopeKey, raw: next });
     saveBuilderState(scopeKey, next);
+  };
+
+  // The saved report on screen: opened from the list or just saved.
+  const [opened, setOpened] = useState<{
+    id: string;
+    notes: ReportNote[];
+  } | null>(null);
+  const reportsQuery = useAnalyticsReports(base.workspaceId, {
+    enabled: Boolean(reports),
+  });
+  const openedReport =
+    (opened && reportsQuery.data?.find((report) => report.id === opened.id)) ||
+    null;
+  const currentConfig = reports ? reportConfigOf(reports.taskSet, state) : null;
+  const isDirty = Boolean(
+    openedReport &&
+      currentConfig &&
+      !isSameReportConfig(openedReport.config, currentConfig),
+  );
+  const openReport = (report: AnalyticsReport) => {
+    if (!reports) return;
+    const target = reports.onOpen(report);
+    const { state: next, reset } = builderStateOfReport(report.config, {
+      dimensions: availableDimensions(target.availability),
+      pointsAvailable: target.availability.features.estimates,
+    });
+    // The builder of the scope the report opens in, which may be another
+    // scope than this one until the page switches to it.
+    setStored({ scopeKey: target.scopeKey, raw: next });
+    saveBuilderState(target.scopeKey, next);
+    setOpened({
+      id: report.id,
+      notes: reportNotes(target.plan, {
+        droppedCount: report.droppedProjectCount,
+        builderReset: reset,
+      }),
+    });
   };
 
   const dateX = isDateDimension(state.xAxis);
@@ -186,19 +244,45 @@ export default function CustomChartCard({
       title={t("analytics:builder.title")}
       subtitle={t("analytics:builder.subtitle")}
       actions={
-        <ExportCsvButton
-          model={table.model}
-          section={`tasks-by-${state.xAxis}`}
-        />
+        <>
+          {reports && currentConfig && (
+            <ReportActions
+              workspaceId={base.workspaceId}
+              reports={reportsQuery.data}
+              isLoading={reportsQuery.isLoading}
+              error={reportsQuery.error}
+              onRetry={() => void reportsQuery.refetch()}
+              opened={openedReport}
+              isDirty={isDirty}
+              currentConfig={currentConfig}
+              onOpen={openReport}
+              onSaved={(saved) => setOpened({ id: saved.id, notes: [] })}
+            />
+          )}
+          <ExportCsvButton
+            model={table.model}
+            section={`tasks-by-${state.xAxis}`}
+          />
+        </>
       }
       controls={
-        <BuilderControls
-          state={state}
-          onChange={update}
-          dimensions={dimensions}
-          segments={segmentOptions(state.xAxis, availability)}
-          pointsAvailable={pointsAvailable}
-        />
+        <>
+          <BuilderControls
+            state={state}
+            onChange={update}
+            dimensions={dimensions}
+            segments={segmentOptions(state.xAxis, availability)}
+            pointsAvailable={pointsAvailable}
+          />
+          {openedReport && (
+            <ReportStatus
+              report={openedReport}
+              isDirty={isDirty}
+              notes={opened?.notes ?? []}
+              onClose={() => setOpened(null)}
+            />
+          )}
+        </>
       }
       isLoading={query.isLoading}
       error={query.error}

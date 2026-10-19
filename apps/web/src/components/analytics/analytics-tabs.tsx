@@ -5,6 +5,7 @@ import {
   IterationCw,
   LayoutDashboard,
   ListChecks,
+  Telescope,
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,6 +18,7 @@ const TAB_ICONS: Record<AnalyticsTab, LucideIcon> = {
   cycles: IterationCw,
   modules: Boxes,
   intake: Inbox,
+  delivery: Telescope,
 };
 
 type AnalyticsTabsProps = {

@@ -8,6 +8,7 @@ import { OPEN_GROUPS_FILTER, taskSetBase } from "@/lib/analytics/requests";
 import { sortBucketsByValue } from "@/lib/analytics/sort";
 import { breakdownTableModel } from "@/lib/analytics/table-model";
 import { highestBar } from "@/lib/charts/bar-layout";
+import { useUserTimeZone } from "@/lib/task-query/request";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 import type { AnalyticsBucket, AnalyticsChartRequest } from "@/types/analytics";
 import { useAnalyticsScope } from "./analytics-context";
@@ -40,6 +41,7 @@ export default function WorkloadCard({ className }: { className?: string }) {
   const { t } = useTranslation();
   const scope = useAnalyticsScope();
   const weekStartsOn = useUserPreferencesStore((state) => state.weekStartsOn);
+  const timeZone = useUserTimeZone();
   const [view, setView] = useState<SectionView>("chart");
 
   const request = useMemo<AnalyticsChartRequest>(
@@ -49,12 +51,13 @@ export default function WorkloadCard({ className }: { className?: string }) {
         projectIds: scope.projectIds,
         filters: OPEN_GROUPS_FILTER,
         weekStartsOn,
+        timeZone,
       }),
       xAxis: "assignee",
       segment: "group",
       metric: "taskCount",
     }),
-    [scope.workspaceId, scope.projectIds, weekStartsOn],
+    [scope.workspaceId, scope.projectIds, weekStartsOn, timeZone],
   );
   const query = useAnalyticsChart(request);
   const result = query.data;

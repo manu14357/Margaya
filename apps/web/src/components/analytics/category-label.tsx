@@ -5,6 +5,7 @@ import icons from "@/constants/project-icons";
 import { NONE_KEY } from "@/lib/analytics/labels";
 import { COLUMN_GROUP_META, isColumnGroup } from "@/lib/column-groups";
 import { getInitials } from "@/lib/get-initials";
+import { identityColor } from "@/lib/identity-color";
 import { resolveLabelColor } from "@/lib/label-color";
 import { getPriorityIcon } from "@/lib/priority";
 import { resolveAvatarSrc } from "@/lib/resolve-avatar-src";
@@ -12,9 +13,22 @@ import type { AnalyticsDimension, AnalyticsMeta } from "@/types/analytics";
 
 type ProjectIconName = keyof typeof icons;
 
-export function ProjectIcon({ icon }: { icon: string | null | undefined }) {
+/** A project's icon; with `seed` (the project id) it wears its identity hue. */
+export function ProjectIcon({
+  icon,
+  seed,
+}: {
+  icon: string | null | undefined;
+  seed?: string | null;
+}) {
   const Icon = icons[(icon ?? "Layout") as ProjectIconName] ?? icons.Layout;
-  return <Icon aria-hidden className="size-3.5 shrink-0 text-foreground/70" />;
+  return (
+    <Icon
+      aria-hidden
+      className="size-3.5 shrink-0 text-foreground/70"
+      style={seed ? { color: identityColor(seed) } : undefined}
+    />
+  );
 }
 
 export function UserAvatar({
@@ -49,7 +63,7 @@ function leadingOf(
     }
     case "project": {
       const project = meta?.projects?.find((entry) => entry.id === key);
-      return <ProjectIcon icon={project?.icon} />;
+      return <ProjectIcon icon={project?.icon} seed={project?.id} />;
     }
     case "label": {
       if (key === NONE_KEY) return null;

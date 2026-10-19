@@ -67,7 +67,7 @@ describe("BarChart", () => {
     const urgentBar = container.querySelector(
       '[data-chart-band="urgent"] [data-chart-segment]',
     );
-    expect(urgentBar).toHaveClass("fill-destructive");
+    expect(urgentBar).toHaveClass("fill-(--priority-urgent)");
   });
 
   it("moves between bars with the keyboard and shows the tooltip", () => {

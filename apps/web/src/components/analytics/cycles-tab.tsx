@@ -26,7 +26,7 @@ export default function CyclesTab() {
           <SectionError error={query.error} onRetry={retry} />
         </Card>
       ) : (
-        <KpiRow className="xl:grid-cols-5">
+        <KpiRow>
           <KpiTile
             label={t("analytics:cycles.current")}
             value={data?.summary.current ?? 0}

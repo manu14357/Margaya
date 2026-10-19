@@ -30,6 +30,10 @@ export type AnalyticsScope = {
   projects: AnalyticsScopeProject[];
   /** The workspace or project slug, for export file names. */
   slug: string;
+  /** Workspace scope: every project the project selector offers. */
+  selectableProjects?: AnalyticsScopeProject[];
+  /** Workspace scope: changes the project selection ([] for all). */
+  setProjectIds?: (ids: string[]) => void;
 };
 
 const AnalyticsScopeContext = createContext<AnalyticsScope | null>(null);

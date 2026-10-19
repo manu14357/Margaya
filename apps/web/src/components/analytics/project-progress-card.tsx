@@ -87,7 +87,7 @@ export default function ProjectProgressCard({
                 className="grid grid-cols-[minmax(0,10rem)_minmax(0,1fr)_auto] items-center gap-3 rounded-md px-1.5 py-1.5 text-xs hover:bg-accent/40 sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)_3rem_5rem]"
               >
                 <span className="flex min-w-0 items-center gap-1.5">
-                  <ProjectIcon icon={project?.icon} />
+                  <ProjectIcon icon={project?.icon} seed={row.projectId} />
                   <span className="truncate font-medium text-sm">
                     {project?.name ?? row.projectId}
                   </span>

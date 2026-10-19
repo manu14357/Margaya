@@ -68,7 +68,7 @@ describe("LineChart", () => {
       '[data-chart-series="completed"] path',
     );
     expect(completed?.getAttribute("d")?.match(/M/g)).toHaveLength(2);
-    expect(completed).toHaveClass("stroke-success");
+    expect(completed).toHaveClass("stroke-(--status-completed)");
   });
 
   it("shows a crosshair, markers and every series in one tooltip", () => {

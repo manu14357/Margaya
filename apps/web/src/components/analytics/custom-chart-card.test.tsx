@@ -1,23 +1,27 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { act, cleanup, render, screen } from "@testing-library/react";
 import type { ComponentProps } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   availabilityOf,
   type CategoryDimension,
 } from "@/lib/analytics/dimensions";
+import type { ReportTarget } from "@/lib/analytics/report-config";
 import { makeChartResult } from "@/lib/analytics/test-fixtures";
 import type {
   AnalyticsChartResult,
   AnalyticsDimension,
 } from "@/types/analytics";
+import type { AnalyticsReport } from "@/types/analytics-report";
 import {
   type AnalyticsScope,
   AnalyticsScopeProvider,
 } from "./analytics-context";
 import type BuilderControlsComponent from "./builder-controls";
 import CustomChartCard from "./custom-chart-card";
+import type ReportActionsComponent from "./report-actions";
 
 type ControlsProps = ComponentProps<typeof BuilderControlsComponent>;
+type ReportActionsProps = ComponentProps<typeof ReportActionsComponent>;
 
 const m = vi.hoisted(() => ({
   result: null as AnalyticsChartResult | null,
@@ -26,7 +30,10 @@ const m = vi.hoisted(() => ({
     segments: readonly CategoryDimension[];
     pointsAvailable: boolean;
   } | null,
+  state: null as ControlsProps["state"] | null,
   orientation: "" as string,
+  reports: [] as AnalyticsReport[],
+  actions: null as ReportActionsProps | null,
 }));
 
 vi.mock("react-i18next", async (importOriginal) => ({
@@ -59,8 +66,38 @@ vi.mock("./builder-controls", () => ({
       segments: props.segments,
       pointsAvailable: props.pointsAvailable,
     };
+    m.state = props.state;
     return null;
   },
+}));
+vi.mock("@/hooks/queries/analytics-report/use-analytics-reports", () => ({
+  useAnalyticsReports: () => ({
+    data: m.reports,
+    isLoading: false,
+    error: null,
+    refetch: vi.fn(),
+  }),
+}));
+vi.mock("./report-actions", () => ({
+  default: (props: ReportActionsProps) => {
+    m.actions = props;
+    return null;
+  },
+  ReportStatus: ({
+    report,
+    isDirty,
+    notes,
+  }: {
+    report: AnalyticsReport;
+    isDirty: boolean;
+    notes: Array<{ kind: string }>;
+  }) => (
+    <p>
+      {`open:${report.name}:${isDirty ? "dirty" : "clean"}:${notes
+        .map((note) => note.kind)
+        .join(",")}`}
+    </p>
+  ),
 }));
 
 const base = { workspaceId: "ws-1", context: { timeZone: "UTC" } };
@@ -69,7 +106,13 @@ const two = [{ id: "p1" }, { id: "p2", cyclesEnabled: true }];
 
 function renderCard(
   projects: Array<Record<string, unknown>>,
-  { pointsPossible = false }: { pointsPossible?: boolean } = {},
+  {
+    pointsPossible = false,
+    reports,
+  }: {
+    pointsPossible?: boolean;
+    reports?: ComponentProps<typeof CustomChartCard>["reports"];
+  } = {},
 ) {
   const scope: AnalyticsScope = {
     kind: "workspace",
@@ -84,16 +127,21 @@ function renderCard(
         base={base}
         availability={availabilityOf(projects)}
         pointsPossible={pointsPossible}
+        reports={reports}
       />
     </AnalyticsScopeProvider>,
   );
+  return scope;
 }
 
 afterEach(() => {
   cleanup();
   m.result = null;
   m.controls = null;
+  m.state = null;
   m.orientation = "";
+  m.reports = [];
+  m.actions = null;
   window.localStorage.clear();
 });
 
@@ -183,5 +231,62 @@ describe("CustomChartCard", () => {
     m.result = makeChartResult({ totalCount: 0, buckets: [], segments: [] });
     renderCard(one);
     expect(screen.getByText("analytics:states.noTasks")).toBeInTheDocument();
+  });
+
+  it("offers saved reports only when the page can apply them", () => {
+    m.result = makeChartResult();
+    renderCard(one);
+    expect(m.actions).toBeNull();
+    cleanup();
+
+    renderCard(one, {
+      reports: { taskSet: {}, onOpen: vi.fn() },
+    });
+    expect(m.actions?.currentConfig).toMatchObject({
+      xAxis: "priority",
+      archived: "exclude",
+    });
+    expect(m.actions?.opened).toBeNull();
+  });
+
+  it("opens a report: applies its chart settings and notes what was left out", () => {
+    m.result = makeChartResult();
+    const report = {
+      id: "r1",
+      workspaceId: "ws-1",
+      name: "Bugs",
+      visibility: "private",
+      owner: { id: "u1", name: "Ada" },
+      isOwner: true,
+      canDelete: true,
+      config: { xAxis: "label", segment: "group", archived: "exclude" },
+      droppedProjectCount: 1,
+      createdAt: "2026-10-01T00:00:00.000Z",
+      updatedAt: "2026-10-01T00:00:00.000Z",
+    } as AnalyticsReport;
+    m.reports = [report];
+    let scopeKey = "";
+    const onOpen = vi.fn(
+      (): ReportTarget => ({
+        scopeKey,
+        availability: availabilityOf(one),
+        plan: {
+          projectIds: [],
+          scopeKey,
+          leftOutCount: 0,
+          allProjects: false,
+          otherProjects: false,
+        },
+      }),
+    );
+    scopeKey = renderCard(one, {
+      reports: { taskSet: {}, onOpen },
+    }).scopeKey;
+
+    act(() => m.actions?.onOpen(report));
+    expect(onOpen).toHaveBeenCalledWith(report);
+    expect(m.state).toMatchObject({ xAxis: "label", segment: "group" });
+    expect(screen.getByText("open:Bugs:clean:dropped")).toBeInTheDocument();
+    expect(m.actions?.opened?.id).toBe("r1");
   });
 });

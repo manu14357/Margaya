@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import getAnalyticsOverview from "@/fetchers/analytics/get-analytics-overview";
 import { analyticsKeys, analyticsScopeKey } from "@/lib/analytics/scope-key";
-import { browserTimeZone } from "@/lib/task-query/request";
+import { useUserTimeZone } from "@/lib/task-query/request";
 import { analyticsQueryOptions } from "./query-options";
 
 export function useAnalyticsOverview({
@@ -14,7 +14,7 @@ export function useAnalyticsOverview({
   enabled?: boolean;
 }) {
   const scopeKey = analyticsScopeKey(projectIds);
-  const timeZone = browserTimeZone();
+  const timeZone = useUserTimeZone();
   return useQuery({
     queryKey: analyticsKeys.overview(workspaceId, scopeKey, timeZone),
     queryFn: ({ signal }) =>

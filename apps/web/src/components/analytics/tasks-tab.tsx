@@ -8,13 +8,18 @@ import useGetCycle from "@/hooks/queries/cycle/use-get-cycle";
 import useGetModule from "@/hooks/queries/module/use-get-module";
 import { useTaskQueryState } from "@/hooks/use-task-query-state";
 import { availabilityOf } from "@/lib/analytics/dimensions";
+import type { ReportTaskSet } from "@/lib/analytics/report-config";
 import { taskSetBase } from "@/lib/analytics/requests";
 import {
   COLUMN_GROUP_META,
   CREATABLE_COLUMN_GROUPS,
 } from "@/lib/column-groups";
-import { withBaseConditions } from "@/lib/task-query/filter-tree";
+import {
+  mergeBaseConditions,
+  withBaseConditions,
+} from "@/lib/task-query/filter-tree";
 import type { FilterCondition, TaskQueryScope } from "@/lib/task-query/model";
+import { useUserTimeZone } from "@/lib/task-query/request";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 import type { AnalyticsChartRequest } from "@/types/analytics";
 import { useAnalyticsScope } from "./analytics-context";
@@ -23,6 +28,7 @@ import BreakdownCard from "./breakdown-card";
 import CustomChartCard from "./custom-chart-card";
 import { KpiRow, KpiTile } from "./kpi-tile";
 import TrendCard from "./trend-card";
+import { analyticsFiltersStorageScope, useOpenReport } from "./use-open-report";
 
 /** The removable "Cycle: Sprint 4" chip of a cycle or module context. */
 function ContextChip({
@@ -64,8 +70,9 @@ export default function TasksTab({
   const { t } = useTranslation();
   const scope = useAnalyticsScope();
   const weekStartsOn = useUserPreferencesStore((state) => state.weekStartsOn);
+  const timeZone = useUserTimeZone();
   const handle = useTaskQueryState({
-    storageScope: `analytics:${scope.scopeKey}`,
+    storageScope: analyticsFiltersStorageScope(scope.scopeKey),
     scope: scope.kind === "project" ? "project" : "workspace",
     workspaceId: scope.workspaceId,
   });
@@ -110,6 +117,7 @@ export default function TasksTab({
         archived: handle.archived,
         showSubTasks,
         weekStartsOn,
+        timeZone,
       }),
     [
       scope.workspaceId,
@@ -118,6 +126,7 @@ export default function TasksTab({
       handle.archived,
       showSubTasks,
       weekStartsOn,
+      timeZone,
     ],
   );
   const availability = useMemo(
@@ -125,6 +134,29 @@ export default function TasksTab({
     [scope.projects],
   );
   const pointsPossible = availability.features.estimates;
+
+  // A saved report keeps the context as editable filter chips.
+  const reportTaskSet = useMemo<ReportTaskSet>(
+    () => ({
+      scope: base.scope,
+      filters: mergeBaseConditions(
+        handle.filters,
+        contextConditions,
+      ) as ReportTaskSet["filters"],
+      archived: handle.archived,
+    }),
+    [base.scope, handle.filters, contextConditions, handle.archived],
+  );
+  const openReport = useOpenReport({
+    scope,
+    handle,
+    hasContext: contextConditions.length > 0,
+    onClearContext,
+  });
+  const reports = useMemo(
+    () => ({ taskSet: reportTaskSet, onOpen: openReport }),
+    [reportTaskSet, openReport],
+  );
 
   const kpiRequest = useMemo<AnalyticsChartRequest>(
     () => ({ ...base, xAxis: "group", metric: "taskCount" }),
@@ -194,6 +226,7 @@ export default function TasksTab({
           base={base}
           availability={availability}
           pointsPossible={pointsPossible}
+          reports={reports}
         />
         <BreakdownCard base={base} availability={availability} />
       </div>

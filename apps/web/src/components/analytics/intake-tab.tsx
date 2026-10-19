@@ -14,7 +14,7 @@ import {
   GROUP_CHART_COLORS,
   SINGLE_SERIES_COLOR,
 } from "@/lib/charts/series-colors";
-import { browserTimeZone } from "@/lib/task-query/request";
+import { useUserTimeZone } from "@/lib/task-query/request";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 import type { AnalyticsIntake } from "@/types/analytics";
 import { useAnalyticsScope } from "./analytics-context";
@@ -51,6 +51,7 @@ export default function IntakeTab() {
   const { t } = useTranslation();
   const scope = useAnalyticsScope();
   const weekStartsOn = useUserPreferencesStore((state) => state.weekStartsOn);
+  const timeZone = useUserTimeZone();
   const period = usePeriodState();
   const [view, setView] = useState<SectionView>("chart");
   const query = useAnalyticsIntake({
@@ -60,7 +61,7 @@ export default function IntakeTab() {
     to: period.range.to,
     bucket: period.bucket,
     weekStartsOn,
-    timeZone: browserTimeZone(),
+    timeZone,
   });
   const data = query.data;
   const retry = () => void query.refetch();

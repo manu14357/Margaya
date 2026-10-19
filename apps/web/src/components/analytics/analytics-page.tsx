@@ -27,6 +27,7 @@ import {
 } from "./analytics-states";
 import AnalyticsTabs from "./analytics-tabs";
 import CyclesTab from "./cycles-tab";
+import DeliveryTab from "./delivery-tab";
 import IntakeTab from "./intake-tab";
 import ModulesTab from "./modules-tab";
 import OverviewTab from "./overview-tab";
@@ -128,8 +129,19 @@ export default function AnalyticsPage({
         ? projects.filter((entry) => projectIds.includes(entry.id))
         : projects,
       slug: workspace?.slug ?? "workspace",
+      selectableProjects: projects,
+      setProjectIds: onProjectsChange,
     };
-  }, [kind, workspaceId, projectId, project, selection, projects, workspace]);
+  }, [
+    kind,
+    workspaceId,
+    projectId,
+    project,
+    selection,
+    projects,
+    workspace,
+    onProjectsChange,
+  ]);
 
   const isReady = !isCheckingPermissions && !isLoadingProjects;
   const canRead = canReadAnalytics();
@@ -191,6 +203,7 @@ export default function AnalyticsPage({
                 {activeTab === "cycles" && <CyclesTab />}
                 {activeTab === "modules" && <ModulesTab />}
                 {activeTab === "intake" && <IntakeTab />}
+                {activeTab === "delivery" && <DeliveryTab />}
               </div>
             )}
           </div>

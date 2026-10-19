@@ -1,8 +1,16 @@
 import { useNavigate } from "@tanstack/react-router";
 import { Snowflake } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CircularProgress from "@/components/ui/circular-progress";
+import { Toggle, ToggleGroup } from "@/components/ui/toggle-group";
+import {
+  type CycleFilter,
+  filterCycleRows,
+  isCycleFilter,
+  loadCycleFilter,
+  saveCycleFilter,
+} from "@/lib/analytics/cycle-filter";
 import {
   entityTableModel,
   type TableColumn,
@@ -24,6 +32,36 @@ type CyclesTableProps = {
   onRetry: () => void;
 };
 
+/** All cycles, or only the running ones across the scope's projects. */
+export function CycleFilterToggle({
+  value,
+  onChange,
+}: {
+  value: CycleFilter;
+  onChange: (filter: CycleFilter) => void;
+}) {
+  const { t } = useTranslation();
+  return (
+    <ToggleGroup
+      size="sm"
+      variant="outline"
+      aria-label={t("analytics:cycles.filter.label")}
+      value={[value]}
+      onValueChange={(values) => {
+        const next = values[0];
+        if (isCycleFilter(next)) onChange(next);
+      }}
+    >
+      <Toggle value="all" className="px-2 text-xs">
+        {t("analytics:cycles.filter.all")}
+      </Toggle>
+      <Toggle value="running" className="px-2 text-xs">
+        {t("analytics:cycles.filter.running")}
+      </Toggle>
+    </ToggleGroup>
+  );
+}
+
 /** Current, upcoming, draft and recently completed cycles (B8 §1.7). */
 export default function CyclesTable({
   data,
@@ -37,7 +75,23 @@ export default function CyclesTable({
   const withProject = scope.kind === "workspace";
   const projectOf = (id: string) =>
     data?.meta.projects.find((project) => project.id === id);
-  const rows = useMemo(() => data?.rows ?? [], [data]);
+  const [stored, setStored] = useState(() => ({
+    scopeKey: scope.scopeKey,
+    filter: loadCycleFilter(scope.scopeKey),
+  }));
+  const filter =
+    stored.scopeKey === scope.scopeKey
+      ? stored.filter
+      : loadCycleFilter(scope.scopeKey);
+  const changeFilter = (next: CycleFilter) => {
+    setStored({ scopeKey: scope.scopeKey, filter: next });
+    saveCycleFilter(scope.scopeKey, next);
+  };
+  const allRows = data?.rows;
+  const rows = useMemo(
+    () => filterCycleRows(allRows ?? [], filter),
+    [allRows, filter],
+  );
   const byId = useMemo(() => new Map(rows.map((row) => [row.id, row])), [rows]);
 
   const model = useMemo(() => {
@@ -120,12 +174,24 @@ export default function CyclesTable({
   return (
     <AnalyticsSection
       title={t("analytics:cycles.table.title")}
-      actions={<ExportCsvButton model={table.model} section="cycles" />}
+      actions={
+        <>
+          <CycleFilterToggle value={filter} onChange={changeFilter} />
+          <ExportCsvButton
+            model={table.model}
+            section={filter === "running" ? "running-cycles" : "cycles"}
+          />
+        </>
+      }
       isLoading={isLoading}
       error={error}
       onRetry={onRetry}
       isEmpty={rows.length === 0}
-      emptyTitle={t("analytics:states.noCycles")}
+      emptyTitle={
+        filter === "running" && (allRows?.length ?? 0) > 0
+          ? t("analytics:states.noRunningCycles")
+          : t("analytics:states.noCycles")
+      }
     >
       {table.model && (
         <AnalyticsDataTable

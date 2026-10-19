@@ -131,12 +131,13 @@ export default function BurnChart({
             d={model.referencePath}
             fill="none"
             stroke="currentColor"
-            strokeWidth={1}
+            strokeWidth={1.5}
             strokeDasharray="4 4"
-            className="text-muted-foreground"
+            className="text-chart-2"
           />
 
-          <g className="text-chart-2">
+          {/* Actual work in the primary accent; the ideal line is amber. */}
+          <g className="text-primary">
             <path d={model.areaPath} fill="currentColor" fillOpacity={0.1} />
             <path
               d={model.actualPath}
@@ -210,12 +211,12 @@ export default function BurnChart({
 
       <div className="mt-2 flex flex-wrap items-center gap-3 text-muted-foreground text-xs">
         <span className="inline-flex items-center gap-1.5">
-          <span className="h-0.5 w-3 rounded-full bg-chart-2" aria-hidden />
+          <span className="h-0.5 w-3 rounded-full bg-primary" aria-hidden />
           {labels.actual}
         </span>
         <span className="inline-flex items-center gap-1.5">
           <span
-            className="w-3 border-muted-foreground border-t border-dashed"
+            className="w-3 border-chart-2 border-t-2 border-dashed"
             aria-hidden
           />
           {labels.reference}

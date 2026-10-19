@@ -60,6 +60,7 @@ vi.mock("./tasks-tab", () => ({ default: () => <p>tasks tab</p> }));
 vi.mock("./cycles-tab", () => ({ default: () => <p>cycles tab</p> }));
 vi.mock("./modules-tab", () => ({ default: () => <p>modules tab</p> }));
 vi.mock("./intake-tab", () => ({ default: () => <p>intake tab</p> }));
+vi.mock("./delivery-tab", () => ({ default: () => <p>delivery tab</p> }));
 
 const plain = { id: "p1", name: "Web", slug: "WEB", icon: null };
 const planned = {
@@ -149,8 +150,15 @@ describe("AnalyticsPage", () => {
       "analytics:tabs.tasks",
       "analytics:tabs.cycles",
       "analytics:tabs.modules",
+      "analytics:tabs.delivery",
     ]);
     expect(screen.getByText("tasks tab")).toBeInTheDocument();
+  });
+
+  it("opens the Delivery tab of a project", () => {
+    state.projects = [plain];
+    renderPage({ scope: "project", projectId: "p1", tab: "delivery" });
+    expect(screen.getByText("delivery tab")).toBeInTheDocument();
   });
 
   it("shows the no-access state without the capability", () => {

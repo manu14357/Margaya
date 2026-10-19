@@ -66,7 +66,7 @@ describe("DonutChart", () => {
     expect(
       Array.from(slices, (slice) => slice.getAttribute("data-chart-slice")),
     ).toEqual(["backlog", "started", "completed"]);
-    expect(slices[2]).toHaveClass("fill-success");
+    expect(slices[2]).toHaveClass("fill-(--status-completed)");
 
     const rows = within(screen.getByRole("list")).getAllByRole("listitem");
     expect(rows).toHaveLength(4);
