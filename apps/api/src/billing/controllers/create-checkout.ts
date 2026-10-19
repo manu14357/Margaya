@@ -1,8 +1,5 @@
 import { createId } from "@paralleldrive/cuid2";
-import { count, eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
-import db from "../../database";
-import { workspaceUserTable } from "../../database/schema";
 import {
   type BillingInterval,
   isBillingEnabled,
@@ -10,6 +7,7 @@ import {
   productIdFor,
 } from "../config";
 import { createCheckoutSession } from "../creem-client";
+import { billableMemberCount } from "../seats";
 import { getOrCreateWorkspaceBilling } from "./get-workspace-billing";
 
 async function createCheckout({
@@ -41,11 +39,8 @@ async function createCheckout({
 
   let units = 1;
   if (plan === "team") {
-    const [members] = await db
-      .select({ value: count() })
-      .from(workspaceUserTable)
-      .where(eq(workspaceUserTable.workspaceId, workspaceId));
-    units = Math.max(1, members?.value ?? 1);
+    // Agents are members but never seats.
+    units = Math.max(1, await billableMemberCount(workspaceId));
   }
 
   const clientUrl = process.env.MARGAYA_CLIENT_URL ?? "";
