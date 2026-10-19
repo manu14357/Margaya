@@ -11,7 +11,7 @@ export const notificationSchema = z
     }),
     type: z.string().openapi({
       description:
-        "One of: info, task_created, workspace_created, task_status_changed, task_assignee_changed, time_entry_created, due_date_reminder, task_overdue, task_mention, task_comment, task_updated, intake_accepted, intake_declined, intake_duplicate, page_mention.",
+        "One of: info, task_created, workspace_created, task_status_changed, task_assignee_changed, time_entry_created, due_date_reminder, task_overdue, task_mention, task_comment, task_updated, intake_accepted, intake_declined, intake_duplicate, page_mention, automation_notice (an automation rule's notify action; eventData.ruleName, eventData.message).",
     }),
     eventData: z.unknown().openapi({
       description:

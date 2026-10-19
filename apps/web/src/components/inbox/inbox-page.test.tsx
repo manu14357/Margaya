@@ -60,6 +60,12 @@ vi.mock("./inbox-preview", () => ({
     </div>
   ),
 }));
+// The AI digest has its own test; here it is a stub without AI.
+vi.mock("./inbox-digest", () => ({
+  useInboxDigest: () => ({ open: false }),
+  InboxDigestButton: () => null,
+  InboxDigestPanel: () => null,
+}));
 vi.mock("react-i18next", () => ({
   initReactI18next: { type: "3rdParty", init: vi.fn() },
   useTranslation: () => ({ t: (key: string) => key }),

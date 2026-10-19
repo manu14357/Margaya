@@ -1,4 +1,4 @@
-import { AlarmClock, Bell } from "lucide-react";
+import { AlarmClock } from "lucide-react";
 import type { KeyboardEvent, MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -6,6 +6,7 @@ import { cn } from "@/lib/cn";
 import { formatRelativeTime } from "@/lib/format";
 import { getInitials } from "@/lib/get-initials";
 import { isUnread } from "@/lib/inbox-cache";
+import { getNotificationKind } from "@/lib/notification-kind";
 import {
   getNotificationActorName,
   getNotificationPreview,
@@ -18,8 +19,6 @@ import { formatSnoozeTarget } from "@/lib/snooze-presets";
 import type { InboxNotification, InboxView } from "@/types/notification";
 import InboxRowActions, { type InboxActionHandler } from "./inbox-row-actions";
 
-const REMINDER_TYPES = new Set(["due_date_reminder", "task_overdue"]);
-
 function LeadingVisual({
   notification,
   actorName,
@@ -27,23 +26,41 @@ function LeadingVisual({
   notification: InboxNotification;
   actorName: string | null;
 }) {
+  const kind = getNotificationKind(notification.type);
+  const KindIcon = kind.icon;
   if (notification.actor || actorName) {
     return (
-      <Avatar className="size-7 shrink-0">
-        <AvatarImage
-          src={notification.actor?.image ?? ""}
-          alt={actorName ?? ""}
-        />
-        <AvatarFallback className="bg-muted font-medium text-[10px]">
-          {getInitials(actorName)}
-        </AvatarFallback>
-      </Avatar>
+      <span className="relative size-7 shrink-0">
+        <Avatar className="size-7">
+          <AvatarImage
+            src={notification.actor?.image ?? ""}
+            alt={actorName ?? ""}
+          />
+          <AvatarFallback className="bg-muted font-medium text-[10px]">
+            {getInitials(actorName)}
+          </AvatarFallback>
+        </Avatar>
+        <span
+          aria-hidden
+          className="-right-1 -bottom-1 absolute flex size-4 items-center justify-center rounded-full bg-card ring-2 ring-card"
+          style={{ color: kind.color }}
+          data-kind={notification.type}
+        >
+          <KindIcon className="size-3" strokeWidth={2.25} />
+        </span>
+      </span>
     );
   }
-  const Icon = REMINDER_TYPES.has(notification.type) ? AlarmClock : Bell;
   return (
-    <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
-      <Icon className="size-3.5" />
+    <span
+      className="flex size-7 shrink-0 items-center justify-center rounded-full"
+      style={{
+        backgroundColor: `color-mix(in srgb, ${kind.color} 14%, var(--card))`,
+        color: kind.color,
+      }}
+      data-kind={notification.type}
+    >
+      <KindIcon className="size-3.5" />
     </span>
   );
 }

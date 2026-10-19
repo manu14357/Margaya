@@ -103,6 +103,14 @@ async function eligibleUserIds(
   const rows = await db
     .select({ userId: workspaceUserTable.userId })
     .from(workspaceUserTable)
+    // AI agents are members but never notified (they read no inbox).
+    .innerJoin(
+      userTable,
+      and(
+        eq(userTable.id, workspaceUserTable.userId),
+        sql`${userTable.kind} <> 'agent'`,
+      ),
+    )
     .leftJoin(
       userNotificationPreferenceTable,
       eq(userNotificationPreferenceTable.userId, workspaceUserTable.userId),

@@ -23,6 +23,11 @@ import type {
   NotificationStateAction,
 } from "@/types/notification";
 import InboxAppliedFilters from "./inbox-applied-filters";
+import {
+  InboxDigestButton,
+  InboxDigestPanel,
+  useInboxDigest,
+} from "./inbox-digest";
 import InboxFilterMenu from "./inbox-filter-menu";
 import InboxHeader from "./inbox-header";
 import InboxList from "./inbox-list";
@@ -69,6 +74,7 @@ export default function InboxPage({
   const filters = resolveInboxFilters(search);
   const inbox = useInboxNotifications({ workspaceId, ...filters });
   const counts = useInboxCounts(workspaceId);
+  const digest = useInboxDigest(workspaceId);
   const rows = useMemo(() => flattenInboxPages(inbox.data), [inbox.data]);
   const { mutate: updateState } = useUpdateNotificationState();
   const markAllRead = useMarkAllNotificationsAsRead();
@@ -265,6 +271,10 @@ export default function InboxPage({
             }}
             menus={
               <>
+                <InboxDigestButton
+                  digest={digest}
+                  unread={counts.data?.unread}
+                />
                 <InboxFilterMenu
                   types={filters.types}
                   unread={filters.unread}
@@ -278,6 +288,7 @@ export default function InboxPage({
               </>
             }
           />
+          <InboxDigestPanel digest={digest} />
           <InboxAppliedFilters
             filters={filters}
             onToggleType={toggleType}

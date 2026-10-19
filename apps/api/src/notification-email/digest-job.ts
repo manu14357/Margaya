@@ -58,6 +58,8 @@ type Candidate = {
   weekday: number;
   hour: number;
   lastSentAt: Date | null;
+  /** The person opted in to My brief in the digest (user preference). */
+  includeBrief?: boolean;
 };
 
 /** Sends one user's digest if it is due; true when an email went out. */
@@ -92,6 +94,7 @@ export async function sendDigestIfDue(
       now,
       timeZone,
       locale: candidate.locale,
+      includeBrief: candidate.includeBrief === true,
     });
     // An empty period stays stamped: nothing in it can still be reported.
     if (workspaces.length === 0) return false;
@@ -122,6 +125,7 @@ async function runDigests(now: Date): Promise<DigestOutcome> {
       weekday: preference.digestWeekday,
       hour: preference.digestHour,
       lastSentAt: preference.lastDigestSentAt,
+      includeBrief: sql<boolean>`coalesce(${userTable.preferences}->>'myBriefEmail' = 'true', false)`,
     })
     .from(preference)
     .innerJoin(userTable, eq(userTable.id, preference.userId))

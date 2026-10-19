@@ -2,6 +2,11 @@ import { useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, Bell, Maximize2, X } from "lucide-react";
 import { type ReactNode, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  AgentReplyCard,
+  agentReplyOf,
+} from "@/components/ai/agents/agent-reply-card";
+import { ApprovalCard } from "@/components/ai/agents/approval-card";
 import TaskDetailsContent from "@/components/task/task-details-content";
 import { TaskDetailsSkeleton } from "@/components/task/task-page-skeleton";
 import TaskPropertiesSidebar from "@/components/task/task-properties-sidebar";
@@ -160,6 +165,16 @@ function PreviewHeader({
   );
 }
 
+function agentApprovalOf(
+  notification: InboxNotification,
+): { approvalId: string; runId: string } | null {
+  if (notification.type !== "ai_approval_requested") return null;
+  const data = notification.eventData as Record<string, unknown> | null;
+  return typeof data?.approvalId === "string" && typeof data.runId === "string"
+    ? { approvalId: data.approvalId, runId: data.runId }
+    : null;
+}
+
 /** The selected notification's task, composed as in the task sheet. */
 function TaskPreview({
   notification,
@@ -189,6 +204,10 @@ function TaskPreview({
     getNotificationCommentId(notification),
     Boolean(data) && !isLoading,
   );
+  // An agent's proposed change waits for this person: review it here.
+  const approval = agentApprovalOf(notification);
+  // An agent's answer that isn't on the task.
+  const reply = agentReplyOf(notification);
 
   const header = (
     <PreviewHeader
@@ -240,6 +259,26 @@ function TaskPreview({
         />
         <div className="min-h-0 flex-1 overflow-y-auto">
           <div className="px-4 py-4">
+            {approval && (
+              <div className="mb-4">
+                <ApprovalCard
+                  workspaceId={workspaceId}
+                  runId={approval.runId}
+                  approvalId={approval.approvalId}
+                />
+              </div>
+            )}
+            {reply && (
+              <div className="mb-4">
+                <AgentReplyCard
+                  workspaceId={workspaceId}
+                  runId={reply.runId}
+                  agentName={reply.agentName}
+                  text={reply.text}
+                  needsInput={reply.needsInput}
+                />
+              </div>
+            )}
             <TaskDetailsContent
               taskId={task.id}
               projectId={task.projectId}

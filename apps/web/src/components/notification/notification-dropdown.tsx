@@ -38,6 +38,7 @@ import { formatRelativeTime } from "@/lib/format";
 import { flattenInboxPages, isUnread } from "@/lib/inbox-cache";
 import {
   getEventDataRecord,
+  getFlowAnomalyTarget,
   getIntakeNotificationTarget,
   getNotificationContent,
   getNotificationTitle,
@@ -126,6 +127,15 @@ const NotificationDropdown = forwardRef<NotificationDropdownRef>(
               projectId: intake.projectId,
             },
             search: { tab: "closed", item: intake.itemId },
+          });
+          return;
+        }
+        const flow = getFlowAnomalyTarget(notification);
+        if (flow && taskWorkspaceId) {
+          navigate({
+            to: "/dashboard/workspace/$workspaceId/project/$projectId/analytics",
+            params: { workspaceId: taskWorkspaceId, projectId: flow.projectId },
+            search: { tab: "delivery" },
           });
           return;
         }

@@ -1,4 +1,5 @@
 import type {
+  DigestBrief,
   DigestMention,
   DigestTask,
   DigestWorkspace,
@@ -26,12 +27,14 @@ import {
   workspaceTable,
   workspaceUserTable,
 } from "../database/schema";
+import { computeMyBrief } from "../insight/my-brief";
 import { inboxViewCondition } from "../notification/inbox";
 import { notificationResourceAccess } from "../notification/resource-access";
 import {
   buildDeliveryContent,
   buildTaskUrl,
 } from "../notification-preferences/delivery";
+import { projectVisibleSql } from "../project/visibility";
 import { taskAssigneeJoin } from "../task/assignees";
 import {
   taskColumnJoin,
@@ -58,7 +61,47 @@ type DigestInput = {
   now: Date;
   timeZone: string;
   locale: string | null;
+  /** Add My brief's blocked and followed tasks (opt-in, #18). */
+  includeBrief?: boolean;
 };
+
+/**
+ * The parts of My brief the digest does not already hold: blocked tasks
+ * and changes on followed tasks. Computed, never written by a model.
+ */
+async function briefSection(
+  userId: string,
+  workspaceId: string,
+  now: Date,
+  since: Date,
+  timeZone: string,
+): Promise<DigestBrief | null> {
+  const brief = await computeMyBrief({
+    userId,
+    workspaceId,
+    now,
+    since,
+    timeZone,
+  });
+  if (brief.blocked.total === 0 && brief.following.total === 0) return null;
+  return {
+    blocked: brief.blocked.items.map((entry) => ({
+      title: `${entry.task.key} ${entry.task.title}`,
+      url: buildTaskUrl(workspaceId, entry.task.projectId, entry.task.id),
+      projectName: entry.task.projectName,
+      blockers: entry.blockers.map((blocker) => blocker.key),
+      hiddenBlockers: entry.hiddenBlockers,
+    })),
+    moreBlocked: brief.blocked.total - brief.blocked.items.length,
+    following: brief.following.items.map((entry) => ({
+      title: `${entry.task.key} ${entry.task.title}`,
+      url: buildTaskUrl(workspaceId, entry.task.projectId, entry.task.id),
+      projectName: entry.task.projectName,
+      changes: entry.changes,
+    })),
+    moreFollowing: brief.following.total - brief.following.items.length,
+  };
+}
 
 /** Workspaces the user is in, minus those whose notifications they paused. */
 async function digestWorkspacesOf(userId: string) {
@@ -106,6 +149,7 @@ async function dueTasksOf(userId: string, workspaceIds: string[], now: Date) {
       and(
         inArray(projectTable.workspaceId, workspaceIds),
         isNull(projectTable.deletedAt),
+        projectVisibleSql(projectTable.id, userId),
         visibleTaskCondition,
         sql`${taskGroupSql} not in ('completed', 'cancelled')`,
         isNotNull(taskTable.dueDate),
@@ -261,8 +305,22 @@ export async function buildDigestWorkspaces(
         };
       });
     const unreadCount = unread.get(workspace.id) ?? 0;
+    const brief = input.includeBrief
+      ? await briefSection(
+          input.userId,
+          workspace.id,
+          input.now,
+          input.since,
+          input.timeZone,
+        )
+      : null;
 
-    if (dueTasks.length === 0 && mentions.length === 0 && unreadCount === 0) {
+    if (
+      dueTasks.length === 0 &&
+      mentions.length === 0 &&
+      unreadCount === 0 &&
+      !brief
+    ) {
       continue;
     }
     result.push({
@@ -273,6 +331,7 @@ export async function buildDigestWorkspaces(
       mentions: listedMentions,
       mentionCount: mentions.length,
       unreadCount,
+      ...(brief ? { brief } : {}),
     });
   }
   return result;
