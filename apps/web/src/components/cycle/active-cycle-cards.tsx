@@ -9,6 +9,7 @@ import {
 } from "@/components/planning/breakdown-list";
 import { useStoredState } from "@/components/planning/use-stored-state";
 import { Card, CardHeader, CardPanel, CardTitle } from "@/components/ui/card";
+import CircularProgress from "@/components/ui/circular-progress";
 import { Tabs, TabsList, TabsPanel, TabsTab } from "@/components/ui/tabs";
 import { useGetTasks } from "@/hooks/queries/task/use-get-tasks";
 import { COLUMN_GROUP_META } from "@/lib/column-groups";
@@ -36,7 +37,17 @@ export function CycleProgressCard({ cycle }: { cycle: Cycle }) {
         </CardTitle>
       </CardHeader>
       <CardPanel className="space-y-3">
-        <p className="font-semibold text-3xl tabular-nums">{cycle.progress}%</p>
+        <div className="flex items-center gap-3">
+          <CircularProgress
+            completed={cycle.progress}
+            total={100}
+            size={44}
+            strokeWidth={5}
+          />
+          <p className="font-semibold text-3xl text-primary tabular-nums">
+            {cycle.progress}%
+          </p>
+        </div>
         <GroupProgressBar
           counts={cycle.counts}
           cancelledLabel={t("cycles:sidebar.cancelledCount", {

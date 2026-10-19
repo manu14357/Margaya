@@ -11,6 +11,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { SplitView } from "@/components/common/split-view";
 import EstimateProgressSummary from "@/components/estimate/estimate-progress-summary";
+import CycleCapacityCheck from "@/components/insight/cycle-capacity-check";
 import { PlanningPageSkeleton } from "@/components/planning/planning-page-states";
 import { Input } from "@/components/ui/input";
 import { Kbd } from "@/components/ui/kbd";
@@ -381,6 +382,7 @@ export default function CyclePlanner({
           {t("cycles:plan.plannedCount", { count: planned.length })}
         </p>
         <EstimateProgressSummary estimates={totals} />
+        <CycleCapacityCheck cycleId={cycle.id} projectId={projectId} />
       </div>
       {renderRows("cycle", planned, t("cycles:plan.cycleEmpty"))}
     </div>

@@ -85,6 +85,7 @@ export default function CycleBoardBody({
   const sidebar = project ? (
     <CycleSidebar
       cycle={cycle}
+      workspaceId={workspaceId}
       {...planningControls}
       columns={project.columns}
     />

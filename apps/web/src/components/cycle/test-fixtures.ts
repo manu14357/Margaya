@@ -26,6 +26,7 @@ export function makeCycle(overrides: Partial<Cycle> = {}): Cycle {
     },
     pending: 3,
     progress: 25,
+    rollover: null,
     createdBy: "owner-1",
     createdAt: "2026-02-20T00:00:00.000Z",
     updatedAt: "2026-02-20T00:00:00.000Z",

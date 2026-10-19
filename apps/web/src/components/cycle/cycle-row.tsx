@@ -71,8 +71,15 @@ export default function CycleRow({
           />
         )}
         <span className="inline-flex items-center gap-1.5 text-xs">
-          <CircularProgress completed={cycle.progress} total={100} />
-          <span aria-hidden>{cycle.progress}%</span>
+          <CircularProgress
+            completed={cycle.progress}
+            total={100}
+            size={18}
+            strokeWidth={2.5}
+          />
+          <span aria-hidden className="font-medium tabular-nums">
+            {cycle.progress}%
+          </span>
           <span className="sr-only">
             {t("cycles:row.progressLabel", { percent: cycle.progress })}
           </span>

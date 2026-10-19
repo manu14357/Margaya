@@ -126,6 +126,10 @@ export function toCycle(
     counts,
     pending: snapshot ? snapshot.pending : pendingOf(counts),
     progress: snapshot ? snapshot.progress : progressOf(counts),
+    rollover:
+      row.rolledOverAt && row.rolloverResult
+        ? { at: row.rolledOverAt, ...row.rolloverResult }
+        : null,
     createdBy: row.createdBy,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,

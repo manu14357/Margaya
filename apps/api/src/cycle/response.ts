@@ -48,6 +48,19 @@ export const cycleSchema = z
       description:
         "Percent done, 0–100: completed ÷ (total − cancelled), rounded. 0 without tasks, 100 when every task is cancelled.",
     }),
+    rollover: z
+      .object({
+        at: responseTimestamp,
+        outcome: z.enum(["moved", "nothing_to_move", "no_next_cycle"]),
+        movedCount: z.number().int(),
+        targetCycleId: z.string().nullable(),
+        targetCycleName: z.string().nullable(),
+      })
+      .nullable()
+      .openapi({
+        description:
+          "What the project's cycle auto-rollover did when this cycle ended; null until it ran (or while it is off).",
+      }),
     createdBy: z.string().nullable(),
     createdAt: responseTimestamp,
     updatedAt: responseTimestamp,

@@ -2,6 +2,7 @@ import { CalendarDays, ListTodo, UserRound } from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import GroupProgressBar from "@/components/charts/group-progress-bar";
+import DeliveryPanel from "@/components/delivery/delivery-panel";
 import {
   EstimateChartUnitToggle,
   estimateChartOf,
@@ -26,6 +27,7 @@ import { CycleStatusBadge } from "./cycle-status";
 
 type CycleSidebarProps = PlanningFilterControls & {
   cycle: Cycle;
+  workspaceId: string;
 };
 
 function PropertyRow({
@@ -52,7 +54,11 @@ function PropertyRow({
  * Beside the cycle's board: its name, then progress and the burn chart
  * (what people check most), then dates, owner and the breakdowns.
  */
-export default function CycleSidebar({ cycle, ...filters }: CycleSidebarProps) {
+export default function CycleSidebar({
+  cycle,
+  workspaceId,
+  ...filters
+}: CycleSidebarProps) {
   const { t } = useTranslation();
   const [mode, setMode] = useState<BurnChartMode>("burndown");
   const { data: progress, isLoading } = useGetCycleProgress(
@@ -93,8 +99,29 @@ export default function CycleSidebar({ cycle, ...filters }: CycleSidebarProps) {
             })}
           </p>
         )}
+        {cycle.rollover && (
+          <p className="text-muted-foreground text-xs">
+            {cycle.rollover.outcome === "moved"
+              ? t("cycles:sidebar.rolledOver", {
+                  count: cycle.rollover.movedCount,
+                  name: cycle.rollover.targetCycleName ?? "",
+                })
+              : cycle.rollover.outcome === "no_next_cycle"
+                ? t("cycles:sidebar.rolloverNoNext")
+                : t("cycles:sidebar.rolloverNothing")}
+          </p>
+        )}
         <EstimateProgressSummary estimates={progress?.estimates} />
       </section>
+
+      {cycle.status !== "completed" && !cycle.archivedAt && (
+        <DeliveryPanel
+          workspaceId={workspaceId}
+          projectId={cycle.projectId}
+          scope="cycle"
+          id={cycle.id}
+        />
+      )}
 
       <section className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">

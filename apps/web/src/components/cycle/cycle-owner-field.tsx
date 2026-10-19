@@ -1,6 +1,7 @@
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { withoutAgents } from "@/components/ai/agents/use-agent-ids";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,6 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useAgentUserIds } from "@/hooks/queries/ai/use-agents";
 import { useGetActiveWorkspaceUsers } from "@/hooks/queries/workspace-users/use-get-active-workspace-users";
 import { getInitials } from "@/lib/get-initials";
 
@@ -47,7 +49,9 @@ export default function CycleOwnerField({
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const { data: users } = useGetActiveWorkspaceUsers(workspaceId);
-  const members = users?.members ?? [];
+  // Owners are people: AI agents are left out.
+  const agentIds = useAgentUserIds(workspaceId);
+  const members = withoutAgents(users?.members, agentIds, (m) => m.userId);
   const owner = members.find((member) => member.userId === value);
 
   const select = (ownerId: string | null) => {

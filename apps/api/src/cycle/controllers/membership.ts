@@ -1,4 +1,5 @@
 import { eq, sql } from "drizzle-orm";
+import { withAutomationMarker } from "../../automation-rule/context";
 import {
   activityTable,
   cycleTable,
@@ -27,7 +28,9 @@ const ACTIVITY_BATCH_SIZE = 500;
 export async function recordCycleChanges(
   tx: Transaction,
   changes: readonly CycleChange[],
-  userId: string,
+  userId: string | null,
+  /** Marks history written by a scheduled job, which has no user. */
+  automation?: { rule: "cycle_rollover" },
 ) {
   for (let i = 0; i < changes.length; i += ACTIVITY_BATCH_SIZE) {
     await tx.insert(activityTable).values(
@@ -36,7 +39,9 @@ export async function recordCycleChanges(
         type: "cycle_changed",
         userId,
         content: null,
-        eventData: data,
+        eventData: automation
+          ? { ...data, automation }
+          : withAutomationMarker(data),
       })),
     );
   }
@@ -111,7 +116,8 @@ export async function publishCycleChanges({
   announceCycles = true,
 }: {
   projectId: string;
-  userId: string;
+  /** Null for the rollover job. */
+  userId: string | null;
   changes: readonly CycleChange[];
   announceCycles?: boolean;
 }) {

@@ -1,6 +1,10 @@
 import { Kanban, ListPlus, PanelRight, Plus, SquarePlus } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { AiSummaryButton } from "@/components/ai/ai-summary";
+import BriefButton from "@/components/ai/brief/brief-button";
 import FavoriteButton from "@/components/favorite/favorite-button";
+import RetroButton from "@/components/insight/retro-button";
+import { useMinWidth } from "@/components/task/use-min-width";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -9,6 +13,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { Cycle } from "@/types/cycle";
+import CycleAiMenu from "./cycle-ai-menu";
 import CycleRowActions from "./cycle-row-actions";
 
 type CycleHeaderActionsProps = {
@@ -44,12 +49,15 @@ export default function CycleHeaderActions({
   onDeleted,
 }: CycleHeaderActionsProps) {
   const { t } = useTranslation();
+  // Below 2xl, labelled AI buttons and the task count squeeze the top bar's
+  // command field to nothing; one "AI" menu holds the AI actions instead.
+  const showAiInline = useMinWidth(1536);
   return (
     <div className="flex items-center gap-1">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <span className="hidden whitespace-nowrap rounded-md bg-muted px-2 py-0.5 font-medium text-muted-foreground text-xs md:inline">
+            <span className="hidden whitespace-nowrap rounded-md bg-muted px-2 py-0.5 font-medium text-muted-foreground text-xs 2xl:inline">
               {t("cycles:detail.taskCount", { count: taskCount })}
             </span>
           </TooltipTrigger>
@@ -117,7 +125,30 @@ export default function CycleHeaderActions({
       >
         <PanelRight className="size-3.5" />
       </Button>
+      {showAiInline ? (
+        <>
+          <AiSummaryButton
+            kind="cycle"
+            id={cycle.id}
+            projectId={cycle.projectId}
+            workspaceId={workspaceId}
+            name={cycle.name}
+          />
+          <RetroButton cycle={cycle} workspaceId={workspaceId} />
+          <BriefButton
+            scopeType="cycle"
+            scopeId={cycle.id}
+            projectId={cycle.projectId}
+            workspaceId={workspaceId}
+            name={cycle.name}
+          />
+        </>
+      ) : (
+        <CycleAiMenu cycle={cycle} workspaceId={workspaceId} />
+      )}
+      {/* The "⋯" menu has Favorite too; the star only shows with room. */}
       <FavoriteButton
+        className="hidden xl:inline-flex"
         workspaceId={workspaceId}
         entityType="cycle"
         entityId={cycle.id}

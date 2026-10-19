@@ -36,6 +36,7 @@ export function cycleAccess(idKey = "id") {
       userId,
       cycle.workspaceId,
       c.get("apiKey")?.id,
+      cycle.projectId,
     );
 
     c.set("workspaceId", cycle.workspaceId);
