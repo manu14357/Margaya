@@ -12,10 +12,13 @@ export const createCommentBody = z.object({
     description:
       "Attribution for an imported comment. Requires workspace:manage_settings and externalSource; otherwise ignored.",
   }),
-  externalSource: z.enum(["trello", "jira"]).optional().openapi({
-    description:
-      "The tool the comment was imported from. Supplying external attribution requires workspace:manage_settings.",
-  }),
+  externalSource: z
+    .enum(["trello", "jira", "linear", "asana"])
+    .optional()
+    .openapi({
+      description:
+        "The tool the comment was imported from. Supplying external attribution requires workspace:manage_settings.",
+    }),
   visibility: z.enum(["internal", "public"]).optional().openapi({
     description:
       "internal (default) or public: also shown on the project's public board. Public needs a published board with comments on (409 otherwise).",

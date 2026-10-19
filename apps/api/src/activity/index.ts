@@ -7,6 +7,7 @@ import {
   jsonResponse,
   z,
 } from "../openapi";
+import { requestHiddenProjectIds } from "../project/visibility";
 import { insertTaskActivity } from "../task-activity/insert-activity";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
@@ -211,6 +212,7 @@ const activity = apiRouter()
         workspaceId,
         limit,
         cursor,
+        hidden: await requestHiddenProjectIds(c),
       }),
       200,
     );
@@ -220,7 +222,14 @@ const activity = apiRouter()
     const { userId } = c.req.valid("param");
     await getWorkspaceMember(workspaceId, userId);
     return c.json(
-      await getMyActivity({ userId, workspaceId, limit, cursor }),
+      await getMyActivity({
+        userId,
+        workspaceId,
+        limit,
+        cursor,
+        // The viewer's restricted projects, not the member's.
+        hidden: await requestHiddenProjectIds(c),
+      }),
       200,
     );
   })
@@ -271,8 +280,15 @@ subscribeToEvent<{
     return;
   }
   // An accepted intake request already has its submitted and accepted rows;
-  // a published draft wrote its "created" row in the publish transaction.
-  if (data.source === "intake" || data.source === "draft") return;
+  // a published draft wrote its "created" row in the publish transaction; a
+  // repeating task's next instance has its recurred_from row instead.
+  if (
+    data.source === "intake" ||
+    data.source === "draft" ||
+    data.source === "recurrence"
+  ) {
+    return;
+  }
   await createActivity(data.taskId, data.type, data.currentUserId, null, {});
 });
 

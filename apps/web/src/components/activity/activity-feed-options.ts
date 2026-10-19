@@ -1,7 +1,13 @@
+import { agentViaOf } from "@/lib/ai/agents";
 import type { ActivityFilter, ActivitySort } from "@/store/user-preferences";
 import { isCommentActivity } from "./utils";
 
-type FeedItem = { type: string; content: string | null; createdAt: string };
+type FeedItem = {
+  type: string;
+  content: string | null;
+  createdAt: string;
+  eventData?: unknown;
+};
 
 function time(value: string): number {
   const parsed = Date.parse(value);
@@ -24,7 +30,9 @@ export function arrangeActivities<T extends FeedItem>(
       : items.filter((item) =>
           filter === "comments"
             ? isCommentActivity(item)
-            : !isCommentActivity(item),
+            : filter === "agents"
+              ? agentViaOf(item.eventData) !== null
+              : !isCommentActivity(item),
         );
   const direction = sort === "newest" ? -1 : 1;
   return kept

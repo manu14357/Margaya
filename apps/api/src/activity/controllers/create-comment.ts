@@ -1,5 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
+import { withAgentVia } from "../../ai-agent/attribution";
+import { withAutomationMarker } from "../../automation-rule/context";
 import db from "../../database";
 import {
   activityTable,
@@ -61,6 +63,9 @@ async function createComment(
       userId,
       content,
       visibility,
+      // An agent's comment says who it acted for (AI-generated marker); an
+      // automation rule's comment carries the "Automation" marker.
+      eventData: withAutomationMarker(withAgentVia(null)),
       ...(external
         ? {
             externalUserName: external.userName,
@@ -89,7 +94,7 @@ async function createComment(
   if (task) {
     await publishEvent("comment.created", {
       ...activity,
-      comment: `**${user?.name}** commented:\n> ${content}`,
+      comment: `**${user?.name ?? (userId ? "" : "Automation")}** commented:\n> ${content}`,
       projectId: task.projectId,
       visibility,
       origin,
@@ -101,8 +106,10 @@ async function createComment(
   // importing member does not start watching the task.
   // Outsiders commenting on a public board don't start watching: they
   // couldn't receive the notifications anyway (B12 §3.9).
+  // The system actor "Automation" (no user) watches nothing.
   if (
     !external &&
+    userId &&
     (origin === "app" || (await isWorkspaceMemberOfTask(taskId, userId)))
   ) {
     await subscribeUsers(taskId, [userId], "commenter");

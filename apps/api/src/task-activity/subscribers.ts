@@ -1,3 +1,4 @@
+import { currentAutomation } from "../automation-rule/context";
 import { subscribeToEvent } from "../events";
 import { relationPerspective } from "../task-relation/types";
 import { insertTaskActivity, recordDescriptionEdit } from "./insert-activity";
@@ -63,11 +64,13 @@ for (const [eventName, type] of [
 ] as const) {
   subscribeToEvent<LabelEvent>(eventName, async (data) => {
     const label = labelEventData(data);
-    if (!data.taskId || !data.userId || !label) return;
+    // An automation rule's change is attributed to "Automation".
+    const actor = data.userId || (currentAutomation() ? null : undefined);
+    if (!data.taskId || actor === undefined || !label) return;
     await insertTaskActivity({
       taskId: data.taskId,
       type,
-      userId: data.userId,
+      userId: actor,
       eventData: label,
     });
   });

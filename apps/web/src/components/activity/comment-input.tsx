@@ -1,8 +1,13 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { ArrowUp, Paperclip } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CommentEditor from "@/components/activity/comment-editor";
+import {
+  CommentAiButton,
+  CommentAiPreview,
+  useCommentAi,
+} from "@/components/editor/ai/comment-ai";
 import CommentVisibilitySwitch from "@/components/publication/comment-visibility-switch";
 import { Button } from "@/components/ui/button";
 import { KbdSequence } from "@/components/ui/kbd";
@@ -13,6 +18,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import useCreateComment from "@/hooks/mutations/comment/use-create-comment";
+import { useAiAvailability } from "@/hooks/queries/ai/use-ai";
+import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { getModifierKeyText } from "@/hooks/use-keyboard-shortcuts";
 import { cn } from "@/lib/cn";
 import { toast } from "@/lib/toast";
@@ -22,11 +29,14 @@ type CommentInputProps = {
   taskId: string;
   /** The project's board is published with comments on: offer Public. */
   publicCommentsOpen?: boolean;
+  /** The task's project: offers AI help on the draft when AI is on there. */
+  projectId?: string;
 };
 
 export default function CommentInput({
   taskId,
   publicCommentsOpen = false,
+  projectId,
 }: CommentInputProps) {
   const { t } = useTranslation();
   const [content, setContent] = useState("");
@@ -34,6 +44,17 @@ export default function CommentInput({
   const [attachAction, setAttachAction] = useState<(() => void) | null>(null);
   const { mutateAsync: createComment, isPending } = useCreateComment();
   const queryClient = useQueryClient();
+  const { data: workspace } = useActiveWorkspace();
+  const { available: aiAvailable } = useAiAvailability(projectId ?? null);
+  const contentRef = useRef(content);
+  contentRef.current = content;
+  const commentAi = useCommentAi({
+    workspaceId: workspace?.id ?? "",
+    taskId,
+    getDraft: () => contentRef.current,
+    onApply: setContent,
+  });
+  const showAi = Boolean(projectId && aiAvailable && workspace?.id);
 
   const handleSubmit = useCallback(async () => {
     if (!content.trim()) {
@@ -92,6 +113,9 @@ export default function CommentInput({
           onSubmitShortcut={handleSubmit}
         />
         <div className="flex items-center justify-end gap-2 border-border/70 border-t px-2 py-2">
+          {showAi && (
+            <CommentAiButton ai={commentAi} disabled={!content.trim()} />
+          )}
           <Button
             size="xs"
             variant="ghost"
@@ -138,6 +162,7 @@ export default function CommentInput({
           </TooltipProvider>
         </div>
       </div>
+      {showAi && <CommentAiPreview ai={commentAi} />}
     </div>
   );
 }

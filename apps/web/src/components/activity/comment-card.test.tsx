@@ -12,6 +12,17 @@ vi.mock("@/components/activity/comment-editor", () => ({
   default: ({ value }: { value: string }) => <div>{value}</div>,
 }));
 
+// Translate-on-read needs the router and AI availability; shown untranslated.
+vi.mock("@/components/ai/translate/translatable-content", () => ({
+  default: ({
+    text,
+    children,
+  }: {
+    text: string;
+    children: (text: string, translated: boolean) => ReactNode;
+  }) => <>{children(text, false)}</>,
+}));
+
 const authState = vi.hoisted(() => ({
   user: null as { id: string } | null,
 }));

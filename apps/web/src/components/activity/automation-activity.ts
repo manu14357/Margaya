@@ -1,11 +1,13 @@
 import { getStatusLabel } from "@/lib/i18n/domain";
 
-// History rows written by the scheduled automations job (B11 §4.6): no user,
-// and an `automation` marker in the event data.
+// History rows written by the scheduled automations job (B11 §4.6) and the
+// cycle rollover job: no user, and an `automation` marker in the event data.
 
 export type AutomationMarker = {
-  rule: "auto_archive" | "auto_close";
+  rule: "auto_archive" | "auto_close" | "cycle_rollover" | "custom";
   months: number;
+  /** A project automation rule ("custom"): its name. */
+  ruleName?: string;
 };
 
 export function automationOf(activity: {
@@ -17,8 +19,26 @@ export function automationOf(activity: {
   if (!data || typeof data !== "object" || Array.isArray(data)) return null;
   const marker = (data as { automation?: unknown }).automation;
   if (!marker || typeof marker !== "object") return null;
-  const { rule, months } = marker as { rule?: unknown; months?: unknown };
-  if (rule !== "auto_archive" && rule !== "auto_close") return null;
+  const { rule, months, ruleName } = marker as {
+    rule?: unknown;
+    months?: unknown;
+    ruleName?: unknown;
+  };
+  // A "When → If → Then" rule: the usual history line, by Automation.
+  if (rule === "custom") {
+    return {
+      rule,
+      months: 0,
+      ruleName: typeof ruleName === "string" ? ruleName : "",
+    };
+  }
+  if (
+    rule !== "auto_archive" &&
+    rule !== "auto_close" &&
+    rule !== "cycle_rollover"
+  ) {
+    return null;
+  }
   return { rule, months: typeof months === "number" ? months : 0 };
 }
 
@@ -30,6 +50,17 @@ export function automationActivityText(
 ): string {
   if (marker.rule === "auto_archive") {
     return t("activity:automation.archived", { count: marker.months });
+  }
+  if (marker.rule === "cycle_rollover") {
+    const data = (activity.eventData ?? {}) as {
+      oldCycleName?: unknown;
+      newCycleName?: unknown;
+    };
+    const name = (value: unknown) => (typeof value === "string" ? value : "");
+    return t("activity:automation.rolledOver", {
+      from: name(data.oldCycleName),
+      to: name(data.newCycleName),
+    });
   }
   const newStatus = (activity.eventData as { newStatus?: unknown })?.newStatus;
   return t("activity:automation.closed", {

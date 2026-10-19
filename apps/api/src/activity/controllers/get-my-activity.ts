@@ -2,6 +2,7 @@ import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { activityTable, projectTable, taskTable } from "../../database/schema";
+import { notHiddenProject } from "../../project/visibility";
 import { inTriageColumnSql, liveTaskCondition } from "../../task/scope";
 import { formatTaskKey } from "../../task-activity/task-snapshot";
 
@@ -56,11 +57,14 @@ async function getMyActivity({
   workspaceId,
   limit = DEFAULT_LIMIT,
   cursor,
+  hidden = [],
 }: {
   userId: string;
   workspaceId: string;
   limit?: number;
   cursor?: string;
+  /** Restricted projects the viewer may not see (project/visibility.ts). */
+  hidden?: readonly string[];
 }) {
   const after = cursor ? decodeCursor(cursor) : null;
 
@@ -85,6 +89,7 @@ async function getMyActivity({
         eq(projectTable.workspaceId, workspaceId),
         liveTaskCondition,
         isNull(projectTable.deletedAt),
+        notHiddenProject(projectTable.id, hidden),
         sql`not ${inTriageColumnSql}`,
         after
           ? sql`(${activityTable.createdAt}, ${activityTable.id}) < (${after.createdAt}::timestamp, ${after.id})`

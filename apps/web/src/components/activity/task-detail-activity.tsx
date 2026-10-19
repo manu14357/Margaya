@@ -6,6 +6,7 @@ import {
   Link as LinkIcon,
   ListTree,
   Paperclip,
+  Repeat,
   Tag,
   Waypoints,
 } from "lucide-react";
@@ -13,6 +14,7 @@ import type { ReactNode } from "react";
 import { Trans } from "react-i18next";
 import { formatDateMedium } from "@/lib/format";
 import { resolveLabelColor } from "@/lib/label-color";
+import { recurrenceSummary } from "@/lib/recurrence";
 import {
   isRelationDisplayKey,
   RELATION_META,
@@ -71,6 +73,11 @@ export function getTaskDetailActivityIcon(type: string): ReactNode {
     case "copied_from":
     case "copied_to":
       return <CopyPlus className={iconClass} />;
+    case "recurrence_set":
+    case "recurrence_removed":
+    case "recurred_from":
+    case "recurred_to":
+      return <Repeat className={iconClass} />;
     default:
       return null;
   }
@@ -342,6 +349,63 @@ export function renderTaskDetailActivity(
         },
         context,
       );
+    case "recurrence_set": {
+      const summary = recurrenceSummary(
+        {
+          frequency: text(data.frequency) ?? "daily",
+          interval: typeof data.interval === "number" ? data.interval : 1,
+          weekdays: Array.isArray(data.weekdays)
+            ? data.weekdays.filter(
+                (day): day is number => typeof day === "number",
+              )
+            : null,
+          monthDay: typeof data.monthDay === "number" ? data.monthDay : null,
+          endDate: text(data.endDate),
+          maxOccurrences:
+            typeof data.maxOccurrences === "number"
+              ? data.maxOccurrences
+              : null,
+        },
+        t,
+      );
+      return line(
+        data.updated === true
+          ? t("tasks:recurrence.activity.updated", { summary })
+          : t("tasks:recurrence.activity.set", { summary }),
+      );
+    }
+    case "recurrence_removed":
+      return line(t("tasks:recurrence.activity.removed"));
+    case "recurred_from": {
+      const scheduled = data.reason === "schedule";
+      return withTask(
+        scheduled
+          ? "tasks:recurrence.activity.recurredFromScheduled"
+          : "tasks:recurrence.activity.recurredFrom",
+        {
+          id: text(data.sourceTaskId),
+          key: text(data.sourceTaskKey),
+          title: text(data.sourceTaskTitle),
+          projectId: text(data.projectId),
+        },
+        context,
+      );
+    }
+    case "recurred_to": {
+      const scheduled = data.reason === "schedule";
+      return withTask(
+        scheduled
+          ? "tasks:recurrence.activity.recurredToScheduled"
+          : "tasks:recurrence.activity.recurredTo",
+        {
+          id: text(data.nextTaskId),
+          key: text(data.nextTaskKey),
+          title: text(data.nextTaskTitle),
+          projectId: text(data.projectId),
+        },
+        context,
+      );
+    }
     default:
       return null;
   }

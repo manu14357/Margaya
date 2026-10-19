@@ -12,6 +12,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { AgentBadge } from "@/components/ai/agents/agent-badge";
 import EstimateActivityText from "@/components/estimate/estimate-activity-text";
 import {
   getIntakeActivityIcon,
@@ -21,6 +22,7 @@ import {
 } from "@/components/intake/intake-activity-text";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import useGetWorkspaceUsers from "@/hooks/queries/workspace-users/use-get-workspace-users";
+import { agentViaOf } from "@/lib/ai/agents";
 import { formatDateMedium, formatRelativeTime } from "@/lib/format";
 import { getInitials } from "@/lib/get-initials";
 import { getPriorityLabel, getStatusLabel } from "@/lib/i18n/domain";
@@ -66,6 +68,13 @@ export type CommentAuthor = {
   image: string | null;
   isWorkspaceMember: boolean;
   isGuest: boolean;
+};
+
+/** Tools the generic importers bring tasks from, by activity source id. */
+const IMPORT_SOURCE_NAMES: Record<string, string> = {
+  trello: "Trello",
+  linear: "Linear",
+  asana: "Asana",
 };
 
 function authorKindOf(author: CommentAuthor | undefined) {
@@ -550,6 +559,22 @@ function renderActivityContent({
     );
   }
 
+  // Written by the Trello, Linear and Asana imports.
+  const importSource =
+    activity.type === "imported" && typeof eventData?.source === "string"
+      ? IMPORT_SOURCE_NAMES[eventData.source]
+      : undefined;
+  if (importSource) {
+    return (
+      <span className="text-sm text-muted-foreground">
+        {t("activity:importedFromSource", {
+          source: importSource,
+          key: typeof eventData?.key === "string" ? eventData.key : "",
+        })}
+      </span>
+    );
+  }
+
   if (activity.type === "created") {
     if (eventData) {
       return (
@@ -607,27 +632,57 @@ function Activity({
 
   const isExternalComment = Boolean(activity.externalSource);
   const actorName = user?.user?.name || t("common:people.someone");
+  // "by Agent X on behalf of Y" (ai-agent attribution).
+  const via = agentViaOf(activity.eventData);
+  const viaLine = via ? (
+    <span className="inline-flex items-center gap-1 text-muted-foreground text-xs">
+      <AgentBadge />
+      {via.onBehalfOfName
+        ? t("ai:agents.activity.onBehalfOf", { name: via.onBehalfOfName })
+        : null}
+    </span>
+  ) : null;
 
   if (isCommentActivity(activity)) {
     // Public board authors are usually outsiders, missing from the members.
     const author = commentAuthors?.get(activity.id);
-    const commentUser = isExternalComment
+    // A comment an automation rule wrote is signed "Automation".
+    const ruleComment = automationOf(activity)?.rule === "custom";
+    const commentUser = ruleComment
       ? {
           id: undefined,
-          name: activity.externalUserName ?? t("activity:githubUser"),
+          name: t("activity:automation.actor"),
           email: undefined,
-          image: activity.externalUserAvatar ?? undefined,
+          image: undefined,
         }
-      : {
-          id: user?.user?.id ?? activity.userId ?? undefined,
-          name: user?.user?.name ?? author?.name,
-          email: user?.user?.email,
-          image: user?.user?.image ?? author?.image,
-        };
+      : isExternalComment
+        ? {
+            id: undefined,
+            name: activity.externalUserName ?? t("activity:githubUser"),
+            email: undefined,
+            image: activity.externalUserAvatar ?? undefined,
+          }
+        : !activity.userId
+          ? {
+              // The author's account was deleted; the comment stays.
+              id: undefined,
+              name: via
+                ? t("ai:agents.desk.deletedAgent")
+                : t("publicProject:comments.deletedUser"),
+              email: undefined,
+              image: undefined,
+            }
+          : {
+              id: user?.user?.id ?? activity.userId ?? undefined,
+              name: user?.user?.name ?? author?.name,
+              email: user?.user?.email,
+              image: user?.user?.image ?? author?.image,
+            };
 
     return (
       <TimelineItem className="m-0! flex-row items-start py-2!" step={step}>
         <TimelineContent className="min-w-0 flex-1">
+          {viaLine && <div className="mb-1 ps-1">{viaLine}</div>}
           <CommentCard
             commentId={activity.id}
             taskId={activity.taskId}
@@ -658,7 +713,11 @@ function Activity({
 
   const activityIcon = getActivityTypeIcon(activity.type);
   // The wake-up job ends snoozes: nobody did it, so no name or avatar.
-  const isSystemRow = activity.type === INTAKE_SNOOZE_ENDED;
+  // A repeat the schedule created has no actor either.
+  const isSystemRow =
+    activity.type === INTAKE_SNOOZE_ENDED ||
+    (!activity.userId &&
+      (activity.type === "recurred_from" || activity.type === "recurred_to"));
   // Scheduled automations act as "Automation", with a bot for an avatar.
   const automation = automationOf(activity);
 
@@ -699,7 +758,7 @@ function Activity({
             </>
           )
         )}
-        {automation ? (
+        {automation && automation.rule !== "custom" ? (
           <span className="text-sm text-muted-foreground">
             {automationActivityText(activity, automation, t)}
           </span>
@@ -711,6 +770,14 @@ function Activity({
             t,
           })
         )}{" "}
+        {viaLine && <>{viaLine} </>}
+        {automation?.rule === "custom" && automation.ruleName && (
+          <span className="text-muted-foreground text-xs">
+            {t("activity:automation.byRule", {
+              name: automation.ruleName,
+            })}{" "}
+          </span>
+        )}
         <span className="whitespace-nowrap text-muted-foreground/70 text-xs">
           {formatRelativeTime(activity.createdAt)}
         </span>

@@ -1,3 +1,5 @@
+import { withAgentVia } from "../../ai-agent/attribution";
+import { withAutomationMarker } from "../../automation-rule/context";
 import db from "../../database";
 import { activityTable } from "../../database/schema";
 
@@ -15,7 +17,9 @@ async function createActivity(
       type,
       userId,
       content,
-      eventData: eventData ?? null,
+      // "by Agent X on behalf of Y" when an agent's run key made the change.
+      // "Automation" when a project automation rule made it.
+      eventData: withAutomationMarker(withAgentVia(eventData)),
     })
     .returning();
   return activity;

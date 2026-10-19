@@ -1,5 +1,6 @@
 import { createId } from "@paralleldrive/cuid2";
 import { desc, eq, sql } from "drizzle-orm";
+import { withAutomationMarker } from "../automation-rule/context";
 import db from "../database";
 import { activityTable, taskTable, userTable } from "../database/schema";
 import { decideDescriptionActivity } from "./coalesce";
@@ -31,7 +32,7 @@ export async function insertTaskActivity(
     insert into ${activityTable} (id, task_id, type, user_id, content, event_data)
     select ${createId()}, ${taskId}, ${type},
       (select ${userTable.id} from ${userTable} where ${userTable.id} = ${userId}),
-      null, ${JSON.stringify(eventData)}::jsonb
+      null, ${JSON.stringify(withAutomationMarker(eventData))}::jsonb
     where exists (select 1 from ${taskTable} where ${taskTable.id} = ${taskId})
   `);
 }

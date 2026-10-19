@@ -24,7 +24,9 @@ async function getComments(taskId: string) {
       memberId: workspaceUserTable.userId,
     })
     .from(activityTable)
-    .innerJoin(userTable, eq(activityTable.userId, userTable.id))
+    // A deleted author (person or agent) leaves user_id null: the comment
+    // stays, without an author.
+    .leftJoin(userTable, eq(activityTable.userId, userTable.id))
     .innerJoin(taskTable, eq(taskTable.id, activityTable.taskId))
     .innerJoin(projectTable, eq(projectTable.id, taskTable.projectId))
     // B12: public board authors may be outside the workspace.
@@ -39,7 +41,6 @@ async function getComments(taskId: string) {
       and(
         eq(activityTable.taskId, taskId),
         eq(activityTable.type, "comment"),
-        isNotNull(activityTable.userId),
         isNotNull(activityTable.content),
       ),
     )
@@ -53,12 +54,15 @@ async function getComments(taskId: string) {
     createdAt: c.createdAt,
     updatedAt: c.updatedAt,
     visibility: c.visibility,
-    user: {
-      name: c.userName,
-      image: c.userImage,
-      isWorkspaceMember: Boolean(c.memberId),
-      isGuest: Boolean(c.isAnonymous),
-    },
+    user:
+      c.userId === null
+        ? null
+        : {
+            name: c.userName ?? "",
+            image: c.userImage,
+            isWorkspaceMember: Boolean(c.memberId),
+            isGuest: Boolean(c.isAnonymous),
+          },
   }));
 }
 

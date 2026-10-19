@@ -3,6 +3,7 @@ import { ExternalLink, Pencil, Trash2 } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CommentEditor from "@/components/activity/comment-editor";
+import TranslatableContent from "@/components/ai/translate/translatable-content";
 import { GithubIcon } from "@/components/icons/github-icon";
 import { useAuth } from "@/components/providers/auth-provider/hooks/use-auth";
 import CommentPublicActions, {
@@ -106,7 +107,11 @@ export default function CommentCard({
         ? "Trello"
         : externalSource === "jira"
           ? "Jira"
-          : externalSource;
+          : externalSource === "linear"
+            ? "Linear"
+            : externalSource === "asana"
+              ? "Asana"
+              : externalSource;
   const isFromGitHub = externalSource === "github";
   const githubProfileUrl =
     isFromGitHub && user?.name ? `https://github.com/${user.name}` : null;
@@ -347,22 +352,39 @@ export default function CommentCard({
         )}
 
         <div className="pt-0.5">
-          <CommentEditor
-            value={isEditing ? editedContent : content}
-            onChange={isEditing ? setEditedContent : undefined}
-            placeholder={t("activity:comment.editPlaceholder")}
-            taskId={taskId}
-            uploadSurface="comment"
-            className={
-              isEditing
-                ? "[&_.margaya-comment-editor-content_.ProseMirror]:min-h-[3rem] [&_.margaya-comment-editor-content_.ProseMirror]:max-h-none [&_.margaya-comment-editor-content_.ProseMirror]:overflow-visible [&_.margaya-comment-editor-content_.ProseMirror]:px-3 [&_.margaya-comment-editor-content_.ProseMirror]:pt-2.5 [&_.margaya-comment-editor-content_.ProseMirror]:pb-2"
-                : "margaya-comment-viewer [&_.margaya-comment-editor-content_.ProseMirror]:px-3 [&_.margaya-comment-editor-content_.ProseMirror]:pt-2 [&_.margaya-comment-editor-content_.ProseMirror]:pb-3"
+          {/* Translate-on-read (B8): the viewer shows the translation while
+              it is on; editing always works on the original. */}
+          <TranslatableContent
+            kind="comment"
+            id={commentId}
+            text={content}
+            projectId={
+              queryClient.getQueryData<{ projectId?: string }>(["task", taskId])
+                ?.projectId
             }
-            autoFocus={isEditing}
-            readOnly={!isEditing}
-            onSubmitShortcut={isEditing ? handleSave : undefined}
-            onCancelShortcut={isEditing ? handleCancel : undefined}
-          />
+            auto
+            hideToggle={isEditing}
+            toggleClassName="px-3 pb-2"
+          >
+            {(shown) => (
+              <CommentEditor
+                value={isEditing ? editedContent : shown}
+                onChange={isEditing ? setEditedContent : undefined}
+                placeholder={t("activity:comment.editPlaceholder")}
+                taskId={taskId}
+                uploadSurface="comment"
+                className={
+                  isEditing
+                    ? "[&_.margaya-comment-editor-content_.ProseMirror]:min-h-[3rem] [&_.margaya-comment-editor-content_.ProseMirror]:max-h-none [&_.margaya-comment-editor-content_.ProseMirror]:overflow-visible [&_.margaya-comment-editor-content_.ProseMirror]:px-3 [&_.margaya-comment-editor-content_.ProseMirror]:pt-2.5 [&_.margaya-comment-editor-content_.ProseMirror]:pb-2"
+                    : "margaya-comment-viewer [&_.margaya-comment-editor-content_.ProseMirror]:px-3 [&_.margaya-comment-editor-content_.ProseMirror]:pt-2 [&_.margaya-comment-editor-content_.ProseMirror]:pb-3"
+                }
+                autoFocus={isEditing}
+                readOnly={!isEditing}
+                onSubmitShortcut={isEditing ? handleSave : undefined}
+                onCancelShortcut={isEditing ? handleCancel : undefined}
+              />
+            )}
+          </TranslatableContent>
         </div>
 
         {!isEditing && reactionGroups && reactionGroups.length > 0 && (

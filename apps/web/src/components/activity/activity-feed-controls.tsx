@@ -1,5 +1,6 @@
 import { ListFilter } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useActiveWorkspaceAgentIds } from "@/components/ai/agents/use-agent-ids";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -23,6 +24,7 @@ const FILTER_KEYS: Record<ActivityFilter, string> = {
   all: "activity:feed.all",
   comments: "activity:feed.comments",
   updates: "activity:feed.updates",
+  agents: "ai:agents.activityFilter",
 };
 
 const SORT_KEYS: Record<ActivitySort, string> = {
@@ -48,6 +50,7 @@ export default function ActivityFeedControls() {
   const sort = useUserPreferencesStore((state) => state.activitySort);
   const setFilter = useUserPreferencesStore((state) => state.setActivityFilter);
   const setSort = useUserPreferencesStore((state) => state.setActivitySort);
+  const hasAgents = useActiveWorkspaceAgentIds().size > 0;
 
   return (
     <DropdownMenu>
@@ -76,7 +79,10 @@ export default function ActivityFeedControls() {
               if (isFilter(value)) setFilter(value);
             }}
           >
-            {ACTIVITY_FILTERS.map((value) => (
+            {ACTIVITY_FILTERS.filter(
+              // "Agents" only in workspaces that have agents.
+              (value) => value !== "agents" || hasAgents || filter === value,
+            ).map((value) => (
               <DropdownMenuRadioItem key={value} value={value}>
                 {t(FILTER_KEYS[value])}
               </DropdownMenuRadioItem>

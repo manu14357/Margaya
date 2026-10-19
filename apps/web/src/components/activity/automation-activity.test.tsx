@@ -77,6 +77,20 @@ describe("automation activity entries", () => {
     ).toBeInTheDocument();
   });
 
+  it("shows a cycle rollover as Automation", () => {
+    renderActivity("cycle_changed", {
+      oldCycleId: "c1",
+      oldCycleName: "Sprint 1",
+      newCycleId: "c2",
+      newCycleName: "Sprint 2",
+      automation: { rule: "cycle_rollover" },
+    });
+    expect(screen.getByText("activity:automation.actor")).toBeInTheDocument();
+    expect(
+      screen.getByText("activity:automation.rolledOver"),
+    ).toBeInTheDocument();
+  });
+
   it("leaves rows without a marker unchanged", () => {
     renderActivity("archived", {});
     expect(screen.queryByText("activity:automation.actor")).toBeNull();
