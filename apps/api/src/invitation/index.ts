@@ -1,11 +1,21 @@
-import { apiRouter, createRoute, jsonResponse } from "../openapi";
+import {
+  apiRouter,
+  createRoute,
+  errorResponse,
+  jsonResponse,
+} from "../openapi";
+import { isInstanceAdmin } from "../utils/is-instance-admin";
+import { requireWorkspacePermission } from "../utils/require-workspace-permission";
+import { INVITATION_NOT_FOUND, invitationAccess } from "./access";
 import getInvitationDetailsController from "./controllers/get-invitation-details";
 import getUserPendingInvitations from "./controllers/get-user-pending-invitations";
+import updateInvitationRole from "./controllers/update-invitation-role";
 import {
   invitationDetailsSchema,
   pendingInvitationListSchema,
+  workspaceInvitationSchema,
 } from "./response";
-import { invitationParam } from "./schema";
+import { invitationParam, updateInvitationRoleBody } from "./schema";
 
 const getPendingRoute = createRoute({
   method: "get",
@@ -37,6 +47,36 @@ const getInvitationRoute = createRoute({
   },
 });
 
+const updateInvitationRoleRoute = createRoute({
+  method: "patch",
+  operationId: "updateInvitationRole",
+  path: "/{id}/role",
+  tags: ["Invitations"],
+  summary: "Change a pending invitation's role",
+  description:
+    "Change the role a pending invitation grants when it is accepted. Needs invitation:create and invitation:cancel in the invitation's workspace. Both the new and the current role must be within the caller's own: a role is above yours when it grants any permission statement yours does not. Owners and instance admins have no ceiling.",
+  middleware: [
+    invitationAccess(),
+    requireWorkspacePermission({ invitation: ["create", "cancel"] }),
+  ] as const,
+  request: {
+    params: invitationParam,
+    body: {
+      required: true,
+      content: { "application/json": { schema: updateInvitationRoleBody } },
+    },
+  },
+  responses: {
+    200: jsonResponse("The updated invitation", workspaceInvitationSchema),
+    400: errorResponse("Invalid body or an unknown role"),
+    403: errorResponse(
+      "Missing permission, or a role above the caller's own (new or current)",
+    ),
+    404: errorResponse(INVITATION_NOT_FOUND),
+    409: errorResponse("The invitation is no longer pending"),
+  },
+});
+
 const invitation = apiRouter()
   .openapi(getPendingRoute, async (c) => {
     const user = c.get("user");
@@ -47,6 +87,15 @@ const invitation = apiRouter()
   })
   .openapi(getInvitationRoute, async (c) =>
     c.json(await getInvitationDetailsController(c.req.valid("param").id), 200),
-  );
+  )
+  .openapi(updateInvitationRoleRoute, async (c) => {
+    const updated = await updateInvitationRole({
+      invitationId: c.req.valid("param").id,
+      role: c.req.valid("json").role,
+      userId: c.get("userId"),
+      instanceAdmin: await isInstanceAdmin(c),
+    });
+    return c.json(updated, 200);
+  });
 
 export default invitation;

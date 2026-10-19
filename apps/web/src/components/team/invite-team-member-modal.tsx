@@ -1,12 +1,16 @@
-import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { z } from "zod/v4";
 import useInviteWorkspaceUser from "@/hooks/mutations/workspace-user/use-invite-workspace-user";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
+import useGrantableRoles from "@/hooks/queries/workspace/use-grantable-roles";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
+import { defaultInviteRole } from "@/lib/grantable-roles";
+import {
+  type InviteFailure,
+  MAX_INVITES_PER_SUBMIT,
+  parseEmailList,
+  sendInvitesInSequence,
+} from "@/lib/invite-emails";
 import { toast } from "@/lib/toast";
 import { Button } from "../ui/button";
 import {
@@ -18,125 +22,167 @@ import {
   DialogPopup,
   DialogTitle,
 } from "../ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
 import InvitationLinkField from "./invitation-link-field";
+import InviteFailureList from "./invite-failure-list";
+import InviteRoleSelect from "./invite-role-select";
 
 type Props = {
   open: boolean;
   onClose: () => void;
 };
 
-const teamMemberSchema = z.object({
-  email: z.string(),
-});
-
-type TeamMemberFormValues = z.infer<typeof teamMemberSchema>;
+type SentInvitation = { id?: string; email: string };
 
 function InviteTeamMemberModal({ open, onClose }: Props) {
   const { t } = useTranslation();
   const { mutateAsync } = useInviteWorkspaceUser();
-  const queryClient = useQueryClient();
   const { data: workspace } = useActiveWorkspace();
   const workspaceId = workspace?.id;
-  const { canInviteUsers } = useWorkspacePermission();
+  const { canInviteUsers, role: myRole } = useWorkspacePermission();
   const canInvite = canInviteUsers();
-  const [createdInvitation, setCreatedInvitation] = useState<{
-    id: string;
-    email: string;
+  const { roles } = useGrantableRoles(workspaceId, myRole);
+
+  const [emails, setEmails] = useState("");
+  const [pickedRole, setPickedRole] = useState<string>();
+  const [error, setError] = useState<string | null>(null);
+  const [failures, setFailures] = useState<InviteFailure[]>([]);
+  const [progress, setProgress] = useState<{
+    done: number;
+    total: number;
   } | null>(null);
+  const [created, setCreated] = useState<SentInvitation[] | null>(null);
 
-  const form = useForm<TeamMemberFormValues>({
-    resolver: standardSchemaResolver(teamMemberSchema),
-    defaultValues: {
-      email: "",
-    },
-  });
+  const role =
+    pickedRole && roles.includes(pickedRole)
+      ? pickedRole
+      : defaultInviteRole(roles);
+  const sending = progress !== null;
 
-  const onSubmit = async ({ email }: TeamMemberFormValues) => {
-    if (!workspaceId) {
-      toast.error(t("team:inviteModal.error"));
-      return;
-    }
-    if (!canInvite) {
+  const onSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!workspaceId || !canInvite || !role) {
       // Defense-in-depth: parent gates the trigger, but if the modal is
       // somehow open without permission we refuse rather than firing a
       // mutation the server will reject.
       toast.error(t("team:inviteModal.error"));
       return;
     }
-    try {
-      const invitation = await mutateAsync({
-        email,
-        workspaceId,
-        role: "member",
-      }); // TODO: role and email
-      await queryClient.refetchQueries({
-        queryKey: ["workspace-users", workspaceId],
-      });
 
+    const { valid, invalid } = parseEmailList(emails);
+    if (invalid.length > 0) {
+      setError(
+        t("team:inviteModal.invalidEmails", { emails: invalid.join(", ") }),
+      );
+      return;
+    }
+    if (valid.length === 0) {
+      setError(t("team:inviteModal.emailRequired"));
+      return;
+    }
+    if (valid.length > MAX_INVITES_PER_SUBMIT) {
+      setError(
+        t("team:inviteModal.tooManyEmails", { max: MAX_INVITES_PER_SUBMIT }),
+      );
+      return;
+    }
+
+    setError(null);
+    setFailures([]);
+    const result = await sendInvitesInSequence(
+      valid,
+      (email) => mutateAsync({ email, workspaceId, role }),
+      {
+        onProgress: (done, total) => setProgress({ done, total }),
+        fallbackMessage: t("team:inviteModal.error"),
+        rateLimitedMessage: t("team:inviteModal.rateLimited"),
+      },
+    );
+    setProgress(null);
+
+    if (result.failed.length === 0) {
       toast.success(t("team:inviteModal.success"));
-
-      // The link is the only delivery channel when SMTP is unconfigured, so the
-      // modal stays open on it instead of closing. If the API ever stops
-      // returning an id, fall back to the previous close-on-success behaviour.
-      if (invitation?.id) {
-        setCreatedInvitation({ id: invitation.id, email });
-        form.reset();
+      setEmails("");
+      // The link is the only delivery channel when SMTP is unconfigured, so
+      // the modal stays open on the links instead of closing. If the API
+      // ever stops returning ids, fall back to closing on success.
+      if (result.sent.some((entry) => entry.id)) {
+        setCreated(result.sent);
         return;
       }
+      resetAndCloseModal();
+      return;
+    }
 
-      resetInviteTeamMember();
-      onClose();
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : t("team:inviteModal.error"),
+    // Keep only what failed in the box so the person can fix and resend.
+    setEmails(result.failed.map((failure) => failure.email).join("\n"));
+    setFailures(result.failed);
+    if (result.sent.length > 0) {
+      toast.success(
+        t("team:inviteModal.sentSome", {
+          sent: result.sent.length,
+          total: valid.length,
+        }),
       );
+    } else {
+      toast.error(t("team:inviteModal.error"));
     }
-  };
-
-  const resetInviteTeamMember = async () => {
-    if (workspaceId) {
-      await queryClient.invalidateQueries({
-        queryKey: ["workspace-users", workspaceId],
-      });
-    }
-    form.reset();
   };
 
   const resetAndCloseModal = () => {
-    setCreatedInvitation(null);
-    resetInviteTeamMember();
+    if (sending) return;
+    setCreated(null);
+    setEmails("");
+    setError(null);
+    setFailures([]);
     onClose();
   };
+
+  const createdWithLinks = created?.filter((entry) => entry.id) ?? [];
 
   return (
     <Dialog open={open} onOpenChange={resetAndCloseModal}>
       <DialogPopup className="w-full max-w-md">
         <DialogHeader>
           <DialogTitle>
-            {createdInvitation
+            {created
               ? t("team:inviteModal.createdTitle")
               : t("team:inviteModal.title")}
           </DialogTitle>
         </DialogHeader>
 
-        {createdInvitation ? (
+        {created ? (
           <>
             <DialogPanel className="space-y-3">
-              <p className="text-sm text-muted-foreground">
-                {t("team:inviteModal.shareLinkDescription", {
-                  email: createdInvitation.email,
-                })}
-              </p>
-              <InvitationLinkField invitationId={createdInvitation.id} />
+              {createdWithLinks.length === 1 ? (
+                <>
+                  <p className="text-sm text-muted-foreground">
+                    {t("team:inviteModal.shareLinkDescription", {
+                      email: createdWithLinks[0]?.email ?? "",
+                    })}
+                  </p>
+                  <InvitationLinkField
+                    invitationId={createdWithLinks[0]?.id ?? ""}
+                  />
+                </>
+              ) : (
+                <>
+                  <p className="text-sm text-muted-foreground">
+                    {t("team:inviteModal.shareLinksDescription")}
+                  </p>
+                  <ul className="space-y-3">
+                    {createdWithLinks.map((entry) => (
+                      <li key={entry.email} className="space-y-1.5">
+                        <p className="break-all text-sm text-foreground">
+                          {entry.email}
+                        </p>
+                        <InvitationLinkField invitationId={entry.id ?? ""} />
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </DialogPanel>
             <DialogFooter>
               <Button size="sm" onClick={resetAndCloseModal}>
@@ -145,44 +191,104 @@ function InviteTeamMemberModal({ open, onClose }: Props) {
             </DialogFooter>
           </>
         ) : (
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="contents">
-              <DialogPanel>
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("team:inviteModal.emailLabel")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder={t("team:inviteModal.emailPlaceholder")}
-                          autoFocus
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+          <form onSubmit={onSubmit} className="contents" noValidate>
+            <DialogPanel className="space-y-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="invite-emails">
+                  {t("team:inviteModal.emailLabel")}
+                </Label>
+                <Textarea
+                  id="invite-emails"
+                  value={emails}
+                  onChange={(event) => {
+                    setEmails(event.target.value);
+                    setError(null);
+                  }}
+                  placeholder={t("team:inviteModal.emailPlaceholder")}
+                  aria-invalid={error !== null}
+                  aria-describedby={
+                    error ? "invite-emails-error" : "invite-emails-hint"
+                  }
+                  disabled={sending}
+                  rows={3}
+                  autoComplete="off"
+                  autoFocus
                 />
-              </DialogPanel>
+                {error ? (
+                  <p
+                    id="invite-emails-error"
+                    role="alert"
+                    className="text-xs text-destructive"
+                  >
+                    {error}
+                  </p>
+                ) : (
+                  <p
+                    id="invite-emails-hint"
+                    className="text-xs text-muted-foreground"
+                  >
+                    {t("team:inviteModal.emailHint")}
+                  </p>
+                )}
+              </div>
 
-              <DialogFooter>
-                <DialogClose
-                  render={<Button variant="outline" size="sm" type="button" />}
+              <div className="space-y-1.5">
+                <Label htmlFor="invite-role">
+                  {t("team:inviteModal.roleLabel")}
+                </Label>
+                <InviteRoleSelect
+                  id="invite-role"
+                  roles={roles}
+                  value={role}
+                  onChange={setPickedRole}
+                  disabled={sending}
+                  className="w-full sm:w-48"
+                  aria-describedby="invite-role-hint"
+                />
+                <p
+                  id="invite-role-hint"
+                  className="text-xs text-muted-foreground"
                 >
-                  {t("common:actions.cancel")}
-                </DialogClose>
-                <Button
-                  type="submit"
-                  size="sm"
-                  disabled={!workspaceId || !canInvite}
-                >
-                  {t("team:inviteModal.sendInvitation")}
-                </Button>
-              </DialogFooter>
-            </form>
-          </Form>
+                  {t("team:inviteModal.roleHint")}
+                </p>
+              </div>
+
+              <InviteFailureList failures={failures} />
+            </DialogPanel>
+
+            <DialogFooter>
+              <DialogClose
+                render={
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    type="button"
+                    disabled={sending}
+                  />
+                }
+              >
+                {t("common:actions.cancel")}
+              </DialogClose>
+              <Button
+                type="submit"
+                size="sm"
+                disabled={
+                  !workspaceId ||
+                  !canInvite ||
+                  !role ||
+                  sending ||
+                  !emails.trim()
+                }
+              >
+                {progress
+                  ? t("team:inviteModal.sending", {
+                      current: Math.min(progress.done + 1, progress.total),
+                      total: progress.total,
+                    })
+                  : t("team:inviteModal.sendInvitation")}
+              </Button>
+            </DialogFooter>
+          </form>
         )}
       </DialogPopup>
     </Dialog>

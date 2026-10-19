@@ -43,3 +43,17 @@ export const invitationDetailsSchema = z
     }),
   })
   .openapi("InvitationDetails");
+
+export const workspaceInvitationSchema = z
+  .object({
+    id: z.string(),
+    email: z.string(),
+    role: z.string().nullable(),
+    workspaceId: z.string(),
+    teamId: z.string().nullable(),
+    status: z.string(),
+    inviterId: z.string(),
+    expiresAt: responseTimestamp,
+    createdAt: responseTimestamp,
+  })
+  .openapi("WorkspaceInvitation");

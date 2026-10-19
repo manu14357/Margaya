@@ -9,9 +9,13 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { withoutAgents } from "@/components/ai/agents/use-agent-ids";
 import useCancelInvitation from "@/hooks/mutations/workspace-user/use-cancel-invitation";
 import useDeleteWorkspaceUser from "@/hooks/mutations/workspace-user/use-delete-workspace-user";
+import useUpdateInvitationRole from "@/hooks/mutations/workspace-user/use-update-invitation-role";
 import useUpdateWorkspaceUserRole from "@/hooks/mutations/workspace-user/use-update-workspace-user-role";
+import { useAgentUserIds } from "@/hooks/queries/ai/use-agents";
+import useGrantableRoles from "@/hooks/queries/workspace/use-grantable-roles";
 import useWorkspaceRoles from "@/hooks/queries/workspace/use-workspace-roles";
 import { useCopyInvitationLink } from "@/hooks/use-copy-invitation-link";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
@@ -52,6 +56,7 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
+import InviteRoleSelect from "./invite-role-select";
 
 type Props = {
   workspaceId: string;
@@ -107,11 +112,21 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
   const { mutateAsync: updateMemberRole } = useUpdateWorkspaceUserRole();
   const { copy: copyInvitationLink } = useCopyInvitationLink();
   const { data: allWorkspaceRoles = [] } = useWorkspaceRoles(workspaceId);
-  const { canManageTeam, canRemoveMembers, canInviteUsers } =
-    useWorkspacePermission();
+  const { mutateAsync: updateInvitationRole } = useUpdateInvitationRole();
+  const {
+    canManageTeam,
+    canRemoveMembers,
+    canInviteUsers,
+    canManageInvitations,
+    role: myRole,
+  } = useWorkspacePermission();
   const canChangeRoles = Boolean(canManageTeam());
   const canRemove = Boolean(canRemoveMembers());
   const canInvite = Boolean(canInviteUsers());
+  const canEditInvitations = Boolean(canManageInvitations());
+  // Pending invitations take a role control only when both their current
+  // role and the choices are within the viewer's own (the API checks too).
+  const { roles: grantable } = useGrantableRoles(workspaceId, myRole);
 
   const customRoles = allWorkspaceRoles.filter(
     (role) => !RESERVED_ROLE_NAMES.has(role.role),
@@ -119,12 +134,16 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
 
   // Owner first, then everyone else (stable on ties so the original
   // listMembers order is preserved within each group).
-  const sortedUsers = [...users].sort((a, b) => {
-    if (a.role === b.role) return 0;
-    if (a.role === "owner") return -1;
-    if (b.role === "owner") return 1;
-    return 0;
-  });
+  // People only: agents are managed in Settings → Agents.
+  const agentIds = useAgentUserIds(workspaceId);
+  const sortedUsers = withoutAgents(users, agentIds, (u) => u.userId).sort(
+    (a, b) => {
+      if (a.role === b.role) return 0;
+      if (a.role === "owner") return -1;
+      if (b.role === "owner") return 1;
+      return 0;
+    },
+  );
 
   const pendingInvitations = invitations.filter(
     (inv) => inv.status !== "accepted" && inv.status !== "canceled",
@@ -138,6 +157,27 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
     } catch (error) {
       toast.error(
         error instanceof Error
+          ? error.message
+          : t("team:membersTable.roleUpdateError"),
+      );
+    }
+  };
+
+  const handleChangeInvitationRole = async (
+    invitation: WorkspaceUserInvitation,
+    role: string,
+  ) => {
+    if (role === invitation.role) return;
+    try {
+      await updateInvitationRole({
+        workspaceId,
+        invitationId: invitation.id,
+        role,
+      });
+      toast.success(t("team:membersTable.invitationRoleUpdateSuccess"));
+    } catch (error) {
+      toast.error(
+        error instanceof Error && error.message
           ? error.message
           : t("team:membersTable.roleUpdateError"),
       );
@@ -359,11 +399,28 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
                 </div>
               </TableCell>
               <TableCell className="py-3">
-                <Badge variant="outline" className="capitalize">
-                  {t(`team:roles.${invitation.role}`, {
-                    defaultValue: capitalize(invitation.role),
-                  })}
-                </Badge>
+                {canEditInvitations &&
+                grantable.includes(invitation.role) &&
+                grantable.length > 1 ? (
+                  <InviteRoleSelect
+                    roles={grantable}
+                    value={invitation.role}
+                    onChange={(role) =>
+                      handleChangeInvitationRole(invitation, role)
+                    }
+                    size="sm"
+                    className="h-8 w-32"
+                    aria-label={t("team:membersTable.ariaInvitationRole", {
+                      email: invitation.email,
+                    })}
+                  />
+                ) : (
+                  <Badge variant="outline" className="capitalize">
+                    {t(`team:roles.${invitation.role}`, {
+                      defaultValue: capitalize(invitation.role),
+                    })}
+                  </Badge>
+                )}
               </TableCell>
               <TableCell className="py-3 text-sm text-muted-foreground">
                 –

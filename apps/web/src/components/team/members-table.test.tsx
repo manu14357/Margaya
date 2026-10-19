@@ -20,6 +20,10 @@ vi.mock("@/lib/copy-to-clipboard", () => ({
   copyToClipboard: (text: string) => copyToClipboard(text),
 }));
 
+vi.mock("@/hooks/queries/ai/use-agents", () => ({
+  useAgentUserIds: () => new Set<string>(),
+}));
+
 vi.mock("@/lib/toast", () => ({
   toast: {
     success: (msg: string) => success(msg),
@@ -54,13 +58,26 @@ vi.mock("@/hooks/queries/workspace/use-workspace-roles", () => ({
   default: () => ({ data: [] }),
 }));
 
+const updateInvitationRole = vi.fn();
+vi.mock("@/hooks/mutations/workspace-user/use-update-invitation-role", () => ({
+  default: () => ({ mutateAsync: updateInvitationRole }),
+}));
+
+const grantable = vi.fn(() => ["viewer", "member", "admin"]);
+vi.mock("@/hooks/queries/workspace/use-grantable-roles", () => ({
+  default: () => ({ roles: grantable(), isLoading: false }),
+}));
+
 const canInviteUsers = vi.fn(() => true);
+const canManageInvitations = vi.fn(() => true);
 
 vi.mock("@/hooks/use-workspace-permission", () => ({
   useWorkspacePermission: () => ({
     canManageTeam: () => true,
     canRemoveMembers: () => true,
     canInviteUsers: () => canInviteUsers(),
+    canManageInvitations: () => canManageInvitations(),
+    role: "admin",
   }),
 }));
 
@@ -70,6 +87,8 @@ vi.mock("../providers/auth-provider/hooks/use-auth", () => ({
 
 beforeEach(() => {
   canInviteUsers.mockReturnValue(true);
+  canManageInvitations.mockReturnValue(true);
+  grantable.mockReturnValue(["viewer", "member", "admin"]);
 });
 
 afterEach(() => {
@@ -158,6 +177,85 @@ describe("MembersTable pending invitation row menu", () => {
     expect(
       screen.queryByRole("button", {
         name: "team:membersTable.ariaInvitationActions",
+      }),
+    ).toBeNull();
+  });
+});
+
+describe("MembersTable pending invitation role", () => {
+  const roleSelect = () =>
+    screen.getByRole("combobox", {
+      name: "team:membersTable.ariaInvitationRole",
+    });
+
+  it("changes a pending invitation's role to another grantable role", async () => {
+    updateInvitationRole.mockResolvedValue({});
+    render(
+      <MembersTable
+        workspaceId="workspace-1"
+        invitations={[pendingInvitation]}
+        users={[] as WorkspaceUser[]}
+      />,
+    );
+
+    fireEvent.click(roleSelect());
+    const options = await screen.findAllByRole("option");
+    expect(options.map((option) => option.textContent)).toEqual([
+      "team:roles.viewer",
+      "team:roles.member",
+      "team:roles.admin",
+    ]);
+    const viewer = await screen.findByRole("option", {
+      name: "team:roles.viewer",
+    });
+    fireEvent.pointerDown(viewer, { pointerType: "mouse" });
+    fireEvent.click(viewer);
+
+    await waitFor(() =>
+      expect(updateInvitationRole).toHaveBeenCalledWith({
+        workspaceId: "workspace-1",
+        invitationId: "invite-1",
+        role: "viewer",
+      }),
+    );
+    await waitFor(() =>
+      expect(success).toHaveBeenCalledWith(
+        "team:membersTable.invitationRoleUpdateSuccess",
+      ),
+    );
+  });
+
+  it("shows the role read-only when it is above the viewer's own", () => {
+    grantable.mockReturnValue(["viewer", "member"]);
+    render(
+      <MembersTable
+        workspaceId="workspace-1"
+        invitations={[
+          { ...pendingInvitation, role: "admin" } as WorkspaceUserInvitation,
+        ]}
+        users={[] as WorkspaceUser[]}
+      />,
+    );
+    expect(
+      screen.queryByRole("combobox", {
+        name: "team:membersTable.ariaInvitationRole",
+      }),
+    ).toBeNull();
+    expect(screen.getByText("team:roles.admin")).toBeVisible();
+  });
+
+  it("shows the role read-only without permission to manage invitations", () => {
+    canManageInvitations.mockReturnValue(false);
+    render(
+      <MembersTable
+        workspaceId="workspace-1"
+        invitations={[pendingInvitation]}
+        users={[] as WorkspaceUser[]}
+      />,
+    );
+    expect(
+      screen.queryByRole("combobox", {
+        name: "team:membersTable.ariaInvitationRole",
       }),
     ).toBeNull();
   });
