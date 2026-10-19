@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import GroupProgressBar from "@/components/charts/group-progress-bar";
+import DeliveryPanel from "@/components/delivery/delivery-panel";
 import {
   EstimateChartUnitToggle,
   estimateChartOf,
@@ -81,6 +82,17 @@ export default function ModuleSidebar({
         />
         <EstimateProgressSummary estimates={progress?.estimates} />
       </section>
+
+      {module.status !== "completed" &&
+        module.status !== "cancelled" &&
+        !module.archivedAt && (
+          <DeliveryPanel
+            workspaceId={workspaceId}
+            projectId={module.projectId}
+            scope="module"
+            id={module.id}
+          />
+        )}
 
       <section className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">

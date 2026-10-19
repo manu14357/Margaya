@@ -1,8 +1,10 @@
 import { Check, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { withoutAgents } from "@/components/ai/agents/use-agent-ids";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
+import { useAgentUserIds } from "@/hooks/queries/ai/use-agents";
 import { useGetActiveWorkspaceUsers } from "@/hooks/queries/workspace-users/use-get-active-workspace-users";
 import { cn } from "@/lib/cn";
 import { getInitials } from "@/lib/get-initials";
@@ -12,14 +14,16 @@ export type ModulePerson = { id: string; name: string; image: string | null };
 /** The workspace's active members, as pickers show them. */
 export function useWorkspacePeople(workspaceId: string): ModulePerson[] {
   const { data } = useGetActiveWorkspaceUsers(workspaceId);
+  // Module leads and members are people: AI agents are left out.
+  const agentIds = useAgentUserIds(workspaceId);
   return useMemo(
     () =>
-      (data?.members ?? []).map((member) => ({
+      withoutAgents(data?.members, agentIds, (m) => m.userId).map((member) => ({
         id: member.userId,
         name: member.user?.name ?? "",
         image: member.user?.image ?? null,
       })),
-    [data],
+    [data, agentIds],
   );
 }
 

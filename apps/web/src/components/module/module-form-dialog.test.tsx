@@ -17,6 +17,12 @@ const state = vi.hoisted(() => ({
   toastError: vi.fn(),
 }));
 
+vi.mock("@/hooks/queries/ai/use-agents", () => ({
+  useAgentUserIds: () => new Set<string>(),
+  useAgents: () => ({ data: [] }),
+  useAgentApprovals: () => ({ data: [] }),
+}));
+
 vi.mock("react-i18next", async (importOriginal) => ({
   ...(await importOriginal<typeof import("react-i18next")>()),
   useTranslation: () => ({ t: (key: string) => key }),

@@ -1,4 +1,5 @@
 import { and, eq, inArray, ne } from "drizzle-orm";
+import { withAutomationMarker } from "../../automation-rule/context";
 import {
   activityTable,
   moduleTable,
@@ -38,7 +39,7 @@ export async function recordModuleActivity(
           type,
           userId,
           content: null,
-          eventData,
+          eventData: withAutomationMarker(eventData),
         })),
     );
   }

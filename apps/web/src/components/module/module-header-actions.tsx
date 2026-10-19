@@ -1,5 +1,6 @@
 import { PanelRight, Plus, SquarePlus } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import BriefButton from "@/components/ai/brief/brief-button";
 import FavoriteButton from "@/components/favorite/favorite-button";
 import { Button } from "@/components/ui/button";
 import {
@@ -88,6 +89,13 @@ export default function ModuleHeaderActions({
       >
         <PanelRight className="size-3.5" />
       </Button>
+      <BriefButton
+        scopeType="module"
+        scopeId={module.id}
+        projectId={module.projectId}
+        workspaceId={workspaceId}
+        name={module.name}
+      />
       {!module.archivedAt && (
         <FavoriteButton
           workspaceId={workspaceId}

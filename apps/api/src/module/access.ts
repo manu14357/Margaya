@@ -36,6 +36,7 @@ export function moduleAccess(idKey = "id") {
       userId,
       found.workspaceId,
       c.get("apiKey")?.id,
+      found.projectId,
     );
 
     c.set("workspaceId", found.workspaceId);

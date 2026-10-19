@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/popover";
 import { useAddModuleTasks } from "@/hooks/mutations/module/use-add-module-tasks";
 import { useRemoveModuleTasks } from "@/hooks/mutations/module/use-remove-module-tasks";
+import { useModuleTaskIndex } from "@/hooks/queries/module/use-get-module-task-map";
 import useGetModules from "@/hooks/queries/module/use-get-modules";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import type { TaskPropertySlotProps } from "@/lib/task-property-slots";
@@ -21,8 +22,9 @@ function errorMessage(error: unknown, fallback: string) {
 }
 
 /**
- * "Add to module…" in the bulk-selection toolbars, plus "Remove from module"
- * on a module's page. Calls go out in batches of 200.
+ * "Add to module…" in the bulk-selection toolbars, plus "Remove from module":
+ * straight from the module on a module's page, otherwise from a picker of
+ * the modules holding any selected task. Calls go out in batches of 200.
  */
 export default function ModuleBulkAction({
   taskIds,
@@ -31,6 +33,7 @@ export default function ModuleBulkAction({
 }: TaskPropertySlotProps["bulkAction"]) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const [removeOpen, setRemoveOpen] = useState(false);
   const scope = useModuleScope();
   const { canUpdateModules, isCheckingPermissions } = useWorkspacePermission();
   const { data: modules = [] } = useGetModules(projectId);
@@ -41,6 +44,16 @@ export default function ModuleBulkAction({
     scope && scope.projectId === projectId
       ? modules.find((module) => module.id === scope.moduleId)
       : undefined;
+  // The board's module chips already load this map, so it is usually cached.
+  const { tasksByModule } = useModuleTaskIndex(projectId, {
+    enabled: !scopedModule && modules.length > 0,
+  });
+  const removableModules = scopedModule
+    ? []
+    : modules.filter((module) => {
+        const members = tasksByModule.get(module.id);
+        return Boolean(members && taskIds.some((id) => members.has(id)));
+      });
   if (isCheckingPermissions || !canUpdateModules() || modules.length === 0) {
     return null;
   }
@@ -68,18 +81,19 @@ export default function ModuleBulkAction({
     }
   };
 
-  const handleRemove = async () => {
-    if (!scopedModule) return;
+  const handleRemove = async (moduleId: string) => {
+    setRemoveOpen(false);
+    const target = modules.find((module) => module.id === moduleId);
     try {
       const change = await removeTasks.mutateAsync({
-        moduleId: scopedModule.id,
+        moduleId,
         projectId,
         taskIds,
       });
       toast.success(
         t("modules:toast.tasksRemoved", {
           count: change.removed.length,
-          name: scopedModule.name,
+          name: target?.name ?? "",
         }),
       );
       onDone();
@@ -113,11 +127,31 @@ export default function ModuleBulkAction({
           size="sm"
           variant="ghost"
           disabled={isPending}
-          onClick={() => void handleRemove()}
+          onClick={() => void handleRemove(scopedModule.id)}
         >
           <SquareMinus className="size-4" />
           {t("modules:bulk.removeFromModule")}
         </Button>
+      )}
+      {removableModules.length > 0 && (
+        <Popover open={removeOpen} onOpenChange={setRemoveOpen}>
+          <PopoverTrigger asChild>
+            <Button size="sm" variant="ghost" disabled={isPending}>
+              <SquareMinus className="size-4" />
+              {t("modules:bulk.removeFromModule")}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="center">
+            <p className="border-border border-b px-2 py-1.5 font-medium text-muted-foreground text-xs">
+              {t("modules:bulk.chooseModule")}
+            </p>
+            <ModuleMultiSelect
+              modules={removableModules}
+              selectedIds={removableModules.map((module) => module.id)}
+              onToggle={(moduleId) => void handleRemove(moduleId)}
+            />
+          </PopoverContent>
+        </Popover>
       )}
     </>
   );
