@@ -1,0 +1,55 @@
+/* Quiet progress cues while an answer is on its way: the composer's border
+   breathes in the primary colour, and the "Thinking…" line shimmers. The
+   chat window itself stays still. Reduced motion keeps both static. */
+
+.ask-composer-busy {
+  animation: ask-composer-breathe 1.8s ease-in-out infinite;
+}
+
+@keyframes ask-composer-breathe {
+  0%,
+  100% {
+    border-color: var(--input);
+    box-shadow: 0 0 0 0 transparent;
+  }
+  50% {
+    border-color: color-mix(in oklab, var(--primary) 55%, var(--input));
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 14%, transparent);
+  }
+}
+
+.ask-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--muted-foreground) 0%,
+    var(--muted-foreground) 40%,
+    var(--foreground) 50%,
+    var(--muted-foreground) 60%,
+    var(--muted-foreground) 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ask-shimmer 1.6s linear infinite;
+}
+
+@keyframes ask-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -150% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ask-composer-busy,
+  .ask-shimmer {
+    animation: none;
+  }
+  .ask-shimmer {
+    color: var(--muted-foreground);
+    background: none;
+  }
+}
