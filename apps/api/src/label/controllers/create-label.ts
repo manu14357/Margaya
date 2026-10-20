@@ -5,6 +5,7 @@ import { labelTable, projectTable, taskTable } from "../../database/schema";
 import { publishEvent } from "../../events";
 import { syncLabelToGitea } from "../../plugins/gitea/utils/sync-label-to-gitea";
 import { syncLabelToGitHub } from "../../plugins/github/utils/sync-label-to-github";
+import { canSeeProject } from "../../project/visibility";
 
 async function createLabel(
   name: string,
@@ -45,6 +46,11 @@ async function createLabel(
       throw new HTTPException(404, {
         message: "Task not found",
       });
+    }
+    // A task in a restricted project the caller cannot see reads as missing.
+    // The system actor (an automation rule, no user) acts in its own project.
+    if (userId && !(await canSeeProject(userId, task.projectId))) {
+      throw new HTTPException(404, { message: "Task not found" });
     }
 
     const [inserted] = await db

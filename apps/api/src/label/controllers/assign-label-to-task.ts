@@ -16,6 +16,7 @@ import {
   removeLabelFromGitHub,
   syncLabelToGitHub,
 } from "../../plugins/github/utils/sync-label-to-github";
+import { canSeeProject } from "../../project/visibility";
 
 type LabelRow = typeof labelTableType.$inferSelect;
 
@@ -48,6 +49,10 @@ async function assignLabelToTask(id: string, taskId: string, userId: string) {
     throw new HTTPException(404, {
       message: "Task not found",
     });
+  }
+  // A task in a restricted project the caller cannot see reads as missing.
+  if (!(await canSeeProject(userId, task.projectId))) {
+    throw new HTTPException(404, { message: "Task not found" });
   }
 
   if (label.workspaceId && label.workspaceId !== task.workspaceId) {

@@ -4,6 +4,7 @@ import {
   errorResponse,
   jsonResponse,
 } from "../openapi";
+import { requestHiddenProjectIds } from "../project/visibility";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import assignLabelToTask from "./controllers/assign-label-to-task";
@@ -226,7 +227,13 @@ const label = apiRouter()
   })
   .openapi(getWorkspaceLabelsRoute, async (c) => {
     const { workspaceId } = c.req.valid("param");
-    return c.json(await getLabelsByWorkspaceId(workspaceId), 200);
+    return c.json(
+      await getLabelsByWorkspaceId(
+        workspaceId,
+        await requestHiddenProjectIds(c),
+      ),
+      200,
+    );
   })
   .openapi(createLabelRoute, async (c) => {
     const { name, color, workspaceId, taskId } = c.req.valid("json");
