@@ -8,7 +8,7 @@ import type {
   FilterNode,
   GroupByKey,
 } from "@/lib/task-query/model";
-import { queryContext } from "@/lib/task-query/request";
+import { queryContext, useUserTimeZone } from "@/lib/task-query/request";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 import type { TaskQueryRequest, TaskQueryResult } from "@/types/task-query";
 
@@ -118,6 +118,7 @@ function groupCount(result: TaskQueryResult | undefined, key: string) {
 
 export function useMyWorkSummary(workspaceId: string) {
   const weekStartsOn = useUserPreferencesStore((state) => state.weekStartsOn);
+  const timeZone = useUserTimeZone();
   const results = useQueries({
     queries: SPECS.map((spec) => {
       const request: TaskQueryRequest = {
@@ -129,7 +130,7 @@ export function useMyWorkSummary(workspaceId: string) {
           subGroupBy: spec.subGroupBy ?? null,
           showEmptyGroups: spec.showEmptyGroups ?? false,
         },
-        context: queryContext(weekStartsOn),
+        context: queryContext(weekStartsOn, timeZone),
       };
       return {
         queryKey: [

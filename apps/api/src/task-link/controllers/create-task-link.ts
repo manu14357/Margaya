@@ -3,6 +3,7 @@ import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { taskLinkTable } from "../../database/schema";
 import { getTaskLink } from "../serialize";
+import { scheduleLinkTitle } from "../title-autofill";
 import {
   DUPLICATE_LINK,
   lockLinkTask,
@@ -75,6 +76,17 @@ async function createTaskLink({
     projectId,
     userId,
   });
+
+  // An untitled link shows its URL until the page title arrives.
+  if (!link.title) {
+    void scheduleLinkTitle({
+      linkId: link.id,
+      url: link.url,
+      taskId,
+      projectId,
+      userId,
+    });
+  }
 
   const created = await getTaskLink(link.id);
   if (!created) throw new HTTPException(404, { message: "Link not found" });

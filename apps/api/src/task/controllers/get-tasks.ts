@@ -27,6 +27,7 @@ import {
   userTable,
 } from "../../database/schema";
 
+import { isRecurringSql } from "../../task-recurrence/queries";
 import { assigneeDetailsOfTasks, hasAnyAssignee } from "../assignees";
 import { boundedTaskRead, type TaskReadDatabase } from "../bounded-read";
 import {
@@ -239,6 +240,7 @@ async function getTasksPage(
     projectId: taskTable.projectId,
     cycleId: cycleTable.id,
     estimatePointId: taskTable.estimatePointId,
+    isRecurring: isRecurringSql,
   };
 
   // The totals ride along as window counts (taken before LIMIT/OFFSET), so a

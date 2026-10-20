@@ -8,6 +8,7 @@ import {
   projectTable,
   taskTable,
 } from "../database/schema";
+import { hiddenProjectIds, notHiddenProject } from "../project/visibility";
 import type { TaskReadDatabase } from "../task/bounded-read";
 import { getWorkspaceTimezone, todayInTimezone } from "../utils/timezone";
 import { isValidTimeZone, type WeekStart, zonedDay } from "./dates";
@@ -106,6 +107,8 @@ async function loadScopeProjects(
   tx: TaskReadDatabase,
   workspaceId: string,
   projectIds: readonly string[] | undefined,
+  /** Restricted projects the caller may not see: read as missing. */
+  hidden: readonly string[],
 ): Promise<ScopeProject[]> {
   const requested = projectIds ? [...new Set(projectIds)] : undefined;
   const rows = await tx
@@ -133,6 +136,7 @@ async function loadScopeProjects(
         requested
           ? inArray(projectTable.id, requested)
           : isNull(projectTable.archivedAt),
+        notHiddenProject(projectTable.id, hidden),
       ),
     )
     .orderBy(
@@ -217,7 +221,11 @@ export async function buildQueryContext(
   // Analytics may omit the zone: it then means the workspace's own (UTC
   // unless an admin set one). The task query engine always passes one.
   const zone = resolveTimeZone(timeZone ?? workspaceZone);
-  const projects = await loadScopeProjects(tx, workspaceId, projectIds);
+  // Public boards name their one project and have no viewer to hide from.
+  const hidden = publicContext
+    ? []
+    : await hiddenProjectIds(userId, workspaceId);
+  const projects = await loadScopeProjects(tx, workspaceId, projectIds, hidden);
   const ids = projects.map((project) => project.id);
   const customFields = await loadCustomFields(tx, customFieldIds, ids);
   return {

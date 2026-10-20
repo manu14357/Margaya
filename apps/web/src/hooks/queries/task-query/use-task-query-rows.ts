@@ -4,7 +4,11 @@ import type {
   TaskQueryScope,
   TaskQueryState,
 } from "@/lib/task-query/model";
-import { buildIdsRequest, buildRowsRequest } from "@/lib/task-query/request";
+import {
+  buildIdsRequest,
+  buildRowsRequest,
+  useUserTimeZone,
+} from "@/lib/task-query/request";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 import { useTaskQuery } from "./use-task-query";
 import { useTaskQueryIds } from "./use-task-query-ids";
@@ -34,6 +38,7 @@ export function useTaskQueryRows({
   enabled = true,
 }: RowsOptions) {
   const weekStartsOn = useUserPreferencesStore((store) => store.weekStartsOn);
+  const timeZone = useUserTimeZone();
   const request = useMemo(
     () =>
       workspaceId
@@ -44,6 +49,7 @@ export function useTaskQueryRows({
             baseConditions,
             search,
             weekStartsOn,
+            timeZone,
             limit,
             ungrouped,
           })
@@ -55,6 +61,7 @@ export function useTaskQueryRows({
       baseConditions,
       search,
       weekStartsOn,
+      timeZone,
       limit,
       ungrouped,
     ],
@@ -79,6 +86,7 @@ export function useTaskQueryIdsFor({
   enabled = true,
 }: IdsOptions) {
   const weekStartsOn = useUserPreferencesStore((store) => store.weekStartsOn);
+  const timeZone = useUserTimeZone();
   const request = useMemo(
     () =>
       workspaceId
@@ -88,9 +96,10 @@ export function useTaskQueryIdsFor({
             state,
             baseConditions,
             weekStartsOn,
+            timeZone,
           })
         : null,
-    [workspaceId, scope, state, baseConditions, weekStartsOn],
+    [workspaceId, scope, state, baseConditions, weekStartsOn, timeZone],
   );
   return useTaskQueryIds(request, { enabled });
 }

@@ -20,6 +20,7 @@ import {
   taskBranchName,
 } from "@/lib/task-branch";
 import { formatTaskKey, shareableTaskUrl } from "@/lib/task-key";
+import { toastTaskArchived } from "@/lib/task-undo";
 import { toast } from "@/lib/toast";
 import {
   hasTaskDelete,
@@ -237,13 +238,9 @@ export function useTaskCommands({ taskId, projectId, workspaceId }: Options): {
             archived: !archived,
           }).then(
             () =>
-              toast.success(
-                t(
-                  archived
-                    ? "tasks:archive.restored"
-                    : "tasks:archive.archived",
-                ),
-              ),
+              archived
+                ? toast.success(t("tasks:archive.restored"))
+                : toastTaskArchived({ taskId, projectId: ownProjectId }, { t }),
             (error: unknown) =>
               toast.error(
                 error instanceof Error && error.message

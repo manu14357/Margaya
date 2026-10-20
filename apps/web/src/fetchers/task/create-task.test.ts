@@ -75,4 +75,23 @@ describe("createTask", () => {
     );
     expect(mocks.post.mock.calls[0]?.[0].json).not.toHaveProperty("userId");
   });
+
+  it("sends the parent so the server links the sub-task in one call", async () => {
+    await createTask(
+      "Child",
+      "",
+      "project-1",
+      [],
+      "to-do",
+      undefined,
+      undefined,
+      "no-priority",
+      undefined,
+      "parent-1",
+    );
+
+    expect(mocks.post.mock.calls[0]?.[0].json).toMatchObject({
+      parentId: "parent-1",
+    });
+  });
 });

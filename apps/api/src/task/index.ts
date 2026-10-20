@@ -20,6 +20,7 @@ import {
   jsonResponse,
 } from "../openapi";
 import { projectDefaultAssignee } from "../project/people";
+import { canSeeProject } from "../project/visibility";
 import {
   assertStorageConfigured,
   assertTaskImageKeyMatchesContext,
@@ -29,6 +30,7 @@ import {
   validateTaskAssetUploadInput,
   verifyTaskAssetUpload,
 } from "../storage/s3";
+import { recordPendingUpload } from "../storage/upload-sweep";
 import {
   getDescriptionVersionHandler,
   getDescriptionVersionRoute,
@@ -39,7 +41,11 @@ import {
 } from "../task-description-version/routes";
 import { boundedRequestBody } from "../utils/bounded-request-body";
 import { normalizeApiServerUrl } from "../utils/openapi-spec";
-import { requireWorkspacePermission } from "../utils/require-workspace-permission";
+import {
+  hasWorkspacePermission,
+  requireWorkspacePermission,
+  workspacePermissionChecker,
+} from "../utils/require-workspace-permission";
 import {
   validateAndParseDate,
   validateDateRange,
@@ -117,6 +123,8 @@ import {
   updateTaskBody,
   updateTitleBody,
 } from "./schema";
+import { similarTasksRoute } from "./similar-routes";
+import { findSimilarTasks } from "./similar-tasks";
 
 const listTasksRoute = createRoute({
   method: "get",
@@ -160,7 +168,7 @@ const bulkUpdateTasksRoute = createRoute({
   responses: {
     200: jsonResponse("Bulk operation result", bulkResultSchema),
     400: errorResponse(
-      "Invalid body, the tasks span more than one workspace, a task would pass 20 assignees, or (updateEstimate) more than one project or a value outside the active estimate system",
+      "Invalid body, the tasks span more than one workspace, a task would pass 20 assignees, (updateStartDate) a start after a selected task's due date, or (updateEstimate) more than one project or a value outside the active estimate system",
     ),
     403: errorResponse(
       "No workspace access, missing the permission the operation needs, an assignee who is not a workspace member, or (updateEstimate) the Estimates feature is off",
@@ -179,7 +187,7 @@ const createTaskRoute = createRoute({
   tags: ["Tasks"],
   summary: "Create task",
   description:
-    "Add a task to a project. It is placed in the column named by `status`; the legacy status `archived` creates it archived in the project's entry column. Assignees come from `assigneeIds` (or the deprecated single `userId`) and need only task:create. When the body has neither field, the project's default assignee (if set) is assigned; send `assigneeIds: []` to create the task unassigned. The caller is recorded as the task's creator.",
+    "Add a task to a project. It is placed in the column named by `status`; the legacy status `archived` creates it archived in the project's entry column. Assignees come from `assigneeIds` (or the deprecated single `userId`) and need only task:create. When the body has neither field, the project's default assignee (if set) is assigned; send `assigneeIds: []` to create the task unassigned. The caller is recorded as the task's creator. With `parentId` the task is created as that task's subtask in one transaction, which also needs task:update.",
   middleware: [
     workspaceAccess.fromProject("projectId"),
     requireWorkspacePermission({ task: ["create"] }),
@@ -195,11 +203,12 @@ const createTaskRoute = createRoute({
   responses: {
     200: jsonResponse("The created task", taskSchema),
     400: errorResponse(
-      "Invalid body, unknown project, more than 20 assignees, or an estimate value outside the project's active estimate system",
+      "Invalid body, unknown project, more than 20 assignees, an estimate value outside the project's active estimate system, or a parent in another project or waiting in intake",
     ),
     403: errorResponse(
-      "No workspace access, missing task:create permission, an assignee who is not a workspace member, or an estimate sent while the project's Estimates feature is off",
+      "No workspace access, missing task:create permission (or task:update with `parentId`), an assignee who is not a workspace member, or an estimate sent while the project's Estimates feature is off",
     ),
+    404: errorResponse("The parent task does not exist in this workspace"),
   },
 });
 
@@ -731,6 +740,18 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
       200,
     ),
   )
+  .openapi(similarTasksRoute, async (c) =>
+    c.json(
+      await findSimilarTasks({
+        projectId: c.req.valid("param").projectId,
+        workspaceId: c.get("workspaceId"),
+        userId: c.get("userId"),
+        text: c.req.valid("query").q,
+        can: await workspacePermissionChecker(c),
+      }),
+      200,
+    ),
+  )
   .openapi(descriptionMatchesRoute, async (c) => {
     const { query, after } = c.req.valid("query");
     return c.json(
@@ -761,6 +782,7 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
     if (
       operation !== "delete" &&
       operation !== "updateDueDate" &&
+      operation !== "updateStartDate" &&
       operation !== "archive" &&
       operation !== "unarchive" &&
       value === undefined
@@ -792,7 +814,14 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
       assigneeIds,
       customFields,
       estimatePointId,
+      parentId,
     } = c.req.valid("json");
+
+    // Linking the new task under a parent changes the parent's subtasks,
+    // which the relation routes guard with task:update.
+    if (parentId && !(await hasWorkspacePermission(c, { task: ["update"] }))) {
+      throw new HTTPException(403, { message: "Insufficient permissions" });
+    }
 
     const parsedStartDate =
       startDate !== undefined
@@ -825,6 +854,7 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
       status,
       customFields,
       estimatePointId,
+      parentId,
     });
 
     return c.json(task, 200);
@@ -838,7 +868,12 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
   })
   .openapi(getTaskByKeyRoute, async (c) => {
     const { workspaceId, key } = c.req.valid("param");
-    return c.json(await getTaskByKey(workspaceId, key), 200);
+    const found = await getTaskByKey(workspaceId, key);
+    // A task of a restricted project the caller cannot see reads as missing.
+    if (!(await canSeeProject(c.get("userId"), found.projectId))) {
+      throw new HTTPException(404, { message: "Task not found" });
+    }
+    return c.json(found, 200);
   })
   .openapi(moveTaskRoute, async (c) => {
     const { id } = c.req.valid("param");
@@ -1047,6 +1082,7 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
         contentType,
         size,
       });
+      await recordPendingUpload(upload.key);
 
       return c.json(upload, 200);
     } catch (error) {

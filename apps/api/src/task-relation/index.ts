@@ -35,12 +35,15 @@ import {
 
 async function workspaceIdOfTask(taskId: string) {
   const [task] = await db
-    .select({ workspaceId: projectTable.workspaceId })
+    .select({
+      workspaceId: projectTable.workspaceId,
+      projectId: projectTable.id,
+    })
     .from(taskTable)
     .innerJoin(projectTable, eq(taskTable.projectId, projectTable.id))
     .where(eq(taskTable.id, taskId))
     .limit(1);
-  return task?.workspaceId ?? null;
+  return task ?? null;
 }
 
 function requireUserId(c: Context) {
@@ -65,13 +68,20 @@ async function scopeToSourceTask(c: Context, next: Next) {
     throw new HTTPException(400, { message: "sourceTaskId is required" });
   }
 
-  const workspaceId = await workspaceIdOfTask(sourceTaskId);
-  if (!workspaceId) {
+  const source = await workspaceIdOfTask(sourceTaskId);
+  if (!source) {
     throw new HTTPException(404, { message: "Source task not found" });
   }
+  const { workspaceId, projectId } = source;
 
-  await validateWorkspaceAccess(userId, workspaceId);
+  await validateWorkspaceAccess(
+    userId,
+    workspaceId,
+    c.get("apiKey")?.id,
+    projectId,
+  );
   c.set("workspaceId", workspaceId);
+  c.set("projectId", projectId);
   return next();
 }
 
@@ -88,13 +98,20 @@ async function scopeToRelation(c: Context, next: Next) {
     throw new HTTPException(404, { message: "Task relation not found" });
   }
 
-  const workspaceId = await workspaceIdOfTask(rel.sourceTaskId);
-  if (!workspaceId) {
+  const source = await workspaceIdOfTask(rel.sourceTaskId);
+  if (!source) {
     throw new HTTPException(404, { message: "Task not found" });
   }
+  const { workspaceId, projectId } = source;
 
-  await validateWorkspaceAccess(userId, workspaceId);
+  await validateWorkspaceAccess(
+    userId,
+    workspaceId,
+    c.get("apiKey")?.id,
+    projectId,
+  );
   c.set("workspaceId", workspaceId);
+  c.set("projectId", projectId);
   return next();
 }
 

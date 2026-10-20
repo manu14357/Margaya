@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import queryTasks from "@/fetchers/task-query/query-tasks";
 import { myWorkQueryKeys } from "@/lib/task-query/cache";
 import { memberCountSpecs } from "@/lib/task-query/member-work";
-import { queryContext } from "@/lib/task-query/request";
+import { queryContext, useUserTimeZone } from "@/lib/task-query/request";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 import type { TaskQueryRequest, TaskQueryResult } from "@/types/task-query";
 import type { MyWorkGroupCounts } from "./use-my-work-summary";
@@ -21,6 +21,7 @@ function groupCount(result: TaskQueryResult | undefined, key: string) {
  */
 export function useMemberWorkSummary(workspaceId: string, userId: string) {
   const weekStartsOn = useUserPreferencesStore((state) => state.weekStartsOn);
+  const timeZone = useUserTimeZone();
   const specs = useMemo(() => memberCountSpecs(userId), [userId]);
   const results = useQueries({
     queries: specs.map((spec) => {
@@ -33,7 +34,7 @@ export function useMemberWorkSummary(workspaceId: string, userId: string) {
           subGroupBy: null,
           showEmptyGroups: spec.showEmptyGroups ?? false,
         },
-        context: queryContext(weekStartsOn),
+        context: queryContext(weekStartsOn, timeZone),
       };
       return {
         queryKey: [

@@ -1,6 +1,5 @@
 import type { Editor } from "@tiptap/core";
 import Placeholder from "@tiptap/extension-placeholder";
-import { Table } from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
@@ -48,10 +47,15 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import type { Highlighter } from "shiki";
+import { EditorAiBubbleButton } from "@/components/editor/ai/editor-ai-menu";
+import EditorAiPreview from "@/components/editor/ai/editor-ai-preview";
+import { useEditorAi } from "@/components/editor/ai/use-editor-ai";
 import { calloutSlashCommand } from "@/components/editor/callout-slash-command";
 import { Callout } from "@/components/editor/extensions/callout";
 import { EditorImage } from "@/components/editor/extensions/editor-image";
+import { MargayaEditorTable } from "@/components/editor/extensions/table-tools";
 import { useImagePreview } from "@/components/editor/image-preview-dialog";
+import TableHandles from "@/components/editor/table-handles";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -63,6 +67,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/menu";
 import { useUpdateTaskDescription } from "@/hooks/mutations/task/use-update-task-description";
+import { useAiAvailability } from "@/hooks/queries/ai/use-ai";
 import useGetTask from "@/hooks/queries/task/use-get-task";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useGetActiveWorkspaceUsers } from "@/hooks/queries/workspace-users/use-get-active-workspace-users";
@@ -683,7 +688,7 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
         Placeholder.configure({
           placeholder: t("tasks:detail.editor.placeholder"),
         }),
-        Table.configure({
+        MargayaEditorTable.configure({
           resizable: true,
         }),
         TableRow,
@@ -900,6 +905,19 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
     editor,
     t("tasks:detail.editor.previewImage"),
   );
+
+  // Editor block AI, for editors of a task whose project has AI on.
+  const { available: aiAvailable } = useAiAvailability(task?.projectId ?? null);
+  const aiTarget = useMemo(
+    () => ({ kind: "task" as const, id: taskId }),
+    [taskId],
+  );
+  const ai = useEditorAi({
+    editor,
+    workspaceId: activeWorkspace?.id ?? "",
+    target: aiTarget,
+  });
+  const aiEnabled = aiAvailable && canEdit && Boolean(task?.projectId);
 
   useEffect(() => {
     slashMenuRef.current = slashMenu;
@@ -1528,6 +1546,12 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
             return from !== to;
           }}
         >
+          {aiEnabled && (
+            <>
+              <EditorAiBubbleButton editor={editor} ai={ai} />
+              <span className="margaya-tiptap-bubble-separator" />
+            </>
+          )}
           <Button
             type="button"
             variant="ghost"
@@ -1694,6 +1718,8 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
           </Button>
         </BubbleMenu>
       )}
+
+      {editor && canEdit && <TableHandles editor={editor} />}
 
       {editor && canEdit && (
         <BubbleMenu
@@ -1945,6 +1971,9 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
         </div>
       )}
 
+      {editor && aiEnabled && (
+        <EditorAiPreview editor={editor} ai={ai} shellRef={editorShellRef} />
+      )}
       <EditorContent
         editor={editor}
         className="margaya-tiptap-content"

@@ -15,6 +15,7 @@ type BulkTaskOperation =
   | "addLabel"
   | "removeLabel"
   | "updateDueDate"
+  | "updateStartDate"
   | "updateEstimate"
   | "archive"
   | "unarchive";
@@ -29,6 +30,7 @@ const BULK_OPERATIONS: readonly BulkTaskOperation[] = [
   "addLabel",
   "removeLabel",
   "updateDueDate",
+  "updateStartDate",
   "updateEstimate",
   "archive",
   "unarchive",

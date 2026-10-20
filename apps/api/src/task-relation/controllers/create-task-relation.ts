@@ -6,6 +6,10 @@ import {
   taskRelationTable,
   taskTable,
 } from "../../database/schema";
+import {
+  hiddenForCurrentRequest,
+  notHiddenProject,
+} from "../../project/visibility";
 import { liveTaskCondition } from "../../task/scope";
 import {
   assertNotInTriage,
@@ -41,6 +45,11 @@ async function workspaceTaskIds(taskIds: string[], workspaceId: string) {
         eq(projectTable.workspaceId, workspaceId),
         // A trashed task can't be linked (C7).
         liveTaskCondition,
+        // Nor one in a restricted project the caller cannot see.
+        notHiddenProject(
+          projectTable.id,
+          await hiddenForCurrentRequest(workspaceId),
+        ),
       ),
     );
   return new Set(rows.map((row) => row.id));

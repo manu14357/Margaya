@@ -15,7 +15,6 @@ const mocks = vi.hoisted(() => ({
   canCreateTasks: vi.fn(),
   canUpdateTasks: vi.fn(),
   createTask: vi.fn(),
-  createRelation: vi.fn(),
   getColumns: vi.fn(),
   getRelations: vi.fn(),
   updateTaskStatus: vi.fn(),
@@ -30,9 +29,6 @@ vi.mock("react-i18next", () => ({
 }));
 vi.mock("@/hooks/mutations/task/use-create-task", () => ({
   default: () => ({ mutateAsync: mocks.createTask, isPending: false }),
-}));
-vi.mock("@/hooks/mutations/task-relation/use-create-task-relation", () => ({
-  default: () => ({ mutateAsync: mocks.createRelation }),
 }));
 vi.mock("@/hooks/mutations/task/use-delete-task", () => ({
   useDeleteTask: () => ({ mutateAsync: vi.fn() }),
@@ -103,7 +99,6 @@ afterEach(() => {
 describe("TaskSubtasks", () => {
   it("creates a subtask as planned when its parent is planned", async () => {
     mocks.createTask.mockResolvedValue({ id: "subtask-1" });
-    mocks.createRelation.mockResolvedValue({});
 
     render(
       <TaskSubtasks
@@ -128,14 +123,14 @@ describe("TaskSubtasks", () => {
     );
 
     await waitFor(() => expect(mocks.createTask).toHaveBeenCalledTimes(1));
+    // One call creates the sub-task and links it to its parent.
     expect(mocks.createTask).toHaveBeenCalledWith(
-      expect.objectContaining({ status: "planned" }),
+      expect.objectContaining({ status: "planned", parentId: "parent-1" }),
     );
   });
 
   it("uses the project's first active column for an active parent", async () => {
     mocks.createTask.mockResolvedValue({ id: "subtask-2" });
-    mocks.createRelation.mockResolvedValue({});
 
     render(
       <TaskSubtasks
@@ -342,7 +337,6 @@ describe("TaskSubtasks", () => {
 
   it("holds an Enter made while the columns load and sends it once they do", async () => {
     mocks.createTask.mockResolvedValue({ id: "subtask-q" });
-    mocks.createRelation.mockResolvedValue({});
     mocks.getColumns.mockReturnValue({ data: undefined, isLoading: true });
     const ref = createRef<TaskSubtasksHandle>();
     const props = {

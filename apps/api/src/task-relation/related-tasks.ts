@@ -6,6 +6,10 @@ import {
   taskTable,
   userTable,
 } from "../database/schema";
+import {
+  hiddenForCurrentRequest,
+  notHiddenProject,
+} from "../project/visibility";
 import { assigneesOfTasks } from "../task/assignees";
 import {
   liveTaskCondition,
@@ -71,6 +75,11 @@ export async function loadRelatedTasks(
         // Trashed tasks read as gone (C7): relations to them are hidden
         // until a restore.
         liveTaskCondition,
+        // So are tasks of a restricted project the caller cannot see.
+        notHiddenProject(
+          projectTable.id,
+          await hiddenForCurrentRequest(workspaceId),
+        ),
       ),
     );
 

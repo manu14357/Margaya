@@ -36,6 +36,10 @@ export const taskQueryRowSchema = z
       description: "The first assignee, or null.",
     }),
     position: z.number().nullable(),
+    isRecurring: z.boolean().optional().openapi({
+      description:
+        "True while the task repeats (it holds the series' repeat rule).",
+    }),
     assigneeIds: z.array(z.string()).optional().openapi({
       description: "include=assignees: every assignee, first assignee first.",
     }),

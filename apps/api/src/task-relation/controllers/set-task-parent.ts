@@ -7,6 +7,10 @@ import {
   taskTable,
 } from "../../database/schema";
 import { publishEvent } from "../../events";
+import {
+  hiddenForCurrentRequest,
+  notHiddenProject,
+} from "../../project/visibility";
 import { liveTaskCondition } from "../../task/scope";
 import {
   loadTaskSnapshots,
@@ -34,6 +38,11 @@ async function parentExists(parentTaskId: string, workspaceId: string) {
         eq(projectTable.workspaceId, workspaceId),
         // A trashed task can't become a parent (C7).
         liveTaskCondition,
+        // Nor one in a restricted project the caller cannot see.
+        notHiddenProject(
+          projectTable.id,
+          await hiddenForCurrentRequest(workspaceId),
+        ),
       ),
     )
     .limit(1);

@@ -30,7 +30,6 @@ import { Input } from "@/components/ui/input";
 import useCreateTask from "@/hooks/mutations/task/use-create-task";
 import { useDeleteTask } from "@/hooks/mutations/task/use-delete-task";
 import { useUpdateTaskStatus } from "@/hooks/mutations/task/use-update-task-status";
-import useCreateTaskRelation from "@/hooks/mutations/task-relation/use-create-task-relation";
 import { useGetColumns } from "@/hooks/queries/column/use-get-columns";
 import useGetTaskRelations from "@/hooks/queries/task-relation/use-get-task-relations";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
@@ -93,7 +92,6 @@ export default function TaskSubtasks({
   const { data: workspace } = useActiveWorkspace();
   const { people } = useAssigneePeople(workspace?.id ?? workspaceId);
   const createTask = useCreateTask();
-  const createRelation = useCreateTaskRelation();
   const { mutateAsync: deleteTask } = useDeleteTask();
   const { mutateAsync: updateTaskStatus } = useUpdateTaskStatus();
   const { data: columns = [], isLoading: isLoadingColumns } =
@@ -307,7 +305,7 @@ export default function TaskSubtasks({
 
   const handleAddSubtask = async () => {
     if (!canCreate || !canEdit || !newTitle.trim()) return;
-    if (createTask.isPending || createRelation.isPending) return;
+    if (createTask.isPending) return;
     // The new sub-task starts in the entry column, so it cannot be sent
     // before the columns load: hold the submit (the form shows it pending)
     // and send it once they arrive, instead of dropping what was typed.
@@ -325,18 +323,15 @@ export default function TaskSubtasks({
     }
 
     try {
-      const newTask = await createTask.mutateAsync({
+      // One call: the server links the sub-task in the same transaction, so
+      // a failure never leaves an orphan task behind.
+      await createTask.mutateAsync({
         title: newTitle.trim(),
         description: "",
         projectId,
         status: initialStatus,
         priority: "no-priority",
-      });
-
-      await createRelation.mutateAsync({
-        sourceTaskId: taskId,
-        targetTaskId: newTask.id,
-        relationType: "subtask",
+        parentId: taskId,
       });
 
       setNewTitle("");

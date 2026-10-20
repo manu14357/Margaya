@@ -25,6 +25,7 @@ import {
   detachTaskFromOtherProjectModules,
   publishModuleDetachments,
 } from "../../module/controllers/membership";
+import { canSeeProject } from "../../project/visibility";
 import { withAssigneeIds } from "../assignees";
 import { completedAtAssignment } from "../scope";
 import { claimTaskNumber } from "./claim-task-numbers";
@@ -130,7 +131,11 @@ async function moveTask({
       isNull(projectTable.deletedAt),
     ),
   });
-  if (!destinationProject) {
+  // A restricted destination the caller cannot see reads as missing.
+  if (
+    !destinationProject ||
+    !(await canSeeProject(currentUserId, destinationProject.id))
+  ) {
     throw new HTTPException(404, {
       message: "Project not found",
     });

@@ -49,6 +49,9 @@ vi.mock("@/components/providers/auth-provider/hooks/use-auth", () => ({
   default: () => ({ user: { id: "ben" } }),
 }));
 
+vi.mock("@/components/ai/agents/agent-badge", () => ({
+  AgentBadgeFor: () => null,
+}));
 vi.mock("@/lib/toast", () => ({ toast: { error: mocks.toastError } }));
 
 vi.mock("react-i18next", () => ({

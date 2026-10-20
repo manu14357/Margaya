@@ -15,7 +15,14 @@ import ActivityFeedControls from "@/components/activity/activity-feed-controls";
 import { arrangeActivities } from "@/components/activity/activity-feed-options";
 import CommentInput from "@/components/activity/comment-input";
 import { isCommentActivity } from "@/components/activity/utils";
+import { AgentRunButton } from "@/components/ai/agents/agent-run-button";
+import { AiSpecDraftButton } from "@/components/ai/ai-spec-draft";
+import { AiSummaryButton } from "@/components/ai/ai-summary";
+import DescriptionTranslation from "@/components/ai/translate/description-translation";
+import TaskTriageEntry from "@/components/ai/triage/task-triage-entry";
 import ArchivedTaskBanner from "@/components/archives/archived-task-banner";
+import { CodingHandoffTimeline } from "@/components/coding-agent/coding-handoff-timeline";
+import { SendToCodingAgentButton } from "@/components/coding-agent/send-to-coding-agent";
 import { ExternalLinksAccordion } from "@/components/external-links/external-links-accordion";
 import IntakeTaskBanner from "@/components/intake/intake-task-banner";
 import { TaskPageReferences } from "@/components/page/task-page-references";
@@ -307,6 +314,14 @@ export default function TaskDetailsContent({
 
       <div className="flex flex-col gap-2">
         <TaskDescription taskId={taskId} />
+        {task?.description ? (
+          <DescriptionTranslation
+            kind="task"
+            id={taskId}
+            text={task.description}
+            projectId={task.projectId}
+          />
+        ) : null}
         <div className="flex flex-wrap items-center gap-2">
           <ReactionBar
             taskId={taskId}
@@ -327,13 +342,54 @@ export default function TaskDetailsContent({
 
       {properties}
 
+      {task && (
+        <TaskTriageEntry
+          task={task}
+          workspaceId={workspaceId}
+          onEditDuplicate={() => relationsRef.current?.openAdd()}
+        />
+      )}
+
       <TaskDetailActionBar
         onAddSubtask={() => subtasksRef.current?.openCreate()}
         onAddRelation={() => relationsRef.current?.openAdd()}
         onAddLink={() => linksRef.current?.openAdd()}
         onAttachFile={() => attachmentsRef.current?.openPicker()}
         onDropFiles={(files) => attachmentsRef.current?.addFiles(files)}
-      />
+      >
+        {task && (
+          <AiSummaryButton
+            kind="task"
+            id={taskId}
+            projectId={task.projectId}
+            workspaceId={workspaceId}
+            name={task.title}
+          />
+        )}
+        {task && (
+          <AiSpecDraftButton
+            taskId={taskId}
+            projectId={task.projectId}
+            workspaceId={workspaceId}
+            taskTitle={task.title}
+            taskKey={
+              project?.slug
+                ? formatTaskKey(project.slug, task.number)
+                : undefined
+            }
+          />
+        )}
+        {task && (
+          <SendToCodingAgentButton taskId={taskId} projectId={task.projectId} />
+        )}
+        {task && (
+          <AgentRunButton
+            taskId={taskId}
+            projectId={task.projectId}
+            workspaceId={workspaceId}
+          />
+        )}
+      </TaskDetailActionBar>
       {customFields.length > 0 && (
         <div>
           <Accordion className="w-full">
@@ -592,6 +648,8 @@ export default function TaskDetailsContent({
           workspaceId={workspaceId}
         />
 
+        <CodingHandoffTimeline taskId={taskId} />
+
         {!isLoadingExternalLinks && externalLinks.length > 0 && (
           <ExternalLinksAccordion
             externalLinks={externalLinks as ExternalLink[]}
@@ -614,6 +672,7 @@ export default function TaskDetailsContent({
         {user?.id && (
           <CommentInput
             taskId={taskId}
+            projectId={task?.projectId}
             publicCommentsOpen={publicBoard?.open ?? false}
           />
         )}

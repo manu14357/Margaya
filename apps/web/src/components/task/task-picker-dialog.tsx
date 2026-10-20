@@ -37,6 +37,8 @@ export type PickerTask = {
   };
   /** What the command list filters and announces. */
   label: string;
+  /** A short muted note after the title, e.g. why AI suggests it. */
+  hint?: string;
 };
 
 export type PickerGroup = {
@@ -126,6 +128,11 @@ export default function TaskPickerDialog({
                           <span className="flex-1 truncate text-sm">
                             {item.title}
                           </span>
+                          {item.hint && (
+                            <span className="hidden max-w-[45%] shrink-0 truncate text-muted-foreground text-xs sm:inline">
+                              {item.hint}
+                            </span>
+                          )}
                         </CommandItem>
                       )}
                     </CommandCollection>

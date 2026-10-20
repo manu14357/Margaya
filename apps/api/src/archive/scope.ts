@@ -3,6 +3,10 @@ import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 import db from "../database";
 import { projectTable } from "../database/schema";
+import {
+  notHiddenProject,
+  requestHiddenProjectIds,
+} from "../project/visibility";
 import { workspacePermissionChecker } from "../utils/require-workspace-permission";
 
 // Archives read the whole workspace (its projects that are not archived;
@@ -39,17 +43,21 @@ export async function resolveArchiveScope(
   projectId: string | undefined,
 ): Promise<ArchiveScope> {
   const workspaceId: string = c.get("workspaceId");
+  // Restricted projects the caller may not see read as missing.
+  const hidden = await requestHiddenProjectIds(c);
   // Trashed projects read as gone (C7).
   const projects = projectId
     ? (and(
         eq(projectTable.id, projectId),
         eq(projectTable.workspaceId, workspaceId),
         isNull(projectTable.deletedAt),
+        notHiddenProject(projectTable.id, hidden),
       ) as SQL)
     : (and(
         eq(projectTable.workspaceId, workspaceId),
         isNull(projectTable.archivedAt),
         isNull(projectTable.deletedAt),
+        notHiddenProject(projectTable.id, hidden),
       ) as SQL);
 
   const [features] = await db
@@ -64,6 +72,8 @@ export async function resolveArchiveScope(
     throw new HTTPException(404, { message: "Project not found" });
   }
 
+  // A project scope's rights are capped by the caller's project role.
+  if (projectId) c.set("projectId", projectId);
   const allowed = await workspacePermissionChecker(c);
   return {
     workspaceId,

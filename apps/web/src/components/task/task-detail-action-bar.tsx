@@ -1,4 +1,5 @@
 import { Link as LinkIcon, ListTree, Paperclip, Waypoints } from "lucide-react";
+import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
@@ -11,6 +12,8 @@ type TaskDetailActionBarProps = {
   onAttachFile: () => void;
   /** Files dropped on "Attach file". */
   onDropFiles: (files: File[]) => void;
+  /** More actions after the built-in ones (each hides itself). */
+  children?: ReactNode;
 };
 
 /** Quick actions under the description; editors only. */
@@ -20,6 +23,7 @@ export default function TaskDetailActionBar({
   onAddLink,
   onAttachFile,
   onDropFiles,
+  children,
 }: TaskDetailActionBarProps) {
   const { t } = useTranslation();
   const { canUpdateTasks, canCreateTasks } = useWorkspacePermission();
@@ -48,6 +52,7 @@ export default function TaskDetailActionBar({
           {t("tasks:detailActions.attachFile")}
         </Button>
       </TaskAttachmentDropZone>
+      {children}
     </div>
   );
 }

@@ -13,6 +13,7 @@ const mocks = vi.hoisted(() => ({
   deleteTask: vi.fn(),
   error: vi.fn(),
   success: vi.fn(),
+  restoreTask: vi.fn(),
 }));
 
 vi.mock("react-i18next", () => ({
@@ -32,6 +33,12 @@ vi.mock("@/hooks/use-workspace-permission", () => ({
 }));
 vi.mock("@/lib/toast", () => ({
   toast: { error: mocks.error, success: mocks.success },
+}));
+vi.mock("@/fetchers/trash/task-trash", () => ({
+  restoreTask: mocks.restoreTask,
+}));
+vi.mock("@/query-client", () => ({
+  default: { invalidateQueries: vi.fn() },
 }));
 
 beforeEach(() => {
@@ -56,7 +63,8 @@ describe("TaskDeleteButton", () => {
 
   it("deletes after confirmation and reports success", async () => {
     const onDeleted = vi.fn();
-    mocks.deleteTask.mockResolvedValue({ id: "task-1" });
+    mocks.deleteTask.mockResolvedValue({ id: "task-1", projectId: "p1" });
+    mocks.restoreTask.mockResolvedValue({ id: "task-1" });
     render(<TaskDeleteButton taskId="task-1" onDeleted={onDeleted} />);
 
     fireEvent.click(
@@ -70,8 +78,22 @@ describe("TaskDeleteButton", () => {
     await waitFor(() =>
       expect(mocks.deleteTask).toHaveBeenCalledWith("task-1"),
     );
-    expect(mocks.success).toHaveBeenCalledWith("tasks:delete.success");
+    expect(mocks.success).toHaveBeenCalledWith(
+      "tasks:delete.success",
+      expect.objectContaining({
+        action: expect.objectContaining({ label: "common:actions.undo" }),
+      }),
+    );
     expect(onDeleted).toHaveBeenCalledTimes(1);
+
+    // Undo restores the task from the trash.
+    mocks.success.mock.calls[0]?.[1]?.action?.onClick();
+    await waitFor(() =>
+      expect(mocks.restoreTask).toHaveBeenCalledWith("task-1"),
+    );
+    await waitFor(() =>
+      expect(mocks.success).toHaveBeenCalledWith("tasks:archive.restored"),
+    );
   });
 
   it("keeps the current view open and reports a failed deletion", async () => {

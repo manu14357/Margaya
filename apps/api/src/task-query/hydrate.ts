@@ -25,6 +25,7 @@ import { assigneeIdsOfTasks } from "../task/assignees";
 import type { TaskReadDatabase } from "../task/bounded-read";
 import { taskColumnJoin, taskGroupSql } from "../task/scope";
 import { formatTaskKey } from "../task-activity/task-snapshot";
+import { isRecurringSql } from "../task-recurrence/queries";
 import { type QueryContext, textArray } from "./context";
 import type {
   CycleGroupMeta,
@@ -71,6 +72,8 @@ export type TaskQueryRow = {
   createdBy: string | null;
   userId: string | null;
   position: number | null;
+  /** True while the task holds a repeat rule. */
+  isRecurring: boolean;
   assigneeIds?: string[];
   labels?: { name: string; color: string }[];
   cycleId?: string | null;
@@ -166,6 +169,7 @@ export async function hydrateRows(
       userId: taskTable.userId,
       position: taskTable.position,
       estimatePointId: taskTable.estimatePointId,
+      isRecurring: isRecurringSql,
       cycleId: include.has("cycle") ? cycleIdSql : sql<null>`null`,
       parentId: include.has("subTasks") ? parentIdSql : sql<null>`null`,
       subTaskCount: include.has("subTasks") ? subTaskCountSql : sql<null>`null`,

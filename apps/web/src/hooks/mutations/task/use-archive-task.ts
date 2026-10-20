@@ -1,4 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  type QueryClient,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import archiveTask from "@/fetchers/task/archive-task";
 import unarchiveTask from "@/fetchers/task/unarchive-task";
 import { invalidateTaskQueries } from "@/lib/task-query/cache";
@@ -10,6 +14,25 @@ type ArchiveVariables = {
   archived: boolean;
 };
 
+/** The lists, boards and counts an archive or restore changes. */
+export function invalidateAfterArchive(
+  queryClient: QueryClient,
+  taskId: string,
+  projectId: string,
+) {
+  for (const queryKey of [
+    ["tasks", projectId],
+    ["task", taskId],
+    ["activities", taskId],
+    ["projects"],
+    ["cycles", projectId],
+    ["modules", projectId],
+  ]) {
+    void queryClient.invalidateQueries({ queryKey });
+  }
+  void invalidateTaskQueries(queryClient, projectId);
+}
+
 /**
  * Archives or restores one task (D7): archived tasks keep their column and
  * position, and leave the board until restored.
@@ -20,19 +43,8 @@ export function useArchiveTask() {
   return useMutation({
     mutationFn: ({ taskId, archived }: ArchiveVariables) =>
       archived ? archiveTask(taskId) : unarchiveTask(taskId),
-    onSuccess: (_task, { taskId, projectId }) => {
-      for (const queryKey of [
-        ["tasks", projectId],
-        ["task", taskId],
-        ["activities", taskId],
-        ["projects"],
-        ["cycles", projectId],
-        ["modules", projectId],
-      ]) {
-        void queryClient.invalidateQueries({ queryKey });
-      }
-      void invalidateTaskQueries(queryClient, projectId);
-    },
+    onSuccess: (_task, { taskId, projectId }) =>
+      invalidateAfterArchive(queryClient, taskId, projectId),
   });
 }
 

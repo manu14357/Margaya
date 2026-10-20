@@ -6,6 +6,7 @@ import {
   recentVisitTable,
 } from "../database/schema";
 import { projectFeatureField } from "../project/features";
+import { hiddenProjectIds } from "../project/visibility";
 import { resolveCycles } from "./resolvers/cycle";
 import { resolveModules } from "./resolvers/module";
 import { resolvePages } from "./resolvers/page";
@@ -55,6 +56,8 @@ export type ResolvedEntity = {
   summary: EntitySummary;
   /** Not archived, and its gating feature (if any) is turned on. */
   available: boolean;
+  /** In a restricted project the caller may not see. */
+  restricted?: boolean;
 };
 
 export function entityRefKey(type: string, id: string) {
@@ -106,16 +109,29 @@ async function resolveWithTrashed(
   }
 
   const isFeatureEnabled = await enabledFeatureLookup(summaries);
+  const hidden = new Set(
+    await hiddenProjectIds(context.userId, context.workspaceId),
+  );
 
   return new Map(
-    summaries.map((summary) => [
-      entityRefKey(summary.type, summary.id),
-      {
-        summary,
-        available:
-          !summary.isArchived && !summary.trashed && isFeatureEnabled(summary),
-      },
-    ]),
+    summaries.map((summary) => {
+      // In a restricted project the caller may not see (project/visibility.ts).
+      const restricted = Boolean(
+        summary.projectId && hidden.has(summary.projectId),
+      );
+      return [
+        entityRefKey(summary.type, summary.id),
+        {
+          summary,
+          restricted,
+          available:
+            !restricted &&
+            !summary.isArchived &&
+            !summary.trashed &&
+            isFeatureEnabled(summary),
+        },
+      ];
+    }),
   );
 }
 
@@ -131,7 +147,7 @@ export async function resolveEntityReferences(
 ): Promise<Map<string, ResolvedEntity>> {
   const resolved = await resolveWithTrashed(context, refs);
   for (const [key, entity] of resolved) {
-    if (entity.summary.trashed) resolved.delete(key);
+    if (entity.summary.trashed || entity.restricted) resolved.delete(key);
   }
   return resolved;
 }
@@ -148,6 +164,7 @@ export async function partitionReferenceRows<T extends ReferenceRow>(
   rows: T[],
 ) {
   // Trashed entities stay hidden, not missing: a restore brings them back.
+  // So do entities of a restricted project: regaining access brings them back.
   const resolved = await resolveWithTrashed(context, rows);
   const visible: Array<T & { entity: EntitySummary }> = [];
   const missing: T[] = [];

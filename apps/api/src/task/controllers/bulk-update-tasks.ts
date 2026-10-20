@@ -50,9 +50,20 @@ type BulkOperation =
   | "addLabel"
   | "removeLabel"
   | "updateDueDate"
+  | "updateStartDate"
   | "updateEstimate"
   | "archive"
   | "unarchive";
+
+/** A date value of a bulk operation; null or empty clears the date. */
+function parseBulkDate(value: string | null | undefined): Date | null {
+  if (!value) return null;
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) {
+    throw new HTTPException(400, { message: `Invalid date value "${value}"` });
+  }
+  return parsed;
+}
 
 async function bulkUpdateTasks({
   taskIds,
@@ -73,6 +84,7 @@ async function bulkUpdateTasks({
       priority: taskTable.priority,
       projectId: taskTable.projectId,
       userId: taskTable.userId,
+      startDate: taskTable.startDate,
       dueDate: taskTable.dueDate,
       archivedAt: taskTable.archivedAt,
       workspaceId: projectTable.workspaceId,
@@ -407,15 +419,7 @@ async function bulkUpdateTasks({
     }
 
     case "updateDueDate": {
-      let parsedDate: Date | null = null;
-      if (value) {
-        parsedDate = new Date(value);
-        if (Number.isNaN(parsedDate.getTime())) {
-          throw new HTTPException(400, {
-            message: `Invalid date value "${value}"`,
-          });
-        }
-      }
+      const parsedDate = parseBulkDate(value);
 
       const result = await db
         .update(taskTable)
@@ -433,6 +437,43 @@ async function bulkUpdateTasks({
           newDueDate: parsedDate,
           title: task.title,
           type: "due_date_changed",
+        });
+      }
+      break;
+    }
+
+    case "updateStartDate": {
+      const parsedDate = parseBulkDate(value);
+      // The same rule as a single task's dates: no start after the due date.
+      if (
+        parsedDate &&
+        tasks.some(
+          (task) =>
+            task.dueDate && task.dueDate.getTime() < parsedDate.getTime(),
+        )
+      ) {
+        throw new HTTPException(400, {
+          message:
+            "Start date cannot be after due date. Please adjust the date range.",
+        });
+      }
+
+      const result = await db
+        .update(taskTable)
+        .set({ startDate: parsedDate })
+        .where(inArray(taskTable.id, foundIds));
+
+      updatedCount = result.rowCount ?? foundIds.length;
+
+      for (const task of tasks) {
+        await publishEvent("task.start_date_changed", {
+          taskId: task.id,
+          projectId: task.projectId,
+          userId,
+          oldStartDate: task.startDate,
+          newStartDate: parsedDate,
+          title: task.title,
+          type: "start_date_changed",
         });
       }
       break;

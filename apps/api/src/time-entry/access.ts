@@ -22,7 +22,10 @@ export function visibleTimeEntry(idKey = "id") {
     const timeEntryId = c.req.param(idKey);
     const [found] = timeEntryId
       ? await db
-          .select({ workspaceId: projectTable.workspaceId })
+          .select({
+            workspaceId: projectTable.workspaceId,
+            projectId: projectTable.id,
+          })
           .from(timeEntryTable)
           .innerJoin(taskTable, eq(taskTable.id, timeEntryTable.taskId))
           .innerJoin(projectTable, eq(projectTable.id, taskTable.projectId))
@@ -42,6 +45,7 @@ export function visibleTimeEntry(idKey = "id") {
         userId,
         found.workspaceId,
         c.get("apiKey")?.id,
+        found.projectId,
       );
     } catch (error) {
       if (error instanceof HTTPException && error.status === 403) {

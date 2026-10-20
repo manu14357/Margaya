@@ -1,4 +1,7 @@
 import { shortcuts } from "@/constants/shortcuts";
+import { isTypingTarget, shortcutKey } from "@/lib/shortcut-key";
+
+export { isTypingTarget };
 
 /** What a key press on an open task asks for. */
 export type TaskShortcutAction =
@@ -40,7 +43,7 @@ export function resolveTaskShortcut(event: KeyLike): TaskShortcutAction | null {
 
   if (!mod) {
     if (event.shiftKey || event.key.length !== 1) return null;
-    return SINGLE_KEYS[event.key.toLowerCase()] ?? null;
+    return SINGLE_KEYS[shortcutKey(event)] ?? null;
   }
 
   if (event.ctrlKey && event.metaKey) return null;
@@ -59,17 +62,6 @@ export function resolveTaskShortcut(event: KeyLike): TaskShortcutAction | null {
     return "delete";
   }
   return null;
-}
-
-/** Typing targets own every key: fields, the editors, contenteditable. */
-export function isTypingTarget(target: EventTarget | null): boolean {
-  if (!(target instanceof Element)) return false;
-  if (target instanceof HTMLElement && target.isContentEditable) return true;
-  return Boolean(
-    target.closest(
-      "input, textarea, select, [contenteditable=''], [contenteditable='true'], [role='textbox'], .ProseMirror",
-    ),
-  );
 }
 
 const OVERLAYS = [

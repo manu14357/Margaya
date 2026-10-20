@@ -5,6 +5,7 @@ import {
   columnTable,
   customFieldDefinitionTable,
   customFieldValueTable,
+  taskRelationTable,
   taskTable,
   userTable,
 } from "../../database/schema";
@@ -12,6 +13,20 @@ import { assertTaskEstimatePoint } from "../../estimate/assert-task-estimate";
 import { shareProjectEstimates } from "../../estimate/write";
 import { publishEvent } from "../../events";
 import { assertProjectFeatureEnabled } from "../../project/features";
+import {
+  formatTaskKey,
+  type TaskSnapshot,
+} from "../../task-activity/task-snapshot";
+import {
+  assertNotInTriage,
+  type LockedRelationTask,
+  lockRelationGraph,
+  lockRelationTasks,
+  SAME_PROJECT_PARENT_MESSAGE,
+  snapshotOfLocked,
+  TRIAGE_LINK_MESSAGE,
+} from "../../task-relation/checks";
+import { publishRelationEvent } from "../../task-relation/events";
 import {
   assertAssignableUsers,
   getProjectWorkspaceId,
@@ -66,6 +81,8 @@ export type CreateTaskInput = {
   priority?: string;
   customFields?: CustomFieldInput[];
   estimatePointId?: string | null;
+  /** Makes the new task a subtask of this one, in the create's transaction. */
+  parentId?: string;
 };
 
 /** Everything a create needs once validated, before the transaction. */
@@ -290,13 +307,100 @@ export async function publishTaskCreated(
   }
 }
 
+const PARENT_NOT_FOUND = "Parent task not found";
+
+/**
+ * Locks the relation graph and the parent, and applies the parent rules
+ * that can fail for a task that does not exist yet: a live task of the
+ * same workspace (others read as missing), of the same project, and not
+ * waiting in intake. A new task has no subtasks, so no loop is possible.
+ */
+async function lockParentForCreate(
+  tx: Transaction,
+  parentId: string,
+  projectId: string,
+  workspaceId: string,
+): Promise<LockedRelationTask> {
+  await lockRelationGraph(tx, workspaceId);
+  const parent = (await lockRelationTasks(tx, [parentId])).get(parentId);
+  if (!parent || parent.workspaceId !== workspaceId) {
+    throw new HTTPException(404, { message: PARENT_NOT_FOUND });
+  }
+  if (parent.projectId !== projectId) {
+    throw new HTTPException(400, { message: SAME_PROJECT_PARENT_MESSAGE });
+  }
+  assertNotInTriage(parent);
+  return parent;
+}
+
 async function createTask(input: CreateTaskInput) {
   const prepared = await prepareTaskCreate(input);
-  const createdTask = await db.transaction((tx) =>
-    insertTaskInTransaction(tx, prepared),
+  const { parentId } = input;
+  if (parentId && prepared.column?.group === "triage") {
+    throw new HTTPException(400, { message: TRIAGE_LINK_MESSAGE });
+  }
+  const workspaceId = parentId
+    ? await getProjectWorkspaceId(input.projectId)
+    : null;
+
+  const { createdTask, relation, snapshots } = await db.transaction(
+    async (tx) => {
+      const parent =
+        parentId && workspaceId
+          ? await lockParentForCreate(
+              tx,
+              parentId,
+              input.projectId,
+              workspaceId,
+            )
+          : null;
+      const createdTask = await insertTaskInTransaction(tx, prepared);
+      if (!parent) return { createdTask, relation: null, snapshots: null };
+
+      const [relation] = await tx
+        .insert(taskRelationTable)
+        .values({
+          sourceTaskId: parent.id,
+          targetTaskId: createdTask.id,
+          relationType: "subtask",
+        })
+        .returning();
+      if (!relation) {
+        throw new HTTPException(500, {
+          message: "Failed to create task relation",
+        });
+      }
+      return {
+        createdTask,
+        relation,
+        snapshots: new Map<string, TaskSnapshot>([
+          [parent.id, snapshotOfLocked(parent)],
+          [
+            createdTask.id,
+            {
+              id: createdTask.id,
+              key: formatTaskKey(parent.slug, createdTask.number),
+              title: createdTask.title,
+              projectId: createdTask.projectId,
+            },
+          ],
+        ]),
+      };
+    },
   );
 
   await publishTaskCreated(createdTask, prepared);
+  // The same event the separate relation route publishes, so activity,
+  // realtime and integrations see a subtask created with its parent exactly
+  // like one linked right after creation.
+  if (relation && snapshots) {
+    await publishRelationEvent("task-relation.created", {
+      relation,
+      userId: prepared.currentUserId,
+      origin: "user",
+      snapshots,
+    });
+  }
 
   return {
     ...createdTask,

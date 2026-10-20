@@ -82,6 +82,7 @@ export const bulkUpdateBody = z.object({
       "addLabel",
       "removeLabel",
       "updateDueDate",
+      "updateStartDate",
       "updateEstimate",
       "archive",
       "unarchive",
@@ -92,7 +93,7 @@ export const bulkUpdateBody = z.object({
     }),
   value: z.string().nullable().optional().openapi({
     description:
-      "The new value for the chosen operation. Unused by `delete`, `archive` and `unarchive`; null clears the assignees (updateAssignee), a due date or an estimate; a user id for addAssignee and removeAssignee. updateEstimate takes a point of the project's active estimate system and needs every task in one project.",
+      "The new value for the chosen operation. Unused by `delete`, `archive` and `unarchive`; null clears the assignees (updateAssignee), a due or start date, or an estimate; updateStartDate is refused when the date falls after a selected task's due date; a user id for addAssignee and removeAssignee. updateEstimate takes a point of the project's active estimate system and needs every task in one project.",
   }),
 });
 
@@ -116,6 +117,10 @@ export const createTaskBody = z.object({
   estimatePointId: z.string().nullable().optional().openapi({
     description:
       "A point of the project's active estimate system. Needs the project's estimates feature on; null or omitted means no estimate.",
+  }),
+  parentId: z.string().min(1).optional().openapi({
+    description:
+      "Creates the task as a subtask of this task, in the same transaction. The parent must be a live task of the same project that is not waiting in intake, and the caller also needs task:update.",
   }),
 });
 
@@ -253,4 +258,11 @@ export const descriptionPageQuery = z.object({
 export const descriptionMatchesQuery = z.object({
   query: z.string().trim().min(1).max(256),
   after: z.string().min(1).max(128).optional(),
+});
+
+export const similarTasksQuery = z.object({
+  q: z.string().trim().min(1).max(256).openapi({
+    description:
+      "The title being typed. Words of three or more letters are searched in open tasks' titles and descriptions.",
+  }),
 });

@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
+import { AgentBadgeFor } from "@/components/ai/agents/agent-badge";
 import useAuth from "@/components/providers/auth-provider/hooks/use-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -249,6 +250,7 @@ export default function AssigneeMultiSelect({
             </span>
           )}
         </span>
+        <AgentBadgeFor userId={row.id} />
         {!showSearch && index < 9 && <ShortcutNumber number={index + 1} />}
       </Button>
     );

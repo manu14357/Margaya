@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useDeleteTask } from "@/hooks/mutations/task/use-delete-task";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { cn } from "@/lib/cn";
+import { toastTaskTrashed } from "@/lib/task-undo";
 import { toast } from "@/lib/toast";
 
 type TaskDeleteButtonProps = {
@@ -42,8 +43,11 @@ export default function TaskDeleteButton({
 
   const handleDelete = async () => {
     try {
-      await deleteTask(taskId);
-      toast.success(t("tasks:delete.success"));
+      const deleted = await deleteTask(taskId);
+      toastTaskTrashed(
+        { taskId: deleted.id, projectId: deleted.projectId },
+        { t },
+      );
       setIsOpen(false);
       onDeleted();
     } catch (error) {

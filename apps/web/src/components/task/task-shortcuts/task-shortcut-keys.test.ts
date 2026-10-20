@@ -42,6 +42,39 @@ describe("resolveTaskShortcut", () => {
     expect(resolveTaskShortcut(press({ key: "S" }))).toBe("status");
   });
 
+  it("maps single keys by physical key on ru and el layouts", () => {
+    // ru: S "ы", P "з", A "ф", L "д", D "в", I "ш".
+    expect(resolveTaskShortcut(press({ key: "ы", code: "KeyS" }))).toBe(
+      "status",
+    );
+    expect(resolveTaskShortcut(press({ key: "з", code: "KeyP" }))).toBe(
+      "priority",
+    );
+    expect(resolveTaskShortcut(press({ key: "ф", code: "KeyA" }))).toBe(
+      "assignees",
+    );
+    expect(resolveTaskShortcut(press({ key: "Ш", code: "KeyI" }))).toBe(
+      "assignSelf",
+    );
+    // el: S "σ", P "π", L "λ", D "δ".
+    expect(resolveTaskShortcut(press({ key: "σ", code: "KeyS" }))).toBe(
+      "status",
+    );
+    expect(resolveTaskShortcut(press({ key: "π", code: "KeyP" }))).toBe(
+      "priority",
+    );
+    expect(resolveTaskShortcut(press({ key: "λ", code: "KeyL" }))).toBe(
+      "labels",
+    );
+    expect(resolveTaskShortcut(press({ key: "δ", code: "KeyD" }))).toBe(
+      "dueDate",
+    );
+    // A Latin layout keeps the typed letter: AZERTY "a" sits on KeyQ.
+    expect(resolveTaskShortcut(press({ key: "a", code: "KeyQ" }))).toBe(
+      "assignees",
+    );
+  });
+
   it("ignores other keys and single keys with modifiers", () => {
     expect(resolveTaskShortcut(press({ key: "x" }))).toBeNull();
     expect(resolveTaskShortcut(press({ key: "Enter" }))).toBeNull();

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import bulkOperation from "@/fetchers/task/bulk-operation";
 import deleteTask from "@/fetchers/task/delete-task";
+import { invalidateTaskQueries } from "@/lib/task-query/cache";
 
 export function useBulkOperations() {
   const queryClientRef = useQueryClient();
@@ -8,6 +9,8 @@ export function useBulkOperations() {
   const invalidateCommon = () => {
     queryClientRef.invalidateQueries({ queryKey: ["tasks"] });
     queryClientRef.invalidateQueries({ queryKey: ["projects"] });
+    // Spreadsheets, grouped views and My work read the task query caches.
+    void invalidateTaskQueries(queryClientRef);
   };
 
   const bulkDelete = useMutation({
@@ -26,9 +29,8 @@ export function useBulkOperations() {
   });
 
   const bulkUnarchive = useMutation({
-    mutationFn: async (taskIds: string[]) => {
-      await bulkOperation({ taskIds, operation: "unarchive" });
-    },
+    mutationFn: (taskIds: string[]) =>
+      bulkOperation({ taskIds, operation: "unarchive" }),
     onSuccess: invalidateCommon,
   });
 
@@ -158,6 +160,36 @@ export function useBulkOperations() {
     },
   });
 
+  const bulkRemoveLabel = useMutation({
+    mutationFn: ({
+      taskIds,
+      labelId,
+    }: {
+      taskIds: string[];
+      labelId: string;
+    }) => bulkOperation({ taskIds, operation: "removeLabel", value: labelId }),
+    onSuccess: () => {
+      invalidateCommon();
+      queryClientRef.invalidateQueries({ queryKey: ["labels"] });
+    },
+  });
+
+  const bulkStartDate = useMutation({
+    mutationFn: ({
+      taskIds,
+      startDate,
+    }: {
+      taskIds: string[];
+      startDate: string | null;
+    }) =>
+      bulkOperation({
+        taskIds,
+        operation: "updateStartDate",
+        value: startDate,
+      }),
+    onSuccess: invalidateCommon,
+  });
+
   const bulkDueDate = useMutation({
     mutationFn: async ({
       taskIds,
@@ -188,6 +220,8 @@ export function useBulkOperations() {
     bulkMoveToBoard: bulkMoveToBoard.mutateAsync,
     bulkPriority: bulkPriority.mutateAsync,
     bulkAddLabel: bulkAddLabel.mutateAsync,
+    bulkRemoveLabel: bulkRemoveLabel.mutateAsync,
     bulkDueDate: bulkDueDate.mutateAsync,
+    bulkStartDate: bulkStartDate.mutateAsync,
   };
 }

@@ -163,6 +163,10 @@ export const boardTaskSchema = z
     estimatePointId: estimatePointIdSchema,
     labels: z.array(taskLabelSchema),
     externalLinks: z.array(taskExternalLinkSchema),
+    isRecurring: z.boolean().optional().openapi({
+      description:
+        "True while the task repeats (it holds the series' repeat rule).",
+    }),
   })
   .openapi("BoardTask");
 
@@ -340,3 +344,20 @@ export const taskKeyLookupSchema = z
     }),
   })
   .openapi("TaskKeyLookup");
+
+export const similarTasksSchema = z
+  .object({
+    tasks: z.array(
+      z.object({
+        id: z.string(),
+        number: z.number().nullable(),
+        key: z.string().openapi({ description: "The task key (WEB-12)." }),
+        title: z.string(),
+        status: z.string(),
+      }),
+    ),
+  })
+  .openapi("SimilarTasks", {
+    description:
+      "Up to five open tasks of the project like the typed title (full-text ranked), best match first.",
+  });

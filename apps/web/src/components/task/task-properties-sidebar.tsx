@@ -6,6 +6,7 @@ import {
   Copy,
   GitBranch,
   Plus,
+  Repeat,
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
@@ -26,6 +27,7 @@ import useGetLabelsByTask from "@/hooks/queries/label/use-get-labels-by-task";
 import useGetProject from "@/hooks/queries/project/use-get-project";
 import useGetProjects from "@/hooks/queries/project/use-get-projects";
 import useGetTask from "@/hooks/queries/task/use-get-task";
+import useTaskRecurrence from "@/hooks/queries/task-recurrence/use-task-recurrence";
 import { useTaskAssignees } from "@/hooks/use-task-assignees";
 import { cn } from "@/lib/cn";
 import { getColumnIcon } from "@/lib/column";
@@ -39,6 +41,7 @@ import { formatDateShort } from "@/lib/format";
 import { getPriorityLabel, getStatusDisplayLabel } from "@/lib/i18n/domain";
 import { resolveLabelColor } from "@/lib/label-color";
 import { getPriorityIcon } from "@/lib/priority";
+import { formatCalendarDate, recurrenceSummary } from "@/lib/recurrence";
 import { formatAssigneeSummary } from "@/lib/task-assignees";
 import {
   copyTaskBranch,
@@ -54,6 +57,7 @@ import TaskDueDatePopover from "./task-due-date-popover";
 import TaskLabelsPopover from "./task-labels-popover";
 import TaskMovePopover from "./task-move-popover";
 import TaskPriorityPopover from "./task-priority-popover";
+import TaskRecurrencePopover from "./task-recurrence-popover";
 import TaskStartDatePopover from "./task-start-date-popover";
 import TaskStatusPopover from "./task-status-popover";
 
@@ -117,8 +121,9 @@ export default function TaskPropertiesSidebar({
   className,
   compact = false,
 }: TaskPropertiesSidebarProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data: task } = useGetTask(taskId ?? "");
+  const { data: recurrence } = useTaskRecurrence(taskId);
   const { data: project } = useGetProject({ id: projectId, workspaceId });
   const { data: columns = [] } = useGetColumns(projectId);
   const taskIsCompleted = isTaskCompleted(task?.status ?? "", columns);
@@ -354,6 +359,36 @@ export default function TaskPropertiesSidebar({
                 </span>
               </Button>
             </TaskDueDatePopover>
+          </PropertyRow>
+
+          <PropertyRow property="repeat" label={t("tasks:recurrence.label")}>
+            <TaskRecurrencePopover task={task} rule={recurrence}>
+              <Button variant="ghost" size="sm" className={VALUE_BUTTON}>
+                <Repeat className="size-3.5 text-muted-foreground" />
+                <span
+                  className={cn(
+                    "truncate",
+                    !recurrence && "text-muted-foreground",
+                  )}
+                >
+                  {recurrence
+                    ? recurrenceSummary(recurrence, t, i18n.language)
+                    : t("tasks:recurrence.none")}
+                </span>
+              </Button>
+            </TaskRecurrencePopover>
+            {recurrence && (
+              <span className="w-full pl-1.5 text-[11px] text-muted-foreground">
+                {recurrence.nextDate
+                  ? t("tasks:recurrence.next", {
+                      date: formatCalendarDate(
+                        recurrence.nextDate,
+                        i18n.language,
+                      ),
+                    })
+                  : t("tasks:recurrence.ended")}
+              </span>
+            )}
           </PropertyRow>
 
           <PropertyRow property="labels" label={t("tasks:properties.labels")}>

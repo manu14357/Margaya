@@ -46,6 +46,10 @@ vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: mocks.t }),
   initReactI18next: { type: "3rdParty", init: () => {} },
 }));
+// Editor block AI stays hidden here (it has its own tests).
+vi.mock("@/hooks/queries/ai/use-ai", () => ({
+  useAiAvailability: () => ({ available: false }),
+}));
 vi.mock("@/hooks/queries/task/use-get-task", () => ({
   default: (taskId: string) => ({ data: mocks.tasks.get(taskId) }),
 }));

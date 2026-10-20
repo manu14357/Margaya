@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import createTask, {
   type CreateTaskRequest,
 } from "@/fetchers/task/create-task";
+import { invalidateTaskQueries } from "@/lib/task-query/cache";
 
 function useCreateTask() {
   const queryClient = useQueryClient();
@@ -17,6 +18,7 @@ function useCreateTask() {
       dueDate,
       priority,
       customFields,
+      parentId,
     }: CreateTaskRequest) =>
       createTask(
         title,
@@ -28,14 +30,31 @@ function useCreateTask() {
         dueDate ? new Date(dueDate) : undefined,
         priority,
         customFields,
+        parentId,
       ),
-    onSuccess: (_data, variables) => {
+    onSuccess: (data, variables) => {
       void queryClient.invalidateQueries({
         queryKey: ["tasks", variables.projectId],
       });
       void queryClient.invalidateQueries({
         queryKey: ["custom-field-values", variables.projectId],
       });
+      if (variables.parentId) {
+        // The parent's sub-task list, both tasks' history and the timeline's
+        // relation lines, as linking them separately would refresh.
+        for (const taskId of [variables.parentId, data.id]) {
+          void queryClient.invalidateQueries({
+            queryKey: ["task-relations", taskId],
+          });
+          void queryClient.invalidateQueries({
+            queryKey: ["activities", taskId],
+          });
+        }
+        void queryClient.invalidateQueries({
+          queryKey: ["task-relations", "project"],
+        });
+        void invalidateTaskQueries(queryClient, variables.projectId);
+      }
     },
   });
 }

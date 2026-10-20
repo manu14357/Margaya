@@ -12,6 +12,7 @@ type BulkOperationType =
   | "addLabel"
   | "removeLabel"
   | "updateDueDate"
+  | "updateStartDate"
   | "archive"
   | "unarchive";
 

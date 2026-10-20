@@ -20,6 +20,10 @@ vi.mock(
   }),
 );
 
+vi.mock("@/components/ai/agents/agent-badge", () => ({
+  AgentBadgeFor: () => null,
+}));
+
 vi.mock("@/components/providers/auth-provider/hooks/use-auth", () => ({
   default: () => ({ user: { id: "ben" } }),
 }));
