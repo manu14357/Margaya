@@ -7,10 +7,13 @@ import {
   TASK_QUERY_INCLUDES,
   TASK_QUERY_MODES,
 } from "../task-query/schema";
+import { type McpToolAnnotations, mcpToolAnnotations } from "./annotations";
+import { mcpToolOutputSchema, structuredOf } from "./output";
 import { registerPlanningTools } from "./planning-tools";
 
 type McpToolResult = {
   content: Array<{ type: "text"; text: string }>;
+  structuredContent?: Record<string, unknown>;
   isError?: boolean;
 };
 
@@ -29,7 +32,12 @@ export type McpToolRegistrar = {
 type ShapeToolServer = {
   registerTool(
     name: string,
-    config: { description: string; inputSchema: z.ZodRawShape },
+    config: {
+      description: string;
+      inputSchema: z.ZodRawShape;
+      outputSchema?: z.ZodObject;
+      annotations: McpToolAnnotations;
+    },
     callback: (args: unknown) => Promise<McpToolResult>,
   ): unknown;
 };
@@ -42,6 +50,12 @@ export function toMcpToolRegistrar(server: ShapeToolServer): McpToolRegistrar {
         {
           description: config.description,
           inputSchema: config.inputSchema.shape,
+          // Declared only for tools with a stable shape (output.ts).
+          ...(mcpToolOutputSchema(name)
+            ? { outputSchema: mcpToolOutputSchema(name) }
+            : {}),
+          // readOnlyHint / destructiveHint, like Margaya's own agents use.
+          annotations: mcpToolAnnotations(name),
         },
         (args) => callback(args),
       ),
@@ -93,7 +107,13 @@ class ApiClient {
 function textResult(data: unknown, isError = false): McpToolResult {
   const text =
     typeof data === "string" ? data : (JSON.stringify(data, null, 2) ?? "");
-  return { content: [{ type: "text", text }], isError };
+  // The same JSON as structured content (output.ts); errors stay text.
+  const structuredContent = isError ? undefined : structuredOf(data);
+  return {
+    content: [{ type: "text", text }],
+    ...(structuredContent ? { structuredContent } : {}),
+    isError,
+  };
 }
 
 function errorResult(message: string): McpToolResult {
@@ -482,6 +502,9 @@ export function registerMcpTools(
         userId: optionalNonEmptyString.describe(
           "Single assignee; assigneeIds takes precedence",
         ),
+        parentId: optionalNonEmptyString.describe(
+          "Create the task as a subtask of this task (same project)",
+        ),
       }),
     },
     async (args) => {
@@ -495,6 +518,7 @@ export function registerMcpTools(
       if (args.dueDate !== undefined) body.dueDate = args.dueDate;
       if (args.assigneeIds !== undefined) body.assigneeIds = args.assigneeIds;
       else if (args.userId !== undefined) body.userId = args.userId;
+      if (args.parentId !== undefined) body.parentId = args.parentId;
       return run(() =>
         client.json(`/api/task/${encodeURIComponent(args.projectId)}`, {
           method: "POST",
@@ -916,7 +940,7 @@ export function registerMcpTools(
     "search",
     {
       description:
-        "Search across tasks, projects, workspaces, comments, activities and pages.",
+        'Ranked full-text search across tasks, projects, workspaces, comments, activities, pages, cycles, modules, saved views and intake requests. Supports "quoted phrases", or and -exclude; the last word also matches as a prefix, and an exact task key (WEB-12) comes first. Task, comment and page results include a highlighted snippet.',
       inputSchema: z.object({
         q: nonEmptyString.describe("Search query"),
         type: z
@@ -928,6 +952,10 @@ export function registerMcpTools(
             "comments",
             "activities",
             "pages",
+            "cycles",
+            "modules",
+            "views",
+            "intake",
           ])
           .optional()
           .describe("Restrict results to one kind. Defaults to all."),

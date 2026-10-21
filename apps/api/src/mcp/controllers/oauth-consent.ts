@@ -2,6 +2,7 @@ import { HTTPException } from "hono/http-exception";
 import { auth } from "../../auth";
 import { publishEvent } from "../../events";
 import type { z } from "../../openapi";
+import { oauthIssuer } from "../metadata";
 import {
   consumeAuthorizationRequest,
   createAuthCode,
@@ -41,6 +42,8 @@ function buildAuthorizationRedirect(
   if (request.state !== undefined) {
     url.searchParams.set("state", request.state);
   }
+  // RFC 9207: the client checks who answered before redeeming the code.
+  url.searchParams.set("iss", oauthIssuer());
   return url.toString();
 }
 
@@ -85,6 +88,7 @@ export async function beginMcpAuthorization(
     codeChallenge: input.code_challenge,
     redirectUri: input.redirect_uri,
     state: input.state,
+    resource: input.resource,
   });
   const consentUrl = new URL("/mcp/authorize", clientUrl);
   consentUrl.searchParams.set("request_id", requestId);
@@ -137,6 +141,7 @@ export async function decideMcpAuthorizationRequest(params: {
       userId: session.user.id,
       codeChallenge: request.codeChallenge,
       redirectUri: request.redirectUri,
+      resource: request.resource,
     },
     params.requestId,
   );

@@ -16,6 +16,12 @@ import {
   getMcpAuthorizationRequest,
   registerMcpClient,
 } from "./controllers/oauth-consent";
+import {
+  authorizationServerMetadata,
+  isMargayaResource,
+  protectedResourceMetadata,
+  publicApiOrigin,
+} from "./metadata";
 import { createModernMcpHandler } from "./modern";
 import { exchangeCode } from "./oauth";
 import { oauthRequestBounds } from "./request-bounds";
@@ -31,9 +37,7 @@ import {
 } from "./schemas";
 import { registerMcpTools, toMcpToolRegistrar } from "./tools";
 
-const publicApiUrl = (process.env.MARGAYA_API_URL || "http://localhost:1337")
-  .replace(/\/api\/?$/, "")
-  .replace(/\/+$/, "");
+const publicApiUrl = publicApiOrigin();
 const internalApiUrl = (
   process.env.MARGAYA_INTERNAL_API_URL || "http://127.0.0.1:1337"
 )
@@ -59,7 +63,11 @@ function createMcpServerForUser(token: string): LegacyMcpServer {
   return server;
 }
 
-type McpCredential = { userId: string; token: string };
+export type McpCredential = {
+  userId: string;
+  token: string;
+  apiKeyId?: string;
+};
 
 /**
  * Resolves the caller the way the REST API does: an API key (as
@@ -67,7 +75,7 @@ type McpCredential = { userId: string; token: string };
  * (OAuth access tokens are sessions). The tools call the REST API with the
  * same credential, so an API key keeps exactly its own permissions there.
  */
-async function authenticateMcpRequest(
+export async function authenticateMcpRequest(
   req: Request,
 ): Promise<McpCredential | null> {
   const authHeader = req.headers.get("authorization");
@@ -81,7 +89,7 @@ async function authenticateMcpRequest(
 
   const apiKey = await verifyApiKey(token);
   if (apiKey?.valid && apiKey.key.userId) {
-    return { userId: apiKey.key.userId, token };
+    return { userId: apiKey.key.userId, token, apiKeyId: apiKey.key.id };
   }
   if (!bearer) return null;
 
@@ -339,7 +347,8 @@ mcp.post("/mcp/token", async (c) => {
     return c.json({ error: "invalid_request" }, 400);
   }
 
-  const { grant_type, code, client_id, code_verifier, redirect_uri } = params;
+  const { grant_type, code, client_id, code_verifier, redirect_uri, resource } =
+    params;
 
   if (grant_type !== "authorization_code") {
     return c.json({ error: "unsupported_grant_type" }, 400);
@@ -361,11 +370,22 @@ mcp.post("/mcp/token", async (c) => {
     return c.json({ error: "invalid_request" }, 400);
   }
 
+  // RFC 8707: a named resource must be one of Margaya's.
+  if (
+    resource !== undefined &&
+    (typeof resource !== "string" ||
+      resource.length > 2048 ||
+      !isMargayaResource(resource))
+  ) {
+    return c.json({ error: "invalid_target" }, 400);
+  }
+
   const result = await exchangeCode(
     code,
     client_id,
     code_verifier,
     redirect_uri,
+    resource,
   );
   if (!result) {
     return c.json({ error: "invalid_grant" }, 400);
@@ -378,24 +398,14 @@ mcp.post("/mcp/token", async (c) => {
   });
 });
 
-mcp.get("/.well-known/oauth-protected-resource/api/mcp", (c) =>
-  c.json({
-    resource: `${publicApiUrl}/api/mcp`,
-    authorization_servers: [`${publicApiUrl}/api`],
-  }),
-);
+for (const resource of ["mcp", "a2a"] as const) {
+  mcp.get(`/.well-known/oauth-protected-resource/api/${resource}`, (c) =>
+    c.json(protectedResourceMetadata(publicApiUrl, resource)),
+  );
+}
 
 mcp.get("/.well-known/oauth-authorization-server/api", (c) =>
-  c.json({
-    issuer: `${publicApiUrl}/api`,
-    authorization_endpoint: `${publicApiUrl}/api/mcp/authorize`,
-    token_endpoint: `${publicApiUrl}/api/mcp/token`,
-    registration_endpoint: `${publicApiUrl}/api/mcp/register`,
-    response_types_supported: ["code"],
-    grant_types_supported: ["authorization_code"],
-    code_challenge_methods_supported: ["S256"],
-    token_endpoint_auth_methods_supported: ["none"],
-  }),
+  c.json(authorizationServerMetadata(publicApiUrl)),
 );
 
 export default mcp;
@@ -403,24 +413,15 @@ export default mcp;
 export function mcpWellKnownRoutes(baseUrl: string) {
   const wellKnown = new Hono();
 
-  wellKnown.get("/.well-known/oauth-protected-resource/api/mcp", (c) =>
-    c.json({
-      resource: `${baseUrl}/api/mcp`,
-      authorization_servers: [`${baseUrl}/api`],
-    }),
-  );
+  for (const resource of ["mcp", "a2a"] as const) {
+    wellKnown.get(
+      `/.well-known/oauth-protected-resource/api/${resource}`,
+      (c) => c.json(protectedResourceMetadata(baseUrl, resource)),
+    );
+  }
 
   wellKnown.get("/.well-known/oauth-authorization-server/api", (c) =>
-    c.json({
-      issuer: `${baseUrl}/api`,
-      authorization_endpoint: `${baseUrl}/api/mcp/authorize`,
-      token_endpoint: `${baseUrl}/api/mcp/token`,
-      registration_endpoint: `${baseUrl}/api/mcp/register`,
-      response_types_supported: ["code"],
-      grant_types_supported: ["authorization_code"],
-      code_challenge_methods_supported: ["S256"],
-      token_endpoint_auth_methods_supported: ["none"],
-    }),
+    c.json(authorizationServerMetadata(baseUrl)),
   );
 
   return wellKnown;

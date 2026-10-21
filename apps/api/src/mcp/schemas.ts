@@ -1,4 +1,5 @@
 import { z } from "../openapi";
+import { isMargayaResource } from "./metadata";
 
 // Redirect URIs are attacker-supplied during dynamic client registration, so
 // anything that could turn into script execution or credential leakage is
@@ -31,6 +32,10 @@ const redirectUriSchema = z
 // one, so the grant is accepted here and omitted from the registration response.
 export const clientRegistrationSchema = z.object({
   redirect_uris: z.array(redirectUriSchema).min(1).max(10),
+  application_type: z.enum(["native", "web"]).optional().openapi({
+    description:
+      "The OpenID Connect application type the client declares (MCP 2026-07-28 asks clients to send it). Accepted for compatibility; both kinds are public clients.",
+  }),
   client_name: z.string().max(100).optional(),
   token_endpoint_auth_method: z.literal("none").optional(),
   grant_types: z
@@ -56,6 +61,15 @@ export const authorizationQuerySchema = z.object({
     }),
   code_challenge_method: z.literal("S256"),
   state: z.string().max(1024).optional(),
+  resource: z
+    .string()
+    .max(2048)
+    .refine(isMargayaResource, "Unknown resource")
+    .optional()
+    .openapi({
+      description:
+        "Resource indicator (RFC 8707): the protected resource the token is for, such as https://margaya.example.com/api/mcp. A token request that repeats it must name the same resource.",
+    }),
 });
 
 export const authorizationRequestParamSchema = z.object({

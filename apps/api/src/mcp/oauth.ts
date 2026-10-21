@@ -16,6 +16,7 @@ type AuthCode = {
   userId: string;
   codeChallenge: string;
   redirectUri: string;
+  resource?: string;
 };
 
 export type AuthorizationRequest = {
@@ -23,6 +24,7 @@ export type AuthorizationRequest = {
   codeChallenge: string;
   redirectUri: string;
   state?: string;
+  resource?: string;
 };
 
 // Clients re-register on invalid_client, so the TTL only bounds table growth.
@@ -110,12 +112,21 @@ export async function exchangeCode(
   clientId: string,
   codeVerifier: string,
   redirectUri: string,
+  resource?: string,
 ): Promise<{ accessToken: string; expiresIn: number } | null> {
   const stored = await consumeState<AuthCode>("code", code);
   if (!stored) return null;
 
   if (stored.clientId !== clientId) return null;
   if (stored.redirectUri !== redirectUri) return null;
+  // The token request must name the resource the authorization named.
+  if (
+    resource !== undefined &&
+    stored.resource !== undefined &&
+    stored.resource !== resource
+  ) {
+    return null;
+  }
   if (!verifyPkce(codeVerifier, stored.codeChallenge)) return null;
 
   const sessionToken = randomUUID();
