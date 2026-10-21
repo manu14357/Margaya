@@ -10,6 +10,18 @@ export type ApiKey = {
   userId: string;
   enabled: boolean;
   permissions: Record<string, string[]> | null;
+  /** Set when the key is limited to these projects (api-key/scope.ts). */
+  projectIds?: string[] | null;
+  readOnly?: boolean;
+  /** Set on an agent run's key (ai-agent/attribution.ts). */
+  agentRun?: {
+    agentId: string;
+    agentUserId: string;
+    agentName: string;
+    onBehalfOf: string;
+    onBehalfOfName: string | null;
+    runId: string;
+  } | null;
 };
 
 export type BaseVariables = {

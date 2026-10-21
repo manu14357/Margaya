@@ -9,7 +9,7 @@ export const getUserTimezoneRoute = createRoute({
   tags: ["User"],
   summary: "Get time zone",
   description:
-    "The current user's time zone for server-rendered times such as reminders and email digests. Null means not chosen yet; the server then uses UTC. The web app always renders in the browser's zone.",
+    "The current user's time zone for server-rendered times such as reminders and email digests. Null means not chosen yet; the server then uses UTC. The web app also counts task-filter and analytics days in it, while showing times in the browser's zone.",
   responses: {
     200: jsonResponse("The user's time zone", userTimezoneSchema),
     404: errorResponse("User not found"),

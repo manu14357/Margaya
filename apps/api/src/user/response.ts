@@ -1,4 +1,5 @@
 import { z } from "../openapi";
+import { userPreferencesShape } from "./schema";
 
 export const avatarSchema = z
   .object({
@@ -46,6 +47,10 @@ export const accountSecuritySchema = z
       description:
         "Whether the account can sign in with a password (and so change it).",
     }),
+    twoFactorEnabled: z.boolean().openapi({
+      description:
+        "Whether password sign-in asks for an authenticator code (TOTP).",
+    }),
     sessions: z.array(userSessionSchema).openapi({
       description: "Active sessions, most recently active first.",
     }),
@@ -64,3 +69,12 @@ export const userTimezoneSchema = z
     }),
   })
   .openapi("UserTimezone");
+
+export const userPreferencesSchema = z
+  .object({
+    preferences: z.object(userPreferencesShape).partial().nullable().openapi({
+      description:
+        "The stored preferences, or null when the user never saved any. Missing keys use the client's defaults.",
+    }),
+  })
+  .openapi("UserPreferences");

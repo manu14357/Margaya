@@ -15,9 +15,17 @@ import {
 import deleteAvatar from "./controllers/delete-avatar";
 import saveAvatar from "./controllers/save-avatar";
 import {
+  getUserPreferences,
+  updateUserPreferences,
+} from "./controllers/user-preferences";
+import {
   getUserTimezoneSetting,
   setUserTimezone,
 } from "./controllers/user-timezone";
+import {
+  getUserPreferencesRoute,
+  updateUserPreferencesRoute,
+} from "./preferences-routes";
 import {
   accountSecuritySchema,
   avatarDeletedSchema,
@@ -106,6 +114,15 @@ const revokeSessionRoute = createRoute({
 });
 
 const user = apiRouter()
+  .openapi(getUserPreferencesRoute, async (c) =>
+    c.json(await getUserPreferences(c.get("userId")), 200),
+  )
+  .openapi(updateUserPreferencesRoute, async (c) =>
+    c.json(
+      await updateUserPreferences(c.get("userId"), c.req.valid("json")),
+      200,
+    ),
+  )
   .openapi(getUserTimezoneRoute, async (c) =>
     c.json(await getUserTimezoneSetting(c.get("userId")), 200),
   )

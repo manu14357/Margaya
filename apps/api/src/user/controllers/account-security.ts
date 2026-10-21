@@ -1,7 +1,7 @@
 import { and, desc, eq, gt } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
-import { accountTable, sessionTable } from "../../database/schema";
+import { accountTable, sessionTable, userTable } from "../../database/schema";
 
 /**
  * The signed-in user's password state and active sessions. Session tokens
@@ -20,6 +20,12 @@ export async function getAccountSecurity(
         eq(accountTable.providerId, "credential"),
       ),
     )
+    .limit(1);
+
+  const [user] = await db
+    .select({ twoFactorEnabled: userTable.twoFactorEnabled })
+    .from(userTable)
+    .where(eq(userTable.id, userId))
     .limit(1);
 
   const sessions = await db
@@ -42,6 +48,7 @@ export async function getAccountSecurity(
 
   return {
     hasPassword: Boolean(credential),
+    twoFactorEnabled: user?.twoFactorEnabled === true,
     sessions: sessions.map((session) => ({
       id: session.id,
       userAgent: session.userAgent,

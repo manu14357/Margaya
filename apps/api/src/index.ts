@@ -13,13 +13,45 @@ import { Hono } from "hono";
 import { compress } from "hono/compress";
 import { cors } from "hono/cors";
 import { HTTPException } from "hono/http-exception";
+import a2aRoutes, { a2aWellKnownRoutes } from "./a2a";
+import { setA2aApiFetch } from "./a2a/api";
 import activity from "./activity";
+import ai from "./ai";
+import aiAgent from "./ai-agent";
+import { setAgentApiFetch } from "./ai-agent/credential";
+import aiAsk from "./ai-ask";
+import aiBrief from "./ai-brief";
+import aiBudget from "./ai-budget";
+import aiBuild from "./ai-build";
+import { setInternalApiFetch } from "./ai-build/dispatch";
+import aiCapture from "./ai-capture";
+import aiChatBuild from "./ai-chat-build";
+import aiConnectors from "./ai-connectors";
+import aiConversations from "./ai-conversation";
+import aiFeedback from "./ai-feedback";
+import aiFilters from "./ai-filters";
+import aiMemoryNotes from "./ai-memory-notes";
+import aiRule from "./ai-rule";
+import aiSkills from "./ai-skills";
+import aiSpeech from "./ai-speech";
+import aiTranslate from "./ai-translate";
+import aiTriage from "./ai-triage";
+import aiWriting from "./ai-writing";
 import analytics from "./analytics";
+import analyticsReport from "./analytics-report";
+import apiKeyRoutes from "./api-key";
+import {
+  flushApiRequestLog,
+  recordApiKeyRequest,
+  routeTemplateOf,
+} from "./api-key/request-log";
 import archive from "./archive";
 import auditLog, { auditCapture } from "./audit-log";
 import { auth } from "./auth";
 import { organizationRoutes } from "./auth-openapi";
+import automationRule from "./automation-rule";
 import billing from "./billing";
+import codingAgent from "./coding-agent";
 import column from "./column";
 import comment from "./comment";
 import config from "./config";
@@ -28,9 +60,11 @@ import cycle from "./cycle";
 import db, { getDatabase, schema } from "./database";
 import { prepareDatabaseStartup } from "./database/prepare-database-startup";
 import { waitForDatabase } from "./database/wait-for-database";
+import delivery from "./delivery";
 import discordIntegration from "./discord-integration";
 import estimate from "./estimate";
 import { eventContext } from "./events";
+import externalImport from "./external-import";
 import externalLink from "./external-link";
 import favorite from "./favorite";
 import genericWebhookIntegration from "./generic-webhook-integration";
@@ -39,6 +73,8 @@ import githubIntegration, {
   handleGithubWebhookRoute,
 } from "./github-integration";
 import home from "./home";
+import insight from "./insight";
+import insightAi from "./insight/ai";
 import getInstanceStatus from "./instance/controllers/get-instance-status";
 import instanceAdmin from "./instance-admin";
 import {
@@ -76,17 +112,22 @@ import {
   legacyTaskDescription,
 } from "./public-board/legacy";
 import { PUBLIC_LIMITS } from "./public-board/limits";
+import publicPage from "./public-page";
 import publication from "./publication";
 import quickLink from "./quick-link";
 import reaction from "./reaction";
 import recentVisit from "./recent-visit";
 import trash from "./trash";
 import "./recent-visit/subscribers";
+import "./workspace/members-realtime";
+import { initializeSemanticMemory } from "./ai-memory/lifecycle";
 import { initializeScheduler, shutdownScheduler } from "./scheduler";
 import search from "./search";
+import { runSearchIndexBackfill } from "./search/backfill";
 import slackIntegration from "./slack-integration";
 import sticky from "./sticky";
 import { getPrivateObject } from "./storage/s3";
+import storageUpload from "./storage/upload-route";
 import subscription from "./subscription";
 import task from "./task";
 import { boardSchema, descriptionPageSchema } from "./task/response";
@@ -98,7 +139,9 @@ import taskExport from "./task-export";
 import { stopExportRunner } from "./task-export/runner";
 import taskLink from "./task-link";
 import taskQuery from "./task-query";
+import taskRecurrence from "./task-recurrence";
 import taskRelation from "./task-relation";
+import taskTemplate from "./task-template";
 import telegramIntegration from "./telegram-integration";
 import timeEntry from "./time-entry";
 import user from "./user";
@@ -112,12 +155,14 @@ import {
 import { backfillRolePermissions } from "./utils/backfill-role-permissions";
 import { getInvitationDetails } from "./utils/check-registration-allowed";
 import { clientIpMiddleware } from "./utils/client-ip";
+import { csrfGuard } from "./utils/csrf-guard";
 import { forwardToAuth } from "./utils/forward-to-auth";
 import { migrateApiKeyReferenceId } from "./utils/migrate-apikey-reference-id";
 import { migrateNotificationPreferencesSchema } from "./utils/migrate-notification-preferences-schema";
 import { migrateSessionColumn } from "./utils/migrate-session-column";
 import { migrateWorkspaceUserEmail } from "./utils/migrate-workspace-user-email";
 import { normalizeApiServerUrl } from "./utils/openapi-spec";
+import { securityHeaders } from "./utils/security-headers";
 import { seedDefaultWorkspaceRoles } from "./utils/seed-default-workspace-roles";
 import { validateWorkspaceAccess } from "./utils/validate-workspace-access";
 import view from "./view";
@@ -147,6 +192,8 @@ type ApiKey = {
   userId: string;
   enabled: boolean;
   permissions: Record<string, string[]> | null;
+  projectIds?: string[] | null;
+  readOnly?: boolean;
 };
 
 type AppVariables = {
@@ -264,6 +311,10 @@ export function createApp() {
       },
     }),
   );
+
+  app.use("*", securityHeaders());
+  // After CORS, so a refused write still carries the CORS answer.
+  app.use("/api/*", csrfGuard());
 
   // Large boards return multi-MB JSON (board/task list responses embed
   // labels and external links per task); gzip cuts that by 85-95% since
@@ -428,6 +479,7 @@ export function createApp() {
 
   // Before the app-wide auth middleware: each route resolves its own viewer.
   const publicBoardApi = api.route("/public-board", publicBoard);
+  const publicPageApi = api.route("/public-page", publicPage);
 
   api.post("/github-integration/webhook", handleGithubWebhookRoute);
 
@@ -486,8 +538,10 @@ export function createApp() {
           content: { "*/*": { schema: { type: "string", format: "binary" } } },
         },
         304: { description: "Not modified" },
-        403: { description: "No access to this asset" },
-        404: { description: "Asset not found" },
+        404: {
+          description:
+            "Asset not found, or the caller has no access to it (another workspace's file, a private page's file)",
+        },
       },
     }),
     async (c) => {
@@ -500,6 +554,7 @@ export function createApp() {
           filename: schema.assetTable.filename,
           surface: schema.assetTable.surface,
           workspaceId: schema.assetTable.workspaceId,
+          projectId: schema.assetTable.projectId,
           isPublic: schema.projectTable.isPublic,
           pageAccess: schema.pageTable.access,
           pageOwnerId: schema.pageTable.ownerId,
@@ -530,7 +585,16 @@ export function createApp() {
         throw new HTTPException(404, { message: "Asset not found" });
       }
 
-      await authorizeAssetAccess(c, asset);
+      try {
+        await authorizeAssetAccess(c, asset);
+      } catch (error) {
+        // A signed-in caller without access learns nothing about the file,
+        // not even that it exists.
+        if (error instanceof HTTPException && error.status === 403) {
+          throw new HTTPException(404, { message: "Asset not found" });
+        }
+        throw error;
+      }
 
       try {
         const object = await getPrivateObject(asset.objectKey);
@@ -618,6 +682,9 @@ export function createApp() {
   );
 
   const configApi = api.route("/config", config);
+  // Before the app-wide auth middleware: the signed token is the credential,
+  // like a presigned S3 URL.
+  api.route("/storage", storageUpload);
 
   api.openAPIRegistry.registerComponent("securitySchemes", "bearerAuth", {
     type: "http",
@@ -743,11 +810,14 @@ export function createApp() {
   );
 
   api.route("/", mcpRoutes);
+  // A2A authenticates like MCP (a2a/index.ts), before the session middleware.
+  api.route("/", a2aRoutes);
 
   api.use("*", async (c, next) => {
     const path = c.req.path;
     if (
       path.startsWith("/api/mcp") ||
+      path === "/api/a2a" ||
       path.startsWith("/api/.well-known/") ||
       path === "/api/billing/webhook"
     ) {
@@ -755,6 +825,8 @@ export function createApp() {
     }
     return Sentry.withIsolationScope(async () => {
       Sentry.setUser(null);
+      const startedAt = performance.now();
+      let failedStatus: number | null = null;
       try {
         await authenticateApiRequest(c);
         const windowId = c.req.header("X-Margaya-Window-Id");
@@ -767,11 +839,24 @@ export function createApp() {
       } catch (error) {
         if (!(error instanceof HTTPException)) {
           console.error("API authentication failed:", error);
+          failedStatus = 500;
           throw new HTTPException(500, { message: "Internal Server Error" });
         }
+        failedStatus = error.status;
         throw error;
       } finally {
         Sentry.setUser(null);
+        // The per-key request log (api-key/request-log.ts): metadata only.
+        const apiKey = c.get("apiKey");
+        if (apiKey) {
+          recordApiKeyRequest({
+            apiKeyId: apiKey.id,
+            method: c.req.method,
+            route: routeTemplateOf(c),
+            status: failedStatus ?? c.res.status,
+            startedAt,
+          });
+        }
       }
     });
   });
@@ -818,7 +903,10 @@ export function createApp() {
   const taskLinkApi = api.route("/task-link", taskLink);
   const taskAttachmentApi = api.route("/task-attachment", taskAttachment);
   const taskCopyApi = api.route("/task-copy", taskCopy);
+  const taskTemplateApi = api.route("/task-template", taskTemplate);
+  const taskRecurrenceApi = api.route("/task-recurrence", taskRecurrence);
   const jiraImportApi = api.route("/jira-import", jiraImport);
+  const externalImportApi = api.route("/external-import", externalImport);
   const externalLinkApi = api.route("/external-link", externalLink);
   const workflowRuleApi = api.route("/workflow-rule", workflowRule);
   const invitationApi = api.route("/invitation", invitation);
@@ -839,6 +927,8 @@ export function createApp() {
   const quickLinkApi = api.route("/quick-link", quickLink);
   const homeApi = api.route("/home", home);
   const analyticsApi = api.route("/analytics", analytics);
+  const deliveryApi = api.route("/delivery", delivery);
+  const analyticsReportApi = api.route("/analytics-report", analyticsReport);
   const taskDraftApi = api.route("/task-draft", taskDraft);
   const taskExportApi = api.route("/task-export", taskExport);
   const archiveApi = api.route("/archive", archive);
@@ -852,7 +942,32 @@ export function createApp() {
   const auditLogApi = api.route("/audit-log", auditLog);
   const publicationApi = api.route("/publication", publication);
   const instanceAdminApi = api.route("/instance-admin", instanceAdmin);
+  const apiKeyApi = api.route("/api-key", apiKeyRoutes);
+  const aiApi = api.route("/ai", ai);
+  const aiAskApi = api.route("/ai/ask", aiAsk);
+  const aiFeedbackApi = api.route("/ai/feedback", aiFeedback);
+  const aiMemoryNotesApi = api.route("/ai/memory", aiMemoryNotes);
+  const aiSkillsApi = api.route("/ai/skills", aiSkills);
+  const aiConversationsApi = api.route("/ai/conversations", aiConversations);
+  const aiSpeechApi = api.route("/ai/speech", aiSpeech);
+  const aiBuildApi = api.route("/ai/build", aiBuild);
+  const aiWritingApi = api.route("/ai/writing", aiWriting);
+  const aiTriageApi = api.route("/ai/triage", aiTriage);
+  const aiRuleApi = api.route("/ai/rules", aiRule);
+  const automationRuleApi = api.route("/automation-rule", automationRule);
+  const aiTranslateApi = api.route("/ai/translate", aiTranslate);
+  const aiBriefApi = api.route("/ai/brief", aiBrief);
+  const insightApi = api.route("/insight", insight);
+  const aiInsightApi = api.route("/ai/insight", insightAi);
+  const aiAgentApi = api.route("/ai/agents", aiAgent);
+  const aiConnectorsApi = api.route("/ai/connectors", aiConnectors);
+  const codingAgentApi = api.route("/coding-agent", codingAgent);
+  const aiCaptureApi = api.route("/ai/capture", aiCapture);
+  const aiChatBuildApi = api.route("/ai/chat", aiChatBuild);
+  const aiFiltersApi = api.route("/ai/filters", aiFilters);
+  const aiBudgetApi = api.route("/ai/budget-status", aiBudget);
 
+  app.route("/", a2aWellKnownRoutes());
   app.route(
     "/",
     mcpWellKnownRoutes(
@@ -934,7 +1049,13 @@ export function createApp() {
           throw new HTTPException(401, { message: "Unauthorized" });
         }
 
-        await validateWorkspaceAccess(userId, project.workspaceId);
+        // A restricted project's non-members are refused (404).
+        await validateWorkspaceAccess(
+          userId,
+          project.workspaceId,
+          undefined,
+          projectId,
+        );
       }
 
       const windowId = c.req.query("windowId");
@@ -958,6 +1079,12 @@ export function createApp() {
   );
 
   app.route("/api", api);
+  // "Talk to build" creates items through the API's own routes (ai-build).
+  setInternalApiFetch((request, env) => app.fetch(request, env));
+  // Agent tools call the API's own routes with a run key (ai-agent).
+  setAgentApiFetch((request, env) => app.fetch(request, env));
+  // A2A requests run as in-process API calls with the caller's credential.
+  setA2aApiFetch((request, env) => app.fetch(request, env));
 
   return {
     app,
@@ -982,8 +1109,10 @@ export function createApp() {
     projectApi,
     publicProjectApi,
     publicBoardApi,
+    publicPageApi,
     publicationApi,
     instanceAdminApi,
+    apiKeyApi,
     recentVisitApi,
     searchApi,
     mattermostIntegrationApi,
@@ -993,7 +1122,10 @@ export function createApp() {
     taskLinkApi,
     taskAttachmentApi,
     taskCopyApi,
+    taskTemplateApi,
+    taskRecurrenceApi,
     jiraImportApi,
+    externalImportApi,
     telegramIntegrationApi,
     timeEntryApi,
     userApi,
@@ -1012,6 +1144,8 @@ export function createApp() {
     quickLinkApi,
     homeApi,
     analyticsApi,
+    deliveryApi,
+    analyticsReportApi,
     taskDraftApi,
     taskExportApi,
     archiveApi,
@@ -1020,6 +1154,29 @@ export function createApp() {
     pageApi,
     webhookApi,
     auditLogApi,
+    aiApi,
+    aiAskApi,
+    aiFeedbackApi,
+    aiMemoryNotesApi,
+    aiSkillsApi,
+    aiConversationsApi,
+    aiSpeechApi,
+    aiBuildApi,
+    aiWritingApi,
+    aiTriageApi,
+    aiRuleApi,
+    automationRuleApi,
+    aiTranslateApi,
+    aiBriefApi,
+    insightApi,
+    aiInsightApi,
+    aiAgentApi,
+    aiConnectorsApi,
+    codingAgentApi,
+    aiCaptureApi,
+    aiChatBuildApi,
+    aiFiltersApi,
+    aiBudgetApi,
     oauthApi,
   };
 }
@@ -1069,6 +1226,16 @@ export async function runStartupTasks() {
 
   initializePlugins();
   initializeScheduler();
+  // A1: index rows written before full-text search existed, in the
+  // background so a large install starts serving at once.
+  void runSearchIndexBackfill().catch((error) => {
+    console.error("Search index backfill failed", error);
+  });
+  // D1: optional semantic search; reports whether pgvector exists and, when
+  // a workspace uses it, indexes in the background.
+  void initializeSemanticMemory().catch((error) => {
+    console.error("Semantic search startup check failed", error);
+  });
   startWebhookDispatcher();
   await initializeWebSocketAdapter();
 }
@@ -1109,6 +1276,7 @@ export async function startServer(
     stopExportRunner();
     stopWebhookDispatcher();
     stopInstanceSettings();
+    await flushApiRequestLog();
     // Page rooms persist (and tell clients to reconnect) before the
     // broadcast adapter goes away.
     await shutdownPageRooms();
@@ -1150,8 +1318,10 @@ const {
   projectApi,
   publicProjectApi,
   publicBoardApi,
+  publicPageApi,
   publicationApi,
   instanceAdminApi,
+  apiKeyApi,
   recentVisitApi,
   searchApi,
   slackIntegrationApi,
@@ -1160,7 +1330,10 @@ const {
   taskLinkApi,
   taskAttachmentApi,
   taskCopyApi,
+  taskTemplateApi,
+  taskRecurrenceApi,
   jiraImportApi,
+  externalImportApi,
   telegramIntegrationApi,
   timeEntryApi,
   userApi,
@@ -1179,6 +1352,8 @@ const {
   quickLinkApi,
   homeApi,
   analyticsApi,
+  deliveryApi,
+  analyticsReportApi,
   taskDraftApi,
   taskExportApi,
   archiveApi,
@@ -1187,6 +1362,29 @@ const {
   pageApi,
   webhookApi,
   auditLogApi,
+  aiApi,
+  aiAskApi,
+  aiFeedbackApi,
+  aiMemoryNotesApi,
+  aiSkillsApi,
+  aiConversationsApi,
+  aiSpeechApi,
+  aiBuildApi,
+  aiWritingApi,
+  aiTriageApi,
+  aiRuleApi,
+  automationRuleApi,
+  aiTranslateApi,
+  aiBriefApi,
+  insightApi,
+  aiInsightApi,
+  aiAgentApi,
+  aiConnectorsApi,
+  codingAgentApi,
+  aiCaptureApi,
+  aiChatBuildApi,
+  aiFiltersApi,
+  aiBudgetApi,
   oauthApi,
 } = createdApp;
 
@@ -1224,7 +1422,10 @@ export type AppType =
   | typeof taskLinkApi
   | typeof taskAttachmentApi
   | typeof taskCopyApi
+  | typeof taskTemplateApi
+  | typeof taskRecurrenceApi
   | typeof jiraImportApi
+  | typeof externalImportApi
   | typeof externalLinkApi
   | typeof workflowRuleApi
   | typeof invitationApi
@@ -1245,6 +1446,8 @@ export type AppType =
   | typeof quickLinkApi
   | typeof homeApi
   | typeof analyticsApi
+  | typeof deliveryApi
+  | typeof analyticsReportApi
   | typeof taskDraftApi
   | typeof taskExportApi
   | typeof archiveApi
@@ -1253,10 +1456,35 @@ export type AppType =
   | typeof pageApi
   | typeof webhookApi
   | typeof auditLogApi
+  | typeof aiApi
+  | typeof aiAskApi
+  | typeof aiFeedbackApi
+  | typeof aiMemoryNotesApi
+  | typeof aiSkillsApi
+  | typeof aiConversationsApi
+  | typeof aiSpeechApi
+  | typeof aiBuildApi
+  | typeof aiWritingApi
+  | typeof aiTriageApi
+  | typeof aiRuleApi
+  | typeof automationRuleApi
+  | typeof aiTranslateApi
+  | typeof aiBriefApi
+  | typeof insightApi
+  | typeof aiInsightApi
+  | typeof aiAgentApi
+  | typeof aiConnectorsApi
+  | typeof codingAgentApi
+  | typeof aiCaptureApi
+  | typeof aiChatBuildApi
+  | typeof aiFiltersApi
+  | typeof aiBudgetApi
   | typeof publicProjectApi
   | typeof publicBoardApi
+  | typeof publicPageApi
   | typeof publicationApi
   | typeof instanceAdminApi
+  | typeof apiKeyApi
   | typeof invitationPublicApi
   | typeof oauthApi;
 
