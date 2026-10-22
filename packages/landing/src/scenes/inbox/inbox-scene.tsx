@@ -1,15 +1,20 @@
 "use client";
 
+import type { LucideIcon } from "lucide-react";
 import {
   AlarmClock,
   Archive,
   AtSign,
+  Bell,
   CalendarClock,
   CheckCheck,
+  CircleDot,
   Inbox,
   Mail,
   MailOpen,
+  MessageSquare,
   RefreshCw,
+  UserRoundPlus,
 } from "lucide-react";
 import { type ReactNode, useMemo } from "react";
 import { type LandingCopy, useLandingCopy } from "../../copy";
@@ -42,6 +47,51 @@ export const SNOOZED_ID = "assigned";
 export const READ_ID = "mention";
 
 const PRESETS = ["oneDay", "threeDays", "oneWeek", "twoWeeks"] as const;
+
+/**
+ * Each notification's type icon and hue, as the app's `notification-kind`
+ * maps them: people (work), talk (pages), state and time (status), mentions.
+ */
+const KINDS: Record<string, { icon: LucideIcon; color: string }> = {
+  mention: { icon: AtSign, color: "var(--area-analytics)" },
+  assigned: { icon: UserRoundPlus, color: "var(--area-work)" },
+  due: { icon: AlarmClock, color: "var(--status-started-fg)" },
+  moved: { icon: CircleDot, color: "var(--status-started-fg)" },
+  commented: { icon: MessageSquare, color: "var(--area-pages)" },
+};
+const FALLBACK_KIND = { icon: Bell, color: "var(--area-inbox)" };
+
+/** The actor's face with a type badge, or the type icon on its own tint. */
+function LeadingVisual({ item }: { item: InboxItem }) {
+  const kind = KINDS[item.id] ?? FALLBACK_KIND;
+  const KindIcon = kind.icon;
+  if (item.actor) {
+    return (
+      <span className="relative size-8 shrink-0" data-kind={item.id}>
+        <Avatar name={item.actor} size="lg" />
+        <span
+          aria-hidden
+          className="absolute -right-1 -bottom-1 flex size-4 items-center justify-center rounded-full bg-card ring-2 ring-card"
+          style={{ color: kind.color }}
+        >
+          <KindIcon className="size-3" strokeWidth={2.25} />
+        </span>
+      </span>
+    );
+  }
+  return (
+    <span
+      data-kind={item.id}
+      className="flex size-8 shrink-0 items-center justify-center rounded-full"
+      style={{
+        backgroundColor: `color-mix(in srgb, ${kind.color} 14%, var(--card))`,
+        color: kind.color,
+      }}
+    >
+      <KindIcon aria-hidden className="size-3.5" />
+    </span>
+  );
+}
 
 function initialItems(demo: Demo): InboxItem[] {
   const { verbs, items } = demo.inbox;
@@ -217,7 +267,7 @@ function InboxView({
               {tab.active && (
                 <span
                   aria-hidden
-                  className="absolute inset-x-1 -bottom-px h-0.5 rounded-full bg-foreground"
+                  className="absolute inset-x-1 -bottom-px h-0.5 rounded-full bg-primary"
                 />
               )}
             </span>
@@ -256,13 +306,7 @@ function InboxView({
                   className="absolute top-1/2 left-1 size-1.5 -translate-y-1/2 rounded-full bg-info"
                 />
               )}
-              {item.actor ? (
-                <Avatar name={item.actor} size="lg" />
-              ) : (
-                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
-                  <AlarmClock aria-hidden className="size-3.5" />
-                </span>
-              )}
+              <LeadingVisual item={item} />
               <div className="flex min-w-0 flex-1 flex-col gap-0.5">
                 <div className="flex items-center gap-2">
                   <p className="min-w-0 flex-1 truncate text-sm">

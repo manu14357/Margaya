@@ -22,7 +22,7 @@ export function DigestPreview({ className }: { className?: string }) {
       <p className="sr-only">{copy.scenes.digest.description}</p>
       <div
         aria-hidden
-        className="overflow-hidden rounded-xl border border-border bg-background font-sans text-foreground text-sm shadow-black/5 shadow-xl dark:shadow-black/30"
+        className="overflow-hidden rounded-xl border border-border bg-background font-sans text-foreground text-sm shadow-xs"
       >
         <div className="flex items-center gap-2 border-border border-b bg-muted/50 px-4 py-2.5 text-xs">
           <span className="font-medium">{digest.from}</span>

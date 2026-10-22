@@ -89,7 +89,7 @@ function JiraView({
         compact
         place={
           <>
-            <ProjectTile icon={Globe} className="size-5" />
+            <ProjectTile icon={Globe} seed="web" className="size-5" />
             <span className="truncate">{demo.projects.website}</span>
           </>
         }

@@ -105,7 +105,7 @@ export function ApiDemo({ className }: { className?: string }) {
   return (
     <figure className={cn("m-0 flex w-full flex-col", className)}>
       <p className="sr-only">{landing.scenes.api.description}</p>
-      <div className="flex flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-black/5 shadow-xl dark:shadow-black/30">
+      <div className="flex flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-xs">
         <div className="flex h-11 items-center gap-2 border-border border-b px-4">
           <span className="rounded-md bg-success/10 px-1.5 py-0.5 font-mono font-semibold text-[11px] text-success-foreground">
             POST

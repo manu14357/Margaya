@@ -217,7 +217,7 @@ function IntakeView({
             {tab.active && (
               <span
                 aria-hidden
-                className="absolute inset-x-1 -bottom-px h-0.5 rounded-full bg-foreground"
+                className="absolute inset-x-1 -bottom-px h-0.5 rounded-full bg-primary"
               />
             )}
           </span>

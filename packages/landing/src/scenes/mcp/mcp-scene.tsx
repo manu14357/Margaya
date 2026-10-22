@@ -212,7 +212,7 @@ function McpView({
       {/* The project board, where the agent's tasks land. */}
       <section className="flex min-h-0 min-w-0 flex-1 flex-col">
         <header className="flex h-12 shrink-0 items-center gap-2 border-border/80 border-b px-3 font-semibold text-[15px] text-foreground">
-          <ProjectTile icon={Globe} className="size-5" />
+          <ProjectTile icon={Globe} seed="web" className="size-5" />
           <span className="truncate">{demo.projects.website}</span>
           <span className="font-normal text-muted-foreground text-sm">
             · {demo.shell.views.board}

@@ -3,6 +3,7 @@ export {
   createAnalyticsScene,
 } from "./analytics/analytics-scene";
 export { ApiDemo, createTaskCurl } from "./api/api-card";
+export { AskDemo, createAskScene } from "./ask/ask-scene";
 export { AuditLogDemo, createAuditLogScene } from "./audit-log/audit-log-scene";
 export {
   CommandPaletteDemo,

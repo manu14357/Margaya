@@ -3,6 +3,7 @@
 import type { LucideIcon } from "lucide-react";
 import {
   Calendar,
+  Check,
   ChevronLeft,
   ChevronRight,
   Search,
@@ -17,7 +18,13 @@ import {
   step,
 } from "../../demo";
 import { cn } from "../../lib/cn";
-import { AvatarStack, ViewChoice } from "../../replica";
+import {
+  AvatarStack,
+  PriorityDot,
+  STATUS_HUE,
+  statusToneStyle,
+  ViewChoice,
+} from "../../replica";
 import {
   type Demo,
   dateOf,
@@ -198,18 +205,29 @@ function GanttView({
                     data-demo={`gantt-col-${day}`}
                     className={cn(
                       "h-full shrink-0 border-border/60 border-r",
-                      index % 7 >= 5 && "bg-muted/25",
+                      index % 7 >= 5 && "bg-(--weekend-tint)",
                     )}
                     style={{ width: dayWidth }}
                   />
                 ))}
               </div>
 
+              <span
+                aria-hidden
+                data-demo="gantt-today"
+                className="pointer-events-none absolute inset-y-0 z-[5] w-0.5 -translate-x-1/2 bg-(--today)"
+                style={{
+                  left: rail + (TODAY - RANGE_START + 0.5) * dayWidth,
+                }}
+              />
+
               <svg
                 aria-hidden="true"
                 className={cn(
                   "pointer-events-none absolute top-0 z-[15] overflow-visible",
-                  conflict ? "text-destructive" : "text-muted-foreground",
+                  conflict
+                    ? "text-(--dependency-conflict)"
+                    : "text-(--dependency)",
                 )}
                 style={{
                   left: rail,
@@ -302,22 +320,31 @@ function DayHeader({
         ? formatDay(demo, day)
         : "";
   const everyDay = zoom !== "quarter";
+  const today = day === TODAY;
   return (
     <div
       className={cn(
-        "shrink-0 border-border/70 border-r px-0.5 py-2 text-center",
-        index % 7 >= 5 && "bg-muted/25",
+        "relative shrink-0 border-border/70 border-r px-0.5 py-2 text-center",
+        index % 7 >= 5 && "bg-(--weekend-tint)",
       )}
       style={{ width }}
     >
-      <div className="h-4 whitespace-nowrap font-medium text-[10px] text-muted-foreground">
-        {label}
-      </div>
+      {today ? (
+        <div className="relative z-10 flex h-4 justify-center">
+          <span className="flex h-3.5 items-center whitespace-nowrap rounded-full bg-(--today) px-1.5 font-semibold text-[9px] text-background uppercase tracking-wide">
+            {demo.viewGantt.today}
+          </span>
+        </div>
+      ) : (
+        <div className="h-4 whitespace-nowrap font-medium text-[10px] text-muted-foreground">
+          {label}
+        </div>
+      )}
       <div
         className={cn(
           "mx-auto flex items-center justify-center rounded-full font-medium",
           everyDay ? "size-6 text-xs" : "size-4 text-[10px]",
-          day === TODAY && "bg-primary text-primary-foreground",
+          today && "bg-(--today) font-semibold text-background",
         )}
       >
         {everyDay || monday || index === 0 || day === TODAY ? date.day : ""}
@@ -343,6 +370,7 @@ function GanttRow({
 }) {
   const demo = useLandingCopy().demo;
   const box = barBox(task, dayWidth);
+  const done = task.status === "done";
   return (
     <div
       data-demo={`gantt-row-${task.id}`}
@@ -354,7 +382,14 @@ function GanttRow({
         style={{ width: rail }}
       >
         <div className="flex w-full items-center gap-1.5">
-          <span className="truncate rounded-full bg-secondary px-1.5 py-px font-medium text-[10px] text-secondary-foreground uppercase tracking-wide">
+          <span
+            style={statusToneStyle(task.status)}
+            className="flex min-w-0 items-center gap-1 truncate rounded-full bg-(color:--tone-tint) px-1.5 py-px font-medium text-(color:--tone-fg) text-[10px] uppercase tracking-wide"
+          >
+            <span
+              aria-hidden
+              className="size-1.5 shrink-0 rounded-full bg-(color:--tone)"
+            />
             {demo.statuses[task.status]}
           </span>
           <span className="truncate text-[10px] text-muted-foreground">
@@ -381,28 +416,52 @@ function GanttRow({
       </div>
       <div className="relative min-w-0 flex-1">
         {box.right > 0 && (
+          // Status-coloured like the app's bars: an open task is the status
+          // tint with a solid cap; a finished one is solid.
           <div
             data-demo={`bar-${task.id}`}
-            className="group absolute top-1.5 bottom-1.5 flex min-w-0 items-stretch overflow-hidden rounded-md border border-primary/25 bg-background font-medium text-foreground text-sm leading-none shadow-sm"
-            style={{ left: box.left, width: box.right - box.left }}
+            data-tone={STATUS_HUE[task.status]}
+            data-done={done || undefined}
+            className={cn(
+              "group absolute top-1.5 bottom-1.5 flex min-w-0 items-stretch overflow-hidden rounded-md border font-medium text-xs leading-none shadow-xs",
+              done
+                ? "border-(color:--tone) bg-(color:--tone) text-[color-mix(in_srgb,var(--tone)_22%,#000)]"
+                : "border-(color:--tone)/40 bg-(color:--tone-tint) text-(color:--tone-fg)",
+            )}
+            style={{
+              ...statusToneStyle(task.status),
+              left: box.left,
+              width: box.right - box.left,
+            }}
           >
-            <span className="w-2 shrink-0 border-primary/15 border-r bg-primary/8" />
-            <span className="relative flex min-w-0 flex-1 items-center gap-1.5 px-2.5">
-              <span aria-hidden className="absolute inset-0 bg-primary/12" />
-              <span className="relative min-w-0 flex-1 truncate">
-                {task.title}
-              </span>
-              <AvatarStack
-                names={task.assignees}
-                max={2}
-                size="xs"
-                className="relative"
-              />
+            <span className="relative w-2 shrink-0">
+              {!done && (
+                <span
+                  aria-hidden
+                  className="absolute inset-y-0 left-0 w-1 bg-(color:--tone)"
+                />
+              )}
+            </span>
+            <span className="flex min-w-0 flex-1 items-center gap-1.5 px-1">
+              {done ? (
+                <Check
+                  aria-hidden
+                  strokeWidth={3}
+                  className="size-3 shrink-0"
+                />
+              ) : (
+                <PriorityDot
+                  priority={task.priority}
+                  className="ring-1 ring-background"
+                />
+              )}
+              <span className="min-w-0 flex-1 truncate">{task.title}</span>
+              <AvatarStack names={task.assignees} max={2} size="xs" />
             </span>
             <span
               data-demo={`bar-end-${task.id}`}
               data-demo-cursor="grab"
-              className="w-2 shrink-0 cursor-ew-resize border-primary/15 border-l bg-primary/8"
+              className="w-2 shrink-0 cursor-ew-resize"
             />
           </div>
         )}

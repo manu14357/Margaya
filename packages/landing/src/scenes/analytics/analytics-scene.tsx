@@ -69,19 +69,30 @@ export function createAnalyticsScene(): DemoScene<
   };
 }
 
-/** Bar fills: status and priority use the app's semantic tones. */
+/**
+ * Bar fills, as the app's chart series: status by column group
+ * (`--status-*`), priority by `--priority-*`, people by chart slot.
+ */
 const TONES: Record<string, string> = {
-  backlog: "bg-muted-foreground/35",
-  todo: "bg-info",
-  inProgress: "bg-warning",
-  inReview: "bg-warning/55",
-  done: "bg-success",
-  urgent: "bg-destructive",
-  high: "bg-warning",
-  medium: "bg-warning/55",
-  low: "bg-info",
-  none: "bg-muted-foreground/35",
+  backlog: "bg-(--status-backlog)",
+  todo: "bg-(--status-unstarted)",
+  inProgress: "bg-(--status-started)",
+  inReview: "bg-(--status-started)",
+  done: "bg-(--status-completed)",
+  urgent: "bg-(--priority-urgent)",
+  high: "bg-(--priority-high)",
+  medium: "bg-(--priority-medium)",
+  low: "bg-(--priority-low)",
+  none: "bg-(--priority-none)",
 };
+
+const CHART_SLOTS = [
+  "bg-chart-1",
+  "bg-chart-2",
+  "bg-chart-3",
+  "bg-chart-4",
+  "bg-chart-5",
+] as const;
 
 function categoryLabel(
   demo: Demo,
@@ -117,8 +128,13 @@ function barStyle(xAxis: AnalyticsDimension, key: string) {
         ],
     };
   }
-  if (xAxis === "assignee") return { className: "bg-primary/80" };
-  return { className: TONES[key] ?? "bg-primary/80" };
+  if (xAxis === "assignee") {
+    const index = ANALYTICS_DATA.assignee.findIndex(
+      (entry) => entry.key === key,
+    );
+    return { className: CHART_SLOTS[Math.max(index, 0) % CHART_SLOTS.length] };
+  }
+  return { className: TONES[key] ?? "bg-chart-1" };
 }
 
 const SCALE_MAX = 20;
@@ -212,19 +228,19 @@ function AnalyticsView({
             <PanelSection label={demo.shell.panel.projects}>
               <PanelRow
                 label={demo.projects.website}
-                leading={<ProjectTile icon={Globe} />}
+                leading={<ProjectTile icon={Globe} seed="web" />}
               />
               <PanelRow
                 label={demo.projects.mobile}
-                leading={<ProjectTile icon={Smartphone} />}
+                leading={<ProjectTile icon={Smartphone} seed="app" />}
               />
               <PanelRow
                 label={demo.projects.platform}
-                leading={<ProjectTile icon={Server} />}
+                leading={<ProjectTile icon={Server} seed="server" />}
               />
               <PanelRow
                 label={demo.projects.handbook}
-                leading={<ProjectTile icon={BookOpen} />}
+                leading={<ProjectTile icon={BookOpen} seed="handbook" />}
               />
             </PanelSection>
           </ContextPanel>

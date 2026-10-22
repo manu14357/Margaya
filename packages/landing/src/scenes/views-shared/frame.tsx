@@ -71,24 +71,24 @@ export function ViewFrame({
             <PanelSection label={shell.panel.favorites}>
               <PanelRow
                 label={demo.projects.website}
-                leading={<ProjectTile icon={Globe} />}
+                leading={<ProjectTile icon={Globe} seed="web" />}
                 active
                 trailing={<PanelCount count={taskCount} />}
               />
               <PanelRow
                 label={demo.projects.mobile}
-                leading={<ProjectTile icon={Smartphone} />}
+                leading={<ProjectTile icon={Smartphone} seed="app" />}
                 trailing={<PanelCount count={9} />}
               />
             </PanelSection>
             <PanelSection label={shell.panel.projects}>
               <PanelRow
                 label={demo.projects.platform}
-                leading={<ProjectTile icon={Server} />}
+                leading={<ProjectTile icon={Server} seed="server" />}
               />
               <PanelRow
                 label={demo.projects.handbook}
-                leading={<ProjectTile icon={BookOpen} />}
+                leading={<ProjectTile icon={BookOpen} seed="handbook" />}
               />
             </PanelSection>
           </ContextPanel>
@@ -99,7 +99,7 @@ export function ViewFrame({
         compact={compact}
         place={
           <>
-            <ProjectTile icon={Globe} className="size-5" />
+            <ProjectTile icon={Globe} seed="web" className="size-5" />
             <span className="truncate">{demo.projects.website}</span>
           </>
         }

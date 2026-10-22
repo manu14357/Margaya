@@ -6,6 +6,7 @@ import { type DemoScene, finalStateOf, scriptActions } from "../demo";
 import { type LandingLinks, LandingLinksProvider } from "../links";
 import { createAnalyticsScene } from "./analytics/analytics-scene";
 import { ApiDemo } from "./api/api-card";
+import { createAskScene } from "./ask/ask-scene";
 import { createAuditLogScene } from "./audit-log/audit-log-scene";
 import { createDocsScene } from "./docs/docs-scene";
 import { createIntegrationsScene } from "./integrations/integrations-scene";
@@ -29,6 +30,7 @@ const links = {
   features: {
     plan: "/features/plan",
     views: "/features/views",
+    ai: "/features/ai",
     docs: "/features/docs",
     automate: "/features/automate",
     selfHost: "/features/self-host",
@@ -46,6 +48,7 @@ const scenes: DemoScene<any, any>[] = [
   createTrashScene(),
   createIntegrationsScene(),
   createMcpScene(demo),
+  createAskScene(demo),
   createJiraScene(),
   createPublicBoardScene(demo),
 ];

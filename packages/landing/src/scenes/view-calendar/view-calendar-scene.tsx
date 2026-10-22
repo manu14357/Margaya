@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { useMemo } from "react";
 import { useLandingCopy } from "../../copy";
 import {
@@ -12,7 +12,9 @@ import {
 import { cn } from "../../lib/cn";
 import {
   AvatarStack,
-  type StatusId,
+  PriorityDot,
+  STATUS_HUE,
+  statusToneStyle,
   ViewChoice,
   viewChoiceClass,
 } from "../../replica";
@@ -60,14 +62,6 @@ export function createCalendarViewScene(
 }
 
 /** The app's bar colours per status group. */
-const STATUS_CLASSES: Record<StatusId, string> = {
-  backlog: "border-primary/25 bg-primary/12",
-  todo: "border-slate-500/35 bg-slate-500/15",
-  inProgress: "border-blue-500/35 bg-blue-500/15",
-  inReview: "border-amber-500/40 bg-amber-500/15",
-  done: "border-emerald-500/35 bg-emerald-500/15",
-};
-
 const WEEKDAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const;
 const DRAG_TYPE = "text/x-margaya-task";
 
@@ -168,7 +162,8 @@ function CalendarView({
                       style={{ gridColumn: index + 1, gridRow: "1 / -1" }}
                       className={cn(
                         "relative min-w-0 border-border/60 border-r",
-                        index >= 5 && "bg-muted/25",
+                        index >= 5 && "bg-(--weekend-tint)",
+                        day === TODAY && "bg-(--today-tint)",
                       )}
                       onDragOver={(event) => {
                         if (event.dataTransfer.types.includes(DRAG_TYPE)) {
@@ -200,7 +195,8 @@ function CalendarView({
                           !isWeek &&
                             date.month !== "oct" &&
                             "text-muted-foreground/60",
-                          day === TODAY && "bg-primary text-primary-foreground",
+                          day === TODAY &&
+                            "bg-(--today) font-semibold text-background",
                         )}
                       >
                         {date.day}
@@ -208,43 +204,65 @@ function CalendarView({
                     </div>
                   );
                 })}
-                {segments.map((segment) => (
-                  <button
-                    key={segment.task.id}
-                    type="button"
-                    draggable
-                    data-demo={`cal-${segment.task.id}`}
-                    onDragStart={(event) => {
-                      event.dataTransfer.setData(DRAG_TYPE, segment.task.id);
-                      event.dataTransfer.effectAllowed = "move";
-                    }}
-                    style={{
-                      gridColumn: `${segment.from + 1} / ${segment.to + 2}`,
-                      gridRow: segment.lane + 2,
-                    }}
-                    title={segment.task.title}
-                    className={cn(
-                      "z-10 mb-0.5 flex h-5 min-w-0 cursor-grab items-center overflow-hidden border px-1.5 text-left font-medium text-[11px] text-foreground leading-none outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                      STATUS_CLASSES[segment.task.status],
-                      segment.continuesBefore
-                        ? "rounded-l-none border-l-0"
-                        : "ml-1 rounded-l-md",
-                      segment.continuesAfter
-                        ? "rounded-r-none border-r-0"
-                        : "mr-1 rounded-r-md",
-                    )}
-                  >
-                    <span className="truncate">{segment.task.title}</span>
-                    {!compact && (
-                      <AvatarStack
-                        names={segment.task.assignees}
-                        max={2}
-                        size="xs"
-                        className="ms-auto ps-1"
-                      />
-                    )}
-                  </button>
-                ))}
+                {segments.map((segment) => {
+                  const task = segment.task;
+                  const done = task.status === "done";
+                  const overdue = !done && task.end < TODAY;
+                  return (
+                    <button
+                      key={segment.task.id}
+                      type="button"
+                      draggable
+                      data-demo={`cal-${segment.task.id}`}
+                      onDragStart={(event) => {
+                        event.dataTransfer.setData(DRAG_TYPE, segment.task.id);
+                        event.dataTransfer.effectAllowed = "move";
+                      }}
+                      data-tone={STATUS_HUE[task.status]}
+                      data-overdue={overdue || undefined}
+                      style={{
+                        ...statusToneStyle(task.status),
+                        gridColumn: `${segment.from + 1} / ${segment.to + 2}`,
+                        gridRow: segment.lane + 2,
+                      }}
+                      title={task.title}
+                      className={cn(
+                        "z-10 mb-0.5 flex h-5 min-w-0 cursor-grab items-center gap-1 overflow-hidden border border-(color:--tone)/25 border-l-[3px] bg-(color:--tone-tint) px-1.5 text-left font-medium text-[11px] leading-none outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                        overdue
+                          ? "border-l-destructive"
+                          : "border-l-(color:--tone)",
+                        done
+                          ? "text-muted-foreground line-through"
+                          : "text-(color:--tone-fg)",
+                        segment.continuesBefore
+                          ? "rounded-l-none border-l-0"
+                          : "ml-1 rounded-l-md",
+                        segment.continuesAfter
+                          ? "rounded-r-none border-r-0"
+                          : "mr-1 rounded-r-md",
+                      )}
+                    >
+                      {done ? (
+                        <Check
+                          aria-hidden
+                          strokeWidth={3}
+                          className="size-3 shrink-0 text-(color:--tone)"
+                        />
+                      ) : (
+                        <PriorityDot priority={task.priority} />
+                      )}
+                      <span className="truncate">{task.title}</span>
+                      {!compact && (
+                        <AvatarStack
+                          names={task.assignees}
+                          max={2}
+                          size="xs"
+                          className="ms-auto ps-1"
+                        />
+                      )}
+                    </button>
+                  );
+                })}
                 {hidden.map((count, index) =>
                   count > 0 ? (
                     <span

@@ -25,6 +25,9 @@ import {
   DueChip,
   LabelChip,
   LayoutToggle,
+  LIST_GROUP_HEADER,
+  ListGroupCount,
+  listGroupStyle,
   PriorityIcon,
   ReplicaCheckbox,
   StatusIcon,
@@ -193,7 +196,10 @@ function ListGroup({
       aria-label={demo.statuses[status]}
       className="border-border/50 border-b"
     >
-      <div className="flex h-8 items-center justify-between border-border/50 border-b bg-muted/80 px-3">
+      <div
+        className={cn(LIST_GROUP_HEADER, "justify-between")}
+        style={listGroupStyle(status)}
+      >
         <button
           type="button"
           data-demo={`group-${status}`}
@@ -210,9 +216,7 @@ function ListGroup({
           />
           <StatusIcon status={status} colored className="size-3.5" />
           <span className="truncate">{demo.statuses[status]}</span>
-          <span className="font-normal text-muted-foreground text-xs tabular-nums">
-            {tasks.length}
-          </span>
+          <ListGroupCount count={tasks.length} />
         </button>
         <span className="flex size-6 items-center justify-center rounded text-muted-foreground">
           <Plus aria-hidden className="size-3.5" />

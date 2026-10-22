@@ -91,7 +91,7 @@ function TrashView({
 
   const crumbs = (
     <>
-      <ProjectTile icon={Globe} className="size-5" />
+      <ProjectTile icon={Globe} seed="web" className="size-5" />
       <button
         type="button"
         data-demo="crumb-project"

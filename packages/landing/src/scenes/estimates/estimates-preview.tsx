@@ -83,7 +83,7 @@ export function EstimatesPreview({ className }: { className?: string }) {
       <p className="sr-only">{copy.scenes.estimates.description}</p>
       <div
         aria-hidden
-        className="overflow-hidden rounded-xl border border-border bg-background font-sans text-foreground text-sm shadow-black/5 shadow-xl dark:shadow-black/30"
+        className="overflow-hidden rounded-xl border border-border bg-background font-sans text-foreground text-sm shadow-xs"
       >
         <div className="space-y-3 border-border border-b bg-card p-4">
           <div className="flex items-center gap-3">

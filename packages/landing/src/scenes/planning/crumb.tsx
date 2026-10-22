@@ -15,7 +15,7 @@ export function ProjectCrumb({
 }) {
   return (
     <>
-      <ProjectTile icon={Globe} className="size-5" />
+      <ProjectTile icon={Globe} seed="web" className="size-5" />
       <span className="shrink-0 font-medium text-muted-foreground">
         {project}
       </span>

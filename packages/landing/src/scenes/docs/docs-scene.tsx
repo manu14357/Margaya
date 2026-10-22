@@ -429,7 +429,7 @@ function DocsView({
         compact={compact}
         place={
           <>
-            <ProjectTile icon={Globe} className="size-5" />
+            <ProjectTile icon={Globe} seed="web" className="size-5" />
             <span className="truncate">{docs.title}</span>
           </>
         }
