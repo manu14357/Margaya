@@ -11,7 +11,8 @@
 			"remove": "Gỡ bỏ",
 			"reset": "Đặt lại",
 			"filter": "Lọc",
-			"clearAllFilters": "Xóa tất cả bộ lọc"
+			"clearAllFilters": "Xóa tất cả bộ lọc",
+			"undo": "Hoàn tác"
 		},
 		"a11y": {
 			"toggleSidebar": "Bật/tắt thanh bên"
@@ -98,7 +99,15 @@
 				"createButton": "Tạo dự án",
 				"successToast": "Tạo dự án thành công",
 				"errorToast": "Không thể tạo dự án",
-				"keyTaken": "Đã có một dự án với mã {{key}} trong không gian làm việc này"
+				"keyTaken": "Đã có một dự án với mã {{key}} trong không gian làm việc này",
+				"blankProject": "Dự án trống",
+				"copyHint": "Trạng thái, trường tùy chỉnh, ước tính, cài đặt và tự động hóa sẽ được sao chép. Thành viên, tích hợp và bảng công khai thì không.",
+				"includeOpenTasks": "Bao gồm công việc đang mở",
+				"includeTemplates": "Bao gồm mẫu công việc",
+				"openTasksHint": "Tối đa 500 công việc đang mở cùng với công việc con, nhãn và ước tính của chúng. Bình luận và lịch sử không được sao chép.",
+				"restricted": "Hạn chế",
+				"restrictedHint": "Chỉ thành viên mới xem được dự án này. Bạn sẽ là thành viên đầu tiên; chủ sở hữu và quản trị viên không gian làm việc luôn xem được dự án.",
+				"startFrom": "Bắt đầu từ"
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -714,6 +723,8 @@
 			"themeLight": "Sáng",
 			"themeDark": "Tối",
 			"themeSystem": "Theo hệ thống",
+			"themeLightContrast": "Sáng tương phản cao",
+			"themeDarkContrast": "Tối tương phản cao",
 			"language": "Ngôn ngữ",
 			"languageDescription": "Chọn ngôn ngữ giao diện ưa thích của bạn",
 			"selectLanguage": "Chọn một ngôn ngữ",
@@ -918,7 +929,8 @@
 				"intake": "Tiếp nhận",
 				"analytics": "Phân tích",
 				"page": "Trang",
-				"audit_log": "Nhật ký kiểm tra"
+				"audit_log": "Nhật ký kiểm tra",
+				"ai": "AI"
 			},
 			"permissions": {
 				"project": {
@@ -1163,6 +1175,16 @@
 					"read": {
 						"description": "Xem và xuất nhật ký kiểm tra của không gian làm việc: ai đã thay đổi thành viên, vai trò, khóa, webhook, tích hợp và cài đặt.",
 						"label": "Xem nhật ký kiểm tra"
+					}
+				},
+				"ai": {
+					"use": {
+						"label": "Dùng AI",
+						"description": "Dùng các tính năng AI khi AI được bật cho không gian làm việc và dự án."
+					},
+					"manage": {
+						"label": "Quản lý AI",
+						"description": "Bật hoặc tắt AI cho không gian làm việc, thay đổi khóa, giới hạn và quyền riêng tư, và xem mức sử dụng AI."
 					}
 				}
 			},
@@ -1756,6 +1778,67 @@
 			"dropHintAny": "Kéo và thả tệp JSON hoặc CSV vào đây",
 			"importAcceptHint": "Tải lên bản xuất JSON của Margaya hoặc tệp CSV.",
 			"importStopped": "Đã dừng nhập: {{message}}",
+			"external": {
+				"sourceHint": "Chuyển từ công cụ khác sang? Nhập bản xuất của công cụ đó cùng trạng thái, nhãn, người dùng, ngày và công việc con.",
+				"sources": {
+					"trello": "Trello (JSON)",
+					"linear": "Linear (CSV)",
+					"asana": "Asana (CSV)"
+				},
+				"title": {
+					"trello": "Nhập từ Trello",
+					"linear": "Nhập từ Linear",
+					"asana": "Nhập từ Asana"
+				},
+				"howToTitle": {
+					"trello": "Cách xuất dữ liệu từ Trello",
+					"linear": "Cách xuất dữ liệu từ Linear",
+					"asana": "Cách xuất dữ liệu từ Asana"
+				},
+				"howTo": {
+					"trello": {
+						"step1": "Trên bảng, mở menu → In, xuất và chia sẻ → Xuất dưới dạng JSON.",
+						"step2": "Tải tệp .json đã tải xuống lên đây."
+					},
+					"linear": {
+						"step1": "Trong Linear, mở Cài đặt → Import / Export và chọn Xuất CSV.",
+						"step2": "Tải lên đây tệp .csv trong email Linear gửi cho bạn."
+					},
+					"asana": {
+						"step1": "Trong dự án Asana, mở menu dự án → Xuất/In → CSV.",
+						"step2": "Tải tệp .csv đã tải xuống lên đây."
+					}
+				},
+				"limits": {
+					"trello": "Tối đa 10 MB và 5.000 thẻ mỗi tệp. Thẻ đã lưu trữ bị bỏ qua; danh sách kiểm tra trở thành danh sách công việc trong mô tả; tệp đính kèm vẫn ở Trello.",
+					"linear": "Tối đa 5 MB và 5.000 issue mỗi tệp. Issue đã lưu trữ bị bỏ qua. Tệp CSV của Linear không có bình luận.",
+					"asana": "Tối đa 5 MB và 5.000 công việc mỗi tệp. Công việc đã hoàn thành sẽ vào cột Hoàn thành của bạn. Tệp CSV của Asana không có bình luận."
+				},
+				"dropHint": {
+					"trello": "Kéo và thả bản xuất JSON của Trello vào đây",
+					"linear": "Kéo và thả bản xuất CSV của Linear vào đây",
+					"asana": "Kéo và thả bản xuất CSV của Asana vào đây"
+				},
+				"wrongType": {
+					"trello": "Chọn bản xuất .json của bảng.",
+					"linear": "Chọn bản xuất .csv của Linear.",
+					"asana": "Chọn bản xuất .csv của Asana."
+				},
+				"itemCount_other": "{{count}} mục",
+				"alreadyImported_other": "{{count}} mục đã được nhập vào dự án này trước đó.",
+				"contents": "{{comments}} bình luận, {{checklists}} danh sách kiểm tra, {{subtasks}} công việc con, {{links}} liên kết",
+				"sourceStatus": "Trạng thái hoặc danh sách",
+				"peopleUnmatched_other": "{{count}} người không phải thành viên ({{names}}). Các mục của họ sẽ không có người được giao và tên được ghi trong mô tả.",
+				"mode": "Các mục đã nhập trước đó",
+				"modeHint": "Được đối chiếu theo id trong bản xuất.",
+				"importAction_other": "Nhập {{count}} mục",
+				"importing_other": "Đang nhập {{count}} mục…",
+				"result": {
+					"skipped_other": "Đã bỏ qua {{count}} mục (đã nhập trước đó)",
+					"failed_other": "{{count}} mục không nhập được",
+					"unmatched_other": "{{count}} người không phải thành viên không gian làm việc; các mục của họ không có người được giao:"
+				}
+			},
 			"unsupportedFile": "Vui lòng tải lên tệp JSON hoặc CSV",
 			"jira": {
 				"alreadyImported_other": "{{count}} issue đã được nhập vào dự án này trước đó.",
@@ -1938,6 +2021,10 @@
 				"views": {
 					"description": "Lưu bộ lọc, cách nhóm và cài đặt hiển thị rồi chia sẻ với nhóm.",
 					"title": "Chế độ xem"
+				},
+				"ai": {
+					"title": "AI",
+					"description": "Tóm tắt, gợi ý và các hỗ trợ AI khác cho dự án này. Tắt sẽ loại hoàn toàn dự án khỏi AI."
 				}
 			},
 			"loadError": "Không thể tải dự án này",
@@ -2142,7 +2229,25 @@
 				"closeOff": "Đã tắt tự động đóng",
 				"closeOn": "Đã bật tự động đóng",
 				"error": "Không thể cập nhật tự động hóa",
-				"updated": "Đã cập nhật tự động hóa"
+				"updated": "Đã cập nhật tự động hóa",
+				"rolloverOff": "Đã tắt chuyển tiếp chu kỳ",
+				"rolloverOn": "Đã bật chuyển tiếp chu kỳ",
+				"flowAlertsOn": "Đã bật cảnh báo luồng công việc",
+				"flowAlertsOff": "Đã tắt cảnh báo luồng công việc"
+			},
+			"cycleRollover": {
+				"cyclesOff": "Hãy bật Chu kỳ trong Tính năng để dùng mục này.",
+				"description": "Khi một chu kỳ kết thúc, các công việc chưa hoàn thành của chu kỳ đó sẽ được chuyển sang chu kỳ tiếp theo. Trưởng dự án sẽ nhận được bản tóm tắt.",
+				"last_other": "Lần gần nhất đã chuyển {{count}} công việc {{time}}",
+				"never": "Chưa chuyển gì",
+				"title": "Chuyển tiếp công việc chưa hoàn thành của chu kỳ"
+			},
+			"flowAlerts": {
+				"title": "Cảnh báo bất thường luồng công việc",
+				"description": "Mỗi ngày một lần, so sánh công việc đang làm, thời gian chu trình và thông lượng với 8 tuần trước đó. Trưởng dự án được thông báo khi một chỉ số vượt khỏi phạm vi thông thường.",
+				"noLead": "Hãy đặt trưởng dự án để nhận các cảnh báo này.",
+				"last": "Cảnh báo gần nhất {{time}}",
+				"never": "Chưa có cảnh báo"
 			}
 		},
 		"workspaceExports": {
@@ -2586,6 +2691,24 @@
 			"noProjectsHint": "Hãy tạo một dự án trước. Cài đặt của dự án sẽ hiện ở đây.",
 			"pickProject": "Chọn một dự án để xem cài đặt của dự án đó."
 		},
+		"projectAccess": {
+			"title": "Quyền truy cập",
+			"subtitle": "Ai có thể xem và làm việc trong dự án này.",
+			"restrictedLabel": "Hạn chế",
+			"restrictedHint": "Chỉ các thành viên bên dưới, cùng chủ sở hữu và quản trị viên không gian làm việc, mới xem được dự án này. Quyền của một thành viên ở đây là những gì cả vai trò không gian làm việc và vai trò dự án của họ đều cho phép.",
+			"openHint": "Mọi người trong không gian làm việc đều xem được dự án này, trong phạm vi vai trò của họ. Hãy hạn chế để chỉ giới hạn cho các thành viên được chọn.",
+			"membersLabel": "Thành viên",
+			"membersHint": "Vai trò dự án giới hạn những gì mỗi thành viên có thể làm ở đây.",
+			"noMembers": "Chưa có thành viên.",
+			"addMember": "Thêm thành viên",
+			"removeMember": "Xóa {{name}}",
+			"roleFor": "Vai trò dự án của {{name}}",
+			"leadTag": "Trưởng dự án",
+			"restrictedProject": "Dự án hạn chế",
+			"toastUpdated": "Đã cập nhật quyền truy cập",
+			"toastError": "Không thể cập nhật quyền truy cập",
+			"loadError": "Không thể tải cài đặt quyền truy cập. Hãy tải lại trang để thử lại."
+		},
 		"projectPeople": {
 			"defaultAssigneeHint": "Được điền sẵn khi bạn tạo công việc và được giao cho các yêu cầu đã chấp nhận chưa có người được giao.",
 			"defaultAssigneeLabel": "Người được giao mặc định",
@@ -2643,7 +2766,7 @@
 			"title": "Bảo mật"
 		},
 		"timezone": {
-			"accountHint": "Dùng cho lời nhắc và email tổng hợp. Ứng dụng luôn hiển thị thời gian theo múi giờ của trình duyệt.",
+			"accountHint": "Dùng cho lời nhắc, email tổng hợp và các ngày mà bộ lọc công việc cùng phân tích dùng để tính. Thời gian trên màn hình hiển thị theo múi giờ của trình duyệt.",
 			"accountLabel": "Múi giờ",
 			"automatic": "Tự động (trình duyệt: {{zone}})",
 			"loadError": "Không thể tải múi giờ. Hãy tải lại trang để thử lại.",
@@ -2656,8 +2779,52 @@
 			"workspaceHint": "Xác định “hôm nay” cho chu kỳ, tự động hóa và phân tích. Các không gian làm việc hiện có bắt đầu với UTC.",
 			"workspaceLabel": "Múi giờ"
 		},
+		"workspaceDeletion": {
+			"pendingTitle": "Đã lên lịch xóa",
+			"pendingDescription": "Không gian làm việc này sẽ bị xóa vào {{date}}. Trước thời điểm đó, nó ở chế độ chỉ đọc, nhưng bạn vẫn có thể mở và xuất nội dung.",
+			"cancel": "Hủy xóa",
+			"confirm": "Lên lịch xóa",
+			"rowDescription": "Không gian làm việc chuyển sang chỉ đọc ngay lập tức và sẽ bị xóa vĩnh viễn vào {{date}}. Bạn có thể hủy trước thời điểm đó.",
+			"dialogTitle": "Xóa {{name}}?",
+			"dialogDescription": "{{name}} chuyển sang chỉ đọc với mọi người ngay lập tức, và khóa API cùng webhook của nó ngừng hoạt động. Các thành viên sẽ nhận được email. Vào {{date}}, nó sẽ bị xóa vĩnh viễn cùng toàn bộ dự án, công việc và trang, trừ khi bạn hủy trước đó.",
+			"toastScheduled": "Đã lên lịch xóa vào {{date}}",
+			"toastCancelled": "Đã hủy xóa. Không gian làm việc có thể chỉnh sửa lại.",
+			"toastError": "Không thể thay đổi việc xóa. Hãy thử lại.",
+			"bannerTitle": "Không gian làm việc này sẽ bị xóa vào {{date}}",
+			"bannerDescription": "Trước thời điểm đó, nó ở chế độ chỉ đọc. Bạn vẫn có thể mở và xuất nội dung.",
+			"admin": {
+				"title": "Đang chờ xóa",
+				"description": "Các không gian làm việc mà chủ sở hữu đã lên lịch xóa. Chúng ở chế độ chỉ đọc đến ngày đó, sau đó bị xóa vĩnh viễn.",
+				"dueAt": "Ngày xóa",
+				"badge": "Xóa vào {{date}}"
+			},
+			"instanceAudit": {
+				"scheduled": "Đã lên lịch xóa một không gian làm việc",
+				"cancelled": "Đã hủy xóa một không gian làm việc",
+				"purged": "Đã xóa một không gian làm việc sau thời gian ân hạn"
+			}
+		},
+		"workspacePublicPages": {
+			"label": "Trang công khai",
+			"description": "Cho phép những người có quyền chia sẻ dự án xuất bản trang qua liên kết công khai chỉ đọc. Tắt tùy chọn này sẽ thu hồi mọi liên kết đã xuất bản.",
+			"toastOn": "Đã bật trang công khai",
+			"toastOff": "Đã tắt trang công khai. Các liên kết đã xuất bản đã bị thu hồi.",
+			"toastError": "Không thể thay đổi cài đặt. Hãy thử lại."
+		},
+		"workspaceA2a": {
+			"label": "Tác tử với tác tử (A2A)",
+			"description": "Cho phép các tác tử AI bên ngoài giao việc cho không gian làm việc này qua giao thức A2A. Chúng hành động bằng khóa API hoặc đăng nhập OAuth của một thành viên và với quyền của thành viên đó, và mọi việc chúng làm đều xuất hiện trong nhật ký kiểm tra.",
+			"toastOn": "Đã bật A2A",
+			"toastOff": "Đã tắt A2A. Các tác tử bên ngoài không thể giao việc cho không gian làm việc này nữa.",
+			"toastError": "Không thể thay đổi cài đặt. Hãy thử lại."
+		},
 		"workspaceAuditLog": {
 			"actions": {
+				"workspaceDeletionScheduled": "Đã lên lịch xóa không gian làm việc",
+				"workspaceDeletionCancelled": "Đã hủy xóa không gian làm việc",
+				"workspacePublicPagesChanged": "Đã bật hoặc tắt trang công khai",
+				"pagePublished": "Đã xuất bản một trang qua liên kết công khai",
+				"pageUnpublished": "Đã thu hồi liên kết công khai của một trang",
 				"apiKeyCreated": "Đã tạo khóa API",
 				"apiKeyRevoked": "Đã thu hồi khóa API",
 				"exportCreated": "Đã bắt đầu xuất dữ liệu",
@@ -2668,6 +2835,7 @@
 				"integrationUpdated": "Đã thay đổi tích hợp",
 				"memberInvitationAccepted": "Đã chấp nhận lời mời",
 				"memberInvitationDeclined": "Đã từ chối lời mời",
+				"memberInvitationRoleChanged": "Đã thay đổi vai trò của lời mời đang chờ",
 				"memberInvitationRevoked": "Đã thu hồi lời mời",
 				"memberInvited": "Đã mời người vào không gian làm việc",
 				"memberLeft": "Đã rời không gian làm việc",
@@ -2697,13 +2865,41 @@
 				"webhookUpdated": "Đã thay đổi webhook",
 				"workspaceCreated": "Đã tạo không gian làm việc",
 				"workspaceOwnershipTransferred": "Đã chuyển quyền sở hữu không gian làm việc",
-				"workspaceUpdated": "Đã thay đổi cài đặt không gian làm việc"
+				"workspaceUpdated": "Đã thay đổi cài đặt không gian làm việc",
+				"aiSettingsUpdated": "Đã thay đổi cài đặt AI",
+				"aiTriageLabelsApplied": "Đã tự động thêm các nhãn được gợi ý",
+				"agentCreated": "Đã tạo một tác tử",
+				"agentUpdated": "Đã thay đổi một tác tử",
+				"agentDeleted": "Đã xóa một tác tử",
+				"agentChangeApplied": "Đã thực hiện thay đổi thay cho người khác",
+				"agentChangeApproved": "Đã phê duyệt thay đổi của tác tử",
+				"agentChangeRejected": "Đã từ chối thay đổi của tác tử",
+				"agentChangeReverted": "Đã hoàn tác thay đổi của tác tử",
+				"codingAgentHandoffSent": "Đã gửi một công việc cho tác tử lập trình",
+				"codingAgentProfileCreated": "Đã tạo hồ sơ tác tử lập trình",
+				"codingAgentProfileUpdated": "Đã thay đổi hồ sơ tác tử lập trình",
+				"codingAgentProfileDeleted": "Đã xóa hồ sơ tác tử lập trình",
+				"a2aTaskReceived": "Đã nhận việc từ một tác tử bên ngoài (A2A)",
+				"automationRuleCreated": "Đã tạo tự động hóa",
+				"automationRuleUpdated": "Đã cập nhật tự động hóa",
+				"automationRuleDeleted": "Đã xóa tự động hóa",
+				"automationRuleRan": "Đã chạy tự động hóa trên một công việc",
+				"agentScheduleCreated": "Đã lên lịch cho một tác tử",
+				"agentScheduleUpdated": "Đã thay đổi lịch của tác tử",
+				"agentScheduleDeleted": "Đã xóa lịch của tác tử",
+				"agentScheduleDisabled": "Đã tắt lịch của tác tử",
+				"aiConnectorCreated": "Đã thêm trình kết nối MCP",
+				"aiConnectorUpdated": "Đã thay đổi trình kết nối MCP",
+				"aiConnectorDeleted": "Đã xóa trình kết nối MCP"
 			},
 			"actor": {
 				"apiKey": "Khóa API",
 				"deletedUser": "Người dùng đã xóa",
 				"system": "Hệ thống",
-				"unknownKey": "Khóa API đã xóa"
+				"unknownKey": "Khóa API đã xóa",
+				"agent": "Tác tử",
+				"agentFor": "Tác tử, thay mặt {{name}}",
+				"automation": "Tự động hóa"
 			},
 			"categories": {
 				"apiKey": "Khóa API",
@@ -2716,7 +2912,11 @@
 				"role": "Vai trò",
 				"trash": "Thùng rác",
 				"webhook": "Webhook",
-				"workspace": "Cài đặt không gian làm việc"
+				"workspace": "Cài đặt không gian làm việc",
+				"agent": "Tác tử",
+				"codingAgent": "Tác tử lập trình",
+				"a2a": "Tác tử bên ngoài (A2A)",
+				"automation": "Tự động hóa"
 			},
 			"columns": {
 				"action": "Hành động",
@@ -2765,6 +2965,7 @@
 			"subtitle": "Ai đã thay đổi thành viên, vai trò, khóa API, webhook, tích hợp, cài đặt và dự án trong không gian làm việc này. Các mục được lưu trong {{days}} ngày.",
 			"subtitleForever": "Ai đã thay đổi thành viên, vai trò, khóa API, webhook, tích hợp, cài đặt và dự án trong không gian làm việc này. Các mục được lưu cho đến khi bạn xóa không gian làm việc.",
 			"targets": {
+				"page": "Trang",
 				"apiKey": "Khóa API",
 				"export": "Bản xuất",
 				"integration": "Tích hợp",
@@ -2773,7 +2974,11 @@
 				"role": "Vai trò",
 				"user": "Thành viên",
 				"webhook": "Webhook",
-				"workspace": "Không gian làm việc"
+				"workspace": "Không gian làm việc",
+				"agent": "Tác tử",
+				"agentRun": "Lượt chạy tác tử",
+				"task": "Công việc",
+				"codingAgentProfile": "Hồ sơ tác tử lập trình"
 			},
 			"title": "Nhật ký kiểm tra"
 		},
@@ -2819,9 +3024,189 @@
 			"workspaceNav": "Đã xóa gần đây",
 			"workspaceSubtitle": "Dự án đã xóa sẽ nằm ở đây cùng công việc của chúng cho đến khi bị xóa vĩnh viễn.",
 			"workspaceTitle": "Dự án đã xóa gần đây"
+		},
+		"automationRules": {
+			"title": "Tự động hóa",
+			"description": "Khi có điều gì xảy ra với một công việc, hãy kiểm tra điều kiện và hành động. Quy tắc tự chạy, không cần AI, dưới tên \"Tự động hóa\".",
+			"empty": "Chưa có tự động hóa nào. Hãy bắt đầu từ một mẫu hoặc tự tạo quy tắc.",
+			"loadError": "Không thể tải tự động hóa.",
+			"newRule": "Quy tắc mới",
+			"templatesTitle": "Mẫu",
+			"saved": "Đã lưu tự động hóa",
+			"saveError": "Không thể lưu tự động hóa",
+			"deleted": "Đã xóa tự động hóa",
+			"confirmDelete": "Xóa",
+			"edit": "Chỉnh sửa {{name}}",
+			"delete": "Xóa {{name}}",
+			"summary_one": "Khi {{trigger}} · {{count}} hành động",
+			"summary_other": "Khi {{trigger}} · {{count}} hành động",
+			"lastRun_one": "{{count}} lần chạy, lần gần nhất {{time}}",
+			"lastRun_other": "{{count}} lần chạy, lần gần nhất {{time}}",
+			"neverRan": "Chưa chạy lần nào",
+			"templates": {
+				"reviewer": {
+					"name": "Giao người duyệt khi chuyển sang Đang xem xét",
+					"description": "Chọn người duyệt; họ sẽ được giao khi công việc chuyển sang xem xét."
+				},
+				"intakeBugs": {
+					"name": "Gắn nhãn lỗi cho yêu cầu tiếp nhận",
+					"description": "Các yêu cầu được chấp nhận có nhắc đến bug hoặc lỗi sẽ được gắn nhãn bug."
+				},
+				"overdue": {
+					"name": "Nâng mức xử lý công việc quá hạn",
+					"description": "Khi quá hạn, tăng mức ưu tiên và báo cho người được giao."
+				}
+			},
+			"triggers": {
+				"task_created": "một công việc được tạo",
+				"status_changed": "trạng thái thay đổi",
+				"assignee_added": "có người được giao",
+				"assignee_removed": "có người bị bỏ giao",
+				"label_added": "một nhãn được thêm",
+				"label_removed": "một nhãn bị xóa",
+				"priority_changed": "mức ưu tiên thay đổi",
+				"due_date_set": "ngày đến hạn được đặt",
+				"due_date_passed": "ngày đến hạn đã qua",
+				"comment_added": "một bình luận được thêm",
+				"moved_to_cycle": "công việc được chuyển vào một chu kỳ",
+				"moved_to_module": "công việc được thêm vào một mô-đun"
+			},
+			"conditions": {
+				"status": "Trạng thái",
+				"labels": "Nhãn",
+				"priority": "Mức ưu tiên",
+				"assignee": "Người được giao",
+				"due_date": "Ngày đến hạn",
+				"estimate": "Ước tính",
+				"title": "Tiêu đề",
+				"custom_field": "Trường tùy chỉnh"
+			},
+			"ops": {
+				"is": "là",
+				"is_not": "không phải",
+				"contains": "chứa",
+				"not_contains": "không chứa",
+				"empty": "trống",
+				"not_empty": "không trống",
+				"set": "đã đặt",
+				"not_set": "chưa đặt",
+				"gte": "ít nhất là",
+				"lte": "nhiều nhất là",
+				"equals": "bằng",
+				"not_equals": "không bằng"
+			},
+			"actions": {
+				"set_status": "Đặt trạng thái",
+				"assign": "Giao",
+				"unassign": "Bỏ giao",
+				"add_label": "Thêm nhãn",
+				"remove_label": "Xóa nhãn",
+				"set_priority": "Đặt mức ưu tiên",
+				"set_due_date": "Đặt ngày đến hạn",
+				"add_comment": "Thêm bình luận",
+				"move_to_cycle": "Chuyển vào chu kỳ",
+				"move_to_module": "Thêm vào mô-đun",
+				"create_subtask": "Tạo công việc con",
+				"notify": "Thông báo",
+				"run_agent": "Chạy tác tử"
+			},
+			"roles": {
+				"assignees": "Người được giao",
+				"creator": "Người tạo",
+				"lead": "Trưởng dự án"
+			},
+			"outcomes": {
+				"success": "Xong",
+				"partial": "Xong một phần",
+				"failed": "Thất bại",
+				"skipped": "Đã bỏ qua"
+			},
+			"errors": {
+				"LOOP_DEPTH": "Đã dừng: quá nhiều quy tắc liên tiếp kích hoạt lẫn nhau.",
+				"RATE_LIMITED": "Đã dừng: công việc này có quá nhiều lần chạy tự động hóa trong một phút.",
+				"AGENT_UNAVAILABLE": "Chạy tác tử: tác tử đang tắt hoặc đã bị xóa.",
+				"NO_RULE_OWNER": "Chạy tác tử: quy tắc này không còn chủ sở hữu. Hãy lưu lại.",
+				"AI_DISABLED": "Chạy tác tử: AI đang tắt cho dự án này."
+			},
+			"history": {
+				"title": "Lịch sử chạy",
+				"empty": "Chưa có lần chạy nào.",
+				"error": "Không thể tải lịch sử chạy.",
+				"failedActions": "Thất bại: {{actions}}"
+			},
+			"editor": {
+				"name": "Tên quy tắc",
+				"namePlaceholder": "Đặt tên cho quy tắc này",
+				"when": "Khi",
+				"if": "Nếu",
+				"then": "Thì",
+				"match": "Khớp",
+				"matchAll": "Tất cả các điều kiện",
+				"matchAny": "Bất kỳ điều kiện nào",
+				"always": "Mọi lúc",
+				"addCondition": "Thêm điều kiện",
+				"addGroup": "Thêm nhóm",
+				"addAction": "Thêm hành động",
+				"remove": "Gỡ",
+				"save": "Lưu quy tắc",
+				"cancel": "Hủy",
+				"choose": "Chọn…",
+				"add": "Thêm…",
+				"removeItem": "Gỡ {{name}}",
+				"any": "Bất kỳ",
+				"from": "từ",
+				"to": "sang",
+				"fromIntake": "Chỉ các yêu cầu được chấp nhận từ tiếp nhận",
+				"people": "Người",
+				"labels": "Nhãn",
+				"priorities": "Mức ưu tiên",
+				"cycles": "Chu kỳ",
+				"modules": "Mô-đun",
+				"field": "Trường",
+				"operator": "Phép so sánh",
+				"points": "Điểm",
+				"value": "Giá trị",
+				"column": "Trạng thái",
+				"everyone": "Mọi người",
+				"label": "Nhãn",
+				"priority": "Mức ưu tiên",
+				"daysFromRun": "ngày sau khi quy tắc chạy",
+				"comment": "Bình luận",
+				"subtaskTitle": "Tiêu đề công việc con",
+				"cycle": "Chu kỳ",
+				"module": "Mô-đun",
+				"roles": "Vai trò",
+				"message": "Tin nhắn (không bắt buộc)",
+				"variables": "Biến:",
+				"agent": "Tác tử",
+				"agentPrompt": "Tác tử nên làm gì?",
+				"agentPromptPlaceholder": "Ví dụ: phân loại công việc này và đề xuất mức ưu tiên.",
+				"agentHint": "Tác tử hành động thay mặt người lưu quy tắc này, với quyền không vượt quá quyền của người đó. Nó không bao giờ chạy vì thay đổi do tác tử thực hiện."
+			}
 		}
 	},
 	"navigation": {
+		"customize": {
+			"open": "Tùy chỉnh thanh bên",
+			"title": "Tùy chỉnh thanh bên",
+			"description": "Chọn những gì thanh bên hiển thị và theo thứ tự nào. Chỉ bạn thấy các thay đổi này, trên mọi thiết bị của bạn.",
+			"settingsDescription": "Sắp xếp lại hoặc ẩn điều hướng chính và các mục của bảng Dự án.",
+			"rail": "Điều hướng chính",
+			"projectsPanel": "Bảng Dự án",
+			"sections": {
+				"views": "Danh sách công việc và chế độ xem",
+				"favorites": "Mục yêu thích",
+				"projects": "Dự án"
+			},
+			"show": "Hiện {{name}}",
+			"alwaysShown": "{{name}} luôn được hiển thị",
+			"moveUp": "Chuyển {{name}} lên",
+			"moveDown": "Chuyển {{name}} xuống",
+			"moved": "Đã chuyển {{name}} đến vị trí {{position}} trên {{total}}",
+			"reset": "Đặt lại mặc định",
+			"resetDone": "Đã đặt lại thanh bên về mặc định",
+			"done": "Xong"
+		},
 		"commandPalette": {
 			"suggestions": "Gợi ý",
 			"commands": "Lệnh",
@@ -2834,6 +3219,8 @@
 			"lightTheme": "Chủ đề sáng",
 			"darkTheme": "Chủ đề tối",
 			"systemTheme": "Chủ đề hệ thống",
+			"lightContrastTheme": "Chủ đề sáng tương phản cao",
+			"darkContrastTheme": "Chủ đề tối tương phản cao",
 			"keyboardShortcuts": "Phím tắt",
 			"inputPlaceholder": "Tìm ứng dụng và lệnh...",
 			"empty": "Không tìm thấy kết quả nào.",
@@ -3148,6 +3535,21 @@
 			"page_mention": {
 				"content": "{{mentionerName}} đã nhắc đến bạn trong: {{pageTitle}}",
 				"title": "{{mentionerName}} đã nhắc đến bạn"
+			},
+			"cycle_rollover": {
+				"content_other": "{{count}} công việc chưa hoàn thành đã được chuyển sang {{targetCycleName}}",
+				"contentNoNext_other": "{{count}} công việc chưa hoàn thành vẫn ở lại {{cycleName}}: không có chu kỳ tiếp theo",
+				"title": "{{cycleName}} đã kết thúc"
+			},
+			"flow_anomaly": {
+				"title": "Luồng công việc bất thường trong {{projectName}}",
+				"throughput_low": "Thông lượng tuần này giảm còn {{value}} công việc (thường khoảng {{baseline}})",
+				"wip_high": "Công việc đang làm tăng lên {{value}} (thường khoảng {{baseline}})",
+				"cycle_time_high": "Thời gian chu trình tăng lên {{value}} ngày (thường khoảng {{baseline}})"
+			},
+			"automation_notice": {
+				"title": "Tự động hóa: {{ruleName}}",
+				"content": "{{taskKey}} {{taskTitle}}"
 			}
 		},
 		"inbox": {
@@ -3289,6 +3691,13 @@
 				"open": "Mở công việc",
 				"read": "Đánh dấu đã đọc hoặc chưa đọc",
 				"snooze": "Tạm hoãn"
+			},
+			"digest": {
+				"button": "Tóm tắt mục chưa đọc",
+				"title": "Tóm tắt mục chưa đọc",
+				"regenerate": "Tóm tắt lại",
+				"close": "Đóng bản tóm tắt",
+				"generating": "Đang tóm tắt…"
 			}
 		}
 	},
@@ -3494,7 +3903,9 @@
 		"automation": {
 			"actor": "Tự động hóa",
 			"archived_other": "đã lưu trữ công việc này sau {{count}} tháng không có cập nhật",
-			"closed_other": "đã đóng công việc này sau {{count}} tháng không có cập nhật, chuyển sang {{to}}"
+			"closed_other": "đã đóng công việc này sau {{count}} tháng không có cập nhật, chuyển sang {{to}}",
+			"rolledOver": "đã chuyển công việc này từ {{from}} sang {{to}} khi chu kỳ kết thúc",
+			"byRule": "qua {{name}}"
 		},
 		"commentVisibility": {
 			"badgeExternal": "Bên ngoài",
@@ -3533,10 +3944,64 @@
 			"updates": "Cập nhật"
 		},
 		"importedFromJira": "đã nhập công việc này từ Jira {{key}}",
+		"importedFromSource": "đã nhập công việc này từ {{source}} {{key}}",
 		"movedToTrash": "đã chuyển công việc này vào thùng rác",
 		"restoredFromTrash": "đã khôi phục công việc này từ thùng rác"
 	},
 	"tasks": {
+		"recurrence": {
+			"label": "Lặp lại",
+			"none": "Không lặp lại",
+			"title": "Lặp lại công việc này",
+			"indicator": "Lặp lại",
+			"frequency": {
+				"label": "Tần suất",
+				"daily": "Hằng ngày",
+				"weekly": "Hằng tuần",
+				"monthly": "Hằng tháng",
+				"yearly": "Hằng năm"
+			},
+			"interval": "Mỗi",
+			"weekdays": "Vào các ngày",
+			"monthDay": "Ngày trong tháng",
+			"trigger": {
+				"label": "Tạo công việc tiếp theo",
+				"completion": "Khi công việc này hoàn thành",
+				"schedule": "Vào ngày của nó, kể cả khi công việc này vẫn đang mở"
+			},
+			"ends": {
+				"label": "Kết thúc",
+				"never": "Không bao giờ",
+				"onDate": "Vào ngày",
+				"endDate": "Ngày kết thúc",
+				"after": "Sau",
+				"count": "Số lần"
+			},
+			"summary": {
+				"daily_other": "Mỗi {{count}} ngày",
+				"weekly_other": "Mỗi {{count}} tuần vào {{days}}",
+				"monthly_other": "Mỗi {{count}} tháng vào ngày {{day}}",
+				"yearly_other": "Mỗi {{count}} năm vào {{date}}",
+				"until": "{{summary}}, đến {{date}}",
+				"times_other": "{{summary}}, {{count}} lần"
+			},
+			"next": "Tiếp theo: {{date}}",
+			"ended": "Không còn lần lặp nào",
+			"save": "Lưu",
+			"remove": "Ngừng lặp lại",
+			"saved": "Đã lưu lặp lại",
+			"removed": "Công việc này không còn lặp lại",
+			"saveError": "Không thể lưu lặp lại",
+			"activity": {
+				"set": "đã đặt công việc này lặp lại: {{summary}}",
+				"updated": "đã thay đổi lặp lại: {{summary}}",
+				"removed": "đã ngừng lặp lại công việc này",
+				"recurredFrom": "đã tạo công việc này làm lần lặp tiếp theo của <task>{{task}}</task>",
+				"recurredFromScheduled": "Được tạo theo lịch làm lần lặp tiếp theo của <task>{{task}}</task>",
+				"recurredTo": "đã hoàn thành công việc này, tạo ra lần lặp tiếp theo <task>{{task}}</task>",
+				"recurredToScheduled": "Lần lặp tiếp theo đã được tạo theo lịch: <task>{{task}}</task>"
+			}
+		},
 		"title": "Nhiệm vụ",
 		"status": {
 			"label": "Trạng thái",
@@ -3958,7 +4423,9 @@
 		},
 		"kanban": {
 			"addTask": "Thêm công việc",
-			"stages": "Cột"
+			"stages": "Cột",
+			"emptyAction": "Thêm công việc",
+			"emptyTitle": "Chưa có công việc nào"
 		},
 		"pr": {
 			"merged": "Đã gộp",
@@ -4029,6 +4496,20 @@
 			"searchActions": "Tìm hành động...",
 			"noActionsFound": "Không tìm thấy hành động nào.",
 			"changeStatus": "Đổi trạng thái",
+			"removeLabel": "Xóa nhãn",
+			"removeLabelSuccess": "Đã xóa nhãn khỏi {{count}} công việc",
+			"removeLabelError": "Không thể xóa nhãn",
+			"unarchive": "Khôi phục từ lưu trữ",
+			"unarchiveSuccess": "Đã khôi phục {{count}} công việc",
+			"unarchiveNone": "Không có công việc nào được chọn đang ở trạng thái lưu trữ",
+			"unarchiveError": "Không thể khôi phục công việc",
+			"setDates": "Ngày",
+			"dateField": "Ngày cần đặt",
+			"startDate": "Ngày bắt đầu",
+			"dueDate": "Ngày đến hạn",
+			"clearStartDate": "Xóa ngày bắt đầu",
+			"clearDueDate": "Xóa ngày đến hạn",
+			"updateStartDateError": "Không thể cập nhật ngày bắt đầu. Ngày bắt đầu không được sau ngày đến hạn của công việc.",
 			"addAssignee": "Thêm người được giao",
 			"addAssigneeSuccess_other": "Đã thêm {{name}} vào {{count}} công việc",
 			"assigneesError": "Không thể cập nhật người được giao",
@@ -4046,7 +4527,19 @@
 				"addRowBefore": "Chèn hàng phía trên",
 				"addRowAfter": "Chèn hàng phía dưới",
 				"deleteRow": "Xóa hàng",
-				"deleteTable": "Xóa bảng"
+				"deleteTable": "Xóa bảng",
+				"moveRowUp": "Chuyển hàng lên",
+				"moveRowDown": "Chuyển hàng xuống",
+				"moveColumnLeft": "Chuyển cột sang trái",
+				"moveColumnRight": "Chuyển cột sang phải",
+				"toggleHeaderRow": "Hàng tiêu đề",
+				"fullWidth": "Toàn chiều rộng",
+				"dragRow": "Hàng {{index}}",
+				"dragColumn": "Cột {{index}}",
+				"dragRowHint": "Kéo để di chuyển hàng, hoặc dùng các phím mũi tên",
+				"dragColumnHint": "Kéo để di chuyển cột, hoặc dùng các phím mũi tên",
+				"insertRowHere": "Chèn một hàng tại đây",
+				"insertColumnHere": "Chèn một cột tại đây"
 			}
 		},
 		"calendar": {
@@ -4068,7 +4561,8 @@
 			"rescheduleError": "Không thể đổi lịch công việc",
 			"showWeekends": "Hiện cuối tuần",
 			"viewMode": "Khoảng thời gian lịch",
-			"week": "Tuần"
+			"week": "Tuần",
+			"overdue": "Quá hạn"
 		},
 		"descriptionSearchLoading": "Đang tìm kiếm trong toàn bộ mô tả…",
 		"descriptionSearchError": "Tìm kiếm mô tả thất bại. Kết quả có thể chưa đầy đủ.",
@@ -4126,11 +4620,11 @@
 			},
 			"label": "Ước tính",
 			"none": "Không có ước tính",
-			"pointsValue": "{{value}} điểm",
+			"pointsValue_other": "{{value}} điểm",
 			"setAria": "Đặt ước tính",
 			"totals": {
 				"estimated": "{{estimated}}/{{total}} công việc đã được ước tính",
-				"points": "{{completed}} / {{total}} điểm",
+				"points_other": "{{completed}} / {{total}} điểm",
 				"time": "{{completed}} / {{total}}"
 			},
 			"updateError": "Không thể cập nhật ước tính"
@@ -4248,6 +4742,12 @@
 			},
 			"url": "URL",
 			"urlPlaceholder": "https://example.com"
+		},
+		"create": {
+			"similarTitle": "Công việc đang mở tương tự",
+			"similarDismiss": "Ẩn công việc tương tự",
+			"similarOpen": "Mở",
+			"similarOpenLabel": "Mở {{key}} {{title}} trong thẻ mới"
 		},
 		"parent": {
 			"add": "Thêm công việc cha",
@@ -4514,6 +5014,7 @@
 				"cycle": "chu kỳ",
 				"estimate": "ước tính",
 				"modules": "mô-đun",
+				"parent": "công việc cha",
 				"status": "trạng thái"
 			},
 			"edited": "Đã chỉnh sửa {{time}}",
@@ -4572,6 +5073,8 @@
 			"hint": "Nhập tiêu đề. @người, #nhãn, !mức ưu tiên và ngày như fri hoặc 12 Oct sẽ trở thành các chip. Nhấn Enter để tạo, Ctrl Enter để mở trình soạn thảo đầy đủ.",
 			"labelError": "Công việc đã được tạo, nhưng không thể thêm nhãn {{name}}",
 			"newLabel": "{{name}} (nhãn mới)",
+			"dueOn": "Thêm công việc đến hạn {{date}}",
+			"notInView": "Đã tạo công việc. Công việc không hiển thị ở đây vì không khớp với chế độ xem này.",
 			"open": "Mở",
 			"openComposer": "Mở trình soạn thảo đầy đủ",
 			"openComposerHint": "Mở trình soạn thảo đầy đủ (Ctrl Enter)",
@@ -4818,7 +5321,18 @@
 			"error": "Không thể mời thành viên nhóm",
 			"createdTitle": "Đã tạo lời mời",
 			"shareLinkDescription": "Chia sẻ liên kết này với {{email}} để họ có thể tham gia không gian làm việc.",
-			"done": "Xong"
+			"done": "Xong",
+			"emailHint": "Phân tách nhiều địa chỉ bằng dấu phẩy, dấu cách hoặc xuống dòng.",
+			"roleLabel": "Vai trò",
+			"roleHint": "Bạn có thể cấp vai trò tối đa bằng vai trò của mình.",
+			"sending": "Đang gửi {{current}}/{{total}}…",
+			"invalidEmails": "Các địa chỉ email này không hợp lệ: {{emails}}",
+			"emailRequired": "Nhập ít nhất một địa chỉ email.",
+			"tooManyEmails": "Mỗi lần mời tối đa {{max}} người.",
+			"sentSome": "Đã gửi {{sent}}/{{total}} lời mời.",
+			"failedTitle": "Chưa gửi được",
+			"rateLimited": "Quá nhiều lời mời cùng lúc. Hãy đợi một phút rồi gửi phần còn lại.",
+			"shareLinksDescription": "Chia sẻ từng liên kết với đúng người để họ có thể tham gia không gian làm việc."
 		},
 		"membersTable": {
 			"emptyTitle": "Chưa có thành viên nhóm nào",
@@ -4844,7 +5358,9 @@
 			"cancelInviteSuccess": "Hủy lời mời thành công",
 			"cancelInviteError": "Không thể hủy lời mời",
 			"roleUpdateSuccess": "Đã cập nhật vai trò",
-			"roleUpdateError": "Không thể cập nhật vai trò"
+			"roleUpdateError": "Không thể cập nhật vai trò",
+			"ariaInvitationRole": "Vai trò cho {{email}}",
+			"invitationRoleUpdateSuccess": "Đã cập nhật vai trò lời mời"
 		},
 		"profile": {
 			"emptyActivity": "Chưa có hoạt động",
@@ -5993,6 +6509,51 @@
 					"shortcuts": "Viết tài liệu phím tắt phân loại"
 				},
 				"title": "Công việc của bạn"
+			},
+			"ask": {
+				"title": "Hỏi AI",
+				"model": "Mô hình của không gian làm việc",
+				"greeting": "Xin chào! Bạn muốn biết điều gì?",
+				"intro": "Hỏi về không gian làm việc bằng ngôn ngữ thường ngày. Câu trả lời đến từ những công việc bạn xem được.",
+				"placeholder": "Hỏi AI, @ để thêm ngữ cảnh, / để dùng lệnh",
+				"placeholderBuild": "Mô tả điều cần tạo hoặc thay đổi…",
+				"modes": {
+					"label": "Chế độ",
+					"ask": "Hỏi",
+					"build": "Xây dựng"
+				},
+				"send": "Gửi",
+				"you": "Bạn",
+				"question": "Điều gì đang chặn chu kỳ hiện tại?",
+				"buildPrompt": "Giao WEB-5 cho Mira",
+				"context": "Ngữ cảnh ({{count}})",
+				"facts": "Dự án: 1 · Người: 4 · Chu kỳ: 1",
+				"earlier": "Tin nhắn trước: {{count}}",
+				"thinking": "Đang suy nghĩ… {{seconds}}s",
+				"thought": "Đã suy nghĩ trong {{seconds}}s",
+				"blockedIntro": "Hai công việc trong {{cycle}} đang bị chặn:",
+				"blockedPageTitles": "{{title}}: đang chờ danh sách trang.",
+				"blockedPricing": "{{title}}: đang chờ thông tin giá từ bộ phận kinh doanh.",
+				"unassigned": "{{key}} chưa có người phụ trách.",
+				"summary": "Một thay đổi. Không có gì xảy ra cho đến khi bạn xác nhận.",
+				"op": "Sửa công việc",
+				"action": "Giao {{key}} cho {{name}}",
+				"awaiting": "Đang chờ phản hồi",
+				"ready": "Thay đổi sẵn sàng: {{count}}",
+				"cancel": "Hủy",
+				"confirm": "Xác nhận",
+				"done": "Xong",
+				"undo": "Hoàn tác",
+				"undone": "Đã hoàn tác",
+				"cancelled": "Đã hủy. Không có gì thay đổi.",
+				"generic": "Bản demo này chỉ trả lời câu hỏi của riêng nó. Trong Margaya, Hỏi trả lời từ không gian làm việc của bạn và gắn liên kết đến những công việc đã dùng.",
+				"genericBuild": "Bản demo này chỉ thực hiện thay đổi của riêng nó. Trong Margaya, Xây dựng biến lời bạn nói thành các thay đổi để bạn xác nhận.",
+				"blocked": "Bị chặn",
+				"tasks": {
+					"pageTitles": "Rà soát tiêu đề trang",
+					"pricing": "Cập nhật trang bảng giá",
+					"mobileMenu": "Sửa menu trên di động"
+				}
 			}
 		},
 		"home": {
@@ -6027,6 +6588,10 @@
 				"singleServer": {
 					"detail": "Redis là tùy chọn",
 					"title": "Một máy chủ là đủ"
+				},
+				"ai": {
+					"title": "AI theo cách của bạn",
+					"detail": "Tắt theo mặc định, dùng mô hình của riêng bạn"
 				}
 			},
 			"faq": {
@@ -6063,6 +6628,14 @@
 					"selfHost": {
 						"answer": "Có. Chạy bằng Docker Compose trên một máy chủ, hoặc trên Kubernetes với Helm chart chính thức. Bạn cần một container ứng dụng và một cơ sở dữ liệu PostgreSQL. Hướng dẫn cài đặt đề cập đến biến môi trường, lưu trữ và reverse proxy.",
 						"question": "Tôi có thể tự lưu trữ Margaya không?"
+					},
+					"ai": {
+						"question": "Margaya có AI không, và AI có bật sẵn không?",
+						"answer": "Có, và không. Hỏi AI, chế độ Xây dựng, hỗ trợ viết, gợi ý phân loại và tác tử AI đều được tích hợp sẵn, nhưng luôn tắt cho đến khi quản trị viên phiên bản kết nối một mô hình và không gian làm việc bật AI. Mọi thay đổi AI đề xuất đều được hiển thị cho bạn trước và có thể hoàn tác."
+					},
+					"aiData": {
+						"question": "Tôi có thể dùng mô hình AI nào, và dữ liệu của tôi đi đâu?",
+						"answer": "Dùng Claude, hoặc bất kỳ mô hình tương thích OpenAI nào bạn tự chạy, như Ollama hay vLLM. Ở chế độ chỉ cục bộ, không có gì rời khỏi mạng của bạn. Margaya chỉ gửi những gì người hỏi vốn đã xem được, không lưu prompt hay câu trả lời trừ khi bạn bật lịch sử trên máy chủ, và ghi lại số lượt sử dụng để tính ngân sách."
 					}
 				},
 				"title": "Câu hỏi, trả lời thẳng thắn"
@@ -6075,13 +6648,11 @@
 				"title": "Dành thời gian cho công việc, không phải cho công cụ."
 			},
 			"hero": {
-				"description": "Margaya gom công việc, chu kỳ, tài liệu và phân loại yêu cầu vào một không gian làm việc nhanh. Gõ một công việc, đẩy nó tiến lên, rồi quay lại với việc chính.",
-				"eyebrow": "Quản lý dự án mã nguồn mở",
-				"note": "Giấy phép MIT. Chạy trên máy chủ của riêng bạn, hoặc dùng thử Margaya Cloud 14 ngày, không cần thẻ tín dụng.",
-				"primaryCta": "Bắt đầu",
-				"secondaryCta": "Tự lưu trữ",
 				"title": "Lên kế hoạch công việc.",
-				"titleAccent": "Bỏ qua việc vặt."
+				"titleAccent": "Bỏ qua việc vặt.",
+				"description": "Margaya gom công việc, chu kỳ, tài liệu và phân loại yêu cầu vào một không gian làm việc nhanh, cùng một trợ lý AI bạn có thể bật lên để trả lời câu hỏi và thực hiện thay đổi. Gõ một công việc, đẩy nó tiến lên, rồi quay lại với việc chính.",
+				"primaryCta": "Bắt đầu",
+				"secondaryCta": "Tự lưu trữ"
 			},
 			"insight": {
 				"description": "Dựng biểu đồ từ công việc, theo dõi nhật ký kiểm tra và khôi phục mọi thứ từ thùng rác.",
@@ -6129,7 +6700,8 @@
 					"select": "Chọn công việc đang trỏ tới",
 					"spreadsheet": "Bảng tính",
 					"status": "Đổi trạng thái",
-					"tasks": "Tìm công việc theo mã hoặc tiêu đề"
+					"tasks": "Tìm công việc theo mã hoặc tiêu đề",
+					"ask": "Mở Hỏi AI"
 				},
 				"modifier": "Ctrl",
 				"shortcutsLabel": "Phím tắt",
@@ -6162,6 +6734,10 @@
 					"views": {
 						"description": "Bảng, danh sách, bảng tính, lịch và Gantt",
 						"title": "Chế độ xem"
+					},
+					"ai": {
+						"title": "AI",
+						"description": "Hỏi AI, chế độ Xây dựng, hỗ trợ viết và tác tử"
 					}
 				},
 				"label": "Chính",
@@ -6172,7 +6748,7 @@
 				"blog": "Blog",
 				"compare": "So sánh",
 				"explore": "Khám phá",
-				"featuresIntro": "Năm chuyến tham quan ngắn về Margaya. Mỗi chuyến đều có bản demo trực tiếp mà bạn có thể tự điều khiển.",
+				"featuresIntro": "Sáu chuyến tham quan ngắn về Margaya. Mỗi chuyến đều có bản demo trực tiếp mà bạn có thể tự điều khiển.",
 				"newTab": "(mở trong thẻ mới)"
 			},
 			"ownIt": {
@@ -6333,6 +6909,26 @@
 					"title": "Tài nguyên"
 				},
 				"selfHosted": "Được tạo ra để tự lưu trữ"
+			},
+			"ai": {
+				"eyebrow": "AI",
+				"title": "Hãy hỏi. Để nó xây dựng. Bạn xác nhận.",
+				"description": "Hỏi AI trả lời dựa trên công việc đang diễn ra, kèm biểu đồ và những công việc nó đã dùng. Chế độ Xây dựng biến một yêu cầu thành các thay đổi để bạn xem lại và xác nhận, còn các tác tử nhận việc như một đồng đội.",
+				"agents": {
+					"title": "Tác tử làm việc như đồng đội",
+					"description": "Giao một công việc cho tác tử và theo dõi trong Bàn tác tử. Tác tử hỏi một người khi bị vướng, chờ phê duyệt trước khi ghi bất cứ thứ gì và có thể chạy theo lịch."
+				},
+				"privacy": {
+					"title": "Riêng tư theo mặc định",
+					"description": "AI luôn tắt cho đến khi quản trị viên bật lên, và bạn quyết định nó chạy ở đâu.",
+					"items": {
+						"model": "Claude, hoặc mô hình của riêng bạn qua Ollama hay vLLM",
+						"local": "Chế độ chỉ cục bộ giữ dữ liệu trong mạng của bạn",
+						"stored": "Không lưu prompt hay câu trả lời nào, trừ khi bạn chọn lưu lịch sử trên máy chủ",
+						"budget": "Ngân sách theo tháng và theo ngày, kèm sổ ghi mức sử dụng",
+						"undo": "Mọi thay đổi từ chế độ Xây dựng đều có thể hoàn tác trong một giờ"
+					}
+				}
 			}
 		},
 		"pages": {
@@ -6351,8 +6947,8 @@
 						"title": "REST API với OpenAPI"
 					},
 					"cleanup": {
-						"body": "Tự động lưu trữ công việc đã đóng và đóng những việc bị bỏ quên, kèm bản xem trước những gì mỗi quy tắc sẽ tác động.",
-						"title": "Dọn dẹp theo lịch"
+						"body": "Thiết lập quy tắc Khi, Nếu, Thì cho việc thường ngày, như giao hoặc gắn nhãn công việc mới, và lưu trữ hoặc đóng công việc bị bỏ quên theo lịch, kèm bản xem trước những gì mỗi quy tắc sẽ tác động.",
+						"title": "Quy tắc tự động hóa"
 					},
 					"integrations": {
 						"body": "Liên kết pull request từ GitHub hoặc Gitea, gửi cập nhật tới Slack, Discord, Telegram hoặc Mattermost, và đẩy sự kiện tới bất kỳ URL nào bằng webhook gửi đi.",
@@ -6491,6 +7087,43 @@
 					}
 				},
 				"title": "Một bộ công việc, mọi góc nhìn bạn cần."
+			},
+			"ai": {
+				"metaTitle": "Trợ lý AI, chế độ Xây dựng và tác tử",
+				"metaDescription": "Đặt câu hỏi về công việc và nhận câu trả lời từ dữ liệu trực tiếp, để chế độ Xây dựng đề xuất thay đổi cho bạn xác nhận, viết với sự hỗ trợ của AI và giao việc cho tác tử AI, với mô hình của riêng bạn và AI tắt theo mặc định.",
+				"eyebrow": "AI",
+				"title": "Một trợ lý hiểu công việc.",
+				"description": "Hỏi AI, chế độ Xây dựng, hỗ trợ viết và tác tử, tất cả trong bản mã nguồn mở, chạy trên mô hình bạn chọn.",
+				"sections": {
+					"ask": {
+						"title": "Hỏi AI",
+						"body": "Hỏi bằng lời thường và nhận câu trả lời từ công việc đang diễn ra, kèm số liệu, biểu đồ và liên kết đến những công việc và trang đã dùng. Nhắc đến một công việc, trang hoặc người bằng @, đính kèm tệp, hoặc nói thay vì gõ."
+					},
+					"build": {
+						"title": "Chế độ Xây dựng",
+						"body": "Mô tả một thay đổi, như một dự án có ba công việc hoặc một công việc cho Mia. Bạn thấy nó đã đọc gì và suy luận ra sao, chỉnh sửa các thay đổi được đề xuất, xác nhận chúng và có thể hoàn tác bất kỳ thay đổi nào trong một giờ."
+					},
+					"writing": {
+						"title": "Hỗ trợ viết",
+						"body": "Cải thiện, rút gọn, dịch hoặc đổi giọng văn của một mô tả hay bình luận, nhận gợi ý tiêu đề, tóm tắt một công việc hoặc thêm khối AI vào trang."
+					},
+					"triage": {
+						"title": "Phân loại và bản tóm lược",
+						"body": "Nhận gợi ý nhãn và mức ưu tiên cho việc mới, phát hiện trùng lặp, lọc bảng bằng cách mô tả điều bạn muốn, và nhận bản tóm tắt hộp thư chưa đọc hoặc bản tóm lược cho một chu kỳ."
+					},
+					"agents": {
+						"title": "Tác tử AI",
+						"body": "Tác tử là thành viên mà bạn có thể giao việc. Chúng hỏi một người khi bị vướng, chờ phê duyệt trước khi ghi, chạy theo lịch và có thể dùng công cụ từ các máy chủ MCP khác mà bạn kết nối."
+					},
+					"privacy": {
+						"title": "Mô hình của bạn, quy tắc của bạn",
+						"body": "AI tắt cho đến khi quản trị viên bật lên. Dùng Claude hoặc mô hình cục bộ, giữ dữ liệu trong mạng của bạn, đặt ngân sách và không lưu prompt hay câu trả lời nào trừ khi bạn muốn."
+					}
+				},
+				"cta": {
+					"title": "Bật AI khi bạn sẵn sàng.",
+					"description": "Đọc hướng dẫn thiết lập AI, hoặc thử Hỏi AI trong không gian làm việc của riêng bạn."
+				}
 			}
 		},
 		"scenes": {
@@ -6601,6 +7234,10 @@
 			"yourWork": {
 				"caption": "Công việc của bạn gom mọi thứ được giao cho bạn, do bạn tạo và bạn đang theo dõi.",
 				"description": "Demo: trang Công việc của bạn. Con trỏ lần lượt qua các tab Được giao, Đã tạo và Đã đăng ký, mỗi tab liệt kê công việc riêng trên nhiều dự án kèm trạng thái, mức ưu tiên và ngày đến hạn."
+			},
+			"ask": {
+				"caption": "Hỏi về công việc, rồi để chế độ Xây dựng thực hiện thay đổi. Bạn là người xác nhận.",
+				"description": "Demo: bảng Website với khung trò chuyện Hỏi AI đang mở. Một người hỏi điều gì đang chặn chu kỳ hiện tại. Trợ lý liệt kê những gì nó đã đọc, suy nghĩ hai giây rồi trả lời: WEB-5 và WEB-6 đang bị chặn, và WEB-5 chưa có người phụ trách. Chuyển sang Xây dựng, họ yêu cầu giao WEB-5 cho Mira. Trợ lý đề xuất thay đổi, họ xác nhận, thẻ hiển thị Xong kèm nút Hoàn tác, và ảnh đại diện của Mira xuất hiện trên WEB-5."
 			}
 		}
 	},
@@ -6756,7 +7393,10 @@
 			"owner": "Chủ sở hữu",
 			"progress": "Tiến độ",
 			"tasks": "Công việc",
-			"title": "Chi tiết chu kỳ"
+			"title": "Chi tiết chu kỳ",
+			"rolledOver_other": "Đã chuyển tiếp {{count}} công việc chưa hoàn thành sang {{name}}.",
+			"rolloverNoNext": "Không tìm thấy chu kỳ tiếp theo khi chuyển tiếp; các công việc chưa hoàn thành vẫn ở đây.",
+			"rolloverNothing": "Không có công việc chưa hoàn thành nào cần chuyển tiếp."
 		},
 		"status": {
 			"archived": "Đã lưu trữ",
@@ -7323,7 +7963,9 @@
 		"widgets": {
 			"quickLinks": "Liên kết nhanh",
 			"recents": "Gần đây",
-			"stickies": "Ghi chú nhanh"
+			"stickies": "Ghi chú nhanh",
+			"risks": "Rủi ro",
+			"myBrief": "Bản tin của tôi"
 		},
 		"focus": {
 			"caughtUp": "Bạn đã xem hết",
@@ -7334,7 +7976,9 @@
 			"overdue_other": "{{count}} quá hạn",
 			"stickies": "Ghi chú dán",
 			"stickiesHint": "Ghi chú riêng tư, chỉ mình bạn thấy",
-			"unread_other": "{{count}} chưa đọc"
+			"unread_other": "{{count}} chưa đọc",
+			"openCaption": "đang mở",
+			"unreadCaption": "chưa đọc"
 		}
 	},
 	"intake": {
@@ -7394,7 +8038,11 @@
 			"titlePlaceholder": "Bạn cần gì?",
 			"titleRequired": "Hãy nhập tiêu đề",
 			"toast": "Đã gửi yêu cầu",
-			"toastView": "Xem"
+			"toastView": "Xem",
+			"pastedImages": "Ảnh đã dán",
+			"pasteHint": "Dán ảnh chụp màn hình để đính kèm vào yêu cầu.",
+			"removeImage": "Xóa {{name}}",
+			"attachFailed": "Yêu cầu đã được gửi, nhưng không thể đính kèm một số ảnh."
 		},
 		"decline": {
 			"description": "Yêu cầu sẽ được đóng và không xuất hiện trên bảng. Bạn có thể mở lại sau.",
@@ -7441,7 +8089,9 @@
 			"noTasks": "Dự án này chưa có công việc nào khác.",
 			"searchPlaceholder": "Tìm công việc theo mã hoặc tiêu đề",
 			"title": "Đánh dấu {{key}} là trùng lặp",
-			"toast": "Đã đánh dấu trùng lặp với {{key}}"
+			"toast": "Đã đánh dấu trùng lặp với {{key}}",
+			"aiSuggestions": "AI gợi ý",
+			"aiChecking": "Đang tìm bản trùng bằng AI…"
 		},
 		"empty": {
 			"backToIntake": "Quay lại mục tiếp nhận",
@@ -7683,6 +8333,11 @@
 				"singleProjectHint": "Chọn một dự án duy nhất để xem vận tốc",
 				"subtitle": "Đã hoàn thành so với cam kết, theo chu kỳ",
 				"title": "Vận tốc"
+			},
+			"filter": {
+				"all": "Tất cả",
+				"label": "Hiển thị chu kỳ",
+				"running": "Đang diễn ra"
 			}
 		},
 		"dimensions": {
@@ -7823,7 +8478,8 @@
 			"noRequests": "Chưa có yêu cầu nào",
 			"noTasks": "Không có công việc nào khớp với các bộ lọc này",
 			"retry": "Thử lại",
-			"timeout": "Việc này mất quá nhiều thời gian. Hãy thu hẹp bộ lọc và thử lại."
+			"timeout": "Việc này mất quá nhiều thời gian. Hãy thu hẹp bộ lọc và thử lại.",
+			"noRunningCycles": "Hiện không có chu kỳ nào đang diễn ra"
 		},
 		"table": {
 			"periodEnd": "Cuối kỳ",
@@ -7839,7 +8495,8 @@
 			"intake": "Tiếp nhận",
 			"modules": "Mô-đun",
 			"overview": "Tổng quan",
-			"tasks": "Công việc"
+			"tasks": "Công việc",
+			"delivery": "Bàn giao"
 		},
 		"trend": {
 			"completed": "Đã hoàn thành",
@@ -7853,9 +8510,141 @@
 			"chart": "Biểu đồ",
 			"label": "Hiển thị dạng",
 			"table": "Bảng"
+		},
+		"reports": {
+			"actionsFor": "Thao tác cho {{name}}",
+			"close": "Đóng báo cáo",
+			"delete": "Xóa",
+			"deleteDescription": "“{{name}}” sẽ bị xóa. Không thể hoàn tác thao tác này.",
+			"deleteSharedDescription": "“{{name}}” sẽ bị xóa đối với mọi người trong không gian làm việc. Không thể hoàn tác thao tác này.",
+			"deleteTitle": "Xóa báo cáo này?",
+			"dialog": {
+				"cancel": "Hủy",
+				"createTitle": "Lưu báo cáo",
+				"editTitle": "Chỉnh sửa báo cáo",
+				"name": "Tên",
+				"namePlaceholder": "ví dụ: Lỗi đang mở theo người được giao",
+				"nameRequired": "Hãy nhập tên",
+				"save": "Lưu",
+				"summary": "Lưu cài đặt biểu đồ, các dự án trong phạm vi và bộ lọc.",
+				"update": "Lưu thay đổi",
+				"visibility": "Ai có thể xem"
+			},
+			"empty": "Chưa có báo cáo đã lưu nào. Hãy lưu biểu đồ này để quay lại sau.",
+			"listTitle": "Báo cáo đã lưu",
+			"loadError": "Không thể tải báo cáo đã lưu",
+			"makePrivate": "Đặt thành riêng tư",
+			"notes": {
+				"allProjects": "Không có dự án nào của báo cáo khả dụng, nên tất cả dự án đều được hiển thị.",
+				"builderReset": "Một số cài đặt biểu đồ không khả dụng cho các dự án này nên đã được đặt lại.",
+				"dropped_other": "{{count}} dự án trong báo cáo này không còn tồn tại.",
+				"leftOut_other": "{{count}} dự án trong báo cáo này đã được lưu trữ nên bị loại ra.",
+				"otherProjects": "Báo cáo này được lưu cho các dự án khác; ở đây chỉ hiển thị dự án này."
+			},
+			"open": "Báo cáo",
+			"rename": "Đổi tên",
+			"save": "Lưu",
+			"saveAsNew": "Lưu thành báo cáo mới",
+			"share": "Chia sẻ với không gian làm việc",
+			"sharedBy": "Được chia sẻ bởi {{name}}",
+			"showing": "Báo cáo: {{name}}",
+			"toast": {
+				"deleted": "Đã xóa báo cáo",
+				"deleteError": "Không thể xóa báo cáo",
+				"madePrivate": "Báo cáo hiện ở chế độ riêng tư",
+				"saved": "Đã lưu “{{name}}”",
+				"saveError": "Không thể lưu báo cáo",
+				"shared": "Đã chia sẻ báo cáo với không gian làm việc",
+				"updated": "Đã cập nhật báo cáo"
+			},
+			"unsaved": "Có thay đổi chưa lưu",
+			"update": "Cập nhật báo cáo",
+			"visibility": {
+				"private": "Riêng tư",
+				"privateHint": "Chỉ bạn có thể xem.",
+				"workspace": "Chia sẻ với không gian làm việc",
+				"workspaceHint": "Mọi người có quyền truy cập phân tích trong không gian làm việc này đều có thể mở."
+			}
 		}
 	},
 	"pages": {
+		"templates": {
+			"saveAction": "Lưu làm mẫu",
+			"saveTitle": "Lưu làm mẫu",
+			"saveDescription": "Nội dung hiện tại và biểu tượng của trang sẽ trở thành mẫu cho các trang mới.",
+			"nameLabel": "Tên mẫu",
+			"scopeLabel": "Dùng được trong",
+			"scopeProject": "Dự án này",
+			"scopeProjectHint": "Được gợi ý khi tạo trang trong dự án này.",
+			"scopeWorkspace": "Mọi dự án",
+			"scopeWorkspaceHint": "Được gợi ý trong mọi dự án của không gian làm việc.",
+			"saveConfirm": "Lưu mẫu",
+			"savedToast": "Đã lưu mẫu",
+			"saveError": "Không thể lưu mẫu",
+			"newFromTemplate": "Trang mới từ mẫu",
+			"moreCreateOptions": "Thêm cách tạo trang",
+			"pickTitle": "Trang mới từ mẫu",
+			"pickDescription": "Trang mới bắt đầu với nội dung của mẫu. Sau đó bạn có thể thay đổi bất cứ điều gì.",
+			"starters": "Mẫu khởi đầu",
+			"saved": "Mẫu đã lưu",
+			"savedEmpty": "Chưa có mẫu nào được lưu. Hãy lưu một mẫu từ menu của trang.",
+			"loadError": "Không thể tải mẫu",
+			"deleteLabel": "Xóa mẫu {{name}}",
+			"deleted": "Đã xóa mẫu",
+			"deleteError": "Không thể xóa mẫu",
+			"builtin": {
+				"meetingName": "Biên bản cuộc họp",
+				"meetingDescription": "Người tham dự, chương trình, quyết định và việc cần làm.",
+				"meetingAttendees": "Người tham dự",
+				"meetingAgenda": "Chương trình họp",
+				"meetingNotes": "Ghi chú",
+				"meetingDecisions": "Quyết định",
+				"meetingActionItems": "Việc cần làm",
+				"specName": "Đặc tả",
+				"specDescription": "Vấn đề, mục tiêu, đề xuất và câu hỏi còn mở.",
+				"specSummary": "Tóm tắt",
+				"specProblem": "Vấn đề",
+				"specGoals": "Mục tiêu",
+				"specNonGoals": "Ngoài phạm vi",
+				"specProposal": "Đề xuất",
+				"specOpenQuestions": "Câu hỏi còn mở",
+				"retroName": "Họp nhìn lại",
+				"retroDescription": "Điều gì tốt, điều gì cần cải thiện, lần tới sẽ thử gì.",
+				"retroWentWell": "Điều gì đã tốt",
+				"retroCouldBeBetter": "Điều gì có thể tốt hơn",
+				"retroTryNext": "Lần tới chúng ta sẽ thử gì"
+			}
+		},
+		"publish": {
+			"menuItem": "Xuất bản lên web",
+			"title": "Xuất bản lên web",
+			"description": "Bất kỳ ai có liên kết đều có thể đọc trang này mà không cần đăng nhập. Các công cụ tìm kiếm được yêu cầu không lập chỉ mục trang.",
+			"switchLabel": "Liên kết công khai",
+			"onHint": "Đã xuất bản. Tắt đi sẽ thu hồi liên kết ngay lập tức.",
+			"offHint": "Đang tắt. Bật lên để tạo liên kết.",
+			"disabledByWorkspace": "Trang công khai đang tắt cho không gian làm việc này. Quản trị viên có thể bật trong cài đặt không gian làm việc.",
+			"cannotPublish": "Chỉ những người có quyền chia sẻ dự án mới có thể xuất bản, và chỉ với các trang hiển thị cho toàn bộ không gian làm việc.",
+			"linkLabel": "Liên kết",
+			"copyLink": "Sao chép liên kết",
+			"copied": "Đã sao chép",
+			"openLink": "Mở trang công khai",
+			"privacyNote": "Lượt nhắc, liên kết công việc, tệp và liên kết tới các trang chưa xuất bản sẽ bị ẩn trên trang công khai.",
+			"publishedToast": "Đã xuất bản trang",
+			"unpublishedToast": "Đã thu hồi liên kết",
+			"error": "Không thể thay đổi liên kết công khai",
+			"loadError": "Không thể tải liên kết công khai",
+			"done": "Xong"
+		},
+		"publicView": {
+			"documentTitle": "Trang được chia sẻ",
+			"unavailableTitle": "Trang này không khả dụng",
+			"unavailableDescription": "Liên kết có thể đã bị thu hồi, hoặc trang không còn được chia sẻ.",
+			"updated": "Cập nhật {{date}}",
+			"mention": "@ai đó",
+			"task": "một công việc được liên kết",
+			"file": "một tệp đính kèm",
+			"page": "một trang khác"
+		},
 		"actions": {
 			"archive": "Lưu trữ",
 			"copyLink": "Sao chép liên kết",
@@ -7893,6 +8682,40 @@
 			"restoredBy": "{{name}} đã khôi phục một phiên bản trước đó",
 			"roomFull": "Hiện có quá nhiều người đang mở trang này. Hãy thử lại sau giây lát.",
 			"signedOut": "Phiên của bạn đã kết thúc. Hãy đăng nhập lại để tiếp tục chỉnh sửa."
+		},
+		"toolbar": {
+			"ariaLabel": "Thanh công cụ định dạng",
+			"textStyle": "Kiểu văn bản",
+			"bold": "In đậm",
+			"italic": "In nghiêng",
+			"underline": "Gạch chân",
+			"strike": "Gạch ngang",
+			"inlineCode": "Mã nội dòng",
+			"link": "Liên kết",
+			"image": "Hình ảnh",
+			"more": "Định dạng khác"
+		},
+		"filters": {
+			"button": "Bộ lọc",
+			"active": "Đã áp dụng bộ lọc",
+			"search": "Tìm bộ lọc",
+			"searchClear": "Xóa tìm kiếm",
+			"favorites": "Mục yêu thích",
+			"createdDate": "Ngày tạo",
+			"date": {
+				"any": "Mọi thời điểm",
+				"today": "Hôm nay",
+				"last7": "7 ngày qua",
+				"last30": "30 ngày qua",
+				"older": "Cũ hơn 30 ngày"
+			},
+			"remove": "Xóa bộ lọc {{filter}}"
+		},
+		"detail": {
+			"unlocked": "Đã mở khóa",
+			"openOutline": "Mở dàn ý",
+			"currentSection": "Mục hiện tại",
+			"emptyLinePlaceholder": "Nhập '/' để xem lệnh"
 		},
 		"commandPalette": {
 			"createPage": "Tạo trang"
@@ -8009,8 +8832,6 @@
 			"locked": "Đã khóa",
 			"newPage": "Trang mới",
 			"ownedBy": "Thuộc về {{name}}",
-			"ownerFilter": "Chủ sở hữu",
-			"ownerFilterSearch": "Tìm người",
 			"retry": "Thử lại",
 			"searchPlaceholder": "Tìm trang",
 			"sort": {
@@ -8130,6 +8951,229 @@
 			"expand": "Mở rộng {{title}}",
 			"newPage": "Trang mới",
 			"title": "Trang"
+		}
+	},
+	"accountSecurity": {
+		"platform": {
+			"save": "Lưu",
+			"retry": "Thử lại",
+			"loadMore": "Tải thêm",
+			"auditPasswordResetSent": "Đã gửi liên kết đặt lại mật khẩu",
+			"apiKeys": {
+				"accessLabel": "Quyền truy cập",
+				"accessFull": "Toàn quyền",
+				"accessFullHint": "Mọi việc bạn có thể làm, trong mọi không gian làm việc bạn tham gia.",
+				"accessRead": "Chỉ đọc",
+				"accessReadHint": "Có thể đọc nhưng không bao giờ thay đổi gì.",
+				"accessCustom": "Tùy chỉnh",
+				"accessCustomHint": "Chỉ những phần bạn chọn bên dưới.",
+				"areasLabel": "Phạm vi",
+				"areaNone": "Không",
+				"areaRead": "Đọc",
+				"areaWrite": "Ghi",
+				"areasRequired": "Chọn ít nhất một phạm vi.",
+				"projectsLabel": "Giới hạn ở một số dự án",
+				"projectsHint": "Các dự án khác coi như không tồn tại với khóa này, và yêu cầu trên toàn không gian làm việc sẽ bị từ chối.",
+				"projectsIn": "Dự án trong {{workspace}}",
+				"projectsLoading": "Đang tải dự án…",
+				"projectsEmpty": "Không gian làm việc này chưa có dự án.",
+				"projectsRequired": "Chọn ít nhất một dự án.",
+				"columnScope": "Phạm vi",
+				"scopeFull": "Toàn quyền",
+				"scopeRead": "Chỉ đọc",
+				"scopeCustom": "Tùy chỉnh",
+				"scopeProjects": "Dự án: {{projects}}",
+				"deletedProject": "Dự án đã xóa",
+				"requestsAria": "Các yêu cầu dùng {{name}}",
+				"requestsTitle": "Yêu cầu: {{name}}",
+				"requestsDescription": "Các yêu cầu gần đây dùng khóa này. Chỉ lưu phương thức, tuyến, trạng thái và thời lượng, không bao giờ lưu nội dung.",
+				"requestsEmpty": "Chưa có yêu cầu nào.",
+				"requestsError": "Không thể tải các yêu cầu.",
+				"columnTime": "Thời gian",
+				"columnRequest": "Yêu cầu",
+				"columnStatus": "Trạng thái",
+				"columnDuration": "Thời lượng",
+				"durationMs": "{{value}} ms"
+			},
+			"policy": {
+				"title": "Chính sách đăng nhập",
+				"description": "Ai được tạo tài khoản, mọi người đăng nhập thế nào và phiên kéo dài bao lâu.",
+				"invitedPasswordSignUp": "Đăng ký bằng mật khẩu cho người được mời",
+				"invitedPasswordSignUpHint": "Khi tắt đăng ký bằng mật khẩu, người có lời mời hợp lệ vẫn có thể tạo tài khoản có mật khẩu.",
+				"domains": "Tên miền email được phép",
+				"domainsHint": "Tài khoản mới phải dùng địa chỉ thuộc một trong các tên miền này. Để trống để cho phép mọi tên miền.",
+				"requiredProvider": "Nhà cung cấp đăng nhập bắt buộc",
+				"requiredProviderHint": "Mọi người đăng nhập qua nhà cung cấp này. Quản trị viên phiên bản vẫn giữ đăng nhập bằng mật khẩu để quay lại.",
+				"noRequirement": "Không bắt buộc",
+				"customProvider": "phương thức đăng nhập của tổ chức bạn",
+				"sessionLifetime": "Thời hạn phiên",
+				"sessionLifetimeHint": "Một phiên không dùng đến kéo dài bao lâu. Sử dụng sẽ gia hạn phiên.",
+				"hours": "giờ",
+				"signInNotice": "Đăng nhập bằng {{provider}}. Đăng nhập bằng mật khẩu chỉ dành cho quản trị viên phiên bản."
+			},
+			"twoFactor": {
+				"title": "Xác thực hai yếu tố",
+				"description": "Yêu cầu mã từ ứng dụng xác thực khi đăng nhập bằng mật khẩu.",
+				"authenticator": "Ứng dụng xác thực",
+				"on": "Bật",
+				"off": "Tắt",
+				"turnOn": "Bật",
+				"turnOff": "Tắt",
+				"newCodes": "Mã khôi phục mới",
+				"confirmPassword": "Xác nhận mật khẩu của bạn",
+				"continue": "Tiếp tục",
+				"setupTitle": "Thêm Margaya vào ứng dụng xác thực",
+				"setupHint": "Nhập khóa thiết lập này vào ứng dụng xác thực, rồi gõ mã 6 chữ số mà ứng dụng hiển thị.",
+				"setupKey": "Khóa thiết lập",
+				"openApp": "Mở trong ứng dụng xác thực trên thiết bị này",
+				"code": "Mã xác thực",
+				"verify": "Xác minh",
+				"invalidCode": "Mã không đúng. Kiểm tra giờ trên thiết bị và thử lại.",
+				"codesTitle": "Mã khôi phục",
+				"codesHint": "Hãy cất giữ chúng ở nơi an toàn. Mỗi mã giúp bạn đăng nhập một lần nếu mất thiết bị.",
+				"copyCodes": "Sao chép mã",
+				"copied": "Đã sao chép mã khôi phục",
+				"done": "Xong",
+				"enabled": "Xác thực hai yếu tố đang bật.",
+				"disabled": "Xác thực hai yếu tố đang tắt.",
+				"error": "Đã xảy ra lỗi. Hãy thử lại."
+			},
+			"challenge": {
+				"title": "Xác thực hai yếu tố",
+				"totpHint": "Nhập mã 6 chữ số từ ứng dụng xác thực của bạn.",
+				"recoveryHint": "Nhập một trong các mã khôi phục. Mỗi mã chỉ dùng được một lần.",
+				"recoveryCode": "Mã khôi phục",
+				"invalid": "Mã không đúng. Hãy thử lại.",
+				"trustDevice": "Tin cậy thiết bị này trong 30 ngày",
+				"useRecovery": "Dùng mã khôi phục",
+				"useApp": "Dùng ứng dụng xác thực",
+				"usePassword": "Đăng nhập bằng mật khẩu",
+				"back": "Quay lại đăng nhập"
+			},
+			"users": {
+				"nav": "Người dùng",
+				"title": "Người dùng",
+				"subtitle": "Mọi tài khoản trên máy chủ này. Chặn người đã rời đi, đặt lại mật khẩu và đăng xuất người dùng.",
+				"listTitle": "Tài khoản",
+				"search": "Tìm theo tên hoặc email",
+				"filterLabel": "Hiển thị",
+				"filterAll": "Tất cả tài khoản",
+				"filterAdmins": "Quản trị viên phiên bản",
+				"filterBanned": "Bị chặn",
+				"empty": "Không có tài khoản nào khớp với “{{query}}”.",
+				"none": "Chưa có tài khoản nào.",
+				"columnUser": "Người dùng",
+				"columnStatus": "Trạng thái",
+				"columnWorkspaces": "Không gian làm việc",
+				"columnLastActive": "Hoạt động gần nhất",
+				"columnJoined": "Tham gia",
+				"columnActions": "Thao tác",
+				"badgeAdmin": "Quản trị",
+				"badgeBanned": "Bị chặn",
+				"badgeTwoFactor": "2FA",
+				"never": "Chưa bao giờ",
+				"actionsFor": "Thao tác cho {{name}}",
+				"details": "Xem chi tiết",
+				"resetPassword": "Đặt lại mật khẩu",
+				"signOut": "Đăng xuất mọi nơi",
+				"makeAdmin": "Đặt làm quản trị viên phiên bản",
+				"removeAdmin": "Gỡ quản trị viên phiên bản",
+				"ban": "Chặn",
+				"unban": "Bỏ chặn",
+				"banTitle": "Chặn {{name}}?",
+				"banDescription": "Người này bị đăng xuất mọi nơi và không thể đăng nhập cho đến khi hết lệnh chặn. Các khóa API của họ cũng ngừng hoạt động.",
+				"banReason": "Lý do (không bắt buộc)",
+				"banDuration": "Thời hạn",
+				"banForever": "Đến khi bỏ chặn",
+				"ban7Days": "7 ngày",
+				"ban30Days": "30 ngày",
+				"banned": "Đã chặn {{name}}.",
+				"unbanned": "{{name}} có thể đăng nhập lại.",
+				"resetTitle": "Đặt lại mật khẩu của {{name}}?",
+				"resetDescription": "Gửi liên kết đặt lại hoặc đặt mật khẩu mới ngay. Đặt mật khẩu sẽ đăng xuất người này ở mọi nơi.",
+				"resetByEmail": "Gửi liên kết đặt lại đến {{email}}",
+				"resetSetNow": "Đặt mật khẩu mới ngay",
+				"newPassword": "Mật khẩu mới",
+				"resetConfirm": "Đặt lại mật khẩu",
+				"resetSent": "Liên kết đặt lại đang được gửi đến {{email}}.",
+				"passwordSet": "Đã đổi mật khẩu của {{name}}.",
+				"signOutTitle": "Đăng xuất {{name}} ở mọi nơi?",
+				"signOutDescription": "Mọi phiên kết thúc ngay. Các khóa API vẫn hoạt động; chỉ chủ sở hữu mới thu hồi được.",
+				"signedOut": "Đã đăng xuất {{name}} ở mọi nơi.",
+				"promoted": "{{name}} giờ là quản trị viên phiên bản.",
+				"demoted": "{{name}} không còn là quản trị viên phiên bản.",
+				"activeSessions": "Phiên đang hoạt động",
+				"signInMethod": "Mật khẩu",
+				"hasPassword": "Đã đặt",
+				"noPassword": "Chưa đặt (đăng nhập cách khác)",
+				"workspacesTitle": "Không gian làm việc",
+				"noWorkspaces": "Không thuộc không gian làm việc nào.",
+				"joined": "Tham gia {{date}}"
+			}
+		},
+		"password": {
+			"tooShort": "Dùng ít nhất {{min}} ký tự.",
+			"tooCommon": "Mật khẩu này quá phổ biến và dễ đoán. Hãy chọn mật khẩu khác.",
+			"matchesEmail": "Mật khẩu không được trùng với địa chỉ email của bạn.",
+			"hint": "Ít nhất {{min}} ký tự. Tránh mật khẩu phổ biến và địa chỉ email của bạn."
+		},
+		"emailChange": {
+			"action": "Đổi email",
+			"title": "Đổi địa chỉ email",
+			"description": "Chúng tôi sẽ gửi mã đến địa chỉ mới. Email của bạn sẽ thay đổi khi bạn nhập mã, và các phiên khác của bạn sẽ bị đăng xuất.",
+			"newEmail": "Địa chỉ email mới",
+			"newEmailPlaceholder": "you@example.com",
+			"invalidEmail": "Nhập địa chỉ email hợp lệ.",
+			"sameEmail": "Đó đã là địa chỉ email của bạn.",
+			"sendCode": "Gửi mã",
+			"codeSent": "Nếu {{email}} có thể sử dụng, mã đang được gửi đến đó. Mã sẽ hết hạn sau 5 phút.",
+			"code": "Mã xác minh",
+			"confirm": "Đổi email",
+			"back": "Dùng địa chỉ khác",
+			"success": "Địa chỉ email của bạn hiện là {{email}}.",
+			"invalidCode": "Mã không đúng hoặc đã hết hạn. Hãy yêu cầu mã mới.",
+			"sessionTooOld": "Vì lý do bảo mật, hãy đăng nhập lại trước khi đổi địa chỉ email.",
+			"unavailable": "Máy chủ này chưa thiết lập email nên không thể đổi địa chỉ của bạn tại đây. Hãy liên hệ quản trị viên phiên bản.",
+			"error": "Không thể đổi địa chỉ email của bạn."
+		},
+		"reauth": {
+			"title": "Xác nhận đó là bạn",
+			"description": "Thay đổi phiên bản cần một lần đăng nhập gần đây. Nhập mật khẩu để tiếp tục trong 10 phút tới.",
+			"noPassword": "Thay đổi phiên bản cần một lần đăng nhập gần đây. Tài khoản của bạn không có mật khẩu, vì vậy hãy đăng nhập lại để tiếp tục.",
+			"password": "Mật khẩu",
+			"confirm": "Xác nhận",
+			"signInAgain": "Đăng nhập lại",
+			"wrongPassword": "Mật khẩu không đúng.",
+			"cancelled": "Chưa lưu: chưa xác nhận được danh tính của bạn.",
+			"error": "Không thể xác nhận mật khẩu của bạn."
+		},
+		"auditTrail": {
+			"title": "Dấu vết kiểm tra",
+			"subtitle": "Thay đổi phiên bản: ai đã thay đổi gì và khi nào. Giá trị bí mật không bao giờ được ghi lại.",
+			"empty": "Chưa ghi nhận thay đổi phiên bản nào.",
+			"loadMore": "Tải thêm",
+			"when": "Khi nào",
+			"who": "Ai",
+			"what": "Nội dung",
+			"system": "Hệ thống",
+			"actions": {
+				"instanceSettingsUpdated": "Đã thay đổi cài đặt phiên bản",
+				"instanceAdminAdded": "Đã thêm quản trị viên phiên bản",
+				"instanceAdminRemoved": "Đã gỡ quản trị viên phiên bản",
+				"instanceReauthenticated": "Đã xác nhận mật khẩu",
+				"userCreated": "Đã tạo một tài khoản",
+				"userRoleChanged": "Đã đổi vai trò của một tài khoản",
+				"userBanned": "Đã chặn một tài khoản",
+				"userUnbanned": "Đã bỏ chặn",
+				"userRemoved": "Đã xóa một tài khoản",
+				"userPasswordSet": "Đã đặt mật khẩu cho một tài khoản",
+				"userSessionsRevoked": "Đã đăng xuất một tài khoản",
+				"userImpersonated": "Đã đăng nhập dưới tài khoản khác",
+				"cliAdminPromoted": "Đã đặt làm quản trị viên phiên bản (CLI khôi phục)",
+				"cliAdminDemoted": "Đã gỡ quản trị viên phiên bản (CLI khôi phục)",
+				"cliPasswordReset": "Đã đặt lại mật khẩu (CLI khôi phục)",
+				"cliUserUnbanned": "Đã bỏ chặn (CLI khôi phục)"
+			}
 		}
 	},
 	"instanceAdmin": {
@@ -8270,7 +9314,8 @@
 			"email": "Email",
 			"general": "Chung",
 			"publicBoards": "Bảng công khai",
-			"workspaces": "Không gian làm việc"
+			"workspaces": "Không gian làm việc",
+			"ai": "AI"
 		},
 		"oauth": {
 			"authorizationUrl": "URL ủy quyền",
@@ -8491,7 +9536,11 @@
 				"label": "Stack",
 				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
 			},
-			"title": "Quick facts"
+			"title": "Quick facts",
+			"ai": {
+				"label": "AI",
+				"value": "Tùy chọn và tắt theo mặc định: Hỏi AI, chế độ Xây dựng và tác tử AI, chạy trên Claude hoặc mô hình tự lưu trữ"
+			}
 		},
 		"guidelines": {
 			"do": {
@@ -8701,5 +9750,1675 @@
 		},
 		"title": "One product. Two ways to run it.",
 		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+	},
+	"templates": {
+		"form": {
+			"addSubtask": "Thêm",
+			"assignees": "Người được giao",
+			"assigneesNone": "Mặc định của dự án",
+			"create": "Tạo mẫu",
+			"createTitle": "Mẫu công việc mới",
+			"description": "Nội dung ban đầu của một công việc mới. Mọi thứ vẫn có thể chỉnh sửa khi tạo công việc.",
+			"editTitle": "Chỉnh sửa mẫu công việc",
+			"estimate": "Ước tính",
+			"labels": "Nhãn",
+			"labelsEmpty": "Không tìm thấy nhãn",
+			"labelsNone": "Không có nhãn",
+			"labelsSearch": "Tìm nhãn",
+			"moveDown": "Di chuyển {{title}} xuống",
+			"moveUp": "Di chuyển {{title}} lên",
+			"name": "Tên",
+			"namePlaceholder": "Báo lỗi",
+			"notSet": "Chưa đặt",
+			"priority": "Mức ưu tiên",
+			"removeSubtask": "Xóa {{title}}",
+			"save": "Lưu mẫu",
+			"status": "Trạng thái",
+			"statusDefault": "Mặc định của dự án",
+			"subtaskPlaceholder": "Thêm công việc con",
+			"subtasks": "Công việc con",
+			"subtaskTitle": "Công việc con {{number}}",
+			"taskDescription": "Mô tả",
+			"taskDescriptionPlaceholder": "Các bước tái hiện, kết quả mong đợi…",
+			"titlePattern": "Định dạng tiêu đề",
+			"titlePatternHint": "{title} sẽ được thay bằng tiêu đề bạn nhập. Nếu không có, tiêu đề bạn nhập sẽ được thêm vào sau định dạng.",
+			"titlePatternPlaceholder": "Lỗi: {title}"
+		},
+		"settings": {
+			"add": "Mẫu mới",
+			"deleteAria": "Xóa mẫu {{name}}",
+			"deleteConfirm": "Xóa",
+			"deleteDescription": "Các công việc đã tạo từ mẫu này vẫn được giữ nguyên.",
+			"deleteTitle": "Xóa mẫu {{name}}?",
+			"description": "Điểm khởi đầu cho công việc mới: định dạng tiêu đề, các trường mặc định và danh sách kiểm tra công việc con.",
+			"editAria": "Chỉnh sửa mẫu {{name}}",
+			"empty": "Chưa có mẫu nào.",
+			"loadError": "Không thể tải mẫu.",
+			"noPermission": "Chỉ những người có thể chỉnh sửa dự án mới có thể thay đổi mẫu của dự án.",
+			"retry": "Thử lại",
+			"subtaskCount_other": "{{count}} công việc con",
+			"title": "Mẫu công việc",
+			"toast": {
+				"created": "Đã tạo mẫu",
+				"deleted": "Đã xóa mẫu",
+				"deleteError": "Không thể xóa mẫu",
+				"error": "Không thể lưu mẫu",
+				"updated": "Đã lưu mẫu"
+			}
+		},
+		"use": {
+			"applied": "Mẫu: {{name}}",
+			"button": "Mẫu",
+			"menuLabel": "Dùng mẫu",
+			"quickAdd": "Tạo từ mẫu",
+			"removeSubtask": "Xóa công việc con {{title}}",
+			"subtaskError_other": "Công việc đã được tạo, nhưng không thể thêm {{count}} công việc con",
+			"subtasksTitle_other": "{{count}} công việc con từ mẫu"
+		}
+	},
+	"delivery": {
+		"forecast": {
+			"title": "Dự báo",
+			"likelyBy": "85% khả năng xong trước {{date}}",
+			"percentiles": "50% trước {{p50}} · 95% trước {{p95}}",
+			"chanceByEnd": "{{percent}}% khả năng hoàn thành trước {{date}}",
+			"beyondHorizon": "Hơn hai năm với tốc độ hiện tại",
+			"open_other": "{{count}} công việc đang mở",
+			"complete": "Tất cả công việc đã hoàn thành",
+			"insufficient": {
+				"short_span": "Chưa đủ lịch sử: dự báo cần ít nhất 14 ngày làm việc trong dự án này.",
+				"few_completions": "Chưa đủ lịch sử: chưa đến 5 công việc được hoàn thành trong 8 tuần qua.",
+				"few_active_days": "Chưa đủ lịch sử: công việc được hoàn thành vào chưa đến 3 ngày trong 8 tuần qua."
+			},
+			"howCalculated": "Cách tính như thế nào?",
+			"method": {
+				"title": "Dự báo Monte Carlo",
+				"body": "Margaya mô phỏng lại tốc độ thực tế của nhóm bạn {{iterations}} lần. Mỗi ngày mô phỏng lấy số công việc hoàn thành của một ngày ngẫu nhiên trong lịch sử bên dưới, cho đến khi hết công việc đang mở. Các ngày cho biết khi nào 50%, 85% và 95% số lần mô phỏng đã xong.",
+				"window": "Lịch sử: {{from}} – {{to}}",
+				"completed": "Công việc đã hoàn thành: {{total}}",
+				"activeDays": "Số ngày có công việc hoàn thành: {{days}}",
+				"perDay": "Hoàn thành mỗi ngày: {{min}}–{{max}}",
+				"perWeek": "Trung bình mỗi tuần: {{perWeek}}",
+				"team": "Tốc độ là của cả dự án, nên công việc ngoài phạm vi này cũng được tính.",
+				"seed": "Hạt giống {{seed}}: cùng dữ liệu sẽ cho cùng kết quả suốt cả ngày."
+			},
+			"error": "Không thể tải dự báo",
+			"retry": "Thử lại"
+		},
+		"risks": {
+			"title": "Rủi ro",
+			"empty": "Không tìm thấy rủi ro",
+			"showAll": "Hiện tất cả ({{total}})",
+			"showLess": "Thu gọn",
+			"noCycleTime": "Công việc kéo dài sẽ hiện khi đã có 10 công việc hoàn thành với thời điểm bắt đầu được ghi lại.",
+			"hiddenTask": "Một công việc bạn không xem được",
+			"truncated": "Chỉ 2.000 công việc đang mở đầu tiên được kiểm tra.",
+			"error": "Không thể tải rủi ro",
+			"someone": "Ai đó",
+			"severity": {
+				"high": "Rủi ro cao",
+				"medium": "Rủi ro trung bình",
+				"low": "Rủi ro thấp"
+			},
+			"criticalPath": {
+				"ends": "Đường găng kết thúc vào {{date}}",
+				"chain_other": "Chuỗi phụ thuộc dài nhất: {{count}} công việc"
+			},
+			"kinds": {
+				"critical_path_late": "Đường găng kết thúc vào {{date}}, sau hạn chót {{deadline}}",
+				"critical_path_tight": "Đường găng kết thúc vào {{date}}, rất sát hạn chót {{deadline}}",
+				"blocked_chain_other": "{{head}} đang chặn {{count}} công việc",
+				"ageing_other": "{{count}} công việc đang làm hơn {{days}} ngày, lâu hơn bình thường",
+				"overdue_cluster_other": "{{name}} có {{count}} công việc quá hạn",
+				"overdue_cluster_unassigned_other": "{{count}} công việc quá hạn chưa có người phụ trách",
+				"overdue_other": "{{count}} công việc quá hạn",
+				"unassigned_near_deadline_other": "{{count}} công việc chưa giao có hạn trước {{date}}",
+				"dependency_loop_other": "{{count}} công việc chặn lẫn nhau thành vòng"
+			}
+		},
+		"home": {
+			"title": "Có rủi ro",
+			"empty": "Không có gì gặp rủi ro trong các chu kỳ hiện tại của bạn",
+			"context": "{{project}} · {{cycle}}"
+		},
+		"tab": {
+			"description": "Dự báo và rủi ro của công việc đang mở trong dự án này"
+		}
+	},
+	"ai": {
+		"rules": {
+			"title": "Quy tắc từ mô tả",
+			"description": "Viết một tự động hóa bằng lời thường. AI sẽ chuyển nó thành một quy tắc bình thường mà bạn có thể chỉnh sửa, thử trên lịch sử gần đây và lưu. Quy tắc đã lưu chạy mà không cần AI.",
+			"label": "Mô tả quy tắc…",
+			"placeholder": "Ví dụ: khi một pull request GitHub được hợp nhất, chuyển công việc sang Hoàn thành",
+			"compile": "Tạo quy tắc",
+			"compiling": "Đang viết quy tắc…",
+			"unsupportedTitle": "Không thể thực hiện bằng tự động hóa",
+			"rejected": "Các quy tắc đề xuất bị loại vì không qua được kiểm tra: {{rejected}}",
+			"noRules": "Không thể tạo quy tắc từ mô tả này.",
+			"workflowRule": "Quy tắc quy trình làm việc",
+			"integration": "Tích hợp",
+			"when": "Khi",
+			"moveTo": "Chuyển công việc sang",
+			"historyWindow": "Khoảng lịch sử để phát lại",
+			"days7": "7 ngày qua",
+			"days30": "30 ngày qua",
+			"days90": "90 ngày qua",
+			"dryRun": "Thử trên lịch sử",
+			"dryRunSummary": "Số công việc lẽ ra đã thay đổi trong {{days}} ngày qua: {{changed}}",
+			"dryRunNone": "Không có gì lẽ ra đã thay đổi trong {{days}} ngày qua.",
+			"dryRunError": "Không thể phát lại quy tắc này.",
+			"more": "Các kết quả khớp khác không hiển thị: {{more}}",
+			"archived": "Đã lưu trữ",
+			"outcomes": {
+				"unchanged": "đã ở đó",
+				"skipped": "giữ nguyên"
+			},
+			"notes": {
+				"integration_not_connected": "Tích hợp này chưa được kết nối với dự án nên không có lịch sử để phát lại.",
+				"branch_push_last_only": "Chỉ lần push gần nhất của mỗi nhánh được ghi lại.",
+				"threshold_from_last_update": "Dựa trên lần cập nhật cuối của mỗi công việc; ngày cho biết khi nào quy tắc lẽ ra đã xử lý nó.",
+				"flow_alerts_notify_only": "Cảnh báo bất thường luồng công việc chỉ thông báo cho trưởng dự án; không thay đổi công việc.",
+				"nothing_enabled": "Quy tắc này không bật gì cả nên sẽ không có gì thay đổi.",
+				"conditions_current_state": "Điều kiện được kiểm tra theo trạng thái hiện tại của từng công việc; lịch sử chỉ lưu các thay đổi."
+			},
+			"save": "Lưu quy tắc",
+			"discard": "Bỏ qua",
+			"saved": "Đã lưu quy tắc",
+			"saveError": "Không thể lưu quy tắc."
+		},
+		"build": {
+			"command": "Xây dựng bằng AI…",
+			"title": "Xây dựng bằng AI",
+			"description": "Mô tả điều bạn muốn lập kế hoạch. AI đề xuất một dự án, các chu kỳ và công việc để bạn xem lại. Không có gì được tạo cho đến khi bạn xác nhận.",
+			"promptLabel": "Chúng ta nên lập kế hoạch cho việc gì?",
+			"promptPlaceholder": "Lập kế hoạch ra mắt lại trang web cho quý 4 với 3 sprint",
+			"target": "Tạo trong",
+			"targetCurrent": "Trong {{name}}",
+			"targetNew": "Một dự án mới",
+			"deep": "Suy nghĩ kỹ hơn (chậm hơn)",
+			"draft": "Đề xuất kế hoạch",
+			"drafting": "Đang soạn kế hoạch…",
+			"cancel": "Hủy",
+			"back": "Quay lại",
+			"create_other": "Tạo {{count}} mục",
+			"creating": "Đang tạo kế hoạch",
+			"progress": "Đã tạo {{done}}/{{total}}…",
+			"close": "Đóng",
+			"openProject": "Mở dự án",
+			"empty": {
+				"text": "Dự án này chưa có công việc nào. Hãy mô tả công việc và AI sẽ đề xuất các công việc để bạn xem lại."
+			},
+			"review": {
+				"description": "Xem lại kế hoạch. Bỏ chọn, chỉnh sửa hoặc sắp xếp lại bất kỳ mục nào, sau đó tạo.",
+				"project": "Dự án",
+				"projectName": "Tên",
+				"projectKey": "Mã",
+				"projectDescription": "Mô tả",
+				"columns": "Cột mới",
+				"labels": "Nhãn",
+				"cycles": "Chu kỳ",
+				"modules": "Mô-đun",
+				"moduleName": "Tên mô-đun",
+				"tasks_other": "{{count}} công việc",
+				"include": "Bao gồm {{name}}",
+				"taskTitle": "Tiêu đề công việc",
+				"taskDescription": "Mô tả công việc",
+				"priority": "Mức ưu tiên",
+				"estimate": "Ước tính (điểm)",
+				"module": "Mô-đun",
+				"none": "Không có",
+				"taskLabels": "Nhãn: {{labels}}",
+				"subtasks": "Công việc con",
+				"subtaskTitle": "Tiêu đề công việc con",
+				"moveUp": "Di chuyển {{name}} lên",
+				"moveDown": "Di chuyển {{name}} xuống",
+				"cycle": {
+					"label": "Chu kỳ",
+					"name": "Tên chu kỳ",
+					"startDate": "Bắt đầu",
+					"endDate": "Kết thúc"
+				}
+			},
+			"done": {
+				"success_other": "Xong. Đã tạo {{count}} công việc.",
+				"partial_other": "Đã tạo, ngoại trừ {{count}} mục:",
+				"estimatesSkipped": "Đã bỏ qua ước tính vì dự án không có hệ thống ước tính theo điểm đang hoạt động.",
+				"created": {
+					"tasks_other": "{{count}} công việc",
+					"subtasks_other": "{{count}} công việc con",
+					"cycles_other": "{{count}} chu kỳ",
+					"modules_other": "{{count}} mô-đun",
+					"columns_other": "{{count}} cột",
+					"labels_other": "{{count}} nhãn"
+				}
+			},
+			"kinds": {
+				"project": "Dự án",
+				"column": "Cột",
+				"cycle": "Chu kỳ",
+				"module": "Mô-đun",
+				"task": "Công việc",
+				"subtask": "Công việc con",
+				"label": "Nhãn",
+				"estimate": "Ước tính",
+				"cycle_tasks": "Công việc trong chu kỳ",
+				"module_tasks": "Công việc trong mô-đun"
+			},
+			"chat": {
+				"planLabel": "Thay đổi được đề xuất",
+				"planning": "Đang lên kế hoạch thay đổi…",
+				"nothing": "Không có gì cần thay đổi cho yêu cầu này.",
+				"awaiting": "Đang chờ phản hồi",
+				"ready": "Thay đổi sẵn sàng: {{count}}. Xác nhận để tiếp tục.",
+				"applying": "Đang áp dụng thay đổi…",
+				"confirm": "Xác nhận",
+				"cancel": "Hủy",
+				"cancelled": "Đã hủy. Không có gì thay đổi.",
+				"remove": "Bỏ {{title}}",
+				"confirmDestructive": "Có, xóa",
+				"truncated": "Kế hoạch đã được rút gọn còn 50 thay đổi đầu tiên.",
+				"appliedSummary": "Đã áp dụng: {{done}} / {{total}}",
+				"autopilotApplied": "Đã được Tự động lái áp dụng ngay.",
+				"autopilotOff": "Tự động lái đang tắt trong không gian làm việc này. Hãy xem lại các thay đổi bên dưới.",
+				"autopilotReview": "Một số thay đổi này cần bạn xem lại trước.",
+				"done": "Xong",
+				"open": "Mở",
+				"skipped": "Đã bỏ qua",
+				"failed": "Thất bại",
+				"undo": "Hoàn tác",
+				"undone": "Đã hoàn tác",
+				"undoFailed": "Không thể hoàn tác thay đổi này.",
+				"forbidden": "Bạn không thể thay đổi bằng AI ở đây.",
+				"pickCandidate": "Có phải ý bạn là:",
+				"fields": {
+					"name": "Tên",
+					"key": "Khóa",
+					"title": "Tiêu đề",
+					"priority": "Độ ưu tiên",
+					"dueDate": "Hạn chót",
+					"assignee": "Người phụ trách",
+					"unassigned": "Không ai",
+					"startDate": "Bắt đầu",
+					"endDate": "Kết thúc",
+					"content": "Bình luận"
+				},
+				"problems": {
+					"forbidden": "Bạn không có quyền làm việc này.",
+					"not_found": "Không tìm thấy thứ mà nó tham chiếu.",
+					"ambiguous": "Tên đó khớp với nhiều người.",
+					"unresolved_ref": "Nó phụ thuộc vào một thay đổi không thể thực hiện.",
+					"feature_off": "Tính năng này đang tắt trong dự án.",
+					"invalid": "Không thể thực hiện thay đổi này như đã viết."
+				},
+				"ops": {
+					"create_project": "Dự án mới",
+					"create_task": "Công việc mới",
+					"update_task": "Sửa công việc",
+					"set_status": "Đổi trạng thái",
+					"assign": "Giao việc",
+					"add_comment": "Bình luận",
+					"create_cycle": "Chu kỳ mới",
+					"add_to_cycle": "Thêm vào chu kỳ",
+					"create_module": "Mô-đun mới",
+					"add_to_module": "Thêm vào mô-đun",
+					"create_page": "Trang mới",
+					"link_tasks": "Liên kết công việc",
+					"create_label": "Nhãn mới",
+					"delete_task": "Xóa công việc",
+					"run_agent": "Chạy tác tử"
+				},
+				"agentRun": {
+					"title": "Lượt chạy tác tử",
+					"loading": "Đang tải lượt chạy…",
+					"loadError": "Không thể tải lượt chạy này.",
+					"inProgress": "Đang chạy"
+				},
+				"noneReady": "Chưa có gì để áp dụng. Hãy sửa hoặc xóa các thay đổi bị đánh dấu, hoặc hỏi lại."
+			},
+			"context": {
+				"title": "Ngữ cảnh ({{count}})",
+				"facts": "Dự án: {{projects}} · Người: {{members}} · Chu kỳ: {{cycles}}",
+				"memory": "Ghi chú bộ nhớ: {{count}}",
+				"history": "Tin nhắn trước: {{count}}"
+			}
+		},
+		"duplicates": {
+			"check": "Kiểm tra bằng AI",
+			"checking": "Đang kiểm tra…",
+			"checkedTitle": "AI đã kiểm tra trùng lặp",
+			"none": "Không có mục nào có khả năng trùng lặp.",
+			"verdict": {
+				"duplicate": "Có thể trùng lặp",
+				"related": "Liên quan"
+			},
+			"mark": "Trùng với mục này",
+			"markLabel": "Đánh dấu công việc mới là bản sao của {{key}}",
+			"marked": "Đã đánh dấu",
+			"willLink": "Công việc mới sẽ được đánh dấu là bản sao của {{key}}.",
+			"undo": "Hoàn tác",
+			"linkError": "Đã tạo công việc nhưng không thể đánh dấu là bản sao của {{key}}."
+		},
+		"triage": {
+			"button": "Gợi ý phân loại",
+			"title": "Gợi ý phân loại",
+			"loading": "Đang xem các công việc tương tự…",
+			"empty": "Không có gợi ý cho mục này.",
+			"retry": "Thử lại",
+			"close": "Đóng gợi ý",
+			"accept": "Chấp nhận",
+			"acceptAll": "Chấp nhận tất cả",
+			"edit": "Sửa",
+			"dismiss": "Bỏ qua",
+			"applied": "Đã áp dụng",
+			"acceptError": "Không thể áp dụng gợi ý này.",
+			"autoApplied": "Dự án này tự động thêm các nhãn được gợi ý.",
+			"sameTitle": "Trùng tiêu đề với một công việc hiện có",
+			"projectAdvice": "Yêu cầu luôn nằm trong dự án của nó: hãy từ chối yêu cầu này và đề nghị gửi lại ở dự án kia.",
+			"otherProjectDuplicate": "Chỉ công việc trong dự án này mới có thể đóng yêu cầu dưới dạng trùng lặp.",
+			"openTask": "Mở {{key}} trong thẻ mới",
+			"fields": {
+				"label": "Nhãn",
+				"assignee": "Người được giao",
+				"priority": "Mức ưu tiên",
+				"project": "Dự án",
+				"duplicate": "Có thể trùng lặp"
+			},
+			"settings": {
+				"title": "Gợi ý phân loại",
+				"description": "Gợi ý của AI cho công việc mới và yêu cầu gửi đến. Mỗi gợi ý đều do một người chấp nhận, sửa hoặc bỏ qua.",
+				"autoApply": "Tự động áp dụng nhãn được gợi ý",
+				"autoApplyHint": "Nhãn được gợi ý sẽ được thêm ngay và mỗi lần đều được ghi vào nhật ký kiểm tra. Người được giao, mức ưu tiên, dự án và trùng lặp luôn chờ một người quyết định.",
+				"saved": "Đã lưu cài đặt phân loại",
+				"saveError": "Không thể lưu cài đặt phân loại."
+			},
+			"liveLabels": {
+				"title": "Nhãn được gợi ý",
+				"add": "Thêm nhãn {{name}}"
+			}
+		},
+		"translate": {
+			"action": "Dịch",
+			"translating": "Đang dịch…",
+			"translatedFrom": "Dịch từ {{language}}",
+			"translated": "Đã dịch",
+			"showOriginal": "Xem bản gốc",
+			"showTranslation": "Xem bản dịch",
+			"settings": {
+				"autoTranslate": "Tự động dịch bình luận",
+				"autoTranslateHint": "Bình luận viết bằng ngôn ngữ khác sẽ được dịch cho từng người đọc khi mở. Khi tắt, người đọc nhấn Dịch."
+			}
+		},
+		"brief": {
+			"button": "Báo cáo",
+			"buttonLabel": "Viết báo cáo cho các bên liên quan",
+			"title": "Báo cáo cho các bên liên quan",
+			"close": "Đóng báo cáo",
+			"intro": "Viết báo cáo tình trạng từ tiến độ, thay đổi, rủi ro và dự báo đã được tính toán của công việc này. Mỗi công việc được nhắc đến đều có trích dẫn.",
+			"audience": "Đối tượng",
+			"audiences": {
+				"team": "Nhóm",
+				"leadership": "Ban lãnh đạo",
+				"client": "Khách hàng"
+			},
+			"generate": "Viết báo cáo",
+			"regenerate": "Viết lại",
+			"writing": "Đang viết báo cáo…",
+			"stop": "Dừng",
+			"copy": "Sao chép",
+			"copied": "Đã sao chép",
+			"copyError": "Không thể sao chép báo cáo.",
+			"saveAsPage": "Lưu thành trang",
+			"saved": "Đã lưu báo cáo thành trang",
+			"saveError": "Không thể lưu trang.",
+			"openPage": "Mở trang",
+			"pageTitle": "Báo cáo tình trạng: {{name}} ({{date}})",
+			"facts": {
+				"title": "Dữ kiện đã dùng",
+				"note": "Các con số này đến từ Margaya, không phải từ AI. Báo cáo đã lưu hoặc sao chép sẽ là mốc so sánh cho báo cáo tiếp theo.",
+				"progress": "Tiến độ",
+				"progressValue": "{{percent}}% (xong {{completed}}/{{total}})",
+				"sinceLast": "Từ báo cáo trước ({{date}})",
+				"sinceDays": "7 ngày qua",
+				"changes": "Hoàn thành: {{completed}} · Thêm: {{added}} · Gỡ bỏ: {{removed}}",
+				"forecast": "Dự báo",
+				"forecastValue": "85% khả năng xong trước {{date}}",
+				"forecastDone": "Không còn việc gì",
+				"forecastNone": "Chưa đủ dữ liệu lịch sử",
+				"risks": "Rủi ro",
+				"diff": "Thay đổi",
+				"progressDiff": "Tiến độ {{before}}% → {{now}}%",
+				"forecastDiff": "Dự báo {{before}} → {{now}}"
+			}
+		},
+		"ask": {
+			"title": "Hỏi AI",
+			"description": "Đặt câu hỏi về không gian làm việc bằng ngôn ngữ tự nhiên. Câu trả lời chỉ dựa trên công việc, trang và bình luận mà bạn xem được, và ghi rõ nguồn của từng thông tin.",
+			"greeting": "Xin chào! Bạn muốn biết điều gì?",
+			"placeholder": "Hỏi AI, @ để thêm ngữ cảnh, / để dùng lệnh",
+			"send": "Hỏi",
+			"stop": "Dừng",
+			"stopped": "Đã dừng.",
+			"newChat": "Cuộc trò chuyện mới",
+			"expand": "Mở rộng",
+			"collapse": "Thu gọn",
+			"scopeProject": "Trong {{project}}",
+			"scopeWorkspace": "Toàn bộ không gian làm việc",
+			"removeScope": "Hỏi về toàn bộ không gian làm việc",
+			"searching": "Đang tìm trong không gian làm việc của bạn…",
+			"noResults": "Tôi không tìm thấy gì về điều này trong không gian làm việc của bạn. Hãy thử từ khác, hoặc nêu tên một dự án, chu kỳ hay mã công việc.",
+			"sources": "Nguồn",
+			"sourcesCount": "Nguồn ({{total}})",
+			"closestMatches": "Kết quả gần nhất",
+			"copy": "Sao chép",
+			"copied": "Đã sao chép",
+			"copyError": "Không thể sao chép câu trả lời",
+			"commentOn": "Bình luận trong {{key}}",
+			"pageSource": "Trang: {{title}}",
+			"openSource": "Mở {{title}}",
+			"disclaimer": "Câu trả lời chỉ dùng những gì bạn xem được. Hãy kiểm tra nguồn trước khi hành động.",
+			"you": "Bạn",
+			"answer": "Câu trả lời",
+			"forbidden": "Bạn không có quyền dùng AI trong không gian làm việc này.",
+			"palette": "Hỏi AI…",
+			"paletteAbout": "Hỏi AI: {{question}}",
+			"examples": {
+				"title": "Thử hỏi",
+				"overdue": "Có gì đang quá hạn?",
+				"mine": "Tôi có những công việc nào đang mở?",
+				"recent": "Tuần này có gì thay đổi?",
+				"summarize": "Tóm tắt dự án này",
+				"chart": "Hiển thị công việc theo trạng thái dưới dạng biểu đồ",
+				"cycleBlockers": "Điều gì đang chặn chu kỳ hiện tại?"
+			},
+			"history": {
+				"title": "Lịch sử",
+				"empty": "Chưa có cuộc trò chuyện nào được lưu.",
+				"localOnly": "Các cuộc trò chuyện chỉ được lưu trong trình duyệt này.",
+				"delete": "Xóa cuộc trò chuyện",
+				"clear": "Xóa lịch sử",
+				"clearConfirm": "Xóa tất cả cuộc trò chuyện đã lưu trong trình duyệt này? Không thể hoàn tác thao tác này.",
+				"search": "Tìm cuộc trò chuyện",
+				"noMatches": "Không có cuộc trò chuyện nào phù hợp.",
+				"loading": "Đang tải các cuộc trò chuyện…",
+				"pin": "Ghim cuộc trò chuyện",
+				"unpin": "Bỏ ghim cuộc trò chuyện",
+				"pinned": "Đã ghim",
+				"rename": "Đổi tên cuộc trò chuyện",
+				"renameLabel": "Tên cuộc trò chuyện",
+				"saveTitle": "Lưu tên",
+				"serverNote": "Các cuộc trò chuyện được lưu trong không gian làm việc và chỉ bạn xem được.",
+				"clearConfirmServer": "Xóa tất cả cuộc trò chuyện bạn đã lưu trong không gian làm việc này? Không thể hoàn tác thao tác này.",
+				"importHint": "Cuộc trò chuyện được lưu trong trình duyệt này: {{total}}",
+				"import": "Nhập",
+				"imported": "Đã nhập cuộc trò chuyện: {{total}}",
+				"openError": "Không thể mở cuộc trò chuyện."
+			},
+			"chartLabel": "Biểu đồ: {{title}}",
+			"chartLoading": "Đang vẽ biểu đồ…",
+			"chartInvalid": "Không thể vẽ biểu đồ này.",
+			"placeholderBuild": "Mô tả điều cần tạo hoặc thay đổi…",
+			"modelLabel": "Mô hình: {{model}}",
+			"more": "Thêm",
+			"moreActions": "Thao tác khác",
+			"openFullPage": "Mở toàn trang",
+			"paletteFullPage": "Mở trò chuyện AI (toàn trang)",
+			"fullPageUnavailable": "AI không khả dụng trong không gian làm việc này.",
+			"shortcut": "Mở hoặc đóng Hỏi AI",
+			"regenerate": "Tạo lại",
+			"editQuestion": "Sửa câu hỏi",
+			"resend": "Gửi",
+			"followUps": "Câu hỏi tiếp theo gợi ý",
+			"saveAsPage": "Lưu thành trang",
+			"copyMarkdown": "Sao chép dạng Markdown",
+			"copiedMarkdown": "Đã sao chép dạng Markdown",
+			"createTask": "Tạo công việc từ nội dung này",
+			"webSearch": "Tìm trên web",
+			"webSource": "Nguồn web: {{title}}",
+			"removeChip": "Xóa {{name}}",
+			"contextChips": "Ngữ cảnh cho câu hỏi này",
+			"contextPicker": "Thêm ngữ cảnh",
+			"contextHint": "Nhập để tìm công việc, trang, dự án, chu kỳ, mô-đun, người dùng hoặc tác tử",
+			"contextEmpty": "Không tìm thấy gì",
+			"contextSearching": "Đang tìm…",
+			"commandMenu": "Lệnh",
+			"commandEmpty": "Không có lệnh phù hợp",
+			"contextKinds": {
+				"task": "Công việc",
+				"page": "Trang",
+				"project": "Dự án",
+				"cycle": "Chu kỳ",
+				"module": "Mô-đun",
+				"user": "Người dùng",
+				"agent": "Tác tử"
+			},
+			"modes": {
+				"label": "Chế độ",
+				"ask": "Hỏi",
+				"build": "Xây dựng",
+				"autopilot": "Tự động lái",
+				"askHint": "Trả lời câu hỏi; không thay đổi gì",
+				"buildHint": "Đề xuất thay đổi để bạn xác nhận",
+				"autopilotHint": "Áp dụng thay đổi ngay; mọi thay đổi đều có thể hoàn tác"
+			},
+			"attachments": {
+				"add": "Đính kèm tệp",
+				"type": "Không thể đính kèm {{name}}. Hãy dùng hình ảnh (PNG, JPEG, WebP, GIF) hoặc tệp văn bản, Markdown hay CSV.",
+				"size": "Không thể thêm {{name}}: tổng dung lượng tệp đính kèm tối đa là 5 MB.",
+				"count": "Chỉ đính kèm tối đa 3 tệp.",
+				"readError": "Không thể đọc tệp."
+			},
+			"voice": {
+				"start": "Đọc chính tả",
+				"stop": "Dừng đọc chính tả",
+				"recording": "Đang nghe…",
+				"transcribing": "Đang chuyển thành văn bản…",
+				"denied": "Hãy cho phép truy cập micrô để đọc chính tả.",
+				"failed": "Không thể chuyển bản ghi âm thành văn bản."
+			},
+			"agent": {
+				"ready": "Gửi yêu cầu này đến {{agent}}.",
+				"needsTask": "Thêm một công việc bằng @ để {{agent}} biết cần làm gì.",
+				"send": "Gửi đến {{agent}}",
+				"error": "Không thể khởi chạy tác tử."
+			},
+			"thinking": {
+				"live": "Đang suy nghĩ… {{seconds}}s",
+				"done": "Đã suy nghĩ trong {{seconds}}s"
+			},
+			"versions": {
+				"previous": "Câu trả lời trước",
+				"next": "Câu trả lời sau",
+				"label": "Câu trả lời {{current}}/{{total}}"
+			},
+			"feedback": {
+				"up": "Câu trả lời tốt",
+				"down": "Câu trả lời chưa tốt",
+				"reasonLabel": "Có gì sai? (không bắt buộc)",
+				"reasonPlaceholder": "Ví dụ: số liệu sai, bỏ sót một công việc",
+				"send": "Gửi",
+				"skip": "Bỏ qua",
+				"thanks": "Cảm ơn bạn đã góp ý."
+			},
+			"commands": {
+				"summarize": "Tóm tắt",
+				"summarizeHint": "Dự án, chu kỳ hoặc trang đang xem",
+				"chart": "Biểu đồ",
+				"chartHint": "Vẽ biểu đồ từ dữ liệu của bạn",
+				"chartPrefill": "Biểu đồ",
+				"brief": "Báo cáo",
+				"briefHint": "Báo cáo cho các bên liên quan về dự án, chu kỳ hoặc mô-đun",
+				"create": "Tạo",
+				"createHint": "Chuyển sang chế độ Xây dựng",
+				"translate": "Dịch",
+				"translateHint": "Sang ngôn ngữ của bạn",
+				"clear": "Xóa",
+				"clearHint": "Bắt đầu cuộc trò chuyện mới",
+				"skill": "Kỹ năng đã lưu",
+				"summarizeTurn": "Tóm tắt {{name}}",
+				"briefTurn": "Báo cáo về {{name}}",
+				"summarizeNeedsScope": "Hãy mở một dự án, chu kỳ hoặc trang, hoặc thêm bằng @, để tóm tắt.",
+				"briefNeedsScope": "Hãy mở một dự án, chu kỳ hoặc mô-đun, hoặc thêm bằng @, để tạo báo cáo.",
+				"buildUnavailable": "Chế độ Xây dựng không khả dụng ở đây.",
+				"translatePrompt": "Dịch câu trả lời gần nhất của bạn sang {{language}}.",
+				"translatePrefill": "Dịch sang {{language}}:",
+				"this": {
+					"page": "trang này",
+					"cycle": "chu kỳ này",
+					"module": "mô-đun này",
+					"project": "dự án này"
+				}
+			},
+			"conversation": {
+				"rename": "Đổi tên",
+				"pin": "Ghim",
+				"unpin": "Bỏ ghim",
+				"export": "Xuất dạng Markdown",
+				"saveAsPage": "Lưu thành trang",
+				"delete": "Xóa cuộc trò chuyện"
+			},
+			"save": {
+				"title": "Lưu thành trang",
+				"description": "Trang sẽ chứa nội dung cùng liên kết đến các nguồn.",
+				"pageTitle": "Tiêu đề",
+				"project": "Dự án",
+				"noProjects": "Không có dự án nào để lưu trang.",
+				"submit": "Lưu trang",
+				"saved": "Đã lưu thành trang",
+				"open": "Mở trang",
+				"error": "Không thể lưu trang"
+			}
+		},
+		"writing": {
+			"aiButton": "AI",
+			"menuLabel": "Thao tác AI",
+			"actions": {
+				"summarize": "Tóm tắt",
+				"improve": "Cải thiện văn phong",
+				"shorter": "Rút gọn",
+				"longer": "Viết dài hơn",
+				"fix": "Sửa chính tả và ngữ pháp",
+				"translate": "Dịch sang…",
+				"custom": "Yêu cầu AI…"
+			},
+			"customPlaceholder": "Cho AI biết cần làm gì, ví dụ: chuyển phần này thành danh sách kiểm tra",
+			"customSubmit": "Tạo",
+			"preview": {
+				"label": "Gợi ý của AI",
+				"generating": "Đang viết…",
+				"editLabel": "Chỉnh sửa gợi ý",
+				"replace": "Thay thế",
+				"insertBelow": "Chèn bên dưới",
+				"discard": "Bỏ",
+				"stop": "Dừng",
+				"retry": "Thử lại",
+				"empty": "AI không trả về gì. Hãy thử lại hoặc diễn đạt khác.",
+				"note": "AI có thể mắc lỗi. Hãy kiểm tra trước khi dùng.",
+				"incomplete": "Bản nháp đã dừng trước khi hoàn tất. Hãy xem lại hoặc thử lại."
+			},
+			"summary": {
+				"button": "Tóm tắt",
+				"cycle": "Tóm tắt chu kỳ",
+				"project": "Tóm tắt dự án",
+				"page": "Tóm tắt trang",
+				"title": "Bản tóm tắt của AI",
+				"generating": "Đang tóm tắt…",
+				"dismiss": "Đóng",
+				"copy": "Sao chép",
+				"copied": "Đã sao chép",
+				"copyError": "Không thể sao chép bản tóm tắt.",
+				"saveAsPage": "Lưu thành trang",
+				"pageTitle": "Tóm tắt: {{name}}",
+				"saved": "Đã lưu bản tóm tắt thành trang",
+				"saveError": "Không thể lưu trang.",
+				"openPage": "Mở trang",
+				"task": "Tóm tắt công việc",
+				"saveAsComment": "Lưu thành bình luận",
+				"commentSaved": "Đã lưu bản tóm tắt thành bình luận",
+				"commentError": "Không thể lưu bình luận."
+			},
+			"spec": {
+				"button": "Soạn bản nháp đặc tả",
+				"title": "Soạn bản nháp đặc tả",
+				"description": "AI soạn bản nháp trang đặc tả từ công việc này và ngữ cảnh của nó. Hãy xem lại và chỉnh sửa, rồi tạo trang; trang sẽ liên kết ngược về công việc.",
+				"generating": "Đang soạn nháp…",
+				"titleLabel": "Tiêu đề trang",
+				"bodyLabel": "Đặc tả",
+				"edit": "Chỉnh sửa",
+				"preview": "Xem trước",
+				"create": "Tạo trang",
+				"pageTitle": "Đặc tả: {{title}}",
+				"created": "Đã tạo trang đặc tả",
+				"createError": "Không thể tạo trang."
+			},
+			"taskWriter": {
+				"button": "Viết bằng AI",
+				"draft": "Soạn nháp từ tiêu đề",
+				"improve": "Cải thiện",
+				"instruction": "Tùy chọn: nên tập trung vào điều gì?",
+				"hint": "Không có gì thay đổi cho đến khi bạn chọn “Dùng nội dung này”.",
+				"writing": "Đang viết…",
+				"use": "Dùng nội dung này",
+				"retry": "Thử lại",
+				"discard": "Bỏ",
+				"close": "Đóng viết bằng AI"
+			},
+			"feedback": {
+				"good": "Câu trả lời tốt",
+				"bad": "Câu trả lời chưa tốt",
+				"thanks": "Cảm ơn phản hồi của bạn"
+			},
+			"tone": {
+				"label": "Giọng văn: {{tone}}",
+				"legend": "Giọng văn",
+				"default": "Mặc định",
+				"professional": "Chuyên nghiệp",
+				"casual": "Thân mật"
+			},
+			"block": {
+				"command": "Khối AI",
+				"title": "Khối AI",
+				"customPlaceholder": "AI nên viết gì từ trang này?",
+				"stale": "Trang đã thay đổi sau khi tạo nội dung này. Hãy tạo lại để bao gồm các thay đổi.",
+				"accept": "Chấp nhận",
+				"regenerate": "Tạo lại",
+				"presets": {
+					"tldr": "Tóm tắt (TL;DR)",
+					"faq": "Câu hỏi thường gặp",
+					"action_items": "Việc cần làm",
+					"custom": "Yêu cầu tùy chỉnh"
+				}
+			},
+			"title": {
+				"suggest": "Gợi ý tiêu đề",
+				"thinking": "Đang nghĩ tiêu đề…",
+				"use": "Dùng tiêu đề này",
+				"another": "Gợi ý tiêu đề khác"
+			},
+			"comment": {
+				"menuLabel": "AI hỗ trợ bình luận này",
+				"previewLabel": "Gợi ý của AI cho bình luận của bạn",
+				"replace": "Thay bản nháp"
+			}
+		},
+		"errors": {
+			"AI_DISABLED": "AI đang tắt ở đây.",
+			"AI_NOT_CONFIGURED": "AI chưa được thiết lập đúng. Hãy nhờ quản trị viên kiểm tra cài đặt AI.",
+			"AI_ROUTE_BLOCKED": "Theo cài đặt quyền riêng tư của bạn, dữ liệu này không thể gửi đến mô hình AI.",
+			"AI_BUDGET_EXCEEDED": "Đã đạt giới hạn AI. Hãy thử lại sau hoặc nhờ quản trị viên tăng giới hạn.",
+			"AI_RATE_LIMITED": "Có quá nhiều yêu cầu AI cùng lúc. Hãy đợi một chút rồi thử lại.",
+			"AI_REFUSED": "Mô hình AI đã từ chối yêu cầu này.",
+			"AI_PROVIDER_ERROR": "Dịch vụ AI không phản hồi. Hãy thử lại sau giây lát.",
+			"unknown": "Đã xảy ra lỗi với AI. Hãy thử lại.",
+			"AI_HISTORY_OFF": "Không gian làm việc này không lưu các cuộc trò chuyện AI trên máy chủ. Lịch sử của bạn vẫn ở trong trình duyệt này."
+		},
+		"features": {
+			"connection_test": "Kiểm tra kết nối",
+			"ask": "Hỏi",
+			"summarize": "Tóm tắt",
+			"editor_assist": "Hỗ trợ viết",
+			"spec_draft": "Bản nháp đặc tả",
+			"duplicate_check": "Kiểm tra trùng lặp",
+			"talk_to_build": "Lập kế hoạch từ câu lệnh",
+			"triage": "Gợi ý phân loại",
+			"translate": "Bản dịch",
+			"brief": "Bản tóm lược cho các bên liên quan",
+			"agent_run": "Tác tử",
+			"rule_compiler": "Quy tắc tự động hóa",
+			"capture": "Ghi nhận thành vấn đề",
+			"estimate": "Ước tính",
+			"retro": "Họp nhìn lại",
+			"my_brief": "Bản tóm lược của tôi",
+			"embedding": "Lập chỉ mục tìm kiếm",
+			"coding_handoff": "Bản giao việc cho tác tử lập trình",
+			"build_chat": "Tạo trong trò chuyện",
+			"nl_filter": "Bộ lọc bằng ngôn ngữ tự nhiên",
+			"inbox_digest": "Tóm tắt hộp thư",
+			"speech": "Giọng nói thành văn bản"
+		},
+		"providers": {
+			"anthropic": "Anthropic (Claude)",
+			"openai_compatible": "Tương thích OpenAI",
+			"fake": "Giả lập (chỉ để kiểm thử)"
+		},
+		"destinations": {
+			"cloud": "Nhà cung cấp đám mây",
+			"local": "Mô hình cục bộ"
+		},
+		"tiers": {
+			"fast": "Mô hình nhanh",
+			"fastHint": "Tác vụ nhanh: viết lại, nhãn, tóm tắt ngắn.",
+			"balanced": "Mô hình cân bằng",
+			"balancedHint": "Hầu hết tính năng: câu trả lời, tóm tắt, bản nháp.",
+			"deep": "Mô hình chuyên sâu",
+			"deepHint": "Việc khó: lập kế hoạch và tác tử."
+		},
+		"test": {
+			"title": "Kiểm tra kết nối",
+			"workspaceHint": "Gửi một yêu cầu rất nhỏ theo đúng cách các lệnh gọi AI của không gian làm việc này được gửi đi.",
+			"button": "Kiểm tra kết nối",
+			"success": "Đã kết nối với {{model}} trong {{ms}} ms"
+		},
+		"usage": {
+			"title": "Mức sử dụng",
+			"subtitle": "Lệnh gọi AI, token và chi phí theo giá niêm yết. Chỉ lưu số lượng, không bao giờ lưu câu lệnh hay câu trả lời.",
+			"rangeLabel": "Khoảng thời gian",
+			"range": {
+				"thisMonth": "Tháng này",
+				"last30Days": "30 ngày qua",
+				"last90Days": "90 ngày qua"
+			},
+			"calls": "Lệnh gọi",
+			"callsCount_other": "{{count}} lệnh gọi",
+			"tokens": "Token",
+			"tokensSplit": "{{input}} vào · {{output}} ra",
+			"cost": "Chi phí",
+			"costHint": "Theo giá niêm yết; mô hình cục bộ được tính là $0.",
+			"day": "Ngày",
+			"byDay": "Lệnh gọi mỗi ngày",
+			"byFeature": "Theo tính năng",
+			"byModel": "Theo mô hình",
+			"byUser": "Theo người dùng",
+			"byWorkspace": "Theo không gian làm việc",
+			"empty": "Không có lượt sử dụng AI nào trong khoảng thời gian này.",
+			"unknownUser": "Tài khoản đã bị xóa",
+			"loadError": "Không thể tải mức sử dụng AI.",
+			"retry": "Thử lại",
+			"exportCsv": "Xuất CSV",
+			"exportError": "Không thể xuất dữ liệu sử dụng.",
+			"feedbackTitle": "Đánh giá câu trả lời",
+			"feedbackOverall": "{{percent}}% tích cực trên {{total}} lượt đánh giá",
+			"feedbackUp": "Thích",
+			"feedbackDown": "Không thích",
+			"feedbackRate": "Tích cực"
+		},
+		"instance": {
+			"title": "AI",
+			"subtitle": "Cho phép các không gian làm việc dùng AI: chọn nhà cung cấp và mô hình, và quyết định dữ liệu được phép đi đâu. AI vẫn tắt cho đến khi bạn bật, và mỗi không gian làm việc cũng phải tự chọn tham gia.",
+			"statusTitle": "AI trên máy chủ này",
+			"statusReady": "Sẵn sàng",
+			"statusNotConfigured": "Chưa thiết lập",
+			"statusOff": "Tắt",
+			"enable": "Cho phép AI",
+			"enableHint": "Khi tùy chọn này bật và đã thiết lập nhà cung cấp, các không gian làm việc có thể bật tính năng AI.",
+			"providerTitle": "Nhà cung cấp",
+			"providerDescription": "Nhà cung cấp mô hình đám mây. Để trống một mô hình để dùng mô hình mặc định của nhà cung cấp cho cấp đó.",
+			"provider": "Nhà cung cấp",
+			"providerHint": "Khuyên dùng Anthropic Claude. Tương thích OpenAI bao gồm OpenAI, Azure, OpenRouter, vLLM và LM Studio.",
+			"anthropicKey": "Khóa API Anthropic",
+			"anthropicKeyHint": "Được lưu ở dạng mã hóa. Sẽ không bao giờ hiển thị lại.",
+			"openaiBaseUrl": "URL gốc",
+			"openaiBaseUrlHint": "Bao gồm cả đường dẫn phiên bản API, ví dụ https://api.openai.com/v1. Phải là địa chỉ công khai.",
+			"openaiKey": "Khóa API",
+			"save": "Lưu",
+			"testCloud": "Kiểm tra nhà cung cấp",
+			"testLocal": "Kiểm tra mô hình cục bộ",
+			"localTitle": "Mô hình cục bộ",
+			"localDescription": "Một máy chủ tương thích OpenAI trong mạng của bạn, chẳng hạn Ollama. Dữ liệu hạn chế chỉ được gửi đến đây.",
+			"localBaseUrl": "URL gốc",
+			"localBaseUrlHint": "Ví dụ http://ollama:11434/v1. Ở đây được phép dùng địa chỉ nội bộ.",
+			"localModel": "Mô hình",
+			"localKey": "Khóa API",
+			"localKeyHint": "Không bắt buộc. Chỉ khi máy chủ của bạn yêu cầu, chẳng hạn vLLM chạy với --api-key. Được lưu ở dạng mã hóa.",
+			"localOnly": "Chế độ chỉ cục bộ",
+			"localOnlyHint": "Mọi lệnh gọi AI đều đến mô hình cục bộ; không có gì được gửi đến nhà cung cấp đám mây.",
+			"privacyTitle": "Quyền riêng tư",
+			"privacyDescription": "Nơi mỗi loại dữ liệu được phép gửi đến. Không gian làm việc có thể đặt chặt chẽ hơn, nhưng không bao giờ lỏng hơn.",
+			"restrictedRoute": "Dự án hạn chế",
+			"restrictedRouteHint": "Dữ liệu từ các dự án hạn chế, khi không gian làm việc cho phép AI đọc chúng.",
+			"privateRoute": "Dữ liệu khác của không gian làm việc",
+			"privateRouteHint": "Công việc, trang và bình luận từ các dự án không hạn chế.",
+			"routeBlocked": "Không bao giờ gửi",
+			"routeLocal": "Chỉ mô hình cục bộ",
+			"routeCloud": "Cho phép nhà cung cấp đám mây",
+			"redaction": "Ẩn dữ liệu cá nhân",
+			"redactionHint": "Thay email, số điện thoại, số thẻ và token bằng ký tự giữ chỗ trước khi gọi lên đám mây. Câu trả lời sẽ hiển thị lại giá trị thật.",
+			"zeroRetention": "Không lưu giữ dữ liệu",
+			"zeroRetentionHint": "Ghi nhận rằng thỏa thuận của bạn với nhà cung cấp không lưu giữ dữ liệu. Margaya hiển thị điều này; nhà cung cấp thực thi nó.",
+			"allowWorkspaceKeys": "Cho phép khóa của không gian làm việc",
+			"allowWorkspaceKeysHint": "Không gian làm việc có thể dùng khóa nhà cung cấp riêng và tự trả chi phí sử dụng của mình.",
+			"embeddingsTitle": "Vector nhúng",
+			"embeddingsDescription": "Không bắt buộc, dành cho tìm kiếm ngữ nghĩa. Mọi điểm cuối vector nhúng tương thích OpenAI đều dùng được. Cơ sở dữ liệu cũng cần tiện ích mở rộng pgvector; thiếu một trong hai, tìm kiếm chỉ dùng toàn văn.",
+			"vectorReady": "pgvector đã sẵn sàng",
+			"vectorAvailable": "pgvector khả dụng",
+			"vectorUnavailable": "pgvector không khả dụng",
+			"embeddingsBaseUrl": "URL gốc",
+			"embeddingsModel": "Mô hình",
+			"embeddingsKey": "Khóa API",
+			"invalidUrl": "Nhập URL http hoặc https.",
+			"usageTitle": "Mức sử dụng trên các không gian làm việc",
+			"usageDescription": "Lệnh gọi AI trên máy chủ này theo không gian làm việc và mô hình. Chỉ lưu số lượng.",
+			"chatTitle": "Trò chuyện",
+			"chatDescription": "Cách mô hình suy luận suy nghĩ và những gì người dùng thấy được.",
+			"showReasoning": "Hiển thị suy luận",
+			"showReasoningHint": "Hiển thị quá trình suy nghĩ của mô hình suy luận cho người đã hỏi. Nội dung này không bao giờ được lưu. Khi tắt: chỉ hiển thị thời gian suy nghĩ.",
+			"localThinking": "Suy nghĩ trên mô hình cục bộ",
+			"localThinkingHint": "Tắt để trả lời nhanh hơn; bật để mô hình suy luận cục bộ suy nghĩ trước.",
+			"localThinkingOff": "Tắt",
+			"localThinkingOn": "Bật",
+			"webSearchTitle": "Tìm kiếm web",
+			"webSearchDescription": "Dịch vụ tìm kiếm mà câu trả lời có thể dùng khi không gian làm việc bật tìm kiếm web.",
+			"webSearchProvider": "Nhà cung cấp tìm kiếm",
+			"webSearchProviderHint": "SearXNG chạy trên máy chủ của riêng bạn; Brave Search và Tavily cần khóa API.",
+			"webSearchOff": "Tắt",
+			"webSearchUrl": "URL SearXNG",
+			"webSearchUrlHint": "Phải bật JSON API của nó.",
+			"webSearchKey": "Khóa API",
+			"webSearchKeyHint": "Dành cho Brave Search hoặc Tavily.",
+			"speechTitle": "Chuyển giọng nói thành văn bản",
+			"speechDescription": "Nhập bằng giọng nói trong trò chuyện. Nếu không thiết lập, các trình duyệt hỗ trợ sẽ tự nhận dạng giọng nói.",
+			"speechBaseUrl": "URL điểm cuối",
+			"speechBaseUrlHint": "Điểm cuối chuyển văn bản tương thích OpenAI, chẳng hạn máy chủ Whisper cục bộ.",
+			"speechModel": "Mô hình",
+			"speechKey": "Khóa API"
+		},
+		"workspace": {
+			"navLabel": "AI",
+			"title": "AI",
+			"subtitle": "Bật tính năng AI cho không gian làm việc này, đặt giới hạn và chọn cách xử lý dữ liệu riêng tư.",
+			"noAccess": "Bạn cần quyền quản lý AI để xem các cài đặt này.",
+			"loadError": "Không thể tải cài đặt AI.",
+			"statusTitle": "AI trong không gian làm việc này",
+			"statusDescription": "AI vẫn tắt cho đến khi bạn bật. Mỗi dự án vẫn có thể tắt AI trong phần tính năng của dự án.",
+			"enable": "Bật AI",
+			"enableHint": "Thành viên có quyền Dùng AI sẽ thấy tính năng AI trong các dự án cho phép.",
+			"enabledToast": "Đã bật AI cho không gian làm việc này",
+			"disabledToast": "Đã tắt AI cho không gian làm việc này",
+			"offOnInstance": "Quản trị viên phiên bản chưa cho phép AI trên máy chủ này.",
+			"notConfigured": "AI đã được cho phép nhưng chưa thiết lập nhà cung cấp. Hãy hỏi quản trị viên phiên bản.",
+			"whereDataGoes": "Dữ liệu được gửi đến đâu",
+			"whereDataGoesHint": "Mô hình nhận các yêu cầu AI của không gian làm việc này.",
+			"zeroRetention": "Không lưu giữ",
+			"limitsTitle": "Giới hạn",
+			"limitsDescription": "Đã chi tháng này: {{spent}}. Yêu cầu sẽ dừng khi đạt giới hạn.",
+			"monthlyCap": "Ngân sách hằng tháng (USD)",
+			"monthlyCapHint": "Theo giá niêm yết, cho toàn bộ không gian làm việc. Để trống nếu không giới hạn.",
+			"dailyTokens": "Token mỗi ngày cho mỗi người",
+			"dailyTokensHint": "Số token đầu vào và đầu ra mỗi người được dùng mỗi ngày (UTC). Để trống nếu không giới hạn.",
+			"noLimit": "Không giới hạn",
+			"invalidNumber": "Nhập một số từ 0 trở lên.",
+			"saveLimits": "Lưu giới hạn",
+			"monthSpendOfCap": "Đã dùng {{spent}} trên {{cap}} trong tháng này.",
+			"privacyTitle": "Quyền riêng tư",
+			"privacyDescription": "AI chỉ thấy những gì người hỏi có thể thấy.",
+			"includeRestricted": "Bao gồm dự án hạn chế",
+			"includeRestrictedHint": "Cho phép AI đọc các dự án hạn chế đối với những người có thể xem chúng. Dữ liệu của chúng chỉ được gửi đến nơi máy chủ cho phép dữ liệu hạn chế.",
+			"localOnly": "Chỉ mô hình cục bộ",
+			"localOnlyHint": "Gửi mọi yêu cầu AI đến mô hình cục bộ của máy chủ.",
+			"localOnlyForced": "Máy chủ đang ở chế độ chỉ cục bộ.",
+			"localOnlyUnavailable": "Máy chủ này không có mô hình cục bộ.",
+			"redactPii": "Ẩn dữ liệu cá nhân",
+			"redactPiiHint": "Thay email, số điện thoại, số thẻ và token bằng ký tự giữ chỗ trước khi yêu cầu rời khỏi máy chủ.",
+			"redactPiiForced": "Luôn bật: máy chủ ẩn dữ liệu cá nhân trong mọi yêu cầu lên đám mây.",
+			"approval": "Phê duyệt thay đổi của AI",
+			"approvalHint": "Các thay đổi do AI đề xuất luôn chờ một người phê duyệt.",
+			"semanticSearch": "Tìm kiếm ngữ nghĩa",
+			"semanticSearchHint": "Hỏi và kiểm tra trùng lặp tìm công việc, trang và bình luận theo cả ý nghĩa, không chỉ theo từ ngữ. Nội dung được lập chỉ mục bằng mô hình vector nhúng của máy chủ.",
+			"semanticUnavailable": "Cơ sở dữ liệu của máy chủ này không có pgvector, nên tìm kiếm chỉ dùng toàn văn.",
+			"semanticNoEndpoint": "Máy chủ này không có điểm cuối vector nhúng, nên tìm kiếm chỉ dùng toàn văn.",
+			"semanticIndexed_one": "Đã lập chỉ mục {{count}} mục",
+			"semanticIndexed_other": "Đã lập chỉ mục {{count}} mục",
+			"semanticPaused": "Việc lập chỉ mục đang tạm dừng. {{reason}}",
+			"semanticEnabledToast": "Đã bật tìm kiếm ngữ nghĩa. Việc lập chỉ mục chạy trong nền.",
+			"semanticDisabledToast": "Đã tắt tìm kiếm ngữ nghĩa và xóa chỉ mục của nó.",
+			"keyTitle": "Khóa API riêng",
+			"keyDescription": "Dùng tài khoản nhà cung cấp riêng của không gian làm việc thay vì của máy chủ. Khóa được lưu ở dạng mã hóa và không bao giờ hiển thị lại.",
+			"keyCurrent": "Khóa đã lưu",
+			"keyEnding": "Kết thúc bằng {{last4}}",
+			"keyUnreadable": "Không thể đọc khóa đã lưu nữa. Hãy nhập lại.",
+			"keyRemove": "Gỡ bỏ",
+			"keyProvider": "Nhà cung cấp",
+			"keyValue": "Khóa API",
+			"keyReplace": "Thay khóa",
+			"keyHint": "Khóa API Anthropic, bắt đầu bằng sk-ant-.",
+			"keyOpenAiHint": "Dùng với điểm cuối tương thích OpenAI của máy chủ.",
+			"keyPlaceholder": "Dán khóa",
+			"keyTooShort": "Khóa này có vẻ quá ngắn.",
+			"keySave": "Lưu khóa",
+			"keySavedToast": "Đã lưu khóa",
+			"keyRemovedToast": "Đã gỡ bỏ khóa",
+			"saved": "Đã lưu cài đặt AI",
+			"saveError": "Không thể lưu cài đặt AI.",
+			"chatTitle": "Trò chuyện Hỏi AI",
+			"chatDescription": "Những gì trò chuyện được phép làm cho mọi người trong không gian làm việc này.",
+			"webSearch": "Tìm kiếm web",
+			"webSearchHint": "Mọi người có thể cho phép câu trả lời tìm kiếm trên web. Kết quả được trích dẫn là nguồn web.",
+			"webSearchUnavailable": "Phiên bản này chưa thiết lập tìm kiếm web.",
+			"webSearchLocalOnly": "Không dùng khi AI chỉ chạy trên mô hình cục bộ.",
+			"storeConversations": "Lưu lịch sử trò chuyện trên máy chủ",
+			"storeConversationsHint": "Cuộc trò chuyện của mỗi người được lưu trong không gian làm việc để họ mở lại trên mọi thiết bị. Khi tắt: chúng chỉ nằm trong từng trình duyệt.",
+			"allowAutopilot": "Cho phép Tự động lái",
+			"allowAutopilotHint": "Chế độ Xây dựng có thể áp dụng thay đổi mà không cần xác nhận. Mọi thay đổi vẫn được ghi lại và có thể hoàn tác."
+		},
+		"agents": {
+			"navLabel": "Tác tử",
+			"title": "Tác tử",
+			"subtitle": "Tác tử AI là thành viên của không gian làm việc, xử lý công việc thay cho người yêu cầu và không bao giờ có nhiều quyền hơn người đó.",
+			"listTitle": "Tác tử của không gian làm việc",
+			"badge": "Tác tử",
+			"noAccess": "Chỉ những người có quyền quản lý AI mới có thể thiết lập tác tử.",
+			"empty": "Chưa có tác tử nào. Hãy tạo một tác tử, rồi nhắc đến nó trong bình luận, giao cho nó một công việc hoặc chạy nó từ một công việc.",
+			"loadError": "Không thể tải các tác tử.",
+			"retry": "Thử lại",
+			"create": "Tác tử mới",
+			"edit": "Chỉnh sửa tác tử",
+			"dialogHint": "Tác tử có thể được giao việc và nhắc đến như một người. Tác tử không thể đăng nhập và không bị tính phí như một chỗ ngồi.",
+			"save": "Lưu",
+			"cancel": "Hủy",
+			"created": "Đã tạo tác tử",
+			"saved": "Đã lưu tác tử",
+			"deleted": "Đã xóa tác tử",
+			"saveError": "Không thể lưu tác tử. Hãy thử lại.",
+			"enable": "Bật",
+			"disable": "Tắt",
+			"off": "Đang tắt",
+			"delete": "Xóa",
+			"deleteTitle": "Xóa {{name}}?",
+			"deleteBody": "Tác tử sẽ rời khỏi không gian làm việc. Các bình luận và lịch sử của nó vẫn được giữ lại, và các lượt chạy vẫn còn trong Bàn tác tử.",
+			"spend": "{{spent}} trong tháng này",
+			"spendOfBudget": "{{spent}} / {{budget}} trong tháng này",
+			"activityFilter": "Tác tử",
+			"fields": {
+				"name": "Tên",
+				"nameTaken": "Một tác tử hoặc thành viên của không gian làm việc này đã dùng tên này. Hãy chọn tên khác.",
+				"description": "Mô tả",
+				"descriptionPlaceholder": "Tác tử này giúp được việc gì",
+				"instructions": "Chỉ dẫn",
+				"instructionsHint": "Cách tác tử nên làm việc. Chỉ quản trị viên mới viết chỉ dẫn; văn bản trong công việc, bình luận và trang không bao giờ được coi là chỉ dẫn.",
+				"role": "Vai trò",
+				"roleHint": "Mức tối đa tác tử được phép làm. Mỗi lượt chạy còn bị giới hạn trong quyền của người yêu cầu.",
+				"tier": "Mô hình",
+				"tierFast": "Nhanh",
+				"tierBalanced": "Cân bằng",
+				"tierDeep": "Chuyên sâu",
+				"provider": "Nơi chạy",
+				"providerDefault": "Mặc định của không gian làm việc",
+				"providerLocal": "Chỉ mô hình cục bộ",
+				"budget": "Ngân sách hằng tháng (USD)",
+				"budgetHint": "Các lượt chạy sẽ dừng khi chi tiêu tháng này đạt mức này. Để trống nếu không giới hạn cho tác tử; giới hạn của không gian làm việc vẫn được áp dụng.",
+				"projects": "Dự án",
+				"projectsAll": "Mọi dự án mà vai trò của nó tiếp cận được",
+				"projectsSome": "Chỉ các dự án này",
+				"projectsHint": "Các lần chạy ở dự án khác sẽ dừng, và tác tử cho biết nó chưa được thiết lập để làm việc ở đó.",
+				"projectsNone": "Chọn ít nhất một dự án.",
+				"skills": "Kỹ năng",
+				"skillsEmpty": "Chưa có kỹ năng dùng chung. Có thể giao cho tác tử các kỹ năng dùng chung đã lưu trong Ask.",
+				"skillsHint": "Tác tử làm theo các prompt đã lưu này khi chúng phù hợp với yêu cầu (tối đa 10).",
+				"webAccess": "Truy cập web",
+				"webAccessHint": "Cho phép tác tử tìm kiếm trên web và dùng trình kết nối của không gian làm việc. Những gì nó gửi tới đó sẽ rời khỏi Margaya."
+			},
+			"status": {
+				"queued": "Đang chờ",
+				"running": "Đang chạy",
+				"awaiting_approval": "Đang chờ phê duyệt",
+				"succeeded": "Hoàn tất",
+				"failed": "Thất bại",
+				"cancelled": "Đã dừng",
+				"needs_input": "Cần trả lời"
+			},
+			"stepStatus": {
+				"ok": "Hoàn tất",
+				"error": "Thất bại",
+				"denied": "Không được phép",
+				"pending": "Đang chờ phê duyệt",
+				"applied": "Đã áp dụng",
+				"rejected": "Đã từ chối",
+				"expired": "Đã hết hạn",
+				"reverted": "Đã hoàn tác"
+			},
+			"step": {
+				"model": "Gọi mô hình"
+			},
+			"tools": {
+				"read_task": "Đọc công việc",
+				"read_project": "Đọc dự án",
+				"read_page": "Đọc trang",
+				"search_workspace": "Tìm kiếm",
+				"add_comment": "Bình luận",
+				"update_task": "Cập nhật công việc",
+				"move_status": "Đổi trạng thái",
+				"create_subtask": "Tạo công việc con",
+				"create_page": "Tạo trang",
+				"link_tasks": "Liên kết công việc",
+				"delete_task": "Xóa công việc",
+				"bulk_move_status": "Đổi trạng thái của nhiều công việc",
+				"ask_person": "Đặt câu hỏi",
+				"web_search": "Tìm kiếm web",
+				"connector": "Dịch vụ bên ngoài: {{tool}}"
+			},
+			"runErrors": {
+				"AGENT_GONE": "Tác tử đã bị xóa.",
+				"AGENT_DISABLED": "Tác tử đang tắt.",
+				"AGENT_LEFT": "Tác tử không còn là thành viên của không gian làm việc.",
+				"PRINCIPAL_LEFT": "Người yêu cầu không còn là thành viên của không gian làm việc.",
+				"AI_USE_DENIED": "Người yêu cầu không được phép dùng AI.",
+				"NOT_IN_SCOPE": "Công việc này nằm trong một dự án mà AI không thể đọc.",
+				"TIME_LIMIT": "Lượt chạy kéo dài quá 10 phút nên đã bị dừng.",
+				"OUTPUT_LIMIT": "Câu trả lời của tác tử quá dài. Hãy yêu cầu một thay đổi nhỏ hơn.",
+				"TURN_LIMIT": "Tác tử đã hết số bước trước khi hoàn thành. Hãy yêu cầu một thay đổi nhỏ và cụ thể hơn.",
+				"INTERRUPTED": "Lượt chạy đã bị gián đoạn. Các thay đổi đã thực hiện vẫn có thể hoàn tác.",
+				"APPROVAL_EXPIRED": "Không ai quyết định về các thay đổi được đề xuất trong vòng 24 giờ, nên chúng đã hết hạn.",
+				"INTERNAL": "Đã xảy ra lỗi trong lượt chạy.",
+				"NEEDS_INPUT_EXPIRED": "Không ai trả lời câu hỏi của tác tử trong 24 giờ.",
+				"OUTSIDE_AGENT_PROJECTS": "Tác tử chưa được thiết lập để làm việc trong dự án này."
+			},
+			"change": {
+				"approve": "Phê duyệt",
+				"reject": "Từ chối",
+				"approved": "Đã áp dụng thay đổi",
+				"rejected": "Đã hủy bỏ thay đổi",
+				"decideError": "Không thể áp dụng quyết định của bạn. Hãy thử lại.",
+				"undo": "Hoàn tác",
+				"undone": "Đã hoàn tác thay đổi",
+				"undoError": "Không thể hoàn tác thay đổi này. Có thể công việc đã thay đổi kể từ đó.",
+				"expiresAt": "Hết hạn {{time}}",
+				"before": "Trước",
+				"after": "Sau",
+				"openPage": "Mở trang",
+				"openSubtask": "Mở công việc con",
+				"openLinked": "Mở công việc được liên kết",
+				"empty": "(trống)",
+				"fields": {
+					"title": "Tiêu đề",
+					"priority": "Mức ưu tiên",
+					"dueDate": "Ngày đến hạn",
+					"description": "Mô tả",
+					"status": "Trạng thái",
+					"statusOf": "Trạng thái của {{task}}",
+					"comment": "Bình luận",
+					"subtask": "Công việc con mới",
+					"page": "Trang mới",
+					"relation": "Liên kết ({{relation}})",
+					"delete": "Chuyển vào thùng rác",
+					"connectorCall": "Gọi tới {{connector}}"
+				}
+			},
+			"inbox": {
+				"title": "{{agentName}} cần bạn phê duyệt",
+				"verb": "đề nghị bạn phê duyệt",
+				"cardTitle": "Thay đổi được đề xuất"
+			},
+			"reply": {
+				"title": "{{agentName}} đã trả lời yêu cầu của bạn",
+				"verb": "đã trả lời yêu cầu của bạn",
+				"cardTitle": "Câu trả lời của tác tử",
+				"hint": "Tác tử không đăng câu trả lời này lên công việc, nên nó được hiển thị ở đây."
+			},
+			"activity": {
+				"onBehalfOf": "thay mặt {{name}}"
+			},
+			"run": {
+				"button": "Chạy tác tử",
+				"title": "Chạy một tác tử trên công việc này",
+				"hint": "Tác tử làm việc với quyền tối đa bằng quyền của bạn. Các thay đổi có thể hoàn tác và một số thay đổi sẽ chờ bạn phê duyệt.",
+				"agent": "Tác tử",
+				"prompt": "Tác tử nên làm gì?",
+				"promptPlaceholder": "Ví dụ: chia việc này thành các công việc con và đề xuất mức ưu tiên.",
+				"start": "Chạy",
+				"started": "{{name}} đang xử lý",
+				"error": "Không thể khởi chạy tác tử. Hãy thử lại.",
+				"recent": "Các lượt chạy gần đây trên công việc này",
+				"viewInDesk": "Mở trong Bàn tác tử"
+			},
+			"desk": {
+				"nav": "Bàn tác tử",
+				"title": "Bàn tác tử",
+				"subtitle": "Những gì tác tử của bạn đã làm và đang làm: mọi lượt chạy cùng các bước, chi phí và thay đổi.",
+				"emptyTitle": "Chưa có lượt chạy tác tử nào",
+				"empty": "Nhắc đến một tác tử trong bình luận, giao cho nó một công việc hoặc chạy nó từ một công việc.",
+				"allAgents": "Tất cả tác tử",
+				"allStatuses": "Tất cả trạng thái",
+				"filterAgent": "Lọc theo tác tử",
+				"filterStatus": "Lọc theo trạng thái",
+				"approvalsTitle": "Đang chờ bạn",
+				"selectRun": "Chọn một lượt chạy để xem các bước và thay đổi.",
+				"runMissing": "Lượt chạy này không khả dụng.",
+				"deletedAgent": "Tác tử đã xóa",
+				"onBehalfOf": "cho {{name}}",
+				"cost": "Chi phí",
+				"tokensLabel": "Token",
+				"tokens": "Token: {{value}}",
+				"toolCallsLabel": "Lệnh gọi công cụ",
+				"summary": "Tóm tắt",
+				"changes": "Tập thay đổi",
+				"noChanges": "Không có thay đổi.",
+				"steps": "Các bước",
+				"cancelRun": "Dừng lượt chạy",
+				"cancelled": "Đã dừng lượt chạy",
+				"cancelError": "Không thể dừng lượt chạy.",
+				"trigger": {
+					"mention": "Được nhắc đến",
+					"assign": "Được giao",
+					"manual": "Chạy từ công việc",
+					"schedule": "Theo lịch",
+					"automation": "Tự động hóa",
+					"chat": "Tiếp nối"
+				},
+				"project": "Dự án:",
+				"workedSeconds": "Đã làm việc {{count}} giây",
+				"workedMinutes": "Đã làm việc {{count}} phút"
+			},
+			"connectors": {
+				"title": "Trình kết nối",
+				"subtitle": "Máy chủ MCP bên ngoài mà tác tử có quyền truy cập web được gọi. Công cụ chỉ đọc chạy ngay; mọi thứ khác chờ phê duyệt.",
+				"create": "Thêm trình kết nối",
+				"edit": "Sửa trình kết nối",
+				"delete": "Xóa trình kết nối",
+				"created": "Đã thêm trình kết nối",
+				"saved": "Đã lưu trình kết nối",
+				"deleted": "Đã xóa trình kết nối",
+				"saveError": "Không thể lưu trình kết nối. Hãy thử lại.",
+				"empty": "Chưa có trình kết nối. Thêm địa chỉ của một máy chủ MCP để tác tử có quyền truy cập web dùng được công cụ của nó.",
+				"shared": "Dùng chung",
+				"personal": "Chỉ mình bạn",
+				"enable": "Bật",
+				"disable": "Tắt",
+				"test": "Kiểm tra",
+				"testOk": "Đã kết nối: {{count}} công cụ, {{readOnly}} công cụ chỉ đọc",
+				"testError": "Không thể chạy kiểm tra. Hãy thử lại.",
+				"errors": {
+					"DESTINATION": "Địa chỉ này không phải máy chủ công khai.",
+					"TIMEOUT": "Máy chủ không trả lời kịp.",
+					"NETWORK": "Không thể kết nối tới máy chủ.",
+					"HTTP": "Máy chủ trả về lỗi ({{status}}).",
+					"TOO_LARGE": "Phản hồi của máy chủ quá lớn.",
+					"PROTOCOL": "Đây có vẻ không phải máy chủ MCP.",
+					"RPC": "Máy chủ MCP đã từ chối yêu cầu.",
+					"SECRET_UNREADABLE": "Không thể đọc bí mật đã lưu nữa. Hãy nhập lại."
+				},
+				"secretHint": "Bí mật ••••{{last4}}",
+				"dialogHint": "Margaya kết nối qua Streamable HTTP. Bí mật được lưu đã mã hóa và không bao giờ hiển thị lại.",
+				"name": "Tên",
+				"url": "URL máy chủ",
+				"urlHint": "Điểm cuối MCP, ví dụ https://mcp.example.com/mcp. Nó phải truy cập được từ internet công cộng.",
+				"auth": "Xác thực",
+				"authHeader": "Bí mật trong header",
+				"authNone": "Không có",
+				"headerName": "Tên header",
+				"secret": "Bí mật",
+				"secretKeep": "Để trống để giữ bí mật hiện tại",
+				"secretHelp": "Toàn bộ giá trị của header, ví dụ Bearer rồi đến token.",
+				"sharedToggle": "Chia sẻ với không gian làm việc",
+				"sharedHint": "Tác tử dùng trình kết nối dùng chung trong mọi lần chạy. Tắt để chỉ dùng cho các lần chạy thay mặt bạn.",
+				"deleteTitle": "Xóa {{name}}?",
+				"deleteBody": "Tác tử sẽ không dùng được công cụ của nó nữa, và bí mật đã lưu sẽ bị xóa."
+			},
+			"followUp": {
+				"label": "Trả lời tác tử",
+				"placeholder": "Đặt câu hỏi tiếp hoặc cho biết việc cần làm tiếp theo…",
+				"send": "Gửi",
+				"error": "Không thể bắt đầu phần tiếp nối. Hãy thử lại."
+			},
+			"needsInput": {
+				"title": "Tác tử có một câu hỏi",
+				"answerLabel": "Câu trả lời của bạn",
+				"placeholder": "Nhập câu trả lời…",
+				"reply": "Trả lời",
+				"sent": "Đã gửi câu trả lời. Tác tử tiếp tục.",
+				"error": "Không thể gửi câu trả lời. Hãy thử lại.",
+				"hint": "Câu hỏi chưa được trả lời sẽ hết hạn sau 24 giờ.",
+				"waiting": "Tác tử đang chờ câu trả lời từ người đã yêu cầu.",
+				"inboxHint": "Lần chạy tạm dừng cho đến khi bạn trả lời.",
+				"answer": "Trả lời trong Bàn tác tử",
+				"notificationTitle": "{{agentName}} có một câu hỏi",
+				"verb": "có một câu hỏi cho bạn"
+			},
+			"schedules": {
+				"open": "Lịch của {{name}}",
+				"title": "Lịch: {{name}}",
+				"hint": "Chạy tác tử theo lịch. Các lần chạy thay mặt người lưu lịch gần nhất, với quyền không vượt quá quyền của người đó.",
+				"empty": "Chưa có lịch nào.",
+				"create": "Lịch mới",
+				"edit": "Sửa lịch",
+				"delete": "Xóa lịch",
+				"deleteBody": "Xóa lịch này? Các lần chạy trước vẫn ở trong Bàn tác tử.",
+				"deleted": "Đã xóa lịch",
+				"saved": "Đã lưu lịch",
+				"saveError": "Không thể lưu lịch. Hãy thử lại.",
+				"enable": "Bật lịch",
+				"disable": "Tắt lịch",
+				"enabled": "Bật",
+				"when": "Khi nào",
+				"presets": {
+					"weekdays": "Mỗi ngày làm việc lúc 9:00",
+					"mondays": "Mỗi thứ Hai lúc 9:00",
+					"monthly": "Ngày đầu tháng lúc 9:00",
+					"custom": "Tùy chỉnh (cron)"
+				},
+				"customLabel": "Lịch cron {{cron}}",
+				"cron": "Biểu thức cron",
+				"cronHint": "Năm trường: phút, giờ, ngày trong tháng, tháng, thứ trong tuần. Tối đa mỗi 15 phút một lần.",
+				"timezone": "Múi giờ",
+				"project": "Dự án",
+				"chooseProject": "Chọn dự án",
+				"task": "Công việc",
+				"noTask": "Không có công việc (toàn bộ dự án)",
+				"taskHint": "Không có công việc, tác tử làm việc trên dự án và đưa báo cáo lên một trang.",
+				"projectLevel": "Toàn bộ dự án",
+				"prompt": "Nó nên làm gì?",
+				"promptPlaceholder": "Ví dụ: tóm tắt những gì đã thay đổi từ hôm qua.",
+				"nextRun": "Lần chạy tiếp theo {{time}}",
+				"runsAs": "Chạy cho {{name}}",
+				"runsAsHint": "Khi lưu, các lần chạy này sẽ thay mặt bạn. Lịch sẽ tắt nếu bạn rời không gian làm việc hoặc mất quyền dùng AI.",
+				"errors": {
+					"CRON_INVALID": "Nhập năm trường cron: phút, giờ, ngày, tháng, thứ trong tuần.",
+					"CRON_TOO_FREQUENT": "Lịch chỉ có thể chạy tối đa mỗi 15 phút một lần.",
+					"CRON_NEVER": "Lịch này sẽ không bao giờ chạy.",
+					"TIMEZONE_INVALID": "Chọn một múi giờ hợp lệ.",
+					"OUTSIDE_AGENT_PROJECTS": "Tác tử này chưa được thiết lập để làm việc trong dự án đó."
+				}
+			},
+			"templates": {
+				"title": "Bắt đầu từ",
+				"blank": "Tác tử trống",
+				"blankHint": "Tự viết hướng dẫn.",
+				"triage": {
+					"name": "Phân loại",
+					"description": "Sắp xếp công việc mới: tiêu đề rõ ràng, mức ưu tiên và liên kết trùng lặp."
+				},
+				"standup": {
+					"name": "Họp đứng",
+					"description": "Viết bản tóm tắt họp đứng hằng ngày trên một trang dự án."
+				},
+				"specWriter": {
+					"name": "Người viết đặc tả",
+					"description": "Biến một công việc thành trang đặc tả có tiêu chí chấp nhận."
+				},
+				"deliveryRisk": {
+					"name": "Rủi ro bàn giao",
+					"description": "Báo cáo hằng tuần công việc quá hạn, bị chặn và chưa có người phụ trách."
+				},
+				"feedback": {
+					"name": "Phản hồi khách hàng",
+					"description": "Nhóm phản hồi của khách hàng theo chủ đề kèm ví dụ."
+				},
+				"triggers": {
+					"mention": "Nhắc đến",
+					"assign": "Giao việc",
+					"schedule": "Lịch",
+					"automation": "Tự động hóa"
+				}
+			}
+		},
+		"capture": {
+			"button": "Ghi nhận",
+			"buttonHint": "Tạo mới từ ảnh chụp màn hình, bản ghi hoặc bản chép lời",
+			"title": "Yêu cầu mới từ nội dung ghi nhận",
+			"description": "Thêm ảnh chụp màn hình, bản ghi màn hình hoặc ghi chú cuộc họp. AI đề xuất yêu cầu; không có gì được tạo cho đến khi bạn xác nhận.",
+			"tabs": {
+				"screenshot": "Ảnh chụp màn hình",
+				"recording": "Bản ghi",
+				"transcript": "Bản chép lời"
+			},
+			"dropzone": "Dán, thả hoặc chọn ảnh chụp màn hình",
+			"dropzoneHint": "PNG, JPEG hoặc WebP, tối đa {{count}} ảnh. Thông tin vị trí và máy ảnh sẽ bị xóa.",
+			"chooseRecording": "Chọn bản ghi màn hình",
+			"recordingHint": "Chỉ {{count}} khung hình tĩnh được gửi tới AI. Video vẫn nằm trên thiết bị của bạn.",
+			"notes": "Ghi chú (không bắt buộc)",
+			"notesPlaceholder": "Bạn đang làm gì, và điều gì đã xảy ra sai?",
+			"transcript": "Bản chép lời hoặc ghi chú cuộc họp",
+			"transcriptPlaceholder": "Dán bản chép lời hoặc ghi chú. Mỗi việc cần làm sẽ trở thành một yêu cầu riêng.",
+			"remove": "Xóa {{name}}",
+			"tooMany": "Tối đa {{count}} ảnh cho mỗi lần ghi nhận.",
+			"mediaErrors": {
+				"type": "Loại tệp này không được hỗ trợ.",
+				"tooLarge": "Tệp này quá lớn.",
+				"unreadable": "Không thể đọc tệp này."
+			},
+			"preparing": "Đang chuẩn bị ảnh…",
+			"analyze": "Đề xuất yêu cầu",
+			"analyzing": "Đang đọc nội dung ghi nhận…",
+			"reviewTitle": "Xem lại các yêu cầu được đề xuất",
+			"reviewDescription": "Chỉnh sửa hoặc bỏ qua bất kỳ yêu cầu nào. Không có gì được tạo cho đến khi bạn xác nhận.",
+			"empty": "Không tìm thấy yêu cầu nào trong nội dung này.",
+			"include": "Bao gồm yêu cầu này",
+			"titleLabel": "Tiêu đề",
+			"descriptionLabel": "Mô tả",
+			"priorityLabel": "Mức ưu tiên",
+			"labelsLabel": "Nhãn được đề xuất",
+			"assignTo": "Giao cho {{name}}",
+			"attachNote": "Ảnh sẽ đính kèm: {{count}}",
+			"attachNotAllowed": "Không thể đính kèm ảnh: bạn cần quyền chỉnh sửa công việc.",
+			"back": "Quay lại",
+			"create": "Tạo yêu cầu ({{count}})",
+			"created": "Đã tạo yêu cầu: {{count}}",
+			"extrasFailed": "Không thể thêm một số nhãn, người phụ trách hoặc tệp đính kèm.",
+			"createError": "Không thể tạo các yêu cầu.",
+			"draftFromImages": "Soạn nháp từ ảnh",
+			"drafting": "Đang soạn nháp…",
+			"sections": {
+				"steps": "Các bước tái hiện",
+				"expected": "Kết quả mong đợi",
+				"actual": "Kết quả thực tế",
+				"environment": "Môi trường"
+			}
+		},
+		"codingAgent": {
+			"button": "Gửi cho tác tử lập trình",
+			"dialogTitle": "Gửi cho một tác tử lập trình",
+			"dialogDescription": "Margaya mở một issue trong kho mã với bản giao việc này. Hãy xem lại và chỉnh sửa trước khi gửi.",
+			"repository": "Kho mã",
+			"profile": "Tác tử lập trình",
+			"github": "GitHub",
+			"gitea": "Gitea",
+			"notReady": "Tích hợp của kho mã này chưa thể mở issue. Hãy kiểm tra trong cài đặt tích hợp của dự án.",
+			"noProfiles": "Không có hồ sơ tác tử lập trình nào hoạt động với kho mã này.",
+			"useAi": "Tóm tắt bằng AI",
+			"regenerate": "Chuẩn bị lại",
+			"preparing": "Đang chuẩn bị bản giao việc…",
+			"error": "Không thể chuẩn bị bản giao việc.",
+			"titleLabel": "Tiêu đề issue",
+			"briefLabel": "Bản giao việc",
+			"briefNote": "Các giá trị trông giống mật khẩu hoặc khóa sẽ bị xóa trước khi gửi. Không có gì được hợp nhất tự động.",
+			"send": "Gửi",
+			"sending": "Đang gửi…",
+			"sent": "Đã gửi cho tác tử lập trình",
+			"sentNotAssigned": "Đã tạo issue nhưng không thể thêm người được giao",
+			"sendError": "Không thể tạo issue",
+			"openIssue": "Mở issue",
+			"timelineTitle": "Tác tử lập trình",
+			"timelineLabel": "Tiến độ của tác tử lập trình",
+			"sentBy": "{{name}} đã gửi cho {{profile}}",
+			"sentByUnknown": "Đã gửi cho {{profile}}",
+			"issueLink": "Issue #{{number}}",
+			"prLink": "Pull request #{{number}}",
+			"pending": "Chưa",
+			"steps": {
+				"issue_created": "Đã tạo issue",
+				"working": "Tác tử đang làm",
+				"ready_for_review": "Sẵn sàng để duyệt",
+				"merged": "Đã hợp nhất",
+				"closed": "Đã đóng, không hợp nhất"
+			},
+			"settings": {
+				"title": "Tác tử lập trình",
+				"subtitle": "Mẫu issue cho “Gửi cho tác tử lập trình”, gửi qua GitHub và Gitea",
+				"sharedNote": "Dùng chung cho mọi dự án trong không gian làm việc này. Hồ sơ chỉ thêm một lượt nhắc hoặc người được giao vào issue; không lưu khóa AI nào.",
+				"builtin": "Có sẵn",
+				"githubOnly": "Chỉ GitHub",
+				"name": "Tên",
+				"namePlaceholder": "vd: Trình chạy build của chúng tôi",
+				"mention": "Lượt nhắc",
+				"mentionPlaceholder": "@agent, hoặc văn bản có {task} và {branch}",
+				"assignee": "Người được giao (GitHub)",
+				"assigneePlaceholder": "Tên đăng nhập GitHub, vd: Copilot",
+				"enabled": "Đang bật",
+				"edit": "Sửa hồ sơ",
+				"delete": "Xóa hồ sơ",
+				"add": "Thêm hồ sơ",
+				"save": "Lưu",
+				"saved": "Đã lưu hồ sơ",
+				"deleted": "Đã xóa hồ sơ",
+				"error": "Không thể lưu hồ sơ",
+				"needsTarget": "Hãy thêm một lượt nhắc hoặc người được giao.",
+				"readOnly": "Chỉ những người quản lý cài đặt không gian làm việc mới có thể thay đổi hồ sơ."
+			}
+		},
+		"filters": {
+			"button": "Mô tả bộ lọc…",
+			"short": "Mô tả",
+			"label": "Mô tả những gì cần hiển thị",
+			"placeholder": "vd: lỗi quá hạn đang xử lý của tôi",
+			"apply": "Áp dụng",
+			"none": "Không thể chuyển thành bộ lọc. Hãy thử từ khác.",
+			"applied": "Đã áp dụng bộ lọc. Sửa các thẻ để điều chỉnh.",
+			"dropped": "Không hiểu: {{words}}",
+			"hint": "AI biến lời bạn thành bộ lọc theo trạng thái, nhãn, người, chu kỳ, mức ưu tiên và ngày."
+		},
+		"budget": {
+			"warningTitle": "Đã dùng {{percent}}% ngân sách AI tháng này",
+			"reachedTitle": "Ngân sách AI tháng này đã hết",
+			"amounts": "{{used}} / {{cap}}.",
+			"warningHint": "Tính năng AI sẽ dừng khi đạt hạn mức. Hãy tăng hạn mức bên dưới nếu cần.",
+			"reachedHint": "Tính năng AI tạm dừng đến tháng sau hoặc đến khi hạn mức được tăng.",
+			"notice": {
+				"title": "Ngân sách AI sắp hết",
+				"content": "Không gian làm việc này đã dùng {{percent}}% ngân sách AI hằng tháng."
+			}
+		},
+		"skills": {
+			"navLabel": "Kỹ năng AI",
+			"title": "Kỹ năng AI",
+			"subtitle": "Các câu lệnh đã lưu để dùng lại qua \"/\" trong trò chuyện AI.",
+			"listTitle": "Kỹ năng",
+			"new": "Kỹ năng mới",
+			"newTitle": "Kỹ năng mới",
+			"editTitle": "Sửa kỹ năng",
+			"dialogHint": "Câu lệnh được thêm vào câu hỏi mỗi khi dùng kỹ năng.",
+			"name": "Tên",
+			"namePlaceholder": "ghi-chu-phat-hanh",
+			"description": "Mô tả",
+			"prompt": "Câu lệnh",
+			"promptPlaceholder": "Viết ghi chú phát hành cho các công việc đã hoàn thành trong chu kỳ này, nhóm theo tính năng.",
+			"shareLabel": "Chia sẻ với không gian làm việc",
+			"shareHint": "Mọi người dùng AI ở đây đều có thể dùng. Khi tắt: chỉ mình bạn.",
+			"shared": "Đã chia sẻ",
+			"personal": "Chỉ mình bạn",
+			"save": "Lưu kỹ năng",
+			"saved": "Đã lưu kỹ năng",
+			"saveError": "Không thể lưu kỹ năng",
+			"deleted": "Đã xóa kỹ năng",
+			"edit": "Sửa {{name}}",
+			"delete": "Xóa {{name}}",
+			"deleteConfirm": "Xóa {{name}}?",
+			"empty": "Chưa có kỹ năng nào. Hãy lưu một câu lệnh bạn hay dùng.",
+			"loadError": "Không thể tải các kỹ năng.",
+			"noAccess": "Bạn cần có quyền dùng AI trong không gian làm việc này."
+		},
+		"memory": {
+			"navLabel": "Bộ nhớ AI",
+			"title": "Bộ nhớ AI",
+			"subtitle": "Những thông tin ngắn mà AI ghi nhớ khi trả lời, chẳng hạn \"Ngày phát hành của chúng tôi là thứ Năm\".",
+			"scopes": {
+				"workspace": "Không gian làm việc",
+				"project": "Dự án",
+				"user": "Cá nhân"
+			},
+			"scopeHints": {
+				"workspace": "Áp dụng cho mọi người trong không gian làm việc. Quản trị viên AI chỉnh sửa.",
+				"project": "Áp dụng trong một dự án. Quản trị viên AI chỉnh sửa.",
+				"user": "Chỉ áp dụng cho bạn và chỉ bạn xem được."
+			},
+			"project": "Dự án",
+			"newNote": "Ghi chú mới",
+			"placeholder": "Ngày phát hành của chúng tôi là thứ Năm.",
+			"add": "Thêm ghi chú",
+			"save": "Lưu ghi chú",
+			"editNote": "Sửa ghi chú",
+			"deleteNote": "Xóa ghi chú",
+			"saved": "Đã lưu ghi chú",
+			"deleted": "Đã xóa ghi chú",
+			"saveError": "Không thể lưu ghi chú",
+			"empty": "Chưa có ghi chú nào.",
+			"loadError": "Không thể tải các ghi chú.",
+			"adminsOnly": "Chỉ quản trị viên AI mới có thể thêm ghi chú ở đây.",
+			"noAccess": "Bạn cần có quyền dùng AI trong không gian làm việc này."
+		}
+	},
+	"insight": {
+		"close": "Đóng",
+		"retry": "Thử lại",
+		"stop": "Dừng",
+		"writing": "Đang viết…",
+		"days_other": "{{count}} ngày",
+		"estimate": {
+			"usually": "Các công việc tương tự thường là {{value}}",
+			"took_other": "{{count}} công việc tương tự mất {{min}}–{{max}} ngày (trung vị {{median}})",
+			"basedOn_other": "Dựa trên {{count}} công việc tương tự đã hoàn thành",
+			"use": "Dùng {{value}}",
+			"why": "Tại sao?",
+			"similar": "Công việc tương tự"
+		},
+		"calibration": {
+			"title": "Hiệu chỉnh ước lượng",
+			"description": "Công việc mỗi kích cỡ thực sự mất bao lâu, từ lúc bắt đầu đầu tiên đến khi xong, trong {{days}} ngày qua.",
+			"empty": "Chưa có công việc đã hoàn thành, đã ước lượng và có ghi nhận thời điểm bắt đầu.",
+			"estimate": "Ước lượng",
+			"tasks": "Công việc",
+			"actual": "Thời gian thực tế",
+			"range": "trung vị {{median}} ngày ({{low}}–{{high}})",
+			"ordered": "Ước lượng lớn hơn thì mất nhiều thời gian hơn, đúng như mong đợi.",
+			"notOrdered": "Ước lượng lớn hơn không phải lúc nào cũng lâu hơn: nên xem lại cách nhóm ước lượng công việc.",
+			"fewSamples": "Cần thêm công việc đã hoàn thành để so sánh các kích cỡ.",
+			"unmeasured_other": "{{count}} công việc không có thời điểm bắt đầu nên không được tính."
+		},
+		"capacity": {
+			"meter": "Khối lượng đã lên kế hoạch so với một chu kỳ thông thường",
+			"within": "Đã lên kế hoạch {{percent}}% một chu kỳ thông thường",
+			"over": "Vượt năng lực: đã lên kế hoạch {{percent}}% một chu kỳ thông thường",
+			"noDates": "Đặt ngày cho chu kỳ để kiểm tra năng lực.",
+			"noHistory": "Năng lực sẽ hiện khi nhóm đã hoàn thành công việc ở các chu kỳ trước.",
+			"details": "Chi tiết năng lực",
+			"compare": "Đã lên kế hoạch {{load}}; một chu kỳ thông thường chứa {{typical}} (khoảng {{low}}–{{high}}).",
+			"tasks_other": "{{count}} công việc",
+			"points_other": "{{count}} điểm",
+			"basisCycles_other": "Dựa trên khối lượng nhóm đã hoàn thành trong {{count}} chu kỳ đã kết thúc gần nhất, quy đổi theo độ dài chu kỳ này.",
+			"basisThroughput": "Dựa trên số công việc dự án hoàn thành trong mỗi khoảng thời gian dài bằng chu kỳ này trong 8 tuần qua.",
+			"deferTitle": "Có thể chuyển sang chu kỳ sau",
+			"blocks_other": "chặn {{count}}",
+			"membersTitle": "Khối lượng theo người",
+			"memberLoad": "{{load}} · thường là {{typical}}",
+			"membersNote": "Khối lượng so với nhịp độ thông thường của từng người, để cân bằng công việc. Không phải thước đo hiệu suất.",
+			"unassigned": "Chưa giao"
+		},
+		"retro": {
+			"button": "Nhìn lại",
+			"buttonLabel": "Chuẩn bị buổi nhìn lại",
+			"title": "Buổi nhìn lại",
+			"factsTitle": "Điều đã xảy ra",
+			"factsSoFar": "Điều đã xảy ra đến nay",
+			"factsNote": "Các dữ kiện này lấy từ dữ liệu của Margaya, không phải từ AI. Chúng mô tả công việc của nhóm, không bao giờ về một cá nhân.",
+			"error": "Không tải được dữ kiện của chu kỳ này.",
+			"aiIntro": "Để AI viết một đoạn tường thuật ngắn và các câu hỏi thảo luận từ những dữ kiện này.",
+			"write": "Viết tường thuật",
+			"rewrite": "Viết lại",
+			"edit": "Sửa",
+			"preview": "Xem trước",
+			"editLabel": "Tường thuật buổi nhìn lại",
+			"saveAsPage": "Lưu thành trang",
+			"saveWithNarrative": "Lưu dữ kiện, tường thuật và các mục cho nhóm.",
+			"saveFactsOnly": "Lưu dữ kiện và các mục để nhóm điền.",
+			"saved": "Đã lưu buổi nhìn lại thành trang",
+			"saveError": "Không lưu được trang.",
+			"openPage": "Mở trang",
+			"pageTitle": "Nhìn lại: {{name}}",
+			"more_other": "và {{count}} mục khác",
+			"facts": {
+				"sayDo_other": "Hoàn thành {{done}} trên {{count}} công việc đã cam kết ({{percent}}%)",
+				"sayDoNone": "Không có gì được cam kết lúc bắt đầu",
+				"scope": "Thay đổi phạm vi: thêm {{added}}, bớt {{removed}} trong chu kỳ",
+				"carry": "Chuyển tiếp: {{carried}} chuyển sang chu kỳ khác, {{open}} vẫn còn mở",
+				"reopened_other": "{{count}} công việc bị mở lại sau khi đã xong",
+				"points": "Điểm ước lượng: hoàn thành {{completed}} trên {{committed}}",
+				"cycleTime": "Thời gian chu trình: trung vị {{median}} ngày",
+				"cycleTimeOutliers_other": "Thời gian chu trình: trung vị {{median}} ngày; {{count}} công việc mất hơn {{threshold}} ngày",
+				"cycleTimeNone": "Thời gian chu trình: chưa đo",
+				"blocked_other": "{{count}} công việc bị công việc khác chặn",
+				"forecastNone": "Dự báo: chưa lưu dự báo nào cho chu kỳ này",
+				"forecastOpen": "Dự báo: 85% khả năng xong trước {{date}}",
+				"forecastMet": "Dự báo: 85% khả năng xong trước {{date}}, và dự báo đã đúng",
+				"forecastMissed": "Dự báo: 85% khả năng xong trước {{date}}, và dự báo đã không đúng"
+			},
+			"lists": {
+				"added": "Thêm trong chu kỳ",
+				"carriedOver": "Chuyển tiếp",
+				"leftOpen": "Còn mở",
+				"outliers": "Mất lâu hơn nhiều so với thường lệ",
+				"blocked": "Bị chặn"
+			},
+			"page": {
+				"facts": "Dữ kiện",
+				"wentWell": "Điều làm tốt",
+				"improve": "Điều cần cải thiện",
+				"actions": "Hành động"
+			}
+		},
+		"myBrief": {
+			"title": "Bản tin của tôi",
+			"empty": "Hôm nay không có gì cần bạn xử lý.",
+			"error": "Không tải được bản tin của bạn.",
+			"summarize": "Tóm tắt",
+			"overdue": "Quá hạn · {{total}}",
+			"dueToday": "Đến hạn hôm nay · {{total}}",
+			"blocked": "Bị chặn · {{total}}",
+			"mentions": "Lượt nhắc · {{total}}",
+			"following": "Thay đổi trên công việc bạn theo dõi · {{total}}",
+			"waitingOn": "Đang chờ {{keys}}",
+			"hiddenBlockers_other": "{{count}} công việc bị ẩn",
+			"mentionedBy": "bởi {{name}}",
+			"mentioned": "đã nhắc đến bạn",
+			"more_other": "và {{count}} mục khác",
+			"kinds": {
+				"status": "trạng thái",
+				"comment": "bình luận",
+				"assignee": "người được giao",
+				"priority": "độ ưu tiên",
+				"due_date": "hạn chót",
+				"other": "cập nhật khác"
+			},
+			"emailTitle": "Thêm Bản tin của tôi vào bản tóm tắt",
+			"emailDescription": "Bản tóm tắt sẽ liệt kê cả công việc bị chặn và thay đổi trên công việc bạn theo dõi. Cần bản tóm tắt hằng ngày hoặc hằng tuần.",
+			"emailError": "Không lưu được cài đặt này."
+		}
 	}
 }

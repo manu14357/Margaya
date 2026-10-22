@@ -11,7 +11,8 @@
 			"remove": "削除",
 			"reset": "リセット",
 			"filter": "フィルター",
-			"clearAllFilters": "すべてのフィルターをクリア"
+			"clearAllFilters": "すべてのフィルターをクリア",
+			"undo": "元に戻す"
 		},
 		"a11y": {
 			"toggleSidebar": "サイドバーを切り替え"
@@ -98,7 +99,15 @@
 				"createButton": "プロジェクトを作成",
 				"successToast": "プロジェクトを作成しました",
 				"errorToast": "プロジェクトの作成に失敗しました",
-				"keyTaken": "このワークスペースには、キー {{key}} のプロジェクトが既に存在します"
+				"keyTaken": "このワークスペースには、キー {{key}} のプロジェクトが既に存在します",
+				"blankProject": "空のプロジェクト",
+				"copyHint": "ステータス、カスタムフィールド、見積もり、設定、自動化がコピーされます。メンバー、連携、公開ボードはコピーされません。",
+				"includeOpenTasks": "未完了のタスクを含める",
+				"includeTemplates": "タスクテンプレートを含める",
+				"openTasksHint": "未完了のタスクを最大500件、サブタスク・ラベル・見積もりとともにコピーします。コメントと履歴はコピーされません。",
+				"restricted": "制限付き",
+				"restrictedHint": "このプロジェクトはメンバーだけが見られます。あなたが最初のメンバーになります。ワークスペースのオーナーと管理者はいつでも閲覧できます。",
+				"startFrom": "作成元"
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -714,6 +723,8 @@
 			"themeLight": "ライト",
 			"themeDark": "ダーク",
 			"themeSystem": "システム",
+			"themeLightContrast": "ハイコントラスト（ライト）",
+			"themeDarkContrast": "ハイコントラスト（ダーク）",
 			"language": "言語",
 			"languageDescription": "表示言語を選択してください",
 			"selectLanguage": "言語を選択",
@@ -918,7 +929,8 @@
 				"intake": "受付",
 				"analytics": "アナリティクス",
 				"page": "ページ",
-				"audit_log": "監査ログ"
+				"audit_log": "監査ログ",
+				"ai": "AI"
 			},
 			"permissions": {
 				"project": {
@@ -1163,6 +1175,16 @@
 					"read": {
 						"description": "ワークスペースの監査ログを表示・エクスポートします。メンバー、ロール、キー、Webhook、連携、設定を誰が変更したかを確認できます。",
 						"label": "監査ログを表示"
+					}
+				},
+				"ai": {
+					"use": {
+						"label": "AI を使用",
+						"description": "ワークスペースとプロジェクトで AI がオンのとき、AI 機能を使用できます。"
+					},
+					"manage": {
+						"label": "AI を管理",
+						"description": "ワークスペースの AI のオン・オフ、キー、上限、プライバシーの変更、AI の使用状況の確認ができます。"
 					}
 				}
 			},
@@ -1756,6 +1778,67 @@
 			"dropHintAny": "JSONまたはCSVファイルをここにドラッグ&ドロップ",
 			"importAcceptHint": "MargayaのJSONエクスポートまたはCSVファイルをアップロードしてください。",
 			"importStopped": "インポートを中断しました: {{message}}",
+			"external": {
+				"sourceHint": "他のツールから移行しますか？ステータス、ラベル、ユーザー、日付、サブタスクを含むエクスポートをインポートできます。",
+				"sources": {
+					"trello": "Trello (JSON)",
+					"linear": "Linear (CSV)",
+					"asana": "Asana (CSV)"
+				},
+				"title": {
+					"trello": "Trello からインポート",
+					"linear": "Linear からインポート",
+					"asana": "Asana からインポート"
+				},
+				"howToTitle": {
+					"trello": "Trello からエクスポートする方法",
+					"linear": "Linear からエクスポートする方法",
+					"asana": "Asana からエクスポートする方法"
+				},
+				"howTo": {
+					"trello": {
+						"step1": "ボードでメニューを開き、印刷、エクスポート、共有 → JSON としてエクスポートを選びます。",
+						"step2": "ダウンロードした .json ファイルをここにアップロードします。"
+					},
+					"linear": {
+						"step1": "Linear で設定 → Import / Export を開き、CSV をエクスポートを選びます。",
+						"step2": "Linear から届くメールの .csv ファイルをここにアップロードします。"
+					},
+					"asana": {
+						"step1": "Asana のプロジェクトでプロジェクトメニュー → エクスポート/印刷 → CSV を選びます。",
+						"step2": "ダウンロードした .csv ファイルをここにアップロードします。"
+					}
+				},
+				"limits": {
+					"trello": "1 ファイルあたり 10 MB、5,000 枚のカードまで。アーカイブ済みのカードは除外されます。チェックリストは説明内のタスクリストになり、添付ファイルは Trello に残ります。",
+					"linear": "1 ファイルあたり 5 MB、5,000 件の課題まで。アーカイブ済みの課題は除外されます。Linear の CSV にはコメントが含まれません。",
+					"asana": "1 ファイルあたり 5 MB、5,000 件のタスクまで。完了済みのタスクは「完了」列に入ります。Asana の CSV にはコメントが含まれません。"
+				},
+				"dropHint": {
+					"trello": "Trello の JSON エクスポートをここにドラッグ＆ドロップ",
+					"linear": "Linear の CSV エクスポートをここにドラッグ＆ドロップ",
+					"asana": "Asana の CSV エクスポートをここにドラッグ＆ドロップ"
+				},
+				"wrongType": {
+					"trello": "ボードの .json エクスポートを選択してください。",
+					"linear": "Linear の .csv エクスポートを選択してください。",
+					"asana": "Asana の .csv エクスポートを選択してください。"
+				},
+				"itemCount_other": "{{count}} 件の項目",
+				"alreadyImported_other": "{{count}} 件の項目はこのプロジェクトにインポート済みです。",
+				"contents": "コメント {{comments}} 件、チェックリスト {{checklists}} 件、サブタスク {{subtasks}} 件、リンク {{links}} 件",
+				"sourceStatus": "ステータスまたはリスト",
+				"peopleUnmatched_other": "{{count}} 人はメンバーではありません（{{names}}）。その項目は未割り当てのままになり、名前は説明に記載されます。",
+				"mode": "インポート済みの項目",
+				"modeHint": "エクスポート内の ID で照合します。",
+				"importAction_other": "{{count}} 件の項目をインポート",
+				"importing_other": "{{count}} 件の項目をインポートしています…",
+				"result": {
+					"skipped_other": "{{count}} 件の項目をスキップしました（インポート済み）",
+					"failed_other": "{{count}} 件の項目が失敗しました",
+					"unmatched_other": "{{count}} 人はワークスペースのメンバーではないため、その項目は未割り当てです:"
+				}
+			},
 			"unsupportedFile": "JSONまたはCSVファイルをアップロードしてください",
 			"jira": {
 				"alreadyImported_other": "{{count}} 件の課題は、以前にこのプロジェクトへインポートされています。",
@@ -1938,6 +2021,10 @@
 				"views": {
 					"description": "フィルター、グループ化、表示設定を保存し、チームと共有します。",
 					"title": "ビュー"
+				},
+				"ai": {
+					"title": "AI",
+					"description": "このプロジェクトでの要約、提案などの AI 支援。オフにすると、このプロジェクトは AI の対象から完全に外れます。"
 				}
 			},
 			"loadError": "このプロジェクトを読み込めませんでした",
@@ -2142,7 +2229,25 @@
 				"closeOff": "自動クローズをオフにしました",
 				"closeOn": "自動クローズをオンにしました",
 				"error": "自動化を更新できませんでした",
-				"updated": "自動化を更新しました"
+				"updated": "自動化を更新しました",
+				"rolloverOff": "サイクルの繰り越しをオフにしました",
+				"rolloverOn": "サイクルの繰り越しをオンにしました",
+				"flowAlertsOn": "フローアラートをオンにしました",
+				"flowAlertsOff": "フローアラートをオフにしました"
+			},
+			"cycleRollover": {
+				"cyclesOff": "これを使うには、機能でサイクルをオンにしてください。",
+				"description": "サイクルが終了すると、未完了のタスクを次のサイクルに移動します。プロジェクトリーダーには概要が届きます。",
+				"last_other": "{{time}} に {{count}}件のタスクを移動",
+				"never": "まだ移動されたタスクはありません",
+				"title": "未完了のサイクル作業を繰り越す"
+			},
+			"flowAlerts": {
+				"title": "フロー異常アラート",
+				"description": "1 日に 1 回、進行中の作業、サイクルタイム、スループットを過去 8 週間と比較します。いずれかが通常の範囲を外れると、プロジェクトリーダーに通知が届きます。",
+				"noLead": "このアラートを受け取るには、プロジェクトリーダーを設定してください。",
+				"last": "最後のアラート: {{time}}",
+				"never": "アラートはまだありません"
 			}
 		},
 		"workspaceExports": {
@@ -2586,6 +2691,24 @@
 			"noProjectsHint": "まずプロジェクトを作成してください。その設定がここに表示されます。",
 			"pickProject": "プロジェクトを選ぶと、その設定が表示されます。"
 		},
+		"projectAccess": {
+			"title": "アクセス",
+			"subtitle": "このプロジェクトを閲覧・作業できる人。",
+			"restrictedLabel": "制限付き",
+			"restrictedHint": "このプロジェクトを見られるのは、以下のメンバーと、ワークスペースのオーナーおよび管理者だけです。ここでのメンバーの権限は、ワークスペースのロールとプロジェクトのロールの両方で許可されている範囲です。",
+			"openHint": "ワークスペースの全員が、各自のワークスペースロールの範囲でこのプロジェクトを閲覧できます。選んだメンバーだけに限定するには制限付きにしてください。",
+			"membersLabel": "メンバー",
+			"membersHint": "プロジェクトのロールによって、各メンバーがここでできることが制限されます。",
+			"noMembers": "まだメンバーがいません。",
+			"addMember": "メンバーを追加",
+			"removeMember": "{{name}} を削除",
+			"roleFor": "{{name}} のプロジェクトロール",
+			"leadTag": "リーダー",
+			"restrictedProject": "制限付きプロジェクト",
+			"toastUpdated": "アクセスを更新しました",
+			"toastError": "アクセスの更新に失敗しました",
+			"loadError": "アクセス設定を読み込めませんでした。ページを再読み込みしてもう一度お試しください。"
+		},
 		"projectPeople": {
 			"defaultAssigneeHint": "タスク作成時にあらかじめ入力され、担当者のいない承認済みリクエストにも割り当てられます。",
 			"defaultAssigneeLabel": "デフォルトの担当者",
@@ -2643,7 +2766,7 @@
 			"title": "セキュリティ"
 		},
 		"timezone": {
-			"accountHint": "リマインダーとメールダイジェストに使用されます。アプリ内の時刻は常にブラウザーのタイムゾーンで表示されます。",
+			"accountHint": "リマインダー、メールダイジェスト、およびタスクのフィルターや分析で日付を数える基準に使用されます。画面上の時刻はブラウザーのタイムゾーンで表示されます。",
 			"accountLabel": "タイムゾーン",
 			"automatic": "自動（ブラウザー: {{zone}}）",
 			"loadError": "タイムゾーンを読み込めませんでした。ページを再読み込みしてもう一度お試しください。",
@@ -2656,8 +2779,52 @@
 			"workspaceHint": "サイクル、自動化、分析における「今日」を決めます。既存のワークスペースは UTC で始まります。",
 			"workspaceLabel": "タイムゾーン"
 		},
+		"workspaceDeletion": {
+			"pendingTitle": "削除予定",
+			"pendingDescription": "このワークスペースは {{date}} に削除されます。それまでは読み取り専用ですが、内容を開いたりエクスポートしたりできます。",
+			"cancel": "削除を取り消す",
+			"confirm": "削除を予約",
+			"rowDescription": "ワークスペースはすぐに読み取り専用になり、{{date}} に完全に削除されます。それまでは取り消せます。",
+			"dialogTitle": "{{name}} を削除しますか？",
+			"dialogDescription": "{{name}} はすぐに全員に対して読み取り専用になり、API キーと Webhook は動作しなくなります。メンバーにはメールで通知されます。それまでに取り消さない限り、{{date}} にすべてのプロジェクト、タスク、ページとともに完全に削除されます。",
+			"toastScheduled": "{{date}} に削除するよう予約しました",
+			"toastCancelled": "削除を取り消しました。ワークスペースを再び編集できます。",
+			"toastError": "削除を変更できませんでした。もう一度お試しください。",
+			"bannerTitle": "このワークスペースは {{date}} に削除されます",
+			"bannerDescription": "それまでは読み取り専用です。内容を開いたりエクスポートしたりできます。",
+			"admin": {
+				"title": "削除待ち",
+				"description": "オーナーが削除を予約したワークスペースです。予定日までは読み取り専用で、その後完全に削除されます。",
+				"dueAt": "削除予定日",
+				"badge": "{{date}} に削除予定"
+			},
+			"instanceAudit": {
+				"scheduled": "ワークスペースの削除を予約しました",
+				"cancelled": "ワークスペースの削除を取り消しました",
+				"purged": "猶予期間が過ぎたワークスペースを削除しました"
+			}
+		},
+		"workspacePublicPages": {
+			"label": "公開ページ",
+			"description": "プロジェクトを共有できるメンバーが、ページを読み取り専用の公開リンクで公開できるようにします。オフにすると、公開中のリンクはすべて無効になります。",
+			"toastOn": "公開ページをオンにしました",
+			"toastOff": "公開ページをオフにしました。公開中のリンクは無効になりました。",
+			"toastError": "設定を変更できませんでした。もう一度お試しください。"
+		},
+		"workspaceA2a": {
+			"label": "エージェント間連携（A2A）",
+			"description": "外部の AI エージェントが A2A プロトコルでこのワークスペースに作業を依頼できるようにします。エージェントはメンバーの API キーまたは OAuth サインインと、そのメンバーの権限で動作し、すべての操作が監査ログに記録されます。",
+			"toastOn": "A2A をオンにしました",
+			"toastOff": "A2A をオフにしました。外部エージェントはこのワークスペースに作業を依頼できなくなりました。",
+			"toastError": "設定を変更できませんでした。もう一度お試しください。"
+		},
 		"workspaceAuditLog": {
 			"actions": {
+				"workspaceDeletionScheduled": "ワークスペースの削除を予約しました",
+				"workspaceDeletionCancelled": "ワークスペースの削除を取り消しました",
+				"workspacePublicPagesChanged": "公開ページをオンまたはオフにしました",
+				"pagePublished": "ページを公開リンクで公開しました",
+				"pageUnpublished": "ページの公開リンクを無効にしました",
 				"apiKeyCreated": "API キーを作成しました",
 				"apiKeyRevoked": "API キーを無効化しました",
 				"exportCreated": "エクスポートを開始しました",
@@ -2668,6 +2835,7 @@
 				"integrationUpdated": "連携を変更しました",
 				"memberInvitationAccepted": "招待を承諾しました",
 				"memberInvitationDeclined": "招待を辞退しました",
+				"memberInvitationRoleChanged": "保留中の招待のロールを変更しました",
 				"memberInvitationRevoked": "招待を取り消しました",
 				"memberInvited": "ワークスペースにユーザーを招待しました",
 				"memberLeft": "ワークスペースから退出しました",
@@ -2697,13 +2865,41 @@
 				"webhookUpdated": "Webhook を変更しました",
 				"workspaceCreated": "ワークスペースを作成しました",
 				"workspaceOwnershipTransferred": "ワークスペースの所有権を譲渡しました",
-				"workspaceUpdated": "ワークスペース設定を変更しました"
+				"workspaceUpdated": "ワークスペース設定を変更しました",
+				"aiSettingsUpdated": "AI 設定を変更しました",
+				"aiTriageLabelsApplied": "提案されたラベルを自動で追加しました",
+				"agentCreated": "エージェントを作成しました",
+				"agentUpdated": "エージェントを変更しました",
+				"agentDeleted": "エージェントを削除しました",
+				"agentChangeApplied": "依頼に基づいて変更を行いました",
+				"agentChangeApproved": "エージェントの変更を承認しました",
+				"agentChangeRejected": "エージェントの変更を却下しました",
+				"agentChangeReverted": "エージェントの変更を元に戻しました",
+				"codingAgentHandoffSent": "タスクをコーディングエージェントに送信しました",
+				"codingAgentProfileCreated": "コーディングエージェントのプロファイルを作成しました",
+				"codingAgentProfileUpdated": "コーディングエージェントのプロファイルを変更しました",
+				"codingAgentProfileDeleted": "コーディングエージェントのプロファイルを削除しました",
+				"a2aTaskReceived": "外部エージェントから作業を受け付けました（A2A）",
+				"automationRuleCreated": "自動化を作成しました",
+				"automationRuleUpdated": "自動化を更新しました",
+				"automationRuleDeleted": "自動化を削除しました",
+				"automationRuleRan": "タスクで自動化を実行しました",
+				"agentScheduleCreated": "エージェントをスケジュール設定しました",
+				"agentScheduleUpdated": "エージェントのスケジュールを変更しました",
+				"agentScheduleDeleted": "エージェントのスケジュールを削除しました",
+				"agentScheduleDisabled": "エージェントのスケジュールをオフにしました",
+				"aiConnectorCreated": "MCP コネクタを追加しました",
+				"aiConnectorUpdated": "MCP コネクタを変更しました",
+				"aiConnectorDeleted": "MCP コネクタを削除しました"
 			},
 			"actor": {
 				"apiKey": "API キー",
 				"deletedUser": "削除されたユーザー",
 				"system": "システム",
-				"unknownKey": "削除された API キー"
+				"unknownKey": "削除された API キー",
+				"agent": "エージェント",
+				"agentFor": "エージェント ({{name}} の代理)",
+				"automation": "自動化"
 			},
 			"categories": {
 				"apiKey": "API キー",
@@ -2716,7 +2912,11 @@
 				"role": "ロール",
 				"trash": "ゴミ箱",
 				"webhook": "Webhook",
-				"workspace": "ワークスペース設定"
+				"workspace": "ワークスペース設定",
+				"agent": "エージェント",
+				"codingAgent": "コーディングエージェント",
+				"a2a": "外部エージェント（A2A）",
+				"automation": "自動化"
 			},
 			"columns": {
 				"action": "操作",
@@ -2765,6 +2965,7 @@
 			"subtitle": "このワークスペースでメンバー、ロール、API キー、Webhook、連携、設定、プロジェクトを変更したユーザーの記録です。エントリは {{days}} 日間保持されます。",
 			"subtitleForever": "このワークスペースでメンバー、ロール、API キー、Webhook、連携、設定、プロジェクトを変更したユーザーの記録です。エントリはワークスペースを削除するまで保持されます。",
 			"targets": {
+				"page": "ページ",
 				"apiKey": "API キー",
 				"export": "エクスポート",
 				"integration": "連携",
@@ -2773,7 +2974,11 @@
 				"role": "ロール",
 				"user": "メンバー",
 				"webhook": "Webhook",
-				"workspace": "ワークスペース"
+				"workspace": "ワークスペース",
+				"agent": "エージェント",
+				"agentRun": "エージェントの実行",
+				"task": "タスク",
+				"codingAgentProfile": "コーディングエージェントのプロファイル"
 			},
 			"title": "監査ログ"
 		},
@@ -2819,9 +3024,189 @@
 			"workspaceNav": "最近削除した項目",
 			"workspaceSubtitle": "削除したプロジェクトは、完全に削除されるまでタスクとともにここに保管されます。",
 			"workspaceTitle": "最近削除したプロジェクト"
+		},
+		"automationRules": {
+			"title": "自動化",
+			"description": "タスクに何かが起きたときに条件を確認し、アクションを実行します。ルールは AI を使わずに「自動化」として自動で動作します。",
+			"empty": "自動化はまだありません。テンプレートから始めるか、独自のルールを作成してください。",
+			"loadError": "自動化を読み込めませんでした。",
+			"newRule": "新しいルール",
+			"templatesTitle": "テンプレート",
+			"saved": "自動化を保存しました",
+			"saveError": "自動化を保存できませんでした",
+			"deleted": "自動化を削除しました",
+			"confirmDelete": "削除",
+			"edit": "{{name}} を編集",
+			"delete": "{{name}} を削除",
+			"summary_one": "{{trigger}}時 · アクション {{count}}件",
+			"summary_other": "{{trigger}}時 · アクション {{count}}件",
+			"lastRun_one": "{{count}}回実行、最終実行 {{time}}",
+			"lastRun_other": "{{count}}回実行、最終実行 {{time}}",
+			"neverRan": "まだ実行されていません",
+			"templates": {
+				"reviewer": {
+					"name": "「レビュー中」に移動したらレビュアーを割り当て",
+					"description": "レビュアーを選んでください。タスクがレビューに入ると担当者として割り当てられます。"
+				},
+				"intakeBugs": {
+					"name": "受付からのバグにラベルを付ける",
+					"description": "バグやエラーに触れている承認済みのリクエストに bug ラベルを付けます。"
+				},
+				"overdue": {
+					"name": "期限切れのタスクをエスカレーション",
+					"description": "期限を過ぎたら優先度を上げ、担当者に通知します。"
+				}
+			},
+			"triggers": {
+				"task_created": "タスクの作成",
+				"status_changed": "ステータスの変更",
+				"assignee_added": "担当者の追加",
+				"assignee_removed": "担当者の解除",
+				"label_added": "ラベルの追加",
+				"label_removed": "ラベルの削除",
+				"priority_changed": "優先度の変更",
+				"due_date_set": "期限の設定",
+				"due_date_passed": "期限の超過",
+				"comment_added": "コメントの追加",
+				"moved_to_cycle": "サイクルへの移動",
+				"moved_to_module": "モジュールへの追加"
+			},
+			"conditions": {
+				"status": "ステータス",
+				"labels": "ラベル",
+				"priority": "優先度",
+				"assignee": "担当者",
+				"due_date": "期限",
+				"estimate": "見積もり",
+				"title": "タイトル",
+				"custom_field": "カスタムフィールド"
+			},
+			"ops": {
+				"is": "が次と一致",
+				"is_not": "が次と一致しない",
+				"contains": "が次を含む",
+				"not_contains": "が次を含まない",
+				"empty": "が空",
+				"not_empty": "が空でない",
+				"set": "が設定済み",
+				"not_set": "が未設定",
+				"gte": "が次の値以上",
+				"lte": "が次の値以下",
+				"equals": "が次と等しい",
+				"not_equals": "が次と等しくない"
+			},
+			"actions": {
+				"set_status": "ステータスを設定",
+				"assign": "担当者を割り当て",
+				"unassign": "担当者を解除",
+				"add_label": "ラベルを追加",
+				"remove_label": "ラベルを削除",
+				"set_priority": "優先度を設定",
+				"set_due_date": "期限を設定",
+				"add_comment": "コメントを追加",
+				"move_to_cycle": "サイクルに移動",
+				"move_to_module": "モジュールに追加",
+				"create_subtask": "サブタスクを作成",
+				"notify": "通知",
+				"run_agent": "エージェントを実行"
+			},
+			"roles": {
+				"assignees": "担当者",
+				"creator": "作成者",
+				"lead": "プロジェクトリーダー"
+			},
+			"outcomes": {
+				"success": "完了",
+				"partial": "一部完了",
+				"failed": "失敗",
+				"skipped": "スキップ"
+			},
+			"errors": {
+				"LOOP_DEPTH": "停止しました: ルールが連続して互いを起動しすぎました。",
+				"RATE_LIMITED": "停止しました: このタスクで 1 分間に実行された自動化が多すぎます。",
+				"AGENT_UNAVAILABLE": "エージェントを実行: エージェントがオフか削除されています。",
+				"NO_RULE_OWNER": "エージェントを実行: このルールの所有者がいません。もう一度保存してください。",
+				"AI_DISABLED": "エージェントを実行: このプロジェクトでは AI がオフです。"
+			},
+			"history": {
+				"title": "実行履歴",
+				"empty": "まだ実行されていません。",
+				"error": "実行履歴を読み込めませんでした。",
+				"failedActions": "失敗: {{actions}}"
+			},
+			"editor": {
+				"name": "ルール名",
+				"namePlaceholder": "このルールに名前を付ける",
+				"when": "トリガー",
+				"if": "条件",
+				"then": "アクション",
+				"match": "一致条件",
+				"matchAll": "すべてに一致",
+				"matchAny": "いずれかに一致",
+				"always": "毎回",
+				"addCondition": "条件を追加",
+				"addGroup": "グループを追加",
+				"addAction": "アクションを追加",
+				"remove": "削除",
+				"save": "ルールを保存",
+				"cancel": "キャンセル",
+				"choose": "選択…",
+				"add": "追加…",
+				"removeItem": "{{name}} を削除",
+				"any": "すべて",
+				"from": "変更前",
+				"to": "変更後",
+				"fromIntake": "受付から承認されたリクエストのみ",
+				"people": "メンバー",
+				"labels": "ラベル",
+				"priorities": "優先度",
+				"cycles": "サイクル",
+				"modules": "モジュール",
+				"field": "フィールド",
+				"operator": "比較",
+				"points": "ポイント",
+				"value": "値",
+				"column": "ステータス",
+				"everyone": "全員",
+				"label": "ラベル",
+				"priority": "優先度",
+				"daysFromRun": "日後（ルール実行時から）",
+				"comment": "コメント",
+				"subtaskTitle": "サブタスクのタイトル",
+				"cycle": "サイクル",
+				"module": "モジュール",
+				"roles": "ロール",
+				"message": "メッセージ（任意）",
+				"variables": "変数:",
+				"agent": "エージェント",
+				"agentPrompt": "エージェントに何をさせますか？",
+				"agentPromptPlaceholder": "例: このタスクをトリアージして優先度を提案して。",
+				"agentHint": "エージェントはこのルールを保存した人の代わりに、その人の権限の範囲内で動作します。エージェントが行った変更では実行されません。"
+			}
 		}
 	},
 	"navigation": {
+		"customize": {
+			"open": "サイドバーをカスタマイズ",
+			"title": "サイドバーをカスタマイズ",
+			"description": "サイドバーに表示する項目と順序を選びます。この変更はすべてのデバイスで、あなたにだけ表示されます。",
+			"settingsDescription": "メインナビゲーションとプロジェクトパネルのセクションを並べ替えたり非表示にしたりします。",
+			"rail": "メインナビゲーション",
+			"projectsPanel": "プロジェクトパネル",
+			"sections": {
+				"views": "タスク一覧とビュー",
+				"favorites": "お気に入り",
+				"projects": "プロジェクト"
+			},
+			"show": "{{name}} を表示",
+			"alwaysShown": "{{name}} は常に表示されます",
+			"moveUp": "{{name}} を上へ移動",
+			"moveDown": "{{name}} を下へ移動",
+			"moved": "{{name}} を {{total}} 件中 {{position}} 番目に移動しました",
+			"reset": "デフォルトに戻す",
+			"resetDone": "サイドバーをデフォルトに戻しました",
+			"done": "完了"
+		},
 		"commandPalette": {
 			"suggestions": "候補",
 			"commands": "コマンド",
@@ -2834,6 +3219,8 @@
 			"lightTheme": "ライトテーマ",
 			"darkTheme": "ダークテーマ",
 			"systemTheme": "システムテーマ",
+			"lightContrastTheme": "ハイコントラストのライトテーマ",
+			"darkContrastTheme": "ハイコントラストのダークテーマ",
 			"keyboardShortcuts": "キーボードショートカット",
 			"inputPlaceholder": "アプリやコマンドを検索...",
 			"empty": "結果が見つかりません。",
@@ -3148,6 +3535,21 @@
 			"page_mention": {
 				"content": "{{mentionerName}} さんが次のページであなたをメンションしました: {{pageTitle}}",
 				"title": "{{mentionerName}} さんがあなたをメンションしました"
+			},
+			"cycle_rollover": {
+				"content_other": "未完了のタスク{{count}}件を{{targetCycleName}}に移動しました",
+				"contentNoNext_other": "次のサイクルがないため、未完了のタスク{{count}}件は{{cycleName}}に残っています",
+				"title": "{{cycleName}}が終了しました"
+			},
+			"flow_anomaly": {
+				"title": "{{projectName}} でいつもと異なるフロー",
+				"throughput_low": "今週のスループットが {{value}} 件に低下しました (通常は約 {{baseline}})",
+				"wip_high": "進行中の作業が {{value}} 件に増えました (通常は約 {{baseline}})",
+				"cycle_time_high": "サイクルタイムが {{value}} 日に延びました (通常は約 {{baseline}})"
+			},
+			"automation_notice": {
+				"title": "自動化: {{ruleName}}",
+				"content": "{{taskKey}} {{taskTitle}}"
 			}
 		},
 		"inbox": {
@@ -3289,6 +3691,13 @@
 				"open": "タスクを開く",
 				"read": "既読・未読を切り替え",
 				"snooze": "スヌーズ"
+			},
+			"digest": {
+				"button": "未読を要約",
+				"title": "未読の要約",
+				"regenerate": "もう一度要約",
+				"close": "要約を閉じる",
+				"generating": "要約しています…"
 			}
 		}
 	},
@@ -3494,7 +3903,9 @@
 		"automation": {
 			"actor": "自動化",
 			"archived_other": "{{count}}か月間更新がなかったため、このタスクをアーカイブしました",
-			"closed_other": "{{count}}か月間更新がなかったため、このタスクをクローズし、{{to}} に移動しました"
+			"closed_other": "{{count}}か月間更新がなかったため、このタスクをクローズし、{{to}} に移動しました",
+			"rolledOver": "サイクルの終了に伴い、このタスクを{{from}}から{{to}}に移動しました",
+			"byRule": "{{name}} 経由"
 		},
 		"commentVisibility": {
 			"badgeExternal": "外部ユーザー",
@@ -3533,10 +3944,64 @@
 			"updates": "更新"
 		},
 		"importedFromJira": "がこのタスクを Jira {{key}} からインポートしました",
+		"importedFromSource": "がこのタスクを {{source}} {{key}} からインポートしました",
 		"movedToTrash": "がこのタスクをゴミ箱に移動しました",
 		"restoredFromTrash": "がこのタスクをゴミ箱から復元しました"
 	},
 	"tasks": {
+		"recurrence": {
+			"label": "繰り返し",
+			"none": "繰り返さない",
+			"title": "このタスクを繰り返す",
+			"indicator": "繰り返し",
+			"frequency": {
+				"label": "頻度",
+				"daily": "毎日",
+				"weekly": "毎週",
+				"monthly": "毎月",
+				"yearly": "毎年"
+			},
+			"interval": "間隔",
+			"weekdays": "曜日",
+			"monthDay": "日付（月内）",
+			"trigger": {
+				"label": "次のタスクを作成するタイミング",
+				"completion": "このタスクの完了時",
+				"schedule": "次の日付になったとき（このタスクが未完了でも）"
+			},
+			"ends": {
+				"label": "終了",
+				"never": "なし",
+				"onDate": "終了日",
+				"endDate": "終了日",
+				"after": "回数",
+				"count": "繰り返す回数"
+			},
+			"summary": {
+				"daily_other": "{{count}} 日ごと",
+				"weekly_other": "{{count}} 週間ごとの {{days}}",
+				"monthly_other": "{{count}} か月ごとの {{day}} 日",
+				"yearly_other": "{{count}} 年ごとの {{date}}",
+				"until": "{{summary}}、{{date}} まで",
+				"times_other": "{{summary}}、{{count}} 回"
+			},
+			"next": "次回: {{date}}",
+			"ended": "これ以上の繰り返しはありません",
+			"save": "保存",
+			"remove": "繰り返しを停止",
+			"saved": "繰り返しを保存しました",
+			"removed": "このタスクは繰り返されなくなりました",
+			"saveError": "繰り返しを保存できませんでした",
+			"activity": {
+				"set": "がこのタスクの繰り返しを設定しました: {{summary}}",
+				"updated": "が繰り返しを変更しました: {{summary}}",
+				"removed": "がこのタスクの繰り返しを停止しました",
+				"recurredFrom": "が <task>{{task}}</task> の次の繰り返しとしてこのタスクを作成しました",
+				"recurredFromScheduled": "<task>{{task}}</task> の次の繰り返しとしてスケジュールどおりに作成されました",
+				"recurredTo": "がこのタスクを完了し、次の繰り返し <task>{{task}}</task> が作成されました",
+				"recurredToScheduled": "次の繰り返しがスケジュールどおりに作成されました: <task>{{task}}</task>"
+			}
+		},
 		"title": "タスク",
 		"status": {
 			"label": "ステータス",
@@ -3920,7 +4385,8 @@
 			"rescheduleError": "タスクの日程変更に失敗しました",
 			"showWeekends": "週末を表示",
 			"viewMode": "カレンダーの期間",
-			"week": "週"
+			"week": "週",
+			"overdue": "期限切れ"
 		},
 		"gantt": {
 			"pageTitle": "{{name}} – ガントチャート",
@@ -3979,7 +4445,9 @@
 		},
 		"kanban": {
 			"addTask": "タスクを追加",
-			"stages": "カラム"
+			"stages": "カラム",
+			"emptyAction": "タスクを追加",
+			"emptyTitle": "まだタスクはありません"
 		},
 		"pr": {
 			"merged": "マージ済み",
@@ -4050,6 +4518,20 @@
 			"searchActions": "操作を検索...",
 			"noActionsFound": "操作が見つかりません。",
 			"changeStatus": "ステータスを変更",
+			"removeLabel": "ラベルを削除",
+			"removeLabelSuccess": "{{count}} 件のタスクからラベルを削除しました",
+			"removeLabelError": "ラベルの削除に失敗しました",
+			"unarchive": "アーカイブから復元",
+			"unarchiveSuccess": "{{count}} 件のタスクを復元しました",
+			"unarchiveNone": "選択したタスクにアーカイブ済みのものはありません",
+			"unarchiveError": "タスクの復元に失敗しました",
+			"setDates": "日付",
+			"dateField": "設定する日付",
+			"startDate": "開始日",
+			"dueDate": "期限",
+			"clearStartDate": "開始日をクリア",
+			"clearDueDate": "期限をクリア",
+			"updateStartDateError": "開始日の更新に失敗しました。開始日をタスクの期限より後にすることはできません。",
 			"addAssignee": "担当者を追加",
 			"addAssigneeSuccess_other": "{{name}}を{{count}}件のタスクに追加しました",
 			"assigneesError": "担当者の更新に失敗しました",
@@ -4067,7 +4549,19 @@
 				"addRowBefore": "上に行を挿入",
 				"addRowAfter": "下に行を挿入",
 				"deleteRow": "行を削除",
-				"deleteTable": "表を削除"
+				"deleteTable": "表を削除",
+				"moveRowUp": "行を上へ移動",
+				"moveRowDown": "行を下へ移動",
+				"moveColumnLeft": "列を左へ移動",
+				"moveColumnRight": "列を右へ移動",
+				"toggleHeaderRow": "見出し行",
+				"fullWidth": "全幅",
+				"dragRow": "{{index}} 行目",
+				"dragColumn": "{{index}} 列目",
+				"dragRowHint": "ドラッグして行を移動するか、矢印キーを使用します",
+				"dragColumnHint": "ドラッグして列を移動するか、矢印キーを使用します",
+				"insertRowHere": "ここに行を挿入",
+				"insertColumnHere": "ここに列を挿入"
 			}
 		},
 		"descriptionSearchLoading": "説明文を全文検索中…",
@@ -4126,11 +4620,11 @@
 			},
 			"label": "見積もり",
 			"none": "見積もりなし",
-			"pointsValue": "{{value}} pt",
+			"pointsValue_other": "{{value}} pt",
 			"setAria": "見積もりを設定",
 			"totals": {
 				"estimated": "{{total}} 件中 {{estimated}} 件のタスクを見積もり済み",
-				"points": "{{completed}} / {{total}} pt",
+				"points_other": "{{completed}} / {{total}} pt",
 				"time": "{{completed}} / {{total}}"
 			},
 			"updateError": "見積もりの更新に失敗しました"
@@ -4248,6 +4742,12 @@
 			},
 			"url": "URL",
 			"urlPlaceholder": "https://example.com"
+		},
+		"create": {
+			"similarTitle": "類似する未完了のタスク",
+			"similarDismiss": "類似タスクを非表示",
+			"similarOpen": "開く",
+			"similarOpenLabel": "{{key}} {{title}} を新しいタブで開く"
 		},
 		"parent": {
 			"add": "親タスクを追加",
@@ -4514,6 +5014,7 @@
 				"cycle": "サイクル",
 				"estimate": "見積もり",
 				"modules": "モジュール",
+				"parent": "親タスク",
 				"status": "ステータス"
 			},
 			"edited": "{{time}} に編集",
@@ -4572,6 +5073,8 @@
 			"hint": "タイトルを入力します。@メンバー、#ラベル、!優先度、fri や 12 Oct のような日付はチップになります。Enter で作成、Ctrl Enter でフルエディターを開きます。",
 			"labelError": "タスクは作成されましたが、ラベル {{name}} を追加できませんでした",
 			"newLabel": "{{name}}（新しいラベル）",
+			"dueOn": "期限 {{date}} のタスクを追加",
+			"notInView": "タスクを作成しました。このビューの条件に一致しないため、ここには表示されません。",
 			"open": "開く",
 			"openComposer": "フルエディターを開く",
 			"openComposerHint": "フルエディターを開く (Ctrl Enter)",
@@ -4818,7 +5321,18 @@
 			"error": "チームメンバーの招待に失敗しました",
 			"createdTitle": "招待を作成しました",
 			"shareLinkDescription": "{{email}} にこのリンクを共有して、ワークスペースに参加してもらいましょう。",
-			"done": "完了"
+			"done": "完了",
+			"emailHint": "複数のアドレスはカンマ、スペース、改行で区切ってください。",
+			"roleLabel": "ロール",
+			"roleHint": "自分のロールまでのロールを付与できます。",
+			"sending": "{{total}} 件中 {{current}} 件目を送信中…",
+			"invalidEmails": "有効なメールアドレスではありません: {{emails}}",
+			"emailRequired": "メールアドレスを 1 件以上入力してください。",
+			"tooManyEmails": "一度に招待できるのは {{max}} 人までです。",
+			"sentSome": "{{total}} 件中 {{sent}} 件の招待を送信しました。",
+			"failedTitle": "未送信",
+			"rateLimited": "一度に送る招待が多すぎます。1 分待ってから残りを送信してください。",
+			"shareLinksDescription": "各リンクをそれぞれの相手に共有して、ワークスペースに参加してもらいましょう。"
 		},
 		"membersTable": {
 			"emptyTitle": "チームメンバーがまだいません",
@@ -4844,7 +5358,9 @@
 			"cancelInviteSuccess": "招待をキャンセルしました",
 			"cancelInviteError": "招待のキャンセルに失敗しました",
 			"roleUpdateSuccess": "ロールを更新しました",
-			"roleUpdateError": "ロールの更新に失敗しました"
+			"roleUpdateError": "ロールの更新に失敗しました",
+			"ariaInvitationRole": "{{email}} のロール",
+			"invitationRoleUpdateSuccess": "招待のロールを更新しました"
 		},
 		"profile": {
 			"emptyActivity": "まだアクティビティはありません",
@@ -5993,6 +6509,51 @@
 					"shortcuts": "仕分け用ショートカットをドキュメント化"
 				},
 				"title": "自分の作業"
+			},
+			"ask": {
+				"title": "AI に質問",
+				"model": "ワークスペースのモデル",
+				"greeting": "こんにちは！何を知りたいですか？",
+				"intro": "ワークスペースについて、ふだんの言葉で質問してください。回答は、あなたが閲覧できるタスクをもとにしています。",
+				"placeholder": "AI に質問、@ でコンテキスト、/ でコマンド",
+				"placeholderBuild": "作成または変更したい内容を説明してください…",
+				"modes": {
+					"label": "モード",
+					"ask": "質問",
+					"build": "作成"
+				},
+				"send": "送信",
+				"you": "あなた",
+				"question": "現在のサイクルを妨げているものは？",
+				"buildPrompt": "WEB-5 を Mira に割り当てて",
+				"context": "コンテキスト（{{count}}）",
+				"facts": "プロジェクト: 1 · メンバー: 4 · サイクル: 1",
+				"earlier": "以前のメッセージ: {{count}}",
+				"thinking": "考えています… {{seconds}}s",
+				"thought": "{{seconds}}s 考えました",
+				"blockedIntro": "{{cycle}} で 2 件のタスクがブロックされています:",
+				"blockedPageTitles": "{{title}} はページ一覧の完成待ちです。",
+				"blockedPricing": "{{title}} は営業からの価格情報待ちです。",
+				"unassigned": "{{key}} にはまだ担当者がいません。",
+				"summary": "変更は 1 件。確定するまで何も起こりません。",
+				"op": "タスクを編集",
+				"action": "{{key}} を {{name}} に割り当て",
+				"awaiting": "応答待ち",
+				"ready": "準備できた変更: {{count}} 件",
+				"cancel": "キャンセル",
+				"confirm": "確定",
+				"done": "完了",
+				"undo": "元に戻す",
+				"undone": "元に戻しました",
+				"cancelled": "キャンセルしました。何も変更されていません。",
+				"generic": "このデモは用意された質問にだけ答えます。Margaya では、質問モードがワークスペースをもとに回答し、参照したタスクへのリンクを示します。",
+				"genericBuild": "このデモは用意された変更だけを行います。Margaya では、作成モードがあなたの言葉を、確定前に確認できる変更に変えます。",
+				"blocked": "ブロック中",
+				"tasks": {
+					"pageTitles": "ページタイトルを監査",
+					"pricing": "料金ページを更新",
+					"mobileMenu": "モバイルメニューを修正"
+				}
 			}
 		},
 		"home": {
@@ -6027,6 +6588,10 @@
 				"singleServer": {
 					"detail": "Redis は任意",
 					"title": "サーバー 1 台で十分"
+				},
+				"ai": {
+					"title": "AI は自分の条件で",
+					"detail": "初期設定はオフ、モデルは自前で"
 				}
 			},
 			"faq": {
@@ -6063,6 +6628,14 @@
 					"selfHost": {
 						"answer": "はい。1 台のサーバーで Docker Compose を使うか、公式 Helm チャートで Kubernetes 上に構築できます。必要なのはアプリコンテナ 1 つと PostgreSQL データベースだけです。環境変数、ストレージ、リバースプロキシについてはインストールガイドで説明しています。",
 						"question": "Margaya を自分でホストできますか？"
+					},
+					"ai": {
+						"question": "Margaya に AI はありますか？初期設定で有効ですか？",
+						"answer": "AI はありますが、初期設定では無効です。AI に質問、作成モード、文章作成の支援、トリアージの提案、AI エージェントが組み込まれていますが、インスタンス管理者がモデルを接続し、ワークスペースで AI を有効にするまではオフのままです。AI が提案する変更はすべて事前に表示され、元に戻すこともできます。"
+					},
+					"aiData": {
+						"question": "どの AI モデルを使えますか？データはどこに送られますか？",
+						"answer": "Claude のほか、Ollama や vLLM など、自分で運用する OpenAI 互換のモデルを使えます。ローカル専用のルーティングなら、データがネットワークの外に出ることはありません。Margaya が送るのは質問した本人がすでに閲覧できる情報だけで、サーバー履歴を有効にしない限りプロンプトも回答も保存せず、予算のために利用回数だけを記録します。"
 					}
 				},
 				"title": "よくある質問に、率直にお答えします"
@@ -6075,13 +6648,11 @@
 				"title": "ツールではなく、仕事そのものに時間を使おう。"
 			},
 			"hero": {
-				"description": "Margaya は、タスク、サイクル、ドキュメント、仕分けをひとつの高速なワークスペースにまとめます。タスクを入力して前に進めたら、すぐに本来の仕事へ戻れます。",
-				"eyebrow": "オープンソースのプロジェクト管理",
-				"note": "MIT ライセンス。自分のサーバーで動かすことも、Margaya Cloud をクレジットカードなしで 14 日間試すこともできます。",
-				"primaryCta": "今すぐ始める",
-				"secondaryCta": "セルフホスト",
 				"title": "仕事を計画しよう。",
-				"titleAccent": "雑務はもう要らない。"
+				"titleAccent": "雑務はもう要らない。",
+				"description": "Margaya は、タスク、サイクル、ドキュメント、仕分けをひとつの高速なワークスペースにまとめます。必要なら AI アシスタントを有効にして、質問への回答や変更も任せられます。タスクを入力して前に進めたら、すぐに本来の仕事へ戻れます。",
+				"primaryCta": "今すぐ始める",
+				"secondaryCta": "セルフホスト"
 			},
 			"insight": {
 				"description": "タスクからグラフを作成し、監査ログを追い、ゴミ箱から何でも復元できます。",
@@ -6129,7 +6700,8 @@
 					"select": "フォーカス中のタスクを選択",
 					"spreadsheet": "スプレッドシート",
 					"status": "ステータスを変更",
-					"tasks": "キーまたはタイトルでタスクを検索"
+					"tasks": "キーまたはタイトルでタスクを検索",
+					"ask": "AI に質問を開く"
 				},
 				"modifier": "Ctrl",
 				"shortcutsLabel": "キーボードショートカット",
@@ -6162,6 +6734,10 @@
 					"views": {
 						"description": "ボード、リスト、スプレッドシート、カレンダー、ガント",
 						"title": "ビュー"
+					},
+					"ai": {
+						"title": "AI",
+						"description": "AI に質問、作成モード、文章作成の支援、エージェント"
 					}
 				},
 				"label": "メイン",
@@ -6172,7 +6748,7 @@
 				"blog": "ブログ",
 				"compare": "比較",
 				"explore": "詳しく見る",
-				"featuresIntro": "Margaya を巡る 5 つの短いツアー。どれも実際に操作できるライブデモ付きです。",
+				"featuresIntro": "Margaya を紹介する 6 つの短いツアーです。どれもライブデモを実際に操作できます。",
 				"newTab": "（新しいタブで開きます）"
 			},
 			"ownIt": {
@@ -6333,6 +6909,26 @@
 					"title": "リソース"
 				},
 				"selfHosted": "セルフホスト前提の設計"
+			},
+			"ai": {
+				"eyebrow": "AI",
+				"title": "質問して、作成を任せて、最後は自分で確定。",
+				"description": "AI に質問すると、最新のタスクをもとに、グラフと参照したタスク付きで回答します。作成モードは依頼を変更案に変え、あなたが確認して確定します。エージェントはチームメイトのようにタスクを引き受けます。",
+				"agents": {
+					"title": "チームメイトのように働くエージェント",
+					"description": "タスクをエージェントに割り当て、エージェントデスクで進み具合を追えます。行き詰まったら人に尋ね、書き込む前には承認を待ち、スケジュールに沿って実行することもできます。"
+				},
+				"privacy": {
+					"title": "初期設定でプライベート",
+					"description": "管理者が有効にするまで AI はオフのまま。どこで実行するかもあなたが決めます。",
+					"items": {
+						"model": "Claude、または Ollama や vLLM で動かす自前のモデル",
+						"local": "ローカル専用のルーティングで、データをネットワーク内に留めます",
+						"stored": "サーバー履歴を選ばない限り、プロンプトも回答も保存しません",
+						"budget": "月次・日次の予算と、利用状況の記録",
+						"undo": "作成モードによる変更は、1 時間以内ならすべて元に戻せます"
+					}
+				}
 			}
 		},
 		"pages": {
@@ -6351,8 +6947,8 @@
 						"title": "OpenAPI 対応の REST API"
 					},
 					"cleanup": {
-						"body": "完了したタスクのアーカイブや、放置されたタスクのクローズを自動化。各ルールがどのタスクに影響するかはプレビューで確認できます。",
-						"title": "スケジュールされたクリーンアップ"
+						"body": "新しいタスクの割り当てやラベル付けといった定型作業に「トリガー・条件・アクション」のルールを設定し、放置されたタスクをスケジュールに沿ってアーカイブまたはクローズできます。各ルールがどのタスクに影響するかはプレビューで確認できます。",
+						"title": "自動化ルール"
 					},
 					"integrations": {
 						"body": "GitHub や Gitea のプルリクエストをリンクし、Slack、Discord、Telegram、Mattermost に更新を送り、送信 Webhook で任意の URL にイベントを届けられます。",
@@ -6491,6 +7087,43 @@
 					}
 				},
 				"title": "ひとつのタスクを、見たいすべての形で。"
+			},
+			"ai": {
+				"metaTitle": "AI アシスタント、作成モード、エージェント",
+				"metaDescription": "仕事について質問すると最新のデータから回答が届き、作成モードが提案する変更を確定し、AI の支援で文章を書き、AI エージェントにタスクを割り当てられます。モデルは自前で選べ、AI は初期設定でオフです。",
+				"eyebrow": "AI",
+				"title": "仕事を理解しているアシスタント。",
+				"description": "AI に質問、作成モード、文章作成の支援、エージェント。すべてオープンソース版に含まれ、あなたが選んだモデルで動きます。",
+				"sections": {
+					"ask": {
+						"title": "AI に質問",
+						"body": "ふだんの言葉で質問すれば、最新のタスクから、件数やグラフ、参照したタスクやページへのリンク付きで回答します。@ でタスク、ページ、人を指定したり、ファイルを添付したり、入力の代わりに話しかけたりもできます。"
+					},
+					"build": {
+						"title": "作成モード",
+						"body": "3 つのタスクを持つプロジェクトや、Mia 向けのタスクなど、変更したい内容を説明します。何を読み、どう考えたかを確認し、提案された変更を編集して確定できます。どの変更も 1 時間以内なら元に戻せます。"
+					},
+					"writing": {
+						"title": "文章作成の支援",
+						"body": "説明やコメントを改善、短縮、翻訳したり、トーンを変えたりできます。タイトルの提案、タスクの要約、ページへの AI ブロックの追加も可能です。"
+					},
+					"triage": {
+						"title": "トリアージとブリーフ",
+						"body": "新しい作業にラベルと優先度を提案し、重複を見つけ、欲しいものを説明するだけでボードを絞り込めます。未読の受信トレイの要約や、サイクルのブリーフも作成できます。"
+					},
+					"agents": {
+						"title": "AI エージェント",
+						"body": "エージェントはタスクを割り当てられるメンバーです。行き詰まったら人に尋ね、書き込む前に承認を待ち、スケジュールに沿って実行し、接続した他の MCP サーバーのツールも使えます。"
+					},
+					"privacy": {
+						"title": "モデルもルールもあなた次第",
+						"body": "AI は管理者が有効にするまでオフです。Claude かローカルモデルを使い、データをネットワーク内に留め、予算を設定できます。あなたが選ばない限り、プロンプトも回答も保存しません。"
+					}
+				},
+				"cta": {
+					"title": "準備ができたら AI を有効に。",
+					"description": "AI のセットアップガイドを読むか、自分のワークスペースで AI に質問を試してみてください。"
+				}
 			}
 		},
 		"scenes": {
@@ -6601,6 +7234,10 @@
 			"yourWork": {
 				"caption": "「自分の作業」には、担当中のもの、作成したもの、フォローしているものが集まります。",
 				"description": "デモ: 「自分の作業」ページです。カーソルが「担当」「作成」「サブスクライブ中」のタブを順に切り替えると、それぞれにプロジェクト横断のタスクがステータス、優先度、期限とともに表示されます。"
+			},
+			"ask": {
+				"caption": "仕事について質問し、変更は作成モードに任せます。確定するのはあなたです。",
+				"description": "デモ: Web サイトのボードで「AI に質問」のチャットを開いています。現在のサイクルを妨げているものを尋ねると、アシスタントは参照した内容を示し、2 秒考えてから「WEB-5 と WEB-6 がブロックされていて、WEB-5 には担当者がいない」と答えます。作成に切り替えて WEB-5 を Mira に割り当てるよう頼むと、変更が提案されます。確定するとカードに「完了」と「元に戻す」が表示され、WEB-5 に Mira のアバターが付きます。"
 			}
 		}
 	},
@@ -6756,7 +7393,10 @@
 			"owner": "オーナー",
 			"progress": "進捗",
 			"tasks": "タスク",
-			"title": "サイクル詳細"
+			"title": "サイクル詳細",
+			"rolledOver_other": "繰り越しにより、未完了のタスク{{count}}件を{{name}}に移動しました。",
+			"rolloverNoNext": "次のサイクルが見つからなかったため、未完了のタスクはここに残っています。",
+			"rolloverNothing": "繰り越す未完了のタスクはありませんでした。"
 		},
 		"status": {
 			"archived": "アーカイブ済み",
@@ -7323,7 +7963,9 @@
 		"widgets": {
 			"quickLinks": "クイックリンク",
 			"recents": "最近使用",
-			"stickies": "付箋"
+			"stickies": "付箋",
+			"risks": "リスク",
+			"myBrief": "マイブリーフ"
 		},
 		"focus": {
 			"caughtUp": "すべて確認済みです",
@@ -7334,7 +7976,9 @@
 			"overdue_other": "期限切れ {{count}} 件",
 			"stickies": "付箋",
 			"stickiesHint": "自分だけが見られる非公開メモ",
-			"unread_other": "未読 {{count}} 件"
+			"unread_other": "未読 {{count}} 件",
+			"openCaption": "未完了",
+			"unreadCaption": "未読"
 		}
 	},
 	"intake": {
@@ -7394,7 +8038,11 @@
 			"titlePlaceholder": "何が必要ですか?",
 			"titleRequired": "タイトルを入力してください",
 			"toast": "リクエストを送信しました",
-			"toastView": "表示"
+			"toastView": "表示",
+			"pastedImages": "貼り付けた画像",
+			"pasteHint": "スクリーンショットを貼り付けると、リクエストに添付されます。",
+			"removeImage": "{{name}} を削除",
+			"attachFailed": "リクエストは送信されましたが、一部の画像を添付できませんでした。"
 		},
 		"decline": {
 			"description": "リクエストはクローズされ、ボードには追加されません。後で再オープンできます。",
@@ -7441,7 +8089,9 @@
 			"noTasks": "このプロジェクトには他のタスクがまだありません。",
 			"searchPlaceholder": "キーまたはタイトルでタスクを検索",
 			"title": "{{key}}を重複としてマーク",
-			"toast": "{{key}}の重複としてマークしました"
+			"toast": "{{key}}の重複としてマークしました",
+			"aiSuggestions": "AI の提案",
+			"aiChecking": "AI で重複を探しています…"
 		},
 		"empty": {
 			"backToIntake": "受付に戻る",
@@ -7683,6 +8333,11 @@
 				"singleProjectHint": "ベロシティを表示するには、プロジェクトを1つ選択してください",
 				"subtitle": "サイクルごとの完了数とコミット数",
 				"title": "ベロシティ"
+			},
+			"filter": {
+				"all": "すべて",
+				"label": "表示するサイクル",
+				"running": "進行中"
 			}
 		},
 		"dimensions": {
@@ -7823,7 +8478,8 @@
 			"noRequests": "リクエストはまだありません",
 			"noTasks": "これらのフィルターに一致するタスクはありません",
 			"retry": "再試行",
-			"timeout": "時間がかかりすぎました。フィルターを絞り込んで、もう一度お試しください。"
+			"timeout": "時間がかかりすぎました。フィルターを絞り込んで、もう一度お試しください。",
+			"noRunningCycles": "現在進行中のサイクルはありません"
 		},
 		"table": {
 			"periodEnd": "期間の終了",
@@ -7839,7 +8495,8 @@
 			"intake": "受付",
 			"modules": "モジュール",
 			"overview": "概要",
-			"tasks": "タスク"
+			"tasks": "タスク",
+			"delivery": "デリバリー"
 		},
 		"trend": {
 			"completed": "完了",
@@ -7853,9 +8510,141 @@
 			"chart": "グラフ",
 			"label": "表示形式",
 			"table": "表"
+		},
+		"reports": {
+			"actionsFor": "{{name}}の操作",
+			"close": "レポートを閉じる",
+			"delete": "削除",
+			"deleteDescription": "「{{name}}」を削除します。この操作は元に戻せません。",
+			"deleteSharedDescription": "「{{name}}」はワークスペースの全員に対して削除されます。この操作は元に戻せません。",
+			"deleteTitle": "このレポートを削除しますか？",
+			"dialog": {
+				"cancel": "キャンセル",
+				"createTitle": "レポートを保存",
+				"editTitle": "レポートを編集",
+				"name": "名前",
+				"namePlaceholder": "例: 担当者別の未解決バグ",
+				"nameRequired": "名前を入力してください",
+				"save": "保存",
+				"summary": "グラフの設定、対象のプロジェクト、フィルターを保存します。",
+				"update": "変更を保存",
+				"visibility": "閲覧できるユーザー"
+			},
+			"empty": "保存済みのレポートはまだありません。このグラフを保存すると、後で再表示できます。",
+			"listTitle": "保存済みのレポート",
+			"loadError": "保存済みのレポートを読み込めませんでした",
+			"makePrivate": "非公開にする",
+			"notes": {
+				"allProjects": "対象のプロジェクトがどれも利用できないため、すべてのプロジェクトを表示しています。",
+				"builderReset": "一部のグラフ設定はこれらのプロジェクトでは利用できないため、リセットされました。",
+				"dropped_other": "このレポートのプロジェクトのうち{{count}}件は存在しなくなりました。",
+				"leftOut_other": "このレポートのプロジェクトのうち{{count}}件はアーカイブ済みのため除外されました。",
+				"otherProjects": "このレポートは別のプロジェクト用に保存されたものです。ここではこのプロジェクトのみを表示します。"
+			},
+			"open": "レポート",
+			"rename": "名前を変更",
+			"save": "保存",
+			"saveAsNew": "新規として保存",
+			"share": "ワークスペースと共有",
+			"sharedBy": "{{name}}が共有",
+			"showing": "レポート: {{name}}",
+			"toast": {
+				"deleted": "レポートを削除しました",
+				"deleteError": "レポートを削除できませんでした",
+				"madePrivate": "レポートを非公開にしました",
+				"saved": "「{{name}}」を保存しました",
+				"saveError": "レポートを保存できませんでした",
+				"shared": "レポートをワークスペースと共有しました",
+				"updated": "レポートを更新しました"
+			},
+			"unsaved": "未保存の変更",
+			"update": "レポートを更新",
+			"visibility": {
+				"private": "非公開",
+				"privateHint": "自分だけが閲覧できます。",
+				"workspace": "ワークスペースと共有",
+				"workspaceHint": "このワークスペースでアナリティクスへのアクセス権を持つ全員が開けます。"
+			}
 		}
 	},
 	"pages": {
+		"templates": {
+			"saveAction": "テンプレートとして保存",
+			"saveTitle": "テンプレートとして保存",
+			"saveDescription": "ページの現在の内容とアイコンが、新しいページ用のテンプレートになります。",
+			"nameLabel": "テンプレート名",
+			"scopeLabel": "利用できる場所",
+			"scopeProject": "このプロジェクト",
+			"scopeProjectHint": "このプロジェクトでページを作成するときに表示されます。",
+			"scopeWorkspace": "すべてのプロジェクト",
+			"scopeWorkspaceHint": "ワークスペースのすべてのプロジェクトで表示されます。",
+			"saveConfirm": "テンプレートを保存",
+			"savedToast": "テンプレートを保存しました",
+			"saveError": "テンプレートを保存できませんでした",
+			"newFromTemplate": "テンプレートから新規ページ",
+			"moreCreateOptions": "ページを作成するその他の方法",
+			"pickTitle": "テンプレートから新規ページ",
+			"pickDescription": "新しいページはテンプレートの内容から始まります。あとから自由に変更できます。",
+			"starters": "スターター",
+			"saved": "保存済みテンプレート",
+			"savedEmpty": "保存済みのテンプレートはまだありません。ページのメニューから保存してください。",
+			"loadError": "テンプレートを読み込めませんでした",
+			"deleteLabel": "テンプレート {{name}} を削除",
+			"deleted": "テンプレートを削除しました",
+			"deleteError": "テンプレートを削除できませんでした",
+			"builtin": {
+				"meetingName": "議事録",
+				"meetingDescription": "参加者、議題、決定事項、アクションアイテム。",
+				"meetingAttendees": "参加者",
+				"meetingAgenda": "議題",
+				"meetingNotes": "メモ",
+				"meetingDecisions": "決定事項",
+				"meetingActionItems": "アクションアイテム",
+				"specName": "仕様書",
+				"specDescription": "課題、目標、提案、未解決の質問。",
+				"specSummary": "概要",
+				"specProblem": "課題",
+				"specGoals": "目標",
+				"specNonGoals": "対象外",
+				"specProposal": "提案",
+				"specOpenQuestions": "未解決の質問",
+				"retroName": "振り返り",
+				"retroDescription": "うまくいったこと、改善点、次に試すこと。",
+				"retroWentWell": "うまくいったこと",
+				"retroCouldBeBetter": "改善できること",
+				"retroTryNext": "次に試すこと"
+			}
+		},
+		"publish": {
+			"menuItem": "ウェブに公開",
+			"title": "ウェブに公開",
+			"description": "リンクを知っている人は誰でも、サインインせずにこのページを閲覧できます。検索エンジンにはインデックスしないよう求めます。",
+			"switchLabel": "公開リンク",
+			"onHint": "公開中です。オフにするとリンクはすぐに無効になります。",
+			"offHint": "オフです。オンにするとリンクが作成されます。",
+			"disabledByWorkspace": "このワークスペースでは公開ページがオフになっています。管理者がワークスペース設定でオンにできます。",
+			"cannotPublish": "公開できるのはプロジェクトを共有できるメンバーのみで、ワークスペース全体に表示されるページに限られます。",
+			"linkLabel": "リンク",
+			"copyLink": "リンクをコピー",
+			"copied": "コピーしました",
+			"openLink": "公開ページを開く",
+			"privacyNote": "メンション、タスクへのリンク、ファイル、未公開ページへのリンクは公開ページでは非表示になります。",
+			"publishedToast": "ページを公開しました",
+			"unpublishedToast": "リンクを無効にしました",
+			"error": "公開リンクを変更できませんでした",
+			"loadError": "公開リンクを読み込めませんでした",
+			"done": "完了"
+		},
+		"publicView": {
+			"documentTitle": "共有ページ",
+			"unavailableTitle": "このページは表示できません",
+			"unavailableDescription": "リンクが無効になったか、ページの共有が終了した可能性があります。",
+			"updated": "{{date}} に更新",
+			"mention": "@メンバー",
+			"task": "リンクされたタスク",
+			"file": "添付ファイル",
+			"page": "別のページ"
+		},
 		"actions": {
 			"archive": "アーカイブ",
 			"copyLink": "リンクをコピー",
@@ -7893,6 +8682,40 @@
 			"restoredBy": "{{name}} さんが以前のバージョンを復元しました",
 			"roomFull": "現在、このページを開いているユーザーが多すぎます。しばらくしてからもう一度お試しください。",
 			"signedOut": "セッションが終了しました。編集を続けるには、もう一度サインインしてください。"
+		},
+		"toolbar": {
+			"ariaLabel": "書式ツールバー",
+			"textStyle": "テキストスタイル",
+			"bold": "太字",
+			"italic": "斜体",
+			"underline": "下線",
+			"strike": "取り消し線",
+			"inlineCode": "インラインコード",
+			"link": "リンク",
+			"image": "画像",
+			"more": "その他の書式"
+		},
+		"filters": {
+			"button": "フィルター",
+			"active": "フィルター適用中",
+			"search": "フィルターを検索",
+			"searchClear": "検索をクリア",
+			"favorites": "お気に入り",
+			"createdDate": "作成日",
+			"date": {
+				"any": "すべての期間",
+				"today": "今日",
+				"last7": "過去 7 日間",
+				"last30": "過去 30 日間",
+				"older": "30 日より前"
+			},
+			"remove": "{{filter}} フィルターを削除"
+		},
+		"detail": {
+			"unlocked": "ロック解除",
+			"openOutline": "アウトラインを開く",
+			"currentSection": "現在のセクション",
+			"emptyLinePlaceholder": "「/」を入力してコマンドを表示"
 		},
 		"commandPalette": {
 			"createPage": "ページを作成"
@@ -8009,8 +8832,6 @@
 			"locked": "ロック中",
 			"newPage": "新しいページ",
 			"ownedBy": "オーナー: {{name}}",
-			"ownerFilter": "オーナー",
-			"ownerFilterSearch": "ユーザーを検索",
 			"retry": "再試行",
 			"searchPlaceholder": "ページを検索",
 			"sort": {
@@ -8130,6 +8951,229 @@
 			"expand": "{{title}} を展開",
 			"newPage": "新しいページ",
 			"title": "ページ"
+		}
+	},
+	"accountSecurity": {
+		"platform": {
+			"save": "保存",
+			"retry": "再試行",
+			"loadMore": "さらに読み込む",
+			"auditPasswordResetSent": "パスワード再設定リンクを送信",
+			"apiKeys": {
+				"accessLabel": "アクセス",
+				"accessFull": "フルアクセス",
+				"accessFullHint": "参加しているすべてのワークスペースで、あなたができることすべて。",
+				"accessRead": "読み取り専用",
+				"accessReadHint": "読み取りのみで、何も変更しません。",
+				"accessCustom": "カスタム",
+				"accessCustomHint": "下で選んだ範囲のみ。",
+				"areasLabel": "範囲",
+				"areaNone": "なし",
+				"areaRead": "読み取り",
+				"areaWrite": "書き込み",
+				"areasRequired": "範囲を 1 つ以上選んでください。",
+				"projectsLabel": "特定のプロジェクトに限定",
+				"projectsHint": "このキーからは他のプロジェクトは存在しないように見え、ワークスペース全体へのリクエストは拒否されます。",
+				"projectsIn": "{{workspace}} のプロジェクト",
+				"projectsLoading": "プロジェクトを読み込んでいます…",
+				"projectsEmpty": "このワークスペースにはまだプロジェクトがありません。",
+				"projectsRequired": "プロジェクトを 1 つ以上選んでください。",
+				"columnScope": "範囲",
+				"scopeFull": "フルアクセス",
+				"scopeRead": "読み取り専用",
+				"scopeCustom": "カスタム",
+				"scopeProjects": "プロジェクト: {{projects}}",
+				"deletedProject": "削除されたプロジェクト",
+				"requestsAria": "{{name}} によるリクエスト",
+				"requestsTitle": "リクエスト: {{name}}",
+				"requestsDescription": "このキーによる最近のリクエストです。保存されるのはメソッド、ルート、ステータス、所要時間のみで、内容は保存されません。",
+				"requestsEmpty": "まだリクエストはありません。",
+				"requestsError": "リクエストを読み込めませんでした。",
+				"columnTime": "日時",
+				"columnRequest": "リクエスト",
+				"columnStatus": "ステータス",
+				"columnDuration": "所要時間",
+				"durationMs": "{{value}} ms"
+			},
+			"policy": {
+				"title": "サインインポリシー",
+				"description": "誰がアカウントを作成できるか、全員のサインイン方法、セッションの長さ。",
+				"invitedPasswordSignUp": "招待された人のパスワード登録",
+				"invitedPasswordSignUpHint": "パスワード登録がオフでも、有効な招待がある人はパスワードのアカウントを作成できます。",
+				"domains": "許可するメールドメイン",
+				"domainsHint": "新しいアカウントはこれらのドメインのアドレスを使う必要があります。空欄ならどのドメインも許可します。",
+				"requiredProvider": "必須のサインインプロバイダー",
+				"requiredProviderHint": "全員がこのプロバイダーでサインインします。インスタンス管理者は復旧用にパスワードでのサインインを維持します。",
+				"noRequirement": "指定なし",
+				"customProvider": "組織のサインイン",
+				"sessionLifetime": "セッションの有効期間",
+				"sessionLifetimeHint": "使われていないセッションが有効な期間です。使うと延長されます。",
+				"hours": "時間",
+				"signInNotice": "{{provider}} でサインインしてください。パスワードでのサインインはインスタンス管理者専用です。"
+			},
+			"twoFactor": {
+				"title": "2 要素認証",
+				"description": "パスワードでサインインするときに、認証アプリのコードを求めます。",
+				"authenticator": "認証アプリ",
+				"on": "オン",
+				"off": "オフ",
+				"turnOn": "オンにする",
+				"turnOff": "オフにする",
+				"newCodes": "新しい回復コード",
+				"confirmPassword": "パスワードを確認",
+				"continue": "続行",
+				"setupTitle": "認証アプリに Margaya を追加",
+				"setupHint": "このセットアップキーを認証アプリに入力し、表示された 6 桁のコードを入力してください。",
+				"setupKey": "セットアップキー",
+				"openApp": "このデバイスの認証アプリで開く",
+				"code": "認証コード",
+				"verify": "確認",
+				"invalidCode": "コードが正しくありません。デバイスの時刻を確認して、もう一度お試しください。",
+				"codesTitle": "回復コード",
+				"codesHint": "安全な場所に保管してください。デバイスをなくしたとき、各コードで 1 回サインインできます。",
+				"copyCodes": "コードをコピー",
+				"copied": "回復コードをコピーしました",
+				"done": "完了",
+				"enabled": "2 要素認証がオンになりました。",
+				"disabled": "2 要素認証がオフになりました。",
+				"error": "問題が発生しました。もう一度お試しください。"
+			},
+			"challenge": {
+				"title": "2 要素認証",
+				"totpHint": "認証アプリの 6 桁のコードを入力してください。",
+				"recoveryHint": "回復コードを 1 つ入力してください。各コードは 1 回だけ使えます。",
+				"recoveryCode": "回復コード",
+				"invalid": "コードが正しくありません。もう一度お試しください。",
+				"trustDevice": "このデバイスを 30 日間信頼する",
+				"useRecovery": "回復コードを使う",
+				"useApp": "認証アプリを使う",
+				"usePassword": "パスワードでサインイン",
+				"back": "サインインに戻る"
+			},
+			"users": {
+				"nav": "ユーザー",
+				"title": "ユーザー",
+				"subtitle": "このサーバーのすべてのアカウントです。離れた人の利用停止、パスワードの再設定、サインアウトができます。",
+				"listTitle": "アカウント",
+				"search": "名前またはメールで検索",
+				"filterLabel": "表示",
+				"filterAll": "すべてのアカウント",
+				"filterAdmins": "インスタンス管理者",
+				"filterBanned": "利用停止中",
+				"empty": "「{{query}}」に一致するアカウントはありません。",
+				"none": "まだアカウントはありません。",
+				"columnUser": "ユーザー",
+				"columnStatus": "状態",
+				"columnWorkspaces": "ワークスペース",
+				"columnLastActive": "最終アクティブ",
+				"columnJoined": "登録日",
+				"columnActions": "操作",
+				"badgeAdmin": "管理者",
+				"badgeBanned": "利用停止",
+				"badgeTwoFactor": "2FA",
+				"never": "なし",
+				"actionsFor": "{{name}} の操作",
+				"details": "詳細を表示",
+				"resetPassword": "パスワードを再設定",
+				"signOut": "すべての場所からサインアウト",
+				"makeAdmin": "インスタンス管理者にする",
+				"removeAdmin": "インスタンス管理者から外す",
+				"ban": "利用停止",
+				"unban": "利用停止を解除",
+				"banTitle": "{{name}} を利用停止にしますか?",
+				"banDescription": "すべての場所からサインアウトされ、停止が終わるまでサインインできません。API キーも使えなくなります。",
+				"banReason": "理由 (任意)",
+				"banDuration": "期間",
+				"banForever": "解除するまで",
+				"ban7Days": "7 日間",
+				"ban30Days": "30 日間",
+				"banned": "{{name}} を利用停止にしました。",
+				"unbanned": "{{name}} は再びサインインできます。",
+				"resetTitle": "{{name}} のパスワードを再設定しますか?",
+				"resetDescription": "再設定リンクを送るか、今すぐ新しいパスワードを設定します。設定するとすべての場所からサインアウトされます。",
+				"resetByEmail": "{{email}} に再設定リンクを送る",
+				"resetSetNow": "今すぐ新しいパスワードを設定",
+				"newPassword": "新しいパスワード",
+				"resetConfirm": "パスワードを再設定",
+				"resetSent": "{{email}} に再設定リンクを送信しています。",
+				"passwordSet": "{{name}} のパスワードを変更しました。",
+				"signOutTitle": "{{name}} をすべての場所からサインアウトしますか?",
+				"signOutDescription": "すべてのセッションがすぐに終了します。API キーは引き続き使えます。取り消せるのは所有者だけです。",
+				"signedOut": "{{name}} をすべての場所からサインアウトしました。",
+				"promoted": "{{name}} はインスタンス管理者になりました。",
+				"demoted": "{{name}} はインスタンス管理者ではなくなりました。",
+				"activeSessions": "有効なセッション",
+				"signInMethod": "パスワード",
+				"hasPassword": "設定済み",
+				"noPassword": "未設定 (別の方法でサインイン)",
+				"workspacesTitle": "ワークスペース",
+				"noWorkspaces": "どのワークスペースにも参加していません。",
+				"joined": "{{date}} に参加"
+			}
+		},
+		"password": {
+			"tooShort": "{{min}} 文字以上にしてください。",
+			"tooCommon": "このパスワードはよく使われていて推測されやすいです。別のパスワードを選んでください。",
+			"matchesEmail": "メールアドレスをパスワードにすることはできません。",
+			"hint": "{{min}} 文字以上。よく使われるパスワードやメールアドレスは避けてください。"
+		},
+		"emailChange": {
+			"action": "メールアドレスを変更",
+			"title": "メールアドレスの変更",
+			"description": "新しいアドレスにコードを送信します。コードを入力するとメールアドレスが変更され、他のセッションはサインアウトされます。",
+			"newEmail": "新しいメールアドレス",
+			"newEmailPlaceholder": "you@example.com",
+			"invalidEmail": "有効なメールアドレスを入力してください。",
+			"sameEmail": "それはすでに現在のメールアドレスです。",
+			"sendCode": "コードを送信",
+			"codeSent": "{{email}} が使用可能であれば、コードを送信しました。有効期限は 5 分です。",
+			"code": "確認コード",
+			"confirm": "メールアドレスを変更",
+			"back": "別のアドレスを使う",
+			"success": "メールアドレスを {{email}} に変更しました。",
+			"invalidCode": "コードが正しくないか、有効期限が切れています。新しいコードをリクエストしてください。",
+			"sessionTooOld": "セキュリティのため、メールアドレスを変更する前にもう一度サインインしてください。",
+			"unavailable": "このサーバーではメールが設定されていないため、ここでアドレスを変更できません。インスタンス管理者に問い合わせてください。",
+			"error": "メールアドレスを変更できませんでした。"
+		},
+		"reauth": {
+			"title": "本人確認",
+			"description": "インスタンスを変更するには、最近のサインインが必要です。パスワードを入力すると、今後 10 分間続行できます。",
+			"noPassword": "インスタンスを変更するには、最近のサインインが必要です。アカウントにパスワードがないため、もう一度サインインして続行してください。",
+			"password": "パスワード",
+			"confirm": "確認",
+			"signInAgain": "もう一度サインイン",
+			"wrongPassword": "パスワードが正しくありません。",
+			"cancelled": "保存されませんでした: 本人確認が完了していません。",
+			"error": "パスワードを確認できませんでした。"
+		},
+		"auditTrail": {
+			"title": "監査証跡",
+			"subtitle": "インスタンスの変更履歴: 誰が、何を、いつ変更したか。シークレットの値は記録されません。",
+			"empty": "まだインスタンスの変更は記録されていません。",
+			"loadMore": "さらに読み込む",
+			"when": "日時",
+			"who": "実行者",
+			"what": "内容",
+			"system": "システム",
+			"actions": {
+				"instanceSettingsUpdated": "インスタンス設定を変更しました",
+				"instanceAdminAdded": "インスタンス管理者を追加しました",
+				"instanceAdminRemoved": "インスタンス管理者を削除しました",
+				"instanceReauthenticated": "パスワードを再確認しました",
+				"userCreated": "アカウントを作成しました",
+				"userRoleChanged": "アカウントのロールを変更しました",
+				"userBanned": "アカウントを利用停止にしました",
+				"userUnbanned": "利用停止を解除しました",
+				"userRemoved": "アカウントを削除しました",
+				"userPasswordSet": "アカウントのパスワードを設定しました",
+				"userSessionsRevoked": "アカウントをサインアウトさせました",
+				"userImpersonated": "別のアカウントとしてサインインしました",
+				"cliAdminPromoted": "インスタンス管理者に昇格しました (復旧 CLI)",
+				"cliAdminDemoted": "インスタンス管理者を削除しました (復旧 CLI)",
+				"cliPasswordReset": "パスワードを再設定しました (復旧 CLI)",
+				"cliUserUnbanned": "利用停止を解除しました (復旧 CLI)"
+			}
 		}
 	},
 	"instanceAdmin": {
@@ -8270,7 +9314,8 @@
 			"email": "メール",
 			"general": "一般",
 			"publicBoards": "公開ボード",
-			"workspaces": "ワークスペース"
+			"workspaces": "ワークスペース",
+			"ai": "AI"
 		},
 		"oauth": {
 			"authorizationUrl": "認可URL",
@@ -8491,7 +9536,11 @@
 				"label": "Stack",
 				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
 			},
-			"title": "Quick facts"
+			"title": "Quick facts",
+			"ai": {
+				"label": "AI",
+				"value": "任意で、初期設定はオフ: AI に質問、作成モード、AI エージェント。Claude またはセルフホストのモデルで動作"
+			}
 		},
 		"guidelines": {
 			"do": {
@@ -8701,5 +9750,1675 @@
 		},
 		"title": "One product. Two ways to run it.",
 		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+	},
+	"templates": {
+		"form": {
+			"addSubtask": "追加",
+			"assignees": "担当者",
+			"assigneesNone": "プロジェクトのデフォルト",
+			"create": "テンプレートを作成",
+			"createTitle": "新しいタスクテンプレート",
+			"description": "新しいタスクの初期内容です。タスクの作成時にすべて編集できます。",
+			"editTitle": "タスクテンプレートを編集",
+			"estimate": "見積もり",
+			"labels": "ラベル",
+			"labelsEmpty": "ラベルが見つかりません",
+			"labelsNone": "ラベルなし",
+			"labelsSearch": "ラベルを検索",
+			"moveDown": "{{title}}を下に移動",
+			"moveUp": "{{title}}を上に移動",
+			"name": "名前",
+			"namePlaceholder": "バグ報告",
+			"notSet": "未設定",
+			"priority": "優先度",
+			"removeSubtask": "{{title}}を削除",
+			"save": "テンプレートを保存",
+			"status": "ステータス",
+			"statusDefault": "プロジェクトのデフォルト",
+			"subtaskPlaceholder": "サブタスクを追加",
+			"subtasks": "サブタスク",
+			"subtaskTitle": "サブタスク {{number}}",
+			"taskDescription": "説明",
+			"taskDescriptionPlaceholder": "再現手順、期待される結果…",
+			"titlePattern": "タイトルのパターン",
+			"titlePatternHint": "{title} は入力したタイトルに置き換えられます。含まれていない場合、入力したタイトルはパターンの後に追加されます。",
+			"titlePatternPlaceholder": "バグ: {title}"
+		},
+		"settings": {
+			"add": "新しいテンプレート",
+			"deleteAria": "テンプレート「{{name}}」を削除",
+			"deleteConfirm": "削除",
+			"deleteDescription": "このテンプレートから作成されたタスクはそのまま残ります。",
+			"deleteTitle": "テンプレート「{{name}}」を削除しますか？",
+			"description": "新しいタスクの出発点です。タイトルのパターン、デフォルトのフィールド、サブタスクのチェックリストを設定できます。",
+			"editAria": "テンプレート「{{name}}」を編集",
+			"empty": "テンプレートはまだありません。",
+			"loadError": "テンプレートを読み込めませんでした。",
+			"noPermission": "プロジェクトを編集できるユーザーのみがテンプレートを変更できます。",
+			"retry": "再試行",
+			"subtaskCount_other": "サブタスク {{count}}件",
+			"title": "タスクテンプレート",
+			"toast": {
+				"created": "テンプレートを作成しました",
+				"deleted": "テンプレートを削除しました",
+				"deleteError": "テンプレートを削除できませんでした",
+				"error": "テンプレートを保存できませんでした",
+				"updated": "テンプレートを保存しました"
+			}
+		},
+		"use": {
+			"applied": "テンプレート: {{name}}",
+			"button": "テンプレート",
+			"menuLabel": "テンプレートを使用",
+			"quickAdd": "テンプレートから作成",
+			"removeSubtask": "サブタスク「{{title}}」を削除",
+			"subtaskError_other": "タスクは作成されましたが、サブタスク{{count}}件を追加できませんでした",
+			"subtasksTitle_other": "テンプレートのサブタスク {{count}}件"
+		}
+	},
+	"delivery": {
+		"forecast": {
+			"title": "予測",
+			"likelyBy": "85% の確率で {{date}} までに完了",
+			"percentiles": "50%: {{p50}} まで · 95%: {{p95}} まで",
+			"chanceByEnd": "{{date}} までに完了する確率: {{percent}}%",
+			"beyondHorizon": "現在のペースでは 2 年以上",
+			"open_other": "未完了のタスク {{count}}件",
+			"complete": "すべてのタスクが完了しています",
+			"insufficient": {
+				"short_span": "履歴がまだ足りません: 予測にはこのプロジェクトで少なくとも 14 日分の作業が必要です。",
+				"few_completions": "履歴がまだ足りません: 過去 8 週間に完了したタスクが 5 件未満です。",
+				"few_active_days": "履歴がまだ足りません: 過去 8 週間でタスクが完了した日が 3 日未満です。"
+			},
+			"howCalculated": "計算方法",
+			"method": {
+				"title": "モンテカルロ予測",
+				"body": "Margaya はチームの実際のペースを {{iterations}} 回再現します。シミュレーションの各日は、下の履歴からランダムに選んだ 1 日の完了数を使い、未完了のタスクがなくなるまで続けます。日付は、シミュレーションの 50%、85%、95% が完了した時点を示します。",
+				"window": "履歴: {{from}} – {{to}}",
+				"completed": "完了したタスク: {{total}}",
+				"activeDays": "完了があった日: {{days}}",
+				"perDay": "1 日あたりの完了数: {{min}}–{{max}}",
+				"perWeek": "週平均: {{perWeek}}",
+				"team": "ペースはプロジェクト全体のものなので、この範囲外の作業も含まれます。",
+				"seed": "シード {{seed}}: 同じデータなら一日中同じ結果になります。"
+			},
+			"error": "予測を読み込めませんでした",
+			"retry": "再試行"
+		},
+		"risks": {
+			"title": "リスク",
+			"empty": "リスクは見つかりませんでした",
+			"showAll": "すべて表示 ({{total}})",
+			"showLess": "表示を減らす",
+			"noCycleTime": "長引いている作業は、開始が記録されたタスクが 10 件完了すると表示されます。",
+			"hiddenTask": "表示権限のないタスク",
+			"truncated": "最初の 2,000 件の未完了タスクのみを確認しました。",
+			"error": "リスクを読み込めませんでした",
+			"someone": "誰か",
+			"severity": {
+				"high": "高リスク",
+				"medium": "中リスク",
+				"low": "低リスク"
+			},
+			"criticalPath": {
+				"ends": "クリティカルパスの終了日: {{date}}",
+				"chain_other": "最長の依存関係チェーン: {{count}}件のタスク"
+			},
+			"kinds": {
+				"critical_path_late": "クリティカルパスは {{date}} に終わり、期限の {{deadline}} を過ぎます",
+				"critical_path_tight": "クリティカルパスは {{date}} に終わり、期限の {{deadline}} にほとんど余裕がありません",
+				"blocked_chain_other": "{{head}} が {{count}}件のタスクをブロックしています",
+				"ageing_other": "{{count}}件のタスクが {{days}} 日以上進行中です (通常より長い)",
+				"overdue_cluster_other": "{{name}} の期限切れタスク: {{count}}件",
+				"overdue_cluster_unassigned_other": "担当者のいない期限切れタスク: {{count}}件",
+				"overdue_other": "期限切れのタスク: {{count}}件",
+				"unassigned_near_deadline_other": "{{date}} までが期限の未割り当てタスク: {{count}}件",
+				"dependency_loop_other": "{{count}}件のタスクが循環して互いをブロックしています"
+			}
+		},
+		"home": {
+			"title": "リスクあり",
+			"empty": "現在のサイクルにリスクはありません",
+			"context": "{{project}} · {{cycle}}"
+		},
+		"tab": {
+			"description": "このプロジェクトの未完了作業の予測とリスク"
+		}
+	},
+	"ai": {
+		"rules": {
+			"title": "説明からルールを作成",
+			"description": "自動化を普段の言葉で書いてください。AI が通常のルールに変換し、編集・最近の履歴での試行・保存ができます。保存したルールは AI なしで動作します。",
+			"label": "ルールを説明…",
+			"placeholder": "例: GitHub のプルリクエストがマージされたら、タスクを「完了」に移動する",
+			"compile": "ルールを作成",
+			"compiling": "ルールを作成中…",
+			"unsupportedTitle": "自動化では実現できない内容",
+			"rejected": "検証に通らず除外された提案ルール: {{rejected}}",
+			"noRules": "この説明からはルールを作成できませんでした。",
+			"workflowRule": "ワークフロールール",
+			"integration": "連携",
+			"when": "トリガー",
+			"moveTo": "タスクの移動先",
+			"historyWindow": "再生する履歴の期間",
+			"days7": "過去 7 日間",
+			"days30": "過去 30 日間",
+			"days90": "過去 90 日間",
+			"dryRun": "履歴で試す",
+			"dryRunSummary": "過去 {{days}} 日間に変更されていたはずのタスク: {{changed}}",
+			"dryRunNone": "過去 {{days}} 日間では何も変更されなかったはずです。",
+			"dryRunError": "このルールを履歴で再生できませんでした。",
+			"more": "表示されていない一致: {{more}}",
+			"archived": "アーカイブ済み",
+			"outcomes": {
+				"unchanged": "移動済み",
+				"skipped": "対象外"
+			},
+			"notes": {
+				"integration_not_connected": "この連携はプロジェクトに接続されていないため、再生できる履歴がありません。",
+				"branch_push_last_only": "各ブランチについて記録されるのは最新の push のみです。",
+				"threshold_from_last_update": "各タスクの最終更新に基づきます。日付はルールがそのタスクを処理したはずの時点です。",
+				"flow_alerts_notify_only": "フロー異常アラートはプロジェクトリーダーに通知するだけで、タスクは変更しません。",
+				"nothing_enabled": "このルールは何も有効にしないため、何も変わりません。",
+				"conditions_current_state": "条件は各タスクの現在の状態に対して確認されました。履歴には変更のみが残ります。"
+			},
+			"save": "ルールを保存",
+			"discard": "破棄",
+			"saved": "ルールを保存しました",
+			"saveError": "ルールを保存できませんでした。"
+		},
+		"build": {
+			"command": "AI で作成…",
+			"title": "AI で作成",
+			"description": "計画したい内容を説明してください。AI がプロジェクト、サイクル、タスクを提案し、あなたが確認します。確定するまで何も作成されません。",
+			"promptLabel": "何を計画しますか？",
+			"promptPlaceholder": "Q4 に 3 スプリントでウェブサイトをリニューアルする計画を立てて",
+			"target": "作成先",
+			"targetCurrent": "{{name}} に作成",
+			"targetNew": "新しいプロジェクト",
+			"deep": "じっくり考える (時間がかかります)",
+			"draft": "計画を提案",
+			"drafting": "計画を作成中…",
+			"cancel": "キャンセル",
+			"back": "戻る",
+			"create_other": "{{count}} 件を作成",
+			"creating": "計画を作成しています",
+			"progress": "{{total}} 件中 {{done}} 件を作成…",
+			"close": "閉じる",
+			"openProject": "プロジェクトを開く",
+			"empty": {
+				"text": "このプロジェクトにはまだタスクがありません。作業内容を説明すると、AI が確認用のタスクを提案します。"
+			},
+			"review": {
+				"description": "計画を確認してください。チェックを外す、編集する、並べ替えることができます。その後、作成します。",
+				"project": "プロジェクト",
+				"projectName": "名前",
+				"projectKey": "キー",
+				"projectDescription": "説明",
+				"columns": "新しいカラム",
+				"labels": "ラベル",
+				"cycles": "サイクル",
+				"modules": "モジュール",
+				"moduleName": "モジュール名",
+				"tasks_other": "{{count}} 件のタスク",
+				"include": "{{name}} を含める",
+				"taskTitle": "タスクのタイトル",
+				"taskDescription": "タスクの説明",
+				"priority": "優先度",
+				"estimate": "見積もり (ポイント)",
+				"module": "モジュール",
+				"none": "なし",
+				"taskLabels": "ラベル: {{labels}}",
+				"subtasks": "サブタスク",
+				"subtaskTitle": "サブタスクのタイトル",
+				"moveUp": "{{name}} を上に移動",
+				"moveDown": "{{name}} を下に移動",
+				"cycle": {
+					"label": "サイクル",
+					"name": "サイクル名",
+					"startDate": "開始",
+					"endDate": "終了"
+				}
+			},
+			"done": {
+				"success_other": "完了しました。{{count}} 件のタスクを作成しました。",
+				"partial_other": "{{count}} 件を除いて作成しました:",
+				"estimatesSkipped": "プロジェクトに有効なポイント見積もりシステムがないため、見積もりは省略されました。",
+				"created": {
+					"tasks_other": "{{count}} 件のタスク",
+					"subtasks_other": "{{count}} 件のサブタスク",
+					"cycles_other": "{{count}} 件のサイクル",
+					"modules_other": "{{count}} 件のモジュール",
+					"columns_other": "{{count}} 件のカラム",
+					"labels_other": "{{count}} 件のラベル"
+				}
+			},
+			"kinds": {
+				"project": "プロジェクト",
+				"column": "カラム",
+				"cycle": "サイクル",
+				"module": "モジュール",
+				"task": "タスク",
+				"subtask": "サブタスク",
+				"label": "ラベル",
+				"estimate": "見積もり",
+				"cycle_tasks": "サイクルのタスク",
+				"module_tasks": "モジュールのタスク"
+			},
+			"chat": {
+				"planLabel": "提案された変更",
+				"planning": "変更を計画しています…",
+				"nothing": "このリクエストで変更するものはありません。",
+				"awaiting": "応答待ち",
+				"ready": "準備できた変更: {{count}} 件。続けるには確定してください。",
+				"applying": "変更を適用しています…",
+				"confirm": "確定",
+				"cancel": "キャンセル",
+				"cancelled": "キャンセルしました。何も変更されていません。",
+				"remove": "{{title}} を削除",
+				"confirmDestructive": "はい、削除します",
+				"truncated": "プランは最初の 50 件の変更に絞られました。",
+				"appliedSummary": "適用済み: {{total}} 件中 {{done}} 件",
+				"autopilotApplied": "オートパイロットがすぐに適用しました。",
+				"autopilotOff": "このワークスペースではオートパイロットがオフです。下の変更を確認してください。",
+				"autopilotReview": "一部の変更は先に確認が必要です。",
+				"done": "完了",
+				"open": "開く",
+				"skipped": "スキップ",
+				"failed": "失敗",
+				"undo": "元に戻す",
+				"undone": "元に戻しました",
+				"undoFailed": "この変更を元に戻せませんでした。",
+				"forbidden": "ここでは AI で変更できません。",
+				"pickCandidate": "もしかして:",
+				"fields": {
+					"name": "名前",
+					"key": "キー",
+					"title": "タイトル",
+					"priority": "優先度",
+					"dueDate": "期日",
+					"assignee": "担当者",
+					"unassigned": "なし",
+					"startDate": "開始",
+					"endDate": "終了",
+					"content": "コメント"
+				},
+				"problems": {
+					"forbidden": "この操作の権限がありません。",
+					"not_found": "参照先が見つかりませんでした。",
+					"ambiguous": "その名前は複数の人に一致します。",
+					"unresolved_ref": "実行できない変更に依存しています。",
+					"feature_off": "この機能はプロジェクトで無効になっています。",
+					"invalid": "この変更は書かれたとおりには実行できません。"
+				},
+				"ops": {
+					"create_project": "新しいプロジェクト",
+					"create_task": "新しいタスク",
+					"update_task": "タスクを編集",
+					"set_status": "ステータスを変更",
+					"assign": "割り当て",
+					"add_comment": "コメント",
+					"create_cycle": "新しいサイクル",
+					"add_to_cycle": "サイクルに追加",
+					"create_module": "新しいモジュール",
+					"add_to_module": "モジュールに追加",
+					"create_page": "新しいページ",
+					"link_tasks": "タスクをリンク",
+					"create_label": "新しいラベル",
+					"delete_task": "タスクを削除",
+					"run_agent": "エージェントを実行"
+				},
+				"agentRun": {
+					"title": "エージェントの実行",
+					"loading": "実行を読み込んでいます…",
+					"loadError": "この実行を読み込めませんでした。",
+					"inProgress": "進行中"
+				},
+				"noneReady": "まだ適用できる変更はありません。警告のある変更を修正または削除するか、もう一度依頼してください。"
+			},
+			"context": {
+				"title": "コンテキスト（{{count}}）",
+				"facts": "プロジェクト: {{projects}} · メンバー: {{members}} · サイクル: {{cycles}}",
+				"memory": "メモリーノート: {{count}}",
+				"history": "以前のメッセージ: {{count}}"
+			}
+		},
+		"duplicates": {
+			"check": "AI で確認",
+			"checking": "確認中…",
+			"checkedTitle": "AI が重複を確認しました",
+			"none": "重複の可能性があるタスクはありません。",
+			"verdict": {
+				"duplicate": "重複の可能性大",
+				"related": "関連あり"
+			},
+			"mark": "これの重複",
+			"markLabel": "新しいタスクを {{key}} の重複としてマーク",
+			"marked": "マーク済み",
+			"willLink": "新しいタスクは {{key}} の重複としてマークされます。",
+			"undo": "元に戻す",
+			"linkError": "タスクは作成されましたが、{{key}} の重複としてマークできませんでした。"
+		},
+		"triage": {
+			"button": "トリアージを提案",
+			"title": "トリアージの提案",
+			"loading": "似た作業を確認しています…",
+			"empty": "この項目への提案はありません。",
+			"retry": "再試行",
+			"close": "提案を閉じる",
+			"accept": "採用",
+			"acceptAll": "すべて採用",
+			"edit": "編集",
+			"dismiss": "却下",
+			"applied": "適用済み",
+			"acceptError": "この提案を適用できませんでした。",
+			"autoApplied": "このプロジェクトでは提案されたラベルが自動で追加されます。",
+			"sameTitle": "既存のタスクと同じタイトル",
+			"projectAdvice": "リクエストは元のプロジェクトに残ります。このリクエストは却下し、あちらで提出するよう依頼してください。",
+			"otherProjectDuplicate": "このプロジェクトのタスクだけが、リクエストを重複としてクローズできます。",
+			"openTask": "{{key}}を新しいタブで開く",
+			"fields": {
+				"label": "ラベル",
+				"assignee": "担当者",
+				"priority": "優先度",
+				"project": "プロジェクト",
+				"duplicate": "重複の可能性"
+			},
+			"settings": {
+				"title": "トリアージの提案",
+				"description": "新しいタスクと受付リクエストへの AI の提案です。各提案は人が採用、編集、または却下します。",
+				"autoApply": "ラベルの提案を自動で適用",
+				"autoApplyHint": "提案されたラベルはすぐに追加され、そのたびに監査ログに記録されます。担当者、優先度、プロジェクト、重複は常に人の判断を待ちます。",
+				"saved": "トリアージの設定を保存しました",
+				"saveError": "トリアージの設定を保存できませんでした。"
+			},
+			"liveLabels": {
+				"title": "おすすめのラベル",
+				"add": "ラベル {{name}} を追加"
+			}
+		},
+		"translate": {
+			"action": "翻訳",
+			"translating": "翻訳中…",
+			"translatedFrom": "{{language}}から翻訳",
+			"translated": "翻訳済み",
+			"showOriginal": "原文を表示",
+			"showTranslation": "翻訳を表示",
+			"settings": {
+				"autoTranslate": "コメントを自動翻訳",
+				"autoTranslateHint": "別の言語で書かれたコメントを、開いた人ごとに翻訳します。オフの場合は「翻訳」をクリックします。"
+			}
+		},
+		"brief": {
+			"button": "報告",
+			"buttonLabel": "関係者向けの報告を作成",
+			"title": "関係者向けの報告",
+			"close": "報告を閉じる",
+			"intro": "この作業の算出済みの進捗、変更、リスク、予測から状況報告を作成します。言及するタスクにはすべて出典を付けます。",
+			"audience": "対象",
+			"audiences": {
+				"team": "チーム",
+				"leadership": "経営層",
+				"client": "顧客"
+			},
+			"generate": "報告を作成",
+			"regenerate": "作り直す",
+			"writing": "報告を作成中…",
+			"stop": "停止",
+			"copy": "コピー",
+			"copied": "コピーしました",
+			"copyError": "報告をコピーできませんでした。",
+			"saveAsPage": "ページとして保存",
+			"saved": "報告をページとして保存しました",
+			"saveError": "ページを保存できませんでした。",
+			"openPage": "ページを開く",
+			"pageTitle": "状況報告: {{name}}（{{date}}）",
+			"facts": {
+				"title": "使用した事実",
+				"note": "これらの数値は AI ではなく Margaya が算出したものです。報告を保存またはコピーすると、次回の比較の基準になります。",
+				"progress": "進捗",
+				"progressValue": "{{percent}}%（{{total}} 件中 {{completed}} 件完了）",
+				"sinceLast": "前回の報告以降（{{date}}）",
+				"sinceDays": "過去 7 日間",
+				"changes": "完了: {{completed}} · 追加: {{added}} · 削除: {{removed}}",
+				"forecast": "予測",
+				"forecastValue": "85% の確率で {{date}} までに完了",
+				"forecastDone": "残りの作業はありません",
+				"forecastNone": "履歴がまだ足りません",
+				"risks": "リスク",
+				"diff": "変化",
+				"progressDiff": "進捗 {{before}}% → {{now}}%",
+				"forecastDiff": "予測 {{before}} → {{now}}"
+			}
+		},
+		"ask": {
+			"title": "AI に質問",
+			"description": "ワークスペースについて、ふだんの言葉で質問できます。回答はあなたが閲覧できるタスク、ページ、コメントだけを使い、各情報の出典を示します。",
+			"greeting": "こんにちは！何を知りたいですか？",
+			"placeholder": "AI に質問、@ でコンテキスト、/ でコマンド",
+			"send": "質問",
+			"stop": "停止",
+			"stopped": "停止しました。",
+			"newChat": "新しい会話",
+			"expand": "拡大",
+			"collapse": "縮小",
+			"scopeProject": "{{project}} 内",
+			"scopeWorkspace": "ワークスペース全体",
+			"removeScope": "ワークスペース全体を対象に質問する",
+			"searching": "ワークスペースを検索しています…",
+			"noResults": "ワークスペース内にこれに関する情報は見つかりませんでした。別の言葉で試すか、プロジェクト、サイクル、タスクキーを指定してください。",
+			"sources": "出典",
+			"sourcesCount": "出典 ({{total}})",
+			"closestMatches": "近い結果",
+			"copy": "コピー",
+			"copied": "コピーしました",
+			"copyError": "回答をコピーできませんでした",
+			"commentOn": "{{key}} へのコメント",
+			"pageSource": "ページ: {{title}}",
+			"openSource": "{{title}} を開く",
+			"disclaimer": "回答はあなたが閲覧できる情報だけを使います。行動する前に出典を確認してください。",
+			"you": "あなた",
+			"answer": "回答",
+			"forbidden": "このワークスペースで AI を使用する権限がありません。",
+			"palette": "AI に質問…",
+			"paletteAbout": "AI に質問: {{question}}",
+			"examples": {
+				"title": "質問の例",
+				"overdue": "期限切れのものは?",
+				"mine": "自分の未完了タスクは?",
+				"recent": "今週は何が変わった?",
+				"summarize": "このプロジェクトを要約して",
+				"chart": "ステータス別のタスクをグラフで表示して",
+				"cycleBlockers": "現在のサイクルを妨げているものは?"
+			},
+			"history": {
+				"title": "履歴",
+				"empty": "保存された会話はまだありません。",
+				"localOnly": "会話はこのブラウザにのみ保存されます。",
+				"delete": "会話を削除",
+				"clear": "履歴を消去",
+				"clearConfirm": "このブラウザに保存されたすべての会話を削除しますか？この操作は元に戻せません。",
+				"search": "会話を検索",
+				"noMatches": "一致する会話はありません。",
+				"loading": "会話を読み込んでいます…",
+				"pin": "会話をピン留め",
+				"unpin": "会話のピン留めを解除",
+				"pinned": "ピン留め済み",
+				"rename": "会話の名前を変更",
+				"renameLabel": "会話の名前",
+				"saveTitle": "名前を保存",
+				"serverNote": "会話はワークスペースに保存され、あなただけが閲覧できます。",
+				"clearConfirmServer": "このワークスペースに保存されたあなたの会話をすべて削除しますか？この操作は元に戻せません。",
+				"importHint": "このブラウザに保存された会話: {{total}}",
+				"import": "インポート",
+				"imported": "インポートした会話: {{total}}",
+				"openError": "会話を開けませんでした。"
+			},
+			"chartLabel": "グラフ: {{title}}",
+			"chartLoading": "グラフを描画中…",
+			"chartInvalid": "このグラフは描画できませんでした。",
+			"placeholderBuild": "作成または変更したい内容を説明してください…",
+			"modelLabel": "モデル: {{model}}",
+			"more": "その他",
+			"moreActions": "その他の操作",
+			"openFullPage": "全画面で開く",
+			"paletteFullPage": "AI チャットを開く (全画面)",
+			"fullPageUnavailable": "このワークスペースでは AI を利用できません。",
+			"shortcut": "AI に質問を開く/閉じる",
+			"regenerate": "再生成",
+			"editQuestion": "質問を編集",
+			"resend": "送信",
+			"followUps": "おすすめの追加質問",
+			"saveAsPage": "ページとして保存",
+			"copyMarkdown": "Markdown としてコピー",
+			"copiedMarkdown": "Markdown としてコピーしました",
+			"createTask": "これからタスクを作成",
+			"webSearch": "ウェブを検索",
+			"webSource": "ウェブ: {{title}}",
+			"removeChip": "{{name}} を削除",
+			"contextChips": "この質問のコンテキスト",
+			"contextPicker": "コンテキストを追加",
+			"contextHint": "入力してタスク、ページ、プロジェクト、サイクル、モジュール、メンバー、エージェントを検索",
+			"contextEmpty": "見つかりませんでした",
+			"contextSearching": "検索しています…",
+			"commandMenu": "コマンド",
+			"commandEmpty": "一致するコマンドはありません",
+			"contextKinds": {
+				"task": "タスク",
+				"page": "ページ",
+				"project": "プロジェクト",
+				"cycle": "サイクル",
+				"module": "モジュール",
+				"user": "メンバー",
+				"agent": "エージェント"
+			},
+			"modes": {
+				"label": "モード",
+				"ask": "質問",
+				"build": "作成",
+				"autopilot": "オートパイロット",
+				"askHint": "質問に答えます。何も変更しません",
+				"buildHint": "変更を提案し、あなたが確定します",
+				"autopilotHint": "変更をすぐに適用します。どの変更も元に戻せます"
+			},
+			"attachments": {
+				"add": "ファイルを添付",
+				"type": "{{name}} は添付できません。画像 (PNG、JPEG、WebP、GIF) またはテキスト、Markdown、CSV ファイルを使用してください。",
+				"size": "{{name}} は追加できません。添付ファイルは合計 5 MB までです。",
+				"count": "添付できるファイルは 3 つまでです。",
+				"readError": "ファイルを読み込めませんでした。"
+			},
+			"voice": {
+				"start": "音声入力",
+				"stop": "音声入力を停止",
+				"recording": "聞き取っています…",
+				"transcribing": "文字起こししています…",
+				"denied": "音声入力するにはマイクへのアクセスを許可してください。",
+				"failed": "録音をテキストに変換できませんでした。"
+			},
+			"agent": {
+				"ready": "このリクエストを {{agent}} に送信します。",
+				"needsTask": "{{agent}} が取り組む内容がわかるように、@ でタスクを追加してください。",
+				"send": "{{agent}} に送信",
+				"error": "エージェントを開始できませんでした。"
+			},
+			"thinking": {
+				"live": "考えています… {{seconds}}s",
+				"done": "{{seconds}}s 考えました"
+			},
+			"versions": {
+				"previous": "前の回答",
+				"next": "次の回答",
+				"label": "回答 {{current}} / {{total}}"
+			},
+			"feedback": {
+				"up": "良い回答",
+				"down": "良くない回答",
+				"reasonLabel": "何が問題でしたか？(任意)",
+				"reasonPlaceholder": "例: 数値が間違っている、タスクが漏れている",
+				"send": "送信",
+				"skip": "スキップ",
+				"thanks": "フィードバックをありがとうございます。"
+			},
+			"commands": {
+				"summarize": "要約",
+				"summarizeHint": "対象のプロジェクト、サイクル、ページ",
+				"chart": "グラフ",
+				"chartHint": "データからグラフを描画",
+				"chartPrefill": "グラフ",
+				"brief": "報告",
+				"briefHint": "プロジェクト、サイクル、モジュールの関係者向け報告",
+				"create": "作成",
+				"createHint": "作成モードに切り替え",
+				"translate": "翻訳",
+				"translateHint": "あなたの言語に",
+				"clear": "クリア",
+				"clearHint": "新しい会話を始める",
+				"skill": "保存したスキル",
+				"summarizeTurn": "{{name}} を要約",
+				"briefTurn": "{{name}} の報告",
+				"summarizeNeedsScope": "要約するには、プロジェクト、サイクル、ページを開くか、@ で追加してください。",
+				"briefNeedsScope": "報告を作成するには、プロジェクト、サイクル、モジュールを開くか、@ で追加してください。",
+				"buildUnavailable": "ここでは作成モードを利用できません。",
+				"translatePrompt": "直前の回答を{{language}}に翻訳してください。",
+				"translatePrefill": "{{language}}に翻訳:",
+				"this": {
+					"page": "このページ",
+					"cycle": "このサイクル",
+					"module": "このモジュール",
+					"project": "このプロジェクト"
+				}
+			},
+			"conversation": {
+				"rename": "名前を変更",
+				"pin": "ピン留め",
+				"unpin": "ピン留めを解除",
+				"export": "Markdown としてエクスポート",
+				"saveAsPage": "ページとして保存",
+				"delete": "会話を削除"
+			},
+			"save": {
+				"title": "ページとして保存",
+				"description": "ページには本文と出典へのリンクが含まれます。",
+				"pageTitle": "タイトル",
+				"project": "プロジェクト",
+				"noProjects": "ページを保存できるプロジェクトがありません。",
+				"submit": "ページを保存",
+				"saved": "ページとして保存しました",
+				"open": "ページを開く",
+				"error": "ページを保存できませんでした"
+			}
+		},
+		"writing": {
+			"aiButton": "AI",
+			"menuLabel": "AI アクション",
+			"actions": {
+				"summarize": "要約する",
+				"improve": "文章を改善",
+				"shorter": "短くする",
+				"longer": "長くする",
+				"fix": "スペルと文法を修正",
+				"translate": "翻訳先…",
+				"custom": "AI に依頼…"
+			},
+			"customPlaceholder": "AI にしてほしいことを入力（例: チェックリストにする）",
+			"customSubmit": "生成",
+			"preview": {
+				"label": "AI の提案",
+				"generating": "作成中…",
+				"editLabel": "提案を編集",
+				"replace": "置き換える",
+				"insertBelow": "下に挿入",
+				"discard": "破棄",
+				"stop": "停止",
+				"retry": "再試行",
+				"empty": "AI から結果が返りませんでした。もう一度試すか、表現を変えてください。",
+				"note": "AI は間違えることがあります。使う前に確認してください。",
+				"incomplete": "下書きは完了する前に止まりました。内容を確認するか、もう一度お試しください。"
+			},
+			"summary": {
+				"button": "要約",
+				"cycle": "サイクルを要約",
+				"project": "プロジェクトを要約",
+				"page": "ページを要約",
+				"title": "AI による要約",
+				"generating": "要約中…",
+				"dismiss": "閉じる",
+				"copy": "コピー",
+				"copied": "コピーしました",
+				"copyError": "要約をコピーできませんでした。",
+				"saveAsPage": "ページとして保存",
+				"pageTitle": "要約: {{name}}",
+				"saved": "要約をページとして保存しました",
+				"saveError": "ページを保存できませんでした。",
+				"openPage": "ページを開く",
+				"task": "タスクを要約",
+				"saveAsComment": "コメントとして保存",
+				"commentSaved": "要約をコメントとして保存しました",
+				"commentError": "コメントを保存できませんでした。"
+			},
+			"spec": {
+				"button": "仕様書の下書きを作成",
+				"title": "仕様書の下書きを作成",
+				"description": "AI がこのタスクとその文脈から仕様書ページの下書きを作成します。確認・編集してからページを作成してください。ページにはタスクへのリンクが入ります。",
+				"generating": "下書きを作成中…",
+				"titleLabel": "ページのタイトル",
+				"bodyLabel": "仕様書",
+				"edit": "編集",
+				"preview": "プレビュー",
+				"create": "ページを作成",
+				"pageTitle": "仕様書: {{title}}",
+				"created": "仕様書ページを作成しました",
+				"createError": "ページを作成できませんでした。"
+			},
+			"taskWriter": {
+				"button": "AIで書く",
+				"draft": "タイトルから下書き",
+				"improve": "改善",
+				"instruction": "任意：何に重点を置きますか？",
+				"hint": "「これを使う」を選ぶまで何も変わりません。",
+				"writing": "作成中…",
+				"use": "これを使う",
+				"retry": "もう一度",
+				"discard": "破棄",
+				"close": "AI作成を閉じる"
+			},
+			"feedback": {
+				"good": "良い回答",
+				"bad": "良くない回答",
+				"thanks": "フィードバックありがとうございます"
+			},
+			"tone": {
+				"label": "トーン: {{tone}}",
+				"legend": "トーン",
+				"default": "標準",
+				"professional": "ビジネス",
+				"casual": "カジュアル"
+			},
+			"block": {
+				"command": "AI ブロック",
+				"title": "AI ブロック",
+				"customPlaceholder": "このページから AI に何を書かせますか？",
+				"stale": "生成後にページが変更されました。変更を反映するには再生成してください。",
+				"accept": "採用",
+				"regenerate": "再生成",
+				"presets": {
+					"tldr": "要約（TL;DR）",
+					"faq": "よくある質問",
+					"action_items": "アクションアイテム",
+					"custom": "カスタム指示"
+				}
+			},
+			"title": {
+				"suggest": "タイトルを提案",
+				"thinking": "タイトルを考えています…",
+				"use": "このタイトルを使う",
+				"another": "別の案を提案"
+			},
+			"comment": {
+				"menuLabel": "このコメントの AI アシスト",
+				"previewLabel": "コメントへの AI の提案",
+				"replace": "下書きを置き換え"
+			}
+		},
+		"errors": {
+			"AI_DISABLED": "ここでは AI がオフになっています。",
+			"AI_NOT_CONFIGURED": "AI が正しく設定されていません。管理者に AI 設定の確認を依頼してください。",
+			"AI_ROUTE_BLOCKED": "プライバシー設定により、このデータは AI モデルに送信できません。",
+			"AI_BUDGET_EXCEEDED": "AI の上限に達しました。後でもう一度試すか、管理者に上限の引き上げを依頼してください。",
+			"AI_RATE_LIMITED": "AI へのリクエストが集中しています。少し待ってからもう一度お試しください。",
+			"AI_REFUSED": "AI モデルがこのリクエストを拒否しました。",
+			"AI_PROVIDER_ERROR": "AI サービスが応答しませんでした。しばらくしてからもう一度お試しください。",
+			"unknown": "AI で問題が発生しました。もう一度お試しください。",
+			"AI_HISTORY_OFF": "このワークスペースでは AI との会話をサーバーに保存しません。履歴はこのブラウザーに残ります。"
+		},
+		"features": {
+			"connection_test": "接続テスト",
+			"ask": "質問",
+			"summarize": "要約",
+			"editor_assist": "文章作成の支援",
+			"spec_draft": "仕様書の下書き",
+			"duplicate_check": "重複チェック",
+			"talk_to_build": "プロンプトから計画",
+			"triage": "トリアージの提案",
+			"translate": "翻訳",
+			"brief": "関係者向けブリーフ",
+			"agent_run": "エージェント",
+			"rule_compiler": "自動化ルール",
+			"capture": "課題として取り込み",
+			"estimate": "見積もり",
+			"retro": "振り返り",
+			"my_brief": "自分のブリーフ",
+			"embedding": "検索インデックス作成",
+			"coding_handoff": "コーディングエージェント向けブリーフ",
+			"build_chat": "チャットで作成",
+			"nl_filter": "自然言語フィルター",
+			"inbox_digest": "受信トレイの要約",
+			"speech": "音声入力"
+		},
+		"providers": {
+			"anthropic": "Anthropic (Claude)",
+			"openai_compatible": "OpenAI 互換",
+			"fake": "ダミー (テスト専用)"
+		},
+		"destinations": {
+			"cloud": "クラウドプロバイダー",
+			"local": "ローカルモデル"
+		},
+		"tiers": {
+			"fast": "高速モデル",
+			"fastHint": "簡単な作業: 書き直し、ラベル、短い要約。",
+			"balanced": "バランスモデル",
+			"balancedHint": "ほとんどの機能: 回答、要約、下書き。",
+			"deep": "高精度モデル",
+			"deepHint": "難しい作業: 計画とエージェント。"
+		},
+		"test": {
+			"title": "接続をテスト",
+			"workspaceHint": "このワークスペースの AI 呼び出しと同じ経路で、ごく小さなリクエストを 1 件送信します。",
+			"button": "接続をテスト",
+			"success": "{{model}} に {{ms}} ms で接続しました"
+		},
+		"usage": {
+			"title": "使用状況",
+			"subtitle": "AI の呼び出し回数、トークン数、定価ベースのコスト。記録されるのは件数だけで、プロンプトや回答は保存されません。",
+			"rangeLabel": "期間",
+			"range": {
+				"thisMonth": "今月",
+				"last30Days": "過去 30 日間",
+				"last90Days": "過去 90 日間"
+			},
+			"calls": "呼び出し",
+			"callsCount_other": "{{count}} 回の呼び出し",
+			"tokens": "トークン",
+			"tokensSplit": "入力 {{input}} · 出力 {{output}}",
+			"cost": "コスト",
+			"costHint": "定価ベース。ローカルモデルは $0 として計算されます。",
+			"day": "日",
+			"byDay": "日別の呼び出し回数",
+			"byFeature": "機能別",
+			"byModel": "モデル別",
+			"byUser": "ユーザー別",
+			"byWorkspace": "ワークスペース別",
+			"empty": "この期間に AI の使用はありません。",
+			"unknownUser": "削除されたアカウント",
+			"loadError": "AI の使用状況を読み込めませんでした。",
+			"retry": "再試行",
+			"exportCsv": "CSV をエクスポート",
+			"exportError": "使用状況をエクスポートできませんでした。",
+			"feedbackTitle": "回答の評価",
+			"feedbackOverall": "{{total}} 件の評価のうち {{percent}}% が高評価",
+			"feedbackUp": "高評価",
+			"feedbackDown": "低評価",
+			"feedbackRate": "高評価率"
+		},
+		"instance": {
+			"title": "AI",
+			"subtitle": "ワークスペースで AI を使えるようにします。プロバイダーとモデルを選び、データの送信先を決めます。AI はオンにするまでオフのままで、各ワークスペースでも個別に有効化する必要があります。",
+			"statusTitle": "このサーバーの AI",
+			"statusReady": "準備完了",
+			"statusNotConfigured": "未設定",
+			"statusOff": "オフ",
+			"enable": "AI を許可",
+			"enableHint": "これをオンにしてプロバイダーを設定すると、ワークスペースで AI 機能を有効にできます。",
+			"providerTitle": "プロバイダー",
+			"providerDescription": "クラウドのモデルプロバイダー。モデルを空欄にすると、その階層のプロバイダー既定モデルが使われます。",
+			"provider": "プロバイダー",
+			"providerHint": "Anthropic Claude を推奨します。OpenAI 互換は OpenAI、Azure、OpenRouter、vLLM、LM Studio に対応します。",
+			"anthropicKey": "Anthropic API キー",
+			"anthropicKeyHint": "暗号化して保存され、再表示されることはありません。",
+			"openaiBaseUrl": "ベース URL",
+			"openaiBaseUrlHint": "バージョンのパスを含めます (例: https://api.openai.com/v1)。公開アドレスである必要があります。",
+			"openaiKey": "API キー",
+			"save": "保存",
+			"testCloud": "プロバイダーをテスト",
+			"testLocal": "ローカルモデルをテスト",
+			"localTitle": "ローカルモデル",
+			"localDescription": "Ollama など、自社ネットワーク内の OpenAI 互換サーバー。制限付きデータはここにしか送信されません。",
+			"localBaseUrl": "ベース URL",
+			"localBaseUrlHint": "例: http://ollama:11434/v1。ここではプライベートアドレスも使用できます。",
+			"localModel": "モデル",
+			"localKey": "API キー",
+			"localKeyHint": "任意。--api-key 付きで起動した vLLM など、サーバーが要求する場合のみ。暗号化して保存されます。",
+			"localOnly": "ローカル専用モード",
+			"localOnlyHint": "すべての AI 呼び出しをローカルモデルに送り、クラウドプロバイダーには何も送信しません。",
+			"privacyTitle": "プライバシー",
+			"privacyDescription": "データの種類ごとの送信先です。ワークスペースはこれより厳しくできますが、緩くすることはできません。",
+			"restrictedRoute": "制限付きプロジェクト",
+			"restrictedRouteHint": "ワークスペースが AI による読み取りを許可している場合の、制限付きプロジェクトのデータ。",
+			"privateRoute": "その他のワークスペースデータ",
+			"privateRouteHint": "制限のないプロジェクトのタスク、ページ、コメント。",
+			"routeBlocked": "送信しない",
+			"routeLocal": "ローカルモデルのみ",
+			"routeCloud": "クラウドプロバイダーを許可",
+			"redaction": "個人データを伏せる",
+			"redactionHint": "クラウドへの呼び出し前に、メールアドレス、電話番号、カード番号、トークンをプレースホルダーに置き換えます。回答では元の値が再び表示されます。",
+			"zeroRetention": "データ保持ゼロ",
+			"zeroRetentionHint": "プロバイダーとの契約でデータが保持されないことを記録します。Margaya はそれを表示し、プロバイダーがそれを守ります。",
+			"allowWorkspaceKeys": "ワークスペースのキーを許可",
+			"allowWorkspaceKeysHint": "ワークスペースが独自のプロバイダーキーを使い、自身の使用量を負担できるようにします。",
+			"embeddingsTitle": "埋め込み",
+			"embeddingsDescription": "任意。セマンティック検索に使います。OpenAI 互換の埋め込みエンドポイントであれば何でも使えます。データベースには pgvector 拡張機能も必要です。どちらかがない場合、検索は全文検索のみになります。",
+			"vectorReady": "pgvector 準備完了",
+			"vectorAvailable": "pgvector 利用可能",
+			"vectorUnavailable": "pgvector 利用不可",
+			"embeddingsBaseUrl": "ベース URL",
+			"embeddingsModel": "モデル",
+			"embeddingsKey": "API キー",
+			"invalidUrl": "http または https の URL を入力してください。",
+			"usageTitle": "ワークスペース全体の使用状況",
+			"usageDescription": "このサーバーでの AI 呼び出しをワークスペースとモデル別に表示します。記録されるのは件数だけです。",
+			"chatTitle": "チャット",
+			"chatDescription": "推論モデルの考え方と、その過程をユーザーにどこまで見せるか。",
+			"showReasoning": "推論を表示",
+			"showReasoningHint": "推論モデルの思考過程を質問した本人に表示します。思考過程は保存されません。オフ: 考えた時間のみ表示します。",
+			"localThinking": "ローカルモデルでの思考",
+			"localThinkingHint": "オフにすると回答が速くなります。オンにするとローカルの推論モデルが先に考えます。",
+			"localThinkingOff": "オフ",
+			"localThinkingOn": "オン",
+			"webSearchTitle": "ウェブ検索",
+			"webSearchDescription": "ワークスペースでウェブ検索をオンにしたときに回答が使用する検索サービス。",
+			"webSearchProvider": "検索プロバイダー",
+			"webSearchProviderHint": "SearXNG は自分のサーバーで動作します。Brave Search と Tavily には API キーが必要です。",
+			"webSearchOff": "オフ",
+			"webSearchUrl": "SearXNG の URL",
+			"webSearchUrlHint": "JSON API が有効になっている必要があります。",
+			"webSearchKey": "API キー",
+			"webSearchKeyHint": "Brave Search または Tavily 用。",
+			"speechTitle": "音声のテキスト変換",
+			"speechDescription": "チャットでの音声入力。設定がない場合は、対応するブラウザが自身で音声を認識します。",
+			"speechBaseUrl": "エンドポイント URL",
+			"speechBaseUrlHint": "OpenAI 互換の文字起こしエンドポイント (ローカルの Whisper サーバーなど)。",
+			"speechModel": "モデル",
+			"speechKey": "API キー"
+		},
+		"workspace": {
+			"navLabel": "AI",
+			"title": "AI",
+			"subtitle": "このワークスペースで AI 機能をオンにし、上限を設定し、非公開データの扱い方を選びます。",
+			"noAccess": "これらの設定を表示するには、AI を管理する権限が必要です。",
+			"loadError": "AI 設定を読み込めませんでした。",
+			"statusTitle": "このワークスペースの AI",
+			"statusDescription": "AI はオンにするまでオフのままです。各プロジェクトでも機能設定から個別にオフにできます。",
+			"enable": "AI をオンにする",
+			"enableHint": "「AI を使用」権限を持つメンバーは、AI を許可しているプロジェクトで AI 機能を利用できます。",
+			"enabledToast": "このワークスペースで AI がオンになりました",
+			"disabledToast": "このワークスペースで AI がオフになりました",
+			"offOnInstance": "インスタンス管理者がまだこのサーバーで AI を許可していません。",
+			"notConfigured": "AI は許可されていますが、プロバイダーがまだ設定されていません。インスタンス管理者に依頼してください。",
+			"whereDataGoes": "データの送信先",
+			"whereDataGoesHint": "このワークスペースの AI リクエストを受け取るモデル。",
+			"zeroRetention": "保持ゼロ",
+			"limitsTitle": "上限",
+			"limitsDescription": "今月の利用額: {{spent}}。上限に達するとリクエストは停止します。",
+			"monthlyCap": "月間予算 (USD)",
+			"monthlyCapHint": "定価ベースで、ワークスペース全体が対象です。上限なしにする場合は空欄のままにします。",
+			"dailyTokens": "1 人あたりの 1 日のトークン数",
+			"dailyTokensHint": "各ユーザーが 1 日 (UTC) に使用できる入力・出力トークン数。上限なしにする場合は空欄のままにします。",
+			"noLimit": "上限なし",
+			"invalidNumber": "0 以上の数値を入力してください。",
+			"saveLimits": "上限を保存",
+			"monthSpendOfCap": "今月は {{cap}} のうち {{spent}} を使用しました。",
+			"privacyTitle": "プライバシー",
+			"privacyDescription": "AI が参照できるのは、質問した本人が閲覧できる内容だけです。",
+			"includeRestricted": "制限付きプロジェクトを含める",
+			"includeRestrictedHint": "閲覧権限のあるユーザーに対して、AI が制限付きプロジェクトを読み取れるようにします。そのデータは、サーバーが制限付きデータの送信を許可している先にのみ送られます。",
+			"localOnly": "ローカルモデルのみ",
+			"localOnlyHint": "すべての AI リクエストをサーバーのローカルモデルに送信します。",
+			"localOnlyForced": "サーバーはローカル専用モードです。",
+			"localOnlyUnavailable": "このサーバーにはローカルモデルがありません。",
+			"redactPii": "個人データを伏せる",
+			"redactPiiHint": "リクエストがサーバーから送信される前に、メールアドレス、電話番号、カード番号、トークンをプレースホルダーに置き換えます。",
+			"redactPiiForced": "常にオン: サーバーがすべてのクラウドリクエストを伏せ字処理します。",
+			"approval": "AI による変更を承認",
+			"approvalHint": "AI が提案した変更は、常にユーザーの承認を待ってから適用されます。",
+			"semanticSearch": "セマンティック検索",
+			"semanticSearchHint": "質問と重複チェックで、タスク、ページ、コメントを言葉だけでなく意味でも見つけられます。コンテンツはサーバーの埋め込みモデルでインデックスされます。",
+			"semanticUnavailable": "このサーバーのデータベースでは pgvector を利用できないため、検索は全文検索のみです。",
+			"semanticNoEndpoint": "このサーバーには埋め込みエンドポイントがないため、検索は全文検索のみです。",
+			"semanticIndexed_one": "{{count}} 件をインデックス済み",
+			"semanticIndexed_other": "{{count}} 件をインデックス済み",
+			"semanticPaused": "インデックス作成は一時停止中です。{{reason}}",
+			"semanticEnabledToast": "セマンティック検索をオンにしました。インデックス作成はバックグラウンドで行われます。",
+			"semanticDisabledToast": "セマンティック検索をオフにし、インデックスを削除しました。",
+			"keyTitle": "独自の API キー",
+			"keyDescription": "サーバーのアカウントではなく、ワークスペース独自のプロバイダーアカウントを使用します。キーは暗号化して保存され、再表示されることはありません。",
+			"keyCurrent": "保存済みのキー",
+			"keyEnding": "末尾 {{last4}}",
+			"keyUnreadable": "保存済みのキーを読み取れなくなりました。もう一度入力してください。",
+			"keyRemove": "削除",
+			"keyProvider": "プロバイダー",
+			"keyValue": "API キー",
+			"keyReplace": "キーを置き換え",
+			"keyHint": "sk-ant- で始まる Anthropic API キー。",
+			"keyOpenAiHint": "サーバーの OpenAI 互換エンドポイントで使用されます。",
+			"keyPlaceholder": "キーを貼り付け",
+			"keyTooShort": "このキーは短すぎるようです。",
+			"keySave": "キーを保存",
+			"keySavedToast": "キーを保存しました",
+			"keyRemovedToast": "キーを削除しました",
+			"saved": "AI 設定を保存しました",
+			"saveError": "AI 設定を保存できませんでした。",
+			"chatTitle": "AI に質問チャット",
+			"chatDescription": "このワークスペースのメンバーのためにチャットができること。",
+			"webSearch": "ウェブ検索",
+			"webSearchHint": "回答にウェブ検索を使うことをユーザーが許可できます。検索結果はウェブの出典として示されます。",
+			"webSearchUnavailable": "このインスタンスではウェブ検索が設定されていません。",
+			"webSearchLocalOnly": "AI がローカルモデルのみを使用している間は使われません。",
+			"storeConversations": "チャット履歴をサーバーに保存",
+			"storeConversationsHint": "各メンバーの会話をワークスペースに保存し、どのデバイスからでも開き直せるようにします。オフ: 会話は各ブラウザにのみ保存されます。",
+			"allowAutopilot": "オートパイロットを許可",
+			"allowAutopilotHint": "作成モードで確認なしに変更を適用できるようにします。すべての変更は記録され、元に戻すことができます。"
+		},
+		"agents": {
+			"navLabel": "エージェント",
+			"title": "エージェント",
+			"subtitle": "AI エージェントは、依頼した人の代わりにタスクに取り組むワークスペースメンバーです。依頼した人より多くの権限を持つことはありません。",
+			"listTitle": "ワークスペースのエージェント",
+			"badge": "エージェント",
+			"noAccess": "エージェントを設定できるのは、AI を管理する権限を持つユーザーだけです。",
+			"empty": "エージェントはまだありません。作成したら、コメントでメンションするか、タスクを割り当てるか、タスクから実行してください。",
+			"loadError": "エージェントを読み込めませんでした。",
+			"retry": "再試行",
+			"create": "新しいエージェント",
+			"edit": "エージェントを編集",
+			"dialogHint": "エージェントはユーザーと同じように割り当てやメンションができます。サインインはできず、シートとして課金されません。",
+			"save": "保存",
+			"cancel": "キャンセル",
+			"created": "エージェントを作成しました",
+			"saved": "エージェントを保存しました",
+			"deleted": "エージェントを削除しました",
+			"saveError": "エージェントを保存できませんでした。もう一度お試しください。",
+			"enable": "オンにする",
+			"disable": "オフにする",
+			"off": "オフ",
+			"delete": "削除",
+			"deleteTitle": "{{name}} を削除しますか？",
+			"deleteBody": "エージェントはワークスペースから外れます。コメントと履歴は残り、実行記録もエージェントデスクに残ります。",
+			"spend": "今月 {{spent}}",
+			"spendOfBudget": "今月は {{budget}} のうち {{spent}}",
+			"activityFilter": "エージェント",
+			"fields": {
+				"name": "名前",
+				"nameTaken": "このワークスペースのエージェントまたはメンバーがすでにこの名前を使っています。別の名前を選んでください。",
+				"description": "説明",
+				"descriptionPlaceholder": "このエージェントが手伝う内容",
+				"instructions": "指示",
+				"instructionsHint": "エージェントの作業方法です。指示を書けるのは管理者だけで、タスク、コメント、ページ内のテキストが指示として扱われることはありません。",
+				"role": "ロール",
+				"roleHint": "エージェントが行える操作の上限です。各実行は、さらに依頼した人の権限の範囲内に制限されます。",
+				"tier": "モデル",
+				"tierFast": "高速",
+				"tierBalanced": "バランス",
+				"tierDeep": "じっくり",
+				"provider": "実行場所",
+				"providerDefault": "ワークスペースの既定",
+				"providerLocal": "ローカルモデルのみ",
+				"budget": "月間予算 (USD)",
+				"budgetHint": "今月の利用額がこの金額に達すると実行が停止します。エージェントの上限を設けない場合は空欄のままにします。ワークスペースの上限は引き続き適用されます。",
+				"projects": "プロジェクト",
+				"projectsAll": "ロールが届くすべてのプロジェクト",
+				"projectsSome": "これらのプロジェクトのみ",
+				"projectsHint": "ほかのプロジェクトでの実行は停止し、エージェントはそこでは設定されていないと伝えます。",
+				"projectsNone": "プロジェクトを 1 つ以上選んでください。",
+				"skills": "スキル",
+				"skillsEmpty": "共有スキルはまだありません。Ask で保存した共有スキルをエージェントに割り当てられます。",
+				"skillsHint": "依頼に合う場合、エージェントはこれらの保存済みプロンプトに従います（最大 10 件）。",
+				"webAccess": "Web アクセス",
+				"webAccessHint": "エージェントに Web 検索とワークスペースのコネクタの使用を許可します。そこへ送られる内容は Margaya の外に出ます。"
+			},
+			"status": {
+				"queued": "待機中",
+				"running": "実行中",
+				"awaiting_approval": "承認待ち",
+				"succeeded": "完了",
+				"failed": "失敗",
+				"cancelled": "停止済み",
+				"needs_input": "回答待ち"
+			},
+			"stepStatus": {
+				"ok": "完了",
+				"error": "失敗",
+				"denied": "許可されていません",
+				"pending": "承認待ち",
+				"applied": "適用済み",
+				"rejected": "却下済み",
+				"expired": "期限切れ",
+				"reverted": "元に戻しました"
+			},
+			"step": {
+				"model": "モデル呼び出し"
+			},
+			"tools": {
+				"read_task": "タスクを読む",
+				"read_project": "プロジェクトを読む",
+				"read_page": "ページを読む",
+				"search_workspace": "検索",
+				"add_comment": "コメント",
+				"update_task": "タスクを更新",
+				"move_status": "ステータスを変更",
+				"create_subtask": "サブタスクを作成",
+				"create_page": "ページを作成",
+				"link_tasks": "タスクをリンク",
+				"delete_task": "タスクを削除",
+				"bulk_move_status": "複数のタスクのステータスを変更",
+				"ask_person": "質問する",
+				"web_search": "Web 検索",
+				"connector": "外部サービス: {{tool}}"
+			},
+			"runErrors": {
+				"AGENT_GONE": "エージェントは削除されました。",
+				"AGENT_DISABLED": "エージェントはオフになっています。",
+				"AGENT_LEFT": "エージェントはワークスペースのメンバーではなくなりました。",
+				"PRINCIPAL_LEFT": "依頼した人はワークスペースのメンバーではなくなりました。",
+				"AI_USE_DENIED": "依頼した人には AI を使用する権限がありません。",
+				"NOT_IN_SCOPE": "このタスクは AI が読み取れないプロジェクトにあります。",
+				"TIME_LIMIT": "実行に 10 分以上かかったため停止しました。",
+				"OUTPUT_LIMIT": "エージェントの回答が長くなりすぎました。より小さな変更を依頼してください。",
+				"TURN_LIMIT": "エージェントは完了前にステップを使い切りました。より小さく具体的な変更を依頼してください。",
+				"INTERRUPTED": "実行が中断されました。すでに行われた変更は元に戻せます。",
+				"APPROVAL_EXPIRED": "提案された変更について 24 時間以内に誰も判断しなかったため、期限切れになりました。",
+				"INTERNAL": "実行中に問題が発生しました。",
+				"NEEDS_INPUT_EXPIRED": "24 時間以内にエージェントの質問に誰も回答しませんでした。",
+				"OUTSIDE_AGENT_PROJECTS": "このエージェントはこのプロジェクトで作業するよう設定されていません。"
+			},
+			"change": {
+				"approve": "承認",
+				"reject": "却下",
+				"approved": "変更を適用しました",
+				"rejected": "変更を破棄しました",
+				"decideError": "判断を反映できませんでした。もう一度お試しください。",
+				"undo": "元に戻す",
+				"undone": "変更を元に戻しました",
+				"undoError": "この変更を元に戻せませんでした。その後タスクが変更された可能性があります。",
+				"expiresAt": "{{time}} に期限切れ",
+				"before": "変更前",
+				"after": "変更後",
+				"openPage": "ページを開く",
+				"openSubtask": "サブタスクを開く",
+				"openLinked": "リンクされたタスクを開く",
+				"empty": "(空)",
+				"fields": {
+					"title": "タイトル",
+					"priority": "優先度",
+					"dueDate": "期限",
+					"description": "説明",
+					"status": "ステータス",
+					"statusOf": "{{task}} のステータス",
+					"comment": "コメント",
+					"subtask": "新しいサブタスク",
+					"page": "新しいページ",
+					"relation": "リンク ({{relation}})",
+					"delete": "ゴミ箱に移動",
+					"connectorCall": "{{connector}} の呼び出し"
+				}
+			},
+			"inbox": {
+				"title": "{{agentName}} があなたの承認を待っています",
+				"verb": "があなたの承認を求めています",
+				"cardTitle": "提案された変更"
+			},
+			"reply": {
+				"title": "{{agentName}} があなたの依頼に回答しました",
+				"verb": "があなたの依頼に回答しました",
+				"cardTitle": "エージェントの回答",
+				"hint": "エージェントはこの回答をタスクに投稿しなかったため、ここに表示しています。"
+			},
+			"activity": {
+				"onBehalfOf": "{{name}} の代理"
+			},
+			"run": {
+				"button": "エージェントを実行",
+				"title": "このタスクでエージェントを実行",
+				"hint": "エージェントはあなたの権限の範囲内で作業します。変更は元に戻せ、一部はあなたの承認を待ちます。",
+				"agent": "エージェント",
+				"prompt": "何をしてほしいですか？",
+				"promptPlaceholder": "例: これをサブタスクに分割して、優先度を提案して。",
+				"start": "実行",
+				"started": "{{name}} が対応中です",
+				"error": "エージェントを開始できませんでした。もう一度お試しください。",
+				"recent": "このタスクでの最近の実行",
+				"viewInDesk": "エージェントデスクで開く"
+			},
+			"desk": {
+				"nav": "エージェントデスク",
+				"title": "エージェントデスク",
+				"subtitle": "エージェントが行ったことと行っていること。すべての実行を、ステップ、コスト、変更とともに表示します。",
+				"emptyTitle": "エージェントの実行はまだありません",
+				"empty": "コメントでエージェントをメンションするか、タスクを割り当てるか、タスクから実行してください。",
+				"allAgents": "すべてのエージェント",
+				"allStatuses": "すべてのステータス",
+				"filterAgent": "エージェントで絞り込む",
+				"filterStatus": "ステータスで絞り込む",
+				"approvalsTitle": "あなたの対応待ち",
+				"selectRun": "実行を選択すると、ステップと変更が表示されます。",
+				"runMissing": "この実行は利用できません。",
+				"deletedAgent": "削除されたエージェント",
+				"onBehalfOf": "{{name}} の依頼",
+				"cost": "コスト",
+				"tokensLabel": "トークン",
+				"tokens": "トークン: {{value}}",
+				"toolCallsLabel": "ツール呼び出し",
+				"summary": "概要",
+				"changes": "変更セット",
+				"noChanges": "変更はありません。",
+				"steps": "ステップ",
+				"cancelRun": "実行を停止",
+				"cancelled": "実行を停止しました",
+				"cancelError": "実行を停止できませんでした。",
+				"trigger": {
+					"mention": "メンション",
+					"assign": "割り当て",
+					"manual": "タスクから実行",
+					"schedule": "スケジュール",
+					"automation": "オートメーション",
+					"chat": "フォローアップ"
+				},
+				"project": "プロジェクト:",
+				"workedSeconds": "作業時間 {{count}} 秒",
+				"workedMinutes": "作業時間 {{count}} 分"
+			},
+			"connectors": {
+				"title": "コネクタ",
+				"subtitle": "Web アクセスを持つエージェントが呼び出せる外部 MCP サーバーです。読み取り専用ツールはすぐに実行され、それ以外は承認を待ちます。",
+				"create": "コネクタを追加",
+				"edit": "コネクタを編集",
+				"delete": "コネクタを削除",
+				"created": "コネクタを追加しました",
+				"saved": "コネクタを保存しました",
+				"deleted": "コネクタを削除しました",
+				"saveError": "コネクタを保存できませんでした。もう一度お試しください。",
+				"empty": "コネクタはまだありません。MCP サーバーのアドレスを追加すると、Web アクセスを持つエージェントがそのツールを使えます。",
+				"shared": "共有",
+				"personal": "自分のみ",
+				"enable": "オンにする",
+				"disable": "オフにする",
+				"test": "テスト",
+				"testOk": "接続済み: ツール {{count}} 件（読み取り専用 {{readOnly}} 件）",
+				"testError": "テストを実行できませんでした。もう一度お試しください。",
+				"errors": {
+					"DESTINATION": "このアドレスは公開サーバーではありません。",
+					"TIMEOUT": "サーバーが時間内に応答しませんでした。",
+					"NETWORK": "サーバーに接続できませんでした。",
+					"HTTP": "サーバーがエラーを返しました（{{status}}）。",
+					"TOO_LARGE": "サーバーの応答が大きすぎます。",
+					"PROTOCOL": "MCP サーバーではないようです。",
+					"RPC": "MCP サーバーがリクエストを拒否しました。",
+					"SECRET_UNREADABLE": "保存されたシークレットを読み取れなくなりました。もう一度入力してください。"
+				},
+				"secretHint": "シークレット ••••{{last4}}",
+				"dialogHint": "Margaya は Streamable HTTP で接続します。シークレットは暗号化して保存され、再表示されることはありません。",
+				"name": "名前",
+				"url": "サーバー URL",
+				"urlHint": "MCP エンドポイント（例: https://mcp.example.com/mcp）。公開インターネットからアクセスできる必要があります。",
+				"auth": "認証",
+				"authHeader": "ヘッダーにシークレット",
+				"authNone": "なし",
+				"headerName": "ヘッダー名",
+				"secret": "シークレット",
+				"secretKeep": "現在のシークレットを残す場合は空欄のままにします",
+				"secretHelp": "ヘッダーの値全体（例: Bearer に続けてトークン）。",
+				"sharedToggle": "ワークスペースで共有",
+				"sharedHint": "エージェントは共有コネクタをすべての実行で使います。オフにすると、あなたの代わりに行う実行だけで使われます。",
+				"deleteTitle": "{{name}} を削除しますか？",
+				"deleteBody": "エージェントはそのツールを使えなくなり、保存されたシークレットも削除されます。"
+			},
+			"followUp": {
+				"label": "エージェントに返信",
+				"placeholder": "追加の質問や次にすることを入力…",
+				"send": "送信",
+				"error": "フォローアップを開始できませんでした。もう一度お試しください。"
+			},
+			"needsInput": {
+				"title": "エージェントから質問があります",
+				"answerLabel": "あなたの回答",
+				"placeholder": "回答を入力…",
+				"reply": "返信",
+				"sent": "回答を送信しました。エージェントが続行します。",
+				"error": "回答を送信できませんでした。もう一度お試しください。",
+				"hint": "回答のない質問は 24 時間後に期限切れになります。",
+				"waiting": "エージェントは依頼した人からの回答を待っています。",
+				"inboxHint": "あなたが回答するまで実行は一時停止しています。",
+				"answer": "エージェントデスクで回答",
+				"notificationTitle": "{{agentName}} から質問があります",
+				"verb": "から質問があります"
+			},
+			"schedules": {
+				"open": "{{name}} のスケジュール",
+				"title": "スケジュール: {{name}}",
+				"hint": "エージェントを時間割で実行します。実行は最後にスケジュールを保存した人の代わりに、その人の権限の範囲内で行われます。",
+				"empty": "スケジュールはまだありません。",
+				"create": "新しいスケジュール",
+				"edit": "スケジュールを編集",
+				"delete": "スケジュールを削除",
+				"deleteBody": "このスケジュールを削除しますか？過去の実行はエージェントデスクに残ります。",
+				"deleted": "スケジュールを削除しました",
+				"saved": "スケジュールを保存しました",
+				"saveError": "スケジュールを保存できませんでした。もう一度お試しください。",
+				"enable": "スケジュールをオンにする",
+				"disable": "スケジュールをオフにする",
+				"enabled": "オン",
+				"when": "実行タイミング",
+				"presets": {
+					"weekdays": "平日の毎日 9:00",
+					"mondays": "毎週月曜 9:00",
+					"monthly": "毎月 1 日 9:00",
+					"custom": "カスタム（cron）"
+				},
+				"customLabel": "cron {{cron}}",
+				"cron": "cron 式",
+				"cronHint": "5 つのフィールド: 分、時、日、月、曜日。最短で 15 分ごとです。",
+				"timezone": "タイムゾーン",
+				"project": "プロジェクト",
+				"chooseProject": "プロジェクトを選択",
+				"task": "タスク",
+				"noTask": "タスクなし（プロジェクト全体）",
+				"taskHint": "タスクがない場合、エージェントはプロジェクト全体を対象にし、レポートをページにまとめます。",
+				"projectLevel": "プロジェクト全体",
+				"prompt": "何をさせますか？",
+				"promptPlaceholder": "例: 昨日から変わったことを要約して。",
+				"nextRun": "次回の実行 {{time}}",
+				"runsAs": "{{name}} の代わりに実行",
+				"runsAsHint": "保存すると、これらの実行はあなたの代わりに行われます。ワークスペースを離れるか AI へのアクセスを失うと、スケジュールはオフになります。",
+				"errors": {
+					"CRON_INVALID": "cron のフィールドを 5 つ入力してください: 分、時、日、月、曜日。",
+					"CRON_TOO_FREQUENT": "スケジュールは最短で 15 分ごとにしか実行できません。",
+					"CRON_NEVER": "このスケジュールは一度も実行されません。",
+					"TIMEZONE_INVALID": "有効なタイムゾーンを選んでください。",
+					"OUTSIDE_AGENT_PROJECTS": "このエージェントはそのプロジェクトで作業するよう設定されていません。"
+				}
+			},
+			"templates": {
+				"title": "テンプレート",
+				"blank": "空のエージェント",
+				"blankHint": "指示を自分で書きます。",
+				"triage": {
+					"name": "トリアージ",
+					"description": "新しいタスクを整理します: わかりやすいタイトル、優先度、重複のリンク。"
+				},
+				"standup": {
+					"name": "スタンドアップ",
+					"description": "毎日のスタンドアップの要約をプロジェクトページに書きます。"
+				},
+				"specWriter": {
+					"name": "仕様書ライター",
+					"description": "タスクを受け入れ基準付きの仕様ページにまとめます。"
+				},
+				"deliveryRisk": {
+					"name": "納期リスク",
+					"description": "期限切れ・ブロック中・担当者不在の作業を毎週報告します。"
+				},
+				"feedback": {
+					"name": "顧客フィードバック",
+					"description": "顧客のフィードバックを例とともにテーマ別にまとめます。"
+				},
+				"triggers": {
+					"mention": "メンション",
+					"assign": "割り当て",
+					"schedule": "スケジュール",
+					"automation": "オートメーション"
+				}
+			}
+		},
+		"capture": {
+			"button": "キャプチャ",
+			"buttonHint": "スクリーンショット、録画、文字起こしから新規作成",
+			"title": "キャプチャから新しいリクエストを作成",
+			"description": "スクリーンショット、画面録画、会議メモを追加してください。AI がリクエストを提案します。確定するまで何も作成されません。",
+			"tabs": {
+				"screenshot": "スクリーンショット",
+				"recording": "録画",
+				"transcript": "文字起こし"
+			},
+			"dropzone": "スクリーンショットを貼り付け、ドロップ、または選択",
+			"dropzoneHint": "PNG、JPEG、WebP、最大 {{count}} 枚。位置情報とカメラ情報は削除されます。",
+			"chooseRecording": "画面録画を選択",
+			"recordingHint": "AI に送信されるのは静止フレーム {{count}} 枚だけです。動画はお使いのデバイスに残ります。",
+			"notes": "メモ（任意）",
+			"notesPlaceholder": "何をしていて、何がうまくいかなかったか",
+			"transcript": "文字起こしまたは会議メモ",
+			"transcriptPlaceholder": "文字起こしやメモを貼り付けてください。アクションアイテムごとに個別のリクエストになります。",
+			"remove": "{{name}} を削除",
+			"tooMany": "1 回のキャプチャにつき最大 {{count}} 枚です。",
+			"mediaErrors": {
+				"type": "このファイル形式には対応していません。",
+				"tooLarge": "ファイルが大きすぎます。",
+				"unreadable": "ファイルを読み込めませんでした。"
+			},
+			"preparing": "画像を準備しています…",
+			"analyze": "リクエストを提案",
+			"analyzing": "キャプチャを読み取っています…",
+			"reviewTitle": "提案されたリクエストを確認",
+			"reviewDescription": "各リクエストは編集したり除外したりできます。確定するまで何も作成されません。",
+			"empty": "このキャプチャからリクエストは見つかりませんでした。",
+			"include": "このリクエストを含める",
+			"titleLabel": "タイトル",
+			"descriptionLabel": "説明",
+			"priorityLabel": "優先度",
+			"labelsLabel": "提案されたラベル",
+			"assignTo": "{{name}} に割り当てる",
+			"attachNote": "添付する画像: {{count}} 枚",
+			"attachNotAllowed": "画像を添付できません。タスクを編集する権限が必要です。",
+			"back": "戻る",
+			"create": "リクエストを作成（{{count}}）",
+			"created": "作成したリクエスト: {{count}} 件",
+			"extrasFailed": "一部のラベル、担当者、添付ファイルを追加できませんでした。",
+			"createError": "リクエストを作成できませんでした。",
+			"draftFromImages": "画像から下書きを作成",
+			"drafting": "下書きを作成しています…",
+			"sections": {
+				"steps": "再現手順",
+				"expected": "期待される動作",
+				"actual": "実際の動作",
+				"environment": "環境"
+			}
+		},
+		"codingAgent": {
+			"button": "コーディングエージェントに送信",
+			"dialogTitle": "コーディングエージェントに送信",
+			"dialogDescription": "Margaya はこのブリーフでリポジトリに Issue を作成します。送信する前に確認・編集してください。",
+			"repository": "リポジトリ",
+			"profile": "コーディングエージェント",
+			"github": "GitHub",
+			"gitea": "Gitea",
+			"notReady": "このリポジトリの連携はまだ Issue を作成できません。プロジェクトの連携設定を確認してください。",
+			"noProfiles": "このリポジトリで使えるコーディングエージェントのプロファイルがありません。",
+			"useAi": "AI で要約",
+			"regenerate": "もう一度作成",
+			"preparing": "ブリーフを作成中…",
+			"error": "ブリーフを作成できませんでした。",
+			"titleLabel": "Issue のタイトル",
+			"briefLabel": "ブリーフ",
+			"briefNote": "パスワードやキーのように見える値は送信前に削除されます。自動でマージされることはありません。",
+			"send": "送信",
+			"sending": "送信中…",
+			"sent": "コーディングエージェントに送信しました",
+			"sentNotAssigned": "Issue は作成されましたが、担当者を追加できませんでした",
+			"sendError": "Issue を作成できませんでした",
+			"openIssue": "Issue を開く",
+			"timelineTitle": "コーディングエージェント",
+			"timelineLabel": "コーディングエージェントの進捗",
+			"sentBy": "{{name}} が {{profile}} に送信",
+			"sentByUnknown": "{{profile}} に送信",
+			"issueLink": "Issue #{{number}}",
+			"prLink": "プルリクエスト #{{number}}",
+			"pending": "未完了",
+			"steps": {
+				"issue_created": "Issue 作成",
+				"working": "エージェント作業中",
+				"ready_for_review": "レビュー待ち",
+				"merged": "マージ済み",
+				"closed": "マージせずにクローズ"
+			},
+			"settings": {
+				"title": "コーディングエージェント",
+				"subtitle": "「コーディングエージェントに送信」用の Issue テンプレート。GitHub と Gitea 経由で送信されます",
+				"sharedNote": "このワークスペースのすべてのプロジェクトで共有されます。プロファイルは Issue にメンションまたは担当者を追加するだけで、AI のキーは保存されません。",
+				"builtin": "組み込み",
+				"githubOnly": "GitHub のみ",
+				"name": "名前",
+				"namePlaceholder": "例: 社内ビルドランナー",
+				"mention": "メンション",
+				"mentionPlaceholder": "@agent、または {task} と {branch} を含むテキスト",
+				"assignee": "担当者 (GitHub)",
+				"assigneePlaceholder": "GitHub のログイン名 (例: Copilot)",
+				"enabled": "有効",
+				"edit": "プロファイルを編集",
+				"delete": "プロファイルを削除",
+				"add": "プロファイルを追加",
+				"save": "保存",
+				"saved": "プロファイルを保存しました",
+				"deleted": "プロファイルを削除しました",
+				"error": "プロファイルを保存できませんでした",
+				"needsTarget": "メンションまたは担当者を追加してください。",
+				"readOnly": "プロファイルを変更できるのは、ワークスペース設定を管理するユーザーだけです。"
+			}
+		},
+		"filters": {
+			"button": "フィルターを文章で指定…",
+			"short": "文章で指定",
+			"label": "表示したい内容を入力",
+			"placeholder": "例: 進行中で期限切れの自分のバグ",
+			"apply": "適用",
+			"none": "フィルターに変換できませんでした。別の言葉で試してください。",
+			"applied": "フィルターを適用しました。チップを編集して調整できます。",
+			"dropped": "理解できなかった語: {{words}}",
+			"hint": "AI が言葉をステータス、ラベル、担当者、サイクル、優先度、日付のフィルターに変換します。"
+		},
+		"budget": {
+			"warningTitle": "今月の AI 予算の {{percent}}% を使用しました",
+			"reachedTitle": "今月の AI 予算を使い切りました",
+			"amounts": "{{cap}} 中 {{used}}。",
+			"warningHint": "上限に達すると AI 機能は停止します。必要に応じて下で上限を引き上げてください。",
+			"reachedHint": "AI 機能は来月まで、または上限が引き上げられるまで停止しています。",
+			"notice": {
+				"title": "AI 予算の残りがわずかです",
+				"content": "このワークスペースは月間 AI 予算の {{percent}}% を使用しました。"
+			}
+		},
+		"skills": {
+			"navLabel": "AI スキル",
+			"title": "AI スキル",
+			"subtitle": "AI チャットで「/」から再利用できる保存済みプロンプト。",
+			"listTitle": "スキル",
+			"new": "新しいスキル",
+			"newTitle": "新しいスキル",
+			"editTitle": "スキルを編集",
+			"dialogHint": "スキルを使うたびに、プロンプトが質問に追加されます。",
+			"name": "名前",
+			"namePlaceholder": "リリースノート",
+			"description": "説明",
+			"prompt": "プロンプト",
+			"promptPlaceholder": "このサイクルで完了したタスクのリリースノートを、機能ごとにまとめて書いてください。",
+			"shareLabel": "ワークスペースと共有",
+			"shareHint": "ここで AI を使うすべてのメンバーが使えます。オフ: 自分だけ。",
+			"shared": "共有",
+			"personal": "自分のみ",
+			"save": "スキルを保存",
+			"saved": "スキルを保存しました",
+			"saveError": "スキルを保存できませんでした",
+			"deleted": "スキルを削除しました",
+			"edit": "{{name}} を編集",
+			"delete": "{{name}} を削除",
+			"deleteConfirm": "{{name}} を削除しますか？",
+			"empty": "スキルはまだありません。よく使うプロンプトを保存しましょう。",
+			"loadError": "スキルを読み込めませんでした。",
+			"noAccess": "このワークスペースで AI を使用するには権限が必要です。"
+		},
+		"memory": {
+			"navLabel": "AI メモリー",
+			"title": "AI メモリー",
+			"subtitle": "AI が回答時に念頭に置く短い事実。例:「リリース日は木曜日」。",
+			"scopes": {
+				"workspace": "ワークスペース",
+				"project": "プロジェクト",
+				"user": "個人"
+			},
+			"scopeHints": {
+				"workspace": "ワークスペースの全員に使われます。AI 管理者が編集します。",
+				"project": "1 つのプロジェクト内で使われます。AI 管理者が編集します。",
+				"user": "あなたにだけ使われ、あなただけが閲覧できます。"
+			},
+			"project": "プロジェクト",
+			"newNote": "新しいメモ",
+			"placeholder": "リリース日は木曜日です。",
+			"add": "メモを追加",
+			"save": "メモを保存",
+			"editNote": "メモを編集",
+			"deleteNote": "メモを削除",
+			"saved": "メモを保存しました",
+			"deleted": "メモを削除しました",
+			"saveError": "メモを保存できませんでした",
+			"empty": "メモはまだありません。",
+			"loadError": "メモを読み込めませんでした。",
+			"adminsOnly": "ここにメモを追加できるのは AI 管理者だけです。",
+			"noAccess": "このワークスペースで AI を使用するには権限が必要です。"
+		}
+	},
+	"insight": {
+		"close": "閉じる",
+		"retry": "再試行",
+		"stop": "停止",
+		"writing": "作成中…",
+		"days_other": "{{count}} 日",
+		"estimate": {
+			"usually": "類似タスクは通常 {{value}} でした",
+			"took_other": "類似タスク {{count}} 件は {{min}}–{{max}} 日かかりました（中央値 {{median}}）",
+			"basedOn_other": "完了した類似タスク {{count}} 件に基づく",
+			"use": "{{value}} を使う",
+			"why": "理由",
+			"similar": "類似タスク"
+		},
+		"calibration": {
+			"title": "見積もりの較正",
+			"description": "各サイズのタスクが最初の着手から完了まで実際にかかった日数（過去 {{days}} 日間）。",
+			"empty": "着手が記録された、完了済みで見積もりのあるタスクはまだありません。",
+			"estimate": "見積もり",
+			"tasks": "タスク",
+			"actual": "実際の所要時間",
+			"range": "中央値 {{median}} 日（{{low}}–{{high}}）",
+			"ordered": "大きい見積もりほど時間がかかっており、妥当です。",
+			"notOrdered": "大きい見積もりが必ずしも長くかかっていません。チームの見積もり方を見直す価値があります。",
+			"fewSamples": "サイズを比較するには、完了したタスクがもっと必要です。",
+			"unmeasured_other": "着手が記録されていないタスク {{count}} 件は除外されています。"
+		},
+		"capacity": {
+			"meter": "通常のサイクルと比べた計画中の作業量",
+			"within": "通常のサイクルの {{percent}}% を計画中",
+			"over": "キャパシティ超過：通常のサイクルの {{percent}}% を計画中",
+			"noDates": "キャパシティを確認するには、サイクルの日付を設定してください。",
+			"noHistory": "チームが過去のサイクルで作業を完了すると、キャパシティが表示されます。",
+			"details": "キャパシティの詳細",
+			"compare": "計画 {{load}}。通常のサイクルは {{typical}}（範囲 {{low}}–{{high}}）。",
+			"tasks_other": "{{count}} タスク",
+			"points_other": "{{count}} ポイント",
+			"basisCycles_other": "チームが直近の終了済みサイクル {{count}} 件で完了した量を、このサイクルの長さに換算しています。",
+			"basisThroughput": "過去 8 週間で、このサイクルと同じ長さの各期間にプロジェクトが完了したタスク数に基づきます。",
+			"deferTitle": "後のサイクルに移せるタスク",
+			"blocks_other": "{{count}} 件をブロック",
+			"membersTitle": "メンバーごとの負荷",
+			"memberLoad": "{{load}} · 通常 {{typical}}",
+			"membersNote": "作業を均等にするための、各メンバー自身の通常ペースに対する負荷です。評価の指標ではありません。",
+			"unassigned": "未割り当て"
+		},
+		"retro": {
+			"button": "振り返り",
+			"buttonLabel": "振り返りを準備",
+			"title": "振り返り",
+			"factsTitle": "起きたこと",
+			"factsSoFar": "これまでに起きたこと",
+			"factsNote": "これらの事実は AI ではなく Margaya の記録に基づきます。個人ではなくチームの作業を表します。",
+			"error": "このサイクルの事実を読み込めませんでした。",
+			"aiIntro": "これらの事実から、AI に短い振り返り文と話し合いの問いを書かせます。",
+			"write": "振り返り文を書く",
+			"rewrite": "もう一度書く",
+			"edit": "編集",
+			"preview": "プレビュー",
+			"editLabel": "振り返り文",
+			"saveAsPage": "ページとして保存",
+			"saveWithNarrative": "事実、振り返り文、チーム用のセクションを保存します。",
+			"saveFactsOnly": "事実と、チームが記入するセクションを保存します。",
+			"saved": "振り返りをページとして保存しました",
+			"saveError": "ページを保存できませんでした。",
+			"openPage": "ページを開く",
+			"pageTitle": "振り返り：{{name}}",
+			"more_other": "ほか {{count}} 件",
+			"facts": {
+				"sayDo_other": "約束したタスク {{count}} 件のうち {{done}} 件が完了（{{percent}}%）",
+				"sayDoNone": "開始時に約束した作業はありませんでした",
+				"scope": "スコープ変更：サイクル中に {{added}} 件追加、{{removed}} 件削除",
+				"carry": "持ち越し：{{carried}} 件を別のサイクルへ移動、{{open}} 件が未完了のまま",
+				"reopened_other": "完了後に再オープンされたタスク {{count}} 件",
+				"points": "見積もりポイント：{{committed}} のうち {{completed}} が完了",
+				"cycleTime": "サイクルタイム：中央値 {{median}} 日",
+				"cycleTimeOutliers_other": "サイクルタイム：中央値 {{median}} 日。{{count}} 件が {{threshold}} 日を超えました",
+				"cycleTimeNone": "サイクルタイム：計測なし",
+				"blocked_other": "他のタスクにブロックされたタスク {{count}} 件",
+				"forecastNone": "予測：このサイクルでは保存されていません",
+				"forecastOpen": "予測：{{date}} までに完了する確率 85%",
+				"forecastMet": "予測：{{date}} までに完了する確率 85%、予測どおりでした",
+				"forecastMissed": "予測：{{date}} までに完了する確率 85%、予測どおりになりませんでした"
+			},
+			"lists": {
+				"added": "サイクル中に追加",
+				"carriedOver": "持ち越し",
+				"leftOpen": "未完了のまま",
+				"outliers": "通常よりかなり長くかかったもの",
+				"blocked": "ブロックされたもの"
+			},
+			"page": {
+				"facts": "事実",
+				"wentWell": "うまくいったこと",
+				"improve": "改善すること",
+				"actions": "アクション"
+			}
+		},
+		"myBrief": {
+			"title": "マイブリーフ",
+			"empty": "今日対応が必要なものはありません。",
+			"error": "ブリーフを読み込めませんでした。",
+			"summarize": "要約",
+			"overdue": "期限切れ · {{total}}",
+			"dueToday": "今日が期限 · {{total}}",
+			"blocked": "ブロック中 · {{total}}",
+			"mentions": "メンション · {{total}}",
+			"following": "フォロー中のタスクの変更 · {{total}}",
+			"waitingOn": "{{keys}} を待っています",
+			"hiddenBlockers_other": "非表示のタスク {{count}} 件",
+			"mentionedBy": "{{name}} から",
+			"mentioned": "あなたをメンションしました",
+			"more_other": "ほか {{count}} 件",
+			"kinds": {
+				"status": "ステータス",
+				"comment": "コメント",
+				"assignee": "担当者",
+				"priority": "優先度",
+				"due_date": "期限",
+				"other": "その他の更新"
+			},
+			"emailTitle": "マイブリーフをダイジェストに追加",
+			"emailDescription": "ダイジェストに、ブロック中のタスクとフォロー中のタスクの変更も表示します。毎日または毎週のダイジェストが必要です。",
+			"emailError": "この設定を保存できませんでした。"
+		}
 	}
 }

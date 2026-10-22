@@ -11,7 +11,8 @@
 			"remove": "제거",
 			"reset": "재설정",
 			"filter": "필터",
-			"clearAllFilters": "모든 필터 지우기"
+			"clearAllFilters": "모든 필터 지우기",
+			"undo": "실행 취소"
 		},
 		"a11y": {
 			"toggleSidebar": "사이드바 토글"
@@ -98,7 +99,15 @@
 				"createButton": "프로젝트 만들기",
 				"successToast": "프로젝트가 생성되었습니다",
 				"errorToast": "프로젝트 생성에 실패했습니다",
-				"keyTaken": "이 워크스페이스에는 이미 키가 {{key}}인 프로젝트가 있습니다"
+				"keyTaken": "이 워크스페이스에는 이미 키가 {{key}}인 프로젝트가 있습니다",
+				"blankProject": "빈 프로젝트",
+				"copyHint": "상태, 사용자 지정 필드, 추정치, 설정, 자동화가 복사됩니다. 멤버, 연동, 공개 보드는 복사되지 않습니다.",
+				"includeOpenTasks": "열린 작업 포함",
+				"includeTemplates": "작업 템플릿 포함",
+				"openTasksHint": "열린 작업을 최대 500개까지 하위 작업, 라벨, 추정치와 함께 복사합니다. 댓글과 기록은 복사되지 않습니다.",
+				"restricted": "제한됨",
+				"restrictedHint": "구성원만 이 프로젝트를 볼 수 있습니다. 내가 첫 번째 구성원이 되며, 워크스페이스 소유자와 관리자는 항상 볼 수 있습니다.",
+				"startFrom": "시작 기준"
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -714,6 +723,8 @@
 			"themeLight": "라이트",
 			"themeDark": "다크",
 			"themeSystem": "시스템",
+			"themeLightContrast": "고대비 라이트",
+			"themeDarkContrast": "고대비 다크",
 			"language": "언어",
 			"languageDescription": "선호하는 인터페이스 언어를 선택합니다",
 			"selectLanguage": "언어 선택",
@@ -1416,6 +1427,67 @@
 			"dropHintAny": "JSON 또는 CSV 파일을 여기에 끌어다 놓으세요",
 			"importAcceptHint": "Margaya JSON 내보내기 파일 또는 CSV 파일을 업로드하세요.",
 			"importStopped": "가져오기가 중단되었습니다: {{message}}",
+			"external": {
+				"sourceHint": "다른 도구에서 옮겨 오시나요? 상태, 레이블, 사용자, 날짜, 하위 작업이 포함된 내보내기 파일을 가져올 수 있습니다.",
+				"sources": {
+					"trello": "Trello (JSON)",
+					"linear": "Linear (CSV)",
+					"asana": "Asana (CSV)"
+				},
+				"title": {
+					"trello": "Trello에서 가져오기",
+					"linear": "Linear에서 가져오기",
+					"asana": "Asana에서 가져오기"
+				},
+				"howToTitle": {
+					"trello": "Trello에서 내보내는 방법",
+					"linear": "Linear에서 내보내는 방법",
+					"asana": "Asana에서 내보내는 방법"
+				},
+				"howTo": {
+					"trello": {
+						"step1": "보드에서 메뉴 → 인쇄, 내보내기 및 공유 → JSON으로 내보내기를 선택하세요.",
+						"step2": "다운로드한 .json 파일을 여기에 업로드하세요."
+					},
+					"linear": {
+						"step1": "Linear에서 설정 → Import / Export를 열고 CSV 내보내기를 선택하세요.",
+						"step2": "Linear가 보낸 이메일의 .csv 파일을 여기에 업로드하세요."
+					},
+					"asana": {
+						"step1": "Asana 프로젝트에서 프로젝트 메뉴 → 내보내기/인쇄 → CSV를 선택하세요.",
+						"step2": "다운로드한 .csv 파일을 여기에 업로드하세요."
+					}
+				},
+				"limits": {
+					"trello": "파일당 최대 10MB, 카드 5,000개까지 가능합니다. 보관된 카드는 제외되고, 체크리스트는 설명의 작업 목록이 되며, 첨부 파일은 Trello에 남습니다.",
+					"linear": "파일당 최대 5MB, 이슈 5,000개까지 가능합니다. 보관된 이슈는 제외됩니다. Linear의 CSV에는 댓글이 없습니다.",
+					"asana": "파일당 최대 5MB, 작업 5,000개까지 가능합니다. 완료된 작업은 '완료' 열로 들어갑니다. Asana의 CSV에는 댓글이 없습니다."
+				},
+				"dropHint": {
+					"trello": "Trello의 JSON 내보내기 파일을 여기에 끌어다 놓으세요",
+					"linear": "Linear의 CSV 내보내기 파일을 여기에 끌어다 놓으세요",
+					"asana": "Asana의 CSV 내보내기 파일을 여기에 끌어다 놓으세요"
+				},
+				"wrongType": {
+					"trello": "보드의 .json 내보내기 파일을 선택하세요.",
+					"linear": "Linear의 .csv 내보내기 파일을 선택하세요.",
+					"asana": "Asana의 .csv 내보내기 파일을 선택하세요."
+				},
+				"itemCount_other": "항목 {{count}}개",
+				"alreadyImported_other": "항목 {{count}}개는 이미 이 프로젝트로 가져왔습니다.",
+				"contents": "댓글 {{comments}}개, 체크리스트 {{checklists}}개, 하위 작업 {{subtasks}}개, 링크 {{links}}개",
+				"sourceStatus": "상태 또는 목록",
+				"peopleUnmatched_other": "{{count}}명은 멤버가 아닙니다({{names}}). 해당 항목은 담당자 없이 유지되며 이름은 설명에 기록됩니다.",
+				"mode": "이전에 가져온 항목",
+				"modeHint": "내보내기 파일의 ID로 일치시킵니다.",
+				"importAction_other": "항목 {{count}}개 가져오기",
+				"importing_other": "항목 {{count}}개를 가져오는 중…",
+				"result": {
+					"skipped_other": "항목 {{count}}개 건너뜀 (이전에 가져옴)",
+					"failed_other": "항목 {{count}}개 실패",
+					"unmatched_other": "{{count}}명은 워크스페이스 멤버가 아니므로 해당 항목에 담당자가 없습니다:"
+				}
+			},
 			"unsupportedFile": "JSON 또는 CSV 파일을 업로드하세요",
 			"jira": {
 				"alreadyImported_other": "이슈 {{count}}개가 이전에 이 프로젝트로 가져와졌습니다.",
@@ -1548,7 +1620,8 @@
 				"intake": "인테이크",
 				"analytics": "분석",
 				"page": "페이지",
-				"audit_log": "감사 로그"
+				"audit_log": "감사 로그",
+				"ai": "AI"
 			},
 			"permissions": {
 				"project": {
@@ -1794,6 +1867,16 @@
 						"description": "워크스페이스 감사 로그를 보고 내보냅니다. 멤버, 역할, 키, 웹훅, 연동, 설정을 누가 변경했는지 확인할 수 있습니다.",
 						"label": "감사 로그 보기"
 					}
+				},
+				"ai": {
+					"use": {
+						"label": "AI 사용",
+						"description": "워크스페이스와 프로젝트에서 AI가 켜져 있을 때 AI 기능을 사용할 수 있습니다."
+					},
+					"manage": {
+						"label": "AI 관리",
+						"description": "워크스페이스의 AI를 켜거나 끄고, 키, 한도, 개인정보 보호 설정을 변경하고, AI 사용량을 볼 수 있습니다."
+					}
 				}
 			},
 			"validation": {
@@ -1938,6 +2021,10 @@
 				"views": {
 					"description": "필터, 그룹화, 표시 설정을 저장하고 팀과 공유합니다.",
 					"title": "보기"
+				},
+				"ai": {
+					"title": "AI",
+					"description": "이 프로젝트를 위한 요약, 제안 및 기타 AI 도움입니다. 끄면 이 프로젝트는 AI에서 완전히 제외됩니다."
 				}
 			},
 			"loadError": "이 프로젝트를 불러올 수 없습니다",
@@ -2142,7 +2229,25 @@
 				"closeOff": "자동 종료를 껐습니다",
 				"closeOn": "자동 종료를 켰습니다",
 				"error": "자동화를 업데이트할 수 없습니다",
-				"updated": "자동화를 업데이트했습니다"
+				"updated": "자동화를 업데이트했습니다",
+				"rolloverOff": "사이클 이월을 껐습니다",
+				"rolloverOn": "사이클 이월을 켰습니다",
+				"flowAlertsOn": "흐름 알림을 켰습니다",
+				"flowAlertsOff": "흐름 알림을 껐습니다"
+			},
+			"cycleRollover": {
+				"cyclesOff": "이 기능을 사용하려면 기능 설정에서 사이클을 켜세요.",
+				"description": "사이클이 끝나면 완료되지 않은 작업을 다음 사이클로 옮깁니다. 프로젝트 리더는 요약을 받습니다.",
+				"last_other": "{{time}} 작업 {{count}}개를 마지막으로 이동함",
+				"never": "아직 이동된 항목이 없습니다",
+				"title": "완료되지 않은 사이클 작업 이월"
+			},
+			"flowAlerts": {
+				"title": "흐름 이상 알림",
+				"description": "하루에 한 번 진행 중인 작업, 사이클 타임, 처리량을 이전 8주와 비교합니다. 하나라도 평소 범위를 벗어나면 프로젝트 리더에게 알림이 갑니다.",
+				"noLead": "이 알림을 받으려면 프로젝트 리더를 지정하세요.",
+				"last": "마지막 알림 {{time}}",
+				"never": "아직 알림이 없습니다"
 			}
 		},
 		"workspaceExports": {
@@ -2586,6 +2691,24 @@
 			"noProjectsHint": "먼저 프로젝트를 만들어 주세요. 해당 설정이 여기에 표시됩니다.",
 			"pickProject": "프로젝트를 선택하면 해당 설정이 표시됩니다."
 		},
+		"projectAccess": {
+			"title": "액세스",
+			"subtitle": "이 프로젝트를 보고 작업할 수 있는 사람입니다.",
+			"restrictedLabel": "제한됨",
+			"restrictedHint": "아래 구성원과 워크스페이스 소유자 및 관리자만 이 프로젝트를 볼 수 있습니다. 여기서 구성원의 권한은 워크스페이스 역할과 프로젝트 역할이 모두 허용하는 범위입니다.",
+			"openHint": "워크스페이스의 모든 사람이 각자의 워크스페이스 역할이 허용하는 범위에서 이 프로젝트를 볼 수 있습니다. 선택한 구성원으로 제한하려면 제한으로 설정하세요.",
+			"membersLabel": "구성원",
+			"membersHint": "프로젝트 역할은 각 구성원이 여기서 할 수 있는 일을 제한합니다.",
+			"noMembers": "아직 구성원이 없습니다.",
+			"addMember": "구성원 추가",
+			"removeMember": "{{name}} 제거",
+			"roleFor": "{{name}}의 프로젝트 역할",
+			"leadTag": "리더",
+			"restrictedProject": "제한된 프로젝트",
+			"toastUpdated": "액세스를 업데이트했습니다",
+			"toastError": "액세스를 업데이트하지 못했습니다",
+			"loadError": "액세스 설정을 불러오지 못했습니다. 페이지를 새로고침한 후 다시 시도하세요."
+		},
 		"projectPeople": {
 			"defaultAssigneeHint": "작업을 만들 때 미리 채워지며, 담당자가 없는 수락된 요청에도 할당됩니다.",
 			"defaultAssigneeLabel": "기본 담당자",
@@ -2643,7 +2766,7 @@
 			"title": "보안"
 		},
 		"timezone": {
-			"accountHint": "미리 알림과 이메일 요약에 사용됩니다. 앱에서는 항상 브라우저의 시간대로 시간을 표시합니다.",
+			"accountHint": "미리 알림, 이메일 요약, 그리고 작업 필터와 분석이 날짜를 세는 기준에 사용됩니다. 화면의 시간은 브라우저의 시간대로 표시됩니다.",
 			"accountLabel": "시간대",
 			"automatic": "자동 (브라우저: {{zone}})",
 			"loadError": "시간대를 불러오지 못했습니다. 페이지를 새로고침한 후 다시 시도하세요.",
@@ -2656,8 +2779,52 @@
 			"workspaceHint": "사이클, 자동화, 분석에서 '오늘'의 기준이 됩니다. 기존 워크스페이스는 UTC로 시작합니다.",
 			"workspaceLabel": "시간대"
 		},
+		"workspaceDeletion": {
+			"pendingTitle": "삭제 예약됨",
+			"pendingDescription": "이 워크스페이스는 {{date}}에 삭제됩니다. 그때까지는 읽기 전용이지만, 내용을 계속 열고 내보낼 수 있습니다.",
+			"cancel": "삭제 취소",
+			"confirm": "삭제 예약",
+			"rowDescription": "워크스페이스는 즉시 읽기 전용이 되고 {{date}}에 영구 삭제됩니다. 그 전까지는 취소할 수 있습니다.",
+			"dialogTitle": "{{name}}을(를) 삭제할까요?",
+			"dialogDescription": "{{name}}은(는) 즉시 모든 사람에게 읽기 전용이 되고, API 키와 웹훅이 작동을 멈춥니다. 멤버에게 이메일이 발송됩니다. 그 전에 취소하지 않으면 {{date}}에 모든 프로젝트, 작업, 페이지와 함께 영구 삭제됩니다.",
+			"toastScheduled": "{{date}}에 삭제되도록 예약했습니다",
+			"toastCancelled": "삭제를 취소했습니다. 워크스페이스를 다시 편집할 수 있습니다.",
+			"toastError": "삭제를 변경하지 못했습니다. 다시 시도하세요.",
+			"bannerTitle": "이 워크스페이스는 {{date}}에 삭제됩니다",
+			"bannerDescription": "그때까지는 읽기 전용입니다. 내용을 계속 열고 내보낼 수 있습니다.",
+			"admin": {
+				"title": "삭제 대기 중",
+				"description": "소유자가 삭제를 예약한 워크스페이스입니다. 해당 날짜까지 읽기 전용이며, 그 후 영구 삭제됩니다.",
+				"dueAt": "삭제 예정일",
+				"badge": "{{date}} 삭제 예정"
+			},
+			"instanceAudit": {
+				"scheduled": "워크스페이스 삭제를 예약함",
+				"cancelled": "워크스페이스 삭제를 취소함",
+				"purged": "유예 기간이 끝난 워크스페이스를 삭제함"
+			}
+		},
+		"workspacePublicPages": {
+			"label": "공개 페이지",
+			"description": "프로젝트를 공유할 수 있는 사람이 페이지를 읽기 전용 공개 링크로 게시할 수 있게 합니다. 끄면 게시된 모든 링크가 취소됩니다.",
+			"toastOn": "공개 페이지가 켜졌습니다",
+			"toastOff": "공개 페이지가 꺼졌습니다. 게시된 링크가 취소되었습니다.",
+			"toastError": "설정을 변경하지 못했습니다. 다시 시도하세요."
+		},
+		"workspaceA2a": {
+			"label": "에이전트 간 연동(A2A)",
+			"description": "외부 AI 에이전트가 A2A 프로토콜로 이 워크스페이스에 작업을 맡길 수 있게 합니다. 에이전트는 멤버의 API 키나 OAuth 로그인과 해당 멤버의 권한으로 동작하며, 모든 작업이 감사 로그에 기록됩니다.",
+			"toastOn": "A2A가 켜졌습니다",
+			"toastOff": "A2A가 꺼졌습니다. 이제 외부 에이전트가 이 워크스페이스에 작업을 맡길 수 없습니다.",
+			"toastError": "설정을 변경하지 못했습니다. 다시 시도하세요."
+		},
 		"workspaceAuditLog": {
 			"actions": {
+				"workspaceDeletionScheduled": "워크스페이스 삭제를 예약함",
+				"workspaceDeletionCancelled": "워크스페이스 삭제를 취소함",
+				"workspacePublicPagesChanged": "공개 페이지를 켜거나 끔",
+				"pagePublished": "페이지를 공개 링크로 게시함",
+				"pageUnpublished": "페이지의 공개 링크를 취소함",
 				"apiKeyCreated": "API 키를 만듦",
 				"apiKeyRevoked": "API 키를 폐기함",
 				"exportCreated": "내보내기를 시작함",
@@ -2668,6 +2835,7 @@
 				"integrationUpdated": "연동을 변경함",
 				"memberInvitationAccepted": "초대를 수락함",
 				"memberInvitationDeclined": "초대를 거절함",
+				"memberInvitationRoleChanged": "대기 중인 초대의 역할을 변경함",
 				"memberInvitationRevoked": "초대를 취소함",
 				"memberInvited": "워크스페이스에 사용자를 초대함",
 				"memberLeft": "워크스페이스에서 나감",
@@ -2697,13 +2865,41 @@
 				"webhookUpdated": "웹훅을 변경함",
 				"workspaceCreated": "워크스페이스를 만듦",
 				"workspaceOwnershipTransferred": "워크스페이스 소유권을 이전함",
-				"workspaceUpdated": "워크스페이스 설정을 변경함"
+				"workspaceUpdated": "워크스페이스 설정을 변경함",
+				"aiSettingsUpdated": "AI 설정을 변경함",
+				"aiTriageLabelsApplied": "제안된 라벨을 자동으로 추가함",
+				"agentCreated": "에이전트를 만듦",
+				"agentUpdated": "에이전트를 변경함",
+				"agentDeleted": "에이전트를 삭제함",
+				"agentChangeApplied": "다른 사람을 대신해 변경함",
+				"agentChangeApproved": "에이전트의 변경 사항을 승인함",
+				"agentChangeRejected": "에이전트의 변경 사항을 거절함",
+				"agentChangeReverted": "에이전트의 변경 사항을 실행 취소함",
+				"codingAgentHandoffSent": "작업을 코딩 에이전트에게 보냄",
+				"codingAgentProfileCreated": "코딩 에이전트 프로필을 만듦",
+				"codingAgentProfileUpdated": "코딩 에이전트 프로필을 변경함",
+				"codingAgentProfileDeleted": "코딩 에이전트 프로필을 삭제함",
+				"a2aTaskReceived": "외부 에이전트로부터 작업을 받았습니다(A2A)",
+				"automationRuleCreated": "자동화를 만들었습니다",
+				"automationRuleUpdated": "자동화를 업데이트했습니다",
+				"automationRuleDeleted": "자동화를 삭제했습니다",
+				"automationRuleRan": "작업에서 자동화를 실행했습니다",
+				"agentScheduleCreated": "에이전트 일정을 만들었습니다",
+				"agentScheduleUpdated": "에이전트 일정을 변경했습니다",
+				"agentScheduleDeleted": "에이전트 일정을 삭제했습니다",
+				"agentScheduleDisabled": "에이전트 일정을 껐습니다",
+				"aiConnectorCreated": "MCP 커넥터를 추가했습니다",
+				"aiConnectorUpdated": "MCP 커넥터를 변경했습니다",
+				"aiConnectorDeleted": "MCP 커넥터를 삭제했습니다"
 			},
 			"actor": {
 				"apiKey": "API 키",
 				"deletedUser": "삭제된 사용자",
 				"system": "시스템",
-				"unknownKey": "삭제된 API 키"
+				"unknownKey": "삭제된 API 키",
+				"agent": "에이전트",
+				"agentFor": "에이전트 ({{name}} 님 대신)",
+				"automation": "자동화"
 			},
 			"categories": {
 				"apiKey": "API 키",
@@ -2716,7 +2912,11 @@
 				"role": "역할",
 				"trash": "휴지통",
 				"webhook": "웹훅",
-				"workspace": "워크스페이스 설정"
+				"workspace": "워크스페이스 설정",
+				"agent": "에이전트",
+				"codingAgent": "코딩 에이전트",
+				"a2a": "외부 에이전트(A2A)",
+				"automation": "자동화"
 			},
 			"columns": {
 				"action": "동작",
@@ -2765,6 +2965,7 @@
 			"subtitle": "이 워크스페이스에서 멤버, 역할, API 키, 웹훅, 연동, 설정, 프로젝트를 누가 변경했는지 보여 줍니다. 항목은 {{days}}일 동안 보관됩니다.",
 			"subtitleForever": "이 워크스페이스에서 멤버, 역할, API 키, 웹훅, 연동, 설정, 프로젝트를 누가 변경했는지 보여 줍니다. 항목은 워크스페이스를 삭제할 때까지 보관됩니다.",
 			"targets": {
+				"page": "페이지",
 				"apiKey": "API 키",
 				"export": "내보내기",
 				"integration": "연동",
@@ -2773,7 +2974,11 @@
 				"role": "역할",
 				"user": "멤버",
 				"webhook": "웹훅",
-				"workspace": "워크스페이스"
+				"workspace": "워크스페이스",
+				"agent": "에이전트",
+				"agentRun": "에이전트 실행",
+				"task": "작업",
+				"codingAgentProfile": "코딩 에이전트 프로필"
 			},
 			"title": "감사 로그"
 		},
@@ -2819,9 +3024,189 @@
 			"workspaceNav": "최근 삭제됨",
 			"workspaceSubtitle": "삭제된 프로젝트는 영구 삭제될 때까지 작업과 함께 여기에 보관됩니다.",
 			"workspaceTitle": "최근 삭제된 프로젝트"
+		},
+		"automationRules": {
+			"title": "자동화",
+			"description": "작업에 어떤 일이 생기면 조건을 확인하고 동작을 실행합니다. 규칙은 AI 없이 '자동화'로서 스스로 실행됩니다.",
+			"empty": "아직 자동화가 없습니다. 템플릿으로 시작하거나 직접 규칙을 만드세요.",
+			"loadError": "자동화를 불러올 수 없습니다.",
+			"newRule": "새 규칙",
+			"templatesTitle": "템플릿",
+			"saved": "자동화를 저장했습니다",
+			"saveError": "자동화를 저장할 수 없습니다",
+			"deleted": "자동화를 삭제했습니다",
+			"confirmDelete": "삭제",
+			"edit": "{{name}} 편집",
+			"delete": "{{name}} 삭제",
+			"summary_one": "{{trigger}} 시 · 동작 {{count}}개",
+			"summary_other": "{{trigger}} 시 · 동작 {{count}}개",
+			"lastRun_one": "{{count}}회 실행, 마지막 실행 {{time}}",
+			"lastRun_other": "{{count}}회 실행, 마지막 실행 {{time}}",
+			"neverRan": "아직 실행되지 않음",
+			"templates": {
+				"reviewer": {
+					"name": "검토 중으로 이동하면 검토자 지정",
+					"description": "검토자를 선택하세요. 작업이 검토 단계에 들어가면 담당자로 지정됩니다."
+				},
+				"intakeBugs": {
+					"name": "인테이크에서 들어온 버그에 라벨 지정",
+					"description": "버그나 오류를 언급한 수락된 요청에 bug 라벨을 붙입니다."
+				},
+				"overdue": {
+					"name": "기한이 지난 작업 에스컬레이션",
+					"description": "마감일이 지나면 우선순위를 올리고 담당자에게 알립니다."
+				}
+			},
+			"triggers": {
+				"task_created": "작업 생성",
+				"status_changed": "상태 변경",
+				"assignee_added": "담당자 지정",
+				"assignee_removed": "담당자 해제",
+				"label_added": "라벨 추가",
+				"label_removed": "라벨 제거",
+				"priority_changed": "우선순위 변경",
+				"due_date_set": "마감일 설정",
+				"due_date_passed": "마감일 경과",
+				"comment_added": "댓글 추가",
+				"moved_to_cycle": "사이클로 이동",
+				"moved_to_module": "모듈에 추가"
+			},
+			"conditions": {
+				"status": "상태",
+				"labels": "라벨",
+				"priority": "우선순위",
+				"assignee": "담당자",
+				"due_date": "마감일",
+				"estimate": "추정치",
+				"title": "제목",
+				"custom_field": "사용자 지정 필드"
+			},
+			"ops": {
+				"is": "일치",
+				"is_not": "일치하지 않음",
+				"contains": "포함",
+				"not_contains": "포함하지 않음",
+				"empty": "비어 있음",
+				"not_empty": "비어 있지 않음",
+				"set": "설정됨",
+				"not_set": "설정되지 않음",
+				"gte": "이상",
+				"lte": "이하",
+				"equals": "같음",
+				"not_equals": "같지 않음"
+			},
+			"actions": {
+				"set_status": "상태 설정",
+				"assign": "담당자 지정",
+				"unassign": "담당자 해제",
+				"add_label": "라벨 추가",
+				"remove_label": "라벨 제거",
+				"set_priority": "우선순위 설정",
+				"set_due_date": "마감일 설정",
+				"add_comment": "댓글 추가",
+				"move_to_cycle": "사이클로 이동",
+				"move_to_module": "모듈에 추가",
+				"create_subtask": "하위 작업 만들기",
+				"notify": "알림 보내기",
+				"run_agent": "에이전트 실행"
+			},
+			"roles": {
+				"assignees": "담당자",
+				"creator": "작성자",
+				"lead": "프로젝트 리더"
+			},
+			"outcomes": {
+				"success": "완료",
+				"partial": "일부 완료",
+				"failed": "실패",
+				"skipped": "건너뜀"
+			},
+			"errors": {
+				"LOOP_DEPTH": "중지됨: 너무 많은 규칙이 연달아 서로를 실행했습니다.",
+				"RATE_LIMITED": "중지됨: 이 작업에서 1분 동안 자동화가 너무 많이 실행되었습니다.",
+				"AGENT_UNAVAILABLE": "에이전트 실행: 에이전트가 꺼져 있거나 삭제되었습니다.",
+				"NO_RULE_OWNER": "에이전트 실행: 이 규칙의 소유자가 없습니다. 다시 저장하세요.",
+				"AI_DISABLED": "에이전트 실행: 이 프로젝트에서 AI가 꺼져 있습니다."
+			},
+			"history": {
+				"title": "실행 기록",
+				"empty": "아직 실행 기록이 없습니다.",
+				"error": "실행 기록을 불러올 수 없습니다.",
+				"failedActions": "실패: {{actions}}"
+			},
+			"editor": {
+				"name": "규칙 이름",
+				"namePlaceholder": "이 규칙의 이름 입력",
+				"when": "트리거",
+				"if": "조건",
+				"then": "동작",
+				"match": "일치 조건",
+				"matchAll": "모두 일치",
+				"matchAny": "하나 이상 일치",
+				"always": "항상",
+				"addCondition": "조건 추가",
+				"addGroup": "그룹 추가",
+				"addAction": "동작 추가",
+				"remove": "제거",
+				"save": "규칙 저장",
+				"cancel": "취소",
+				"choose": "선택…",
+				"add": "추가…",
+				"removeItem": "{{name}} 제거",
+				"any": "모두",
+				"from": "변경 전",
+				"to": "변경 후",
+				"fromIntake": "인테이크에서 수락된 요청만",
+				"people": "사용자",
+				"labels": "라벨",
+				"priorities": "우선순위",
+				"cycles": "사이클",
+				"modules": "모듈",
+				"field": "필드",
+				"operator": "비교",
+				"points": "포인트",
+				"value": "값",
+				"column": "상태",
+				"everyone": "모든 사람",
+				"label": "라벨",
+				"priority": "우선순위",
+				"daysFromRun": "일 후 (규칙 실행 기준)",
+				"comment": "댓글",
+				"subtaskTitle": "하위 작업 제목",
+				"cycle": "사이클",
+				"module": "모듈",
+				"roles": "역할",
+				"message": "메시지 (선택 사항)",
+				"variables": "변수:",
+				"agent": "에이전트",
+				"agentPrompt": "에이전트가 무엇을 해야 하나요?",
+				"agentPromptPlaceholder": "예: 이 작업을 분류하고 우선순위를 제안해 줘.",
+				"agentHint": "에이전트는 이 규칙을 저장한 사람을 대신해, 그 사람의 권한을 넘지 않게 동작합니다. 에이전트가 만든 변경에는 절대 실행되지 않습니다."
+			}
 		}
 	},
 	"navigation": {
+		"customize": {
+			"open": "사이드바 사용자 지정",
+			"title": "사이드바 사용자 지정",
+			"description": "사이드바에 표시할 항목과 순서를 선택하세요. 이 변경 사항은 모든 기기에서 나에게만 보입니다.",
+			"settingsDescription": "기본 탐색과 프로젝트 패널 섹션의 순서를 바꾸거나 숨깁니다.",
+			"rail": "기본 탐색",
+			"projectsPanel": "프로젝트 패널",
+			"sections": {
+				"views": "작업 목록 및 보기",
+				"favorites": "즐겨찾기",
+				"projects": "프로젝트"
+			},
+			"show": "{{name}} 표시",
+			"alwaysShown": "{{name}}은(는) 항상 표시됩니다",
+			"moveUp": "{{name}} 위로 이동",
+			"moveDown": "{{name}} 아래로 이동",
+			"moved": "{{name}}을(를) {{total}}개 중 {{position}}번째로 이동했습니다",
+			"reset": "기본값으로 재설정",
+			"resetDone": "사이드바를 기본값으로 재설정했습니다",
+			"done": "완료"
+		},
 		"commandPalette": {
 			"suggestions": "추천",
 			"commands": "명령",
@@ -2834,6 +3219,8 @@
 			"lightTheme": "라이트 테마",
 			"darkTheme": "다크 테마",
 			"systemTheme": "시스템 테마",
+			"lightContrastTheme": "고대비 라이트 테마",
+			"darkContrastTheme": "고대비 다크 테마",
 			"keyboardShortcuts": "키보드 단축키",
 			"inputPlaceholder": "앱과 명령 검색...",
 			"empty": "결과를 찾을 수 없습니다.",
@@ -3143,6 +3530,21 @@
 			"page_mention": {
 				"content": "{{mentionerName}}님이 다음 페이지에서 회원님을 멘션했습니다: {{pageTitle}}",
 				"title": "{{mentionerName}}님이 회원님을 멘션했습니다"
+			},
+			"cycle_rollover": {
+				"content_other": "미완료 작업 {{count}}개를 {{targetCycleName}}(으)로 이동했습니다",
+				"contentNoNext_other": "다음 사이클이 없어 미완료 작업 {{count}}개가 {{cycleName}}에 남아 있습니다",
+				"title": "{{cycleName}} 종료됨"
+			},
+			"flow_anomaly": {
+				"title": "{{projectName}}에서 평소와 다른 흐름",
+				"throughput_low": "이번 주 처리량이 작업 {{value}}개로 줄었습니다 (평소 약 {{baseline}})",
+				"wip_high": "진행 중인 작업이 {{value}}개로 늘었습니다 (평소 약 {{baseline}})",
+				"cycle_time_high": "사이클 타임이 {{value}}일로 늘었습니다 (평소 약 {{baseline}})"
+			},
+			"automation_notice": {
+				"title": "자동화: {{ruleName}}",
+				"content": "{{taskKey}} {{taskTitle}}"
 			}
 		},
 		"reminderLeadTime": {
@@ -3289,6 +3691,13 @@
 				"open": "작업 열기",
 				"read": "읽음 또는 읽지 않음으로 표시",
 				"snooze": "다시 알림"
+			},
+			"digest": {
+				"button": "읽지 않은 항목 요약",
+				"title": "읽지 않은 항목 요약",
+				"regenerate": "다시 요약",
+				"close": "요약 닫기",
+				"generating": "요약하는 중…"
 			}
 		}
 	},
@@ -3494,7 +3903,9 @@
 		"automation": {
 			"actor": "자동화",
 			"archived_other": "{{count}}개월 동안 업데이트가 없어 이 작업을 보관했습니다",
-			"closed_other": "{{count}}개월 동안 업데이트가 없어 이 작업을 종료하고 {{to}}(으)로 이동했습니다"
+			"closed_other": "{{count}}개월 동안 업데이트가 없어 이 작업을 종료하고 {{to}}(으)로 이동했습니다",
+			"rolledOver": "사이클이 끝나 이 작업을 {{from}}에서 {{to}}(으)로 이동했습니다",
+			"byRule": "규칙: {{name}}"
 		},
 		"commentVisibility": {
 			"badgeExternal": "외부 사용자",
@@ -3533,10 +3944,64 @@
 			"updates": "업데이트"
 		},
 		"importedFromJira": "Jira {{key}}에서 이 작업을 가져옴",
+		"importedFromSource": "{{source}} {{key}}에서 이 작업을 가져옴",
 		"movedToTrash": "이 작업을 휴지통으로 이동함",
 		"restoredFromTrash": "휴지통에서 이 작업을 복원함"
 	},
 	"tasks": {
+		"recurrence": {
+			"label": "반복",
+			"none": "반복 안 함",
+			"title": "이 작업 반복",
+			"indicator": "반복됨",
+			"frequency": {
+				"label": "빈도",
+				"daily": "매일",
+				"weekly": "매주",
+				"monthly": "매월",
+				"yearly": "매년"
+			},
+			"interval": "간격",
+			"weekdays": "반복 요일",
+			"monthDay": "날짜(월 기준)",
+			"trigger": {
+				"label": "다음 작업 생성 시점",
+				"completion": "이 작업이 완료되면",
+				"schedule": "해당 날짜가 되면(이 작업이 아직 열려 있어도)"
+			},
+			"ends": {
+				"label": "종료",
+				"never": "없음",
+				"onDate": "날짜",
+				"endDate": "종료일",
+				"after": "횟수",
+				"count": "반복 횟수"
+			},
+			"summary": {
+				"daily_other": "{{count}}일마다",
+				"weekly_other": "{{count}}주마다 {{days}}",
+				"monthly_other": "{{count}}개월마다 {{day}}일",
+				"yearly_other": "{{count}}년마다 {{date}}",
+				"until": "{{summary}}, {{date}}까지",
+				"times_other": "{{summary}}, {{count}}회"
+			},
+			"next": "다음: {{date}}",
+			"ended": "더 이상 반복 없음",
+			"save": "저장",
+			"remove": "반복 중지",
+			"saved": "반복이 저장되었습니다",
+			"removed": "이 작업은 더 이상 반복되지 않습니다",
+			"saveError": "반복을 저장할 수 없습니다",
+			"activity": {
+				"set": "이 작업을 반복하도록 설정함: {{summary}}",
+				"updated": "반복을 변경함: {{summary}}",
+				"removed": "이 작업의 반복을 중지함",
+				"recurredFrom": "이 작업을 <task>{{task}}</task>의 다음 반복으로 생성함",
+				"recurredFromScheduled": "<task>{{task}}</task>의 다음 반복으로 일정에 따라 생성됨",
+				"recurredTo": "이 작업을 완료하여 다음 반복 <task>{{task}}</task>이(가) 생성됨",
+				"recurredToScheduled": "다음 반복이 일정에 따라 생성됨: <task>{{task}}</task>"
+			}
+		},
 		"title": "작업",
 		"status": {
 			"label": "상태",
@@ -3920,7 +4385,8 @@
 			"rescheduleError": "작업 일정을 변경하지 못했습니다",
 			"showWeekends": "주말 표시",
 			"viewMode": "캘린더 기간",
-			"week": "주"
+			"week": "주",
+			"overdue": "기한 초과"
 		},
 		"gantt": {
 			"pageTitle": "{{name}} – 간트",
@@ -3979,7 +4445,9 @@
 		},
 		"kanban": {
 			"addTask": "작업 추가",
-			"stages": "컬럼"
+			"stages": "컬럼",
+			"emptyAction": "작업 추가",
+			"emptyTitle": "아직 작업이 없습니다"
 		},
 		"pr": {
 			"merged": "병합됨",
@@ -4050,6 +4518,20 @@
 			"searchActions": "작업 검색...",
 			"noActionsFound": "작업을 찾을 수 없습니다.",
 			"changeStatus": "상태 변경",
+			"removeLabel": "라벨 제거",
+			"removeLabelSuccess": "작업 {{count}}개에서 라벨이 제거되었습니다",
+			"removeLabelError": "라벨 제거에 실패했습니다",
+			"unarchive": "보관에서 복원",
+			"unarchiveSuccess": "작업 {{count}}개가 복원되었습니다",
+			"unarchiveNone": "선택한 작업 중 보관된 작업이 없습니다",
+			"unarchiveError": "작업 복원에 실패했습니다",
+			"setDates": "날짜",
+			"dateField": "설정할 날짜",
+			"startDate": "시작일",
+			"dueDate": "마감일",
+			"clearStartDate": "시작일 지우기",
+			"clearDueDate": "마감일 지우기",
+			"updateStartDateError": "시작일 업데이트에 실패했습니다. 시작일은 작업의 마감일보다 늦을 수 없습니다.",
 			"addAssignee": "담당자 추가",
 			"addAssigneeSuccess_other": "{{count}}건의 작업에 {{name}}을 추가했습니다",
 			"assigneesError": "담당자를 업데이트하지 못했습니다",
@@ -4067,7 +4549,19 @@
 				"addRowBefore": "위에 행 삽입",
 				"addRowAfter": "아래에 행 삽입",
 				"deleteRow": "행 삭제",
-				"deleteTable": "표 삭제"
+				"deleteTable": "표 삭제",
+				"moveRowUp": "행을 위로 이동",
+				"moveRowDown": "행을 아래로 이동",
+				"moveColumnLeft": "열을 왼쪽으로 이동",
+				"moveColumnRight": "열을 오른쪽으로 이동",
+				"toggleHeaderRow": "머리글 행",
+				"fullWidth": "전체 너비",
+				"dragRow": "{{index}}행",
+				"dragColumn": "{{index}}열",
+				"dragRowHint": "드래그하거나 화살표 키로 행을 이동하세요",
+				"dragColumnHint": "드래그하거나 화살표 키로 열을 이동하세요",
+				"insertRowHere": "여기에 행 삽입",
+				"insertColumnHere": "여기에 열 삽입"
 			}
 		},
 		"descriptionSearchLoading": "전체 설명 검색 중…",
@@ -4126,11 +4620,11 @@
 			},
 			"label": "추정치",
 			"none": "추정치 없음",
-			"pointsValue": "{{value}}점",
+			"pointsValue_other": "{{value}}점",
 			"setAria": "추정치 설정",
 			"totals": {
 				"estimated": "{{total}}개 작업 중 {{estimated}}개 추정됨",
-				"points": "{{completed}} / {{total}}점",
+				"points_other": "{{completed}} / {{total}}점",
 				"time": "{{completed}} / {{total}}"
 			},
 			"updateError": "추정치 업데이트에 실패했습니다"
@@ -4248,6 +4742,12 @@
 			},
 			"url": "URL",
 			"urlPlaceholder": "https://example.com"
+		},
+		"create": {
+			"similarTitle": "비슷한 진행 중 작업",
+			"similarDismiss": "비슷한 작업 숨기기",
+			"similarOpen": "열기",
+			"similarOpenLabel": "새 탭에서 {{key}} {{title}} 열기"
 		},
 		"parent": {
 			"add": "상위 작업 추가",
@@ -4514,6 +5014,7 @@
 				"cycle": "사이클",
 				"estimate": "추정치",
 				"modules": "모듈",
+				"parent": "상위 작업",
 				"status": "상태"
 			},
 			"edited": "{{time}} 편집됨",
@@ -4572,6 +5073,8 @@
 			"hint": "제목을 입력하세요. @사람, #라벨, !우선순위와 fri, 12 Oct 같은 날짜는 칩으로 바뀝니다. Enter로 만들고, Ctrl Enter로 전체 편집기를 엽니다.",
 			"labelError": "작업은 만들어졌지만 라벨 {{name}}을(를) 추가하지 못했습니다",
 			"newLabel": "{{name}}(새 라벨)",
+			"dueOn": "{{date}} 마감 작업 추가",
+			"notInView": "작업이 생성되었습니다. 이 보기의 조건과 일치하지 않아 여기에 표시되지 않습니다.",
 			"open": "열기",
 			"openComposer": "전체 편집기 열기",
 			"openComposerHint": "전체 편집기 열기 (Ctrl Enter)",
@@ -4818,7 +5321,18 @@
 			"error": "팀 멤버 초대에 실패했습니다",
 			"createdTitle": "초대가 생성되었습니다",
 			"shareLinkDescription": "{{email}}님이 워크스페이스에 참여할 수 있도록 이 링크를 공유하세요.",
-			"done": "완료"
+			"done": "완료",
+			"emailHint": "여러 주소는 쉼표, 공백 또는 줄바꿈으로 구분하세요.",
+			"roleLabel": "역할",
+			"roleHint": "내 역할까지의 역할을 부여할 수 있습니다.",
+			"sending": "{{total}}개 중 {{current}}번째 보내는 중…",
+			"invalidEmails": "유효하지 않은 이메일 주소: {{emails}}",
+			"emailRequired": "이메일 주소를 하나 이상 입력하세요.",
+			"tooManyEmails": "한 번에 최대 {{max}}명까지 초대할 수 있습니다.",
+			"sentSome": "초대 {{total}}개 중 {{sent}}개를 보냈습니다.",
+			"failedTitle": "보내지 못함",
+			"rateLimited": "한 번에 너무 많은 초대를 보냈습니다. 1분 후 나머지를 보내세요.",
+			"shareLinksDescription": "각 링크를 해당 사람과 공유하여 워크스페이스에 참여하게 하세요."
 		},
 		"membersTable": {
 			"emptyTitle": "아직 팀 멤버가 없습니다",
@@ -4844,7 +5358,9 @@
 			"cancelInviteError": "초대 취소에 실패했습니다",
 			"ariaInvitationActions": "초대 작업",
 			"roleUpdateSuccess": "역할이 업데이트되었습니다",
-			"roleUpdateError": "역할 업데이트에 실패했습니다"
+			"roleUpdateError": "역할 업데이트에 실패했습니다",
+			"ariaInvitationRole": "{{email}}의 역할",
+			"invitationRoleUpdateSuccess": "초대 역할이 업데이트되었습니다"
 		},
 		"profile": {
 			"emptyActivity": "아직 활동이 없습니다",
@@ -5993,6 +6509,51 @@
 					"shortcuts": "분류 단축키 문서화"
 				},
 				"title": "내 작업"
+			},
+			"ask": {
+				"title": "AI에게 묻기",
+				"model": "워크스페이스 모델",
+				"greeting": "안녕하세요! 무엇이 궁금하신가요?",
+				"intro": "워크스페이스에 대해 평소 말투로 물어보세요. 답변은 볼 수 있는 작업을 바탕으로 합니다.",
+				"placeholder": "AI에게 묻기, @로 컨텍스트, /로 명령어",
+				"placeholderBuild": "만들거나 바꿀 내용을 설명하세요…",
+				"modes": {
+					"label": "모드",
+					"ask": "묻기",
+					"build": "만들기"
+				},
+				"send": "보내기",
+				"you": "나",
+				"question": "현재 사이클을 막고 있는 건 뭔가요?",
+				"buildPrompt": "WEB-5를 Mira에게 할당해 줘",
+				"context": "컨텍스트 ({{count}})",
+				"facts": "프로젝트: 1 · 사람: 4 · 사이클: 1",
+				"earlier": "이전 메시지: {{count}}",
+				"thinking": "생각하는 중… {{seconds}}s",
+				"thought": "{{seconds}}s 동안 생각함",
+				"blockedIntro": "{{cycle}}에서 작업 2개가 막혀 있습니다:",
+				"blockedPageTitles": "{{title}}은(는) 페이지 목록 정리를 기다리고 있습니다.",
+				"blockedPricing": "{{title}}은(는) 영업팀의 가격 정보를 기다리고 있습니다.",
+				"unassigned": "{{key}}에는 아직 담당자가 없습니다.",
+				"summary": "변경 1개. 확인하기 전에는 아무것도 바뀌지 않습니다.",
+				"op": "작업 편집",
+				"action": "{{key}}을(를) {{name}}에게 할당",
+				"awaiting": "응답 대기 중",
+				"ready": "준비된 변경: {{count}}개",
+				"cancel": "취소",
+				"confirm": "확인",
+				"done": "완료",
+				"undo": "실행 취소",
+				"undone": "실행 취소됨",
+				"cancelled": "취소했습니다. 변경된 내용이 없습니다.",
+				"generic": "이 데모는 준비된 질문에만 답합니다. Margaya에서는 묻기가 워크스페이스를 바탕으로 답하고 참고한 작업을 링크합니다.",
+				"genericBuild": "이 데모는 준비된 변경만 수행합니다. Margaya에서는 만들기가 여러분의 말을 확인 가능한 변경으로 바꿉니다.",
+				"blocked": "막힘",
+				"tasks": {
+					"pageTitles": "페이지 제목 점검",
+					"pricing": "가격 페이지 업데이트",
+					"mobileMenu": "모바일 메뉴 수정"
+				}
 			}
 		},
 		"home": {
@@ -6027,6 +6588,10 @@
 				"singleServer": {
 					"detail": "Redis는 선택 사항",
 					"title": "서버 한 대면 충분"
+				},
+				"ai": {
+					"title": "내 방식대로 쓰는 AI",
+					"detail": "기본값은 꺼짐, 모델은 직접 선택"
 				}
 			},
 			"faq": {
@@ -6063,6 +6628,14 @@
 					"selfHost": {
 						"answer": "네. 서버 한 대에서 Docker Compose로 실행하거나, 공식 Helm 차트로 Kubernetes에서 실행할 수 있습니다. 필요한 것은 앱 컨테이너 하나와 PostgreSQL 데이터베이스뿐입니다. 환경 변수, 스토리지, 리버스 프록시는 설치 가이드에서 다룹니다.",
 						"question": "Margaya를 직접 호스팅할 수 있나요?"
+					},
+					"ai": {
+						"question": "Margaya에 AI가 있나요? 기본으로 켜져 있나요?",
+						"answer": "AI는 있지만 기본으로 켜져 있지는 않습니다. AI에게 묻기, 만들기 모드, 글쓰기 도움, 분류 제안, AI 에이전트가 내장되어 있지만, 인스턴스 관리자가 모델을 연결하고 워크스페이스에서 AI를 켜기 전까지는 꺼져 있습니다. AI가 제안하는 모든 변경은 먼저 보여 드리며 실행 취소할 수 있습니다."
+					},
+					"aiData": {
+						"question": "어떤 AI 모델을 쓸 수 있고, 데이터는 어디로 가나요?",
+						"answer": "Claude를 쓰거나, Ollama나 vLLM처럼 직접 운영하는 OpenAI 호환 모델을 쓸 수 있습니다. 로컬 전용 라우팅을 쓰면 어떤 데이터도 네트워크 밖으로 나가지 않습니다. Margaya는 질문한 사람이 이미 볼 수 있는 내용만 보내고, 서버 기록을 켜지 않는 한 프롬프트와 답변을 보관하지 않으며, 예산 관리를 위해 사용 횟수만 기록합니다."
 					}
 				},
 				"title": "자주 묻는 질문, 솔직하게 답해 드립니다"
@@ -6075,13 +6648,11 @@
 				"title": "도구가 아니라 일에 시간을 쓰세요."
 			},
 			"hero": {
-				"description": "Margaya는 작업, 사이클, 문서, 분류를 빠른 워크스페이스 하나에 담았습니다. 작업을 입력하고 진행시킨 뒤, 바로 본업으로 돌아가세요.",
-				"eyebrow": "오픈 소스 프로젝트 관리",
-				"note": "MIT 라이선스. 직접 서버에서 운영하거나, Margaya Cloud를 신용카드 없이 14일 동안 무료로 체험해 보세요.",
-				"primaryCta": "시작하기",
-				"secondaryCta": "직접 호스팅",
 				"title": "일은 계획하고,",
-				"titleAccent": "잡무는 덜어 내세요."
+				"titleAccent": "잡무는 덜어 내세요.",
+				"description": "Margaya는 작업, 사이클, 문서, 분류를 빠른 워크스페이스 하나에 담았습니다. 필요하면 AI 어시스턴트를 켜서 질문에 답하고 변경까지 맡길 수 있습니다. 작업을 입력하고 진행시킨 뒤, 바로 본업으로 돌아가세요.",
+				"primaryCta": "시작하기",
+				"secondaryCta": "직접 호스팅"
 			},
 			"insight": {
 				"description": "작업으로 차트를 만들고, 감사 로그를 살피고, 휴지통에서 무엇이든 복원하세요.",
@@ -6129,7 +6700,8 @@
 					"select": "포커스된 작업 선택",
 					"spreadsheet": "스프레드시트",
 					"status": "상태 변경",
-					"tasks": "키나 제목으로 작업 찾기"
+					"tasks": "키나 제목으로 작업 찾기",
+					"ask": "AI에게 묻기 열기"
 				},
 				"modifier": "Ctrl",
 				"shortcutsLabel": "키보드 단축키",
@@ -6162,6 +6734,10 @@
 					"views": {
 						"description": "보드, 목록, 스프레드시트, 캘린더, 간트",
 						"title": "보기"
+					},
+					"ai": {
+						"title": "AI",
+						"description": "AI에게 묻기, 만들기 모드, 글쓰기 도움, 에이전트"
 					}
 				},
 				"label": "주 메뉴",
@@ -6172,7 +6748,7 @@
 				"blog": "블로그",
 				"compare": "비교",
 				"explore": "둘러보기",
-				"featuresIntro": "Margaya를 짧게 살펴보는 5가지 투어. 투어마다 직접 조작해 볼 수 있는 라이브 데모가 있습니다.",
+				"featuresIntro": "Margaya를 둘러보는 짧은 투어 여섯 가지입니다. 각 투어에는 직접 조작해 볼 수 있는 라이브 데모가 있습니다.",
 				"newTab": "(새 탭에서 열림)"
 			},
 			"ownIt": {
@@ -6333,6 +6909,26 @@
 					"title": "리소스"
 				},
 				"selfHosted": "직접 호스팅을 위해 만들었습니다"
+			},
+			"ai": {
+				"eyebrow": "AI",
+				"title": "묻고, 만들게 하고, 직접 확인하세요.",
+				"description": "AI에게 묻기는 최신 작업을 바탕으로 차트와 참고한 작업을 곁들여 답합니다. 만들기 모드는 요청을 변경 사항으로 바꾸고, 여러분이 검토하고 확인합니다. 에이전트는 팀원처럼 작업을 맡습니다.",
+				"agents": {
+					"title": "팀원처럼 일하는 에이전트",
+					"description": "작업을 에이전트에게 할당하고 에이전트 데스크에서 진행 상황을 확인하세요. 막히면 사람에게 묻고, 쓰기 전에 승인을 기다리며, 일정에 따라 실행할 수도 있습니다."
+				},
+				"privacy": {
+					"title": "기본적으로 비공개",
+					"description": "관리자가 켜기 전까지 AI는 꺼져 있고, 어디에서 실행할지는 여러분이 정합니다.",
+					"items": {
+						"model": "Claude, 또는 Ollama나 vLLM으로 실행하는 자체 모델",
+						"local": "로컬 전용 라우팅으로 데이터를 네트워크 안에 둡니다",
+						"stored": "서버 기록을 선택하지 않으면 프롬프트와 답변을 저장하지 않습니다",
+						"budget": "월별, 일별 예산과 사용 내역",
+						"undo": "만들기 모드의 모든 변경은 한 시간 동안 실행 취소할 수 있습니다"
+					}
+				}
 			}
 		},
 		"pages": {
@@ -6351,8 +6947,8 @@
 						"title": "OpenAPI 기반 REST API"
 					},
 					"cleanup": {
-						"body": "닫힌 작업은 보관하고 방치된 작업은 자동으로 닫으세요. 각 규칙이 어떤 작업에 적용될지 미리 볼 수 있습니다.",
-						"title": "예약 정리"
+						"body": "새 작업 할당이나 라벨 지정 같은 반복 업무에 트리거, 조건, 동작 규칙을 설정하고, 방치된 작업은 일정에 따라 보관하거나 닫으세요. 각 규칙이 어떤 작업에 적용될지 미리 볼 수 있습니다.",
+						"title": "자동화 규칙"
 					},
 					"integrations": {
 						"body": "GitHub나 Gitea의 풀 리퀘스트를 연결하고, Slack, Discord, Telegram, Mattermost로 업데이트를 보내고, 발신 웹훅으로 어떤 URL에든 이벤트를 전송하세요.",
@@ -6491,6 +7087,43 @@
 					}
 				},
 				"title": "하나의 작업 목록을, 원하는 모든 방식으로."
+			},
+			"ai": {
+				"metaTitle": "AI 어시스턴트, 만들기 모드, 에이전트",
+				"metaDescription": "업무에 대해 질문하고 최신 데이터로 답을 받으세요. 만들기 모드가 제안한 변경을 확인하고, AI의 도움으로 글을 쓰고, AI 에이전트에게 작업을 할당할 수 있습니다. 모델은 직접 선택하고, AI는 기본적으로 꺼져 있습니다.",
+				"eyebrow": "AI",
+				"title": "업무를 아는 어시스턴트.",
+				"description": "AI에게 묻기, 만들기 모드, 글쓰기 도움, 에이전트가 모두 오픈 소스 버전에 들어 있고, 여러분이 고른 모델에서 실행됩니다.",
+				"sections": {
+					"ask": {
+						"title": "AI에게 묻기",
+						"body": "평소 말투로 물으면 최신 작업을 바탕으로 개수, 차트, 참고한 작업과 페이지 링크까지 곁들여 답합니다. @로 작업, 페이지, 사람을 언급하거나, 파일을 첨부하거나, 입력 대신 말로 물어보세요."
+					},
+					"build": {
+						"title": "만들기 모드",
+						"body": "작업 세 개가 있는 프로젝트나 Mia에게 줄 작업처럼 원하는 변경을 설명하세요. 무엇을 읽고 어떻게 판단했는지 보고, 제안된 변경을 수정해 확인할 수 있으며, 어떤 변경이든 한 시간 동안 실행 취소할 수 있습니다."
+					},
+					"writing": {
+						"title": "글쓰기 도움",
+						"body": "설명이나 댓글을 다듬고, 줄이고, 번역하거나 어조를 바꾸세요. 제목 제안을 받고, 작업을 요약하고, 페이지에 AI 블록을 추가할 수도 있습니다."
+					},
+					"triage": {
+						"title": "분류와 브리핑",
+						"body": "새 업무에 맞는 라벨과 우선순위를 제안받고, 중복을 찾고, 원하는 내용을 설명해 보드를 필터링하세요. 읽지 않은 받은 편지함 요약이나 사이클 브리핑도 받을 수 있습니다."
+					},
+					"agents": {
+						"title": "AI 에이전트",
+						"body": "에이전트는 작업을 할당할 수 있는 멤버입니다. 막히면 사람에게 묻고, 쓰기 전에 승인을 기다리며, 일정에 따라 실행되고, 연결한 다른 MCP 서버의 도구도 쓸 수 있습니다."
+					},
+					"privacy": {
+						"title": "내 모델, 내 규칙",
+						"body": "관리자가 켜기 전까지 AI는 꺼져 있습니다. Claude나 로컬 모델을 쓰고, 데이터를 네트워크 안에 두고, 예산을 정하고, 원하지 않으면 프롬프트와 답변을 남기지 마세요."
+					}
+				},
+				"cta": {
+					"title": "준비가 되면 AI를 켜세요.",
+					"description": "AI 설정 가이드를 읽거나, 내 워크스페이스에서 AI에게 묻기를 사용해 보세요."
+				}
 			}
 		},
 		"scenes": {
@@ -6601,6 +7234,10 @@
 			"yourWork": {
 				"caption": "내 작업에는 나에게 할당된 일, 내가 만든 일, 내가 팔로우하는 일이 모입니다.",
 				"description": "데모: 내 작업 페이지입니다. 커서가 할당됨, 만든 작업, 구독 중 탭을 차례로 오가면, 탭마다 여러 프로젝트에 걸친 작업이 상태, 우선순위, 마감일과 함께 표시됩니다."
+			},
+			"ask": {
+				"caption": "업무에 대해 묻고, 변경은 만들기에 맡기세요. 확인은 여러분이 합니다.",
+				"description": "데모: AI에게 묻기 채팅이 열린 웹사이트 보드입니다. 누군가 현재 사이클을 막고 있는 것이 무엇인지 묻습니다. 어시스턴트는 읽은 내용을 나열하고 2초 동안 생각한 뒤, WEB-5와 WEB-6이 막혀 있고 WEB-5에는 담당자가 없다고 답합니다. 만들기로 바꿔 WEB-5를 Mira에게 할당해 달라고 하자 변경을 제안하고, 확인하면 카드에 완료와 실행 취소가 표시되며 WEB-5에 Mira의 아바타가 나타납니다."
 			}
 		}
 	},
@@ -6756,7 +7393,10 @@
 			"owner": "소유자",
 			"progress": "진행 상황",
 			"tasks": "작업",
-			"title": "사이클 상세 정보"
+			"title": "사이클 상세 정보",
+			"rolledOver_other": "이월로 미완료 작업 {{count}}개를 {{name}}(으)로 이동했습니다.",
+			"rolloverNoNext": "이월할 다음 사이클이 없어 미완료 작업이 여기에 남아 있습니다.",
+			"rolloverNothing": "이월할 미완료 작업이 없었습니다."
 		},
 		"status": {
 			"archived": "보관됨",
@@ -7323,7 +7963,9 @@
 		"widgets": {
 			"quickLinks": "빠른 링크",
 			"recents": "최근 항목",
-			"stickies": "스티커 메모"
+			"stickies": "스티커 메모",
+			"risks": "위험",
+			"myBrief": "내 브리핑"
 		},
 		"focus": {
 			"caughtUp": "모두 확인했습니다",
@@ -7334,7 +7976,9 @@
 			"overdue_other": "기한 초과 {{count}}개",
 			"stickies": "스티커 메모",
 			"stickiesHint": "나만 볼 수 있는 비공개 메모",
-			"unread_other": "읽지 않음 {{count}}개"
+			"unread_other": "읽지 않음 {{count}}개",
+			"openCaption": "진행 중",
+			"unreadCaption": "읽지 않음"
 		}
 	},
 	"intake": {
@@ -7394,7 +8038,11 @@
 			"titlePlaceholder": "무엇이 필요하신가요?",
 			"titleRequired": "제목을 입력하세요",
 			"toast": "요청을 제출했습니다",
-			"toastView": "보기"
+			"toastView": "보기",
+			"pastedImages": "붙여넣은 이미지",
+			"pasteHint": "스크린샷을 붙여넣으면 요청에 첨부됩니다.",
+			"removeImage": "{{name}} 제거",
+			"attachFailed": "요청은 제출되었지만 일부 이미지를 첨부하지 못했습니다."
 		},
 		"decline": {
 			"description": "요청이 종료되며 보드에 추가되지 않습니다. 나중에 다시 열 수 있습니다.",
@@ -7441,7 +8089,9 @@
 			"noTasks": "이 프로젝트에는 아직 다른 작업이 없습니다.",
 			"searchPlaceholder": "키 또는 제목으로 작업 검색",
 			"title": "{{key}}을(를) 중복으로 표시",
-			"toast": "{{key}}의 중복으로 표시했습니다"
+			"toast": "{{key}}의 중복으로 표시했습니다",
+			"aiSuggestions": "AI 추천",
+			"aiChecking": "AI로 중복 항목을 찾는 중…"
 		},
 		"empty": {
 			"backToIntake": "인테이크로 돌아가기",
@@ -7683,6 +8333,11 @@
 				"singleProjectHint": "벨로시티를 보려면 프로젝트를 하나만 선택하세요",
 				"subtitle": "사이클별 완료 대비 계획",
 				"title": "벨로시티"
+			},
+			"filter": {
+				"all": "전체",
+				"label": "사이클 표시",
+				"running": "진행 중"
 			}
 		},
 		"dimensions": {
@@ -7823,7 +8478,8 @@
 			"noRequests": "아직 요청이 없습니다",
 			"noTasks": "이 필터와 일치하는 작업이 없습니다",
 			"retry": "다시 시도",
-			"timeout": "시간이 너무 오래 걸렸습니다. 필터를 좁혀서 다시 시도하세요."
+			"timeout": "시간이 너무 오래 걸렸습니다. 필터를 좁혀서 다시 시도하세요.",
+			"noRunningCycles": "현재 진행 중인 사이클이 없습니다"
 		},
 		"table": {
 			"periodEnd": "기간 종료",
@@ -7839,7 +8495,8 @@
 			"intake": "인테이크",
 			"modules": "모듈",
 			"overview": "개요",
-			"tasks": "작업"
+			"tasks": "작업",
+			"delivery": "딜리버리"
 		},
 		"trend": {
 			"completed": "완료",
@@ -7853,9 +8510,141 @@
 			"chart": "차트",
 			"label": "표시 방식",
 			"table": "표"
+		},
+		"reports": {
+			"actionsFor": "{{name}} 동작",
+			"close": "리포트 닫기",
+			"delete": "삭제",
+			"deleteDescription": "“{{name}}”이(가) 삭제됩니다. 이 작업은 되돌릴 수 없습니다.",
+			"deleteSharedDescription": "워크스페이스의 모든 사용자에게서 “{{name}}”이(가) 삭제됩니다. 이 작업은 되돌릴 수 없습니다.",
+			"deleteTitle": "이 리포트를 삭제할까요?",
+			"dialog": {
+				"cancel": "취소",
+				"createTitle": "리포트 저장",
+				"editTitle": "리포트 편집",
+				"name": "이름",
+				"namePlaceholder": "예: 담당자별 열린 버그",
+				"nameRequired": "이름을 입력하세요",
+				"save": "저장",
+				"summary": "차트 설정, 대상 프로젝트, 필터를 저장합니다.",
+				"update": "변경 사항 저장",
+				"visibility": "볼 수 있는 사람"
+			},
+			"empty": "저장된 리포트가 아직 없습니다. 이 차트를 저장하면 나중에 다시 볼 수 있습니다.",
+			"listTitle": "저장된 리포트",
+			"loadError": "저장된 리포트를 불러올 수 없습니다",
+			"makePrivate": "비공개로 전환",
+			"notes": {
+				"allProjects": "리포트의 프로젝트를 하나도 사용할 수 없어 모든 프로젝트를 표시합니다.",
+				"builderReset": "일부 차트 설정은 이 프로젝트에서 사용할 수 없어 초기화되었습니다.",
+				"dropped_other": "이 리포트의 프로젝트 {{count}}개가 더 이상 존재하지 않습니다.",
+				"leftOut_other": "이 리포트의 프로젝트 {{count}}개는 보관되어 제외되었습니다.",
+				"otherProjects": "이 리포트는 다른 프로젝트용으로 저장되었습니다. 여기서는 이 프로젝트만 표시합니다."
+			},
+			"open": "리포트",
+			"rename": "이름 바꾸기",
+			"save": "저장",
+			"saveAsNew": "새로 저장",
+			"share": "워크스페이스에 공유",
+			"sharedBy": "{{name}} 님이 공유함",
+			"showing": "리포트: {{name}}",
+			"toast": {
+				"deleted": "리포트를 삭제했습니다",
+				"deleteError": "리포트를 삭제할 수 없습니다",
+				"madePrivate": "리포트를 비공개로 전환했습니다",
+				"saved": "“{{name}}”을(를) 저장했습니다",
+				"saveError": "리포트를 저장할 수 없습니다",
+				"shared": "리포트를 워크스페이스에 공유했습니다",
+				"updated": "리포트를 업데이트했습니다"
+			},
+			"unsaved": "저장되지 않은 변경 사항",
+			"update": "리포트 업데이트",
+			"visibility": {
+				"private": "비공개",
+				"privateHint": "나만 볼 수 있습니다.",
+				"workspace": "워크스페이스에 공유됨",
+				"workspaceHint": "이 워크스페이스에서 분석에 접근할 수 있는 모든 사용자가 열 수 있습니다."
+			}
 		}
 	},
 	"pages": {
+		"templates": {
+			"saveAction": "템플릿으로 저장",
+			"saveTitle": "템플릿으로 저장",
+			"saveDescription": "페이지의 현재 내용과 아이콘이 새 페이지용 템플릿이 됩니다.",
+			"nameLabel": "템플릿 이름",
+			"scopeLabel": "사용 범위",
+			"scopeProject": "이 프로젝트",
+			"scopeProjectHint": "이 프로젝트에서 페이지를 만들 때 제안됩니다.",
+			"scopeWorkspace": "모든 프로젝트",
+			"scopeWorkspaceHint": "워크스페이스의 모든 프로젝트에서 제안됩니다.",
+			"saveConfirm": "템플릿 저장",
+			"savedToast": "템플릿을 저장했습니다",
+			"saveError": "템플릿을 저장하지 못했습니다",
+			"newFromTemplate": "템플릿으로 새 페이지",
+			"moreCreateOptions": "페이지를 만드는 다른 방법",
+			"pickTitle": "템플릿으로 새 페이지",
+			"pickDescription": "새 페이지는 템플릿의 내용으로 시작합니다. 이후 무엇이든 바꿀 수 있습니다.",
+			"starters": "기본 템플릿",
+			"saved": "저장된 템플릿",
+			"savedEmpty": "저장된 템플릿이 아직 없습니다. 페이지 메뉴에서 저장하세요.",
+			"loadError": "템플릿을 불러오지 못했습니다",
+			"deleteLabel": "{{name}} 템플릿 삭제",
+			"deleted": "템플릿을 삭제했습니다",
+			"deleteError": "템플릿을 삭제하지 못했습니다",
+			"builtin": {
+				"meetingName": "회의록",
+				"meetingDescription": "참석자, 안건, 결정 사항, 할 일.",
+				"meetingAttendees": "참석자",
+				"meetingAgenda": "안건",
+				"meetingNotes": "메모",
+				"meetingDecisions": "결정 사항",
+				"meetingActionItems": "할 일",
+				"specName": "기획서",
+				"specDescription": "문제, 목표, 제안, 열린 질문.",
+				"specSummary": "요약",
+				"specProblem": "문제",
+				"specGoals": "목표",
+				"specNonGoals": "범위 밖",
+				"specProposal": "제안",
+				"specOpenQuestions": "열린 질문",
+				"retroName": "회고",
+				"retroDescription": "잘된 점, 개선할 점, 다음에 시도할 것.",
+				"retroWentWell": "잘된 점",
+				"retroCouldBeBetter": "개선할 점",
+				"retroTryNext": "다음에 시도할 것"
+			}
+		},
+		"publish": {
+			"menuItem": "웹에 게시",
+			"title": "웹에 게시",
+			"description": "링크가 있는 사람은 누구나 로그인하지 않고 이 페이지를 읽을 수 있습니다. 검색 엔진에는 색인하지 않도록 요청합니다.",
+			"switchLabel": "공개 링크",
+			"onHint": "게시됨. 끄면 링크가 즉시 취소됩니다.",
+			"offHint": "꺼짐. 켜면 링크가 만들어집니다.",
+			"disabledByWorkspace": "이 워크스페이스에서는 공개 페이지가 꺼져 있습니다. 관리자가 워크스페이스 설정에서 켤 수 있습니다.",
+			"cannotPublish": "프로젝트를 공유할 수 있는 사람만 게시할 수 있으며, 워크스페이스 전체에 보이는 페이지만 게시할 수 있습니다.",
+			"linkLabel": "링크",
+			"copyLink": "링크 복사",
+			"copied": "복사됨",
+			"openLink": "공개 페이지 열기",
+			"privacyNote": "멘션, 작업 링크, 파일, 게시되지 않은 페이지로의 링크는 공개 페이지에서 숨겨집니다.",
+			"publishedToast": "페이지를 게시했습니다",
+			"unpublishedToast": "링크를 취소했습니다",
+			"error": "공개 링크를 변경하지 못했습니다",
+			"loadError": "공개 링크를 불러오지 못했습니다",
+			"done": "완료"
+		},
+		"publicView": {
+			"documentTitle": "공유된 페이지",
+			"unavailableTitle": "이 페이지를 볼 수 없습니다",
+			"unavailableDescription": "링크가 취소되었거나 페이지가 더 이상 공유되지 않습니다.",
+			"updated": "{{date}} 업데이트됨",
+			"mention": "@누군가",
+			"task": "연결된 작업",
+			"file": "첨부 파일",
+			"page": "다른 페이지"
+		},
 		"actions": {
 			"archive": "보관",
 			"copyLink": "링크 복사",
@@ -7893,6 +8682,40 @@
 			"restoredBy": "{{name}}님이 이전 버전을 복원했습니다",
 			"roomFull": "지금 이 페이지를 열어 둔 사용자가 너무 많습니다. 잠시 후 다시 시도하세요.",
 			"signedOut": "세션이 종료되었습니다. 계속 편집하려면 다시 로그인하세요."
+		},
+		"toolbar": {
+			"ariaLabel": "서식 도구 모음",
+			"textStyle": "텍스트 스타일",
+			"bold": "굵게",
+			"italic": "기울임꼴",
+			"underline": "밑줄",
+			"strike": "취소선",
+			"inlineCode": "인라인 코드",
+			"link": "링크",
+			"image": "이미지",
+			"more": "추가 서식"
+		},
+		"filters": {
+			"button": "필터",
+			"active": "필터 적용됨",
+			"search": "필터 검색",
+			"searchClear": "검색 지우기",
+			"favorites": "즐겨찾기",
+			"createdDate": "생성일",
+			"date": {
+				"any": "전체 기간",
+				"today": "오늘",
+				"last7": "최근 7일",
+				"last30": "최근 30일",
+				"older": "30일 이전"
+			},
+			"remove": "{{filter}} 필터 제거"
+		},
+		"detail": {
+			"unlocked": "잠금 해제됨",
+			"openOutline": "개요 열기",
+			"currentSection": "현재 섹션",
+			"emptyLinePlaceholder": "'/'를 입력해 명령 보기"
 		},
 		"commandPalette": {
 			"createPage": "페이지 만들기"
@@ -8009,8 +8832,6 @@
 			"locked": "잠김",
 			"newPage": "새 페이지",
 			"ownedBy": "소유자: {{name}}",
-			"ownerFilter": "소유자",
-			"ownerFilterSearch": "사용자 검색",
 			"retry": "다시 시도",
 			"searchPlaceholder": "페이지 검색",
 			"sort": {
@@ -8130,6 +8951,229 @@
 			"expand": "{{title}} 펼치기",
 			"newPage": "새 페이지",
 			"title": "페이지"
+		}
+	},
+	"accountSecurity": {
+		"platform": {
+			"save": "저장",
+			"retry": "다시 시도",
+			"loadMore": "더 불러오기",
+			"auditPasswordResetSent": "비밀번호 재설정 링크 전송",
+			"apiKeys": {
+				"accessLabel": "접근 권한",
+				"accessFull": "전체 접근",
+				"accessFullHint": "속한 모든 워크스페이스에서 할 수 있는 모든 작업.",
+				"accessRead": "읽기 전용",
+				"accessReadHint": "읽을 수만 있고 아무것도 변경하지 않습니다.",
+				"accessCustom": "사용자 지정",
+				"accessCustomHint": "아래에서 선택한 영역만.",
+				"areasLabel": "영역",
+				"areaNone": "없음",
+				"areaRead": "읽기",
+				"areaWrite": "쓰기",
+				"areasRequired": "영역을 하나 이상 선택하세요.",
+				"projectsLabel": "특정 프로젝트로 제한",
+				"projectsHint": "이 키에서는 다른 프로젝트가 없는 것처럼 보이며, 워크스페이스 전체 요청은 거부됩니다.",
+				"projectsIn": "{{workspace}}의 프로젝트",
+				"projectsLoading": "프로젝트를 불러오는 중…",
+				"projectsEmpty": "이 워크스페이스에는 아직 프로젝트가 없습니다.",
+				"projectsRequired": "프로젝트를 하나 이상 선택하세요.",
+				"columnScope": "범위",
+				"scopeFull": "전체 접근",
+				"scopeRead": "읽기 전용",
+				"scopeCustom": "사용자 지정",
+				"scopeProjects": "프로젝트: {{projects}}",
+				"deletedProject": "삭제된 프로젝트",
+				"requestsAria": "{{name}}(으)로 보낸 요청",
+				"requestsTitle": "요청: {{name}}",
+				"requestsDescription": "이 키로 보낸 최근 요청입니다. 메서드, 경로, 상태, 소요 시간만 저장하며 내용은 저장하지 않습니다.",
+				"requestsEmpty": "아직 요청이 없습니다.",
+				"requestsError": "요청을 불러오지 못했습니다.",
+				"columnTime": "시간",
+				"columnRequest": "요청",
+				"columnStatus": "상태",
+				"columnDuration": "소요 시간",
+				"durationMs": "{{value}}ms"
+			},
+			"policy": {
+				"title": "로그인 정책",
+				"description": "누가 계정을 만들 수 있는지, 모두가 어떻게 로그인하는지, 세션이 얼마나 유지되는지 정합니다.",
+				"invitedPasswordSignUp": "초대받은 사람의 비밀번호 가입",
+				"invitedPasswordSignUpHint": "비밀번호 가입이 꺼져 있어도 유효한 초대를 받은 사람은 비밀번호 계정을 만들 수 있습니다.",
+				"domains": "허용된 이메일 도메인",
+				"domainsHint": "새 계정은 이 도메인 중 하나의 주소를 사용해야 합니다. 비워 두면 모든 도메인을 허용합니다.",
+				"requiredProvider": "필수 로그인 제공자",
+				"requiredProviderHint": "모두 이 제공자로 로그인합니다. 인스턴스 관리자는 복구용으로 비밀번호 로그인을 유지합니다.",
+				"noRequirement": "필수 아님",
+				"customProvider": "조직의 로그인",
+				"sessionLifetime": "세션 유지 시간",
+				"sessionLifetimeHint": "사용하지 않는 세션이 유지되는 시간입니다. 사용하면 연장됩니다.",
+				"hours": "시간",
+				"signInNotice": "{{provider}}(으)로 로그인하세요. 비밀번호 로그인은 인스턴스 관리자 전용입니다."
+			},
+			"twoFactor": {
+				"title": "2단계 인증",
+				"description": "비밀번호로 로그인할 때 인증 앱의 코드를 요구합니다.",
+				"authenticator": "인증 앱",
+				"on": "켜짐",
+				"off": "꺼짐",
+				"turnOn": "켜기",
+				"turnOff": "끄기",
+				"newCodes": "새 복구 코드",
+				"confirmPassword": "비밀번호 확인",
+				"continue": "계속",
+				"setupTitle": "인증 앱에 Margaya 추가",
+				"setupHint": "이 설정 키를 인증 앱에 입력한 뒤 표시되는 6자리 코드를 입력하세요.",
+				"setupKey": "설정 키",
+				"openApp": "이 기기의 인증 앱에서 열기",
+				"code": "인증 코드",
+				"verify": "확인",
+				"invalidCode": "코드가 올바르지 않습니다. 기기의 시간을 확인하고 다시 시도하세요.",
+				"codesTitle": "복구 코드",
+				"codesHint": "안전한 곳에 보관하세요. 기기를 잃어버렸을 때 각 코드로 한 번 로그인할 수 있습니다.",
+				"copyCodes": "코드 복사",
+				"copied": "복구 코드를 복사했습니다",
+				"done": "완료",
+				"enabled": "2단계 인증이 켜졌습니다.",
+				"disabled": "2단계 인증이 꺼졌습니다.",
+				"error": "문제가 발생했습니다. 다시 시도하세요."
+			},
+			"challenge": {
+				"title": "2단계 인증",
+				"totpHint": "인증 앱의 6자리 코드를 입력하세요.",
+				"recoveryHint": "복구 코드 중 하나를 입력하세요. 각 코드는 한 번만 사용할 수 있습니다.",
+				"recoveryCode": "복구 코드",
+				"invalid": "코드가 올바르지 않습니다. 다시 시도하세요.",
+				"trustDevice": "이 기기를 30일 동안 신뢰",
+				"useRecovery": "복구 코드 사용",
+				"useApp": "인증 앱 사용",
+				"usePassword": "비밀번호로 로그인",
+				"back": "로그인으로 돌아가기"
+			},
+			"users": {
+				"nav": "사용자",
+				"title": "사용자",
+				"subtitle": "이 서버의 모든 계정입니다. 떠난 사람을 차단하고, 비밀번호를 재설정하고, 로그아웃시킬 수 있습니다.",
+				"listTitle": "계정",
+				"search": "이름 또는 이메일로 검색",
+				"filterLabel": "표시",
+				"filterAll": "모든 계정",
+				"filterAdmins": "인스턴스 관리자",
+				"filterBanned": "차단됨",
+				"empty": "“{{query}}”와 일치하는 계정이 없습니다.",
+				"none": "아직 계정이 없습니다.",
+				"columnUser": "사용자",
+				"columnStatus": "상태",
+				"columnWorkspaces": "워크스페이스",
+				"columnLastActive": "마지막 활동",
+				"columnJoined": "가입일",
+				"columnActions": "작업",
+				"badgeAdmin": "관리자",
+				"badgeBanned": "차단됨",
+				"badgeTwoFactor": "2FA",
+				"never": "없음",
+				"actionsFor": "{{name}} 작업",
+				"details": "세부 정보 보기",
+				"resetPassword": "비밀번호 재설정",
+				"signOut": "모든 곳에서 로그아웃",
+				"makeAdmin": "인스턴스 관리자로 지정",
+				"removeAdmin": "인스턴스 관리자에서 제외",
+				"ban": "차단",
+				"unban": "차단 해제",
+				"banTitle": "{{name}}님을 차단할까요?",
+				"banDescription": "모든 곳에서 로그아웃되며 차단이 끝날 때까지 로그인할 수 없습니다. API 키도 작동을 멈춥니다.",
+				"banReason": "사유(선택)",
+				"banDuration": "기간",
+				"banForever": "해제할 때까지",
+				"ban7Days": "7일",
+				"ban30Days": "30일",
+				"banned": "{{name}}님을 차단했습니다.",
+				"unbanned": "{{name}}님이 다시 로그인할 수 있습니다.",
+				"resetTitle": "{{name}}님의 비밀번호를 재설정할까요?",
+				"resetDescription": "재설정 링크를 보내거나 지금 새 비밀번호를 설정하세요. 새 비밀번호를 설정하면 모든 곳에서 로그아웃됩니다.",
+				"resetByEmail": "{{email}}(으)로 재설정 링크 보내기",
+				"resetSetNow": "지금 새 비밀번호 설정",
+				"newPassword": "새 비밀번호",
+				"resetConfirm": "비밀번호 재설정",
+				"resetSent": "{{email}}(으)로 재설정 링크를 보내는 중입니다.",
+				"passwordSet": "{{name}}님의 비밀번호를 변경했습니다.",
+				"signOutTitle": "{{name}}님을 모든 곳에서 로그아웃할까요?",
+				"signOutDescription": "모든 세션이 즉시 종료됩니다. API 키는 계속 작동하며, 소유자만 취소할 수 있습니다.",
+				"signedOut": "{{name}}님을 모든 곳에서 로그아웃했습니다.",
+				"promoted": "{{name}}님이 이제 인스턴스 관리자입니다.",
+				"demoted": "{{name}}님은 더 이상 인스턴스 관리자가 아닙니다.",
+				"activeSessions": "활성 세션",
+				"signInMethod": "비밀번호",
+				"hasPassword": "설정됨",
+				"noPassword": "설정 안 됨(다른 방법으로 로그인)",
+				"workspacesTitle": "워크스페이스",
+				"noWorkspaces": "속한 워크스페이스가 없습니다.",
+				"joined": "{{date}} 가입"
+			}
+		},
+		"password": {
+			"tooShort": "{{min}}자 이상 입력하세요.",
+			"tooCommon": "너무 흔해서 추측하기 쉬운 비밀번호입니다. 다른 비밀번호를 선택하세요.",
+			"matchesEmail": "이메일 주소를 비밀번호로 사용할 수 없습니다.",
+			"hint": "{{min}}자 이상. 흔한 비밀번호와 이메일 주소는 피하세요."
+		},
+		"emailChange": {
+			"action": "이메일 변경",
+			"title": "이메일 주소 변경",
+			"description": "새 주소로 코드를 보내 드립니다. 코드를 입력하면 이메일이 변경되고 다른 세션은 로그아웃됩니다.",
+			"newEmail": "새 이메일 주소",
+			"newEmailPlaceholder": "you@example.com",
+			"invalidEmail": "올바른 이메일 주소를 입력하세요.",
+			"sameEmail": "이미 사용 중인 이메일 주소입니다.",
+			"sendCode": "코드 보내기",
+			"codeSent": "{{email}}을(를) 사용할 수 있다면 코드가 전송되었습니다. 코드는 5분 후 만료됩니다.",
+			"code": "인증 코드",
+			"confirm": "이메일 변경",
+			"back": "다른 주소 사용",
+			"success": "이메일 주소가 {{email}}(으)로 변경되었습니다.",
+			"invalidCode": "코드가 올바르지 않거나 만료되었습니다. 새 코드를 요청하세요.",
+			"sessionTooOld": "보안을 위해 이메일 주소를 변경하기 전에 다시 로그인하세요.",
+			"unavailable": "이 서버에 이메일이 설정되어 있지 않아 여기에서 주소를 변경할 수 없습니다. 인스턴스 관리자에게 문의하세요.",
+			"error": "이메일 주소를 변경할 수 없습니다."
+		},
+		"reauth": {
+			"title": "본인 확인",
+			"description": "인스턴스를 변경하려면 최근 로그인이 필요합니다. 비밀번호를 입력하면 앞으로 10분 동안 계속할 수 있습니다.",
+			"noPassword": "인스턴스를 변경하려면 최근 로그인이 필요합니다. 계정에 비밀번호가 없으므로 다시 로그인하여 계속하세요.",
+			"password": "비밀번호",
+			"confirm": "확인",
+			"signInAgain": "다시 로그인",
+			"wrongPassword": "비밀번호가 올바르지 않습니다.",
+			"cancelled": "저장되지 않음: 본인 확인이 완료되지 않았습니다.",
+			"error": "비밀번호를 확인할 수 없습니다."
+		},
+		"auditTrail": {
+			"title": "감사 기록",
+			"subtitle": "인스턴스 변경 내역: 누가, 무엇을, 언제 변경했는지 보여 줍니다. 비밀 값은 기록되지 않습니다.",
+			"empty": "아직 기록된 인스턴스 변경이 없습니다.",
+			"loadMore": "더 불러오기",
+			"when": "시간",
+			"who": "사용자",
+			"what": "내용",
+			"system": "시스템",
+			"actions": {
+				"instanceSettingsUpdated": "인스턴스 설정을 변경함",
+				"instanceAdminAdded": "인스턴스 관리자를 추가함",
+				"instanceAdminRemoved": "인스턴스 관리자를 제거함",
+				"instanceReauthenticated": "비밀번호를 다시 확인함",
+				"userCreated": "계정을 생성함",
+				"userRoleChanged": "계정의 역할을 변경함",
+				"userBanned": "계정을 차단함",
+				"userUnbanned": "차단을 해제함",
+				"userRemoved": "계정을 삭제함",
+				"userPasswordSet": "계정의 비밀번호를 설정함",
+				"userSessionsRevoked": "계정을 로그아웃시킴",
+				"userImpersonated": "다른 계정으로 로그인함",
+				"cliAdminPromoted": "인스턴스 관리자로 지정함 (복구 CLI)",
+				"cliAdminDemoted": "인스턴스 관리자를 제거함 (복구 CLI)",
+				"cliPasswordReset": "비밀번호를 재설정함 (복구 CLI)",
+				"cliUserUnbanned": "차단을 해제함 (복구 CLI)"
+			}
 		}
 	},
 	"instanceAdmin": {
@@ -8270,7 +9314,8 @@
 			"email": "이메일",
 			"general": "일반",
 			"publicBoards": "공개 보드",
-			"workspaces": "워크스페이스"
+			"workspaces": "워크스페이스",
+			"ai": "AI"
 		},
 		"oauth": {
 			"authorizationUrl": "인증 URL",
@@ -8491,7 +9536,11 @@
 				"label": "Stack",
 				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
 			},
-			"title": "Quick facts"
+			"title": "Quick facts",
+			"ai": {
+				"label": "AI",
+				"value": "선택 사항이며 기본적으로 꺼짐: AI에게 묻기, 만들기 모드, AI 에이전트를 Claude 또는 직접 호스팅한 모델에서 사용"
+			}
 		},
 		"guidelines": {
 			"do": {
@@ -8701,5 +9750,1675 @@
 		},
 		"title": "One product. Two ways to run it.",
 		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+	},
+	"templates": {
+		"form": {
+			"addSubtask": "추가",
+			"assignees": "담당자",
+			"assigneesNone": "프로젝트 기본값",
+			"create": "템플릿 만들기",
+			"createTitle": "새 작업 템플릿",
+			"description": "새 작업의 초기 내용입니다. 작업을 만들 때 모든 항목을 수정할 수 있습니다.",
+			"editTitle": "작업 템플릿 편집",
+			"estimate": "추정치",
+			"labels": "라벨",
+			"labelsEmpty": "라벨을 찾을 수 없음",
+			"labelsNone": "라벨 없음",
+			"labelsSearch": "라벨 검색",
+			"moveDown": "{{title}} 아래로 이동",
+			"moveUp": "{{title}} 위로 이동",
+			"name": "이름",
+			"namePlaceholder": "버그 리포트",
+			"notSet": "설정 안 됨",
+			"priority": "우선순위",
+			"removeSubtask": "{{title}} 제거",
+			"save": "템플릿 저장",
+			"status": "상태",
+			"statusDefault": "프로젝트 기본값",
+			"subtaskPlaceholder": "하위 작업 추가",
+			"subtasks": "하위 작업",
+			"subtaskTitle": "하위 작업 {{number}}",
+			"taskDescription": "설명",
+			"taskDescriptionPlaceholder": "재현 단계, 예상 결과…",
+			"titlePattern": "제목 패턴",
+			"titlePatternHint": "{title}은(는) 입력한 제목으로 바뀝니다. 없으면 입력한 제목이 패턴 뒤에 붙습니다.",
+			"titlePatternPlaceholder": "버그: {title}"
+		},
+		"settings": {
+			"add": "새 템플릿",
+			"deleteAria": "{{name}} 템플릿 삭제",
+			"deleteConfirm": "삭제",
+			"deleteDescription": "이 템플릿으로 만든 작업은 그대로 유지됩니다.",
+			"deleteTitle": "{{name}} 템플릿을 삭제할까요?",
+			"description": "새 작업의 시작점입니다. 제목 패턴, 기본 필드, 하위 작업 체크리스트를 정할 수 있습니다.",
+			"editAria": "{{name}} 템플릿 편집",
+			"empty": "아직 템플릿이 없습니다.",
+			"loadError": "템플릿을 불러올 수 없습니다.",
+			"noPermission": "프로젝트를 편집할 수 있는 사용자만 템플릿을 변경할 수 있습니다.",
+			"retry": "다시 시도",
+			"subtaskCount_other": "하위 작업 {{count}}개",
+			"title": "작업 템플릿",
+			"toast": {
+				"created": "템플릿을 만들었습니다",
+				"deleted": "템플릿을 삭제했습니다",
+				"deleteError": "템플릿을 삭제할 수 없습니다",
+				"error": "템플릿을 저장할 수 없습니다",
+				"updated": "템플릿을 저장했습니다"
+			}
+		},
+		"use": {
+			"applied": "템플릿: {{name}}",
+			"button": "템플릿",
+			"menuLabel": "템플릿 사용",
+			"quickAdd": "템플릿으로 만들기",
+			"removeSubtask": "하위 작업 {{title}} 제거",
+			"subtaskError_other": "작업은 만들어졌지만 하위 작업 {{count}}개를 추가할 수 없습니다",
+			"subtasksTitle_other": "템플릿의 하위 작업 {{count}}개"
+		}
+	},
+	"delivery": {
+		"forecast": {
+			"title": "예측",
+			"likelyBy": "85% 확률로 {{date}}까지 완료",
+			"percentiles": "50%: {{p50}}까지 · 95%: {{p95}}까지",
+			"chanceByEnd": "{{date}}까지 완료할 확률: {{percent}}%",
+			"beyondHorizon": "현재 속도로는 2년 이상",
+			"open_other": "열린 작업 {{count}}개",
+			"complete": "모든 작업이 완료되었습니다",
+			"insufficient": {
+				"short_span": "아직 기록이 부족합니다: 예측하려면 이 프로젝트에서 최소 14일의 작업이 필요합니다.",
+				"few_completions": "아직 기록이 부족합니다: 지난 8주 동안 완료된 작업이 5개 미만입니다.",
+				"few_active_days": "아직 기록이 부족합니다: 지난 8주 동안 작업이 완료된 날이 3일 미만입니다."
+			},
+			"howCalculated": "어떻게 계산되나요?",
+			"method": {
+				"title": "몬테카를로 예측",
+				"body": "Margaya는 팀의 실제 속도를 {{iterations}}번 재현합니다. 시뮬레이션의 하루마다 아래 기록에서 무작위로 고른 하루의 완료 수를 가져와, 열린 작업이 모두 끝날 때까지 반복합니다. 날짜는 시뮬레이션의 50%, 85%, 95%가 끝난 시점을 보여 줍니다.",
+				"window": "기록: {{from}} – {{to}}",
+				"completed": "완료된 작업: {{total}}",
+				"activeDays": "완료가 있었던 날: {{days}}",
+				"perDay": "하루 완료 수: {{min}}–{{max}}",
+				"perWeek": "주간 평균: {{perWeek}}",
+				"team": "속도는 프로젝트 전체 기준이므로 이 범위 밖의 작업도 포함됩니다.",
+				"seed": "시드 {{seed}}: 같은 데이터라면 하루 종일 같은 결과가 나옵니다."
+			},
+			"error": "예측을 불러오지 못했습니다",
+			"retry": "다시 시도"
+		},
+		"risks": {
+			"title": "위험",
+			"empty": "발견된 위험이 없습니다",
+			"showAll": "모두 보기 ({{total}})",
+			"showLess": "간단히 보기",
+			"noCycleTime": "오래 걸리는 작업은 시작이 기록된 작업 10개가 완료되면 표시됩니다.",
+			"hiddenTask": "볼 수 없는 작업",
+			"truncated": "처음 2,000개의 열린 작업만 확인했습니다.",
+			"error": "위험을 불러오지 못했습니다",
+			"someone": "누군가",
+			"severity": {
+				"high": "높은 위험",
+				"medium": "중간 위험",
+				"low": "낮은 위험"
+			},
+			"criticalPath": {
+				"ends": "크리티컬 패스 종료일: {{date}}",
+				"chain_other": "가장 긴 의존성 체인: 작업 {{count}}개"
+			},
+			"kinds": {
+				"critical_path_late": "크리티컬 패스가 {{date}}에 끝나 마감일 {{deadline}}을 넘깁니다",
+				"critical_path_tight": "크리티컬 패스가 {{date}}에 끝나 마감일 {{deadline}}에 거의 여유가 없습니다",
+				"blocked_chain_other": "{{head}}이(가) 작업 {{count}}개를 막고 있습니다",
+				"ageing_other": "작업 {{count}}개가 {{days}}일 넘게 진행 중입니다 (평소보다 깁니다)",
+				"overdue_cluster_other": "{{name}}의 기한이 지난 작업 {{count}}개",
+				"overdue_cluster_unassigned_other": "담당자가 없는 기한이 지난 작업 {{count}}개",
+				"overdue_other": "기한이 지난 작업 {{count}}개",
+				"unassigned_near_deadline_other": "{{date}}까지 기한인 미배정 작업 {{count}}개",
+				"dependency_loop_other": "작업 {{count}}개가 순환하며 서로를 막고 있습니다"
+			}
+		},
+		"home": {
+			"title": "위험 항목",
+			"empty": "현재 사이클에 위험한 항목이 없습니다",
+			"context": "{{project}} · {{cycle}}"
+		},
+		"tab": {
+			"description": "이 프로젝트의 열린 작업에 대한 예측과 위험"
+		}
+	},
+	"ai": {
+		"rules": {
+			"title": "설명으로 규칙 만들기",
+			"description": "자동화를 평소 말로 적어 보세요. AI가 이를 일반 규칙으로 바꾸며, 편집하고 최근 기록으로 시험한 뒤 저장할 수 있습니다. 저장된 규칙은 AI 없이 실행됩니다.",
+			"label": "규칙 설명…",
+			"placeholder": "예: GitHub 풀 리퀘스트가 병합되면 작업을 완료로 이동",
+			"compile": "규칙 만들기",
+			"compiling": "규칙을 작성하는 중…",
+			"unsupportedTitle": "자동화로는 불가능한 항목",
+			"rejected": "검증을 통과하지 못해 제외된 제안 규칙: {{rejected}}",
+			"noRules": "이 설명으로는 규칙을 만들 수 없습니다.",
+			"workflowRule": "워크플로 규칙",
+			"integration": "연동",
+			"when": "트리거",
+			"moveTo": "작업 이동 위치",
+			"historyWindow": "재생할 기록 기간",
+			"days7": "최근 7일",
+			"days30": "최근 30일",
+			"days90": "최근 90일",
+			"dryRun": "기록으로 시험",
+			"dryRunSummary": "최근 {{days}}일 동안 변경되었을 작업: {{changed}}",
+			"dryRunNone": "최근 {{days}}일 동안 변경되었을 항목이 없습니다.",
+			"dryRunError": "이 규칙을 기록으로 재생하지 못했습니다.",
+			"more": "표시되지 않은 추가 일치 항목: {{more}}",
+			"archived": "보관됨",
+			"outcomes": {
+				"unchanged": "이미 해당 위치",
+				"skipped": "건너뜀"
+			},
+			"notes": {
+				"integration_not_connected": "이 연동이 프로젝트에 연결되어 있지 않아 재생할 기록이 없습니다.",
+				"branch_push_last_only": "브랜치마다 마지막 push만 기록됩니다.",
+				"threshold_from_last_update": "각 작업의 마지막 업데이트를 기준으로 합니다. 날짜는 규칙이 해당 작업을 처리했을 시점입니다.",
+				"flow_alerts_notify_only": "흐름 이상 알림은 프로젝트 리더에게 알리기만 하고 작업은 변경하지 않습니다.",
+				"nothing_enabled": "이 규칙은 아무것도 켜지 않으므로 바뀌는 것이 없습니다.",
+				"conditions_current_state": "조건은 각 작업의 현재 상태를 기준으로 확인했습니다. 기록에는 변경 사항만 남습니다."
+			},
+			"save": "규칙 저장",
+			"discard": "버리기",
+			"saved": "규칙을 저장했습니다",
+			"saveError": "규칙을 저장하지 못했습니다."
+		},
+		"build": {
+			"command": "AI로 만들기…",
+			"title": "AI로 만들기",
+			"description": "계획할 내용을 설명하세요. AI가 검토용 프로젝트, 사이클, 작업을 제안합니다. 확인하기 전에는 아무것도 만들어지지 않습니다.",
+			"promptLabel": "무엇을 계획할까요?",
+			"promptPlaceholder": "4분기에 스프린트 3개로 웹사이트 리뉴얼 계획 세우기",
+			"target": "만들 위치",
+			"targetCurrent": "{{name}}에 만들기",
+			"targetNew": "새 프로젝트",
+			"deep": "더 깊이 생각하기(더 느림)",
+			"draft": "계획 제안",
+			"drafting": "계획을 작성하는 중…",
+			"cancel": "취소",
+			"back": "뒤로",
+			"create_other": "항목 {{count}}개 만들기",
+			"creating": "계획을 만드는 중",
+			"progress": "{{total}}개 중 {{done}}개 생성됨…",
+			"close": "닫기",
+			"openProject": "프로젝트 열기",
+			"empty": {
+				"text": "이 프로젝트에는 아직 작업이 없습니다. 할 일을 설명하면 AI가 검토용 작업을 제안합니다."
+			},
+			"review": {
+				"description": "계획을 검토하세요. 원하는 항목의 선택을 해제하거나, 수정하거나, 순서를 바꾼 뒤 만드세요.",
+				"project": "프로젝트",
+				"projectName": "이름",
+				"projectKey": "키",
+				"projectDescription": "설명",
+				"columns": "새 컬럼",
+				"labels": "라벨",
+				"cycles": "사이클",
+				"modules": "모듈",
+				"moduleName": "모듈 이름",
+				"tasks_other": "작업 {{count}}개",
+				"include": "{{name}} 포함",
+				"taskTitle": "작업 제목",
+				"taskDescription": "작업 설명",
+				"priority": "우선순위",
+				"estimate": "추정치(포인트)",
+				"module": "모듈",
+				"none": "없음",
+				"taskLabels": "라벨: {{labels}}",
+				"subtasks": "하위 작업",
+				"subtaskTitle": "하위 작업 제목",
+				"moveUp": "{{name}} 위로 이동",
+				"moveDown": "{{name}} 아래로 이동",
+				"cycle": {
+					"label": "사이클",
+					"name": "사이클 이름",
+					"startDate": "시작",
+					"endDate": "종료"
+				}
+			},
+			"done": {
+				"success_other": "완료되었습니다. 작업 {{count}}개를 만들었습니다.",
+				"partial_other": "항목 {{count}}개를 제외하고 모두 만들었습니다:",
+				"estimatesSkipped": "프로젝트에 활성화된 포인트 추정 시스템이 없어 추정치는 제외되었습니다.",
+				"created": {
+					"tasks_other": "작업 {{count}}개",
+					"subtasks_other": "하위 작업 {{count}}개",
+					"cycles_other": "사이클 {{count}}개",
+					"modules_other": "모듈 {{count}}개",
+					"columns_other": "컬럼 {{count}}개",
+					"labels_other": "라벨 {{count}}개"
+				}
+			},
+			"kinds": {
+				"project": "프로젝트",
+				"column": "컬럼",
+				"cycle": "사이클",
+				"module": "모듈",
+				"task": "작업",
+				"subtask": "하위 작업",
+				"label": "라벨",
+				"estimate": "추정치",
+				"cycle_tasks": "사이클 작업",
+				"module_tasks": "모듈 작업"
+			},
+			"chat": {
+				"planLabel": "제안된 변경 사항",
+				"planning": "변경 사항을 계획하는 중…",
+				"nothing": "이 요청에는 변경할 내용이 없습니다.",
+				"awaiting": "응답 대기 중",
+				"ready": "준비된 변경: {{count}}개. 계속하려면 확인하세요.",
+				"applying": "변경 사항을 적용하는 중…",
+				"confirm": "확인",
+				"cancel": "취소",
+				"cancelled": "취소했습니다. 변경된 내용이 없습니다.",
+				"remove": "{{title}} 제거",
+				"confirmDestructive": "예, 삭제합니다",
+				"truncated": "계획이 처음 50개 변경으로 줄었습니다.",
+				"appliedSummary": "적용됨: {{total}}개 중 {{done}}개",
+				"autopilotApplied": "자동 조종이 바로 적용했습니다.",
+				"autopilotOff": "이 워크스페이스에서는 자동 조종이 꺼져 있습니다. 아래 변경 사항을 검토하세요.",
+				"autopilotReview": "일부 변경 사항은 먼저 검토가 필요합니다.",
+				"done": "완료",
+				"open": "열기",
+				"skipped": "건너뜀",
+				"failed": "실패",
+				"undo": "실행 취소",
+				"undone": "실행 취소됨",
+				"undoFailed": "이 변경을 실행 취소하지 못했습니다.",
+				"forbidden": "여기서는 AI로 변경할 수 없습니다.",
+				"pickCandidate": "이것을 의미하셨나요:",
+				"fields": {
+					"name": "이름",
+					"key": "키",
+					"title": "제목",
+					"priority": "우선순위",
+					"dueDate": "마감일",
+					"assignee": "담당자",
+					"unassigned": "없음",
+					"startDate": "시작",
+					"endDate": "종료",
+					"content": "댓글"
+				},
+				"problems": {
+					"forbidden": "이 작업에 대한 권한이 없습니다.",
+					"not_found": "참조하는 항목을 찾을 수 없습니다.",
+					"ambiguous": "이 이름과 일치하는 사람이 여러 명입니다.",
+					"unresolved_ref": "할 수 없는 변경에 의존합니다.",
+					"feature_off": "이 기능은 프로젝트에서 꺼져 있습니다.",
+					"invalid": "이 변경은 작성된 그대로 할 수 없습니다."
+				},
+				"ops": {
+					"create_project": "새 프로젝트",
+					"create_task": "새 작업",
+					"update_task": "작업 편집",
+					"set_status": "상태 변경",
+					"assign": "할당",
+					"add_comment": "댓글 달기",
+					"create_cycle": "새 사이클",
+					"add_to_cycle": "사이클에 추가",
+					"create_module": "새 모듈",
+					"add_to_module": "모듈에 추가",
+					"create_page": "새 페이지",
+					"link_tasks": "작업 연결",
+					"create_label": "새 레이블",
+					"delete_task": "작업 삭제",
+					"run_agent": "에이전트 실행"
+				},
+				"agentRun": {
+					"title": "에이전트 실행 기록",
+					"loading": "실행을 불러오는 중…",
+					"loadError": "이 실행을 불러오지 못했습니다.",
+					"inProgress": "진행 중"
+				},
+				"noneReady": "아직 적용할 수 있는 변경이 없습니다. 표시된 변경을 수정하거나 제거하거나 다시 요청하세요."
+			},
+			"context": {
+				"title": "컨텍스트 ({{count}})",
+				"facts": "프로젝트: {{projects}} · 사람: {{members}} · 사이클: {{cycles}}",
+				"memory": "메모리 노트: {{count}}",
+				"history": "이전 메시지: {{count}}"
+			}
+		},
+		"duplicates": {
+			"check": "AI로 확인",
+			"checking": "확인하는 중…",
+			"checkedTitle": "AI가 중복 여부를 확인했습니다",
+			"none": "중복일 가능성이 있는 작업이 없습니다.",
+			"verdict": {
+				"duplicate": "중복 가능성 높음",
+				"related": "관련됨"
+			},
+			"mark": "이 작업의 중복",
+			"markLabel": "새 작업을 {{key}}의 중복으로 표시",
+			"marked": "표시됨",
+			"willLink": "새 작업이 {{key}}의 중복으로 표시됩니다.",
+			"undo": "실행 취소",
+			"linkError": "작업은 만들어졌지만 {{key}}의 중복으로 표시하지 못했습니다."
+		},
+		"triage": {
+			"button": "분류 제안 받기",
+			"title": "분류 제안",
+			"loading": "비슷한 작업을 살펴보는 중…",
+			"empty": "이 항목에 대한 제안이 없습니다.",
+			"retry": "다시 시도",
+			"close": "제안 닫기",
+			"accept": "수락",
+			"acceptAll": "모두 수락",
+			"edit": "편집",
+			"dismiss": "무시",
+			"applied": "적용됨",
+			"acceptError": "이 제안을 적용하지 못했습니다.",
+			"autoApplied": "이 프로젝트는 제안된 라벨을 자동으로 추가합니다.",
+			"sameTitle": "기존 작업과 제목이 같음",
+			"projectAdvice": "요청은 원래 프로젝트에 남습니다. 이 요청은 거절하고 해당 프로젝트에 제출해 달라고 요청하세요.",
+			"otherProjectDuplicate": "이 프로젝트의 작업만 요청을 중복으로 닫을 수 있습니다.",
+			"openTask": "새 탭에서 {{key}} 열기",
+			"fields": {
+				"label": "라벨",
+				"assignee": "담당자",
+				"priority": "우선순위",
+				"project": "프로젝트",
+				"duplicate": "중복 가능성"
+			},
+			"settings": {
+				"title": "분류 제안",
+				"description": "새 작업과 접수 요청에 대한 AI 제안입니다. 각 제안은 사람이 수락, 편집 또는 무시합니다.",
+				"autoApply": "라벨 제안 자동 적용",
+				"autoApplyHint": "제안된 라벨이 바로 추가되며, 매번 감사 로그에 기록됩니다. 담당자, 우선순위, 프로젝트, 중복은 항상 사람의 결정을 기다립니다.",
+				"saved": "분류 설정을 저장했습니다",
+				"saveError": "분류 설정을 저장하지 못했습니다."
+			},
+			"liveLabels": {
+				"title": "추천 레이블",
+				"add": "{{name}} 레이블 추가"
+			}
+		},
+		"translate": {
+			"action": "번역",
+			"translating": "번역하는 중…",
+			"translatedFrom": "{{language}}에서 번역됨",
+			"translated": "번역됨",
+			"showOriginal": "원문 보기",
+			"showTranslation": "번역 보기",
+			"settings": {
+				"autoTranslate": "댓글 자동 번역",
+				"autoTranslateHint": "다른 언어로 작성된 댓글을 읽는 사람마다 열 때 번역합니다. 끄면 읽는 사람이 번역을 클릭합니다."
+			}
+		},
+		"brief": {
+			"button": "브리핑",
+			"buttonLabel": "이해관계자 브리핑 작성",
+			"title": "이해관계자 브리핑",
+			"close": "브리핑 닫기",
+			"intro": "이 작업의 계산된 진행률, 변경 사항, 위험, 예측으로 상태 브리핑을 작성합니다. 언급하는 모든 작업에 출처를 표시합니다.",
+			"audience": "대상",
+			"audiences": {
+				"team": "팀",
+				"leadership": "경영진",
+				"client": "고객"
+			},
+			"generate": "브리핑 작성",
+			"regenerate": "다시 작성",
+			"writing": "브리핑 작성 중…",
+			"stop": "중지",
+			"copy": "복사",
+			"copied": "복사됨",
+			"copyError": "브리핑을 복사하지 못했습니다.",
+			"saveAsPage": "페이지로 저장",
+			"saved": "브리핑을 페이지로 저장했습니다",
+			"saveError": "페이지를 저장하지 못했습니다.",
+			"openPage": "페이지 열기",
+			"pageTitle": "상태 브리핑: {{name}} ({{date}})",
+			"facts": {
+				"title": "사용한 사실",
+				"note": "이 수치는 AI가 아니라 Margaya가 계산한 것입니다. 저장하거나 복사한 브리핑은 다음 브리핑의 비교 기준이 됩니다.",
+				"progress": "진행률",
+				"progressValue": "{{percent}}% ({{total}}개 중 {{completed}}개 완료)",
+				"sinceLast": "지난 브리핑 이후 ({{date}})",
+				"sinceDays": "최근 7일",
+				"changes": "완료: {{completed}} · 추가: {{added}} · 제외: {{removed}}",
+				"forecast": "예측",
+				"forecastValue": "85% 확률로 {{date}}까지",
+				"forecastDone": "남은 작업 없음",
+				"forecastNone": "아직 기록이 충분하지 않음",
+				"risks": "위험",
+				"diff": "변화",
+				"progressDiff": "진행률 {{before}}% → {{now}}%",
+				"forecastDiff": "예측 {{before}} → {{now}}"
+			}
+		},
+		"ask": {
+			"title": "AI에게 묻기",
+			"description": "워크스페이스에 대해 평소 쓰는 말로 질문하세요. 답변은 볼 수 있는 작업, 페이지, 댓글만 사용하며 각 내용의 출처를 알려 줍니다.",
+			"greeting": "안녕하세요! 무엇이 궁금하신가요?",
+			"placeholder": "AI에게 묻기, @로 컨텍스트, /로 명령어",
+			"send": "묻기",
+			"stop": "중지",
+			"stopped": "중지되었습니다.",
+			"newChat": "새 대화",
+			"expand": "확대",
+			"collapse": "축소",
+			"scopeProject": "{{project}} 안에서",
+			"scopeWorkspace": "전체 워크스페이스",
+			"removeScope": "대신 전체 워크스페이스에 대해 묻기",
+			"searching": "워크스페이스를 검색하는 중…",
+			"noResults": "워크스페이스에서 이에 관한 내용을 찾지 못했습니다. 다른 단어로 시도하거나 프로젝트, 사이클 또는 작업 키를 지정해 보세요.",
+			"sources": "출처",
+			"sourcesCount": "출처 ({{total}})",
+			"closestMatches": "가장 가까운 결과",
+			"copy": "복사",
+			"copied": "복사됨",
+			"copyError": "답변을 복사하지 못했습니다",
+			"commentOn": "{{key}}의 댓글",
+			"pageSource": "페이지: {{title}}",
+			"openSource": "{{title}} 열기",
+			"disclaimer": "답변은 볼 수 있는 내용만 사용합니다. 조치하기 전에 출처를 확인하세요.",
+			"you": "나",
+			"answer": "답변",
+			"forbidden": "이 워크스페이스에서 AI를 사용할 권한이 없습니다.",
+			"palette": "AI에게 묻기…",
+			"paletteAbout": "AI에게 묻기: {{question}}",
+			"examples": {
+				"title": "이렇게 물어보세요",
+				"overdue": "기한이 지난 작업은?",
+				"mine": "내 열린 작업은 무엇인가요?",
+				"recent": "이번 주에 무엇이 바뀌었나요?",
+				"summarize": "이 프로젝트 요약해 줘",
+				"chart": "상태별 작업을 차트로 보여 줘",
+				"cycleBlockers": "현재 사이클을 막고 있는 것은?"
+			},
+			"history": {
+				"title": "기록",
+				"empty": "저장된 대화가 아직 없습니다.",
+				"localOnly": "대화는 이 브라우저에만 저장됩니다.",
+				"delete": "대화 삭제",
+				"clear": "기록 지우기",
+				"clearConfirm": "이 브라우저에 저장된 모든 대화를 삭제할까요? 이 작업은 되돌릴 수 없습니다.",
+				"search": "대화 검색",
+				"noMatches": "일치하는 대화가 없습니다.",
+				"loading": "대화를 불러오는 중…",
+				"pin": "대화 고정",
+				"unpin": "대화 고정 해제",
+				"pinned": "고정됨",
+				"rename": "대화 이름 바꾸기",
+				"renameLabel": "대화 이름",
+				"saveTitle": "이름 저장",
+				"serverNote": "대화는 워크스페이스에 저장되며 나만 볼 수 있습니다.",
+				"clearConfirmServer": "이 워크스페이스에 저장된 내 대화를 모두 삭제할까요? 이 작업은 되돌릴 수 없습니다.",
+				"importHint": "이 브라우저에 저장된 대화: {{total}}",
+				"import": "가져오기",
+				"imported": "가져온 대화: {{total}}",
+				"openError": "대화를 열지 못했습니다."
+			},
+			"chartLabel": "차트: {{title}}",
+			"chartLoading": "차트를 그리는 중…",
+			"chartInvalid": "이 차트를 그릴 수 없습니다.",
+			"placeholderBuild": "만들거나 바꿀 내용을 설명하세요…",
+			"modelLabel": "모델: {{model}}",
+			"more": "더 보기",
+			"moreActions": "추가 작업",
+			"openFullPage": "전체 화면으로 열기",
+			"paletteFullPage": "AI 채팅 열기(전체 화면)",
+			"fullPageUnavailable": "이 워크스페이스에서는 AI를 사용할 수 없습니다.",
+			"shortcut": "AI에게 묻기 열기 또는 닫기",
+			"regenerate": "다시 생성",
+			"editQuestion": "질문 편집",
+			"resend": "보내기",
+			"followUps": "추천 후속 질문",
+			"saveAsPage": "페이지로 저장",
+			"copyMarkdown": "Markdown으로 복사",
+			"copiedMarkdown": "Markdown으로 복사됨",
+			"createTask": "이 내용으로 작업 만들기",
+			"webSearch": "웹 검색",
+			"webSource": "웹: {{title}}",
+			"removeChip": "{{name}} 제거",
+			"contextChips": "이 질문의 컨텍스트",
+			"contextPicker": "컨텍스트 추가",
+			"contextHint": "입력하여 작업, 페이지, 프로젝트, 사이클, 모듈, 사람 또는 에이전트 찾기",
+			"contextEmpty": "찾은 항목이 없습니다",
+			"contextSearching": "검색하는 중…",
+			"commandMenu": "명령어",
+			"commandEmpty": "일치하는 명령어가 없습니다",
+			"contextKinds": {
+				"task": "작업",
+				"page": "페이지",
+				"project": "프로젝트",
+				"cycle": "사이클",
+				"module": "모듈",
+				"user": "사람",
+				"agent": "에이전트"
+			},
+			"modes": {
+				"label": "모드",
+				"ask": "묻기",
+				"build": "만들기",
+				"autopilot": "오토파일럿",
+				"askHint": "질문에 답하며 아무것도 바꾸지 않습니다",
+				"buildHint": "변경 사항을 제안하고 확인을 받습니다",
+				"autopilotHint": "변경 사항을 바로 적용하며, 모든 변경은 되돌릴 수 있습니다"
+			},
+			"attachments": {
+				"add": "파일 첨부",
+				"type": "{{name}}은(는) 첨부할 수 없습니다. 이미지(PNG, JPEG, WebP, GIF)나 텍스트, Markdown, CSV 파일을 사용하세요.",
+				"size": "{{name}}을(를) 추가할 수 없습니다. 첨부 파일은 합계 5MB까지입니다.",
+				"count": "파일은 최대 3개까지 첨부할 수 있습니다.",
+				"readError": "파일을 읽지 못했습니다."
+			},
+			"voice": {
+				"start": "음성 입력",
+				"stop": "음성 입력 중지",
+				"recording": "듣는 중…",
+				"transcribing": "텍스트로 변환하는 중…",
+				"denied": "음성으로 입력하려면 마이크 접근을 허용하세요.",
+				"failed": "녹음을 텍스트로 변환하지 못했습니다."
+			},
+			"agent": {
+				"ready": "이 요청을 {{agent}}에게 보냅니다.",
+				"needsTask": "{{agent}}이(가) 무엇을 처리할지 알 수 있도록 @로 작업을 추가하세요.",
+				"send": "{{agent}}에게 보내기",
+				"error": "에이전트를 시작하지 못했습니다."
+			},
+			"thinking": {
+				"live": "생각하는 중… {{seconds}}s",
+				"done": "{{seconds}}s 동안 생각함"
+			},
+			"versions": {
+				"previous": "이전 답변",
+				"next": "다음 답변",
+				"label": "답변 {{current}}/{{total}}"
+			},
+			"feedback": {
+				"up": "좋은 답변",
+				"down": "나쁜 답변",
+				"reasonLabel": "무엇이 잘못되었나요? (선택 사항)",
+				"reasonPlaceholder": "예: 숫자가 틀림, 작업을 빠뜨림",
+				"send": "보내기",
+				"skip": "건너뛰기",
+				"thanks": "의견을 보내 주셔서 감사합니다."
+			},
+			"commands": {
+				"summarize": "요약",
+				"summarizeHint": "현재 범위의 프로젝트, 사이클 또는 페이지",
+				"chart": "차트",
+				"chartHint": "데이터로 차트 그리기",
+				"chartPrefill": "차트",
+				"brief": "브리핑",
+				"briefHint": "프로젝트, 사이클 또는 모듈에 대한 이해관계자 브리핑",
+				"create": "만들기",
+				"createHint": "만들기 모드로 전환",
+				"translate": "번역",
+				"translateHint": "내 언어로",
+				"clear": "지우기",
+				"clearHint": "새 대화 시작",
+				"skill": "저장된 스킬",
+				"summarizeTurn": "{{name}} 요약",
+				"briefTurn": "{{name}} 브리핑",
+				"summarizeNeedsScope": "요약하려면 프로젝트, 사이클 또는 페이지를 열거나 @로 추가하세요.",
+				"briefNeedsScope": "브리핑을 받으려면 프로젝트, 사이클 또는 모듈을 열거나 @로 추가하세요.",
+				"buildUnavailable": "여기서는 만들기 모드를 사용할 수 없습니다.",
+				"translatePrompt": "마지막 답변을 {{language}}(으)로 번역해 줘.",
+				"translatePrefill": "{{language}}(으)로 번역:",
+				"this": {
+					"page": "이 페이지",
+					"cycle": "이 사이클",
+					"module": "이 모듈",
+					"project": "이 프로젝트"
+				}
+			},
+			"conversation": {
+				"rename": "이름 바꾸기",
+				"pin": "고정",
+				"unpin": "고정 해제",
+				"export": "Markdown으로 내보내기",
+				"saveAsPage": "페이지로 저장",
+				"delete": "대화 삭제"
+			},
+			"save": {
+				"title": "페이지로 저장",
+				"description": "페이지에는 본문과 출처 링크가 함께 저장됩니다.",
+				"pageTitle": "제목",
+				"project": "프로젝트",
+				"noProjects": "페이지를 저장할 프로젝트가 없습니다.",
+				"submit": "페이지 저장",
+				"saved": "페이지로 저장했습니다",
+				"open": "페이지 열기",
+				"error": "페이지를 저장하지 못했습니다"
+			}
+		},
+		"writing": {
+			"aiButton": "AI",
+			"menuLabel": "AI 작업",
+			"actions": {
+				"summarize": "요약하기",
+				"improve": "글 다듬기",
+				"shorter": "짧게 만들기",
+				"longer": "길게 만들기",
+				"fix": "맞춤법 및 문법 수정",
+				"translate": "번역할 언어…",
+				"custom": "AI에게 요청…"
+			},
+			"customPlaceholder": "AI에게 할 일을 알려 주세요. 예: 체크리스트로 바꾸기",
+			"customSubmit": "생성",
+			"preview": {
+				"label": "AI 제안",
+				"generating": "작성 중…",
+				"editLabel": "제안 편집",
+				"replace": "바꾸기",
+				"insertBelow": "아래에 삽입",
+				"discard": "버리기",
+				"stop": "중지",
+				"retry": "다시 시도",
+				"empty": "AI가 아무것도 반환하지 않았습니다. 다시 시도하거나 다르게 표현해 보세요.",
+				"note": "AI는 실수할 수 있습니다. 사용하기 전에 검토하세요.",
+				"incomplete": "초안이 완료되기 전에 중단되었습니다. 검토하거나 다시 시도하세요."
+			},
+			"summary": {
+				"button": "요약",
+				"cycle": "사이클 요약",
+				"project": "프로젝트 요약",
+				"page": "페이지 요약",
+				"title": "AI 요약",
+				"generating": "요약하는 중…",
+				"dismiss": "닫기",
+				"copy": "복사",
+				"copied": "복사됨",
+				"copyError": "요약을 복사하지 못했습니다.",
+				"saveAsPage": "페이지로 저장",
+				"pageTitle": "요약: {{name}}",
+				"saved": "요약을 페이지로 저장했습니다",
+				"saveError": "페이지를 저장하지 못했습니다.",
+				"openPage": "페이지 열기",
+				"task": "작업 요약",
+				"saveAsComment": "댓글로 저장",
+				"commentSaved": "요약을 댓글로 저장했습니다",
+				"commentError": "댓글을 저장하지 못했습니다."
+			},
+			"spec": {
+				"button": "사양 초안 작성",
+				"title": "사양 초안 작성",
+				"description": "AI가 이 작업과 그 맥락을 바탕으로 사양 페이지 초안을 작성합니다. 검토하고 편집한 다음 페이지를 만드세요. 페이지는 작업으로 다시 연결됩니다.",
+				"generating": "초안 작성 중…",
+				"titleLabel": "페이지 제목",
+				"bodyLabel": "사양",
+				"edit": "편집",
+				"preview": "미리 보기",
+				"create": "페이지 만들기",
+				"pageTitle": "사양: {{title}}",
+				"created": "사양 페이지를 만들었습니다",
+				"createError": "페이지를 만들지 못했습니다."
+			},
+			"taskWriter": {
+				"button": "AI로 작성",
+				"draft": "제목으로 초안 작성",
+				"improve": "개선",
+				"instruction": "선택: 무엇에 집중할까요?",
+				"hint": "“이것 사용”을 선택하기 전에는 아무것도 바뀌지 않습니다.",
+				"writing": "작성 중…",
+				"use": "이것 사용",
+				"retry": "다시 시도",
+				"discard": "버리기",
+				"close": "AI 작성 닫기"
+			},
+			"feedback": {
+				"good": "좋은 답변",
+				"bad": "좋지 않은 답변",
+				"thanks": "피드백 감사합니다"
+			},
+			"tone": {
+				"label": "어조: {{tone}}",
+				"legend": "어조",
+				"default": "기본",
+				"professional": "전문적",
+				"casual": "편안한"
+			},
+			"block": {
+				"command": "AI 블록",
+				"title": "AI 블록",
+				"customPlaceholder": "이 페이지에서 AI가 무엇을 작성할까요?",
+				"stale": "생성 후 페이지가 변경되었습니다. 변경 사항을 반영하려면 다시 생성하세요.",
+				"accept": "수락",
+				"regenerate": "다시 생성",
+				"presets": {
+					"tldr": "요약(TL;DR)",
+					"faq": "자주 묻는 질문",
+					"action_items": "실행 항목",
+					"custom": "사용자 지정 지시"
+				}
+			},
+			"title": {
+				"suggest": "제목 제안",
+				"thinking": "제목을 생각하는 중…",
+				"use": "이 제목 사용",
+				"another": "다른 제목 제안"
+			},
+			"comment": {
+				"menuLabel": "이 댓글에 대한 AI 도움",
+				"previewLabel": "댓글에 대한 AI 제안",
+				"replace": "초안 바꾸기"
+			}
+		},
+		"errors": {
+			"AI_DISABLED": "여기에서는 AI가 꺼져 있습니다.",
+			"AI_NOT_CONFIGURED": "AI가 올바르게 설정되지 않았습니다. 관리자에게 AI 설정을 확인해 달라고 요청하세요.",
+			"AI_ROUTE_BLOCKED": "개인정보 보호 설정에 따라 이 데이터는 AI 모델로 보낼 수 없습니다.",
+			"AI_BUDGET_EXCEEDED": "AI 한도에 도달했습니다. 나중에 다시 시도하거나 관리자에게 한도를 늘려 달라고 요청하세요.",
+			"AI_RATE_LIMITED": "AI 요청이 한꺼번에 너무 많습니다. 잠시 기다린 후 다시 시도하세요.",
+			"AI_REFUSED": "AI 모델이 이 요청을 거절했습니다.",
+			"AI_PROVIDER_ERROR": "AI 서비스가 응답하지 않았습니다. 잠시 후 다시 시도하세요.",
+			"unknown": "AI에서 문제가 발생했습니다. 다시 시도하세요.",
+			"AI_HISTORY_OFF": "이 워크스페이스는 AI 대화를 서버에 보관하지 않습니다. 기록은 이 브라우저에 남습니다."
+		},
+		"features": {
+			"connection_test": "연결 테스트",
+			"ask": "질문하기",
+			"summarize": "요약",
+			"editor_assist": "글쓰기 도움",
+			"spec_draft": "사양 초안",
+			"duplicate_check": "중복 확인",
+			"talk_to_build": "프롬프트로 계획하기",
+			"triage": "분류 제안",
+			"translate": "번역",
+			"brief": "이해관계자 브리핑",
+			"agent_run": "에이전트",
+			"rule_compiler": "자동화 규칙",
+			"capture": "이슈로 캡처",
+			"estimate": "추정치",
+			"retro": "회고",
+			"my_brief": "내 브리핑",
+			"embedding": "검색 색인",
+			"coding_handoff": "코딩 에이전트 브리프",
+			"build_chat": "채팅에서 만들기",
+			"nl_filter": "자연어 필터",
+			"inbox_digest": "받은편지함 요약",
+			"speech": "음성을 텍스트로"
+		},
+		"providers": {
+			"anthropic": "Anthropic (Claude)",
+			"openai_compatible": "OpenAI 호환",
+			"fake": "가짜 (테스트 전용)"
+		},
+		"destinations": {
+			"cloud": "클라우드 제공자",
+			"local": "로컬 모델"
+		},
+		"tiers": {
+			"fast": "빠른 모델",
+			"fastHint": "간단한 작업: 다시 쓰기, 라벨, 짧은 요약.",
+			"balanced": "균형 모델",
+			"balancedHint": "대부분의 기능: 답변, 요약, 초안.",
+			"deep": "심층 모델",
+			"deepHint": "어려운 작업: 계획과 에이전트."
+		},
+		"test": {
+			"title": "연결 테스트",
+			"workspaceHint": "이 워크스페이스의 AI 호출과 같은 경로로 아주 작은 요청 하나를 보냅니다.",
+			"button": "연결 테스트",
+			"success": "{{ms}} ms 만에 {{model}}에 연결됨"
+		},
+		"usage": {
+			"title": "사용량",
+			"subtitle": "AI 호출, 토큰, 정가 기준 비용입니다. 횟수만 기록되며 프롬프트나 답변은 저장되지 않습니다.",
+			"rangeLabel": "기간",
+			"range": {
+				"thisMonth": "이번 달",
+				"last30Days": "최근 30일",
+				"last90Days": "최근 90일"
+			},
+			"calls": "호출",
+			"callsCount_other": "호출 {{count}}회",
+			"tokens": "토큰",
+			"tokensSplit": "입력 {{input}} · 출력 {{output}}",
+			"cost": "비용",
+			"costHint": "정가 기준이며, 로컬 모델은 $0으로 계산됩니다.",
+			"day": "날짜",
+			"byDay": "일별 호출 수",
+			"byFeature": "기능별",
+			"byModel": "모델별",
+			"byUser": "사용자별",
+			"byWorkspace": "워크스페이스별",
+			"empty": "이 기간에는 AI 사용 내역이 없습니다.",
+			"unknownUser": "삭제된 계정",
+			"loadError": "AI 사용량을 불러올 수 없습니다.",
+			"retry": "다시 시도",
+			"exportCsv": "CSV 내보내기",
+			"exportError": "사용량을 내보내지 못했습니다.",
+			"feedbackTitle": "답변 평가",
+			"feedbackOverall": "평가 {{total}}개 중 {{percent}}% 긍정",
+			"feedbackUp": "좋아요",
+			"feedbackDown": "싫어요",
+			"feedbackRate": "긍정"
+		},
+		"instance": {
+			"title": "AI",
+			"subtitle": "워크스페이스에서 AI를 사용할 수 있게 합니다. 제공자와 모델을 선택하고 데이터를 어디로 보낼 수 있는지 정합니다. AI는 직접 켜기 전까지 꺼져 있으며, 각 워크스페이스에서도 따로 사용을 선택해야 합니다.",
+			"statusTitle": "이 서버의 AI",
+			"statusReady": "준비됨",
+			"statusNotConfigured": "설정되지 않음",
+			"statusOff": "꺼짐",
+			"enable": "AI 허용",
+			"enableHint": "이 옵션을 켜고 제공자를 설정하면 워크스페이스에서 AI 기능을 켤 수 있습니다.",
+			"providerTitle": "제공자",
+			"providerDescription": "클라우드 모델 제공자입니다. 모델을 비워 두면 해당 등급에 대한 제공자의 기본 모델을 사용합니다.",
+			"provider": "제공자",
+			"providerHint": "Anthropic Claude를 권장합니다. OpenAI 호환은 OpenAI, Azure, OpenRouter, vLLM, LM Studio를 지원합니다.",
+			"anthropicKey": "Anthropic API 키",
+			"anthropicKeyHint": "암호화되어 저장되며 다시 표시되지 않습니다.",
+			"openaiBaseUrl": "기본 URL",
+			"openaiBaseUrlHint": "버전 경로를 포함합니다(예: https://api.openai.com/v1). 공개 주소여야 합니다.",
+			"openaiKey": "API 키",
+			"save": "저장",
+			"testCloud": "제공자 테스트",
+			"testLocal": "로컬 모델 테스트",
+			"localTitle": "로컬 모델",
+			"localDescription": "Ollama처럼 자체 네트워크에 있는 OpenAI 호환 서버입니다. 제한된 데이터는 오직 이곳으로만 보내집니다.",
+			"localBaseUrl": "기본 URL",
+			"localBaseUrlHint": "예: http://ollama:11434/v1. 여기서는 사설 주소도 사용할 수 있습니다.",
+			"localModel": "모델",
+			"localKey": "API 키",
+			"localKeyHint": "선택 사항. --api-key로 시작한 vLLM처럼 서버에서 요구하는 경우에만 필요합니다. 암호화되어 저장됩니다.",
+			"localOnly": "로컬 전용 모드",
+			"localOnlyHint": "모든 AI 호출이 로컬 모델로 가며, 클라우드 제공자로는 아무것도 보내지 않습니다.",
+			"privacyTitle": "개인정보 보호",
+			"privacyDescription": "데이터 종류별로 보낼 수 있는 곳입니다. 워크스페이스는 이보다 더 엄격하게 설정할 수는 있지만 더 느슨하게 할 수는 없습니다.",
+			"restrictedRoute": "제한된 프로젝트",
+			"restrictedRouteHint": "워크스페이스가 AI의 읽기를 허용한 경우, 제한된 프로젝트의 데이터입니다.",
+			"privateRoute": "기타 워크스페이스 데이터",
+			"privateRouteHint": "제한되지 않은 프로젝트의 작업, 페이지, 댓글입니다.",
+			"routeBlocked": "보내지 않음",
+			"routeLocal": "로컬 모델만",
+			"routeCloud": "클라우드 제공자 허용",
+			"redaction": "개인 데이터 가리기",
+			"redactionHint": "클라우드 호출 전에 이메일, 전화번호, 카드 번호, 토큰을 자리 표시자로 바꿉니다. 답변에는 실제 값이 다시 표시됩니다.",
+			"zeroRetention": "데이터 무보존",
+			"zeroRetentionHint": "제공자와의 계약에 따라 데이터가 보존되지 않음을 기록합니다. Margaya는 이를 표시하고, 제공자가 이를 이행합니다.",
+			"allowWorkspaceKeys": "워크스페이스 키 허용",
+			"allowWorkspaceKeysHint": "워크스페이스가 자체 제공자 키를 사용하고 자체 사용량에 대한 비용을 부담할 수 있습니다.",
+			"embeddingsTitle": "임베딩",
+			"embeddingsDescription": "선택 사항이며, 의미 기반 검색에 사용됩니다. OpenAI 호환 임베딩 엔드포인트라면 무엇이든 사용할 수 있습니다. 데이터베이스에 pgvector 확장도 있어야 하며, 둘 중 하나라도 없으면 검색은 전체 텍스트 검색만 사용합니다.",
+			"vectorReady": "pgvector 준비됨",
+			"vectorAvailable": "pgvector 사용 가능",
+			"vectorUnavailable": "pgvector 사용 불가",
+			"embeddingsBaseUrl": "기본 URL",
+			"embeddingsModel": "모델",
+			"embeddingsKey": "API 키",
+			"invalidUrl": "http 또는 https URL을 입력하세요.",
+			"usageTitle": "워크스페이스 전체 사용량",
+			"usageDescription": "이 서버의 AI 호출을 워크스페이스와 모델별로 보여 줍니다. 횟수만 기록됩니다.",
+			"chatTitle": "채팅",
+			"chatDescription": "추론 모델이 생각하는 방식과 사람들에게 보여 주는 내용입니다.",
+			"showReasoning": "추론 과정 표시",
+			"showReasoningHint": "질문한 사람에게 추론 모델의 생각 과정을 보여 줍니다. 저장되지 않습니다. 꺼짐: 생각한 시간만 표시합니다.",
+			"localThinking": "로컬 모델의 생각",
+			"localThinkingHint": "끄면 더 빠르게 답하고, 켜면 로컬 추론 모델이 먼저 생각합니다.",
+			"localThinkingOff": "끄기",
+			"localThinkingOn": "켜기",
+			"webSearchTitle": "웹 검색",
+			"webSearchDescription": "워크스페이스에서 웹 검색을 켰을 때 답변에 사용할 수 있는 검색 서비스입니다.",
+			"webSearchProvider": "검색 제공자",
+			"webSearchProviderHint": "SearXNG는 자체 서버에서 실행되며, Brave Search와 Tavily는 API 키가 필요합니다.",
+			"webSearchOff": "끄기",
+			"webSearchUrl": "SearXNG URL",
+			"webSearchUrlHint": "JSON API가 활성화되어 있어야 합니다.",
+			"webSearchKey": "API 키",
+			"webSearchKeyHint": "Brave Search 또는 Tavily용입니다.",
+			"speechTitle": "음성 텍스트 변환",
+			"speechDescription": "채팅의 음성 입력입니다. 설정하지 않으면 이를 지원하는 브라우저가 직접 음성을 인식합니다.",
+			"speechBaseUrl": "엔드포인트 URL",
+			"speechBaseUrlHint": "로컬 Whisper 서버와 같은 OpenAI 호환 음성 변환 엔드포인트입니다.",
+			"speechModel": "모델",
+			"speechKey": "API 키"
+		},
+		"workspace": {
+			"navLabel": "AI",
+			"title": "AI",
+			"subtitle": "이 워크스페이스의 AI 기능을 켜고, 한도를 설정하고, 비공개 데이터 처리 방식을 선택합니다.",
+			"noAccess": "이 설정을 보려면 AI 관리 권한이 필요합니다.",
+			"loadError": "AI 설정을 불러올 수 없습니다.",
+			"statusTitle": "이 워크스페이스의 AI",
+			"statusDescription": "AI는 직접 켜기 전까지 꺼져 있습니다. 각 프로젝트에서도 기능 설정에서 따로 끌 수 있습니다.",
+			"enable": "AI 켜기",
+			"enableHint": "AI 사용 권한이 있는 멤버는 AI를 허용한 프로젝트에서 AI 기능을 볼 수 있습니다.",
+			"enabledToast": "이 워크스페이스에서 AI가 켜졌습니다",
+			"disabledToast": "이 워크스페이스에서 AI가 꺼졌습니다",
+			"offOnInstance": "인스턴스 관리자가 아직 이 서버에서 AI를 허용하지 않았습니다.",
+			"notConfigured": "AI는 허용되어 있지만 아직 설정된 제공자가 없습니다. 인스턴스 관리자에게 문의하세요.",
+			"whereDataGoes": "데이터 전송 위치",
+			"whereDataGoesHint": "이 워크스페이스의 AI 요청을 받는 모델입니다.",
+			"zeroRetention": "무보존",
+			"limitsTitle": "한도",
+			"limitsDescription": "이번 달 사용 금액: {{spent}}. 한도에 도달하면 요청이 중단됩니다.",
+			"monthlyCap": "월 예산 (USD)",
+			"monthlyCapHint": "정가 기준이며 워크스페이스 전체에 적용됩니다. 한도를 두지 않으려면 비워 두세요.",
+			"dailyTokens": "1인당 일일 토큰",
+			"dailyTokensHint": "각 사용자가 하루(UTC)에 사용할 수 있는 입력 및 출력 토큰입니다. 한도를 두지 않으려면 비워 두세요.",
+			"noLimit": "한도 없음",
+			"invalidNumber": "0 이상의 숫자를 입력하세요.",
+			"saveLimits": "한도 저장",
+			"monthSpendOfCap": "이번 달 {{cap}} 중 {{spent}} 사용",
+			"privacyTitle": "개인정보 보호",
+			"privacyDescription": "AI는 요청한 사람이 볼 수 있는 내용만 볼 수 있습니다.",
+			"includeRestricted": "제한된 프로젝트 포함",
+			"includeRestrictedHint": "제한된 프로젝트를 볼 수 있는 사람에 대해 AI가 해당 프로젝트를 읽을 수 있게 합니다. 그 데이터는 서버가 제한된 데이터를 허용한 곳으로만 보내집니다.",
+			"localOnly": "로컬 모델만",
+			"localOnlyHint": "모든 AI 요청을 서버의 로컬 모델로 보냅니다.",
+			"localOnlyForced": "서버가 로컬 전용 모드입니다.",
+			"localOnlyUnavailable": "이 서버에는 로컬 모델이 없습니다.",
+			"redactPii": "개인 데이터 가리기",
+			"redactPiiHint": "요청이 서버를 떠나기 전에 이메일, 전화번호, 카드 번호, 토큰을 자리 표시자로 바꿉니다.",
+			"redactPiiForced": "항상 켜짐: 서버가 모든 클라우드 요청에서 개인 데이터를 가립니다.",
+			"approval": "AI 변경 사항 승인",
+			"approvalHint": "AI가 제안한 변경 사항은 항상 사람이 승인할 때까지 대기합니다.",
+			"semanticSearch": "의미 기반 검색",
+			"semanticSearchHint": "질문하기와 중복 확인이 작업, 페이지, 댓글을 단어뿐 아니라 의미로도 찾습니다. 콘텐츠는 서버의 임베딩 모델로 색인됩니다.",
+			"semanticUnavailable": "이 서버의 데이터베이스에서 pgvector를 사용할 수 없어 검색은 전체 텍스트 검색만 사용합니다.",
+			"semanticNoEndpoint": "이 서버에 임베딩 엔드포인트가 없어 검색은 전체 텍스트 검색만 사용합니다.",
+			"semanticIndexed_one": "{{count}}개 항목 색인됨",
+			"semanticIndexed_other": "{{count}}개 항목 색인됨",
+			"semanticPaused": "색인이 일시 중지되었습니다. {{reason}}",
+			"semanticEnabledToast": "의미 기반 검색이 켜졌습니다. 색인은 백그라운드에서 진행됩니다.",
+			"semanticDisabledToast": "의미 기반 검색이 꺼졌고 색인이 삭제되었습니다.",
+			"keyTitle": "자체 API 키",
+			"keyDescription": "서버의 계정 대신 워크스페이스의 자체 제공자 계정을 사용합니다. 키는 암호화되어 저장되며 다시 표시되지 않습니다.",
+			"keyCurrent": "저장된 키",
+			"keyEnding": "끝자리 {{last4}}",
+			"keyUnreadable": "저장된 키를 더 이상 읽을 수 없습니다. 다시 입력하세요.",
+			"keyRemove": "제거",
+			"keyProvider": "제공자",
+			"keyValue": "API 키",
+			"keyReplace": "키 교체",
+			"keyHint": "sk-ant-로 시작하는 Anthropic API 키입니다.",
+			"keyOpenAiHint": "서버의 OpenAI 호환 엔드포인트와 함께 사용됩니다.",
+			"keyPlaceholder": "키 붙여넣기",
+			"keyTooShort": "이 키는 너무 짧은 것 같습니다.",
+			"keySave": "키 저장",
+			"keySavedToast": "키가 저장되었습니다",
+			"keyRemovedToast": "키가 제거되었습니다",
+			"saved": "AI 설정이 저장되었습니다",
+			"saveError": "AI 설정을 저장할 수 없습니다.",
+			"chatTitle": "AI에게 묻기 채팅",
+			"chatDescription": "이 워크스페이스의 사람들을 위해 채팅이 할 수 있는 일입니다.",
+			"webSearch": "웹 검색",
+			"webSearchHint": "사용자는 답변이 웹을 검색하도록 허용할 수 있습니다. 검색 결과는 웹 출처로 표시됩니다.",
+			"webSearchUnavailable": "이 인스턴스에는 웹 검색이 설정되어 있지 않습니다.",
+			"webSearchLocalOnly": "AI가 로컬 모델만 사용하는 동안에는 사용되지 않습니다.",
+			"storeConversations": "채팅 기록을 서버에 보관",
+			"storeConversationsHint": "각 사람의 대화를 워크스페이스에 저장하여 어떤 기기에서든 다시 열 수 있습니다. 꺼짐: 대화는 각 브라우저에만 남습니다.",
+			"allowAutopilot": "오토파일럿 허용",
+			"allowAutopilotHint": "만들기 모드가 확인 없이 변경 사항을 적용할 수 있습니다. 모든 변경은 계속 기록되며 되돌릴 수 있습니다."
+		},
+		"agents": {
+			"navLabel": "에이전트",
+			"title": "에이전트",
+			"subtitle": "AI 에이전트는 요청한 사람을 대신해 작업을 처리하는 워크스페이스 멤버이며, 그 사람보다 많은 권한을 갖지 않습니다.",
+			"listTitle": "워크스페이스 에이전트",
+			"badge": "에이전트",
+			"noAccess": "AI 관리 권한이 있는 사람만 에이전트를 설정할 수 있습니다.",
+			"empty": "아직 에이전트가 없습니다. 에이전트를 만든 뒤 댓글에서 멘션하거나, 작업을 할당하거나, 작업에서 실행하세요.",
+			"loadError": "에이전트를 불러오지 못했습니다.",
+			"retry": "다시 시도",
+			"create": "새 에이전트",
+			"edit": "에이전트 편집",
+			"dialogHint": "에이전트는 사람처럼 할당하고 멘션할 수 있습니다. 로그인할 수 없으며 좌석으로 청구되지 않습니다.",
+			"save": "저장",
+			"cancel": "취소",
+			"created": "에이전트를 만들었습니다",
+			"saved": "에이전트를 저장했습니다",
+			"deleted": "에이전트를 삭제했습니다",
+			"saveError": "에이전트를 저장하지 못했습니다. 다시 시도하세요.",
+			"enable": "켜기",
+			"disable": "끄기",
+			"off": "꺼짐",
+			"delete": "삭제",
+			"deleteTitle": "{{name}}을(를) 삭제할까요?",
+			"deleteBody": "에이전트가 워크스페이스에서 나갑니다. 댓글과 기록은 그대로 남고, 실행 내역도 에이전트 데스크에 남습니다.",
+			"spend": "이번 달 {{spent}}",
+			"spendOfBudget": "이번 달 {{budget}} 중 {{spent}}",
+			"activityFilter": "에이전트",
+			"fields": {
+				"name": "이름",
+				"nameTaken": "이 워크스페이스의 에이전트나 멤버가 이미 이 이름을 사용하고 있습니다. 다른 이름을 선택하세요.",
+				"description": "설명",
+				"descriptionPlaceholder": "이 에이전트가 돕는 일",
+				"instructions": "지침",
+				"instructionsHint": "에이전트의 작업 방식입니다. 지침은 관리자만 작성하며, 작업, 댓글, 페이지의 텍스트는 절대 지침으로 간주되지 않습니다.",
+				"role": "역할",
+				"roleHint": "에이전트가 할 수 있는 최대 범위입니다. 각 실행은 요청한 사람의 권한으로도 제한됩니다.",
+				"tier": "모델",
+				"tierFast": "빠름",
+				"tierBalanced": "균형",
+				"tierDeep": "심층",
+				"provider": "실행 위치",
+				"providerDefault": "워크스페이스 기본값",
+				"providerLocal": "로컬 모델만",
+				"budget": "월 예산 (USD)",
+				"budgetHint": "이번 달 사용 금액이 이 금액에 도달하면 실행이 중단됩니다. 에이전트 한도를 두지 않으려면 비워 두세요. 워크스페이스 한도는 계속 적용됩니다.",
+				"projects": "프로젝트",
+				"projectsAll": "역할이 닿는 모든 프로젝트",
+				"projectsSome": "이 프로젝트만",
+				"projectsHint": "다른 프로젝트의 실행은 중단되고, 에이전트는 그곳에서 작업하도록 설정되지 않았다고 알립니다.",
+				"projectsNone": "프로젝트를 하나 이상 선택하세요.",
+				"skills": "스킬",
+				"skillsEmpty": "아직 공유 스킬이 없습니다. Ask에서 저장한 공유 스킬을 에이전트에게 줄 수 있습니다.",
+				"skillsHint": "요청에 맞으면 에이전트가 이 저장된 프롬프트를 따릅니다(최대 10개).",
+				"webAccess": "웹 접근",
+				"webAccessHint": "에이전트가 웹을 검색하고 워크스페이스의 커넥터를 사용할 수 있게 합니다. 그곳으로 보내는 내용은 Margaya 밖으로 나갑니다."
+			},
+			"status": {
+				"queued": "대기 중",
+				"running": "실행 중",
+				"awaiting_approval": "승인 대기 중",
+				"succeeded": "완료",
+				"failed": "실패",
+				"cancelled": "중단됨",
+				"needs_input": "답변 필요"
+			},
+			"stepStatus": {
+				"ok": "완료",
+				"error": "실패",
+				"denied": "허용되지 않음",
+				"pending": "승인 대기 중",
+				"applied": "적용됨",
+				"rejected": "거절됨",
+				"expired": "만료됨",
+				"reverted": "실행 취소됨"
+			},
+			"step": {
+				"model": "모델 호출"
+			},
+			"tools": {
+				"read_task": "작업 읽기",
+				"read_project": "프로젝트 읽기",
+				"read_page": "페이지 읽기",
+				"search_workspace": "검색",
+				"add_comment": "댓글",
+				"update_task": "작업 업데이트",
+				"move_status": "상태 변경",
+				"create_subtask": "하위 작업 만들기",
+				"create_page": "페이지 만들기",
+				"link_tasks": "작업 연결",
+				"delete_task": "작업 삭제",
+				"bulk_move_status": "여러 작업의 상태 변경",
+				"ask_person": "질문하기",
+				"web_search": "웹 검색",
+				"connector": "외부 서비스: {{tool}}"
+			},
+			"runErrors": {
+				"AGENT_GONE": "에이전트가 삭제되었습니다.",
+				"AGENT_DISABLED": "에이전트가 꺼져 있습니다.",
+				"AGENT_LEFT": "에이전트가 더 이상 워크스페이스 멤버가 아닙니다.",
+				"PRINCIPAL_LEFT": "요청한 사람이 더 이상 워크스페이스 멤버가 아닙니다.",
+				"AI_USE_DENIED": "요청한 사람은 AI를 사용할 수 없습니다.",
+				"NOT_IN_SCOPE": "이 작업은 AI가 읽을 수 없는 프로젝트에 있습니다.",
+				"TIME_LIMIT": "실행이 10분을 넘겨 중단되었습니다.",
+				"OUTPUT_LIMIT": "에이전트의 답변이 너무 길어졌습니다. 더 작은 변경을 요청하세요.",
+				"TURN_LIMIT": "에이전트가 작업을 마치기 전에 단계를 모두 사용했습니다. 더 작고 구체적인 변경을 요청하세요.",
+				"INTERRUPTED": "실행이 중단되었습니다. 이미 적용된 변경 사항은 여전히 실행 취소할 수 있습니다.",
+				"APPROVAL_EXPIRED": "제안된 변경 사항에 대해 24시간 안에 아무도 결정하지 않아 만료되었습니다.",
+				"INTERNAL": "실행 중에 문제가 발생했습니다.",
+				"NEEDS_INPUT_EXPIRED": "24시간 안에 아무도 에이전트의 질문에 답하지 않았습니다.",
+				"OUTSIDE_AGENT_PROJECTS": "이 에이전트는 이 프로젝트에서 작업하도록 설정되어 있지 않습니다."
+			},
+			"change": {
+				"approve": "승인",
+				"reject": "거절",
+				"approved": "변경 사항을 적용했습니다",
+				"rejected": "변경 사항을 버렸습니다",
+				"decideError": "결정을 적용하지 못했습니다. 다시 시도하세요.",
+				"undo": "실행 취소",
+				"undone": "변경 사항을 실행 취소했습니다",
+				"undoError": "이 변경 사항을 실행 취소하지 못했습니다. 그사이 작업이 변경되었을 수 있습니다.",
+				"expiresAt": "{{time}}에 만료",
+				"before": "변경 전",
+				"after": "변경 후",
+				"openPage": "페이지 열기",
+				"openSubtask": "하위 작업 열기",
+				"openLinked": "연결된 작업 열기",
+				"empty": "(비어 있음)",
+				"fields": {
+					"title": "제목",
+					"priority": "우선순위",
+					"dueDate": "마감일",
+					"description": "설명",
+					"status": "상태",
+					"statusOf": "{{task}}의 상태",
+					"comment": "댓글",
+					"subtask": "새 하위 작업",
+					"page": "새 페이지",
+					"relation": "연결 ({{relation}})",
+					"delete": "휴지통으로 이동",
+					"connectorCall": "{{connector}} 호출"
+				}
+			},
+			"inbox": {
+				"title": "{{agentName}}이(가) 회원님의 승인을 기다리고 있습니다",
+				"verb": "회원님의 승인을 요청했습니다",
+				"cardTitle": "제안된 변경 사항"
+			},
+			"reply": {
+				"title": "{{agentName}}이(가) 회원님의 요청에 답했습니다",
+				"verb": "회원님의 요청에 답했습니다",
+				"cardTitle": "에이전트의 답변",
+				"hint": "에이전트가 이 답변을 작업에 게시하지 않아 여기에 표시됩니다."
+			},
+			"activity": {
+				"onBehalfOf": "{{name}} 님을 대신하여"
+			},
+			"run": {
+				"button": "에이전트 실행",
+				"title": "이 작업에서 에이전트 실행",
+				"hint": "에이전트는 최대 내 권한 범위 안에서 작업합니다. 변경 사항은 실행 취소할 수 있으며, 일부는 내 승인을 기다립니다.",
+				"agent": "에이전트",
+				"prompt": "무엇을 해야 하나요?",
+				"promptPlaceholder": "예: 이 작업을 하위 작업으로 나누고 우선순위를 제안해 줘.",
+				"start": "실행",
+				"started": "{{name}}이(가) 작업을 시작했습니다",
+				"error": "에이전트를 시작하지 못했습니다. 다시 시도하세요.",
+				"recent": "이 작업의 최근 실행",
+				"viewInDesk": "에이전트 데스크에서 열기"
+			},
+			"desk": {
+				"nav": "에이전트 데스크",
+				"title": "에이전트 데스크",
+				"subtitle": "에이전트가 한 일과 하고 있는 일: 모든 실행의 단계, 비용, 변경 사항을 확인하세요.",
+				"emptyTitle": "아직 에이전트 실행이 없습니다",
+				"empty": "댓글에서 에이전트를 멘션하거나, 작업을 할당하거나, 작업에서 실행하세요.",
+				"allAgents": "모든 에이전트",
+				"allStatuses": "모든 상태",
+				"filterAgent": "에이전트로 필터링",
+				"filterStatus": "상태로 필터링",
+				"approvalsTitle": "내 처리를 기다리는 항목",
+				"selectRun": "실행을 선택하면 단계와 변경 사항을 볼 수 있습니다.",
+				"runMissing": "이 실행을 사용할 수 없습니다.",
+				"deletedAgent": "삭제된 에이전트",
+				"onBehalfOf": "{{name}} 님 요청",
+				"cost": "비용",
+				"tokensLabel": "토큰",
+				"tokens": "토큰: {{value}}",
+				"toolCallsLabel": "도구 호출",
+				"summary": "요약",
+				"changes": "변경 세트",
+				"noChanges": "변경 사항이 없습니다.",
+				"steps": "단계",
+				"cancelRun": "실행 중단",
+				"cancelled": "실행을 중단했습니다",
+				"cancelError": "실행을 중단하지 못했습니다.",
+				"trigger": {
+					"mention": "멘션됨",
+					"assign": "할당됨",
+					"manual": "작업에서 실행",
+					"schedule": "예약됨",
+					"automation": "자동화",
+					"chat": "후속 요청"
+				},
+				"project": "프로젝트:",
+				"workedSeconds": "{{count}}초 동안 작업",
+				"workedMinutes": "{{count}}분 동안 작업"
+			},
+			"connectors": {
+				"title": "커넥터",
+				"subtitle": "웹 접근 권한이 있는 에이전트가 호출할 수 있는 외부 MCP 서버입니다. 읽기 전용 도구는 바로 실행되고, 나머지는 모두 승인을 기다립니다.",
+				"create": "커넥터 추가",
+				"edit": "커넥터 편집",
+				"delete": "커넥터 삭제",
+				"created": "커넥터를 추가했습니다",
+				"saved": "커넥터를 저장했습니다",
+				"deleted": "커넥터를 삭제했습니다",
+				"saveError": "커넥터를 저장하지 못했습니다. 다시 시도하세요.",
+				"empty": "아직 커넥터가 없습니다. 웹 접근 권한이 있는 에이전트가 도구를 쓸 수 있도록 MCP 서버 주소를 추가하세요.",
+				"shared": "공유",
+				"personal": "나만",
+				"enable": "켜기",
+				"disable": "끄기",
+				"test": "테스트",
+				"testOk": "연결됨: 도구 {{count}}개, 읽기 전용 {{readOnly}}개",
+				"testError": "테스트를 실행하지 못했습니다. 다시 시도하세요.",
+				"errors": {
+					"DESTINATION": "이 주소는 공개 서버가 아닙니다.",
+					"TIMEOUT": "서버가 제시간에 응답하지 않았습니다.",
+					"NETWORK": "서버에 연결할 수 없습니다.",
+					"HTTP": "서버가 오류로 응답했습니다({{status}}).",
+					"TOO_LARGE": "서버 응답이 너무 큽니다.",
+					"PROTOCOL": "MCP 서버가 아닌 것 같습니다.",
+					"RPC": "MCP 서버가 요청을 거부했습니다.",
+					"SECRET_UNREADABLE": "저장된 비밀 값을 더 이상 읽을 수 없습니다. 다시 입력하세요."
+				},
+				"secretHint": "비밀 값 ••••{{last4}}",
+				"dialogHint": "Margaya는 Streamable HTTP로 연결합니다. 비밀 값은 암호화되어 저장되며 다시 표시되지 않습니다.",
+				"name": "이름",
+				"url": "서버 URL",
+				"urlHint": "MCP 엔드포인트입니다. 예: https://mcp.example.com/mcp. 공개 인터넷에서 접근할 수 있어야 합니다.",
+				"auth": "인증",
+				"authHeader": "헤더의 비밀 값",
+				"authNone": "없음",
+				"headerName": "헤더 이름",
+				"secret": "비밀 값",
+				"secretKeep": "현재 비밀 값을 유지하려면 비워 두세요",
+				"secretHelp": "헤더의 전체 값입니다. 예: Bearer 뒤에 토큰.",
+				"sharedToggle": "워크스페이스와 공유",
+				"sharedHint": "에이전트는 모든 실행에서 공유 커넥터를 사용합니다. 끄면 나를 대신한 실행에서만 사용됩니다.",
+				"deleteTitle": "{{name}}을(를) 삭제할까요?",
+				"deleteBody": "에이전트가 더 이상 도구를 사용할 수 없고, 저장된 비밀 값도 삭제됩니다."
+			},
+			"followUp": {
+				"label": "에이전트에게 답장",
+				"placeholder": "후속 질문이나 다음에 할 일을 입력하세요…",
+				"send": "보내기",
+				"error": "후속 요청을 시작하지 못했습니다. 다시 시도하세요."
+			},
+			"needsInput": {
+				"title": "에이전트에게 질문이 있습니다",
+				"answerLabel": "내 답변",
+				"placeholder": "답변을 입력하세요…",
+				"reply": "답장",
+				"sent": "답변을 보냈습니다. 에이전트가 계속 진행합니다.",
+				"error": "답변을 보내지 못했습니다. 다시 시도하세요.",
+				"hint": "답변하지 않은 질문은 24시간 후 만료됩니다.",
+				"waiting": "에이전트가 요청한 사람의 답변을 기다리고 있습니다.",
+				"inboxHint": "답변할 때까지 실행이 일시 중지됩니다.",
+				"answer": "에이전트 데스크에서 답변",
+				"notificationTitle": "{{agentName}}에게 질문이 있습니다",
+				"verb": "님이 질문했습니다"
+			},
+			"schedules": {
+				"open": "{{name}}의 일정",
+				"title": "일정: {{name}}",
+				"hint": "에이전트를 시간표에 따라 실행합니다. 실행은 마지막으로 일정을 저장한 사람을 대신하며, 그 사람의 권한을 넘지 않습니다.",
+				"empty": "아직 일정이 없습니다.",
+				"create": "새 일정",
+				"edit": "일정 편집",
+				"delete": "일정 삭제",
+				"deleteBody": "이 일정을 삭제할까요? 지난 실행은 에이전트 데스크에 남습니다.",
+				"deleted": "일정을 삭제했습니다",
+				"saved": "일정을 저장했습니다",
+				"saveError": "일정을 저장하지 못했습니다. 다시 시도하세요.",
+				"enable": "일정 켜기",
+				"disable": "일정 끄기",
+				"enabled": "켜짐",
+				"when": "언제",
+				"presets": {
+					"weekdays": "평일 매일 9:00",
+					"mondays": "매주 월요일 9:00",
+					"monthly": "매월 1일 9:00",
+					"custom": "사용자 지정(cron)"
+				},
+				"customLabel": "cron {{cron}}",
+				"cron": "cron 표현식",
+				"cronHint": "필드 다섯 개: 분, 시, 일, 월, 요일. 최소 15분 간격입니다.",
+				"timezone": "시간대",
+				"project": "프로젝트",
+				"chooseProject": "프로젝트 선택",
+				"task": "작업",
+				"noTask": "작업 없음(프로젝트 전체)",
+				"taskHint": "작업이 없으면 에이전트가 프로젝트 전체를 다루고 보고서를 페이지에 작성합니다.",
+				"projectLevel": "프로젝트 전체",
+				"prompt": "무엇을 해야 하나요?",
+				"promptPlaceholder": "예: 어제 이후 바뀐 내용을 요약해 줘.",
+				"nextRun": "다음 실행 {{time}}",
+				"runsAs": "{{name}} 대신 실행",
+				"runsAsHint": "저장하면 이 실행은 나를 대신해 이루어집니다. 워크스페이스를 떠나거나 AI 접근 권한을 잃으면 일정이 꺼집니다.",
+				"errors": {
+					"CRON_INVALID": "cron 필드 다섯 개를 입력하세요: 분, 시, 일, 월, 요일.",
+					"CRON_TOO_FREQUENT": "일정은 최소 15분 간격으로만 실행할 수 있습니다.",
+					"CRON_NEVER": "이 일정은 한 번도 실행되지 않습니다.",
+					"TIMEZONE_INVALID": "올바른 시간대를 선택하세요.",
+					"OUTSIDE_AGENT_PROJECTS": "이 에이전트는 그 프로젝트에서 작업하도록 설정되어 있지 않습니다."
+				}
+			},
+			"templates": {
+				"title": "시작 템플릿",
+				"blank": "빈 에이전트",
+				"blankHint": "지침을 직접 작성합니다.",
+				"triage": {
+					"name": "분류",
+					"description": "새 작업을 정리합니다: 명확한 제목, 우선순위, 중복 링크."
+				},
+				"standup": {
+					"name": "스탠드업",
+					"description": "매일 스탠드업 요약을 프로젝트 페이지에 작성합니다."
+				},
+				"specWriter": {
+					"name": "사양 작성자",
+					"description": "작업을 수락 기준이 있는 사양 페이지로 만듭니다."
+				},
+				"deliveryRisk": {
+					"name": "납기 위험",
+					"description": "기한이 지났거나 막혔거나 담당자가 없는 작업을 매주 보고합니다."
+				},
+				"feedback": {
+					"name": "고객 피드백",
+					"description": "고객 피드백을 예시와 함께 주제별로 묶습니다."
+				},
+				"triggers": {
+					"mention": "멘션",
+					"assign": "할당",
+					"schedule": "일정",
+					"automation": "자동화"
+				}
+			}
+		},
+		"capture": {
+			"button": "캡처",
+			"buttonHint": "스크린샷, 녹화 또는 녹취록으로 새로 만들기",
+			"title": "캡처로 새 요청 만들기",
+			"description": "스크린샷, 화면 녹화 또는 회의 메모를 추가하세요. AI가 요청을 제안하며, 확인하기 전에는 아무것도 만들어지지 않습니다.",
+			"tabs": {
+				"screenshot": "스크린샷",
+				"recording": "녹화",
+				"transcript": "녹취록"
+			},
+			"dropzone": "스크린샷을 붙여넣거나, 끌어다 놓거나, 선택하세요",
+			"dropzoneHint": "PNG, JPEG 또는 WebP, 최대 {{count}}개. 위치 및 카메라 정보는 제거됩니다.",
+			"chooseRecording": "화면 녹화 선택",
+			"recordingHint": "AI에는 정지 프레임 {{count}}개만 전송됩니다. 동영상은 기기에 그대로 남습니다.",
+			"notes": "메모(선택 사항)",
+			"notesPlaceholder": "무엇을 하고 있었고, 무엇이 잘못되었나요?",
+			"transcript": "녹취록 또는 회의 메모",
+			"transcriptPlaceholder": "녹취록이나 메모를 붙여넣으세요. 각 실행 항목이 별도의 요청이 됩니다.",
+			"remove": "{{name}} 제거",
+			"tooMany": "캡처당 최대 {{count}}개의 이미지만 추가할 수 있습니다.",
+			"mediaErrors": {
+				"type": "지원되지 않는 파일 형식입니다.",
+				"tooLarge": "파일이 너무 큽니다.",
+				"unreadable": "파일을 읽을 수 없습니다."
+			},
+			"preparing": "이미지 준비 중…",
+			"analyze": "요청 제안",
+			"analyzing": "캡처를 읽는 중…",
+			"reviewTitle": "제안된 요청 검토",
+			"reviewDescription": "요청을 수정하거나 제외할 수 있습니다. 확인하기 전에는 아무것도 만들어지지 않습니다.",
+			"empty": "이 캡처에서 요청을 찾지 못했습니다.",
+			"include": "이 요청 포함",
+			"titleLabel": "제목",
+			"descriptionLabel": "설명",
+			"priorityLabel": "우선순위",
+			"labelsLabel": "제안된 라벨",
+			"assignTo": "{{name}}에게 할당",
+			"attachNote": "첨부할 이미지: {{count}}개",
+			"attachNotAllowed": "이미지를 첨부할 수 없습니다. 작업을 편집할 권한이 필요합니다.",
+			"back": "뒤로",
+			"create": "요청 만들기({{count}})",
+			"created": "만든 요청: {{count}}개",
+			"extrasFailed": "일부 라벨, 담당자 또는 첨부 파일을 추가하지 못했습니다.",
+			"createError": "요청을 만들지 못했습니다.",
+			"draftFromImages": "이미지로 초안 작성",
+			"drafting": "초안 작성 중…",
+			"sections": {
+				"steps": "재현 단계",
+				"expected": "예상 결과",
+				"actual": "실제 결과",
+				"environment": "환경"
+			}
+		},
+		"codingAgent": {
+			"button": "코딩 에이전트에게 보내기",
+			"dialogTitle": "코딩 에이전트에게 보내기",
+			"dialogDescription": "Margaya가 이 브리프로 저장소에 이슈를 엽니다. 보내기 전에 검토하고 수정하세요.",
+			"repository": "저장소",
+			"profile": "코딩 에이전트",
+			"github": "GitHub",
+			"gitea": "Gitea",
+			"notReady": "이 저장소의 연동은 아직 이슈를 열 수 없습니다. 프로젝트의 연동 설정에서 확인하세요.",
+			"noProfiles": "이 저장소에서 쓸 수 있는 코딩 에이전트 프로필이 없습니다.",
+			"useAi": "AI로 요약",
+			"regenerate": "다시 준비",
+			"preparing": "브리프를 준비하는 중…",
+			"error": "브리프를 준비하지 못했습니다.",
+			"titleLabel": "이슈 제목",
+			"briefLabel": "브리프",
+			"briefNote": "비밀번호나 키처럼 보이는 값은 보내기 전에 제거됩니다. 자동으로 병합되는 것은 없습니다.",
+			"send": "보내기",
+			"sending": "보내는 중…",
+			"sent": "코딩 에이전트에게 보냈습니다",
+			"sentNotAssigned": "이슈는 만들었지만 담당자를 추가하지 못했습니다",
+			"sendError": "이슈를 만들지 못했습니다",
+			"openIssue": "이슈 열기",
+			"timelineTitle": "코딩 에이전트",
+			"timelineLabel": "코딩 에이전트 진행 상황",
+			"sentBy": "{{name}} 님이 {{profile}}에게 보냄",
+			"sentByUnknown": "{{profile}}에게 보냄",
+			"issueLink": "이슈 #{{number}}",
+			"prLink": "풀 리퀘스트 #{{number}}",
+			"pending": "아직 아님",
+			"steps": {
+				"issue_created": "이슈 생성됨",
+				"working": "에이전트 작업 중",
+				"ready_for_review": "리뷰 준비됨",
+				"merged": "병합됨",
+				"closed": "병합 없이 닫힘"
+			},
+			"settings": {
+				"title": "코딩 에이전트",
+				"subtitle": "‘코딩 에이전트에게 보내기’용 이슈 템플릿으로, GitHub와 Gitea를 통해 보냅니다",
+				"sharedNote": "이 워크스페이스의 모든 프로젝트에서 함께 씁니다. 프로필은 이슈에 멘션이나 담당자만 추가하며, AI 키는 저장하지 않습니다.",
+				"builtin": "기본 제공",
+				"githubOnly": "GitHub 전용",
+				"name": "이름",
+				"namePlaceholder": "예: 사내 빌드 러너",
+				"mention": "멘션",
+				"mentionPlaceholder": "@agent 또는 {task}와 {branch}가 들어간 텍스트",
+				"assignee": "담당자 (GitHub)",
+				"assigneePlaceholder": "GitHub 로그인, 예: Copilot",
+				"enabled": "사용",
+				"edit": "프로필 편집",
+				"delete": "프로필 삭제",
+				"add": "프로필 추가",
+				"save": "저장",
+				"saved": "프로필을 저장했습니다",
+				"deleted": "프로필을 삭제했습니다",
+				"error": "프로필을 저장하지 못했습니다",
+				"needsTarget": "멘션이나 담당자를 추가하세요.",
+				"readOnly": "워크스페이스 설정을 관리하는 사람만 프로필을 변경할 수 있습니다."
+			}
+		},
+		"filters": {
+			"button": "필터를 설명하세요…",
+			"short": "설명",
+			"label": "보고 싶은 항목을 설명하세요",
+			"placeholder": "예: 진행 중인 기한 지난 내 버그",
+			"apply": "적용",
+			"none": "필터로 바꿀 수 없었습니다. 다른 표현을 시도해 보세요.",
+			"applied": "필터를 적용했습니다. 칩을 편집해 조정하세요.",
+			"dropped": "이해하지 못함: {{words}}",
+			"hint": "AI가 문장을 상태, 레이블, 사람, 사이클, 우선순위, 날짜 필터로 바꿉니다."
+		},
+		"budget": {
+			"warningTitle": "이번 달 AI 예산의 {{percent}}%를 사용했습니다",
+			"reachedTitle": "이번 달 AI 예산을 모두 사용했습니다",
+			"amounts": "{{cap}} 중 {{used}}.",
+			"warningHint": "한도에 도달하면 AI 기능이 중지됩니다. 필요하면 아래에서 한도를 올리세요.",
+			"reachedHint": "다음 달까지 또는 한도를 올릴 때까지 AI 기능이 일시 중지됩니다.",
+			"notice": {
+				"title": "AI 예산이 거의 소진됨",
+				"content": "이 워크스페이스는 월간 AI 예산의 {{percent}}%를 사용했습니다."
+			}
+		},
+		"skills": {
+			"navLabel": "AI 스킬",
+			"title": "AI 스킬",
+			"subtitle": "AI 채팅에서 \"/\"로 다시 사용할 수 있는 저장된 프롬프트입니다.",
+			"listTitle": "스킬",
+			"new": "새 스킬",
+			"newTitle": "새 스킬",
+			"editTitle": "스킬 편집",
+			"dialogHint": "스킬을 사용할 때마다 프롬프트가 질문에 추가됩니다.",
+			"name": "이름",
+			"namePlaceholder": "릴리스-노트",
+			"description": "설명",
+			"prompt": "프롬프트",
+			"promptPlaceholder": "이번 사이클에 완료된 작업의 릴리스 노트를 기능별로 묶어서 작성해 줘.",
+			"shareLabel": "워크스페이스와 공유",
+			"shareHint": "여기서 AI를 사용하는 모든 사람이 사용할 수 있습니다. 꺼짐: 나만 사용.",
+			"shared": "공유됨",
+			"personal": "나만",
+			"save": "스킬 저장",
+			"saved": "스킬을 저장했습니다",
+			"saveError": "스킬을 저장하지 못했습니다",
+			"deleted": "스킬을 삭제했습니다",
+			"edit": "{{name}} 편집",
+			"delete": "{{name}} 삭제",
+			"deleteConfirm": "{{name}}을(를) 삭제할까요?",
+			"empty": "아직 스킬이 없습니다. 자주 쓰는 프롬프트를 저장하세요.",
+			"loadError": "스킬을 불러오지 못했습니다.",
+			"noAccess": "이 워크스페이스에서 AI를 사용하려면 권한이 필요합니다."
+		},
+		"memory": {
+			"navLabel": "AI 메모리",
+			"title": "AI 메모리",
+			"subtitle": "AI가 답변할 때 기억하는 짧은 사실입니다. 예: \"출시일은 목요일입니다\".",
+			"scopes": {
+				"workspace": "워크스페이스",
+				"project": "프로젝트",
+				"user": "개인"
+			},
+			"scopeHints": {
+				"workspace": "워크스페이스의 모든 사람에게 사용됩니다. AI 관리자가 편집합니다.",
+				"project": "한 프로젝트에서 사용됩니다. AI 관리자가 편집합니다.",
+				"user": "나에게만 사용되며 나만 볼 수 있습니다."
+			},
+			"project": "프로젝트",
+			"newNote": "새 메모",
+			"placeholder": "출시일은 목요일입니다.",
+			"add": "메모 추가",
+			"save": "메모 저장",
+			"editNote": "메모 편집",
+			"deleteNote": "메모 삭제",
+			"saved": "메모를 저장했습니다",
+			"deleted": "메모를 삭제했습니다",
+			"saveError": "메모를 저장하지 못했습니다",
+			"empty": "아직 메모가 없습니다.",
+			"loadError": "메모를 불러오지 못했습니다.",
+			"adminsOnly": "AI 관리자만 여기에 메모를 추가할 수 있습니다.",
+			"noAccess": "이 워크스페이스에서 AI를 사용하려면 권한이 필요합니다."
+		}
+	},
+	"insight": {
+		"close": "닫기",
+		"retry": "다시 시도",
+		"stop": "중지",
+		"writing": "작성 중…",
+		"days_other": "{{count}}일",
+		"estimate": {
+			"usually": "비슷한 작업은 보통 {{value}}였습니다",
+			"took_other": "비슷한 작업 {{count}}개가 {{min}}–{{max}}일 걸렸습니다(중앙값 {{median}})",
+			"basedOn_other": "완료된 비슷한 작업 {{count}}개 기준",
+			"use": "{{value}} 사용",
+			"why": "이유는?",
+			"similar": "비슷한 작업"
+		},
+		"calibration": {
+			"title": "추정치 보정",
+			"description": "최근 {{days}}일 동안 각 크기의 작업이 첫 시작부터 완료까지 실제로 걸린 시간입니다.",
+			"empty": "시작이 기록된 완료·추정 작업이 아직 없습니다.",
+			"estimate": "추정치",
+			"tasks": "작업",
+			"actual": "실제 소요 시간",
+			"range": "중앙값 {{median}}일 ({{low}}–{{high}})",
+			"ordered": "추정치가 클수록 더 오래 걸렸습니다. 예상대로입니다.",
+			"notOrdered": "추정치가 크다고 항상 더 오래 걸리지는 않았습니다. 팀의 작업 크기 산정 방식을 살펴볼 만합니다.",
+			"fewSamples": "크기를 비교하려면 완료된 작업이 더 필요합니다.",
+			"unmeasured_other": "시작이 기록되지 않은 작업 {{count}}개는 제외되었습니다."
+		},
+		"capacity": {
+			"meter": "평소 사이클과 비교한 계획된 작업량",
+			"within": "평소 사이클의 {{percent}}%로 계획됨",
+			"over": "용량 초과: 평소 사이클의 {{percent}}%로 계획됨",
+			"noDates": "용량을 확인하려면 사이클 날짜를 설정하세요.",
+			"noHistory": "팀이 이전 사이클에서 작업을 완료하면 용량이 표시됩니다.",
+			"details": "용량 세부 정보",
+			"compare": "{{load}} 계획됨. 평소 사이클은 {{typical}}을 소화합니다(범위 {{low}}–{{high}}).",
+			"tasks_other": "작업 {{count}}개",
+			"points_other": "{{count}}포인트",
+			"basisCycles_other": "최근 종료된 사이클 {{count}}개에서 팀이 완료한 양을 이 사이클 길이에 맞춰 환산했습니다.",
+			"basisThroughput": "최근 8주 동안 이 사이클 길이의 각 구간에서 프로젝트가 완료한 작업 수를 기준으로 합니다.",
+			"deferTitle": "이후 사이클로 옮길 수 있음",
+			"blocks_other": "{{count}}개 차단",
+			"membersTitle": "사람별 부하",
+			"memberLoad": "{{load}} · 보통 {{typical}}",
+			"membersNote": "업무를 고르게 나누기 위한, 각자의 평소 속도 대비 부하입니다. 성과 지표가 아닙니다.",
+			"unassigned": "미할당"
+		},
+		"retro": {
+			"button": "회고",
+			"buttonLabel": "회고 준비",
+			"title": "회고",
+			"factsTitle": "일어난 일",
+			"factsSoFar": "지금까지 일어난 일",
+			"factsNote": "이 사실은 AI가 아니라 Margaya 기록에서 나온 것입니다. 개인이 아닌 팀의 작업을 설명합니다.",
+			"error": "이 사이클의 사실을 불러오지 못했습니다.",
+			"aiIntro": "이 사실을 바탕으로 AI가 짧은 서술과 토론 질문을 작성하게 합니다.",
+			"write": "서술 작성",
+			"rewrite": "다시 작성",
+			"edit": "편집",
+			"preview": "미리보기",
+			"editLabel": "회고 서술",
+			"saveAsPage": "페이지로 저장",
+			"saveWithNarrative": "사실, 서술, 팀용 섹션을 저장합니다.",
+			"saveFactsOnly": "사실과 팀이 채울 섹션을 저장합니다.",
+			"saved": "회고를 페이지로 저장했습니다",
+			"saveError": "페이지를 저장하지 못했습니다.",
+			"openPage": "페이지 열기",
+			"pageTitle": "회고: {{name}}",
+			"more_other": "외 {{count}}개",
+			"facts": {
+				"sayDo_other": "약속한 작업 {{count}}개 중 {{done}}개 완료({{percent}}%)",
+				"sayDoNone": "시작 시 약속한 작업이 없었습니다",
+				"scope": "범위 변경: 사이클 중 {{added}}개 추가, {{removed}}개 제거",
+				"carry": "이월: {{carried}}개를 다른 사이클로 이동, {{open}}개는 미완료로 남음",
+				"reopened_other": "완료 후 다시 열린 작업 {{count}}개",
+				"points": "추정 포인트: {{committed}} 중 {{completed}} 완료",
+				"cycleTime": "사이클 타임: 중앙값 {{median}}일",
+				"cycleTimeOutliers_other": "사이클 타임: 중앙값 {{median}}일, 작업 {{count}}개가 {{threshold}}일을 넘김",
+				"cycleTimeNone": "사이클 타임: 측정되지 않음",
+				"blocked_other": "다른 작업에 막힌 작업 {{count}}개",
+				"forecastNone": "예측: 이 사이클에 저장된 예측이 없습니다",
+				"forecastOpen": "예측: {{date}}까지 완료될 확률 85%",
+				"forecastMet": "예측: {{date}}까지 완료될 확률 85%, 예측이 맞았습니다",
+				"forecastMissed": "예측: {{date}}까지 완료될 확률 85%, 예측이 빗나갔습니다"
+			},
+			"lists": {
+				"added": "사이클 중 추가됨",
+				"carriedOver": "이월됨",
+				"leftOpen": "미완료로 남음",
+				"outliers": "평소보다 훨씬 오래 걸림",
+				"blocked": "막힘"
+			},
+			"page": {
+				"facts": "사실",
+				"wentWell": "잘된 점",
+				"improve": "개선할 점",
+				"actions": "실행 항목"
+			}
+		},
+		"myBrief": {
+			"title": "내 브리핑",
+			"empty": "오늘 처리할 일이 없습니다.",
+			"error": "브리핑을 불러오지 못했습니다.",
+			"summarize": "요약",
+			"overdue": "기한 지남 · {{total}}",
+			"dueToday": "오늘 마감 · {{total}}",
+			"blocked": "막힘 · {{total}}",
+			"mentions": "멘션 · {{total}}",
+			"following": "팔로우 중인 작업의 변경 · {{total}}",
+			"waitingOn": "{{keys}} 대기 중",
+			"hiddenBlockers_other": "숨겨진 작업 {{count}}개",
+			"mentionedBy": "{{name}} 님",
+			"mentioned": "님이 회원님을 멘션했습니다",
+			"more_other": "외 {{count}}개",
+			"kinds": {
+				"status": "상태",
+				"comment": "댓글",
+				"assignee": "담당자",
+				"priority": "우선순위",
+				"due_date": "마감일",
+				"other": "기타 업데이트"
+			},
+			"emailTitle": "다이제스트에 내 브리핑 추가",
+			"emailDescription": "다이제스트에 막힌 작업과 팔로우 중인 작업의 변경도 표시합니다. 일간 또는 주간 다이제스트가 필요합니다.",
+			"emailError": "이 설정을 저장하지 못했습니다."
+		}
 	}
 }

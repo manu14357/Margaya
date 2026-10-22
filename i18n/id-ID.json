@@ -11,7 +11,8 @@
 			"remove": "Hapus",
 			"reset": "Atur ulang",
 			"filter": "Filter",
-			"clearAllFilters": "Hapus semua filter"
+			"clearAllFilters": "Hapus semua filter",
+			"undo": "Urungkan"
 		},
 		"a11y": {
 			"toggleSidebar": "Tampilkan/sembunyikan panel samping"
@@ -98,7 +99,15 @@
 				"createButton": "Buat proyek",
 				"successToast": "Proyek berhasil dibuat",
 				"errorToast": "Gagal membuat proyek",
-				"keyTaken": "Proyek dengan key {{key}} sudah ada di ruang kerja ini"
+				"keyTaken": "Proyek dengan key {{key}} sudah ada di ruang kerja ini",
+				"blankProject": "Proyek kosong",
+				"copyHint": "Status, field kustom, estimasi, pengaturan, dan otomatisasi akan disalin. Anggota, integrasi, dan papan publik tidak disalin.",
+				"includeOpenTasks": "Sertakan tugas yang terbuka",
+				"includeTemplates": "Sertakan templat tugas",
+				"openTasksHint": "Hingga 500 tugas terbuka beserta subtugas, label, dan estimasinya. Komentar dan riwayat tidak disalin.",
+				"restricted": "Terbatas",
+				"restrictedHint": "Hanya anggota yang dapat melihat proyek ini. Anda akan menjadi anggota pertamanya; pemilik dan admin workspace selalu dapat melihatnya.",
+				"startFrom": "Mulai dari"
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -714,6 +723,8 @@
 			"themeLight": "Terang",
 			"themeDark": "Gelap",
 			"themeSystem": "Sistem",
+			"themeLightContrast": "Terang kontras tinggi",
+			"themeDarkContrast": "Gelap kontras tinggi",
 			"language": "Bahasa",
 			"languageDescription": "Pilih bahasa antarmuka yang Anda inginkan",
 			"selectLanguage": "Pilih bahasa",
@@ -1416,6 +1427,67 @@
 			"dropHintAny": "Seret dan lepas file JSON atau CSV di sini",
 			"importAcceptHint": "Unggah ekspor JSON Margaya atau file CSV.",
 			"importStopped": "Impor dihentikan: {{message}}",
+			"external": {
+				"sourceHint": "Pindah dari alat lain? Impor ekspornya beserta status, label, orang, tanggal, dan subtugas.",
+				"sources": {
+					"trello": "Trello (JSON)",
+					"linear": "Linear (CSV)",
+					"asana": "Asana (CSV)"
+				},
+				"title": {
+					"trello": "Impor dari Trello",
+					"linear": "Impor dari Linear",
+					"asana": "Impor dari Asana"
+				},
+				"howToTitle": {
+					"trello": "Cara mengekspor dari Trello",
+					"linear": "Cara mengekspor dari Linear",
+					"asana": "Cara mengekspor dari Asana"
+				},
+				"howTo": {
+					"trello": {
+						"step1": "Di papan, buka menu → Cetak, ekspor, dan bagikan → Ekspor sebagai JSON.",
+						"step2": "Unggah file .json yang telah diunduh di sini."
+					},
+					"linear": {
+						"step1": "Di Linear, buka Pengaturan → Import / Export lalu pilih Ekspor CSV.",
+						"step2": "Unggah file .csv dari email yang dikirim Linear di sini."
+					},
+					"asana": {
+						"step1": "Di proyek Asana, buka menu proyek → Ekspor/Cetak → CSV.",
+						"step2": "Unggah file .csv yang telah diunduh di sini."
+					}
+				},
+				"limits": {
+					"trello": "Hingga 10 MB dan 5.000 kartu per file. Kartu yang diarsipkan dilewati; checklist menjadi daftar tugas di deskripsi; lampiran tetap di Trello.",
+					"linear": "Hingga 5 MB dan 5.000 issue per file. Issue yang diarsipkan dilewati. CSV Linear tidak berisi komentar.",
+					"asana": "Hingga 5 MB dan 5.000 tugas per file. Tugas yang selesai masuk ke kolom Selesai Anda. CSV Asana tidak berisi komentar."
+				},
+				"dropHint": {
+					"trello": "Seret dan lepas ekspor JSON Trello di sini",
+					"linear": "Seret dan lepas ekspor CSV Linear di sini",
+					"asana": "Seret dan lepas ekspor CSV Asana di sini"
+				},
+				"wrongType": {
+					"trello": "Pilih ekspor .json dari papan.",
+					"linear": "Pilih ekspor .csv dari Linear.",
+					"asana": "Pilih ekspor .csv dari Asana."
+				},
+				"itemCount_other": "{{count}} item",
+				"alreadyImported_other": "{{count}} item sudah pernah diimpor ke proyek ini.",
+				"contents": "{{comments}} komentar, {{checklists}} checklist, {{subtasks}} subtugas, {{links}} tautan",
+				"sourceStatus": "Status atau daftar",
+				"peopleUnmatched_other": "{{count}} orang bukan anggota ({{names}}). Item mereka tetap tanpa penanggung jawab, dan namanya dicatat di deskripsi.",
+				"mode": "Item yang pernah diimpor",
+				"modeHint": "Dikenali dari id-nya di ekspor.",
+				"importAction_other": "Impor {{count}} item",
+				"importing_other": "Mengimpor {{count}} item…",
+				"result": {
+					"skipped_other": "{{count}} item dilewati (sudah pernah diimpor)",
+					"failed_other": "{{count}} item gagal",
+					"unmatched_other": "{{count}} orang bukan anggota ruang kerja; item mereka tidak memiliki penanggung jawab:"
+				}
+			},
 			"unsupportedFile": "Harap unggah file JSON atau CSV",
 			"jira": {
 				"alreadyImported_other": "{{count}} issue sudah pernah diimpor ke proyek ini.",
@@ -1548,7 +1620,8 @@
 				"intake": "Intake",
 				"analytics": "Analitik",
 				"page": "Halaman",
-				"audit_log": "Log audit"
+				"audit_log": "Log audit",
+				"ai": "AI"
 			},
 			"permissions": {
 				"project": {
@@ -1794,6 +1867,16 @@
 						"description": "Lihat dan ekspor log audit ruang kerja: siapa yang mengubah anggota, peran, kunci, webhook, integrasi, dan pengaturan.",
 						"label": "Lihat log audit"
 					}
+				},
+				"ai": {
+					"use": {
+						"label": "Gunakan AI",
+						"description": "Gunakan fitur AI, saat AI aktif untuk ruang kerja dan proyek."
+					},
+					"manage": {
+						"label": "Kelola AI",
+						"description": "Aktifkan atau nonaktifkan AI untuk ruang kerja, ubah kunci, batas, dan privasinya, serta lihat penggunaan AI."
+					}
 				}
 			},
 			"validation": {
@@ -1938,6 +2021,10 @@
 				"views": {
 					"description": "Simpan filter, pengelompokan, dan pengaturan tampilan lalu bagikan ke tim.",
 					"title": "Tampilan"
+				},
+				"ai": {
+					"title": "AI",
+					"description": "Ringkasan, saran, dan bantuan AI lainnya untuk proyek ini. Jika dinonaktifkan, proyek sepenuhnya dikecualikan dari AI."
 				}
 			},
 			"loadError": "Tidak dapat memuat proyek ini",
@@ -2142,7 +2229,25 @@
 				"closeOff": "Tutup otomatis dinonaktifkan",
 				"closeOn": "Tutup otomatis diaktifkan",
 				"error": "Gagal memperbarui otomatisasi",
-				"updated": "Otomatisasi diperbarui"
+				"updated": "Otomatisasi diperbarui",
+				"rolloverOff": "Pengalihan siklus dinonaktifkan",
+				"rolloverOn": "Pengalihan siklus diaktifkan",
+				"flowAlertsOn": "Peringatan alur diaktifkan",
+				"flowAlertsOff": "Peringatan alur dinonaktifkan"
+			},
+			"cycleRollover": {
+				"cyclesOff": "Aktifkan Siklus di Fitur untuk menggunakan ini.",
+				"description": "Saat siklus berakhir, pindahkan tugas yang belum selesai ke siklus berikutnya. Pemimpin proyek menerima ringkasannya.",
+				"last_other": "Terakhir memindahkan {{count}} tugas {{time}}",
+				"never": "Belum ada yang dipindahkan",
+				"title": "Alihkan pekerjaan siklus yang belum selesai"
+			},
+			"flowAlerts": {
+				"title": "Peringatan anomali alur",
+				"description": "Sekali sehari, bandingkan pekerjaan berjalan, waktu siklus, dan throughput dengan 8 minggu sebelumnya. Pemimpin proyek diberi tahu saat salah satunya keluar dari rentang biasanya.",
+				"noLead": "Tetapkan pemimpin proyek untuk menerima peringatan ini.",
+				"last": "Peringatan terakhir {{time}}",
+				"never": "Belum ada peringatan"
 			}
 		},
 		"workspaceExports": {
@@ -2586,6 +2691,24 @@
 			"noProjectsHint": "Buat proyek terlebih dahulu. Pengaturannya akan muncul di sini.",
 			"pickProject": "Pilih proyek untuk melihat pengaturannya."
 		},
+		"projectAccess": {
+			"title": "Akses",
+			"subtitle": "Siapa yang dapat melihat dan bekerja di proyek ini.",
+			"restrictedLabel": "Terbatas",
+			"restrictedHint": "Hanya anggota di bawah ini, serta pemilik dan admin workspace, yang dapat melihat proyek ini. Hak anggota di sini adalah yang diizinkan oleh peran workspace dan peran proyeknya sekaligus.",
+			"openHint": "Semua orang di workspace dapat melihat proyek ini, sesuai izin peran workspace mereka. Jadikan terbatas untuk membatasinya ke anggota yang dipilih.",
+			"membersLabel": "Anggota",
+			"membersHint": "Peran proyek membatasi apa yang dapat dilakukan setiap anggota di sini.",
+			"noMembers": "Belum ada anggota.",
+			"addMember": "Tambah anggota",
+			"removeMember": "Hapus {{name}}",
+			"roleFor": "Peran proyek {{name}}",
+			"leadTag": "Pemimpin",
+			"restrictedProject": "Proyek terbatas",
+			"toastUpdated": "Akses diperbarui",
+			"toastError": "Gagal memperbarui akses",
+			"loadError": "Tidak dapat memuat pengaturan akses. Muat ulang halaman untuk mencoba lagi."
+		},
 		"projectPeople": {
 			"defaultAssigneeHint": "Terisi otomatis saat Anda membuat tugas, dan ditugaskan ke permintaan yang diterima tanpa penanggung jawab.",
 			"defaultAssigneeLabel": "Penanggung jawab default",
@@ -2643,7 +2766,7 @@
 			"title": "Keamanan"
 		},
 		"timezone": {
-			"accountHint": "Digunakan untuk pengingat dan ringkasan email. Aplikasi selalu menampilkan waktu dalam zona waktu browser Anda.",
+			"accountHint": "Digunakan untuk pengingat, ringkasan email, dan hari yang dihitung oleh filter tugas serta analitik. Waktu di layar ditampilkan dalam zona waktu browser Anda.",
 			"accountLabel": "Zona waktu",
 			"automatic": "Otomatis (browser: {{zone}})",
 			"loadError": "Tidak dapat memuat zona waktu. Muat ulang halaman untuk mencoba lagi.",
@@ -2656,8 +2779,52 @@
 			"workspaceHint": "Menentukan \"hari ini\" untuk siklus, otomasi, dan analitik. Ruang kerja yang sudah ada dimulai dengan UTC.",
 			"workspaceLabel": "Zona waktu"
 		},
+		"workspaceDeletion": {
+			"pendingTitle": "Penghapusan dijadwalkan",
+			"pendingDescription": "Ruang kerja ini akan dihapus pada {{date}}. Sampai saat itu ruang kerja hanya bisa dibaca, dan Anda masih bisa membuka serta mengekspor isinya.",
+			"cancel": "Batalkan penghapusan",
+			"confirm": "Jadwalkan penghapusan",
+			"rowDescription": "Ruang kerja langsung menjadi hanya-baca dan akan dihapus permanen pada {{date}}. Anda bisa membatalkannya sebelum itu.",
+			"dialogTitle": "Hapus {{name}}?",
+			"dialogDescription": "{{name}} langsung menjadi hanya-baca untuk semua orang, dan kunci API serta webhook-nya berhenti berfungsi. Anggota akan menerima email. Pada {{date}}, ruang kerja ini akan dihapus permanen beserta semua proyek, tugas, dan halamannya, kecuali Anda membatalkannya sebelum itu.",
+			"toastScheduled": "Penghapusan dijadwalkan pada {{date}}",
+			"toastCancelled": "Penghapusan dibatalkan. Ruang kerja bisa diedit lagi.",
+			"toastError": "Tidak dapat mengubah penghapusan. Coba lagi.",
+			"bannerTitle": "Ruang kerja ini akan dihapus pada {{date}}",
+			"bannerDescription": "Sampai saat itu hanya bisa dibaca. Anda masih bisa membuka dan mengekspor isinya.",
+			"admin": {
+				"title": "Menunggu penghapusan",
+				"description": "Ruang kerja yang penghapusannya dijadwalkan oleh pemiliknya. Hanya bisa dibaca sampai tanggalnya, lalu dihapus permanen.",
+				"dueAt": "Dihapus pada",
+				"badge": "Dihapus pada {{date}}"
+			},
+			"instanceAudit": {
+				"scheduled": "Menjadwalkan penghapusan ruang kerja",
+				"cancelled": "Membatalkan penghapusan ruang kerja",
+				"purged": "Menghapus ruang kerja setelah masa tenggang"
+			}
+		},
+		"workspacePublicPages": {
+			"label": "Halaman publik",
+			"description": "Izinkan orang yang dapat membagikan proyek memublikasikan halaman lewat tautan publik hanya-baca. Menonaktifkannya mencabut semua tautan yang dipublikasikan.",
+			"toastOn": "Halaman publik diaktifkan",
+			"toastOff": "Halaman publik dinonaktifkan. Tautan yang dipublikasikan telah dicabut.",
+			"toastError": "Tidak dapat mengubah pengaturan. Coba lagi."
+		},
+		"workspaceA2a": {
+			"label": "Agen-ke-agen (A2A)",
+			"description": "Izinkan agen AI eksternal menyerahkan pekerjaan ke ruang kerja ini melalui protokol A2A. Mereka bertindak dengan kunci API atau masuk OAuth milik seorang anggota dan izin anggota tersebut, dan semua yang mereka lakukan muncul di log audit.",
+			"toastOn": "A2A diaktifkan",
+			"toastOff": "A2A dinonaktifkan. Agen eksternal tidak dapat lagi menyerahkan pekerjaan ke ruang kerja ini.",
+			"toastError": "Tidak dapat mengubah pengaturan. Coba lagi."
+		},
 		"workspaceAuditLog": {
 			"actions": {
+				"workspaceDeletionScheduled": "Menjadwalkan penghapusan ruang kerja",
+				"workspaceDeletionCancelled": "Membatalkan penghapusan ruang kerja",
+				"workspacePublicPagesChanged": "Mengaktifkan atau menonaktifkan halaman publik",
+				"pagePublished": "Memublikasikan halaman lewat tautan publik",
+				"pageUnpublished": "Mencabut tautan publik halaman",
 				"apiKeyCreated": "Membuat kunci API",
 				"apiKeyRevoked": "Mencabut kunci API",
 				"exportCreated": "Memulai ekspor",
@@ -2668,6 +2835,7 @@
 				"integrationUpdated": "Mengubah integrasi",
 				"memberInvitationAccepted": "Menerima undangan",
 				"memberInvitationDeclined": "Menolak undangan",
+				"memberInvitationRoleChanged": "Mengubah peran undangan yang tertunda",
 				"memberInvitationRevoked": "Mencabut undangan",
 				"memberInvited": "Mengundang seseorang ke ruang kerja",
 				"memberLeft": "Keluar dari ruang kerja",
@@ -2697,13 +2865,41 @@
 				"webhookUpdated": "Mengubah webhook",
 				"workspaceCreated": "Membuat ruang kerja",
 				"workspaceOwnershipTransferred": "Mentransfer kepemilikan ruang kerja",
-				"workspaceUpdated": "Mengubah pengaturan ruang kerja"
+				"workspaceUpdated": "Mengubah pengaturan ruang kerja",
+				"aiSettingsUpdated": "Mengubah pengaturan AI",
+				"aiTriageLabelsApplied": "Menambahkan label yang disarankan secara otomatis",
+				"agentCreated": "Membuat agen",
+				"agentUpdated": "Mengubah agen",
+				"agentDeleted": "Menghapus agen",
+				"agentChangeApplied": "Membuat perubahan atas nama seseorang",
+				"agentChangeApproved": "Menyetujui perubahan agen",
+				"agentChangeRejected": "Menolak perubahan agen",
+				"agentChangeReverted": "Mengurungkan perubahan agen",
+				"codingAgentHandoffSent": "Mengirim tugas ke agen koding",
+				"codingAgentProfileCreated": "Membuat profil agen koding",
+				"codingAgentProfileUpdated": "Mengubah profil agen koding",
+				"codingAgentProfileDeleted": "Menghapus profil agen koding",
+				"a2aTaskReceived": "Menerima pekerjaan dari agen eksternal (A2A)",
+				"automationRuleCreated": "Membuat otomatisasi",
+				"automationRuleUpdated": "Memperbarui otomatisasi",
+				"automationRuleDeleted": "Menghapus otomatisasi",
+				"automationRuleRan": "Menjalankan otomatisasi pada tugas",
+				"agentScheduleCreated": "Menjadwalkan agen",
+				"agentScheduleUpdated": "Mengubah jadwal agen",
+				"agentScheduleDeleted": "Menghapus jadwal agen",
+				"agentScheduleDisabled": "Menonaktifkan jadwal agen",
+				"aiConnectorCreated": "Menambahkan konektor MCP",
+				"aiConnectorUpdated": "Mengubah konektor MCP",
+				"aiConnectorDeleted": "Menghapus konektor MCP"
 			},
 			"actor": {
 				"apiKey": "Kunci API",
 				"deletedUser": "Pengguna yang dihapus",
 				"system": "Sistem",
-				"unknownKey": "Kunci API yang dihapus"
+				"unknownKey": "Kunci API yang dihapus",
+				"agent": "Agen",
+				"agentFor": "Agen, atas nama {{name}}",
+				"automation": "Otomatisasi"
 			},
 			"categories": {
 				"apiKey": "Kunci API",
@@ -2716,7 +2912,11 @@
 				"role": "Peran",
 				"trash": "Sampah",
 				"webhook": "Webhook",
-				"workspace": "Pengaturan ruang kerja"
+				"workspace": "Pengaturan ruang kerja",
+				"agent": "Agen",
+				"codingAgent": "Agen koding",
+				"a2a": "Agen eksternal (A2A)",
+				"automation": "Otomatisasi"
 			},
 			"columns": {
 				"action": "Tindakan",
@@ -2765,6 +2965,7 @@
 			"subtitle": "Siapa yang mengubah anggota, peran, kunci API, webhook, integrasi, pengaturan, dan proyek di ruang kerja ini. Entri disimpan selama {{days}} hari.",
 			"subtitleForever": "Siapa yang mengubah anggota, peran, kunci API, webhook, integrasi, pengaturan, dan proyek di ruang kerja ini. Entri disimpan sampai Anda menghapus ruang kerja.",
 			"targets": {
+				"page": "Halaman",
 				"apiKey": "Kunci API",
 				"export": "Ekspor",
 				"integration": "Integrasi",
@@ -2773,7 +2974,11 @@
 				"role": "Peran",
 				"user": "Anggota",
 				"webhook": "Webhook",
-				"workspace": "Ruang kerja"
+				"workspace": "Ruang kerja",
+				"agent": "Agen",
+				"agentRun": "Eksekusi agen",
+				"task": "Tugas",
+				"codingAgentProfile": "Profil agen koding"
 			},
 			"title": "Log audit"
 		},
@@ -2819,9 +3024,189 @@
 			"workspaceNav": "Baru dihapus",
 			"workspaceSubtitle": "Proyek yang dihapus tetap di sini beserta tugasnya sampai dihapus permanen.",
 			"workspaceTitle": "Proyek yang baru dihapus"
+		},
+		"automationRules": {
+			"title": "Otomatisasi",
+			"description": "Saat sesuatu terjadi pada tugas, periksa kondisinya lalu ambil tindakan. Aturan berjalan sendiri, tanpa AI, sebagai \"Otomatisasi\".",
+			"empty": "Belum ada otomatisasi. Mulai dari templat atau buat aturan Anda sendiri.",
+			"loadError": "Gagal memuat otomatisasi.",
+			"newRule": "Aturan baru",
+			"templatesTitle": "Templat",
+			"saved": "Otomatisasi disimpan",
+			"saveError": "Gagal menyimpan otomatisasi",
+			"deleted": "Otomatisasi dihapus",
+			"confirmDelete": "Hapus",
+			"edit": "Edit {{name}}",
+			"delete": "Hapus {{name}}",
+			"summary_one": "Saat {{trigger}} · {{count}} tindakan",
+			"summary_other": "Saat {{trigger}} · {{count}} tindakan",
+			"lastRun_one": "{{count}} kali dijalankan, terakhir {{time}}",
+			"lastRun_other": "{{count}} kali dijalankan, terakhir {{time}}",
+			"neverRan": "Belum pernah dijalankan",
+			"templates": {
+				"reviewer": {
+					"name": "Tugaskan peninjau saat dipindah ke Dalam Review",
+					"description": "Pilih peninjau; mereka ditugaskan saat tugas masuk tahap review."
+				},
+				"intakeBugs": {
+					"name": "Beri label bug dari intake",
+					"description": "Permintaan yang diterima dan menyebut bug atau error mendapat label bug."
+				},
+				"overdue": {
+					"name": "Eskalasi tugas yang terlambat",
+					"description": "Saat tenggat terlewati, naikkan prioritas dan beri tahu penanggung jawab."
+				}
+			},
+			"triggers": {
+				"task_created": "tugas dibuat",
+				"status_changed": "status berubah",
+				"assignee_added": "seseorang ditugaskan",
+				"assignee_removed": "penugasan seseorang dilepas",
+				"label_added": "label ditambahkan",
+				"label_removed": "label dihapus",
+				"priority_changed": "prioritas berubah",
+				"due_date_set": "tenggat ditetapkan",
+				"due_date_passed": "tenggat terlewati",
+				"comment_added": "komentar ditambahkan",
+				"moved_to_cycle": "tugas dipindah ke siklus",
+				"moved_to_module": "tugas ditambahkan ke modul"
+			},
+			"conditions": {
+				"status": "Status",
+				"labels": "Label",
+				"priority": "Prioritas",
+				"assignee": "Penanggung jawab",
+				"due_date": "Tenggat",
+				"estimate": "Estimasi",
+				"title": "Judul",
+				"custom_field": "Field kustom"
+			},
+			"ops": {
+				"is": "adalah",
+				"is_not": "bukan",
+				"contains": "berisi",
+				"not_contains": "tidak berisi",
+				"empty": "kosong",
+				"not_empty": "tidak kosong",
+				"set": "sudah diatur",
+				"not_set": "belum diatur",
+				"gte": "minimal",
+				"lte": "maksimal",
+				"equals": "sama dengan",
+				"not_equals": "tidak sama dengan"
+			},
+			"actions": {
+				"set_status": "Atur status",
+				"assign": "Tugaskan",
+				"unassign": "Lepas penugasan",
+				"add_label": "Tambah label",
+				"remove_label": "Hapus label",
+				"set_priority": "Atur prioritas",
+				"set_due_date": "Atur tenggat",
+				"add_comment": "Tambah komentar",
+				"move_to_cycle": "Pindahkan ke siklus",
+				"move_to_module": "Tambahkan ke modul",
+				"create_subtask": "Buat subtugas",
+				"notify": "Beri tahu",
+				"run_agent": "Jalankan agen"
+			},
+			"roles": {
+				"assignees": "Penanggung Jawab",
+				"creator": "Pembuat",
+				"lead": "Pemimpin proyek"
+			},
+			"outcomes": {
+				"success": "Selesai",
+				"partial": "Sebagian selesai",
+				"failed": "Gagal",
+				"skipped": "Dilewati"
+			},
+			"errors": {
+				"LOOP_DEPTH": "Dihentikan: terlalu banyak aturan saling memicu secara beruntun.",
+				"RATE_LIMITED": "Dihentikan: tugas ini menjalankan terlalu banyak otomatisasi dalam satu menit.",
+				"AGENT_UNAVAILABLE": "Jalankan agen: agen nonaktif atau sudah dihapus.",
+				"NO_RULE_OWNER": "Jalankan agen: aturan ini tidak punya pemilik lagi. Simpan ulang.",
+				"AI_DISABLED": "Jalankan agen: AI nonaktif untuk proyek ini."
+			},
+			"history": {
+				"title": "Riwayat eksekusi",
+				"empty": "Belum ada eksekusi.",
+				"error": "Gagal memuat riwayat eksekusi.",
+				"failedActions": "Gagal: {{actions}}"
+			},
+			"editor": {
+				"name": "Nama aturan",
+				"namePlaceholder": "Beri nama aturan ini",
+				"when": "Saat",
+				"if": "Jika",
+				"then": "Maka",
+				"match": "Cocokkan",
+				"matchAll": "Semua kondisi ini",
+				"matchAny": "Salah satu kondisi ini",
+				"always": "Setiap kali",
+				"addCondition": "Tambah kondisi",
+				"addGroup": "Tambah grup",
+				"addAction": "Tambah tindakan",
+				"remove": "Hapus",
+				"save": "Simpan aturan",
+				"cancel": "Batal",
+				"choose": "Pilih…",
+				"add": "Tambah…",
+				"removeItem": "Hapus {{name}}",
+				"any": "Apa saja",
+				"from": "dari",
+				"to": "ke",
+				"fromIntake": "Hanya permintaan yang diterima dari intake",
+				"people": "Orang",
+				"labels": "Label",
+				"priorities": "Prioritas",
+				"cycles": "Siklus",
+				"modules": "Modul",
+				"field": "Field",
+				"operator": "Perbandingan",
+				"points": "Poin",
+				"value": "Nilai",
+				"column": "Status",
+				"everyone": "Semua orang",
+				"label": "Label",
+				"priority": "Prioritas",
+				"daysFromRun": "hari setelah aturan berjalan",
+				"comment": "Komentar",
+				"subtaskTitle": "Judul subtugas",
+				"cycle": "Siklus",
+				"module": "Modul",
+				"roles": "Peran",
+				"message": "Pesan (opsional)",
+				"variables": "Variabel:",
+				"agent": "Agen",
+				"agentPrompt": "Apa yang harus dilakukan agen?",
+				"agentPromptPlaceholder": "Misalnya: lakukan triase pada tugas ini dan sarankan prioritas.",
+				"agentHint": "Agen bertindak atas nama orang yang menyimpan aturan ini, dengan hak paling banyak sebesar haknya. Agen tidak pernah berjalan karena perubahan yang dibuat agen."
+			}
 		}
 	},
 	"navigation": {
+		"customize": {
+			"open": "Sesuaikan bilah sisi",
+			"title": "Sesuaikan bilah sisi",
+			"description": "Pilih apa yang ditampilkan bilah sisi Anda dan urutannya. Hanya Anda yang melihat perubahan ini, di semua perangkat Anda.",
+			"settingsDescription": "Ubah urutan atau sembunyikan navigasi utama dan bagian panel Proyek.",
+			"rail": "Navigasi utama",
+			"projectsPanel": "Panel Proyek",
+			"sections": {
+				"views": "Daftar tugas dan tampilan",
+				"favorites": "Favorit",
+				"projects": "Proyek"
+			},
+			"show": "Tampilkan {{name}}",
+			"alwaysShown": "{{name}} selalu ditampilkan",
+			"moveUp": "Pindahkan {{name}} ke atas",
+			"moveDown": "Pindahkan {{name}} ke bawah",
+			"moved": "{{name}} dipindahkan ke posisi {{position}} dari {{total}}",
+			"reset": "Kembalikan ke default",
+			"resetDone": "Bilah sisi dikembalikan ke default",
+			"done": "Selesai"
+		},
 		"commandPalette": {
 			"suggestions": "Saran",
 			"commands": "Perintah",
@@ -2834,6 +3219,8 @@
 			"lightTheme": "Tema terang",
 			"darkTheme": "Tema gelap",
 			"systemTheme": "Tema sistem",
+			"lightContrastTheme": "Tema terang kontras tinggi",
+			"darkContrastTheme": "Tema gelap kontras tinggi",
 			"keyboardShortcuts": "Pintasan keyboard",
 			"inputPlaceholder": "Cari aplikasi dan perintah...",
 			"empty": "Tidak ada hasil ditemukan.",
@@ -3143,6 +3530,21 @@
 			"page_mention": {
 				"content": "{{mentionerName}} menyebut Anda di: {{pageTitle}}",
 				"title": "{{mentionerName}} menyebut Anda"
+			},
+			"cycle_rollover": {
+				"content_other": "{{count}} tugas yang belum selesai dipindahkan ke {{targetCycleName}}",
+				"contentNoNext_other": "{{count}} tugas yang belum selesai tetap di {{cycleName}}: tidak ada siklus berikutnya",
+				"title": "{{cycleName}} berakhir"
+			},
+			"flow_anomaly": {
+				"title": "Alur tidak biasa di {{projectName}}",
+				"throughput_low": "Throughput turun menjadi {{value}} tugas minggu ini (biasanya sekitar {{baseline}})",
+				"wip_high": "Pekerjaan berjalan naik menjadi {{value}} tugas (biasanya sekitar {{baseline}})",
+				"cycle_time_high": "Waktu siklus naik menjadi {{value}} hari (biasanya sekitar {{baseline}})"
+			},
+			"automation_notice": {
+				"title": "Otomatisasi: {{ruleName}}",
+				"content": "{{taskKey}} {{taskTitle}}"
 			}
 		},
 		"reminderLeadTime": {
@@ -3289,6 +3691,13 @@
 				"open": "Buka tugas",
 				"read": "Tandai sudah atau belum dibaca",
 				"snooze": "Tunda"
+			},
+			"digest": {
+				"button": "Ringkas yang belum dibaca",
+				"title": "Ringkasan yang belum dibaca",
+				"regenerate": "Ringkas lagi",
+				"close": "Tutup ringkasan",
+				"generating": "Meringkas…"
 			}
 		}
 	},
@@ -3494,7 +3903,9 @@
 		"automation": {
 			"actor": "Otomatisasi",
 			"archived_other": "mengarsipkan tugas ini setelah {{count}} bulan tanpa pembaruan",
-			"closed_other": "menutup tugas ini setelah {{count}} bulan tanpa pembaruan, dan memindahkannya ke {{to}}"
+			"closed_other": "menutup tugas ini setelah {{count}} bulan tanpa pembaruan, dan memindahkannya ke {{to}}",
+			"rolledOver": "memindahkan tugas ini dari {{from}} ke {{to}} saat siklus berakhir",
+			"byRule": "melalui {{name}}"
 		},
 		"commentVisibility": {
 			"badgeExternal": "Eksternal",
@@ -3533,10 +3944,64 @@
 			"updates": "Pembaruan"
 		},
 		"importedFromJira": "mengimpor tugas ini dari Jira {{key}}",
+		"importedFromSource": "mengimpor tugas ini dari {{source}} {{key}}",
 		"movedToTrash": "memindahkan tugas ini ke sampah",
 		"restoredFromTrash": "memulihkan tugas ini dari sampah"
 	},
 	"tasks": {
+		"recurrence": {
+			"label": "Ulangi",
+			"none": "Tidak berulang",
+			"title": "Ulangi tugas ini",
+			"indicator": "Berulang",
+			"frequency": {
+				"label": "Frekuensi",
+				"daily": "Harian",
+				"weekly": "Mingguan",
+				"monthly": "Bulanan",
+				"yearly": "Tahunan"
+			},
+			"interval": "Setiap",
+			"weekdays": "Pada hari-hari ini",
+			"monthDay": "Tanggal dalam bulan",
+			"trigger": {
+				"label": "Buat yang berikutnya",
+				"completion": "Saat tugas ini selesai",
+				"schedule": "Pada tanggalnya, meskipun tugas ini masih terbuka"
+			},
+			"ends": {
+				"label": "Berakhir",
+				"never": "Tidak pernah",
+				"onDate": "Pada",
+				"endDate": "Tanggal berakhir",
+				"after": "Setelah",
+				"count": "Jumlah kali"
+			},
+			"summary": {
+				"daily_other": "Setiap {{count}} hari",
+				"weekly_other": "Setiap {{count}} minggu pada {{days}}",
+				"monthly_other": "Setiap {{count}} bulan pada tanggal {{day}}",
+				"yearly_other": "Setiap {{count}} tahun pada {{date}}",
+				"until": "{{summary}}, hingga {{date}}",
+				"times_other": "{{summary}}, {{count}} kali"
+			},
+			"next": "Berikutnya: {{date}}",
+			"ended": "Tidak ada pengulangan lagi",
+			"save": "Simpan",
+			"remove": "Hentikan pengulangan",
+			"saved": "Pengulangan disimpan",
+			"removed": "Tugas ini tidak berulang lagi",
+			"saveError": "Gagal menyimpan pengulangan",
+			"activity": {
+				"set": "mengatur tugas ini agar berulang: {{summary}}",
+				"updated": "mengubah pengulangan: {{summary}}",
+				"removed": "menghentikan pengulangan tugas ini",
+				"recurredFrom": "membuat tugas ini sebagai pengulangan berikutnya dari <task>{{task}}</task>",
+				"recurredFromScheduled": "Dibuat sesuai jadwal sebagai pengulangan berikutnya dari <task>{{task}}</task>",
+				"recurredTo": "menyelesaikan tugas ini, sehingga pengulangan berikutnya <task>{{task}}</task> dibuat",
+				"recurredToScheduled": "Pengulangan berikutnya dibuat sesuai jadwal: <task>{{task}}</task>"
+			}
+		},
 		"title": "Tugas",
 		"status": {
 			"label": "Status",
@@ -3958,7 +4423,9 @@
 		},
 		"kanban": {
 			"addTask": "Tambah tugas",
-			"stages": "Kolom"
+			"stages": "Kolom",
+			"emptyAction": "Tambah tugas",
+			"emptyTitle": "Belum ada tugas"
 		},
 		"pr": {
 			"merged": "Digabung",
@@ -4029,6 +4496,20 @@
 			"searchActions": "Cari aksi...",
 			"noActionsFound": "Tidak ada aksi ditemukan.",
 			"changeStatus": "Ubah status",
+			"removeLabel": "Hapus label",
+			"removeLabelSuccess": "Label dihapus dari {{count}} tugas",
+			"removeLabelError": "Gagal menghapus label",
+			"unarchive": "Pulihkan dari arsip",
+			"unarchiveSuccess": "{{count}} tugas dipulihkan",
+			"unarchiveNone": "Tidak ada tugas terpilih yang diarsipkan",
+			"unarchiveError": "Gagal memulihkan tugas",
+			"setDates": "Tanggal",
+			"dateField": "Tanggal yang diatur",
+			"startDate": "Tanggal mulai",
+			"dueDate": "Tenggat",
+			"clearStartDate": "Hapus tanggal mulai",
+			"clearDueDate": "Hapus tenggat",
+			"updateStartDateError": "Gagal memperbarui tanggal mulai. Tanggal mulai tidak boleh setelah tenggat tugas.",
 			"addAssignee": "Tambah penanggung jawab",
 			"addAssigneeSuccess_other": "Menambahkan {{name}} ke {{count}} tugas",
 			"assigneesError": "Gagal memperbarui penanggung jawab",
@@ -4046,7 +4527,19 @@
 				"addRowBefore": "Sisipkan baris di atas",
 				"addRowAfter": "Sisipkan baris di bawah",
 				"deleteRow": "Hapus baris",
-				"deleteTable": "Hapus tabel"
+				"deleteTable": "Hapus tabel",
+				"moveRowUp": "Pindahkan baris ke atas",
+				"moveRowDown": "Pindahkan baris ke bawah",
+				"moveColumnLeft": "Pindahkan kolom ke kiri",
+				"moveColumnRight": "Pindahkan kolom ke kanan",
+				"toggleHeaderRow": "Baris header",
+				"fullWidth": "Lebar penuh",
+				"dragRow": "Baris {{index}}",
+				"dragColumn": "Kolom {{index}}",
+				"dragRowHint": "Seret untuk memindahkan baris, atau gunakan tombol panah",
+				"dragColumnHint": "Seret untuk memindahkan kolom, atau gunakan tombol panah",
+				"insertRowHere": "Sisipkan baris di sini",
+				"insertColumnHere": "Sisipkan kolom di sini"
 			}
 		},
 		"calendar": {
@@ -4068,7 +4561,8 @@
 			"rescheduleError": "Gagal menjadwalkan ulang tugas",
 			"showWeekends": "Tampilkan akhir pekan",
 			"viewMode": "Periode kalender",
-			"week": "Minggu"
+			"week": "Minggu",
+			"overdue": "Terlambat"
 		},
 		"descriptionSearchLoading": "Mencari deskripsi lengkap…",
 		"descriptionSearchError": "Pencarian deskripsi gagal. Hasil mungkin tidak lengkap.",
@@ -4126,11 +4620,11 @@
 			},
 			"label": "Estimasi",
 			"none": "Tidak ada estimasi",
-			"pointsValue": "{{value}} poin",
+			"pointsValue_other": "{{value}} poin",
 			"setAria": "Atur estimasi",
 			"totals": {
 				"estimated": "{{estimated}} dari {{total}} tugas diestimasi",
-				"points": "{{completed}} / {{total}} poin",
+				"points_other": "{{completed}} / {{total}} poin",
 				"time": "{{completed}} / {{total}}"
 			},
 			"updateError": "Gagal memperbarui estimasi"
@@ -4248,6 +4742,12 @@
 			},
 			"url": "URL",
 			"urlPlaceholder": "https://example.com"
+		},
+		"create": {
+			"similarTitle": "Tugas terbuka yang mirip",
+			"similarDismiss": "Sembunyikan tugas yang mirip",
+			"similarOpen": "Buka",
+			"similarOpenLabel": "Buka {{key}} {{title}} di tab baru"
 		},
 		"parent": {
 			"add": "Tambah tugas induk",
@@ -4514,6 +5014,7 @@
 				"cycle": "siklus",
 				"estimate": "estimasi",
 				"modules": "modul",
+				"parent": "tugas induk",
 				"status": "status"
 			},
 			"edited": "Diedit {{time}}",
@@ -4572,6 +5073,8 @@
 			"hint": "Ketik judul. @orang, #label, !prioritas, dan tanggal seperti fri atau 12 Oct menjadi chip. Enter untuk membuat, Ctrl Enter untuk membuka editor lengkap.",
 			"labelError": "Tugas dibuat, tetapi label {{name}} tidak dapat ditambahkan",
 			"newLabel": "{{name}} (label baru)",
+			"dueOn": "Tambah tugas dengan tenggat {{date}}",
+			"notInView": "Tugas dibuat. Tugas tidak ditampilkan di sini karena tidak cocok dengan tampilan ini.",
 			"open": "Buka",
 			"openComposer": "Buka editor lengkap",
 			"openComposerHint": "Buka editor lengkap (Ctrl Enter)",
@@ -4818,7 +5321,18 @@
 			"error": "Gagal mengundang anggota tim",
 			"createdTitle": "Undangan dibuat",
 			"shareLinkDescription": "Bagikan tautan ini kepada {{email}} agar mereka dapat bergabung ke ruang kerja.",
-			"done": "Selesai"
+			"done": "Selesai",
+			"emailHint": "Pisahkan beberapa alamat dengan koma, spasi, atau baris baru.",
+			"roleLabel": "Peran",
+			"roleHint": "Anda dapat memberikan peran hingga setara peran Anda.",
+			"sending": "Mengirim {{current}} dari {{total}}…",
+			"invalidEmails": "Alamat email ini tidak valid: {{emails}}",
+			"emailRequired": "Masukkan setidaknya satu alamat email.",
+			"tooManyEmails": "Undang maksimal {{max}} orang sekaligus.",
+			"sentSome": "Terkirim {{sent}} dari {{total}} undangan.",
+			"failedTitle": "Tidak terkirim",
+			"rateLimited": "Terlalu banyak undangan sekaligus. Tunggu satu menit, lalu kirim sisanya.",
+			"shareLinksDescription": "Bagikan setiap tautan kepada orangnya agar mereka dapat bergabung ke ruang kerja."
 		},
 		"membersTable": {
 			"emptyTitle": "Belum ada anggota tim",
@@ -4844,6 +5358,8 @@
 			"cancelInviteError": "Gagal membatalkan undangan",
 			"roleUpdateSuccess": "Peran diperbarui",
 			"roleUpdateError": "Gagal memperbarui peran",
+			"ariaInvitationRole": "Peran untuk {{email}}",
+			"invitationRoleUpdateSuccess": "Peran undangan diperbarui",
 			"ariaInvitationActions": "Tindakan undangan"
 		},
 		"profile": {
@@ -5993,6 +6509,51 @@
 					"shortcuts": "Dokumentasikan pintasan triase"
 				},
 				"title": "Pekerjaan Anda"
+			},
+			"ask": {
+				"title": "Tanya AI",
+				"model": "Model ruang kerja",
+				"greeting": "Hai! Apa yang ingin Anda ketahui?",
+				"intro": "Tanyakan tentang ruang kerja Anda dengan bahasa sehari-hari. Jawaban berasal dari tugas yang bisa Anda lihat.",
+				"placeholder": "Tanya AI, @ untuk konteks, / untuk perintah",
+				"placeholderBuild": "Jelaskan apa yang ingin dibuat atau diubah…",
+				"modes": {
+					"label": "Mode",
+					"ask": "Tanya",
+					"build": "Bangun"
+				},
+				"send": "Kirim",
+				"you": "Anda",
+				"question": "Apa yang menghambat siklus saat ini?",
+				"buildPrompt": "Tugaskan WEB-5 ke Mira",
+				"context": "Konteks ({{count}})",
+				"facts": "Proyek: 1 · Orang: 4 · Siklus: 1",
+				"earlier": "Pesan sebelumnya: {{count}}",
+				"thinking": "Berpikir… {{seconds}}s",
+				"thought": "Berpikir selama {{seconds}}s",
+				"blockedIntro": "Dua tugas di {{cycle}} terblokir:",
+				"blockedPageTitles": "{{title}} menunggu inventaris halaman.",
+				"blockedPricing": "{{title}} menunggu data harga dari tim penjualan.",
+				"unassigned": "{{key}} belum punya penanggung jawab.",
+				"summary": "Satu perubahan. Tidak ada yang terjadi sampai Anda mengonfirmasi.",
+				"op": "Edit tugas",
+				"action": "Tugaskan {{key}} ke {{name}}",
+				"awaiting": "Menunggu tanggapan",
+				"ready": "Perubahan siap: {{count}}",
+				"cancel": "Batal",
+				"confirm": "Konfirmasi",
+				"done": "Selesai",
+				"undo": "Urungkan",
+				"undone": "Diurungkan",
+				"cancelled": "Dibatalkan. Tidak ada yang diubah.",
+				"generic": "Demo ini hanya menjawab pertanyaannya sendiri. Di Margaya, Tanya menjawab dari ruang kerja Anda dan menautkan tugas yang dipakainya.",
+				"genericBuild": "Demo ini hanya membuat perubahannya sendiri. Di Margaya, Bangun mengubah kata-kata Anda menjadi perubahan yang Anda konfirmasi.",
+				"blocked": "Terblokir",
+				"tasks": {
+					"pageTitles": "Audit judul halaman",
+					"pricing": "Perbarui halaman harga",
+					"mobileMenu": "Perbaiki menu seluler"
+				}
 			}
 		},
 		"home": {
@@ -6027,6 +6588,10 @@
 				"singleServer": {
 					"detail": "Redis bersifat opsional",
 					"title": "Satu server sudah cukup"
+				},
+				"ai": {
+					"title": "AI sesuai aturan Anda",
+					"detail": "Nonaktif secara default, model Anda sendiri"
 				}
 			},
 			"faq": {
@@ -6063,6 +6628,14 @@
 					"selfHost": {
 						"answer": "Bisa. Jalankan dengan Docker Compose di satu server, atau di Kubernetes dengan Helm chart resmi. Anda butuh satu container aplikasi dan database PostgreSQL. Panduan instalasi membahas variabel lingkungan, penyimpanan, dan reverse proxy.",
 						"question": "Bisakah saya meng-hosting Margaya sendiri?"
+					},
+					"ai": {
+						"question": "Apakah Margaya punya AI, dan apakah aktif secara default?",
+						"answer": "Ya, dan tidak. Tanya AI, mode Bangun, bantuan menulis, saran triase, dan agen AI sudah tersedia, tetapi tetap nonaktif sampai admin instans menghubungkan model dan ruang kerja mengaktifkan AI. Setiap perubahan yang diusulkan AI ditampilkan kepada Anda terlebih dahulu dan bisa diurungkan."
+					},
+					"aiData": {
+						"question": "Model AI mana yang bisa saya pakai, dan ke mana data saya dikirim?",
+						"answer": "Gunakan Claude, atau model apa pun yang kompatibel dengan OpenAI yang Anda jalankan sendiri, seperti Ollama atau vLLM. Dengan perutean khusus lokal, tidak ada yang keluar dari jaringan Anda. Margaya hanya mengirim apa yang sudah bisa dilihat oleh orang yang bertanya, tidak menyimpan prompt atau jawaban kecuali Anda mengaktifkan riwayat di server, dan mencatat jumlah penggunaan untuk anggaran."
 					}
 				},
 				"title": "Pertanyaan, dijawab dengan lugas"
@@ -6075,13 +6648,11 @@
 				"title": "Habiskan waktu untuk pekerjaan, bukan untuk alatnya."
 			},
 			"hero": {
-				"description": "Margaya menyatukan tugas, siklus, dokumen, dan triase dalam satu ruang kerja yang cepat. Ketik tugas, gerakkan maju, lalu kembali fokus pada pekerjaan itu sendiri.",
-				"eyebrow": "Manajemen proyek open source",
-				"note": "Berlisensi MIT. Jalankan di server Anda sendiri, atau coba Margaya Cloud selama 14 hari tanpa kartu kredit.",
-				"primaryCta": "Mulai",
-				"secondaryCta": "Self-host",
 				"title": "Rencanakan pekerjaan.",
-				"titleAccent": "Lewati urusan remeh."
+				"titleAccent": "Lewati urusan remeh.",
+				"description": "Margaya menyatukan tugas, siklus, dokumen, dan triase dalam satu ruang kerja yang cepat, dengan asisten AI yang bisa Anda aktifkan untuk menjawab pertanyaan dan membuat perubahan. Ketik tugas, gerakkan maju, lalu kembali fokus pada pekerjaan itu sendiri.",
+				"primaryCta": "Mulai",
+				"secondaryCta": "Self-host"
 			},
 			"insight": {
 				"description": "Buat grafik dari tugas Anda, pantau log audit, dan pulihkan apa pun dari sampah.",
@@ -6129,7 +6700,8 @@
 					"select": "Pilih tugas yang difokuskan",
 					"spreadsheet": "Spreadsheet",
 					"status": "Ubah status",
-					"tasks": "Temukan tugas berdasarkan kunci atau judul"
+					"tasks": "Temukan tugas berdasarkan kunci atau judul",
+					"ask": "Buka Tanya AI"
 				},
 				"modifier": "Ctrl",
 				"shortcutsLabel": "Pintasan keyboard",
@@ -6162,6 +6734,10 @@
 					"views": {
 						"description": "Papan, daftar, spreadsheet, kalender, dan Gantt",
 						"title": "Tampilan"
+					},
+					"ai": {
+						"title": "AI",
+						"description": "Tanya AI, mode Bangun, bantuan menulis, dan agen"
 					}
 				},
 				"label": "Utama",
@@ -6172,7 +6748,7 @@
 				"blog": "Blog",
 				"compare": "Bandingkan",
 				"explore": "Jelajahi",
-				"featuresIntro": "Lima tur singkat Margaya. Masing-masing punya demo langsung yang bisa Anda coba sendiri.",
+				"featuresIntro": "Enam tur singkat tentang Margaya. Masing-masing punya demo langsung yang bisa Anda coba sendiri.",
 				"newTab": "(terbuka di tab baru)"
 			},
 			"ownIt": {
@@ -6333,6 +6909,26 @@
 					"title": "Sumber daya"
 				},
 				"selfHosted": "Dibuat untuk di-host sendiri"
+			},
+			"ai": {
+				"eyebrow": "AI",
+				"title": "Tanyakan. Biarkan ia membangun. Anda yang mengonfirmasi.",
+				"description": "Tanya AI menjawab dari tugas-tugas Anda yang terkini, lengkap dengan grafik dan tugas yang dipakainya. Mode Bangun mengubah permintaan menjadi perubahan yang Anda tinjau dan konfirmasi, dan agen mengerjakan tugas layaknya rekan tim.",
+				"agents": {
+					"title": "Agen yang bekerja layaknya rekan tim",
+					"description": "Tugaskan sebuah tugas ke agen dan pantau di Meja Agen. Agen bertanya kepada seseorang saat buntu, menunggu persetujuan sebelum menulis, dan bisa berjalan sesuai jadwal."
+				},
+				"privacy": {
+					"title": "Privat secara default",
+					"description": "AI tetap nonaktif sampai admin mengaktifkannya, dan Anda yang menentukan di mana AI berjalan.",
+					"items": {
+						"model": "Claude, atau model Anda sendiri melalui Ollama atau vLLM",
+						"local": "Perutean khusus lokal menjaga data tetap di jaringan Anda",
+						"stored": "Tidak ada prompt atau jawaban yang disimpan, kecuali Anda memilih riwayat di server",
+						"budget": "Anggaran bulanan dan harian, dengan catatan penggunaan",
+						"undo": "Setiap perubahan dari mode Bangun bisa diurungkan selama satu jam"
+					}
+				}
 			}
 		},
 		"pages": {
@@ -6351,8 +6947,8 @@
 						"title": "REST API dengan OpenAPI"
 					},
 					"cleanup": {
-						"body": "Arsipkan tugas yang sudah ditutup dan tutup tugas yang terbengkalai secara otomatis, dengan pratinjau apa saja yang akan terdampak oleh setiap aturan.",
-						"title": "Pembersihan terjadwal"
+						"body": "Buat aturan Saat, Jika, Maka untuk pekerjaan rutin, seperti menugaskan atau memberi label pada tugas baru, serta arsipkan atau tutup tugas yang terbengkalai sesuai jadwal, dengan pratinjau apa saja yang akan terdampak oleh setiap aturan.",
+						"title": "Aturan otomatisasi"
 					},
 					"integrations": {
 						"body": "Tautkan pull request dari GitHub atau Gitea, kirim pembaruan ke Slack, Discord, Telegram, atau Mattermost, dan kirim event ke URL mana pun dengan webhook keluar.",
@@ -6491,6 +7087,43 @@
 					}
 				},
 				"title": "Satu set tugas, dengan semua cara Anda perlu melihatnya."
+			},
+			"ai": {
+				"metaTitle": "Asisten AI, mode Bangun, dan agen",
+				"metaDescription": "Ajukan pertanyaan tentang pekerjaan Anda dan dapatkan jawaban dari data terkini, biarkan mode Bangun mengusulkan perubahan yang Anda konfirmasi, menulis dengan bantuan AI, dan tugaskan tugas ke agen AI, dengan model Anda sendiri dan AI nonaktif secara default.",
+				"eyebrow": "AI",
+				"title": "Asisten yang memahami pekerjaan Anda.",
+				"description": "Tanya AI, mode Bangun, bantuan menulis, dan agen, semuanya ada di versi open source, berjalan di model pilihan Anda.",
+				"sections": {
+					"ask": {
+						"title": "Tanya AI",
+						"body": "Bertanyalah dengan kata-kata biasa dan dapatkan jawaban dari tugas terkini, lengkap dengan jumlah, grafik, dan tautan ke tugas serta halaman yang dipakai. Sebut tugas, halaman, atau orang dengan @, lampirkan file, atau bicara alih-alih mengetik."
+					},
+					"build": {
+						"title": "Mode Bangun",
+						"body": "Jelaskan perubahan yang diinginkan, misalnya proyek dengan tiga tugas atau tugas untuk Mia. Anda melihat apa yang dibacanya dan bagaimana ia bernalar, menyunting perubahan yang diusulkan, mengonfirmasinya, dan bisa mengurungkan yang mana pun selama satu jam."
+					},
+					"writing": {
+						"title": "Bantuan menulis",
+						"body": "Perbaiki, persingkat, terjemahkan, atau ubah nada deskripsi maupun komentar, dapatkan saran judul, ringkas tugas, atau tambahkan blok AI ke halaman."
+					},
+					"triage": {
+						"title": "Triase dan laporan",
+						"body": "Dapatkan saran label dan prioritas untuk pekerjaan baru, temukan duplikat, filter papan dengan menjelaskan apa yang Anda cari, dan dapatkan ringkasan kotak masuk yang belum dibaca atau laporan untuk sebuah siklus."
+					},
+					"agents": {
+						"title": "Agen AI",
+						"body": "Agen adalah anggota yang bisa Anda beri tugas. Mereka bertanya kepada seseorang saat buntu, menunggu persetujuan sebelum menulis, berjalan sesuai jadwal, dan bisa memakai alat dari server MCP lain yang Anda hubungkan."
+					},
+					"privacy": {
+						"title": "Model Anda, aturan Anda",
+						"body": "AI nonaktif sampai admin mengaktifkannya. Gunakan Claude atau model lokal, simpan data di jaringan Anda, atur anggaran, dan jangan simpan prompt atau jawaban kecuali Anda memilihnya."
+					}
+				},
+				"cta": {
+					"title": "Aktifkan AI saat Anda siap.",
+					"description": "Baca panduan penyiapan AI, atau coba Tanya AI di ruang kerja Anda sendiri."
+				}
 			}
 		},
 		"scenes": {
@@ -6601,6 +7234,10 @@
 			"yourWork": {
 				"caption": "Pekerjaan Anda mengumpulkan yang ditugaskan kepada Anda, yang Anda buat, dan yang Anda ikuti.",
 				"description": "Demo: halaman Pekerjaan Anda. Kursor berpindah ke tab Ditugaskan, Dibuat, dan Dilanggani, masing-masing menampilkan tugasnya sendiri dari berbagai proyek beserta status, prioritas, dan tenggat."
+			},
+			"ask": {
+				"caption": "Tanyakan tentang pekerjaan, lalu biarkan Bangun membuat perubahannya. Anda yang mengonfirmasi.",
+				"description": "Demo: papan Website dengan obrolan Tanya AI terbuka. Seseorang menanyakan apa yang menghambat siklus saat ini. Asisten mencantumkan apa yang dibacanya, berpikir selama dua detik, lalu menjawab: WEB-5 dan WEB-6 terblokir, dan WEB-5 belum punya penanggung jawab. Setelah beralih ke Bangun, mereka memintanya menugaskan WEB-5 ke Mira. Asisten mengusulkan perubahan, mereka mengonfirmasi, kartu menampilkan Selesai dengan Urungkan, dan avatar Mira muncul di WEB-5."
 			}
 		}
 	},
@@ -6756,7 +7393,10 @@
 			"owner": "Pemilik",
 			"progress": "Progres",
 			"tasks": "Tugas",
-			"title": "Detail siklus"
+			"title": "Detail siklus",
+			"rolledOver_other": "Pengalihan memindahkan {{count}} tugas yang belum selesai ke {{name}}.",
+			"rolloverNoNext": "Pengalihan tidak menemukan siklus berikutnya; tugas yang belum selesai tetap di sini.",
+			"rolloverNothing": "Pengalihan tidak menemukan tugas yang belum selesai untuk dipindahkan."
 		},
 		"status": {
 			"archived": "Diarsipkan",
@@ -7323,7 +7963,9 @@
 		"widgets": {
 			"quickLinks": "Tautan cepat",
 			"recents": "Terbaru",
-			"stickies": "Catatan tempel"
+			"stickies": "Catatan tempel",
+			"risks": "Risiko",
+			"myBrief": "Ringkasan saya"
 		},
 		"focus": {
 			"caughtUp": "Semua sudah terbaca",
@@ -7334,7 +7976,9 @@
 			"overdue_other": "{{count}} terlambat",
 			"stickies": "Catatan tempel",
 			"stickiesHint": "Catatan pribadi, hanya untuk Anda",
-			"unread_other": "{{count}} belum dibaca"
+			"unread_other": "{{count}} belum dibaca",
+			"openCaption": "terbuka",
+			"unreadCaption": "belum dibaca"
 		}
 	},
 	"intake": {
@@ -7394,7 +8038,11 @@
 			"titlePlaceholder": "Apa yang Anda butuhkan?",
 			"titleRequired": "Tambahkan judul",
 			"toast": "Permintaan dikirim",
-			"toastView": "Lihat"
+			"toastView": "Lihat",
+			"pastedImages": "Gambar yang ditempel",
+			"pasteHint": "Tempel tangkapan layar untuk melampirkannya ke permintaan.",
+			"removeImage": "Hapus {{name}}",
+			"attachFailed": "Permintaan telah diajukan, tetapi beberapa gambar tidak dapat dilampirkan."
 		},
 		"decline": {
 			"description": "Permintaan ditutup dan tidak masuk ke papan. Anda dapat membukanya kembali nanti.",
@@ -7441,7 +8089,9 @@
 			"noTasks": "Proyek ini belum memiliki tugas lain.",
 			"searchPlaceholder": "Cari tugas berdasarkan key atau judul",
 			"title": "Tandai {{key}} sebagai duplikat",
-			"toast": "Ditandai sebagai duplikat dari {{key}}"
+			"toast": "Ditandai sebagai duplikat dari {{key}}",
+			"aiSuggestions": "Disarankan oleh AI",
+			"aiChecking": "Mencari duplikat dengan AI…"
 		},
 		"empty": {
 			"backToIntake": "Kembali ke intake",
@@ -7683,6 +8333,11 @@
 				"singleProjectHint": "Pilih satu proyek untuk melihat velositas",
 				"subtitle": "Selesai vs komitmen, per siklus",
 				"title": "Velositas"
+			},
+			"filter": {
+				"all": "Semua",
+				"label": "Tampilkan siklus",
+				"running": "Sedang berjalan"
 			}
 		},
 		"dimensions": {
@@ -7823,7 +8478,8 @@
 			"noRequests": "Belum ada permintaan",
 			"noTasks": "Tidak ada tugas yang cocok dengan filter ini",
 			"retry": "Coba lagi",
-			"timeout": "Proses ini terlalu lama. Persempit filter dan coba lagi."
+			"timeout": "Proses ini terlalu lama. Persempit filter dan coba lagi.",
+			"noRunningCycles": "Tidak ada siklus yang sedang berjalan saat ini"
 		},
 		"table": {
 			"periodEnd": "Akhir periode",
@@ -7839,7 +8495,8 @@
 			"intake": "Intake",
 			"modules": "Modul",
 			"overview": "Ringkasan",
-			"tasks": "Tugas"
+			"tasks": "Tugas",
+			"delivery": "Pengiriman"
 		},
 		"trend": {
 			"completed": "Selesai",
@@ -7853,9 +8510,141 @@
 			"chart": "Bagan",
 			"label": "Tampilkan sebagai",
 			"table": "Tabel"
+		},
+		"reports": {
+			"actionsFor": "Tindakan untuk {{name}}",
+			"close": "Tutup laporan",
+			"delete": "Hapus",
+			"deleteDescription": "“{{name}}” akan dihapus. Tindakan ini tidak dapat dibatalkan.",
+			"deleteSharedDescription": "“{{name}}” akan dihapus untuk semua orang di ruang kerja. Tindakan ini tidak dapat dibatalkan.",
+			"deleteTitle": "Hapus laporan ini?",
+			"dialog": {
+				"cancel": "Batal",
+				"createTitle": "Simpan laporan",
+				"editTitle": "Edit laporan",
+				"name": "Nama",
+				"namePlaceholder": "mis. Bug terbuka per penanggung jawab",
+				"nameRequired": "Masukkan nama",
+				"save": "Simpan",
+				"summary": "Menyimpan pengaturan grafik, proyek yang tercakup, dan filter.",
+				"update": "Simpan perubahan",
+				"visibility": "Siapa yang dapat melihatnya"
+			},
+			"empty": "Belum ada laporan tersimpan. Simpan grafik ini agar dapat kembali melihatnya nanti.",
+			"listTitle": "Laporan tersimpan",
+			"loadError": "Tidak dapat memuat laporan tersimpan",
+			"makePrivate": "Jadikan pribadi",
+			"notes": {
+				"allProjects": "Tidak ada proyeknya yang tersedia, jadi semua proyek ditampilkan.",
+				"builderReset": "Beberapa pengaturan grafik tidak tersedia untuk proyek-proyek ini dan telah diatur ulang.",
+				"dropped_other": "{{count}} proyek dalam laporan ini sudah tidak ada.",
+				"leftOut_other": "{{count}} proyek dalam laporan ini diarsipkan dan tidak disertakan.",
+				"otherProjects": "Laporan ini disimpan untuk proyek lain; di sini hanya proyek ini yang ditampilkan."
+			},
+			"open": "Laporan",
+			"rename": "Ganti nama",
+			"save": "Simpan",
+			"saveAsNew": "Simpan sebagai baru",
+			"share": "Bagikan ke ruang kerja",
+			"sharedBy": "Dibagikan oleh {{name}}",
+			"showing": "Laporan: {{name}}",
+			"toast": {
+				"deleted": "Laporan dihapus",
+				"deleteError": "Tidak dapat menghapus laporan",
+				"madePrivate": "Laporan sekarang bersifat pribadi",
+				"saved": "“{{name}}” disimpan",
+				"saveError": "Tidak dapat menyimpan laporan",
+				"shared": "Laporan dibagikan ke ruang kerja",
+				"updated": "Laporan diperbarui"
+			},
+			"unsaved": "Perubahan belum disimpan",
+			"update": "Perbarui laporan",
+			"visibility": {
+				"private": "Pribadi",
+				"privateHint": "Hanya Anda yang dapat melihatnya.",
+				"workspace": "Dibagikan ke ruang kerja",
+				"workspaceHint": "Semua orang dengan akses analitik di ruang kerja ini dapat membukanya."
+			}
 		}
 	},
 	"pages": {
+		"templates": {
+			"saveAction": "Simpan sebagai templat",
+			"saveTitle": "Simpan sebagai templat",
+			"saveDescription": "Isi dan ikon halaman saat ini menjadi templat untuk halaman baru.",
+			"nameLabel": "Nama templat",
+			"scopeLabel": "Tersedia di",
+			"scopeProject": "Proyek ini",
+			"scopeProjectHint": "Ditawarkan saat membuat halaman di proyek ini.",
+			"scopeWorkspace": "Semua proyek",
+			"scopeWorkspaceHint": "Ditawarkan di semua proyek ruang kerja.",
+			"saveConfirm": "Simpan templat",
+			"savedToast": "Templat disimpan",
+			"saveError": "Tidak dapat menyimpan templat",
+			"newFromTemplate": "Halaman baru dari templat",
+			"moreCreateOptions": "Cara lain membuat halaman",
+			"pickTitle": "Halaman baru dari templat",
+			"pickDescription": "Halaman baru dimulai dengan isi templat. Setelah itu Anda bisa mengubah apa saja.",
+			"starters": "Templat awal",
+			"saved": "Templat tersimpan",
+			"savedEmpty": "Belum ada templat tersimpan. Simpan dari menu sebuah halaman.",
+			"loadError": "Tidak dapat memuat templat",
+			"deleteLabel": "Hapus templat {{name}}",
+			"deleted": "Templat dihapus",
+			"deleteError": "Tidak dapat menghapus templat",
+			"builtin": {
+				"meetingName": "Catatan rapat",
+				"meetingDescription": "Peserta, agenda, keputusan, dan tindak lanjut.",
+				"meetingAttendees": "Peserta",
+				"meetingAgenda": "Agenda",
+				"meetingNotes": "Catatan",
+				"meetingDecisions": "Keputusan",
+				"meetingActionItems": "Tindak lanjut",
+				"specName": "Spesifikasi",
+				"specDescription": "Masalah, tujuan, usulan, dan pertanyaan terbuka.",
+				"specSummary": "Ringkasan",
+				"specProblem": "Masalah",
+				"specGoals": "Tujuan",
+				"specNonGoals": "Di luar cakupan",
+				"specProposal": "Usulan",
+				"specOpenQuestions": "Pertanyaan terbuka",
+				"retroName": "Retrospektif",
+				"retroDescription": "Apa yang berjalan baik, apa yang bisa diperbaiki, apa yang akan dicoba berikutnya.",
+				"retroWentWell": "Apa yang berjalan baik",
+				"retroCouldBeBetter": "Apa yang bisa lebih baik",
+				"retroTryNext": "Apa yang akan kami coba berikutnya"
+			}
+		},
+		"publish": {
+			"menuItem": "Publikasikan ke web",
+			"title": "Publikasikan ke web",
+			"description": "Siapa pun yang memiliki tautan dapat membaca halaman ini tanpa masuk. Mesin pencari diminta untuk tidak mengindeksnya.",
+			"switchLabel": "Tautan publik",
+			"onHint": "Dipublikasikan. Menonaktifkannya langsung mencabut tautan.",
+			"offHint": "Nonaktif. Aktifkan untuk membuat tautan.",
+			"disabledByWorkspace": "Halaman publik dinonaktifkan untuk ruang kerja ini. Admin dapat mengaktifkannya di pengaturan ruang kerja.",
+			"cannotPublish": "Hanya orang yang dapat membagikan proyek yang bisa memublikasikan, dan hanya halaman yang terlihat oleh seluruh ruang kerja.",
+			"linkLabel": "Tautan",
+			"copyLink": "Salin tautan",
+			"copied": "Disalin",
+			"openLink": "Buka halaman publik",
+			"privacyNote": "Sebutan, tautan tugas, berkas, dan tautan ke halaman yang belum dipublikasikan disembunyikan di halaman publik.",
+			"publishedToast": "Halaman dipublikasikan",
+			"unpublishedToast": "Tautan dicabut",
+			"error": "Tidak dapat mengubah tautan publik",
+			"loadError": "Tidak dapat memuat tautan publik",
+			"done": "Selesai"
+		},
+		"publicView": {
+			"documentTitle": "Halaman yang dibagikan",
+			"unavailableTitle": "Halaman ini tidak tersedia",
+			"unavailableDescription": "Tautan mungkin telah dicabut, atau halaman tidak lagi dibagikan.",
+			"updated": "Diperbarui {{date}}",
+			"mention": "@seseorang",
+			"task": "tugas tertaut",
+			"file": "berkas lampiran",
+			"page": "halaman lain"
+		},
 		"actions": {
 			"archive": "Arsipkan",
 			"copyLink": "Salin tautan",
@@ -7893,6 +8682,40 @@
 			"restoredBy": "{{name}} memulihkan versi sebelumnya",
 			"roomFull": "Terlalu banyak orang yang membuka halaman ini saat ini. Coba lagi sebentar lagi.",
 			"signedOut": "Sesi Anda telah berakhir. Masuk lagi untuk terus mengedit."
+		},
+		"toolbar": {
+			"ariaLabel": "Bilah alat format",
+			"textStyle": "Gaya teks",
+			"bold": "Tebal",
+			"italic": "Miring",
+			"underline": "Garis bawah",
+			"strike": "Coret",
+			"inlineCode": "Kode sebaris",
+			"link": "Tautan",
+			"image": "Gambar",
+			"more": "Format lainnya"
+		},
+		"filters": {
+			"button": "Filter",
+			"active": "Filter diterapkan",
+			"search": "Cari filter",
+			"searchClear": "Hapus pencarian",
+			"favorites": "Favorit",
+			"createdDate": "Tanggal dibuat",
+			"date": {
+				"any": "Kapan saja",
+				"today": "Hari ini",
+				"last7": "7 hari terakhir",
+				"last30": "30 hari terakhir",
+				"older": "Lebih dari 30 hari lalu"
+			},
+			"remove": "Hapus filter {{filter}}"
+		},
+		"detail": {
+			"unlocked": "Tidak dikunci",
+			"openOutline": "Buka kerangka",
+			"currentSection": "Bagian saat ini",
+			"emptyLinePlaceholder": "Ketik '/' untuk perintah"
 		},
 		"commandPalette": {
 			"createPage": "Buat halaman"
@@ -8009,8 +8832,6 @@
 			"locked": "Terkunci",
 			"newPage": "Halaman baru",
 			"ownedBy": "Dimiliki oleh {{name}}",
-			"ownerFilter": "Pemilik",
-			"ownerFilterSearch": "Cari orang",
 			"retry": "Coba lagi",
 			"searchPlaceholder": "Cari halaman",
 			"sort": {
@@ -8130,6 +8951,229 @@
 			"expand": "Perluas {{title}}",
 			"newPage": "Halaman baru",
 			"title": "Halaman"
+		}
+	},
+	"accountSecurity": {
+		"platform": {
+			"save": "Simpan",
+			"retry": "Coba lagi",
+			"loadMore": "Muat lebih banyak",
+			"auditPasswordResetSent": "Tautan reset kata sandi dikirim",
+			"apiKeys": {
+				"accessLabel": "Akses",
+				"accessFull": "Akses penuh",
+				"accessFullHint": "Semua yang bisa Anda lakukan, di setiap ruang kerja yang Anda ikuti.",
+				"accessRead": "Hanya baca",
+				"accessReadHint": "Bisa membaca tetapi tidak pernah mengubah apa pun.",
+				"accessCustom": "Kustom",
+				"accessCustomHint": "Hanya area yang Anda pilih di bawah.",
+				"areasLabel": "Area",
+				"areaNone": "Tidak ada",
+				"areaRead": "Baca",
+				"areaWrite": "Tulis",
+				"areasRequired": "Pilih setidaknya satu area.",
+				"projectsLabel": "Batasi ke proyek tertentu",
+				"projectsHint": "Proyek lain tampak tidak ada bagi kunci ini, dan permintaan untuk seluruh ruang kerja ditolak.",
+				"projectsIn": "Proyek di {{workspace}}",
+				"projectsLoading": "Memuat proyek…",
+				"projectsEmpty": "Ruang kerja ini belum punya proyek.",
+				"projectsRequired": "Pilih setidaknya satu proyek.",
+				"columnScope": "Cakupan",
+				"scopeFull": "Akses penuh",
+				"scopeRead": "Hanya baca",
+				"scopeCustom": "Kustom",
+				"scopeProjects": "Proyek: {{projects}}",
+				"deletedProject": "Proyek terhapus",
+				"requestsAria": "Permintaan dengan {{name}}",
+				"requestsTitle": "Permintaan: {{name}}",
+				"requestsDescription": "Permintaan terbaru dengan kunci ini. Hanya metode, rute, status, dan durasi yang disimpan, tidak pernah isinya.",
+				"requestsEmpty": "Belum ada permintaan.",
+				"requestsError": "Tidak dapat memuat permintaan.",
+				"columnTime": "Waktu",
+				"columnRequest": "Permintaan",
+				"columnStatus": "Status",
+				"columnDuration": "Durasi",
+				"durationMs": "{{value}} md"
+			},
+			"policy": {
+				"title": "Kebijakan masuk",
+				"description": "Siapa yang boleh membuat akun, bagaimana semua orang masuk, dan berapa lama sesi berlangsung.",
+				"invitedPasswordSignUp": "Daftar dengan kata sandi untuk undangan",
+				"invitedPasswordSignUpHint": "Saat pendaftaran dengan kata sandi dimatikan, orang dengan undangan yang valid tetap bisa membuat akun berkata sandi.",
+				"domains": "Domain email yang diizinkan",
+				"domainsHint": "Akun baru harus memakai alamat di salah satu domain ini. Kosongkan untuk mengizinkan domain apa pun.",
+				"requiredProvider": "Penyedia masuk wajib",
+				"requiredProviderHint": "Semua orang masuk lewat penyedia ini. Admin instans tetap bisa masuk dengan kata sandi sebagai jalan kembali.",
+				"noRequirement": "Tidak ada kewajiban",
+				"customProvider": "metode masuk organisasi Anda",
+				"sessionLifetime": "Durasi sesi",
+				"sessionLifetimeHint": "Berapa lama sesi bertahan tanpa digunakan. Menggunakannya akan memperpanjangnya.",
+				"hours": "jam",
+				"signInNotice": "Masuk dengan {{provider}}. Masuk dengan kata sandi hanya untuk admin instans."
+			},
+			"twoFactor": {
+				"title": "Autentikasi dua faktor",
+				"description": "Minta kode dari aplikasi autentikator saat masuk dengan kata sandi.",
+				"authenticator": "Aplikasi autentikator",
+				"on": "Aktif",
+				"off": "Nonaktif",
+				"turnOn": "Aktifkan",
+				"turnOff": "Nonaktifkan",
+				"newCodes": "Kode pemulihan baru",
+				"confirmPassword": "Konfirmasi kata sandi Anda",
+				"continue": "Lanjutkan",
+				"setupTitle": "Tambahkan Margaya ke aplikasi autentikator Anda",
+				"setupHint": "Masukkan kunci penyiapan ini di aplikasi autentikator, lalu ketik kode 6 digit yang ditampilkannya.",
+				"setupKey": "Kunci penyiapan",
+				"openApp": "Buka di aplikasi autentikator di perangkat ini",
+				"code": "Kode autentikasi",
+				"verify": "Verifikasi",
+				"invalidCode": "Kode itu salah. Periksa jam di perangkat Anda dan coba lagi.",
+				"codesTitle": "Kode pemulihan",
+				"codesHint": "Simpan di tempat aman. Setiap kode bisa dipakai masuk sekali jika perangkat Anda hilang.",
+				"copyCodes": "Salin kode",
+				"copied": "Kode pemulihan disalin",
+				"done": "Selesai",
+				"enabled": "Autentikasi dua faktor aktif.",
+				"disabled": "Autentikasi dua faktor nonaktif.",
+				"error": "Terjadi kesalahan. Coba lagi."
+			},
+			"challenge": {
+				"title": "Autentikasi dua faktor",
+				"totpHint": "Masukkan kode 6 digit dari aplikasi autentikator Anda.",
+				"recoveryHint": "Masukkan salah satu kode pemulihan Anda. Setiap kode berlaku sekali.",
+				"recoveryCode": "Kode pemulihan",
+				"invalid": "Kode itu salah. Coba lagi.",
+				"trustDevice": "Percayai perangkat ini selama 30 hari",
+				"useRecovery": "Gunakan kode pemulihan",
+				"useApp": "Gunakan aplikasi autentikator",
+				"usePassword": "Masuk dengan kata sandi saja",
+				"back": "Kembali ke halaman masuk"
+			},
+			"users": {
+				"nav": "Pengguna",
+				"title": "Pengguna",
+				"subtitle": "Semua akun di server ini. Blokir orang yang sudah keluar, reset kata sandi, dan keluarkan sesi.",
+				"listTitle": "Akun",
+				"search": "Cari berdasarkan nama atau email",
+				"filterLabel": "Tampilkan",
+				"filterAll": "Semua akun",
+				"filterAdmins": "Admin instans",
+				"filterBanned": "Diblokir",
+				"empty": "Tidak ada akun yang cocok dengan “{{query}}”.",
+				"none": "Belum ada akun.",
+				"columnUser": "Pengguna",
+				"columnStatus": "Status",
+				"columnWorkspaces": "Ruang kerja",
+				"columnLastActive": "Terakhir aktif",
+				"columnJoined": "Bergabung",
+				"columnActions": "Tindakan",
+				"badgeAdmin": "Admin",
+				"badgeBanned": "Diblokir",
+				"badgeTwoFactor": "2FA",
+				"never": "Belum pernah",
+				"actionsFor": "Tindakan untuk {{name}}",
+				"details": "Lihat detail",
+				"resetPassword": "Reset kata sandi",
+				"signOut": "Keluarkan dari semua perangkat",
+				"makeAdmin": "Jadikan admin instans",
+				"removeAdmin": "Cabut admin instans",
+				"ban": "Blokir",
+				"unban": "Buka blokir",
+				"banTitle": "Blokir {{name}}?",
+				"banDescription": "Semua sesinya diakhiri dan dia tidak bisa masuk sampai blokir berakhir. Kunci API-nya juga berhenti berfungsi.",
+				"banReason": "Alasan (opsional)",
+				"banDuration": "Durasi",
+				"banForever": "Sampai blokir dibuka",
+				"ban7Days": "7 hari",
+				"ban30Days": "30 hari",
+				"banned": "{{name}} diblokir.",
+				"unbanned": "{{name}} bisa masuk lagi.",
+				"resetTitle": "Reset kata sandi {{name}}?",
+				"resetDescription": "Kirim tautan reset atau tetapkan kata sandi baru sekarang. Menetapkannya akan mengakhiri semua sesinya.",
+				"resetByEmail": "Kirim tautan reset ke {{email}}",
+				"resetSetNow": "Tetapkan kata sandi baru sekarang",
+				"newPassword": "Kata sandi baru",
+				"resetConfirm": "Reset kata sandi",
+				"resetSent": "Tautan reset sedang dikirim ke {{email}}.",
+				"passwordSet": "Kata sandi {{name}} telah diubah.",
+				"signOutTitle": "Keluarkan {{name}} dari semua perangkat?",
+				"signOutDescription": "Semua sesi langsung berakhir. Kunci API-nya tetap berfungsi; hanya pemiliknya yang bisa mencabutnya.",
+				"signedOut": "{{name}} telah dikeluarkan dari semua perangkat.",
+				"promoted": "{{name}} sekarang admin instans.",
+				"demoted": "{{name}} bukan lagi admin instans.",
+				"activeSessions": "Sesi aktif",
+				"signInMethod": "Kata sandi",
+				"hasPassword": "Sudah diatur",
+				"noPassword": "Belum diatur (masuk dengan cara lain)",
+				"workspacesTitle": "Ruang kerja",
+				"noWorkspaces": "Bukan anggota ruang kerja mana pun.",
+				"joined": "Bergabung {{date}}"
+			}
+		},
+		"password": {
+			"tooShort": "Gunakan minimal {{min}} karakter.",
+			"tooCommon": "Kata sandi ini terlalu umum dan mudah ditebak. Pilih yang lain.",
+			"matchesEmail": "Kata sandi tidak boleh sama dengan alamat email Anda.",
+			"hint": "Minimal {{min}} karakter. Hindari kata sandi umum dan alamat email Anda."
+		},
+		"emailChange": {
+			"action": "Ubah email",
+			"title": "Ubah alamat email",
+			"description": "Kami akan mengirim kode ke alamat baru. Email Anda berubah setelah kode dimasukkan, dan sesi Anda yang lain akan dikeluarkan.",
+			"newEmail": "Alamat email baru",
+			"newEmailPlaceholder": "you@example.com",
+			"invalidEmail": "Masukkan alamat email yang valid.",
+			"sameEmail": "Itu sudah alamat email Anda.",
+			"sendCode": "Kirim kode",
+			"codeSent": "Jika {{email}} dapat digunakan, kode sedang dikirim ke sana. Kode kedaluwarsa dalam 5 menit.",
+			"code": "Kode verifikasi",
+			"confirm": "Ubah email",
+			"back": "Gunakan alamat lain",
+			"success": "Alamat email Anda sekarang {{email}}.",
+			"invalidCode": "Kode tidak benar atau sudah kedaluwarsa. Minta kode baru.",
+			"sessionTooOld": "Demi keamanan, masuk lagi sebelum mengubah alamat email Anda.",
+			"unavailable": "Email belum disiapkan di server ini, jadi alamat Anda tidak bisa diubah di sini. Hubungi admin instans.",
+			"error": "Tidak dapat mengubah alamat email Anda."
+		},
+		"reauth": {
+			"title": "Konfirmasi bahwa ini Anda",
+			"description": "Mengubah instans memerlukan proses masuk terbaru. Masukkan kata sandi untuk melanjutkan selama 10 menit ke depan.",
+			"noPassword": "Mengubah instans memerlukan proses masuk terbaru. Akun Anda tidak memiliki kata sandi, jadi masuk lagi untuk melanjutkan.",
+			"password": "Kata sandi",
+			"confirm": "Konfirmasi",
+			"signInAgain": "Masuk lagi",
+			"wrongPassword": "Kata sandi itu salah.",
+			"cancelled": "Tidak disimpan: identitas Anda belum dikonfirmasi.",
+			"error": "Tidak dapat mengonfirmasi kata sandi Anda."
+		},
+		"auditTrail": {
+			"title": "Jejak audit",
+			"subtitle": "Perubahan instans: siapa mengubah apa, dan kapan. Nilai rahasia tidak pernah dicatat.",
+			"empty": "Belum ada perubahan instans yang tercatat.",
+			"loadMore": "Muat lebih banyak",
+			"when": "Kapan",
+			"who": "Siapa",
+			"what": "Apa",
+			"system": "Sistem",
+			"actions": {
+				"instanceSettingsUpdated": "Mengubah pengaturan instans",
+				"instanceAdminAdded": "Menambahkan admin instans",
+				"instanceAdminRemoved": "Menghapus admin instans",
+				"instanceReauthenticated": "Mengonfirmasi kata sandinya",
+				"userCreated": "Membuat akun",
+				"userRoleChanged": "Mengubah peran akun",
+				"userBanned": "Memblokir akun",
+				"userUnbanned": "Membuka blokir",
+				"userRemoved": "Menghapus akun",
+				"userPasswordSet": "Mengatur kata sandi akun",
+				"userSessionsRevoked": "Mengeluarkan akun dari semua sesi",
+				"userImpersonated": "Masuk sebagai akun lain",
+				"cliAdminPromoted": "Menjadikan admin instans (CLI pemulihan)",
+				"cliAdminDemoted": "Menghapus admin instans (CLI pemulihan)",
+				"cliPasswordReset": "Mereset kata sandi (CLI pemulihan)",
+				"cliUserUnbanned": "Membuka blokir (CLI pemulihan)"
+			}
 		}
 	},
 	"instanceAdmin": {
@@ -8270,7 +9314,8 @@
 			"email": "Email",
 			"general": "Umum",
 			"publicBoards": "Papan publik",
-			"workspaces": "Ruang kerja"
+			"workspaces": "Ruang kerja",
+			"ai": "AI"
 		},
 		"oauth": {
 			"authorizationUrl": "URL otorisasi",
@@ -8491,7 +9536,11 @@
 				"label": "Stack",
 				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
 			},
-			"title": "Quick facts"
+			"title": "Quick facts",
+			"ai": {
+				"label": "AI",
+				"value": "Opsional dan nonaktif secara default: Tanya AI, mode Bangun, dan agen AI, di Claude atau model yang di-host sendiri"
+			}
 		},
 		"guidelines": {
 			"do": {
@@ -8701,5 +9750,1675 @@
 		},
 		"title": "One product. Two ways to run it.",
 		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+	},
+	"templates": {
+		"form": {
+			"addSubtask": "Tambah",
+			"assignees": "Penanggung jawab",
+			"assigneesNone": "Default proyek",
+			"create": "Buat templat",
+			"createTitle": "Templat tugas baru",
+			"description": "Isi awal sebuah tugas baru. Semuanya tetap dapat diedit saat tugas dibuat.",
+			"editTitle": "Edit templat tugas",
+			"estimate": "Estimasi",
+			"labels": "Label",
+			"labelsEmpty": "Label tidak ditemukan",
+			"labelsNone": "Tanpa label",
+			"labelsSearch": "Cari label",
+			"moveDown": "Pindahkan {{title}} ke bawah",
+			"moveUp": "Pindahkan {{title}} ke atas",
+			"name": "Nama",
+			"namePlaceholder": "Laporan bug",
+			"notSet": "Belum diatur",
+			"priority": "Prioritas",
+			"removeSubtask": "Hapus {{title}}",
+			"save": "Simpan templat",
+			"status": "Status",
+			"statusDefault": "Default proyek",
+			"subtaskPlaceholder": "Tambahkan subtugas",
+			"subtasks": "Subtugas",
+			"subtaskTitle": "Subtugas {{number}}",
+			"taskDescription": "Deskripsi",
+			"taskDescriptionPlaceholder": "Langkah untuk mereproduksi, hasil yang diharapkan…",
+			"titlePattern": "Pola judul",
+			"titlePatternHint": "{title} diganti dengan judul yang diketik. Tanpanya, judul yang diketik ditambahkan setelah pola.",
+			"titlePatternPlaceholder": "Bug: {title}"
+		},
+		"settings": {
+			"add": "Templat baru",
+			"deleteAria": "Hapus templat {{name}}",
+			"deleteConfirm": "Hapus",
+			"deleteDescription": "Tugas yang dibuat dari templat ini tetap seperti semula.",
+			"deleteTitle": "Hapus templat {{name}}?",
+			"description": "Titik awal untuk tugas baru: pola judul, field default, dan daftar periksa subtugas.",
+			"editAria": "Edit templat {{name}}",
+			"empty": "Belum ada templat.",
+			"loadError": "Templat tidak dapat dimuat.",
+			"noPermission": "Hanya orang yang dapat mengedit proyek yang dapat mengubah templatnya.",
+			"retry": "Coba lagi",
+			"subtaskCount_other": "{{count}} subtugas",
+			"title": "Templat tugas",
+			"toast": {
+				"created": "Templat dibuat",
+				"deleted": "Templat dihapus",
+				"deleteError": "Templat tidak dapat dihapus",
+				"error": "Templat tidak dapat disimpan",
+				"updated": "Templat disimpan"
+			}
+		},
+		"use": {
+			"applied": "Templat: {{name}}",
+			"button": "Templat",
+			"menuLabel": "Gunakan templat",
+			"quickAdd": "Buat dari templat",
+			"removeSubtask": "Hapus subtugas {{title}}",
+			"subtaskError_other": "Tugas telah dibuat, tetapi {{count}} subtugas tidak dapat ditambahkan",
+			"subtasksTitle_other": "{{count}} subtugas dari templat"
+		}
+	},
+	"delivery": {
+		"forecast": {
+			"title": "Prakiraan",
+			"likelyBy": "85% kemungkinan selesai paling lambat {{date}}",
+			"percentiles": "50% paling lambat {{p50}} · 95% paling lambat {{p95}}",
+			"chanceByEnd": "{{percent}}% kemungkinan selesai paling lambat {{date}}",
+			"beyondHorizon": "Lebih dari dua tahun dengan laju saat ini",
+			"open_other": "{{count}} tugas terbuka",
+			"complete": "Semua tugas sudah selesai",
+			"insufficient": {
+				"short_span": "Riwayat belum cukup: prakiraan butuh setidaknya 14 hari kerja di proyek ini.",
+				"few_completions": "Riwayat belum cukup: kurang dari 5 tugas selesai dalam 8 minggu terakhir.",
+				"few_active_days": "Riwayat belum cukup: tugas diselesaikan pada kurang dari 3 hari dalam 8 minggu terakhir."
+			},
+			"howCalculated": "Bagaimana ini dihitung?",
+			"method": {
+				"title": "Prakiraan Monte Carlo",
+				"body": "Margaya memutar ulang laju nyata tim Anda sebanyak {{iterations}} kali. Setiap hari simulasi mengambil jumlah tugas selesai dari satu hari acak di riwayat di bawah, sampai tugas terbuka habis. Tanggal menunjukkan kapan 50%, 85%, dan 95% simulasi selesai.",
+				"window": "Riwayat: {{from}} – {{to}}",
+				"completed": "Tugas selesai: {{total}}",
+				"activeDays": "Hari dengan tugas selesai: {{days}}",
+				"perDay": "Selesai per hari: {{min}}–{{max}}",
+				"perWeek": "Rata-rata per minggu: {{perWeek}}",
+				"team": "Lajunya milik seluruh proyek, jadi pekerjaan di luar cakupan ini juga dihitung.",
+				"seed": "Seed {{seed}}: data yang sama memberi jawaban yang sama sepanjang hari."
+			},
+			"error": "Tidak dapat memuat prakiraan",
+			"retry": "Coba lagi"
+		},
+		"risks": {
+			"title": "Risiko",
+			"empty": "Tidak ada risiko",
+			"showAll": "Tampilkan semua ({{total}})",
+			"showLess": "Tampilkan lebih sedikit",
+			"noCycleTime": "Pekerjaan yang berlarut-larut muncul setelah 10 tugas dengan waktu mulai tercatat selesai.",
+			"hiddenTask": "Tugas yang tidak dapat Anda lihat",
+			"truncated": "Hanya 2.000 tugas terbuka pertama yang diperiksa.",
+			"error": "Tidak dapat memuat risiko",
+			"someone": "Seseorang",
+			"severity": {
+				"high": "Risiko tinggi",
+				"medium": "Risiko sedang",
+				"low": "Risiko rendah"
+			},
+			"criticalPath": {
+				"ends": "Jalur kritis berakhir {{date}}",
+				"chain_other": "Rantai dependensi terpanjang: {{count}} tugas"
+			},
+			"kinds": {
+				"critical_path_late": "Jalur kritis berakhir {{date}}, setelah tenggat {{deadline}}",
+				"critical_path_tight": "Jalur kritis berakhir {{date}}, sangat dekat dengan tenggat {{deadline}}",
+				"blocked_chain_other": "{{head}} memblokir {{count}} tugas",
+				"ageing_other": "{{count}} tugas sedang dikerjakan lebih dari {{days}} hari, lebih lama dari biasanya",
+				"overdue_cluster_other": "{{name}} punya {{count}} tugas terlambat",
+				"overdue_cluster_unassigned_other": "{{count}} tugas terlambat tanpa penerima tugas",
+				"overdue_other": "{{count}} tugas terlambat",
+				"unassigned_near_deadline_other": "{{count}} tugas belum ditugaskan dengan tenggat paling lambat {{date}}",
+				"dependency_loop_other": "{{count}} tugas saling memblokir dalam satu lingkaran"
+			}
+		},
+		"home": {
+			"title": "Berisiko",
+			"empty": "Tidak ada yang berisiko di siklus Anda saat ini",
+			"context": "{{project}} · {{cycle}}"
+		},
+		"tab": {
+			"description": "Prakiraan dan risiko pekerjaan terbuka proyek ini"
+		}
+	},
+	"ai": {
+		"rules": {
+			"title": "Aturan dari deskripsi",
+			"description": "Tulis otomatisasi dengan kata-kata biasa. AI mengubahnya menjadi aturan biasa yang bisa Anda edit, uji pada riwayat terbaru, dan simpan. Aturan yang disimpan berjalan tanpa AI.",
+			"label": "Jelaskan aturan…",
+			"placeholder": "Contoh: saat pull request GitHub digabung, pindahkan tugas ke Selesai",
+			"compile": "Buat aturan",
+			"compiling": "Menulis aturan…",
+			"unsupportedTitle": "Tidak bisa dengan otomatisasi",
+			"rejected": "Aturan usulan yang dihilangkan karena gagal validasi: {{rejected}}",
+			"noRules": "Tidak ada aturan yang bisa dibuat dari deskripsi ini.",
+			"workflowRule": "Aturan alur kerja",
+			"integration": "Integrasi",
+			"when": "Saat",
+			"moveTo": "Pindahkan tugas ke",
+			"historyWindow": "Riwayat yang diputar ulang",
+			"days7": "7 hari terakhir",
+			"days30": "30 hari terakhir",
+			"days90": "90 hari terakhir",
+			"dryRun": "Uji pada riwayat",
+			"dryRunSummary": "Tugas yang akan berubah dalam {{days}} hari terakhir: {{changed}}",
+			"dryRunNone": "Tidak ada yang akan berubah dalam {{days}} hari terakhir.",
+			"dryRunError": "Aturan ini tidak dapat diputar ulang.",
+			"more": "Kecocokan lain yang tidak ditampilkan: {{more}}",
+			"archived": "Diarsipkan",
+			"outcomes": {
+				"unchanged": "sudah di sana",
+				"skipped": "dibiarkan"
+			},
+			"notes": {
+				"integration_not_connected": "Integrasi ini belum terhubung ke proyek, jadi tidak ada riwayat untuk diputar ulang.",
+				"branch_push_last_only": "Hanya push terakhir dari setiap branch yang tercatat.",
+				"threshold_from_last_update": "Berdasarkan pembaruan terakhir setiap tugas; tanggal menunjukkan kapan aturan akan mengambilnya.",
+				"flow_alerts_notify_only": "Peringatan anomali alur hanya memberi tahu pemimpin proyek; tidak mengubah tugas.",
+				"nothing_enabled": "Aturan ini tidak mengaktifkan apa pun, jadi tidak ada yang berubah.",
+				"conditions_current_state": "Kondisi diperiksa terhadap keadaan setiap tugas saat ini; riwayat hanya menyimpan perubahannya."
+			},
+			"save": "Simpan aturan",
+			"discard": "Abaikan",
+			"saved": "Aturan disimpan",
+			"saveError": "Aturan tidak dapat disimpan."
+		},
+		"build": {
+			"command": "Bangun dengan AI…",
+			"title": "Bangun dengan AI",
+			"description": "Jelaskan apa yang ingin direncanakan. AI mengusulkan proyek, siklus, dan tugas untuk Anda tinjau. Tidak ada yang dibuat sebelum Anda konfirmasi.",
+			"promptLabel": "Apa yang perlu kita rencanakan?",
+			"promptPlaceholder": "Rencanakan peluncuran ulang situs web untuk Q4 dengan 3 sprint",
+			"target": "Buat di",
+			"targetCurrent": "Di {{name}}",
+			"targetNew": "Proyek baru",
+			"deep": "Pikirkan lebih dalam (lebih lambat)",
+			"draft": "Usulkan rencana",
+			"drafting": "Menyusun rencana…",
+			"cancel": "Batal",
+			"back": "Kembali",
+			"create_other": "Buat {{count}} item",
+			"creating": "Membuat rencana",
+			"progress": "{{done}} dari {{total}} dibuat…",
+			"close": "Tutup",
+			"openProject": "Buka proyek",
+			"empty": {
+				"text": "Proyek ini belum punya tugas. Jelaskan pekerjaannya dan AI akan mengusulkan tugas untuk Anda tinjau."
+			},
+			"review": {
+				"description": "Tinjau rencananya. Hapus centang, ubah, atau urutkan ulang apa pun, lalu buat.",
+				"project": "Proyek",
+				"projectName": "Nama",
+				"projectKey": "Kunci",
+				"projectDescription": "Deskripsi",
+				"columns": "Kolom baru",
+				"labels": "Label",
+				"cycles": "Siklus",
+				"modules": "Modul",
+				"moduleName": "Nama modul",
+				"tasks_other": "{{count}} tugas",
+				"include": "Sertakan {{name}}",
+				"taskTitle": "Judul tugas",
+				"taskDescription": "Deskripsi tugas",
+				"priority": "Prioritas",
+				"estimate": "Estimasi (poin)",
+				"module": "Modul",
+				"none": "Tidak ada",
+				"taskLabels": "Label: {{labels}}",
+				"subtasks": "Subtugas",
+				"subtaskTitle": "Judul subtugas",
+				"moveUp": "Pindahkan {{name}} ke atas",
+				"moveDown": "Pindahkan {{name}} ke bawah",
+				"cycle": {
+					"label": "Siklus",
+					"name": "Nama siklus",
+					"startDate": "Mulai",
+					"endDate": "Selesai"
+				}
+			},
+			"done": {
+				"success_other": "Selesai. {{count}} tugas telah dibuat.",
+				"partial_other": "Dibuat, kecuali {{count}} item:",
+				"estimatesSkipped": "Estimasi tidak disertakan karena proyek tidak memiliki sistem estimasi poin yang aktif.",
+				"created": {
+					"tasks_other": "{{count}} tugas",
+					"subtasks_other": "{{count}} subtugas",
+					"cycles_other": "{{count}} siklus",
+					"modules_other": "{{count}} modul",
+					"columns_other": "{{count}} kolom",
+					"labels_other": "{{count}} label"
+				}
+			},
+			"kinds": {
+				"project": "Proyek",
+				"column": "Kolom",
+				"cycle": "Siklus",
+				"module": "Modul",
+				"task": "Tugas",
+				"subtask": "Subtugas",
+				"label": "Label",
+				"estimate": "Estimasi",
+				"cycle_tasks": "Tugas siklus",
+				"module_tasks": "Tugas modul"
+			},
+			"chat": {
+				"planLabel": "Perubahan yang diusulkan",
+				"planning": "Merencanakan perubahan…",
+				"nothing": "Tidak ada yang perlu diubah untuk permintaan ini.",
+				"awaiting": "Menunggu tanggapan",
+				"ready": "Perubahan siap: {{count}}. Konfirmasi untuk melanjutkan.",
+				"applying": "Menerapkan perubahan…",
+				"confirm": "Konfirmasi",
+				"cancel": "Batal",
+				"cancelled": "Dibatalkan. Tidak ada yang diubah.",
+				"remove": "Hapus {{title}}",
+				"confirmDestructive": "Ya, hapus",
+				"truncated": "Rencana dipangkas menjadi 50 perubahan pertama.",
+				"appliedSummary": "Diterapkan: {{done}} dari {{total}}",
+				"autopilotApplied": "Langsung diterapkan oleh Autopilot.",
+				"autopilotOff": "Autopilot nonaktif di ruang kerja ini. Tinjau perubahan di bawah.",
+				"autopilotReview": "Beberapa perubahan ini perlu Anda tinjau dulu.",
+				"done": "Selesai",
+				"open": "Buka",
+				"skipped": "Dilewati",
+				"failed": "Gagal",
+				"undo": "Urungkan",
+				"undone": "Diurungkan",
+				"undoFailed": "Perubahan ini tidak dapat diurungkan.",
+				"forbidden": "Anda tidak dapat membuat perubahan dengan AI di sini.",
+				"pickCandidate": "Maksud Anda:",
+				"fields": {
+					"name": "Nama",
+					"key": "Kunci",
+					"title": "Judul",
+					"priority": "Prioritas",
+					"dueDate": "Tenggat",
+					"assignee": "Penanggung jawab",
+					"unassigned": "Tidak ada",
+					"startDate": "Mulai",
+					"endDate": "Selesai",
+					"content": "Komentar"
+				},
+				"problems": {
+					"forbidden": "Anda tidak memiliki izin untuk ini.",
+					"not_found": "Sesuatu yang dirujuknya tidak ditemukan.",
+					"ambiguous": "Nama itu cocok dengan lebih dari satu orang.",
+					"unresolved_ref": "Ini bergantung pada perubahan yang tidak dapat dilakukan.",
+					"feature_off": "Fitur ini dinonaktifkan untuk proyek.",
+					"invalid": "Perubahan ini tidak dapat dilakukan seperti yang tertulis."
+				},
+				"ops": {
+					"create_project": "Proyek baru",
+					"create_task": "Tugas baru",
+					"update_task": "Edit tugas",
+					"set_status": "Ubah status",
+					"assign": "Tugaskan",
+					"add_comment": "Komentari",
+					"create_cycle": "Siklus baru",
+					"add_to_cycle": "Tambahkan ke siklus",
+					"create_module": "Modul baru",
+					"add_to_module": "Tambahkan ke modul",
+					"create_page": "Halaman baru",
+					"link_tasks": "Tautkan tugas",
+					"create_label": "Label baru",
+					"delete_task": "Hapus tugas",
+					"run_agent": "Jalankan agen"
+				},
+				"agentRun": {
+					"title": "Proses agen",
+					"loading": "Memuat proses…",
+					"loadError": "Proses ini tidak dapat dimuat.",
+					"inProgress": "Sedang berjalan"
+				},
+				"noneReady": "Belum ada yang bisa diterapkan. Perbaiki atau hapus perubahan yang ditandai, atau tanyakan lagi."
+			},
+			"context": {
+				"title": "Konteks ({{count}})",
+				"facts": "Proyek: {{projects}} · Orang: {{members}} · Siklus: {{cycles}}",
+				"memory": "Catatan memori: {{count}}",
+				"history": "Pesan sebelumnya: {{count}}"
+			}
+		},
+		"duplicates": {
+			"check": "Periksa dengan AI",
+			"checking": "Memeriksa…",
+			"checkedTitle": "AI memeriksa duplikat di sini",
+			"none": "Tidak ada kemungkinan duplikat.",
+			"verdict": {
+				"duplicate": "Kemungkinan duplikat",
+				"related": "Terkait"
+			},
+			"mark": "Duplikat dari ini",
+			"markLabel": "Tandai tugas baru sebagai duplikat dari {{key}}",
+			"marked": "Ditandai",
+			"willLink": "Tugas baru akan ditandai sebagai duplikat dari {{key}}.",
+			"undo": "Urungkan",
+			"linkError": "Tugas berhasil dibuat, tetapi tidak dapat ditandai sebagai duplikat dari {{key}}."
+		},
+		"triage": {
+			"button": "Sarankan triase",
+			"title": "Saran triase",
+			"loading": "Memeriksa pekerjaan serupa…",
+			"empty": "Tidak ada saran untuk item ini.",
+			"retry": "Coba lagi",
+			"close": "Tutup saran",
+			"accept": "Terima",
+			"acceptAll": "Terima semua",
+			"edit": "Edit",
+			"dismiss": "Abaikan",
+			"applied": "Diterapkan",
+			"acceptError": "Tidak dapat menerapkan saran ini.",
+			"autoApplied": "Proyek ini menambahkan label yang disarankan secara otomatis.",
+			"sameTitle": "Judulnya sama dengan tugas yang sudah ada",
+			"projectAdvice": "Permintaan tetap berada di proyeknya: tolak permintaan ini dan minta agar diajukan di sana.",
+			"otherProjectDuplicate": "Hanya tugas di proyek ini yang dapat menutup permintaan sebagai duplikat.",
+			"openTask": "Buka {{key}} di tab baru",
+			"fields": {
+				"label": "Label",
+				"assignee": "Penanggung jawab",
+				"priority": "Prioritas",
+				"project": "Proyek",
+				"duplicate": "Kemungkinan duplikat"
+			},
+			"settings": {
+				"title": "Saran triase",
+				"description": "Saran AI untuk tugas baru dan permintaan intake. Seseorang menerima, mengedit, atau mengabaikan setiap saran.",
+				"autoApply": "Terapkan saran label secara otomatis",
+				"autoApplyHint": "Label yang disarankan langsung ditambahkan, dan masing-masing dicatat di log audit. Penanggung jawab, prioritas, proyek, dan duplikat selalu menunggu keputusan seseorang.",
+				"saved": "Pengaturan triase disimpan",
+				"saveError": "Tidak dapat menyimpan pengaturan triase."
+			},
+			"liveLabels": {
+				"title": "Label yang disarankan",
+				"add": "Tambahkan label {{name}}"
+			}
+		},
+		"translate": {
+			"action": "Terjemahkan",
+			"translating": "Menerjemahkan…",
+			"translatedFrom": "Diterjemahkan dari {{language}}",
+			"translated": "Diterjemahkan",
+			"showOriginal": "Tampilkan asli",
+			"showTranslation": "Tampilkan terjemahan",
+			"settings": {
+				"autoTranslate": "Terjemahkan komentar secara otomatis",
+				"autoTranslateHint": "Komentar dalam bahasa lain diterjemahkan untuk setiap pembaca saat dibuka. Jika nonaktif, pembaca mengeklik Terjemahkan."
+			}
+		},
+		"brief": {
+			"button": "Laporan",
+			"buttonLabel": "Tulis laporan untuk pemangku kepentingan",
+			"title": "Laporan untuk pemangku kepentingan",
+			"close": "Tutup laporan",
+			"intro": "Menulis laporan status dari kemajuan, perubahan, risiko, dan prakiraan yang dihitung untuk pekerjaan ini. Setiap tugas yang disebut diberi rujukan.",
+			"audience": "Pembaca",
+			"audiences": {
+				"team": "Tim",
+				"leadership": "Pimpinan",
+				"client": "Klien"
+			},
+			"generate": "Tulis laporan",
+			"regenerate": "Tulis ulang",
+			"writing": "Menulis laporan…",
+			"stop": "Hentikan",
+			"copy": "Salin",
+			"copied": "Disalin",
+			"copyError": "Tidak dapat menyalin laporan.",
+			"saveAsPage": "Simpan sebagai halaman",
+			"saved": "Laporan disimpan sebagai halaman",
+			"saveError": "Tidak dapat menyimpan halaman.",
+			"openPage": "Buka halaman",
+			"pageTitle": "Laporan status: {{name}} ({{date}})",
+			"facts": {
+				"title": "Fakta yang digunakan",
+				"note": "Angka-angka ini berasal dari Margaya, bukan dari AI. Menyimpan atau menyalin laporan menjadikannya acuan untuk laporan berikutnya.",
+				"progress": "Kemajuan",
+				"progressValue": "{{percent}}% ({{completed}} dari {{total}} selesai)",
+				"sinceLast": "Sejak laporan terakhir ({{date}})",
+				"sinceDays": "7 hari terakhir",
+				"changes": "Selesai: {{completed}} · Ditambahkan: {{added}} · Dihapus: {{removed}}",
+				"forecast": "Prakiraan",
+				"forecastValue": "85% kemungkinan selesai pada {{date}}",
+				"forecastDone": "Tidak ada lagi yang perlu dikerjakan",
+				"forecastNone": "Riwayat belum cukup",
+				"risks": "Risiko",
+				"diff": "Perubahan",
+				"progressDiff": "Kemajuan {{before}}% → {{now}}%",
+				"forecastDiff": "Prakiraan {{before}} → {{now}}"
+			}
+		},
+		"ask": {
+			"title": "Tanya AI",
+			"description": "Ajukan pertanyaan tentang ruang kerja Anda dengan bahasa sehari-hari. Jawaban hanya berasal dari tugas, halaman, dan komentar yang dapat Anda lihat, dan menyebutkan sumber setiap fakta.",
+			"greeting": "Hai! Apa yang ingin Anda ketahui?",
+			"placeholder": "Tanya AI, @ untuk konteks, / untuk perintah",
+			"send": "Tanya",
+			"stop": "Hentikan",
+			"stopped": "Dihentikan.",
+			"newChat": "Percakapan baru",
+			"expand": "Perbesar",
+			"collapse": "Perkecil",
+			"scopeProject": "Di {{project}}",
+			"scopeWorkspace": "Seluruh ruang kerja",
+			"removeScope": "Tanyakan seluruh ruang kerja saja",
+			"searching": "Mencari di ruang kerja Anda…",
+			"noResults": "Saya tidak menemukan apa pun tentang ini di ruang kerja Anda. Coba kata lain, atau sebutkan proyek, siklus, atau kunci tugas.",
+			"sources": "Sumber",
+			"sourcesCount": "Sumber ({{total}})",
+			"closestMatches": "Hasil paling mirip",
+			"copy": "Salin",
+			"copied": "Disalin",
+			"copyError": "Jawaban tidak dapat disalin",
+			"commentOn": "Komentar di {{key}}",
+			"pageSource": "Halaman: {{title}}",
+			"openSource": "Buka {{title}}",
+			"disclaimer": "Jawaban hanya memakai apa yang dapat Anda lihat. Periksa sumbernya sebelum bertindak.",
+			"you": "Anda",
+			"answer": "Jawaban",
+			"forbidden": "Anda tidak memiliki izin untuk memakai AI di ruang kerja ini.",
+			"palette": "Tanya AI…",
+			"paletteAbout": "Tanya AI: {{question}}",
+			"examples": {
+				"title": "Coba tanyakan",
+				"overdue": "Apa saja yang terlambat?",
+				"mine": "Apa saja tugas terbuka saya?",
+				"recent": "Apa yang berubah minggu ini?",
+				"summarize": "Ringkas proyek ini",
+				"chart": "Tampilkan tugas per status dalam bentuk diagram",
+				"cycleBlockers": "Apa yang menghambat siklus saat ini?"
+			},
+			"history": {
+				"title": "Riwayat",
+				"empty": "Belum ada percakapan yang tersimpan.",
+				"localOnly": "Percakapan hanya disimpan di peramban ini.",
+				"delete": "Hapus percakapan",
+				"clear": "Hapus riwayat",
+				"clearConfirm": "Hapus semua percakapan yang tersimpan di peramban ini? Tindakan ini tidak dapat dibatalkan.",
+				"search": "Cari percakapan",
+				"noMatches": "Tidak ada percakapan yang cocok.",
+				"loading": "Memuat percakapan…",
+				"pin": "Sematkan percakapan",
+				"unpin": "Lepas sematan percakapan",
+				"pinned": "Disematkan",
+				"rename": "Ganti nama percakapan",
+				"renameLabel": "Nama percakapan",
+				"saveTitle": "Simpan nama",
+				"serverNote": "Percakapan disimpan di ruang kerja Anda dan hanya dapat dilihat oleh Anda.",
+				"clearConfirmServer": "Hapus semua percakapan tersimpan Anda di ruang kerja ini? Tindakan ini tidak dapat dibatalkan.",
+				"importHint": "Percakapan yang tersimpan di peramban ini: {{total}}",
+				"import": "Impor",
+				"imported": "Percakapan yang diimpor: {{total}}",
+				"openError": "Percakapan tidak dapat dibuka."
+			},
+			"chartLabel": "Grafik: {{title}}",
+			"chartLoading": "Menggambar grafik…",
+			"chartInvalid": "Grafik ini tidak dapat digambar.",
+			"placeholderBuild": "Jelaskan apa yang ingin dibuat atau diubah…",
+			"modelLabel": "Model: {{model}}",
+			"more": "Lainnya",
+			"moreActions": "Tindakan lainnya",
+			"openFullPage": "Buka satu halaman penuh",
+			"paletteFullPage": "Buka obrolan AI (satu halaman penuh)",
+			"fullPageUnavailable": "AI tidak tersedia di ruang kerja ini.",
+			"shortcut": "Buka atau tutup Tanya AI",
+			"regenerate": "Buat ulang",
+			"editQuestion": "Edit pertanyaan",
+			"resend": "Kirim",
+			"followUps": "Pertanyaan lanjutan yang disarankan",
+			"saveAsPage": "Simpan sebagai halaman",
+			"copyMarkdown": "Salin sebagai Markdown",
+			"copiedMarkdown": "Disalin sebagai Markdown",
+			"createTask": "Buat tugas dari ini",
+			"webSearch": "Cari di web",
+			"webSource": "Web: {{title}}",
+			"removeChip": "Hapus {{name}}",
+			"contextChips": "Konteks untuk pertanyaan ini",
+			"contextPicker": "Tambahkan konteks",
+			"contextHint": "Ketik untuk mencari tugas, halaman, proyek, siklus, modul, orang, atau agen",
+			"contextEmpty": "Tidak ada yang ditemukan",
+			"contextSearching": "Mencari…",
+			"commandMenu": "Perintah",
+			"commandEmpty": "Tidak ada perintah yang cocok",
+			"contextKinds": {
+				"task": "Tugas",
+				"page": "Halaman",
+				"project": "Proyek",
+				"cycle": "Siklus",
+				"module": "Modul",
+				"user": "Orang",
+				"agent": "Agen"
+			},
+			"modes": {
+				"label": "Mode",
+				"ask": "Tanya",
+				"build": "Bangun",
+				"autopilot": "Pilot otomatis",
+				"askHint": "Menjawab pertanyaan; tidak mengubah apa pun",
+				"buildHint": "Mengusulkan perubahan untuk Anda konfirmasi",
+				"autopilotHint": "Langsung menerapkan perubahan; setiap perubahan dapat diurungkan"
+			},
+			"attachments": {
+				"add": "Lampirkan file",
+				"type": "{{name}} tidak dapat dilampirkan. Gunakan gambar (PNG, JPEG, WebP, GIF) atau file teks, Markdown, atau CSV.",
+				"size": "{{name}} tidak muat: total lampiran paling banyak 5 MB.",
+				"count": "Lampirkan paling banyak 3 file.",
+				"readError": "File tidak dapat dibaca."
+			},
+			"voice": {
+				"start": "Dikte",
+				"stop": "Hentikan dikte",
+				"recording": "Mendengarkan…",
+				"transcribing": "Mentranskripsi…",
+				"denied": "Izinkan akses mikrofon untuk mendikte.",
+				"failed": "Rekaman tidak dapat diubah menjadi teks."
+			},
+			"agent": {
+				"ready": "Kirim permintaan ini ke {{agent}}.",
+				"needsTask": "Tambahkan tugas dengan @ agar {{agent}} tahu apa yang harus dikerjakan.",
+				"send": "Kirim ke {{agent}}",
+				"error": "Agen tidak dapat dijalankan."
+			},
+			"thinking": {
+				"live": "Berpikir… {{seconds}}s",
+				"done": "Berpikir selama {{seconds}}s"
+			},
+			"versions": {
+				"previous": "Jawaban sebelumnya",
+				"next": "Jawaban berikutnya",
+				"label": "Jawaban {{current}} dari {{total}}"
+			},
+			"feedback": {
+				"up": "Jawaban bagus",
+				"down": "Jawaban buruk",
+				"reasonLabel": "Apa yang salah? (opsional)",
+				"reasonPlaceholder": "Misalnya: angka salah, ada tugas yang terlewat",
+				"send": "Kirim",
+				"skip": "Lewati",
+				"thanks": "Terima kasih atas masukannya."
+			},
+			"commands": {
+				"summarize": "Ringkas",
+				"summarizeHint": "Proyek, siklus, atau halaman yang sedang dibuka",
+				"chart": "Grafik",
+				"chartHint": "Gambar grafik dari data Anda",
+				"chartPrefill": "Grafik",
+				"brief": "Laporan",
+				"briefHint": "Laporan untuk pemangku kepentingan tentang proyek, siklus, atau modul",
+				"create": "Buat",
+				"createHint": "Beralih ke mode Bangun",
+				"translate": "Terjemahkan",
+				"translateHint": "Ke bahasa Anda",
+				"clear": "Bersihkan",
+				"clearHint": "Mulai percakapan baru",
+				"skill": "Keterampilan tersimpan",
+				"summarizeTurn": "Ringkas {{name}}",
+				"briefTurn": "Laporan tentang {{name}}",
+				"summarizeNeedsScope": "Buka proyek, siklus, atau halaman, atau tambahkan dengan @, untuk meringkasnya.",
+				"briefNeedsScope": "Buka proyek, siklus, atau modul, atau tambahkan dengan @, untuk membuat laporan.",
+				"buildUnavailable": "Mode Bangun tidak tersedia di sini.",
+				"translatePrompt": "Terjemahkan jawaban terakhir Anda ke {{language}}.",
+				"translatePrefill": "Terjemahkan ke {{language}}:",
+				"this": {
+					"page": "halaman ini",
+					"cycle": "siklus ini",
+					"module": "modul ini",
+					"project": "proyek ini"
+				}
+			},
+			"conversation": {
+				"rename": "Ganti nama",
+				"pin": "Sematkan",
+				"unpin": "Lepas sematan",
+				"export": "Ekspor sebagai Markdown",
+				"saveAsPage": "Simpan sebagai halaman",
+				"delete": "Hapus percakapan"
+			},
+			"save": {
+				"title": "Simpan sebagai halaman",
+				"description": "Halaman berisi teks beserta tautan ke sumbernya.",
+				"pageTitle": "Judul",
+				"project": "Proyek",
+				"noProjects": "Tidak ada proyek untuk menyimpan halaman ini.",
+				"submit": "Simpan halaman",
+				"saved": "Disimpan sebagai halaman",
+				"open": "Buka halaman",
+				"error": "Halaman tidak dapat disimpan"
+			}
+		},
+		"writing": {
+			"aiButton": "AI",
+			"menuLabel": "Tindakan AI",
+			"actions": {
+				"summarize": "Ringkas",
+				"improve": "Perbaiki tulisan",
+				"shorter": "Persingkat",
+				"longer": "Perpanjang",
+				"fix": "Perbaiki ejaan & tata bahasa",
+				"translate": "Terjemahkan ke…",
+				"custom": "Minta AI untuk…"
+			},
+			"customPlaceholder": "Beri tahu AI apa yang harus dilakukan, mis. ubah ini menjadi daftar periksa",
+			"customSubmit": "Buat",
+			"preview": {
+				"label": "Saran AI",
+				"generating": "Menulis…",
+				"editLabel": "Sunting saran",
+				"replace": "Ganti",
+				"insertBelow": "Sisipkan di bawah",
+				"discard": "Buang",
+				"stop": "Hentikan",
+				"retry": "Coba lagi",
+				"empty": "AI tidak mengembalikan apa pun. Coba lagi atau ubah kalimatnya.",
+				"note": "AI bisa keliru. Periksa sebelum digunakan.",
+				"incomplete": "Draf berhenti sebelum selesai. Tinjau atau coba lagi."
+			},
+			"summary": {
+				"button": "Ringkas",
+				"cycle": "Ringkas siklus",
+				"project": "Ringkas proyek",
+				"page": "Ringkas halaman",
+				"title": "Ringkasan AI",
+				"generating": "Meringkas…",
+				"dismiss": "Tutup",
+				"copy": "Salin",
+				"copied": "Disalin",
+				"copyError": "Tidak dapat menyalin ringkasan.",
+				"saveAsPage": "Simpan sebagai halaman",
+				"pageTitle": "Ringkasan: {{name}}",
+				"saved": "Ringkasan disimpan sebagai halaman",
+				"saveError": "Tidak dapat menyimpan halaman.",
+				"openPage": "Buka halaman",
+				"task": "Ringkas tugas",
+				"saveAsComment": "Simpan sebagai komentar",
+				"commentSaved": "Ringkasan disimpan sebagai komentar",
+				"commentError": "Komentar tidak dapat disimpan."
+			},
+			"spec": {
+				"button": "Buat draf spesifikasi",
+				"title": "Buat draf spesifikasi",
+				"description": "AI membuat draf halaman spesifikasi dari tugas ini dan konteksnya. Tinjau dan edit, lalu buat halamannya; halaman itu menautkan kembali ke tugas.",
+				"generating": "Menyusun draf…",
+				"titleLabel": "Judul halaman",
+				"bodyLabel": "Spesifikasi",
+				"edit": "Sunting",
+				"preview": "Pratinjau",
+				"create": "Buat halaman",
+				"pageTitle": "Spesifikasi: {{title}}",
+				"created": "Halaman spesifikasi dibuat",
+				"createError": "Tidak dapat membuat halaman."
+			},
+			"taskWriter": {
+				"button": "Tulis dengan AI",
+				"draft": "Draf dari judul",
+				"improve": "Perbaiki",
+				"instruction": "Opsional: apa yang perlu difokuskan?",
+				"hint": "Tidak ada yang berubah sampai Anda memilih “Gunakan ini”.",
+				"writing": "Sedang menulis…",
+				"use": "Gunakan ini",
+				"retry": "Coba lagi",
+				"discard": "Buang",
+				"close": "Tutup penulisan AI"
+			},
+			"feedback": {
+				"good": "Jawaban bagus",
+				"bad": "Jawaban buruk",
+				"thanks": "Terima kasih atas masukannya"
+			},
+			"tone": {
+				"label": "Nada: {{tone}}",
+				"legend": "Nada",
+				"default": "Bawaan",
+				"professional": "Profesional",
+				"casual": "Santai"
+			},
+			"block": {
+				"command": "Blok AI",
+				"title": "Blok AI",
+				"customPlaceholder": "Apa yang harus AI tulis dari halaman ini?",
+				"stale": "Halaman berubah setelah ini dibuat. Buat ulang untuk menyertakan perubahan.",
+				"accept": "Terima",
+				"regenerate": "Buat ulang",
+				"presets": {
+					"tldr": "Ringkasan (TL;DR)",
+					"faq": "FAQ",
+					"action_items": "Tindak lanjut",
+					"custom": "Perintah khusus"
+				}
+			},
+			"title": {
+				"suggest": "Sarankan judul",
+				"thinking": "Memikirkan judul…",
+				"use": "Gunakan judul ini",
+				"another": "Sarankan yang lain"
+			},
+			"comment": {
+				"menuLabel": "Bantuan AI untuk komentar ini",
+				"previewLabel": "Saran AI untuk komentar Anda",
+				"replace": "Ganti draf"
+			}
+		},
+		"errors": {
+			"AI_DISABLED": "AI dinonaktifkan di sini.",
+			"AI_NOT_CONFIGURED": "AI belum disiapkan dengan benar. Minta admin untuk memeriksa pengaturan AI.",
+			"AI_ROUTE_BLOCKED": "Data ini tidak dapat dikirim ke model AI berdasarkan pengaturan privasi Anda.",
+			"AI_BUDGET_EXCEEDED": "Batas AI telah tercapai. Coba lagi nanti atau minta admin untuk menaikkannya.",
+			"AI_RATE_LIMITED": "Terlalu banyak permintaan AI sekaligus. Tunggu sebentar lalu coba lagi.",
+			"AI_REFUSED": "Model AI menolak permintaan ini.",
+			"AI_PROVIDER_ERROR": "Layanan AI tidak merespons. Coba lagi sebentar lagi.",
+			"unknown": "Terjadi masalah dengan AI. Coba lagi.",
+			"AI_HISTORY_OFF": "Ruang kerja ini tidak menyimpan percakapan AI di server. Riwayat Anda tetap di browser ini."
+		},
+		"features": {
+			"connection_test": "Uji koneksi",
+			"ask": "Tanya",
+			"summarize": "Ringkasan",
+			"editor_assist": "Bantuan menulis",
+			"spec_draft": "Draf spesifikasi",
+			"duplicate_check": "Pemeriksaan duplikat",
+			"talk_to_build": "Rencana dari perintah",
+			"triage": "Saran triase",
+			"translate": "Terjemahan",
+			"brief": "Ringkasan untuk pemangku kepentingan",
+			"agent_run": "Agen",
+			"rule_compiler": "Aturan otomatisasi",
+			"capture": "Ubah menjadi tugas",
+			"estimate": "Estimasi",
+			"retro": "Retrospektif",
+			"my_brief": "Ringkasan saya",
+			"embedding": "Pengindeksan pencarian",
+			"coding_handoff": "Brief untuk agen koding",
+			"build_chat": "Buat di obrolan",
+			"nl_filter": "Filter bahasa alami",
+			"inbox_digest": "Ringkasan kotak masuk",
+			"speech": "Ucapan ke teks"
+		},
+		"providers": {
+			"anthropic": "Anthropic (Claude)",
+			"openai_compatible": "Kompatibel dengan OpenAI",
+			"fake": "Palsu (hanya untuk pengujian)"
+		},
+		"destinations": {
+			"cloud": "Penyedia cloud",
+			"local": "Model lokal"
+		},
+		"tiers": {
+			"fast": "Model cepat",
+			"fastHint": "Tugas singkat: menulis ulang, label, ringkasan pendek.",
+			"balanced": "Model seimbang",
+			"balancedHint": "Sebagian besar fitur: jawaban, ringkasan, draf.",
+			"deep": "Model mendalam",
+			"deepHint": "Pekerjaan berat: perencanaan dan agen."
+		},
+		"test": {
+			"title": "Uji koneksi",
+			"workspaceHint": "Mengirim satu permintaan kecil melalui jalur yang sama dengan panggilan AI ruang kerja ini.",
+			"button": "Uji koneksi",
+			"success": "Terhubung ke {{model}} dalam {{ms}} ms"
+		},
+		"usage": {
+			"title": "Penggunaan",
+			"subtitle": "Panggilan AI, token, dan biaya berdasarkan harga daftar. Hanya jumlah yang disimpan, tidak pernah perintah atau jawaban.",
+			"rangeLabel": "Periode",
+			"range": {
+				"thisMonth": "Bulan ini",
+				"last30Days": "30 hari terakhir",
+				"last90Days": "90 hari terakhir"
+			},
+			"calls": "Panggilan",
+			"callsCount_other": "{{count}} panggilan",
+			"tokens": "Token",
+			"tokensSplit": "{{input}} masuk · {{output}} keluar",
+			"cost": "Biaya",
+			"costHint": "Berdasarkan harga daftar; model lokal dihitung $0.",
+			"day": "Hari",
+			"byDay": "Panggilan per hari",
+			"byFeature": "Per fitur",
+			"byModel": "Per model",
+			"byUser": "Per orang",
+			"byWorkspace": "Per ruang kerja",
+			"empty": "Tidak ada penggunaan AI pada periode ini.",
+			"unknownUser": "Akun yang dihapus",
+			"loadError": "Tidak dapat memuat penggunaan AI.",
+			"retry": "Coba lagi",
+			"exportCsv": "Ekspor CSV",
+			"exportError": "Data penggunaan tidak dapat diekspor.",
+			"feedbackTitle": "Penilaian jawaban",
+			"feedbackOverall": "{{percent}}% positif dari {{total}} penilaian",
+			"feedbackUp": "Jempol ke atas",
+			"feedbackDown": "Jempol ke bawah",
+			"feedbackRate": "Positif"
+		},
+		"instance": {
+			"title": "AI",
+			"subtitle": "Izinkan ruang kerja menggunakan AI: pilih penyedia dan model, serta tentukan ke mana data boleh dikirim. AI tetap nonaktif sampai Anda mengaktifkannya, dan setiap ruang kerja juga harus mengaktifkannya sendiri.",
+			"statusTitle": "AI di server ini",
+			"statusReady": "Siap",
+			"statusNotConfigured": "Belum disiapkan",
+			"statusOff": "Nonaktif",
+			"enable": "Izinkan AI",
+			"enableHint": "Ruang kerja dapat mengaktifkan fitur AI setelah opsi ini aktif dan penyedia telah disiapkan.",
+			"providerTitle": "Penyedia",
+			"providerDescription": "Penyedia model cloud. Biarkan model kosong untuk memakai model bawaan penyedia untuk tingkat tersebut.",
+			"provider": "Penyedia",
+			"providerHint": "Anthropic Claude direkomendasikan. Opsi kompatibel dengan OpenAI mencakup OpenAI, Azure, OpenRouter, vLLM, dan LM Studio.",
+			"anthropicKey": "Kunci API Anthropic",
+			"anthropicKeyHint": "Disimpan terenkripsi. Tidak akan ditampilkan lagi.",
+			"openaiBaseUrl": "URL dasar",
+			"openaiBaseUrlHint": "Termasuk jalur versi, misalnya https://api.openai.com/v1. Harus berupa alamat publik.",
+			"openaiKey": "Kunci API",
+			"save": "Simpan",
+			"testCloud": "Uji penyedia",
+			"testLocal": "Uji model lokal",
+			"localTitle": "Model lokal",
+			"localDescription": "Server yang kompatibel dengan OpenAI di jaringan Anda sendiri, seperti Ollama. Data terbatas hanya dikirim ke sini.",
+			"localBaseUrl": "URL dasar",
+			"localBaseUrlHint": "Misalnya http://ollama:11434/v1. Alamat privat diizinkan di sini.",
+			"localModel": "Model",
+			"localKey": "Kunci API",
+			"localKeyHint": "Opsional. Hanya jika server Anda memerlukannya, misalnya vLLM yang dijalankan dengan --api-key. Disimpan terenkripsi.",
+			"localOnly": "Mode khusus lokal",
+			"localOnlyHint": "Setiap panggilan AI dikirim ke model lokal; tidak ada yang dikirim ke penyedia cloud.",
+			"privacyTitle": "Privasi",
+			"privacyDescription": "Ke mana setiap jenis data boleh dikirim. Ruang kerja boleh lebih ketat, tetapi tidak pernah lebih longgar.",
+			"restrictedRoute": "Proyek terbatas",
+			"restrictedRouteHint": "Data dari proyek terbatas, jika ruang kerja mengizinkan AI membacanya.",
+			"privateRoute": "Data ruang kerja lainnya",
+			"privateRouteHint": "Tugas, halaman, dan komentar dari proyek terbuka.",
+			"routeBlocked": "Tidak pernah dikirim",
+			"routeLocal": "Hanya model lokal",
+			"routeCloud": "Penyedia cloud diizinkan",
+			"redaction": "Samarkan data pribadi",
+			"redactionHint": "Mengganti email, nomor telepon, nomor kartu, dan token dengan penanda sebelum panggilan ke cloud. Jawaban kembali menampilkan nilai aslinya.",
+			"zeroRetention": "Tanpa retensi data",
+			"zeroRetentionHint": "Catat bahwa perjanjian Anda dengan penyedia tidak menyimpan data apa pun. Margaya menampilkannya; penyedia yang menegakkannya.",
+			"allowWorkspaceKeys": "Izinkan kunci ruang kerja",
+			"allowWorkspaceKeysHint": "Ruang kerja boleh memakai kunci penyedia sendiri dan membayar penggunaannya sendiri.",
+			"embeddingsTitle": "Representasi vektor",
+			"embeddingsDescription": "Opsional, untuk pencarian semantik. Endpoint representasi vektor apa pun yang kompatibel dengan OpenAI dapat digunakan. Basis data juga memerlukan ekstensi pgvector; tanpa salah satunya, pencarian tetap hanya teks lengkap.",
+			"vectorReady": "pgvector siap",
+			"vectorAvailable": "pgvector tersedia",
+			"vectorUnavailable": "pgvector tidak tersedia",
+			"embeddingsBaseUrl": "URL dasar",
+			"embeddingsModel": "Model",
+			"embeddingsKey": "Kunci API",
+			"invalidUrl": "Masukkan URL http atau https.",
+			"usageTitle": "Penggunaan di semua ruang kerja",
+			"usageDescription": "Panggilan AI di server ini per ruang kerja dan model. Hanya jumlah yang disimpan.",
+			"chatTitle": "Obrolan",
+			"chatDescription": "Cara model penalaran berpikir dan apa yang dapat dilihat orang dari proses itu.",
+			"showReasoning": "Tampilkan penalaran",
+			"showReasoningHint": "Tampilkan proses berpikir model penalaran kepada orang yang bertanya. Proses ini tidak pernah disimpan. Nonaktif: hanya lama waktu berpikirnya.",
+			"localThinking": "Berpikir pada model lokal",
+			"localThinkingHint": "Nonaktif menjawab lebih cepat; aktif membuat model penalaran lokal berpikir terlebih dahulu.",
+			"localThinkingOff": "Nonaktif",
+			"localThinkingOn": "Aktif",
+			"webSearchTitle": "Pencarian web",
+			"webSearchDescription": "Layanan pencarian yang dapat dipakai jawaban saat ruang kerja mengaktifkan pencarian web.",
+			"webSearchProvider": "Penyedia pencarian",
+			"webSearchProviderHint": "SearXNG berjalan di server Anda sendiri; Brave Search dan Tavily memerlukan kunci API.",
+			"webSearchOff": "Nonaktif",
+			"webSearchUrl": "URL SearXNG",
+			"webSearchUrlHint": "API JSON-nya harus diaktifkan.",
+			"webSearchKey": "Kunci API",
+			"webSearchKeyHint": "Untuk Brave Search atau Tavily.",
+			"speechTitle": "Ucapan ke teks",
+			"speechDescription": "Input suara di obrolan. Tanpa ini, peramban yang mampu akan mengenali ucapan sendiri.",
+			"speechBaseUrl": "URL endpoint",
+			"speechBaseUrlHint": "Endpoint transkripsi yang kompatibel dengan OpenAI, misalnya server Whisper lokal.",
+			"speechModel": "Model",
+			"speechKey": "Kunci API"
+		},
+		"workspace": {
+			"navLabel": "AI",
+			"title": "AI",
+			"subtitle": "Aktifkan fitur AI untuk ruang kerja ini, atur batas, dan pilih cara data privat ditangani.",
+			"noAccess": "Anda memerlukan izin mengelola AI untuk melihat pengaturan ini.",
+			"loadError": "Tidak dapat memuat pengaturan AI.",
+			"statusTitle": "AI di ruang kerja ini",
+			"statusDescription": "AI nonaktif sampai Anda mengaktifkannya. Setiap proyek tetap dapat menonaktifkannya di pengaturan fiturnya.",
+			"enable": "Aktifkan AI",
+			"enableHint": "Anggota dengan izin Gunakan AI melihat fitur AI di proyek yang mengizinkannya.",
+			"enabledToast": "AI aktif untuk ruang kerja ini",
+			"disabledToast": "AI nonaktif untuk ruang kerja ini",
+			"offOnInstance": "Admin instans belum mengizinkan AI di server ini.",
+			"notConfigured": "AI sudah diizinkan, tetapi belum ada penyedia yang disiapkan. Hubungi admin instans.",
+			"whereDataGoes": "Ke mana data dikirim",
+			"whereDataGoesHint": "Model yang menerima permintaan AI dari ruang kerja ini.",
+			"zeroRetention": "Tanpa retensi",
+			"limitsTitle": "Batas",
+			"limitsDescription": "Terpakai bulan ini: {{spent}}. Permintaan berhenti saat batas tercapai.",
+			"monthlyCap": "Anggaran bulanan (USD)",
+			"monthlyCapHint": "Berdasarkan harga daftar, untuk seluruh ruang kerja. Biarkan kosong untuk tanpa batas.",
+			"dailyTokens": "Token harian per orang",
+			"dailyTokensHint": "Token masukan dan keluaran yang boleh dipakai setiap orang per hari (UTC). Biarkan kosong untuk tanpa batas.",
+			"noLimit": "Tanpa batas",
+			"invalidNumber": "Masukkan angka 0 atau lebih.",
+			"saveLimits": "Simpan batas",
+			"monthSpendOfCap": "{{spent}} dari {{cap}} terpakai bulan ini.",
+			"privacyTitle": "Privasi",
+			"privacyDescription": "AI hanya melihat apa yang dapat dilihat oleh orang yang bertanya.",
+			"includeRestricted": "Sertakan proyek terbatas",
+			"includeRestrictedHint": "Izinkan AI membaca proyek terbatas untuk orang yang dapat melihatnya. Datanya hanya dikirim ke tempat yang diizinkan server untuk data terbatas.",
+			"localOnly": "Hanya model lokal",
+			"localOnlyHint": "Kirim setiap permintaan AI ke model lokal server.",
+			"localOnlyForced": "Server dalam mode khusus lokal.",
+			"localOnlyUnavailable": "Server ini tidak memiliki model lokal.",
+			"redactPii": "Samarkan data pribadi",
+			"redactPiiHint": "Mengganti email, nomor telepon, nomor kartu, dan token dengan penanda sebelum permintaan meninggalkan server.",
+			"redactPiiForced": "Selalu aktif: server menyamarkan setiap permintaan ke cloud.",
+			"approval": "Setujui perubahan AI",
+			"approvalHint": "Perubahan yang disarankan AI selalu menunggu persetujuan seseorang.",
+			"semanticSearch": "Pencarian semantik",
+			"semanticSearchHint": "Tanya dan pemeriksaan duplikat juga menemukan tugas, halaman, dan komentar berdasarkan maknanya, bukan hanya kata-katanya. Konten diindeks dengan model representasi vektor milik server.",
+			"semanticUnavailable": "pgvector tidak tersedia di basis data server ini, jadi pencarian hanya memakai teks lengkap.",
+			"semanticNoEndpoint": "Server ini tidak memiliki endpoint representasi vektor, jadi pencarian hanya memakai teks lengkap.",
+			"semanticIndexed_one": "{{count}} item terindeks",
+			"semanticIndexed_other": "{{count}} item terindeks",
+			"semanticPaused": "Pengindeksan dijeda. {{reason}}",
+			"semanticEnabledToast": "Pencarian semantik aktif. Pengindeksan berjalan di latar belakang.",
+			"semanticDisabledToast": "Pencarian semantik nonaktif dan indeksnya telah dihapus.",
+			"keyTitle": "Kunci API sendiri",
+			"keyDescription": "Gunakan akun penyedia milik ruang kerja Anda sendiri, bukan milik server. Kunci disimpan terenkripsi dan tidak akan ditampilkan lagi.",
+			"keyCurrent": "Kunci tersimpan",
+			"keyEnding": "Berakhiran {{last4}}",
+			"keyUnreadable": "Kunci tersimpan tidak dapat dibaca lagi. Masukkan kembali.",
+			"keyRemove": "Hapus",
+			"keyProvider": "Penyedia",
+			"keyValue": "Kunci API",
+			"keyReplace": "Ganti kunci",
+			"keyHint": "Kunci API Anthropic, diawali dengan sk-ant-.",
+			"keyOpenAiHint": "Digunakan dengan endpoint server yang kompatibel dengan OpenAI.",
+			"keyPlaceholder": "Tempel kunci",
+			"keyTooShort": "Kunci ini tampak terlalu pendek.",
+			"keySave": "Simpan kunci",
+			"keySavedToast": "Kunci disimpan",
+			"keyRemovedToast": "Kunci dihapus",
+			"saved": "Pengaturan AI disimpan",
+			"saveError": "Tidak dapat menyimpan pengaturan AI.",
+			"chatTitle": "Obrolan Tanya AI",
+			"chatDescription": "Apa yang boleh dilakukan obrolan untuk orang di ruang kerja ini.",
+			"webSearch": "Pencarian web",
+			"webSearchHint": "Orang dapat mengizinkan jawaban mencari di web. Hasilnya dikutip sebagai sumber web.",
+			"webSearchUnavailable": "Instans ini belum menyiapkan pencarian web.",
+			"webSearchLocalOnly": "Tidak digunakan selama AI hanya memakai model lokal.",
+			"storeConversations": "Simpan riwayat obrolan di server",
+			"storeConversationsHint": "Percakapan setiap orang disimpan di ruang kerja agar dapat dibuka lagi di perangkat mana pun. Nonaktif: percakapan hanya tersimpan di masing-masing peramban.",
+			"allowAutopilot": "Izinkan Pilot otomatis",
+			"allowAutopilotHint": "Mode Bangun boleh menerapkan perubahan tanpa konfirmasi. Setiap perubahan tetap dicatat dan dapat diurungkan."
+		},
+		"agents": {
+			"navLabel": "Agen",
+			"title": "Agen",
+			"subtitle": "Agen AI adalah anggota ruang kerja yang mengerjakan tugas untuk orang yang memintanya, tanpa pernah memiliki hak lebih dari orang tersebut.",
+			"listTitle": "Agen ruang kerja",
+			"badge": "Agen",
+			"noAccess": "Hanya orang yang dapat mengelola AI yang bisa menyiapkan agen.",
+			"empty": "Belum ada agen. Buat satu, lalu sebut agen itu dalam komentar, tugaskan tugas kepadanya, atau jalankan dari sebuah tugas.",
+			"loadError": "Tidak dapat memuat agen.",
+			"retry": "Coba lagi",
+			"create": "Agen baru",
+			"edit": "Edit agen",
+			"dialogHint": "Agen dapat ditugaskan dan disebut seperti orang. Agen tidak bisa masuk dan tidak ditagih sebagai pengguna berbayar.",
+			"save": "Simpan",
+			"cancel": "Batal",
+			"created": "Agen dibuat",
+			"saved": "Agen disimpan",
+			"deleted": "Agen dihapus",
+			"saveError": "Tidak dapat menyimpan agen. Coba lagi.",
+			"enable": "Aktifkan",
+			"disable": "Nonaktifkan",
+			"off": "Nonaktif",
+			"delete": "Hapus",
+			"deleteTitle": "Hapus {{name}}?",
+			"deleteBody": "Agen akan keluar dari ruang kerja. Komentar dan riwayatnya tetap ada, dan eksekusinya tetap tersimpan di Meja Agen.",
+			"spend": "{{spent}} bulan ini",
+			"spendOfBudget": "{{spent}} dari {{budget}} bulan ini",
+			"activityFilter": "Agen",
+			"fields": {
+				"name": "Nama",
+				"nameTaken": "Agen atau anggota ruang kerja ini sudah memakai nama ini. Pilih nama lain.",
+				"description": "Deskripsi",
+				"descriptionPlaceholder": "Hal yang dibantu oleh agen ini",
+				"instructions": "Instruksi",
+				"instructionsHint": "Cara agen seharusnya bekerja. Hanya admin yang menulisnya; teks dalam tugas, komentar, dan halaman tidak pernah dianggap sebagai instruksi.",
+				"role": "Peran",
+				"roleHint": "Batas maksimal yang boleh dilakukan agen. Setiap eksekusi juga dibatasi oleh hak orang yang meminta.",
+				"tier": "Model",
+				"tierFast": "Cepat",
+				"tierBalanced": "Seimbang",
+				"tierDeep": "Mendalam",
+				"provider": "Tempat dijalankan",
+				"providerDefault": "Bawaan ruang kerja",
+				"providerLocal": "Hanya model lokal",
+				"budget": "Anggaran bulanan (USD)",
+				"budgetHint": "Eksekusi berhenti saat pengeluaran bulan ini mencapai jumlah tersebut. Biarkan kosong agar agen tanpa batas; batas ruang kerja tetap berlaku.",
+				"projects": "Proyek",
+				"projectsAll": "Semua proyek yang dijangkau perannya",
+				"projectsSome": "Hanya proyek ini",
+				"projectsHint": "Jalannya di proyek lain berhenti, dan agen menyampaikan bahwa ia tidak diatur untuk bekerja di sana.",
+				"projectsNone": "Pilih setidaknya satu proyek.",
+				"skills": "Keahlian",
+				"skillsEmpty": "Belum ada keahlian bersama. Keahlian bersama yang disimpan di Ask dapat diberikan kepada agen.",
+				"skillsHint": "Agen mengikuti prompt tersimpan ini bila cocok dengan permintaan (maksimal 10).",
+				"webAccess": "Akses web",
+				"webAccessHint": "Mengizinkan agen mencari di web dan memakai konektor ruang kerja. Apa yang dikirimnya ke sana keluar dari Margaya."
+			},
+			"status": {
+				"queued": "Dalam antrean",
+				"running": "Berjalan",
+				"awaiting_approval": "Menunggu persetujuan",
+				"succeeded": "Selesai",
+				"failed": "Gagal",
+				"cancelled": "Dihentikan",
+				"needs_input": "Perlu jawaban"
+			},
+			"stepStatus": {
+				"ok": "Selesai",
+				"error": "Gagal",
+				"denied": "Tidak diizinkan",
+				"pending": "Menunggu persetujuan",
+				"applied": "Diterapkan",
+				"rejected": "Ditolak",
+				"expired": "Kedaluwarsa",
+				"reverted": "Diurungkan"
+			},
+			"step": {
+				"model": "Panggilan model"
+			},
+			"tools": {
+				"read_task": "Baca tugas",
+				"read_project": "Baca proyek",
+				"read_page": "Baca halaman",
+				"search_workspace": "Cari",
+				"add_comment": "Komentar",
+				"update_task": "Perbarui tugas",
+				"move_status": "Ubah status",
+				"create_subtask": "Buat subtugas",
+				"create_page": "Buat halaman",
+				"link_tasks": "Tautkan tugas",
+				"delete_task": "Hapus tugas",
+				"bulk_move_status": "Ubah status beberapa tugas",
+				"ask_person": "Ajukan pertanyaan",
+				"web_search": "Pencarian web",
+				"connector": "Layanan eksternal: {{tool}}"
+			},
+			"runErrors": {
+				"AGENT_GONE": "Agen telah dihapus.",
+				"AGENT_DISABLED": "Agen dinonaktifkan.",
+				"AGENT_LEFT": "Agen bukan lagi anggota ruang kerja.",
+				"PRINCIPAL_LEFT": "Orang yang meminta bukan lagi anggota ruang kerja.",
+				"AI_USE_DENIED": "Orang yang meminta tidak diizinkan menggunakan AI.",
+				"NOT_IN_SCOPE": "Tugas berada di proyek yang tidak dapat dibaca AI.",
+				"TIME_LIMIT": "Eksekusi berlangsung lebih dari 10 menit dan dihentikan.",
+				"OUTPUT_LIMIT": "Jawaban agen terlalu panjang. Minta perubahan yang lebih kecil.",
+				"TURN_LIMIT": "Agen kehabisan langkah sebelum selesai. Minta perubahan yang lebih kecil dan spesifik.",
+				"INTERRUPTED": "Eksekusi terputus. Perubahan yang sudah dibuat masih dapat diurungkan.",
+				"APPROVAL_EXPIRED": "Tidak ada yang memutuskan perubahan yang diusulkan dalam 24 jam, jadi perubahan itu kedaluwarsa.",
+				"INTERNAL": "Terjadi masalah selama eksekusi.",
+				"NEEDS_INPUT_EXPIRED": "Tidak ada yang menjawab pertanyaan agen dalam 24 jam.",
+				"OUTSIDE_AGENT_PROJECTS": "Agen tidak diatur untuk bekerja di proyek ini."
+			},
+			"change": {
+				"approve": "Setujui",
+				"reject": "Tolak",
+				"approved": "Perubahan diterapkan",
+				"rejected": "Perubahan dibuang",
+				"decideError": "Tidak dapat menerapkan keputusan Anda. Coba lagi.",
+				"undo": "Urungkan",
+				"undone": "Perubahan diurungkan",
+				"undoError": "Tidak dapat mengurungkan perubahan ini. Tugas mungkin sudah berubah sejak itu.",
+				"expiresAt": "Kedaluwarsa {{time}}",
+				"before": "Sebelum",
+				"after": "Sesudah",
+				"openPage": "Buka halaman",
+				"openSubtask": "Buka subtugas",
+				"openLinked": "Buka tugas tertaut",
+				"empty": "(kosong)",
+				"fields": {
+					"title": "Judul",
+					"priority": "Prioritas",
+					"dueDate": "Tenggat",
+					"description": "Deskripsi",
+					"status": "Status",
+					"statusOf": "Status {{task}}",
+					"comment": "Komentar",
+					"subtask": "Subtugas baru",
+					"page": "Halaman baru",
+					"relation": "Tautan ({{relation}})",
+					"delete": "Pindahkan ke sampah",
+					"connectorCall": "Panggilan ke {{connector}}"
+				}
+			},
+			"inbox": {
+				"title": "{{agentName}} memerlukan persetujuan Anda",
+				"verb": "meminta persetujuan Anda",
+				"cardTitle": "Perubahan yang diusulkan"
+			},
+			"reply": {
+				"title": "{{agentName}} menjawab permintaan Anda",
+				"verb": "menjawab permintaan Anda",
+				"cardTitle": "Jawaban agen",
+				"hint": "Agen tidak memposting jawaban ini di tugas, jadi jawaban ditampilkan di sini."
+			},
+			"activity": {
+				"onBehalfOf": "atas nama {{name}}"
+			},
+			"run": {
+				"button": "Jalankan agen",
+				"title": "Jalankan agen pada tugas ini",
+				"hint": "Agen bekerja dengan hak yang tidak melebihi hak Anda. Perubahan dapat diurungkan, dan sebagian menunggu persetujuan Anda.",
+				"agent": "Agen",
+				"prompt": "Apa yang harus dilakukannya?",
+				"promptPlaceholder": "Contoh: pecah ini menjadi subtugas dan sarankan prioritas.",
+				"start": "Jalankan",
+				"started": "{{name}} sedang mengerjakannya",
+				"error": "Tidak dapat memulai agen. Coba lagi.",
+				"recent": "Eksekusi terbaru pada tugas ini",
+				"viewInDesk": "Buka di Meja Agen"
+			},
+			"desk": {
+				"nav": "Meja Agen",
+				"title": "Meja Agen",
+				"subtitle": "Apa yang sudah dan sedang dikerjakan agen Anda: setiap eksekusi beserta langkah, biaya, dan perubahannya.",
+				"emptyTitle": "Belum ada eksekusi agen",
+				"empty": "Sebut agen dalam komentar, tugaskan tugas kepadanya, atau jalankan dari sebuah tugas.",
+				"allAgents": "Semua agen",
+				"allStatuses": "Semua status",
+				"filterAgent": "Filter menurut agen",
+				"filterStatus": "Filter menurut status",
+				"approvalsTitle": "Menunggu Anda",
+				"selectRun": "Pilih eksekusi untuk melihat langkah dan perubahannya.",
+				"runMissing": "Eksekusi ini tidak tersedia.",
+				"deletedAgent": "Agen yang dihapus",
+				"onBehalfOf": "untuk {{name}}",
+				"cost": "Biaya",
+				"tokensLabel": "Token",
+				"tokens": "Token: {{value}}",
+				"toolCallsLabel": "Panggilan alat",
+				"summary": "Ringkasan",
+				"changes": "Kumpulan perubahan",
+				"noChanges": "Tidak ada perubahan.",
+				"steps": "Langkah",
+				"cancelRun": "Hentikan eksekusi",
+				"cancelled": "Eksekusi dihentikan",
+				"cancelError": "Tidak dapat menghentikan eksekusi.",
+				"trigger": {
+					"mention": "Disebut",
+					"assign": "Ditugaskan",
+					"manual": "Dijalankan dari tugas",
+					"schedule": "Terjadwal",
+					"automation": "Otomatisasi",
+					"chat": "Lanjutan"
+				},
+				"project": "Proyek:",
+				"workedSeconds": "Bekerja {{count}} dtk",
+				"workedMinutes": "Bekerja {{count}} mnt"
+			},
+			"connectors": {
+				"title": "Konektor",
+				"subtitle": "Server MCP eksternal yang boleh dipanggil agen dengan akses web. Alat hanya-baca langsung berjalan; selain itu menunggu persetujuan.",
+				"create": "Tambah konektor",
+				"edit": "Edit konektor",
+				"delete": "Hapus konektor",
+				"created": "Konektor ditambahkan",
+				"saved": "Konektor disimpan",
+				"deleted": "Konektor dihapus",
+				"saveError": "Tidak dapat menyimpan konektor. Coba lagi.",
+				"empty": "Belum ada konektor. Tambahkan alamat server MCP agar agen dengan akses web bisa memakai alatnya.",
+				"shared": "Dibagikan",
+				"personal": "Hanya Anda",
+				"enable": "Aktifkan",
+				"disable": "Nonaktifkan",
+				"test": "Uji",
+				"testOk": "Terhubung: {{count}} alat, {{readOnly}} hanya-baca",
+				"testError": "Tidak dapat menjalankan uji. Coba lagi.",
+				"errors": {
+					"DESTINATION": "Alamat ini bukan server publik.",
+					"TIMEOUT": "Server tidak menjawab tepat waktu.",
+					"NETWORK": "Tidak dapat menjangkau server.",
+					"HTTP": "Server menjawab dengan galat ({{status}}).",
+					"TOO_LARGE": "Jawaban server terlalu besar.",
+					"PROTOCOL": "Ini tidak tampak seperti server MCP.",
+					"RPC": "Server MCP menolak permintaan.",
+					"SECRET_UNREADABLE": "Rahasia yang tersimpan tidak bisa dibaca lagi. Masukkan lagi."
+				},
+				"secretHint": "Rahasia ••••{{last4}}",
+				"dialogHint": "Margaya terhubung melalui Streamable HTTP. Rahasia disimpan terenkripsi dan tidak pernah ditampilkan lagi.",
+				"name": "Nama",
+				"url": "URL server",
+				"urlHint": "Endpoint MCP, misalnya https://mcp.example.com/mcp. Harus bisa dijangkau dari internet publik.",
+				"auth": "Autentikasi",
+				"authHeader": "Rahasia di header",
+				"authNone": "Tidak ada",
+				"headerName": "Nama header",
+				"secret": "Rahasia",
+				"secretKeep": "Biarkan kosong untuk mempertahankan rahasia saat ini",
+				"secretHelp": "Nilai lengkap header, misalnya Bearer lalu token.",
+				"sharedToggle": "Bagikan ke ruang kerja",
+				"sharedHint": "Agen memakai konektor bersama di setiap jalannya. Nonaktifkan agar hanya dipakai untuk jalannya atas nama Anda.",
+				"deleteTitle": "Hapus {{name}}?",
+				"deleteBody": "Agen tidak bisa lagi memakai alatnya, dan rahasia yang tersimpan dihapus."
+			},
+			"followUp": {
+				"label": "Balas agen",
+				"placeholder": "Ajukan pertanyaan lanjutan atau sebutkan langkah berikutnya…",
+				"send": "Kirim",
+				"error": "Tidak dapat memulai lanjutan. Coba lagi."
+			},
+			"needsInput": {
+				"title": "Agen punya pertanyaan",
+				"answerLabel": "Jawaban Anda",
+				"placeholder": "Ketik jawaban Anda…",
+				"reply": "Balas",
+				"sent": "Jawaban terkirim. Agen melanjutkan.",
+				"error": "Tidak dapat mengirim jawaban Anda. Coba lagi.",
+				"hint": "Pertanyaan yang tidak dijawab kedaluwarsa setelah 24 jam.",
+				"waiting": "Agen menunggu jawaban dari orang yang memintanya.",
+				"inboxHint": "Jalannya dijeda sampai Anda menjawab.",
+				"answer": "Jawab di Meja Agen",
+				"notificationTitle": "{{agentName}} punya pertanyaan",
+				"verb": "punya pertanyaan untuk Anda"
+			},
+			"schedules": {
+				"open": "Jadwal {{name}}",
+				"title": "Jadwal: {{name}}",
+				"hint": "Jalankan agen sesuai jadwal. Jalannya bertindak atas nama orang yang terakhir menyimpan jadwal, dengan hak paling banyak sebesar haknya.",
+				"empty": "Belum ada jadwal.",
+				"create": "Jadwal baru",
+				"edit": "Edit jadwal",
+				"delete": "Hapus jadwal",
+				"deleteBody": "Hapus jadwal ini? Jalannya sebelumnya tetap ada di Meja Agen.",
+				"deleted": "Jadwal dihapus",
+				"saved": "Jadwal disimpan",
+				"saveError": "Tidak dapat menyimpan jadwal. Coba lagi.",
+				"enable": "Aktifkan jadwal",
+				"disable": "Nonaktifkan jadwal",
+				"enabled": "Aktif",
+				"when": "Kapan",
+				"presets": {
+					"weekdays": "Setiap hari kerja pukul 9:00",
+					"mondays": "Setiap Senin pukul 9:00",
+					"monthly": "Tanggal 1 setiap bulan pukul 9:00",
+					"custom": "Kustom (cron)"
+				},
+				"customLabel": "Jadwal cron {{cron}}",
+				"cron": "Ekspresi cron",
+				"cronHint": "Lima kolom: menit, jam, tanggal, bulan, hari dalam minggu. Paling sering setiap 15 menit.",
+				"timezone": "Zona waktu",
+				"project": "Proyek",
+				"chooseProject": "Pilih proyek",
+				"task": "Tugas",
+				"noTask": "Tanpa tugas (seluruh proyek)",
+				"taskHint": "Tanpa tugas, agen bekerja pada proyek dan menaruh laporan di sebuah halaman.",
+				"projectLevel": "Seluruh proyek",
+				"prompt": "Apa yang harus dilakukannya?",
+				"promptPlaceholder": "Misalnya: ringkas apa yang berubah sejak kemarin.",
+				"nextRun": "Jalannya berikutnya {{time}}",
+				"runsAs": "Berjalan untuk {{name}}",
+				"runsAsHint": "Dengan menyimpan, jalannya ini bertindak atas nama Anda. Jadwal nonaktif jika Anda keluar dari ruang kerja atau kehilangan akses AI.",
+				"errors": {
+					"CRON_INVALID": "Masukkan lima kolom cron: menit, jam, tanggal, bulan, hari dalam minggu.",
+					"CRON_TOO_FREQUENT": "Jadwal paling sering berjalan setiap 15 menit.",
+					"CRON_NEVER": "Jadwal ini tidak akan pernah berjalan.",
+					"TIMEZONE_INVALID": "Pilih zona waktu yang valid.",
+					"OUTSIDE_AGENT_PROJECTS": "Agen ini tidak diatur untuk bekerja di proyek itu."
+				}
+			},
+			"templates": {
+				"title": "Mulai dari",
+				"blank": "Agen kosong",
+				"blankHint": "Tulis instruksinya sendiri.",
+				"triage": {
+					"name": "Triase",
+					"description": "Merapikan tugas baru: judul jelas, prioritas, dan tautan duplikat."
+				},
+				"standup": {
+					"name": "Standup",
+					"description": "Menulis ringkasan standup harian di halaman proyek."
+				},
+				"specWriter": {
+					"name": "Penulis spesifikasi",
+					"description": "Mengubah tugas menjadi halaman spesifikasi dengan kriteria penerimaan."
+				},
+				"deliveryRisk": {
+					"name": "Risiko pengiriman",
+					"description": "Setiap minggu melaporkan pekerjaan yang terlambat, terblokir, dan tanpa penanggung jawab."
+				},
+				"feedback": {
+					"name": "Masukan pelanggan",
+					"description": "Mengelompokkan masukan pelanggan ke dalam tema beserta contohnya."
+				},
+				"triggers": {
+					"mention": "Sebutan",
+					"assign": "Penugasan",
+					"schedule": "Jadwal",
+					"automation": "Otomatisasi"
+				}
+			}
+		},
+		"capture": {
+			"button": "Tangkap",
+			"buttonHint": "Baru dari tangkapan layar, rekaman, atau transkrip",
+			"title": "Permintaan baru dari tangkapan",
+			"description": "Tambahkan tangkapan layar, rekaman layar, atau catatan rapat. AI mengusulkan permintaan; tidak ada yang dibuat sampai Anda mengonfirmasi.",
+			"tabs": {
+				"screenshot": "Tangkapan layar",
+				"recording": "Rekaman",
+				"transcript": "Transkrip"
+			},
+			"dropzone": "Tempel, letakkan, atau pilih tangkapan layar",
+			"dropzoneHint": "PNG, JPEG, atau WebP, maksimal {{count}} gambar. Data lokasi dan kamera dihapus.",
+			"chooseRecording": "Pilih rekaman layar",
+			"recordingHint": "Hanya {{count}} bingkai diam yang dikirim ke AI. Videonya tetap di perangkat Anda.",
+			"notes": "Catatan (opsional)",
+			"notesPlaceholder": "Apa yang sedang Anda lakukan, dan apa yang salah?",
+			"transcript": "Transkrip atau catatan rapat",
+			"transcriptPlaceholder": "Tempel transkrip atau catatan. Setiap butir tindakan menjadi permintaan tersendiri.",
+			"remove": "Hapus {{name}}",
+			"tooMany": "Maksimal {{count}} gambar per tangkapan.",
+			"mediaErrors": {
+				"type": "Jenis file ini tidak didukung.",
+				"tooLarge": "File ini terlalu besar.",
+				"unreadable": "File ini tidak dapat dibaca."
+			},
+			"preparing": "Menyiapkan gambar…",
+			"analyze": "Usulkan permintaan",
+			"analyzing": "Membaca tangkapan…",
+			"reviewTitle": "Tinjau permintaan yang diusulkan",
+			"reviewDescription": "Edit atau lewati permintaan mana pun. Tidak ada yang dibuat sampai Anda mengonfirmasi.",
+			"empty": "Tidak ada permintaan yang ditemukan dalam tangkapan ini.",
+			"include": "Sertakan permintaan ini",
+			"titleLabel": "Judul",
+			"descriptionLabel": "Deskripsi",
+			"priorityLabel": "Prioritas",
+			"labelsLabel": "Label yang disarankan",
+			"assignTo": "Tugaskan ke {{name}}",
+			"attachNote": "Gambar yang akan dilampirkan: {{count}}",
+			"attachNotAllowed": "Gambar tidak dapat dilampirkan: Anda memerlukan izin untuk mengedit tugas.",
+			"back": "Kembali",
+			"create": "Buat permintaan ({{count}})",
+			"created": "Permintaan dibuat: {{count}}",
+			"extrasFailed": "Beberapa label, penanggung jawab, atau lampiran tidak dapat ditambahkan.",
+			"createError": "Permintaan tidak dapat dibuat.",
+			"draftFromImages": "Buat draf dari gambar",
+			"drafting": "Membuat draf…",
+			"sections": {
+				"steps": "Langkah reproduksi",
+				"expected": "Yang diharapkan",
+				"actual": "Yang terjadi",
+				"environment": "Lingkungan"
+			}
+		},
+		"codingAgent": {
+			"button": "Kirim ke agen koding",
+			"dialogTitle": "Kirim ke agen koding",
+			"dialogDescription": "Margaya membuka issue di repositori dengan brief ini. Tinjau dan sunting sebelum mengirimnya.",
+			"repository": "Repositori",
+			"profile": "Agen koding",
+			"github": "GitHub",
+			"gitea": "Gitea",
+			"notReady": "Integrasi repositori ini belum bisa membuka issue. Periksa di pengaturan integrasi proyek.",
+			"noProfiles": "Tidak ada profil agen koding yang berfungsi dengan repositori ini.",
+			"useAi": "Ringkas dengan AI",
+			"regenerate": "Siapkan lagi",
+			"preparing": "Menyiapkan brief…",
+			"error": "Brief tidak dapat disiapkan.",
+			"titleLabel": "Judul issue",
+			"briefLabel": "Brief",
+			"briefNote": "Nilai yang tampak seperti kata sandi atau kunci dihapus sebelum dikirim. Tidak ada yang digabungkan secara otomatis.",
+			"send": "Kirim",
+			"sending": "Mengirim…",
+			"sent": "Terkirim ke agen koding",
+			"sentNotAssigned": "Issue dibuat, tetapi penerima tugas tidak dapat ditambahkan",
+			"sendError": "Issue tidak dapat dibuat",
+			"openIssue": "Buka issue",
+			"timelineTitle": "Agen koding",
+			"timelineLabel": "Progres agen koding",
+			"sentBy": "Dikirim ke {{profile}} oleh {{name}}",
+			"sentByUnknown": "Dikirim ke {{profile}}",
+			"issueLink": "Issue #{{number}}",
+			"prLink": "Pull request #{{number}}",
+			"pending": "Belum",
+			"steps": {
+				"issue_created": "Issue dibuat",
+				"working": "Agen sedang bekerja",
+				"ready_for_review": "Siap ditinjau",
+				"merged": "Digabungkan",
+				"closed": "Ditutup tanpa digabungkan"
+			},
+			"settings": {
+				"title": "Agen koding",
+				"subtitle": "Templat issue untuk “Kirim ke agen koding”, dikirim melalui GitHub dan Gitea",
+				"sharedNote": "Dipakai bersama oleh semua proyek di ruang kerja ini. Profil hanya menambahkan sebutan atau penerima tugas ke issue; tidak ada kunci AI yang disimpan.",
+				"builtin": "Bawaan",
+				"githubOnly": "Hanya GitHub",
+				"name": "Nama",
+				"namePlaceholder": "mis. Runner build kami",
+				"mention": "Sebutan",
+				"mentionPlaceholder": "@agen, atau teks dengan {task} dan {branch}",
+				"assignee": "Penerima tugas (GitHub)",
+				"assigneePlaceholder": "Login GitHub, mis. Copilot",
+				"enabled": "Aktif",
+				"edit": "Sunting profil",
+				"delete": "Hapus profil",
+				"add": "Tambah profil",
+				"save": "Simpan",
+				"saved": "Profil disimpan",
+				"deleted": "Profil dihapus",
+				"error": "Profil tidak dapat disimpan",
+				"needsTarget": "Tambahkan sebutan atau penerima tugas.",
+				"readOnly": "Hanya orang yang mengelola pengaturan ruang kerja yang dapat mengubah profil."
+			}
+		},
+		"filters": {
+			"button": "Jelaskan filter…",
+			"short": "Jelaskan",
+			"label": "Jelaskan apa yang ingin ditampilkan",
+			"placeholder": "mis. bug saya yang terlambat dan sedang dikerjakan",
+			"apply": "Terapkan",
+			"none": "Tidak dapat diubah menjadi filter. Coba kata lain.",
+			"applied": "Filter diterapkan. Ubah chip untuk menyesuaikannya.",
+			"dropped": "Tidak dipahami: {{words}}",
+			"hint": "AI mengubah kata-kata Anda menjadi filter status, label, orang, siklus, prioritas, dan tanggal."
+		},
+		"budget": {
+			"warningTitle": "{{percent}}% anggaran AI bulan ini sudah terpakai",
+			"reachedTitle": "Anggaran AI bulan ini sudah habis",
+			"amounts": "{{used}} dari {{cap}}.",
+			"warningHint": "Fitur AI berhenti saat batas tercapai. Naikkan batas di bawah jika perlu.",
+			"reachedHint": "Fitur AI dijeda hingga bulan depan atau hingga batas dinaikkan.",
+			"notice": {
+				"title": "Anggaran AI hampir habis",
+				"content": "Ruang kerja ini telah memakai {{percent}}% anggaran AI bulanannya."
+			}
+		},
+		"skills": {
+			"navLabel": "Keterampilan AI",
+			"title": "Keterampilan AI",
+			"subtitle": "Perintah tersimpan untuk dipakai ulang dari \"/\" di obrolan AI.",
+			"listTitle": "Keterampilan",
+			"new": "Keterampilan baru",
+			"newTitle": "Keterampilan baru",
+			"editTitle": "Edit keterampilan",
+			"dialogHint": "Perintah ditambahkan ke pertanyaan setiap kali keterampilan dipakai.",
+			"name": "Nama",
+			"namePlaceholder": "catatan-rilis",
+			"description": "Deskripsi",
+			"prompt": "Perintah",
+			"promptPlaceholder": "Tulis catatan rilis untuk tugas yang selesai di siklus ini, dikelompokkan per fitur.",
+			"shareLabel": "Bagikan ke ruang kerja",
+			"shareHint": "Semua orang yang memakai AI di sini dapat menggunakannya. Nonaktif: hanya Anda.",
+			"shared": "Dibagikan",
+			"personal": "Hanya Anda",
+			"save": "Simpan keterampilan",
+			"saved": "Keterampilan disimpan",
+			"saveError": "Keterampilan tidak dapat disimpan",
+			"deleted": "Keterampilan dihapus",
+			"edit": "Edit {{name}}",
+			"delete": "Hapus {{name}}",
+			"deleteConfirm": "Hapus {{name}}?",
+			"empty": "Belum ada keterampilan. Simpan perintah yang sering Anda pakai.",
+			"loadError": "Keterampilan tidak dapat dimuat.",
+			"noAccess": "Anda memerlukan izin untuk memakai AI di ruang kerja ini."
+		},
+		"memory": {
+			"navLabel": "Memori AI",
+			"title": "Memori AI",
+			"subtitle": "Fakta singkat yang diingat AI saat menjawab, misalnya \"Hari rilis kami adalah Kamis\".",
+			"scopes": {
+				"workspace": "Ruang kerja",
+				"project": "Proyek",
+				"user": "Pribadi"
+			},
+			"scopeHints": {
+				"workspace": "Dipakai untuk semua orang di ruang kerja. Admin AI yang mengeditnya.",
+				"project": "Dipakai dalam satu proyek. Admin AI yang mengeditnya.",
+				"user": "Hanya dipakai untuk Anda dan hanya dapat dilihat oleh Anda."
+			},
+			"project": "Proyek",
+			"newNote": "Catatan baru",
+			"placeholder": "Hari rilis kami adalah Kamis.",
+			"add": "Tambah catatan",
+			"save": "Simpan catatan",
+			"editNote": "Edit catatan",
+			"deleteNote": "Hapus catatan",
+			"saved": "Catatan disimpan",
+			"deleted": "Catatan dihapus",
+			"saveError": "Catatan tidak dapat disimpan",
+			"empty": "Belum ada catatan.",
+			"loadError": "Catatan tidak dapat dimuat.",
+			"adminsOnly": "Hanya admin AI yang dapat menambahkan catatan di sini.",
+			"noAccess": "Anda memerlukan izin untuk memakai AI di ruang kerja ini."
+		}
+	},
+	"insight": {
+		"close": "Tutup",
+		"retry": "Coba lagi",
+		"stop": "Hentikan",
+		"writing": "Sedang menulis…",
+		"days_other": "{{count}} hari",
+		"estimate": {
+			"usually": "Tugas serupa biasanya {{value}}",
+			"took_other": "{{count}} tugas serupa memakan {{min}}–{{max}} hari (median {{median}})",
+			"basedOn_other": "Berdasarkan {{count}} tugas serupa yang selesai",
+			"use": "Gunakan {{value}}",
+			"why": "Mengapa?",
+			"similar": "Tugas serupa"
+		},
+		"calibration": {
+			"title": "Kalibrasi estimasi",
+			"description": "Berapa lama tugas tiap ukuran benar-benar berlangsung, dari mulai pertama hingga selesai, selama {{days}} hari terakhir.",
+			"empty": "Belum ada tugas selesai dan berestimasi dengan waktu mulai yang tercatat.",
+			"estimate": "Estimasi",
+			"tasks": "Tugas",
+			"actual": "Waktu aktual",
+			"range": "median {{median}} hr ({{low}}–{{high}})",
+			"ordered": "Estimasi yang lebih besar memakan waktu lebih lama, sebagaimana mestinya.",
+			"notOrdered": "Estimasi yang lebih besar tidak selalu lebih lama: layak ditinjau cara tim mengukur pekerjaan.",
+			"fewSamples": "Perlu lebih banyak tugas selesai untuk membandingkan ukuran.",
+			"unmeasured_other": "{{count}} tugas tanpa waktu mulai tercatat tidak dihitung."
+		},
+		"capacity": {
+			"meter": "Pekerjaan yang direncanakan dibanding siklus biasa",
+			"within": "Direncanakan {{percent}}% dari siklus biasa",
+			"over": "Melebihi kapasitas: direncanakan {{percent}}% dari siklus biasa",
+			"noDates": "Atur tanggal siklus untuk memeriksa kapasitasnya.",
+			"noHistory": "Kapasitas muncul setelah tim menyelesaikan pekerjaan di siklus sebelumnya.",
+			"details": "Detail kapasitas",
+			"compare": "{{load}} direncanakan; siklus biasa memuat {{typical}} (rentang {{low}}–{{high}}).",
+			"tasks_other": "{{count}} tugas",
+			"points_other": "{{count}} poin",
+			"basisCycles_other": "Berdasarkan yang diselesaikan tim dalam {{count}} siklus terakhir yang berakhir, disesuaikan dengan panjang siklus ini.",
+			"basisThroughput": "Berdasarkan tugas yang diselesaikan proyek pada setiap rentang sepanjang siklus ini selama 8 minggu terakhir.",
+			"deferTitle": "Bisa dipindah ke siklus berikutnya",
+			"blocks_other": "memblokir {{count}}",
+			"membersTitle": "Beban per orang",
+			"memberLoad": "{{load}} · biasanya {{typical}}",
+			"membersNote": "Beban terhadap laju biasa tiap orang, untuk menyeimbangkan pekerjaan. Bukan ukuran kinerja.",
+			"unassigned": "Belum ditugaskan"
+		},
+		"retro": {
+			"button": "Retrospeksi",
+			"buttonLabel": "Siapkan retrospeksi",
+			"title": "Retrospeksi",
+			"factsTitle": "Yang terjadi",
+			"factsSoFar": "Yang terjadi sejauh ini",
+			"factsNote": "Fakta ini berasal dari catatan Margaya, bukan dari AI. Fakta ini menggambarkan pekerjaan tim, bukan perorangan.",
+			"error": "Tidak dapat memuat fakta siklus ini.",
+			"aiIntro": "Biarkan AI menulis narasi singkat dan pertanyaan diskusi dari fakta ini.",
+			"write": "Tulis narasi",
+			"rewrite": "Tulis ulang",
+			"edit": "Edit",
+			"preview": "Pratinjau",
+			"editLabel": "Narasi retrospeksi",
+			"saveAsPage": "Simpan sebagai halaman",
+			"saveWithNarrative": "Menyimpan fakta, narasi, dan bagian untuk tim.",
+			"saveFactsOnly": "Menyimpan fakta dan bagian yang akan diisi tim.",
+			"saved": "Retrospeksi disimpan sebagai halaman",
+			"saveError": "Tidak dapat menyimpan halaman.",
+			"openPage": "Buka halaman",
+			"pageTitle": "Retrospeksi: {{name}}",
+			"more_other": "dan {{count}} lainnya",
+			"facts": {
+				"sayDo_other": "{{done}} dari {{count}} tugas yang disepakati selesai ({{percent}}%)",
+				"sayDoNone": "Tidak ada yang disepakati di awal",
+				"scope": "Perubahan cakupan: {{added}} ditambahkan, {{removed}} dihapus selama siklus",
+				"carry": "Dibawa: {{carried}} dipindah ke siklus lain, {{open}} masih terbuka",
+				"reopened_other": "{{count}} tugas dibuka kembali setelah selesai",
+				"points": "Poin estimasi: {{completed}} dari {{committed}} selesai",
+				"cycleTime": "Waktu siklus: median {{median}} hari",
+				"cycleTimeOutliers_other": "Waktu siklus: median {{median}} hari; {{count}} tugas memakan lebih dari {{threshold}} hari",
+				"cycleTimeNone": "Waktu siklus: tidak terukur",
+				"blocked_other": "{{count}} tugas diblokir oleh tugas lain",
+				"forecastNone": "Prakiraan: tidak ada yang disimpan untuk siklus ini",
+				"forecastOpen": "Prakiraan: 85% kemungkinan selesai sebelum {{date}}",
+				"forecastMet": "Prakiraan: 85% kemungkinan selesai sebelum {{date}}, dan terbukti",
+				"forecastMissed": "Prakiraan: 85% kemungkinan selesai sebelum {{date}}, dan tidak terbukti"
+			},
+			"lists": {
+				"added": "Ditambahkan selama siklus",
+				"carriedOver": "Dibawa ke siklus lain",
+				"leftOpen": "Masih terbuka",
+				"outliers": "Jauh lebih lama dari biasanya",
+				"blocked": "Diblokir"
+			},
+			"page": {
+				"facts": "Fakta",
+				"wentWell": "Yang berjalan baik",
+				"improve": "Yang perlu diperbaiki",
+				"actions": "Tindakan"
+			}
+		},
+		"myBrief": {
+			"title": "Ringkasan saya",
+			"empty": "Tidak ada yang perlu Anda tangani hari ini.",
+			"error": "Tidak dapat memuat ringkasan Anda.",
+			"summarize": "Ringkas",
+			"overdue": "Terlambat · {{total}}",
+			"dueToday": "Jatuh tempo hari ini · {{total}}",
+			"blocked": "Diblokir · {{total}}",
+			"mentions": "Sebutan · {{total}}",
+			"following": "Perubahan pada tugas yang Anda ikuti · {{total}}",
+			"waitingOn": "Menunggu {{keys}}",
+			"hiddenBlockers_other": "{{count}} tugas tersembunyi",
+			"mentionedBy": "oleh {{name}}",
+			"mentioned": "menyebut Anda",
+			"more_other": "dan {{count}} lainnya",
+			"kinds": {
+				"status": "status",
+				"comment": "komentar",
+				"assignee": "penerima tugas",
+				"priority": "prioritas",
+				"due_date": "tenggat",
+				"other": "pembaruan lain"
+			},
+			"emailTitle": "Tambahkan Ringkasan saya ke email ringkasan",
+			"emailDescription": "Email ringkasan juga mencantumkan tugas Anda yang diblokir dan perubahan pada tugas yang Anda ikuti. Memerlukan ringkasan harian atau mingguan.",
+			"emailError": "Tidak dapat menyimpan pengaturan ini."
+		}
 	}
 }

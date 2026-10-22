@@ -11,7 +11,8 @@
 			"remove": "移除",
 			"reset": "重置",
 			"filter": "筛选",
-			"clearAllFilters": "清除全部筛选"
+			"clearAllFilters": "清除全部筛选",
+			"undo": "撤销"
 		},
 		"a11y": {
 			"toggleSidebar": "切换侧边栏"
@@ -98,7 +99,15 @@
 				"createButton": "创建项目",
 				"successToast": "项目创建成功",
 				"errorToast": "项目创建失败",
-				"keyTaken": "此工作区中已存在标识为 {{key}} 的项目"
+				"keyTaken": "此工作区中已存在标识为 {{key}} 的项目",
+				"blankProject": "空白项目",
+				"copyHint": "将复制状态、自定义字段、预估、设置和自动化。成员、集成和公开看板不会被复制。",
+				"includeOpenTasks": "包含未完成的任务",
+				"includeTemplates": "包含任务模板",
+				"openTasksHint": "最多 500 个未完成的任务，连同其子任务、标签和预估。评论和历史记录不会被复制。",
+				"restricted": "受限",
+				"restrictedHint": "只有成员才能看到此项目。你将成为第一位成员；工作区所有者和管理员始终可以看到它。",
+				"startFrom": "起点"
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -714,6 +723,8 @@
 			"themeLight": "浅色",
 			"themeDark": "深色",
 			"themeSystem": "跟随系统",
+			"themeLightContrast": "高对比度浅色",
+			"themeDarkContrast": "高对比度深色",
 			"language": "语言",
 			"languageDescription": "选择你偏好的界面语言",
 			"selectLanguage": "选择语言",
@@ -918,7 +929,8 @@
 				"intake": "收集箱",
 				"analytics": "分析",
 				"page": "页面",
-				"audit_log": "审计日志"
+				"audit_log": "审计日志",
+				"ai": "AI"
 			},
 			"permissions": {
 				"project": {
@@ -1163,6 +1175,16 @@
 					"read": {
 						"description": "查看并导出工作区审计日志：谁更改了成员、角色、密钥、Webhook、集成和设置。",
 						"label": "查看审计日志"
+					}
+				},
+				"ai": {
+					"use": {
+						"label": "使用 AI",
+						"description": "当工作区和项目开启 AI 时，可以使用 AI 功能。"
+					},
+					"manage": {
+						"label": "管理 AI",
+						"description": "可以为工作区开启或关闭 AI，更改其密钥、限额和隐私设置，并查看 AI 用量。"
 					}
 				}
 			},
@@ -1794,6 +1816,67 @@
 			"dropHintAny": "将 JSON 或 CSV 文件拖放到此处",
 			"importAcceptHint": "请上传 Margaya JSON 导出文件或 CSV 文件。",
 			"importStopped": "导入已中止：{{message}}",
+			"external": {
+				"sourceHint": "从其他工具迁移？导入其导出文件，包含状态、标签、人员、日期和子任务。",
+				"sources": {
+					"trello": "Trello (JSON)",
+					"linear": "Linear (CSV)",
+					"asana": "Asana (CSV)"
+				},
+				"title": {
+					"trello": "从 Trello 导入",
+					"linear": "从 Linear 导入",
+					"asana": "从 Asana 导入"
+				},
+				"howToTitle": {
+					"trello": "如何从 Trello 导出",
+					"linear": "如何从 Linear 导出",
+					"asana": "如何从 Asana 导出"
+				},
+				"howTo": {
+					"trello": {
+						"step1": "在看板上打开菜单 → 打印、导出和共享 → 导出为 JSON。",
+						"step2": "将下载的 .json 文件上传到这里。"
+					},
+					"linear": {
+						"step1": "在 Linear 中打开设置 → Import / Export，选择导出 CSV。",
+						"step2": "将 Linear 发送的邮件中的 .csv 文件上传到这里。"
+					},
+					"asana": {
+						"step1": "在 Asana 项目中打开项目菜单 → 导出/打印 → CSV。",
+						"step2": "将下载的 .csv 文件上传到这里。"
+					}
+				},
+				"limits": {
+					"trello": "每个文件最多 10 MB、5,000 张卡片。已归档的卡片不会导入；清单会变成描述中的任务列表；附件保留在 Trello 中。",
+					"linear": "每个文件最多 5 MB、5,000 个问题。已归档的问题不会导入。Linear 的 CSV 不包含评论。",
+					"asana": "每个文件最多 5 MB、5,000 个任务。已完成的任务会进入“已完成”列。Asana 的 CSV 不包含评论。"
+				},
+				"dropHint": {
+					"trello": "将 Trello 的 JSON 导出文件拖放到这里",
+					"linear": "将 Linear 的 CSV 导出文件拖放到这里",
+					"asana": "将 Asana 的 CSV 导出文件拖放到这里"
+				},
+				"wrongType": {
+					"trello": "请选择看板的 .json 导出文件。",
+					"linear": "请选择 Linear 的 .csv 导出文件。",
+					"asana": "请选择 Asana 的 .csv 导出文件。"
+				},
+				"itemCount_other": "{{count}} 个条目",
+				"alreadyImported_other": "{{count}} 个条目之前已导入此项目。",
+				"contents": "{{comments}} 条评论、{{checklists}} 个清单、{{subtasks}} 个子任务、{{links}} 个关联",
+				"sourceStatus": "状态或列表",
+				"peopleUnmatched_other": "{{count}} 人不是成员（{{names}}），其条目将保持未指派，姓名会记录在描述中。",
+				"mode": "之前导入过的条目",
+				"modeHint": "按导出文件中的 id 匹配。",
+				"importAction_other": "导入 {{count}} 个条目",
+				"importing_other": "正在导入 {{count}} 个条目…",
+				"result": {
+					"skipped_other": "已跳过 {{count}} 个条目（之前已导入）",
+					"failed_other": "{{count}} 个条目导入失败",
+					"unmatched_other": "{{count}} 人不是工作区成员，其条目未指派："
+				}
+			},
 			"unsupportedFile": "请上传 JSON 或 CSV 文件",
 			"jira": {
 				"alreadyImported_other": "有 {{count}} 个问题之前已导入此项目。",
@@ -1938,6 +2021,10 @@
 				"views": {
 					"description": "保存筛选、分组和显示设置，并与团队共享。",
 					"title": "视图"
+				},
+				"ai": {
+					"title": "AI",
+					"description": "为此项目提供摘要、建议及其他 AI 辅助。关闭后，此项目将完全不参与 AI。"
 				}
 			},
 			"loadError": "加载此项目失败",
@@ -2142,7 +2229,25 @@
 				"closeOff": "自动关闭已关闭",
 				"closeOn": "自动关闭已开启",
 				"error": "无法更新自动化",
-				"updated": "自动化已更新"
+				"updated": "自动化已更新",
+				"rolloverOff": "迭代顺延已关闭",
+				"rolloverOn": "迭代顺延已开启",
+				"flowAlertsOn": "已开启工作流提醒",
+				"flowAlertsOff": "已关闭工作流提醒"
+			},
+			"cycleRollover": {
+				"cyclesOff": "请在“功能”中开启“迭代”后使用此功能。",
+				"description": "迭代结束时，将其中未完成的任务移至下一个迭代。项目主管会收到一份摘要。",
+				"last_other": "{{time}}最近移动了 {{count}} 个任务",
+				"never": "尚未移动任何任务",
+				"title": "顺延迭代中未完成的工作"
+			},
+			"flowAlerts": {
+				"title": "工作流异常提醒",
+				"description": "每天将进行中的工作、周期时间和吞吐量与之前 8 周进行一次比较。任何一项超出通常范围时，项目主管会收到通知。",
+				"noLead": "设置项目主管后才能收到这些提醒。",
+				"last": "最近一次提醒：{{time}}",
+				"never": "尚无提醒"
 			}
 		},
 		"workspaceExports": {
@@ -2586,6 +2691,24 @@
 			"noProjectsHint": "请先创建项目，它的设置会显示在这里。",
 			"pickProject": "选择一个项目以查看其设置。"
 		},
+		"projectAccess": {
+			"title": "访问权限",
+			"subtitle": "谁可以查看此项目并在其中工作。",
+			"restrictedLabel": "受限",
+			"restrictedHint": "只有下方的成员以及工作区所有者和管理员可以看到此项目。成员在此处的权限是其工作区角色和项目角色同时允许的范围。",
+			"openHint": "工作区中的每个人都可以按其工作区角色的权限查看此项目。设为受限可将其限制为选定的成员。",
+			"membersLabel": "成员",
+			"membersHint": "项目角色限制每位成员在此处可以执行的操作。",
+			"noMembers": "还没有成员。",
+			"addMember": "添加成员",
+			"removeMember": "移除 {{name}}",
+			"roleFor": "{{name}} 的项目角色",
+			"leadTag": "负责人",
+			"restrictedProject": "受限项目",
+			"toastUpdated": "访问权限已更新",
+			"toastError": "更新访问权限失败",
+			"loadError": "无法加载访问权限设置。请刷新页面后重试。"
+		},
 		"projectPeople": {
 			"defaultAssigneeHint": "创建任务时自动填入，也会指派给已接受但没有负责人的请求。",
 			"defaultAssigneeLabel": "默认负责人",
@@ -2643,7 +2766,7 @@
 			"title": "安全"
 		},
 		"timezone": {
-			"accountHint": "用于提醒和邮件摘要。应用中的时间始终按浏览器时区显示。",
+			"accountHint": "用于提醒、邮件摘要，以及任务筛选和分析计算日期的依据。屏幕上的时间按浏览器时区显示。",
 			"accountLabel": "时区",
 			"automatic": "自动（浏览器：{{zone}}）",
 			"loadError": "无法加载时区，请刷新页面重试。",
@@ -2656,8 +2779,52 @@
 			"workspaceHint": "用于确定迭代、自动化和分析中的“今天”。现有工作区默认使用 UTC。",
 			"workspaceLabel": "时区"
 		},
+		"workspaceDeletion": {
+			"pendingTitle": "已计划删除",
+			"pendingDescription": "此工作区将于 {{date}} 删除。在此之前它为只读，但你仍可打开和导出其内容。",
+			"cancel": "取消删除",
+			"confirm": "计划删除",
+			"rowDescription": "工作区会立即变为只读，并将于 {{date}} 永久删除。在此之前你可以取消。",
+			"dialogTitle": "删除 {{name}}？",
+			"dialogDescription": "{{name}} 会立即对所有人变为只读，其 API 密钥和 Webhook 将停止工作。成员会收到邮件通知。除非你提前取消，否则它将于 {{date}} 连同所有项目、任务和页面一起被永久删除。",
+			"toastScheduled": "已计划于 {{date}} 删除",
+			"toastCancelled": "已取消删除。工作区可以再次编辑。",
+			"toastError": "无法更改删除计划，请重试。",
+			"bannerTitle": "此工作区将于 {{date}} 删除",
+			"bannerDescription": "在此之前它为只读。你仍可打开和导出其内容。",
+			"admin": {
+				"title": "待删除",
+				"description": "所有者已计划删除的工作区。在指定日期前为只读，之后将被永久删除。",
+				"dueAt": "删除日期",
+				"badge": "将于 {{date}} 删除"
+			},
+			"instanceAudit": {
+				"scheduled": "计划删除了一个工作区",
+				"cancelled": "取消了一个工作区的删除",
+				"purged": "在宽限期结束后删除了一个工作区"
+			}
+		},
+		"workspacePublicPages": {
+			"label": "公开页面",
+			"description": "允许可共享项目的成员通过只读公开链接发布页面。关闭后将撤销所有已发布的链接。",
+			"toastOn": "已开启公开页面",
+			"toastOff": "已关闭公开页面，已发布的链接已被撤销。",
+			"toastError": "无法更改设置，请重试。"
+		},
+		"workspaceA2a": {
+			"label": "智能体互联（A2A）",
+			"description": "允许外部 AI 智能体通过 A2A 协议向此工作区移交工作。它们使用某位成员的 API 密钥或 OAuth 登录，并以该成员的权限执行操作，所有操作都会记录在审计日志中。",
+			"toastOn": "已开启 A2A",
+			"toastOff": "已关闭 A2A。外部智能体无法再向此工作区移交工作。",
+			"toastError": "无法更改设置，请重试。"
+		},
 		"workspaceAuditLog": {
 			"actions": {
+				"workspaceDeletionScheduled": "计划删除了工作区",
+				"workspaceDeletionCancelled": "取消了工作区的删除",
+				"workspacePublicPagesChanged": "开启或关闭了公开页面",
+				"pagePublished": "通过公开链接发布了页面",
+				"pageUnpublished": "撤销了页面的公开链接",
 				"apiKeyCreated": "创建了 API 密钥",
 				"apiKeyRevoked": "撤销了 API 密钥",
 				"exportCreated": "发起了导出",
@@ -2668,6 +2835,7 @@
 				"integrationUpdated": "更改了集成",
 				"memberInvitationAccepted": "接受了邀请",
 				"memberInvitationDeclined": "拒绝了邀请",
+				"memberInvitationRoleChanged": "更改了待处理邀请的角色",
 				"memberInvitationRevoked": "撤销了邀请",
 				"memberInvited": "邀请了成员加入工作区",
 				"memberLeft": "退出了工作区",
@@ -2697,13 +2865,41 @@
 				"webhookUpdated": "更改了 Webhook",
 				"workspaceCreated": "创建了工作区",
 				"workspaceOwnershipTransferred": "转移了工作区所有权",
-				"workspaceUpdated": "更改了工作区设置"
+				"workspaceUpdated": "更改了工作区设置",
+				"aiSettingsUpdated": "更改了 AI 设置",
+				"aiTriageLabelsApplied": "自动添加了建议的标签",
+				"agentCreated": "创建了智能体",
+				"agentUpdated": "更改了智能体",
+				"agentDeleted": "删除了智能体",
+				"agentChangeApplied": "代表他人做出了更改",
+				"agentChangeApproved": "批准了智能体的更改",
+				"agentChangeRejected": "拒绝了智能体的更改",
+				"agentChangeReverted": "撤销了智能体的更改",
+				"codingAgentHandoffSent": "将任务发送给编码智能体",
+				"codingAgentProfileCreated": "创建了编码智能体配置",
+				"codingAgentProfileUpdated": "修改了编码智能体配置",
+				"codingAgentProfileDeleted": "删除了编码智能体配置",
+				"a2aTaskReceived": "已接收外部智能体移交的工作（A2A）",
+				"automationRuleCreated": "创建了自动化",
+				"automationRuleUpdated": "更改了自动化",
+				"automationRuleDeleted": "删除了自动化",
+				"automationRuleRan": "在任务上运行了自动化",
+				"agentScheduleCreated": "为智能体创建了计划",
+				"agentScheduleUpdated": "修改了智能体计划",
+				"agentScheduleDeleted": "删除了智能体计划",
+				"agentScheduleDisabled": "关闭了智能体计划",
+				"aiConnectorCreated": "添加了 MCP 连接器",
+				"aiConnectorUpdated": "修改了 MCP 连接器",
+				"aiConnectorDeleted": "删除了 MCP 连接器"
 			},
 			"actor": {
 				"apiKey": "API 密钥",
 				"deletedUser": "已删除的用户",
 				"system": "系统",
-				"unknownKey": "已删除的 API 密钥"
+				"unknownKey": "已删除的 API 密钥",
+				"agent": "智能体",
+				"agentFor": "智能体，代表 {{name}}",
+				"automation": "自动化"
 			},
 			"categories": {
 				"apiKey": "API 密钥",
@@ -2716,7 +2912,11 @@
 				"role": "角色",
 				"trash": "回收站",
 				"webhook": "Webhook",
-				"workspace": "工作区设置"
+				"workspace": "工作区设置",
+				"agent": "智能体",
+				"codingAgent": "编码智能体",
+				"a2a": "外部智能体（A2A）",
+				"automation": "自动化"
 			},
 			"columns": {
 				"action": "操作",
@@ -2765,6 +2965,7 @@
 			"subtitle": "记录谁在此工作区中更改了成员、角色、API 密钥、Webhook、集成、设置和项目。记录保留 {{days}} 天。",
 			"subtitleForever": "记录谁在此工作区中更改了成员、角色、API 密钥、Webhook、集成、设置和项目。记录会一直保留，直到工作区被删除。",
 			"targets": {
+				"page": "页面",
 				"apiKey": "API 密钥",
 				"export": "导出",
 				"integration": "集成",
@@ -2773,7 +2974,11 @@
 				"role": "角色",
 				"user": "成员",
 				"webhook": "Webhook",
-				"workspace": "工作区"
+				"workspace": "工作区",
+				"agent": "智能体",
+				"agentRun": "智能体运行",
+				"task": "任务",
+				"codingAgentProfile": "编码智能体配置"
 			},
 			"title": "审计日志"
 		},
@@ -2819,9 +3024,189 @@
 			"workspaceNav": "最近删除",
 			"workspaceSubtitle": "已删除的项目及其任务会保留在这里，直到被永久删除。",
 			"workspaceTitle": "最近删除的项目"
+		},
+		"automationRules": {
+			"title": "自动化",
+			"description": "当任务发生变化时，检查条件并执行操作。规则会以“自动化”的身份自行运行，无需 AI。",
+			"empty": "还没有自动化。可以从模板开始，或自己创建规则。",
+			"loadError": "无法加载自动化。",
+			"newRule": "新建规则",
+			"templatesTitle": "模板",
+			"saved": "自动化已保存",
+			"saveError": "无法保存自动化",
+			"deleted": "自动化已删除",
+			"confirmDelete": "删除",
+			"edit": "编辑 {{name}}",
+			"delete": "删除 {{name}}",
+			"summary_one": "当{{trigger}}时 · {{count}} 个操作",
+			"summary_other": "当{{trigger}}时 · {{count}} 个操作",
+			"lastRun_one": "已运行 {{count}} 次，最近一次：{{time}}",
+			"lastRun_other": "已运行 {{count}} 次，最近一次：{{time}}",
+			"neverRan": "尚未运行",
+			"templates": {
+				"reviewer": {
+					"name": "移至“审核中”时指派审核人",
+					"description": "选择审核人；任务进入审核时会指派给他们。"
+				},
+				"intakeBugs": {
+					"name": "为收集箱中的缺陷添加标签",
+					"description": "已接受的请求中提到缺陷或错误时，会被添加缺陷标签。"
+				},
+				"overdue": {
+					"name": "升级逾期任务",
+					"description": "截止日期已过时，提高优先级并通知负责人。"
+				}
+			},
+			"triggers": {
+				"task_created": "创建任务",
+				"status_changed": "状态变更",
+				"assignee_added": "指派了负责人",
+				"assignee_removed": "取消了负责人",
+				"label_added": "添加标签",
+				"label_removed": "移除标签",
+				"priority_changed": "优先级变更",
+				"due_date_set": "设置截止日期",
+				"due_date_passed": "截止日期已过",
+				"comment_added": "添加评论",
+				"moved_to_cycle": "任务移入迭代",
+				"moved_to_module": "任务添加到模块"
+			},
+			"conditions": {
+				"status": "状态",
+				"labels": "标签",
+				"priority": "优先级",
+				"assignee": "负责人",
+				"due_date": "截止日期",
+				"estimate": "预估",
+				"title": "标题",
+				"custom_field": "自定义字段"
+			},
+			"ops": {
+				"is": "是",
+				"is_not": "不是",
+				"contains": "包含",
+				"not_contains": "不包含",
+				"empty": "为空",
+				"not_empty": "不为空",
+				"set": "已设置",
+				"not_set": "未设置",
+				"gte": "至少为",
+				"lte": "至多为",
+				"equals": "等于",
+				"not_equals": "不等于"
+			},
+			"actions": {
+				"set_status": "设置状态",
+				"assign": "指派",
+				"unassign": "取消指派",
+				"add_label": "添加标签",
+				"remove_label": "移除标签",
+				"set_priority": "设置优先级",
+				"set_due_date": "设置截止日期",
+				"add_comment": "添加评论",
+				"move_to_cycle": "移至迭代",
+				"move_to_module": "添加到模块",
+				"create_subtask": "创建子任务",
+				"notify": "通知",
+				"run_agent": "运行智能体"
+			},
+			"roles": {
+				"assignees": "负责人",
+				"creator": "创建者",
+				"lead": "项目主管"
+			},
+			"outcomes": {
+				"success": "已完成",
+				"partial": "部分完成",
+				"failed": "失败",
+				"skipped": "已跳过"
+			},
+			"errors": {
+				"LOOP_DEPTH": "已停止：连续相互触发的规则过多。",
+				"RATE_LIMITED": "已停止：此任务一分钟内运行的自动化过多。",
+				"AGENT_UNAVAILABLE": "运行智能体：智能体已关闭或已被删除。",
+				"NO_RULE_OWNER": "运行智能体：此规则已无所有者，请重新保存。",
+				"AI_DISABLED": "运行智能体：此项目已关闭 AI。"
+			},
+			"history": {
+				"title": "运行历史",
+				"empty": "暂无运行记录。",
+				"error": "无法加载运行历史。",
+				"failedActions": "失败：{{actions}}"
+			},
+			"editor": {
+				"name": "规则名称",
+				"namePlaceholder": "为此规则命名",
+				"when": "当",
+				"if": "如果",
+				"then": "则",
+				"match": "匹配",
+				"matchAll": "满足以下全部",
+				"matchAny": "满足以下任一",
+				"always": "每次",
+				"addCondition": "添加条件",
+				"addGroup": "添加分组",
+				"addAction": "添加操作",
+				"remove": "移除",
+				"save": "保存规则",
+				"cancel": "取消",
+				"choose": "选择…",
+				"add": "添加…",
+				"removeItem": "移除 {{name}}",
+				"any": "任意",
+				"from": "从",
+				"to": "到",
+				"fromIntake": "仅限从收集箱接受的请求",
+				"people": "人员",
+				"labels": "标签",
+				"priorities": "优先级",
+				"cycles": "迭代",
+				"modules": "模块",
+				"field": "字段",
+				"operator": "比较方式",
+				"points": "点数",
+				"value": "值",
+				"column": "状态",
+				"everyone": "所有人",
+				"label": "标签",
+				"priority": "优先级",
+				"daysFromRun": "天（自规则运行起）",
+				"comment": "评论",
+				"subtaskTitle": "子任务标题",
+				"cycle": "迭代",
+				"module": "模块",
+				"roles": "角色",
+				"message": "消息（可选）",
+				"variables": "变量：",
+				"agent": "智能体",
+				"agentPrompt": "智能体应该做什么？",
+				"agentPromptPlaceholder": "例如：对此任务进行分诊并建议优先级。",
+				"agentHint": "智能体代表保存此规则的人行事，权限不超过此人。智能体所做的更改永远不会触发它。"
+			}
 		}
 	},
 	"navigation": {
+		"customize": {
+			"open": "自定义侧边栏",
+			"title": "自定义侧边栏",
+			"description": "选择侧边栏显示哪些内容以及顺序。这些更改只有你能看到，并在你的所有设备上生效。",
+			"settingsDescription": "重新排序或隐藏主导航和项目面板中的分区。",
+			"rail": "主导航",
+			"projectsPanel": "项目面板",
+			"sections": {
+				"views": "任务列表和视图",
+				"favorites": "收藏",
+				"projects": "项目"
+			},
+			"show": "显示{{name}}",
+			"alwaysShown": "{{name}}始终显示",
+			"moveUp": "上移{{name}}",
+			"moveDown": "下移{{name}}",
+			"moved": "已将{{name}}移到第 {{position}} 位，共 {{total}} 项",
+			"reset": "恢复默认",
+			"resetDone": "侧边栏已恢复默认",
+			"done": "完成"
+		},
 		"commandPalette": {
 			"suggestions": "建议",
 			"commands": "命令",
@@ -2834,6 +3219,8 @@
 			"lightTheme": "浅色主题",
 			"darkTheme": "深色主题",
 			"systemTheme": "跟随系统主题",
+			"lightContrastTheme": "高对比度浅色主题",
+			"darkContrastTheme": "高对比度深色主题",
 			"keyboardShortcuts": "键盘快捷键",
 			"inputPlaceholder": "搜索应用和命令…",
 			"empty": "未找到结果。",
@@ -3148,6 +3535,21 @@
 			"page_mention": {
 				"content": "{{mentionerName}} 在以下页面中提到了你：{{pageTitle}}",
 				"title": "{{mentionerName}} 提到了你"
+			},
+			"cycle_rollover": {
+				"content_other": "{{count}} 个未完成的任务已移至 {{targetCycleName}}",
+				"contentNoNext_other": "{{count}} 个未完成的任务仍留在 {{cycleName}}：没有下一个迭代",
+				"title": "{{cycleName}} 已结束"
+			},
+			"flow_anomaly": {
+				"title": "{{projectName}} 的工作流异常",
+				"throughput_low": "本周吞吐量降至 {{value}} 个任务（通常约为 {{baseline}}）",
+				"wip_high": "进行中的工作增至 {{value}} 个任务（通常约为 {{baseline}}）",
+				"cycle_time_high": "周期时间增至 {{value}} 天（通常约为 {{baseline}}）"
+			},
+			"automation_notice": {
+				"title": "自动化：{{ruleName}}",
+				"content": "{{taskKey}} {{taskTitle}}"
 			}
 		},
 		"inbox": {
@@ -3289,6 +3691,13 @@
 				"open": "打开任务",
 				"read": "标记为已读或未读",
 				"snooze": "稍后提醒"
+			},
+			"digest": {
+				"button": "总结未读",
+				"title": "未读摘要",
+				"regenerate": "重新总结",
+				"close": "关闭摘要",
+				"generating": "正在总结…"
 			}
 		}
 	},
@@ -3494,7 +3903,9 @@
 		"automation": {
 			"actor": "自动化",
 			"archived_other": "因 {{count}} 个月没有更新而归档了此任务",
-			"closed_other": "因 {{count}} 个月没有更新而关闭了此任务，并将其移至 {{to}}"
+			"closed_other": "因 {{count}} 个月没有更新而关闭了此任务，并将其移至 {{to}}",
+			"rolledOver": "在迭代结束时将此任务从 {{from}} 移至 {{to}}",
+			"byRule": "通过 {{name}}"
 		},
 		"commentVisibility": {
 			"badgeExternal": "外部用户",
@@ -3533,10 +3944,64 @@
 			"updates": "更新"
 		},
 		"importedFromJira": "从 Jira {{key}} 导入了此任务",
+		"importedFromSource": "从 {{source}} {{key}} 导入了此任务",
 		"movedToTrash": "将此任务移至回收站",
 		"restoredFromTrash": "从回收站恢复了此任务"
 	},
 	"tasks": {
+		"recurrence": {
+			"label": "重复",
+			"none": "不重复",
+			"title": "重复此任务",
+			"indicator": "重复",
+			"frequency": {
+				"label": "频率",
+				"daily": "每天",
+				"weekly": "每周",
+				"monthly": "每月",
+				"yearly": "每年"
+			},
+			"interval": "间隔",
+			"weekdays": "重复日",
+			"monthDay": "每月的日期",
+			"trigger": {
+				"label": "何时创建下一个",
+				"completion": "此任务完成时",
+				"schedule": "到达日期时，即使此任务仍未完成"
+			},
+			"ends": {
+				"label": "结束",
+				"never": "永不",
+				"onDate": "于",
+				"endDate": "结束日期",
+				"after": "次数",
+				"count": "重复次数"
+			},
+			"summary": {
+				"daily_other": "每 {{count}} 天",
+				"weekly_other": "每 {{count}} 周的{{days}}",
+				"monthly_other": "每 {{count}} 个月的 {{day}} 日",
+				"yearly_other": "每 {{count}} 年的{{date}}",
+				"until": "{{summary}}，直到 {{date}}",
+				"times_other": "{{summary}}，共 {{count}} 次"
+			},
+			"next": "下一次：{{date}}",
+			"ended": "不再重复",
+			"save": "保存",
+			"remove": "停止重复",
+			"saved": "重复设置已保存",
+			"removed": "此任务不再重复",
+			"saveError": "无法保存重复设置",
+			"activity": {
+				"set": "将此任务设为重复：{{summary}}",
+				"updated": "更改了重复设置：{{summary}}",
+				"removed": "停止了此任务的重复",
+				"recurredFrom": "将此任务创建为 <task>{{task}}</task> 的下一次重复",
+				"recurredFromScheduled": "按计划创建为 <task>{{task}}</task> 的下一次重复",
+				"recurredTo": "完成了此任务，并创建了下一次重复 <task>{{task}}</task>",
+				"recurredToScheduled": "已按计划创建下一次重复：<task>{{task}}</task>"
+			}
+		},
 		"title": "任务",
 		"status": {
 			"label": "状态",
@@ -3920,7 +4385,8 @@
 			"rescheduleError": "重新安排任务失败",
 			"showWeekends": "显示周末",
 			"viewMode": "日历周期",
-			"week": "周"
+			"week": "周",
+			"overdue": "已逾期"
 		},
 		"gantt": {
 			"pageTitle": "{{name}} – 甘特图",
@@ -3979,7 +4445,9 @@
 		},
 		"kanban": {
 			"addTask": "添加任务",
-			"stages": "列"
+			"stages": "列",
+			"emptyAction": "添加任务",
+			"emptyTitle": "还没有任务"
 		},
 		"pr": {
 			"merged": "已合并",
@@ -4050,6 +4518,20 @@
 			"searchActions": "搜索操作…",
 			"noActionsFound": "未找到操作。",
 			"changeStatus": "更改状态",
+			"removeLabel": "移除标签",
+			"removeLabelSuccess": "已从 {{count}} 个任务移除标签",
+			"removeLabelError": "移除标签失败",
+			"unarchive": "从归档中恢复",
+			"unarchiveSuccess": "已恢复 {{count}} 个任务",
+			"unarchiveNone": "所选任务中没有已归档的任务",
+			"unarchiveError": "恢复任务失败",
+			"setDates": "日期",
+			"dateField": "要设置的日期",
+			"startDate": "开始日期",
+			"dueDate": "截止日期",
+			"clearStartDate": "清除开始日期",
+			"clearDueDate": "清除截止日期",
+			"updateStartDateError": "更新开始日期失败。开始日期不能晚于任务的截止日期。",
 			"addAssignee": "添加负责人",
 			"addAssigneeSuccess_other": "已将 {{name}} 添加到 {{count}} 个任务",
 			"assigneesError": "更新负责人失败",
@@ -4067,7 +4549,19 @@
 				"addRowBefore": "在上方插入行",
 				"addRowAfter": "在下方插入行",
 				"deleteRow": "删除行",
-				"deleteTable": "删除表格"
+				"deleteTable": "删除表格",
+				"moveRowUp": "上移行",
+				"moveRowDown": "下移行",
+				"moveColumnLeft": "左移列",
+				"moveColumnRight": "右移列",
+				"toggleHeaderRow": "标题行",
+				"fullWidth": "全宽",
+				"dragRow": "第 {{index}} 行",
+				"dragColumn": "第 {{index}} 列",
+				"dragRowHint": "拖动以移动该行，或使用方向键",
+				"dragColumnHint": "拖动以移动该列，或使用方向键",
+				"insertRowHere": "在此插入一行",
+				"insertColumnHere": "在此插入一列"
 			}
 		},
 		"descriptionSearchLoading": "正在搜索完整描述…",
@@ -4126,11 +4620,11 @@
 			},
 			"label": "预估",
 			"none": "无预估",
-			"pointsValue": "{{value}} 点",
+			"pointsValue_other": "{{value}} 点",
 			"setAria": "设置预估",
 			"totals": {
 				"estimated": "{{total}} 个任务中已有 {{estimated}} 个设置预估",
-				"points": "{{completed}} / {{total}} 点",
+				"points_other": "{{completed}} / {{total}} 点",
 				"time": "{{completed}} / {{total}}"
 			},
 			"updateError": "更新预估失败"
@@ -4248,6 +4742,12 @@
 			},
 			"url": "URL",
 			"urlPlaceholder": "https://example.com"
+		},
+		"create": {
+			"similarTitle": "相似的未完成任务",
+			"similarDismiss": "隐藏相似任务",
+			"similarOpen": "打开",
+			"similarOpenLabel": "在新标签页中打开 {{key}} {{title}}"
 		},
 		"parent": {
 			"add": "添加父任务",
@@ -4514,6 +5014,7 @@
 				"cycle": "迭代",
 				"estimate": "预估",
 				"modules": "模块",
+				"parent": "父任务",
 				"status": "状态"
 			},
 			"edited": "{{time}}编辑",
@@ -4572,6 +5073,8 @@
 			"hint": "输入标题。@成员、#标签、!优先级，以及 fri 或 12 Oct 这样的日期会变成标签块。按 Enter 创建，按 Ctrl Enter 打开完整编辑器。",
 			"labelError": "任务已创建，但无法添加标签 {{name}}",
 			"newLabel": "{{name}}（新标签）",
+			"dueOn": "添加截止于 {{date}} 的任务",
+			"notInView": "任务已创建。由于不符合此视图的条件，因此未在此处显示。",
 			"open": "打开",
 			"openComposer": "打开完整编辑器",
 			"openComposerHint": "打开完整编辑器 (Ctrl Enter)",
@@ -4818,7 +5321,18 @@
 			"error": "邀请团队成员失败",
 			"createdTitle": "邀请已创建",
 			"shareLinkDescription": "将此链接分享给 {{email}}，以便对方加入工作区。",
-			"done": "完成"
+			"done": "完成",
+			"emailHint": "多个地址可用逗号、空格或换行分隔。",
+			"roleLabel": "角色",
+			"roleHint": "你可以授予不高于自己的角色。",
+			"sending": "正在发送第 {{current}}/{{total}} 个…",
+			"invalidEmails": "以下邮箱地址无效：{{emails}}",
+			"emailRequired": "请至少输入一个邮箱地址。",
+			"tooManyEmails": "一次最多邀请 {{max}} 人。",
+			"sentSome": "已发送 {{sent}}/{{total}} 个邀请。",
+			"failedTitle": "未发送",
+			"rateLimited": "一次发送的邀请过多。请等待一分钟后再发送其余邀请。",
+			"shareLinksDescription": "将每个链接分享给对应的人，以便对方加入工作区。"
 		},
 		"membersTable": {
 			"emptyTitle": "暂无团队成员",
@@ -4844,7 +5358,9 @@
 			"cancelInviteSuccess": "邀请已取消",
 			"cancelInviteError": "取消邀请失败",
 			"roleUpdateSuccess": "角色已更新",
-			"roleUpdateError": "更新角色失败"
+			"roleUpdateError": "更新角色失败",
+			"ariaInvitationRole": "{{email}} 的角色",
+			"invitationRoleUpdateSuccess": "邀请角色已更新"
 		},
 		"profile": {
 			"emptyActivity": "暂无活动",
@@ -5993,6 +6509,51 @@
 					"shortcuts": "为分派快捷键编写文档"
 				},
 				"title": "我的工作"
+			},
+			"ask": {
+				"title": "问 AI",
+				"model": "工作区模型",
+				"greeting": "你好！你想了解什么？",
+				"intro": "用日常语言询问你的工作区。答案来自你能看到的任务。",
+				"placeholder": "问 AI，输入 @ 添加上下文，输入 / 使用命令",
+				"placeholderBuild": "描述要创建或更改的内容…",
+				"modes": {
+					"label": "模式",
+					"ask": "提问",
+					"build": "构建"
+				},
+				"send": "发送",
+				"you": "你",
+				"question": "当前迭代被什么阻塞了？",
+				"buildPrompt": "把 WEB-5 分配给 Mira",
+				"context": "上下文（{{count}}）",
+				"facts": "项目：1 · 成员：4 · 迭代：1",
+				"earlier": "之前的消息：{{count}}",
+				"thinking": "正在思考… {{seconds}}s",
+				"thought": "已思考 {{seconds}}s",
+				"blockedIntro": "{{cycle}} 中有两个任务被阻塞：",
+				"blockedPageTitles": "{{title}}：正在等待页面清单。",
+				"blockedPricing": "{{title}}：正在等待销售团队提供价格信息。",
+				"unassigned": "{{key}} 还没有负责人。",
+				"summary": "共一项更改。在你确认之前不会有任何变动。",
+				"op": "编辑任务",
+				"action": "将 {{key}} 分配给 {{name}}",
+				"awaiting": "等待回应",
+				"ready": "已就绪的更改：{{count}} 项",
+				"cancel": "取消",
+				"confirm": "确认",
+				"done": "完成",
+				"undo": "撤销",
+				"undone": "已撤销",
+				"cancelled": "已取消，未做任何更改。",
+				"generic": "这个演示只回答它预设的问题。在 Margaya 中，提问模式会根据你的工作区作答，并链接它引用的任务。",
+				"genericBuild": "这个演示只执行它预设的更改。在 Margaya 中，构建模式会把你的话变成由你确认的更改。",
+				"blocked": "已阻塞",
+				"tasks": {
+					"pageTitles": "审查页面标题",
+					"pricing": "更新定价页面",
+					"mobileMenu": "修复移动端菜单"
+				}
 			}
 		},
 		"home": {
@@ -6027,6 +6588,10 @@
 				"singleServer": {
 					"detail": "Redis 可选",
 					"title": "一台服务器就够"
+				},
+				"ai": {
+					"title": "AI 由你做主",
+					"detail": "默认关闭，使用你自己的模型"
 				}
 			},
 			"faq": {
@@ -6063,6 +6628,14 @@
 					"selfHost": {
 						"answer": "可以。在单台服务器上用 Docker Compose 运行，或使用官方 Helm Chart 部署到 Kubernetes。你只需要一个应用容器和一个 PostgreSQL 数据库。安装指南涵盖了环境变量、存储和反向代理的配置。",
 						"question": "我可以自己托管 Margaya 吗？"
+					},
+					"ai": {
+						"question": "Margaya 有 AI 吗？默认开启吗？",
+						"answer": "有，但默认不开启。问 AI、构建模式、写作辅助、分拣建议和 AI 智能体都已内置，但在实例管理员连接模型、且工作区开启 AI 之前，它们都处于关闭状态。AI 提出的每项更改都会先展示给你，并且可以撤销。"
+					},
+					"aiData": {
+						"question": "我可以使用哪些 AI 模型？我的数据会去哪里？",
+						"answer": "可以使用 Claude，或任何你自行运行的 OpenAI 兼容模型，例如 Ollama 或 vLLM。在仅本地模式下，任何数据都不会离开你的网络。Margaya 只发送提问者本来就能看到的内容；除非你开启服务器历史，否则不保留任何提示词或回答；并会记录用量以便核算预算。"
 					}
 				},
 				"title": "常见问题，坦诚作答"
@@ -6075,13 +6648,11 @@
 				"title": "把时间花在工作上，而不是工具上。"
 			},
 			"hero": {
-				"description": "Margaya 将任务、迭代、文档和分派整合在一个快速的工作区里。输入任务、推进进度，然后回到真正的工作中去。",
-				"eyebrow": "开源项目管理",
-				"note": "MIT 许可。可部署在你自己的服务器上，也可以免信用卡试用 Margaya Cloud 14 天。",
-				"primaryCta": "立即开始",
-				"secondaryCta": "自托管",
 				"title": "专注规划工作，",
-				"titleAccent": "告别琐碎杂务。"
+				"titleAccent": "告别琐碎杂务。",
+				"description": "Margaya 将任务、迭代、文档和分派整合在一个快速的工作区里，还有一个可按需开启的 AI 助手，帮你回答问题、做出更改。输入任务、推进进度，然后回到真正的工作中去。",
+				"primaryCta": "立即开始",
+				"secondaryCta": "自托管"
 			},
 			"insight": {
 				"description": "用任务数据生成图表，追踪审计日志，并从回收站恢复任何内容。",
@@ -6129,7 +6700,8 @@
 					"select": "选择当前聚焦的任务",
 					"spreadsheet": "电子表格",
 					"status": "更改状态",
-					"tasks": "按编号或标题查找任务"
+					"tasks": "按编号或标题查找任务",
+					"ask": "打开问 AI"
 				},
 				"modifier": "Ctrl",
 				"shortcutsLabel": "键盘快捷键",
@@ -6162,6 +6734,10 @@
 					"views": {
 						"description": "看板、列表、电子表格、日历和甘特图",
 						"title": "视图"
+					},
+					"ai": {
+						"title": "AI",
+						"description": "问 AI、构建模式、写作辅助和智能体"
 					}
 				},
 				"label": "主导航",
@@ -6172,7 +6748,7 @@
 				"blog": "博客",
 				"compare": "对比",
 				"explore": "探索",
-				"featuresIntro": "五个简短的 Margaya 导览，每个都附带可亲自上手操作的在线演示。",
+				"featuresIntro": "六个简短的 Margaya 导览，每个都附带可亲自上手操作的在线演示。",
 				"newTab": "（在新标签页中打开）"
 			},
 			"ownIt": {
@@ -6333,6 +6909,26 @@
 					"title": "资源"
 				},
 				"selfHosted": "专为自托管打造"
+			},
+			"ai": {
+				"eyebrow": "AI",
+				"title": "提问。让它构建。由你确认。",
+				"description": "问 AI 根据实时任务作答，附带图表和它引用的任务。构建模式把请求变成更改，由你审阅并确认；智能体则像队友一样承接任务。",
+				"agents": {
+					"title": "像队友一样工作的智能体",
+					"description": "把任务分配给智能体，并在智能体工作台中跟进。遇到卡点时它会询问真人，写入前会等待批准，还可以按计划运行。"
+				},
+				"privacy": {
+					"title": "默认私密",
+					"description": "在管理员开启之前，AI 始终处于关闭状态，并且由你决定它在哪里运行。",
+					"items": {
+						"model": "Claude，或通过 Ollama、vLLM 运行你自己的模型",
+						"local": "仅本地模式让数据留在你的网络内",
+						"stored": "除非你选择在服务器上保存历史，否则不会存储任何提示词或回答",
+						"budget": "按月和按日设置预算，并附用量台账",
+						"undo": "构建模式做出的每项更改都可以在一小时内撤销"
+					}
+				}
 			}
 		},
 		"pages": {
@@ -6351,8 +6947,8 @@
 						"title": "基于 OpenAPI 的 REST API"
 					},
 					"cleanup": {
-						"body": "自动归档已关闭的任务、关闭长期无进展的任务，并可预览每条规则将影响哪些任务。",
-						"title": "定时清理"
+						"body": "为日常工作设置“当、如果、则”规则，例如为新任务分配负责人或添加标签，并按计划归档或关闭长期无进展的任务，还可预览每条规则将影响哪些任务。",
+						"title": "自动化规则"
 					},
 					"integrations": {
 						"body": "关联 GitHub 或 Gitea 的拉取请求，向 Slack、Discord、Telegram 或 Mattermost 发送动态，并通过出站 Webhook 将事件推送到任意 URL。",
@@ -6491,6 +7087,43 @@
 					}
 				},
 				"title": "一组任务，任你选择查看方式。"
+			},
+			"ai": {
+				"metaTitle": "AI 助手、构建模式和智能体",
+				"metaDescription": "就你的工作提问并从实时数据中获得答案，让构建模式提出由你确认的更改，借助 AI 写作，并把任务分配给 AI 智能体——使用你自己的模型，AI 默认关闭。",
+				"eyebrow": "AI",
+				"title": "一个懂你工作的助手。",
+				"description": "问 AI、构建模式、写作辅助和智能体，全部包含在开源版本中，运行在你选择的模型上。",
+				"sections": {
+					"ask": {
+						"title": "问 AI",
+						"body": "用日常语言提问，从实时任务中获得答案，并附带数量统计、图表，以及它引用的任务和页面链接。用 @ 提及任务、页面或成员，附加文件，或直接语音输入。"
+					},
+					"build": {
+						"title": "构建模式",
+						"body": "描述一项更改，比如一个包含三个任务的项目，或一个分配给 Mia 的任务。你可以看到它读取了什么、如何推理，编辑拟议的更改并确认，且可在一小时内撤销其中任意一项。"
+					},
+					"writing": {
+						"title": "写作辅助",
+						"body": "改进、缩短、翻译描述或评论，或调整其语气；获取标题建议、总结任务，或在页面中添加 AI 块。"
+					},
+					"triage": {
+						"title": "分拣与简报",
+						"body": "为新工作获取标签和优先级建议，发现重复项，用描述的方式筛选看板，并获取未读收件箱的摘要或某个迭代的简报。"
+					},
+					"agents": {
+						"title": "AI 智能体",
+						"body": "智能体是可以分配任务的成员。遇到卡点时会询问真人，写入前等待批准，可按计划运行，还能使用你连接的其他 MCP 服务器中的工具。"
+					},
+					"privacy": {
+						"title": "你的模型，你的规则",
+						"body": "在管理员开启之前，AI 一直处于关闭状态。使用 Claude 或本地模型，让数据留在你的网络内，设置预算；除非你愿意，否则不保留任何提示词或回答。"
+					}
+				},
+				"cta": {
+					"title": "准备好了再开启 AI。",
+					"description": "阅读 AI 设置指南，或在你自己的工作区中试用问 AI。"
+				}
 			}
 		},
 		"scenes": {
@@ -6601,6 +7234,10 @@
 			"yourWork": {
 				"caption": "“我的工作”汇集了指派给你的、你创建的以及你关注的任务。",
 				"description": "演示：“我的工作”页面。光标依次切换“已指派”“已创建”和“已订阅”标签页，每个标签页都列出跨项目的任务及其状态、优先级和截止日期。"
+			},
+			"ask": {
+				"caption": "先就工作提问，再让构建模式完成更改。由你确认。",
+				"description": "演示：网站看板，问 AI 对话已打开。有人询问是什么阻塞了当前迭代。助手列出它读取的内容，思考两秒后回答：WEB-5 和 WEB-6 被阻塞，且 WEB-5 没有负责人。切换到构建模式后，对方让它把 WEB-5 分配给 Mira。助手提出更改，对方确认，卡片显示“完成”和“撤销”，Mira 的头像出现在 WEB-5 上。"
 			}
 		}
 	},
@@ -6756,7 +7393,10 @@
 			"owner": "所有者",
 			"progress": "进度",
 			"tasks": "任务",
-			"title": "迭代详情"
+			"title": "迭代详情",
+			"rolledOver_other": "顺延已将 {{count}} 个未完成的任务移至 {{name}}。",
+			"rolloverNoNext": "顺延时未找到下一个迭代；未完成的任务仍留在此处。",
+			"rolloverNothing": "顺延时没有找到需要移动的未完成任务。"
 		},
 		"status": {
 			"archived": "已归档",
@@ -7323,7 +7963,9 @@
 		"widgets": {
 			"quickLinks": "快捷链接",
 			"recents": "最近访问",
-			"stickies": "便签"
+			"stickies": "便签",
+			"risks": "风险",
+			"myBrief": "我的简报"
 		},
 		"focus": {
 			"caughtUp": "已全部处理",
@@ -7334,7 +7976,9 @@
 			"overdue_other": "{{count}} 项已逾期",
 			"stickies": "便签",
 			"stickiesHint": "私人笔记，仅你可见",
-			"unread_other": "{{count}} 条未读"
+			"unread_other": "{{count}} 条未读",
+			"openCaption": "进行中",
+			"unreadCaption": "未读"
 		}
 	},
 	"intake": {
@@ -7394,7 +8038,11 @@
 			"titlePlaceholder": "你需要什么？",
 			"titleRequired": "请输入标题",
 			"toast": "请求已提交",
-			"toastView": "查看"
+			"toastView": "查看",
+			"pastedImages": "已粘贴的图片",
+			"pasteHint": "粘贴截图即可将其附加到请求中。",
+			"removeImage": "移除 {{name}}",
+			"attachFailed": "请求已提交，但部分图片未能附加。"
 		},
 		"decline": {
 			"description": "请求将被关闭，不会进入看板。你之后可以重新打开。",
@@ -7441,7 +8089,9 @@
 			"noTasks": "此项目还没有其他任务。",
 			"searchPlaceholder": "按编号或标题搜索任务",
 			"title": "将 {{key}} 标记为重复项",
-			"toast": "已标记为 {{key}} 的重复项"
+			"toast": "已标记为 {{key}} 的重复项",
+			"aiSuggestions": "AI 推荐",
+			"aiChecking": "正在用 AI 查找重复项…"
 		},
 		"empty": {
 			"backToIntake": "返回收集箱",
@@ -7683,6 +8333,11 @@
 				"singleProjectHint": "请选择单个项目以查看速率",
 				"subtitle": "各迭代的完成数与承诺数对比",
 				"title": "速率"
+			},
+			"filter": {
+				"all": "全部",
+				"label": "显示迭代",
+				"running": "进行中"
 			}
 		},
 		"dimensions": {
@@ -7823,7 +8478,8 @@
 			"noRequests": "暂无请求",
 			"noTasks": "没有符合这些筛选条件的任务",
 			"retry": "重试",
-			"timeout": "耗时过长。请缩小筛选范围后重试。"
+			"timeout": "耗时过长。请缩小筛选范围后重试。",
+			"noRunningCycles": "当前没有进行中的迭代"
 		},
 		"table": {
 			"periodEnd": "时间段结束",
@@ -7839,7 +8495,8 @@
 			"intake": "收集箱",
 			"modules": "模块",
 			"overview": "概览",
-			"tasks": "任务"
+			"tasks": "任务",
+			"delivery": "交付"
 		},
 		"trend": {
 			"completed": "完成",
@@ -7853,9 +8510,141 @@
 			"chart": "图表",
 			"label": "显示为",
 			"table": "表格"
+		},
+		"reports": {
+			"actionsFor": "{{name}} 的操作",
+			"close": "关闭报表",
+			"delete": "删除",
+			"deleteDescription": "“{{name}}”将被删除。此操作无法撤销。",
+			"deleteSharedDescription": "“{{name}}”将对工作区中的所有人删除。此操作无法撤销。",
+			"deleteTitle": "删除此报表？",
+			"dialog": {
+				"cancel": "取消",
+				"createTitle": "保存报表",
+				"editTitle": "编辑报表",
+				"name": "名称",
+				"namePlaceholder": "例如：按负责人统计的未解决缺陷",
+				"nameRequired": "请输入名称",
+				"save": "保存",
+				"summary": "保存图表设置、范围内的项目和筛选条件。",
+				"update": "保存更改",
+				"visibility": "可见范围"
+			},
+			"empty": "暂无已保存的报表。保存此图表，以便日后查看。",
+			"listTitle": "已保存的报表",
+			"loadError": "无法加载已保存的报表",
+			"makePrivate": "设为私有",
+			"notes": {
+				"allProjects": "其中的项目均不可用，因此显示所有项目。",
+				"builderReset": "部分图表设置不适用于这些项目，已被重置。",
+				"dropped_other": "此报表中有 {{count}} 个项目已不存在。",
+				"leftOut_other": "此报表中有 {{count}} 个项目已归档，未被纳入。",
+				"otherProjects": "此报表是为其他项目保存的；此处仅显示当前项目。"
+			},
+			"open": "报表",
+			"rename": "重命名",
+			"save": "保存",
+			"saveAsNew": "另存为新报表",
+			"share": "与工作区共享",
+			"sharedBy": "由 {{name}} 共享",
+			"showing": "报表：{{name}}",
+			"toast": {
+				"deleted": "报表已删除",
+				"deleteError": "无法删除报表",
+				"madePrivate": "报表已设为私有",
+				"saved": "已保存“{{name}}”",
+				"saveError": "无法保存报表",
+				"shared": "报表已与工作区共享",
+				"updated": "报表已更新"
+			},
+			"unsaved": "有未保存的更改",
+			"update": "更新报表",
+			"visibility": {
+				"private": "私有",
+				"privateHint": "仅你可见。",
+				"workspace": "与工作区共享",
+				"workspaceHint": "此工作区中拥有分析访问权限的所有人都可以打开。"
+			}
 		}
 	},
 	"pages": {
+		"templates": {
+			"saveAction": "另存为模板",
+			"saveTitle": "另存为模板",
+			"saveDescription": "页面当前的内容和图标将成为新页面的模板。",
+			"nameLabel": "模板名称",
+			"scopeLabel": "适用范围",
+			"scopeProject": "此项目",
+			"scopeProjectHint": "在此项目中创建页面时提供。",
+			"scopeWorkspace": "所有项目",
+			"scopeWorkspaceHint": "在工作区的所有项目中提供。",
+			"saveConfirm": "保存模板",
+			"savedToast": "模板已保存",
+			"saveError": "无法保存模板",
+			"newFromTemplate": "从模板新建页面",
+			"moreCreateOptions": "更多创建页面的方式",
+			"pickTitle": "从模板新建页面",
+			"pickDescription": "新页面将以模板的内容开始，之后可以随意修改。",
+			"starters": "入门模板",
+			"saved": "已保存的模板",
+			"savedEmpty": "还没有已保存的模板。可在页面菜单中保存一个。",
+			"loadError": "无法加载模板",
+			"deleteLabel": "删除模板 {{name}}",
+			"deleted": "模板已删除",
+			"deleteError": "无法删除模板",
+			"builtin": {
+				"meetingName": "会议记录",
+				"meetingDescription": "参会人员、议程、决定和待办事项。",
+				"meetingAttendees": "参会人员",
+				"meetingAgenda": "议程",
+				"meetingNotes": "记录",
+				"meetingDecisions": "决定",
+				"meetingActionItems": "待办事项",
+				"specName": "需求规格",
+				"specDescription": "问题、目标、方案和待解决的问题。",
+				"specSummary": "摘要",
+				"specProblem": "问题",
+				"specGoals": "目标",
+				"specNonGoals": "非目标",
+				"specProposal": "方案",
+				"specOpenQuestions": "待解决的问题",
+				"retroName": "回顾",
+				"retroDescription": "做得好的、可以改进的，以及下一步要尝试的。",
+				"retroWentWell": "做得好的地方",
+				"retroCouldBeBetter": "可以改进的地方",
+				"retroTryNext": "下一步要尝试的"
+			}
+		},
+		"publish": {
+			"menuItem": "发布到网页",
+			"title": "发布到网页",
+			"description": "任何拥有链接的人都无需登录即可阅读此页面。我们会要求搜索引擎不要将其编入索引。",
+			"switchLabel": "公开链接",
+			"onHint": "已发布。关闭后链接会立即失效。",
+			"offHint": "已关闭。开启后将创建链接。",
+			"disabledByWorkspace": "此工作区已关闭公开页面。管理员可以在工作区设置中开启。",
+			"cannotPublish": "只有可共享项目的成员才能发布，且只能发布对整个工作区可见的页面。",
+			"linkLabel": "链接",
+			"copyLink": "复制链接",
+			"copied": "已复制",
+			"openLink": "打开公开页面",
+			"privacyNote": "提及、任务链接、文件以及指向未发布页面的链接在公开页面上会被隐藏。",
+			"publishedToast": "页面已发布",
+			"unpublishedToast": "链接已撤销",
+			"error": "无法更改公开链接",
+			"loadError": "无法加载公开链接",
+			"done": "完成"
+		},
+		"publicView": {
+			"documentTitle": "共享页面",
+			"unavailableTitle": "此页面不可用",
+			"unavailableDescription": "链接可能已被撤销，或页面已不再共享。",
+			"updated": "更新于 {{date}}",
+			"mention": "@某人",
+			"task": "关联的任务",
+			"file": "附件",
+			"page": "另一个页面"
+		},
 		"actions": {
 			"archive": "归档",
 			"copyLink": "复制链接",
@@ -7893,6 +8682,40 @@
 			"restoredBy": "{{name}} 恢复了较早的版本",
 			"roomFull": "目前打开此页面的人太多了。请稍后再试。",
 			"signedOut": "你的会话已结束。请重新登录以继续编辑。"
+		},
+		"toolbar": {
+			"ariaLabel": "格式工具栏",
+			"textStyle": "文本样式",
+			"bold": "粗体",
+			"italic": "斜体",
+			"underline": "下划线",
+			"strike": "删除线",
+			"inlineCode": "行内代码",
+			"link": "链接",
+			"image": "图片",
+			"more": "更多格式"
+		},
+		"filters": {
+			"button": "筛选",
+			"active": "已应用筛选",
+			"search": "搜索筛选条件",
+			"searchClear": "清除搜索",
+			"favorites": "收藏",
+			"createdDate": "创建日期",
+			"date": {
+				"any": "任意时间",
+				"today": "今天",
+				"last7": "最近 7 天",
+				"last30": "最近 30 天",
+				"older": "30 天以前"
+			},
+			"remove": "移除 {{filter}} 筛选"
+		},
+		"detail": {
+			"unlocked": "已解锁",
+			"openOutline": "打开大纲",
+			"currentSection": "当前章节",
+			"emptyLinePlaceholder": "输入“/”查看命令"
 		},
 		"commandPalette": {
 			"createPage": "创建页面"
@@ -8009,8 +8832,6 @@
 			"locked": "已锁定",
 			"newPage": "新建页面",
 			"ownedBy": "所有者：{{name}}",
-			"ownerFilter": "所有者",
-			"ownerFilterSearch": "搜索用户",
 			"retry": "重试",
 			"searchPlaceholder": "搜索页面",
 			"sort": {
@@ -8130,6 +8951,229 @@
 			"expand": "展开 {{title}}",
 			"newPage": "新建页面",
 			"title": "页面"
+		}
+	},
+	"accountSecurity": {
+		"platform": {
+			"save": "保存",
+			"retry": "重试",
+			"loadMore": "加载更多",
+			"auditPasswordResetSent": "已发送密码重置链接",
+			"apiKeys": {
+				"accessLabel": "访问权限",
+				"accessFull": "完全访问",
+				"accessFullHint": "在你所属的每个工作区中可执行的所有操作。",
+				"accessRead": "只读",
+				"accessReadHint": "可以读取，但不会更改任何内容。",
+				"accessCustom": "自定义",
+				"accessCustomHint": "仅限下面选择的范围。",
+				"areasLabel": "范围",
+				"areaNone": "无",
+				"areaRead": "读取",
+				"areaWrite": "写入",
+				"areasRequired": "请至少选择一个范围。",
+				"projectsLabel": "仅限特定项目",
+				"projectsHint": "对此密钥而言其他项目如同不存在，针对整个工作区的请求会被拒绝。",
+				"projectsIn": "{{workspace}} 中的项目",
+				"projectsLoading": "正在加载项目…",
+				"projectsEmpty": "此工作区还没有项目。",
+				"projectsRequired": "请至少选择一个项目。",
+				"columnScope": "范围",
+				"scopeFull": "完全访问",
+				"scopeRead": "只读",
+				"scopeCustom": "自定义",
+				"scopeProjects": "项目：{{projects}}",
+				"deletedProject": "已删除的项目",
+				"requestsAria": "使用 {{name}} 发出的请求",
+				"requestsTitle": "请求：{{name}}",
+				"requestsDescription": "使用此密钥发出的最近请求。仅保存方法、路由、状态和耗时，从不保存请求内容。",
+				"requestsEmpty": "还没有请求。",
+				"requestsError": "无法加载请求。",
+				"columnTime": "时间",
+				"columnRequest": "请求",
+				"columnStatus": "状态",
+				"columnDuration": "耗时",
+				"durationMs": "{{value}} 毫秒"
+			},
+			"policy": {
+				"title": "登录策略",
+				"description": "谁可以创建账户、大家如何登录，以及会话持续多久。",
+				"invitedPasswordSignUp": "受邀者可用密码注册",
+				"invitedPasswordSignUpHint": "关闭密码注册后，持有有效邀请的人仍可创建密码账户。",
+				"domains": "允许的邮箱域名",
+				"domainsHint": "新账户必须使用这些域名之一的邮箱地址。留空则允许任何域名。",
+				"requiredProvider": "必须使用的登录提供方",
+				"requiredProviderHint": "所有人都通过此提供方登录。实例管理员保留密码登录作为恢复途径。",
+				"noRequirement": "不要求",
+				"customProvider": "你所在组织的登录方式",
+				"sessionLifetime": "会话时长",
+				"sessionLifetimeHint": "会话在未使用时保持有效的时长。使用会延长会话。",
+				"hours": "小时",
+				"signInNotice": "请使用 {{provider}} 登录。密码登录仅供实例管理员使用。"
+			},
+			"twoFactor": {
+				"title": "双重身份验证",
+				"description": "使用密码登录时，要求输入身份验证器应用中的验证码。",
+				"authenticator": "身份验证器应用",
+				"on": "已开启",
+				"off": "已关闭",
+				"turnOn": "开启",
+				"turnOff": "关闭",
+				"newCodes": "新的恢复码",
+				"confirmPassword": "确认你的密码",
+				"continue": "继续",
+				"setupTitle": "将 Margaya 添加到身份验证器应用",
+				"setupHint": "在身份验证器应用中输入此设置密钥，然后输入应用显示的 6 位验证码。",
+				"setupKey": "设置密钥",
+				"openApp": "在此设备的身份验证器应用中打开",
+				"code": "验证码",
+				"verify": "验证",
+				"invalidCode": "验证码不正确。请检查设备时间后重试。",
+				"codesTitle": "恢复码",
+				"codesHint": "请妥善保存。设备丢失时，每个恢复码可登录一次。",
+				"copyCodes": "复制恢复码",
+				"copied": "已复制恢复码",
+				"done": "完成",
+				"enabled": "双重身份验证已开启。",
+				"disabled": "双重身份验证已关闭。",
+				"error": "出了点问题，请重试。"
+			},
+			"challenge": {
+				"title": "双重身份验证",
+				"totpHint": "输入身份验证器应用中的 6 位验证码。",
+				"recoveryHint": "输入你的一个恢复码。每个恢复码只能使用一次。",
+				"recoveryCode": "恢复码",
+				"invalid": "验证码不正确，请重试。",
+				"trustDevice": "信任此设备 30 天",
+				"useRecovery": "使用恢复码",
+				"useApp": "使用身份验证器应用",
+				"usePassword": "改用密码登录",
+				"back": "返回登录"
+			},
+			"users": {
+				"nav": "用户",
+				"title": "用户",
+				"subtitle": "此服务器上的所有账户。封禁已离开的人、重置密码并让用户退出登录。",
+				"listTitle": "账户",
+				"search": "按姓名或邮箱搜索",
+				"filterLabel": "显示",
+				"filterAll": "所有账户",
+				"filterAdmins": "实例管理员",
+				"filterBanned": "已封禁",
+				"empty": "没有与“{{query}}”匹配的账户。",
+				"none": "还没有账户。",
+				"columnUser": "用户",
+				"columnStatus": "状态",
+				"columnWorkspaces": "工作区",
+				"columnLastActive": "最近活动",
+				"columnJoined": "加入时间",
+				"columnActions": "操作",
+				"badgeAdmin": "管理员",
+				"badgeBanned": "已封禁",
+				"badgeTwoFactor": "2FA",
+				"never": "从未",
+				"actionsFor": "{{name}} 的操作",
+				"details": "查看详情",
+				"resetPassword": "重置密码",
+				"signOut": "在所有设备上退出登录",
+				"makeAdmin": "设为实例管理员",
+				"removeAdmin": "取消实例管理员",
+				"ban": "封禁",
+				"unban": "解除封禁",
+				"banTitle": "要封禁 {{name}} 吗？",
+				"banDescription": "此人会在所有设备上退出登录，封禁结束前无法登录。其 API 密钥也会停止工作。",
+				"banReason": "原因（可选）",
+				"banDuration": "时长",
+				"banForever": "直到解除封禁",
+				"ban7Days": "7 天",
+				"ban30Days": "30 天",
+				"banned": "已封禁 {{name}}。",
+				"unbanned": "{{name}} 可以再次登录。",
+				"resetTitle": "要重置 {{name}} 的密码吗？",
+				"resetDescription": "发送重置链接，或立即设置新密码。设置新密码会让此人在所有设备上退出登录。",
+				"resetByEmail": "向 {{email}} 发送重置链接",
+				"resetSetNow": "立即设置新密码",
+				"newPassword": "新密码",
+				"resetConfirm": "重置密码",
+				"resetSent": "重置链接正在发送至 {{email}}。",
+				"passwordSet": "已更改 {{name}} 的密码。",
+				"signOutTitle": "要让 {{name}} 在所有设备上退出登录吗？",
+				"signOutDescription": "所有会话会立即结束。其 API 密钥仍可使用，只有所有者可以撤销。",
+				"signedOut": "已让 {{name}} 在所有设备上退出登录。",
+				"promoted": "{{name}} 现在是实例管理员。",
+				"demoted": "{{name}} 不再是实例管理员。",
+				"activeSessions": "活动会话",
+				"signInMethod": "密码",
+				"hasPassword": "已设置",
+				"noPassword": "未设置（通过其他方式登录）",
+				"workspacesTitle": "工作区",
+				"noWorkspaces": "不属于任何工作区。",
+				"joined": "{{date}} 加入"
+			}
+		},
+		"password": {
+			"tooShort": "请至少使用 {{min}} 个字符。",
+			"tooCommon": "此密码过于常见，容易被猜到。请换一个。",
+			"matchesEmail": "密码不能与邮箱地址相同。",
+			"hint": "至少 {{min}} 个字符。避免使用常见密码和你的邮箱地址。"
+		},
+		"emailChange": {
+			"action": "更改邮箱",
+			"title": "更改邮箱地址",
+			"description": "我们会向新地址发送验证码。输入验证码后邮箱即会更改，你的其他会话将退出登录。",
+			"newEmail": "新邮箱地址",
+			"newEmailPlaceholder": "you@example.com",
+			"invalidEmail": "请输入有效的邮箱地址。",
+			"sameEmail": "这已经是你的邮箱地址。",
+			"sendCode": "发送验证码",
+			"codeSent": "如果 {{email}} 可用，验证码已发送至该地址。验证码将在 5 分钟后过期。",
+			"code": "验证码",
+			"confirm": "更改邮箱",
+			"back": "使用其他地址",
+			"success": "你的邮箱地址已更改为 {{email}}。",
+			"invalidCode": "验证码不正确或已过期。请重新获取。",
+			"sessionTooOld": "为了你的安全，请在更改邮箱地址前重新登录。",
+			"unavailable": "此服务器未配置邮件，因此无法在此更改邮箱地址。请联系实例管理员。",
+			"error": "无法更改邮箱地址。"
+		},
+		"reauth": {
+			"title": "确认是你本人",
+			"description": "更改实例需要近期登录。输入密码后，可在接下来的 10 分钟内继续操作。",
+			"noPassword": "更改实例需要近期登录。你的账户没有密码，请重新登录以继续。",
+			"password": "密码",
+			"confirm": "确认",
+			"signInAgain": "重新登录",
+			"wrongPassword": "密码不正确。",
+			"cancelled": "未保存：未能确认你的身份。",
+			"error": "无法确认你的密码。"
+		},
+		"auditTrail": {
+			"title": "审计记录",
+			"subtitle": "实例变更：谁在何时更改了什么。密钥值永远不会被记录。",
+			"empty": "尚无实例变更记录。",
+			"loadMore": "加载更多",
+			"when": "时间",
+			"who": "操作者",
+			"what": "内容",
+			"system": "系统",
+			"actions": {
+				"instanceSettingsUpdated": "更改了实例设置",
+				"instanceAdminAdded": "添加了实例管理员",
+				"instanceAdminRemoved": "移除了实例管理员",
+				"instanceReauthenticated": "确认了密码",
+				"userCreated": "创建了账户",
+				"userRoleChanged": "更改了账户的角色",
+				"userBanned": "封禁了账户",
+				"userUnbanned": "解除了封禁",
+				"userRemoved": "删除了账户",
+				"userPasswordSet": "设置了账户密码",
+				"userSessionsRevoked": "使账户退出登录",
+				"userImpersonated": "以其他账户身份登录",
+				"cliAdminPromoted": "设为实例管理员（恢复 CLI）",
+				"cliAdminDemoted": "移除了实例管理员（恢复 CLI）",
+				"cliPasswordReset": "重置了密码（恢复 CLI）",
+				"cliUserUnbanned": "解除了封禁（恢复 CLI）"
+			}
 		}
 	},
 	"instanceAdmin": {
@@ -8270,7 +9314,8 @@
 			"email": "邮件",
 			"general": "常规",
 			"publicBoards": "公开看板",
-			"workspaces": "工作区"
+			"workspaces": "工作区",
+			"ai": "AI"
 		},
 		"oauth": {
 			"authorizationUrl": "授权 URL",
@@ -8491,7 +9536,11 @@
 				"label": "Stack",
 				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
 			},
-			"title": "Quick facts"
+			"title": "Quick facts",
+			"ai": {
+				"label": "AI",
+				"value": "可选，默认关闭：问 AI、构建模式和 AI 智能体，可运行在 Claude 或自托管模型上"
+			}
 		},
 		"guidelines": {
 			"do": {
@@ -8701,5 +9750,1675 @@
 		},
 		"title": "One product. Two ways to run it.",
 		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+	},
+	"templates": {
+		"form": {
+			"addSubtask": "添加",
+			"assignees": "负责人",
+			"assigneesNone": "项目默认",
+			"create": "创建模板",
+			"createTitle": "新建任务模板",
+			"description": "新任务的初始内容。创建任务时所有内容仍可编辑。",
+			"editTitle": "编辑任务模板",
+			"estimate": "预估",
+			"labels": "标签",
+			"labelsEmpty": "未找到标签",
+			"labelsNone": "无标签",
+			"labelsSearch": "搜索标签",
+			"moveDown": "下移 {{title}}",
+			"moveUp": "上移 {{title}}",
+			"name": "名称",
+			"namePlaceholder": "缺陷报告",
+			"notSet": "未设置",
+			"priority": "优先级",
+			"removeSubtask": "移除 {{title}}",
+			"save": "保存模板",
+			"status": "状态",
+			"statusDefault": "项目默认",
+			"subtaskPlaceholder": "添加子任务",
+			"subtasks": "子任务",
+			"subtaskTitle": "子任务 {{number}}",
+			"taskDescription": "描述",
+			"taskDescriptionPlaceholder": "复现步骤、预期结果…",
+			"titlePattern": "标题格式",
+			"titlePatternHint": "{title} 会被替换为输入的标题。如果格式中没有它，输入的标题会接在格式之后。",
+			"titlePatternPlaceholder": "缺陷：{title}"
+		},
+		"settings": {
+			"add": "新建模板",
+			"deleteAria": "删除模板 {{name}}",
+			"deleteConfirm": "删除",
+			"deleteDescription": "基于此模板创建的任务将保持不变。",
+			"deleteTitle": "删除模板 {{name}}？",
+			"description": "新任务的起点：标题格式、默认字段和子任务清单。",
+			"editAria": "编辑模板 {{name}}",
+			"empty": "暂无模板。",
+			"loadError": "无法加载模板。",
+			"noPermission": "只有可以编辑此项目的人才能更改其模板。",
+			"retry": "重试",
+			"subtaskCount_other": "{{count}} 个子任务",
+			"title": "任务模板",
+			"toast": {
+				"created": "模板已创建",
+				"deleted": "模板已删除",
+				"deleteError": "无法删除模板",
+				"error": "无法保存模板",
+				"updated": "模板已保存"
+			}
+		},
+		"use": {
+			"applied": "模板：{{name}}",
+			"button": "模板",
+			"menuLabel": "使用模板",
+			"quickAdd": "从模板创建",
+			"removeSubtask": "移除子任务 {{title}}",
+			"subtaskError_other": "任务已创建，但有 {{count}} 个子任务未能添加",
+			"subtasksTitle_other": "来自模板的 {{count}} 个子任务"
+		}
+	},
+	"delivery": {
+		"forecast": {
+			"title": "预测",
+			"likelyBy": "有 85% 的把握在 {{date}} 前完成",
+			"percentiles": "50%：{{p50}} 前 · 95%：{{p95}} 前",
+			"chanceByEnd": "在 {{date}} 前完成的概率：{{percent}}%",
+			"beyondHorizon": "按当前速度需要两年以上",
+			"open_other": "{{count}} 个未完成任务",
+			"complete": "所有任务均已完成",
+			"insufficient": {
+				"short_span": "历史数据还不够：预测至少需要此项目 14 天的工作记录。",
+				"few_completions": "历史数据还不够：过去 8 周完成的任务少于 5 个。",
+				"few_active_days": "历史数据还不够：过去 8 周有任务完成的天数少于 3 天。"
+			},
+			"howCalculated": "这是怎么算出来的？",
+			"method": {
+				"title": "蒙特卡洛预测",
+				"body": "Margaya 将团队的真实节奏重放 {{iterations}} 次。每个模拟日从下方历史中随机取一天的完成数，直到未完成任务全部完成。日期表示 50%、85% 和 95% 的模拟完成的时间。",
+				"window": "历史：{{from}} – {{to}}",
+				"completed": "已完成任务：{{total}}",
+				"activeDays": "有任务完成的天数：{{days}}",
+				"perDay": "每天完成数：{{min}}–{{max}}",
+				"perWeek": "每周平均：{{perWeek}}",
+				"team": "节奏按整个项目计算，因此此范围以外的工作也计入其中。",
+				"seed": "种子 {{seed}}：同样的数据当天始终给出同样的结果。"
+			},
+			"error": "无法加载预测",
+			"retry": "重试"
+		},
+		"risks": {
+			"title": "风险",
+			"empty": "未发现风险",
+			"showAll": "全部显示（{{total}}）",
+			"showLess": "收起",
+			"noCycleTime": "完成 10 个记录了开始时间的任务后，会显示拖延的工作。",
+			"hiddenTask": "一个你无权查看的任务",
+			"truncated": "仅检查了前 2,000 个未完成任务。",
+			"error": "无法加载风险",
+			"someone": "某人",
+			"severity": {
+				"high": "高风险",
+				"medium": "中风险",
+				"low": "低风险"
+			},
+			"criticalPath": {
+				"ends": "关键路径于 {{date}} 结束",
+				"chain_other": "最长依赖链：{{count}} 个任务"
+			},
+			"kinds": {
+				"critical_path_late": "关键路径于 {{date}} 结束，晚于截止日期 {{deadline}}",
+				"critical_path_tight": "关键路径于 {{date}} 结束，距截止日期 {{deadline}} 几乎没有余量",
+				"blocked_chain_other": "{{head}} 阻塞了 {{count}} 个任务",
+				"ageing_other": "{{count}} 个任务已进行超过 {{days}} 天，比平时更久",
+				"overdue_cluster_other": "{{name}} 有 {{count}} 个逾期任务",
+				"overdue_cluster_unassigned_other": "{{count}} 个逾期任务没有负责人",
+				"overdue_other": "{{count}} 个逾期任务",
+				"unassigned_near_deadline_other": "{{count}} 个未分配任务将于 {{date}} 前到期",
+				"dependency_loop_other": "{{count}} 个任务循环互相阻塞"
+			}
+		},
+		"home": {
+			"title": "有风险",
+			"empty": "你当前的迭代中没有风险项",
+			"context": "{{project}} · {{cycle}}"
+		},
+		"tab": {
+			"description": "此项目未完成工作的预测与风险"
+		}
+	},
+	"ai": {
+		"rules": {
+			"title": "根据描述创建规则",
+			"description": "用日常语言描述一个自动化。AI 会把它转换成普通规则，你可以编辑、在近期历史上试运行并保存。保存的规则运行时无需 AI。",
+			"label": "描述规则…",
+			"placeholder": "例如：当 GitHub 拉取请求被合并时，将任务移到“已完成”",
+			"compile": "创建规则",
+			"compiling": "正在编写规则…",
+			"unsupportedTitle": "自动化无法实现的部分",
+			"rejected": "未通过校验而被排除的建议规则：{{rejected}}",
+			"noRules": "无法根据此描述创建规则。",
+			"workflowRule": "工作流规则",
+			"integration": "集成",
+			"when": "触发条件",
+			"moveTo": "将任务移到",
+			"historyWindow": "回放的历史范围",
+			"days7": "最近 7 天",
+			"days30": "最近 30 天",
+			"days90": "最近 90 天",
+			"dryRun": "在历史上试运行",
+			"dryRunSummary": "最近 {{days}} 天内本会发生变化的任务：{{changed}}",
+			"dryRunNone": "最近 {{days}} 天内不会有任何变化。",
+			"dryRunError": "无法回放此规则。",
+			"more": "未显示的其他匹配项：{{more}}",
+			"archived": "已归档",
+			"outcomes": {
+				"unchanged": "已在该处",
+				"skipped": "未处理"
+			},
+			"notes": {
+				"integration_not_connected": "此集成未连接到项目，因此没有可回放的历史。",
+				"branch_push_last_only": "每个分支只记录最近一次 push。",
+				"threshold_from_last_update": "依据每个任务的最后更新时间；日期表示规则本会处理它的时间。",
+				"flow_alerts_notify_only": "工作流异常提醒只通知项目主管，不会更改任务。",
+				"nothing_enabled": "此规则没有开启任何功能，因此不会有变化。",
+				"conditions_current_state": "条件是按每个任务的当前状态检查的；历史只保留变更。"
+			},
+			"save": "保存规则",
+			"discard": "放弃",
+			"saved": "规则已保存",
+			"saveError": "无法保存规则。"
+		},
+		"build": {
+			"command": "用 AI 构建…",
+			"title": "用 AI 构建",
+			"description": "描述你想规划的内容。AI 会提出项目、迭代和任务供你审阅。在你确认之前不会创建任何内容。",
+			"promptLabel": "要规划什么？",
+			"promptPlaceholder": "规划第四季度的网站改版，分 3 个冲刺",
+			"target": "创建位置",
+			"targetCurrent": "在 {{name}} 中",
+			"targetNew": "新建项目",
+			"deep": "深入思考（较慢）",
+			"draft": "生成计划",
+			"drafting": "正在起草计划…",
+			"cancel": "取消",
+			"back": "返回",
+			"create_other": "创建 {{count}} 项",
+			"creating": "正在创建计划",
+			"progress": "已创建 {{done}}/{{total}}…",
+			"close": "关闭",
+			"openProject": "打开项目",
+			"empty": {
+				"text": "此项目还没有任务。描述要做的工作，AI 会提出任务供你审阅。"
+			},
+			"review": {
+				"description": "审阅计划。可以取消勾选、编辑或调整任意项的顺序，然后创建。",
+				"project": "项目",
+				"projectName": "名称",
+				"projectKey": "标识",
+				"projectDescription": "描述",
+				"columns": "新列",
+				"labels": "标签",
+				"cycles": "迭代",
+				"modules": "模块",
+				"moduleName": "模块名称",
+				"tasks_other": "{{count}} 个任务",
+				"include": "包含 {{name}}",
+				"taskTitle": "任务标题",
+				"taskDescription": "任务描述",
+				"priority": "优先级",
+				"estimate": "预估（点数）",
+				"module": "模块",
+				"none": "无",
+				"taskLabels": "标签：{{labels}}",
+				"subtasks": "子任务",
+				"subtaskTitle": "子任务标题",
+				"moveUp": "上移 {{name}}",
+				"moveDown": "下移 {{name}}",
+				"cycle": {
+					"label": "迭代",
+					"name": "迭代名称",
+					"startDate": "开始",
+					"endDate": "结束"
+				}
+			},
+			"done": {
+				"success_other": "完成。已创建 {{count}} 个任务。",
+				"partial_other": "已创建，但有 {{count}} 项未能创建：",
+				"estimatesSkipped": "由于项目没有启用的点数预估体系，已略过预估。",
+				"created": {
+					"tasks_other": "{{count}} 个任务",
+					"subtasks_other": "{{count}} 个子任务",
+					"cycles_other": "{{count}} 个迭代",
+					"modules_other": "{{count}} 个模块",
+					"columns_other": "{{count}} 个列",
+					"labels_other": "{{count}} 个标签"
+				}
+			},
+			"kinds": {
+				"project": "项目",
+				"column": "列",
+				"cycle": "迭代",
+				"module": "模块",
+				"task": "任务",
+				"subtask": "子任务",
+				"label": "标签",
+				"estimate": "预估",
+				"cycle_tasks": "迭代任务",
+				"module_tasks": "模块任务"
+			},
+			"chat": {
+				"planLabel": "建议的更改",
+				"planning": "正在规划更改…",
+				"nothing": "此请求没有需要更改的内容。",
+				"awaiting": "等待回应",
+				"ready": "已就绪的更改：{{count}} 项。确认后继续。",
+				"applying": "正在应用更改…",
+				"confirm": "确认",
+				"cancel": "取消",
+				"cancelled": "已取消，未做任何更改。",
+				"remove": "移除 {{title}}",
+				"confirmDestructive": "是的，删除",
+				"truncated": "计划已缩减为前 50 项更改。",
+				"appliedSummary": "已应用：{{done}} / {{total}}",
+				"autopilotApplied": "已由自动驾驶立即应用。",
+				"autopilotOff": "此工作区已关闭自动驾驶。请查看下方的更改。",
+				"autopilotReview": "其中部分更改需要你先审核。",
+				"done": "完成",
+				"open": "打开",
+				"skipped": "已跳过",
+				"failed": "失败",
+				"undo": "撤销",
+				"undone": "已撤销",
+				"undoFailed": "无法撤销此更改。",
+				"forbidden": "你无法在此使用 AI 进行更改。",
+				"pickCandidate": "你是不是指：",
+				"fields": {
+					"name": "名称",
+					"key": "键",
+					"title": "标题",
+					"priority": "优先级",
+					"dueDate": "截止日期",
+					"assignee": "负责人",
+					"unassigned": "无人",
+					"startDate": "开始",
+					"endDate": "结束",
+					"content": "评论"
+				},
+				"problems": {
+					"forbidden": "你没有执行此操作的权限。",
+					"not_found": "未找到它引用的内容。",
+					"ambiguous": "该名称匹配到多个人。",
+					"unresolved_ref": "它依赖于一项无法执行的更改。",
+					"feature_off": "此功能在项目中已关闭。",
+					"invalid": "此更改无法按所写内容执行。"
+				},
+				"ops": {
+					"create_project": "新建项目",
+					"create_task": "新建任务",
+					"update_task": "编辑任务",
+					"set_status": "更改状态",
+					"assign": "分配",
+					"add_comment": "评论",
+					"create_cycle": "新建周期",
+					"add_to_cycle": "加入周期",
+					"create_module": "新建模块",
+					"add_to_module": "加入模块",
+					"create_page": "新建页面",
+					"link_tasks": "关联任务",
+					"create_label": "新建标签",
+					"delete_task": "删除任务",
+					"run_agent": "运行智能体"
+				},
+				"agentRun": {
+					"title": "智能体运行",
+					"loading": "正在加载运行…",
+					"loadError": "无法加载此运行。",
+					"inProgress": "进行中"
+				},
+				"noneReady": "暂时没有可应用的更改。请修正或移除标记的更改，或重新提问。"
+			},
+			"context": {
+				"title": "上下文（{{count}}）",
+				"facts": "项目：{{projects}} · 成员：{{members}} · 周期：{{cycles}}",
+				"memory": "记忆笔记：{{count}}",
+				"history": "之前的消息：{{count}}"
+			}
+		},
+		"duplicates": {
+			"check": "用 AI 检查",
+			"checking": "正在检查…",
+			"checkedTitle": "AI 已检查是否重复",
+			"none": "没有可能重复的任务。",
+			"verdict": {
+				"duplicate": "可能重复",
+				"related": "相关"
+			},
+			"mark": "标为此任务的重复",
+			"markLabel": "将新任务标记为 {{key}} 的重复",
+			"marked": "已标记",
+			"willLink": "新任务将被标记为 {{key}} 的重复。",
+			"undo": "撤销",
+			"linkError": "任务已创建，但无法标记为 {{key}} 的重复。"
+		},
+		"triage": {
+			"button": "获取分拣建议",
+			"title": "分拣建议",
+			"loading": "正在查看类似工作…",
+			"empty": "此项没有建议。",
+			"retry": "重试",
+			"close": "关闭建议",
+			"accept": "接受",
+			"acceptAll": "全部接受",
+			"edit": "编辑",
+			"dismiss": "忽略",
+			"applied": "已应用",
+			"acceptError": "无法应用此建议。",
+			"autoApplied": "此项目会自动添加建议的标签。",
+			"sameTitle": "与现有任务标题相同",
+			"projectAdvice": "请求始终留在其所属项目中：请拒绝此请求，并请对方在该项目中提交。",
+			"otherProjectDuplicate": "只有此项目中的任务才能将请求作为重复项关闭。",
+			"openTask": "在新标签页中打开 {{key}}",
+			"fields": {
+				"label": "标签",
+				"assignee": "负责人",
+				"priority": "优先级",
+				"project": "项目",
+				"duplicate": "可能重复"
+			},
+			"settings": {
+				"title": "分拣建议",
+				"description": "为新任务和收件请求提供的 AI 建议。每条建议都由人接受、编辑或忽略。",
+				"autoApply": "自动应用标签建议",
+				"autoApplyHint": "建议的标签会立即添加，每次都会记录到审计日志。负责人、优先级、项目和重复项始终等待人来决定。",
+				"saved": "分拣设置已保存",
+				"saveError": "无法保存分拣设置。"
+			},
+			"liveLabels": {
+				"title": "推荐标签",
+				"add": "添加标签 {{name}}"
+			}
+		},
+		"translate": {
+			"action": "翻译",
+			"translating": "正在翻译…",
+			"translatedFrom": "译自{{language}}",
+			"translated": "已翻译",
+			"showOriginal": "显示原文",
+			"showTranslation": "显示译文",
+			"settings": {
+				"autoTranslate": "自动翻译评论",
+				"autoTranslateHint": "用其他语言写的评论会在每位读者打开时为其翻译。关闭时，读者点击“翻译”。"
+			}
+		},
+		"brief": {
+			"button": "简报",
+			"buttonLabel": "撰写干系人简报",
+			"title": "干系人简报",
+			"close": "关闭简报",
+			"intro": "根据计算出的进度、变更、风险和预测为这项工作撰写状态简报。提到的每个任务都会注明出处。",
+			"audience": "受众",
+			"audiences": {
+				"team": "团队",
+				"leadership": "管理层",
+				"client": "客户"
+			},
+			"generate": "撰写简报",
+			"regenerate": "重新撰写",
+			"writing": "正在撰写简报…",
+			"stop": "停止",
+			"copy": "复制",
+			"copied": "已复制",
+			"copyError": "无法复制简报。",
+			"saveAsPage": "另存为页面",
+			"saved": "简报已保存为页面",
+			"saveError": "无法保存页面。",
+			"openPage": "打开页面",
+			"pageTitle": "状态简报：{{name}}（{{date}}）",
+			"facts": {
+				"title": "使用的事实",
+				"note": "这些数字来自 Margaya，而不是 AI。保存或复制的简报会成为下一份简报的对比基准。",
+				"progress": "进度",
+				"progressValue": "{{percent}}%（{{total}} 个中已完成 {{completed}} 个）",
+				"sinceLast": "自上次简报以来（{{date}}）",
+				"sinceDays": "最近 7 天",
+				"changes": "已完成：{{completed}} · 新增：{{added}} · 移除：{{removed}}",
+				"forecast": "预测",
+				"forecastValue": "85% 的可能在 {{date}} 前完成",
+				"forecastDone": "没有剩余工作",
+				"forecastNone": "历史数据尚不足",
+				"risks": "风险",
+				"diff": "变化",
+				"progressDiff": "进度 {{before}}% → {{now}}%",
+				"forecastDiff": "预测 {{before}} → {{now}}"
+			}
+		},
+		"ask": {
+			"title": "问 AI",
+			"description": "用日常语言提问关于工作区的问题。回答只使用你能看到的任务、页面和评论，并注明每条信息的出处。",
+			"greeting": "你好！你想了解什么？",
+			"placeholder": "问 AI，输入 @ 添加上下文，输入 / 使用命令",
+			"send": "提问",
+			"stop": "停止",
+			"stopped": "已停止。",
+			"newChat": "新对话",
+			"expand": "展开",
+			"collapse": "收起",
+			"scopeProject": "在 {{project}} 中",
+			"scopeWorkspace": "整个工作区",
+			"removeScope": "改为询问整个工作区",
+			"searching": "正在搜索你的工作区…",
+			"noResults": "在你的工作区中没有找到相关内容。请换个说法，或指明项目、迭代或任务编号。",
+			"sources": "来源",
+			"sourcesCount": "来源（{{total}}）",
+			"closestMatches": "最接近的结果",
+			"copy": "复制",
+			"copied": "已复制",
+			"copyError": "无法复制回答",
+			"commentOn": "{{key}} 的评论",
+			"pageSource": "页面：{{title}}",
+			"openSource": "打开 {{title}}",
+			"disclaimer": "回答只使用你能看到的内容。行动前请核对来源。",
+			"you": "你",
+			"answer": "回答",
+			"forbidden": "你没有在此工作区使用 AI 的权限。",
+			"palette": "问 AI…",
+			"paletteAbout": "问 AI：{{question}}",
+			"examples": {
+				"title": "试着问问",
+				"overdue": "有哪些逾期了？",
+				"mine": "我有哪些未完成的任务？",
+				"recent": "本周有什么变化？",
+				"summarize": "总结这个项目",
+				"chart": "用图表按状态显示任务",
+				"cycleBlockers": "当前迭代被什么阻塞了？"
+			},
+			"history": {
+				"title": "历史",
+				"empty": "还没有保存的对话。",
+				"localOnly": "对话仅保存在此浏览器中。",
+				"delete": "删除对话",
+				"clear": "清除历史",
+				"clearConfirm": "删除此浏览器中保存的所有对话？此操作无法撤销。",
+				"search": "搜索对话",
+				"noMatches": "没有匹配的对话。",
+				"loading": "正在加载对话…",
+				"pin": "置顶对话",
+				"unpin": "取消置顶对话",
+				"pinned": "已置顶",
+				"rename": "重命名对话",
+				"renameLabel": "对话名称",
+				"saveTitle": "保存名称",
+				"serverNote": "对话保存在你的工作区中，仅你可见。",
+				"clearConfirmServer": "删除你在此工作区中保存的所有对话？此操作无法撤销。",
+				"importHint": "此浏览器中保存的对话：{{total}}",
+				"import": "导入",
+				"imported": "已导入的对话：{{total}}",
+				"openError": "无法打开该对话。"
+			},
+			"chartLabel": "图表：{{title}}",
+			"chartLoading": "正在绘制图表…",
+			"chartInvalid": "无法绘制此图表。",
+			"placeholderBuild": "描述要创建或更改的内容…",
+			"modelLabel": "模型：{{model}}",
+			"more": "更多",
+			"moreActions": "更多操作",
+			"openFullPage": "在完整页面中打开",
+			"paletteFullPage": "打开 AI 对话（完整页面）",
+			"fullPageUnavailable": "此工作区无法使用 AI。",
+			"shortcut": "打开或关闭问 AI",
+			"regenerate": "重新生成",
+			"editQuestion": "编辑问题",
+			"resend": "发送",
+			"followUps": "推荐的后续问题",
+			"saveAsPage": "另存为页面",
+			"copyMarkdown": "复制为 Markdown",
+			"copiedMarkdown": "已复制为 Markdown",
+			"createTask": "据此创建任务",
+			"webSearch": "搜索网络",
+			"webSource": "网络：{{title}}",
+			"removeChip": "移除 {{name}}",
+			"contextChips": "此问题的上下文",
+			"contextPicker": "添加上下文",
+			"contextHint": "输入以查找任务、页面、项目、迭代、模块、人员或智能体",
+			"contextEmpty": "未找到任何内容",
+			"contextSearching": "正在搜索…",
+			"commandMenu": "命令",
+			"commandEmpty": "没有匹配的命令",
+			"contextKinds": {
+				"task": "任务",
+				"page": "页面",
+				"project": "项目",
+				"cycle": "迭代",
+				"module": "模块",
+				"user": "人员",
+				"agent": "智能体"
+			},
+			"modes": {
+				"label": "模式",
+				"ask": "提问",
+				"build": "构建",
+				"autopilot": "自动驾驶",
+				"askHint": "回答问题，不做任何更改",
+				"buildHint": "提出更改，由你确认",
+				"autopilotHint": "立即应用更改；每项更改都可以撤销"
+			},
+			"attachments": {
+				"add": "附加文件",
+				"type": "无法附加 {{name}}。请使用图片（PNG、JPEG、WebP、GIF）或文本、Markdown、CSV 文件。",
+				"size": "无法添加 {{name}}：附件总大小不能超过 5 MB。",
+				"count": "最多附加 3 个文件。",
+				"readError": "无法读取该文件。"
+			},
+			"voice": {
+				"start": "语音输入",
+				"stop": "停止语音输入",
+				"recording": "正在聆听…",
+				"transcribing": "正在转写…",
+				"denied": "请允许访问麦克风以使用语音输入。",
+				"failed": "无法将录音转为文字。"
+			},
+			"agent": {
+				"ready": "将此请求发送给 {{agent}}。",
+				"needsTask": "用 @ 添加一个任务，让 {{agent}} 知道要处理什么。",
+				"send": "发送给 {{agent}}",
+				"error": "无法启动智能体。"
+			},
+			"thinking": {
+				"live": "正在思考… {{seconds}}s",
+				"done": "已思考 {{seconds}}s"
+			},
+			"versions": {
+				"previous": "上一个回答",
+				"next": "下一个回答",
+				"label": "第 {{current}} 个回答，共 {{total}} 个"
+			},
+			"feedback": {
+				"up": "回答很好",
+				"down": "回答不好",
+				"reasonLabel": "哪里出了问题？（可选）",
+				"reasonPlaceholder": "例如：数字有误、漏掉了某个任务",
+				"send": "发送",
+				"skip": "跳过",
+				"thanks": "感谢你的反馈。"
+			},
+			"commands": {
+				"summarize": "总结",
+				"summarizeHint": "当前范围内的项目、迭代或页面",
+				"chart": "图表",
+				"chartHint": "根据你的数据绘制图表",
+				"chartPrefill": "图表",
+				"brief": "简报",
+				"briefHint": "项目、迭代或模块的干系人简报",
+				"create": "创建",
+				"createHint": "切换到构建模式",
+				"translate": "翻译",
+				"translateHint": "翻译成你的语言",
+				"clear": "清空",
+				"clearHint": "开始新对话",
+				"skill": "已保存的技能",
+				"summarizeTurn": "总结 {{name}}",
+				"briefTurn": "{{name}} 的简报",
+				"summarizeNeedsScope": "请打开一个项目、迭代或页面，或用 @ 添加一个，以便进行总结。",
+				"briefNeedsScope": "请打开一个项目、迭代或模块，或用 @ 添加一个，以便生成简报。",
+				"buildUnavailable": "此处无法使用构建模式。",
+				"translatePrompt": "将你的上一个回答翻译成{{language}}。",
+				"translatePrefill": "翻译成{{language}}：",
+				"this": {
+					"page": "此页面",
+					"cycle": "此迭代",
+					"module": "此模块",
+					"project": "此项目"
+				}
+			},
+			"conversation": {
+				"rename": "重命名",
+				"pin": "置顶",
+				"unpin": "取消置顶",
+				"export": "导出为 Markdown",
+				"saveAsPage": "另存为页面",
+				"delete": "删除对话"
+			},
+			"save": {
+				"title": "另存为页面",
+				"description": "页面将包含文本及其来源链接。",
+				"pageTitle": "标题",
+				"project": "项目",
+				"noProjects": "没有可保存此页面的项目。",
+				"submit": "保存页面",
+				"saved": "已另存为页面",
+				"open": "打开页面",
+				"error": "无法保存页面"
+			}
+		},
+		"writing": {
+			"aiButton": "AI",
+			"menuLabel": "AI 操作",
+			"actions": {
+				"summarize": "总结",
+				"improve": "改进文字",
+				"shorter": "缩短",
+				"longer": "扩写",
+				"fix": "修正拼写和语法",
+				"translate": "翻译为…",
+				"custom": "让 AI…"
+			},
+			"customPlaceholder": "告诉 AI 要做什么，例如：把这段改成检查清单",
+			"customSubmit": "生成",
+			"preview": {
+				"label": "AI 建议",
+				"generating": "正在撰写…",
+				"editLabel": "编辑建议",
+				"replace": "替换",
+				"insertBelow": "插入到下方",
+				"discard": "放弃",
+				"stop": "停止",
+				"retry": "重试",
+				"empty": "AI 没有返回任何内容。请重试或换种说法。",
+				"note": "AI 可能会出错，使用前请先检查。",
+				"incomplete": "草稿在完成前停止了。请检查或重试。"
+			},
+			"summary": {
+				"button": "总结",
+				"cycle": "总结迭代",
+				"project": "总结项目",
+				"page": "总结页面",
+				"title": "AI 摘要",
+				"generating": "正在总结…",
+				"dismiss": "关闭",
+				"copy": "复制",
+				"copied": "已复制",
+				"copyError": "无法复制摘要。",
+				"saveAsPage": "另存为页面",
+				"pageTitle": "摘要：{{name}}",
+				"saved": "摘要已另存为页面",
+				"saveError": "无法保存页面。",
+				"openPage": "打开页面",
+				"task": "总结任务",
+				"saveAsComment": "保存为评论",
+				"commentSaved": "摘要已保存为评论",
+				"commentError": "无法保存评论。"
+			},
+			"spec": {
+				"button": "起草需求规格",
+				"title": "起草需求规格",
+				"description": "AI 会根据此任务及其上下文起草一个需求规格页面。请先检查和编辑，再创建页面；页面会链接回该任务。",
+				"generating": "正在起草…",
+				"titleLabel": "页面标题",
+				"bodyLabel": "需求规格",
+				"edit": "编辑",
+				"preview": "预览",
+				"create": "创建页面",
+				"pageTitle": "需求规格：{{title}}",
+				"created": "已创建需求规格页面",
+				"createError": "无法创建页面。"
+			},
+			"taskWriter": {
+				"button": "用 AI 撰写",
+				"draft": "根据标题起草",
+				"improve": "改进",
+				"instruction": "可选：重点关注什么？",
+				"hint": "在你选择“使用此内容”之前不会有任何更改。",
+				"writing": "正在撰写…",
+				"use": "使用此内容",
+				"retry": "重试",
+				"discard": "放弃",
+				"close": "关闭 AI 撰写"
+			},
+			"feedback": {
+				"good": "回答不错",
+				"bad": "回答不好",
+				"thanks": "感谢你的反馈"
+			},
+			"tone": {
+				"label": "语气：{{tone}}",
+				"legend": "语气",
+				"default": "默认",
+				"professional": "正式",
+				"casual": "随意"
+			},
+			"block": {
+				"command": "AI 块",
+				"title": "AI 块",
+				"customPlaceholder": "要让 AI 根据此页面写什么？",
+				"stale": "生成后页面已更改。重新生成以包含这些更改。",
+				"accept": "采用",
+				"regenerate": "重新生成",
+				"presets": {
+					"tldr": "摘要（TL;DR）",
+					"faq": "常见问题",
+					"action_items": "待办事项",
+					"custom": "自定义指令"
+				}
+			},
+			"title": {
+				"suggest": "建议标题",
+				"thinking": "正在构思标题…",
+				"use": "使用此标题",
+				"another": "换一个"
+			},
+			"comment": {
+				"menuLabel": "AI 帮你写这条评论",
+				"previewLabel": "AI 对你评论的建议",
+				"replace": "替换草稿"
+			}
+		},
+		"errors": {
+			"AI_DISABLED": "此处已关闭 AI。",
+			"AI_NOT_CONFIGURED": "AI 未正确设置。请让管理员检查 AI 设置。",
+			"AI_ROUTE_BLOCKED": "根据你的隐私设置，此数据不能发送给 AI 模型。",
+			"AI_BUDGET_EXCEEDED": "已达到 AI 限额。请稍后再试，或让管理员提高限额。",
+			"AI_RATE_LIMITED": "同时发出的 AI 请求过多。请稍等片刻后重试。",
+			"AI_REFUSED": "AI 模型拒绝了此请求。",
+			"AI_PROVIDER_ERROR": "AI 服务没有响应。请稍后重试。",
+			"unknown": "AI 出现问题。请重试。",
+			"AI_HISTORY_OFF": "此工作区不会在服务器上保存 AI 对话。你的历史记录只保留在此浏览器中。"
+		},
+		"features": {
+			"connection_test": "连接测试",
+			"ask": "提问",
+			"summarize": "摘要",
+			"editor_assist": "写作辅助",
+			"spec_draft": "需求规格草稿",
+			"duplicate_check": "重复检查",
+			"talk_to_build": "根据提示词规划",
+			"triage": "分拣建议",
+			"translate": "翻译",
+			"brief": "干系人简报",
+			"agent_run": "智能体",
+			"rule_compiler": "自动化规则",
+			"capture": "捕获为事项",
+			"estimate": "预估",
+			"retro": "回顾",
+			"my_brief": "我的简报",
+			"embedding": "搜索索引",
+			"coding_handoff": "编码智能体任务简报",
+			"build_chat": "在聊天中构建",
+			"nl_filter": "自然语言筛选",
+			"inbox_digest": "收件箱摘要",
+			"speech": "语音转文字"
+		},
+		"providers": {
+			"anthropic": "Anthropic (Claude)",
+			"openai_compatible": "OpenAI 兼容",
+			"fake": "模拟（仅用于测试）"
+		},
+		"destinations": {
+			"cloud": "云服务商",
+			"local": "本地模型"
+		},
+		"tiers": {
+			"fast": "快速模型",
+			"fastHint": "简单任务：改写、标签、简短摘要。",
+			"balanced": "均衡模型",
+			"balancedHint": "大多数功能：回答、摘要、草稿。",
+			"deep": "深度模型",
+			"deepHint": "复杂工作：规划和智能体。"
+		},
+		"test": {
+			"title": "测试连接",
+			"workspaceHint": "按照此工作区 AI 调用的方式发送一个极小的请求。",
+			"button": "测试连接",
+			"success": "已在 {{ms}} ms 内连接到 {{model}}"
+		},
+		"usage": {
+			"title": "用量",
+			"subtitle": "AI 调用次数、令牌数以及按标价计算的费用。只保留计数，绝不保存提示词或回答。",
+			"rangeLabel": "时间段",
+			"range": {
+				"thisMonth": "本月",
+				"last30Days": "最近 30 天",
+				"last90Days": "最近 90 天"
+			},
+			"calls": "调用",
+			"callsCount_other": "{{count}} 次调用",
+			"tokens": "令牌",
+			"tokensSplit": "输入 {{input}} · 输出 {{output}}",
+			"cost": "费用",
+			"costHint": "按标价计算；本地模型计为 $0。",
+			"day": "日期",
+			"byDay": "每日调用次数",
+			"byFeature": "按功能",
+			"byModel": "按模型",
+			"byUser": "按人员",
+			"byWorkspace": "按工作区",
+			"empty": "此时间段内没有 AI 用量。",
+			"unknownUser": "已删除的账户",
+			"loadError": "无法加载 AI 用量。",
+			"retry": "重试",
+			"exportCsv": "导出 CSV",
+			"exportError": "无法导出用量。",
+			"feedbackTitle": "回答评分",
+			"feedbackOverall": "{{total}} 条评分中 {{percent}}% 为好评",
+			"feedbackUp": "赞",
+			"feedbackDown": "踩",
+			"feedbackRate": "好评率"
+		},
+		"instance": {
+			"title": "AI",
+			"subtitle": "允许工作区使用 AI：选择服务商和模型，并决定数据可以发往何处。在你开启之前 AI 保持关闭，且每个工作区也必须自行选择启用。",
+			"statusTitle": "此服务器上的 AI",
+			"statusReady": "就绪",
+			"statusNotConfigured": "未设置",
+			"statusOff": "已关闭",
+			"enable": "允许 AI",
+			"enableHint": "开启此项并设置服务商后，工作区即可开启 AI 功能。",
+			"providerTitle": "服务商",
+			"providerDescription": "云端模型服务商。模型留空则使用该服务商在此档位的默认模型。",
+			"provider": "服务商",
+			"providerHint": "推荐使用 Anthropic Claude。OpenAI 兼容涵盖 OpenAI、Azure、OpenRouter、vLLM 和 LM Studio。",
+			"anthropicKey": "Anthropic API 密钥",
+			"anthropicKeyHint": "加密存储，之后不会再次显示。",
+			"openaiBaseUrl": "基础 URL",
+			"openaiBaseUrlHint": "需包含版本路径，例如 https://api.openai.com/v1。必须是公网地址。",
+			"openaiKey": "API 密钥",
+			"save": "保存",
+			"testCloud": "测试服务商",
+			"testLocal": "测试本地模型",
+			"localTitle": "本地模型",
+			"localDescription": "你自己网络中的 OpenAI 兼容服务器，例如 Ollama。受限数据只会发送到这里。",
+			"localBaseUrl": "基础 URL",
+			"localBaseUrlHint": "例如 http://ollama:11434/v1。此处允许使用内网地址。",
+			"localModel": "模型",
+			"localKey": "API 密钥",
+			"localKeyHint": "可选。仅当你的服务器需要时填写，例如使用 --api-key 启动的 vLLM。加密存储。",
+			"localOnly": "仅本地模式",
+			"localOnlyHint": "所有 AI 调用都发往本地模型；不会向云服务商发送任何内容。",
+			"privacyTitle": "隐私",
+			"privacyDescription": "各类数据可以发往何处。工作区可以设置得更严格，但不能更宽松。",
+			"restrictedRoute": "受限项目",
+			"restrictedRouteHint": "当工作区允许 AI 读取受限项目时，来自这些项目的数据。",
+			"privateRoute": "其他工作区数据",
+			"privateRouteHint": "来自非受限项目的任务、页面和评论。",
+			"routeBlocked": "从不发送",
+			"routeLocal": "仅本地模型",
+			"routeCloud": "允许云服务商",
+			"redaction": "脱敏个人数据",
+			"redactionHint": "在调用云端之前，将邮箱、电话号码、卡号和令牌替换为占位符。回答中会重新显示真实值。",
+			"zeroRetention": "零数据保留",
+			"zeroRetentionHint": "记录你与服务商的协议规定不保留任何数据。Margaya 负责显示，由服务商负责执行。",
+			"allowWorkspaceKeys": "允许工作区密钥",
+			"allowWorkspaceKeysHint": "工作区可以使用自己的服务商密钥，并为自己的用量付费。",
+			"embeddingsTitle": "嵌入",
+			"embeddingsDescription": "可选，用于语义搜索。任何 OpenAI 兼容的嵌入端点均可使用。数据库还需要 pgvector 扩展；缺少任一项时，搜索仅使用全文检索。",
+			"vectorReady": "pgvector 已就绪",
+			"vectorAvailable": "pgvector 可用",
+			"vectorUnavailable": "pgvector 不可用",
+			"embeddingsBaseUrl": "基础 URL",
+			"embeddingsModel": "模型",
+			"embeddingsKey": "API 密钥",
+			"invalidUrl": "请输入 http 或 https URL。",
+			"usageTitle": "各工作区用量",
+			"usageDescription": "此服务器上按工作区和模型统计的 AI 调用。只保留计数。",
+			"chatTitle": "对话",
+			"chatDescription": "推理模型如何思考，以及用户能看到多少思考过程。",
+			"showReasoning": "显示推理过程",
+			"showReasoningHint": "向提问者显示推理模型的思考过程。思考内容从不保存。关闭时：只显示思考了多长时间。",
+			"localThinking": "本地模型思考",
+			"localThinkingHint": "关闭时回答更快；开启时本地推理模型会先思考。",
+			"localThinkingOff": "关闭",
+			"localThinkingOn": "开启",
+			"webSearchTitle": "网络搜索",
+			"webSearchDescription": "当工作区开启网络搜索时，回答可以使用的搜索服务。",
+			"webSearchProvider": "搜索服务商",
+			"webSearchProviderHint": "SearXNG 运行在你自己的服务器上；Brave Search 和 Tavily 需要 API 密钥。",
+			"webSearchOff": "关闭",
+			"webSearchUrl": "SearXNG URL",
+			"webSearchUrlHint": "必须启用其 JSON API。",
+			"webSearchKey": "API 密钥",
+			"webSearchKeyHint": "用于 Brave Search 或 Tavily。",
+			"speechTitle": "语音转文字",
+			"speechDescription": "对话中的语音输入。未设置时，支持语音识别的浏览器会自行识别。",
+			"speechBaseUrl": "端点 URL",
+			"speechBaseUrlHint": "兼容 OpenAI 的转写端点，例如本地 Whisper 服务器。",
+			"speechModel": "模型",
+			"speechKey": "API 密钥"
+		},
+		"workspace": {
+			"navLabel": "AI",
+			"title": "AI",
+			"subtitle": "为此工作区开启 AI 功能、设置限额，并选择如何处理私有数据。",
+			"noAccess": "你需要管理 AI 的权限才能查看这些设置。",
+			"loadError": "无法加载 AI 设置。",
+			"statusTitle": "此工作区中的 AI",
+			"statusDescription": "在你开启之前 AI 保持关闭。每个项目仍可在其功能中将其关闭。",
+			"enable": "开启 AI",
+			"enableHint": "拥有“使用 AI”权限的成员可以在允许 AI 的项目中看到 AI 功能。",
+			"enabledToast": "已为此工作区开启 AI",
+			"disabledToast": "已为此工作区关闭 AI",
+			"offOnInstance": "实例管理员尚未在此服务器上允许 AI。",
+			"notConfigured": "AI 已允许，但尚未设置服务商。请联系实例管理员。",
+			"whereDataGoes": "数据去向",
+			"whereDataGoesHint": "接收此工作区 AI 请求的模型。",
+			"zeroRetention": "零保留",
+			"limitsTitle": "限额",
+			"limitsDescription": "本月已花费：{{spent}}。达到限额后将停止请求。",
+			"monthlyCap": "每月预算 (USD)",
+			"monthlyCapHint": "按标价计算，适用于整个工作区。留空表示不限制。",
+			"dailyTokens": "每人每日令牌数",
+			"dailyTokensHint": "每人每天 (UTC) 可使用的输入和输出令牌数。留空表示不限制。",
+			"noLimit": "不限制",
+			"invalidNumber": "请输入大于或等于 0 的数字。",
+			"saveLimits": "保存限额",
+			"monthSpendOfCap": "本月已使用 {{spent}}，限额 {{cap}}。",
+			"privacyTitle": "隐私",
+			"privacyDescription": "AI 只能看到提问者本人能看到的内容。",
+			"includeRestricted": "包含受限项目",
+			"includeRestrictedHint": "允许 AI 为能查看受限项目的人读取这些项目。其数据只会发往服务器允许接收受限数据的地方。",
+			"localOnly": "仅本地模型",
+			"localOnlyHint": "将所有 AI 请求发送到服务器的本地模型。",
+			"localOnlyForced": "服务器处于仅本地模式。",
+			"localOnlyUnavailable": "此服务器没有本地模型。",
+			"redactPii": "脱敏个人数据",
+			"redactPiiHint": "在请求离开服务器之前，将邮箱、电话号码、卡号和令牌替换为占位符。",
+			"redactPiiForced": "始终开启：服务器会对每个云端请求进行脱敏。",
+			"approval": "审批 AI 更改",
+			"approvalHint": "AI 建议的更改始终需要等待人工审批。",
+			"semanticSearch": "语义搜索",
+			"semanticSearchHint": "提问和重复检查不仅按字词，还会按含义查找任务、页面和评论。内容使用服务器的嵌入模型建立索引。",
+			"semanticUnavailable": "此服务器的数据库不支持 pgvector，因此搜索仅使用全文检索。",
+			"semanticNoEndpoint": "此服务器没有嵌入端点，因此搜索仅使用全文检索。",
+			"semanticIndexed_one": "已索引 {{count}} 项",
+			"semanticIndexed_other": "已索引 {{count}} 项",
+			"semanticPaused": "索引已暂停。{{reason}}",
+			"semanticEnabledToast": "语义搜索已开启。索引在后台进行。",
+			"semanticDisabledToast": "语义搜索已关闭，其索引已删除。",
+			"keyTitle": "自有 API 密钥",
+			"keyDescription": "使用工作区自己的服务商账户，而不是服务器的账户。密钥加密存储，之后不会再次显示。",
+			"keyCurrent": "已保存的密钥",
+			"keyEnding": "尾号 {{last4}}",
+			"keyUnreadable": "已保存的密钥无法再读取。请重新输入。",
+			"keyRemove": "移除",
+			"keyProvider": "服务商",
+			"keyValue": "API 密钥",
+			"keyReplace": "替换密钥",
+			"keyHint": "以 sk-ant- 开头的 Anthropic API 密钥。",
+			"keyOpenAiHint": "与服务器的 OpenAI 兼容端点配合使用。",
+			"keyPlaceholder": "粘贴密钥",
+			"keyTooShort": "此密钥似乎太短。",
+			"keySave": "保存密钥",
+			"keySavedToast": "密钥已保存",
+			"keyRemovedToast": "密钥已移除",
+			"saved": "AI 设置已保存",
+			"saveError": "无法保存 AI 设置。",
+			"chatTitle": "问 AI 对话",
+			"chatDescription": "对话可以为此工作区的成员做什么。",
+			"webSearch": "网络搜索",
+			"webSearchHint": "成员可以让回答搜索网络。搜索结果会作为网络来源注明出处。",
+			"webSearchUnavailable": "此实例尚未设置网络搜索。",
+			"webSearchLocalOnly": "AI 仅使用本地模型时不会使用。",
+			"storeConversations": "在服务器上保存对话历史",
+			"storeConversationsHint": "每个人的对话都保存在工作区中，可以在任何设备上重新打开。关闭时：对话只保留在各自的浏览器中。",
+			"allowAutopilot": "允许自动驾驶",
+			"allowAutopilotHint": "构建模式可以无需确认直接应用更改。每项更改仍会被记录，并且可以撤销。"
+		},
+		"agents": {
+			"navLabel": "智能体",
+			"title": "智能体",
+			"subtitle": "AI 智能体是工作区成员，代表请求者处理任务，所拥有的权限绝不会超过该请求者。",
+			"listTitle": "工作区智能体",
+			"badge": "智能体",
+			"noAccess": "只有能管理 AI 的人才能设置智能体。",
+			"empty": "还没有智能体。创建一个，然后在评论中提及它、给它指派任务，或从任务中运行它。",
+			"loadError": "无法加载智能体。",
+			"retry": "重试",
+			"create": "新建智能体",
+			"edit": "编辑智能体",
+			"dialogHint": "智能体可以像成员一样被指派和提及。它们无法登录，也不按席位计费。",
+			"save": "保存",
+			"cancel": "取消",
+			"created": "已创建智能体",
+			"saved": "已保存智能体",
+			"deleted": "已删除智能体",
+			"saveError": "无法保存智能体，请重试。",
+			"enable": "开启",
+			"disable": "关闭",
+			"off": "已关闭",
+			"delete": "删除",
+			"deleteTitle": "删除 {{name}}？",
+			"deleteBody": "该智能体将离开工作区。它的评论和历史记录会保留，运行记录也会保留在智能体工作台中。",
+			"spend": "本月 {{spent}}",
+			"spendOfBudget": "本月已用 {{spent}}，预算 {{budget}}",
+			"activityFilter": "智能体",
+			"fields": {
+				"name": "名称",
+				"nameTaken": "此工作区中已有智能体或成员使用这个名称。请换一个名称。",
+				"description": "描述",
+				"descriptionPlaceholder": "此智能体能帮忙做什么",
+				"instructions": "指令",
+				"instructionsHint": "智能体的工作方式。只有管理员可以编写指令；任务、评论和页面中的文字永远不会被当作指令。",
+				"role": "角色",
+				"roleHint": "智能体最多能做的事。每次运行还会受到请求者自身权限的限制。",
+				"tier": "模型",
+				"tierFast": "快速",
+				"tierBalanced": "均衡",
+				"tierDeep": "深度",
+				"provider": "运行位置",
+				"providerDefault": "工作区默认",
+				"providerLocal": "仅本地模型",
+				"budget": "每月预算 (USD)",
+				"budgetHint": "本月花费达到此金额后，运行将停止。留空表示不限制该智能体；工作区限额仍然适用。",
+				"projects": "项目",
+				"projectsAll": "其角色可访问的所有项目",
+				"projectsSome": "仅这些项目",
+				"projectsHint": "在其他项目中的运行会停止，智能体会说明它未设置为在那里工作。",
+				"projectsNone": "请至少选择一个项目。",
+				"skills": "技能",
+				"skillsEmpty": "还没有共享技能。在 Ask 中保存的共享技能可以分配给智能体。",
+				"skillsHint": "当请求合适时，智能体会遵循这些已保存的提示（最多 10 个）。",
+				"webAccess": "网络访问",
+				"webAccessHint": "允许智能体搜索网络并使用工作区的连接器。它发送到那里的内容会离开 Margaya。"
+			},
+			"status": {
+				"queued": "排队中",
+				"running": "运行中",
+				"awaiting_approval": "等待审批",
+				"succeeded": "已完成",
+				"failed": "失败",
+				"cancelled": "已停止",
+				"needs_input": "需要回复"
+			},
+			"stepStatus": {
+				"ok": "已完成",
+				"error": "失败",
+				"denied": "不允许",
+				"pending": "等待审批",
+				"applied": "已应用",
+				"rejected": "已拒绝",
+				"expired": "已过期",
+				"reverted": "已撤销"
+			},
+			"step": {
+				"model": "模型调用"
+			},
+			"tools": {
+				"read_task": "读取任务",
+				"read_project": "读取项目",
+				"read_page": "读取页面",
+				"search_workspace": "搜索",
+				"add_comment": "评论",
+				"update_task": "更新任务",
+				"move_status": "更改状态",
+				"create_subtask": "创建子任务",
+				"create_page": "创建页面",
+				"link_tasks": "关联任务",
+				"delete_task": "删除任务",
+				"bulk_move_status": "更改多个任务的状态",
+				"ask_person": "提问",
+				"web_search": "网络搜索",
+				"connector": "外部服务：{{tool}}"
+			},
+			"runErrors": {
+				"AGENT_GONE": "该智能体已被删除。",
+				"AGENT_DISABLED": "该智能体已关闭。",
+				"AGENT_LEFT": "该智能体已不再是工作区成员。",
+				"PRINCIPAL_LEFT": "请求者已不再是工作区成员。",
+				"AI_USE_DENIED": "请求者没有使用 AI 的权限。",
+				"NOT_IN_SCOPE": "该任务所在的项目不允许 AI 读取。",
+				"TIME_LIMIT": "运行时间超过 10 分钟，已被停止。",
+				"OUTPUT_LIMIT": "智能体的回答太长了。请提出更小的更改。",
+				"TURN_LIMIT": "智能体在完成前用完了步骤。请提出更小、更具体的更改。",
+				"INTERRUPTED": "运行被中断。已做出的更改仍可撤销。",
+				"APPROVAL_EXPIRED": "24 小时内无人处理建议的更改，因此它们已过期。",
+				"INTERNAL": "运行过程中出现问题。",
+				"NEEDS_INPUT_EXPIRED": "24 小时内没有人回答智能体的问题。",
+				"OUTSIDE_AGENT_PROJECTS": "该智能体未设置为在此项目中工作。"
+			},
+			"change": {
+				"approve": "批准",
+				"reject": "拒绝",
+				"approved": "已应用更改",
+				"rejected": "已放弃更改",
+				"decideError": "无法应用你的决定，请重试。",
+				"undo": "撤销",
+				"undone": "已撤销更改",
+				"undoError": "无法撤销此更改。任务可能在此之后已被修改。",
+				"expiresAt": "{{time}} 过期",
+				"before": "更改前",
+				"after": "更改后",
+				"openPage": "打开页面",
+				"openSubtask": "打开子任务",
+				"openLinked": "打开关联任务",
+				"empty": "（空）",
+				"fields": {
+					"title": "标题",
+					"priority": "优先级",
+					"dueDate": "截止日期",
+					"description": "描述",
+					"status": "状态",
+					"statusOf": "{{task}} 的状态",
+					"comment": "评论",
+					"subtask": "新子任务",
+					"page": "新页面",
+					"relation": "关联（{{relation}}）",
+					"delete": "移至回收站",
+					"connectorCall": "调用 {{connector}}"
+				}
+			},
+			"inbox": {
+				"title": "{{agentName}} 需要你的审批",
+				"verb": "请求你审批",
+				"cardTitle": "建议的更改"
+			},
+			"reply": {
+				"title": "{{agentName}} 回复了你的请求",
+				"verb": "回复了你的请求",
+				"cardTitle": "智能体的回复",
+				"hint": "智能体没有把这条回复发布到任务中，因此在这里显示。"
+			},
+			"activity": {
+				"onBehalfOf": "代表 {{name}}"
+			},
+			"run": {
+				"button": "运行智能体",
+				"title": "在此任务上运行智能体",
+				"hint": "智能体的权限最多与你相同。更改可以撤销，部分更改需要等待你的审批。",
+				"agent": "智能体",
+				"prompt": "要它做什么？",
+				"promptPlaceholder": "例如：把它拆分成子任务，并建议一个优先级。",
+				"start": "运行",
+				"started": "{{name}} 已开始处理",
+				"error": "无法启动智能体，请重试。",
+				"recent": "此任务的最近运行",
+				"viewInDesk": "在智能体工作台中打开"
+			},
+			"desk": {
+				"nav": "智能体工作台",
+				"title": "智能体工作台",
+				"subtitle": "你的智能体做过和正在做的事：每次运行及其步骤、费用和更改。",
+				"emptyTitle": "还没有智能体运行记录",
+				"empty": "在评论中提及智能体、给它指派任务，或从任务中运行它。",
+				"allAgents": "全部智能体",
+				"allStatuses": "全部状态",
+				"filterAgent": "按智能体筛选",
+				"filterStatus": "按状态筛选",
+				"approvalsTitle": "等待你处理",
+				"selectRun": "选择一次运行以查看其步骤和更改。",
+				"runMissing": "此运行不可用。",
+				"deletedAgent": "已删除的智能体",
+				"onBehalfOf": "为 {{name}}",
+				"cost": "费用",
+				"tokensLabel": "令牌",
+				"tokens": "令牌：{{value}}",
+				"toolCallsLabel": "工具调用",
+				"summary": "摘要",
+				"changes": "更改集",
+				"noChanges": "没有更改。",
+				"steps": "步骤",
+				"cancelRun": "停止运行",
+				"cancelled": "已停止运行",
+				"cancelError": "无法停止运行。",
+				"trigger": {
+					"mention": "被提及",
+					"assign": "被指派",
+					"manual": "从任务中运行",
+					"schedule": "定时",
+					"automation": "自动化",
+					"chat": "后续"
+				},
+				"project": "项目：",
+				"workedSeconds": "工作了 {{count}} 秒",
+				"workedMinutes": "工作了 {{count}} 分钟"
+			},
+			"connectors": {
+				"title": "连接器",
+				"subtitle": "具有网络访问权限的智能体可以调用的外部 MCP 服务器。只读工具会立即运行，其他操作都要等待审批。",
+				"create": "添加连接器",
+				"edit": "编辑连接器",
+				"delete": "删除连接器",
+				"created": "已添加连接器",
+				"saved": "已保存连接器",
+				"deleted": "已删除连接器",
+				"saveError": "无法保存连接器，请重试。",
+				"empty": "还没有连接器。添加 MCP 服务器的地址后，具有网络访问权限的智能体就能使用它的工具。",
+				"shared": "共享",
+				"personal": "仅自己",
+				"enable": "开启",
+				"disable": "关闭",
+				"test": "测试",
+				"testOk": "已连接：{{count}} 个工具，其中 {{readOnly}} 个只读",
+				"testError": "无法运行测试，请重试。",
+				"errors": {
+					"DESTINATION": "该地址不是公共服务器。",
+					"TIMEOUT": "服务器没有及时响应。",
+					"NETWORK": "无法连接到服务器。",
+					"HTTP": "服务器返回了错误（{{status}}）。",
+					"TOO_LARGE": "服务器的响应过大。",
+					"PROTOCOL": "这看起来不是 MCP 服务器。",
+					"RPC": "MCP 服务器拒绝了请求。",
+					"SECRET_UNREADABLE": "已保存的密钥无法再读取，请重新输入。"
+				},
+				"secretHint": "密钥 ••••{{last4}}",
+				"dialogHint": "Margaya 通过 Streamable HTTP 连接。密钥会加密存储，且不会再次显示。",
+				"name": "名称",
+				"url": "服务器 URL",
+				"urlHint": "MCP 端点，例如 https://mcp.example.com/mcp。它必须能从公网访问。",
+				"auth": "身份验证",
+				"authHeader": "请求头中的密钥",
+				"authNone": "无",
+				"headerName": "请求头名称",
+				"secret": "密钥",
+				"secretKeep": "留空则保留当前密钥",
+				"secretHelp": "请求头的完整值，例如 Bearer 后接令牌。",
+				"sharedToggle": "与工作区共享",
+				"sharedHint": "智能体在每次运行中都会使用共享连接器。关闭后只用于代表你进行的运行。",
+				"deleteTitle": "删除 {{name}}？",
+				"deleteBody": "智能体将无法再使用它的工具，已保存的密钥也会被删除。"
+			},
+			"followUp": {
+				"label": "回复智能体",
+				"placeholder": "提出后续问题或说明下一步要做什么…",
+				"send": "发送",
+				"error": "无法开始后续运行，请重试。"
+			},
+			"needsInput": {
+				"title": "智能体有一个问题",
+				"answerLabel": "你的回答",
+				"placeholder": "输入你的回答…",
+				"reply": "回复",
+				"sent": "回答已发送，智能体继续工作。",
+				"error": "无法发送你的回答，请重试。",
+				"hint": "未回答的问题会在 24 小时后过期。",
+				"waiting": "智能体正在等待发起请求的人回答。",
+				"inboxHint": "在你回答之前，运行会暂停。",
+				"answer": "在智能体工作台中回答",
+				"notificationTitle": "{{agentName}} 有一个问题",
+				"verb": "向你提了一个问题"
+			},
+			"schedules": {
+				"open": "{{name}} 的计划",
+				"title": "计划：{{name}}",
+				"hint": "按时间表运行智能体。运行会代表最后保存该计划的人执行，权限不超过此人。",
+				"empty": "还没有计划。",
+				"create": "新建计划",
+				"edit": "编辑计划",
+				"delete": "删除计划",
+				"deleteBody": "删除此计划？过去的运行仍保留在智能体工作台中。",
+				"deleted": "已删除计划",
+				"saved": "已保存计划",
+				"saveError": "无法保存计划，请重试。",
+				"enable": "开启计划",
+				"disable": "关闭计划",
+				"enabled": "开启",
+				"when": "时间",
+				"presets": {
+					"weekdays": "每个工作日 9:00",
+					"mondays": "每周一 9:00",
+					"monthly": "每月 1 日 9:00",
+					"custom": "自定义（cron）"
+				},
+				"customLabel": "cron 表达式 {{cron}}",
+				"cron": "cron 表达式",
+				"cronHint": "五个字段：分钟、小时、日期、月份、星期。最多每 15 分钟一次。",
+				"timezone": "时区",
+				"project": "项目",
+				"chooseProject": "选择项目",
+				"task": "任务",
+				"noTask": "无任务（整个项目）",
+				"taskHint": "没有任务时，智能体会处理整个项目，并把报告写到页面上。",
+				"projectLevel": "整个项目",
+				"prompt": "它应该做什么？",
+				"promptPlaceholder": "例如：总结自昨天以来的变化。",
+				"nextRun": "下次运行 {{time}}",
+				"runsAs": "代表 {{name}} 运行",
+				"runsAsHint": "保存后，这些运行将代表你执行。如果你离开工作区或失去 AI 访问权限，计划会自动关闭。",
+				"errors": {
+					"CRON_INVALID": "请输入五个 cron 字段：分钟、小时、日期、月份、星期。",
+					"CRON_TOO_FREQUENT": "计划最多每 15 分钟运行一次。",
+					"CRON_NEVER": "此计划永远不会运行。",
+					"TIMEZONE_INVALID": "请选择有效的时区。",
+					"OUTSIDE_AGENT_PROJECTS": "该智能体未设置为在那个项目中工作。"
+				}
+			},
+			"templates": {
+				"title": "从模板开始",
+				"blank": "空白智能体",
+				"blankHint": "自己编写指令。",
+				"triage": {
+					"name": "分诊",
+					"description": "整理新任务：清晰的标题、优先级和重复项链接。"
+				},
+				"standup": {
+					"name": "站会",
+					"description": "每天在项目页面上撰写站会摘要。"
+				},
+				"specWriter": {
+					"name": "规格撰写",
+					"description": "把任务整理成带验收标准的规格页面。"
+				},
+				"deliveryRisk": {
+					"name": "交付风险",
+					"description": "每周报告逾期、受阻和无人负责的工作。"
+				},
+				"feedback": {
+					"name": "客户反馈",
+					"description": "将客户反馈按主题归类并附上示例。"
+				},
+				"triggers": {
+					"mention": "提及",
+					"assign": "分配",
+					"schedule": "计划",
+					"automation": "自动化"
+				}
+			}
+		},
+		"capture": {
+			"button": "捕获",
+			"buttonHint": "从截图、录屏或会议记录新建",
+			"title": "从捕获内容新建请求",
+			"description": "添加截图、录屏或会议记录。AI 会提出请求建议；在你确认之前不会创建任何内容。",
+			"tabs": {
+				"screenshot": "截图",
+				"recording": "录屏",
+				"transcript": "会议记录"
+			},
+			"dropzone": "粘贴、拖放或选择截图",
+			"dropzoneHint": "PNG、JPEG 或 WebP，最多 {{count}} 张。位置和相机信息会被移除。",
+			"chooseRecording": "选择录屏文件",
+			"recordingHint": "只会向 AI 发送 {{count}} 张静态帧，视频仍保留在你的设备上。",
+			"notes": "备注（可选）",
+			"notesPlaceholder": "你当时在做什么？出了什么问题？",
+			"transcript": "会议转录或记录",
+			"transcriptPlaceholder": "粘贴会议转录或记录。每个待办事项都会成为一条单独的请求。",
+			"remove": "移除 {{name}}",
+			"tooMany": "每次捕获最多 {{count}} 张图片。",
+			"mediaErrors": {
+				"type": "不支持此文件类型。",
+				"tooLarge": "文件过大。",
+				"unreadable": "无法读取此文件。"
+			},
+			"preparing": "正在准备图片…",
+			"analyze": "生成请求建议",
+			"analyzing": "正在读取捕获内容…",
+			"reviewTitle": "检查建议的请求",
+			"reviewDescription": "可以编辑或排除任意请求。在你确认之前不会创建任何内容。",
+			"empty": "未在此捕获内容中找到请求。",
+			"include": "包含此请求",
+			"titleLabel": "标题",
+			"descriptionLabel": "描述",
+			"priorityLabel": "优先级",
+			"labelsLabel": "建议的标签",
+			"assignTo": "分配给 {{name}}",
+			"attachNote": "待附加的图片：{{count}} 张",
+			"attachNotAllowed": "无法附加图片：你需要编辑任务的权限。",
+			"back": "返回",
+			"create": "创建请求（{{count}}）",
+			"created": "已创建请求：{{count}} 条",
+			"extrasFailed": "部分标签、负责人或附件未能添加。",
+			"createError": "无法创建请求。",
+			"draftFromImages": "根据图片起草",
+			"drafting": "正在起草…",
+			"sections": {
+				"steps": "复现步骤",
+				"expected": "预期结果",
+				"actual": "实际结果",
+				"environment": "环境"
+			}
+		},
+		"codingAgent": {
+			"button": "发送给编码智能体",
+			"dialogTitle": "发送给编码智能体",
+			"dialogDescription": "Margaya 会用这份简报在仓库中创建一个 issue。发送前请检查并编辑。",
+			"repository": "仓库",
+			"profile": "编码智能体",
+			"github": "GitHub",
+			"gitea": "Gitea",
+			"notReady": "此仓库的集成还不能创建 issue。请在项目的集成设置中检查。",
+			"noProfiles": "没有适用于此仓库的编码智能体配置。",
+			"useAi": "用 AI 总结",
+			"regenerate": "重新生成",
+			"preparing": "正在准备简报…",
+			"error": "无法准备简报。",
+			"titleLabel": "Issue 标题",
+			"briefLabel": "简报",
+			"briefNote": "看起来像密码或密钥的内容会在发送前移除。不会自动合并任何内容。",
+			"send": "发送",
+			"sending": "正在发送…",
+			"sent": "已发送给编码智能体",
+			"sentNotAssigned": "已创建 issue，但无法添加指派人",
+			"sendError": "无法创建 issue",
+			"openIssue": "打开 issue",
+			"timelineTitle": "编码智能体",
+			"timelineLabel": "编码智能体进度",
+			"sentBy": "{{name}} 已发送给 {{profile}}",
+			"sentByUnknown": "已发送给 {{profile}}",
+			"issueLink": "Issue #{{number}}",
+			"prLink": "拉取请求 #{{number}}",
+			"pending": "尚未完成",
+			"steps": {
+				"issue_created": "已创建 issue",
+				"working": "智能体处理中",
+				"ready_for_review": "待评审",
+				"merged": "已合并",
+				"closed": "未合并即关闭"
+			},
+			"settings": {
+				"title": "编码智能体",
+				"subtitle": "用于“发送给编码智能体”的 issue 模板，通过 GitHub 和 Gitea 发送",
+				"sharedNote": "此工作区的所有项目共用。配置只会在 issue 中添加提及或指派人，不保存任何 AI 密钥。",
+				"builtin": "内置",
+				"githubOnly": "仅限 GitHub",
+				"name": "名称",
+				"namePlaceholder": "例如：我们的构建运行器",
+				"mention": "提及",
+				"mentionPlaceholder": "@agent，或包含 {task} 和 {branch} 的文本",
+				"assignee": "指派人（GitHub）",
+				"assigneePlaceholder": "GitHub 登录名，例如 Copilot",
+				"enabled": "已启用",
+				"edit": "编辑配置",
+				"delete": "删除配置",
+				"add": "添加配置",
+				"save": "保存",
+				"saved": "配置已保存",
+				"deleted": "配置已删除",
+				"error": "无法保存配置",
+				"needsTarget": "请添加提及或指派人。",
+				"readOnly": "只有管理工作区设置的人才能修改配置。"
+			}
+		},
+		"filters": {
+			"button": "用文字描述筛选…",
+			"short": "描述",
+			"label": "描述要显示的内容",
+			"placeholder": "例如：我进行中的逾期缺陷",
+			"apply": "应用",
+			"none": "无法转换为筛选条件，请换种说法。",
+			"applied": "已应用筛选。可编辑标签调整。",
+			"dropped": "未能理解：{{words}}",
+			"hint": "AI 会把你的描述转换为状态、标签、人员、周期、优先级和日期筛选。"
+		},
+		"budget": {
+			"warningTitle": "本月 AI 预算已使用 {{percent}}%",
+			"reachedTitle": "本月 AI 预算已用完",
+			"amounts": "{{used}} / {{cap}}。",
+			"warningHint": "达到上限后 AI 功能将停止。如有需要，请在下方提高上限。",
+			"reachedHint": "AI 功能已暂停，直到下个月或上限提高为止。",
+			"notice": {
+				"title": "AI 预算即将用完",
+				"content": "此工作区已使用每月 AI 预算的 {{percent}}%。"
+			}
+		},
+		"skills": {
+			"navLabel": "AI 技能",
+			"title": "AI 技能",
+			"subtitle": "已保存的提示词，可在 AI 对话中通过 \"/\" 重复使用。",
+			"listTitle": "技能",
+			"new": "新建技能",
+			"newTitle": "新建技能",
+			"editTitle": "编辑技能",
+			"dialogHint": "每次使用该技能时，提示词都会添加到问题中。",
+			"name": "名称",
+			"namePlaceholder": "发布说明",
+			"description": "描述",
+			"prompt": "提示词",
+			"promptPlaceholder": "为本迭代完成的任务撰写发布说明，按功能分组。",
+			"shareLabel": "与工作区共享",
+			"shareHint": "此处所有使用 AI 的人都可以使用。关闭时：仅你可用。",
+			"shared": "已共享",
+			"personal": "仅你",
+			"save": "保存技能",
+			"saved": "技能已保存",
+			"saveError": "无法保存技能",
+			"deleted": "技能已删除",
+			"edit": "编辑 {{name}}",
+			"delete": "删除 {{name}}",
+			"deleteConfirm": "删除 {{name}}？",
+			"empty": "还没有技能。保存一个你常用的提示词吧。",
+			"loadError": "无法加载技能。",
+			"noAccess": "你需要在此工作区使用 AI 的权限。"
+		},
+		"memory": {
+			"navLabel": "AI 记忆",
+			"title": "AI 记忆",
+			"subtitle": "AI 回答时会记住的简短事实，例如“我们的发布日是星期四”。",
+			"scopes": {
+				"workspace": "工作区",
+				"project": "项目",
+				"user": "个人"
+			},
+			"scopeHints": {
+				"workspace": "适用于工作区中的所有人。由 AI 管理员编辑。",
+				"project": "适用于单个项目。由 AI 管理员编辑。",
+				"user": "仅适用于你，且仅你可见。"
+			},
+			"project": "项目",
+			"newNote": "新建笔记",
+			"placeholder": "我们的发布日是星期四。",
+			"add": "添加笔记",
+			"save": "保存笔记",
+			"editNote": "编辑笔记",
+			"deleteNote": "删除笔记",
+			"saved": "笔记已保存",
+			"deleted": "笔记已删除",
+			"saveError": "无法保存笔记",
+			"empty": "还没有笔记。",
+			"loadError": "无法加载笔记。",
+			"adminsOnly": "只有 AI 管理员可以在此添加笔记。",
+			"noAccess": "你需要在此工作区使用 AI 的权限。"
+		}
+	},
+	"insight": {
+		"close": "关闭",
+		"retry": "重试",
+		"stop": "停止",
+		"writing": "正在撰写…",
+		"days_other": "{{count}} 天",
+		"estimate": {
+			"usually": "类似任务通常为 {{value}}",
+			"took_other": "{{count}} 个类似任务耗时 {{min}}–{{max}} 天（中位数 {{median}}）",
+			"basedOn_other": "基于 {{count}} 个已完成的类似任务",
+			"use": "使用 {{value}}",
+			"why": "为什么？",
+			"similar": "类似任务"
+		},
+		"calibration": {
+			"title": "估算校准",
+			"description": "过去 {{days}} 天内，各规模任务从首次开始到完成的实际耗时。",
+			"empty": "还没有记录了开始时间的已完成估算任务。",
+			"estimate": "估算",
+			"tasks": "任务",
+			"actual": "实际耗时",
+			"range": "中位数 {{median}} 天（{{low}}–{{high}}）",
+			"ordered": "估算越大耗时越长，符合预期。",
+			"notOrdered": "估算更大的任务并不总是耗时更长：值得看看团队如何评估工作量。",
+			"fewSamples": "需要更多已完成的任务才能比较规模。",
+			"unmeasured_other": "{{count}} 个任务没有记录开始时间，已排除。"
+		},
+		"capacity": {
+			"meter": "计划工作量与常规周期的对比",
+			"within": "计划量为常规周期的 {{percent}}%",
+			"over": "超出容量：计划量为常规周期的 {{percent}}%",
+			"noDates": "设置周期日期后即可检查容量。",
+			"noHistory": "团队在之前的周期中完成工作后，将显示容量。",
+			"details": "容量详情",
+			"compare": "已计划 {{load}}；常规周期可容纳 {{typical}}（范围 {{low}}–{{high}}）。",
+			"tasks_other": "{{count}} 个任务",
+			"points_other": "{{count}} 点",
+			"basisCycles_other": "基于团队在最近 {{count}} 个已结束周期中完成的工作量，按本周期长度换算。",
+			"basisThroughput": "基于项目在过去 8 周内每段与本周期等长的时间里完成的任务数。",
+			"deferTitle": "可移至后续周期",
+			"blocks_other": "阻塞 {{count}} 个",
+			"membersTitle": "每人负载",
+			"memberLoad": "{{load}} · 通常 {{typical}}",
+			"membersNote": "相对于每个人自身常规节奏的负载，用于平衡工作。这不是绩效衡量。",
+			"unassigned": "未分配"
+		},
+		"retro": {
+			"button": "回顾",
+			"buttonLabel": "准备回顾",
+			"title": "回顾",
+			"factsTitle": "发生了什么",
+			"factsSoFar": "目前发生了什么",
+			"factsNote": "这些事实来自 Margaya 的记录，而非 AI。它们描述的是团队的工作，而非个人。",
+			"error": "无法加载此周期的事实。",
+			"aiIntro": "让 AI 根据这些事实撰写简短叙述和讨论问题。",
+			"write": "撰写叙述",
+			"rewrite": "重新撰写",
+			"edit": "编辑",
+			"preview": "预览",
+			"editLabel": "回顾叙述",
+			"saveAsPage": "保存为页面",
+			"saveWithNarrative": "保存事实、叙述以及供团队填写的部分。",
+			"saveFactsOnly": "保存事实以及供团队填写的部分。",
+			"saved": "回顾已保存为页面",
+			"saveError": "无法保存页面。",
+			"openPage": "打开页面",
+			"pageTitle": "回顾：{{name}}",
+			"more_other": "另有 {{count}} 个",
+			"facts": {
+				"sayDo_other": "承诺的 {{count}} 个任务中完成了 {{done}} 个（{{percent}}%）",
+				"sayDoNone": "开始时没有承诺任何工作",
+				"scope": "范围变化：周期内新增 {{added}} 个，移除 {{removed}} 个",
+				"carry": "延续：{{carried}} 个移至其他周期，{{open}} 个仍未完成",
+				"reopened_other": "{{count}} 个任务在完成后被重新打开",
+				"points": "估算点数：{{committed}} 中完成 {{completed}}",
+				"cycleTime": "周期时间：中位数 {{median}} 天",
+				"cycleTimeOutliers_other": "周期时间：中位数 {{median}} 天；{{count}} 个任务超过 {{threshold}} 天",
+				"cycleTimeNone": "周期时间：未测量",
+				"blocked_other": "{{count}} 个任务被其他任务阻塞",
+				"forecastNone": "预测：此周期没有保存预测",
+				"forecastOpen": "预测：85% 可能在 {{date}} 前完成",
+				"forecastMet": "预测：85% 可能在 {{date}} 前完成，预测成立",
+				"forecastMissed": "预测：85% 可能在 {{date}} 前完成，预测未成立"
+			},
+			"lists": {
+				"added": "周期内新增",
+				"carriedOver": "延续",
+				"leftOpen": "仍未完成",
+				"outliers": "耗时远超平常",
+				"blocked": "被阻塞"
+			},
+			"page": {
+				"facts": "事实",
+				"wentWell": "做得好的地方",
+				"improve": "需要改进的地方",
+				"actions": "行动项"
+			}
+		},
+		"myBrief": {
+			"title": "我的简报",
+			"empty": "今天没有需要你处理的事。",
+			"error": "无法加载你的简报。",
+			"summarize": "总结",
+			"overdue": "已逾期 · {{total}}",
+			"dueToday": "今天到期 · {{total}}",
+			"blocked": "被阻塞 · {{total}}",
+			"mentions": "提及 · {{total}}",
+			"following": "你关注的任务的变更 · {{total}}",
+			"waitingOn": "等待 {{keys}}",
+			"hiddenBlockers_other": "{{count}} 个隐藏任务",
+			"mentionedBy": "来自 {{name}}",
+			"mentioned": "提及了你",
+			"more_other": "另有 {{count}} 个",
+			"kinds": {
+				"status": "状态",
+				"comment": "评论",
+				"assignee": "负责人",
+				"priority": "优先级",
+				"due_date": "截止日期",
+				"other": "其他更新"
+			},
+			"emailTitle": "将我的简报加入摘要邮件",
+			"emailDescription": "摘要邮件还会列出你被阻塞的任务和你关注的任务的变更。需要开启每日或每周摘要。",
+			"emailError": "无法保存此设置。"
+		}
 	}
 }
