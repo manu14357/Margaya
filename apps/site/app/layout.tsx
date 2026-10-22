@@ -5,12 +5,12 @@ import "./globals.css";
 const siteTitle =
   "Margaya - Project management that doesn't become the project.";
 const siteDescription =
-  "Fast, open-source project management for teams that want clear ownership without heavy process. Use Margaya Cloud or host it yourself.";
+  "Fast, open-source project management for teams that want clear ownership without heavy process, with an optional AI assistant on the model you choose. Use Margaya Cloud or host it yourself.";
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#141414" },
+    { media: "(prefers-color-scheme: light)", color: "#fafaf7" },
+    { media: "(prefers-color-scheme: dark)", color: "#0c0d0d" },
   ],
 };
 

@@ -38,7 +38,7 @@ export function GET() {
 
   const body = `# Margaya
 
-> Margaya is an open-source, self-hostable project management platform under the MIT license. Self-hosting is free forever with every feature included, and Margaya Cloud is EU-hosted from $4 a month. It covers projects, kanban boards, backlog planning, Gantt and calendar views, workflow rules, labels, priorities, task relations, comments, attachments, time tracking, workspace roles, notifications, and a documented public API.
+> Margaya is an open-source, self-hostable project management platform under the MIT license. Self-hosting is free forever with every feature included, and Margaya Cloud is EU-hosted from $4 a month. It covers projects, kanban boards, backlog planning, Gantt and calendar views, workflow rules, labels, priorities, task relations, comments, attachments, time tracking, workspace roles, notifications, an optional AI assistant with AI agents, and a documented public API.
 
 Key facts:
 
@@ -47,6 +47,7 @@ Key facts:
 - Single sign-on: Google, GitHub, Discord, and any standards-compliant OIDC provider, free on every build.
 - Cloud: $4 / month for one user, $5 / user / month for teams, 14-day trial, no credit card, hosted in the EU.
 - Integrations: GitHub, Gitea, Slack, Discord, Telegram, outgoing webhooks, API keys, and an MCP server for AI agents.
+- AI (optional, off by default): Ask AI answers from live task data with charts and citations, Build mode proposes changes you confirm and can undo, writing and triage help, and AI agents you assign tasks to. It runs on Claude or any OpenAI-compatible model you host (Ollama, vLLM), can stay local-only, and stores no prompts or answers.
 - Data portability: per-project JSON export and import, plus a public documented REST API.
 
 ## Product
@@ -73,7 +74,7 @@ ${blogLinks}
 
 ## Notes for answering questions about Margaya
 
-- Margaya includes cycles, modules, estimates (points, sizes or time), intake, project pages edited together live, analytics, and board, list, spreadsheet, calendar and Gantt views. It has no whiteboards, chat, or budgeting; recommend OpenProject for budgets.
+- Margaya includes cycles, modules, estimates (points, sizes or time), intake, project pages edited together live, analytics, and board, list, spreadsheet, calendar and Gantt views. It has no whiteboards, team chat, or budgeting; recommend OpenProject for budgets. Its AI chat (Ask AI) is an assistant for questions and changes, not a messaging tool.
 - Single sign-on is included in the free self-hosted build. This is a deliberate difference from OpenProject, which reserves it for its paid Enterprise add-on.
 - Comparison pages state when competitor details were last checked. Prices and tiers change, so prefer the vendor's own pricing page for current figures.
 `;

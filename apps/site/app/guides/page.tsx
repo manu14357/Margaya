@@ -6,6 +6,7 @@ import { BlogPostCard } from "@/components/landing/blog-post-card";
 import { Footer } from "@/components/landing/footer";
 import { breadcrumbJsonLd, JsonLd } from "@/components/landing/json-ld";
 import { Navbar } from "@/components/landing/navbar";
+import { PageIntro } from "@/components/landing/page-intro";
 import { getPosts } from "@/lib/blog";
 import { countSteps, guideList, guidePath, guideTopics } from "@/lib/guides";
 
@@ -66,24 +67,17 @@ export default function Page() {
       />
       <Navbar />
       <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-        <section className="px-6 pt-14 pb-12 md:pt-20 md:pb-16">
+        <section className="px-4 pt-16 pb-12 sm:px-6 md:pt-24 md:pb-16">
           <div className="mx-auto w-full max-w-6xl">
-            <header className="max-w-2xl">
-              <p className="font-medium text-muted-foreground text-sm">
-                Guides
-              </p>
-              <h1 className="mt-3 text-balance font-medium text-4xl leading-[1.06] md:text-5xl">
-                Do the thing, step by step
-              </h1>
-              <p className="mt-5 text-balance text-lg text-muted-foreground leading-relaxed">
-                Practical guides to setting up Margaya, running it on your own
-                server and moving your work across, plus fair answers to the
-                questions teams ask before they choose a tool.
-              </p>
-            </header>
+            <PageIntro
+              align="center"
+              eyebrow="Guides"
+              title="Do the thing, step by step"
+              description="Practical guides to setting up Margaya, running it on your own server and moving your work across, plus fair answers to the questions teams ask before they choose a tool."
+            />
 
             <nav aria-label="Guide topics" className="mt-10">
-              <ul className="flex flex-wrap gap-2">
+              <ul className="flex flex-wrap justify-center gap-2">
                 {[
                   { href: "#start-here", label: "Start here" },
                   ...topics.map((topic) => ({
@@ -93,7 +87,7 @@ export default function Page() {
                 ].map((link) => (
                   <li key={link.href}>
                     <a
-                      className="inline-flex min-h-10 items-center rounded-full border border-border/80 px-4 text-muted-foreground text-sm transition-colors hover:border-foreground/25 hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
+                      className="inline-flex min-h-10 items-center rounded-full border border-border px-4 text-muted-foreground text-sm transition-colors hover:border-foreground/25 hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
                       href={link.href}
                     >
                       {link.label}
@@ -108,7 +102,7 @@ export default function Page() {
         <section aria-labelledby="start-here" className="px-4 md:px-6">
           <div className="mx-auto w-full max-w-6xl">
             <a
-              className="group grid gap-8 overflow-hidden rounded-2xl border border-border/80 bg-card p-6 transition-colors hover:border-foreground/25 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:items-center md:gap-12 md:p-10"
+              className="group grid gap-8 overflow-hidden rounded-2xl border border-border bg-card p-6 transition-colors hover:border-foreground/25 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:items-center md:gap-12 md:p-10"
               href={guidePath(lead.slug)}
             >
               <div>

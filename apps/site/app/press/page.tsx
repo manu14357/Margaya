@@ -113,6 +113,7 @@ const facts = [
   press.facts.languages,
   press.facts.stack,
   press.facts.interfaces,
+  press.facts.ai,
 ];
 
 const guidelines = {
@@ -142,19 +143,20 @@ export default function PressPage() {
       />
       <Navbar />
       <main className="min-h-screen bg-background text-foreground">
-        <section className="px-4 pt-14 pb-12 md:px-6 md:pt-20 md:pb-16 lg:pt-24">
+        <section className="px-4 pt-16 pb-16 sm:px-6 md:pt-24 md:pb-20">
           <div className="mx-auto w-full max-w-6xl">
             <PageIntro
+              align="center"
               eyebrow={press.eyebrow}
               title={press.headline}
               description={press.intro}
             >
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <div className="mt-9 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row [&>*]:w-full sm:[&>*]:w-auto">
                 <a
                   href={pressKitPath}
                   download
                   className={cn(
-                    "inline-flex h-12 items-center justify-center gap-3 rounded-lg border border-primary bg-primary px-5 font-medium text-primary-foreground text-sm shadow-primary/24 shadow-xs transition-colors hover:bg-primary/90",
+                    "inline-flex h-12 items-center justify-center gap-3 rounded-lg border border-primary bg-primary px-5 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90",
                     FOCUS,
                   )}
                 >
@@ -177,7 +179,7 @@ export default function PressPage() {
           </div>
         </section>
 
-        <div className="px-4 pb-20 md:px-6 md:pb-28">
+        <div className="px-4 pb-20 sm:px-6 md:pb-28">
           <div className="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[12rem_minmax(0,1fr)] lg:gap-16">
             <OnThisPage
               title={press.onThisPage}
@@ -475,7 +477,7 @@ export default function PressPage() {
               </Section>
 
               <Section id="contact" title={press.contact.title}>
-                <div className="flex flex-col gap-6 rounded-2xl border border-border bg-sidebar p-6 md:flex-row md:items-center md:justify-between md:p-8">
+                <div className="flex flex-col gap-6 rounded-2xl border border-border bg-card p-6 md:flex-row md:items-center md:justify-between md:p-8">
                   <div className="flex gap-4">
                     <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-border bg-background text-muted-foreground">
                       <MessagesSquare aria-hidden className="size-5" />

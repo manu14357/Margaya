@@ -7,6 +7,7 @@ import { ContentCard } from "@/components/landing/content-card";
 import { Footer } from "@/components/landing/footer";
 import { breadcrumbJsonLd, JsonLd } from "@/components/landing/json-ld";
 import { Navbar } from "@/components/landing/navbar";
+import { PageIntro } from "@/components/landing/page-intro";
 import { formatBlogDateShort } from "@/lib/blog/format";
 import {
   alternativePath,
@@ -92,25 +93,17 @@ export default function Page() {
       />
       <Navbar />
       <main className="min-h-screen bg-background text-foreground">
-        <section className="px-4 pt-14 pb-12 md:px-6 md:pt-20 md:pb-16 lg:pt-24">
-          <div className="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:items-end">
-            <header>
-              <p className="font-medium text-muted-foreground text-sm">
-                Alternatives
-              </p>
-              <h1 className="mt-3 text-balance font-medium text-4xl leading-[1.06] md:text-6xl">
-                How Margaya compares
-              </h1>
-              <p className="mt-5 max-w-2xl text-balance text-lg text-muted-foreground leading-relaxed md:text-xl">
-                Margaya is open-source project management you can run yourself
-                or use in the cloud. Here it is next to {comparisonList.length}{" "}
-                tools teams often weigh it against, compared feature by feature,
-                with an honest word on when each one is the better choice.
-              </p>
-            </header>
+        <section className="px-4 pt-16 pb-12 sm:px-6 md:pt-24 md:pb-16">
+          <div className="mx-auto w-full max-w-6xl">
+            <PageIntro
+              align="center"
+              eyebrow="Alternatives"
+              title="How Margaya compares"
+              description={`Margaya is open-source project management you can run yourself or use in the cloud. Here it is next to ${comparisonList.length} tools teams often weigh it against, compared feature by feature, with an honest word on when each one is the better choice.`}
+            />
             <aside
               aria-label="How these comparisons are written"
-              className="rounded-xl border border-border bg-sidebar p-5 text-sm leading-relaxed md:p-6"
+              className="mx-auto mt-10 max-w-2xl rounded-xl border border-border bg-card p-5 text-center text-sm leading-relaxed md:p-6"
             >
               <p className="font-medium">We build Margaya.</p>
               <p className="mt-2 text-muted-foreground">
@@ -124,7 +117,7 @@ export default function Page() {
 
         <section
           aria-label="Comparisons"
-          className="border-border border-t px-4 py-12 md:px-6 md:py-16"
+          className="px-4 py-12 sm:px-6 md:py-16"
         >
           <div className="mx-auto w-full max-w-6xl">
             <AlternativesGrid cards={cards} categories={comparisonCategories} />
@@ -133,18 +126,21 @@ export default function Page() {
 
         <section
           aria-labelledby="alternatives-method"
-          className="border-border border-t px-4 py-14 md:px-6 md:py-20"
+          className="px-4 py-16 sm:px-6 md:py-24"
         >
           <div className="mx-auto w-full max-w-6xl">
             <h2
               id="alternatives-method"
-              className="max-w-2xl text-balance font-medium text-2xl md:text-3xl"
+              className="max-w-2xl text-balance font-medium text-3xl leading-[1.15] tracking-[-0.02em] md:text-4xl"
             >
               What every comparison covers
             </h2>
-            <ul className="mt-8 grid gap-px overflow-hidden rounded-xl border border-border bg-border md:grid-cols-3">
+            <ul className="mt-10 grid gap-4 md:grid-cols-3">
               {principles.map((item) => (
-                <li key={item.title} className="bg-background p-6 md:p-8">
+                <li
+                  key={item.title}
+                  className="rounded-xl border border-border bg-card p-6 md:p-8"
+                >
                   <h3 className="font-medium">{item.title}</h3>
                   <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
                     {item.body}
@@ -158,13 +154,13 @@ export default function Page() {
         {guideList.length > 0 ? (
           <section
             aria-labelledby="alternatives-guides"
-            className="border-border border-t px-4 py-14 md:px-6 md:py-20"
+            className="px-4 py-16 sm:px-6 md:py-24"
           >
             <div className="mx-auto w-full max-w-6xl">
               <div className="flex flex-wrap items-baseline justify-between gap-4">
                 <h2
                   id="alternatives-guides"
-                  className="font-medium text-2xl md:text-3xl"
+                  className="font-medium text-3xl leading-[1.15] tracking-[-0.02em] md:text-4xl"
                 >
                   Still choosing? Start with a guide
                 </h2>

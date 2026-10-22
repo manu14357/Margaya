@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "./docs.css";
 
 export const metadata: Metadata = {
   title: {

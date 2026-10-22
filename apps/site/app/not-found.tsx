@@ -110,20 +110,22 @@ export default function NotFound() {
       <Navbar />
       <main className="bg-[var(--background)] px-6 pt-16 pb-20 text-[var(--foreground)] md:pt-24 md:pb-28">
         <div className="mx-auto w-full max-w-2xl">
-          <p className="inline-flex items-center gap-2 rounded-full border border-border/80 px-3 py-1 font-mono text-muted-foreground text-xs">
-            <span
-              aria-hidden="true"
-              className="size-1.5 rounded-full bg-warning"
-            />
-            404 · No page at this address
-          </p>
-          <h1 className="mt-6 text-balance font-medium text-4xl leading-[1.08] md:text-5xl">
-            This link wandered off the board
-          </h1>
-          <p className="mt-5 text-balance text-lg text-muted-foreground leading-relaxed">
-            The page may have moved, or the address may have a typo. Tell us
-            where you were heading and we'll point the way.
-          </p>
+          <header className="flex flex-col items-center text-center">
+            <p className="inline-flex items-center gap-2 rounded-full border border-border/80 px-3 py-1 font-mono text-muted-foreground text-xs">
+              <span
+                aria-hidden="true"
+                className="size-1.5 rounded-full bg-warning"
+              />
+              404 · No page at this address
+            </p>
+            <h1 className="mt-6 text-balance font-medium text-[2.5rem] leading-[1.08] tracking-[-0.03em] md:text-5xl">
+              This link wandered off the board
+            </h1>
+            <p className="mt-5 max-w-xl text-pretty text-base text-muted-foreground leading-relaxed sm:text-lg">
+              The page may have moved, or the address may have a typo. Tell us
+              where you were heading and we'll point the way.
+            </p>
+          </header>
 
           <div className="mt-10">
             <NotFoundFinder links={links} />
@@ -133,7 +135,7 @@ export default function NotFound() {
             {shortcuts.map((item) => (
               <li key={item.href}>
                 <a
-                  className="group flex h-full items-start gap-3 rounded-xl border border-border/80 p-4 transition-colors hover:border-foreground/25 hover:bg-card focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
+                  className="group flex h-full items-start gap-3 rounded-xl border border-border bg-card p-4 transition-colors hover:border-foreground/25 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
                   href={item.href}
                 >
                   <item.icon
@@ -151,7 +153,7 @@ export default function NotFound() {
             ))}
           </ul>
 
-          <p className="mt-10 text-muted-foreground text-sm">
+          <p className="mt-10 text-center text-muted-foreground text-sm">
             Followed a broken link from our site?{" "}
             <a
               className="text-foreground underline decoration-border underline-offset-4 hover:decoration-current"

@@ -1,5 +1,7 @@
 import { ArrowRight, Check, Minus, Plus } from "lucide-react";
 import type { Metadata } from "next";
+import { ClosingCta } from "@/components/content/closing-cta";
+import { CtaLink } from "@/components/content/cta-link";
 import { Footer } from "@/components/landing/footer";
 import { breadcrumbJsonLd, JsonLd } from "@/components/landing/json-ld";
 import { Navbar } from "@/components/landing/navbar";
@@ -68,14 +70,15 @@ export default function PricingPage() {
       />
       <Navbar />
       <main className="min-h-screen bg-background text-foreground">
-        <section className="px-4 pt-14 pb-16 md:px-6 md:pt-20 md:pb-20 lg:pt-24">
+        <section className="px-4 pt-16 pb-16 sm:px-6 md:pt-24 md:pb-24">
           <div className="mx-auto w-full max-w-6xl">
             <PageIntro
+              align="center"
               eyebrow={pricing.eyebrow}
               title={pricing.title}
               description={pricing.description}
             />
-            <div className="mt-12">
+            <div className="mt-12 md:mt-16">
               <PricingPlans />
             </div>
           </div>
@@ -83,25 +86,25 @@ export default function PricingPage() {
 
         <section
           aria-labelledby="compare-title"
-          className="border-border border-t px-4 py-16 md:px-6 md:py-24"
+          className="px-4 py-16 sm:px-6 md:py-24"
         >
           <div className="mx-auto w-full max-w-6xl">
-            <div className="max-w-2xl">
+            <div className="mx-auto max-w-2xl text-center">
               <h2
                 id="compare-title"
-                className="text-balance font-medium text-3xl leading-tight md:text-4xl"
+                className="text-balance font-medium text-3xl leading-[1.15] tracking-[-0.02em] md:text-4xl"
               >
                 {pricing.table.title}
               </h2>
-              <p className="mt-4 text-balance text-lg text-muted-foreground leading-relaxed">
+              <p className="mt-4 text-pretty text-base text-muted-foreground leading-relaxed md:text-lg">
                 {pricing.table.description}
               </p>
             </div>
-            <div className="relative mt-10 overflow-x-auto rounded-2xl border border-border">
+            <div className="relative mt-10 overflow-x-auto rounded-xl border border-border bg-card md:mt-14">
               <table className="w-full min-w-[40rem] border-collapse text-sm">
                 <caption className="sr-only">{pricing.table.title}</caption>
                 <thead>
-                  <tr className="bg-sidebar">
+                  <tr>
                     <th
                       scope="col"
                       className="w-[34%] px-5 py-4 text-left font-medium text-muted-foreground"
@@ -128,7 +131,7 @@ export default function PricingPage() {
                       <th
                         scope="colgroup"
                         colSpan={4}
-                        className="border-border border-t bg-background px-5 pt-6 pb-2 text-left font-medium text-muted-foreground text-xs uppercase tracking-[0.08em]"
+                        className="border-border border-t px-5 pt-6 pb-2 text-left font-medium text-muted-foreground text-xs uppercase tracking-[0.08em]"
                       >
                         {pricing.table.groups[group.group]}
                       </th>
@@ -164,12 +167,12 @@ export default function PricingPage() {
 
         <section
           aria-labelledby="faq-title"
-          className="border-border border-t px-4 py-16 md:px-6 md:py-24"
+          className="px-4 py-16 sm:px-6 md:py-24"
         >
           <div className="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-16">
             <h2
               id="faq-title"
-              className="text-balance font-medium text-3xl leading-tight md:text-4xl lg:sticky lg:top-24 lg:self-start"
+              className="text-balance font-medium text-3xl leading-[1.15] tracking-[-0.02em] md:text-4xl lg:sticky lg:top-24 lg:self-start"
             >
               {pricing.faq.title}
             </h2>
@@ -200,39 +203,22 @@ export default function PricingPage() {
           </div>
         </section>
 
-        <section className="px-4 pb-20 md:px-6 md:pb-28">
-          <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 rounded-2xl border border-border bg-sidebar p-8 md:flex-row md:items-end md:justify-between md:p-12">
-            <div className="max-w-2xl">
-              <h2 className="text-balance font-medium text-3xl leading-tight md:text-4xl">
-                {pricing.cta.title}
-              </h2>
-              <p className="mt-4 text-balance text-lg text-muted-foreground leading-relaxed">
-                {pricing.cta.description}
-              </p>
-            </div>
-            <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
-              <a
-                href={siteLinks.signUp}
-                className={cn(
-                  "inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-primary bg-primary px-5 font-medium text-primary-foreground text-sm shadow-primary/24 shadow-xs transition-colors hover:bg-primary/90",
-                  FOCUS,
-                )}
-              >
+        <ClosingCta
+          id="pricing-cta"
+          title={pricing.cta.title}
+          description={pricing.cta.description}
+          actions={
+            <>
+              <CtaLink href={siteLinks.signUp}>
                 {pricing.cta.primary}
-                <ArrowRight aria-hidden className="size-4" />
-              </a>
-              <a
-                href={siteLinks.selfHost}
-                className={cn(
-                  "inline-flex h-12 items-center justify-center rounded-lg border border-input bg-popover px-5 font-medium text-foreground text-sm shadow-xs/5 transition-colors hover:bg-accent/50 dark:bg-input/32 dark:hover:bg-input/64",
-                  FOCUS,
-                )}
-              >
+                <ArrowRight aria-hidden />
+              </CtaLink>
+              <CtaLink href={siteLinks.selfHost} variant="outline">
                 {pricing.cta.secondary}
-              </a>
-            </div>
-          </div>
-        </section>
+              </CtaLink>
+            </>
+          }
+        />
       </main>
       <Footer />
     </>
