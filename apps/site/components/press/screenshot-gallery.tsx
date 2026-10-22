@@ -147,7 +147,7 @@ export function ScreenshotGallery({
                 alt=""
                 width={asset.width}
                 height={asset.height}
-                className="h-auto w-full transition-transform duration-300 group-hover:scale-[1.015] motion-reduce:transition-none"
+                className="h-auto w-full"
               />
               <span className="absolute top-3 right-3 flex size-8 items-center justify-center rounded-lg border border-border bg-background/90 text-foreground opacity-0 shadow-sm transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
                 <Maximize2 aria-hidden className="size-4" />
