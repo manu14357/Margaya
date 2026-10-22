@@ -11,7 +11,8 @@
 			"remove": "Verwijderen",
 			"reset": "Herstellen",
 			"filter": "Filteren",
-			"clearAllFilters": "Alle filters wissen"
+			"clearAllFilters": "Alle filters wissen",
+			"undo": "Ongedaan maken"
 		},
 		"a11y": {
 			"toggleSidebar": "Zijbalk in-/uitschakelen"
@@ -98,7 +99,15 @@
 				"createButton": "Project aanmaken",
 				"successToast": "Project succesvol aangemaakt",
 				"errorToast": "Aanmaken van project mislukt",
-				"keyTaken": "Er bestaat al een project met de sleutel {{key}} in deze werkruimte"
+				"keyTaken": "Er bestaat al een project met de sleutel {{key}} in deze werkruimte",
+				"blankProject": "Leeg project",
+				"copyHint": "Statussen, aangepaste velden, inschattingen, instellingen en automatiseringen worden gekopieerd. Leden, integraties en openbare borden niet.",
+				"includeOpenTasks": "Open taken meenemen",
+				"includeTemplates": "Taaksjablonen meenemen",
+				"openTasksHint": "Maximaal 500 open taken met hun subtaken, labels en inschattingen. Reacties en geschiedenis worden niet gekopieerd.",
+				"restricted": "Beperkt",
+				"restrictedHint": "Alleen leden kunnen dit project zien. Je wordt het eerste lid; eigenaren en beheerders van de workspace kunnen het altijd zien.",
+				"startFrom": "Beginnen vanaf"
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -589,6 +598,8 @@
 			"themeLight": "Licht",
 			"themeDark": "Donker",
 			"themeSystem": "Systeem",
+			"themeLightContrast": "Licht met hoog contrast",
+			"themeDarkContrast": "Donker met hoog contrast",
 			"language": "Taal",
 			"languageDescription": "Kies je gewenste taal voor de interface",
 			"selectLanguage": "Selecteer een taal",
@@ -1181,6 +1192,75 @@
 			"dropHintAny": "Sleep hier een JSON- of CSV-bestand naartoe",
 			"importAcceptHint": "Upload een Margaya JSON-export of een CSV-bestand.",
 			"importStopped": "Import gestopt: {{message}}",
+			"external": {
+				"sourceHint": "Overstappen van een andere tool? Importeer de export met statussen, labels, mensen, datums en subtaken.",
+				"sources": {
+					"trello": "Trello (JSON)",
+					"linear": "Linear (CSV)",
+					"asana": "Asana (CSV)"
+				},
+				"title": {
+					"trello": "Importeren uit Trello",
+					"linear": "Importeren uit Linear",
+					"asana": "Importeren uit Asana"
+				},
+				"howToTitle": {
+					"trello": "Zo exporteer je uit Trello",
+					"linear": "Zo exporteer je uit Linear",
+					"asana": "Zo exporteer je uit Asana"
+				},
+				"howTo": {
+					"trello": {
+						"step1": "Open op het bord het menu → Afdrukken, exporteren en delen → Exporteren als JSON.",
+						"step2": "Upload het gedownloade .json-bestand hier."
+					},
+					"linear": {
+						"step1": "Open in Linear Instellingen → Import / Export en kies CSV exporteren.",
+						"step2": "Upload hier het .csv-bestand uit de e-mail die Linear stuurt."
+					},
+					"asana": {
+						"step1": "Open in het Asana-project het projectmenu → Exporteren/Afdrukken → CSV.",
+						"step2": "Upload het gedownloade .csv-bestand hier."
+					}
+				},
+				"limits": {
+					"trello": "Tot 10 MB en 5.000 kaarten per bestand. Gearchiveerde kaarten worden overgeslagen; checklists worden takenlijsten in de beschrijving; bijlagen blijven in Trello.",
+					"linear": "Tot 5 MB en 5.000 issues per bestand. Gearchiveerde issues worden overgeslagen. De CSV van Linear bevat geen reacties.",
+					"asana": "Tot 5 MB en 5.000 taken per bestand. Voltooide taken komen in je kolom 'Klaar'. De CSV van Asana bevat geen reacties."
+				},
+				"dropHint": {
+					"trello": "Sleep de JSON-export van Trello hierheen",
+					"linear": "Sleep de CSV-export van Linear hierheen",
+					"asana": "Sleep de CSV-export van Asana hierheen"
+				},
+				"wrongType": {
+					"trello": "Kies de .json-export van het bord.",
+					"linear": "Kies de .csv-export van Linear.",
+					"asana": "Kies de .csv-export van Asana."
+				},
+				"itemCount_one": "{{count}} item",
+				"itemCount_other": "{{count}} items",
+				"alreadyImported_one": "{{count}} item is al eerder in dit project geïmporteerd.",
+				"alreadyImported_other": "{{count}} items zijn al eerder in dit project geïmporteerd.",
+				"contents": "{{comments}} reacties, {{checklists}} checklists, {{subtasks}} subtaken, {{links}} koppelingen",
+				"sourceStatus": "Status of lijst",
+				"peopleUnmatched_one": "{{count}} persoon is geen lid ({{names}}). Diens items blijven niet toegewezen; de naam staat in de beschrijving.",
+				"peopleUnmatched_other": "{{count}} mensen zijn geen lid ({{names}}). Hun items blijven niet toegewezen; de namen staan in de beschrijving.",
+				"mode": "Eerder geïmporteerde items",
+				"modeHint": "Herkend aan hun id in de export.",
+				"importAction_one": "{{count}} item importeren",
+				"importAction_other": "{{count}} items importeren",
+				"importing_one": "{{count}} item wordt geïmporteerd…",
+				"importing_other": "{{count}} items worden geïmporteerd…",
+				"result": {
+					"skipped_one": "{{count}} item overgeslagen (eerder geïmporteerd)",
+					"skipped_other": "{{count}} items overgeslagen (eerder geïmporteerd)",
+					"failed_one": "{{count}} item mislukt",
+					"failed_other": "{{count}} items mislukt",
+					"unmatched_one": "{{count}} persoon is geen werkruimtelid; diens items zijn niet toegewezen:",
+					"unmatched_other": "{{count}} mensen zijn geen werkruimtelid; hun items zijn niet toegewezen:"
+				}
+			},
 			"unsupportedFile": "Upload een JSON- of CSV-bestand",
 			"jira": {
 				"alreadyImported_one": "{{count}} issue is eerder in dit project geïmporteerd.",
@@ -1453,7 +1533,8 @@
 				"intake": "Intake",
 				"analytics": "Analyse",
 				"page": "Pagina's",
-				"audit_log": "Auditlog"
+				"audit_log": "Auditlog",
+				"ai": "AI"
 			},
 			"permissions": {
 				"project": {
@@ -1698,6 +1779,16 @@
 					"read": {
 						"description": "Het auditlog van de werkruimte bekijken en exporteren: wie leden, rollen, sleutels, webhooks, integraties en instellingen heeft gewijzigd.",
 						"label": "Auditlog bekijken"
+					}
+				},
+				"ai": {
+					"use": {
+						"label": "AI gebruiken",
+						"description": "Kan AI-functies gebruiken wanneer AI aan staat voor de werkruimte en het project."
+					},
+					"manage": {
+						"label": "AI beheren",
+						"description": "Kan AI in- of uitschakelen voor de werkruimte, de sleutel, limieten en privacy wijzigen en het AI-gebruik bekijken."
 					}
 				}
 			},
@@ -1965,6 +2056,10 @@
 				"views": {
 					"description": "Sla filters, groepering en weergave-instellingen op en deel ze met het team.",
 					"title": "Weergaven"
+				},
+				"ai": {
+					"title": "AI",
+					"description": "Samenvattingen, suggesties en andere AI-hulp voor dit project. Uitgeschakeld houdt het project volledig buiten AI."
 				}
 			},
 			"loadError": "Laden van dit project mislukt",
@@ -2178,7 +2273,26 @@
 				"closeOff": "Automatisch sluiten uitgeschakeld",
 				"closeOn": "Automatisch sluiten ingeschakeld",
 				"error": "De automatiseringen konden niet worden bijgewerkt",
-				"updated": "Automatisering bijgewerkt"
+				"updated": "Automatisering bijgewerkt",
+				"rolloverOff": "Doorschuiven naar volgende cyclus uitgeschakeld",
+				"rolloverOn": "Doorschuiven naar volgende cyclus ingeschakeld",
+				"flowAlertsOn": "Doorstromingsmeldingen ingeschakeld",
+				"flowAlertsOff": "Doorstromingsmeldingen uitgeschakeld"
+			},
+			"cycleRollover": {
+				"cyclesOff": "Schakel Cyclussen in bij Functies om dit te gebruiken.",
+				"description": "Als een cyclus eindigt, worden de onvoltooide taken naar de volgende cyclus verplaatst. De projectleider krijgt een samenvatting.",
+				"last_one": "Laatst {{count}} taak verplaatst {{time}}",
+				"last_other": "Laatst {{count}} taken verplaatst {{time}}",
+				"never": "Nog niets verplaatst",
+				"title": "Onvoltooid cycluswerk doorschuiven"
+			},
+			"flowAlerts": {
+				"title": "Meldingen bij afwijkende doorstroming",
+				"description": "Vergelijkt eenmaal per dag onderhanden werk, doorlooptijd en doorvoer met de 8 weken ervoor. De projectleider krijgt een melding als een waarde buiten het gebruikelijke bereik valt.",
+				"noLead": "Stel een projectleider in om deze meldingen te ontvangen.",
+				"last": "Laatste melding {{time}}",
+				"never": "Nog geen meldingen"
 			}
 		},
 		"workspaceExports": {
@@ -2625,6 +2739,24 @@
 			"noProjectsHint": "Maak eerst een project aan. De instellingen ervan verschijnen dan hier.",
 			"pickProject": "Kies een project om de instellingen ervan te zien."
 		},
+		"projectAccess": {
+			"title": "Toegang",
+			"subtitle": "Wie dit project kan zien en erin kan werken.",
+			"restrictedLabel": "Beperkt",
+			"restrictedHint": "Alleen de leden hieronder, en eigenaren en beheerders van de workspace, kunnen dit project zien. De rechten van een lid hier zijn wat zowel hun workspacerol als hun projectrol toestaat.",
+			"openHint": "Iedereen in de workspace kan dit project zien, zoals hun workspacerol toestaat. Maak het beperkt om het tot gekozen leden te beperken.",
+			"membersLabel": "Leden",
+			"membersHint": "De projectrol beperkt wat elk lid hier kan doen.",
+			"noMembers": "Nog geen leden.",
+			"addMember": "Lid toevoegen",
+			"removeMember": "{{name}} verwijderen",
+			"roleFor": "Projectrol van {{name}}",
+			"leadTag": "Leider",
+			"restrictedProject": "Beperkt project",
+			"toastUpdated": "Toegang bijgewerkt",
+			"toastError": "Kan de toegang niet bijwerken",
+			"loadError": "Kan de toegangsinstellingen niet laden. Herlaad de pagina om het opnieuw te proberen."
+		},
 		"projectPeople": {
 			"defaultAssigneeHint": "Vooraf ingevuld wanneer je een taak aanmaakt en toegewezen aan geaccepteerde aanvragen zonder toegewezen persoon.",
 			"defaultAssigneeLabel": "Standaard toegewezen persoon",
@@ -2682,7 +2814,7 @@
 			"title": "Beveiliging"
 		},
 		"timezone": {
-			"accountHint": "Gebruikt voor herinneringen en e-mailoverzichten. De app toont tijden altijd in de tijdzone van je browser.",
+			"accountHint": "Gebruikt voor herinneringen, e-mailoverzichten en de dagen waarmee taakfilters en analyses rekenen. Tijden op het scherm staan in de tijdzone van je browser.",
 			"accountLabel": "Tijdzone",
 			"automatic": "Automatisch (browser: {{zone}})",
 			"loadError": "Kan de tijdzone niet laden. Laad de pagina opnieuw om het nog eens te proberen.",
@@ -2695,8 +2827,52 @@
 			"workspaceHint": "Bepaalt wat \"vandaag\" is voor cyclussen, automatiseringen en analyses. Bestaande werkruimtes starten op UTC.",
 			"workspaceLabel": "Tijdzone"
 		},
+		"workspaceDeletion": {
+			"pendingTitle": "Verwijdering gepland",
+			"pendingDescription": "Deze werkruimte wordt op {{date}} verwijderd. Tot dan is ze alleen-lezen en kun je de inhoud nog openen en exporteren.",
+			"cancel": "Verwijdering annuleren",
+			"confirm": "Verwijdering plannen",
+			"rowDescription": "De werkruimte wordt meteen alleen-lezen en op {{date}} definitief verwijderd. Tot dan kun je annuleren.",
+			"dialogTitle": "{{name}} verwijderen?",
+			"dialogDescription": "{{name}} wordt meteen alleen-lezen voor iedereen, en de API-sleutels en webhooks werken niet meer. Leden krijgen een e-mail. Op {{date}} wordt de werkruimte definitief verwijderd met alle projecten, taken en pagina's, tenzij je eerder annuleert.",
+			"toastScheduled": "Verwijdering gepland voor {{date}}",
+			"toastCancelled": "Verwijdering geannuleerd. De werkruimte kan weer worden bewerkt.",
+			"toastError": "De verwijdering kon niet worden gewijzigd. Probeer het opnieuw.",
+			"bannerTitle": "Deze werkruimte wordt op {{date}} verwijderd",
+			"bannerDescription": "Tot dan is ze alleen-lezen. Je kunt de inhoud nog openen en exporteren.",
+			"admin": {
+				"title": "Geplande verwijderingen",
+				"description": "Werkruimten waarvan de eigenaar de verwijdering heeft gepland. Ze zijn alleen-lezen tot de datum en worden daarna definitief verwijderd.",
+				"dueAt": "Verwijderd op",
+				"badge": "Verwijderd op {{date}}"
+			},
+			"instanceAudit": {
+				"scheduled": "Heeft een werkruimte gepland voor verwijdering",
+				"cancelled": "Heeft de verwijdering van een werkruimte geannuleerd",
+				"purged": "Heeft een werkruimte verwijderd na de bedenktijd"
+			}
+		},
+		"workspacePublicPages": {
+			"label": "Openbare pagina's",
+			"description": "Laat mensen die projecten mogen delen pagina's publiceren via een openbare alleen-lezen link. Uitschakelen trekt alle gepubliceerde links in.",
+			"toastOn": "Openbare pagina's staan aan",
+			"toastOff": "Openbare pagina's staan uit. Gepubliceerde links zijn ingetrokken.",
+			"toastError": "De instelling kon niet worden gewijzigd. Probeer het opnieuw."
+		},
+		"workspaceA2a": {
+			"label": "Agent-tot-agent (A2A)",
+			"description": "Laat externe AI-agents via het A2A-protocol werk overdragen aan deze werkruimte. Ze handelen met de API-sleutel of OAuth-aanmelding van een lid en met de rechten van dat lid, en alles wat ze doen staat in het auditlog.",
+			"toastOn": "A2A staat aan",
+			"toastOff": "A2A staat uit. Externe agents kunnen geen werk meer overdragen aan deze werkruimte.",
+			"toastError": "De instelling kon niet worden gewijzigd. Probeer het opnieuw."
+		},
 		"workspaceAuditLog": {
 			"actions": {
+				"workspaceDeletionScheduled": "Heeft de werkruimte gepland voor verwijdering",
+				"workspaceDeletionCancelled": "Heeft de verwijdering van de werkruimte geannuleerd",
+				"workspacePublicPagesChanged": "Heeft openbare pagina's in- of uitgeschakeld",
+				"pagePublished": "Heeft een pagina gepubliceerd via een openbare link",
+				"pageUnpublished": "Heeft de openbare link van een pagina ingetrokken",
 				"apiKeyCreated": "Heeft een API-sleutel aangemaakt",
 				"apiKeyRevoked": "Heeft een API-sleutel ingetrokken",
 				"exportCreated": "Heeft een export gestart",
@@ -2707,6 +2883,7 @@
 				"integrationUpdated": "Heeft een integratie gewijzigd",
 				"memberInvitationAccepted": "Heeft een uitnodiging geaccepteerd",
 				"memberInvitationDeclined": "Heeft een uitnodiging afgewezen",
+				"memberInvitationRoleChanged": "Heeft de rol van een openstaande uitnodiging gewijzigd",
 				"memberInvitationRevoked": "Heeft een uitnodiging ingetrokken",
 				"memberInvited": "Heeft iemand uitgenodigd voor de werkruimte",
 				"memberLeft": "Heeft de werkruimte verlaten",
@@ -2736,13 +2913,41 @@
 				"webhookUpdated": "Heeft een webhook gewijzigd",
 				"workspaceCreated": "Heeft de werkruimte aangemaakt",
 				"workspaceOwnershipTransferred": "Heeft het eigendom van de werkruimte overgedragen",
-				"workspaceUpdated": "Heeft werkruimte-instellingen gewijzigd"
+				"workspaceUpdated": "Heeft werkruimte-instellingen gewijzigd",
+				"aiSettingsUpdated": "Heeft de AI-instellingen gewijzigd",
+				"aiTriageLabelsApplied": "Heeft voorgestelde labels automatisch toegevoegd",
+				"agentCreated": "Heeft een agent aangemaakt",
+				"agentUpdated": "Heeft een agent gewijzigd",
+				"agentDeleted": "Heeft een agent verwijderd",
+				"agentChangeApplied": "Heeft een wijziging gemaakt namens iemand",
+				"agentChangeApproved": "Heeft de wijziging van een agent goedgekeurd",
+				"agentChangeRejected": "Heeft de wijziging van een agent afgewezen",
+				"agentChangeReverted": "Heeft de wijziging van een agent ongedaan gemaakt",
+				"codingAgentHandoffSent": "Heeft een taak naar een codeeragent gestuurd",
+				"codingAgentProfileCreated": "Heeft een codeeragentprofiel aangemaakt",
+				"codingAgentProfileUpdated": "Heeft een codeeragentprofiel gewijzigd",
+				"codingAgentProfileDeleted": "Heeft een codeeragentprofiel verwijderd",
+				"a2aTaskReceived": "Werk ontvangen van een externe agent (A2A)",
+				"automationRuleCreated": "Heeft een automatisering aangemaakt",
+				"automationRuleUpdated": "Heeft een automatisering bijgewerkt",
+				"automationRuleDeleted": "Heeft een automatisering verwijderd",
+				"automationRuleRan": "Heeft een automatisering op een taak uitgevoerd",
+				"agentScheduleCreated": "Heeft een agent ingepland",
+				"agentScheduleUpdated": "Heeft een agentplanning gewijzigd",
+				"agentScheduleDeleted": "Heeft een agentplanning verwijderd",
+				"agentScheduleDisabled": "Heeft een agentplanning uitgeschakeld",
+				"aiConnectorCreated": "Heeft een MCP-connector toegevoegd",
+				"aiConnectorUpdated": "Heeft een MCP-connector gewijzigd",
+				"aiConnectorDeleted": "Heeft een MCP-connector verwijderd"
 			},
 			"actor": {
 				"apiKey": "API-sleutel",
 				"deletedUser": "Verwijderde gebruiker",
 				"system": "Systeem",
-				"unknownKey": "Verwijderde API-sleutel"
+				"unknownKey": "Verwijderde API-sleutel",
+				"agent": "Agent",
+				"agentFor": "Agent, namens {{name}}",
+				"automation": "Automatisering"
 			},
 			"categories": {
 				"apiKey": "API-sleutels",
@@ -2755,7 +2960,11 @@
 				"role": "Rollen",
 				"trash": "Prullenbak",
 				"webhook": "Webhooks",
-				"workspace": "Werkruimte-instellingen"
+				"workspace": "Werkruimte-instellingen",
+				"agent": "Agents",
+				"codingAgent": "Codeeragents",
+				"a2a": "Externe agents (A2A)",
+				"automation": "Automatiseringen"
 			},
 			"columns": {
 				"action": "Actie",
@@ -2804,6 +3013,7 @@
 			"subtitle": "Wie leden, rollen, API-sleutels, webhooks, integraties, instellingen en projecten in deze werkruimte heeft gewijzigd. Items worden {{days}} dagen bewaard.",
 			"subtitleForever": "Wie leden, rollen, API-sleutels, webhooks, integraties, instellingen en projecten in deze werkruimte heeft gewijzigd. Items worden bewaard tot je de werkruimte verwijdert.",
 			"targets": {
+				"page": "Pagina",
 				"apiKey": "API-sleutel",
 				"export": "Export",
 				"integration": "Integratie",
@@ -2812,7 +3022,11 @@
 				"role": "Rol",
 				"user": "Lid",
 				"webhook": "Webhook",
-				"workspace": "Werkruimte"
+				"workspace": "Werkruimte",
+				"agent": "Agent",
+				"agentRun": "Uitvoering van agent",
+				"task": "Taak",
+				"codingAgentProfile": "Codeeragentprofiel"
 			},
 			"title": "Auditlog"
 		},
@@ -2861,9 +3075,189 @@
 			"workspaceNav": "Recent verwijderd",
 			"workspaceSubtitle": "Verwijderde projecten blijven hier met hun taken tot ze permanent worden verwijderd.",
 			"workspaceTitle": "Recent verwijderde projecten"
+		},
+		"automationRules": {
+			"title": "Automatiseringen",
+			"description": "Wanneer er iets met een taak gebeurt, controleert een regel de voorwaarden en onderneemt actie. Regels draaien zelfstandig, zonder AI, als ‘Automatisering’.",
+			"empty": "Nog geen automatiseringen. Begin met een sjabloon of maak je eigen regel.",
+			"loadError": "De automatiseringen konden niet worden geladen.",
+			"newRule": "Nieuwe regel",
+			"templatesTitle": "Sjablonen",
+			"saved": "Automatisering opgeslagen",
+			"saveError": "De automatisering kon niet worden opgeslagen",
+			"deleted": "Automatisering verwijderd",
+			"confirmDelete": "Verwijderen",
+			"edit": "{{name}} bewerken",
+			"delete": "{{name}} verwijderen",
+			"summary_one": "Wanneer {{trigger}} · {{count}} actie",
+			"summary_other": "Wanneer {{trigger}} · {{count}} acties",
+			"lastRun_one": "{{count}} uitvoering, laatste {{time}}",
+			"lastRun_other": "{{count}} uitvoeringen, laatste {{time}}",
+			"neverRan": "Nog niet uitgevoerd",
+			"templates": {
+				"reviewer": {
+					"name": "Reviewer toewijzen bij verplaatsen naar Ter beoordeling",
+					"description": "Kies de reviewer; die wordt toegewezen zodra een taak ter beoordeling komt."
+				},
+				"intakeBugs": {
+					"name": "Bugs uit intake labelen",
+					"description": "Geaccepteerde aanvragen die een bug of fout noemen, krijgen het buglabel."
+				},
+				"overdue": {
+					"name": "Achterstallige taken escaleren",
+					"description": "Als een einddatum verstrijkt, verhoog de prioriteit en informeer de toegewezen personen."
+				}
+			},
+			"triggers": {
+				"task_created": "een taak wordt aangemaakt",
+				"status_changed": "de status verandert",
+				"assignee_added": "iemand wordt toegewezen",
+				"assignee_removed": "een toewijzing wordt verwijderd",
+				"label_added": "een label wordt toegevoegd",
+				"label_removed": "een label wordt verwijderd",
+				"priority_changed": "de prioriteit verandert",
+				"due_date_set": "een einddatum wordt ingesteld",
+				"due_date_passed": "de einddatum verstrijkt",
+				"comment_added": "een reactie wordt toegevoegd",
+				"moved_to_cycle": "de taak naar een cyclus gaat",
+				"moved_to_module": "de taak aan een module wordt toegevoegd"
+			},
+			"conditions": {
+				"status": "Status",
+				"labels": "Labels",
+				"priority": "Prioriteit",
+				"assignee": "Toegewezen persoon",
+				"due_date": "Einddatum",
+				"estimate": "Inschatting",
+				"title": "Titel",
+				"custom_field": "Aangepast veld"
+			},
+			"ops": {
+				"is": "is",
+				"is_not": "is niet",
+				"contains": "bevat",
+				"not_contains": "bevat niet",
+				"empty": "is leeg",
+				"not_empty": "is niet leeg",
+				"set": "is ingesteld",
+				"not_set": "is niet ingesteld",
+				"gte": "is minstens",
+				"lte": "is hoogstens",
+				"equals": "is gelijk aan",
+				"not_equals": "is niet gelijk aan"
+			},
+			"actions": {
+				"set_status": "Status instellen",
+				"assign": "Toewijzen",
+				"unassign": "Toewijzing opheffen",
+				"add_label": "Label toevoegen",
+				"remove_label": "Label verwijderen",
+				"set_priority": "Prioriteit instellen",
+				"set_due_date": "Einddatum instellen",
+				"add_comment": "Reactie toevoegen",
+				"move_to_cycle": "Naar cyclus verplaatsen",
+				"move_to_module": "Toevoegen aan module",
+				"create_subtask": "Subtaak aanmaken",
+				"notify": "Melden",
+				"run_agent": "Agent starten"
+			},
+			"roles": {
+				"assignees": "Toegewezen personen",
+				"creator": "Maker",
+				"lead": "Projectleider"
+			},
+			"outcomes": {
+				"success": "Klaar",
+				"partial": "Deels klaar",
+				"failed": "Mislukt",
+				"skipped": "Overgeslagen"
+			},
+			"errors": {
+				"LOOP_DEPTH": "Gestopt: te veel regels activeerden elkaar achter elkaar.",
+				"RATE_LIMITED": "Gestopt: voor deze taak zijn binnen een minuut te veel automatiseringen uitgevoerd.",
+				"AGENT_UNAVAILABLE": "Agent starten: de agent staat uit of is verwijderd.",
+				"NO_RULE_OWNER": "Agent starten: deze regel heeft geen eigenaar meer. Sla hem opnieuw op.",
+				"AI_DISABLED": "Agent starten: AI staat uit voor dit project."
+			},
+			"history": {
+				"title": "Uitvoeringsgeschiedenis",
+				"empty": "Nog geen uitvoeringen.",
+				"error": "De uitvoeringsgeschiedenis kon niet worden geladen.",
+				"failedActions": "Mislukt: {{actions}}"
+			},
+			"editor": {
+				"name": "Regelnaam",
+				"namePlaceholder": "Geef deze regel een naam",
+				"when": "Wanneer",
+				"if": "Als",
+				"then": "Dan",
+				"match": "Voldoen aan",
+				"matchAll": "Al deze",
+				"matchAny": "Een van deze",
+				"always": "Elke keer",
+				"addCondition": "Voorwaarde toevoegen",
+				"addGroup": "Groep toevoegen",
+				"addAction": "Actie toevoegen",
+				"remove": "Verwijderen",
+				"save": "Regel opslaan",
+				"cancel": "Annuleren",
+				"choose": "Kiezen…",
+				"add": "Toevoegen…",
+				"removeItem": "{{name}} verwijderen",
+				"any": "Elke",
+				"from": "van",
+				"to": "naar",
+				"fromIntake": "Alleen aanvragen die via intake zijn geaccepteerd",
+				"people": "Personen",
+				"labels": "Labels",
+				"priorities": "Prioriteiten",
+				"cycles": "Cycli",
+				"modules": "Modules",
+				"field": "Veld",
+				"operator": "Vergelijking",
+				"points": "Punten",
+				"value": "Waarde",
+				"column": "Status",
+				"everyone": "Iedereen",
+				"label": "Label",
+				"priority": "Prioriteit",
+				"daysFromRun": "dagen nadat de regel is uitgevoerd",
+				"comment": "Reactie",
+				"subtaskTitle": "Titel van subtaak",
+				"cycle": "Cyclus",
+				"module": "Module",
+				"roles": "Rollen",
+				"message": "Bericht (optioneel)",
+				"variables": "Variabelen:",
+				"agent": "Agent",
+				"agentPrompt": "Wat moet de agent doen?",
+				"agentPromptPlaceholder": "Bijvoorbeeld: beoordeel deze taak en stel een prioriteit voor.",
+				"agentHint": "De agent handelt namens wie deze regel opslaat, met hoogstens diens rechten. Hij start nooit bij wijzigingen die een agent maakte."
+			}
 		}
 	},
 	"navigation": {
+		"customize": {
+			"open": "Zijbalk aanpassen",
+			"title": "Zijbalk aanpassen",
+			"description": "Kies wat je zijbalk toont en in welke volgorde. Alleen jij ziet deze wijzigingen, op al je apparaten.",
+			"settingsDescription": "Wijzig de volgorde van de hoofdnavigatie en de onderdelen van het projectenpaneel, of verberg ze.",
+			"rail": "Hoofdnavigatie",
+			"projectsPanel": "Projectenpaneel",
+			"sections": {
+				"views": "Takenlijsten en weergaven",
+				"favorites": "Favorieten",
+				"projects": "Projecten"
+			},
+			"show": "{{name}} tonen",
+			"alwaysShown": "{{name}} wordt altijd getoond",
+			"moveUp": "{{name}} omhoog verplaatsen",
+			"moveDown": "{{name}} omlaag verplaatsen",
+			"moved": "{{name}} verplaatst naar positie {{position}} van {{total}}",
+			"reset": "Standaard herstellen",
+			"resetDone": "Zijbalk teruggezet naar standaard",
+			"done": "Klaar"
+		},
 		"commandPalette": {
 			"suggestions": "Suggesties",
 			"commands": "Commando's",
@@ -2876,6 +3270,8 @@
 			"lightTheme": "Licht thema",
 			"darkTheme": "Donker thema",
 			"systemTheme": "Systeemthema",
+			"lightContrastTheme": "Licht thema met hoog contrast",
+			"darkContrastTheme": "Donker thema met hoog contrast",
 			"keyboardShortcuts": "Sneltoetsen",
 			"inputPlaceholder": "Zoek naar apps en commando's...",
 			"empty": "Geen resultaten gevonden.",
@@ -3187,6 +3583,23 @@
 			"page_mention": {
 				"content": "{{mentionerName}} heeft je genoemd in: {{pageTitle}}",
 				"title": "{{mentionerName}} heeft je genoemd"
+			},
+			"cycle_rollover": {
+				"content_one": "{{count}} onvoltooide taak verplaatst naar {{targetCycleName}}",
+				"content_other": "{{count}} onvoltooide taken verplaatst naar {{targetCycleName}}",
+				"contentNoNext_one": "{{count}} onvoltooide taak is in {{cycleName}} gebleven: er is geen volgende cyclus",
+				"contentNoNext_other": "{{count}} onvoltooide taken zijn in {{cycleName}} gebleven: er is geen volgende cyclus",
+				"title": "{{cycleName}} is afgelopen"
+			},
+			"flow_anomaly": {
+				"title": "Ongebruikelijke doorstroming in {{projectName}}",
+				"throughput_low": "De doorvoer daalde deze week naar {{value}} taken (normaal ongeveer {{baseline}})",
+				"wip_high": "Het onderhanden werk steeg naar {{value}} taken (normaal ongeveer {{baseline}})",
+				"cycle_time_high": "De doorlooptijd steeg naar {{value}} dagen (normaal ongeveer {{baseline}})"
+			},
+			"automation_notice": {
+				"title": "Automatisering: {{ruleName}}",
+				"content": "{{taskKey}} {{taskTitle}}"
 			}
 		},
 		"reminderLeadTime": {
@@ -3338,6 +3751,13 @@
 				"open": "De taak openen",
 				"read": "Markeren als gelezen of ongelezen",
 				"snooze": "Uitstellen"
+			},
+			"digest": {
+				"button": "Ongelezen samenvatten",
+				"title": "Samenvatting van ongelezen",
+				"regenerate": "Opnieuw samenvatten",
+				"close": "Samenvatting sluiten",
+				"generating": "Samenvatten…"
 			}
 		}
 	},
@@ -3545,7 +3965,9 @@
 			"archived_one": "heeft deze taak gearchiveerd na {{count}} maand zonder updates",
 			"archived_other": "heeft deze taak gearchiveerd na {{count}} maanden zonder updates",
 			"closed_one": "heeft deze taak gesloten na {{count}} maand zonder updates en verplaatst naar {{to}}",
-			"closed_other": "heeft deze taak gesloten na {{count}} maanden zonder updates en verplaatst naar {{to}}"
+			"closed_other": "heeft deze taak gesloten na {{count}} maanden zonder updates en verplaatst naar {{to}}",
+			"rolledOver": "heeft deze taak van {{from}} naar {{to}} verplaatst toen de cyclus eindigde",
+			"byRule": "via {{name}}"
 		},
 		"commentVisibility": {
 			"badgeExternal": "Extern",
@@ -3584,10 +4006,69 @@
 			"updates": "Updates"
 		},
 		"importedFromJira": "heeft deze taak geïmporteerd uit Jira {{key}}",
+		"importedFromSource": "heeft deze taak geïmporteerd uit {{source}} {{key}}",
 		"movedToTrash": "heeft deze taak naar de prullenbak verplaatst",
 		"restoredFromTrash": "heeft deze taak uit de prullenbak hersteld"
 	},
 	"tasks": {
+		"recurrence": {
+			"label": "Herhalen",
+			"none": "Herhaalt niet",
+			"title": "Deze taak herhalen",
+			"indicator": "Herhaalt",
+			"frequency": {
+				"label": "Herhaling",
+				"daily": "Dagelijks",
+				"weekly": "Wekelijks",
+				"monthly": "Maandelijks",
+				"yearly": "Jaarlijks"
+			},
+			"interval": "Elke",
+			"weekdays": "Op deze dagen",
+			"monthDay": "Dag van de maand",
+			"trigger": {
+				"label": "Volgende aanmaken",
+				"completion": "Als deze is voltooid",
+				"schedule": "Op de eigen datum, ook als deze nog open is"
+			},
+			"ends": {
+				"label": "Eindigt",
+				"never": "Nooit",
+				"onDate": "Op",
+				"endDate": "Einddatum",
+				"after": "Na",
+				"count": "Aantal keer"
+			},
+			"summary": {
+				"daily_one": "Elke dag",
+				"daily_other": "Elke {{count}} dagen",
+				"weekly_one": "Elke week op {{days}}",
+				"weekly_other": "Elke {{count}} weken op {{days}}",
+				"monthly_one": "Elke maand op dag {{day}}",
+				"monthly_other": "Elke {{count}} maanden op dag {{day}}",
+				"yearly_one": "Elk jaar op {{date}}",
+				"yearly_other": "Elke {{count}} jaar op {{date}}",
+				"until": "{{summary}}, tot {{date}}",
+				"times_one": "{{summary}}, {{count}} keer",
+				"times_other": "{{summary}}, {{count}} keer"
+			},
+			"next": "Volgende: {{date}}",
+			"ended": "Geen herhalingen meer",
+			"save": "Opslaan",
+			"remove": "Herhaling stoppen",
+			"saved": "Herhaling opgeslagen",
+			"removed": "Deze taak herhaalt niet meer",
+			"saveError": "Kan de herhaling niet opslaan",
+			"activity": {
+				"set": "heeft deze taak laten herhalen: {{summary}}",
+				"updated": "heeft de herhaling gewijzigd: {{summary}}",
+				"removed": "heeft de herhaling van deze taak gestopt",
+				"recurredFrom": "heeft deze taak aangemaakt als volgende herhaling van <task>{{task}}</task>",
+				"recurredFromScheduled": "Volgens planning aangemaakt als volgende herhaling van <task>{{task}}</task>",
+				"recurredTo": "heeft deze taak voltooid, waardoor de volgende herhaling <task>{{task}}</task> is aangemaakt",
+				"recurredToScheduled": "De volgende herhaling is volgens planning aangemaakt: <task>{{task}}</task>"
+			}
+		},
 		"title": "Taken",
 		"status": {
 			"label": "Status",
@@ -3999,7 +4480,9 @@
 		},
 		"kanban": {
 			"addTask": "Taak toevoegen",
-			"stages": "Kolommen"
+			"stages": "Kolommen",
+			"emptyAction": "Een taak toevoegen",
+			"emptyTitle": "Nog geen taken"
 		},
 		"pr": {
 			"merged": "Samengevoegd",
@@ -4071,6 +4554,20 @@
 			"searchActions": "Acties zoeken...",
 			"noActionsFound": "Geen acties gevonden.",
 			"changeStatus": "Status wijzigen",
+			"removeLabel": "Label verwijderen",
+			"removeLabelSuccess": "Label verwijderd van {{count}} taken",
+			"removeLabelError": "Verwijderen label mislukt",
+			"unarchive": "Terugzetten uit archief",
+			"unarchiveSuccess": "{{count}} taken teruggezet",
+			"unarchiveNone": "Geen van de geselecteerde taken is gearchiveerd",
+			"unarchiveError": "Terugzetten taken mislukt",
+			"setDates": "Datums",
+			"dateField": "In te stellen datum",
+			"startDate": "Startdatum",
+			"dueDate": "Einddatum",
+			"clearStartDate": "Startdatum wissen",
+			"clearDueDate": "Einddatum wissen",
+			"updateStartDateError": "Bijwerken startdatum mislukt. Een startdatum kan niet na de einddatum van een taak liggen.",
 			"addAssignee": "Toegewezen persoon toevoegen",
 			"addAssigneeSuccess_one": "{{name}} toegevoegd aan {{count}} taak",
 			"addAssigneeSuccess_other": "{{name}} toegevoegd aan {{count}} taken",
@@ -4102,7 +4599,19 @@
 				"addRowBefore": "Rij erboven invoegen",
 				"addRowAfter": "Rij eronder invoegen",
 				"deleteRow": "Rij verwijderen",
-				"deleteTable": "Tabel verwijderen"
+				"deleteTable": "Tabel verwijderen",
+				"moveRowUp": "Rij omhoog verplaatsen",
+				"moveRowDown": "Rij omlaag verplaatsen",
+				"moveColumnLeft": "Kolom naar links verplaatsen",
+				"moveColumnRight": "Kolom naar rechts verplaatsen",
+				"toggleHeaderRow": "Koprij",
+				"fullWidth": "Volledige breedte",
+				"dragRow": "Rij {{index}}",
+				"dragColumn": "Kolom {{index}}",
+				"dragRowHint": "Sleep om de rij te verplaatsen, of gebruik de pijltjestoetsen",
+				"dragColumnHint": "Sleep om de kolom te verplaatsen, of gebruik de pijltjestoetsen",
+				"insertRowHere": "Hier een rij invoegen",
+				"insertColumnHere": "Hier een kolom invoegen"
 			}
 		},
 		"calendar": {
@@ -4124,7 +4633,8 @@
 			"rescheduleError": "Kan de taak niet opnieuw plannen",
 			"showWeekends": "Weekenden tonen",
 			"viewMode": "Kalenderperiode",
-			"week": "Week"
+			"week": "Week",
+			"overdue": "Te laat"
 		},
 		"descriptionSearchLoading": "Volledige beschrijvingen doorzoeken…",
 		"descriptionSearchError": "Zoeken in beschrijvingen mislukt. Resultaten kunnen onvolledig zijn.",
@@ -4183,11 +4693,13 @@
 			},
 			"label": "Inschatting",
 			"none": "Geen inschatting",
-			"pointsValue": "{{value}} pt",
+			"pointsValue_one": "{{value}} pt",
+			"pointsValue_other": "{{value}} pt",
 			"setAria": "Inschatting instellen",
 			"totals": {
 				"estimated": "{{estimated}} van {{total}} taken ingeschat",
-				"points": "{{completed}} / {{total}} pt",
+				"points_one": "{{completed}} / {{total}} pt",
+				"points_other": "{{completed}} / {{total}} pt",
 				"time": "{{completed}} / {{total}}"
 			},
 			"updateError": "Bijwerken van de inschatting mislukt"
@@ -4306,6 +4818,12 @@
 			},
 			"url": "URL",
 			"urlPlaceholder": "https://example.com"
+		},
+		"create": {
+			"similarTitle": "Vergelijkbare open taken",
+			"similarDismiss": "Vergelijkbare taken verbergen",
+			"similarOpen": "Openen",
+			"similarOpenLabel": "{{key}} {{title}} openen in een nieuw tabblad"
 		},
 		"parent": {
 			"add": "Bovenliggende taak toevoegen",
@@ -4576,6 +5094,7 @@
 				"cycle": "cyclus",
 				"estimate": "inschatting",
 				"modules": "modules",
+				"parent": "bovenliggende taak",
 				"status": "status"
 			},
 			"edited": "Bewerkt {{time}}",
@@ -4634,6 +5153,8 @@
 			"hint": "Typ een titel. @persoon, #label, !prioriteit en datums zoals fri of 12 Oct worden chips. Enter maakt aan, Ctrl Enter opent de volledige editor.",
 			"labelError": "De taak is aangemaakt, maar het label {{name}} kon niet worden toegevoegd",
 			"newLabel": "{{name}} (nieuw label)",
+			"dueOn": "Taak toevoegen met einddatum {{date}}",
+			"notInView": "Taak aangemaakt. Hij wordt hier niet getoond omdat hij niet bij deze weergave past.",
 			"open": "Openen",
 			"openComposer": "De volledige editor openen",
 			"openComposerHint": "De volledige editor openen (Ctrl Enter)",
@@ -4886,7 +5407,18 @@
 			"error": "Uitnodigen teamlid mislukt",
 			"createdTitle": "Uitnodiging aangemaakt",
 			"shareLinkDescription": "Deel deze link met {{email}} zodat diegene lid kan worden van de werkruimte.",
-			"done": "Klaar"
+			"done": "Klaar",
+			"emailHint": "Scheid meerdere adressen met komma's, spaties of nieuwe regels.",
+			"roleLabel": "Rol",
+			"roleHint": "Je kunt rollen geven tot en met je eigen rol.",
+			"sending": "{{current}} van {{total}} versturen…",
+			"invalidEmails": "Dit zijn geen geldige e-mailadressen: {{emails}}",
+			"emailRequired": "Voer minstens één e-mailadres in.",
+			"tooManyEmails": "Nodig maximaal {{max}} personen tegelijk uit.",
+			"sentSome": "{{sent}} van {{total}} uitnodigingen verstuurd.",
+			"failedTitle": "Niet verstuurd",
+			"rateLimited": "Te veel uitnodigingen tegelijk. Wacht een minuut en verstuur dan de rest.",
+			"shareLinksDescription": "Deel elke link met de juiste persoon zodat die lid kan worden van de werkruimte."
 		},
 		"membersTable": {
 			"emptyTitle": "Nog geen teamleden",
@@ -4912,7 +5444,9 @@
 			"cancelInviteError": "Annuleren uitnodiging mislukt",
 			"ariaInvitationActions": "Uitnodigingsacties",
 			"roleUpdateSuccess": "Rol bijgewerkt",
-			"roleUpdateError": "Bijwerken rol mislukt"
+			"roleUpdateError": "Bijwerken rol mislukt",
+			"ariaInvitationRole": "Rol voor {{email}}",
+			"invitationRoleUpdateSuccess": "Rol van uitnodiging bijgewerkt"
 		},
 		"profile": {
 			"emptyActivity": "Nog geen activiteit",
@@ -6063,6 +6597,51 @@
 					"shortcuts": "De triage-sneltoetsen documenteren"
 				},
 				"title": "Jouw werk"
+			},
+			"ask": {
+				"title": "Vraag het AI",
+				"model": "Werkruimtemodel",
+				"greeting": "Hoi! Wat wil je weten?",
+				"intro": "Stel in gewone taal vragen over je werkruimte. Antwoorden komen uit de taken die jij kunt zien.",
+				"placeholder": "Vraag het AI, @ voor context, / voor opdrachten",
+				"placeholderBuild": "Beschrijf wat je wilt maken of wijzigen…",
+				"modes": {
+					"label": "Modus",
+					"ask": "Vragen",
+					"build": "Bouwen"
+				},
+				"send": "Versturen",
+				"you": "Jij",
+				"question": "Wat blokkeert de huidige cyclus?",
+				"buildPrompt": "Wijs WEB-5 toe aan Mira",
+				"context": "Context ({{count}})",
+				"facts": "Projecten: 1 · Personen: 4 · Cyclussen: 1",
+				"earlier": "Eerdere berichten: {{count}}",
+				"thinking": "Nadenken… {{seconds}}s",
+				"thought": "{{seconds}}s nagedacht",
+				"blockedIntro": "Twee taken in {{cycle}} zijn geblokkeerd:",
+				"blockedPageTitles": "{{title}} wacht op een overzicht van de pagina's.",
+				"blockedPricing": "{{title}} wacht op prijsgegevens van sales.",
+				"unassigned": "{{key}} heeft nog geen toegewezen persoon.",
+				"summary": "Eén wijziging. Er gebeurt niets tot je bevestigt.",
+				"op": "Taak bewerken",
+				"action": "{{key}} toewijzen aan {{name}}",
+				"awaiting": "Wacht op antwoord",
+				"ready": "Wijzigingen klaar: {{count}}",
+				"cancel": "Annuleren",
+				"confirm": "Bevestigen",
+				"done": "Klaar",
+				"undo": "Ongedaan maken",
+				"undone": "Ongedaan gemaakt",
+				"cancelled": "Geannuleerd. Er is niets gewijzigd.",
+				"generic": "Deze demo beantwoordt alleen zijn eigen vraag. In Margaya antwoordt Vragen vanuit je werkruimte en linkt het naar de taken die het gebruikte.",
+				"genericBuild": "Deze demo maakt alleen zijn eigen wijziging. In Margaya zet Bouwen je woorden om in wijzigingen die jij bevestigt.",
+				"blocked": "Geblokkeerd",
+				"tasks": {
+					"pageTitles": "Paginatitels controleren",
+					"pricing": "Prijspagina bijwerken",
+					"mobileMenu": "Mobiel menu repareren"
+				}
 			}
 		},
 		"home": {
@@ -6097,6 +6676,10 @@
 				"singleServer": {
 					"detail": "Redis is optioneel",
 					"title": "Eén server is genoeg"
+				},
+				"ai": {
+					"title": "AI op jouw voorwaarden",
+					"detail": "Standaard uit, met je eigen model"
 				}
 			},
 			"faq": {
@@ -6133,6 +6716,14 @@
 					"selfHost": {
 						"answer": "Ja. Draai het met Docker Compose op één server, of op Kubernetes met de officiële Helm-chart. Je hebt één app-container en een PostgreSQL-database nodig. De installatiegids behandelt omgevingsvariabelen, opslag en reverse proxy's.",
 						"question": "Kan ik Margaya zelf hosten?"
+					},
+					"ai": {
+						"question": "Heeft Margaya AI, en staat het standaard aan?",
+						"answer": "Ja, en nee. Vraag het AI, de modus Bouwen, schrijfhulp, triagesuggesties en AI-agents zijn ingebouwd, maar blijven uit tot een instantiebeheerder een model koppelt en een werkruimte AI inschakelt. Elke wijziging die de AI voorstelt, zie je eerst en kun je ongedaan maken."
+					},
+					"aiData": {
+						"question": "Welke AI-modellen kan ik gebruiken, en waar gaat mijn data naartoe?",
+						"answer": "Gebruik Claude, of elk OpenAI-compatibel model dat je zelf draait, zoals Ollama of vLLM. Met alleen-lokale routering verlaat niets je netwerk. Margaya stuurt alleen wat de vragensteller al kan zien, bewaart geen prompts of antwoorden tenzij je geschiedenis op de server inschakelt, en registreert gebruiksaantallen voor budgetten."
 					}
 				},
 				"title": "Vragen, helder beantwoord"
@@ -6145,13 +6736,11 @@
 				"title": "Besteed je tijd aan het werk, niet aan de tool."
 			},
 			"hero": {
-				"description": "Margaya brengt taken, cyclussen, docs en triage samen in één snelle werkruimte. Typ een taak, breng hem verder en ga terug naar het echte werk.",
-				"eyebrow": "Opensource-projectmanagement",
-				"note": "MIT-licentie. Draai het op je eigen server of probeer Margaya Cloud 14 dagen zonder creditcard.",
-				"primaryCta": "Aan de slag",
-				"secondaryCta": "Zelf hosten",
 				"title": "Plan het werk.",
-				"titleAccent": "Schrap het gedoe."
+				"titleAccent": "Schrap het gedoe.",
+				"description": "Margaya brengt taken, cyclussen, docs en triage samen in één snelle werkruimte, met een AI-assistent die je kunt inschakelen om vragen te beantwoorden en wijzigingen door te voeren. Typ een taak, breng hem verder en ga terug naar het echte werk.",
+				"primaryCta": "Aan de slag",
+				"secondaryCta": "Zelf hosten"
 			},
 			"insight": {
 				"description": "Bouw grafieken van je taken, volg het auditlog en herstel alles uit de prullenbak.",
@@ -6199,7 +6788,8 @@
 					"select": "Taak met focus selecteren",
 					"spreadsheet": "Spreadsheet",
 					"status": "Status wijzigen",
-					"tasks": "Taak zoeken op sleutel of titel"
+					"tasks": "Taak zoeken op sleutel of titel",
+					"ask": "Vraag het AI openen"
 				},
 				"modifier": "Ctrl",
 				"shortcutsLabel": "Sneltoetsen",
@@ -6232,6 +6822,10 @@
 					"views": {
 						"description": "Bord, lijst, spreadsheet, kalender en Gantt",
 						"title": "Weergaven"
+					},
+					"ai": {
+						"title": "AI",
+						"description": "Vraag het AI, de modus Bouwen, schrijfhulp en agents"
 					}
 				},
 				"label": "Hoofdmenu",
@@ -6242,7 +6836,7 @@
 				"blog": "Blog",
 				"compare": "Vergelijken",
 				"explore": "Ontdekken",
-				"featuresIntro": "Vijf korte rondleidingen door Margaya. Elk met een live demo die je zelf kunt bedienen.",
+				"featuresIntro": "Zes korte rondleidingen door Margaya. Elk heeft een live demo die je zelf kunt overnemen.",
 				"newTab": "(opent in een nieuw tabblad)"
 			},
 			"ownIt": {
@@ -6403,6 +6997,26 @@
 					"title": "Bronnen"
 				},
 				"selfHosted": "Gemaakt om zelf te hosten"
+			},
+			"ai": {
+				"eyebrow": "AI",
+				"title": "Vraag het. Laat het bouwen. Jij bevestigt.",
+				"description": "Vraag het AI antwoordt op basis van je actuele taken, met grafieken en de taken die het gebruikte. De modus Bouwen zet een verzoek om in wijzigingen die je controleert en bevestigt, en agents pakken taken op zoals teamgenoten.",
+				"agents": {
+					"title": "Agents die werken als teamgenoten",
+					"description": "Wijs een taak toe aan een agent en volg hem in de Agentendesk. Loopt hij vast, dan vraagt hij het aan een mens, hij wacht op goedkeuring voordat hij iets schrijft en kan volgens een schema draaien."
+				},
+				"privacy": {
+					"title": "Standaard privé",
+					"description": "AI blijft uit tot een beheerder het inschakelt, en jij bepaalt waar het draait.",
+					"items": {
+						"model": "Claude, of je eigen model via Ollama of vLLM",
+						"local": "Alleen-lokale routering houdt data binnen je netwerk",
+						"stored": "Geen prompts of antwoorden opgeslagen, tenzij je kiest voor geschiedenis op de server",
+						"budget": "Maand- en dagbudgetten, met een overzicht van het gebruik",
+						"undo": "Elke wijziging uit de modus Bouwen kun je een uur lang ongedaan maken"
+					}
+				}
 			}
 		},
 		"pages": {
@@ -6421,8 +7035,8 @@
 						"title": "Een REST API met OpenAPI"
 					},
 					"cleanup": {
-						"body": "Archiveer gesloten taken en sluit verouderde taken automatisch, met een voorbeeld van wat elke regel raakt.",
-						"title": "Geplande opschoning"
+						"body": "Stel Wanneer-, Als-, Dan-regels in voor routinewerk, zoals nieuwe taken toewijzen of labelen, en archiveer of sluit verouderde taken volgens een schema, met een voorbeeld van wat elke regel raakt.",
+						"title": "Automatiseringsregels"
 					},
 					"integrations": {
 						"body": "Koppel pull requests uit GitHub of Gitea, stuur updates naar Slack, Discord, Telegram of Mattermost en post events naar elke URL met uitgaande webhooks.",
@@ -6561,6 +7175,43 @@
 					}
 				},
 				"title": "Eén set taken, op elke manier die je nodig hebt."
+			},
+			"ai": {
+				"metaTitle": "AI-assistent, modus Bouwen en agents",
+				"metaDescription": "Stel vragen over je werk en krijg antwoorden uit actuele data, laat de modus Bouwen wijzigingen voorstellen die jij bevestigt, schrijf met hulp van AI en wijs taken toe aan AI-agents, met je eigen model en AI standaard uit.",
+				"eyebrow": "AI",
+				"title": "Een assistent die het werk kent.",
+				"description": "Vraag het AI, de modus Bouwen, schrijfhulp en agents, allemaal in de opensourceversie, op het model dat jij kiest.",
+				"sections": {
+					"ask": {
+						"title": "Vraag het AI",
+						"body": "Vraag het in gewone woorden en krijg antwoorden uit actuele taken, met aantallen, grafieken en links naar de taken en pagina's die het gebruikte. Noem een taak, pagina of persoon met @, voeg een bestand toe, of spreek in plaats van te typen."
+					},
+					"build": {
+						"title": "Modus Bouwen",
+						"body": "Beschrijf een wijziging, zoals een project met drie taken of een taak voor Mia. Je ziet wat het las en hoe het redeneerde, past de voorgestelde wijzigingen aan, bevestigt ze en kunt elk ervan een uur lang ongedaan maken."
+					},
+					"writing": {
+						"title": "Schrijfhulp",
+						"body": "Verbeter, verkort, vertaal of verander de toon van een beschrijving of opmerking, krijg een titelsuggestie, vat een taak samen of voeg een AI-blok toe aan een pagina."
+					},
+					"triage": {
+						"title": "Triage en samenvattingen",
+						"body": "Krijg label- en prioriteitssuggesties voor nieuw werk, vind duplicaten, filter een bord door te beschrijven wat je zoekt, en krijg een samenvatting van je ongelezen inbox of een statusupdate voor een cyclus."
+					},
+					"agents": {
+						"title": "AI-agents",
+						"body": "Agents zijn leden aan wie je taken kunt toewijzen. Ze vragen het aan een mens als ze vastlopen, wachten op goedkeuring voordat ze schrijven, draaien volgens een schema en kunnen tools gebruiken van andere MCP-servers die je koppelt."
+					},
+					"privacy": {
+						"title": "Jouw model, jouw regels",
+						"body": "AI staat uit tot een beheerder het inschakelt. Gebruik Claude of een lokaal model, houd data binnen je netwerk, stel budgetten in en bewaar geen prompts of antwoorden, tenzij je daarvoor kiest."
+					}
+				},
+				"cta": {
+					"title": "Schakel AI in wanneer je er klaar voor bent.",
+					"description": "Lees de handleiding voor het instellen van AI, of probeer Vraag het AI in een eigen werkruimte."
+				}
 			}
 		},
 		"scenes": {
@@ -6671,6 +7322,10 @@
 			"yourWork": {
 				"caption": "Jouw werk verzamelt wat aan jou is toegewezen, wat je hebt aangemaakt en wat je volgt.",
 				"description": "Demo: de pagina Jouw werk. De cursor gaat langs de tabbladen Toegewezen, Aangemaakt en Gevolgd, en elk toont de eigen taken uit alle projecten met status, prioriteit en einddatum."
+			},
+			"ask": {
+				"caption": "Vraag iets over het werk en laat Bouwen de wijziging maken. Jij bevestigt.",
+				"description": "Demo: het bord Website met de chat Vraag het AI open. Iemand vraagt wat de huidige cyclus blokkeert. De assistent toont wat het las, denkt twee seconden na en antwoordt: WEB-5 en WEB-6 zijn geblokkeerd, en WEB-5 heeft nog geen toegewezen persoon. Na de overstap naar Bouwen vragen ze WEB-5 aan Mira toe te wijzen. De assistent stelt de wijziging voor, zij bevestigen, de kaart toont Klaar met Ongedaan maken, en Mira's avatar verschijnt op WEB-5."
 			}
 		}
 	},
@@ -6836,7 +7491,11 @@
 			"owner": "Eigenaar",
 			"progress": "Voortgang",
 			"tasks": "Taken",
-			"title": "Cyclusdetails"
+			"title": "Cyclusdetails",
+			"rolledOver_one": "Doorschuiven heeft {{count}} onvoltooide taak naar {{name}} verplaatst.",
+			"rolledOver_other": "Doorschuiven heeft {{count}} onvoltooide taken naar {{name}} verplaatst.",
+			"rolloverNoNext": "Doorschuiven vond geen volgende cyclus; onvoltooide taken zijn hier gebleven.",
+			"rolloverNothing": "Doorschuiven vond geen onvoltooide taken om te verplaatsen."
 		},
 		"status": {
 			"archived": "Gearchiveerd",
@@ -7418,7 +8077,9 @@
 		"widgets": {
 			"quickLinks": "Snelkoppelingen",
 			"recents": "Recent",
-			"stickies": "Plaknotities"
+			"stickies": "Plaknotities",
+			"risks": "Risico's",
+			"myBrief": "Mijn overzicht"
 		},
 		"focus": {
 			"caughtUp": "Helemaal bij",
@@ -7432,7 +8093,9 @@
 			"stickies": "Plaknotities",
 			"stickiesHint": "Privénotities, alleen voor jou",
 			"unread_one": "{{count}} ongelezen",
-			"unread_other": "{{count}} ongelezen"
+			"unread_other": "{{count}} ongelezen",
+			"openCaption": "open",
+			"unreadCaption": "ongelezen"
 		}
 	},
 	"intake": {
@@ -7492,7 +8155,11 @@
 			"titlePlaceholder": "Wat heb je nodig?",
 			"titleRequired": "Voeg een titel toe",
 			"toast": "Verzoek ingediend",
-			"toastView": "Bekijken"
+			"toastView": "Bekijken",
+			"pastedImages": "Geplakte afbeeldingen",
+			"pasteHint": "Plak schermafbeeldingen om ze bij het verzoek te voegen.",
+			"removeImage": "{{name}} verwijderen",
+			"attachFailed": "Het verzoek is ingediend, maar sommige afbeeldingen konden niet worden bijgevoegd."
 		},
 		"decline": {
 			"description": "Het verzoek wordt gesloten en komt niet op het bord. Je kunt het later heropenen.",
@@ -7539,7 +8206,9 @@
 			"noTasks": "Dit project heeft nog geen andere taken.",
 			"searchPlaceholder": "Taken zoeken op sleutel of titel",
 			"title": "{{key}} als duplicaat markeren",
-			"toast": "Als duplicaat van {{key}} gemarkeerd"
+			"toast": "Als duplicaat van {{key}} gemarkeerd",
+			"aiSuggestions": "Voorgesteld door AI",
+			"aiChecking": "Duplicaten zoeken met AI…"
 		},
 		"empty": {
 			"backToIntake": "Terug naar intake",
@@ -7783,6 +8452,11 @@
 				"singleProjectHint": "Selecteer één project om de snelheid te zien",
 				"subtitle": "Voltooid versus gepland, per cyclus",
 				"title": "Snelheid"
+			},
+			"filter": {
+				"all": "Alle",
+				"label": "Cyclussen tonen",
+				"running": "Nu actief"
 			}
 		},
 		"dimensions": {
@@ -7926,7 +8600,8 @@
 			"noRequests": "Nog geen aanvragen",
 			"noTasks": "Geen taken komen overeen met deze filters",
 			"retry": "Opnieuw proberen",
-			"timeout": "Dit duurde te lang. Beperk de filters en probeer het opnieuw."
+			"timeout": "Dit duurde te lang. Beperk de filters en probeer het opnieuw.",
+			"noRunningCycles": "Er zijn momenteel geen actieve cyclussen"
 		},
 		"table": {
 			"periodEnd": "Einde van periode",
@@ -7942,7 +8617,8 @@
 			"intake": "Intake",
 			"modules": "Modules",
 			"overview": "Overzicht",
-			"tasks": "Taken"
+			"tasks": "Taken",
+			"delivery": "Oplevering"
 		},
 		"trend": {
 			"completed": "Voltooid",
@@ -7956,9 +8632,143 @@
 			"chart": "Grafiek",
 			"label": "Weergeven als",
 			"table": "Tabel"
+		},
+		"reports": {
+			"actionsFor": "Acties voor {{name}}",
+			"close": "Rapport sluiten",
+			"delete": "Verwijderen",
+			"deleteDescription": "“{{name}}” wordt verwijderd. Dit kan niet ongedaan worden gemaakt.",
+			"deleteSharedDescription": "“{{name}}” wordt voor iedereen in de werkruimte verwijderd. Dit kan niet ongedaan worden gemaakt.",
+			"deleteTitle": "Dit rapport verwijderen?",
+			"dialog": {
+				"cancel": "Annuleren",
+				"createTitle": "Rapport opslaan",
+				"editTitle": "Rapport bewerken",
+				"name": "Naam",
+				"namePlaceholder": "bijv. Open bugs per toegewezen persoon",
+				"nameRequired": "Voer een naam in",
+				"save": "Opslaan",
+				"summary": "Slaat de grafiekinstellingen, de geselecteerde projecten en de filters op.",
+				"update": "Wijzigingen opslaan",
+				"visibility": "Wie kan het zien"
+			},
+			"empty": "Nog geen opgeslagen rapporten. Sla deze grafiek op om er later naar terug te keren.",
+			"listTitle": "Opgeslagen rapporten",
+			"loadError": "Opgeslagen rapporten konden niet worden geladen",
+			"makePrivate": "Privé maken",
+			"notes": {
+				"allProjects": "Geen van de projecten van dit rapport is beschikbaar, dus alle projecten worden getoond.",
+				"builderReset": "Sommige grafiekinstellingen zijn niet beschikbaar voor deze projecten en zijn teruggezet.",
+				"dropped_one": "{{count}} project in dit rapport bestaat niet meer.",
+				"dropped_other": "{{count}} projecten in dit rapport bestaan niet meer.",
+				"leftOut_one": "{{count}} project in dit rapport is gearchiveerd en weggelaten.",
+				"leftOut_other": "{{count}} projecten in dit rapport zijn gearchiveerd en weggelaten.",
+				"otherProjects": "Dit rapport is opgeslagen voor andere projecten; hier toont het alleen dit project."
+			},
+			"open": "Rapporten",
+			"rename": "Naam wijzigen",
+			"save": "Opslaan",
+			"saveAsNew": "Opslaan als nieuw",
+			"share": "Delen met werkruimte",
+			"sharedBy": "Gedeeld door {{name}}",
+			"showing": "Rapport: {{name}}",
+			"toast": {
+				"deleted": "Rapport verwijderd",
+				"deleteError": "Het rapport kon niet worden verwijderd",
+				"madePrivate": "Rapport is nu privé",
+				"saved": "“{{name}}” opgeslagen",
+				"saveError": "Het rapport kon niet worden opgeslagen",
+				"shared": "Rapport gedeeld met de werkruimte",
+				"updated": "Rapport bijgewerkt"
+			},
+			"unsaved": "Niet-opgeslagen wijzigingen",
+			"update": "Rapport bijwerken",
+			"visibility": {
+				"private": "Privé",
+				"privateHint": "Alleen jij kunt het zien.",
+				"workspace": "Gedeeld met werkruimte",
+				"workspaceHint": "Iedereen in deze werkruimte met toegang tot analyses kan het openen."
+			}
 		}
 	},
 	"pages": {
+		"templates": {
+			"saveAction": "Opslaan als sjabloon",
+			"saveTitle": "Opslaan als sjabloon",
+			"saveDescription": "De huidige inhoud en het pictogram van de pagina worden een sjabloon voor nieuwe pagina's.",
+			"nameLabel": "Naam van het sjabloon",
+			"scopeLabel": "Beschikbaar in",
+			"scopeProject": "Dit project",
+			"scopeProjectHint": "Aangeboden bij het maken van pagina's in dit project.",
+			"scopeWorkspace": "Alle projecten",
+			"scopeWorkspaceHint": "Aangeboden in alle projecten van de werkruimte.",
+			"saveConfirm": "Sjabloon opslaan",
+			"savedToast": "Sjabloon opgeslagen",
+			"saveError": "Het sjabloon kon niet worden opgeslagen",
+			"newFromTemplate": "Nieuwe pagina uit sjabloon",
+			"moreCreateOptions": "Meer manieren om een pagina te maken",
+			"pickTitle": "Nieuwe pagina uit sjabloon",
+			"pickDescription": "De nieuwe pagina begint met de inhoud van het sjabloon. Daarna kun je alles aanpassen.",
+			"starters": "Startsjablonen",
+			"saved": "Opgeslagen sjablonen",
+			"savedEmpty": "Nog geen opgeslagen sjablonen. Sla er een op via het menu van een pagina.",
+			"loadError": "Sjablonen konden niet worden geladen",
+			"deleteLabel": "Sjabloon {{name}} verwijderen",
+			"deleted": "Sjabloon verwijderd",
+			"deleteError": "Het sjabloon kon niet worden verwijderd",
+			"builtin": {
+				"meetingName": "Vergadernotities",
+				"meetingDescription": "Aanwezigen, agenda, besluiten en actiepunten.",
+				"meetingAttendees": "Aanwezigen",
+				"meetingAgenda": "Agenda",
+				"meetingNotes": "Notities",
+				"meetingDecisions": "Besluiten",
+				"meetingActionItems": "Actiepunten",
+				"specName": "Specificatie",
+				"specDescription": "Probleem, doelen, voorstel en open vragen.",
+				"specSummary": "Samenvatting",
+				"specProblem": "Probleem",
+				"specGoals": "Doelen",
+				"specNonGoals": "Buiten scope",
+				"specProposal": "Voorstel",
+				"specOpenQuestions": "Open vragen",
+				"retroName": "Retrospectief",
+				"retroDescription": "Wat ging goed, wat kan beter en wat proberen we hierna.",
+				"retroWentWell": "Wat ging goed",
+				"retroCouldBeBetter": "Wat kan beter",
+				"retroTryNext": "Wat we hierna proberen"
+			}
+		},
+		"publish": {
+			"menuItem": "Publiceren op het web",
+			"title": "Publiceren op het web",
+			"description": "Iedereen met de link kan deze pagina lezen zonder in te loggen. Zoekmachines wordt gevraagd haar niet te indexeren.",
+			"switchLabel": "Openbare link",
+			"onHint": "Gepubliceerd. Uitschakelen trekt de link meteen in.",
+			"offHint": "Uit. Schakel in om een link te maken.",
+			"disabledByWorkspace": "Openbare pagina's staan uit voor deze werkruimte. Een beheerder kan ze inschakelen in de werkruimte-instellingen.",
+			"cannotPublish": "Alleen mensen die projecten mogen delen kunnen publiceren, en alleen pagina's die zichtbaar zijn voor de hele werkruimte.",
+			"linkLabel": "Link",
+			"copyLink": "Link kopiëren",
+			"copied": "Gekopieerd",
+			"openLink": "Openbare pagina openen",
+			"privacyNote": "Vermeldingen, taaklinks, bestanden en links naar niet-gepubliceerde pagina's worden verborgen op de openbare pagina.",
+			"publishedToast": "Pagina gepubliceerd",
+			"unpublishedToast": "Link ingetrokken",
+			"error": "De openbare link kon niet worden gewijzigd",
+			"loadError": "De openbare link kon niet worden geladen",
+			"done": "Klaar"
+		},
+		"publicView": {
+			"documentTitle": "Gedeelde pagina",
+			"unavailableTitle": "Deze pagina is niet beschikbaar",
+			"unavailableDescription": "De link is mogelijk ingetrokken, of de pagina wordt niet meer gedeeld.",
+			"updated": "Bijgewerkt op {{date}}",
+			"mention": "@iemand",
+			"task": "een gekoppelde taak",
+			"file": "een bijgevoegd bestand",
+			"page": "een andere pagina"
+		},
 		"actions": {
 			"archive": "Archiveren",
 			"copyLink": "Link kopiëren",
@@ -7996,6 +8806,40 @@
 			"restoredBy": "{{name}} heeft een eerdere versie hersteld",
 			"roomFull": "Er hebben nu te veel mensen deze pagina open. Probeer het zo meteen opnieuw.",
 			"signedOut": "Je sessie is beëindigd. Log opnieuw in om verder te bewerken."
+		},
+		"toolbar": {
+			"ariaLabel": "Opmaakwerkbalk",
+			"textStyle": "Tekststijl",
+			"bold": "Vet",
+			"italic": "Cursief",
+			"underline": "Onderstrepen",
+			"strike": "Doorhalen",
+			"inlineCode": "Inline code",
+			"link": "Link",
+			"image": "Afbeelding",
+			"more": "Meer opmaak"
+		},
+		"filters": {
+			"button": "Filters",
+			"active": "Filters toegepast",
+			"search": "Filters zoeken",
+			"searchClear": "Zoekopdracht wissen",
+			"favorites": "Favorieten",
+			"createdDate": "Aanmaakdatum",
+			"date": {
+				"any": "Altijd",
+				"today": "Vandaag",
+				"last7": "Afgelopen 7 dagen",
+				"last30": "Afgelopen 30 dagen",
+				"older": "Ouder dan 30 dagen"
+			},
+			"remove": "Filter {{filter}} verwijderen"
+		},
+		"detail": {
+			"unlocked": "Ontgrendeld",
+			"openOutline": "Overzicht openen",
+			"currentSection": "Huidige sectie",
+			"emptyLinePlaceholder": "Typ '/' voor opdrachten"
 		},
 		"commandPalette": {
 			"createPage": "Pagina aanmaken"
@@ -8113,8 +8957,6 @@
 			"locked": "Vergrendeld",
 			"newPage": "Nieuwe pagina",
 			"ownedBy": "Eigenaar: {{name}}",
-			"ownerFilter": "Eigenaar",
-			"ownerFilterSearch": "Mensen zoeken",
 			"retry": "Opnieuw proberen",
 			"searchPlaceholder": "Pagina's zoeken",
 			"sort": {
@@ -8234,6 +9076,229 @@
 			"expand": "{{title}} uitvouwen",
 			"newPage": "Nieuwe pagina",
 			"title": "Pagina's"
+		}
+	},
+	"accountSecurity": {
+		"platform": {
+			"save": "Opslaan",
+			"retry": "Opnieuw proberen",
+			"loadMore": "Meer laden",
+			"auditPasswordResetSent": "Herstellink voor wachtwoord verstuurd",
+			"apiKeys": {
+				"accessLabel": "Toegang",
+				"accessFull": "Volledige toegang",
+				"accessFullHint": "Alles wat je kunt doen, in elke werkruimte waar je lid van bent.",
+				"accessRead": "Alleen lezen",
+				"accessReadHint": "Kan lezen maar verandert nooit iets.",
+				"accessCustom": "Aangepast",
+				"accessCustomHint": "Alleen de onderdelen die je hieronder kiest.",
+				"areasLabel": "Onderdelen",
+				"areaNone": "Geen",
+				"areaRead": "Lezen",
+				"areaWrite": "Schrijven",
+				"areasRequired": "Kies minstens één onderdeel.",
+				"projectsLabel": "Beperken tot bepaalde projecten",
+				"projectsHint": "Andere projecten lijken voor deze sleutel niet te bestaan, en verzoeken voor de hele werkruimte worden geweigerd.",
+				"projectsIn": "Projecten in {{workspace}}",
+				"projectsLoading": "Projecten laden…",
+				"projectsEmpty": "Deze werkruimte heeft nog geen projecten.",
+				"projectsRequired": "Kies minstens één project.",
+				"columnScope": "Bereik",
+				"scopeFull": "Volledige toegang",
+				"scopeRead": "Alleen lezen",
+				"scopeCustom": "Aangepast",
+				"scopeProjects": "Projecten: {{projects}}",
+				"deletedProject": "Verwijderd project",
+				"requestsAria": "Verzoeken met {{name}}",
+				"requestsTitle": "Verzoeken: {{name}}",
+				"requestsDescription": "Recente verzoeken met deze sleutel. Alleen methode, route, status en duur worden bewaard, nooit de inhoud.",
+				"requestsEmpty": "Nog geen verzoeken.",
+				"requestsError": "De verzoeken konden niet worden geladen.",
+				"columnTime": "Tijd",
+				"columnRequest": "Verzoek",
+				"columnStatus": "Status",
+				"columnDuration": "Duur",
+				"durationMs": "{{value}} ms"
+			},
+			"policy": {
+				"title": "Aanmeldbeleid",
+				"description": "Wie een account mag maken, hoe iedereen zich aanmeldt en hoe lang sessies duren.",
+				"invitedPasswordSignUp": "Registreren met wachtwoord voor genodigden",
+				"invitedPasswordSignUpHint": "Als registreren met wachtwoord uit staat, kunnen mensen met een geldige uitnodiging toch een wachtwoordaccount maken.",
+				"domains": "Toegestane e-maildomeinen",
+				"domainsHint": "Nieuwe accounts moeten een adres op een van deze domeinen gebruiken. Laat leeg om elk domein toe te staan.",
+				"requiredProvider": "Verplichte aanmeldprovider",
+				"requiredProviderHint": "Iedereen meldt zich aan via deze provider. Instantiebeheerders houden aanmelden met wachtwoord als noodroute.",
+				"noRequirement": "Geen verplichting",
+				"customProvider": "de aanmelding van je organisatie",
+				"sessionLifetime": "Sessieduur",
+				"sessionLifetimeHint": "Hoe lang een ongebruikte sessie geldig blijft. Gebruik verlengt haar.",
+				"hours": "uur",
+				"signInNotice": "Meld je aan met {{provider}}. Aanmelden met wachtwoord is alleen voor instantiebeheerders."
+			},
+			"twoFactor": {
+				"title": "Tweestapsverificatie",
+				"description": "Vraag om een code uit een authenticator-app bij aanmelden met je wachtwoord.",
+				"authenticator": "Authenticator-app",
+				"on": "Aan",
+				"off": "Uit",
+				"turnOn": "Inschakelen",
+				"turnOff": "Uitschakelen",
+				"newCodes": "Nieuwe herstelcodes",
+				"confirmPassword": "Bevestig je wachtwoord",
+				"continue": "Doorgaan",
+				"setupTitle": "Voeg Margaya toe aan je authenticator-app",
+				"setupHint": "Voer deze instelsleutel in je authenticator-app in en typ daarna de 6-cijferige code die de app toont.",
+				"setupKey": "Instelsleutel",
+				"openApp": "Openen in een authenticator-app op dit apparaat",
+				"code": "Verificatiecode",
+				"verify": "Verifiëren",
+				"invalidCode": "Die code klopt niet. Controleer de tijd op je apparaat en probeer het opnieuw.",
+				"codesTitle": "Herstelcodes",
+				"codesHint": "Bewaar ze op een veilige plek. Met elke code meld je je één keer aan als je je apparaat kwijt bent.",
+				"copyCodes": "Codes kopiëren",
+				"copied": "Herstelcodes gekopieerd",
+				"done": "Klaar",
+				"enabled": "Tweestapsverificatie staat aan.",
+				"disabled": "Tweestapsverificatie staat uit.",
+				"error": "Er ging iets mis. Probeer het opnieuw."
+			},
+			"challenge": {
+				"title": "Tweestapsverificatie",
+				"totpHint": "Voer de 6-cijferige code uit je authenticator-app in.",
+				"recoveryHint": "Voer een van je herstelcodes in. Elke code werkt één keer.",
+				"recoveryCode": "Herstelcode",
+				"invalid": "Die code klopt niet. Probeer het opnieuw.",
+				"trustDevice": "Dit apparaat 30 dagen vertrouwen",
+				"useRecovery": "Een herstelcode gebruiken",
+				"useApp": "Je authenticator-app gebruiken",
+				"usePassword": "In plaats daarvan aanmelden met wachtwoord",
+				"back": "Terug naar aanmelden"
+			},
+			"users": {
+				"nav": "Gebruikers",
+				"title": "Gebruikers",
+				"subtitle": "Alle accounts op deze server. Blokkeer mensen die vertrokken zijn, stel wachtwoorden opnieuw in en meld mensen af.",
+				"listTitle": "Accounts",
+				"search": "Zoeken op naam of e-mail",
+				"filterLabel": "Tonen",
+				"filterAll": "Alle accounts",
+				"filterAdmins": "Instantiebeheerders",
+				"filterBanned": "Geblokkeerd",
+				"empty": "Geen accounts komen overeen met ‘{{query}}’.",
+				"none": "Nog geen accounts.",
+				"columnUser": "Gebruiker",
+				"columnStatus": "Status",
+				"columnWorkspaces": "Werkruimtes",
+				"columnLastActive": "Laatst actief",
+				"columnJoined": "Lid sinds",
+				"columnActions": "Acties",
+				"badgeAdmin": "Beheerder",
+				"badgeBanned": "Geblokkeerd",
+				"badgeTwoFactor": "2FA",
+				"never": "Nooit",
+				"actionsFor": "Acties voor {{name}}",
+				"details": "Details bekijken",
+				"resetPassword": "Wachtwoord opnieuw instellen",
+				"signOut": "Overal afmelden",
+				"makeAdmin": "Instantiebeheerder maken",
+				"removeAdmin": "Instantiebeheerder verwijderen",
+				"ban": "Blokkeren",
+				"unban": "Deblokkeren",
+				"banTitle": "{{name}} blokkeren?",
+				"banDescription": "De persoon wordt overal afgemeld en kan zich niet aanmelden tot de blokkade afloopt. Ook de API-sleutels werken niet meer.",
+				"banReason": "Reden (optioneel)",
+				"banDuration": "Duur",
+				"banForever": "Tot deblokkering",
+				"ban7Days": "7 dagen",
+				"ban30Days": "30 dagen",
+				"banned": "{{name}} is geblokkeerd.",
+				"unbanned": "{{name}} kan zich weer aanmelden.",
+				"resetTitle": "Wachtwoord van {{name}} opnieuw instellen?",
+				"resetDescription": "Stuur een herstellink of stel nu een nieuw wachtwoord in. Een nieuw wachtwoord meldt de persoon overal af.",
+				"resetByEmail": "Herstellink sturen naar {{email}}",
+				"resetSetNow": "Nu een nieuw wachtwoord instellen",
+				"newPassword": "Nieuw wachtwoord",
+				"resetConfirm": "Wachtwoord opnieuw instellen",
+				"resetSent": "Er is een herstellink onderweg naar {{email}}.",
+				"passwordSet": "Het wachtwoord van {{name}} is gewijzigd.",
+				"signOutTitle": "{{name}} overal afmelden?",
+				"signOutDescription": "Alle sessies stoppen meteen. De API-sleutels blijven werken; alleen de eigenaar kan ze intrekken.",
+				"signedOut": "{{name}} is overal afgemeld.",
+				"promoted": "{{name}} is nu instantiebeheerder.",
+				"demoted": "{{name}} is geen instantiebeheerder meer.",
+				"activeSessions": "Actieve sessies",
+				"signInMethod": "Wachtwoord",
+				"hasPassword": "Ingesteld",
+				"noPassword": "Niet ingesteld (meldt zich anders aan)",
+				"workspacesTitle": "Werkruimtes",
+				"noWorkspaces": "Geen lid van een werkruimte.",
+				"joined": "Lid sinds {{date}}"
+			}
+		},
+		"password": {
+			"tooShort": "Gebruik minstens {{min}} tekens.",
+			"tooCommon": "Dit wachtwoord is te gebruikelijk en makkelijk te raden. Kies een ander.",
+			"matchesEmail": "Je wachtwoord mag niet je e-mailadres zijn.",
+			"hint": "Minstens {{min}} tekens. Vermijd veelgebruikte wachtwoorden en je e-mailadres."
+		},
+		"emailChange": {
+			"action": "E-mailadres wijzigen",
+			"title": "E-mailadres wijzigen",
+			"description": "We sturen een code naar het nieuwe adres. Je e-mailadres wijzigt zodra je die invoert, en je andere sessies worden uitgelogd.",
+			"newEmail": "Nieuw e-mailadres",
+			"newEmailPlaceholder": "jij@voorbeeld.nl",
+			"invalidEmail": "Voer een geldig e-mailadres in.",
+			"sameEmail": "Dat is al je e-mailadres.",
+			"sendCode": "Code versturen",
+			"codeSent": "Als {{email}} gebruikt kan worden, is er een code onderweg. Die verloopt over 5 minuten.",
+			"code": "Verificatiecode",
+			"confirm": "E-mailadres wijzigen",
+			"back": "Een ander adres gebruiken",
+			"success": "Je e-mailadres is nu {{email}}.",
+			"invalidCode": "Die code klopt niet of is verlopen. Vraag een nieuwe aan.",
+			"sessionTooOld": "Log voor je veiligheid opnieuw in voordat je je e-mailadres wijzigt.",
+			"unavailable": "E-mail is niet ingesteld op deze server, dus je adres kan hier niet worden gewijzigd. Vraag het een instantiebeheerder.",
+			"error": "Je e-mailadres kon niet worden gewijzigd."
+		},
+		"reauth": {
+			"title": "Bevestig dat jij het bent",
+			"description": "Voor wijzigingen aan de instantie moet je recent zijn ingelogd. Voer je wachtwoord in om de komende 10 minuten verder te gaan.",
+			"noPassword": "Voor wijzigingen aan de instantie moet je recent zijn ingelogd. Je account heeft geen wachtwoord, dus log opnieuw in om verder te gaan.",
+			"password": "Wachtwoord",
+			"confirm": "Bevestigen",
+			"signInAgain": "Opnieuw inloggen",
+			"wrongPassword": "Dat wachtwoord klopt niet.",
+			"cancelled": "Niet opgeslagen: je identiteit is niet bevestigd.",
+			"error": "Je wachtwoord kon niet worden bevestigd."
+		},
+		"auditTrail": {
+			"title": "Wijzigingslogboek",
+			"subtitle": "Wijzigingen aan de instantie: wie wat heeft gewijzigd, en wanneer. Geheime waarden worden nooit vastgelegd.",
+			"empty": "Nog geen wijzigingen aan de instantie vastgelegd.",
+			"loadMore": "Meer laden",
+			"when": "Wanneer",
+			"who": "Wie",
+			"what": "Wat",
+			"system": "Systeem",
+			"actions": {
+				"instanceSettingsUpdated": "Heeft instantie-instellingen gewijzigd",
+				"instanceAdminAdded": "Heeft een instantiebeheerder toegevoegd",
+				"instanceAdminRemoved": "Heeft een instantiebeheerder verwijderd",
+				"instanceReauthenticated": "Heeft het eigen wachtwoord bevestigd",
+				"userCreated": "Heeft een account aangemaakt",
+				"userRoleChanged": "Heeft de rol van een account gewijzigd",
+				"userBanned": "Heeft een account geblokkeerd",
+				"userUnbanned": "Heeft een blokkering opgeheven",
+				"userRemoved": "Heeft een account verwijderd",
+				"userPasswordSet": "Heeft het wachtwoord van een account ingesteld",
+				"userSessionsRevoked": "Heeft een account uitgelogd",
+				"userImpersonated": "Heeft ingelogd als een ander account",
+				"cliAdminPromoted": "Heeft een instantiebeheerder aangesteld (herstel-CLI)",
+				"cliAdminDemoted": "Heeft een instantiebeheerder verwijderd (herstel-CLI)",
+				"cliPasswordReset": "Heeft een wachtwoord opnieuw ingesteld (herstel-CLI)",
+				"cliUserUnbanned": "Heeft een blokkering opgeheven (herstel-CLI)"
+			}
 		}
 	},
 	"instanceAdmin": {
@@ -8374,7 +9439,8 @@
 			"email": "E-mail",
 			"general": "Algemeen",
 			"publicBoards": "Openbare borden",
-			"workspaces": "Werkruimtes"
+			"workspaces": "Werkruimtes",
+			"ai": "AI"
 		},
 		"oauth": {
 			"authorizationUrl": "Authorization-URL",
@@ -8595,7 +9661,11 @@
 				"label": "Stack",
 				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
 			},
-			"title": "Quick facts"
+			"title": "Quick facts",
+			"ai": {
+				"label": "AI",
+				"value": "Optioneel en standaard uit: Vraag het AI, de modus Bouwen en AI-agents, op Claude of een zelf gehost model"
+			}
 		},
 		"guidelines": {
 			"do": {
@@ -8805,5 +9875,1713 @@
 		},
 		"title": "One product. Two ways to run it.",
 		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+	},
+	"templates": {
+		"form": {
+			"addSubtask": "Toevoegen",
+			"assignees": "Toegewezen personen",
+			"assigneesNone": "Projectstandaard",
+			"create": "Sjabloon aanmaken",
+			"createTitle": "Nieuw taaksjabloon",
+			"description": "Waarmee een nieuwe taak begint. Alles blijft bewerkbaar nadat de taak is aangemaakt.",
+			"editTitle": "Taaksjabloon bewerken",
+			"estimate": "Inschatting",
+			"labels": "Labels",
+			"labelsEmpty": "Geen labels gevonden",
+			"labelsNone": "Geen labels",
+			"labelsSearch": "Labels zoeken",
+			"moveDown": "{{title}} omlaag verplaatsen",
+			"moveUp": "{{title}} omhoog verplaatsen",
+			"name": "Naam",
+			"namePlaceholder": "Bugmelding",
+			"notSet": "Niet ingesteld",
+			"priority": "Prioriteit",
+			"removeSubtask": "{{title}} verwijderen",
+			"save": "Sjabloon opslaan",
+			"status": "Status",
+			"statusDefault": "Projectstandaard",
+			"subtaskPlaceholder": "Subtaak toevoegen",
+			"subtasks": "Subtaken",
+			"subtaskTitle": "Subtaak {{number}}",
+			"taskDescription": "Beschrijving",
+			"taskDescriptionPlaceholder": "Stappen om te reproduceren, verwacht resultaat…",
+			"titlePattern": "Titelpatroon",
+			"titlePatternHint": "{title} wordt vervangen door de ingevoerde titel. Zonder {title} komt de ingevoerde titel na het patroon.",
+			"titlePatternPlaceholder": "Bug: {title}"
+		},
+		"settings": {
+			"add": "Nieuw sjabloon",
+			"deleteAria": "Sjabloon {{name}} verwijderen",
+			"deleteConfirm": "Verwijderen",
+			"deleteDescription": "Taken die ermee zijn aangemaakt, blijven ongewijzigd.",
+			"deleteTitle": "Het sjabloon {{name}} verwijderen?",
+			"description": "Startpunten voor nieuwe taken: een titelpatroon, standaardvelden en een checklist met subtaken.",
+			"editAria": "Sjabloon {{name}} bewerken",
+			"empty": "Nog geen sjablonen.",
+			"loadError": "Sjablonen konden niet worden geladen.",
+			"noPermission": "Alleen mensen die het project kunnen bewerken, kunnen de sjablonen wijzigen.",
+			"retry": "Opnieuw proberen",
+			"subtaskCount_one": "{{count}} subtaak",
+			"subtaskCount_other": "{{count}} subtaken",
+			"title": "Taaksjablonen",
+			"toast": {
+				"created": "Sjabloon aangemaakt",
+				"deleted": "Sjabloon verwijderd",
+				"deleteError": "Het sjabloon kon niet worden verwijderd",
+				"error": "Het sjabloon kon niet worden opgeslagen",
+				"updated": "Sjabloon opgeslagen"
+			}
+		},
+		"use": {
+			"applied": "Sjabloon: {{name}}",
+			"button": "Sjabloon",
+			"menuLabel": "Een sjabloon gebruiken",
+			"quickAdd": "Aanmaken vanuit een sjabloon",
+			"removeSubtask": "Subtaak {{title}} verwijderen",
+			"subtaskError_one": "De taak is aangemaakt, maar {{count}} subtaak kon niet worden toegevoegd",
+			"subtaskError_other": "De taak is aangemaakt, maar {{count}} subtaken konden niet worden toegevoegd",
+			"subtasksTitle_one": "{{count}} subtaak uit het sjabloon",
+			"subtasksTitle_other": "{{count}} subtaken uit het sjabloon"
+		}
+	},
+	"delivery": {
+		"forecast": {
+			"title": "Prognose",
+			"likelyBy": "85% kans dat het uiterlijk {{date}} klaar is",
+			"percentiles": "50% uiterlijk {{p50}} · 95% uiterlijk {{p95}}",
+			"chanceByEnd": "{{percent}}% kans om uiterlijk {{date}} klaar te zijn",
+			"beyondHorizon": "Meer dan twee jaar in het huidige tempo",
+			"open_one": "{{count}} open taak",
+			"open_other": "{{count}} open taken",
+			"complete": "Alle taken zijn klaar",
+			"insufficient": {
+				"short_span": "Nog niet genoeg geschiedenis: een prognose heeft minstens 14 dagen werk in dit project nodig.",
+				"few_completions": "Nog niet genoeg geschiedenis: de afgelopen 8 weken zijn minder dan 5 taken afgerond.",
+				"few_active_days": "Nog niet genoeg geschiedenis: de afgelopen 8 weken zijn op minder dan 3 dagen taken afgerond."
+			},
+			"howCalculated": "Hoe wordt dit berekend?",
+			"method": {
+				"title": "Monte-Carloprognose",
+				"body": "Margaya speelt het echte tempo van je team {{iterations}} keer na. Elke gesimuleerde dag neemt de afgeronde taken van een willekeurige dag uit de geschiedenis hieronder, tot de open taken klaar zijn. De datums laten zien wanneer 50%, 85% en 95% van de simulaties klaar was.",
+				"window": "Geschiedenis: {{from}} – {{to}}",
+				"completed": "Afgeronde taken: {{total}}",
+				"activeDays": "Dagen met een afgeronde taak: {{days}}",
+				"perDay": "Afgerond per dag: {{min}}–{{max}}",
+				"perWeek": "Gemiddeld per week: {{perWeek}}",
+				"team": "Het tempo is dat van het hele project, dus werk buiten deze selectie telt ook mee.",
+				"seed": "Seed {{seed}}: dezelfde gegevens geven de hele dag hetzelfde antwoord."
+			},
+			"error": "De prognose kon niet worden geladen",
+			"retry": "Opnieuw proberen"
+		},
+		"risks": {
+			"title": "Risico's",
+			"empty": "Geen risico's gevonden",
+			"showAll": "Alles tonen ({{total}})",
+			"showLess": "Minder tonen",
+			"noCycleTime": "Werk dat te lang loopt verschijnt zodra 10 taken met een vastgelegde start zijn afgerond.",
+			"hiddenTask": "Een taak die je niet kunt zien",
+			"truncated": "Alleen de eerste 2.000 open taken zijn gecontroleerd.",
+			"error": "De risico's konden niet worden geladen",
+			"someone": "Iemand",
+			"severity": {
+				"high": "Hoog risico",
+				"medium": "Gemiddeld risico",
+				"low": "Laag risico"
+			},
+			"criticalPath": {
+				"ends": "Kritiek pad eindigt op {{date}}",
+				"chain_one": "Langste afhankelijkheidsketen: {{count}} taak",
+				"chain_other": "Langste afhankelijkheidsketen: {{count}} taken"
+			},
+			"kinds": {
+				"critical_path_late": "Het kritieke pad eindigt op {{date}}, na de deadline van {{deadline}}",
+				"critical_path_tight": "Het kritieke pad eindigt op {{date}}, vlak voor de deadline van {{deadline}}",
+				"blocked_chain_one": "{{head}} blokkeert {{count}} taak",
+				"blocked_chain_other": "{{head}} blokkeert {{count}} taken",
+				"ageing_one": "{{count}} taak al meer dan {{days}} dagen in uitvoering, langer dan normaal",
+				"ageing_other": "{{count}} taken al meer dan {{days}} dagen in uitvoering, langer dan normaal",
+				"overdue_cluster_one": "{{name}} heeft {{count}} achterstallige taak",
+				"overdue_cluster_other": "{{name}} heeft {{count}} achterstallige taken",
+				"overdue_cluster_unassigned_one": "{{count}} achterstallige taak zonder toegewezen persoon",
+				"overdue_cluster_unassigned_other": "{{count}} achterstallige taken zonder toegewezen persoon",
+				"overdue_one": "{{count}} achterstallige taak",
+				"overdue_other": "{{count}} achterstallige taken",
+				"unassigned_near_deadline_one": "{{count}} niet-toegewezen taak met deadline {{date}}",
+				"unassigned_near_deadline_other": "{{count}} niet-toegewezen taken met deadline uiterlijk {{date}}",
+				"dependency_loop_one": "{{count}} taak zit in een blokkadelus",
+				"dependency_loop_other": "{{count}} taken blokkeren elkaar in een lus"
+			}
+		},
+		"home": {
+			"title": "Risico",
+			"empty": "Niets in gevaar in je huidige cyclussen",
+			"context": "{{project}} · {{cycle}}"
+		},
+		"tab": {
+			"description": "Prognose en risico's van het open werk in dit project"
+		}
+	},
+	"ai": {
+		"rules": {
+			"title": "Regel uit een beschrijving",
+			"description": "Beschrijf een automatisering in gewone woorden. AI maakt er een normale regel van die je kunt bewerken, op recente geschiedenis kunt testen en kunt opslaan. Opgeslagen regels werken zonder AI.",
+			"label": "Beschrijf een regel…",
+			"placeholder": "Bijvoorbeeld: als een GitHub-pullrequest wordt samengevoegd, verplaats de taak naar Klaar",
+			"compile": "Regel maken",
+			"compiling": "Regel wordt geschreven…",
+			"unsupportedTitle": "Niet mogelijk met automatiseringen",
+			"rejected": "Voorgestelde regels weggelaten omdat ze de validatie niet doorstonden: {{rejected}}",
+			"noRules": "Uit deze beschrijving kon geen regel worden gemaakt.",
+			"workflowRule": "Workflow-regel",
+			"integration": "Integratie",
+			"when": "Wanneer",
+			"moveTo": "Taak verplaatsen naar",
+			"historyWindow": "Geschiedenis om af te spelen",
+			"days7": "Afgelopen 7 dagen",
+			"days30": "Afgelopen 30 dagen",
+			"days90": "Afgelopen 90 dagen",
+			"dryRun": "Testen op geschiedenis",
+			"dryRunSummary": "Taken die in de afgelopen {{days}} dagen zouden zijn gewijzigd: {{changed}}",
+			"dryRunNone": "In de afgelopen {{days}} dagen zou er niets zijn veranderd.",
+			"dryRunError": "Deze regel kon niet worden afgespeeld.",
+			"more": "Meer resultaten niet getoond: {{more}}",
+			"archived": "Gearchiveerd",
+			"outcomes": {
+				"unchanged": "stond er al",
+				"skipped": "ongemoeid gelaten"
+			},
+			"notes": {
+				"integration_not_connected": "Deze integratie is niet met het project verbonden, dus er is geen geschiedenis om af te spelen.",
+				"branch_push_last_only": "Van elke branch wordt alleen de laatste push vastgelegd.",
+				"threshold_from_last_update": "Gebaseerd op de laatste update van elke taak; de datums tonen wanneer de regel de taak zou hebben opgepakt.",
+				"flow_alerts_notify_only": "Meldingen bij afwijkende doorstroming informeren alleen de projectleider; ze wijzigen geen taken.",
+				"nothing_enabled": "Deze regel zet niets aan, dus er zou niets veranderen.",
+				"conditions_current_state": "Voorwaarden zijn gecontroleerd op elke taak zoals die nu is; de geschiedenis bewaart alleen de wijzigingen."
+			},
+			"save": "Regel opslaan",
+			"discard": "Negeren",
+			"saved": "Regel opgeslagen",
+			"saveError": "De regel kon niet worden opgeslagen."
+		},
+		"build": {
+			"command": "Bouwen met AI…",
+			"title": "Bouwen met AI",
+			"description": "Beschrijf wat je wilt plannen. AI stelt een project, cycli en taken voor die je controleert. Er wordt pas iets aangemaakt als je bevestigt.",
+			"promptLabel": "Wat moeten we plannen?",
+			"promptPlaceholder": "Plan een relaunch van de website voor Q4 met 3 sprints",
+			"target": "Aanmaken in",
+			"targetCurrent": "In {{name}}",
+			"targetNew": "Een nieuw project",
+			"deep": "Grondiger nadenken (langzamer)",
+			"draft": "Plan voorstellen",
+			"drafting": "Plan wordt opgesteld…",
+			"cancel": "Annuleren",
+			"back": "Terug",
+			"create_one": "{{count}} item aanmaken",
+			"create_other": "{{count}} items aanmaken",
+			"creating": "Plan wordt aangemaakt",
+			"progress": "{{done}} van {{total}} aangemaakt…",
+			"close": "Sluiten",
+			"openProject": "Project openen",
+			"empty": {
+				"text": "Dit project heeft nog geen taken. Beschrijf het werk en AI stelt taken voor die je controleert."
+			},
+			"review": {
+				"description": "Controleer het plan. Vink uit, bewerk of herschik wat je wilt en maak het daarna aan.",
+				"project": "Project",
+				"projectName": "Naam",
+				"projectKey": "Sleutel",
+				"projectDescription": "Beschrijving",
+				"columns": "Nieuwe kolommen",
+				"labels": "Labels",
+				"cycles": "Cyclussen",
+				"modules": "Modules",
+				"moduleName": "Modulenaam",
+				"tasks_one": "{{count}} taak",
+				"tasks_other": "{{count}} taken",
+				"include": "{{name}} opnemen",
+				"taskTitle": "Taaktitel",
+				"taskDescription": "Taakbeschrijving",
+				"priority": "Prioriteit",
+				"estimate": "Inschatting (punten)",
+				"module": "Module",
+				"none": "Geen",
+				"taskLabels": "Labels: {{labels}}",
+				"subtasks": "Subtaken",
+				"subtaskTitle": "Titel van de subtaak",
+				"moveUp": "{{name}} omhoog verplaatsen",
+				"moveDown": "{{name}} omlaag verplaatsen",
+				"cycle": {
+					"label": "Cyclus",
+					"name": "Naam van de cyclus",
+					"startDate": "Begin",
+					"endDate": "Einde"
+				}
+			},
+			"done": {
+				"success_one": "Klaar. Er is {{count}} taak aangemaakt.",
+				"success_other": "Klaar. Er zijn {{count}} taken aangemaakt.",
+				"partial_one": "Aangemaakt, behalve {{count}} item:",
+				"partial_other": "Aangemaakt, behalve {{count}} items:",
+				"estimatesSkipped": "Inschattingen zijn weggelaten omdat het project geen actief puntensysteem voor inschattingen heeft.",
+				"created": {
+					"tasks_one": "{{count}} taak",
+					"tasks_other": "{{count}} taken",
+					"subtasks_one": "{{count}} subtaak",
+					"subtasks_other": "{{count}} subtaken",
+					"cycles_one": "{{count}} cyclus",
+					"cycles_other": "{{count}} cyclussen",
+					"modules_one": "{{count}} module",
+					"modules_other": "{{count}} modules",
+					"columns_one": "{{count}} kolom",
+					"columns_other": "{{count}} kolommen",
+					"labels_one": "{{count}} label",
+					"labels_other": "{{count}} labels"
+				}
+			},
+			"kinds": {
+				"project": "Project",
+				"column": "Kolom",
+				"cycle": "Cyclus",
+				"module": "Module",
+				"task": "Taak",
+				"subtask": "Subtaak",
+				"label": "Label",
+				"estimate": "Inschatting",
+				"cycle_tasks": "Taken in cyclus",
+				"module_tasks": "Taken in module"
+			},
+			"chat": {
+				"planLabel": "Voorgestelde wijzigingen",
+				"planning": "Wijzigingen plannen…",
+				"nothing": "Niets te wijzigen voor dit verzoek.",
+				"awaiting": "Wacht op antwoord",
+				"ready": "Wijzigingen klaar: {{count}}. Bevestig om door te gaan.",
+				"applying": "Wijzigingen toepassen…",
+				"confirm": "Bevestigen",
+				"cancel": "Annuleren",
+				"cancelled": "Geannuleerd. Er is niets gewijzigd.",
+				"remove": "{{title}} verwijderen",
+				"confirmDestructive": "Ja, verwijderen",
+				"truncated": "Het plan is ingekort tot de eerste 50 wijzigingen.",
+				"appliedSummary": "Toegepast: {{done}} van {{total}}",
+				"autopilotApplied": "Direct toegepast door de automatische piloot.",
+				"autopilotOff": "De automatische piloot staat uit in deze workspace. Bekijk de wijzigingen hieronder.",
+				"autopilotReview": "Sommige van deze wijzigingen moet je eerst bekijken.",
+				"done": "Klaar",
+				"open": "Openen",
+				"skipped": "Overgeslagen",
+				"failed": "Mislukt",
+				"undo": "Ongedaan maken",
+				"undone": "Ongedaan gemaakt",
+				"undoFailed": "Deze wijziging kon niet ongedaan worden gemaakt.",
+				"forbidden": "Je kunt hier geen wijzigingen met AI maken.",
+				"pickCandidate": "Bedoelde je:",
+				"fields": {
+					"name": "Naam",
+					"key": "Sleutel",
+					"title": "Titel",
+					"priority": "Prioriteit",
+					"dueDate": "Vervaldatum",
+					"assignee": "Toegewezen aan",
+					"unassigned": "Niemand",
+					"startDate": "Begin",
+					"endDate": "Einde",
+					"content": "Opmerking"
+				},
+				"problems": {
+					"forbidden": "Je hebt hier geen toestemming voor.",
+					"not_found": "Iets waarnaar ze verwijst, is niet gevonden.",
+					"ambiguous": "Die naam past bij meer dan één persoon.",
+					"unresolved_ref": "Ze hangt af van een wijziging die niet kan.",
+					"feature_off": "Deze functie staat uit voor het project.",
+					"invalid": "Deze wijziging kan niet zoals ze is geschreven."
+				},
+				"ops": {
+					"create_project": "Nieuw project",
+					"create_task": "Nieuwe taak",
+					"update_task": "Taak bewerken",
+					"set_status": "Status wijzigen",
+					"assign": "Toewijzen",
+					"add_comment": "Reageren",
+					"create_cycle": "Nieuwe cyclus",
+					"add_to_cycle": "Aan cyclus toevoegen",
+					"create_module": "Nieuwe module",
+					"add_to_module": "Aan module toevoegen",
+					"create_page": "Nieuwe pagina",
+					"link_tasks": "Taken koppelen",
+					"create_label": "Nieuw label",
+					"delete_task": "Taak verwijderen",
+					"run_agent": "Agent uitvoeren"
+				},
+				"agentRun": {
+					"title": "Agent-run",
+					"loading": "Run laden…",
+					"loadError": "Deze run kon niet worden geladen.",
+					"inProgress": "Bezig"
+				},
+				"noneReady": "Er kan nog niets worden toegepast. Pas de gemarkeerde wijzigingen aan of verwijder ze, of vraag het opnieuw."
+			},
+			"context": {
+				"title": "Context ({{count}})",
+				"facts": "Projecten: {{projects}} · Personen: {{members}} · Cycli: {{cycles}}",
+				"memory": "Geheugennotities: {{count}}",
+				"history": "Eerdere berichten: {{count}}"
+			}
+		},
+		"duplicates": {
+			"check": "Controleren met AI",
+			"checking": "Bezig met controleren…",
+			"checkedTitle": "Door AI gecontroleerd op duplicaten",
+			"none": "Geen waarschijnlijke duplicaten.",
+			"verdict": {
+				"duplicate": "Waarschijnlijk duplicaat",
+				"related": "Gerelateerd"
+			},
+			"mark": "Duplicaat hiervan",
+			"markLabel": "Nieuwe taak markeren als duplicaat van {{key}}",
+			"marked": "Gemarkeerd",
+			"willLink": "De nieuwe taak wordt gemarkeerd als duplicaat van {{key}}.",
+			"undo": "Ongedaan maken",
+			"linkError": "De taak is aangemaakt, maar kon niet worden gemarkeerd als duplicaat van {{key}}."
+		},
+		"triage": {
+			"button": "Triage voorstellen",
+			"title": "Triagesuggesties",
+			"loading": "Vergelijkbaar werk bekijken…",
+			"empty": "Geen suggesties voor dit item.",
+			"retry": "Opnieuw proberen",
+			"close": "Suggesties sluiten",
+			"accept": "Accepteren",
+			"acceptAll": "Alles accepteren",
+			"edit": "Bewerken",
+			"dismiss": "Negeren",
+			"applied": "Toegepast",
+			"acceptError": "Kan deze suggestie niet toepassen.",
+			"autoApplied": "Dit project voegt voorgestelde labels automatisch toe.",
+			"sameTitle": "Zelfde titel als een bestaande taak",
+			"projectAdvice": "Aanvragen blijven in hun project: wijs deze af en vraag om hem daar in te dienen.",
+			"otherProjectDuplicate": "Alleen een taak in dit project kan de aanvraag als duplicaat sluiten.",
+			"openTask": "{{key}} openen in een nieuw tabblad",
+			"fields": {
+				"label": "Label",
+				"assignee": "Toegewezen persoon",
+				"priority": "Prioriteit",
+				"project": "Project",
+				"duplicate": "Mogelijk duplicaat"
+			},
+			"settings": {
+				"title": "Triagesuggesties",
+				"description": "AI-suggesties voor nieuwe taken en intake-aanvragen. Een persoon accepteert, bewerkt of negeert elke suggestie.",
+				"autoApply": "Labelsuggesties automatisch toepassen",
+				"autoApplyHint": "Voorgestelde labels worden meteen toegevoegd en elk wordt vastgelegd in het auditlogboek. Toewijzing, prioriteit, project en duplicaten wachten altijd op een persoon.",
+				"saved": "Triage-instelling opgeslagen",
+				"saveError": "Kan de triage-instelling niet opslaan."
+			},
+			"liveLabels": {
+				"title": "Voorgestelde labels",
+				"add": "Label {{name}} toevoegen"
+			}
+		},
+		"translate": {
+			"action": "Vertalen",
+			"translating": "Bezig met vertalen…",
+			"translatedFrom": "Vertaald uit het {{language}}",
+			"translated": "Vertaald",
+			"showOriginal": "Origineel tonen",
+			"showTranslation": "Vertaling tonen",
+			"settings": {
+				"autoTranslate": "Opmerkingen automatisch vertalen",
+				"autoTranslateHint": "Opmerkingen in een andere taal worden voor elke lezer vertaald zodra ze worden geopend. Staat dit uit, dan klikken lezers op Vertalen."
+			}
+		},
+		"brief": {
+			"button": "Statusupdate",
+			"buttonLabel": "Statusupdate voor belanghebbenden schrijven",
+			"title": "Statusupdate voor belanghebbenden",
+			"close": "Statusupdate sluiten",
+			"intro": "Schrijft een statusupdate op basis van de berekende voortgang, wijzigingen, risico's en prognose van dit werk. Elke genoemde taak wordt vermeld met verwijzing.",
+			"audience": "Doelgroep",
+			"audiences": {
+				"team": "Team",
+				"leadership": "Leiding",
+				"client": "Klant"
+			},
+			"generate": "Update schrijven",
+			"regenerate": "Opnieuw schrijven",
+			"writing": "Statusupdate wordt geschreven…",
+			"stop": "Stoppen",
+			"copy": "Kopiëren",
+			"copied": "Gekopieerd",
+			"copyError": "Kan de statusupdate niet kopiëren.",
+			"saveAsPage": "Opslaan als pagina",
+			"saved": "Statusupdate opgeslagen als pagina",
+			"saveError": "Kan de pagina niet opslaan.",
+			"openPage": "Pagina openen",
+			"pageTitle": "Statusupdate: {{name}} ({{date}})",
+			"facts": {
+				"title": "Gebruikte feiten",
+				"note": "Deze cijfers komen van Margaya, niet van de AI. Als je een update opslaat of kopieert, wordt die het vergelijkingspunt voor de volgende.",
+				"progress": "Voortgang",
+				"progressValue": "{{percent}}% ({{completed}} van {{total}} klaar)",
+				"sinceLast": "Sinds de vorige update ({{date}})",
+				"sinceDays": "Afgelopen 7 dagen",
+				"changes": "Afgerond: {{completed}} · Toegevoegd: {{added}} · Verwijderd: {{removed}}",
+				"forecast": "Prognose",
+				"forecastValue": "85% kans vóór {{date}}",
+				"forecastDone": "Niets meer te doen",
+				"forecastNone": "Nog niet genoeg geschiedenis",
+				"risks": "Risico's",
+				"diff": "Verandering",
+				"progressDiff": "Voortgang {{before}}% → {{now}}%",
+				"forecastDiff": "Prognose {{before}} → {{now}}"
+			}
+		},
+		"ask": {
+			"title": "Vraag het AI",
+			"description": "Stel in gewone taal vragen over je werkruimte. Antwoorden komen alleen uit taken, pagina's en reacties die je kunt zien, en vermelden waar elk feit vandaan komt.",
+			"greeting": "Hoi! Wat wil je weten?",
+			"placeholder": "Vraag het AI, @ voor context, / voor opdrachten",
+			"send": "Vragen",
+			"stop": "Stoppen",
+			"stopped": "Gestopt.",
+			"newChat": "Nieuw gesprek",
+			"expand": "Vergroten",
+			"collapse": "Verkleinen",
+			"scopeProject": "Binnen {{project}}",
+			"scopeWorkspace": "Hele werkruimte",
+			"removeScope": "Vraag in plaats daarvan over de hele werkruimte",
+			"searching": "Je werkruimte wordt doorzocht…",
+			"noResults": "Ik heb hier niets over gevonden in je werkruimte. Probeer andere woorden, of noem een project, een cyclus of een taaksleutel.",
+			"sources": "Bronnen",
+			"sourcesCount": "Bronnen ({{total}})",
+			"closestMatches": "Meest vergelijkbare resultaten",
+			"copy": "Kopiëren",
+			"copied": "Gekopieerd",
+			"copyError": "Kan het antwoord niet kopiëren",
+			"commentOn": "Reactie op {{key}}",
+			"pageSource": "Pagina: {{title}}",
+			"openSource": "{{title}} openen",
+			"disclaimer": "Antwoorden gebruiken alleen wat jij kunt zien. Controleer de bronnen voordat je ernaar handelt.",
+			"you": "Jij",
+			"answer": "Antwoord",
+			"forbidden": "Je hebt geen toestemming om AI in deze werkruimte te gebruiken.",
+			"palette": "Vraag het AI…",
+			"paletteAbout": "Vraag het AI: {{question}}",
+			"examples": {
+				"title": "Probeer bijvoorbeeld",
+				"overdue": "Wat is te laat?",
+				"mine": "Wat zijn mijn openstaande taken?",
+				"recent": "Wat is er deze week veranderd?",
+				"summarize": "Vat dit project samen",
+				"chart": "Toon taken per status als grafiek",
+				"cycleBlockers": "Wat blokkeert de huidige cyclus?"
+			},
+			"history": {
+				"title": "Geschiedenis",
+				"empty": "Nog geen opgeslagen gesprekken.",
+				"localOnly": "Gesprekken worden alleen in deze browser opgeslagen.",
+				"delete": "Gesprek verwijderen",
+				"clear": "Geschiedenis wissen",
+				"clearConfirm": "Alle opgeslagen gesprekken in deze browser verwijderen? Dit kan niet ongedaan worden gemaakt.",
+				"search": "Gesprekken zoeken",
+				"noMatches": "Geen gesprek gevonden.",
+				"loading": "Gesprekken laden…",
+				"pin": "Gesprek vastzetten",
+				"unpin": "Gesprek losmaken",
+				"pinned": "Vastgezet",
+				"rename": "Naam van gesprek wijzigen",
+				"renameLabel": "Naam van het gesprek",
+				"saveTitle": "Naam opslaan",
+				"serverNote": "Gesprekken worden in je werkruimte opgeslagen en zijn alleen voor jou zichtbaar.",
+				"clearConfirmServer": "Al je opgeslagen gesprekken in deze werkruimte verwijderen? Dit kan niet ongedaan worden gemaakt.",
+				"importHint": "Gesprekken opgeslagen in deze browser: {{total}}",
+				"import": "Importeren",
+				"imported": "Gesprekken geïmporteerd: {{total}}",
+				"openError": "Kan het gesprek niet openen."
+			},
+			"chartLabel": "Grafiek: {{title}}",
+			"chartLoading": "Grafiek tekenen…",
+			"chartInvalid": "Deze grafiek kon niet worden getekend.",
+			"placeholderBuild": "Beschrijf wat je wilt maken of wijzigen…",
+			"modelLabel": "Taalmodel: {{model}}",
+			"more": "Meer",
+			"moreActions": "Meer acties",
+			"openFullPage": "Volledige pagina openen",
+			"paletteFullPage": "AI-chat openen (volledige pagina)",
+			"fullPageUnavailable": "AI is niet beschikbaar in deze werkruimte.",
+			"shortcut": "Vraag het AI openen of sluiten",
+			"regenerate": "Opnieuw genereren",
+			"editQuestion": "Vraag bewerken",
+			"resend": "Verzenden",
+			"followUps": "Voorgestelde vervolgvragen",
+			"saveAsPage": "Opslaan als pagina",
+			"copyMarkdown": "Kopiëren als Markdown",
+			"copiedMarkdown": "Gekopieerd als Markdown",
+			"createTask": "Hier een taak van maken",
+			"webSearch": "Op het web zoeken",
+			"webSource": "Webbron: {{title}}",
+			"removeChip": "{{name}} verwijderen",
+			"contextChips": "Context voor deze vraag",
+			"contextPicker": "Context toevoegen",
+			"contextHint": "Typ om taken, pagina's, projecten, cyclussen, modules, personen of agents te vinden",
+			"contextEmpty": "Niets gevonden",
+			"contextSearching": "Zoeken…",
+			"commandMenu": "Opdrachten",
+			"commandEmpty": "Geen overeenkomende opdracht",
+			"contextKinds": {
+				"task": "Taak",
+				"page": "Pagina",
+				"project": "Project",
+				"cycle": "Cyclus",
+				"module": "Module",
+				"user": "Persoon",
+				"agent": "Agent"
+			},
+			"modes": {
+				"label": "Modus",
+				"ask": "Vragen",
+				"build": "Bouwen",
+				"autopilot": "Automatische piloot",
+				"askHint": "Beantwoordt vragen; wijzigt niets",
+				"buildHint": "Stelt wijzigingen voor die jij bevestigt",
+				"autopilotHint": "Voert wijzigingen direct door; elke wijziging kan ongedaan worden gemaakt"
+			},
+			"attachments": {
+				"add": "Bestanden bijvoegen",
+				"type": "{{name}} kan niet worden bijgevoegd. Gebruik een afbeelding (PNG, JPEG, WebP, GIF) of een tekst-, Markdown- of CSV-bestand.",
+				"size": "{{name}} past niet: bijlagen mogen samen hooguit 5 MB zijn.",
+				"count": "Voeg maximaal 3 bestanden bij.",
+				"readError": "Kan het bestand niet lezen."
+			},
+			"voice": {
+				"start": "Dicteren",
+				"stop": "Dicteren stoppen",
+				"recording": "Luisteren…",
+				"transcribing": "Transcriberen…",
+				"denied": "Geef toegang tot de microfoon om te dicteren.",
+				"failed": "Kan de opname niet omzetten in tekst."
+			},
+			"agent": {
+				"ready": "Stuur dit verzoek naar {{agent}}.",
+				"needsTask": "Voeg een taak toe met @ zodat {{agent}} weet waaraan gewerkt moet worden.",
+				"send": "Naar {{agent}} sturen",
+				"error": "Kan de agent niet starten."
+			},
+			"thinking": {
+				"live": "Nadenken… {{seconds}}s",
+				"done": "{{seconds}}s nagedacht"
+			},
+			"versions": {
+				"previous": "Vorig antwoord",
+				"next": "Volgend antwoord",
+				"label": "Antwoord {{current}} van {{total}}"
+			},
+			"feedback": {
+				"up": "Goed antwoord",
+				"down": "Slecht antwoord",
+				"reasonLabel": "Wat ging er mis? (optioneel)",
+				"reasonPlaceholder": "Bijvoorbeeld: verkeerde cijfers, een taak gemist",
+				"send": "Verzenden",
+				"skip": "Overslaan",
+				"thanks": "Bedankt voor je feedback."
+			},
+			"commands": {
+				"summarize": "Samenvatten",
+				"summarizeHint": "Het project, de cyclus of de pagina waar je bent",
+				"chart": "Grafiek",
+				"chartHint": "Teken een grafiek van je gegevens",
+				"chartPrefill": "Grafiek",
+				"brief": "Statusupdate",
+				"briefHint": "Een statusupdate voor belanghebbenden over het project, de cyclus of de module",
+				"create": "Maken",
+				"createHint": "Overschakelen naar de modus Bouwen",
+				"translate": "Vertalen",
+				"translateHint": "Naar jouw taal",
+				"clear": "Wissen",
+				"clearHint": "Een nieuw gesprek beginnen",
+				"skill": "Opgeslagen vaardigheid",
+				"summarizeTurn": "{{name}} samenvatten",
+				"briefTurn": "Statusupdate over {{name}}",
+				"summarizeNeedsScope": "Open een project, cyclus of pagina, of voeg er een toe met @, om die samen te vatten.",
+				"briefNeedsScope": "Open een project, cyclus of module, of voeg er een toe met @, voor een statusupdate.",
+				"buildUnavailable": "De modus Bouwen is hier niet beschikbaar.",
+				"translatePrompt": "Vertaal je laatste antwoord naar het {{language}}.",
+				"translatePrefill": "Vertalen naar het {{language}}:",
+				"this": {
+					"page": "deze pagina",
+					"cycle": "deze cyclus",
+					"module": "deze module",
+					"project": "dit project"
+				}
+			},
+			"conversation": {
+				"rename": "Naam wijzigen",
+				"pin": "Vastzetten",
+				"unpin": "Losmaken",
+				"export": "Exporteren als Markdown",
+				"saveAsPage": "Opslaan als pagina",
+				"delete": "Gesprek verwijderen"
+			},
+			"save": {
+				"title": "Opslaan als pagina",
+				"description": "De pagina krijgt de tekst met links naar de bronnen.",
+				"pageTitle": "Titel",
+				"project": "Project",
+				"noProjects": "Er is geen project om de pagina in op te slaan.",
+				"submit": "Pagina opslaan",
+				"saved": "Opgeslagen als pagina",
+				"open": "Pagina openen",
+				"error": "Kan de pagina niet opslaan"
+			}
+		},
+		"writing": {
+			"aiButton": "AI",
+			"menuLabel": "AI-acties",
+			"actions": {
+				"summarize": "Samenvatten",
+				"improve": "Tekst verbeteren",
+				"shorter": "Korter maken",
+				"longer": "Langer maken",
+				"fix": "Spelling en grammatica verbeteren",
+				"translate": "Vertalen naar…",
+				"custom": "AI vragen om…"
+			},
+			"customPlaceholder": "Zeg wat de AI moet doen, bijv. er een checklist van maken",
+			"customSubmit": "Genereren",
+			"preview": {
+				"label": "AI-suggestie",
+				"generating": "Bezig met schrijven…",
+				"editLabel": "Suggestie bewerken",
+				"replace": "Vervangen",
+				"insertBelow": "Hieronder invoegen",
+				"discard": "Verwerpen",
+				"stop": "Stoppen",
+				"retry": "Opnieuw proberen",
+				"empty": "De AI gaf niets terug. Probeer het opnieuw of formuleer het anders.",
+				"note": "AI kan fouten maken. Controleer het resultaat voordat je het gebruikt.",
+				"incomplete": "Het concept stopte voordat het klaar was. Bekijk het of probeer het opnieuw."
+			},
+			"summary": {
+				"button": "Samenvatten",
+				"cycle": "Cyclus samenvatten",
+				"project": "Project samenvatten",
+				"page": "Pagina samenvatten",
+				"title": "AI-samenvatting",
+				"generating": "Bezig met samenvatten…",
+				"dismiss": "Sluiten",
+				"copy": "Kopiëren",
+				"copied": "Gekopieerd",
+				"copyError": "Kan de samenvatting niet kopiëren.",
+				"saveAsPage": "Opslaan als pagina",
+				"pageTitle": "Samenvatting: {{name}}",
+				"saved": "Samenvatting opgeslagen als pagina",
+				"saveError": "Kan de pagina niet opslaan.",
+				"openPage": "Pagina openen",
+				"task": "Taak samenvatten",
+				"saveAsComment": "Opslaan als opmerking",
+				"commentSaved": "Samenvatting opgeslagen als opmerking",
+				"commentError": "De opmerking kon niet worden opgeslagen."
+			},
+			"spec": {
+				"button": "Specificatie opstellen",
+				"title": "Specificatie opstellen",
+				"description": "De AI stelt op basis van deze taak en de context een specificatiepagina op. Controleer en bewerk die en maak dan de pagina aan; die linkt terug naar de taak.",
+				"generating": "Bezig met opstellen…",
+				"titleLabel": "Paginatitel",
+				"bodyLabel": "Specificatie",
+				"edit": "Bewerken",
+				"preview": "Voorbeeld",
+				"create": "Pagina maken",
+				"pageTitle": "Specificatie: {{title}}",
+				"created": "Specificatiepagina gemaakt",
+				"createError": "Kan de pagina niet maken."
+			},
+			"taskWriter": {
+				"button": "Schrijven met AI",
+				"draft": "Opzet vanuit de titel",
+				"improve": "Verbeteren",
+				"instruction": "Optioneel: waar moet het op letten?",
+				"hint": "Er verandert niets tot je “Dit gebruiken” kiest.",
+				"writing": "Bezig met schrijven…",
+				"use": "Dit gebruiken",
+				"retry": "Opnieuw proberen",
+				"discard": "Verwerpen",
+				"close": "AI-schrijven sluiten"
+			},
+			"feedback": {
+				"good": "Goed antwoord",
+				"bad": "Slecht antwoord",
+				"thanks": "Bedankt voor je feedback"
+			},
+			"tone": {
+				"label": "Toon: {{tone}}",
+				"legend": "Toon",
+				"default": "Standaard",
+				"professional": "Zakelijk",
+				"casual": "Informeel"
+			},
+			"block": {
+				"command": "AI-blok",
+				"title": "AI-blok",
+				"customPlaceholder": "Wat moet AI op basis van deze pagina schrijven?",
+				"stale": "De pagina is gewijzigd na het genereren. Genereer opnieuw om de wijzigingen mee te nemen.",
+				"accept": "Accepteren",
+				"regenerate": "Opnieuw genereren",
+				"presets": {
+					"tldr": "Samenvatting (TL;DR)",
+					"faq": "Veelgestelde vragen",
+					"action_items": "Actiepunten",
+					"custom": "Eigen instructie"
+				}
+			},
+			"title": {
+				"suggest": "Titel voorstellen",
+				"thinking": "Titel bedenken…",
+				"use": "Deze titel gebruiken",
+				"another": "Een andere voorstellen"
+			},
+			"comment": {
+				"menuLabel": "AI-hulp bij deze opmerking",
+				"previewLabel": "AI-voorstel voor je opmerking",
+				"replace": "Concept vervangen"
+			}
+		},
+		"errors": {
+			"AI_DISABLED": "AI is hier uitgeschakeld.",
+			"AI_NOT_CONFIGURED": "AI is niet goed ingesteld. Vraag een beheerder om de AI-instellingen te controleren.",
+			"AI_ROUTE_BLOCKED": "Deze gegevens mogen volgens je privacyinstellingen niet naar een AI-model worden gestuurd.",
+			"AI_BUDGET_EXCEEDED": "De AI-limiet is bereikt. Probeer het later opnieuw of vraag een beheerder om de limiet te verhogen.",
+			"AI_RATE_LIMITED": "Te veel AI-verzoeken tegelijk. Wacht even en probeer het opnieuw.",
+			"AI_REFUSED": "Het AI-model heeft dit verzoek geweigerd.",
+			"AI_PROVIDER_ERROR": "De AI-dienst reageerde niet. Probeer het zo meteen opnieuw.",
+			"unknown": "Er ging iets mis met AI. Probeer het opnieuw.",
+			"AI_HISTORY_OFF": "Deze workspace bewaart AI-gesprekken niet op de server. Je geschiedenis blijft in deze browser."
+		},
+		"features": {
+			"connection_test": "Verbindingstests",
+			"ask": "Vragen",
+			"summarize": "Samenvattingen",
+			"editor_assist": "Schrijfhulp",
+			"spec_draft": "Conceptspecificaties",
+			"duplicate_check": "Duplicaatcontroles",
+			"talk_to_build": "Plannen vanuit een prompt",
+			"triage": "Triagesuggesties",
+			"translate": "Vertalingen",
+			"brief": "Briefings voor belanghebbenden",
+			"agent_run": "AI-agents",
+			"rule_compiler": "Automatiseringsregels",
+			"capture": "Vastleggen als melding",
+			"estimate": "Inschattingen",
+			"retro": "Retrospectieven",
+			"my_brief": "Mijn briefing",
+			"embedding": "Zoekindexering",
+			"coding_handoff": "Briefings voor codeeragents",
+			"build_chat": "Bouwen in de chat",
+			"nl_filter": "Filters in gewone taal",
+			"inbox_digest": "Samenvattingen van de inbox",
+			"speech": "Spraak naar tekst"
+		},
+		"providers": {
+			"anthropic": "Anthropic (Claude)",
+			"openai_compatible": "OpenAI-compatibel",
+			"fake": "Nep (alleen voor testen)"
+		},
+		"destinations": {
+			"cloud": "Cloudprovider",
+			"local": "Lokaal model"
+		},
+		"tiers": {
+			"fast": "Snel model",
+			"fastHint": "Snelle taken: herschrijven, labels, korte samenvattingen.",
+			"balanced": "Gebalanceerd model",
+			"balancedHint": "De meeste functies: antwoorden, samenvattingen, concepten.",
+			"deep": "Grondig model",
+			"deepHint": "Zwaar werk: planning en agents."
+		},
+		"test": {
+			"title": "Verbinding testen",
+			"workspaceHint": "Stuurt één klein verzoek op dezelfde manier als de AI-aanroepen van deze werkruimte.",
+			"button": "Verbinding testen",
+			"success": "Verbonden met {{model}} in {{ms}} ms"
+		},
+		"usage": {
+			"title": "Gebruik",
+			"subtitle": "AI-aanroepen, tokens en kosten tegen catalogusprijs. Alleen aantallen worden bewaard, nooit prompts of antwoorden.",
+			"rangeLabel": "Periode",
+			"range": {
+				"thisMonth": "Deze maand",
+				"last30Days": "Afgelopen 30 dagen",
+				"last90Days": "Afgelopen 90 dagen"
+			},
+			"calls": "Aanroepen",
+			"callsCount_one": "{{count}} aanroep",
+			"callsCount_other": "{{count}} aanroepen",
+			"tokens": "Tokens",
+			"tokensSplit": "{{input}} in · {{output}} uit",
+			"cost": "Kosten",
+			"costHint": "Tegen catalogusprijs; lokale modellen tellen als $0.",
+			"day": "Dag",
+			"byDay": "Aanroepen per dag",
+			"byFeature": "Per functie",
+			"byModel": "Per model",
+			"byUser": "Per persoon",
+			"byWorkspace": "Per werkruimte",
+			"empty": "Geen AI-gebruik in deze periode.",
+			"unknownUser": "Verwijderd account",
+			"loadError": "Kan het AI-gebruik niet laden.",
+			"retry": "Opnieuw proberen",
+			"exportCsv": "CSV exporteren",
+			"exportError": "Kan het gebruik niet exporteren.",
+			"feedbackTitle": "Beoordelingen van antwoorden",
+			"feedbackOverall": "{{percent}}% positief van {{total}} beoordelingen",
+			"feedbackUp": "Duim omhoog",
+			"feedbackDown": "Duim omlaag",
+			"feedbackRate": "Positief"
+		},
+		"instance": {
+			"title": "AI",
+			"subtitle": "Laat werkruimtes AI gebruiken: kies de provider en modellen en bepaal waar gegevens naartoe mogen. AI blijft uit totdat je het inschakelt, en elke werkruimte moet het ook zelf aanzetten.",
+			"statusTitle": "AI op deze server",
+			"statusReady": "Gereed",
+			"statusNotConfigured": "Niet ingesteld",
+			"statusOff": "Uit",
+			"enable": "AI toestaan",
+			"enableHint": "Werkruimtes kunnen AI-functies inschakelen zodra dit aan staat en er een provider is ingesteld.",
+			"providerTitle": "Provider",
+			"providerDescription": "De cloudprovider voor modellen. Laat een model leeg om de standaard van de provider voor dat niveau te gebruiken.",
+			"provider": "Provider",
+			"providerHint": "Anthropic Claude wordt aanbevolen. OpenAI-compatibel omvat OpenAI, Azure, OpenRouter, vLLM en LM Studio.",
+			"anthropicKey": "Anthropic API-sleutel",
+			"anthropicKeyHint": "Versleuteld opgeslagen. Wordt nooit meer getoond.",
+			"openaiBaseUrl": "Basis-URL",
+			"openaiBaseUrlHint": "Inclusief het versiepad, bijvoorbeeld https://api.openai.com/v1. Moet een openbaar adres zijn.",
+			"openaiKey": "API-sleutel",
+			"save": "Opslaan",
+			"testCloud": "Provider testen",
+			"testLocal": "Lokaal model testen",
+			"localTitle": "Lokaal model",
+			"localDescription": "Een OpenAI-compatibele server in je eigen netwerk, zoals Ollama. Beperkte gegevens gaan alleen hierheen.",
+			"localBaseUrl": "Basis-URL",
+			"localBaseUrlHint": "Bijvoorbeeld http://ollama:11434/v1. Privéadressen zijn hier toegestaan.",
+			"localModel": "Model",
+			"localKey": "API-sleutel",
+			"localKeyHint": "Optioneel. Alleen als je server er een vraagt, zoals vLLM gestart met --api-key. Wordt versleuteld opgeslagen.",
+			"localOnly": "Alleen-lokaal-modus",
+			"localOnlyHint": "Elke AI-aanroep gaat naar het lokale model; er wordt niets naar een cloudprovider gestuurd.",
+			"privacyTitle": "Privacy",
+			"privacyDescription": "Waar elk soort gegevens naartoe mag. Werkruimtes kunnen strenger zijn, nooit soepeler.",
+			"restrictedRoute": "Beperkte projecten",
+			"restrictedRouteHint": "Gegevens uit beperkte projecten, als een werkruimte AI ze laat lezen.",
+			"privateRoute": "Overige werkruimtegegevens",
+			"privateRouteHint": "Taken, pagina's en reacties uit open projecten.",
+			"routeBlocked": "Nooit verzonden",
+			"routeLocal": "Alleen lokaal model",
+			"routeCloud": "Cloudprovider toegestaan",
+			"redaction": "Persoonsgegevens maskeren",
+			"redactionHint": "Vervang e-mailadressen, telefoonnummers, kaartnummers en tokens door plaatshouders vóór cloudaanroepen. Antwoorden tonen weer de echte waarden.",
+			"zeroRetention": "Geen gegevensbewaring",
+			"zeroRetentionHint": "Leg vast dat je overeenkomst met de provider bepaalt dat er geen gegevens worden bewaard. Margaya toont het; de provider handhaaft het.",
+			"allowWorkspaceKeys": "Werkruimtesleutels toestaan",
+			"allowWorkspaceKeysHint": "Werkruimtes mogen hun eigen providersleutel gebruiken en betalen voor hun eigen gebruik.",
+			"embeddingsTitle": "Inbeddingen",
+			"embeddingsDescription": "Optioneel, voor semantisch zoeken. Elk OpenAI-compatibel endpoint voor inbeddingen werkt. De database heeft ook de extensie pgvector nodig; zonder een van beide blijft zoeken beperkt tot volledige tekst.",
+			"vectorReady": "pgvector gereed",
+			"vectorAvailable": "pgvector beschikbaar",
+			"vectorUnavailable": "pgvector niet beschikbaar",
+			"embeddingsBaseUrl": "Basis-URL",
+			"embeddingsModel": "Model",
+			"embeddingsKey": "API-sleutel",
+			"invalidUrl": "Voer een http- of https-URL in.",
+			"usageTitle": "Gebruik over alle werkruimtes",
+			"usageDescription": "AI-aanroepen op deze server per werkruimte en model. Alleen aantallen worden bewaard.",
+			"chatTitle": "Chatfunctie",
+			"chatDescription": "Hoe redeneermodellen nadenken en wat mensen daarvan te zien krijgen.",
+			"showReasoning": "Redenering tonen",
+			"showReasoningHint": "Toon het denkproces van een redeneermodel aan de persoon die de vraag stelde. Het wordt nooit opgeslagen. Uit: alleen hoe lang het nadacht.",
+			"localThinking": "Nadenken bij lokale modellen",
+			"localThinkingHint": "Uit antwoordt sneller; aan laat lokale redeneermodellen eerst nadenken.",
+			"localThinkingOff": "Uit",
+			"localThinkingOn": "Aan",
+			"webSearchTitle": "Zoeken op het web",
+			"webSearchDescription": "Een zoekdienst die antwoorden kunnen gebruiken wanneer een werkruimte zoeken op het web aanzet.",
+			"webSearchProvider": "Zoekprovider",
+			"webSearchProviderHint": "SearXNG draait op je eigen server; Brave Search en Tavily hebben een API-sleutel nodig.",
+			"webSearchOff": "Uit",
+			"webSearchUrl": "SearXNG-URL",
+			"webSearchUrlHint": "De JSON-API ervan moet zijn ingeschakeld.",
+			"webSearchKey": "API-sleutel",
+			"webSearchKeyHint": "Voor Brave Search of Tavily.",
+			"speechTitle": "Spraak naar tekst",
+			"speechDescription": "Spraakinvoer in de chat. Zonder deze instelling herkennen browsers die dat kunnen de spraak zelf.",
+			"speechBaseUrl": "Endpoint-URL",
+			"speechBaseUrlHint": "Een OpenAI-compatibel transcriptie-endpoint, zoals een lokale Whisper-server.",
+			"speechModel": "Spraakmodel",
+			"speechKey": "API-sleutel"
+		},
+		"workspace": {
+			"navLabel": "AI",
+			"title": "AI",
+			"subtitle": "Schakel AI-functies in voor deze werkruimte, stel limieten in en kies hoe privégegevens worden behandeld.",
+			"noAccess": "Je hebt het recht om AI te beheren nodig om deze instellingen te zien.",
+			"loadError": "Kan de AI-instellingen niet laden.",
+			"statusTitle": "AI in deze werkruimte",
+			"statusDescription": "AI staat uit totdat je het inschakelt. Elk project kan het nog steeds uitschakelen bij zijn functies.",
+			"enable": "AI inschakelen",
+			"enableHint": "Leden met het recht AI gebruiken zien AI-functies in projecten die dat toestaan.",
+			"enabledToast": "AI staat aan voor deze werkruimte",
+			"disabledToast": "AI staat uit voor deze werkruimte",
+			"offOnInstance": "Een instantiebeheerder heeft AI nog niet toegestaan op deze server.",
+			"notConfigured": "AI is toegestaan, maar er is nog geen provider ingesteld. Vraag het een instantiebeheerder.",
+			"whereDataGoes": "Waar gegevens naartoe gaan",
+			"whereDataGoesHint": "Het model dat de AI-verzoeken van deze werkruimte ontvangt.",
+			"zeroRetention": "Geen bewaring",
+			"limitsTitle": "Limieten",
+			"limitsDescription": "Deze maand besteed: {{spent}}. Verzoeken stoppen wanneer een limiet is bereikt.",
+			"monthlyCap": "Maandbudget (USD)",
+			"monthlyCapHint": "Tegen catalogusprijs, voor de hele werkruimte. Laat leeg voor geen limiet.",
+			"dailyTokens": "Dagelijkse tokens per persoon",
+			"dailyTokensHint": "Invoer- en uitvoertokens die elke persoon per dag (UTC) mag gebruiken. Laat leeg voor geen limiet.",
+			"noLimit": "Geen limiet",
+			"invalidNumber": "Voer een getal van 0 of hoger in.",
+			"saveLimits": "Limieten opslaan",
+			"monthSpendOfCap": "{{spent}} van {{cap}} gebruikt deze maand.",
+			"privacyTitle": "Privacy",
+			"privacyDescription": "AI ziet alleen wat de persoon die de vraag stelt kan zien.",
+			"includeRestricted": "Beperkte projecten meenemen",
+			"includeRestrictedHint": "Laat AI beperkte projecten lezen voor mensen die ze kunnen zien. Hun gegevens gaan alleen naar plekken waar de server beperkte gegevens toestaat.",
+			"localOnly": "Alleen lokaal model",
+			"localOnlyHint": "Stuur elk AI-verzoek naar het lokale model van de server.",
+			"localOnlyForced": "De server staat in alleen-lokaal-modus.",
+			"localOnlyUnavailable": "Deze server heeft geen lokaal model.",
+			"redactPii": "Persoonsgegevens maskeren",
+			"redactPiiHint": "Vervang e-mailadressen, telefoonnummers, kaartnummers en tokens door plaatshouders voordat verzoeken de server verlaten.",
+			"redactPiiForced": "Altijd aan: de server maskeert elk cloudverzoek.",
+			"approval": "AI-wijzigingen goedkeuren",
+			"approvalHint": "Wijzigingen die AI voorstelt, wachten altijd op goedkeuring door een persoon.",
+			"semanticSearch": "Semantisch zoeken",
+			"semanticSearchHint": "Vragen en de duplicaatcontrole vinden taken, pagina's en reacties ook op betekenis, niet alleen op hun woorden. Inhoud wordt geïndexeerd met het inbeddingsmodel van de server.",
+			"semanticUnavailable": "pgvector is niet beschikbaar in de database van deze server, dus zoeken gebruikt alleen volledige tekst.",
+			"semanticNoEndpoint": "Deze server heeft geen endpoint voor inbeddingen, dus zoeken gebruikt alleen volledige tekst.",
+			"semanticIndexed_one": "{{count}} item geïndexeerd",
+			"semanticIndexed_other": "{{count}} items geïndexeerd",
+			"semanticPaused": "Indexeren is gepauzeerd. {{reason}}",
+			"semanticEnabledToast": "Semantisch zoeken staat aan. Indexeren gebeurt op de achtergrond.",
+			"semanticDisabledToast": "Semantisch zoeken staat uit en de index is verwijderd.",
+			"keyTitle": "Eigen API-sleutel",
+			"keyDescription": "Gebruik het eigen provideraccount van je werkruimte in plaats van dat van de server. De sleutel wordt versleuteld opgeslagen en nooit meer getoond.",
+			"keyCurrent": "Opgeslagen sleutel",
+			"keyEnding": "Eindigt op {{last4}}",
+			"keyUnreadable": "De opgeslagen sleutel kan niet meer worden gelezen. Voer hem opnieuw in.",
+			"keyRemove": "Verwijderen",
+			"keyProvider": "Provider",
+			"keyValue": "API-sleutel",
+			"keyReplace": "Sleutel vervangen",
+			"keyHint": "Een Anthropic API-sleutel die begint met sk-ant-.",
+			"keyOpenAiHint": "Wordt gebruikt met het OpenAI-compatibele endpoint van de server.",
+			"keyPlaceholder": "Plak de sleutel",
+			"keyTooShort": "Deze sleutel lijkt te kort.",
+			"keySave": "Sleutel opslaan",
+			"keySavedToast": "Sleutel opgeslagen",
+			"keyRemovedToast": "Sleutel verwijderd",
+			"saved": "AI-instellingen opgeslagen",
+			"saveError": "Kan de AI-instellingen niet opslaan.",
+			"chatTitle": "Chat van Vraag het AI",
+			"chatDescription": "Wat de chat mag doen voor mensen in deze werkruimte.",
+			"webSearch": "Zoeken op het web",
+			"webSearchHint": "Mensen kunnen antwoorden op het web laten zoeken. Resultaten worden als webbronnen vermeld.",
+			"webSearchUnavailable": "Op deze installatie is geen webzoekfunctie ingesteld.",
+			"webSearchLocalOnly": "Niet gebruikt zolang AI alleen lokale modellen gebruikt.",
+			"storeConversations": "Chatgeschiedenis op de server bewaren",
+			"storeConversationsHint": "De gesprekken van iedereen worden in de werkruimte opgeslagen, zodat ze die op elk apparaat kunnen heropenen. Uit: ze blijven alleen in de eigen browser.",
+			"allowAutopilot": "Automatische piloot toestaan",
+			"allowAutopilotHint": "De modus Bouwen mag wijzigingen doorvoeren zonder bevestiging. Elke wijziging wordt nog steeds vastgelegd en kan ongedaan worden gemaakt."
+		},
+		"agents": {
+			"navLabel": "Agents",
+			"title": "Agents",
+			"subtitle": "AI-agents zijn werkruimteleden die aan taken werken voor de persoon die ze iets vraagt, nooit met meer rechten dan die persoon.",
+			"listTitle": "Agents in de werkruimte",
+			"badge": "Agent",
+			"noAccess": "Alleen mensen die AI mogen beheren, kunnen agents instellen.",
+			"empty": "Nog geen agents. Maak er een aan en noem hem daarna in een opmerking, wijs hem een taak toe of start hem vanuit een taak.",
+			"loadError": "Kan de agents niet laden.",
+			"retry": "Opnieuw proberen",
+			"create": "Nieuwe agent",
+			"edit": "Agent bewerken",
+			"dialogHint": "Agents kun je toewijzen en noemen zoals mensen. Ze kunnen niet inloggen en tellen niet als betaalde plaatsen.",
+			"save": "Opslaan",
+			"cancel": "Annuleren",
+			"created": "Agent aangemaakt",
+			"saved": "Agent opgeslagen",
+			"deleted": "Agent verwijderd",
+			"saveError": "Kan de agent niet opslaan. Probeer het opnieuw.",
+			"enable": "Inschakelen",
+			"disable": "Uitschakelen",
+			"off": "Uit",
+			"delete": "Verwijderen",
+			"deleteTitle": "{{name}} verwijderen?",
+			"deleteBody": "De agent verlaat de werkruimte. Zijn opmerkingen en geschiedenis blijven bestaan, en zijn uitvoeringen blijven zichtbaar in de Agentendesk.",
+			"spend": "{{spent}} deze maand",
+			"spendOfBudget": "{{spent}} van {{budget}} deze maand",
+			"activityFilter": "Agents",
+			"fields": {
+				"name": "Naam",
+				"nameTaken": "Een agent of lid van deze werkruimte heeft deze naam al. Kies een andere.",
+				"description": "Beschrijving",
+				"descriptionPlaceholder": "Waarmee deze agent helpt",
+				"instructions": "Instructies",
+				"instructionsHint": "Hoe de agent moet werken. Alleen beheerders schrijven deze; tekst in taken, opmerkingen en pagina's telt nooit als instructie.",
+				"role": "Rol",
+				"roleHint": "Het maximum dat de agent mag doen. Elke uitvoering is bovendien beperkt tot de rechten van de persoon die het vraagt.",
+				"tier": "Model",
+				"tierFast": "Snel",
+				"tierBalanced": "Gebalanceerd",
+				"tierDeep": "Grondig",
+				"provider": "Waar hij draait",
+				"providerDefault": "Standaard van de werkruimte",
+				"providerLocal": "Alleen lokaal model",
+				"budget": "Maandbudget (USD)",
+				"budgetHint": "Uitvoeringen stoppen zodra de uitgaven van deze maand dit bedrag bereiken. Laat leeg voor geen agentlimiet; werkruimtelimieten blijven gelden.",
+				"projects": "Projecten",
+				"projectsAll": "Alle projecten die zijn rol bereikt",
+				"projectsSome": "Alleen deze projecten",
+				"projectsHint": "Runs in andere projecten stoppen, en de agent zegt dat hij daar niet is ingesteld.",
+				"projectsNone": "Kies minstens één project.",
+				"skills": "Vaardigheden",
+				"skillsEmpty": "Nog geen gedeelde vaardigheden. Gedeelde vaardigheden die in Ask zijn opgeslagen, kun je aan agents geven.",
+				"skillsHint": "De agent volgt deze opgeslagen prompts als ze bij het verzoek passen (maximaal 10).",
+				"webAccess": "Webtoegang",
+				"webAccessHint": "Laat de agent op het web zoeken en de connectors van de werkruimte gebruiken. Wat hij daarheen stuurt, verlaat Margaya."
+			},
+			"status": {
+				"queued": "In wachtrij",
+				"running": "Bezig",
+				"awaiting_approval": "Wacht op goedkeuring",
+				"succeeded": "Klaar",
+				"failed": "Mislukt",
+				"cancelled": "Gestopt",
+				"needs_input": "Wacht op antwoord"
+			},
+			"stepStatus": {
+				"ok": "Klaar",
+				"error": "Mislukt",
+				"denied": "Niet toegestaan",
+				"pending": "Wacht op goedkeuring",
+				"applied": "Toegepast",
+				"rejected": "Afgewezen",
+				"expired": "Verlopen",
+				"reverted": "Ongedaan gemaakt"
+			},
+			"step": {
+				"model": "Modelaanroep"
+			},
+			"tools": {
+				"read_task": "Taak lezen",
+				"read_project": "Project lezen",
+				"read_page": "Pagina lezen",
+				"search_workspace": "Zoeken",
+				"add_comment": "Opmerking plaatsen",
+				"update_task": "Taak bijwerken",
+				"move_status": "Status wijzigen",
+				"create_subtask": "Subtaak aanmaken",
+				"create_page": "Pagina maken",
+				"link_tasks": "Taken koppelen",
+				"delete_task": "Taak verwijderen",
+				"bulk_move_status": "Status van meerdere taken wijzigen",
+				"ask_person": "Vraag stellen",
+				"web_search": "Zoeken op het web",
+				"connector": "Externe dienst: {{tool}}"
+			},
+			"runErrors": {
+				"AGENT_GONE": "De agent is verwijderd.",
+				"AGENT_DISABLED": "De agent staat uit.",
+				"AGENT_LEFT": "De agent is geen lid meer van de werkruimte.",
+				"PRINCIPAL_LEFT": "De persoon die het vroeg, is geen lid meer van de werkruimte.",
+				"AI_USE_DENIED": "De persoon die het vroeg, mag geen AI gebruiken.",
+				"NOT_IN_SCOPE": "De taak staat in een project dat AI niet mag lezen.",
+				"TIME_LIMIT": "De uitvoering duurde langer dan 10 minuten en is gestopt.",
+				"OUTPUT_LIMIT": "Het antwoord van de agent werd te lang. Vraag om een kleinere wijziging.",
+				"TURN_LIMIT": "De agent had geen stappen meer voordat hij klaar was. Vraag om een kleinere, specifiekere wijziging.",
+				"INTERRUPTED": "De uitvoering is onderbroken. Wijzigingen die al zijn gemaakt, kun je nog ongedaan maken.",
+				"APPROVAL_EXPIRED": "Niemand heeft binnen 24 uur over de voorgestelde wijzigingen beslist, dus ze zijn verlopen.",
+				"INTERNAL": "Er ging iets mis tijdens de uitvoering.",
+				"NEEDS_INPUT_EXPIRED": "Niemand beantwoordde de vraag van de agent binnen 24 uur.",
+				"OUTSIDE_AGENT_PROJECTS": "De agent is niet ingesteld om in dit project te werken."
+			},
+			"change": {
+				"approve": "Goedkeuren",
+				"reject": "Afwijzen",
+				"approved": "Wijziging toegepast",
+				"rejected": "Wijziging verworpen",
+				"decideError": "Kan je beslissing niet toepassen. Probeer het opnieuw.",
+				"undo": "Ongedaan maken",
+				"undone": "Wijziging ongedaan gemaakt",
+				"undoError": "Kan deze wijziging niet ongedaan maken. De taak is mogelijk intussen gewijzigd.",
+				"expiresAt": "Verloopt {{time}}",
+				"before": "Voor",
+				"after": "Na",
+				"openPage": "Pagina openen",
+				"openSubtask": "Subtaak openen",
+				"openLinked": "Gekoppelde taak openen",
+				"empty": "(leeg)",
+				"fields": {
+					"title": "Titel",
+					"priority": "Prioriteit",
+					"dueDate": "Einddatum",
+					"description": "Beschrijving",
+					"status": "Status",
+					"statusOf": "Status van {{task}}",
+					"comment": "Opmerking",
+					"subtask": "Nieuwe subtaak",
+					"page": "Nieuwe pagina",
+					"relation": "Koppeling ({{relation}})",
+					"delete": "Naar prullenbak verplaatsen",
+					"connectorCall": "Aanroep naar {{connector}}"
+				}
+			},
+			"inbox": {
+				"title": "{{agentName}} heeft je goedkeuring nodig",
+				"verb": "vraagt om je goedkeuring",
+				"cardTitle": "Voorgestelde wijziging"
+			},
+			"reply": {
+				"title": "{{agentName}} heeft je verzoek beantwoord",
+				"verb": "heeft je verzoek beantwoord",
+				"cardTitle": "Antwoord van de agent",
+				"hint": "De agent heeft dit antwoord niet bij de taak geplaatst, daarom staat het hier."
+			},
+			"activity": {
+				"onBehalfOf": "namens {{name}}"
+			},
+			"run": {
+				"button": "Agent starten",
+				"title": "Een agent op deze taak laten werken",
+				"hint": "De agent werkt met hoogstens jouw rechten. Wijzigingen kun je ongedaan maken, en sommige wachten op je goedkeuring.",
+				"agent": "Agent",
+				"prompt": "Wat moet hij doen?",
+				"promptPlaceholder": "Bijvoorbeeld: splits dit op in subtaken en stel een prioriteit voor.",
+				"start": "Starten",
+				"started": "{{name}} gaat ermee aan de slag",
+				"error": "Kan de agent niet starten. Probeer het opnieuw.",
+				"recent": "Recente uitvoeringen op deze taak",
+				"viewInDesk": "Openen in Agentendesk"
+			},
+			"desk": {
+				"nav": "Agentendesk",
+				"title": "Agentendesk",
+				"subtitle": "Wat je agents hebben gedaan en nu doen: elke uitvoering met haar stappen, kosten en wijzigingen.",
+				"emptyTitle": "Nog geen uitvoeringen van agents",
+				"empty": "Noem een agent in een opmerking, wijs hem een taak toe of start hem vanuit een taak.",
+				"allAgents": "Alle agents",
+				"allStatuses": "Alle statussen",
+				"filterAgent": "Filteren op agent",
+				"filterStatus": "Filteren op status",
+				"approvalsTitle": "Wacht op jou",
+				"selectRun": "Selecteer een uitvoering om de stappen en wijzigingen te zien.",
+				"runMissing": "Deze uitvoering is niet beschikbaar.",
+				"deletedAgent": "Verwijderde agent",
+				"onBehalfOf": "voor {{name}}",
+				"cost": "Kosten",
+				"tokensLabel": "Tokens",
+				"tokens": "Tokens: {{value}}",
+				"toolCallsLabel": "Toolaanroepen",
+				"summary": "Samenvatting",
+				"changes": "Wijzigingenset",
+				"noChanges": "Geen wijzigingen.",
+				"steps": "Stappen",
+				"cancelRun": "Uitvoering stoppen",
+				"cancelled": "Uitvoering gestopt",
+				"cancelError": "Kan de uitvoering niet stoppen.",
+				"trigger": {
+					"mention": "Genoemd",
+					"assign": "Toegewezen",
+					"manual": "Gestart vanuit een taak",
+					"schedule": "Gepland",
+					"automation": "Automatisering",
+					"chat": "Vervolg"
+				},
+				"project": "Project:",
+				"workedSeconds": "Werkte {{count}} s",
+				"workedMinutes": "Werkte {{count}} min"
+			},
+			"connectors": {
+				"title": "Connectors",
+				"subtitle": "Externe MCP-servers die agents met webtoegang mogen aanroepen. Alleen-lezen-tools draaien direct; al het andere wacht op goedkeuring.",
+				"create": "Connector toevoegen",
+				"edit": "Connector bewerken",
+				"delete": "Connector verwijderen",
+				"created": "Connector toegevoegd",
+				"saved": "Connector opgeslagen",
+				"deleted": "Connector verwijderd",
+				"saveError": "Kan de connector niet opslaan. Probeer het opnieuw.",
+				"empty": "Nog geen connectors. Voeg het adres van een MCP-server toe zodat agents met webtoegang de tools ervan kunnen gebruiken.",
+				"shared": "Gedeeld",
+				"personal": "Alleen jij",
+				"enable": "Inschakelen",
+				"disable": "Uitschakelen",
+				"test": "Testen",
+				"testOk": "Verbonden: {{count}} tools, waarvan {{readOnly}} alleen-lezen",
+				"testError": "Kan de test niet uitvoeren. Probeer het opnieuw.",
+				"errors": {
+					"DESTINATION": "Het adres is geen openbare server.",
+					"TIMEOUT": "De server antwoordde niet op tijd.",
+					"NETWORK": "Kan de server niet bereiken.",
+					"HTTP": "De server antwoordde met een fout ({{status}}).",
+					"TOO_LARGE": "Het antwoord van de server was te groot.",
+					"PROTOCOL": "Dit lijkt geen MCP-server te zijn.",
+					"RPC": "De MCP-server weigerde het verzoek.",
+					"SECRET_UNREADABLE": "Het opgeslagen geheim is niet meer leesbaar. Voer het opnieuw in."
+				},
+				"secretHint": "Geheim ••••{{last4}}",
+				"dialogHint": "Margaya verbindt via Streamable HTTP. Geheimen worden versleuteld opgeslagen en nooit meer getoond.",
+				"name": "Naam",
+				"url": "Server-URL",
+				"urlHint": "Het MCP-eindpunt, bijvoorbeeld https://mcp.example.com/mcp. Het moet bereikbaar zijn via het openbare internet.",
+				"auth": "Authenticatie",
+				"authHeader": "Geheim in een header",
+				"authNone": "Geen",
+				"headerName": "Headernaam",
+				"secret": "Geheim",
+				"secretKeep": "Laat leeg om het huidige geheim te houden",
+				"secretHelp": "De volledige waarde van de header, bijvoorbeeld Bearer gevolgd door een token.",
+				"sharedToggle": "Delen met de werkruimte",
+				"sharedHint": "Agents gebruiken gedeelde connectors bij elke run. Schakel uit om hem alleen te gebruiken voor runs namens jou.",
+				"deleteTitle": "{{name}} verwijderen?",
+				"deleteBody": "Agents kunnen de tools niet meer gebruiken en het opgeslagen geheim wordt verwijderd."
+			},
+			"followUp": {
+				"label": "Antwoord aan de agent",
+				"placeholder": "Stel een vervolgvraag of zeg wat er nu moet gebeuren…",
+				"send": "Versturen",
+				"error": "Kan het vervolg niet starten. Probeer het opnieuw."
+			},
+			"needsInput": {
+				"title": "De agent heeft een vraag",
+				"answerLabel": "Jouw antwoord",
+				"placeholder": "Typ je antwoord…",
+				"reply": "Antwoorden",
+				"sent": "Antwoord verstuurd. De agent gaat verder.",
+				"error": "Kan je antwoord niet versturen. Probeer het opnieuw.",
+				"hint": "Onbeantwoorde vragen verlopen na 24 uur.",
+				"waiting": "De agent wacht op een antwoord van degene die het vroeg.",
+				"inboxHint": "De run is gepauzeerd tot je antwoordt.",
+				"answer": "Antwoorden in de Agentendesk",
+				"notificationTitle": "{{agentName}} heeft een vraag",
+				"verb": "heeft een vraag voor je"
+			},
+			"schedules": {
+				"open": "Planningen van {{name}}",
+				"title": "Planningen: {{name}}",
+				"hint": "Laat de agent volgens schema draaien. Runs handelen namens wie de planning het laatst opsloeg, met hoogstens diens rechten.",
+				"empty": "Nog geen planningen.",
+				"create": "Nieuwe planning",
+				"edit": "Planning bewerken",
+				"delete": "Planning verwijderen",
+				"deleteBody": "Deze planning verwijderen? Eerdere runs blijven in de Agentendesk.",
+				"deleted": "Planning verwijderd",
+				"saved": "Planning opgeslagen",
+				"saveError": "Kan de planning niet opslaan. Probeer het opnieuw.",
+				"enable": "Planning inschakelen",
+				"disable": "Planning uitschakelen",
+				"enabled": "Aan",
+				"when": "Wanneer",
+				"presets": {
+					"weekdays": "Elke werkdag om 9:00",
+					"mondays": "Elke maandag om 9:00",
+					"monthly": "De eerste van de maand om 9:00",
+					"custom": "Aangepast (cron)"
+				},
+				"customLabel": "Cron-planning {{cron}}",
+				"cron": "Cron-expressie",
+				"cronHint": "Vijf velden: minuut, uur, dag van de maand, maand, weekdag. Hoogstens elke 15 minuten.",
+				"timezone": "Tijdzone",
+				"project": "Project",
+				"chooseProject": "Kies een project",
+				"task": "Taak",
+				"noTask": "Geen taak (heel het project)",
+				"taskHint": "Zonder taak werkt de agent aan het project en zet hij rapporten op een pagina.",
+				"projectLevel": "Heel het project",
+				"prompt": "Wat moet hij doen?",
+				"promptPlaceholder": "Bijvoorbeeld: vat samen wat er sinds gisteren is veranderd.",
+				"nextRun": "Volgende run {{time}}",
+				"runsAs": "Draait voor {{name}}",
+				"runsAsHint": "Door op te slaan handelen deze runs namens jou. De planning gaat uit als je de werkruimte verlaat of geen AI-toegang meer hebt.",
+				"errors": {
+					"CRON_INVALID": "Vul vijf cron-velden in: minuut, uur, dag, maand, weekdag.",
+					"CRON_TOO_FREQUENT": "Een planning mag hoogstens elke 15 minuten draaien.",
+					"CRON_NEVER": "Deze planning zou nooit draaien.",
+					"TIMEZONE_INVALID": "Kies een geldige tijdzone.",
+					"OUTSIDE_AGENT_PROJECTS": "Deze agent is niet ingesteld om in dat project te werken."
+				}
+			},
+			"templates": {
+				"title": "Begin met",
+				"blank": "Lege agent",
+				"blankHint": "Schrijf de instructies zelf.",
+				"triage": {
+					"name": "Triage",
+					"description": "Ruimt nieuwe taken op: duidelijke titels, prioriteiten en links naar duplicaten."
+				},
+				"standup": {
+					"name": "Stand-up",
+					"description": "Schrijft dagelijks een stand-upsamenvatting op een projectpagina."
+				},
+				"specWriter": {
+					"name": "Specificatieschrijver",
+					"description": "Maakt van een taak een specificatiepagina met acceptatiecriteria."
+				},
+				"deliveryRisk": {
+					"name": "Leveringsrisico",
+					"description": "Meldt elke week achterstallig, geblokkeerd en eigenaarloos werk."
+				},
+				"feedback": {
+					"name": "Klantfeedback",
+					"description": "Groepeert klantfeedback in thema's met voorbeelden."
+				},
+				"triggers": {
+					"mention": "Vermelding",
+					"assign": "Toewijzing",
+					"schedule": "Planning",
+					"automation": "Automatisering"
+				}
+			}
+		},
+		"capture": {
+			"button": "Vastleggen",
+			"buttonHint": "Nieuw uit schermafbeelding, opname of transcript",
+			"title": "Nieuwe verzoeken uit een vastlegging",
+			"description": "Voeg schermafbeeldingen, een schermopname of vergadernotities toe. AI stelt verzoeken voor; er wordt pas iets aangemaakt als je bevestigt.",
+			"tabs": {
+				"screenshot": "Schermafbeeldingen",
+				"recording": "Opname",
+				"transcript": "Transcript"
+			},
+			"dropzone": "Plak, sleep of kies schermafbeeldingen",
+			"dropzoneHint": "PNG, JPEG of WebP, maximaal {{count}} afbeeldingen. Locatie- en cameragegevens worden verwijderd.",
+			"chooseRecording": "Kies een schermopname",
+			"recordingHint": "Er worden maar {{count}} stilstaande beelden naar AI gestuurd. De video blijft op je apparaat.",
+			"notes": "Notities (optioneel)",
+			"notesPlaceholder": "Wat deed je, en wat ging er mis?",
+			"transcript": "Transcript of vergadernotities",
+			"transcriptPlaceholder": "Plak het transcript of de notities. Elk actiepunt wordt een apart verzoek.",
+			"remove": "{{name}} verwijderen",
+			"tooMany": "Maximaal {{count}} afbeeldingen per vastlegging.",
+			"mediaErrors": {
+				"type": "Dit bestandstype wordt niet ondersteund.",
+				"tooLarge": "Dit bestand is te groot.",
+				"unreadable": "Dit bestand kon niet worden gelezen."
+			},
+			"preparing": "Afbeeldingen voorbereiden…",
+			"analyze": "Verzoeken voorstellen",
+			"analyzing": "Vastlegging lezen…",
+			"reviewTitle": "Voorgestelde verzoeken controleren",
+			"reviewDescription": "Bewerk verzoeken of laat ze weg. Er wordt pas iets aangemaakt als je bevestigt.",
+			"empty": "Geen verzoeken gevonden in deze vastlegging.",
+			"include": "Dit verzoek meenemen",
+			"titleLabel": "Titel",
+			"descriptionLabel": "Beschrijving",
+			"priorityLabel": "Prioriteit",
+			"labelsLabel": "Voorgestelde labels",
+			"assignTo": "Toewijzen aan {{name}}",
+			"attachNote": "Bij te voegen afbeeldingen: {{count}}",
+			"attachNotAllowed": "Afbeeldingen kunnen niet worden bijgevoegd: je hebt toestemming nodig om taken te bewerken.",
+			"back": "Terug",
+			"create": "Verzoeken aanmaken ({{count}})",
+			"created": "Aangemaakte verzoeken: {{count}}",
+			"extrasFailed": "Sommige labels, eigenaren of bijlagen konden niet worden toegevoegd.",
+			"createError": "De verzoeken konden niet worden aangemaakt.",
+			"draftFromImages": "Opstellen uit afbeeldingen",
+			"drafting": "Opstellen…",
+			"sections": {
+				"steps": "Stappen om te reproduceren",
+				"expected": "Verwacht",
+				"actual": "Werkelijk",
+				"environment": "Omgeving"
+			}
+		},
+		"codingAgent": {
+			"button": "Naar codeeragent sturen",
+			"dialogTitle": "Naar een codeeragent sturen",
+			"dialogDescription": "Margaya opent met deze briefing een issue in de repository. Controleer en bewerk hem voordat je hem verstuurt.",
+			"repository": "Repository",
+			"profile": "Codeeragent",
+			"github": "GitHub",
+			"gitea": "Gitea",
+			"notReady": "De integratie van deze repository kan nog geen issues openen. Controleer haar in de integratie-instellingen van het project.",
+			"noProfiles": "Geen enkel codeeragentprofiel werkt met deze repository.",
+			"useAi": "Samenvatten met AI",
+			"regenerate": "Opnieuw voorbereiden",
+			"preparing": "Briefing wordt voorbereid…",
+			"error": "De briefing kon niet worden voorbereid.",
+			"titleLabel": "Titel van de issue",
+			"briefLabel": "Briefing",
+			"briefNote": "Waarden die op wachtwoorden of sleutels lijken, worden vóór het versturen verwijderd. Er wordt nooit automatisch iets gemerged.",
+			"send": "Versturen",
+			"sending": "Versturen…",
+			"sent": "Naar de codeeragent gestuurd",
+			"sentNotAssigned": "Issue aangemaakt, maar de toegewezen persoon kon niet worden toegevoegd",
+			"sendError": "De issue kon niet worden aangemaakt",
+			"openIssue": "Issue openen",
+			"timelineTitle": "Codeeragent",
+			"timelineLabel": "Voortgang van de codeeragent",
+			"sentBy": "Naar {{profile}} gestuurd door {{name}}",
+			"sentByUnknown": "Naar {{profile}} gestuurd",
+			"issueLink": "Issue #{{number}}",
+			"prLink": "Pull request #{{number}}",
+			"pending": "Nog niet",
+			"steps": {
+				"issue_created": "Issue aangemaakt",
+				"working": "Agent aan het werk",
+				"ready_for_review": "Klaar voor review",
+				"merged": "Gemerged",
+				"closed": "Gesloten zonder merge"
+			},
+			"settings": {
+				"title": "Codeeragents",
+				"subtitle": "Issuesjablonen voor ‘Naar codeeragent sturen’, verstuurd via GitHub en Gitea",
+				"sharedNote": "Gedeeld door alle projecten in deze werkruimte. Profielen voegen alleen een vermelding of een toegewezen persoon aan de issue toe; er worden geen AI-sleutels opgeslagen.",
+				"builtin": "Ingebouwd",
+				"githubOnly": "Alleen GitHub",
+				"name": "Naam",
+				"namePlaceholder": "bijv. Onze build-runner",
+				"mention": "Vermelding",
+				"mentionPlaceholder": "@agent, of een tekst met {task} en {branch}",
+				"assignee": "Toegewezen aan (GitHub)",
+				"assigneePlaceholder": "GitHub-login, bijv. Copilot",
+				"enabled": "Ingeschakeld",
+				"edit": "Profiel bewerken",
+				"delete": "Profiel verwijderen",
+				"add": "Profiel toevoegen",
+				"save": "Opslaan",
+				"saved": "Profiel opgeslagen",
+				"deleted": "Profiel verwijderd",
+				"error": "Het profiel kon niet worden opgeslagen",
+				"needsTarget": "Voeg een vermelding of een toegewezen persoon toe.",
+				"readOnly": "Alleen mensen die de werkruimte-instellingen beheren, kunnen profielen wijzigen."
+			}
+		},
+		"filters": {
+			"button": "Beschrijf een filter…",
+			"short": "Beschrijven",
+			"label": "Beschrijf wat je wilt zien",
+			"placeholder": "bijv. mijn achterstallige bugs in behandeling",
+			"apply": "Toepassen",
+			"none": "Daar konden geen filters van worden gemaakt. Probeer andere woorden.",
+			"applied": "Filters toegepast. Pas ze aan via de chips.",
+			"dropped": "Niet begrepen: {{words}}",
+			"hint": "AI zet je woorden om in filters op statussen, labels, personen, cycli, prioriteiten en datums."
+		},
+		"budget": {
+			"warningTitle": "{{percent}}% van het AI-budget van deze maand is gebruikt",
+			"reachedTitle": "Het AI-budget van deze maand is op",
+			"amounts": "{{used}} van {{cap}}.",
+			"warningHint": "AI-functies stoppen als het plafond is bereikt. Verhoog het hieronder indien nodig.",
+			"reachedHint": "AI-functies zijn gepauzeerd tot volgende maand of tot het plafond wordt verhoogd.",
+			"notice": {
+				"title": "AI-budget bijna op",
+				"content": "Deze werkruimte heeft {{percent}}% van haar maandelijkse AI-budget gebruikt."
+			}
+		},
+		"skills": {
+			"navLabel": "AI-vaardigheden",
+			"title": "AI-vaardigheden",
+			"subtitle": "Opgeslagen prompts om te hergebruiken via \"/\" in de AI-chat.",
+			"listTitle": "Vaardigheden",
+			"new": "Nieuwe vaardigheid",
+			"newTitle": "Nieuwe vaardigheid",
+			"editTitle": "Vaardigheid bewerken",
+			"dialogHint": "De prompt wordt aan de vraag toegevoegd telkens wanneer de vaardigheid wordt gebruikt.",
+			"name": "Naam",
+			"namePlaceholder": "release-notities",
+			"description": "Beschrijving",
+			"prompt": "Prompttekst",
+			"promptPlaceholder": "Schrijf release-notities voor de taken die deze cyclus zijn afgerond, gegroepeerd per functie.",
+			"shareLabel": "Delen met de werkruimte",
+			"shareHint": "Iedereen die hier AI gebruikt, kan hem gebruiken. Uit: alleen jij.",
+			"shared": "Gedeeld",
+			"personal": "Alleen jij",
+			"save": "Vaardigheid opslaan",
+			"saved": "Vaardigheid opgeslagen",
+			"saveError": "Kan de vaardigheid niet opslaan",
+			"deleted": "Vaardigheid verwijderd",
+			"edit": "{{name}} bewerken",
+			"delete": "{{name}} verwijderen",
+			"deleteConfirm": "{{name}} verwijderen?",
+			"empty": "Nog geen vaardigheden. Sla een prompt op die je vaak gebruikt.",
+			"loadError": "Kan de vaardigheden niet laden.",
+			"noAccess": "Je hebt toestemming nodig om AI in deze werkruimte te gebruiken."
+		},
+		"memory": {
+			"navLabel": "AI-geheugen",
+			"title": "AI-geheugen",
+			"subtitle": "Korte feiten die AI onthoudt bij het antwoorden, zoals \"Onze releasedag is donderdag\".",
+			"scopes": {
+				"workspace": "Werkruimte",
+				"project": "Project",
+				"user": "Persoonlijk"
+			},
+			"scopeHints": {
+				"workspace": "Gebruikt voor iedereen in de werkruimte. AI-beheerders bewerken ze.",
+				"project": "Gebruikt in één project. AI-beheerders bewerken ze.",
+				"user": "Alleen voor jou gebruikt en alleen voor jou zichtbaar."
+			},
+			"project": "Project",
+			"newNote": "Nieuwe notitie",
+			"placeholder": "Onze releasedag is donderdag.",
+			"add": "Notitie toevoegen",
+			"save": "Notitie opslaan",
+			"editNote": "Notitie bewerken",
+			"deleteNote": "Notitie verwijderen",
+			"saved": "Notitie opgeslagen",
+			"deleted": "Notitie verwijderd",
+			"saveError": "Kan de notitie niet opslaan",
+			"empty": "Nog geen notities.",
+			"loadError": "Kan de notities niet laden.",
+			"adminsOnly": "Alleen AI-beheerders kunnen hier notities toevoegen.",
+			"noAccess": "Je hebt toestemming nodig om AI in deze werkruimte te gebruiken."
+		}
+	},
+	"insight": {
+		"close": "Sluiten",
+		"retry": "Opnieuw proberen",
+		"stop": "Stoppen",
+		"writing": "Bezig met schrijven…",
+		"days_one": "{{count}} dag",
+		"days_other": "{{count}} dagen",
+		"estimate": {
+			"usually": "Vergelijkbare taken waren meestal {{value}}",
+			"took_one": "{{count}} vergelijkbare taak duurde {{min}}–{{max}} dagen (mediaan {{median}})",
+			"took_other": "{{count}} vergelijkbare taken duurden {{min}}–{{max}} dagen (mediaan {{median}})",
+			"basedOn_one": "Gebaseerd op {{count}} vergelijkbare afgeronde taak",
+			"basedOn_other": "Gebaseerd op {{count}} vergelijkbare afgeronde taken",
+			"use": "{{value}} gebruiken",
+			"why": "Waarom?",
+			"similar": "Vergelijkbare taken"
+		},
+		"calibration": {
+			"title": "Kalibratie van schattingen",
+			"description": "Hoe lang taken van elke omvang echt duurden, van eerste start tot klaar, in de afgelopen {{days}} dagen.",
+			"empty": "Nog geen afgeronde, geschatte taken met een geregistreerde start.",
+			"estimate": "Schatting",
+			"tasks": "Taken",
+			"actual": "Werkelijke tijd",
+			"range": "mediaan {{median}} d ({{low}}–{{high}})",
+			"ordered": "Grotere schattingen duurden langer, zoals het hoort.",
+			"notOrdered": "Grotere schattingen duurden niet altijd langer: kijk eens hoe het team werk inschat.",
+			"fewSamples": "Er zijn meer afgeronde taken nodig om omvangen te vergelijken.",
+			"unmeasured_one": "{{count}} taak heeft geen geregistreerde start en telt niet mee.",
+			"unmeasured_other": "{{count}} taken hebben geen geregistreerde start en tellen niet mee."
+		},
+		"capacity": {
+			"meter": "Gepland werk vergeleken met een gebruikelijke cyclus",
+			"within": "Gepland op {{percent}}% van een gebruikelijke cyclus",
+			"over": "Boven capaciteit: gepland op {{percent}}% van een gebruikelijke cyclus",
+			"noDates": "Stel de datums van de cyclus in om de capaciteit te controleren.",
+			"noHistory": "Capaciteit verschijnt zodra het team werk heeft afgerond in eerdere cycli.",
+			"details": "Details over capaciteit",
+			"compare": "{{load}} gepland; een gebruikelijke cyclus bevat {{typical}} (bereik {{low}}–{{high}}).",
+			"tasks_one": "{{count}} taak",
+			"tasks_other": "{{count}} taken",
+			"points_one": "{{count}} punt",
+			"points_other": "{{count}} punten",
+			"basisCycles_one": "Gebaseerd op wat het team afrondde in de laatste afgelopen cyclus, geschaald naar de lengte van deze cyclus.",
+			"basisCycles_other": "Gebaseerd op wat het team afrondde in de laatste {{count}} afgelopen cycli, geschaald naar de lengte van deze cyclus.",
+			"basisThroughput": "Gebaseerd op de taken die het project de afgelopen 8 weken per periode van deze cycluslengte afrondde.",
+			"deferTitle": "Kan naar een latere cyclus",
+			"blocks_one": "blokkeert {{count}}",
+			"blocks_other": "blokkeert {{count}}",
+			"membersTitle": "Belasting per persoon",
+			"memberLoad": "{{load}} · meestal {{typical}}",
+			"membersNote": "Belasting ten opzichte van ieders eigen gebruikelijke tempo, om werk te verdelen. Geen prestatiemaatstaf.",
+			"unassigned": "Niet toegewezen"
+		},
+		"retro": {
+			"button": "Retrospectief",
+			"buttonLabel": "Een retrospectief voorbereiden",
+			"title": "Retrospectief",
+			"factsTitle": "Wat er gebeurde",
+			"factsSoFar": "Wat er tot nu toe gebeurde",
+			"factsNote": "Deze feiten komen uit de gegevens van Margaya, niet van de AI. Ze beschrijven het werk van het team, nooit een persoon.",
+			"error": "De feiten van deze cyclus konden niet worden geladen.",
+			"aiIntro": "Laat AI op basis van deze feiten een kort verhaal en discussievragen schrijven.",
+			"write": "Verhaal schrijven",
+			"rewrite": "Opnieuw schrijven",
+			"edit": "Bewerken",
+			"preview": "Voorbeeld",
+			"editLabel": "Verhaal van het retrospectief",
+			"saveAsPage": "Opslaan als pagina",
+			"saveWithNarrative": "Slaat de feiten, het verhaal en secties voor het team op.",
+			"saveFactsOnly": "Slaat de feiten en secties op die het team invult.",
+			"saved": "Retrospectief opgeslagen als pagina",
+			"saveError": "De pagina kon niet worden opgeslagen.",
+			"openPage": "Pagina openen",
+			"pageTitle": "Retrospectief: {{name}}",
+			"more_one": "en nog {{count}}",
+			"more_other": "en nog {{count}}",
+			"facts": {
+				"sayDo_one": "{{done}} van {{count}} toegezegde taak klaar ({{percent}}%)",
+				"sayDo_other": "{{done}} van {{count}} toegezegde taken klaar ({{percent}}%)",
+				"sayDoNone": "Er was aan het begin niets toegezegd",
+				"scope": "Wijziging in omvang: {{added}} toegevoegd, {{removed}} verwijderd tijdens de cyclus",
+				"carry": "Overgedragen: {{carried}} naar een andere cyclus verplaatst, {{open}} open gebleven",
+				"reopened_one": "{{count}} taak heropend nadat ze klaar was",
+				"reopened_other": "{{count}} taken heropend nadat ze klaar waren",
+				"points": "Schattingspunten: {{completed}} van {{committed}} klaar",
+				"cycleTime": "Doorlooptijd: mediaan {{median}} dagen",
+				"cycleTimeOutliers_one": "Doorlooptijd: mediaan {{median}} dagen; {{count}} taak duurde langer dan {{threshold}} dagen",
+				"cycleTimeOutliers_other": "Doorlooptijd: mediaan {{median}} dagen; {{count}} taken duurden langer dan {{threshold}} dagen",
+				"cycleTimeNone": "Doorlooptijd: niet gemeten",
+				"blocked_one": "{{count}} taak werd geblokkeerd door een andere",
+				"blocked_other": "{{count}} taken werden geblokkeerd door andere",
+				"forecastNone": "Prognose: geen opgeslagen voor deze cyclus",
+				"forecastOpen": "Prognose: 85% kans klaar op {{date}}",
+				"forecastMet": "Prognose: 85% kans klaar op {{date}}, en die klopte",
+				"forecastMissed": "Prognose: 85% kans klaar op {{date}}, en die klopte niet"
+			},
+			"lists": {
+				"added": "Toegevoegd tijdens de cyclus",
+				"carriedOver": "Overgedragen",
+				"leftOpen": "Open gebleven",
+				"outliers": "Duurde veel langer dan gebruikelijk",
+				"blocked": "Geblokkeerd"
+			},
+			"page": {
+				"facts": "Feiten",
+				"wentWell": "Wat ging goed",
+				"improve": "Wat kan beter",
+				"actions": "Acties"
+			}
+		},
+		"myBrief": {
+			"title": "Mijn overzicht",
+			"empty": "Vandaag heeft niets je nodig.",
+			"error": "Je overzicht kon niet worden geladen.",
+			"summarize": "Samenvatten",
+			"overdue": "Te laat · {{total}}",
+			"dueToday": "Vandaag af · {{total}}",
+			"blocked": "Geblokkeerd · {{total}}",
+			"mentions": "Vermeldingen · {{total}}",
+			"following": "Wijzigingen in taken die je volgt · {{total}}",
+			"waitingOn": "Wacht op {{keys}}",
+			"hiddenBlockers_one": "{{count}} verborgen taak",
+			"hiddenBlockers_other": "{{count}} verborgen taken",
+			"mentionedBy": "door {{name}}",
+			"mentioned": "heeft je vermeld",
+			"more_one": "en nog {{count}}",
+			"more_other": "en nog {{count}}",
+			"kinds": {
+				"status": "status",
+				"comment": "reacties",
+				"assignee": "toegewezenen",
+				"priority": "prioriteit",
+				"due_date": "deadline",
+				"other": "andere updates"
+			},
+			"emailTitle": "Mijn overzicht aan de samenvatting toevoegen",
+			"emailDescription": "Je samenvatting toont dan ook je geblokkeerde taken en wijzigingen in taken die je volgt. Vereist een dagelijkse of wekelijkse samenvatting.",
+			"emailError": "Deze instelling kon niet worden opgeslagen."
+		}
 	}
 }

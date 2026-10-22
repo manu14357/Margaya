@@ -11,7 +11,8 @@
 			"remove": "Entfernen",
 			"reset": "Zurücksetzen",
 			"filter": "Filter",
-			"clearAllFilters": "Alle Filter löschen"
+			"clearAllFilters": "Alle Filter löschen",
+			"undo": "Rückgängig"
 		},
 		"a11y": {
 			"toggleSidebar": "Sidebar umschalten"
@@ -98,7 +99,15 @@
 				"createButton": "Projekt erstellen",
 				"successToast": "Projekt erfolgreich erstellt",
 				"errorToast": "Projekt konnte nicht erstellt werden",
-				"keyTaken": "In diesem Workspace existiert bereits ein Projekt mit dem Schlüssel {{key}}"
+				"keyTaken": "In diesem Workspace existiert bereits ein Projekt mit dem Schlüssel {{key}}",
+				"blankProject": "Leeres Projekt",
+				"copyHint": "Status, benutzerdefinierte Felder, Schätzungen, Einstellungen und Automatisierungen werden kopiert. Mitglieder, Integrationen und öffentliche Boards nicht.",
+				"includeOpenTasks": "Offene Aufgaben übernehmen",
+				"includeTemplates": "Aufgabenvorlagen übernehmen",
+				"openTasksHint": "Bis zu 500 offene Aufgaben mit ihren Teilaufgaben, Labels und Schätzungen. Kommentare und Verlauf werden nicht kopiert.",
+				"restricted": "Eingeschränkt",
+				"restrictedHint": "Nur Mitglieder können dieses Projekt sehen. Du wirst sein erstes Mitglied; Workspace-Eigentümer und Admins sehen es immer.",
+				"startFrom": "Ausgangspunkt"
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -714,6 +723,8 @@
 			"themeLight": "Hell",
 			"themeDark": "Dunkel",
 			"themeSystem": "System",
+			"themeLightContrast": "Hell mit hohem Kontrast",
+			"themeDarkContrast": "Dunkel mit hohem Kontrast",
 			"language": "Sprache",
 			"languageDescription": "Wähle deine bevorzugte Oberflächensprache",
 			"selectLanguage": "Sprache auswählen",
@@ -1428,6 +1439,75 @@
 			"dropHintAny": "JSON- oder CSV-Datei hierher ziehen und ablegen",
 			"importAcceptHint": "Lade einen Margaya-JSON-Export oder eine CSV-Datei hoch.",
 			"importStopped": "Import gestoppt: {{message}}",
+			"external": {
+				"sourceHint": "Du wechselst von einem anderen Tool? Importiere seinen Export mit Status, Labels, Personen, Daten und Teilaufgaben.",
+				"sources": {
+					"trello": "Trello (JSON)",
+					"linear": "Linear (CSV)",
+					"asana": "Asana (CSV)"
+				},
+				"title": {
+					"trello": "Aus Trello importieren",
+					"linear": "Aus Linear importieren",
+					"asana": "Aus Asana importieren"
+				},
+				"howToTitle": {
+					"trello": "So exportierst du aus Trello",
+					"linear": "So exportierst du aus Linear",
+					"asana": "So exportierst du aus Asana"
+				},
+				"howTo": {
+					"trello": {
+						"step1": "Öffne auf dem Board das Menü → Drucken, exportieren und teilen → Als JSON exportieren.",
+						"step2": "Lade die heruntergeladene .json-Datei hier hoch."
+					},
+					"linear": {
+						"step1": "Öffne in Linear Einstellungen → Import / Export und wähle CSV exportieren.",
+						"step2": "Lade die .csv-Datei aus der E-Mail von Linear hier hoch."
+					},
+					"asana": {
+						"step1": "Öffne im Asana-Projekt das Projektmenü → Exportieren/Drucken → CSV.",
+						"step2": "Lade die heruntergeladene .csv-Datei hier hoch."
+					}
+				},
+				"limits": {
+					"trello": "Bis zu 10 MB und 5.000 Karten pro Datei. Archivierte Karten werden ausgelassen; Checklisten werden zu Aufgabenlisten in der Beschreibung; Anhänge bleiben in Trello.",
+					"linear": "Bis zu 5 MB und 5.000 Vorgänge pro Datei. Archivierte Vorgänge werden ausgelassen. Der CSV-Export von Linear enthält keine Kommentare.",
+					"asana": "Bis zu 5 MB und 5.000 Aufgaben pro Datei. Erledigte Aufgaben landen in deiner Spalte „Erledigt“. Der CSV-Export von Asana enthält keine Kommentare."
+				},
+				"dropHint": {
+					"trello": "Ziehe den JSON-Export von Trello hierher",
+					"linear": "Ziehe den CSV-Export von Linear hierher",
+					"asana": "Ziehe den CSV-Export von Asana hierher"
+				},
+				"wrongType": {
+					"trello": "Wähle den .json-Export des Boards.",
+					"linear": "Wähle den .csv-Export von Linear.",
+					"asana": "Wähle den .csv-Export von Asana."
+				},
+				"itemCount_one": "{{count}} Eintrag",
+				"itemCount_other": "{{count}} Einträge",
+				"alreadyImported_one": "{{count}} Eintrag wurde bereits in dieses Projekt importiert.",
+				"alreadyImported_other": "{{count}} Einträge wurden bereits in dieses Projekt importiert.",
+				"contents": "{{comments}} Kommentare, {{checklists}} Checklisten, {{subtasks}} Teilaufgaben, {{links}} Verknüpfungen",
+				"sourceStatus": "Status oder Liste",
+				"peopleUnmatched_one": "{{count}} Person ist kein Mitglied ({{names}}). Ihre Einträge bleiben ohne Zuweisung; der Name steht in der Beschreibung.",
+				"peopleUnmatched_other": "{{count}} Personen sind keine Mitglieder ({{names}}). Ihre Einträge bleiben ohne Zuweisung; die Namen stehen in der Beschreibung.",
+				"mode": "Bereits importierte Einträge",
+				"modeHint": "Erkannt an ihrer ID im Export.",
+				"importAction_one": "{{count}} Eintrag importieren",
+				"importAction_other": "{{count}} Einträge importieren",
+				"importing_one": "{{count}} Eintrag wird importiert…",
+				"importing_other": "{{count}} Einträge werden importiert…",
+				"result": {
+					"skipped_one": "{{count}} Eintrag übersprungen (bereits importiert)",
+					"skipped_other": "{{count}} Einträge übersprungen (bereits importiert)",
+					"failed_one": "{{count}} Eintrag fehlgeschlagen",
+					"failed_other": "{{count}} Einträge fehlgeschlagen",
+					"unmatched_one": "{{count}} Person ist kein Workspace-Mitglied; ihre Einträge sind nicht zugewiesen:",
+					"unmatched_other": "{{count}} Personen sind keine Workspace-Mitglieder; ihre Einträge sind nicht zugewiesen:"
+				}
+			},
 			"unsupportedFile": "Bitte lade eine JSON- oder CSV-Datei hoch",
 			"jira": {
 				"alreadyImported_one": "{{count}} Vorgang wurde bereits in dieses Projekt importiert.",
@@ -1575,7 +1655,8 @@
 				"intake": "Eingang",
 				"analytics": "Analytics",
 				"page": "Seiten",
-				"audit_log": "Audit-Log"
+				"audit_log": "Audit-Log",
+				"ai": "KI"
 			},
 			"permissions": {
 				"project": {
@@ -1821,6 +1902,16 @@
 						"description": "Das Audit-Log des Workspace ansehen und exportieren: wer Mitglieder, Rollen, Schlüssel, Webhooks, Integrationen und Einstellungen geändert hat.",
 						"label": "Audit-Log ansehen"
 					}
+				},
+				"ai": {
+					"use": {
+						"label": "KI nutzen",
+						"description": "Kann KI-Funktionen nutzen, wenn KI für den Workspace und das Projekt eingeschaltet ist."
+					},
+					"manage": {
+						"label": "KI verwalten",
+						"description": "Kann KI für den Workspace ein- oder ausschalten, Schlüssel, Limits und Datenschutz ändern und die KI-Nutzung sehen."
+					}
 				}
 			},
 			"validation": {
@@ -1965,6 +2056,10 @@
 				"views": {
 					"description": "Speichere Filter, Gruppierung und Anzeigeeinstellungen und teile sie mit dem Team.",
 					"title": "Ansichten"
+				},
+				"ai": {
+					"title": "KI",
+					"description": "Zusammenfassungen, Vorschläge und weitere KI-Hilfe für dieses Projekt. Ausgeschaltet bleibt das Projekt komplett von der KI ausgeschlossen."
 				}
 			},
 			"loadError": "Dieses Projekt konnte nicht geladen werden",
@@ -2178,7 +2273,26 @@
 				"closeOff": "Automatisches Schließen deaktiviert",
 				"closeOn": "Automatisches Schließen aktiviert",
 				"error": "Die Automatisierungen konnten nicht aktualisiert werden",
-				"updated": "Automatisierung aktualisiert"
+				"updated": "Automatisierung aktualisiert",
+				"rolloverOff": "Zyklus-Übertrag deaktiviert",
+				"rolloverOn": "Zyklus-Übertrag aktiviert",
+				"flowAlertsOn": "Flusswarnungen aktiviert",
+				"flowAlertsOff": "Flusswarnungen deaktiviert"
+			},
+			"cycleRollover": {
+				"cyclesOff": "Aktiviere Zyklen unter Funktionen, um dies zu nutzen.",
+				"description": "Wenn ein Zyklus endet, werden seine unerledigten Aufgaben in den nächsten Zyklus verschoben. Die Projektleitung erhält eine Zusammenfassung.",
+				"last_one": "Zuletzt {{count}} Aufgabe verschoben {{time}}",
+				"last_other": "Zuletzt {{count}} Aufgaben verschoben {{time}}",
+				"never": "Noch nichts verschoben",
+				"title": "Unerledigte Zyklusarbeit übertragen"
+			},
+			"flowAlerts": {
+				"title": "Warnungen bei Flussanomalien",
+				"description": "Vergleicht einmal täglich laufende Arbeit, Durchlaufzeit und Durchsatz mit den 8 Wochen davor. Die Projektleitung wird benachrichtigt, wenn ein Wert seinen üblichen Bereich verlässt.",
+				"noLead": "Lege eine Projektleitung fest, damit diese Warnungen ankommen.",
+				"last": "Letzte Warnung {{time}}",
+				"never": "Noch keine Warnungen"
 			}
 		},
 		"workspaceExports": {
@@ -2625,6 +2739,24 @@
 			"noProjectsHint": "Erstelle zuerst ein Projekt. Seine Einstellungen erscheinen dann hier.",
 			"pickProject": "Wähle ein Projekt, um dessen Einstellungen zu sehen."
 		},
+		"projectAccess": {
+			"title": "Zugriff",
+			"subtitle": "Wer dieses Projekt sehen und darin arbeiten kann.",
+			"restrictedLabel": "Eingeschränkt",
+			"restrictedHint": "Nur die Mitglieder unten sowie Workspace-Eigentümer und Admins können dieses Projekt sehen. Die Rechte eines Mitglieds hier sind das, was seine Workspace-Rolle und seine Projektrolle beide erlauben.",
+			"openHint": "Alle im Workspace können dieses Projekt sehen, so wie ihre Workspace-Rolle es erlaubt. Schränke es ein, um es auf ausgewählte Mitglieder zu begrenzen.",
+			"membersLabel": "Mitglieder",
+			"membersHint": "Die Projektrolle begrenzt, was jedes Mitglied hier tun kann.",
+			"noMembers": "Noch keine Mitglieder.",
+			"addMember": "Mitglied hinzufügen",
+			"removeMember": "{{name}} entfernen",
+			"roleFor": "Projektrolle von {{name}}",
+			"leadTag": "Leitung",
+			"restrictedProject": "Eingeschränktes Projekt",
+			"toastUpdated": "Zugriff aktualisiert",
+			"toastError": "Zugriff konnte nicht aktualisiert werden",
+			"loadError": "Zugriffseinstellungen konnten nicht geladen werden. Lade die Seite neu, um es erneut zu versuchen."
+		},
 		"projectPeople": {
 			"defaultAssigneeHint": "Wird beim Erstellen einer Aufgabe vorausgefüllt und angenommenen Anfragen ohne Zuweisung zugewiesen.",
 			"defaultAssigneeLabel": "Standardmäßig zugewiesen",
@@ -2682,7 +2814,7 @@
 			"title": "Sicherheit"
 		},
 		"timezone": {
-			"accountHint": "Wird für Erinnerungen und E-Mail-Zusammenfassungen verwendet. Die App zeigt Zeiten immer in der Zeitzone deines Browsers an.",
+			"accountHint": "Wird für Erinnerungen, E-Mail-Zusammenfassungen und die Tage verwendet, nach denen Aufgabenfilter und Analysen zählen. Uhrzeiten auf dem Bildschirm erscheinen in der Zeitzone deines Browsers.",
 			"accountLabel": "Zeitzone",
 			"automatic": "Automatisch (Browser: {{zone}})",
 			"loadError": "Die Zeitzone konnte nicht geladen werden. Lade die Seite neu, um es erneut zu versuchen.",
@@ -2695,8 +2827,52 @@
 			"workspaceHint": "Legt fest, was „heute“ für Zyklen, Automatisierungen und Analysen bedeutet. Bestehende Workspaces starten mit UTC.",
 			"workspaceLabel": "Zeitzone"
 		},
+		"workspaceDeletion": {
+			"pendingTitle": "Zur Löschung vorgemerkt",
+			"pendingDescription": "Dieser Workspace wird am {{date}} gelöscht. Bis dahin ist er schreibgeschützt; du kannst seine Inhalte weiterhin öffnen und exportieren.",
+			"cancel": "Löschung abbrechen",
+			"confirm": "Löschung planen",
+			"rowDescription": "Der Workspace wird sofort schreibgeschützt und am {{date}} endgültig gelöscht. Bis dahin kannst du abbrechen.",
+			"dialogTitle": "{{name}} löschen?",
+			"dialogDescription": "{{name}} wird sofort für alle schreibgeschützt, und seine API-Schlüssel und Webhooks funktionieren nicht mehr. Die Mitglieder werden per E-Mail informiert. Am {{date}} wird er mit allen Projekten, Aufgaben und Seiten endgültig gelöscht, sofern du nicht vorher abbrichst.",
+			"toastScheduled": "Löschung für den {{date}} geplant",
+			"toastCancelled": "Löschung abgebrochen. Der Workspace ist wieder bearbeitbar.",
+			"toastError": "Die Löschung konnte nicht geändert werden. Versuche es erneut.",
+			"bannerTitle": "Dieser Workspace wird am {{date}} gelöscht",
+			"bannerDescription": "Bis dahin ist er schreibgeschützt. Du kannst seine Inhalte weiterhin öffnen und exportieren.",
+			"admin": {
+				"title": "Ausstehende Löschungen",
+				"description": "Workspaces, deren Eigentümer die Löschung geplant haben. Sie sind bis zum Datum schreibgeschützt und werden dann endgültig gelöscht.",
+				"dueAt": "Gelöscht am",
+				"badge": "Löschung am {{date}}"
+			},
+			"instanceAudit": {
+				"scheduled": "Hat einen Workspace zur Löschung vorgemerkt",
+				"cancelled": "Hat eine Workspace-Löschung abgebrochen",
+				"purged": "Hat einen Workspace nach Ablauf der Frist gelöscht"
+			}
+		},
+		"workspacePublicPages": {
+			"label": "Öffentliche Seiten",
+			"description": "Erlaubt Personen, die Projekte teilen dürfen, Seiten über einen öffentlichen Nur-Lese-Link zu veröffentlichen. Beim Ausschalten werden alle veröffentlichten Links widerrufen.",
+			"toastOn": "Öffentliche Seiten sind aktiviert",
+			"toastOff": "Öffentliche Seiten sind deaktiviert. Veröffentlichte Links wurden widerrufen.",
+			"toastError": "Die Einstellung konnte nicht geändert werden. Versuche es erneut."
+		},
+		"workspaceA2a": {
+			"label": "Agent-zu-Agent (A2A)",
+			"description": "Erlaubt externen KI-Agenten, diesem Workspace über das A2A-Protokoll Arbeit zu übergeben. Sie handeln mit dem API-Schlüssel oder der OAuth-Anmeldung eines Mitglieds und dessen Berechtigungen; alles, was sie tun, erscheint im Audit-Log.",
+			"toastOn": "A2A ist aktiviert",
+			"toastOff": "A2A ist deaktiviert. Externe Agenten können diesem Workspace keine Arbeit mehr übergeben.",
+			"toastError": "Die Einstellung konnte nicht geändert werden. Versuche es erneut."
+		},
 		"workspaceAuditLog": {
 			"actions": {
+				"workspaceDeletionScheduled": "Hat den Workspace zur Löschung vorgemerkt",
+				"workspaceDeletionCancelled": "Hat die Löschung des Workspace abgebrochen",
+				"workspacePublicPagesChanged": "Hat öffentliche Seiten ein- oder ausgeschaltet",
+				"pagePublished": "Hat eine Seite über einen öffentlichen Link veröffentlicht",
+				"pageUnpublished": "Hat den öffentlichen Link einer Seite widerrufen",
 				"apiKeyCreated": "Hat einen API-Schlüssel erstellt",
 				"apiKeyRevoked": "Hat einen API-Schlüssel widerrufen",
 				"exportCreated": "Hat einen Export gestartet",
@@ -2707,6 +2883,7 @@
 				"integrationUpdated": "Hat eine Integration geändert",
 				"memberInvitationAccepted": "Hat eine Einladung angenommen",
 				"memberInvitationDeclined": "Hat eine Einladung abgelehnt",
+				"memberInvitationRoleChanged": "Hat die Rolle einer offenen Einladung geändert",
 				"memberInvitationRevoked": "Hat eine Einladung widerrufen",
 				"memberInvited": "Hat jemanden in den Workspace eingeladen",
 				"memberLeft": "Hat den Workspace verlassen",
@@ -2736,13 +2913,41 @@
 				"webhookUpdated": "Hat einen Webhook geändert",
 				"workspaceCreated": "Hat den Workspace erstellt",
 				"workspaceOwnershipTransferred": "Hat die Workspace-Eigentümerschaft übertragen",
-				"workspaceUpdated": "Hat Workspace-Einstellungen geändert"
+				"workspaceUpdated": "Hat Workspace-Einstellungen geändert",
+				"aiSettingsUpdated": "Hat die KI-Einstellungen geändert",
+				"aiTriageLabelsApplied": "Hat vorgeschlagene Labels automatisch hinzugefügt",
+				"agentCreated": "Hat einen Agenten erstellt",
+				"agentUpdated": "Hat einen Agenten geändert",
+				"agentDeleted": "Hat einen Agenten gelöscht",
+				"agentChangeApplied": "Hat eine Änderung im Auftrag einer Person vorgenommen",
+				"agentChangeApproved": "Hat die Änderung eines Agenten genehmigt",
+				"agentChangeRejected": "Hat die Änderung eines Agenten abgelehnt",
+				"agentChangeReverted": "Hat die Änderung eines Agenten rückgängig gemacht",
+				"codingAgentHandoffSent": "Hat eine Aufgabe an einen Coding-Agenten gesendet",
+				"codingAgentProfileCreated": "Hat ein Coding-Agent-Profil erstellt",
+				"codingAgentProfileUpdated": "Hat ein Coding-Agent-Profil geändert",
+				"codingAgentProfileDeleted": "Hat ein Coding-Agent-Profil gelöscht",
+				"a2aTaskReceived": "Arbeit von einem externen Agenten erhalten (A2A)",
+				"automationRuleCreated": "Hat eine Automatisierung erstellt",
+				"automationRuleUpdated": "Hat eine Automatisierung aktualisiert",
+				"automationRuleDeleted": "Hat eine Automatisierung gelöscht",
+				"automationRuleRan": "Hat eine Automatisierung auf eine Aufgabe angewendet",
+				"agentScheduleCreated": "Hat einen Agenten eingeplant",
+				"agentScheduleUpdated": "Hat einen Agenten-Zeitplan geändert",
+				"agentScheduleDeleted": "Hat einen Agenten-Zeitplan gelöscht",
+				"agentScheduleDisabled": "Hat einen Agenten-Zeitplan ausgeschaltet",
+				"aiConnectorCreated": "Hat einen MCP-Konnektor hinzugefügt",
+				"aiConnectorUpdated": "Hat einen MCP-Konnektor geändert",
+				"aiConnectorDeleted": "Hat einen MCP-Konnektor gelöscht"
 			},
 			"actor": {
 				"apiKey": "API-Schlüssel",
 				"deletedUser": "Gelöschter Benutzer",
 				"system": "System",
-				"unknownKey": "Gelöschter API-Schlüssel"
+				"unknownKey": "Gelöschter API-Schlüssel",
+				"agent": "Agent",
+				"agentFor": "Agent, im Auftrag von {{name}}",
+				"automation": "Automatisierung"
 			},
 			"categories": {
 				"apiKey": "API-Schlüssel",
@@ -2755,7 +2960,11 @@
 				"role": "Rollen",
 				"trash": "Papierkorb",
 				"webhook": "Webhooks",
-				"workspace": "Workspace-Einstellungen"
+				"workspace": "Workspace-Einstellungen",
+				"agent": "Agenten",
+				"codingAgent": "Coding-Agenten",
+				"a2a": "Externe Agenten (A2A)",
+				"automation": "Automatisierungen"
 			},
 			"columns": {
 				"action": "Aktion",
@@ -2804,6 +3013,7 @@
 			"subtitle": "Wer in diesem Workspace Mitglieder, Rollen, API-Schlüssel, Webhooks, Integrationen, Einstellungen und Projekte geändert hat. Einträge werden {{days}} Tage lang aufbewahrt.",
 			"subtitleForever": "Wer in diesem Workspace Mitglieder, Rollen, API-Schlüssel, Webhooks, Integrationen, Einstellungen und Projekte geändert hat. Einträge werden aufbewahrt, bis du den Workspace löschst.",
 			"targets": {
+				"page": "Seite",
 				"apiKey": "API-Schlüssel",
 				"export": "Export",
 				"integration": "Integration",
@@ -2812,7 +3022,11 @@
 				"role": "Rolle",
 				"user": "Mitglied",
 				"webhook": "Webhook",
-				"workspace": "Workspace"
+				"workspace": "Workspace",
+				"agent": "Agent",
+				"agentRun": "Agenten-Ausführung",
+				"task": "Aufgabe",
+				"codingAgentProfile": "Coding-Agent-Profil"
 			},
 			"title": "Audit-Log"
 		},
@@ -2861,9 +3075,189 @@
 			"workspaceNav": "Zuletzt gelöscht",
 			"workspaceSubtitle": "Gelöschte Projekte bleiben mit ihren Aufgaben hier, bis sie endgültig gelöscht werden.",
 			"workspaceTitle": "Zuletzt gelöschte Projekte"
+		},
+		"automationRules": {
+			"title": "Automatisierungen",
+			"description": "Wenn mit einer Aufgabe etwas passiert, werden Bedingungen geprüft und Aktionen ausgeführt. Regeln laufen selbstständig, ohne KI, als „Automatisierung“.",
+			"empty": "Noch keine Automatisierungen. Starte mit einer Vorlage oder erstelle eine eigene Regel.",
+			"loadError": "Die Automatisierungen konnten nicht geladen werden.",
+			"newRule": "Neue Regel",
+			"templatesTitle": "Vorlagen",
+			"saved": "Automatisierung gespeichert",
+			"saveError": "Die Automatisierung konnte nicht gespeichert werden",
+			"deleted": "Automatisierung gelöscht",
+			"confirmDelete": "Löschen",
+			"edit": "{{name}} bearbeiten",
+			"delete": "{{name}} löschen",
+			"summary_one": "Wenn {{trigger}} · {{count}} Aktion",
+			"summary_other": "Wenn {{trigger}} · {{count}} Aktionen",
+			"lastRun_one": "{{count}} Ausführung, zuletzt {{time}}",
+			"lastRun_other": "{{count}} Ausführungen, zuletzt {{time}}",
+			"neverRan": "Noch nicht ausgeführt",
+			"templates": {
+				"reviewer": {
+					"name": "Prüfer zuweisen, wenn nach „In Prüfung“ verschoben",
+					"description": "Wähle den Prüfer aus; er wird zugewiesen, sobald eine Aufgabe in die Prüfung kommt."
+				},
+				"intakeBugs": {
+					"name": "Bugs aus dem Eingang mit Label versehen",
+					"description": "Angenommene Anfragen, die einen Bug oder Fehler erwähnen, erhalten das Bug-Label."
+				},
+				"overdue": {
+					"name": "Überfällige Aufgaben eskalieren",
+					"description": "Wenn ein Fälligkeitsdatum verstrichen ist, wird die Priorität erhöht und die Zugewiesenen werden benachrichtigt."
+				}
+			},
+			"triggers": {
+				"task_created": "eine Aufgabe erstellt wird",
+				"status_changed": "sich der Status ändert",
+				"assignee_added": "jemand zugewiesen wird",
+				"assignee_removed": "eine Zuweisung entfernt wird",
+				"label_added": "ein Label hinzugefügt wird",
+				"label_removed": "ein Label entfernt wird",
+				"priority_changed": "sich die Priorität ändert",
+				"due_date_set": "ein Fälligkeitsdatum festgelegt wird",
+				"due_date_passed": "das Fälligkeitsdatum verstreicht",
+				"comment_added": "ein Kommentar hinzugefügt wird",
+				"moved_to_cycle": "die Aufgabe in einen Zyklus verschoben wird",
+				"moved_to_module": "die Aufgabe einem Modul hinzugefügt wird"
+			},
+			"conditions": {
+				"status": "Status",
+				"labels": "Labels",
+				"priority": "Priorität",
+				"assignee": "Zugewiesen",
+				"due_date": "Fälligkeitsdatum",
+				"estimate": "Schätzung",
+				"title": "Titel",
+				"custom_field": "Benutzerdefiniertes Feld"
+			},
+			"ops": {
+				"is": "ist",
+				"is_not": "ist nicht",
+				"contains": "enthält",
+				"not_contains": "enthält nicht",
+				"empty": "ist leer",
+				"not_empty": "ist nicht leer",
+				"set": "ist gesetzt",
+				"not_set": "ist nicht gesetzt",
+				"gte": "ist mindestens",
+				"lte": "ist höchstens",
+				"equals": "ist gleich",
+				"not_equals": "ist ungleich"
+			},
+			"actions": {
+				"set_status": "Status festlegen",
+				"assign": "Zuweisen",
+				"unassign": "Zuweisung entfernen",
+				"add_label": "Label hinzufügen",
+				"remove_label": "Label entfernen",
+				"set_priority": "Priorität festlegen",
+				"set_due_date": "Fälligkeitsdatum festlegen",
+				"add_comment": "Kommentar hinzufügen",
+				"move_to_cycle": "In Zyklus verschieben",
+				"move_to_module": "Zu Modul hinzufügen",
+				"create_subtask": "Teilaufgabe erstellen",
+				"notify": "Benachrichtigen",
+				"run_agent": "Agent starten"
+			},
+			"roles": {
+				"assignees": "Zugewiesene",
+				"creator": "Ersteller",
+				"lead": "Projektleitung"
+			},
+			"outcomes": {
+				"success": "Erledigt",
+				"partial": "Teilweise erledigt",
+				"failed": "Fehlgeschlagen",
+				"skipped": "Übersprungen"
+			},
+			"errors": {
+				"LOOP_DEPTH": "Abgebrochen: Zu viele Regeln haben sich nacheinander gegenseitig ausgelöst.",
+				"RATE_LIMITED": "Abgebrochen: Für diese Aufgabe gab es innerhalb einer Minute zu viele Automatisierungsläufe.",
+				"AGENT_UNAVAILABLE": "Agent starten: Der Agent ist aus oder wurde gelöscht.",
+				"NO_RULE_OWNER": "Agent starten: Diese Regel gehört niemandem mehr. Speichere sie erneut.",
+				"AI_DISABLED": "Agent starten: KI ist für dieses Projekt ausgeschaltet."
+			},
+			"history": {
+				"title": "Ausführungsverlauf",
+				"empty": "Noch keine Ausführungen.",
+				"error": "Der Ausführungsverlauf konnte nicht geladen werden.",
+				"failedActions": "Fehlgeschlagen: {{actions}}"
+			},
+			"editor": {
+				"name": "Regelname",
+				"namePlaceholder": "Benenne diese Regel",
+				"when": "Wenn",
+				"if": "Falls",
+				"then": "Dann",
+				"match": "Zutreffen",
+				"matchAll": "Alle davon",
+				"matchAny": "Eine davon",
+				"always": "Jedes Mal",
+				"addCondition": "Bedingung hinzufügen",
+				"addGroup": "Gruppe hinzufügen",
+				"addAction": "Aktion hinzufügen",
+				"remove": "Entfernen",
+				"save": "Regel speichern",
+				"cancel": "Abbrechen",
+				"choose": "Auswählen…",
+				"add": "Hinzufügen…",
+				"removeItem": "{{name}} entfernen",
+				"any": "Beliebig",
+				"from": "von",
+				"to": "nach",
+				"fromIntake": "Nur aus dem Eingang angenommene Anfragen",
+				"people": "Personen",
+				"labels": "Labels",
+				"priorities": "Prioritäten",
+				"cycles": "Zyklen",
+				"modules": "Module",
+				"field": "Feld",
+				"operator": "Vergleich",
+				"points": "Punkte",
+				"value": "Wert",
+				"column": "Status",
+				"everyone": "Alle",
+				"label": "Label",
+				"priority": "Priorität",
+				"daysFromRun": "Tage nach Ausführung der Regel",
+				"comment": "Kommentar",
+				"subtaskTitle": "Titel der Teilaufgabe",
+				"cycle": "Zyklus",
+				"module": "Modul",
+				"roles": "Rollen",
+				"message": "Nachricht (optional)",
+				"variables": "Variablen:",
+				"agent": "Agent",
+				"agentPrompt": "Was soll der Agent tun?",
+				"agentPromptPlaceholder": "Zum Beispiel: Diese Aufgabe sichten und eine Priorität vorschlagen.",
+				"agentHint": "Der Agent handelt für die Person, die diese Regel speichert, mit höchstens deren Rechten. Er startet nie bei Änderungen, die ein Agent gemacht hat."
+			}
 		}
 	},
 	"navigation": {
+		"customize": {
+			"open": "Seitenleiste anpassen",
+			"title": "Seitenleiste anpassen",
+			"description": "Lege fest, was deine Seitenleiste zeigt und in welcher Reihenfolge. Nur du siehst diese Änderungen, auf allen deinen Geräten.",
+			"settingsDescription": "Ordne die Hauptnavigation und die Bereiche des Projektbereichs neu an oder blende sie aus.",
+			"rail": "Hauptnavigation",
+			"projectsPanel": "Projektbereich",
+			"sections": {
+				"views": "Aufgabenlisten und Ansichten",
+				"favorites": "Favoriten",
+				"projects": "Projekte"
+			},
+			"show": "{{name}} anzeigen",
+			"alwaysShown": "{{name}} wird immer angezeigt",
+			"moveUp": "{{name}} nach oben verschieben",
+			"moveDown": "{{name}} nach unten verschieben",
+			"moved": "{{name}} auf Position {{position}} von {{total}} verschoben",
+			"reset": "Auf Standard zurücksetzen",
+			"resetDone": "Seitenleiste auf Standard zurückgesetzt",
+			"done": "Fertig"
+		},
 		"commandPalette": {
 			"suggestions": "Vorschläge",
 			"commands": "Befehle",
@@ -2876,6 +3270,8 @@
 			"lightTheme": "Helles Design",
 			"darkTheme": "Dunkles Design",
 			"systemTheme": "Systemdesign",
+			"lightContrastTheme": "Helles Design mit hohem Kontrast",
+			"darkContrastTheme": "Dunkles Design mit hohem Kontrast",
 			"keyboardShortcuts": "Tastenkürzel",
 			"inputPlaceholder": "Nach Apps und Befehlen suchen...",
 			"empty": "Keine Ergebnisse gefunden.",
@@ -3195,6 +3591,23 @@
 			"page_mention": {
 				"content": "{{mentionerName}} hat dich erwähnt in: {{pageTitle}}",
 				"title": "{{mentionerName}} hat dich erwähnt"
+			},
+			"cycle_rollover": {
+				"content_one": "{{count}} unerledigte Aufgabe nach {{targetCycleName}} verschoben",
+				"content_other": "{{count}} unerledigte Aufgaben nach {{targetCycleName}} verschoben",
+				"contentNoNext_one": "{{count}} unerledigte Aufgabe ist in {{cycleName}} geblieben: Es gibt keinen nächsten Zyklus",
+				"contentNoNext_other": "{{count}} unerledigte Aufgaben sind in {{cycleName}} geblieben: Es gibt keinen nächsten Zyklus",
+				"title": "{{cycleName}} ist beendet"
+			},
+			"flow_anomaly": {
+				"title": "Ungewöhnlicher Arbeitsfluss in {{projectName}}",
+				"throughput_low": "Der Durchsatz ist diese Woche auf {{value}} Aufgaben gesunken (sonst etwa {{baseline}})",
+				"wip_high": "Die laufende Arbeit ist auf {{value}} Aufgaben gestiegen (sonst etwa {{baseline}})",
+				"cycle_time_high": "Die Durchlaufzeit ist auf {{value}} Tage gestiegen (sonst etwa {{baseline}})"
+			},
+			"automation_notice": {
+				"title": "Automatisierung: {{ruleName}}",
+				"content": "{{taskKey}} {{taskTitle}}"
 			}
 		},
 		"inbox": {
@@ -3338,6 +3751,13 @@
 				"open": "Aufgabe öffnen",
 				"read": "Als gelesen oder ungelesen markieren",
 				"snooze": "Zurückstellen"
+			},
+			"digest": {
+				"button": "Ungelesenes zusammenfassen",
+				"title": "Zusammenfassung des Ungelesenen",
+				"regenerate": "Erneut zusammenfassen",
+				"close": "Zusammenfassung schließen",
+				"generating": "Wird zusammengefasst…"
 			}
 		}
 	},
@@ -3545,7 +3965,9 @@
 			"archived_one": "hat diese Aufgabe nach {{count}} Monat ohne Aktualisierungen archiviert",
 			"archived_other": "hat diese Aufgabe nach {{count}} Monaten ohne Aktualisierungen archiviert",
 			"closed_one": "hat diese Aufgabe nach {{count}} Monat ohne Aktualisierungen geschlossen und nach {{to}} verschoben",
-			"closed_other": "hat diese Aufgabe nach {{count}} Monaten ohne Aktualisierungen geschlossen und nach {{to}} verschoben"
+			"closed_other": "hat diese Aufgabe nach {{count}} Monaten ohne Aktualisierungen geschlossen und nach {{to}} verschoben",
+			"rolledOver": "hat diese Aufgabe bei Zyklusende von {{from}} nach {{to}} verschoben",
+			"byRule": "über {{name}}"
 		},
 		"commentVisibility": {
 			"badgeExternal": "Extern",
@@ -3584,10 +4006,69 @@
 			"updates": "Änderungen"
 		},
 		"importedFromJira": "hat diese Aufgabe aus Jira {{key}} importiert",
+		"importedFromSource": "hat diese Aufgabe aus {{source}} {{key}} importiert",
 		"movedToTrash": "hat diese Aufgabe in den Papierkorb verschoben",
 		"restoredFromTrash": "hat diese Aufgabe aus dem Papierkorb wiederhergestellt"
 	},
 	"tasks": {
+		"recurrence": {
+			"label": "Wiederholen",
+			"none": "Keine Wiederholung",
+			"title": "Diese Aufgabe wiederholen",
+			"indicator": "Wiederholt sich",
+			"frequency": {
+				"label": "Wiederholung",
+				"daily": "Täglich",
+				"weekly": "Wöchentlich",
+				"monthly": "Monatlich",
+				"yearly": "Jährlich"
+			},
+			"interval": "Alle",
+			"weekdays": "An diesen Tagen",
+			"monthDay": "Tag des Monats",
+			"trigger": {
+				"label": "Nächste Aufgabe erstellen",
+				"completion": "Wenn diese erledigt ist",
+				"schedule": "An ihrem Datum, auch wenn diese noch offen ist"
+			},
+			"ends": {
+				"label": "Endet",
+				"never": "Nie",
+				"onDate": "Am",
+				"endDate": "Enddatum",
+				"after": "Nach",
+				"count": "Anzahl der Wiederholungen"
+			},
+			"summary": {
+				"daily_one": "Jeden Tag",
+				"daily_other": "Alle {{count}} Tage",
+				"weekly_one": "Jede Woche am {{days}}",
+				"weekly_other": "Alle {{count}} Wochen am {{days}}",
+				"monthly_one": "Jeden Monat am {{day}}.",
+				"monthly_other": "Alle {{count}} Monate am {{day}}.",
+				"yearly_one": "Jedes Jahr am {{date}}",
+				"yearly_other": "Alle {{count}} Jahre am {{date}}",
+				"until": "{{summary}}, bis {{date}}",
+				"times_one": "{{summary}}, {{count}}-mal",
+				"times_other": "{{summary}}, {{count}}-mal"
+			},
+			"next": "Nächste: {{date}}",
+			"ended": "Keine weiteren Wiederholungen",
+			"save": "Speichern",
+			"remove": "Wiederholung beenden",
+			"saved": "Wiederholung gespeichert",
+			"removed": "Diese Aufgabe wiederholt sich nicht mehr",
+			"saveError": "Die Wiederholung konnte nicht gespeichert werden",
+			"activity": {
+				"set": "hat diese Aufgabe auf Wiederholung gestellt: {{summary}}",
+				"updated": "hat die Wiederholung geändert: {{summary}}",
+				"removed": "hat die Wiederholung dieser Aufgabe beendet",
+				"recurredFrom": "hat diese Aufgabe als nächste Wiederholung von <task>{{task}}</task> erstellt",
+				"recurredFromScheduled": "Planmäßig als nächste Wiederholung von <task>{{task}}</task> erstellt",
+				"recurredTo": "hat diese Aufgabe erledigt, wodurch die nächste Wiederholung <task>{{task}}</task> erstellt wurde",
+				"recurredToScheduled": "Die nächste Wiederholung wurde planmäßig erstellt: <task>{{task}}</task>"
+			}
+		},
 		"title": "Aufgaben",
 		"status": {
 			"label": "Status",
@@ -4010,7 +4491,9 @@
 		},
 		"kanban": {
 			"addTask": "Aufgabe hinzufügen",
-			"stages": "Spalten"
+			"stages": "Spalten",
+			"emptyAction": "Aufgabe hinzufügen",
+			"emptyTitle": "Noch keine Aufgaben"
 		},
 		"pr": {
 			"merged": "Zusammengeführt",
@@ -4082,6 +4565,20 @@
 			"searchActions": "Aktionen suchen...",
 			"noActionsFound": "Keine Aktionen gefunden.",
 			"changeStatus": "Status ändern",
+			"removeLabel": "Label entfernen",
+			"removeLabelSuccess": "Label von {{count}} Aufgaben entfernt",
+			"removeLabelError": "Label konnte nicht entfernt werden",
+			"unarchive": "Aus dem Archiv wiederherstellen",
+			"unarchiveSuccess": "{{count}} Aufgaben wiederhergestellt",
+			"unarchiveNone": "Keine der ausgewählten Aufgaben ist archiviert",
+			"unarchiveError": "Aufgaben konnten nicht wiederhergestellt werden",
+			"setDates": "Daten",
+			"dateField": "Zu setzendes Datum",
+			"startDate": "Startdatum",
+			"dueDate": "Fälligkeitsdatum",
+			"clearStartDate": "Startdatum entfernen",
+			"clearDueDate": "Fälligkeitsdatum entfernen",
+			"updateStartDateError": "Startdatum konnte nicht aktualisiert werden. Ein Startdatum darf nicht nach dem Fälligkeitsdatum einer Aufgabe liegen.",
 			"addAssignee": "Zugewiesene Person hinzufügen",
 			"addAssigneeSuccess_one": "{{name}} zu {{count}} Aufgabe hinzugefügt",
 			"addAssigneeSuccess_other": "{{name}} zu {{count}} Aufgaben hinzugefügt",
@@ -4102,7 +4599,19 @@
 				"addRowBefore": "Zeile oberhalb einfügen",
 				"addRowAfter": "Zeile unterhalb einfügen",
 				"deleteRow": "Zeile löschen",
-				"deleteTable": "Tabelle löschen"
+				"deleteTable": "Tabelle löschen",
+				"moveRowUp": "Zeile nach oben verschieben",
+				"moveRowDown": "Zeile nach unten verschieben",
+				"moveColumnLeft": "Spalte nach links verschieben",
+				"moveColumnRight": "Spalte nach rechts verschieben",
+				"toggleHeaderRow": "Kopfzeile",
+				"fullWidth": "Volle Breite",
+				"dragRow": "Zeile {{index}}",
+				"dragColumn": "Spalte {{index}}",
+				"dragRowHint": "Ziehen, um die Zeile zu verschieben, oder die Pfeiltasten verwenden",
+				"dragColumnHint": "Ziehen, um die Spalte zu verschieben, oder die Pfeiltasten verwenden",
+				"insertRowHere": "Hier eine Zeile einfügen",
+				"insertColumnHere": "Hier eine Spalte einfügen"
 			}
 		},
 		"calendar": {
@@ -4124,7 +4633,8 @@
 			"rescheduleError": "Aufgabe konnte nicht verschoben werden",
 			"showWeekends": "Wochenenden anzeigen",
 			"viewMode": "Kalenderzeitraum",
-			"week": "Woche"
+			"week": "Woche",
+			"overdue": "Überfällig"
 		},
 		"descriptionSearchLoading": "Vollständige Beschreibungen werden durchsucht…",
 		"descriptionSearchError": "Die Suche in Beschreibungen ist fehlgeschlagen. Ergebnisse sind möglicherweise unvollständig.",
@@ -4183,11 +4693,13 @@
 			},
 			"label": "Schätzung",
 			"none": "Keine Schätzung",
-			"pointsValue": "{{value}} Pkt.",
+			"pointsValue_one": "{{value}} Pkt.",
+			"pointsValue_other": "{{value}} Pkt.",
 			"setAria": "Schätzung festlegen",
 			"totals": {
 				"estimated": "{{estimated}} von {{total}} Aufgaben geschätzt",
-				"points": "{{completed}} / {{total}} Pkt.",
+				"points_one": "{{completed}} / {{total}} Pkt.",
+				"points_other": "{{completed}} / {{total}} Pkt.",
 				"time": "{{completed}} / {{total}}"
 			},
 			"updateError": "Schätzung konnte nicht aktualisiert werden"
@@ -4306,6 +4818,12 @@
 			},
 			"url": "URL",
 			"urlPlaceholder": "https://example.com"
+		},
+		"create": {
+			"similarTitle": "Ähnliche offene Aufgaben",
+			"similarDismiss": "Ähnliche Aufgaben ausblenden",
+			"similarOpen": "Öffnen",
+			"similarOpenLabel": "{{key}} {{title}} in einem neuen Tab öffnen"
 		},
 		"parent": {
 			"add": "Übergeordnete Aufgabe hinzufügen",
@@ -4576,6 +5094,7 @@
 				"cycle": "Zyklus",
 				"estimate": "Schätzung",
 				"modules": "Module",
+				"parent": "übergeordnete Aufgabe",
 				"status": "Status"
 			},
 			"edited": "Bearbeitet {{time}}",
@@ -4634,6 +5153,8 @@
 			"hint": "Tippe einen Titel ein. @Person, #Label, !Priorität und Daten wie fri oder 12 Oct werden zu Chips. Enter erstellt, Ctrl Enter öffnet den vollständigen Editor.",
 			"labelError": "Die Aufgabe wurde erstellt, aber das Label {{name}} konnte nicht hinzugefügt werden",
 			"newLabel": "{{name}} (neues Label)",
+			"dueOn": "Aufgabe mit Fälligkeit {{date}} hinzufügen",
+			"notInView": "Aufgabe erstellt. Sie wird hier nicht angezeigt, weil sie nicht zu dieser Ansicht passt.",
 			"open": "Öffnen",
 			"openComposer": "Vollständigen Editor öffnen",
 			"openComposerHint": "Vollständigen Editor öffnen (Ctrl Enter)",
@@ -4886,7 +5407,18 @@
 			"error": "Teammitglied konnte nicht eingeladen werden",
 			"createdTitle": "Einladung erstellt",
 			"shareLinkDescription": "Teile diesen Link mit {{email}}, damit die Person dem Workspace beitreten kann.",
-			"done": "Fertig"
+			"done": "Fertig",
+			"emailHint": "Trenne mehrere Adressen mit Kommas, Leerzeichen oder Zeilenumbrüchen.",
+			"roleLabel": "Rolle",
+			"roleHint": "Du kannst Rollen bis zu deiner eigenen vergeben.",
+			"sending": "Sende {{current}} von {{total}}…",
+			"invalidEmails": "Keine gültigen E-Mail-Adressen: {{emails}}",
+			"emailRequired": "Gib mindestens eine E-Mail-Adresse ein.",
+			"tooManyEmails": "Lade bis zu {{max}} Personen auf einmal ein.",
+			"sentSome": "{{sent}} von {{total}} Einladungen gesendet.",
+			"failedTitle": "Nicht gesendet",
+			"rateLimited": "Zu viele Einladungen auf einmal. Warte eine Minute und sende dann den Rest.",
+			"shareLinksDescription": "Teile jeden Link mit der jeweiligen Person, damit sie dem Workspace beitreten kann."
 		},
 		"membersTable": {
 			"emptyTitle": "Noch keine Teammitglieder",
@@ -4912,7 +5444,9 @@
 			"cancelInviteError": "Einladung konnte nicht abgebrochen werden",
 			"ariaInvitationActions": "Einladungsaktionen",
 			"roleUpdateSuccess": "Rolle aktualisiert",
-			"roleUpdateError": "Rolle konnte nicht aktualisiert werden"
+			"roleUpdateError": "Rolle konnte nicht aktualisiert werden",
+			"ariaInvitationRole": "Rolle für {{email}}",
+			"invitationRoleUpdateSuccess": "Rolle der Einladung aktualisiert"
 		},
 		"profile": {
 			"emptyActivity": "Noch keine Aktivität",
@@ -6063,6 +6597,51 @@
 					"shortcuts": "Tastenkürzel für die Sichtung dokumentieren"
 				},
 				"title": "Meine Arbeit"
+			},
+			"ask": {
+				"title": "KI fragen",
+				"model": "Workspace-Modell",
+				"greeting": "Hallo! Was möchtest du wissen?",
+				"intro": "Frag in einfachen Worten nach deinem Workspace. Die Antworten stammen aus den Aufgaben, die du sehen kannst.",
+				"placeholder": "KI fragen, @ für Kontext, / für Befehle",
+				"placeholderBuild": "Beschreibe, was erstellt oder geändert werden soll…",
+				"modes": {
+					"label": "Modus",
+					"ask": "Fragen",
+					"build": "Erstellen"
+				},
+				"send": "Senden",
+				"you": "Du",
+				"question": "Was blockiert den aktuellen Zyklus?",
+				"buildPrompt": "Weise WEB-5 Mira zu",
+				"context": "Kontext ({{count}})",
+				"facts": "Projekte: 1 · Personen: 4 · Zyklen: 1",
+				"earlier": "Frühere Nachrichten: {{count}}",
+				"thinking": "Denkt nach … {{seconds}}s",
+				"thought": "Hat {{seconds}}s nachgedacht",
+				"blockedIntro": "Zwei Aufgaben in {{cycle}} sind blockiert:",
+				"blockedPageTitles": "{{title}} wartet auf eine Übersicht aller Seiten.",
+				"blockedPricing": "{{title}} wartet auf Preisangaben vom Vertrieb.",
+				"unassigned": "{{key}} ist noch niemandem zugewiesen.",
+				"summary": "Eine Änderung. Nichts passiert, bevor du bestätigst.",
+				"op": "Aufgabe bearbeiten",
+				"action": "{{key}} an {{name}} zuweisen",
+				"awaiting": "Wartet auf Antwort",
+				"ready": "Bereite Änderungen: {{count}}",
+				"cancel": "Abbrechen",
+				"confirm": "Bestätigen",
+				"done": "Erledigt",
+				"undo": "Rückgängig",
+				"undone": "Rückgängig gemacht",
+				"cancelled": "Abgebrochen. Nichts wurde geändert.",
+				"generic": "Diese Demo beantwortet nur ihre eigene Frage. In Margaya antwortet „Fragen“ aus deinem Workspace und verlinkt die genutzten Aufgaben.",
+				"genericBuild": "Diese Demo nimmt nur ihre eigene Änderung vor. In Margaya macht „Erstellen“ aus deinen Worten Änderungen, die du bestätigst.",
+				"blocked": "Blockiert",
+				"tasks": {
+					"pageTitles": "Seitentitel prüfen",
+					"pricing": "Preisseite aktualisieren",
+					"mobileMenu": "Mobiles Menü reparieren"
+				}
 			}
 		},
 		"home": {
@@ -6097,6 +6676,10 @@
 				"singleServer": {
 					"detail": "Redis ist optional",
 					"title": "Ein Server genügt"
+				},
+				"ai": {
+					"title": "KI zu deinen Bedingungen",
+					"detail": "Standardmäßig aus, dein eigenes Modell"
 				}
 			},
 			"faq": {
@@ -6133,6 +6716,14 @@
 					"selfHost": {
 						"answer": "Ja. Betreib es mit Docker Compose auf einem einzelnen Server oder auf Kubernetes mit dem offiziellen Helm-Chart. Du brauchst einen App-Container und eine PostgreSQL-Datenbank. Die Installationsanleitung erklärt Umgebungsvariablen, Speicher und Reverse Proxys.",
 						"question": "Kann ich Margaya selbst hosten?"
+					},
+					"ai": {
+						"question": "Hat Margaya KI, und ist sie standardmäßig eingeschaltet?",
+						"answer": "Ja und nein. „KI fragen“, der Modus Erstellen, Schreibhilfe, Sichtungsvorschläge und KI-Agenten sind eingebaut, bleiben aber aus, bis ein Instanz-Admin ein Modell verbindet und ein Workspace KI einschaltet. Jede Änderung, die die KI vorschlägt, wird dir zuerst gezeigt und lässt sich rückgängig machen."
+					},
+					"aiData": {
+						"question": "Welche KI-Modelle kann ich nutzen, und wohin gehen meine Daten?",
+						"answer": "Nutze Claude oder ein beliebiges OpenAI-kompatibles Modell, das du selbst betreibst, etwa mit Ollama oder vLLM. Mit Nur-lokal-Routing verlässt nichts dein Netzwerk. Margaya sendet nur, was die fragende Person ohnehin sehen kann, speichert keine Prompts oder Antworten, außer du schaltest den Serververlauf ein, und erfasst Nutzungszahlen für Budgets."
 					}
 				},
 				"title": "Fragen, klar beantwortet"
@@ -6145,13 +6736,11 @@
 				"title": "Investier deine Zeit in die Arbeit, nicht ins Tool."
 			},
 			"hero": {
-				"description": "Margaya bündelt Aufgaben, Zyklen, Dokus und Sichtung in einem schnellen Workspace. Aufgabe tippen, voranbringen und zurück an die eigentliche Arbeit.",
-				"eyebrow": "Open-Source-Projektmanagement",
-				"note": "MIT-lizenziert. Betreib es auf deinem eigenen Server oder teste Margaya Cloud 14 Tage lang ohne Kreditkarte.",
-				"primaryCta": "Jetzt starten",
-				"secondaryCta": "Selbst hosten",
 				"title": "Arbeit organisieren.",
-				"titleAccent": "Ohne lästigen Kleinkram."
+				"titleAccent": "Ohne lästigen Kleinkram.",
+				"description": "Margaya bündelt Aufgaben, Zyklen, Dokus und Sichtung in einem schnellen Workspace, mit einem KI-Assistenten, den du einschalten kannst, damit er Fragen beantwortet und Änderungen vornimmt. Aufgabe tippen, voranbringen und zurück an die eigentliche Arbeit.",
+				"primaryCta": "Jetzt starten",
+				"secondaryCta": "Selbst hosten"
 			},
 			"insight": {
 				"description": "Erstelle Diagramme aus deinen Aufgaben, verfolge das Audit-Log und stell alles aus dem Papierkorb wieder her.",
@@ -6199,7 +6788,8 @@
 					"select": "Fokussierte Aufgabe auswählen",
 					"spreadsheet": "Tabelle",
 					"status": "Status ändern",
-					"tasks": "Aufgabe nach Schlüssel oder Titel finden"
+					"tasks": "Aufgabe nach Schlüssel oder Titel finden",
+					"ask": "„KI fragen“ öffnen"
 				},
 				"modifier": "Ctrl",
 				"shortcutsLabel": "Tastenkürzel",
@@ -6232,6 +6822,10 @@
 					"views": {
 						"description": "Board, Liste, Tabelle, Kalender und Gantt",
 						"title": "Ansichten"
+					},
+					"ai": {
+						"title": "KI",
+						"description": "KI fragen, Modus Erstellen, Schreibhilfe und Agenten"
 					}
 				},
 				"label": "Hauptmenü",
@@ -6242,7 +6836,7 @@
 				"blog": "Blog",
 				"compare": "Vergleichen",
 				"explore": "Entdecken",
-				"featuresIntro": "Fünf kurze Touren durch Margaya. Jede mit einer Live-Demo, die du selbst steuern kannst.",
+				"featuresIntro": "Sechs kurze Touren durch Margaya. Jede mit einer Live-Demo, die du selbst steuern kannst.",
 				"newTab": "(öffnet in einem neuen Tab)"
 			},
 			"ownIt": {
@@ -6403,6 +6997,26 @@
 					"title": "Ressourcen"
 				},
 				"selfHosted": "Fürs Selbsthosten gemacht"
+			},
+			"ai": {
+				"eyebrow": "KI",
+				"title": "Frag sie. Lass sie umsetzen. Du bestätigst.",
+				"description": "„KI fragen“ antwortet auf Basis deiner aktuellen Aufgaben, mit Diagrammen und den Aufgaben, die dafür genutzt wurden. Der Modus Erstellen macht aus einer Anfrage Änderungen, die du prüfst und bestätigst, und Agenten übernehmen Aufgaben wie Teammitglieder.",
+				"agents": {
+					"title": "Agenten, die wie Teammitglieder arbeiten",
+					"description": "Weise einem Agenten eine Aufgabe zu und verfolge sie im Agent-Desk. Er fragt eine Person, wenn er nicht weiterkommt, wartet vor dem Schreiben auf eine Freigabe und kann nach Zeitplan laufen."
+				},
+				"privacy": {
+					"title": "Standardmäßig privat",
+					"description": "KI bleibt aus, bis ein Admin sie einschaltet, und du entscheidest, wo sie läuft.",
+					"items": {
+						"model": "Claude oder dein eigenes Modell über Ollama oder vLLM",
+						"local": "Nur-lokal-Routing hält die Daten in deinem Netzwerk",
+						"stored": "Keine Prompts oder Antworten gespeichert, außer du wählst den Serververlauf",
+						"budget": "Monats- und Tagesbudgets, mit einem Nutzungsprotokoll",
+						"undo": "Jede Änderung aus dem Modus Erstellen lässt sich eine Stunde lang rückgängig machen"
+					}
+				}
 			}
 		},
 		"pages": {
@@ -6421,8 +7035,8 @@
 						"title": "Eine REST API mit OpenAPI"
 					},
 					"cleanup": {
-						"body": "Archiviere geschlossene Aufgaben und schließe liegengebliebene automatisch, mit einer Vorschau, was jede Regel betrifft.",
-						"title": "Automatisches Aufräumen"
+						"body": "Lege Wenn-Falls-Dann-Regeln für Routinearbeit an, etwa um neue Aufgaben zuzuweisen oder mit Labels zu versehen, und archiviere oder schließe liegengebliebene Aufgaben nach Zeitplan, mit einer Vorschau, was jede Regel betrifft.",
+						"title": "Automatisierungsregeln"
 					},
 					"integrations": {
 						"body": "Verknüpfe Pull Requests aus GitHub oder Gitea, schick Updates an Slack, Discord, Telegram oder Mattermost und sende Events per ausgehendem Webhook an jede beliebige URL.",
@@ -6561,6 +7175,43 @@
 					}
 				},
 				"title": "Dieselben Aufgaben, aus jedem Blickwinkel."
+			},
+			"ai": {
+				"metaTitle": "KI-Assistent, Modus Erstellen und Agenten",
+				"metaDescription": "Stell Fragen zu deiner Arbeit und erhalte Antworten aus Live-Daten, lass den Modus Erstellen Änderungen vorschlagen, die du bestätigst, schreib mit KI-Hilfe und weise KI-Agenten Aufgaben zu, mit deinem eigenen Modell und standardmäßig ausgeschalteter KI.",
+				"eyebrow": "KI",
+				"title": "Ein Assistent, der die Arbeit kennt.",
+				"description": "KI fragen, Modus Erstellen, Schreibhilfe und Agenten, alles im Open-Source-Build und auf dem Modell deiner Wahl.",
+				"sections": {
+					"ask": {
+						"title": "KI fragen",
+						"body": "Frag in einfachen Worten und erhalte Antworten aus aktuellen Aufgaben, mit Zahlen, Diagrammen und Links zu den genutzten Aufgaben und Seiten. Erwähne eine Aufgabe, Seite oder Person mit @, häng eine Datei an oder sprich, statt zu tippen."
+					},
+					"build": {
+						"title": "Modus Erstellen",
+						"body": "Beschreibe eine Änderung, etwa ein Projekt mit drei Aufgaben oder eine Aufgabe für Mia. Du siehst, was gelesen und wie überlegt wurde, bearbeitest die vorgeschlagenen Änderungen, bestätigst sie und kannst jede davon eine Stunde lang rückgängig machen."
+					},
+					"writing": {
+						"title": "Schreibhilfe",
+						"body": "Verbessere, kürze oder übersetze eine Beschreibung oder einen Kommentar oder ändere den Ton, lass dir einen Titel vorschlagen, fasse eine Aufgabe zusammen oder füge einer Seite einen KI-Block hinzu."
+					},
+					"triage": {
+						"title": "Sichtung und Briefings",
+						"body": "Erhalte Label- und Prioritätsvorschläge für neue Arbeit, finde Duplikate, filtere ein Board, indem du beschreibst, was du suchst, und hol dir eine Zusammenfassung deines ungelesenen Posteingangs oder ein Briefing zu einem Zyklus."
+					},
+					"agents": {
+						"title": "KI-Agenten",
+						"body": "Agenten sind Mitglieder, denen du Aufgaben zuweisen kannst. Sie fragen eine Person, wenn sie nicht weiterkommen, warten vor dem Schreiben auf eine Freigabe, laufen nach Zeitplan und können Tools anderer MCP-Server nutzen, die du verbindest."
+					},
+					"privacy": {
+						"title": "Dein Modell, deine Regeln",
+						"body": "KI ist aus, bis ein Admin sie einschaltet. Nutze Claude oder ein lokales Modell, halte Daten in deinem Netzwerk, leg Budgets fest und speichere keine Prompts oder Antworten, wenn du es nicht willst."
+					}
+				},
+				"cta": {
+					"title": "Schalte KI ein, wenn du so weit bist.",
+					"description": "Lies die Anleitung zur KI-Einrichtung oder probier „KI fragen“ in einem eigenen Workspace aus."
+				}
 			}
 		},
 		"scenes": {
@@ -6671,6 +7322,10 @@
 			"yourWork": {
 				"caption": "„Meine Arbeit“ sammelt, was dir zugewiesen ist, was du erstellt hast und was du verfolgst.",
 				"description": "Demo: Die Seite „Meine Arbeit“. Der Cursor wechselt durch die Tabs „Zugewiesen“, „Erstellt“ und „Abonniert“, und jeder listet seine eigenen Aufgaben aus allen Projekten mit Status, Priorität und Fälligkeitsdatum."
+			},
+			"ask": {
+				"caption": "Frag nach der Arbeit und lass „Erstellen“ die Änderung vornehmen. Du bestätigst sie.",
+				"description": "Demo: das Board Website mit geöffnetem Chat „KI fragen“. Jemand fragt, was den aktuellen Zyklus blockiert. Der Assistent listet auf, was er gelesen hat, denkt zwei Sekunden nach und antwortet: WEB-5 und WEB-6 sind blockiert, und WEB-5 ist niemandem zugewiesen. Im Modus Erstellen bittet die Person darum, WEB-5 Mira zuzuweisen. Der Assistent schlägt die Änderung vor, sie wird bestätigt, die Karte zeigt „Erledigt“ mit „Rückgängig“, und Miras Avatar erscheint bei WEB-5."
 			}
 		}
 	},
@@ -6836,7 +7491,11 @@
 			"owner": "Verantwortlich",
 			"progress": "Fortschritt",
 			"tasks": "Aufgaben",
-			"title": "Zyklusdetails"
+			"title": "Zyklusdetails",
+			"rolledOver_one": "Der Übertrag hat {{count}} unerledigte Aufgabe nach {{name}} verschoben.",
+			"rolledOver_other": "Der Übertrag hat {{count}} unerledigte Aufgaben nach {{name}} verschoben.",
+			"rolloverNoNext": "Der Übertrag hat keinen nächsten Zyklus gefunden; unerledigte Aufgaben sind hier geblieben.",
+			"rolloverNothing": "Der Übertrag hat keine unerledigten Aufgaben zum Verschieben gefunden."
 		},
 		"status": {
 			"archived": "Archiviert",
@@ -7418,7 +8077,9 @@
 		"widgets": {
 			"quickLinks": "Schnellzugriffe",
 			"recents": "Zuletzt besucht",
-			"stickies": "Haftnotizen"
+			"stickies": "Haftnotizen",
+			"risks": "Risiken",
+			"myBrief": "Mein Überblick"
 		},
 		"focus": {
 			"caughtUp": "Alles erledigt",
@@ -7432,7 +8093,9 @@
 			"stickies": "Notizzettel",
 			"stickiesHint": "Private Notizen, nur für dich",
 			"unread_one": "{{count}} ungelesen",
-			"unread_other": "{{count}} ungelesen"
+			"unread_other": "{{count}} ungelesen",
+			"openCaption": "offen",
+			"unreadCaption": "ungelesen"
 		}
 	},
 	"intake": {
@@ -7492,7 +8155,11 @@
 			"titlePlaceholder": "Was brauchst du?",
 			"titleRequired": "Titel hinzufügen",
 			"toast": "Anfrage gesendet",
-			"toastView": "Ansehen"
+			"toastView": "Ansehen",
+			"pastedImages": "Eingefügte Bilder",
+			"pasteHint": "Füge Screenshots ein, um sie an die Anfrage anzuhängen.",
+			"removeImage": "{{name}} entfernen",
+			"attachFailed": "Die Anfrage wurde eingereicht, aber einige Bilder konnten nicht angehängt werden."
 		},
 		"decline": {
 			"description": "Die Anfrage wird geschlossen und bleibt vom Board fern. Du kannst sie später wieder öffnen.",
@@ -7539,7 +8206,9 @@
 			"noTasks": "Dieses Projekt hat noch keine weiteren Aufgaben.",
 			"searchPlaceholder": "Aufgaben nach Schlüssel oder Titel suchen",
 			"title": "{{key}} als Duplikat markieren",
-			"toast": "Als Duplikat von {{key}} markiert"
+			"toast": "Als Duplikat von {{key}} markiert",
+			"aiSuggestions": "Von der KI vorgeschlagen",
+			"aiChecking": "Suche mit KI nach Duplikaten…"
 		},
 		"empty": {
 			"backToIntake": "Zurück zum Intake",
@@ -7783,6 +8452,11 @@
 				"singleProjectHint": "Wähle ein einzelnes Projekt, um die Velocity zu sehen",
 				"subtitle": "Abgeschlossen vs. zugesagt, pro Zyklus",
 				"title": "Velocity"
+			},
+			"filter": {
+				"all": "Alle",
+				"label": "Zyklen anzeigen",
+				"running": "Aktuell laufend"
 			}
 		},
 		"dimensions": {
@@ -7926,7 +8600,8 @@
 			"noRequests": "Noch keine Anfragen",
 			"noTasks": "Keine Aufgaben entsprechen diesen Filtern",
 			"retry": "Erneut versuchen",
-			"timeout": "Das hat zu lange gedauert. Grenze die Filter ein und versuche es erneut."
+			"timeout": "Das hat zu lange gedauert. Grenze die Filter ein und versuche es erneut.",
+			"noRunningCycles": "Derzeit laufen keine Zyklen"
 		},
 		"table": {
 			"periodEnd": "Zeitraumende",
@@ -7942,7 +8617,8 @@
 			"intake": "Eingang",
 			"modules": "Module",
 			"overview": "Übersicht",
-			"tasks": "Aufgaben"
+			"tasks": "Aufgaben",
+			"delivery": "Lieferung"
 		},
 		"trend": {
 			"completed": "Abgeschlossen",
@@ -7956,9 +8632,143 @@
 			"chart": "Diagramm",
 			"label": "Anzeigen als",
 			"table": "Tabelle"
+		},
+		"reports": {
+			"actionsFor": "Aktionen für {{name}}",
+			"close": "Bericht schließen",
+			"delete": "Löschen",
+			"deleteDescription": "„{{name}}“ wird gelöscht. Das kann nicht rückgängig gemacht werden.",
+			"deleteSharedDescription": "„{{name}}“ wird für alle im Workspace gelöscht. Das kann nicht rückgängig gemacht werden.",
+			"deleteTitle": "Diesen Bericht löschen?",
+			"dialog": {
+				"cancel": "Abbrechen",
+				"createTitle": "Bericht speichern",
+				"editTitle": "Bericht bearbeiten",
+				"name": "Name",
+				"namePlaceholder": "z. B. Offene Bugs nach Zugewiesenen",
+				"nameRequired": "Gib einen Namen ein",
+				"save": "Speichern",
+				"summary": "Speichert die Diagrammeinstellungen, die einbezogenen Projekte und die Filter.",
+				"update": "Änderungen speichern",
+				"visibility": "Wer ihn sehen kann"
+			},
+			"empty": "Noch keine gespeicherten Berichte. Speichere dieses Diagramm, um später darauf zurückzukommen.",
+			"listTitle": "Gespeicherte Berichte",
+			"loadError": "Gespeicherte Berichte konnten nicht geladen werden",
+			"makePrivate": "Privat machen",
+			"notes": {
+				"allProjects": "Keines seiner Projekte ist verfügbar, daher werden alle Projekte angezeigt.",
+				"builderReset": "Einige Diagrammeinstellungen sind für diese Projekte nicht verfügbar und wurden zurückgesetzt.",
+				"dropped_one": "{{count}} Projekt in diesem Bericht existiert nicht mehr.",
+				"dropped_other": "{{count}} Projekte in diesem Bericht existieren nicht mehr.",
+				"leftOut_one": "{{count}} Projekt in diesem Bericht ist archiviert und wurde ausgelassen.",
+				"leftOut_other": "{{count}} Projekte in diesem Bericht sind archiviert und wurden ausgelassen.",
+				"otherProjects": "Dieser Bericht wurde für andere Projekte gespeichert; hier zeigt er nur dieses Projekt."
+			},
+			"open": "Berichte",
+			"rename": "Umbenennen",
+			"save": "Speichern",
+			"saveAsNew": "Als neu speichern",
+			"share": "Mit Workspace teilen",
+			"sharedBy": "Geteilt von {{name}}",
+			"showing": "Bericht: {{name}}",
+			"toast": {
+				"deleted": "Bericht gelöscht",
+				"deleteError": "Der Bericht konnte nicht gelöscht werden",
+				"madePrivate": "Der Bericht ist jetzt privat",
+				"saved": "„{{name}}“ gespeichert",
+				"saveError": "Der Bericht konnte nicht gespeichert werden",
+				"shared": "Bericht mit dem Workspace geteilt",
+				"updated": "Bericht aktualisiert"
+			},
+			"unsaved": "Ungespeicherte Änderungen",
+			"update": "Bericht aktualisieren",
+			"visibility": {
+				"private": "Privat",
+				"privateHint": "Nur du kannst ihn sehen.",
+				"workspace": "Mit Workspace geteilt",
+				"workspaceHint": "Alle mit Analytics-Zugriff in diesem Workspace können ihn öffnen."
+			}
 		}
 	},
 	"pages": {
+		"templates": {
+			"saveAction": "Als Vorlage speichern",
+			"saveTitle": "Als Vorlage speichern",
+			"saveDescription": "Der aktuelle Inhalt und das Symbol der Seite werden zu einer Vorlage für neue Seiten.",
+			"nameLabel": "Name der Vorlage",
+			"scopeLabel": "Verfügbar in",
+			"scopeProject": "Diesem Projekt",
+			"scopeProjectHint": "Wird beim Erstellen von Seiten in diesem Projekt angeboten.",
+			"scopeWorkspace": "Allen Projekten",
+			"scopeWorkspaceHint": "Wird in allen Projekten des Workspace angeboten.",
+			"saveConfirm": "Vorlage speichern",
+			"savedToast": "Vorlage gespeichert",
+			"saveError": "Die Vorlage konnte nicht gespeichert werden",
+			"newFromTemplate": "Neue Seite aus Vorlage",
+			"moreCreateOptions": "Weitere Möglichkeiten, eine Seite zu erstellen",
+			"pickTitle": "Neue Seite aus Vorlage",
+			"pickDescription": "Die neue Seite beginnt mit dem Inhalt der Vorlage. Danach kannst du alles ändern.",
+			"starters": "Startvorlagen",
+			"saved": "Gespeicherte Vorlagen",
+			"savedEmpty": "Noch keine gespeicherten Vorlagen. Speichere eine über das Menü einer Seite.",
+			"loadError": "Vorlagen konnten nicht geladen werden",
+			"deleteLabel": "Vorlage {{name}} löschen",
+			"deleted": "Vorlage gelöscht",
+			"deleteError": "Die Vorlage konnte nicht gelöscht werden",
+			"builtin": {
+				"meetingName": "Besprechungsnotizen",
+				"meetingDescription": "Teilnehmende, Agenda, Entscheidungen und Aufgaben.",
+				"meetingAttendees": "Teilnehmende",
+				"meetingAgenda": "Agenda",
+				"meetingNotes": "Notizen",
+				"meetingDecisions": "Entscheidungen",
+				"meetingActionItems": "Aufgaben",
+				"specName": "Spezifikation",
+				"specDescription": "Problem, Ziele, Vorschlag und offene Fragen.",
+				"specSummary": "Zusammenfassung",
+				"specProblem": "Problem",
+				"specGoals": "Ziele",
+				"specNonGoals": "Nicht-Ziele",
+				"specProposal": "Vorschlag",
+				"specOpenQuestions": "Offene Fragen",
+				"retroName": "Retrospektive",
+				"retroDescription": "Was gut lief, was besser werden kann, was wir als Nächstes ausprobieren.",
+				"retroWentWell": "Was gut lief",
+				"retroCouldBeBetter": "Was besser sein könnte",
+				"retroTryNext": "Was wir als Nächstes ausprobieren"
+			}
+		},
+		"publish": {
+			"menuItem": "Im Web veröffentlichen",
+			"title": "Im Web veröffentlichen",
+			"description": "Jede Person mit dem Link kann diese Seite ohne Anmeldung lesen. Suchmaschinen werden gebeten, sie nicht zu indexieren.",
+			"switchLabel": "Öffentlicher Link",
+			"onHint": "Veröffentlicht. Beim Ausschalten wird der Link sofort widerrufen.",
+			"offHint": "Aus. Schalte ihn ein, um einen Link zu erstellen.",
+			"disabledByWorkspace": "Öffentliche Seiten sind für diesen Workspace deaktiviert. Ein Admin kann sie in den Workspace-Einstellungen aktivieren.",
+			"cannotPublish": "Nur Personen, die Projekte teilen dürfen, können veröffentlichen, und nur Seiten, die für den gesamten Workspace sichtbar sind.",
+			"linkLabel": "Link",
+			"copyLink": "Link kopieren",
+			"copied": "Kopiert",
+			"openLink": "Öffentliche Seite öffnen",
+			"privacyNote": "Erwähnungen, Aufgabenlinks, Dateien und Links zu unveröffentlichten Seiten werden auf der öffentlichen Seite ausgeblendet.",
+			"publishedToast": "Seite veröffentlicht",
+			"unpublishedToast": "Link widerrufen",
+			"error": "Der öffentliche Link konnte nicht geändert werden",
+			"loadError": "Der öffentliche Link konnte nicht geladen werden",
+			"done": "Fertig"
+		},
+		"publicView": {
+			"documentTitle": "Geteilte Seite",
+			"unavailableTitle": "Diese Seite ist nicht verfügbar",
+			"unavailableDescription": "Der Link wurde möglicherweise widerrufen, oder die Seite wird nicht mehr geteilt.",
+			"updated": "Aktualisiert am {{date}}",
+			"mention": "@jemand",
+			"task": "eine verknüpfte Aufgabe",
+			"file": "eine angehängte Datei",
+			"page": "eine andere Seite"
+		},
 		"actions": {
 			"archive": "Archivieren",
 			"copyLink": "Link kopieren",
@@ -7996,6 +8806,40 @@
 			"restoredBy": "{{name}} hat eine frühere Version wiederhergestellt",
 			"roomFull": "Zu viele Personen haben diese Seite gerade geöffnet. Versuche es gleich noch einmal.",
 			"signedOut": "Deine Sitzung ist abgelaufen. Melde dich erneut an, um weiter zu bearbeiten."
+		},
+		"toolbar": {
+			"ariaLabel": "Formatierungsleiste",
+			"textStyle": "Textstil",
+			"bold": "Fett",
+			"italic": "Kursiv",
+			"underline": "Unterstrichen",
+			"strike": "Durchgestrichen",
+			"inlineCode": "Inline-Code",
+			"link": "Link",
+			"image": "Bild",
+			"more": "Weitere Formatierung"
+		},
+		"filters": {
+			"button": "Filter",
+			"active": "Filter angewendet",
+			"search": "Filter durchsuchen",
+			"searchClear": "Suche löschen",
+			"favorites": "Favoriten",
+			"createdDate": "Erstellungsdatum",
+			"date": {
+				"any": "Beliebiger Zeitraum",
+				"today": "Heute",
+				"last7": "Letzte 7 Tage",
+				"last30": "Letzte 30 Tage",
+				"older": "Älter als 30 Tage"
+			},
+			"remove": "Filter {{filter}} entfernen"
+		},
+		"detail": {
+			"unlocked": "Entsperrt",
+			"openOutline": "Gliederung öffnen",
+			"currentSection": "Aktueller Abschnitt",
+			"emptyLinePlaceholder": "Tippe „/“ für Befehle"
 		},
 		"commandPalette": {
 			"createPage": "Seite erstellen"
@@ -8113,8 +8957,6 @@
 			"locked": "Gesperrt",
 			"newPage": "Neue Seite",
 			"ownedBy": "Gehört {{name}}",
-			"ownerFilter": "Eigentümer",
-			"ownerFilterSearch": "Personen suchen",
 			"retry": "Erneut versuchen",
 			"searchPlaceholder": "Seiten suchen",
 			"sort": {
@@ -8234,6 +9076,229 @@
 			"expand": "{{title}} ausklappen",
 			"newPage": "Neue Seite",
 			"title": "Seiten"
+		}
+	},
+	"accountSecurity": {
+		"platform": {
+			"save": "Speichern",
+			"retry": "Erneut versuchen",
+			"loadMore": "Mehr laden",
+			"auditPasswordResetSent": "Link zum Zurücksetzen des Passworts gesendet",
+			"apiKeys": {
+				"accessLabel": "Zugriff",
+				"accessFull": "Vollzugriff",
+				"accessFullHint": "Alles, was du tun kannst, in jedem Workspace, dem du angehörst.",
+				"accessRead": "Nur lesen",
+				"accessReadHint": "Kann lesen, aber nie etwas ändern.",
+				"accessCustom": "Benutzerdefiniert",
+				"accessCustomHint": "Nur die Bereiche, die du unten auswählst.",
+				"areasLabel": "Bereiche",
+				"areaNone": "Keine",
+				"areaRead": "Lesen",
+				"areaWrite": "Schreiben",
+				"areasRequired": "Wähle mindestens einen Bereich.",
+				"projectsLabel": "Auf bestimmte Projekte beschränken",
+				"projectsHint": "Andere Projekte erscheinen für diesen Schlüssel als nicht vorhanden, und workspaceweite Anfragen werden abgelehnt.",
+				"projectsIn": "Projekte in {{workspace}}",
+				"projectsLoading": "Projekte werden geladen…",
+				"projectsEmpty": "Dieser Workspace hat noch keine Projekte.",
+				"projectsRequired": "Wähle mindestens ein Projekt.",
+				"columnScope": "Umfang",
+				"scopeFull": "Vollzugriff",
+				"scopeRead": "Nur lesen",
+				"scopeCustom": "Benutzerdefiniert",
+				"scopeProjects": "Projekte: {{projects}}",
+				"deletedProject": "Gelöschtes Projekt",
+				"requestsAria": "Anfragen mit {{name}}",
+				"requestsTitle": "Anfragen: {{name}}",
+				"requestsDescription": "Letzte Anfragen mit diesem Schlüssel. Gespeichert werden nur Methode, Route, Status und Dauer, nie der Inhalt der Anfrage.",
+				"requestsEmpty": "Noch keine Anfragen.",
+				"requestsError": "Die Anfragen konnten nicht geladen werden.",
+				"columnTime": "Zeit",
+				"columnRequest": "Anfrage",
+				"columnStatus": "Status",
+				"columnDuration": "Dauer",
+				"durationMs": "{{value}} ms"
+			},
+			"policy": {
+				"title": "Anmelderichtlinie",
+				"description": "Wer ein Konto erstellen darf, wie sich alle anmelden und wie lange Sitzungen dauern.",
+				"invitedPasswordSignUp": "Passwort-Registrierung für Eingeladene",
+				"invitedPasswordSignUpHint": "Wenn die Passwort-Registrierung aus ist, können Personen mit gültiger Einladung trotzdem ein Passwortkonto erstellen.",
+				"domains": "Erlaubte E-Mail-Domains",
+				"domainsHint": "Neue Konten müssen eine Adresse aus einer dieser Domains verwenden. Leer lassen, um jede Domain zu erlauben.",
+				"requiredProvider": "Vorgeschriebener Anmeldeanbieter",
+				"requiredProviderHint": "Alle melden sich über diesen Anbieter an. Instanz-Admins behalten die Passwort-Anmeldung als Rückweg.",
+				"noRequirement": "Keine Vorgabe",
+				"customProvider": "die Anmeldung deiner Organisation",
+				"sessionLifetime": "Sitzungsdauer",
+				"sessionLifetimeHint": "Wie lange eine Sitzung ohne Nutzung gültig bleibt. Nutzung verlängert sie.",
+				"hours": "Stunden",
+				"signInNotice": "Melde dich mit {{provider}} an. Die Passwort-Anmeldung ist nur für Instanz-Admins."
+			},
+			"twoFactor": {
+				"title": "Zwei-Faktor-Authentifizierung",
+				"description": "Bei der Anmeldung mit Passwort einen Code aus einer Authenticator-App abfragen.",
+				"authenticator": "Authenticator-App",
+				"on": "An",
+				"off": "Aus",
+				"turnOn": "Einschalten",
+				"turnOff": "Ausschalten",
+				"newCodes": "Neue Wiederherstellungscodes",
+				"confirmPassword": "Bestätige dein Passwort",
+				"continue": "Weiter",
+				"setupTitle": "Margaya zu deiner Authenticator-App hinzufügen",
+				"setupHint": "Gib diesen Einrichtungsschlüssel in deiner Authenticator-App ein und dann den angezeigten 6-stelligen Code.",
+				"setupKey": "Einrichtungsschlüssel",
+				"openApp": "In einer Authenticator-App auf diesem Gerät öffnen",
+				"code": "Authentifizierungscode",
+				"verify": "Bestätigen",
+				"invalidCode": "Dieser Code stimmt nicht. Prüfe die Uhrzeit auf deinem Gerät und versuche es erneut.",
+				"codesTitle": "Wiederherstellungscodes",
+				"codesHint": "Bewahre sie sicher auf. Jeder Code meldet dich einmal an, falls du dein Gerät verlierst.",
+				"copyCodes": "Codes kopieren",
+				"copied": "Wiederherstellungscodes kopiert",
+				"done": "Fertig",
+				"enabled": "Die Zwei-Faktor-Authentifizierung ist an.",
+				"disabled": "Die Zwei-Faktor-Authentifizierung ist aus.",
+				"error": "Etwas ist schiefgelaufen. Versuche es erneut."
+			},
+			"challenge": {
+				"title": "Zwei-Faktor-Authentifizierung",
+				"totpHint": "Gib den 6-stelligen Code aus deiner Authenticator-App ein.",
+				"recoveryHint": "Gib einen deiner Wiederherstellungscodes ein. Jeder Code funktioniert einmal.",
+				"recoveryCode": "Wiederherstellungscode",
+				"invalid": "Dieser Code stimmt nicht. Versuche es erneut.",
+				"trustDevice": "Diesem Gerät 30 Tage vertrauen",
+				"useRecovery": "Wiederherstellungscode verwenden",
+				"useApp": "Authenticator-App verwenden",
+				"usePassword": "Stattdessen mit Passwort anmelden",
+				"back": "Zurück zur Anmeldung"
+			},
+			"users": {
+				"nav": "Benutzer",
+				"title": "Benutzer",
+				"subtitle": "Alle Konten auf diesem Server. Sperre ausgeschiedene Personen, setze Passwörter zurück und melde Personen ab.",
+				"listTitle": "Konten",
+				"search": "Nach Name oder E-Mail suchen",
+				"filterLabel": "Anzeigen",
+				"filterAll": "Alle Konten",
+				"filterAdmins": "Instanz-Admins",
+				"filterBanned": "Gesperrt",
+				"empty": "Keine Konten passen zu „{{query}}“.",
+				"none": "Noch keine Konten.",
+				"columnUser": "Benutzer",
+				"columnStatus": "Status",
+				"columnWorkspaces": "Workspaces",
+				"columnLastActive": "Zuletzt aktiv",
+				"columnJoined": "Beigetreten",
+				"columnActions": "Aktionen",
+				"badgeAdmin": "Admin",
+				"badgeBanned": "Gesperrt",
+				"badgeTwoFactor": "2FA",
+				"never": "Nie",
+				"actionsFor": "Aktionen für {{name}}",
+				"details": "Details anzeigen",
+				"resetPassword": "Passwort zurücksetzen",
+				"signOut": "Überall abmelden",
+				"makeAdmin": "Zum Instanz-Admin machen",
+				"removeAdmin": "Instanz-Admin entfernen",
+				"ban": "Sperren",
+				"unban": "Entsperren",
+				"banTitle": "{{name}} sperren?",
+				"banDescription": "Die Person wird überall abgemeldet und kann sich bis zum Ende der Sperre nicht anmelden. Auch ihre API-Schlüssel funktionieren nicht mehr.",
+				"banReason": "Grund (optional)",
+				"banDuration": "Dauer",
+				"banForever": "Bis zur Entsperrung",
+				"ban7Days": "7 Tage",
+				"ban30Days": "30 Tage",
+				"banned": "{{name}} ist gesperrt.",
+				"unbanned": "{{name}} kann sich wieder anmelden.",
+				"resetTitle": "Passwort von {{name}} zurücksetzen?",
+				"resetDescription": "Sende einen Link zum Zurücksetzen oder lege jetzt ein neues Passwort fest. Ein neues Passwort meldet die Person überall ab.",
+				"resetByEmail": "Link zum Zurücksetzen an {{email}} senden",
+				"resetSetNow": "Jetzt ein neues Passwort festlegen",
+				"newPassword": "Neues Passwort",
+				"resetConfirm": "Passwort zurücksetzen",
+				"resetSent": "Ein Link zum Zurücksetzen ist unterwegs an {{email}}.",
+				"passwordSet": "Das Passwort von {{name}} wurde geändert.",
+				"signOutTitle": "{{name}} überall abmelden?",
+				"signOutDescription": "Alle Sitzungen enden sofort. Die API-Schlüssel funktionieren weiter; nur ihr Besitzer kann sie widerrufen.",
+				"signedOut": "{{name}} wurde überall abgemeldet.",
+				"promoted": "{{name}} ist jetzt Instanz-Admin.",
+				"demoted": "{{name}} ist kein Instanz-Admin mehr.",
+				"activeSessions": "Aktive Sitzungen",
+				"signInMethod": "Passwort",
+				"hasPassword": "Festgelegt",
+				"noPassword": "Nicht festgelegt (meldet sich anders an)",
+				"workspacesTitle": "Workspaces",
+				"noWorkspaces": "Kein Mitglied eines Workspace.",
+				"joined": "Beigetreten am {{date}}"
+			}
+		},
+		"password": {
+			"tooShort": "Verwende mindestens {{min}} Zeichen.",
+			"tooCommon": "Dieses Passwort ist zu verbreitet und leicht zu erraten. Wähle ein anderes.",
+			"matchesEmail": "Dein Passwort darf nicht deine E-Mail-Adresse sein.",
+			"hint": "Mindestens {{min}} Zeichen. Vermeide gängige Passwörter und deine E-Mail-Adresse."
+		},
+		"emailChange": {
+			"action": "E-Mail ändern",
+			"title": "E-Mail-Adresse ändern",
+			"description": "Wir senden einen Code an die neue Adresse. Deine E-Mail-Adresse ändert sich, sobald du ihn eingibst, und deine anderen Sitzungen werden abgemeldet.",
+			"newEmail": "Neue E-Mail-Adresse",
+			"newEmailPlaceholder": "du@example.com",
+			"invalidEmail": "Gib eine gültige E-Mail-Adresse ein.",
+			"sameEmail": "Das ist bereits deine E-Mail-Adresse.",
+			"sendCode": "Code senden",
+			"codeSent": "Falls {{email}} verwendet werden kann, ist ein Code dorthin unterwegs. Er läuft in 5 Minuten ab.",
+			"code": "Bestätigungscode",
+			"confirm": "E-Mail ändern",
+			"back": "Andere Adresse verwenden",
+			"success": "Deine E-Mail-Adresse lautet jetzt {{email}}.",
+			"invalidCode": "Dieser Code ist falsch oder abgelaufen. Fordere einen neuen an.",
+			"sessionTooOld": "Melde dich zu deiner Sicherheit erneut an, bevor du deine E-Mail-Adresse änderst.",
+			"unavailable": "Auf diesem Server ist kein E-Mail-Versand eingerichtet, daher kann deine Adresse hier nicht geändert werden. Wende dich an einen Instanz-Admin.",
+			"error": "Deine E-Mail-Adresse konnte nicht geändert werden."
+		},
+		"reauth": {
+			"title": "Bestätige, dass du es bist",
+			"description": "Änderungen an der Instanz erfordern eine aktuelle Anmeldung. Gib dein Passwort ein, um für die nächsten 10 Minuten fortzufahren.",
+			"noPassword": "Änderungen an der Instanz erfordern eine aktuelle Anmeldung. Dein Konto hat kein Passwort, melde dich also erneut an, um fortzufahren.",
+			"password": "Passwort",
+			"confirm": "Bestätigen",
+			"signInAgain": "Erneut anmelden",
+			"wrongPassword": "Dieses Passwort ist falsch.",
+			"cancelled": "Nicht gespeichert: Deine Identität wurde nicht bestätigt.",
+			"error": "Dein Passwort konnte nicht bestätigt werden."
+		},
+		"auditTrail": {
+			"title": "Änderungsprotokoll",
+			"subtitle": "Änderungen an der Instanz: wer was wann geändert hat. Geheime Werte werden nie aufgezeichnet.",
+			"empty": "Noch keine Änderungen an der Instanz aufgezeichnet.",
+			"loadMore": "Mehr laden",
+			"when": "Wann",
+			"who": "Wer",
+			"what": "Was",
+			"system": "System",
+			"actions": {
+				"instanceSettingsUpdated": "Instanzeinstellungen geändert",
+				"instanceAdminAdded": "Instanz-Admin hinzugefügt",
+				"instanceAdminRemoved": "Instanz-Admin entfernt",
+				"instanceReauthenticated": "Passwort bestätigt",
+				"userCreated": "Konto erstellt",
+				"userRoleChanged": "Rolle eines Kontos geändert",
+				"userBanned": "Konto gesperrt",
+				"userUnbanned": "Sperre aufgehoben",
+				"userRemoved": "Konto gelöscht",
+				"userPasswordSet": "Passwort eines Kontos festgelegt",
+				"userSessionsRevoked": "Konto abgemeldet",
+				"userImpersonated": "Als anderes Konto angemeldet",
+				"cliAdminPromoted": "Zum Instanz-Admin gemacht (Wiederherstellungs-CLI)",
+				"cliAdminDemoted": "Instanz-Admin entfernt (Wiederherstellungs-CLI)",
+				"cliPasswordReset": "Passwort zurückgesetzt (Wiederherstellungs-CLI)",
+				"cliUserUnbanned": "Sperre aufgehoben (Wiederherstellungs-CLI)"
+			}
 		}
 	},
 	"instanceAdmin": {
@@ -8374,7 +9439,8 @@
 			"email": "E-Mail",
 			"general": "Allgemein",
 			"publicBoards": "Öffentliche Boards",
-			"workspaces": "Workspaces"
+			"workspaces": "Workspaces",
+			"ai": "KI"
 		},
 		"oauth": {
 			"authorizationUrl": "Autorisierungs-URL",
@@ -8595,7 +9661,11 @@
 				"label": "Stack",
 				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
 			},
-			"title": "Quick facts"
+			"title": "Quick facts",
+			"ai": {
+				"label": "KI",
+				"value": "Optional und standardmäßig aus: KI fragen, Modus Erstellen und KI-Agenten, mit Claude oder einem selbst gehosteten Modell"
+			}
 		},
 		"guidelines": {
 			"do": {
@@ -8805,5 +9875,1713 @@
 		},
 		"title": "One product. Two ways to run it.",
 		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+	},
+	"templates": {
+		"form": {
+			"addSubtask": "Hinzufügen",
+			"assignees": "Zugewiesene",
+			"assigneesNone": "Projektstandard",
+			"create": "Vorlage erstellen",
+			"createTitle": "Neue Aufgabenvorlage",
+			"description": "Womit eine neue Aufgabe beginnt. Beim Erstellen der Aufgabe bleibt alles bearbeitbar.",
+			"editTitle": "Aufgabenvorlage bearbeiten",
+			"estimate": "Schätzung",
+			"labels": "Labels",
+			"labelsEmpty": "Keine Labels gefunden",
+			"labelsNone": "Keine Labels",
+			"labelsSearch": "Labels suchen",
+			"moveDown": "{{title}} nach unten verschieben",
+			"moveUp": "{{title}} nach oben verschieben",
+			"name": "Name",
+			"namePlaceholder": "Fehlerbericht",
+			"notSet": "Nicht festgelegt",
+			"priority": "Priorität",
+			"removeSubtask": "{{title}} entfernen",
+			"save": "Vorlage speichern",
+			"status": "Status",
+			"statusDefault": "Projektstandard",
+			"subtaskPlaceholder": "Teilaufgabe hinzufügen",
+			"subtasks": "Teilaufgaben",
+			"subtaskTitle": "Teilaufgabe {{number}}",
+			"taskDescription": "Beschreibung",
+			"taskDescriptionPlaceholder": "Schritte zur Reproduktion, erwartetes Ergebnis…",
+			"titlePattern": "Titelmuster",
+			"titlePatternHint": "{title} wird durch den eingegebenen Titel ersetzt. Fehlt es, folgt der eingegebene Titel auf das Muster.",
+			"titlePatternPlaceholder": "Fehler: {title}"
+		},
+		"settings": {
+			"add": "Neue Vorlage",
+			"deleteAria": "Vorlage {{name}} löschen",
+			"deleteConfirm": "Löschen",
+			"deleteDescription": "Daraus erstellte Aufgaben bleiben unverändert.",
+			"deleteTitle": "Vorlage {{name}} löschen?",
+			"description": "Ausgangspunkte für neue Aufgaben: ein Titelmuster, Standardfelder und eine Checkliste mit Teilaufgaben.",
+			"editAria": "Vorlage {{name}} bearbeiten",
+			"empty": "Noch keine Vorlagen.",
+			"loadError": "Die Vorlagen konnten nicht geladen werden.",
+			"noPermission": "Nur Personen, die das Projekt bearbeiten dürfen, können seine Vorlagen ändern.",
+			"retry": "Erneut versuchen",
+			"subtaskCount_one": "{{count}} Teilaufgabe",
+			"subtaskCount_other": "{{count}} Teilaufgaben",
+			"title": "Aufgabenvorlagen",
+			"toast": {
+				"created": "Vorlage erstellt",
+				"deleted": "Vorlage gelöscht",
+				"deleteError": "Die Vorlage konnte nicht gelöscht werden",
+				"error": "Die Vorlage konnte nicht gespeichert werden",
+				"updated": "Vorlage gespeichert"
+			}
+		},
+		"use": {
+			"applied": "Vorlage: {{name}}",
+			"button": "Vorlage",
+			"menuLabel": "Vorlage verwenden",
+			"quickAdd": "Aus Vorlage erstellen",
+			"removeSubtask": "Teilaufgabe {{title}} entfernen",
+			"subtaskError_one": "Die Aufgabe wurde erstellt, aber {{count}} Teilaufgabe konnte nicht hinzugefügt werden",
+			"subtaskError_other": "Die Aufgabe wurde erstellt, aber {{count}} Teilaufgaben konnten nicht hinzugefügt werden",
+			"subtasksTitle_one": "{{count}} Teilaufgabe aus der Vorlage",
+			"subtasksTitle_other": "{{count}} Teilaufgaben aus der Vorlage"
+		}
+	},
+	"delivery": {
+		"forecast": {
+			"title": "Prognose",
+			"likelyBy": "Zu 85 % erledigt bis {{date}}",
+			"percentiles": "50 % bis {{p50}} · 95 % bis {{p95}}",
+			"chanceByEnd": "{{percent}} % Chance, bis {{date}} fertig zu werden",
+			"beyondHorizon": "Über zwei Jahre beim aktuellen Tempo",
+			"open_one": "{{count}} offene Aufgabe",
+			"open_other": "{{count}} offene Aufgaben",
+			"complete": "Alle Aufgaben sind erledigt",
+			"insufficient": {
+				"short_span": "Noch zu wenig Verlauf: Eine Prognose braucht mindestens 14 Tage Arbeit in diesem Projekt.",
+				"few_completions": "Noch zu wenig Verlauf: In den letzten 8 Wochen wurden weniger als 5 Aufgaben erledigt.",
+				"few_active_days": "Noch zu wenig Verlauf: In den letzten 8 Wochen wurden an weniger als 3 Tagen Aufgaben erledigt."
+			},
+			"howCalculated": "Wie wird das berechnet?",
+			"method": {
+				"title": "Monte-Carlo-Prognose",
+				"body": "Margaya spielt das tatsächliche Tempo deines Teams {{iterations}}-mal durch. Jeder simulierte Tag übernimmt die Erledigungen eines zufälligen Tages aus dem Verlauf unten, bis die offenen Aufgaben erledigt sind. Die Daten zeigen, wann 50 %, 85 % und 95 % der Durchläufe fertig waren.",
+				"window": "Verlauf: {{from}} – {{to}}",
+				"completed": "Erledigte Aufgaben: {{total}}",
+				"activeDays": "Tage mit Erledigungen: {{days}}",
+				"perDay": "Erledigungen pro Tag: {{min}}–{{max}}",
+				"perWeek": "Durchschnitt pro Woche: {{perWeek}}",
+				"team": "Das Tempo gilt für das ganze Projekt, daher zählt auch Arbeit außerhalb dieses Bereichs.",
+				"seed": "Startwert {{seed}}: Dieselben Daten ergeben den ganzen Tag dasselbe Ergebnis."
+			},
+			"error": "Die Prognose konnte nicht geladen werden",
+			"retry": "Erneut versuchen"
+		},
+		"risks": {
+			"title": "Risiken",
+			"empty": "Keine Risiken gefunden",
+			"showAll": "Alle anzeigen ({{total}})",
+			"showLess": "Weniger anzeigen",
+			"noCycleTime": "Überfällige laufende Arbeit erscheint, sobald 10 Aufgaben mit erfasstem Start erledigt wurden.",
+			"hiddenTask": "Eine Aufgabe, die du nicht sehen kannst",
+			"truncated": "Nur die ersten 2.000 offenen Aufgaben wurden geprüft.",
+			"error": "Die Risiken konnten nicht geladen werden",
+			"someone": "Jemand",
+			"severity": {
+				"high": "Hohes Risiko",
+				"medium": "Mittleres Risiko",
+				"low": "Geringes Risiko"
+			},
+			"criticalPath": {
+				"ends": "Kritischer Pfad endet am {{date}}",
+				"chain_one": "Längste Abhängigkeitskette: {{count}} Aufgabe",
+				"chain_other": "Längste Abhängigkeitskette: {{count}} Aufgaben"
+			},
+			"kinds": {
+				"critical_path_late": "Der kritische Pfad endet am {{date}}, nach der Frist am {{deadline}}",
+				"critical_path_tight": "Der kritische Pfad endet am {{date}}, knapp vor der Frist am {{deadline}}",
+				"blocked_chain_one": "{{head}} blockiert {{count}} Aufgabe",
+				"blocked_chain_other": "{{head}} blockiert {{count}} Aufgaben",
+				"ageing_one": "{{count}} Aufgabe seit über {{days}} Tagen in Arbeit, länger als üblich",
+				"ageing_other": "{{count}} Aufgaben seit über {{days}} Tagen in Arbeit, länger als üblich",
+				"overdue_cluster_one": "{{name}} hat {{count}} überfällige Aufgabe",
+				"overdue_cluster_other": "{{name}} hat {{count}} überfällige Aufgaben",
+				"overdue_cluster_unassigned_one": "{{count}} überfällige Aufgabe ohne Zuständige",
+				"overdue_cluster_unassigned_other": "{{count}} überfällige Aufgaben ohne Zuständige",
+				"overdue_one": "{{count}} überfällige Aufgabe",
+				"overdue_other": "{{count}} überfällige Aufgaben",
+				"unassigned_near_deadline_one": "{{count}} nicht zugewiesene Aufgabe fällig bis {{date}}",
+				"unassigned_near_deadline_other": "{{count}} nicht zugewiesene Aufgaben fällig bis {{date}}",
+				"dependency_loop_one": "{{count}} Aufgabe steckt in einer Blockierschleife",
+				"dependency_loop_other": "{{count}} Aufgaben blockieren sich gegenseitig in einer Schleife"
+			}
+		},
+		"home": {
+			"title": "Gefährdet",
+			"empty": "In deinen aktuellen Zyklen ist nichts gefährdet",
+			"context": "{{project}} · {{cycle}}"
+		},
+		"tab": {
+			"description": "Prognose und Risiken der offenen Arbeit in diesem Projekt"
+		}
+	},
+	"ai": {
+		"rules": {
+			"title": "Regel aus einer Beschreibung",
+			"description": "Beschreibe eine Automatisierung in einfachen Worten. Die KI macht daraus eine normale Regel, die du bearbeiten, am jüngsten Verlauf testen und speichern kannst. Gespeicherte Regeln laufen ohne KI.",
+			"label": "Regel beschreiben…",
+			"placeholder": "Zum Beispiel: Wenn ein GitHub-Pull-Request gemergt wird, verschiebe die Aufgabe nach Erledigt",
+			"compile": "Regel erstellen",
+			"compiling": "Regel wird geschrieben…",
+			"unsupportedTitle": "Mit Automatisierungen nicht möglich",
+			"rejected": "Vorgeschlagene Regeln, die die Prüfung nicht bestanden haben und weggelassen wurden: {{rejected}}",
+			"noRules": "Aus dieser Beschreibung ließ sich keine Regel erstellen.",
+			"workflowRule": "Workflow-Regel",
+			"integration": "Integration",
+			"when": "Wenn",
+			"moveTo": "Aufgabe verschieben nach",
+			"historyWindow": "Zeitraum des Verlaufs",
+			"days7": "Letzte 7 Tage",
+			"days30": "Letzte 30 Tage",
+			"days90": "Letzte 90 Tage",
+			"dryRun": "Am Verlauf testen",
+			"dryRunSummary": "Aufgaben, die sich in den letzten {{days}} Tagen geändert hätten: {{changed}}",
+			"dryRunNone": "In den letzten {{days}} Tagen hätte sich nichts geändert.",
+			"dryRunError": "Diese Regel konnte nicht am Verlauf getestet werden.",
+			"more": "Weitere Treffer, nicht angezeigt: {{more}}",
+			"archived": "Archiviert",
+			"outcomes": {
+				"unchanged": "bereits dort",
+				"skipped": "ausgelassen"
+			},
+			"notes": {
+				"integration_not_connected": "Diese Integration ist nicht mit dem Projekt verbunden, daher gibt es keinen Verlauf zum Testen.",
+				"branch_push_last_only": "Pro Branch wird nur der letzte Push gespeichert.",
+				"threshold_from_last_update": "Basiert auf der letzten Aktualisierung jeder Aufgabe; das Datum zeigt, wann die Regel sie erfasst hätte.",
+				"flow_alerts_notify_only": "Warnungen bei Flussanomalien benachrichtigen nur die Projektleitung; Aufgaben ändern sie nicht.",
+				"nothing_enabled": "Diese Regel schaltet nichts ein, also würde sich nichts ändern.",
+				"conditions_current_state": "Die Bedingungen wurden am aktuellen Zustand jeder Aufgabe geprüft; der Verlauf enthält nur die Änderungen."
+			},
+			"save": "Regel speichern",
+			"discard": "Verwerfen",
+			"saved": "Regel gespeichert",
+			"saveError": "Die Regel konnte nicht gespeichert werden."
+		},
+		"build": {
+			"command": "Mit KI aufbauen…",
+			"title": "Mit KI aufbauen",
+			"description": "Beschreibe, was geplant werden soll. Die KI entwirft ein Projekt, Zyklen und Aufgaben, die du prüfst. Erst nach deiner Bestätigung wird etwas angelegt.",
+			"promptLabel": "Was sollen wir planen?",
+			"promptPlaceholder": "Website-Relaunch für Q4 mit 3 Sprints planen",
+			"target": "Anlegen in",
+			"targetCurrent": "In {{name}}",
+			"targetNew": "Neues Projekt",
+			"deep": "Gründlicher nachdenken (langsamer)",
+			"draft": "Plan entwerfen",
+			"drafting": "Plan wird entworfen…",
+			"cancel": "Abbrechen",
+			"back": "Zurück",
+			"create_one": "{{count}} Element anlegen",
+			"create_other": "{{count}} Elemente anlegen",
+			"creating": "Plan wird angelegt",
+			"progress": "{{done}} von {{total}} angelegt…",
+			"close": "Schließen",
+			"openProject": "Projekt öffnen",
+			"empty": {
+				"text": "Dieses Projekt hat noch keine Aufgaben. Beschreibe die Arbeit, und die KI entwirft Aufgaben, die du prüfst."
+			},
+			"review": {
+				"description": "Prüfe den Plan. Du kannst alles abwählen, bearbeiten oder umsortieren und ihn dann anlegen.",
+				"project": "Projekt",
+				"projectName": "Name",
+				"projectKey": "Schlüssel",
+				"projectDescription": "Beschreibung",
+				"columns": "Neue Spalten",
+				"labels": "Labels",
+				"cycles": "Zyklen",
+				"modules": "Module",
+				"moduleName": "Modulname",
+				"tasks_one": "{{count}} Aufgabe",
+				"tasks_other": "{{count}} Aufgaben",
+				"include": "{{name}} übernehmen",
+				"taskTitle": "Aufgabentitel",
+				"taskDescription": "Aufgabenbeschreibung",
+				"priority": "Priorität",
+				"estimate": "Schätzung (Punkte)",
+				"module": "Modul",
+				"none": "Keine",
+				"taskLabels": "Labels: {{labels}}",
+				"subtasks": "Teilaufgaben",
+				"subtaskTitle": "Titel der Teilaufgabe",
+				"moveUp": "{{name}} nach oben verschieben",
+				"moveDown": "{{name}} nach unten verschieben",
+				"cycle": {
+					"label": "Zyklus",
+					"name": "Zyklusname",
+					"startDate": "Beginn",
+					"endDate": "Ende"
+				}
+			},
+			"done": {
+				"success_one": "Fertig. {{count}} Aufgabe wurde angelegt.",
+				"success_other": "Fertig. {{count}} Aufgaben wurden angelegt.",
+				"partial_one": "Angelegt, bis auf {{count}} Element:",
+				"partial_other": "Angelegt, bis auf {{count}} Elemente:",
+				"estimatesSkipped": "Schätzungen wurden ausgelassen, weil das Projekt kein aktives Punkte-Schätzsystem hat.",
+				"created": {
+					"tasks_one": "{{count}} Aufgabe",
+					"tasks_other": "{{count}} Aufgaben",
+					"subtasks_one": "{{count}} Teilaufgabe",
+					"subtasks_other": "{{count}} Teilaufgaben",
+					"cycles_one": "{{count}} Zyklus",
+					"cycles_other": "{{count}} Zyklen",
+					"modules_one": "{{count}} Modul",
+					"modules_other": "{{count}} Module",
+					"columns_one": "{{count}} Spalte",
+					"columns_other": "{{count}} Spalten",
+					"labels_one": "{{count}} Label",
+					"labels_other": "{{count}} Labels"
+				}
+			},
+			"kinds": {
+				"project": "Projekt",
+				"column": "Spalte",
+				"cycle": "Zyklus",
+				"module": "Modul",
+				"task": "Aufgabe",
+				"subtask": "Teilaufgabe",
+				"label": "Label",
+				"estimate": "Schätzung",
+				"cycle_tasks": "Aufgaben im Zyklus",
+				"module_tasks": "Aufgaben im Modul"
+			},
+			"chat": {
+				"planLabel": "Vorgeschlagene Änderungen",
+				"planning": "Änderungen werden geplant…",
+				"nothing": "Für diese Anfrage gibt es nichts zu ändern.",
+				"awaiting": "Wartet auf Antwort",
+				"ready": "Bereite Änderungen: {{count}}. Bestätige, um fortzufahren.",
+				"applying": "Änderungen werden angewendet…",
+				"confirm": "Bestätigen",
+				"cancel": "Abbrechen",
+				"cancelled": "Abgebrochen. Nichts wurde geändert.",
+				"remove": "{{title}} entfernen",
+				"confirmDestructive": "Ja, löschen",
+				"truncated": "Der Plan wurde auf die ersten 50 Änderungen gekürzt.",
+				"appliedSummary": "Angewendet: {{done}} von {{total}}",
+				"autopilotApplied": "Sofort vom Autopiloten angewendet.",
+				"autopilotOff": "Der Autopilot ist in diesem Workspace aus. Prüfe die Änderungen unten.",
+				"autopilotReview": "Einige dieser Änderungen musst du zuerst prüfen.",
+				"done": "Erledigt",
+				"open": "Öffnen",
+				"skipped": "Übersprungen",
+				"failed": "Fehlgeschlagen",
+				"undo": "Rückgängig",
+				"undone": "Rückgängig gemacht",
+				"undoFailed": "Diese Änderung konnte nicht rückgängig gemacht werden.",
+				"forbidden": "Du kannst hier keine Änderungen mit KI vornehmen.",
+				"pickCandidate": "Meintest du:",
+				"fields": {
+					"name": "Name",
+					"key": "Schlüssel",
+					"title": "Titel",
+					"priority": "Priorität",
+					"dueDate": "Fälligkeitsdatum",
+					"assignee": "Zuständig",
+					"unassigned": "Niemand",
+					"startDate": "Beginn",
+					"endDate": "Ende",
+					"content": "Kommentar"
+				},
+				"problems": {
+					"forbidden": "Dafür fehlt dir die Berechtigung.",
+					"not_found": "Etwas, worauf sie sich bezieht, wurde nicht gefunden.",
+					"ambiguous": "Dieser Name passt auf mehr als eine Person.",
+					"unresolved_ref": "Sie hängt von einer Änderung ab, die nicht möglich ist.",
+					"feature_off": "Diese Funktion ist für das Projekt deaktiviert.",
+					"invalid": "Diese Änderung ist so nicht möglich."
+				},
+				"ops": {
+					"create_project": "Neues Projekt",
+					"create_task": "Neue Aufgabe",
+					"update_task": "Aufgabe bearbeiten",
+					"set_status": "Status ändern",
+					"assign": "Zuweisen",
+					"add_comment": "Kommentieren",
+					"create_cycle": "Neuer Zyklus",
+					"add_to_cycle": "Zum Zyklus hinzufügen",
+					"create_module": "Neues Modul",
+					"add_to_module": "Zum Modul hinzufügen",
+					"create_page": "Neue Seite",
+					"link_tasks": "Aufgaben verknüpfen",
+					"create_label": "Neues Label",
+					"delete_task": "Aufgabe löschen",
+					"run_agent": "Agent ausführen"
+				},
+				"agentRun": {
+					"title": "Agent-Lauf",
+					"loading": "Lauf wird geladen…",
+					"loadError": "Dieser Lauf konnte nicht geladen werden.",
+					"inProgress": "In Arbeit"
+				},
+				"noneReady": "Noch kann nichts angewendet werden. Korrigiere oder entferne die markierten Änderungen oder frag erneut."
+			},
+			"context": {
+				"title": "Kontext ({{count}})",
+				"facts": "Projekte: {{projects}} · Personen: {{members}} · Zyklen: {{cycles}}",
+				"memory": "Gedächtnisnotizen: {{count}}",
+				"history": "Frühere Nachrichten: {{count}}"
+			}
+		},
+		"duplicates": {
+			"check": "Mit KI prüfen",
+			"checking": "Wird geprüft…",
+			"checkedTitle": "Von der KI auf Duplikate geprüft",
+			"none": "Keine wahrscheinlichen Duplikate.",
+			"verdict": {
+				"duplicate": "Wahrscheinlich Duplikat",
+				"related": "Verwandt"
+			},
+			"mark": "Duplikat hiervon",
+			"markLabel": "Neue Aufgabe als Duplikat von {{key}} markieren",
+			"marked": "Markiert",
+			"willLink": "Die neue Aufgabe wird als Duplikat von {{key}} markiert.",
+			"undo": "Rückgängig",
+			"linkError": "Die Aufgabe wurde angelegt, konnte aber nicht als Duplikat von {{key}} markiert werden."
+		},
+		"triage": {
+			"button": "Triage vorschlagen",
+			"title": "Triage-Vorschläge",
+			"loading": "Ähnliche Arbeit wird geprüft…",
+			"empty": "Keine Vorschläge für diesen Eintrag.",
+			"retry": "Erneut versuchen",
+			"close": "Vorschläge schließen",
+			"accept": "Übernehmen",
+			"acceptAll": "Alle übernehmen",
+			"edit": "Bearbeiten",
+			"dismiss": "Verwerfen",
+			"applied": "Übernommen",
+			"acceptError": "Der Vorschlag konnte nicht übernommen werden.",
+			"autoApplied": "Dieses Projekt fügt vorgeschlagene Labels automatisch hinzu.",
+			"sameTitle": "Gleicher Titel wie eine vorhandene Aufgabe",
+			"projectAdvice": "Anfragen bleiben in ihrem Projekt: Lehne diese ab und reiche sie dort ein.",
+			"otherProjectDuplicate": "Nur eine Aufgabe in diesem Projekt kann die Anfrage als Duplikat schließen.",
+			"openTask": "{{key}} in neuem Tab öffnen",
+			"fields": {
+				"label": "Label",
+				"assignee": "Zugewiesen",
+				"priority": "Priorität",
+				"project": "Projekt",
+				"duplicate": "Mögliches Duplikat"
+			},
+			"settings": {
+				"title": "Triage-Vorschläge",
+				"description": "KI-Vorschläge für neue Aufgaben und Intake-Anfragen. Jeder Vorschlag wird von einer Person übernommen, bearbeitet oder verworfen.",
+				"autoApply": "Label-Vorschläge automatisch übernehmen",
+				"autoApplyHint": "Vorgeschlagene Labels werden sofort hinzugefügt und jeweils im Audit-Log festgehalten. Zuweisung, Priorität, Projekt und Duplikate warten immer auf eine Person.",
+				"saved": "Triage-Einstellung gespeichert",
+				"saveError": "Die Triage-Einstellung konnte nicht gespeichert werden."
+			},
+			"liveLabels": {
+				"title": "Vorgeschlagene Labels",
+				"add": "Label {{name}} hinzufügen"
+			}
+		},
+		"translate": {
+			"action": "Übersetzen",
+			"translating": "Wird übersetzt…",
+			"translatedFrom": "Übersetzt aus: {{language}}",
+			"translated": "Übersetzt",
+			"showOriginal": "Original anzeigen",
+			"showTranslation": "Übersetzung anzeigen",
+			"settings": {
+				"autoTranslate": "Kommentare automatisch übersetzen",
+				"autoTranslateHint": "Kommentare in einer anderen Sprache werden für alle Lesenden beim Öffnen übersetzt. Wenn aus, klicken Lesende auf „Übersetzen“."
+			}
+		},
+		"brief": {
+			"button": "Statusbericht",
+			"buttonLabel": "Statusbericht für Stakeholder schreiben",
+			"title": "Statusbericht für Stakeholder",
+			"close": "Statusbericht schließen",
+			"intro": "Schreibt einen Statusbericht aus dem berechneten Fortschritt, den Änderungen, Risiken und der Prognose dieser Arbeit. Jede erwähnte Aufgabe wird zitiert.",
+			"audience": "Zielgruppe",
+			"audiences": {
+				"team": "Team",
+				"leadership": "Führung",
+				"client": "Kunde"
+			},
+			"generate": "Bericht schreiben",
+			"regenerate": "Neu schreiben",
+			"writing": "Bericht wird geschrieben…",
+			"stop": "Stopp",
+			"copy": "Kopieren",
+			"copied": "Kopiert",
+			"copyError": "Der Bericht konnte nicht kopiert werden.",
+			"saveAsPage": "Als Seite speichern",
+			"saved": "Bericht als Seite gespeichert",
+			"saveError": "Die Seite konnte nicht gespeichert werden.",
+			"openPage": "Seite öffnen",
+			"pageTitle": "Statusbericht: {{name}} ({{date}})",
+			"facts": {
+				"title": "Verwendete Fakten",
+				"note": "Diese Zahlen stammen von Margaya, nicht von der KI. Wenn du einen Bericht speicherst oder kopierst, wird er zur Grundlage für den nächsten.",
+				"progress": "Fortschritt",
+				"progressValue": "{{percent}} % ({{completed}} von {{total}} erledigt)",
+				"sinceLast": "Seit dem letzten Bericht ({{date}})",
+				"sinceDays": "Letzte 7 Tage",
+				"changes": "Erledigt: {{completed}} · Hinzugefügt: {{added}} · Entfernt: {{removed}}",
+				"forecast": "Prognose",
+				"forecastValue": "Zu 85 % bis {{date}}",
+				"forecastDone": "Nichts mehr zu tun",
+				"forecastNone": "Noch nicht genug Verlauf",
+				"risks": "Risiken",
+				"diff": "Veränderung",
+				"progressDiff": "Fortschritt {{before}} % → {{now}} %",
+				"forecastDiff": "Prognose {{before}} → {{now}}"
+			}
+		},
+		"ask": {
+			"title": "KI fragen",
+			"description": "Stelle Fragen zu deinem Workspace in einfacher Sprache. Antworten stammen nur aus Aufgaben, Seiten und Kommentaren, die du sehen kannst, und nennen für jede Aussage die Quelle.",
+			"greeting": "Hallo! Was möchtest du wissen?",
+			"placeholder": "KI fragen, @ für Kontext, / für Befehle",
+			"send": "Fragen",
+			"stop": "Stoppen",
+			"stopped": "Gestoppt.",
+			"newChat": "Neue Unterhaltung",
+			"expand": "Vergrößern",
+			"collapse": "Verkleinern",
+			"scopeProject": "Im Projekt {{project}}",
+			"scopeWorkspace": "Ganzer Workspace",
+			"removeScope": "Stattdessen den ganzen Workspace fragen",
+			"searching": "Dein Workspace wird durchsucht …",
+			"noResults": "Dazu habe ich in deinem Workspace nichts gefunden. Versuche andere Wörter oder nenne ein Projekt, einen Zyklus oder einen Aufgabenschlüssel.",
+			"sources": "Quellen",
+			"sourcesCount": "Quellen ({{total}})",
+			"closestMatches": "Ähnlichste Treffer",
+			"copy": "Kopieren",
+			"copied": "Kopiert",
+			"copyError": "Die Antwort konnte nicht kopiert werden",
+			"commentOn": "Kommentar zu {{key}}",
+			"pageSource": "Seite: {{title}}",
+			"openSource": "{{title}} öffnen",
+			"disclaimer": "Antworten nutzen nur, was du sehen kannst. Prüfe die Quellen, bevor du danach handelst.",
+			"you": "Du",
+			"answer": "Antwort",
+			"forbidden": "Du darfst KI in diesem Workspace nicht verwenden.",
+			"palette": "KI fragen …",
+			"paletteAbout": "KI fragen: {{question}}",
+			"examples": {
+				"title": "Probiere zum Beispiel",
+				"overdue": "Was ist überfällig?",
+				"mine": "Welche offenen Aufgaben habe ich?",
+				"recent": "Was hat sich diese Woche geändert?",
+				"summarize": "Fasse dieses Projekt zusammen",
+				"chart": "Zeige Aufgaben nach Status als Diagramm",
+				"cycleBlockers": "Was blockiert den aktuellen Zyklus?"
+			},
+			"history": {
+				"title": "Verlauf",
+				"empty": "Noch keine gespeicherten Unterhaltungen.",
+				"localOnly": "Unterhaltungen werden nur in diesem Browser gespeichert.",
+				"delete": "Unterhaltung löschen",
+				"clear": "Verlauf löschen",
+				"clearConfirm": "Alle in diesem Browser gespeicherten Unterhaltungen löschen? Das kann nicht rückgängig gemacht werden.",
+				"search": "Unterhaltungen durchsuchen",
+				"noMatches": "Keine Unterhaltung passt.",
+				"loading": "Unterhaltungen werden geladen …",
+				"pin": "Unterhaltung anheften",
+				"unpin": "Unterhaltung lösen",
+				"pinned": "Angeheftet",
+				"rename": "Unterhaltung umbenennen",
+				"renameLabel": "Name der Unterhaltung",
+				"saveTitle": "Namen speichern",
+				"serverNote": "Unterhaltungen werden in deinem Workspace gespeichert und sind nur für dich sichtbar.",
+				"clearConfirmServer": "Alle deine gespeicherten Unterhaltungen in diesem Workspace löschen? Das kann nicht rückgängig gemacht werden.",
+				"importHint": "In diesem Browser gespeicherte Unterhaltungen: {{total}}",
+				"import": "Importieren",
+				"imported": "Importierte Unterhaltungen: {{total}}",
+				"openError": "Die Unterhaltung konnte nicht geöffnet werden."
+			},
+			"chartLabel": "Diagramm: {{title}}",
+			"chartLoading": "Diagramm wird gezeichnet…",
+			"chartInvalid": "Dieses Diagramm konnte nicht gezeichnet werden.",
+			"placeholderBuild": "Beschreibe, was erstellt oder geändert werden soll …",
+			"modelLabel": "Modell: {{model}}",
+			"more": "Mehr",
+			"moreActions": "Weitere Aktionen",
+			"openFullPage": "Als ganze Seite öffnen",
+			"paletteFullPage": "KI-Chat öffnen (ganze Seite)",
+			"fullPageUnavailable": "KI ist in diesem Workspace nicht verfügbar.",
+			"shortcut": "KI fragen öffnen oder schließen",
+			"regenerate": "Neu generieren",
+			"editQuestion": "Frage bearbeiten",
+			"resend": "Senden",
+			"followUps": "Vorgeschlagene Folgefragen",
+			"saveAsPage": "Als Seite speichern",
+			"copyMarkdown": "Als Markdown kopieren",
+			"copiedMarkdown": "Als Markdown kopiert",
+			"createTask": "Aufgabe daraus erstellen",
+			"webSearch": "Im Web suchen",
+			"webSource": "Web: {{title}}",
+			"removeChip": "{{name}} entfernen",
+			"contextChips": "Kontext für diese Frage",
+			"contextPicker": "Kontext hinzufügen",
+			"contextHint": "Tippe, um Aufgaben, Seiten, Projekte, Zyklen, Module, Personen oder Agenten zu finden",
+			"contextEmpty": "Nichts gefunden",
+			"contextSearching": "Suche läuft …",
+			"commandMenu": "Befehle",
+			"commandEmpty": "Kein passender Befehl",
+			"contextKinds": {
+				"task": "Aufgabe",
+				"page": "Seite",
+				"project": "Projekt",
+				"cycle": "Zyklus",
+				"module": "Modul",
+				"user": "Person",
+				"agent": "Agent"
+			},
+			"modes": {
+				"label": "Modus",
+				"ask": "Fragen",
+				"build": "Erstellen",
+				"autopilot": "Autopilot",
+				"askHint": "Beantwortet Fragen und ändert nichts",
+				"buildHint": "Schlägt Änderungen vor, die du bestätigst",
+				"autopilotHint": "Übernimmt Änderungen sofort; jede Änderung lässt sich rückgängig machen"
+			},
+			"attachments": {
+				"add": "Dateien anhängen",
+				"type": "{{name}} kann nicht angehängt werden. Verwende ein Bild (PNG, JPEG, WebP, GIF) oder eine Text-, Markdown- oder CSV-Datei.",
+				"size": "{{name}} passt nicht: Anhänge dürfen zusammen höchstens 5 MB groß sein.",
+				"count": "Hänge höchstens 3 Dateien an.",
+				"readError": "Die Datei konnte nicht gelesen werden."
+			},
+			"voice": {
+				"start": "Diktieren",
+				"stop": "Diktat beenden",
+				"recording": "Hört zu …",
+				"transcribing": "Wird transkribiert …",
+				"denied": "Erlaube den Mikrofonzugriff, um zu diktieren.",
+				"failed": "Die Aufnahme konnte nicht in Text umgewandelt werden."
+			},
+			"agent": {
+				"ready": "Diese Anfrage an {{agent}} senden.",
+				"needsTask": "Füge mit @ eine Aufgabe hinzu, damit {{agent}} weiß, woran er arbeiten soll.",
+				"send": "An {{agent}} senden",
+				"error": "Der Agent konnte nicht gestartet werden."
+			},
+			"thinking": {
+				"live": "Denkt nach … {{seconds}}s",
+				"done": "Hat {{seconds}}s nachgedacht"
+			},
+			"versions": {
+				"previous": "Vorherige Antwort",
+				"next": "Nächste Antwort",
+				"label": "Antwort {{current}} von {{total}}"
+			},
+			"feedback": {
+				"up": "Gute Antwort",
+				"down": "Schlechte Antwort",
+				"reasonLabel": "Was ist schiefgelaufen? (optional)",
+				"reasonPlaceholder": "Zum Beispiel: falsche Zahlen, eine Aufgabe übersehen",
+				"send": "Senden",
+				"skip": "Überspringen",
+				"thanks": "Danke für dein Feedback."
+			},
+			"commands": {
+				"summarize": "Zusammenfassen",
+				"summarizeHint": "Das aktuelle Projekt, den Zyklus oder die Seite",
+				"chart": "Diagramm",
+				"chartHint": "Ein Diagramm aus deinen Daten zeichnen",
+				"chartPrefill": "Diagramm",
+				"brief": "Briefing",
+				"briefHint": "Ein Stakeholder-Briefing für das Projekt, den Zyklus oder das Modul",
+				"create": "Erstellen",
+				"createHint": "Zum Modus Erstellen wechseln",
+				"translate": "Übersetzen",
+				"translateHint": "In deine Sprache",
+				"clear": "Leeren",
+				"clearHint": "Neue Unterhaltung beginnen",
+				"skill": "Gespeicherter Skill",
+				"summarizeTurn": "{{name}} zusammenfassen",
+				"briefTurn": "Briefing zu {{name}}",
+				"summarizeNeedsScope": "Öffne ein Projekt, einen Zyklus oder eine Seite oder füge eines mit @ hinzu, um es zusammenzufassen.",
+				"briefNeedsScope": "Öffne ein Projekt, einen Zyklus oder ein Modul oder füge eines mit @ hinzu, um ein Briefing zu erhalten.",
+				"buildUnavailable": "Der Modus Erstellen ist hier nicht verfügbar.",
+				"translatePrompt": "Übersetze deine letzte Antwort in folgende Sprache: {{language}}.",
+				"translatePrefill": "Übersetzen in {{language}}:",
+				"this": {
+					"page": "diese Seite",
+					"cycle": "diesen Zyklus",
+					"module": "dieses Modul",
+					"project": "dieses Projekt"
+				}
+			},
+			"conversation": {
+				"rename": "Umbenennen",
+				"pin": "Anheften",
+				"unpin": "Lösen",
+				"export": "Als Markdown exportieren",
+				"saveAsPage": "Als Seite speichern",
+				"delete": "Unterhaltung löschen"
+			},
+			"save": {
+				"title": "Als Seite speichern",
+				"description": "Die Seite erhält den Text mit Links zu seinen Quellen.",
+				"pageTitle": "Titel",
+				"project": "Projekt",
+				"noProjects": "Es gibt kein Projekt, in dem die Seite gespeichert werden kann.",
+				"submit": "Seite speichern",
+				"saved": "Als Seite gespeichert",
+				"open": "Seite öffnen",
+				"error": "Die Seite konnte nicht gespeichert werden"
+			}
+		},
+		"writing": {
+			"aiButton": "KI",
+			"menuLabel": "KI-Aktionen",
+			"actions": {
+				"summarize": "Zusammenfassen",
+				"improve": "Text verbessern",
+				"shorter": "Kürzer fassen",
+				"longer": "Ausführlicher machen",
+				"fix": "Rechtschreibung & Grammatik korrigieren",
+				"translate": "Übersetzen in…",
+				"custom": "KI bitten…"
+			},
+			"customPlaceholder": "Sag der KI, was sie tun soll, z. B. eine Checkliste daraus machen",
+			"customSubmit": "Erstellen",
+			"preview": {
+				"label": "KI-Vorschlag",
+				"generating": "Schreibt…",
+				"editLabel": "Vorschlag bearbeiten",
+				"replace": "Ersetzen",
+				"insertBelow": "Darunter einfügen",
+				"discard": "Verwerfen",
+				"stop": "Stoppen",
+				"retry": "Erneut versuchen",
+				"empty": "Die KI hat nichts geliefert. Versuche es erneut oder formuliere um.",
+				"note": "KI kann Fehler machen. Prüfe das Ergebnis, bevor du es verwendest.",
+				"incomplete": "Der Entwurf wurde vor dem Ende abgebrochen. Prüfe ihn oder versuche es erneut."
+			},
+			"summary": {
+				"button": "Zusammenfassen",
+				"cycle": "Zyklus zusammenfassen",
+				"project": "Projekt zusammenfassen",
+				"page": "Seite zusammenfassen",
+				"title": "KI-Zusammenfassung",
+				"generating": "Fasst zusammen…",
+				"dismiss": "Schließen",
+				"copy": "Kopieren",
+				"copied": "Kopiert",
+				"copyError": "Die Zusammenfassung konnte nicht kopiert werden.",
+				"saveAsPage": "Als Seite speichern",
+				"pageTitle": "Zusammenfassung: {{name}}",
+				"saved": "Zusammenfassung als Seite gespeichert",
+				"saveError": "Die Seite konnte nicht gespeichert werden.",
+				"openPage": "Seite öffnen",
+				"task": "Aufgabe zusammenfassen",
+				"saveAsComment": "Als Kommentar speichern",
+				"commentSaved": "Zusammenfassung als Kommentar gespeichert",
+				"commentError": "Der Kommentar konnte nicht gespeichert werden."
+			},
+			"spec": {
+				"button": "Spezifikation entwerfen",
+				"title": "Spezifikation entwerfen",
+				"description": "Die KI entwirft aus dieser Aufgabe und ihrem Kontext eine Spezifikationsseite. Prüfe und bearbeite sie und erstelle dann die Seite; sie verlinkt zurück auf die Aufgabe.",
+				"generating": "Entwirft…",
+				"titleLabel": "Seitentitel",
+				"bodyLabel": "Spezifikation",
+				"edit": "Bearbeiten",
+				"preview": "Vorschau",
+				"create": "Seite erstellen",
+				"pageTitle": "Spezifikation: {{title}}",
+				"created": "Spezifikationsseite erstellt",
+				"createError": "Die Seite konnte nicht erstellt werden."
+			},
+			"taskWriter": {
+				"button": "Mit KI schreiben",
+				"draft": "Aus dem Titel entwerfen",
+				"improve": "Verbessern",
+				"instruction": "Optional: Worauf soll es achten?",
+				"hint": "Nichts ändert sich, bis du „Übernehmen“ wählst.",
+				"writing": "Wird geschrieben…",
+				"use": "Übernehmen",
+				"retry": "Erneut versuchen",
+				"discard": "Verwerfen",
+				"close": "KI-Schreiben schließen"
+			},
+			"feedback": {
+				"good": "Gute Antwort",
+				"bad": "Schlechte Antwort",
+				"thanks": "Danke für das Feedback"
+			},
+			"tone": {
+				"label": "Ton: {{tone}}",
+				"legend": "Ton",
+				"default": "Standard",
+				"professional": "Professionell",
+				"casual": "Locker"
+			},
+			"block": {
+				"command": "KI-Block",
+				"title": "KI-Block",
+				"customPlaceholder": "Was soll die KI aus dieser Seite schreiben?",
+				"stale": "Die Seite wurde nach dem Erzeugen geändert. Neu erzeugen, um die Änderungen einzubeziehen.",
+				"accept": "Übernehmen",
+				"regenerate": "Neu erzeugen",
+				"presets": {
+					"tldr": "Zusammenfassung (TL;DR)",
+					"faq": "FAQ",
+					"action_items": "Aufgabenpunkte",
+					"custom": "Eigene Anweisung"
+				}
+			},
+			"title": {
+				"suggest": "Titel vorschlagen",
+				"thinking": "Titel wird überlegt…",
+				"use": "Diesen Titel verwenden",
+				"another": "Anderen vorschlagen"
+			},
+			"comment": {
+				"menuLabel": "KI-Hilfe für diesen Kommentar",
+				"previewLabel": "KI-Vorschlag für deinen Kommentar",
+				"replace": "Entwurf ersetzen"
+			}
+		},
+		"errors": {
+			"AI_DISABLED": "KI ist hier ausgeschaltet.",
+			"AI_NOT_CONFIGURED": "KI ist nicht richtig eingerichtet. Bitte einen Admin, die KI-Einstellungen zu prüfen.",
+			"AI_ROUTE_BLOCKED": "Diese Daten dürfen laut deinen Datenschutzeinstellungen nicht an ein KI-Modell gesendet werden.",
+			"AI_BUDGET_EXCEEDED": "Das KI-Limit ist erreicht. Versuche es später erneut oder bitte einen Admin, es zu erhöhen.",
+			"AI_RATE_LIMITED": "Zu viele KI-Anfragen auf einmal. Warte kurz und versuche es erneut.",
+			"AI_REFUSED": "Das KI-Modell hat diese Anfrage abgelehnt.",
+			"AI_PROVIDER_ERROR": "Der KI-Dienst hat nicht geantwortet. Versuche es gleich noch einmal.",
+			"unknown": "Bei der KI ist etwas schiefgelaufen. Versuche es erneut.",
+			"AI_HISTORY_OFF": "Dieser Workspace speichert KI-Unterhaltungen nicht auf dem Server. Dein Verlauf bleibt in diesem Browser."
+		},
+		"features": {
+			"connection_test": "Verbindungstests",
+			"ask": "Fragen",
+			"summarize": "Zusammenfassungen",
+			"editor_assist": "Schreibhilfe",
+			"spec_draft": "Spezifikationsentwürfe",
+			"duplicate_check": "Duplikatprüfungen",
+			"talk_to_build": "Planung per Prompt",
+			"triage": "Triage-Vorschläge",
+			"translate": "Übersetzungen",
+			"brief": "Stakeholder-Briefings",
+			"agent_run": "Agenten",
+			"rule_compiler": "Automatisierungsregeln",
+			"capture": "Als Aufgabe erfassen",
+			"estimate": "Schätzungen",
+			"retro": "Retrospektiven",
+			"my_brief": "Mein Briefing",
+			"embedding": "Suchindizierung",
+			"coding_handoff": "Briefings für Coding-Agenten",
+			"build_chat": "Im Chat erstellen",
+			"nl_filter": "Filter in natürlicher Sprache",
+			"inbox_digest": "Posteingangs-Zusammenfassungen",
+			"speech": "Sprache zu Text"
+		},
+		"providers": {
+			"anthropic": "Anthropic (Claude)",
+			"openai_compatible": "OpenAI-kompatibel",
+			"fake": "Simuliert (nur für Tests)"
+		},
+		"destinations": {
+			"cloud": "Cloud-Anbieter",
+			"local": "Lokales Modell"
+		},
+		"tiers": {
+			"fast": "Schnelles Modell",
+			"fastHint": "Schnelle Aufgaben: Umformulieren, Labels, kurze Zusammenfassungen.",
+			"balanced": "Ausgewogenes Modell",
+			"balancedHint": "Die meisten Funktionen: Antworten, Zusammenfassungen, Entwürfe.",
+			"deep": "Gründliches Modell",
+			"deepHint": "Anspruchsvolle Arbeit: Planung und Agenten."
+		},
+		"test": {
+			"title": "Verbindung testen",
+			"workspaceHint": "Sendet eine winzige Anfrage auf demselben Weg wie die KI-Aufrufe dieses Workspace.",
+			"button": "Verbindung testen",
+			"success": "Verbunden mit {{model}} in {{ms}} ms"
+		},
+		"usage": {
+			"title": "Nutzung",
+			"subtitle": "KI-Aufrufe, Tokens und Kosten nach Listenpreis. Es werden nur Zählwerte gespeichert, nie Prompts oder Antworten.",
+			"rangeLabel": "Zeitraum",
+			"range": {
+				"thisMonth": "Dieser Monat",
+				"last30Days": "Letzte 30 Tage",
+				"last90Days": "Letzte 90 Tage"
+			},
+			"calls": "Aufrufe",
+			"callsCount_one": "{{count}} Aufruf",
+			"callsCount_other": "{{count}} Aufrufe",
+			"tokens": "Token-Verbrauch",
+			"tokensSplit": "{{input}} Eingabe · {{output}} Ausgabe",
+			"cost": "Kosten",
+			"costHint": "Nach Listenpreis; lokale Modelle zählen als $0.",
+			"day": "Tag",
+			"byDay": "Aufrufe pro Tag",
+			"byFeature": "Nach Funktion",
+			"byModel": "Nach Modell",
+			"byUser": "Nach Person",
+			"byWorkspace": "Nach Workspace",
+			"empty": "Keine KI-Nutzung in diesem Zeitraum.",
+			"unknownUser": "Entferntes Konto",
+			"loadError": "KI-Nutzung konnte nicht geladen werden.",
+			"retry": "Erneut versuchen",
+			"exportCsv": "CSV exportieren",
+			"exportError": "Die Nutzung konnte nicht exportiert werden.",
+			"feedbackTitle": "Bewertungen der Antworten",
+			"feedbackOverall": "{{percent}} % positiv von {{total}} Bewertungen",
+			"feedbackUp": "Daumen hoch",
+			"feedbackDown": "Daumen runter",
+			"feedbackRate": "Positiv"
+		},
+		"instance": {
+			"title": "KI",
+			"subtitle": "Erlaube Workspaces, KI zu nutzen: Wähle Anbieter und Modelle und lege fest, wohin Daten gehen dürfen. KI bleibt aus, bis du sie einschaltest, und jeder Workspace muss sie ebenfalls aktivieren.",
+			"statusTitle": "KI auf diesem Server",
+			"statusReady": "Bereit",
+			"statusNotConfigured": "Nicht eingerichtet",
+			"statusOff": "Aus",
+			"enable": "KI erlauben",
+			"enableHint": "Workspaces können KI-Funktionen einschalten, sobald dies aktiv und ein Anbieter eingerichtet ist.",
+			"providerTitle": "Anbieter",
+			"providerDescription": "Der Anbieter der Cloud-Modelle. Lass ein Modell leer, um den Standard des Anbieters für diese Stufe zu verwenden.",
+			"provider": "Anbieter",
+			"providerHint": "Anthropic Claude wird empfohlen. OpenAI-kompatibel umfasst OpenAI, Azure, OpenRouter, vLLM und LM Studio.",
+			"anthropicKey": "Anthropic-API-Schlüssel",
+			"anthropicKeyHint": "Wird verschlüsselt gespeichert und nie wieder angezeigt.",
+			"openaiBaseUrl": "Basis-URL",
+			"openaiBaseUrlHint": "Inklusive Versionspfad, zum Beispiel https://api.openai.com/v1. Muss eine öffentliche Adresse sein.",
+			"openaiKey": "API-Schlüssel",
+			"save": "Speichern",
+			"testCloud": "Anbieter testen",
+			"testLocal": "Lokales Modell testen",
+			"localTitle": "Lokales Modell",
+			"localDescription": "Ein OpenAI-kompatibler Server in deinem eigenen Netzwerk, etwa Ollama. Eingeschränkte Daten gehen ausschließlich hierhin.",
+			"localBaseUrl": "Basis-URL",
+			"localBaseUrlHint": "Zum Beispiel http://ollama:11434/v1. Private Adressen sind hier erlaubt.",
+			"localModel": "Modell",
+			"localKey": "API-Schlüssel",
+			"localKeyHint": "Optional. Nur nötig, wenn dein Server einen verlangt, etwa vLLM mit --api-key. Wird verschlüsselt gespeichert.",
+			"localOnly": "Nur-lokal-Modus",
+			"localOnlyHint": "Jeder KI-Aufruf geht an das lokale Modell; nichts wird an einen Cloud-Anbieter gesendet.",
+			"privacyTitle": "Datenschutz",
+			"privacyDescription": "Wohin welche Art von Daten gehen darf. Workspaces können strenger sein, nie lockerer.",
+			"restrictedRoute": "Eingeschränkte Projekte",
+			"restrictedRouteHint": "Daten aus eingeschränkten Projekten, wenn ein Workspace der KI erlaubt, sie zu lesen.",
+			"privateRoute": "Andere Workspace-Daten",
+			"privateRouteHint": "Aufgaben, Seiten und Kommentare aus offenen Projekten.",
+			"routeBlocked": "Nie gesendet",
+			"routeLocal": "Nur lokales Modell",
+			"routeCloud": "Cloud-Anbieter erlaubt",
+			"redaction": "Personenbezogene Daten schwärzen",
+			"redactionHint": "Ersetzt E-Mail-Adressen, Telefonnummern, Kartennummern und Tokens vor Cloud-Aufrufen durch Platzhalter. Antworten zeigen wieder die echten Werte.",
+			"zeroRetention": "Keine Datenspeicherung",
+			"zeroRetentionHint": "Halte fest, dass deine Vereinbarung mit dem Anbieter keine Datenspeicherung vorsieht. Margaya zeigt es an; der Anbieter setzt es durch.",
+			"allowWorkspaceKeys": "Workspace-Schlüssel erlauben",
+			"allowWorkspaceKeysHint": "Workspaces dürfen ihren eigenen Anbieterschlüssel verwenden und ihre Nutzung selbst bezahlen.",
+			"embeddingsTitle": "Vektor-Embeddings",
+			"embeddingsDescription": "Optional, für die semantische Suche. Jeder OpenAI-kompatible Embeddings-Endpunkt funktioniert. Die Datenbank braucht außerdem die Erweiterung pgvector; fehlt eines davon, bleibt es bei reiner Volltextsuche.",
+			"vectorReady": "pgvector bereit",
+			"vectorAvailable": "pgvector verfügbar",
+			"vectorUnavailable": "pgvector nicht verfügbar",
+			"embeddingsBaseUrl": "Basis-URL",
+			"embeddingsModel": "Modell",
+			"embeddingsKey": "API-Schlüssel",
+			"invalidUrl": "Gib eine http- oder https-URL ein.",
+			"usageTitle": "Nutzung über alle Workspaces",
+			"usageDescription": "KI-Aufrufe auf diesem Server nach Workspace und Modell. Es werden nur Zählwerte gespeichert.",
+			"chatTitle": "Chat",
+			"chatDescription": "Wie Reasoning-Modelle nachdenken und was Personen davon sehen.",
+			"showReasoning": "Denkprozess anzeigen",
+			"showReasoningHint": "Zeigt der fragenden Person, wie ein Reasoning-Modell nachdenkt. Das wird nie gespeichert. Aus: nur, wie lange es nachgedacht hat.",
+			"localThinking": "Nachdenken bei lokalen Modellen",
+			"localThinkingHint": "Aus antwortet schneller; an lässt lokale Reasoning-Modelle zuerst nachdenken.",
+			"localThinkingOff": "Aus",
+			"localThinkingOn": "An",
+			"webSearchTitle": "Websuche",
+			"webSearchDescription": "Ein Suchdienst, den Antworten nutzen können, wenn ein Workspace die Websuche einschaltet.",
+			"webSearchProvider": "Suchanbieter",
+			"webSearchProviderHint": "SearXNG läuft auf deinem eigenen Server; Brave Search und Tavily brauchen einen API-Schlüssel.",
+			"webSearchOff": "Aus",
+			"webSearchUrl": "SearXNG-URL",
+			"webSearchUrlHint": "Die JSON-API muss aktiviert sein.",
+			"webSearchKey": "API-Schlüssel",
+			"webSearchKeyHint": "Für Brave Search oder Tavily.",
+			"speechTitle": "Sprache zu Text",
+			"speechDescription": "Spracheingabe im Chat. Ohne sie erkennen Browser, die das können, Sprache selbst.",
+			"speechBaseUrl": "Endpunkt-URL",
+			"speechBaseUrlHint": "Ein OpenAI-kompatibler Transkriptions-Endpunkt, zum Beispiel ein lokaler Whisper-Server.",
+			"speechModel": "Modell",
+			"speechKey": "API-Schlüssel"
+		},
+		"workspace": {
+			"navLabel": "KI",
+			"title": "KI",
+			"subtitle": "Schalte KI-Funktionen für diesen Workspace ein, lege Limits fest und wähle, wie mit privaten Daten umgegangen wird.",
+			"noAccess": "Du brauchst die Berechtigung zum Verwalten der KI, um diese Einstellungen zu sehen.",
+			"loadError": "Die KI-Einstellungen konnten nicht geladen werden.",
+			"statusTitle": "KI in diesem Workspace",
+			"statusDescription": "KI bleibt aus, bis du sie einschaltest. Jedes Projekt kann sie in seinen Funktionen trotzdem ausschalten.",
+			"enable": "KI einschalten",
+			"enableHint": "Mitglieder mit der Berechtigung „KI nutzen“ sehen KI-Funktionen in Projekten, die sie erlauben.",
+			"enabledToast": "KI ist für diesen Workspace eingeschaltet",
+			"disabledToast": "KI ist für diesen Workspace ausgeschaltet",
+			"offOnInstance": "Ein Instanz-Admin hat KI auf diesem Server noch nicht erlaubt.",
+			"notConfigured": "KI ist erlaubt, aber noch kein Anbieter ist eingerichtet. Frag einen Instanz-Admin.",
+			"whereDataGoes": "Wohin Daten gehen",
+			"whereDataGoesHint": "Das Modell, das die KI-Anfragen dieses Workspace erhält.",
+			"zeroRetention": "Keine Speicherung",
+			"limitsTitle": "Nutzungslimits",
+			"limitsDescription": "Diesen Monat ausgegeben: {{spent}}. Anfragen werden gestoppt, wenn ein Limit erreicht ist.",
+			"monthlyCap": "Monatsbudget (USD)",
+			"monthlyCapHint": "Nach Listenpreis, für den gesamten Workspace. Leer lassen für kein Limit.",
+			"dailyTokens": "Tägliche Tokens pro Person",
+			"dailyTokensHint": "Eingabe- und Ausgabe-Tokens, die jede Person pro Tag (UTC) nutzen darf. Leer lassen für kein Limit.",
+			"noLimit": "Kein Limit",
+			"invalidNumber": "Gib eine Zahl ab 0 ein.",
+			"saveLimits": "Limits speichern",
+			"monthSpendOfCap": "{{spent}} von {{cap}} diesen Monat verbraucht.",
+			"privacyTitle": "Datenschutz",
+			"privacyDescription": "KI sieht immer nur, was die fragende Person sehen kann.",
+			"includeRestricted": "Eingeschränkte Projekte einbeziehen",
+			"includeRestrictedHint": "Erlaube der KI, eingeschränkte Projekte für Personen zu lesen, die sie sehen können. Deren Daten gehen nur dorthin, wo der Server eingeschränkte Daten erlaubt.",
+			"localOnly": "Nur lokales Modell",
+			"localOnlyHint": "Sendet jede KI-Anfrage an das lokale Modell des Servers.",
+			"localOnlyForced": "Der Server ist im Nur-lokal-Modus.",
+			"localOnlyUnavailable": "Dieser Server hat kein lokales Modell.",
+			"redactPii": "Personenbezogene Daten schwärzen",
+			"redactPiiHint": "Ersetzt E-Mail-Adressen, Telefonnummern, Kartennummern und Tokens durch Platzhalter, bevor Anfragen den Server verlassen.",
+			"redactPiiForced": "Immer an: Der Server schwärzt jede Cloud-Anfrage.",
+			"approval": "KI-Änderungen freigeben",
+			"approvalHint": "Von der KI vorgeschlagene Änderungen warten immer auf die Freigabe durch eine Person.",
+			"semanticSearch": "Semantische Suche",
+			"semanticSearchHint": "Fragen und die Duplikatprüfung finden Aufgaben, Seiten und Kommentare auch nach ihrer Bedeutung, nicht nur nach ihren Wörtern. Inhalte werden mit dem Embeddings-Modell des Servers indiziert.",
+			"semanticUnavailable": "pgvector ist in der Datenbank dieses Servers nicht verfügbar, daher nutzt die Suche nur Volltext.",
+			"semanticNoEndpoint": "Dieser Server hat keinen Embeddings-Endpunkt, daher nutzt die Suche nur Volltext.",
+			"semanticIndexed_one": "{{count}} Eintrag indiziert",
+			"semanticIndexed_other": "{{count}} Einträge indiziert",
+			"semanticPaused": "Die Indizierung ist pausiert. {{reason}}",
+			"semanticEnabledToast": "Die semantische Suche ist an. Die Indizierung läuft im Hintergrund.",
+			"semanticDisabledToast": "Die semantische Suche ist aus, ihr Index wurde gelöscht.",
+			"keyTitle": "Eigener API-Schlüssel",
+			"keyDescription": "Nutze das eigene Anbieterkonto deines Workspace statt dem des Servers. Der Schlüssel wird verschlüsselt gespeichert und nie wieder angezeigt.",
+			"keyCurrent": "Gespeicherter Schlüssel",
+			"keyEnding": "Endet auf {{last4}}",
+			"keyUnreadable": "Der gespeicherte Schlüssel kann nicht mehr gelesen werden. Gib ihn erneut ein.",
+			"keyRemove": "Entfernen",
+			"keyProvider": "Anbieter",
+			"keyValue": "API-Schlüssel",
+			"keyReplace": "Schlüssel ersetzen",
+			"keyHint": "Ein Anthropic-API-Schlüssel, der mit sk-ant- beginnt.",
+			"keyOpenAiHint": "Wird mit dem OpenAI-kompatiblen Endpunkt des Servers verwendet.",
+			"keyPlaceholder": "Schlüssel einfügen",
+			"keyTooShort": "Dieser Schlüssel sieht zu kurz aus.",
+			"keySave": "Schlüssel speichern",
+			"keySavedToast": "Schlüssel gespeichert",
+			"keyRemovedToast": "Schlüssel entfernt",
+			"saved": "KI-Einstellungen gespeichert",
+			"saveError": "Die KI-Einstellungen konnten nicht gespeichert werden.",
+			"chatTitle": "KI-Chat",
+			"chatDescription": "Was der Chat für Personen in diesem Workspace tun darf.",
+			"webSearch": "Websuche",
+			"webSearchHint": "Personen können Antworten im Web suchen lassen. Ergebnisse werden als Webquellen zitiert.",
+			"webSearchUnavailable": "Auf dieser Instanz ist keine Websuche eingerichtet.",
+			"webSearchLocalOnly": "Wird nicht genutzt, solange KI nur lokale Modelle verwendet.",
+			"storeConversations": "Chatverlauf auf dem Server speichern",
+			"storeConversationsHint": "Die Unterhaltungen jeder Person werden im Workspace gespeichert, damit sie sie auf jedem Gerät wieder öffnen kann. Aus: Sie bleiben nur im jeweiligen Browser.",
+			"allowAutopilot": "Autopilot erlauben",
+			"allowAutopilotHint": "Im Modus Erstellen dürfen Änderungen ohne Bestätigung übernommen werden. Jede Änderung wird trotzdem protokolliert und kann rückgängig gemacht werden."
+		},
+		"agents": {
+			"navLabel": "Agenten",
+			"title": "Agenten",
+			"subtitle": "KI-Agenten sind Workspace-Mitglieder, die Aufgaben für die Person erledigen, die sie darum bittet – nie mit mehr Rechten als diese Person.",
+			"listTitle": "Agenten im Workspace",
+			"badge": "Agent",
+			"noAccess": "Nur Personen, die die KI verwalten dürfen, können Agenten einrichten.",
+			"empty": "Noch keine Agenten. Erstelle einen und erwähne ihn dann in einem Kommentar, weise ihm eine Aufgabe zu oder starte ihn aus einer Aufgabe.",
+			"loadError": "Die Agenten konnten nicht geladen werden.",
+			"retry": "Erneut versuchen",
+			"create": "Neuer Agent",
+			"edit": "Agent bearbeiten",
+			"dialogHint": "Agenten können wie Personen zugewiesen und erwähnt werden. Sie können sich nicht anmelden und werden nicht als Plätze abgerechnet.",
+			"save": "Speichern",
+			"cancel": "Abbrechen",
+			"created": "Agent erstellt",
+			"saved": "Agent gespeichert",
+			"deleted": "Agent gelöscht",
+			"saveError": "Der Agent konnte nicht gespeichert werden. Versuche es erneut.",
+			"enable": "Einschalten",
+			"disable": "Ausschalten",
+			"off": "Aus",
+			"delete": "Löschen",
+			"deleteTitle": "{{name}} löschen?",
+			"deleteBody": "Der Agent verlässt den Workspace. Seine Kommentare und sein Verlauf bleiben erhalten, ebenso seine Ausführungen im Agent-Desk.",
+			"spend": "{{spent}} in diesem Monat",
+			"spendOfBudget": "{{spent}} von {{budget}} in diesem Monat",
+			"activityFilter": "Agenten",
+			"fields": {
+				"name": "Name",
+				"nameTaken": "Ein Agent oder Mitglied dieses Workspaces trägt diesen Namen bereits. Wähle einen anderen.",
+				"description": "Beschreibung",
+				"descriptionPlaceholder": "Wobei dieser Agent hilft",
+				"instructions": "Anweisungen",
+				"instructionsHint": "Wie der Agent arbeiten soll. Nur Admins schreiben sie; Text in Aufgaben, Kommentaren und Seiten zählt nie als Anweisung.",
+				"role": "Rolle",
+				"roleHint": "Das Höchste, was der Agent tun darf. Jede Ausführung ist zusätzlich auf die Rechte der anfragenden Person beschränkt.",
+				"tier": "Modell",
+				"tierFast": "Schnell",
+				"tierBalanced": "Ausgewogen",
+				"tierDeep": "Gründlich",
+				"provider": "Wo er läuft",
+				"providerDefault": "Workspace-Standard",
+				"providerLocal": "Nur lokales Modell",
+				"budget": "Monatsbudget (USD)",
+				"budgetHint": "Ausführungen stoppen, sobald die Ausgaben dieses Monats es erreichen. Leer lassen für kein Agenten-Limit; die Workspace-Limits gelten weiterhin.",
+				"projects": "Projekte",
+				"projectsAll": "Alle Projekte, die seine Rolle erreicht",
+				"projectsSome": "Nur diese Projekte",
+				"projectsHint": "Läufe in anderen Projekten stoppen, und der Agent sagt, dass er dort nicht eingerichtet ist.",
+				"projectsNone": "Wähle mindestens ein Projekt.",
+				"skills": "Skills",
+				"skillsEmpty": "Noch keine geteilten Skills. In Ask gespeicherte geteilte Skills können Agenten zugewiesen werden.",
+				"skillsHint": "Der Agent folgt diesen gespeicherten Prompts, wenn sie zur Anfrage passen (bis zu 10).",
+				"webAccess": "Webzugriff",
+				"webAccessHint": "Erlaubt dem Agenten, im Web zu suchen und die Konnektoren des Workspace zu nutzen. Was er dorthin sendet, verlässt Margaya."
+			},
+			"status": {
+				"queued": "In Warteschlange",
+				"running": "Läuft",
+				"awaiting_approval": "Wartet auf Genehmigung",
+				"succeeded": "Erledigt",
+				"failed": "Fehlgeschlagen",
+				"cancelled": "Gestoppt",
+				"needs_input": "Braucht Antwort"
+			},
+			"stepStatus": {
+				"ok": "Erledigt",
+				"error": "Fehlgeschlagen",
+				"denied": "Nicht erlaubt",
+				"pending": "Wartet auf Genehmigung",
+				"applied": "Übernommen",
+				"rejected": "Abgelehnt",
+				"expired": "Abgelaufen",
+				"reverted": "Rückgängig gemacht"
+			},
+			"step": {
+				"model": "Modellaufruf"
+			},
+			"tools": {
+				"read_task": "Aufgabe lesen",
+				"read_project": "Projekt lesen",
+				"read_page": "Seite lesen",
+				"search_workspace": "Suchen",
+				"add_comment": "Kommentieren",
+				"update_task": "Aufgabe aktualisieren",
+				"move_status": "Status ändern",
+				"create_subtask": "Teilaufgabe erstellen",
+				"create_page": "Seite erstellen",
+				"link_tasks": "Aufgaben verknüpfen",
+				"delete_task": "Aufgabe löschen",
+				"bulk_move_status": "Status mehrerer Aufgaben ändern",
+				"ask_person": "Frage stellen",
+				"web_search": "Websuche",
+				"connector": "Externer Dienst: {{tool}}"
+			},
+			"runErrors": {
+				"AGENT_GONE": "Der Agent wurde gelöscht.",
+				"AGENT_DISABLED": "Der Agent ist ausgeschaltet.",
+				"AGENT_LEFT": "Der Agent ist kein Mitglied des Workspace mehr.",
+				"PRINCIPAL_LEFT": "Die anfragende Person ist kein Mitglied des Workspace mehr.",
+				"AI_USE_DENIED": "Die anfragende Person darf keine KI nutzen.",
+				"NOT_IN_SCOPE": "Die Aufgabe liegt in einem Projekt, das die KI nicht lesen darf.",
+				"TIME_LIMIT": "Die Ausführung dauerte länger als 10 Minuten und wurde gestoppt.",
+				"OUTPUT_LIMIT": "Die Antwort des Agenten wurde zu lang. Bitte um eine kleinere Änderung.",
+				"TURN_LIMIT": "Dem Agenten gingen die Schritte aus, bevor er fertig war. Bitte um eine kleinere, genauere Änderung.",
+				"INTERRUPTED": "Die Ausführung wurde unterbrochen. Bereits vorgenommene Änderungen können weiterhin rückgängig gemacht werden.",
+				"APPROVAL_EXPIRED": "Niemand hat innerhalb von 24 Stunden über die vorgeschlagenen Änderungen entschieden, daher sind sie abgelaufen.",
+				"INTERNAL": "Bei der Ausführung ist etwas schiefgelaufen.",
+				"NEEDS_INPUT_EXPIRED": "Niemand hat die Frage des Agenten innerhalb von 24 Stunden beantwortet.",
+				"OUTSIDE_AGENT_PROJECTS": "Der Agent ist nicht für dieses Projekt eingerichtet."
+			},
+			"change": {
+				"approve": "Genehmigen",
+				"reject": "Ablehnen",
+				"approved": "Änderung übernommen",
+				"rejected": "Änderung verworfen",
+				"decideError": "Deine Entscheidung konnte nicht übernommen werden. Versuche es erneut.",
+				"undo": "Rückgängig",
+				"undone": "Änderung rückgängig gemacht",
+				"undoError": "Diese Änderung konnte nicht rückgängig gemacht werden. Die Aufgabe wurde inzwischen möglicherweise geändert.",
+				"expiresAt": "Läuft ab {{time}}",
+				"before": "Vorher",
+				"after": "Nachher",
+				"openPage": "Seite öffnen",
+				"openSubtask": "Unteraufgabe öffnen",
+				"openLinked": "Verknüpfte Aufgabe öffnen",
+				"empty": "(leer)",
+				"fields": {
+					"title": "Titel",
+					"priority": "Priorität",
+					"dueDate": "Fälligkeitsdatum",
+					"description": "Beschreibung",
+					"status": "Status",
+					"statusOf": "Status von {{task}}",
+					"comment": "Kommentar",
+					"subtask": "Neue Teilaufgabe",
+					"page": "Neue Seite",
+					"relation": "Verknüpfung ({{relation}})",
+					"delete": "In den Papierkorb verschieben",
+					"connectorCall": "Aufruf an {{connector}}"
+				}
+			},
+			"inbox": {
+				"title": "{{agentName}} braucht deine Genehmigung",
+				"verb": "bittet um deine Genehmigung",
+				"cardTitle": "Vorgeschlagene Änderung"
+			},
+			"reply": {
+				"title": "{{agentName}} hat auf deine Anfrage geantwortet",
+				"verb": "hat auf deine Anfrage geantwortet",
+				"cardTitle": "Antwort des Agenten",
+				"hint": "Der Agent hat diese Antwort nicht in der Aufgabe gepostet, daher erscheint sie hier."
+			},
+			"activity": {
+				"onBehalfOf": "im Auftrag von {{name}}"
+			},
+			"run": {
+				"button": "Agent starten",
+				"title": "Einen Agenten auf diese Aufgabe ansetzen",
+				"hint": "Der Agent arbeitet höchstens mit deinen Rechten. Änderungen lassen sich rückgängig machen, und manche warten auf deine Genehmigung.",
+				"agent": "Agent",
+				"prompt": "Was soll er tun?",
+				"promptPlaceholder": "Zum Beispiel: Teile das in Teilaufgaben auf und schlage eine Priorität vor.",
+				"start": "Starten",
+				"started": "{{name}} kümmert sich darum",
+				"error": "Der Agent konnte nicht gestartet werden. Versuche es erneut.",
+				"recent": "Letzte Ausführungen für diese Aufgabe",
+				"viewInDesk": "Im Agent-Desk öffnen"
+			},
+			"desk": {
+				"nav": "Agent-Desk",
+				"title": "Agent-Desk",
+				"subtitle": "Was deine Agenten getan haben und gerade tun: jede Ausführung mit ihren Schritten, Kosten und Änderungen.",
+				"emptyTitle": "Noch keine Agenten-Ausführungen",
+				"empty": "Erwähne einen Agenten in einem Kommentar, weise ihm eine Aufgabe zu oder starte ihn aus einer Aufgabe.",
+				"allAgents": "Alle Agenten",
+				"allStatuses": "Alle Status",
+				"filterAgent": "Nach Agent filtern",
+				"filterStatus": "Nach Status filtern",
+				"approvalsTitle": "Wartet auf dich",
+				"selectRun": "Wähle eine Ausführung, um ihre Schritte und Änderungen zu sehen.",
+				"runMissing": "Diese Ausführung ist nicht verfügbar.",
+				"deletedAgent": "Gelöschter Agent",
+				"onBehalfOf": "für {{name}}",
+				"cost": "Kosten",
+				"tokensLabel": "Tokens",
+				"tokens": "Tokens: {{value}}",
+				"toolCallsLabel": "Tool-Aufrufe",
+				"summary": "Zusammenfassung",
+				"changes": "Änderungen",
+				"noChanges": "Keine Änderungen.",
+				"steps": "Schritte",
+				"cancelRun": "Ausführung stoppen",
+				"cancelled": "Ausführung gestoppt",
+				"cancelError": "Die Ausführung konnte nicht gestoppt werden.",
+				"trigger": {
+					"mention": "Erwähnt",
+					"assign": "Zugewiesen",
+					"manual": "Aus einer Aufgabe gestartet",
+					"schedule": "Geplant",
+					"automation": "Automatisierung",
+					"chat": "Folgefrage"
+				},
+				"project": "Projekt:",
+				"workedSeconds": "Arbeitete {{count}} s",
+				"workedMinutes": "Arbeitete {{count}} Min."
+			},
+			"connectors": {
+				"title": "Konnektoren",
+				"subtitle": "Externe MCP-Server, die Agenten mit Webzugriff aufrufen dürfen. Nur lesende Tools laufen sofort; alles andere wartet auf Genehmigung.",
+				"create": "Konnektor hinzufügen",
+				"edit": "Konnektor bearbeiten",
+				"delete": "Konnektor löschen",
+				"created": "Konnektor hinzugefügt",
+				"saved": "Konnektor gespeichert",
+				"deleted": "Konnektor gelöscht",
+				"saveError": "Der Konnektor konnte nicht gespeichert werden. Versuche es erneut.",
+				"empty": "Noch keine Konnektoren. Füge die Adresse eines MCP-Servers hinzu, damit Agenten mit Webzugriff seine Tools nutzen können.",
+				"shared": "Geteilt",
+				"personal": "Nur du",
+				"enable": "Einschalten",
+				"disable": "Ausschalten",
+				"test": "Testen",
+				"testOk": "Verbunden: {{count}} Tools, davon {{readOnly}} nur lesend",
+				"testError": "Der Test konnte nicht ausgeführt werden. Versuche es erneut.",
+				"errors": {
+					"DESTINATION": "Die Adresse ist kein öffentlicher Server.",
+					"TIMEOUT": "Der Server hat nicht rechtzeitig geantwortet.",
+					"NETWORK": "Der Server ist nicht erreichbar.",
+					"HTTP": "Der Server hat mit einem Fehler geantwortet ({{status}}).",
+					"TOO_LARGE": "Die Antwort des Servers war zu groß.",
+					"PROTOCOL": "Das sieht nicht nach einem MCP-Server aus.",
+					"RPC": "Der MCP-Server hat die Anfrage abgelehnt.",
+					"SECRET_UNREADABLE": "Das gespeicherte Secret kann nicht mehr gelesen werden. Gib es erneut ein."
+				},
+				"secretHint": "Secret: ••••{{last4}}",
+				"dialogHint": "Margaya verbindet sich über Streamable HTTP. Secrets werden verschlüsselt gespeichert und nie wieder angezeigt.",
+				"name": "Name",
+				"url": "Server-URL",
+				"urlHint": "Der MCP-Endpunkt, zum Beispiel https://mcp.example.com/mcp. Er muss im öffentlichen Internet erreichbar sein.",
+				"auth": "Authentifizierung",
+				"authHeader": "Secret in einem Header",
+				"authNone": "Keine",
+				"headerName": "Header-Name",
+				"secret": "Secret",
+				"secretKeep": "Leer lassen, um das aktuelle Secret zu behalten",
+				"secretHelp": "Der vollständige Wert des Headers, zum Beispiel Bearer gefolgt von einem Token.",
+				"sharedToggle": "Mit dem Workspace teilen",
+				"sharedHint": "Agenten nutzen geteilte Konnektoren in jedem Lauf. Schalte das aus, um ihn nur für Läufe in deinem Auftrag zu verwenden.",
+				"deleteTitle": "{{name}} löschen?",
+				"deleteBody": "Agenten können seine Tools nicht mehr nutzen, und sein gespeichertes Secret wird gelöscht."
+			},
+			"followUp": {
+				"label": "Dem Agenten antworten",
+				"placeholder": "Stelle eine Folgefrage oder sag, was als Nächstes zu tun ist …",
+				"send": "Senden",
+				"error": "Die Folgefrage konnte nicht gestartet werden. Versuche es erneut."
+			},
+			"needsInput": {
+				"title": "Der Agent hat eine Frage",
+				"answerLabel": "Deine Antwort",
+				"placeholder": "Antwort eingeben …",
+				"reply": "Antworten",
+				"sent": "Antwort gesendet. Der Agent macht weiter.",
+				"error": "Deine Antwort konnte nicht gesendet werden. Versuche es erneut.",
+				"hint": "Unbeantwortete Fragen verfallen nach 24 Stunden.",
+				"waiting": "Der Agent wartet auf eine Antwort der Person, die ihn beauftragt hat.",
+				"inboxHint": "Der Lauf ist pausiert, bis du antwortest.",
+				"answer": "Im Agent-Desk antworten",
+				"notificationTitle": "{{agentName}} hat eine Frage",
+				"verb": "hat eine Frage an dich"
+			},
+			"schedules": {
+				"open": "Zeitpläne von {{name}}",
+				"title": "Zeitpläne: {{name}}",
+				"hint": "Lass den Agenten nach Zeitplan laufen. Läufe handeln für die Person, die den Zeitplan zuletzt gespeichert hat, mit höchstens deren Rechten.",
+				"empty": "Noch keine Zeitpläne.",
+				"create": "Neuer Zeitplan",
+				"edit": "Zeitplan bearbeiten",
+				"delete": "Zeitplan löschen",
+				"deleteBody": "Diesen Zeitplan löschen? Frühere Läufe bleiben im Agent-Desk.",
+				"deleted": "Zeitplan gelöscht",
+				"saved": "Zeitplan gespeichert",
+				"saveError": "Der Zeitplan konnte nicht gespeichert werden. Versuche es erneut.",
+				"enable": "Zeitplan einschalten",
+				"disable": "Zeitplan ausschalten",
+				"enabled": "An",
+				"when": "Wann",
+				"presets": {
+					"weekdays": "Jeden Werktag um 9:00",
+					"mondays": "Jeden Montag um 9:00",
+					"monthly": "Am Monatsersten um 9:00",
+					"custom": "Benutzerdefiniert (Cron)"
+				},
+				"customLabel": "Cron: {{cron}}",
+				"cron": "Cron-Ausdruck",
+				"cronHint": "Fünf Felder: Minute, Stunde, Tag im Monat, Monat, Wochentag. Höchstens alle 15 Minuten.",
+				"timezone": "Zeitzone",
+				"project": "Projekt",
+				"chooseProject": "Projekt wählen",
+				"task": "Aufgabe",
+				"noTask": "Keine Aufgabe (ganzes Projekt)",
+				"taskHint": "Ohne Aufgabe arbeitet der Agent am Projekt und legt Berichte auf einer Seite ab.",
+				"projectLevel": "Ganzes Projekt",
+				"prompt": "Was soll er tun?",
+				"promptPlaceholder": "Zum Beispiel: Fasse zusammen, was sich seit gestern geändert hat.",
+				"nextRun": "Nächster Lauf {{time}}",
+				"runsAs": "Läuft für {{name}}",
+				"runsAsHint": "Durch das Speichern handeln diese Läufe für dich. Der Zeitplan schaltet sich aus, wenn du den Workspace verlässt oder den KI-Zugriff verlierst.",
+				"errors": {
+					"CRON_INVALID": "Gib fünf Cron-Felder ein: Minute, Stunde, Tag, Monat, Wochentag.",
+					"CRON_TOO_FREQUENT": "Ein Zeitplan darf höchstens alle 15 Minuten laufen.",
+					"CRON_NEVER": "Dieser Zeitplan würde nie laufen.",
+					"TIMEZONE_INVALID": "Wähle eine gültige Zeitzone.",
+					"OUTSIDE_AGENT_PROJECTS": "Dieser Agent ist nicht für dieses Projekt eingerichtet."
+				}
+			},
+			"templates": {
+				"title": "Vorlage",
+				"blank": "Leerer Agent",
+				"blankHint": "Schreibe die Anweisungen selbst.",
+				"triage": {
+					"name": "Triage",
+					"description": "Räumt neue Aufgaben auf: klare Titel, Prioritäten und Duplikat-Links."
+				},
+				"standup": {
+					"name": "Standup",
+					"description": "Schreibt eine tägliche Standup-Zusammenfassung auf eine Projektseite."
+				},
+				"specWriter": {
+					"name": "Spezifikationsautor",
+					"description": "Macht aus einer Aufgabe eine Spezifikationsseite mit Akzeptanzkriterien."
+				},
+				"deliveryRisk": {
+					"name": "Lieferrisiko",
+					"description": "Meldet jede Woche überfällige, blockierte und herrenlose Arbeit."
+				},
+				"feedback": {
+					"name": "Kundenfeedback",
+					"description": "Ordnet Kundenfeedback in Themen mit Beispielen."
+				},
+				"triggers": {
+					"mention": "Erwähnung",
+					"assign": "Zuweisung",
+					"schedule": "Zeitplan",
+					"automation": "Automatisierung"
+				}
+			}
+		},
+		"capture": {
+			"button": "Erfassen",
+			"buttonHint": "Neu aus Screenshot, Aufnahme oder Transkript",
+			"title": "Neue Anfragen aus einer Erfassung",
+			"description": "Füge Screenshots, eine Bildschirmaufnahme oder Besprechungsnotizen hinzu. Die KI schlägt Anfragen vor; erstellt wird erst, wenn du bestätigst.",
+			"tabs": {
+				"screenshot": "Screenshots",
+				"recording": "Aufnahme",
+				"transcript": "Transkript"
+			},
+			"dropzone": "Screenshots einfügen, ablegen oder auswählen",
+			"dropzoneHint": "PNG, JPEG oder WebP, bis zu {{count}} Bilder. Standort- und Kameradaten werden entfernt.",
+			"chooseRecording": "Bildschirmaufnahme auswählen",
+			"recordingHint": "Nur {{count}} Standbilder werden an die KI gesendet. Das Video bleibt auf deinem Gerät.",
+			"notes": "Notizen (optional)",
+			"notesPlaceholder": "Was hast du gemacht, und was ist schiefgelaufen?",
+			"transcript": "Transkript oder Besprechungsnotizen",
+			"transcriptPlaceholder": "Füge das Transkript oder die Notizen ein. Jede Aufgabe wird zu einer eigenen Anfrage.",
+			"remove": "{{name}} entfernen",
+			"tooMany": "Höchstens {{count}} Bilder pro Erfassung.",
+			"mediaErrors": {
+				"type": "Dieser Dateityp wird nicht unterstützt.",
+				"tooLarge": "Diese Datei ist zu groß.",
+				"unreadable": "Diese Datei konnte nicht gelesen werden."
+			},
+			"preparing": "Bilder werden vorbereitet…",
+			"analyze": "Anfragen vorschlagen",
+			"analyzing": "Erfassung wird gelesen…",
+			"reviewTitle": "Vorgeschlagene Anfragen prüfen",
+			"reviewDescription": "Bearbeite Anfragen oder lass sie weg. Erstellt wird erst, wenn du bestätigst.",
+			"empty": "In dieser Erfassung wurden keine Anfragen gefunden.",
+			"include": "Diese Anfrage übernehmen",
+			"titleLabel": "Titel",
+			"descriptionLabel": "Beschreibung",
+			"priorityLabel": "Priorität",
+			"labelsLabel": "Vorgeschlagene Labels",
+			"assignTo": "{{name}} zuweisen",
+			"attachNote": "Anzuhängende Bilder: {{count}}",
+			"attachNotAllowed": "Bilder können nicht angehängt werden: Dafür brauchst du die Berechtigung, Aufgaben zu bearbeiten.",
+			"back": "Zurück",
+			"create": "Anfragen erstellen ({{count}})",
+			"created": "Erstellte Anfragen: {{count}}",
+			"extrasFailed": "Einige Labels, Verantwortliche oder Anhänge konnten nicht hinzugefügt werden.",
+			"createError": "Die Anfragen konnten nicht erstellt werden.",
+			"draftFromImages": "Aus Bildern entwerfen",
+			"drafting": "Wird entworfen…",
+			"sections": {
+				"steps": "Schritte zur Reproduktion",
+				"expected": "Erwartet",
+				"actual": "Tatsächlich",
+				"environment": "Umgebung"
+			}
+		},
+		"codingAgent": {
+			"button": "An Coding-Agenten senden",
+			"dialogTitle": "An einen Coding-Agenten senden",
+			"dialogDescription": "Margaya erstellt mit diesem Briefing ein Issue im Repository. Prüfe und bearbeite es vor dem Senden.",
+			"repository": "Repository",
+			"profile": "Coding-Agent",
+			"github": "GitHub",
+			"gitea": "Gitea",
+			"notReady": "Die Integration dieses Repositorys kann noch keine Issues erstellen. Prüfe sie in den Integrationseinstellungen des Projekts.",
+			"noProfiles": "Kein Coding-Agent-Profil funktioniert mit diesem Repository.",
+			"useAi": "Mit KI zusammenfassen",
+			"regenerate": "Neu erstellen",
+			"preparing": "Briefing wird erstellt…",
+			"error": "Das Briefing konnte nicht erstellt werden.",
+			"titleLabel": "Issue-Titel",
+			"briefLabel": "Briefing",
+			"briefNote": "Werte, die wie Passwörter oder Schlüssel aussehen, werden vor dem Senden entfernt. Nichts wird automatisch gemergt.",
+			"send": "Senden",
+			"sending": "Wird gesendet…",
+			"sent": "An den Coding-Agenten gesendet",
+			"sentNotAssigned": "Issue erstellt, aber die zugewiesene Person konnte nicht hinzugefügt werden",
+			"sendError": "Das Issue konnte nicht erstellt werden",
+			"openIssue": "Issue öffnen",
+			"timelineTitle": "Coding-Agent",
+			"timelineLabel": "Fortschritt des Coding-Agenten",
+			"sentBy": "An {{profile}} gesendet von {{name}}",
+			"sentByUnknown": "An {{profile}} gesendet",
+			"issueLink": "Issue #{{number}}",
+			"prLink": "Pull Request #{{number}}",
+			"pending": "Noch nicht",
+			"steps": {
+				"issue_created": "Issue erstellt",
+				"working": "Agent arbeitet",
+				"ready_for_review": "Bereit zur Prüfung",
+				"merged": "Gemergt",
+				"closed": "Ohne Merge geschlossen"
+			},
+			"settings": {
+				"title": "Coding-Agenten",
+				"subtitle": "Issue-Vorlagen für „An Coding-Agenten senden“, versendet über GitHub und Gitea",
+				"sharedNote": "Gilt für alle Projekte in diesem Workspace. Profile fügen dem Issue nur eine Erwähnung oder eine zugewiesene Person hinzu; es werden keine KI-Schlüssel gespeichert.",
+				"builtin": "Integriert",
+				"githubOnly": "Nur GitHub",
+				"name": "Name",
+				"namePlaceholder": "z. B. Unser Build-Runner",
+				"mention": "Erwähnung",
+				"mentionPlaceholder": "@agent oder ein Text mit {task} und {branch}",
+				"assignee": "Zugewiesen (GitHub)",
+				"assigneePlaceholder": "GitHub-Login, z. B. Copilot",
+				"enabled": "Aktiviert",
+				"edit": "Profil bearbeiten",
+				"delete": "Profil löschen",
+				"add": "Profil hinzufügen",
+				"save": "Speichern",
+				"saved": "Profil gespeichert",
+				"deleted": "Profil gelöscht",
+				"error": "Das Profil konnte nicht gespeichert werden",
+				"needsTarget": "Füge eine Erwähnung oder eine zugewiesene Person hinzu.",
+				"readOnly": "Nur Personen, die die Workspace-Einstellungen verwalten, können Profile ändern."
+			}
+		},
+		"filters": {
+			"button": "Filter beschreiben…",
+			"short": "Beschreiben",
+			"label": "Beschreibe, was angezeigt werden soll",
+			"placeholder": "z. B. meine überfälligen Bugs in Arbeit",
+			"apply": "Anwenden",
+			"none": "Daraus ließen sich keine Filter machen. Versuche andere Worte.",
+			"applied": "Filter angewendet. Passe sie über die Chips an.",
+			"dropped": "Nicht verstanden: {{words}}",
+			"hint": "Die KI macht aus deinen Worten Filter für Status, Labels, Personen, Zyklen, Prioritäten und Daten."
+		},
+		"budget": {
+			"warningTitle": "{{percent}} % des KI-Budgets dieses Monats sind verbraucht",
+			"reachedTitle": "Das KI-Budget dieses Monats ist aufgebraucht",
+			"amounts": "{{used}} von {{cap}}.",
+			"warningHint": "KI-Funktionen stoppen, wenn die Obergrenze erreicht ist. Erhöhe sie bei Bedarf unten.",
+			"reachedHint": "KI-Funktionen sind bis zum nächsten Monat oder bis zur Erhöhung der Obergrenze pausiert.",
+			"notice": {
+				"title": "KI-Budget fast aufgebraucht",
+				"content": "Dieser Workspace hat {{percent}} % seines monatlichen KI-Budgets verbraucht."
+			}
+		},
+		"skills": {
+			"navLabel": "KI-Skills",
+			"title": "KI-Skills",
+			"subtitle": "Gespeicherte Prompts, die du im KI-Chat über \"/\" wiederverwenden kannst.",
+			"listTitle": "Skills",
+			"new": "Neuer Skill",
+			"newTitle": "Neuer Skill",
+			"editTitle": "Skill bearbeiten",
+			"dialogHint": "Der Prompt wird der Frage hinzugefügt, wann immer der Skill verwendet wird.",
+			"name": "Name",
+			"namePlaceholder": "versionshinweise",
+			"description": "Beschreibung",
+			"prompt": "Prompt",
+			"promptPlaceholder": "Schreibe Versionshinweise für die in diesem Zyklus erledigten Aufgaben, gruppiert nach Funktion.",
+			"shareLabel": "Mit dem Workspace teilen",
+			"shareHint": "Alle, die hier KI nutzen, können ihn verwenden. Aus: nur du.",
+			"shared": "Geteilt",
+			"personal": "Nur du",
+			"save": "Skill speichern",
+			"saved": "Skill gespeichert",
+			"saveError": "Der Skill konnte nicht gespeichert werden",
+			"deleted": "Skill gelöscht",
+			"edit": "{{name}} bearbeiten",
+			"delete": "{{name}} löschen",
+			"deleteConfirm": "{{name}} löschen?",
+			"empty": "Noch keine Skills. Speichere einen Prompt, den du oft verwendest.",
+			"loadError": "Die Skills konnten nicht geladen werden.",
+			"noAccess": "Du brauchst die Berechtigung, KI in diesem Workspace zu nutzen."
+		},
+		"memory": {
+			"navLabel": "KI-Gedächtnis",
+			"title": "KI-Gedächtnis",
+			"subtitle": "Kurze Fakten, die die KI beim Antworten berücksichtigt, etwa „Unser Release-Tag ist Donnerstag“.",
+			"scopes": {
+				"workspace": "Workspace",
+				"project": "Projekt",
+				"user": "Persönlich"
+			},
+			"scopeHints": {
+				"workspace": "Gilt für alle im Workspace. KI-Admins bearbeiten sie.",
+				"project": "Gilt in einem Projekt. KI-Admins bearbeiten sie.",
+				"user": "Gilt nur für dich und ist nur für dich sichtbar."
+			},
+			"project": "Projekt",
+			"newNote": "Neue Notiz",
+			"placeholder": "Unser Release-Tag ist Donnerstag.",
+			"add": "Notiz hinzufügen",
+			"save": "Notiz speichern",
+			"editNote": "Notiz bearbeiten",
+			"deleteNote": "Notiz löschen",
+			"saved": "Notiz gespeichert",
+			"deleted": "Notiz gelöscht",
+			"saveError": "Die Notiz konnte nicht gespeichert werden",
+			"empty": "Noch keine Notizen.",
+			"loadError": "Die Notizen konnten nicht geladen werden.",
+			"adminsOnly": "Nur KI-Admins können hier Notizen hinzufügen.",
+			"noAccess": "Du brauchst die Berechtigung, KI in diesem Workspace zu nutzen."
+		}
+	},
+	"insight": {
+		"close": "Schließen",
+		"retry": "Erneut versuchen",
+		"stop": "Stopp",
+		"writing": "Schreibt…",
+		"days_one": "{{count}} Tag",
+		"days_other": "{{count}} Tage",
+		"estimate": {
+			"usually": "Ähnliche Aufgaben waren meist {{value}}",
+			"took_one": "{{count}} ähnliche Aufgabe dauerte {{min}}–{{max}} Tage (Median {{median}})",
+			"took_other": "{{count}} ähnliche Aufgaben dauerten {{min}}–{{max}} Tage (Median {{median}})",
+			"basedOn_one": "Basierend auf {{count}} ähnlichen abgeschlossenen Aufgabe",
+			"basedOn_other": "Basierend auf {{count}} ähnlichen abgeschlossenen Aufgaben",
+			"use": "{{value}} übernehmen",
+			"why": "Warum?",
+			"similar": "Ähnliche Aufgaben"
+		},
+		"calibration": {
+			"title": "Kalibrierung der Schätzungen",
+			"description": "Wie lange Aufgaben jeder Größe in den letzten {{days}} Tagen tatsächlich gedauert haben, vom ersten Start bis erledigt.",
+			"empty": "Noch keine abgeschlossenen, geschätzten Aufgaben mit erfasstem Start.",
+			"estimate": "Schätzung",
+			"tasks": "Aufgaben",
+			"actual": "Tatsächliche Dauer",
+			"range": "Median {{median}} T ({{low}}–{{high}})",
+			"ordered": "Größere Schätzungen dauerten länger, wie es sein sollte.",
+			"notOrdered": "Größere Schätzungen dauerten nicht immer länger: Ein Blick darauf, wie das Team Arbeit einschätzt, lohnt sich.",
+			"fewSamples": "Für einen Vergleich der Größen braucht es mehr abgeschlossene Aufgaben.",
+			"unmeasured_one": "{{count}} Aufgabe hat keinen erfassten Start und wird nicht berücksichtigt.",
+			"unmeasured_other": "{{count}} Aufgaben haben keinen erfassten Start und werden nicht berücksichtigt."
+		},
+		"capacity": {
+			"meter": "Geplante Arbeit im Vergleich zu einem üblichen Zyklus",
+			"within": "Geplant mit {{percent}} % eines üblichen Zyklus",
+			"over": "Überlastet: geplant mit {{percent}} % eines üblichen Zyklus",
+			"noDates": "Lege die Daten des Zyklus fest, um seine Kapazität zu prüfen.",
+			"noHistory": "Die Kapazität erscheint, sobald das Team in früheren Zyklen Arbeit abgeschlossen hat.",
+			"details": "Kapazitätsdetails",
+			"compare": "{{load}} geplant; ein üblicher Zyklus fasst {{typical}} (Spanne {{low}}–{{high}}).",
+			"tasks_one": "{{count}} Aufgabe",
+			"tasks_other": "{{count}} Aufgaben",
+			"points_one": "{{count}} Punkt",
+			"points_other": "{{count}} Punkte",
+			"basisCycles_one": "Basierend auf dem, was das Team im letzten beendeten Zyklus abgeschlossen hat, hochgerechnet auf die Länge dieses Zyklus.",
+			"basisCycles_other": "Basierend auf dem, was das Team in den letzten {{count}} beendeten Zyklen abgeschlossen hat, hochgerechnet auf die Länge dieses Zyklus.",
+			"basisThroughput": "Basierend auf den Aufgaben, die das Projekt in den letzten 8 Wochen je Zeitraum von der Länge dieses Zyklus abgeschlossen hat.",
+			"deferTitle": "Könnte in einen späteren Zyklus verschoben werden",
+			"blocks_one": "blockiert {{count}}",
+			"blocks_other": "blockiert {{count}}",
+			"membersTitle": "Auslastung pro Person",
+			"memberLoad": "{{load}} · sonst {{typical}}",
+			"membersNote": "Auslastung gemessen am üblichen Tempo jeder Person, um Arbeit auszugleichen. Kein Leistungsmaß.",
+			"unassigned": "Nicht zugewiesen"
+		},
+		"retro": {
+			"button": "Retrospektive",
+			"buttonLabel": "Retrospektive vorbereiten",
+			"title": "Retrospektive",
+			"factsTitle": "Was passiert ist",
+			"factsSoFar": "Was bisher passiert ist",
+			"factsNote": "Diese Fakten stammen aus den Daten von Margaya, nicht von der KI. Sie beschreiben die Arbeit des Teams, nie eine Person.",
+			"error": "Die Fakten für diesen Zyklus konnten nicht geladen werden.",
+			"aiIntro": "Lass die KI aus diesen Fakten einen kurzen Rückblick und Diskussionsfragen schreiben.",
+			"write": "Rückblick schreiben",
+			"rewrite": "Neu schreiben",
+			"edit": "Bearbeiten",
+			"preview": "Vorschau",
+			"editLabel": "Rückblick der Retrospektive",
+			"saveAsPage": "Als Seite speichern",
+			"saveWithNarrative": "Speichert die Fakten, den Rückblick und Abschnitte für das Team.",
+			"saveFactsOnly": "Speichert die Fakten und Abschnitte, die das Team ausfüllt.",
+			"saved": "Retrospektive als Seite gespeichert",
+			"saveError": "Die Seite konnte nicht gespeichert werden.",
+			"openPage": "Seite öffnen",
+			"pageTitle": "Retrospektive: {{name}}",
+			"more_one": "und {{count}} weitere",
+			"more_other": "und {{count}} weitere",
+			"facts": {
+				"sayDo_one": "{{done}} von {{count}} zugesagten Aufgabe erledigt ({{percent}} %)",
+				"sayDo_other": "{{done}} von {{count}} zugesagten Aufgaben erledigt ({{percent}} %)",
+				"sayDoNone": "Zu Beginn wurde nichts zugesagt",
+				"scope": "Umfangsänderung: {{added}} hinzugefügt, {{removed}} entfernt während des Zyklus",
+				"carry": "Übertrag: {{carried}} in einen anderen Zyklus verschoben, {{open}} offen geblieben",
+				"reopened_one": "{{count}} Aufgabe wurde nach dem Erledigen wieder geöffnet",
+				"reopened_other": "{{count}} Aufgaben wurden nach dem Erledigen wieder geöffnet",
+				"points": "Schätzpunkte: {{completed}} von {{committed}} erledigt",
+				"cycleTime": "Durchlaufzeit: Median {{median}} Tage",
+				"cycleTimeOutliers_one": "Durchlaufzeit: Median {{median}} Tage; {{count}} Aufgabe dauerte über {{threshold}} Tage",
+				"cycleTimeOutliers_other": "Durchlaufzeit: Median {{median}} Tage; {{count}} Aufgaben dauerten über {{threshold}} Tage",
+				"cycleTimeNone": "Durchlaufzeit: nicht gemessen",
+				"blocked_one": "{{count}} Aufgabe war durch eine andere blockiert",
+				"blocked_other": "{{count}} Aufgaben waren durch andere blockiert",
+				"forecastNone": "Prognose: Für diesen Zyklus wurde keine gespeichert",
+				"forecastOpen": "Prognose: mit 85 % Wahrscheinlichkeit erledigt bis {{date}}",
+				"forecastMet": "Prognose: mit 85 % Wahrscheinlichkeit erledigt bis {{date}}, und sie hat gehalten",
+				"forecastMissed": "Prognose: mit 85 % Wahrscheinlichkeit erledigt bis {{date}}, und sie hat nicht gehalten"
+			},
+			"lists": {
+				"added": "Während des Zyklus hinzugefügt",
+				"carriedOver": "Übertragen",
+				"leftOpen": "Offen geblieben",
+				"outliers": "Dauerte viel länger als üblich",
+				"blocked": "Blockiert"
+			},
+			"page": {
+				"facts": "Fakten",
+				"wentWell": "Was gut lief",
+				"improve": "Was wir verbessern können",
+				"actions": "Maßnahmen"
+			}
+		},
+		"myBrief": {
+			"title": "Mein Überblick",
+			"empty": "Heute wartet nichts auf dich.",
+			"error": "Dein Überblick konnte nicht geladen werden.",
+			"summarize": "Zusammenfassen",
+			"overdue": "Überfällig · {{total}}",
+			"dueToday": "Heute fällig · {{total}}",
+			"blocked": "Blockiert · {{total}}",
+			"mentions": "Erwähnungen · {{total}}",
+			"following": "Änderungen an abonnierten Aufgaben · {{total}}",
+			"waitingOn": "Wartet auf {{keys}}",
+			"hiddenBlockers_one": "{{count}} verborgene Aufgabe",
+			"hiddenBlockers_other": "{{count}} verborgene Aufgaben",
+			"mentionedBy": "von {{name}}",
+			"mentioned": "hat dich erwähnt",
+			"more_one": "und {{count}} weitere",
+			"more_other": "und {{count}} weitere",
+			"kinds": {
+				"status": "Status",
+				"comment": "Kommentare",
+				"assignee": "Zugewiesene",
+				"priority": "Priorität",
+				"due_date": "Fälligkeitsdatum",
+				"other": "weitere Änderungen"
+			},
+			"emailTitle": "Mein Überblick zur Zusammenfassung hinzufügen",
+			"emailDescription": "Deine Zusammenfassung listet dann auch deine blockierten Aufgaben und Änderungen an abonnierten Aufgaben. Erfordert eine tägliche oder wöchentliche Zusammenfassung.",
+			"emailError": "Diese Einstellung konnte nicht gespeichert werden."
+		}
 	}
 }

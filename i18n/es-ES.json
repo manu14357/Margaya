@@ -11,7 +11,8 @@
 			"remove": "Borrar",
 			"reset": "Restablecer",
 			"filter": "Filtrar",
-			"clearAllFilters": "Eliminar todos los filtros"
+			"clearAllFilters": "Eliminar todos los filtros",
+			"undo": "Deshacer"
 		},
 		"a11y": {
 			"toggleSidebar": "Mostrar barra lateral"
@@ -98,7 +99,15 @@
 				"createButton": "Crear proyecto",
 				"successToast": "Proyecto creado satisfactoriamente",
 				"errorToast": "Hubo un error al crear el proyecto",
-				"keyTaken": "Ya existe un proyecto con la clave {{key}} en este espacio de trabajo"
+				"keyTaken": "Ya existe un proyecto con la clave {{key}} en este espacio de trabajo",
+				"blankProject": "Proyecto en blanco",
+				"copyHint": "Se copian los estados, los campos personalizados, las estimaciones, la configuración y las automatizaciones. Los miembros, las integraciones y los tableros públicos no.",
+				"includeOpenTasks": "Incluir tareas abiertas",
+				"includeTemplates": "Incluir plantillas de tareas",
+				"openTasksHint": "Hasta 500 tareas abiertas con sus subtareas, etiquetas y estimaciones. No se copian los comentarios ni el historial.",
+				"restricted": "Restringido",
+				"restrictedHint": "Solo los miembros pueden ver este proyecto. Serás su primer miembro; los propietarios y administradores del espacio de trabajo siempre pueden verlo.",
+				"startFrom": "Empezar desde"
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -589,6 +598,8 @@
 			"themeLight": "Día",
 			"themeDark": "Noche",
 			"themeSystem": "Sistema",
+			"themeLightContrast": "Día con alto contraste",
+			"themeDarkContrast": "Noche con alto contraste",
 			"language": "Idioma",
 			"languageDescription": "Elige el idioma de la interfaz",
 			"selectLanguage": "Seleccionar un idioma",
@@ -1193,6 +1204,83 @@
 			"dropHintAny": "Arrastra y suelta aquí un archivo JSON o CSV",
 			"importAcceptHint": "Sube una exportación JSON de Margaya o un archivo CSV.",
 			"importStopped": "Importación detenida: {{message}}",
+			"external": {
+				"sourceHint": "¿Vienes de otra herramienta? Importa su exportación con estados, etiquetas, personas, fechas y subtareas.",
+				"sources": {
+					"trello": "Trello (JSON)",
+					"linear": "Linear (CSV)",
+					"asana": "Asana (CSV)"
+				},
+				"title": {
+					"trello": "Importar desde Trello",
+					"linear": "Importar desde Linear",
+					"asana": "Importar desde Asana"
+				},
+				"howToTitle": {
+					"trello": "Cómo exportar desde Trello",
+					"linear": "Cómo exportar desde Linear",
+					"asana": "Cómo exportar desde Asana"
+				},
+				"howTo": {
+					"trello": {
+						"step1": "En el tablero, abre el menú → Imprimir, exportar y compartir → Exportar como JSON.",
+						"step2": "Sube aquí el archivo .json descargado."
+					},
+					"linear": {
+						"step1": "En Linear, abre Ajustes → Import / Export y elige Exportar CSV.",
+						"step2": "Sube aquí el archivo .csv del correo que te envía Linear."
+					},
+					"asana": {
+						"step1": "En el proyecto de Asana, abre el menú del proyecto → Exportar/Imprimir → CSV.",
+						"step2": "Sube aquí el archivo .csv descargado."
+					}
+				},
+				"limits": {
+					"trello": "Hasta 10 MB y 5000 tarjetas por archivo. Las tarjetas archivadas se omiten; las listas de comprobación pasan a ser listas de tareas en la descripción; los adjuntos se quedan en Trello.",
+					"linear": "Hasta 5 MB y 5000 incidencias por archivo. Las incidencias archivadas se omiten. El CSV de Linear no incluye comentarios.",
+					"asana": "Hasta 5 MB y 5000 tareas por archivo. Las tareas completadas van a tu columna «Hecho». El CSV de Asana no incluye comentarios."
+				},
+				"dropHint": {
+					"trello": "Arrastra y suelta aquí la exportación JSON de Trello",
+					"linear": "Arrastra y suelta aquí la exportación CSV de Linear",
+					"asana": "Arrastra y suelta aquí la exportación CSV de Asana"
+				},
+				"wrongType": {
+					"trello": "Elige la exportación .json del tablero.",
+					"linear": "Elige la exportación .csv de Linear.",
+					"asana": "Elige la exportación .csv de Asana."
+				},
+				"itemCount_many": "{{count}} elementos",
+				"itemCount_one": "{{count}} elemento",
+				"itemCount_other": "{{count}} elementos",
+				"alreadyImported_many": "{{count}} elementos ya se importaron a este proyecto.",
+				"alreadyImported_one": "{{count}} elemento ya se importó a este proyecto.",
+				"alreadyImported_other": "{{count}} elementos ya se importaron a este proyecto.",
+				"contents": "{{comments}} comentarios, {{checklists}} listas de comprobación, {{subtasks}} subtareas, {{links}} vínculos",
+				"sourceStatus": "Estado o lista",
+				"peopleUnmatched_many": "{{count}} personas no son miembros ({{names}}). Sus elementos quedan sin asignar y los nombres se anotan en la descripción.",
+				"peopleUnmatched_one": "{{count}} persona no es miembro ({{names}}). Sus elementos quedan sin asignar y el nombre se anota en la descripción.",
+				"peopleUnmatched_other": "{{count}} personas no son miembros ({{names}}). Sus elementos quedan sin asignar y los nombres se anotan en la descripción.",
+				"mode": "Elementos importados antes",
+				"modeHint": "Se reconocen por su id en la exportación.",
+				"importAction_many": "Importar {{count}} elementos",
+				"importAction_one": "Importar {{count}} elemento",
+				"importAction_other": "Importar {{count}} elementos",
+				"importing_many": "Importando {{count}} elementos…",
+				"importing_one": "Importando {{count}} elemento…",
+				"importing_other": "Importando {{count}} elementos…",
+				"result": {
+					"skipped_one": "{{count}} elemento omitido (importado antes)",
+					"skipped_many": "{{count}} elementos omitidos (importados antes)",
+					"skipped_other": "{{count}} elementos omitidos (importados antes)",
+					"failed_one": "{{count}} elemento con error",
+					"failed_many": "{{count}} elementos con error",
+					"failed_other": "{{count}} elementos con error",
+					"unmatched_one": "{{count}} persona no es miembro del espacio de trabajo; sus elementos quedan sin asignar:",
+					"unmatched_many": "{{count}} personas no son miembros del espacio de trabajo; sus elementos quedan sin asignar:",
+					"unmatched_other": "{{count}} personas no son miembros del espacio de trabajo; sus elementos quedan sin asignar:"
+				}
+			},
 			"unsupportedFile": "Sube un archivo JSON o CSV",
 			"jira": {
 				"alreadyImported_many": "{{count}} issues were imported into this project before.",
@@ -1479,7 +1567,8 @@
 				"intake": "Recepción",
 				"analytics": "Analytics",
 				"page": "Páginas",
-				"audit_log": "Registro de auditoría"
+				"audit_log": "Registro de auditoría",
+				"ai": "IA"
 			},
 			"permissions": {
 				"project": {
@@ -1724,6 +1813,16 @@
 					"read": {
 						"description": "Ver y exportar el registro de auditoría del espacio de trabajo: quién ha cambiado miembros, roles, claves, webhooks, integraciones y ajustes.",
 						"label": "Ver el registro de auditoría"
+					}
+				},
+				"ai": {
+					"use": {
+						"label": "Usar IA",
+						"description": "Puede usar las funciones de IA cuando la IA está activada en el espacio de trabajo y en el proyecto."
+					},
+					"manage": {
+						"label": "Gestionar IA",
+						"description": "Puede activar o desactivar la IA en el espacio de trabajo, cambiar su clave, límites y privacidad, y ver el uso de IA."
 					}
 				}
 			},
@@ -1992,6 +2091,10 @@
 				"views": {
 					"description": "Guarda filtros, agrupaciones y ajustes de visualización, y compártelos con el equipo.",
 					"title": "Vistas"
+				},
+				"ai": {
+					"title": "IA",
+					"description": "Resúmenes, sugerencias y otra ayuda de IA para este proyecto. Si se desactiva, el proyecto queda totalmente fuera de la IA."
 				}
 			},
 			"loadError": "No se ha podido cargar este proyecto",
@@ -2214,7 +2317,27 @@
 				"closeOff": "Cierre automático desactivado",
 				"closeOn": "Cierre automático activado",
 				"error": "No se pudieron actualizar las automatizaciones",
-				"updated": "Automatización actualizada"
+				"updated": "Automatización actualizada",
+				"rolloverOff": "Traspaso de ciclo desactivado",
+				"rolloverOn": "Traspaso de ciclo activado",
+				"flowAlertsOn": "Alertas de flujo activadas",
+				"flowAlertsOff": "Alertas de flujo desactivadas"
+			},
+			"cycleRollover": {
+				"cyclesOff": "Activa Ciclos en Funciones para usar esta opción.",
+				"description": "Cuando termina un ciclo, sus tareas sin terminar pasan al ciclo siguiente. El responsable del proyecto recibe un resumen.",
+				"last_many": "Última vez se movieron {{count}} tareas {{time}}",
+				"last_one": "Última vez se movió {{count}} tarea {{time}}",
+				"last_other": "Última vez se movieron {{count}} tareas {{time}}",
+				"never": "Aún no se ha movido nada",
+				"title": "Traspasar el trabajo sin terminar del ciclo"
+			},
+			"flowAlerts": {
+				"title": "Alertas de anomalías de flujo",
+				"description": "Una vez al día compara el trabajo en curso, el tiempo de ciclo y el rendimiento con las 8 semanas anteriores. El responsable del proyecto recibe un aviso cuando alguno sale de su rango habitual.",
+				"noLead": "Asigna un responsable del proyecto para recibir estas alertas.",
+				"last": "Última alerta {{time}}",
+				"never": "Aún no hay alertas"
 			}
 		},
 		"workspaceExports": {
@@ -2664,6 +2787,24 @@
 			"noProjectsHint": "Crea primero un proyecto. Sus ajustes aparecerán aquí.",
 			"pickProject": "Elige un proyecto para ver sus ajustes."
 		},
+		"projectAccess": {
+			"title": "Acceso",
+			"subtitle": "Quién puede ver este proyecto y trabajar en él.",
+			"restrictedLabel": "Restringido",
+			"restrictedHint": "Solo los miembros de abajo, y los propietarios y administradores del espacio de trabajo, pueden ver este proyecto. Los permisos de un miembro aquí son los que permiten a la vez su rol en el espacio de trabajo y su rol en el proyecto.",
+			"openHint": "Todos en el espacio de trabajo pueden ver este proyecto, según lo que permita su rol. Restríngelo para limitarlo a los miembros que elijas.",
+			"membersLabel": "Miembros",
+			"membersHint": "El rol en el proyecto limita lo que cada miembro puede hacer aquí.",
+			"noMembers": "Aún no hay miembros.",
+			"addMember": "Añadir miembro",
+			"removeMember": "Quitar a {{name}}",
+			"roleFor": "Rol en el proyecto de {{name}}",
+			"leadTag": "Responsable",
+			"restrictedProject": "Proyecto restringido",
+			"toastUpdated": "Acceso actualizado",
+			"toastError": "Error al actualizar el acceso",
+			"loadError": "No se pudo cargar la configuración de acceso. Recarga la página para volver a intentarlo."
+		},
 		"projectPeople": {
 			"defaultAssigneeHint": "Se rellena al crear una tarea y se asigna a las solicitudes aceptadas que no tienen asignado.",
 			"defaultAssigneeLabel": "Asignado predeterminado",
@@ -2721,7 +2862,7 @@
 			"title": "Seguridad"
 		},
 		"timezone": {
-			"accountHint": "Se usa para los recordatorios y los resúmenes por correo electrónico. La aplicación siempre muestra las horas en la zona horaria de tu navegador.",
+			"accountHint": "Se usa para los recordatorios, los resúmenes por correo electrónico y los días con los que cuentan los filtros de tareas y las analíticas. Las horas en pantalla se muestran en la zona horaria de tu navegador.",
 			"accountLabel": "Zona horaria",
 			"automatic": "Automática (navegador: {{zone}})",
 			"loadError": "No se ha podido cargar la zona horaria. Recarga la página para volver a intentarlo.",
@@ -2734,8 +2875,52 @@
 			"workspaceHint": "Define qué es \"hoy\" para los ciclos, las automatizaciones y las analíticas. Los espacios de trabajo existentes empiezan en UTC.",
 			"workspaceLabel": "Zona horaria"
 		},
+		"workspaceDeletion": {
+			"pendingTitle": "Eliminación programada",
+			"pendingDescription": "Este espacio de trabajo se eliminará el {{date}}. Hasta entonces es de solo lectura y todavía puedes abrir y exportar su contenido.",
+			"cancel": "Cancelar eliminación",
+			"confirm": "Programar eliminación",
+			"rowDescription": "El espacio de trabajo pasa a ser de solo lectura de inmediato y se eliminará definitivamente el {{date}}. Puedes cancelarlo hasta entonces.",
+			"dialogTitle": "¿Eliminar {{name}}?",
+			"dialogDescription": "{{name}} pasa a ser de solo lectura para todos de inmediato, y sus claves de API y webhooks dejan de funcionar. Se avisa a los miembros por correo electrónico. El {{date}} se eliminará definitivamente con todos sus proyectos, tareas y páginas, salvo que canceles antes.",
+			"toastScheduled": "Eliminación programada para el {{date}}",
+			"toastCancelled": "Eliminación cancelada. El espacio de trabajo vuelve a ser editable.",
+			"toastError": "No se pudo cambiar la eliminación. Inténtalo de nuevo.",
+			"bannerTitle": "Este espacio de trabajo se eliminará el {{date}}",
+			"bannerDescription": "Hasta entonces es de solo lectura. Todavía puedes abrir y exportar su contenido.",
+			"admin": {
+				"title": "Eliminaciones pendientes",
+				"description": "Espacios de trabajo cuyos propietarios programaron su eliminación. Son de solo lectura hasta la fecha y después se eliminan definitivamente.",
+				"dueAt": "Se elimina el",
+				"badge": "Se elimina el {{date}}"
+			},
+			"instanceAudit": {
+				"scheduled": "Ha programado la eliminación de un espacio de trabajo",
+				"cancelled": "Ha cancelado la eliminación de un espacio de trabajo",
+				"purged": "Ha eliminado un espacio de trabajo tras el periodo de gracia"
+			}
+		},
+		"workspacePublicPages": {
+			"label": "Páginas públicas",
+			"description": "Permite que quienes pueden compartir proyectos publiquen páginas mediante un enlace público de solo lectura. Al desactivarlo se revocan todos los enlaces publicados.",
+			"toastOn": "Las páginas públicas están activadas",
+			"toastOff": "Las páginas públicas están desactivadas. Se revocaron los enlaces publicados.",
+			"toastError": "No se pudo cambiar el ajuste. Inténtalo de nuevo."
+		},
+		"workspaceA2a": {
+			"label": "Agente a agente (A2A)",
+			"description": "Permite que agentes de IA externos entreguen trabajo a este espacio de trabajo mediante el protocolo A2A. Actúan con la clave de API o el inicio de sesión OAuth de un miembro y con los permisos de ese miembro, y todo lo que hacen aparece en el registro de auditoría.",
+			"toastOn": "A2A está activado",
+			"toastOff": "A2A está desactivado. Los agentes externos ya no pueden entregar trabajo a este espacio de trabajo.",
+			"toastError": "No se pudo cambiar el ajuste. Inténtalo de nuevo."
+		},
 		"workspaceAuditLog": {
 			"actions": {
+				"workspaceDeletionScheduled": "Ha programado la eliminación del espacio de trabajo",
+				"workspaceDeletionCancelled": "Ha cancelado la eliminación del espacio de trabajo",
+				"workspacePublicPagesChanged": "Ha activado o desactivado las páginas públicas",
+				"pagePublished": "Ha publicado una página mediante un enlace público",
+				"pageUnpublished": "Ha revocado el enlace público de una página",
 				"apiKeyCreated": "Ha creado una clave de API",
 				"apiKeyRevoked": "Ha revocado una clave de API",
 				"exportCreated": "Ha iniciado una exportación",
@@ -2746,6 +2931,7 @@
 				"integrationUpdated": "Ha modificado una integración",
 				"memberInvitationAccepted": "Ha aceptado una invitación",
 				"memberInvitationDeclined": "Ha rechazado una invitación",
+				"memberInvitationRoleChanged": "Ha cambiado el rol de una invitación pendiente",
 				"memberInvitationRevoked": "Ha revocado una invitación",
 				"memberInvited": "Ha invitado a alguien al espacio de trabajo",
 				"memberLeft": "Ha abandonado el espacio de trabajo",
@@ -2775,13 +2961,41 @@
 				"webhookUpdated": "Ha modificado un webhook",
 				"workspaceCreated": "Ha creado el espacio de trabajo",
 				"workspaceOwnershipTransferred": "Ha transferido la propiedad del espacio de trabajo",
-				"workspaceUpdated": "Ha modificado los ajustes del espacio de trabajo"
+				"workspaceUpdated": "Ha modificado los ajustes del espacio de trabajo",
+				"aiSettingsUpdated": "Ha modificado los ajustes de IA",
+				"aiTriageLabelsApplied": "Ha añadido automáticamente etiquetas sugeridas",
+				"agentCreated": "Ha creado un agente",
+				"agentUpdated": "Ha modificado un agente",
+				"agentDeleted": "Ha eliminado un agente",
+				"agentChangeApplied": "Ha hecho un cambio en nombre de alguien",
+				"agentChangeApproved": "Ha aprobado el cambio de un agente",
+				"agentChangeRejected": "Ha rechazado el cambio de un agente",
+				"agentChangeReverted": "Ha deshecho el cambio de un agente",
+				"codingAgentHandoffSent": "Envió una tarea a un agente de código",
+				"codingAgentProfileCreated": "Creó un perfil de agente de código",
+				"codingAgentProfileUpdated": "Cambió un perfil de agente de código",
+				"codingAgentProfileDeleted": "Eliminó un perfil de agente de código",
+				"a2aTaskReceived": "Recibió trabajo de un agente externo (A2A)",
+				"automationRuleCreated": "Ha creado una automatización",
+				"automationRuleUpdated": "Ha actualizado una automatización",
+				"automationRuleDeleted": "Ha eliminado una automatización",
+				"automationRuleRan": "Ha ejecutado una automatización en una tarea",
+				"agentScheduleCreated": "Programó un agente",
+				"agentScheduleUpdated": "Cambió una programación de agente",
+				"agentScheduleDeleted": "Eliminó una programación de agente",
+				"agentScheduleDisabled": "Desactivó una programación de agente",
+				"aiConnectorCreated": "Añadió un conector MCP",
+				"aiConnectorUpdated": "Cambió un conector MCP",
+				"aiConnectorDeleted": "Eliminó un conector MCP"
 			},
 			"actor": {
 				"apiKey": "Clave de API",
 				"deletedUser": "Usuario eliminado",
 				"system": "Sistema",
-				"unknownKey": "Clave de API eliminada"
+				"unknownKey": "Clave de API eliminada",
+				"agent": "Agente",
+				"agentFor": "Agente, en nombre de {{name}}",
+				"automation": "Automatización"
 			},
 			"categories": {
 				"apiKey": "Claves de API",
@@ -2794,7 +3008,11 @@
 				"role": "Roles",
 				"trash": "Papelera",
 				"webhook": "Webhooks",
-				"workspace": "Ajustes del espacio de trabajo"
+				"workspace": "Ajustes del espacio de trabajo",
+				"agent": "Agentes",
+				"codingAgent": "Agentes de código",
+				"a2a": "Agentes externos (A2A)",
+				"automation": "Automatizaciones"
 			},
 			"columns": {
 				"action": "Acción",
@@ -2843,6 +3061,7 @@
 			"subtitle": "Quién ha cambiado miembros, roles, claves de API, webhooks, integraciones, ajustes y proyectos en este espacio de trabajo. Las entradas se conservan durante {{days}} días.",
 			"subtitleForever": "Quién ha cambiado miembros, roles, claves de API, webhooks, integraciones, ajustes y proyectos en este espacio de trabajo. Las entradas se conservan hasta que elimines el espacio de trabajo.",
 			"targets": {
+				"page": "Página",
 				"apiKey": "Clave de API",
 				"export": "Exportación",
 				"integration": "Integración",
@@ -2851,7 +3070,11 @@
 				"role": "Rol",
 				"user": "Miembro",
 				"webhook": "Webhook",
-				"workspace": "Espacio de trabajo"
+				"workspace": "Espacio de trabajo",
+				"agent": "Agente",
+				"agentRun": "Ejecución de agente",
+				"task": "Tarea",
+				"codingAgentProfile": "Perfil de agente de código"
 			},
 			"title": "Registro de auditoría"
 		},
@@ -2903,9 +3126,191 @@
 			"workspaceNav": "Eliminados recientemente",
 			"workspaceSubtitle": "Los proyectos eliminados permanecen aquí con sus tareas hasta que se eliminan permanentemente.",
 			"workspaceTitle": "Proyectos eliminados recientemente"
+		},
+		"automationRules": {
+			"title": "Automatizaciones",
+			"description": "Cuando le ocurre algo a una tarea, comprueba condiciones y actúa. Las reglas se ejecutan por sí solas, sin IA, como «Automatización».",
+			"empty": "Aún no hay automatizaciones. Empieza con una plantilla o crea tu propia regla.",
+			"loadError": "No se pudieron cargar las automatizaciones.",
+			"newRule": "Nueva regla",
+			"templatesTitle": "Plantillas",
+			"saved": "Automatización guardada",
+			"saveError": "No se pudo guardar la automatización",
+			"deleted": "Automatización eliminada",
+			"confirmDelete": "Eliminar",
+			"edit": "Editar {{name}}",
+			"delete": "Eliminar {{name}}",
+			"summary_one": "Cuando {{trigger}} · {{count}} acción",
+			"summary_other": "Cuando {{trigger}} · {{count}} acciones",
+			"lastRun_one": "{{count}} ejecución, última: {{time}}",
+			"lastRun_other": "{{count}} ejecuciones, última: {{time}}",
+			"neverRan": "Aún no se ha ejecutado",
+			"templates": {
+				"reviewer": {
+					"name": "Asignar revisor al pasar a En revisión",
+					"description": "Elige el revisor; se le asigna cuando una tarea entra en revisión."
+				},
+				"intakeBugs": {
+					"name": "Etiquetar bugs de Recepción",
+					"description": "Las solicitudes aceptadas que mencionan un bug o un error reciben la etiqueta de bug."
+				},
+				"overdue": {
+					"name": "Escalar tareas vencidas",
+					"description": "Cuando pasa una fecha de vencimiento, sube la prioridad y avisa a los asignados."
+				}
+			},
+			"triggers": {
+				"task_created": "se crea una tarea",
+				"status_changed": "cambia el estado",
+				"assignee_added": "se asigna a alguien",
+				"assignee_removed": "se desasigna a alguien",
+				"label_added": "se añade una etiqueta",
+				"label_removed": "se quita una etiqueta",
+				"priority_changed": "cambia la prioridad",
+				"due_date_set": "se establece una fecha de vencimiento",
+				"due_date_passed": "pasa la fecha de vencimiento",
+				"comment_added": "se añade un comentario",
+				"moved_to_cycle": "la tarea pasa a un ciclo",
+				"moved_to_module": "la tarea se añade a un módulo"
+			},
+			"conditions": {
+				"status": "Estado",
+				"labels": "Etiquetas",
+				"priority": "Prioridad",
+				"assignee": "Asignado",
+				"due_date": "Fecha de vencimiento",
+				"estimate": "Estimación",
+				"title": "Título",
+				"custom_field": "Campo personalizado"
+			},
+			"ops": {
+				"is": "es",
+				"is_not": "no es",
+				"contains": "contiene",
+				"not_contains": "no contiene",
+				"empty": "está en blanco",
+				"not_empty": "no está en blanco",
+				"set": "tiene valor",
+				"not_set": "no tiene valor",
+				"gte": "es como mínimo",
+				"lte": "es como máximo",
+				"equals": "es igual a",
+				"not_equals": "no es igual a"
+			},
+			"actions": {
+				"set_status": "Establecer estado",
+				"assign": "Asignar",
+				"unassign": "Desasignar",
+				"add_label": "Añadir etiqueta",
+				"remove_label": "Quitar etiqueta",
+				"set_priority": "Establecer prioridad",
+				"set_due_date": "Establecer fecha de vencimiento",
+				"add_comment": "Añadir comentario",
+				"move_to_cycle": "Mover a un ciclo",
+				"move_to_module": "Añadir a un módulo",
+				"create_subtask": "Crear subtarea",
+				"notify": "Notificar",
+				"run_agent": "Ejecutar agente"
+			},
+			"roles": {
+				"assignees": "Asignados",
+				"creator": "Creador",
+				"lead": "Responsable del proyecto"
+			},
+			"outcomes": {
+				"success": "Hecho",
+				"partial": "Hecho en parte",
+				"failed": "Fallido",
+				"skipped": "Omitido"
+			},
+			"errors": {
+				"LOOP_DEPTH": "Detenido: demasiadas reglas se activaron unas a otras seguidas.",
+				"RATE_LIMITED": "Detenido: esta tarea tuvo demasiadas ejecuciones de automatizaciones en un minuto.",
+				"AGENT_UNAVAILABLE": "Ejecutar agente: el agente está desactivado o se eliminó.",
+				"NO_RULE_OWNER": "Ejecutar agente: esta regla ya no tiene propietario. Guárdala de nuevo.",
+				"AI_DISABLED": "Ejecutar agente: la IA está desactivada en este proyecto."
+			},
+			"history": {
+				"title": "Historial de ejecuciones",
+				"empty": "Aún no hay ejecuciones.",
+				"error": "No se pudo cargar el historial de ejecuciones.",
+				"failedActions": "Fallidas: {{actions}}"
+			},
+			"editor": {
+				"name": "Nombre de la regla",
+				"namePlaceholder": "Ponle nombre a esta regla",
+				"when": "Cuando",
+				"if": "Si",
+				"then": "Entonces",
+				"match": "Coincidencia",
+				"matchAll": "Todas estas",
+				"matchAny": "Cualquiera de estas",
+				"always": "Siempre",
+				"addCondition": "Añadir condición",
+				"addGroup": "Añadir grupo",
+				"addAction": "Añadir acción",
+				"remove": "Quitar",
+				"save": "Guardar regla",
+				"cancel": "Cancelar",
+				"choose": "Elegir…",
+				"add": "Añadir…",
+				"removeItem": "Quitar {{name}}",
+				"any": "Cualquiera",
+				"from": "de",
+				"to": "a",
+				"fromIntake": "Solo solicitudes aceptadas desde Recepción",
+				"people": "Personas",
+				"labels": "Etiquetas",
+				"priorities": "Prioridades",
+				"cycles": "Ciclos",
+				"modules": "Módulos",
+				"field": "Campo",
+				"operator": "Comparación",
+				"points": "Puntos",
+				"value": "Valor",
+				"column": "Estado",
+				"everyone": "Todos",
+				"label": "Etiqueta",
+				"priority": "Prioridad",
+				"daysFromRun": "días después de que se ejecute la regla",
+				"comment": "Comentario",
+				"subtaskTitle": "Título de la subtarea",
+				"cycle": "Ciclo",
+				"module": "Módulo",
+				"roles": "Roles",
+				"message": "Mensaje (opcional)",
+				"variables": "Variables:",
+				"agent": "Agente",
+				"agentPrompt": "¿Qué debe hacer el agente?",
+				"agentPromptPlaceholder": "Por ejemplo: clasifica esta tarea y sugiere una prioridad.",
+				"agentHint": "El agente actúa en nombre de quien guarda esta regla, con como mucho sus permisos. Nunca se ejecuta por cambios hechos por un agente."
+			},
+			"summary_many": "Cuando {{trigger}} · {{count}} acciones",
+			"lastRun_many": "{{count}} ejecuciones, última: {{time}}"
 		}
 	},
 	"navigation": {
+		"customize": {
+			"open": "Personalizar barra lateral",
+			"title": "Personalizar barra lateral",
+			"description": "Elige qué muestra tu barra lateral y en qué orden. Solo tú ves estos cambios, en todos tus dispositivos.",
+			"settingsDescription": "Reordena u oculta la navegación principal y las secciones del panel Proyectos.",
+			"rail": "Navegación principal",
+			"projectsPanel": "Panel Proyectos",
+			"sections": {
+				"views": "Listas de tareas y vistas",
+				"favorites": "Favoritos",
+				"projects": "Proyectos"
+			},
+			"show": "Mostrar {{name}}",
+			"alwaysShown": "{{name}} siempre se muestra",
+			"moveUp": "Subir {{name}}",
+			"moveDown": "Bajar {{name}}",
+			"moved": "{{name}} movido a la posición {{position}} de {{total}}",
+			"reset": "Restablecer valores predeterminados",
+			"resetDone": "Barra lateral restablecida",
+			"done": "Listo"
+		},
 		"commandPalette": {
 			"suggestions": "Sugerencias",
 			"commands": "Comandos",
@@ -2918,6 +3323,8 @@
 			"lightTheme": "Tema día",
 			"darkTheme": "Tema noche",
 			"systemTheme": "Tema del sistema",
+			"lightContrastTheme": "Tema día con alto contraste",
+			"darkContrastTheme": "Tema noche con alto contraste",
 			"keyboardShortcuts": "Atajos de teclado",
 			"inputPlaceholder": "Buscar aplicaciones y comandos...",
 			"empty": "No se ha encontrado ningún resultado.",
@@ -3230,6 +3637,25 @@
 			"page_mention": {
 				"content": "{{mentionerName}} te ha mencionado en: {{pageTitle}}",
 				"title": "{{mentionerName}} te ha mencionado"
+			},
+			"cycle_rollover": {
+				"content_many": "{{count}} tareas sin terminar se movieron a {{targetCycleName}}",
+				"content_one": "{{count}} tarea sin terminar se movió a {{targetCycleName}}",
+				"content_other": "{{count}} tareas sin terminar se movieron a {{targetCycleName}}",
+				"contentNoNext_many": "{{count}} tareas sin terminar se quedaron en {{cycleName}}: no hay un ciclo siguiente",
+				"contentNoNext_one": "{{count}} tarea sin terminar se quedó en {{cycleName}}: no hay un ciclo siguiente",
+				"contentNoNext_other": "{{count}} tareas sin terminar se quedaron en {{cycleName}}: no hay un ciclo siguiente",
+				"title": "{{cycleName}} ha terminado"
+			},
+			"flow_anomaly": {
+				"title": "Flujo inusual en {{projectName}}",
+				"throughput_low": "El rendimiento bajó a {{value}} tareas esta semana (lo habitual, unas {{baseline}})",
+				"wip_high": "El trabajo en curso subió a {{value}} tareas (lo habitual, unas {{baseline}})",
+				"cycle_time_high": "El tiempo de ciclo subió a {{value}} días (lo habitual, unos {{baseline}})"
+			},
+			"automation_notice": {
+				"title": "Automatización: {{ruleName}}",
+				"content": "{{taskKey}} {{taskTitle}}"
 			}
 		},
 		"reminderLeadTime": {
@@ -3387,6 +3813,13 @@
 				"open": "Abrir la tarea",
 				"read": "Marcar como leída o no leída",
 				"snooze": "Posponer"
+			},
+			"digest": {
+				"button": "Resumir no leídas",
+				"title": "Resumen de no leídas",
+				"regenerate": "Resumir de nuevo",
+				"close": "Cerrar resumen",
+				"generating": "Resumiendo…"
 			}
 		}
 	},
@@ -3596,7 +4029,9 @@
 			"archived_other": "archivó esta tarea tras {{count}} meses sin actualizaciones",
 			"closed_many": "closed this task after {{count}} months without updates, moving it to {{to}}",
 			"closed_one": "cerró esta tarea tras {{count}} mes sin actualizaciones y la movió a {{to}}",
-			"closed_other": "cerró esta tarea tras {{count}} meses sin actualizaciones y la movió a {{to}}"
+			"closed_other": "cerró esta tarea tras {{count}} meses sin actualizaciones y la movió a {{to}}",
+			"rolledOver": "movió esta tarea de {{from}} a {{to}} al terminar el ciclo",
+			"byRule": "mediante {{name}}"
 		},
 		"commentVisibility": {
 			"badgeExternal": "Externo",
@@ -3635,10 +4070,74 @@
 			"updates": "Actualizaciones"
 		},
 		"importedFromJira": "ha importado esta tarea desde Jira {{key}}",
+		"importedFromSource": "ha importado esta tarea desde {{source}} {{key}}",
 		"movedToTrash": "ha movido esta tarea a la papelera",
 		"restoredFromTrash": "ha restaurado esta tarea de la papelera"
 	},
 	"tasks": {
+		"recurrence": {
+			"label": "Repetir",
+			"none": "No se repite",
+			"title": "Repetir esta tarea",
+			"indicator": "Se repite",
+			"frequency": {
+				"label": "Frecuencia",
+				"daily": "Cada día",
+				"weekly": "Cada semana",
+				"monthly": "Cada mes",
+				"yearly": "Cada año"
+			},
+			"interval": "Cada",
+			"weekdays": "Estos días",
+			"monthDay": "Día del mes",
+			"trigger": {
+				"label": "Crear la siguiente",
+				"completion": "Cuando esta se complete",
+				"schedule": "En su fecha, aunque esta siga abierta"
+			},
+			"ends": {
+				"label": "Termina",
+				"never": "Nunca",
+				"onDate": "El",
+				"endDate": "Fecha de fin",
+				"after": "Después de",
+				"count": "Número de veces"
+			},
+			"summary": {
+				"daily_one": "Cada día",
+				"daily_many": "Cada {{count}} días",
+				"daily_other": "Cada {{count}} días",
+				"weekly_one": "Cada semana el {{days}}",
+				"weekly_many": "Cada {{count}} semanas el {{days}}",
+				"weekly_other": "Cada {{count}} semanas el {{days}}",
+				"monthly_one": "Cada mes el día {{day}}",
+				"monthly_many": "Cada {{count}} meses el día {{day}}",
+				"monthly_other": "Cada {{count}} meses el día {{day}}",
+				"yearly_one": "Cada año el {{date}}",
+				"yearly_many": "Cada {{count}} años el {{date}}",
+				"yearly_other": "Cada {{count}} años el {{date}}",
+				"until": "{{summary}}, hasta el {{date}}",
+				"times_one": "{{summary}}, {{count}} vez",
+				"times_many": "{{summary}}, {{count}} veces",
+				"times_other": "{{summary}}, {{count}} veces"
+			},
+			"next": "Siguiente: {{date}}",
+			"ended": "No hay más repeticiones",
+			"save": "Guardar",
+			"remove": "Dejar de repetir",
+			"saved": "Repetición guardada",
+			"removed": "Esta tarea ya no se repite",
+			"saveError": "No se ha podido guardar la repetición",
+			"activity": {
+				"set": "ha configurado esta tarea para que se repita: {{summary}}",
+				"updated": "ha cambiado la repetición: {{summary}}",
+				"removed": "ha dejado de repetir esta tarea",
+				"recurredFrom": "ha creado esta tarea como la siguiente repetición de <task>{{task}}</task>",
+				"recurredFromScheduled": "Creada según lo programado como la siguiente repetición de <task>{{task}}</task>",
+				"recurredTo": "ha completado esta tarea, lo que ha creado la siguiente repetición <task>{{task}}</task>",
+				"recurredToScheduled": "La siguiente repetición se ha creado según lo programado: <task>{{task}}</task>"
+			}
+		},
 		"title": "Tareas",
 		"status": {
 			"label": "Estado",
@@ -4051,7 +4550,9 @@
 		},
 		"kanban": {
 			"addTask": "Añadir tarea",
-			"stages": "Columnas"
+			"stages": "Columnas",
+			"emptyAction": "Añadir una tarea",
+			"emptyTitle": "Aún no hay tareas"
 		},
 		"pr": {
 			"merged": "Mergeada",
@@ -4124,6 +4625,20 @@
 			"searchActions": "Buscar acciones...",
 			"noActionsFound": "No se han encontrado acciones.",
 			"changeStatus": "Cambiar estado",
+			"removeLabel": "Quitar etiqueta",
+			"removeLabelSuccess": "Etiqueta quitada de {{count}} tareas",
+			"removeLabelError": "Error al quitar la etiqueta",
+			"unarchive": "Restaurar del archivo",
+			"unarchiveSuccess": "{{count}} tareas restauradas",
+			"unarchiveNone": "Ninguna de las tareas seleccionadas está archivada",
+			"unarchiveError": "Error al restaurar las tareas",
+			"setDates": "Fechas",
+			"dateField": "Fecha que establecer",
+			"startDate": "Fecha de inicio",
+			"dueDate": "Fecha de vencimiento",
+			"clearStartDate": "Borrar fecha de inicio",
+			"clearDueDate": "Borrar fecha de vencimiento",
+			"updateStartDateError": "Error al actualizar la fecha de inicio. La fecha de inicio no puede ser posterior a la fecha de vencimiento de una tarea.",
 			"addAssignee": "Añadir asignado",
 			"addAssigneeSuccess_many": "Added {{name}} to {{count}} tasks",
 			"addAssigneeSuccess_one": "{{name}} añadido a {{count}} tarea",
@@ -4158,7 +4673,19 @@
 				"addRowBefore": "Insertar fila encima",
 				"addRowAfter": "Insertar fila debajo",
 				"deleteRow": "Eliminar fila",
-				"deleteTable": "Eliminar tabla"
+				"deleteTable": "Eliminar tabla",
+				"moveRowUp": "Mover fila arriba",
+				"moveRowDown": "Mover fila abajo",
+				"moveColumnLeft": "Mover columna a la izquierda",
+				"moveColumnRight": "Mover columna a la derecha",
+				"toggleHeaderRow": "Fila de encabezado",
+				"fullWidth": "Ancho completo",
+				"dragRow": "Fila {{index}}",
+				"dragColumn": "Columna {{index}}",
+				"dragRowHint": "Arrastra para mover la fila o usa las teclas de flecha",
+				"dragColumnHint": "Arrastra para mover la columna o usa las teclas de flecha",
+				"insertRowHere": "Insertar una fila aquí",
+				"insertColumnHere": "Insertar una columna aquí"
 			}
 		},
 		"calendar": {
@@ -4180,7 +4707,8 @@
 			"rescheduleError": "Error al reprogramar la tarea",
 			"showWeekends": "Mostrar fines de semana",
 			"viewMode": "Periodo del calendario",
-			"week": "Semana"
+			"week": "Semana",
+			"overdue": "Vencidas"
 		},
 		"descriptionSearchLoading": "Buscando en las descripciones completas…",
 		"descriptionSearchError": "La búsqueda en las descripciones ha fallado. Los resultados pueden estar incompletos.",
@@ -4240,11 +4768,15 @@
 			},
 			"label": "Estimación",
 			"none": "Sin estimación",
-			"pointsValue": "{{value}} pts",
+			"pointsValue_one": "{{value}} pt",
+			"pointsValue_many": "{{value}} pts",
+			"pointsValue_other": "{{value}} pts",
 			"setAria": "Establecer estimación",
 			"totals": {
 				"estimated": "{{estimated}} de {{total}} tareas estimadas",
-				"points": "{{completed}} / {{total}} pts",
+				"points_one": "{{completed}} / {{total}} pt",
+				"points_many": "{{completed}} / {{total}} pts",
+				"points_other": "{{completed}} / {{total}} pts",
 				"time": "{{completed}} / {{total}}"
 			},
 			"updateError": "No se ha podido actualizar la estimación"
@@ -4364,6 +4896,12 @@
 			},
 			"url": "URL",
 			"urlPlaceholder": "https://example.com"
+		},
+		"create": {
+			"similarTitle": "Tareas abiertas parecidas",
+			"similarDismiss": "Ocultar tareas parecidas",
+			"similarOpen": "Abrir",
+			"similarOpenLabel": "Abrir {{key}} {{title}} en una pestaña nueva"
 		},
 		"parent": {
 			"add": "Añadir tarea principal",
@@ -4638,6 +5176,7 @@
 				"cycle": "ciclo",
 				"estimate": "estimación",
 				"modules": "módulos",
+				"parent": "tarea principal",
 				"status": "estado"
 			},
 			"edited": "Editado {{time}}",
@@ -4696,6 +5235,8 @@
 			"hint": "Escribe un título. @persona, #etiqueta, !prioridad y fechas como fri o 12 Oct se convierten en chips. Intro crea, Ctrl Intro abre el editor completo.",
 			"labelError": "La tarea se creó, pero no se pudo añadir la etiqueta {{name}}",
 			"newLabel": "{{name}} (etiqueta nueva)",
+			"dueOn": "Añadir tarea con vencimiento el {{date}}",
+			"notInView": "Tarea creada. No se muestra aquí porque no coincide con esta vista.",
 			"open": "Abrir",
 			"openComposer": "Abrir el editor completo",
 			"openComposerHint": "Abrir el editor completo (Ctrl Intro)",
@@ -4954,7 +5495,18 @@
 			"error": "Error al invitar miembro al equipo",
 			"createdTitle": "Invitación creada",
 			"shareLinkDescription": "Comparte este enlace con {{email}} para que se una al espacio de trabajo.",
-			"done": "Listo"
+			"done": "Listo",
+			"emailHint": "Separa varias direcciones con comas, espacios o saltos de línea.",
+			"roleLabel": "Rol",
+			"roleHint": "Puedes asignar roles hasta el tuyo.",
+			"sending": "Enviando {{current}} de {{total}}…",
+			"invalidEmails": "Estas direcciones de correo no son válidas: {{emails}}",
+			"emailRequired": "Introduce al menos una dirección de correo.",
+			"tooManyEmails": "Invita hasta {{max}} personas a la vez.",
+			"sentSome": "Se enviaron {{sent}} de {{total}} invitaciones.",
+			"failedTitle": "No enviadas",
+			"rateLimited": "Demasiadas invitaciones a la vez. Espera un minuto y envía el resto.",
+			"shareLinksDescription": "Comparte cada enlace con su persona para que se una al espacio de trabajo."
 		},
 		"membersTable": {
 			"emptyTitle": "No hay miembros en el equipo aún",
@@ -4980,7 +5532,9 @@
 			"cancelInviteSuccess": "Invitación cancelada correctamente",
 			"cancelInviteError": "Error al cancelar invitación",
 			"roleUpdateSuccess": "Rol actualizado",
-			"roleUpdateError": "Error al actualizar el rol"
+			"roleUpdateError": "Error al actualizar el rol",
+			"ariaInvitationRole": "Rol de {{email}}",
+			"invitationRoleUpdateSuccess": "Rol de la invitación actualizado"
 		},
 		"profile": {
 			"emptyActivity": "Aún no hay actividad",
@@ -6133,6 +6687,51 @@
 					"shortcuts": "Documentar los atajos de triaje"
 				},
 				"title": "Tu trabajo"
+			},
+			"ask": {
+				"title": "Preguntar a la IA",
+				"model": "Modelo del espacio de trabajo",
+				"greeting": "¡Hola! ¿Qué te gustaría saber?",
+				"intro": "Pregunta sobre tu espacio de trabajo con palabras sencillas. Las respuestas salen de las tareas que puedes ver.",
+				"placeholder": "Pregunta a la IA, @ para contexto, / para comandos",
+				"placeholderBuild": "Describe qué quieres crear o cambiar…",
+				"modes": {
+					"label": "Modo",
+					"ask": "Preguntar",
+					"build": "Crear"
+				},
+				"send": "Enviar",
+				"you": "Tú",
+				"question": "¿Qué está bloqueando el ciclo actual?",
+				"buildPrompt": "Asigna WEB-5 a Mira",
+				"context": "Contexto ({{count}})",
+				"facts": "Proyectos: 1 · Personas: 4 · Ciclos: 1",
+				"earlier": "Mensajes anteriores: {{count}}",
+				"thinking": "Pensando… {{seconds}}s",
+				"thought": "Ha pensado durante {{seconds}}s",
+				"blockedIntro": "Hay dos tareas bloqueadas en {{cycle}}:",
+				"blockedPageTitles": "{{title}} está a la espera de un inventario de páginas.",
+				"blockedPricing": "{{title}} está a la espera de los datos de precios de ventas.",
+				"unassigned": "{{key}} aún no tiene a nadie asignado.",
+				"summary": "Un cambio. No pasa nada hasta que confirmes.",
+				"op": "Editar tarea",
+				"action": "Asignar {{key}} a {{name}}",
+				"awaiting": "Esperando respuesta",
+				"ready": "Cambios listos: {{count}}",
+				"cancel": "Cancelar",
+				"confirm": "Confirmar",
+				"done": "Hecho",
+				"undo": "Deshacer",
+				"undone": "Deshecho",
+				"cancelled": "Cancelado. No se cambió nada.",
+				"generic": "Esta demo solo responde a su propia pregunta. En Margaya, Preguntar responde a partir de tu espacio de trabajo y enlaza las tareas que ha usado.",
+				"genericBuild": "Esta demo solo hace su propio cambio. En Margaya, Crear convierte tus palabras en cambios que tú confirmas.",
+				"blocked": "Bloqueada",
+				"tasks": {
+					"pageTitles": "Revisar los títulos de las páginas",
+					"pricing": "Actualizar la página de precios",
+					"mobileMenu": "Corregir el menú móvil"
+				}
 			}
 		},
 		"home": {
@@ -6167,6 +6766,10 @@
 				"singleServer": {
 					"detail": "Redis es opcional",
 					"title": "Basta con un servidor"
+				},
+				"ai": {
+					"title": "IA a tu manera",
+					"detail": "Desactivada por defecto, tu propio modelo"
 				}
 			},
 			"faq": {
@@ -6203,6 +6806,14 @@
 					"selfHost": {
 						"answer": "Sí. Ejecútalo con Docker Compose en un solo servidor o en Kubernetes con el chart oficial de Helm. Necesitas un contenedor de aplicación y una base de datos PostgreSQL. La guía de instalación cubre las variables de entorno, el almacenamiento y los proxies inversos.",
 						"question": "¿Puedo alojar Margaya yo mismo?"
+					},
+					"ai": {
+						"question": "¿Margaya tiene IA? ¿Está activada por defecto?",
+						"answer": "Sí, y no. Preguntar a la IA, el modo Crear, la ayuda de redacción, las sugerencias de triaje y los agentes de IA vienen integrados, pero siguen desactivados hasta que un administrador de la instancia conecta un modelo y un espacio de trabajo activa la IA. Cada cambio que propone la IA se te muestra primero y se puede deshacer."
+					},
+					"aiData": {
+						"question": "¿Qué modelos de IA puedo usar y adónde van mis datos?",
+						"answer": "Usa Claude o cualquier modelo compatible con OpenAI que ejecutes tú mismo, como Ollama o vLLM. Con el enrutamiento solo local, nada sale de tu red. Margaya solo envía lo que la persona que pregunta ya puede ver, no guarda prompts ni respuestas salvo que actives el historial en el servidor y registra el uso para los presupuestos."
 					}
 				},
 				"title": "Preguntas, respuestas claras"
@@ -6215,13 +6826,11 @@
 				"title": "Dedica tu tiempo al trabajo, no a la herramienta."
 			},
 			"hero": {
-				"description": "Margaya reúne tareas, ciclos, documentos y triaje en un espacio de trabajo rápido. Escribe una tarea, hazla avanzar y vuelve a lo que de verdad importa.",
-				"eyebrow": "Gestión de proyectos de código abierto",
-				"note": "Licencia MIT. Ejecútalo en tu propio servidor o prueba Margaya Cloud durante 14 días sin tarjeta de crédito.",
-				"primaryCta": "Empezar",
-				"secondaryCta": "Alójalo tú mismo",
 				"title": "Planifica el trabajo.",
-				"titleAccent": "Olvídate del papeleo."
+				"titleAccent": "Olvídate del papeleo.",
+				"description": "Margaya reúne tareas, ciclos, documentos y triaje en un espacio de trabajo rápido, con un asistente de IA que puedes activar para responder preguntas y hacer cambios. Escribe una tarea, hazla avanzar y vuelve a lo que de verdad importa.",
+				"primaryCta": "Empezar",
+				"secondaryCta": "Alójalo tú mismo"
 			},
 			"insight": {
 				"description": "Crea gráficos a partir de tus tareas, sigue el registro de auditoría y restaura lo que sea desde la papelera.",
@@ -6269,7 +6878,8 @@
 					"select": "Seleccionar la tarea enfocada",
 					"spreadsheet": "Hoja de cálculo",
 					"status": "Cambiar el estado",
-					"tasks": "Buscar una tarea por clave o título"
+					"tasks": "Buscar una tarea por clave o título",
+					"ask": "Abrir Preguntar a la IA"
 				},
 				"modifier": "Ctrl",
 				"shortcutsLabel": "Atajos de teclado",
@@ -6302,6 +6912,10 @@
 					"views": {
 						"description": "Tablero, lista, hoja de cálculo, calendario y Gantt",
 						"title": "Vistas"
+					},
+					"ai": {
+						"title": "IA",
+						"description": "Preguntar a la IA, modo Crear, ayuda de redacción y agentes"
 					}
 				},
 				"label": "Principal",
@@ -6312,7 +6926,7 @@
 				"blog": "Blog",
 				"compare": "Comparar",
 				"explore": "Explorar",
-				"featuresIntro": "Cinco recorridos breves por Margaya. Cada uno incluye una demo en vivo que puedes manejar tú mismo.",
+				"featuresIntro": "Seis recorridos breves por Margaya. Cada uno incluye una demo en vivo que puedes manejar tú mismo.",
 				"newTab": "(se abre en una pestaña nueva)"
 			},
 			"ownIt": {
@@ -6473,6 +7087,26 @@
 					"title": "Recursos"
 				},
 				"selfHosted": "Hecho para alojarlo tú mismo"
+			},
+			"ai": {
+				"eyebrow": "IA",
+				"title": "Pregúntale. Deja que lo haga. Tú confirmas.",
+				"description": "Preguntar a la IA responde a partir de tus tareas en vivo, con gráficos y las tareas que ha usado. El modo Crear convierte una petición en cambios que revisas y confirmas, y los agentes se encargan de tareas como un compañero más.",
+				"agents": {
+					"title": "Agentes que trabajan como compañeros",
+					"description": "Asigna una tarea a un agente y síguela en el Panel de agentes. Pregunta a una persona cuando se atasca, espera tu aprobación antes de escribir y puede ejecutarse según un calendario."
+				},
+				"privacy": {
+					"title": "Privado por defecto",
+					"description": "La IA está desactivada hasta que un administrador la activa, y tú decides dónde se ejecuta.",
+					"items": {
+						"model": "Claude, o tu propio modelo con Ollama o vLLM",
+						"local": "El enrutamiento solo local mantiene los datos en tu red",
+						"stored": "No se guardan prompts ni respuestas salvo que elijas el historial en el servidor",
+						"budget": "Presupuestos mensuales y diarios, con un registro de uso",
+						"undo": "Cualquier cambio del modo Crear se puede deshacer durante una hora"
+					}
+				}
 			}
 		},
 		"pages": {
@@ -6491,8 +7125,8 @@
 						"title": "Una API REST con OpenAPI"
 					},
 					"cleanup": {
-						"body": "Archiva las tareas cerradas y cierra las estancadas automáticamente, con una vista previa de lo que tocará cada regla.",
-						"title": "Limpieza programada"
+						"body": "Crea reglas de tipo Cuando, Si, Entonces para el trabajo rutinario, como asignar o etiquetar tareas nuevas, y archiva o cierra las tareas estancadas según un calendario, con una vista previa de lo que tocará cada regla.",
+						"title": "Reglas de automatización"
 					},
 					"integrations": {
 						"body": "Vincula pull requests de GitHub o Gitea, envía novedades a Slack, Discord, Telegram o Mattermost y publica eventos en cualquier URL con webhooks salientes.",
@@ -6631,6 +7265,43 @@
 					}
 				},
 				"title": "Un mismo conjunto de tareas, como necesites verlo."
+			},
+			"ai": {
+				"metaTitle": "Asistente de IA, modo Crear y agentes",
+				"metaDescription": "Haz preguntas sobre tu trabajo y obtén respuestas a partir de datos en vivo, deja que el modo Crear proponga cambios que tú confirmas, escribe con ayuda de la IA y asigna tareas a agentes de IA, con tu propio modelo y la IA desactivada por defecto.",
+				"eyebrow": "IA",
+				"title": "Un asistente que conoce el trabajo.",
+				"description": "Preguntar a la IA, modo Crear, ayuda de redacción y agentes, todo en la versión de código abierto y con el modelo que elijas.",
+				"sections": {
+					"ask": {
+						"title": "Preguntar a la IA",
+						"body": "Pregunta con palabras sencillas y obtén respuestas a partir de las tareas en vivo, con recuentos, gráficos y enlaces a las tareas y páginas usadas. Menciona una tarea, página o persona con @, adjunta un archivo o habla en lugar de escribir."
+					},
+					"build": {
+						"title": "Modo Crear",
+						"body": "Describe un cambio, como un proyecto con tres tareas o una tarea para Mia. Ves qué ha leído y cómo ha razonado, editas los cambios propuestos, los confirmas y puedes deshacer cualquiera de ellos durante una hora."
+					},
+					"writing": {
+						"title": "Ayuda de redacción",
+						"body": "Mejora, acorta, traduce o cambia el tono de una descripción o un comentario, obtén una sugerencia de título, resume una tarea o añade un bloque de IA a una página."
+					},
+					"triage": {
+						"title": "Triaje y resúmenes",
+						"body": "Recibe sugerencias de etiqueta y prioridad para el trabajo nuevo, detecta duplicados, filtra un tablero describiendo lo que buscas y obtén un resumen de tu bandeja de entrada sin leer o un informe de un ciclo."
+					},
+					"agents": {
+						"title": "Agentes de IA",
+						"body": "Los agentes son miembros a los que puedes asignar tareas. Preguntan a una persona cuando se atascan, esperan aprobación antes de escribir, se ejecutan según un calendario y pueden usar herramientas de otros servidores MCP que conectes."
+					},
+					"privacy": {
+						"title": "Tu modelo, tus reglas",
+						"body": "La IA está desactivada hasta que un administrador la activa. Usa Claude o un modelo local, mantén los datos en tu red, fija presupuestos y no guardes prompts ni respuestas salvo que tú lo decidas."
+					}
+				},
+				"cta": {
+					"title": "Activa la IA cuando estés listo.",
+					"description": "Lee la guía de configuración de la IA o prueba Preguntar a la IA en tu propio espacio de trabajo."
+				}
 			}
 		},
 		"scenes": {
@@ -6741,6 +7412,10 @@
 			"yourWork": {
 				"caption": "Tu trabajo reúne lo que tienes asignado, lo que has creado y lo que sigues.",
 				"description": "Demo: la página Tu trabajo. El cursor recorre las pestañas Asignadas, Creadas y Suscritas, y cada una muestra sus tareas de todos los proyectos con estado, prioridad y fechas de vencimiento."
+			},
+			"ask": {
+				"caption": "Pregunta sobre el trabajo y deja que Crear haga el cambio. Tú lo confirmas.",
+				"description": "Demo: el tablero Sitio web con el chat de Preguntar a la IA abierto. Alguien pregunta qué está bloqueando el ciclo actual. El asistente enumera lo que ha leído, piensa dos segundos y responde: WEB-5 y WEB-6 están bloqueadas, y WEB-5 no tiene a nadie asignado. Tras pasar al modo Crear, le pide que asigne WEB-5 a Mira. El asistente propone el cambio, se confirma, la tarjeta muestra Hecho con Deshacer y el avatar de Mira aparece en WEB-5."
 			}
 		}
 	},
@@ -6916,7 +7591,12 @@
 			"owner": "Propietario",
 			"progress": "Progreso",
 			"tasks": "Tareas",
-			"title": "Detalles del ciclo"
+			"title": "Detalles del ciclo",
+			"rolledOver_many": "El traspaso movió {{count}} tareas sin terminar a {{name}}.",
+			"rolledOver_one": "El traspaso movió {{count}} tarea sin terminar a {{name}}.",
+			"rolledOver_other": "El traspaso movió {{count}} tareas sin terminar a {{name}}.",
+			"rolloverNoNext": "El traspaso no encontró un ciclo siguiente; las tareas sin terminar se quedaron aquí.",
+			"rolloverNothing": "El traspaso no encontró tareas sin terminar que mover."
 		},
 		"status": {
 			"archived": "Archivado",
@@ -7513,7 +8193,9 @@
 		"widgets": {
 			"quickLinks": "Enlaces rápidos",
 			"recents": "Recientes",
-			"stickies": "Notas adhesivas"
+			"stickies": "Notas adhesivas",
+			"risks": "Riesgos",
+			"myBrief": "Mi informe"
 		},
 		"focus": {
 			"caughtUp": "Todo al día",
@@ -7530,7 +8212,9 @@
 			"stickiesHint": "Notas privadas, solo para ti",
 			"unread_many": "{{count}} unread",
 			"unread_one": "{{count}} sin leer",
-			"unread_other": "{{count}} sin leer"
+			"unread_other": "{{count}} sin leer",
+			"openCaption": "abiertas",
+			"unreadCaption": "sin leer"
 		}
 	},
 	"intake": {
@@ -7590,7 +8274,11 @@
 			"titlePlaceholder": "¿Qué necesitas?",
 			"titleRequired": "Añade un título",
 			"toast": "Solicitud enviada",
-			"toastView": "Ver"
+			"toastView": "Ver",
+			"pastedImages": "Imágenes pegadas",
+			"pasteHint": "Pega capturas de pantalla para adjuntarlas a la solicitud.",
+			"removeImage": "Quitar {{name}}",
+			"attachFailed": "La solicitud se ha enviado, pero no se han podido adjuntar algunas imágenes."
 		},
 		"decline": {
 			"description": "La solicitud se cierra y no pasa al tablero. Puedes reabrirla más tarde.",
@@ -7637,7 +8325,9 @@
 			"noTasks": "Este proyecto aún no tiene otras tareas.",
 			"searchPlaceholder": "Buscar tareas por clave o título",
 			"title": "Marcar {{key}} como duplicada",
-			"toast": "Marcada como duplicada de {{key}}"
+			"toast": "Marcada como duplicada de {{key}}",
+			"aiSuggestions": "Sugeridas por la IA",
+			"aiChecking": "Buscando duplicados con IA…"
 		},
 		"empty": {
 			"backToIntake": "Volver a recepción",
@@ -7883,6 +8573,11 @@
 				"singleProjectHint": "Selecciona un solo proyecto para ver la velocidad",
 				"subtitle": "Completado vs comprometido, por ciclo",
 				"title": "Velocidad"
+			},
+			"filter": {
+				"all": "Todos",
+				"label": "Mostrar ciclos",
+				"running": "En curso"
 			}
 		},
 		"dimensions": {
@@ -8029,7 +8724,8 @@
 			"noRequests": "Aún no hay solicitudes",
 			"noTasks": "Ninguna tarea coincide con estos filtros",
 			"retry": "Reintentar",
-			"timeout": "Esto tardó demasiado. Acota los filtros e inténtalo de nuevo."
+			"timeout": "Esto tardó demasiado. Acota los filtros e inténtalo de nuevo.",
+			"noRunningCycles": "No hay ciclos en curso en este momento"
 		},
 		"table": {
 			"periodEnd": "Fin del período",
@@ -8045,7 +8741,8 @@
 			"intake": "Recepción",
 			"modules": "Módulos",
 			"overview": "Resumen",
-			"tasks": "Tareas"
+			"tasks": "Tareas",
+			"delivery": "Entrega"
 		},
 		"trend": {
 			"completed": "Completadas",
@@ -8059,9 +8756,145 @@
 			"chart": "Gráfico",
 			"label": "Mostrar como",
 			"table": "Tabla"
+		},
+		"reports": {
+			"actionsFor": "Acciones para {{name}}",
+			"close": "Cerrar informe",
+			"delete": "Eliminar",
+			"deleteDescription": "Se eliminará «{{name}}». Esta acción no se puede deshacer.",
+			"deleteSharedDescription": "Se eliminará «{{name}}» para todos en el espacio de trabajo. Esta acción no se puede deshacer.",
+			"deleteTitle": "¿Eliminar este informe?",
+			"dialog": {
+				"cancel": "Cancelar",
+				"createTitle": "Guardar informe",
+				"editTitle": "Editar informe",
+				"name": "Nombre",
+				"namePlaceholder": "p. ej., Errores abiertos por asignado",
+				"nameRequired": "Introduce un nombre",
+				"save": "Guardar",
+				"summary": "Guarda la configuración del gráfico, los proyectos incluidos y los filtros.",
+				"update": "Guardar cambios",
+				"visibility": "Quién puede verlo"
+			},
+			"empty": "Aún no hay informes guardados. Guarda este gráfico para volver a él más tarde.",
+			"listTitle": "Informes guardados",
+			"loadError": "No se pudieron cargar los informes guardados",
+			"makePrivate": "Hacer privado",
+			"notes": {
+				"allProjects": "Ninguno de sus proyectos está disponible, así que se muestran todos los proyectos.",
+				"builderReset": "Algunos ajustes del gráfico no están disponibles para estos proyectos y se han restablecido.",
+				"dropped_many": "{{count}} proyectos de este informe ya no existen.",
+				"dropped_one": "{{count}} proyecto de este informe ya no existe.",
+				"dropped_other": "{{count}} proyectos de este informe ya no existen.",
+				"leftOut_many": "{{count}} proyectos de este informe están archivados y se han excluido.",
+				"leftOut_one": "{{count}} proyecto de este informe está archivado y se ha excluido.",
+				"leftOut_other": "{{count}} proyectos de este informe están archivados y se han excluido.",
+				"otherProjects": "Este informe se guardó para otros proyectos; aquí solo muestra este proyecto."
+			},
+			"open": "Informes",
+			"rename": "Renombrar",
+			"save": "Guardar",
+			"saveAsNew": "Guardar como nuevo",
+			"share": "Compartir con el espacio de trabajo",
+			"sharedBy": "Compartido por {{name}}",
+			"showing": "Informe: {{name}}",
+			"toast": {
+				"deleted": "Informe eliminado",
+				"deleteError": "No se pudo eliminar el informe",
+				"madePrivate": "El informe ahora es privado",
+				"saved": "Se guardó «{{name}}»",
+				"saveError": "No se pudo guardar el informe",
+				"shared": "Informe compartido con el espacio de trabajo",
+				"updated": "Informe actualizado"
+			},
+			"unsaved": "Cambios sin guardar",
+			"update": "Actualizar informe",
+			"visibility": {
+				"private": "Privado",
+				"privateHint": "Solo tú puedes verlo.",
+				"workspace": "Compartido con el espacio de trabajo",
+				"workspaceHint": "Cualquier persona con acceso a Analytics en este espacio de trabajo puede abrirlo."
+			}
 		}
 	},
 	"pages": {
+		"templates": {
+			"saveAction": "Guardar como plantilla",
+			"saveTitle": "Guardar como plantilla",
+			"saveDescription": "El contenido actual y el icono de la página se convierten en una plantilla para páginas nuevas.",
+			"nameLabel": "Nombre de la plantilla",
+			"scopeLabel": "Disponible en",
+			"scopeProject": "Este proyecto",
+			"scopeProjectHint": "Se ofrece al crear páginas en este proyecto.",
+			"scopeWorkspace": "Todos los proyectos",
+			"scopeWorkspaceHint": "Se ofrece en todos los proyectos del espacio de trabajo.",
+			"saveConfirm": "Guardar plantilla",
+			"savedToast": "Plantilla guardada",
+			"saveError": "No se pudo guardar la plantilla",
+			"newFromTemplate": "Nueva página desde plantilla",
+			"moreCreateOptions": "Más formas de crear una página",
+			"pickTitle": "Nueva página desde plantilla",
+			"pickDescription": "La nueva página empieza con el contenido de la plantilla. Después puedes cambiar lo que quieras.",
+			"starters": "Plantillas iniciales",
+			"saved": "Plantillas guardadas",
+			"savedEmpty": "Aún no hay plantillas guardadas. Guarda una desde el menú de una página.",
+			"loadError": "No se pudieron cargar las plantillas",
+			"deleteLabel": "Eliminar la plantilla {{name}}",
+			"deleted": "Plantilla eliminada",
+			"deleteError": "No se pudo eliminar la plantilla",
+			"builtin": {
+				"meetingName": "Notas de reunión",
+				"meetingDescription": "Asistentes, orden del día, decisiones y tareas pendientes.",
+				"meetingAttendees": "Asistentes",
+				"meetingAgenda": "Orden del día",
+				"meetingNotes": "Notas",
+				"meetingDecisions": "Decisiones",
+				"meetingActionItems": "Tareas pendientes",
+				"specName": "Especificación",
+				"specDescription": "Problema, objetivos, propuesta y preguntas abiertas.",
+				"specSummary": "Resumen",
+				"specProblem": "Problema",
+				"specGoals": "Objetivos",
+				"specNonGoals": "Fuera de alcance",
+				"specProposal": "Propuesta",
+				"specOpenQuestions": "Preguntas abiertas",
+				"retroName": "Retrospectiva",
+				"retroDescription": "Qué salió bien, qué mejorar y qué probaremos a continuación.",
+				"retroWentWell": "Qué salió bien",
+				"retroCouldBeBetter": "Qué podría ir mejor",
+				"retroTryNext": "Qué probaremos a continuación"
+			}
+		},
+		"publish": {
+			"menuItem": "Publicar en la web",
+			"title": "Publicar en la web",
+			"description": "Cualquiera con el enlace puede leer esta página sin iniciar sesión. Se pide a los buscadores que no la indexen.",
+			"switchLabel": "Enlace público",
+			"onHint": "Publicada. Al desactivarlo, el enlace se revoca al instante.",
+			"offHint": "Desactivado. Actívalo para crear un enlace.",
+			"disabledByWorkspace": "Las páginas públicas están desactivadas en este espacio de trabajo. Un administrador puede activarlas en los ajustes del espacio de trabajo.",
+			"cannotPublish": "Solo quienes pueden compartir proyectos pueden publicar, y solo páginas visibles para todo el espacio de trabajo.",
+			"linkLabel": "Enlace",
+			"copyLink": "Copiar enlace",
+			"copied": "Copiado",
+			"openLink": "Abrir la página pública",
+			"privacyNote": "Las menciones, los enlaces a tareas, los archivos y los enlaces a páginas no publicadas se ocultan en la página pública.",
+			"publishedToast": "Página publicada",
+			"unpublishedToast": "Enlace revocado",
+			"error": "No se pudo cambiar el enlace público",
+			"loadError": "No se pudo cargar el enlace público",
+			"done": "Listo"
+		},
+		"publicView": {
+			"documentTitle": "Página compartida",
+			"unavailableTitle": "Esta página no está disponible",
+			"unavailableDescription": "Puede que el enlace se haya revocado o que la página ya no se comparta.",
+			"updated": "Actualizada el {{date}}",
+			"mention": "@alguien",
+			"task": "una tarea vinculada",
+			"file": "un archivo adjunto",
+			"page": "otra página"
+		},
 		"actions": {
 			"archive": "Archivar",
 			"copyLink": "Copiar enlace",
@@ -8099,6 +8932,40 @@
 			"restoredBy": "{{name}} restauró una versión anterior",
 			"roomFull": "Demasiadas personas tienen esta página abierta ahora mismo. Inténtalo de nuevo en un momento.",
 			"signedOut": "Tu sesión terminó. Vuelve a iniciar sesión para seguir editando."
+		},
+		"toolbar": {
+			"ariaLabel": "Barra de formato",
+			"textStyle": "Estilo de texto",
+			"bold": "Negrita",
+			"italic": "Cursiva",
+			"underline": "Subrayado",
+			"strike": "Tachado",
+			"inlineCode": "Código en línea",
+			"link": "Enlace",
+			"image": "Imagen",
+			"more": "Más formato"
+		},
+		"filters": {
+			"button": "Filtros",
+			"active": "Filtros aplicados",
+			"search": "Buscar filtros",
+			"searchClear": "Borrar búsqueda",
+			"favorites": "Favoritos",
+			"createdDate": "Fecha de creación",
+			"date": {
+				"any": "Cualquier fecha",
+				"today": "Hoy",
+				"last7": "Últimos 7 días",
+				"last30": "Últimos 30 días",
+				"older": "Hace más de 30 días"
+			},
+			"remove": "Quitar el filtro {{filter}}"
+		},
+		"detail": {
+			"unlocked": "Desbloqueada",
+			"openOutline": "Abrir esquema",
+			"currentSection": "Sección actual",
+			"emptyLinePlaceholder": "Escribe «/» para ver los comandos"
 		},
 		"commandPalette": {
 			"createPage": "Crear página"
@@ -8217,8 +9084,6 @@
 			"locked": "Bloqueada",
 			"newPage": "Nueva página",
 			"ownedBy": "Propiedad de {{name}}",
-			"ownerFilter": "Propietario",
-			"ownerFilterSearch": "Buscar personas",
 			"retry": "Reintentar",
 			"searchPlaceholder": "Buscar páginas",
 			"sort": {
@@ -8338,6 +9203,229 @@
 			"expand": "Expandir {{title}}",
 			"newPage": "Nueva página",
 			"title": "Páginas"
+		}
+	},
+	"accountSecurity": {
+		"platform": {
+			"save": "Guardar",
+			"retry": "Reintentar",
+			"loadMore": "Cargar más",
+			"auditPasswordResetSent": "Enlace para restablecer la contraseña enviado",
+			"apiKeys": {
+				"accessLabel": "Acceso",
+				"accessFull": "Acceso completo",
+				"accessFullHint": "Todo lo que puedes hacer, en cada espacio de trabajo al que perteneces.",
+				"accessRead": "Solo lectura",
+				"accessReadHint": "Puede leer, pero nunca cambia nada.",
+				"accessCustom": "Personalizado",
+				"accessCustomHint": "Solo las áreas que elijas abajo.",
+				"areasLabel": "Áreas",
+				"areaNone": "Ninguno",
+				"areaRead": "Lectura",
+				"areaWrite": "Escritura",
+				"areasRequired": "Elige al menos un área.",
+				"projectsLabel": "Limitar a proyectos concretos",
+				"projectsHint": "Los demás proyectos parecen no existir para esta clave y se rechazan las solicitudes de todo el espacio de trabajo.",
+				"projectsIn": "Proyectos en {{workspace}}",
+				"projectsLoading": "Cargando proyectos…",
+				"projectsEmpty": "Este espacio de trabajo aún no tiene proyectos.",
+				"projectsRequired": "Elige al menos un proyecto.",
+				"columnScope": "Alcance",
+				"scopeFull": "Acceso completo",
+				"scopeRead": "Solo lectura",
+				"scopeCustom": "Personalizado",
+				"scopeProjects": "Proyectos: {{projects}}",
+				"deletedProject": "Proyecto eliminado",
+				"requestsAria": "Solicitudes hechas con {{name}}",
+				"requestsTitle": "Solicitudes: {{name}}",
+				"requestsDescription": "Solicitudes recientes hechas con esta clave. Solo se guardan el método, la ruta, el estado y la duración, nunca el contenido.",
+				"requestsEmpty": "Aún no hay solicitudes.",
+				"requestsError": "No se pudieron cargar las solicitudes.",
+				"columnTime": "Hora",
+				"columnRequest": "Solicitud",
+				"columnStatus": "Estado",
+				"columnDuration": "Duración",
+				"durationMs": "{{value}} ms"
+			},
+			"policy": {
+				"title": "Política de inicio de sesión",
+				"description": "Quién puede crear una cuenta, cómo inicia sesión cada persona y cuánto duran las sesiones.",
+				"invitedPasswordSignUp": "Registro con contraseña para invitados",
+				"invitedPasswordSignUpHint": "Si el registro con contraseña está desactivado, quien tenga una invitación válida aún puede crear una cuenta con contraseña.",
+				"domains": "Dominios de correo permitidos",
+				"domainsHint": "Las cuentas nuevas deben usar una dirección de uno de estos dominios. Déjalo vacío para permitir cualquier dominio.",
+				"requiredProvider": "Proveedor de inicio de sesión obligatorio",
+				"requiredProviderHint": "Todos inician sesión con este proveedor. Los administradores de la instancia conservan el inicio con contraseña como vía de acceso.",
+				"noRequirement": "Sin requisito",
+				"customProvider": "el inicio de sesión de tu organización",
+				"sessionLifetime": "Duración de la sesión",
+				"sessionLifetimeHint": "Cuánto dura una sesión sin usarse. Usarla la prolonga.",
+				"hours": "horas",
+				"signInNotice": "Inicia sesión con {{provider}}. El inicio con contraseña es solo para administradores de la instancia."
+			},
+			"twoFactor": {
+				"title": "Autenticación en dos pasos",
+				"description": "Pedir un código de una aplicación de autenticación al iniciar sesión con contraseña.",
+				"authenticator": "Aplicación de autenticación",
+				"on": "Activada",
+				"off": "Desactivada",
+				"turnOn": "Activar",
+				"turnOff": "Desactivar",
+				"newCodes": "Nuevos códigos de recuperación",
+				"confirmPassword": "Confirma tu contraseña",
+				"continue": "Continuar",
+				"setupTitle": "Añade Margaya a tu aplicación de autenticación",
+				"setupHint": "Introduce esta clave de configuración en tu aplicación y luego el código de 6 dígitos que muestra.",
+				"setupKey": "Clave de configuración",
+				"openApp": "Abrir en una aplicación de autenticación de este dispositivo",
+				"code": "Código de autenticación",
+				"verify": "Verificar",
+				"invalidCode": "Ese código no es correcto. Revisa la hora de tu dispositivo e inténtalo de nuevo.",
+				"codesTitle": "Códigos de recuperación",
+				"codesHint": "Guárdalos en un lugar seguro. Cada uno te permite iniciar sesión una vez si pierdes tu dispositivo.",
+				"copyCodes": "Copiar códigos",
+				"copied": "Códigos de recuperación copiados",
+				"done": "Listo",
+				"enabled": "La autenticación en dos pasos está activada.",
+				"disabled": "La autenticación en dos pasos está desactivada.",
+				"error": "Algo salió mal. Inténtalo de nuevo."
+			},
+			"challenge": {
+				"title": "Autenticación en dos pasos",
+				"totpHint": "Introduce el código de 6 dígitos de tu aplicación de autenticación.",
+				"recoveryHint": "Introduce uno de tus códigos de recuperación. Cada código funciona una sola vez.",
+				"recoveryCode": "Código de recuperación",
+				"invalid": "Ese código no es correcto. Inténtalo de nuevo.",
+				"trustDevice": "Confiar en este dispositivo durante 30 días",
+				"useRecovery": "Usar un código de recuperación",
+				"useApp": "Usar tu aplicación de autenticación",
+				"usePassword": "Iniciar sesión con contraseña",
+				"back": "Volver al inicio de sesión"
+			},
+			"users": {
+				"nav": "Usuarios",
+				"title": "Usuarios",
+				"subtitle": "Todas las cuentas de este servidor. Bloquea a quienes se fueron, restablece contraseñas y cierra sesiones.",
+				"listTitle": "Cuentas",
+				"search": "Buscar por nombre o correo",
+				"filterLabel": "Mostrar",
+				"filterAll": "Todas las cuentas",
+				"filterAdmins": "Administradores de la instancia",
+				"filterBanned": "Bloqueadas",
+				"empty": "Ninguna cuenta coincide con «{{query}}».",
+				"none": "Aún no hay cuentas.",
+				"columnUser": "Usuario",
+				"columnStatus": "Estado",
+				"columnWorkspaces": "Espacios de trabajo",
+				"columnLastActive": "Última actividad",
+				"columnJoined": "Alta",
+				"columnActions": "Acciones",
+				"badgeAdmin": "Administrador",
+				"badgeBanned": "Bloqueada",
+				"badgeTwoFactor": "2FA",
+				"never": "Nunca",
+				"actionsFor": "Acciones para {{name}}",
+				"details": "Ver detalles",
+				"resetPassword": "Restablecer contraseña",
+				"signOut": "Cerrar sesión en todas partes",
+				"makeAdmin": "Hacer administrador de la instancia",
+				"removeAdmin": "Quitar administrador de la instancia",
+				"ban": "Bloquear",
+				"unban": "Desbloquear",
+				"banTitle": "¿Bloquear a {{name}}?",
+				"banDescription": "Se cierra su sesión en todas partes y no podrá iniciar sesión hasta que termine el bloqueo. Sus claves de API también dejan de funcionar.",
+				"banReason": "Motivo (opcional)",
+				"banDuration": "Duración",
+				"banForever": "Hasta desbloquear",
+				"ban7Days": "7 días",
+				"ban30Days": "30 días",
+				"banned": "{{name}} está bloqueado.",
+				"unbanned": "{{name}} puede volver a iniciar sesión.",
+				"resetTitle": "¿Restablecer la contraseña de {{name}}?",
+				"resetDescription": "Envía un enlace para restablecerla o define una contraseña nueva ahora. Definirla cierra su sesión en todas partes.",
+				"resetByEmail": "Enviar un enlace a {{email}}",
+				"resetSetNow": "Definir una contraseña nueva ahora",
+				"newPassword": "Contraseña nueva",
+				"resetConfirm": "Restablecer contraseña",
+				"resetSent": "Hay un enlace de restablecimiento en camino a {{email}}.",
+				"passwordSet": "Se cambió la contraseña de {{name}}.",
+				"signOutTitle": "¿Cerrar la sesión de {{name}} en todas partes?",
+				"signOutDescription": "Todas las sesiones terminan al instante. Sus claves de API siguen funcionando; solo su propietario puede revocarlas.",
+				"signedOut": "Se cerró la sesión de {{name}} en todas partes.",
+				"promoted": "{{name}} ahora es administrador de la instancia.",
+				"demoted": "{{name}} ya no es administrador de la instancia.",
+				"activeSessions": "Sesiones activas",
+				"signInMethod": "Contraseña",
+				"hasPassword": "Definida",
+				"noPassword": "Sin definir (inicia sesión de otra forma)",
+				"workspacesTitle": "Espacios de trabajo",
+				"noWorkspaces": "No pertenece a ningún espacio de trabajo.",
+				"joined": "Se unió el {{date}}"
+			}
+		},
+		"password": {
+			"tooShort": "Usa al menos {{min}} caracteres.",
+			"tooCommon": "Esta contraseña es demasiado común y fácil de adivinar. Elige otra.",
+			"matchesEmail": "Tu contraseña no puede ser tu dirección de correo electrónico.",
+			"hint": "Al menos {{min}} caracteres. Evita las contraseñas comunes y tu dirección de correo electrónico."
+		},
+		"emailChange": {
+			"action": "Cambiar correo",
+			"title": "Cambiar dirección de correo electrónico",
+			"description": "Enviaremos un código a la nueva dirección. Tu correo cambia en cuanto lo introduzcas y se cerrarán tus otras sesiones.",
+			"newEmail": "Nueva dirección de correo electrónico",
+			"newEmailPlaceholder": "tu@ejemplo.com",
+			"invalidEmail": "Introduce una dirección de correo electrónico válida.",
+			"sameEmail": "Esa ya es tu dirección de correo electrónico.",
+			"sendCode": "Enviar código",
+			"codeSent": "Si se puede usar {{email}}, hay un código en camino. Caduca en 5 minutos.",
+			"code": "Código de verificación",
+			"confirm": "Cambiar correo",
+			"back": "Usar otra dirección",
+			"success": "Tu dirección de correo electrónico ahora es {{email}}.",
+			"invalidCode": "Ese código no es correcto o ha caducado. Solicita uno nuevo.",
+			"sessionTooOld": "Por tu seguridad, vuelve a iniciar sesión antes de cambiar tu dirección de correo electrónico.",
+			"unavailable": "El correo electrónico no está configurado en este servidor, así que no puedes cambiar tu dirección aquí. Pídeselo a un administrador de la instancia.",
+			"error": "No se ha podido cambiar tu dirección de correo electrónico."
+		},
+		"reauth": {
+			"title": "Confirma que eres tú",
+			"description": "Para cambiar la instancia se necesita un inicio de sesión reciente. Introduce tu contraseña para continuar durante los próximos 10 minutos.",
+			"noPassword": "Para cambiar la instancia se necesita un inicio de sesión reciente. Tu cuenta no tiene contraseña, así que vuelve a iniciar sesión para continuar.",
+			"password": "Contraseña",
+			"confirm": "Confirmar",
+			"signInAgain": "Volver a iniciar sesión",
+			"wrongPassword": "Esa contraseña no es correcta.",
+			"cancelled": "No se ha guardado: no se ha confirmado tu identidad.",
+			"error": "No se ha podido confirmar tu contraseña."
+		},
+		"auditTrail": {
+			"title": "Registro de auditoría",
+			"subtitle": "Cambios en la instancia: quién cambió qué y cuándo. Los valores secretos nunca se registran.",
+			"empty": "Aún no se han registrado cambios en la instancia.",
+			"loadMore": "Cargar más",
+			"when": "Cuándo",
+			"who": "Quién",
+			"what": "Qué",
+			"system": "Sistema",
+			"actions": {
+				"instanceSettingsUpdated": "Cambió los ajustes de la instancia",
+				"instanceAdminAdded": "Añadió un administrador de la instancia",
+				"instanceAdminRemoved": "Quitó un administrador de la instancia",
+				"instanceReauthenticated": "Confirmó su contraseña",
+				"userCreated": "Creó una cuenta",
+				"userRoleChanged": "Cambió el rol de una cuenta",
+				"userBanned": "Bloqueó una cuenta",
+				"userUnbanned": "Levantó un bloqueo",
+				"userRemoved": "Eliminó una cuenta",
+				"userPasswordSet": "Estableció la contraseña de una cuenta",
+				"userSessionsRevoked": "Cerró la sesión de una cuenta",
+				"userImpersonated": "Inició sesión como otra cuenta",
+				"cliAdminPromoted": "Nombró a un administrador de la instancia (CLI de recuperación)",
+				"cliAdminDemoted": "Quitó un administrador de la instancia (CLI de recuperación)",
+				"cliPasswordReset": "Restableció una contraseña (CLI de recuperación)",
+				"cliUserUnbanned": "Levantó un bloqueo (CLI de recuperación)"
+			}
 		}
 	},
 	"instanceAdmin": {
@@ -8478,7 +9566,8 @@
 			"email": "Correo electrónico",
 			"general": "General",
 			"publicBoards": "Tableros públicos",
-			"workspaces": "Espacios de trabajo"
+			"workspaces": "Espacios de trabajo",
+			"ai": "IA"
 		},
 		"oauth": {
 			"authorizationUrl": "URL de autorización",
@@ -8699,7 +9788,11 @@
 				"label": "Stack",
 				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
 			},
-			"title": "Quick facts"
+			"title": "Quick facts",
+			"ai": {
+				"label": "IA",
+				"value": "Opcional y desactivada por defecto: Preguntar a la IA, modo Crear y agentes de IA, con Claude o un modelo autoalojado"
+			}
 		},
 		"guidelines": {
 			"do": {
@@ -8909,5 +10002,1752 @@
 		},
 		"title": "One product. Two ways to run it.",
 		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+	},
+	"templates": {
+		"form": {
+			"addSubtask": "Añadir",
+			"assignees": "Asignados",
+			"assigneesNone": "Predeterminado del proyecto",
+			"create": "Crear plantilla",
+			"createTitle": "Nueva plantilla de tarea",
+			"description": "Con lo que empieza una tarea nueva. Todo sigue siendo editable al crear la tarea.",
+			"editTitle": "Editar plantilla de tarea",
+			"estimate": "Estimación",
+			"labels": "Etiquetas",
+			"labelsEmpty": "No se encontraron etiquetas",
+			"labelsNone": "Sin etiquetas",
+			"labelsSearch": "Buscar etiquetas",
+			"moveDown": "Bajar {{title}}",
+			"moveUp": "Subir {{title}}",
+			"name": "Nombre",
+			"namePlaceholder": "Informe de error",
+			"notSet": "Sin establecer",
+			"priority": "Prioridad",
+			"removeSubtask": "Quitar {{title}}",
+			"save": "Guardar plantilla",
+			"status": "Estado",
+			"statusDefault": "Predeterminado del proyecto",
+			"subtaskPlaceholder": "Añade una subtarea",
+			"subtasks": "Subtareas",
+			"subtaskTitle": "Subtarea {{number}}",
+			"taskDescription": "Descripción",
+			"taskDescriptionPlaceholder": "Pasos para reproducirlo, resultado esperado…",
+			"titlePattern": "Patrón de título",
+			"titlePatternHint": "{title} se sustituye por el título escrito. Si no aparece, el título escrito va después del patrón.",
+			"titlePatternPlaceholder": "Error: {title}"
+		},
+		"settings": {
+			"add": "Nueva plantilla",
+			"deleteAria": "Eliminar la plantilla {{name}}",
+			"deleteConfirm": "Eliminar",
+			"deleteDescription": "Las tareas creadas a partir de ella se quedan como están.",
+			"deleteTitle": "¿Eliminar la plantilla {{name}}?",
+			"description": "Puntos de partida para tareas nuevas: un patrón de título, campos predeterminados y una lista de subtareas.",
+			"editAria": "Editar la plantilla {{name}}",
+			"empty": "Aún no hay plantillas.",
+			"loadError": "No se pudieron cargar las plantillas.",
+			"noPermission": "Solo quienes pueden editar el proyecto pueden cambiar sus plantillas.",
+			"retry": "Reintentar",
+			"subtaskCount_many": "{{count}} subtareas",
+			"subtaskCount_one": "{{count}} subtarea",
+			"subtaskCount_other": "{{count}} subtareas",
+			"title": "Plantillas de tareas",
+			"toast": {
+				"created": "Plantilla creada",
+				"deleted": "Plantilla eliminada",
+				"deleteError": "No se pudo eliminar la plantilla",
+				"error": "No se pudo guardar la plantilla",
+				"updated": "Plantilla guardada"
+			}
+		},
+		"use": {
+			"applied": "Plantilla: {{name}}",
+			"button": "Plantilla",
+			"menuLabel": "Usar una plantilla",
+			"quickAdd": "Crear a partir de una plantilla",
+			"removeSubtask": "Quitar la subtarea {{title}}",
+			"subtaskError_many": "La tarea se creó, pero no se pudieron añadir {{count}} subtareas",
+			"subtaskError_one": "La tarea se creó, pero no se pudo añadir {{count}} subtarea",
+			"subtaskError_other": "La tarea se creó, pero no se pudieron añadir {{count}} subtareas",
+			"subtasksTitle_many": "{{count}} subtareas de la plantilla",
+			"subtasksTitle_one": "{{count}} subtarea de la plantilla",
+			"subtasksTitle_other": "{{count}} subtareas de la plantilla"
+		}
+	},
+	"delivery": {
+		"forecast": {
+			"title": "Previsión",
+			"likelyBy": "85 % de probabilidad de terminar a más tardar el {{date}}",
+			"percentiles": "50 % a más tardar el {{p50}} · 95 % a más tardar el {{p95}}",
+			"chanceByEnd": "{{percent}} % de probabilidad de terminar antes del {{date}}",
+			"beyondHorizon": "Más de dos años al ritmo actual",
+			"open_one": "{{count}} tarea abierta",
+			"open_many": "{{count}} tareas abiertas",
+			"open_other": "{{count}} tareas abiertas",
+			"complete": "Todas las tareas están terminadas",
+			"insufficient": {
+				"short_span": "Aún no hay suficiente historial: una previsión necesita al menos 14 días de trabajo en este proyecto.",
+				"few_completions": "Aún no hay suficiente historial: se completaron menos de 5 tareas en las últimas 8 semanas.",
+				"few_active_days": "Aún no hay suficiente historial: se completaron tareas en menos de 3 días en las últimas 8 semanas."
+			},
+			"howCalculated": "¿Cómo se calcula?",
+			"method": {
+				"title": "Previsión Monte Carlo",
+				"body": "Margaya reproduce {{iterations}} veces el ritmo real de tu equipo. Cada día simulado toma las tareas completadas de un día al azar del historial de abajo, hasta terminar las tareas abiertas. Las fechas muestran cuándo había terminado el 50 %, el 85 % y el 95 % de las simulaciones.",
+				"window": "Historial: {{from}} – {{to}}",
+				"completed": "Tareas completadas: {{total}}",
+				"activeDays": "Días con alguna tarea completada: {{days}}",
+				"perDay": "Completadas por día: {{min}}–{{max}}",
+				"perWeek": "Media semanal: {{perWeek}}",
+				"team": "El ritmo es el de todo el proyecto, así que también cuenta el trabajo fuera de este ámbito.",
+				"seed": "Semilla {{seed}}: los mismos datos dan el mismo resultado durante todo el día."
+			},
+			"error": "No se pudo cargar la previsión",
+			"retry": "Reintentar"
+		},
+		"risks": {
+			"title": "Riesgos",
+			"empty": "No se encontraron riesgos",
+			"showAll": "Mostrar todo ({{total}})",
+			"showLess": "Mostrar menos",
+			"noCycleTime": "El trabajo estancado aparece cuando se hayan terminado 10 tareas con un inicio registrado.",
+			"hiddenTask": "Una tarea que no puedes ver",
+			"truncated": "Solo se revisaron las primeras 2000 tareas abiertas.",
+			"error": "No se pudieron cargar los riesgos",
+			"someone": "Alguien",
+			"severity": {
+				"high": "Riesgo alto",
+				"medium": "Riesgo medio",
+				"low": "Riesgo bajo"
+			},
+			"criticalPath": {
+				"ends": "La ruta crítica termina el {{date}}",
+				"chain_one": "Cadena de dependencias más larga: {{count}} tarea",
+				"chain_many": "Cadena de dependencias más larga: {{count}} tareas",
+				"chain_other": "Cadena de dependencias más larga: {{count}} tareas"
+			},
+			"kinds": {
+				"critical_path_late": "La ruta crítica termina el {{date}}, después del plazo del {{deadline}}",
+				"critical_path_tight": "La ruta crítica termina el {{date}}, muy cerca del plazo del {{deadline}}",
+				"blocked_chain_one": "{{head}} bloquea {{count}} tarea",
+				"blocked_chain_many": "{{head}} bloquea {{count}} tareas",
+				"blocked_chain_other": "{{head}} bloquea {{count}} tareas",
+				"ageing_one": "{{count}} tarea en curso desde hace más de {{days}} días, más de lo habitual",
+				"ageing_many": "{{count}} tareas en curso desde hace más de {{days}} días, más de lo habitual",
+				"ageing_other": "{{count}} tareas en curso desde hace más de {{days}} días, más de lo habitual",
+				"overdue_cluster_one": "{{name}} tiene {{count}} tarea vencida",
+				"overdue_cluster_many": "{{name}} tiene {{count}} tareas vencidas",
+				"overdue_cluster_other": "{{name}} tiene {{count}} tareas vencidas",
+				"overdue_cluster_unassigned_one": "{{count}} tarea vencida sin responsable",
+				"overdue_cluster_unassigned_many": "{{count}} tareas vencidas sin responsable",
+				"overdue_cluster_unassigned_other": "{{count}} tareas vencidas sin responsable",
+				"overdue_one": "{{count}} tarea vencida",
+				"overdue_many": "{{count}} tareas vencidas",
+				"overdue_other": "{{count}} tareas vencidas",
+				"unassigned_near_deadline_one": "{{count}} tarea sin asignar con vencimiento el {{date}}",
+				"unassigned_near_deadline_many": "{{count}} tareas sin asignar con vencimiento hasta el {{date}}",
+				"unassigned_near_deadline_other": "{{count}} tareas sin asignar con vencimiento hasta el {{date}}",
+				"dependency_loop_one": "{{count}} tarea está en un bucle de bloqueos",
+				"dependency_loop_many": "{{count}} tareas se bloquean entre sí en un bucle",
+				"dependency_loop_other": "{{count}} tareas se bloquean entre sí en un bucle"
+			}
+		},
+		"home": {
+			"title": "En riesgo",
+			"empty": "Nada en riesgo en tus ciclos actuales",
+			"context": "{{project}} · {{cycle}}"
+		},
+		"tab": {
+			"description": "Previsión y riesgos del trabajo abierto de este proyecto"
+		}
+	},
+	"ai": {
+		"rules": {
+			"title": "Regla a partir de una descripción",
+			"description": "Describe una automatización con tus palabras. La IA la convierte en una regla normal que puedes editar, probar con el historial reciente y guardar. Las reglas guardadas funcionan sin IA.",
+			"label": "Describe una regla…",
+			"placeholder": "Por ejemplo: cuando se fusione una pull request de GitHub, mover la tarea a Hecho",
+			"compile": "Crear regla",
+			"compiling": "Escribiendo la regla…",
+			"unsupportedTitle": "No es posible con automatizaciones",
+			"rejected": "Reglas sugeridas descartadas por no superar la validación: {{rejected}}",
+			"noRules": "No se pudo crear ninguna regla a partir de esta descripción.",
+			"workflowRule": "Regla del flujo de trabajo",
+			"integration": "Integración",
+			"when": "Cuando",
+			"moveTo": "Mover la tarea a",
+			"historyWindow": "Historial que reproducir",
+			"days7": "Últimos 7 días",
+			"days30": "Últimos 30 días",
+			"days90": "Últimos 90 días",
+			"dryRun": "Probar con el historial",
+			"dryRunSummary": "Tareas que habrían cambiado en los últimos {{days}} días: {{changed}}",
+			"dryRunNone": "No habría cambiado nada en los últimos {{days}} días.",
+			"dryRunError": "No se pudo reproducir esta regla.",
+			"more": "Más coincidencias no mostradas: {{more}}",
+			"archived": "Archivada",
+			"outcomes": {
+				"unchanged": "ya estaba ahí",
+				"skipped": "sin cambios"
+			},
+			"notes": {
+				"integration_not_connected": "Esta integración no está conectada al proyecto, así que no hay historial que reproducir.",
+				"branch_push_last_only": "Solo se registra el último push de cada rama.",
+				"threshold_from_last_update": "Basado en la última actualización de cada tarea; las fechas indican cuándo la habría tomado la regla.",
+				"flow_alerts_notify_only": "Las alertas de anomalías de flujo solo avisan al responsable del proyecto; no cambian tareas.",
+				"nothing_enabled": "Esta regla no activa nada, así que nada cambiaría.",
+				"conditions_current_state": "Las condiciones se comprobaron con el estado actual de cada tarea; el historial solo conserva los cambios."
+			},
+			"save": "Guardar regla",
+			"discard": "Descartar",
+			"saved": "Regla guardada",
+			"saveError": "No se pudo guardar la regla."
+		},
+		"build": {
+			"command": "Crear con IA…",
+			"title": "Crear con IA",
+			"description": "Describe qué quieres planificar. La IA propone un proyecto, ciclos y tareas para que los revises. No se crea nada hasta que lo confirmes.",
+			"promptLabel": "¿Qué debemos planificar?",
+			"promptPlaceholder": "Planifica el relanzamiento del sitio web para el T4 con 3 sprints",
+			"target": "Crear en",
+			"targetCurrent": "En {{name}}",
+			"targetNew": "Un proyecto nuevo",
+			"deep": "Pensar más a fondo (más lento)",
+			"draft": "Proponer plan",
+			"drafting": "Preparando un plan…",
+			"cancel": "Cancelar",
+			"back": "Atrás",
+			"create_one": "Crear {{count}} elemento",
+			"create_many": "Crear {{count}} elementos",
+			"create_other": "Crear {{count}} elementos",
+			"creating": "Creando el plan",
+			"progress": "{{done}} de {{total}} creados…",
+			"close": "Cerrar",
+			"openProject": "Abrir proyecto",
+			"empty": {
+				"text": "Este proyecto aún no tiene tareas. Describe el trabajo y la IA propondrá tareas para que las revises."
+			},
+			"review": {
+				"description": "Revisa el plan. Desmarca, edita o reordena lo que quieras y después créalo.",
+				"project": "Proyecto",
+				"projectName": "Nombre",
+				"projectKey": "Identificador",
+				"projectDescription": "Descripción",
+				"columns": "Columnas nuevas",
+				"labels": "Etiquetas",
+				"cycles": "Ciclos",
+				"modules": "Módulos",
+				"moduleName": "Nombre del módulo",
+				"tasks_one": "{{count}} tarea",
+				"tasks_many": "{{count}} tareas",
+				"tasks_other": "{{count}} tareas",
+				"include": "Incluir {{name}}",
+				"taskTitle": "Título de la tarea",
+				"taskDescription": "Descripción de la tarea",
+				"priority": "Prioridad",
+				"estimate": "Estimación (puntos)",
+				"module": "Módulo",
+				"none": "Ninguno",
+				"taskLabels": "Etiquetas: {{labels}}",
+				"subtasks": "Sub-tareas",
+				"subtaskTitle": "Título de la sub-tarea",
+				"moveUp": "Subir {{name}}",
+				"moveDown": "Bajar {{name}}",
+				"cycle": {
+					"label": "Ciclo",
+					"name": "Nombre del ciclo",
+					"startDate": "Inicio",
+					"endDate": "Fin"
+				}
+			},
+			"done": {
+				"success_one": "Listo. Se creó {{count}} tarea.",
+				"success_many": "Listo. Se crearon {{count}} tareas.",
+				"success_other": "Listo. Se crearon {{count}} tareas.",
+				"partial_one": "Creado, salvo {{count}} elemento:",
+				"partial_many": "Creado, salvo {{count}} elementos:",
+				"partial_other": "Creado, salvo {{count}} elementos:",
+				"estimatesSkipped": "Las estimaciones se omitieron porque el proyecto no tiene un sistema de estimación por puntos activo.",
+				"created": {
+					"tasks_one": "{{count}} tarea",
+					"tasks_many": "{{count}} tareas",
+					"tasks_other": "{{count}} tareas",
+					"subtasks_one": "{{count}} sub-tarea",
+					"subtasks_many": "{{count}} sub-tareas",
+					"subtasks_other": "{{count}} sub-tareas",
+					"cycles_one": "{{count}} ciclo",
+					"cycles_many": "{{count}} ciclos",
+					"cycles_other": "{{count}} ciclos",
+					"modules_one": "{{count}} módulo",
+					"modules_many": "{{count}} módulos",
+					"modules_other": "{{count}} módulos",
+					"columns_one": "{{count}} columna",
+					"columns_many": "{{count}} columnas",
+					"columns_other": "{{count}} columnas",
+					"labels_one": "{{count}} etiqueta",
+					"labels_many": "{{count}} etiquetas",
+					"labels_other": "{{count}} etiquetas"
+				}
+			},
+			"kinds": {
+				"project": "Proyecto",
+				"column": "Columna",
+				"cycle": "Ciclo",
+				"module": "Módulo",
+				"task": "Tarea",
+				"subtask": "Sub-tarea",
+				"label": "Etiqueta",
+				"estimate": "Estimación",
+				"cycle_tasks": "Tareas del ciclo",
+				"module_tasks": "Tareas del módulo"
+			},
+			"chat": {
+				"planLabel": "Cambios propuestos",
+				"planning": "Planificando cambios…",
+				"nothing": "No hay nada que cambiar para esta solicitud.",
+				"awaiting": "Esperando respuesta",
+				"ready": "Cambios listos: {{count}}. Confirma para continuar.",
+				"applying": "Aplicando cambios…",
+				"confirm": "Confirmar",
+				"cancel": "Cancelar",
+				"cancelled": "Cancelado. No se cambió nada.",
+				"remove": "Quitar {{title}}",
+				"confirmDestructive": "Sí, eliminarla",
+				"truncated": "El plan se recortó a sus primeros 50 cambios.",
+				"appliedSummary": "Aplicados: {{done}} de {{total}}",
+				"autopilotApplied": "Aplicado al instante por el piloto automático.",
+				"autopilotOff": "El piloto automático está desactivado en este espacio de trabajo. Revisa los cambios abajo.",
+				"autopilotReview": "Algunos de estos cambios necesitan tu revisión primero.",
+				"done": "Hecho",
+				"open": "Abrir",
+				"skipped": "Omitido",
+				"failed": "Error",
+				"undo": "Deshacer",
+				"undone": "Deshecho",
+				"undoFailed": "No se pudo deshacer este cambio.",
+				"forbidden": "Aquí no puedes hacer cambios con IA.",
+				"pickCandidate": "¿Quisiste decir:",
+				"fields": {
+					"name": "Nombre",
+					"key": "Clave",
+					"title": "Título",
+					"priority": "Prioridad",
+					"dueDate": "Fecha de vencimiento",
+					"assignee": "Responsable",
+					"unassigned": "Nadie",
+					"startDate": "Inicio",
+					"endDate": "Fin",
+					"content": "Comentario"
+				},
+				"problems": {
+					"forbidden": "No tienes permiso para esto.",
+					"not_found": "No se encontró algo a lo que hace referencia.",
+					"ambiguous": "Ese nombre coincide con más de uno.",
+					"unresolved_ref": "Depende de un cambio que no se puede hacer.",
+					"feature_off": "Esta función está desactivada en el proyecto.",
+					"invalid": "Este cambio no se puede hacer tal como está."
+				},
+				"ops": {
+					"create_project": "Nuevo proyecto",
+					"create_task": "Nueva tarea",
+					"update_task": "Editar tarea",
+					"set_status": "Cambiar estado",
+					"assign": "Asignar",
+					"add_comment": "Comentar",
+					"create_cycle": "Nuevo ciclo",
+					"add_to_cycle": "Añadir al ciclo",
+					"create_module": "Nuevo módulo",
+					"add_to_module": "Añadir al módulo",
+					"create_page": "Nueva página",
+					"link_tasks": "Vincular tareas",
+					"create_label": "Nueva etiqueta",
+					"delete_task": "Eliminar tarea",
+					"run_agent": "Ejecutar agente"
+				},
+				"agentRun": {
+					"title": "Ejecución del agente",
+					"loading": "Cargando la ejecución…",
+					"loadError": "No se pudo cargar esta ejecución.",
+					"inProgress": "En curso"
+				},
+				"noneReady": "Todavía no se puede aplicar nada. Corrige o quita los cambios marcados, o vuelve a preguntar."
+			},
+			"context": {
+				"title": "Contexto ({{count}})",
+				"facts": "Proyectos: {{projects}} · Personas: {{members}} · Ciclos: {{cycles}}",
+				"memory": "Notas de memoria: {{count}}",
+				"history": "Mensajes anteriores: {{count}}"
+			}
+		},
+		"duplicates": {
+			"check": "Comprobar con IA",
+			"checking": "Comprobando…",
+			"checkedTitle": "La IA comprobó si hay duplicados",
+			"none": "No hay duplicados probables.",
+			"verdict": {
+				"duplicate": "Probable duplicado",
+				"related": "Relacionada"
+			},
+			"mark": "Duplicado de esta",
+			"markLabel": "Marcar la nueva tarea como duplicado de {{key}}",
+			"marked": "Marcada",
+			"willLink": "La nueva tarea se marcará como duplicado de {{key}}.",
+			"undo": "Deshacer",
+			"linkError": "La tarea se creó, pero no se pudo marcar como duplicado de {{key}}."
+		},
+		"triage": {
+			"button": "Sugerir clasificación",
+			"title": "Sugerencias de clasificación",
+			"loading": "Revisando trabajo similar…",
+			"empty": "No hay sugerencias para este elemento.",
+			"retry": "Reintentar",
+			"close": "Cerrar sugerencias",
+			"accept": "Aceptar",
+			"acceptAll": "Aceptar todo",
+			"edit": "Editar",
+			"dismiss": "Descartar",
+			"applied": "Aplicado",
+			"acceptError": "No se pudo aplicar esta sugerencia.",
+			"autoApplied": "Este proyecto añade automáticamente las etiquetas sugeridas.",
+			"sameTitle": "Mismo título que una tarea existente",
+			"projectAdvice": "Las solicitudes se quedan en su proyecto: recházala y pide que la envíen allí.",
+			"otherProjectDuplicate": "Solo una tarea de este proyecto puede cerrar la solicitud como duplicada.",
+			"openTask": "Abrir {{key}} en una pestaña nueva",
+			"fields": {
+				"label": "Etiqueta",
+				"assignee": "Asignado",
+				"priority": "Prioridad",
+				"project": "Proyecto",
+				"duplicate": "Posible duplicado"
+			},
+			"settings": {
+				"title": "Sugerencias de clasificación",
+				"description": "Sugerencias de la IA para tareas nuevas y solicitudes de entrada. Una persona acepta, edita o descarta cada una.",
+				"autoApply": "Aplicar automáticamente las etiquetas sugeridas",
+				"autoApplyHint": "Las etiquetas sugeridas se añaden en cuanto se proponen y cada una queda registrada en el registro de auditoría. La asignación, la prioridad, el proyecto y los duplicados siempre esperan a una persona.",
+				"saved": "Ajuste de clasificación guardado",
+				"saveError": "No se pudo guardar el ajuste de clasificación."
+			},
+			"liveLabels": {
+				"title": "Etiquetas sugeridas",
+				"add": "Añadir etiqueta {{name}}"
+			}
+		},
+		"translate": {
+			"action": "Traducir",
+			"translating": "Traduciendo…",
+			"translatedFrom": "Traducido del idioma: {{language}}",
+			"translated": "Traducido",
+			"showOriginal": "Ver original",
+			"showTranslation": "Ver traducción",
+			"settings": {
+				"autoTranslate": "Traducir comentarios automáticamente",
+				"autoTranslateHint": "Los comentarios escritos en otro idioma se traducen para cada lector al abrirlos. Si está desactivado, cada lector pulsa Traducir."
+			}
+		},
+		"brief": {
+			"button": "Informe",
+			"buttonLabel": "Escribir un informe para las partes interesadas",
+			"title": "Informe para partes interesadas",
+			"close": "Cerrar informe",
+			"intro": "Escribe un informe de estado a partir del progreso, los cambios, los riesgos y la previsión calculados de este trabajo. Cita cada tarea que menciona.",
+			"audience": "Destinatarios",
+			"audiences": {
+				"team": "Equipo",
+				"leadership": "Dirección",
+				"client": "Cliente"
+			},
+			"generate": "Escribir informe",
+			"regenerate": "Volver a escribir",
+			"writing": "Escribiendo el informe…",
+			"stop": "Detener",
+			"copy": "Copiar",
+			"copied": "Copiado",
+			"copyError": "No se pudo copiar el informe.",
+			"saveAsPage": "Guardar como página",
+			"saved": "Informe guardado como página",
+			"saveError": "No se pudo guardar la página.",
+			"openPage": "Abrir página",
+			"pageTitle": "Informe de estado: {{name}} ({{date}})",
+			"facts": {
+				"title": "Datos utilizados",
+				"note": "Estas cifras proceden de Margaya, no de la IA. Al guardar o copiar un informe, se convierte en la referencia del siguiente.",
+				"progress": "Progreso",
+				"progressValue": "{{percent}} % ({{completed}} de {{total}} terminadas)",
+				"sinceLast": "Desde el último informe ({{date}})",
+				"sinceDays": "Últimos 7 días",
+				"changes": "Completadas: {{completed}} · Añadidas: {{added}} · Quitadas: {{removed}}",
+				"forecast": "Previsión",
+				"forecastValue": "85 % probable para el {{date}}",
+				"forecastDone": "No queda nada por hacer",
+				"forecastNone": "Aún no hay suficiente historial",
+				"risks": "Riesgos",
+				"diff": "Cambio",
+				"progressDiff": "Progreso {{before}} % → {{now}} %",
+				"forecastDiff": "Previsión {{before}} → {{now}}"
+			}
+		},
+		"ask": {
+			"title": "Preguntar a la IA",
+			"description": "Pregunta sobre tu espacio de trabajo con tus propias palabras. Las respuestas se basan solo en las tareas, páginas y comentarios que puedes ver, y citan de dónde sale cada dato.",
+			"greeting": "¡Hola! ¿Qué te gustaría saber?",
+			"placeholder": "Pregunta a la IA, @ para contexto, / para comandos",
+			"send": "Preguntar",
+			"stop": "Detener",
+			"stopped": "Detenido.",
+			"newChat": "Nueva conversación",
+			"expand": "Ampliar",
+			"collapse": "Reducir",
+			"scopeProject": "En {{project}}",
+			"scopeWorkspace": "Todo el espacio de trabajo",
+			"removeScope": "Preguntar sobre todo el espacio de trabajo",
+			"searching": "Buscando en tu espacio de trabajo…",
+			"noResults": "No he encontrado nada sobre esto en tu espacio de trabajo. Prueba con otras palabras o indica un proyecto, un ciclo o la clave de una tarea.",
+			"sources": "Fuentes",
+			"sourcesCount": "Fuentes ({{total}})",
+			"closestMatches": "Coincidencias más cercanas",
+			"copy": "Copiar",
+			"copied": "Copiado",
+			"copyError": "No se pudo copiar la respuesta",
+			"commentOn": "Comentario en {{key}}",
+			"pageSource": "Página: {{title}}",
+			"openSource": "Abrir {{title}}",
+			"disclaimer": "Las respuestas solo usan lo que puedes ver. Revisa las fuentes antes de actuar.",
+			"you": "Tú",
+			"answer": "Respuesta",
+			"forbidden": "No tienes permiso para usar la IA en este espacio de trabajo.",
+			"palette": "Preguntar a la IA…",
+			"paletteAbout": "Preguntar a la IA: {{question}}",
+			"examples": {
+				"title": "Prueba a preguntar",
+				"overdue": "¿Qué está atrasado?",
+				"mine": "¿Cuáles son mis tareas abiertas?",
+				"recent": "¿Qué ha cambiado esta semana?",
+				"summarize": "Resume este proyecto",
+				"chart": "Muestra las tareas por estado en un gráfico",
+				"cycleBlockers": "¿Qué está bloqueando el ciclo actual?"
+			},
+			"history": {
+				"title": "Historial",
+				"empty": "Todavía no hay conversaciones guardadas.",
+				"localOnly": "Las conversaciones solo se guardan en este navegador.",
+				"delete": "Eliminar conversación",
+				"clear": "Borrar historial",
+				"clearConfirm": "¿Eliminar todas las conversaciones guardadas en este navegador? No se puede deshacer.",
+				"search": "Buscar conversaciones",
+				"noMatches": "Ninguna conversación coincide.",
+				"loading": "Cargando conversaciones…",
+				"pin": "Fijar conversación",
+				"unpin": "Dejar de fijar la conversación",
+				"pinned": "Fijadas",
+				"rename": "Cambiar nombre de la conversación",
+				"renameLabel": "Nombre de la conversación",
+				"saveTitle": "Guardar nombre",
+				"serverNote": "Las conversaciones se guardan en tu espacio de trabajo y solo tú puedes verlas.",
+				"clearConfirmServer": "¿Eliminar todas tus conversaciones guardadas en este espacio de trabajo? No se puede deshacer.",
+				"importHint": "Conversaciones guardadas en este navegador: {{total}}",
+				"import": "Importar",
+				"imported": "Conversaciones importadas: {{total}}",
+				"openError": "No se pudo abrir la conversación."
+			},
+			"chartLabel": "Gráfico: {{title}}",
+			"chartLoading": "Dibujando el gráfico…",
+			"chartInvalid": "No se pudo dibujar este gráfico.",
+			"placeholderBuild": "Describe qué quieres crear o cambiar…",
+			"modelLabel": "Modelo: {{model}}",
+			"more": "Más",
+			"moreActions": "Más acciones",
+			"openFullPage": "Abrir a página completa",
+			"paletteFullPage": "Abrir el chat de IA (página completa)",
+			"fullPageUnavailable": "La IA no está disponible en este espacio de trabajo.",
+			"shortcut": "Abrir o cerrar Preguntar a la IA",
+			"regenerate": "Regenerar",
+			"editQuestion": "Editar pregunta",
+			"resend": "Enviar",
+			"followUps": "Preguntas sugeridas",
+			"saveAsPage": "Guardar como página",
+			"copyMarkdown": "Copiar como Markdown",
+			"copiedMarkdown": "Copiado como Markdown",
+			"createTask": "Crear una tarea a partir de esto",
+			"webSearch": "Buscar en la web",
+			"webSource": "Web: {{title}}",
+			"removeChip": "Quitar {{name}}",
+			"contextChips": "Contexto para esta pregunta",
+			"contextPicker": "Añadir contexto",
+			"contextHint": "Escribe para buscar tareas, páginas, proyectos, ciclos, módulos, personas o agentes",
+			"contextEmpty": "No se ha encontrado nada",
+			"contextSearching": "Buscando…",
+			"commandMenu": "Comandos",
+			"commandEmpty": "Ningún comando coincide",
+			"contextKinds": {
+				"task": "Tarea",
+				"page": "Página",
+				"project": "Proyecto",
+				"cycle": "Ciclo",
+				"module": "Módulo",
+				"user": "Persona",
+				"agent": "Agente"
+			},
+			"modes": {
+				"label": "Modo",
+				"ask": "Preguntar",
+				"build": "Crear",
+				"autopilot": "Piloto automático",
+				"askHint": "Responde preguntas; no cambia nada",
+				"buildHint": "Propone cambios para que los confirmes",
+				"autopilotHint": "Aplica los cambios al instante; todos se pueden deshacer"
+			},
+			"attachments": {
+				"add": "Adjuntar archivos",
+				"type": "No se puede adjuntar {{name}}. Usa una imagen (PNG, JPEG, WebP, GIF) o un archivo de texto, Markdown o CSV.",
+				"size": "{{name}} no cabe: los adjuntos pueden ocupar como máximo 5 MB en total.",
+				"count": "Adjunta 3 archivos como máximo.",
+				"readError": "No se pudo leer el archivo."
+			},
+			"voice": {
+				"start": "Dictar",
+				"stop": "Dejar de dictar",
+				"recording": "Escuchando…",
+				"transcribing": "Transcribiendo…",
+				"denied": "Permite el acceso al micrófono para dictar.",
+				"failed": "No se pudo convertir la grabación en texto."
+			},
+			"agent": {
+				"ready": "Enviar esta petición a {{agent}}.",
+				"needsTask": "Añade una tarea con @ para que {{agent}} sepa en qué trabajar.",
+				"send": "Enviar a {{agent}}",
+				"error": "No se pudo iniciar el agente."
+			},
+			"thinking": {
+				"live": "Pensando… {{seconds}}s",
+				"done": "Ha pensado durante {{seconds}}s"
+			},
+			"versions": {
+				"previous": "Respuesta anterior",
+				"next": "Respuesta siguiente",
+				"label": "Respuesta {{current}} de {{total}}"
+			},
+			"feedback": {
+				"up": "Buena respuesta",
+				"down": "Mala respuesta",
+				"reasonLabel": "¿Qué ha fallado? (opcional)",
+				"reasonPlaceholder": "Por ejemplo: cifras incorrectas, se ha saltado una tarea",
+				"send": "Enviar",
+				"skip": "Omitir",
+				"thanks": "Gracias por tu opinión."
+			},
+			"commands": {
+				"summarize": "Resumir",
+				"summarizeHint": "El proyecto, ciclo o página actual",
+				"chart": "Gráfico",
+				"chartHint": "Dibuja un gráfico con tus datos",
+				"chartPrefill": "Gráfico",
+				"brief": "Resumen",
+				"briefHint": "Un resumen para las partes interesadas del proyecto, ciclo o módulo",
+				"create": "Crear",
+				"createHint": "Cambiar al modo Crear",
+				"translate": "Traducir",
+				"translateHint": "A tu idioma",
+				"clear": "Borrar",
+				"clearHint": "Empezar una conversación nueva",
+				"skill": "Habilidad guardada",
+				"summarizeTurn": "Resumir {{name}}",
+				"briefTurn": "Resumen sobre {{name}}",
+				"summarizeNeedsScope": "Abre un proyecto, ciclo o página, o añade uno con @, para resumirlo.",
+				"briefNeedsScope": "Abre un proyecto, ciclo o módulo, o añade uno con @, para obtener un resumen.",
+				"buildUnavailable": "El modo Crear no está disponible aquí.",
+				"translatePrompt": "Traduce tu última respuesta a este idioma: {{language}}.",
+				"translatePrefill": "Traducir a {{language}}:",
+				"this": {
+					"page": "esta página",
+					"cycle": "este ciclo",
+					"module": "este módulo",
+					"project": "este proyecto"
+				}
+			},
+			"conversation": {
+				"rename": "Cambiar nombre",
+				"pin": "Fijar",
+				"unpin": "Dejar de fijar",
+				"export": "Exportar como Markdown",
+				"saveAsPage": "Guardar como página",
+				"delete": "Eliminar conversación"
+			},
+			"save": {
+				"title": "Guardar como página",
+				"description": "La página recoge el texto con enlaces a sus fuentes.",
+				"pageTitle": "Título",
+				"project": "Proyecto",
+				"noProjects": "No hay ningún proyecto donde guardar la página.",
+				"submit": "Guardar página",
+				"saved": "Guardado como página",
+				"open": "Abrir página",
+				"error": "No se pudo guardar la página"
+			}
+		},
+		"writing": {
+			"aiButton": "IA",
+			"menuLabel": "Acciones de IA",
+			"actions": {
+				"summarize": "Resumir",
+				"improve": "Mejorar la redacción",
+				"shorter": "Acortar",
+				"longer": "Alargar",
+				"fix": "Corregir ortografía y gramática",
+				"translate": "Traducir a…",
+				"custom": "Pedir a la IA que…"
+			},
+			"customPlaceholder": "Dile a la IA qué hacer, p. ej., convertirlo en una lista de comprobación",
+			"customSubmit": "Generar",
+			"preview": {
+				"label": "Sugerencia de la IA",
+				"generating": "Escribiendo…",
+				"editLabel": "Editar la sugerencia",
+				"replace": "Reemplazar",
+				"insertBelow": "Insertar debajo",
+				"discard": "Descartar",
+				"stop": "Detener",
+				"retry": "Reintentar",
+				"empty": "La IA no devolvió nada. Vuelve a intentarlo o reformula la petición.",
+				"note": "La IA puede equivocarse. Revisa el resultado antes de usarlo.",
+				"incomplete": "El borrador se detuvo antes de terminar. Revísalo o vuelve a intentarlo."
+			},
+			"summary": {
+				"button": "Resumir",
+				"cycle": "Resumir ciclo",
+				"project": "Resumir proyecto",
+				"page": "Resumir página",
+				"title": "Resumen de la IA",
+				"generating": "Resumiendo…",
+				"dismiss": "Cerrar",
+				"copy": "Copiar",
+				"copied": "Copiado",
+				"copyError": "No se pudo copiar el resumen.",
+				"saveAsPage": "Guardar como página",
+				"pageTitle": "Resumen: {{name}}",
+				"saved": "Resumen guardado como página",
+				"saveError": "No se pudo guardar la página.",
+				"openPage": "Abrir página",
+				"task": "Resumir tarea",
+				"saveAsComment": "Guardar como comentario",
+				"commentSaved": "Resumen guardado como comentario",
+				"commentError": "No se pudo guardar el comentario."
+			},
+			"spec": {
+				"button": "Redactar una especificación",
+				"title": "Redactar una especificación",
+				"description": "La IA redacta una página de especificación a partir de esta tarea y su contexto. Revísala y edítala y después crea la página; enlaza de vuelta a la tarea.",
+				"generating": "Redactando…",
+				"titleLabel": "Título de la página",
+				"bodyLabel": "Especificación",
+				"edit": "Editar",
+				"preview": "Vista previa",
+				"create": "Crear página",
+				"pageTitle": "Especificación: {{title}}",
+				"created": "Página de especificación creada",
+				"createError": "No se pudo crear la página."
+			},
+			"taskWriter": {
+				"button": "Escribir con IA",
+				"draft": "Redactar desde el título",
+				"improve": "Mejorar",
+				"instruction": "Opcional: ¿en qué debe centrarse?",
+				"hint": "Nada cambia hasta que eliges «Usar esto».",
+				"writing": "Escribiendo…",
+				"use": "Usar esto",
+				"retry": "Reintentar",
+				"discard": "Descartar",
+				"close": "Cerrar escritura con IA"
+			},
+			"feedback": {
+				"good": "Buena respuesta",
+				"bad": "Mala respuesta",
+				"thanks": "Gracias por tu opinión"
+			},
+			"tone": {
+				"label": "Tono: {{tone}}",
+				"legend": "Tono",
+				"default": "Predeterminado",
+				"professional": "Profesional",
+				"casual": "Informal"
+			},
+			"block": {
+				"command": "Bloque de IA",
+				"title": "Bloque de IA",
+				"customPlaceholder": "¿Qué debe escribir la IA a partir de esta página?",
+				"stale": "La página cambió después de generar esto. Regenera para incluir los cambios.",
+				"accept": "Aceptar",
+				"regenerate": "Regenerar",
+				"presets": {
+					"tldr": "Resumen (TL;DR)",
+					"faq": "Preguntas frecuentes",
+					"action_items": "Acciones pendientes",
+					"custom": "Instrucción personalizada"
+				}
+			},
+			"title": {
+				"suggest": "Sugerir un título",
+				"thinking": "Pensando un título…",
+				"use": "Usar este título",
+				"another": "Sugerir otro"
+			},
+			"comment": {
+				"menuLabel": "Ayuda de IA con este comentario",
+				"previewLabel": "Sugerencia de IA para tu comentario",
+				"replace": "Reemplazar borrador"
+			}
+		},
+		"errors": {
+			"AI_DISABLED": "La IA está desactivada aquí.",
+			"AI_NOT_CONFIGURED": "La IA no está bien configurada. Pide a un administrador que revise los ajustes de IA.",
+			"AI_ROUTE_BLOCKED": "Tus ajustes de privacidad no permiten enviar estos datos a un modelo de IA.",
+			"AI_BUDGET_EXCEEDED": "Se ha alcanzado el límite de IA. Inténtalo más tarde o pide a un administrador que lo aumente.",
+			"AI_RATE_LIMITED": "Demasiadas solicitudes de IA a la vez. Espera un momento y vuelve a intentarlo.",
+			"AI_REFUSED": "El modelo de IA ha rechazado esta solicitud.",
+			"AI_PROVIDER_ERROR": "El servicio de IA no ha respondido. Vuelve a intentarlo en un momento.",
+			"unknown": "Algo ha fallado con la IA. Vuelve a intentarlo.",
+			"AI_HISTORY_OFF": "Este espacio de trabajo no guarda las conversaciones con la IA en el servidor. Tu historial se queda en este navegador."
+		},
+		"features": {
+			"connection_test": "Pruebas de conexión",
+			"ask": "Preguntas",
+			"summarize": "Resúmenes",
+			"editor_assist": "Ayuda de redacción",
+			"spec_draft": "Borradores de especificaciones",
+			"duplicate_check": "Detección de duplicados",
+			"talk_to_build": "Planificar desde un prompt",
+			"triage": "Sugerencias de clasificación",
+			"translate": "Traducciones",
+			"brief": "Resúmenes para partes interesadas",
+			"agent_run": "Agentes",
+			"rule_compiler": "Reglas de automatización",
+			"capture": "Capturar como tarea",
+			"estimate": "Estimaciones",
+			"retro": "Retrospectivas",
+			"my_brief": "Mi resumen",
+			"embedding": "Indexación de búsqueda",
+			"coding_handoff": "Instrucciones para agentes de código",
+			"build_chat": "Crear desde el chat",
+			"nl_filter": "Filtros en lenguaje natural",
+			"inbox_digest": "Resúmenes de la bandeja",
+			"speech": "Voz a texto"
+		},
+		"providers": {
+			"anthropic": "Anthropic (Claude)",
+			"openai_compatible": "Compatible con OpenAI",
+			"fake": "Simulado (solo para pruebas)"
+		},
+		"destinations": {
+			"cloud": "Proveedor en la nube",
+			"local": "Modelo local"
+		},
+		"tiers": {
+			"fast": "Modelo rápido",
+			"fastHint": "Tareas rápidas: reescritura, etiquetas, resúmenes breves.",
+			"balanced": "Modelo equilibrado",
+			"balancedHint": "La mayoría de las funciones: respuestas, resúmenes, borradores.",
+			"deep": "Modelo avanzado",
+			"deepHint": "Trabajo complejo: planificación y agentes."
+		},
+		"test": {
+			"title": "Probar conexión",
+			"workspaceHint": "Envía una solicitud mínima por la misma ruta que las llamadas de IA de este espacio de trabajo.",
+			"button": "Probar conexión",
+			"success": "Conectado a {{model}} en {{ms}} ms"
+		},
+		"usage": {
+			"title": "Uso",
+			"subtitle": "Llamadas de IA, tokens y coste según precio de lista. Solo se guardan recuentos, nunca prompts ni respuestas.",
+			"rangeLabel": "Periodo",
+			"range": {
+				"thisMonth": "Este mes",
+				"last30Days": "Últimos 30 días",
+				"last90Days": "Últimos 90 días"
+			},
+			"calls": "Llamadas",
+			"callsCount_one": "{{count}} llamada",
+			"callsCount_many": "{{count}} llamadas",
+			"callsCount_other": "{{count}} llamadas",
+			"tokens": "Tokens consumidos",
+			"tokensSplit": "{{input}} de entrada · {{output}} de salida",
+			"cost": "Coste",
+			"costHint": "Según precio de lista; los modelos locales cuentan como $0.",
+			"day": "Día",
+			"byDay": "Llamadas por día",
+			"byFeature": "Por función",
+			"byModel": "Por modelo",
+			"byUser": "Por persona",
+			"byWorkspace": "Por espacio de trabajo",
+			"empty": "No hay uso de IA en este periodo.",
+			"unknownUser": "Cuenta eliminada",
+			"loadError": "No se pudo cargar el uso de IA.",
+			"retry": "Reintentar",
+			"exportCsv": "Exportar CSV",
+			"exportError": "No se pudo exportar el uso.",
+			"feedbackTitle": "Valoraciones de respuestas",
+			"feedbackOverall": "{{percent}} % positivas de {{total}} valoraciones",
+			"feedbackUp": "Pulgar arriba",
+			"feedbackDown": "Pulgar abajo",
+			"feedbackRate": "Positivas"
+		},
+		"instance": {
+			"title": "IA",
+			"subtitle": "Permite que los espacios de trabajo usen IA: elige el proveedor y los modelos, y decide adónde pueden ir los datos. La IA permanece desactivada hasta que la actives, y cada espacio de trabajo también debe activarla.",
+			"statusTitle": "IA en este servidor",
+			"statusReady": "Lista",
+			"statusNotConfigured": "Sin configurar",
+			"statusOff": "Desactivada",
+			"enable": "Permitir IA",
+			"enableHint": "Los espacios de trabajo pueden activar las funciones de IA cuando esto esté activado y haya un proveedor configurado.",
+			"providerTitle": "Proveedor",
+			"providerDescription": "El proveedor de modelos en la nube. Deja un modelo vacío para usar el predeterminado del proveedor para ese nivel.",
+			"provider": "Proveedor",
+			"providerHint": "Se recomienda Anthropic Claude. Compatible con OpenAI cubre OpenAI, Azure, OpenRouter, vLLM y LM Studio.",
+			"anthropicKey": "Clave de API de Anthropic",
+			"anthropicKeyHint": "Se guarda cifrada. No se vuelve a mostrar nunca.",
+			"openaiBaseUrl": "URL base",
+			"openaiBaseUrlHint": "Incluida la ruta de la versión, por ejemplo https://api.openai.com/v1. Debe ser una dirección pública.",
+			"openaiKey": "Clave de API",
+			"save": "Guardar",
+			"testCloud": "Probar proveedor",
+			"testLocal": "Probar modelo local",
+			"localTitle": "Modelo local",
+			"localDescription": "Un servidor compatible con OpenAI en tu propia red, como Ollama. Los datos restringidos solo van aquí.",
+			"localBaseUrl": "URL base",
+			"localBaseUrlHint": "Por ejemplo http://ollama:11434/v1. Aquí se permiten direcciones privadas.",
+			"localModel": "Modelo",
+			"localKey": "Clave de API",
+			"localKeyHint": "Opcional. Solo si tu servidor lo requiere, como vLLM iniciado con --api-key. Se guarda cifrada.",
+			"localOnly": "Modo solo local",
+			"localOnlyHint": "Todas las llamadas de IA van al modelo local; no se envía nada a un proveedor en la nube.",
+			"privacyTitle": "Privacidad",
+			"privacyDescription": "Adónde puede ir cada tipo de datos. Los espacios de trabajo pueden ser más estrictos, nunca más permisivos.",
+			"restrictedRoute": "Proyectos restringidos",
+			"restrictedRouteHint": "Datos de proyectos restringidos, cuando un espacio de trabajo permite que la IA los lea.",
+			"privateRoute": "Otros datos del espacio de trabajo",
+			"privateRouteHint": "Tareas, páginas y comentarios de proyectos abiertos.",
+			"routeBlocked": "Nunca se envían",
+			"routeLocal": "Solo modelo local",
+			"routeCloud": "Proveedor en la nube permitido",
+			"redaction": "Ocultar datos personales",
+			"redactionHint": "Sustituye correos electrónicos, números de teléfono, números de tarjeta y tokens por marcadores antes de las llamadas a la nube. Las respuestas vuelven a mostrar los valores reales.",
+			"zeroRetention": "Sin retención de datos",
+			"zeroRetentionHint": "Indica que tu acuerdo con el proveedor no conserva ningún dato. Margaya lo muestra; el proveedor lo garantiza.",
+			"allowWorkspaceKeys": "Permitir claves de espacios de trabajo",
+			"allowWorkspaceKeysHint": "Los espacios de trabajo pueden usar su propia clave de proveedor y pagar su propio uso.",
+			"embeddingsTitle": "Embeddings vectoriales",
+			"embeddingsDescription": "Opcional, para la búsqueda semántica. Sirve cualquier endpoint de embeddings compatible con OpenAI. La base de datos también necesita la extensión pgvector; sin alguno de los dos, la búsqueda sigue siendo solo de texto completo.",
+			"vectorReady": "pgvector listo",
+			"vectorAvailable": "pgvector disponible",
+			"vectorUnavailable": "pgvector no disponible",
+			"embeddingsBaseUrl": "URL base",
+			"embeddingsModel": "Modelo",
+			"embeddingsKey": "Clave de API",
+			"invalidUrl": "Introduce una URL http o https.",
+			"usageTitle": "Uso en todos los espacios de trabajo",
+			"usageDescription": "Llamadas de IA en este servidor por espacio de trabajo y modelo. Solo se guardan recuentos.",
+			"chatTitle": "Chat",
+			"chatDescription": "Cómo piensan los modelos de razonamiento y qué ven las personas de ello.",
+			"showReasoning": "Mostrar razonamiento",
+			"showReasoningHint": "Muestra el razonamiento de un modelo a la persona que preguntó. Nunca se guarda. Desactivado: solo cuánto tiempo pensó.",
+			"localThinking": "Razonamiento en modelos locales",
+			"localThinkingHint": "Desactivado responde más rápido; activado deja que los modelos de razonamiento locales piensen primero.",
+			"localThinkingOff": "Desactivado",
+			"localThinkingOn": "Activado",
+			"webSearchTitle": "Búsqueda web",
+			"webSearchDescription": "Un servicio de búsqueda que las respuestas pueden usar cuando un espacio de trabajo activa la búsqueda web.",
+			"webSearchProvider": "Proveedor de búsqueda",
+			"webSearchProviderHint": "SearXNG se ejecuta en tu propio servidor; Brave Search y Tavily necesitan una clave de API.",
+			"webSearchOff": "Desactivada",
+			"webSearchUrl": "URL de SearXNG",
+			"webSearchUrlHint": "Su API JSON debe estar habilitada.",
+			"webSearchKey": "Clave de API",
+			"webSearchKeyHint": "Para Brave Search o Tavily.",
+			"speechTitle": "Voz a texto",
+			"speechDescription": "Entrada por voz en el chat. Sin ella, los navegadores que pueden hacerlo reconocen la voz por sí mismos.",
+			"speechBaseUrl": "URL del endpoint",
+			"speechBaseUrlHint": "Un endpoint de transcripción compatible con OpenAI, como un servidor Whisper local.",
+			"speechModel": "Modelo",
+			"speechKey": "Clave de API"
+		},
+		"workspace": {
+			"navLabel": "IA",
+			"title": "IA",
+			"subtitle": "Activa las funciones de IA en este espacio de trabajo, establece límites y elige cómo se tratan los datos privados.",
+			"noAccess": "Necesitas permiso para gestionar la IA para ver estos ajustes.",
+			"loadError": "No se pudieron cargar los ajustes de IA.",
+			"statusTitle": "IA en este espacio de trabajo",
+			"statusDescription": "La IA permanece desactivada hasta que la actives. Cada proyecto puede desactivarla igualmente en sus funciones.",
+			"enable": "Activar IA",
+			"enableHint": "Los miembros con el permiso «Usar IA» ven las funciones de IA en los proyectos que lo permiten.",
+			"enabledToast": "La IA está activada en este espacio de trabajo",
+			"disabledToast": "La IA está desactivada en este espacio de trabajo",
+			"offOnInstance": "Un administrador de la instancia aún no ha permitido la IA en este servidor.",
+			"notConfigured": "La IA está permitida, pero aún no hay ningún proveedor configurado. Consulta a un administrador de la instancia.",
+			"whereDataGoes": "Adónde van los datos",
+			"whereDataGoesHint": "El modelo que recibe las solicitudes de IA de este espacio de trabajo.",
+			"zeroRetention": "Sin retención",
+			"limitsTitle": "Límites",
+			"limitsDescription": "Gastado este mes: {{spent}}. Las solicitudes se detienen al alcanzar un límite.",
+			"monthlyCap": "Presupuesto mensual (USD)",
+			"monthlyCapHint": "Según precio de lista, para todo el espacio de trabajo. Déjalo vacío para no tener límite.",
+			"dailyTokens": "Tokens diarios por persona",
+			"dailyTokensHint": "Tokens de entrada y salida que cada persona puede usar al día (UTC). Déjalo vacío para no tener límite.",
+			"noLimit": "Sin límite",
+			"invalidNumber": "Introduce un número igual o mayor que 0.",
+			"saveLimits": "Guardar límites",
+			"monthSpendOfCap": "{{spent}} de {{cap}} usados este mes.",
+			"privacyTitle": "Privacidad",
+			"privacyDescription": "La IA solo ve lo que puede ver la persona que pregunta.",
+			"includeRestricted": "Incluir proyectos restringidos",
+			"includeRestrictedHint": "Permite que la IA lea proyectos restringidos para las personas que pueden verlos. Sus datos solo van adonde el servidor permite los datos restringidos.",
+			"localOnly": "Solo modelo local",
+			"localOnlyHint": "Envía todas las solicitudes de IA al modelo local del servidor.",
+			"localOnlyForced": "El servidor está en modo solo local.",
+			"localOnlyUnavailable": "Este servidor no tiene modelo local.",
+			"redactPii": "Ocultar datos personales",
+			"redactPiiHint": "Sustituye correos electrónicos, números de teléfono, números de tarjeta y tokens por marcadores antes de que las solicitudes salgan del servidor.",
+			"redactPiiForced": "Siempre activado: el servidor oculta los datos personales en todas las solicitudes a la nube.",
+			"approval": "Aprobar cambios de la IA",
+			"approvalHint": "Los cambios sugeridos por la IA siempre esperan a que una persona los apruebe.",
+			"semanticSearch": "Búsqueda semántica",
+			"semanticSearchHint": "Las preguntas y la detección de duplicados también encuentran tareas, páginas y comentarios por su significado, no solo por sus palabras. El contenido se indexa con el modelo de embeddings del servidor.",
+			"semanticUnavailable": "pgvector no está disponible en la base de datos de este servidor, así que la búsqueda solo usa texto completo.",
+			"semanticNoEndpoint": "Este servidor no tiene un endpoint de embeddings, así que la búsqueda solo usa texto completo.",
+			"semanticIndexed_one": "{{count}} elemento indexado",
+			"semanticIndexed_many": "{{count}} de elementos indexados",
+			"semanticIndexed_other": "{{count}} elementos indexados",
+			"semanticPaused": "La indexación está en pausa. {{reason}}",
+			"semanticEnabledToast": "La búsqueda semántica está activada. La indexación se hace en segundo plano.",
+			"semanticDisabledToast": "La búsqueda semántica está desactivada y se ha eliminado su índice.",
+			"keyTitle": "Clave de API propia",
+			"keyDescription": "Usa la cuenta de proveedor de tu espacio de trabajo en lugar de la del servidor. La clave se guarda cifrada y no se vuelve a mostrar nunca.",
+			"keyCurrent": "Clave guardada",
+			"keyEnding": "Termina en {{last4}}",
+			"keyUnreadable": "La clave guardada ya no se puede leer. Vuelve a introducirla.",
+			"keyRemove": "Quitar",
+			"keyProvider": "Proveedor",
+			"keyValue": "Clave de API",
+			"keyReplace": "Reemplazar clave",
+			"keyHint": "Una clave de API de Anthropic, que empieza por sk-ant-.",
+			"keyOpenAiHint": "Se usa con el endpoint compatible con OpenAI del servidor.",
+			"keyPlaceholder": "Pega la clave",
+			"keyTooShort": "Esta clave parece demasiado corta.",
+			"keySave": "Guardar clave",
+			"keySavedToast": "Clave guardada",
+			"keyRemovedToast": "Clave quitada",
+			"saved": "Ajustes de IA guardados",
+			"saveError": "No se pudieron guardar los ajustes de IA.",
+			"chatTitle": "Chat de Preguntar a la IA",
+			"chatDescription": "Qué puede hacer el chat por las personas de este espacio de trabajo.",
+			"webSearch": "Búsqueda web",
+			"webSearchHint": "Las personas pueden permitir que las respuestas busquen en la web. Los resultados se citan como fuentes web.",
+			"webSearchUnavailable": "La instancia no tiene configurada la búsqueda web.",
+			"webSearchLocalOnly": "No se usa mientras la IA funcione solo con modelos locales.",
+			"storeConversations": "Guardar el historial del chat en el servidor",
+			"storeConversationsHint": "Las conversaciones de cada persona se guardan en el espacio de trabajo para que pueda volver a abrirlas en cualquier dispositivo. Desactivado: se quedan solo en cada navegador.",
+			"allowAutopilot": "Permitir el piloto automático",
+			"allowAutopilotHint": "El modo Crear puede aplicar cambios sin confirmación. Todos los cambios se siguen registrando y se pueden deshacer."
+		},
+		"agents": {
+			"navLabel": "Agentes",
+			"title": "Agentes",
+			"subtitle": "Los agentes de IA son miembros del espacio de trabajo que se ocupan de tareas para la persona que se lo pide, nunca con más permisos que esa persona.",
+			"listTitle": "Agentes del espacio de trabajo",
+			"badge": "Agente",
+			"noAccess": "Solo las personas que pueden gestionar la IA pueden configurar agentes.",
+			"empty": "Aún no hay agentes. Crea uno y luego menciónalo en un comentario, asígnale una tarea o ejecútalo desde una tarea.",
+			"loadError": "No se pudieron cargar los agentes.",
+			"retry": "Reintentar",
+			"create": "Nuevo agente",
+			"edit": "Editar agente",
+			"dialogHint": "Los agentes se pueden asignar y mencionar como si fueran personas. No pueden iniciar sesión y no se facturan como puestos.",
+			"save": "Guardar",
+			"cancel": "Cancelar",
+			"created": "Agente creado",
+			"saved": "Agente guardado",
+			"deleted": "Agente eliminado",
+			"saveError": "No se pudo guardar el agente. Inténtalo de nuevo.",
+			"enable": "Activar",
+			"disable": "Desactivar",
+			"off": "Desactivado",
+			"delete": "Eliminar",
+			"deleteTitle": "¿Eliminar {{name}}?",
+			"deleteBody": "El agente sale del espacio de trabajo. Sus comentarios y su historial se conservan, y sus ejecuciones siguen en el Panel de agentes.",
+			"spend": "{{spent}} este mes",
+			"spendOfBudget": "{{spent}} de {{budget}} este mes",
+			"activityFilter": "Agentes",
+			"fields": {
+				"name": "Nombre",
+				"nameTaken": "Un agente o miembro de este espacio de trabajo ya tiene este nombre. Elige otro.",
+				"description": "Descripción",
+				"descriptionPlaceholder": "En qué ayuda este agente",
+				"instructions": "Instrucciones",
+				"instructionsHint": "Cómo debe trabajar el agente. Solo los administradores las escriben; el texto de tareas, comentarios y páginas nunca cuenta como instrucción.",
+				"role": "Rol",
+				"roleHint": "Lo máximo que puede hacer el agente. Cada ejecución se limita además a los permisos de la persona que la pide.",
+				"tier": "Modelo",
+				"tierFast": "Rápido",
+				"tierBalanced": "Equilibrado",
+				"tierDeep": "Avanzado",
+				"provider": "Dónde se ejecuta",
+				"providerDefault": "Predeterminado del espacio de trabajo",
+				"providerLocal": "Solo modelo local",
+				"budget": "Presupuesto mensual (USD)",
+				"budgetHint": "Las ejecuciones se detienen cuando el gasto de este mes lo alcanza. Déjalo vacío para que el agente no tenga límite; los límites del espacio de trabajo siguen aplicándose.",
+				"projects": "Proyectos",
+				"projectsAll": "Todos los proyectos a los que llega su rol",
+				"projectsSome": "Solo estos proyectos",
+				"projectsHint": "Las ejecuciones en otros proyectos se detienen y el agente indica que no está configurado allí.",
+				"projectsNone": "Elige al menos un proyecto.",
+				"skills": "Habilidades",
+				"skillsEmpty": "Aún no hay habilidades compartidas. Las habilidades compartidas guardadas en Ask se pueden asignar a agentes.",
+				"skillsHint": "El agente sigue estos prompts guardados cuando encajan con la petición (hasta 10).",
+				"webAccess": "Acceso web",
+				"webAccessHint": "Permite al agente buscar en la web y usar los conectores del espacio de trabajo. Lo que envía allí sale de Margaya."
+			},
+			"status": {
+				"queued": "En cola",
+				"running": "En curso",
+				"awaiting_approval": "Esperando aprobación",
+				"succeeded": "Completado",
+				"failed": "Fallido",
+				"cancelled": "Detenido",
+				"needs_input": "Necesita respuesta"
+			},
+			"stepStatus": {
+				"ok": "Completado",
+				"error": "Fallido",
+				"denied": "No permitido",
+				"pending": "Esperando aprobación",
+				"applied": "Aplicado",
+				"rejected": "Rechazado",
+				"expired": "Caducado",
+				"reverted": "Deshecho"
+			},
+			"step": {
+				"model": "Llamada al modelo"
+			},
+			"tools": {
+				"read_task": "Leer tarea",
+				"read_project": "Leer proyecto",
+				"read_page": "Leer página",
+				"search_workspace": "Buscar",
+				"add_comment": "Comentar",
+				"update_task": "Actualizar tarea",
+				"move_status": "Cambiar estado",
+				"create_subtask": "Crear sub-tarea",
+				"create_page": "Crear página",
+				"link_tasks": "Vincular tareas",
+				"delete_task": "Eliminar tarea",
+				"bulk_move_status": "Cambiar el estado de varias tareas",
+				"ask_person": "Hacer una pregunta",
+				"web_search": "Búsqueda web",
+				"connector": "Servicio externo: {{tool}}"
+			},
+			"runErrors": {
+				"AGENT_GONE": "El agente se ha eliminado.",
+				"AGENT_DISABLED": "El agente está desactivado.",
+				"AGENT_LEFT": "El agente ya no es miembro del espacio de trabajo.",
+				"PRINCIPAL_LEFT": "La persona que lo pidió ya no es miembro del espacio de trabajo.",
+				"AI_USE_DENIED": "La persona que lo pidió no tiene permiso para usar la IA.",
+				"NOT_IN_SCOPE": "La tarea está en un proyecto que la IA no puede leer.",
+				"TIME_LIMIT": "La ejecución duró más de 10 minutos y se detuvo.",
+				"OUTPUT_LIMIT": "La respuesta del agente fue demasiado larga. Pide un cambio más pequeño.",
+				"TURN_LIMIT": "El agente se quedó sin pasos antes de terminar. Pide un cambio más pequeño y concreto.",
+				"INTERRUPTED": "La ejecución se interrumpió. Los cambios ya realizados aún se pueden deshacer.",
+				"APPROVAL_EXPIRED": "Nadie decidió sobre los cambios propuestos en 24 horas, así que caducaron.",
+				"INTERNAL": "Algo salió mal durante la ejecución.",
+				"NEEDS_INPUT_EXPIRED": "Nadie respondió a la pregunta del agente en 24 horas.",
+				"OUTSIDE_AGENT_PROJECTS": "El agente no está configurado para trabajar en este proyecto."
+			},
+			"change": {
+				"approve": "Aprobar",
+				"reject": "Rechazar",
+				"approved": "Cambio aplicado",
+				"rejected": "Cambio descartado",
+				"decideError": "No se pudo aplicar tu decisión. Inténtalo de nuevo.",
+				"undo": "Deshacer",
+				"undone": "Cambio deshecho",
+				"undoError": "No se pudo deshacer este cambio. Puede que la tarea haya cambiado desde entonces.",
+				"expiresAt": "Caduca {{time}}",
+				"before": "Antes",
+				"after": "Después",
+				"openPage": "Abrir página",
+				"openSubtask": "Abrir subtarea",
+				"openLinked": "Abrir tarea vinculada",
+				"empty": "(vacío)",
+				"fields": {
+					"title": "Título",
+					"priority": "Prioridad",
+					"dueDate": "Fecha de vencimiento",
+					"description": "Descripción",
+					"status": "Estado",
+					"statusOf": "Estado de {{task}}",
+					"comment": "Comentario",
+					"subtask": "Nueva sub-tarea",
+					"page": "Página nueva",
+					"relation": "Vínculo ({{relation}})",
+					"delete": "Mover a la papelera",
+					"connectorCall": "Llamada a {{connector}}"
+				}
+			},
+			"inbox": {
+				"title": "{{agentName}} necesita tu aprobación",
+				"verb": "pide tu aprobación",
+				"cardTitle": "Cambio propuesto"
+			},
+			"reply": {
+				"title": "{{agentName}} respondió a tu solicitud",
+				"verb": "respondió a tu solicitud",
+				"cardTitle": "Respuesta del agente",
+				"hint": "El agente no publicó esta respuesta en la tarea, así que se muestra aquí."
+			},
+			"activity": {
+				"onBehalfOf": "en nombre de {{name}}"
+			},
+			"run": {
+				"button": "Ejecutar agente",
+				"title": "Ejecutar un agente en esta tarea",
+				"hint": "El agente trabaja como máximo con tus permisos. Los cambios se pueden deshacer y algunos esperan tu aprobación.",
+				"agent": "Agente",
+				"prompt": "¿Qué debe hacer?",
+				"promptPlaceholder": "Por ejemplo: divide esto en sub-tareas y sugiere una prioridad.",
+				"start": "Ejecutar",
+				"started": "{{name}} se pone con ello",
+				"error": "No se pudo iniciar el agente. Inténtalo de nuevo.",
+				"recent": "Ejecuciones recientes en esta tarea",
+				"viewInDesk": "Abrir en el Panel de agentes"
+			},
+			"desk": {
+				"nav": "Panel de agentes",
+				"title": "Panel de agentes",
+				"subtitle": "Lo que tus agentes han hecho y están haciendo: cada ejecución con sus pasos, su coste y sus cambios.",
+				"emptyTitle": "Aún no hay ejecuciones de agentes",
+				"empty": "Menciona un agente en un comentario, asígnale una tarea o ejecútalo desde una tarea.",
+				"allAgents": "Todos los agentes",
+				"allStatuses": "Todos los estados",
+				"filterAgent": "Filtrar por agente",
+				"filterStatus": "Filtrar por estado",
+				"approvalsTitle": "Pendiente de ti",
+				"selectRun": "Selecciona una ejecución para ver sus pasos y cambios.",
+				"runMissing": "Esta ejecución no está disponible.",
+				"deletedAgent": "Agente eliminado",
+				"onBehalfOf": "para {{name}}",
+				"cost": "Coste",
+				"tokensLabel": "Tokens",
+				"tokens": "Tokens: {{value}}",
+				"toolCallsLabel": "Llamadas a herramientas",
+				"summary": "Resumen",
+				"changes": "Conjunto de cambios",
+				"noChanges": "Sin cambios.",
+				"steps": "Pasos",
+				"cancelRun": "Detener ejecución",
+				"cancelled": "Ejecución detenida",
+				"cancelError": "No se pudo detener la ejecución.",
+				"trigger": {
+					"mention": "Mencionado",
+					"assign": "Asignado",
+					"manual": "Ejecutado desde una tarea",
+					"schedule": "Programada",
+					"automation": "Automatización",
+					"chat": "Seguimiento"
+				},
+				"project": "Proyecto:",
+				"workedSeconds": "Trabajó {{count}} s",
+				"workedMinutes": "Trabajó {{count}} min"
+			},
+			"connectors": {
+				"title": "Conectores",
+				"subtitle": "Servidores MCP externos a los que pueden llamar los agentes con acceso web. Las herramientas de solo lectura se ejecutan al momento; todo lo demás espera aprobación.",
+				"create": "Añadir conector",
+				"edit": "Editar conector",
+				"delete": "Eliminar conector",
+				"created": "Conector añadido",
+				"saved": "Conector guardado",
+				"deleted": "Conector eliminado",
+				"saveError": "No se pudo guardar el conector. Inténtalo de nuevo.",
+				"empty": "Aún no hay conectores. Añade la dirección de un servidor MCP para que los agentes con acceso web usen sus herramientas.",
+				"shared": "Compartido",
+				"personal": "Solo tú",
+				"enable": "Activar",
+				"disable": "Desactivar",
+				"test": "Probar",
+				"testOk": "Conectado: {{count}} herramientas, {{readOnly}} de solo lectura",
+				"testError": "No se pudo hacer la prueba. Inténtalo de nuevo.",
+				"errors": {
+					"DESTINATION": "La dirección no es un servidor público.",
+					"TIMEOUT": "El servidor no respondió a tiempo.",
+					"NETWORK": "No se pudo conectar con el servidor.",
+					"HTTP": "El servidor respondió con un error ({{status}}).",
+					"TOO_LARGE": "La respuesta del servidor era demasiado grande.",
+					"PROTOCOL": "No parece un servidor MCP.",
+					"RPC": "El servidor MCP rechazó la solicitud.",
+					"SECRET_UNREADABLE": "El secreto guardado ya no se puede leer. Introdúcelo de nuevo."
+				},
+				"secretHint": "Secreto ••••{{last4}}",
+				"dialogHint": "Margaya se conecta mediante Streamable HTTP. Los secretos se guardan cifrados y nunca se vuelven a mostrar.",
+				"name": "Nombre",
+				"url": "URL del servidor",
+				"urlHint": "El punto de acceso MCP, por ejemplo https://mcp.example.com/mcp. Debe ser accesible desde Internet.",
+				"auth": "Autenticación",
+				"authHeader": "Secreto en una cabecera",
+				"authNone": "Ninguna",
+				"headerName": "Nombre de la cabecera",
+				"secret": "Secreto",
+				"secretKeep": "Déjalo vacío para mantener el secreto actual",
+				"secretHelp": "El valor completo de la cabecera, por ejemplo Bearer seguido de un token.",
+				"sharedToggle": "Compartir con el espacio de trabajo",
+				"sharedHint": "Los agentes usan los conectores compartidos en cada ejecución. Desactívalo para reservarlo a las ejecuciones en tu nombre.",
+				"deleteTitle": "¿Eliminar {{name}}?",
+				"deleteBody": "Los agentes ya no podrán usar sus herramientas y su secreto guardado se elimina."
+			},
+			"followUp": {
+				"label": "Responder al agente",
+				"placeholder": "Haz una pregunta de seguimiento o di qué hacer a continuación…",
+				"send": "Enviar",
+				"error": "No se pudo iniciar el seguimiento. Inténtalo de nuevo."
+			},
+			"needsInput": {
+				"title": "El agente tiene una pregunta",
+				"answerLabel": "Tu respuesta",
+				"placeholder": "Escribe tu respuesta…",
+				"reply": "Responder",
+				"sent": "Respuesta enviada. El agente continúa.",
+				"error": "No se pudo enviar tu respuesta. Inténtalo de nuevo.",
+				"hint": "Las preguntas sin respuesta caducan a las 24 horas.",
+				"waiting": "El agente espera la respuesta de la persona que se lo pidió.",
+				"inboxHint": "La ejecución está en pausa hasta que respondas.",
+				"answer": "Responder en el Panel de agentes",
+				"notificationTitle": "{{agentName}} tiene una pregunta",
+				"verb": "tiene una pregunta para ti"
+			},
+			"schedules": {
+				"open": "Programaciones de {{name}}",
+				"title": "Programaciones: {{name}}",
+				"hint": "Ejecuta el agente según un horario. Las ejecuciones actúan en nombre de quien guardó la programación por última vez, con como mucho sus permisos.",
+				"empty": "Aún no hay programaciones.",
+				"create": "Nueva programación",
+				"edit": "Editar programación",
+				"delete": "Eliminar programación",
+				"deleteBody": "¿Eliminar esta programación? Las ejecuciones anteriores se quedan en el Panel de agentes.",
+				"deleted": "Programación eliminada",
+				"saved": "Programación guardada",
+				"saveError": "No se pudo guardar la programación. Inténtalo de nuevo.",
+				"enable": "Activar programación",
+				"disable": "Desactivar programación",
+				"enabled": "Activa",
+				"when": "Cuándo",
+				"presets": {
+					"weekdays": "Cada día laborable a las 9:00",
+					"mondays": "Cada lunes a las 9:00",
+					"monthly": "El día 1 de cada mes a las 9:00",
+					"custom": "Personalizada (cron)"
+				},
+				"customLabel": "Cron: {{cron}}",
+				"cron": "Expresión cron",
+				"cronHint": "Cinco campos: minuto, hora, día del mes, mes, día de la semana. Como mucho cada 15 minutos.",
+				"timezone": "Zona horaria",
+				"project": "Proyecto",
+				"chooseProject": "Elige un proyecto",
+				"task": "Tarea",
+				"noTask": "Sin tarea (todo el proyecto)",
+				"taskHint": "Sin tarea, el agente trabaja sobre el proyecto y deja los informes en una página.",
+				"projectLevel": "Todo el proyecto",
+				"prompt": "¿Qué debe hacer?",
+				"promptPlaceholder": "Por ejemplo: resume lo que ha cambiado desde ayer.",
+				"nextRun": "Próxima ejecución {{time}}",
+				"runsAs": "Se ejecuta para {{name}}",
+				"runsAsHint": "Al guardar, estas ejecuciones actúan en tu nombre. La programación se desactiva si dejas el espacio de trabajo o pierdes el acceso a la IA.",
+				"errors": {
+					"CRON_INVALID": "Introduce cinco campos cron: minuto, hora, día, mes, día de la semana.",
+					"CRON_TOO_FREQUENT": "Una programación puede ejecutarse como mucho cada 15 minutos.",
+					"CRON_NEVER": "Esta programación nunca se ejecutaría.",
+					"TIMEZONE_INVALID": "Elige una zona horaria válida.",
+					"OUTSIDE_AGENT_PROJECTS": "Este agente no está configurado para trabajar en ese proyecto."
+				}
+			},
+			"templates": {
+				"title": "Empezar desde",
+				"blank": "Agente en blanco",
+				"blankHint": "Escribe tú las instrucciones.",
+				"triage": {
+					"name": "Clasificación",
+					"description": "Ordena las tareas nuevas: títulos claros, prioridades y enlaces a duplicados."
+				},
+				"standup": {
+					"name": "Reunión diaria",
+					"description": "Escribe un resumen diario de la reunión en una página del proyecto."
+				},
+				"specWriter": {
+					"name": "Redactor de especificaciones",
+					"description": "Convierte una tarea en una página de especificación con criterios de aceptación."
+				},
+				"deliveryRisk": {
+					"name": "Riesgo de entrega",
+					"description": "Informa cada semana del trabajo vencido, bloqueado o sin responsable."
+				},
+				"feedback": {
+					"name": "Opiniones de clientes",
+					"description": "Agrupa las opiniones de clientes en temas con ejemplos."
+				},
+				"triggers": {
+					"mention": "Mención",
+					"assign": "Asignación",
+					"schedule": "Programación",
+					"automation": "Automatización"
+				}
+			}
+		},
+		"capture": {
+			"button": "Capturar",
+			"buttonHint": "Nueva a partir de una captura de pantalla, grabación o transcripción",
+			"title": "Nuevas solicitudes a partir de una captura",
+			"description": "Añade capturas de pantalla, una grabación de pantalla o notas de una reunión. La IA propone solicitudes; no se crea nada hasta que confirmes.",
+			"tabs": {
+				"screenshot": "Capturas",
+				"recording": "Grabación",
+				"transcript": "Transcripción"
+			},
+			"dropzone": "Pega, suelta o elige capturas de pantalla",
+			"dropzoneHint": "PNG, JPEG o WebP, hasta {{count}} imágenes. Se eliminan los datos de ubicación y de la cámara.",
+			"chooseRecording": "Elegir una grabación de pantalla",
+			"recordingHint": "Solo se envían {{count}} fotogramas a la IA. El vídeo se queda en tu dispositivo.",
+			"notes": "Notas (opcional)",
+			"notesPlaceholder": "¿Qué estabas haciendo y qué salió mal?",
+			"transcript": "Transcripción o notas de la reunión",
+			"transcriptPlaceholder": "Pega la transcripción o las notas. Cada tarea pendiente se convierte en una solicitud.",
+			"remove": "Quitar {{name}}",
+			"tooMany": "Hasta {{count}} imágenes por captura.",
+			"mediaErrors": {
+				"type": "Este tipo de archivo no es compatible.",
+				"tooLarge": "Este archivo es demasiado grande.",
+				"unreadable": "No se ha podido leer este archivo."
+			},
+			"preparing": "Preparando las imágenes…",
+			"analyze": "Proponer solicitudes",
+			"analyzing": "Leyendo la captura…",
+			"reviewTitle": "Revisar las solicitudes propuestas",
+			"reviewDescription": "Edita o descarta cualquier solicitud. No se crea nada hasta que confirmes.",
+			"empty": "No se han encontrado solicitudes en esta captura.",
+			"include": "Incluir esta solicitud",
+			"titleLabel": "Título",
+			"descriptionLabel": "Descripción",
+			"priorityLabel": "Prioridad",
+			"labelsLabel": "Etiquetas sugeridas",
+			"assignTo": "Asignar a {{name}}",
+			"attachNote": "Imágenes para adjuntar: {{count}}",
+			"attachNotAllowed": "No se pueden adjuntar imágenes: necesitas permiso para editar tareas.",
+			"back": "Atrás",
+			"create": "Crear solicitudes ({{count}})",
+			"created": "Solicitudes creadas: {{count}}",
+			"extrasFailed": "No se han podido añadir algunas etiquetas, responsables o archivos adjuntos.",
+			"createError": "No se han podido crear las solicitudes.",
+			"draftFromImages": "Redactar a partir de las imágenes",
+			"drafting": "Redactando…",
+			"sections": {
+				"steps": "Pasos para reproducirlo",
+				"expected": "Resultado esperado",
+				"actual": "Resultado real",
+				"environment": "Entorno"
+			}
+		},
+		"codingAgent": {
+			"button": "Enviar a un agente de código",
+			"dialogTitle": "Enviar a un agente de código",
+			"dialogDescription": "Margaya abre una incidencia en el repositorio con estas instrucciones. Revísalas y edítalas antes de enviarlas.",
+			"repository": "Repositorio",
+			"profile": "Agente de código",
+			"github": "GitHub",
+			"gitea": "Gitea",
+			"notReady": "La integración de este repositorio todavía no puede abrir incidencias. Revísala en los ajustes de integraciones del proyecto.",
+			"noProfiles": "Ningún perfil de agente de código funciona con este repositorio.",
+			"useAi": "Resumir con IA",
+			"regenerate": "Preparar de nuevo",
+			"preparing": "Preparando las instrucciones…",
+			"error": "No se pudieron preparar las instrucciones.",
+			"titleLabel": "Título de la incidencia",
+			"briefLabel": "Instrucciones",
+			"briefNote": "Los valores que parecen contraseñas o claves se eliminan antes del envío. Nunca se fusiona nada automáticamente.",
+			"send": "Enviar",
+			"sending": "Enviando…",
+			"sent": "Enviado al agente de código",
+			"sentNotAssigned": "Incidencia creada, pero no se pudo añadir la persona asignada",
+			"sendError": "No se pudo crear la incidencia",
+			"openIssue": "Abrir incidencia",
+			"timelineTitle": "Agente de código",
+			"timelineLabel": "Progreso del agente de código",
+			"sentBy": "Enviado a {{profile}} por {{name}}",
+			"sentByUnknown": "Enviado a {{profile}}",
+			"issueLink": "Incidencia n.º {{number}}",
+			"prLink": "Pull request n.º {{number}}",
+			"pending": "Todavía no",
+			"steps": {
+				"issue_created": "Incidencia creada",
+				"working": "Agente trabajando",
+				"ready_for_review": "Lista para revisión",
+				"merged": "Fusionada",
+				"closed": "Cerrada sin fusionar"
+			},
+			"settings": {
+				"title": "Agentes de código",
+				"subtitle": "Plantillas de incidencias para «Enviar a un agente de código», enviadas a través de GitHub y Gitea",
+				"sharedNote": "Se comparten en todos los proyectos de este espacio de trabajo. Los perfiles solo añaden una mención o una persona asignada a la incidencia; no se guarda ninguna clave de IA.",
+				"builtin": "Integrado",
+				"githubOnly": "Solo GitHub",
+				"name": "Nombre",
+				"namePlaceholder": "p. ej., Nuestro ejecutor de builds",
+				"mention": "Mención",
+				"mentionPlaceholder": "@agente, o un texto con {task} y {branch}",
+				"assignee": "Persona asignada (GitHub)",
+				"assigneePlaceholder": "Usuario de GitHub, p. ej., Copilot",
+				"enabled": "Activado",
+				"edit": "Editar perfil",
+				"delete": "Eliminar perfil",
+				"add": "Añadir perfil",
+				"save": "Guardar",
+				"saved": "Perfil guardado",
+				"deleted": "Perfil eliminado",
+				"error": "No se pudo guardar el perfil",
+				"needsTarget": "Añade una mención o una persona asignada.",
+				"readOnly": "Solo quienes gestionan los ajustes del espacio de trabajo pueden cambiar los perfiles."
+			}
+		},
+		"filters": {
+			"button": "Describe un filtro…",
+			"short": "Describir",
+			"label": "Describe qué quieres ver",
+			"placeholder": "p. ej., mis errores vencidos en curso",
+			"apply": "Aplicar",
+			"none": "No se pudo convertir en filtros. Prueba con otras palabras.",
+			"applied": "Filtros aplicados. Edita los chips para ajustarlos.",
+			"dropped": "No entendido: {{words}}",
+			"hint": "La IA convierte tus palabras en filtros de estados, etiquetas, personas, ciclos, prioridades y fechas."
+		},
+		"budget": {
+			"warningTitle": "Se ha usado el {{percent}} % del presupuesto de IA de este mes",
+			"reachedTitle": "Se agotó el presupuesto de IA de este mes",
+			"amounts": "{{used}} de {{cap}}.",
+			"warningHint": "Las funciones de IA se detienen al alcanzar el límite. Auméntalo abajo si hace falta.",
+			"reachedHint": "Las funciones de IA están en pausa hasta el próximo mes o hasta que se aumente el límite.",
+			"notice": {
+				"title": "Presupuesto de IA casi agotado",
+				"content": "Este espacio de trabajo ha usado el {{percent}} % de su presupuesto mensual de IA."
+			}
+		},
+		"skills": {
+			"navLabel": "Habilidades de IA",
+			"title": "Habilidades de IA",
+			"subtitle": "Prompts guardados para reutilizar desde \"/\" en el chat de IA.",
+			"listTitle": "Habilidades",
+			"new": "Nueva habilidad",
+			"newTitle": "Nueva habilidad",
+			"editTitle": "Editar habilidad",
+			"dialogHint": "El prompt se añade a la pregunta cada vez que se usa la habilidad.",
+			"name": "Nombre",
+			"namePlaceholder": "notas-de-version",
+			"description": "Descripción",
+			"prompt": "Prompt",
+			"promptPlaceholder": "Escribe notas de versión para las tareas completadas en este ciclo, agrupadas por funcionalidad.",
+			"shareLabel": "Compartir con el espacio de trabajo",
+			"shareHint": "Cualquiera que use la IA aquí puede usarla. Desactivado: solo tú.",
+			"shared": "Compartida",
+			"personal": "Solo tú",
+			"save": "Guardar habilidad",
+			"saved": "Habilidad guardada",
+			"saveError": "No se pudo guardar la habilidad",
+			"deleted": "Habilidad eliminada",
+			"edit": "Editar {{name}}",
+			"delete": "Eliminar {{name}}",
+			"deleteConfirm": "¿Eliminar {{name}}?",
+			"empty": "Aún no hay habilidades. Guarda un prompt que uses a menudo.",
+			"loadError": "No se pudieron cargar las habilidades.",
+			"noAccess": "Necesitas permiso para usar la IA en este espacio de trabajo."
+		},
+		"memory": {
+			"navLabel": "Memoria de la IA",
+			"title": "Memoria de la IA",
+			"subtitle": "Datos breves que la IA tiene en cuenta al responder, como «Nuestro día de lanzamiento es el jueves».",
+			"scopes": {
+				"workspace": "Espacio de trabajo",
+				"project": "Proyecto",
+				"user": "Personal"
+			},
+			"scopeHints": {
+				"workspace": "Se usan para todo el espacio de trabajo. Las editan los administradores de IA.",
+				"project": "Se usan en un proyecto. Las editan los administradores de IA.",
+				"user": "Se usan solo para ti y solo tú puedes verlas."
+			},
+			"project": "Proyecto",
+			"newNote": "Nueva nota",
+			"placeholder": "Nuestro día de lanzamiento es el jueves.",
+			"add": "Añadir nota",
+			"save": "Guardar nota",
+			"editNote": "Editar nota",
+			"deleteNote": "Eliminar nota",
+			"saved": "Nota guardada",
+			"deleted": "Nota eliminada",
+			"saveError": "No se pudo guardar la nota",
+			"empty": "Aún no hay notas.",
+			"loadError": "No se pudieron cargar las notas.",
+			"adminsOnly": "Solo los administradores de IA pueden añadir notas aquí.",
+			"noAccess": "Necesitas permiso para usar la IA en este espacio de trabajo."
+		}
+	},
+	"insight": {
+		"close": "Cerrar",
+		"retry": "Reintentar",
+		"stop": "Detener",
+		"writing": "Escribiendo…",
+		"days_one": "{{count}} día",
+		"days_other": "{{count}} días",
+		"days_many": "{{count}} días",
+		"estimate": {
+			"usually": "Las tareas similares solían ser {{value}}",
+			"took_one": "{{count}} tarea similar tardó {{min}}–{{max}} días (mediana {{median}})",
+			"took_other": "{{count}} tareas similares tardaron {{min}}–{{max}} días (mediana {{median}})",
+			"took_many": "{{count}} tareas similares tardaron {{min}}–{{max}} días (mediana {{median}})",
+			"basedOn_one": "Basado en {{count}} tarea similar terminada",
+			"basedOn_other": "Basado en {{count}} tareas similares terminadas",
+			"basedOn_many": "Basado en {{count}} tareas similares terminadas",
+			"use": "Usar {{value}}",
+			"why": "¿Por qué?",
+			"similar": "Tareas similares"
+		},
+		"calibration": {
+			"title": "Calibración de estimaciones",
+			"description": "Cuánto tardaron realmente las tareas de cada tamaño, desde el primer inicio hasta terminarlas, en los últimos {{days}} días.",
+			"empty": "Aún no hay tareas terminadas y estimadas con un inicio registrado.",
+			"estimate": "Estimación",
+			"tasks": "Tareas",
+			"actual": "Tiempo real",
+			"range": "mediana {{median}} d ({{low}}–{{high}})",
+			"ordered": "Las estimaciones mayores tardaron más, como debe ser.",
+			"notOrdered": "Las estimaciones mayores no siempre tardaron más: conviene revisar cómo dimensiona el trabajo el equipo.",
+			"fewSamples": "Se necesitan más tareas terminadas para comparar tamaños.",
+			"unmeasured_one": "{{count}} tarea no tiene inicio registrado y queda fuera.",
+			"unmeasured_other": "{{count}} tareas no tienen inicio registrado y quedan fuera.",
+			"unmeasured_many": "{{count}} tareas no tienen inicio registrado y quedan fuera."
+		},
+		"capacity": {
+			"meter": "Trabajo planificado frente a un ciclo habitual",
+			"within": "Planificado al {{percent}} % de un ciclo habitual",
+			"over": "Por encima de la capacidad: planificado al {{percent}} % de un ciclo habitual",
+			"noDates": "Define las fechas del ciclo para comprobar su capacidad.",
+			"noHistory": "La capacidad aparece cuando el equipo ha terminado trabajo en ciclos anteriores.",
+			"details": "Detalles de capacidad",
+			"compare": "{{load}} planificado; un ciclo habitual admite {{typical}} (rango {{low}}–{{high}}).",
+			"tasks_one": "{{count}} tarea",
+			"tasks_other": "{{count}} tareas",
+			"tasks_many": "{{count}} tareas",
+			"points_one": "{{count}} punto",
+			"points_other": "{{count}} puntos",
+			"points_many": "{{count}} puntos",
+			"basisCycles_one": "Basado en lo que el equipo terminó en el último ciclo finalizado, ajustado a la duración de este ciclo.",
+			"basisCycles_other": "Basado en lo que el equipo terminó en los últimos {{count}} ciclos finalizados, ajustado a la duración de este ciclo.",
+			"basisCycles_many": "Basado en lo que el equipo terminó en los últimos {{count}} ciclos finalizados, ajustado a la duración de este ciclo.",
+			"basisThroughput": "Basado en las tareas que el proyecto terminó en las últimas 8 semanas por cada periodo de la duración de este ciclo.",
+			"deferTitle": "Podría pasar a un ciclo posterior",
+			"blocks_one": "bloquea {{count}}",
+			"blocks_other": "bloquea {{count}}",
+			"blocks_many": "bloquea {{count}}",
+			"membersTitle": "Carga por persona",
+			"memberLoad": "{{load}} · normalmente {{typical}}",
+			"membersNote": "Carga frente al ritmo habitual de cada persona, para equilibrar el trabajo. No es una medida de rendimiento.",
+			"unassigned": "Sin asignar"
+		},
+		"retro": {
+			"button": "Retrospectiva",
+			"buttonLabel": "Preparar una retrospectiva",
+			"title": "Retrospectiva",
+			"factsTitle": "Qué pasó",
+			"factsSoFar": "Qué ha pasado hasta ahora",
+			"factsNote": "Estos datos proceden de los registros de Margaya, no de la IA. Describen el trabajo del equipo, nunca a una persona.",
+			"error": "No se pudieron cargar los datos de este ciclo.",
+			"aiIntro": "Deja que la IA escriba un breve relato y preguntas para debatir a partir de estos datos.",
+			"write": "Escribir relato",
+			"rewrite": "Volver a escribir",
+			"edit": "Editar",
+			"preview": "Vista previa",
+			"editLabel": "Relato de la retrospectiva",
+			"saveAsPage": "Guardar como página",
+			"saveWithNarrative": "Guarda los datos, el relato y secciones para el equipo.",
+			"saveFactsOnly": "Guarda los datos y secciones para que el equipo los complete.",
+			"saved": "Retrospectiva guardada como página",
+			"saveError": "No se pudo guardar la página.",
+			"openPage": "Abrir página",
+			"pageTitle": "Retrospectiva: {{name}}",
+			"more_one": "y {{count}} más",
+			"more_other": "y {{count}} más",
+			"more_many": "y {{count}} más",
+			"facts": {
+				"sayDo_one": "{{done}} de {{count}} tarea comprometida hecha ({{percent}} %)",
+				"sayDo_other": "{{done}} de {{count}} tareas comprometidas hechas ({{percent}} %)",
+				"sayDo_many": "{{done}} de {{count}} tareas comprometidas hechas ({{percent}} %)",
+				"sayDoNone": "No se comprometió nada al inicio",
+				"scope": "Cambio de alcance: {{added}} añadidas y {{removed}} quitadas durante el ciclo",
+				"carry": "Arrastre: {{carried}} movidas a otro ciclo, {{open}} quedaron abiertas",
+				"reopened_one": "{{count}} tarea se reabrió después de estar hecha",
+				"reopened_other": "{{count}} tareas se reabrieron después de estar hechas",
+				"reopened_many": "{{count}} tareas se reabrieron después de estar hechas",
+				"points": "Puntos de estimación: {{completed}} de {{committed}} hechos",
+				"cycleTime": "Tiempo de ciclo: mediana de {{median}} días",
+				"cycleTimeOutliers_one": "Tiempo de ciclo: mediana de {{median}} días; {{count}} tarea tardó más de {{threshold}} días",
+				"cycleTimeOutliers_other": "Tiempo de ciclo: mediana de {{median}} días; {{count}} tareas tardaron más de {{threshold}} días",
+				"cycleTimeOutliers_many": "Tiempo de ciclo: mediana de {{median}} días; {{count}} tareas tardaron más de {{threshold}} días",
+				"cycleTimeNone": "Tiempo de ciclo: sin medir",
+				"blocked_one": "{{count}} tarea estuvo bloqueada por otra",
+				"blocked_other": "{{count}} tareas estuvieron bloqueadas por otras",
+				"blocked_many": "{{count}} tareas estuvieron bloqueadas por otras",
+				"forecastNone": "Previsión: no se guardó ninguna para este ciclo",
+				"forecastOpen": "Previsión: 85 % de probabilidad de terminar antes del {{date}}",
+				"forecastMet": "Previsión: 85 % de probabilidad de terminar antes del {{date}}, y se cumplió",
+				"forecastMissed": "Previsión: 85 % de probabilidad de terminar antes del {{date}}, y no se cumplió"
+			},
+			"lists": {
+				"added": "Añadidas durante el ciclo",
+				"carriedOver": "Arrastradas",
+				"leftOpen": "Quedaron abiertas",
+				"outliers": "Tardaron mucho más de lo habitual",
+				"blocked": "Bloqueadas"
+			},
+			"page": {
+				"facts": "Datos",
+				"wentWell": "Qué salió bien",
+				"improve": "Qué mejorar",
+				"actions": "Acciones"
+			}
+		},
+		"myBrief": {
+			"title": "Mi informe",
+			"empty": "Hoy nada requiere tu atención.",
+			"error": "No se pudo cargar tu informe.",
+			"summarize": "Resumir",
+			"overdue": "Vencidas · {{total}}",
+			"dueToday": "Vencen hoy · {{total}}",
+			"blocked": "Bloqueadas · {{total}}",
+			"mentions": "Menciones · {{total}}",
+			"following": "Cambios en tareas que sigues · {{total}}",
+			"waitingOn": "Esperando a {{keys}}",
+			"hiddenBlockers_one": "{{count}} tarea oculta",
+			"hiddenBlockers_other": "{{count}} tareas ocultas",
+			"hiddenBlockers_many": "{{count}} tareas ocultas",
+			"mentionedBy": "de {{name}}",
+			"mentioned": "te mencionó",
+			"more_one": "y {{count}} más",
+			"more_other": "y {{count}} más",
+			"more_many": "y {{count}} más",
+			"kinds": {
+				"status": "estado",
+				"comment": "comentarios",
+				"assignee": "asignados",
+				"priority": "prioridad",
+				"due_date": "fecha de vencimiento",
+				"other": "otras novedades"
+			},
+			"emailTitle": "Añadir Mi informe al resumen",
+			"emailDescription": "Tu resumen también incluirá tus tareas bloqueadas y los cambios en las tareas que sigues. Requiere un resumen diario o semanal.",
+			"emailError": "No se pudo guardar este ajuste."
+		}
 	}
 }
