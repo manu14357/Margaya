@@ -92,7 +92,7 @@ export const youtrack: Comparison = {
     {
       question: "Can Margaya run scripted workflows?",
       answer:
-        "Not inside the app. Margaya has scheduled cleanup and Git-driven workflow rules, and anything more custom can run outside it through the REST API, signed webhooks or MCP.",
+        "Not as scripts. Margaya has When, If, Then automation rules, scheduled cleanup and Git-driven workflow rules, and anything more custom can run outside it through the REST API, signed webhooks or MCP.",
     },
   ],
   related: ["jira", "redmine", "openproject", "linear"],

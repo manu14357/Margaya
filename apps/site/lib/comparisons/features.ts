@@ -100,7 +100,7 @@ export const compareFeatures: Record<FeatureKey, Feature> = {
   automations: {
     area: "automation",
     label: "Built-in automation",
-    margaya: ["partial", "Scheduled cleanup and Git rules, no rule builder"],
+    margaya: ["yes", "When, If, Then rules, scheduled cleanup and Git rules"],
   },
   api: {
     area: "automation",

@@ -98,7 +98,7 @@ export const jira: Comparison = {
     {
       question: "What does Margaya not do that Jira does?",
       answer:
-        "Margaya has no configurable issue-type schemes, no general automation rule builder and no app marketplace. Its automation covers scheduled cleanup and Git-driven rules, and everything else is open to you through the REST API, webhooks and MCP.",
+        "Margaya has no configurable issue-type schemes and no app marketplace. Its automation covers When, If, Then rules per project, scheduled cleanup and Git-driven rules, and everything else is open to you through the REST API, webhooks and MCP.",
     },
   ],
   related: ["linear", "youtrack", "openproject", "azure-devops"],

@@ -92,7 +92,7 @@ export const kanboard: Comparison = {
     {
       question: "Does Margaya have automatic actions?",
       answer:
-        "Margaya has scheduled cleanup rules that archive closed tasks and close stale ones, and Git rules that move tasks when pull requests open or merge. There is no general rule builder.",
+        "Yes. Margaya has When, If, Then rules that react to task changes, such as assigning or labelling new tasks, scheduled cleanup rules that archive closed tasks and close stale ones, and Git rules that move tasks when pull requests open or merge.",
     },
   ],
   related: ["wekan", "trello", "vikunja", "redmine"],

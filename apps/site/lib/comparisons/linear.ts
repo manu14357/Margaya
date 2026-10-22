@@ -93,7 +93,7 @@ export const linear: Comparison = {
     {
       question: "Does Margaya work with AI assistants?",
       answer:
-        "Yes. Every Margaya instance has a built-in MCP endpoint, and an MCP package is available for clients that prefer a local stdio server.",
+        "Yes, in two ways. Margaya has its own optional AI, with Ask AI, Build mode, writing help and AI agents running on Claude or a model you host. And every instance has a built-in MCP endpoint, with an MCP package for clients that prefer a local stdio server.",
     },
   ],
   related: ["jira", "shortcut", "github-projects", "huly"],

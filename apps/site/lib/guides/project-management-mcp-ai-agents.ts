@@ -161,7 +161,7 @@ margaya-mcp install --target cursor-user -y --api-url https://pm.example.com`,
     {
       question: "Does Margaya send my data to an AI provider?",
       answer:
-        "No. Margaya doesn't call any AI service itself. Data reaches an AI provider only when you connect a client and ask it to read something, under that client's terms.",
+        "Not unless you turn its AI on. Margaya's own AI features are off by default; when an admin turns them on, Margaya sends only what the person asking can already see to the model the admin chose, Claude or a model you run yourself, and keeps no prompts or answers. An MCP client you connect reads data under that client's own terms.",
     },
     {
       question: "Can an agent see private pages?",

@@ -92,7 +92,7 @@ export const asana: Comparison = {
     {
       question: "What does Asana have that Margaya does not?",
       answer:
-        "Portfolios, company goals, workload balancing and a general rule builder. Margaya focuses on projects and leaves cross-company reporting to analytics and exports.",
+        "Portfolios, company goals and workload balancing. Margaya focuses on projects and leaves cross-company reporting to analytics and exports.",
     },
   ],
   related: ["monday", "clickup", "wrike", "basecamp"],
