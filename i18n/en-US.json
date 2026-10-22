@@ -11,7 +11,8 @@
 			"remove": "Remove",
 			"reset": "Reset",
 			"filter": "Filter",
-			"clearAllFilters": "Clear all filters"
+			"clearAllFilters": "Clear all filters",
+			"undo": "Undo"
 		},
 		"a11y": {
 			"toggleSidebar": "Toggle sidebar"
@@ -145,7 +146,15 @@
 				"createButton": "Create project",
 				"successToast": "Project created successfully",
 				"errorToast": "Failed to create project",
-				"keyTaken": "A project with the key {{key}} already exists in this workspace"
+				"keyTaken": "A project with the key {{key}} already exists in this workspace",
+				"startFrom": "Start from",
+				"blankProject": "Blank project",
+				"copyHint": "Statuses, custom fields, estimates, settings and automations are copied. Members, integrations and public boards are not.",
+				"includeTemplates": "Include task templates",
+				"includeOpenTasks": "Include open tasks",
+				"openTasksHint": "Up to 500 open tasks with their sub-tasks, labels and estimates. Comments and history are not copied.",
+				"restricted": "Restricted",
+				"restrictedHint": "Only members can see this project. You'll be its first member; workspace owners and admins can always see it."
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -714,6 +723,8 @@
 			"themeLight": "Light",
 			"themeDark": "Dark",
 			"themeSystem": "System",
+			"themeLightContrast": "High contrast light",
+			"themeDarkContrast": "High contrast dark",
 			"language": "Language",
 			"languageDescription": "Choose your preferred interface language",
 			"selectLanguage": "Select a language",
@@ -826,11 +837,29 @@
 			"workspaceHint": "Defines \"today\" for cycles, automations and analytics. Existing workspaces start on UTC.",
 			"useBrowser": "Use {{zone}}",
 			"accountLabel": "Time zone",
-			"accountHint": "Used for reminders and email digests. The app always shows times in your browser's time zone.",
+			"accountHint": "Used for reminders, email digests, and the days that task filters and analytics count in. Times on screen use your browser's time zone.",
 			"automatic": "Automatic (browser: {{zone}})",
 			"toastUpdated": "Time zone updated",
 			"toastError": "Failed to update the time zone",
 			"loadError": "Couldn't load the time zone. Reload the page to try again."
+		},
+		"projectAccess": {
+			"title": "Access",
+			"subtitle": "Who can see and work in this project.",
+			"restrictedLabel": "Restricted",
+			"restrictedHint": "Only the members below, and workspace owners and admins, can see this project. A member's rights here are what both their workspace role and their project role allow.",
+			"openHint": "Everyone in the workspace can see this project, as their workspace role allows. Restrict it to limit it to chosen members.",
+			"membersLabel": "Members",
+			"membersHint": "The project role limits what each member can do here.",
+			"noMembers": "No members yet.",
+			"addMember": "Add member",
+			"removeMember": "Remove {{name}}",
+			"roleFor": "Project role of {{name}}",
+			"leadTag": "Lead",
+			"restrictedProject": "Restricted project",
+			"toastUpdated": "Access updated",
+			"toastError": "Failed to update access",
+			"loadError": "Couldn't load access settings. Reload the page to try again."
 		},
 		"projectPeople": {
 			"title": "People",
@@ -947,7 +976,8 @@
 				"intake": "Intake",
 				"analytics": "Analytics",
 				"page": "Pages",
-				"audit_log": "Audit log"
+				"audit_log": "Audit log",
+				"ai": "AI"
 			},
 			"permissions": {
 				"project": {
@@ -1193,6 +1223,16 @@
 						"label": "View audit log",
 						"description": "See and export the workspace audit log: who changed members, roles, keys, webhooks, integrations and settings."
 					}
+				},
+				"ai": {
+					"use": {
+						"label": "Use AI",
+						"description": "Use AI features, when AI is on for the workspace and the project."
+					},
+					"manage": {
+						"label": "Manage AI",
+						"description": "Turn AI on or off for the workspace, change its key, limits and privacy, and see AI usage."
+					}
 				}
 			},
 			"validation": {
@@ -1324,6 +1364,45 @@
 				"expired": "Expired"
 			}
 		},
+		"workspaceDeletion": {
+			"pendingTitle": "Scheduled for deletion",
+			"pendingDescription": "This workspace will be deleted on {{date}}. Until then it is read-only, and you can still open and export its work.",
+			"cancel": "Cancel deletion",
+			"confirm": "Schedule deletion",
+			"rowDescription": "The workspace becomes read-only right away and is deleted for good on {{date}}. You can cancel until then.",
+			"dialogTitle": "Delete {{name}}?",
+			"dialogDescription": "{{name}} becomes read-only for everyone right away, and its API keys and webhooks stop working. Members are emailed. On {{date}} it is deleted for good, with all its projects, tasks and pages, unless you cancel before then.",
+			"toastScheduled": "Deletion scheduled for {{date}}",
+			"toastCancelled": "Deletion cancelled. The workspace is writable again.",
+			"toastError": "Couldn't change the deletion. Try again.",
+			"bannerTitle": "This workspace will be deleted on {{date}}",
+			"bannerDescription": "It is read-only until then. You can still open and export its work.",
+			"admin": {
+				"title": "Pending deletion",
+				"description": "Workspaces their owners scheduled for deletion. They are read-only until the date, then deleted for good.",
+				"dueAt": "Deleted on",
+				"badge": "Deleted on {{date}}"
+			},
+			"instanceAudit": {
+				"scheduled": "Scheduled a workspace for deletion",
+				"cancelled": "Cancelled a workspace deletion",
+				"purged": "Deleted a workspace after its grace period"
+			}
+		},
+		"workspacePublicPages": {
+			"label": "Public pages",
+			"description": "Let people who can share projects publish pages to a read-only public link. Turning this off revokes every published link.",
+			"toastOn": "Public pages are on",
+			"toastOff": "Public pages are off. Published links were revoked.",
+			"toastError": "Couldn't change the setting. Try again."
+		},
+		"workspaceA2a": {
+			"label": "Agent-to-agent (A2A)",
+			"description": "Let external AI agents hand work to this workspace over the A2A protocol. They act with a member's API key or OAuth sign-in and that member's permissions, and everything they do appears in the audit log.",
+			"toastOn": "A2A is on",
+			"toastOff": "A2A is off. External agents can no longer hand work to this workspace.",
+			"toastError": "Couldn't change the setting. Try again."
+		},
 		"workspaceAuditLog": {
 			"title": "Audit log",
 			"pageTitle": "Audit log",
@@ -1367,7 +1446,10 @@
 				"system": "System",
 				"apiKey": "API key",
 				"unknownKey": "Deleted API key",
-				"deletedUser": "Deleted user"
+				"deletedUser": "Deleted user",
+				"agent": "Agent",
+				"agentFor": "Agent, on behalf of {{name}}",
+				"automation": "Automation"
 			},
 			"details": {
 				"changes": "Changed fields",
@@ -1387,7 +1469,12 @@
 				"integration": "Integration",
 				"workspace": "Workspace",
 				"project": "Project",
-				"export": "Export"
+				"export": "Export",
+				"page": "Page",
+				"agent": "Agent",
+				"agentRun": "Agent run",
+				"task": "Task",
+				"codingAgentProfile": "Coding agent profile"
 			},
 			"categories": {
 				"member": "Members and invitations",
@@ -1400,13 +1487,23 @@
 				"publicBoard": "Public boards",
 				"export": "Exports",
 				"import": "Imports",
-				"trash": "Trash"
+				"trash": "Trash",
+				"agent": "Agents",
+				"codingAgent": "Coding agents",
+				"a2a": "External agents (A2A)",
+				"automation": "Automations"
 			},
 			"actions": {
+				"workspaceDeletionScheduled": "Scheduled the workspace for deletion",
+				"workspaceDeletionCancelled": "Cancelled the workspace deletion",
+				"workspacePublicPagesChanged": "Turned public pages on or off",
+				"pagePublished": "Published a page to a public link",
+				"pageUnpublished": "Revoked a page's public link",
 				"memberInvited": "Invited someone to the workspace",
 				"memberInvitationRevoked": "Revoked an invitation",
 				"memberInvitationAccepted": "Accepted an invitation",
 				"memberInvitationDeclined": "Declined an invitation",
+				"memberInvitationRoleChanged": "Changed a pending invitation's role",
 				"memberRemoved": "Removed a member",
 				"memberLeft": "Left the workspace",
 				"memberRoleChanged": "Changed a member's role",
@@ -1442,7 +1539,32 @@
 				"importRun": "Imported tasks",
 				"trashPurged": "Permanently deleted tasks from the trash",
 				"trashEmptied": "Emptied a project's trash",
-				"unknown": "{{action}}"
+				"unknown": "{{action}}",
+				"aiSettingsUpdated": "Changed the AI settings",
+				"aiTriageLabelsApplied": "Applied suggested labels automatically",
+				"agentCreated": "Created an agent",
+				"agentUpdated": "Changed an agent",
+				"agentDeleted": "Deleted an agent",
+				"agentChangeApplied": "Made a change for someone",
+				"agentChangeApproved": "Approved an agent's change",
+				"agentChangeRejected": "Rejected an agent's change",
+				"agentChangeReverted": "Undid an agent's change",
+				"codingAgentHandoffSent": "Sent a task to a coding agent",
+				"codingAgentProfileCreated": "Created a coding agent profile",
+				"codingAgentProfileUpdated": "Changed a coding agent profile",
+				"codingAgentProfileDeleted": "Deleted a coding agent profile",
+				"a2aTaskReceived": "Received work from an external agent (A2A)",
+				"automationRuleCreated": "Created an automation",
+				"automationRuleUpdated": "Updated an automation",
+				"automationRuleDeleted": "Deleted an automation",
+				"automationRuleRan": "Ran an automation on a task",
+				"agentScheduleCreated": "Scheduled an agent",
+				"agentScheduleUpdated": "Changed an agent schedule",
+				"agentScheduleDeleted": "Deleted an agent schedule",
+				"agentScheduleDisabled": "Turned off an agent schedule",
+				"aiConnectorCreated": "Added an MCP connector",
+				"aiConnectorUpdated": "Changed an MCP connector",
+				"aiConnectorDeleted": "Deleted an MCP connector"
 			}
 		},
 		"workspaceWebhooks": {
@@ -1776,6 +1898,10 @@
 				"timeTracking": {
 					"title": "Time tracking",
 					"description": "Log time spent on tasks."
+				},
+				"ai": {
+					"title": "AI",
+					"description": "Summaries, suggestions and other AI help for this project. Off keeps the project out of AI entirely."
 				}
 			}
 		},
@@ -1958,6 +2084,14 @@
 				"noCancelledColumn": "Add a column in the Cancelled group above to use auto-close.",
 				"paused": "Auto-close is paused. Choose a column in the Cancelled group."
 			},
+			"cycleRollover": {
+				"title": "Roll over unfinished cycle work",
+				"description": "When a cycle ends, move its unfinished tasks to the next cycle. The project lead gets a summary.",
+				"cyclesOff": "Turn on Cycles in Features to use this.",
+				"last_one": "Last moved {{count}} task {{time}}",
+				"last_other": "Last moved {{count}} tasks {{time}}",
+				"never": "Nothing moved yet"
+			},
 			"months_one": "{{count}} month",
 			"months_other": "{{count}} months",
 			"preview": {
@@ -1992,8 +2126,19 @@
 				"archiveOff": "Auto-archive turned off",
 				"closeOn": "Auto-close turned on",
 				"closeOff": "Auto-close turned off",
+				"rolloverOn": "Cycle rollover turned on",
+				"rolloverOff": "Cycle rollover turned off",
 				"updated": "Automation updated",
-				"error": "Couldn't update automations"
+				"error": "Couldn't update automations",
+				"flowAlertsOn": "Flow alerts turned on",
+				"flowAlertsOff": "Flow alerts turned off"
+			},
+			"flowAlerts": {
+				"title": "Flow anomaly alerts",
+				"description": "Once a day, compare work in progress, cycle time and throughput with the previous 8 weeks. The project lead is notified when one leaves its usual range.",
+				"noLead": "Set a project lead to receive these alerts.",
+				"last": "Last alert {{time}}",
+				"never": "No alerts yet"
 			}
 		},
 		"projectSwitcher": {
@@ -2442,6 +2587,75 @@
 			"dropHintAny": "Drag and drop a JSON or CSV file here",
 			"unsupportedFile": "Please upload a JSON or CSV file",
 			"importStopped": "Import stopped: {{message}}",
+			"external": {
+				"sourceHint": "Moving from another tool? Import its export with statuses, labels, people, dates and sub-tasks.",
+				"sources": {
+					"trello": "Trello (JSON)",
+					"linear": "Linear (CSV)",
+					"asana": "Asana (CSV)"
+				},
+				"title": {
+					"trello": "Import from Trello",
+					"linear": "Import from Linear",
+					"asana": "Import from Asana"
+				},
+				"howToTitle": {
+					"trello": "How to export from Trello",
+					"linear": "How to export from Linear",
+					"asana": "How to export from Asana"
+				},
+				"howTo": {
+					"trello": {
+						"step1": "On the board, open the menu → Print, export and share → Export as JSON.",
+						"step2": "Upload the downloaded .json file here."
+					},
+					"linear": {
+						"step1": "In Linear, open Settings → Import / Export and choose Export CSV.",
+						"step2": "Upload the .csv file from the email Linear sends you."
+					},
+					"asana": {
+						"step1": "In the Asana project, open the project menu → Export/Print → CSV.",
+						"step2": "Upload the downloaded .csv file here."
+					}
+				},
+				"limits": {
+					"trello": "Up to 10 MB and 5,000 cards per file. Archived cards are left out; checklists become task lists in the description; attachments stay in Trello.",
+					"linear": "Up to 5 MB and 5,000 issues per file. Archived issues are left out. Linear's CSV has no comments.",
+					"asana": "Up to 5 MB and 5,000 tasks per file. Completed tasks land in your Done column. Asana's CSV has no comments."
+				},
+				"dropHint": {
+					"trello": "Drag and drop Trello's JSON export here",
+					"linear": "Drag and drop Linear's CSV export here",
+					"asana": "Drag and drop Asana's CSV export here"
+				},
+				"wrongType": {
+					"trello": "Choose the board's .json export.",
+					"linear": "Choose Linear's .csv export.",
+					"asana": "Choose Asana's .csv export."
+				},
+				"itemCount_one": "{{count}} item",
+				"itemCount_other": "{{count}} items",
+				"alreadyImported_one": "{{count}} item was imported into this project before.",
+				"alreadyImported_other": "{{count}} items were imported into this project before.",
+				"contents": "{{comments}} comments, {{checklists}} checklists, {{subtasks}} sub-tasks, {{links}} links",
+				"sourceStatus": "Status or list",
+				"peopleUnmatched_one": "{{count}} person isn't a member ({{names}}). Their items stay unassigned, with the name noted in the description.",
+				"peopleUnmatched_other": "{{count}} people aren't members ({{names}}). Their items stay unassigned, with the names noted in the description.",
+				"mode": "Items imported before",
+				"modeHint": "Matched by their id in the export.",
+				"importAction_one": "Import {{count}} item",
+				"importAction_other": "Import {{count}} items",
+				"importing_one": "Importing {{count}} item…",
+				"importing_other": "Importing {{count}} items…",
+				"result": {
+					"skipped_one": "{{count}} item skipped (imported before)",
+					"skipped_other": "{{count}} items skipped (imported before)",
+					"failed_one": "{{count}} item failed",
+					"failed_other": "{{count}} items failed",
+					"unmatched_one": "{{count}} person isn't a workspace member; their items are unassigned:",
+					"unmatched_other": "{{count}} people aren't workspace members; their items are unassigned:"
+				}
+			},
 			"jira": {
 				"title": "Import from Jira",
 				"source": "Jira (CSV export)",
@@ -2861,9 +3075,189 @@
 				"emptied_other": "{{count}} tasks deleted permanently",
 				"purgeError": "Couldn't delete it permanently"
 			}
+		},
+		"automationRules": {
+			"title": "Automations",
+			"description": "When something happens to a task, check conditions and act on it. Rules run on their own, without AI, as \"Automation\".",
+			"empty": "No automations yet. Start from a template or build your own rule.",
+			"loadError": "Couldn't load the automations.",
+			"newRule": "New rule",
+			"templatesTitle": "Templates",
+			"saved": "Automation saved",
+			"saveError": "Couldn't save the automation",
+			"deleted": "Automation deleted",
+			"confirmDelete": "Delete",
+			"edit": "Edit {{name}}",
+			"delete": "Delete {{name}}",
+			"summary_one": "When {{trigger}} · {{count}} action",
+			"summary_other": "When {{trigger}} · {{count}} actions",
+			"lastRun_one": "{{count}} run, last {{time}}",
+			"lastRun_other": "{{count}} runs, last {{time}}",
+			"neverRan": "Hasn't run yet",
+			"templates": {
+				"reviewer": {
+					"name": "Assign reviewer when moved to In review",
+					"description": "Pick the reviewer; they're assigned when a task enters review."
+				},
+				"intakeBugs": {
+					"name": "Label bugs from intake",
+					"description": "Accepted requests that mention a bug or error get the bug label."
+				},
+				"overdue": {
+					"name": "Escalate overdue tasks",
+					"description": "When a due date passes, raise the priority and tell the assignees."
+				}
+			},
+			"triggers": {
+				"task_created": "a task is created",
+				"status_changed": "the status changes",
+				"assignee_added": "someone is assigned",
+				"assignee_removed": "someone is unassigned",
+				"label_added": "a label is added",
+				"label_removed": "a label is removed",
+				"priority_changed": "the priority changes",
+				"due_date_set": "a due date is set",
+				"due_date_passed": "the due date passes",
+				"comment_added": "a comment is added",
+				"moved_to_cycle": "it moves into a cycle",
+				"moved_to_module": "it's added to a module"
+			},
+			"conditions": {
+				"status": "Status",
+				"labels": "Labels",
+				"priority": "Priority",
+				"assignee": "Assignee",
+				"due_date": "Due date",
+				"estimate": "Estimate",
+				"title": "Title",
+				"custom_field": "Custom field"
+			},
+			"ops": {
+				"is": "is",
+				"is_not": "is not",
+				"contains": "contains",
+				"not_contains": "doesn't contain",
+				"empty": "is empty",
+				"not_empty": "is not empty",
+				"set": "is set",
+				"not_set": "is not set",
+				"gte": "is at least",
+				"lte": "is at most",
+				"equals": "equals",
+				"not_equals": "doesn't equal"
+			},
+			"actions": {
+				"set_status": "Set status",
+				"assign": "Assign",
+				"unassign": "Unassign",
+				"add_label": "Add label",
+				"remove_label": "Remove label",
+				"set_priority": "Set priority",
+				"set_due_date": "Set due date",
+				"add_comment": "Add comment",
+				"move_to_cycle": "Move to cycle",
+				"move_to_module": "Add to module",
+				"create_subtask": "Create subtask",
+				"notify": "Notify",
+				"run_agent": "Run agent"
+			},
+			"roles": {
+				"assignees": "Assignees",
+				"creator": "Creator",
+				"lead": "Project lead"
+			},
+			"outcomes": {
+				"success": "Done",
+				"partial": "Partly done",
+				"failed": "Failed",
+				"skipped": "Skipped"
+			},
+			"errors": {
+				"LOOP_DEPTH": "Stopped: too many rules triggered each other in a row.",
+				"RATE_LIMITED": "Stopped: this task had too many automation runs in a minute.",
+				"AGENT_UNAVAILABLE": "Run agent: the agent is off or was deleted.",
+				"NO_RULE_OWNER": "Run agent: nobody owns this rule any more. Save it again.",
+				"AI_DISABLED": "Run agent: AI is off for this project."
+			},
+			"history": {
+				"title": "Run history",
+				"empty": "No runs yet.",
+				"error": "Couldn't load the run history.",
+				"failedActions": "Failed: {{actions}}"
+			},
+			"editor": {
+				"name": "Rule name",
+				"namePlaceholder": "Name this rule",
+				"when": "When",
+				"if": "If",
+				"then": "Then",
+				"match": "Match",
+				"matchAll": "All of these",
+				"matchAny": "Any of these",
+				"always": "Every time",
+				"addCondition": "Add condition",
+				"addGroup": "Add group",
+				"addAction": "Add action",
+				"remove": "Remove",
+				"save": "Save rule",
+				"cancel": "Cancel",
+				"choose": "Choose…",
+				"add": "Add…",
+				"removeItem": "Remove {{name}}",
+				"any": "Any",
+				"from": "from",
+				"to": "to",
+				"fromIntake": "Only requests accepted from intake",
+				"people": "People",
+				"labels": "Labels",
+				"priorities": "Priorities",
+				"cycles": "Cycles",
+				"modules": "Modules",
+				"field": "Field",
+				"operator": "Comparison",
+				"points": "Points",
+				"value": "Value",
+				"column": "Status",
+				"everyone": "Everyone",
+				"label": "Label",
+				"priority": "Priority",
+				"daysFromRun": "days after the rule runs",
+				"comment": "Comment",
+				"subtaskTitle": "Subtask title",
+				"cycle": "Cycle",
+				"module": "Module",
+				"roles": "Roles",
+				"message": "Message (optional)",
+				"variables": "Variables:",
+				"agent": "Agent",
+				"agentPrompt": "What should the agent do?",
+				"agentPromptPlaceholder": "For example: triage this task and suggest a priority.",
+				"agentHint": "The agent acts for the person who saves this rule, with at most their rights. It never runs for changes an agent made."
+			}
 		}
 	},
 	"navigation": {
+		"customize": {
+			"open": "Customize sidebar",
+			"title": "Customize sidebar",
+			"description": "Choose what your sidebar shows and in which order. Only you see these changes, on every device.",
+			"settingsDescription": "Reorder or hide the main navigation and the sections of the Projects panel.",
+			"rail": "Main navigation",
+			"projectsPanel": "Projects panel",
+			"sections": {
+				"views": "Task lists and views",
+				"favorites": "Favorites",
+				"projects": "Projects"
+			},
+			"show": "Show {{name}}",
+			"alwaysShown": "{{name}} is always shown",
+			"moveUp": "Move {{name}} up",
+			"moveDown": "Move {{name}} down",
+			"moved": "{{name}} moved to position {{position}} of {{total}}",
+			"reset": "Reset to default",
+			"resetDone": "Sidebar reset to default",
+			"done": "Done"
+		},
 		"commandPalette": {
 			"suggestions": "Suggestions",
 			"commands": "Commands",
@@ -2876,6 +3270,8 @@
 			"lightTheme": "Light theme",
 			"darkTheme": "Dark theme",
 			"systemTheme": "System theme",
+			"lightContrastTheme": "High contrast light theme",
+			"darkContrastTheme": "High contrast dark theme",
 			"keyboardShortcuts": "Keyboard shortcuts",
 			"inputPlaceholder": "Search or jump to…",
 			"empty": "No results found.",
@@ -3195,6 +3591,23 @@
 			"page_mention": {
 				"title": "{{mentionerName}} mentioned you",
 				"content": "{{mentionerName}} mentioned you in: {{pageTitle}}"
+			},
+			"cycle_rollover": {
+				"title": "{{cycleName}} ended",
+				"content_one": "{{count}} unfinished task moved to {{targetCycleName}}",
+				"content_other": "{{count}} unfinished tasks moved to {{targetCycleName}}",
+				"contentNoNext_one": "{{count}} unfinished task stayed in {{cycleName}}: there is no next cycle",
+				"contentNoNext_other": "{{count}} unfinished tasks stayed in {{cycleName}}: there is no next cycle"
+			},
+			"flow_anomaly": {
+				"title": "Unusual flow in {{projectName}}",
+				"throughput_low": "Throughput fell to {{value}} tasks this week (usually about {{baseline}})",
+				"wip_high": "Work in progress rose to {{value}} tasks (usually about {{baseline}})",
+				"cycle_time_high": "Cycle time rose to {{value}} days (usually about {{baseline}})"
+			},
+			"automation_notice": {
+				"title": "Automation: {{ruleName}}",
+				"content": "{{taskKey}} {{taskTitle}}"
 			}
 		},
 		"inbox": {
@@ -3338,6 +3751,13 @@
 				"snooze": "Snooze",
 				"read": "Mark read or unread",
 				"open": "Open the task"
+			},
+			"digest": {
+				"button": "Summarize unread",
+				"title": "Unread summary",
+				"regenerate": "Summarize again",
+				"close": "Close summary",
+				"generating": "Summarizing…"
 			}
 		}
 	},
@@ -3367,6 +3787,7 @@
 		"moved": "moved task from \"{{from}}\" to \"{{to}}\"",
 		"created": "created this task",
 		"importedFromJira": "imported this task from Jira {{key}}",
+		"importedFromSource": "imported this task from {{source}} {{key}}",
 		"githubUser": "GitHub user",
 		"comment": {
 			"github": "GitHub",
@@ -3582,12 +4003,72 @@
 			"archived_one": "archived this task after {{count}} month without updates",
 			"archived_other": "archived this task after {{count}} months without updates",
 			"closed_one": "closed this task after {{count}} month without updates, moving it to {{to}}",
-			"closed_other": "closed this task after {{count}} months without updates, moving it to {{to}}"
+			"closed_other": "closed this task after {{count}} months without updates, moving it to {{to}}",
+			"rolledOver": "moved this task from {{from}} to {{to}} when the cycle ended",
+			"byRule": "via {{name}}"
 		},
 		"movedToTrash": "moved this task to the trash",
 		"restoredFromTrash": "restored this task from the trash"
 	},
 	"tasks": {
+		"recurrence": {
+			"label": "Repeat",
+			"none": "Does not repeat",
+			"title": "Repeat this task",
+			"indicator": "Repeats",
+			"frequency": {
+				"label": "Repeats",
+				"daily": "Daily",
+				"weekly": "Weekly",
+				"monthly": "Monthly",
+				"yearly": "Yearly"
+			},
+			"interval": "Every",
+			"weekdays": "On these days",
+			"monthDay": "Day of the month",
+			"trigger": {
+				"label": "Create the next one",
+				"completion": "When this one is completed",
+				"schedule": "On its date, even if this one is still open"
+			},
+			"ends": {
+				"label": "Ends",
+				"never": "Never",
+				"onDate": "On",
+				"endDate": "End date",
+				"after": "After",
+				"count": "Number of times"
+			},
+			"summary": {
+				"daily_one": "Every day",
+				"daily_other": "Every {{count}} days",
+				"weekly_one": "Every week on {{days}}",
+				"weekly_other": "Every {{count}} weeks on {{days}}",
+				"monthly_one": "Every month on day {{day}}",
+				"monthly_other": "Every {{count}} months on day {{day}}",
+				"yearly_one": "Every year on {{date}}",
+				"yearly_other": "Every {{count}} years on {{date}}",
+				"until": "{{summary}}, until {{date}}",
+				"times_one": "{{summary}}, {{count}} time",
+				"times_other": "{{summary}}, {{count}} times"
+			},
+			"next": "Next: {{date}}",
+			"ended": "No more repeats",
+			"save": "Save",
+			"remove": "Stop repeating",
+			"saved": "Repeat saved",
+			"removed": "This task no longer repeats",
+			"saveError": "Couldn't save the repeat",
+			"activity": {
+				"set": "set this task to repeat: {{summary}}",
+				"updated": "changed the repeat: {{summary}}",
+				"removed": "stopped this task from repeating",
+				"recurredFrom": "created this task as the next repeat of <task>{{task}}</task>",
+				"recurredFromScheduled": "Created on schedule as the next repeat of <task>{{task}}</task>",
+				"recurredTo": "completed this task, which created the next repeat <task>{{task}}</task>",
+				"recurredToScheduled": "The next repeat was created on schedule: <task>{{task}}</task>"
+			}
+		},
 		"title": "Tasks",
 		"subscription": {
 			"subscribe": "Subscribe",
@@ -4015,7 +4496,8 @@
 			"previousWeek": "Previous week",
 			"nextWeek": "Next week",
 			"addTaskOn": "Add a task due {{date}}",
-			"rescheduleError": "Failed to reschedule the task"
+			"rescheduleError": "Failed to reschedule the task",
+			"overdue": "Overdue"
 		},
 		"gantt": {
 			"pageTitle": "{{name}} – Gantt",
@@ -4123,7 +4605,8 @@
 				"assignees": "assignees",
 				"cycle": "cycle",
 				"modules": "modules",
-				"estimate": "estimate"
+				"estimate": "estimate",
+				"parent": "parent"
 			},
 			"editor": {
 				"title": "Edit draft",
@@ -4145,7 +4628,9 @@
 		},
 		"kanban": {
 			"addTask": "Add task",
-			"stages": "Columns"
+			"stages": "Columns",
+			"emptyTitle": "No tasks yet",
+			"emptyAction": "Add a task"
 		},
 		"pr": {
 			"merged": "Merged",
@@ -4287,7 +4772,21 @@
 			"actions": "Actions",
 			"searchActions": "Search actions...",
 			"noActionsFound": "No actions found.",
-			"changeStatus": "Change status"
+			"changeStatus": "Change status",
+			"removeLabel": "Remove label",
+			"removeLabelSuccess": "Label removed from {{count}} tasks",
+			"removeLabelError": "Failed to remove label",
+			"unarchive": "Restore from archive",
+			"unarchiveSuccess": "{{count}} tasks restored",
+			"unarchiveNone": "None of the selected tasks are archived",
+			"unarchiveError": "Failed to restore tasks",
+			"setDates": "Dates",
+			"dateField": "Date to set",
+			"startDate": "Start date",
+			"dueDate": "Due date",
+			"clearStartDate": "Clear start date",
+			"clearDueDate": "Clear due date",
+			"updateStartDateError": "Failed to update start date. A start date can't be after a task's due date."
 		},
 		"editor": {
 			"table": {
@@ -4297,7 +4796,19 @@
 				"addRowBefore": "Insert row above",
 				"addRowAfter": "Insert row below",
 				"deleteRow": "Delete row",
-				"deleteTable": "Delete table"
+				"deleteTable": "Delete table",
+				"moveRowUp": "Move row up",
+				"moveRowDown": "Move row down",
+				"moveColumnLeft": "Move column left",
+				"moveColumnRight": "Move column right",
+				"toggleHeaderRow": "Header row",
+				"fullWidth": "Full width",
+				"dragRow": "Row {{index}}",
+				"dragColumn": "Column {{index}}",
+				"dragRowHint": "Drag to move the row, or use the arrow keys",
+				"dragColumnHint": "Drag to move the column, or use the arrow keys",
+				"insertRowHere": "Insert a row here",
+				"insertColumnHere": "Insert a column here"
 			}
 		},
 		"descriptionSearchLoading": "Searching full descriptions…",
@@ -4330,7 +4841,8 @@
 		"estimate": {
 			"label": "Estimate",
 			"none": "No estimate",
-			"pointsValue": "{{value}} pts",
+			"pointsValue_one": "{{value}} pt",
+			"pointsValue_other": "{{value}} pts",
 			"updateError": "Failed to update the estimate",
 			"setAria": "Set estimate",
 			"duration": {
@@ -4341,7 +4853,8 @@
 				"minuteUnit": "m"
 			},
 			"totals": {
-				"points": "{{completed}} / {{total}} pts",
+				"points_one": "{{completed}} / {{total}} pt",
+				"points_other": "{{completed}} / {{total}} pts",
 				"time": "{{completed}} / {{total}}",
 				"estimated": "{{estimated}} of {{total}} tasks estimated"
 			},
@@ -4439,6 +4952,12 @@
 				"deleteError": "Couldn't delete the attachment"
 			},
 			"loadError": "Couldn't load attachments"
+		},
+		"create": {
+			"similarTitle": "Similar open tasks",
+			"similarDismiss": "Hide similar tasks",
+			"similarOpen": "Open",
+			"similarOpenLabel": "Open {{key}} {{title}} in a new tab"
 		},
 		"parent": {
 			"label": "Parent",
@@ -4685,7 +5204,9 @@
 			"create": "Create task",
 			"saving": "Saving…",
 			"labelError": "The task was created, but the label {{name}} couldn't be added",
-			"open": "Open"
+			"open": "Open",
+			"dueOn": "Add task due {{date}}",
+			"notInView": "Task created. It isn't shown here because it doesn't match this view."
 		},
 		"triage": {
 			"changeStatus": "Status: {{status}}",
@@ -4915,7 +5436,18 @@
 			"error": "Failed to invite team member",
 			"createdTitle": "Invitation created",
 			"shareLinkDescription": "Share this link with {{email}} so they can join the workspace.",
-			"done": "Done"
+			"done": "Done",
+			"emailHint": "Separate several addresses with commas, spaces or new lines.",
+			"roleLabel": "Role",
+			"roleHint": "You can give a role up to your own.",
+			"sending": "Sending {{current}} of {{total}}…",
+			"invalidEmails": "These aren't valid email addresses: {{emails}}",
+			"emailRequired": "Enter at least one email address.",
+			"tooManyEmails": "Invite up to {{max}} people at a time.",
+			"sentSome": "Sent {{sent}} of {{total}} invitations.",
+			"failedTitle": "Not sent",
+			"rateLimited": "Too many invitations at once. Wait a minute, then send the rest.",
+			"shareLinksDescription": "Share each link with its person so they can join the workspace."
 		},
 		"membersTable": {
 			"emptyTitle": "No team members yet",
@@ -4941,7 +5473,9 @@
 			"cancelInviteSuccess": "Invitation cancelled successfully",
 			"cancelInviteError": "Failed to cancel invitation",
 			"roleUpdateSuccess": "Role updated",
-			"roleUpdateError": "Failed to update role"
+			"roleUpdateError": "Failed to update role",
+			"ariaInvitationRole": "Role for {{email}}",
+			"invitationRoleUpdateSuccess": "Invitation role updated"
 		}
 	},
 	"publicProject": {
@@ -5158,6 +5692,10 @@
 			"interfaces": {
 				"label": "Interfaces",
 				"value": "REST API with an OpenAPI description, plus an MCP server"
+			},
+			"ai": {
+				"label": "AI",
+				"value": "Optional and off by default: Ask AI, Build mode and AI agents, on Claude or a self-hosted model"
 			},
 			"source": {
 				"label": "Source code",
@@ -5530,6 +6068,10 @@
 			"publicBoard": {
 				"caption": "Visitors vote on what matters and send requests your team reviews first.",
 				"description": "Demo: a public roadmap board with Planned, In progress and Shipped columns. Vote counts tick up as visitors vote. The cursor opens a task and upvotes it, then submits a request, Export a board as PDF, and a Request sent message appears."
+			},
+			"ask": {
+				"caption": "Ask about the work, then let Build make the change. You confirm it.",
+				"description": "Demo: the Website board with the Ask AI chat open. Someone asks what is blocking the current cycle. The assistant lists what it read, thinks for two seconds and answers: WEB-5 and WEB-6 are blocked, and WEB-5 has no assignee. Switched to Build, they ask it to assign WEB-5 to Mira. It proposes the change, they confirm, the card shows Done with an Undo, and Mira's avatar appears on WEB-5."
 			}
 		},
 		"demo": {
@@ -6397,6 +6939,51 @@
 					"monitoring": "Set up status page monitoring"
 				}
 			},
+			"ask": {
+				"title": "Ask AI",
+				"model": "Workspace model",
+				"greeting": "Hi! What would you like to know?",
+				"intro": "Ask about your workspace in plain language. Answers come from the tasks you can see.",
+				"placeholder": "Ask AI, @ for context, / for commands",
+				"placeholderBuild": "Describe what to create or change…",
+				"modes": {
+					"label": "Mode",
+					"ask": "Ask",
+					"build": "Build"
+				},
+				"send": "Send",
+				"you": "You",
+				"question": "What's blocking the current cycle?",
+				"buildPrompt": "Assign WEB-5 to Mira",
+				"context": "Context ({{count}})",
+				"facts": "Projects: 1 · People: 4 · Cycles: 1",
+				"earlier": "Earlier messages: {{count}}",
+				"thinking": "Thinking… {{seconds}}s",
+				"thought": "Thought for {{seconds}}s",
+				"blockedIntro": "Two tasks in {{cycle}} are blocked:",
+				"blockedPageTitles": "{{title}} is waiting on a page inventory.",
+				"blockedPricing": "{{title}} is waiting on pricing facts from sales.",
+				"unassigned": "{{key}} has no assignee yet.",
+				"summary": "One change. Nothing happens until you confirm.",
+				"op": "Edit task",
+				"action": "Assign {{key}} to {{name}}",
+				"awaiting": "Awaiting response",
+				"ready": "Changes ready: {{count}}",
+				"cancel": "Cancel",
+				"confirm": "Confirm",
+				"done": "Done",
+				"undo": "Undo",
+				"undone": "Undone",
+				"cancelled": "Cancelled. Nothing was changed.",
+				"generic": "This demo only answers its own question. In Margaya, Ask answers from your workspace and links the tasks it used.",
+				"genericBuild": "This demo only makes its own change. In Margaya, Build turns your words into changes you confirm.",
+				"blocked": "Blocked",
+				"tasks": {
+					"pageTitles": "Audit page titles",
+					"pricing": "Update the pricing page",
+					"mobileMenu": "Fix the mobile menu"
+				}
+			},
 			"jira": {
 				"title": "Import from Jira",
 				"source": "Jira (CSV export)",
@@ -6480,13 +7067,11 @@
 		},
 		"home": {
 			"hero": {
-				"eyebrow": "Open-source project management",
 				"title": "Plan the work.",
 				"titleAccent": "Skip the busywork.",
-				"description": "Margaya keeps tasks, cycles, docs and triage in one fast workspace. Type a task, move it along, and get back to the work itself.",
+				"description": "Margaya keeps tasks, cycles, docs and triage in one fast workspace, with an AI assistant you can turn on to answer questions and make changes. Type a task, move it along, and get back to the work itself.",
 				"primaryCta": "Get started",
-				"secondaryCta": "Self-host",
-				"note": "MIT licensed. Run it on your own server, or try Margaya Cloud for 14 days without a credit card."
+				"secondaryCta": "Self-host"
 			},
 			"facts": {
 				"label": "Margaya at a glance",
@@ -6509,6 +7094,10 @@
 				"api": {
 					"title": "API and MCP",
 					"detail": "REST with OpenAPI"
+				},
+				"ai": {
+					"title": "AI on your terms",
+					"detail": "Off by default, your own model"
 				}
 			},
 			"views": {
@@ -6567,6 +7156,26 @@
 				"title": "See what changed, and undo what should not have.",
 				"description": "Build charts from your tasks, follow the audit log, and restore anything from the trash."
 			},
+			"ai": {
+				"eyebrow": "AI",
+				"title": "Ask it. Let it build. You confirm.",
+				"description": "Ask AI answers from your live tasks, with charts and the tasks it used. Build mode turns a request into changes you review and confirm, and agents take tasks like teammates.",
+				"agents": {
+					"title": "Agents that work like teammates",
+					"description": "Assign a task to an agent and follow it in the Agent Desk. It asks a person when it is stuck, waits for approval before it writes, and can run on a schedule."
+				},
+				"privacy": {
+					"title": "Private by default",
+					"description": "AI stays off until an admin turns it on, and you decide where it runs.",
+					"items": {
+						"model": "Claude, or your own model through Ollama or vLLM",
+						"local": "Local-only routing keeps data on your network",
+						"stored": "No prompts or answers stored unless you choose server history",
+						"budget": "Monthly and daily budgets, with a usage ledger",
+						"undo": "Every change from Build mode can be undone for an hour"
+					}
+				}
+			},
 			"automate": {
 				"eyebrow": "Automate and connect",
 				"title": "Plug Margaya into the tools you already run.",
@@ -6598,6 +7207,7 @@
 					"panel": "Show or hide the side panel",
 					"inbox": "Open the inbox",
 					"help": "Show every shortcut",
+					"ask": "Open Ask AI",
 					"actions": "Run an action",
 					"tasks": "Find a task by key or title",
 					"people": "Find a person",
@@ -6664,6 +7274,10 @@
 						"title": "Automate",
 						"description": "Integrations, REST API, MCP and Jira import"
 					},
+					"ai": {
+						"title": "AI",
+						"description": "Ask AI, Build mode, writing help and agents"
+					},
 					"selfHost": {
 						"title": "Self-host",
 						"description": "Docker, Helm and a database you control"
@@ -6672,7 +7286,7 @@
 				"compare": "Compare",
 				"blog": "Blog",
 				"explore": "Explore",
-				"featuresIntro": "Five short tours of Margaya. Each has a live demo you can take over.",
+				"featuresIntro": "Six short tours of Margaya. Each has a live demo you can take over.",
 				"newTab": "(opens in a new tab)"
 			},
 			"footer": {
@@ -6807,6 +7421,14 @@
 					"api": {
 						"question": "Is there an API, and does it work with AI agents?",
 						"answer": "Every instance has a REST API described with OpenAPI, plus API keys and outgoing webhooks. A built-in MCP endpoint lets AI agents read and update tasks as the person who approved them."
+					},
+					"ai": {
+						"question": "Does Margaya have AI, and is it on by default?",
+						"answer": "Yes, and no. Ask AI, Build mode, writing help, triage suggestions and AI agents are built in, but they stay off until an instance admin connects a model and a workspace turns AI on. Every change the AI proposes is shown to you first and can be undone."
+					},
+					"aiData": {
+						"question": "Which AI models can I use, and where does my data go?",
+						"answer": "Use Claude, or any OpenAI-compatible model you run yourself, such as Ollama or vLLM. With local-only routing nothing leaves your network. Margaya only sends what the person asking can already see, keeps no prompts or answers unless you turn on server history, and records usage counts for budgets."
 					}
 				}
 			},
@@ -6937,13 +7559,50 @@
 						"body": "Upload Jira's CSV export, map statuses, priorities and people, and bring over sub-tasks, links and comments."
 					},
 					"cleanup": {
-						"title": "Scheduled clean-up",
-						"body": "Archive closed tasks and close stale ones automatically, with a preview of what each rule will touch."
+						"title": "Automation rules",
+						"body": "Set up When, If, Then rules for routine work, such as assigning or labelling new tasks, and archive or close stale tasks on a schedule, with a preview of what each rule will touch."
 					}
 				},
 				"cta": {
 					"title": "Make Margaya part of your stack.",
 					"description": "Read the API reference, or connect your first integration in minutes."
+				}
+			},
+			"ai": {
+				"metaTitle": "AI assistant, Build mode and agents",
+				"metaDescription": "Ask questions about your work and get answers from live data, let Build mode propose changes you confirm, write with AI help and assign tasks to AI agents, with your own model and AI off by default.",
+				"eyebrow": "AI",
+				"title": "An assistant that knows the work.",
+				"description": "Ask AI, Build mode, writing help and agents, all in the open-source build, running on the model you choose.",
+				"sections": {
+					"ask": {
+						"title": "Ask AI",
+						"body": "Ask in plain words and get answers from live tasks, with counts, charts and links to the tasks and pages it used. Mention a task, page or person with @, attach a file, or speak instead of typing."
+					},
+					"build": {
+						"title": "Build mode",
+						"body": "Describe a change, such as a project with three tasks or a task for Mia. You see what it read and how it reasoned, edit the proposed changes, confirm them, and undo any of them for an hour."
+					},
+					"writing": {
+						"title": "Writing help",
+						"body": "Improve, shorten, translate or change the tone of a description or comment, get a title suggestion, summarise a task, or add an AI block to a page."
+					},
+					"triage": {
+						"title": "Triage and briefs",
+						"body": "Get label and priority suggestions for new work, spot duplicates, filter a board by describing what you want, and get a summary of your unread inbox or a brief for a cycle."
+					},
+					"agents": {
+						"title": "AI agents",
+						"body": "Agents are members you can assign tasks to. They ask a person when stuck, wait for approval before writing, run on a schedule, and can use tools from other MCP servers you connect."
+					},
+					"privacy": {
+						"title": "Your model, your rules",
+						"body": "AI is off until an admin turns it on. Use Claude or a local model, keep data on your network, set budgets, and keep no prompts or answers unless you choose to."
+					}
+				},
+				"cta": {
+					"title": "Turn on AI when you are ready.",
+					"description": "Read the AI setup guide, or try Ask AI in a workspace of your own."
 				}
 			},
 			"selfHost": {
@@ -7128,7 +7787,9 @@
 			"empty": "No tasks match",
 			"noTasks": "This project has no other tasks yet.",
 			"toast": "Marked as a duplicate of {{key}}",
-			"error": "Couldn't mark the request as a duplicate"
+			"error": "Couldn't mark the request as a duplicate",
+			"aiSuggestions": "Suggested by AI",
+			"aiChecking": "Looking for duplicates with AI…"
 		},
 		"reopen": {
 			"toast": "Request reopened",
@@ -7163,7 +7824,11 @@
 			"discardTitle": "Discard this request?",
 			"discardDescription": "What you typed will be lost.",
 			"discard": "Discard",
-			"keepEditing": "Keep editing"
+			"keepEditing": "Keep editing",
+			"pastedImages": "Pasted images",
+			"pasteHint": "Paste screenshots to attach them to the request.",
+			"removeImage": "Remove {{name}}",
+			"attachFailed": "The request was filed, but some images couldn't be attached."
 		},
 		"empty": {
 			"noRequests": {
@@ -7352,7 +8017,11 @@
 			"burndown": "Burn-down",
 			"burnup": "Burn-up",
 			"cancelledCount": "{{count}} cancelled",
-			"frozen": "Report frozen on {{date}} when unfinished tasks moved to another cycle."
+			"frozen": "Report frozen on {{date}} when unfinished tasks moved to another cycle.",
+			"rolledOver_one": "Rollover moved {{count}} unfinished task to {{name}}.",
+			"rolledOver_other": "Rollover moved {{count}} unfinished tasks to {{name}}.",
+			"rolloverNoNext": "Rollover found no next cycle; unfinished tasks stayed here.",
+			"rolloverNothing": "Rollover found no unfinished tasks to move."
 		},
 		"chart": {
 			"noDates": "Add dates to see the chart",
@@ -7689,7 +8358,8 @@
 			"tasks": "Tasks",
 			"cycles": "Cycles",
 			"modules": "Modules",
-			"intake": "Intake"
+			"intake": "Intake",
+			"delivery": "Delivery"
 		},
 		"header": {
 			"allProjects": "All projects",
@@ -7720,6 +8390,7 @@
 			"noTasks": "No tasks match these filters",
 			"noPeriodData": "No data in this period",
 			"noCycles": "No cycles yet",
+			"noRunningCycles": "No cycles are running right now",
 			"noModules": "No modules yet",
 			"noRequests": "No requests yet"
 		},
@@ -7804,6 +8475,63 @@
 			"truncatedSegments_other": "{{count}} more grouped as Other",
 			"multiValued": "A task with several {{dimension}} counts once in each."
 		},
+		"reports": {
+			"open": "Reports",
+			"listTitle": "Saved reports",
+			"loadError": "Couldn't load saved reports",
+			"empty": "No saved reports yet. Save this chart to come back to it.",
+			"sharedBy": "Shared by {{name}}",
+			"actionsFor": "Actions for {{name}}",
+			"rename": "Rename",
+			"share": "Share with workspace",
+			"makePrivate": "Make private",
+			"delete": "Delete",
+			"save": "Save",
+			"saveAsNew": "Save as new",
+			"update": "Update report",
+			"showing": "Report: {{name}}",
+			"unsaved": "Unsaved changes",
+			"close": "Close report",
+			"deleteTitle": "Delete this report?",
+			"deleteDescription": "“{{name}}” will be deleted. This can't be undone.",
+			"deleteSharedDescription": "“{{name}}” will be deleted for everyone in the workspace. This can't be undone.",
+			"visibility": {
+				"private": "Private",
+				"privateHint": "Only you can see it.",
+				"workspace": "Shared with workspace",
+				"workspaceHint": "Everyone with analytics access in this workspace can open it."
+			},
+			"dialog": {
+				"createTitle": "Save report",
+				"editTitle": "Edit report",
+				"name": "Name",
+				"namePlaceholder": "e.g. Open bugs by assignee",
+				"nameRequired": "Enter a name",
+				"visibility": "Who can see it",
+				"summary": "Saves the chart settings, the projects in scope and the filters.",
+				"cancel": "Cancel",
+				"save": "Save",
+				"update": "Save changes"
+			},
+			"notes": {
+				"dropped_one": "{{count}} project in this report no longer exists.",
+				"dropped_other": "{{count}} projects in this report no longer exist.",
+				"leftOut_one": "{{count}} project in this report is archived and was left out.",
+				"leftOut_other": "{{count}} projects in this report are archived and were left out.",
+				"allProjects": "None of its projects are available, so all projects are shown.",
+				"otherProjects": "This report was saved for other projects; here it shows this project only.",
+				"builderReset": "Some chart settings aren't available for these projects and were reset."
+			},
+			"toast": {
+				"saved": "Saved “{{name}}”",
+				"updated": "Report updated",
+				"shared": "Report shared with the workspace",
+				"madePrivate": "Report is now private",
+				"deleted": "Report deleted",
+				"saveError": "Couldn't save the report",
+				"deleteError": "Couldn't delete the report"
+			}
+		},
 		"dimensions": {
 			"status": "Status",
 			"group": "Group",
@@ -7868,6 +8596,11 @@
 			"drafts": "Drafts",
 			"completedRecent": "Completed (last 180 days)",
 			"averageCompleted": "Avg. completed (last 3)",
+			"filter": {
+				"label": "Show cycles",
+				"all": "All",
+				"running": "Running now"
+			},
 			"velocity": {
 				"title": "Velocity",
 				"subtitle": "Completed vs committed, per cycle",
@@ -8107,7 +8840,9 @@
 		"widgets": {
 			"quickLinks": "Quick links",
 			"recents": "Recents",
-			"stickies": "Stickies"
+			"stickies": "Stickies",
+			"risks": "Risks",
+			"myBrief": "My brief"
 		},
 		"manage": {
 			"title": "Manage widgets",
@@ -8213,7 +8948,9 @@
 			"open_other": "{{count}} open",
 			"overdue_one": "{{count}} overdue",
 			"overdue_other": "{{count}} overdue",
-			"stickiesHint": "Private notes, only for you"
+			"stickiesHint": "Private notes, only for you",
+			"unreadCaption": "unread",
+			"openCaption": "open"
 		}
 	},
 	"stickies": {
@@ -8262,6 +8999,83 @@
 		}
 	},
 	"pages": {
+		"templates": {
+			"saveAction": "Save as template",
+			"saveTitle": "Save as template",
+			"saveDescription": "The page's current content and icon become a template for new pages.",
+			"nameLabel": "Template name",
+			"scopeLabel": "Available in",
+			"scopeProject": "This project",
+			"scopeProjectHint": "Offered when creating pages in this project.",
+			"scopeWorkspace": "Every project",
+			"scopeWorkspaceHint": "Offered in every project of the workspace.",
+			"saveConfirm": "Save template",
+			"savedToast": "Template saved",
+			"saveError": "Couldn't save the template",
+			"newFromTemplate": "New page from template",
+			"moreCreateOptions": "More ways to create a page",
+			"pickTitle": "New page from template",
+			"pickDescription": "The new page starts with the template's content. Change anything afterwards.",
+			"starters": "Starters",
+			"saved": "Saved templates",
+			"savedEmpty": "No saved templates yet. Save one from a page's menu.",
+			"loadError": "Couldn't load templates",
+			"deleteLabel": "Delete template {{name}}",
+			"deleted": "Template deleted",
+			"deleteError": "Couldn't delete the template",
+			"builtin": {
+				"meetingName": "Meeting notes",
+				"meetingDescription": "Attendees, agenda, decisions and action items.",
+				"meetingAttendees": "Attendees",
+				"meetingAgenda": "Agenda",
+				"meetingNotes": "Notes",
+				"meetingDecisions": "Decisions",
+				"meetingActionItems": "Action items",
+				"specName": "Spec",
+				"specDescription": "Problem, goals, proposal and open questions.",
+				"specSummary": "Summary",
+				"specProblem": "Problem",
+				"specGoals": "Goals",
+				"specNonGoals": "Non-goals",
+				"specProposal": "Proposal",
+				"specOpenQuestions": "Open questions",
+				"retroName": "Retrospective",
+				"retroDescription": "What went well, what to improve, what to try next.",
+				"retroWentWell": "What went well",
+				"retroCouldBeBetter": "What could be better",
+				"retroTryNext": "What we'll try next"
+			}
+		},
+		"publish": {
+			"menuItem": "Publish to web",
+			"title": "Publish to web",
+			"description": "Anyone with the link can read this page without signing in. Search engines are asked not to index it.",
+			"switchLabel": "Public link",
+			"onHint": "Published. Turning it off revokes the link at once.",
+			"offHint": "Off. Turn it on to create a link.",
+			"disabledByWorkspace": "Public pages are turned off for this workspace. An admin can turn them on in workspace settings.",
+			"cannotPublish": "Only people who can share projects can publish, and only pages visible to the whole workspace.",
+			"linkLabel": "Link",
+			"copyLink": "Copy link",
+			"copied": "Copied",
+			"openLink": "Open public page",
+			"privacyNote": "Mentions, task links, files and links to unpublished pages are hidden on the public page.",
+			"publishedToast": "Page published",
+			"unpublishedToast": "Link revoked",
+			"error": "Couldn't change the public link",
+			"loadError": "Couldn't load the public link",
+			"done": "Done"
+		},
+		"publicView": {
+			"documentTitle": "Shared page",
+			"unavailableTitle": "This page isn't available",
+			"unavailableDescription": "The link may have been revoked, or the page is no longer shared.",
+			"updated": "Updated {{date}}",
+			"mention": "@someone",
+			"task": "a linked task",
+			"file": "an attached file",
+			"page": "another page"
+		},
 		"section": {
 			"title": "Pages"
 		},
@@ -8274,8 +9088,6 @@
 				"archived": "Archived"
 			},
 			"searchPlaceholder": "Search pages",
-			"ownerFilter": "Owner",
-			"ownerFilterSearch": "Search people",
 			"clearFilters": "Clear filters",
 			"sort": {
 				"lastEdited": "Last edited",
@@ -8535,8 +9347,265 @@
 		"notification": {
 			"openPage": "Open page"
 		},
+		"toolbar": {
+			"ariaLabel": "Formatting toolbar",
+			"textStyle": "Text style",
+			"bold": "Bold",
+			"italic": "Italic",
+			"underline": "Underline",
+			"strike": "Strikethrough",
+			"inlineCode": "Inline code",
+			"link": "Link",
+			"image": "Image",
+			"more": "More formatting"
+		},
+		"filters": {
+			"button": "Filters",
+			"active": "Filters applied",
+			"search": "Search filters",
+			"searchClear": "Clear search",
+			"favorites": "Favorites",
+			"createdDate": "Created date",
+			"date": {
+				"any": "Any time",
+				"today": "Today",
+				"last7": "Last 7 days",
+				"last30": "Last 30 days",
+				"older": "Older than 30 days"
+			},
+			"remove": "Remove {{filter}} filter"
+		},
+		"detail": {
+			"unlocked": "Unlocked",
+			"openOutline": "Open outline",
+			"currentSection": "Current section",
+			"emptyLinePlaceholder": "Type '/' for commands"
+		},
 		"commandPalette": {
 			"createPage": "Create page"
+		}
+	},
+	"accountSecurity": {
+		"platform": {
+			"save": "Save",
+			"retry": "Try again",
+			"loadMore": "Load more",
+			"auditPasswordResetSent": "Sent a password reset link",
+			"apiKeys": {
+				"accessLabel": "Access",
+				"accessFull": "Full access",
+				"accessFullHint": "Everything you can do, in every workspace you belong to.",
+				"accessRead": "Read-only",
+				"accessReadHint": "Can read but never change anything.",
+				"accessCustom": "Custom",
+				"accessCustomHint": "Only the areas you choose below.",
+				"areasLabel": "Areas",
+				"areaNone": "None",
+				"areaRead": "Read",
+				"areaWrite": "Write",
+				"areasRequired": "Choose at least one area.",
+				"projectsLabel": "Limit to specific projects",
+				"projectsHint": "Other projects look missing to this key, and workspace-wide requests are refused.",
+				"projectsIn": "Projects in {{workspace}}",
+				"projectsLoading": "Loading projects…",
+				"projectsEmpty": "This workspace has no projects yet.",
+				"projectsRequired": "Choose at least one project.",
+				"columnScope": "Scope",
+				"scopeFull": "Full access",
+				"scopeRead": "Read-only",
+				"scopeCustom": "Custom",
+				"scopeProjects": "Projects: {{projects}}",
+				"deletedProject": "Deleted project",
+				"requestsAria": "Requests made with {{name}}",
+				"requestsTitle": "Requests: {{name}}",
+				"requestsDescription": "Recent requests made with this key. Only the method, route, status and duration are kept, never request content.",
+				"requestsEmpty": "No requests yet.",
+				"requestsError": "Couldn't load the requests.",
+				"columnTime": "Time",
+				"columnRequest": "Request",
+				"columnStatus": "Status",
+				"columnDuration": "Duration",
+				"durationMs": "{{value}} ms"
+			},
+			"policy": {
+				"title": "Sign-in policy",
+				"description": "Who may create an account, how everyone signs in, and how long sessions last.",
+				"invitedPasswordSignUp": "Password sign-up for invited people",
+				"invitedPasswordSignUpHint": "When password sign-up is off, people with a valid invitation can still create a password account.",
+				"domains": "Allowed email domains",
+				"domainsHint": "New accounts must use an address at one of these domains. Leave empty to allow any domain.",
+				"requiredProvider": "Required sign-in provider",
+				"requiredProviderHint": "Everyone signs in through this provider. Instance admins keep password sign-in as a way back in.",
+				"noRequirement": "No requirement",
+				"customProvider": "your organization's sign-in",
+				"sessionLifetime": "Session lifetime",
+				"sessionLifetimeHint": "How long a session lasts without use. Using it extends it.",
+				"hours": "hours",
+				"signInNotice": "Sign in with {{provider}}. Password sign-in is for instance admins only."
+			},
+			"twoFactor": {
+				"title": "Two-factor authentication",
+				"description": "Ask for a code from an authenticator app when you sign in with your password.",
+				"authenticator": "Authenticator app",
+				"on": "On",
+				"off": "Off",
+				"turnOn": "Turn on",
+				"turnOff": "Turn off",
+				"newCodes": "New recovery codes",
+				"confirmPassword": "Confirm your password",
+				"continue": "Continue",
+				"setupTitle": "Add Margaya to your authenticator app",
+				"setupHint": "Enter this setup key in your authenticator app, then type the 6-digit code it shows.",
+				"setupKey": "Setup key",
+				"openApp": "Open in an authenticator app on this device",
+				"code": "Authentication code",
+				"verify": "Verify",
+				"invalidCode": "That code isn't right. Check the time on your device and try again.",
+				"codesTitle": "Recovery codes",
+				"codesHint": "Keep these somewhere safe. Each one signs you in once if you lose your device.",
+				"copyCodes": "Copy codes",
+				"copied": "Recovery codes copied",
+				"done": "Done",
+				"enabled": "Two-factor authentication is on.",
+				"disabled": "Two-factor authentication is off.",
+				"error": "Something went wrong. Try again."
+			},
+			"challenge": {
+				"title": "Two-factor authentication",
+				"totpHint": "Enter the 6-digit code from your authenticator app.",
+				"recoveryHint": "Enter one of your recovery codes. Each code works once.",
+				"recoveryCode": "Recovery code",
+				"invalid": "That code isn't right. Try again.",
+				"trustDevice": "Trust this device for 30 days",
+				"useRecovery": "Use a recovery code",
+				"useApp": "Use your authenticator app",
+				"usePassword": "Sign in with a password instead",
+				"back": "Back to sign-in"
+			},
+			"users": {
+				"nav": "Users",
+				"title": "Users",
+				"subtitle": "Every account on this server. Ban people who left, reset passwords and sign people out.",
+				"listTitle": "Accounts",
+				"search": "Search by name or email",
+				"filterLabel": "Show",
+				"filterAll": "All accounts",
+				"filterAdmins": "Instance admins",
+				"filterBanned": "Banned",
+				"empty": "No accounts match “{{query}}”.",
+				"none": "No accounts yet.",
+				"columnUser": "User",
+				"columnStatus": "Status",
+				"columnWorkspaces": "Workspaces",
+				"columnLastActive": "Last active",
+				"columnJoined": "Joined",
+				"columnActions": "Actions",
+				"badgeAdmin": "Admin",
+				"badgeBanned": "Banned",
+				"badgeTwoFactor": "2FA",
+				"never": "Never",
+				"actionsFor": "Actions for {{name}}",
+				"details": "View details",
+				"resetPassword": "Reset password",
+				"signOut": "Sign out everywhere",
+				"makeAdmin": "Make instance admin",
+				"removeAdmin": "Remove instance admin",
+				"ban": "Ban",
+				"unban": "Unban",
+				"banTitle": "Ban {{name}}?",
+				"banDescription": "They are signed out everywhere and can't sign in until the ban ends. Their API keys stop working too.",
+				"banReason": "Reason (optional)",
+				"banDuration": "Duration",
+				"banForever": "Until unbanned",
+				"ban7Days": "7 days",
+				"ban30Days": "30 days",
+				"banned": "{{name}} is banned.",
+				"unbanned": "{{name}} can sign in again.",
+				"resetTitle": "Reset the password of {{name}}?",
+				"resetDescription": "Send a reset link, or set a new password now. Setting one signs them out everywhere.",
+				"resetByEmail": "Email a reset link to {{email}}",
+				"resetSetNow": "Set a new password now",
+				"newPassword": "New password",
+				"resetConfirm": "Reset password",
+				"resetSent": "A reset link is on its way to {{email}}.",
+				"passwordSet": "The password of {{name}} was changed.",
+				"signOutTitle": "Sign {{name}} out everywhere?",
+				"signOutDescription": "Every session ends at once. Their API keys keep working; only their owner can revoke those.",
+				"signedOut": "{{name}} was signed out everywhere.",
+				"promoted": "{{name}} is now an instance admin.",
+				"demoted": "{{name}} is no longer an instance admin.",
+				"activeSessions": "Active sessions",
+				"signInMethod": "Password",
+				"hasPassword": "Set",
+				"noPassword": "Not set (signs in another way)",
+				"workspacesTitle": "Workspaces",
+				"noWorkspaces": "Not a member of any workspace.",
+				"joined": "Joined {{date}}"
+			}
+		},
+		"password": {
+			"tooShort": "Use at least {{min}} characters.",
+			"tooCommon": "This password is too common and easy to guess. Choose another one.",
+			"matchesEmail": "Your password can't be your email address.",
+			"hint": "At least {{min}} characters. Avoid common passwords and your email address."
+		},
+		"emailChange": {
+			"action": "Change email",
+			"title": "Change email address",
+			"description": "We'll send a code to the new address. Your email changes once you enter it, and your other sessions are signed out.",
+			"newEmail": "New email address",
+			"newEmailPlaceholder": "you@example.com",
+			"invalidEmail": "Enter a valid email address.",
+			"sameEmail": "That's already your email address.",
+			"sendCode": "Send code",
+			"codeSent": "If {{email}} can be used, a code is on its way there. It expires in 5 minutes.",
+			"code": "Verification code",
+			"confirm": "Change email",
+			"back": "Use another address",
+			"success": "Your email address is now {{email}}.",
+			"invalidCode": "That code isn't right or has expired. Request a new one.",
+			"sessionTooOld": "For your security, sign in again before changing your email address.",
+			"unavailable": "Email isn't set up on this server, so your address can't be changed here. Ask an instance admin.",
+			"error": "Couldn't change your email address."
+		},
+		"reauth": {
+			"title": "Confirm it's you",
+			"description": "Changing the instance needs a recent sign-in. Enter your password to continue for the next 10 minutes.",
+			"noPassword": "Changing the instance needs a recent sign-in. Your account has no password, so sign in again to continue.",
+			"password": "Password",
+			"confirm": "Confirm",
+			"signInAgain": "Sign in again",
+			"wrongPassword": "That password isn't right.",
+			"cancelled": "Not saved: your identity wasn't confirmed.",
+			"error": "Couldn't confirm your password."
+		},
+		"auditTrail": {
+			"title": "Audit trail",
+			"subtitle": "Instance changes: who changed what, and when. Secret values are never recorded.",
+			"empty": "No instance changes recorded yet.",
+			"loadMore": "Load more",
+			"when": "When",
+			"who": "Who",
+			"what": "What",
+			"system": "System",
+			"actions": {
+				"instanceSettingsUpdated": "Changed instance settings",
+				"instanceAdminAdded": "Added an instance admin",
+				"instanceAdminRemoved": "Removed an instance admin",
+				"instanceReauthenticated": "Confirmed their password",
+				"userCreated": "Created an account",
+				"userRoleChanged": "Changed an account's role",
+				"userBanned": "Banned an account",
+				"userUnbanned": "Lifted a ban",
+				"userRemoved": "Deleted an account",
+				"userPasswordSet": "Set an account's password",
+				"userSessionsRevoked": "Signed an account out",
+				"userImpersonated": "Signed in as another account",
+				"cliAdminPromoted": "Made an instance admin (recovery CLI)",
+				"cliAdminDemoted": "Removed an instance admin (recovery CLI)",
+				"cliPasswordReset": "Reset a password (recovery CLI)",
+				"cliUserUnbanned": "Lifted a ban (recovery CLI)"
+			}
 		}
 	},
 	"instanceAdmin": {
@@ -8549,7 +9618,8 @@
 			"email": "Email",
 			"workspaces": "Workspaces",
 			"publicBoards": "Public boards",
-			"admins": "Admins"
+			"admins": "Admins",
+			"ai": "AI"
 		},
 		"lockedCallout": "These settings are managed with environment variables on this server. Changes here are disabled.",
 		"source": {
@@ -8804,6 +9874,1714 @@
 			"removeConfirm": "Remove",
 			"removed": "{{name}} is no longer an instance admin",
 			"lastAdmin": "There must be at least one instance admin"
+		}
+	},
+	"templates": {
+		"settings": {
+			"title": "Task templates",
+			"description": "Starting points for new tasks: a title pattern, default fields and a sub-task checklist.",
+			"empty": "No templates yet.",
+			"add": "New template",
+			"editAria": "Edit template {{name}}",
+			"deleteAria": "Delete template {{name}}",
+			"loadError": "Templates could not be loaded.",
+			"retry": "Retry",
+			"noPermission": "Only people who can edit the project can change its templates.",
+			"subtaskCount_one": "{{count}} sub-task",
+			"subtaskCount_other": "{{count}} sub-tasks",
+			"deleteTitle": "Delete the template {{name}}?",
+			"deleteDescription": "Tasks created from it stay as they are.",
+			"deleteConfirm": "Delete",
+			"toast": {
+				"created": "Template created",
+				"updated": "Template saved",
+				"deleted": "Template deleted",
+				"error": "The template could not be saved",
+				"deleteError": "The template could not be deleted"
+			}
+		},
+		"form": {
+			"createTitle": "New task template",
+			"editTitle": "Edit task template",
+			"description": "What a new task starts with. Everything stays editable when the task is created.",
+			"name": "Name",
+			"namePlaceholder": "Bug report",
+			"titlePattern": "Title pattern",
+			"titlePatternPlaceholder": "Bug: {title}",
+			"titlePatternHint": "{title} is replaced by the typed title. Without it, the typed title follows the pattern.",
+			"taskDescription": "Description",
+			"taskDescriptionPlaceholder": "Steps to reproduce, expected result…",
+			"status": "Status",
+			"statusDefault": "Project default",
+			"priority": "Priority",
+			"notSet": "Not set",
+			"assignees": "Assignees",
+			"assigneesNone": "Project default",
+			"labels": "Labels",
+			"labelsNone": "No labels",
+			"labelsSearch": "Search labels",
+			"labelsEmpty": "No labels found",
+			"estimate": "Estimate",
+			"subtasks": "Sub-tasks",
+			"subtaskTitle": "Sub-task {{number}}",
+			"subtaskPlaceholder": "Add a sub-task",
+			"addSubtask": "Add",
+			"moveUp": "Move {{title}} up",
+			"moveDown": "Move {{title}} down",
+			"removeSubtask": "Remove {{title}}",
+			"save": "Save template",
+			"create": "Create template"
+		},
+		"use": {
+			"button": "Template",
+			"menuLabel": "Use a template",
+			"applied": "Template: {{name}}",
+			"quickAdd": "Create from a template",
+			"subtasksTitle_one": "{{count}} sub-task from the template",
+			"subtasksTitle_other": "{{count}} sub-tasks from the template",
+			"removeSubtask": "Remove sub-task {{title}}",
+			"subtaskError_one": "The task was created, but {{count}} sub-task could not be added",
+			"subtaskError_other": "The task was created, but {{count}} sub-tasks could not be added"
+		}
+	},
+	"delivery": {
+		"forecast": {
+			"title": "Forecast",
+			"likelyBy": "85% likely done by {{date}}",
+			"percentiles": "50% by {{p50}} · 95% by {{p95}}",
+			"chanceByEnd": "{{percent}}% chance to finish by {{date}}",
+			"beyondHorizon": "Over two years at the current pace",
+			"open_one": "{{count}} open task",
+			"open_other": "{{count}} open tasks",
+			"complete": "All tasks are done",
+			"insufficient": {
+				"short_span": "Not enough history yet: a forecast needs at least 14 days of work in this project.",
+				"few_completions": "Not enough history yet: fewer than 5 tasks were completed in the last 8 weeks.",
+				"few_active_days": "Not enough history yet: tasks were completed on fewer than 3 days in the last 8 weeks."
+			},
+			"howCalculated": "How is this calculated?",
+			"method": {
+				"title": "Monte Carlo forecast",
+				"body": "Margaya replays your team's real pace {{iterations}} times. Each simulated day takes the completions of a random day from the history below, until the open tasks are done. The dates show when 50%, 85% and 95% of the runs had finished.",
+				"window": "History: {{from}} – {{to}}",
+				"completed": "Tasks completed: {{total}}",
+				"activeDays": "Days with a completion: {{days}}",
+				"perDay": "Completions per day: {{min}}–{{max}}",
+				"perWeek": "Average per week: {{perWeek}}",
+				"team": "The pace is the whole project's, so work outside this scope counts too.",
+				"seed": "Seed {{seed}}: the same data gives the same answer all day."
+			},
+			"error": "Couldn't load the forecast",
+			"retry": "Retry"
+		},
+		"risks": {
+			"title": "Risks",
+			"empty": "No risks found",
+			"showAll": "Show all ({{total}})",
+			"showLess": "Show less",
+			"noCycleTime": "Ageing work appears once 10 tasks have been finished with a recorded start.",
+			"hiddenTask": "A task you can't see",
+			"truncated": "Only the first 2,000 open tasks were checked.",
+			"error": "Couldn't load risks",
+			"someone": "Someone",
+			"severity": {
+				"high": "High risk",
+				"medium": "Medium risk",
+				"low": "Low risk"
+			},
+			"criticalPath": {
+				"ends": "Critical path ends {{date}}",
+				"chain_one": "Longest dependency chain: {{count}} task",
+				"chain_other": "Longest dependency chain: {{count}} tasks"
+			},
+			"kinds": {
+				"critical_path_late": "The critical path ends {{date}}, after the {{deadline}} deadline",
+				"critical_path_tight": "The critical path ends {{date}}, close to the {{deadline}} deadline",
+				"blocked_chain_one": "{{head}} blocks {{count}} task",
+				"blocked_chain_other": "{{head}} blocks {{count}} tasks",
+				"ageing_one": "{{count}} task in progress for over {{days}} days, longer than usual",
+				"ageing_other": "{{count}} tasks in progress for over {{days}} days, longer than usual",
+				"overdue_cluster_one": "{{name}} has {{count}} overdue task",
+				"overdue_cluster_other": "{{name}} has {{count}} overdue tasks",
+				"overdue_cluster_unassigned_one": "{{count}} overdue task without an assignee",
+				"overdue_cluster_unassigned_other": "{{count}} overdue tasks without an assignee",
+				"overdue_one": "{{count}} overdue task",
+				"overdue_other": "{{count}} overdue tasks",
+				"unassigned_near_deadline_one": "{{count}} unassigned task due by {{date}}",
+				"unassigned_near_deadline_other": "{{count}} unassigned tasks due by {{date}}",
+				"dependency_loop_one": "{{count}} task is in a blocking loop",
+				"dependency_loop_other": "{{count}} tasks block each other in a loop"
+			}
+		},
+		"home": {
+			"title": "At risk",
+			"empty": "Nothing at risk in your current cycles",
+			"context": "{{project}} · {{cycle}}"
+		},
+		"tab": {
+			"description": "Forecast and risks of this project's open work"
+		}
+	},
+	"ai": {
+		"rules": {
+			"title": "Rule from a description",
+			"description": "Write an automation in plain words. AI turns it into a normal rule that you can edit, try on recent history and save. Saved rules run without AI.",
+			"label": "Describe a rule…",
+			"placeholder": "For example: when a GitHub pull request is merged, move the task to Done",
+			"compile": "Create rule",
+			"compiling": "Writing the rule…",
+			"unsupportedTitle": "Not possible with automations",
+			"rejected": "Suggested rules left out because they failed validation: {{rejected}}",
+			"noRules": "No rule could be made from this description.",
+			"workflowRule": "Workflow rule",
+			"integration": "Integration",
+			"when": "When",
+			"moveTo": "Move the task to",
+			"historyWindow": "History to replay",
+			"days7": "Last 7 days",
+			"days30": "Last 30 days",
+			"days90": "Last 90 days",
+			"dryRun": "Try on history",
+			"dryRunSummary": "Tasks that would have changed in the last {{days}} days: {{changed}}",
+			"dryRunNone": "Nothing would have changed in the last {{days}} days.",
+			"dryRunError": "Couldn't replay this rule.",
+			"more": "More matches not shown: {{more}}",
+			"archived": "Archived",
+			"outcomes": {
+				"unchanged": "already there",
+				"skipped": "left alone"
+			},
+			"notes": {
+				"integration_not_connected": "This integration isn't connected to the project, so there is no history to replay.",
+				"branch_push_last_only": "Only the latest push of each branch is recorded.",
+				"threshold_from_last_update": "Based on each task's last update; dates show when the rule would have taken it.",
+				"flow_alerts_notify_only": "Flow anomaly alerts only notify the project lead; they don't change tasks.",
+				"nothing_enabled": "This rule turns nothing on, so nothing would change.",
+				"conditions_current_state": "Conditions were checked against each task as it is now; history keeps only the changes."
+			},
+			"save": "Save rule",
+			"discard": "Discard",
+			"saved": "Rule saved",
+			"saveError": "Couldn't save the rule."
+		},
+		"build": {
+			"command": "Build with AI…",
+			"title": "Build with AI",
+			"description": "Describe what to plan. AI drafts a project, cycles and tasks for you to review. Nothing is created until you confirm.",
+			"promptLabel": "What should we plan?",
+			"promptPlaceholder": "Plan a website relaunch for Q4 with 3 sprints",
+			"target": "Build into",
+			"targetCurrent": "Into {{name}}",
+			"targetNew": "A new project",
+			"deep": "Think deeper (slower)",
+			"draft": "Draft plan",
+			"drafting": "Drafting a plan…",
+			"cancel": "Cancel",
+			"back": "Back",
+			"create_one": "Create {{count}} item",
+			"create_other": "Create {{count}} items",
+			"creating": "Creating the plan",
+			"progress": "Created {{done}} of {{total}}…",
+			"close": "Close",
+			"openProject": "Open project",
+			"empty": {
+				"text": "This project has no tasks yet. Describe the work and AI drafts tasks for you to review."
+			},
+			"review": {
+				"description": "Review the plan. Uncheck, edit or reorder anything, then create it.",
+				"project": "Project",
+				"projectName": "Name",
+				"projectKey": "Key",
+				"projectDescription": "Description",
+				"columns": "New columns",
+				"labels": "Labels",
+				"cycles": "Cycles",
+				"modules": "Modules",
+				"moduleName": "Module name",
+				"tasks_one": "{{count}} task",
+				"tasks_other": "{{count}} tasks",
+				"include": "Include {{name}}",
+				"taskTitle": "Task title",
+				"taskDescription": "Task description",
+				"priority": "Priority",
+				"estimate": "Estimate (points)",
+				"module": "Module",
+				"none": "None",
+				"taskLabels": "Labels: {{labels}}",
+				"subtasks": "Sub-tasks",
+				"subtaskTitle": "Sub-task title",
+				"moveUp": "Move {{name}} up",
+				"moveDown": "Move {{name}} down",
+				"cycle": {
+					"label": "Cycle",
+					"name": "Cycle name",
+					"startDate": "Start",
+					"endDate": "End"
+				}
+			},
+			"done": {
+				"success_one": "Done. {{count}} task was created.",
+				"success_other": "Done. {{count}} tasks were created.",
+				"partial_one": "Created, except for {{count}} item:",
+				"partial_other": "Created, except for {{count}} items:",
+				"estimatesSkipped": "Estimates were left out because the project has no active points estimate system.",
+				"created": {
+					"tasks_one": "{{count}} task",
+					"tasks_other": "{{count}} tasks",
+					"subtasks_one": "{{count}} sub-task",
+					"subtasks_other": "{{count}} sub-tasks",
+					"cycles_one": "{{count}} cycle",
+					"cycles_other": "{{count}} cycles",
+					"modules_one": "{{count}} module",
+					"modules_other": "{{count}} modules",
+					"columns_one": "{{count}} column",
+					"columns_other": "{{count}} columns",
+					"labels_one": "{{count}} label",
+					"labels_other": "{{count}} labels"
+				}
+			},
+			"kinds": {
+				"project": "Project",
+				"column": "Column",
+				"cycle": "Cycle",
+				"module": "Module",
+				"task": "Task",
+				"subtask": "Sub-task",
+				"label": "Label",
+				"estimate": "Estimate",
+				"cycle_tasks": "Cycle tasks",
+				"module_tasks": "Module tasks"
+			},
+			"chat": {
+				"planLabel": "Proposed changes",
+				"planning": "Planning changes…",
+				"nothing": "Nothing to change for this request.",
+				"awaiting": "Awaiting response",
+				"ready": "Changes ready: {{count}}. Confirm to continue.",
+				"applying": "Applying changes…",
+				"confirm": "Confirm",
+				"cancel": "Cancel",
+				"cancelled": "Cancelled. Nothing was changed.",
+				"remove": "Remove {{title}}",
+				"confirmDestructive": "Yes, delete it",
+				"truncated": "The plan was cut to its first 50 changes.",
+				"appliedSummary": "Applied: {{done}} of {{total}}",
+				"autopilotApplied": "Applied right away by Autopilot.",
+				"autopilotOff": "Autopilot is off for this workspace. Review the changes below.",
+				"autopilotReview": "Some of these changes need your review first.",
+				"done": "Done",
+				"open": "Open",
+				"skipped": "Skipped",
+				"failed": "Failed",
+				"undo": "Undo",
+				"undone": "Undone",
+				"undoFailed": "Couldn't undo this change.",
+				"forbidden": "You can't make changes with AI here.",
+				"pickCandidate": "Did you mean:",
+				"fields": {
+					"name": "Name",
+					"key": "Key",
+					"title": "Title",
+					"priority": "Priority",
+					"dueDate": "Due date",
+					"assignee": "Assignee",
+					"unassigned": "No one",
+					"startDate": "Start",
+					"endDate": "End",
+					"content": "Comment"
+				},
+				"problems": {
+					"forbidden": "You don't have permission for this.",
+					"not_found": "Something it refers to wasn't found.",
+					"ambiguous": "That name matches more than one.",
+					"unresolved_ref": "It depends on a change that can't be made.",
+					"feature_off": "This feature is turned off for the project.",
+					"invalid": "This change can't be made as written."
+				},
+				"ops": {
+					"create_project": "New project",
+					"create_task": "New task",
+					"update_task": "Edit task",
+					"set_status": "Change status",
+					"assign": "Assign",
+					"add_comment": "Comment",
+					"create_cycle": "New cycle",
+					"add_to_cycle": "Add to cycle",
+					"create_module": "New module",
+					"add_to_module": "Add to module",
+					"create_page": "New page",
+					"link_tasks": "Link tasks",
+					"create_label": "New label",
+					"delete_task": "Delete task",
+					"run_agent": "Run agent"
+				},
+				"agentRun": {
+					"title": "Agent run",
+					"loading": "Loading the run…",
+					"loadError": "Couldn't load this run.",
+					"inProgress": "In progress"
+				},
+				"noneReady": "Nothing can be applied yet. Fix or remove the flagged changes, or ask again."
+			},
+			"context": {
+				"title": "Context ({{count}})",
+				"facts": "Projects: {{projects}} · People: {{members}} · Cycles: {{cycles}}",
+				"memory": "Memory notes: {{count}}",
+				"history": "Earlier messages: {{count}}"
+			}
+		},
+		"duplicates": {
+			"check": "Check with AI",
+			"checking": "Checking…",
+			"checkedTitle": "AI checked these for duplicates",
+			"none": "No likely duplicates.",
+			"verdict": {
+				"duplicate": "Likely duplicate",
+				"related": "Related"
+			},
+			"mark": "Duplicate of this",
+			"markLabel": "Mark the new task as a duplicate of {{key}}",
+			"marked": "Marked",
+			"willLink": "The new task will be marked as a duplicate of {{key}}.",
+			"undo": "Undo",
+			"linkError": "The task was created, but it couldn't be marked as a duplicate of {{key}}."
+		},
+		"triage": {
+			"button": "Suggest triage",
+			"title": "Triage suggestions",
+			"loading": "Looking at similar work…",
+			"empty": "No suggestions for this one.",
+			"retry": "Try again",
+			"close": "Close suggestions",
+			"accept": "Accept",
+			"acceptAll": "Accept all",
+			"edit": "Edit",
+			"dismiss": "Dismiss",
+			"applied": "Applied",
+			"acceptError": "Couldn't apply this suggestion.",
+			"autoApplied": "This project adds suggested labels automatically.",
+			"sameTitle": "Same title as an existing task",
+			"projectAdvice": "Requests stay in their project: decline this one and ask for it there.",
+			"otherProjectDuplicate": "Only a task in this project can close the request as a duplicate.",
+			"openTask": "Open {{key}} in a new tab",
+			"fields": {
+				"label": "Label",
+				"assignee": "Assignee",
+				"priority": "Priority",
+				"project": "Project",
+				"duplicate": "Possible duplicate"
+			},
+			"settings": {
+				"title": "Triage suggestions",
+				"description": "AI suggestions for new tasks and intake requests. People accept, edit or dismiss each one.",
+				"autoApply": "Auto-apply label suggestions",
+				"autoApplyHint": "Add suggested labels as soon as they are suggested. Each one is recorded in the audit log. Assignee, priority, project and duplicates always wait for a person.",
+				"saved": "Triage setting saved",
+				"saveError": "Couldn't save the triage setting."
+			},
+			"liveLabels": {
+				"title": "Suggested labels",
+				"add": "Add label {{name}}"
+			}
+		},
+		"translate": {
+			"action": "Translate",
+			"translating": "Translating…",
+			"translatedFrom": "Translated from {{language}}",
+			"translated": "Translated",
+			"showOriginal": "Show original",
+			"showTranslation": "Show translation",
+			"settings": {
+				"autoTranslate": "Auto-translate comments",
+				"autoTranslateHint": "Translate comments written in another language for each reader as they open them. When off, readers click Translate."
+			}
+		},
+		"brief": {
+			"button": "Brief",
+			"buttonLabel": "Write a stakeholder brief",
+			"title": "Stakeholder brief",
+			"close": "Close brief",
+			"intro": "Write a status brief from this work's computed progress, changes, risks and forecast. Every task it mentions is cited.",
+			"audience": "Audience",
+			"audiences": {
+				"team": "Team",
+				"leadership": "Leadership",
+				"client": "Client"
+			},
+			"generate": "Write brief",
+			"regenerate": "Write again",
+			"writing": "Writing the brief…",
+			"stop": "Stop",
+			"copy": "Copy",
+			"copied": "Copied",
+			"copyError": "Couldn't copy the brief.",
+			"saveAsPage": "Save as page",
+			"saved": "Brief saved as a page",
+			"saveError": "Couldn't save the page.",
+			"openPage": "Open page",
+			"pageTitle": "Status brief: {{name}} ({{date}})",
+			"facts": {
+				"title": "Facts used",
+				"note": "These numbers come from Margaya, not from the AI. Saving or copying a brief makes it the baseline for the next one.",
+				"progress": "Progress",
+				"progressValue": "{{percent}}% ({{completed}} of {{total}} done)",
+				"sinceLast": "Since the last brief ({{date}})",
+				"sinceDays": "Last 7 days",
+				"changes": "Completed: {{completed}} · Added: {{added}} · Removed: {{removed}}",
+				"forecast": "Forecast",
+				"forecastValue": "85% likely by {{date}}",
+				"forecastDone": "Nothing left to do",
+				"forecastNone": "Not enough history yet",
+				"risks": "Risks",
+				"diff": "Change",
+				"progressDiff": "Progress {{before}}% → {{now}}%",
+				"forecastDiff": "Forecast {{before}} → {{now}}"
+			}
+		},
+		"ask": {
+			"title": "Ask AI",
+			"description": "Ask about your workspace in plain language. Answers come only from the tasks, pages and comments you can see, and cite where each fact comes from.",
+			"greeting": "Hi! What would you like to know?",
+			"placeholder": "Ask AI, @ for context, / for commands",
+			"send": "Ask",
+			"stop": "Stop",
+			"stopped": "Stopped.",
+			"newChat": "New conversation",
+			"expand": "Expand",
+			"collapse": "Collapse",
+			"scopeProject": "In {{project}}",
+			"scopeWorkspace": "Whole workspace",
+			"removeScope": "Ask about the whole workspace instead",
+			"searching": "Searching your workspace…",
+			"noResults": "I couldn't find anything about this in your workspace. Try other words, or name a project, a cycle or a task key.",
+			"sources": "Sources",
+			"sourcesCount": "Sources ({{total}})",
+			"closestMatches": "Closest matches",
+			"copy": "Copy",
+			"copied": "Copied",
+			"copyError": "Couldn't copy the answer",
+			"commentOn": "Comment on {{key}}",
+			"pageSource": "Page: {{title}}",
+			"openSource": "Open {{title}}",
+			"disclaimer": "Answers use only what you can see. Check the sources before acting on them.",
+			"you": "You",
+			"answer": "Answer",
+			"forbidden": "You don't have permission to use AI in this workspace.",
+			"palette": "Ask AI…",
+			"paletteAbout": "Ask AI: {{question}}",
+			"examples": {
+				"title": "Try asking",
+				"overdue": "What's overdue?",
+				"mine": "What are my open tasks?",
+				"recent": "What changed this week?",
+				"summarize": "Summarize this project",
+				"chart": "Show tasks by status as a chart",
+				"cycleBlockers": "What's blocking the current cycle?"
+			},
+			"history": {
+				"title": "History",
+				"empty": "No saved conversations yet.",
+				"localOnly": "Conversations are saved in this browser only.",
+				"delete": "Delete conversation",
+				"clear": "Clear history",
+				"clearConfirm": "Delete all saved conversations in this browser? This can't be undone.",
+				"search": "Search conversations",
+				"noMatches": "No conversation matches.",
+				"loading": "Loading conversations…",
+				"pin": "Pin conversation",
+				"unpin": "Unpin conversation",
+				"pinned": "Pinned",
+				"rename": "Rename conversation",
+				"renameLabel": "Conversation name",
+				"saveTitle": "Save name",
+				"serverNote": "Conversations are saved in your workspace, visible only to you.",
+				"clearConfirmServer": "Delete all your saved conversations in this workspace? This can't be undone.",
+				"importHint": "Conversations saved in this browser: {{total}}",
+				"import": "Import",
+				"imported": "Conversations imported: {{total}}",
+				"openError": "Couldn't open the conversation."
+			},
+			"chartLabel": "Chart: {{title}}",
+			"chartLoading": "Drawing the chart…",
+			"chartInvalid": "This chart couldn't be drawn.",
+			"placeholderBuild": "Describe what to create or change…",
+			"modelLabel": "Model: {{model}}",
+			"more": "More",
+			"moreActions": "More actions",
+			"openFullPage": "Open full page",
+			"paletteFullPage": "Open AI chat (full page)",
+			"fullPageUnavailable": "AI isn't available in this workspace.",
+			"shortcut": "Open or close Ask AI",
+			"regenerate": "Regenerate",
+			"editQuestion": "Edit question",
+			"resend": "Send",
+			"followUps": "Suggested follow-ups",
+			"saveAsPage": "Save as page",
+			"copyMarkdown": "Copy as Markdown",
+			"copiedMarkdown": "Copied as Markdown",
+			"createTask": "Create task from this",
+			"webSearch": "Search the web",
+			"webSource": "Web: {{title}}",
+			"removeChip": "Remove {{name}}",
+			"contextChips": "Context for this question",
+			"contextPicker": "Add context",
+			"contextHint": "Type to find tasks, pages, projects, cycles, modules, people or agents",
+			"contextEmpty": "Nothing found",
+			"contextSearching": "Searching…",
+			"commandMenu": "Commands",
+			"commandEmpty": "No matching command",
+			"contextKinds": {
+				"task": "Task",
+				"page": "Page",
+				"project": "Project",
+				"cycle": "Cycle",
+				"module": "Module",
+				"user": "Person",
+				"agent": "Agent"
+			},
+			"modes": {
+				"label": "Mode",
+				"ask": "Ask",
+				"build": "Build",
+				"autopilot": "Autopilot",
+				"askHint": "Answers questions; changes nothing",
+				"buildHint": "Proposes changes for you to confirm",
+				"autopilotHint": "Applies changes right away; every change can be undone"
+			},
+			"attachments": {
+				"add": "Attach files",
+				"type": "{{name}} can't be attached. Use an image (PNG, JPEG, WebP, GIF) or a text, Markdown or CSV file.",
+				"size": "{{name}} doesn't fit: attachments can be at most 5 MB together.",
+				"count": "Attach at most 3 files.",
+				"readError": "Couldn't read the file."
+			},
+			"voice": {
+				"start": "Dictate",
+				"stop": "Stop dictating",
+				"recording": "Listening…",
+				"transcribing": "Transcribing…",
+				"denied": "Allow microphone access to dictate.",
+				"failed": "Couldn't turn the recording into text."
+			},
+			"agent": {
+				"ready": "Send this request to {{agent}}.",
+				"needsTask": "Add a task with @ so {{agent}} knows what to work on.",
+				"send": "Send to {{agent}}",
+				"error": "Couldn't start the agent."
+			},
+			"thinking": {
+				"live": "Thinking… {{seconds}}s",
+				"done": "Thought for {{seconds}}s"
+			},
+			"versions": {
+				"previous": "Previous answer",
+				"next": "Next answer",
+				"label": "Answer {{current}} of {{total}}"
+			},
+			"feedback": {
+				"up": "Good answer",
+				"down": "Bad answer",
+				"reasonLabel": "What went wrong? (optional)",
+				"reasonPlaceholder": "For example: wrong numbers, missed a task",
+				"send": "Send",
+				"skip": "Skip",
+				"thanks": "Thanks for the feedback."
+			},
+			"commands": {
+				"summarize": "Summarize",
+				"summarizeHint": "The project, cycle or page in scope",
+				"chart": "Chart",
+				"chartHint": "Draw a chart from your data",
+				"chartPrefill": "Chart",
+				"brief": "Brief",
+				"briefHint": "A stakeholder brief for the project, cycle or module",
+				"create": "Create",
+				"createHint": "Switch to Build mode",
+				"translate": "Translate",
+				"translateHint": "Into your language",
+				"clear": "Clear",
+				"clearHint": "Start a new conversation",
+				"skill": "Saved skill",
+				"summarizeTurn": "Summarize {{name}}",
+				"briefTurn": "Brief on {{name}}",
+				"summarizeNeedsScope": "Open a project, cycle or page, or add one with @, to summarize it.",
+				"briefNeedsScope": "Open a project, cycle or module, or add one with @, for a brief.",
+				"buildUnavailable": "Build mode isn't available here.",
+				"translatePrompt": "Translate your last answer into {{language}}.",
+				"translatePrefill": "Translate into {{language}}:",
+				"this": {
+					"page": "this page",
+					"cycle": "this cycle",
+					"module": "this module",
+					"project": "this project"
+				}
+			},
+			"conversation": {
+				"rename": "Rename",
+				"pin": "Pin",
+				"unpin": "Unpin",
+				"export": "Export as Markdown",
+				"saveAsPage": "Save as page",
+				"delete": "Delete conversation"
+			},
+			"save": {
+				"title": "Save as page",
+				"description": "The page gets the text with links to its sources.",
+				"pageTitle": "Title",
+				"project": "Project",
+				"noProjects": "There's no project to save the page in.",
+				"submit": "Save page",
+				"saved": "Saved as a page",
+				"open": "Open page",
+				"error": "Couldn't save the page"
+			}
+		},
+		"writing": {
+			"aiButton": "AI",
+			"menuLabel": "AI actions",
+			"actions": {
+				"summarize": "Summarize",
+				"improve": "Improve writing",
+				"shorter": "Make shorter",
+				"longer": "Make longer",
+				"fix": "Fix spelling & grammar",
+				"translate": "Translate to…",
+				"custom": "Ask AI to…"
+			},
+			"customPlaceholder": "Tell AI what to do, e.g. turn this into a checklist",
+			"customSubmit": "Generate",
+			"preview": {
+				"label": "AI suggestion",
+				"generating": "Writing…",
+				"editLabel": "Edit the suggestion",
+				"replace": "Replace",
+				"insertBelow": "Insert below",
+				"discard": "Discard",
+				"stop": "Stop",
+				"retry": "Try again",
+				"empty": "AI returned nothing. Try again or rephrase.",
+				"note": "AI can make mistakes. Review before using.",
+				"incomplete": "The draft stopped before it finished. Review it or try again."
+			},
+			"summary": {
+				"button": "Summarize",
+				"cycle": "Summarize cycle",
+				"project": "Summarize project",
+				"page": "Summarize page",
+				"title": "AI summary",
+				"generating": "Summarizing…",
+				"dismiss": "Dismiss",
+				"copy": "Copy",
+				"copied": "Copied",
+				"copyError": "Couldn't copy the summary.",
+				"saveAsPage": "Save as page",
+				"pageTitle": "Summary: {{name}}",
+				"saved": "Summary saved as a page",
+				"saveError": "Couldn't save the page.",
+				"openPage": "Open page",
+				"task": "Summarize task",
+				"saveAsComment": "Save as comment",
+				"commentSaved": "Summary saved as a comment",
+				"commentError": "Couldn't save the comment."
+			},
+			"spec": {
+				"button": "Draft a spec",
+				"title": "Draft a spec",
+				"description": "AI drafts a spec page from this task and its context. Review and edit it, then create the page; it links back to the task.",
+				"generating": "Drafting…",
+				"titleLabel": "Page title",
+				"bodyLabel": "Spec",
+				"edit": "Edit",
+				"preview": "Preview",
+				"create": "Create page",
+				"pageTitle": "Spec: {{title}}",
+				"created": "Spec page created",
+				"createError": "Couldn't create the page."
+			},
+			"taskWriter": {
+				"button": "Write with AI",
+				"draft": "Draft from title",
+				"improve": "Improve",
+				"instruction": "Optional: what should it focus on?",
+				"hint": "Nothing changes until you choose “Use this”.",
+				"writing": "Writing…",
+				"use": "Use this",
+				"retry": "Try again",
+				"discard": "Discard",
+				"close": "Close AI writing"
+			},
+			"feedback": {
+				"good": "Good answer",
+				"bad": "Bad answer",
+				"thanks": "Thanks for the feedback"
+			},
+			"tone": {
+				"label": "Tone: {{tone}}",
+				"legend": "Tone",
+				"default": "Default",
+				"professional": "Professional",
+				"casual": "Casual"
+			},
+			"block": {
+				"command": "AI block",
+				"title": "AI block",
+				"customPlaceholder": "What should AI write from this page?",
+				"stale": "The page changed after this was generated. Regenerate to include the changes.",
+				"accept": "Accept",
+				"regenerate": "Regenerate",
+				"presets": {
+					"tldr": "Summary (TL;DR)",
+					"faq": "FAQ",
+					"action_items": "Action items",
+					"custom": "Custom prompt"
+				}
+			},
+			"title": {
+				"suggest": "Suggest a title",
+				"thinking": "Thinking of a title…",
+				"use": "Use this title",
+				"another": "Suggest another"
+			},
+			"comment": {
+				"menuLabel": "AI help with this comment",
+				"previewLabel": "AI suggestion for your comment",
+				"replace": "Replace draft"
+			}
+		},
+		"errors": {
+			"AI_DISABLED": "AI is turned off here.",
+			"AI_NOT_CONFIGURED": "AI isn't set up correctly. Ask an admin to check the AI settings.",
+			"AI_ROUTE_BLOCKED": "This data can't be sent to an AI model under your privacy settings.",
+			"AI_BUDGET_EXCEEDED": "The AI limit has been reached. Try again later or ask an admin to raise it.",
+			"AI_RATE_LIMITED": "Too many AI requests at once. Wait a moment and try again.",
+			"AI_REFUSED": "The AI model declined this request.",
+			"AI_PROVIDER_ERROR": "The AI service didn't respond. Try again in a moment.",
+			"unknown": "Something went wrong with AI. Try again.",
+			"AI_HISTORY_OFF": "This workspace doesn't keep AI conversations on the server. Your history stays in this browser."
+		},
+		"features": {
+			"connection_test": "Connection tests",
+			"ask": "Ask",
+			"summarize": "Summaries",
+			"editor_assist": "Writing help",
+			"spec_draft": "Spec drafts",
+			"duplicate_check": "Duplicate checks",
+			"talk_to_build": "Plan from a prompt",
+			"triage": "Triage suggestions",
+			"translate": "Translations",
+			"brief": "Stakeholder briefs",
+			"agent_run": "Agents",
+			"rule_compiler": "Automation rules",
+			"capture": "Capture to issue",
+			"estimate": "Estimates",
+			"retro": "Retrospectives",
+			"my_brief": "My brief",
+			"embedding": "Search indexing",
+			"coding_handoff": "Coding agent briefs",
+			"build_chat": "Build in chat",
+			"nl_filter": "Natural-language filters",
+			"inbox_digest": "Inbox digests",
+			"speech": "Speech to text"
+		},
+		"providers": {
+			"anthropic": "Anthropic (Claude)",
+			"openai_compatible": "OpenAI-compatible",
+			"fake": "Fake (testing only)"
+		},
+		"destinations": {
+			"cloud": "Cloud provider",
+			"local": "Local model"
+		},
+		"tiers": {
+			"fast": "Fast model",
+			"fastHint": "Quick tasks: rewriting, labels, short summaries.",
+			"balanced": "Balanced model",
+			"balancedHint": "Most features: answers, summaries, drafts.",
+			"deep": "Deep model",
+			"deepHint": "Hard work: planning and agents."
+		},
+		"test": {
+			"title": "Test connection",
+			"workspaceHint": "Sends one tiny request the way this workspace's AI calls go.",
+			"button": "Test connection",
+			"success": "Connected to {{model}} in {{ms}} ms"
+		},
+		"usage": {
+			"title": "Usage",
+			"subtitle": "AI calls, tokens and cost by list price. Only counts are kept, never prompts or answers.",
+			"rangeLabel": "Period",
+			"range": {
+				"thisMonth": "This month",
+				"last30Days": "Last 30 days",
+				"last90Days": "Last 90 days"
+			},
+			"calls": "Calls",
+			"callsCount_one": "{{count}} call",
+			"callsCount_other": "{{count}} calls",
+			"tokens": "Tokens",
+			"tokensSplit": "{{input}} in · {{output}} out",
+			"cost": "Cost",
+			"costHint": "By list price; local models count as $0.",
+			"day": "Day",
+			"byDay": "Calls per day",
+			"byFeature": "By feature",
+			"byModel": "By model",
+			"byUser": "By person",
+			"byWorkspace": "By workspace",
+			"empty": "No AI usage in this period.",
+			"unknownUser": "Removed account",
+			"loadError": "Couldn't load AI usage.",
+			"retry": "Retry",
+			"exportCsv": "Export CSV",
+			"exportError": "Couldn't export the usage.",
+			"feedbackTitle": "Answer ratings",
+			"feedbackOverall": "{{percent}}% positive of {{total}} ratings",
+			"feedbackUp": "Thumbs up",
+			"feedbackDown": "Thumbs down",
+			"feedbackRate": "Positive"
+		},
+		"instance": {
+			"title": "AI",
+			"subtitle": "Let workspaces use AI: choose the provider and models, and decide where data may go. AI stays off until you turn it on, and each workspace must opt in too.",
+			"statusTitle": "AI on this server",
+			"statusReady": "Ready",
+			"statusNotConfigured": "Not set up",
+			"statusOff": "Off",
+			"enable": "Allow AI",
+			"enableHint": "Workspaces can turn on AI features once this is on and a provider is set up.",
+			"providerTitle": "Provider",
+			"providerDescription": "The cloud model provider. Leave a model empty to use the provider's default for that tier.",
+			"provider": "Provider",
+			"providerHint": "Anthropic Claude is recommended. OpenAI-compatible covers OpenAI, Azure, OpenRouter, vLLM and LM Studio.",
+			"anthropicKey": "Anthropic API key",
+			"anthropicKeyHint": "Stored encrypted. It is never shown again.",
+			"openaiBaseUrl": "Base URL",
+			"openaiBaseUrlHint": "Including the version path, for example https://api.openai.com/v1. Must be a public address.",
+			"openaiKey": "API key",
+			"save": "Save",
+			"testCloud": "Test provider",
+			"testLocal": "Test local model",
+			"localTitle": "Local model",
+			"localDescription": "An OpenAI-compatible server on your own network, such as Ollama. Restricted data only ever goes here.",
+			"localBaseUrl": "Base URL",
+			"localBaseUrlHint": "For example http://ollama:11434/v1. Private addresses are allowed here.",
+			"localModel": "Model",
+			"localKey": "API key",
+			"localKeyHint": "Optional. Only if your server needs one, such as vLLM started with --api-key. Stored encrypted.",
+			"localOnly": "Local-only mode",
+			"localOnlyHint": "Every AI call goes to the local model; nothing is sent to a cloud provider.",
+			"privacyTitle": "Privacy",
+			"privacyDescription": "Where each kind of data may go. Workspaces can be stricter, never looser.",
+			"restrictedRoute": "Restricted projects",
+			"restrictedRouteHint": "Data from restricted projects, when a workspace lets AI read them.",
+			"privateRoute": "Other workspace data",
+			"privateRouteHint": "Tasks, pages and comments from open projects.",
+			"routeBlocked": "Never sent",
+			"routeLocal": "Local model only",
+			"routeCloud": "Cloud provider allowed",
+			"redaction": "Redact personal data",
+			"redactionHint": "Replace emails, phone numbers, card numbers and tokens with placeholders before cloud calls. Answers show the real values again.",
+			"zeroRetention": "Zero data retention",
+			"zeroRetentionHint": "Record that your agreement with the provider keeps no data. Margaya shows it; the provider enforces it.",
+			"allowWorkspaceKeys": "Allow workspace keys",
+			"allowWorkspaceKeysHint": "Workspaces may use their own provider key and pay for their own usage.",
+			"embeddingsTitle": "Embeddings",
+			"embeddingsDescription": "Optional, for semantic search. Any OpenAI-compatible embeddings endpoint works. The database also needs the pgvector extension; without either, search stays full-text only.",
+			"vectorReady": "pgvector ready",
+			"vectorAvailable": "pgvector available",
+			"vectorUnavailable": "pgvector not available",
+			"embeddingsBaseUrl": "Base URL",
+			"embeddingsModel": "Model",
+			"embeddingsKey": "API key",
+			"invalidUrl": "Enter an http or https URL.",
+			"usageTitle": "Usage across workspaces",
+			"usageDescription": "AI calls on this server by workspace and model. Only counts are kept.",
+			"chatTitle": "Chat",
+			"chatDescription": "How reasoning models think and what people see of it.",
+			"showReasoning": "Show reasoning",
+			"showReasoningHint": "Show a reasoning model's thinking to the person who asked. It is never stored. Off: only how long it thought.",
+			"localThinking": "Thinking on local models",
+			"localThinkingHint": "Off answers faster; on lets local reasoning models think first.",
+			"localThinkingOff": "Off",
+			"localThinkingOn": "On",
+			"webSearchTitle": "Web search",
+			"webSearchDescription": "A search service answers can use when a workspace turns web search on.",
+			"webSearchProvider": "Search provider",
+			"webSearchProviderHint": "SearXNG runs on your own server; Brave Search and Tavily need an API key.",
+			"webSearchOff": "Off",
+			"webSearchUrl": "SearXNG URL",
+			"webSearchUrlHint": "Its JSON API must be enabled.",
+			"webSearchKey": "API key",
+			"webSearchKeyHint": "For Brave Search or Tavily.",
+			"speechTitle": "Speech to text",
+			"speechDescription": "Voice input in the chat. Without it, browsers that can do it recognize speech themselves.",
+			"speechBaseUrl": "Endpoint URL",
+			"speechBaseUrlHint": "An OpenAI-compatible transcription endpoint, such as a local Whisper server.",
+			"speechModel": "Model",
+			"speechKey": "API key"
+		},
+		"workspace": {
+			"navLabel": "AI",
+			"title": "AI",
+			"subtitle": "Turn on AI features for this workspace, set limits and choose how private data is handled.",
+			"noAccess": "You need permission to manage AI to see these settings.",
+			"loadError": "Couldn't load the AI settings.",
+			"statusTitle": "AI in this workspace",
+			"statusDescription": "AI is off until you turn it on. Each project can still turn it off in its features.",
+			"enable": "Turn on AI",
+			"enableHint": "Members with the Use AI permission see AI features in projects that allow them.",
+			"enabledToast": "AI is on for this workspace",
+			"disabledToast": "AI is off for this workspace",
+			"offOnInstance": "An instance admin hasn't allowed AI on this server yet.",
+			"notConfigured": "AI is allowed, but no provider is set up yet. Ask an instance admin.",
+			"whereDataGoes": "Where data goes",
+			"whereDataGoesHint": "The model that receives this workspace's AI requests.",
+			"zeroRetention": "Zero retention",
+			"limitsTitle": "Limits",
+			"limitsDescription": "Spent this month: {{spent}}. Requests stop when a limit is reached.",
+			"monthlyCap": "Monthly budget (USD)",
+			"monthlyCapHint": "By list price, for the whole workspace. Leave empty for no limit.",
+			"dailyTokens": "Daily tokens per person",
+			"dailyTokensHint": "Input and output tokens each person may use per day (UTC). Leave empty for no limit.",
+			"noLimit": "No limit",
+			"invalidNumber": "Enter a number of 0 or more.",
+			"saveLimits": "Save limits",
+			"monthSpendOfCap": "{{spent}} of {{cap}} used this month.",
+			"privacyTitle": "Privacy",
+			"privacyDescription": "AI only ever sees what the person asking can see.",
+			"includeRestricted": "Include restricted projects",
+			"includeRestrictedHint": "Let AI read restricted projects for people who can see them. Their data only goes where the server allows restricted data.",
+			"localOnly": "Local model only",
+			"localOnlyHint": "Send every AI request to the server's local model.",
+			"localOnlyForced": "The server is in local-only mode.",
+			"localOnlyUnavailable": "This server has no local model.",
+			"redactPii": "Redact personal data",
+			"redactPiiHint": "Replace emails, phone numbers, card numbers and tokens with placeholders before requests leave the server.",
+			"redactPiiForced": "Always on: the server redacts every cloud request.",
+			"approval": "Approve AI changes",
+			"approvalHint": "Changes suggested by AI always wait for a person to approve them.",
+			"semanticSearch": "Semantic search",
+			"semanticSearchHint": "Ask and the duplicate check also find tasks, pages and comments by meaning, not only by their words. Content is indexed with the server's embeddings model.",
+			"semanticUnavailable": "pgvector isn't available on this server's database, so search uses full text only.",
+			"semanticNoEndpoint": "This server has no embeddings endpoint, so search uses full text only.",
+			"semanticIndexed_one": "{{count}} item indexed",
+			"semanticIndexed_other": "{{count}} items indexed",
+			"semanticPaused": "Indexing is paused. {{reason}}",
+			"semanticEnabledToast": "Semantic search is on. Indexing runs in the background.",
+			"semanticDisabledToast": "Semantic search is off and its index was deleted.",
+			"keyTitle": "Own API key",
+			"keyDescription": "Use your workspace's own provider account instead of the server's. The key is stored encrypted and never shown again.",
+			"keyCurrent": "Saved key",
+			"keyEnding": "Ends in {{last4}}",
+			"keyUnreadable": "The saved key can't be read anymore. Enter it again.",
+			"keyRemove": "Remove",
+			"keyProvider": "Provider",
+			"keyValue": "API key",
+			"keyReplace": "Replace key",
+			"keyHint": "An Anthropic API key, starting with sk-ant-.",
+			"keyOpenAiHint": "Used with the server's OpenAI-compatible endpoint.",
+			"keyPlaceholder": "Paste the key",
+			"keyTooShort": "This key looks too short.",
+			"keySave": "Save key",
+			"keySavedToast": "Key saved",
+			"keyRemovedToast": "Key removed",
+			"saved": "AI settings saved",
+			"saveError": "Couldn't save the AI settings.",
+			"chatTitle": "Ask AI chat",
+			"chatDescription": "What the chat may do for people in this workspace.",
+			"webSearch": "Web search",
+			"webSearchHint": "People can let answers search the web. Results are cited as web sources.",
+			"webSearchUnavailable": "The instance has no web search set up.",
+			"webSearchLocalOnly": "Not used while AI stays on local models.",
+			"storeConversations": "Keep chat history on the server",
+			"storeConversationsHint": "Each person's conversations are saved in the workspace so they can reopen them on any device. Off: they stay in each browser only.",
+			"allowAutopilot": "Allow Autopilot",
+			"allowAutopilotHint": "Build mode may apply changes without a confirmation. Every change is still logged and can be undone."
+		},
+		"agents": {
+			"navLabel": "Agents",
+			"title": "Agents",
+			"subtitle": "AI agents are workspace members that work on tasks for the person who asks them, never with more rights than that person.",
+			"listTitle": "Workspace agents",
+			"badge": "Agent",
+			"noAccess": "Only people who can manage AI can set up agents.",
+			"empty": "No agents yet. Create one, then mention it in a comment, assign it a task or run it from a task.",
+			"loadError": "Couldn't load the agents.",
+			"retry": "Retry",
+			"create": "New agent",
+			"edit": "Edit agent",
+			"dialogHint": "Agents can be assigned and mentioned like people. They can't sign in and aren't billed as seats.",
+			"save": "Save",
+			"cancel": "Cancel",
+			"created": "Agent created",
+			"saved": "Agent saved",
+			"deleted": "Agent deleted",
+			"saveError": "Couldn't save the agent. Try again.",
+			"enable": "Turn on",
+			"disable": "Turn off",
+			"off": "Off",
+			"delete": "Delete",
+			"deleteTitle": "Delete {{name}}?",
+			"deleteBody": "The agent leaves the workspace. Its comments and history stay, and its runs stay in the Agent Desk.",
+			"spend": "{{spent}} this month",
+			"spendOfBudget": "{{spent}} of {{budget}} this month",
+			"activityFilter": "Agents",
+			"fields": {
+				"name": "Name",
+				"nameTaken": "An agent or member of this workspace already has this name. Choose another one.",
+				"description": "Description",
+				"descriptionPlaceholder": "What this agent helps with",
+				"instructions": "Instructions",
+				"instructionsHint": "How the agent should work. Only admins write these; text in tasks, comments and pages never counts as instructions.",
+				"role": "Role",
+				"roleHint": "The most the agent may do. Each run is also limited to the rights of the person who asks.",
+				"tier": "Model",
+				"tierFast": "Fast",
+				"tierBalanced": "Balanced",
+				"tierDeep": "Deep",
+				"provider": "Where it runs",
+				"providerDefault": "Workspace default",
+				"providerLocal": "Local model only",
+				"budget": "Monthly budget (USD)",
+				"budgetHint": "Runs stop once this month's spend reaches it. Leave empty for no agent limit; workspace limits still apply.",
+				"projects": "Projects",
+				"projectsAll": "All projects its role can reach",
+				"projectsSome": "Only these projects",
+				"projectsHint": "Runs in other projects stop, and the agent says it isn't set up to work there.",
+				"projectsNone": "Choose at least one project.",
+				"skills": "Skills",
+				"skillsEmpty": "No shared skills yet. Shared skills saved in Ask can be given to agents.",
+				"skillsHint": "The agent follows these saved prompts when they fit the request (up to 10).",
+				"webAccess": "Web access",
+				"webAccessHint": "Lets the agent search the web and use the workspace's connectors. What it sends there leaves Margaya."
+			},
+			"status": {
+				"queued": "Queued",
+				"running": "Running",
+				"awaiting_approval": "Waiting for approval",
+				"succeeded": "Done",
+				"failed": "Failed",
+				"cancelled": "Stopped",
+				"needs_input": "Needs input"
+			},
+			"stepStatus": {
+				"ok": "Done",
+				"error": "Failed",
+				"denied": "Not allowed",
+				"pending": "Waiting for approval",
+				"applied": "Applied",
+				"rejected": "Rejected",
+				"expired": "Expired",
+				"reverted": "Undone"
+			},
+			"step": {
+				"model": "Model call"
+			},
+			"tools": {
+				"read_task": "Read task",
+				"read_project": "Read project",
+				"read_page": "Read page",
+				"search_workspace": "Search",
+				"add_comment": "Comment",
+				"update_task": "Update task",
+				"move_status": "Change status",
+				"create_subtask": "Create sub-task",
+				"create_page": "Create page",
+				"link_tasks": "Link tasks",
+				"delete_task": "Delete task",
+				"bulk_move_status": "Change status of several tasks",
+				"ask_person": "Ask a question",
+				"web_search": "Web search",
+				"connector": "Outside service: {{tool}}"
+			},
+			"runErrors": {
+				"AGENT_GONE": "The agent was deleted.",
+				"AGENT_DISABLED": "The agent is turned off.",
+				"AGENT_LEFT": "The agent is no longer a workspace member.",
+				"PRINCIPAL_LEFT": "The person who asked is no longer a workspace member.",
+				"AI_USE_DENIED": "The person who asked isn't allowed to use AI.",
+				"NOT_IN_SCOPE": "The task is in a project AI can't read.",
+				"TIME_LIMIT": "The run took longer than 10 minutes and was stopped.",
+				"OUTPUT_LIMIT": "The agent's answer got too long. Ask for a smaller change.",
+				"TURN_LIMIT": "The agent ran out of steps before finishing. Ask for a smaller, more specific change.",
+				"INTERRUPTED": "The run was interrupted. Changes already made can still be undone.",
+				"APPROVAL_EXPIRED": "Nobody decided on the proposed changes within 24 hours, so they expired.",
+				"INTERNAL": "Something went wrong during the run.",
+				"NEEDS_INPUT_EXPIRED": "Nobody answered the agent's question within 24 hours.",
+				"OUTSIDE_AGENT_PROJECTS": "The agent isn't set up to work in this project."
+			},
+			"change": {
+				"approve": "Approve",
+				"reject": "Reject",
+				"approved": "Change applied",
+				"rejected": "Change discarded",
+				"decideError": "Couldn't apply your decision. Try again.",
+				"undo": "Undo",
+				"undone": "Change undone",
+				"undoError": "Couldn't undo this change. The task may have changed since.",
+				"expiresAt": "Expires {{time}}",
+				"before": "Before",
+				"after": "After",
+				"openPage": "Open page",
+				"openSubtask": "Open sub-task",
+				"openLinked": "Open linked task",
+				"empty": "(empty)",
+				"fields": {
+					"title": "Title",
+					"priority": "Priority",
+					"dueDate": "Due date",
+					"description": "Description",
+					"status": "Status",
+					"statusOf": "Status of {{task}}",
+					"comment": "Comment",
+					"subtask": "New sub-task",
+					"page": "New page",
+					"relation": "Link ({{relation}})",
+					"delete": "Move to trash",
+					"connectorCall": "Call to {{connector}}"
+				}
+			},
+			"inbox": {
+				"title": "{{agentName}} needs your approval",
+				"verb": "asks for your approval",
+				"cardTitle": "Proposed change"
+			},
+			"reply": {
+				"title": "{{agentName}} answered your request",
+				"verb": "answered your request",
+				"cardTitle": "Agent's answer",
+				"hint": "The agent didn't post this answer on the task, so it's shown here."
+			},
+			"activity": {
+				"onBehalfOf": "on behalf of {{name}}"
+			},
+			"run": {
+				"button": "Run agent",
+				"title": "Run an agent on this task",
+				"hint": "The agent works with at most your rights. Changes can be undone, and some wait for your approval.",
+				"agent": "Agent",
+				"prompt": "What should it do?",
+				"promptPlaceholder": "For example: split this into sub-tasks and suggest a priority.",
+				"start": "Run",
+				"started": "{{name}} is on it",
+				"error": "Couldn't start the agent. Try again.",
+				"recent": "Recent runs on this task",
+				"viewInDesk": "Open in Agent Desk"
+			},
+			"desk": {
+				"nav": "Agent Desk",
+				"title": "Agent Desk",
+				"subtitle": "What your agents did and are doing: every run with its steps, cost and changes.",
+				"emptyTitle": "No agent runs yet",
+				"empty": "Mention an agent in a comment, assign it a task or run it from a task.",
+				"allAgents": "All agents",
+				"allStatuses": "All statuses",
+				"filterAgent": "Filter by agent",
+				"filterStatus": "Filter by status",
+				"approvalsTitle": "Waiting for you",
+				"selectRun": "Select a run to see its steps and changes.",
+				"runMissing": "This run isn't available.",
+				"deletedAgent": "Deleted agent",
+				"onBehalfOf": "for {{name}}",
+				"cost": "Cost",
+				"tokensLabel": "Tokens",
+				"tokens": "Tokens: {{value}}",
+				"toolCallsLabel": "Tool calls",
+				"summary": "Summary",
+				"changes": "Change set",
+				"noChanges": "No changes.",
+				"steps": "Steps",
+				"cancelRun": "Stop run",
+				"cancelled": "Run stopped",
+				"cancelError": "Couldn't stop the run.",
+				"trigger": {
+					"mention": "Mentioned",
+					"assign": "Assigned",
+					"manual": "Run from a task",
+					"schedule": "Scheduled",
+					"automation": "Automation",
+					"chat": "Follow-up"
+				},
+				"project": "Project:",
+				"workedSeconds": "Worked for {{count}} s",
+				"workedMinutes": "Worked for {{count}} min"
+			},
+			"connectors": {
+				"title": "Connectors",
+				"subtitle": "Outside MCP servers that agents with web access may call. Read-only tools run right away; everything else waits for approval.",
+				"create": "Add connector",
+				"edit": "Edit connector",
+				"delete": "Delete connector",
+				"created": "Connector added",
+				"saved": "Connector saved",
+				"deleted": "Connector deleted",
+				"saveError": "Couldn't save the connector. Try again.",
+				"empty": "No connectors yet. Add an MCP server's address so agents with web access can use its tools.",
+				"shared": "Shared",
+				"personal": "Only you",
+				"enable": "Turn on",
+				"disable": "Turn off",
+				"test": "Test",
+				"testOk": "Connected: {{count}} tools, {{readOnly}} read-only",
+				"testError": "Couldn't run the test. Try again.",
+				"errors": {
+					"DESTINATION": "The address isn't a public server.",
+					"TIMEOUT": "The server didn't answer in time.",
+					"NETWORK": "Couldn't reach the server.",
+					"HTTP": "The server answered with an error ({{status}}).",
+					"TOO_LARGE": "The server's answer was too large.",
+					"PROTOCOL": "This doesn't look like an MCP server.",
+					"RPC": "The MCP server refused the request.",
+					"SECRET_UNREADABLE": "The stored secret can't be read any more. Enter it again."
+				},
+				"secretHint": "Secret ••••{{last4}}",
+				"dialogHint": "Margaya connects over Streamable HTTP. Secrets are stored encrypted and never shown again.",
+				"name": "Name",
+				"url": "Server URL",
+				"urlHint": "The MCP endpoint, for example https://mcp.example.com/mcp. It must be reachable on the public internet.",
+				"auth": "Authentication",
+				"authHeader": "Secret in a header",
+				"authNone": "None",
+				"headerName": "Header name",
+				"secret": "Secret",
+				"secretKeep": "Leave empty to keep the current secret",
+				"secretHelp": "The header's full value, for example Bearer followed by a token.",
+				"sharedToggle": "Share with the workspace",
+				"sharedHint": "Agents use shared connectors in every run. Turn this off to keep it for runs on your behalf.",
+				"deleteTitle": "Delete {{name}}?",
+				"deleteBody": "Agents can no longer use its tools, and its stored secret is deleted."
+			},
+			"followUp": {
+				"label": "Reply to the agent",
+				"placeholder": "Ask a follow-up or say what to do next…",
+				"send": "Send",
+				"error": "Couldn't start the follow-up. Try again."
+			},
+			"needsInput": {
+				"title": "The agent has a question",
+				"answerLabel": "Your answer",
+				"placeholder": "Type your answer…",
+				"reply": "Reply",
+				"sent": "Answer sent. The agent continues.",
+				"error": "Couldn't send your answer. Try again.",
+				"hint": "Unanswered questions expire after 24 hours.",
+				"waiting": "The agent is waiting for an answer from the person who asked.",
+				"inboxHint": "The run is paused until you answer.",
+				"answer": "Answer in Agent Desk",
+				"notificationTitle": "{{agentName}} has a question",
+				"verb": "has a question for you"
+			},
+			"schedules": {
+				"open": "Schedules of {{name}}",
+				"title": "Schedules: {{name}}",
+				"hint": "Run the agent on a timetable. Runs act for the person who last saved the schedule, with at most their rights.",
+				"empty": "No schedules yet.",
+				"create": "New schedule",
+				"edit": "Edit schedule",
+				"delete": "Delete schedule",
+				"deleteBody": "Delete this schedule? Past runs stay in the Agent Desk.",
+				"deleted": "Schedule deleted",
+				"saved": "Schedule saved",
+				"saveError": "Couldn't save the schedule. Try again.",
+				"enable": "Turn schedule on",
+				"disable": "Turn schedule off",
+				"enabled": "On",
+				"when": "When",
+				"presets": {
+					"weekdays": "Every weekday at 9:00",
+					"mondays": "Every Monday at 9:00",
+					"monthly": "First of the month at 9:00",
+					"custom": "Custom (cron)"
+				},
+				"customLabel": "Cron {{cron}}",
+				"cron": "Cron expression",
+				"cronHint": "Five fields: minute, hour, day of month, month, weekday. At most every 15 minutes.",
+				"timezone": "Time zone",
+				"project": "Project",
+				"chooseProject": "Choose a project",
+				"task": "Task",
+				"noTask": "No task (whole project)",
+				"taskHint": "Without a task, the agent works on the project and puts reports on a page.",
+				"projectLevel": "Whole project",
+				"prompt": "What should it do?",
+				"promptPlaceholder": "For example: summarize what changed since yesterday.",
+				"nextRun": "Next run {{time}}",
+				"runsAs": "Runs for {{name}}",
+				"runsAsHint": "Saving makes you the person these runs act for. The schedule turns off if you leave the workspace or lose AI access.",
+				"errors": {
+					"CRON_INVALID": "Enter five cron fields: minute, hour, day, month, weekday.",
+					"CRON_TOO_FREQUENT": "A schedule can run at most every 15 minutes.",
+					"CRON_NEVER": "This schedule would never run.",
+					"TIMEZONE_INVALID": "Choose a valid time zone.",
+					"OUTSIDE_AGENT_PROJECTS": "This agent isn't set up to work in that project."
+				}
+			},
+			"templates": {
+				"title": "Start from",
+				"blank": "Blank agent",
+				"blankHint": "Write the instructions yourself.",
+				"triage": {
+					"name": "Triage",
+					"description": "Tidies new tasks: clear titles, priorities and duplicate links."
+				},
+				"standup": {
+					"name": "Standup",
+					"description": "Writes a daily standup summary on a project page."
+				},
+				"specWriter": {
+					"name": "Spec writer",
+					"description": "Turns a task into a specification page with acceptance criteria."
+				},
+				"deliveryRisk": {
+					"name": "Delivery risk",
+					"description": "Reports overdue, blocked and unowned work every week."
+				},
+				"feedback": {
+					"name": "Customer feedback",
+					"description": "Groups customer feedback into themes with examples."
+				},
+				"triggers": {
+					"mention": "Mention",
+					"assign": "Assign",
+					"schedule": "Schedule",
+					"automation": "Automation"
+				}
+			}
+		},
+		"capture": {
+			"button": "Capture",
+			"buttonHint": "New from screenshot, recording or transcript",
+			"title": "New requests from a capture",
+			"description": "Add screenshots, a screen recording or meeting notes. AI proposes requests; nothing is created until you confirm.",
+			"tabs": {
+				"screenshot": "Screenshots",
+				"recording": "Recording",
+				"transcript": "Transcript"
+			},
+			"dropzone": "Paste, drop or choose screenshots",
+			"dropzoneHint": "PNG, JPEG or WebP, up to {{count}} images. Location and camera details are removed.",
+			"chooseRecording": "Choose a screen recording",
+			"recordingHint": "Only {{count}} still frames are sent to AI. The video stays on your device.",
+			"notes": "Notes (optional)",
+			"notesPlaceholder": "What were you doing, and what went wrong?",
+			"transcript": "Transcript or meeting notes",
+			"transcriptPlaceholder": "Paste the transcript or notes. Each action item becomes its own request.",
+			"remove": "Remove {{name}}",
+			"tooMany": "Up to {{count}} images per capture.",
+			"mediaErrors": {
+				"type": "This file type isn't supported.",
+				"tooLarge": "This file is too large.",
+				"unreadable": "This file couldn't be read."
+			},
+			"preparing": "Preparing images…",
+			"analyze": "Propose requests",
+			"analyzing": "Reading the capture…",
+			"reviewTitle": "Review proposed requests",
+			"reviewDescription": "Edit or leave out any request. Nothing is created until you confirm.",
+			"empty": "No requests found in this capture.",
+			"include": "Include this request",
+			"titleLabel": "Title",
+			"descriptionLabel": "Description",
+			"priorityLabel": "Priority",
+			"labelsLabel": "Suggested labels",
+			"assignTo": "Assign to {{name}}",
+			"attachNote": "Images to attach: {{count}}",
+			"attachNotAllowed": "Images can't be attached: you need permission to edit tasks.",
+			"back": "Back",
+			"create": "Create requests ({{count}})",
+			"created": "Requests created: {{count}}",
+			"extrasFailed": "Some labels, owners or attachments couldn't be added.",
+			"createError": "Couldn't create the requests.",
+			"draftFromImages": "Draft from images",
+			"drafting": "Drafting…",
+			"sections": {
+				"steps": "Steps to reproduce",
+				"expected": "Expected",
+				"actual": "Actual",
+				"environment": "Environment"
+			}
+		},
+		"codingAgent": {
+			"button": "Send to coding agent",
+			"dialogTitle": "Send to a coding agent",
+			"dialogDescription": "Margaya opens an issue on the repository with this brief. Review and edit it before you send it.",
+			"repository": "Repository",
+			"profile": "Coding agent",
+			"github": "GitHub",
+			"gitea": "Gitea",
+			"notReady": "This repository's integration can't open issues yet. Check it in the project's integration settings.",
+			"noProfiles": "No coding agent profile works with this repository.",
+			"useAi": "Summarize with AI",
+			"regenerate": "Prepare again",
+			"preparing": "Preparing the brief…",
+			"error": "The brief could not be prepared.",
+			"titleLabel": "Issue title",
+			"briefLabel": "Brief",
+			"briefNote": "Values that look like passwords or keys are removed before sending. Nothing is merged automatically.",
+			"send": "Send",
+			"sending": "Sending…",
+			"sent": "Sent to the coding agent",
+			"sentNotAssigned": "Issue created, but the assignee could not be added",
+			"sendError": "The issue could not be created",
+			"openIssue": "Open issue",
+			"timelineTitle": "Coding agent",
+			"timelineLabel": "Coding agent progress",
+			"sentBy": "Sent to {{profile}} by {{name}}",
+			"sentByUnknown": "Sent to {{profile}}",
+			"issueLink": "Issue #{{number}}",
+			"prLink": "Pull request #{{number}}",
+			"pending": "Not yet",
+			"steps": {
+				"issue_created": "Issue created",
+				"working": "Agent working",
+				"ready_for_review": "Ready for review",
+				"merged": "Merged",
+				"closed": "Closed without merging"
+			},
+			"settings": {
+				"title": "Coding agents",
+				"subtitle": "Issue templates for “Send to coding agent”, sent through GitHub and Gitea",
+				"sharedNote": "Shared by every project in this workspace. Profiles only add a mention or an assignee to the issue; no AI keys are stored.",
+				"builtin": "Built-in",
+				"githubOnly": "GitHub only",
+				"name": "Name",
+				"namePlaceholder": "e.g. Our build runner",
+				"mention": "Mention",
+				"mentionPlaceholder": "@agent, or a text with {task} and {branch}",
+				"assignee": "Assignee (GitHub)",
+				"assigneePlaceholder": "GitHub login, e.g. Copilot",
+				"enabled": "Enabled",
+				"edit": "Edit profile",
+				"delete": "Delete profile",
+				"add": "Add profile",
+				"save": "Save",
+				"saved": "Profile saved",
+				"deleted": "Profile deleted",
+				"error": "The profile could not be saved",
+				"needsTarget": "Add a mention or an assignee.",
+				"readOnly": "Only people who manage workspace settings can change profiles."
+			}
+		},
+		"filters": {
+			"button": "Describe a filter…",
+			"short": "Describe",
+			"label": "Describe what to show",
+			"placeholder": "e.g. my overdue bugs in progress",
+			"apply": "Apply",
+			"none": "Couldn't turn that into filters. Try other words.",
+			"applied": "Filters applied. Edit the chips to adjust them.",
+			"dropped": "Not understood: {{words}}",
+			"hint": "AI turns your words into filters on statuses, labels, people, cycles, priorities and dates."
+		},
+		"budget": {
+			"warningTitle": "{{percent}}% of this month's AI budget is used",
+			"reachedTitle": "This month's AI budget is used up",
+			"amounts": "{{used}} of {{cap}}.",
+			"warningHint": "AI features stop when the cap is reached. Raise the cap below if needed.",
+			"reachedHint": "AI features are paused until next month or until the cap is raised.",
+			"notice": {
+				"title": "AI budget almost used",
+				"content": "This workspace has used {{percent}}% of its monthly AI budget."
+			}
+		},
+		"skills": {
+			"navLabel": "AI skills",
+			"title": "AI skills",
+			"subtitle": "Saved prompts to reuse from \"/\" in the AI chat.",
+			"listTitle": "Skills",
+			"new": "New skill",
+			"newTitle": "New skill",
+			"editTitle": "Edit skill",
+			"dialogHint": "The prompt is added to the question whenever the skill is used.",
+			"name": "Name",
+			"namePlaceholder": "release-notes",
+			"description": "Description",
+			"prompt": "Prompt",
+			"promptPlaceholder": "Write release notes for the tasks done this cycle, grouped by feature.",
+			"shareLabel": "Share with the workspace",
+			"shareHint": "Everyone who uses AI here can use it. Off: only you.",
+			"shared": "Shared",
+			"personal": "Only you",
+			"save": "Save skill",
+			"saved": "Skill saved",
+			"saveError": "Couldn't save the skill",
+			"deleted": "Skill deleted",
+			"edit": "Edit {{name}}",
+			"delete": "Delete {{name}}",
+			"deleteConfirm": "Delete {{name}}?",
+			"empty": "No skills yet. Save a prompt you use often.",
+			"loadError": "Couldn't load the skills.",
+			"noAccess": "You need permission to use AI in this workspace."
+		},
+		"memory": {
+			"navLabel": "AI memory",
+			"title": "AI memory",
+			"subtitle": "Short facts AI keeps in mind when it answers, such as \"Our release day is Thursday\".",
+			"scopes": {
+				"workspace": "Workspace",
+				"project": "Project",
+				"user": "Personal"
+			},
+			"scopeHints": {
+				"workspace": "Used for everyone in the workspace. AI admins edit them.",
+				"project": "Used in one project. AI admins edit them.",
+				"user": "Used only for you and visible only to you."
+			},
+			"project": "Project",
+			"newNote": "New note",
+			"placeholder": "Our release day is Thursday.",
+			"add": "Add note",
+			"save": "Save note",
+			"editNote": "Edit note",
+			"deleteNote": "Delete note",
+			"saved": "Note saved",
+			"deleted": "Note deleted",
+			"saveError": "Couldn't save the note",
+			"empty": "No notes yet.",
+			"loadError": "Couldn't load the notes.",
+			"adminsOnly": "Only AI admins can add notes here.",
+			"noAccess": "You need permission to use AI in this workspace."
+		}
+	},
+	"insight": {
+		"close": "Close",
+		"retry": "Retry",
+		"stop": "Stop",
+		"writing": "Writing…",
+		"days_one": "{{count}} day",
+		"days_other": "{{count}} days",
+		"estimate": {
+			"usually": "Similar tasks were usually {{value}}",
+			"took_one": "{{count}} similar task took {{min}}–{{max}} days (median {{median}})",
+			"took_other": "{{count}} similar tasks took {{min}}–{{max}} days (median {{median}})",
+			"basedOn_one": "Based on {{count}} similar finished task",
+			"basedOn_other": "Based on {{count}} similar finished tasks",
+			"use": "Use {{value}}",
+			"why": "Why?",
+			"similar": "Similar tasks"
+		},
+		"calibration": {
+			"title": "Estimate calibration",
+			"description": "How long tasks of each size really took, from first start to done, over the last {{days}} days.",
+			"empty": "No finished, estimated tasks with a recorded start yet.",
+			"estimate": "Estimate",
+			"tasks": "Tasks",
+			"actual": "Actual time",
+			"range": "median {{median}} d ({{low}}–{{high}})",
+			"ordered": "Bigger estimates took longer, as they should.",
+			"notOrdered": "Bigger estimates did not always take longer: worth a look at how the team sizes work.",
+			"fewSamples": "More finished tasks are needed to compare sizes.",
+			"unmeasured_one": "{{count}} task has no recorded start and is left out.",
+			"unmeasured_other": "{{count}} tasks have no recorded start and are left out."
+		},
+		"capacity": {
+			"meter": "Planned work compared with a usual cycle",
+			"within": "Planned at {{percent}}% of a usual cycle",
+			"over": "Over capacity: planned at {{percent}}% of a usual cycle",
+			"noDates": "Set the cycle's dates to check its capacity.",
+			"noHistory": "Capacity appears once the team has finished work in earlier cycles.",
+			"details": "Capacity details",
+			"compare": "{{load}} planned; a usual cycle holds {{typical}} (range {{low}}–{{high}}).",
+			"tasks_one": "{{count}} task",
+			"tasks_other": "{{count}} tasks",
+			"points_one": "{{count}} point",
+			"points_other": "{{count}} points",
+			"basisCycles_one": "Based on what the team finished in the last ended cycle, scaled to this cycle's length.",
+			"basisCycles_other": "Based on what the team finished in the last {{count}} ended cycles, scaled to this cycle's length.",
+			"basisThroughput": "Based on the tasks the project finished per stretch of this cycle's length over the last 8 weeks.",
+			"deferTitle": "Could move to a later cycle",
+			"blocks_one": "blocks {{count}}",
+			"blocks_other": "blocks {{count}}",
+			"membersTitle": "Load per person",
+			"memberLoad": "{{load}} · usually {{typical}}",
+			"membersNote": "Load against each person's own usual pace, to balance work. Not a performance measure.",
+			"unassigned": "Unassigned"
+		},
+		"retro": {
+			"button": "Retro",
+			"buttonLabel": "Prepare a retrospective",
+			"title": "Retrospective",
+			"factsTitle": "What happened",
+			"factsSoFar": "What happened so far",
+			"factsNote": "These facts come from Margaya's records, not from the AI. They describe the team's work, never a person.",
+			"error": "Couldn't load the facts for this cycle.",
+			"aiIntro": "Let AI write a short narrative and discussion questions from these facts.",
+			"write": "Write narrative",
+			"rewrite": "Write again",
+			"edit": "Edit",
+			"preview": "Preview",
+			"editLabel": "Retrospective narrative",
+			"saveAsPage": "Save as page",
+			"saveWithNarrative": "Saves the facts, the narrative and sections for the team.",
+			"saveFactsOnly": "Saves the facts and sections for the team to fill in.",
+			"saved": "Retrospective saved as a page",
+			"saveError": "Couldn't save the page.",
+			"openPage": "Open page",
+			"pageTitle": "Retrospective: {{name}}",
+			"more_one": "and {{count}} more",
+			"more_other": "and {{count}} more",
+			"facts": {
+				"sayDo_one": "{{done}} of {{count}} committed task done ({{percent}}%)",
+				"sayDo_other": "{{done}} of {{count}} committed tasks done ({{percent}}%)",
+				"sayDoNone": "Nothing was committed at the start",
+				"scope": "Scope change: {{added}} added, {{removed}} removed during the cycle",
+				"carry": "Carry-over: {{carried}} moved to another cycle, {{open}} left open",
+				"reopened_one": "{{count}} task reopened after it was done",
+				"reopened_other": "{{count}} tasks reopened after they were done",
+				"points": "Estimate points: {{completed}} of {{committed}} done",
+				"cycleTime": "Cycle time: median {{median}} days",
+				"cycleTimeOutliers_one": "Cycle time: median {{median}} days; {{count}} task took over {{threshold}} days",
+				"cycleTimeOutliers_other": "Cycle time: median {{median}} days; {{count}} tasks took over {{threshold}} days",
+				"cycleTimeNone": "Cycle time: not measured",
+				"blocked_one": "{{count}} task was blocked by another",
+				"blocked_other": "{{count}} tasks were blocked by others",
+				"forecastNone": "Forecast: none was saved for this cycle",
+				"forecastOpen": "Forecast: 85% likely done by {{date}}",
+				"forecastMet": "Forecast: 85% likely done by {{date}}, and it held",
+				"forecastMissed": "Forecast: 85% likely done by {{date}}, and it did not hold"
+			},
+			"lists": {
+				"added": "Added during the cycle",
+				"carriedOver": "Carried over",
+				"leftOpen": "Left open",
+				"outliers": "Took much longer than usual",
+				"blocked": "Blocked"
+			},
+			"page": {
+				"facts": "Facts",
+				"wentWell": "What went well",
+				"improve": "What to improve",
+				"actions": "Actions"
+			}
+		},
+		"myBrief": {
+			"title": "My brief",
+			"empty": "Nothing needs you today.",
+			"error": "Couldn't load your brief.",
+			"summarize": "Summarize",
+			"overdue": "Overdue · {{total}}",
+			"dueToday": "Due today · {{total}}",
+			"blocked": "Blocked · {{total}}",
+			"mentions": "Mentions · {{total}}",
+			"following": "Changes on tasks you follow · {{total}}",
+			"waitingOn": "Waiting on {{keys}}",
+			"hiddenBlockers_one": "{{count}} hidden task",
+			"hiddenBlockers_other": "{{count}} hidden tasks",
+			"mentionedBy": "by {{name}}",
+			"mentioned": "mentioned you",
+			"more_one": "and {{count}} more",
+			"more_other": "and {{count}} more",
+			"kinds": {
+				"status": "status",
+				"comment": "comments",
+				"assignee": "assignees",
+				"priority": "priority",
+				"due_date": "due date",
+				"other": "other updates"
+			},
+			"emailTitle": "Add My brief to the digest",
+			"emailDescription": "Your digest also lists your blocked tasks and changes on tasks you follow. Needs a daily or weekly digest.",
+			"emailError": "Couldn't save this setting."
 		}
 	}
 }
