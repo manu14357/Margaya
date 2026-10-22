@@ -358,7 +358,7 @@ export function DemoStage<S, A>({
       <p className="sr-only">{description}</p>
       <div
         ref={frameRef}
-        className="relative isolate w-full overflow-hidden rounded-xl border border-border bg-background shadow-black/5 shadow-xl dark:shadow-black/30"
+        className="relative isolate w-full overflow-hidden rounded-xl border border-border bg-background shadow-xs"
         style={{ aspectRatio: `${design.width} / ${design.height}` }}
       >
         {/* The canvas is laid out at the design size and scaled to fit. */}

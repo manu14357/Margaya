@@ -14,7 +14,9 @@ type QuestionKey =
   | "cost"
   | "languages"
   | "jira"
-  | "api";
+  | "api"
+  | "ai"
+  | "aiData";
 
 const QUESTIONS: QuestionKey[] = [
   "selfHost",
@@ -25,6 +27,8 @@ const QUESTIONS: QuestionKey[] = [
   "languages",
   "jira",
   "api",
+  "ai",
+  "aiData",
 ];
 
 /**

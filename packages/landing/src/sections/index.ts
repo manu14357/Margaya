@@ -1,3 +1,4 @@
+export { AiSection } from "./ai-section";
 export { AutomateSection } from "./automate-section";
 export { DocsSection } from "./docs-section";
 export { FactsStrip } from "./facts-strip";
@@ -18,7 +19,12 @@ export {
 } from "./prefs-controls";
 export { PricingSection } from "./pricing-section";
 export { PublicBoardsSection } from "./public-boards-section";
-export { LandingSection, type SectionCopy, SectionStub } from "./section";
+export {
+  LandingSection,
+  LandingSectionDetail,
+  type SectionCopy,
+  SectionStub,
+} from "./section";
 export { TriageSection } from "./triage-section";
 export { ViewsSection } from "./views-section";
 export { YourDaySection } from "./your-day-section";

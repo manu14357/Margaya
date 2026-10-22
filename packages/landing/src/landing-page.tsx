@@ -9,6 +9,7 @@ import {
 } from "./links";
 import { type LandingPrefs, LandingPrefsProvider } from "./prefs";
 import {
+  AiSection,
   AutomateSection,
   DocsSection,
   FactsStrip,
@@ -72,6 +73,7 @@ export function LandingPage({ chrome = true }: { chrome?: boolean }) {
         <HeroSection />
         <FactsStrip />
         <ViewsSection />
+        <AiSection />
         <PlanSection />
         <TriageSection />
         <DocsSection />

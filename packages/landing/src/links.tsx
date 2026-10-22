@@ -25,6 +25,7 @@ export type LandingLinks = {
   features: {
     plan: string;
     views: string;
+    ai: string;
     docs: string;
     automate: string;
     selfHost: string;

@@ -168,19 +168,20 @@ Rules:
 2. Hero
 3. Facts strip
 4. Views
-5. Plan
-6. Triage
-7. Docs
-8. Your day
-9. Insight
-10. Automate
-11. Public boards
-12. Keyboard
-13. Own it
-14. Pricing
-15. FAQ
-16. Final CTA
-17. Footer
+5. AI
+6. Plan
+7. Triage
+8. Docs
+9. Your day
+10. Insight
+11. Automate
+12. Public boards
+13. Keyboard
+14. Own it
+15. Pricing
+16. FAQ
+17. Final CTA
+18. Footer
 
 Each section is one file in `src/sections/`. Stubs render `SectionStub` and
 say `STUB. Owner: Lx`. When you replace a stub, keep its export name and

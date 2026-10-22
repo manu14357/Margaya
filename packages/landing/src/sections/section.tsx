@@ -11,8 +11,9 @@ export type SectionCopy = {
 };
 
 /**
- * The frame every home section uses: an anchor id, the eyebrow, title and
- * description, then the section's own content.
+ * The frame every landing section uses: an anchor id, a quiet eyebrow, the
+ * title and one line of description, then the section's own content. Every
+ * section shares the same rhythm, so pages read as one calm column.
  */
 export function LandingSection({
   id,
@@ -33,7 +34,7 @@ export function LandingSection({
     <section
       id={id}
       aria-labelledby={titleId}
-      className={cn("scroll-mt-20 px-6 py-20 md:py-28", className)}
+      className={cn("scroll-mt-20 px-4 py-20 sm:px-6 md:py-28", className)}
     >
       <div className="mx-auto w-full max-w-6xl">
         <header
@@ -43,25 +44,53 @@ export function LandingSection({
           )}
         >
           {copy.eyebrow && (
-            <p className="font-medium text-muted-foreground text-sm">
+            <p className="mb-3 font-medium text-muted-foreground text-sm">
               {copy.eyebrow}
             </p>
           )}
           <h2
             id={titleId}
-            className="mt-2 text-balance font-medium text-3xl leading-tight md:text-4xl"
+            className="text-balance font-medium text-3xl leading-[1.15] tracking-[-0.02em] md:text-[2.5rem]"
           >
             {copy.title}
           </h2>
           {copy.description && (
-            <p className="mt-4 text-balance text-lg text-muted-foreground leading-relaxed">
+            <p className="mt-4 text-pretty text-base text-muted-foreground leading-relaxed md:text-lg">
               {copy.description}
             </p>
           )}
         </header>
-        {children && <div className="mt-12">{children}</div>}
+        {children && <div className="mt-10 md:mt-14">{children}</div>}
       </div>
     </section>
+  );
+}
+
+/**
+ * A secondary point inside a section: a small heading and one line, then
+ * its own content (a preview, a list). Sits beside a screen.
+ */
+export function LandingSectionDetail({
+  title,
+  description,
+  children,
+  className,
+}: {
+  title: string;
+  description?: string;
+  children?: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={className}>
+      <h3 className="font-medium text-base text-foreground">{title}</h3>
+      {description && (
+        <p className="mt-2 text-pretty text-muted-foreground text-sm leading-relaxed">
+          {description}
+        </p>
+      )}
+      {children && <div className="mt-5">{children}</div>}
+    </div>
   );
 }
 
@@ -85,7 +114,7 @@ export function SectionStub({
     <LandingSection id={id} copy={copy}>
       <div
         data-stub={owner}
-        className="flex aspect-[16/7] w-full items-center justify-center rounded-xl border border-border border-dashed bg-muted/30 text-muted-foreground text-sm"
+        className="flex aspect-[16/7] w-full items-center justify-center rounded-xl border border-border border-dashed text-muted-foreground text-sm"
       >
         {placeholder}
       </div>

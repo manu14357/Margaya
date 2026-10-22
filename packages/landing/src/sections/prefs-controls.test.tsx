@@ -28,6 +28,7 @@ const links: LandingLinks = {
   features: {
     plan: "/features/plan",
     views: "/features/views",
+    ai: "/features/ai",
     docs: "/features/docs",
     automate: "/features/automate",
     selfHost: "/features/self-host",

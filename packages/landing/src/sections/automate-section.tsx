@@ -15,7 +15,7 @@ export function AutomateSection() {
   const copy = useLandingCopy().home.automate;
   return (
     <LandingSection id="automate" copy={copy}>
-      <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-8">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-8">
         <LazyMount className="aspect-[19/14]">
           <IntegrationsDemo />
         </LazyMount>

@@ -1,4 +1,11 @@
-export { Avatar, type AvatarSize, AvatarStack, initials } from "./avatar";
+export {
+  Avatar,
+  type AvatarSize,
+  AvatarStack,
+  identityColor,
+  identityTileStyle,
+  initials,
+} from "./avatar";
 export { Board, BoardColumn, CaptureBar } from "./board";
 export { ReplicaCheckbox } from "./checkbox";
 export {
@@ -11,10 +18,15 @@ export {
   LabelDot,
   type Priority,
   PriorityChip,
+  PriorityDot,
   PriorityIcon,
+  STATUS_HUE,
   StatusChip,
+  StatusDot,
+  type StatusHue,
   StatusIcon,
   type StatusId,
+  statusToneStyle,
   TokenChip,
 } from "./chips";
 export {
@@ -49,7 +61,13 @@ export {
   WorkspaceTile,
 } from "./shell";
 export { TaskCard, type TaskCardProps } from "./task-card";
-export { TaskListGroup, TaskListRow } from "./task-list-row";
+export {
+  LIST_GROUP_HEADER,
+  ListGroupCount,
+  listGroupStyle,
+  TaskListGroup,
+  TaskListRow,
+} from "./task-list-row";
 export { PropertyValue, type SheetProperty, TaskSheet } from "./task-sheet";
 export { ReplicaToast } from "./toast";
 export { LayoutToggle, ViewChoice, viewChoiceClass } from "./view-choice";

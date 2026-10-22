@@ -13,12 +13,11 @@ const FOCUS =
   "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background";
 
 /**
- * The public footer, in three bands: a quiet mission strip, with no buttons
- * because most pages end with their own call to action just above it; the
- * link columns (Product, Compare, Resources, Company); and a bottom bar with
- * the copyright, the self-hosting note and compact language and theme
- * controls (when the host provides `LandingPrefs`). Site-only pages
- * come from `links.site`; a link the host does not give is left out, and a
+ * The public footer, in two bands: the logo with a short mission beside the
+ * link columns (Product, Compare, Resources, Company), then a bottom bar
+ * with the copyright, the self-hosting note and compact language and theme
+ * controls (when the host provides `LandingPrefs`). Site-only pages come
+ * from `links.site`; a link the host does not give is left out, and a
  * column with no links is dropped.
  */
 export function LandingFooter() {
@@ -35,6 +34,7 @@ export function LandingFooter() {
       links: [
         { label: nav.items.plan.title, href: links.features.plan },
         { label: nav.items.views.title, href: links.features.views },
+        { label: nav.items.ai.title, href: links.features.ai },
         { label: nav.items.docs.title, href: links.features.docs },
         { label: nav.items.automate.title, href: links.features.automate },
         { label: nav.items.selfHost.title, href: links.features.selfHost },
@@ -91,44 +91,34 @@ export function LandingFooter() {
     .filter((column) => column.links.length > 0);
 
   return (
-    <footer className="border-border border-t bg-sidebar">
-      <div className="px-4 pt-14 pb-12 md:px-6 md:pt-16">
-        <div className="mx-auto grid w-full max-w-6xl gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-12">
+    <footer className="border-border border-t px-4 sm:px-6">
+      <div className="mx-auto grid w-full max-w-6xl gap-10 py-14 md:grid-cols-[minmax(0,2fr)_minmax(0,5fr)] md:gap-12 md:py-16">
+        <div className="flex flex-col items-start">
           <LandingLink
             href={links.home}
             aria-label={nav.home}
-            className={cn("inline-flex self-start rounded-sm", FOCUS)}
+            className={cn("inline-flex rounded-sm", FOCUS)}
           >
             <LandingLogo />
           </LandingLink>
-          <div>
-            <p className="max-w-2xl text-balance font-medium text-2xl text-foreground leading-snug tracking-tight md:text-3xl">
-              {footer.mission}
-            </p>
-            <p className="mt-3 max-w-xl text-balance text-muted-foreground leading-relaxed">
-              {footer.missionNote}
-            </p>
-          </div>
+          <p className="mt-5 max-w-xs text-pretty text-foreground text-sm leading-relaxed">
+            {footer.mission}
+          </p>
+          <p className="mt-2 max-w-xs text-pretty text-muted-foreground text-sm leading-relaxed">
+            {footer.missionNote}
+          </p>
         </div>
-      </div>
 
-      <div className="border-border border-t px-4 md:px-6">
         <nav
           aria-label={footer.label}
-          className="mx-auto grid w-full max-w-6xl grid-cols-2 gap-x-6 gap-y-10 py-12 md:grid-cols-4 md:gap-x-0"
+          className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4"
         >
-          {visibleColumns.map((column, index) => (
-            <div
-              key={column.key}
-              className="min-w-0 md:border-border md:border-l md:px-6 md:first:border-l-0 md:first:pl-0"
-            >
-              <h2 className="flex items-baseline gap-2 font-medium text-muted-foreground text-xs uppercase tracking-[0.08em]">
-                <span aria-hidden className="font-mono text-foreground/40">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
+          {visibleColumns.map((column) => (
+            <div key={column.key} className="min-w-0">
+              <h2 className="font-medium text-foreground text-sm">
                 {column.title}
               </h2>
-              <ul className="mt-4 flex flex-col gap-0.5">
+              <ul className="mt-3 flex flex-col gap-0.5">
                 {column.links.map((link) => (
                   <li key={link.label}>
                     <LandingLink
@@ -137,17 +127,14 @@ export function LandingFooter() {
                         ? { target: "_blank", rel: "noreferrer" }
                         : {})}
                       className={cn(
-                        "group inline-flex min-h-8 items-center gap-1 rounded-sm text-foreground/80 text-sm transition-colors hover:text-foreground",
+                        "inline-flex min-h-8 items-center gap-1 rounded-sm text-muted-foreground text-sm transition-colors hover:text-foreground",
                         FOCUS,
                       )}
                     >
                       {link.label}
                       {link.external && (
                         <>
-                          <ArrowUpRight
-                            aria-hidden
-                            className="size-3.5 text-muted-foreground transition-transform group-hover:-translate-y-px group-hover:translate-x-px motion-reduce:transition-none"
-                          />
+                          <ArrowUpRight aria-hidden className="size-3.5" />
                           <span className="sr-only">{nav.newTab}</span>
                         </>
                       )}
@@ -160,24 +147,20 @@ export function LandingFooter() {
         </nav>
       </div>
 
-      <div className="border-border border-t px-4 md:px-6">
-        <div className="mx-auto flex w-full max-w-6xl flex-col-reverse gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-muted-foreground text-xs">
-            <span suppressHydrationWarning>
-              {fill(footer.copyright, { year: new Date().getFullYear() })}
-            </span>
-            <span aria-hidden className="text-foreground/20">
-              /
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <Server aria-hidden className="size-3.5" />
-              {footer.selfHosted}
-            </span>
-          </p>
-          <div className="flex flex-wrap items-center gap-3">
-            <LandingLanguageSelect compact />
-            <LandingThemeSwitch compact />
-          </div>
+      <div className="mx-auto flex w-full max-w-6xl flex-col-reverse gap-3 border-border border-t py-5 sm:flex-row sm:items-center sm:justify-between">
+        <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-muted-foreground text-xs">
+          <span suppressHydrationWarning>
+            {fill(footer.copyright, { year: new Date().getFullYear() })}
+          </span>
+          <span aria-hidden>·</span>
+          <span className="inline-flex items-center gap-1.5">
+            <Server aria-hidden className="size-3.5" />
+            {footer.selfHosted}
+          </span>
+        </p>
+        <div className="flex flex-wrap items-center gap-3">
+          <LandingLanguageSelect compact />
+          <LandingThemeSwitch compact />
         </div>
       </div>
     </footer>

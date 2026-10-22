@@ -22,6 +22,7 @@ const GROUPS: { id: keyof KeyboardCopy["groups"]; shortcuts: Shortcut[] }[] = [
       { id: "panel", keys: ["mod", "B"] },
       { id: "inbox", keys: ["N", "I"], sequence: true },
       { id: "help", keys: ["?"] },
+      { id: "ask", keys: ["mod", "J"] },
     ],
   },
   {
@@ -83,7 +84,7 @@ export function KeyboardSection() {
       <LazyMount className="aspect-[1280/760]">
         <CommandPaletteDemo />
       </LazyMount>
-      <section aria-label={copy.shortcutsLabel} className="mt-14">
+      <section aria-label={copy.shortcutsLabel} className="mt-12">
         <div className="grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
           {GROUPS.map((group) => (
             <div key={group.id}>

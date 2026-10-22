@@ -14,7 +14,7 @@ import {
   Search,
   X,
 } from "lucide-react";
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps, CSSProperties, ReactNode } from "react";
 import { cn } from "../lib/cn";
 
 /*
@@ -32,15 +32,68 @@ const STATUS_ICON: Record<StatusId, LucideIcon> = {
   done: CircleCheck,
 };
 
+/*
+ * The app's semantic status hues (`--status-*`). Icons take their column
+ * group's hue, so "In review" (a started column) shares the started hue; dots,
+ * bars and chips give a second started column the review hue, like the app.
+ */
 const STATUS_TONE: Record<StatusId, string> = {
-  backlog: "text-muted-foreground",
-  todo: "text-info-foreground",
-  inProgress: "text-warning-foreground",
-  inReview: "text-warning-foreground",
-  done: "text-success-foreground",
+  backlog: "text-(--status-backlog)",
+  todo: "text-(--status-unstarted)",
+  inProgress: "text-(--status-started)",
+  inReview: "text-(--status-started)",
+  done: "text-(--status-completed)",
 };
 
-/** A status glyph. Muted like the board headers, or `colored` by group. */
+export type StatusHue =
+  | "backlog"
+  | "unstarted"
+  | "started"
+  | "review"
+  | "completed"
+  | "cancelled";
+
+/** The hue of a status's dot, bar or chip. */
+export const STATUS_HUE: Record<StatusId, StatusHue> = {
+  backlog: "backlog",
+  todo: "unstarted",
+  inProgress: "started",
+  inReview: "review",
+  done: "completed",
+};
+
+/**
+ * `--tone` (solid), `--tone-tint` (surface) and `--tone-fg` (text on the
+ * tint) for a status, as the app's calendar and gantt set them.
+ */
+export function statusToneStyle(status: StatusId): CSSProperties {
+  const hue = STATUS_HUE[status];
+  return {
+    "--tone": `var(--status-${hue})`,
+    "--tone-tint": `var(--status-${hue}-tint)`,
+    "--tone-fg": `var(--status-${hue}-fg)`,
+  } as CSSProperties;
+}
+
+/** The board header's 8px status dot: the board's only colour. */
+export function StatusDot({
+  status,
+  className,
+}: {
+  status: StatusId;
+  className?: string;
+}) {
+  return (
+    <span
+      aria-hidden
+      data-status-dot={STATUS_HUE[status]}
+      className={cn("mx-0.5 size-2 shrink-0 rounded-full", className)}
+      style={{ backgroundColor: `var(--status-${STATUS_HUE[status]})` }}
+    />
+  );
+}
+
+/** A status glyph. Muted, or `colored` by its group's hue. */
 export function StatusIcon({
   status,
   colored = false,
@@ -88,7 +141,7 @@ export function StatusChip({
 
 export type Priority = "none" | "low" | "medium" | "high" | "urgent";
 
-/** The app's priority glyphs and colours. */
+/** The app's priority glyphs in their `--priority-*` hues. */
 export function PriorityIcon({
   priority,
   className,
@@ -102,35 +155,54 @@ export function PriorityIcon({
       return (
         <CircleAlert
           aria-hidden
-          className={cn(classes, "text-destructive-foreground")}
+          className={cn(classes, "text-(--priority-urgent)")}
         />
       );
     case "high":
       return (
         <ChevronsUp
           aria-hidden
-          className={cn(classes, "text-warning-foreground")}
+          className={cn(classes, "text-(--priority-high)")}
         />
       );
     case "medium":
       return (
         <ChevronUp
           aria-hidden
-          className={cn(classes, "text-warning-foreground/80")}
+          className={cn(classes, "text-(--priority-medium)")}
         />
       );
     case "low":
       return (
         <ChevronDown
           aria-hidden
-          className={cn(classes, "text-info-foreground/85")}
+          className={cn(classes, "text-(--priority-low)")}
         />
       );
     default:
       return (
-        <Minus aria-hidden className={cn(classes, "text-muted-foreground")} />
+        <Minus aria-hidden className={cn(classes, "text-(--priority-none)")} />
       );
   }
+}
+
+/** A small dot in the priority's hue, as on gantt bars and calendar chips. */
+export function PriorityDot({
+  priority,
+  className,
+}: {
+  priority: Priority;
+  className?: string;
+}) {
+  if (priority === "none") return null;
+  return (
+    <span
+      aria-hidden
+      data-priority={priority}
+      className={cn("size-1.5 shrink-0 rounded-full", className)}
+      style={{ backgroundColor: `var(--priority-${priority})` }}
+    />
+  );
 }
 
 /** The small priority box on a board card. */

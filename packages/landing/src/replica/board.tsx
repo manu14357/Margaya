@@ -1,7 +1,7 @@
 import { CornerDownLeft, Maximize2, Plus } from "lucide-react";
 import type { ChangeEvent, KeyboardEvent, ReactNode } from "react";
 import { cn } from "../lib/cn";
-import { StatusIcon, type StatusId } from "./chips";
+import { StatusDot, type StatusId } from "./chips";
 
 /** The board canvas: columns side by side. */
 export function Board({
@@ -18,7 +18,10 @@ export function Board({
   );
 }
 
-/** One status column: header, cards, and an optional capture bar. */
+/**
+ * One status column: header, cards, and an optional capture bar. Neutral like
+ * the app's board: the header's status dot is its only colour.
+ */
 export function BoardColumn({
   status,
   title,
@@ -52,7 +55,7 @@ export function BoardColumn({
     >
       <div className="shrink-0 px-2 pt-1.5 pb-1">
         <div className="flex h-7 items-center gap-1.5">
-          <StatusIcon status={status} />
+          <StatusDot status={status} />
           <h3 className="truncate font-medium text-[13px] text-foreground">
             {title}
           </h3>

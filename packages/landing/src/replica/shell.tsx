@@ -21,10 +21,10 @@ import {
   SquircleDashed,
   UserRoundCheck,
 } from "lucide-react";
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps, CSSProperties, ReactNode } from "react";
 import { useLandingCopy } from "../copy";
 import { cn } from "../lib/cn";
-import { Avatar, initials } from "./avatar";
+import { Avatar, identityColor, initials } from "./avatar";
 import { Kbd } from "./chips";
 
 /*
@@ -73,6 +73,17 @@ export type RailDestination =
   | "analytics"
   | "settings";
 
+/** Each destination's area hue (`--area-*`): the icon wears it. */
+const AREA: Record<RailDestination, string> = {
+  home: "var(--area-home)",
+  inbox: "var(--area-inbox)",
+  myWork: "var(--area-work)",
+  projects: "var(--area-projects)",
+  pages: "var(--area-pages)",
+  analytics: "var(--area-analytics)",
+  settings: "var(--area-settings)",
+};
+
 const RAIL: { id: Exclude<RailDestination, "settings">; icon: LucideIcon }[] = [
   { id: "home", icon: House },
   { id: "inbox", icon: Inbox },
@@ -99,6 +110,7 @@ function RailItem({
     <span
       data-demo={`rail-${id}`}
       aria-current={active ? "page" : undefined}
+      style={{ "--rail-area": AREA[id] } as CSSProperties}
       className={cn(
         "relative flex w-14 flex-col items-center gap-0.5 rounded-lg py-1 font-medium text-[11px] leading-3",
         active ? "text-sidebar-accent-foreground" : "text-sidebar-foreground",
@@ -112,13 +124,17 @@ function RailItem({
       )}
       <span
         className={cn(
-          "relative flex h-7 w-9 items-center justify-center rounded-full",
-          active && "bg-sidebar-accent",
+          "relative flex h-7 w-9 items-center justify-center rounded-full text-(--rail-area)",
+          active && "bg-[color-mix(in_oklab,var(--rail-area)_16%,transparent)]",
         )}
       >
-        <Icon aria-hidden strokeWidth={1.75} className="size-[18px]" />
+        <Icon
+          aria-hidden
+          strokeWidth={active ? 2 : 1.75}
+          className="size-[18px]"
+        />
         {badge ? (
-          <span className="absolute -top-1 -right-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 font-semibold text-[10px] text-primary-foreground tabular-nums leading-none ring-2 ring-sidebar">
+          <span className="absolute -top-1 -right-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 font-semibold text-[10px] text-background tabular-nums leading-none ring-2 ring-sidebar">
             {badge}
           </span>
         ) : null}
@@ -295,23 +311,34 @@ export function PanelCount({ count }: { count: number | string }) {
   );
 }
 
-/** A project's icon on a small squircle tile. */
+/**
+ * A project's icon on a small squircle tile, tinted with the project's
+ * identity hue (hashed from `seed`) or the projects area hue, like the app.
+ */
 export function ProjectTile({
   icon: Icon = FolderKanban,
+  seed,
   className,
 }: {
   icon?: LucideIcon;
+  seed?: string;
   className?: string;
 }) {
+  const color = seed ? identityColor(seed) : "var(--area-projects)";
   return (
     <span
       aria-hidden
       className={cn(
-        "flex size-4.5 shrink-0 items-center justify-center rounded-[28%] border border-border/80 bg-background text-foreground/75",
+        "flex size-4.5 shrink-0 items-center justify-center rounded-[28%] border [&>svg]:size-[66%]",
         className,
       )}
+      style={{
+        backgroundColor: `color-mix(in oklab, ${color} 14%, var(--card))`,
+        borderColor: `color-mix(in oklab, ${color} 28%, transparent)`,
+        color,
+      }}
     >
-      <Icon className="size-3" />
+      <Icon />
     </span>
   );
 }
@@ -409,7 +436,7 @@ export function ViewTabs({
             {id === active && (
               <span
                 aria-hidden
-                className="absolute inset-x-1 -bottom-px h-0.5 rounded-full bg-foreground"
+                className="absolute inset-x-1 -bottom-px h-0.5 rounded-full bg-primary"
               />
             )}
           </span>

@@ -8,6 +8,7 @@ import {
   type LucideIcon,
   Menu,
   Server,
+  Sparkles,
   Target,
   Workflow,
   X,
@@ -26,11 +27,12 @@ import {
   LandingThemeSwitch,
 } from "./prefs-controls";
 
-type FeatureKey = "plan" | "views" | "docs" | "automate" | "selfHost";
+type FeatureKey = "plan" | "views" | "ai" | "docs" | "automate" | "selfHost";
 
 const FEATURES: { key: FeatureKey; icon: LucideIcon }[] = [
   { key: "plan", icon: Target },
   { key: "views", icon: LayoutGrid },
+  { key: "ai", icon: Sparkles },
   { key: "docs", icon: FileText },
   { key: "automate", icon: Workflow },
   { key: "selfHost", icon: Server },
@@ -111,7 +113,7 @@ function FeaturesMenu() {
       <div
         id={panelId}
         hidden={!open}
-        className="absolute top-full left-0 z-50 mt-3 w-[36rem] rounded-2xl border border-border bg-popover p-2 text-popover-foreground shadow-xl"
+        className="absolute top-full left-0 z-50 mt-3 w-[36rem] rounded-xl border border-border bg-popover p-2 text-popover-foreground shadow-lg/5"
       >
         <ul className="grid grid-cols-2 gap-1">
           {FEATURES.map(({ key, icon: Icon }) => (
@@ -120,7 +122,7 @@ function FeaturesMenu() {
                 href={links.features[key]}
                 onClick={() => setOpen(false)}
                 className={cn(
-                  "group flex h-full items-start gap-3 rounded-xl p-3 transition-colors hover:bg-accent",
+                  "group flex h-full items-start gap-3 rounded-lg p-3 transition-colors hover:bg-accent",
                   FOCUS,
                 )}
               >
@@ -138,7 +140,7 @@ function FeaturesMenu() {
               </LandingLink>
             </li>
           ))}
-          <li className="flex items-end rounded-xl bg-muted p-3 text-muted-foreground text-xs leading-relaxed">
+          <li className="flex items-end p-3 text-muted-foreground text-xs leading-relaxed">
             {nav.featuresIntro}
           </li>
         </ul>
@@ -185,102 +187,104 @@ function MobileMenu({
     <div
       id={id}
       hidden={!open}
-      className="absolute inset-x-0 top-full z-50 mt-2 max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-2xl border border-border bg-popover px-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-popover-foreground shadow-xl lg:hidden"
+      className="absolute inset-x-0 top-full z-50 max-h-[calc(100dvh-4rem)] overflow-y-auto border-border border-b bg-background px-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-foreground shadow-lg/5 sm:px-6 lg:hidden"
     >
-      <nav aria-label={nav.menu}>
-        <p className="pt-4 pb-1 font-medium text-muted-foreground text-xs">
-          {nav.features}
-        </p>
-        <ul className="grid gap-x-4 sm:grid-cols-2">
-          {FEATURES.map(({ key, icon: Icon }) => (
-            <li key={key}>
+      <div className="mx-auto w-full max-w-6xl">
+        <nav aria-label={nav.menu}>
+          <p className="pt-4 pb-1 font-medium text-muted-foreground text-xs">
+            {nav.features}
+          </p>
+          <ul className="grid gap-x-4 sm:grid-cols-2">
+            {FEATURES.map(({ key, icon: Icon }) => (
+              <li key={key}>
+                <LandingLink
+                  href={links.features[key]}
+                  onClick={onClose}
+                  className={cn(
+                    "flex min-h-12 items-center gap-3 rounded-md px-1 text-sm",
+                    FOCUS,
+                  )}
+                >
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground">
+                    <Icon aria-hidden className="size-4" />
+                  </span>
+                  {nav.items[key].title}
+                </LandingLink>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-3 border-border border-t pt-4 pb-1 font-medium text-muted-foreground text-xs">
+            {nav.explore}
+          </p>
+          <ul>
+            {items.map((item) => (
+              <li key={item.label}>
+                <LandingLink
+                  href={item.href ?? ""}
+                  onClick={onClose}
+                  className={rowLink}
+                >
+                  {item.label}
+                </LandingLink>
+              </li>
+            ))}
+            <li>
               <LandingLink
-                href={links.features[key]}
+                href={links.github}
                 onClick={onClose}
-                className={cn(
-                  "flex min-h-12 items-center gap-3 rounded-md px-1 text-sm",
-                  FOCUS,
-                )}
-              >
-                <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground">
-                  <Icon aria-hidden className="size-4" />
-                </span>
-                {nav.items[key].title}
-              </LandingLink>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-3 border-border border-t pt-4 pb-1 font-medium text-muted-foreground text-xs">
-          {nav.explore}
-        </p>
-        <ul>
-          {items.map((item) => (
-            <li key={item.label}>
-              <LandingLink
-                href={item.href ?? ""}
-                onClick={onClose}
+                target="_blank"
+                rel="noreferrer"
                 className={rowLink}
               >
-                {item.label}
+                <span>
+                  {nav.github}
+                  <span className="sr-only"> {nav.newTab}</span>
+                </span>
+                <ArrowUpRight
+                  aria-hidden
+                  className="size-4 text-muted-foreground"
+                />
               </LandingLink>
             </li>
-          ))}
-          <li>
-            <LandingLink
-              href={links.github}
-              onClick={onClose}
-              target="_blank"
-              rel="noreferrer"
-              className={rowLink}
-            >
-              <span>
-                {nav.github}
-                <span className="sr-only"> {nav.newTab}</span>
-              </span>
-              <ArrowUpRight
-                aria-hidden
-                className="size-4 text-muted-foreground"
-              />
-            </LandingLink>
-          </li>
-        </ul>
-      </nav>
-      {prefs && (
-        <section
-          aria-label={copy.prefs.label}
-          className="mt-3 flex flex-col gap-4 border-border border-t pt-4"
-        >
-          {hasLanguageChoice(prefs) && <LandingLanguageSelect />}
-          <LandingThemeSwitch />
-        </section>
-      )}
-      <div
-        className={`mt-4 grid gap-3 border-border border-t pt-4 ${links.signIn ? "grid-cols-2" : "grid-cols-1"}`}
-      >
-        {links.signIn && (
-          <LandingButton
-            href={links.signIn}
-            variant="outline"
-            size="md"
-            className="h-11"
+          </ul>
+        </nav>
+        {prefs && (
+          <section
+            aria-label={copy.prefs.label}
+            className="mt-3 flex flex-col gap-4 border-border border-t pt-4"
           >
-            {nav.signIn}
-          </LandingButton>
+            {hasLanguageChoice(prefs) && <LandingLanguageSelect />}
+            <LandingThemeSwitch />
+          </section>
         )}
-        <LandingButton href={links.signUp} size="md" className="h-11">
-          {nav.getStarted}
-        </LandingButton>
+        <div
+          className={`mt-4 grid gap-3 border-border border-t pt-4 ${links.signIn ? "grid-cols-2" : "grid-cols-1"}`}
+        >
+          {links.signIn && (
+            <LandingButton
+              href={links.signIn}
+              variant="outline"
+              size="md"
+              className="h-11"
+            >
+              {nav.signIn}
+            </LandingButton>
+          )}
+          <LandingButton href={links.signUp} size="md" className="h-11">
+            {nav.getStarted}
+          </LandingButton>
+        </div>
       </div>
     </div>
   );
 }
 
 /**
- * The public navbar: a floating bar with the logo; Features (a menu of the
+ * The public navbar: a plain full-width bar with a hairline border, the logo; Features (a menu of the
  * five feature pages), Pricing, Docs, Compare and Blog; then the language
  * and theme menus (when the host provides `LandingPrefs`), GitHub, Sign in
  * and Get started. Below `lg` everything but Get started folds into a panel
- * under the bar. The header stays 4rem tall: the docs layout's sticky
+ * under the bar, full width. The header stays 4rem tall: the docs layout's sticky
  * sidebars sit at `top-16`.
  */
 export function LandingNavbar() {
@@ -289,7 +293,7 @@ export function LandingNavbar() {
   const items = useNavItems();
   const [mobileOpen, setMobileOpen] = useState(false);
   const mobileId = useId();
-  const barRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef(() => setMobileOpen(false));
   useDismiss(mobileOpen, closeRef.current, barRef, toggleRef);
@@ -305,12 +309,12 @@ export function LandingNavbar() {
   }, [mobileOpen]);
 
   return (
-    <header className="sticky top-0 z-40 flex h-16 items-center bg-gradient-to-b from-background via-background/70 to-transparent px-3 md:px-4">
-      <div
-        ref={barRef}
-        className="relative mx-auto flex h-12 w-full max-w-6xl items-center justify-between gap-3 rounded-xl border border-border bg-background/80 pr-1.5 pl-3 shadow-xs backdrop-blur-md md:pl-4"
-      >
-        <div className="flex min-w-0 items-center gap-5">
+    <header
+      ref={barRef}
+      className="sticky top-0 z-40 flex h-16 items-center border-border border-b bg-background/95 px-4 backdrop-blur-sm sm:px-6"
+    >
+      <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-6">
           <LandingLink
             href={links.home}
             aria-label={nav.home}
@@ -381,12 +385,12 @@ export function LandingNavbar() {
             )}
           </button>
         </div>
-        <MobileMenu
-          id={mobileId}
-          open={mobileOpen}
-          onClose={() => setMobileOpen(false)}
-        />
       </div>
+      <MobileMenu
+        id={mobileId}
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+      />
     </header>
   );
 }

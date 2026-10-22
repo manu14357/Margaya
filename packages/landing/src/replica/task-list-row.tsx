@@ -1,4 +1,5 @@
-import type { ReactNode } from "react";
+import { ChevronRight } from "lucide-react";
+import type { CSSProperties, ReactNode } from "react";
 import { cn } from "../lib/cn";
 import { AvatarStack } from "./avatar";
 import {
@@ -93,7 +94,42 @@ export function TaskListRow({
   );
 }
 
-/** A list layout's group header: status glyph, name, count. */
+/** A status's column group, whose hue the app's list header wears. */
+const GROUP_HUE: Record<StatusId, string> = {
+  backlog: "backlog",
+  todo: "unstarted",
+  inProgress: "started",
+  inReview: "started",
+  done: "completed",
+};
+
+/** The group header's tint, edge hue and count colour for a status. */
+export function listGroupStyle(status: StatusId): CSSProperties {
+  const hue = GROUP_HUE[status];
+  return {
+    "--group-color": `var(--status-${hue})`,
+    "--group-fg": `var(--status-${hue}-fg)`,
+    backgroundColor: `var(--status-${hue}-tint)`,
+  } as CSSProperties;
+}
+
+/** The header classes that go with `listGroupStyle`. */
+export const LIST_GROUP_HEADER =
+  "flex h-8 shrink-0 items-center border-border/50 border-b px-3 shadow-[inset_3px_0_0_var(--group-color)]";
+
+/** The group's count pill. */
+export function ListGroupCount({ count }: { count: number }) {
+  return (
+    <span className="rounded-full bg-card px-1.5 font-medium text-[11px] text-(--group-fg) tabular-nums leading-4 ring-1 ring-(--group-color)/30">
+      {count}
+    </span>
+  );
+}
+
+/**
+ * A list layout's group header, like the app's: the group's tint with a
+ * 3px edge in its hue, then chevron, status glyph, name and a count pill.
+ */
 export function TaskListGroup({
   status,
   title,
@@ -108,13 +144,17 @@ export function TaskListGroup({
   return (
     <div
       data-demo={target}
-      className="flex h-8 shrink-0 items-center gap-2 border-border/50 border-b bg-muted/50 px-3"
+      data-group={GROUP_HUE[status]}
+      className={cn(LIST_GROUP_HEADER, "gap-1.5")}
+      style={listGroupStyle(status)}
     >
+      <ChevronRight
+        aria-hidden
+        className="size-3 shrink-0 rotate-90 text-muted-foreground"
+      />
       <StatusIcon status={status} colored className="size-3.5" />
       <span className="font-medium text-[13px] text-foreground">{title}</span>
-      <span className="text-muted-foreground text-xs tabular-nums">
-        {count}
-      </span>
+      <ListGroupCount count={count} />
     </div>
   );
 }

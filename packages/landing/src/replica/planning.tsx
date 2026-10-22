@@ -66,10 +66,10 @@ export type GroupCounts = {
 };
 
 const SEGMENTS: { id: keyof GroupCounts; className: string }[] = [
-  { id: "completed", className: "bg-success" },
-  { id: "started", className: "bg-warning" },
-  { id: "unstarted", className: "bg-info" },
-  { id: "backlog", className: "bg-muted-foreground/40" },
+  { id: "completed", className: "bg-(--status-completed)" },
+  { id: "started", className: "bg-(--status-started)" },
+  { id: "unstarted", className: "bg-(--status-unstarted)" },
+  { id: "backlog", className: "bg-(--status-backlog)" },
 ];
 
 /** Work by column group as one stacked bar, like cycles and modules. */
@@ -209,11 +209,12 @@ export function BurnChart({
           d={`M${xFor(0)},${yFor(scope)} L${xFor(days - 1)},${yFor(0)}`}
           fill="none"
           stroke="currentColor"
-          strokeWidth={1}
+          strokeWidth={1.5}
           strokeDasharray="4 4"
-          className="text-muted-foreground"
+          className="text-chart-2"
         />
-        <g className="text-chart-2">
+        {/* Actual work in the primary accent; the ideal line is amber. */}
+        <g className="text-primary">
           <path
             d={area}
             fill="currentColor"
@@ -249,13 +250,13 @@ export function BurnChart({
       </svg>
       <div className="mt-2 flex flex-wrap items-center gap-3 text-muted-foreground text-xs">
         <span className="inline-flex items-center gap-1.5">
-          <span aria-hidden className="h-0.5 w-3 rounded-full bg-chart-2" />
+          <span aria-hidden className="h-0.5 w-3 rounded-full bg-primary" />
           {labels.actual}
         </span>
         <span className="inline-flex items-center gap-1.5">
           <span
             aria-hidden
-            className="w-3 border-muted-foreground border-t border-dashed"
+            className="w-3 border-chart-2 border-t-2 border-dashed"
           />
           {labels.reference}
         </span>
