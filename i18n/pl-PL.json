@@ -11,7 +11,8 @@
 			"remove": "Usuń",
 			"reset": "Resetuj",
 			"filter": "Filtruj",
-			"clearAllFilters": "Wyczyść wszystkie filtry"
+			"clearAllFilters": "Wyczyść wszystkie filtry",
+			"undo": "Cofnij"
 		},
 		"a11y": {
 			"toggleSidebar": "Przełącz pasek boczny"
@@ -98,7 +99,15 @@
 				"createButton": "Utwórz projekt",
 				"successToast": "Projekt został utworzony",
 				"errorToast": "Nie udało się utworzyć projektu",
-				"keyTaken": "Projekt z kluczem {{key}} już istnieje w tym obszarze roboczym"
+				"keyTaken": "Projekt z kluczem {{key}} już istnieje w tym obszarze roboczym",
+				"blankProject": "Pusty projekt",
+				"copyHint": "Kopiowane są statusy, pola niestandardowe, szacunki, ustawienia i automatyzacje. Członkowie, integracje i publiczne tablice nie są kopiowane.",
+				"includeOpenTasks": "Uwzględnij otwarte zadania",
+				"includeTemplates": "Uwzględnij szablony zadań",
+				"openTasksHint": "Do 500 otwartych zadań wraz z podzadaniami, etykietami i szacunkami. Komentarze i historia nie są kopiowane.",
+				"restricted": "Ograniczony",
+				"restrictedHint": "Tylko członkowie mogą zobaczyć ten projekt. Zostaniesz jego pierwszym członkiem; właściciele i administratorzy przestrzeni roboczej zawsze go widzą.",
+				"startFrom": "Zacznij od"
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -531,6 +540,27 @@
 		}
 	},
 	"navigation": {
+		"customize": {
+			"open": "Dostosuj pasek boczny",
+			"title": "Dostosuj pasek boczny",
+			"description": "Wybierz, co pokazuje pasek boczny i w jakiej kolejności. Tylko Ty widzisz te zmiany, na wszystkich swoich urządzeniach.",
+			"settingsDescription": "Zmień kolejność głównej nawigacji i sekcji panelu Projekty albo je ukryj.",
+			"rail": "Główna nawigacja",
+			"projectsPanel": "Panel Projekty",
+			"sections": {
+				"views": "Listy zadań i widoki",
+				"favorites": "Ulubione",
+				"projects": "Projekty"
+			},
+			"show": "Pokaż: {{name}}",
+			"alwaysShown": "{{name}} jest zawsze widoczne",
+			"moveUp": "Przenieś w górę: {{name}}",
+			"moveDown": "Przenieś w dół: {{name}}",
+			"moved": "{{name}}: przeniesiono na pozycję {{position}} z {{total}}",
+			"reset": "Przywróć domyślne",
+			"resetDone": "Przywrócono domyślny pasek boczny",
+			"done": "Gotowe"
+		},
 		"commandPalette": {
 			"suggestions": "Sugestie",
 			"commands": "Polecenia",
@@ -543,6 +573,8 @@
 			"lightTheme": "Jasny motyw",
 			"darkTheme": "Ciemny motyw",
 			"systemTheme": "Motyw systemowy",
+			"lightContrastTheme": "Jasny motyw o wysokim kontraście",
+			"darkContrastTheme": "Ciemny motyw o wysokim kontraście",
 			"keyboardShortcuts": "Skróty klawiszowe",
 			"inputPlaceholder": "Szukaj aplikacji i poleceń...",
 			"empty": "Nie znaleziono wyników.",
@@ -872,6 +904,27 @@
 			"page_mention": {
 				"content": "{{mentionerName}} wspomniał(a) o Tobie na stronie: {{pageTitle}}",
 				"title": "{{mentionerName}} wspomniał(a) o Tobie"
+			},
+			"cycle_rollover": {
+				"content_few": "{{count}} nieukończone zadania przeniesiono do {{targetCycleName}}",
+				"content_many": "{{count}} nieukończonych zadań przeniesiono do {{targetCycleName}}",
+				"content_one": "{{count}} nieukończone zadanie przeniesiono do {{targetCycleName}}",
+				"content_other": "Nieukończone zadania przeniesione do {{targetCycleName}}: {{count}}",
+				"contentNoNext_few": "{{count}} nieukończone zadania pozostały w {{cycleName}}: brak następnego cyklu",
+				"contentNoNext_many": "{{count}} nieukończonych zadań pozostało w {{cycleName}}: brak następnego cyklu",
+				"contentNoNext_one": "{{count}} nieukończone zadanie pozostało w {{cycleName}}: brak następnego cyklu",
+				"contentNoNext_other": "Nieukończone zadania pozostałe w {{cycleName}}: {{count}} (brak następnego cyklu)",
+				"title": "Cykl {{cycleName}} zakończył się"
+			},
+			"flow_anomaly": {
+				"title": "Nietypowy przepływ w {{projectName}}",
+				"throughput_low": "Przepustowość spadła w tym tygodniu do {{value}} zadań (zwykle około {{baseline}})",
+				"wip_high": "Praca w toku wzrosła do {{value}} zadań (zwykle około {{baseline}})",
+				"cycle_time_high": "Czas cyklu wzrósł do {{value}} dni (zwykle około {{baseline}})"
+			},
+			"automation_notice": {
+				"title": "Automatyzacja: {{ruleName}}",
+				"content": "{{taskKey}} {{taskTitle}}"
 			}
 		},
 		"inbox": {
@@ -1019,6 +1072,13 @@
 				"open": "Otwórz zadanie",
 				"read": "Oznacz jako przeczytane lub nieprzeczytane",
 				"snooze": "Odłóż"
+			},
+			"digest": {
+				"button": "Podsumuj nieprzeczytane",
+				"title": "Podsumowanie nieprzeczytanych",
+				"regenerate": "Podsumuj ponownie",
+				"close": "Zamknij podsumowanie",
+				"generating": "Podsumowywanie…"
 			}
 		}
 	},
@@ -1185,7 +1245,18 @@
 			"error": "Nie udało się zaprosić członka zespołu",
 			"createdTitle": "Zaproszenie utworzone",
 			"shareLinkDescription": "Udostępnij ten link adresowi {{email}}, aby mógł dołączyć do obszaru roboczego.",
-			"done": "Gotowe"
+			"done": "Gotowe",
+			"emailHint": "Oddziel kilka adresów przecinkami, spacjami lub nowymi wierszami.",
+			"roleLabel": "Rola",
+			"roleHint": "Możesz nadać rolę maksymalnie równą swojej.",
+			"sending": "Wysyłanie {{current}} z {{total}}…",
+			"invalidEmails": "To nie są prawidłowe adresy e-mail: {{emails}}",
+			"emailRequired": "Wpisz co najmniej jeden adres e-mail.",
+			"tooManyEmails": "Zaproś maksymalnie {{max}} osób naraz.",
+			"sentSome": "Wysłano zaproszenia: {{sent}} z {{total}}.",
+			"failedTitle": "Nie wysłano",
+			"rateLimited": "Zbyt wiele zaproszeń naraz. Odczekaj minutę, a potem wyślij resztę.",
+			"shareLinksDescription": "Udostępnij każdy link właściwej osobie, aby mogła dołączyć do obszaru roboczego."
 		},
 		"membersTable": {
 			"emptyTitle": "Brak członków zespołu",
@@ -1211,7 +1282,9 @@
 			"cancelInviteSuccess": "Zaproszenie zostało anulowane",
 			"cancelInviteError": "Nie udało się anulować zaproszenia",
 			"roleUpdateSuccess": "Rola zaktualizowana",
-			"roleUpdateError": "Nie udało się zaktualizować roli"
+			"roleUpdateError": "Nie udało się zaktualizować roli",
+			"ariaInvitationRole": "Rola dla {{email}}",
+			"invitationRoleUpdateSuccess": "Zaktualizowano rolę zaproszenia"
 		},
 		"profile": {
 			"emptyActivity": "Brak aktywności",
@@ -1669,7 +1742,9 @@
 			"closed_few": "zamknęła to zadanie po {{count}} miesiącach bez aktualizacji i przeniosła je do: {{to}}",
 			"closed_many": "zamknęła to zadanie po {{count}} miesiącach bez aktualizacji i przeniosła je do: {{to}}",
 			"closed_one": "zamknęła to zadanie po {{count}} miesiącu bez aktualizacji i przeniosła je do: {{to}}",
-			"closed_other": "zamknęła to zadanie po {{count}} mies. bez aktualizacji i przeniosła je do: {{to}}"
+			"closed_other": "zamknęła to zadanie po {{count}} mies. bez aktualizacji i przeniosła je do: {{to}}",
+			"rolledOver": "przeniosła to zadanie z {{from}} do {{to}} po zakończeniu cyklu",
+			"byRule": "przez regułę {{name}}"
 		},
 		"commentVisibility": {
 			"badgeExternal": "Zewnętrzny",
@@ -1708,6 +1783,7 @@
 			"updates": "Aktualizacje"
 		},
 		"importedFromJira": "zaimportował(a) to zadanie z Jira {{key}}",
+		"importedFromSource": "zaimportował(a) to zadanie z {{source}} {{key}}",
 		"movedToTrash": "przeniósł(a) to zadanie do kosza",
 		"restoredFromTrash": "przywrócił(a) to zadanie z kosza"
 	},
@@ -2249,6 +2325,8 @@
 			"themeDescription": "Wybierz preferowany schemat kolorów",
 			"themeLight": "Jasny",
 			"themeSystem": "Systemowy",
+			"themeLightContrast": "Jasny o wysokim kontraście",
+			"themeDarkContrast": "Ciemny o wysokim kontraście",
 			"title": "Preferencje",
 			"weekStartsOnMonday": "Poniedziałek",
 			"weekStartsOnSaturday": "Sobota",
@@ -2541,6 +2619,91 @@
 			"dropHintAny": "Przeciągnij i upuść tutaj plik JSON lub CSV",
 			"importAcceptHint": "Prześlij eksport JSON z Margaya lub plik CSV.",
 			"importStopped": "Import zatrzymany: {{message}}",
+			"external": {
+				"sourceHint": "Przenosisz się z innego narzędzia? Zaimportuj jego eksport ze statusami, etykietami, osobami, datami i podzadaniami.",
+				"sources": {
+					"trello": "Trello (JSON)",
+					"linear": "Linear (CSV)",
+					"asana": "Asana (CSV)"
+				},
+				"title": {
+					"trello": "Importuj z Trello",
+					"linear": "Importuj z Linear",
+					"asana": "Importuj z Asany"
+				},
+				"howToTitle": {
+					"trello": "Jak wyeksportować dane z Trello",
+					"linear": "Jak wyeksportować dane z Linear",
+					"asana": "Jak wyeksportować dane z Asany"
+				},
+				"howTo": {
+					"trello": {
+						"step1": "Na tablicy otwórz menu → Drukuj, eksportuj i udostępnij → Eksportuj jako JSON.",
+						"step2": "Prześlij tutaj pobrany plik .json."
+					},
+					"linear": {
+						"step1": "W Linear otwórz Ustawienia → Import / Export i wybierz Eksportuj CSV.",
+						"step2": "Prześlij tutaj plik .csv z wiadomości e-mail od Linear."
+					},
+					"asana": {
+						"step1": "W projekcie Asana otwórz menu projektu → Eksportuj/Drukuj → CSV.",
+						"step2": "Prześlij tutaj pobrany plik .csv."
+					}
+				},
+				"limits": {
+					"trello": "Do 10 MB i 5000 kart na plik. Zarchiwizowane karty są pomijane; listy kontrolne stają się listami zadań w opisie; załączniki zostają w Trello.",
+					"linear": "Do 5 MB i 5000 zgłoszeń na plik. Zarchiwizowane zgłoszenia są pomijane. CSV z Linear nie zawiera komentarzy.",
+					"asana": "Do 5 MB i 5000 zadań na plik. Ukończone zadania trafiają do kolumny „Gotowe”. CSV z Asany nie zawiera komentarzy."
+				},
+				"dropHint": {
+					"trello": "Przeciągnij i upuść tutaj eksport JSON z Trello",
+					"linear": "Przeciągnij i upuść tutaj eksport CSV z Linear",
+					"asana": "Przeciągnij i upuść tutaj eksport CSV z Asany"
+				},
+				"wrongType": {
+					"trello": "Wybierz eksport .json tablicy.",
+					"linear": "Wybierz eksport .csv z Linear.",
+					"asana": "Wybierz eksport .csv z Asany."
+				},
+				"itemCount_few": "{{count}} elementy",
+				"itemCount_many": "{{count}} elementów",
+				"itemCount_one": "{{count}} element",
+				"itemCount_other": "{{count}} elementu",
+				"alreadyImported_few": "{{count}} elementy zostały już wcześniej zaimportowane do tego projektu.",
+				"alreadyImported_many": "{{count}} elementów zostało już wcześniej zaimportowanych do tego projektu.",
+				"alreadyImported_one": "{{count}} element został już wcześniej zaimportowany do tego projektu.",
+				"alreadyImported_other": "Elementy zaimportowane wcześniej do tego projektu: {{count}}.",
+				"contents": "Komentarze: {{comments}}, listy kontrolne: {{checklists}}, podzadania: {{subtasks}}, powiązania: {{links}}",
+				"sourceStatus": "Status lub lista",
+				"peopleUnmatched_few": "{{count}} osoby nie są członkami ({{names}}). Ich elementy pozostaną nieprzypisane, a nazwiska trafią do opisu.",
+				"peopleUnmatched_many": "{{count}} osób nie jest członkami ({{names}}). Ich elementy pozostaną nieprzypisane, a nazwiska trafią do opisu.",
+				"peopleUnmatched_one": "{{count}} osoba nie jest członkiem ({{names}}). Jej elementy pozostaną nieprzypisane, a nazwisko trafi do opisu.",
+				"peopleUnmatched_other": "Osoby, które nie są członkami: {{count}} ({{names}}). Ich elementy pozostaną nieprzypisane, a nazwiska trafią do opisu.",
+				"mode": "Elementy zaimportowane wcześniej",
+				"modeHint": "Rozpoznawane po identyfikatorze w eksporcie.",
+				"importAction_few": "Importuj {{count}} elementy",
+				"importAction_many": "Importuj {{count}} elementów",
+				"importAction_one": "Importuj {{count}} element",
+				"importAction_other": "Importuj elementy: {{count}}",
+				"importing_few": "Importowanie {{count}} elementów…",
+				"importing_many": "Importowanie {{count}} elementów…",
+				"importing_one": "Importowanie {{count}} elementu…",
+				"importing_other": "Importowanie elementów: {{count}}…",
+				"result": {
+					"skipped_one": "Pominięto {{count}} element (zaimportowany wcześniej)",
+					"skipped_few": "Pominięto {{count}} elementy (zaimportowane wcześniej)",
+					"skipped_many": "Pominięto {{count}} elementów (zaimportowanych wcześniej)",
+					"skipped_other": "Pominięte elementy (zaimportowane wcześniej): {{count}}",
+					"failed_one": "{{count}} element nie powiódł się",
+					"failed_few": "{{count}} elementy nie powiodły się",
+					"failed_many": "{{count}} elementów nie powiodło się",
+					"failed_other": "Nieudane elementy: {{count}}",
+					"unmatched_one": "{{count}} osoba nie jest członkiem obszaru roboczego; jej elementy są nieprzypisane:",
+					"unmatched_few": "{{count}} osoby nie są członkami obszaru roboczego; ich elementy są nieprzypisane:",
+					"unmatched_many": "{{count}} osób nie jest członkami obszaru roboczego; ich elementy są nieprzypisane:",
+					"unmatched_other": "Osoby, które nie są członkami obszaru roboczego: {{count}}; ich elementy są nieprzypisane:"
+				}
+			},
 			"unsupportedFile": "Prześlij plik JSON lub CSV",
 			"jira": {
 				"alreadyImported_few": "{{count}} zgłoszenia zostały już wcześniej zaimportowane do tego projektu.",
@@ -3063,6 +3226,16 @@
 						"description": "Przeglądanie i eksportowanie dziennika audytu obszaru roboczego: kto zmieniał członków, role, klucze, webhooki, integracje i ustawienia.",
 						"label": "Przeglądanie dziennika audytu"
 					}
+				},
+				"ai": {
+					"use": {
+						"label": "Używanie AI",
+						"description": "Może korzystać z funkcji AI, gdy AI jest włączona dla obszaru roboczego i projektu."
+					},
+					"manage": {
+						"label": "Zarządzanie AI",
+						"description": "Może włączać i wyłączać AI dla obszaru roboczego, zmieniać jej klucz, limity i prywatność oraz przeglądać użycie AI."
+					}
 				}
 			},
 			"resources": {
@@ -3081,7 +3254,8 @@
 				"intake": "Zgłoszenia",
 				"analytics": "Analityka",
 				"page": "Strony",
-				"audit_log": "Dziennik audytu"
+				"audit_log": "Dziennik audytu",
+				"ai": "AI"
 			},
 			"saveChanges": "Zapisz zmiany",
 			"sectionSubtitle": "Edytuj role domyślne lub dodaj własną. Członkowie zachowują przypisaną nazwę roli podczas edycji.",
@@ -3200,6 +3374,10 @@
 				"views": {
 					"description": "Zapisuj filtry, grupowanie i ustawienia wyświetlania oraz udostępniaj je zespołowi.",
 					"title": "Widoki"
+				},
+				"ai": {
+					"title": "AI",
+					"description": "Podsumowania, sugestie i inna pomoc AI dla tego projektu. Wyłączenie całkowicie wyklucza projekt z AI."
 				}
 			},
 			"loadError": "Nie udało się wczytać tego projektu",
@@ -3431,7 +3609,28 @@
 				"closeOff": "Automatyczne zamykanie wyłączone",
 				"closeOn": "Automatyczne zamykanie włączone",
 				"error": "Nie udało się zaktualizować automatyzacji",
-				"updated": "Automatyzacja zaktualizowana"
+				"updated": "Automatyzacja zaktualizowana",
+				"rolloverOff": "Przenoszenie między cyklami wyłączone",
+				"rolloverOn": "Przenoszenie między cyklami włączone",
+				"flowAlertsOn": "Alerty przepływu włączone",
+				"flowAlertsOff": "Alerty przepływu wyłączone"
+			},
+			"cycleRollover": {
+				"cyclesOff": "Aby z tego korzystać, włącz Cykle w Funkcjach.",
+				"description": "Po zakończeniu cyklu jego nieukończone zadania są przenoszone do następnego cyklu. Lider projektu otrzymuje podsumowanie.",
+				"last_few": "Ostatnio przeniesiono {{count}} zadania {{time}}",
+				"last_many": "Ostatnio przeniesiono {{count}} zadań {{time}}",
+				"last_one": "Ostatnio przeniesiono {{count}} zadanie {{time}}",
+				"last_other": "Ostatnio przeniesiono zadań: {{count}}, {{time}}",
+				"never": "Jeszcze niczego nie przeniesiono",
+				"title": "Przenoś nieukończoną pracę z cyklu"
+			},
+			"flowAlerts": {
+				"title": "Alerty o anomaliach przepływu",
+				"description": "Raz dziennie porównuje pracę w toku, czas cyklu i przepustowość z poprzednimi 8 tygodniami. Lider projektu dostaje powiadomienie, gdy któraś wartość wyjdzie poza zwykły zakres.",
+				"noLead": "Ustaw lidera projektu, aby otrzymywać te alerty.",
+				"last": "Ostatni alert {{time}}",
+				"never": "Jeszcze brak alertów"
 			}
 		},
 		"workspaceExports": {
@@ -3884,6 +4083,24 @@
 			"noProjectsHint": "Najpierw utwórz projekt. Jego ustawienia pojawią się tutaj.",
 			"pickProject": "Wybierz projekt, aby zobaczyć jego ustawienia."
 		},
+		"projectAccess": {
+			"title": "Dostęp",
+			"subtitle": "Kto może widzieć ten projekt i w nim pracować.",
+			"restrictedLabel": "Ograniczony",
+			"restrictedHint": "Ten projekt widzą tylko poniżsi członkowie oraz właściciele i administratorzy przestrzeni roboczej. Uprawnienia członka tutaj to to, na co pozwalają jednocześnie jego rola w przestrzeni roboczej i rola w projekcie.",
+			"openHint": "Wszyscy w przestrzeni roboczej widzą ten projekt w zakresie, na jaki pozwala ich rola. Ogranicz go, aby był dostępny tylko dla wybranych członków.",
+			"membersLabel": "Członkowie",
+			"membersHint": "Rola w projekcie ogranicza, co każdy członek może tu robić.",
+			"noMembers": "Brak członków.",
+			"addMember": "Dodaj członka",
+			"removeMember": "Usuń {{name}}",
+			"roleFor": "Rola w projekcie: {{name}}",
+			"leadTag": "Lider",
+			"restrictedProject": "Projekt ograniczony",
+			"toastUpdated": "Zaktualizowano dostęp",
+			"toastError": "Nie udało się zaktualizować dostępu",
+			"loadError": "Nie udało się wczytać ustawień dostępu. Odśwież stronę, aby spróbować ponownie."
+		},
 		"projectPeople": {
 			"defaultAssigneeHint": "Wstępnie wybierana przy tworzeniu zadania i przypisywana do zaakceptowanych zgłoszeń bez osoby przypisanej.",
 			"defaultAssigneeLabel": "Domyślna osoba przypisana",
@@ -3941,7 +4158,7 @@
 			"title": "Bezpieczeństwo"
 		},
 		"timezone": {
-			"accountHint": "Używana w przypomnieniach i podsumowaniach e-mail. Aplikacja zawsze pokazuje godziny w strefie czasowej Twojej przeglądarki.",
+			"accountHint": "Używana w przypomnieniach, podsumowaniach e-mail oraz do liczenia dni w filtrach zadań i analizach. Godziny na ekranie są pokazywane w strefie czasowej Twojej przeglądarki.",
 			"accountLabel": "Strefa czasowa",
 			"automatic": "Automatycznie (przeglądarka: {{zone}})",
 			"loadError": "Nie udało się wczytać strefy czasowej. Odśwież stronę, aby spróbować ponownie.",
@@ -3954,8 +4171,52 @@
 			"workspaceHint": "Określa, co oznacza „dzisiaj” dla cykli, automatyzacji i analityki. Istniejące obszary robocze zaczynają od UTC.",
 			"workspaceLabel": "Strefa czasowa"
 		},
+		"workspaceDeletion": {
+			"pendingTitle": "Zaplanowano usunięcie",
+			"pendingDescription": "Ten obszar roboczy zostanie usunięty {{date}}. Do tego czasu jest tylko do odczytu, ale nadal można otwierać i eksportować jego zawartość.",
+			"cancel": "Anuluj usunięcie",
+			"confirm": "Zaplanuj usunięcie",
+			"rowDescription": "Obszar roboczy od razu staje się tylko do odczytu i zostanie trwale usunięty {{date}}. Do tego czasu można to anulować.",
+			"dialogTitle": "Usunąć {{name}}?",
+			"dialogDescription": "{{name}} od razu staje się tylko do odczytu dla wszystkich, a jego klucze API i webhooki przestają działać. Członkowie dostaną e-mail. {{date}} obszar roboczy zostanie trwale usunięty razem ze wszystkimi projektami, zadaniami i stronami, chyba że wcześniej anulujesz usunięcie.",
+			"toastScheduled": "Zaplanowano usunięcie na {{date}}",
+			"toastCancelled": "Anulowano usunięcie. Obszar roboczy znów można edytować.",
+			"toastError": "Nie udało się zmienić usunięcia. Spróbuj ponownie.",
+			"bannerTitle": "Ten obszar roboczy zostanie usunięty {{date}}",
+			"bannerDescription": "Do tego czasu jest tylko do odczytu. Nadal można otwierać i eksportować jego zawartość.",
+			"admin": {
+				"title": "Oczekujące usunięcia",
+				"description": "Obszary robocze, których właściciele zaplanowali usunięcie. Do wskazanej daty są tylko do odczytu, a potem zostają trwale usunięte.",
+				"dueAt": "Data usunięcia",
+				"badge": "Usunięcie {{date}}"
+			},
+			"instanceAudit": {
+				"scheduled": "Zaplanowano usunięcie obszaru roboczego",
+				"cancelled": "Anulowano usunięcie obszaru roboczego",
+				"purged": "Usunięto obszar roboczy po okresie karencji"
+			}
+		},
+		"workspacePublicPages": {
+			"label": "Strony publiczne",
+			"description": "Pozwala osobom, które mogą udostępniać projekty, publikować strony pod publicznym linkiem tylko do odczytu. Wyłączenie unieważnia wszystkie opublikowane linki.",
+			"toastOn": "Strony publiczne są włączone",
+			"toastOff": "Strony publiczne są wyłączone. Opublikowane linki zostały unieważnione.",
+			"toastError": "Nie udało się zmienić ustawienia. Spróbuj ponownie."
+		},
+		"workspaceA2a": {
+			"label": "Agent–agent (A2A)",
+			"description": "Pozwól zewnętrznym agentom AI przekazywać pracę do tego obszaru roboczego przez protokół A2A. Działają z kluczem API lub logowaniem OAuth członka i z jego uprawnieniami, a wszystko, co robią, trafia do dziennika audytu.",
+			"toastOn": "A2A jest włączone",
+			"toastOff": "A2A jest wyłączone. Zewnętrzni agenci nie mogą już przekazywać pracy do tego obszaru roboczego.",
+			"toastError": "Nie udało się zmienić ustawienia. Spróbuj ponownie."
+		},
 		"workspaceAuditLog": {
 			"actions": {
+				"workspaceDeletionScheduled": "Zaplanowano usunięcie obszaru roboczego",
+				"workspaceDeletionCancelled": "Anulowano usunięcie obszaru roboczego",
+				"workspacePublicPagesChanged": "Włączono lub wyłączono strony publiczne",
+				"pagePublished": "Opublikowano stronę pod publicznym linkiem",
+				"pageUnpublished": "Unieważniono publiczny link strony",
 				"apiKeyCreated": "Utworzono klucz API",
 				"apiKeyRevoked": "Unieważniono klucz API",
 				"exportCreated": "Rozpoczęto eksport",
@@ -3966,6 +4227,7 @@
 				"integrationUpdated": "Zmieniono integrację",
 				"memberInvitationAccepted": "Zaakceptowano zaproszenie",
 				"memberInvitationDeclined": "Odrzucono zaproszenie",
+				"memberInvitationRoleChanged": "Zmieniono rolę oczekującego zaproszenia",
 				"memberInvitationRevoked": "Cofnięto zaproszenie",
 				"memberInvited": "Zaproszono kogoś do obszaru roboczego",
 				"memberLeft": "Opuszczono obszar roboczy",
@@ -3995,13 +4257,41 @@
 				"webhookUpdated": "Zmieniono webhook",
 				"workspaceCreated": "Utworzono obszar roboczy",
 				"workspaceOwnershipTransferred": "Przekazano własność obszaru roboczego",
-				"workspaceUpdated": "Zmieniono ustawienia obszaru roboczego"
+				"workspaceUpdated": "Zmieniono ustawienia obszaru roboczego",
+				"aiSettingsUpdated": "Zmieniono ustawienia AI",
+				"aiTriageLabelsApplied": "Automatycznie dodano sugerowane etykiety",
+				"agentCreated": "Utworzono agenta",
+				"agentUpdated": "Zmieniono agenta",
+				"agentDeleted": "Usunięto agenta",
+				"agentChangeApplied": "Wprowadzono zmianę w czyimś imieniu",
+				"agentChangeApproved": "Zatwierdzono zmianę agenta",
+				"agentChangeRejected": "Odrzucono zmianę agenta",
+				"agentChangeReverted": "Cofnięto zmianę agenta",
+				"codingAgentHandoffSent": "Wysłano zadanie do agenta kodującego",
+				"codingAgentProfileCreated": "Utworzono profil agenta kodującego",
+				"codingAgentProfileUpdated": "Zmieniono profil agenta kodującego",
+				"codingAgentProfileDeleted": "Usunięto profil agenta kodującego",
+				"a2aTaskReceived": "Przyjęto pracę od zewnętrznego agenta (A2A)",
+				"automationRuleCreated": "Utworzono automatyzację",
+				"automationRuleUpdated": "Zaktualizowano automatyzację",
+				"automationRuleDeleted": "Usunięto automatyzację",
+				"automationRuleRan": "Uruchomiono automatyzację na zadaniu",
+				"agentScheduleCreated": "Zaplanował(a) agenta",
+				"agentScheduleUpdated": "Zmienił(a) harmonogram agenta",
+				"agentScheduleDeleted": "Usunął(-ęła) harmonogram agenta",
+				"agentScheduleDisabled": "Wyłączył(a) harmonogram agenta",
+				"aiConnectorCreated": "Dodał(a) konektor MCP",
+				"aiConnectorUpdated": "Zmienił(a) konektor MCP",
+				"aiConnectorDeleted": "Usunął(-ęła) konektor MCP"
 			},
 			"actor": {
 				"apiKey": "Klucz API",
 				"deletedUser": "Usunięty użytkownik",
 				"system": "System",
-				"unknownKey": "Usunięty klucz API"
+				"unknownKey": "Usunięty klucz API",
+				"agent": "Agent",
+				"agentFor": "Agent w imieniu {{name}}",
+				"automation": "Automatyzacja"
 			},
 			"categories": {
 				"apiKey": "Klucze API",
@@ -4014,7 +4304,11 @@
 				"role": "Role",
 				"trash": "Kosz",
 				"webhook": "Webhooki",
-				"workspace": "Ustawienia obszaru roboczego"
+				"workspace": "Ustawienia obszaru roboczego",
+				"agent": "Agenci",
+				"codingAgent": "Agenci kodujący",
+				"a2a": "Zewnętrzni agenci (A2A)",
+				"automation": "Automatyzacje"
 			},
 			"columns": {
 				"action": "Działanie",
@@ -4063,6 +4357,7 @@
 			"subtitle": "Kto zmieniał członków, role, klucze API, webhooki, integracje, ustawienia i projekty w tym obszarze roboczym. Wpisy są przechowywane przez {{days}} dni.",
 			"subtitleForever": "Kto zmieniał członków, role, klucze API, webhooki, integracje, ustawienia i projekty w tym obszarze roboczym. Wpisy są przechowywane do momentu usunięcia obszaru roboczego.",
 			"targets": {
+				"page": "Strona",
 				"apiKey": "Klucz API",
 				"export": "Eksport",
 				"integration": "Integracja",
@@ -4071,7 +4366,11 @@
 				"role": "Rola",
 				"user": "Członek",
 				"webhook": "Webhook",
-				"workspace": "Obszar roboczy"
+				"workspace": "Obszar roboczy",
+				"agent": "Agent",
+				"agentRun": "Uruchomienie agenta",
+				"task": "Zadanie",
+				"codingAgentProfile": "Profil agenta kodującego"
 			},
 			"title": "Dziennik audytu"
 		},
@@ -4126,9 +4425,240 @@
 			"workspaceNav": "Ostatnio usunięte",
 			"workspaceSubtitle": "Usunięte projekty pozostają tutaj razem z zadaniami, dopóki nie zostaną trwale usunięte.",
 			"workspaceTitle": "Ostatnio usunięte projekty"
+		},
+		"automationRules": {
+			"title": "Automatyzacje",
+			"description": "Gdy coś dzieje się z zadaniem, reguła sprawdza warunki i wykonuje działania. Reguły działają samodzielnie, bez AI, jako „Automatyzacja”.",
+			"empty": "Brak automatyzacji. Zacznij od szablonu lub utwórz własną regułę.",
+			"loadError": "Nie udało się wczytać automatyzacji.",
+			"newRule": "Nowa reguła",
+			"templatesTitle": "Szablony",
+			"saved": "Zapisano automatyzację",
+			"saveError": "Nie udało się zapisać automatyzacji",
+			"deleted": "Usunięto automatyzację",
+			"confirmDelete": "Usuń",
+			"edit": "Edytuj: {{name}}",
+			"delete": "Usuń: {{name}}",
+			"summary_one": "Gdy {{trigger}} · {{count}} działanie",
+			"summary_few": "Gdy {{trigger}} · {{count}} działania",
+			"summary_many": "Gdy {{trigger}} · {{count}} działań",
+			"summary_other": "Gdy {{trigger}} · działania: {{count}}",
+			"lastRun_one": "{{count}} uruchomienie, ostatnio {{time}}",
+			"lastRun_few": "{{count}} uruchomienia, ostatnio {{time}}",
+			"lastRun_many": "{{count}} uruchomień, ostatnio {{time}}",
+			"lastRun_other": "Uruchomienia: {{count}}, ostatnio {{time}}",
+			"neverRan": "Jeszcze nie uruchomiono",
+			"templates": {
+				"reviewer": {
+					"name": "Przypisz recenzenta po przeniesieniu do przeglądu",
+					"description": "Wybierz recenzenta; zostanie przypisany, gdy zadanie trafi do przeglądu."
+				},
+				"intakeBugs": {
+					"name": "Oznaczaj błędy ze zgłoszeń",
+					"description": "Zaakceptowane zgłoszenia, które wspominają o bugu lub błędzie, dostają etykietę błędu."
+				},
+				"overdue": {
+					"name": "Eskaluj zaległe zadania",
+					"description": "Gdy minie termin, podnieś priorytet i powiadom osoby przypisane."
+				}
+			},
+			"triggers": {
+				"task_created": "zadanie zostanie utworzone",
+				"status_changed": "zmieni się status",
+				"assignee_added": "ktoś zostanie przypisany",
+				"assignee_removed": "ktoś przestanie być przypisany",
+				"label_added": "zostanie dodana etykieta",
+				"label_removed": "zostanie usunięta etykieta",
+				"priority_changed": "zmieni się priorytet",
+				"due_date_set": "zostanie ustawiony termin",
+				"due_date_passed": "minie termin",
+				"comment_added": "zostanie dodany komentarz",
+				"moved_to_cycle": "zadanie trafi do cyklu",
+				"moved_to_module": "zadanie zostanie dodane do modułu"
+			},
+			"conditions": {
+				"status": "Status",
+				"labels": "Etykiety",
+				"priority": "Priorytet",
+				"assignee": "Osoba przypisana",
+				"due_date": "Termin",
+				"estimate": "Szacunek",
+				"title": "Tytuł",
+				"custom_field": "Pole niestandardowe"
+			},
+			"ops": {
+				"is": "jest",
+				"is_not": "nie jest",
+				"contains": "zawiera",
+				"not_contains": "nie zawiera",
+				"empty": "jest puste",
+				"not_empty": "nie jest puste",
+				"set": "jest ustawione",
+				"not_set": "nie jest ustawione",
+				"gte": "wynosi co najmniej",
+				"lte": "wynosi co najwyżej",
+				"equals": "równa się",
+				"not_equals": "nie równa się"
+			},
+			"actions": {
+				"set_status": "Ustaw status",
+				"assign": "Przypisz",
+				"unassign": "Usuń przypisanie",
+				"add_label": "Dodaj etykietę",
+				"remove_label": "Usuń etykietę",
+				"set_priority": "Ustaw priorytet",
+				"set_due_date": "Ustaw termin",
+				"add_comment": "Dodaj komentarz",
+				"move_to_cycle": "Przenieś do cyklu",
+				"move_to_module": "Dodaj do modułu",
+				"create_subtask": "Utwórz podzadanie",
+				"notify": "Powiadom",
+				"run_agent": "Uruchom agenta"
+			},
+			"roles": {
+				"assignees": "Osoby przypisane",
+				"creator": "Autor",
+				"lead": "Lider projektu"
+			},
+			"outcomes": {
+				"success": "Gotowe",
+				"partial": "Częściowo gotowe",
+				"failed": "Nieudane",
+				"skipped": "Pominięte"
+			},
+			"errors": {
+				"LOOP_DEPTH": "Zatrzymano: zbyt wiele reguł wywołało się nawzajem pod rząd.",
+				"RATE_LIMITED": "Zatrzymano: to zadanie miało zbyt wiele uruchomień automatyzacji w ciągu minuty.",
+				"AGENT_UNAVAILABLE": "Uruchom agenta: agent jest wyłączony lub został usunięty.",
+				"NO_RULE_OWNER": "Uruchom agenta: ta reguła nie ma już właściciela. Zapisz ją ponownie.",
+				"AI_DISABLED": "Uruchom agenta: AI jest wyłączone w tym projekcie."
+			},
+			"history": {
+				"title": "Historia uruchomień",
+				"empty": "Brak uruchomień.",
+				"error": "Nie udało się wczytać historii uruchomień.",
+				"failedActions": "Nieudane: {{actions}}"
+			},
+			"editor": {
+				"name": "Nazwa reguły",
+				"namePlaceholder": "Nazwij tę regułę",
+				"when": "Gdy",
+				"if": "Jeśli",
+				"then": "Wtedy",
+				"match": "Dopasowanie",
+				"matchAll": "Wszystkie z tych",
+				"matchAny": "Dowolne z tych",
+				"always": "Za każdym razem",
+				"addCondition": "Dodaj warunek",
+				"addGroup": "Dodaj grupę",
+				"addAction": "Dodaj działanie",
+				"remove": "Usuń",
+				"save": "Zapisz regułę",
+				"cancel": "Anuluj",
+				"choose": "Wybierz…",
+				"add": "Dodaj…",
+				"removeItem": "Usuń: {{name}}",
+				"any": "Dowolny",
+				"from": "z",
+				"to": "na",
+				"fromIntake": "Tylko zaakceptowane zgłoszenia",
+				"people": "Osoby",
+				"labels": "Etykiety",
+				"priorities": "Priorytety",
+				"cycles": "Cykle",
+				"modules": "Moduły",
+				"field": "Pole",
+				"operator": "Porównanie",
+				"points": "Punkty",
+				"value": "Wartość",
+				"column": "Status",
+				"everyone": "Wszyscy",
+				"label": "Etykieta",
+				"priority": "Priorytet",
+				"daysFromRun": "dni po uruchomieniu reguły",
+				"comment": "Komentarz",
+				"subtaskTitle": "Tytuł podzadania",
+				"cycle": "Cykl",
+				"module": "Moduł",
+				"roles": "Role",
+				"message": "Wiadomość (opcjonalnie)",
+				"variables": "Zmienne:",
+				"agent": "Agent",
+				"agentPrompt": "Co ma zrobić agent?",
+				"agentPromptPlaceholder": "Na przykład: oceń to zadanie i zaproponuj priorytet.",
+				"agentHint": "Agent działa w imieniu osoby, która zapisuje tę regułę, z co najwyżej jej uprawnieniami. Nigdy nie uruchamia się przy zmianach wprowadzonych przez agenta."
+			}
 		}
 	},
 	"tasks": {
+		"recurrence": {
+			"label": "Powtarzanie",
+			"none": "Nie powtarza się",
+			"title": "Powtarzaj to zadanie",
+			"indicator": "Powtarza się",
+			"frequency": {
+				"label": "Częstotliwość",
+				"daily": "Codziennie",
+				"weekly": "Co tydzień",
+				"monthly": "Co miesiąc",
+				"yearly": "Co rok"
+			},
+			"interval": "Co",
+			"weekdays": "W te dni",
+			"monthDay": "Dzień miesiąca",
+			"trigger": {
+				"label": "Utwórz następne",
+				"completion": "Po ukończeniu tego",
+				"schedule": "W jego dniu, nawet jeśli to jest wciąż otwarte"
+			},
+			"ends": {
+				"label": "Kończy się",
+				"never": "Nigdy",
+				"onDate": "Dnia",
+				"endDate": "Data zakończenia",
+				"after": "Po",
+				"count": "Liczba powtórzeń"
+			},
+			"summary": {
+				"daily_one": "Codziennie",
+				"daily_few": "Co {{count}} dni",
+				"daily_many": "Co {{count}} dni",
+				"daily_other": "Co {{count}} dnia",
+				"weekly_one": "Co tydzień w: {{days}}",
+				"weekly_few": "Co {{count}} tygodnie w: {{days}}",
+				"weekly_many": "Co {{count}} tygodni w: {{days}}",
+				"weekly_other": "Co {{count}} tygodnia w: {{days}}",
+				"monthly_one": "Co miesiąc, dnia {{day}}",
+				"monthly_few": "Co {{count}} miesiące, dnia {{day}}",
+				"monthly_many": "Co {{count}} miesięcy, dnia {{day}}",
+				"monthly_other": "Co {{count}} miesiąca, dnia {{day}}",
+				"yearly_one": "Co rok, {{date}}",
+				"yearly_few": "Co {{count}} lata, {{date}}",
+				"yearly_many": "Co {{count}} lat, {{date}}",
+				"yearly_other": "Co {{count}} roku, {{date}}",
+				"until": "{{summary}}, do {{date}}",
+				"times_one": "{{summary}}, {{count}} raz",
+				"times_few": "{{summary}}, {{count}} razy",
+				"times_many": "{{summary}}, {{count}} razy",
+				"times_other": "{{summary}}, {{count}} razy"
+			},
+			"next": "Następne: {{date}}",
+			"ended": "Brak kolejnych powtórzeń",
+			"save": "Zapisz",
+			"remove": "Zatrzymaj powtarzanie",
+			"saved": "Zapisano powtarzanie",
+			"removed": "To zadanie już się nie powtarza",
+			"saveError": "Nie udało się zapisać powtarzania",
+			"activity": {
+				"set": "ustawił(a) powtarzanie tego zadania: {{summary}}",
+				"updated": "zmienił(a) powtarzanie: {{summary}}",
+				"removed": "zatrzymał(a) powtarzanie tego zadania",
+				"recurredFrom": "utworzył(a) to zadanie jako następne powtórzenie <task>{{task}}</task>",
+				"recurredFromScheduled": "Utworzone zgodnie z harmonogramem jako następne powtórzenie <task>{{task}}</task>",
+				"recurredTo": "ukończył(a) to zadanie, co utworzyło następne powtórzenie <task>{{task}}</task>",
+				"recurredToScheduled": "Następne powtórzenie zostało utworzone zgodnie z harmonogramem: <task>{{task}}</task>"
+			}
+		},
 		"title": "Zadania",
 		"actions": {
 			"archive": "Archiwizuj",
@@ -4219,6 +4749,20 @@
 			"archiveError": "Nie udało się zarchiwizować zadań",
 			"archiveSuccess": "Zarchiwizowano zadań: {{count}}",
 			"changeStatus": "Zmień status",
+			"removeLabel": "Usuń etykietę",
+			"removeLabelSuccess": "Usunięto etykietę z zadań: {{count}}",
+			"removeLabelError": "Nie udało się usunąć etykiety",
+			"unarchive": "Przywróć z archiwum",
+			"unarchiveSuccess": "Przywrócono zadań: {{count}}",
+			"unarchiveNone": "Żadne z wybranych zadań nie jest zarchiwizowane",
+			"unarchiveError": "Nie udało się przywrócić zadań",
+			"setDates": "Daty",
+			"dateField": "Data do ustawienia",
+			"startDate": "Data rozpoczęcia",
+			"dueDate": "Termin",
+			"clearStartDate": "Wyczyść datę rozpoczęcia",
+			"clearDueDate": "Wyczyść termin",
+			"updateStartDateError": "Nie udało się zaktualizować daty rozpoczęcia. Data rozpoczęcia nie może być późniejsza niż termin zadania.",
 			"delete": "Usuń zadania",
 			"deleteConfirm": "Przenieść zadania do kosza (liczba: {{count}})? Możesz je przywrócić w sekcji Ostatnio usunięte w ustawieniach projektu.",
 			"deleteError": "Nie udało się usunąć zadań",
@@ -4433,7 +4977,19 @@
 				"addRowBefore": "Wstaw wiersz powyżej",
 				"deleteColumn": "Usuń kolumnę",
 				"deleteRow": "Usuń wiersz",
-				"deleteTable": "Usuń tabelę"
+				"deleteTable": "Usuń tabelę",
+				"moveRowUp": "Przenieś wiersz w górę",
+				"moveRowDown": "Przenieś wiersz w dół",
+				"moveColumnLeft": "Przenieś kolumnę w lewo",
+				"moveColumnRight": "Przenieś kolumnę w prawo",
+				"toggleHeaderRow": "Wiersz nagłówka",
+				"fullWidth": "Pełna szerokość",
+				"dragRow": "Wiersz {{index}}",
+				"dragColumn": "Kolumna {{index}}",
+				"dragRowHint": "Przeciągnij, aby przenieść wiersz, lub użyj klawiszy strzałek",
+				"dragColumnHint": "Przeciągnij, aby przenieść kolumnę, lub użyj klawiszy strzałek",
+				"insertRowHere": "Wstaw tutaj wiersz",
+				"insertColumnHere": "Wstaw tutaj kolumnę"
 			}
 		},
 		"entity": {
@@ -4458,7 +5014,8 @@
 			"rescheduleError": "Nie udało się zmienić terminu zadania",
 			"showWeekends": "Pokaż weekendy",
 			"viewMode": "Okres kalendarza",
-			"week": "Tydzień"
+			"week": "Tydzień",
+			"overdue": "Po terminie"
 		},
 		"gantt": {
 			"hideTasks": "Ukryj zadania",
@@ -4494,7 +5051,9 @@
 		},
 		"kanban": {
 			"addTask": "Dodaj zadanie",
-			"stages": "Kolumny"
+			"stages": "Kolumny",
+			"emptyAction": "Dodaj zadanie",
+			"emptyTitle": "Brak zadań"
 		},
 		"labels": {
 			"empty": "Brak dostępnych etykiet",
@@ -4736,11 +5295,17 @@
 			},
 			"label": "Szacunek",
 			"none": "Bez szacunku",
-			"pointsValue": "{{value}} pkt",
+			"pointsValue_one": "{{value}} pkt",
+			"pointsValue_few": "{{value}} pkt",
+			"pointsValue_many": "{{value}} pkt",
+			"pointsValue_other": "{{value}} pkt",
 			"setAria": "Ustaw szacunek",
 			"totals": {
 				"estimated": "Oszacowano {{estimated}} z {{total}} zadań",
-				"points": "{{completed}} / {{total}} pkt",
+				"points_one": "{{completed}} / {{total}} pkt",
+				"points_few": "{{completed}} / {{total}} pkt",
+				"points_many": "{{completed}} / {{total}} pkt",
+				"points_other": "{{completed}} / {{total}} pkt",
 				"time": "{{completed}} / {{total}}"
 			},
 			"updateError": "Nie udało się zaktualizować szacunku"
@@ -4861,6 +5426,12 @@
 			},
 			"url": "URL",
 			"urlPlaceholder": "https://example.com"
+		},
+		"create": {
+			"similarTitle": "Podobne otwarte zadania",
+			"similarDismiss": "Ukryj podobne zadania",
+			"similarOpen": "Otwórz",
+			"similarOpenLabel": "Otwórz {{key}} {{title}} w nowej karcie"
 		},
 		"parent": {
 			"add": "Dodaj zadanie nadrzędne",
@@ -5139,6 +5710,7 @@
 				"cycle": "cykl",
 				"estimate": "szacunek",
 				"modules": "moduły",
+				"parent": "zadanie nadrzędne",
 				"status": "status"
 			},
 			"edited": "Edytowano {{time}}",
@@ -5197,6 +5769,8 @@
 			"hint": "Wpisz tytuł. @osoba, #etykieta, !priorytet oraz daty, np. fri lub 12 Oct, zamieniają się w znaczniki. Enter tworzy zadanie, Ctrl Enter otwiera pełny edytor.",
 			"labelError": "Zadanie zostało utworzone, ale nie udało się dodać etykiety {{name}}",
 			"newLabel": "{{name}} (nowa etykieta)",
+			"dueOn": "Dodaj zadanie z terminem {{date}}",
+			"notInView": "Zadanie utworzone. Nie jest tu widoczne, ponieważ nie pasuje do tego widoku.",
 			"open": "Otwórz",
 			"openComposer": "Otwórz pełny edytor",
 			"openComposerHint": "Otwórz pełny edytor (Ctrl Enter)",
@@ -6203,6 +6777,51 @@
 					"shortcuts": "Opisz skróty do segregacji zgłoszeń"
 				},
 				"title": "Twoja praca"
+			},
+			"ask": {
+				"title": "Zapytaj AI",
+				"model": "Model obszaru roboczego",
+				"greeting": "Cześć! Czego chcesz się dowiedzieć?",
+				"intro": "Pytaj o obszar roboczy własnymi słowami. Odpowiedzi pochodzą z zadań, które widzisz.",
+				"placeholder": "Zapytaj AI, @ dodaje kontekst, / otwiera polecenia",
+				"placeholderBuild": "Opisz, co utworzyć lub zmienić…",
+				"modes": {
+					"label": "Tryb",
+					"ask": "Pytaj",
+					"build": "Buduj"
+				},
+				"send": "Wyślij",
+				"you": "Ty",
+				"question": "Co blokuje bieżący cykl?",
+				"buildPrompt": "Przypisz WEB-5 do Miry",
+				"context": "Kontekst ({{count}})",
+				"facts": "Projekty: 1 · Osoby: 4 · Cykle: 1",
+				"earlier": "Wcześniejsze wiadomości: {{count}}",
+				"thinking": "Myślę… {{seconds}}s",
+				"thought": "Czas myślenia: {{seconds}}s",
+				"blockedIntro": "{{cycle}} — zablokowane są dwa zadania:",
+				"blockedPageTitles": "{{title}}: czeka na spis stron.",
+				"blockedPricing": "{{title}}: czeka na dane o cenach od działu sprzedaży.",
+				"unassigned": "{{key}} nie ma jeszcze przypisanej osoby.",
+				"summary": "Jedna zmiana. Nic się nie stanie, dopóki jej nie potwierdzisz.",
+				"op": "Edytuj zadanie",
+				"action": "Przypisz {{key}} osobie {{name}}",
+				"awaiting": "Oczekiwanie na odpowiedź",
+				"ready": "Gotowe zmiany: {{count}}",
+				"cancel": "Anuluj",
+				"confirm": "Potwierdź",
+				"done": "Gotowe",
+				"undo": "Cofnij",
+				"undone": "Cofnięto",
+				"cancelled": "Anulowano. Nic nie zostało zmienione.",
+				"generic": "To demo odpowiada tylko na swoje pytanie. W Margaya tryb Pytaj odpowiada na podstawie Twojego obszaru roboczego i podaje linki do zadań, z których korzystał.",
+				"genericBuild": "To demo wprowadza tylko swoją zmianę. W Margaya tryb Buduj zamienia Twoje słowa w zmiany, które potwierdzasz.",
+				"blocked": "Zablokowane",
+				"tasks": {
+					"pageTitles": "Sprawdź tytuły stron",
+					"pricing": "Zaktualizuj stronę z cenami",
+					"mobileMenu": "Napraw menu mobilne"
+				}
 			}
 		},
 		"home": {
@@ -6237,6 +6856,10 @@
 				"singleServer": {
 					"detail": "Redis jest opcjonalny",
 					"title": "Wystarczy jeden serwer"
+				},
+				"ai": {
+					"title": "AI na Twoich warunkach",
+					"detail": "Domyślnie wyłączone, Twój własny model"
 				}
 			},
 			"faq": {
@@ -6273,6 +6896,14 @@
 					"selfHost": {
 						"answer": "Tak. Uruchom ją przez Docker Compose na jednym serwerze albo na Kubernetes z oficjalnym chartem Helm. Potrzebujesz jednego kontenera aplikacji i bazy PostgreSQL. Przewodnik instalacji omawia zmienne środowiskowe, przechowywanie danych i reverse proxy.",
 						"question": "Czy mogę hostować Margaya samodzielnie?"
+					},
+					"ai": {
+						"question": "Czy Margaya ma AI i czy jest ono domyślnie włączone?",
+						"answer": "Tak i nie. Wbudowane są Zapytaj AI, tryb Buduj, pomoc w pisaniu, sugestie segregacji i agenci AI, ale wszystko to pozostaje wyłączone, dopóki administrator instancji nie podłączy modelu, a obszar roboczy nie włączy AI. Każdą zmianę zaproponowaną przez AI najpierw zobaczysz i możesz ją cofnąć."
+					},
+					"aiData": {
+						"question": "Jakich modeli AI mogę używać i dokąd trafiają moje dane?",
+						"answer": "Używaj Claude albo dowolnego modelu zgodnego z OpenAI, który uruchamiasz samodzielnie, na przykład przez Ollama lub vLLM. W trybie tylko lokalnym nic nie opuszcza Twojej sieci. Margaya wysyła tylko to, co osoba pytająca już widzi, nie przechowuje promptów ani odpowiedzi, chyba że włączysz historię na serwerze, i zapisuje liczniki zużycia na potrzeby budżetów."
 					}
 				},
 				"title": "Pytania i proste odpowiedzi"
@@ -6285,13 +6916,11 @@
 				"title": "Poświęć czas pracy, a nie narzędziu."
 			},
 			"hero": {
-				"description": "Margaya trzyma zadania, cykle, dokumenty i zgłoszenia w jednym szybkim obszarze roboczym. Wpisz zadanie, popchnij je dalej i wróć do właściwej pracy.",
-				"eyebrow": "Zarządzanie projektami open source",
-				"note": "Licencja MIT. Uruchom na własnym serwerze albo wypróbuj Margaya Cloud przez 14 dni bez karty kredytowej.",
-				"primaryCta": "Zacznij teraz",
-				"secondaryCta": "Hostuj u siebie",
 				"title": "Planuj pracę.",
-				"titleAccent": "Bez zbędnej biurokracji."
+				"titleAccent": "Bez zbędnej biurokracji.",
+				"description": "Margaya trzyma zadania, cykle, dokumenty i zgłoszenia w jednym szybkim obszarze roboczym, z asystentem AI, którego możesz włączyć, by odpowiadał na pytania i wprowadzał zmiany. Wpisz zadanie, popchnij je dalej i wróć do właściwej pracy.",
+				"primaryCta": "Zacznij teraz",
+				"secondaryCta": "Hostuj u siebie"
 			},
 			"insight": {
 				"description": "Twórz wykresy z zadań, śledź dziennik audytu i przywracaj wszystko z kosza.",
@@ -6339,7 +6968,8 @@
 					"select": "Zaznacz bieżące zadanie",
 					"spreadsheet": "Arkusz",
 					"status": "Zmień status",
-					"tasks": "Znajdź zadanie po kluczu lub tytule"
+					"tasks": "Znajdź zadanie po kluczu lub tytule",
+					"ask": "Otwórz Zapytaj AI"
 				},
 				"modifier": "Ctrl",
 				"shortcutsLabel": "Skróty klawiszowe",
@@ -6372,6 +7002,10 @@
 					"views": {
 						"description": "Tablica, lista, arkusz, kalendarz i wykres Gantta",
 						"title": "Widoki"
+					},
+					"ai": {
+						"title": "AI",
+						"description": "Zapytaj AI, tryb Buduj, pomoc w pisaniu i agenci"
 					}
 				},
 				"label": "Główna",
@@ -6382,7 +7016,7 @@
 				"blog": "Blog",
 				"compare": "Porównaj",
 				"explore": "Odkrywaj",
-				"featuresIntro": "Pięć krótkich przewodników po aplikacji Margaya. Każdy z demo na żywo, które możesz przejąć.",
+				"featuresIntro": "Sześć krótkich przewodników po aplikacji Margaya. Każdy z demo na żywo, które możesz przejąć.",
 				"newTab": "(otwiera się w nowej karcie)"
 			},
 			"ownIt": {
@@ -6543,6 +7177,26 @@
 					"title": "Zasoby"
 				},
 				"selfHosted": "Stworzony do hostowania u siebie"
+			},
+			"ai": {
+				"eyebrow": "AI",
+				"title": "Zapytaj. Pozwól mu zbudować. Ty potwierdzasz.",
+				"description": "Zapytaj AI odpowiada na podstawie Twoich bieżących zadań, z wykresami i listą zadań, z których korzystał. Tryb Buduj zamienia prośbę w zmiany, które przeglądasz i potwierdzasz, a agenci przejmują zadania jak członkowie zespołu.",
+				"agents": {
+					"title": "Agenci, którzy pracują jak członkowie zespołu",
+					"description": "Przypisz zadanie agentowi i śledź jego pracę w Pulpicie agentów. Gdy utknie, pyta człowieka, przed zapisaniem czegokolwiek czeka na zgodę i może działać według harmonogramu."
+				},
+				"privacy": {
+					"title": "Domyślnie prywatnie",
+					"description": "AI pozostaje wyłączone, dopóki administrator go nie włączy, a Ty decydujesz, gdzie działa.",
+					"items": {
+						"model": "Claude albo własny model przez Ollama lub vLLM",
+						"local": "Tryb tylko lokalny zatrzymuje dane w Twojej sieci",
+						"stored": "Żadne prompty ani odpowiedzi nie są zapisywane, chyba że wybierzesz historię na serwerze",
+						"budget": "Miesięczne i dzienne budżety oraz rejestr zużycia",
+						"undo": "Każdą zmianę z trybu Buduj można cofnąć przez godzinę"
+					}
+				}
 			}
 		},
 		"pages": {
@@ -6561,8 +7215,8 @@
 						"title": "REST API z OpenAPI"
 					},
 					"cleanup": {
-						"body": "Automatycznie archiwizuj zamknięte zadania i zamykaj te zaniedbane, z podglądem tego, czego dotknie każda reguła.",
-						"title": "Zaplanowane porządki"
+						"body": "Ustaw reguły Kiedy, Jeśli, Wtedy dla rutynowej pracy, takiej jak przypisywanie lub etykietowanie nowych zadań, i archiwizuj lub zamykaj zaniedbane zadania według harmonogramu, z podglądem tego, czego dotknie każda reguła.",
+						"title": "Reguły automatyzacji"
 					},
 					"integrations": {
 						"body": "Łącz pull requesty z GitHub lub Gitea, wysyłaj aktualizacje do Slack, Discord, Telegram lub Mattermost i przesyłaj zdarzenia pod dowolny URL za pomocą webhooków wychodzących.",
@@ -6701,6 +7355,43 @@
 					}
 				},
 				"title": "Jeden zestaw zadań, każde ujęcie, jakiego potrzebujesz."
+			},
+			"ai": {
+				"metaTitle": "Asystent AI, tryb Buduj i agenci",
+				"metaDescription": "Zadawaj pytania o swoją pracę i dostawaj odpowiedzi z bieżących danych, pozwól trybowi Buduj proponować zmiany do Twojego potwierdzenia, pisz z pomocą AI i przypisuj zadania agentom AI — na własnym modelu i z AI domyślnie wyłączonym.",
+				"eyebrow": "AI",
+				"title": "Asystent, który zna Twoją pracę.",
+				"description": "Zapytaj AI, tryb Buduj, pomoc w pisaniu i agenci — wszystko w wersji open source, na wybranym przez Ciebie modelu.",
+				"sections": {
+					"ask": {
+						"title": "Zapytaj AI",
+						"body": "Pytaj zwykłymi słowami i dostawaj odpowiedzi z bieżących zadań, z liczbami, wykresami i linkami do zadań i stron, z których korzystał. Wspomnij zadanie, stronę lub osobę przez @, dołącz plik albo mów zamiast pisać."
+					},
+					"build": {
+						"title": "Tryb Buduj",
+						"body": "Opisz zmianę, na przykład projekt z trzema zadaniami albo zadanie dla Mii. Widzisz, co przeczytał i jak rozumował, edytujesz proponowane zmiany, potwierdzasz je i możesz cofnąć każdą z nich przez godzinę."
+					},
+					"writing": {
+						"title": "Pomoc w pisaniu",
+						"body": "Popraw, skróć, przetłumacz lub zmień ton opisu albo komentarza, poproś o propozycję tytułu, podsumuj zadanie lub dodaj blok AI do strony."
+					},
+					"triage": {
+						"title": "Segregacja i podsumowania",
+						"body": "Dostawaj sugestie etykiet i priorytetów dla nowej pracy, wyłapuj duplikaty, filtruj tablicę, opisując, czego szukasz, i otrzymuj podsumowanie nieprzeczytanych wiadomości w skrzynce odbiorczej albo omówienie cyklu."
+					},
+					"agents": {
+						"title": "Agenci AI",
+						"body": "Agenci to członkowie, którym możesz przypisywać zadania. Gdy utkną, pytają człowieka, przed zapisaniem czekają na zgodę, działają według harmonogramu i mogą korzystać z narzędzi z innych podłączonych serwerów MCP."
+					},
+					"privacy": {
+						"title": "Twój model, Twoje zasady",
+						"body": "AI jest wyłączone, dopóki administrator go nie włączy. Używaj Claude albo modelu lokalnego, trzymaj dane w swojej sieci, ustawiaj budżety i nie przechowuj promptów ani odpowiedzi, jeśli tego nie chcesz."
+					}
+				},
+				"cta": {
+					"title": "Włącz AI, gdy przyjdzie na to pora.",
+					"description": "Przeczytaj przewodnik konfiguracji AI albo wypróbuj Zapytaj AI we własnym obszarze roboczym."
+				}
 			}
 		},
 		"scenes": {
@@ -6811,6 +7502,10 @@
 			"yourWork": {
 				"caption": "Twoja praca zbiera to, co Ci przypisano, co utworzyłeś i co obserwujesz.",
 				"description": "Demo: strona Twoja praca. Kursor przechodzi przez karty Przypisane, Utworzone i Obserwowane, a każda z nich pokazuje własne zadania ze wszystkich projektów ze statusem, priorytetem i terminem."
+			},
+			"ask": {
+				"caption": "Zapytaj o pracę, a potem pozwól trybowi Buduj wprowadzić zmianę. Ty ją potwierdzasz.",
+				"description": "Demo: tablica projektu Strona WWW z otwartym czatem Zapytaj AI. Ktoś pyta, co blokuje bieżący cykl. Asystent wymienia, co przeczytał, myśli przez dwie sekundy i odpowiada: WEB-5 i WEB-6 są zablokowane, a WEB-5 nie ma przypisanej osoby. Po przełączeniu na tryb Buduj użytkownik prosi o przypisanie WEB-5 do Miry. Asystent proponuje zmianę, użytkownik ją potwierdza, karta pokazuje Gotowe z przyciskiem Cofnij, a na WEB-5 pojawia się awatar Miry."
 			}
 		}
 	},
@@ -6996,7 +7691,13 @@
 			"owner": "Właściciel",
 			"progress": "Postęp",
 			"tasks": "Zadania",
-			"title": "Szczegóły cyklu"
+			"title": "Szczegóły cyklu",
+			"rolledOver_few": "Automatyczne przeniesienie: {{count}} nieukończone zadania trafiły do {{name}}.",
+			"rolledOver_many": "Automatyczne przeniesienie: {{count}} nieukończonych zadań trafiło do {{name}}.",
+			"rolledOver_one": "Automatyczne przeniesienie: {{count}} nieukończone zadanie trafiło do {{name}}.",
+			"rolledOver_other": "Automatyczne przeniesienie: nieukończone zadania przeniesione do {{name}}: {{count}}.",
+			"rolloverNoNext": "Automatyczne przeniesienie nie znalazło następnego cyklu; nieukończone zadania pozostały tutaj.",
+			"rolloverNothing": "Automatyczne przeniesienie nie znalazło nieukończonych zadań do przeniesienia."
 		},
 		"status": {
 			"archived": "Zarchiwizowany",
@@ -7608,7 +8309,9 @@
 		"widgets": {
 			"quickLinks": "Szybkie linki",
 			"recents": "Ostatnie",
-			"stickies": "Karteczki"
+			"stickies": "Karteczki",
+			"risks": "Ryzyka",
+			"myBrief": "Mój przegląd"
 		},
 		"focus": {
 			"caughtUp": "Wszystko przeczytane",
@@ -7628,7 +8331,9 @@
 			"unread_few": "{{count}} nieprzeczytane",
 			"unread_many": "{{count}} nieprzeczytanych",
 			"unread_one": "{{count}} nieprzeczytane",
-			"unread_other": "Nieprzeczytane: {{count}}"
+			"unread_other": "Nieprzeczytane: {{count}}",
+			"openCaption": "otwarte",
+			"unreadCaption": "nieprzeczytane"
 		}
 	},
 	"intake": {
@@ -7688,7 +8393,11 @@
 			"titlePlaceholder": "Czego potrzebujesz?",
 			"titleRequired": "Dodaj tytuł",
 			"toast": "Zgłoszenie wysłane",
-			"toastView": "Zobacz"
+			"toastView": "Zobacz",
+			"pastedImages": "Wklejone obrazy",
+			"pasteHint": "Wklej zrzuty ekranu, aby załączyć je do zgłoszenia.",
+			"removeImage": "Usuń {{name}}",
+			"attachFailed": "Zgłoszenie zostało wysłane, ale nie udało się załączyć niektórych obrazów."
 		},
 		"decline": {
 			"description": "Zgłoszenie zostanie zamknięte i nie trafi na tablicę. Możesz je później otworzyć ponownie.",
@@ -7735,7 +8444,9 @@
 			"noTasks": "Ten projekt nie ma jeszcze innych zadań.",
 			"searchPlaceholder": "Szukaj zadań po kluczu lub tytule",
 			"title": "Oznacz {{key}} jako duplikat",
-			"toast": "Oznaczono jako duplikat {{key}}"
+			"toast": "Oznaczono jako duplikat {{key}}",
+			"aiSuggestions": "Proponowane przez AI",
+			"aiChecking": "Szukanie duplikatów z AI…"
 		},
 		"empty": {
 			"backToIntake": "Wróć do zgłoszeń",
@@ -7983,6 +8694,11 @@
 				"singleProjectHint": "Wybierz jeden projekt, aby zobaczyć prędkość",
 				"subtitle": "Ukończone a zaplanowane, według cyklu",
 				"title": "Prędkość"
+			},
+			"filter": {
+				"all": "Wszystkie",
+				"label": "Pokaż cykle",
+				"running": "Trwające teraz"
 			}
 		},
 		"dimensions": {
@@ -8132,7 +8848,8 @@
 			"noRequests": "Brak zgłoszeń",
 			"noTasks": "Żadne zadania nie pasują do tych filtrów",
 			"retry": "Spróbuj ponownie",
-			"timeout": "Trwało to zbyt długo. Zawęź filtry i spróbuj ponownie."
+			"timeout": "Trwało to zbyt długo. Zawęź filtry i spróbuj ponownie.",
+			"noRunningCycles": "Obecnie nie trwa żaden cykl"
 		},
 		"table": {
 			"periodEnd": "Koniec okresu",
@@ -8148,7 +8865,8 @@
 			"intake": "Zgłoszenia",
 			"modules": "Moduły",
 			"overview": "Przegląd",
-			"tasks": "Zadania"
+			"tasks": "Zadania",
+			"delivery": "Dostarczanie"
 		},
 		"trend": {
 			"completed": "Ukończone",
@@ -8162,9 +8880,147 @@
 			"chart": "Wykres",
 			"label": "Pokaż jako",
 			"table": "Tabela"
+		},
+		"reports": {
+			"actionsFor": "Akcje dla {{name}}",
+			"close": "Zamknij raport",
+			"delete": "Usuń",
+			"deleteDescription": "Raport „{{name}}” zostanie usunięty. Tej operacji nie można cofnąć.",
+			"deleteSharedDescription": "Raport „{{name}}” zostanie usunięty dla wszystkich w obszarze roboczym. Tej operacji nie można cofnąć.",
+			"deleteTitle": "Usunąć ten raport?",
+			"dialog": {
+				"cancel": "Anuluj",
+				"createTitle": "Zapisz raport",
+				"editTitle": "Edytuj raport",
+				"name": "Nazwa",
+				"namePlaceholder": "np. Otwarte błędy według przypisanej osoby",
+				"nameRequired": "Wpisz nazwę",
+				"save": "Zapisz",
+				"summary": "Zapisuje ustawienia wykresu, wybrane projekty i filtry.",
+				"update": "Zapisz zmiany",
+				"visibility": "Kto może go zobaczyć"
+			},
+			"empty": "Brak zapisanych raportów. Zapisz ten wykres, aby do niego wrócić.",
+			"listTitle": "Zapisane raporty",
+			"loadError": "Nie udało się wczytać zapisanych raportów",
+			"makePrivate": "Ustaw jako prywatny",
+			"notes": {
+				"allProjects": "Żaden z projektów tego raportu nie jest dostępny, więc wyświetlane są wszystkie projekty.",
+				"builderReset": "Niektóre ustawienia wykresu nie są dostępne dla tych projektów i zostały zresetowane.",
+				"dropped_few": "{{count}} projekty z tego raportu już nie istnieją.",
+				"dropped_many": "{{count}} projektów z tego raportu już nie istnieje.",
+				"dropped_one": "{{count}} projekt z tego raportu już nie istnieje.",
+				"dropped_other": "Projekty z tego raportu, które już nie istnieją: {{count}}.",
+				"leftOut_few": "{{count}} projekty z tego raportu są zarchiwizowane i zostały pominięte.",
+				"leftOut_many": "{{count}} projektów z tego raportu jest zarchiwizowanych i zostało pominiętych.",
+				"leftOut_one": "{{count}} projekt z tego raportu jest zarchiwizowany i został pominięty.",
+				"leftOut_other": "Pominięte zarchiwizowane projekty z tego raportu: {{count}}.",
+				"otherProjects": "Ten raport zapisano dla innych projektów; tutaj pokazuje tylko ten projekt."
+			},
+			"open": "Raporty",
+			"rename": "Zmień nazwę",
+			"save": "Zapisz",
+			"saveAsNew": "Zapisz jako nowy",
+			"share": "Udostępnij w obszarze roboczym",
+			"sharedBy": "Udostępnił(a): {{name}}",
+			"showing": "Raport: {{name}}",
+			"toast": {
+				"deleted": "Usunięto raport",
+				"deleteError": "Nie udało się usunąć raportu",
+				"madePrivate": "Raport jest teraz prywatny",
+				"saved": "Zapisano „{{name}}”",
+				"saveError": "Nie udało się zapisać raportu",
+				"shared": "Raport udostępniono w obszarze roboczym",
+				"updated": "Zaktualizowano raport"
+			},
+			"unsaved": "Niezapisane zmiany",
+			"update": "Zaktualizuj raport",
+			"visibility": {
+				"private": "Prywatny",
+				"privateHint": "Widzisz go tylko ty.",
+				"workspace": "Udostępniony w obszarze roboczym",
+				"workspaceHint": "Może go otworzyć każdy w tym obszarze roboczym, kto ma dostęp do analityki."
+			}
 		}
 	},
 	"pages": {
+		"templates": {
+			"saveAction": "Zapisz jako szablon",
+			"saveTitle": "Zapisz jako szablon",
+			"saveDescription": "Bieżąca zawartość i ikona strony staną się szablonem dla nowych stron.",
+			"nameLabel": "Nazwa szablonu",
+			"scopeLabel": "Dostępny w",
+			"scopeProject": "Tym projekcie",
+			"scopeProjectHint": "Proponowany przy tworzeniu stron w tym projekcie.",
+			"scopeWorkspace": "Wszystkich projektach",
+			"scopeWorkspaceHint": "Proponowany we wszystkich projektach obszaru roboczego.",
+			"saveConfirm": "Zapisz szablon",
+			"savedToast": "Zapisano szablon",
+			"saveError": "Nie udało się zapisać szablonu",
+			"newFromTemplate": "Nowa strona z szablonu",
+			"moreCreateOptions": "Więcej sposobów tworzenia strony",
+			"pickTitle": "Nowa strona z szablonu",
+			"pickDescription": "Nowa strona zaczyna się od zawartości szablonu. Potem można zmienić wszystko.",
+			"starters": "Szablony startowe",
+			"saved": "Zapisane szablony",
+			"savedEmpty": "Brak zapisanych szablonów. Zapisz szablon z menu strony.",
+			"loadError": "Nie udało się wczytać szablonów",
+			"deleteLabel": "Usuń szablon {{name}}",
+			"deleted": "Usunięto szablon",
+			"deleteError": "Nie udało się usunąć szablonu",
+			"builtin": {
+				"meetingName": "Notatki ze spotkania",
+				"meetingDescription": "Uczestnicy, agenda, decyzje i zadania do wykonania.",
+				"meetingAttendees": "Uczestnicy",
+				"meetingAgenda": "Agenda",
+				"meetingNotes": "Notatki",
+				"meetingDecisions": "Decyzje",
+				"meetingActionItems": "Zadania do wykonania",
+				"specName": "Specyfikacja",
+				"specDescription": "Problem, cele, propozycja i otwarte pytania.",
+				"specSummary": "Podsumowanie",
+				"specProblem": "Problem",
+				"specGoals": "Cele",
+				"specNonGoals": "Poza zakresem",
+				"specProposal": "Propozycja",
+				"specOpenQuestions": "Otwarte pytania",
+				"retroName": "Retrospektywa",
+				"retroDescription": "Co poszło dobrze, co poprawić i co wypróbujemy dalej.",
+				"retroWentWell": "Co poszło dobrze",
+				"retroCouldBeBetter": "Co mogło pójść lepiej",
+				"retroTryNext": "Co wypróbujemy dalej"
+			}
+		},
+		"publish": {
+			"menuItem": "Opublikuj w sieci",
+			"title": "Opublikuj w sieci",
+			"description": "Każdy, kto ma link, może przeczytać tę stronę bez logowania. Wyszukiwarki są proszone, aby jej nie indeksować.",
+			"switchLabel": "Link publiczny",
+			"onHint": "Opublikowano. Wyłączenie od razu unieważnia link.",
+			"offHint": "Wyłączony. Włącz, aby utworzyć link.",
+			"disabledByWorkspace": "Strony publiczne są wyłączone w tym obszarze roboczym. Administrator może je włączyć w ustawieniach obszaru roboczego.",
+			"cannotPublish": "Publikować mogą tylko osoby, które mogą udostępniać projekty, i tylko strony widoczne dla całego obszaru roboczego.",
+			"linkLabel": "Link",
+			"copyLink": "Kopiuj link",
+			"copied": "Skopiowano",
+			"openLink": "Otwórz stronę publiczną",
+			"privacyNote": "Wzmianki, linki do zadań, pliki i linki do nieopublikowanych stron są ukryte na stronie publicznej.",
+			"publishedToast": "Opublikowano stronę",
+			"unpublishedToast": "Unieważniono link",
+			"error": "Nie udało się zmienić linku publicznego",
+			"loadError": "Nie udało się wczytać linku publicznego",
+			"done": "Gotowe"
+		},
+		"publicView": {
+			"documentTitle": "Udostępniona strona",
+			"unavailableTitle": "Ta strona jest niedostępna",
+			"unavailableDescription": "Link mógł zostać unieważniony albo strona nie jest już udostępniana.",
+			"updated": "Zaktualizowano {{date}}",
+			"mention": "@ktoś",
+			"task": "powiązane zadanie",
+			"file": "załączony plik",
+			"page": "inna strona"
+		},
 		"actions": {
 			"archive": "Zarchiwizuj",
 			"copyLink": "Kopiuj link",
@@ -8202,6 +9058,40 @@
 			"restoredBy": "{{name}} przywrócił(a) wcześniejszą wersję",
 			"roomFull": "Zbyt wiele osób ma teraz otwartą tę stronę. Spróbuj ponownie za chwilę.",
 			"signedOut": "Twoja sesja wygasła. Zaloguj się ponownie, aby kontynuować edycję."
+		},
+		"toolbar": {
+			"ariaLabel": "Pasek formatowania",
+			"textStyle": "Styl tekstu",
+			"bold": "Pogrubienie",
+			"italic": "Kursywa",
+			"underline": "Podkreślenie",
+			"strike": "Przekreślenie",
+			"inlineCode": "Kod w linii",
+			"link": "Link",
+			"image": "Obraz",
+			"more": "Więcej formatowania"
+		},
+		"filters": {
+			"button": "Filtry",
+			"active": "Zastosowano filtry",
+			"search": "Szukaj filtrów",
+			"searchClear": "Wyczyść wyszukiwanie",
+			"favorites": "Ulubione",
+			"createdDate": "Data utworzenia",
+			"date": {
+				"any": "Dowolny czas",
+				"today": "Dzisiaj",
+				"last7": "Ostatnie 7 dni",
+				"last30": "Ostatnie 30 dni",
+				"older": "Starsze niż 30 dni"
+			},
+			"remove": "Usuń filtr {{filter}}"
+		},
+		"detail": {
+			"unlocked": "Odblokowana",
+			"openOutline": "Otwórz konspekt",
+			"currentSection": "Bieżąca sekcja",
+			"emptyLinePlaceholder": "Wpisz „/”, aby wyświetlić polecenia"
 		},
 		"commandPalette": {
 			"createPage": "Utwórz stronę"
@@ -8321,8 +9211,6 @@
 			"locked": "Zablokowana",
 			"newPage": "Nowa strona",
 			"ownedBy": "Właściciel: {{name}}",
-			"ownerFilter": "Właściciel",
-			"ownerFilterSearch": "Szukaj osób",
 			"retry": "Spróbuj ponownie",
 			"searchPlaceholder": "Szukaj stron",
 			"sort": {
@@ -8442,6 +9330,229 @@
 			"expand": "Rozwiń {{title}}",
 			"newPage": "Nowa strona",
 			"title": "Strony"
+		}
+	},
+	"accountSecurity": {
+		"platform": {
+			"save": "Zapisz",
+			"retry": "Spróbuj ponownie",
+			"loadMore": "Wczytaj więcej",
+			"auditPasswordResetSent": "Wysłano link do resetowania hasła",
+			"apiKeys": {
+				"accessLabel": "Dostęp",
+				"accessFull": "Pełny dostęp",
+				"accessFullHint": "Wszystko, co możesz zrobić, w każdym obszarze roboczym, do którego należysz.",
+				"accessRead": "Tylko odczyt",
+				"accessReadHint": "Może czytać, ale nigdy niczego nie zmienia.",
+				"accessCustom": "Własny",
+				"accessCustomHint": "Tylko obszary wybrane poniżej.",
+				"areasLabel": "Zakresy",
+				"areaNone": "Brak",
+				"areaRead": "Odczyt",
+				"areaWrite": "Zapis",
+				"areasRequired": "Wybierz co najmniej jeden zakres.",
+				"projectsLabel": "Ogranicz do wybranych projektów",
+				"projectsHint": "Inne projekty są dla tego klucza niewidoczne, a żądania dotyczące całego obszaru roboczego są odrzucane.",
+				"projectsIn": "Projekty w {{workspace}}",
+				"projectsLoading": "Wczytywanie projektów…",
+				"projectsEmpty": "Ten obszar roboczy nie ma jeszcze projektów.",
+				"projectsRequired": "Wybierz co najmniej jeden projekt.",
+				"columnScope": "Zakres",
+				"scopeFull": "Pełny dostęp",
+				"scopeRead": "Tylko odczyt",
+				"scopeCustom": "Własny",
+				"scopeProjects": "Projekty: {{projects}}",
+				"deletedProject": "Usunięty projekt",
+				"requestsAria": "Żądania wykonane kluczem {{name}}",
+				"requestsTitle": "Żądania: {{name}}",
+				"requestsDescription": "Ostatnie żądania wykonane tym kluczem. Zapisywane są tylko metoda, ścieżka, status i czas trwania, nigdy treść.",
+				"requestsEmpty": "Brak żądań.",
+				"requestsError": "Nie udało się wczytać żądań.",
+				"columnTime": "Czas",
+				"columnRequest": "Żądanie",
+				"columnStatus": "Status",
+				"columnDuration": "Czas trwania",
+				"durationMs": "{{value}} ms"
+			},
+			"policy": {
+				"title": "Zasady logowania",
+				"description": "Kto może założyć konto, jak wszyscy się logują i jak długo trwają sesje.",
+				"invitedPasswordSignUp": "Rejestracja hasłem dla zaproszonych",
+				"invitedPasswordSignUpHint": "Gdy rejestracja hasłem jest wyłączona, osoby z ważnym zaproszeniem nadal mogą założyć konto z hasłem.",
+				"domains": "Dozwolone domeny e-mail",
+				"domainsHint": "Nowe konta muszą używać adresu w jednej z tych domen. Pozostaw puste, aby zezwolić na każdą domenę.",
+				"requiredProvider": "Wymagany dostawca logowania",
+				"requiredProviderHint": "Wszyscy logują się przez tego dostawcę. Administratorzy instancji zachowują logowanie hasłem jako drogę powrotu.",
+				"noRequirement": "Brak wymogu",
+				"customProvider": "logowanie Twojej organizacji",
+				"sessionLifetime": "Czas trwania sesji",
+				"sessionLifetimeHint": "Jak długo trwa nieużywana sesja. Korzystanie z niej ją przedłuża.",
+				"hours": "godz.",
+				"signInNotice": "Zaloguj się przez {{provider}}. Logowanie hasłem jest tylko dla administratorów instancji."
+			},
+			"twoFactor": {
+				"title": "Uwierzytelnianie dwuskładnikowe",
+				"description": "Wymagaj kodu z aplikacji uwierzytelniającej przy logowaniu hasłem.",
+				"authenticator": "Aplikacja uwierzytelniająca",
+				"on": "Włączone",
+				"off": "Wyłączone",
+				"turnOn": "Włącz",
+				"turnOff": "Wyłącz",
+				"newCodes": "Nowe kody odzyskiwania",
+				"confirmPassword": "Potwierdź hasło",
+				"continue": "Dalej",
+				"setupTitle": "Dodaj Margaya do aplikacji uwierzytelniającej",
+				"setupHint": "Wpisz ten klucz konfiguracji w aplikacji uwierzytelniającej, a potem 6-cyfrowy kod, który pokaże.",
+				"setupKey": "Klucz konfiguracji",
+				"openApp": "Otwórz w aplikacji uwierzytelniającej na tym urządzeniu",
+				"code": "Kod uwierzytelniający",
+				"verify": "Zweryfikuj",
+				"invalidCode": "Ten kod jest nieprawidłowy. Sprawdź godzinę na urządzeniu i spróbuj ponownie.",
+				"codesTitle": "Kody odzyskiwania",
+				"codesHint": "Przechowuj je w bezpiecznym miejscu. Każdy kod pozwala raz się zalogować, jeśli zgubisz urządzenie.",
+				"copyCodes": "Kopiuj kody",
+				"copied": "Skopiowano kody odzyskiwania",
+				"done": "Gotowe",
+				"enabled": "Uwierzytelnianie dwuskładnikowe jest włączone.",
+				"disabled": "Uwierzytelnianie dwuskładnikowe jest wyłączone.",
+				"error": "Coś poszło nie tak. Spróbuj ponownie."
+			},
+			"challenge": {
+				"title": "Uwierzytelnianie dwuskładnikowe",
+				"totpHint": "Wpisz 6-cyfrowy kod z aplikacji uwierzytelniającej.",
+				"recoveryHint": "Wpisz jeden z kodów odzyskiwania. Każdy kod działa jeden raz.",
+				"recoveryCode": "Kod odzyskiwania",
+				"invalid": "Ten kod jest nieprawidłowy. Spróbuj ponownie.",
+				"trustDevice": "Ufaj temu urządzeniu przez 30 dni",
+				"useRecovery": "Użyj kodu odzyskiwania",
+				"useApp": "Użyj aplikacji uwierzytelniającej",
+				"usePassword": "Zaloguj się hasłem",
+				"back": "Wróć do logowania"
+			},
+			"users": {
+				"nav": "Użytkownicy",
+				"title": "Użytkownicy",
+				"subtitle": "Wszystkie konta na tym serwerze. Blokuj osoby, które odeszły, resetuj hasła i wylogowuj użytkowników.",
+				"listTitle": "Konta",
+				"search": "Szukaj po nazwie lub e-mailu",
+				"filterLabel": "Pokaż",
+				"filterAll": "Wszystkie konta",
+				"filterAdmins": "Administratorzy instancji",
+				"filterBanned": "Zablokowane",
+				"empty": "Żadne konto nie pasuje do „{{query}}”.",
+				"none": "Brak kont.",
+				"columnUser": "Użytkownik",
+				"columnStatus": "Status",
+				"columnWorkspaces": "Obszary robocze",
+				"columnLastActive": "Ostatnia aktywność",
+				"columnJoined": "Dołączył",
+				"columnActions": "Akcje",
+				"badgeAdmin": "Administrator",
+				"badgeBanned": "Zablokowane",
+				"badgeTwoFactor": "2FA",
+				"never": "Nigdy",
+				"actionsFor": "Akcje dla {{name}}",
+				"details": "Pokaż szczegóły",
+				"resetPassword": "Resetuj hasło",
+				"signOut": "Wyloguj wszędzie",
+				"makeAdmin": "Nadaj rolę administratora instancji",
+				"removeAdmin": "Odbierz rolę administratora instancji",
+				"ban": "Zablokuj",
+				"unban": "Odblokuj",
+				"banTitle": "Zablokować {{name}}?",
+				"banDescription": "Ta osoba zostanie wylogowana wszędzie i nie zaloguje się do końca blokady. Jej klucze API też przestaną działać.",
+				"banReason": "Powód (opcjonalnie)",
+				"banDuration": "Czas trwania",
+				"banForever": "Do odblokowania",
+				"ban7Days": "7 dni",
+				"ban30Days": "30 dni",
+				"banned": "{{name}} – konto zablokowane.",
+				"unbanned": "{{name}} może znów się logować.",
+				"resetTitle": "Zresetować hasło użytkownika {{name}}?",
+				"resetDescription": "Wyślij link do resetu albo ustaw nowe hasło teraz. Ustawienie hasła wyloguje tę osobę wszędzie.",
+				"resetByEmail": "Wyślij link do resetu na {{email}}",
+				"resetSetNow": "Ustaw nowe hasło teraz",
+				"newPassword": "Nowe hasło",
+				"resetConfirm": "Resetuj hasło",
+				"resetSent": "Link do resetu jest w drodze na {{email}}.",
+				"passwordSet": "Hasło użytkownika {{name}} zostało zmienione.",
+				"signOutTitle": "Wylogować {{name}} wszędzie?",
+				"signOutDescription": "Wszystkie sesje kończą się od razu. Klucze API nadal działają; tylko ich właściciel może je unieważnić.",
+				"signedOut": "{{name}} – wylogowano wszędzie.",
+				"promoted": "{{name}} jest teraz administratorem instancji.",
+				"demoted": "{{name}} nie jest już administratorem instancji.",
+				"activeSessions": "Aktywne sesje",
+				"signInMethod": "Hasło",
+				"hasPassword": "Ustawione",
+				"noPassword": "Nieustawione (loguje się inaczej)",
+				"workspacesTitle": "Obszary robocze",
+				"noWorkspaces": "Nie należy do żadnego obszaru roboczego.",
+				"joined": "Dołączył {{date}}"
+			}
+		},
+		"password": {
+			"tooShort": "Użyj co najmniej {{min}} znaków.",
+			"tooCommon": "To hasło jest zbyt popularne i łatwe do odgadnięcia. Wybierz inne.",
+			"matchesEmail": "Hasło nie może być Twoim adresem e-mail.",
+			"hint": "Co najmniej {{min}} znaków. Unikaj popularnych haseł i swojego adresu e-mail."
+		},
+		"emailChange": {
+			"action": "Zmień e-mail",
+			"title": "Zmień adres e-mail",
+			"description": "Wyślemy kod na nowy adres. Twój e-mail zmieni się po jego wpisaniu, a pozostałe sesje zostaną wylogowane.",
+			"newEmail": "Nowy adres e-mail",
+			"newEmailPlaceholder": "ty@przyklad.pl",
+			"invalidEmail": "Wpisz prawidłowy adres e-mail.",
+			"sameEmail": "To już jest Twój adres e-mail.",
+			"sendCode": "Wyślij kod",
+			"codeSent": "Jeśli można użyć adresu {{email}}, kod jest już w drodze. Wygaśnie za 5 minut.",
+			"code": "Kod weryfikacyjny",
+			"confirm": "Zmień e-mail",
+			"back": "Użyj innego adresu",
+			"success": "Twój adres e-mail to teraz {{email}}.",
+			"invalidCode": "Ten kod jest nieprawidłowy lub wygasł. Poproś o nowy.",
+			"sessionTooOld": "Ze względów bezpieczeństwa zaloguj się ponownie przed zmianą adresu e-mail.",
+			"unavailable": "Poczta e-mail nie jest skonfigurowana na tym serwerze, więc nie można tu zmienić adresu. Poproś administratora instancji.",
+			"error": "Nie udało się zmienić adresu e-mail."
+		},
+		"reauth": {
+			"title": "Potwierdź, że to Ty",
+			"description": "Zmiany instancji wymagają niedawnego zalogowania. Wpisz hasło, aby kontynuować przez następne 10 minut.",
+			"noPassword": "Zmiany instancji wymagają niedawnego zalogowania. Twoje konto nie ma hasła, więc zaloguj się ponownie, aby kontynuować.",
+			"password": "Hasło",
+			"confirm": "Potwierdź",
+			"signInAgain": "Zaloguj się ponownie",
+			"wrongPassword": "To hasło jest nieprawidłowe.",
+			"cancelled": "Nie zapisano: Twoja tożsamość nie została potwierdzona.",
+			"error": "Nie udało się potwierdzić hasła."
+		},
+		"auditTrail": {
+			"title": "Historia zmian",
+			"subtitle": "Zmiany instancji: kto, co i kiedy zmienił. Wartości tajne nigdy nie są zapisywane.",
+			"empty": "Nie zapisano jeszcze żadnych zmian instancji.",
+			"loadMore": "Wczytaj więcej",
+			"when": "Kiedy",
+			"who": "Kto",
+			"what": "Co",
+			"system": "System",
+			"actions": {
+				"instanceSettingsUpdated": "Zmienił(a) ustawienia instancji",
+				"instanceAdminAdded": "Dodał(a) administratora instancji",
+				"instanceAdminRemoved": "Usunął(-ęła) administratora instancji",
+				"instanceReauthenticated": "Potwierdził(a) swoje hasło",
+				"userCreated": "Utworzył(a) konto",
+				"userRoleChanged": "Zmienił(a) rolę konta",
+				"userBanned": "Zablokował(a) konto",
+				"userUnbanned": "Zdjął(-ęła) blokadę",
+				"userRemoved": "Usunął(-ęła) konto",
+				"userPasswordSet": "Ustawił(a) hasło konta",
+				"userSessionsRevoked": "Wylogował(a) konto",
+				"userImpersonated": "Zalogował(a) się jako inne konto",
+				"cliAdminPromoted": "Nadał(a) uprawnienia administratora instancji (CLI odzyskiwania)",
+				"cliAdminDemoted": "Odebrał(a) uprawnienia administratora instancji (CLI odzyskiwania)",
+				"cliPasswordReset": "Zresetował(a) hasło (CLI odzyskiwania)",
+				"cliUserUnbanned": "Zdjął(-ęła) blokadę (CLI odzyskiwania)"
+			}
 		}
 	},
 	"instanceAdmin": {
@@ -8582,7 +9693,8 @@
 			"email": "E-mail",
 			"general": "Ogólne",
 			"publicBoards": "Tablice publiczne",
-			"workspaces": "Obszary robocze"
+			"workspaces": "Obszary robocze",
+			"ai": "AI"
 		},
 		"oauth": {
 			"authorizationUrl": "URL autoryzacji",
@@ -8803,7 +9915,11 @@
 				"label": "Stack",
 				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
 			},
-			"title": "Quick facts"
+			"title": "Quick facts",
+			"ai": {
+				"label": "AI",
+				"value": "Opcjonalne i domyślnie wyłączone: Zapytaj AI, tryb Buduj i agenci AI, na Claude albo na modelu hostowanym samodzielnie"
+			}
 		},
 		"guidelines": {
 			"do": {
@@ -9013,5 +10129,1791 @@
 		},
 		"title": "One product. Two ways to run it.",
 		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+	},
+	"templates": {
+		"form": {
+			"addSubtask": "Dodaj",
+			"assignees": "Przypisane osoby",
+			"assigneesNone": "Domyślne dla projektu",
+			"create": "Utwórz szablon",
+			"createTitle": "Nowy szablon zadania",
+			"description": "Od tego zaczyna się nowe zadanie. Po utworzeniu zadania wszystko nadal można edytować.",
+			"editTitle": "Edytuj szablon zadania",
+			"estimate": "Szacunek",
+			"labels": "Etykiety",
+			"labelsEmpty": "Nie znaleziono etykiet",
+			"labelsNone": "Brak etykiet",
+			"labelsSearch": "Szukaj etykiet",
+			"moveDown": "Przenieś „{{title}}” w dół",
+			"moveUp": "Przenieś „{{title}}” w górę",
+			"name": "Nazwa",
+			"namePlaceholder": "Zgłoszenie błędu",
+			"notSet": "Nie ustawiono",
+			"priority": "Priorytet",
+			"removeSubtask": "Usuń „{{title}}”",
+			"save": "Zapisz szablon",
+			"status": "Status",
+			"statusDefault": "Domyślny dla projektu",
+			"subtaskPlaceholder": "Dodaj podzadanie",
+			"subtasks": "Podzadania",
+			"subtaskTitle": "Podzadanie {{number}}",
+			"taskDescription": "Opis",
+			"taskDescriptionPlaceholder": "Kroki do odtworzenia, oczekiwany wynik…",
+			"titlePattern": "Wzorzec tytułu",
+			"titlePatternHint": "{title} zostanie zastąpione wpisanym tytułem. Bez tego znacznika wpisany tytuł jest dodawany po wzorcu.",
+			"titlePatternPlaceholder": "Błąd: {title}"
+		},
+		"settings": {
+			"add": "Nowy szablon",
+			"deleteAria": "Usuń szablon {{name}}",
+			"deleteConfirm": "Usuń",
+			"deleteDescription": "Zadania utworzone z tego szablonu pozostaną bez zmian.",
+			"deleteTitle": "Usunąć szablon {{name}}?",
+			"description": "Punkty wyjścia dla nowych zadań: wzorzec tytułu, domyślne pola i lista kontrolna podzadań.",
+			"editAria": "Edytuj szablon {{name}}",
+			"empty": "Brak szablonów.",
+			"loadError": "Nie udało się wczytać szablonów.",
+			"noPermission": "Szablony mogą zmieniać tylko osoby, które mogą edytować projekt.",
+			"retry": "Spróbuj ponownie",
+			"subtaskCount_few": "{{count}} podzadania",
+			"subtaskCount_many": "{{count}} podzadań",
+			"subtaskCount_one": "{{count}} podzadanie",
+			"subtaskCount_other": "Podzadania: {{count}}",
+			"title": "Szablony zadań",
+			"toast": {
+				"created": "Utworzono szablon",
+				"deleted": "Usunięto szablon",
+				"deleteError": "Nie udało się usunąć szablonu",
+				"error": "Nie udało się zapisać szablonu",
+				"updated": "Zapisano szablon"
+			}
+		},
+		"use": {
+			"applied": "Szablon: {{name}}",
+			"button": "Szablon",
+			"menuLabel": "Użyj szablonu",
+			"quickAdd": "Utwórz z szablonu",
+			"removeSubtask": "Usuń podzadanie {{title}}",
+			"subtaskError_few": "Zadanie zostało utworzone, ale {{count}} podzadania nie zostały dodane",
+			"subtaskError_many": "Zadanie zostało utworzone, ale {{count}} podzadań nie zostało dodanych",
+			"subtaskError_one": "Zadanie zostało utworzone, ale {{count}} podzadanie nie zostało dodane",
+			"subtaskError_other": "Zadanie zostało utworzone, ale nie dodano podzadań: {{count}}",
+			"subtasksTitle_few": "{{count}} podzadania z szablonu",
+			"subtasksTitle_many": "{{count}} podzadań z szablonu",
+			"subtasksTitle_one": "{{count}} podzadanie z szablonu",
+			"subtasksTitle_other": "Podzadania z szablonu: {{count}}"
+		}
+	},
+	"delivery": {
+		"forecast": {
+			"title": "Prognoza",
+			"likelyBy": "85% szans na ukończenie do {{date}}",
+			"percentiles": "50% do {{p50}} · 95% do {{p95}}",
+			"chanceByEnd": "{{percent}}% szans na ukończenie do {{date}}",
+			"beyondHorizon": "Ponad dwa lata w obecnym tempie",
+			"open_one": "{{count}} otwarte zadanie",
+			"open_few": "{{count}} otwarte zadania",
+			"open_many": "{{count}} otwartych zadań",
+			"open_other": "Otwartych zadań: {{count}}",
+			"complete": "Wszystkie zadania są ukończone",
+			"insufficient": {
+				"short_span": "Za mało historii: prognoza wymaga co najmniej 14 dni pracy w tym projekcie.",
+				"few_completions": "Za mało historii: w ciągu ostatnich 8 tygodni ukończono mniej niż 5 zadań.",
+				"few_active_days": "Za mało historii: w ciągu ostatnich 8 tygodni zadania kończono w mniej niż 3 dni."
+			},
+			"howCalculated": "Jak to jest liczone?",
+			"method": {
+				"title": "Prognoza Monte Carlo",
+				"body": "Margaya odtwarza rzeczywiste tempo zespołu {{iterations}} razy. Każdy symulowany dzień przyjmuje liczbę ukończonych zadań z losowego dnia z poniższej historii, aż otwarte zadania zostaną ukończone. Daty pokazują, kiedy skończyło się 50%, 85% i 95% symulacji.",
+				"window": "Historia: {{from}} – {{to}}",
+				"completed": "Ukończone zadania: {{total}}",
+				"activeDays": "Dni z ukończonym zadaniem: {{days}}",
+				"perDay": "Ukończone dziennie: {{min}}–{{max}}",
+				"perWeek": "Średnio na tydzień: {{perWeek}}",
+				"team": "Tempo dotyczy całego projektu, więc liczy się też praca spoza tego zakresu.",
+				"seed": "Ziarno {{seed}}: te same dane dają przez cały dzień ten sam wynik."
+			},
+			"error": "Nie udało się wczytać prognozy",
+			"retry": "Spróbuj ponownie"
+		},
+		"risks": {
+			"title": "Ryzyka",
+			"empty": "Nie znaleziono ryzyk",
+			"showAll": "Pokaż wszystkie ({{total}})",
+			"showLess": "Pokaż mniej",
+			"noCycleTime": "Przeciągające się zadania pojawią się, gdy 10 zadań zostanie ukończonych z zapisanym rozpoczęciem.",
+			"hiddenTask": "Zadanie, którego nie widzisz",
+			"truncated": "Sprawdzono tylko pierwsze 2000 otwartych zadań.",
+			"error": "Nie udało się wczytać ryzyk",
+			"someone": "Ktoś",
+			"severity": {
+				"high": "Wysokie ryzyko",
+				"medium": "Średnie ryzyko",
+				"low": "Niskie ryzyko"
+			},
+			"criticalPath": {
+				"ends": "Ścieżka krytyczna kończy się {{date}}",
+				"chain_one": "Najdłuższy łańcuch zależności: {{count}} zadanie",
+				"chain_few": "Najdłuższy łańcuch zależności: {{count}} zadania",
+				"chain_many": "Najdłuższy łańcuch zależności: {{count}} zadań",
+				"chain_other": "Najdłuższy łańcuch zależności, zadań: {{count}}"
+			},
+			"kinds": {
+				"critical_path_late": "Ścieżka krytyczna kończy się {{date}}, po terminie {{deadline}}",
+				"critical_path_tight": "Ścieżka krytyczna kończy się {{date}}, tuż przed terminem {{deadline}}",
+				"blocked_chain_one": "{{head}} blokuje {{count}} zadanie",
+				"blocked_chain_few": "{{head}} blokuje {{count}} zadania",
+				"blocked_chain_many": "{{head}} blokuje {{count}} zadań",
+				"blocked_chain_other": "{{head}} blokuje zadań: {{count}}",
+				"ageing_one": "{{count}} zadanie w toku od ponad {{days}} dni, dłużej niż zwykle",
+				"ageing_few": "{{count}} zadania w toku od ponad {{days}} dni, dłużej niż zwykle",
+				"ageing_many": "{{count}} zadań w toku od ponad {{days}} dni, dłużej niż zwykle",
+				"ageing_other": "Zadań w toku dłużej niż zwykle (ponad {{days}} dni): {{count}}",
+				"overdue_cluster_one": "{{name}}: {{count}} zaległe zadanie",
+				"overdue_cluster_few": "{{name}}: {{count}} zaległe zadania",
+				"overdue_cluster_many": "{{name}}: {{count}} zaległych zadań",
+				"overdue_cluster_other": "{{name}}: zaległych zadań {{count}}",
+				"overdue_cluster_unassigned_one": "{{count}} zaległe zadanie bez przypisanej osoby",
+				"overdue_cluster_unassigned_few": "{{count}} zaległe zadania bez przypisanej osoby",
+				"overdue_cluster_unassigned_many": "{{count}} zaległych zadań bez przypisanej osoby",
+				"overdue_cluster_unassigned_other": "Zaległych zadań bez przypisanej osoby: {{count}}",
+				"overdue_one": "{{count}} zaległe zadanie",
+				"overdue_few": "{{count}} zaległe zadania",
+				"overdue_many": "{{count}} zaległych zadań",
+				"overdue_other": "Zaległych zadań: {{count}}",
+				"unassigned_near_deadline_one": "{{count}} nieprzypisane zadanie z terminem do {{date}}",
+				"unassigned_near_deadline_few": "{{count}} nieprzypisane zadania z terminem do {{date}}",
+				"unassigned_near_deadline_many": "{{count}} nieprzypisanych zadań z terminem do {{date}}",
+				"unassigned_near_deadline_other": "Nieprzypisanych zadań z terminem do {{date}}: {{count}}",
+				"dependency_loop_one": "{{count}} zadanie jest w pętli blokad",
+				"dependency_loop_few": "{{count}} zadania blokują się nawzajem w pętli",
+				"dependency_loop_many": "{{count}} zadań blokuje się nawzajem w pętli",
+				"dependency_loop_other": "Zadań blokujących się nawzajem w pętli: {{count}}"
+			}
+		},
+		"home": {
+			"title": "Zagrożone",
+			"empty": "W bieżących cyklach nic nie jest zagrożone",
+			"context": "{{project}} · {{cycle}}"
+		},
+		"tab": {
+			"description": "Prognoza i ryzyka otwartej pracy w tym projekcie"
+		}
+	},
+	"ai": {
+		"rules": {
+			"title": "Reguła z opisu",
+			"description": "Opisz automatyzację własnymi słowami. AI zamieni ją w zwykłą regułę, którą możesz edytować, przetestować na niedawnej historii i zapisać. Zapisane reguły działają bez AI.",
+			"label": "Opisz regułę…",
+			"placeholder": "Na przykład: gdy pull request w GitHubie zostanie scalony, przenieś zadanie do Gotowe",
+			"compile": "Utwórz regułę",
+			"compiling": "Tworzenie reguły…",
+			"unsupportedTitle": "Niemożliwe w automatyzacjach",
+			"rejected": "Pominięte sugerowane reguły, które nie przeszły walidacji: {{rejected}}",
+			"noRules": "Z tego opisu nie udało się utworzyć reguły.",
+			"workflowRule": "Reguła obiegu pracy",
+			"integration": "Integracja",
+			"when": "Gdy",
+			"moveTo": "Przenieś zadanie do",
+			"historyWindow": "Historia do odtworzenia",
+			"days7": "Ostatnie 7 dni",
+			"days30": "Ostatnie 30 dni",
+			"days90": "Ostatnie 90 dni",
+			"dryRun": "Przetestuj na historii",
+			"dryRunSummary": "Zadania, które zmieniłyby się w ciągu ostatnich {{days}} dni: {{changed}}",
+			"dryRunNone": "W ciągu ostatnich {{days}} dni nic by się nie zmieniło.",
+			"dryRunError": "Nie udało się odtworzyć tej reguły.",
+			"more": "Pozostałe niewyświetlone dopasowania: {{more}}",
+			"archived": "Zarchiwizowane",
+			"outcomes": {
+				"unchanged": "już tam było",
+				"skipped": "pominięte"
+			},
+			"notes": {
+				"integration_not_connected": "Ta integracja nie jest połączona z projektem, więc nie ma historii do odtworzenia.",
+				"branch_push_last_only": "Dla każdej gałęzi zapisywany jest tylko ostatni push.",
+				"threshold_from_last_update": "Na podstawie ostatniej aktualizacji każdego zadania; daty pokazują, kiedy reguła by je objęła.",
+				"flow_alerts_notify_only": "Alerty o anomaliach przepływu tylko powiadamiają lidera projektu; nie zmieniają zadań.",
+				"nothing_enabled": "Ta reguła niczego nie włącza, więc nic by się nie zmieniło.",
+				"conditions_current_state": "Warunki sprawdzono dla każdego zadania w jego obecnym stanie; historia przechowuje tylko zmiany."
+			},
+			"save": "Zapisz regułę",
+			"discard": "Odrzuć",
+			"saved": "Reguła zapisana",
+			"saveError": "Nie udało się zapisać reguły."
+		},
+		"build": {
+			"command": "Zbuduj z AI…",
+			"title": "Zbuduj z AI",
+			"description": "Opisz, co chcesz zaplanować. AI przygotuje projekt, cykle i zadania do przejrzenia. Nic nie zostanie utworzone, dopóki tego nie potwierdzisz.",
+			"promptLabel": "Co mamy zaplanować?",
+			"promptPlaceholder": "Zaplanuj odświeżenie strony internetowej na IV kwartał w 3 sprintach",
+			"target": "Utwórz w",
+			"targetCurrent": "W {{name}}",
+			"targetNew": "Nowy projekt",
+			"deep": "Przemyśl dokładniej (wolniej)",
+			"draft": "Przygotuj plan",
+			"drafting": "Przygotowywanie planu…",
+			"cancel": "Anuluj",
+			"back": "Wstecz",
+			"create_one": "Utwórz {{count}} element",
+			"create_few": "Utwórz {{count}} elementy",
+			"create_many": "Utwórz {{count}} elementów",
+			"create_other": "Utwórz {{count}} elementu",
+			"creating": "Tworzenie planu",
+			"progress": "Utworzono {{done}} z {{total}}…",
+			"close": "Zamknij",
+			"openProject": "Otwórz projekt",
+			"empty": {
+				"text": "Ten projekt nie ma jeszcze zadań. Opisz pracę, a AI przygotuje zadania do przejrzenia."
+			},
+			"review": {
+				"description": "Przejrzyj plan. Odznacz, edytuj lub zmień kolejność czegokolwiek, a następnie go utwórz.",
+				"project": "Projekt",
+				"projectName": "Nazwa",
+				"projectKey": "Klucz",
+				"projectDescription": "Opis",
+				"columns": "Nowe kolumny",
+				"labels": "Etykiety",
+				"cycles": "Cykle",
+				"modules": "Moduły",
+				"moduleName": "Nazwa modułu",
+				"tasks_one": "{{count}} zadanie",
+				"tasks_few": "{{count}} zadania",
+				"tasks_many": "{{count}} zadań",
+				"tasks_other": "{{count}} zadania",
+				"include": "Uwzględnij: {{name}}",
+				"taskTitle": "Tytuł zadania",
+				"taskDescription": "Opis zadania",
+				"priority": "Priorytet",
+				"estimate": "Szacunek (punkty)",
+				"module": "Moduł",
+				"none": "Brak",
+				"taskLabels": "Etykiety: {{labels}}",
+				"subtasks": "Podzadania",
+				"subtaskTitle": "Tytuł podzadania",
+				"moveUp": "Przesuń w górę: {{name}}",
+				"moveDown": "Przesuń w dół: {{name}}",
+				"cycle": {
+					"label": "Cykl",
+					"name": "Nazwa cyklu",
+					"startDate": "Początek",
+					"endDate": "Koniec"
+				}
+			},
+			"done": {
+				"success_one": "Gotowe. Utworzono {{count}} zadanie.",
+				"success_few": "Gotowe. Utworzono {{count}} zadania.",
+				"success_many": "Gotowe. Utworzono {{count}} zadań.",
+				"success_other": "Gotowe. Utworzono {{count}} zadania.",
+				"partial_one": "Utworzono wszystko poza {{count}} elementem:",
+				"partial_few": "Utworzono wszystko poza {{count}} elementami:",
+				"partial_many": "Utworzono wszystko poza {{count}} elementami:",
+				"partial_other": "Utworzono wszystko poza {{count}} elementu:",
+				"estimatesSkipped": "Pominięto szacunki, ponieważ projekt nie ma aktywnego punktowego systemu szacowania.",
+				"created": {
+					"tasks_one": "{{count}} zadanie",
+					"tasks_few": "{{count}} zadania",
+					"tasks_many": "{{count}} zadań",
+					"tasks_other": "{{count}} zadania",
+					"subtasks_one": "{{count}} podzadanie",
+					"subtasks_few": "{{count}} podzadania",
+					"subtasks_many": "{{count}} podzadań",
+					"subtasks_other": "{{count}} podzadania",
+					"cycles_one": "{{count}} cykl",
+					"cycles_few": "{{count}} cykle",
+					"cycles_many": "{{count}} cykli",
+					"cycles_other": "{{count}} cyklu",
+					"modules_one": "{{count}} moduł",
+					"modules_few": "{{count}} moduły",
+					"modules_many": "{{count}} modułów",
+					"modules_other": "{{count}} modułu",
+					"columns_one": "{{count}} kolumna",
+					"columns_few": "{{count}} kolumny",
+					"columns_many": "{{count}} kolumn",
+					"columns_other": "{{count}} kolumny",
+					"labels_one": "{{count}} etykieta",
+					"labels_few": "{{count}} etykiety",
+					"labels_many": "{{count}} etykiet",
+					"labels_other": "{{count}} etykiety"
+				}
+			},
+			"kinds": {
+				"project": "Projekt",
+				"column": "Kolumna",
+				"cycle": "Cykl",
+				"module": "Moduł",
+				"task": "Zadanie",
+				"subtask": "Podzadanie",
+				"label": "Etykieta",
+				"estimate": "Szacunek",
+				"cycle_tasks": "Zadania cyklu",
+				"module_tasks": "Zadania modułu"
+			},
+			"chat": {
+				"planLabel": "Proponowane zmiany",
+				"planning": "Planowanie zmian…",
+				"nothing": "Dla tej prośby nie ma nic do zmiany.",
+				"awaiting": "Oczekiwanie na odpowiedź",
+				"ready": "Gotowe zmiany: {{count}}. Potwierdź, aby kontynuować.",
+				"applying": "Wprowadzanie zmian…",
+				"confirm": "Potwierdź",
+				"cancel": "Anuluj",
+				"cancelled": "Anulowano. Nic nie zostało zmienione.",
+				"remove": "Usuń {{title}}",
+				"confirmDestructive": "Tak, usuń",
+				"truncated": "Plan skrócono do pierwszych 50 zmian.",
+				"appliedSummary": "Wprowadzono: {{done}} z {{total}}",
+				"autopilotApplied": "Wprowadzone od razu przez autopilota.",
+				"autopilotOff": "Autopilot jest wyłączony w tym obszarze roboczym. Przejrzyj zmiany poniżej.",
+				"autopilotReview": "Niektóre z tych zmian wymagają najpierw Twojej weryfikacji.",
+				"done": "Gotowe",
+				"open": "Otwórz",
+				"skipped": "Pominięto",
+				"failed": "Niepowodzenie",
+				"undo": "Cofnij",
+				"undone": "Cofnięto",
+				"undoFailed": "Nie udało się cofnąć tej zmiany.",
+				"forbidden": "Nie możesz tu wprowadzać zmian za pomocą AI.",
+				"pickCandidate": "Czy chodziło o:",
+				"fields": {
+					"name": "Nazwa",
+					"key": "Klucz",
+					"title": "Tytuł",
+					"priority": "Priorytet",
+					"dueDate": "Termin",
+					"assignee": "Osoba przypisana",
+					"unassigned": "Nikt",
+					"startDate": "Początek",
+					"endDate": "Koniec",
+					"content": "Komentarz"
+				},
+				"problems": {
+					"forbidden": "Nie masz do tego uprawnień.",
+					"not_found": "Nie znaleziono czegoś, do czego się odnosi.",
+					"ambiguous": "Ta nazwa pasuje do więcej niż jednej osoby.",
+					"unresolved_ref": "Zależy od zmiany, której nie da się wprowadzić.",
+					"feature_off": "Ta funkcja jest wyłączona w projekcie.",
+					"invalid": "Tej zmiany nie da się wprowadzić w tej postaci."
+				},
+				"ops": {
+					"create_project": "Nowy projekt",
+					"create_task": "Nowe zadanie",
+					"update_task": "Edytuj zadanie",
+					"set_status": "Zmień status",
+					"assign": "Przypisz",
+					"add_comment": "Skomentuj",
+					"create_cycle": "Nowy cykl",
+					"add_to_cycle": "Dodaj do cyklu",
+					"create_module": "Nowy moduł",
+					"add_to_module": "Dodaj do modułu",
+					"create_page": "Nowa strona",
+					"link_tasks": "Połącz zadania",
+					"create_label": "Nowa etykieta",
+					"delete_task": "Usuń zadanie",
+					"run_agent": "Uruchom agenta"
+				},
+				"agentRun": {
+					"title": "Uruchomienie agenta",
+					"loading": "Wczytywanie uruchomienia…",
+					"loadError": "Nie udało się wczytać tego uruchomienia.",
+					"inProgress": "W toku"
+				},
+				"noneReady": "Nic nie można jeszcze zastosować. Popraw lub usuń oznaczone zmiany albo zapytaj ponownie."
+			},
+			"context": {
+				"title": "Kontekst ({{count}})",
+				"facts": "Projekty: {{projects}} · Osoby: {{members}} · Cykle: {{cycles}}",
+				"memory": "Notatki pamięci: {{count}}",
+				"history": "Wcześniejsze wiadomości: {{count}}"
+			}
+		},
+		"duplicates": {
+			"check": "Sprawdź z AI",
+			"checking": "Sprawdzanie…",
+			"checkedTitle": "AI sprawdziła, czy to duplikaty",
+			"none": "Brak prawdopodobnych duplikatów.",
+			"verdict": {
+				"duplicate": "Prawdopodobny duplikat",
+				"related": "Powiązane"
+			},
+			"mark": "Duplikat tego",
+			"markLabel": "Oznacz nowe zadanie jako duplikat {{key}}",
+			"marked": "Oznaczono",
+			"willLink": "Nowe zadanie zostanie oznaczone jako duplikat {{key}}.",
+			"undo": "Cofnij",
+			"linkError": "Zadanie zostało utworzone, ale nie udało się oznaczyć go jako duplikatu {{key}}."
+		},
+		"triage": {
+			"button": "Zaproponuj segregację",
+			"title": "Sugestie segregacji",
+			"loading": "Sprawdzam podobne zadania…",
+			"empty": "Brak sugestii dla tego elementu.",
+			"retry": "Spróbuj ponownie",
+			"close": "Zamknij sugestie",
+			"accept": "Akceptuj",
+			"acceptAll": "Akceptuj wszystkie",
+			"edit": "Edytuj",
+			"dismiss": "Odrzuć",
+			"applied": "Zastosowano",
+			"acceptError": "Nie udało się zastosować tej sugestii.",
+			"autoApplied": "Ten projekt automatycznie dodaje sugerowane etykiety.",
+			"sameTitle": "Taki sam tytuł jak istniejące zadanie",
+			"projectAdvice": "Zgłoszenia zostają w swoim projekcie: odrzuć to zgłoszenie i poproś o przesłanie go tam.",
+			"otherProjectDuplicate": "Tylko zadanie z tego projektu może zamknąć zgłoszenie jako duplikat.",
+			"openTask": "Otwórz {{key}} w nowej karcie",
+			"fields": {
+				"label": "Etykieta",
+				"assignee": "Osoba przypisana",
+				"priority": "Priorytet",
+				"project": "Projekt",
+				"duplicate": "Możliwy duplikat"
+			},
+			"settings": {
+				"title": "Sugestie segregacji",
+				"description": "Sugestie AI dla nowych zadań i zgłoszeń. Każdą z nich człowiek akceptuje, edytuje lub odrzuca.",
+				"autoApply": "Automatycznie stosuj sugerowane etykiety",
+				"autoApplyHint": "Sugerowane etykiety są dodawane od razu, a każda trafia do dziennika audytu. Przypisanie, priorytet, projekt i duplikaty zawsze czekają na człowieka.",
+				"saved": "Zapisano ustawienie segregacji",
+				"saveError": "Nie udało się zapisać ustawienia segregacji."
+			},
+			"liveLabels": {
+				"title": "Proponowane etykiety",
+				"add": "Dodaj etykietę {{name}}"
+			}
+		},
+		"translate": {
+			"action": "Przetłumacz",
+			"translating": "Tłumaczę…",
+			"translatedFrom": "Język oryginału: {{language}}",
+			"translated": "Przetłumaczono",
+			"showOriginal": "Pokaż oryginał",
+			"showTranslation": "Pokaż tłumaczenie",
+			"settings": {
+				"autoTranslate": "Automatycznie tłumacz komentarze",
+				"autoTranslateHint": "Komentarze w innym języku są tłumaczone dla każdego czytelnika przy otwarciu. Gdy wyłączone, czytelnicy klikają Przetłumacz."
+			}
+		},
+		"brief": {
+			"button": "Raport",
+			"buttonLabel": "Napisz raport dla interesariuszy",
+			"title": "Raport dla interesariuszy",
+			"close": "Zamknij raport",
+			"intro": "Tworzy raport o stanie prac na podstawie wyliczonego postępu, zmian, ryzyk i prognozy. Każde wspomniane zadanie jest przywołane z kluczem.",
+			"audience": "Odbiorcy",
+			"audiences": {
+				"team": "Zespół",
+				"leadership": "Kierownictwo",
+				"client": "Klient"
+			},
+			"generate": "Napisz raport",
+			"regenerate": "Napisz ponownie",
+			"writing": "Piszę raport…",
+			"stop": "Zatrzymaj",
+			"copy": "Kopiuj",
+			"copied": "Skopiowano",
+			"copyError": "Nie udało się skopiować raportu.",
+			"saveAsPage": "Zapisz jako stronę",
+			"saved": "Zapisano raport jako stronę",
+			"saveError": "Nie udało się zapisać strony.",
+			"openPage": "Otwórz stronę",
+			"pageTitle": "Raport o stanie: {{name}} ({{date}})",
+			"facts": {
+				"title": "Użyte fakty",
+				"note": "Te liczby pochodzą z Margaya, a nie od AI. Zapisany lub skopiowany raport staje się punktem odniesienia dla kolejnego.",
+				"progress": "Postęp",
+				"progressValue": "{{percent}}% (ukończono {{completed}} z {{total}})",
+				"sinceLast": "Od ostatniego raportu ({{date}})",
+				"sinceDays": "Ostatnie 7 dni",
+				"changes": "Ukończone: {{completed}} · Dodane: {{added}} · Usunięte: {{removed}}",
+				"forecast": "Prognoza",
+				"forecastValue": "85% szans do {{date}}",
+				"forecastDone": "Nic nie zostało do zrobienia",
+				"forecastNone": "Za mało historii",
+				"risks": "Ryzyka",
+				"diff": "Zmiana",
+				"progressDiff": "Postęp {{before}}% → {{now}}%",
+				"forecastDiff": "Prognoza {{before}} → {{now}}"
+			}
+		},
+		"ask": {
+			"title": "Zapytaj AI",
+			"description": "Zadawaj pytania o obszar roboczy własnymi słowami. Odpowiedzi opierają się tylko na zadaniach, stronach i komentarzach, które widzisz, i wskazują źródło każdej informacji.",
+			"greeting": "Cześć! Czego chcesz się dowiedzieć?",
+			"placeholder": "Zapytaj AI, @ dodaje kontekst, / otwiera polecenia",
+			"send": "Zapytaj",
+			"stop": "Zatrzymaj",
+			"stopped": "Zatrzymano.",
+			"newChat": "Nowa rozmowa",
+			"expand": "Rozwiń",
+			"collapse": "Zwiń",
+			"scopeProject": "W projekcie {{project}}",
+			"scopeWorkspace": "Cały obszar roboczy",
+			"removeScope": "Zapytaj o cały obszar roboczy",
+			"searching": "Przeszukiwanie obszaru roboczego…",
+			"noResults": "Nie znalazłem nic na ten temat w Twoim obszarze roboczym. Spróbuj innych słów albo podaj projekt, cykl lub klucz zadania.",
+			"sources": "Źródła",
+			"sourcesCount": "Źródła ({{total}})",
+			"closestMatches": "Najbliższe wyniki",
+			"copy": "Kopiuj",
+			"copied": "Skopiowano",
+			"copyError": "Nie udało się skopiować odpowiedzi",
+			"commentOn": "Komentarz do {{key}}",
+			"pageSource": "Strona: {{title}}",
+			"openSource": "Otwórz {{title}}",
+			"disclaimer": "Odpowiedzi korzystają tylko z tego, co widzisz. Sprawdź źródła, zanim zaczniesz działać.",
+			"you": "Ty",
+			"answer": "Odpowiedź",
+			"forbidden": "Nie masz uprawnień do korzystania z AI w tym obszarze roboczym.",
+			"palette": "Zapytaj AI…",
+			"paletteAbout": "Zapytaj AI: {{question}}",
+			"examples": {
+				"title": "Zapytaj na przykład",
+				"overdue": "Co jest po terminie?",
+				"mine": "Jakie mam otwarte zadania?",
+				"recent": "Co zmieniło się w tym tygodniu?",
+				"summarize": "Podsumuj ten projekt",
+				"chart": "Pokaż zadania według statusu na wykresie",
+				"cycleBlockers": "Co blokuje bieżący cykl?"
+			},
+			"history": {
+				"title": "Historia",
+				"empty": "Nie ma jeszcze zapisanych rozmów.",
+				"localOnly": "Rozmowy są zapisywane tylko w tej przeglądarce.",
+				"delete": "Usuń rozmowę",
+				"clear": "Wyczyść historię",
+				"clearConfirm": "Usunąć wszystkie rozmowy zapisane w tej przeglądarce? Tej operacji nie można cofnąć.",
+				"search": "Szukaj rozmów",
+				"noMatches": "Żadna rozmowa nie pasuje.",
+				"loading": "Wczytywanie rozmów…",
+				"pin": "Przypnij rozmowę",
+				"unpin": "Odepnij rozmowę",
+				"pinned": "Przypięte",
+				"rename": "Zmień nazwę rozmowy",
+				"renameLabel": "Nazwa rozmowy",
+				"saveTitle": "Zapisz nazwę",
+				"serverNote": "Rozmowy są zapisywane w obszarze roboczym i widoczne tylko dla Ciebie.",
+				"clearConfirmServer": "Usunąć wszystkie Twoje zapisane rozmowy w tym obszarze roboczym? Tej operacji nie można cofnąć.",
+				"importHint": "Rozmowy zapisane w tej przeglądarce: {{total}}",
+				"import": "Importuj",
+				"imported": "Zaimportowane rozmowy: {{total}}",
+				"openError": "Nie udało się otworzyć rozmowy."
+			},
+			"chartLabel": "Wykres: {{title}}",
+			"chartLoading": "Rysuję wykres…",
+			"chartInvalid": "Nie udało się narysować tego wykresu.",
+			"placeholderBuild": "Opisz, co utworzyć lub zmienić…",
+			"modelLabel": "Model AI: {{model}}",
+			"more": "Więcej",
+			"moreActions": "Więcej działań",
+			"openFullPage": "Otwórz na pełnej stronie",
+			"paletteFullPage": "Otwórz czat AI (pełna strona)",
+			"fullPageUnavailable": "AI nie jest dostępna w tym obszarze roboczym.",
+			"shortcut": "Otwórz lub zamknij Zapytaj AI",
+			"regenerate": "Wygeneruj ponownie",
+			"editQuestion": "Edytuj pytanie",
+			"resend": "Wyślij",
+			"followUps": "Sugerowane pytania uzupełniające",
+			"saveAsPage": "Zapisz jako stronę",
+			"copyMarkdown": "Kopiuj jako Markdown",
+			"copiedMarkdown": "Skopiowano jako Markdown",
+			"createTask": "Utwórz z tego zadanie",
+			"webSearch": "Szukaj w internecie",
+			"webSource": "Internet: {{title}}",
+			"removeChip": "Usuń {{name}}",
+			"contextChips": "Kontekst tego pytania",
+			"contextPicker": "Dodaj kontekst",
+			"contextHint": "Zacznij pisać, aby znaleźć zadania, strony, projekty, cykle, moduły, osoby lub agentów",
+			"contextEmpty": "Nic nie znaleziono",
+			"contextSearching": "Wyszukiwanie…",
+			"commandMenu": "Polecenia",
+			"commandEmpty": "Brak pasującego polecenia",
+			"contextKinds": {
+				"task": "Zadanie",
+				"page": "Strona",
+				"project": "Projekt",
+				"cycle": "Cykl",
+				"module": "Moduł",
+				"user": "Osoba",
+				"agent": "Agent"
+			},
+			"modes": {
+				"label": "Tryb",
+				"ask": "Pytaj",
+				"build": "Buduj",
+				"autopilot": "Autopilot",
+				"askHint": "Odpowiada na pytania; niczego nie zmienia",
+				"buildHint": "Proponuje zmiany do Twojego potwierdzenia",
+				"autopilotHint": "Wprowadza zmiany od razu; każdą zmianę można cofnąć"
+			},
+			"attachments": {
+				"add": "Załącz pliki",
+				"type": "Nie można załączyć pliku {{name}}. Użyj obrazu (PNG, JPEG, WebP, GIF) albo pliku tekstowego, Markdown lub CSV.",
+				"size": "{{name}} się nie zmieści: załączniki mogą mieć łącznie najwyżej 5 MB.",
+				"count": "Możesz załączyć maksymalnie 3 pliki.",
+				"readError": "Nie udało się odczytać pliku."
+			},
+			"voice": {
+				"start": "Dyktuj",
+				"stop": "Zatrzymaj dyktowanie",
+				"recording": "Słucham…",
+				"transcribing": "Transkrypcja…",
+				"denied": "Zezwól na dostęp do mikrofonu, aby dyktować.",
+				"failed": "Nie udało się zamienić nagrania na tekst."
+			},
+			"agent": {
+				"ready": "Wyślij tę prośbę do agenta {{agent}}.",
+				"needsTask": "Dodaj zadanie za pomocą @, aby agent {{agent}} wiedział, nad czym pracować.",
+				"send": "Wyślij do agenta {{agent}}",
+				"error": "Nie udało się uruchomić agenta."
+			},
+			"thinking": {
+				"live": "Myślę… {{seconds}}s",
+				"done": "Czas myślenia: {{seconds}}s"
+			},
+			"versions": {
+				"previous": "Poprzednia odpowiedź",
+				"next": "Następna odpowiedź",
+				"label": "Odpowiedź {{current}} z {{total}}"
+			},
+			"feedback": {
+				"up": "Dobra odpowiedź",
+				"down": "Zła odpowiedź",
+				"reasonLabel": "Co poszło nie tak? (opcjonalnie)",
+				"reasonPlaceholder": "Na przykład: błędne liczby, pominięte zadanie",
+				"send": "Wyślij",
+				"skip": "Pomiń",
+				"thanks": "Dziękujemy za opinię."
+			},
+			"commands": {
+				"summarize": "Podsumuj",
+				"summarizeHint": "Bieżący projekt, cykl lub strona",
+				"chart": "Wykres",
+				"chartHint": "Narysuj wykres na podstawie swoich danych",
+				"chartPrefill": "Wykres",
+				"brief": "Raport",
+				"briefHint": "Raport dla interesariuszy o projekcie, cyklu lub module",
+				"create": "Utwórz",
+				"createHint": "Przełącz na tryb Buduj",
+				"translate": "Przetłumacz",
+				"translateHint": "Na Twój język",
+				"clear": "Wyczyść",
+				"clearHint": "Rozpocznij nową rozmowę",
+				"skill": "Zapisana umiejętność",
+				"summarizeTurn": "Podsumowanie: {{name}}",
+				"briefTurn": "Raport: {{name}}",
+				"summarizeNeedsScope": "Otwórz projekt, cykl lub stronę albo dodaj je za pomocą @, aby uzyskać podsumowanie.",
+				"briefNeedsScope": "Otwórz projekt, cykl lub moduł albo dodaj je za pomocą @, aby uzyskać raport.",
+				"buildUnavailable": "Tryb Buduj nie jest tu dostępny.",
+				"translatePrompt": "Przetłumacz swoją ostatnią odpowiedź na język: {{language}}.",
+				"translatePrefill": "Przetłumacz na język: {{language}}:",
+				"this": {
+					"page": "ta strona",
+					"cycle": "ten cykl",
+					"module": "ten moduł",
+					"project": "ten projekt"
+				}
+			},
+			"conversation": {
+				"rename": "Zmień nazwę",
+				"pin": "Przypnij",
+				"unpin": "Odepnij",
+				"export": "Eksportuj jako Markdown",
+				"saveAsPage": "Zapisz jako stronę",
+				"delete": "Usuń rozmowę"
+			},
+			"save": {
+				"title": "Zapisz jako stronę",
+				"description": "Strona otrzyma tekst z linkami do źródeł.",
+				"pageTitle": "Tytuł",
+				"project": "Projekt",
+				"noProjects": "Nie ma projektu, w którym można zapisać stronę.",
+				"submit": "Zapisz stronę",
+				"saved": "Zapisano jako stronę",
+				"open": "Otwórz stronę",
+				"error": "Nie udało się zapisać strony"
+			}
+		},
+		"writing": {
+			"aiButton": "AI",
+			"menuLabel": "Akcje AI",
+			"actions": {
+				"summarize": "Podsumuj",
+				"improve": "Popraw styl",
+				"shorter": "Skróć",
+				"longer": "Rozwiń",
+				"fix": "Popraw pisownię i gramatykę",
+				"translate": "Przetłumacz na…",
+				"custom": "Poproś AI o…"
+			},
+			"customPlaceholder": "Napisz, co ma zrobić AI, np. zamień to w listę kontrolną",
+			"customSubmit": "Generuj",
+			"preview": {
+				"label": "Propozycja AI",
+				"generating": "Piszę…",
+				"editLabel": "Edytuj propozycję",
+				"replace": "Zastąp",
+				"insertBelow": "Wstaw poniżej",
+				"discard": "Odrzuć",
+				"stop": "Zatrzymaj",
+				"retry": "Spróbuj ponownie",
+				"empty": "AI nic nie zwróciło. Spróbuj ponownie lub sformułuj prośbę inaczej.",
+				"note": "AI może się mylić. Sprawdź wynik przed użyciem.",
+				"incomplete": "Szkic urwał się przed końcem. Sprawdź go lub spróbuj ponownie."
+			},
+			"summary": {
+				"button": "Podsumuj",
+				"cycle": "Podsumuj cykl",
+				"project": "Podsumuj projekt",
+				"page": "Podsumuj stronę",
+				"title": "Podsumowanie AI",
+				"generating": "Tworzę podsumowanie…",
+				"dismiss": "Zamknij",
+				"copy": "Kopiuj",
+				"copied": "Skopiowano",
+				"copyError": "Nie udało się skopiować podsumowania.",
+				"saveAsPage": "Zapisz jako stronę",
+				"pageTitle": "Podsumowanie: {{name}}",
+				"saved": "Podsumowanie zapisano jako stronę",
+				"saveError": "Nie udało się zapisać strony.",
+				"openPage": "Otwórz stronę",
+				"task": "Podsumuj zadanie",
+				"saveAsComment": "Zapisz jako komentarz",
+				"commentSaved": "Podsumowanie zapisano jako komentarz",
+				"commentError": "Nie udało się zapisać komentarza."
+			},
+			"spec": {
+				"button": "Szkic specyfikacji",
+				"title": "Szkic specyfikacji",
+				"description": "AI przygotuje szkic strony specyfikacji na podstawie tego zadania i jego kontekstu. Przejrzyj go i popraw, a potem utwórz stronę; będzie zawierać link do zadania.",
+				"generating": "Przygotowuję szkic…",
+				"titleLabel": "Tytuł strony",
+				"bodyLabel": "Specyfikacja",
+				"edit": "Edytuj",
+				"preview": "Podgląd",
+				"create": "Utwórz stronę",
+				"pageTitle": "Specyfikacja: {{title}}",
+				"created": "Utworzono stronę specyfikacji",
+				"createError": "Nie udało się utworzyć strony."
+			},
+			"taskWriter": {
+				"button": "Napisz z AI",
+				"draft": "Szkic z tytułu",
+				"improve": "Popraw",
+				"instruction": "Opcjonalnie: na czym się skupić?",
+				"hint": "Nic się nie zmieni, dopóki nie wybierzesz „Użyj tego”.",
+				"writing": "Piszę…",
+				"use": "Użyj tego",
+				"retry": "Spróbuj ponownie",
+				"discard": "Odrzuć",
+				"close": "Zamknij pisanie z AI"
+			},
+			"feedback": {
+				"good": "Dobra odpowiedź",
+				"bad": "Zła odpowiedź",
+				"thanks": "Dziękujemy za opinię"
+			},
+			"tone": {
+				"label": "Ton: {{tone}}",
+				"legend": "Ton",
+				"default": "Domyślny",
+				"professional": "Profesjonalny",
+				"casual": "Swobodny"
+			},
+			"block": {
+				"command": "Blok AI",
+				"title": "Blok AI",
+				"customPlaceholder": "Co AI ma napisać na podstawie tej strony?",
+				"stale": "Strona zmieniła się po wygenerowaniu. Wygeneruj ponownie, aby uwzględnić zmiany.",
+				"accept": "Akceptuj",
+				"regenerate": "Wygeneruj ponownie",
+				"presets": {
+					"tldr": "Podsumowanie (TL;DR)",
+					"faq": "FAQ",
+					"action_items": "Zadania do wykonania",
+					"custom": "Własne polecenie"
+				}
+			},
+			"title": {
+				"suggest": "Zaproponuj tytuł",
+				"thinking": "Wymyślam tytuł…",
+				"use": "Użyj tego tytułu",
+				"another": "Zaproponuj inny"
+			},
+			"comment": {
+				"menuLabel": "Pomoc AI przy tym komentarzu",
+				"previewLabel": "Propozycja AI dla twojego komentarza",
+				"replace": "Zastąp szkic"
+			}
+		},
+		"errors": {
+			"AI_DISABLED": "AI jest tutaj wyłączona.",
+			"AI_NOT_CONFIGURED": "AI nie jest poprawnie skonfigurowana. Poproś administratora o sprawdzenie ustawień AI.",
+			"AI_ROUTE_BLOCKED": "Twoje ustawienia prywatności nie pozwalają wysłać tych danych do modelu AI.",
+			"AI_BUDGET_EXCEEDED": "Osiągnięto limit AI. Spróbuj ponownie później lub poproś administratora o jego zwiększenie.",
+			"AI_RATE_LIMITED": "Zbyt wiele żądań AI naraz. Odczekaj chwilę i spróbuj ponownie.",
+			"AI_REFUSED": "Model AI odrzucił to żądanie.",
+			"AI_PROVIDER_ERROR": "Usługa AI nie odpowiedziała. Spróbuj ponownie za chwilę.",
+			"unknown": "Coś poszło nie tak z AI. Spróbuj ponownie.",
+			"AI_HISTORY_OFF": "Ta przestrzeń robocza nie przechowuje rozmów z AI na serwerze. Twoja historia zostaje w tej przeglądarce."
+		},
+		"features": {
+			"connection_test": "Testy połączenia",
+			"ask": "Pytania",
+			"summarize": "Podsumowania",
+			"editor_assist": "Pomoc w pisaniu",
+			"spec_draft": "Szkice specyfikacji",
+			"duplicate_check": "Wykrywanie duplikatów",
+			"talk_to_build": "Plan z polecenia",
+			"triage": "Sugestie segregacji",
+			"translate": "Tłumaczenia",
+			"brief": "Raporty dla interesariuszy",
+			"agent_run": "Agenci",
+			"rule_compiler": "Reguły automatyzacji",
+			"capture": "Zapisywanie jako zadanie",
+			"estimate": "Szacunki",
+			"retro": "Retrospektywy",
+			"my_brief": "Moje podsumowanie",
+			"embedding": "Indeksowanie wyszukiwania",
+			"coding_handoff": "Briefy dla agentów kodujących",
+			"build_chat": "Tworzenie w czacie",
+			"nl_filter": "Filtry w języku naturalnym",
+			"inbox_digest": "Podsumowania skrzynki odbiorczej",
+			"speech": "Mowa na tekst"
+		},
+		"providers": {
+			"anthropic": "Anthropic (Claude)",
+			"openai_compatible": "Zgodny z OpenAI",
+			"fake": "Pozorny (tylko do testów)"
+		},
+		"destinations": {
+			"cloud": "Dostawca chmurowy",
+			"local": "Model lokalny"
+		},
+		"tiers": {
+			"fast": "Szybki model",
+			"fastHint": "Szybkie zadania: przeredagowanie, etykiety, krótkie podsumowania.",
+			"balanced": "Zrównoważony model",
+			"balancedHint": "Większość funkcji: odpowiedzi, podsumowania, szkice.",
+			"deep": "Zaawansowany model",
+			"deepHint": "Trudna praca: planowanie i agenci."
+		},
+		"test": {
+			"title": "Test połączenia",
+			"workspaceHint": "Wysyła jedno małe żądanie tą samą drogą co wywołania AI tego obszaru roboczego.",
+			"button": "Testuj połączenie",
+			"success": "Połączono z {{model}} w {{ms}} ms"
+		},
+		"usage": {
+			"title": "Użycie",
+			"subtitle": "Wywołania AI, tokeny i koszt według cen katalogowych. Zapisywane są tylko liczby, nigdy prompty ani odpowiedzi.",
+			"rangeLabel": "Okres",
+			"range": {
+				"thisMonth": "Ten miesiąc",
+				"last30Days": "Ostatnie 30 dni",
+				"last90Days": "Ostatnie 90 dni"
+			},
+			"calls": "Wywołania",
+			"callsCount_one": "{{count}} wywołanie",
+			"callsCount_few": "{{count}} wywołania",
+			"callsCount_many": "{{count}} wywołań",
+			"callsCount_other": "{{count}} wywołania",
+			"tokens": "Tokeny",
+			"tokensSplit": "{{input}} wej. · {{output}} wyj.",
+			"cost": "Koszt",
+			"costHint": "Według cen katalogowych; modele lokalne liczą się jako $0.",
+			"day": "Dzień",
+			"byDay": "Wywołania dziennie",
+			"byFeature": "Według funkcji",
+			"byModel": "Według modelu",
+			"byUser": "Według osoby",
+			"byWorkspace": "Według obszaru roboczego",
+			"empty": "Brak użycia AI w tym okresie.",
+			"unknownUser": "Usunięte konto",
+			"loadError": "Nie udało się wczytać użycia AI.",
+			"retry": "Spróbuj ponownie",
+			"exportCsv": "Eksportuj CSV",
+			"exportError": "Nie udało się wyeksportować danych o użyciu.",
+			"feedbackTitle": "Oceny odpowiedzi",
+			"feedbackOverall": "{{percent}}% pozytywnych z {{total}} ocen",
+			"feedbackUp": "Kciuk w górę",
+			"feedbackDown": "Kciuk w dół",
+			"feedbackRate": "Pozytywne"
+		},
+		"instance": {
+			"title": "AI",
+			"subtitle": "Pozwól obszarom roboczym korzystać z AI: wybierz dostawcę i modele oraz zdecyduj, dokąd mogą trafiać dane. AI pozostaje wyłączona, dopóki jej nie włączysz, a każdy obszar roboczy musi ją też włączyć u siebie.",
+			"statusTitle": "AI na tym serwerze",
+			"statusReady": "Gotowe",
+			"statusNotConfigured": "Nieskonfigurowane",
+			"statusOff": "Wyłączone",
+			"enable": "Zezwól na AI",
+			"enableHint": "Obszary robocze mogą włączyć funkcje AI, gdy ta opcja jest włączona, a dostawca jest skonfigurowany.",
+			"providerTitle": "Dostawca",
+			"providerDescription": "Dostawca modeli w chmurze. Pozostaw model pusty, aby użyć domyślnego modelu dostawcy dla danego poziomu.",
+			"provider": "Dostawca",
+			"providerHint": "Zalecany jest Anthropic Claude. Opcja zgodna z OpenAI obejmuje OpenAI, Azure, OpenRouter, vLLM i LM Studio.",
+			"anthropicKey": "Klucz API Anthropic",
+			"anthropicKeyHint": "Przechowywany w postaci zaszyfrowanej. Nigdy więcej nie zostanie wyświetlony.",
+			"openaiBaseUrl": "Bazowy URL",
+			"openaiBaseUrlHint": "Razem ze ścieżką wersji, na przykład https://api.openai.com/v1. Musi to być adres publiczny.",
+			"openaiKey": "Klucz API",
+			"save": "Zapisz",
+			"testCloud": "Testuj dostawcę",
+			"testLocal": "Testuj model lokalny",
+			"localTitle": "Model lokalny",
+			"localDescription": "Serwer zgodny z OpenAI w Twojej własnej sieci, np. Ollama. Dane ograniczone trafiają wyłącznie tutaj.",
+			"localBaseUrl": "Bazowy URL",
+			"localBaseUrlHint": "Na przykład http://ollama:11434/v1. Adresy prywatne są tu dozwolone.",
+			"localModel": "Model",
+			"localKey": "Klucz API",
+			"localKeyHint": "Opcjonalny. Tylko jeśli serwer go wymaga, np. vLLM uruchomiony z --api-key. Przechowywany w postaci zaszyfrowanej.",
+			"localOnly": "Tryb tylko lokalny",
+			"localOnlyHint": "Każde wywołanie AI trafia do modelu lokalnego; nic nie jest wysyłane do dostawcy chmurowego.",
+			"privacyTitle": "Prywatność",
+			"privacyDescription": "Dokąd może trafiać każdy rodzaj danych. Obszary robocze mogą być bardziej restrykcyjne, nigdy mniej.",
+			"restrictedRoute": "Projekty ograniczone",
+			"restrictedRouteHint": "Dane z projektów ograniczonych, gdy obszar roboczy pozwala AI je czytać.",
+			"privateRoute": "Pozostałe dane obszaru roboczego",
+			"privateRouteHint": "Zadania, strony i komentarze z otwartych projektów.",
+			"routeBlocked": "Nigdy nie wysyłane",
+			"routeLocal": "Tylko model lokalny",
+			"routeCloud": "Dostawca chmurowy dozwolony",
+			"redaction": "Ukrywaj dane osobowe",
+			"redactionHint": "Zastępuj adresy e-mail, numery telefonów, numery kart i tokeny symbolami zastępczymi przed wywołaniami w chmurze. Odpowiedzi znów pokazują prawdziwe wartości.",
+			"zeroRetention": "Brak przechowywania danych",
+			"zeroRetentionHint": "Zaznacz, że Twoja umowa z dostawcą wyklucza przechowywanie danych. Margaya to pokazuje; dostawca to egzekwuje.",
+			"allowWorkspaceKeys": "Zezwól na klucze obszarów roboczych",
+			"allowWorkspaceKeysHint": "Obszary robocze mogą używać własnego klucza dostawcy i płacić za własne użycie.",
+			"embeddingsTitle": "Osadzenia wektorowe",
+			"embeddingsDescription": "Opcjonalne, na potrzeby wyszukiwania semantycznego. Działa dowolny endpoint osadzeń zgodny z OpenAI. Baza danych potrzebuje też rozszerzenia pgvector; bez któregokolwiek z nich wyszukiwanie pozostaje wyłącznie pełnotekstowe.",
+			"vectorReady": "pgvector gotowy",
+			"vectorAvailable": "pgvector dostępny",
+			"vectorUnavailable": "pgvector niedostępny",
+			"embeddingsBaseUrl": "Bazowy URL",
+			"embeddingsModel": "Model",
+			"embeddingsKey": "Klucz API",
+			"invalidUrl": "Wpisz adres URL zaczynający się od http lub https.",
+			"usageTitle": "Użycie we wszystkich obszarach roboczych",
+			"usageDescription": "Wywołania AI na tym serwerze według obszaru roboczego i modelu. Zapisywane są tylko liczby.",
+			"chatTitle": "Czat",
+			"chatDescription": "Jak myślą modele rozumujące i co użytkownicy z tego widzą.",
+			"showReasoning": "Pokazuj rozumowanie",
+			"showReasoningHint": "Pokazuje tok myślenia modelu rozumującego osobie, która zadała pytanie. Nigdy nie jest zapisywany. Wyłączone: tylko czas myślenia.",
+			"localThinking": "Myślenie w modelach lokalnych",
+			"localThinkingHint": "Wyłączone — szybsze odpowiedzi; włączone — lokalne modele rozumujące najpierw myślą.",
+			"localThinkingOff": "Wyłączone",
+			"localThinkingOn": "Włączone",
+			"webSearchTitle": "Wyszukiwanie w internecie",
+			"webSearchDescription": "Usługa wyszukiwania, z której mogą korzystać odpowiedzi, gdy obszar roboczy włączy wyszukiwanie w internecie.",
+			"webSearchProvider": "Dostawca wyszukiwania",
+			"webSearchProviderHint": "SearXNG działa na Twoim własnym serwerze; Brave Search i Tavily wymagają klucza API.",
+			"webSearchOff": "Wyłączone",
+			"webSearchUrl": "Adres URL SearXNG",
+			"webSearchUrlHint": "Musi mieć włączone JSON API.",
+			"webSearchKey": "Klucz API",
+			"webSearchKeyHint": "Dla Brave Search lub Tavily.",
+			"speechTitle": "Mowa na tekst",
+			"speechDescription": "Wprowadzanie głosowe w czacie. Bez tego przeglądarki, które to potrafią, same rozpoznają mowę.",
+			"speechBaseUrl": "Adres URL punktu końcowego",
+			"speechBaseUrlHint": "Punkt końcowy transkrypcji zgodny z OpenAI, np. lokalny serwer Whisper.",
+			"speechModel": "Model mowy",
+			"speechKey": "Klucz API"
+		},
+		"workspace": {
+			"navLabel": "AI",
+			"title": "AI",
+			"subtitle": "Włącz funkcje AI dla tego obszaru roboczego, ustaw limity i wybierz sposób obsługi danych prywatnych.",
+			"noAccess": "Aby zobaczyć te ustawienia, potrzebujesz uprawnienia do zarządzania AI.",
+			"loadError": "Nie udało się wczytać ustawień AI.",
+			"statusTitle": "AI w tym obszarze roboczym",
+			"statusDescription": "AI pozostaje wyłączona, dopóki jej nie włączysz. Każdy projekt nadal może ją wyłączyć w swoich funkcjach.",
+			"enable": "Włącz AI",
+			"enableHint": "Członkowie z uprawnieniem „Używanie AI” widzą funkcje AI w projektach, które na to pozwalają.",
+			"enabledToast": "AI jest włączona w tym obszarze roboczym",
+			"disabledToast": "AI jest wyłączona w tym obszarze roboczym",
+			"offOnInstance": "Administrator instancji nie zezwolił jeszcze na AI na tym serwerze.",
+			"notConfigured": "AI jest dozwolona, ale nie skonfigurowano jeszcze dostawcy. Zapytaj administratora instancji.",
+			"whereDataGoes": "Dokąd trafiają dane",
+			"whereDataGoesHint": "Model, który otrzymuje żądania AI z tego obszaru roboczego.",
+			"zeroRetention": "Brak przechowywania",
+			"limitsTitle": "Limity",
+			"limitsDescription": "Wydano w tym miesiącu: {{spent}}. Po osiągnięciu limitu żądania są wstrzymywane.",
+			"monthlyCap": "Miesięczny budżet (USD)",
+			"monthlyCapHint": "Według cen katalogowych, dla całego obszaru roboczego. Pozostaw puste, aby nie ustawiać limitu.",
+			"dailyTokens": "Dzienne tokeny na osobę",
+			"dailyTokensHint": "Tokeny wejściowe i wyjściowe, których każda osoba może użyć dziennie (UTC). Pozostaw puste, aby nie ustawiać limitu.",
+			"noLimit": "Bez limitu",
+			"invalidNumber": "Wpisz liczbę równą 0 lub większą.",
+			"saveLimits": "Zapisz limity",
+			"monthSpendOfCap": "Wykorzystano {{spent}} z {{cap}} w tym miesiącu.",
+			"privacyTitle": "Prywatność",
+			"privacyDescription": "AI widzi tylko to, co może zobaczyć osoba zadająca pytanie.",
+			"includeRestricted": "Uwzględniaj projekty ograniczone",
+			"includeRestrictedHint": "Pozwól AI czytać projekty ograniczone w imieniu osób, które je widzą. Ich dane trafiają tylko tam, gdzie serwer dopuszcza dane ograniczone.",
+			"localOnly": "Tylko model lokalny",
+			"localOnlyHint": "Wysyłaj każde żądanie AI do lokalnego modelu serwera.",
+			"localOnlyForced": "Serwer działa w trybie tylko lokalnym.",
+			"localOnlyUnavailable": "Ten serwer nie ma modelu lokalnego.",
+			"redactPii": "Ukrywaj dane osobowe",
+			"redactPiiHint": "Zastępuj adresy e-mail, numery telefonów, numery kart i tokeny symbolami zastępczymi, zanim żądania opuszczą serwer.",
+			"redactPiiForced": "Zawsze włączone: serwer ukrywa dane osobowe w każdym żądaniu do chmury.",
+			"approval": "Zatwierdzaj zmiany AI",
+			"approvalHint": "Zmiany zaproponowane przez AI zawsze czekają na zatwierdzenie przez człowieka.",
+			"semanticSearch": "Wyszukiwanie semantyczne",
+			"semanticSearchHint": "Pytania i wykrywanie duplikatów znajdują zadania, strony i komentarze także po znaczeniu, nie tylko po słowach. Treść jest indeksowana modelem osadzeń serwera.",
+			"semanticUnavailable": "pgvector nie jest dostępny w bazie danych tego serwera, więc wyszukiwanie jest wyłącznie pełnotekstowe.",
+			"semanticNoEndpoint": "Ten serwer nie ma endpointu osadzeń, więc wyszukiwanie jest wyłącznie pełnotekstowe.",
+			"semanticIndexed_one": "{{count}} element zindeksowany",
+			"semanticIndexed_few": "{{count}} elementy zindeksowane",
+			"semanticIndexed_many": "{{count}} elementów zindeksowanych",
+			"semanticIndexed_other": "{{count}} elementu zindeksowanego",
+			"semanticPaused": "Indeksowanie jest wstrzymane. {{reason}}",
+			"semanticEnabledToast": "Wyszukiwanie semantyczne jest włączone. Indeksowanie działa w tle.",
+			"semanticDisabledToast": "Wyszukiwanie semantyczne jest wyłączone, a jego indeks został usunięty.",
+			"keyTitle": "Własny klucz API",
+			"keyDescription": "Używaj własnego konta obszaru roboczego u dostawcy zamiast konta serwera. Klucz jest przechowywany w postaci zaszyfrowanej i nigdy więcej nie jest wyświetlany.",
+			"keyCurrent": "Zapisany klucz",
+			"keyEnding": "Kończy się na {{last4}}",
+			"keyUnreadable": "Nie można już odczytać zapisanego klucza. Wpisz go ponownie.",
+			"keyRemove": "Usuń",
+			"keyProvider": "Dostawca",
+			"keyValue": "Klucz API",
+			"keyReplace": "Zastąp klucz",
+			"keyHint": "Klucz API Anthropic zaczynający się od sk-ant-.",
+			"keyOpenAiHint": "Używany z endpointem serwera zgodnym z OpenAI.",
+			"keyPlaceholder": "Wklej klucz",
+			"keyTooShort": "Ten klucz wygląda na zbyt krótki.",
+			"keySave": "Zapisz klucz",
+			"keySavedToast": "Klucz zapisany",
+			"keyRemovedToast": "Klucz usunięty",
+			"saved": "Ustawienia AI zapisane",
+			"saveError": "Nie udało się zapisać ustawień AI.",
+			"chatTitle": "Czat Zapytaj AI",
+			"chatDescription": "Co czat może robić dla osób w tym obszarze roboczym.",
+			"webSearch": "Wyszukiwanie w internecie",
+			"webSearchHint": "Użytkownicy mogą pozwolić, by odpowiedzi korzystały z wyszukiwania w internecie. Wyniki są cytowane jako źródła internetowe.",
+			"webSearchUnavailable": "Ta instancja nie ma skonfigurowanego wyszukiwania w internecie.",
+			"webSearchLocalOnly": "Nieużywane, dopóki AI korzysta tylko z modeli lokalnych.",
+			"storeConversations": "Przechowuj historię czatu na serwerze",
+			"storeConversationsHint": "Rozmowy każdej osoby są zapisywane w obszarze roboczym, więc można je otworzyć na dowolnym urządzeniu. Wyłączone: pozostają tylko w danej przeglądarce.",
+			"allowAutopilot": "Zezwól na autopilota",
+			"allowAutopilotHint": "Tryb Buduj może wprowadzać zmiany bez potwierdzenia. Każda zmiana jest nadal rejestrowana i można ją cofnąć."
+		},
+		"agents": {
+			"navLabel": "Agenci",
+			"title": "Agenci",
+			"subtitle": "Agenci AI to członkowie obszaru roboczego, którzy pracują nad zadaniami dla osoby, która ich o to prosi, nigdy z większymi uprawnieniami niż ta osoba.",
+			"listTitle": "Agenci obszaru roboczego",
+			"badge": "Agent",
+			"noAccess": "Agentów mogą konfigurować tylko osoby z uprawnieniem do zarządzania AI.",
+			"empty": "Nie ma jeszcze agentów. Utwórz agenta, a potem wspomnij o nim w komentarzu, przypisz mu zadanie lub uruchom go z poziomu zadania.",
+			"loadError": "Nie udało się wczytać agentów.",
+			"retry": "Spróbuj ponownie",
+			"create": "Nowy agent",
+			"edit": "Edytuj agenta",
+			"dialogHint": "Agentów można przypisywać i wspominać tak jak ludzi. Nie mogą się logować i nie są rozliczani jako stanowiska.",
+			"save": "Zapisz",
+			"cancel": "Anuluj",
+			"created": "Utworzono agenta",
+			"saved": "Zapisano agenta",
+			"deleted": "Usunięto agenta",
+			"saveError": "Nie udało się zapisać agenta. Spróbuj ponownie.",
+			"enable": "Włącz",
+			"disable": "Wyłącz",
+			"off": "Wyłączony",
+			"delete": "Usuń",
+			"deleteTitle": "Usunąć {{name}}?",
+			"deleteBody": "Agent opuści obszar roboczy. Jego komentarze i historia pozostaną, a jego uruchomienia nadal będą widoczne w Pulpicie agentów.",
+			"spend": "{{spent}} w tym miesiącu",
+			"spendOfBudget": "{{spent}} z {{budget}} w tym miesiącu",
+			"activityFilter": "Agenci",
+			"fields": {
+				"name": "Nazwa",
+				"nameTaken": "Agent lub członek tego obszaru roboczego ma już tę nazwę. Wybierz inną.",
+				"description": "Opis",
+				"descriptionPlaceholder": "W czym pomaga ten agent",
+				"instructions": "Instrukcje",
+				"instructionsHint": "Jak agent ma pracować. Piszą je tylko administratorzy; tekst w zadaniach, komentarzach i na stronach nigdy nie jest traktowany jako instrukcja.",
+				"role": "Rola",
+				"roleHint": "Najwięcej, co agent może zrobić. Każde uruchomienie jest też ograniczone do uprawnień osoby, która o nie prosi.",
+				"tier": "Model",
+				"tierFast": "Szybki",
+				"tierBalanced": "Zrównoważony",
+				"tierDeep": "Zaawansowany",
+				"provider": "Gdzie działa",
+				"providerDefault": "Domyślny dla obszaru roboczego",
+				"providerLocal": "Tylko model lokalny",
+				"budget": "Miesięczny budżet (USD)",
+				"budgetHint": "Uruchomienia zatrzymują się, gdy wydatki w tym miesiącu osiągną tę kwotę. Pozostaw puste, aby nie ustawiać limitu agenta; limity obszaru roboczego nadal obowiązują.",
+				"projects": "Projekty",
+				"projectsAll": "Wszystkie projekty dostępne dla jego roli",
+				"projectsSome": "Tylko te projekty",
+				"projectsHint": "Uruchomienia w innych projektach są przerywane, a agent informuje, że nie jest tam skonfigurowany.",
+				"projectsNone": "Wybierz co najmniej jeden projekt.",
+				"skills": "Umiejętności",
+				"skillsEmpty": "Brak udostępnionych umiejętności. Udostępnione umiejętności zapisane w Ask można przypisać agentom.",
+				"skillsHint": "Agent stosuje te zapisane prompty, gdy pasują do prośby (maksymalnie 10).",
+				"webAccess": "Dostęp do sieci",
+				"webAccessHint": "Pozwala agentowi szukać w sieci i używać konektorów obszaru roboczego. To, co tam wysyła, opuszcza Margaya."
+			},
+			"status": {
+				"queued": "W kolejce",
+				"running": "W toku",
+				"awaiting_approval": "Czeka na zatwierdzenie",
+				"succeeded": "Gotowe",
+				"failed": "Niepowodzenie",
+				"cancelled": "Zatrzymano",
+				"needs_input": "Czeka na odpowiedź"
+			},
+			"stepStatus": {
+				"ok": "Gotowe",
+				"error": "Niepowodzenie",
+				"denied": "Niedozwolone",
+				"pending": "Czeka na zatwierdzenie",
+				"applied": "Zastosowano",
+				"rejected": "Odrzucono",
+				"expired": "Wygasło",
+				"reverted": "Cofnięto"
+			},
+			"step": {
+				"model": "Wywołanie modelu"
+			},
+			"tools": {
+				"read_task": "Odczyt zadania",
+				"read_project": "Odczyt projektu",
+				"read_page": "Odczyt strony",
+				"search_workspace": "Wyszukiwanie",
+				"add_comment": "Komentarz",
+				"update_task": "Aktualizacja zadania",
+				"move_status": "Zmiana statusu",
+				"create_subtask": "Utworzenie podzadania",
+				"create_page": "Utwórz stronę",
+				"link_tasks": "Powiązanie zadań",
+				"delete_task": "Usunięcie zadania",
+				"bulk_move_status": "Zmiana statusu kilku zadań",
+				"ask_person": "Zadaj pytanie",
+				"web_search": "Wyszukiwanie w sieci",
+				"connector": "Usługa zewnętrzna: {{tool}}"
+			},
+			"runErrors": {
+				"AGENT_GONE": "Agent został usunięty.",
+				"AGENT_DISABLED": "Agent jest wyłączony.",
+				"AGENT_LEFT": "Agent nie jest już członkiem obszaru roboczego.",
+				"PRINCIPAL_LEFT": "Osoba, która o to prosiła, nie jest już członkiem obszaru roboczego.",
+				"AI_USE_DENIED": "Osoba, która o to prosiła, nie ma uprawnienia do używania AI.",
+				"NOT_IN_SCOPE": "Zadanie należy do projektu, którego AI nie może czytać.",
+				"TIME_LIMIT": "Uruchomienie trwało dłużej niż 10 minut i zostało zatrzymane.",
+				"OUTPUT_LIMIT": "Odpowiedź agenta była za długa. Poproś o mniejszą zmianę.",
+				"TURN_LIMIT": "Agentowi skończyły się kroki, zanim skończył. Poproś o mniejszą, bardziej konkretną zmianę.",
+				"INTERRUPTED": "Uruchomienie zostało przerwane. Wprowadzone już zmiany nadal można cofnąć.",
+				"APPROVAL_EXPIRED": "Nikt nie podjął decyzji w sprawie proponowanych zmian w ciągu 24 godzin, więc wygasły.",
+				"INTERNAL": "Podczas uruchomienia coś poszło nie tak.",
+				"NEEDS_INPUT_EXPIRED": "Nikt nie odpowiedział na pytanie agenta w ciągu 24 godzin.",
+				"OUTSIDE_AGENT_PROJECTS": "Agent nie jest skonfigurowany do pracy w tym projekcie."
+			},
+			"change": {
+				"approve": "Zatwierdź",
+				"reject": "Odrzuć",
+				"approved": "Zastosowano zmianę",
+				"rejected": "Odrzucono zmianę",
+				"decideError": "Nie udało się zastosować Twojej decyzji. Spróbuj ponownie.",
+				"undo": "Cofnij",
+				"undone": "Cofnięto zmianę",
+				"undoError": "Nie udało się cofnąć tej zmiany. Zadanie mogło się w międzyczasie zmienić.",
+				"expiresAt": "Wygasa {{time}}",
+				"before": "Przed",
+				"after": "Po",
+				"openPage": "Otwórz stronę",
+				"openSubtask": "Otwórz podzadanie",
+				"openLinked": "Otwórz powiązane zadanie",
+				"empty": "(puste)",
+				"fields": {
+					"title": "Tytuł",
+					"priority": "Priorytet",
+					"dueDate": "Termin",
+					"description": "Opis",
+					"status": "Status",
+					"statusOf": "Status zadania {{task}}",
+					"comment": "Komentarz",
+					"subtask": "Nowe podzadanie",
+					"page": "Nowa strona",
+					"relation": "Powiązanie ({{relation}})",
+					"delete": "Przenieś do kosza",
+					"connectorCall": "Wywołanie {{connector}}"
+				}
+			},
+			"inbox": {
+				"title": "{{agentName}} potrzebuje Twojego zatwierdzenia",
+				"verb": "prosi o Twoje zatwierdzenie",
+				"cardTitle": "Proponowana zmiana"
+			},
+			"reply": {
+				"title": "{{agentName}} odpowiedział na Twoją prośbę",
+				"verb": "odpowiedział na Twoją prośbę",
+				"cardTitle": "Odpowiedź agenta",
+				"hint": "Agent nie opublikował tej odpowiedzi w zadaniu, dlatego jest widoczna tutaj."
+			},
+			"activity": {
+				"onBehalfOf": "w imieniu {{name}}"
+			},
+			"run": {
+				"button": "Uruchom agenta",
+				"title": "Uruchom agenta dla tego zadania",
+				"hint": "Agent działa najwyżej z Twoimi uprawnieniami. Zmiany można cofnąć, a niektóre czekają na Twoje zatwierdzenie.",
+				"agent": "Agent",
+				"prompt": "Co ma zrobić?",
+				"promptPlaceholder": "Na przykład: podziel to na podzadania i zaproponuj priorytet.",
+				"start": "Uruchom",
+				"started": "{{name}} zabiera się do pracy",
+				"error": "Nie udało się uruchomić agenta. Spróbuj ponownie.",
+				"recent": "Ostatnie uruchomienia dla tego zadania",
+				"viewInDesk": "Otwórz w Pulpicie agentów"
+			},
+			"desk": {
+				"nav": "Pulpit agentów",
+				"title": "Pulpit agentów",
+				"subtitle": "Co Twoi agenci zrobili i co robią teraz: każde uruchomienie z krokami, kosztem i zmianami.",
+				"emptyTitle": "Nie ma jeszcze uruchomień agentów",
+				"empty": "Wspomnij o agencie w komentarzu, przypisz mu zadanie lub uruchom go z poziomu zadania.",
+				"allAgents": "Wszyscy agenci",
+				"allStatuses": "Wszystkie statusy",
+				"filterAgent": "Filtruj według agenta",
+				"filterStatus": "Filtruj według statusu",
+				"approvalsTitle": "Czeka na Ciebie",
+				"selectRun": "Wybierz uruchomienie, aby zobaczyć jego kroki i zmiany.",
+				"runMissing": "To uruchomienie jest niedostępne.",
+				"deletedAgent": "Usunięty agent",
+				"onBehalfOf": "dla {{name}}",
+				"cost": "Koszt",
+				"tokensLabel": "Tokeny",
+				"tokens": "Tokeny: {{value}}",
+				"toolCallsLabel": "Wywołania narzędzi",
+				"summary": "Podsumowanie",
+				"changes": "Zestaw zmian",
+				"noChanges": "Brak zmian.",
+				"steps": "Kroki",
+				"cancelRun": "Zatrzymaj uruchomienie",
+				"cancelled": "Zatrzymano uruchomienie",
+				"cancelError": "Nie udało się zatrzymać uruchomienia.",
+				"trigger": {
+					"mention": "Wzmianka",
+					"assign": "Przypisanie",
+					"manual": "Uruchomiono z zadania",
+					"schedule": "Zaplanowane",
+					"automation": "Automatyzacja",
+					"chat": "Kontynuacja"
+				},
+				"project": "Projekt:",
+				"workedSeconds": "Pracował {{count}} s",
+				"workedMinutes": "Pracował {{count}} min"
+			},
+			"connectors": {
+				"title": "Konektory",
+				"subtitle": "Zewnętrzne serwery MCP, które mogą wywoływać agenci z dostępem do sieci. Narzędzia tylko do odczytu działają od razu; wszystko inne czeka na zatwierdzenie.",
+				"create": "Dodaj konektor",
+				"edit": "Edytuj konektor",
+				"delete": "Usuń konektor",
+				"created": "Dodano konektor",
+				"saved": "Zapisano konektor",
+				"deleted": "Usunięto konektor",
+				"saveError": "Nie udało się zapisać konektora. Spróbuj ponownie.",
+				"empty": "Brak konektorów. Dodaj adres serwera MCP, aby agenci z dostępem do sieci mogli korzystać z jego narzędzi.",
+				"shared": "Udostępniony",
+				"personal": "Tylko ty",
+				"enable": "Włącz",
+				"disable": "Wyłącz",
+				"test": "Testuj",
+				"testOk": "Połączono: narzędzia: {{count}}, tylko do odczytu: {{readOnly}}",
+				"testError": "Nie udało się uruchomić testu. Spróbuj ponownie.",
+				"errors": {
+					"DESTINATION": "Adres nie jest serwerem publicznym.",
+					"TIMEOUT": "Serwer nie odpowiedział na czas.",
+					"NETWORK": "Nie udało się połączyć z serwerem.",
+					"HTTP": "Serwer odpowiedział błędem ({{status}}).",
+					"TOO_LARGE": "Odpowiedź serwera była za duża.",
+					"PROTOCOL": "To nie wygląda na serwer MCP.",
+					"RPC": "Serwer MCP odrzucił żądanie.",
+					"SECRET_UNREADABLE": "Zapisanego sekretu nie da się już odczytać. Wpisz go ponownie."
+				},
+				"secretHint": "Sekret ••••{{last4}}",
+				"dialogHint": "Margaya łączy się przez Streamable HTTP. Sekrety są przechowywane w postaci zaszyfrowanej i nigdy więcej nie są pokazywane.",
+				"name": "Nazwa",
+				"url": "Adres URL serwera",
+				"urlHint": "Punkt końcowy MCP, na przykład https://mcp.example.com/mcp. Musi być dostępny w publicznym internecie.",
+				"auth": "Uwierzytelnianie",
+				"authHeader": "Sekret w nagłówku",
+				"authNone": "Brak",
+				"headerName": "Nazwa nagłówka",
+				"secret": "Sekret",
+				"secretKeep": "Zostaw puste, aby zachować obecny sekret",
+				"secretHelp": "Pełna wartość nagłówka, na przykład Bearer i token.",
+				"sharedToggle": "Udostępnij w obszarze roboczym",
+				"sharedHint": "Agenci używają udostępnionych konektorów w każdym uruchomieniu. Wyłącz, aby zachować go tylko dla uruchomień w twoim imieniu.",
+				"deleteTitle": "Usunąć {{name}}?",
+				"deleteBody": "Agenci nie będą już mogli korzystać z jego narzędzi, a zapisany sekret zostanie usunięty."
+			},
+			"followUp": {
+				"label": "Odpowiedz agentowi",
+				"placeholder": "Zadaj pytanie uzupełniające albo napisz, co zrobić dalej…",
+				"send": "Wyślij",
+				"error": "Nie udało się rozpocząć kontynuacji. Spróbuj ponownie."
+			},
+			"needsInput": {
+				"title": "Agent ma pytanie",
+				"answerLabel": "Twoja odpowiedź",
+				"placeholder": "Wpisz odpowiedź…",
+				"reply": "Odpowiedz",
+				"sent": "Wysłano odpowiedź. Agent kontynuuje.",
+				"error": "Nie udało się wysłać odpowiedzi. Spróbuj ponownie.",
+				"hint": "Pytania bez odpowiedzi wygasają po 24 godzinach.",
+				"waiting": "Agent czeka na odpowiedź osoby, która go poprosiła.",
+				"inboxHint": "Uruchomienie jest wstrzymane do czasu twojej odpowiedzi.",
+				"answer": "Odpowiedz w Pulpicie agentów",
+				"notificationTitle": "{{agentName}} ma pytanie",
+				"verb": "ma do ciebie pytanie"
+			},
+			"schedules": {
+				"open": "Harmonogramy agenta {{name}}",
+				"title": "Harmonogramy: {{name}}",
+				"hint": "Uruchamiaj agenta według harmonogramu. Uruchomienia działają w imieniu osoby, która ostatnio zapisała harmonogram, z co najwyżej jej uprawnieniami.",
+				"empty": "Brak harmonogramów.",
+				"create": "Nowy harmonogram",
+				"edit": "Edytuj harmonogram",
+				"delete": "Usuń harmonogram",
+				"deleteBody": "Usunąć ten harmonogram? Wcześniejsze uruchomienia zostaną w Pulpicie agentów.",
+				"deleted": "Usunięto harmonogram",
+				"saved": "Zapisano harmonogram",
+				"saveError": "Nie udało się zapisać harmonogramu. Spróbuj ponownie.",
+				"enable": "Włącz harmonogram",
+				"disable": "Wyłącz harmonogram",
+				"enabled": "Włączony",
+				"when": "Kiedy",
+				"presets": {
+					"weekdays": "W każdy dzień roboczy o 9:00",
+					"mondays": "W każdy poniedziałek o 9:00",
+					"monthly": "Pierwszego dnia miesiąca o 9:00",
+					"custom": "Własny (cron)"
+				},
+				"customLabel": "Cron: {{cron}}",
+				"cron": "Wyrażenie cron",
+				"cronHint": "Pięć pól: minuta, godzina, dzień miesiąca, miesiąc, dzień tygodnia. Najwyżej co 15 minut.",
+				"timezone": "Strefa czasowa",
+				"project": "Projekt",
+				"chooseProject": "Wybierz projekt",
+				"task": "Zadanie",
+				"noTask": "Bez zadania (cały projekt)",
+				"taskHint": "Bez zadania agent pracuje nad projektem i zapisuje raporty na stronie.",
+				"projectLevel": "Cały projekt",
+				"prompt": "Co ma zrobić?",
+				"promptPlaceholder": "Na przykład: podsumuj, co zmieniło się od wczoraj.",
+				"nextRun": "Następne uruchomienie {{time}}",
+				"runsAs": "Działa dla: {{name}}",
+				"runsAsHint": "Po zapisaniu te uruchomienia działają w twoim imieniu. Harmonogram wyłączy się, jeśli opuścisz obszar roboczy lub stracisz dostęp do AI.",
+				"errors": {
+					"CRON_INVALID": "Wpisz pięć pól cron: minuta, godzina, dzień, miesiąc, dzień tygodnia.",
+					"CRON_TOO_FREQUENT": "Harmonogram może działać najwyżej co 15 minut.",
+					"CRON_NEVER": "Ten harmonogram nigdy by się nie uruchomił.",
+					"TIMEZONE_INVALID": "Wybierz prawidłową strefę czasową.",
+					"OUTSIDE_AGENT_PROJECTS": "Ten agent nie jest skonfigurowany do pracy w tym projekcie."
+				}
+			},
+			"templates": {
+				"title": "Zacznij od",
+				"blank": "Pusty agent",
+				"blankHint": "Napisz instrukcje samodzielnie.",
+				"triage": {
+					"name": "Triaż",
+					"description": "Porządkuje nowe zadania: jasne tytuły, priorytety i powiązania z duplikatami."
+				},
+				"standup": {
+					"name": "Stand-up",
+					"description": "Codziennie pisze podsumowanie stand-upu na stronie projektu."
+				},
+				"specWriter": {
+					"name": "Autor specyfikacji",
+					"description": "Zamienia zadanie w stronę specyfikacji z kryteriami akceptacji."
+				},
+				"deliveryRisk": {
+					"name": "Ryzyko dostarczenia",
+					"description": "Co tydzień raportuje zaległą, zablokowaną i nieprzypisaną pracę."
+				},
+				"feedback": {
+					"name": "Opinie klientów",
+					"description": "Grupuje opinie klientów w tematy z przykładami."
+				},
+				"triggers": {
+					"mention": "Wzmianka",
+					"assign": "Przypisanie",
+					"schedule": "Harmonogram",
+					"automation": "Automatyzacja"
+				}
+			}
+		},
+		"capture": {
+			"button": "Przechwyć",
+			"buttonHint": "Nowe ze zrzutu ekranu, nagrania lub transkrypcji",
+			"title": "Nowe zgłoszenia z przechwycenia",
+			"description": "Dodaj zrzuty ekranu, nagranie ekranu lub notatki ze spotkania. AI zaproponuje zgłoszenia; nic nie zostanie utworzone, dopóki nie potwierdzisz.",
+			"tabs": {
+				"screenshot": "Zrzuty ekranu",
+				"recording": "Nagranie",
+				"transcript": "Transkrypcja"
+			},
+			"dropzone": "Wklej, upuść lub wybierz zrzuty ekranu",
+			"dropzoneHint": "PNG, JPEG lub WebP, maksymalnie {{count}} obrazów. Dane o lokalizacji i aparacie są usuwane.",
+			"chooseRecording": "Wybierz nagranie ekranu",
+			"recordingHint": "Do AI trafia tylko {{count}} klatek. Wideo zostaje na Twoim urządzeniu.",
+			"notes": "Notatki (opcjonalnie)",
+			"notesPlaceholder": "Jakie kroki wykonano i co poszło nie tak?",
+			"transcript": "Transkrypcja lub notatki ze spotkania",
+			"transcriptPlaceholder": "Wklej transkrypcję lub notatki. Każde zadanie do wykonania stanie się osobnym zgłoszeniem.",
+			"remove": "Usuń {{name}}",
+			"tooMany": "Maksymalnie {{count}} obrazów na jedno przechwycenie.",
+			"mediaErrors": {
+				"type": "Ten typ pliku nie jest obsługiwany.",
+				"tooLarge": "Ten plik jest za duży.",
+				"unreadable": "Nie udało się odczytać tego pliku."
+			},
+			"preparing": "Przygotowywanie obrazów…",
+			"analyze": "Zaproponuj zgłoszenia",
+			"analyzing": "Odczytywanie przechwycenia…",
+			"reviewTitle": "Przejrzyj proponowane zgłoszenia",
+			"reviewDescription": "Edytuj lub pomiń dowolne zgłoszenie. Nic nie zostanie utworzone, dopóki nie potwierdzisz.",
+			"empty": "W tym przechwyceniu nie znaleziono zgłoszeń.",
+			"include": "Uwzględnij to zgłoszenie",
+			"titleLabel": "Tytuł",
+			"descriptionLabel": "Opis",
+			"priorityLabel": "Priorytet",
+			"labelsLabel": "Sugerowane etykiety",
+			"assignTo": "Przypisz do: {{name}}",
+			"attachNote": "Obrazy do załączenia: {{count}}",
+			"attachNotAllowed": "Nie można załączyć obrazów: potrzebujesz uprawnienia do edytowania zadań.",
+			"back": "Wstecz",
+			"create": "Utwórz zgłoszenia ({{count}})",
+			"created": "Utworzone zgłoszenia: {{count}}",
+			"extrasFailed": "Nie udało się dodać niektórych etykiet, osób odpowiedzialnych lub załączników.",
+			"createError": "Nie udało się utworzyć zgłoszeń.",
+			"draftFromImages": "Utwórz szkic z obrazów",
+			"drafting": "Tworzenie szkicu…",
+			"sections": {
+				"steps": "Kroki do odtworzenia",
+				"expected": "Oczekiwany wynik",
+				"actual": "Rzeczywisty wynik",
+				"environment": "Środowisko"
+			}
+		},
+		"codingAgent": {
+			"button": "Wyślij do agenta kodującego",
+			"dialogTitle": "Wyślij do agenta kodującego",
+			"dialogDescription": "Margaya otworzy w repozytorium zgłoszenie z tym briefem. Przejrzyj go i popraw przed wysłaniem.",
+			"repository": "Repozytorium",
+			"profile": "Agent kodujący",
+			"github": "GitHub",
+			"gitea": "Gitea",
+			"notReady": "Integracja tego repozytorium nie może jeszcze otwierać zgłoszeń. Sprawdź ją w ustawieniach integracji projektu.",
+			"noProfiles": "Żaden profil agenta kodującego nie działa z tym repozytorium.",
+			"useAi": "Podsumuj za pomocą AI",
+			"regenerate": "Przygotuj ponownie",
+			"preparing": "Przygotowywanie briefu…",
+			"error": "Nie udało się przygotować briefu.",
+			"titleLabel": "Tytuł zgłoszenia",
+			"briefLabel": "Brief",
+			"briefNote": "Wartości wyglądające na hasła lub klucze są usuwane przed wysłaniem. Nic nie jest scalane automatycznie.",
+			"send": "Wyślij",
+			"sending": "Wysyłanie…",
+			"sent": "Wysłano do agenta kodującego",
+			"sentNotAssigned": "Zgłoszenie utworzone, ale nie udało się dodać osoby przypisanej",
+			"sendError": "Nie udało się utworzyć zgłoszenia",
+			"openIssue": "Otwórz zgłoszenie",
+			"timelineTitle": "Agent kodujący",
+			"timelineLabel": "Postęp agenta kodującego",
+			"sentBy": "Wysłane do {{profile}} przez {{name}}",
+			"sentByUnknown": "Wysłane do {{profile}}",
+			"issueLink": "Zgłoszenie nr {{number}}",
+			"prLink": "Pull request nr {{number}}",
+			"pending": "Jeszcze nie",
+			"steps": {
+				"issue_created": "Zgłoszenie utworzone",
+				"working": "Agent pracuje",
+				"ready_for_review": "Gotowe do przeglądu",
+				"merged": "Scalone",
+				"closed": "Zamknięte bez scalenia"
+			},
+			"settings": {
+				"title": "Agenci kodujący",
+				"subtitle": "Szablony zgłoszeń dla „Wyślij do agenta kodującego”, wysyłane przez GitHub i Gitea",
+				"sharedNote": "Wspólne dla wszystkich projektów w tym obszarze roboczym. Profile dodają do zgłoszenia tylko wzmiankę lub osobę przypisaną; żadne klucze AI nie są przechowywane.",
+				"builtin": "Wbudowany",
+				"githubOnly": "Tylko GitHub",
+				"name": "Nazwa",
+				"namePlaceholder": "np. Nasz runner buildów",
+				"mention": "Wzmianka",
+				"mentionPlaceholder": "@agent albo tekst z {task} i {branch}",
+				"assignee": "Osoba przypisana (GitHub)",
+				"assigneePlaceholder": "Login GitHub, np. Copilot",
+				"enabled": "Włączony",
+				"edit": "Edytuj profil",
+				"delete": "Usuń profil",
+				"add": "Dodaj profil",
+				"save": "Zapisz",
+				"saved": "Profil zapisany",
+				"deleted": "Profil usunięty",
+				"error": "Nie udało się zapisać profilu",
+				"needsTarget": "Dodaj wzmiankę lub osobę przypisaną.",
+				"readOnly": "Profile mogą zmieniać tylko osoby zarządzające ustawieniami obszaru roboczego."
+			}
+		},
+		"filters": {
+			"button": "Opisz filtr…",
+			"short": "Opisz",
+			"label": "Opisz, co pokazać",
+			"placeholder": "np. moje zaległe błędy w toku",
+			"apply": "Zastosuj",
+			"none": "Nie udało się zamienić tego na filtry. Spróbuj innych słów.",
+			"applied": "Filtry zastosowane. Edytuj chipy, aby je dostosować.",
+			"dropped": "Nie zrozumiano: {{words}}",
+			"hint": "AI zamienia twoje słowa na filtry statusów, etykiet, osób, cykli, priorytetów i dat."
+		},
+		"budget": {
+			"warningTitle": "Wykorzystano {{percent}}% budżetu AI na ten miesiąc",
+			"reachedTitle": "Budżet AI na ten miesiąc się wyczerpał",
+			"amounts": "{{used}} z {{cap}}.",
+			"warningHint": "Funkcje AI zatrzymują się po osiągnięciu limitu. W razie potrzeby zwiększ go poniżej.",
+			"reachedHint": "Funkcje AI są wstrzymane do przyszłego miesiąca lub do zwiększenia limitu.",
+			"notice": {
+				"title": "Budżet AI prawie wyczerpany",
+				"content": "Ten obszar roboczy wykorzystał {{percent}}% miesięcznego budżetu AI."
+			}
+		},
+		"skills": {
+			"navLabel": "Umiejętności AI",
+			"title": "Umiejętności AI",
+			"subtitle": "Zapisane prompty do ponownego użycia przez \"/\" w czacie AI.",
+			"listTitle": "Umiejętności",
+			"new": "Nowa umiejętność",
+			"newTitle": "Nowa umiejętność",
+			"editTitle": "Edytuj umiejętność",
+			"dialogHint": "Prompt jest dodawany do pytania za każdym razem, gdy używasz umiejętności.",
+			"name": "Nazwa",
+			"namePlaceholder": "informacje-o-wydaniu",
+			"description": "Opis",
+			"prompt": "Treść promptu",
+			"promptPlaceholder": "Napisz informacje o wydaniu dla zadań ukończonych w tym cyklu, pogrupowane według funkcji.",
+			"shareLabel": "Udostępnij w obszarze roboczym",
+			"shareHint": "Może z niej korzystać każdy, kto używa tu AI. Wyłączone: tylko Ty.",
+			"shared": "Udostępniona",
+			"personal": "Tylko Ty",
+			"save": "Zapisz umiejętność",
+			"saved": "Zapisano umiejętność",
+			"saveError": "Nie udało się zapisać umiejętności",
+			"deleted": "Usunięto umiejętność",
+			"edit": "Edytuj {{name}}",
+			"delete": "Usuń {{name}}",
+			"deleteConfirm": "Usunąć {{name}}?",
+			"empty": "Nie ma jeszcze umiejętności. Zapisz prompt, którego często używasz.",
+			"loadError": "Nie udało się wczytać umiejętności.",
+			"noAccess": "Potrzebujesz uprawnień do korzystania z AI w tym obszarze roboczym."
+		},
+		"memory": {
+			"navLabel": "Pamięć AI",
+			"title": "Pamięć AI",
+			"subtitle": "Krótkie fakty, o których AI pamięta podczas odpowiadania, np. \"Wydania publikujemy w czwartki\".",
+			"scopes": {
+				"workspace": "Obszar roboczy",
+				"project": "Projekt",
+				"user": "Osobiste"
+			},
+			"scopeHints": {
+				"workspace": "Używane dla wszystkich w obszarze roboczym. Edytują je administratorzy AI.",
+				"project": "Używane w jednym projekcie. Edytują je administratorzy AI.",
+				"user": "Używane tylko dla Ciebie i widoczne tylko dla Ciebie."
+			},
+			"project": "Projekt",
+			"newNote": "Nowa notatka",
+			"placeholder": "Wydania publikujemy w czwartki.",
+			"add": "Dodaj notatkę",
+			"save": "Zapisz notatkę",
+			"editNote": "Edytuj notatkę",
+			"deleteNote": "Usuń notatkę",
+			"saved": "Zapisano notatkę",
+			"deleted": "Usunięto notatkę",
+			"saveError": "Nie udało się zapisać notatki",
+			"empty": "Nie ma jeszcze notatek.",
+			"loadError": "Nie udało się wczytać notatek.",
+			"adminsOnly": "Tylko administratorzy AI mogą tu dodawać notatki.",
+			"noAccess": "Potrzebujesz uprawnień do korzystania z AI w tym obszarze roboczym."
+		}
+	},
+	"insight": {
+		"close": "Zamknij",
+		"retry": "Spróbuj ponownie",
+		"stop": "Zatrzymaj",
+		"writing": "Trwa pisanie…",
+		"days_one": "{{count}} dzień",
+		"days_few": "{{count}} dni",
+		"days_many": "{{count}} dni",
+		"days_other": "{{count}} dnia",
+		"estimate": {
+			"usually": "Podobne zadania zwykle miały {{value}}",
+			"took_one": "{{count}} podobne zadanie trwało {{min}}–{{max}} dni (mediana {{median}})",
+			"took_few": "{{count}} podobne zadania trwały {{min}}–{{max}} dni (mediana {{median}})",
+			"took_many": "{{count}} podobnych zadań trwało {{min}}–{{max}} dni (mediana {{median}})",
+			"took_other": "{{count}} podobnego zadania trwało {{min}}–{{max}} dni (mediana {{median}})",
+			"basedOn_one": "Na podstawie {{count}} podobnego ukończonego zadania",
+			"basedOn_few": "Na podstawie {{count}} podobnych ukończonych zadań",
+			"basedOn_many": "Na podstawie {{count}} podobnych ukończonych zadań",
+			"basedOn_other": "Na podstawie {{count}} podobnego ukończonego zadania",
+			"use": "Użyj {{value}}",
+			"why": "Dlaczego?",
+			"similar": "Podobne zadania"
+		},
+		"calibration": {
+			"title": "Kalibracja szacunków",
+			"description": "Ile naprawdę trwały zadania każdej wielkości, od pierwszego rozpoczęcia do ukończenia, w ciągu ostatnich {{days}} dni.",
+			"empty": "Brak jeszcze ukończonych, oszacowanych zadań z zarejestrowanym rozpoczęciem.",
+			"estimate": "Szacunek",
+			"tasks": "Zadania",
+			"actual": "Rzeczywisty czas",
+			"range": "mediana {{median}} d ({{low}}–{{high}})",
+			"ordered": "Większe szacunki trwały dłużej, tak jak powinny.",
+			"notOrdered": "Większe szacunki nie zawsze trwały dłużej: warto przyjrzeć się, jak zespół wycenia pracę.",
+			"fewSamples": "Do porównania wielkości potrzeba więcej ukończonych zadań.",
+			"unmeasured_one": "{{count}} zadanie nie ma zarejestrowanego rozpoczęcia i zostało pominięte.",
+			"unmeasured_few": "{{count}} zadania nie mają zarejestrowanego rozpoczęcia i zostały pominięte.",
+			"unmeasured_many": "{{count}} zadań nie ma zarejestrowanego rozpoczęcia i zostało pominiętych.",
+			"unmeasured_other": "{{count}} zadania nie ma zarejestrowanego rozpoczęcia i zostało pominięte."
+		},
+		"capacity": {
+			"meter": "Zaplanowana praca w porównaniu ze zwykłym cyklem",
+			"within": "Zaplanowano {{percent}}% zwykłego cyklu",
+			"over": "Ponad możliwości: zaplanowano {{percent}}% zwykłego cyklu",
+			"noDates": "Ustaw daty cyklu, aby sprawdzić jego przepustowość.",
+			"noHistory": "Przepustowość pojawi się, gdy zespół ukończy pracę we wcześniejszych cyklach.",
+			"details": "Szczegóły przepustowości",
+			"compare": "Zaplanowano {{load}}; zwykły cykl mieści {{typical}} (zakres {{low}}–{{high}}).",
+			"tasks_one": "{{count}} zadanie",
+			"tasks_few": "{{count}} zadania",
+			"tasks_many": "{{count}} zadań",
+			"tasks_other": "{{count}} zadania",
+			"points_one": "{{count}} punkt",
+			"points_few": "{{count}} punkty",
+			"points_many": "{{count}} punktów",
+			"points_other": "{{count}} punktu",
+			"basisCycles_one": "Na podstawie tego, co zespół ukończył w ostatnim zakończonym cyklu, przeskalowane do długości tego cyklu.",
+			"basisCycles_few": "Na podstawie tego, co zespół ukończył w ostatnich {{count}} zakończonych cyklach, przeskalowane do długości tego cyklu.",
+			"basisCycles_many": "Na podstawie tego, co zespół ukończył w ostatnich {{count}} zakończonych cyklach, przeskalowane do długości tego cyklu.",
+			"basisCycles_other": "Na podstawie tego, co zespół ukończył w ostatnich {{count}} zakończonych cyklach, przeskalowane do długości tego cyklu.",
+			"basisThroughput": "Na podstawie zadań, które projekt ukończył w każdym okresie o długości tego cyklu w ciągu ostatnich 8 tygodni.",
+			"deferTitle": "Można przenieść do późniejszego cyklu",
+			"blocks_one": "blokuje {{count}}",
+			"blocks_few": "blokuje {{count}}",
+			"blocks_many": "blokuje {{count}}",
+			"blocks_other": "blokuje {{count}}",
+			"membersTitle": "Obciążenie na osobę",
+			"memberLoad": "{{load}} · zwykle {{typical}}",
+			"membersNote": "Obciążenie względem zwykłego tempa każdej osoby, aby rozłożyć pracę. To nie jest miara wydajności.",
+			"unassigned": "Nieprzypisane"
+		},
+		"retro": {
+			"button": "Retrospektywa",
+			"buttonLabel": "Przygotuj retrospektywę",
+			"title": "Retrospektywa",
+			"factsTitle": "Co się wydarzyło",
+			"factsSoFar": "Co wydarzyło się do tej pory",
+			"factsNote": "Te fakty pochodzą z danych Margaya, nie od AI. Opisują pracę zespołu, nigdy pojedynczą osobę.",
+			"error": "Nie udało się wczytać faktów tego cyklu.",
+			"aiIntro": "Pozwól AI napisać na podstawie tych faktów krótkie podsumowanie i pytania do dyskusji.",
+			"write": "Napisz podsumowanie",
+			"rewrite": "Napisz ponownie",
+			"edit": "Edytuj",
+			"preview": "Podgląd",
+			"editLabel": "Podsumowanie retrospektywy",
+			"saveAsPage": "Zapisz jako stronę",
+			"saveWithNarrative": "Zapisuje fakty, podsumowanie i sekcje dla zespołu.",
+			"saveFactsOnly": "Zapisuje fakty i sekcje do uzupełnienia przez zespół.",
+			"saved": "Retrospektywa zapisana jako strona",
+			"saveError": "Nie udało się zapisać strony.",
+			"openPage": "Otwórz stronę",
+			"pageTitle": "Retrospektywa: {{name}}",
+			"more_one": "i jeszcze {{count}}",
+			"more_few": "i jeszcze {{count}}",
+			"more_many": "i jeszcze {{count}}",
+			"more_other": "i jeszcze {{count}}",
+			"facts": {
+				"sayDo_one": "Ukończono {{done}} z {{count}} zaplanowanego zadania ({{percent}}%)",
+				"sayDo_few": "Ukończono {{done}} z {{count}} zaplanowanych zadań ({{percent}}%)",
+				"sayDo_many": "Ukończono {{done}} z {{count}} zaplanowanych zadań ({{percent}}%)",
+				"sayDo_other": "Ukończono {{done}} z {{count}} zaplanowanego zadania ({{percent}}%)",
+				"sayDoNone": "Na początku nic nie zaplanowano",
+				"scope": "Zmiana zakresu: {{added}} dodano, {{removed}} usunięto w trakcie cyklu",
+				"carry": "Przeniesienie: {{carried}} przeniesiono do innego cyklu, {{open}} pozostało otwartych",
+				"reopened_one": "{{count}} zadanie ponownie otwarto po ukończeniu",
+				"reopened_few": "{{count}} zadania ponownie otwarto po ukończeniu",
+				"reopened_many": "{{count}} zadań ponownie otwarto po ukończeniu",
+				"reopened_other": "{{count}} zadania ponownie otwarto po ukończeniu",
+				"points": "Punkty szacunku: ukończono {{completed}} z {{committed}}",
+				"cycleTime": "Czas cyklu: mediana {{median}} dni",
+				"cycleTimeOutliers_one": "Czas cyklu: mediana {{median}} dni; {{count}} zadanie trwało ponad {{threshold}} dni",
+				"cycleTimeOutliers_few": "Czas cyklu: mediana {{median}} dni; {{count}} zadania trwały ponad {{threshold}} dni",
+				"cycleTimeOutliers_many": "Czas cyklu: mediana {{median}} dni; {{count}} zadań trwało ponad {{threshold}} dni",
+				"cycleTimeOutliers_other": "Czas cyklu: mediana {{median}} dni; {{count}} zadania trwało ponad {{threshold}} dni",
+				"cycleTimeNone": "Czas cyklu: nie zmierzono",
+				"blocked_one": "{{count}} zadanie było zablokowane przez inne",
+				"blocked_few": "{{count}} zadania były zablokowane przez inne",
+				"blocked_many": "{{count}} zadań było zablokowanych przez inne",
+				"blocked_other": "{{count}} zadania było zablokowane przez inne",
+				"forecastNone": "Prognoza: nie zapisano żadnej dla tego cyklu",
+				"forecastOpen": "Prognoza: 85% szans na ukończenie do {{date}}",
+				"forecastMet": "Prognoza: 85% szans na ukończenie do {{date}} i sprawdziła się",
+				"forecastMissed": "Prognoza: 85% szans na ukończenie do {{date}} i nie sprawdziła się"
+			},
+			"lists": {
+				"added": "Dodane w trakcie cyklu",
+				"carriedOver": "Przeniesione",
+				"leftOpen": "Pozostawione otwarte",
+				"outliers": "Trwały znacznie dłużej niż zwykle",
+				"blocked": "Zablokowane"
+			},
+			"page": {
+				"facts": "Fakty",
+				"wentWell": "Co poszło dobrze",
+				"improve": "Co poprawić",
+				"actions": "Działania"
+			}
+		},
+		"myBrief": {
+			"title": "Mój przegląd",
+			"empty": "Dziś nic na Ciebie nie czeka.",
+			"error": "Nie udało się wczytać Twojego przeglądu.",
+			"summarize": "Podsumuj",
+			"overdue": "Zaległe · {{total}}",
+			"dueToday": "Na dziś · {{total}}",
+			"blocked": "Zablokowane · {{total}}",
+			"mentions": "Wzmianki · {{total}}",
+			"following": "Zmiany w obserwowanych zadaniach · {{total}}",
+			"waitingOn": "Czeka na {{keys}}",
+			"hiddenBlockers_one": "{{count}} ukryte zadanie",
+			"hiddenBlockers_few": "{{count}} ukryte zadania",
+			"hiddenBlockers_many": "{{count}} ukrytych zadań",
+			"hiddenBlockers_other": "{{count}} ukrytego zadania",
+			"mentionedBy": "od {{name}}",
+			"mentioned": "wspomniał(a) o Tobie",
+			"more_one": "i jeszcze {{count}}",
+			"more_few": "i jeszcze {{count}}",
+			"more_many": "i jeszcze {{count}}",
+			"more_other": "i jeszcze {{count}}",
+			"kinds": {
+				"status": "stan",
+				"comment": "komentarze",
+				"assignee": "przypisani",
+				"priority": "priorytet",
+				"due_date": "termin",
+				"other": "inne zmiany"
+			},
+			"emailTitle": "Dodaj Mój przegląd do podsumowania e-mail",
+			"emailDescription": "Podsumowanie pokaże też Twoje zablokowane zadania i zmiany w obserwowanych zadaniach. Wymaga podsumowania dziennego lub tygodniowego.",
+			"emailError": "Nie udało się zapisać tego ustawienia."
+		}
 	}
 }

@@ -11,7 +11,8 @@
 			"remove": "Çıxar",
 			"reset": "Sıfırla",
 			"filter": "Süzgəc",
-			"clearAllFilters": "Bütün süzgəcləri təmizlə"
+			"clearAllFilters": "Bütün süzgəcləri təmizlə",
+			"undo": "Geri al"
 		},
 		"a11y": {
 			"toggleSidebar": "Yan paneli aç/bağla"
@@ -98,7 +99,15 @@
 				"createButton": "Layihə yarat",
 				"successToast": "Layihə uğurla yaradıldı",
 				"errorToast": "Layihəni yaratmaq alınmadı",
-				"keyTaken": "Bu iş sahəsində {{key}} açarına malik layihə artıq mövcuddur"
+				"keyTaken": "Bu iş sahəsində {{key}} açarına malik layihə artıq mövcuddur",
+				"blankProject": "Boş layihə",
+				"copyHint": "Statuslar, fərdi sahələr, qiymətləndirmələr, parametrlər və avtomatlaşdırmalar kopyalanır. Üzvlər, inteqrasiyalar və ictimai lövhələr kopyalanmır.",
+				"includeOpenTasks": "Açıq tapşırıqları daxil et",
+				"includeTemplates": "Tapşırıq şablonlarını daxil et",
+				"openTasksHint": "Alt tapşırıqları, etiketləri və qiymətləndirmələri ilə birlikdə 500-ə qədər açıq tapşırıq. Şərhlər və tarixçə kopyalanmır.",
+				"restricted": "Məhdud",
+				"restrictedHint": "Bu layihəni yalnız üzvlər görə bilər. Siz onun ilk üzvü olacaqsınız; iş sahəsinin sahibləri və adminləri onu həmişə görə bilər.",
+				"startFrom": "Başlanğıc nöqtəsi"
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -714,6 +723,8 @@
 			"themeLight": "Açıq",
 			"themeDark": "Tünd",
 			"themeSystem": "Sistem",
+			"themeLightContrast": "Yüksək kontrastlı açıq",
+			"themeDarkContrast": "Yüksək kontrastlı tünd",
 			"language": "Dil",
 			"languageDescription": "İstədiyiniz interfeys dilini seçin",
 			"selectLanguage": "Dil seçin",
@@ -919,7 +930,8 @@
 				"intake": "Sorğular",
 				"analytics": "Analitika",
 				"page": "Səhifələr",
-				"audit_log": "Audit jurnalı"
+				"audit_log": "Audit jurnalı",
+				"ai": "Sİ"
 			},
 			"permissions": {
 				"project": {
@@ -1164,6 +1176,16 @@
 					"read": {
 						"description": "İş sahəsinin audit jurnalını görün və ixrac edin: üzvləri, rolları, açarları, webhook-ları, inteqrasiyaları və parametrləri kim dəyişib.",
 						"label": "Audit jurnalına bax"
+					}
+				},
+				"ai": {
+					"use": {
+						"label": "Sİ-dən istifadə et",
+						"description": "Sİ iş sahəsi və layihə üçün aktiv olduqda Sİ xüsusiyyətlərindən istifadə edə bilər."
+					},
+					"manage": {
+						"label": "Sİ-ni idarə et",
+						"description": "İş sahəsi üçün Sİ-ni aktivləşdirə və ya söndürə, onun açarını, limitlərini və məxfilik parametrlərini dəyişə, Sİ istifadəsinə baxa bilər."
 					}
 				}
 			},
@@ -1807,6 +1829,75 @@
 			"dropHintAny": "JSON və ya CSV faylını bura sürüşdürüb buraxın",
 			"importAcceptHint": "Margaya JSON ixracı və ya CSV faylı yükləyin.",
 			"importStopped": "İdxal dayandı: {{message}}",
+			"external": {
+				"sourceHint": "Başqa alətdən keçirsiniz? Onun ixracını vəziyyətlər, etiketlər, insanlar, tarixlər və alt tapşırıqlarla birlikdə idxal edin.",
+				"sources": {
+					"trello": "Trello (JSON)",
+					"linear": "Linear (CSV)",
+					"asana": "Asana (CSV)"
+				},
+				"title": {
+					"trello": "Trello-dan idxal et",
+					"linear": "Linear-dan idxal et",
+					"asana": "Asana-dan idxal et"
+				},
+				"howToTitle": {
+					"trello": "Trello-dan necə ixrac etmək olar",
+					"linear": "Linear-dan necə ixrac etmək olar",
+					"asana": "Asana-dan necə ixrac etmək olar"
+				},
+				"howTo": {
+					"trello": {
+						"step1": "Lövhədə menyunu açın → Çap, ixrac və paylaş → JSON kimi ixrac et.",
+						"step2": "Endirilmiş .json faylını buraya yükləyin."
+					},
+					"linear": {
+						"step1": "Linear-da Parametrlər → Import / Export bölməsini açın və CSV ixracını seçin.",
+						"step2": "Linear-ın göndərdiyi e-poçtdakı .csv faylını buraya yükləyin."
+					},
+					"asana": {
+						"step1": "Asana layihəsində layihə menyusunu açın → Export/Print → CSV.",
+						"step2": "Endirilmiş .csv faylını buraya yükləyin."
+					}
+				},
+				"limits": {
+					"trello": "Hər faylda 10 MB və 5.000 karta qədər. Arxivlənmiş kartlar daxil edilmir; yoxlama siyahıları təsvirdə tapşırıq siyahısına çevrilir; qoşmalar Trello-da qalır.",
+					"linear": "Hər faylda 5 MB və 5.000 məsələyə qədər. Arxivlənmiş məsələlər daxil edilmir. Linear-ın CSV faylında şərhlər yoxdur.",
+					"asana": "Hər faylda 5 MB və 5.000 tapşırığa qədər. Tamamlanmış tapşırıqlar «Hazır» sütununa düşür. Asana-nın CSV faylında şərhlər yoxdur."
+				},
+				"dropHint": {
+					"trello": "Trello-nun JSON ixracını buraya sürükləyin",
+					"linear": "Linear-ın CSV ixracını buraya sürükləyin",
+					"asana": "Asana-nın CSV ixracını buraya sürükləyin"
+				},
+				"wrongType": {
+					"trello": "Lövhənin .json ixracını seçin.",
+					"linear": "Linear-ın .csv ixracını seçin.",
+					"asana": "Asana-nın .csv ixracını seçin."
+				},
+				"itemCount_one": "{{count}} element",
+				"itemCount_other": "{{count}} element",
+				"alreadyImported_one": "{{count}} element əvvəllər bu layihəyə idxal edilib.",
+				"alreadyImported_other": "{{count}} element əvvəllər bu layihəyə idxal edilib.",
+				"contents": "{{comments}} şərh, {{checklists}} yoxlama siyahısı, {{subtasks}} alt tapşırıq, {{links}} əlaqə",
+				"sourceStatus": "Vəziyyət və ya siyahı",
+				"peopleUnmatched_one": "{{count}} şəxs üzv deyil ({{names}}). Onun elementləri təyin olunmamış qalır, adı isə təsvirdə qeyd olunur.",
+				"peopleUnmatched_other": "{{count}} şəxs üzv deyil ({{names}}). Onların elementləri təyin olunmamış qalır, adları isə təsvirdə qeyd olunur.",
+				"mode": "Əvvəllər idxal edilmiş elementlər",
+				"modeHint": "İxracdakı identifikatorlarına görə tapılır.",
+				"importAction_one": "{{count}} elementi idxal et",
+				"importAction_other": "{{count}} elementi idxal et",
+				"importing_one": "{{count}} element idxal edilir…",
+				"importing_other": "{{count}} element idxal edilir…",
+				"result": {
+					"skipped_one": "{{count}} element ötürüldü (əvvəllər idxal edilib)",
+					"skipped_other": "{{count}} element ötürüldü (əvvəllər idxal edilib)",
+					"failed_one": "{{count}} element alınmadı",
+					"failed_other": "{{count}} element alınmadı",
+					"unmatched_one": "{{count}} şəxs iş sahəsinin üzvü deyil; onun elementləri təyin olunmayıb:",
+					"unmatched_other": "{{count}} şəxs iş sahəsinin üzvü deyil; onların elementləri təyin olunmayıb:"
+				}
+			},
 			"unsupportedFile": "Zəhmət olmasa JSON və ya CSV faylı yükləyin",
 			"jira": {
 				"alreadyImported_one": "{{count}} məsələ əvvəllər bu layihəyə idxal edilib.",
@@ -1965,6 +2056,10 @@
 				"views": {
 					"description": "Filtrləri, qruplaşdırmanı və göstərmə parametrlərini yadda saxlayın və komanda ilə paylaşın.",
 					"title": "Görünüşlər"
+				},
+				"ai": {
+					"title": "Sİ",
+					"description": "Bu layihə üçün xülasələr, təkliflər və digər Sİ köməyi. Söndürüldükdə layihə Sİ-dən tamamilə kənarda qalır."
 				}
 			},
 			"loadError": "Bu layihəni yükləmək mümkün olmadı",
@@ -2178,7 +2273,26 @@
 				"closeOff": "Avtomatik bağlama söndürüldü",
 				"closeOn": "Avtomatik bağlama aktiv edildi",
 				"error": "Avtomatlaşdırmalar yenilənə bilmədi",
-				"updated": "Avtomatlaşdırma yeniləndi"
+				"updated": "Avtomatlaşdırma yeniləndi",
+				"rolloverOff": "Dövr köçürməsi söndürüldü",
+				"rolloverOn": "Dövr köçürməsi aktiv edildi",
+				"flowAlertsOn": "Axın xəbərdarlıqları aktiv edildi",
+				"flowAlertsOff": "Axın xəbərdarlıqları deaktiv edildi"
+			},
+			"cycleRollover": {
+				"cyclesOff": "Bundan istifadə etmək üçün Xüsusiyyətlər bölməsində Dövrləri aktiv edin.",
+				"description": "Dövr bitdikdə onun bitməmiş tapşırıqları növbəti dövrə köçürülür. Layihə rəhbəri xülasə alır.",
+				"last_one": "Sonuncu dəfə {{count}} tapşırıq köçürüldü {{time}}",
+				"last_other": "Sonuncu dəfə {{count}} tapşırıq köçürüldü {{time}}",
+				"never": "Hələ heç nə köçürülməyib",
+				"title": "Bitməmiş dövr işini növbəti dövrə keçir"
+			},
+			"flowAlerts": {
+				"title": "Axın anomaliyası xəbərdarlıqları",
+				"description": "Gündə bir dəfə icradakı işi, dövr müddətini və məhsuldarlığı əvvəlki 8 həftə ilə müqayisə edir. Bunlardan biri adi həddən çıxanda layihə rəhbərinə bildiriş gəlir.",
+				"noLead": "Bu xəbərdarlıqları almaq üçün layihə rəhbəri təyin edin.",
+				"last": "Son xəbərdarlıq {{time}}",
+				"never": "Hələ xəbərdarlıq yoxdur"
 			}
 		},
 		"workspaceExports": {
@@ -2625,6 +2739,24 @@
 			"noProjectsHint": "Əvvəlcə layihə yaradın. Onun parametrləri burada görünəcək.",
 			"pickProject": "Parametrlərinə baxmaq üçün layihə seçin."
 		},
+		"projectAccess": {
+			"title": "Giriş",
+			"subtitle": "Bu layihəni kim görə və onda işləyə bilər.",
+			"restrictedLabel": "Məhdud",
+			"restrictedHint": "Bu layihəni yalnız aşağıdakı üzvlər, həmçinin iş sahəsinin sahibləri və adminləri görə bilər. Üzvün buradakı hüquqları həm iş sahəsi rolunun, həm də layihə rolunun icazə verdiyi qədərdir.",
+			"openHint": "İş sahəsindəki hər kəs bu layihəni öz iş sahəsi rolunun icazə verdiyi qədər görə bilər. Onu seçilmiş üzvlərlə məhdudlaşdırmaq üçün məhdud edin.",
+			"membersLabel": "Üzvlər",
+			"membersHint": "Layihə rolu hər üzvün burada nə edə biləcəyini məhdudlaşdırır.",
+			"noMembers": "Hələ üzv yoxdur.",
+			"addMember": "Üzv əlavə et",
+			"removeMember": "{{name}} adlı üzvü sil",
+			"roleFor": "{{name}} üçün layihə rolu",
+			"leadTag": "Rəhbər",
+			"restrictedProject": "Məhdud layihə",
+			"toastUpdated": "Giriş yeniləndi",
+			"toastError": "Girişi yeniləmək alınmadı",
+			"loadError": "Giriş ayarlarını yükləmək alınmadı. Yenidən cəhd etmək üçün səhifəni yeniləyin."
+		},
 		"projectPeople": {
 			"defaultAssigneeHint": "Tapşırıq yaradarkən avtomatik doldurulur və icraçısı olmayan qəbul edilmiş sorğulara təyin olunur.",
 			"defaultAssigneeLabel": "Defolt icraçı",
@@ -2682,7 +2814,7 @@
 			"title": "Təhlükəsizlik"
 		},
 		"timezone": {
-			"accountHint": "Xatırlatmalar və e-poçt xülasələri üçün istifadə olunur. Tətbiq vaxtları həmişə brauzerinizin saat qurşağında göstərir.",
+			"accountHint": "Xatırlatmalar, e-poçt xülasələri, həmçinin tapşırıq filtrləri və analitikanın günləri saydığı saat qurşağı üçün istifadə olunur. Ekrandakı vaxtlar brauzerinizin saat qurşağında göstərilir.",
 			"accountLabel": "Saat qurşağı",
 			"automatic": "Avtomatik (brauzer: {{zone}})",
 			"loadError": "Saat qurşağını yükləmək mümkün olmadı. Yenidən cəhd etmək üçün səhifəni yeniləyin.",
@@ -2695,8 +2827,52 @@
 			"workspaceHint": "Dövrlər, avtomatlaşdırmalar və analitika üçün \"bu günü\" müəyyən edir. Mövcud iş sahələri UTC ilə başlayır.",
 			"workspaceLabel": "Saat qurşağı"
 		},
+		"workspaceDeletion": {
+			"pendingTitle": "Silinmə planlaşdırılıb",
+			"pendingDescription": "Bu iş sahəsi {{date}} tarixində silinəcək. O vaxta qədər yalnız oxunuş üçündür, lakin məzmununu açmaq və ixrac etmək hələ də mümkündür.",
+			"cancel": "Silinməni ləğv et",
+			"confirm": "Silinməni planlaşdır",
+			"rowDescription": "İş sahəsi dərhal yalnız oxunuş rejiminə keçir və {{date}} tarixində həmişəlik silinir. O vaxta qədər ləğv edə bilərsiniz.",
+			"dialogTitle": "{{name}} silinsin?",
+			"dialogDescription": "{{name}} dərhal hamı üçün yalnız oxunuş rejiminə keçir, API açarları və webhook-ları işləməyi dayandırır. Üzvlərə e-poçt göndərilir. Əvvəlcədən ləğv etməsəniz, {{date}} tarixində bütün layihələri, tapşırıqları və səhifələri ilə birlikdə həmişəlik silinəcək.",
+			"toastScheduled": "Silinmə {{date}} tarixinə planlaşdırıldı",
+			"toastCancelled": "Silinmə ləğv edildi. İş sahəsi yenidən redaktə edilə bilər.",
+			"toastError": "Silinməni dəyişmək mümkün olmadı. Yenidən cəhd edin.",
+			"bannerTitle": "Bu iş sahəsi {{date}} tarixində silinəcək",
+			"bannerDescription": "O vaxta qədər yalnız oxunuş üçündür. Məzmununu açmaq və ixrac etmək hələ də mümkündür.",
+			"admin": {
+				"title": "Silinməni gözləyənlər",
+				"description": "Sahiblərinin silinməsini planlaşdırdığı iş sahələri. Tarixə qədər yalnız oxunuş üçündür, sonra həmişəlik silinir.",
+				"dueAt": "Silinmə tarixi",
+				"badge": "{{date}} tarixində silinəcək"
+			},
+			"instanceAudit": {
+				"scheduled": "İş sahəsinin silinməsini planlaşdırdı",
+				"cancelled": "İş sahəsinin silinməsini ləğv etdi",
+				"purged": "Güzəşt müddəti bitən iş sahəsini sildi"
+			}
+		},
+		"workspacePublicPages": {
+			"label": "İctimai səhifələr",
+			"description": "Layihələri paylaşa bilən şəxslərə səhifələri yalnız oxunuş üçün ictimai keçidlə dərc etməyə icazə verir. Söndürüldükdə dərc edilmiş bütün keçidlər ləğv olunur.",
+			"toastOn": "İctimai səhifələr aktivdir",
+			"toastOff": "İctimai səhifələr deaktivdir. Dərc edilmiş keçidlər ləğv olundu.",
+			"toastError": "Ayarı dəyişmək mümkün olmadı. Yenidən cəhd edin."
+		},
+		"workspaceA2a": {
+			"label": "Agentdən agentə (A2A)",
+			"description": "Xarici süni intellekt agentlərinə A2A protokolu ilə bu iş sahəsinə iş təhvil verməyə icazə verin. Onlar üzvün API açarı və ya OAuth girişi ilə, həmin üzvün icazələri ilə işləyir və etdikləri hər şey audit jurnalında görünür.",
+			"toastOn": "A2A aktivdir",
+			"toastOff": "A2A deaktivdir. Xarici agentlər artıq bu iş sahəsinə iş təhvil verə bilməz.",
+			"toastError": "Ayarı dəyişmək mümkün olmadı. Yenidən cəhd edin."
+		},
 		"workspaceAuditLog": {
 			"actions": {
+				"workspaceDeletionScheduled": "İş sahəsinin silinməsini planlaşdırdı",
+				"workspaceDeletionCancelled": "İş sahəsinin silinməsini ləğv etdi",
+				"workspacePublicPagesChanged": "İctimai səhifələri aktiv və ya deaktiv etdi",
+				"pagePublished": "Səhifəni ictimai keçidlə dərc etdi",
+				"pageUnpublished": "Səhifənin ictimai keçidini ləğv etdi",
 				"apiKeyCreated": "API açarı yaratdı",
 				"apiKeyRevoked": "API açarını ləğv etdi",
 				"exportCreated": "İxrac başlatdı",
@@ -2707,6 +2883,7 @@
 				"integrationUpdated": "İnteqrasiyanı dəyişdi",
 				"memberInvitationAccepted": "Dəvəti qəbul etdi",
 				"memberInvitationDeclined": "Dəvəti rədd etdi",
+				"memberInvitationRoleChanged": "Gözləyən dəvətin rolunu dəyişdi",
 				"memberInvitationRevoked": "Dəvəti ləğv etdi",
 				"memberInvited": "Kimisə iş sahəsinə dəvət etdi",
 				"memberLeft": "İş sahəsini tərk etdi",
@@ -2736,13 +2913,41 @@
 				"webhookUpdated": "Webhook-u dəyişdi",
 				"workspaceCreated": "İş sahəsini yaratdı",
 				"workspaceOwnershipTransferred": "İş sahəsinin sahibliyini ötürdü",
-				"workspaceUpdated": "İş sahəsi parametrlərini dəyişdi"
+				"workspaceUpdated": "İş sahəsi parametrlərini dəyişdi",
+				"aiSettingsUpdated": "Sİ parametrlərini dəyişdi",
+				"aiTriageLabelsApplied": "Təklif olunan etiketləri avtomatik əlavə etdi",
+				"agentCreated": "Agent yaratdı",
+				"agentUpdated": "Agenti dəyişdi",
+				"agentDeleted": "Agenti sildi",
+				"agentChangeApplied": "Kiminsə adından dəyişiklik etdi",
+				"agentChangeApproved": "Agentin dəyişikliyini təsdiqlədi",
+				"agentChangeRejected": "Agentin dəyişikliyini rədd etdi",
+				"agentChangeReverted": "Agentin dəyişikliyini geri aldı",
+				"codingAgentHandoffSent": "Tapşırığı kodlaşdırma agentinə göndərdi",
+				"codingAgentProfileCreated": "Kodlaşdırma agenti profili yaratdı",
+				"codingAgentProfileUpdated": "Kodlaşdırma agenti profilini dəyişdi",
+				"codingAgentProfileDeleted": "Kodlaşdırma agenti profilini sildi",
+				"a2aTaskReceived": "Xarici agentdən iş qəbul edildi (A2A)",
+				"automationRuleCreated": "Avtomatlaşdırma yaratdı",
+				"automationRuleUpdated": "Avtomatlaşdırmanı yenilədi",
+				"automationRuleDeleted": "Avtomatlaşdırmanı sildi",
+				"automationRuleRan": "Tapşırıq üzərində avtomatlaşdırma icra etdi",
+				"agentScheduleCreated": "Agenti planlaşdırdı",
+				"agentScheduleUpdated": "Agent cədvəlini dəyişdi",
+				"agentScheduleDeleted": "Agent cədvəlini sildi",
+				"agentScheduleDisabled": "Agent cədvəlini söndürdü",
+				"aiConnectorCreated": "MCP konnektoru əlavə etdi",
+				"aiConnectorUpdated": "MCP konnektorunu dəyişdi",
+				"aiConnectorDeleted": "MCP konnektorunu sildi"
 			},
 			"actor": {
 				"apiKey": "API açarı",
 				"deletedUser": "Silinmiş istifadəçi",
 				"system": "Sistem",
-				"unknownKey": "Silinmiş API açarı"
+				"unknownKey": "Silinmiş API açarı",
+				"agent": "Agent",
+				"agentFor": "Agent, {{name}} adından",
+				"automation": "Avtomatlaşdırma"
 			},
 			"categories": {
 				"apiKey": "API açarları",
@@ -2755,7 +2960,11 @@
 				"role": "Rollar",
 				"trash": "Zibil qutusu",
 				"webhook": "Webhook-lar",
-				"workspace": "İş sahəsi parametrləri"
+				"workspace": "İş sahəsi parametrləri",
+				"agent": "Agentlər",
+				"codingAgent": "Kodlaşdırma agentləri",
+				"a2a": "Xarici agentlər (A2A)",
+				"automation": "Avtomatlaşdırmalar"
 			},
 			"columns": {
 				"action": "Əməliyyat",
@@ -2804,6 +3013,7 @@
 			"subtitle": "Bu iş sahəsində üzvləri, rolları, API açarlarını, webhook-ları, inteqrasiyaları, parametrləri və layihələri kim dəyişib. Qeydlər {{days}} gün saxlanılır.",
 			"subtitleForever": "Bu iş sahəsində üzvləri, rolları, API açarlarını, webhook-ları, inteqrasiyaları, parametrləri və layihələri kim dəyişib. Qeydlər iş sahəsini silənə qədər saxlanılır.",
 			"targets": {
+				"page": "Səhifə",
 				"apiKey": "API açarı",
 				"export": "İxrac",
 				"integration": "İnteqrasiya",
@@ -2812,7 +3022,11 @@
 				"role": "Rol",
 				"user": "Üzv",
 				"webhook": "Webhook",
-				"workspace": "İş sahəsi"
+				"workspace": "İş sahəsi",
+				"agent": "Agent",
+				"agentRun": "Agent icrası",
+				"task": "Tapşırıq",
+				"codingAgentProfile": "Kodlaşdırma agenti profili"
 			},
 			"title": "Audit jurnalı"
 		},
@@ -2861,9 +3075,189 @@
 			"workspaceNav": "Son silinənlər",
 			"workspaceSubtitle": "Silinmiş layihələr tapşırıqları ilə birlikdə həmişəlik silinənə qədər burada qalır.",
 			"workspaceTitle": "Son silinən layihələr"
+		},
+		"automationRules": {
+			"title": "Avtomatlaşdırmalar",
+			"description": "Tapşırıqla nəsə baş verəndə şərtləri yoxlayın və əməliyyat icra edin. Qaydalar Sİ olmadan, “Avtomatlaşdırma” adı ilə özbaşına işləyir.",
+			"empty": "Hələ avtomatlaşdırma yoxdur. Şablondan başlayın və ya öz qaydanızı yaradın.",
+			"loadError": "Avtomatlaşdırmaları yükləmək mümkün olmadı.",
+			"newRule": "Yeni qayda",
+			"templatesTitle": "Şablonlar",
+			"saved": "Avtomatlaşdırma saxlanıldı",
+			"saveError": "Avtomatlaşdırmanı saxlamaq mümkün olmadı",
+			"deleted": "Avtomatlaşdırma silindi",
+			"confirmDelete": "Sil",
+			"edit": "{{name}} qaydasını redaktə et",
+			"delete": "{{name}} qaydasını sil",
+			"summary_one": "{{trigger}} · {{count}} əməliyyat",
+			"summary_other": "{{trigger}} · {{count}} əməliyyat",
+			"lastRun_one": "{{count}} dəfə işləyib, sonuncu: {{time}}",
+			"lastRun_other": "{{count}} dəfə işləyib, sonuncu: {{time}}",
+			"neverRan": "Hələ işləməyib",
+			"templates": {
+				"reviewer": {
+					"name": "“Yoxlanılır” sütununa keçəndə yoxlayıcı təyin et",
+					"description": "Yoxlayıcını seçin; tapşırıq yoxlamaya daxil olanda ona təyin edilir."
+				},
+				"intakeBugs": {
+					"name": "Sorğulardan gələn xətaları etiketlə",
+					"description": "Xəta və ya səhvdən bəhs edən qəbul edilmiş sorğulara xəta etiketi verilir."
+				},
+				"overdue": {
+					"name": "Vaxtı keçmiş tapşırıqları yüksəlt",
+					"description": "Son tarix keçəndə prioriteti artırın və icraçılara xəbər verin."
+				}
+			},
+			"triggers": {
+				"task_created": "Tapşırıq yaradılanda",
+				"status_changed": "Vəziyyət dəyişəndə",
+				"assignee_added": "Kimsə təyin ediləndə",
+				"assignee_removed": "Kimsə icraçılardan çıxarılanda",
+				"label_added": "Etiket əlavə ediləndə",
+				"label_removed": "Etiket silinəndə",
+				"priority_changed": "Prioritet dəyişəndə",
+				"due_date_set": "Son tarix təyin ediləndə",
+				"due_date_passed": "Son tarix keçəndə",
+				"comment_added": "Şərh əlavə ediləndə",
+				"moved_to_cycle": "Tapşırıq dövrə köçürüləndə",
+				"moved_to_module": "Tapşırıq modula əlavə ediləndə"
+			},
+			"conditions": {
+				"status": "Vəziyyət",
+				"labels": "Etiketlər",
+				"priority": "Prioritet",
+				"assignee": "İcraçı",
+				"due_date": "Son tarix",
+				"estimate": "Qiymətləndirmə",
+				"title": "Başlıq",
+				"custom_field": "Fərdi sahə"
+			},
+			"ops": {
+				"is": "bərabərdir",
+				"is_not": "bərabər deyil",
+				"contains": "ehtiva edir",
+				"not_contains": "ehtiva etmir",
+				"empty": "boşdur",
+				"not_empty": "boş deyil",
+				"set": "təyin edilib",
+				"not_set": "təyin edilməyib",
+				"gte": "ən azı",
+				"lte": "ən çoxu",
+				"equals": "eynidir",
+				"not_equals": "eyni deyil"
+			},
+			"actions": {
+				"set_status": "Vəziyyəti təyin et",
+				"assign": "Təyin et",
+				"unassign": "İcraçılardan çıxar",
+				"add_label": "Etiket əlavə et",
+				"remove_label": "Etiketi sil",
+				"set_priority": "Prioritet təyin et",
+				"set_due_date": "Son tarix təyin et",
+				"add_comment": "Şərh əlavə et",
+				"move_to_cycle": "Dövrə köçür",
+				"move_to_module": "Modula əlavə et",
+				"create_subtask": "Alt tapşırıq yarat",
+				"notify": "Bildiriş göndər",
+				"run_agent": "Agenti işə sal"
+			},
+			"roles": {
+				"assignees": "İcraçılar",
+				"creator": "Yaradan",
+				"lead": "Layihə rəhbəri"
+			},
+			"outcomes": {
+				"success": "Tamamlandı",
+				"partial": "Qismən tamamlandı",
+				"failed": "Uğursuz oldu",
+				"skipped": "Buraxıldı"
+			},
+			"errors": {
+				"LOOP_DEPTH": "Dayandırıldı: ardıcıl olaraq həddən çox qayda bir-birini işə saldı.",
+				"RATE_LIMITED": "Dayandırıldı: bu tapşırıqda bir dəqiqə ərzində həddən çox avtomatlaşdırma işə düşdü.",
+				"AGENT_UNAVAILABLE": "Agenti işə sal: agent sönülüdür və ya silinib.",
+				"NO_RULE_OWNER": "Agenti işə sal: bu qaydanın artıq sahibi yoxdur. Onu yenidən yadda saxlayın.",
+				"AI_DISABLED": "Agenti işə sal: bu layihədə Sİ sönülüdür."
+			},
+			"history": {
+				"title": "İcra tarixçəsi",
+				"empty": "Hələ icra yoxdur.",
+				"error": "İcra tarixçəsini yükləmək mümkün olmadı.",
+				"failedActions": "Uğursuz: {{actions}}"
+			},
+			"editor": {
+				"name": "Qaydanın adı",
+				"namePlaceholder": "Bu qaydaya ad verin",
+				"when": "Nə vaxt",
+				"if": "Əgər",
+				"then": "Onda",
+				"match": "Uyğunluq",
+				"matchAll": "Bunların hamısı",
+				"matchAny": "Bunlardan hər hansı biri",
+				"always": "Hər dəfə",
+				"addCondition": "Şərt əlavə et",
+				"addGroup": "Qrup əlavə et",
+				"addAction": "Əməliyyat əlavə et",
+				"remove": "Sil",
+				"save": "Qaydanı saxla",
+				"cancel": "Ləğv et",
+				"choose": "Seçin…",
+				"add": "Əlavə et…",
+				"removeItem": "{{name}} sil",
+				"any": "İstənilən",
+				"from": "haradan",
+				"to": "haraya",
+				"fromIntake": "Yalnız Sorğulardan qəbul edilmiş sorğular",
+				"people": "Şəxslər",
+				"labels": "Etiketlər",
+				"priorities": "Prioritetlər",
+				"cycles": "Dövrlər",
+				"modules": "Modullar",
+				"field": "Sahə",
+				"operator": "Müqayisə",
+				"points": "Xallar",
+				"value": "Dəyər",
+				"column": "Vəziyyət",
+				"everyone": "Hamı",
+				"label": "Etiket",
+				"priority": "Prioritet",
+				"daysFromRun": "gün sonra (qayda işləyəndən etibarən)",
+				"comment": "Şərh",
+				"subtaskTitle": "Alt tapşırığın başlığı",
+				"cycle": "Dövr",
+				"module": "Modul",
+				"roles": "Rollar",
+				"message": "Mesaj (istəyə bağlı)",
+				"variables": "Dəyişənlər:",
+				"agent": "Agent",
+				"agentPrompt": "Agent nə etməlidir?",
+				"agentPromptPlaceholder": "Məsələn: bu tapşırığı çeşidlə və prioritet təklif et.",
+				"agentHint": "Agent bu qaydanı yadda saxlayan şəxsin adından və ən çoxu onun hüquqları ilə işləyir. Agentin etdiyi dəyişikliklər üçün heç vaxt işə düşmür."
+			}
 		}
 	},
 	"navigation": {
+		"customize": {
+			"open": "Yan paneli fərdiləşdir",
+			"title": "Yan paneli fərdiləşdir",
+			"description": "Yan panelinizin nəyi hansı ardıcıllıqla göstərəcəyini seçin. Bu dəyişiklikləri bütün cihazlarınızda yalnız siz görürsünüz.",
+			"settingsDescription": "Əsas naviqasiyanı və Layihələr panelinin bölmələrini yenidən sıralayın və ya gizlədin.",
+			"rail": "Əsas naviqasiya",
+			"projectsPanel": "Layihələr paneli",
+			"sections": {
+				"views": "Tapşırıq siyahıları və görünüşlər",
+				"favorites": "Sevimlilər",
+				"projects": "Layihələr"
+			},
+			"show": "{{name}} göstər",
+			"alwaysShown": "{{name}} həmişə göstərilir",
+			"moveUp": "{{name}} yuxarı köçür",
+			"moveDown": "{{name}} aşağı köçür",
+			"moved": "{{name}}: {{total}} içində {{position}}-ci mövqe",
+			"reset": "Defolta qaytar",
+			"resetDone": "Yan panel defolta qaytarıldı",
+			"done": "Hazırdır"
+		},
 		"commandPalette": {
 			"suggestions": "Təkliflər",
 			"commands": "Əmrlər",
@@ -2876,6 +3270,8 @@
 			"lightTheme": "Açıq tema",
 			"darkTheme": "Tünd tema",
 			"systemTheme": "Sistem teması",
+			"lightContrastTheme": "Yüksək kontrastlı açıq tema",
+			"darkContrastTheme": "Yüksək kontrastlı tünd tema",
 			"keyboardShortcuts": "Klaviatura qısayolları",
 			"inputPlaceholder": "Tətbiqləri və əmrləri axtar...",
 			"empty": "Nəticə tapılmadı.",
@@ -3195,6 +3591,23 @@
 			"page_mention": {
 				"content": "{{mentionerName}} sizi burada qeyd etdi: {{pageTitle}}",
 				"title": "{{mentionerName}} sizi qeyd etdi"
+			},
+			"cycle_rollover": {
+				"content_one": "{{count}} bitməmiş tapşırıq {{targetCycleName}} dövrünə köçürüldü",
+				"content_other": "{{count}} bitməmiş tapşırıq {{targetCycleName}} dövrünə köçürüldü",
+				"contentNoNext_one": "{{count}} bitməmiş tapşırıq {{cycleName}} dövründə qaldı: növbəti dövr yoxdur",
+				"contentNoNext_other": "{{count}} bitməmiş tapşırıq {{cycleName}} dövründə qaldı: növbəti dövr yoxdur",
+				"title": "{{cycleName}} başa çatdı"
+			},
+			"flow_anomaly": {
+				"title": "{{projectName}} layihəsində qeyri-adi iş axını",
+				"throughput_low": "Bu həftə məhsuldarlıq {{value}} tapşırığa düşüb (adətən təxminən {{baseline}})",
+				"wip_high": "İcradakı iş {{value}} tapşırığa qalxıb (adətən təxminən {{baseline}})",
+				"cycle_time_high": "Dövr müddəti {{value}} günə qalxıb (adətən təxminən {{baseline}})"
+			},
+			"automation_notice": {
+				"title": "Avtomatlaşdırma: {{ruleName}}",
+				"content": "{{taskKey}} {{taskTitle}}"
 			}
 		},
 		"inbox": {
@@ -3338,6 +3751,13 @@
 				"open": "Tapşırığı aç",
 				"read": "Oxunmuş və ya oxunmamış kimi işarələ",
 				"snooze": "Təxirə sal"
+			},
+			"digest": {
+				"button": "Oxunmamışları xülasə et",
+				"title": "Oxunmamışların xülasəsi",
+				"regenerate": "Yenidən xülasə et",
+				"close": "Xülasəni bağla",
+				"generating": "Xülasə hazırlanır…"
 			}
 		}
 	},
@@ -3545,7 +3965,9 @@
 			"archived_one": "bu tapşırığı {{count}} ay yenilənmədiyi üçün arxivlədi",
 			"archived_other": "bu tapşırığı {{count}} ay yenilənmədiyi üçün arxivlədi",
 			"closed_one": "bu tapşırığı {{count}} ay yenilənmədiyi üçün bağladı və {{to}} sütununa köçürdü",
-			"closed_other": "bu tapşırığı {{count}} ay yenilənmədiyi üçün bağladı və {{to}} sütununa köçürdü"
+			"closed_other": "bu tapşırığı {{count}} ay yenilənmədiyi üçün bağladı və {{to}} sütununa köçürdü",
+			"rolledOver": "dövr bitdikdə bu tapşırığı {{from}} dövründən {{to}} dövrünə köçürdü",
+			"byRule": "{{name}} vasitəsilə"
 		},
 		"commentVisibility": {
 			"badgeExternal": "Xarici",
@@ -3584,10 +4006,69 @@
 			"updates": "Yeniləmələr"
 		},
 		"importedFromJira": "bu tapşırığı Jira-dan idxal etdi: {{key}}",
+		"importedFromSource": "bu tapşırığı {{source}} xidmətindən idxal etdi: {{key}}",
 		"movedToTrash": "bu tapşırığı zibil qutusuna köçürdü",
 		"restoredFromTrash": "bu tapşırığı zibil qutusundan bərpa etdi"
 	},
 	"tasks": {
+		"recurrence": {
+			"label": "Təkrar",
+			"none": "Təkrarlanmır",
+			"title": "Bu tapşırığı təkrarla",
+			"indicator": "Təkrarlanır",
+			"frequency": {
+				"label": "Tezlik",
+				"daily": "Hər gün",
+				"weekly": "Hər həftə",
+				"monthly": "Hər ay",
+				"yearly": "Hər il"
+			},
+			"interval": "Aralıq",
+			"weekdays": "Bu günlərdə",
+			"monthDay": "Ayın günü",
+			"trigger": {
+				"label": "Növbətini yarat",
+				"completion": "Bu tamamlananda",
+				"schedule": "Öz tarixində, bu hələ açıq olsa belə"
+			},
+			"ends": {
+				"label": "Bitir",
+				"never": "Heç vaxt",
+				"onDate": "Tarixdə",
+				"endDate": "Bitmə tarixi",
+				"after": "Bu qədər sonra",
+				"count": "Təkrar sayı"
+			},
+			"summary": {
+				"daily_one": "Hər gün",
+				"daily_other": "Hər {{count}} gündən bir",
+				"weekly_one": "Hər həftə: {{days}}",
+				"weekly_other": "Hər {{count}} həftədən bir: {{days}}",
+				"monthly_one": "Hər ayın {{day}}-i",
+				"monthly_other": "Hər {{count}} aydan bir, ayın {{day}}-i",
+				"yearly_one": "Hər il {{date}}",
+				"yearly_other": "Hər {{count}} ildən bir, {{date}}",
+				"until": "{{summary}}, {{date}} tarixinədək",
+				"times_one": "{{summary}}, {{count}} dəfə",
+				"times_other": "{{summary}}, {{count}} dəfə"
+			},
+			"next": "Növbəti: {{date}}",
+			"ended": "Başqa təkrar yoxdur",
+			"save": "Yadda saxla",
+			"remove": "Təkrarı dayandır",
+			"saved": "Təkrar yadda saxlanıldı",
+			"removed": "Bu tapşırıq artıq təkrarlanmır",
+			"saveError": "Təkrarı yadda saxlamaq mümkün olmadı",
+			"activity": {
+				"set": "bu tapşırığı təkrarlanan etdi: {{summary}}",
+				"updated": "təkrarı dəyişdi: {{summary}}",
+				"removed": "bu tapşırığın təkrarını dayandırdı",
+				"recurredFrom": "bu tapşırığı <task>{{task}}</task> tapşırığının növbəti təkrarı kimi yaratdı",
+				"recurredFromScheduled": "Plana uyğun olaraq <task>{{task}}</task> tapşırığının növbəti təkrarı kimi yaradıldı",
+				"recurredTo": "bu tapşırığı tamamladı və növbəti təkrar <task>{{task}}</task> yaradıldı",
+				"recurredToScheduled": "Növbəti təkrar plana uyğun olaraq yaradıldı: <task>{{task}}</task>"
+			}
+		},
 		"title": "Tapşırıqlar",
 		"status": {
 			"label": "Vəziyyət",
@@ -3971,7 +4452,8 @@
 			"rescheduleError": "Tapşırığın vaxtını dəyişmək alınmadı",
 			"showWeekends": "Həftə sonlarını göstər",
 			"viewMode": "Təqvim dövrü",
-			"week": "Həftə"
+			"week": "Həftə",
+			"overdue": "Gecikmiş"
 		},
 		"gantt": {
 			"pageTitle": "{{name}} – Qant diaqramı",
@@ -4031,7 +4513,9 @@
 		},
 		"kanban": {
 			"addTask": "Tapşırıq əlavə et",
-			"stages": "Sütunlar"
+			"stages": "Sütunlar",
+			"emptyAction": "Tapşırıq əlavə et",
+			"emptyTitle": "Hələ tapşırıq yoxdur"
 		},
 		"pr": {
 			"merged": "Birləşdirilib",
@@ -4103,6 +4587,20 @@
 			"searchActions": "Əməliyyatları axtar...",
 			"noActionsFound": "Əməliyyat tapılmadı.",
 			"changeStatus": "Vəziyyəti dəyiş",
+			"removeLabel": "Etiketi çıxar",
+			"removeLabelSuccess": "Etiket {{count}} tapşırıqdan çıxarıldı",
+			"removeLabelError": "Etiketi çıxarmaq alınmadı",
+			"unarchive": "Arxivdən bərpa et",
+			"unarchiveSuccess": "{{count}} tapşırıq bərpa edildi",
+			"unarchiveNone": "Seçilmiş tapşırıqların heç biri arxivlənməyib",
+			"unarchiveError": "Tapşırıqları bərpa etmək alınmadı",
+			"setDates": "Tarixlər",
+			"dateField": "Təyin ediləcək tarix",
+			"startDate": "Başlama tarixi",
+			"dueDate": "Son tarix",
+			"clearStartDate": "Başlama tarixini təmizlə",
+			"clearDueDate": "Son tarixi təmizlə",
+			"updateStartDateError": "Başlama tarixini yeniləmək alınmadı. Başlama tarixi tapşırığın son tarixindən sonra ola bilməz.",
 			"addAssignee": "İcraçı əlavə et",
 			"addAssigneeSuccess_one": "{{name}} {{count}} tapşırığa əlavə edildi",
 			"addAssigneeSuccess_other": "{{name}} {{count}} tapşırığa əlavə edildi",
@@ -4123,7 +4621,19 @@
 				"addRowBefore": "Yuxarıya sətir daxil et",
 				"addRowAfter": "Aşağıya sətir daxil et",
 				"deleteRow": "Sətri sil",
-				"deleteTable": "Cədvəli sil"
+				"deleteTable": "Cədvəli sil",
+				"moveRowUp": "Sətri yuxarı köçür",
+				"moveRowDown": "Sətri aşağı köçür",
+				"moveColumnLeft": "Sütunu sola köçür",
+				"moveColumnRight": "Sütunu sağa köçür",
+				"toggleHeaderRow": "Başlıq sətri",
+				"fullWidth": "Tam en",
+				"dragRow": "Sətir {{index}}",
+				"dragColumn": "Sütun {{index}}",
+				"dragRowHint": "Sətri köçürmək üçün sürüşdürün və ya ox düymələrindən istifadə edin",
+				"dragColumnHint": "Sütunu köçürmək üçün sürüşdürün və ya ox düymələrindən istifadə edin",
+				"insertRowHere": "Bura sətir əlavə et",
+				"insertColumnHere": "Bura sütun əlavə et"
 			}
 		},
 		"descriptionSearchLoading": "Tam təsvirlər axtarılır…",
@@ -4183,11 +4693,13 @@
 			},
 			"label": "Qiymətləndirmə",
 			"none": "Qiymətləndirmə yoxdur",
-			"pointsValue": "{{value}} xal",
+			"pointsValue_one": "{{value}} xal",
+			"pointsValue_other": "{{value}} xal",
 			"setAria": "Qiymətləndirmə təyin et",
 			"totals": {
 				"estimated": "{{total}} tapşırıqdan {{estimated}} qiymətləndirilib",
-				"points": "{{completed}} / {{total}} xal",
+				"points_one": "{{completed}} / {{total}} xal",
+				"points_other": "{{completed}} / {{total}} xal",
 				"time": "{{completed}} / {{total}}"
 			},
 			"updateError": "Qiymətləndirməni yeniləmək alınmadı"
@@ -4306,6 +4818,12 @@
 			},
 			"url": "URL",
 			"urlPlaceholder": "https://example.com"
+		},
+		"create": {
+			"similarTitle": "Oxşar açıq tapşırıqlar",
+			"similarDismiss": "Oxşar tapşırıqları gizlət",
+			"similarOpen": "Aç",
+			"similarOpenLabel": "{{key}} {{title}} tapşırığını yeni tabda aç"
 		},
 		"parent": {
 			"add": "Valideyn tapşırıq əlavə et",
@@ -4576,6 +5094,7 @@
 				"cycle": "dövr",
 				"estimate": "qiymətləndirmə",
 				"modules": "modullar",
+				"parent": "valideyn tapşırıq",
 				"status": "vəziyyət"
 			},
 			"edited": "Redaktə edilib {{time}}",
@@ -4634,6 +5153,8 @@
 			"hint": "Başlıq yazın. @şəxs, #etiket, !prioritet və fri və ya 12 Oct kimi tarixlər çipə çevrilir. Enter yaradır, Ctrl Enter tam redaktoru açır.",
 			"labelError": "Tapşırıq yaradıldı, lakin {{name}} etiketi əlavə edilə bilmədi",
 			"newLabel": "{{name}} (yeni etiket)",
+			"dueOn": "Son tarixi {{date}} olan tapşırıq əlavə et",
+			"notInView": "Tapşırıq yaradıldı. Bu görünüşə uyğun gəlmədiyi üçün burada göstərilmir.",
 			"open": "Aç",
 			"openComposer": "Tam redaktoru aç",
 			"openComposerHint": "Tam redaktoru aç (Ctrl Enter)",
@@ -4886,7 +5407,18 @@
 			"error": "Komanda üzvünü dəvət etmək alınmadı",
 			"createdTitle": "Dəvət yaradıldı",
 			"shareLinkDescription": "İş sahəsinə qoşula bilməsi üçün bu keçidi {{email}} ilə paylaşın.",
-			"done": "Hazırdır"
+			"done": "Hazırdır",
+			"emailHint": "Bir neçə ünvanı vergül, boşluq və ya yeni sətirlə ayırın.",
+			"roleLabel": "Rol",
+			"roleHint": "Öz rolunuza qədər rol verə bilərsiniz.",
+			"sending": "{{total}} dəvətdən {{current}} göndərilir…",
+			"invalidEmails": "Bu e-poçt ünvanları etibarlı deyil: {{emails}}",
+			"emailRequired": "Ən azı bir e-poçt ünvanı daxil edin.",
+			"tooManyEmails": "Bir dəfəyə ən çox {{max}} nəfəri dəvət edin.",
+			"sentSome": "{{total}} dəvətdən {{sent}} göndərildi.",
+			"failedTitle": "Göndərilmədi",
+			"rateLimited": "Eyni anda çox dəvət. Bir dəqiqə gözləyin, sonra qalanını göndərin.",
+			"shareLinksDescription": "Hər keçidi aid olduğu şəxslə paylaşın ki, iş sahəsinə qoşula bilsin."
 		},
 		"membersTable": {
 			"emptyTitle": "Hələ komanda üzvü yoxdur",
@@ -4912,7 +5444,9 @@
 			"cancelInviteSuccess": "Dəvət uğurla ləğv edildi",
 			"cancelInviteError": "Dəvəti ləğv etmək alınmadı",
 			"roleUpdateSuccess": "Rol yeniləndi",
-			"roleUpdateError": "Rolu yeniləmək alınmadı"
+			"roleUpdateError": "Rolu yeniləmək alınmadı",
+			"ariaInvitationRole": "{{email}} üçün rol",
+			"invitationRoleUpdateSuccess": "Dəvətin rolu yeniləndi"
 		},
 		"profile": {
 			"emptyActivity": "Hələ fəaliyyət yoxdur",
@@ -6063,6 +6597,51 @@
 					"shortcuts": "Çeşidləmə qısayollarını sənədləşdir"
 				},
 				"title": "Sizin işiniz"
+			},
+			"ask": {
+				"title": "Sİ-dən soruş",
+				"model": "İş sahəsinin modeli",
+				"greeting": "Salam! Nəyi bilmək istərdiniz?",
+				"intro": "İş sahəniz barədə sadə dildə soruşun. Cavablar gördüyünüz tapşırıqlardan gəlir.",
+				"placeholder": "Sİ-dən soruşun, kontekst üçün @, əmrlər üçün /",
+				"placeholderBuild": "Nəyi yaratmaq və ya dəyişmək lazım olduğunu təsvir edin…",
+				"modes": {
+					"label": "Rejim",
+					"ask": "Soruş",
+					"build": "Qur"
+				},
+				"send": "Göndər",
+				"you": "Siz",
+				"question": "Cari dövrü nə bloklayır?",
+				"buildPrompt": "WEB-5-i Miraya təyin et",
+				"context": "Kontekst ({{count}})",
+				"facts": "Layihələr: 1 · İnsanlar: 4 · Dövrlər: 1",
+				"earlier": "Əvvəlki mesajlar: {{count}}",
+				"thinking": "Düşünür… {{seconds}}s",
+				"thought": "{{seconds}}s düşündü",
+				"blockedIntro": "{{cycle}} daxilində iki tapşırıq bloklanıb:",
+				"blockedPageTitles": "{{title}} səhifələrin siyahısını gözləyir.",
+				"blockedPricing": "{{title}} satış komandasından qiymət məlumatlarını gözləyir.",
+				"unassigned": "{{key}} hələ heç kimə təyin olunmayıb.",
+				"summary": "Bir dəyişiklik. Siz təsdiqləyənə qədər heç nə baş vermir.",
+				"op": "Tapşırığı redaktə et",
+				"action": "{{key}} tapşırığını təyin et: {{name}}",
+				"awaiting": "Cavab gözlənilir",
+				"ready": "Hazır dəyişikliklər: {{count}}",
+				"cancel": "Ləğv et",
+				"confirm": "Təsdiqlə",
+				"done": "Hazırdır",
+				"undo": "Geri qaytar",
+				"undone": "Geri qaytarıldı",
+				"cancelled": "Ləğv edildi. Heç nə dəyişmədi.",
+				"generic": "Bu demo yalnız öz sualına cavab verir. Margaya-da “Soruş” iş sahənizə əsasən cavab verir və istifadə etdiyi tapşırıqlara keçid göstərir.",
+				"genericBuild": "Bu demo yalnız öz dəyişikliyini edir. Margaya-da “Qur” sözlərinizi təsdiqlədiyiniz dəyişikliklərə çevirir.",
+				"blocked": "Bloklanıb",
+				"tasks": {
+					"pageTitles": "Səhifə başlıqlarını yoxla",
+					"pricing": "Qiymətlər səhifəsini yenilə",
+					"mobileMenu": "Mobil menyunu düzəlt"
+				}
 			}
 		},
 		"home": {
@@ -6097,6 +6676,10 @@
 				"singleServer": {
 					"detail": "Redis istəyə bağlıdır",
 					"title": "Bir server kifayətdir"
+				},
+				"ai": {
+					"title": "Sİ sizin şərtlərinizlə",
+					"detail": "Defolt olaraq söndürülüb, öz modeliniz"
 				}
 			},
 			"faq": {
@@ -6133,6 +6716,14 @@
 					"selfHost": {
 						"answer": "Bəli. Onu tək serverdə Docker Compose ilə və ya rəsmi Helm chart ilə Kubernetes-də işlədin. Sizə bir tətbiq konteyneri və PostgreSQL verilənlər bazası lazımdır. Quraşdırma təlimatı mühit dəyişənlərini, yaddaşı və reverse proxy-ləri əhatə edir.",
 						"question": "Margaya-nı öz serverimdə yerləşdirə bilərəmmi?"
+					},
+					"ai": {
+						"question": "Margaya-da Sİ varmı və o, defolt olaraq yanılıdırmı?",
+						"answer": "Bəli və xeyr. “Sİ-dən soruş”, Qur rejimi, yazı köməyi, çeşidləmə təklifləri və Sİ agentləri daxildir, lakin quraşdırma admini modeli qoşana və iş sahəsi Sİ-ni yandırana qədər söndürülü qalır. Sİ-nin təklif etdiyi hər dəyişiklik əvvəlcə sizə göstərilir və geri qaytarıla bilər."
+					},
+					"aiData": {
+						"question": "Hansı Sİ modellərindən istifadə edə bilərəm və datam hara gedir?",
+						"answer": "Claude-dan və ya özünüz işlətdiyiniz istənilən OpenAI ilə uyğun modeldən, məsələn Ollama və ya vLLM-dən istifadə edin. Yalnız lokal marşrutlaşdırma ilə heç nə şəbəkənizdən kənara çıxmır. Margaya yalnız soruşan şəxsin onsuz da görə bildiyini göndərir, server tarixçəsini yandırmasanız heç bir sorğu və ya cavab saxlamır, büdcələr üçün isə istifadə saylarını qeyd edir."
 					}
 				},
 				"title": "Suallar və aydın cavablar"
@@ -6145,13 +6736,11 @@
 				"title": "Vaxtınızı alətə yox, işə sərf edin."
 			},
 			"hero": {
-				"description": "Margaya tapşırıqları, dövrləri, sənədləri və sorğuların çeşidlənməsini bir sürətli iş sahəsində saxlayır. Tapşırığı yazın, irəli aparın və əsl işinizə qayıdın.",
-				"eyebrow": "Açıq mənbəli layihə idarəetməsi",
-				"note": "MIT lisenziyası. Öz serverinizdə işlədin və ya Margaya Cloud-u kredit kartı olmadan 14 gün sınayın.",
-				"primaryCta": "Başlayın",
-				"secondaryCta": "Öz serverinizdə",
 				"title": "İşi planlaşdırın.",
-				"titleAccent": "Lazımsız əziyyəti unudun."
+				"titleAccent": "Lazımsız əziyyəti unudun.",
+				"description": "Margaya tapşırıqları, dövrləri, sənədləri və sorğuların çeşidlənməsini bir sürətli iş sahəsində saxlayır; suallara cavab vermək və dəyişikliklər etmək üçün Sİ köməkçisini də yandıra bilərsiniz. Tapşırığı yazın, irəli aparın və əsl işinizə qayıdın.",
+				"primaryCta": "Başlayın",
+				"secondaryCta": "Öz serverinizdə"
 			},
 			"insight": {
 				"description": "Tapşırıqlarınızdan diaqramlar qurun, audit jurnalını izləyin və istənilən şeyi zibil qutusundan bərpa edin.",
@@ -6199,7 +6788,8 @@
 					"select": "Fokusdakı tapşırığı seç",
 					"spreadsheet": "Cədvəl",
 					"status": "Vəziyyəti dəyiş",
-					"tasks": "Tapşırığı açar və ya başlığa görə tap"
+					"tasks": "Tapşırığı açar və ya başlığa görə tap",
+					"ask": "“Sİ-dən soruş”u aç"
 				},
 				"modifier": "Ctrl",
 				"shortcutsLabel": "Klaviatura qısayolları",
@@ -6232,6 +6822,10 @@
 					"views": {
 						"description": "Lövhə, siyahı, cədvəl, təqvim və Qant",
 						"title": "Görünüşlər"
+					},
+					"ai": {
+						"title": "Sİ",
+						"description": "Sİ-dən soruş, Qur rejimi, yazı köməyi və agentlər"
 					}
 				},
 				"label": "Əsas",
@@ -6242,7 +6836,7 @@
 				"blog": "Bloq",
 				"compare": "Müqayisə",
 				"explore": "Kəşf et",
-				"featuresIntro": "Margaya üzrə beş qısa tur. Hər birində idarəsini öz üzərinizə götürə biləcəyiniz canlı demo var.",
+				"featuresIntro": "Margaya üzrə altı qısa tur. Hər birində idarəsini öz üzərinizə götürə biləcəyiniz canlı demo var.",
 				"newTab": "(yeni vərəqdə açılır)"
 			},
 			"ownIt": {
@@ -6403,6 +6997,26 @@
 					"title": "Resurslar"
 				},
 				"selfHosted": "Öz serverinizdə işlətmək üçün yaradılıb"
+			},
+			"ai": {
+				"eyebrow": "Sİ",
+				"title": "Soruşun. Qursun. Siz təsdiqləyin.",
+				"description": "“Sİ-dən soruş” canlı tapşırıqlarınız əsasında cavab verir, qrafikləri və istifadə etdiyi tapşırıqları göstərir. Qur rejimi sorğunu sizin yoxlayıb təsdiqlədiyiniz dəyişikliklərə çevirir, agentlər isə komanda üzvləri kimi tapşırıqları öz üzərinə götürür.",
+				"agents": {
+					"title": "Komanda üzvləri kimi işləyən agentlər",
+					"description": "Tapşırığı agentə təyin edin və gedişatını Agent Masasında izləyin. İşi ilişəndə insandan soruşur, yazmazdan əvvəl təsdiq gözləyir və cədvəl üzrə işləyə bilir."
+				},
+				"privacy": {
+					"title": "Defolt olaraq məxfi",
+					"description": "Admin yandırana qədər Sİ söndürülü qalır və onun harada işləyəcəyinə siz qərar verirsiniz.",
+					"items": {
+						"model": "Claude və ya Ollama, yaxud vLLM vasitəsilə öz modeliniz",
+						"local": "Yalnız lokal marşrutlaşdırma datanı şəbəkənizdə saxlayır",
+						"stored": "Server tarixçəsini seçməsəniz, heç bir sorğu və ya cavab saxlanılmır",
+						"budget": "Aylıq və gündəlik büdcələr, istifadə jurnalı ilə",
+						"undo": "Qur rejimindəki hər dəyişikliyi bir saat ərzində geri qaytarmaq olar"
+					}
+				}
 			}
 		},
 		"pages": {
@@ -6421,8 +7035,8 @@
 						"title": "OpenAPI ilə REST API"
 					},
 					"cleanup": {
-						"body": "Bağlı tapşırıqları avtomatik arxivləşdirin və köhnəlmişləri bağlayın; hər qaydanın nəyə toxunacağını əvvəlcədən görün.",
-						"title": "Planlı təmizləmə"
+						"body": "Gündəlik işlər üçün “Nə vaxt, Əgər, Onda” qaydaları qurun, məsələn yeni tapşırıqları təyin etmək və ya etiketləmək üçün, köhnəlmiş tapşırıqları isə cədvəl üzrə arxivləşdirin və ya bağlayın; hər qaydanın nəyə toxunacağını əvvəlcədən görün.",
+						"title": "Avtomatlaşdırma qaydaları"
 					},
 					"integrations": {
 						"body": "GitHub və ya Gitea-dan pull request-ləri əlaqələndirin, yenilikləri Slack, Discord, Telegram və ya Mattermost-a göndərin və çıxan webhook-larla hadisələri istənilən URL-ə ötürün.",
@@ -6561,6 +7175,43 @@
 					}
 				},
 				"title": "Bir tapşırıq dəsti, ehtiyac duyduğunuz hər baxış bucağı."
+			},
+			"ai": {
+				"metaTitle": "Sİ köməkçisi, Qur rejimi və agentlər",
+				"metaDescription": "İşinizlə bağlı suallar verin və canlı datadan cavab alın, Qur rejiminə təsdiqləyəcəyiniz dəyişikliklər təklif etdirin, Sİ köməyi ilə yazın və tapşırıqları Sİ agentlərinə təyin edin; öz modelinizlə və defolt olaraq söndürülmüş Sİ ilə.",
+				"eyebrow": "Sİ",
+				"title": "İşi tanıyan köməkçi.",
+				"description": "Sİ-dən soruş, Qur rejimi, yazı köməyi və agentlər; hamısı açıq mənbəli versiyada, seçdiyiniz modeldə işləyir.",
+				"sections": {
+					"ask": {
+						"title": "Sİ-dən soruş",
+						"body": "Sadə sözlərlə soruşun və canlı tapşırıqlardan cavab alın: saylar, qrafiklər, istifadə olunan tapşırıq və səhifələrə keçidlərlə. Tapşırığı, səhifəni və ya şəxsi @ ilə qeyd edin, fayl əlavə edin və ya yazmaq əvəzinə danışın."
+					},
+					"build": {
+						"title": "Qur rejimi",
+						"body": "Dəyişikliyi təsvir edin, məsələn üç tapşırıqlı bir layihə və ya Mia üçün bir tapşırıq. Nəyi oxuduğunu və necə düşündüyünü görürsünüz, təklif olunan dəyişiklikləri redaktə edir, təsdiqləyir və istənilənini bir saat ərzində geri qaytara bilirsiniz."
+					},
+					"writing": {
+						"title": "Yazı köməyi",
+						"body": "Təsviri və ya şərhi təkmilləşdirin, qısaldın, tərcümə edin və ya tonunu dəyişin, başlıq təklifi alın, tapşırığın xülasəsini çıxarın və ya səhifəyə Sİ bloku əlavə edin."
+					},
+					"triage": {
+						"title": "Çeşidləmə və xülasələr",
+						"body": "Yeni iş üçün etiket və prioritet təklifləri alın, dublikatları aşkar edin, istədiyinizi təsvir etməklə lövhəni filtrləyin, oxunmamış gələnlərinizin xülasəsini və ya dövr üzrə qısa hesabat alın."
+					},
+					"agents": {
+						"title": "Sİ agentləri",
+						"body": "Agentlər tapşırıq təyin edə biləcəyiniz üzvlərdir. İşləri ilişəndə insandan soruşur, yazmazdan əvvəl təsdiq gözləyir, cədvəl üzrə işləyir və qoşduğunuz digər MCP serverlərinin alətlərindən istifadə edə bilirlər."
+					},
+					"privacy": {
+						"title": "Sizin modeliniz, sizin qaydalarınız",
+						"body": "Admin yandırana qədər Sİ söndürülüdür. Claude və ya lokal modeldən istifadə edin, datanı şəbəkənizdə saxlayın, büdcələr təyin edin və özünüz seçməsəniz, heç bir sorğu və ya cavab saxlanılmasın."
+					}
+				},
+				"cta": {
+					"title": "Hazır olanda Sİ-ni yandırın.",
+					"description": "Sİ quraşdırma təlimatını oxuyun və ya “Sİ-dən soruş”u öz iş sahənizdə sınayın."
+				}
 			}
 		},
 		"scenes": {
@@ -6671,6 +7322,10 @@
 			"yourWork": {
 				"caption": "Sizin işiniz sizə təyin olunanları, yaratdıqlarınızı və izlədiklərinizi bir yerə toplayır.",
 				"description": "Demo: Sizin işiniz səhifəsi. Kursor Təyin edilənlər, Yaradılanlar və İzlədiklərim tablarından keçir və hər biri bütün layihələrdəki öz tapşırıqlarını vəziyyət, prioritet və son tarixlə göstərir."
+			},
+			"ask": {
+				"caption": "İş barədə soruşun, sonra dəyişikliyi Qur rejiminə həvalə edin. Siz təsdiqləyirsiniz.",
+				"description": "Demo: “Sİ-dən soruş” söhbəti açıq olan Veb-sayt lövhəsi. Kimsə cari dövrü nəyin blokladığını soruşur. Köməkçi oxuduqlarını sadalayır, iki saniyə düşünür və cavab verir: WEB-5 və WEB-6 bloklanıb, WEB-5-in isə icraçısı yoxdur. Qur rejiminə keçib WEB-5-i Miraya təyin etməyi xahiş edirlər. Köməkçi dəyişikliyi təklif edir, onlar təsdiqləyir, kartda “Geri qaytar” düyməsi ilə “Hazırdır” görünür və WEB-5-də Miranın avatarı peyda olur."
 			}
 		}
 	},
@@ -6836,7 +7491,11 @@
 			"owner": "Sahib",
 			"progress": "İrəliləyiş",
 			"tasks": "Tapşırıqlar",
-			"title": "Dövr detalları"
+			"title": "Dövr detalları",
+			"rolledOver_one": "Köçürmə {{count}} bitməmiş tapşırığı {{name}} dövrünə keçirdi.",
+			"rolledOver_other": "Köçürmə {{count}} bitməmiş tapşırığı {{name}} dövrünə keçirdi.",
+			"rolloverNoNext": "Köçürmə növbəti dövr tapmadı; bitməmiş tapşırıqlar burada qaldı.",
+			"rolloverNothing": "Köçürmə köçürüləcək bitməmiş tapşırıq tapmadı."
 		},
 		"status": {
 			"archived": "Arxivlənmiş",
@@ -7418,7 +8077,9 @@
 		"widgets": {
 			"quickLinks": "Sürətli linklər",
 			"recents": "Sonuncular",
-			"stickies": "Yapışqan qeydlər"
+			"stickies": "Yapışqan qeydlər",
+			"risks": "Risklər",
+			"myBrief": "Xülasəm"
 		},
 		"focus": {
 			"caughtUp": "Hamısı oxunub",
@@ -7432,7 +8093,9 @@
 			"stickies": "Yapışqanlı qeydlər",
 			"stickiesHint": "Şəxsi qeydlər, yalnız sizin üçün",
 			"unread_one": "{{count}} oxunmamış",
-			"unread_other": "{{count}} oxunmamış"
+			"unread_other": "{{count}} oxunmamış",
+			"openCaption": "açıq",
+			"unreadCaption": "oxunmamış"
 		}
 	},
 	"intake": {
@@ -7492,7 +8155,11 @@
 			"titlePlaceholder": "Nəyə ehtiyacınız var?",
 			"titleRequired": "Başlıq əlavə edin",
 			"toast": "Sorğu göndərildi",
-			"toastView": "Bax"
+			"toastView": "Bax",
+			"pastedImages": "Yapışdırılmış şəkillər",
+			"pasteHint": "Sorğuya qoşmaq üçün ekran şəkillərini yapışdırın.",
+			"removeImage": "{{name}} faylını sil",
+			"attachFailed": "Sorğu göndərildi, lakin bəzi şəkilləri qoşmaq mümkün olmadı."
 		},
 		"decline": {
 			"description": "Sorğu bağlanır və lövhədən kənarda qalır. Sonra yenidən aça bilərsiniz.",
@@ -7539,7 +8206,9 @@
 			"noTasks": "Bu layihədə hələ başqa tapşırıq yoxdur.",
 			"searchPlaceholder": "Tapşırıqları açar və ya başlığa görə axtar",
 			"title": "{{key}} sorğusunu təkrar kimi işarələ",
-			"toast": "{{key}} ilə təkrar kimi işarələndi"
+			"toast": "{{key}} ilə təkrar kimi işarələndi",
+			"aiSuggestions": "Sİ tərəfindən təklif olunub",
+			"aiChecking": "Sİ ilə dublikatlar axtarılır…"
 		},
 		"empty": {
 			"backToIntake": "Sorğulara qayıt",
@@ -7783,6 +8452,11 @@
 				"singleProjectHint": "Sürəti görmək üçün bir layihə seçin",
 				"subtitle": "Hər dövr üzrə tamamlanan və öhdəlik götürülən",
 				"title": "Sürət"
+			},
+			"filter": {
+				"all": "Hamısı",
+				"label": "Dövrləri göstər",
+				"running": "Hazırda davam edənlər"
 			}
 		},
 		"dimensions": {
@@ -7926,7 +8600,8 @@
 			"noRequests": "Hələ sorğu yoxdur",
 			"noTasks": "Bu filtrlərə uyğun tapşırıq yoxdur",
 			"retry": "Yenidən cəhd et",
-			"timeout": "Bu çox uzun çəkdi. Filtrləri daraldın və yenidən cəhd edin."
+			"timeout": "Bu çox uzun çəkdi. Filtrləri daraldın və yenidən cəhd edin.",
+			"noRunningCycles": "Hazırda davam edən dövr yoxdur"
 		},
 		"table": {
 			"periodEnd": "Dövrün sonu",
@@ -7942,7 +8617,8 @@
 			"intake": "Qəbul",
 			"modules": "Modullar",
 			"overview": "İcmal",
-			"tasks": "Tapşırıqlar"
+			"tasks": "Tapşırıqlar",
+			"delivery": "Təhvil"
 		},
 		"trend": {
 			"completed": "Tamamlanan",
@@ -7956,9 +8632,143 @@
 			"chart": "Diaqram",
 			"label": "Bu şəkildə göstər",
 			"table": "Cədvəl"
+		},
+		"reports": {
+			"actionsFor": "{{name}} üçün əməliyyatlar",
+			"close": "Hesabatı bağla",
+			"delete": "Sil",
+			"deleteDescription": "“{{name}}” silinəcək. Bu əməliyyatı geri qaytarmaq mümkün deyil.",
+			"deleteSharedDescription": "“{{name}}” iş sahəsindəki hər kəs üçün silinəcək. Bu əməliyyatı geri qaytarmaq mümkün deyil.",
+			"deleteTitle": "Bu hesabat silinsin?",
+			"dialog": {
+				"cancel": "Ləğv et",
+				"createTitle": "Hesabatı yadda saxla",
+				"editTitle": "Hesabatı redaktə et",
+				"name": "Ad",
+				"namePlaceholder": "məs. İcraçılara görə açıq xətalar",
+				"nameRequired": "Ad daxil edin",
+				"save": "Yadda saxla",
+				"summary": "Diaqram parametrlərini, əhatə olunan layihələri və filtrləri yadda saxlayır.",
+				"update": "Dəyişiklikləri yadda saxla",
+				"visibility": "Kim görə bilər"
+			},
+			"empty": "Hələ yadda saxlanmış hesabat yoxdur. Sonra ona qayıtmaq üçün bu diaqramı yadda saxlayın.",
+			"listTitle": "Yadda saxlanmış hesabatlar",
+			"loadError": "Yadda saxlanmış hesabatlar yüklənə bilmədi",
+			"makePrivate": "Şəxsi et",
+			"notes": {
+				"allProjects": "Onun layihələrindən heç biri əlçatan deyil, buna görə bütün layihələr göstərilir.",
+				"builderReset": "Bəzi diaqram parametrləri bu layihələr üçün əlçatan deyil və sıfırlandı.",
+				"dropped_one": "Bu hesabatdakı {{count}} layihə artıq mövcud deyil.",
+				"dropped_other": "Bu hesabatdakı {{count}} layihə artıq mövcud deyil.",
+				"leftOut_one": "Bu hesabatdakı {{count}} layihə arxivlənib və kənarda saxlanılıb.",
+				"leftOut_other": "Bu hesabatdakı {{count}} layihə arxivlənib və kənarda saxlanılıb.",
+				"otherProjects": "Bu hesabat başqa layihələr üçün yadda saxlanılıb; burada yalnız bu layihəni göstərir."
+			},
+			"open": "Hesabatlar",
+			"rename": "Adını dəyiş",
+			"save": "Yadda saxla",
+			"saveAsNew": "Yeni kimi yadda saxla",
+			"share": "İş sahəsi ilə paylaş",
+			"sharedBy": "{{name}} paylaşıb",
+			"showing": "Hesabat: {{name}}",
+			"toast": {
+				"deleted": "Hesabat silindi",
+				"deleteError": "Hesabat silinə bilmədi",
+				"madePrivate": "Hesabat indi şəxsidir",
+				"saved": "“{{name}}” yadda saxlanıldı",
+				"saveError": "Hesabat yadda saxlanıla bilmədi",
+				"shared": "Hesabat iş sahəsi ilə paylaşıldı",
+				"updated": "Hesabat yeniləndi"
+			},
+			"unsaved": "Yadda saxlanılmamış dəyişikliklər",
+			"update": "Hesabatı yenilə",
+			"visibility": {
+				"private": "Şəxsi",
+				"privateHint": "Yalnız siz görə bilərsiniz.",
+				"workspace": "İş sahəsi ilə paylaşılıb",
+				"workspaceHint": "Bu iş sahəsində analitikaya girişi olan hər kəs onu aça bilər."
+			}
 		}
 	},
 	"pages": {
+		"templates": {
+			"saveAction": "Şablon kimi saxla",
+			"saveTitle": "Şablon kimi saxla",
+			"saveDescription": "Səhifənin cari məzmunu və ikonu yeni səhifələr üçün şablona çevrilir.",
+			"nameLabel": "Şablonun adı",
+			"scopeLabel": "Harada mövcuddur",
+			"scopeProject": "Bu layihə",
+			"scopeProjectHint": "Bu layihədə səhifə yaradarkən təklif olunur.",
+			"scopeWorkspace": "Bütün layihələr",
+			"scopeWorkspaceHint": "İş sahəsinin bütün layihələrində təklif olunur.",
+			"saveConfirm": "Şablonu saxla",
+			"savedToast": "Şablon saxlanıldı",
+			"saveError": "Şablonu saxlamaq mümkün olmadı",
+			"newFromTemplate": "Şablondan yeni səhifə",
+			"moreCreateOptions": "Səhifə yaratmağın digər yolları",
+			"pickTitle": "Şablondan yeni səhifə",
+			"pickDescription": "Yeni səhifə şablonun məzmunu ilə başlayır. Sonra istədiyinizi dəyişə bilərsiniz.",
+			"starters": "Başlanğıc şablonları",
+			"saved": "Saxlanılmış şablonlar",
+			"savedEmpty": "Hələ saxlanılmış şablon yoxdur. Səhifənin menyusundan birini saxlayın.",
+			"loadError": "Şablonları yükləmək mümkün olmadı",
+			"deleteLabel": "{{name}} şablonunu sil",
+			"deleted": "Şablon silindi",
+			"deleteError": "Şablonu silmək mümkün olmadı",
+			"builtin": {
+				"meetingName": "Görüş qeydləri",
+				"meetingDescription": "İştirakçılar, gündəlik, qərarlar və görüləcək işlər.",
+				"meetingAttendees": "İştirakçılar",
+				"meetingAgenda": "Gündəlik",
+				"meetingNotes": "Qeydlər",
+				"meetingDecisions": "Qərarlar",
+				"meetingActionItems": "Görüləcək işlər",
+				"specName": "Spesifikasiya",
+				"specDescription": "Problem, məqsədlər, təklif və açıq suallar.",
+				"specSummary": "Xülasə",
+				"specProblem": "Problem",
+				"specGoals": "Məqsədlər",
+				"specNonGoals": "Əhatədən kənar",
+				"specProposal": "Təklif",
+				"specOpenQuestions": "Açıq suallar",
+				"retroName": "Retrospektiv",
+				"retroDescription": "Nə yaxşı keçdi, nəyi yaxşılaşdırmaq olar, növbəti dəfə nəyi sınayacağıq.",
+				"retroWentWell": "Nə yaxşı keçdi",
+				"retroCouldBeBetter": "Nə daha yaxşı ola bilərdi",
+				"retroTryNext": "Növbəti dəfə nəyi sınayacağıq"
+			}
+		},
+		"publish": {
+			"menuItem": "Vebdə dərc et",
+			"title": "Vebdə dərc et",
+			"description": "Keçidi olan hər kəs bu səhifəni daxil olmadan oxuya bilər. Axtarış sistemlərindən onu indeksləməmək xahiş olunur.",
+			"switchLabel": "İctimai keçid",
+			"onHint": "Dərc edilib. Söndürmək keçidi dərhal ləğv edir.",
+			"offHint": "Söndürülüb. Keçid yaratmaq üçün aktiv edin.",
+			"disabledByWorkspace": "Bu iş sahəsində ictimai səhifələr deaktivdir. Admin onları iş sahəsinin ayarlarında aktiv edə bilər.",
+			"cannotPublish": "Yalnız layihələri paylaşa bilən şəxslər dərc edə bilər və yalnız bütün iş sahəsinə görünən səhifələr dərc oluna bilər.",
+			"linkLabel": "Keçid",
+			"copyLink": "Keçidi kopyala",
+			"copied": "Kopyalandı",
+			"openLink": "İctimai səhifəni aç",
+			"privacyNote": "İstinadlar, tapşırıq keçidləri, fayllar və dərc edilməmiş səhifələrə keçidlər ictimai səhifədə gizlədilir.",
+			"publishedToast": "Səhifə dərc edildi",
+			"unpublishedToast": "Keçid ləğv edildi",
+			"error": "İctimai keçidi dəyişmək mümkün olmadı",
+			"loadError": "İctimai keçidi yükləmək mümkün olmadı",
+			"done": "Hazırdır"
+		},
+		"publicView": {
+			"documentTitle": "Paylaşılan səhifə",
+			"unavailableTitle": "Bu səhifə əlçatan deyil",
+			"unavailableDescription": "Keçid ləğv edilmiş ola bilər və ya səhifə artıq paylaşılmır.",
+			"updated": "Yeniləndi: {{date}}",
+			"mention": "@kimsə",
+			"task": "əlaqəli tapşırıq",
+			"file": "əlavə edilmiş fayl",
+			"page": "başqa səhifə"
+		},
 		"actions": {
 			"archive": "Arxivlə",
 			"copyLink": "Keçidi kopyala",
@@ -7996,6 +8806,40 @@
 			"restoredBy": "{{name}} əvvəlki versiyanı bərpa etdi",
 			"roomFull": "Hazırda çox adam bu səhifəni açıb. Bir azdan yenidən cəhd edin.",
 			"signedOut": "Sessiyanız başa çatdı. Redaktəyə davam etmək üçün yenidən daxil olun."
+		},
+		"toolbar": {
+			"ariaLabel": "Formatlama alətlər paneli",
+			"textStyle": "Mətn üslubu",
+			"bold": "Qalın",
+			"italic": "Kursiv",
+			"underline": "Altından xətt",
+			"strike": "Üstündən xətt",
+			"inlineCode": "Sətirdaxili kod",
+			"link": "Keçid",
+			"image": "Şəkil",
+			"more": "Daha çox formatlama"
+		},
+		"filters": {
+			"button": "Filtrlər",
+			"active": "Filtrlər tətbiq edilib",
+			"search": "Filtrlərdə axtar",
+			"searchClear": "Axtarışı təmizlə",
+			"favorites": "Seçilmişlər",
+			"createdDate": "Yaradılma tarixi",
+			"date": {
+				"any": "İstənilən vaxt",
+				"today": "Bu gün",
+				"last7": "Son 7 gün",
+				"last30": "Son 30 gün",
+				"older": "30 gündən köhnə"
+			},
+			"remove": "{{filter}} filtrini çıxar"
+		},
+		"detail": {
+			"unlocked": "Kilidsiz",
+			"openOutline": "Struktur panelini aç",
+			"currentSection": "Cari bölmə",
+			"emptyLinePlaceholder": "Əmrlər üçün '/' yazın"
 		},
 		"commandPalette": {
 			"createPage": "Səhifə yarat"
@@ -8113,8 +8957,6 @@
 			"locked": "Kilidlənib",
 			"newPage": "Yeni səhifə",
 			"ownedBy": "Sahibi: {{name}}",
-			"ownerFilter": "Sahib",
-			"ownerFilterSearch": "Şəxsləri axtar",
 			"retry": "Yenidən cəhd et",
 			"searchPlaceholder": "Səhifələri axtar",
 			"sort": {
@@ -8234,6 +9076,229 @@
 			"expand": "{{title}} elementini aç",
 			"newPage": "Yeni səhifə",
 			"title": "Səhifələr"
+		}
+	},
+	"accountSecurity": {
+		"platform": {
+			"save": "Yadda saxla",
+			"retry": "Yenidən cəhd edin",
+			"loadMore": "Daha çox yüklə",
+			"auditPasswordResetSent": "Parol sıfırlama linki göndərildi",
+			"apiKeys": {
+				"accessLabel": "Giriş",
+				"accessFull": "Tam giriş",
+				"accessFullHint": "Üzv olduğunuz hər iş sahəsində edə bildiyiniz hər şey.",
+				"accessRead": "Yalnız oxuma",
+				"accessReadHint": "Oxuya bilər, amma heç nəyi dəyişmir.",
+				"accessCustom": "Fərdi",
+				"accessCustomHint": "Yalnız aşağıda seçdiyiniz bölmələr.",
+				"areasLabel": "Bölmələr",
+				"areaNone": "Yoxdur",
+				"areaRead": "Oxuma",
+				"areaWrite": "Yazma",
+				"areasRequired": "Ən azı bir bölmə seçin.",
+				"projectsLabel": "Müəyyən layihələrlə məhdudlaşdır",
+				"projectsHint": "Digər layihələr bu açar üçün mövcud olmayan kimi görünür, bütün iş sahəsinə aid sorğular isə rədd edilir.",
+				"projectsIn": "{{workspace}} daxilindəki layihələr",
+				"projectsLoading": "Layihələr yüklənir…",
+				"projectsEmpty": "Bu iş sahəsində hələ layihə yoxdur.",
+				"projectsRequired": "Ən azı bir layihə seçin.",
+				"columnScope": "Əhatə",
+				"scopeFull": "Tam giriş",
+				"scopeRead": "Yalnız oxuma",
+				"scopeCustom": "Fərdi",
+				"scopeProjects": "Layihələr: {{projects}}",
+				"deletedProject": "Silinmiş layihə",
+				"requestsAria": "{{name}} ilə edilən sorğular",
+				"requestsTitle": "Sorğular: {{name}}",
+				"requestsDescription": "Bu açarla edilən son sorğular. Yalnız metod, marşrut, status və müddət saxlanılır, məzmun heç vaxt saxlanılmır.",
+				"requestsEmpty": "Hələ sorğu yoxdur.",
+				"requestsError": "Sorğular yüklənmədi.",
+				"columnTime": "Vaxt",
+				"columnRequest": "Sorğu",
+				"columnStatus": "Status",
+				"columnDuration": "Müddət",
+				"durationMs": "{{value}} ms"
+			},
+			"policy": {
+				"title": "Giriş qaydaları",
+				"description": "Kimin hesab yarada biləcəyi, hamının necə daxil olacağı və sessiyaların nə qədər davam edəcəyi.",
+				"invitedPasswordSignUp": "Dəvət olunanlar üçün parolla qeydiyyat",
+				"invitedPasswordSignUpHint": "Parolla qeydiyyat söndürüləndə, etibarlı dəvəti olan şəxslər yenə də parollu hesab yarada bilər.",
+				"domains": "İcazə verilən e-poçt domenləri",
+				"domainsHint": "Yeni hesablar bu domenlərdən birində ünvan istifadə etməlidir. İstənilən domenə icazə vermək üçün boş saxlayın.",
+				"requiredProvider": "Məcburi giriş provayderi",
+				"requiredProviderHint": "Hamı bu provayder vasitəsilə daxil olur. Instans adminləri geri qayıtmaq üçün parolla girişi saxlayır.",
+				"noRequirement": "Tələb yoxdur",
+				"customProvider": "təşkilatınızın giriş üsulu",
+				"sessionLifetime": "Sessiya müddəti",
+				"sessionLifetimeHint": "İstifadə olunmayan sessiyanın nə qədər qüvvədə qaldığı. İstifadə onu uzadır.",
+				"hours": "saat",
+				"signInNotice": "{{provider}} ilə daxil olun. Parolla giriş yalnız instans adminləri üçündür."
+			},
+			"twoFactor": {
+				"title": "İki faktorlu autentifikasiya",
+				"description": "Parolla daxil olanda autentifikator tətbiqindən kod istə.",
+				"authenticator": "Autentifikator tətbiqi",
+				"on": "Aktiv",
+				"off": "Deaktiv",
+				"turnOn": "Aktivləşdir",
+				"turnOff": "Deaktiv et",
+				"newCodes": "Yeni bərpa kodları",
+				"confirmPassword": "Parolunuzu təsdiqləyin",
+				"continue": "Davam et",
+				"setupTitle": "Margaya-nı autentifikator tətbiqinizə əlavə edin",
+				"setupHint": "Bu quraşdırma açarını tətbiqə daxil edin, sonra göstərdiyi 6 rəqəmli kodu yazın.",
+				"setupKey": "Quraşdırma açarı",
+				"openApp": "Bu cihazdakı autentifikator tətbiqində aç",
+				"code": "Autentifikasiya kodu",
+				"verify": "Təsdiqlə",
+				"invalidCode": "Bu kod düzgün deyil. Cihazınızdakı vaxtı yoxlayıb yenidən cəhd edin.",
+				"codesTitle": "Bərpa kodları",
+				"codesHint": "Onları təhlükəsiz yerdə saxlayın. Cihazınızı itirsəniz, hər kod bir dəfə daxil olmağa imkan verir.",
+				"copyCodes": "Kodları kopyala",
+				"copied": "Bərpa kodları kopyalandı",
+				"done": "Hazırdır",
+				"enabled": "İki faktorlu autentifikasiya aktivdir.",
+				"disabled": "İki faktorlu autentifikasiya deaktivdir.",
+				"error": "Nəsə səhv getdi. Yenidən cəhd edin."
+			},
+			"challenge": {
+				"title": "İki faktorlu autentifikasiya",
+				"totpHint": "Autentifikator tətbiqinizdəki 6 rəqəmli kodu daxil edin.",
+				"recoveryHint": "Bərpa kodlarınızdan birini daxil edin. Hər kod bir dəfə işləyir.",
+				"recoveryCode": "Bərpa kodu",
+				"invalid": "Bu kod düzgün deyil. Yenidən cəhd edin.",
+				"trustDevice": "Bu cihaza 30 gün etibar et",
+				"useRecovery": "Bərpa kodundan istifadə et",
+				"useApp": "Autentifikator tətbiqindən istifadə et",
+				"usePassword": "Bunun əvəzinə parolla daxil ol",
+				"back": "Girişə qayıt"
+			},
+			"users": {
+				"nav": "İstifadəçilər",
+				"title": "İstifadəçilər",
+				"subtitle": "Bu serverdəki bütün hesablar. Ayrılanları bloklayın, parolları sıfırlayın və sessiyaları bağlayın.",
+				"listTitle": "Hesablar",
+				"search": "Ad və ya e-poçta görə axtar",
+				"filterLabel": "Göstər",
+				"filterAll": "Bütün hesablar",
+				"filterAdmins": "Instans adminləri",
+				"filterBanned": "Bloklananlar",
+				"empty": "“{{query}}” ilə uyğun hesab yoxdur.",
+				"none": "Hələ hesab yoxdur.",
+				"columnUser": "İstifadəçi",
+				"columnStatus": "Status",
+				"columnWorkspaces": "İş sahələri",
+				"columnLastActive": "Son fəaliyyət",
+				"columnJoined": "Qoşulub",
+				"columnActions": "Əməliyyatlar",
+				"badgeAdmin": "Admin",
+				"badgeBanned": "Bloklanıb",
+				"badgeTwoFactor": "2FA",
+				"never": "Heç vaxt",
+				"actionsFor": "{{name}} üçün əməliyyatlar",
+				"details": "Ətraflı bax",
+				"resetPassword": "Parolu sıfırla",
+				"signOut": "Hər yerdə çıxış et",
+				"makeAdmin": "Instans admini et",
+				"removeAdmin": "Instans adminliyini götür",
+				"ban": "Blokla",
+				"unban": "Blokdan çıxar",
+				"banTitle": "{{name}} bloklansın?",
+				"banDescription": "Hər yerdə sessiyası bağlanır və blok bitənə qədər daxil ola bilməz. API açarları da işləməyi dayandırır.",
+				"banReason": "Səbəb (istəyə bağlı)",
+				"banDuration": "Müddət",
+				"banForever": "Blokdan çıxarılana qədər",
+				"ban7Days": "7 gün",
+				"ban30Days": "30 gün",
+				"banned": "{{name}} bloklandı.",
+				"unbanned": "{{name}} yenidən daxil ola bilər.",
+				"resetTitle": "{{name}} üçün parol sıfırlansın?",
+				"resetDescription": "Sıfırlama linki göndərin və ya indi yeni parol təyin edin. Parol təyin etmək hər yerdə sessiyanı bağlayır.",
+				"resetByEmail": "{{email}} ünvanına sıfırlama linki göndər",
+				"resetSetNow": "İndi yeni parol təyin et",
+				"newPassword": "Yeni parol",
+				"resetConfirm": "Parolu sıfırla",
+				"resetSent": "{{email}} ünvanına sıfırlama linki göndərildi.",
+				"passwordSet": "{{name}} üçün parol dəyişdirildi.",
+				"signOutTitle": "{{name}} hər yerdə çıxarılsın?",
+				"signOutDescription": "Bütün sessiyalar dərhal bitir. API açarları işləməyə davam edir; onları yalnız sahibi ləğv edə bilər.",
+				"signedOut": "{{name}} hər yerdə çıxarıldı.",
+				"promoted": "{{name}} artıq instans adminidir.",
+				"demoted": "{{name}} artıq instans admini deyil.",
+				"activeSessions": "Aktiv sessiyalar",
+				"signInMethod": "Parol",
+				"hasPassword": "Təyin edilib",
+				"noPassword": "Təyin edilməyib (başqa yolla daxil olur)",
+				"workspacesTitle": "İş sahələri",
+				"noWorkspaces": "Heç bir iş sahəsinin üzvü deyil.",
+				"joined": "Qoşulub: {{date}}"
+			}
+		},
+		"password": {
+			"tooShort": "Ən azı {{min}} simvoldan istifadə edin.",
+			"tooCommon": "Bu parol çox yayğındır və asanlıqla təxmin edilir. Başqasını seçin.",
+			"matchesEmail": "Parolunuz e-poçt ünvanınız ola bilməz.",
+			"hint": "Ən azı {{min}} simvol. Yayğın parollardan və e-poçt ünvanınızdan istifadə etməyin."
+		},
+		"emailChange": {
+			"action": "E-poçtu dəyiş",
+			"title": "E-poçt ünvanını dəyiş",
+			"description": "Yeni ünvana kod göndərəcəyik. Kodu daxil etdiyiniz anda e-poçtunuz dəyişir və digər sessiyalarınız bağlanır.",
+			"newEmail": "Yeni e-poçt ünvanı",
+			"newEmailPlaceholder": "you@example.com",
+			"invalidEmail": "Etibarlı e-poçt ünvanı daxil edin.",
+			"sameEmail": "Bu artıq sizin e-poçt ünvanınızdır.",
+			"sendCode": "Kod göndər",
+			"codeSent": "{{email}} istifadə oluna bilərsə, ora kod göndərilir. Kodun müddəti 5 dəqiqəyə bitir.",
+			"code": "Təsdiq kodu",
+			"confirm": "E-poçtu dəyiş",
+			"back": "Başqa ünvan istifadə et",
+			"success": "E-poçt ünvanınız indi {{email}}.",
+			"invalidCode": "Kod yanlışdır və ya müddəti bitib. Yenisini istəyin.",
+			"sessionTooOld": "Təhlükəsizliyiniz üçün e-poçt ünvanınızı dəyişməzdən əvvəl yenidən daxil olun.",
+			"unavailable": "Bu serverdə e-poçt quraşdırılmayıb, buna görə ünvanınızı burada dəyişmək mümkün deyil. Instans admininə müraciət edin.",
+			"error": "E-poçt ünvanınızı dəyişmək alınmadı."
+		},
+		"reauth": {
+			"title": "Bunun siz olduğunuzu təsdiqləyin",
+			"description": "Instansı dəyişmək üçün yaxın vaxtda daxil olmaq lazımdır. Növbəti 10 dəqiqə ərzində davam etmək üçün parolunuzu daxil edin.",
+			"noPassword": "Instansı dəyişmək üçün yaxın vaxtda daxil olmaq lazımdır. Hesabınızın parolu yoxdur, buna görə davam etmək üçün yenidən daxil olun.",
+			"password": "Parol",
+			"confirm": "Təsdiqlə",
+			"signInAgain": "Yenidən daxil ol",
+			"wrongPassword": "Parol yanlışdır.",
+			"cancelled": "Saxlanmadı: kimliyiniz təsdiqlənmədi.",
+			"error": "Parolunuzu təsdiqləmək alınmadı."
+		},
+		"auditTrail": {
+			"title": "Audit jurnalı",
+			"subtitle": "Instans dəyişiklikləri: kim nəyi nə vaxt dəyişib. Gizli dəyərlər heç vaxt qeyd olunmur.",
+			"empty": "Hələ qeyd olunmuş instans dəyişikliyi yoxdur.",
+			"loadMore": "Daha çox yüklə",
+			"when": "Nə vaxt",
+			"who": "Kim",
+			"what": "Nə",
+			"system": "Sistem",
+			"actions": {
+				"instanceSettingsUpdated": "Instans ayarlarını dəyişdi",
+				"instanceAdminAdded": "Instans admini əlavə etdi",
+				"instanceAdminRemoved": "Instans adminini çıxardı",
+				"instanceReauthenticated": "Parolunu təsdiqlədi",
+				"userCreated": "Hesab yaratdı",
+				"userRoleChanged": "Hesabın rolunu dəyişdi",
+				"userBanned": "Hesabı blokladı",
+				"userUnbanned": "Bloku götürdü",
+				"userRemoved": "Hesabı sildi",
+				"userPasswordSet": "Hesabın parolunu təyin etdi",
+				"userSessionsRevoked": "Hesabın sessiyalarını bağladı",
+				"userImpersonated": "Başqa hesab kimi daxil oldu",
+				"cliAdminPromoted": "Instans admini təyin etdi (bərpa CLI)",
+				"cliAdminDemoted": "Instans adminini çıxardı (bərpa CLI)",
+				"cliPasswordReset": "Parolu sıfırladı (bərpa CLI)",
+				"cliUserUnbanned": "Bloku götürdü (bərpa CLI)"
+			}
 		}
 	},
 	"instanceAdmin": {
@@ -8374,7 +9439,8 @@
 			"email": "E-poçt",
 			"general": "Ümumi",
 			"publicBoards": "İctimai lövhələr",
-			"workspaces": "İş sahələri"
+			"workspaces": "İş sahələri",
+			"ai": "Sİ"
 		},
 		"oauth": {
 			"authorizationUrl": "Səlahiyyətləndirmə URL-i",
@@ -8595,7 +9661,11 @@
 				"label": "Stack",
 				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
 			},
-			"title": "Quick facts"
+			"title": "Quick facts",
+			"ai": {
+				"label": "Sİ",
+				"value": "İstəyə bağlı və defolt olaraq söndürülü: Sİ-dən soruş, Qur rejimi və Sİ agentləri, Claude və ya öz serverinizdəki modellə"
+			}
 		},
 		"guidelines": {
 			"do": {
@@ -8805,5 +9875,1713 @@
 		},
 		"title": "One product. Two ways to run it.",
 		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+	},
+	"templates": {
+		"form": {
+			"addSubtask": "Əlavə et",
+			"assignees": "İcraçılar",
+			"assigneesNone": "Layihə üzrə standart",
+			"create": "Şablon yarat",
+			"createTitle": "Yeni tapşırıq şablonu",
+			"description": "Yeni tapşırıq bununla başlayır. Tapşırıq yaradılanda hər şey redaktə edilə bilən qalır.",
+			"editTitle": "Tapşırıq şablonunu redaktə et",
+			"estimate": "Qiymətləndirmə",
+			"labels": "Etiketlər",
+			"labelsEmpty": "Etiket tapılmadı",
+			"labelsNone": "Etiket yoxdur",
+			"labelsSearch": "Etiketləri axtar",
+			"moveDown": "{{title}} aşağı köçür",
+			"moveUp": "{{title}} yuxarı köçür",
+			"name": "Ad",
+			"namePlaceholder": "Xəta hesabatı",
+			"notSet": "Təyin edilməyib",
+			"priority": "Prioritet",
+			"removeSubtask": "{{title}} sil",
+			"save": "Şablonu yadda saxla",
+			"status": "Vəziyyət",
+			"statusDefault": "Layihə üzrə standart",
+			"subtaskPlaceholder": "Alt tapşırıq əlavə edin",
+			"subtasks": "Alt tapşırıqlar",
+			"subtaskTitle": "Alt tapşırıq {{number}}",
+			"taskDescription": "Təsvir",
+			"taskDescriptionPlaceholder": "Təkrarlama addımları, gözlənilən nəticə…",
+			"titlePattern": "Başlıq formatı",
+			"titlePatternHint": "{title} daxil edilən başlıqla əvəz olunur. O olmadıqda daxil edilən başlıq formatdan sonra gəlir.",
+			"titlePatternPlaceholder": "Xəta: {title}"
+		},
+		"settings": {
+			"add": "Yeni şablon",
+			"deleteAria": "{{name}} şablonunu sil",
+			"deleteConfirm": "Sil",
+			"deleteDescription": "Ondan yaradılmış tapşırıqlar olduğu kimi qalır.",
+			"deleteTitle": "{{name}} şablonu silinsin?",
+			"description": "Yeni tapşırıqlar üçün başlanğıc nöqtələri: başlıq formatı, standart sahələr və alt tapşırıq siyahısı.",
+			"editAria": "{{name}} şablonunu redaktə et",
+			"empty": "Hələ şablon yoxdur.",
+			"loadError": "Şablonlar yüklənə bilmədi.",
+			"noPermission": "Şablonları yalnız layihəni redaktə edə bilən şəxslər dəyişə bilər.",
+			"retry": "Yenidən cəhd et",
+			"subtaskCount_one": "{{count}} alt tapşırıq",
+			"subtaskCount_other": "{{count}} alt tapşırıq",
+			"title": "Tapşırıq şablonları",
+			"toast": {
+				"created": "Şablon yaradıldı",
+				"deleted": "Şablon silindi",
+				"deleteError": "Şablon silinə bilmədi",
+				"error": "Şablon yadda saxlanıla bilmədi",
+				"updated": "Şablon yadda saxlanıldı"
+			}
+		},
+		"use": {
+			"applied": "Şablon: {{name}}",
+			"button": "Şablon",
+			"menuLabel": "Şablondan istifadə et",
+			"quickAdd": "Şablondan yarat",
+			"removeSubtask": "{{title}} alt tapşırığını sil",
+			"subtaskError_one": "Tapşırıq yaradıldı, lakin {{count}} alt tapşırıq əlavə edilə bilmədi",
+			"subtaskError_other": "Tapşırıq yaradıldı, lakin {{count}} alt tapşırıq əlavə edilə bilmədi",
+			"subtasksTitle_one": "Şablondan {{count}} alt tapşırıq",
+			"subtasksTitle_other": "Şablondan {{count}} alt tapşırıq"
+		}
+	},
+	"delivery": {
+		"forecast": {
+			"title": "Proqnoz",
+			"likelyBy": "85% ehtimalla {{date}} tarixinədək bitəcək",
+			"percentiles": "50%: {{p50}} · 95%: {{p95}}",
+			"chanceByEnd": "{{date}} tarixinədək bitmə ehtimalı: {{percent}}%",
+			"beyondHorizon": "Hazırkı templə iki ildən çox",
+			"open_one": "{{count}} açıq tapşırıq",
+			"open_other": "{{count}} açıq tapşırıq",
+			"complete": "Bütün tapşırıqlar tamamlanıb",
+			"insufficient": {
+				"short_span": "Hələ kifayət qədər tarixçə yoxdur: proqnoz üçün bu layihədə ən azı 14 günlük iş lazımdır.",
+				"few_completions": "Hələ kifayət qədər tarixçə yoxdur: son 8 həftədə 5-dən az tapşırıq tamamlanıb.",
+				"few_active_days": "Hələ kifayət qədər tarixçə yoxdur: son 8 həftədə tapşırıqlar 3 gündən az gündə tamamlanıb."
+			},
+			"howCalculated": "Bu necə hesablanır?",
+			"method": {
+				"title": "Monte Karlo proqnozu",
+				"body": "Margaya komandanızın real tempini {{iterations}} dəfə təkrarlayır. Hər simulyasiya günü aşağıdakı tarixçədən təsadüfi bir günün tamamlanmış tapşırıqlarını götürür və açıq tapşırıqlar bitənədək davam edir. Tarixlər simulyasiyaların 50%, 85% və 95%-nin nə vaxt bitdiyini göstərir.",
+				"window": "Tarixçə: {{from}} – {{to}}",
+				"completed": "Tamamlanmış tapşırıqlar: {{total}}",
+				"activeDays": "Tamamlanma olan günlər: {{days}}",
+				"perDay": "Gündəlik tamamlanan: {{min}}–{{max}}",
+				"perWeek": "Həftəlik orta: {{perWeek}}",
+				"team": "Temp bütün layihəyə aiddir, ona görə bu əhatədən kənar iş də nəzərə alınır.",
+				"seed": "Toxum {{seed}}: eyni məlumatlar bütün gün eyni nəticəni verir."
+			},
+			"error": "Proqnozu yükləmək mümkün olmadı",
+			"retry": "Yenidən cəhd edin"
+		},
+		"risks": {
+			"title": "Risklər",
+			"empty": "Risk tapılmadı",
+			"showAll": "Hamısını göstər ({{total}})",
+			"showLess": "Daha az göstər",
+			"noCycleTime": "Uzanan iş, başlanğıcı qeydə alınmış 10 tapşırıq tamamlandıqdan sonra görünəcək.",
+			"hiddenTask": "Görə bilmədiyiniz tapşırıq",
+			"truncated": "Yalnız ilk 2.000 açıq tapşırıq yoxlanılıb.",
+			"error": "Riskləri yükləmək mümkün olmadı",
+			"someone": "Kimsə",
+			"severity": {
+				"high": "Yüksək risk",
+				"medium": "Orta risk",
+				"low": "Aşağı risk"
+			},
+			"criticalPath": {
+				"ends": "Kritik yol {{date}} tarixində bitir",
+				"chain_one": "Ən uzun asılılıq zənciri: {{count}} tapşırıq",
+				"chain_other": "Ən uzun asılılıq zənciri: {{count}} tapşırıq"
+			},
+			"kinds": {
+				"critical_path_late": "Kritik yol {{date}} tarixində, {{deadline}} son tarixindən sonra bitir",
+				"critical_path_tight": "Kritik yol {{date}} tarixində, {{deadline}} son tarixinə çox yaxın bitir",
+				"blocked_chain_one": "{{head}} {{count}} tapşırığı bloklayır",
+				"blocked_chain_other": "{{head}} {{count}} tapşırığı bloklayır",
+				"ageing_one": "{{count}} tapşırıq {{days}} gündən çoxdur icradadır, adi haldan uzun",
+				"ageing_other": "{{count}} tapşırıq {{days}} gündən çoxdur icradadır, adi haldan uzun",
+				"overdue_cluster_one": "{{name}}: {{count}} gecikmiş tapşırıq",
+				"overdue_cluster_other": "{{name}}: {{count}} gecikmiş tapşırıq",
+				"overdue_cluster_unassigned_one": "İcraçısı olmayan {{count}} gecikmiş tapşırıq",
+				"overdue_cluster_unassigned_other": "İcraçısı olmayan {{count}} gecikmiş tapşırıq",
+				"overdue_one": "{{count}} gecikmiş tapşırıq",
+				"overdue_other": "{{count}} gecikmiş tapşırıq",
+				"unassigned_near_deadline_one": "Son tarixi {{date}} olan {{count}} təyin edilməmiş tapşırıq",
+				"unassigned_near_deadline_other": "Son tarixi ən gec {{date}} olan {{count}} təyin edilməmiş tapşırıq",
+				"dependency_loop_one": "{{count}} tapşırıq bloklama dövrəsindədir",
+				"dependency_loop_other": "{{count}} tapşırıq dövrə şəklində bir-birini bloklayır"
+			}
+		},
+		"home": {
+			"title": "Risk altında",
+			"empty": "Cari dövrlərinizdə risk altında heç nə yoxdur",
+			"context": "{{project}} · {{cycle}}"
+		},
+		"tab": {
+			"description": "Bu layihənin açıq işinin proqnozu və riskləri"
+		}
+	},
+	"ai": {
+		"rules": {
+			"title": "Təsvirdən qayda",
+			"description": "Avtomatlaşdırmanı sadə sözlərlə təsvir edin. Sİ onu redaktə edə, yaxın tarixçə üzərində sınaya və saxlaya biləcəyiniz adi qaydaya çevirir. Saxlanılan qaydalar Sİ olmadan işləyir.",
+			"label": "Qaydanı təsvir edin…",
+			"placeholder": "Məsələn: GitHub pull request birləşdiriləndə tapşırığı Tamamlandı sütununa köçür",
+			"compile": "Qayda yarat",
+			"compiling": "Qayda yazılır…",
+			"unsupportedTitle": "Avtomatlaşdırmalarla mümkün deyil",
+			"rejected": "Yoxlamadan keçmədiyi üçün kənarda qalan təklif olunmuş qaydalar: {{rejected}}",
+			"noRules": "Bu təsvirdən qayda yaratmaq mümkün olmadı.",
+			"workflowRule": "İş axını qaydası",
+			"integration": "İnteqrasiya",
+			"when": "Nə vaxt",
+			"moveTo": "Tapşırığı köçür",
+			"historyWindow": "Təkrar oynadılacaq tarixçə",
+			"days7": "Son 7 gün",
+			"days30": "Son 30 gün",
+			"days90": "Son 90 gün",
+			"dryRun": "Tarixçədə sına",
+			"dryRunSummary": "Son {{days}} gündə dəyişəcək tapşırıqlar: {{changed}}",
+			"dryRunNone": "Son {{days}} gündə heç nə dəyişməzdi.",
+			"dryRunError": "Bu qaydanı tarixçə üzərində təkrar oynatmaq mümkün olmadı.",
+			"more": "Göstərilməyən digər uyğunluqlar: {{more}}",
+			"archived": "Arxivləşdirildi",
+			"outcomes": {
+				"unchanged": "artıq oradadır",
+				"skipped": "toxunulmadı"
+			},
+			"notes": {
+				"integration_not_connected": "Bu inteqrasiya layihəyə qoşulmayıb, ona görə təkrar oynadılacaq tarixçə yoxdur.",
+				"branch_push_last_only": "Hər budağın yalnız son push-u qeyd olunur.",
+				"threshold_from_last_update": "Hər tapşırığın son yenilənməsinə əsaslanır; tarixlər qaydanın onu nə vaxt götürəcəyini göstərir.",
+				"flow_alerts_notify_only": "Axın anomaliyası xəbərdarlıqları yalnız layihə rəhbərinə bildiriş göndərir; tapşırıqları dəyişmir.",
+				"nothing_enabled": "Bu qayda heç nəyi aktivləşdirmir, ona görə heç nə dəyişməzdi.",
+				"conditions_current_state": "Şərtlər hər tapşırığın hazırkı vəziyyətinə görə yoxlanıldı; tarixçədə yalnız dəyişikliklər saxlanılır."
+			},
+			"save": "Qaydanı saxla",
+			"discard": "Rədd et",
+			"saved": "Qayda saxlanıldı",
+			"saveError": "Qaydanı saxlamaq mümkün olmadı."
+		},
+		"build": {
+			"command": "Sİ ilə qur…",
+			"title": "Sİ ilə qur",
+			"description": "Nəyi planlaşdırmaq istədiyinizi təsvir edin. Sİ nəzərdən keçirməyiniz üçün layihə, dövrlər və tapşırıqlar təklif edir. Siz təsdiqləyənə qədər heç nə yaradılmır.",
+			"promptLabel": "Nəyi planlaşdıraq?",
+			"promptPlaceholder": "4-cü rüb üçün 3 sprintdən ibarət vebsaytın yenilənməsini planlaşdır",
+			"target": "Harada yaradılsın",
+			"targetCurrent": "{{name}} daxilində",
+			"targetNew": "Yeni layihə",
+			"deep": "Daha dərindən düşün (daha yavaş)",
+			"draft": "Plan təklif et",
+			"drafting": "Plan hazırlanır…",
+			"cancel": "Ləğv et",
+			"back": "Geri",
+			"create_one": "{{count}} element yarat",
+			"create_other": "{{count}} element yarat",
+			"creating": "Plan yaradılır",
+			"progress": "{{total}} elementdən {{done}} yaradıldı…",
+			"close": "Bağla",
+			"openProject": "Layihəni aç",
+			"empty": {
+				"text": "Bu layihədə hələ tapşırıq yoxdur. İşi təsvir edin, Sİ nəzərdən keçirməyiniz üçün tapşırıqlar təklif etsin."
+			},
+			"review": {
+				"description": "Planı nəzərdən keçirin. İstənilən elementin seçimini götürün, onu redaktə edin və ya sırasını dəyişin, sonra yaradın.",
+				"project": "Layihə",
+				"projectName": "Ad",
+				"projectKey": "Açar",
+				"projectDescription": "Təsvir",
+				"columns": "Yeni sütunlar",
+				"labels": "Etiketlər",
+				"cycles": "Dövrlər",
+				"modules": "Modullar",
+				"moduleName": "Modulun adı",
+				"tasks_one": "{{count}} tapşırıq",
+				"tasks_other": "{{count}} tapşırıq",
+				"include": "{{name}} daxil edilsin",
+				"taskTitle": "Tapşırığın başlığı",
+				"taskDescription": "Tapşırığın təsviri",
+				"priority": "Prioritet",
+				"estimate": "Qiymətləndirmə (xal)",
+				"module": "Modul",
+				"none": "Yoxdur",
+				"taskLabels": "Etiketlər: {{labels}}",
+				"subtasks": "Alt tapşırıqlar",
+				"subtaskTitle": "Alt tapşırığın başlığı",
+				"moveUp": "{{name}} yuxarı köçür",
+				"moveDown": "{{name}} aşağı köçür",
+				"cycle": {
+					"label": "Dövr",
+					"name": "Dövrün adı",
+					"startDate": "Başlanğıc",
+					"endDate": "Son"
+				}
+			},
+			"done": {
+				"success_one": "Hazırdır. {{count}} tapşırıq yaradıldı.",
+				"success_other": "Hazırdır. {{count}} tapşırıq yaradıldı.",
+				"partial_one": "{{count}} element istisna olmaqla hər şey yaradıldı:",
+				"partial_other": "{{count}} element istisna olmaqla hər şey yaradıldı:",
+				"estimatesSkipped": "Layihədə aktiv xal qiymətləndirmə sistemi olmadığı üçün qiymətləndirmələr əlavə edilmədi.",
+				"created": {
+					"tasks_one": "{{count}} tapşırıq",
+					"tasks_other": "{{count}} tapşırıq",
+					"subtasks_one": "{{count}} alt tapşırıq",
+					"subtasks_other": "{{count}} alt tapşırıq",
+					"cycles_one": "{{count}} dövr",
+					"cycles_other": "{{count}} dövr",
+					"modules_one": "{{count}} modul",
+					"modules_other": "{{count}} modul",
+					"columns_one": "{{count}} sütun",
+					"columns_other": "{{count}} sütun",
+					"labels_one": "{{count}} etiket",
+					"labels_other": "{{count}} etiket"
+				}
+			},
+			"kinds": {
+				"project": "Layihə",
+				"column": "Sütun",
+				"cycle": "Dövr",
+				"module": "Modul",
+				"task": "Tapşırıq",
+				"subtask": "Alt tapşırıq",
+				"label": "Etiket",
+				"estimate": "Qiymətləndirmə",
+				"cycle_tasks": "Dövrün tapşırıqları",
+				"module_tasks": "Modulun tapşırıqları"
+			},
+			"chat": {
+				"planLabel": "Təklif olunan dəyişikliklər",
+				"planning": "Dəyişikliklər planlaşdırılır…",
+				"nothing": "Bu sorğu üçün dəyişdiriləcək bir şey yoxdur.",
+				"awaiting": "Cavab gözlənilir",
+				"ready": "Hazır dəyişikliklər: {{count}}. Davam etmək üçün təsdiqləyin.",
+				"applying": "Dəyişikliklər tətbiq olunur…",
+				"confirm": "Təsdiqlə",
+				"cancel": "Ləğv et",
+				"cancelled": "Ləğv edildi. Heç nə dəyişmədi.",
+				"remove": "{{title}} sil",
+				"confirmDestructive": "Bəli, sil",
+				"truncated": "Plan ilk 50 dəyişikliyə qədər qısaldıldı.",
+				"appliedSummary": "Tətbiq olundu: {{done}} / {{total}}",
+				"autopilotApplied": "Avtopilot tərəfindən dərhal tətbiq olundu.",
+				"autopilotOff": "Bu iş sahəsində avtopilot söndürülüb. Aşağıdakı dəyişiklikləri nəzərdən keçirin.",
+				"autopilotReview": "Bu dəyişikliklərin bəziləri əvvəlcə sizin yoxlamanızı tələb edir.",
+				"done": "Hazırdır",
+				"open": "Aç",
+				"skipped": "Ötürüldü",
+				"failed": "Uğursuz oldu",
+				"undo": "Geri qaytar",
+				"undone": "Geri qaytarıldı",
+				"undoFailed": "Bu dəyişikliyi geri qaytarmaq mümkün olmadı.",
+				"forbidden": "Burada süni intellektlə dəyişiklik edə bilməzsiniz.",
+				"pickCandidate": "Bunu nəzərdə tutmusunuz:",
+				"fields": {
+					"name": "Ad",
+					"key": "Açar",
+					"title": "Başlıq",
+					"priority": "Prioritet",
+					"dueDate": "Son tarix",
+					"assignee": "İcraçı",
+					"unassigned": "Heç kim",
+					"startDate": "Başlanğıc",
+					"endDate": "Son",
+					"content": "Şərh"
+				},
+				"problems": {
+					"forbidden": "Bunun üçün icazəniz yoxdur.",
+					"not_found": "İstinad etdiyi bir şey tapılmadı.",
+					"ambiguous": "Bu ad birdən çox nəfərə uyğun gəlir.",
+					"unresolved_ref": "Edilə bilməyən bir dəyişiklikdən asılıdır.",
+					"feature_off": "Bu funksiya layihədə söndürülüb.",
+					"invalid": "Bu dəyişiklik yazıldığı kimi edilə bilməz."
+				},
+				"ops": {
+					"create_project": "Yeni layihə",
+					"create_task": "Yeni tapşırıq",
+					"update_task": "Tapşırığı redaktə et",
+					"set_status": "Statusu dəyiş",
+					"assign": "Təyin et",
+					"add_comment": "Şərh yaz",
+					"create_cycle": "Yeni dövr",
+					"add_to_cycle": "Dövrə əlavə et",
+					"create_module": "Yeni modul",
+					"add_to_module": "Modula əlavə et",
+					"create_page": "Yeni səhifə",
+					"link_tasks": "Tapşırıqları əlaqələndir",
+					"create_label": "Yeni etiket",
+					"delete_task": "Tapşırığı sil",
+					"run_agent": "Agenti işə sal"
+				},
+				"agentRun": {
+					"title": "Agentin icrası",
+					"loading": "İcra yüklənir…",
+					"loadError": "Bu icranı yükləmək mümkün olmadı.",
+					"inProgress": "Davam edir"
+				},
+				"noneReady": "Hələ heç nə tətbiq edilə bilməz. İşarələnmiş dəyişiklikləri düzəldin və ya silin, ya da yenidən soruşun."
+			},
+			"context": {
+				"title": "Kontekst ({{count}})",
+				"facts": "Layihələr: {{projects}} · İnsanlar: {{members}} · Dövrlər: {{cycles}}",
+				"memory": "Yaddaş qeydləri: {{count}}",
+				"history": "Əvvəlki mesajlar: {{count}}"
+			}
+		},
+		"duplicates": {
+			"check": "Sİ ilə yoxla",
+			"checking": "Yoxlanılır…",
+			"checkedTitle": "Sİ bunları dublikat üçün yoxladı",
+			"none": "Ehtimal olunan dublikat yoxdur.",
+			"verdict": {
+				"duplicate": "Ehtimal ki, dublikatdır",
+				"related": "Əlaqəli"
+			},
+			"mark": "Bunun dublikatı",
+			"markLabel": "Yeni tapşırığı {{key}} tapşırığının dublikatı kimi qeyd et",
+			"marked": "Qeyd edildi",
+			"willLink": "Yeni tapşırıq {{key}} tapşırığının dublikatı kimi qeyd ediləcək.",
+			"undo": "Geri al",
+			"linkError": "Tapşırıq yaradıldı, lakin onu {{key}} tapşırığının dublikatı kimi qeyd etmək mümkün olmadı."
+		},
+		"triage": {
+			"button": "Çeşidləmə təklif et",
+			"title": "Çeşidləmə təklifləri",
+			"loading": "Oxşar işlərə baxılır…",
+			"empty": "Bu element üçün təklif yoxdur.",
+			"retry": "Yenidən cəhd et",
+			"close": "Təklifləri bağla",
+			"accept": "Qəbul et",
+			"acceptAll": "Hamısını qəbul et",
+			"edit": "Redaktə et",
+			"dismiss": "Rədd et",
+			"applied": "Tətbiq edildi",
+			"acceptError": "Bu təklifi tətbiq etmək mümkün olmadı.",
+			"autoApplied": "Bu layihə təklif olunan etiketləri avtomatik əlavə edir.",
+			"sameTitle": "Mövcud tapşırıqla eyni başlıq",
+			"projectAdvice": "Sorğular öz layihəsində qalır: bunu rədd edin və orada göndərilməsini xahiş edin.",
+			"otherProjectDuplicate": "Sorğunu dublikat kimi yalnız bu layihədəki tapşırıq bağlaya bilər.",
+			"openTask": "{{key}} tapşırığını yeni tabda aç",
+			"fields": {
+				"label": "Etiket",
+				"assignee": "İcraçı",
+				"priority": "Prioritet",
+				"project": "Layihə",
+				"duplicate": "Ehtimal olunan dublikat"
+			},
+			"settings": {
+				"title": "Çeşidləmə təklifləri",
+				"description": "Yeni tapşırıqlar və daxil olan sorğular üçün Sİ təklifləri. Hər təklifi bir nəfər qəbul edir, redaktə edir və ya rədd edir.",
+				"autoApply": "Etiket təkliflərini avtomatik tətbiq et",
+				"autoApplyHint": "Təklif olunan etiketlər dərhal əlavə olunur və hər biri audit jurnalında qeyd edilir. İcraçı, prioritet, layihə və dublikatlar həmişə bir nəfərin qərarını gözləyir.",
+				"saved": "Çeşidləmə parametri saxlanıldı",
+				"saveError": "Çeşidləmə parametrini saxlamaq mümkün olmadı."
+			},
+			"liveLabels": {
+				"title": "Təklif olunan etiketlər",
+				"add": "{{name}} etiketini əlavə et"
+			}
+		},
+		"translate": {
+			"action": "Tərcümə et",
+			"translating": "Tərcümə edilir…",
+			"translatedFrom": "Orijinalın dili: {{language}}",
+			"translated": "Tərcümə edildi",
+			"showOriginal": "Orijinalı göstər",
+			"showTranslation": "Tərcüməni göstər",
+			"settings": {
+				"autoTranslate": "Şərhləri avtomatik tərcümə et",
+				"autoTranslateHint": "Başqa dildə yazılmış şərhlər hər oxucu üçün açılanda tərcümə olunur. Söndürüldükdə oxucular Tərcümə et düyməsinə basır."
+			}
+		},
+		"brief": {
+			"button": "Hesabat",
+			"buttonLabel": "Maraqlı tərəflər üçün hesabat yaz",
+			"title": "Maraqlı tərəflər üçün hesabat",
+			"close": "Hesabatı bağla",
+			"intro": "Bu işin hesablanmış irəliləyişi, dəyişiklikləri, riskləri və proqnozundan status hesabatı yazır. Adı çəkilən hər tapşırığa istinad verilir.",
+			"audience": "Auditoriya",
+			"audiences": {
+				"team": "Komanda",
+				"leadership": "Rəhbərlik",
+				"client": "Müştəri"
+			},
+			"generate": "Hesabat yaz",
+			"regenerate": "Yenidən yaz",
+			"writing": "Hesabat yazılır…",
+			"stop": "Dayandır",
+			"copy": "Kopyala",
+			"copied": "Kopyalandı",
+			"copyError": "Hesabatı kopyalamaq mümkün olmadı.",
+			"saveAsPage": "Səhifə kimi saxla",
+			"saved": "Hesabat səhifə kimi saxlanıldı",
+			"saveError": "Səhifəni saxlamaq mümkün olmadı.",
+			"openPage": "Səhifəni aç",
+			"pageTitle": "Status hesabatı: {{name}} ({{date}})",
+			"facts": {
+				"title": "İstifadə olunan faktlar",
+				"note": "Bu rəqəmlər Sİ-dən deyil, Margaya-dan gəlir. Saxlanılan və ya kopyalanan hesabat növbəti hesabat üçün müqayisə nöqtəsinə çevrilir.",
+				"progress": "İrəliləyiş",
+				"progressValue": "{{percent}}% ({{total}} tapşırıqdan {{completed}} tamamlanıb)",
+				"sinceLast": "Son hesabatdan bəri ({{date}})",
+				"sinceDays": "Son 7 gün",
+				"changes": "Tamamlanan: {{completed}} · Əlavə olunan: {{added}} · Çıxarılan: {{removed}}",
+				"forecast": "Proqnoz",
+				"forecastValue": "85% ehtimalla {{date}} tarixinədək",
+				"forecastDone": "Görüləsi iş qalmayıb",
+				"forecastNone": "Hələ kifayət qədər tarixçə yoxdur",
+				"risks": "Risklər",
+				"diff": "Dəyişiklik",
+				"progressDiff": "İrəliləyiş {{before}}% → {{now}}%",
+				"forecastDiff": "Proqnoz {{before}} → {{now}}"
+			}
+		},
+		"ask": {
+			"title": "Sİ-dən soruş",
+			"description": "İş sahənizlə bağlı suallarınızı öz sözlərinizlə verin. Cavablar yalnız gördüyünüz tapşırıqlara, səhifələrə və şərhlərə əsaslanır və hər məlumatın mənbəyini göstərir.",
+			"greeting": "Salam! Nəyi bilmək istərdiniz?",
+			"placeholder": "Sİ-dən soruşun, kontekst üçün @, əmrlər üçün /",
+			"send": "Soruş",
+			"stop": "Dayandır",
+			"stopped": "Dayandırıldı.",
+			"newChat": "Yeni söhbət",
+			"expand": "Genişləndir",
+			"collapse": "Kiçilt",
+			"scopeProject": "{{project}} daxilində",
+			"scopeWorkspace": "Bütün iş sahəsi",
+			"removeScope": "Bunun əvəzinə bütün iş sahəsi haqqında soruş",
+			"searching": "İş sahəniz axtarılır…",
+			"noResults": "İş sahənizdə bununla bağlı heç nə tapmadım. Başqa sözlər yoxlayın və ya layihə, dövr ya da tapşırıq açarı göstərin.",
+			"sources": "Mənbələr",
+			"sourcesCount": "Mənbələr ({{total}})",
+			"closestMatches": "Ən yaxın nəticələr",
+			"copy": "Kopyala",
+			"copied": "Kopyalandı",
+			"copyError": "Cavabı kopyalamaq mümkün olmadı",
+			"commentOn": "{{key}} üzrə şərh",
+			"pageSource": "Səhifə: {{title}}",
+			"openSource": "{{title}} aç",
+			"disclaimer": "Cavablar yalnız gördüklərinizdən istifadə edir. Hərəkət etməzdən əvvəl mənbələri yoxlayın.",
+			"you": "Siz",
+			"answer": "Cavab",
+			"forbidden": "Bu iş sahəsində Sİ-dən istifadə etməyə icazəniz yoxdur.",
+			"palette": "Sİ-dən soruş…",
+			"paletteAbout": "Sİ-dən soruş: {{question}}",
+			"examples": {
+				"title": "Bunu soruşmağa çalışın",
+				"overdue": "Nə gecikib?",
+				"mine": "Açıq tapşırıqlarım hansılardır?",
+				"recent": "Bu həftə nə dəyişib?",
+				"summarize": "Bu layihəni xülasə et",
+				"chart": "Tapşırıqları statusa görə diaqramda göstər",
+				"cycleBlockers": "Cari dövrü nə əngəlləyir?"
+			},
+			"history": {
+				"title": "Tarixçə",
+				"empty": "Hələ saxlanmış söhbət yoxdur.",
+				"localOnly": "Söhbətlər yalnız bu brauzerdə saxlanılır.",
+				"delete": "Söhbəti sil",
+				"clear": "Tarixçəni təmizlə",
+				"clearConfirm": "Bu brauzerdəki bütün saxlanmış söhbətlər silinsin? Bu əməliyyatı geri qaytarmaq mümkün deyil.",
+				"search": "Söhbətlərdə axtar",
+				"noMatches": "Uyğun söhbət yoxdur.",
+				"loading": "Söhbətlər yüklənir…",
+				"pin": "Söhbəti bərkit",
+				"unpin": "Söhbətin bərkidilməsini ləğv et",
+				"pinned": "Bərkidilmiş",
+				"rename": "Söhbətin adını dəyiş",
+				"renameLabel": "Söhbətin adı",
+				"saveTitle": "Adı saxla",
+				"serverNote": "Söhbətlər iş sahənizdə saxlanılır və yalnız sizə görünür.",
+				"clearConfirmServer": "Bu iş sahəsində saxladığınız bütün söhbətlər silinsin? Bu əməliyyatı geri qaytarmaq olmaz.",
+				"importHint": "Bu brauzerdə saxlanmış söhbətlər: {{total}}",
+				"import": "İdxal et",
+				"imported": "İdxal olunan söhbətlər: {{total}}",
+				"openError": "Söhbəti açmaq mümkün olmadı."
+			},
+			"chartLabel": "Diaqram: {{title}}",
+			"chartLoading": "Diaqram çəkilir…",
+			"chartInvalid": "Bu diaqramı çəkmək mümkün olmadı.",
+			"placeholderBuild": "Nəyi yaratmaq və ya dəyişmək lazım olduğunu təsvir edin…",
+			"modelLabel": "Model: {{model}}",
+			"more": "Daha çox",
+			"moreActions": "Digər əməliyyatlar",
+			"openFullPage": "Tam səhifədə aç",
+			"paletteFullPage": "Sİ söhbətini aç (tam səhifə)",
+			"fullPageUnavailable": "Bu iş sahəsində Sİ əlçatan deyil.",
+			"shortcut": "Sİ-dən soruş panelini aç və ya bağla",
+			"regenerate": "Yenidən yarat",
+			"editQuestion": "Sualı redaktə et",
+			"resend": "Göndər",
+			"followUps": "Təklif olunan növbəti suallar",
+			"saveAsPage": "Səhifə kimi saxla",
+			"copyMarkdown": "Markdown kimi kopyala",
+			"copiedMarkdown": "Markdown kimi kopyalandı",
+			"createTask": "Bundan tapşırıq yarat",
+			"webSearch": "İnternetdə axtar",
+			"webSource": "İnternet: {{title}}",
+			"removeChip": "{{name}} çıxar",
+			"contextChips": "Bu sual üçün kontekst",
+			"contextPicker": "Kontekst əlavə et",
+			"contextHint": "Tapşırıq, səhifə, layihə, dövr, modul, insan və ya agent tapmaq üçün yazın",
+			"contextEmpty": "Heç nə tapılmadı",
+			"contextSearching": "Axtarılır…",
+			"commandMenu": "Əmrlər",
+			"commandEmpty": "Uyğun əmr yoxdur",
+			"contextKinds": {
+				"task": "Tapşırıq",
+				"page": "Səhifə",
+				"project": "Layihə",
+				"cycle": "Dövr",
+				"module": "Modul",
+				"user": "İnsan",
+				"agent": "Agent"
+			},
+			"modes": {
+				"label": "Rejim",
+				"ask": "Soruş",
+				"build": "Qur",
+				"autopilot": "Avtopilot",
+				"askHint": "Suallara cavab verir; heç nəyi dəyişmir",
+				"buildHint": "Təsdiqləməyiniz üçün dəyişikliklər təklif edir",
+				"autopilotHint": "Dəyişiklikləri dərhal tətbiq edir; hər dəyişikliyi geri qaytarmaq olar"
+			},
+			"attachments": {
+				"add": "Fayl əlavə et",
+				"type": "{{name}} əlavə edilə bilməz. Şəkil (PNG, JPEG, WebP, GIF) və ya mətn, Markdown ya da CSV faylı istifadə edin.",
+				"size": "{{name}} sığmır: qoşmaların ümumi həcmi ən çox 5 MB ola bilər.",
+				"count": "Ən çoxu 3 fayl əlavə edin.",
+				"readError": "Faylı oxumaq mümkün olmadı."
+			},
+			"voice": {
+				"start": "Diktə et",
+				"stop": "Diktəni dayandır",
+				"recording": "Dinlənilir…",
+				"transcribing": "Mətnə çevrilir…",
+				"denied": "Diktə etmək üçün mikrofona giriş icazəsi verin.",
+				"failed": "Səs yazısını mətnə çevirmək mümkün olmadı."
+			},
+			"agent": {
+				"ready": "Bu sorğunu {{agent}} agentinə göndərin.",
+				"needsTask": "{{agent}} nə üzərində işləyəcəyini bilməsi üçün @ ilə tapşırıq əlavə edin.",
+				"send": "{{agent}} agentinə göndər",
+				"error": "Agenti işə salmaq mümkün olmadı."
+			},
+			"thinking": {
+				"live": "Düşünür… {{seconds}}s",
+				"done": "{{seconds}}s düşündü"
+			},
+			"versions": {
+				"previous": "Əvvəlki cavab",
+				"next": "Növbəti cavab",
+				"label": "Cavab {{current}} / {{total}}"
+			},
+			"feedback": {
+				"up": "Yaxşı cavab",
+				"down": "Pis cavab",
+				"reasonLabel": "Nə səhv oldu? (istəyə bağlı)",
+				"reasonPlaceholder": "Məsələn: rəqəmlər səhvdir, bir tapşırıq buraxılıb",
+				"send": "Göndər",
+				"skip": "Keç",
+				"thanks": "Rəyiniz üçün təşəkkür edirik."
+			},
+			"commands": {
+				"summarize": "Xülasə",
+				"summarizeHint": "Açıq olan layihə, dövr və ya səhifə",
+				"chart": "Qrafik",
+				"chartHint": "Məlumatlarınızdan qrafik çəkin",
+				"chartPrefill": "Qrafik",
+				"brief": "Hesabat",
+				"briefHint": "Layihə, dövr və ya modul üzrə maraqlı tərəflər üçün hesabat",
+				"create": "Yarat",
+				"createHint": "Qur rejiminə keç",
+				"translate": "Tərcümə et",
+				"translateHint": "Sizin dilinizə",
+				"clear": "Təmizlə",
+				"clearHint": "Yeni söhbətə başla",
+				"skill": "Saxlanmış bacarıq",
+				"summarizeTurn": "{{name}} xülasəsi",
+				"briefTurn": "{{name}} üzrə hesabat",
+				"summarizeNeedsScope": "Xülasə üçün layihə, dövr və ya səhifə açın, yaxud @ ilə əlavə edin.",
+				"briefNeedsScope": "Hesabat üçün layihə, dövr və ya modul açın, yaxud @ ilə əlavə edin.",
+				"buildUnavailable": "Qur rejimi burada əlçatan deyil.",
+				"translatePrompt": "Son cavabını bu dilə tərcümə et: {{language}}.",
+				"translatePrefill": "Bu dilə tərcümə et ({{language}}):",
+				"this": {
+					"page": "bu səhifə",
+					"cycle": "bu dövr",
+					"module": "bu modul",
+					"project": "bu layihə"
+				}
+			},
+			"conversation": {
+				"rename": "Adını dəyiş",
+				"pin": "Bərkit",
+				"unpin": "Bərkitməni ləğv et",
+				"export": "Markdown kimi ixrac et",
+				"saveAsPage": "Səhifə kimi saxla",
+				"delete": "Söhbəti sil"
+			},
+			"save": {
+				"title": "Səhifə kimi saxla",
+				"description": "Səhifəyə mətn və mənbələrinə keçidlər əlavə olunur.",
+				"pageTitle": "Başlıq",
+				"project": "Layihə",
+				"noProjects": "Səhifəni saxlamaq üçün layihə yoxdur.",
+				"submit": "Səhifəni saxla",
+				"saved": "Səhifə kimi saxlanıldı",
+				"open": "Səhifəni aç",
+				"error": "Səhifəni saxlamaq mümkün olmadı"
+			}
+		},
+		"writing": {
+			"aiButton": "Sİ",
+			"menuLabel": "Sİ əməliyyatları",
+			"actions": {
+				"summarize": "Xülasə et",
+				"improve": "Mətni yaxşılaşdır",
+				"shorter": "Qısalt",
+				"longer": "Genişləndir",
+				"fix": "Orfoqrafiya və qrammatikanı düzəlt",
+				"translate": "Bu dilə tərcümə et…",
+				"custom": "Sİ-dən xahiş et…"
+			},
+			"customPlaceholder": "Sİ-yə nə edəcəyini deyin, məsələn, bunu yoxlama siyahısına çevir",
+			"customSubmit": "Yarat",
+			"preview": {
+				"label": "Sİ təklifi",
+				"generating": "Yazılır…",
+				"editLabel": "Təklifi redaktə et",
+				"replace": "Əvəz et",
+				"insertBelow": "Aşağıya əlavə et",
+				"discard": "İmtina et",
+				"stop": "Dayandır",
+				"retry": "Yenidən cəhd et",
+				"empty": "Sİ heç nə qaytarmadı. Yenidən cəhd edin və ya fərqli ifadə edin.",
+				"note": "Sİ səhv edə bilər. İstifadə etməzdən əvvəl yoxlayın.",
+				"incomplete": "Qaralama bitmədən dayandı. Onu yoxlayın və ya yenidən cəhd edin."
+			},
+			"summary": {
+				"button": "Xülasə et",
+				"cycle": "Dövrün xülasəsi",
+				"project": "Layihənin xülasəsi",
+				"page": "Səhifənin xülasəsi",
+				"title": "Sİ xülasəsi",
+				"generating": "Xülasə hazırlanır…",
+				"dismiss": "Bağla",
+				"copy": "Kopyala",
+				"copied": "Kopyalandı",
+				"copyError": "Xülasəni kopyalamaq mümkün olmadı.",
+				"saveAsPage": "Səhifə kimi saxla",
+				"pageTitle": "Xülasə: {{name}}",
+				"saved": "Xülasə səhifə kimi saxlanıldı",
+				"saveError": "Səhifəni saxlamaq mümkün olmadı.",
+				"openPage": "Səhifəni aç",
+				"task": "Tapşırığı xülasə et",
+				"saveAsComment": "Şərh kimi saxla",
+				"commentSaved": "Xülasə şərh kimi saxlanıldı",
+				"commentError": "Şərhi saxlamaq mümkün olmadı."
+			},
+			"spec": {
+				"button": "Spesifikasiya qaralaması hazırla",
+				"title": "Spesifikasiya qaralaması hazırla",
+				"description": "Sİ bu tapşırıq və onun kontekstindən spesifikasiya səhifəsinin qaralamasını hazırlayır. Onu yoxlayıb redaktə edin, sonra səhifəni yaradın; səhifə tapşırığa geri keçid verir.",
+				"generating": "Qaralama hazırlanır…",
+				"titleLabel": "Səhifə başlığı",
+				"bodyLabel": "Spesifikasiya",
+				"edit": "Redaktə et",
+				"preview": "Önizləmə",
+				"create": "Səhifə yarat",
+				"pageTitle": "Spesifikasiya: {{title}}",
+				"created": "Spesifikasiya səhifəsi yaradıldı",
+				"createError": "Səhifəni yaratmaq mümkün olmadı."
+			},
+			"taskWriter": {
+				"button": "Sİ ilə yaz",
+				"draft": "Başlıqdan qaralama yaz",
+				"improve": "Təkmilləşdir",
+				"instruction": "İstəyə bağlı: nəyə diqqət yetirsin?",
+				"hint": "«Bunu istifadə et» seçənə qədər heç nə dəyişmir.",
+				"writing": "Yazılır…",
+				"use": "Bunu istifadə et",
+				"retry": "Yenidən cəhd et",
+				"discard": "Ləğv et",
+				"close": "Sİ yazısını bağla"
+			},
+			"feedback": {
+				"good": "Yaxşı cavab",
+				"bad": "Pis cavab",
+				"thanks": "Rəyiniz üçün təşəkkürlər"
+			},
+			"tone": {
+				"label": "Ton: {{tone}}",
+				"legend": "Ton",
+				"default": "Standart",
+				"professional": "Peşəkar",
+				"casual": "Sərbəst"
+			},
+			"block": {
+				"command": "Sİ bloku",
+				"title": "Sİ bloku",
+				"customPlaceholder": "Sİ bu səhifədən nə yazsın?",
+				"stale": "Bu yaradıldıqdan sonra səhifə dəyişib. Dəyişiklikləri daxil etmək üçün yenidən yaradın.",
+				"accept": "Qəbul et",
+				"regenerate": "Yenidən yarat",
+				"presets": {
+					"tldr": "Xülasə (TL;DR)",
+					"faq": "Tez-tez verilən suallar",
+					"action_items": "Görüləcək işlər",
+					"custom": "Xüsusi göstəriş"
+				}
+			},
+			"title": {
+				"suggest": "Başlıq təklif et",
+				"thinking": "Başlıq düşünülür…",
+				"use": "Bu başlığı istifadə et",
+				"another": "Başqasını təklif et"
+			},
+			"comment": {
+				"menuLabel": "Bu şərh üçün Sİ köməyi",
+				"previewLabel": "Şərhiniz üçün Sİ təklifi",
+				"replace": "Qaralamanı əvəz et"
+			}
+		},
+		"errors": {
+			"AI_DISABLED": "Sİ burada söndürülüb.",
+			"AI_NOT_CONFIGURED": "Sİ düzgün qurulmayıb. Admindən Sİ parametrlərini yoxlamasını xahiş edin.",
+			"AI_ROUTE_BLOCKED": "Məxfilik parametrlərinizə görə bu məlumatlar Sİ modelinə göndərilə bilməz.",
+			"AI_BUDGET_EXCEEDED": "Sİ limitinə çatılıb. Daha sonra yenidən cəhd edin və ya admindən limiti artırmasını xahiş edin.",
+			"AI_RATE_LIMITED": "Eyni anda həddən artıq Sİ sorğusu var. Bir az gözləyib yenidən cəhd edin.",
+			"AI_REFUSED": "Sİ modeli bu sorğunu rədd etdi.",
+			"AI_PROVIDER_ERROR": "Sİ xidməti cavab vermədi. Bir az sonra yenidən cəhd edin.",
+			"unknown": "Sİ ilə bağlı xəta baş verdi. Yenidən cəhd edin.",
+			"AI_HISTORY_OFF": "Bu iş sahəsi AI söhbətlərini serverdə saxlamır. Tarixçəniz bu brauzerdə qalır."
+		},
+		"features": {
+			"connection_test": "Bağlantı testləri",
+			"ask": "Soruş",
+			"summarize": "Xülasələr",
+			"editor_assist": "Yazı köməyi",
+			"spec_draft": "Spesifikasiya qaralamaları",
+			"duplicate_check": "Dublikat yoxlamaları",
+			"talk_to_build": "Sorğudan plan",
+			"triage": "Çeşidləmə təklifləri",
+			"translate": "Tərcümələr",
+			"brief": "Maraqlı tərəflər üçün xülasələr",
+			"agent_run": "Agentlər",
+			"rule_compiler": "Avtomatlaşdırma qaydaları",
+			"capture": "Tapşırığa çevirmə",
+			"estimate": "Qiymətləndirmələr",
+			"retro": "Retrospektivlər",
+			"my_brief": "Mənim xülasəm",
+			"embedding": "Axtarış indeksləməsi",
+			"coding_handoff": "Kodlaşdırma agentləri üçün brifinqlər",
+			"build_chat": "Söhbətdə yarat",
+			"nl_filter": "Təbii dildə filtrlər",
+			"inbox_digest": "Gələnlər qutusu xülasələri",
+			"speech": "Nitqdən mətnə"
+		},
+		"providers": {
+			"anthropic": "Anthropic (Claude)",
+			"openai_compatible": "OpenAI ilə uyğun",
+			"fake": "Saxta (yalnız test üçün)"
+		},
+		"destinations": {
+			"cloud": "Bulud provayderi",
+			"local": "Lokal model"
+		},
+		"tiers": {
+			"fast": "Sürətli model",
+			"fastHint": "Qısa işlər: yenidən yazma, etiketlər, qısa xülasələr.",
+			"balanced": "Balanslı model",
+			"balancedHint": "Əksər xüsusiyyətlər: cavablar, xülasələr, qaralamalar.",
+			"deep": "Dərin model",
+			"deepHint": "Çətin işlər: planlaşdırma və agentlər."
+		},
+		"test": {
+			"title": "Bağlantını yoxla",
+			"workspaceHint": "Bu iş sahəsinin Sİ çağırışlarının getdiyi yolla bir kiçik sorğu göndərir.",
+			"button": "Bağlantını yoxla",
+			"success": "{{model}} modelinə {{ms}} ms ərzində qoşuldu"
+		},
+		"usage": {
+			"title": "İstifadə",
+			"subtitle": "Siyahı qiyməti ilə Sİ çağırışları, tokenlər və xərc. Yalnız saylar saxlanılır, sorğuların mətni və cavablar heç vaxt saxlanılmır.",
+			"rangeLabel": "Müddət",
+			"range": {
+				"thisMonth": "Bu ay",
+				"last30Days": "Son 30 gün",
+				"last90Days": "Son 90 gün"
+			},
+			"calls": "Çağırışlar",
+			"callsCount_one": "{{count}} çağırış",
+			"callsCount_other": "{{count}} çağırış",
+			"tokens": "Tokenlər",
+			"tokensSplit": "{{input}} giriş · {{output}} çıxış",
+			"cost": "Xərc",
+			"costHint": "Siyahı qiyməti ilə; lokal modellər $0 sayılır.",
+			"day": "Gün",
+			"byDay": "Gündəlik çağırışlar",
+			"byFeature": "Xüsusiyyətə görə",
+			"byModel": "Modelə görə",
+			"byUser": "Şəxsə görə",
+			"byWorkspace": "İş sahəsinə görə",
+			"empty": "Bu müddətdə Sİ istifadəsi yoxdur.",
+			"unknownUser": "Silinmiş hesab",
+			"loadError": "Sİ istifadəsini yükləmək mümkün olmadı.",
+			"retry": "Yenidən cəhd et",
+			"exportCsv": "CSV ixrac et",
+			"exportError": "İstifadə məlumatlarını ixrac etmək mümkün olmadı.",
+			"feedbackTitle": "Cavab qiymətləndirmələri",
+			"feedbackOverall": "{{total}} qiymətləndirmədən {{percent}}% müsbət",
+			"feedbackUp": "Bəyənmə",
+			"feedbackDown": "Bəyənməmə",
+			"feedbackRate": "Müsbət"
+		},
+		"instance": {
+			"title": "Sİ",
+			"subtitle": "İş sahələrinə Sİ-dən istifadə etməyə icazə verin: provayderi və modelləri seçin, məlumatların hara gedə biləcəyinə qərar verin. Siz aktivləşdirənə qədər Sİ söndürülü qalır və hər iş sahəsi də ayrıca qoşulmalıdır.",
+			"statusTitle": "Bu serverdə Sİ",
+			"statusReady": "Hazırdır",
+			"statusNotConfigured": "Qurulmayıb",
+			"statusOff": "Söndürülüb",
+			"enable": "Sİ-yə icazə ver",
+			"enableHint": "Bu aktiv olduqda və provayder qurulduqda iş sahələri Sİ xüsusiyyətlərini aktivləşdirə bilər.",
+			"providerTitle": "Provayder",
+			"providerDescription": "Bulud model provayderi. Həmin səviyyə üçün provayderin standart modelindən istifadə etmək üçün modeli boş saxlayın.",
+			"provider": "Provayder",
+			"providerHint": "Anthropic Claude tövsiyə olunur. OpenAI ilə uyğun seçim OpenAI, Azure, OpenRouter, vLLM və LM Studio-nu əhatə edir.",
+			"anthropicKey": "Anthropic API açarı",
+			"anthropicKeyHint": "Şifrələnmiş şəkildə saxlanılır. Bir daha göstərilmir.",
+			"openaiBaseUrl": "Əsas URL",
+			"openaiBaseUrlHint": "Versiya yolu daxil olmaqla, məsələn https://api.openai.com/v1. İctimai ünvan olmalıdır.",
+			"openaiKey": "API açarı",
+			"save": "Yadda saxla",
+			"testCloud": "Provayderi yoxla",
+			"testLocal": "Lokal modeli yoxla",
+			"localTitle": "Lokal model",
+			"localDescription": "Öz şəbəkənizdə işləyən, Ollama kimi OpenAI ilə uyğun server. Məhdud məlumatlar yalnız bura göndərilir.",
+			"localBaseUrl": "Əsas URL",
+			"localBaseUrlHint": "Məsələn http://ollama:11434/v1. Burada özəl ünvanlara icazə verilir.",
+			"localModel": "Model",
+			"localKey": "API açarı",
+			"localKeyHint": "İstəyə bağlı. Yalnız serveriniz tələb edirsə, məsələn --api-key ilə başladılmış vLLM. Şifrələnmiş saxlanılır.",
+			"localOnly": "Yalnız lokal rejim",
+			"localOnlyHint": "Hər Sİ çağırışı lokal modelə gedir; bulud provayderinə heç nə göndərilmir.",
+			"privacyTitle": "Məxfilik",
+			"privacyDescription": "Hər növ məlumatın hara gedə biləcəyi. İş sahələri daha sərt ola bilər, amma heç vaxt daha yumşaq ola bilməz.",
+			"restrictedRoute": "Məhdud layihələr",
+			"restrictedRouteHint": "İş sahəsi Sİ-yə onları oxumağa icazə verdikdə məhdud layihələrdən gələn məlumatlar.",
+			"privateRoute": "Digər iş sahəsi məlumatları",
+			"privateRouteHint": "Açıq layihələrdəki tapşırıqlar, səhifələr və şərhlər.",
+			"routeBlocked": "Heç vaxt göndərilmir",
+			"routeLocal": "Yalnız lokal model",
+			"routeCloud": "Bulud provayderinə icazə verilir",
+			"redaction": "Şəxsi məlumatları gizlət",
+			"redactionHint": "Bulud çağırışlarından əvvəl e-poçtları, telefon nömrələrini, kart nömrələrini və giriş nişanlarını yer tutucularla əvəz edir. Cavablarda real dəyərlər yenidən göstərilir.",
+			"zeroRetention": "Sıfır məlumat saxlama",
+			"zeroRetentionHint": "Provayderlə müqavilənizin heç bir məlumat saxlamadığını qeyd edin. Margaya bunu göstərir; provayder isə bunu təmin edir.",
+			"allowWorkspaceKeys": "İş sahəsi açarlarına icazə ver",
+			"allowWorkspaceKeysHint": "İş sahələri öz provayder açarlarından istifadə edə və öz istifadələrinin haqqını ödəyə bilər.",
+			"embeddingsTitle": "Vektor təsvirləri",
+			"embeddingsDescription": "İstəyə bağlıdır, semantik axtarış üçün. OpenAI ilə uyğun istənilən vektor təsvirləri xidməti işləyir. Verilənlər bazasında pgvector genişlənməsi də olmalıdır; onlardan biri olmadıqda axtarış yalnız tam mətn üzrə qalır.",
+			"vectorReady": "pgvector hazırdır",
+			"vectorAvailable": "pgvector əlçatandır",
+			"vectorUnavailable": "pgvector əlçatan deyil",
+			"embeddingsBaseUrl": "Əsas URL",
+			"embeddingsModel": "Model",
+			"embeddingsKey": "API açarı",
+			"invalidUrl": "http və ya https URL-i daxil edin.",
+			"usageTitle": "İş sahələri üzrə istifadə",
+			"usageDescription": "Bu serverdəki Sİ çağırışları iş sahəsi və model üzrə. Yalnız saylar saxlanılır.",
+			"chatTitle": "Söhbət",
+			"chatDescription": "Mühakimə modellərinin necə düşündüyü və insanların bundan nə gördüyü.",
+			"showReasoning": "Mühakiməni göstər",
+			"showReasoningHint": "Mühakimə modelinin düşüncə prosesini sual verən şəxsə göstərin. Bu heç vaxt saxlanılmır. Söndürülüb: yalnız nə qədər düşündüyü göstərilir.",
+			"localThinking": "Lokal modellərdə düşünmə",
+			"localThinkingHint": "Söndürülüb: cavablar daha sürətli olur; aktiv: lokal mühakimə modelləri əvvəlcə düşünür.",
+			"localThinkingOff": "Söndürülüb",
+			"localThinkingOn": "Aktiv",
+			"webSearchTitle": "İnternetdə axtarış",
+			"webSearchDescription": "İş sahəsi internet axtarışını aktiv etdikdə cavabların istifadə edə biləcəyi axtarış xidməti.",
+			"webSearchProvider": "Axtarış provayderi",
+			"webSearchProviderHint": "SearXNG öz serverinizdə işləyir; Brave Search və Tavily üçün API açarı lazımdır.",
+			"webSearchOff": "Söndürülüb",
+			"webSearchUrl": "SearXNG URL-i",
+			"webSearchUrlHint": "Onun JSON API-si aktiv olmalıdır.",
+			"webSearchKey": "API açarı",
+			"webSearchKeyHint": "Brave Search və ya Tavily üçün.",
+			"speechTitle": "Nitqdən mətnə",
+			"speechDescription": "Söhbətdə səsli daxiletmə. Bu olmadan, bacaran brauzerlər nitqi özləri tanıyır.",
+			"speechBaseUrl": "Son nöqtə URL-i",
+			"speechBaseUrlHint": "OpenAI ilə uyğun transkripsiya son nöqtəsi, məsələn, lokal Whisper serveri.",
+			"speechModel": "Model",
+			"speechKey": "API açarı"
+		},
+		"workspace": {
+			"navLabel": "Sİ",
+			"title": "Sİ",
+			"subtitle": "Bu iş sahəsi üçün Sİ xüsusiyyətlərini aktivləşdirin, limitlər təyin edin və özəl məlumatların necə emal olunacağını seçin.",
+			"noAccess": "Bu parametrləri görmək üçün Sİ-ni idarə etmək icazəniz olmalıdır.",
+			"loadError": "Sİ parametrlərini yükləmək mümkün olmadı.",
+			"statusTitle": "Bu iş sahəsində Sİ",
+			"statusDescription": "Siz aktivləşdirənə qədər Sİ söndürülüdür. Hər layihə yenə də öz xüsusiyyətlərində onu söndürə bilər.",
+			"enable": "Sİ-ni aktivləşdir",
+			"enableHint": "Sİ-dən istifadə icazəsi olan üzvlər Sİ xüsusiyyətlərini buna icazə verən layihələrdə görür.",
+			"enabledToast": "Sİ bu iş sahəsi üçün aktivdir",
+			"disabledToast": "Sİ bu iş sahəsi üçün söndürülüb",
+			"offOnInstance": "Quraşdırmanın inzibatçısı bu serverdə hələ Sİ-yə icazə verməyib.",
+			"notConfigured": "Sİ-yə icazə verilib, lakin hələ provayder qurulmayıb. Quraşdırmanın inzibatçısına müraciət edin.",
+			"whereDataGoes": "Məlumatlar hara gedir",
+			"whereDataGoesHint": "Bu iş sahəsinin Sİ sorğularını qəbul edən model.",
+			"zeroRetention": "Sıfır saxlama",
+			"limitsTitle": "Limitlər",
+			"limitsDescription": "Bu ay xərclənib: {{spent}}. Limitə çatıldıqda sorğular dayanır.",
+			"monthlyCap": "Aylıq büdcə (USD)",
+			"monthlyCapHint": "Siyahı qiyməti ilə, bütün iş sahəsi üçün. Limitsiz olması üçün boş saxlayın.",
+			"dailyTokens": "Hər şəxs üçün gündəlik tokenlər",
+			"dailyTokensHint": "Hər şəxsin gündə (UTC) istifadə edə biləcəyi giriş və çıxış tokenləri. Limitsiz olması üçün boş saxlayın.",
+			"noLimit": "Limit yoxdur",
+			"invalidNumber": "0 və ya daha böyük ədəd daxil edin.",
+			"saveLimits": "Limitləri yadda saxla",
+			"monthSpendOfCap": "Bu ay {{cap}} məbləğindən {{spent}} istifadə olunub.",
+			"privacyTitle": "Məxfilik",
+			"privacyDescription": "Sİ yalnız sorğu verən şəxsin görə bildiklərini görür.",
+			"includeRestricted": "Məhdud layihələri daxil et",
+			"includeRestrictedHint": "Sİ-yə məhdud layihələri onları görə bilən şəxslər üçün oxumağa icazə verin. Onların məlumatları yalnız serverin məhdud məlumatlara icazə verdiyi yerə gedir.",
+			"localOnly": "Yalnız lokal model",
+			"localOnlyHint": "Hər Sİ sorğusunu serverin lokal modelinə göndərir.",
+			"localOnlyForced": "Server yalnız lokal rejimdədir.",
+			"localOnlyUnavailable": "Bu serverdə lokal model yoxdur.",
+			"redactPii": "Şəxsi məlumatları gizlət",
+			"redactPiiHint": "Sorğular serverdən çıxmazdan əvvəl e-poçtları, telefon nömrələrini, kart nömrələrini və giriş nişanlarını yer tutucularla əvəz edir.",
+			"redactPiiForced": "Həmişə aktivdir: server hər bulud sorğusunda şəxsi məlumatları gizlədir.",
+			"approval": "Sİ dəyişikliklərini təsdiqlə",
+			"approvalHint": "Sİ-nin təklif etdiyi dəyişikliklər həmişə bir şəxsin təsdiqini gözləyir.",
+			"semanticSearch": "Semantik axtarış",
+			"semanticSearchHint": "Soruş funksiyası və dublikat yoxlaması tapşırıqları, səhifələri və şərhləri yalnız sözlərinə görə deyil, mənasına görə də tapır. Məzmun serverin vektor təsvirləri modeli ilə indekslənir.",
+			"semanticUnavailable": "Bu serverin verilənlər bazasında pgvector əlçatan deyil, buna görə axtarış yalnız tam mətn üzrə aparılır.",
+			"semanticNoEndpoint": "Bu serverdə vektor təsvirləri xidməti yoxdur, buna görə axtarış yalnız tam mətn üzrə aparılır.",
+			"semanticIndexed_one": "{{count}} element indeksləndi",
+			"semanticIndexed_other": "{{count}} element indeksləndi",
+			"semanticPaused": "İndeksləmə dayandırılıb. {{reason}}",
+			"semanticEnabledToast": "Semantik axtarış aktivdir. İndeksləmə arxa planda gedir.",
+			"semanticDisabledToast": "Semantik axtarış söndürülüb və onun indeksi silinib.",
+			"keyTitle": "Öz API açarı",
+			"keyDescription": "Serverin hesabı əvəzinə iş sahənizin öz provayder hesabından istifadə edin. Açar şifrələnmiş şəkildə saxlanılır və bir daha göstərilmir.",
+			"keyCurrent": "Saxlanmış açar",
+			"keyEnding": "{{last4}} ilə bitir",
+			"keyUnreadable": "Saxlanmış açarı artıq oxumaq mümkün deyil. Onu yenidən daxil edin.",
+			"keyRemove": "Sil",
+			"keyProvider": "Provayder",
+			"keyValue": "API açarı",
+			"keyReplace": "Açarı əvəz et",
+			"keyHint": "sk-ant- ilə başlayan Anthropic API açarı.",
+			"keyOpenAiHint": "Serverin OpenAI ilə uyğun xidmət ünvanı ilə istifadə olunur.",
+			"keyPlaceholder": "Açarı yapışdırın",
+			"keyTooShort": "Bu açar çox qısa görünür.",
+			"keySave": "Açarı yadda saxla",
+			"keySavedToast": "Açar yadda saxlanıldı",
+			"keyRemovedToast": "Açar silindi",
+			"saved": "Sİ parametrləri yadda saxlanıldı",
+			"saveError": "Sİ parametrlərini yadda saxlamaq mümkün olmadı.",
+			"chatTitle": "Sİ-dən soruş söhbəti",
+			"chatDescription": "Söhbətin bu iş sahəsindəki insanlar üçün nə edə biləcəyi.",
+			"webSearch": "İnternetdə axtarış",
+			"webSearchHint": "İnsanlar cavabların internetdə axtarış etməsinə icazə verə bilər. Nəticələr internet mənbələri kimi göstərilir.",
+			"webSearchUnavailable": "Bu instansiyada internet axtarışı qurulmayıb.",
+			"webSearchLocalOnly": "Sİ yalnız lokal modellərdə işlədikcə istifadə olunmur.",
+			"storeConversations": "Söhbət tarixçəsini serverdə saxla",
+			"storeConversationsHint": "Hər kəsin söhbətləri iş sahəsində saxlanılır ki, onları istənilən cihazda yenidən aça bilsinlər. Söndürülüb: söhbətlər yalnız hər brauzerin özündə qalır.",
+			"allowAutopilot": "Avtopilota icazə ver",
+			"allowAutopilotHint": "Qur rejimi dəyişiklikləri təsdiq olmadan tətbiq edə bilər. Hər dəyişiklik yenə də qeydə alınır və geri qaytarıla bilər."
+		},
+		"agents": {
+			"navLabel": "Agentlər",
+			"title": "Agentlər",
+			"subtitle": "Sİ agentləri onlardan xahiş edən şəxs üçün tapşırıqlar üzərində işləyən iş sahəsi üzvləridir və heç vaxt həmin şəxsdən çox hüquqa malik olmurlar.",
+			"listTitle": "İş sahəsinin agentləri",
+			"badge": "Agent",
+			"noAccess": "Agentləri yalnız Sİ-ni idarə edə bilən şəxslər qura bilər.",
+			"empty": "Hələ agent yoxdur. Birini yaradın, sonra onu şərhdə xatırladın, ona tapşırıq təyin edin və ya tapşırıqdan işə salın.",
+			"loadError": "Agentləri yükləmək mümkün olmadı.",
+			"retry": "Yenidən cəhd et",
+			"create": "Yeni agent",
+			"edit": "Agenti redaktə et",
+			"dialogHint": "Agentlərə insanlar kimi tapşırıq təyin etmək və onları xatırlatmaq olar. Onlar daxil ola bilməz və ödənişli istifadəçi kimi hesablanmır.",
+			"save": "Yadda saxla",
+			"cancel": "Ləğv et",
+			"created": "Agent yaradıldı",
+			"saved": "Agent yadda saxlanıldı",
+			"deleted": "Agent silindi",
+			"saveError": "Agenti yadda saxlamaq mümkün olmadı. Yenidən cəhd edin.",
+			"enable": "Aktivləşdir",
+			"disable": "Söndür",
+			"off": "Söndürülüb",
+			"delete": "Sil",
+			"deleteTitle": "{{name}} silinsin?",
+			"deleteBody": "Agent iş sahəsini tərk edir. Onun şərhləri və tarixçəsi qalır, icraları isə Agent Masasında saxlanılır.",
+			"spend": "Bu ay {{spent}}",
+			"spendOfBudget": "Bu ay {{budget}} məbləğindən {{spent}}",
+			"activityFilter": "Agentlər",
+			"fields": {
+				"name": "Ad",
+				"nameTaken": "Bu iş sahəsində artıq bu adda agent və ya üzv var. Başqa ad seçin.",
+				"description": "Təsvir",
+				"descriptionPlaceholder": "Bu agent nədə kömək edir",
+				"instructions": "Təlimatlar",
+				"instructionsHint": "Agent necə işləməlidir. Bunları yalnız adminlər yazır; tapşırıqlardakı, şərhlərdəki və səhifələrdəki mətn heç vaxt təlimat sayılmır.",
+				"role": "Rol",
+				"roleHint": "Agentin edə biləcəyi maksimum. Hər icra həm də xahiş edən şəxsin hüquqları ilə məhdudlaşır.",
+				"tier": "Model",
+				"tierFast": "Sürətli",
+				"tierBalanced": "Balanslı",
+				"tierDeep": "Dərin",
+				"provider": "Harada işləyir",
+				"providerDefault": "İş sahəsinin standart seçimi",
+				"providerLocal": "Yalnız lokal model",
+				"budget": "Aylıq büdcə (USD)",
+				"budgetHint": "Bu ayın xərci bu məbləğə çatdıqda icralar dayanır. Agent üçün limit olmaması üçün boş saxlayın; iş sahəsinin limitləri yenə də tətbiq olunur.",
+				"projects": "Layihələr",
+				"projectsAll": "Rolunun çatdığı bütün layihələr",
+				"projectsSome": "Yalnız bu layihələr",
+				"projectsHint": "Digər layihələrdəki icralar dayanır və agent orada qurulmadığını bildirir.",
+				"projectsNone": "Ən azı bir layihə seçin.",
+				"skills": "Bacarıqlar",
+				"skillsEmpty": "Hələ paylaşılan bacarıq yoxdur. Ask-də saxlanmış paylaşılan bacarıqlar agentlərə verilə bilər.",
+				"skillsHint": "Agent bu saxlanmış promptlara sorğuya uyğun gəldikdə əməl edir (ən çoxu 10).",
+				"webAccess": "Veb girişi",
+				"webAccessHint": "Agentə vebdə axtarmağa və iş sahəsinin konnektorlarından istifadə etməyə icazə verir. Oraya göndərdikləri Margaya-dan çıxır."
+			},
+			"status": {
+				"queued": "Növbədədir",
+				"running": "İcra olunur",
+				"awaiting_approval": "Təsdiq gözləyir",
+				"succeeded": "Hazırdır",
+				"failed": "Uğursuz oldu",
+				"cancelled": "Dayandırıldı",
+				"needs_input": "Cavab gözləyir"
+			},
+			"stepStatus": {
+				"ok": "Hazırdır",
+				"error": "Uğursuz oldu",
+				"denied": "İcazə verilmədi",
+				"pending": "Təsdiq gözləyir",
+				"applied": "Tətbiq edildi",
+				"rejected": "Rədd edildi",
+				"expired": "Müddəti bitib",
+				"reverted": "Geri alındı"
+			},
+			"step": {
+				"model": "Model çağırışı"
+			},
+			"tools": {
+				"read_task": "Tapşırığı oxu",
+				"read_project": "Layihəni oxu",
+				"read_page": "Səhifəni oxu",
+				"search_workspace": "Axtar",
+				"add_comment": "Şərh yaz",
+				"update_task": "Tapşırığı yenilə",
+				"move_status": "Vəziyyəti dəyiş",
+				"create_subtask": "Alt tapşırıq yarat",
+				"create_page": "Səhifə yarat",
+				"link_tasks": "Tapşırıqları əlaqələndir",
+				"delete_task": "Tapşırığı sil",
+				"bulk_move_status": "Bir neçə tapşırığın vəziyyətini dəyiş",
+				"ask_person": "Sual ver",
+				"web_search": "Vebdə axtarış",
+				"connector": "Xarici xidmət: {{tool}}"
+			},
+			"runErrors": {
+				"AGENT_GONE": "Agent silinib.",
+				"AGENT_DISABLED": "Agent söndürülüb.",
+				"AGENT_LEFT": "Agent artıq iş sahəsinin üzvü deyil.",
+				"PRINCIPAL_LEFT": "Xahiş edən şəxs artıq iş sahəsinin üzvü deyil.",
+				"AI_USE_DENIED": "Xahiş edən şəxsin Sİ-dən istifadə etməyə icazəsi yoxdur.",
+				"NOT_IN_SCOPE": "Tapşırıq Sİ-nin oxuya bilmədiyi layihədədir.",
+				"TIME_LIMIT": "İcra 10 dəqiqədən çox çəkdiyi üçün dayandırıldı.",
+				"OUTPUT_LIMIT": "Agentin cavabı çox uzun oldu. Daha kiçik dəyişiklik istəyin.",
+				"TURN_LIMIT": "Agentin addımları bitməmişdən əvvəl tükəndi. Daha kiçik və konkret dəyişiklik istəyin.",
+				"INTERRUPTED": "İcra yarımçıq kəsildi. Artıq edilmiş dəyişiklikləri yenə də geri almaq olar.",
+				"APPROVAL_EXPIRED": "Təklif olunan dəyişikliklər barədə 24 saat ərzində qərar verilmədi, ona görə onların müddəti bitdi.",
+				"INTERNAL": "İcra zamanı xəta baş verdi.",
+				"NEEDS_INPUT_EXPIRED": "Heç kim 24 saat ərzində agentin sualına cavab vermədi.",
+				"OUTSIDE_AGENT_PROJECTS": "Agent bu layihədə işləmək üçün qurulmayıb."
+			},
+			"change": {
+				"approve": "Təsdiqlə",
+				"reject": "Rədd et",
+				"approved": "Dəyişiklik tətbiq edildi",
+				"rejected": "Dəyişiklikdən imtina edildi",
+				"decideError": "Qərarınızı tətbiq etmək mümkün olmadı. Yenidən cəhd edin.",
+				"undo": "Geri al",
+				"undone": "Dəyişiklik geri alındı",
+				"undoError": "Bu dəyişikliyi geri almaq mümkün olmadı. Tapşırıq o vaxtdan bəri dəyişmiş ola bilər.",
+				"expiresAt": "Müddəti bitir: {{time}}",
+				"before": "Əvvəl",
+				"after": "Sonra",
+				"openPage": "Səhifəni aç",
+				"openSubtask": "Alt tapşırığı aç",
+				"openLinked": "Əlaqəli tapşırığı aç",
+				"empty": "(boş)",
+				"fields": {
+					"title": "Başlıq",
+					"priority": "Prioritet",
+					"dueDate": "Son tarix",
+					"description": "Təsvir",
+					"status": "Vəziyyət",
+					"statusOf": "{{task}} vəziyyəti",
+					"comment": "Şərh",
+					"subtask": "Yeni alt tapşırıq",
+					"page": "Yeni səhifə",
+					"relation": "Əlaqə ({{relation}})",
+					"delete": "Zibil qutusuna köçür",
+					"connectorCall": "{{connector}} çağırışı"
+				}
+			},
+			"inbox": {
+				"title": "{{agentName}} təsdiqinizi gözləyir",
+				"verb": "təsdiqinizi istəyir",
+				"cardTitle": "Təklif olunan dəyişiklik"
+			},
+			"reply": {
+				"title": "{{agentName}} sorğunuza cavab verdi",
+				"verb": "sorğunuza cavab verdi",
+				"cardTitle": "Agentin cavabı",
+				"hint": "Agent bu cavabı tapşırıqda dərc etmədi, ona görə burada göstərilir."
+			},
+			"activity": {
+				"onBehalfOf": "{{name}} adından"
+			},
+			"run": {
+				"button": "Agenti işə sal",
+				"title": "Bu tapşırıqda agenti işə salın",
+				"hint": "Agent ən çoxu sizin hüquqlarınızla işləyir. Dəyişiklikləri geri almaq olar, bəziləri isə təsdiqinizi gözləyir.",
+				"agent": "Agent",
+				"prompt": "Nə etməlidir?",
+				"promptPlaceholder": "Məsələn: bunu alt tapşırıqlara böl və prioritet təklif et.",
+				"start": "İşə sal",
+				"started": "{{name}} işə başladı",
+				"error": "Agenti işə salmaq mümkün olmadı. Yenidən cəhd edin.",
+				"recent": "Bu tapşırıqda son icralar",
+				"viewInDesk": "Agent Masasında aç"
+			},
+			"desk": {
+				"nav": "Agent Masası",
+				"title": "Agent Masası",
+				"subtitle": "Agentlərinizin nə etdiyi və nə etməkdə olduğu: hər icra addımları, xərci və dəyişiklikləri ilə.",
+				"emptyTitle": "Hələ agent icrası yoxdur",
+				"empty": "Şərhdə agenti xatırladın, ona tapşırıq təyin edin və ya onu tapşırıqdan işə salın.",
+				"allAgents": "Bütün agentlər",
+				"allStatuses": "Bütün vəziyyətlər",
+				"filterAgent": "Agentə görə filtrlə",
+				"filterStatus": "Vəziyyətə görə filtrlə",
+				"approvalsTitle": "Sizi gözləyənlər",
+				"selectRun": "Addımlarını və dəyişikliklərini görmək üçün icra seçin.",
+				"runMissing": "Bu icra mövcud deyil.",
+				"deletedAgent": "Silinmiş agent",
+				"onBehalfOf": "{{name}} üçün",
+				"cost": "Xərc",
+				"tokensLabel": "Tokenlər",
+				"tokens": "Tokenlər: {{value}}",
+				"toolCallsLabel": "Alət çağırışları",
+				"summary": "Xülasə",
+				"changes": "Dəyişiklik dəsti",
+				"noChanges": "Dəyişiklik yoxdur.",
+				"steps": "Addımlar",
+				"cancelRun": "İcranı dayandır",
+				"cancelled": "İcra dayandırıldı",
+				"cancelError": "İcranı dayandırmaq mümkün olmadı.",
+				"trigger": {
+					"mention": "Xatırladıldı",
+					"assign": "Təyin edildi",
+					"manual": "Tapşırıqdan işə salındı",
+					"schedule": "Planlaşdırılıb",
+					"automation": "Avtomatlaşdırma",
+					"chat": "Davam"
+				},
+				"project": "Layihə:",
+				"workedSeconds": "{{count}} san işlədi",
+				"workedMinutes": "{{count}} dəq işlədi"
+			},
+			"connectors": {
+				"title": "Konnektorlar",
+				"subtitle": "Veb girişi olan agentlərin çağıra biləcəyi xarici MCP serverləri. Yalnız oxuma alətləri dərhal işləyir; qalan hər şey təsdiq gözləyir.",
+				"create": "Konnektor əlavə et",
+				"edit": "Konnektoru redaktə et",
+				"delete": "Konnektoru sil",
+				"created": "Konnektor əlavə edildi",
+				"saved": "Konnektor yadda saxlandı",
+				"deleted": "Konnektor silindi",
+				"saveError": "Konnektoru yadda saxlamaq mümkün olmadı. Yenidən cəhd edin.",
+				"empty": "Hələ konnektor yoxdur. Veb girişi olan agentlərin alətlərindən istifadə etməsi üçün MCP serverinin ünvanını əlavə edin.",
+				"shared": "Paylaşılan",
+				"personal": "Yalnız siz",
+				"enable": "Yandır",
+				"disable": "Söndür",
+				"test": "Yoxla",
+				"testOk": "Qoşuldu: {{count}} alət, {{readOnly}} yalnız oxuma",
+				"testError": "Yoxlamanı icra etmək mümkün olmadı. Yenidən cəhd edin.",
+				"errors": {
+					"DESTINATION": "Ünvan ictimai server deyil.",
+					"TIMEOUT": "Server vaxtında cavab vermədi.",
+					"NETWORK": "Serverə qoşulmaq mümkün olmadı.",
+					"HTTP": "Server xəta ilə cavab verdi ({{status}}).",
+					"TOO_LARGE": "Serverin cavabı çox böyük idi.",
+					"PROTOCOL": "Bu, MCP serverinə oxşamır.",
+					"RPC": "MCP serveri sorğunu rədd etdi.",
+					"SECRET_UNREADABLE": "Saxlanmış gizli açar artıq oxunmur. Onu yenidən daxil edin."
+				},
+				"secretHint": "Gizli açar ••••{{last4}}",
+				"dialogHint": "Margaya Streamable HTTP ilə qoşulur. Gizli açarlar şifrəli saxlanılır və bir daha göstərilmir.",
+				"name": "Ad",
+				"url": "Server URL-i",
+				"urlHint": "MCP son nöqtəsi, məsələn https://mcp.example.com/mcp. O, ictimai internetdən əlçatan olmalıdır.",
+				"auth": "Autentifikasiya",
+				"authHeader": "Başlıqda gizli açar",
+				"authNone": "Yoxdur",
+				"headerName": "Başlığın adı",
+				"secret": "Gizli açar",
+				"secretKeep": "Cari gizli açarı saxlamaq üçün boş buraxın",
+				"secretHelp": "Başlığın tam dəyəri, məsələn Bearer və tokeni.",
+				"sharedToggle": "İş sahəsi ilə paylaş",
+				"sharedHint": "Agentlər paylaşılan konnektorları hər icrada istifadə edir. Yalnız sizin adınızdan icralar üçün saxlamaq üçün söndürün.",
+				"deleteTitle": "{{name}} silinsin?",
+				"deleteBody": "Agentlər artıq onun alətlərindən istifadə edə bilməz və saxlanmış gizli açarı silinir."
+			},
+			"followUp": {
+				"label": "Agentə cavab ver",
+				"placeholder": "Əlavə sual verin və ya sonra nə edilməli olduğunu deyin…",
+				"send": "Göndər",
+				"error": "Davamı başlatmaq mümkün olmadı. Yenidən cəhd edin."
+			},
+			"needsInput": {
+				"title": "Agentin sualı var",
+				"answerLabel": "Cavabınız",
+				"placeholder": "Cavabınızı yazın…",
+				"reply": "Cavab ver",
+				"sent": "Cavab göndərildi. Agent davam edir.",
+				"error": "Cavabınızı göndərmək mümkün olmadı. Yenidən cəhd edin.",
+				"hint": "Cavabsız sualların müddəti 24 saatdan sonra bitir.",
+				"waiting": "Agent onu xahiş edən şəxsin cavabını gözləyir.",
+				"inboxHint": "Siz cavab verənə qədər icra dayandırılıb.",
+				"answer": "Agent Masasında cavab ver",
+				"notificationTitle": "{{agentName}} sual verir",
+				"verb": "sizə sual verir"
+			},
+			"schedules": {
+				"open": "{{name}} cədvəlləri",
+				"title": "Cədvəllər: {{name}}",
+				"hint": "Agenti cədvəl üzrə işə salın. İcralar cədvəli sonuncu yadda saxlayan şəxsin adından və ən çoxu onun hüquqları ilə işləyir.",
+				"empty": "Hələ cədvəl yoxdur.",
+				"create": "Yeni cədvəl",
+				"edit": "Cədvəli redaktə et",
+				"delete": "Cədvəli sil",
+				"deleteBody": "Bu cədvəl silinsin? Keçmiş icralar Agent Masasında qalır.",
+				"deleted": "Cədvəl silindi",
+				"saved": "Cədvəl yadda saxlandı",
+				"saveError": "Cədvəli yadda saxlamaq mümkün olmadı. Yenidən cəhd edin.",
+				"enable": "Cədvəli yandır",
+				"disable": "Cədvəli söndür",
+				"enabled": "Aktiv",
+				"when": "Nə vaxt",
+				"presets": {
+					"weekdays": "Hər iş günü saat 9:00-da",
+					"mondays": "Hər bazar ertəsi saat 9:00-da",
+					"monthly": "Ayın birinci günü saat 9:00-da",
+					"custom": "Fərdi (cron)"
+				},
+				"customLabel": "Cron: {{cron}}",
+				"cron": "Cron ifadəsi",
+				"cronHint": "Beş sahə: dəqiqə, saat, ayın günü, ay, həftənin günü. Ən çoxu 15 dəqiqədən bir.",
+				"timezone": "Saat qurşağı",
+				"project": "Layihə",
+				"chooseProject": "Layihə seçin",
+				"task": "Tapşırıq",
+				"noTask": "Tapşırıqsız (bütün layihə)",
+				"taskHint": "Tapşırıq olmadan agent layihə üzərində işləyir və hesabatları səhifəyə qoyur.",
+				"projectLevel": "Bütün layihə",
+				"prompt": "Nə etməlidir?",
+				"promptPlaceholder": "Məsələn: dünəndən bəri nəyin dəyişdiyini xülasə et.",
+				"nextRun": "Növbəti icra {{time}}",
+				"runsAs": "{{name}} üçün işləyir",
+				"runsAsHint": "Yadda saxladıqda bu icralar sizin adınızdan işləyir. İş sahəsini tərk etsəniz və ya Sİ girişini itirsəniz, cədvəl sönür.",
+				"errors": {
+					"CRON_INVALID": "Beş cron sahəsi daxil edin: dəqiqə, saat, gün, ay, həftənin günü.",
+					"CRON_TOO_FREQUENT": "Cədvəl ən çoxu 15 dəqiqədən bir işləyə bilər.",
+					"CRON_NEVER": "Bu cədvəl heç vaxt işləməzdi.",
+					"TIMEZONE_INVALID": "Etibarlı saat qurşağı seçin.",
+					"OUTSIDE_AGENT_PROJECTS": "Bu agent həmin layihədə işləmək üçün qurulmayıb."
+				}
+			},
+			"templates": {
+				"title": "Buradan başla",
+				"blank": "Boş agent",
+				"blankHint": "Təlimatları özünüz yazın.",
+				"triage": {
+					"name": "Çeşidləmə",
+					"description": "Yeni tapşırıqları qaydaya salır: aydın başlıqlar, prioritetlər və dublikat keçidləri."
+				},
+				"standup": {
+					"name": "Gündəlik görüş",
+					"description": "Hər gün layihə səhifəsinə gündəlik görüşün xülasəsini yazır."
+				},
+				"specWriter": {
+					"name": "Spesifikasiya müəllifi",
+					"description": "Tapşırığı qəbul meyarları olan spesifikasiya səhifəsinə çevirir."
+				},
+				"deliveryRisk": {
+					"name": "Təhvil riski",
+					"description": "Hər həftə gecikmiş, bloklanmış və sahibsiz işlər barədə hesabat verir."
+				},
+				"feedback": {
+					"name": "Müştəri rəyləri",
+					"description": "Müştəri rəylərini nümunələrlə mövzulara ayırır."
+				},
+				"triggers": {
+					"mention": "Qeyd",
+					"assign": "Təyinat",
+					"schedule": "Cədvəl",
+					"automation": "Avtomatlaşdırma"
+				}
+			}
+		},
+		"capture": {
+			"button": "Ələ al",
+			"buttonHint": "Ekran şəkli, yazı və ya transkriptdən yeni sorğu",
+			"title": "Qeydə alınan materialdan yeni sorğular",
+			"description": "Ekran şəkilləri, ekran yazısı və ya görüş qeydləri əlavə edin. Sİ sorğular təklif edir; siz təsdiqləyənə qədər heç nə yaradılmır.",
+			"tabs": {
+				"screenshot": "Ekran şəkilləri",
+				"recording": "Yazı",
+				"transcript": "Transkript"
+			},
+			"dropzone": "Ekran şəkillərini yapışdırın, sürükləyin və ya seçin",
+			"dropzoneHint": "PNG, JPEG və ya WebP, ən çox {{count}} şəkil. Məkan və kamera məlumatları silinir.",
+			"chooseRecording": "Ekran yazısı seçin",
+			"recordingHint": "Sİ-yə yalnız {{count}} kadr göndərilir. Video cihazınızda qalır.",
+			"notes": "Qeydlər (istəyə bağlı)",
+			"notesPlaceholder": "Nə edirdiniz və nə səhv getdi?",
+			"transcript": "Transkript və ya görüş qeydləri",
+			"transcriptPlaceholder": "Transkripti və ya qeydləri yapışdırın. Hər icra ediləcək iş ayrıca sorğuya çevrilir.",
+			"remove": "{{name}} faylını sil",
+			"tooMany": "Hər dəfə ən çox {{count}} şəkil.",
+			"mediaErrors": {
+				"type": "Bu fayl növü dəstəklənmir.",
+				"tooLarge": "Bu fayl çox böyükdür.",
+				"unreadable": "Bu faylı oxumaq mümkün olmadı."
+			},
+			"preparing": "Şəkillər hazırlanır…",
+			"analyze": "Sorğular təklif et",
+			"analyzing": "Material oxunur…",
+			"reviewTitle": "Təklif olunan sorğuları yoxlayın",
+			"reviewDescription": "İstənilən sorğunu redaktə edin və ya çıxarın. Siz təsdiqləyənə qədər heç nə yaradılmır.",
+			"empty": "Bu materialda sorğu tapılmadı.",
+			"include": "Bu sorğunu daxil et",
+			"titleLabel": "Başlıq",
+			"descriptionLabel": "Təsvir",
+			"priorityLabel": "Prioritet",
+			"labelsLabel": "Təklif olunan etiketlər",
+			"assignTo": "{{name}} şəxsinə təyin et",
+			"attachNote": "Əlavə ediləcək şəkillər: {{count}}",
+			"attachNotAllowed": "Şəkilləri əlavə etmək olmur: tapşırıqları redaktə etmək icazəniz olmalıdır.",
+			"back": "Geri",
+			"create": "Sorğuları yarat ({{count}})",
+			"created": "Yaradılan sorğular: {{count}}",
+			"extrasFailed": "Bəzi etiketləri, məsul şəxsləri və ya qoşmaları əlavə etmək mümkün olmadı.",
+			"createError": "Sorğuları yaratmaq mümkün olmadı.",
+			"draftFromImages": "Şəkillərdən qaralama hazırla",
+			"drafting": "Qaralama hazırlanır…",
+			"sections": {
+				"steps": "Təkrarlama addımları",
+				"expected": "Gözlənilən",
+				"actual": "Faktiki",
+				"environment": "Mühit"
+			}
+		},
+		"codingAgent": {
+			"button": "Kodlaşdırma agentinə göndər",
+			"dialogTitle": "Kodlaşdırma agentinə göndər",
+			"dialogDescription": "Margaya bu brifinqlə repozitoriyada issue açır. Göndərməzdən əvvəl onu nəzərdən keçirib redaktə edin.",
+			"repository": "Repozitoriya",
+			"profile": "Kodlaşdırma agenti",
+			"github": "GitHub",
+			"gitea": "Gitea",
+			"notReady": "Bu repozitoriyanın inteqrasiyası hələ issue aça bilmir. Onu layihənin inteqrasiya parametrlərində yoxlayın.",
+			"noProfiles": "Bu repozitoriya ilə işləyən kodlaşdırma agenti profili yoxdur.",
+			"useAi": "Süni intellektlə xülasə et",
+			"regenerate": "Yenidən hazırla",
+			"preparing": "Brifinq hazırlanır…",
+			"error": "Brifinqi hazırlamaq mümkün olmadı.",
+			"titleLabel": "Issue başlığı",
+			"briefLabel": "Brifinq",
+			"briefNote": "Parol və ya açara bənzəyən dəyərlər göndərilməzdən əvvəl silinir. Heç nə avtomatik birləşdirilmir.",
+			"send": "Göndər",
+			"sending": "Göndərilir…",
+			"sent": "Kodlaşdırma agentinə göndərildi",
+			"sentNotAssigned": "Issue yaradıldı, lakin icraçını əlavə etmək mümkün olmadı",
+			"sendError": "Issue yaratmaq mümkün olmadı",
+			"openIssue": "Issue-nu aç",
+			"timelineTitle": "Kodlaşdırma agenti",
+			"timelineLabel": "Kodlaşdırma agentinin gedişatı",
+			"sentBy": "{{name}} tərəfindən {{profile}} profilinə göndərildi",
+			"sentByUnknown": "{{profile}} profilinə göndərildi",
+			"issueLink": "Issue #{{number}}",
+			"prLink": "Pull request #{{number}}",
+			"pending": "Hələ yox",
+			"steps": {
+				"issue_created": "Issue yaradıldı",
+				"working": "Agent işləyir",
+				"ready_for_review": "Yoxlamaya hazırdır",
+				"merged": "Birləşdirildi",
+				"closed": "Birləşdirilmədən bağlandı"
+			},
+			"settings": {
+				"title": "Kodlaşdırma agentləri",
+				"subtitle": "“Kodlaşdırma agentinə göndər” üçün GitHub və Gitea vasitəsilə göndərilən issue şablonları",
+				"sharedNote": "Bu iş sahəsindəki bütün layihələr üçün ümumidir. Profillər issue-ya yalnız qeyd və ya icraçı əlavə edir; süni intellekt açarları saxlanılmır.",
+				"builtin": "Daxili",
+				"githubOnly": "Yalnız GitHub",
+				"name": "Ad",
+				"namePlaceholder": "məs. Bizim build icraçımız",
+				"mention": "Qeyd",
+				"mentionPlaceholder": "@agent və ya {task} və {branch} olan mətn",
+				"assignee": "İcraçı (GitHub)",
+				"assigneePlaceholder": "GitHub istifadəçi adı, məs. Copilot",
+				"enabled": "Aktiv",
+				"edit": "Profili redaktə et",
+				"delete": "Profili sil",
+				"add": "Profil əlavə et",
+				"save": "Yadda saxla",
+				"saved": "Profil yadda saxlanıldı",
+				"deleted": "Profil silindi",
+				"error": "Profili yadda saxlamaq mümkün olmadı",
+				"needsTarget": "Qeyd və ya icraçı əlavə edin.",
+				"readOnly": "Profilləri yalnız iş sahəsi parametrlərini idarə edənlər dəyişə bilər."
+			}
+		},
+		"filters": {
+			"button": "Filtri təsvir edin…",
+			"short": "Təsvir et",
+			"label": "Nəyi göstərmək lazım olduğunu təsvir edin",
+			"placeholder": "məs. icrada olan gecikmiş xətalarım",
+			"apply": "Tətbiq et",
+			"none": "Bunu filtrlərə çevirmək mümkün olmadı. Başqa sözlər yoxlayın.",
+			"applied": "Filtrlər tətbiq olundu. Tənzimləmək üçün çipləri redaktə edin.",
+			"dropped": "Başa düşülmədi: {{words}}",
+			"hint": "Sİ sözlərinizi status, etiket, şəxs, dövr, prioritet və tarix filtrlərinə çevirir."
+		},
+		"budget": {
+			"warningTitle": "Bu ayın Sİ büdcəsinin {{percent}}%-i istifadə olunub",
+			"reachedTitle": "Bu ayın Sİ büdcəsi bitib",
+			"amounts": "{{used}} / {{cap}}.",
+			"warningHint": "Limitə çatanda Sİ funksiyaları dayanır. Lazım olsa, aşağıda limiti artırın.",
+			"reachedHint": "Sİ funksiyaları növbəti aya və ya limit artırılana qədər dayandırılıb.",
+			"notice": {
+				"title": "Sİ büdcəsi az qalıb",
+				"content": "Bu iş sahəsi aylıq Sİ büdcəsinin {{percent}}%-ni istifadə edib."
+			}
+		},
+		"skills": {
+			"navLabel": "Sİ bacarıqları",
+			"title": "Sİ bacarıqları",
+			"subtitle": "Sİ söhbətində \"/\" vasitəsilə təkrar istifadə üçün saxlanmış sorğular.",
+			"listTitle": "Bacarıqlar",
+			"new": "Yeni bacarıq",
+			"newTitle": "Yeni bacarıq",
+			"editTitle": "Bacarığı redaktə et",
+			"dialogHint": "Bacarıq istifadə olunduqda sorğu mətni suala əlavə edilir.",
+			"name": "Ad",
+			"namePlaceholder": "buraxilis-qeydleri",
+			"description": "Təsvir",
+			"prompt": "Sorğu mətni",
+			"promptPlaceholder": "Bu dövrdə tamamlanan tapşırıqlar üçün funksiyalar üzrə qruplaşdırılmış buraxılış qeydləri yaz.",
+			"shareLabel": "İş sahəsi ilə paylaş",
+			"shareHint": "Burada Sİ-dən istifadə edən hər kəs ondan istifadə edə bilər. Söndürülüb: yalnız siz.",
+			"shared": "Paylaşılıb",
+			"personal": "Yalnız siz",
+			"save": "Bacarığı saxla",
+			"saved": "Bacarıq saxlanıldı",
+			"saveError": "Bacarığı saxlamaq mümkün olmadı",
+			"deleted": "Bacarıq silindi",
+			"edit": "{{name}} redaktə et",
+			"delete": "{{name}} sil",
+			"deleteConfirm": "{{name}} silinsin?",
+			"empty": "Hələ bacarıq yoxdur. Tez-tez istifadə etdiyiniz sorğunu saxlayın.",
+			"loadError": "Bacarıqları yükləmək mümkün olmadı.",
+			"noAccess": "Bu iş sahəsində Sİ-dən istifadə etmək üçün icazə lazımdır."
+		},
+		"memory": {
+			"navLabel": "Sİ yaddaşı",
+			"title": "Sİ yaddaşı",
+			"subtitle": "Sİ-nin cavab verərkən nəzərə aldığı qısa faktlar, məsələn, \"Buraxılış günümüz cümə axşamıdır\".",
+			"scopes": {
+				"workspace": "İş sahəsi",
+				"project": "Layihə",
+				"user": "Şəxsi"
+			},
+			"scopeHints": {
+				"workspace": "İş sahəsindəki hər kəs üçün istifadə olunur. Sİ adminləri redaktə edir.",
+				"project": "Bir layihədə istifadə olunur. Sİ adminləri redaktə edir.",
+				"user": "Yalnız sizin üçün istifadə olunur və yalnız sizə görünür."
+			},
+			"project": "Layihə",
+			"newNote": "Yeni qeyd",
+			"placeholder": "Buraxılış günümüz cümə axşamıdır.",
+			"add": "Qeyd əlavə et",
+			"save": "Qeydi saxla",
+			"editNote": "Qeydi redaktə et",
+			"deleteNote": "Qeydi sil",
+			"saved": "Qeyd saxlanıldı",
+			"deleted": "Qeyd silindi",
+			"saveError": "Qeydi saxlamaq mümkün olmadı",
+			"empty": "Hələ qeyd yoxdur.",
+			"loadError": "Qeydləri yükləmək mümkün olmadı.",
+			"adminsOnly": "Burada qeydləri yalnız Sİ adminləri əlavə edə bilər.",
+			"noAccess": "Bu iş sahəsində Sİ-dən istifadə etmək üçün icazə lazımdır."
+		}
+	},
+	"insight": {
+		"close": "Bağla",
+		"retry": "Yenidən cəhd et",
+		"stop": "Dayandır",
+		"writing": "Yazılır…",
+		"days_one": "{{count}} gün",
+		"days_other": "{{count}} gün",
+		"estimate": {
+			"usually": "Oxşar tapşırıqlar adətən {{value}} olub",
+			"took_one": "{{count}} oxşar tapşırıq {{min}}–{{max}} gün çəkdi (median {{median}})",
+			"took_other": "{{count}} oxşar tapşırıq {{min}}–{{max}} gün çəkdi (median {{median}})",
+			"basedOn_one": "Tamamlanmış {{count}} oxşar tapşırığa əsasən",
+			"basedOn_other": "Tamamlanmış {{count}} oxşar tapşırığa əsasən",
+			"use": "{{value}} istifadə et",
+			"why": "Niyə?",
+			"similar": "Oxşar tapşırıqlar"
+		},
+		"calibration": {
+			"title": "Qiymətləndirmələrin kalibrlənməsi",
+			"description": "Hər ölçüdə tapşırıqların ilk başlanğıcdan tamamlanmağa qədər son {{days}} gündə əslində nə qədər çəkdiyi.",
+			"empty": "Hələ başlanğıcı qeydə alınmış, tamamlanmış və qiymətləndirilmiş tapşırıq yoxdur.",
+			"estimate": "Qiymətləndirmə",
+			"tasks": "Tapşırıqlar",
+			"actual": "Faktiki vaxt",
+			"range": "median {{median}} g ({{low}}–{{high}})",
+			"ordered": "Böyük qiymətləndirmələr, olmalı olduğu kimi, daha uzun çəkdi.",
+			"notOrdered": "Böyük qiymətləndirmələr həmişə daha uzun çəkmədi: komandanın işi necə ölçdüyünə baxmağa dəyər.",
+			"fewSamples": "Ölçüləri müqayisə etmək üçün daha çox tamamlanmış tapşırıq lazımdır.",
+			"unmeasured_one": "Başlanğıcı qeydə alınmamış {{count}} tapşırıq nəzərə alınmadı.",
+			"unmeasured_other": "Başlanğıcı qeydə alınmamış {{count}} tapşırıq nəzərə alınmadı."
+		},
+		"capacity": {
+			"meter": "Planlaşdırılan iş adi dövrlə müqayisədə",
+			"within": "Adi dövrün {{percent}}%-i qədər planlaşdırılıb",
+			"over": "Tutumdan artıq: adi dövrün {{percent}}%-i qədər planlaşdırılıb",
+			"noDates": "Tutumu yoxlamaq üçün dövrün tarixlərini təyin edin.",
+			"noHistory": "Tutum komanda əvvəlki dövrlərdə işi tamamladıqdan sonra görünür.",
+			"details": "Tutum təfərrüatları",
+			"compare": "{{load}} planlaşdırılıb; adi dövr {{typical}} tutur (aralıq {{low}}–{{high}}).",
+			"tasks_one": "{{count}} tapşırıq",
+			"tasks_other": "{{count}} tapşırıq",
+			"points_one": "{{count}} xal",
+			"points_other": "{{count}} xal",
+			"basisCycles_one": "Komandanın bitmiş son dövrdə tamamladıqlarına əsasən, bu dövrün uzunluğuna uyğunlaşdırılıb.",
+			"basisCycles_other": "Komandanın bitmiş son {{count}} dövrdə tamamladıqlarına əsasən, bu dövrün uzunluğuna uyğunlaşdırılıb.",
+			"basisThroughput": "Layihənin son 8 həftədə bu dövr uzunluğunda hər müddətdə tamamladığı tapşırıqlara əsasən.",
+			"deferTitle": "Sonrakı dövrə keçirilə bilər",
+			"blocks_one": "{{count}} tapşırığı bloklayır",
+			"blocks_other": "{{count}} tapşırığı bloklayır",
+			"membersTitle": "Şəxs üzrə yük",
+			"memberLoad": "{{load}} · adətən {{typical}}",
+			"membersNote": "İşi bölüşdürmək üçün hər şəxsin öz adi tempinə görə yük. Bu, performans ölçüsü deyil.",
+			"unassigned": "Təyin edilməyib"
+		},
+		"retro": {
+			"button": "Retrospektiv",
+			"buttonLabel": "Retrospektiv hazırla",
+			"title": "Retrospektiv",
+			"factsTitle": "Nə baş verdi",
+			"factsSoFar": "İndiyə qədər nə baş verdi",
+			"factsNote": "Bu faktlar süni intellektdən deyil, Margaya qeydlərindən gəlir. Onlar fərdi şəxsi deyil, komandanın işini təsvir edir.",
+			"error": "Bu dövrün faktlarını yükləmək mümkün olmadı.",
+			"aiIntro": "Süni intellekt bu faktlardan qısa təsvir və müzakirə sualları yazsın.",
+			"write": "Təsvir yaz",
+			"rewrite": "Yenidən yaz",
+			"edit": "Redaktə et",
+			"preview": "Önizləmə",
+			"editLabel": "Retrospektiv təsviri",
+			"saveAsPage": "Səhifə kimi saxla",
+			"saveWithNarrative": "Faktları, təsviri və komanda üçün bölmələri saxlayır.",
+			"saveFactsOnly": "Faktları və komandanın dolduracağı bölmələri saxlayır.",
+			"saved": "Retrospektiv səhifə kimi saxlanıldı",
+			"saveError": "Səhifəni saxlamaq mümkün olmadı.",
+			"openPage": "Səhifəni aç",
+			"pageTitle": "Retrospektiv: {{name}}",
+			"more_one": "və daha {{count}}",
+			"more_other": "və daha {{count}}",
+			"facts": {
+				"sayDo_one": "Öhdəlik götürülmüş {{count}} tapşırıqdan {{done}} tamamlandı ({{percent}}%)",
+				"sayDo_other": "Öhdəlik götürülmüş {{count}} tapşırıqdan {{done}} tamamlandı ({{percent}}%)",
+				"sayDoNone": "Əvvəldə heç bir öhdəlik götürülmədi",
+				"scope": "Həcm dəyişikliyi: dövr ərzində {{added}} əlavə edildi, {{removed}} çıxarıldı",
+				"carry": "Keçirilən: {{carried}} başqa dövrə köçürüldü, {{open}} açıq qaldı",
+				"reopened_one": "{{count}} tapşırıq tamamlandıqdan sonra yenidən açıldı",
+				"reopened_other": "{{count}} tapşırıq tamamlandıqdan sonra yenidən açıldı",
+				"points": "Qiymətləndirmə xalları: {{committed}} xaldan {{completed}} tamamlandı",
+				"cycleTime": "Dövr vaxtı: median {{median}} gün",
+				"cycleTimeOutliers_one": "Dövr vaxtı: median {{median}} gün; {{count}} tapşırıq {{threshold}} gündən çox çəkdi",
+				"cycleTimeOutliers_other": "Dövr vaxtı: median {{median}} gün; {{count}} tapşırıq {{threshold}} gündən çox çəkdi",
+				"cycleTimeNone": "Dövr vaxtı: ölçülməyib",
+				"blocked_one": "{{count}} tapşırıq başqası tərəfindən bloklandı",
+				"blocked_other": "{{count}} tapşırıq başqaları tərəfindən bloklandı",
+				"forecastNone": "Proqnoz: bu dövr üçün saxlanılmayıb",
+				"forecastOpen": "Proqnoz: 85% ehtimalla {{date}} tarixinədək bitəcək",
+				"forecastMet": "Proqnoz: 85% ehtimalla {{date}} tarixinədək bitəcək; özünü doğrultdu",
+				"forecastMissed": "Proqnoz: 85% ehtimalla {{date}} tarixinədək bitəcək; özünü doğrultmadı"
+			},
+			"lists": {
+				"added": "Dövr ərzində əlavə edilənlər",
+				"carriedOver": "Keçirilənlər",
+				"leftOpen": "Açıq qalanlar",
+				"outliers": "Adi haldan xeyli uzun çəkənlər",
+				"blocked": "Bloklananlar"
+			},
+			"page": {
+				"facts": "Faktlar",
+				"wentWell": "Nə yaxşı alındı",
+				"improve": "Nəyi yaxşılaşdırmaq",
+				"actions": "Addımlar"
+			}
+		},
+		"myBrief": {
+			"title": "Xülasəm",
+			"empty": "Bu gün sizi gözləyən heç nə yoxdur.",
+			"error": "Xülasənizi yükləmək mümkün olmadı.",
+			"summarize": "Qısaca",
+			"overdue": "Gecikmiş · {{total}}",
+			"dueToday": "Bu gün son tarix · {{total}}",
+			"blocked": "Bloklanmış · {{total}}",
+			"mentions": "Qeydlər · {{total}}",
+			"following": "İzlədiyiniz tapşırıqlarda dəyişikliklər · {{total}}",
+			"waitingOn": "{{keys}} gözlənilir",
+			"hiddenBlockers_one": "{{count}} gizli tapşırıq",
+			"hiddenBlockers_other": "{{count}} gizli tapşırıq",
+			"mentionedBy": "{{name}} tərəfindən",
+			"mentioned": "sizi qeyd etdi",
+			"more_one": "və daha {{count}}",
+			"more_other": "və daha {{count}}",
+			"kinds": {
+				"status": "status",
+				"comment": "şərhlər",
+				"assignee": "icraçılar",
+				"priority": "prioritet",
+				"due_date": "son tarix",
+				"other": "digər yeniliklər"
+			},
+			"emailTitle": "Xülasəmi e-poçt icmalına əlavə et",
+			"emailDescription": "İcmal bloklanmış tapşırıqlarınızı və izlədiyiniz tapşırıqlardakı dəyişiklikləri də göstərir. Gündəlik və ya həftəlik icmal tələb olunur.",
+			"emailError": "Bu ayarı saxlamaq mümkün olmadı."
+		}
 	}
 }

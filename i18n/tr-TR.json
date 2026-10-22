@@ -11,7 +11,8 @@
 			"remove": "Kaldır",
 			"reset": "Sıfırla",
 			"filter": "Filtrele",
-			"clearAllFilters": "Tüm filtreleri temizle"
+			"clearAllFilters": "Tüm filtreleri temizle",
+			"undo": "Geri al"
 		},
 		"a11y": {
 			"toggleSidebar": "Kenar çubuğunu aç/kapat"
@@ -98,7 +99,15 @@
 				"createButton": "Proje oluştur",
 				"successToast": "Proje başarıyla oluşturuldu",
 				"errorToast": "Proje oluşturulamadı",
-				"keyTaken": "{{key}} anahtarına sahip bir proje bu çalışma alanında zaten var"
+				"keyTaken": "{{key}} anahtarına sahip bir proje bu çalışma alanında zaten var",
+				"blankProject": "Boş proje",
+				"copyHint": "Durumlar, özel alanlar, tahminler, ayarlar ve otomasyonlar kopyalanır. Üyeler, entegrasyonlar ve herkese açık panolar kopyalanmaz.",
+				"includeOpenTasks": "Açık görevleri dahil et",
+				"includeTemplates": "Görev şablonlarını dahil et",
+				"openTasksHint": "Alt görevleri, etiketleri ve tahminleriyle birlikte en fazla 500 açık görev. Yorumlar ve geçmiş kopyalanmaz.",
+				"restricted": "Kısıtlı",
+				"restrictedHint": "Bu projeyi yalnızca üyeler görebilir. İlk üyesi siz olacaksınız; çalışma alanı sahipleri ve yöneticileri her zaman görebilir.",
+				"startFrom": "Başlangıç noktası"
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -714,6 +723,8 @@
 			"themeLight": "Açık",
 			"themeDark": "Koyu",
 			"themeSystem": "Sistem",
+			"themeLightContrast": "Yüksek karşıtlıklı açık",
+			"themeDarkContrast": "Yüksek karşıtlıklı koyu",
 			"language": "Dil",
 			"languageDescription": "Tercih ettiğiniz arayüz dilini seçin",
 			"selectLanguage": "Bir dil seçin",
@@ -1428,6 +1439,75 @@
 			"dropHintAny": "Bir JSON veya CSV dosyasını buraya sürükleyip bırakın",
 			"importAcceptHint": "Bir Margaya JSON dışa aktarması veya CSV dosyası yükleyin.",
 			"importStopped": "İçe aktarma durdu: {{message}}",
+			"external": {
+				"sourceHint": "Başka bir araçtan mı geçiyorsunuz? Dışa aktarımını durumlar, etiketler, kişiler, tarihler ve alt görevlerle birlikte içe aktarın.",
+				"sources": {
+					"trello": "Trello (JSON)",
+					"linear": "Linear (CSV)",
+					"asana": "Asana (CSV)"
+				},
+				"title": {
+					"trello": "Trello'dan içe aktar",
+					"linear": "Linear'dan içe aktar",
+					"asana": "Asana'dan içe aktar"
+				},
+				"howToTitle": {
+					"trello": "Trello'dan nasıl dışa aktarılır",
+					"linear": "Linear'dan nasıl dışa aktarılır",
+					"asana": "Asana'dan nasıl dışa aktarılır"
+				},
+				"howTo": {
+					"trello": {
+						"step1": "Panoda menüyü açın → Yazdır, dışa aktar ve paylaş → JSON olarak dışa aktar.",
+						"step2": "İndirilen .json dosyasını buraya yükleyin."
+					},
+					"linear": {
+						"step1": "Linear'da Ayarlar → Import / Export'u açın ve CSV olarak dışa aktar'ı seçin.",
+						"step2": "Linear'ın gönderdiği e-postadaki .csv dosyasını buraya yükleyin."
+					},
+					"asana": {
+						"step1": "Asana projesinde proje menüsünü açın → Dışa aktar/Yazdır → CSV.",
+						"step2": "İndirilen .csv dosyasını buraya yükleyin."
+					}
+				},
+				"limits": {
+					"trello": "Dosya başına en fazla 10 MB ve 5.000 kart. Arşivlenmiş kartlar alınmaz; kontrol listeleri açıklamada görev listesine dönüşür; ekler Trello'da kalır.",
+					"linear": "Dosya başına en fazla 5 MB ve 5.000 sorun. Arşivlenmiş sorunlar alınmaz. Linear'ın CSV dosyasında yorum yoktur.",
+					"asana": "Dosya başına en fazla 5 MB ve 5.000 görev. Tamamlanan görevler \"Bitti\" sütununuza gider. Asana'nın CSV dosyasında yorum yoktur."
+				},
+				"dropHint": {
+					"trello": "Trello'nun JSON dışa aktarımını buraya sürükleyip bırakın",
+					"linear": "Linear'ın CSV dışa aktarımını buraya sürükleyip bırakın",
+					"asana": "Asana'nın CSV dışa aktarımını buraya sürükleyip bırakın"
+				},
+				"wrongType": {
+					"trello": "Panonun .json dışa aktarımını seçin.",
+					"linear": "Linear'ın .csv dışa aktarımını seçin.",
+					"asana": "Asana'nın .csv dışa aktarımını seçin."
+				},
+				"itemCount_one": "{{count}} öğe",
+				"itemCount_other": "{{count}} öğe",
+				"alreadyImported_one": "{{count}} öğe daha önce bu projeye aktarıldı.",
+				"alreadyImported_other": "{{count}} öğe daha önce bu projeye aktarıldı.",
+				"contents": "{{comments}} yorum, {{checklists}} kontrol listesi, {{subtasks}} alt görev, {{links}} bağlantı",
+				"sourceStatus": "Durum veya liste",
+				"peopleUnmatched_one": "{{count}} kişi üye değil ({{names}}). Öğeleri atanmamış kalır ve adı açıklamaya yazılır.",
+				"peopleUnmatched_other": "{{count}} kişi üye değil ({{names}}). Öğeleri atanmamış kalır ve adları açıklamaya yazılır.",
+				"mode": "Daha önce aktarılan öğeler",
+				"modeHint": "Dışa aktarımdaki kimlikleriyle eşleştirilir.",
+				"importAction_one": "{{count}} öğeyi içe aktar",
+				"importAction_other": "{{count}} öğeyi içe aktar",
+				"importing_one": "{{count}} öğe içe aktarılıyor…",
+				"importing_other": "{{count}} öğe içe aktarılıyor…",
+				"result": {
+					"skipped_one": "{{count}} öğe atlandı (daha önce içe aktarılmış)",
+					"skipped_other": "{{count}} öğe atlandı (daha önce içe aktarılmış)",
+					"failed_one": "{{count}} öğe başarısız oldu",
+					"failed_other": "{{count}} öğe başarısız oldu",
+					"unmatched_one": "{{count}} kişi çalışma alanı üyesi değil; öğeleri atanmamış:",
+					"unmatched_other": "{{count}} kişi çalışma alanı üyesi değil; öğeleri atanmamış:"
+				}
+			},
 			"unsupportedFile": "Lütfen bir JSON veya CSV dosyası yükleyin",
 			"jira": {
 				"alreadyImported_one": "{{count}} sorun daha önce bu projeye içe aktarıldı.",
@@ -1575,7 +1655,8 @@
 				"intake": "İstekler",
 				"analytics": "Analitik",
 				"page": "Sayfalar",
-				"audit_log": "Denetim günlüğü"
+				"audit_log": "Denetim günlüğü",
+				"ai": "YZ"
 			},
 			"permissions": {
 				"project": {
@@ -1821,6 +1902,16 @@
 						"description": "Çalışma alanı denetim günlüğünü görün ve dışa aktarın: üyeleri, rolleri, anahtarları, webhook'ları, entegrasyonları ve ayarları kimin değiştirdiği.",
 						"label": "Denetim günlüğünü görüntüle"
 					}
+				},
+				"ai": {
+					"use": {
+						"label": "YZ kullanma",
+						"description": "Çalışma alanında ve projede YZ açıkken YZ özelliklerini kullanabilir."
+					},
+					"manage": {
+						"label": "YZ yönetme",
+						"description": "Çalışma alanı için YZ'yi açıp kapatabilir, anahtarını, sınırlarını ve gizlilik ayarlarını değiştirebilir ve YZ kullanımını görebilir."
+					}
 				}
 			},
 			"validation": {
@@ -1965,6 +2056,10 @@
 				"views": {
 					"description": "Filtreleri, gruplamayı ve görüntüleme ayarlarını kaydedin ve takımla paylaşın.",
 					"title": "Görünümler"
+				},
+				"ai": {
+					"title": "YZ",
+					"description": "Bu proje için özetler, öneriler ve diğer YZ yardımları. Kapalıyken proje YZ'nin tamamen dışında kalır."
 				}
 			},
 			"loadError": "Bu proje yüklenemedi",
@@ -2178,7 +2273,26 @@
 				"closeOff": "Otomatik kapatma kapatıldı",
 				"closeOn": "Otomatik kapatma açıldı",
 				"error": "Otomasyonlar güncellenemedi",
-				"updated": "Otomasyon güncellendi"
+				"updated": "Otomasyon güncellendi",
+				"rolloverOff": "Döngü aktarımı kapatıldı",
+				"rolloverOn": "Döngü aktarımı açıldı",
+				"flowAlertsOn": "Akış uyarıları açıldı",
+				"flowAlertsOff": "Akış uyarıları kapatıldı"
+			},
+			"cycleRollover": {
+				"cyclesOff": "Bunu kullanmak için Özellikler bölümünden Döngüler'i açın.",
+				"description": "Bir döngü sona erdiğinde tamamlanmamış görevleri sonraki döngüye taşınır. Proje lideri bir özet alır.",
+				"last_one": "Son olarak {{count}} görev taşındı {{time}}",
+				"last_other": "Son olarak {{count}} görev taşındı {{time}}",
+				"never": "Henüz hiçbir şey taşınmadı",
+				"title": "Tamamlanmamış döngü işlerini sonraki döngüye aktar"
+			},
+			"flowAlerts": {
+				"title": "Akış anomalisi uyarıları",
+				"description": "Günde bir kez devam eden işi, döngü süresini ve verimi önceki 8 haftayla karşılaştırır. Bunlardan biri olağan aralığın dışına çıktığında proje lideri bilgilendirilir.",
+				"noLead": "Bu uyarıları almak için bir proje lideri belirleyin.",
+				"last": "Son uyarı {{time}}",
+				"never": "Henüz uyarı yok"
 			}
 		},
 		"workspaceExports": {
@@ -2625,6 +2739,24 @@
 			"noProjectsHint": "Önce bir proje oluşturun. Ayarları burada görünür.",
 			"pickProject": "Ayarlarını görmek için bir proje seçin."
 		},
+		"projectAccess": {
+			"title": "Erişim",
+			"subtitle": "Bu projeyi kimlerin görebileceği ve üzerinde çalışabileceği.",
+			"restrictedLabel": "Kısıtlı",
+			"restrictedHint": "Bu projeyi yalnızca aşağıdaki üyeler ile çalışma alanı sahipleri ve yöneticileri görebilir. Bir üyenin buradaki hakları, hem çalışma alanı rolünün hem de proje rolünün izin verdiği kadardır.",
+			"openHint": "Çalışma alanındaki herkes bu projeyi, çalışma alanı rolünün izin verdiği ölçüde görebilir. Seçilen üyelerle sınırlamak için kısıtlayın.",
+			"membersLabel": "Üyeler",
+			"membersHint": "Proje rolü, her üyenin burada neler yapabileceğini sınırlar.",
+			"noMembers": "Henüz üye yok.",
+			"addMember": "Üye ekle",
+			"removeMember": "{{name}} kişisini kaldır",
+			"roleFor": "{{name}} için proje rolü",
+			"leadTag": "Lider",
+			"restrictedProject": "Kısıtlı proje",
+			"toastUpdated": "Erişim güncellendi",
+			"toastError": "Erişim güncellenemedi",
+			"loadError": "Erişim ayarları yüklenemedi. Tekrar denemek için sayfayı yenileyin."
+		},
 		"projectPeople": {
 			"defaultAssigneeHint": "Görev oluştururken önceden doldurulur ve atananı olmayan kabul edilmiş isteklere atanır.",
 			"defaultAssigneeLabel": "Varsayılan atanan",
@@ -2682,7 +2814,7 @@
 			"title": "Güvenlik"
 		},
 		"timezone": {
-			"accountHint": "Hatırlatıcılar ve e-posta özetleri için kullanılır. Uygulama saatleri her zaman tarayıcınızın saat diliminde gösterir.",
+			"accountHint": "Hatırlatıcılar, e-posta özetleri ve talep filtreleriyle analizlerin günleri saydığı saat dilimi için kullanılır. Ekrandaki saatler tarayıcınızın saat diliminde gösterilir.",
 			"accountLabel": "Saat dilimi",
 			"automatic": "Otomatik (tarayıcı: {{zone}})",
 			"loadError": "Saat dilimi yüklenemedi. Tekrar denemek için sayfayı yenileyin.",
@@ -2695,8 +2827,52 @@
 			"workspaceHint": "Döngüler, otomasyonlar ve analizler için \"bugün\"ü belirler. Mevcut çalışma alanları UTC ile başlar.",
 			"workspaceLabel": "Saat dilimi"
 		},
+		"workspaceDeletion": {
+			"pendingTitle": "Silinmesi planlandı",
+			"pendingDescription": "Bu çalışma alanı {{date}} tarihinde silinecek. O zamana kadar salt okunurdur; içeriğini açmaya ve dışa aktarmaya devam edebilirsiniz.",
+			"cancel": "Silmeyi iptal et",
+			"confirm": "Silmeyi planla",
+			"rowDescription": "Çalışma alanı hemen salt okunur olur ve {{date}} tarihinde kalıcı olarak silinir. O zamana kadar iptal edebilirsiniz.",
+			"dialogTitle": "{{name}} silinsin mi?",
+			"dialogDescription": "{{name}} herkes için hemen salt okunur olur ve API anahtarları ile webhook'ları çalışmayı durdurur. Üyelere e-posta gönderilir. Daha önce iptal etmezseniz {{date}} tarihinde tüm projeleri, görevleri ve sayfalarıyla birlikte kalıcı olarak silinir.",
+			"toastScheduled": "Silme {{date}} tarihine planlandı",
+			"toastCancelled": "Silme iptal edildi. Çalışma alanı yeniden düzenlenebilir.",
+			"toastError": "Silme değiştirilemedi. Tekrar deneyin.",
+			"bannerTitle": "Bu çalışma alanı {{date}} tarihinde silinecek",
+			"bannerDescription": "O zamana kadar salt okunurdur. İçeriğini açmaya ve dışa aktarmaya devam edebilirsiniz.",
+			"admin": {
+				"title": "Silinmeyi bekleyenler",
+				"description": "Sahiplerinin silinmesini planladığı çalışma alanları. Tarihe kadar salt okunurdur, ardından kalıcı olarak silinir.",
+				"dueAt": "Silinme tarihi",
+				"badge": "{{date}} tarihinde silinecek"
+			},
+			"instanceAudit": {
+				"scheduled": "Bir çalışma alanının silinmesini planladı",
+				"cancelled": "Bir çalışma alanının silinmesini iptal etti",
+				"purged": "Bekleme süresi dolan bir çalışma alanını sildi"
+			}
+		},
+		"workspacePublicPages": {
+			"label": "Herkese açık sayfalar",
+			"description": "Projeleri paylaşabilen kişilerin sayfaları salt okunur, herkese açık bir bağlantıyla yayınlamasına izin verir. Kapatıldığında yayınlanmış tüm bağlantılar iptal edilir.",
+			"toastOn": "Herkese açık sayfalar açık",
+			"toastOff": "Herkese açık sayfalar kapalı. Yayınlanmış bağlantılar iptal edildi.",
+			"toastError": "Ayar değiştirilemedi. Tekrar deneyin."
+		},
+		"workspaceA2a": {
+			"label": "Ajandan ajana (A2A)",
+			"description": "Harici yapay zekâ ajanlarının A2A protokolüyle bu çalışma alanına iş devretmesine izin verin. Bir üyenin API anahtarı veya OAuth oturumuyla ve o üyenin izinleriyle çalışırlar; yaptıkları her şey denetim günlüğünde görünür.",
+			"toastOn": "A2A açık",
+			"toastOff": "A2A kapalı. Harici ajanlar artık bu çalışma alanına iş devredemez.",
+			"toastError": "Ayar değiştirilemedi. Tekrar deneyin."
+		},
 		"workspaceAuditLog": {
 			"actions": {
+				"workspaceDeletionScheduled": "Çalışma alanının silinmesini planladı",
+				"workspaceDeletionCancelled": "Çalışma alanının silinmesini iptal etti",
+				"workspacePublicPagesChanged": "Herkese açık sayfaları açtı veya kapattı",
+				"pagePublished": "Bir sayfayı herkese açık bağlantıyla yayınladı",
+				"pageUnpublished": "Bir sayfanın herkese açık bağlantısını iptal etti",
 				"apiKeyCreated": "Bir API anahtarı oluşturdu",
 				"apiKeyRevoked": "Bir API anahtarını iptal etti",
 				"exportCreated": "Bir dışa aktarma başlattı",
@@ -2707,6 +2883,7 @@
 				"integrationUpdated": "Bir entegrasyonu değiştirdi",
 				"memberInvitationAccepted": "Bir daveti kabul etti",
 				"memberInvitationDeclined": "Bir daveti reddetti",
+				"memberInvitationRoleChanged": "Bekleyen bir davetin rolünü değiştirdi",
 				"memberInvitationRevoked": "Bir daveti iptal etti",
 				"memberInvited": "Çalışma alanına birini davet etti",
 				"memberLeft": "Çalışma alanından ayrıldı",
@@ -2736,13 +2913,41 @@
 				"webhookUpdated": "Bir webhook'u değiştirdi",
 				"workspaceCreated": "Çalışma alanını oluşturdu",
 				"workspaceOwnershipTransferred": "Çalışma alanı sahipliğini devretti",
-				"workspaceUpdated": "Çalışma alanı ayarlarını değiştirdi"
+				"workspaceUpdated": "Çalışma alanı ayarlarını değiştirdi",
+				"aiSettingsUpdated": "YZ ayarlarını değiştirdi",
+				"aiTriageLabelsApplied": "Önerilen etiketleri otomatik olarak ekledi",
+				"agentCreated": "Bir ajan oluşturdu",
+				"agentUpdated": "Bir ajanı değiştirdi",
+				"agentDeleted": "Bir ajanı sildi",
+				"agentChangeApplied": "Biri adına bir değişiklik yaptı",
+				"agentChangeApproved": "Bir ajanın değişikliğini onayladı",
+				"agentChangeRejected": "Bir ajanın değişikliğini reddetti",
+				"agentChangeReverted": "Bir ajanın değişikliğini geri aldı",
+				"codingAgentHandoffSent": "Bir görevi kodlama ajanına gönderdi",
+				"codingAgentProfileCreated": "Bir kodlama ajanı profili oluşturdu",
+				"codingAgentProfileUpdated": "Bir kodlama ajanı profilini değiştirdi",
+				"codingAgentProfileDeleted": "Bir kodlama ajanı profilini sildi",
+				"a2aTaskReceived": "Harici bir ajandan iş alındı (A2A)",
+				"automationRuleCreated": "Bir otomasyon oluşturdu",
+				"automationRuleUpdated": "Bir otomasyonu değiştirdi",
+				"automationRuleDeleted": "Bir otomasyonu sildi",
+				"automationRuleRan": "Bir görevde otomasyon çalıştırdı",
+				"agentScheduleCreated": "Bir ajanı zamanladı",
+				"agentScheduleUpdated": "Bir ajan zamanlamasını değiştirdi",
+				"agentScheduleDeleted": "Bir ajan zamanlamasını sildi",
+				"agentScheduleDisabled": "Bir ajan zamanlamasını kapattı",
+				"aiConnectorCreated": "Bir MCP bağlayıcısı ekledi",
+				"aiConnectorUpdated": "Bir MCP bağlayıcısını değiştirdi",
+				"aiConnectorDeleted": "Bir MCP bağlayıcısını sildi"
 			},
 			"actor": {
 				"apiKey": "API anahtarı",
 				"deletedUser": "Silinmiş kullanıcı",
 				"system": "Sistem",
-				"unknownKey": "Silinmiş API anahtarı"
+				"unknownKey": "Silinmiş API anahtarı",
+				"agent": "Ajan",
+				"agentFor": "Ajan, {{name}} adına",
+				"automation": "Otomasyon"
 			},
 			"categories": {
 				"apiKey": "API anahtarları",
@@ -2755,7 +2960,11 @@
 				"role": "Roller",
 				"trash": "Çöp kutusu",
 				"webhook": "Webhook'lar",
-				"workspace": "Çalışma alanı ayarları"
+				"workspace": "Çalışma alanı ayarları",
+				"agent": "Ajanlar",
+				"codingAgent": "Kodlama ajanları",
+				"a2a": "Harici ajanlar (A2A)",
+				"automation": "Otomasyonlar"
 			},
 			"columns": {
 				"action": "İşlem",
@@ -2804,6 +3013,7 @@
 			"subtitle": "Bu çalışma alanında üyeleri, rolleri, API anahtarlarını, webhook'ları, entegrasyonları, ayarları ve projeleri kimin değiştirdiği. Kayıtlar {{days}} gün saklanır.",
 			"subtitleForever": "Bu çalışma alanında üyeleri, rolleri, API anahtarlarını, webhook'ları, entegrasyonları, ayarları ve projeleri kimin değiştirdiği. Kayıtlar çalışma alanını silene kadar saklanır.",
 			"targets": {
+				"page": "Sayfa",
 				"apiKey": "API anahtarı",
 				"export": "Dışa aktarma",
 				"integration": "Entegrasyon",
@@ -2812,7 +3022,11 @@
 				"role": "Rol",
 				"user": "Üye",
 				"webhook": "Webhook",
-				"workspace": "Çalışma alanı"
+				"workspace": "Çalışma alanı",
+				"agent": "Ajan",
+				"agentRun": "Ajan çalıştırması",
+				"task": "Görev",
+				"codingAgentProfile": "Kodlama ajanı profili"
 			},
 			"title": "Denetim günlüğü"
 		},
@@ -2861,9 +3075,189 @@
 			"workspaceNav": "Son silinenler",
 			"workspaceSubtitle": "Silinen projeler, görevleriyle birlikte kalıcı olarak silinene kadar burada kalır.",
 			"workspaceTitle": "Son silinen projeler"
+		},
+		"automationRules": {
+			"title": "Otomasyonlar",
+			"description": "Bir görevde bir şey olduğunda koşulları denetleyin ve harekete geçin. Kurallar YZ olmadan, \"Otomasyon\" adıyla kendi kendine çalışır.",
+			"empty": "Henüz otomasyon yok. Bir şablonla başlayın veya kendi kuralınızı oluşturun.",
+			"loadError": "Otomasyonlar yüklenemedi.",
+			"newRule": "Yeni kural",
+			"templatesTitle": "Şablonlar",
+			"saved": "Otomasyon kaydedildi",
+			"saveError": "Otomasyon kaydedilemedi",
+			"deleted": "Otomasyon silindi",
+			"confirmDelete": "Sil",
+			"edit": "{{name}} kuralını düzenle",
+			"delete": "{{name}} kuralını sil",
+			"summary_one": "{{trigger}} · {{count}} eylem",
+			"summary_other": "{{trigger}} · {{count}} eylem",
+			"lastRun_one": "{{count}} çalıştırma, sonuncusu {{time}}",
+			"lastRun_other": "{{count}} çalıştırma, sonuncusu {{time}}",
+			"neverRan": "Henüz çalışmadı",
+			"templates": {
+				"reviewer": {
+					"name": "İncelemeye taşındığında gözden geçireni ata",
+					"description": "Gözden geçireni seçin; görev incelemeye girdiğinde atanır."
+				},
+				"intakeBugs": {
+					"name": "Gelen isteklerdeki hataları etiketle",
+					"description": "Bir hatadan veya sorundan söz eden kabul edilmiş istekler hata etiketini alır."
+				},
+				"overdue": {
+					"name": "Gecikmiş görevleri yükselt",
+					"description": "Bitiş tarihi geçtiğinde önceliği artır ve atananlara haber ver."
+				}
+			},
+			"triggers": {
+				"task_created": "bir görev oluşturulduğunda",
+				"status_changed": "durum değiştiğinde",
+				"assignee_added": "birisi atandığında",
+				"assignee_removed": "birinin ataması kaldırıldığında",
+				"label_added": "bir etiket eklendiğinde",
+				"label_removed": "bir etiket kaldırıldığında",
+				"priority_changed": "öncelik değiştiğinde",
+				"due_date_set": "bir bitiş tarihi belirlendiğinde",
+				"due_date_passed": "bitiş tarihi geçtiğinde",
+				"comment_added": "bir yorum eklendiğinde",
+				"moved_to_cycle": "bir döngüye taşındığında",
+				"moved_to_module": "bir modüle eklendiğinde"
+			},
+			"conditions": {
+				"status": "Durum",
+				"labels": "Etiketler",
+				"priority": "Öncelik",
+				"assignee": "Atanan",
+				"due_date": "Bitiş tarihi",
+				"estimate": "Tahmin",
+				"title": "Başlık",
+				"custom_field": "Özel alan"
+			},
+			"ops": {
+				"is": "eşit",
+				"is_not": "eşit değil",
+				"contains": "içerir",
+				"not_contains": "içermez",
+				"empty": "boş",
+				"not_empty": "boş değil",
+				"set": "belirlenmiş",
+				"not_set": "belirlenmemiş",
+				"gte": "en az",
+				"lte": "en fazla",
+				"equals": "eşittir",
+				"not_equals": "eşit değildir"
+			},
+			"actions": {
+				"set_status": "Durumu ayarla",
+				"assign": "Ata",
+				"unassign": "Atamayı kaldır",
+				"add_label": "Etiket ekle",
+				"remove_label": "Etiketi kaldır",
+				"set_priority": "Öncelik belirle",
+				"set_due_date": "Bitiş tarihi belirle",
+				"add_comment": "Yorum ekle",
+				"move_to_cycle": "Döngüye taşı",
+				"move_to_module": "Modüle ekle",
+				"create_subtask": "Alt görev oluştur",
+				"notify": "Bildir",
+				"run_agent": "Ajanı çalıştır"
+			},
+			"roles": {
+				"assignees": "Atananlar",
+				"creator": "Oluşturan",
+				"lead": "Proje lideri"
+			},
+			"outcomes": {
+				"success": "Tamamlandı",
+				"partial": "Kısmen tamamlandı",
+				"failed": "Başarısız",
+				"skipped": "Atlandı"
+			},
+			"errors": {
+				"LOOP_DEPTH": "Durduruldu: çok fazla kural art arda birbirini tetikledi.",
+				"RATE_LIMITED": "Durduruldu: bu görevde bir dakika içinde çok fazla otomasyon çalıştı.",
+				"AGENT_UNAVAILABLE": "Ajanı çalıştır: ajan kapalı ya da silinmiş.",
+				"NO_RULE_OWNER": "Ajanı çalıştır: bu kuralın artık sahibi yok. Yeniden kaydedin.",
+				"AI_DISABLED": "Ajanı çalıştır: bu projede YZ kapalı."
+			},
+			"history": {
+				"title": "Çalıştırma geçmişi",
+				"empty": "Henüz çalıştırma yok.",
+				"error": "Çalıştırma geçmişi yüklenemedi.",
+				"failedActions": "Başarısız: {{actions}}"
+			},
+			"editor": {
+				"name": "Kural adı",
+				"namePlaceholder": "Bu kurala bir ad verin",
+				"when": "Ne zaman",
+				"if": "Eğer",
+				"then": "O zaman",
+				"match": "Eşleşme",
+				"matchAll": "Bunların tümü",
+				"matchAny": "Bunlardan herhangi biri",
+				"always": "Her seferinde",
+				"addCondition": "Koşul ekle",
+				"addGroup": "Grup ekle",
+				"addAction": "Eylem ekle",
+				"remove": "Kaldır",
+				"save": "Kuralı kaydet",
+				"cancel": "İptal",
+				"choose": "Seçin…",
+				"add": "Ekle…",
+				"removeItem": "{{name}} öğesini kaldır",
+				"any": "Herhangi biri",
+				"from": "şuradan",
+				"to": "şuraya",
+				"fromIntake": "Yalnızca gelen isteklerden kabul edilenler",
+				"people": "Kişiler",
+				"labels": "Etiketler",
+				"priorities": "Öncelikler",
+				"cycles": "Döngüler",
+				"modules": "Modüller",
+				"field": "Alan",
+				"operator": "Karşılaştırma",
+				"points": "Puan",
+				"value": "Değer",
+				"column": "Durum",
+				"everyone": "Herkes",
+				"label": "Etiket",
+				"priority": "Öncelik",
+				"daysFromRun": "gün sonra (kural çalıştıktan sonra)",
+				"comment": "Yorum",
+				"subtaskTitle": "Alt görev başlığı",
+				"cycle": "Döngü",
+				"module": "Modül",
+				"roles": "Roller",
+				"message": "Mesaj (isteğe bağlı)",
+				"variables": "Değişkenler:",
+				"agent": "Ajan",
+				"agentPrompt": "Ajan ne yapmalı?",
+				"agentPromptPlaceholder": "Örneğin: bu görevi değerlendir ve bir öncelik öner.",
+				"agentHint": "Ajan, bu kuralı kaydeden kişi adına ve en fazla onun yetkileriyle çalışır. Bir ajanın yaptığı değişiklikler için asla çalışmaz."
+			}
 		}
 	},
 	"navigation": {
+		"customize": {
+			"open": "Kenar çubuğunu özelleştir",
+			"title": "Kenar çubuğunu özelleştir",
+			"description": "Kenar çubuğunuzun neleri hangi sırayla göstereceğini seçin. Bu değişiklikleri tüm cihazlarınızda yalnızca siz görürsünüz.",
+			"settingsDescription": "Ana gezinmeyi ve Projeler panelinin bölümlerini yeniden sıralayın veya gizleyin.",
+			"rail": "Ana gezinme",
+			"projectsPanel": "Projeler paneli",
+			"sections": {
+				"views": "Görev listeleri ve görünümler",
+				"favorites": "Favoriler",
+				"projects": "Projeler"
+			},
+			"show": "{{name}} göster",
+			"alwaysShown": "{{name}} her zaman gösterilir",
+			"moveUp": "{{name}} yukarı taşı",
+			"moveDown": "{{name}} aşağı taşı",
+			"moved": "{{name}}, {{total}} öğe içinde {{position}}. konuma taşındı",
+			"reset": "Varsayılana sıfırla",
+			"resetDone": "Kenar çubuğu varsayılana sıfırlandı",
+			"done": "Bitti"
+		},
 		"commandPalette": {
 			"suggestions": "Öneriler",
 			"commands": "Komutlar",
@@ -2876,6 +3270,8 @@
 			"lightTheme": "Açık tema",
 			"darkTheme": "Koyu tema",
 			"systemTheme": "Sistem teması",
+			"lightContrastTheme": "Yüksek karşıtlıklı açık tema",
+			"darkContrastTheme": "Yüksek karşıtlıklı koyu tema",
 			"keyboardShortcuts": "Klavye kısayolları",
 			"inputPlaceholder": "Uygulama ve komut ara...",
 			"empty": "Sonuç bulunamadı.",
@@ -3187,6 +3583,23 @@
 			"page_mention": {
 				"content": "{{mentionerName}} sizden şurada bahsetti: {{pageTitle}}",
 				"title": "{{mentionerName}} sizden bahsetti"
+			},
+			"cycle_rollover": {
+				"content_one": "{{count}} tamamlanmamış görev {{targetCycleName}} döngüsüne taşındı",
+				"content_other": "{{count}} tamamlanmamış görev {{targetCycleName}} döngüsüne taşındı",
+				"contentNoNext_one": "{{count}} tamamlanmamış görev {{cycleName}} içinde kaldı: sonraki döngü yok",
+				"contentNoNext_other": "{{count}} tamamlanmamış görev {{cycleName}} içinde kaldı: sonraki döngü yok",
+				"title": "{{cycleName}} sona erdi"
+			},
+			"flow_anomaly": {
+				"title": "{{projectName}} projesinde olağandışı iş akışı",
+				"throughput_low": "Verim bu hafta {{value}} göreve düştü (genellikle yaklaşık {{baseline}})",
+				"wip_high": "Devam eden iş {{value}} göreve çıktı (genellikle yaklaşık {{baseline}})",
+				"cycle_time_high": "Döngü süresi {{value}} güne çıktı (genellikle yaklaşık {{baseline}})"
+			},
+			"automation_notice": {
+				"title": "Otomasyon: {{ruleName}}",
+				"content": "{{taskKey}} {{taskTitle}}"
 			}
 		},
 		"reminderLeadTime": {
@@ -3338,6 +3751,13 @@
 				"open": "Görevi aç",
 				"read": "Okundu veya okunmadı olarak işaretle",
 				"snooze": "Ertele"
+			},
+			"digest": {
+				"button": "Okunmamışları özetle",
+				"title": "Okunmamışların özeti",
+				"regenerate": "Yeniden özetle",
+				"close": "Özeti kapat",
+				"generating": "Özetleniyor…"
 			}
 		}
 	},
@@ -3545,7 +3965,9 @@
 			"archived_one": "bu görevi {{count}} ay güncellenmediği için arşivledi",
 			"archived_other": "bu görevi {{count}} ay güncellenmediği için arşivledi",
 			"closed_one": "bu görevi {{count}} ay güncellenmediği için kapattı ve {{to}} sütununa taşıdı",
-			"closed_other": "bu görevi {{count}} ay güncellenmediği için kapattı ve {{to}} sütununa taşıdı"
+			"closed_other": "bu görevi {{count}} ay güncellenmediği için kapattı ve {{to}} sütununa taşıdı",
+			"rolledOver": "döngü sona erdiğinde bu görevi {{from}} döngüsünden {{to}} döngüsüne taşıdı",
+			"byRule": "{{name}} aracılığıyla"
 		},
 		"commentVisibility": {
 			"badgeExternal": "Harici",
@@ -3584,10 +4006,69 @@
 			"updates": "Güncellemeler"
 		},
 		"importedFromJira": "bu görevi Jira'dan içe aktardı: {{key}}",
+		"importedFromSource": "bu görevi {{source}} üzerinden içe aktardı: {{key}}",
 		"movedToTrash": "bu görevi çöp kutusuna taşıdı",
 		"restoredFromTrash": "bu görevi çöp kutusundan geri yükledi"
 	},
 	"tasks": {
+		"recurrence": {
+			"label": "Tekrarla",
+			"none": "Tekrarlanmıyor",
+			"title": "Bu görevi tekrarla",
+			"indicator": "Tekrarlanıyor",
+			"frequency": {
+				"label": "Sıklık",
+				"daily": "Her gün",
+				"weekly": "Her hafta",
+				"monthly": "Her ay",
+				"yearly": "Her yıl"
+			},
+			"interval": "Aralık",
+			"weekdays": "Bu günlerde",
+			"monthDay": "Ayın günü",
+			"trigger": {
+				"label": "Sonrakini oluştur",
+				"completion": "Bu tamamlandığında",
+				"schedule": "Kendi tarihinde, bu hâlâ açık olsa bile"
+			},
+			"ends": {
+				"label": "Bitiş",
+				"never": "Hiçbir zaman",
+				"onDate": "Tarihte",
+				"endDate": "Bitiş tarihi",
+				"after": "Şu kadar sonra",
+				"count": "Tekrar sayısı"
+			},
+			"summary": {
+				"daily_one": "Her gün",
+				"daily_other": "Her {{count}} günde bir",
+				"weekly_one": "Her hafta: {{days}}",
+				"weekly_other": "Her {{count}} haftada bir: {{days}}",
+				"monthly_one": "Her ayın {{day}}. günü",
+				"monthly_other": "Her {{count}} ayda bir, ayın {{day}}. günü",
+				"yearly_one": "Her yıl {{date}}",
+				"yearly_other": "Her {{count}} yılda bir, {{date}}",
+				"until": "{{summary}}, {{date}} tarihine kadar",
+				"times_one": "{{summary}}, {{count}} kez",
+				"times_other": "{{summary}}, {{count}} kez"
+			},
+			"next": "Sonraki: {{date}}",
+			"ended": "Başka tekrar yok",
+			"save": "Kaydet",
+			"remove": "Tekrarı durdur",
+			"saved": "Tekrar kaydedildi",
+			"removed": "Bu görev artık tekrarlanmıyor",
+			"saveError": "Tekrar kaydedilemedi",
+			"activity": {
+				"set": "bu görevi tekrarlanacak şekilde ayarladı: {{summary}}",
+				"updated": "tekrarı değiştirdi: {{summary}}",
+				"removed": "bu görevin tekrarını durdurdu",
+				"recurredFrom": "bu görevi <task>{{task}}</task> görevinin sonraki tekrarı olarak oluşturdu",
+				"recurredFromScheduled": "Plana göre <task>{{task}}</task> görevinin sonraki tekrarı olarak oluşturuldu",
+				"recurredTo": "bu görevi tamamladı ve sonraki tekrar <task>{{task}}</task> oluşturuldu",
+				"recurredToScheduled": "Sonraki tekrar plana göre oluşturuldu: <task>{{task}}</task>"
+			}
+		},
 		"title": "Görevler",
 		"status": {
 			"label": "Durum",
@@ -4010,7 +4491,9 @@
 		},
 		"kanban": {
 			"addTask": "Görev ekle",
-			"stages": "Sütunlar"
+			"stages": "Sütunlar",
+			"emptyAction": "Görev ekle",
+			"emptyTitle": "Henüz görev yok"
 		},
 		"pr": {
 			"merged": "Birleştirildi",
@@ -4082,6 +4565,20 @@
 			"searchActions": "İşlem ara...",
 			"noActionsFound": "İşlem bulunamadı.",
 			"changeStatus": "Durumu değiştir",
+			"removeLabel": "Etiketi kaldır",
+			"removeLabelSuccess": "Etiket {{count}} görevden kaldırıldı",
+			"removeLabelError": "Etiket kaldırılamadı",
+			"unarchive": "Arşivden geri yükle",
+			"unarchiveSuccess": "{{count}} görev geri yüklendi",
+			"unarchiveNone": "Seçilen görevlerin hiçbiri arşivlenmemiş",
+			"unarchiveError": "Görevler geri yüklenemedi",
+			"setDates": "Tarihler",
+			"dateField": "Ayarlanacak tarih",
+			"startDate": "Başlangıç tarihi",
+			"dueDate": "Bitiş tarihi",
+			"clearStartDate": "Başlangıç tarihini temizle",
+			"clearDueDate": "Bitiş tarihini temizle",
+			"updateStartDateError": "Başlangıç tarihi güncellenemedi. Başlangıç tarihi, görevin bitiş tarihinden sonra olamaz.",
 			"addAssignee": "Atanan kişi ekle",
 			"addAssigneeSuccess_one": "{{name}}, {{count}} göreve eklendi",
 			"addAssigneeSuccess_other": "{{name}}, {{count}} göreve eklendi",
@@ -4102,7 +4599,19 @@
 				"addRowBefore": "Üste satır ekle",
 				"addRowAfter": "Alta satır ekle",
 				"deleteRow": "Satırı sil",
-				"deleteTable": "Tabloyu sil"
+				"deleteTable": "Tabloyu sil",
+				"moveRowUp": "Satırı yukarı taşı",
+				"moveRowDown": "Satırı aşağı taşı",
+				"moveColumnLeft": "Sütunu sola taşı",
+				"moveColumnRight": "Sütunu sağa taşı",
+				"toggleHeaderRow": "Başlık satırı",
+				"fullWidth": "Tam genişlik",
+				"dragRow": "Satır {{index}}",
+				"dragColumn": "Sütun {{index}}",
+				"dragRowHint": "Satırı taşımak için sürükleyin veya ok tuşlarını kullanın",
+				"dragColumnHint": "Sütunu taşımak için sürükleyin veya ok tuşlarını kullanın",
+				"insertRowHere": "Buraya satır ekle",
+				"insertColumnHere": "Buraya sütun ekle"
 			}
 		},
 		"calendar": {
@@ -4124,7 +4633,8 @@
 			"rescheduleError": "Görev yeniden planlanamadı",
 			"showWeekends": "Hafta sonlarını göster",
 			"viewMode": "Takvim dönemi",
-			"week": "Hafta"
+			"week": "Hafta",
+			"overdue": "Gecikmiş"
 		},
 		"descriptionSearchLoading": "Tam açıklamalar aranıyor…",
 		"descriptionSearchError": "Açıklama araması başarısız oldu. Sonuçlar eksik olabilir.",
@@ -4183,11 +4693,13 @@
 			},
 			"label": "Tahmin",
 			"none": "Tahmin yok",
-			"pointsValue": "{{value}} pt",
+			"pointsValue_one": "{{value}} pt",
+			"pointsValue_other": "{{value}} pt",
 			"setAria": "Tahmin belirle",
 			"totals": {
 				"estimated": "{{total}} görevten {{estimated}} tahmin edildi",
-				"points": "{{completed}} / {{total}} pt",
+				"points_one": "{{completed}} / {{total}} pt",
+				"points_other": "{{completed}} / {{total}} pt",
 				"time": "{{completed}} / {{total}}"
 			},
 			"updateError": "Tahmin güncellenemedi"
@@ -4306,6 +4818,12 @@
 			},
 			"url": "URL",
 			"urlPlaceholder": "https://example.com"
+		},
+		"create": {
+			"similarTitle": "Benzer açık talepler",
+			"similarDismiss": "Benzer talepleri gizle",
+			"similarOpen": "Aç",
+			"similarOpenLabel": "{{key}} {{title}} talebini yeni sekmede aç"
 		},
 		"parent": {
 			"add": "Üst talep ekle",
@@ -4576,6 +5094,7 @@
 				"cycle": "döngü",
 				"estimate": "tahmin",
 				"modules": "modüller",
+				"parent": "üst talep",
 				"status": "durum"
 			},
 			"edited": "Düzenlendi {{time}}",
@@ -4634,6 +5153,8 @@
 			"hint": "Bir başlık yazın. @kişi, #etiket, !öncelik ve fri veya 12 Oct gibi tarihler çipe dönüşür. Enter oluşturur, Ctrl Enter tam düzenleyiciyi açar.",
 			"labelError": "Görev oluşturuldu ancak {{name}} etiketi eklenemedi",
 			"newLabel": "{{name}} (yeni etiket)",
+			"dueOn": "Bitiş tarihi {{date}} olan görev ekle",
+			"notInView": "Görev oluşturuldu. Bu görünümle eşleşmediği için burada gösterilmiyor.",
 			"open": "Aç",
 			"openComposer": "Tam düzenleyiciyi aç",
 			"openComposerHint": "Tam düzenleyiciyi aç (Ctrl Enter)",
@@ -4886,7 +5407,18 @@
 			"error": "Ekip üyesi davet edilemedi",
 			"createdTitle": "Davet oluşturuldu",
 			"shareLinkDescription": "Bu bağlantıyı {{email}} ile paylaşın, böylece çalışma alanına katılabilir.",
-			"done": "Bitti"
+			"done": "Bitti",
+			"emailHint": "Birden fazla adresi virgül, boşluk veya yeni satırla ayırın.",
+			"roleLabel": "Rol",
+			"roleHint": "Kendi rolünüze kadar rol verebilirsiniz.",
+			"sending": "{{total}} davetten {{current}}. gönderiliyor…",
+			"invalidEmails": "Bunlar geçerli e-posta adresleri değil: {{emails}}",
+			"emailRequired": "En az bir e-posta adresi girin.",
+			"tooManyEmails": "Tek seferde en fazla {{max}} kişi davet edin.",
+			"sentSome": "{{total}} davetten {{sent}} tanesi gönderildi.",
+			"failedTitle": "Gönderilmedi",
+			"rateLimited": "Aynı anda çok fazla davet. Bir dakika bekleyin, ardından kalanları gönderin.",
+			"shareLinksDescription": "Her bağlantıyı ilgili kişiyle paylaşın, böylece çalışma alanına katılabilir."
 		},
 		"membersTable": {
 			"emptyTitle": "Henüz ekip üyesi yok",
@@ -4912,6 +5444,8 @@
 			"cancelInviteError": "Davet iptal edilemedi",
 			"roleUpdateSuccess": "Rol güncellendi",
 			"roleUpdateError": "Rol güncellenemedi",
+			"ariaInvitationRole": "{{email}} için rol",
+			"invitationRoleUpdateSuccess": "Davet rolü güncellendi",
 			"ariaInvitationActions": "Davet işlemleri"
 		},
 		"profile": {
@@ -6063,6 +6597,51 @@
 					"shortcuts": "Ayıklama kısayollarını belgele"
 				},
 				"title": "Çalışmanız"
+			},
+			"ask": {
+				"title": "YZ'ye sor",
+				"model": "Çalışma alanı modeli",
+				"greeting": "Merhaba! Ne öğrenmek istersiniz?",
+				"intro": "Çalışma alanınız hakkında sade bir dille sorun. Yanıtlar görebildiğiniz görevlerden gelir.",
+				"placeholder": "YZ'ye sorun; bağlam için @, komutlar için /",
+				"placeholderBuild": "Neyi oluşturmak veya değiştirmek istediğinizi anlatın…",
+				"modes": {
+					"label": "Mod",
+					"ask": "Sor",
+					"build": "Oluştur"
+				},
+				"send": "Gönder",
+				"you": "Siz",
+				"question": "Geçerli döngüyü ne engelliyor?",
+				"buildPrompt": "WEB-5'i Mira'ya ata",
+				"context": "Bağlam ({{count}})",
+				"facts": "Projeler: 1 · Kişiler: 4 · Döngüler: 1",
+				"earlier": "Önceki mesajlar: {{count}}",
+				"thinking": "Düşünüyor… {{seconds}}s",
+				"thought": "{{seconds}}s düşündü",
+				"blockedIntro": "{{cycle}} içinde iki görev engellendi:",
+				"blockedPageTitles": "{{title}}: sayfa envanteri bekleniyor.",
+				"blockedPricing": "{{title}}: satış ekibinden fiyat bilgileri bekleniyor.",
+				"unassigned": "{{key}} için henüz atanan kişi yok.",
+				"summary": "Tek bir değişiklik. Siz onaylayana kadar hiçbir şey olmaz.",
+				"op": "Görevi düzenle",
+				"action": "{{key}} görevini {{name}} kişisine ata",
+				"awaiting": "Yanıt bekleniyor",
+				"ready": "Hazır değişiklik: {{count}}",
+				"cancel": "İptal",
+				"confirm": "Onayla",
+				"done": "Tamam",
+				"undo": "Geri al",
+				"undone": "Geri alındı",
+				"cancelled": "İptal edildi. Hiçbir şey değişmedi.",
+				"generic": "Bu demo yalnızca kendi sorusunu yanıtlar. Margaya'da Sor modu çalışma alanınızdan yanıt verir ve kullandığı görevlere bağlantı ekler.",
+				"genericBuild": "Bu demo yalnızca kendi değişikliğini yapar. Margaya'da Oluştur modu sözlerinizi onayladığınız değişikliklere dönüştürür.",
+				"blocked": "Engellendi",
+				"tasks": {
+					"pageTitles": "Sayfa başlıklarını denetle",
+					"pricing": "Fiyatlandırma sayfasını güncelle",
+					"mobileMenu": "Mobil menüyü düzelt"
+				}
 			}
 		},
 		"home": {
@@ -6097,6 +6676,10 @@
 				"singleServer": {
 					"detail": "Redis isteğe bağlı",
 					"title": "Tek sunucu yeterli"
+				},
+				"ai": {
+					"title": "Kuralları sizin koyduğunuz YZ",
+					"detail": "Varsayılan olarak kapalı, kendi modeliniz"
 				}
 			},
 			"faq": {
@@ -6133,6 +6716,14 @@
 					"selfHost": {
 						"answer": "Evet. Tek bir sunucuda Docker Compose ile ya da resmi Helm chart ile Kubernetes üzerinde çalıştırın. Bir uygulama konteynerine ve bir PostgreSQL veritabanına ihtiyacınız var. Kurulum kılavuzu ortam değişkenlerini, depolamayı ve ters proxy'leri kapsar.",
 						"question": "Margaya'yı kendim barındırabilir miyim?"
+					},
+					"ai": {
+						"question": "Margaya'da YZ var mı, varsayılan olarak açık mı?",
+						"answer": "Evet ve hayır. YZ'ye sor, Oluştur modu, yazma yardımı, önceliklendirme önerileri ve YZ ajanları yerleşik olarak gelir, ancak bir örnek yöneticisi bir model bağlayıp çalışma alanı YZ'yi açana kadar kapalı kalır. YZ'nin önerdiği her değişiklik önce size gösterilir ve geri alınabilir."
+					},
+					"aiData": {
+						"question": "Hangi YZ modellerini kullanabilirim, verilerim nereye gider?",
+						"answer": "Claude'u ya da Ollama veya vLLM gibi kendi çalıştırdığınız OpenAI uyumlu herhangi bir modeli kullanın. Yalnızca yerel modda hiçbir şey ağınızın dışına çıkmaz. Margaya yalnızca soran kişinin zaten görebildiklerini gönderir, sunucu geçmişini açmadığınız sürece istem veya yanıt saklamaz ve bütçeler için kullanım sayılarını kaydeder."
 					}
 				},
 				"title": "Sorular ve açık yanıtlar"
@@ -6145,13 +6736,11 @@
 				"title": "Zamanınızı araca değil, işe harcayın."
 			},
 			"hero": {
-				"description": "Margaya görevleri, döngüleri, belgeleri ve istek ayıklamayı tek ve hızlı bir çalışma alanında toplar. Görevi yazın, ilerletin ve asıl işinize dönün.",
-				"eyebrow": "Açık kaynaklı proje yönetimi",
-				"note": "MIT lisanslı. Kendi sunucunuzda çalıştırın ya da Margaya Cloud'u kredi kartı olmadan 14 gün deneyin.",
-				"primaryCta": "Başlayın",
-				"secondaryCta": "Kendiniz barındırın",
 				"title": "İşi planlayın.",
-				"titleAccent": "Angaryayı geride bırakın."
+				"titleAccent": "Angaryayı geride bırakın.",
+				"description": "Margaya görevleri, döngüleri, belgeleri ve istek ayıklamayı tek ve hızlı bir çalışma alanında toplar; isterseniz açabileceğiniz bir YZ asistanı da soruları yanıtlar ve değişiklik yapar. Görevi yazın, ilerletin ve asıl işinize dönün.",
+				"primaryCta": "Başlayın",
+				"secondaryCta": "Kendiniz barındırın"
 			},
 			"insight": {
 				"description": "Görevlerinizden grafikler oluşturun, denetim günlüğünü takip edin ve her şeyi çöp kutusundan geri yükleyin.",
@@ -6199,7 +6788,8 @@
 					"select": "Odaktaki görevi seç",
 					"spreadsheet": "Tablo",
 					"status": "Durumu değiştir",
-					"tasks": "Anahtar veya başlıkla görev bul"
+					"tasks": "Anahtar veya başlıkla görev bul",
+					"ask": "YZ'ye sor panelini aç"
 				},
 				"modifier": "Ctrl",
 				"shortcutsLabel": "Klavye kısayolları",
@@ -6232,6 +6822,10 @@
 					"views": {
 						"description": "Pano, liste, tablo, takvim ve Gantt",
 						"title": "Görünümler"
+					},
+					"ai": {
+						"title": "YZ",
+						"description": "YZ'ye sor, Oluştur modu, yazma yardımı ve ajanlar"
 					}
 				},
 				"label": "Ana menü",
@@ -6242,7 +6836,7 @@
 				"blog": "Blog",
 				"compare": "Karşılaştır",
 				"explore": "Keşfet",
-				"featuresIntro": "Margaya'da beş kısa tur. Her birinde kontrolü devralabileceğiniz canlı bir demo var.",
+				"featuresIntro": "Margaya'da altı kısa tur. Her birinde kontrolü devralabileceğiniz canlı bir demo var.",
 				"newTab": "(yeni sekmede açılır)"
 			},
 			"ownIt": {
@@ -6403,6 +6997,26 @@
 					"title": "Kaynaklar"
 				},
 				"selfHosted": "Kendi sunucunuzda barındırmak için tasarlandı"
+			},
+			"ai": {
+				"eyebrow": "YZ",
+				"title": "Sorun. Oluştursun. Siz onaylayın.",
+				"description": "YZ'ye sor, güncel görevlerinizden yanıt verir; grafikleri ve kullandığı görevleri de gösterir. Oluştur modu bir isteği gözden geçirip onayladığınız değişikliklere dönüştürür, ajanlar da görevleri bir ekip arkadaşı gibi üstlenir.",
+				"agents": {
+					"title": "Ekip arkadaşı gibi çalışan ajanlar",
+					"description": "Bir görevi bir ajana atayın ve Ajan Masası'ndan takip edin. Takıldığında bir kişiye sorar, bir şey yazmadan önce onay bekler ve bir zamanlamaya göre çalışabilir."
+				},
+				"privacy": {
+					"title": "Varsayılan olarak gizli",
+					"description": "Bir yönetici açana kadar YZ kapalı kalır; nerede çalışacağına siz karar verirsiniz.",
+					"items": {
+						"model": "Claude veya Ollama ya da vLLM üzerinden kendi modeliniz",
+						"local": "Yalnızca yerel mod verileri ağınızda tutar",
+						"stored": "Sunucu geçmişini seçmediğiniz sürece hiçbir istem veya yanıt saklanmaz",
+						"budget": "Kullanım kaydıyla birlikte aylık ve günlük bütçeler",
+						"undo": "Oluştur modundan gelen her değişiklik bir saat boyunca geri alınabilir"
+					}
+				}
 			}
 		},
 		"pages": {
@@ -6421,8 +7035,8 @@
 						"title": "OpenAPI ile REST API"
 					},
 					"cleanup": {
-						"body": "Kapanmış görevleri arşivleyin ve bayatlamış olanları otomatik kapatın; her kuralın neyi etkileyeceğini önceden görün.",
-						"title": "Zamanlanmış temizlik"
+						"body": "Yeni görevleri atamak veya etiketlemek gibi rutin işler için Ne zaman, Eğer, O zaman kuralları kurun; bayatlamış görevleri bir zamanlamayla arşivleyin veya kapatın ve her kuralın neyi etkileyeceğini önceden görün.",
+						"title": "Otomasyon kuralları"
 					},
 					"integrations": {
 						"body": "GitHub veya Gitea'dan pull request'leri bağlayın, Slack, Discord, Telegram veya Mattermost'a güncelleme gönderin ve giden webhook'larla olayları herhangi bir URL'ye iletin.",
@@ -6561,6 +7175,43 @@
 					}
 				},
 				"title": "Tek görev kümesi, görmeniz gereken her biçimde."
+			},
+			"ai": {
+				"metaTitle": "YZ asistanı, Oluştur modu ve ajanlar",
+				"metaDescription": "İşinizle ilgili sorular sorun ve güncel verilerden yanıt alın, Oluştur modunun onaylayacağınız değişiklikler önermesine izin verin, YZ yardımıyla yazın ve görevleri YZ ajanlarına atayın; kendi modelinizle ve YZ varsayılan olarak kapalıyken.",
+				"eyebrow": "YZ",
+				"title": "İşi bilen bir asistan.",
+				"description": "YZ'ye sor, Oluştur modu, yazma yardımı ve ajanlar; hepsi açık kaynak sürümde, seçtiğiniz model üzerinde çalışır.",
+				"sections": {
+					"ask": {
+						"title": "YZ'ye sor",
+						"body": "Sade bir dille sorun ve güncel görevlerden yanıt alın; sayılar, grafikler ve kullandığı görev ve sayfalara bağlantılarla birlikte. @ ile bir görevden, sayfadan veya kişiden bahsedin, dosya ekleyin ya da yazmak yerine konuşun."
+					},
+					"build": {
+						"title": "Oluştur modu",
+						"body": "Üç görevli bir proje ya da Mia için bir görev gibi bir değişikliği anlatın. Neyi okuduğunu ve nasıl akıl yürüttüğünü görür, önerilen değişiklikleri düzenler ve onaylarsınız; herhangi birini bir saat boyunca geri alabilirsiniz."
+					},
+					"writing": {
+						"title": "Yazma yardımı",
+						"body": "Bir açıklamayı veya yorumu iyileştirin, kısaltın, çevirin ya da tonunu değiştirin, başlık önerisi alın, bir görevi özetleyin veya bir sayfaya yapay zekâ bloğu ekleyin."
+					},
+					"triage": {
+						"title": "Ayıklama ve özetler",
+						"body": "Yeni işler için etiket ve öncelik önerileri alın, kopyaları yakalayın, ne istediğinizi anlatarak bir panoyu filtreleyin ve okunmamış gelen kutunuzun özetini ya da bir döngünün kısa değerlendirmesini alın."
+					},
+					"agents": {
+						"title": "YZ ajanları",
+						"body": "Ajanlar, görev atayabileceğiniz üyelerdir. Takıldıklarında bir kişiye sorar, yazmadan önce onay bekler, bir zamanlamaya göre çalışır ve bağladığınız diğer MCP sunucularındaki araçları kullanabilirler."
+					},
+					"privacy": {
+						"title": "Sizin modeliniz, sizin kurallarınız",
+						"body": "Bir yönetici açana kadar YZ kapalıdır. Claude'u ya da yerel bir modeli kullanın, verileri ağınızda tutun, bütçe belirleyin; siz istemedikçe hiçbir istem veya yanıt saklanmaz."
+					}
+				},
+				"cta": {
+					"title": "Hazır olduğunuzda YZ'yi açın.",
+					"description": "YZ kurulum kılavuzunu okuyun ya da YZ'ye sor özelliğini kendi çalışma alanınızda deneyin."
+				}
 			}
 		},
 		"scenes": {
@@ -6671,6 +7322,10 @@
 			"yourWork": {
 				"caption": "Çalışmanız size atananları, sizin oluşturduklarınızı ve takip ettiklerinizi bir araya getirir.",
 				"description": "Demo: Çalışmanız sayfası. İmleç Atananlar, Oluşturulanlar ve Takip edilenler sekmeleri arasında geziniyor; her biri projeler genelindeki kendi görevlerini durum, öncelik ve bitiş tarihleriyle listeliyor."
+			},
+			"ask": {
+				"caption": "İş hakkında sorun, sonra değişikliği Oluştur modu yapsın. Onayı siz verirsiniz.",
+				"description": "Demo: YZ'ye sor sohbeti açık olan Website panosu. Biri geçerli döngüyü neyin engellediğini sorar. Asistan neleri okuduğunu listeler, iki saniye düşünür ve yanıt verir: WEB-5 ve WEB-6 engellenmiş, WEB-5'in de atanan kişisi yok. Oluştur moduna geçip WEB-5'i Mira'ya atamasını isterler. Asistan değişikliği önerir, onaylarlar, kartta Geri al düğmesiyle birlikte Tamam görünür ve WEB-5'te Mira'nın avatarı belirir."
 			}
 		}
 	},
@@ -6836,7 +7491,11 @@
 			"owner": "Sahip",
 			"progress": "İlerleme",
 			"tasks": "Görevler",
-			"title": "Döngü ayrıntıları"
+			"title": "Döngü ayrıntıları",
+			"rolledOver_one": "Aktarım, {{count}} tamamlanmamış görevi {{name}} döngüsüne taşıdı.",
+			"rolledOver_other": "Aktarım, {{count}} tamamlanmamış görevi {{name}} döngüsüne taşıdı.",
+			"rolloverNoNext": "Aktarım sonraki bir döngü bulamadı; tamamlanmamış görevler burada kaldı.",
+			"rolloverNothing": "Aktarım, taşınacak tamamlanmamış görev bulamadı."
 		},
 		"status": {
 			"archived": "Arşivlendi",
@@ -7418,7 +8077,9 @@
 		"widgets": {
 			"quickLinks": "Hızlı bağlantılar",
 			"recents": "Son kullanılanlar",
-			"stickies": "Yapışkan notlar"
+			"stickies": "Yapışkan notlar",
+			"risks": "Riskler",
+			"myBrief": "Özetim"
 		},
 		"focus": {
 			"caughtUp": "Hepsi okundu",
@@ -7432,7 +8093,9 @@
 			"stickies": "Yapışkan notlar",
 			"stickiesHint": "Özel notlar, yalnızca sizin için",
 			"unread_one": "{{count}} okunmamış",
-			"unread_other": "{{count}} okunmamış"
+			"unread_other": "{{count}} okunmamış",
+			"openCaption": "açık",
+			"unreadCaption": "okunmamış"
 		}
 	},
 	"intake": {
@@ -7492,7 +8155,11 @@
 			"titlePlaceholder": "Neye ihtiyacınız var?",
 			"titleRequired": "Bir başlık ekleyin",
 			"toast": "İstek gönderildi",
-			"toastView": "Görüntüle"
+			"toastView": "Görüntüle",
+			"pastedImages": "Yapıştırılan görseller",
+			"pasteHint": "İsteğe eklemek için ekran görüntülerini yapıştırın.",
+			"removeImage": "{{name}} öğesini kaldır",
+			"attachFailed": "İstek gönderildi ancak bazı görseller eklenemedi."
 		},
 		"decline": {
 			"description": "İstek kapatılır ve panoya alınmaz. Daha sonra yeniden açabilirsiniz.",
@@ -7539,7 +8206,9 @@
 			"noTasks": "Bu projede henüz başka görev yok.",
 			"searchPlaceholder": "Görevleri anahtar veya başlığa göre ara",
 			"title": "{{key}} isteğini yinelenen olarak işaretle",
-			"toast": "{{key}} ile yinelenen olarak işaretlendi"
+			"toast": "{{key}} ile yinelenen olarak işaretlendi",
+			"aiSuggestions": "Yapay zekâ önerileri",
+			"aiChecking": "Yapay zekâ ile kopyalar aranıyor…"
 		},
 		"empty": {
 			"backToIntake": "İsteklere dön",
@@ -7783,6 +8452,11 @@
 				"singleProjectHint": "Hızı görmek için tek bir proje seçin",
 				"subtitle": "Döngü başına tamamlanan ve taahhüt edilen",
 				"title": "Hız"
+			},
+			"filter": {
+				"all": "Tümü",
+				"label": "Döngüleri göster",
+				"running": "Şu anda devam eden"
 			}
 		},
 		"dimensions": {
@@ -7926,7 +8600,8 @@
 			"noRequests": "Henüz istek yok",
 			"noTasks": "Bu filtrelerle eşleşen görev yok",
 			"retry": "Tekrar dene",
-			"timeout": "Bu çok uzun sürdü. Filtreleri daraltıp tekrar deneyin."
+			"timeout": "Bu çok uzun sürdü. Filtreleri daraltıp tekrar deneyin.",
+			"noRunningCycles": "Şu anda devam eden döngü yok"
 		},
 		"table": {
 			"periodEnd": "Dönem sonu",
@@ -7942,7 +8617,8 @@
 			"intake": "Gelen istekler",
 			"modules": "Modüller",
 			"overview": "Genel bakış",
-			"tasks": "Görevler"
+			"tasks": "Görevler",
+			"delivery": "Teslimat"
 		},
 		"trend": {
 			"completed": "Tamamlanan",
@@ -7956,9 +8632,143 @@
 			"chart": "Grafik",
 			"label": "Şu şekilde göster",
 			"table": "Tablo"
+		},
+		"reports": {
+			"actionsFor": "{{name}} için işlemler",
+			"close": "Raporu kapat",
+			"delete": "Sil",
+			"deleteDescription": "“{{name}}” silinecek. Bu işlem geri alınamaz.",
+			"deleteSharedDescription": "“{{name}}” çalışma alanındaki herkes için silinecek. Bu işlem geri alınamaz.",
+			"deleteTitle": "Bu rapor silinsin mi?",
+			"dialog": {
+				"cancel": "İptal",
+				"createTitle": "Raporu kaydet",
+				"editTitle": "Raporu düzenle",
+				"name": "Ad",
+				"namePlaceholder": "örn. Atanana göre açık hatalar",
+				"nameRequired": "Bir ad girin",
+				"save": "Kaydet",
+				"summary": "Grafik ayarlarını, kapsamdaki projeleri ve filtreleri kaydeder.",
+				"update": "Değişiklikleri kaydet",
+				"visibility": "Kimler görebilir"
+			},
+			"empty": "Henüz kayıtlı rapor yok. Daha sonra geri dönmek için bu grafiği kaydedin.",
+			"listTitle": "Kayıtlı raporlar",
+			"loadError": "Kayıtlı raporlar yüklenemedi",
+			"makePrivate": "Özel yap",
+			"notes": {
+				"allProjects": "Projelerinin hiçbiri kullanılamıyor, bu yüzden tüm projeler gösteriliyor.",
+				"builderReset": "Bazı grafik ayarları bu projeler için kullanılamadığından sıfırlandı.",
+				"dropped_one": "Bu rapordaki {{count}} proje artık mevcut değil.",
+				"dropped_other": "Bu rapordaki {{count}} proje artık mevcut değil.",
+				"leftOut_one": "Bu rapordaki {{count}} proje arşivlendiği için dışarıda bırakıldı.",
+				"leftOut_other": "Bu rapordaki {{count}} proje arşivlendiği için dışarıda bırakıldı.",
+				"otherProjects": "Bu rapor başka projeler için kaydedildi; burada yalnızca bu projeyi gösteriyor."
+			},
+			"open": "Raporlar",
+			"rename": "Yeniden adlandır",
+			"save": "Kaydet",
+			"saveAsNew": "Yeni olarak kaydet",
+			"share": "Çalışma alanıyla paylaş",
+			"sharedBy": "{{name}} tarafından paylaşıldı",
+			"showing": "Rapor: {{name}}",
+			"toast": {
+				"deleted": "Rapor silindi",
+				"deleteError": "Rapor silinemedi",
+				"madePrivate": "Rapor artık özel",
+				"saved": "“{{name}}” kaydedildi",
+				"saveError": "Rapor kaydedilemedi",
+				"shared": "Rapor çalışma alanıyla paylaşıldı",
+				"updated": "Rapor güncellendi"
+			},
+			"unsaved": "Kaydedilmemiş değişiklikler",
+			"update": "Raporu güncelle",
+			"visibility": {
+				"private": "Özel",
+				"privateHint": "Yalnızca siz görebilirsiniz.",
+				"workspace": "Çalışma alanıyla paylaşıldı",
+				"workspaceHint": "Bu çalışma alanında analitik erişimi olan herkes açabilir."
+			}
 		}
 	},
 	"pages": {
+		"templates": {
+			"saveAction": "Şablon olarak kaydet",
+			"saveTitle": "Şablon olarak kaydet",
+			"saveDescription": "Sayfanın mevcut içeriği ve simgesi yeni sayfalar için bir şablona dönüşür.",
+			"nameLabel": "Şablon adı",
+			"scopeLabel": "Kullanılabileceği yer",
+			"scopeProject": "Bu proje",
+			"scopeProjectHint": "Bu projede sayfa oluştururken sunulur.",
+			"scopeWorkspace": "Tüm projeler",
+			"scopeWorkspaceHint": "Çalışma alanının tüm projelerinde sunulur.",
+			"saveConfirm": "Şablonu kaydet",
+			"savedToast": "Şablon kaydedildi",
+			"saveError": "Şablon kaydedilemedi",
+			"newFromTemplate": "Şablondan yeni sayfa",
+			"moreCreateOptions": "Sayfa oluşturmanın diğer yolları",
+			"pickTitle": "Şablondan yeni sayfa",
+			"pickDescription": "Yeni sayfa şablonun içeriğiyle başlar. Sonrasında her şeyi değiştirebilirsiniz.",
+			"starters": "Başlangıç şablonları",
+			"saved": "Kayıtlı şablonlar",
+			"savedEmpty": "Henüz kayıtlı şablon yok. Bir sayfanın menüsünden şablon kaydedin.",
+			"loadError": "Şablonlar yüklenemedi",
+			"deleteLabel": "{{name}} şablonunu sil",
+			"deleted": "Şablon silindi",
+			"deleteError": "Şablon silinemedi",
+			"builtin": {
+				"meetingName": "Toplantı notları",
+				"meetingDescription": "Katılımcılar, gündem, kararlar ve yapılacaklar.",
+				"meetingAttendees": "Katılımcılar",
+				"meetingAgenda": "Gündem",
+				"meetingNotes": "Notlar",
+				"meetingDecisions": "Kararlar",
+				"meetingActionItems": "Yapılacaklar",
+				"specName": "Şartname",
+				"specDescription": "Sorun, hedefler, öneri ve açık sorular.",
+				"specSummary": "Özet",
+				"specProblem": "Sorun",
+				"specGoals": "Hedefler",
+				"specNonGoals": "Kapsam dışı",
+				"specProposal": "Öneri",
+				"specOpenQuestions": "Açık sorular",
+				"retroName": "Retrospektif",
+				"retroDescription": "Neler iyi gitti, neler geliştirilebilir, sırada ne deneyeceğiz.",
+				"retroWentWell": "Neler iyi gitti",
+				"retroCouldBeBetter": "Neler daha iyi olabilirdi",
+				"retroTryNext": "Sırada ne deneyeceğiz"
+			}
+		},
+		"publish": {
+			"menuItem": "Web'de yayınla",
+			"title": "Web'de yayınla",
+			"description": "Bağlantıya sahip herkes bu sayfayı oturum açmadan okuyabilir. Arama motorlarından sayfayı dizine eklememeleri istenir.",
+			"switchLabel": "Herkese açık bağlantı",
+			"onHint": "Yayında. Kapatmak bağlantıyı hemen iptal eder.",
+			"offHint": "Kapalı. Bağlantı oluşturmak için açın.",
+			"disabledByWorkspace": "Bu çalışma alanında herkese açık sayfalar kapalı. Bir yönetici bunları çalışma alanı ayarlarından açabilir.",
+			"cannotPublish": "Yalnızca projeleri paylaşabilen kişiler yayınlayabilir ve yalnızca tüm çalışma alanına görünür sayfalar yayınlanabilir.",
+			"linkLabel": "Bağlantı",
+			"copyLink": "Bağlantıyı kopyala",
+			"copied": "Kopyalandı",
+			"openLink": "Herkese açık sayfayı aç",
+			"privacyNote": "Bahsetmeler, görev bağlantıları, dosyalar ve yayınlanmamış sayfalara giden bağlantılar herkese açık sayfada gizlenir.",
+			"publishedToast": "Sayfa yayınlandı",
+			"unpublishedToast": "Bağlantı iptal edildi",
+			"error": "Herkese açık bağlantı değiştirilemedi",
+			"loadError": "Herkese açık bağlantı yüklenemedi",
+			"done": "Tamam"
+		},
+		"publicView": {
+			"documentTitle": "Paylaşılan sayfa",
+			"unavailableTitle": "Bu sayfa kullanılamıyor",
+			"unavailableDescription": "Bağlantı iptal edilmiş olabilir ya da sayfa artık paylaşılmıyor.",
+			"updated": "Güncellenme: {{date}}",
+			"mention": "@biri",
+			"task": "bağlı bir görev",
+			"file": "ekli bir dosya",
+			"page": "başka bir sayfa"
+		},
 		"actions": {
 			"archive": "Arşivle",
 			"copyLink": "Bağlantıyı kopyala",
@@ -7996,6 +8806,40 @@
 			"restoredBy": "{{name}} önceki bir sürümü geri yükledi",
 			"roomFull": "Şu anda çok fazla kişi bu sayfayı açık tutuyor. Biraz sonra tekrar deneyin.",
 			"signedOut": "Oturumunuz sona erdi. Düzenlemeye devam etmek için yeniden giriş yapın."
+		},
+		"toolbar": {
+			"ariaLabel": "Biçimlendirme araç çubuğu",
+			"textStyle": "Metin stili",
+			"bold": "Kalın",
+			"italic": "İtalik",
+			"underline": "Altı çizili",
+			"strike": "Üstü çizili",
+			"inlineCode": "Satır içi kod",
+			"link": "Bağlantı",
+			"image": "Görsel",
+			"more": "Daha fazla biçimlendirme"
+		},
+		"filters": {
+			"button": "Filtreler",
+			"active": "Filtreler uygulandı",
+			"search": "Filtrelerde ara",
+			"searchClear": "Aramayı temizle",
+			"favorites": "Favoriler",
+			"createdDate": "Oluşturulma tarihi",
+			"date": {
+				"any": "Herhangi bir zaman",
+				"today": "Bugün",
+				"last7": "Son 7 gün",
+				"last30": "Son 30 gün",
+				"older": "30 günden eski"
+			},
+			"remove": "{{filter}} filtresini kaldır"
+		},
+		"detail": {
+			"unlocked": "Kilitsiz",
+			"openOutline": "Ana hattı aç",
+			"currentSection": "Geçerli bölüm",
+			"emptyLinePlaceholder": "Komutlar için '/' yazın"
 		},
 		"commandPalette": {
 			"createPage": "Sayfa oluştur"
@@ -8113,8 +8957,6 @@
 			"locked": "Kilitli",
 			"newPage": "Yeni sayfa",
 			"ownedBy": "Sahibi: {{name}}",
-			"ownerFilter": "Sahip",
-			"ownerFilterSearch": "Kişi ara",
 			"retry": "Tekrar dene",
 			"searchPlaceholder": "Sayfa ara",
 			"sort": {
@@ -8234,6 +9076,229 @@
 			"expand": "{{title}} öğesini genişlet",
 			"newPage": "Yeni sayfa",
 			"title": "Sayfalar"
+		}
+	},
+	"accountSecurity": {
+		"platform": {
+			"save": "Kaydet",
+			"retry": "Tekrar dene",
+			"loadMore": "Daha fazla yükle",
+			"auditPasswordResetSent": "Parola sıfırlama bağlantısı gönderildi",
+			"apiKeys": {
+				"accessLabel": "Erişim",
+				"accessFull": "Tam erişim",
+				"accessFullHint": "Üyesi olduğunuz her çalışma alanında yapabildiğiniz her şey.",
+				"accessRead": "Salt okunur",
+				"accessReadHint": "Okuyabilir ama hiçbir şeyi değiştirmez.",
+				"accessCustom": "Özel",
+				"accessCustomHint": "Yalnızca aşağıda seçtiğiniz alanlar.",
+				"areasLabel": "Alanlar",
+				"areaNone": "Yok",
+				"areaRead": "Okuma",
+				"areaWrite": "Yazma",
+				"areasRequired": "En az bir alan seçin.",
+				"projectsLabel": "Belirli projelerle sınırla",
+				"projectsHint": "Diğer projeler bu anahtar için yokmuş gibi görünür ve tüm çalışma alanını kapsayan istekler reddedilir.",
+				"projectsIn": "{{workspace}} içindeki projeler",
+				"projectsLoading": "Projeler yükleniyor…",
+				"projectsEmpty": "Bu çalışma alanında henüz proje yok.",
+				"projectsRequired": "En az bir proje seçin.",
+				"columnScope": "Kapsam",
+				"scopeFull": "Tam erişim",
+				"scopeRead": "Salt okunur",
+				"scopeCustom": "Özel",
+				"scopeProjects": "Projeler: {{projects}}",
+				"deletedProject": "Silinmiş proje",
+				"requestsAria": "{{name}} ile yapılan istekler",
+				"requestsTitle": "İstekler: {{name}}",
+				"requestsDescription": "Bu anahtarla yapılan son istekler. Yalnızca yöntem, rota, durum ve süre saklanır, içerik asla saklanmaz.",
+				"requestsEmpty": "Henüz istek yok.",
+				"requestsError": "İstekler yüklenemedi.",
+				"columnTime": "Zaman",
+				"columnRequest": "İstek",
+				"columnStatus": "Durum",
+				"columnDuration": "Süre",
+				"durationMs": "{{value}} ms"
+			},
+			"policy": {
+				"title": "Oturum açma politikası",
+				"description": "Kimlerin hesap oluşturabileceği, herkesin nasıl oturum açacağı ve oturumların ne kadar süreceği.",
+				"invitedPasswordSignUp": "Davetliler için parolayla kayıt",
+				"invitedPasswordSignUpHint": "Parolayla kayıt kapalıyken geçerli daveti olan kişiler yine de parolalı hesap oluşturabilir.",
+				"domains": "İzin verilen e-posta alan adları",
+				"domainsHint": "Yeni hesaplar bu alan adlarından birinde bir adres kullanmalıdır. Her alan adına izin vermek için boş bırakın.",
+				"requiredProvider": "Zorunlu oturum açma sağlayıcısı",
+				"requiredProviderHint": "Herkes bu sağlayıcıyla oturum açar. Örnek yöneticileri geri dönüş yolu olarak parolayla oturum açmayı korur.",
+				"noRequirement": "Zorunluluk yok",
+				"customProvider": "kuruluşunuzun oturum açma yöntemi",
+				"sessionLifetime": "Oturum süresi",
+				"sessionLifetimeHint": "Kullanılmayan bir oturumun ne kadar geçerli kalacağı. Kullanmak süreyi uzatır.",
+				"hours": "saat",
+				"signInNotice": "{{provider}} ile oturum açın. Parolayla oturum açma yalnızca örnek yöneticileri içindir."
+			},
+			"twoFactor": {
+				"title": "İki adımlı doğrulama",
+				"description": "Parolayla oturum açarken bir doğrulayıcı uygulamasından kod iste.",
+				"authenticator": "Doğrulayıcı uygulama",
+				"on": "Açık",
+				"off": "Kapalı",
+				"turnOn": "Aç",
+				"turnOff": "Kapat",
+				"newCodes": "Yeni kurtarma kodları",
+				"confirmPassword": "Parolanızı onaylayın",
+				"continue": "Devam",
+				"setupTitle": "Margaya'yı doğrulayıcı uygulamanıza ekleyin",
+				"setupHint": "Bu kurulum anahtarını doğrulayıcı uygulamanıza girin, ardından gösterdiği 6 haneli kodu yazın.",
+				"setupKey": "Kurulum anahtarı",
+				"openApp": "Bu cihazdaki bir doğrulayıcı uygulamada aç",
+				"code": "Doğrulama kodu",
+				"verify": "Doğrula",
+				"invalidCode": "Bu kod doğru değil. Cihazınızın saatini kontrol edip tekrar deneyin.",
+				"codesTitle": "Kurtarma kodları",
+				"codesHint": "Bunları güvenli bir yerde saklayın. Cihazınızı kaybederseniz her kod bir kez oturum açmanızı sağlar.",
+				"copyCodes": "Kodları kopyala",
+				"copied": "Kurtarma kodları kopyalandı",
+				"done": "Bitti",
+				"enabled": "İki adımlı doğrulama açık.",
+				"disabled": "İki adımlı doğrulama kapalı.",
+				"error": "Bir şeyler ters gitti. Tekrar deneyin."
+			},
+			"challenge": {
+				"title": "İki adımlı doğrulama",
+				"totpHint": "Doğrulayıcı uygulamanızdaki 6 haneli kodu girin.",
+				"recoveryHint": "Kurtarma kodlarınızdan birini girin. Her kod bir kez çalışır.",
+				"recoveryCode": "Kurtarma kodu",
+				"invalid": "Bu kod doğru değil. Tekrar deneyin.",
+				"trustDevice": "Bu cihaza 30 gün güven",
+				"useRecovery": "Kurtarma kodu kullan",
+				"useApp": "Doğrulayıcı uygulamanızı kullanın",
+				"usePassword": "Bunun yerine parolayla oturum aç",
+				"back": "Oturum açmaya dön"
+			},
+			"users": {
+				"nav": "Kullanıcılar",
+				"title": "Kullanıcılar",
+				"subtitle": "Bu sunucudaki tüm hesaplar. Ayrılanları engelleyin, parolaları sıfırlayın ve oturumları kapatın.",
+				"listTitle": "Hesaplar",
+				"search": "Ada veya e-postaya göre ara",
+				"filterLabel": "Göster",
+				"filterAll": "Tüm hesaplar",
+				"filterAdmins": "Örnek yöneticileri",
+				"filterBanned": "Engellenenler",
+				"empty": "“{{query}}” ile eşleşen hesap yok.",
+				"none": "Henüz hesap yok.",
+				"columnUser": "Kullanıcı",
+				"columnStatus": "Durum",
+				"columnWorkspaces": "Çalışma alanları",
+				"columnLastActive": "Son etkinlik",
+				"columnJoined": "Katılma",
+				"columnActions": "İşlemler",
+				"badgeAdmin": "Yönetici",
+				"badgeBanned": "Engelli",
+				"badgeTwoFactor": "2FA",
+				"never": "Hiç",
+				"actionsFor": "{{name}} için işlemler",
+				"details": "Ayrıntıları gör",
+				"resetPassword": "Parolayı sıfırla",
+				"signOut": "Her yerde oturumu kapat",
+				"makeAdmin": "Örnek yöneticisi yap",
+				"removeAdmin": "Örnek yöneticiliğini kaldır",
+				"ban": "Engelle",
+				"unban": "Engeli kaldır",
+				"banTitle": "{{name}} engellensin mi?",
+				"banDescription": "Her yerde oturumu kapatılır ve engel bitene kadar oturum açamaz. API anahtarları da çalışmayı durdurur.",
+				"banReason": "Neden (isteğe bağlı)",
+				"banDuration": "Süre",
+				"banForever": "Engel kaldırılana kadar",
+				"ban7Days": "7 gün",
+				"ban30Days": "30 gün",
+				"banned": "{{name}} engellendi.",
+				"unbanned": "{{name}} yeniden oturum açabilir.",
+				"resetTitle": "{{name}} kullanıcısının parolası sıfırlansın mı?",
+				"resetDescription": "Bir sıfırlama bağlantısı gönderin ya da şimdi yeni bir parola belirleyin. Parola belirlemek her yerde oturumu kapatır.",
+				"resetByEmail": "{{email}} adresine sıfırlama bağlantısı gönder",
+				"resetSetNow": "Şimdi yeni bir parola belirle",
+				"newPassword": "Yeni parola",
+				"resetConfirm": "Parolayı sıfırla",
+				"resetSent": "{{email}} adresine bir sıfırlama bağlantısı gönderildi.",
+				"passwordSet": "{{name}} kullanıcısının parolası değiştirildi.",
+				"signOutTitle": "{{name}} her yerde oturumdan çıkarılsın mı?",
+				"signOutDescription": "Tüm oturumlar hemen sona erer. API anahtarları çalışmaya devam eder; onları yalnızca sahibi iptal edebilir.",
+				"signedOut": "{{name}} her yerde oturumdan çıkarıldı.",
+				"promoted": "{{name}} artık örnek yöneticisi.",
+				"demoted": "{{name}} artık örnek yöneticisi değil.",
+				"activeSessions": "Etkin oturumlar",
+				"signInMethod": "Parola",
+				"hasPassword": "Belirlendi",
+				"noPassword": "Belirlenmedi (başka yolla oturum açıyor)",
+				"workspacesTitle": "Çalışma alanları",
+				"noWorkspaces": "Hiçbir çalışma alanının üyesi değil.",
+				"joined": "Katılma: {{date}}"
+			}
+		},
+		"password": {
+			"tooShort": "En az {{min}} karakter kullanın.",
+			"tooCommon": "Bu parola çok yaygın ve kolay tahmin edilebilir. Başka bir parola seçin.",
+			"matchesEmail": "Parolanız e-posta adresiniz olamaz.",
+			"hint": "En az {{min}} karakter. Yaygın parolalardan ve e-posta adresinizden kaçının."
+		},
+		"emailChange": {
+			"action": "E-postayı değiştir",
+			"title": "E-posta adresini değiştir",
+			"description": "Yeni adrese bir kod göndereceğiz. Kodu girdiğiniz anda e-postanız değişir ve diğer oturumlarınız kapatılır.",
+			"newEmail": "Yeni e-posta adresi",
+			"newEmailPlaceholder": "you@example.com",
+			"invalidEmail": "Geçerli bir e-posta adresi girin.",
+			"sameEmail": "Bu zaten sizin e-posta adresiniz.",
+			"sendCode": "Kod gönder",
+			"codeSent": "{{email}} kullanılabiliyorsa, bu adrese bir kod gönderiliyor. Kodun süresi 5 dakika içinde dolar.",
+			"code": "Doğrulama kodu",
+			"confirm": "E-postayı değiştir",
+			"back": "Başka bir adres kullan",
+			"success": "E-posta adresiniz artık {{email}}.",
+			"invalidCode": "Kod yanlış veya süresi dolmuş. Yeni bir kod isteyin.",
+			"sessionTooOld": "Güvenliğiniz için e-posta adresinizi değiştirmeden önce tekrar giriş yapın.",
+			"unavailable": "Bu sunucuda e-posta yapılandırılmamış, bu yüzden adresiniz burada değiştirilemez. Bir örnek yöneticisine başvurun.",
+			"error": "E-posta adresiniz değiştirilemedi."
+		},
+		"reauth": {
+			"title": "Siz olduğunuzu doğrulayın",
+			"description": "Örneği değiştirmek için yakın zamanda giriş yapmış olmanız gerekir. Sonraki 10 dakika boyunca devam etmek için parolanızı girin.",
+			"noPassword": "Örneği değiştirmek için yakın zamanda giriş yapmış olmanız gerekir. Hesabınızın parolası yok, bu yüzden devam etmek için tekrar giriş yapın.",
+			"password": "Parola",
+			"confirm": "Onayla",
+			"signInAgain": "Tekrar giriş yap",
+			"wrongPassword": "Parola yanlış.",
+			"cancelled": "Kaydedilmedi: kimliğiniz doğrulanmadı.",
+			"error": "Parolanız doğrulanamadı."
+		},
+		"auditTrail": {
+			"title": "Denetim kaydı",
+			"subtitle": "Örnek değişiklikleri: kim neyi ne zaman değiştirdi. Gizli değerler asla kaydedilmez.",
+			"empty": "Henüz kaydedilmiş örnek değişikliği yok.",
+			"loadMore": "Daha fazla yükle",
+			"when": "Ne zaman",
+			"who": "Kim",
+			"what": "Ne",
+			"system": "Sistem",
+			"actions": {
+				"instanceSettingsUpdated": "Örnek ayarlarını değiştirdi",
+				"instanceAdminAdded": "Bir örnek yöneticisi ekledi",
+				"instanceAdminRemoved": "Bir örnek yöneticisini kaldırdı",
+				"instanceReauthenticated": "Parolasını doğruladı",
+				"userCreated": "Bir hesap oluşturdu",
+				"userRoleChanged": "Bir hesabın rolünü değiştirdi",
+				"userBanned": "Bir hesabı engelledi",
+				"userUnbanned": "Bir engeli kaldırdı",
+				"userRemoved": "Bir hesabı sildi",
+				"userPasswordSet": "Bir hesabın parolasını ayarladı",
+				"userSessionsRevoked": "Bir hesabın oturumlarını kapattı",
+				"userImpersonated": "Başka bir hesap olarak giriş yaptı",
+				"cliAdminPromoted": "Örnek yöneticisi atadı (kurtarma CLI)",
+				"cliAdminDemoted": "Bir örnek yöneticisini kaldırdı (kurtarma CLI)",
+				"cliPasswordReset": "Bir parolayı sıfırladı (kurtarma CLI)",
+				"cliUserUnbanned": "Bir engeli kaldırdı (kurtarma CLI)"
+			}
 		}
 	},
 	"instanceAdmin": {
@@ -8374,7 +9439,8 @@
 			"email": "E-posta",
 			"general": "Genel",
 			"publicBoards": "Herkese açık panolar",
-			"workspaces": "Çalışma alanları"
+			"workspaces": "Çalışma alanları",
+			"ai": "YZ"
 		},
 		"oauth": {
 			"authorizationUrl": "Yetkilendirme URL'si",
@@ -8595,7 +9661,11 @@
 				"label": "Stack",
 				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
 			},
-			"title": "Quick facts"
+			"title": "Quick facts",
+			"ai": {
+				"label": "YZ",
+				"value": "İsteğe bağlı ve varsayılan olarak kapalı: YZ'ye sor, Oluştur modu ve YZ ajanları; Claude veya kendi barındırdığınız bir model üzerinde"
+			}
 		},
 		"guidelines": {
 			"do": {
@@ -8805,5 +9875,1713 @@
 		},
 		"title": "One product. Two ways to run it.",
 		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+	},
+	"templates": {
+		"form": {
+			"addSubtask": "Ekle",
+			"assignees": "Atananlar",
+			"assigneesNone": "Proje varsayılanı",
+			"create": "Şablon oluştur",
+			"createTitle": "Yeni görev şablonu",
+			"description": "Yeni bir görevin başlangıç içeriği. Görev oluşturulurken her şey düzenlenebilir kalır.",
+			"editTitle": "Görev şablonunu düzenle",
+			"estimate": "Tahmin",
+			"labels": "Etiketler",
+			"labelsEmpty": "Etiket bulunamadı",
+			"labelsNone": "Etiket yok",
+			"labelsSearch": "Etiket ara",
+			"moveDown": "{{title}} öğesini aşağı taşı",
+			"moveUp": "{{title}} öğesini yukarı taşı",
+			"name": "Ad",
+			"namePlaceholder": "Hata raporu",
+			"notSet": "Ayarlanmadı",
+			"priority": "Öncelik",
+			"removeSubtask": "{{title}} öğesini kaldır",
+			"save": "Şablonu kaydet",
+			"status": "Durum",
+			"statusDefault": "Proje varsayılanı",
+			"subtaskPlaceholder": "Alt görev ekle",
+			"subtasks": "Alt görevler",
+			"subtaskTitle": "Alt görev {{number}}",
+			"taskDescription": "Açıklama",
+			"taskDescriptionPlaceholder": "Yeniden oluşturma adımları, beklenen sonuç…",
+			"titlePattern": "Başlık kalıbı",
+			"titlePatternHint": "{title}, yazılan başlıkla değiştirilir. Kalıpta yoksa yazılan başlık kalıbın ardına eklenir.",
+			"titlePatternPlaceholder": "Hata: {title}"
+		},
+		"settings": {
+			"add": "Yeni şablon",
+			"deleteAria": "{{name}} şablonunu sil",
+			"deleteConfirm": "Sil",
+			"deleteDescription": "Bu şablondan oluşturulan görevler olduğu gibi kalır.",
+			"deleteTitle": "{{name}} şablonu silinsin mi?",
+			"description": "Yeni görevler için başlangıç noktaları: bir başlık kalıbı, varsayılan alanlar ve bir alt görev kontrol listesi.",
+			"editAria": "{{name}} şablonunu düzenle",
+			"empty": "Henüz şablon yok.",
+			"loadError": "Şablonlar yüklenemedi.",
+			"noPermission": "Projenin şablonlarını yalnızca projeyi düzenleyebilen kişiler değiştirebilir.",
+			"retry": "Tekrar dene",
+			"subtaskCount_one": "{{count}} alt görev",
+			"subtaskCount_other": "{{count}} alt görev",
+			"title": "Görev şablonları",
+			"toast": {
+				"created": "Şablon oluşturuldu",
+				"deleted": "Şablon silindi",
+				"deleteError": "Şablon silinemedi",
+				"error": "Şablon kaydedilemedi",
+				"updated": "Şablon kaydedildi"
+			}
+		},
+		"use": {
+			"applied": "Şablon: {{name}}",
+			"button": "Şablon",
+			"menuLabel": "Şablon kullan",
+			"quickAdd": "Şablondan oluştur",
+			"removeSubtask": "{{title}} alt görevini kaldır",
+			"subtaskError_one": "Görev oluşturuldu ancak {{count}} alt görev eklenemedi",
+			"subtaskError_other": "Görev oluşturuldu ancak {{count}} alt görev eklenemedi",
+			"subtasksTitle_one": "Şablondan {{count}} alt görev",
+			"subtasksTitle_other": "Şablondan {{count}} alt görev"
+		}
+	},
+	"delivery": {
+		"forecast": {
+			"title": "Tahmin",
+			"likelyBy": "%85 olasılıkla {{date}} tarihine kadar biter",
+			"percentiles": "%50: {{p50}} · %95: {{p95}}",
+			"chanceByEnd": "{{date}} tarihine kadar bitme olasılığı: %{{percent}}",
+			"beyondHorizon": "Mevcut hızla iki yıldan fazla",
+			"open_one": "{{count}} açık görev",
+			"open_other": "{{count}} açık görev",
+			"complete": "Tüm görevler tamamlandı",
+			"insufficient": {
+				"short_span": "Henüz yeterli geçmiş yok: tahmin için bu projede en az 14 günlük çalışma gerekir.",
+				"few_completions": "Henüz yeterli geçmiş yok: son 8 haftada 5'ten az görev tamamlandı.",
+				"few_active_days": "Henüz yeterli geçmiş yok: son 8 haftada görevler 3 günden az günde tamamlandı."
+			},
+			"howCalculated": "Bu nasıl hesaplanıyor?",
+			"method": {
+				"title": "Monte Carlo tahmini",
+				"body": "Margaya ekibinizin gerçek hızını {{iterations}} kez yeniden oynatır. Her simüle edilen gün, aşağıdaki geçmişten rastgele bir günün tamamlanan görev sayısını alır ve açık görevler bitene kadar devam eder. Tarihler, simülasyonların %50, %85 ve %95'inin ne zaman bittiğini gösterir.",
+				"window": "Geçmiş: {{from}} – {{to}}",
+				"completed": "Tamamlanan görev: {{total}}",
+				"activeDays": "Tamamlama olan gün: {{days}}",
+				"perDay": "Günlük tamamlanan: {{min}}–{{max}}",
+				"perWeek": "Haftalık ortalama: {{perWeek}}",
+				"team": "Hız tüm projeye aittir, bu yüzden bu kapsam dışındaki işler de sayılır.",
+				"seed": "Tohum {{seed}}: aynı veriler gün boyunca aynı sonucu verir."
+			},
+			"error": "Tahmin yüklenemedi",
+			"retry": "Tekrar dene"
+		},
+		"risks": {
+			"title": "Riskler",
+			"empty": "Risk bulunamadı",
+			"showAll": "Tümünü göster ({{total}})",
+			"showLess": "Daha az göster",
+			"noCycleTime": "Uzayan işler, başlangıcı kayıtlı 10 görev tamamlandığında görünür.",
+			"hiddenTask": "Göremediğiniz bir görev",
+			"truncated": "Yalnızca ilk 2.000 açık görev kontrol edildi.",
+			"error": "Riskler yüklenemedi",
+			"someone": "Biri",
+			"severity": {
+				"high": "Yüksek risk",
+				"medium": "Orta risk",
+				"low": "Düşük risk"
+			},
+			"criticalPath": {
+				"ends": "Kritik yol {{date}} tarihinde bitiyor",
+				"chain_one": "En uzun bağımlılık zinciri: {{count}} görev",
+				"chain_other": "En uzun bağımlılık zinciri: {{count}} görev"
+			},
+			"kinds": {
+				"critical_path_late": "Kritik yol {{date}} tarihinde, {{deadline}} son tarihinden sonra bitiyor",
+				"critical_path_tight": "Kritik yol {{date}} tarihinde, {{deadline}} son tarihine çok yakın bitiyor",
+				"blocked_chain_one": "{{head}}, {{count}} görevi engelliyor",
+				"blocked_chain_other": "{{head}}, {{count}} görevi engelliyor",
+				"ageing_one": "{{count}} görev {{days}} günden uzun süredir devam ediyor, her zamankinden uzun",
+				"ageing_other": "{{count}} görev {{days}} günden uzun süredir devam ediyor, her zamankinden uzun",
+				"overdue_cluster_one": "{{name}}: {{count}} gecikmiş görev",
+				"overdue_cluster_other": "{{name}}: {{count}} gecikmiş görev",
+				"overdue_cluster_unassigned_one": "Atanmamış {{count}} gecikmiş görev",
+				"overdue_cluster_unassigned_other": "Atanmamış {{count}} gecikmiş görev",
+				"overdue_one": "{{count}} gecikmiş görev",
+				"overdue_other": "{{count}} gecikmiş görev",
+				"unassigned_near_deadline_one": "Son tarihi {{date}} olan {{count}} atanmamış görev",
+				"unassigned_near_deadline_other": "Son tarihi en geç {{date}} olan {{count}} atanmamış görev",
+				"dependency_loop_one": "{{count}} görev bir engelleme döngüsünde",
+				"dependency_loop_other": "{{count}} görev bir döngü içinde birbirini engelliyor"
+			}
+		},
+		"home": {
+			"title": "Risk altında",
+			"empty": "Mevcut döngülerinizde risk altında bir şey yok",
+			"context": "{{project}} · {{cycle}}"
+		},
+		"tab": {
+			"description": "Bu projedeki açık işlerin tahmini ve riskleri"
+		}
+	},
+	"ai": {
+		"rules": {
+			"title": "Açıklamadan kural",
+			"description": "Bir otomasyonu kendi sözcüklerinizle anlatın. YZ bunu düzenleyebileceğiniz, yakın geçmiş üzerinde deneyebileceğiniz ve kaydedebileceğiniz normal bir kurala dönüştürür. Kaydedilen kurallar YZ olmadan çalışır.",
+			"label": "Bir kural tanımlayın…",
+			"placeholder": "Örneğin: bir GitHub pull request'i birleştirildiğinde görevi Tamamlandı sütununa taşı",
+			"compile": "Kural oluştur",
+			"compiling": "Kural yazılıyor…",
+			"unsupportedTitle": "Otomasyonlarla mümkün değil",
+			"rejected": "Doğrulamayı geçemediği için dışarıda bırakılan önerilen kurallar: {{rejected}}",
+			"noRules": "Bu açıklamadan kural oluşturulamadı.",
+			"workflowRule": "İş akışı kuralı",
+			"integration": "Entegrasyon",
+			"when": "Şu olduğunda",
+			"moveTo": "Görevi şuraya taşı",
+			"historyWindow": "Yeniden oynatılacak geçmiş",
+			"days7": "Son 7 gün",
+			"days30": "Son 30 gün",
+			"days90": "Son 90 gün",
+			"dryRun": "Geçmişte dene",
+			"dryRunSummary": "Son {{days}} günde değişmiş olacak görevler: {{changed}}",
+			"dryRunNone": "Son {{days}} günde hiçbir şey değişmezdi.",
+			"dryRunError": "Bu kural geçmiş üzerinde yeniden oynatılamadı.",
+			"more": "Gösterilmeyen diğer eşleşmeler: {{more}}",
+			"archived": "Arşivlendi",
+			"outcomes": {
+				"unchanged": "zaten orada",
+				"skipped": "dokunulmadı"
+			},
+			"notes": {
+				"integration_not_connected": "Bu entegrasyon projeye bağlı değil, bu yüzden yeniden oynatılacak geçmiş yok.",
+				"branch_push_last_only": "Her dalın yalnızca son push'u kaydedilir.",
+				"threshold_from_last_update": "Her görevin son güncellemesine göre; tarihler kuralın görevi ne zaman alacağını gösterir.",
+				"flow_alerts_notify_only": "Akış anomalisi uyarıları yalnızca proje liderini bilgilendirir; görevleri değiştirmez.",
+				"nothing_enabled": "Bu kural hiçbir şeyi açmıyor, bu yüzden hiçbir şey değişmezdi.",
+				"conditions_current_state": "Koşullar her görevin şu anki hâline göre denetlendi; geçmiş yalnızca değişiklikleri tutar."
+			},
+			"save": "Kuralı kaydet",
+			"discard": "Yoksay",
+			"saved": "Kural kaydedildi",
+			"saveError": "Kural kaydedilemedi."
+		},
+		"build": {
+			"command": "YZ ile oluştur…",
+			"title": "YZ ile oluştur",
+			"description": "Neyi planlamak istediğinizi anlatın. YZ, gözden geçirmeniz için bir proje, döngüler ve görevler önerir. Siz onaylayana kadar hiçbir şey oluşturulmaz.",
+			"promptLabel": "Neyi planlayalım?",
+			"promptPlaceholder": "4. çeyrek için 3 sprintlik bir web sitesi yenileme planı hazırla",
+			"target": "Nerede oluşturulsun",
+			"targetCurrent": "{{name}} içinde",
+			"targetNew": "Yeni bir proje",
+			"deep": "Daha derin düşün (daha yavaş)",
+			"draft": "Plan öner",
+			"drafting": "Plan hazırlanıyor…",
+			"cancel": "İptal",
+			"back": "Geri",
+			"create_one": "{{count}} öğe oluştur",
+			"create_other": "{{count}} öğe oluştur",
+			"creating": "Plan oluşturuluyor",
+			"progress": "{{total}} öğeden {{done}} tanesi oluşturuldu…",
+			"close": "Kapat",
+			"openProject": "Projeyi aç",
+			"empty": {
+				"text": "Bu projede henüz görev yok. İşi anlatın, YZ gözden geçirmeniz için görevler önersin."
+			},
+			"review": {
+				"description": "Planı gözden geçirin. İstediğiniz öğenin işaretini kaldırın, düzenleyin veya sırasını değiştirin, ardından oluşturun.",
+				"project": "Proje",
+				"projectName": "Ad",
+				"projectKey": "Anahtar",
+				"projectDescription": "Açıklama",
+				"columns": "Yeni sütunlar",
+				"labels": "Etiketler",
+				"cycles": "Döngüler",
+				"modules": "Modüller",
+				"moduleName": "Modül adı",
+				"tasks_one": "{{count}} görev",
+				"tasks_other": "{{count}} görev",
+				"include": "{{name}} dahil edilsin",
+				"taskTitle": "Görev başlığı",
+				"taskDescription": "Görev açıklaması",
+				"priority": "Öncelik",
+				"estimate": "Tahmin (puan)",
+				"module": "Modül",
+				"none": "Yok",
+				"taskLabels": "Etiketler: {{labels}}",
+				"subtasks": "Alt görevler",
+				"subtaskTitle": "Alt görev başlığı",
+				"moveUp": "{{name}} yukarı taşı",
+				"moveDown": "{{name}} aşağı taşı",
+				"cycle": {
+					"label": "Döngü",
+					"name": "Döngü adı",
+					"startDate": "Başlangıç",
+					"endDate": "Bitiş"
+				}
+			},
+			"done": {
+				"success_one": "Tamamlandı. {{count}} görev oluşturuldu.",
+				"success_other": "Tamamlandı. {{count}} görev oluşturuldu.",
+				"partial_one": "{{count}} öğe dışında her şey oluşturuldu:",
+				"partial_other": "{{count}} öğe dışında her şey oluşturuldu:",
+				"estimatesSkipped": "Projede etkin bir puan tahmin sistemi olmadığı için tahminler eklenmedi.",
+				"created": {
+					"tasks_one": "{{count}} görev",
+					"tasks_other": "{{count}} görev",
+					"subtasks_one": "{{count}} alt görev",
+					"subtasks_other": "{{count}} alt görev",
+					"cycles_one": "{{count}} döngü",
+					"cycles_other": "{{count}} döngü",
+					"modules_one": "{{count}} modül",
+					"modules_other": "{{count}} modül",
+					"columns_one": "{{count}} sütun",
+					"columns_other": "{{count}} sütun",
+					"labels_one": "{{count}} etiket",
+					"labels_other": "{{count}} etiket"
+				}
+			},
+			"kinds": {
+				"project": "Proje",
+				"column": "Sütun",
+				"cycle": "Döngü",
+				"module": "Modül",
+				"task": "Görev",
+				"subtask": "Alt görev",
+				"label": "Etiket",
+				"estimate": "Tahmin",
+				"cycle_tasks": "Döngü görevleri",
+				"module_tasks": "Modül görevleri"
+			},
+			"chat": {
+				"planLabel": "Önerilen değişiklikler",
+				"planning": "Değişiklikler planlanıyor…",
+				"nothing": "Bu istek için değiştirilecek bir şey yok.",
+				"awaiting": "Yanıt bekleniyor",
+				"ready": "Hazır değişiklik: {{count}}. Devam etmek için onaylayın.",
+				"applying": "Değişiklikler uygulanıyor…",
+				"confirm": "Onayla",
+				"cancel": "İptal",
+				"cancelled": "İptal edildi. Hiçbir şey değişmedi.",
+				"remove": "{{title}} öğesini kaldır",
+				"confirmDestructive": "Evet, sil",
+				"truncated": "Plan ilk 50 değişikliğe kısaltıldı.",
+				"appliedSummary": "Uygulanan: {{done}} / {{total}}",
+				"autopilotApplied": "Otomatik pilot tarafından hemen uygulandı.",
+				"autopilotOff": "Bu çalışma alanında otomatik pilot kapalı. Aşağıdaki değişiklikleri gözden geçirin.",
+				"autopilotReview": "Bu değişikliklerden bazılarının önce gözden geçirilmesi gerekiyor.",
+				"done": "Tamam",
+				"open": "Aç",
+				"skipped": "Atlandı",
+				"failed": "Başarısız",
+				"undo": "Geri al",
+				"undone": "Geri alındı",
+				"undoFailed": "Bu değişiklik geri alınamadı.",
+				"forbidden": "Burada yapay zekâ ile değişiklik yapamazsınız.",
+				"pickCandidate": "Şunu mu demek istediniz:",
+				"fields": {
+					"name": "Ad",
+					"key": "Anahtar",
+					"title": "Başlık",
+					"priority": "Öncelik",
+					"dueDate": "Bitiş tarihi",
+					"assignee": "Atanan kişi",
+					"unassigned": "Kimse",
+					"startDate": "Başlangıç",
+					"endDate": "Bitiş",
+					"content": "Yorum"
+				},
+				"problems": {
+					"forbidden": "Bunun için izniniz yok.",
+					"not_found": "Başvurduğu bir şey bulunamadı.",
+					"ambiguous": "Bu ad birden fazla kişiyle eşleşiyor.",
+					"unresolved_ref": "Yapılamayan bir değişikliğe bağlı.",
+					"feature_off": "Bu özellik projede kapalı.",
+					"invalid": "Bu değişiklik yazıldığı haliyle yapılamaz."
+				},
+				"ops": {
+					"create_project": "Yeni proje",
+					"create_task": "Yeni görev",
+					"update_task": "Görevi düzenle",
+					"set_status": "Durumu değiştir",
+					"assign": "Ata",
+					"add_comment": "Yorum yap",
+					"create_cycle": "Yeni döngü",
+					"add_to_cycle": "Döngüye ekle",
+					"create_module": "Yeni modül",
+					"add_to_module": "Modüle ekle",
+					"create_page": "Yeni sayfa",
+					"link_tasks": "Görevleri bağla",
+					"create_label": "Yeni etiket",
+					"delete_task": "Görevi sil",
+					"run_agent": "Ajanı çalıştır"
+				},
+				"agentRun": {
+					"title": "Ajan çalışması",
+					"loading": "Çalışma yükleniyor…",
+					"loadError": "Bu çalışma yüklenemedi.",
+					"inProgress": "Sürüyor"
+				},
+				"noneReady": "Henüz uygulanabilecek bir şey yok. İşaretli değişiklikleri düzeltin ya da kaldırın veya yeniden sorun."
+			},
+			"context": {
+				"title": "Bağlam ({{count}})",
+				"facts": "Projeler: {{projects}} · Kişiler: {{members}} · Döngüler: {{cycles}}",
+				"memory": "Hafıza notları: {{count}}",
+				"history": "Önceki mesajlar: {{count}}"
+			}
+		},
+		"duplicates": {
+			"check": "YZ ile kontrol et",
+			"checking": "Kontrol ediliyor…",
+			"checkedTitle": "YZ bunları yinelenen kayıtlar için kontrol etti",
+			"none": "Muhtemel bir kopya yok.",
+			"verdict": {
+				"duplicate": "Muhtemel kopya",
+				"related": "İlişkili"
+			},
+			"mark": "Bunun kopyası",
+			"markLabel": "Yeni görevi {{key}} görevinin kopyası olarak işaretle",
+			"marked": "İşaretlendi",
+			"willLink": "Yeni görev, {{key}} görevinin kopyası olarak işaretlenecek.",
+			"undo": "Geri al",
+			"linkError": "Görev oluşturuldu ancak {{key}} görevinin kopyası olarak işaretlenemedi."
+		},
+		"triage": {
+			"button": "Önceliklendirme öner",
+			"title": "Önceliklendirme önerileri",
+			"loading": "Benzer işler inceleniyor…",
+			"empty": "Bu öğe için öneri yok.",
+			"retry": "Yeniden dene",
+			"close": "Önerileri kapat",
+			"accept": "Kabul et",
+			"acceptAll": "Tümünü kabul et",
+			"edit": "Düzenle",
+			"dismiss": "Yoksay",
+			"applied": "Uygulandı",
+			"acceptError": "Bu öneri uygulanamadı.",
+			"autoApplied": "Bu proje önerilen etiketleri otomatik olarak ekler.",
+			"sameTitle": "Mevcut bir görevle aynı başlık",
+			"projectAdvice": "Talepler kendi projesinde kalır: bunu reddedip orada yeniden gönderilmesini isteyin.",
+			"otherProjectDuplicate": "Talebi kopya olarak yalnızca bu projedeki bir görev kapatabilir.",
+			"openTask": "{{key}} görevini yeni sekmede aç",
+			"fields": {
+				"label": "Etiket",
+				"assignee": "Atanan",
+				"priority": "Öncelik",
+				"project": "Proje",
+				"duplicate": "Olası kopya"
+			},
+			"settings": {
+				"title": "Önceliklendirme önerileri",
+				"description": "Yeni görevler ve gelen talepler için YZ önerileri. Her öneriyi bir kişi kabul eder, düzenler ya da yoksayar.",
+				"autoApply": "Etiket önerilerini otomatik uygula",
+				"autoApplyHint": "Önerilen etiketler hemen eklenir ve her biri denetim günlüğüne kaydedilir. Atanan kişi, öncelik, proje ve kopyalar her zaman bir kişinin kararını bekler.",
+				"saved": "Önceliklendirme ayarı kaydedildi",
+				"saveError": "Önceliklendirme ayarı kaydedilemedi."
+			},
+			"liveLabels": {
+				"title": "Önerilen etiketler",
+				"add": "{{name}} etiketini ekle"
+			}
+		},
+		"translate": {
+			"action": "Çevir",
+			"translating": "Çevriliyor…",
+			"translatedFrom": "Kaynak dil: {{language}}",
+			"translated": "Çevrildi",
+			"showOriginal": "Aslını göster",
+			"showTranslation": "Çeviriyi göster",
+			"settings": {
+				"autoTranslate": "Yorumları otomatik çevir",
+				"autoTranslateHint": "Başka bir dilde yazılan yorumlar her okuyucu için açıldığında çevrilir. Kapalıyken okuyucular Çevir'e tıklar."
+			}
+		},
+		"brief": {
+			"button": "Özet rapor",
+			"buttonLabel": "Paydaşlar için özet rapor yaz",
+			"title": "Paydaş raporu",
+			"close": "Raporu kapat",
+			"intro": "Bu işin hesaplanan ilerlemesi, değişiklikleri, riskleri ve tahmininden bir durum raporu yazar. Anılan her görev kaynak olarak gösterilir.",
+			"audience": "Hedef kitle",
+			"audiences": {
+				"team": "Ekip",
+				"leadership": "Yönetim",
+				"client": "Müşteri"
+			},
+			"generate": "Rapor yaz",
+			"regenerate": "Yeniden yaz",
+			"writing": "Rapor yazılıyor…",
+			"stop": "Durdur",
+			"copy": "Kopyala",
+			"copied": "Kopyalandı",
+			"copyError": "Rapor kopyalanamadı.",
+			"saveAsPage": "Sayfa olarak kaydet",
+			"saved": "Rapor sayfa olarak kaydedildi",
+			"saveError": "Sayfa kaydedilemedi.",
+			"openPage": "Sayfayı aç",
+			"pageTitle": "Durum raporu: {{name}} ({{date}})",
+			"facts": {
+				"title": "Kullanılan veriler",
+				"note": "Bu sayılar YZ'den değil, Margaya'dan gelir. Kaydedilen ya da kopyalanan rapor bir sonrakinin karşılaştırma noktası olur.",
+				"progress": "İlerleme",
+				"progressValue": "%{{percent}} ({{total}} görevden {{completed}} tamamlandı)",
+				"sinceLast": "Son rapordan beri ({{date}})",
+				"sinceDays": "Son 7 gün",
+				"changes": "Tamamlanan: {{completed}} · Eklenen: {{added}} · Çıkarılan: {{removed}}",
+				"forecast": "Tahmin",
+				"forecastValue": "%85 olasılıkla {{date}} tarihine kadar",
+				"forecastDone": "Yapılacak bir şey kalmadı",
+				"forecastNone": "Henüz yeterli geçmiş yok",
+				"risks": "Riskler",
+				"diff": "Değişim",
+				"progressDiff": "İlerleme %{{before}} → %{{now}}",
+				"forecastDiff": "Tahmin {{before}} → {{now}}"
+			}
+		},
+		"ask": {
+			"title": "YZ'ye sor",
+			"description": "Çalışma alanınızla ilgili sorularınızı kendi sözlerinizle sorun. Yanıtlar yalnızca görebildiğiniz görevlere, sayfalara ve yorumlara dayanır ve her bilginin kaynağını belirtir.",
+			"greeting": "Merhaba! Ne öğrenmek istersiniz?",
+			"placeholder": "YZ'ye sorun; bağlam için @, komutlar için /",
+			"send": "Sor",
+			"stop": "Durdur",
+			"stopped": "Durduruldu.",
+			"newChat": "Yeni sohbet",
+			"expand": "Genişlet",
+			"collapse": "Daralt",
+			"scopeProject": "{{project}} içinde",
+			"scopeWorkspace": "Tüm çalışma alanı",
+			"removeScope": "Bunun yerine tüm çalışma alanına sor",
+			"searching": "Çalışma alanınız aranıyor…",
+			"noResults": "Çalışma alanınızda bununla ilgili bir şey bulamadım. Başka kelimeler deneyin ya da bir proje, döngü veya görev anahtarı belirtin.",
+			"sources": "Kaynaklar",
+			"sourcesCount": "Kaynaklar ({{total}})",
+			"closestMatches": "En yakın sonuçlar",
+			"copy": "Kopyala",
+			"copied": "Kopyalandı",
+			"copyError": "Yanıt kopyalanamadı",
+			"commentOn": "{{key}} yorumu",
+			"pageSource": "Sayfa: {{title}}",
+			"openSource": "{{title}} öğesini aç",
+			"disclaimer": "Yanıtlar yalnızca görebildiklerinizi kullanır. Harekete geçmeden önce kaynakları kontrol edin.",
+			"you": "Siz",
+			"answer": "Yanıt",
+			"forbidden": "Bu çalışma alanında YZ kullanma izniniz yok.",
+			"palette": "YZ'ye sor…",
+			"paletteAbout": "YZ'ye sor: {{question}}",
+			"examples": {
+				"title": "Şunları sormayı deneyin",
+				"overdue": "Gecikmiş neler var?",
+				"mine": "Açık görevlerim neler?",
+				"recent": "Bu hafta neler değişti?",
+				"summarize": "Bu projeyi özetle",
+				"chart": "Görevleri duruma göre grafikte göster",
+				"cycleBlockers": "Geçerli döngüyü ne engelliyor?"
+			},
+			"history": {
+				"title": "Geçmiş",
+				"empty": "Henüz kaydedilmiş sohbet yok.",
+				"localOnly": "Sohbetler yalnızca bu tarayıcıda kaydedilir.",
+				"delete": "Sohbeti sil",
+				"clear": "Geçmişi temizle",
+				"clearConfirm": "Bu tarayıcıda kaydedilen tüm sohbetler silinsin mi? Bu işlem geri alınamaz.",
+				"search": "Sohbetlerde ara",
+				"noMatches": "Eşleşen sohbet yok.",
+				"loading": "Sohbetler yükleniyor…",
+				"pin": "Sohbeti sabitle",
+				"unpin": "Sohbetin sabitlemesini kaldır",
+				"pinned": "Sabitlenenler",
+				"rename": "Sohbeti yeniden adlandır",
+				"renameLabel": "Sohbet adı",
+				"saveTitle": "Adı kaydet",
+				"serverNote": "Sohbetler çalışma alanınızda kaydedilir ve yalnızca size görünür.",
+				"clearConfirmServer": "Bu çalışma alanındaki tüm kayıtlı sohbetleriniz silinsin mi? Bu işlem geri alınamaz.",
+				"importHint": "Bu tarayıcıda kaydedilen sohbetler: {{total}}",
+				"import": "İçe aktar",
+				"imported": "İçe aktarılan sohbetler: {{total}}",
+				"openError": "Sohbet açılamadı."
+			},
+			"chartLabel": "Grafik: {{title}}",
+			"chartLoading": "Grafik çiziliyor…",
+			"chartInvalid": "Bu grafik çizilemedi.",
+			"placeholderBuild": "Neyi oluşturmak veya değiştirmek istediğinizi anlatın…",
+			"modelLabel": "Kullanılan model: {{model}}",
+			"more": "Daha fazla",
+			"moreActions": "Diğer işlemler",
+			"openFullPage": "Tam sayfada aç",
+			"paletteFullPage": "YZ sohbetini aç (tam sayfa)",
+			"fullPageUnavailable": "YZ bu çalışma alanında kullanılamıyor.",
+			"shortcut": "YZ'ye sor panelini aç veya kapat",
+			"regenerate": "Yeniden oluştur",
+			"editQuestion": "Soruyu düzenle",
+			"resend": "Gönder",
+			"followUps": "Önerilen devam soruları",
+			"saveAsPage": "Sayfa olarak kaydet",
+			"copyMarkdown": "Markdown olarak kopyala",
+			"copiedMarkdown": "Markdown olarak kopyalandı",
+			"createTask": "Bundan görev oluştur",
+			"webSearch": "Web'de ara",
+			"webSource": "Web kaynağı: {{title}}",
+			"removeChip": "{{name}} öğesini kaldır",
+			"contextChips": "Bu sorunun bağlamı",
+			"contextPicker": "Bağlam ekle",
+			"contextHint": "Görev, sayfa, proje, döngü, modül, kişi veya ajan bulmak için yazın",
+			"contextEmpty": "Hiçbir şey bulunamadı",
+			"contextSearching": "Aranıyor…",
+			"commandMenu": "Komutlar",
+			"commandEmpty": "Eşleşen komut yok",
+			"contextKinds": {
+				"task": "Görev",
+				"page": "Sayfa",
+				"project": "Proje",
+				"cycle": "Döngü",
+				"module": "Modül",
+				"user": "Kişi",
+				"agent": "Ajan"
+			},
+			"modes": {
+				"label": "Mod",
+				"ask": "Sor",
+				"build": "Oluştur",
+				"autopilot": "Otomatik pilot",
+				"askHint": "Soruları yanıtlar; hiçbir şeyi değiştirmez",
+				"buildHint": "Onaylamanız için değişiklikler önerir",
+				"autopilotHint": "Değişiklikleri hemen uygular; her değişiklik geri alınabilir"
+			},
+			"attachments": {
+				"add": "Dosya ekle",
+				"type": "{{name}} eklenemiyor. Bir görsel (PNG, JPEG, WebP, GIF) ya da metin, Markdown veya CSV dosyası kullanın.",
+				"size": "{{name}} sığmıyor: ekler toplamda en fazla 5 MB olabilir.",
+				"count": "En fazla 3 dosya ekleyebilirsiniz.",
+				"readError": "Dosya okunamadı."
+			},
+			"voice": {
+				"start": "Dikte et",
+				"stop": "Dikteyi durdur",
+				"recording": "Dinleniyor…",
+				"transcribing": "Metne dönüştürülüyor…",
+				"denied": "Dikte etmek için mikrofon erişimine izin verin.",
+				"failed": "Kayıt metne dönüştürülemedi."
+			},
+			"agent": {
+				"ready": "Bu isteği {{agent}} ajanına gönderin.",
+				"needsTask": "{{agent}} ajanının ne üzerinde çalışacağını bilmesi için @ ile bir görev ekleyin.",
+				"send": "{{agent}} ajanına gönder",
+				"error": "Ajan başlatılamadı."
+			},
+			"thinking": {
+				"live": "Düşünüyor… {{seconds}}s",
+				"done": "{{seconds}}s düşündü"
+			},
+			"versions": {
+				"previous": "Önceki yanıt",
+				"next": "Sonraki yanıt",
+				"label": "Yanıt {{current}} / {{total}}"
+			},
+			"feedback": {
+				"up": "İyi yanıt",
+				"down": "Kötü yanıt",
+				"reasonLabel": "Ne yanlış gitti? (isteğe bağlı)",
+				"reasonPlaceholder": "Örneğin: yanlış sayılar, atlanan bir görev",
+				"send": "Gönder",
+				"skip": "Atla",
+				"thanks": "Geri bildiriminiz için teşekkürler."
+			},
+			"commands": {
+				"summarize": "Özetle",
+				"summarizeHint": "Kapsamdaki proje, döngü veya sayfa",
+				"chart": "Grafik",
+				"chartHint": "Verilerinizden bir grafik çizin",
+				"chartPrefill": "Grafik",
+				"brief": "Rapor",
+				"briefHint": "Proje, döngü veya modül için paydaş raporu",
+				"create": "Oluştur",
+				"createHint": "Oluştur moduna geç",
+				"translate": "Çevir",
+				"translateHint": "Kendi dilinize",
+				"clear": "Temizle",
+				"clearHint": "Yeni bir sohbet başlat",
+				"skill": "Kayıtlı beceri",
+				"summarizeTurn": "Özet: {{name}}",
+				"briefTurn": "Rapor: {{name}}",
+				"summarizeNeedsScope": "Özetlemek için bir proje, döngü veya sayfa açın ya da @ ile ekleyin.",
+				"briefNeedsScope": "Rapor için bir proje, döngü veya modül açın ya da @ ile ekleyin.",
+				"buildUnavailable": "Oluştur modu burada kullanılamıyor.",
+				"translatePrompt": "Son yanıtını şu dile çevir: {{language}}.",
+				"translatePrefill": "Şu dile çevir: {{language}}:",
+				"this": {
+					"page": "bu sayfa",
+					"cycle": "bu döngü",
+					"module": "bu modül",
+					"project": "bu proje"
+				}
+			},
+			"conversation": {
+				"rename": "Yeniden adlandır",
+				"pin": "Sabitle",
+				"unpin": "Sabitlemeyi kaldır",
+				"export": "Markdown olarak dışa aktar",
+				"saveAsPage": "Sayfa olarak kaydet",
+				"delete": "Sohbeti sil"
+			},
+			"save": {
+				"title": "Sayfa olarak kaydet",
+				"description": "Sayfaya metin, kaynaklarının bağlantılarıyla birlikte eklenir.",
+				"pageTitle": "Başlık",
+				"project": "Proje",
+				"noProjects": "Sayfanın kaydedilebileceği bir proje yok.",
+				"submit": "Sayfayı kaydet",
+				"saved": "Sayfa olarak kaydedildi",
+				"open": "Sayfayı aç",
+				"error": "Sayfa kaydedilemedi"
+			}
+		},
+		"writing": {
+			"aiButton": "YZ",
+			"menuLabel": "YZ işlemleri",
+			"actions": {
+				"summarize": "Özetle",
+				"improve": "Yazımı iyileştir",
+				"shorter": "Kısalt",
+				"longer": "Uzat",
+				"fix": "Yazım ve dil bilgisini düzelt",
+				"translate": "Şu dile çevir…",
+				"custom": "YZ'den iste…"
+			},
+			"customPlaceholder": "YZ'ye ne yapacağını söyleyin, ör. bunu bir kontrol listesine dönüştür",
+			"customSubmit": "Oluştur",
+			"preview": {
+				"label": "YZ önerisi",
+				"generating": "Yazılıyor…",
+				"editLabel": "Öneriyi düzenle",
+				"replace": "Değiştir",
+				"insertBelow": "Altına ekle",
+				"discard": "Vazgeç",
+				"stop": "Durdur",
+				"retry": "Tekrar dene",
+				"empty": "YZ bir şey döndürmedi. Tekrar deneyin ya da farklı ifade edin.",
+				"note": "YZ hata yapabilir. Kullanmadan önce gözden geçirin.",
+				"incomplete": "Taslak bitmeden durdu. Gözden geçirin veya tekrar deneyin."
+			},
+			"summary": {
+				"button": "Özetle",
+				"cycle": "Döngüyü özetle",
+				"project": "Projeyi özetle",
+				"page": "Sayfayı özetle",
+				"title": "YZ özeti",
+				"generating": "Özetleniyor…",
+				"dismiss": "Kapat",
+				"copy": "Kopyala",
+				"copied": "Kopyalandı",
+				"copyError": "Özet kopyalanamadı.",
+				"saveAsPage": "Sayfa olarak kaydet",
+				"pageTitle": "Özet: {{name}}",
+				"saved": "Özet sayfa olarak kaydedildi",
+				"saveError": "Sayfa kaydedilemedi.",
+				"openPage": "Sayfayı aç",
+				"task": "Görevi özetle",
+				"saveAsComment": "Yorum olarak kaydet",
+				"commentSaved": "Özet yorum olarak kaydedildi",
+				"commentError": "Yorum kaydedilemedi."
+			},
+			"spec": {
+				"button": "Teknik özellik taslağı hazırla",
+				"title": "Teknik özellik taslağı hazırla",
+				"description": "YZ, bu talepten ve bağlamından bir teknik özellik sayfası taslağı hazırlar. Gözden geçirip düzenleyin, ardından sayfayı oluşturun; sayfa talebe geri bağlantı verir.",
+				"generating": "Taslak hazırlanıyor…",
+				"titleLabel": "Sayfa başlığı",
+				"bodyLabel": "Teknik özellik",
+				"edit": "Düzenle",
+				"preview": "Önizleme",
+				"create": "Sayfa oluştur",
+				"pageTitle": "Teknik özellik: {{title}}",
+				"created": "Teknik özellik sayfası oluşturuldu",
+				"createError": "Sayfa oluşturulamadı."
+			},
+			"taskWriter": {
+				"button": "YZ ile yaz",
+				"draft": "Başlıktan taslak",
+				"improve": "İyileştir",
+				"instruction": "İsteğe bağlı: neye odaklansın?",
+				"hint": "“Bunu kullan”ı seçene kadar hiçbir şey değişmez.",
+				"writing": "Yazılıyor…",
+				"use": "Bunu kullan",
+				"retry": "Tekrar dene",
+				"discard": "Vazgeç",
+				"close": "YZ yazımını kapat"
+			},
+			"feedback": {
+				"good": "İyi yanıt",
+				"bad": "Kötü yanıt",
+				"thanks": "Geri bildiriminiz için teşekkürler"
+			},
+			"tone": {
+				"label": "Ton: {{tone}}",
+				"legend": "Ton",
+				"default": "Varsayılan",
+				"professional": "Profesyonel",
+				"casual": "Samimi"
+			},
+			"block": {
+				"command": "Yapay zekâ bloğu",
+				"title": "Yapay zekâ bloğu",
+				"customPlaceholder": "Yapay zekâ bu sayfadan ne yazsın?",
+				"stale": "Bu oluşturulduktan sonra sayfa değişti. Değişiklikleri eklemek için yeniden oluşturun.",
+				"accept": "Kabul et",
+				"regenerate": "Yeniden oluştur",
+				"presets": {
+					"tldr": "Özet (TL;DR)",
+					"faq": "SSS",
+					"action_items": "Yapılacaklar",
+					"custom": "Özel komut"
+				}
+			},
+			"title": {
+				"suggest": "Başlık öner",
+				"thinking": "Başlık düşünülüyor…",
+				"use": "Bu başlığı kullan",
+				"another": "Başka öner"
+			},
+			"comment": {
+				"menuLabel": "Bu yorum için yapay zekâ yardımı",
+				"previewLabel": "Yorumunuz için yapay zekâ önerisi",
+				"replace": "Taslağı değiştir"
+			}
+		},
+		"errors": {
+			"AI_DISABLED": "YZ burada kapalı.",
+			"AI_NOT_CONFIGURED": "YZ doğru şekilde ayarlanmamış. Bir yöneticiden YZ ayarlarını kontrol etmesini isteyin.",
+			"AI_ROUTE_BLOCKED": "Gizlilik ayarlarınız nedeniyle bu veriler bir YZ modeline gönderilemez.",
+			"AI_BUDGET_EXCEEDED": "YZ sınırına ulaşıldı. Daha sonra tekrar deneyin veya bir yöneticiden sınırı yükseltmesini isteyin.",
+			"AI_RATE_LIMITED": "Aynı anda çok fazla YZ isteği var. Biraz bekleyip tekrar deneyin.",
+			"AI_REFUSED": "YZ modeli bu isteği reddetti.",
+			"AI_PROVIDER_ERROR": "YZ hizmeti yanıt vermedi. Birazdan tekrar deneyin.",
+			"unknown": "YZ ile ilgili bir sorun oluştu. Tekrar deneyin.",
+			"AI_HISTORY_OFF": "Bu çalışma alanı yapay zekâ sohbetlerini sunucuda saklamıyor. Geçmişiniz bu tarayıcıda kalır."
+		},
+		"features": {
+			"connection_test": "Bağlantı testleri",
+			"ask": "Sor",
+			"summarize": "Özetler",
+			"editor_assist": "Yazma yardımı",
+			"spec_draft": "Teknik özellik taslakları",
+			"duplicate_check": "Yinelenen kontrolleri",
+			"talk_to_build": "İstemden plan",
+			"triage": "Önceliklendirme önerileri",
+			"translate": "Çeviriler",
+			"brief": "Paydaş özetleri",
+			"agent_run": "Ajanlar",
+			"rule_compiler": "Otomasyon kuralları",
+			"capture": "Göreve dönüştürme",
+			"estimate": "Tahminler",
+			"retro": "Retrospektifler",
+			"my_brief": "Özetim",
+			"embedding": "Arama dizinleme",
+			"coding_handoff": "Kodlama ajanı brifingleri",
+			"build_chat": "Sohbette oluştur",
+			"nl_filter": "Doğal dil filtreleri",
+			"inbox_digest": "Gelen kutusu özetleri",
+			"speech": "Konuşmadan metne"
+		},
+		"providers": {
+			"anthropic": "Anthropic (Claude)",
+			"openai_compatible": "OpenAI uyumlu",
+			"fake": "Sahte (yalnızca test için)"
+		},
+		"destinations": {
+			"cloud": "Bulut sağlayıcı",
+			"local": "Yerel model"
+		},
+		"tiers": {
+			"fast": "Hızlı model",
+			"fastHint": "Kısa işler: yeniden yazma, etiketler, kısa özetler.",
+			"balanced": "Dengeli model",
+			"balancedHint": "Çoğu özellik: yanıtlar, özetler, taslaklar.",
+			"deep": "Derin model",
+			"deepHint": "Zor işler: planlama ve ajanlar."
+		},
+		"test": {
+			"title": "Bağlantıyı test et",
+			"workspaceHint": "Bu çalışma alanının YZ çağrılarının izlediği yoldan çok küçük bir istek gönderir.",
+			"button": "Bağlantıyı test et",
+			"success": "{{model}} modeline {{ms}} ms içinde bağlanıldı"
+		},
+		"usage": {
+			"title": "Kullanım",
+			"subtitle": "Liste fiyatına göre YZ çağrıları, belirteçler ve maliyet. Yalnızca sayılar tutulur; istemler veya yanıtlar asla saklanmaz.",
+			"rangeLabel": "Dönem",
+			"range": {
+				"thisMonth": "Bu ay",
+				"last30Days": "Son 30 gün",
+				"last90Days": "Son 90 gün"
+			},
+			"calls": "Çağrılar",
+			"callsCount_one": "{{count}} çağrı",
+			"callsCount_other": "{{count}} çağrı",
+			"tokens": "Belirteçler",
+			"tokensSplit": "{{input}} giriş · {{output}} çıkış",
+			"cost": "Maliyet",
+			"costHint": "Liste fiyatına göre; yerel modeller $0 sayılır.",
+			"day": "Gün",
+			"byDay": "Günlük çağrılar",
+			"byFeature": "Özelliğe göre",
+			"byModel": "Modele göre",
+			"byUser": "Kişiye göre",
+			"byWorkspace": "Çalışma alanına göre",
+			"empty": "Bu dönemde YZ kullanımı yok.",
+			"unknownUser": "Silinmiş hesap",
+			"loadError": "YZ kullanımı yüklenemedi.",
+			"retry": "Tekrar dene",
+			"exportCsv": "CSV olarak dışa aktar",
+			"exportError": "Kullanım dışa aktarılamadı.",
+			"feedbackTitle": "Yanıt değerlendirmeleri",
+			"feedbackOverall": "%{{percent}} olumlu ({{total}} değerlendirme)",
+			"feedbackUp": "Beğeni",
+			"feedbackDown": "Beğenmeme",
+			"feedbackRate": "Olumlu"
+		},
+		"instance": {
+			"title": "YZ",
+			"subtitle": "Çalışma alanlarının YZ kullanmasına izin verin: sağlayıcıyı ve modelleri seçin, verilerin nereye gidebileceğine karar verin. YZ siz açana kadar kapalı kalır ve her çalışma alanının da ayrıca katılması gerekir.",
+			"statusTitle": "Bu sunucuda YZ",
+			"statusReady": "Hazır",
+			"statusNotConfigured": "Ayarlanmadı",
+			"statusOff": "Kapalı",
+			"enable": "YZ'ye izin ver",
+			"enableHint": "Bu ayar açıkken ve bir sağlayıcı ayarlandığında çalışma alanları YZ özelliklerini açabilir.",
+			"providerTitle": "Sağlayıcı",
+			"providerDescription": "Bulut model sağlayıcısı. O katman için sağlayıcının varsayılan modelini kullanmak üzere model alanını boş bırakın.",
+			"provider": "Sağlayıcı",
+			"providerHint": "Anthropic Claude önerilir. OpenAI uyumlu seçeneği OpenAI, Azure, OpenRouter, vLLM ve LM Studio'yu kapsar.",
+			"anthropicKey": "Anthropic API anahtarı",
+			"anthropicKeyHint": "Şifrelenmiş olarak saklanır. Bir daha asla gösterilmez.",
+			"openaiBaseUrl": "Temel URL",
+			"openaiBaseUrlHint": "Sürüm yolu dahil, örneğin https://api.openai.com/v1. Herkese açık bir adres olmalıdır.",
+			"openaiKey": "API anahtarı",
+			"save": "Kaydet",
+			"testCloud": "Sağlayıcıyı test et",
+			"testLocal": "Yerel modeli test et",
+			"localTitle": "Yerel model",
+			"localDescription": "Kendi ağınızda çalışan, Ollama gibi OpenAI uyumlu bir sunucu. Kısıtlı veriler yalnızca buraya gider.",
+			"localBaseUrl": "Temel URL",
+			"localBaseUrlHint": "Örneğin http://ollama:11434/v1. Burada özel adreslere izin verilir.",
+			"localModel": "Model",
+			"localKey": "API anahtarı",
+			"localKeyHint": "İsteğe bağlı. Yalnızca sunucunuz istiyorsa, örneğin --api-key ile başlatılan vLLM. Şifrelenmiş olarak saklanır.",
+			"localOnly": "Yalnızca yerel mod",
+			"localOnlyHint": "Her YZ çağrısı yerel modele gider; bulut sağlayıcıya hiçbir şey gönderilmez.",
+			"privacyTitle": "Gizlilik",
+			"privacyDescription": "Her veri türünün nereye gidebileceği. Çalışma alanları daha katı olabilir, asla daha gevşek olamaz.",
+			"restrictedRoute": "Kısıtlı projeler",
+			"restrictedRouteHint": "Bir çalışma alanı YZ'nin okumasına izin verdiğinde kısıtlı projelerden gelen veriler.",
+			"privateRoute": "Diğer çalışma alanı verileri",
+			"privateRouteHint": "Açık projelerdeki görevler, sayfalar ve yorumlar.",
+			"routeBlocked": "Asla gönderilmez",
+			"routeLocal": "Yalnızca yerel model",
+			"routeCloud": "Bulut sağlayıcıya izin verilir",
+			"redaction": "Kişisel verileri maskele",
+			"redactionHint": "Bulut çağrılarından önce e-postaları, telefon numaralarını, kart numaralarını ve belirteçleri yer tutucularla değiştirir. Yanıtlarda gerçek değerler yeniden gösterilir.",
+			"zeroRetention": "Sıfır veri saklama",
+			"zeroRetentionHint": "Sağlayıcıyla yaptığınız sözleşmenin hiçbir veri saklamadığını kaydedin. Margaya bunu gösterir; sağlayıcı ise uygular.",
+			"allowWorkspaceKeys": "Çalışma alanı anahtarlarına izin ver",
+			"allowWorkspaceKeysHint": "Çalışma alanları kendi sağlayıcı anahtarlarını kullanabilir ve kendi kullanımlarının bedelini ödeyebilir.",
+			"embeddingsTitle": "Vektör gömmeleri",
+			"embeddingsDescription": "İsteğe bağlıdır, anlamsal arama için. OpenAI uyumlu herhangi bir gömme uç noktası çalışır. Veritabanında pgvector uzantısı da olmalıdır; ikisinden biri yoksa arama yalnızca tam metin olarak kalır.",
+			"vectorReady": "pgvector hazır",
+			"vectorAvailable": "pgvector kullanılabilir",
+			"vectorUnavailable": "pgvector kullanılamıyor",
+			"embeddingsBaseUrl": "Temel URL",
+			"embeddingsModel": "Model",
+			"embeddingsKey": "API anahtarı",
+			"invalidUrl": "Bir http veya https URL'si girin.",
+			"usageTitle": "Çalışma alanları genelinde kullanım",
+			"usageDescription": "Bu sunucudaki YZ çağrıları, çalışma alanına ve modele göre. Yalnızca sayılar tutulur.",
+			"chatTitle": "Sohbet",
+			"chatDescription": "Akıl yürütme modellerinin nasıl düşündüğü ve kişilerin bundan ne gördüğü.",
+			"showReasoning": "Akıl yürütmeyi göster",
+			"showReasoningHint": "Akıl yürütme modelinin düşüncelerini soruyu soran kişiye gösterir. Asla saklanmaz. Kapalı: yalnızca ne kadar süre düşündüğü.",
+			"localThinking": "Yerel modellerde düşünme",
+			"localThinkingHint": "Kapalıyken daha hızlı yanıt verir; açıkken yerel akıl yürütme modelleri önce düşünür.",
+			"localThinkingOff": "Kapalı",
+			"localThinkingOn": "Açık",
+			"webSearchTitle": "Web araması",
+			"webSearchDescription": "Bir çalışma alanı web aramasını açtığında yanıtların kullanabileceği arama hizmeti.",
+			"webSearchProvider": "Arama sağlayıcısı",
+			"webSearchProviderHint": "SearXNG kendi sunucunuzda çalışır; Brave Search ve Tavily bir API anahtarı gerektirir.",
+			"webSearchOff": "Kapalı",
+			"webSearchUrl": "SearXNG URL'si",
+			"webSearchUrlHint": "JSON API'sinin etkin olması gerekir.",
+			"webSearchKey": "API anahtarı",
+			"webSearchKeyHint": "Brave Search veya Tavily için.",
+			"speechTitle": "Konuşmadan metne",
+			"speechDescription": "Sohbette sesli giriş. Bu ayar olmadan, destekleyen tarayıcılar konuşmayı kendileri tanır.",
+			"speechBaseUrl": "Uç nokta URL'si",
+			"speechBaseUrlHint": "OpenAI uyumlu bir transkripsiyon uç noktası, örneğin yerel bir Whisper sunucusu.",
+			"speechModel": "Konuşma modeli",
+			"speechKey": "API anahtarı"
+		},
+		"workspace": {
+			"navLabel": "YZ",
+			"title": "YZ",
+			"subtitle": "Bu çalışma alanı için YZ özelliklerini açın, sınırlar belirleyin ve özel verilerin nasıl işleneceğini seçin.",
+			"noAccess": "Bu ayarları görmek için YZ yönetme izniniz olmalıdır.",
+			"loadError": "YZ ayarları yüklenemedi.",
+			"statusTitle": "Bu çalışma alanında YZ",
+			"statusDescription": "YZ siz açana kadar kapalıdır. Her proje yine de kendi özelliklerinden kapatabilir.",
+			"enable": "YZ'yi aç",
+			"enableHint": "YZ kullanma iznine sahip üyeler, buna izin veren projelerde YZ özelliklerini görür.",
+			"enabledToast": "YZ bu çalışma alanı için açık",
+			"disabledToast": "YZ bu çalışma alanı için kapalı",
+			"offOnInstance": "Bir örnek yöneticisi bu sunucuda henüz YZ'ye izin vermedi.",
+			"notConfigured": "YZ'ye izin verildi ancak henüz bir sağlayıcı ayarlanmadı. Bir örnek yöneticisine başvurun.",
+			"whereDataGoes": "Veriler nereye gider",
+			"whereDataGoesHint": "Bu çalışma alanının YZ isteklerini alan model.",
+			"zeroRetention": "Sıfır saklama",
+			"limitsTitle": "Sınırlar",
+			"limitsDescription": "Bu ay harcanan: {{spent}}. Bir sınıra ulaşıldığında istekler durur.",
+			"monthlyCap": "Aylık bütçe (USD)",
+			"monthlyCapHint": "Liste fiyatına göre, tüm çalışma alanı için. Sınır olmaması için boş bırakın.",
+			"dailyTokens": "Kişi başına günlük belirteç",
+			"dailyTokensHint": "Her kişinin günde (UTC) kullanabileceği giriş ve çıkış belirteçleri. Sınır olmaması için boş bırakın.",
+			"noLimit": "Sınır yok",
+			"invalidNumber": "0 veya daha büyük bir sayı girin.",
+			"saveLimits": "Sınırları kaydet",
+			"monthSpendOfCap": "Bu ay {{cap}} bütçenin {{spent}} kadarı kullanıldı.",
+			"privacyTitle": "Gizlilik",
+			"privacyDescription": "YZ yalnızca soran kişinin görebildiklerini görür.",
+			"includeRestricted": "Kısıtlı projeleri dahil et",
+			"includeRestrictedHint": "YZ'nin, kısıtlı projeleri görebilen kişiler için bu projeleri okumasına izin verin. Bu projelerin verileri yalnızca sunucunun kısıtlı verilere izin verdiği yere gider.",
+			"localOnly": "Yalnızca yerel model",
+			"localOnlyHint": "Her YZ isteğini sunucunun yerel modeline gönderir.",
+			"localOnlyForced": "Sunucu yalnızca yerel modda.",
+			"localOnlyUnavailable": "Bu sunucuda yerel model yok.",
+			"redactPii": "Kişisel verileri maskele",
+			"redactPiiHint": "İstekler sunucudan çıkmadan önce e-postaları, telefon numaralarını, kart numaralarını ve belirteçleri yer tutucularla değiştirir.",
+			"redactPiiForced": "Her zaman açık: sunucu her bulut isteğini maskeler.",
+			"approval": "YZ değişikliklerini onayla",
+			"approvalHint": "YZ'nin önerdiği değişiklikler her zaman bir kişinin onayını bekler.",
+			"semanticSearch": "Anlamsal arama",
+			"semanticSearchHint": "Sor ve yinelenen kontrolü görevleri, sayfaları ve yorumları yalnızca kelimelerine göre değil, anlamlarına göre de bulur. İçerik, sunucunun gömme modeliyle dizinlenir.",
+			"semanticUnavailable": "Bu sunucunun veritabanında pgvector kullanılamıyor, bu yüzden arama yalnızca tam metin kullanır.",
+			"semanticNoEndpoint": "Bu sunucuda gömme uç noktası yok, bu yüzden arama yalnızca tam metin kullanır.",
+			"semanticIndexed_one": "{{count}} öğe dizinlendi",
+			"semanticIndexed_other": "{{count}} öğe dizinlendi",
+			"semanticPaused": "Dizinleme duraklatıldı. {{reason}}",
+			"semanticEnabledToast": "Anlamsal arama açık. Dizinleme arka planda çalışır.",
+			"semanticDisabledToast": "Anlamsal arama kapalı ve dizini silindi.",
+			"keyTitle": "Kendi API anahtarınız",
+			"keyDescription": "Sunucunun hesabı yerine çalışma alanınızın kendi sağlayıcı hesabını kullanın. Anahtar şifrelenmiş olarak saklanır ve bir daha asla gösterilmez.",
+			"keyCurrent": "Kayıtlı anahtar",
+			"keyEnding": "{{last4}} ile bitiyor",
+			"keyUnreadable": "Kayıtlı anahtar artık okunamıyor. Yeniden girin.",
+			"keyRemove": "Kaldır",
+			"keyProvider": "Sağlayıcı",
+			"keyValue": "API anahtarı",
+			"keyReplace": "Anahtarı değiştir",
+			"keyHint": "sk-ant- ile başlayan bir Anthropic API anahtarı.",
+			"keyOpenAiHint": "Sunucunun OpenAI uyumlu uç noktasıyla kullanılır.",
+			"keyPlaceholder": "Anahtarı yapıştırın",
+			"keyTooShort": "Bu anahtar çok kısa görünüyor.",
+			"keySave": "Anahtarı kaydet",
+			"keySavedToast": "Anahtar kaydedildi",
+			"keyRemovedToast": "Anahtar kaldırıldı",
+			"saved": "YZ ayarları kaydedildi",
+			"saveError": "YZ ayarları kaydedilemedi.",
+			"chatTitle": "YZ'ye sor sohbeti",
+			"chatDescription": "Sohbetin bu çalışma alanındaki kişiler için neler yapabileceği.",
+			"webSearch": "Web araması",
+			"webSearchHint": "Kişiler yanıtların web'de arama yapmasına izin verebilir. Sonuçlar web kaynağı olarak gösterilir.",
+			"webSearchUnavailable": "Bu sunucuda web araması ayarlanmamış.",
+			"webSearchLocalOnly": "YZ yalnızca yerel modelleri kullandığı sürece kullanılmaz.",
+			"storeConversations": "Sohbet geçmişini sunucuda tut",
+			"storeConversationsHint": "Herkesin sohbetleri çalışma alanında kaydedilir, böylece bunları her cihazda yeniden açabilirler. Kapalı: sohbetler yalnızca her kişinin kendi tarayıcısında kalır.",
+			"allowAutopilot": "Otomatik pilota izin ver",
+			"allowAutopilotHint": "Oluştur modu değişiklikleri onay almadan uygulayabilir. Her değişiklik yine kaydedilir ve geri alınabilir."
+		},
+		"agents": {
+			"navLabel": "Ajanlar",
+			"title": "Ajanlar",
+			"subtitle": "YZ ajanları, kendilerinden isteyen kişi adına görevler üzerinde çalışan çalışma alanı üyeleridir; hiçbir zaman o kişiden daha fazla yetkiye sahip olmazlar.",
+			"listTitle": "Çalışma alanı ajanları",
+			"badge": "Ajan",
+			"noAccess": "Ajanları yalnızca YZ'yi yönetebilen kişiler ayarlayabilir.",
+			"empty": "Henüz ajan yok. Bir ajan oluşturun, ardından bir yorumda ondan bahsedin, ona bir görev atayın veya bir görevden çalıştırın.",
+			"loadError": "Ajanlar yüklenemedi.",
+			"retry": "Tekrar dene",
+			"create": "Yeni ajan",
+			"edit": "Ajanı düzenle",
+			"dialogHint": "Ajanlara kişiler gibi görev atanabilir ve onlardan bahsedilebilir. Oturum açamazlar ve ücretli kullanıcı olarak faturalandırılmazlar.",
+			"save": "Kaydet",
+			"cancel": "İptal",
+			"created": "Ajan oluşturuldu",
+			"saved": "Ajan kaydedildi",
+			"deleted": "Ajan silindi",
+			"saveError": "Ajan kaydedilemedi. Tekrar deneyin.",
+			"enable": "Aç",
+			"disable": "Kapat",
+			"off": "Kapalı",
+			"delete": "Sil",
+			"deleteTitle": "{{name}} silinsin mi?",
+			"deleteBody": "Ajan çalışma alanından ayrılır. Yorumları ve geçmişi korunur, çalıştırmaları da Ajan Masası'nda kalır.",
+			"spend": "Bu ay {{spent}}",
+			"spendOfBudget": "Bu ay {{budget}} bütçenin {{spent}} kadarı",
+			"activityFilter": "Ajanlar",
+			"fields": {
+				"name": "Ad",
+				"nameTaken": "Bu çalışma alanındaki bir ajan veya üye zaten bu ada sahip. Başka bir ad seçin.",
+				"description": "Açıklama",
+				"descriptionPlaceholder": "Bu ajanın neye yardımcı olduğu",
+				"instructions": "Talimatlar",
+				"instructionsHint": "Ajanın nasıl çalışması gerektiği. Bunları yalnızca yöneticiler yazar; görevlerdeki, yorumlardaki ve sayfalardaki metinler asla talimat sayılmaz.",
+				"role": "Rol",
+				"roleHint": "Ajanın yapabileceklerinin üst sınırı. Her çalıştırma ayrıca isteyen kişinin yetkileriyle sınırlıdır.",
+				"tier": "Model",
+				"tierFast": "Hızlı",
+				"tierBalanced": "Dengeli",
+				"tierDeep": "Derin",
+				"provider": "Nerede çalışır",
+				"providerDefault": "Çalışma alanı varsayılanı",
+				"providerLocal": "Yalnızca yerel model",
+				"budget": "Aylık bütçe (USD)",
+				"budgetHint": "Bu ayki harcama bu tutara ulaştığında çalıştırmalar durur. Ajan sınırı olmaması için boş bırakın; çalışma alanı sınırları yine de geçerlidir.",
+				"projects": "Projeler",
+				"projectsAll": "Rolünün eriştiği tüm projeler",
+				"projectsSome": "Yalnızca bu projeler",
+				"projectsHint": "Diğer projelerdeki çalıştırmalar durur ve ajan orada çalışacak şekilde ayarlanmadığını söyler.",
+				"projectsNone": "En az bir proje seçin.",
+				"skills": "Beceriler",
+				"skillsEmpty": "Henüz paylaşılan beceri yok. Ask'te kaydedilen paylaşılan beceriler ajanlara verilebilir.",
+				"skillsHint": "Ajan, isteğe uyduklarında bu kayıtlı istemleri izler (en fazla 10).",
+				"webAccess": "Web erişimi",
+				"webAccessHint": "Ajanın web'de arama yapmasına ve çalışma alanının bağlayıcılarını kullanmasına izin verir. Oraya gönderdikleri Margaya'dan çıkar."
+			},
+			"status": {
+				"queued": "Sırada",
+				"running": "Çalışıyor",
+				"awaiting_approval": "Onay bekliyor",
+				"succeeded": "Tamamlandı",
+				"failed": "Başarısız",
+				"cancelled": "Durduruldu",
+				"needs_input": "Yanıt bekliyor"
+			},
+			"stepStatus": {
+				"ok": "Tamamlandı",
+				"error": "Başarısız",
+				"denied": "İzin verilmedi",
+				"pending": "Onay bekliyor",
+				"applied": "Uygulandı",
+				"rejected": "Reddedildi",
+				"expired": "Süresi doldu",
+				"reverted": "Geri alındı"
+			},
+			"step": {
+				"model": "Model çağrısı"
+			},
+			"tools": {
+				"read_task": "Görevi oku",
+				"read_project": "Projeyi oku",
+				"read_page": "Sayfayı oku",
+				"search_workspace": "Ara",
+				"add_comment": "Yorum yap",
+				"update_task": "Görevi güncelle",
+				"move_status": "Durumu değiştir",
+				"create_subtask": "Alt görev oluştur",
+				"create_page": "Sayfa oluştur",
+				"link_tasks": "Görevleri bağla",
+				"delete_task": "Görevi sil",
+				"bulk_move_status": "Birden çok görevin durumunu değiştir",
+				"ask_person": "Soru sor",
+				"web_search": "Web araması",
+				"connector": "Dış hizmet: {{tool}}"
+			},
+			"runErrors": {
+				"AGENT_GONE": "Ajan silindi.",
+				"AGENT_DISABLED": "Ajan kapalı.",
+				"AGENT_LEFT": "Ajan artık çalışma alanının üyesi değil.",
+				"PRINCIPAL_LEFT": "İsteyen kişi artık çalışma alanının üyesi değil.",
+				"AI_USE_DENIED": "İsteyen kişinin YZ kullanma izni yok.",
+				"NOT_IN_SCOPE": "Görev, YZ'nin okuyamadığı bir projede.",
+				"TIME_LIMIT": "Çalıştırma 10 dakikadan uzun sürdüğü için durduruldu.",
+				"OUTPUT_LIMIT": "Ajanın yanıtı çok uzun oldu. Daha küçük bir değişiklik isteyin.",
+				"TURN_LIMIT": "Ajanın adımları işi bitirmeden tükendi. Daha küçük ve net bir değişiklik isteyin.",
+				"INTERRUPTED": "Çalıştırma kesintiye uğradı. Önceden yapılan değişiklikler yine de geri alınabilir.",
+				"APPROVAL_EXPIRED": "Önerilen değişiklikler hakkında 24 saat içinde kimse karar vermediği için süreleri doldu.",
+				"INTERNAL": "Çalıştırma sırasında bir sorun oluştu.",
+				"NEEDS_INPUT_EXPIRED": "Ajanın sorusunu 24 saat içinde kimse yanıtlamadı.",
+				"OUTSIDE_AGENT_PROJECTS": "Ajan bu projede çalışacak şekilde ayarlanmamış."
+			},
+			"change": {
+				"approve": "Onayla",
+				"reject": "Reddet",
+				"approved": "Değişiklik uygulandı",
+				"rejected": "Değişiklik yoksayıldı",
+				"decideError": "Kararınız uygulanamadı. Tekrar deneyin.",
+				"undo": "Geri al",
+				"undone": "Değişiklik geri alındı",
+				"undoError": "Bu değişiklik geri alınamadı. Görev o zamandan beri değişmiş olabilir.",
+				"expiresAt": "Son geçerlilik: {{time}}",
+				"before": "Önce",
+				"after": "Sonra",
+				"openPage": "Sayfayı aç",
+				"openSubtask": "Alt görevi aç",
+				"openLinked": "Bağlı görevi aç",
+				"empty": "(boş)",
+				"fields": {
+					"title": "Başlık",
+					"priority": "Öncelik",
+					"dueDate": "Bitiş tarihi",
+					"description": "Açıklama",
+					"status": "Durum",
+					"statusOf": "{{task}} durumu",
+					"comment": "Yorum",
+					"subtask": "Yeni alt görev",
+					"page": "Yeni sayfa",
+					"relation": "Bağlantı ({{relation}})",
+					"delete": "Çöp kutusuna taşı",
+					"connectorCall": "{{connector}} çağrısı"
+				}
+			},
+			"inbox": {
+				"title": "{{agentName}} onayınızı bekliyor",
+				"verb": "onayınızı istiyor",
+				"cardTitle": "Önerilen değişiklik"
+			},
+			"reply": {
+				"title": "{{agentName}} isteğinizi yanıtladı",
+				"verb": "isteğinizi yanıtladı",
+				"cardTitle": "Ajanın yanıtı",
+				"hint": "Ajan bu yanıtı göreve yazmadığı için burada gösteriliyor."
+			},
+			"activity": {
+				"onBehalfOf": "{{name}} adına"
+			},
+			"run": {
+				"button": "Ajanı çalıştır",
+				"title": "Bu görevde bir ajan çalıştırın",
+				"hint": "Ajan en fazla sizin yetkilerinizle çalışır. Değişiklikler geri alınabilir ve bazıları onayınızı bekler.",
+				"agent": "Ajan",
+				"prompt": "Ne yapması gerekiyor?",
+				"promptPlaceholder": "Örneğin: bunu alt görevlere böl ve bir öncelik öner.",
+				"start": "Çalıştır",
+				"started": "{{name}} işe koyuldu",
+				"error": "Ajan başlatılamadı. Tekrar deneyin.",
+				"recent": "Bu görevdeki son çalıştırmalar",
+				"viewInDesk": "Ajan Masası'nda aç"
+			},
+			"desk": {
+				"nav": "Ajan Masası",
+				"title": "Ajan Masası",
+				"subtitle": "Ajanlarınızın yaptıkları ve yapmakta oldukları: her çalıştırma adımları, maliyeti ve değişiklikleriyle.",
+				"emptyTitle": "Henüz ajan çalıştırması yok",
+				"empty": "Bir yorumda bir ajandan bahsedin, ona bir görev atayın veya bir görevden çalıştırın.",
+				"allAgents": "Tüm ajanlar",
+				"allStatuses": "Tüm durumlar",
+				"filterAgent": "Ajana göre filtrele",
+				"filterStatus": "Duruma göre filtrele",
+				"approvalsTitle": "Sizi bekleyenler",
+				"selectRun": "Adımlarını ve değişikliklerini görmek için bir çalıştırma seçin.",
+				"runMissing": "Bu çalıştırma kullanılamıyor.",
+				"deletedAgent": "Silinmiş ajan",
+				"onBehalfOf": "{{name}} için",
+				"cost": "Maliyet",
+				"tokensLabel": "Belirteçler",
+				"tokens": "Belirteçler: {{value}}",
+				"toolCallsLabel": "Araç çağrıları",
+				"summary": "Özet",
+				"changes": "Değişiklik kümesi",
+				"noChanges": "Değişiklik yok.",
+				"steps": "Adımlar",
+				"cancelRun": "Çalıştırmayı durdur",
+				"cancelled": "Çalıştırma durduruldu",
+				"cancelError": "Çalıştırma durdurulamadı.",
+				"trigger": {
+					"mention": "Bahsedildi",
+					"assign": "Atandı",
+					"manual": "Bir görevden çalıştırıldı",
+					"schedule": "Zamanlanmış",
+					"automation": "Otomasyon",
+					"chat": "Devam"
+				},
+				"project": "Proje:",
+				"workedSeconds": "{{count}} sn çalıştı",
+				"workedMinutes": "{{count}} dk çalıştı"
+			},
+			"connectors": {
+				"title": "Bağlayıcılar",
+				"subtitle": "Web erişimi olan ajanların çağırabileceği dış MCP sunucuları. Salt okunur araçlar hemen çalışır; diğer her şey onay bekler.",
+				"create": "Bağlayıcı ekle",
+				"edit": "Bağlayıcıyı düzenle",
+				"delete": "Bağlayıcıyı sil",
+				"created": "Bağlayıcı eklendi",
+				"saved": "Bağlayıcı kaydedildi",
+				"deleted": "Bağlayıcı silindi",
+				"saveError": "Bağlayıcı kaydedilemedi. Tekrar deneyin.",
+				"empty": "Henüz bağlayıcı yok. Web erişimi olan ajanların araçlarını kullanabilmesi için bir MCP sunucusunun adresini ekleyin.",
+				"shared": "Paylaşılan",
+				"personal": "Yalnızca siz",
+				"enable": "Aç",
+				"disable": "Kapat",
+				"test": "Test et",
+				"testOk": "Bağlandı: {{count}} araç, {{readOnly}} tanesi salt okunur",
+				"testError": "Test çalıştırılamadı. Tekrar deneyin.",
+				"errors": {
+					"DESTINATION": "Adres herkese açık bir sunucu değil.",
+					"TIMEOUT": "Sunucu zamanında yanıt vermedi.",
+					"NETWORK": "Sunucuya ulaşılamadı.",
+					"HTTP": "Sunucu bir hatayla yanıt verdi ({{status}}).",
+					"TOO_LARGE": "Sunucunun yanıtı çok büyüktü.",
+					"PROTOCOL": "Bu bir MCP sunucusuna benzemiyor.",
+					"RPC": "MCP sunucusu isteği reddetti.",
+					"SECRET_UNREADABLE": "Kayıtlı gizli anahtar artık okunamıyor. Yeniden girin."
+				},
+				"secretHint": "Gizli anahtar ••••{{last4}}",
+				"dialogHint": "Margaya, Streamable HTTP üzerinden bağlanır. Gizli anahtarlar şifreli saklanır ve bir daha gösterilmez.",
+				"name": "Ad",
+				"url": "Sunucu URL'si",
+				"urlHint": "MCP uç noktası, örneğin https://mcp.example.com/mcp. Herkese açık internetten erişilebilir olmalı.",
+				"auth": "Kimlik doğrulama",
+				"authHeader": "Başlıkta gizli anahtar",
+				"authNone": "Yok",
+				"headerName": "Başlık adı",
+				"secret": "Gizli anahtar",
+				"secretKeep": "Mevcut gizli anahtarı korumak için boş bırakın",
+				"secretHelp": "Başlığın tam değeri, örneğin Bearer ve ardından bir token.",
+				"sharedToggle": "Çalışma alanıyla paylaş",
+				"sharedHint": "Ajanlar paylaşılan bağlayıcıları her çalıştırmada kullanır. Yalnızca sizin adınıza yapılan çalıştırmalarda kullanmak için kapatın.",
+				"deleteTitle": "{{name}} silinsin mi?",
+				"deleteBody": "Ajanlar artık araçlarını kullanamaz ve kayıtlı gizli anahtarı silinir."
+			},
+			"followUp": {
+				"label": "Ajana yanıt ver",
+				"placeholder": "Bir devam sorusu sorun veya sırada ne yapılacağını söyleyin…",
+				"send": "Gönder",
+				"error": "Devam başlatılamadı. Tekrar deneyin."
+			},
+			"needsInput": {
+				"title": "Ajanın bir sorusu var",
+				"answerLabel": "Yanıtınız",
+				"placeholder": "Yanıtınızı yazın…",
+				"reply": "Yanıtla",
+				"sent": "Yanıt gönderildi. Ajan devam ediyor.",
+				"error": "Yanıtınız gönderilemedi. Tekrar deneyin.",
+				"hint": "Yanıtlanmayan soruların süresi 24 saat sonra dolar.",
+				"waiting": "Ajan, isteyen kişiden yanıt bekliyor.",
+				"inboxHint": "Siz yanıtlayana kadar çalıştırma duraklatıldı.",
+				"answer": "Ajan Masası'nda yanıtla",
+				"notificationTitle": "{{agentName}} bir soru soruyor",
+				"verb": "size bir soru soruyor"
+			},
+			"schedules": {
+				"open": "{{name}} zamanlamaları",
+				"title": "Zamanlamalar: {{name}}",
+				"hint": "Ajanı bir takvime göre çalıştırın. Çalıştırmalar, zamanlamayı en son kaydeden kişi adına ve en fazla onun yetkileriyle yapılır.",
+				"empty": "Henüz zamanlama yok.",
+				"create": "Yeni zamanlama",
+				"edit": "Zamanlamayı düzenle",
+				"delete": "Zamanlamayı sil",
+				"deleteBody": "Bu zamanlama silinsin mi? Geçmiş çalıştırmalar Ajan Masası'nda kalır.",
+				"deleted": "Zamanlama silindi",
+				"saved": "Zamanlama kaydedildi",
+				"saveError": "Zamanlama kaydedilemedi. Tekrar deneyin.",
+				"enable": "Zamanlamayı aç",
+				"disable": "Zamanlamayı kapat",
+				"enabled": "Açık",
+				"when": "Ne zaman",
+				"presets": {
+					"weekdays": "Her iş günü 9:00'da",
+					"mondays": "Her pazartesi 9:00'da",
+					"monthly": "Ayın ilk günü 9:00'da",
+					"custom": "Özel (cron)"
+				},
+				"customLabel": "Cron: {{cron}}",
+				"cron": "Cron ifadesi",
+				"cronHint": "Beş alan: dakika, saat, ayın günü, ay, haftanın günü. En fazla 15 dakikada bir.",
+				"timezone": "Saat dilimi",
+				"project": "Proje",
+				"chooseProject": "Bir proje seçin",
+				"task": "Görev",
+				"noTask": "Görev yok (tüm proje)",
+				"taskHint": "Görev olmadan ajan proje üzerinde çalışır ve raporları bir sayfaya koyar.",
+				"projectLevel": "Tüm proje",
+				"prompt": "Ne yapmalı?",
+				"promptPlaceholder": "Örneğin: dünden beri neyin değiştiğini özetle.",
+				"nextRun": "Sonraki çalıştırma {{time}}",
+				"runsAs": "{{name}} için çalışır",
+				"runsAsHint": "Kaydettiğinizde bu çalıştırmalar sizin adınıza yapılır. Çalışma alanından ayrılırsanız veya YZ erişiminizi kaybederseniz zamanlama kapanır.",
+				"errors": {
+					"CRON_INVALID": "Beş cron alanı girin: dakika, saat, gün, ay, haftanın günü.",
+					"CRON_TOO_FREQUENT": "Bir zamanlama en fazla 15 dakikada bir çalışabilir.",
+					"CRON_NEVER": "Bu zamanlama hiç çalışmazdı.",
+					"TIMEZONE_INVALID": "Geçerli bir saat dilimi seçin.",
+					"OUTSIDE_AGENT_PROJECTS": "Bu ajan o projede çalışacak şekilde ayarlanmamış."
+				}
+			},
+			"templates": {
+				"title": "Şununla başla",
+				"blank": "Boş ajan",
+				"blankHint": "Talimatları kendiniz yazın.",
+				"triage": {
+					"name": "Önceliklendirme",
+					"description": "Yeni görevleri düzenler: net başlıklar, öncelikler ve kopya bağlantıları."
+				},
+				"standup": {
+					"name": "Günlük toplantı",
+					"description": "Her gün bir proje sayfasına günlük toplantı özeti yazar."
+				},
+				"specWriter": {
+					"name": "Şartname yazarı",
+					"description": "Bir görevi kabul kriterleri olan bir şartname sayfasına dönüştürür."
+				},
+				"deliveryRisk": {
+					"name": "Teslimat riski",
+					"description": "Her hafta gecikmiş, engellenmiş ve sahipsiz işleri raporlar."
+				},
+				"feedback": {
+					"name": "Müşteri geri bildirimi",
+					"description": "Müşteri geri bildirimlerini örneklerle temalara ayırır."
+				},
+				"triggers": {
+					"mention": "Bahsetme",
+					"assign": "Atama",
+					"schedule": "Zamanlama",
+					"automation": "Otomasyon"
+				}
+			}
+		},
+		"capture": {
+			"button": "Yakala",
+			"buttonHint": "Ekran görüntüsü, kayıt veya transkriptten yeni istek",
+			"title": "Bir yakalamadan yeni istekler",
+			"description": "Ekran görüntüleri, bir ekran kaydı veya toplantı notları ekleyin. YZ istekler önerir; siz onaylayana kadar hiçbir şey oluşturulmaz.",
+			"tabs": {
+				"screenshot": "Ekran görüntüleri",
+				"recording": "Kayıt",
+				"transcript": "Transkript"
+			},
+			"dropzone": "Ekran görüntülerini yapıştırın, sürükleyin veya seçin",
+			"dropzoneHint": "PNG, JPEG veya WebP, en fazla {{count}} görsel. Konum ve kamera bilgileri kaldırılır.",
+			"chooseRecording": "Ekran kaydı seçin",
+			"recordingHint": "YZ'ye yalnızca {{count}} sabit kare gönderilir. Video cihazınızda kalır.",
+			"notes": "Notlar (isteğe bağlı)",
+			"notesPlaceholder": "Ne yapıyordunuz ve ne ters gitti?",
+			"transcript": "Transkript veya toplantı notları",
+			"transcriptPlaceholder": "Transkripti veya notları yapıştırın. Her eylem maddesi ayrı bir istek olur.",
+			"remove": "{{name}} öğesini kaldır",
+			"tooMany": "Yakalama başına en fazla {{count}} görsel.",
+			"mediaErrors": {
+				"type": "Bu dosya türü desteklenmiyor.",
+				"tooLarge": "Bu dosya çok büyük.",
+				"unreadable": "Bu dosya okunamadı."
+			},
+			"preparing": "Görseller hazırlanıyor…",
+			"analyze": "İstek öner",
+			"analyzing": "Yakalama okunuyor…",
+			"reviewTitle": "Önerilen istekleri gözden geçirin",
+			"reviewDescription": "İstediğiniz isteği düzenleyin veya dışarıda bırakın. Siz onaylayana kadar hiçbir şey oluşturulmaz.",
+			"empty": "Bu yakalamada istek bulunamadı.",
+			"include": "Bu isteği dahil et",
+			"titleLabel": "Başlık",
+			"descriptionLabel": "Açıklama",
+			"priorityLabel": "Öncelik",
+			"labelsLabel": "Önerilen etiketler",
+			"assignTo": "{{name}} kişisine ata",
+			"attachNote": "Eklenecek görseller: {{count}}",
+			"attachNotAllowed": "Görseller eklenemiyor: görevleri düzenleme izniniz olmalı.",
+			"back": "Geri",
+			"create": "İstekleri oluştur ({{count}})",
+			"created": "Oluşturulan istekler: {{count}}",
+			"extrasFailed": "Bazı etiketler, sorumlular veya ekler eklenemedi.",
+			"createError": "İstekler oluşturulamadı.",
+			"draftFromImages": "Görsellerden taslak oluştur",
+			"drafting": "Taslak hazırlanıyor…",
+			"sections": {
+				"steps": "Yeniden üretme adımları",
+				"expected": "Beklenen",
+				"actual": "Gerçekleşen",
+				"environment": "Ortam"
+			}
+		},
+		"codingAgent": {
+			"button": "Kodlama ajanına gönder",
+			"dialogTitle": "Bir kodlama ajanına gönder",
+			"dialogDescription": "Margaya bu brifingle depoda bir issue açar. Göndermeden önce gözden geçirip düzenleyin.",
+			"repository": "Depo",
+			"profile": "Kodlama ajanı",
+			"github": "GitHub",
+			"gitea": "Gitea",
+			"notReady": "Bu deponun entegrasyonu henüz issue açamıyor. Projenin entegrasyon ayarlarından kontrol edin.",
+			"noProfiles": "Bu depoyla çalışan bir kodlama ajanı profili yok.",
+			"useAi": "Yapay zekâ ile özetle",
+			"regenerate": "Yeniden hazırla",
+			"preparing": "Brifing hazırlanıyor…",
+			"error": "Brifing hazırlanamadı.",
+			"titleLabel": "Issue başlığı",
+			"briefLabel": "Brifing",
+			"briefNote": "Parola veya anahtara benzeyen değerler gönderilmeden önce kaldırılır. Hiçbir şey otomatik olarak birleştirilmez.",
+			"send": "Gönder",
+			"sending": "Gönderiliyor…",
+			"sent": "Kodlama ajanına gönderildi",
+			"sentNotAssigned": "Issue oluşturuldu ancak atanan kişi eklenemedi",
+			"sendError": "Issue oluşturulamadı",
+			"openIssue": "Issue'yu aç",
+			"timelineTitle": "Kodlama ajanı",
+			"timelineLabel": "Kodlama ajanının ilerlemesi",
+			"sentBy": "{{name}} tarafından {{profile}} profiline gönderildi",
+			"sentByUnknown": "{{profile}} profiline gönderildi",
+			"issueLink": "Issue #{{number}}",
+			"prLink": "Pull request #{{number}}",
+			"pending": "Henüz değil",
+			"steps": {
+				"issue_created": "Issue oluşturuldu",
+				"working": "Ajan çalışıyor",
+				"ready_for_review": "İncelemeye hazır",
+				"merged": "Birleştirildi",
+				"closed": "Birleştirilmeden kapatıldı"
+			},
+			"settings": {
+				"title": "Kodlama ajanları",
+				"subtitle": "“Kodlama ajanına gönder” için GitHub ve Gitea üzerinden gönderilen issue şablonları",
+				"sharedNote": "Bu çalışma alanındaki tüm projeler tarafından paylaşılır. Profiller issue'ya yalnızca bir bahsetme veya atanan kişi ekler; hiçbir yapay zekâ anahtarı saklanmaz.",
+				"builtin": "Yerleşik",
+				"githubOnly": "Yalnızca GitHub",
+				"name": "Ad",
+				"namePlaceholder": "örn. Derleme çalıştırıcımız",
+				"mention": "Bahsetme",
+				"mentionPlaceholder": "@ajan veya {task} ve {branch} içeren bir metin",
+				"assignee": "Atanan kişi (GitHub)",
+				"assigneePlaceholder": "GitHub kullanıcı adı, örn. Copilot",
+				"enabled": "Etkin",
+				"edit": "Profili düzenle",
+				"delete": "Profili sil",
+				"add": "Profil ekle",
+				"save": "Kaydet",
+				"saved": "Profil kaydedildi",
+				"deleted": "Profil silindi",
+				"error": "Profil kaydedilemedi",
+				"needsTarget": "Bir bahsetme veya atanan kişi ekleyin.",
+				"readOnly": "Profilleri yalnızca çalışma alanı ayarlarını yönetenler değiştirebilir."
+			}
+		},
+		"filters": {
+			"button": "Bir filtre tarif edin…",
+			"short": "Tarif et",
+			"label": "Ne gösterileceğini tarif edin",
+			"placeholder": "ör. devam eden gecikmiş hatalarım",
+			"apply": "Uygula",
+			"none": "Bu filtrelere dönüştürülemedi. Başka kelimeler deneyin.",
+			"applied": "Filtreler uygulandı. Ayarlamak için çipleri düzenleyin.",
+			"dropped": "Anlaşılmadı: {{words}}",
+			"hint": "Yapay zekâ sözlerinizi durum, etiket, kişi, döngü, öncelik ve tarih filtrelerine dönüştürür."
+		},
+		"budget": {
+			"warningTitle": "Bu ayın yapay zekâ bütçesinin %{{percent}} kadarı kullanıldı",
+			"reachedTitle": "Bu ayın yapay zekâ bütçesi tükendi",
+			"amounts": "{{used}} / {{cap}}.",
+			"warningHint": "Sınıra ulaşıldığında yapay zekâ özellikleri durur. Gerekirse aşağıdan sınırı artırın.",
+			"reachedHint": "Yapay zekâ özellikleri gelecek aya veya sınır artırılana kadar duraklatıldı.",
+			"notice": {
+				"title": "Yapay zekâ bütçesi neredeyse bitti",
+				"content": "Bu çalışma alanı aylık yapay zekâ bütçesinin %{{percent}} kadarını kullandı."
+			}
+		},
+		"skills": {
+			"navLabel": "YZ becerileri",
+			"title": "YZ becerileri",
+			"subtitle": "YZ sohbetinde \"/\" ile yeniden kullanılacak kayıtlı istemler.",
+			"listTitle": "Beceriler",
+			"new": "Yeni beceri",
+			"newTitle": "Yeni beceri",
+			"editTitle": "Beceriyi düzenle",
+			"dialogHint": "Beceri her kullanıldığında istem soruya eklenir.",
+			"name": "Ad",
+			"namePlaceholder": "sürüm-notları",
+			"description": "Açıklama",
+			"prompt": "İstem",
+			"promptPlaceholder": "Bu döngüde tamamlanan görevler için özelliğe göre gruplanmış sürüm notları yaz.",
+			"shareLabel": "Çalışma alanıyla paylaş",
+			"shareHint": "Burada YZ kullanan herkes bunu kullanabilir. Kapalı: yalnızca siz.",
+			"shared": "Paylaşılan",
+			"personal": "Yalnızca siz",
+			"save": "Beceriyi kaydet",
+			"saved": "Beceri kaydedildi",
+			"saveError": "Beceri kaydedilemedi",
+			"deleted": "Beceri silindi",
+			"edit": "{{name}} öğesini düzenle",
+			"delete": "{{name}} öğesini sil",
+			"deleteConfirm": "{{name}} silinsin mi?",
+			"empty": "Henüz beceri yok. Sık kullandığınız bir istemi kaydedin.",
+			"loadError": "Beceriler yüklenemedi.",
+			"noAccess": "Bu çalışma alanında YZ kullanmak için izniniz olmalı."
+		},
+		"memory": {
+			"navLabel": "YZ belleği",
+			"title": "YZ belleği",
+			"subtitle": "YZ'nin yanıt verirken aklında tuttuğu kısa bilgiler, örneğin \"Sürüm günümüz perşembe\".",
+			"scopes": {
+				"workspace": "Çalışma alanı",
+				"project": "Proje",
+				"user": "Kişisel"
+			},
+			"scopeHints": {
+				"workspace": "Çalışma alanındaki herkes için kullanılır. YZ yöneticileri düzenler.",
+				"project": "Tek bir projede kullanılır. YZ yöneticileri düzenler.",
+				"user": "Yalnızca sizin için kullanılır ve yalnızca size görünür."
+			},
+			"project": "Proje",
+			"newNote": "Yeni not",
+			"placeholder": "Sürüm günümüz perşembe.",
+			"add": "Not ekle",
+			"save": "Notu kaydet",
+			"editNote": "Notu düzenle",
+			"deleteNote": "Notu sil",
+			"saved": "Not kaydedildi",
+			"deleted": "Not silindi",
+			"saveError": "Not kaydedilemedi",
+			"empty": "Henüz not yok.",
+			"loadError": "Notlar yüklenemedi.",
+			"adminsOnly": "Burada yalnızca YZ yöneticileri not ekleyebilir.",
+			"noAccess": "Bu çalışma alanında YZ kullanmak için izniniz olmalı."
+		}
+	},
+	"insight": {
+		"close": "Kapat",
+		"retry": "Yeniden dene",
+		"stop": "Durdur",
+		"writing": "Yazılıyor…",
+		"days_one": "{{count}} gün",
+		"days_other": "{{count}} gün",
+		"estimate": {
+			"usually": "Benzer görevler genellikle {{value}} idi",
+			"took_one": "{{count}} benzer görev {{min}}–{{max}} gün sürdü (medyan {{median}})",
+			"took_other": "{{count}} benzer görev {{min}}–{{max}} gün sürdü (medyan {{median}})",
+			"basedOn_one": "Tamamlanmış {{count}} benzer göreve göre",
+			"basedOn_other": "Tamamlanmış {{count}} benzer göreve göre",
+			"use": "{{value}} kullan",
+			"why": "Neden?",
+			"similar": "Benzer görevler"
+		},
+		"calibration": {
+			"title": "Tahmin kalibrasyonu",
+			"description": "Her büyüklükteki görevlerin ilk başlangıçtan tamamlanmaya kadar son {{days}} günde gerçekte ne kadar sürdüğü.",
+			"empty": "Henüz başlangıcı kaydedilmiş, tamamlanmış ve tahminli görev yok.",
+			"estimate": "Tahmin",
+			"tasks": "Görevler",
+			"actual": "Gerçek süre",
+			"range": "medyan {{median}} g ({{low}}–{{high}})",
+			"ordered": "Büyük tahminler, olması gerektiği gibi daha uzun sürdü.",
+			"notOrdered": "Büyük tahminler her zaman daha uzun sürmedi: ekibin işi nasıl boyutlandırdığına bakmaya değer.",
+			"fewSamples": "Büyüklükleri karşılaştırmak için daha fazla tamamlanmış görev gerekiyor.",
+			"unmeasured_one": "Başlangıcı kaydedilmemiş {{count}} görev dahil edilmedi.",
+			"unmeasured_other": "Başlangıcı kaydedilmemiş {{count}} görev dahil edilmedi."
+		},
+		"capacity": {
+			"meter": "Planlanan iş, olağan bir döngüyle karşılaştırıldığında",
+			"within": "Olağan bir döngünün %{{percent}} kadarı planlandı",
+			"over": "Kapasitenin üzerinde: olağan bir döngünün %{{percent}} kadarı planlandı",
+			"noDates": "Kapasiteyi kontrol etmek için döngünün tarihlerini ayarlayın.",
+			"noHistory": "Kapasite, ekip önceki döngülerde iş tamamladığında görünür.",
+			"details": "Kapasite ayrıntıları",
+			"compare": "{{load}} planlandı; olağan bir döngü {{typical}} alır (aralık {{low}}–{{high}}).",
+			"tasks_one": "{{count}} görev",
+			"tasks_other": "{{count}} görev",
+			"points_one": "{{count}} puan",
+			"points_other": "{{count}} puan",
+			"basisCycles_one": "Ekibin biten son döngüde tamamladıklarına göre, bu döngünün uzunluğuna ölçeklendi.",
+			"basisCycles_other": "Ekibin biten son {{count}} döngüde tamamladıklarına göre, bu döngünün uzunluğuna ölçeklendi.",
+			"basisThroughput": "Projenin son 8 haftada bu döngü uzunluğundaki her dönemde tamamladığı görevlere göre.",
+			"deferTitle": "Sonraki bir döngüye taşınabilir",
+			"blocks_one": "{{count}} görevi engelliyor",
+			"blocks_other": "{{count}} görevi engelliyor",
+			"membersTitle": "Kişi başına yük",
+			"memberLoad": "{{load}} · genellikle {{typical}}",
+			"membersNote": "İşi dengelemek için her kişinin kendi olağan hızına göre yük. Bir performans ölçüsü değildir.",
+			"unassigned": "Atanmamış"
+		},
+		"retro": {
+			"button": "Retrospektif",
+			"buttonLabel": "Retrospektif hazırla",
+			"title": "Retrospektif",
+			"factsTitle": "Neler oldu",
+			"factsSoFar": "Şimdiye kadar neler oldu",
+			"factsNote": "Bu bilgiler yapay zekâdan değil, Margaya kayıtlarından gelir. Bir kişiyi değil, ekibin işini anlatır.",
+			"error": "Bu döngünün bilgileri yüklenemedi.",
+			"aiIntro": "Yapay zekâ bu bilgilerden kısa bir anlatım ve tartışma soruları yazsın.",
+			"write": "Anlatım yaz",
+			"rewrite": "Yeniden yaz",
+			"edit": "Düzenle",
+			"preview": "Önizleme",
+			"editLabel": "Retrospektif anlatımı",
+			"saveAsPage": "Sayfa olarak kaydet",
+			"saveWithNarrative": "Bilgileri, anlatımı ve ekip için bölümleri kaydeder.",
+			"saveFactsOnly": "Bilgileri ve ekibin dolduracağı bölümleri kaydeder.",
+			"saved": "Retrospektif sayfa olarak kaydedildi",
+			"saveError": "Sayfa kaydedilemedi.",
+			"openPage": "Sayfayı aç",
+			"pageTitle": "Retrospektif: {{name}}",
+			"more_one": "ve {{count}} tane daha",
+			"more_other": "ve {{count}} tane daha",
+			"facts": {
+				"sayDo_one": "Taahhüt edilen {{count}} görevden {{done}} tanesi bitti (%{{percent}})",
+				"sayDo_other": "Taahhüt edilen {{count}} görevden {{done}} tanesi bitti (%{{percent}})",
+				"sayDoNone": "Başlangıçta hiçbir şey taahhüt edilmedi",
+				"scope": "Kapsam değişikliği: döngü sırasında {{added}} eklendi, {{removed}} çıkarıldı",
+				"carry": "Devreden: {{carried}} başka döngüye taşındı, {{open}} açık kaldı",
+				"reopened_one": "{{count}} görev bittikten sonra yeniden açıldı",
+				"reopened_other": "{{count}} görev bittikten sonra yeniden açıldı",
+				"points": "Tahmin puanları: {{committed}} puandan {{completed}} tanesi bitti",
+				"cycleTime": "Döngü süresi: medyan {{median}} gün",
+				"cycleTimeOutliers_one": "Döngü süresi: medyan {{median}} gün; {{count}} görev {{threshold}} günden uzun sürdü",
+				"cycleTimeOutliers_other": "Döngü süresi: medyan {{median}} gün; {{count}} görev {{threshold}} günden uzun sürdü",
+				"cycleTimeNone": "Döngü süresi: ölçülmedi",
+				"blocked_one": "{{count}} görev başka bir görev tarafından engellendi",
+				"blocked_other": "{{count}} görev başka görevler tarafından engellendi",
+				"forecastNone": "Tahmin: bu döngü için kaydedilmedi",
+				"forecastOpen": "Tahmin: %85 olasılıkla {{date}} tarihine kadar biter",
+				"forecastMet": "Tahmin: %85 olasılıkla {{date}} tarihine kadar biter; tuttu",
+				"forecastMissed": "Tahmin: %85 olasılıkla {{date}} tarihine kadar biter; tutmadı"
+			},
+			"lists": {
+				"added": "Döngü sırasında eklenenler",
+				"carriedOver": "Devredenler",
+				"leftOpen": "Açık kalanlar",
+				"outliers": "Olağandan çok daha uzun sürenler",
+				"blocked": "Engellenenler"
+			},
+			"page": {
+				"facts": "Bilgiler",
+				"wentWell": "İyi gidenler",
+				"improve": "İyileştirilecekler",
+				"actions": "Eylemler"
+			}
+		},
+		"myBrief": {
+			"title": "Özetim",
+			"empty": "Bugün sizi bekleyen bir şey yok.",
+			"error": "Özetiniz yüklenemedi.",
+			"summarize": "Özetle",
+			"overdue": "Gecikmiş · {{total}}",
+			"dueToday": "Bugün teslim · {{total}}",
+			"blocked": "Engellenmiş · {{total}}",
+			"mentions": "Bahsetmeler · {{total}}",
+			"following": "Takip ettiğiniz görevlerdeki değişiklikler · {{total}}",
+			"waitingOn": "{{keys}} bekleniyor",
+			"hiddenBlockers_one": "{{count}} gizli görev",
+			"hiddenBlockers_other": "{{count}} gizli görev",
+			"mentionedBy": "{{name}} tarafından",
+			"mentioned": "sizden bahsetti",
+			"more_one": "ve {{count}} tane daha",
+			"more_other": "ve {{count}} tane daha",
+			"kinds": {
+				"status": "durum",
+				"comment": "yorumlar",
+				"assignee": "atananlar",
+				"priority": "öncelik",
+				"due_date": "bitiş tarihi",
+				"other": "diğer güncellemeler"
+			},
+			"emailTitle": "Özetimi e-posta özetine ekle",
+			"emailDescription": "E-posta özeti engellenmiş görevlerinizi ve takip ettiğiniz görevlerdeki değişiklikleri de listeler. Günlük veya haftalık özet gerekir.",
+			"emailError": "Bu ayar kaydedilemedi."
+		}
 	}
 }
