@@ -19,7 +19,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Archive, LayoutGrid, Plus } from "lucide-react";
+import { Archive, LayoutGrid, Lock, Plus } from "lucide-react";
 import {
   type CSSProperties,
   type ReactNode,
@@ -417,6 +417,15 @@ function RouteComponent() {
                         <div className="flex items-center gap-3">
                           <IconComponent className="w-5 h-5 text-muted-foreground" />
                           <span className="font-medium">{project.name}</span>
+                          {project.visibility === "restricted" && (
+                            <Lock
+                              className="size-3 shrink-0 text-muted-foreground"
+                              role="img"
+                              aria-label={t(
+                                "settings:projectAccess.restrictedProject",
+                              )}
+                            />
+                          )}
                         </div>
                       </TableCell>
                       <TableCell className="py-3">

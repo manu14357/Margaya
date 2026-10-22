@@ -9,6 +9,7 @@ import {
   InstancePage,
   InstanceSection,
 } from "@/components/instance-admin/instance-page";
+import { PendingDeletionsSection } from "@/components/instance-admin/pending-deletions";
 import { SearchField } from "@/components/instance-admin/search-field";
 import { SettingSwitchRow } from "@/components/instance-admin/setting-row";
 import { WorkspacesTable } from "@/components/instance-admin/workspaces-table";
@@ -67,6 +68,8 @@ function RouteComponent() {
           />
         )}
       </InstanceSection>
+
+      <PendingDeletionsSection />
 
       <InstanceSection
         title={t("instanceAdmin:workspaces.listTitle")}

@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Search } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import BuildWithAiEmptyHint from "@/components/ai-build/build-with-ai-empty-hint";
 import BoardToolbar, { LayoutToggle } from "@/components/board/board-toolbar";
 import BulkToolbar from "@/components/bulk-selection/bulk-toolbar";
 import ProjectLayout from "@/components/common/project-layout";
@@ -301,6 +302,10 @@ function RouteComponent() {
           }
         />
 
+        {!queryState.hasActiveFilters && (
+          <BuildWithAiEmptyHint project={data} />
+        )}
+
         {descriptionSearch.isLoading && (
           <p role="status" className="px-4 py-2 text-sm text-muted-foreground">
             {t("tasks:descriptionSearchLoading")}
@@ -334,6 +339,8 @@ function RouteComponent() {
                     ? queryState.clearFilters
                     : undefined
                 }
+                quickAdd={queryState.state.archived !== "only"}
+                projectId={projectId}
               />
               <BulkToolbar />
             </>

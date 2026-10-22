@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
+import CaptureButton from "@/components/ai/capture/capture-button";
 import ProjectLayout from "@/components/common/project-layout";
 import CreateIntakeDialog from "@/components/intake/create-intake-dialog";
 import IntakeScreen from "@/components/intake/intake-screen";
@@ -46,15 +47,18 @@ function RouteComponent() {
   );
 
   const headerActions = canCreate ? (
-    <Button
-      variant="outline"
-      size="xs"
-      className="gap-1"
-      onClick={() => setIsCreateOpen(true)}
-    >
-      <Plus className="size-3" />
-      {t("intake:newRequest")}
-    </Button>
+    <div className="flex items-center gap-1.5">
+      <CaptureButton projectId={projectId} />
+      <Button
+        variant="outline"
+        size="xs"
+        className="gap-1"
+        onClick={() => setIsCreateOpen(true)}
+      >
+        <Plus className="size-3" />
+        {t("intake:newRequest")}
+      </Button>
+    </div>
   ) : null;
 
   return (

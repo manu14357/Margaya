@@ -69,6 +69,7 @@ const RESOURCE_LABELS: Record<string, string> = {
   analytics: "Analytics",
   page: "Pages",
   audit_log: "Audit log",
+  ai: "AI",
   workspace: "Workspace",
 };
 
@@ -249,6 +250,16 @@ const PERMISSION_LABELS: Record<
   "intake:triage": {
     label: "Triage requests",
     description: "Accept, decline, snooze and close requests as duplicates.",
+  },
+  "ai:use": {
+    label: "Use AI",
+    description:
+      "Use AI features, when AI is on for the workspace and the project.",
+  },
+  "ai:manage": {
+    label: "Manage AI",
+    description:
+      "Turn AI on or off for the workspace and change its key, limits and privacy, and see AI usage.",
   },
   "audit_log:read": {
     label: "View audit log",

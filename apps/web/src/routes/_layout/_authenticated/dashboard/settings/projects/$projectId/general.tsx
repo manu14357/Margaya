@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import ArchiveProjectSetting from "@/components/archives/archive-project-setting";
+import ProjectAccessSettings from "@/components/project/project-access-settings";
 import ProjectPeopleSettings from "@/components/project/project-people-settings";
 import { TasksImportExport } from "@/components/project/tasks-import-export.tsx";
 import {
@@ -559,6 +560,13 @@ function RouteComponent() {
           workspaceId={workspace.id}
           projectId={projectId}
           canEdit={canEdit}
+        />
+      )}
+
+      {workspace?.id && (
+        <ProjectAccessSettings
+          workspaceId={workspace.id}
+          projectId={projectId}
         />
       )}
 

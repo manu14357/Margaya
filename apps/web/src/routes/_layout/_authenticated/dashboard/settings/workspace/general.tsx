@@ -1,11 +1,13 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useQueryClient } from "@tanstack/react-query";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import useAuth from "@/components/providers/auth-provider/hooks/use-auth";
+import WorkspaceA2aSetting from "@/components/settings/workspace-a2a-setting";
+import WorkspacePublicPagesSetting from "@/components/settings/workspace-public-pages-setting";
 import WorkspaceTimezoneSetting from "@/components/settings/workspace-timezone-setting";
 import {
   SettingsDangerZone,
@@ -41,7 +43,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { LeaveWorkspaceRow } from "@/components/workspace/leave-workspace-row";
-import useDeleteWorkspace from "@/hooks/mutations/workspace/use-delete-workspace";
+import WorkspaceDeletionRow from "@/components/workspace/workspace-deletion-row";
 import useTransferWorkspaceOwnership from "@/hooks/mutations/workspace/use-transfer-workspace-ownership";
 import useUpdateWorkspace from "@/hooks/mutations/workspace/use-update-workspace";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
@@ -113,7 +115,6 @@ function RouteComponent() {
   );
 
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isSavingRef = useRef(false);
   const queuedSaveRef = useRef<WorkspaceFormValues | null>(null);
@@ -121,7 +122,6 @@ function RouteComponent() {
   const [echoGuard] = useState(() =>
     createSaveEchoGuard<NormalizedWorkspaceValues>(),
   );
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
   const [selectedNewOwnerId, setSelectedNewOwnerId] = useState<string>("");
 
@@ -131,8 +131,6 @@ function RouteComponent() {
     workspaceId: workspace?.id,
   });
   const { mutateAsync: updateWorkspace } = useUpdateWorkspace();
-  const { mutateAsync: deleteWorkspace, isPending: isDeleting } =
-    useDeleteWorkspace();
   const { mutateAsync: transferOwnership, isPending: isTransferring } =
     useTransferWorkspaceOwnership();
   const { canManageWorkspace, canDeleteWorkspace, isOwner } =
@@ -279,29 +277,6 @@ function RouteComponent() {
     }
   }, [workspace?.id, currentOwnerMember, selectedMember, transferOwnership, t]);
 
-  const handleDeleteWorkspace = useCallback(async () => {
-    if (!workspace?.id) return;
-
-    try {
-      await deleteWorkspace({ workspaceId: workspace.id });
-      toast.success(t("settings:workspaceGeneral.toastDeleted"));
-
-      // Invalidate all workspace-related queries
-      await queryClient.invalidateQueries({ queryKey: ["workspaces"] });
-      await queryClient.invalidateQueries({
-        queryKey: ["active-organization"],
-      });
-
-      navigate({ to: "/dashboard" });
-    } catch (error) {
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : t("settings:workspaceGeneral.toastDeleteError"),
-      );
-    }
-  }, [workspace?.id, deleteWorkspace, queryClient, navigate, t]);
-
   const debouncedSave = useCallback(() => {
     if (debounceTimeoutRef.current) {
       clearTimeout(debounceTimeoutRef.current);
@@ -414,6 +389,18 @@ function RouteComponent() {
                   canEdit={canEdit}
                 />
               )}
+              {workspace?.id && (
+                <WorkspacePublicPagesSetting
+                  workspaceId={workspace.id}
+                  canEdit={canEdit}
+                />
+              )}
+              {workspace?.id && (
+                <WorkspaceA2aSetting
+                  workspaceId={workspace.id}
+                  canEdit={canEdit}
+                />
+              )}
             </SettingsGroup>
           </form>
         </Form>
@@ -521,23 +508,11 @@ function RouteComponent() {
             currentUserId={currentUser?.id}
             members={members}
           />
-          {canDelete && (
-            <SettingsRow
-              label={t("settings:workspaceGeneral.deleteWorkspace")}
-              description={t(
-                "settings:workspaceGeneral.deleteWorkspaceDescription",
-              )}
-            >
-              <Button
-                variant="destructive-outline"
-                size="sm"
-                type="button"
-                onClick={() => setIsDeleteModalOpen(true)}
-              >
-                {t("settings:workspaceGeneral.deleteWorkspace")}
-              </Button>
-            </SettingsRow>
-          )}
+          <WorkspaceDeletionRow
+            workspaceId={workspace.id}
+            workspaceName={workspace.name}
+            canDelete={canDelete}
+          />
         </SettingsDangerZone>
       ) : null}
 
@@ -592,40 +567,6 @@ function RouteComponent() {
                 : t("settings:workspaceGeneral.transferOwnership.confirm", {
                     defaultValue: "Transfer ownership",
                   })}
-            </AlertDialogClose>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      <AlertDialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              {t("settings:workspaceGeneral.deleteModalTitle")}
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              {t("settings:workspaceGeneral.deleteModalDescription", {
-                name: workspace?.name ?? "",
-              })}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogClose render={<Button variant="outline" size="sm" />}>
-              {t("common:actions.cancel")}
-            </AlertDialogClose>
-            <AlertDialogClose
-              render={
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  disabled={isDeleting}
-                  onClick={handleDeleteWorkspace}
-                />
-              }
-            >
-              {isDeleting
-                ? t("common:actions.deleting")
-                : t("settings:workspaceGeneral.deleteModalConfirm")}
             </AlertDialogClose>
           </AlertDialogFooter>
         </AlertDialogContent>

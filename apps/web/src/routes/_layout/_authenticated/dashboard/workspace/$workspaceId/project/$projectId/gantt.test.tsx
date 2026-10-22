@@ -95,8 +95,14 @@ vi.mock("@/hooks/queries/task-relation/use-get-project-dependencies", () => ({
   useGetProjectDependencies: () => dependencies(),
 }));
 const canUpdateTasks = vi.fn(() => true);
+const canCreateTasks = vi.fn(() => false);
+vi.mock("@/components/task-draft/quick-add", () => ({
+  default: ({ prefill }: { prefill: { status: string } }) => (
+    <div data-testid="gantt-quick-add">{prefill.status}</div>
+  ),
+}));
 vi.mock("@/hooks/use-workspace-permission", () => ({
-  useWorkspacePermission: () => ({ canUpdateTasks }),
+  useWorkspacePermission: () => ({ canUpdateTasks, canCreateTasks }),
 }));
 
 vi.mock("@/components/gantt/gantt-task-bar", () => ({
@@ -462,6 +468,45 @@ describe("Gantt undated tasks", () => {
 
     expect(screen.queryByText("No scheduled tasks")).toBeNull();
     expect(screen.getByText("Needs dates")).toBeInTheDocument();
+  });
+
+  it("ends the task rail with a quick add for people who can create", () => {
+    mockTasks([makeTask({ id: "undated", title: "Needs dates" })]);
+    render(<GanttRoute />);
+    expect(screen.queryByTestId("gantt-quick-add")).toBeNull();
+    cleanup();
+
+    canCreateTasks.mockImplementation(() => true);
+    useGetTasks.mockReturnValue({
+      data: {
+        id: "project-1",
+        name: "Roadmap",
+        slug: "RM",
+        columns: [
+          {
+            id: "col-0",
+            slug: "backlog",
+            name: "Backlog",
+            group: "backlog",
+            position: 0,
+            tasks: [],
+          },
+          {
+            id: "col-1",
+            slug: "to-do",
+            name: "To do",
+            group: "unstarted",
+            position: 1,
+            tasks: [makeTask({ id: "undated", title: "Needs dates" })],
+          },
+        ],
+        plannedTasks: [],
+        archivedTasks: [],
+      },
+    });
+    render(<GanttRoute />);
+    expect(screen.getByTestId("gantt-quick-add").textContent).toBe("to-do");
+    canCreateTasks.mockImplementation(() => false);
   });
 
   it("offers no scheduling to people who cannot edit tasks", () => {

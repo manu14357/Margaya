@@ -67,6 +67,9 @@ vi.mock("@/hooks/mutations/project/use-delete-project", () => ({
 vi.mock("@/components/project/project-people-settings", () => ({
   default: () => null,
 }));
+vi.mock("@/components/project/project-access-settings", () => ({
+  default: () => null,
+}));
 vi.mock("@/lib/toast", () => ({
   toast: { success: m.success, error: m.error },
 }));

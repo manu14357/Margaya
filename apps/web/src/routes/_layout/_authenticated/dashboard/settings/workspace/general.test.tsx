@@ -54,9 +54,6 @@ vi.mock("@/hooks/use-workspace-permission", () => ({
 vi.mock("@/hooks/mutations/workspace/use-update-workspace", () => ({
   default: () => ({ mutateAsync: m.update }),
 }));
-vi.mock("@/hooks/mutations/workspace/use-delete-workspace", () => ({
-  default: () => ({ mutateAsync: vi.fn(), isPending: false }),
-}));
 vi.mock("@/hooks/mutations/workspace/use-leave-workspace", () => ({
   default: () => ({ mutateAsync: vi.fn(), isPending: false }),
   LAST_OWNER_CODE: "YOU_CANNOT_LEAVE_THE_ORGANIZATION_AS_THE_ONLY_OWNER",
@@ -66,6 +63,15 @@ vi.mock("@/hooks/mutations/workspace/use-transfer-workspace-ownership", () => ({
   default: () => ({ mutateAsync: vi.fn(), isPending: false }),
 }));
 vi.mock("@/components/settings/workspace-timezone-setting", () => ({
+  default: () => null,
+}));
+vi.mock("@/components/settings/workspace-public-pages-setting", () => ({
+  default: () => null,
+}));
+vi.mock("@/components/settings/workspace-a2a-setting", () => ({
+  default: () => null,
+}));
+vi.mock("@/components/workspace/workspace-deletion-row", () => ({
   default: () => null,
 }));
 vi.mock("@/lib/toast", () => ({

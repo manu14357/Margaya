@@ -6,6 +6,7 @@ import {
   EmailVerificationPrompt,
   useNeedsEmailVerification,
 } from "@/components/account/email-verification-prompt";
+import { TwoFactorSection } from "@/components/account/two-factor-section";
 import useAuth from "@/components/providers/auth-provider/hooks/use-auth";
 import {
   SettingsGroup,
@@ -57,6 +58,11 @@ function SecurityPage() {
       ) : null}
 
       {data?.hasPassword ? <ChangePasswordSection /> : null}
+
+      {/* Two-factor guards password sign-in, so it needs a password. */}
+      {data?.hasPassword ? (
+        <TwoFactorSection enabled={data.twoFactorEnabled} />
+      ) : null}
 
       <ActiveSessionsSection
         sessions={data?.sessions}

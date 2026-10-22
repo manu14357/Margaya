@@ -189,6 +189,7 @@ function RouteComponent() {
             onClearFilters={
               queryState.hasActiveFilters ? queryState.clearFilters : undefined
             }
+            quickAdd={queryState.state.archived !== "only"}
           />
         </div>
         <BulkToolbar projectId={projectId} />

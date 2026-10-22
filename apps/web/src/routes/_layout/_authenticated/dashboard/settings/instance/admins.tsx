@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AddAdminDialog } from "@/components/instance-admin/add-admin-dialog";
 import { AdminsTable } from "@/components/instance-admin/admins-table";
+import { AuditTrail } from "@/components/instance-admin/audit-trail";
 import {
   InstanceLoadState,
   InstancePage,
@@ -42,6 +43,7 @@ function RouteComponent() {
           onRetry={() => void admins.refetch()}
         />
       )}
+      <AuditTrail />
       <AddAdminDialog open={addOpen} onOpenChange={setAddOpen} />
     </InstancePage>
   );

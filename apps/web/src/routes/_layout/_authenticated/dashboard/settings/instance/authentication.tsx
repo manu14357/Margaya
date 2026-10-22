@@ -11,6 +11,7 @@ import {
 import { OAuthProviderSheet } from "@/components/instance-admin/oauth-provider-sheet";
 import { SettingSwitchRow } from "@/components/instance-admin/setting-row";
 import { SignInMethodCard } from "@/components/instance-admin/sign-in-method-card";
+import { SignInPolicySection } from "@/components/instance-admin/sign-in-policy-section";
 import { useSaveInstanceSettings } from "@/components/instance-admin/use-save-instance-settings";
 import { Separator } from "@/components/ui/separator";
 import { useInstanceSettings } from "@/hooks/queries/instance-admin/use-instance-admin";
@@ -114,6 +115,13 @@ function AuthenticationSettings({ settings }: { settings: InstanceSettings }) {
         <Separator />
         <SettingSwitchRow
           settings={settings}
+          settingKey="auth.emailSignUpForInvitations"
+          label={t("accountSecurity:platform.policy.invitedPasswordSignUp")}
+          hint={t("accountSecurity:platform.policy.invitedPasswordSignUpHint")}
+        />
+        <Separator />
+        <SettingSwitchRow
+          settings={settings}
           settingKey="auth.guestAccess"
           label={t("instanceAdmin:auth.guestAccess")}
           hint={t("instanceAdmin:auth.guestAccessHint")}
@@ -160,6 +168,8 @@ function AuthenticationSettings({ settings }: { settings: InstanceSettings }) {
           })}
         </div>
       </InstanceSection>
+
+      <SignInPolicySection settings={settings} />
 
       <OAuthProviderSheet
         open={sheetOpen}

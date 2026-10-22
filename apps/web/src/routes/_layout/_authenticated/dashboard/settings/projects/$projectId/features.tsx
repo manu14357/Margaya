@@ -1,6 +1,8 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import TriageProjectSettings from "@/components/ai/triage/triage-project-settings";
 import {
   SettingsGroup,
   SettingsPage,
@@ -25,6 +27,7 @@ import {
   type ProjectFeatureKey,
 } from "@/constants/project-features";
 import useUpdateProjectFeatures from "@/hooks/mutations/project/use-update-project-features";
+import { useAiAvailability } from "@/hooks/queries/ai/use-ai";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useProjectFeatures } from "@/hooks/use-project-features";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
@@ -51,7 +54,13 @@ function RouteComponent() {
   const [pendingDisable, setPendingDisable] =
     useState<ProjectFeatureKey | null>(null);
 
-  const features = getAvailableProjectFeatures();
+  const queryClient = useQueryClient();
+  // The AI switch only matters once the instance and the workspace have AI on.
+  const ai = useAiAvailability();
+  const aiOn = Boolean(ai.data?.instanceEnabled && ai.data.workspaceEnabled);
+  const features = getAvailableProjectFeatures().filter(
+    (feature) => feature.key !== "ai" || aiOn,
+  );
 
   const saveFeature = async (key: ProjectFeatureKey, enabled: boolean) => {
     const feature = getProjectFeature(key);
@@ -62,6 +71,11 @@ function RouteComponent() {
         workspaceId,
         features: { [feature.field]: enabled },
       });
+      if (key === "ai") {
+        void queryClient.invalidateQueries({
+          queryKey: ["ai", "availability"],
+        });
+      }
       toast.success(
         enabled
           ? t("settings:projectFeatures.toastEnabled", { feature: title })
@@ -156,6 +170,10 @@ function RouteComponent() {
           </>
         )}
       </SettingsSection>
+
+      {aiOn && project?.aiEnabled === true && (
+        <TriageProjectSettings projectId={projectId} canEdit={canEdit} />
+      )}
 
       <AlertDialog
         open={pendingDisable !== null}

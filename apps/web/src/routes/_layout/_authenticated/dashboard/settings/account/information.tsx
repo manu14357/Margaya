@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
+import { ChangeEmailDialog } from "@/components/account/change-email-dialog";
 import useAuth from "@/components/providers/auth-provider/hooks/use-auth";
 import {
   SettingsDangerZone,
@@ -47,6 +48,7 @@ import useDeleteAccount, {
 import useRemoveUserAvatar from "@/hooks/mutations/use-remove-user-avatar";
 import useUpdateUserAvatar from "@/hooks/mutations/use-update-user-avatar";
 import useUpdateUserProfile from "@/hooks/mutations/use-update-user-profile";
+import useGetConfig from "@/hooks/queries/config/use-get-config";
 import { createSaveEchoGuard, sameFormValues } from "@/lib/form-autosave";
 import { getInitials } from "@/lib/get-initials";
 import { ACCEPTED_AVATAR_TYPES } from "@/lib/prepare-avatar-image";
@@ -91,6 +93,13 @@ function RouteComponent() {
     useDeleteAccount();
   const avatarInputRef = useRef<HTMLInputElement>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isChangeEmailOpen, setIsChangeEmailOpen] = useState(false);
+  const { data: config } = useGetConfig();
+  const isGuest = Boolean(
+    (user as { isAnonymous?: boolean | null } | null)?.isAnonymous,
+  );
+  // The change is confirmed by a code sent to the new address.
+  const canChangeEmail = !isGuest && Boolean(config?.hasSmtp);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
   const canConfirmDelete =
     Boolean(user?.email) &&
@@ -401,6 +410,20 @@ function RouteComponent() {
                           />
                         </FormControl>
                         <FormMessage />
+                        {canChangeEmail ? (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="xs"
+                            onClick={() => setIsChangeEmailOpen(true)}
+                          >
+                            {t("accountSecurity:emailChange.action")}
+                          </Button>
+                        ) : isGuest ? null : (
+                          <p className="text-xs text-muted-foreground">
+                            {t("accountSecurity:emailChange.unavailable")}
+                          </p>
+                        )}
                       </div>
                     </SettingsRow>
                   </FormItem>
@@ -410,6 +433,11 @@ function RouteComponent() {
           </Form>
         </SettingsGroup>
       </SettingsSection>
+
+      <ChangeEmailDialog
+        open={isChangeEmailOpen}
+        onOpenChange={setIsChangeEmailOpen}
+      />
 
       <SettingsDangerZone
         title={t("settings:informationPage.deleteAccount.sectionTitle")}

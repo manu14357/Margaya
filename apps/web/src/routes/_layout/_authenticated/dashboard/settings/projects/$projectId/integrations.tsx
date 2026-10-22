@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
+  Bot,
   ChevronDown,
   FolderGit,
   MessageCircle,
@@ -10,6 +11,7 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
+import { CodingAgentProfilesSettings } from "@/components/coding-agent/coding-agent-profiles-settings";
 import { GithubIcon } from "@/components/icons/github-icon";
 import { DiscordIntegrationSettings } from "@/components/project/discord-integration-settings";
 import { GenericWebhookIntegrationSettings } from "@/components/project/generic-webhook-integration-settings";
@@ -61,6 +63,14 @@ function RouteComponent() {
             title={t("settings:projectIntegrations.giteaSectionTitle")}
           >
             <GiteaIntegrationSettings projectId={projectId} />
+          </IntegrationSection>
+
+          <IntegrationSection
+            icon={<Bot className="size-4" />}
+            subtitle={t("ai:codingAgent.settings.subtitle")}
+            title={t("ai:codingAgent.settings.title")}
+          >
+            <CodingAgentProfilesSettings />
           </IntegrationSection>
         </SettingsGroup>
       </SettingsSection>

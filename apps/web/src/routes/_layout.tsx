@@ -1,5 +1,7 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { useState } from "react";
+import { AskHotkey } from "@/components/ai/ask/ask-hotkey";
+import AskPanel from "@/components/ai/ask/ask-panel";
 import CommandPalette from "@/components/command-palette";
 import SearchCommandMenu from "@/components/search-command-menu";
 import CopyTaskDialogHost from "@/components/task/copy-task-dialog-host";
@@ -15,6 +17,8 @@ function RouteComponent() {
     <>
       <Outlet />
       <CommandPalette />
+      <AskPanel />
+      <AskHotkey />
       <CopyTaskDialogHost />
       <SearchCommandMenu open={searchOpen} setOpen={setSearchOpen} />
     </>

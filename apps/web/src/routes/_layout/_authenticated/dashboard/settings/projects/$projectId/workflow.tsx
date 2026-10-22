@@ -1,10 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
+import RuleCompiler from "@/components/ai/rules/rule-compiler";
+import AutomationRules from "@/components/project/automation-rules/automation-rules";
 import ColumnEditor, {
   SortColumnsByGroupButton,
 } from "@/components/project/column-editor";
 import CustomFieldEditor from "@/components/project/custom-field-editor";
 import ScheduledAutomations from "@/components/project/scheduled-automations/scheduled-automations";
+import TaskTemplates from "@/components/project/task-templates/task-templates";
 import WorkflowEditor from "@/components/project/workflow-editor";
 import { SettingsPage, SettingsSection } from "@/components/settings-layout";
 
@@ -40,6 +43,15 @@ function RouteComponent() {
       </SettingsSection>
 
       <SettingsSection
+        title={t("settings:automationRules.title")}
+        description={t("settings:automationRules.description")}
+      >
+        <AutomationRules projectId={projectId} />
+      </SettingsSection>
+
+      <RuleCompiler projectId={projectId} />
+
+      <SettingsSection
         title={t("settings:projectWorkflow.automationTitle")}
         description={t("settings:projectWorkflow.automationDescription")}
       >
@@ -51,6 +63,13 @@ function RouteComponent() {
         description={t("settings:projectAutomations.description")}
       >
         <ScheduledAutomations projectId={projectId} />
+      </SettingsSection>
+
+      <SettingsSection
+        title={t("templates:settings.title")}
+        description={t("templates:settings.description")}
+      >
+        <TaskTemplates projectId={projectId} />
       </SettingsSection>
     </SettingsPage>
   );

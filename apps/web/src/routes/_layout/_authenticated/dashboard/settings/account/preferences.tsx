@@ -4,8 +4,9 @@ import {
   supportedLocales,
 } from "@i18n/resources";
 import { createFileRoute } from "@tanstack/react-router";
-import { RotateCcw } from "lucide-react";
+import { PanelsLeftRight, RotateCcw } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useCustomizeSidebarDialog } from "@/components/common/customize-sidebar-dialog";
 import AccountTimezoneSetting from "@/components/settings/account-timezone-setting";
 import {
   SettingsGroup,
@@ -22,9 +23,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { THEME_LABEL_KEYS } from "@/constants/themes";
 import { useLocale } from "@/hooks/use-locale";
 import {
+  isTheme,
   isWeekStartDay,
+  THEMES,
   useUserPreferencesStore,
   WEEK_START_DAYS,
   type WeekStartDay,
@@ -50,6 +54,9 @@ function getLocaleLabel(locale: AppLocale) {
 
 function RouteComponent() {
   const { t } = useTranslation();
+  const openCustomizeSidebar = useCustomizeSidebarDialog(
+    (state) => state.setOpen,
+  );
   const { locale, setLocale } = useLocale();
   const {
     theme,
@@ -74,12 +81,6 @@ function RouteComponent() {
     sidebarDefaultOpen,
     setSidebarDefaultOpen,
   } = useUserPreferencesStore();
-
-  const themeLabels: Record<string, string> = {
-    light: t("settings:preferencesPage.themeLight"),
-    dark: t("settings:preferencesPage.themeDark"),
-    system: t("settings:preferencesPage.themeSystem"),
-  };
 
   const viewLabels: Record<string, string> = {
     board: t("settings:preferencesPage.board"),
@@ -109,7 +110,9 @@ function RouteComponent() {
           >
             <Select
               value={theme}
-              onValueChange={(value) => value && setTheme(value)}
+              onValueChange={(value) => {
+                if (isTheme(value)) setTheme(value);
+              }}
             >
               <SelectTrigger
                 size="sm"
@@ -119,19 +122,15 @@ function RouteComponent() {
                 <SelectValue
                   placeholder={t("settings:preferencesPage.selectTheme")}
                 >
-                  {themeLabels[theme]}
+                  {t(THEME_LABEL_KEYS[theme])}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="light">
-                  {t("settings:preferencesPage.themeLight")}
-                </SelectItem>
-                <SelectItem value="dark">
-                  {t("settings:preferencesPage.themeDark")}
-                </SelectItem>
-                <SelectItem value="system">
-                  {t("settings:preferencesPage.themeSystem")}
-                </SelectItem>
+                {THEMES.map((value) => (
+                  <SelectItem key={value} value={value}>
+                    {t(THEME_LABEL_KEYS[value])}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </SettingsRow>
@@ -256,6 +255,20 @@ function RouteComponent() {
               checked={sidebarDefaultOpen}
               onCheckedChange={setSidebarDefaultOpen}
             />
+          </SettingsRow>
+
+          <SettingsRow
+            label={t("navigation:customize.title")}
+            description={t("navigation:customize.settingsDescription")}
+          >
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => openCustomizeSidebar(true)}
+            >
+              <PanelsLeftRight />
+              {t("navigation:customize.open")}
+            </Button>
           </SettingsRow>
         </SettingsGroup>
       </SettingsSection>

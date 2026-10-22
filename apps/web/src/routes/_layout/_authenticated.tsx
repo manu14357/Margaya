@@ -1,4 +1,5 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { usePreferencesSync } from "@/hooks/use-preferences-sync";
 import { authClient } from "@/lib/auth-client";
 
 // protects all child routes, must be logged in
@@ -29,4 +30,11 @@ export const Route = createFileRoute("/_layout/_authenticated")({
     }
     return { session, sessionError };
   },
+  component: AuthenticatedLayout,
 });
+
+function AuthenticatedLayout() {
+  const { session } = Route.useRouteContext();
+  usePreferencesSync(Boolean(session));
+  return <Outlet />;
+}

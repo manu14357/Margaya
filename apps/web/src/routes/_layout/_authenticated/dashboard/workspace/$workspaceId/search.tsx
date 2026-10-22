@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import WorkspaceLayout from "@/components/common/workspace-layout";
 import PageTitle from "@/components/page-title";
+import { HighlightedSnippet } from "@/components/shared/highlighted-snippet";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useGlobalSearch from "@/hooks/queries/search/use-global-search";
@@ -148,6 +149,12 @@ function SearchComponent() {
                         <span className="text-sm text-foreground truncate block">
                           {result.title}
                         </span>
+                        {result.snippet && (
+                          <HighlightedSnippet
+                            snippet={result.snippet}
+                            className="mt-0.5 text-xs text-muted-foreground line-clamp-2"
+                          />
+                        )}
                       </div>
 
                       {result.projectName && (
