@@ -1,0 +1,106 @@
+---
+title: Build mode in chat
+description: Ask the AI chat to make changes for you, review them as cards, confirm, and undo any of them
+---
+
+Ask AI answers questions and never changes anything. **Build mode** lets the same chat make changes: you describe what you want, the AI proposes a list of changes as cards, and nothing happens until you choose **Confirm**.
+
+Build mode appears only when AI is on for the server and the workspace, and you have the **Use AI** permission. See [AI Setup](/core/functional/ai-setup).
+
+## Ask for changes
+
+Switch the chat from **Ask** to **Build** and describe the work, for example:
+
+- "Create a project NX-7 Sensor Fusion with Elena as lead, and three tasks to calibrate the IMU."
+- "Move WEB-12 to In Review and assign it to Mark."
+- "Plan WEB-14 and WEB-15 in Sprint 4 and comment that they slipped."
+- "@Atlas triage WEB-21." This hands the task to an agent; see [AI Agents](/core/functional/ai-agents).
+
+Mention tasks, pages, projects, cycles, modules, people or agents with `@` to point the AI at them. In a project, new things go into that project unless you name another one.
+
+Tasks you name by key in the request, such as "add a description to WEB-18", are read in full first, like tasks you add with `@`. Keys from earlier messages count only when the request names none, so "also make it high priority" still means the task you were talking about.
+
+## Watch it plan
+
+While the AI plans, the chat shows what it works from under **Context (n)**:
+
+- the workspace facts it got: the number of projects, people and cycles;
+- each task, page or comment it read in full, linked so you can open it. Several comments read from one task show as one row with a count, such as **×3**;
+- the [memory notes](/core/functional/ai-skills-and-memory) it was given;
+- the earlier messages of the conversation.
+
+The list folds once the plan is ready; select **Context (n)** to open or close it.
+
+Below it, **Thinking…** shows while a reasoning model thinks, and **Thought for …s** afterwards. The reasoning text itself appears only when an instance admin shows reasoning (see [AI Setup](/core/functional/ai-setup#chat-features)).
+
+## Review the proposed changes
+
+The answer is a short summary and one card per change:
+
+| Change | What it does |
+|---|---|
+| New project | Creates a project with a name and key, and optionally a description and a lead. |
+| New task | Creates a task with a title, and optionally a description, priority, status, assignees, due date, labels or a parent task. |
+| Edit task | Changes a task's title, description, priority or due date. |
+| Change status | Moves a task to another column. |
+| Assign | Adds assignees to a task. |
+| Comment | Adds a comment to a task. |
+| New cycle, Add to cycle | Creates a cycle, or plans tasks in one. |
+| New module, Add to module | Creates a module, or adds tasks to one. |
+| New page | Creates a page in a project. |
+| Link tasks | Links two tasks, for example "blocks" or "related". |
+| New label | Creates a workspace label. |
+| Delete task | Moves a task to the trash. |
+| Run agent | Starts an agent on a task and shows its progress in the chat. |
+
+A plan holds at most 50 changes. Changes can build on each other: a task can go into a project, cycle or module that an earlier card creates.
+
+Before you confirm, you can:
+
+- **Edit** the simple fields on a card, such as a title, a name, a key, dates, the priority or the assignee.
+- **Remove** a card with its **✕** button. Cards that depended on it are skipped.
+- **Pick the right person** when a name matches more than one member.
+- **Tick** a deletion. A destructive change never runs without its tick.
+
+A card that can't be applied as written says why, for example when you don't have the permission it needs, a task or person isn't found, or the project has cycles or modules turned off. It is skipped when you confirm.
+
+When the AI names an existing project by its key or name where a new one would go, Margaya uses that existing project instead of flagging the card.
+
+When the request is unclear, the AI asks a question with a few options instead of guessing. Pick an option to get a new plan.
+
+The footer reads **Awaiting response** with the number of changes that are ready. Choose **Confirm** to apply them, or **Cancel** to discard the plan. When every card is flagged, the footer says "Nothing can be applied yet. Fix or remove the flagged changes, or ask again."
+
+## What happens when you confirm
+
+Each change runs in order, as you, with your own permissions. It is exactly as if you had made it by hand: the same checks, history, notifications, realtime updates, webhooks and integrations. Changes you couldn't make yourself fail the same way.
+
+If one change fails, the others still run, and the changes that depended on it are skipped. Each card then shows:
+
+- a check mark and a link to what was created or changed, or the reason it failed;
+- **Undo**, for an hour after the change.
+
+Undo puts things back the way they were: it removes what was created (or archives it when you may not delete it; pages are archived), restores old titles, dates, statuses and assignees, takes tasks back out of a cycle or module, and restores a deleted task from the trash. Only the person who made a change can undo it from the chat.
+
+## Autopilot
+
+Workspace admins can turn on **Allow Autopilot** in the workspace's AI settings, under **Ask AI chat**. With Autopilot on, a plan is applied right away instead of waiting for **Confirm**, and each change still has its link and **Undo**.
+
+Autopilot never applies a plan that has a question, a card that can't be applied, or a deletion: those plans wait for your review as usual. Autopilot is also off whenever the workspace requires approval for AI changes.
+
+## Privacy
+
+The AI sees only what you can see, in projects with AI turned on. It gets the names and ids of projects, columns, cycles, modules, labels, members and agents so it can point at the right things, plus any items you mention and the workspace's, project's and your own memory notes. Planning is counted under **Build in chat** in AI usage. Your request isn't stored.
+
+## Build mode or Build with AI?
+
+Build mode works in the chat on anything in the workspace: it creates, edits, assigns, comments, plans into cycles and runs agents, one card per change. [Build with AI](/core/functional/build-with-ai) drafts one bigger plan for a single project (a new project, or tasks in the current one, with columns, labels, cycles, modules and sub-tasks) in a dialog of its own.
+
+## API
+
+| Endpoint | What it does |
+|---|---|
+| `POST /api/ai/chat/plan` | Turns a request into proposed actions, a question, or nothing. With `autopilot: true` and Autopilot allowed, it applies a clean plan right away. |
+| `POST /api/ai/chat/apply` | Applies reviewed actions as the caller. Destructive actions must be listed in `confirmDestructive`. Returns one result per action with a link and an undo token. |
+| `POST /api/ai/chat/undo` | Reverts one applied action with its undo token. |
+
+`POST /api/ai/chat/plan` returns one JSON body by default. Send `Accept: text/event-stream` to get Server-Sent Events instead: `context` (the fact counts, the items read in full with titles and links, the number of memory notes and earlier turns), `reasoning` while the model thinks (with text only when the instance shows reasoning), then `done` with the plan, including `reasoningMs`, or `error` with a `code` and `message`.

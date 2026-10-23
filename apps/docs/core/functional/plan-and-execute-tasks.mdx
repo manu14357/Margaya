@@ -10,9 +10,16 @@ Use this workflow to move from planning to execution with minimal overhead.
 In a project:
 
 1. Open **Board** or **List** view.
-2. Click **Create task**.
+2. Click **+** at the top of a column. From anywhere in the workspace, the **+** button in the left rail opens **New task** too.
 3. Add a short, action-oriented title.
-4. Optionally set description, assignee, priority, due date, and labels.
+4. Optionally set a description, status, priority, assignees, dates, labels, cycle, modules and estimate from the chips under it.
+5. Click **Create task**. Tick **Create more** first to keep the dialog open for the next one, or click **Save as draft** to finish it later.
+
+Once the title has three or more words, the dialog may list up to five **Similar open tasks** of the same project under it, so you can spot a duplicate before creating one. It searches titles and descriptions and shows the best matches first. **Open** shows a task in a new tab, **Duplicate of this** marks the new task as its duplicate, and the **×** hides the list. The list never stops you from creating the task. See [Build with AI](/core/functional/build-with-ai#duplicate-check-while-creating-a-task) for the optional AI check.
+
+<Screenshot src="tasks/create-task-dialog" alt="The New task dialog with the title Redesign pricing page header, a Similar open tasks box listing WEB-1 Redesign the pricing page, property chips, and the Create more, Save as draft and Create task buttons" caption="The New task dialog flags a similar open task as you type." />
+
+When you add a link to a task without a title, Margaya looks up the page's title in the background and shows it once it arrives; until then the link shows its address. Only public web pages are read: addresses on private networks, other ports, or pages that are slow, large or not HTML keep showing their address.
 
 ## 2. Keep task data clean
 
@@ -32,6 +39,8 @@ Board view is best for flow-based execution:
 2. Drag tasks across columns as status changes.
 3. Open a task to edit details without losing board context.
 
+<Screenshot src="tasks/board-view" alt="The Website relaunch board with tasks in the Backlog, To Do, In Progress and In Review columns" caption="Board view: each column is a workflow status." />
+
 ## 4. Switch to List view for dense review
 
 List view is useful when you need to scan many tasks quickly.
@@ -42,21 +51,21 @@ Typical uses:
 - Spotting overdue work
 - Finding unassigned or under-specified tasks
 
+<Screenshot src="tasks/list-view" alt="The Website relaunch tasks in List view, grouped by Backlog, To Do, In Progress and In Review, one row per task" caption="List view groups the same tasks by status, one row each." />
+
 ## 5. Use filters to focus
 
-The board toolbar supports filtering by:
+The **Filter** button above the board filters by status, column group, priority, assignee, creator, labels, cycle, module, estimate, start and due dates, when tasks were created, updated or completed, parent, subscription and mentions. The same menu shows or hides archived tasks.
 
-- Status
-- Priority
-- Assignee
-- Due date
-- Labels
+<Screenshot src="tasks/board-filter" alt="The Filter menu open above the board, listing Status, Group, Priority, Assignee, Created by, Labels, Cycle, Module, Estimate, dates, Parent, Subscribed and Mentions, and the archived options" caption="Filter by any task property." />
 
 Use filters aggressively during standups, planning, and triage.
 
 ## 6. Open full task page when needed
 
-From the task sheet, use **Open in full page** for deeper edits and focused context.
+From the task sheet, use **Open in full page** (the expand icon at the top of the sheet) for deeper edits and focused context.
+
+<Screenshot src="tasks/task-sheet" alt="The task sheet for WEB-1 Redesign the pricing page, with its description, the History button and the properties panel" caption="The task sheet keeps the board behind it." />
 
 ## 7. Work on the open task from the keyboard
 

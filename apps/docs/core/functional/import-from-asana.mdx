@@ -1,0 +1,47 @@
+---
+title: Import from Asana
+description: Move an Asana project into Margaya from its CSV export, with sections, tags, assignees, dates, sub-tasks and dependencies
+---
+
+The Asana import reads the CSV file Asana exports for a project and creates one task per Asana task and sub-task in a Margaya project. It works from the file alone: Margaya never connects to Asana.
+
+## Export the project from Asana
+
+1. Open the project in Asana.
+2. Open the project menu and choose **Export/Print** > **CSV**.
+3. Save the `.csv` file without opening and saving it in a spreadsheet.
+
+A file holds at most **5 MB** and **5,000 tasks**. Asana's CSV has no comments or attachments, so none are imported.
+
+## Import the file
+
+1. Open **Settings** > **Projects**, pick your project and open **General settings**.
+2. Under **Import and export**, select **Import tasks**, then **Asana (CSV)**.
+3. **Upload** the file. Margaya shows how many tasks it will import, the sub-tasks and dependencies it found, and how many tasks were imported into this project before.
+4. **Map** each section to a column. Completed tasks are listed under **Completed** and suggested for your completed column, whatever section they were in; tasks without a section go to the **Backlog** unless you choose otherwise. Check the priority mapping (from a **Priority** custom field, when the project has one) and which people match workspace members.
+
+<Screenshot src="data/asana-map" alt="The Map step of the Asana import, pairing each section and Completed with a Margaya column, with the priority mapping and matched people" caption="Map: choose where each status goes and check who matches a member." />
+
+5. Choose **Import** and review the summary.
+
+Calendar dates in the export have no time zone; they are read in your browser's time zone.
+
+## How fields are mapped
+
+| Asana | Margaya |
+|---|---|
+| Name | Title. Tasks without a name are not imported. |
+| Notes | Description. |
+| Task ID | Kept as the task's import reference. |
+| Section/Column | The column chosen in **Map**. |
+| Completed At | Completed tasks go to the column chosen for **Completed**, with this completion date. |
+| Assignee Email, Assignee | The workspace member with that email, or else that exact name. Without a match the task stays unassigned, and the person is written at the end of the description and listed in the summary. |
+| Tags | Labels; new names are created as workspace labels. |
+| Start Date, Due Date, Created At, Last Modified | Start, due, creation and last-update dates. |
+| Priority (custom field) | Priority, through the mapping. |
+| Parent task | Sub-tasks: the parent (named by ID, or by a name that only one task in the file has) becomes the task's parent. |
+| Blocked By, Blocking (Dependencies) | Blocking relations, when both tasks are in the file. |
+
+## Importing the same project again
+
+Each task remembers its Asana task ID. Importing again skips tasks imported before, or, with **Update them**, rewrites their title, description, status, priority, dates and assignee and adds new tags. Only one import runs per project at a time.

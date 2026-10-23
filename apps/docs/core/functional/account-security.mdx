@@ -1,6 +1,6 @@
 ---
 title: Account Security
-description: Reset a forgotten password, change it, verify your email, review where you're signed in and leave a workspace
+description: Reset a forgotten password, change it, change or verify your email, review where you're signed in and leave a workspace
 ---
 
 Password, email verification and your signed-in devices live under **Settings -> Account -> Security**.
@@ -17,7 +17,7 @@ When your server can send email and password sign-in is on, the sign-in screen s
 - The confirmation looks the same whether or not an account uses that email, so the form never reveals who has an account.
 - A reset link works once and expires after **1 hour**. An old or used link shows **This reset link is invalid or has expired**; request a new one from there.
 - Setting a new password signs out **every** session of your account, on every device.
-- Passwords need at least 8 characters.
+- New passwords follow the [password rules](#password-rules).
 
 <Note>
   Without email configured on the server, the link is not shown. Ask an instance admin to reset access for you.
@@ -31,7 +31,35 @@ The **Password** section appears when your account signs in with a password (acc
 2. Keep **Sign out other sessions** checked (the default) to sign out every other device. Your current device stays signed in.
 3. Select **Change password**.
 
+<Screenshot src="account/password" alt="The Password section with current password, new password and confirmation fields, the Sign out other sessions option and the Change password button" caption="Change your password under Settings > Account > Security." />
+
 A wrong current password is refused and nothing changes.
+
+## Password rules
+
+Every new password (at sign-up, when you reset or change it) must:
+
+- have at least **10 characters**;
+- not be a common password such as `1234567890`, `qwertyuiop` or a common word with numbers added (`Password2024!`);
+- not be your email address.
+
+A password you already have keeps working until you change it. A few unrelated words make a strong password that is easy to remember.
+
+## Change your email address
+
+You need email configured on the server. Guest accounts can't change their address.
+
+1. Go to **Settings -> Account -> Information** and select **Change email** under your email address.
+2. Enter the new address and select **Send code**.
+3. Enter the 6-digit code sent to the **new** address (it expires after 5 minutes) and select **Change email**.
+
+Your email changes only once the code is entered. Afterwards:
+
+- your old address gets an email saying the address changed;
+- every other session of your account is signed out (this device stays signed in);
+- you sign in with the new address from now on.
+
+If you signed in more than a day ago, sign in again first.
 
 ## Verify your email
 
@@ -52,7 +80,46 @@ Your pending invitations appear right away. The emailed invitation link works wh
 - the IP address it signed in from, when known;
 - a **This device** badge on the session you are using.
 
+<Screenshot src="account/sessions" alt="The Active sessions list with each signed-in browser, when it was last active and signed in, its IP address, and Sign out buttons" caption="Every device signed in to your account." />
+
 Select **Sign out** on a session you don't recognize, or **Sign out all other sessions** to keep only this one. Signed-out devices must sign in again. To end the current session, use **Sign out** in the account menu.
+
+## Two-factor authentication
+
+If you sign in with a password, you can ask for a second step: a 6-digit code from an authenticator app (any app that supports TOTP, such as 1Password, Bitwarden, Google Authenticator or Authy).
+
+1. Go to **Settings -> Account -> Security** and select **Turn on** under **Two-factor authentication**.
+2. Confirm your password.
+3. Add the **setup key** to your authenticator app (or select **Open in an authenticator app on this device**), then type the 6-digit code it shows and select **Verify**.
+<Screenshot src="account/two-factor-setup" alt="The Two-factor authentication section during setup, with the setup key, a link to open it in an authenticator app and the field for the 6-digit code" caption="Add Margaya to your authenticator app, then enter its code." />
+
+4. Save the 10 **recovery codes** somewhere safe. Each one signs you in once if you lose your device.
+
+From then on, password sign-in asks for a code. Select **Trust this device for 30 days** to skip it on that browser for a while, or **Use a recovery code** if you don't have your device. **New recovery codes** replaces the old ones, and **Turn off** removes two-factor; both ask for your password.
+
+<Note>
+While two-factor is on, Margaya doesn't send you sign-in links or sign-in codes by email, because they would skip the second step. On a server that signs in with email codes, select **Sign in with a password instead**. Signing in with GitHub, Google, Discord or single sign-on uses that provider's own checks.
+</Note>
+
+## API keys
+
+Create keys under **Settings -> Account -> API keys** with **Create API key**, to use the REST API, the CLI or MCP. Give the key a name and an **Expiration** (1, 7, 30 or 90 days, a custom date or **Never**), then choose its **Access**:
+
+- **Full access**: everything you can do, in every workspace you belong to. Keys made before scoping work this way.
+- **Read-only**: it can read, and every request that would change something is refused (403).
+- **Custom**: pick **Read** or **Write** for each area (projects, tasks, labels, cycles, modules, views, intake, pages, analytics, workspace, audit log). Areas you leave at **None** are refused.
+
+<Screenshot src="account/api-key-create" alt="The Create API key dialog with a name, the expiration, Custom access with Read or Write per area, and the Limit to specific projects option" caption="A custom key gets only the areas you choose." />
+
+Select **Limit to specific projects** to pick projects from the current workspace. Other projects then look missing to the key (404), and workspace-wide requests such as search are refused; the project list shows only its projects. A key never does more than your own role allows, and limited keys can't manage your account or other keys.
+
+The key itself is shown once, right after you create it. The **Scope** column shows each key's access, next to when it expires and was last used.
+
+<Screenshot src="account/api-keys" alt="The API keys list with a read-only key Weekly report and a custom key CI pipeline limited to Website relaunch" caption="Your API keys and what each one may do." />
+
+The activity icon on a key opens its **request log**: the time, method, route (such as `/api/task/:id`), status and duration of recent requests. Request contents are never stored. Entries are kept 14 days by default.
+
+<Screenshot src="account/api-key-requests" alt="The request log of the Weekly report key with the time, method and route, status and duration of each request" caption="The request log shows what a key did, never the request contents." />
 
 ## Leave a workspace
 

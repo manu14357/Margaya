@@ -42,6 +42,8 @@ The workspace's first tab shows:
 - **Tasks by group**, a donut of backlog, unstarted, started, completed and cancelled tasks.
 - **Workload**, the open tasks of each assignee. It shows the ten busiest assignees, plus tasks without one.
 
+<Screenshot src="analytics/overview" alt="The workspace Analytics overview with tiles for members, projects, open and completed tasks, cycles, modules and open requests, a Project progress list, a Tasks by group donut and a Workload chart" caption="The Overview tab across every project in the workspace." />
+
 ## Tasks
 
 The **Tasks** tab is the place to dig in. Everything on it counts the same set of tasks, so the tiles, charts and table always agree.
@@ -60,6 +62,8 @@ This chart plots tasks created and tasks completed per week or month, with a **C
 - Group dates by **Week** or **Month**. Weeks are offered for ranges up to two years and are the default up to 90 days; longer ranges default to months.
 - Switch between **Chart** and **Table**. Where your projects use a points estimate, a **Points** toggle sums points instead of counting tasks.
 
+<Screenshot src="analytics/tasks-tab" alt="The Tasks tab of the Website relaunch analytics with tiles for total, backlog, not started, started, completed, cancelled and completion, and the Created vs completed chart for the last 90 days" caption="Headline tiles and the Created vs completed chart." />
+
 ### Build a custom chart
 
 **Custom chart** compares tasks by whatever you choose:
@@ -71,6 +75,22 @@ This chart plots tasks created and tasks completed per week or month, with a **C
 
 The filters above also apply to the chart. The chart has its own table and **Export CSV** button.
 
+### Save a report
+
+Keep a chart you check often as a saved report:
+
+1. Set up the chart, the projects in scope and the filters.
+2. Click **Save**, give it a name and choose who can see it: **Private** (only you) or **Shared with workspace** (everyone with analytics access in the workspace).
+3. Open it again later from **Reports** on the chart card.
+
+<Screenshot src="analytics/save-report-dialog" alt="The Save report dialog with a name field and Who can see it set to Private or Shared with workspace" caption="Save a chart as a private or shared report." />
+
+A report stores the chart settings, the projects in scope and the filters. While one is open, the card shows **Report:** and its name (its **x** closes the report), and **Unsaved changes** when you change something; the owner can **Update report** or **Save as new**. From the **Reports** list the owner can rename a report, share it or make it private, and delete it. Admins can also delete shared reports. Nobody else ever sees your private reports, admins included.
+
+<Screenshot src="analytics/saved-report" alt="The Custom chart card with the report Open work by assignee open: tasks by assignee, segmented by priority, with Reports, Save as new and Export CSV buttons" caption="An open report shows its name above the chart." />
+
+Reports are always shown with the viewer's own access: if a project in a report was deleted or archived, it is left out and the card says so, and the numbers come from what the viewer may see. Time zone and week start come from whoever opens the report.
+
 ### Breakdown
 
 **Breakdown** is a table with one row per **Group rows by** choice (project, assignee, label, priority, cycle, module or created by), a column per workflow group, a **Progress** bar and a **Total** row. Click a column header to sort.
@@ -79,7 +99,7 @@ The filters above also apply to the chart. The chart has its own table and **Exp
 
 The **Cycles** tab shows the number of current, upcoming and draft cycles, and cycles completed in the last 180 days. A **Velocity** chart compares completed with committed work for the last 12 completed cycles. It needs exactly one project with Cycles on, so select a single project in the workspace scope. **Avg. completed (last 3)** appears alongside it.
 
-The **Cycles** table lists each cycle with its status, dates, progress, **Done**, **Committed**, **Cancelled** and **Pending**. A cycle whose unfinished work was transferred shows **Numbers frozen at transfer**: its numbers stay as they were.
+The **Cycles** table lists each cycle with its status, dates, progress, **Done**, **Committed**, **Cancelled** and **Pending**. Set **Show cycles** to **Running now** to see only the cycles in progress today, across every project in scope. A cycle whose unfinished work was transferred shows **Numbers frozen at transfer**: its numbers stay as they were.
 
 ## Modules
 

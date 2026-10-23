@@ -11,6 +11,10 @@ Publishing turns a project into a public board: a page anyone with the link can 
 2. Click **Publish**. The status changes to **Live** and shows who published it and when.
 3. Copy the **Public link**, or click **Open** to see the board.
 
+<Screenshot src="tasks/publish-menu" alt="The sidebar menu of the Public roadmap project open, with View project, Share project, Add to favorites, Project settings, Publish..., Archives and Delete project" caption="Publish... in the project's sidebar menu." />
+
+<Screenshot src="tasks/publish-status" alt="The Publish status card showing Live, Published by Elena Marsh, and the public link with Copy link and Open buttons" caption="A live board and its public link." />
+
 The project shows a **Public** badge next to its name while it is live. Clicking it opens the board.
 
 You need the **project:share** permission, which Admins and Owners have. Without it the Publish page is read-only. Archived projects can't be published, and the board stops working while its project is archived.
@@ -41,6 +45,8 @@ Everything here is off until you turn it on.
 - **Requests** - signed-in accounts can send requests to the project's [Intake](/core/functional/intake). This needs Intake turned on in the project's **Features** tab. If Intake is later turned off, requests stop working on the board.
 - **Allow guests** - guests can comment and react, but never vote or send requests.
 
+<Screenshot src="tasks/publish-participation" alt="The Participation section with Comments, Reactions and Votes on, Requests off with a note to turn on Intake first, and Allow guests off" caption="Choose what visitors can do." />
+
 **Content**
 
 Visitors always see titles, columns, priorities, labels and due dates.
@@ -56,6 +62,8 @@ Visitors always see titles, columns, priorities, labels and due dates.
 
 Tasks in the Intake queue and archived tasks never appear. Tasks in the backlog appear only if **Show backlog** is on.
 
+<Screenshot src="tasks/public-board" alt="The Public roadmap public board with To Do, In Progress, In Review and Done columns, vote counts on each card, Search tasks, Filter and Manual order" caption="What visitors see: the public board." />
+
 ## Guests and signed-in accounts
 
 Anyone can read the board. To take part, a visitor has to sign in:
@@ -69,7 +77,7 @@ Guest access is a server setting, so **Allow guests** has no effect while it is 
 ## Votes, reactions and comments
 
 - **Votes** - upvote or downvote a task. Clicking your own vote again removes it; clicking the other arrow switches it. Inside Margaya, a task shows a read-only summary such as "▲ 12 · ▼ 2" while votes are on.
-- **Reactions** - one of eight reactions (thumbs up, thumbs down, smile, boom, confused, heart, airplane, eyes) on tasks and on comments.
+- **Reactions** - one of eight emoji reactions (👍 👎 😄 💥 😕 ❤️ ✈️ 👀) on tasks and on comments.
 - **Comments** - written in Markdown. HTML, images and mentions are removed, and a comment can have at most 5,000 characters and 10 links. Files can't be attached. Each comment shows its author, a **Member** or **Guest** badge where it applies, and **edited** after changes. You can **Edit** and **Delete** your own comments from the comment's menu.
 
 ## Requests
@@ -93,6 +101,8 @@ People with **project:share** can moderate public comments, from a comment's **.
 - **Hide from board** makes the comment internal. It stays visible to your team.
 - **Delete...** removes it for everyone. Only public comments can be removed this way.
 - **Block person...** (for external and guest authors) stops them from commenting, reacting, voting and sending requests. They can still read the board. Tick **Also hide their public comments** to make all their public comments internal.
+
+<Screenshot src="tasks/publish-moderation" alt="The Moderation section with a recent public comment by Priya Raman on RMP-1 and an empty Blocked people list" caption="Recent public comments and blocked people." />
 
 **Blocked people** on the Publish page lists everyone blocked, who blocked them, and **Unblock**.
 

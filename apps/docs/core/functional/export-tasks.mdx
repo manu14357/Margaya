@@ -8,15 +8,19 @@ Exports turn the tasks of your projects into a file you can open in a spreadshee
 ## Start an export
 
 1. Open **Settings** > **Workspace** > **Exports**.
-2. Under **New export**, pick the **Projects**. Leave it on **All projects** to export every project that is not archived. Archived projects are listed separately and are only included when you pick them.
+2. Select **New export** and pick the **Projects**. Leave it on **All projects** to export every project that is not archived. Archived projects are listed separately and are only included when you pick them.
 3. Pick the **Format**: **CSV**, **Excel (.xlsx)** or **JSON**.
 4. Turn on **One file per project** to keep projects apart. Excel puts each project on its own sheet; CSV and JSON files are zipped together.
 5. Leave **Include archived tasks** on to export archived tasks too. They show when they were archived in the **Archived at** column.
 6. Select **Export**.
 
-From a project's settings (**Settings** > **Projects** > a project > **General**), the **Export** menu also starts a CSV or Excel export of that project only.
+<Screenshot src="data/new-export-dialog" alt="The New export dialog with the project picker, the CSV, Excel and JSON formats, One file per project and Include archived tasks" caption="A new export: choose projects, a format and the options." />
 
-You get a notification in the app when the file is ready, with a **Download** button. The **Previous exports** table shows each export's status: **Queued**, **Processing**, **Ready**, **Failed** or **Expired**.
+From a project's settings (**Settings** > **Projects** > a project > **General settings**), the **Export tasks** menu under **Import and export** also starts a **CSV (spreadsheet)** or **Excel (.xlsx)** export of that project only. Its **JSON (for re-import)** choice downloads a file right away that the project import reads back.
+
+You get a notification in the app when the file is ready, with a **Download** button. The **Previous exports** table shows each export's status: **Queued**, **Processing**, **Ready**, **Failed** or **Expired**, with its number of tasks, its size and how long it stays available.
+
+<Screenshot src="data/previous-exports" alt="The Exports page with two ready exports, a CSV of six projects and an Excel file of Website relaunch, each with download and delete buttons" caption="Previous exports, ready to download for 7 days." />
 
 ## What is exported
 
@@ -48,7 +52,7 @@ A file can be downloaded for **7 days** after it is ready; then it is deleted an
 
 ## Who can export
 
-Anyone who can read tasks can export, including **Viewers**. You see and download your own exports. Workspace **Admins** and **Owners** (the **manage settings** permission) can switch to **All exports** to see, download and delete everyone's, so they can manage who holds copies of workspace data. Deleting an export deletes its file for everyone.
+Anyone who can read tasks can export, including **Viewers**. You see and download your own exports. Workspace **Admins** and **Owners** (the **manage settings** permission) can switch from **My exports** to **All exports** to see, download and delete everyone's, so they can manage who holds copies of workspace data. Deleting an export deletes its file for everyone.
 
 ## Use the API
 

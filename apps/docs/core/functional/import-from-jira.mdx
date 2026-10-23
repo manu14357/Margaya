@@ -15,15 +15,20 @@ A file holds at most **5 MB** and **5,000 issues**. Export a large project in pa
 
 ## Import the file
 
-1. Open **Settings** > **Projects** > your project > **General**.
-2. In **Tasks import/export**, choose **Import**, then **Jira (CSV export)**.
-3. **Upload** the file. Margaya reads it and shows how many issues it holds, the columns it found, and how many issues were imported into this project before.
+1. Open **Settings** > **Projects**, pick your project and open **General settings**.
+2. Under **Import and export**, select **Import tasks**, then **Jira (CSV export)**.
+3. **Upload** the file. Margaya reads it and shows how many issues it holds, the comments, sub-tasks and issue links it found, the columns it detected, and how many issues were imported into this project before. Select **Next**.
+
+<Screenshot src="data/jira-upload" alt="The Upload step of the Jira import with the chosen CSV file, its issue count and the comments, sub-tasks and issue links found" caption="Upload: the export is read before anything is imported." />
+
 4. **Map**:
    - pick the column each Jira status goes to (suggested by name, then by Jira's status category; anything can go to the **Backlog**);
    - check the priority mapping;
    - see which assignees and reporters match workspace members;
    - choose the options below.
-5. Choose **Import**. The summary lists the tasks created, updated and skipped, the comments and relations added, the people who didn't match a member, warnings, and the rows that failed with their line numbers.
+<Screenshot src="data/jira-map" alt="The Map step of the Jira import with Jira statuses paired to columns, the priority mapping, matched people and the import options" caption="Map: statuses, priorities, people and options on one page." />
+
+5. Select **Import N issues**. The summary lists the tasks created, updated and skipped, the comments and relations added, the people who didn't match a member, warnings, and the rows that failed with their line numbers.
 
 Dates in the export have no time zone; they are read in your browser's time zone.
 

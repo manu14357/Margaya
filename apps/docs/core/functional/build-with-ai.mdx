@@ -1,0 +1,91 @@
+---
+title: Build with AI
+description: Describe a plan in a sentence and get a reviewable project, cycles, modules and tasks; and catch duplicate tasks while you create them
+---
+
+Two features help you start and keep work tidy:
+
+- **Build with AI** turns a prompt such as "plan a website relaunch for Q4 with 3 sprints" into a proposed plan. You review and edit it, then create it in one go.
+- **Duplicate check** shows existing tasks that look like the one you are creating. It works without AI; with AI on, it can also say which ones are likely the same work.
+
+Build with AI and the AI part of the duplicate check appear only when AI is on for the server, the workspace and the project, and you have the **Use AI** permission. See [AI Setup](/core/functional/ai-setup). The plain duplicate hints are always available.
+
+<Info>
+Build with AI drafts one larger plan for a single project in a dialog of its own: a new project, or tasks in the current one, with columns, labels, cycles, modules and sub-tasks. To change things that already exist, such as editing, assigning, moving or commenting on tasks, use [Build mode](/core/functional/build-mode) in the AI chat instead.
+</Info>
+
+## Build a plan from a prompt
+
+Open **Build with AI…** from the command palette (`Ctrl` / `⌘` + `K`). In a project with no tasks yet, the board also offers **Build with AI…** above the columns.
+
+1. Describe what to plan. Mention the timeframe, the number of sprints or the main workstreams if you know them.
+2. Choose where to build: **into the current project**, or **a new project**. You see this choice when you opened Build with AI from a project and you may create projects.
+3. Optionally turn on **Think deeper** for larger plans. It takes longer.
+4. Choose **Draft plan**.
+
+<Screenshot src="ai/build-prompt" alt="The Build with AI dialog with a prompt to plan a four-week help center relaunch in two sprints, Build into set to A new project, the Think deeper option and Draft plan" caption="Describe the plan and choose where to build it." />
+
+AI proposes:
+
+| Part | What you get |
+|---|---|
+| **Project** | For a new project: a name, a key and a description. |
+| **Columns** | Extra workflow columns, only when the plan needs them. Existing columns with the same name are reused. |
+| **Labels** | A few labels. Labels that already exist in the workspace keep their color. |
+| **Cycles** | Sprints with start and end dates that follow each other, when you asked for sprints or dates. |
+| **Modules** | Larger workstreams that group tasks. |
+| **Tasks** | Titles, short descriptions, priorities, estimates in points, and sub-tasks for steps worth tracking. Each task can belong to a cycle and a module. |
+
+### Review and edit
+
+Nothing exists yet. The plan is shown as cards you can change:
+
+- Uncheck anything you don't want: a column, label, cycle, module, task or sub-task. Tasks that pointed to an unchecked cycle or module simply stay out of it.
+- Edit names, titles, descriptions, dates, priorities and estimates.
+- Move tasks up or down to set their order.
+- Change which cycle or module a task belongs to.
+
+Choose **Create** when you're ready, or **Back** to change the prompt and draft again.
+
+<Screenshot src="ai/build-review" alt="The review of a proposed Help center relaunch project: its name, key and description, two labels, two dated sprints, two modules, and the first tasks with priority, estimate, cycle, module and sub-tasks, with Back and Create 15 items" caption="Nothing exists until you choose Create." />
+
+### Creation
+
+Margaya creates the plan item by item and shows the progress. Every item goes through the same checks as if you had created it by hand, with your own permissions:
+
+- A new project needs the permission to create projects. Building into a project needs the permission to create tasks, and that project must be one you can see. A [restricted project](/core/functional/restricted-projects) you are not a member of can't be chosen.
+- New columns and the project description need the permission to update projects. Without it they are left out of the review.
+- Cycles and modules need their features turned on for the project, and the permission to create them. A cycle whose dates overlap an existing cycle is refused.
+- Estimates are applied when the project uses a points estimate system. The nearest value is used. Otherwise they are left out, and the summary says so.
+
+If some items can't be created, the rest are kept. The summary lists what was created and each item that failed, with the reason. Created items appear for your teammates right away, with the usual notifications, activity and webhooks.
+
+<Info>
+The prompt and the project's name, description, columns, labels, cycles and modules are sent to the AI model to draft the plan. The tasks you create are not sent anywhere; creating the plan makes no AI call.
+</Info>
+
+## Duplicate check while creating a task
+
+When you type a title of three or more words in **Create task**, Margaya looks for open tasks in the project that match it. It searches titles and descriptions and ranks the results by relevance. The hints appear under the title. They never block creating, and **×** hides them.
+
+For each hint you can:
+
+- **Open** the task in a new tab, so your draft stays.
+- Choose **Duplicate of this** to mark the new task as a duplicate of that task. The link is made when you create the task. **Undo** removes the choice. This needs the permission to update tasks.
+
+### Check with AI
+
+With AI available, choose **Check with AI** in the hints. A fast model compares your draft with the matching tasks and keeps only those that are:
+
+- **Likely duplicate**: probably the same work, even if worded differently.
+- **Related**: overlapping or connected work.
+
+Each comes with a short reason, for example "same login bug, different wording". If none are likely duplicates, the hints say so. Only your draft's title and description and the matching tasks are sent to the model, and nothing is sent when there are no matching tasks.
+
+<Screenshot src="ai/duplicate-check" alt="A new task titled Hero video does not autoplay in Safari, with the hint that AI checked these for duplicates: WEB-2 Fix hero video autoplay on Safari, marked Likely duplicate with the reason, and Duplicate of this and Open" caption="Check with AI keeps the likely duplicates and says why." />
+
+## Permissions and privacy
+
+- Build with AI and **Check with AI** need the **Use AI** permission. Viewers don't have it by default.
+- AI only reads projects you can see that have AI turned on. Restricted projects are left out unless the workspace includes them in its AI settings.
+- AI usage is recorded in the workspace's AI usage page as **Plan from a prompt** and **Duplicate checks**.

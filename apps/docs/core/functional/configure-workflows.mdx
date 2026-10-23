@@ -3,7 +3,7 @@ title: Configure Project Workflows
 description: Customize columns and automation rules for how your project moves
 ---
 
-Use workflow settings to match Margaya to your team's delivery process.
+Use workflow settings to match Margaya to your team's delivery process. The **Workflow** page holds a project's columns, custom fields, integration rules, [scheduled automations](/core/functional/automations) and [task templates](/core/functional/task-templates).
 
 ## Open workflow settings
 
@@ -16,21 +16,26 @@ Use workflow settings to match Margaya to your team's delivery process.
 
 In **Workflow -> Columns**:
 
-1. Add or rename columns to reflect your real stages.
-2. Reorder columns to match execution order.
-3. Mark final columns as done states where appropriate.
+1. Add or rename columns to reflect your real stages: type a name in **New column name...**, pick its group and click **Add**.
+2. Drag the handle on the left of a column to reorder columns to match execution order.
+3. Pick each column's group (**Backlog**, **Not started**, **Started**, **Completed** or **Cancelled**) so Margaya knows which columns mean done. See [column groups](/core/functional/project-features-and-column-groups#column-groups).
+
+<Screenshot src="tasks/workflow-columns" alt="The Columns section of the Workflow settings with Backlog, To Do, In Progress, In Review and Done, each with its group, and a row to add a new column" caption="Each column has a name and a group." />
 
 Common examples:
 
 - `To Do -> In Progress -> Review -> Done`
 - `Backlog -> Ready -> In Progress -> QA -> Done`
 
-## Configure automation rules
+## Configure integration rules
 
-In **Workflow -> Automation Rules**:
+In **Workflow -> Integration rules**:
 
-1. Map integration events to target columns.
-2. Verify each event moves work to the expected stage.
+1. For each connected integration (GitHub or Gitea), pick a column for the events you care about: **Branch push**, **PR opened**, **PR merged**, **Issue opened** and **Issue closed**.
+2. Leave an event on **Select column...** to ignore it.
+3. Verify each event moves work to the expected stage.
+
+<Screenshot src="tasks/workflow-integration-rules" alt="The Integration rules section with GitHub and Gitea events Branch push, PR opened, PR merged, Issue opened and Issue closed, each with a column picker" caption="Pick a column for each integration event." />
 
 This helps keep project state aligned with external systems.
 

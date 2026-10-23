@@ -17,14 +17,17 @@ Open the project's **Pages** tab. The list has three tabs:
 - **Private** - your own private pages. Nobody else sees them.
 - **Archived** - archived pages, ready to restore or delete.
 
-Above the list:
+To the right of the tabs:
 
-- **Search pages** matches page titles.
-- **Owner** filters by who owns the page.
+- The **search** icon opens a field that matches page titles. **Escape** clears the text; a second **Escape** closes the field.
 - The sort menu offers **Last edited** (the default), **Created** and **Name**, ascending or descending. Your choice is remembered in your browser.
-- **Clear filters** resets search and owner.
+- **Filters** narrows the list by **Favorites**, **Created by** (the page owner) and **Created date** (**Today**, **Last 7 days**, **Last 30 days** or **Older than 30 days**). The menu has its own search, and the button shows how many filters are in use.
 
-Each row shows the page's icon, title, parent path, owner, and when it was edited or archived. A lock marks locked pages.
+Filters in use appear as chips under the tabs. Each chip has an **×** to remove that filter, and **Clear all** removes them all. When nothing matches, **Clear filters** resets the search and the filters.
+
+Each row shows the page's icon, title and parent path, when it was edited (or archived), whether it is public or private, its owner, a star to add it to your favorites, and the page menu. A lock marks locked pages. On narrow screens the owner is hidden.
+
+<Screenshot src="pages/pages-list" alt="The Pages tab of Website relaunch with the Public, Private and Archived tabs, search, sort and Filters, listing Content migration notes in Relaunch plan and Relaunch plan" caption="The project's pages, with each page's parent, owner and visibility." />
 
 ## Create a page
 
@@ -33,7 +36,26 @@ Each row shows the page's icon, title, parent path, owner, and when it was edite
 - Use **New sub-page** in a page's menu to create one under it.
 - Use **Create page** in the command palette.
 
-A new page is named **Untitled** and opens right away, so type a title and start writing. The title can be up to 255 characters. Click **Add icon** to give the page an emoji or an icon. A project holds up to 5,000 pages.
+A new page is named **Untitled** and opens right away, so type a title and start writing. Long titles wrap onto more lines; **Enter** moves into the page body. The title can be up to 255 characters. Hover the area above the title and click **Add icon** to give the page an emoji or an icon. A project holds up to 5,000 pages.
+
+## Page templates
+
+Open the arrow next to **New page** and choose **New page from template**. Pick a starter (meeting notes, a spec or a retrospective) or one of your saved templates; the new page starts with its content, and you can change anything afterwards.
+
+<Screenshot src="pages/template-picker" alt="The New page from template dialog with the Meeting notes, Spec and Retrospective starters and the saved template Migration notes for this project" caption="Start from a built-in starter or a saved template." />
+
+To save your own, choose **Save as template** in a page's menu, name it, and choose where it is offered: **This project**, or **Every project** of the workspace. The template keeps the page's current content and icon; later edits to the page don't change it. Whoever saved a template, or anyone who can manage pages, can delete it from the template picker. A workspace holds up to 200 templates.
+
+## Publish a page to the web
+
+Pages can be shared with people outside the workspace through a read-only link. An admin first turns on **Public pages** in the workspace's general settings; it is off by default. Then anyone who can share projects can choose **Publish to web** in a page's menu and switch on **Public link**.
+
+- The link has an unguessable token. Anyone who has it can read the page without signing in, and search engines are asked not to index it.
+- The public page shows the title, icon and content without Margaya's menus. Mentions, task links, attached files and links to pages that are not published are replaced with neutral placeholders; a link to another published page leads to its public copy.
+- Switching **Public link** off revokes the link at once. Publishing again creates a new link, so the old one keeps answering "not available".
+- Making the page private, archiving it, or turning **Public pages** off for the workspace also revokes its link.
+
+<Screenshot src="pages/publish-dialog" alt="The Publish to web dialog explaining that anyone with the link can read the page, with the Public link switch turned off" caption="Switch on Public link to share a read-only copy." />
 
 ## Public and private pages
 
@@ -62,7 +84,13 @@ Moving needs permission to manage the page, and the page must not be locked or a
 
 ## Write in the editor
 
-Click into the page and write. The placeholder reads "Write something, or press / for commands".
+Click into the page and write. The placeholder reads "Write something, or press / for commands", and an empty line you are on shows "Type '/' for commands".
+
+The page header holds the page switcher (after the project name) and, on the right, who is here, the sync state, **Lock**, the favorite star, **Copy link** and the page menu.
+
+**Formatting toolbar.** On wider screens an editable page has a toolbar above the text: a **Text style** menu (Text, Heading 1, Heading 2, Heading 3), then **Bold**, **Italic**, **Underline**, **Strikethrough** and **Inline code**, the three lists, **Quote**, **Code block** and **Callout**, and **Link**, **Table**, **Image** and **Divider**. On narrower screens the blocks and inserts move into **More formatting**. Hover a button to see its keyboard shortcut. Use the arrow keys to move between the toolbar's buttons. To hide the toolbar, turn off **Formatting toolbar** in the page menu; your choice is saved to your account. The toolbar is not shown on read-only, locked or archived pages.
+
+<Screenshot src="pages/editor" alt="The Relaunch plan page with the formatting toolbar above it: the Text style menu, text marks, lists, quote, code block, callout, link, table, image and divider buttons, and the outline bars at the right edge" caption="The formatting toolbar sits above an editable page." />
 
 **Slash menu.** Type `/` and filter by name:
 
@@ -72,7 +100,7 @@ Click into the page and write. The placeholder reads "Write something, or press 
 | Lists | Bulleted list, Numbered list, To-do list |
 | Insert | Quote, Callout, Code block, Divider, Table (3 by 3), File, Link to page |
 
-**Formatting.** Select text to open the formatting bubble menu. The shortcuts shown in the slash menu also work, for example Ctrl+Alt+1 for Heading 1.
+**Formatting.** Select text to open the formatting bubble menu: a **Text** menu to turn the block into a heading or back into text, then link and the text marks. The shortcuts shown in the slash menu also work, for example Ctrl+Alt+1 for Heading 1.
 
 **Code blocks.** Hover a code block to pick its language and copy it. A code block set to `mermaid` renders as a diagram.
 
@@ -93,11 +121,13 @@ Click into the page and write. The placeholder reads "Write something, or press 
 
 **Move blocks.** Hover a block, or put the cursor in it, and a handle appears to its left. Drag the handle to move the block. Click it for **Move up**, **Move down**, **Duplicate** and **Delete**. From the keyboard, **Alt+Shift+Up** and **Alt+Shift+Down** move the current block and **Alt+Shift+M** opens its menu. The handle acts on whole top-level blocks: a list or table moves as one. The handle is hidden on read-only pages and on small touch screens.
 
+**Tables.** Put the cursor in a table to show its handles: a grip beside each row and above each column, and a **+** on the lines between them. Drag a grip to move its row or column, or focus it and use the arrow keys. Click a **+** to insert a row or column there. The table menu also has **Move row up**, **Move row down**, **Move column left**, **Move column right**, **Header row** and **Full width**, which lets a table use the page's whole width. Tables with merged cells can't be reordered.
+
 **Page links.** Choose **Link to page** and pick a page. If the linked page is later deleted or made private, the link shows "Private or deleted page" to people who can't open it.
 
 **@mentions.** Type `@` and choose a member. Mentioning someone who wasn't mentioned before sends them a notification naming the page ("mentioned you in Release plan"), if they can see the page. You are never notified for your own mentions, and duplicating a page doesn't notify again.
 
-Top-right, **Full width** in the page menu widens the page.
+**Full width** in the page menu widens the text column for everyone who opens the page.
 
 ## Backlinks
 
@@ -130,7 +160,7 @@ A page has a size limit. If it grows too large, a banner asks you to copy your r
 
 ## Lock a page
 
-The owner or a page manager can **Lock** a page from the header or its menu. A locked page is read-only for everyone, the owner included, and shows "This page is locked. Unlock it to make changes."
+The owner or a page manager can **Lock** a page from the lock button in the header or from its menu. A locked page is read-only for everyone, the owner included, shows a **Locked** badge in the header and the banner "This page is locked. Unlock it to make changes." Click the badge to unlock; "Unlocked" shows for a moment.
 
 A lock blocks:
 
@@ -155,7 +185,7 @@ Only the page owner or a page manager can archive or delete.
 
 ## Version history
 
-Open **Version history** from the page menu, or the **History** tab of the side panel.
+Open **Version history** from the page menu (it also shows when the page was last edited), or the **History** tab of the side panel. The versions are listed on a timeline, newest first, under **Current version**, each with its date and time and who edited it.
 
 - Versions are saved as you edit. Edits by the same person within 10 minutes update the newest version, and a different person or a longer pause starts a new one. Margaya keeps the newest 20.
 - Choose a version to preview it, view only. **Back to current** returns to the live page.
@@ -164,15 +194,21 @@ Open **Version history** from the page menu, or the **History** tab of the side 
 
 ## Outline and Info
 
-The side panel (toggle it in the header) has three tabs:
+The side panel has three tabs. Open it with the panel button at the right end of the formatting toolbar, or next to the project tabs when the toolbar is hidden. On screens 1024px and wider it slides in beside the page and the text re-centres; on smaller screens it opens as a sheet. **Close panel** sits at its top left.
 
-- **Outline** - the page's headings. Add headings to fill it.
+- **Outline** - the page's headings. Add headings to fill it. The heading you are reading is highlighted; click a heading to jump to it.
 - **Info** - words, characters, paragraphs and reading time, plus who created and last edited the page, who locked it, and **Linked from**.
 - **History** - version history.
+
+<Screenshot src="pages/side-panel" alt="The Relaunch plan page with the side panel open on the Outline tab, listing the headings Goals, Launch checklist, Owners and Open questions" caption="The side panel's Outline tab lists the page's headings." />
+
+While the panel is closed, a page with two or more headings shows short bars at the right edge of a wide page, one per heading. Hover or focus them to see the outline and jump to a heading, or click them to open the **Outline** tab.
 
 ## Export to markdown
 
 From the page menu choose **Copy as markdown** or **Download as markdown**.
+
+<Screenshot src="pages/page-menu" alt="The page menu with Full width and Formatting toolbar switches, Copy as markdown, Download as markdown, Print / Save as PDF, Version history, Duplicate, Save as template, Publish to web, Make private, Move to project and Archive" caption="The page menu holds export, sharing and page options." />
 
 ## Print or save as PDF
 

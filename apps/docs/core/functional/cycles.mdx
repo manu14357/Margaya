@@ -30,6 +30,8 @@ Status is computed from today's date, not set by hand. "Today" is the date in th
 4. Set **Dates**, or leave them empty to save it as a draft.
 5. Set an **Owner**. It defaults to you.
 
+<Screenshot src="cycles/new-cycle-dialog" alt="The New cycle dialog with the name Sprint 16, a description, Dates set to No dates (draft) and the owner Elena Marsh" caption="Leave the dates empty to keep the cycle as a draft." />
+
 Dated cycles can span at most 366 days, and a cycle's dates can't overlap another dated cycle in the same project, archived ones included. If the dialog reports an overlap, pick different dates or clear them to keep the cycle as a draft.
 
 Once a cycle is active, its start date is locked and its end date can't move into the past.
@@ -40,13 +42,49 @@ Once a cycle is active, its start date is locked and its end date can't move int
 - A task can only be in one cycle at a time; adding it to a cycle moves it out of any other.
 - Tasks can always leave a cycle, even a completed or archived one.
 
+## Check capacity while planning
+
+The cycle planner (**Plan cycle**) shows a capacity check under the cycle's totals, for people who can read analytics: for example **Planned at 132% of a usual cycle**.
+
+- **Capacity** is what the team actually finished in comparable time before. Margaya uses up to 6 ended cycles of the project (at least 2), scaled to this cycle's length. Without enough cycles, it uses the project's daily throughput over the last 8 weeks.
+- **Load** is the cycle's tasks that aren't cancelled. When the project's estimates are points or time and most tasks are sized, it compares estimate points; otherwise task counts.
+- **Over capacity** means the load is above a usual (median) cycle. **Capacity details** then lists not-started tasks you could move to a later cycle: lowest priority first, then those blocking the fewest other tasks.
+- People who can update cycles also see the load per person against that person's own usual pace, to help balance work. It is not a performance score.
+
+<Screenshot src="insight/cycle-capacity" alt="The cycle planner for Sprint 14 warning Over capacity: planned at 130% of a usual cycle, with Capacity details open: 30 points planned against a usual 23, three tasks that could move to a later cycle, and the load per person" caption="Capacity details suggest what could move to a later cycle." />
+
+The check is computed, never written by AI, and it updates as you move tasks in and out.
+
+## Retrospectives
+
+On a running or ended cycle, **Retro** opens a fact sheet of what happened, computed from the cycle's history:
+
+- **Say/do**: how much of the work committed at the start was done.
+- **Scope change**: tasks added and removed during the cycle.
+- **Carry-over**: tasks moved to another cycle after it ended, and tasks left open.
+- **Reopened** tasks, **cycle-time outliers** (tasks that took longer than the project's usual 85th percentile), **blocked** tasks, and how the earliest shared [stakeholder brief](/core/functional/ai-triage-and-briefs) forecast held.
+
+The facts are about the team's work only; there is no per-person scoring. With AI on for the project, **Write narrative** adds a short summary and 3 to 5 discussion questions written from those facts and citing tasks; you can edit it before saving. **Save as page** creates a Page in the project with the facts, the narrative (if any) and empty **What went well**, **What to improve** and **Actions** sections for the team.
+
+<Screenshot src="insight/cycle-retro" alt="The Retrospective card for Sprint 14 with the facts so far, such as 3 of 9 committed tasks done, and an AI narrative with a summary and three questions to discuss, plus Save as page" caption="The facts come from Margaya; the narrative is optional." />
+
 ## Track progress
 
-Open a cycle to see its counts, completion percentage, and a burndown/burn-up chart, broken down by assignee, label, and priority. Cancelled tasks are tracked separately and never count as in-progress work.
+The **Cycles** view groups cycles into Active, Upcoming, Draft and Completed. The active cycle opens with its progress, a burndown chart and its high-priority tasks; **Open cycle** shows all of its tasks.
+
+<Screenshot src="cycles/cycle-list" alt="The Cycles view with Sprint 14 active at 27% complete, its progress, burndown and high-priority tasks, and Sprint 15 upcoming" caption="The Cycles view with the active sprint expanded." />
+
+Open a cycle to see its tasks next to its counts, completion percentage, and a burn-down/burn-up chart in tasks or points, broken down by status, assignee, label, and priority. Cancelled tasks are tracked separately and never count as in-progress work.
+
+<Screenshot src="cycles/cycle-detail" alt="Sprint 14 open as a board with its side panel showing 7 days left, 27% progress, the estimate total, a burn-down chart, the dates, owner and a breakdown by status" caption="A cycle shows its tasks next to its progress and burndown." />
 
 ## Carry work forward
 
 When a cycle completes, use **Transfer** to move its unfinished tasks (backlog, not started, or started) into a draft, upcoming, or active cycle. Completed and cancelled tasks stay behind, and the source cycle's progress report freezes at the moment of transfer so its historical numbers never change.
+
+To do this automatically, turn on **Roll over unfinished cycle work** under **Settings -> Projects -> [your project] -> Workflow -> Scheduled automations** (see [scheduled automations](/core/functional/automations#roll-over-unfinished-cycle-work)). When a cycle ends in the workspace's time zone, its unfinished tasks move to the next cycle, and the project lead gets a summary.
+
+<Screenshot src="cycles/rollover-setting" alt="The Scheduled automations section of the project's workflow settings with the Roll over unfinished cycle work switch" caption="Roll over is a scheduled automation in the project's workflow settings." />
 
 ## Archive a cycle
 
@@ -65,5 +103,6 @@ Working with cycles needs workspace **Cycle** permissions (read, create, update,
 ## Next
 
 - [Group work with Modules](/core/functional/modules)
+- [Estimate task size](/core/functional/estimates)
 - [Turn on project features and column groups](/core/functional/project-features-and-column-groups)
 - [Plan work in Backlog](/core/functional/backlog-planning)

@@ -20,7 +20,38 @@ The project gets an **Intake** tab. Its badge shows how many requests are waitin
 2. Describe what you need in the title, add details, steps to reproduce or links, and set a **Priority** if you know it.
 3. Click **Submit request**. Turn on **Create more** to submit several in a row.
 
+<Screenshot src="intake/new-request-dialog" alt="The New request dialog with the title field What do you need?, a details field, a Priority button, the Create more switch and Submit request" caption="Describe the request and submit it for review." />
+
 While a request is open, its requester can still **Edit request** or **Withdraw request**. Requests can also be submitted through the [API](/api-reference/endpoints/intake/createIntakeItem); they show "via API".
+
+### Paste screenshots
+
+Paste one or more screenshots (PNG, JPEG or WebP) anywhere in the **New request** dialog. They wait beside the form and are attached to the request once you submit it. Attaching needs permission to edit tasks (**task:update**); without it, pasting does nothing.
+
+## Capture requests with AI
+
+When AI is on for the workspace and the project (see [Set up AI](/core/functional/ai-setup)), the Intake tab also has a **Capture** button. It turns raw evidence into well-written requests:
+
+- **Screenshots**: paste, drop or choose up to 6 images. AI writes one request with a title, a summary, steps to reproduce, the expected and the actual behavior, and the environment when it's visible.
+- **Recording**: choose a screen recording. Margaya takes 5 still frames from it in your browser and sends only those; the video never leaves your device.
+- **Transcript**: paste meeting notes or a transcript. AI proposes one request per action item, up to 10, and suggests an owner when the notes clearly give the item to a project member.
+
+<Screenshot src="ai/capture-transcript" alt="The New requests from a capture dialog on the Transcript tab, with notes from a beta sync meeting pasted in and Propose requests" caption="Paste meeting notes, screenshots or a recording." />
+
+Each proposal also suggests a **Priority** (from the severity it sees) and existing workspace labels. Nothing is created until you confirm: edit any title or description, change the priority, untick labels or the owner, and leave out proposals you don't want. **Create requests** submits the rest as ordinary pending requests, adds the labels and owner, and attaches the screenshots or frames to the request.
+
+<Screenshot src="ai/capture-review" alt="Review proposed requests with three requests from the meeting notes, each with an editable title and description, a priority with its reason, suggested labels and an owner such as Theo Okafor, and Create requests (3)" caption="Edit or leave out any proposal before you create it." />
+
+In the **New request** dialog, **Draft from images** does the same for pasted screenshots: it fills in the title, description and priority for you to review before you submit.
+
+Privacy and limits:
+
+- Images are redrawn in your browser and checked again on the server, so location, camera and other metadata (EXIF, XMP, IPTC) is removed before AI sees them. Each image may be up to 3.75 MB, 9 MB together.
+- Images and notes count as private data. They follow your instance's AI routing, including local-only mode. Restricted projects are left out unless the workspace includes them in AI.
+- Text inside screenshots and transcripts is treated as data: AI never follows instructions found there, and it has no tools, so it can't change anything.
+- Prompts and answers aren't stored; only usage counts are kept.
+
+Capture needs the **Use AI** permission (`ai:use`) and Intake **create**. Adding labels needs **label:update**, assigning an owner needs **task:assign**, and attaching images needs **task:update**. It's also available through the API as [`POST /ai/capture/{projectId}`](/api-reference/endpoints/ai/aiCaptureAnalyze).
 
 ## Review the queue
 
@@ -36,12 +67,16 @@ Each request has a status:
 
 Select a request to read it, see its activity and set its **Properties** (priority, assignee, labels and due date) before you decide.
 
+<Screenshot src="intake/intake-queue" alt="The Intake tab of Mobile app with four open requests and MOB-11 Show the build number in Settings selected, showing its description, activity, properties and the Accept, Decline and Snooze buttons" caption="Select a request to review it and decide." />
+
 ## Accept, decline, snooze or mark as duplicate
 
 - **Accept** moves the request onto the board. Pick the **Column** it lands in, or **Backlog**. From then on it is an ordinary task, and its details show which request it came from. If the request has no assignee and the project has a [default assignee](/core/functional/personalize-your-workspace#project-lead-and-default-assignee), it is assigned to them.
 - **Decline** closes the request without adding it to the board. Add an optional reason: the requester sees it in their notification.
 - **Snooze** hides the request until **Tomorrow**, **In 3 days**, **Next week**, **In 2 weeks** or a date you pick. It comes back as pending on its own; **Unsnooze** brings it back now.
-- **Mark as duplicate** closes the request in favor of an existing task in the same project. Search for that task by key or title.
+- **Mark as duplicate** closes the request in favor of an existing task in the same project. Search for that task by key or title. When AI is on for the project, **Suggested by AI** lists likely duplicates first, each with a short reason; pick one to mark the request as its duplicate.
+
+<Screenshot src="intake/accept-request" alt="The Accept MOB-11 dialog with the Column picker set to To Do and the Accept button" caption="Choose the column the accepted task lands in." />
 
 **Reopen** puts a declined or duplicate request back into review. The requester is notified in their [inbox](/core/functional/inbox) when a request is accepted, declined or marked as a duplicate.
 

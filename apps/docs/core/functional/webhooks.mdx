@@ -13,11 +13,15 @@ Workspace webhooks cover a whole workspace and are managed by workspace admins. 
 
 1. Open **Settings** > **Workspace** > **Webhooks**. You need the **manage settings** permission (workspace **Admins** and **Owners**).
 2. Select **Create webhook**.
-3. Enter the **Endpoint URL**. It must be `http` or `https`, carry no username or password, resolve to a public address and not point at this Margaya instance.
+3. Optionally give it a **Name**, shown in the list instead of the URL. Enter the **Endpoint URL**. It must be `http` or `https`, carry no username or password, resolve to a public address and not point at this Margaya instance.
 4. Keep **All events**, or select **Choose events** to pick whole families (for example **Tasks**) or single events.
 5. Select **Create**, then copy the **signing secret**. It is shown only once.
 
-Use **Send test** to deliver a `webhook.ping` event and see your endpoint's answer right away.
+<Screenshot src="data/webhook-create" alt="The Create webhook dialog with a name, an endpoint URL and Choose events selected, with the Tasks group ticked among Projects, Statuses, Comments and more" caption="Subscribe to every event, or pick groups and single events." />
+
+The **Endpoints** list shows each webhook with its events, status and last delivery. Select one to open it, and use **Send test** there to deliver a `webhook.ping` event and see your endpoint's answer right away.
+
+<Screenshot src="data/webhooks-list" alt="The Webhooks settings page listing two endpoints, Release notifier and Support desk sync, with their event counts and Active status" caption="Workspace webhooks under Settings > Workspace > Webhooks." />
 
 ## Events
 
@@ -102,7 +106,7 @@ function verify(secret, timestamp, rawBody, header) {
 
 ### Rotate the secret
 
-**Rotate secret** creates a new secret, shown once. Choose how long the previous secret stays valid (up to 72 hours, 24 by default): meanwhile every request carries both signatures, the new one first, so you can deploy the new secret without dropping events.
+**Rotate secret**, on the webhook's **Settings** tab, creates a new secret, shown once. Choose how long the previous secret stays valid (up to 72 hours, 24 by default): meanwhile every request carries both signatures, the new one first, so you can deploy the new secret without dropping events.
 
 Secrets are stored encrypted with a key derived from the instance's `AUTH_SECRET`. If an administrator changes `AUTH_SECRET`, the webhook shows that its secret can't be read and deliveries fail with "Signing secret unavailable" until you rotate it.
 
@@ -116,7 +120,17 @@ Secrets are stored encrypted with a key derived from the instance's `AUTH_SECRET
 
 ## Delivery log
 
-The **Deliveries** tab lists recent deliveries with their status, response code, attempts and duration. Open one to see the request headers (with the signature masked), the body, every attempt and the first 2 KB of the last response. **Redeliver** sends a finished delivery again as a new delivery. The log is kept for 14 days (`WEBHOOK_DELIVERY_RETENTION_DAYS` on self-hosted instances, 1 to 90).
+A webhook opens on its **Deliveries** tab, which lists recent deliveries with their status, event, summary, response, attempts and age. Filter it by status or event.
+
+<Screenshot src="data/webhook-deliveries" alt="The Deliveries tab of the Release notifier webhook with task.created deliveries queued for retry after timeouts and a failed webhook.ping test" caption="The delivery log: retries show as Queued with their attempt count." />
+
+Open a delivery to see the request headers (with the signature masked), the body, every attempt and the first 2 KB of the last response.
+
+<Screenshot src="data/webhook-delivery" alt="A delivery's details panel with its event, status, attempts, request headers and request body" caption="One delivery, with every attempt." />
+
+The **Settings** tab changes the name, URL, events and **Active** switch, and holds the signing secret card.
+
+<Screenshot src="data/webhook-settings" alt="The Settings tab of a webhook with its endpoint fields, events, the Active switch and the Signing secret card with Rotate secret" caption="Edit the endpoint or rotate its secret on the Settings tab." /> **Redeliver** sends a finished delivery again as a new delivery. The log is kept for 14 days (`WEBHOOK_DELIVERY_RETENTION_DAYS` on self-hosted instances, 1 to 90).
 
 ## Limits and network rules
 

@@ -1,0 +1,69 @@
+---
+title: Task Templates
+description: Start recurring kinds of work from a project template, and start new projects from an existing one
+---
+
+A task template is a starting point for a new task: a title pattern, a description, a status, a priority, labels, assignees, an estimate and an optional sub-task checklist. Templates are optional. A project without templates looks and works exactly as before.
+
+## Manage templates
+
+1. Go to **Settings**.
+2. Open **Projects** and select your project.
+3. Open the **Workflow** tab and find **Task templates**.
+4. Click **New template**, fill in what new tasks should start with, and click **Create template**.
+
+Everyone who can see the project can see its templates. Creating, editing and deleting them needs permission to update the project. A project can have up to 50 templates, and names are unique within a project.
+
+<Screenshot src="tasks/task-templates" alt="The Task templates section of Platform API listing Bug report and New endpoint, each with its priority, labels, title pattern and sub-task count, and a New template button" caption="A project's templates in its Workflow settings." />
+
+| Field | What it does |
+| --- | --- |
+| **Title pattern** | The new task's title. `{title}` is replaced by what you type, so `Bug: {title}` turns "Login fails" into "Bug: Login fails". Without `{title}`, what you type follows the pattern. |
+| **Description** | The task's starting description. |
+| **Status** | The column new tasks land in. **Project default** uses the first not-started column. |
+| **Priority**, **Labels**, **Assignees** | Set on the new task. Without assignees, the project's default assignee applies. |
+| **Estimate** | A value of the project's active estimate system. Ignored while Estimates is off. |
+| **Sub-tasks** | A checklist of titles. Each becomes a sub-task under the new task, in order. |
+
+If a label is deleted, a member leaves the workspace, a column is removed or the estimate system changes, the template simply leaves that value out. Deleting a template never changes tasks created from it.
+
+<Screenshot src="tasks/edit-template" alt="The Edit task template dialog for Bug report: title pattern Bug: {title}, a description with steps to reproduce, priority High, labels Backend and Bug, and three sub-tasks" caption="A template sets the fields and sub-tasks new tasks start with." />
+
+## Use a template
+
+**In the create dialog:** click **Template** and pick one. The form fills in with the template's values, merged with the title you typed. Everything stays editable, and you can remove sub-tasks from the checklist before you click **Create**. The **Template** button only appears when the project has templates.
+
+<Screenshot src="tasks/use-template" alt="The New task dialog with the title Webhook signature mismatch and the Template menu open, offering Bug report and New endpoint with three sub-tasks each" caption="Pick a template in the create dialog." />
+
+**In quick add:** type a title in the quick add bar, open the template menu at the end of the bar and pick a template. The task is created right away in that column, with the template's values and sub-tasks.
+
+Creating a task from a template needs permission to create tasks. Its sub-tasks also need permission to update tasks; without it, the checklist is left out.
+
+## Start a project from an existing one
+
+When you create a project, pick an existing project under **Start from** to reuse its setup:
+
+- statuses (columns and their groups), custom fields and estimate systems,
+- feature toggles, description, project lead and default assignee,
+- scheduled automations.
+
+Members' personal data, integrations, webhooks, workflow rules and public boards are never copied. Labels are shared across the workspace, so they are already available.
+
+Two options add more:
+
+- **Include task templates** copies the source's templates.
+- **Include open tasks** copies up to 500 tasks that are not completed, cancelled, archived or waiting in Intake, with their assignees, labels, custom field values, estimates and sub-task links. Comments, attachments, history, cycles and modules stay with the source. This needs permission to create tasks.
+
+No tasks are copied unless you tick **Include open tasks**.
+
+## API and MCP
+
+- Templates: `GET /task-template/project/{projectId}`, `POST /task-template`, `PATCH` and `DELETE /task-template/{id}`, and `POST /task-template/{id}/apply` to create a task from one.
+- Projects: `POST /project` accepts `fromProjectId` and `copy: { taskTemplates, openTasks }`.
+- MCP tools: `list_task_templates` and `create_task_from_template`.
+
+## Next
+
+- [Configure project workflows](/core/functional/configure-workflows)
+- [Plan and execute tasks](/core/functional/plan-and-execute-tasks)
+- [Automate task cleanup](/core/functional/automations)

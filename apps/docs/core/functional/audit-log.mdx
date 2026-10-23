@@ -20,7 +20,11 @@ Each row shows:
 - **Action**: what happened, for example "Changed a member's role".
 - **Target**: what the action was about, by its name at the time, so entries stay readable after the target is deleted.
 
-Expand a row to see its details: the fields that changed with their values before and after, the client IP address and the browser and operating system.
+<Screenshot src="data/audit-log" alt="The workspace Audit log with filters for actor, action and date, and entries such as Archived a project, Created an API key and Created a webhook" caption="The audit log, newest first." />
+
+Expand a row (the arrow at its end) to see its details: the fields that changed with their values before and after, the client IP address and the browser and operating system.
+
+<Screenshot src="data/audit-log-details" alt="An expanded audit log entry for Changed workspace settings showing the changed fields with their before and after values, the IP address and the device" caption="Details of one entry." />
 
 ## What is recorded
 
@@ -36,10 +40,16 @@ Expand a row to see its details: the fields that changed with their values befor
 | Public boards | Board published or unpublished, link replaced, settings changed |
 | Exports and imports | Export started or downloaded; tasks imported from a file, Jira, GitHub or Gitea |
 | Trash | Tasks permanently deleted, project trash emptied (one entry per request, with the number of tasks) |
+| Coding agents | Task sent to a coding agent (with the profile and the issue); [coding agent profile](/core/functional/coding-agents) created, changed or deleted |
+| AI | [AI settings](/core/functional/ai-setup) changed (which fields, never a key); suggested labels applied automatically by [triage](/core/functional/ai-triage-and-briefs); MCP connectors added, changed or deleted |
+| Agents | [Agent](/core/functional/ai-agents) created, changed or deleted; schedule created, changed, deleted or turned off on its own (with the reason); change made by an agent for someone; change approved, rejected or undone |
+| External agents (A2A) | Work received from an external agent over [A2A](/core/integrations/a2a), with the skill it asked for |
+
+Changes an agent makes show the agent as the **Actor**, with "Agent, on behalf of" the person it worked for.
 
 ## Filter and export
 
-Filter by **actor**, by **action** category and by **date** (last 24 hours, 7, 30 or 90 days). Select **Export CSV** to download the filtered entries, newest first, up to 10,000 rows per file. Narrow the date range to export older entries.
+Filter by **actor** (**Anyone** by default), by **action** category (**All actions**) and by **date** (**Any time**, or the last 24 hours, 7, 30 or 90 days). Select **Export CSV** to download the filtered entries, newest first, up to 10,000 rows per file. Narrow the date range to export older entries.
 
 The API offers the same: `GET /api/audit-log?workspaceId=…` with `actorId`, `actorType`, `action` (an action such as `member.role_changed` or a prefix such as `member`), `targetType`, `from` and `to`, paged with `cursor`; and `GET /api/audit-log/export` for CSV. API keys need the `audit_log:read` scope.
 

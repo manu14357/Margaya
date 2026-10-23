@@ -16,19 +16,24 @@ A module groups the tasks for one feature or larger piece of work and tracks the
 
 Set the status yourself as work progresses: **Backlog**, **Planned**, **In progress**, **Paused**, **Completed**, or **Cancelled**. New modules start in Backlog.
 
+<Screenshot src="modules/module-list" alt="The Modules view of Website relaunch with Content platform planned at 0% and Marketing site in progress at 33%, each with its dates, status, lead and task count" caption="Modules are grouped by status, each with its progress, dates and lead." />
+
 ## Create a module
 
 1. Open the project's **Modules** view.
 2. Click **New module**.
 3. Add a **Name** (unique within the project) and optional **Description**.
-4. Optionally set a **Start date** and **Target date**.
-5. Optionally set a **Lead** and add **Members**.
+4. Pick a **Status**; it defaults to **Backlog**.
+5. Optionally set a **Start date** and **Target date**.
+6. Optionally set a **Lead** and add **Members**.
 
 The lead is not automatically added to the members list, so add them separately if they should also appear as a member.
 
+<Screenshot src="modules/new-module-dialog" alt="The New module dialog with the name Customer stories, a description, Status Backlog, Lead, Start date, Target date and Members fields" caption="A new module starts in Backlog unless you pick another status." />
+
 ## Add tasks to a module
 
-Add existing tasks from the module page, or set a task's modules from the task itself. A task can belong to several active modules at once, and adding or removing tasks is idempotent, so repeating the same change is harmless.
+Use **Add task** or **Add existing** at the top of the module page, or set a task's modules from the task itself. A task can belong to several active modules at once, and adding or removing tasks is idempotent, so repeating the same change is harmless.
 
 ## Reference links
 
@@ -37,6 +42,8 @@ Add links to related resources (specs, designs, discussions) from the module's *
 ## Track progress
 
 A module's page shows its task count, completion percentage, and a burndown/burn-up chart broken down by assignee, label, and priority. Cancelled tasks are tracked separately and never count as in-progress work.
+
+<Screenshot src="modules/module-detail" alt="The Marketing site module with its tasks grouped by column and a side panel showing 33% progress, estimate points, a burndown chart, the start and target dates, lead and members" caption="A module's tasks next to its progress and properties." />
 
 ## Archive a module
 

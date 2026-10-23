@@ -22,6 +22,20 @@ Users can forward matching notifications through:
 
 These settings are personal to the signed-in account. They do not change notification routing for other users in the workspace.
 
+## Choose what notifies you
+
+**Notify me about** at the top of the page decides which task events create notifications at all, in the inbox and on every channel:
+
+- **Task assignments**
+- **Comments and mentions**: new comments on tasks you're assigned to or subscribed to, and direct @mentions
+- **Task status changes** on tasks you're assigned to or subscribed to
+- **Other task changes**: priority, due date and title changes on tasks you follow
+- **Due-date reminders**, with **Remind me before the due date** set between 1 hour and 30 days
+
+Select **Save notification types** to apply your choices.
+
+<Screenshot src="account/notify-me-about" alt="The Notify me about section with switches for task assignments, comments and mentions, status changes, other task changes and due-date reminders, and the reminder lead time" caption="Choose which task events notify you." />
+
 ## How it works
 
 Margaya already stores in-app notifications in the notification inbox. Account notification delivery adds a separate preference layer on top of that behavior.
@@ -40,7 +54,7 @@ Webhook signing secrets and ntfy and Gotify tokens are stored encrypted. Your in
 
 ## Global channels
 
-The Notifications page includes separate connection cards for:
+The **Delivery channels** section of the Notifications page includes separate connection cards for:
 
 - `Email`
 - `Gotify`
@@ -48,6 +62,8 @@ The Notifications page includes separate connection cards for:
 - `Custom webhook`
 
 Configure each channel once at the account level, then decide which workspaces are allowed to use it.
+
+<Screenshot src="account/delivery-channels" alt="The Delivery channels section with cards for Email, ntfy, Gotify and Custom webhook, each with its fields and a connect button" caption="Each channel is set up once for your account." />
 
 ### Email
 
@@ -108,6 +124,8 @@ Under **Email digest** you can also ask for a summary email: **Off** (the defaul
 
 Only tasks and notifications you can still see are included, and workspaces you paused in your workspace rules are left out. When there is nothing to report, no digest is sent. Each digest ends with a **Manage notification settings** link.
 
+<Screenshot src="account/email-digest" alt="The Email digest section with Send a digest, the time it is sent and Save digest" caption="A daily or weekly summary email." />
+
 The digest is separate from the email channel switch: you can turn per-notification emails off and still receive a daily digest. It needs an email address on your account and SMTP on the server.
 
 ## Workspace delivery rules
@@ -123,6 +141,8 @@ Each workspace rule can:
 
 This lets a user receive notifications from one workspace in ntfy, another by email, and ignore the rest.
 
+<Screenshot src="account/workspace-rules" alt="The Workspace delivery rules section with the Studio North card, its switches for Email, ntfy, Gotify and Custom webhook, the project scope and Create rule" caption="A delivery rule per workspace; channels must be set up above first." />
+
 ## Supported notification sources
 
 V1 forwards the same notification types that currently create inbox notifications in Margaya.
@@ -134,6 +154,12 @@ That includes:
 - `task_status_changed`
 - `task_assignee_changed`
 - `time_entry_created`
+
+When your workspace uses AI, these are forwarded too:
+
+- `ai_agent_reply`: an [agent](/core/functional/ai-agents) answered your request outside the task, or has a question for you
+- `ai_approval_requested`: an agent proposed a change that waits for your approval
+- `ai_budget_warning`: the workspace has used 80% of its monthly AI budget (only to people with **Manage AI**, once a month)
 
 If Margaya cannot resolve a notification to a workspace or project context, that notification stays inbox-only.
 

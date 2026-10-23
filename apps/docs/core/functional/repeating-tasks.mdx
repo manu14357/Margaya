@@ -1,0 +1,47 @@
+---
+title: Repeating Tasks
+description: Make a task come back daily, weekly, monthly or yearly
+---
+
+A repeating task creates its next instance by itself: the weekly report, the monthly invoice run, the yearly licence renewal. Repeating is optional and set per task. Tasks that don't repeat look and work exactly as before.
+
+## Make a task repeat
+
+1. Open the task.
+2. In its properties, click **Repeat** (it reads **Does not repeat** until you set one).
+3. Choose how often:
+   - **Daily**, every day or every few days.
+   - **Weekly**, on the weekdays you pick, every week or every few weeks.
+   - **Monthly**, on a day of the month. Shorter months use their last day, so the 31st becomes the 30th or the 28th.
+   - **Yearly**, on the same day each year.
+4. Choose when the next one is created:
+   - **When this one is completed** (the default): completing the task creates the next one straight away.
+   - **On its date, even if this one is still open**: the next one is created when its date begins, in the workspace's time zone, even if this one is still open.
+5. Under **Ends**, keep **Never**, or end the series **On** a date or **After** a number of times (the first task counts).
+6. Click **Save**.
+
+<Screenshot src="tasks/repeat-editor" alt="The Repeat this task popover set to Weekly on Monday, created when this one is completed, never ending, with Stop repeating and Save" caption="A weekly repeat, summarised as Every week on Mon." />
+
+The pattern counts from the task's due date (or its start date, or today when it has neither), in the workspace's [time zone](/core/functional/personalize-your-workspace#workspace-time-zone).
+
+Setting or removing a repeat needs permission to update tasks.
+
+## What the next instance gets
+
+The new task copies the title, description, labels, assignees (those still in the workspace), priority and estimate. It starts in the project's first not-started column, and its start and due dates move forward to the next occurrence. Comments, attachments, sub-tasks, relations, cycles and modules are not copied.
+
+The repeat moves to the new task: only the latest instance carries it, and only that one shows the repeat icon on boards and lists. Completing an earlier instance again never creates another task.
+
+When the task is completed late, the next instance gets the first date after today, so you never get a task that is already overdue. When the server was down on a scheduled date, it creates one instance for the latest date that passed, not one for every missed day.
+
+A task in the trash pauses its series until you restore it.
+
+## Stop a task repeating
+
+Open the task, click its repeat setting and click **Stop repeating**. Tasks created already stay. The task's history shows when a repeat was set, changed or stopped, and links each instance to the one before it.
+
+## Automations and the API
+
+- API: `GET`, `PUT` and `DELETE /api/task-recurrence/{taskId}`.
+- MCP: `get_task_recurrence`, `set_task_recurrence` and `remove_task_recurrence` (see [MCP](/core/integrations/mcp)).
+- Webhooks and integrations see each new instance as a newly created task.

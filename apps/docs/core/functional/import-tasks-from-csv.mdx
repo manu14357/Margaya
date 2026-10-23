@@ -5,16 +5,34 @@ description: Bring tasks in from a spreadsheet or another tool's CSV export, map
 
 The CSV import turns the rows of a spreadsheet, or the CSV export of another tool, into tasks of one project. Your browser reads the file and maps its columns; Margaya then creates the tasks in batches.
 
-Moving from Jira? Its CSV export has its own import, which also brings sub-tasks, issue links and comments: see [Import from Jira](/core/functional/import-from-jira).
+Moving from Jira? Its CSV export has its own import, which also brings sub-tasks, issue links and comments: see [Import from Jira](/core/functional/import-from-jira). Trello boards, Linear and Asana have their own imports too: see [Import from Trello](/core/functional/import-from-trello), [Import from Linear](/core/functional/import-from-linear) and [Import from Asana](/core/functional/import-from-asana).
 
 ## Import a CSV file
 
-1. Open **Settings** > **Projects** > your project > **General**.
-2. In **Tasks import/export**, choose **Import** and pick a `.csv` file (at most 5 MB and 5,000 rows).
-3. Check the detected **delimiter** (comma, semicolon or tab) and whether the **first row contains column names**.
-4. **Map columns**: for each Margaya field, pick the CSV column to read it from, or **Don't import**. Columns are matched by their header names automatically; **Title** is required.
-5. **Review** what will happen: how many tasks will be imported, how many rows are skipped because they have no title, and which values don't match anything in the project (for example a status that isn't a column, or a person who isn't a workspace member).
-6. Choose **Import**. A progress bar follows the batches, and the result lists any tasks that failed or were imported with warnings, with their row numbers.
+1. Open **Settings** > **Projects**, pick your project and open **General settings**.
+2. Under **Import and export**, select **Import tasks**.
+
+<Screenshot src="data/import-export-row" alt="The Import and export section of a project's general settings, with the Export tasks and Import tasks buttons" caption="Imports and exports start from the project's general settings." />
+
+3. Drop a `.csv` file on the dialog or choose **Select file** (at most 5 MB and 5,000 rows). The same dialog takes a Margaya JSON export, and has buttons for the Jira, Trello, Linear and Asana imports.
+
+<Screenshot src="data/import-dialog" alt="The Import tasks dialog with a drop zone for JSON or CSV files and buttons for Jira, Trello, Linear and Asana exports" caption="One dialog for every kind of import." />
+
+4. **Upload**: check the file's row count, the detected **Delimiter** (comma, semicolon or tab) and whether the **First row contains column names**, then select **Next**.
+
+<Screenshot src="data/csv-upload" alt="The Upload step of the CSV import with the chosen file, its row count, the delimiter and the header option" caption="Upload: Margaya reads the file in your browser and detects its delimiter." />
+
+5. **Map columns**: for each Margaya field, pick the CSV column to read it from, or **Don't import**. Columns are matched by their header names automatically, and a sample value shows what will be read; **Title** is required.
+
+<Screenshot src="data/csv-map" alt="The Map columns step listing Margaya fields such as Title, Status and Assignees next to the CSV column each one reads from, with sample values" caption="Map columns: each Margaya field reads one CSV column." />
+
+6. **Review** what will happen: how many tasks will be imported, how many rows are skipped because they have no title, and which values don't match anything in the project (for example a status that isn't a column, or a person who isn't a workspace member). A preview shows the first tasks as they will be created.
+
+<Screenshot src="data/csv-review" alt="The Review step summarising how many tasks will be imported, the skipped rows, unmatched statuses and people, and new labels" caption="Review: problems are listed before anything is created." />
+
+7. Select **Import**. A progress bar follows the batches, and the result lists any tasks that failed or were imported with warnings, with their row numbers.
+
+<Screenshot src="data/csv-result" alt="The result of a CSV import showing the number of tasks imported" caption="The result, with details for any rows that failed." />
 
 ## Fields you can map
 

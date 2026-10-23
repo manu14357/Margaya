@@ -18,25 +18,31 @@ A project can also archive its closed tasks on a schedule: see [Automate task cl
 
 1. Go to **Settings**.
 2. Open **Projects** and select your project.
-3. In the **Danger zone** of the **General** tab, click **Archive project** and confirm.
+3. In the **Danger zone** of **General settings**, click **Archive project** and confirm.
 
 You need permission to update projects. An archived project is hidden from the sidebar and project lists. Its tasks, cycles and modules are kept, and none of them show up in the workspace Archives, which only lists items from projects that are not archived. They come back together when you restore the project.
 
 An archived project still opens from a link or from the Archives page. A **This project is archived.** bar appears under its header with **Restore** and **View in Archives**. In **Settings**, the **Archive project** row becomes **Restore**.
 
+<Screenshot src="data/archived-project-banner" alt="An archived project's board with the bar This project is archived and its Restore and View in Archives buttons" caption="An archived project still opens, with a bar to restore it." />
+
 ## Open the Archives pages
 
-- **Workspace:** click **Archives** on the **Projects** page, or run **Go to archives** from the command palette.
+- **Workspace:** click **Archives** in the sidebar's **Projects** panel or on the **Projects** page, or run **Go to archives** from the command palette.
 - **Project:** open the **...** menu of a project in the sidebar and choose **Archives**, or run **Go to project archives** from the command palette while you are in the project.
 
 Each page has a tab per kind of item with a count: **Tasks**, **Cycles**, **Modules** and, in the workspace only, **Projects**. A tab is hidden when you lack permission to read that kind of item or when the feature is off in every project in scope. Items are listed with the newest archive first and show when they were archived.
 
-On the workspace page, a project filter narrows **Tasks**, **Cycles** and **Modules** to one project.
+On the workspace page, a project filter (**All projects** by default) narrows **Tasks**, **Cycles** and **Modules** to one project.
+
+<Screenshot src="data/archives-tasks" alt="The workspace Archives page on the Tasks tab, listing four archived tasks from Website relaunch and Mobile app with when each was archived" caption="Workspace Archives: one tab per kind of item, newest first." />
 
 ## Restore an item
 
-- **Tasks** - click **Restore** on a row, or open the task and click **Restore** in the banner "This task was archived ..." at the top of it. Restoring needs permission to update tasks. A restored task returns to the column it was in, with its dates and history intact.
-- **Cycles, modules and projects** - click **Restore** on the row, or use the row's menu. **Open** shows the item first.
+- **Tasks** - click the **Restore** button at the end of a row (or **Restore** in its **...** menu), or open the task and click **Restore** in the banner "This task was archived ..." at the top of it. Restoring needs permission to update tasks. A restored task returns to the column it was in, with its dates and history intact.
+- **Cycles, modules and projects** - click the **Restore** button on the row, or use the row's **...** menu. **Open** shows the item first.
+
+<Screenshot src="data/archives-projects" alt="The Projects tab of the workspace Archives with the archived project Brand refresh 2024 and its task count" caption="Archived projects are listed on their own tab, with their tasks." />
 
 A row leaves the list as soon as you restore it. If the restore fails, it comes back and an error message appears.
 

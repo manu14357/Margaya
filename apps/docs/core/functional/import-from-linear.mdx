@@ -1,0 +1,50 @@
+---
+title: Import from Linear
+description: Move Linear issues into Margaya from Linear's CSV export, with statuses, priorities, labels, people, dates and sub-issues
+---
+
+The Linear import reads the CSV file Linear exports and creates one task per issue in a Margaya project. It works from the file alone: Margaya never connects to Linear.
+
+## Export your issues from Linear
+
+1. In Linear, open **Settings** > **Import / Export**.
+2. Choose **Export CSV**. Linear emails you a link to the file.
+3. Save the `.csv` file without opening and saving it in a spreadsheet, which can change its dates.
+
+A file holds at most **5 MB** and **5,000 issues**. Linear's CSV has no comments, so none are imported.
+
+## Import the file
+
+1. Open **Settings** > **Projects**, pick your project and open **General settings**.
+2. Under **Import and export**, select **Import tasks**, then **Linear (CSV)**.
+3. **Upload** the file. Margaya shows how many issues it will import, the sub-issues and links it found, and how many issues were imported into this project before.
+4. **Map** each Linear status to a column (suggested by name, then by the issue's state: completed and canceled issues go to a completed column, started ones to a started column), check the priority mapping and which people match workspace members.
+
+<Screenshot src="data/linear-map" alt="The Map step of the Linear import, pairing each Linear status with a Margaya column, with the priority mapping and matched people" caption="Map: choose where each status goes and check who matches a member." />
+
+5. Choose **Import** and review the summary.
+
+You need permission to create tasks; updating issues imported before needs permission to update tasks.
+
+## How fields are mapped
+
+| Linear | Margaya |
+|---|---|
+| Title | Title. Issues without a title are not imported. |
+| Description | Description (Linear writes Markdown). |
+| ID (for example ENG-12) | Kept as the task's import reference: the activity shows "imported this task from Linear ENG-12". Margaya numbers the task itself. |
+| Status | The column chosen in **Map**. |
+| Priority | Urgent, High, Medium and Low keep their name; No priority becomes no priority, unless changed in **Map**. |
+| Assignee | The workspace member with that email, or else that exact name. Without a match the task stays unassigned, and the name is written at the end of the description and listed in the summary. |
+| Creator | The task's creator when they are a member; otherwise you. |
+| Labels | Labels; new names are created as workspace labels. |
+| Due Date, Started, Created, Updated | Due date, start date, creation and last-update dates. |
+| Completed, Canceled | The completion date of a task in a completed column. |
+| Parent issue | Sub-tasks, when both issues are in the file. |
+| Blocked by, Blocking, Related | Blocking and related relations, when both issues are in the file and the export has these columns. |
+| Archived issues | Not imported. |
+| Estimate, Cycle, Project | Not imported. |
+
+## Importing the same issues again
+
+Each task remembers its Linear ID. Importing again skips issues imported before, or, with **Update them**, rewrites their title, description, status, priority, dates and assignee and adds new labels. Only one import runs per project at a time.

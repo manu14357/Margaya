@@ -36,6 +36,14 @@ Click **Filter** and pick a property: status or group, priority, assignee, creat
 - **Match all** and **Match any** decide how conditions combine.
 - **Clear all filters** starts over.
 
+### Describe a filter in your own words
+
+When AI is on, the ✦ **Describe a filter…** button next to **Filter** turns a sentence into filters, for example "my overdue bugs in progress" or "urgent tasks created last week". The filters it understood appear as ordinary chips, which you can change or remove. Words that match nothing you can filter on, such as a cycle that doesn't exist, are listed as not understood instead of being guessed. The new filters replace the current ones.
+
+It works in every task list, board, spreadsheet, calendar, timeline and view, and only uses statuses, labels, people, cycles, modules and projects you can see. Status and module need a single project. Each use counts toward your AI limits as **Natural-language filters**. Over the API, use `POST /api/ai/filters/parse`.
+
+<Screenshot src="views/filter-menu" alt="The Filter menu listing Status, Group, Priority, Assignee, Created by, Labels, Cycle, Module, Estimate, the date properties, Parent, Subscribed and Mentions, with the Archived options below" caption="Filter by any task property, or show archived tasks." />
+
 ## Change the layout and display
 
 Pick a layout from the toolbar. Project views can use **List**, **Board**, **Spreadsheet**, **Calendar** or **Gantt**; workspace views use **List**, **Board** or **Spreadsheet**. Status belongs to a single project, so workspace views can't filter or group by status.
@@ -46,6 +54,8 @@ Open **Display** to choose:
 - **Order by**, for example **Due date**, **Priority** or **Manual**
 - **Show sub-tasks** and **Show empty groups**
 - **Properties** - what each row or card shows, such as key, labels, estimate or dates
+
+<Screenshot src="views/display-menu" alt="The Display panel with Group by Status, Sub-group by None, Order by Manual, the Show sub-tasks and Show empty groups switches and the Properties chips" caption="Display controls grouping, order and the properties each task shows." />
 
 ## Work in the spreadsheet
 
@@ -60,6 +70,8 @@ The **Spreadsheet** layout shows one row per task and one column per property:
 
 The **Calendar** layout places every task that has a start date, a due date or both. A task with both dates spans the days between them. The filters you set on the project's other layouts apply here too.
 
+<Screenshot src="views/calendar-layout" alt="The Launch calendar view in the Month layout for October 2026, with tasks spanning their start and due dates and +N more links on busy days" caption="The calendar layout of a saved view." />
+
 - Switch between **Month** and **Week**. Week shows one week with more room for each day. Weeks start on the day chosen in your preferences.
 - Turn off **Show weekends** to hide Saturday and Sunday. Your browser remembers this choice and the Month or Week choice.
 - Drag a task to another day to reschedule it. A task with only a due date moves to the day you drop it on. A task with a start date keeps its length, and both dates move by the same number of days. If the change can't be saved, the task goes back to its old day.
@@ -72,6 +84,8 @@ You need permission to edit tasks to drag them, and permission to create tasks t
 
 The **Gantt** layout draws each dated task as a bar from its start date to its due date.
 
+<Screenshot src="views/gantt-layout" alt="The Release timeline view in the Gantt layout, with each task as a bar on a Month timeline, the today line and dependency lines" caption="The Gantt layout with the Month zoom." />
+
 - Drag a bar to move it, or drag either end to change its start or due date.
 - Choose a zoom level: **Week**, **Month** (the default) or **Quarter**. Your browser remembers it. Use the arrows or the date field to move through time, and **Jump to today** to come back.
 - Tasks that match your filters but have no dates are listed under **No dates**. Drag one onto the timeline to start it on the day you drop it, with a one-week span. Or click **Schedule** to start it today with a one-week span.
@@ -82,14 +96,20 @@ Changes other people make to task dates show up in both layouts right away.
 ## Save a view
 
 1. Set the filters, layout and display you want on any task list.
-2. Click **Save view**.
+2. Click **Save view** (it appears once you change the filters), or **New view** on the **Views** tab.
 3. Give it a **Name** and an optional **Description**.
-4. Under **Who can see it**, choose **Workspace** (everyone in the workspace) or **Private** (only you).
+4. Under **Who can see it**, choose **Workspace** (everyone in the workspace) or **Private** (only you). Keep **Start from the current filters** checked to save what you set up.
 5. Click **Create view**.
+
+<Screenshot src="views/save-view-dialog" alt="The New view dialog with the name High priority work, an empty description, Who can see it set to Workspace and Start from the current filters checked, showing 1 filters grouped by Status" caption="Save the current filters and layout as a view." />
 
 When you change a saved view, it shows **Unsaved changes**. Click **Save** to update it, **Save as new view** to keep the original, or **Reset** to go back.
 
+<Screenshot src="views/saved-view" alt="The Due this week view in the List layout grouped by assignee, with the Due date is This week filter chip and the layout switcher" caption="A saved view opens with its filters, layout and grouping." />
+
 From a view's menu you can also **Edit**, **Duplicate**, **Copy link**, **Delete** or add it to your favorites. Deleting a view never affects its tasks.
+
+<Screenshot src="views/views-list" alt="The Views tab of Website relaunch listing Design review, Due this week, Launch calendar and Release timeline, each shared with the workspace" caption="The project's saved views, with All and Mine tabs." />
 
 ## Lock a view
 

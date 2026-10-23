@@ -15,9 +15,9 @@ Estimates let your team size tasks with a consistent set of values, then see tot
 ## Create your estimate system
 
 1. Open **Settings -> Projects -> [your project] -> Estimates**.
-2. Click **Add estimate system**.
+2. Click **Add estimate system**. If the project already has one, open the **...** menu next to it and choose **New system**.
 3. Choose a type: **Points**, **Categories**, or **Time**. The type can't be changed later; create another system if you need a different one.
-4. Start from a template or choose **Custom**:
+4. Choose **Custom** under **Start from scratch**, or pick a template under **Or start from a template**:
    - Points: Fibonacci (1, 2, 3, 5, 8, 13), Linear (1-6), or Squares (1, 4, 9, 16, 25, 36)
    - Categories: T-shirt sizes (XS-XXL), or Easy to hard
    - Time: Hours, or Short tasks
@@ -25,9 +25,32 @@ Estimates let your team size tasks with a consistent set of values, then see tot
 
 Every system needs 2 to 10 distinct values. Points and time values are whole numbers or up to 2 decimals and are kept in ascending order; category values are plain text kept in the order you set.
 
+<Screenshot src="estimates/new-system-dialog" alt="The New estimate system dialog, step 1 of 2, with Points, Categories and Time, a Custom option and the Fibonacci, Linear and Squares templates" caption="Pick a type, then start from scratch or from a template." />
+
 ## Estimate a task
 
 Open a task and set its **Estimate** from the task's property panel. Only values from the project's active estimate system are offered.
+
+## Suggestions from similar tasks
+
+When you open a task's estimate picker, Margaya may show a suggestion at the top, such as **Similar tasks were usually 3 points**, with how long those tasks really took (for example "4 similar tasks took 2–5 days").
+
+- The suggestion comes from your own team's finished work in the same project: tasks whose titles match (full-text search, run with your permissions) or that share a label, that were completed and estimated with the active system.
+- The value is the one those tasks were given most often. Cycle time is measured from the moment a task first entered a started column until it was completed.
+- It needs at least 3 similar finished tasks; otherwise nothing is shown.
+- Click **Use** to apply it, or just pick another value. Nothing changes until you choose.
+- Open **Similar tasks** to see which tasks it was based on.
+- With AI turned on for the project, **Why?** writes a two- or three-sentence explanation from the same numbers, citing the similar tasks. The numbers themselves never come from the AI.
+
+<Screenshot src="insight/estimate-suggestion" alt="The estimate picker of a task with the suggestion Similar tasks were usually 3 pts, 3 similar tasks took 2 to 5 days with a median of 3, a Why? button and the three similar tasks" caption="The suggestion comes from your team's own finished work." />
+
+## Calibration
+
+**Settings -> Projects -> [your project] -> Estimates** shows **Estimate calibration** under the active system (for people who can read analytics). For each value, it shows how many tasks were completed at that size in the last 180 days and the spread of their actual cycle time: the median and the middle half (25th to 75th percentile).
+
+If bigger estimates took longer, the scale is working as intended. If they didn't, the card says so, a good prompt to revisit how the team sizes work. Tasks that were completed without ever entering a started column have no cycle time and are left out.
+
+<Screenshot src="insight/estimate-calibration" alt="The Estimate calibration card: for 1, 2, 3, 5 and 8 points, how many tasks were completed and the median and middle half of their actual time, with the note that bigger estimates took longer" caption="Calibration compares each size with how long it really took." />
 
 ## See totals
 
@@ -36,6 +59,8 @@ Estimate totals appear on the board and in cycle and module progress reports, br
 ## Switch systems
 
 Switching the active system lets you map each value of the old system to a value in the new one (or to "No estimate"). Tasks on unmapped values lose their estimate. The old system isn't deleted, so you can switch back to it later from **Other estimate systems**.
+
+<Screenshot src="estimates/estimate-system" alt="The Estimate system card of Website relaunch: Story points with the values 1, 2, 3, 5 and 8, how many tasks use each value, and a field to add a value" caption="The active system lists each value and how many tasks use it." />
 
 ## Delete values or the system
 

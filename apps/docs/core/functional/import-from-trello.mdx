@@ -1,0 +1,51 @@
+---
+title: Import from Trello
+description: Move a Trello board into Margaya from its JSON export, with lists, labels, members, dates, checklists and comments
+---
+
+The Trello import reads the JSON file Trello exports for a board and creates one task per card in a Margaya project. It works from the file alone: Margaya never connects to Trello.
+
+## Export the board from Trello
+
+1. Open the board in Trello.
+2. Open the board menu and choose **Print, export and share** > **Export as JSON**.
+3. Save the `.json` file without editing it.
+
+A file holds at most **10 MB** and **5,000 cards**. The export carries the board's most recent activity, which is where comments come from: very old comments on a busy board may not be in it.
+
+## Import the file
+
+1. Open **Settings** > **Projects**, pick your project and open **General settings**.
+2. Under **Import and export**, select **Import tasks**, then **Trello (JSON)**.
+3. **Upload** the file. Margaya shows how many cards it will import, how many comments, checklists and links it found, and how many cards were imported into this project before.
+
+<Screenshot src="data/trello-upload" alt="The Upload step of the Trello import with a board export chosen, showing how many cards, comments, checklists and links it holds" caption="Upload: Margaya counts what the export holds before importing." />
+
+4. **Map** each Trello list to a column (suggested by name; anything can go to the **Backlog**), check which members match workspace members, and choose what happens to cards imported before.
+
+<Screenshot src="data/trello-map" alt="The Map step of the Trello import, pairing each Trello list with a Margaya column, with people and the option for cards imported before" caption="Map: choose where each status goes and check who matches a member." />
+
+5. Choose **Import**. The summary lists the tasks created, updated and skipped, the comments added, the people who didn't match a member, warnings and failed cards.
+
+You need permission to create tasks. Importing comments with their Trello author needs the **Manage workspace settings** permission; without it comments are skipped with a warning. Updating cards imported before needs permission to update tasks.
+
+## How fields are mapped
+
+| Trello | Margaya |
+|---|---|
+| Card name | Title. Cards without a name are not imported. |
+| Description | Description (Trello already writes Markdown). |
+| List | The column chosen in **Map**. |
+| Labels | Labels; a label without a name uses its colour name. New names are created as workspace labels. |
+| Members | Assignees: the workspace member with that email, or else that exact full name. Trello's export usually has no emails, so names are matched. People without a match leave the task unassigned; their names are written at the end of the description and listed in the summary. |
+| Start and due dates | Start and due dates. |
+| Card creation time, last activity | Creation and last-update dates. |
+| Checklists | Task lists (checkboxes) at the end of the description, ticked items kept ticked. |
+| Comments | Comments, with their author's name and date. They notify nobody. |
+| Short link | Kept as the task's import reference: the activity shows "imported this task from Trello AbC12345". |
+| Archived cards, cards on archived lists | Not imported. |
+| Attachments, custom fields, Power-Ups | Not imported. |
+
+## Importing the same board again
+
+Each task remembers the card it came from. Importing the board again skips cards imported before, or, with **Update them**, rewrites their title, description, status, dates and assignees, adds new labels, and adds only the comments not imported yet. Only one import runs per project at a time.

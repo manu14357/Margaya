@@ -1,0 +1,121 @@
+---
+title: Forecast and Risk
+description: See when open work will likely be done, what could make it slip, and get told when the team's flow changes
+---
+
+Margaya computes three things from your project's own history. No AI model is involved, so they work on every instance, and the same data always gives the same answer:
+
+- **Forecast**: when the open tasks of a cycle, module or project will likely be done.
+- **Risk radar**: what could make that work slip, with links to the tasks.
+- **Flow alerts**: an optional notice to the project lead when work in progress, cycle time or throughput leaves its usual range.
+
+The forecast and the risk radar are shown to people who can read analytics. Viewers don't get that by default. They respect [restricted projects](/core/functional/restricted-projects): you never see a task from a project you can't open.
+
+## Where to find them
+
+- **Cycles:** open a cycle that is active, upcoming or a draft. The **Forecast** and **Risks** cards sit in the sidebar under the progress bar.
+- **Modules:** open a module that isn't completed or cancelled. The cards sit in the sidebar under the progress bar.
+- **Projects:** open the project's **Analytics** and choose the **Delivery** tab. It forecasts all of the project's open work.
+- **Home:** the **At risk** widget lists the top risks across the active cycles you can see. You can hide it or move it with **Manage widgets**, where it is called **Risks**.
+
+<Screenshot src="delivery/home-risks" alt="The At risk widget on Home listing risks from Website relaunch, Sprint 14: two tasks in progress longer than usual, and WEB-1 blocking WEB-6" caption="At risk on Home gathers the risks of every active cycle you can see." />
+
+The cards refresh by themselves when tasks change.
+
+<Screenshot src="delivery/cycle-forecast-risks" alt="Sprint 14's Forecast card, 85% likely done by Oct 30 with a 38% chance to finish by the Oct 28 end date in red, above the Risks card with a critical path past the deadline, two tasks in progress longer than usual and a blocked task" caption="The Forecast and Risks cards in a cycle's sidebar." />
+
+## Forecast
+
+The forecast answers "when will the open tasks be done?" with three dates instead of one:
+
+- **50%:** half of the simulated futures finish by this date. Treat it as a coin flip.
+- **85%:** the date to plan around. The card leads with it ("85% likely done by …").
+- **95%:** a cautious date for commitments you can't miss.
+
+When the cycle or module has an end date, the card also shows the **chance to finish by that date**. It turns red, with a warning icon, below 50%.
+
+### How it is calculated
+
+Click the **ⓘ** button on the card to see the method and the history it used. Margaya runs a Monte Carlo simulation:
+
+<Screenshot src="delivery/forecast-method" alt="The Monte Carlo forecast explanation opened from the info button: the history window, 31 tasks completed on 24 days, 0 to 4 completions a day, 3.9 a week, and the seed" caption="The method and the history behind the dates." />
+
+1. It counts the tasks the project completed on each of the last 56 days. If the project is newer, it starts from the project's first day. Days with no completions count as zero.
+2. It replays the future 10,000 times. Each simulated day takes the completions of a random day from that history, until the open tasks are done.
+3. The dates are the 50th, 85th and 95th percentiles of those 10,000 finish dates.
+
+**What counts:**
+
+- **Open tasks:** tasks in the Backlog, Not started or Started groups, counted the same way cycle and module progress counts them.
+- **Completed tasks:** tasks in a Completed column. A reopened task stops counting. Archived done tasks still count, so auto-archive doesn't erase your history.
+
+**Things to know:**
+
+- **The pace is the whole project's.** A cycle forecast uses the team's throughput on all of the project's work, not only on that cycle.
+- **Stable for the day.** The simulation's random generator is seeded from the scope, the date and the number of open tasks. Refreshing gives the same numbers all day, and they change when work moves.
+- **Horizon.** A forecast stops at two years. Anything slower shows as "over two years at the current pace".
+
+### Not enough history
+
+A forecast drawn from very little data would be misleading. Instead of guessing, the card says so when, in the last 8 weeks:
+
+- the project has less than 14 days of history;
+- fewer than 5 tasks were completed; or
+- tasks were completed on fewer than 3 different days.
+
+## Risk radar
+
+<Screenshot src="delivery/delivery-tab" alt="The Delivery tab of Website relaunch's analytics: a forecast for 17 open tasks and three risks, ageing work and two blocked chains" caption="The Delivery tab forecasts all of a project's open work." />
+
+The risk radar lists what could make the open work slip, ranked by severity: high, medium, then low. Each risk is one sentence with links to up to three tasks. Every risk is computed from your data:
+
+| Risk | What it means | Severity |
+|---|---|---|
+| **Critical path** | The longest chain of "blocks" and "finishes before" relations, sized with the project's median cycle time, ends after the deadline or within 2 days of it | High when it ends after the deadline |
+| **Blocked chain** | One open task holds up others in this scope, directly or through other tasks | High when the blocking task has no assignee or has been in progress far too long |
+| **Ageing work** | Tasks in progress longer than the project's usual cycle time (its 85th percentile) | High when more than twice as long |
+| **Overdue cluster** | 3 or more overdue tasks share the same first assignee, or have no assignee | High from 5 tasks |
+| **Overdue** | Other overdue tasks | Low |
+| **Unassigned near the deadline** | Tasks with no assignee that are due, or whose cycle or module ends, within 3 days | High within a day |
+| **Dependency loop** | Tasks that block each other in a circle. New loops can't be created; this finds old ones | Medium |
+
+**Details:**
+
+- **Cycle time** is the time from a task's first move into a Started column until it was completed, over the last 90 days. Ageing work and day-based critical paths appear once 10 tasks have such a history. Until then, the critical path is measured in tasks.
+- **Blockers you can't see.** A task in a project you can't open still counts in a chain, but it shows only as "a task you can't see", never by name.
+- **Size limit.** The radar checks up to 2,000 open tasks. On larger projects it says so.
+
+## Flow alerts
+
+Flow alerts are off by default. When you turn them on, Margaya checks the project once a day and notifies the project lead when the team's flow changes sharply.
+
+### Turn on flow alerts
+
+1. Go to **Settings**.
+2. Open **Projects** and select your project.
+3. Open the **Workflow** tab.
+4. Under **Scheduled automations**, turn on **Flow anomaly alerts**.
+
+You need permission to update the project. Alerts go to the **project lead**, so set one on the project first. Without a lead, nothing is sent.
+
+### How alerts work
+
+Each day, the last 7 days are compared with the 8 weeks before them, using the median and the median absolute deviation. These hold steady when one week was unusual. An alert is sent when a value moves at least 3 spreads away from its usual level, in the direction that hurts:
+
+- **Throughput fell:** fewer tasks were completed than usual.
+- **Work in progress rose:** more tasks were in progress at once than usual.
+- **Cycle time rose:** completed tasks took longer than usual.
+
+There is at most one alert per measure per week. It arrives in the inbox and, depending on the lead's settings, by email or in the digest. Clicking it opens the project's **Delivery** analytics.
+
+A project needs about 9 weeks of history before alerts can fire. Throughput also needs at least 10 completions in those 8 weeks.
+
+## API
+
+The same numbers are available through the API, with the same permissions:
+
+- `GET /api/delivery/cycle/{cycleId}/forecast` and `GET /api/delivery/cycle/{cycleId}/risks`;
+- the `module/{moduleId}` and `project/{projectId}` equivalents;
+- `GET /api/delivery/home/risks?workspaceId=…` for the Home widget.
+
+Turn flow alerts on or off with `PATCH /api/project-automation/{projectId}`, sending `{ "flowAlerts": { "enabled": true } }`.

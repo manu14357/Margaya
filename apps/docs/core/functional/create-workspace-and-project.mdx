@@ -7,25 +7,39 @@ This guide covers the first functional setup inside Margaya so your team can beg
 
 ## 1. Create a workspace
 
-1. Go to the dashboard and create a new workspace.
-2. Choose a clear workspace name (usually company, team, or department).
-3. Confirm creation and open the workspace.
+1. Click the workspace switcher at the top of the left rail and choose **Add workspace**, or press `w` then `c`.
+2. Choose a clear workspace name (usually company, team, or department) and optionally add a description.
+3. Click **Create workspace**. Margaya switches to the new workspace.
+
+<Screenshot src="getting-around/workspace-switcher" alt="The workspace switcher menu open, listing Studio North with an Add workspace item below" caption="The workspace switcher lists your workspaces and adds new ones." />
+
+<Screenshot src="getting-around/create-workspace" alt="The Create a new workspace dialog with the name Studio North Labs filled in" caption="Name the workspace, then create it." />
+
+If **Add workspace** is missing, an instance admin has turned off workspace creation for regular users.
 
 ## 2. Create your first project
 
-Inside the workspace Projects page:
+Open **Projects** in the left rail, then:
 
-1. Click **Create project**.
-2. Set a project name your team will recognize quickly.
-3. Open the project when it appears in the projects list.
+1. Click **Create project**, or press `p` then `c`.
+2. Set a project name your team will recognize quickly. Margaya suggests a **Key** from the name; it prefixes every task ID in the project (for example `WEB-12`), and you can change it before you create the project.
+3. Optionally pick an existing project under **Start from** to reuse its statuses, custom fields and settings. See [Start a project from an existing one](/core/functional/task-templates#start-a-project-from-an-existing-one).
+4. Optionally tick **Restricted** so only the project's members can see it. See [Restricted projects](/core/functional/restricted-projects).
+5. Click **Create project**. The new project appears in the sidebar and the projects list.
+
+<Screenshot src="getting-around/create-project" alt="The Create a new project dialog with the name Brand refresh, the generated key, the Start from menu and the Restricted checkbox" caption="The key becomes the prefix of every task ID in the project." />
 
 ## 3. Decide your execution view
 
-Each project supports:
+Each project's tabs switch between its layouts:
 
-- **Board view** for status-driven execution
-- **List view** for compact scanning and sorting
-- **Backlog view** for planning and grooming
+- **Board** for status-driven execution, with a **List** toggle for compact scanning and sorting
+- **Backlog** for planning and grooming
+- **Spreadsheet**, **Calendar** and **Gantt** for editing fields, dates and schedules
+
+Planning features such as **Cycles**, **Modules**, **Views** and **Pages** show up as tabs only when they are [turned on for the project](/core/functional/project-features-and-column-groups), next to **Analytics**.
+
+<Screenshot src="getting-around/project-views" alt="A project header with the layout tabs Backlog, Board, Spreadsheet, Calendar and Gantt, the planning tabs, and the Board and List toggle" caption="Layouts and planning features sit side by side in the project header." />
 
 You can switch views as your workflow changes.
 
@@ -39,6 +53,17 @@ Before team onboarding, align on:
 - Due date expectations
 
 This keeps your board consistent from day one.
+
+## Delete a workspace
+
+The owner deletes a workspace from **Settings -> Workspace -> General -> Delete workspace**. Deleting schedules it rather than removing it at once:
+
+- The workspace turns read-only for everyone right away. People can still open and export its work, and a banner shows the deletion date.
+- Its API keys, integrations and webhooks stop working.
+- Every member gets an email.
+- After the grace period (14 days unless the server sets `WORKSPACE_DELETION_GRACE_DAYS`), an hourly job deletes it for good with all its projects, tasks and pages.
+
+Until then the owner can choose **Cancel deletion** in the banner or in the general settings, and everything works as before. A workspace with an active subscription must cancel it first. Instance admins see the workspaces waiting for deletion under **Settings -> Instance -> Workspaces**.
 
 ## Next
 

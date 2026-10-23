@@ -16,6 +16,14 @@ You are notified when someone:
 
 Due-date reminders and overdue alerts arrive here too. Your own changes never notify you.
 
+When your workspace uses [AI agents](/core/functional/ai-agents), you also hear from them:
+
+- **answered your request**: an agent you asked finished without posting its answer on the task, so the answer comes here, with a link to the run in the Agent Desk;
+- **has a question for you**: an agent needs your answer before it can go on. **Answer in Agent Desk** opens the run;
+- **asks for your approval**: an agent proposed a change that waits for you. Select the notification to see the change, then **Approve** or **Reject** it, or choose **Open in Agent Desk**.
+
+People with **Manage AI** also get **AI budget almost used** once a month, when the workspace has used 80% of its monthly AI budget.
+
 ## Read and triage notifications
 
 - **All** shows everything; **Mentions** shows only @mentions of you.
@@ -26,13 +34,25 @@ Due-date reminders and overdue alerts arrive here too. Your own changes never no
 
 Most actions offer **Undo** for a few seconds.
 
+### Summarize unread notifications
+
+When AI is on, the ✦ **Summarize unread** button above the list writes a short digest of your unread notifications: what needs attention first, then the rest grouped by task. It cites tasks by key and leaves out projects that AI may not read. Reading the summary doesn't mark anything as read. ↻ writes it again and **×** closes it. Each digest counts toward your AI limits as **Inbox digests** (`POST /api/ai/insight/inbox-digest` over the API).
+
+<Screenshot src="getting-around/inbox" alt="The Inbox with a list of mentions, assignments and comments, and the selected notification's task open in a preview next to the list" caption="Select a notification to read its task without leaving the inbox." />
+
+<Screenshot src="getting-around/inbox-filters" alt="The inbox Filters menu with Assigned to me, Created by me, Subscribed and Unread only" caption="Filters narrow the list by how the task relates to you." />
+
+The keyboard works too: `j` and `k` move between notifications, `e` archives and moves on, `s` snoozes, `u` marks read or unread, and `Enter` opens the task.
+
 ## Snooze and archive
 
 **Snooze** hides a notification until **1 day**, **3 days**, **5 days**, **1 week** or **2 weeks** from now, or a **Custom…** date and time. When the time comes, it returns to the top of your inbox as unread. **Unsnooze** brings it back right away.
 
+<Screenshot src="getting-around/inbox-snooze" alt="A notification's hover actions with the Snooze menu open, offering 1 day, 3 days, 5 days, 1 week, 2 weeks and Custom" caption="Hover a notification to mark it read, archive it or snooze it." />
+
 **Archive** moves a notification out of the way without deleting it. Archiving a snoozed notification also ends the snooze.
 
-Switch between the **Inbox**, **Snoozed** and **Archived** lists with the view menu. In **Archived**, **Move to inbox** restores a notification.
+Switch between the **Inbox**, **Snoozed** and **Archived** lists from the **View** section of the side panel or the view menu above the list. In **Archived**, **Move to inbox** restores a notification.
 
 **Clear all notifications** in the notifications menu deletes every notification in the workspace for good.
 

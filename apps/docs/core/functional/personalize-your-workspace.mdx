@@ -10,30 +10,53 @@ Margaya includes account and workspace preferences that improve clarity without 
 1. Go to **Settings**.
 2. Open **Account -> Preferences**.
 
-## Configure appearance defaults
+## Configure appearance
 
-Set the defaults your team prefers:
+The **Appearance** section holds:
 
-- Theme (light/dark)
-- Default task view (board/list)
-- Compact mode
-- Sidebar default open/closed
+- **Theme**: **Light**, **Dark**, **System**, or the **High contrast light** and **High contrast dark** themes, which use stronger text, borders and focus rings. Margaya starts in the light theme until you pick another one.
+- **Language** of the interface.
+- **Time zone** (see [below](#set-your-time-zone)).
+- **First day of week** for calendars and weekly ranges: Sunday, Monday or Saturday.
+- **Default view** for tasks: **Board** or **List**.
+- **Sidebar default**: keep the sidebar expanded on startup.
+- **Customize sidebar** (see [below](#customize-the-sidebar)).
+
+<Screenshot src="account/preferences-appearance" alt="The Appearance section of Preferences with Theme, Language, Time zone, First day of week, Default view, Sidebar default and Customize sidebar" caption="Settings > Account > Preferences." />
+
+<Screenshot src="account/preferences-theme" alt="The Theme list open with Light, Dark, System, High contrast light and High contrast dark" caption="Five themes, including two high contrast ones." />
+
+Your theme, week start, display toggles, calendar and timeline choices, task activity order, the pages formatting toolbar and your sidebar layout are saved to your account, so they follow you to every browser you sign in on. Each browser also keeps a copy, so the app opens with your choices before it reaches the server.
+
+## Customize the sidebar
+
+Open **Customize sidebar** from your account menu (your avatar), or from **Account -> Preferences**. In the dialog you can:
+
+- reorder the main navigation (Home, Inbox, Your work, Projects, Pages and Analytics) and hide the ones you never use. Home is always shown, and **Settings** stays at the bottom;
+- reorder or hide the sections of the **Projects** panel: task lists and views, favorites, and projects. Filtering the panel always searches your projects, even when you hid them.
+
+<Screenshot src="account/customize-sidebar" alt="The Customize sidebar dialog listing the main navigation and the Projects panel sections, each with a visibility switch and move buttons" caption="Reorder or hide sidebar items; only you see the change." />
+
+Drag a row by its handle, or use the up and down arrow buttons, which work with the keyboard. Changes apply right away and only you see them; they don't change the workspace's project order. **Reset to default** brings back the standard layout.
 
 ## Set your time zone
 
-**Time zone** in **Account -> Preferences** is used for times the server writes for you: due-date reminders (which mention the due day) and email digests. Choose **Automatic (browser)** to save the time zone your browser reports, or pick one from the searchable list. Until you choose, the server uses UTC. The app itself always shows dates and times in your browser's time zone.
+**Time zone** in **Account -> Preferences** is used for times the server writes for you: due-date reminders (which mention the due day) and email digests. Choose **Automatic (browser)** to save the time zone your browser reports, or pick one from the searchable list. Until you choose, the server uses UTC. Task filters such as "due today" or "overdue", and analytics, count days in this time zone once you have chosen one (otherwise in your browser's). Times on screen stay in your browser's time zone.
 
 ## Configure task display options
 
-Toggle the fields you want visible in views:
+Under **Display options**, toggle the fields you want visible in task views:
 
-- Task numbers
-- Assignees
-- Due dates
-- Labels
-- Priority indicators
+- **Task numbers**
+- **Assignees**
+- **Due dates**
+- **Labels**
+- **Priority** indicators
+- **Estimates** on board cards
 
-If needed, use **Reset** in preferences to return to defaults.
+**Reset** next to the section title turns them all back to the defaults.
+
+<Screenshot src="account/display-options" alt="The Display options section with switches for task numbers, assignees, due dates, labels, priority and estimates, and a Reset button" caption="Choose what task cards and rows show." />
 
 ## Tune workspace and project settings
 
@@ -49,6 +72,7 @@ Workspace admins set **Time zone** in **Settings -> Workspace -> General** (it n
 
 - cycle status and day boundaries: a cycle ending on a day ends at midnight in this time zone
 - project automations (auto-archive and auto-close)
+- [repeating tasks](/core/functional/repeating-tasks) that are created on their date
 - analytics, when a request does not name its own time zone
 
 Pick a zone from the searchable list, or use the suggested browser time zone shown under it. Nothing changes until you save. Dates without a time, such as cycle start and end dates, keep their stored values.
@@ -67,7 +91,6 @@ Both must be workspace members. When someone leaves or is removed from the works
 ## Suggested baseline for most teams
 
 - Default view: Board
-- Compact mode: Off initially
 - Show assignees, due dates, labels, and priority: On
 
 Adjust once your team has 1-2 weeks of active usage.

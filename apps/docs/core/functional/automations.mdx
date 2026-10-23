@@ -1,11 +1,109 @@
 ---
-title: Automate Task Cleanup
-description: Let a project archive closed tasks and close stale open ones on a schedule, with a preview of what each rule will take
+title: Automate Your Workflow
+description: Build "When, If, Then" rules that react to task changes, and let a project archive closed tasks, close stale ones and roll unfinished cycle work over on a schedule
 ---
 
-Scheduled automations tidy up tasks nobody has touched for a while. Each project has two rules, both off by default. Margaya checks them every hour.
+A project has two kinds of automation:
 
-## Open the settings
+- **Automations** react to changes on tasks: "when a bug moves to In review, assign Priya and add the needs-qa label".
+- **Scheduled automations** tidy up tasks nobody has touched for a while and carry unfinished cycle work forward. Margaya checks them every hour.
+
+Neither uses AI to run. Every rule is off until you create or turn it on.
+
+## Automations: When, If, Then
+
+An automation rule has three parts:
+
+- **When**: the trigger, one change to a task of this project.
+- **If**: optional conditions the task must meet at that moment.
+- **Then**: one to ten actions, run in order on that task.
+
+To set them up, open **Settings**, then **Projects**, select your project and open the **Workflow** tab. The **Automations** section lists the project's rules. Each rule has a switch, how often it ran and when it last ran.
+
+<Screenshot src="tasks/automation-rules" alt="The Automations section of the Client support project with four rules, each with its trigger, number of actions, run count and last run, an edit and a delete button and a switch, plus New rule and three templates" caption="Rules run on their own as Automation once they're on." />
+
+### Triggers
+
+- A task is created. You can limit this to requests accepted from intake.
+- The status changes, optionally from or to particular columns.
+- Someone is assigned or unassigned, optionally only particular people.
+- A label is added or removed, optionally only particular labels.
+- The priority changes, optionally to particular priorities.
+- A due date is set.
+- The due date passes. Margaya checks every hour and fires once per task and due date, for open tasks whose due date passed in the last two days. Tasks in completed, cancelled or triage columns are left out.
+- A comment is added.
+- The task moves into a cycle or is added to a module.
+
+A rule fires whoever made the change: a person, an integration, the API or another rule.
+
+### Conditions
+
+Choose **All of these** or **Any of these**, then add conditions:
+
+- **Status** is or is not one of some columns.
+- **Labels** contain, or don't contain, one of some labels.
+- **Priority** is or is not one of some priorities.
+- **Assignee** is or is not one of some people, or is empty or not empty.
+- **Due date** is set or not set.
+- **Estimate** is set, not set, at least or at most a number of points.
+- **Title** contains or doesn't contain some text (case doesn't matter).
+- **Custom field** equals or doesn't equal a value.
+
+Use **Add group** to mix the two, for example "a bug, and either urgent or unassigned". Conditions check the task as it is right after the trigger. A rule without conditions runs every time its trigger happens.
+
+### Actions
+
+- **Set status**: move the task to a column.
+- **Assign** or **Unassign** people. Unassign with nobody chosen removes everyone.
+- **Add label** or **Remove label**. A new label name is created on the task.
+- **Set priority**.
+- **Set due date** a number of days after the rule runs, in the workspace's time zone.
+- **Add comment**.
+- **Move to cycle** or **Add to module**.
+- **Create subtask**: a new task under this one, in the first open column.
+- **Notify**: the assignees, the creator, the project lead or chosen people, with an optional message.
+- **Run agent**: start an [AI agent](/core/functional/ai-agents) on the task with your instructions, for example "Triage {{task.key}}: set a priority and look for duplicates". The run acts for the person who last saved the rule, capped at their rights, so saving a rule with this action needs the **Use AI** permission. It never starts for a change an agent made, so agents can't trigger each other through rules. This turns rules into event triggers for agents, with all of the rule's filters.
+
+Comments, subtask titles, messages and agent instructions can use variables: `{{task.title}}`, `{{task.key}}`, `{{task.status}}`, `{{task.priority}}`, `{{task.dueDate}}`, `{{project.name}}` and `{{rule.name}}`.
+
+Each action works exactly like the same change made by a person: it shows in the task's history, updates open boards live and sends the usual notifications. The history shows **Automation** as the actor, with the rule's name. The workspace audit log records each run that changed something, with **Automation** as the actor and the rule's id.
+
+<Screenshot src="tasks/automation-rule-editor" alt="The rule builder for Send bugs in review to QA: When the status changes to In Review, If the labels contain Bug, Then assign Priya Raman and add the label needs-qa, with Cancel and Save rule" caption="Build a rule from When, If and Then rows." />
+
+### Templates
+
+Start from a template and adjust it:
+
+- **Assign reviewer when moved to In review**: pick the reviewer, and they're assigned when a task enters review.
+- **Label bugs from intake**: requests accepted from intake that mention a bug or an error get the bug label.
+- **Escalate overdue tasks**: when a due date passes, the priority goes to urgent and the assignees are told.
+
+### Run history
+
+Choose **Run history** to see the latest runs: the rule, the task, the outcome and any action that failed. A run is listed when a rule's trigger and conditions matched.
+
+- **Done**: every action applied, or had nothing to change.
+- **Partly done** or **Failed**: some or all actions failed, for example because a cycle has ended. The other actions still ran.
+- **Skipped**: the loop guard or the rate limit stopped the rule.
+
+Runs are kept for 30 days. Self-hosted instances can change this with `AUTOMATION_RUN_RETENTION_DAYS` (0 keeps them).
+
+<Screenshot src="tasks/automation-run-history" alt="The run history: one Partly done run of Pull urgent work into the sprint whose Move to cycle action failed, and four Done runs, each with the rule, the task key and title, and when it ran" caption="Every run, newest first." />
+
+### Safety
+
+- **No loops**: changes made by a rule never trigger that same rule again. A chain of rules triggering each other stops after three rules. A task takes at most 20 runs a minute.
+- **Your project only**: a rule only acts on tasks of its own project. It can only name that project's columns, cycles, modules and custom fields, and people of the workspace.
+- **Restricted projects**: a rule can't assign or notify anyone who can't see the project.
+- **Never in the way**: rules run after the change that triggered them is saved. If a rule fails, the original change stands.
+
+Anyone who can see the project can see its rules and runs. Creating, editing, turning on or off and deleting rules needs permission to update projects. These actions are recorded in the audit log. External agents can list rules and turn them on or off through MCP with the same permission.
+
+## Scheduled automations
+
+Each project has three scheduled rules, all off by default.
+
+### Open the settings
 
 1. Go to **Settings**.
 2. Open **Projects** and select your project.
@@ -14,14 +112,16 @@ Scheduled automations tidy up tasks nobody has touched for a while. Each project
 
 Anyone who can see the project can view these settings. Changing them needs permission to update projects.
 
-## Auto-archive closed tasks
+<Screenshot src="tasks/scheduled-automations" alt="The Scheduled automations section with switches for Auto-archive closed tasks, Auto-close stale tasks and Roll over unfinished cycle work; auto-close asks for a Cancelled column first" caption="All three rules are off until you turn them on." />
+
+### Auto-archive closed tasks
 
 Archives tasks in a **Completed** or **Cancelled** column group that have not been updated for a while. Archived tasks keep their column and history, and you can bring them back from [Archives](/core/functional/archives).
 
 1. Turn on **Auto-archive closed tasks**.
 2. Pick **Archive after**: 1 to 12 months. The default is 3.
 
-## Auto-close stale tasks
+### Auto-close stale tasks
 
 Moves open tasks, including planned ones, that have not been updated for a while to a Cancelled column. Tasks in Triage are left alone.
 
@@ -32,7 +132,24 @@ Moves open tasks, including planned ones, that have not been updated for a while
 
 If that column is later deleted or moved out of the Cancelled group, auto-close pauses and the page shows "Auto-close is paused. Choose a column in the Cancelled group." Pick a valid column to resume. Closed tasks land at the bottom of the column and are no longer marked completed.
 
-## What counts as untouched
+### Roll over unfinished cycle work
+
+When a cycle ends, moves its unfinished tasks (backlog, not started or started) to the project's next cycle: the one that starts first after the ended cycle's last day. Completed and cancelled tasks stay with the ended cycle, and its progress report freezes, exactly as with a manual [Transfer](/core/functional/cycles#carry-work-forward).
+
+1. Make sure **Cycles** is on for the project. While it is off the switch is off-limits.
+2. Turn on **Roll over unfinished cycle work**.
+
+How it behaves:
+
+- A cycle ends at midnight after its end date in the workspace's time zone (**Settings -> Workspace -> General**). The hourly check picks it up within the hour.
+- Only cycles that end from the day before you turn the rule on are rolled over. Older completed cycles are left alone.
+- Each ended cycle is handled once. Tasks you add to it afterwards stay where you put them, and a second run never moves anything twice.
+- When there is no next cycle yet, nothing moves and the cycle notes "Rollover found no next cycle". Creating one later does not reopen it; use **Transfer** instead.
+- Each moved task gets a history entry with **Automation** as the actor: "moved this task from Sprint 1 to Sprint 2 when the cycle ended".
+- The project lead gets one summary notification per ended cycle, with how many tasks moved, or how many stayed because there was no next cycle. Projects without a lead send none.
+- The ended cycle's sidebar says what the rollover did.
+
+### What counts as untouched
 
 A task is untouched when it hasn't been updated for N calendar months. Margaya counts back N months from now on the same day and time, on the workspace's clock: the time zone set in **Settings -> Workspace -> General** (UTC unless changed). If that month is shorter, the last day of that month is used: three months before May 31 is February 28.
 
@@ -44,27 +161,60 @@ Auto-close also skips tasks that:
 
 Auto-archive applies the same untouched rule and the same cycle and module checks. Archived tasks and projects that are archived are never processed.
 
-## Preview before you commit
+### Preview before you commit
 
 Under a rule that is on, a line shows how many tasks match right now, such as "12 tasks match right now" or "10,000+ tasks match right now". It also shows when the rule last ran, or "Nothing archived yet" and "Nothing closed yet".
 
 When you turn a rule on or lower its months, and tasks already match, a dialog asks you to confirm. It says how many tasks will be archived or moved to which column within the next hour. Raising the months, turning a rule off and changing the column save without asking. Turning a rule off keeps its months and column for next time.
 
-## How changes appear
+### How changes appear
 
 - Each affected task gets a history entry with **Automation** as the actor, such as "archived this task after 3 months without updates" or "closed this task after 3 months without updates, moving it to Cancelled".
-- No notifications are sent to anyone.
+- Auto-archive and auto-close send no notifications. Cycle rollover sends one summary to the project lead.
 - Large backlogs are processed in batches over several hourly runs, so the count can take a few hours to reach zero.
 
 To undo an auto-archive, restore the tasks from Archives. To undo an auto-close, move the tasks back as you would any other task.
 
-## Tips
+### Tips
 
 - Start with a longer period such as 6 or 12 months and check the preview before shortening it.
 - Keep long-running work in a cycle or module you still use, so it is never closed by accident.
+- With cycle rollover on, create the next cycle before the current one ends, so unfinished work has somewhere to go.
+
+The same section also holds **Flow anomaly alerts**, a daily check that tells the project lead when work in progress, cycle time or throughput changes sharply. See [Forecast and risk](/core/functional/forecast-and-risk#flow-alerts).
+
+## Describe a rule in plain words
+
+When AI is on for the workspace and the project, the **Workflow** tab also shows **Rule from a description**. Type what you want, for example "when a GitHub pull request is merged, move the task to Done", and choose **Create rule**. AI writes the rule; it never runs inside it. The result is an ordinary rule that runs exactly like one you set up by hand, with no AI involved and no cost per run.
+
+It only writes rules the existing engines support:
+
+- **Automations**: When, If, Then rules on tasks, as described above. For example, "when a bug moves to In review, assign Priya and add the needs-qa label" becomes a rule that runs when the status changes to In review, if the labels contain bug, and then assigns Priya and adds needs-qa.
+- **Integration rules**: when a GitHub or Gitea branch gets a push, a pull request is opened or merged, or an issue is opened or closed, move the linked task to a column.
+- **Scheduled automations**: auto-archive, auto-close, cycle rollover and flow anomaly alerts, with their usual months and column.
+
+People, labels, cycles, modules and columns must exist in the project. Anything else is listed under **Not possible with automations** with a short reason, instead of a rule that would do something different, for example acting on another project or on other tasks.
+
+1. Describe the rule and choose **Create rule**.
+2. Check the rule in the usual controls and change anything you like: the When, If and Then rows of an automation, the integration, event and column, or the switches, months and column of a scheduled automation.
+3. Choose a period (the last 7, 30 or 90 days) and **Try on history** to see what the rule would have done.
+4. Choose **Save rule**. It is saved through the same settings as above, or choose **Discard**.
+
+<Screenshot src="ai/rule-from-description" alt="Rule from a description with the request When a bug moves to In review, assign Priya, add the needs-qa label and text the client; the part Text the client listed under Not possible with automations, the compiled rule in the When, If and Then rows, and Try on history listing two tasks that would have changed in the last 30 days" caption="AI writes an ordinary rule; Try on history replays it without AI." />
+
+**Try on history** is computed from the project's records; it doesn't use AI and changes nothing:
+
+- For an automation, it replays the project's history of that trigger in the period: status, assignee, label, priority, due date, comment, cycle and module changes, new tasks and passed due dates. The conditions are checked against each task as it is now, because history keeps only the changes; tasks that don't meet them are shown as left alone.
+- For an integration rule, it replays the branches, pull requests and issues linked to the project's tasks in that period. It reads each task's column at that moment from its history, and shows whether the task would have moved, was already there, or was left alone because it sat in a final column. Only the latest push of each branch is recorded.
+- For auto-archive and auto-close, it lists the tasks the first run would take, dated by when each crossed the months threshold, counted from its last update.
+- For cycle rollover, it lists the unfinished tasks of cycles that ended in the period and the cycle they would move to.
+- Flow anomaly alerts only notify the project lead, so there is nothing to replay.
+
+Creating rules this way needs permission to update projects and to use AI. The section is hidden when AI is off or when you can't change automations; the rules themselves keep working either way. See [Set up AI](/core/functional/ai-setup).
 
 ## Next
 
+- [Forecast and risk](/core/functional/forecast-and-risk)
 - [Archive and restore work](/core/functional/archives)
 - [Configure project workflows](/core/functional/configure-workflows)
 - [Turn on project features and column groups](/core/functional/project-features-and-column-groups)
