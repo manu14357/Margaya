@@ -3,6 +3,7 @@ import path from "node:path";
 import Image from "next/image";
 import type { GuideShot } from "@/lib/guides";
 import { cn } from "@/lib/utils";
+import { ScreenFrame } from "./screen-frame";
 
 const PRODUCT_DIR = path.join(process.cwd(), "public", "images", "product");
 
@@ -38,28 +39,21 @@ export function ProductShot({
   const image = "block h-auto w-full";
 
   return (
-    <figure className={className}>
-      <div className="overflow-hidden rounded-xl border border-border/80 bg-muted shadow-[0_1px_2px_rgb(0_0_0/0.04),0_12px_32px_-12px_rgb(0_0_0/0.18)]">
-        <Image
-          alt={shot.alt}
-          className={cn(image, "dark:hidden")}
-          height={light.height}
-          src={`/images/product/${shot.view}-light.png`}
-          width={light.width}
-        />
-        <Image
-          alt={shot.alt}
-          className={cn(image, "hidden dark:block")}
-          height={dark.height}
-          src={`/images/product/${shot.view}-dark.png`}
-          width={dark.width}
-        />
-      </div>
-      {shot.caption ? (
-        <figcaption className="mt-3 text-muted-foreground text-sm">
-          {shot.caption}
-        </figcaption>
-      ) : null}
-    </figure>
+    <ScreenFrame caption={shot.caption} className={className}>
+      <Image
+        alt={shot.alt}
+        className={cn(image, "dark:hidden")}
+        height={light.height}
+        src={`/images/product/${shot.view}-light.png`}
+        width={light.width}
+      />
+      <Image
+        alt={shot.alt}
+        className={cn(image, "hidden dark:block")}
+        height={dark.height}
+        src={`/images/product/${shot.view}-dark.png`}
+        width={dark.width}
+      />
+    </ScreenFrame>
   );
 }

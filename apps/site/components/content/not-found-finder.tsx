@@ -54,7 +54,7 @@ export function NotFoundFinder({ links }: { links: FinderLink[] }) {
   };
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-[0_1px_2px_rgb(0_0_0/0.04),0_16px_40px_-20px_rgb(0_0_0/0.25)]">
+    <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
       <div className="flex items-center gap-3 border-border/70 border-b px-4">
         <Search
           aria-hidden="true"

@@ -234,7 +234,7 @@ export function GuidePage({ data }: { data: Guide }) {
                 ) : null}
               </ol>
             </nav>
-            <h1 className="mt-6 text-balance font-medium text-4xl leading-[1.08] md:text-[3.25rem]">
+            <h1 className="mt-6 text-balance font-medium text-[2.5rem] leading-[1.08] tracking-[-0.03em] md:text-[3.25rem]">
               {data.question}
             </h1>
             <p className="mt-6 text-balance text-lg text-muted-foreground leading-relaxed md:text-xl">

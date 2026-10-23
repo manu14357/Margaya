@@ -109,10 +109,10 @@ export function PricingPlans() {
 
   return (
     <div>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col items-center gap-3 text-center">
         <fieldset>
           <legend className="sr-only">{copy.label}</legend>
-          <div className="inline-flex rounded-xl border border-border bg-sidebar p-1">
+          <div className="inline-flex rounded-xl border border-border bg-muted p-1">
             {(["monthly", "annual"] as const).map((value) => (
               <label
                 key={value}
@@ -128,7 +128,7 @@ export function PricingPlans() {
                 />
                 {copy[value]}
                 {value === "annual" && (
-                  <span className="rounded-md bg-foreground/[0.06] px-1.5 py-0.5 text-foreground text-xs">
+                  <span className="rounded-md bg-foreground/[0.06] px-1.5 py-0.5 text-foreground text-xs tabular-nums">
                     {copy.saving}
                   </span>
                 )}
@@ -139,17 +139,15 @@ export function PricingPlans() {
         <p className="text-muted-foreground text-sm">{pricing.trialNote}</p>
       </div>
 
-      <ul className="mt-8 grid gap-5 lg:grid-cols-3">
+      <ul className="mt-10 grid gap-4 lg:grid-cols-3">
         {cards(interval).map((card) => {
           const Icon = card.icon;
           return (
             <li
               key={card.key}
               className={cn(
-                "flex flex-col rounded-2xl border p-6 md:p-7",
-                card.featured
-                  ? "border-primary bg-primary text-primary-foreground shadow-xl"
-                  : "border-border bg-card",
+                "flex flex-col rounded-xl border bg-card p-6 md:p-7",
+                card.featured ? "border-primary/50" : "border-border",
               )}
             >
               <div className="flex items-center justify-between gap-3">
@@ -158,19 +156,12 @@ export function PricingPlans() {
                   {card.name}
                 </h2>
                 {card.badge ? (
-                  <span className="rounded-full border border-primary-foreground/20 px-2.5 py-0.5 text-xs">
+                  <span className="rounded-full border border-primary/30 px-2.5 py-0.5 font-medium text-primary text-xs">
                     {card.badge}
                   </span>
                 ) : null}
               </div>
-              <p
-                className={cn(
-                  "mt-1 text-sm",
-                  card.featured
-                    ? "text-primary-foreground/70"
-                    : "text-muted-foreground",
-                )}
-              >
+              <p className="mt-1 text-muted-foreground text-sm">
                 {card.tagline}
               </p>
 
@@ -188,25 +179,11 @@ export function PricingPlans() {
                   respectMotionPreference
                   className="font-medium text-5xl tabular-nums tracking-tight"
                 />
-                <span
-                  className={cn(
-                    "text-sm",
-                    card.featured
-                      ? "text-primary-foreground/70"
-                      : "text-muted-foreground",
-                  )}
-                >
+                <span className="text-muted-foreground text-sm">
                   {card.period}
                 </span>
               </p>
-              <p
-                className={cn(
-                  "mt-1.5 min-h-5 text-sm",
-                  card.featured
-                    ? "text-primary-foreground/70"
-                    : "text-muted-foreground",
-                )}
-              >
+              <p className="mt-1.5 min-h-5 text-muted-foreground text-sm">
                 {card.note}
               </p>
 
@@ -215,45 +192,23 @@ export function PricingPlans() {
                 className={cn(
                   "mt-7 inline-flex h-11 items-center justify-center gap-2 rounded-lg border px-4 font-medium text-sm transition-colors",
                   card.featured
-                    ? "border-primary-foreground bg-primary-foreground text-primary hover:bg-primary-foreground/90"
-                    : "border-input bg-popover text-foreground shadow-xs/5 hover:bg-accent/50 dark:bg-input/32 dark:hover:bg-input/64",
+                    ? "border-primary bg-primary text-primary-foreground hover:bg-primary/90"
+                    : "border-input bg-popover text-foreground hover:bg-accent/50 dark:bg-input/32 dark:hover:bg-input/64",
                   FOCUS,
-                  card.featured &&
-                    "focus-visible:ring-primary-foreground focus-visible:ring-offset-primary",
                 )}
               >
                 {card.cta}
                 <ArrowRight aria-hidden className="size-4" />
               </a>
 
-              <ul
-                className={cn(
-                  "mt-7 flex flex-col gap-3 border-t pt-6 text-sm",
-                  card.featured
-                    ? "border-primary-foreground/15"
-                    : "border-border",
-                )}
-              >
+              <ul className="mt-7 flex flex-col gap-3 border-border border-t pt-6 text-sm">
                 {card.points.map((point) => (
                   <li key={point} className="flex items-start gap-2.5">
                     <Check
                       aria-hidden
-                      className={cn(
-                        "mt-0.5 size-4 shrink-0",
-                        card.featured
-                          ? "text-primary-foreground"
-                          : "text-foreground",
-                      )}
+                      className="mt-0.5 size-4 shrink-0 text-muted-foreground"
                     />
-                    <span
-                      className={
-                        card.featured
-                          ? "text-primary-foreground/90"
-                          : "text-foreground/85"
-                      }
-                    >
-                      {point}
-                    </span>
+                    <span className="text-foreground/85">{point}</span>
                   </li>
                 ))}
               </ul>

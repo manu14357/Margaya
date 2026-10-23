@@ -2,6 +2,7 @@
 
 import {
   ApiDemo,
+  AskDemo,
   CyclesDemo,
   DocsSlashDemo,
   DocsTasksDemo,
@@ -48,6 +49,7 @@ const scenes: Partial<Record<string, SceneComponent | "pending">> = {
   "automate.api": ApiDemo,
   "automate.mcp": McpDemo,
   "automate.jira": JiraImportDemo,
+  "ai.ask": AskDemo,
   "selfHost.safety": TrustDemo,
 };
 

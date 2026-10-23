@@ -108,7 +108,7 @@ export function LegalPage({
       />
       <Navbar />
       <main className="min-h-screen bg-background text-foreground">
-        <section className="px-4 pt-14 pb-12 md:px-6 md:pt-20 md:pb-16 lg:pt-24">
+        <section className="px-4 pt-16 pb-12 sm:px-6 md:pt-24 md:pb-16">
           <div className="mx-auto w-full max-w-6xl">
             <PageIntro
               eyebrow={legalChrome.eyebrow}
@@ -147,7 +147,7 @@ export function LegalPage({
             <article className="min-w-0 max-w-[68ch]">
               <section
                 aria-labelledby="summary-title"
-                className="rounded-2xl border border-border bg-sidebar p-6"
+                className="rounded-2xl border border-border bg-card p-6"
               >
                 <h2 id="summary-title" className="font-medium text-lg">
                   {document.summaryTitle}

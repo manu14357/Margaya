@@ -26,7 +26,7 @@ function Cover({
       <div
         aria-hidden="true"
         className={cn(
-          "relative flex aspect-[1200/630] flex-col justify-between overflow-hidden rounded-xl border border-border/80 bg-[linear-gradient(160deg,var(--muted),transparent_70%)] p-5 transition-colors group-hover:border-foreground/25 md:p-6",
+          "relative flex aspect-[1200/630] flex-col justify-between overflow-hidden rounded-xl border border-border bg-muted/50 p-5 transition-colors group-hover:border-foreground/25 md:p-6",
           className,
         )}
       >
@@ -44,7 +44,7 @@ function Cover({
               className={cn(
                 "rounded-full border px-2.5 py-1 text-[0.6875rem] leading-none",
                 tool === "Margaya"
-                  ? "border-foreground bg-foreground text-background"
+                  ? "border-primary/40 bg-background font-medium text-primary"
                   : "border-border bg-background text-foreground/70",
               )}
               key={tool}
@@ -60,13 +60,13 @@ function Cover({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-xl border border-border/80 bg-muted",
+        "overflow-hidden rounded-xl border border-border bg-muted transition-colors group-hover:border-foreground/25",
         className,
       )}
     >
       <Image
         alt=""
-        className="aspect-[1200/630] h-auto w-full object-cover transition-transform duration-500 group-hover:scale-[1.02] motion-reduce:transition-none"
+        className="aspect-[1200/630] h-auto w-full object-cover"
         height={630}
         loading={eager ? "eager" : "lazy"}
         src={post.image}
@@ -105,7 +105,7 @@ export function BlogPostCard({
     return (
       <a
         className={cn(
-          "group grid gap-6 rounded-2xl border border-border/80 bg-card p-3 transition-colors hover:border-foreground/25 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-center md:gap-10 md:p-4",
+          "group grid gap-6 rounded-2xl border border-border bg-card p-3 transition-colors hover:border-foreground/25 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-center md:gap-10 md:p-4",
           FOCUS,
         )}
         href={blogPath(post.slug)}

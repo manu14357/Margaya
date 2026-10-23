@@ -57,7 +57,7 @@ export function AlternativesGrid({
                 className={cn(
                   "inline-flex min-h-10 items-center gap-2 rounded-full border px-4 font-medium text-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                   active
-                    ? "border-primary bg-primary text-primary-foreground"
+                    ? "border-foreground/25 bg-muted text-foreground"
                     : "border-border text-muted-foreground hover:border-foreground/25 hover:text-foreground",
                 )}
               >
@@ -65,7 +65,9 @@ export function AlternativesGrid({
                 <span
                   className={cn(
                     "tabular-nums text-xs",
-                    active ? "opacity-70" : "text-muted-foreground/80",
+                    active
+                      ? "text-muted-foreground"
+                      : "text-muted-foreground/80",
                   )}
                 >
                   {option.count}
@@ -92,7 +94,7 @@ export function AlternativesGrid({
                 <span className="flex items-start justify-between gap-3">
                   <span
                     aria-hidden="true"
-                    className="flex size-10 items-center justify-center rounded-lg border border-border bg-sidebar font-medium text-sm"
+                    className="flex size-10 items-center justify-center rounded-lg border border-border bg-muted font-medium text-sm"
                   >
                     {card.competitor.slice(0, 1).toUpperCase()}
                   </span>

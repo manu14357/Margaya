@@ -16,12 +16,8 @@ export function CtaBand({
   return (
     <aside
       aria-labelledby="cta-band-title"
-      className="relative overflow-hidden rounded-2xl border border-border/80 bg-card p-6 md:p-8"
+      className="rounded-2xl border border-border bg-card p-6 md:p-8"
     >
-      <div
-        aria-hidden="true"
-        className="absolute inset-y-0 left-0 w-1 bg-foreground"
-      />
       <h2
         className="text-balance font-medium text-xl leading-tight md:text-2xl"
         id="cta-band-title"
@@ -33,7 +29,7 @@ export function CtaBand({
       </p>
       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
         <a
-          className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 font-medium text-primary-foreground text-sm transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
+          className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
           href={siteLinks.signUp}
         >
           Start a free trial

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 /**
- * A hairline across the top of the viewport that fills as the reader moves
+ * A neutral hairline across the top of the viewport that fills as the reader moves
  * through the element with `targetId`. It writes the transform directly, so
  * scrolling never re-renders React.
  */
@@ -46,7 +46,10 @@ export function ReadingProgress({ targetId }: { targetId: string }) {
       aria-hidden="true"
       className="pointer-events-none fixed inset-x-0 top-0 z-50 h-0.5"
     >
-      <div className="h-full origin-left scale-x-0 bg-foreground" ref={bar} />
+      <div
+        className="h-full origin-left scale-x-0 bg-foreground/30"
+        ref={bar}
+      />
     </div>
   );
 }

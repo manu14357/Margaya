@@ -83,7 +83,7 @@ describe("SiteLandingProviders", () => {
     expect(screen.getAllByText("Pricing").length).toBeGreaterThan(0);
     expect(fetch).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByRole("button", { name: "Theme: System" }));
+    fireEvent.click(screen.getByRole("button", { name: "Theme: Light" }));
     fireEvent.click(screen.getByRole("menuitemradio", { name: "Dark" }));
     expect(localStorage.getItem(THEME_STORAGE_KEY)).toBe("dark");
     expect(document.documentElement.classList.contains("dark")).toBe(true);

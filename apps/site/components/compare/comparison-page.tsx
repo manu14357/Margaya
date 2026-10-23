@@ -1,7 +1,9 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { ArrowRight, ArrowUpRight, ChevronDown } from "lucide-react";
-import { FadeIn } from "@/components/landing/fade-in";
+import { ClosingCta } from "@/components/content/closing-cta";
+import { CtaLink } from "@/components/content/cta-link";
+import { ScreenFrame } from "@/components/content/screen-frame";
 import { Footer } from "@/components/landing/footer";
 import {
   breadcrumbJsonLd,
@@ -9,7 +11,6 @@ import {
   JsonLd,
 } from "@/components/landing/json-ld";
 import { Navbar } from "@/components/landing/navbar";
-import { Button } from "@/components/ui/button";
 import {
   alternativePath,
   type Comparison,
@@ -65,7 +66,7 @@ function SectionHeading({
       ) : null}
       <h2
         id={id}
-        className="mt-2 text-balance font-medium text-2xl leading-tight md:text-3xl"
+        className="mt-2 text-balance font-medium text-2xl leading-[1.15] tracking-[-0.02em] md:text-3xl"
       >
         {title}
       </h2>
@@ -125,10 +126,10 @@ export function ComparisonPage({ data }: { data: Comparison }) {
       <Navbar />
       <main className="min-h-screen bg-background text-foreground">
         {/* Hero */}
-        <section className="px-4 pt-12 pb-14 md:px-6 md:pt-20 md:pb-20">
+        <section className="px-4 pt-12 pb-16 sm:px-6 md:pt-20 md:pb-24">
           <div className="mx-auto w-full max-w-6xl">
             <nav aria-label="Breadcrumb">
-              <ol className="flex flex-wrap items-center gap-1.5 text-muted-foreground text-sm">
+              <ol className="flex flex-wrap items-center justify-center gap-1.5 text-muted-foreground text-sm">
                 <li>
                   <a
                     href="/alternatives"
@@ -143,76 +144,63 @@ export function ComparisonPage({ data }: { data: Comparison }) {
                 </li>
               </ol>
             </nav>
-            <div className="mt-6 grid items-end gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
-              <header>
-                <h1 className="text-balance font-medium text-4xl leading-[1.05] md:text-6xl">
-                  Margaya{" "}
-                  <span className="text-muted-foreground">
-                    vs {data.competitor}
-                  </span>
-                </h1>
-                <p className="mt-6 max-w-xl text-balance text-lg leading-relaxed md:text-xl">
-                  {data.verdict}
-                </p>
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <Button
-                    size="lg"
-                    className="h-12 px-5 text-sm sm:h-12"
-                    render={<a href={siteLinks.signUp} />}
-                  >
-                    Try Margaya Cloud
-                    <ArrowRight aria-hidden="true" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="h-12 px-5 text-sm sm:h-12"
-                    render={<a href={siteLinks.selfHost} />}
-                  >
-                    Self-host for free
-                  </Button>
-                </div>
-                <p className="mt-6 flex flex-wrap gap-x-2 gap-y-1 text-muted-foreground text-xs">
-                  <span>{categoryLabels.join(" · ")}</span>
-                  <span aria-hidden="true">·</span>
-                  <span>
-                    {data.competitor} details reviewed{" "}
-                    <time dateTime={data.reviewedOn}>
-                      {formatReviewed(data.reviewedOn)}
-                    </time>
-                  </span>
-                </p>
-              </header>
-              <FadeIn delay={120}>
-                <figure className="overflow-hidden rounded-xl border border-border bg-sidebar shadow-sm">
-                  {/* biome-ignore lint/performance/noImgElement: the static export serves screenshots as-is, one per theme. */}
-                  <img
-                    src={`/images/product/${view}-light.png`}
-                    alt={`Margaya's ${view} view`}
-                    width={1728}
-                    height={1000}
-                    loading="eager"
-                    className="block h-auto w-full dark:hidden"
-                  />
-                  {/* biome-ignore lint/performance/noImgElement: see above. */}
-                  <img
-                    src={`/images/product/${view}-dark.png`}
-                    alt={`Margaya's ${view} view`}
-                    width={1728}
-                    height={1000}
-                    loading="eager"
-                    className="hidden h-auto w-full dark:block"
-                  />
-                </figure>
-              </FadeIn>
-            </div>
+            <header className="mx-auto mt-6 flex max-w-3xl flex-col items-center text-center">
+              <h1 className="text-balance font-medium text-[2.5rem] leading-[1.08] tracking-[-0.03em] sm:text-5xl md:text-6xl">
+                Margaya{" "}
+                <span className="text-muted-foreground">
+                  vs {data.competitor}
+                </span>
+              </h1>
+              <p className="mt-6 max-w-xl text-pretty text-base text-muted-foreground leading-relaxed sm:text-lg">
+                {data.verdict}
+              </p>
+              <div className="mt-9 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row [&>*]:w-full sm:[&>*]:w-auto">
+                <CtaLink href={siteLinks.signUp}>
+                  Try Margaya Cloud
+                  <ArrowRight aria-hidden="true" />
+                </CtaLink>
+                <CtaLink href={siteLinks.selfHost} variant="outline">
+                  Self-host for free
+                </CtaLink>
+              </div>
+              <p className="mt-6 flex flex-wrap justify-center gap-x-2 gap-y-1 text-muted-foreground text-xs">
+                <span>{categoryLabels.join(" · ")}</span>
+                <span aria-hidden="true">·</span>
+                <span>
+                  {data.competitor} details reviewed{" "}
+                  <time dateTime={data.reviewedOn}>
+                    {formatReviewed(data.reviewedOn)}
+                  </time>
+                </span>
+              </p>
+            </header>
+            <ScreenFrame className="mx-auto mt-14 max-w-5xl md:mt-20">
+              {/* biome-ignore lint/performance/noImgElement: the static export serves screenshots as-is, one per theme. */}
+              <img
+                src={`/images/product/${view}-light.png`}
+                alt={`Margaya's ${view} view`}
+                width={1728}
+                height={1000}
+                loading="eager"
+                className="block h-auto w-full dark:hidden"
+              />
+              {/* biome-ignore lint/performance/noImgElement: see above. */}
+              <img
+                src={`/images/product/${view}-dark.png`}
+                alt={`Margaya's ${view} view`}
+                width={1728}
+                height={1000}
+                loading="eager"
+                className="hidden h-auto w-full dark:block"
+              />
+            </ScreenFrame>
           </div>
         </section>
 
         {/* At a glance */}
         <section
           aria-labelledby="compare-glance"
-          className="border-border border-t px-4 py-16 md:px-6 md:py-20"
+          className="px-4 py-16 sm:px-6 md:py-20"
         >
           <div className="mx-auto w-full max-w-6xl">
             <SectionHeading id="compare-glance" title="At a glance" />
@@ -250,7 +238,7 @@ export function ComparisonPage({ data }: { data: Comparison }) {
         {/* Feature table */}
         <section
           aria-labelledby="compare-features"
-          className="border-border border-t px-4 py-16 md:px-6 md:py-20"
+          className="px-4 py-16 sm:px-6 md:py-20"
         >
           <div className="mx-auto w-full max-w-6xl">
             <div className="flex flex-wrap items-end justify-between gap-6">
@@ -270,7 +258,7 @@ export function ComparisonPage({ data }: { data: Comparison }) {
         {/* Where they shine / where Margaya differs */}
         <section
           aria-labelledby="compare-shines"
-          className="border-border border-t px-4 py-16 md:px-6 md:py-20"
+          className="px-4 py-16 sm:px-6 md:py-20"
         >
           <div className="mx-auto grid w-full max-w-6xl gap-14 lg:grid-cols-2 lg:gap-12">
             <div>
@@ -283,7 +271,7 @@ export function ComparisonPage({ data }: { data: Comparison }) {
                 {data.shines.map((point) => (
                   <li
                     key={point.title}
-                    className="rounded-xl border border-border p-5 md:p-6"
+                    className="rounded-xl border border-border bg-card p-5 md:p-6"
                   >
                     <h3 className="font-medium">{point.title}</h3>
                     <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
@@ -303,7 +291,7 @@ export function ComparisonPage({ data }: { data: Comparison }) {
                 {data.different.map((point) => (
                   <li
                     key={point.title}
-                    className="rounded-xl border border-border bg-sidebar p-5 md:p-6"
+                    className="rounded-xl border border-border bg-card p-5 md:p-6"
                   >
                     <h3 className="font-medium">{point.title}</h3>
                     <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
@@ -319,7 +307,7 @@ export function ComparisonPage({ data }: { data: Comparison }) {
         {/* Migration */}
         <section
           aria-labelledby="compare-migrate"
-          className="border-border border-t px-4 py-16 md:px-6 md:py-20"
+          className="px-4 py-16 sm:px-6 md:py-20"
         >
           <div className="mx-auto grid w-full max-w-6xl items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
             <SectionHeading
@@ -353,7 +341,7 @@ export function ComparisonPage({ data }: { data: Comparison }) {
               <li>
                 <a
                   href={EXPORT_DOCS}
-                  className="group flex items-start justify-between gap-4 rounded-xl border border-border p-5 outline-none transition-colors hover:border-foreground/25 focus-visible:ring-2 focus-visible:ring-ring"
+                  className="group flex items-start justify-between gap-4 rounded-xl border border-border bg-card p-5 outline-none transition-colors hover:border-foreground/25 focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   <span>
                     <span className="block font-medium">Export, any time</span>
@@ -375,7 +363,7 @@ export function ComparisonPage({ data }: { data: Comparison }) {
         {/* FAQ */}
         <section
           aria-labelledby="compare-faq"
-          className="border-border border-t px-4 py-16 md:px-6 md:py-20"
+          className="px-4 py-16 sm:px-6 md:py-20"
         >
           <div className="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
             <SectionHeading
@@ -409,7 +397,7 @@ export function ComparisonPage({ data }: { data: Comparison }) {
         {related.length > 0 ? (
           <nav
             aria-labelledby="compare-related"
-            className="border-border border-t px-4 py-14 md:px-6 md:py-16"
+            className="px-4 py-16 sm:px-6 md:py-20"
           >
             <div className="mx-auto w-full max-w-6xl">
               <div className="flex flex-wrap items-baseline justify-between gap-4">
@@ -447,39 +435,22 @@ export function ComparisonPage({ data }: { data: Comparison }) {
             </div>
           </nav>
         ) : null}
-        {/* Final CTA */}
-        <section
-          aria-labelledby="compare-cta"
-          className="px-4 pt-4 pb-16 md:px-6 md:pb-20"
-        >
-          <div className="mx-auto w-full max-w-6xl rounded-2xl bg-primary px-6 py-14 text-center text-primary-foreground md:px-12 md:py-16">
-            <h2
-              id="compare-cta"
-              className="mx-auto max-w-2xl text-balance font-medium text-3xl leading-tight md:text-4xl"
-            >
-              See how your team works in Margaya
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-balance text-lg leading-relaxed opacity-75">
-              Start in Margaya Cloud, or run it on your own server for free. The
-              product is the same either way.
-            </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <a
-                href={siteLinks.signUp}
-                className="inline-flex h-12 items-center gap-2 rounded-lg bg-primary-foreground px-5 font-medium text-primary text-sm outline-none transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
-              >
+        <ClosingCta
+          id="compare-cta"
+          title="See how your team works in Margaya"
+          description="Start in Margaya Cloud, or run it on your own server for free. The product is the same either way."
+          actions={
+            <>
+              <CtaLink href={siteLinks.signUp}>
                 Try Margaya Cloud
-                <ArrowRight aria-hidden="true" className="size-4" />
-              </a>
-              <a
-                href={siteLinks.selfHost}
-                className="inline-flex h-12 items-center rounded-lg border border-primary-foreground/25 px-5 font-medium text-sm outline-none transition-colors hover:bg-primary-foreground/10 focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
-              >
+                <ArrowRight aria-hidden="true" />
+              </CtaLink>
+              <CtaLink href={siteLinks.selfHost} variant="outline">
                 Read the install guide
-              </a>
-            </div>
-          </div>
-        </section>
+              </CtaLink>
+            </>
+          }
+        />
       </main>
       <Footer />
     </>
