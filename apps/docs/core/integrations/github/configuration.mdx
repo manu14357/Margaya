@@ -136,35 +136,40 @@ Once your environment variables are configured and your backend is restarted, yo
 
 <Steps>
 <Step>
-**Navigate to Project Settings**
+**Open the project's integrations**
 
-1. Open your Margaya project
-2. Go to **Project settings**
-3. Find the **GitHub integration** section
+1. Select **Settings** at the bottom of the left rail, then **Projects**.
+2. Pick the project in the project switcher and open **Project integrations**.
+3. Expand **GitHub integration** under **Code hosting**.
 </Step>
 
 <Step>
-**Connect Repository**
+**Connect your GitHub account**
 
-You have two options to connect a repository:
+Margaya checks that you administer the repository before it links it. If your Margaya account isn't linked to GitHub yet, the section asks you to select **Connect GitHub** and approve the link on GitHub. This needs [GitHub sign-in](/core/social-providers/github) to be set up on the instance; until it is, the section says *Ask your instance administrator to enable GitHub sign-in*.
+</Step>
 
-**Option A: Browse Repositories**
-1. Click "Browse Repositories"
-2. Select from repositories where your GitHub App is installed
-3. Click on the desired repository
+<Step>
+**Choose the repository**
 
-**Option B: Manual Entry**
+You have two options:
+
+**Option A: Browse**
+1. Select **Browse**
+2. Pick from the repositories where your GitHub App is installed
+
+**Option B: Manual entry**
 1. Enter the **Repository owner** (username or organization)
 2. Enter the **Repository name**
-3. Click "Verify Installation"
+3. Select **Verify** to check that the GitHub App is installed on it
+
+<Screenshot src="integrations/github" alt="The GitHub integration expanded, with the account verification notice, the Not connected status, repository owner and name filled in, and Browse, Verify and Connect buttons" caption="Enter or browse for the repository, verify it, then connect." />
 </Step>
 
 <Step>
-**Verify and Connect**
+**Connect**
 
-1. Margaya will verify that your GitHub App has access
-2. If successful, click "Connect Repository"
-3. You should see a green "Connected" status
+Select **Connect**. The connection status changes from **Not connected** to **Connected**.
 
 <Check>
 Once connected, new tasks created in this project will automatically generate GitHub issues!

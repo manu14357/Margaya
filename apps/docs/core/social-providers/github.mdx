@@ -13,7 +13,15 @@ GitHub is a social provider for Margaya. It allows users to sign in to Margaya u
 2. Create a new OAuth app.
 3. Set the redirect URI to `MARGAYA_API_URL/api/auth/callback/github`.
 4. Copy the client ID and client secret.
-5. Set `GITHUB_OAUTH_CLIENT_ID` and `GITHUB_OAUTH_CLIENT_SECRET` (or the legacy `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` if you prefer).
+
+### Add the credentials
+
+Use either of these:
+
+- **In the app.** As an [instance admin](/core/installation/instance-admin), open **Settings** > **Instance** > **Authentication** and select **Configure** next to GitHub. Copy the **Callback URL** from the panel into your OAuth app, paste the **Client ID** and **Client secret**, and select **Save**. No restart is needed.
+- **With environment variables.** Set `GITHUB_OAUTH_CLIENT_ID` and `GITHUB_OAUTH_CLIENT_SECRET` (or the legacy `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`) and restart Margaya. The provider is then managed by the environment and read-only in the app.
+
+<Screenshot src="admin/oauth-github" alt="The Configure GitHub panel in instance authentication settings, with the callback URL to copy and fields for the client ID and client secret" caption="The panel shows the exact callback URL to register with GitHub." />
 
 For more information on what your `MARGAYA_API_URL` is, see the [Environment variables](/core/installation/environment-variables#github-sso) page.
 

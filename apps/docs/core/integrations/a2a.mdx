@@ -1,0 +1,195 @@
+---
+title: A2A (agent-to-agent)
+description: Let external AI agents hand work to Margaya over the A2A protocol, with each person's own permissions and a full audit trail.
+---
+
+[A2A](https://a2a-protocol.org) is an open protocol that lets one AI agent hand
+work to another. MCP connects an agent to tools; A2A lets it delegate a whole
+piece of work. Margaya is an **A2A 1.0 server**. An external agent can:
+
+- create a task;
+- submit a request for triage;
+- ask a question about the workspace;
+- hand a task to one of your [Margaya agents](/core/functional/ai-agents).
+
+Margaya then records the outcome.
+
+A2A is **off by default**. While it is off in every workspace, Margaya serves no
+Agent Card and accepts no A2A requests.
+
+## Turn it on
+
+1. Open **Settings** > **Workspace** > **General**.
+2. Turn on **Agent-to-agent (A2A)**.
+
+<Screenshot src="integrations/a2a-toggle" alt="The workspace general settings with the Public pages switch on and the Agent-to-agent (A2A) switch, which is off until you turn it on" caption="A2A is off until a workspace admin turns it on." />
+
+You need permission to change workspace settings. Turning A2A on or off is
+recorded in the audit log as a workspace change. While A2A is off, the
+workspace answers every A2A request as if it did not exist, including requests
+about tasks created earlier.
+
+## How external agents authenticate
+
+An external agent always acts as a **person in your workspace**. It sends one of
+these:
+
+- **An API key**, as `Authorization: Bearer <key>` or `x-api-key`. Create a
+  dedicated key under **Settings** > **Account** > **API keys**. Give it only
+  the access the agent needs, for example **Custom** with write access to tasks
+  and intake, limited to the projects it should reach.
+- **An OAuth access token**, from the same authorization server the
+  [MCP endpoint](/core/integrations/mcp) uses. The discovery document is at
+  `/.well-known/oauth-protected-resource/api/a2a`.
+
+Every request is an ordinary call to Margaya's API with that credential. The
+agent can't do anything its person couldn't do:
+
+- Read-only keys can't create anything.
+- Restricted projects the person isn't a member of can't be targeted.
+- Project-scoped keys stay inside their projects.
+- Viewers can't create tasks.
+
+Margaya's own agents can't call A2A, so agents can't hand work to each other
+in a loop.
+
+## Discovery
+
+The public Agent Card is at:
+
+```
+https://your-margaya-instance.com/.well-known/agent-card.json
+```
+
+It is also served at `/api/.well-known/agent-card.json`. The card describes:
+
+- the endpoint (`/api/a2a`, JSON-RPC binding, protocol version `1.0`);
+- the authentication schemes;
+- the skills.
+
+It never names a workspace, project, person or internal ID. The AI skills are
+listed only while AI is on for the instance.
+
+An authenticated agent can call `GetExtendedAgentCard`. That card lists one
+interface for each workspace the person may hand work to, with the workspace
+slug as its `tenant`.
+
+## Skills
+
+Each message chooses a skill with a JSON data part
+(`{"skill": "...", ...}`) or with `metadata.skill`. Text parts carry the
+content. File parts are refused.
+
+| Skill | What it does | Data fields | Result |
+| --- | --- | --- | --- |
+| `triage_request` (default) | Submits the work to a project's [intake](/core/functional/intake) queue. | `project` (slug or ID), optional `title` and `priority` | Stays submitted until someone triages it. |
+| `create_task` | Creates a task directly. | `project`, optional `title`, `description`, `priority`, `status` (a column slug), `dueDate` | Completes at once, with the task as an artifact. |
+| `ask_workspace` | Answers a question from the tasks, pages and comments the person can see, with cited sources. Needs AI. | optional `project` and `locale` | Completes at once, with the answer and its sources. |
+| `run_agent` | Hands a task to a Margaya agent. Needs AI. | `agent` (name or ID), `task` (task ID) | Follows the agent run. |
+
+For `create_task` and `triage_request`, the first line of the text becomes the
+title and the rest becomes the description, unless `title` is set.
+
+Example request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "SendMessage",
+  "params": {
+    "tenant": "acme",
+    "message": {
+      "messageId": "3f1c…",
+      "role": "ROLE_USER",
+      "parts": [
+        { "text": "Checkout fails for EU cards\nSeen since Tuesday's deploy." },
+        { "data": { "skill": "create_task", "project": "web", "priority": "high" } }
+      ]
+    }
+  }
+}
+```
+
+Send the `A2A-Version: 1.0` header. Requests that ask for another version get
+`VersionNotSupportedError` (`-32009`). A request without the header is accepted
+when it uses a 1.0 method name.
+
+## Task lifecycle
+
+Margaya supports these methods:
+
+- `SendMessage`
+- `SendStreamingMessage`
+- `GetTask`
+- `ListTasks`
+- `CancelTask`
+- `SubscribeToTask`
+- `GetExtendedAgentCard`
+
+Push notifications are not supported (`-32003`). Poll `GetTask`, or stream the
+task instead.
+
+Margaya reads each task's state from the work it maps to:
+
+| Margaya | A2A state |
+| --- | --- |
+| Intake request pending or snoozed | `TASK_STATE_SUBMITTED` |
+| Intake request accepted, or merged as a duplicate | `TASK_STATE_COMPLETED` |
+| Intake request declined | `TASK_STATE_REJECTED`, with the reason |
+| Agent run queued | `TASK_STATE_SUBMITTED` |
+| Agent run working, or waiting for a person's approval | `TASK_STATE_WORKING` |
+| Agent run succeeded | `TASK_STATE_COMPLETED`, with the agent's summary |
+| Agent run failed | `TASK_STATE_FAILED` |
+| Agent run cancelled | `TASK_STATE_CANCELED` |
+| Task created, or question answered | `TASK_STATE_COMPLETED` |
+
+An agent run that waits for approval stays `WORKING`, not `INPUT_REQUIRED`. A
+person in Margaya decides, not the calling agent.
+
+A blocking `SendMessage` for `run_agent` waits up to 20 seconds. After that it
+returns the current state. Set `configuration.returnImmediately` to return at
+once. Triage waits on people, so `triage_request` always returns right away.
+
+`SendStreamingMessage` and `SubscribeToTask` send Server-Sent Events:
+
+1. the task;
+2. a status update for each state change;
+3. the artifacts when the task finishes.
+
+A stream stays open for at most two minutes; subscribe again after that.
+
+Only agent runs can be cancelled. Intake requests are triaged by people, and
+created tasks and answers are already complete.
+
+`ListTasks` returns only the person's own A2A tasks in the tenant, newest
+first. It supports these parameters:
+
+- `pageSize` (at most 100, 50 by default) and `pageToken`;
+- `contextId`;
+- `statusTimestampAfter`;
+- `includeArtifacts`.
+
+The `status` filter applies to the tasks on the returned page. Tasks the person
+can no longer see are left out. Margaya doesn't keep message history, so tasks
+have no `history`.
+
+## Audit and privacy
+
+- Every task received over A2A is recorded in the
+  [audit log](/core/functional/audit-log) as **Received work from an external
+  agent (A2A)**, with the person, the API key and the skill.
+- The work itself appears in the task's activity under that person, like any
+  other change made with their key. The audit log records the client as
+  `Margaya A2A (<client user agent>)`.
+- Margaya stores only how each A2A task maps to Margaya work, never message
+  text or answers. A later `GetTask` for an `ask_workspace` task reports it as
+  completed without the answer.
+
+## Not available yet
+
+- Calling external A2A agents from Margaya agents. Today, Margaya receives
+  work but doesn't delegate it outward.
+- Signed Agent Cards.
+- The HTTP+JSON and gRPC bindings. Only JSON-RPC is served.
+- Push notifications.

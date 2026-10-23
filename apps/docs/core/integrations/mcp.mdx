@@ -10,6 +10,10 @@ Margaya supports the Model Context Protocol (MCP) in two ways:
 
 Both offer the same tools for managing workspaces, projects, tasks, comments, and labels.
 
+<Info>
+This page is about Margaya as an MCP **server**: outside AI clients connect to Margaya and work in it as you. It works without Margaya's own AI features. The opposite direction is [connectors](/core/functional/ai-agents#connectors-mcp-servers): there Margaya is the MCP **client**, and Margaya's own [AI agents](/core/functional/ai-agents) use tools from outside MCP servers during their runs. Connectors need AI turned on and an agent with **Web access**.
+</Info>
+
 ## Built-in HTTP endpoint
 
 Every Margaya API instance ships with a Streamable HTTP MCP endpoint. This is the recommended approach for self-hosted deployments.
@@ -20,7 +24,15 @@ Point your MCP client at:
 https://your-margaya-instance.com/api/mcp
 ```
 
-On first connect, you will be redirected to Margaya to sign in and explicitly approve the MCP client. After approval, all MCP tools run as your authenticated user.
+On first connect, you will be redirected to Margaya to sign in and explicitly approve the MCP client. The page names the client and the address it will send you back to; select **Approve** only if you started the connection. After approval, all MCP tools run as your authenticated user.
+
+<Screenshot src="mcp/consent" alt="The Margaya MCP consent page showing the client name Cursor and its local redirect URI, a warning, and Approve and Deny buttons" caption="Approve the MCP client once; its tools then act as you." />
+
+### Use an API key instead
+
+Clients that can't run the OAuth flow can send an API key as `Authorization: Bearer <key>` or `x-api-key`. Create one under **Settings** > **Account** > **API keys** with **Create API key**, and give it only the access the client needs (see [API keys](/core/functional/account-security#api-keys)). The key acts with its owner's permissions.
+
+<Screenshot src="mcp/create-api-key" alt="The Create API key dialog with the name Cursor MCP filled in, an expiration choice and the access options" caption="Name the key after the client that uses it, so it is easy to revoke later." />
 
 The endpoint implements OAuth 2.1 with PKCE for authentication. Discovery metadata is available at:
 
@@ -31,6 +43,46 @@ The endpoint serves both MCP protocol eras: modern `2026-07-28` requests are
 stateless and self-contained, while 2025-era clients keep the sessionful
 `initialize` flow. See [MCP 2026-07-28 stateless compatibility](/core/integrations/mcp-stateless)
 for the exact contract, tests, Codex configuration, limitations, and rollback.
+
+### Protocol compliance
+
+Margaya follows MCP revision `2026-07-28`, the current revision as of October
+2026, and keeps older clients working:
+
+- **Version negotiation.** A modern request names its version in `_meta` and
+  the `MCP-Protocol-Version` header. `server/discover` returns the supported
+  versions, capabilities and server identity. An unsupported version is refused
+  with `UnsupportedProtocolVersionError` (`-32022`), which lists the versions
+  Margaya does support. Clients from the `2025` era still negotiate through
+  `initialize`.
+- **Structured output.** Every successful tool result carries its JSON both as
+  `structuredContent` and as a text block, for clients that only read text. A
+  list comes back as `{ "items": [...] }`. Tools with a stable shape also
+  declare an `outputSchema`: `get_task`, `create_task`, `get_project`,
+  `create_project`, `list_projects` and `list_project_columns`. The schemas name
+  only the fields every result has, and extra fields are allowed. Errors stay
+  plain text with `isError: true`.
+- **Tool annotations.** Every tool has `readOnlyHint`, `destructiveHint`,
+  `idempotentHint` and `openWorldHint` (always `false`, because tools act only
+  on your instance). Clients can use them to ask before a destructive call.
+- **Authorization.** The protected resource metadata lists
+  `bearer_methods_supported`. The authorization response includes `iss`
+  ([RFC 9207](https://datatracker.ietf.org/doc/html/rfc9207)), and the
+  authorization server metadata advertises it. A `resource` indicator
+  ([RFC 8707](https://datatracker.ietf.org/doc/html/rfc8707)) is accepted on
+  the authorize and token requests. It must name one of Margaya's resources
+  (`/api/mcp`, `/api/a2a` or `/api`), or the request fails with `invalid_target`.
+  If the token request repeats the resource, it must name the same one as the
+  authorization request. Dynamic client registration accepts `application_type`.
+
+Some parts of the revision are not implemented yet:
+
+- The Tasks extension for long-running operations.
+- MCP Apps.
+- Client ID Metadata Documents. Dynamic client registration still works.
+- Audience-restricted access tokens. A token works across the whole instance
+  with your permissions.
+- Paginated `tools/list`. The full catalog fits in one response.
 
 ### OAuth request limits
 
@@ -121,6 +173,10 @@ On the first tool call that needs Margaya access, the MCP server:
 4. Polls until you approve sign-in
 5. Stores credentials in `~/.config/margaya-mcp/credentials.json`
 
+In the browser, check that the code matches the one in your terminal, then select **Approve**. If you open `/device` yourself, enter the code under **Connect a device** first.
+
+<Screenshot src="mcp/device-approve" alt="The Margaya device approval page showing a device code with Approve and Deny buttons" caption="Approve the device only when the code matches the one your terminal printed." />
+
 ## Available tools
 
 Both the HTTP endpoint and stdio package expose the same tools:
@@ -137,6 +193,9 @@ Both the HTTP endpoint and stdio package expose the same tools:
 - Modules: `list_modules`, `get_module`, `create_module`, `update_module`, `delete_module`, `set_module_archived`, `list_module_tasks`, `update_module_tasks`, `set_task_modules`, `add_module_link`, `delete_module_link`
 - Pages: `list_pages`, `get_page`, `create_page`, `update_page`, `replace_page_content`, `set_page_archived`, `delete_page`
 - Intake: `list_intake_items`, `get_intake_item`, `submit_intake_item`, `update_intake_item`, `triage_intake_item`, `delete_intake_item`
+- Task templates: `list_task_templates`, `create_task_from_template` (see [Task templates](/core/functional/task-templates))
+- Repeating tasks: `get_task_recurrence`, `set_task_recurrence`, `remove_task_recurrence` (see [Repeating tasks](/core/functional/repeating-tasks))
+- Automations: `list_automation_rules`, `set_automation_rule_enabled` (turning a rule on or off needs permission to update projects; see [Automate your workflow](/core/functional/automations))
 
 `list_project_columns` is worth calling first when setting a status: the column
 slugs it returns are exactly the values `create_task` and `update_task_status`
@@ -151,6 +210,9 @@ Page content is markdown: `get_page` returns it, `replace_page_content` replaces
 the whole document, and `search` also finds pages.
 An API key (as `Authorization: Bearer <key>` or `x-api-key`) works on the HTTP
 endpoint too, with its owner's permissions.
+
+To hand work to Margaya from another agent instead of calling tools one by one,
+see [A2A](/core/integrations/a2a).
 
 ## Debugging
 

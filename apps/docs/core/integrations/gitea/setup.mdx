@@ -19,6 +19,16 @@ You need:
 2. Enable scopes for **repository** and **issues** (write access where needed).
 3. Copy the token and store it securely; paste it into Margaya's Gitea integration settings.
 
+## Connect the repository in Margaya
+
+1. Select **Settings** at the bottom of the left rail, then **Projects**.
+2. Pick the project in the project switcher and open **Project integrations**.
+3. Expand **Gitea integration** under **Code hosting**.
+4. Fill in the **Gitea URL**, **Personal access token**, **Owner** and **Repository name**. **Browse** lists the repositories the token can reach.
+5. Select **Verify** to check access, then **Connect**.
+
+<Screenshot src="integrations/gitea" alt="The Gitea integration expanded, showing Not connected and fields for Gitea URL, personal access token, owner and repository name, with Browse, Verify and Connect buttons" caption="Verify checks the token against the repository before you connect." />
+
 ## Webhook in Gitea
 
 Margaya verifies incoming webhooks with a **HMAC SHA256** secret stored per integration.
@@ -39,7 +49,7 @@ Example: `https://git.example.com/acme/my-app/settings/hooks`
 
 ### Configure the webhook
 
-1. Connect the repository in Margaya **Project → Integrations → Gitea** and save.
+1. [Connect the repository in Margaya](#connect-the-repository-in-margaya).
 2. Copy the **Webhook URL** and **Secret** shown in Margaya (after saving).
 3. In Gitea: **Add Webhook → Gitea**.
 4. Set **Payload URL** to the Margaya webhook URL.

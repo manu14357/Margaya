@@ -3,17 +3,19 @@ title: Outgoing webhooks
 description: Send task activity from a Margaya project to Slack, Discord, Telegram, or any HTTP endpoint. Configure per-project notifications and optional signing.
 ---
 
-Margaya can notify external systems when tasks change in a project. Each integration is per project and uses either an incoming webhook URL from the service you connect (Slack, Discord), a bot token plus chat ID (Telegram), or your own HTTP listener (generic webhook).
+Margaya can notify external systems when tasks change in a project. Each integration is per project and uses either an incoming webhook URL from the service you connect (Slack, Discord, Mattermost), a bot token plus chat ID (Telegram), or your own HTTP listener (generic webhook).
 
 <Info>
-These integrations are outgoing only: Margaya posts to your URL when events occur. They are separate from [GitHub integration](/core/integrations/github/setup), which syncs issues and repositories.
+These integrations are outgoing only: Margaya posts to your URL when events occur. They are separate from [GitHub integration](/core/integrations/github/setup), which syncs issues and repositories. To receive events from a whole workspace instead of one project, use [workspace webhooks](/core/functional/webhooks).
 </Info>
 
 ## Where to configure
 
-1. Open **Settings** in the sidebar.
-2. Under **Projects**, select the project.
-3. Open the **Integrations** tab.
+1. Select **Settings** at the bottom of the left rail, then **Projects**.
+2. Pick the project in the project switcher and open **Project integrations**.
+3. Expand the integration you want under **Chat and webhooks**.
+
+<Screenshot src="integrations/overview" alt="The Project integrations page with GitHub and Gitea under Code hosting, and Discord, Generic webhooks, Slack, Mattermost and Telegram under Chat and webhooks" caption="Every integration is set up per project from Project integrations." />
 
 ## Task links in notifications
 
@@ -21,16 +23,18 @@ Notification messages and generic webhook payloads include links to the task in 
 
 ## Events you can subscribe to
 
-For Slack, Discord, Telegram, and generic webhooks you can toggle the same event types:
+Slack, Discord, Mattermost, Telegram and generic webhooks share these toggles under **Event notifications**:
 
-| Event | Default on | Description |
+| Toggle | Default | Description |
 | --- | --- | --- |
-| Task created | Yes | New task in the project |
-| Task status changed | Yes | Status column changed |
-| Task priority changed | No | Priority changed |
-| Task title changed | No | Title edited |
-| Task description changed | No | Description edited |
-| Task comment created | Yes | New comment on a task |
+| **New tasks** | On | New task in the project |
+| **Status changes** | On | Status column changed |
+| **Priority changes** | Off | Priority changed |
+| **Title changes** | Off | Title edited |
+| **Description changes** | Off | Description edited |
+| **New comments** | On | New comment on a task |
+
+Generic webhooks have six more, all off by default: **Task deleted**, **Task moved**, **Due date changed**, **Assignee added**, **Assignee removed** and **Due-date reminders**.
 
 Defaults apply when you first connect; you can change toggles anytime in project settings.
 
@@ -70,7 +74,9 @@ Paste those values into the Telegram section, optionally add a chat label, choos
 
 ## Generic HTTP webhook
 
-Use a generic webhook when you want a JSON POST to your own service, automation, or middleware.
+Use a generic webhook when you want a JSON POST to your own service, automation, or middleware. Expand **Generic webhooks**, enter the **Endpoint URL**, optionally a **Signing secret**, choose the events and select **Connect webhook**.
+
+<Screenshot src="integrations/generic-webhook" alt="The Generic webhooks integration expanded, with an endpoint URL filled in and an empty, optional signing secret field" caption="A generic webhook posts JSON to your endpoint, signed when you set a secret." />
 
 ### Delivery health
 
@@ -80,7 +86,7 @@ After delivery attempts, Margaya stores basic health metadata (for example last 
 
 Each POST has `Content-Type: application/json`. Top-level fields:
 
-- `event`: string, one of: `task.created`, `task.status_changed`, `task.priority_changed`, `task.title_changed`, `task.description_changed`, `task.comment_created`
+- `event`: string, one of: `task.created`, `task.status_changed`, `task.priority_changed`, `task.title_changed`, `task.description_changed`, `task.comment_created`, `task.deleted`, `task.moved`, `task.due_date_changed`, `task.assignee_changed`, `task.unassigned`, `task.due_date_reminder`
 - `timestamp`: ISO 8601 time when Margaya sent the request
 - `integration`: `{ "type": "generic-webhook" }`
 - `project`: `id`, `name`, `workspaceId`

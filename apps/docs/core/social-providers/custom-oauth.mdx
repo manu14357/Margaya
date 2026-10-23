@@ -9,7 +9,7 @@ Margaya supports custom OAuth 2.0 and OpenID Connect (OIDC) providers, allowing 
 
 ## Configuration
 
-To configure a custom OAuth/OIDC provider, you need to set the following environment variables in your `.env` file:
+You can configure a custom OAuth/OIDC provider in the app, as an instance admin (see [step 2](#2-configure-it-in-the-app)), or with the following environment variables in your `.env` file. Environment variables take precedence and make the provider read-only in the app.
 
 ### Required Variables
 
@@ -45,7 +45,22 @@ First, create an OAuth 2.0 or OIDC application in your identity provider:
 4. Copy the client ID and client secret
 5. Note the authorization, token, and userinfo endpoint URLs
 
-### 2. Set Environment Variables
+### 2. Configure it in the app
+
+As an [instance admin](/core/installation/instance-admin), open **Settings** > **Instance** > **Authentication** and select **Configure** next to **Custom OAuth / OIDC**:
+
+1. Copy the **Callback URL** into your identity provider.
+2. Enter the **Client ID** and **Client secret**.
+3. Set a **Button label** for the sign-in screen, for example "Continue with Okta".
+4. Enter the **Discovery URL**, or the **Authorization URL**, **Token URL** and **User info URL**.
+5. Adjust **Scopes**, **Use PKCE**, **Sign in automatically** and the **Logout URL** if needed.
+6. Select **Save**. No restart is needed.
+
+<Screenshot src="admin/oauth-custom" alt="The Configure Custom OAuth / OIDC panel with the callback URL, client ID and secret, button label, discovery URL and endpoint fields, scopes, and switches for PKCE and automatic sign-in" caption="Everything the environment variables set can also be set in this panel." />
+
+If you configure the provider here, skip steps 3 and 4.
+
+### 3. Set Environment Variables
 
 Add the following to your `.env` file:
 
@@ -68,7 +83,7 @@ CUSTOM_OAUTH_SCOPES=profile,email,openid
 CUSTOM_AUTH_PKCE=false
 ```
 
-### 3. Restart Services
+### 4. Restart Services
 
 After updating the environment variables, restart your Margaya services:
 
@@ -114,7 +129,7 @@ CUSTOM_OAUTH_SCOPES=openid,profile,email
 
 ## Usage
 
-Once configured, users will see a "Continue with OIDC" button on the sign-in page. The system will automatically remember the last used login method for each user.
+Once configured, users will see a "Continue with OIDC" button on the sign-in page, or your own **Button label** if you set one in the app. The system will automatically remember the last used login method for each user.
 
 ### Auto-Login (Skip the Login Page)
 
