@@ -139,13 +139,13 @@ export function setLocale(locale: string): Promise<void> {
 export function getTheme(): LandingTheme {
   if (theme === null) {
     const stored = readStorage(THEME_STORAGE_KEY);
-    theme = isLandingTheme(stored) ? stored : "system";
+    theme = isLandingTheme(stored) ? stored : "light";
   }
   return theme;
 }
 
 export function getServerTheme(): LandingTheme {
-  return "system";
+  return "light";
 }
 
 export function setTheme(next: LandingTheme) {

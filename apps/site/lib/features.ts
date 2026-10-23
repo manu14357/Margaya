@@ -3,6 +3,7 @@ import { landing } from "@/lib/landing";
 export const featureSlugs = [
   "plan",
   "views",
+  "ai",
   "docs",
   "automate",
   "self-host",
@@ -14,6 +15,7 @@ export type FeatureSlug = (typeof featureSlugs)[number];
 const copyKeys = {
   plan: "plan",
   views: "views",
+  ai: "ai",
   docs: "docs",
   automate: "automate",
   "self-host": "selfHost",

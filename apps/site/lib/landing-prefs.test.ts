@@ -104,7 +104,8 @@ describe("site landing preferences", () => {
 
   it("stores the theme and applies it to the document", () => {
     stubBrowser({ dark: true });
-    expect(getTheme()).toBe("system");
+    // Light by default, even when the OS prefers dark.
+    expect(getTheme()).toBe("light");
 
     setTheme("light");
     expect(localStorage.getItem(THEME_STORAGE_KEY)).toBe("light");
@@ -116,6 +117,9 @@ describe("site landing preferences", () => {
 
     resetLandingPrefs();
     expect(getTheme()).toBe("system");
+    localStorage.removeItem(THEME_STORAGE_KEY);
+    resetLandingPrefs();
+    expect(getTheme()).toBe("light");
     localStorage.setItem(THEME_STORAGE_KEY, "dark");
     resetLandingPrefs();
     expect(getTheme()).toBe("dark");
@@ -123,6 +127,15 @@ describe("site landing preferences", () => {
 
   it("applies the stored theme before hydration", () => {
     stubBrowser({ dark: true });
+    // No stored choice: light, whatever the OS prefers.
+    new Function(themeScript)();
+    expect(document.documentElement.classList.contains("dark")).toBe(false);
+    expect(document.documentElement.style.colorScheme).toBe("light");
+
+    localStorage.setItem(THEME_STORAGE_KEY, "dark");
+    new Function(themeScript)();
+    expect(document.documentElement.classList.contains("dark")).toBe(true);
+
     localStorage.setItem(THEME_STORAGE_KEY, "light");
     new Function(themeScript)();
     expect(document.documentElement.classList.contains("dark")).toBe(false);

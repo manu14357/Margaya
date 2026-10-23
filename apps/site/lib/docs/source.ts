@@ -26,6 +26,8 @@ export type DocPage = {
   title: string;
   description: string;
   openapi: { method: string; path: string } | null;
+  /** `landing` (frontmatter `mode: landing`) is wide, without an outline. */
+  mode: "landing" | null;
   tab: string;
   group: string;
 };
@@ -36,8 +38,23 @@ export type NavItem = {
   label: string;
   method: string | null;
 };
-export type NavGroup = { group: string; items: NavItem[] };
+/** A collapsible sub-section inside a sidebar group; deeper levels flatten. */
+export type NavSubgroup = { group: string; items: NavItem[] };
+export type NavGroup = { group: string; items: (NavItem | NavSubgroup)[] };
 export type NavTab = { tab: string; href: string; groups: NavGroup[] };
+
+export function isNavSubgroup(
+  entry: NavItem | NavSubgroup,
+): entry is NavSubgroup {
+  return "items" in entry;
+}
+
+/** A group's pages in sidebar order, sub-sections included. */
+export function navGroupPages(group: NavGroup): NavItem[] {
+  return group.items.flatMap((entry) =>
+    isNavSubgroup(entry) ? entry.items : [entry],
+  );
+}
 
 type DocsIndex = {
   pages: Map<string, DocPage>;
@@ -138,6 +155,7 @@ function readPage(id: string, tab: string, group: string): DocPage {
     title: frontmatter.title,
     description: frontmatter.description ?? "",
     openapi: parseOpenApiReference(frontmatter.openapi),
+    mode: frontmatter.mode === "landing" ? "landing" : null,
     tab,
     group,
   };
@@ -159,34 +177,37 @@ function buildIndex(): DocsIndex {
   for (const tab of config.navigation.tabs) {
     const groups: NavGroup[] = [];
     for (const group of tab.groups) {
-      const items: NavItem[] = [];
-      for (const id of flatten(group.pages)) {
+      const item = (id: string): NavItem => {
         const page = readPage(id, tab.tab, group.group);
         pages.set(id, page);
         const operation = page.openapi
           ? findOperation(page.openapi.method, page.openapi.path)
           : null;
-        items.push({
+        return {
           id,
           href: page.href,
           label: operation?.summary ?? page.title,
           method: page.openapi?.method ?? null,
-        });
-      }
+        };
+      };
+      const items = group.pages.map((entry) =>
+        typeof entry === "string"
+          ? item(entry)
+          : { group: entry.group, items: flatten(entry.pages).map(item) },
+      );
       groups.push({ group: group.group, items });
     }
-    tabs.push({
-      tab: tab.tab,
-      href: groups[0]?.items[0]?.href ?? DOCS_BASE,
-      groups,
-    });
+    const first = groups[0] ? navGroupPages(groups[0])[0] : undefined;
+    tabs.push({ tab: tab.tab, href: first?.href ?? DOCS_BASE, groups });
   }
 
   // Pages missing from the sidebar are still published, like Mintlify's hidden pages.
+  const apiTab =
+    tabs.find((tab) => tab.tab === "API Reference")?.tab ?? "API Reference";
   for (const id of listSourceIds()) {
     if (pages.has(id)) continue;
     const tab = id.startsWith("api-reference/")
-      ? (tabs[1]?.tab ?? "API Reference")
+      ? apiTab
       : (tabs[0]?.tab ?? "Guides");
     pages.set(id, readPage(id, tab, ""));
   }
@@ -253,7 +274,7 @@ export function getDocNeighbours(page: DocPage): {
   next: NavItem | null;
 } {
   const tab = docsIndex().tabs.find((entry) => entry.tab === page.tab);
-  const items = tab?.groups.flatMap((group) => group.items) ?? [];
+  const items = tab?.groups.flatMap(navGroupPages) ?? [];
   const index = items.findIndex((item) => item.id === page.id);
   if (index === -1) return { previous: null, next: null };
   return {

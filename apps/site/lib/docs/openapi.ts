@@ -399,3 +399,30 @@ export function exampleValue(
       return "<string>";
   }
 }
+
+export const PARAMETER_LOCATIONS: Record<string, string> = {
+  path: "Path parameters",
+  query: "Query parameters",
+  header: "Headers",
+  cookie: "Cookies",
+};
+
+/** Section ids an operation page renders, in order, for its outline. */
+export function operationHeadings(
+  operation: Operation,
+): { id: string; text: string; depth: number }[] {
+  const headings: { id: string; text: string; depth: number }[] = [];
+  if (operation.authenticated) {
+    headings.push({ id: "authorization", text: "Authorization", depth: 2 });
+  }
+  for (const [location, title] of Object.entries(PARAMETER_LOCATIONS)) {
+    if (operation.parameters.some((parameter) => parameter.in === location)) {
+      headings.push({ id: `${location}-parameters`, text: title, depth: 2 });
+    }
+  }
+  if (operation.requestBody) {
+    headings.push({ id: "request-body", text: "Request body", depth: 2 });
+  }
+  headings.push({ id: "responses", text: "Responses", depth: 2 });
+  return headings;
+}

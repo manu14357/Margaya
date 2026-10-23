@@ -18,6 +18,7 @@ export const siteLinks: LandingLinks = {
   features: {
     plan: featurePath("plan"),
     views: featurePath("views"),
+    ai: featurePath("ai"),
     docs: featurePath("docs"),
     automate: featurePath("automate"),
     selfHost: featurePath("self-host"),

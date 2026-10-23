@@ -1,26 +1,29 @@
-import { findOperation } from "./openapi";
+import { renderDocMarkdown } from "./markdown";
+import { findOperation, operationHeadings, schemaFields } from "./openapi";
 import { getAllDocPages, getDocPageBody } from "./source";
+
+export type DocsSearchSection = { id: string; text: string };
 
 export type DocsSearchEntry = {
   href: string;
   title: string;
   description: string;
+  /** `Tab › Group`. */
   section: string;
   method: string | null;
   path: string | null;
-  headings: string[];
+  /** h2/h3 headings with the ids the rendered page uses, for deep links. */
+  sections: DocsSearchSection[];
+  /** Extra matching terms: an operation's id and parameter names. */
+  keywords: string;
 };
 
-function bodyHeadings(body: string): string[] {
-  const headings: string[] = [];
-  let inFence = false;
-  for (const line of body.split("\n")) {
-    if (/^\s*(`{3,}|~{3,})/.test(line)) inFence = !inFence;
-    if (inFence) continue;
-    const match = /^#{2,3}\s+(.+?)\s*#*\s*$/.exec(line);
-    if (match?.[1]) headings.push(match[1].replace(/[`*_]/g, ""));
-  }
-  return headings;
+const DESCRIPTION_LIMIT = 160;
+
+function trim(text: string): string {
+  return text.length > DESCRIPTION_LIMIT
+    ? `${text.slice(0, DESCRIPTION_LIMIT - 1).trimEnd()}…`
+    : text;
 }
 
 /** One entry per published page, served as /docs/search-index.json. */
@@ -29,16 +32,36 @@ export function buildDocsSearchIndex(): DocsSearchEntry[] {
     const operation = page.openapi
       ? findOperation(page.openapi.method, page.openapi.path)
       : null;
+    const reserved = operation ? operationHeadings(operation) : [];
+    // The same render as the page (minus highlighting), so every id matches.
+    const body = renderDocMarkdown(getDocPageBody(page), {
+      reservedIds: reserved.map((heading) => heading.id),
+      source: page.id,
+      highlight: false,
+    });
+    const keywords = operation
+      ? [
+          operation.operationId,
+          ...operation.parameters.map((parameter) => parameter.name),
+          ...(operation.requestBody?.schema
+            ? (schemaFields(operation.requestBody.schema) ?? []).map(
+                (field) => field.name,
+              )
+            : []),
+        ].join(" ")
+      : "";
     return {
       href: page.href,
       title: operation?.summary || page.title,
-      description: operation
-        ? `${page.title} · ${page.description}`
-        : page.description,
+      description: trim(page.description),
       section: [page.tab, page.group].filter(Boolean).join(" › "),
       method: operation?.method ?? null,
       path: operation?.path ?? null,
-      headings: operation ? [] : bodyHeadings(getDocPageBody(page)),
+      sections: [...body.headings, ...reserved].map(({ id, text }) => ({
+        id,
+        text,
+      })),
+      keywords,
     };
   });
 }
