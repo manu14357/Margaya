@@ -1,0 +1,156 @@
+---
+title: AI Writing
+description: Rewrite, shorten, translate or extend text in pages, task descriptions and comments, pick a tone, add AI blocks and titles to pages, summarize a cycle, project, page or task in one click, and draft a spec page from a task
+---
+
+Margaya's writing help works where you already write: in pages, task descriptions, comments, cycles and projects. Each feature proposes text for you to review. Nothing is changed or created until you choose to apply it.
+
+These features appear only when AI is on for the server, the workspace and the project, and you have the **Use AI** permission. See [AI Setup](/core/functional/ai-setup). When AI is off, the buttons and menu items described here are hidden.
+
+## Edit text with AI
+
+In a page or a task description, select some text and choose **AI** at the start of the formatting bubble. In a page you can also open a block's menu with the handle to the left of it (or `Alt` + `Shift` + `M`) and choose **AI** to work on the whole block.
+
+| Action | What it does |
+|---|---|
+| **Improve writing** | Makes the text clearer and more concise, in the same language and tone. |
+| **Fix spelling & grammar** | Corrects spelling, grammar and punctuation, and changes nothing else. |
+| **Make shorter** | Roughly halves the text and keeps its key points. |
+| **Make longer** | Adds detail and explanation that follow from the text, without inventing facts. |
+| **Summarize** | Condenses the text into a few sentences or bullets. |
+| **Translate to…** | Translates into any of Margaya's 20 interface languages. Code, links and names stay as they are. |
+| **Ask AI to…** | Type your own instruction, for example "turn this into a checklist". |
+
+<Screenshot src="ai/editor-ai-menu" alt="The AI menu opened from the formatting bubble, with Improve writing, Fix spelling & grammar, Make shorter, Make longer, Summarize, Translate to… and Ask AI to…" caption="Choose AI at the start of the formatting bubble." />
+
+The suggestion streams into a preview under the text. When it's done you can edit it, then choose:
+
+- **Replace** to swap the selected text for the suggestion.
+- **Insert below** to add it after the block, keeping the original.
+- **Discard** (or `Esc`) to close the preview without changing anything.
+- **Try again** for a new suggestion.
+
+<Screenshot src="ai/editor-ai-preview" alt="An Improve writing preview under the selected callout, with the editable suggestion Sprint 14 scope is frozen. Add new requests to the backlog; we triage them every Monday., and the Replace, Insert below and Try again buttons" caption="The suggestion stays editable until you apply it." />
+
+<Info>
+On pages that others are editing at the same time, the suggestion is applied as one ordinary edit. Everyone sees it at once, and **Undo** reverts it. If someone else deletes the selected text while you review, **Replace** is no longer offered, but **Insert below** still is.
+</Info>
+
+Only the selected text is sent to the model, together with your instruction. You need permission to edit the page or the task.
+
+### Tone
+
+**Improve writing**, **Make shorter**, **Make longer** and **Ask AI to…** can write in a tone:
+
+- **Default** keeps the tone of your text.
+- **Professional** is clear, precise and courteous.
+- **Casual** is friendly and conversational.
+
+Pick the tone under **Tone** in the AI menu, or switch it in the preview: the suggestion is rewritten in the new tone. Margaya remembers your choice in this browser. **Fix spelling & grammar**, **Summarize** and **Translate to…** don't change the tone.
+
+### Rate a suggestion
+
+Under a finished suggestion, 👍 and 👎 tell your workspace admins whether AI helped. Only the rating and the model are kept, never the text. The rates show on the AI usage page.
+
+## AI in comments
+
+When you write a comment on a task, the ✦ button next to **Attach** opens the same AI actions for your draft: improve, fix, shorten, lengthen, summarize, translate, your own instruction and the tone. The suggestion appears under the comment box, where you can edit it. **Replace draft** puts it in the comment box; nothing is posted until you send the comment yourself. **Discard** (or `Esc`) closes it.
+
+AI in comments needs AI on for the task's project and the permission to comment on the task.
+
+## AI blocks in pages
+
+Type `/` in a page and choose **AI block** (in the **Insert** group). Pick what to generate from the page:
+
+| Preset | What it writes |
+|---|---|
+| **Summary (TL;DR)** | Two or three sentences, then the key points. |
+| **FAQ** | The questions a reader would ask, answered from the page. |
+| **Action items** | A checklist of follow-ups, with owners and dates only when the page names them. |
+| **Custom prompt** | Anything you ask for, for example "a table of the risks". |
+
+The block is generated from the page as it is in the editor, including edits that are not saved yet. It appears as a proposal with a dashed border where you typed `/`:
+
+- **Accept** inserts it as ordinary page content. **Undo** removes it again.
+- **Regenerate** writes a new version.
+- **Discard** (or `Esc`) drops it.
+
+If the page changes while the proposal is open, it is marked as out of date; **Regenerate** to include the changes. Co-editors don't see the proposal until you accept it.
+
+## Suggest a page title
+
+Under a page's title, **Suggest a title** proposes one title from the page's content. **Use this title** applies it, ↻ suggests another and **×** closes the suggestion. It needs permission to edit the page.
+
+## Write a new task's description
+
+In the **Create task** dialog, **Write with AI** sits above the description:
+
+- **Draft from title** writes a description from the title and any notes you already typed: a short goal, what is in scope, and acceptance criteria as a checklist. Anything the title doesn't say is left as `[TBD]` rather than invented.
+- **Improve** rewrites the description you typed.
+- An optional line tells it what to focus on, for example "mention the mobile app".
+
+The text streams into a preview. **Use this** puts it in the description, where you can still edit it; **Try again** writes a new version and **Discard** drops it. It needs AI on for the project and permission to create tasks.
+
+## One-click summaries
+
+Choose **Summarize** (the ✦ button) to get a short summary in a card at the side of the screen:
+
+- **Cycle:** in a cycle's header. It covers progress, risks and blockers, notable changes from the last 7 days, and what needs attention next.
+- **Project:** next to the project's name on the board, list and other task views. It covers status and health: open, overdue and unassigned work, what moved recently, and what is stuck or at risk.
+- **Page:** in a page's header. It gives a TL;DR with the key points, decisions and open questions.
+- **Task:** **Summarize** in the row of actions under a task's description. It tells where the task stands from its description, latest comments and change history: the current state, what was decided, what is open or blocked, and the next step.
+
+<Screenshot src="ai/summary-card" alt="The AI summary card for the Website relaunch project with a verdict, then Status, Risks and Next sections that name tasks by key, and Copy, Save as page and Try again" caption="A project summary, written from the board and its numbers." />
+
+If you can read analytics, cycle and project summaries also use the numbers from [Forecast and Risk](/core/functional/forecast-and-risk). Those dates and percentages are computed by Margaya, not guessed by the model.
+
+In the summary card you can:
+
+- **Copy** the summary as Markdown.
+- **Save as page** to keep it as a new page in the project. This needs permission to create pages, with Pages turned on for the project.
+- **Save as comment** (task summaries) to post it on the task. This needs permission to comment.
+- Rate it with 👍 or 👎.
+- **Try again** for a fresh summary, or close the card with **×** or `Esc`.
+
+The summary is never saved unless you choose **Save as page** or **Save as comment**.
+
+## Draft a spec from a task
+
+On a task, choose **Draft a spec** in the row of actions under the description. AI drafts a spec page from the task's title, description, latest comments and related tasks, with these sections:
+
+- **Problem**
+- **Goals**
+- **Non-goals**
+- **Approach**
+- **Open questions**
+
+Review the draft, change the title, and choose **Edit** to change the text. Then choose **Create page**. The page is created in the task's project and starts with a link to the task, so it also appears under **Mentioned in pages** on the task. **Discard** closes the draft without creating anything.
+
+<Screenshot src="ai/spec-draft" alt="The Draft a spec dialog for Accessibility audit for the navigation, with the page title and a draft with Problem, Goals, Non-goals, Approach and Open questions sections, and Try again, Discard and Create page" caption="Review the draft, then create the page." />
+
+**Draft a spec** needs permission to create pages, with Pages turned on for the task's project.
+
+## Language
+
+Answers are written in your interface language. Rewrites keep the language of the original text unless you ask for a translation.
+
+## Privacy and limits
+
+- AI only reads what you can see. A page, task, cycle or project in a [restricted project](/core/functional/restricted-projects) you're not a member of is treated as if it doesn't exist. Restricted projects you are a member of are left out unless your workspace admin includes them in the AI settings.
+- Text from tasks, comments and pages is passed to the model as data. The model is told never to follow instructions found inside it.
+- Each request counts toward the workspace's and your AI limits, and appears on the AI usage page as **Writing help**, **Summaries** or **Spec drafts**. Margaya keeps the counts, never your text or the suggestion (see [AI privacy and data](/core/functional/ai-privacy-and-data)).
+- AI can make mistakes. Read the result before you use it.
+
+## API
+
+These features are also available over the REST API. Each one streams Server-Sent Events, or returns a single JSON body when you send `Accept: application/json`:
+
+| Endpoint | What it does |
+|---|---|
+| `POST /api/ai/writing/assist` | Rewrite a passage of a page, a task or a comment draft (`target.kind` `comment_draft` with the task id), optionally with a `tone`. |
+| `POST /api/ai/writing/summarize` | Summarize a cycle, project, page or task. |
+| `POST /api/ai/writing/page-block` | Generate an AI block (`tldr`, `faq`, `action_items` or `custom`) from a page. |
+| `POST /api/ai/writing/title` | Suggest a page title (JSON only: `{ "title": "…" }`). |
+| `POST /api/ai/writing/spec-draft` | Draft a spec from a task. |
+
+API keys need the **AI** area with write access.

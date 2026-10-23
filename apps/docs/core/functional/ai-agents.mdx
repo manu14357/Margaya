@@ -1,0 +1,169 @@
+---
+title: AI Agents and the Agent Desk
+description: Delegate work to AI agents that act with at most your rights, review every change they make, approve the risky ones and undo any of them in one click
+---
+
+An AI agent is a workspace member that does work for the person who asks it. You can mention it in a comment, assign it a task or run it from a task. It reads what it needs, makes the changes you asked for through the same routes as everyone else, and every change it makes can be reviewed and undone.
+
+Agents appear only when AI is on for the server, the workspace and the project. See [AI Setup](/core/functional/ai-setup). When AI is off, nothing on this page shows and agents never run.
+
+## Create an agent
+
+You need the **Manage AI** permission (owners and admins have it).
+
+1. Go to **Settings**, open **Workspace** and choose **Agents**.
+2. Choose **New agent**.
+3. Fill in the agent:
+
+| Field | What it does |
+|---|---|
+| **Name** | Shown wherever the agent appears, like a person's name. It must differ from every other agent's and member's name in the workspace (ignoring upper and lower case), so an @mention always points to one agent. |
+| **Description** | A short line about what it helps with, shown when people run it. |
+| **Instructions** | How the agent should work, for example "Split large tasks into sub-tasks and suggest a priority". Only admins write these. Text in tasks, comments and pages never counts as instructions. |
+| **Role** | The most the agent may do, such as **Member** or **Viewer**, or a custom role. Agents can never be owners or admins, and you can only pick a role within your own. |
+| **Model** | **Fast**, **Balanced** or **Deep**. Deeper models are slower and cost more. |
+| **Where it runs** | The workspace default, or **Local model only** when the server has a local model. |
+| **Monthly budget** | A spend limit in US dollars for the calendar month. Runs stop once it is reached, and **Run agent** refuses to start a run while it is used up. Workspace limits still apply. |
+| **Projects** | **All projects** its role reaches, or **Only these projects**. Outside them the agent refuses to work and says so on the task. |
+| **Skills** | Up to 10 shared [skills](/core/functional/ai-skills-and-memory) (saved prompts) the agent follows on every run, when they fit the request. |
+| **Web access** | Lets the agent search the web (when the server has web search and the workspace turned it on) and use [connectors](#connectors-mcp-servers). Off by default. |
+
+### Start from a template
+
+Instead of a blank agent, pick a template. It fills in the name, instructions, role and model, which you can change before saving:
+
+| Template | What it does | Suggested start |
+|---|---|---|
+| **Triage** | Clarifies new tasks, sets a priority and links duplicates. | Assign it, or a **Run agent** automation on new tasks. |
+| **Standup** | Writes a short daily summary of done, in progress and blocked work on a page. | A schedule every weekday at 9:00. |
+| **Spec writer** | Turns a task into a specification page and asks you about missing essentials. | Mention or assign it. |
+| **Delivery risk** | Reports overdue, blocked and unowned urgent work on a page, without changing anything. | A schedule every Monday at 9:00. |
+| **Customer feedback** | Groups feedback into themes with quotes and task keys. | An automation, or a weekly schedule. |
+
+When a template suggests a schedule, Margaya offers to create it right after the agent.
+
+<Screenshot src="ai/new-agent" alt="The New agent dialog filled in for Sprint Helper, with a description, instructions, role, model, where it runs and a monthly budget of 10 US dollars" caption="An agent never gets more rights than its role and the person who asks." />
+
+The agent joins the workspace with that role and a bot avatar, so you can tell it apart everywhere. Use the switch to turn an agent off, the pencil to change it and the bin to delete it. Deleting an agent keeps its comments and history: its comments show as **Deleted agent** (a deleted person's as **Deleted user**), and its runs stay in the Agent Desk.
+
+<Screenshot src="ai/agents-settings" alt="The workspace's Agents settings with Triage Bot, on, and Release Notes, off, each with its spend this month, and New agent" caption="Turn an agent off with its switch; its history stays." />
+
+Agents:
+
+- can be assigned and @mentioned like people;
+- can't sign in, receive invitations or get email or inbox notifications;
+- are never counted as billable seats;
+- are left out of lists that are for people only, such as the **Members** page, cycle owners and module leads;
+- need to be added to a [restricted project](/core/functional/restricted-projects) explicitly before they can work in it.
+
+## Ask an agent to work
+
+There are several ways to start a run:
+
+- **Mention it** in a comment: `@Triage Bot why does this time out?`. The agent reads the task and your comment and answers in the thread. It changes the task only when your comment asks it to.
+- **Assign it** a task. The agent reads the task. If the task asks for a clear, small piece of work, it does that and reports back with a comment; otherwise it comments with a short plan or the questions it needs answered. It doesn't rename the task, rewrite its description or create sub-tasks, pages or links unless the task asks for that.
+- **Run it** from the task: choose **Run agent** in the task's action bar, pick an agent, say what it should do and choose **Run**. The same dialog lists recent runs on the task.
+- **Schedule it**: see [Schedules](#schedules).
+- **Automate it**: the [automation](/core/functional/automations) action **Run agent** starts the agent when something happens to a task (created, status, assignee, label or priority changed, a comment, …), with the rule's filters.
+- **Follow up**: in the Agent Desk, reply to a finished run to continue the conversation. A follow-up is a new run of the same agent, on the same task or project, that knows the earlier answer.
+
+Agents never start each other: a comment, assignment or other change made by an agent doesn't trigger a run, also not through an automation rule.
+
+## Schedules
+
+Run an agent on a timetable, for example a standup summary every weekday morning or a delivery-risk report every Monday. You need **Manage AI** and **Use AI**.
+
+1. In **Settings → Workspace → Agents**, choose **Schedules** on the agent.
+2. Choose **New schedule** and pick when: **Every weekday at 9:00**, **Every Monday at 9:00**, **First of the month**, or a custom cron expression with five fields (minute, hour, day, month, weekday).
+3. Pick the time zone, the project and, if you like, a task. Without a task the run works on the whole project and puts reports on a project page.
+4. Write what the agent should do on each run and save.
+
+Each schedule shows its next run. Schedules run at most every 15 minutes, and an agent has at most 20. A scheduled run acts for **the person who last saved the schedule**, capped at their rights. If that person leaves the workspace or loses **Use AI**, or the project is no longer within the agent's projects, the schedule turns itself off and the audit log says why. While the agent or AI is off, scheduled runs are skipped. If the server was down at the scheduled time, the missed run happens once when it is back.
+
+## Questions: when an agent needs input
+
+When an agent can't continue without you, for example to choose between two options, it asks. The run pauses with the status **Needs input**, you get the question in your inbox, and the Agent Desk shows it with a reply box (and the agent's suggested answers as buttons). Your answer resumes the same run where it stopped. A question nobody answers within 24 hours ends the run as failed. Only the person the run works for can answer.
+
+If a mention or assignment ends without a comment on the task, for example because the agent's role can't comment, the agent's answer goes to your inbox instead, with a link to the run in the Agent Desk.
+
+### What an agent can do
+
+| Kind | Tools |
+|---|---|
+| Read | Read a task with its latest comments, read a project and its statuses, read a page, search the workspace. |
+| Change | Comment, update a task's title, priority, due date or description, change its status, create a sub-task, link two tasks, create a project page linked to the task. |
+| Destructive | Move a task to the trash, change the status of several tasks at once. These always wait for approval. |
+| Ask | Ask the person a question and pause until they answer. |
+| Outside (web access only) | Search the web; read from and act in connected services. Actions in a connected service always wait for approval and can't be undone. |
+
+Without **Web access**, agents have no tools that reach outside Margaya. No agent has tools that touch members, roles, invitations, API keys, webhooks, sharing or publishing.
+
+## Connectors (MCP servers)
+
+Connectors let agents with **Web access** use outside services that offer an [MCP](https://modelcontextprotocol.io) server over HTTP (Streamable HTTP), such as an issue tracker or an error tracker.
+
+In **Settings → Workspace → Agents**, under **Connectors**, choose **Add connector** and enter a name, the server's URL and, if it needs one, a header with a secret (for example `Authorization: Bearer …`). **Test** connects and lists the server's tools.
+
+- **Shared** connectors serve the whole workspace and need **Manage AI**. **Personal** connectors are yours: agents use them only in runs on your behalf.
+- Secrets are stored encrypted and never shown again, only their last four characters.
+- The URL must lead to a public address (the same safety check as webhooks), redirects aren't followed, and answers are limited in size and time.
+- The agent sees each tool as `connector_<name>__<tool>`. Tools the server marks as read-only run right away; their answers are treated as untrusted data. Every other tool is an action in that service: it waits for your approval and can't be undone.
+
+## Rights: never more than yours
+
+Each run acts as the agent, but its rights are capped at what both the agent's role and **the person who asked** may do. A viewer who runs an agent gets read-only behaviour: the agent can read and report, but every change is refused. The run only reaches projects that both the agent and that person can see, with AI on. Rights are checked again before every tool call, so if the person loses access during a run, the run stops.
+
+Under the hood, each run gets a short-lived internal credential with exactly those rights. Every change goes through the normal API, so permissions, activity, notifications, webhooks and real-time updates work as if a person had made it. The credential is removed when the run ends.
+
+To run an agent at all, the person needs the **Use AI** permission.
+
+## Untrusted content
+
+Task descriptions, comments, pages and search results can be written by anyone, including people outside the workspace. Agents treat them as data inside clearly marked blocks and never follow instructions found there. Combined with the rights cap, the approval step for destructive changes and outside actions, and outside tools only for agents you give web access, this keeps an injected instruction from leaking private data or making large changes unnoticed.
+
+## Review, approve and undo
+
+Every change a run makes is part of its **change set**: what it changed, with the values before and after.
+
+- **Applied right away, with Undo.** By default, ordinary changes (comments, field updates, status changes, sub-tasks, links, pages) apply at once. **Undo** reverts one change: old values come back, a comment, sub-task or link the agent created is removed, a page it created is archived, a trashed task is restored. Undoing a sub-task needs permission to delete tasks.
+- **Waiting for approval.** Destructive changes always wait. In **Settings → Workspace → AI**, **Approve AI changes** makes every agent change wait. A waiting change appears in the inbox of the person who asked, with a before/after preview and **Approve** or **Reject**. Approving applies it with your current rights; rejecting discards it. Approvals expire after 24 hours.
+
+Once nothing in a run waits any more, the run ends: it **succeeded** if it changed something, it is **cancelled** if you rejected everything it proposed, and it **failed** if its proposals expired. Its summary gets a line saying what was approved, rejected or expired.
+
+Only the person who asked can approve. That person, or anyone with **Manage AI**, can undo.
+
+<Screenshot src="ai/agent-desk" alt="The Agent Desk with a proposed change waiting for you: Triage Bot wants to move WEB-14 Update the legal pages to the trash, with Approve and Reject, above a list of three runs with their trigger, person, cost and time" caption="Destructive changes wait for the person who asked." />
+
+## The Agent Desk
+
+Open **Your work → Agent Desk** (it appears once the workspace has an agent). It lists runs, newest first, with their agent, task, trigger, status and cost, and can be filtered by agent and status. **Waiting for you** at the top lists your pending approvals.
+
+Select a run to see:
+
+- who it ran for, how it started (mention, assignment, Run agent, schedule, automation or follow-up), how long it worked, its cost, tokens and number of tool calls;
+- its question and a reply box while it needs input;
+- why it stopped, if it didn't finish (for example a used-up budget or a 10-minute limit);
+- the agent's summary;
+- the change set, with **Undo**, **Approve** and **Reject**;
+- the steps: every model call and tool call in order, with its outcome.
+
+<Screenshot src="ai/agent-run" alt="A Triage Bot run on MOB-3 Crash when rotating the task sheet: cost, tokens and tool calls, the summary, a change set of a priority change, two sub-tasks and a comment, each with Undo, and the eight steps" caption="Every change in a run can be undone on its own." />
+
+You see your own runs; people with **Manage AI** see every run in the workspace. Runs in projects you can't see are left out. **Stop run** ends a queued or running run, or one waiting for your answer; changes it already made stay until you undo them. Below a finished run, write in **Reply to the agent** and choose **Send** to give the agent a follow-up.
+
+## Where agent work shows up
+
+- **Activity:** rows and comments made by an agent show the **Agent** badge and "on behalf of" the person who asked. In a task's activity, choose **Agents** under **Show** to see only agent work.
+- **Audit log:** agent actions are recorded with the agent as the actor and the person it acted for, along with the run. Creating, changing and deleting agents, schedules and connectors, schedules turning themselves off, approvals, rejections and undos are recorded too.
+- **Usage:** every model call is counted in the AI usage ledger as **Agents**, with the agent and the run.
+
+## Limits
+
+- At most 16 model turns, 25 tool calls and 10 minutes per run. Near the limit the agent is told to finish; a run that still runs out of steps stops with a reason and a comment on the task, instead of reporting success.
+- At most 25 agents per workspace.
+- Runs use the server's job queue in the database, so they work on a single server and across several servers without extra services. A run interrupted by a restart is retried unless it had already made changes; then it stops and its changes stay reviewable.
+- Model prompts and answers are never stored. A run keeps what you asked only while it works and drops it when it ends; afterwards it keeps its summary, its change set and its steps, which hold only shortened, redacted tool arguments.
+
+## For external agents (MCP)
+
+Agents you connect through [MCP](/core/integrations/mcp) are separate from the agents on this page, but get the same safety signals: every MCP tool says whether it only reads (`readOnlyHint`) or may make destructive changes (`destructiveHint`), so your MCP client can ask before risky calls.

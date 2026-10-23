@@ -1,0 +1,80 @@
+---
+title: Coding Agents
+description: Send a task to a coding agent such as Claude Code, GitHub Copilot or Codex as an issue on your GitHub or Gitea repository, then follow the pull request back on the task
+---
+
+**Send to coding agent** hands a task to an automated coding agent that works in your repository. Margaya writes a brief from the task, you review and edit it, and Margaya opens an issue on the project's GitHub or Gitea repository that asks the agent to work on it. When the agent opens a pull request, its progress shows on the task until it is merged or closed.
+
+Margaya never runs the agent and never stores an AI key for it. A coding agent profile is only an issue template: a mention (such as `@claude`) and, on GitHub, an assignee (such as `Copilot`). The issue is created with the project's existing [GitHub](/core/integrations/github/setup) or [Gitea](/core/integrations/gitea/setup) integration, and the agent itself runs wherever your repository runs it, for example as a GitHub Action.
+
+## Before you start
+
+- The project has a GitHub or Gitea repository connected under **Settings → Projects → (project) → Integrations**. A GitHub repository must be verified.
+- The coding agent is set up on that repository. For example, the Claude Code GitHub Action responds to `@claude`, the Codex integration responds to `@codex`, and GitHub Copilot's coding agent works on issues assigned to `Copilot`.
+- You can edit the task (the **Edit tasks** permission).
+
+## Send a task
+
+1. Open the task and choose **Send to coding agent** under the description. The button appears when the project has a connected repository and you can edit the task.
+2. Choose the **Repository** and the **Coding agent** profile. Profiles that only assign someone (such as GitHub Copilot) are offered for GitHub repositories only.
+3. Margaya prepares the brief:
+   - the task's key, title and description;
+   - its acceptance criteria, taken from an "Acceptance criteria" section or from the checklist items in the description;
+   - related tasks, with how they relate and their status;
+   - pages that mention the task, as short excerpts.
+
+   When AI is on for the workspace and the project, you can turn on **Summarize with AI** and choose **Prepare again**. The brief is then condensed into a goal, context and acceptance criteria through Margaya's AI gateway; it counts towards your AI usage as **Coding agent briefs**.
+4. Review the **Issue title** and the **Brief** and edit them as you like.
+5. Choose **Send**. Margaya opens the issue, adds the profile's mention at the top and, on GitHub, assigns the profile's assignee.
+
+The issue ends with delivery notes: a link back to the task, the branch name the project's integration links pull requests from (for example `web-12`), and a request to reference the issue in the pull request. The issue does not become a new task.
+
+### What never goes into the brief
+
+- Values that look like passwords, tokens or keys are replaced with `[secret removed]`, both in the prepared brief and in whatever you send. The integration's own credentials are never included.
+- Related tasks and pages from other restricted projects are left out, even when you can see them, because the issue leaves Margaya. The task's own project is included.
+- Comments are not included.
+
+## Follow the pull request
+
+The task shows a compact **Coding agent** timeline with four steps:
+
+| Step | When it is reached |
+|---|---|
+| **Issue created** | The issue was sent. The timeline names the profile and who sent it. |
+| **Agent working** | A pull request was opened as a draft (on Gitea, a title starting with `WIP:` or `[WIP]`). |
+| **Ready for review** | The pull request is open and not a draft, or was marked ready for review. |
+| **Merged** or **Closed without merging** | The pull request was merged, or closed without merging. |
+
+A pull request is linked to the task when it references the handoff issue (for example "Closes #41", which most coding agents add on their own), uses the task's branch name, or names the task in its title or description, the same rules the integration already uses. Links to the issue and to the pull request appear on the timeline. If a pull request is closed without merging and the agent opens a new one, the timeline follows the new one.
+
+Margaya never merges anything. The task's status changes only if the project's GitHub or Gitea integration is already set to move tasks when a pull request is opened or merged (see the integration's status settings). The timeline updates live for everyone viewing the task.
+
+## Manage coding agent profiles
+
+Profiles are shared by every project in the workspace. Find them under **Settings → Projects → (any project) → Integrations → Coding agents**. Changing them needs the **Manage workspace settings** permission, the same permission as connecting integrations.
+
+Every workspace starts with three built-in profiles:
+
+| Profile | Issue template |
+|---|---|
+| **Claude Code (GitHub Action)** | Mentions `@claude`. Works on GitHub and Gitea. |
+| **GitHub Copilot coding agent** | Assigns `Copilot`. GitHub only. |
+| **Codex** | Mentions `@codex`. Works on GitHub and Gitea. |
+
+<Screenshot src="ai/coding-agent-profiles" alt="The Coding agents section of a project's integrations with the built-in Claude Code (GitHub Action), GitHub Copilot coding agent and Codex profiles, each with a switch and an edit button, and Add profile" caption="The built-in profiles; each only adds a mention or an assignee." />
+
+You can rename, change or turn off the built-in profiles, but not delete them. **Add profile** creates a custom one with:
+
+- **Mention**: a handle such as `@our-runner`, which gets a short request after it, or a full line of text. In a full line, `{task}` becomes the task key and `{branch}` the branch name.
+- **Assignee (GitHub)**: a GitHub login to assign the issue to. Gitea profiles use mentions only.
+
+A profile needs a mention or an assignee. If GitHub can't assign the assignee (for example because Copilot's coding agent is not enabled for the repository), the issue is still created and Margaya tells you that the assignee was not added.
+
+## Audit log
+
+Sending a task is recorded in the workspace [audit log](/core/functional/audit-log) as **Sent a task to a coding agent**, with who sent it, the profile and the issue. Creating, changing and deleting profiles are recorded too.
+
+## API
+
+The same actions are available in the API under `/coding-agent`: list and manage profiles, read a task's handoffs, prepare a brief and send it. They follow the same permissions, so an API key needs task write access to send.

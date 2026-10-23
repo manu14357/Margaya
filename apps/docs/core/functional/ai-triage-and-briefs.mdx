@@ -1,0 +1,110 @@
+---
+title: AI Triage, Translation and Briefs
+description: Get explained triage suggestions for new tasks and intake requests, read comments and descriptions in your own language, and write cited stakeholder briefs from computed facts
+---
+
+Three AI features help with the routine around the work: deciding where new work belongs, reading what teammates wrote in other languages, and telling others how the work is going. Each one proposes; nothing changes until a person accepts it.
+
+These features appear only when AI is on for the server, the workspace and the project, and you have the **Use AI** permission. See [AI Setup](/core/functional/ai-setup). When AI is off, the buttons and links described here are hidden.
+
+## Triage suggestions
+
+Triage suggestions help you sort new work. Open a request in a project's [Intake](/core/functional/intake) queue, or a task that is new (created in the last two days) or has no labels, and choose **Suggest triage** (the ✦ button).
+
+Margaya looks at the item and at existing tasks that are similar to it, then suggests:
+
+| Suggestion | What you can do |
+|---|---|
+| **Label** | Up to three of the workspace's labels. |
+| **Assignee** | One person who can see the project, based on who handled similar work. |
+| **Priority** | A priority, when the item gives a clear reason for one. |
+| **Project** | A project the item fits better. Tasks can be moved there. Requests stay in their project, so for a request this is advice only. |
+| **Possible duplicate** | Up to three existing tasks that describe the same problem. A task with exactly the same title is always listed. |
+
+Each suggestion comes with a one-line reason, such as "Similar tasks WEB-3 and WEB-9 carry this label", so you can check it before you act. For each one you can:
+
+- **Accept** to apply it through the same change you would make by hand. Accepting a duplicate closes a request as a duplicate, or adds a **Duplicate** relation to a task.
+- **Edit** to open the usual control (the label, assignee or priority picker, or the duplicate dialog) and choose something else.
+- **Dismiss** to hide it.
+
+<Screenshot src="ai/triage-suggestions" alt="Triage suggestions for an intake request about a push notification crash: the labels Bug and Backend and the assignee Theo Okafor, each with a reason and Accept, Edit and Dismiss, plus Accept all" caption="Every suggestion says why, and nothing applies until you accept it." />
+
+**Accept all** applies the suggested labels, assignee and priority in one go. A move to another project or a duplicate is always its own decision.
+
+Suggestions for a request need permission to triage intake. Suggestions for a task need permission to edit tasks. Accepting each suggestion also needs the permission for that change.
+
+### Auto-apply label suggestions
+
+By default nothing is applied until someone accepts it. A project can opt in to adding suggested labels at once:
+
+1. Go to **Settings**, open **Projects** and select the project.
+2. Open the **Features** tab.
+3. Under **Triage suggestions**, turn on **Auto-apply label suggestions**.
+
+Changing this setting needs permission to edit the project. While it is on, suggested labels are added as soon as someone asks for suggestions, as that person and only if they may edit labels. Each time, the [audit log](/core/functional/audit-log) records **Applied suggested labels automatically** with the task and the labels. Assignee, priority, project and duplicates always wait for a person.
+
+### Label suggestions while you type
+
+In the **Create task** dialog, Margaya suggests up to three of the workspace's labels once you stop typing the title or description for a moment. They appear as dashed chips above the labels; click one to add it to the new task. Hover a chip to see why it was suggested. Suggestions come from the labels' names and the labels of similar tasks you can see, and they appear only when AI is on for the project and you may add labels.
+
+## Translate comments and descriptions
+
+When a comment, a task description or a page is written in a language other than your interface language, a **Translate** link appears under it. Margaya decides this on your device first, from the text's script and common words, so nothing is sent to the AI unless the text looks like another language.
+
+- **Comments:** choose **Translate** and the comment shows in your language, with **Translated from …** and **Show original** under it.
+
+<Screenshot src="ai/translate-comment" alt="Jonas Weber's comment, written in German, shown in English with Translated from German and Show original under it" caption="A translated comment, with the original one click away." />
+- **Task descriptions and pages:** the translation shows below the **Translate** line, read-only, so the original stays editable. Choose **Show original** to hide it.
+
+Translations are kept per text and language, so the next reader in the same language gets it at once without a new AI request. Editing a comment or a description replaces its translations, and deleting it deletes them.
+
+### Auto-translate comments
+
+Workspace admins can translate comments without a click: go to **Settings**, open **AI** in the workspace section and turn on **Auto-translate comments**. Each reader then sees comments in other languages already translated, with **Show original** to switch back. It is off by default.
+
+## Stakeholder briefs
+
+A stakeholder brief is a short status update for a cycle, a module or a whole project. Choose **Brief** in a cycle's or module's header, or on the **Delivery** tab of a project's analytics.
+
+1. Choose the **Audience**:
+   - **Team:** concrete and practical.
+   - **Leadership:** outcomes, risks and dates first.
+   - **Client:** customer-safe, with no people's names and no internal process. Not available for restricted projects.
+2. Choose **Write brief**. The brief streams into a card.
+
+The brief is written only from facts Margaya computes: progress, completed and added work, work removed from scope, risks from [Forecast and Risk](/core/functional/forecast-and-risk) and the delivery forecast. The model doesn't calculate any number or date. Every task it mentions is cited by its key, such as **WEB-12**, and links to the task. Open **Facts used** to see the numbers the brief was written from.
+
+<Screenshot src="ai/stakeholder-brief" alt="A Leadership stakeholder brief for Sprint 14: progress and the expected finish, outcomes, risks and dates, with linked task keys, Facts used, Copy and Save as page" caption="Task keys link to the tasks; the numbers come from Margaya." />
+
+### What changed since the last brief
+
+When you **Save as page** or **Copy** a brief, it becomes the baseline for the next brief of the same cycle, module or project. The next brief then covers what changed since: newly completed work, added and removed tasks, the change in progress and how the forecast date moved. Without an earlier brief, the brief covers the last 7 days.
+
+- **Save as page** creates a page in the project, with the task keys as links. This needs permission to create pages, with Pages turned on for the project.
+- **Copy** copies the brief as Markdown.
+
+Margaya keeps the computed facts of each brief so it can compare, not the brief's text.
+
+## Language
+
+Suggestions, reasons and briefs are written in your interface language. Translations go into your interface language.
+
+## Privacy and limits
+
+- AI only reads what you can see. A task, comment, page, cycle or module in a [restricted project](/core/functional/restricted-projects) you're not a member of is treated as if it doesn't exist, and similar tasks from such projects are never used. Restricted projects you are a member of are left out unless your workspace admin includes them in the AI settings.
+- Text from tasks, comments, pages and requests is passed to the model as data. The model is told never to follow instructions found inside it, and it can only suggest: it has no tools and changes nothing itself.
+- Each request counts toward the workspace's and your AI limits, and appears on the AI usage page as **Triage suggestions** (label suggestions while you type count here too), **Translations** or **Stakeholder briefs**. A translation served from what was kept costs nothing.
+- AI can make mistakes. Read the result before you use it.
+
+## API
+
+These features are also available over the REST API. API keys need the **AI** area with write access.
+
+| Endpoint | What it does |
+|---|---|
+| `POST /api/ai/triage/suggest` | Suggest labels, an assignee, a priority, a project and duplicates for a task or request. |
+| `POST /api/ai/triage/labels` | Suggest labels for a task that is still being written, from its title and description. |
+| `GET` and `PATCH /api/ai/triage/settings/{projectId}` | Read or change a project's auto-apply of label suggestions. |
+| `POST /api/ai/translate` | Translate a comment, a task description or a page. |
+| `POST /api/ai/brief` | Write a stakeholder brief. It streams Server-Sent Events, or returns a single JSON body when you send `Accept: application/json`. |
+| `POST /api/ai/brief/{id}/share` | Mark a brief as saved or copied, so the next brief compares with it. |
