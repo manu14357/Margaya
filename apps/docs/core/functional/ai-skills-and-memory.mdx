@@ -1,0 +1,66 @@
+---
+title: AI Skills and Memory
+description: Save prompts you use often as skills, and give AI short facts to keep in mind for the workspace, a project or just you
+---
+
+Two settings pages shape how AI works for your team:
+
+- **AI skills** are saved prompts, such as "Write release notes for the tasks done this cycle, grouped by feature". Pick one in the chat instead of typing the same instructions again.
+- **AI memory** holds short facts AI keeps in mind when it answers, such as "Our release day is Thursday".
+
+Both appear once AI is allowed on the server, for everyone with the **Use AI** permission. See [AI Setup](/core/functional/ai-setup).
+
+## AI skills
+
+Open **Settings** > **Workspace** > **AI skills** and choose **New skill**:
+
+| Field | What it does |
+|---|---|
+| **Name** | How the skill shows in lists, for example `release-notes`. Up to 80 characters. |
+| **Description** | Optional. A short line about what it is for. Up to 300 characters. |
+| **Prompt** | The instructions added whenever the skill is used. Up to 4,000 characters. |
+| **Share with the workspace** | On (the default): everyone who uses AI in the workspace can use it. Off: only you. |
+
+Choose **Save skill**. The list shows each skill as **Shared** or **Only you**. Its creator, or anyone with **Manage AI**, can change or delete it. A workspace holds at most 200 skills.
+
+### Where skills are used
+
+- **Ask AI.** Type **/** at the start of the question box; your skills follow the built-in commands. The skill's prompt is added as your instructions for that question. See [Ask AI](/core/functional/ask-ai).
+- **Agents.** An [agent](/core/functional/ai-agents) can follow up to 10 shared skills on every run, when they fit the request. Only shared skills can be given to an agent: a skill that is deleted, or no longer shared, stops reaching it.
+
+Build mode doesn't use skills.
+
+## AI memory
+
+Open **Settings** > **Workspace** > **AI memory**. Notes are grouped in three tabs:
+
+| Tab | Who writes them | Used for |
+|---|---|---|
+| **Workspace** | People with **Manage AI** | Everyone in the workspace. |
+| **Project** | People with **Manage AI** (pick the project first) | Requests about that project. |
+| **Personal** | You | Only your own requests. Nobody else can see them. |
+
+Type the fact and choose **Add note**. A note holds up to 500 characters, and each workspace, project and person can have up to 100 notes. Use the pencil to change a note and the bin to delete it. Without **Manage AI**, the **Workspace** and **Project** tabs are read-only.
+
+### Where memory notes are used
+
+- **Ask AI** uses the workspace's notes, the notes of the project Ask is scoped to, and your personal notes.
+- **Build mode** uses them when it plans changes; the **Context (n)** list shows how many it got. See [Build mode](/core/functional/build-mode#watch-it-plan).
+- **Agent runs** use the workspace's notes, the notes of the run's project, and the personal notes of the person the run works for.
+
+Notes are background: AI never cites them, and live task data wins when they disagree. At most 40 notes go into one request, workspace notes first, then project notes, then personal ones.
+
+## Privacy
+
+- Skills and notes are stored in your workspace until someone deletes them. They are sent to the model with each request that uses them, under the same [routing and redaction rules](/core/functional/ai-privacy-and-data) as everything else.
+- Personal notes and private skills are only ever used for the person who wrote them.
+- Keep passwords, keys and other secrets out of skills and notes.
+
+## API
+
+| Endpoint | What it does |
+|---|---|
+| `GET` / `POST /api/ai/skills`, `PATCH` / `DELETE /api/ai/skills/{id}` | List, create, change and delete skills. |
+| `GET` / `POST /api/ai/memory`, `PATCH` / `DELETE /api/ai/memory/{id}` | List, create, change and delete memory notes. `scope` is `workspace`, `project` (with `projectId`) or `user`. |
+
+API keys need the **AI** area.

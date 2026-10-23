@@ -1,0 +1,72 @@
+---
+title: AI Privacy and Data
+description: What Margaya's AI features may read, where each request goes, what is redacted, and what is never stored versus what is kept
+---
+
+This page collects how Margaya's AI features handle your data. For the settings themselves, see [AI Setup](/core/functional/ai-setup).
+
+## Off until you turn it on
+
+AI is off by default. Nothing is sent to any model until an instance admin allows AI and sets up a provider, and a workspace admin turns AI on for the workspace. Each project can stay out of AI entirely by turning **AI** off under its **Features**. See [AI Overview](/core/functional/ai-overview#what-has-to-be-turned-on).
+
+## What AI may read
+
+- **Only what the person can see.** Every AI feature reads through the same permission checks as the rest of Margaya. Agents are capped at both their role and the rights of the person they work for.
+- **Projects with AI off** are never read, by any feature.
+- **Restricted projects** stay out, even for their members, until a workspace admin turns on **Include restricted projects**.
+- **Content is data, not instructions.** Task descriptions, comments, pages, search results and attachments are passed to the model inside marked blocks, and the model is told never to follow instructions found there.
+
+## Where each request goes
+
+Every request is classified by the most sensitive data in it:
+
+| Tier | What it contains |
+|---|---|
+| **Restricted** | Content from a restricted project. |
+| **Private** | Any other workspace content, such as tasks, comments and pages. Attached images always count as at least private. |
+| **Public** | Only published content, or no workspace content at all. |
+
+An instance admin decides where each tier may go: restricted data is **Never sent**, **Local model only** (the default) or **Cloud provider allowed**; other workspace data is **Local model only** or **Cloud provider allowed** (the default). **Local-only mode** on the instance, or **Local model only** in a workspace, sends every request to the local model. A workspace can be stricter than the server, never looser. A request whose only allowed destination is missing is refused rather than sent elsewhere.
+
+Embeddings for semantic search and speech to text follow the same idea: an endpoint on your own network counts as local, any other as cloud, so a workspace that may only use local models never sends text or recordings to a cloud endpoint.
+
+## Redaction
+
+With **Redact personal data** on (for the server, or for one workspace), emails, phone numbers, card and IBAN numbers and credential-looking tokens are replaced with placeholders such as `[EMAIL_1]` before a request goes to a cloud provider. The same value always gets the same placeholder, and the answer shows the real values again, so people never see the placeholders. Requests to the local model are not redacted, and neither are attached images.
+
+**Zero data retention** on the instance page only records that your agreement with the provider keeps no data; the provider enforces it.
+
+## What is never stored
+
+- **Prompts and answers.** Margaya doesn't keep what was sent to a model or what came back, for any feature. The one exception is chat history that a workspace opts into (below).
+- **Reasoning.** A reasoning model's thinking text is shown only to the person who asked, and only when the instance shows reasoning. It is never stored or logged.
+- **Attachments.** Files attached to an Ask question are used for that question only. Location and camera data are removed from PNG, JPEG and WebP images first.
+- **Recordings.** With the server's speech-to-text endpoint, a dictated question is turned into text and only the text comes back; neither the recording nor the text is stored. When the browser's own speech recognition is used instead, nothing reaches Margaya until you send the question. With **Capture**, a screen recording stays on your device: only a few still frames are sent.
+- **Agent run input.** What you asked an agent is kept only while the run works, and dropped when it ends.
+
+## What is kept
+
+| Data | What it holds | Who sees it |
+|---|---|---|
+| **Usage ledger** | One row per model call: feature, person, agent and run, provider, model, data tier, outcome, tokens, cost and duration. No text. | People with **Manage AI** (their workspace); instance admins (totals across workspaces). |
+| **Ratings** | A thumbs up or down, the optional reason, the feature and the model. Never the question or the answer. | People with **Manage AI**, next to usage. |
+| **Chat history on the server** | Only when the workspace turns on **Keep chat history on the server**: each person's Ask conversations, up to 100 questions each, without reasoning. Otherwise history stays in each browser. | Only the person who had the conversation. Nobody else can open it, admins included. |
+| **Memory notes and skills** | The text people saved under **AI memory** and **AI skills**. | See [AI skills and memory](/core/functional/ai-skills-and-memory). |
+| **Agent runs** | The agent's summary, its changes with values before and after, and its steps with shortened, redacted tool arguments. | The person the run worked for; everyone with **Manage AI**. |
+| **Stakeholder briefs** | The computed facts each brief was written from, so the next brief can show what changed. The brief's text is kept only if you save it as a page. | Shown as **What changed since the last brief**. |
+| **Translations** | One cached translation per text and language, so the next reader gets it without a new request. Replaced when the text changes, deleted with it. | Everyone who can see the text. |
+| **Search index** | With semantic search on: vectors of tasks, pages and comments, without their text. Deleted with the item, or when semantic search is turned off. | Used only for search, with the usual permission checks. |
+
+Anything you choose to save, such as a summary saved as a page or comment, an applied suggestion or a created task, becomes ordinary workspace content.
+
+## Web search
+
+When web search is on, only the person's question is sent to the search provider, never workspace content. Web results are cited as web sources and used for outside facts, never for the state of your work.
+
+## Budgets and limits
+
+- A **monthly budget** in US dollars for the whole workspace, and a **daily token limit** per person. From 80% of the budget, people with **Manage AI** get a notice; once a limit is reached, AI requests stop until the next month or day.
+- A **monthly budget** per [agent](/core/functional/ai-agents).
+- Requests per minute per workspace and per person, and requests at the same time per person, set by the server (see [Environment variables](/core/installation/environment-variables#ai)).
+
+Costs are estimates by list price. Local models count as $0, but their tokens are still recorded.

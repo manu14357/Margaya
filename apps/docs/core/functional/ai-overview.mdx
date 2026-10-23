@@ -1,0 +1,66 @@
+---
+title: AI Overview
+description: Every AI feature in Margaya on one page, what has to be turned on for each, and where to read more
+---
+
+Margaya's AI features are optional and **off by default**. Each one proposes or explains; routine work never depends on AI, and everything still works when it is off. This page lists every AI feature and where to find it.
+
+## What has to be turned on
+
+AI features appear only when every level allows them:
+
+1. **Instance.** An instance admin selects **Allow AI** and sets up a provider under **Settings** > **Instance** > **AI**.
+2. **Workspace.** A workspace admin turns on **Turn on AI** under **Settings** > **Workspace** > **AI**.
+3. **Project.** Each project keeps **AI** on, or turns it off under its **Features**. Off keeps the project out of AI entirely.
+4. **Person.** People need the **Use AI** permission. Members, Admins and Owners have it by default; Viewers do not.
+
+Some features need one more switch, listed in the tables below. See [AI Setup](/core/functional/ai-setup) for every setting, and [AI privacy and data](/core/functional/ai-privacy-and-data) for where data goes and what is kept.
+
+## Chat
+
+| Feature | Where you find it | Read more |
+|---|---|---|
+| **Ask AI** | The sparkle in the top bar, <kbd>Ctrl</kbd> <kbd>J</kbd> (<kbd>⌘</kbd> <kbd>J</kbd> on a Mac), or **Ask AI…** in the command palette. Answers cite their sources. | [Ask AI](/core/functional/ask-ai) |
+| **Build mode** | The **Build** switch under the chat's question box. Proposes changes as cards you confirm; each can be undone. | [Build mode in chat](/core/functional/build-mode) |
+| **Autopilot** | A third chat mode that applies changes right away. Needs **Allow Autopilot** in the workspace. | [Build mode in chat](/core/functional/build-mode#autopilot) |
+| **Skills and memory notes** | Saved prompts under **/** in the chat, and short facts AI keeps in mind. **Settings** > **Workspace** > **AI skills** and **AI memory**. | [AI skills and memory](/core/functional/ai-skills-and-memory) |
+| **Web search** | The globe next to the question box. Needs a search provider on the instance and **Web search** in the workspace. | [Ask AI](/core/functional/ask-ai#search-the-web) |
+| **Semantic search** | Ask and the duplicate check also find items by meaning. Needs an embeddings endpoint, pgvector and **Semantic search** in the workspace. | [AI Setup](/core/functional/ai-setup#enable-semantic-search) |
+
+## Planning and writing
+
+| Feature | Where you find it | Read more |
+|---|---|---|
+| **Build with AI** | **Build with AI…** in the command palette, or on an empty board. Drafts a project, cycles, modules and tasks to review. | [Build with AI](/core/functional/build-with-ai) |
+| **Writing help** | **AI** in the formatting bubble of pages and descriptions, the ✦ button in comments, **AI block** in pages, **Suggest a title**, and **Write with AI** in **Create task**. | [AI Writing](/core/functional/ai-writing) |
+| **Summaries and spec drafts** | **Summarize** on a cycle, project, page or task, and **Draft a spec** on a task. | [AI Writing](/core/functional/ai-writing#one-click-summaries) |
+| **Triage suggestions** | **Suggest triage** on intake requests and new tasks, label suggestions in **Create task**, and optional **Auto-apply label suggestions** per project. | [AI Triage, Translation and Briefs](/core/functional/ai-triage-and-briefs) |
+| **Duplicate check** | **Check with AI** in the duplicate hints of **Create task**. | [Build with AI](/core/functional/build-with-ai#check-with-ai) |
+| **Translation** | **Translate** under comments, descriptions and pages in another language, and optional **Auto-translate comments**. | [AI Triage, Translation and Briefs](/core/functional/ai-triage-and-briefs#translate-comments-and-descriptions) |
+| **Stakeholder briefs** | **Brief** in a cycle's or module's header or on a project's **Delivery** analytics tab, or **/brief** in the chat. | [AI Triage, Translation and Briefs](/core/functional/ai-triage-and-briefs#stakeholder-briefs) |
+| **Filters from a sentence** | **Describe a filter…** next to **Filter**. | [Views](/core/functional/views#describe-a-filter-in-your-own-words) |
+| **Capture** | **Capture** in a project's Intake: requests from screenshots, a screen recording or meeting notes. | [Intake](/core/functional/intake#capture-requests-with-ai) |
+| **Estimate explanations** | **Why?** on an estimate suggestion. The numbers never come from AI. | [Estimates](/core/functional/estimates#suggestions-from-similar-tasks) |
+| **Retrospective narrative** | **Write narrative** in a cycle's **Retro**. | [Cycles](/core/functional/cycles#retrospectives) |
+| **Rules from a description** | **Rule from a description** on a project's **Workflow** tab. Saved rules run without AI. | [Automations](/core/functional/automations#describe-a-rule-in-plain-words) |
+
+## Your day
+
+| Feature | Where you find it | Read more |
+|---|---|---|
+| **Inbox digest** | **Summarize unread** above the inbox list. | [Inbox](/core/functional/inbox#summarize-unread-notifications) |
+| **My brief** | **Summarize** in the **My brief** widget on Home. The lists themselves need no AI. | [My Brief](/core/functional/my-brief#summarize-with-ai) |
+
+## Agents and outside tools
+
+| Feature | Where you find it | Read more |
+|---|---|---|
+| **AI agents** | **Settings** > **Workspace** > **Agents**. Mention, assign, run, schedule or automate an agent; review its runs in **Your work** > **Agent Desk**. | [AI Agents and the Agent Desk](/core/functional/ai-agents) |
+| **Connectors** | **Connectors** in the agent settings. Lets agents with **Web access** use outside MCP servers, with Margaya as the MCP client. | [Connectors](/core/functional/ai-agents#connectors-mcp-servers) |
+| **Coding agents** | **Send to coding agent** on a task. Works without AI; **Summarize with AI** condenses the brief when AI is on. | [Coding Agents](/core/functional/coding-agents) |
+| **A2A** | **Agent-to-agent (A2A)** in the workspace's general settings, off by default. Asking questions and running agents over A2A need AI. | [A2A](/core/integrations/a2a) |
+| **MCP server** | `/api/mcp` and the `@margaya/mcp` package let outside AI clients work in Margaya as you. Needs no AI settings. | [Margaya MCP Server](/core/integrations/mcp) |
+
+## Usage and limits
+
+Every AI request is counted by feature, person and model, with its tokens and cost. Workspace admins see it under **Settings** > **Workspace** > **AI** > **Usage** and can set a monthly budget and a daily token limit per person. See [AI Setup](/core/functional/ai-setup#usage-and-costs).
