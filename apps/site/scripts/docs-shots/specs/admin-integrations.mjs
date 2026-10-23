@@ -1,0 +1,485 @@
+/**
+ * Screenshots for the self-hosting docs: instance administration, sign-in
+ * providers, project integrations, MCP and the first sign-up
+ * (apps/docs/core/installation, integrations, social-providers, deployments).
+ *
+ * LOCAL DEVELOPMENT ONLY. Admin screens use the owner account (an instance
+ * admin); everything else uses the Studio North press account. Nothing is
+ * saved: forms are filled for the picture and panels are opened, never
+ * submitted. The MCP consent and device shots create short-lived pending
+ * requests that expire on their own. Rows for accounts outside the
+ * margaya.test demo domain are hidden so no real person appears in the docs.
+ */
+
+const API = process.env.DOCS_SHOTS_API_URL ?? "http://localhost:1337";
+const CLIENT = process.env.DOCS_SHOTS_CLIENT_URL ?? "http://localhost:5173";
+
+const HIDE = `
+  [data-sonner-toaster], [data-sonner-toast], .tsqd-parent-container,
+  [aria-label="Open Tanstack query devtools"], [class*="devtools"] {
+    display: none !important;
+  }
+  *, *::before, *::after {
+    caret-color: transparent !important;
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+`;
+
+const instance = (page) => `/dashboard/settings/instance/${page}`;
+const integrations = (seed) =>
+  `/dashboard/settings/projects/${seed.projects.web.id}/integrations`;
+
+/** A settings section, found by its heading. */
+const section = (title) =>
+  `section:has(> div h2:text-is(${JSON.stringify(title)}))`;
+
+/** One collapsible integration on the project integrations page. */
+const integration = (title) =>
+  `div:has(> button h3:text-is(${JSON.stringify(title)}))`;
+
+/** Hides table rows for accounts outside the fictional demo domain. */
+async function hideOutsiders(page) {
+  await page.evaluate(() => {
+    for (const row of document.querySelectorAll("tbody tr")) {
+      if (!row.textContent?.includes("margaya.test")) {
+        row.style.display = "none";
+      }
+    }
+  });
+}
+
+/** Navigates again inside prepare; the runner's hiding styles are re-added. */
+async function goto(page, url, ready) {
+  await page.goto(new URL(url, CLIENT).href, { waitUntil: "domcontentloaded" });
+  await page.addStyleTag({ content: HIDE });
+  await page
+    .getByText(ready, { exact: true })
+    .first()
+    .waitFor({ state: "visible", timeout: 60_000 });
+}
+
+async function openIntegration(page, title) {
+  await page.getByRole("heading", { name: title, exact: true }).click();
+  await page
+    .locator(`${integration(title)} input`)
+    .first()
+    .waitFor({ state: "visible" });
+  // The crop must fit in the viewport, so bring the section to the top.
+  await page
+    .locator(integration(title))
+    .first()
+    .evaluate((element) => element.scrollIntoView({ block: "start" }));
+}
+
+/**
+ * Marks the integration's header plus its first card (the connection
+ * fields) with an invisible overlay, so the shot can stop before the long
+ * event list that the page text already covers.
+ */
+async function markConnectionCard(page, title, cardTitle) {
+  await page.evaluate(
+    ([title, cardTitle]) => {
+      document.getElementById("docs-shot-clip")?.remove();
+      const heading = [...document.querySelectorAll("h3")].find(
+        (element) => element.textContent?.trim() === title,
+      );
+      const root = heading?.closest("button")?.parentElement;
+      let card = [...document.querySelectorAll("body *")].find(
+        (element) =>
+          element.children.length === 0 &&
+          element.textContent?.trim() === cardTitle,
+      );
+      while (
+        card &&
+        !(
+          typeof card.className === "string" &&
+          card.className.includes("border") &&
+          card.className.includes("rounded")
+        )
+      ) {
+        card = card.parentElement;
+      }
+      if (!root || !card) throw new Error(`No card "${cardTitle}"`);
+      const outer = root.getBoundingClientRect();
+      const inner = card.getBoundingClientRect();
+      const mark = document.createElement("div");
+      mark.id = "docs-shot-clip";
+      Object.assign(mark.style, {
+        position: "fixed",
+        left: `${outer.left - 8}px`,
+        top: `${outer.top - 8}px`,
+        width: `${outer.width + 16}px`,
+        height: `${inner.bottom - outer.top + 24}px`,
+        pointerEvents: "none",
+      });
+      document.body.append(mark);
+    },
+    [title, cardTitle],
+  );
+}
+
+/** Fills the nth text input of an expanded integration, for the picture. */
+async function fill(page, title, index, value) {
+  await page
+    .locator(`${integration(title)} input:not([type=checkbox])`)
+    .nth(index)
+    .fill(value);
+}
+
+async function configureProvider(page, index) {
+  await page.getByRole("button", { name: "Configure" }).nth(index).click();
+  await page.locator("[role=dialog]").waitFor({ state: "visible" });
+}
+
+// Pending requests are reused across the light and dark captures of a run.
+let consentUrl = null;
+let deviceCode = null;
+
+async function mcpConsentUrl(page) {
+  if (consentUrl) return consentUrl;
+  const request = page.context().request;
+  const redirectUri = "http://127.0.0.1:33418/callback";
+  const registered = await request.post(`${API}/api/mcp/register`, {
+    data: { client_name: "Cursor", redirect_uris: [redirectUri] },
+    headers: { Origin: CLIENT },
+  });
+  if (!registered.ok()) {
+    throw new Error(`MCP client registration failed: ${registered.status()}`);
+  }
+  const { client_id } = await registered.json();
+  const params = new URLSearchParams({
+    response_type: "code",
+    client_id,
+    redirect_uri: redirectUri,
+    // Any 43-character base64url value is a well-formed S256 challenge; the
+    // flow is never completed, so no verifier is needed.
+    code_challenge: "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM",
+    code_challenge_method: "S256",
+    state: "docs",
+  });
+  const started = await request.get(`${API}/api/mcp/authorize?${params}`, {
+    maxRedirects: 0,
+  });
+  const location = started.headers().location;
+  if (!location) {
+    throw new Error(`MCP authorize gave no redirect: ${started.status()}`);
+  }
+  consentUrl = location;
+  return location;
+}
+
+async function mcpDeviceCode(page) {
+  if (deviceCode) return deviceCode;
+  const response = await page
+    .context()
+    .request.post(`${API}/api/auth/device/code`, {
+      data: { client_id: "margaya-mcp" },
+      headers: { Origin: CLIENT },
+    });
+  if (!response.ok()) {
+    throw new Error(`Device code request failed: ${response.status()}`);
+  }
+  deviceCode = (await response.json()).user_code;
+  return deviceCode;
+}
+
+const tall = { width: 1440, height: 1200 };
+
+const shots = [
+  // ---------------------------------------------------------------- admin
+  {
+    name: "admin/general",
+    account: "owner",
+    url: instance("general"),
+    ready: "Instance name",
+    viewport: tall,
+    clip: { selector: "[data-slot=settings-page]" },
+  },
+  {
+    name: "admin/sign-up",
+    account: "owner",
+    url: instance("authentication"),
+    ready: "Anyone can sign up",
+    clip: { selector: section("Sign-up"), pad: 16 },
+  },
+  {
+    name: "admin/sign-in-methods",
+    account: "owner",
+    url: instance("authentication"),
+    ready: "Email and password",
+    viewport: tall,
+    clip: { selector: section("Sign-in methods"), pad: 16 },
+  },
+  {
+    name: "admin/sign-in-policy",
+    account: "owner",
+    url: instance("authentication"),
+    ready: "Allowed email domains",
+    viewport: { width: 1440, height: 1600 },
+    clip: { selector: section("Sign-in policy"), pad: 16 },
+  },
+  {
+    name: "admin/oauth-github",
+    account: "owner",
+    url: instance("authentication"),
+    ready: "Email and password",
+    // A short viewport keeps the sheet free of empty space.
+    viewport: { width: 1440, height: 520 },
+    prepare: (page) => configureProvider(page, 0),
+    clip: { selector: "[role=dialog]" },
+  },
+  {
+    name: "admin/oauth-google",
+    account: "owner",
+    url: instance("authentication"),
+    ready: "Email and password",
+    // A short viewport keeps the sheet free of empty space.
+    viewport: { width: 1440, height: 520 },
+    prepare: (page) => configureProvider(page, 1),
+    clip: { selector: "[role=dialog]" },
+  },
+  {
+    name: "admin/oauth-discord",
+    account: "owner",
+    url: instance("authentication"),
+    ready: "Email and password",
+    // A short viewport keeps the sheet free of empty space.
+    viewport: { width: 1440, height: 520 },
+    prepare: (page) => configureProvider(page, 2),
+    clip: { selector: "[role=dialog]" },
+  },
+  {
+    name: "admin/oauth-custom",
+    account: "owner",
+    url: instance("authentication"),
+    ready: "Email and password",
+    viewport: { width: 1440, height: 1080 },
+    prepare: (page) => configureProvider(page, 3),
+    clip: { selector: "[role=dialog]" },
+  },
+  {
+    name: "admin/email",
+    account: "owner",
+    url: instance("email"),
+    ready: "SMTP server",
+    viewport: tall,
+    clip: { selector: "[data-slot=settings-page]" },
+  },
+  {
+    name: "admin/workspaces",
+    account: "owner",
+    url: instance("workspaces"),
+    ready: "All workspaces",
+    prepare: hideOutsiders,
+    clip: { selector: "[data-slot=settings-page]" },
+  },
+  {
+    name: "admin/public-boards",
+    account: "owner",
+    url: instance("public-boards"),
+    ready: "Published boards",
+    clip: { selector: "[data-slot=settings-page]" },
+  },
+  {
+    name: "admin/users",
+    account: "owner",
+    url: instance("users"),
+    ready: "Jonas Weber",
+    viewport: tall,
+    prepare: async (page) => {
+      await hideOutsiders(page);
+      await page
+        .getByRole("button", { name: "Actions for Jonas Weber" })
+        .click();
+      await page.getByRole("menu").waitFor({ state: "visible" });
+    },
+    keepPointer: true,
+    clip: { selector: "[data-slot=settings-page]" },
+  },
+  {
+    name: "admin/admins",
+    account: "owner",
+    url: instance("admins"),
+    ready: "Audit trail",
+    prepare: hideOutsiders,
+    clip: { selector: "[data-slot=settings-page]" },
+  },
+
+  // ---------------------------------------------------- first sign-up
+  {
+    name: "install/sign-up",
+    url: "/auth/sign-up",
+    prepare: async (page) => {
+      await page.context().clearCookies();
+      await goto(page, "/auth/sign-up", "Full name");
+    },
+    clip: { x: 815, y: 170, width: 470, height: 560 },
+  },
+
+  // ------------------------------------------------- project integrations
+  {
+    name: "integrations/overview",
+    url: integrations,
+    ready: "Project integrations",
+    clip: { selector: "[data-slot=settings-page]" },
+  },
+  {
+    name: "integrations/github",
+    url: integrations,
+    ready: "GitHub integration",
+    prepare: async (page) => {
+      await openIntegration(page, "GitHub integration");
+      await fill(page, "GitHub integration", 0, "studio-north");
+      await fill(page, "GitHub integration", 1, "website");
+    },
+    clip: { selector: integration("GitHub integration"), pad: 8 },
+  },
+  {
+    name: "integrations/gitea",
+    url: integrations,
+    ready: "Gitea integration",
+    prepare: async (page) => {
+      await openIntegration(page, "Gitea integration");
+      await fill(
+        page,
+        "Gitea integration",
+        0,
+        "https://git.studionorth.example",
+      );
+      await fill(page, "Gitea integration", 2, "studio-north");
+      await fill(page, "Gitea integration", 3, "website");
+    },
+    clip: { selector: integration("Gitea integration"), pad: 8 },
+  },
+  {
+    name: "integrations/discord",
+    url: integrations,
+    ready: "Discord integration",
+    viewport: tall,
+    prepare: async (page) => {
+      await openIntegration(page, "Discord integration");
+      await fill(
+        page,
+        "Discord integration",
+        0,
+        "https://discord.com/api/webhooks/000000000000000000/xxxxxxxxxxxxxxxx",
+      );
+      await fill(page, "Discord integration", 1, "#web-releases");
+    },
+    clip: { selector: integration("Discord integration"), pad: 8 },
+  },
+  {
+    name: "integrations/slack",
+    url: integrations,
+    ready: "Slack integration",
+    viewport: tall,
+    prepare: async (page) => {
+      await openIntegration(page, "Slack integration");
+      await fill(
+        page,
+        "Slack integration",
+        0,
+        "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXX",
+      );
+      await fill(page, "Slack integration", 1, "#web-releases");
+    },
+    clip: { selector: integration("Slack integration"), pad: 8 },
+  },
+  {
+    name: "integrations/mattermost",
+    url: integrations,
+    ready: "Mattermost integration",
+    viewport: tall,
+    prepare: async (page) => {
+      await openIntegration(page, "Mattermost integration");
+      await fill(
+        page,
+        "Mattermost integration",
+        0,
+        "https://chat.studionorth.example/hooks/xxxxxxxxxxxxxxxxxxxxxxxxxx",
+      );
+      await fill(page, "Mattermost integration", 1, "web-releases");
+    },
+    clip: { selector: integration("Mattermost integration"), pad: 8 },
+  },
+  {
+    name: "integrations/telegram",
+    url: integrations,
+    ready: "Telegram integration",
+    viewport: { width: 1440, height: 1500 },
+    prepare: async (page) => {
+      await openIntegration(page, "Telegram integration");
+      await fill(page, "Telegram integration", 1, "-1001234567890");
+      await fill(page, "Telegram integration", 3, "Web releases");
+      await markConnectionCard(
+        page,
+        "Telegram integration",
+        "Telegram bot connection",
+      );
+    },
+    clip: { selector: "#docs-shot-clip" },
+  },
+  {
+    name: "integrations/generic-webhook",
+    url: integrations,
+    ready: "Generic webhooks",
+    viewport: { width: 1440, height: 1500 },
+    prepare: async (page) => {
+      await openIntegration(page, "Generic webhooks");
+      await fill(
+        page,
+        "Generic webhooks",
+        0,
+        "https://hooks.studionorth.example/margaya",
+      );
+      await markConnectionCard(
+        page,
+        "Generic webhooks",
+        "Outgoing webhook connection",
+      );
+    },
+    clip: { selector: "#docs-shot-clip" },
+  },
+
+  // ------------------------------------------------------------------ MCP
+  {
+    name: "mcp/consent",
+    url: "/dashboard/settings/account/developer",
+    ready: "Developer settings",
+    prepare: async (page) => {
+      await goto(page, await mcpConsentUrl(page), "Cursor");
+    },
+    clip: { x: 815, y: 245, width: 470, height: 415 },
+  },
+  {
+    name: "mcp/device-approve",
+    url: "/dashboard/settings/account/developer",
+    ready: "Developer settings",
+    prepare: async (page) => {
+      const code = await mcpDeviceCode(page);
+      await goto(
+        page,
+        `/device/approve?user_code=${encodeURIComponent(code)}`,
+        "Approve",
+      );
+    },
+    clip: { x: 815, y: 340, width: 470, height: 225 },
+  },
+  {
+    name: "mcp/create-api-key",
+    url: "/dashboard/settings/account/developer",
+    ready: "Developer settings",
+    prepare: async (page) => {
+      await page.getByRole("button", { name: "Create API key" }).click();
+      const dialog = page.locator("[role=dialog]");
+      await dialog.waitFor({ state: "visible" });
+      await dialog.locator("input").first().fill("Cursor MCP");
+    },
+    clip: { selector: "[role=dialog]" },
+  },
+];
+
+// The docs use light-mode screenshots only.
+export default shots.map((shot) => ({ themes: ["light"], ...shot }));
