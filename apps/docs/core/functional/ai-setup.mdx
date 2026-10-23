@@ -1,0 +1,202 @@
+---
+title: AI Setup
+description: Turn on AI for your server and workspaces, choose Claude, an OpenAI-compatible service or a local model, decide where data may go, and keep costs in check
+---
+
+Margaya's AI features are optional and **off by default**. Nothing changes for anyone until three switches are on:
+
+1. An **instance admin** allows AI and sets up a provider (**Settings** > **Instance** > **AI**).
+2. A **workspace admin** turns AI on for the workspace (**Settings** > **Workspace** > **AI**).
+3. Each **project** keeps AI on, or turns it off under **Settings** > **Projects** > **Features**.
+
+People also need the **Use AI** permission (`ai:use`). Members, Admins and Owners have it by default; Viewers do not. **Manage AI** (`ai:manage`) lets Admins and Owners change the workspace's AI settings and see its usage. Both can be granted to custom roles under **Settings** > **Workspace** > **Roles**.
+
+<Info>
+AI only ever sees what the person asking can see. It reads through the same permission checks as everything else: restricted projects stay hidden from people who aren't members, and projects with AI turned off are left out entirely.
+</Info>
+
+## Choose a provider
+
+Open **Settings** > **Instance** > **AI** and pick a provider.
+
+| Provider | When to use it | What you enter |
+|---|---|---|
+| **Anthropic (Claude)** | Recommended default. | An Anthropic API key. |
+| **OpenAI-compatible** | OpenAI, Azure OpenAI, OpenRouter, LiteLLM, vLLM or LM Studio. | The base URL, including the version path (for example `https://api.openai.com/v1`), an API key, and model names. |
+
+Margaya uses three model tiers:
+
+| Tier | Used for | Claude default |
+|---|---|---|
+| **Fast** | Rewriting, labels, short summaries | `claude-haiku-5-5` |
+| **Balanced** | Most features: answers, summaries, drafts | `claude-sonnet-5-5` |
+| **Deep** | Planning and agents | `claude-opus-5-5` |
+
+Leave a tier empty to use the default. An OpenAI-compatible server with a single model can fill in just one tier; Margaya uses it for the others.
+
+Select **Test provider** to send one tiny request and see the model and response time.
+
+<Screenshot src="ai/instance-provider" alt="The instance AI settings with the provider set to Anthropic (Claude) and a saved API key, the default fast, balanced and deep Claude models, a local model at http://ollama:11434/v1 running llama3.3 with an optional API key, and the Local-only mode switch" caption="A cloud provider and an optional local model, set up once per server." />
+
+API keys are stored encrypted, using a key derived from `AUTH_SECRET`, and are never shown again. If you change `AUTH_SECRET`, enter the keys again.
+
+## Run a local model
+
+A **local model** is an OpenAI-compatible server on your own network, such as Ollama or vLLM. Enter its base URL (for example `http://ollama:11434/v1`) and the model name under **Local model**. Private network addresses are only allowed here; cloud endpoints must be public addresses.
+
+The Docker Compose files include an optional `ollama` service. It never starts unless you ask for it:
+
+```bash
+docker compose --profile ai-local up -d
+docker compose exec ollama ollama pull llama3.3
+```
+
+Then set the local base URL to `http://ollama:11434/v1` and the model to `llama3.3`.
+
+Turn on **Local-only mode** to send every AI request to the local model. Nothing then leaves your network, and no cloud key is needed.
+
+## Decide where data may go
+
+Every AI request is classified by the most sensitive data it contains:
+
+- **Restricted**: content from a restricted project. It is only included when a workspace turns on **Include restricted projects**.
+- **Private**: any other workspace content, such as tasks, comments and pages.
+- **Public**: only content that is already published, or no workspace content at all.
+
+Under **Privacy**, choose where each kind may go:
+
+| Data | Options | Default |
+|---|---|---|
+| Restricted projects | Never sent, local model only, or cloud provider allowed | Local model only |
+| Other workspace data | Local model only, or cloud provider allowed | Cloud provider allowed |
+
+If the only allowed destination is a local model and none is set up, the request is refused. Workspaces can be stricter (local-only, PII redaction) but never looser than the server.
+
+**Redact personal data** replaces emails, phone numbers, card and IBAN numbers and credential-looking tokens with placeholders such as `[EMAIL_1]` before a request goes to a cloud provider. The answer shows the real values again, so people never see the placeholders.
+
+**Zero data retention** records that your agreement with the provider keeps no data. Margaya shows it to workspace admins; the provider enforces it. For Anthropic, zero data retention is an organization-level arrangement made with Anthropic.
+
+## Turn on AI for a workspace
+
+Open **Settings** > **Workspace** > **AI** (needs **Manage AI**).
+
+- **Turn on AI**: the workspace opt-in. It is only available once the server allows AI.
+- **Limits**:
+  - a **monthly budget** in US dollars for the whole workspace, by list price;
+  - a **daily token limit** per person (input plus output tokens, per UTC day).
+
+  Once a limit is reached, AI requests are refused until the next month or day.
+
+  From 80% of the monthly budget, the AI settings page shows a warning with the amount used, and everyone who can manage AI gets one notice per month in their inbox (and by email, if they get notifications by email). The status is also available at `GET /api/ai/budget-status`.
+- **Privacy**:
+  - **Include restricted projects** lets AI read restricted projects for people who can see them.
+  - **Local model only** sends every request to the server's local model.
+  - **Redact personal data** works as described above.
+  - **Approve AI changes** makes every change AI suggests wait for a person's approval.
+- **Own API key**: when the server allows it, a workspace can use its own provider key and pay for its own usage. The key is stored encrypted and only its last four characters are shown.
+- **Test connection** sends one tiny request the way this workspace's requests go.
+
+<Screenshot src="ai/workspace-settings" alt="The workspace AI settings: Turn on AI is on, Auto-translate comments and Semantic search are off, data goes to Anthropic (Claude), a Test connection button, and limits of 50 US dollars a month and 200,000 tokens per person a day" caption="Turn AI on for the workspace and set its limits." />
+
+Changes to these settings are recorded in the [audit log](/core/functional/audit-log) (which fields changed, never the key itself).
+
+## Chat features
+
+These instance settings live under **Settings** > **Instance** > **AI**, in the **Chat**, **Web search** and **Speech to text** sections:
+
+- **Show reasoning** sends a reasoning model's thinking text to the person who asked. Off by default: people then only see how long the model thought. Reasoning is never stored or logged either way.
+- **Thinking on local models**: by default Margaya asks local reasoning models (Qwen, DeepSeek R1, models on Ollama) not to think, which keeps answers fast. Set it to **On** to let them think; Margaya still adds extra room for their reasoning tokens.
+- **Search provider**: **SearXNG** (enter your SearXNG base URL; its JSON output must be enabled), **Brave Search** or **Tavily** (enter the API key). Only a person's question is sent to the provider, never workspace content. A SearXNG URL must be a public address like other outbound calls; for one on your own network set `MARGAYA_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS=true`.
+- **Speech to text**: an OpenAI-compatible transcription endpoint (`…/audio/transcriptions`), such as a local Whisper server or `https://api.openai.com/v1` with `whisper-1`. An endpoint on your own network counts as local; workspaces whose data may only go to local models never send recordings to a cloud endpoint. Transcriptions appear in usage as **Speech to text**.
+
+Each workspace then decides under **Settings** > **Workspace** > **AI**, in the **Ask AI chat** section:
+
+- **Web search** lets people turn on web search for a question (only once the server has a provider).
+- **Keep chat history on the server** stores Ask conversations for each person so they can reopen, rename and pin them on any device. Off by default: history then stays in the browser.
+- **Allow Autopilot** lets Build mode apply AI changes without a confirmation. Changes are still recorded and can be undone.
+
+People with **Manage AI** also keep the workspace's and projects' [memory notes](/core/functional/ai-skills-and-memory).
+
+## Enable semantic search
+
+Semantic search is optional. With it, Ask and the duplicate check also find tasks, pages and comments that mean the same thing in other words: "sign-in fails" finds "users can't authenticate". Without it, everything uses full-text search, which always keeps working.
+
+It needs two things on the server.
+
+1. **An embeddings endpoint.** Under **Settings** > **Instance** > **AI** > **Embeddings**, enter any OpenAI-compatible embeddings endpoint: for example `https://api.openai.com/v1` with `text-embedding-3-small`, or a local Ollama at `http://ollama:11434/v1` with `nomic-embed-text`. An endpoint on your own network (a private address) counts as a local model.
+2. **The pgvector extension in PostgreSQL.** The default `postgres:16-alpine` image doesn't include it; `pgvector/pgvector:pg16` is the same PostgreSQL 16 with pgvector added.
+
+   - **Docker Compose:** `docker compose -f compose.yml -f compose.pgvector.yml up -d`
+   - **Helm:** set `postgresql.pgvector.enabled=true`.
+   - **External or managed PostgreSQL:** turn on the `vector` extension (most providers offer it). Margaya's database user needs permission to run `CREATE EXTENSION vector`, or you create it once yourself.
+
+   Switching an existing database to the pgvector image keeps your data. Run `REINDEX DATABASE <your database>;` once afterwards, because the two images sort text with different C libraries.
+
+The **Embeddings** section shows **pgvector ready**, **pgvector available** or **pgvector not available**.
+
+Then a workspace admin turns on **Semantic search** under **Settings** > **Workspace** > **AI**. The first time, Margaya creates the extension and its `ai_embedding` table. This happens at runtime, not in a migration, so a database without pgvector is never changed. Existing content is then indexed in the background, and the setting shows how many items are indexed.
+
+<Info>
+Semantic search follows the same rules as every other AI request:
+
+- **Permissions.** Results are filtered exactly like full-text search, so people only get tasks, pages and comments they can see.
+- **Privacy.** Restricted projects are only indexed when **Include restricted projects** is on *and* restricted data may go to the embeddings endpoint. Projects with AI off, trashed tasks, archived pages and intake requests that haven't been accepted are never indexed.
+- **Costs.** Embedding requests appear in the usage ledger as **Search indexing**, count against the workspace's monthly budget (indexing pauses when it's reached), and are redacted when redaction is on.
+</Info>
+
+How the index stays current:
+
+- Every five minutes, new and changed tasks, pages and comments are embedded. Text that didn't change is never sent again, and long pages are split into chunks of about 800 tokens.
+- Deleting a task, page, comment, project or workspace deletes its embeddings. Trashed and archived items drop out of results at once, and out of the index on the next pass.
+- Changing the embedding model re-indexes everything in the background; items not re-indexed yet are found by full text only.
+- Turning **Semantic search** off deletes the workspace's index.
+
+## Usage and costs
+
+Every AI request is recorded in the AI usage ledger: the feature, the person, the model, the tokens used and the cost by list price. **Prompts and answers are never stored**, only these counts.
+
+- Workspace admins see usage by feature, person, model and day under **Settings** > **Workspace** > **AI** > **Usage**, with the thumbs up and down people gave per feature, and can export it as CSV (one row per day, feature, model and person).
+- Instance admins see the total across workspaces under **Settings** > **Instance** > **AI**.
+
+<Screenshot src="ai/usage" alt="The Usage section for this month: 569 calls, 1.7M tokens and 6.42 US dollars, a calls-per-day chart, and breakdowns by feature, person and model" caption="Usage keeps counts and costs, never prompts or answers." />
+
+Costs are estimates from list prices. Local and unknown models count as $0, but their tokens are still recorded.
+
+## Configure with environment variables
+
+Every AI setting can also come from the environment. A set variable wins over the panel and locks that field, like other [instance settings](/core/installation/environment-variables).
+
+| Variable | Setting |
+|---|---|
+| `MARGAYA_AI_ENABLED` | Allow AI (`true` or `false`) |
+| `MARGAYA_AI_PROVIDER` | `anthropic` or `openai_compatible` |
+| `ANTHROPIC_API_KEY` | Anthropic API key |
+| `MARGAYA_AI_OPENAI_BASE_URL`, `MARGAYA_AI_OPENAI_API_KEY` | OpenAI-compatible endpoint |
+| `MARGAYA_AI_MODEL_FAST`, `MARGAYA_AI_MODEL_BALANCED`, `MARGAYA_AI_MODEL_DEEP` | Model names per tier |
+| `MARGAYA_AI_LOCAL_BASE_URL`, `MARGAYA_AI_LOCAL_MODEL` | Local model |
+| `MARGAYA_AI_LOCAL_API_KEY` | Local model API key (optional, only if your server requires one) |
+| `MARGAYA_AI_LOCAL_ONLY` | Local-only mode |
+| `MARGAYA_AI_EMBEDDINGS_BASE_URL`, `MARGAYA_AI_EMBEDDINGS_MODEL`, `MARGAYA_AI_EMBEDDINGS_API_KEY` | Optional embeddings endpoint, for semantic search |
+| `MARGAYA_AI_SEMANTIC_MIN_SIMILARITY` | How close in meaning a result must be, from -1 to 1 (default `0.3`). Raise it if semantic search returns loosely related items. |
+| `MARGAYA_AI_WORKSPACE_RPM`, `MARGAYA_AI_USER_RPM` | AI requests per minute per workspace (default 120) and per person (default 30) |
+| `MARGAYA_AI_USER_CONCURRENCY` | Simultaneous AI requests per person (default 2) |
+| `MARGAYA_AI_SHOW_REASONING` | Show reasoning text to the asker (`true` or `false`) |
+| `MARGAYA_AI_LOCAL_THINKING` | Let local models think (`on` or `off`, default `off`) |
+| `MARGAYA_AI_WEB_SEARCH_PROVIDER` | `off`, `searxng`, `brave` or `tavily` |
+| `MARGAYA_AI_WEB_SEARCH_URL`, `MARGAYA_AI_WEB_SEARCH_API_KEY` | SearXNG base URL, or the Brave or Tavily key |
+| `MARGAYA_AI_WEB_SEARCH_RPM` | Web searches per minute per workspace (default 60) |
+| `MARGAYA_AI_SPEECH_BASE_URL`, `MARGAYA_AI_SPEECH_MODEL`, `MARGAYA_AI_SPEECH_API_KEY` | Speech-to-text endpoint |
+
+With the Helm chart, set these under `margaya.env.ai` in your values, and reference keys from Secrets.
+
+## Troubleshooting
+
+- **No AI features appear**: check all four switches: server, workspace, project and the person's **Use AI** permission.
+- **"AI isn't set up correctly"**: the key, base URL or model is missing or rejected. Use **Test provider** on the instance page.
+- **"This data can't be sent to an AI model"**: the request includes restricted or private data whose only allowed destination is a local model that isn't set up, or restricted data is set to **Never sent**.
+- **"The AI limit has been reached"**: the workspace's monthly budget or your daily token limit is used up.
+- **"Too many AI requests at once"** (`AI_RATE_LIMITED`): a person or the workspace sent more requests per minute, or more at the same time, than the server allows, or the provider itself is rate limiting. Wait a moment and try again. The server's limits are `MARGAYA_AI_WORKSPACE_RPM`, `MARGAYA_AI_USER_RPM` and `MARGAYA_AI_USER_CONCURRENCY`.
+- **"The AI service didn't respond"** (`AI_PROVIDER_ERROR`): the provider failed or timed out, or a reasoning model ran out of room before it wrote an answer. Try again; if it keeps happening, use **Test provider** or **Test local model** on the instance page.
+- **"The AI model declined this request"** (`AI_REFUSED`): the provider refused to answer. Rephrase the request.
+- **"This workspace doesn't keep AI conversations on the server"** (`AI_HISTORY_OFF`): the conversations API was called while **Keep chat history on the server** is off. History stays in each browser until a workspace admin turns it on.
+- **"pgvector not available"**: the database has no pgvector extension, or Margaya's database user may not create it. Use the pgvector image (see [Enable semantic search](#enable-semantic-search)); search keeps working with full text meanwhile.

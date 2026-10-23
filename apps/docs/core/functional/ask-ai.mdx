@@ -1,0 +1,174 @@
+---
+title: Ask AI
+description: Ask questions about your workspace in plain language and get short answers that cite the tasks, pages and comments they come from
+---
+
+**Ask AI** answers questions about your workspace in plain language: "What's overdue in Website?", "What are my open tasks?", "What's blocking cycle 12?" or "Why did we drop SSO from v2?". Every answer cites where each fact comes from, and the citations open the task, page or comment itself.
+
+Ask needs AI to be turned on for your server and workspace (see [AI Setup](/core/functional/ai-setup)) and the **Use AI** permission. Members, Admins and Owners have it by default; Viewers do not. While AI is off, Ask doesn't appear anywhere.
+
+## Open Ask
+
+- Select the small sparkle in the top bar.
+- Press <kbd>Ctrl</kbd> <kbd>J</kbd> (<kbd>⌘</kbd> <kbd>J</kbd> on a Mac) anywhere, even while typing. Press it again to close the chat.
+- Or open the command palette (<kbd>Ctrl</kbd> <kbd>K</kbd>, or <kbd>⌘</kbd> <kbd>K</kbd> on a Mac) and choose **Ask AI…**. If you've already typed a question in the palette, choose **Ask AI: …** to ask it straight away. **Open AI chat (full page)** opens the full-page chat.
+
+Ask opens as a chat window in the bottom-right corner. The page behind it stays usable, so you can keep working on the board while you chat. **Expand** makes the window larger, and it follows you as you move between pages. On a phone it fills the screen.
+
+**Open full page** in the chat header opens the same conversation as a page of its own, with your history down the left side. Select the **×** in its header to go back to the page you opened it from, or to the workspace home. **Open full page** and **Expand** are hidden on phones, where the chat already fills the screen.
+
+The header shows which model answers and whether it runs on a **local** model or in the **cloud**, for example `nemotron-3-ultra:cloud · Local`. While an answer is on its way, the chat window stays still: only the border of the question box gently pulses and the **Thinking…** label shimmers. Both stay still if your system asks for reduced motion.
+
+The **⋯** menu in the header renames or pins the conversation, exports it as a Markdown file, saves it as a page in a project you pick, or deletes it.
+
+Opened inside a project, Ask answers from that project only; the project's name shows under the title. Select the **×** next to it to ask about the whole workspace instead. If a project has AI turned off, Ask starts with the whole workspace, and that project is left out.
+
+## Ask a question
+
+A new conversation offers a few suggested questions to start from. Type your question and press <kbd>Enter</kbd> (<kbd>Shift</kbd> <kbd>Enter</kbd> adds a new line). The answer streams in as it is written; select **Stop** to end it early. Answers come in the language you use Margaya in.
+
+Ask finds what to answer from in two ways:
+
+- **Full-text search** over task titles and descriptions, pages and comments, for questions about decisions and history.
+- **Task filters** for questions about the state of work: overdue, due soon, yours, someone else's, unassigned, urgent or high priority, recently changed, finished, a named project, a cycle (by name or number, such as "cycle 12"), and blockers. A task key such as `WEB-12` always brings that task in.
+
+Name a person to see their work: "What's on Mia's plate?", "Tasks of Adam" or "What is Mia working on?". Ask matches workspace members by full or first name (agents by their full name) and looks at their open tasks; when nothing of theirs is open, it shows their finished tasks instead. The same goes for "What's assigned to me?".
+
+Ask about finished work with words like done, finished, completed, closed or shipped: "What did we finish this week?" lists the most recently completed tasks with the day each was completed, and "Is WEB-4 done?" answers from that task's status.
+
+Tasks and live counts are the current state of your workspace; pages are notes from some point in time. When a page (for example an older status summary) disagrees with the tasks, Ask goes by the tasks, and it sees when each page was last updated.
+
+When you ask whether a cycle is at risk or when it will finish, and you can read analytics, Ask also uses the cycle's [forecast and risk radar](/core/functional/forecast-and-risk).
+
+## Counts and charts
+
+Ask can count, too: "How many tasks are in each status?", "Open tasks per assignee" or "Breakdown by priority". Counting questions work in any language Margaya speaks, such as "¿Cuántas tareas están en revisión?". For questions like these, Margaya counts the live tasks you can see in the project Ask is scoped to (or the project the question names, otherwise every project Ask may read): totals, open and closed, overdue and due in the next 7 days, completed in the last 7 days, and breakdowns by status, status group, priority, assignee, label, cycle and module (cycles and modules only where the project uses them). Archived, trashed and triage tasks are not counted. The numbers come from Margaya, not from the model, and are not listed as sources.
+
+Ask for a chart or graph ("Chart the tasks by status") and the answer includes a bar, donut or line chart. Hover over a bar or slice, or focus the chart and use the arrow keys, to see its value. Small comparisons may come as a table. **Copy** turns charts into plain lists.
+
+## Trends over time
+
+Ask about change over time and it gets the numbers per week or per day: "Created vs completed per week", "How many tasks did we finish each day this month?" or "Show the burn-up for Sprint 4". Margaya counts the tasks created and completed in each of the last 12 weeks (weeks start on Monday, in the workspace's time zone) or each of the last 30 days when you say "day" or "daily". With a cycle in the question, it adds the cycle's burn-up: how many of its tasks were completed by the end of each day, and how many remain. These answers usually come with a line chart that has one line per series.
+
+## Citations and sources
+
+Facts in an answer are followed by small chips: a task key such as **WEB-12**, a page title, or **Comment on WEB-12**. Select a chip to open it. Opening checks your access again, as everywhere else in Margaya.
+
+Under each answer, **Sources** lists what the answer cites, then the closest other matches that Ask looked at. **Copy** copies the answer with plain citations and a list of links.
+
+<Screenshot src="ai/ask-answer" alt="The Ask AI panel scoped to Website relaunch with the question What's blocking Sprint 14?, an answer with citation chips for WEB-1, WEB-6, a comment on WEB-1 and WEB-2, and the Sources list with a closest match" caption="Each fact links to the task, page or comment it comes from." />
+
+## Work with an answer
+
+Under each answer:
+
+- **Copy** copies it with plain citations and a list of links.
+- **Thumbs up** and **thumbs down** rate it (see [Rate answers](#rate-answers)).
+- **Regenerate** (on the latest answer) asks the same question again. Every version is kept: use **‹ 1/2 ›** to switch between them.
+- **⋯** offers **Save as page** (pick the title and the project; citations become links), **Copy as Markdown** and **Create task from this**, which opens the new task dialog with the answer as its description.
+
+To change a question, hover over it and select the pencil: edit it and press <kbd>Enter</kbd>. Ask answers the edited question again, and the questions that came after it are dropped from the conversation.
+
+If Ask finds nothing relevant, it says so instead of guessing. Try other words, or name a project, a cycle or a task key.
+
+If the model runs out of room before it writes anything (this can happen with local reasoning models that think at length), Ask shows an error instead of an empty answer. Try a shorter or more specific question.
+
+## Follow-up questions
+
+Ask keeps the conversation going: "Who owns it?" after "What's blocking cycle 12?" uses the earlier questions and answers. A follow-up that doesn't name its subject, such as "And what is its description?" after an answer about WEB-2, is about the tasks the previous answer cited (when it cited only a few), or else the project and people the previous question named.
+
+## Point at things with @
+
+Type **@** in the question box to pick tasks, pages, projects, cycles, modules, people or agents (up to 10). Ask reads each one fresh, checks your access as everywhere else, and puts it first:
+
+- a **task** or **page** is read in full and cited as usual;
+- a **project** brings its description and live counts, and narrows the search to that project;
+- a **cycle** or **module** brings its dates, its counts and up to 25 of its tasks (with the burn-up for a trend question);
+- a **person** or **agent** brings their open assigned tasks, earliest due first.
+
+Anything you can't see, or that AI may not read, is quietly left out.
+
+What you pick shows as chips above the question box; select the **×** on a chip, or press <kbd>Backspace</kbd> in an empty box, to remove it. Use the arrow keys and <kbd>Enter</kbd> to pick from the list, <kbd>Esc</kbd> to close it.
+
+Add an **agent** and a **task** with @, write what the agent should do, and select **Send to …** to start a run of that agent on the task. A live card in the chat follows the run; open it in the Agent Desk for the details. Without a task chip, Ask asks you to add one.
+
+## Commands with /
+
+Type **/** at the start of the question box for commands:
+
+- **/summarize** summarizes the page, cycle or project you have open, or one you added with @.
+- **/brief** writes a stakeholder brief for the cycle, module or project in scope.
+- **/chart** starts a chart request for you to finish.
+- **/create** switches to **Build** mode, which proposes changes for you to confirm.
+- **/translate** translates the last answer into your language.
+- **/clear** starts a new conversation.
+
+Your saved [skills](#skills-and-memory-notes) follow the commands.
+
+## Modes
+
+The switch under the question box chooses what the chat may do. **Ask** only answers and never changes anything. **Build** proposes changes (projects, tasks, assignments and more) as cards you can edit, then confirm; each applied change can be undone. **Autopilot** applies the changes right away; it appears only when a workspace admin allows it, and every change is still recorded and can be undone.
+
+## Thinking
+
+Reasoning models think before they answer. Three dots show until the first words arrive. While the model thinks, Ask shows **Thinking…** with a timer, and afterwards **Thought for …s**; when reasoning text is shown, select it to open the text. By default only the time is shown. An instance admin can also show the model's reasoning text (see [AI Setup](/core/functional/ai-setup#chat-features)); it is shown only to the person who asked and is never stored or logged.
+
+## Suggested follow-ups
+
+When a useful next step exists, for example a list that could be charted, Ask suggests one or two short follow-up questions in your language, phrased as questions you might ask next. Often there are none. Select one to ask it.
+
+## Attach files
+
+Select the paperclip to attach up to 3 files, at most 5 MB together, to a question. They show as chips you can remove before sending:
+
+- **Images** (PNG, JPEG, WebP or GIF) go to the model as images, for example a screenshot of an error. Location and camera data are removed from PNG, JPEG and WebP images first. The model must be able to read images; most current cloud models can, many local models can't.
+- **Text, Markdown and CSV files** are read as text and used like any other context.
+
+Attached files are never stored.
+
+## Search the web
+
+When an admin has set up web search for the server and turned it on for the workspace, you can turn on web search for a question with the globe next to the question box. Margaya then sends **only your question** to the search provider, never workspace content, and the answer may cite web results as well. Web results come from the public internet: Ask uses them for outside facts, never for the state of your work.
+
+## Skills and memory notes
+
+A **skill** is a saved prompt, such as "Answer as a standup: yesterday, today, blockers". Pick one from **/** in the question box and its prompt is added as your instructions for that question.
+
+**Memory notes** are short facts the AI should always know, like "Our release day is Thursday". Ask uses the workspace's notes, the project's notes and your own as background: it never cites them, and live task data still wins. Build mode and agent runs use them too.
+
+See [AI skills and memory](/core/functional/ai-skills-and-memory) to create and manage both.
+
+## Rate answers
+
+Use the thumbs up or down under an answer; a thumbs down asks for an optional short reason first. Only the rating, the reason, the feature and the model are stored, never your question or the answer. Admins see the ratings next to AI usage.
+
+## Speak your question
+
+Select the microphone to dictate, and select it again to stop. Depending on the server, the browser's own speech recognition is used (in your Margaya language), or the recording is sent to the server's speech-to-text endpoint and only the text comes back. The microphone is hidden when neither is available. Either way you can edit the text before sending; nothing is sent automatically, and recordings are never stored.
+
+## History
+
+Your conversations are kept so you can come back to them. Select **History** in the chat header (or open the full-page chat) to see past conversations: pinned ones first, then the newest, with their name and project. Search them by name, and rename, pin or delete one from its row. Select one to reopen it and keep asking; follow-up questions use its earlier answers. **Clear history** removes them all. **New conversation** starts a fresh one and keeps the previous one in the history.
+
+By default, history is saved **in this browser only**, for your account and this workspace: it is never sent to or stored on the server, it doesn't follow you to another browser or device, the last 50 conversations are kept (each with its last 50 questions), and signing out clears it.
+
+A workspace admin can turn on **Keep chat history on the server** instead. Your conversations are then stored for your account only (nobody else, admins included, can open them), and follow you to other devices. Conversations already saved in your browser can be moved there once with **Import** in the history list. A conversation keeps at most 100 questions. Reasoning is never stored. Turning the setting off hides stored conversations again.
+
+## Privacy
+
+- Ask only ever uses what you can see. Restricted projects you aren't a member of, trashed work, other people's private pages and projects with AI turned off are never read.
+- Restricted projects you *are* a member of stay out too, unless a workspace admin turns on **Include restricted projects** in the workspace's AI settings. Their content then follows that setting's routing rules.
+- Workspace content is passed to the model as data, never as instructions, so text inside a task or page can't change what Ask does.
+- Questions and answers are not stored on the server unless the workspace keeps conversations on the server (see [History](#history)). Reasoning, attached files and recordings are never stored. Each question is recorded in the AI usage ledger with token counts and cost only, under the **Ask** feature. A question can make two model calls: a quick one to plan the search and one to write the answer. If nothing relevant is found, the answer call is skipped.
+
+## Use Ask from the API
+
+`POST /api/ai/ask` takes `workspaceId` and `question`, plus optional `projectId`, `history` (earlier questions and answers of the conversation), `locale`, `context` (up to 10 `{kind, id}` items, where `kind` is `task`, `page`, `project`, `cycle`, `module`, `user` or `agent`), `webSearch`, `attachments` (up to 3 `{name, mediaType, data}` with base64 `data`) and `skillId`. It streams Server-Sent Events: `meta` carries `sources` and the `model`, `reasoning` events show that the model is thinking (with text only when the server shows reasoning), `delta` the answer text, and `done` the `citations` the answer uses, `noResults`, `followUps` (at most two suggested questions, often none) and `reasoningMs` (how long the model thought, or `null`). Send `Accept: application/json` (or `?stream=false`) to get one JSON body instead. If the model fails or writes nothing, the stream ends with an `error` event (`AI_PROVIDER_ERROR`), and the JSON form answers `502` with that code, never an empty `text`.
+
+Citation tokens look like `[T:WEB-12]` for a task, `[P:Release plan]` for a page, `[C:WEB-12/ab12cd]` for a comment and `[W:1]` for a web result. Each token matches the `ref` of one entry in `sources`, which also gives its `url`.
+
+An answer may contain a fenced code block with the language `chart` holding JSON: `{"type": "bar" | "donut" | "line", "title": string, "data": [{"label": string, "value": number}], "unit"?: string}`, or, for several series over the same labels, `{"type": "line" | "bar", "title": string, "series": [{"name": string, "data": [{"label": string, "value": number}]}], "unit"?: string}`. Clients that can't draw it can show the data as a list.
+
+Related routes: `GET`/`POST`/`PATCH`/`DELETE /api/ai/skills`, `/api/ai/memory` (memory notes), `POST /api/ai/feedback`, `/api/ai/conversations` (only while the workspace keeps conversations on the server; otherwise `403` with code `AI_HISTORY_OFF`) and `POST /api/ai/speech/transcribe` (multipart field `audio`, at most 10 MB).
+
+API keys need write access to the **AI** area.
