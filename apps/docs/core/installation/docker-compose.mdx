@@ -140,4 +140,42 @@ When using `fs`, keep these differences in mind:
 - Create buckets through the S3 API or CLI, not through a web console.
 - Browser uploads may require reverse-proxy CORS handling, because `fs` does not currently implement S3 CORS APIs.
 
+## Optional AI services
+
+AI is off by default and needs no extra services. Two optional pieces help when you turn it on; see [AI Setup](/core/functional/ai-setup).
+
+### Local model with Ollama
+
+The repository's `compose.yml` includes an `ollama` service in the `ai-local` profile. It never starts unless you ask for it:
+
+```bash
+docker compose --profile ai-local up -d
+docker compose exec ollama ollama pull llama3.3
+```
+
+Then set the local model's base URL to `http://ollama:11434/v1` and the model to `llama3.3`, under **Settings** > **Instance** > **AI** or with `MARGAYA_AI_LOCAL_BASE_URL` and `MARGAYA_AI_LOCAL_MODEL`. To add it to your own compose file:
+
+```yml
+services:
+  ollama:
+    image: ollama/ollama:0.40.8
+    profiles: ["ai-local"]
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+```
+
+### PostgreSQL with pgvector
+
+Semantic search needs the pgvector extension, which `postgres:16-alpine` doesn't include. `compose.pgvector.yml` swaps in `pgvector/pgvector:pg16`, the same PostgreSQL 16 with pgvector added:
+
+```bash
+docker compose -f compose.yml -f compose.pgvector.yml up -d
+```
+
+Switching an existing database keeps your data. Run `REINDEX DATABASE <your database>;` once afterwards, because the two images sort text with different C libraries.
+
 After creating the compose file, the next step is to set up the environment variables.

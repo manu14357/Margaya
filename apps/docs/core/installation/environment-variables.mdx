@@ -18,6 +18,7 @@ The variables are split up into the following sections:
 - [Object Storage](#object-storage)
 - [Access Control](#access-control)
 - [Notifications](#notifications)
+- [AI](#ai)
 - [GitHub SSO](#github-sso)
 - [GitHub integration](#github-integration)
 - [Google SSO](#google-sso)
@@ -81,9 +82,20 @@ Name | Description | Default |
 --- | --- | --- |
 | `MARGAYA_INTERNAL_API_URL` | API origin used only for server-side requests from the built-in HTTP MCP endpoint. Override it only if the API is not reachable at the default loopback address from its own process. | `http://127.0.0.1:1337` |
 
+### File storage
+
+Without S3, Margaya keeps uploads (attachments and images in task descriptions, comments and pages) in a built-in file store on the API's disk. Files are served only through the API's authorized download route.
+
+Name | Description | Default |
+--- | --- | --- |
+| `MARGAYA_STORAGE_DIR` | Folder of the built-in file store. Mount a volume here. The Docker Compose files use `/app/apps/api/data/uploads`. | `./data/uploads` |
+| `MARGAYA_LOCAL_STORAGE` | `false` turns the built-in store off: uploads answer 503 until S3 is configured. | `true` |
+
+The built-in store belongs to one machine. With several API instances, use S3-compatible storage or a volume they all share. Setting `S3_ENDPOINT` and `S3_BUCKET` switches new uploads to S3; files already stored are not moved.
+
 ### Object Storage
 
-Margaya uses S3-compatible object storage for private uploads in task descriptions and task comments.
+Margaya can use S3-compatible object storage for private uploads in task descriptions, task comments and pages, and for task exports. When it is configured, the built-in file store is not used.
 
 MinIO is the easiest local option and the primary tested target. You can also use other S3-compatible storage backends such as AWS S3, Cloudflare R2, or [`fs`](https://github.com/ferdzo/fs).
 
@@ -96,9 +108,9 @@ Name | Description | Default |
 | `S3_REGION` | The storage region used for request signing. | `us-east-1` |
 | `S3_PUBLIC_BASE_URL` | Optional public base URL for uploaded assets. Margaya does not require this for the current private asset flow. |  |
 | `S3_FORCE_PATH_STYLE` | Use path-style S3 URLs. This should usually be `true` for MinIO and `fs`. | `true` |
-| `S3_MAX_IMAGE_UPLOAD_BYTES` | Maximum allowed upload size in bytes for images and other uploaded files. | `10485760` |
+| `S3_MAX_IMAGE_UPLOAD_BYTES` | Maximum allowed upload size in bytes for images and other uploaded files, with S3 or the built-in store. | `10485760` |
 | `S3_KEY_PREFIX` | Optional prefix prepended to all S3 object keys. Useful for sharing a single bucket across multiple environments (e.g. `staging/`, `prod/margaya/`). Trailing slashes are trimmed automatically. |  |
-| `S3_PRESIGN_TTL_SECONDS` | How long presigned upload URLs remain valid. | `300` |
+| `S3_PRESIGN_TTL_SECONDS` | How long presigned upload URLs (and the built-in store's upload links) remain valid. | `300` |
 
 ### Access Control
 
@@ -115,6 +127,19 @@ rate limited per connection and re-check the session and page access while open.
 Page collaboration works on a single instance without Redis; with Redis, instances
 relay page edits and presence to each other.
 
+The same origins guard cookie-authenticated writes. A POST, PUT, PATCH or DELETE
+that carries a session cookie must come from `MARGAYA_CLIENT_URL`, `MARGAYA_API_URL`
+or a `CORS_ORIGINS` entry (judged by the `Origin` header, else `Referer`, else
+`Sec-Fetch-Site`); anything else gets 403 "Cross-site request refused". Calls with an
+API key or Bearer token, MCP, OAuth callbacks and signed webhooks are not checked.
+If people reach the web app at an address you have not listed, add it to
+`CORS_ORIGINS`.
+
+The API sends a deny-all content security policy, `X-Frame-Options: DENY` and, when
+`MARGAYA_API_URL` starts with `https://`, `Strict-Transport-Security`. The web image's
+nginx adds a page content security policy and HSTS for requests that arrive with
+`X-Forwarded-Proto: https`. TLS itself is handled by your reverse proxy.
+
 Name | Description | Default |
 --- | --- | --- |
 | `DISABLE_GUEST_ACCESS` | Disable anonymous/guest sign-in. Guests are also blocked before initial instance setup and when registration, local registration, or the local login form is disabled. | `false` |
@@ -123,6 +148,11 @@ Name | Description | Default |
 | `DISABLE_EMAIL_OTP_SIGN_IN` | When SMTP is configured, sign-in uses email verification codes by default. Set to `true` to use email/password sign-in instead. Workspace invitation emails still use SMTP. | `false` |
 | `DISABLE_LOGIN_FORM` | Hide the email/password login form on the sign-in page. When set to `true`, only SSO/OAuth buttons are shown. Useful when you want to enforce authentication exclusively through an external identity provider. | `false` |
 | `MARGAYA_PUBLIC_LANDING` | Show signed-out visitors the product landing page when they open the web app's root address. Set to `false` to send them straight to sign-in. Signed-in users always go to their dashboard. Setting it locks the switch in [Instance administration](/core/installation/instance-admin#general). | `true` |
+| `ALLOWED_EMAIL_DOMAINS` | Comma-separated domains new accounts must use, such as `example.com,example.org` (exact match, no subdomains). Covers every sign-up method, OAuth and invitations included. Empty allows any domain. Locks the setting in [Instance administration](/core/installation/instance-admin#sign-in-policy). | empty |
+| `ALLOW_INVITED_PASSWORD_REGISTRATION` | With password sign-up off, still let people with a valid invitation create a password account. | `false` |
+| `REQUIRED_SIGN_IN_PROVIDER` | `github`, `google`, `discord` or `custom`: everyone signs in through this provider, and other sign-in methods are refused. Instance admins keep password sign-in as a way back in. | empty |
+| `SESSION_LIFETIME_HOURS` | How long a session lasts without use (1 to 8760). Use extends it, at most once a day. | `168` |
+| `ALLOW_INSTANCE_ADMIN_API_KEYS` | Give an instance admin's API keys the admin's instance-wide reach (every workspace and Better Auth's `/api/auth/admin/*` endpoints). By default those keys act like any member's keys: only the workspaces the admin belongs to. | `false` |
 | `CUSTOM_OAUTH_AUTO_LOGIN` | Automatically redirect to the custom OAuth/OIDC provider instead of showing the sign-in page. When set to `true`, users are immediately redirected to your identity provider without seeing the login page. Requires a custom OAuth provider to be configured. | `false` |
 
 <Warning>
@@ -156,8 +186,49 @@ Name | Description | Default |
 | `NOTIFICATION_SECRET_ENCRYPTION_KEY` | Key that encrypts the secrets people save in their [notification settings](/core/functional/account-notifications): webhook signing secrets and ntfy and Gotify tokens. Required to store any of them; use any long random value, for example `openssl rand -hex 32`. Without it, saving such a secret fails with HTTP 503 naming this variable, and the rest of the notification settings keep working. Keep it stable and back it up: after a change, stored secrets can no longer be read and people must enter them again. |  |
 | `EMAIL_NOTIFICATION_BATCH_WINDOW_SECONDS` | Seconds email notifications wait so the ones that arrive close together go out as one email per person, grouped by task (at most `86400`). `0` sends each notification email immediately. Only email is delayed; in-app, ntfy, Gotify and webhook notifications are immediate, and sign-in, password reset and invitation emails are never batched. See [batching and digests](/core/functional/account-notifications#batched-emails). | `300` |
 | `TRASH_RETENTION_DAYS` | Days a deleted task or project stays in the [trash](/core/functional/trash-and-restore), where it can be restored, before an hourly job deletes it permanently. `0` turns the automatic purge off. | `30` |
+| `WORKSPACE_DELETION_GRACE_DAYS` | Days a workspace scheduled for deletion stays read-only, with its API keys and webhooks paused, before an hourly job deletes it for good. Its owner can cancel until then. `0` deletes it at the next run. | `14` |
 | `AUDIT_LOG_RETENTION_DAYS` | Days [audit log](/core/functional/audit-log) entries are kept. `0` keeps them forever. Entries hold client IP addresses, so match your privacy policy. | `365` |
+| `INSTANCE_AUDIT_LOG_RETENTION_DAYS` | Days [instance audit trail](/core/installation/instance-admin) entries are kept. `0` keeps them forever. | `365` |
+| `API_REQUEST_LOG_RETENTION_DAYS` | Days the per-key [API request log](/core/functional/account-security) is kept (at most 365). It stores the time, method, route template, status and duration of each request; never bodies, query strings, headers or IP addresses. | `14` |
+| `API_REQUEST_LOG_ENABLED` | Set to `false` to stop logging API key requests. | `true` |
+| `MARGAYA_LINK_TITLE_FETCH` | Look up the page title of a task link added without one. The server fetches only public `http`/`https` pages on the standard ports (private, loopback, link-local and metadata addresses are refused after DNS resolution, on every redirect), reads at most 256 KB of HTML for 3 seconds, and never follows more than 3 redirects. Set to `false` on air-gapped installs or where outbound requests are not allowed. This setting is not affected by `MARGAYA_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS`. | `true` |
 | `MARGAYA_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS` | Allow outbound notification destinations (ntfy, Gotify, generic webhooks) that resolve to private or non-routable addresses. Off by default to prevent SSRF; the `http`/`https` requirement still applies. Only enable on a trusted, isolated deployment. | `false` |
+
+### AI
+
+AI is off by default and needs no variables: an instance admin can set everything under **Settings** > **Instance** > **AI**. A variable set here wins over the panel and locks that field. Each workspace must still turn AI on, and each project can turn it off. See [AI Setup](/core/functional/ai-setup) for what each setting does.
+
+These variables mirror a setting in the panel:
+
+Name | Description |
+--- | --- |
+| `MARGAYA_AI_ENABLED` | Allow AI on this server (`true` or `false`).
+| `MARGAYA_AI_PROVIDER` | `anthropic` (default) or `openai_compatible`.
+| `ANTHROPIC_API_KEY` | The Anthropic API key.
+| `MARGAYA_AI_OPENAI_BASE_URL`, `MARGAYA_AI_OPENAI_API_KEY` | An OpenAI-compatible endpoint, including the version path (for example `https://api.openai.com/v1`). It must be a public address.
+| `MARGAYA_AI_MODEL_FAST`, `MARGAYA_AI_MODEL_BALANCED`, `MARGAYA_AI_MODEL_DEEP` | Model names per tier. Empty uses the provider's default.
+| `MARGAYA_AI_LOCAL_BASE_URL`, `MARGAYA_AI_LOCAL_MODEL`, `MARGAYA_AI_LOCAL_API_KEY` | A local OpenAI-compatible server, such as Ollama or vLLM. The key is optional.
+| `MARGAYA_AI_LOCAL_ONLY` | `true` sends every AI request to the local model.
+| `MARGAYA_AI_EMBEDDINGS_BASE_URL`, `MARGAYA_AI_EMBEDDINGS_MODEL`, `MARGAYA_AI_EMBEDDINGS_API_KEY` | An embeddings endpoint for semantic search (also needs pgvector).
+| `MARGAYA_AI_SHOW_REASONING` | Show a reasoning model's thinking text to the person who asked.
+| `MARGAYA_AI_LOCAL_THINKING` | `on` lets local reasoning models think (default `off`).
+| `MARGAYA_AI_WEB_SEARCH_PROVIDER`, `MARGAYA_AI_WEB_SEARCH_URL`, `MARGAYA_AI_WEB_SEARCH_API_KEY` | Web search: `off`, `searxng`, `brave` or `tavily`, with the SearXNG URL or the API key.
+| `MARGAYA_AI_SPEECH_BASE_URL`, `MARGAYA_AI_SPEECH_MODEL`, `MARGAYA_AI_SPEECH_API_KEY` | A speech-to-text endpoint for voice input.
+
+These are server-only and have no field in the panel:
+
+Name | Description | Default |
+--- | --- | --- |
+| `MARGAYA_AI_SEMANTIC_MIN_SIMILARITY` | How close in meaning a semantic search result must be, from -1 to 1. | `0.3` |
+| `MARGAYA_AI_WORKSPACE_RPM` | AI requests per minute per workspace. | `120` |
+| `MARGAYA_AI_USER_RPM` | AI requests per minute per person. | `30` |
+| `MARGAYA_AI_USER_CONCURRENCY` | AI requests one person may run at the same time. | `2` |
+| `MARGAYA_AI_WEB_SEARCH_RPM` | Web searches per minute per workspace. | `60` |
+| `MARGAYA_AI_TIMEOUT_MS` | Time limit for one AI request, in milliseconds. | `600000` |
+| `MARGAYA_AI_LOCAL_REASONING_TOKENS` | Extra output tokens added to every local-model call so reasoning models have room to think. `0` turns it off. | `4096` |
+| `MARGAYA_AI_AGENT_CONCURRENCY` | [Agent](/core/functional/ai-agents) runs one API instance works on at the same time. | `2` |
+
+Keys saved in the panel are encrypted with a key derived from `AUTH_SECRET`. With the Helm chart, set these under `margaya.env.ai`.
 
 ### GitHub SSO
 

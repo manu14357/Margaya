@@ -15,7 +15,14 @@ docker compose up -d
 
 You can now access the web application at [http://localhost:5173](http://localhost:5173).
 
-The next logical step would be to set up a reverse proxy to access the web application from the internet.
+## Create the first account
 
-- Nginx
-- Traefik
+Open the web application and select **Sign up**, or go straight to `/auth/sign-up`. Enter your name, email address and a password of at least 10 characters, then select **Create account**.
+
+<Screenshot src="install/sign-up" alt="The Create account form with Continue as guest, then fields for full name, email and password, and a Create account button" caption="The first account created on a new instance becomes its instance admin." />
+
+The first account on a new instance is its [instance admin](/core/installation/instance-admin). From **Settings** > **Instance** you can then set up email, sign-in providers and who may sign up, without editing `.env` or restarting.
+
+## Next steps
+
+To reach Margaya from the internet, put a reverse proxy in front of it, for example [Nginx](/core/reverse-proxy/nginx) or Traefik.

@@ -5,9 +5,34 @@ description: Configure S3-compatible storage for private images and attachments 
 
 ## Overview
 
-Margaya supports private uploads in task descriptions and task comments.
+Margaya supports private uploads in task descriptions, task comments, the
+Attachments panel and pages.
 
-Uploads use an S3-compatible object storage backend:
+## Built-in file store (no S3 needed)
+
+When `S3_ENDPOINT` and `S3_BUCKET` are not set, uploads go to a built-in file
+store on the API's disk, so attachments and images work on a fresh install:
+
+- files live under `MARGAYA_STORAGE_DIR` (default `./data/uploads`; the Docker
+  Compose files use `/app/apps/api/data/uploads` on the `uploads_data` volume,
+  and the Helm chart mounts a PersistentVolumeClaim)
+- the API hands the browser a signed upload link instead of a presigned S3 URL;
+  it is valid for `S3_PRESIGN_TTL_SECONDS`, accepts exactly the approved content
+  type and size (at most `S3_MAX_IMAGE_UPLOAD_BYTES`), streams the body to disk,
+  and can be used once
+- downloads go through the same authorized `/api/asset/{id}` route as with S3:
+  a file from a workspace you don't belong to answers 404, and nothing lists
+  the folder
+- uploads that were never finalized are deleted after a day by an hourly job
+
+Back the folder up with your database. The store belongs to one machine: with
+several API instances or replicas, use S3-compatible storage or a volume they
+all share. `MARGAYA_LOCAL_STORAGE=false` turns it off. Switching to S3 later
+applies to new uploads; files already on disk are not moved.
+
+## S3-compatible storage
+
+With S3 configured, uploads use the S3-compatible object storage backend:
 
 - the Margaya API creates presigned upload URLs
 - the browser uploads files directly to the storage backend

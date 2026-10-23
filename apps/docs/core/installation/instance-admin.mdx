@@ -60,6 +60,8 @@ A saved change applies at once on the API instance that saved it, and within 10 
 - **Show the product landing page** decides what signed-out visitors see when they open the app's root address. When it is on (the default), they see the Margaya landing page with links to sign in and sign up. When it is off, they go straight to sign-in. Signed-in people always go to their dashboard.
 - **Overview** shows the version, the number of accounts, guests, workspaces, projects and public boards, and which server services are set up: realtime (in memory or Redis), email, file storage, captcha, error reporting, cloud mode and demo mode. It never shows their values.
 
+<Screenshot src="admin/general" alt="The General instance page with the instance name field, the Show the product landing page switch, and the Overview card listing version, counts and server services" caption="Each setting shows a badge for where its value comes from; here, Default." />
+
 ## Authentication
 
 ### Sign-up
@@ -68,7 +70,10 @@ A saved change applies at once on the API instance that saved it, and within 10 
 | --- | --- |
 | **Anyone can sign up** | When off, people need an invitation to create an account. |
 | **Email sign-up** | Create accounts with an email address. Turn off to allow only single sign-on. |
+| **Password sign-up for invited people** | With email sign-up off, people with a valid invitation can still create a password account. |
 | **Guest access** | Let people try Margaya without an account. It also needs open sign-up and email sign-in; a note appears when it is on but inactive for that reason. |
+
+<Screenshot src="admin/sign-up" alt="The Sign-up section with switches for Anyone can sign up, Email sign-up, Password sign-up for invited people and Guest access, each with a Default badge" caption="Sign-up switches on the Authentication page." />
 
 ### Sign-in methods
 
@@ -82,6 +87,8 @@ Each method has a status (**Active**, **Turned off**, **Not configured** or **Ne
 The last working sign-in method can't be turned off. Its switch is disabled, and a change that would leave no way to sign in is refused.
 </Warning>
 
+<Screenshot src="admin/sign-in-methods" alt="The Sign-in methods list: Email and password marked Active, Email code marked Needs email setup, and GitHub, Google, Discord and Custom OAuth / OIDC marked Not configured with Configure buttons" caption="Each method shows its status; providers open their panel from Configure." />
+
 ### Configure an OAuth provider
 
 Select **Configure** on a provider to open its panel:
@@ -89,6 +96,8 @@ Select **Configure** on a provider to open its panel:
 1. Copy the **Callback URL** and add it to your OAuth app. It is `<API URL>/api/auth/callback/<provider>` for GitHub, Google and Discord, and `<API URL>/api/auth/oauth2/callback/custom` for custom OAuth. The API URL comes from `MARGAYA_API_URL`.
 2. Enter the **Client ID** and **Client secret**.
 3. Select **Save**.
+
+<Screenshot src="admin/oauth-github" alt="The GitHub sign-in panel with the callback URL and a Copy button, and fields for client ID and client secret" caption="The provider panel: copy the callback URL, then enter the client ID and secret." />
 
 For **Custom OAuth / OIDC** the panel also has:
 
@@ -101,6 +110,14 @@ For **Custom OAuth / OIDC** the panel also has:
 
 URLs must be absolute `http` or `https` URLs. For provider setup details, see [Authentication Providers](/core/social-providers/github).
 
+### Sign-in policy
+
+- **Allowed email domains.** New accounts must use an address at one of these domains (exact match, no subdomains), whatever way they sign up, invitations included. Margaya also refuses to invite a new address outside the list. Existing accounts are not affected. Leave it empty to allow any domain.
+- **Required sign-in provider.** Everyone signs in through one provider you have set up and turned on. Other providers, passwords, email codes and magic links are refused, except that instance admins keep password sign-in (and password reset) as a way back in. Sessions that already exist keep working.
+- **Session lifetime.** How long a session lasts without use, in hours (default 168, a week). Using a session extends it, at most once a day. New sessions use the new value.
+
+<Screenshot src="admin/sign-in-policy" alt="The Sign-in policy section with Allowed email domains, Required sign-in provider set to No requirement, and Session lifetime of 168 hours" caption="Sign-in policy applies to everyone on the instance." />
+
 ## Email
 
 Configure the SMTP server Margaya uses for sign-in codes, invitations and notifications. The page shows **Email is set up** once a host and a From address are set.
@@ -112,6 +129,8 @@ Configure the SMTP server Margaya uses for sign-in codes, invitations and notifi
 | **Security** | **TLS** (usually port 465), **STARTTLS** (usually port 587) or **None** (unencrypted; use only for a local relay). |
 | **Username**, **Password** | The password is a write-only secret. |
 | **From** | An address, or a name and an address: `Margaya <no-reply@example.com>`. |
+
+<Screenshot src="admin/email" alt="The Email page with the SMTP server form: host, port, security, username, password and From, plus Save changes and Send test email buttons" caption="Until a host and a From address are saved, the page shows Email isn't set up yet." />
 
 **Remove email settings** clears the saved SMTP settings, and Margaya stops sending email until you set it up again. It appears only when there are saved settings and the environment doesn't manage email.
 
@@ -137,11 +156,35 @@ If it fails, the dialog shows one of these categories. Server error text is neve
 - **All workspaces** lists every workspace with its owner, member count, project count and creation date. Search by name or slug, use **Load more** for further pages, and select **Open** to go to a workspace.
 - **Create workspace** creates one from this page.
 
+<Screenshot src="admin/workspaces" alt="The Workspaces page with the Only instance admins can create workspaces switch and the All workspaces table listing name, owner, members, projects and creation date" caption="All workspaces on the instance, with a shortcut to open each one." />
+
 ## Public boards
 
 - **Allow public boards.** When off, every public link answers "not found". Nothing is deleted, and turning it back on restores the boards.
 - **Allow public participation.** When off, public boards are read-only: no comments, reactions, votes or requests.
 - **Published boards** lists every published board with its workspace, publish date and enabled features (comments, reactions, votes, requests, guests). Search by project or workspace name. From a row you can open the board, open the project settings or **Unpublish** it. Unpublishing stops the link working until someone publishes the board again; settings, comments, reactions and votes are kept.
+
+<Screenshot src="admin/public-boards" alt="The Public boards page with the Allow public boards and Allow public participation switches and a Published boards table showing one board with comments, reactions and votes" caption="Instance-wide switches for public boards, and every board that is published." />
+
+## AI
+
+AI is off until you turn it on. Under **AI**, select **Allow AI**, choose a provider and models, optionally add a local model, and decide where each kind of data may go. The page also holds the **Chat**, **Web search**, **Speech to text** and **Embeddings** settings, and **Usage across workspaces** (counts and costs only). Each workspace must then turn AI on for itself. See [AI Setup](/core/functional/ai-setup) for every setting, and [Environment variables](/core/installation/environment-variables#ai) for the `MARGAYA_AI_*` variables that lock them.
+
+## Users
+
+**Users** lists every account on the server (guests excepted), newest first, with its status (admin, banned, two-factor), workspace count and last activity. Search by name or email, or show only admins or banned accounts. Select a name to see the workspaces the person belongs to, their role in each, and their active sessions.
+
+The menu on each row can:
+
+- **Ban** an account, until you unban it or for 7 or 30 days, with an optional reason. The person is signed out everywhere at once and their API keys stop working.
+- **Unban** it.
+- **Reset password**: email a reset link (needs [email](#email)), or set a new password now, which signs the person out everywhere.
+- **Sign out everywhere**: end every session. Their API keys keep working; only the owner can revoke those.
+- **Make instance admin** or **Remove instance admin**.
+
+<Screenshot src="admin/users" alt="The Users page listing accounts with status, workspace count, last activity and join date, with the actions menu open on one row showing View details, Reset password, Sign out everywhere, Make instance admin and Ban" caption="The actions menu on each account. View details opens the same panel as selecting the name." />
+
+Each of these needs a recent sign-in ([Confirm it's you](#confirm-its-you)) and is recorded in the [audit trail](#audit-trail). You can't ban yourself, and the last instance admin can't be banned or removed.
 
 ## Admins
 
@@ -153,6 +196,29 @@ The page lists every instance admin, and marks your own row.
 <Warning>
 The last active instance admin can't be removed. The button is disabled for the only admin, and the API refuses the request.
 </Warning>
+
+<Screenshot src="admin/admins" alt="The Admins page listing an instance admin marked You with a Remove admin button, and the Audit trail below with a Recovery CLI entry that made an account an instance admin" caption="Admins and the audit trail share one page." />
+
+### Confirm it's you
+
+Saving instance settings, adding or removing admins, and Better Auth's account actions (`/api/auth/admin/*`: ban, remove, set a password, impersonate) need a recent sign-in. If your session started more than 10 minutes ago, Margaya asks for your password and then lets you make changes for the next 10 minutes. Admins who sign in without a password (GitHub, Google, Discord, single sign-on, email codes) select **Sign in again** instead.
+
+An instance admin's API keys can't do any of this and only reach the workspaces the admin belongs to, unless `ALLOW_INSTANCE_ADMIN_API_KEYS=true` is set.
+
+### Audit trail
+
+Below the admin list, **Audit trail** shows instance changes newest first: who did it, when, and what changed. It records settings saved (which settings, never their values), admins added and removed, password confirmations, account actions from **Users** and the admin endpoints, and recovery CLI runs. Entries are kept for a year by default (`INSTANCE_AUDIT_LOG_RETENTION_DAYS`).
+
+### Locked out
+
+If no admin can sign in, someone with shell access to the server can use the recovery CLI:
+
+```bash
+docker compose exec margaya node apps/api/dist/cli/admin.js promote-admin you@example.com
+docker compose exec -e MARGAYA_NEW_PASSWORD='a long new passphrase' margaya node apps/api/dist/cli/admin.js reset-password you@example.com
+```
+
+It also has `list-admins`, `demote-admin` (never the last admin) and `unban-user`. Without `MARGAYA_NEW_PASSWORD`, `reset-password` prints a generated password once. On Kubernetes, run the same command with `kubectl exec` in the Margaya pod. Every run appears in the audit trail as **Recovery CLI**.
 
 ## Environment variables
 
@@ -177,6 +243,7 @@ Setting one of these variables locks its setting in the app and shows it with an
 | Custom OAuth logout URL | `CUSTOM_OAUTH_LOGOUT_URL` | Locks only this field. |
 | SMTP | `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM` | These lock as a group when `SMTP_HOST` is set. |
 | Public boards | `DISABLE_PUBLIC_BOARDS` | `true` turns them off. |
+| AI | `MARGAYA_AI_ENABLED`, `ANTHROPIC_API_KEY` and the other `MARGAYA_AI_*` variables | See [AI](/core/installation/environment-variables#ai). |
 
 These settings have no variable and are always managed in the app: each provider's on/off switch, the custom OAuth button label and public participation.
 
