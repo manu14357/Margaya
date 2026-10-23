@@ -51,41 +51,92 @@
 						"pages": [
 							"core/functional/index",
 							"core/functional/create-workspace-and-project",
-							"core/functional/plan-and-execute-tasks",
-							"core/functional/description-history",
-							"core/functional/keyboard-shortcuts",
-							"core/functional/multiple-assignees",
-							"core/functional/backlog-planning",
-							"core/functional/collaborate-with-team",
-							"core/functional/configure-workflows",
-							"core/functional/project-features-and-column-groups",
-							"core/functional/cycles",
-							"core/functional/modules",
-							"core/functional/estimates",
-							"core/functional/views",
-							"core/functional/intake",
-							"core/functional/publish-a-project-board",
-							"core/functional/drafts",
-							"core/functional/pages",
-							"core/functional/archives",
-							"core/functional/trash-and-restore",
-							"core/functional/automations",
-							"core/functional/analytics",
-							"core/functional/export-tasks",
-							"core/functional/webhooks",
-							"core/functional/audit-log",
-							"core/functional/import-tasks-from-csv",
-							"core/functional/import-from-jira",
-							"core/functional/home",
-							"core/functional/your-work",
-							"core/functional/member-profiles",
-							"core/functional/inbox",
-							"core/functional/account-notifications",
-							"core/functional/manage-your-account",
-							"core/functional/account-security",
-							"core/functional/personalize-your-workspace",
-							"core/functional/favorites-and-recent-items",
-							"core/functional/manage-workspace-labels"
+							{
+								"group": "Getting around",
+								"pages": [
+									"core/functional/home",
+									"core/functional/your-work",
+									"core/functional/inbox",
+									"core/functional/favorites-and-recent-items",
+									"core/functional/keyboard-shortcuts",
+									"core/functional/member-profiles"
+								]
+							},
+							{
+								"group": "Tasks and boards",
+								"pages": [
+									"core/functional/plan-and-execute-tasks",
+									"core/functional/multiple-assignees",
+									"core/functional/description-history",
+									"core/functional/collaborate-with-team",
+									"core/functional/configure-workflows",
+									"core/functional/project-features-and-column-groups",
+									"core/functional/restricted-projects",
+									"core/functional/manage-workspace-labels",
+									"core/functional/automations",
+									"core/functional/task-templates",
+									"core/functional/repeating-tasks",
+									"core/functional/publish-a-project-board"
+								]
+							},
+							{
+								"group": "Planning",
+								"pages": [
+									"core/functional/backlog-planning",
+									"core/functional/cycles",
+									"core/functional/modules",
+									"core/functional/estimates",
+									"core/functional/views",
+									"core/functional/intake",
+									"core/functional/analytics",
+									"core/functional/forecast-and-risk"
+								]
+							},
+							{
+								"group": "Pages and drafts",
+								"pages": ["core/functional/pages", "core/functional/drafts"]
+							},
+							{
+								"group": "AI",
+								"pages": [
+									"core/functional/ai-overview",
+									"core/functional/ai-setup",
+									"core/functional/ai-privacy-and-data",
+									"core/functional/ask-ai",
+									"core/functional/build-mode",
+									"core/functional/build-with-ai",
+									"core/functional/ai-writing",
+									"core/functional/ai-triage-and-briefs",
+									"core/functional/ai-skills-and-memory",
+									"core/functional/ai-agents",
+									"core/functional/coding-agents",
+									"core/functional/my-brief"
+								]
+							},
+							{
+								"group": "Data",
+								"pages": [
+									"core/functional/import-tasks-from-csv",
+									"core/functional/import-from-jira",
+									"core/functional/import-from-trello",
+									"core/functional/import-from-linear",
+									"core/functional/import-from-asana",
+									"core/functional/export-tasks",
+									"core/functional/archives",
+									"core/functional/trash-and-restore",
+									"core/functional/audit-log",
+									"core/functional/webhooks"
+								]
+							},
+							{
+								"group": "Account and workspace",
+								"pages": [
+									"core/functional/manage-your-account",
+									"core/functional/account-security",
+									"core/functional/account-notifications",
+									"core/functional/personalize-your-workspace"
+								]
+							}
 						]
 					},
 					{
@@ -118,6 +169,7 @@
 						"pages": [
 							"core/integrations/mcp",
 							"core/integrations/mcp-stateless",
+							"core/integrations/a2a",
 							"core/integrations/discord",
 							"core/integrations/slack",
 							"core/integrations/mattermost",
@@ -169,7 +221,17 @@
 							"api-reference/endpoints/projects/unarchiveProject",
 							"api-reference/endpoints/projects/previewProjectAutomation",
 							"api-reference/endpoints/projects/getProjectAutomations",
-							"api-reference/endpoints/projects/updateProjectAutomations"
+							"api-reference/endpoints/projects/updateProjectAutomations",
+							"api-reference/endpoints/projects/getProjectAccess",
+							"api-reference/endpoints/projects/updateProjectVisibility",
+							"api-reference/endpoints/projects/addProjectMember",
+							"api-reference/endpoints/projects/updateProjectMember",
+							"api-reference/endpoints/projects/removeProjectMember",
+							"api-reference/endpoints/projects/listAutomationRules",
+							"api-reference/endpoints/projects/createAutomationRule",
+							"api-reference/endpoints/projects/listAutomationRuns",
+							"api-reference/endpoints/projects/updateAutomationRule",
+							"api-reference/endpoints/projects/deleteAutomationRule"
 						]
 					},
 					{
@@ -188,6 +250,8 @@
 							"api-reference/endpoints/tasks/importTasks",
 							"api-reference/endpoints/tasks/previewJiraImport",
 							"api-reference/endpoints/tasks/importJiraIssues",
+							"api-reference/endpoints/tasks/previewExternalImport",
+							"api-reference/endpoints/tasks/importExternalItems",
 							"api-reference/endpoints/tasks/updateTaskStatus",
 							"api-reference/endpoints/tasks/updateTaskPriority",
 							"api-reference/endpoints/tasks/updateTaskEstimate",
@@ -205,7 +269,12 @@
 							"api-reference/endpoints/tasks/listTaskDescriptionVersions",
 							"api-reference/endpoints/tasks/getTaskDescriptionVersion",
 							"api-reference/endpoints/tasks/restoreTaskDescriptionVersion",
-							"api-reference/endpoints/tasks/queryTasks"
+							"api-reference/endpoints/tasks/queryTasks",
+							"api-reference/endpoints/tasks/findSimilarTasks",
+							"api-reference/endpoints/tasks/getTaskByKey",
+							"api-reference/endpoints/tasks/getTaskRecurrence",
+							"api-reference/endpoints/tasks/setTaskRecurrence",
+							"api-reference/endpoints/tasks/removeTaskRecurrence"
 						]
 					},
 					{
@@ -216,6 +285,16 @@
 							"api-reference/endpoints/columns/reorderColumns",
 							"api-reference/endpoints/columns/updateColumn",
 							"api-reference/endpoints/columns/deleteColumn"
+						]
+					},
+					{
+						"group": "Task templates",
+						"pages": [
+							"api-reference/endpoints/task-templates/listTaskTemplates",
+							"api-reference/endpoints/task-templates/createTaskTemplate",
+							"api-reference/endpoints/task-templates/updateTaskTemplate",
+							"api-reference/endpoints/task-templates/deleteTaskTemplate",
+							"api-reference/endpoints/task-templates/applyTaskTemplate"
 						]
 					},
 					{
@@ -329,7 +408,13 @@
 							"api-reference/endpoints/pages/restorePageVersion",
 							"api-reference/endpoints/pages/listPageBacklinks",
 							"api-reference/endpoints/pages/createPageAssetUpload",
-							"api-reference/endpoints/pages/finalizePageAssetUpload"
+							"api-reference/endpoints/pages/finalizePageAssetUpload",
+							"api-reference/endpoints/pages/listPageTemplates",
+							"api-reference/endpoints/pages/deletePageTemplate",
+							"api-reference/endpoints/pages/savePageAsTemplate",
+							"api-reference/endpoints/pages/getPagePublication",
+							"api-reference/endpoints/pages/publishPage",
+							"api-reference/endpoints/pages/unpublishPage"
 						]
 					},
 					{
@@ -359,7 +444,12 @@
 							"api-reference/endpoints/analytics/queryAnalyticsTrend",
 							"api-reference/endpoints/analytics/getAnalyticsCycles",
 							"api-reference/endpoints/analytics/getAnalyticsModules",
-							"api-reference/endpoints/analytics/getAnalyticsIntake"
+							"api-reference/endpoints/analytics/getAnalyticsIntake",
+							"api-reference/endpoints/analytics/listAnalyticsReports",
+							"api-reference/endpoints/analytics/getAnalyticsReport",
+							"api-reference/endpoints/analytics/createAnalyticsReport",
+							"api-reference/endpoints/analytics/updateAnalyticsReport",
+							"api-reference/endpoints/analytics/deleteAnalyticsReport"
 						]
 					},
 					{
@@ -591,6 +681,158 @@
 						"pages": ["api-reference/endpoints/search/globalSearch"]
 					},
 					{
+						"group": "AI",
+						"pages": [
+							"api-reference/endpoints/ai/getAiAvailability",
+							"api-reference/endpoints/ai/getAiSettings",
+							"api-reference/endpoints/ai/updateAiSettings",
+							"api-reference/endpoints/ai/testAiConnection",
+							"api-reference/endpoints/ai/getAiUsage",
+							"api-reference/endpoints/ai/exportAiUsage",
+							"api-reference/endpoints/ai/getInstanceAiStatus",
+							"api-reference/endpoints/ai/testInstanceAiConnection",
+							"api-reference/endpoints/ai/getInstanceAiUsage",
+							"api-reference/endpoints/ai/aiAsk",
+							"api-reference/endpoints/ai/createAiFeedback",
+							"api-reference/endpoints/ai/listAiMemoryNotes",
+							"api-reference/endpoints/ai/createAiMemoryNote",
+							"api-reference/endpoints/ai/updateAiMemoryNote",
+							"api-reference/endpoints/ai/deleteAiMemoryNote",
+							"api-reference/endpoints/ai/listAiSkills",
+							"api-reference/endpoints/ai/createAiSkill",
+							"api-reference/endpoints/ai/updateAiSkill",
+							"api-reference/endpoints/ai/deleteAiSkill",
+							"api-reference/endpoints/ai/listAiConversations",
+							"api-reference/endpoints/ai/getAiConversation",
+							"api-reference/endpoints/ai/putAiConversation",
+							"api-reference/endpoints/ai/updateAiConversation",
+							"api-reference/endpoints/ai/deleteAiConversation",
+							"api-reference/endpoints/ai/transcribeSpeech",
+							"api-reference/endpoints/ai/aiDuplicateCheck",
+							"api-reference/endpoints/ai/aiBuildProposal",
+							"api-reference/endpoints/ai/aiBuildApply",
+							"api-reference/endpoints/ai/aiEditorAssist",
+							"api-reference/endpoints/ai/aiSummarize",
+							"api-reference/endpoints/ai/aiSpecDraft",
+							"api-reference/endpoints/ai/aiPageTitle",
+							"api-reference/endpoints/ai/aiPageBlock",
+							"api-reference/endpoints/ai/aiTriageSuggest",
+							"api-reference/endpoints/ai/aiTriageDraftLabels",
+							"api-reference/endpoints/ai/getAiTriageSettings",
+							"api-reference/endpoints/ai/updateAiTriageSettings",
+							"api-reference/endpoints/ai/aiCompileRule",
+							"api-reference/endpoints/ai/aiRuleDryRun",
+							"api-reference/endpoints/ai/aiTranslate",
+							"api-reference/endpoints/ai/aiGenerateBrief",
+							"api-reference/endpoints/ai/aiShareBrief",
+							"api-reference/endpoints/ai/aiExplainEstimate",
+							"api-reference/endpoints/ai/aiRetroNarrative",
+							"api-reference/endpoints/ai/aiMyBriefSummary",
+							"api-reference/endpoints/ai/aiInboxDigest",
+							"api-reference/endpoints/ai/aiCaptureAnalyze",
+							"api-reference/endpoints/ai/aiChatBuildPlan",
+							"api-reference/endpoints/ai/aiChatBuildApply",
+							"api-reference/endpoints/ai/aiChatBuildUndo",
+							"api-reference/endpoints/ai/aiParseTaskFilter",
+							"api-reference/endpoints/ai/getAiBudgetStatus"
+						]
+					},
+					{
+						"group": "AI agents",
+						"pages": [
+							"api-reference/endpoints/ai-agents/listAgents",
+							"api-reference/endpoints/ai-agents/createAgent",
+							"api-reference/endpoints/ai-agents/listAgentTemplates",
+							"api-reference/endpoints/ai-agents/listAgentSchedules",
+							"api-reference/endpoints/ai-agents/createAgentSchedule",
+							"api-reference/endpoints/ai-agents/updateAgentSchedule",
+							"api-reference/endpoints/ai-agents/deleteAgentSchedule",
+							"api-reference/endpoints/ai-agents/replyToAgentRun",
+							"api-reference/endpoints/ai-agents/followUpAgentRun",
+							"api-reference/endpoints/ai-agents/updateAgent",
+							"api-reference/endpoints/ai-agents/deleteAgent",
+							"api-reference/endpoints/ai-agents/startAgentRun",
+							"api-reference/endpoints/ai-agents/listAgentRuns",
+							"api-reference/endpoints/ai-agents/getAgentRun",
+							"api-reference/endpoints/ai-agents/cancelAgentRun",
+							"api-reference/endpoints/ai-agents/undoAgentChange",
+							"api-reference/endpoints/ai-agents/listAgentApprovals",
+							"api-reference/endpoints/ai-agents/approveAgentChange",
+							"api-reference/endpoints/ai-agents/rejectAgentChange"
+						]
+					},
+					{
+						"group": "AI connectors",
+						"pages": [
+							"api-reference/endpoints/ai-connectors/listAiConnectors",
+							"api-reference/endpoints/ai-connectors/createAiConnector",
+							"api-reference/endpoints/ai-connectors/updateAiConnector",
+							"api-reference/endpoints/ai-connectors/deleteAiConnector",
+							"api-reference/endpoints/ai-connectors/testAiConnector"
+						]
+					},
+					{
+						"group": "Delivery",
+						"pages": [
+							"api-reference/endpoints/delivery/getCycleForecast",
+							"api-reference/endpoints/delivery/getModuleForecast",
+							"api-reference/endpoints/delivery/getProjectForecast",
+							"api-reference/endpoints/delivery/getCycleRisks",
+							"api-reference/endpoints/delivery/getModuleRisks",
+							"api-reference/endpoints/delivery/getProjectRisks",
+							"api-reference/endpoints/delivery/getHomeRisks"
+						]
+					},
+					{
+						"group": "Insights",
+						"pages": [
+							"api-reference/endpoints/insights/getEstimateSuggestion",
+							"api-reference/endpoints/insights/getEstimateCalibration",
+							"api-reference/endpoints/insights/getCycleCapacity",
+							"api-reference/endpoints/insights/getRetroFacts",
+							"api-reference/endpoints/insights/getMyBrief"
+						]
+					},
+					{
+						"group": "Coding agents",
+						"pages": [
+							"api-reference/endpoints/coding-agents/listCodingAgentProfiles",
+							"api-reference/endpoints/coding-agents/createCodingAgentProfile",
+							"api-reference/endpoints/coding-agents/updateCodingAgentProfile",
+							"api-reference/endpoints/coding-agents/deleteCodingAgentProfile",
+							"api-reference/endpoints/coding-agents/getTaskCodingAgents",
+							"api-reference/endpoints/coding-agents/prepareCodingAgentBrief",
+							"api-reference/endpoints/coding-agents/sendToCodingAgent"
+						]
+					},
+					{
+						"group": "Public pages",
+						"pages": [
+							"api-reference/endpoints/public-pages/getPublicPage",
+							"api-reference/endpoints/public-pages/getPublicPageAsset"
+						]
+					},
+					{
+						"group": "Trash",
+						"pages": [
+							"api-reference/endpoints/trash/listTaskTrash",
+							"api-reference/endpoints/trash/emptyTaskTrash",
+							"api-reference/endpoints/trash/restoreTask",
+							"api-reference/endpoints/trash/purgeTask",
+							"api-reference/endpoints/trash/listProjectTrash",
+							"api-reference/endpoints/trash/restoreProject",
+							"api-reference/endpoints/trash/purgeProject"
+						]
+					},
+					{
+						"group": "API keys",
+						"pages": [
+							"api-reference/endpoints/api-keys/listApiKeys",
+							"api-reference/endpoints/api-keys/createScopedApiKey",
+							"api-reference/endpoints/api-keys/listApiKeyRequests"
+						]
+					},
+					{
 						"group": "Workflow Rules",
 						"pages": [
 							"api-reference/endpoints/workflow-rules/getWorkflowRules",
@@ -628,14 +870,20 @@
 						"group": "Invitations",
 						"pages": [
 							"api-reference/endpoints/invitations/getUserPendingInvitations",
-							"api-reference/endpoints/invitations/getInvitationDetails"
+							"api-reference/endpoints/invitations/getInvitationDetails",
+							"api-reference/endpoints/invitations/updateInvitationRole"
 						]
 					},
 					{
 						"group": "Workspaces",
 						"pages": [
 							"api-reference/endpoints/workspaces/getWorkspaceMembers",
-							"api-reference/endpoints/workspaces/getWorkspaceMember"
+							"api-reference/endpoints/workspaces/getWorkspaceMember",
+							"api-reference/endpoints/workspaces/getWorkspaceSettings",
+							"api-reference/endpoints/workspaces/updateWorkspaceSettings",
+							"api-reference/endpoints/workspaces/getWorkspaceDeletion",
+							"api-reference/endpoints/workspaces/scheduleWorkspaceDeletion",
+							"api-reference/endpoints/workspaces/cancelWorkspaceDeletion"
 						]
 					},
 					{
@@ -732,7 +980,15 @@
 							"api-reference/endpoints/instance-admin/listInstanceAdmins",
 							"api-reference/endpoints/instance-admin/addInstanceAdmin",
 							"api-reference/endpoints/instance-admin/removeInstanceAdmin",
-							"api-reference/endpoints/instance-admin/listInstancePublicBoards"
+							"api-reference/endpoints/instance-admin/listInstancePublicBoards",
+							"api-reference/endpoints/instance-admin/confirmInstanceAdmin",
+							"api-reference/endpoints/instance-admin/listInstanceUsers",
+							"api-reference/endpoints/instance-admin/getInstanceUser",
+							"api-reference/endpoints/instance-admin/banInstanceUser",
+							"api-reference/endpoints/instance-admin/unbanInstanceUser",
+							"api-reference/endpoints/instance-admin/revokeInstanceUserSessions",
+							"api-reference/endpoints/instance-admin/resetInstanceUserPassword",
+							"api-reference/endpoints/instance-admin/listInstanceAuditLog"
 						]
 					},
 					{
@@ -753,12 +1009,21 @@
 						"pages": [
 							"api-reference/endpoints/user/getUserAvatar",
 							"api-reference/endpoints/user/uploadUserAvatar",
-							"api-reference/endpoints/user/deleteUserAvatar"
+							"api-reference/endpoints/user/deleteUserAvatar",
+							"api-reference/endpoints/user/getUserPreferences",
+							"api-reference/endpoints/user/updateUserPreferences",
+							"api-reference/endpoints/user/getUserTimezone",
+							"api-reference/endpoints/user/updateUserTimezone",
+							"api-reference/endpoints/user/getAccountSecurity",
+							"api-reference/endpoints/user/revokeUserSession"
 						]
 					},
 					{
 						"group": "Assets",
-						"pages": ["api-reference/endpoints/assets/getAsset"]
+						"pages": [
+							"api-reference/endpoints/assets/getAsset",
+							"api-reference/endpoints/assets/uploadStorageObject"
+						]
 					},
 					{
 						"group": "Organization Management",
