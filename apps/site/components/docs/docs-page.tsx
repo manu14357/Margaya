@@ -1,45 +1,54 @@
-import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, SquarePen } from "lucide-react";
 import type { Metadata } from "next";
-import { Footer } from "@/components/landing/footer";
-import { Navbar } from "@/components/landing/navbar";
+import { formatDocDate, getDocLastUpdated } from "@/lib/docs/last-updated";
 import { renderDocMarkdown } from "@/lib/docs/markdown";
-import { findOperation } from "@/lib/docs/openapi";
+import { findOperation, operationHeadings } from "@/lib/docs/openapi";
+import { docMarkdownHref } from "@/lib/docs/page-markdown";
 import {
   type DocPage,
   getDocNeighbours,
   getDocPageBody,
   getDocsTabs,
-  type NavTab,
   resolveDocLink,
 } from "@/lib/docs/source";
+import { siteLinks } from "@/lib/site-links";
 import {
-  MethodBadge,
   OperationEndpoint,
+  OperationExamples,
   OperationReference,
-  operationHeadings,
 } from "./api-operation";
-import { DocsSearch } from "./docs-search";
-import { DocsSidebarToggle } from "./docs-sidebar-toggle";
+import { DocsCopyPage } from "./docs-copy-page";
+import { DocsEnhance } from "./docs-enhance";
+import { DocsHeader } from "./docs-header";
+import { DocsMobileBar } from "./docs-mobile-bar";
+import { DocsSidebarNav } from "./docs-sidebar";
+import { DocsToc } from "./docs-toc";
 
-const SIDEBAR_ID = "docs-sidebar";
 const EDIT_BASE = "https://github.com/manu14357/Margaya/blob/main/apps/docs";
+
+// Marks the document before the body paints, so tabbed blocks show one panel
+// at a time from the first frame when scripts run (and stay stacked when not).
+const JS_FLAG = "document.documentElement.setAttribute('data-docs-js','')";
 
 export function docMetadata(page: DocPage): Metadata {
   const operation = page.openapi
     ? findOperation(page.openapi.method, page.openapi.path)
     : null;
   const title = operation?.summary ? operation.summary : page.title;
+  const fullTitle = `${title} | Margaya Docs`;
   const description =
     page.description ||
     `${title} in the Margaya documentation: guides and API reference for the open-source project management platform.`;
   return {
-    title,
+    // Absolute, because the docs layout's title template does not apply to
+    // the /docs index, which lives in the same route segment.
+    title: { absolute: fullTitle },
     description,
     alternates: { canonical: page.href },
     openGraph: {
       type: "article",
       siteName: "Margaya",
-      title: `${title} | Margaya Docs`,
+      title: fullTitle,
       description,
       url: page.href,
       images: [
@@ -48,67 +57,44 @@ export function docMetadata(page: DocPage): Metadata {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | Margaya Docs`,
+      title: fullTitle,
       description,
       images: ["/og-image.png"],
     },
   };
 }
 
-// Tabs with more groups than this (the API reference) list only the current
-// group's pages; the other groups link to their first page. Every page
-// carries its sidebar, so listing all ~280 endpoints would dominate its size.
-const EXPANDED_GROUP_LIMIT = 12;
-
-function Sidebar({ tab, page }: { tab: NavTab; page: DocPage }) {
-  const compact = tab.groups.length > EXPANDED_GROUP_LIMIT;
+function DocsFooter() {
   return (
-    <aside
-      id={SIDEBAR_ID}
-      aria-label="Documentation"
-      className="docs-sidebar shrink-0 border-r lg:w-72"
-    >
-      <nav
-        aria-label={`${tab.tab} pages`}
-        className={`docs-sidebar-scroll${compact ? " docs-sidebar-compact" : ""}`}
+    <footer className="docs-footer">
+      <span>© {new Date().getFullYear()} Margaya</span>
+      <span aria-hidden="true">·</span>
+      <a href="/">Home</a>
+      <span aria-hidden="true">·</span>
+      <a
+        href={
+          siteLinks.site?.license ?? `${siteLinks.github}/blob/main/LICENSE`
+        }
+        target="_blank"
+        rel="noreferrer"
       >
-        {tab.groups.map((group) => {
-          const current = group.items.some((item) => item.id === page.id);
-          if (compact && !current) {
-            return (
-              <a
-                key={group.group}
-                href={group.items[0]?.href ?? tab.href}
-                className="docs-nav-group-link"
-              >
-                {group.group}
-              </a>
-            );
-          }
-          return (
-            <div key={group.group} className="docs-nav-group">
-              <p className="docs-nav-heading">{group.group}</p>
-              <ul className="docs-nav-list">
-                {group.items.map((item) => (
-                  <li key={item.id}>
-                    <a
-                      href={item.href}
-                      aria-current={item.id === page.id ? "page" : undefined}
-                      className="docs-nav-link"
-                    >
-                      {item.method ? (
-                        <MethodBadge method={item.method} small />
-                      ) : null}
-                      <span>{item.label}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          );
-        })}
-      </nav>
-    </aside>
+        MIT licence
+      </a>
+      <span aria-hidden="true">·</span>
+      <a href={siteLinks.github} target="_blank" rel="noreferrer">
+        GitHub
+      </a>
+    </footer>
+  );
+}
+
+function Html({ html, className }: { html: string; className: string }) {
+  return (
+    <div
+      className={className}
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: docs pages are trusted MDX files in this repository (and the committed OpenAPI document), rendered to HTML at build time.
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
   );
 }
 
@@ -123,137 +109,160 @@ export function DocsPageView({ page }: { page: DocPage }) {
   const body = renderDocMarkdown(getDocPageBody(page), {
     resolveHref,
     reservedIds: sections.map((section) => section.id),
+    source: page.id,
   });
   const intro = operation?.description
-    ? renderDocMarkdown(operation.description, { resolveHref }).html
+    ? renderDocMarkdown(operation.description, {
+        resolveHref,
+        source: page.id,
+      }).html
     : "";
   const outline = [...body.headings, ...sections];
+  const landing = page.mode === "landing";
+  const showToc = !operation && !landing && outline.length > 1;
+  const lastUpdated = getDocLastUpdated(page.id);
   const { previous, next } = getDocNeighbours(page);
+  const eyebrow = [page.tab, page.group].filter(Boolean).join(" › ");
+  const sidebar = tab ? <DocsSidebarNav tab={tab} page={page} /> : null;
+  const width = operation
+    ? "docs-main-wide"
+    : landing
+      ? "docs-main-landing"
+      : "";
 
   return (
     <>
-      <Navbar />
-      <div className="border-b bg-background">
-        <div className="mx-auto flex w-full max-w-[90rem] flex-wrap items-center gap-3 px-4 py-2.5 md:px-6">
-          <DocsSidebarToggle controls={SIDEBAR_ID} />
-          <nav aria-label="Documentation sections" className="flex gap-1">
-            {tabs.map((entry) => (
-              <a
-                key={entry.tab}
-                href={entry.href}
-                aria-current={entry.tab === tab?.tab ? "true" : undefined}
-                className="docs-tab"
-              >
-                {entry.tab}
-              </a>
-            ))}
-          </nav>
-          <div className="ml-auto w-full sm:w-auto">
-            <DocsSearch />
-          </div>
-        </div>
-      </div>
-      <div className="mx-auto flex w-full max-w-[90rem] max-lg:flex-col">
-        {tab ? <Sidebar tab={tab} page={page} /> : null}
-        <main className="min-w-0 flex-1 px-4 py-10 md:px-10 lg:py-12">
-          <article className="mx-auto max-w-3xl">
-            <header>
-              {page.group ? (
-                <p className="font-medium text-muted-foreground text-sm">
-                  {page.group}
-                </p>
-              ) : null}
-              <h1 className="mt-2 text-balance font-semibold text-3xl tracking-tight md:text-4xl">
-                {page.title}
-              </h1>
-              {page.description ? (
-                <p className="mt-3 text-lg text-muted-foreground leading-relaxed">
-                  {page.description}
-                </p>
-              ) : null}
-            </header>
-            {operation ? <OperationEndpoint operation={operation} /> : null}
-            {intro ? (
-              <div
-                className="docs-prose mt-6"
-                // biome-ignore lint/security/noDangerouslySetInnerHtml: rendered at build time from the committed OpenAPI document.
-                dangerouslySetInnerHTML={{ __html: intro }}
-              />
-            ) : null}
-            <div
-              className="docs-prose mt-8"
-              // biome-ignore lint/security/noDangerouslySetInnerHtml: docs pages are trusted MDX files in this repository, rendered to HTML at build time.
-              dangerouslySetInnerHTML={{ __html: body.html }}
-            />
-            {operation ? <OperationReference operation={operation} /> : null}
-            <p className="mt-12 text-sm">
-              <a
-                href={`${EDIT_BASE}/${page.id}.mdx`}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground"
-              >
-                Edit this page on GitHub
-                <ArrowUpRight aria-hidden="true" className="size-3.5" />
-              </a>
-            </p>
-          </article>
-          {previous || next ? (
-            <nav
-              aria-label="Previous and next pages"
-              className="mx-auto mt-8 grid max-w-3xl gap-3 border-t pt-8 sm:grid-cols-2"
-            >
-              {previous ? (
-                <a href={previous.href} className="docs-pager-link">
-                  <span className="flex items-center gap-1 text-muted-foreground text-xs">
-                    <ArrowLeft aria-hidden="true" className="size-3.5" />
-                    Previous
-                  </span>
-                  <span className="font-medium">{previous.label}</span>
-                </a>
-              ) : (
-                <span />
-              )}
-              {next ? (
-                <a
-                  href={next.href}
-                  className="docs-pager-link sm:items-end sm:text-right"
-                >
-                  <span className="flex items-center gap-1 text-muted-foreground text-xs">
-                    Next
-                    <ArrowRight aria-hidden="true" className="size-3.5" />
-                  </span>
-                  <span className="font-medium">{next.label}</span>
-                </a>
-              ) : null}
-            </nav>
-          ) : null}
-        </main>
-        {outline.length > 1 ? (
-          <aside
-            aria-label="On this page"
-            className="docs-toc shrink-0 max-xl:hidden xl:w-60"
-          >
-            <p className="font-medium text-sm">On this page</p>
-            <ul className="mt-3 space-y-2 text-sm">
-              {outline.map((heading) => (
-                <li
-                  key={heading.id}
-                  className={heading.depth === 3 ? "pl-3" : undefined}
-                >
-                  <a
-                    href={`#${heading.id}`}
-                    className="text-muted-foreground hover:text-foreground"
-                  >
-                    {heading.text}
-                  </a>
-                </li>
-              ))}
-            </ul>
+      <script
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: a constant one-line flag, set before the content paints.
+        dangerouslySetInnerHTML={{ __html: JS_FLAG }}
+      />
+      <DocsHeader
+        tabs={tabs.map((entry) => ({
+          tab: entry.tab,
+          href: entry.href,
+          active: entry.tab === tab?.tab,
+        }))}
+      />
+      <div className="docs-layout">
+        {sidebar ? (
+          <aside className="docs-sidebar" data-docs-sidebar>
+            <div className="docs-sidebar-scroll" data-docs-scroll>
+              {sidebar}
+            </div>
           </aside>
         ) : null}
+        <div className="docs-column">
+          <DocsMobileBar headings={landing ? [] : outline}>
+            {sidebar}
+          </DocsMobileBar>
+          <main id="docs-main" className={`docs-main ${width}`}>
+            <article className="docs-article">
+              <header className={landing ? "docs-hero" : "docs-page-header"}>
+                <div className="docs-title-row">
+                  <div className="min-w-0">
+                    {eyebrow && !landing ? (
+                      <p className="docs-eyebrow">{eyebrow}</p>
+                    ) : null}
+                    <h1 className="docs-title">
+                      {operation?.summary || page.title}
+                    </h1>
+                  </div>
+                  {landing ? null : (
+                    <DocsCopyPage markdownHref={docMarkdownHref(page)} />
+                  )}
+                </div>
+                {page.description ? (
+                  <p className="docs-lead">{page.description}</p>
+                ) : null}
+                {operation ? (
+                  <>
+                    <OperationEndpoint operation={operation} />
+                    <p className="docs-operation-id">
+                      Operation ID <code>{operation.operationId}</code>
+                    </p>
+                  </>
+                ) : null}
+              </header>
+              {operation ? (
+                <div className="docs-api-grid">
+                  <div className="docs-api-main">
+                    {intro ? (
+                      <Html className="docs-prose" html={intro} />
+                    ) : null}
+                    {body.html.trim() ? (
+                      <Html className="docs-prose mt-6" html={body.html} />
+                    ) : null}
+                    <OperationReference operation={operation} />
+                  </div>
+                  <OperationExamples operation={operation} />
+                </div>
+              ) : (
+                <Html
+                  className={`docs-prose ${landing ? "mt-10" : "mt-8"}`}
+                  html={body.html}
+                />
+              )}
+              <div className="docs-edit-row">
+                <a
+                  href={`${EDIT_BASE}/${page.id}.mdx`}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="docs-edit-link"
+                >
+                  <SquarePen aria-hidden="true" className="size-4" />
+                  Edit this page
+                  <span className="sr-only">
+                    {" "}
+                    on GitHub (opens in a new tab)
+                  </span>
+                </a>
+                {lastUpdated ? (
+                  <p className="docs-last-updated">
+                    Last updated:{" "}
+                    <time dateTime={lastUpdated}>
+                      {formatDocDate(lastUpdated)}
+                    </time>
+                  </p>
+                ) : null}
+              </div>
+            </article>
+            {previous || next ? (
+              <nav aria-label="Previous and next pages" className="docs-pager">
+                {previous ? (
+                  <a href={previous.href} className="docs-pager-link">
+                    <span className="docs-pager-label">
+                      <ArrowLeft aria-hidden="true" className="size-3.5" />
+                      Previous page
+                    </span>
+                    <span className="docs-pager-title">{previous.label}</span>
+                  </a>
+                ) : (
+                  <span className="max-sm:hidden" />
+                )}
+                {next ? (
+                  <a
+                    href={next.href}
+                    className="docs-pager-link sm:items-end sm:text-right"
+                  >
+                    <span className="docs-pager-label">
+                      Next page
+                      <ArrowRight aria-hidden="true" className="size-3.5" />
+                    </span>
+                    <span className="docs-pager-title">{next.label}</span>
+                  </a>
+                ) : null}
+              </nav>
+            ) : null}
+          </main>
+          <DocsFooter />
+        </div>
+        {showToc ? (
+          <div className="docs-toc">
+            <DocsToc headings={outline} />
+          </div>
+        ) : null}
       </div>
-      <Footer />
+      <DocsEnhance />
     </>
   );
 }

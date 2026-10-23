@@ -1,17 +1,8 @@
-import type { DocHeading } from "@/lib/docs/markdown";
-import {
-  exampleValue,
-  type Operation,
-  openApiServerUrl,
-} from "@/lib/docs/openapi";
+import { Check, Copy } from "lucide-react";
+import { requestSamples, responseSamples } from "@/lib/docs/api-samples";
+import { codeBlockHtml, codeTabsHtml, tabsHtml } from "@/lib/docs/highlight";
+import { type Operation, PARAMETER_LOCATIONS } from "@/lib/docs/openapi";
 import { FieldList, SchemaBody } from "./schema-fields";
-
-const LOCATION_TITLES: Record<string, string> = {
-  path: "Path parameters",
-  query: "Query parameters",
-  header: "Headers",
-  cookie: "Cookies",
-};
 
 export function MethodBadge({
   method,
@@ -29,95 +20,21 @@ export function MethodBadge({
   );
 }
 
-/** Section ids the operation renders, in order, for the page outline. */
-export function operationHeadings(operation: Operation): DocHeading[] {
-  const headings: DocHeading[] = [];
-  if (operation.authenticated) {
-    headings.push({ id: "authorization", text: "Authorization", depth: 2 });
-  }
-  for (const location of Object.keys(LOCATION_TITLES)) {
-    if (operation.parameters.some((parameter) => parameter.in === location)) {
-      headings.push({
-        id: `${location}-parameters`,
-        text: LOCATION_TITLES[location] ?? location,
-        depth: 2,
-      });
-    }
-  }
-  if (operation.requestBody) {
-    headings.push({ id: "request-body", text: "Request body", depth: 2 });
-  }
-  headings.push({ id: "responses", text: "Responses", depth: 2 });
-  headings.push({ id: "example-request", text: "Example request", depth: 2 });
-  if (successSchema(operation)) {
-    headings.push({
-      id: "example-response",
-      text: "Example response",
-      depth: 2,
-    });
-  }
-  return headings;
-}
-
-function successSchema(operation: Operation) {
-  const success = operation.responses.find(
-    (response) => response.status.startsWith("2") && response.schema,
-  );
-  return success?.contentType?.includes("json") ? success : null;
-}
-
-function shellQuote(value: string): string {
-  return `'${value.replace(/'/g, "'\\''")}'`;
-}
-
-function curlExample(operation: Operation): string {
-  const query = operation.parameters
-    .filter((parameter) => parameter.in === "query" && parameter.required)
-    .map((parameter) => `${parameter.name}=<${parameter.name}>`)
-    .join("&");
-  const url = `${openApiServerUrl()}${operation.path}${query ? `?${query}` : ""}`;
-  const lines = [
-    `curl --request ${operation.method}`,
-    `  --url ${shellQuote(url)}`,
-  ];
-  if (operation.authenticated) {
-    lines.push(`  --header 'Authorization: Bearer <api-key>'`);
-  }
-  const body = operation.requestBody;
-  if (body?.schema && body.contentType.includes("json")) {
-    lines.push(`  --header 'Content-Type: ${body.contentType}'`);
-    const example = JSON.stringify(
-      exampleValue(body.schema, { requiredOnly: true }),
-      null,
-      2,
-    );
-    lines.push(`  --data ${shellQuote(example)}`);
-  } else if (body) {
-    lines.push(`  --header 'Content-Type: ${body.contentType}'`);
-    lines.push("  --data-binary @file");
-  }
-  return lines.join(" \\\n");
-}
-
-function CodeBlock({ label, code }: { label: string; code: string }) {
-  return (
-    <div className="docs-code">
-      <div className="docs-code-header">
-        <span>{label}</span>
-      </div>
-      <pre>
-        <code>{code}</code>
-      </pre>
-    </div>
-  );
-}
-
 /** The request line of an operation, shown under the page title. */
 export function OperationEndpoint({ operation }: { operation: Operation }) {
   return (
     <div className="docs-endpoint">
       <MethodBadge method={operation.method} />
       <code className="docs-endpoint-path">{operation.path}</code>
+      <button
+        type="button"
+        className="docs-copy docs-copy-inline"
+        data-copy-text={operation.path}
+        aria-label="Copy path"
+      >
+        <Copy aria-hidden="true" className="docs-icon docs-copy-idle" />
+        <Check aria-hidden="true" className="docs-icon docs-copy-done" />
+      </button>
       {operation.deprecated ? (
         <span className="docs-field-meta">deprecated</span>
       ) : null}
@@ -125,9 +42,59 @@ export function OperationEndpoint({ operation }: { operation: Operation }) {
   );
 }
 
-/** Parameters, body, responses and examples of an operation. */
+function Html({ html, className }: { html: string; className?: string }) {
+  return (
+    <div
+      className={className}
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: highlighted at build time from the committed OpenAPI document.
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+}
+
+/**
+ * The example panel: request samples in cURL, JavaScript and Python, then
+ * example responses by status. Sticky beside the reference on wide screens.
+ */
+export function OperationExamples({ operation }: { operation: Operation }) {
+  const requests = requestSamples(operation);
+  const responses = responseSamples(operation);
+  return (
+    <div className="docs-api-examples">
+      <section id="example-request" aria-label="Example request">
+        <Html
+          html={codeTabsHtml(
+            requests.map((sample) => ({
+              label: sample.label,
+              language: sample.language,
+              code: sample.code,
+            })),
+            { header: "Request" },
+          )}
+        />
+      </section>
+      {responses.length > 0 ? (
+        <section id="example-response" aria-label="Example response">
+          <Html
+            html={tabsHtml(
+              responses.map((response) => ({
+                label: response.status,
+                html: codeBlockHtml(response.code, "json"),
+              })),
+              {
+                className: "docs-code-group docs-response-group",
+                header: "Response",
+              },
+            )}
+          />
+        </section>
+      ) : null}
+    </div>
+  );
+}
+
+/** Parameters, body and responses of an operation. */
 export function OperationReference({ operation }: { operation: Operation }) {
-  const success = successSchema(operation);
   return (
     <div className="docs-operation">
       {operation.authenticated ? (
@@ -148,7 +115,7 @@ export function OperationReference({ operation }: { operation: Operation }) {
         </section>
       ) : null}
 
-      {Object.entries(LOCATION_TITLES).map(([location, title]) => {
+      {Object.entries(PARAMETER_LOCATIONS).map(([location, title]) => {
         const parameters = operation.parameters.filter(
           (parameter) => parameter.in === location,
         );
@@ -201,21 +168,6 @@ export function OperationReference({ operation }: { operation: Operation }) {
           ))}
         </div>
       </section>
-
-      <section aria-labelledby="example-request">
-        <h2 id="example-request">Example request</h2>
-        <CodeBlock label="cURL" code={curlExample(operation)} />
-      </section>
-
-      {success?.schema ? (
-        <section aria-labelledby="example-response">
-          <h2 id="example-response">Example response</h2>
-          <CodeBlock
-            label={success.status}
-            code={JSON.stringify(exampleValue(success.schema), null, 2)}
-          />
-        </section>
-      ) : null}
     </div>
   );
 }

@@ -108,7 +108,9 @@ export function FieldList({
               ) : null}
               {field.required ? (
                 <span className="docs-field-required">required</span>
-              ) : null}
+              ) : (
+                <span className="docs-field-optional">optional</span>
+              )}
               {target.deprecated ? (
                 <span className="docs-field-meta">deprecated</span>
               ) : null}
