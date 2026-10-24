@@ -1,5 +1,13 @@
 ---
 title: globalSearch
-description: Search across tasks, projects, workspaces, comments, and activities
+description: Ranked full-text search across tasks, pages, comments, projects, planning items and intake requests
 openapi: 'GET /search'
 ---
+
+Search uses PostgreSQL full-text search:
+
+- `q` accepts web-search syntax: `"quoted phrases"`, `or` and `-exclude`. The last word also matches as a prefix, so results update while you type.
+- An exact task key such as `WEB-12` is always the first result.
+- Matching ignores case, and ignores accents where the server's database supports it. Words are not stemmed, so it behaves the same in every language. Chinese, Japanese and Thai text also matches by substring.
+- Task, comment and page results include a `snippet`: the text around the match, with `highlights` as character ranges.
+- Results never include restricted projects you are not a member of, trashed items, or kinds your role cannot read.
