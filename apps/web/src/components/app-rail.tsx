@@ -1,5 +1,5 @@
 import { CircleQuestionMark, Plus } from "lucide-react";
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps, CSSProperties, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useShell } from "@/components/common/shell-context";
 import {
@@ -17,20 +17,21 @@ import { WorkspaceSwitcher } from "@/components/workspace-switcher";
 import { shortcuts } from "@/constants/shortcuts";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { cn } from "@/lib/cn";
+import { visibleRailItems } from "@/lib/sidebar-layout";
+import { useUserPreferencesStore } from "@/store/user-preferences";
 
-/** The destinations on the rail, top to bottom (Settings sits at the foot). */
+/**
+ * The destinations on the rail, top to bottom, in the user's own order and
+ * without the ones they hid (Settings sits at the foot).
+ */
 export function useRailDestinations(): ShellDestination[] {
   const { canReadAnalytics, isCheckingPermissions } = useWorkspacePermission();
+  const sidebarLayout = useUserPreferencesStore((state) => state.sidebarLayout);
   // Shown once the permission check settles, so it never flashes.
   const showAnalytics = !isCheckingPermissions && canReadAnalytics();
-  return [
-    "home",
-    "inbox",
-    "my-work",
-    "projects",
-    "pages",
-    ...(showAnalytics ? (["analytics"] as const) : []),
-  ];
+  return visibleRailItems(sidebarLayout).filter(
+    (item) => item !== "analytics" || showAnalytics,
+  );
 }
 
 export function RailBadge({
@@ -48,7 +49,7 @@ export function RailBadge({
       role="img"
       aria-label={label}
       className={cn(
-        "absolute -top-1 -right-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 font-semibold text-[10px] text-primary-foreground tabular-nums leading-none ring-2 ring-sidebar",
+        "absolute -top-1 -right-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 font-semibold text-[10px] text-background tabular-nums leading-none ring-2 ring-sidebar",
         className,
       )}
     >
@@ -60,8 +61,10 @@ export function RailBadge({
 const railButton =
   "group/rail relative flex w-14 cursor-pointer flex-col items-center gap-0.5 rounded-lg py-1 font-medium text-[11px] text-sidebar-foreground leading-3 outline-hidden transition-colors hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring aria-[current=page]:text-sidebar-accent-foreground";
 
+// `--rail-area` is the item's area hue: the icon wears it, and the active
+// item's pill is a soft tint of it.
 const railIcon =
-  "relative flex h-7 w-9 items-center justify-center rounded-full transition-colors group-hover/rail:bg-sidebar-accent group-aria-[current=page]/rail:bg-sidebar-accent [&>svg]:size-[18px]";
+  "relative flex h-7 w-9 items-center justify-center rounded-full text-(--rail-area) transition-colors group-hover/rail:bg-[color-mix(in_oklab,var(--rail-area)_9%,transparent)] group-aria-[current=page]/rail:bg-[color-mix(in_oklab,var(--rail-area)_16%,transparent)] [&>svg]:size-[18px]";
 
 function RailItem({
   destination,
@@ -85,6 +88,7 @@ function RailItem({
       aria-current={active ? "page" : undefined}
       onClick={onSelect}
       data-destination={destination}
+      style={{ "--rail-area": meta.color } as CSSProperties}
     >
       {active && (
         <span
@@ -93,7 +97,7 @@ function RailItem({
         />
       )}
       <span className={railIcon}>
-        <Icon strokeWidth={1.75} />
+        <Icon strokeWidth={active ? 2 : 1.75} />
         {badge}
       </span>
       <span className="max-w-full truncate px-0.5">{t(meta.labelKey)}</span>
