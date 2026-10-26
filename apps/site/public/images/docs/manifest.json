@@ -1,0 +1,895 @@
+{
+	"description": "Docs screenshots: real Margaya UI with fictional Studio North data, captured by apps/site/scripts/docs-shots/capture.mjs. Light mode only. Sizes are CSS pixels; the files are twice that.",
+	"shots": {
+		"account/api-key-create": {
+			"width": 512,
+			"height": 1195,
+			"format": "webp"
+		},
+		"account/api-key-requests": {
+			"width": 672,
+			"height": 380,
+			"format": "webp"
+		},
+		"account/api-keys": {
+			"width": 768,
+			"height": 345,
+			"format": "webp"
+		},
+		"account/customize-sidebar": {
+			"width": 448,
+			"height": 638,
+			"format": "webp"
+		},
+		"account/delete-account": {
+			"width": 512,
+			"height": 240,
+			"format": "webp"
+		},
+		"account/delivery-channels": {
+			"width": 744,
+			"height": 1306,
+			"format": "webp"
+		},
+		"account/display-options": {
+			"width": 744,
+			"height": 445,
+			"format": "webp"
+		},
+		"account/email-digest": {
+			"width": 744,
+			"height": 245,
+			"format": "webp"
+		},
+		"account/information": {
+			"width": 768,
+			"height": 592,
+			"format": "webp"
+		},
+		"account/notify-me-about": {
+			"width": 744,
+			"height": 517,
+			"format": "webp"
+		},
+		"account/password": {
+			"width": 744,
+			"height": 462,
+			"format": "webp"
+		},
+		"account/preferences-appearance": {
+			"width": 744,
+			"height": 524,
+			"format": "webp"
+		},
+		"account/preferences-theme": {
+			"width": 744,
+			"height": 524,
+			"format": "webp"
+		},
+		"account/sessions": {
+			"width": 744,
+			"height": 275,
+			"format": "webp"
+		},
+		"account/two-factor-setup": {
+			"width": 744,
+			"height": 319,
+			"format": "webp"
+		},
+		"account/workspace-rules": {
+			"width": 744,
+			"height": 613,
+			"format": "webp"
+		},
+		"admin/admins": {
+			"width": 768,
+			"height": 397,
+			"format": "webp"
+		},
+		"admin/email": {
+			"width": 768,
+			"height": 512,
+			"format": "webp"
+		},
+		"admin/general": {
+			"width": 768,
+			"height": 714,
+			"format": "webp"
+		},
+		"admin/oauth-custom": {
+			"width": 512,
+			"height": 1080,
+			"format": "webp"
+		},
+		"admin/oauth-discord": {
+			"width": 512,
+			"height": 520,
+			"format": "webp"
+		},
+		"admin/oauth-github": {
+			"width": 512,
+			"height": 520,
+			"format": "webp"
+		},
+		"admin/oauth-google": {
+			"width": 512,
+			"height": 520,
+			"format": "webp"
+		},
+		"admin/public-boards": {
+			"width": 768,
+			"height": 468,
+			"format": "webp"
+		},
+		"admin/sign-in-methods": {
+			"width": 752,
+			"height": 534,
+			"format": "webp"
+		},
+		"admin/sign-in-policy": {
+			"width": 752,
+			"height": 310,
+			"format": "webp"
+		},
+		"admin/sign-up": {
+			"width": 752,
+			"height": 317,
+			"format": "webp"
+		},
+		"admin/users": {
+			"width": 768,
+			"height": 738,
+			"format": "webp"
+		},
+		"admin/workspaces": {
+			"width": 768,
+			"height": 473,
+			"format": "webp"
+		},
+		"ai/agent-desk": {
+			"width": 1128,
+			"height": 530,
+			"format": "webp"
+		},
+		"ai/agent-run": {
+			"width": 708,
+			"height": 900,
+			"format": "webp"
+		},
+		"ai/agents-settings": {
+			"width": 760,
+			"height": 308,
+			"format": "webp"
+		},
+		"ai/ask-answer": {
+			"width": 512,
+			"height": 534,
+			"format": "webp"
+		},
+		"ai/build-prompt": {
+			"width": 672,
+			"height": 408,
+			"format": "webp"
+		},
+		"ai/build-review": {
+			"width": 672,
+			"height": 1260,
+			"format": "webp"
+		},
+		"ai/capture-review": {
+			"width": 672,
+			"height": 1268,
+			"format": "webp"
+		},
+		"ai/capture-transcript": {
+			"width": 672,
+			"height": 474,
+			"format": "webp"
+		},
+		"ai/coding-agent-profiles": {
+			"width": 734,
+			"height": 366,
+			"format": "webp"
+		},
+		"ai/duplicate-check": {
+			"width": 636,
+			"height": 210,
+			"format": "webp"
+		},
+		"ai/editor-ai-menu": {
+			"width": 249,
+			"height": 267,
+			"format": "webp"
+		},
+		"ai/editor-ai-preview": {
+			"width": 699,
+			"height": 231,
+			"format": "webp"
+		},
+		"ai/instance-provider": {
+			"width": 768,
+			"height": 1063,
+			"format": "webp"
+		},
+		"ai/new-agent": {
+			"width": 512,
+			"height": 708,
+			"format": "webp"
+		},
+		"ai/rule-from-description": {
+			"width": 752,
+			"height": 969,
+			"format": "webp"
+		},
+		"ai/spec-draft": {
+			"width": 672,
+			"height": 759,
+			"format": "webp"
+		},
+		"ai/stakeholder-brief": {
+			"width": 484,
+			"height": 502,
+			"format": "webp"
+		},
+		"ai/summary-card": {
+			"width": 472,
+			"height": 469,
+			"format": "webp"
+		},
+		"ai/translate-comment": {
+			"width": 543,
+			"height": 155,
+			"format": "webp"
+		},
+		"ai/triage-suggestions": {
+			"width": 408,
+			"height": 323,
+			"format": "webp"
+		},
+		"ai/usage": {
+			"width": 752,
+			"height": 790,
+			"format": "webp"
+		},
+		"ai/workspace-settings": {
+			"width": 768,
+			"height": 713,
+			"format": "webp"
+		},
+		"analytics/overview": {
+			"width": 1128,
+			"height": 810,
+			"format": "webp"
+		},
+		"analytics/save-report-dialog": {
+			"width": 480,
+			"height": 416,
+			"format": "webp"
+		},
+		"analytics/saved-report": {
+			"width": 1074,
+			"height": 404,
+			"format": "webp"
+		},
+		"analytics/tasks-tab": {
+			"width": 1128,
+			"height": 690,
+			"format": "webp"
+		},
+		"backlog/backlog-view": {
+			"width": 1128,
+			"height": 306,
+			"format": "webp"
+		},
+		"cycles/cycle-detail": {
+			"width": 1128,
+			"height": 900,
+			"format": "webp"
+		},
+		"cycles/cycle-list": {
+			"width": 1128,
+			"height": 670,
+			"format": "webp"
+		},
+		"cycles/new-cycle-dialog": {
+			"width": 544,
+			"height": 552,
+			"format": "webp"
+		},
+		"cycles/rollover-setting": {
+			"width": 752,
+			"height": 360,
+			"format": "webp"
+		},
+		"data/archived-project-banner": {
+			"width": 1128,
+			"height": 128,
+			"format": "webp"
+		},
+		"data/archives-projects": {
+			"width": 1128,
+			"height": 158,
+			"format": "webp"
+		},
+		"data/archives-tasks": {
+			"width": 1128,
+			"height": 310,
+			"format": "webp"
+		},
+		"data/asana-map": {
+			"width": 672,
+			"height": 866,
+			"format": "webp"
+		},
+		"data/audit-log": {
+			"width": 1128,
+			"height": 628,
+			"format": "webp"
+		},
+		"data/audit-log-details": {
+			"width": 1128,
+			"height": 560,
+			"format": "webp"
+		},
+		"data/csv-map": {
+			"width": 672,
+			"height": 834,
+			"format": "webp"
+		},
+		"data/csv-result": {
+			"width": 672,
+			"height": 270,
+			"format": "webp"
+		},
+		"data/csv-review": {
+			"width": 672,
+			"height": 642,
+			"format": "webp"
+		},
+		"data/csv-upload": {
+			"width": 672,
+			"height": 532,
+			"format": "webp"
+		},
+		"data/import-dialog": {
+			"width": 448,
+			"height": 756,
+			"format": "webp"
+		},
+		"data/import-export-row": {
+			"width": 744,
+			"height": 106,
+			"format": "webp"
+		},
+		"data/jira-map": {
+			"width": 672,
+			"height": 1148,
+			"format": "webp"
+		},
+		"data/jira-upload": {
+			"width": 672,
+			"height": 704,
+			"format": "webp"
+		},
+		"data/linear-map": {
+			"width": 672,
+			"height": 1024,
+			"format": "webp"
+		},
+		"data/new-export-dialog": {
+			"width": 512,
+			"height": 463,
+			"format": "webp"
+		},
+		"data/previous-exports": {
+			"width": 768,
+			"height": 379,
+			"format": "webp"
+		},
+		"data/project-trash": {
+			"width": 768,
+			"height": 329,
+			"format": "webp"
+		},
+		"data/trello-map": {
+			"width": 672,
+			"height": 743,
+			"format": "webp"
+		},
+		"data/trello-upload": {
+			"width": 672,
+			"height": 648,
+			"format": "webp"
+		},
+		"data/webhook-create": {
+			"width": 576,
+			"height": 948,
+			"format": "webp"
+		},
+		"data/webhook-deliveries": {
+			"width": 768,
+			"height": 511,
+			"format": "webp"
+		},
+		"data/webhook-delivery": {
+			"width": 576,
+			"height": 900,
+			"format": "webp"
+		},
+		"data/webhook-settings": {
+			"width": 768,
+			"height": 1237,
+			"format": "webp"
+		},
+		"data/webhooks-list": {
+			"width": 768,
+			"height": 335,
+			"format": "webp"
+		},
+		"data/workspace-trash": {
+			"width": 768,
+			"height": 236,
+			"format": "webp"
+		},
+		"delivery/cycle-forecast-risks": {
+			"width": 311,
+			"height": 488,
+			"format": "webp"
+		},
+		"delivery/delivery-tab": {
+			"width": 1112,
+			"height": 288,
+			"format": "webp"
+		},
+		"delivery/forecast-method": {
+			"width": 357,
+			"height": 397,
+			"format": "webp"
+		},
+		"delivery/home-risks": {
+			"width": 1104,
+			"height": 234,
+			"format": "webp"
+		},
+		"drafts/drafts-list": {
+			"width": 1128,
+			"height": 290,
+			"format": "webp"
+		},
+		"drafts/save-as-draft": {
+			"width": 704,
+			"height": 550,
+			"format": "webp"
+		},
+		"estimates/estimate-system": {
+			"width": 752,
+			"height": 480,
+			"format": "webp"
+		},
+		"estimates/new-system-dialog": {
+			"width": 608,
+			"height": 578,
+			"format": "webp"
+		},
+		"getting-around/command-bar": {
+			"width": 576,
+			"height": 420,
+			"format": "webp"
+		},
+		"getting-around/create-project": {
+			"width": 448,
+			"height": 414,
+			"format": "webp"
+		},
+		"getting-around/create-workspace": {
+			"width": 448,
+			"height": 244,
+			"format": "webp"
+		},
+		"getting-around/favorite-star": {
+			"width": 210,
+			"height": 73,
+			"format": "webp"
+		},
+		"getting-around/favorites-sidebar": {
+			"width": 312,
+			"height": 520,
+			"format": "webp"
+		},
+		"getting-around/home": {
+			"width": 1440,
+			"height": 900,
+			"format": "webp"
+		},
+		"getting-around/home-add-link": {
+			"width": 448,
+			"height": 300,
+			"format": "webp"
+		},
+		"getting-around/home-manage-widgets": {
+			"width": 384,
+			"height": 316,
+			"format": "webp"
+		},
+		"getting-around/inbox": {
+			"width": 1128,
+			"height": 900,
+			"format": "webp"
+		},
+		"getting-around/inbox-filters": {
+			"width": 648,
+			"height": 420,
+			"format": "webp"
+		},
+		"getting-around/inbox-snooze": {
+			"width": 423,
+			"height": 245,
+			"format": "webp"
+		},
+		"getting-around/keyboard-shortcuts": {
+			"width": 672,
+			"height": 720,
+			"format": "webp"
+		},
+		"getting-around/member-profile": {
+			"width": 1128,
+			"height": 900,
+			"format": "webp"
+		},
+		"getting-around/member-profile-hover": {
+			"width": 319,
+			"height": 132,
+			"format": "webp"
+		},
+		"getting-around/project-views": {
+			"width": 1128,
+			"height": 128,
+			"format": "webp"
+		},
+		"getting-around/stickies": {
+			"width": 1128,
+			"height": 300,
+			"format": "webp"
+		},
+		"getting-around/workspace-switcher": {
+			"width": 249,
+			"height": 146,
+			"format": "webp"
+		},
+		"getting-around/your-work-assigned": {
+			"width": 1128,
+			"height": 440,
+			"format": "webp"
+		},
+		"getting-around/your-work-summary": {
+			"width": 1128,
+			"height": 900,
+			"format": "webp"
+		},
+		"insight/cycle-capacity": {
+			"width": 576,
+			"height": 463,
+			"format": "webp"
+		},
+		"insight/cycle-retro": {
+			"width": 484,
+			"height": 650,
+			"format": "webp"
+		},
+		"insight/estimate-calibration": {
+			"width": 752,
+			"height": 314,
+			"format": "webp"
+		},
+		"insight/estimate-suggestion": {
+			"width": 404,
+			"height": 239,
+			"format": "webp"
+		},
+		"insight/my-brief": {
+			"width": 1104,
+			"height": 540,
+			"format": "webp"
+		},
+		"install/sign-up": {
+			"width": 470,
+			"height": 560,
+			"format": "webp"
+		},
+		"intake/accept-request": {
+			"width": 480,
+			"height": 264,
+			"format": "webp"
+		},
+		"intake/intake-queue": {
+			"width": 1128,
+			"height": 620,
+			"format": "webp"
+		},
+		"intake/new-request-dialog": {
+			"width": 704,
+			"height": 480,
+			"format": "webp"
+		},
+		"integrations/a2a-toggle": {
+			"width": 718,
+			"height": 157,
+			"format": "webp"
+		},
+		"integrations/discord": {
+			"width": 734,
+			"height": 870,
+			"format": "webp"
+		},
+		"integrations/generic-webhook": {
+			"width": 734,
+			"height": 403,
+			"format": "webp"
+		},
+		"integrations/gitea": {
+			"width": 734,
+			"height": 561,
+			"format": "webp"
+		},
+		"integrations/github": {
+			"width": 734,
+			"height": 518,
+			"format": "webp"
+		},
+		"integrations/mattermost": {
+			"width": 734,
+			"height": 870,
+			"format": "webp"
+		},
+		"integrations/overview": {
+			"width": 768,
+			"height": 663,
+			"format": "webp"
+		},
+		"integrations/slack": {
+			"width": 734,
+			"height": 870,
+			"format": "webp"
+		},
+		"integrations/telegram": {
+			"width": 734,
+			"height": 583,
+			"format": "webp"
+		},
+		"mcp/consent": {
+			"width": 470,
+			"height": 415,
+			"format": "webp"
+		},
+		"mcp/create-api-key": {
+			"width": 512,
+			"height": 743,
+			"format": "webp"
+		},
+		"mcp/device-approve": {
+			"width": 470,
+			"height": 225,
+			"format": "webp"
+		},
+		"modules/module-detail": {
+			"width": 1128,
+			"height": 900,
+			"format": "webp"
+		},
+		"modules/module-list": {
+			"width": 1128,
+			"height": 290,
+			"format": "webp"
+		},
+		"modules/new-module-dialog": {
+			"width": 544,
+			"height": 636,
+			"format": "webp"
+		},
+		"pages/editor": {
+			"width": 1128,
+			"height": 640,
+			"format": "webp"
+		},
+		"pages/page-menu": {
+			"width": 281,
+			"height": 437,
+			"format": "webp"
+		},
+		"pages/pages-list": {
+			"width": 1128,
+			"height": 240,
+			"format": "webp"
+		},
+		"pages/publish-dialog": {
+			"width": 480,
+			"height": 262,
+			"format": "webp"
+		},
+		"pages/side-panel": {
+			"width": 1128,
+			"height": 640,
+			"format": "webp"
+		},
+		"pages/template-picker": {
+			"width": 480,
+			"height": 447,
+			"format": "webp"
+		},
+		"tasks/assignee-picker": {
+			"width": 536,
+			"height": 372,
+			"format": "webp"
+		},
+		"tasks/automation-rule-editor": {
+			"width": 744,
+			"height": 530,
+			"format": "webp"
+		},
+		"tasks/automation-rules": {
+			"width": 752,
+			"height": 617,
+			"format": "webp"
+		},
+		"tasks/automation-run-history": {
+			"width": 744,
+			"height": 246,
+			"format": "webp"
+		},
+		"tasks/board-filter": {
+			"width": 244,
+			"height": 772,
+			"format": "webp"
+		},
+		"tasks/board-view": {
+			"width": 1128,
+			"height": 900,
+			"format": "webp"
+		},
+		"tasks/column-group-picker": {
+			"width": 806,
+			"height": 416,
+			"format": "webp"
+		},
+		"tasks/create-label": {
+			"width": 448,
+			"height": 348,
+			"format": "webp"
+		},
+		"tasks/create-task-dialog": {
+			"width": 672,
+			"height": 604,
+			"format": "webp"
+		},
+		"tasks/description-history": {
+			"width": 896,
+			"height": 379,
+			"format": "webp"
+		},
+		"tasks/edit-template": {
+			"width": 576,
+			"height": 862,
+			"format": "webp"
+		},
+		"tasks/invite-member": {
+			"width": 448,
+			"height": 338,
+			"format": "webp"
+		},
+		"tasks/list-view": {
+			"width": 1128,
+			"height": 900,
+			"format": "webp"
+		},
+		"tasks/project-features": {
+			"width": 752,
+			"height": 542,
+			"format": "webp"
+		},
+		"tasks/public-board": {
+			"width": 1280,
+			"height": 520,
+			"format": "webp"
+		},
+		"tasks/publish-menu": {
+			"width": 387,
+			"height": 529,
+			"format": "webp"
+		},
+		"tasks/publish-moderation": {
+			"width": 752,
+			"height": 280,
+			"format": "webp"
+		},
+		"tasks/publish-participation": {
+			"width": 752,
+			"height": 472,
+			"format": "webp"
+		},
+		"tasks/publish-status": {
+			"width": 752,
+			"height": 270,
+			"format": "webp"
+		},
+		"tasks/repeat-editor": {
+			"width": 325,
+			"height": 485,
+			"format": "webp"
+		},
+		"tasks/restricted-access": {
+			"width": 752,
+			"height": 432,
+			"format": "webp"
+		},
+		"tasks/scheduled-automations": {
+			"width": 752,
+			"height": 360,
+			"format": "webp"
+		},
+		"tasks/task-sheet": {
+			"width": 560,
+			"height": 900,
+			"format": "webp"
+		},
+		"tasks/task-templates": {
+			"width": 752,
+			"height": 234,
+			"format": "webp"
+		},
+		"tasks/use-template": {
+			"width": 672,
+			"height": 518,
+			"format": "webp"
+		},
+		"tasks/workflow-columns": {
+			"width": 752,
+			"height": 416,
+			"format": "webp"
+		},
+		"tasks/workflow-integration-rules": {
+			"width": 752,
+			"height": 882,
+			"format": "webp"
+		},
+		"tasks/workspace-labels": {
+			"width": 752,
+			"height": 416,
+			"format": "webp"
+		},
+		"views/calendar-layout": {
+			"width": 1128,
+			"height": 900,
+			"format": "webp"
+		},
+		"views/display-menu": {
+			"width": 344,
+			"height": 412,
+			"format": "webp"
+		},
+		"views/filter-menu": {
+			"width": 248,
+			"height": 781,
+			"format": "webp"
+		},
+		"views/gantt-layout": {
+			"width": 1128,
+			"height": 900,
+			"format": "webp"
+		},
+		"views/save-view-dialog": {
+			"width": 544,
+			"height": 568,
+			"format": "webp"
+		},
+		"views/saved-view": {
+			"width": 1128,
+			"height": 575,
+			"format": "webp"
+		},
+		"views/views-list": {
+			"width": 1128,
+			"height": 320,
+			"format": "webp"
+		}
+	}
+}
