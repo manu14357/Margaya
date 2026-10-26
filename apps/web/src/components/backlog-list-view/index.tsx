@@ -320,7 +320,14 @@ function BacklogListView({
             "bg-accent/35 outline-2 outline-primary/60 outline-dashed -outline-offset-2",
         )}
       >
-        <div className="flex h-8 items-center justify-between border-border/50 border-b bg-muted/80 px-2 md:px-3">
+        <div
+          className={cn(
+            "flex h-8 items-center justify-between border-border/50 border-b px-2 md:px-3",
+            sectionId === "planned"
+              ? "bg-(--status-backlog-tint) shadow-[inset_3px_0_0_var(--status-backlog)]"
+              : "bg-muted/80",
+          )}
+        >
           <button
             type="button"
             onClick={() => toggleSection(sectionId)}
@@ -333,14 +340,21 @@ function BacklogListView({
               )}
             />
             <div className="flex items-center gap-2 h-4">
-              <IconComponent className="w-4 h-4 flex-shrink-0 text-muted-foreground" />
+              <IconComponent
+                className={cn(
+                  "w-4 h-4 flex-shrink-0",
+                  sectionId === "planned"
+                    ? "text-(--status-backlog-fg)"
+                    : "text-muted-foreground",
+                )}
+              />
               <div className="flex items-center gap-1">
                 <span className="mt-1 mr-1">
                   {t(`tasks:backlog.sections.${sectionId}`, {
                     defaultValue: title,
                   })}
                 </span>
-                <span className="text-xs text-muted-foreground mt-0.5">
+                <span className="rounded-full bg-card px-1.5 font-medium text-[11px] text-muted-foreground tabular-nums leading-4 ring-1 ring-border">
                   {tasks.length}
                 </span>
               </div>

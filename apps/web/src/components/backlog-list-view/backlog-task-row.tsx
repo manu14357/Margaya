@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { type CSSProperties, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { RecurringIndicator } from "@/components/task/recurring-indicator";
 import {
   AlertDialog,
   AlertDialogClose,
@@ -43,7 +44,7 @@ import useProjectStore from "@/store/project";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 import type Task from "@/types/task";
 import TaskCardContextMenuContent from "../kanban-board/task-card-context-menu/task-card-context-menu-content";
-import { TaskLabels } from "../kanban-board/task-labels";
+import { LabelChips } from "../shared/label-chips";
 import AssigneeAvatarStack from "../task/assignee-avatar-stack";
 import { ContextMenu, ContextMenuTrigger } from "../ui/context-menu";
 
@@ -175,7 +176,9 @@ export default function BacklogTaskRow({ task }: BacklogTaskRowProps) {
             onKeyDown={handleKeyDown}
             className={cn(
               "group relative flex min-h-9 cursor-pointer items-center gap-1.5 px-2 py-0.5 transition-colors md:gap-2 md:px-3",
-              isTaskSelected ? "bg-accent/45" : "hover:bg-accent/60",
+              isTaskSelected
+                ? "bg-accent/45"
+                : "hover:bg-accent/70 hover:shadow-[inset_2px_0_0_var(--primary)]",
             )}
             {...attributes}
             {...listeners}
@@ -198,7 +201,7 @@ export default function BacklogTaskRow({ task }: BacklogTaskRowProps) {
                 </span>
                 {showLabels && (
                   <div className="flex items-center gap-1">
-                    <TaskLabels labels={task.labels ?? []} />
+                    <LabelChips labels={task.labels ?? []} max={3} />
                   </div>
                 )}
               </div>
@@ -206,7 +209,7 @@ export default function BacklogTaskRow({ task }: BacklogTaskRowProps) {
 
             {showDueDates && task.dueDate && (
               <div
-                className={`flex h-5 shrink-0 items-center gap-1 rounded px-1.5 text-[10px] ${dueDateStatusColors[getDueDateStatus(task.dueDate, taskIsCompleted)]}`}
+                className={`flex h-5 shrink-0 items-center gap-1 rounded-full px-1.5 font-medium text-[10px] ${dueDateStatusColors[getDueDateStatus(task.dueDate, taskIsCompleted)]}`}
               >
                 {getDueDateStatus(task.dueDate, taskIsCompleted) ===
                   "overdue" && <CalendarX className="w-3 h-3" />}
@@ -219,6 +222,8 @@ export default function BacklogTaskRow({ task }: BacklogTaskRowProps) {
                 <span>{format(new Date(task.dueDate), "MMM d")}</span>
               </div>
             )}
+
+            {task.isRecurring && <RecurringIndicator />}
 
             {activeCustomFieldValues.length > 0 && (
               <HoverCard openDelay={200} closeDelay={100}>
