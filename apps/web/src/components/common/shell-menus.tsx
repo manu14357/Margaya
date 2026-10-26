@@ -6,6 +6,7 @@ import {
   FolderPlus,
   Keyboard,
   LogOut,
+  PanelsLeftRight,
   Settings,
   ShieldCheck,
   Sparkles,
@@ -18,6 +19,7 @@ import {
   openCommandPalette,
   requestCreate,
 } from "@/components/command-palette/palette-store";
+import { useCustomizeSidebarDialog } from "@/components/common/customize-sidebar-dialog";
 import { useAuth } from "@/components/providers/auth-provider/hooks/use-auth";
 import { ThemeToggleDropdown } from "@/components/theme-toggle-dropdown";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -208,6 +210,9 @@ export function UserMenu({ trigger, side = "right" }: ShellMenuProps) {
     config?.customOAuthLogoutUrl,
   );
   const { setProject } = useProjectStore();
+  const openCustomizeSidebar = useCustomizeSidebarDialog(
+    (state) => state.setOpen,
+  );
 
   if (!user) return null;
 
@@ -255,6 +260,10 @@ export function UserMenu({ trigger, side = "right" }: ShellMenuProps) {
         >
           <Settings />
           {t("navigation:userMenu.settings")}
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => openCustomizeSidebar(true)}>
+          <PanelsLeftRight />
+          {t("navigation:customize.open")}
         </DropdownMenuItem>
         {isInstanceAdmin && (
           <DropdownMenuItem

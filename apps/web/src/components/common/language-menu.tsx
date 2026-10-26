@@ -1,4 +1,4 @@
-import { ChevronDown, Languages, Monitor, Moon, Sun } from "lucide-react";
+import { ChevronDown, Languages } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,22 +8,13 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/menu";
+import { THEME_ICONS, THEME_LABEL_KEYS } from "@/constants/themes";
 import { useGuestLocale } from "@/hooks/use-guest-locale";
-import { useUserPreferencesStore } from "@/store/user-preferences";
-
-const THEMES = ["light", "dark", "system"] as const;
-type Theme = (typeof THEMES)[number];
-
-function isTheme(value: unknown): value is Theme {
-  return THEMES.some((theme) => theme === value);
-}
-
-const THEME_ICONS = { light: Sun, dark: Moon, system: Monitor } as const;
-const THEME_LABEL_KEYS = {
-  light: "settings:preferencesPage.themeLight",
-  dark: "settings:preferencesPage.themeDark",
-  system: "settings:preferencesPage.themeSystem",
-} as const;
+import {
+  isTheme,
+  THEMES,
+  useUserPreferencesStore,
+} from "@/store/user-preferences";
 
 /** The signed-out language menu: every locale, by its own name. */
 export function LanguageMenu({ className }: { className?: string }) {
@@ -73,7 +64,7 @@ export function LanguageMenu({ className }: { className?: string }) {
   );
 }
 
-/** Light / Dark / System behind an icon button, for signed-out screens. */
+/** The theme choices behind an icon button, for signed-out screens. */
 export function ThemeMenu({ className }: { className?: string }) {
   const { t } = useTranslation();
   const theme = useUserPreferencesStore((state) => state.theme);
@@ -96,7 +87,7 @@ export function ThemeMenu({ className }: { className?: string }) {
       >
         <Icon aria-hidden className="size-4" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-40">
+      <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuRadioGroup
           value={theme}
           onValueChange={(value) => {

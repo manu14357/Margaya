@@ -28,7 +28,10 @@ function DestinationTab({ id }: { id: ShellDestination }) {
       aria-current={active ? "page" : undefined}
       onClick={() => shell?.selectDestination(id)}
     >
-      <span className="relative">
+      <span
+        className="relative"
+        style={active ? { color: meta.color } : undefined}
+      >
         <Icon strokeWidth={1.75} />
         {id === "inbox" && (
           <RailBadge

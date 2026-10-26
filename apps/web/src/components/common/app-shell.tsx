@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { type ReactNode, useCallback, useMemo, useState } from "react";
 import { AppRail } from "@/components/app-rail";
+import { CustomizeSidebarDialog } from "@/components/common/customize-sidebar-dialog";
 import MobileTabBar from "@/components/common/mobile-tab-bar";
 import { ShellContext } from "@/components/common/shell-context";
 import {
@@ -12,13 +13,13 @@ import {
 import { ContextPanel } from "@/components/context-panel/context-panel";
 import { DemoAlert } from "@/components/demo-alert";
 import { SidebarProvider, useSidebar } from "@/components/ui/sidebar";
+import WorkspaceDeletionBanner from "@/components/workspace/workspace-deletion-banner";
 import { isProjectFeatureEnabled } from "@/constants/project-features";
 import { shortcuts } from "@/constants/shortcuts";
 import { isDemoMode } from "@/constants/urls";
 import useGetProjects from "@/hooks/queries/project/use-get-projects";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useRegisterShortcuts } from "@/hooks/use-keyboard-shortcuts";
-import { useUserPreferencesEffects } from "@/hooks/use-user-preferences-effects";
 import { useUserWebSocket } from "@/hooks/use-user-websocket";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 
@@ -36,7 +37,6 @@ export function AppShell({ children }: { children: ReactNode }) {
   const { sidebarDefaultOpen, setSidebarDefaultOpen } =
     useUserPreferencesStore();
 
-  useUserPreferencesEffects();
   // User-scoped WebSocket (notifications, exports, Home): the shell is
   // mounted for the whole authenticated dashboard, so it owns the socket.
   useUserWebSocket();
@@ -143,6 +143,7 @@ function ShellFrame({ children }: { children: ReactNode }) {
       <ContextPanel onSlotChange={setPanelSlot} />
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
         {isDemoMode && <DemoAlert />}
+        {workspaceId && <WorkspaceDeletionBanner workspaceId={workspaceId} />}
         <main
           className="flex min-h-0 flex-1 flex-col overflow-hidden"
           data-slot="shell-main"
@@ -151,6 +152,7 @@ function ShellFrame({ children }: { children: ReactNode }) {
         </main>
         <MobileTabBar />
       </div>
+      <CustomizeSidebarDialog />
     </ShellContext.Provider>
   );
 }

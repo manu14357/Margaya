@@ -29,32 +29,53 @@ export type ShellDestinationMeta = {
   id: ShellDestination;
   labelKey: `navigation:shell.${string}`;
   icon: LucideIcon;
+  /** The area hue (`styles/semantic-colors.css`) for the icon and its pill. */
+  color: `var(--area-${string})`;
 };
 
 export const DESTINATION_META: Record<ShellDestination, ShellDestinationMeta> =
   {
-    home: { id: "home", labelKey: "navigation:shell.home", icon: House },
-    inbox: { id: "inbox", labelKey: "navigation:shell.inbox", icon: Inbox },
+    home: {
+      id: "home",
+      labelKey: "navigation:shell.home",
+      icon: House,
+      color: "var(--area-home)",
+    },
+    inbox: {
+      id: "inbox",
+      labelKey: "navigation:shell.inbox",
+      icon: Inbox,
+      color: "var(--area-inbox)",
+    },
     "my-work": {
       id: "my-work",
       labelKey: "navigation:shell.myWork",
       icon: UserRoundCheck,
+      color: "var(--area-work)",
     },
     projects: {
       id: "projects",
       labelKey: "navigation:shell.projects",
       icon: FolderKanban,
+      color: "var(--area-projects)",
     },
-    pages: { id: "pages", labelKey: "navigation:shell.pages", icon: FileText },
+    pages: {
+      id: "pages",
+      labelKey: "navigation:shell.pages",
+      icon: FileText,
+      color: "var(--area-pages)",
+    },
     analytics: {
       id: "analytics",
       labelKey: "navigation:shell.analytics",
       icon: ChartLine,
+      color: "var(--area-analytics)",
     },
     settings: {
       id: "settings",
       labelKey: "navigation:shell.settings",
       icon: Settings,
+      color: "var(--area-settings)",
     },
   };
 
@@ -75,6 +96,7 @@ export function resolveDestination(pathname: string): ShellDestination {
       return "inbox";
     case "my-work":
     case "drafts":
+    case "agents":
       return "my-work";
     case "analytics":
       return "analytics";

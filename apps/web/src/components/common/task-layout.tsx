@@ -52,7 +52,11 @@ export default function TaskLayout({
       <Layout.TopBar
         place={
           <>
-            <ProjectTile icon={project?.icon} className="size-6" />
+            <ProjectTile
+              icon={project?.icon}
+              seed={project?.id}
+              className="size-6"
+            />
             <button
               type="button"
               onClick={() =>

@@ -6,7 +6,7 @@ import { cn } from "@/lib/cn";
 
 /**
  * The top bar's command field: a button that opens the command palette.
- * Full width from 768px; an icon below that.
+ * Full width from 768px, never narrower than 10rem; an icon below that.
  */
 export function CommandField({ className }: { className?: string }) {
   const { t } = useTranslation();
@@ -20,7 +20,7 @@ export function CommandField({ className }: { className?: string }) {
         aria-keyshortcuts="Control+K Meta+K"
         onClick={() => openCommandPalette()}
         className={cn(
-          "hidden h-8 min-w-0 cursor-pointer items-center gap-2 rounded-full border border-input bg-card ps-3 pe-1.5 text-muted-foreground/80 text-sm outline-hidden transition-colors hover:border-ring/40 hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring md:flex md:w-60 lg:w-96",
+          "hidden h-8 min-w-0 cursor-pointer items-center gap-2 overflow-hidden rounded-full border border-input bg-card ps-3 pe-1.5 text-muted-foreground/80 text-sm outline-hidden transition-colors hover:border-ring/40 hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring md:flex md:w-60 md:min-w-40 lg:w-96",
           className,
         )}
         data-slot="command-field"

@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { type ReactNode, useState } from "react";
+import { AiSummaryButton } from "@/components/ai/ai-summary";
 import ProjectArchivedNotice from "@/components/archives/project-archived-notice";
 import ProjectCrumbSelect from "@/components/common/header/project-crumb-select";
 import Layout from "@/components/common/layout";
@@ -147,7 +148,11 @@ export default function ProjectLayout({
       <Layout.TopBar
         place={
           <>
-            <ProjectTile icon={project?.icon} className="size-6" />
+            <ProjectTile
+              icon={project?.icon}
+              seed={project?.id}
+              className="size-6"
+            />
             <ProjectCrumbSelect
               workspaceId={workspaceId}
               projectId={projectId}
@@ -175,10 +180,20 @@ export default function ProjectLayout({
                   workspaceId={workspaceId}
                   leadUserId={project.leadUserId}
                 />
+                {isTasksSection && (
+                  <AiSummaryButton
+                    kind="project"
+                    id={projectId}
+                    projectId={projectId}
+                    workspaceId={workspaceId}
+                    name={project.name}
+                  />
+                )}
               </span>
             )}
+            {/* Below xl the top bar has no room for them beside the actions. */}
             {extraCrumbs && (
-              <span className="hidden min-w-0 items-center gap-1 md:flex">
+              <span className="hidden min-w-0 items-center gap-1 xl:flex">
                 <span aria-hidden className="text-muted-foreground/60">
                   ·
                 </span>

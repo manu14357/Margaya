@@ -62,7 +62,7 @@ export function ViewTabs({
                   <TabsTab
                     value={tab.value}
                     onClick={tab.onSelect}
-                    className="h-7 grow-0 gap-1.5 px-2 text-[13px] text-muted-foreground sm:h-7 sm:text-[13px]"
+                    className="h-7 grow-0 gap-1.5 px-2 text-[13px] text-muted-foreground data-active:text-foreground sm:h-7 sm:text-[13px] data-active:[&_svg]:text-primary"
                   >
                     {Icon && <Icon className="size-3.5" />}
                     {tab.label}
