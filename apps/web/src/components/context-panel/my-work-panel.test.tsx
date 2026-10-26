@@ -15,6 +15,16 @@ vi.mock("@tanstack/react-router", () => ({
   useLocation: ({ select }: { select: (location: object) => unknown }) =>
     select({ pathname: m.pathname, search: m.search }),
 }));
+vi.mock("@/hooks/queries/ai/use-agents", () => ({
+  useAgentUserIds: () => new Set<string>(),
+  useAgents: () => ({ data: [] }),
+  useAgentApprovals: () => ({ data: [] }),
+}));
+
+vi.mock("@/hooks/queries/ai/use-ai", () => ({
+  useAiAvailability: () => ({ available: false, canUse: false }),
+}));
+
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
   initReactI18next: { type: "3rdParty", init: vi.fn() },

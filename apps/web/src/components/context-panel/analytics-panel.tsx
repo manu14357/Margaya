@@ -33,7 +33,7 @@ export function AnalyticsPanel({ workspaceId }: { workspaceId: string }) {
             <PanelLink
               key={project.id}
               label={project.name}
-              leading={<ProjectTile icon={project.icon} />}
+              leading={<ProjectTile icon={project.icon} seed={project.id} />}
               active={pathname === path}
               onSelect={() => navigate({ to: path })}
             />

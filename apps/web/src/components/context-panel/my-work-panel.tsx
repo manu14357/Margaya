@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import {
   Bell,
+  Bot,
   FilePen,
   LayoutDashboard,
   type LucideIcon,
@@ -14,6 +15,7 @@ import {
   PanelSection,
 } from "@/components/context-panel/panel-primitives";
 import { useTaskDraftCount } from "@/hooks/queries/task-draft/use-task-draft-count";
+import { useAgentDeskNav } from "@/hooks/use-agent-desk-nav";
 import {
   isMyWorkTab,
   type MyWorkTab,
@@ -46,6 +48,8 @@ export function MyWorkPanel({ workspaceId }: { workspaceId: string }) {
   const onMyWork = pathname.startsWith(`${base}/my-work`);
   const activeTab: MyWorkTab = isMyWorkTab(tab) ? tab : "summary";
   const draftsActive = pathname.startsWith(`${base}/drafts`);
+  const deskActive = pathname.startsWith(`${base}/agents`);
+  const { show: showDesk, waiting } = useAgentDeskNav(workspaceId, deskActive);
 
   return (
     <PanelSection>
@@ -75,6 +79,19 @@ export function MyWorkPanel({ workspaceId }: { workspaceId: string }) {
             ) : undefined
           }
           onSelect={() => navigate({ to: `${base}/drafts` })}
+        />
+      )}
+      {showDesk && (
+        <PanelLink
+          label={t("ai:agents.desk.nav")}
+          icon={Bot}
+          active={deskActive}
+          trailing={
+            waiting > 0 ? (
+              <PanelCount count={waiting > 99 ? "99+" : waiting} />
+            ) : undefined
+          }
+          onSelect={() => navigate({ to: `${base}/agents` })}
         />
       )}
     </PanelSection>

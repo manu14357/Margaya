@@ -90,7 +90,11 @@ function DrawerDestinations() {
             onClick={() => shell.selectDestination(id)}
             className="flex min-h-11 flex-col items-center justify-center gap-0.5 rounded-md font-medium text-[11px] text-sidebar-foreground outline-hidden hover:bg-sidebar-accent focus-visible:ring-2 focus-visible:ring-sidebar-ring aria-[current=page]:bg-sidebar-accent aria-[current=page]:text-sidebar-accent-foreground"
           >
-            <Icon className="size-4.5" strokeWidth={1.75} />
+            <Icon
+              className="size-4.5"
+              strokeWidth={1.75}
+              style={{ color: meta.color }}
+            />
             <span className="max-w-full truncate px-1">{t(meta.labelKey)}</span>
           </button>
         );
@@ -132,6 +136,16 @@ function PanelContents({
       {drawer && <DrawerDestinations />}
 
       <div className="flex h-12 shrink-0 items-center gap-2 ps-4 pe-2">
+        <span
+          aria-hidden
+          className="flex size-6 shrink-0 items-center justify-center rounded-md [&>svg]:size-3.5"
+          style={{
+            backgroundColor: `color-mix(in oklab, ${meta.color} 14%, transparent)`,
+            color: meta.color,
+          }}
+        >
+          <meta.icon strokeWidth={2} />
+        </span>
         <h2 className="min-w-0 flex-1 truncate font-semibold text-[15px] text-foreground">
           {t(meta.labelKey)}
         </h2>

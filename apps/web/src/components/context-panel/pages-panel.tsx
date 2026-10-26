@@ -30,7 +30,7 @@ export function PagesPanel({ workspaceId }: { workspaceId: string }) {
           <PanelLink
             key={project.id}
             label={project.name}
-            leading={<ProjectTile icon={project.icon} />}
+            leading={<ProjectTile icon={project.icon} seed={project.id} />}
             active={pathname === path || pathname.startsWith(`${path}/`)}
             onSelect={() => navigate({ to: path })}
           />

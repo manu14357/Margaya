@@ -8,16 +8,26 @@ import {
 } from "@/components/context-panel/panel-primitives";
 import { NavFavorites } from "@/components/favorite/nav-favorites";
 import { NavProjects } from "@/components/nav-projects";
+import { visiblePanelSections } from "@/lib/sidebar-layout";
+import { useUserPreferencesStore } from "@/store/user-preferences";
 
 /**
- * Projects: a filter, the workspace task lists, Favorites, then every
- * project with its enabled sections.
+ * Projects: a filter, then the workspace task lists, Favorites and every
+ * project with its enabled sections, in the user's order (see
+ * lib/sidebar-layout).
  */
 export function ProjectsPanel({ workspaceId }: { workspaceId: string }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const pathname = useLocation({ select: (location) => location.pathname });
   const [filter, setFilter] = useState("");
+  const sidebarLayout = useUserPreferencesStore((state) => state.sidebarLayout);
+  const visible = visiblePanelSections(sidebarLayout);
+  // A filter always searches the projects, even when the user hid them.
+  const sections =
+    filter && !visible.includes("projects")
+      ? [...visible, "projects" as const]
+      : visible;
   const base = `/dashboard/workspace/${workspaceId}`;
 
   return (
@@ -41,34 +51,39 @@ export function ProjectsPanel({ workspaceId }: { workspaceId: string }) {
         </label>
       </div>
 
-      {!filter && (
-        <PanelSection>
-          <PanelLink
-            label={t("navigation:sidebar.allTasks")}
-            icon={Rows3}
-            active={pathname === `${base}/views/all`}
-            onSelect={() => navigate({ to: `${base}/views/all` })}
-          />
-          <PanelLink
-            label={t("views:nav.title")}
-            icon={Layers}
-            active={
-              pathname.startsWith(`${base}/views`) &&
-              pathname !== `${base}/views/all`
-            }
-            onSelect={() => navigate({ to: `${base}/views` })}
-          />
-          <PanelLink
-            label={t("navigation:projectList.archives")}
-            icon={Archive}
-            active={pathname.startsWith(`${base}/archives`)}
-            onSelect={() => navigate({ to: `${base}/archives` })}
-          />
-        </PanelSection>
-      )}
-
-      {!filter && <NavFavorites />}
-      <NavProjects filter={filter} />
+      {sections.map((section) => {
+        if (section === "projects") {
+          return <NavProjects key={section} filter={filter} />;
+        }
+        // A filter narrows the list to projects.
+        if (filter) return null;
+        if (section === "favorites") return <NavFavorites key={section} />;
+        return (
+          <PanelSection key={section}>
+            <PanelLink
+              label={t("navigation:sidebar.allTasks")}
+              icon={Rows3}
+              active={pathname === `${base}/views/all`}
+              onSelect={() => navigate({ to: `${base}/views/all` })}
+            />
+            <PanelLink
+              label={t("views:nav.title")}
+              icon={Layers}
+              active={
+                pathname.startsWith(`${base}/views`) &&
+                pathname !== `${base}/views/all`
+              }
+              onSelect={() => navigate({ to: `${base}/views` })}
+            />
+            <PanelLink
+              label={t("navigation:projectList.archives")}
+              icon={Archive}
+              active={pathname.startsWith(`${base}/archives`)}
+              onSelect={() => navigate({ to: `${base}/archives` })}
+            />
+          </PanelSection>
+        );
+      })}
     </>
   );
 }
