@@ -1,8 +1,10 @@
 import {
   Archive,
+  ArchiveRestore,
   ArrowDownToLine,
   CalendarIcon,
   Menu,
+  Tag,
   Trash2,
   X,
 } from "lucide-react";
@@ -35,6 +37,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Toggle, ToggleGroup } from "@/components/ui/toggle-group";
 import { useBulkOperations } from "@/hooks/mutations/task/use-bulk-operations";
 import { useGetColumns } from "@/hooks/queries/column/use-get-columns";
 import useGetLabelsByWorkspace from "@/hooks/queries/label/use-get-labels-by-workspace";
@@ -65,6 +68,8 @@ type BulkActionGroup = {
   label: string;
   items: BulkActionItem[];
 };
+
+type BulkDateField = "dueDate" | "startDate";
 
 type BulkToolbarProps = {
   /**
@@ -120,7 +125,10 @@ function BulkToolbar({ projectId }: BulkToolbarProps = {}) {
     bulkChangeStatus,
     bulkPriority,
     bulkAddLabel,
+    bulkRemoveLabel,
     bulkDueDate,
+    bulkStartDate,
+    bulkUnarchive,
   } = useBulkOperations();
   const { data: workspace } = useActiveWorkspace();
   const { data: workspaceLabels = [] } = useGetLabelsByWorkspace(
@@ -134,6 +142,7 @@ function BulkToolbar({ projectId }: BulkToolbarProps = {}) {
   const canEditLabels = canUpdateLabels();
   const [isActionsOpen, setIsActionsOpen] = useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [dateField, setDateField] = useState<BulkDateField>("dueDate");
 
   const selectedCount = selectedTaskIds.size;
 
@@ -276,21 +285,72 @@ function BulkToolbar({ projectId }: BulkToolbarProps = {}) {
     [bulkAddLabel, selectedTaskIds, selectedCount, clearSelection, t],
   );
 
-  const handleBulkDueDate = useCallback(
-    async (date: Date | undefined) => {
+  const handleBulkRemoveLabel = useCallback(
+    async (labelId: string) => {
       try {
-        await bulkDueDate({
+        const result = await bulkRemoveLabel({
           taskIds: Array.from(selectedTaskIds),
-          dueDate: date?.toISOString() ?? null,
+          labelId,
         });
+        toast.success(
+          t("tasks:bulk.removeLabelSuccess", { count: result.updatedCount }),
+        );
+        clearSelection();
+        setIsActionsOpen(false);
+      } catch (_error) {
+        toast.error(t("tasks:bulk.removeLabelError"));
+      }
+    },
+    [bulkRemoveLabel, selectedTaskIds, clearSelection, t],
+  );
+
+  const handleBulkUnarchive = useCallback(async () => {
+    try {
+      const result = await bulkUnarchive(Array.from(selectedTaskIds));
+      if (result.updatedCount === 0) {
+        toast.info(t("tasks:bulk.unarchiveNone"));
+      } else {
+        toast.success(
+          t("tasks:bulk.unarchiveSuccess", { count: result.updatedCount }),
+        );
+      }
+      clearSelection();
+      setIsActionsOpen(false);
+    } catch (_error) {
+      toast.error(t("tasks:bulk.unarchiveError"));
+    }
+  }, [bulkUnarchive, selectedTaskIds, clearSelection, t]);
+
+  const handleBulkDate = useCallback(
+    async (date: Date | undefined) => {
+      const taskIds = Array.from(selectedTaskIds);
+      const value = date?.toISOString() ?? null;
+      try {
+        if (dateField === "startDate") {
+          await bulkStartDate({ taskIds, startDate: value });
+        } else {
+          await bulkDueDate({ taskIds, dueDate: value });
+        }
         toast.success(t("tasks:bulk.updateSuccess", { count: selectedCount }));
         clearSelection();
         setIsDatePickerOpen(false);
       } catch (_error) {
-        toast.error(t("tasks:bulk.updateDueDateError"));
+        toast.error(
+          dateField === "startDate"
+            ? t("tasks:bulk.updateStartDateError")
+            : t("tasks:bulk.updateDueDateError"),
+        );
       }
     },
-    [bulkDueDate, selectedTaskIds, selectedCount, clearSelection, t],
+    [
+      bulkDueDate,
+      bulkStartDate,
+      dateField,
+      selectedTaskIds,
+      selectedCount,
+      clearSelection,
+      t,
+    ],
   );
 
   const groupedItems = useMemo<BulkActionGroup[]>(() => {
@@ -320,6 +380,16 @@ function BulkToolbar({ projectId }: BulkToolbarProps = {}) {
                   icon: <Archive className="h-4 w-4 text-muted-foreground" />,
                   onRun: () => {
                     void handleBulkArchive();
+                  },
+                },
+                {
+                  value: "bulk-unarchive",
+                  label: t("tasks:bulk.unarchive"),
+                  icon: (
+                    <ArchiveRestore className="h-4 w-4 text-muted-foreground" />
+                  ),
+                  onRun: () => {
+                    void handleBulkUnarchive();
                   },
                 },
               ]
@@ -376,6 +446,18 @@ function BulkToolbar({ projectId }: BulkToolbarProps = {}) {
           },
         })),
       });
+      groups.push({
+        value: "remove-label",
+        label: t("tasks:bulk.removeLabel"),
+        items: uniqueLabels.map((label) => ({
+          value: `remove-label-${label.id}`,
+          label: label.name,
+          icon: <Tag className="h-3 w-3 text-muted-foreground" />,
+          onRun: () => {
+            void handleBulkRemoveLabel(label.id);
+          },
+        })),
+      });
     }
     return groups;
   }, [
@@ -390,6 +472,8 @@ function BulkToolbar({ projectId }: BulkToolbarProps = {}) {
     handleBulkChangeStatus,
     handleBulkPriority,
     handleBulkAddLabel,
+    handleBulkRemoveLabel,
+    handleBulkUnarchive,
     priorityOptions,
     t,
   ]);
@@ -404,8 +488,8 @@ function BulkToolbar({ projectId }: BulkToolbarProps = {}) {
       className="-translate-x-1/2 fixed bottom-[calc(4.25rem+env(safe-area-inset-bottom))] left-1/2 z-50 w-max max-w-[calc(100vw-1rem)] transition-[translate,opacity] md:bottom-6 duration-200 ease-out starting:translate-y-3 starting:opacity-0 motion-reduce:starting:translate-y-0"
     >
       <Toolbar className="max-w-full items-center gap-1 overflow-x-auto rounded-xl border-border/80 bg-background px-1.5 py-1 shadow-lg/8 [scrollbar-width:none]">
-        <ToolbarGroup className="px-1.5">
-          <span className="text-sm font-medium text-foreground">
+        <ToolbarGroup className="shrink-0 px-1.5">
+          <span className="whitespace-nowrap text-sm font-medium text-foreground">
             {t("tasks:bulk.selectedCount", { count: selectedCount })}
           </span>
         </ToolbarGroup>
@@ -429,13 +513,34 @@ function BulkToolbar({ projectId }: BulkToolbarProps = {}) {
                 <PopoverTrigger asChild>
                   <Button size="sm" variant="ghost">
                     <CalendarIcon className="size-4" />
-                    {t("tasks:bulk.setDueDate")}
+                    {t("tasks:bulk.setDates")}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="p-0" align="center">
+                  <div className="flex justify-center border-b border-border p-2">
+                    <ToggleGroup
+                      size="sm"
+                      variant="outline"
+                      aria-label={t("tasks:bulk.dateField")}
+                      value={[dateField]}
+                      onValueChange={(values) => {
+                        const next = values[0];
+                        if (next === "dueDate" || next === "startDate") {
+                          setDateField(next);
+                        }
+                      }}
+                    >
+                      <Toggle value="startDate" className="px-2 text-xs">
+                        {t("tasks:bulk.startDate")}
+                      </Toggle>
+                      <Toggle value="dueDate" className="px-2 text-xs">
+                        {t("tasks:bulk.dueDate")}
+                      </Toggle>
+                    </ToggleGroup>
+                  </div>
                   <Calendar
                     mode="single"
-                    onSelect={handleBulkDueDate}
+                    onSelect={handleBulkDate}
                     className="w-full bg-popover"
                   />
                   <div className="p-0 border-t border-border">
@@ -443,10 +548,12 @@ function BulkToolbar({ projectId }: BulkToolbarProps = {}) {
                       variant="ghost"
                       size="sm"
                       className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground rounded-none"
-                      onClick={() => handleBulkDueDate(undefined)}
+                      onClick={() => handleBulkDate(undefined)}
                     >
                       <X className="h-4 w-4" />
-                      {t("tasks:dueDate.clear")}
+                      {dateField === "startDate"
+                        ? t("tasks:bulk.clearStartDate")
+                        : t("tasks:bulk.clearDueDate")}
                     </Button>
                   </div>
                 </PopoverContent>
