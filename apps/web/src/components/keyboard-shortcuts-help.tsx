@@ -61,6 +61,10 @@ function useShortcutCategories(): ShortcutCategory[] {
             description: t("navigation:keyboardShortcuts.items.globalSearch"),
           },
           {
+            keys: [shortcuts.ask.prefix, shortcuts.ask.toggle],
+            description: t("ai:ask.shortcut"),
+          },
+          {
             keys: [shortcuts.sidebar.prefix, shortcuts.sidebar.toggle],
             description: t("navigation:shell.togglePanel"),
           },
