@@ -5,22 +5,14 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from "@/components/ui/menu";
-import { useUserPreferencesStore } from "@/store/user-preferences";
+import { THEME_LABEL_KEYS } from "@/constants/themes";
+import {
+  isTheme,
+  THEMES,
+  useUserPreferencesStore,
+} from "@/store/user-preferences";
 
-const THEMES = ["light", "dark", "system"] as const;
-type Theme = (typeof THEMES)[number];
-
-const THEME_LABEL_KEYS: Record<Theme, string> = {
-  light: "settings:preferencesPage.themeLight",
-  dark: "settings:preferencesPage.themeDark",
-  system: "settings:preferencesPage.themeSystem",
-};
-
-function isTheme(value: unknown): value is Theme {
-  return THEMES.some((theme) => theme === value);
-}
-
-/** Light / Dark / System, as radio items inside a menu (the avatar menu). */
+/** The theme choices, as radio items inside a menu (the avatar menu). */
 export function ThemeToggleDropdown() {
   const { t } = useTranslation();
   const { theme, setTheme } = useUserPreferencesStore();
