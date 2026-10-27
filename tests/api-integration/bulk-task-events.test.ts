@@ -92,4 +92,90 @@ describe("bulk task event snapshots", () => {
       );
     }
   });
+
+  it("sets and clears start dates with one event per task", async () => {
+    const { user, workspace } = await createWorkspaceMember();
+    const { project } = await createProjectFixture({
+      workspaceId: workspace.id,
+    });
+    const earlier = new Date("2026-03-01T00:00:00.000Z");
+    const tasks = await db
+      .insert(schema.taskTable)
+      .values([
+        {
+          projectId: project.id,
+          title: "Dated",
+          startDate: earlier,
+          number: 1,
+        },
+        { projectId: project.id, title: "Undated", number: 2 },
+      ])
+      .returning();
+    const start = new Date("2026-04-01T00:00:00.000Z");
+
+    const result = await bulkUpdateTasks({
+      taskIds: tasks.map((task) => task.id),
+      operation: "updateStartDate",
+      value: start.toISOString(),
+      userId: user.id,
+    });
+    expect(result.updatedCount).toBe(2);
+    for (const task of tasks) {
+      expect(publish).toHaveBeenCalledWith(
+        "task.start_date_changed",
+        expect.objectContaining({
+          taskId: task.id,
+          projectId: project.id,
+          oldStartDate: task.startDate,
+          newStartDate: start,
+          title: task.title,
+        }),
+      );
+    }
+    const stored = await db.query.taskTable.findMany();
+    expect(stored.map((task) => task.startDate?.toISOString())).toEqual([
+      start.toISOString(),
+      start.toISOString(),
+    ]);
+
+    await bulkUpdateTasks({
+      taskIds: tasks.map((task) => task.id),
+      operation: "updateStartDate",
+      value: null,
+      userId: user.id,
+    });
+    const cleared = await db.query.taskTable.findMany();
+    expect(cleared.every((task) => task.startDate === null)).toBe(true);
+  });
+
+  it("refuses a start date after a selected task's due date and changes nothing", async () => {
+    const { user, workspace } = await createWorkspaceMember();
+    const { project } = await createProjectFixture({
+      workspaceId: workspace.id,
+    });
+    const tasks = await db
+      .insert(schema.taskTable)
+      .values([
+        {
+          projectId: project.id,
+          title: "Due soon",
+          dueDate: new Date("2026-03-01T00:00:00.000Z"),
+          number: 1,
+        },
+        { projectId: project.id, title: "Open", number: 2 },
+      ])
+      .returning();
+
+    await expect(
+      bulkUpdateTasks({
+        taskIds: tasks.map((task) => task.id),
+        operation: "updateStartDate",
+        value: "2026-04-01T00:00:00.000Z",
+        userId: user.id,
+      }),
+    ).rejects.toMatchObject({ status: 400 });
+    const stored = await db.query.taskTable.findMany();
+    expect(stored.every((task) => task.startDate === null)).toBe(true);
+    expect(publish).not.toHaveBeenCalled();
+  });
 });

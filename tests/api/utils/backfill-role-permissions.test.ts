@@ -8,6 +8,7 @@ import {
 describe("pendingBackfillResources", () => {
   it("offers every non-baseline resource of the built-in roles until applied", () => {
     expect(pendingBackfillResources(new Set())).toEqual([
+      "ai",
       "analytics",
       "audit_log",
       "cycle",
@@ -17,6 +18,7 @@ describe("pendingBackfillResources", () => {
       "view",
     ]);
     expect(pendingBackfillResources(new Set(["cycle"]))).toEqual([
+      "ai",
       "analytics",
       "audit_log",
       "intake",
@@ -27,6 +29,7 @@ describe("pendingBackfillResources", () => {
     expect(
       pendingBackfillResources(
         new Set([
+          "ai",
           "analytics",
           "audit_log",
           "cycle",

@@ -62,14 +62,22 @@ describe("API integration: workspace time zone setting", () => {
     const s = await scene();
     const read = await s.request(`/workspace/${s.workspace.id}/settings`);
     expect(read.status).toBe(200);
-    expect(await read.json()).toEqual({ timezone: "UTC" });
+    expect(await read.json()).toEqual({
+      timezone: "UTC",
+      allowPublicPages: false,
+      allowA2a: false,
+    });
 
     const saved = await s.request(
       `/workspace/${s.workspace.id}/settings`,
       json("PATCH", { timezone: "europe/berlin" }),
     );
     expect(saved.status, await saved.clone().text()).toBe(200);
-    expect(await saved.json()).toEqual({ timezone: "Europe/Berlin" });
+    expect(await saved.json()).toEqual({
+      timezone: "Europe/Berlin",
+      allowPublicPages: false,
+      allowA2a: false,
+    });
   });
 
   it.each(["Mars/Olympus", "+05:30", ""])("rejects %j with 400", async (tz) => {

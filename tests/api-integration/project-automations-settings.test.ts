@@ -66,6 +66,13 @@ describe("scheduled automation settings", () => {
         lastClosedAt: null,
         lastClosedCount: 0,
       },
+      cycleRollover: {
+        enabled: false,
+        since: null,
+        lastRolledOverAt: null,
+        lastRolledOverCount: 0,
+      },
+      flowAlerts: { enabled: false, lastCheckedOn: null, lastAlertAt: null },
       lastCheckedAt: null,
       updatedAt: null,
       updatedBy: null,

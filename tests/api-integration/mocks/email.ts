@@ -18,6 +18,14 @@ export async function sendOtpEmail(
   return undefined;
 }
 
+export async function sendEmailChangedEmail(
+  _to: string,
+  _subject: string,
+  _data: unknown,
+): Promise<void> {
+  return undefined;
+}
+
 export async function sendPasswordResetEmail(
   _to: string,
   _subject: string,

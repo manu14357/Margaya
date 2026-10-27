@@ -17,6 +17,7 @@ describe("project feature catalog", () => {
       "intakeEnabled",
       "estimatesEnabled",
       "timeTrackingEnabled",
+      "aiEnabled",
     ]);
     for (const feature of PROJECT_FEATURE_KEYS) {
       expect(projectTable[projectFeatureField(feature)]).toBeDefined();
@@ -47,6 +48,7 @@ describe("project feature catalog", () => {
       intake: false,
       estimates: false,
       timeTracking: true,
+      ai: true,
     });
   });
 });

@@ -297,6 +297,18 @@ describe("MCP tool catalog", () => {
     expect(lastRequest().body).not.toHaveProperty("userId");
   });
 
+  it("creates a subtask by passing the parent with the create", async () => {
+    await call("create_task", {
+      projectId: "p1",
+      title: "Child",
+      description: "",
+      priority: "low",
+      status: "to-do",
+      parentId: "t-parent",
+    });
+    expect(lastRequest().body).toMatchObject({ parentId: "t-parent" });
+  });
+
   it("updates a task, echoing the first assignee unless a list is given", async () => {
     const existing = {
       id: "t1",

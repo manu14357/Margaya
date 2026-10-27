@@ -111,3 +111,39 @@ describe("workspaceAccess lookup sources", () => {
     expect(res.status).toBe(403);
   });
 });
+
+describe("workspaceAccess unknown lookups", () => {
+  function getApp(options?: { notFoundMessage?: string }) {
+    return new Hono()
+      .use("*", async (c, next) => {
+        c.set("userId", "user-1");
+        return next();
+      })
+      .get(
+        "/task/:taskId",
+        workspaceAccess.fromTaskId("taskId", options),
+        (c) => c.json({ ok: true }),
+      );
+  }
+
+  it("answers 400 for an unknown id by default", async () => {
+    const res = await getApp().request("/task/unknown-task");
+    expect(res.status).toBe(400);
+  });
+
+  it("answers the opted-in 404 for an unknown id", async () => {
+    const res = await getApp({ notFoundMessage: "Task not found" }).request(
+      "/task/unknown-task",
+    );
+    expect(res.status).toBe(404);
+    expect(await res.text()).toContain("Task not found");
+  });
+
+  it("still authorizes a known id when the 404 is opted in", async () => {
+    const app = getApp({ notFoundMessage: "Task not found" });
+    expect((await app.request("/task/task-in-my-workspace")).status).toBe(200);
+    expect((await app.request("/task/task-in-other-workspace")).status).toBe(
+      403,
+    );
+  });
+});

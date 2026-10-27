@@ -24,6 +24,8 @@ const DEFAULTS = [
   { key: "quick-links", enabled: true },
   { key: "recents", enabled: true },
   { key: "stickies", enabled: true },
+  { key: "risks", enabled: true },
+  { key: "my-brief", enabled: false },
 ];
 
 async function preferences(role = "member") {
@@ -71,7 +73,9 @@ describe("API integration: home preferences", () => {
     const widgets = [
       { key: "stickies", enabled: true },
       { key: "quick-links", enabled: false },
+      { key: "risks", enabled: false },
       { key: "recents", enabled: true },
+      { key: "my-brief", enabled: true },
     ];
     const saved = (await (
       await expectStatus(put(widgets), 200)
@@ -132,6 +136,8 @@ describe("API integration: home preferences", () => {
       { key: "recents", enabled: false },
       { key: "quick-links", enabled: true },
       { key: "stickies", enabled: true },
+      { key: "risks", enabled: true },
+      { key: "my-brief", enabled: false },
     ]);
   });
 

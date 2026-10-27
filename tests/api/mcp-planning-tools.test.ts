@@ -48,7 +48,7 @@ function requests() {
 describe("MCP planning tools (cycles, modules, intake)", () => {
   it("registers all 33 tools, identical to the stdio package's file", () => {
     for (const name of PLANNING_TOOL_NAMES) expect(tools.has(name)).toBe(true);
-    expect(PLANNING_TOOL_NAMES).toHaveLength(33);
+    expect(PLANNING_TOOL_NAMES).toHaveLength(40);
 
     const root = resolve(__dirname, "../..");
     expect(
@@ -260,6 +260,27 @@ describe("MCP planning tools (cycles, modules, intake)", () => {
         url: "http://api.test/api/search?q=plan&type=pages&workspaceId=w1",
         method: "GET",
         body: undefined,
+      },
+    ]);
+  });
+
+  it("lists automation rules and turns one on or off", async () => {
+    await call("list_automation_rules", { projectId: "p 1" });
+    await call("set_automation_rule_enabled", {
+      projectId: "p1",
+      ruleId: "r1",
+      enabled: false,
+    });
+    expect(requests()).toEqual([
+      {
+        url: "http://api.test/api/automation-rule/p%201",
+        method: "GET",
+        body: undefined,
+      },
+      {
+        url: "http://api.test/api/automation-rule/p1/r1",
+        method: "PATCH",
+        body: { enabled: false },
       },
     ]);
   });

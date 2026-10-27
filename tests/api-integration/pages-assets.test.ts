@@ -108,9 +108,9 @@ describe("API integration: page files", () => {
     const asset = await upload(s, s.ben, page.id);
 
     mockAuthenticatedSession(s.cara);
-    expect((await s.app.request(`/api/asset/${asset.id}`)).status).toBe(403);
+    expect((await s.app.request(`/api/asset/${asset.id}`)).status).toBe(404);
     mockAuthenticatedSession(s.admin);
-    expect((await s.app.request(`/api/asset/${asset.id}`)).status).toBe(403);
+    expect((await s.app.request(`/api/asset/${asset.id}`)).status).toBe(404);
     mockAuthenticatedSession(s.ben);
     expect((await s.app.request(`/api/asset/${asset.id}`)).status).toBe(200);
   });

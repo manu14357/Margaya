@@ -28,6 +28,7 @@ describe("auth rate limit settings", () => {
     expect(selfHosted.customRules["/request-password-reset"]).toBeDefined();
     expect(selfHosted.customRules["/change-password"]).toBeDefined();
     expect(selfHosted.customRules["/get-session"]).toBe(false);
+    expect(selfHosted.customRules["/organization/has-permission"]).toBe(false);
     expect(selfHosted.customRules).not.toHaveProperty("/sign-up/email");
 
     vi.stubEnv("MARGAYA_CLOUD", "true");

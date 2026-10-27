@@ -76,6 +76,7 @@ describe("API integration: role permission backfill", () => {
     const result = await backfillRolePermissions();
     expect(result).toEqual({
       pending: [
+        "ai",
         "analytics",
         "audit_log",
         "cycle",
@@ -109,6 +110,10 @@ describe("API integration: role permission backfill", () => {
     expect(stored.admin?.audit_log).toEqual(["read"]);
     expect(stored.member).not.toHaveProperty("audit_log");
     expect(stored.viewer).not.toHaveProperty("audit_log");
+    // AI: members use it, admins also manage it, viewers get neither.
+    expect(stored.member?.ai).toEqual(["use"]);
+    expect(stored.admin?.ai).toEqual(["use", "manage"]);
+    expect(stored.viewer).not.toHaveProperty("ai");
     expect(stored.viewer?.page).toEqual(["read"]);
     expect(stored.member?.page).toEqual(["create", "read", "update"]);
     expect(stored.admin?.page).toEqual(["create", "read", "update", "delete"]);
@@ -123,6 +128,7 @@ describe("API integration: role permission backfill", () => {
 
     const applied = await db.select().from(schema.rolePermissionBackfillTable);
     expect(applied.map((row) => row.resource).sort()).toEqual([
+      "ai",
       "analytics",
       "audit_log",
       "cycle",
@@ -173,6 +179,7 @@ describe("API integration: role permission backfill", () => {
 
     expect(await backfillRolePermissions()).toEqual({
       pending: [
+        "ai",
         "analytics",
         "audit_log",
         "cycle",

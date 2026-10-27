@@ -310,13 +310,22 @@ describe("S3 helpers", () => {
     );
   });
 
-  it("assertStorageConfigured throws when endpoint or bucket is missing", () => {
+  it("assertStorageConfigured throws when endpoint or bucket is missing and the local store is off", () => {
     delete process.env.S3_ENDPOINT;
     delete process.env.S3_BUCKET;
+    vi.stubEnv("MARGAYA_LOCAL_STORAGE", "false");
 
     expect(() => assertStorageConfigured()).toThrow(
       /S3 uploads are not configured/,
     );
+    vi.unstubAllEnvs();
+  });
+
+  it("falls back to the local store when S3 is not configured", () => {
+    delete process.env.S3_ENDPOINT;
+    delete process.env.S3_BUCKET;
+
+    expect(() => assertStorageConfigured()).not.toThrow();
   });
 });
 

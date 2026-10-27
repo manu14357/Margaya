@@ -17,6 +17,7 @@ const mockRemoveLabelFromGitHub = vi.fn();
 const mockRemoveLabelFromGitea = vi.fn();
 const mockSyncLabelToGitHub = vi.fn();
 const mockSyncLabelToGitea = vi.fn();
+const mockCanSeeProject = vi.fn();
 
 function createMockTxContext() {
   return {
@@ -69,6 +70,11 @@ vi.mock(
     syncLabelToGitea: (...args: unknown[]) => mockSyncLabelToGitea(...args),
   }),
 );
+
+// Restricted-project visibility has its own query; these tests cover the label logic.
+vi.mock("../../../apps/api/src/project/visibility", () => ({
+  canSeeProject: (...args: unknown[]) => mockCanSeeProject(...args),
+}));
 
 import assignLabelToTask from "../../../apps/api/src/label/controllers/assign-label-to-task";
 import unassignLabelFromTask from "../../../apps/api/src/label/controllers/unassign-label-from-task";
@@ -188,10 +194,22 @@ describe("assignLabelToTask", () => {
     mockTransaction.mockImplementation(async (cb: (tx: unknown) => unknown) =>
       cb(createMockTxContext()),
     );
+    mockCanSeeProject.mockResolvedValue(true);
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
+  });
+
+  it("reads a task in a restricted project the caller cannot see as missing", async () => {
+    mockFindFirst.mockResolvedValue(WORKSPACE_LABEL);
+    mockSelect.mockReturnValue(makeSelectMock([TASK]));
+    mockCanSeeProject.mockResolvedValue(false);
+
+    await expect(
+      assignLabelToTask("label-ws-1", "task-1", "user-1"),
+    ).rejects.toMatchObject({ status: 404 });
+    expect(mockInsert).not.toHaveBeenCalled();
   });
 
   it("creates a task-level copy without mutating the workspace definition", async () => {
