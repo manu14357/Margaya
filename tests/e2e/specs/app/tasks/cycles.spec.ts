@@ -469,10 +469,11 @@ test("a cycle is added to and removed from favorites", async ({
   });
   await openCyclePage(page, cycle.id);
 
-  // The cycle's star sits after "Toggle cycle details" (the project has one too).
+  // The cycle's star is the first favorites button after "Toggle cycle
+  // details" (the project has one too; the retrospective button sits between).
   const star = page
     .getByRole("button", { name: "Toggle cycle details" })
-    .locator("xpath=following::button[1]");
+    .locator("xpath=following::button[contains(@aria-label, 'favorites')][1]");
   await expect(star).toHaveAccessibleName("Add to favorites");
   await star.click();
   await expect(toast(page, "Added to favorites")).toBeVisible();

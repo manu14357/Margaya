@@ -129,12 +129,18 @@ test(
   covers("sendInstanceTestEmail"),
   async ({ apiAs, mailpit, seed }) => {
     const owner = await apiAs("owner");
-    const since = new Date();
+    // MailPit stamps messages with its own clock, which can lag this one by a
+    // moment; the subject keeps the slack from matching other mail.
+    const since = new Date(Date.now() - 5_000);
     const result = await expectJson<{ sent: boolean }>(
       await owner.post("/api/instance-admin/email/test", { data: {} }),
     );
     expect(result.sent).toBe(true);
-    await mailpit.waitForMessage({ to: seed.users.owner.email, since });
+    await mailpit.waitForMessage({
+      to: seed.users.owner.email,
+      subject: "Test email from",
+      since,
+    });
   },
 );
 

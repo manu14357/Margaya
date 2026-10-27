@@ -30,6 +30,7 @@ import {
   openFilterSubmenu,
   openPopover,
   pickCalendarDay,
+  restoreBoardLayout,
   shortDate,
   taskCard,
   titlesInOrder,
@@ -343,6 +344,7 @@ test("list triage moves with j/k, selects with x and changes priority with !", a
     .poll(async () => (await getTask(api, next)).priority)
     .toBe("urgent");
   expect([first.id, second.id]).toContain(next);
+  await restoreBoardLayout(page);
 });
 
 test("the create modal keeps a description when a priority is chosen after it", async ({

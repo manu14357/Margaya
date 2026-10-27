@@ -176,6 +176,8 @@ test.describe("command palette", () => {
       "Light theme",
       "Dark theme",
       "System theme",
+      "High contrast light theme",
+      "High contrast dark theme",
       "Keyboard shortcuts",
     ]) {
       await expect(
@@ -186,8 +188,9 @@ test.describe("command palette", () => {
     await expect(palette.getByText("Commands")).toBeVisible();
 
     await paletteInput(page).fill("theme");
+    // Light, dark, system and the two high-contrast themes.
     await expect(palette.getByRole("option", { name: /theme/i })).toHaveCount(
-      3,
+      5,
     );
     await expect(
       palette.getByRole("option", { name: /^Create task/ }),

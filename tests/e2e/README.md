@@ -10,6 +10,7 @@ pnpm e2e                                  # headless, Microsoft Edge
 pnpm e2e:ui                               # Playwright UI mode
 pnpm --filter @margaya/e2e test:headed    # watch the browser
 pnpm e2e specs/app/board                  # one folder or file
+E2E_WEB_SERVER=dev pnpm e2e specs/app/board  # Vite dev server instead of a build
 pnpm --filter @margaya/e2e report         # open the last HTML report
 pnpm --filter @margaya/e2e db:reset       # recreate margaya_e2e after migrations change
 ```
@@ -20,18 +21,44 @@ Microsoft Edge. Account details: [`creds.md`](../../creds.md).
 ## What a run does
 
 1. `webServer` starts the API (`tsx src/index.ts`, port 3337, database
-   `margaya_e2e`, created if missing) and Vite (port 5174), and stops them after
-   the run. Outside CI, servers already listening on those ports are reused.
+   `margaya_e2e`, created if missing) and the web app on port 5174, and stops
+   them after the run. Outside CI, servers already listening on those ports are
+   reused. See "Web server modes" below.
 2. `global-setup.ts` makes sure MailPit is up, waits for both servers and runs
    the seed (`seed/seed.ts`) through the public HTTP API only.
 3. The seed is idempotent. It signs in (or signs up) the four users, then finds
    or creates the workspace, memberships, labels, projects, columns, estimates,
    tasks, cycles and modules. It writes one storage state per role and
    `seed.json` (every seeded id) to `tests/e2e/.auth/` (gitignored).
+4. It then loads the sign-in page and a seeded board once in Edge, retrying
+   until both render. A cold Vite dev server needs well over the 30 s
+   navigation timeout for its first page; a production build does not.
 
 The API runs with SMTP pointed at MailPit, `DISABLE_EMAIL_OTP_SIGN_IN=true`
-(the sign-in page shows the password form), registration enabled and
-`MARGAYA_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS=true`. See `helpers/env.ts`.
+(the sign-in page shows the password form), registration enabled,
+`MARGAYA_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS=true` and no file storage
+(`MARGAYA_LOCAL_STORAGE=false`). See `helpers/env.ts`.
+
+## Web server modes
+
+- **Production build (default).** `vite build` writes the app to
+  `tests/e2e/.web-dist/` (gitignored) and `vite preview` serves it on 5174.
+  The build adds about a minute to start-up, but pages never wait on a cold
+  compile, a dependency re-optimization or a hot reload, which removes the
+  start-up and mid-run flakes of the dev server. Use it for full runs. Edits to
+  the app during a run are not picked up; rerun to rebuild.
+- **Dev server.** `E2E_WEB_SERVER=dev` (PowerShell:
+  `$env:E2E_WEB_SERVER="dev"`) runs the Vite dev server instead. It starts
+  faster and serves the current source on every navigation, which suits a
+  single spec while you edit the app. It runs with `MARGAYA_DISABLE_HMR=true`,
+  so edits never hot-reload a page under test; set that variable too if you
+  start the dev server by hand for reuse.
+
+Both modes build or serve with `VITE_API_URL=http://localhost:3337` and
+`VITE_CLIENT_URL=http://localhost:5174`. The build runs in Vite's
+`development` mode, so it reads the same env files as the dev server and never
+`apps/web/.env.production` (whose CAPTCHA key and Sentry DSN belong to the
+hosted site); the output is still a minified production bundle.
 
 ## Layout
 
@@ -126,4 +153,5 @@ test.use(asRole("viewer"));   // or asAnonymous
 - `... already exists with a different password`: a seeded account was changed.
   Reset the database.
 - A stale server on 3337 or 5174 is reused outside CI. Stop it if it runs old
-  code or another configuration.
+  code or another configuration. That includes a preview server from an
+  earlier run: it serves the bundle built then, not your latest edits.

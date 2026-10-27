@@ -3,7 +3,6 @@ import {
   addMember,
   createProject,
   createTask,
-  createWorkspace,
   expectJson,
   expectStatus,
   signUpUser,
@@ -19,6 +18,12 @@ import { uniqueName } from "../../helpers/ui";
 // workspace this file creates with fresh accounts: never on the seeded one.
 
 type Member = { id: string; userId: string; role: string };
+type Deletion = {
+  pending: boolean;
+  dueAt: string | null;
+  scheduledBy: { id: string; name: string } | null;
+  graceDays: number;
+};
 type Invitation = {
   id: string;
   email: string;
@@ -582,12 +587,15 @@ test(
 );
 
 test(
-  "rename the workspace; members leave or are removed; delete it",
+  "rename the workspace; members leave or are removed; schedule and cancel its deletion",
   covers(
     "updateOrganization",
     "leaveOrganization",
     "removeOrganizationMember",
     "deleteOrganization",
+    "getWorkspaceDeletion",
+    "scheduleWorkspaceDeletion",
+    "cancelWorkspaceDeletion",
   ),
   async () => {
     const name = uniqueName("E2E Org renamed");
@@ -627,23 +635,77 @@ test(
       403,
     );
 
-    // Delete a second, empty workspace, then this file's own.
-    const extra = await createWorkspace(owner.ctx, "E2E Org extra");
-    const deleted = await expectJson<Workspace>(
-      await owner.ctx.post("/api/auth/organization/delete", {
-        data: { organizationId: extra.id },
-      }),
-    );
-    expect(deleted.id).toBe(extra.id);
-    await expectJson(
+    // Deleting goes through a grace period: Better Auth's delete answers 409
+    // until a scheduled deletion is due.
+    const refused = await expectStatus(
       await owner.ctx.post("/api/auth/organization/delete", {
         data: { organizationId: workspace.id },
       }),
+      409,
     );
-    const listed = await expectJson<Workspace[]>(
-      await owner.ctx.get("/api/auth/organization/list"),
+    expect(refused).toMatch(/grace period/i);
+
+    const deletionPath = `/api/workspace/${workspace.id}/deletion`;
+    const idle = await expectJson<Deletion>(await owner.ctx.get(deletionPath));
+    expect(idle).toMatchObject({ pending: false, dueAt: null });
+
+    const scheduled = await expectJson<Deletion>(
+      await owner.ctx.post(deletionPath),
     );
-    expect(listed.map((entry) => entry.id)).not.toContain(workspace.id);
-    expect(listed.map((entry) => entry.id)).not.toContain(extra.id);
+    expect(scheduled).toMatchObject({
+      pending: true,
+      scheduledBy: { id: owner.id },
+    });
+    const due = Date.parse(scheduled.dueAt ?? "");
+    expect(due - Date.now()).toBeGreaterThan(
+      (scheduled.graceDays - 1) * 86_400_000,
+    );
+    // Scheduling again changes nothing.
+    const again = await expectJson<Deletion>(
+      await owner.ctx.post(deletionPath),
+    );
+    expect(again.dueAt).toBe(scheduled.dueAt);
+    // Still not due.
+    await expectStatus(
+      await owner.ctx.post("/api/auth/organization/delete", {
+        data: { organizationId: workspace.id },
+      }),
+      409,
+    );
+
+    // Read-only meanwhile: reads work, writes answer 423 Locked.
+    await expectJson(
+      await owner.ctx.get("/api/project", {
+        params: { workspaceId: workspace.id },
+      }),
+    );
+    await expectStatus(
+      await owner.ctx.post("/api/project", {
+        data: {
+          name: uniqueName("Locked project"),
+          slug: `lk${Date.now().toString(36).slice(-6)}`,
+          icon: "Layout",
+          workspaceId: workspace.id,
+        },
+      }),
+      423,
+    );
+    await expectStatus(
+      await owner.ctx.post("/api/auth/organization/update", {
+        data: { organizationId: workspace.id, data: { name: "Locked" } },
+      }),
+      423,
+    );
+
+    const cancelled = await expectJson<Deletion>(
+      await owner.ctx.delete(deletionPath),
+    );
+    expect(cancelled).toMatchObject({ pending: false, dueAt: null });
+    // Writable again.
+    const project = await createProject(owner.ctx, workspace.id);
+    expect(project.workspaceId).toBe(workspace.id);
+
+    // Leave this file's workspace scheduled, so the purge job removes it.
+    await expectJson(await owner.ctx.post(deletionPath));
   },
 );

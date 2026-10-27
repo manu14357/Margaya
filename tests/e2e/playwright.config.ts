@@ -4,9 +4,10 @@ import { authFile } from "./helpers/auth";
 import {
   apiServerEnv,
   E2E_API_URL,
-  E2E_WEB_PORT,
+  E2E_WEB_MODE,
   E2E_WEB_URL,
   REPO_ROOT,
+  webServerCommand,
   webServerEnv,
 } from "./helpers/env";
 
@@ -85,13 +86,15 @@ export default defineConfig({
       stderr: "pipe",
     },
     {
+      // A production build served by `vite preview` unless E2E_WEB_SERVER=dev
+      // (see E2E_WEB_MODE). The build is part of the start-up time.
       name: "web",
-      command: `pnpm exec vite --port ${E2E_WEB_PORT} --strictPort`,
+      command: webServerCommand(),
       cwd: path.join(REPO_ROOT, "apps", "web"),
       url: E2E_WEB_URL,
       env: webServerEnv,
       reuseExistingServer: !isCI,
-      timeout: 180_000,
+      timeout: E2E_WEB_MODE === "dev" ? 180_000 : 420_000,
     },
     ...(withDocsSite
       ? [

@@ -262,31 +262,61 @@ test.describe("workspace general settings", () => {
     ).toBeVisible();
   });
 
-  test("the owner deletes a workspace after confirming", async ({ pageAs }) => {
-    const { page, workspace: keep } = await newUserWithWorkspace(pageAs, {
-      workspaceName: uniqueName("Keep WS"),
+  test("the owner schedules a deletion, the workspace turns read-only, and cancelling restores it", async ({
+    pageAs,
+  }) => {
+    const { page, workspace } = await newUserWithWorkspace(pageAs, {
+      workspaceName: uniqueName("Doomed WS"),
     });
-    const doomed = await createWorkspaceViaApi(
-      page.request,
-      uniqueName("Doomed WS"),
-    );
+    const createProject = () =>
+      page.request.post(`${E2E_API_URL}/api/project`, {
+        data: {
+          name: uniqueName("Grace project"),
+          slug: `gp${Date.now().toString(36).slice(-5)}`,
+          icon: "Layout",
+          workspaceId: workspace.id,
+        },
+        headers: { Origin: E2E_WEB_URL },
+      });
 
-    await page.goto(workspacePath(doomed.id));
-    await expect(workspaceSwitcher(page, doomed.name)).toBeVisible();
+    await page.goto(workspacePath(workspace.id));
     await page.goto("/dashboard/settings/workspace/general");
-    await expect(page.getByLabel("Workspace name")).toHaveValue(doomed.name);
+    await expect(page.getByLabel("Workspace name")).toHaveValue(workspace.name);
 
     await page.getByRole("button", { name: "Delete workspace" }).click();
-    const dialog = page.getByRole("alertdialog", { name: "Delete workspace?" });
+    const dialog = page.getByRole("alertdialog", {
+      name: `Delete ${workspace.name}?`,
+    });
     await expect(dialog).toBeVisible();
-    await expect(dialog.getByText(doomed.name)).toBeVisible();
-    await dialog.getByRole("button", { name: "Delete workspace" }).click();
+    await dialog.getByRole("button", { name: "Schedule deletion" }).click();
+    await expect(page.getByText(/^Deletion scheduled for /)).toBeVisible();
+    await expect(dialog).toBeHidden();
 
+    // The danger zone shows the pending state, and a banner runs across the
+    // workspace.
     await expect(
-      page.getByText("Workspace deleted successfully"),
+      page.getByText("Scheduled for deletion", { exact: true }),
     ).toBeVisible();
-    await expect(page).toHaveURL(new RegExp(workspacePath(keep.id)));
-    const remaining = await listWorkspaces(page);
-    expect(remaining.map((w) => w.id)).toEqual([keep.id]);
+    const banner = page
+      .getByRole("alert")
+      .filter({ hasText: "This workspace will be deleted on" });
+    await expect(banner).toBeVisible();
+    await expect(banner.getByText("It is read-only until then.")).toBeVisible();
+
+    // Read-only: writes answer 423 Locked; the workspace still exists.
+    expect((await createProject()).status()).toBe(423);
+    expect((await listWorkspaces(page)).map((w) => w.id)).toContain(
+      workspace.id,
+    );
+
+    await banner.getByRole("button", { name: "Cancel deletion" }).click();
+    await expect(
+      page.getByText("Deletion cancelled. The workspace is writable again."),
+    ).toBeVisible();
+    await expect(banner).toBeHidden();
+    await expect(
+      page.getByRole("button", { name: "Delete workspace" }),
+    ).toBeVisible();
+    expect([200, 201]).toContain((await createProject()).status());
   });
 });

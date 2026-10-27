@@ -46,8 +46,28 @@ test.describe("sign up", () => {
     });
     await page.getByRole("button", { name: "Create account" }).click();
 
-    await expect(page.getByText("Password is too short")).toBeVisible();
+    // The password policy: at least 10 characters, checked as the user types.
+    await expect(page.getByText("Use at least 10 characters.")).toBeVisible();
     await expect(page.getByText(/invalid email/i)).toBeVisible();
+    await expect(page).toHaveURL(/\/auth\/sign-up/);
+  });
+
+  test("refuses a common password the server rejects", async ({ page }) => {
+    await page.goto("/auth/sign-up");
+    // Long enough for the form; a dictionary word with decoration is still
+    // common, which only the server decides.
+    await fillSignUp(page, {
+      name: "Common Choice",
+      email: uniqueEmail("common"),
+      password: "Password2026!",
+    });
+    await page.getByRole("button", { name: "Create account" }).click();
+
+    await expect(
+      page.getByText(
+        "This password is too common and easy to guess. Choose another one.",
+      ),
+    ).toBeVisible();
     await expect(page).toHaveURL(/\/auth\/sign-up/);
   });
 

@@ -147,7 +147,11 @@ test("a module is created with status, lead, members and dates", async ({
   await dialog.getByRole("button", { name: "Create module" }).click();
   await expect(toast(page, "Module created")).toBeVisible();
   await expect(dialog).toBeHidden();
-  await expect(page.getByRole("link", { name: "Checkout flow" })).toBeVisible();
+  // Creating opens the new module.
+  await expect(page).toHaveURL(/\/modules\/[^/]+$/);
+  await expect(
+    page.getByRole("button", { name: "Switch module" }),
+  ).toContainText("Checkout flow");
 
   const [created] = await listModules(api);
   expect(created).toMatchObject({
@@ -166,6 +170,8 @@ test("a module is created with status, lead, members and dates", async ({
   );
 
   // A duplicate name is refused.
+  await page.goto(projectViewPath(project.id, "modules"));
+  await expect(page.getByRole("link", { name: "Checkout flow" })).toBeVisible();
   await page.getByRole("button", { name: "New module" }).first().click();
   const again = page.getByRole("dialog", { name: "New module" });
   await again.getByLabel("Name").fill("Checkout flow");

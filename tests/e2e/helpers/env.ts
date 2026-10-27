@@ -17,6 +17,18 @@ export const E2E_WEB_PORT = 5174;
 export const E2E_API_URL = `http://localhost:${E2E_API_PORT}`;
 export const E2E_WEB_URL = `http://localhost:${E2E_WEB_PORT}`;
 
+/**
+ * How the suite serves the web app. "preview" (the default) builds it once with
+ * `vite build` and serves the bundle with `vite preview`: no cold compiles, no
+ * dependency re-optimization and no HMR mid-run. E2E_WEB_SERVER=dev uses the
+ * Vite dev server instead, which starts faster for a quick single-spec run
+ * while you edit the app.
+ */
+export const E2E_WEB_MODE: "preview" | "dev" =
+  process.env.E2E_WEB_SERVER === "dev" ? "dev" : "preview";
+/** Where preview mode writes its bundle (gitignored). */
+export const E2E_WEB_DIST = path.join(E2E_ROOT, ".web-dist");
+
 export const E2E_DATABASE_NAME = "margaya_e2e";
 export const E2E_DATABASE_URL = `postgresql://margaya:margaya@127.0.0.1:55432/${E2E_DATABASE_NAME}`;
 
@@ -59,13 +71,35 @@ export const apiServerEnv: Record<string, string> = {
   DISABLE_WORKSPACE_CREATION: "false",
   MARGAYA_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS: "true",
   MARGAYA_CLOUD: "false",
+  // No S3 and no built-in local file store: specs cover the "uploads are not
+  // configured" answers, and nothing is written under apps/api/data.
+  MARGAYA_LOCAL_STORAGE: "false",
   // Encrypts stored notification secrets (webhook signing secrets, ntfy and
   // Gotify tokens); without it, storing one answers 503.
   NOTIFICATION_SECRET_ENCRYPTION_KEY:
     "margaya-e2e-only-notification-secret-key-not-for-production-0001",
 };
 
+/**
+ * Environment for the web server. The VITE_ values are read at build time in
+ * preview mode and per request in dev mode.
+ */
 export const webServerEnv: Record<string, string> = {
   VITE_API_URL: E2E_API_URL,
   VITE_CLIENT_URL: E2E_WEB_URL,
+  // Dev mode only: other work in the same tree must not hot-reload pages
+  // mid-test; each navigation still serves the current source.
+  MARGAYA_DISABLE_HMR: "true",
 };
+
+/** The command that serves the web app on E2E_WEB_PORT, per E2E_WEB_MODE. */
+export function webServerCommand(): string {
+  const port = `--port ${E2E_WEB_PORT} --strictPort`;
+  if (E2E_WEB_MODE === "dev") return `pnpm exec vite ${port}`;
+  const outDir = `--outDir "${E2E_WEB_DIST}"`;
+  // Development mode reads the same env files as the dev server. The default
+  // production mode would load apps/web/.env.production: its CAPTCHA site key
+  // locks the sign-up form, and its Sentry DSN would report test errors.
+  // Vite still emits a production bundle.
+  return `pnpm exec vite build --mode development ${outDir} --emptyOutDir --logLevel warn && pnpm exec vite preview --mode development ${outDir} ${port}`;
+}

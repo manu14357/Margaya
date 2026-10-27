@@ -13,7 +13,10 @@ test.use({ navigationTimeout: 60_000 });
 
 const ORIGIN = { Origin: E2E_WEB_URL };
 
-function widget(page: Page, name: "Quick links" | "Recents" | "Stickies") {
+function widget(
+  page: Page,
+  name: "Quick links" | "Recents" | "Stickies" | "At risk",
+) {
   return page.getByRole("region", { name, exact: true });
 }
 
@@ -50,7 +53,12 @@ test.describe("home", () => {
         name: new RegExp(`^Good (morning|afternoon|evening), ${user.name}$`),
       }),
     ).toBeVisible();
-    for (const name of ["Quick links", "Recents", "Stickies"] as const) {
+    for (const name of [
+      "Quick links",
+      "Recents",
+      "Stickies",
+      "At risk",
+    ] as const) {
       await expect(widget(page, name)).toBeVisible();
     }
 
@@ -61,6 +69,10 @@ test.describe("home", () => {
     ).toBeVisible();
     const showRecents = dialog.getByRole("switch", { name: "Show Recents" });
     await expect(showRecents).toBeChecked();
+    // My brief is opt-in.
+    await expect(
+      dialog.getByRole("switch", { name: "Show My brief" }),
+    ).not.toBeChecked();
     // Each switch is saved before the next one is flipped.
     const saveAfter = async (action: Promise<void>) => {
       const saved = page.waitForResponse(
@@ -75,7 +87,7 @@ test.describe("home", () => {
     await expect(showRecents).not.toBeChecked();
 
     // One switch at a time, each settled before the next.
-    for (const name of ["Quick links", "Stickies"] as const) {
+    for (const name of ["Quick links", "Stickies", "Risks"] as const) {
       const toggle = dialog.getByRole("switch", { name: `Show ${name}` });
       await saveAfter(toggle.click());
       await expect(toggle).not.toBeChecked();
@@ -89,13 +101,23 @@ test.describe("home", () => {
     await expect(page.getByText("Your home is empty")).toBeVisible();
 
     await page.getByRole("button", { name: "Manage widgets" }).first().click();
-    for (const name of ["Quick links", "Recents", "Stickies"] as const) {
+    for (const name of [
+      "Quick links",
+      "Recents",
+      "Stickies",
+      "Risks",
+    ] as const) {
       const toggle = dialog.getByRole("switch", { name: `Show ${name}` });
       await saveAfter(toggle.click());
       await expect(toggle).toBeChecked();
     }
     await dialog.getByRole("button", { name: "Close" }).first().click();
-    for (const name of ["Quick links", "Recents", "Stickies"] as const) {
+    for (const name of [
+      "Quick links",
+      "Recents",
+      "Stickies",
+      "At risk",
+    ] as const) {
       await expect(widget(page, name)).toBeVisible();
     }
     await expect(page.getByText("Your home is empty")).toHaveCount(0);
@@ -181,12 +203,13 @@ test.describe("navigation", () => {
     const panel = page.locator('[data-slot="context-panel"]').first();
     const jump = page.getByRole("region", { name: "Jump back in" });
     // Creating the workspace notifies its owner ("workspace created"), shortly
-    // after the API call returns.
+    // after the API call returns. Counts are a large number with a caption
+    // beside it, so the text has no space between them.
     await expect(jump.getByRole("link", { name: /^Inbox/ })).toContainText(
-      /All caught up|1 unread/,
+      /All caught up|1\s*unread/,
     );
     await expect(jump.getByRole("link", { name: /^Your work/ })).toContainText(
-      "0 open",
+      /0\s*open/,
     );
 
     await jump.getByRole("link", { name: /^Stickies/ }).click();
@@ -268,7 +291,11 @@ test.describe("stickies", () => {
     await card.getByRole("button", { name: "Delete sticky" }).click();
     await expect(page.getByRole("alertdialog")).toHaveCount(0);
     await expect(page.getByText("No stickies yet")).toBeVisible();
-    expect(await listStickies(page, workspace.id)).toHaveLength(0);
+    // The card leaves optimistically; the delete request may still be in
+    // flight.
+    await expect
+      .poll(async () => (await listStickies(page, workspace.id)).length)
+      .toBe(0);
   });
 
   test("keeps stored text, searches it and confirms deleting a written note", async ({

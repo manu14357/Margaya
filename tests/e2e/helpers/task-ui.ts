@@ -29,6 +29,31 @@ export async function waitForBoardReady(page: Page): Promise<void> {
   await expect(
     page.getByRole("button", { name: "Add task" }).first(),
   ).toBeVisible({ timeout: 60_000 });
+  // The Board/List choice is a per-user preference kept on the server, so a
+  // spec that switched the shared owner to List leaves later specs in List.
+  const board = page
+    .getByRole("group", { name: "Layout" })
+    .getByRole("button", { name: "Board", exact: true });
+  if (
+    (await board.count()) > 0 &&
+    (await board.first().getAttribute("aria-pressed")) === "false"
+  ) {
+    await board.first().click();
+    await expect(board.first()).toHaveAttribute("aria-pressed", "true");
+  }
+}
+
+/**
+ * Switch a board back to the Board layout at the end of a spec that chose
+ * List, so the owner's synced preference does not leak into specs running
+ * alongside.
+ */
+export async function restoreBoardLayout(page: Page): Promise<void> {
+  await toolbarButton(page, "Board").click();
+  await expect(toolbarButton(page, "Board")).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
 }
 
 /**

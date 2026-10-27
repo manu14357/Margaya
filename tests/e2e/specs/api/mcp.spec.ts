@@ -223,10 +223,18 @@ test("discovery metadata and the 401 challenge", async () => {
   const resource = await expectJson<{
     resource: string;
     authorization_servers: string[];
+    bearer_methods_supported: string[];
+    resource_name: string;
+    resource_documentation: string;
   }>(await anonymous.get("/.well-known/oauth-protected-resource/api/mcp"));
   expect(resource).toEqual({
     resource: `${E2E_API_URL}/api/mcp`,
     authorization_servers: [`${E2E_API_URL}/api`],
+    bearer_methods_supported: ["header"],
+    resource_name: "Margaya MCP",
+    resource_documentation: expect.stringMatching(
+      /^https:\/\/.+\/docs\/core\/integrations\/mcp$/,
+    ),
   });
   const server = await expectJson<{
     token_endpoint: string;

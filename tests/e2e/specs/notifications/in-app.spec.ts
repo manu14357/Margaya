@@ -267,6 +267,13 @@ test("the bell shows the recipient's notifications; mark one read, then mark all
     await expect(page).toHaveURL(new RegExp(`/task/${tasks[0]?.id}`), {
       timeout: UI_TIMEOUT,
     });
+    // The URL commits before the lazily loaded task page renders, and that
+    // page brings its own header (and bell). Opening the old bell meanwhile
+    // loses the menu when the header is replaced.
+    await expect(page.getByPlaceholder("Click to add a title")).toHaveValue(
+      tasks[0]?.title ?? "",
+      { timeout: UI_TIMEOUT },
+    );
     await expect(bell).toContainText("1", { timeout: 30_000 });
     // The badge updates optimistically; the stored state follows.
     const readState = async (taskId: string | undefined) =>

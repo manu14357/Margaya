@@ -241,12 +241,15 @@ test("due date and move to backlog work on the selection", async ({
   await waitForBoardReady(page);
 
   let bar = await selectTasks(page, tasks);
-  await bar.getByRole("button", { name: "Set due date" }).click();
-  const today = new Date();
-  today.setHours(12, 0, 0, 0);
-  await openPopover(page)
-    .getByRole("button", { name: /^Today, / })
-    .click();
+  // One Dates control sets either date; the due date is the default field.
+  await bar.getByRole("button", { name: "Dates", exact: true }).click();
+  const dates = openPopover(page);
+  await expect(
+    dates
+      .getByRole("group", { name: "Date to set" })
+      .getByRole("button", { name: "Due date", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await dates.getByRole("button", { name: /^Today, / }).click();
   await expect(toast(page, "2 tasks updated")).toBeVisible();
   for (const task of tasks) {
     await expect

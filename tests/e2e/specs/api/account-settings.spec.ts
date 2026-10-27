@@ -15,6 +15,8 @@ import { covers } from "../../helpers/openapi";
 // Time zones (user and workspace), member profiles and the account's
 // sessions.
 
+// Only the time zone is checked here; the settings carry other workspace
+// switches too.
 type Settings = { timezone: string };
 type UserTimezone = { timezone: string | null };
 type MemberProfile = {
@@ -49,7 +51,7 @@ test(
     const path = `/api/workspace/${world.workspace.id}/settings`;
     expect(
       await expectJson<Settings>(await world.as("viewer").get(path)),
-    ).toEqual({ timezone: "UTC" });
+    ).toMatchObject({ timezone: "UTC" });
 
     await expectStatus(
       await world.as("member").patch(path, {
@@ -67,17 +69,17 @@ test(
           data: { timezone: "Europe/Berlin" },
         }),
       ),
-    ).toEqual({ timezone: "Europe/Berlin" });
+    ).toMatchObject({ timezone: "Europe/Berlin" });
     expect(
       await expectJson<Settings>(await world.as("member").get(path)),
-    ).toEqual({ timezone: "Europe/Berlin" });
+    ).toMatchObject({ timezone: "Europe/Berlin" });
 
     // And back.
     expect(
       await expectJson<Settings>(
         await world.as("owner").patch(path, { data: { timezone: "UTC" } }),
       ),
-    ).toEqual({ timezone: "UTC" });
+    ).toMatchObject({ timezone: "UTC" });
     await expectStatus(await world.anonymous.get(path), 401);
   },
 );

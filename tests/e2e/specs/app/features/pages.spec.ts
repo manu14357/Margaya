@@ -150,14 +150,16 @@ test("a sub-page nests under its parent in the tree and the list", async ({
     parentPath.getByRole("link", { name: parentTitle }),
   ).toBeVisible();
 
-  // The document bar's switcher jumps between the project's pages.
-  const toolbar = page.locator('[data-slot="page-toolbar"]');
-  await toolbar.getByRole("button", { name: childTitle }).click();
-  await page.getByRole("button", { name: parentTitle, exact: true }).click();
+  // The page switcher in the top bar's breadcrumbs jumps between the
+  // project's pages.
+  const topBar = page.locator('[data-slot="top-bar"]');
+  await topBar.getByRole("button", { name: childTitle }).click();
+  await page
+    .getByRole("dialog")
+    .getByRole("button", { name: parentTitle })
+    .click();
   await expect(page).toHaveURL(new RegExp(`/pages/${parent.id}`));
-  await expect(
-    toolbar.getByRole("button", { name: parentTitle }),
-  ).toBeVisible();
+  await expect(topBar.getByRole("button", { name: parentTitle })).toBeVisible();
 
   // The open page's ancestors are kept expanded; back on the parent, the
   // tree uses the remembered state, so expand and collapse it by hand.

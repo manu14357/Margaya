@@ -11,7 +11,11 @@ import {
   type World,
 } from "../../helpers/api-kit";
 import { E2E_WEB_URL } from "../../helpers/env";
-import { extractLinks, type MailpitMessage } from "../../helpers/mailpit";
+import {
+  extractLinks,
+  type MailpitClient,
+  type MailpitMessage,
+} from "../../helpers/mailpit";
 import {
   browserContextFor,
   openApp,
@@ -28,6 +32,16 @@ import { uniqueName } from "../../helpers/ui";
 const SENDER = "noreply@margaya.test";
 
 /** Every link in the email is http(s); links to the app answer. */
+/** Ids of the messages a recipient already has. */
+async function messageIds(
+  mailpit: MailpitClient,
+  email: string,
+): Promise<Set<string>> {
+  return new Set(
+    (await mailpit.search(`to:${email}`)).map((entry) => entry.ID),
+  );
+}
+
 async function expectWorkingLinks(message: MailpitMessage): Promise<string[]> {
   const links = extractLinks(message);
   expect(links.length).toBeGreaterThan(0);
@@ -270,7 +284,9 @@ test.describe("notification emails", () => {
     const quiet = await createTask(world.as("owner"), project.id, {
       title: uniqueName("Quiet task"),
     });
-    const since = new Date(Date.now() - 1000);
+    // Compare against the messages already there rather than by time: the
+    // MailPit container's clock can run ahead of this machine's.
+    const viewerBefore = await messageIds(mailpit, viewer.email);
     await expectJson(
       await world.as("owner").put(`/api/task/assignees/${quiet.id}`, {
         data: { assigneeIds: [viewer.id] },
@@ -280,7 +296,7 @@ test.describe("notification emails", () => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     const viewerMail = (await mailpit.search(`to:${viewer.email}`)).filter(
       (entry) =>
-        new Date(entry.Created) >= since && !/invited you/i.test(entry.Subject),
+        !viewerBefore.has(entry.ID) && !/invited you/i.test(entry.Subject),
     );
     expect(viewerMail).toEqual([]);
 
@@ -303,7 +319,7 @@ test.describe("notification emails", () => {
     const muted = await createTask(world.as("owner"), project.id, {
       title: uniqueName("Muted task"),
     });
-    const mutedSince = new Date(Date.now() - 1000);
+    const memberBefore = await messageIds(mailpit, member.email);
     await expectJson(
       await world.as("owner").put(`/api/task/assignees/${muted.id}`, {
         data: { assigneeIds: [member.id] },
@@ -313,8 +329,7 @@ test.describe("notification emails", () => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     const memberMail = (await mailpit.search(`to:${member.email}`)).filter(
       (entry) =>
-        new Date(entry.Created) >= mutedSince &&
-        !/invited you/i.test(entry.Subject),
+        !memberBefore.has(entry.ID) && !/invited you/i.test(entry.Subject),
     );
     expect(memberMail).toEqual([]);
   });

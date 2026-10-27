@@ -347,6 +347,9 @@ test(
         { key: "quick-links", enabled: true },
         { key: "recents", enabled: true },
         { key: "stickies", enabled: true },
+        { key: "risks", enabled: true },
+        // Opt-in: off until the person turns it on.
+        { key: "my-brief", enabled: false },
       ],
     });
 
@@ -354,6 +357,8 @@ test(
       { key: "stickies", enabled: true },
       { key: "quick-links", enabled: false },
       { key: "recents", enabled: true },
+      { key: "my-brief", enabled: true },
+      { key: "risks", enabled: false },
     ];
     const saved = await expectJson<HomePreferences>(
       await admin.put("/api/home/preferences", {
@@ -400,7 +405,7 @@ test(
       await admin.put("/api/home/preferences", {
         data: {
           workspaceId,
-          widgets: [...widgets.slice(0, 2), { key: "weather", enabled: true }],
+          widgets: [...widgets.slice(0, -1), { key: "weather", enabled: true }],
         },
       }),
       400,

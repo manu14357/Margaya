@@ -121,24 +121,25 @@ test.describe("preferences", () => {
     ).toBeVisible();
 
     const html = page.locator("html");
-    // The app defaults to dark.
-    await expect(html).toHaveClass(/\bdark\b/);
-    const theme = page.getByRole("combobox").first();
-    await expect(theme).toHaveText("Dark");
-
-    await theme.click();
-    await page.getByRole("option", { name: "Light" }).click();
+    // New users start light.
     await expect(html).toHaveClass(/\blight\b/);
-    await expect(html).not.toHaveClass(/\bdark\b/);
+    const theme = page.getByRole("combobox").first();
     await expect(theme).toHaveText("Light");
 
-    // Kept in the browser across reloads.
+    // Exact: the high-contrast options also contain "Light" and "Dark".
+    await theme.click();
+    await page.getByRole("option", { name: "Dark", exact: true }).click();
+    await expect(html).toHaveClass(/\bdark\b/);
+    await expect(html).not.toHaveClass(/\blight\b/);
+    await expect(theme).toHaveText("Dark");
+
+    // Kept across reloads.
     await page.reload();
-    await expect(html).toHaveClass(/\blight\b/);
+    await expect(html).toHaveClass(/\bdark\b/);
 
     await page.getByRole("combobox").first().click();
-    await page.getByRole("option", { name: "Dark" }).click();
-    await expect(html).toHaveClass(/\bdark\b/);
+    await page.getByRole("option", { name: "Light", exact: true }).click();
+    await expect(html).toHaveClass(/\blight\b/);
   });
 
   test("switches the interface to German and back", async ({ pageAs }) => {

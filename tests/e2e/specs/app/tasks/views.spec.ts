@@ -20,6 +20,7 @@ import {
   localYmd,
   openPopover,
   pickCalendarDay,
+  restoreBoardLayout,
   shortDate,
   taskCard,
   taskSheet,
@@ -102,6 +103,7 @@ test.describe("list view", () => {
       .flatMap((column) => column.tasks)
       .find((candidate) => candidate.title === title);
     expect(created?.status).toBe("in-progress");
+    await restoreBoardLayout(page);
   });
 });
 
