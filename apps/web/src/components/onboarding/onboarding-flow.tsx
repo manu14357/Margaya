@@ -19,6 +19,8 @@ import { PendingInvitationList } from "@/components/invitation/pending-invitatio
 import PageTitle from "@/components/page-title";
 import useAuth from "@/components/providers/auth-provider/hooks/use-auth";
 import InvitationLinkField from "@/components/team/invitation-link-field";
+import InviteFailureList from "@/components/team/invite-failure-list";
+import InviteRoleSelect from "@/components/team/invite-role-select";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -31,6 +33,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Radio, RadioGroup } from "@/components/ui/radio-group";
+import { Textarea } from "@/components/ui/textarea";
 import type { UpdateProjectFeaturesRequest } from "@/fetchers/project/update-project-features";
 import useCreateProject from "@/hooks/mutations/project/use-create-project";
 import useUpdateProjectFeatures from "@/hooks/mutations/project/use-update-project-features";
@@ -38,9 +41,17 @@ import useCreateTask from "@/hooks/mutations/task/use-create-task";
 import useInviteWorkspaceUser from "@/hooks/mutations/workspace-user/use-invite-workspace-user";
 import { usePendingInvitations } from "@/hooks/queries/invitation/use-pending-invitations";
 import useCreateWorkspace from "@/hooks/queries/workspace/use-create-workspace";
+import useGrantableRoles from "@/hooks/queries/workspace/use-grantable-roles";
 import { authClient } from "@/lib/auth-client";
 import generateProjectSlug from "@/lib/generate-project-id";
+import { defaultInviteRole } from "@/lib/grantable-roles";
 import { HttpError } from "@/lib/http-error";
+import {
+  type InviteFailure,
+  MAX_INVITES_PER_SUBMIT,
+  parseEmailList,
+  sendInvitesInSequence,
+} from "@/lib/invite-emails";
 import { toast } from "@/lib/toast";
 import { AuthDivider } from "../auth/divider";
 import { SetupHeading, SetupLayout } from "./setup-layout";
@@ -604,34 +615,59 @@ function InviteStep({
   onContinue: () => void;
 }) {
   const { t } = useTranslation();
-  const [email, setEmail] = useState("");
+  const [emails, setEmails] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [failures, setFailures] = useState<InviteFailure[]>([]);
   const [invited, setInvited] = useState<{ id?: string; email: string }[]>([]);
-  const { mutateAsync: invite, isPending } = useInviteWorkspaceUser();
+  const [isPending, setIsPending] = useState(false);
+  const [pickedRole, setPickedRole] = useState<string>();
+  const { mutateAsync: invite } = useInviteWorkspaceUser();
+  // The person onboarding just created this workspace, so they own it.
+  const { roles } = useGrantableRoles(workspaceId, "owner");
+  const role =
+    pickedRole && roles.includes(pickedRole)
+      ? pickedRole
+      : defaultInviteRole(roles);
 
   const handleInvite = async (event: React.FormEvent) => {
     event.preventDefault();
-    const address = email.trim();
-    if (!z.email().safeParse(address).success) {
-      setError(t("auth:onboarding.invalidEmail"));
+    const { valid, invalid } = parseEmailList(emails);
+    if (invalid.length > 0 || valid.length === 0) {
+      setError(
+        invalid.length > 0
+          ? t("team:inviteModal.invalidEmails", { emails: invalid.join(", ") })
+          : t("auth:onboarding.invalidEmail"),
+      );
       return;
     }
-    try {
-      const invitation = await invite({
-        email: address,
-        workspaceId,
-        role: "member",
-      });
-      setInvited((list) => [...list, { id: invitation?.id, email: address }]);
-      setEmail("");
-      setError(null);
-    } catch (inviteError) {
+    if (valid.length > MAX_INVITES_PER_SUBMIT) {
       setError(
-        inviteError instanceof Error
-          ? inviteError.message
-          : t("auth:onboarding.toast.inviteFailed"),
+        t("team:inviteModal.tooManyEmails", { max: MAX_INVITES_PER_SUBMIT }),
       );
+      return;
     }
+    if (!role) return;
+    setIsPending(true);
+    setError(null);
+    setFailures([]);
+    const result = await sendInvitesInSequence(
+      valid,
+      (email) => invite({ email, workspaceId, role }),
+      {
+        fallbackMessage: t("auth:onboarding.toast.inviteFailed"),
+        rateLimitedMessage: t("team:inviteModal.rateLimited"),
+      },
+    );
+    setIsPending(false);
+    setInvited((list) => [
+      ...list,
+      ...result.sent.filter(
+        (entry) => !list.some((done) => done.email === entry.email),
+      ),
+    ]);
+    // Keep only what failed in the box so it can be fixed and resent.
+    setEmails(result.failed.map((failure) => failure.email).join("\n"));
+    setFailures(result.failed);
   };
 
   return (
@@ -641,45 +677,71 @@ function InviteStep({
         description={t("auth:onboarding.inviteSubtitle")}
       />
 
-      <form onSubmit={handleInvite} className="space-y-2" noValidate>
-        <Label htmlFor="onboarding-invite-email">
-          {t("auth:onboarding.inviteEmailLabel")}
-        </Label>
-        <div className="flex gap-2">
-          <Input
+      <form onSubmit={handleInvite} className="space-y-3" noValidate>
+        <div className="space-y-1.5">
+          <Label htmlFor="onboarding-invite-email">
+            {t("auth:onboarding.inviteEmailLabel")}
+          </Label>
+          <Textarea
             id="onboarding-invite-email"
-            type="email"
-            value={email}
+            value={emails}
             onChange={(event) => {
-              setEmail(event.target.value);
+              setEmails(event.target.value);
               setError(null);
             }}
             placeholder={t("auth:onboarding.inviteEmailPlaceholder")}
             aria-invalid={error !== null}
-            aria-describedby={error ? "onboarding-invite-error" : undefined}
+            aria-describedby={
+              error ? "onboarding-invite-error" : "onboarding-invite-hint"
+            }
+            disabled={isPending}
+            rows={2}
             autoComplete="off"
             autoFocus
           />
+          {error ? (
+            <p
+              id="onboarding-invite-error"
+              role="alert"
+              className="text-xs text-destructive"
+            >
+              {error}
+            </p>
+          ) : (
+            <p
+              id="onboarding-invite-hint"
+              className="text-xs text-muted-foreground"
+            >
+              {t("team:inviteModal.emailHint")}
+            </p>
+          )}
+        </div>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
+          <div className="space-y-1.5">
+            <Label htmlFor="onboarding-invite-role">
+              {t("team:inviteModal.roleLabel")}
+            </Label>
+            <InviteRoleSelect
+              id="onboarding-invite-role"
+              roles={roles}
+              value={role}
+              onChange={setPickedRole}
+              disabled={isPending}
+              className="w-full sm:w-44"
+            />
+          </div>
           <Button
             type="submit"
             variant="outline"
-            disabled={isPending || !email.trim()}
-            className="shrink-0"
+            disabled={isPending || !emails.trim() || !role}
+            className="sm:ms-auto"
           >
             {isPending
               ? t("auth:onboarding.inviting")
               : t("auth:onboarding.sendInvite")}
           </Button>
         </div>
-        {error ? (
-          <p
-            id="onboarding-invite-error"
-            role="alert"
-            className="text-xs text-destructive"
-          >
-            {error}
-          </p>
-        ) : null}
+        <InviteFailureList failures={failures} />
       </form>
 
       {invited.length > 0 ? (
