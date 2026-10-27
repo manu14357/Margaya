@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Plus } from "lucide-react";
+import { Plus, StickyNote } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import WidgetSection, {
@@ -53,6 +53,8 @@ export default function StickiesWidget({
     >
       <WidgetSection
         title={t("home:widgets.stickies")}
+        icon={StickyNote}
+        tone="var(--area-projects)"
         actions={
           <>
             <StickySearch
