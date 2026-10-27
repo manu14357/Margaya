@@ -108,6 +108,7 @@ export default function PublicBoardColumns({
                   column.isFinal,
                   column.icon,
                   column.group,
+                  { neutral: true },
                 )}
                 <span className="max-w-32 truncate">
                   {columnLabel(column, backlog)}
@@ -144,6 +145,7 @@ export default function PublicBoardColumns({
                       column.isFinal,
                       column.icon,
                       column.group,
+                      { neutral: true },
                     )}
                     <h3 className="truncate font-medium text-foreground text-sm">
                       {name}
