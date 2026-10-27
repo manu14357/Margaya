@@ -28,6 +28,7 @@ import {
   Folder,
   Forward,
   Globe,
+  Lock,
   MoreHorizontal,
   Plus,
   Settings,
@@ -391,8 +392,17 @@ export function NavProjects({ filter = "" }: NavProjectsProps) {
                         className="ps-7 pe-7 font-medium"
                         onClick={() => handleProjectClick(project)}
                       >
-                        <ProjectTile icon={project.icon} />
+                        <ProjectTile icon={project.icon} seed={project.id} />
                         <span>{project.name}</span>
+                        {project.visibility === "restricted" && (
+                          <Lock
+                            className="ms-auto size-3 shrink-0 text-muted-foreground"
+                            role="img"
+                            aria-label={t(
+                              "settings:projectAccess.restrictedProject",
+                            )}
+                          />
+                        )}
                       </SidebarMenuButton>
                       {sections.length > 1 && (
                         <button
@@ -567,7 +577,10 @@ export function NavProjects({ filter = "" }: NavProjectsProps) {
               <DragOverlay dropAnimation={null}>
                 {draggingProject ? (
                   <div className="flex h-7.5 w-56 items-center gap-2 rounded-md border bg-card not-dark:bg-clip-padding ps-7 pe-2 text-[13px] text-sidebar-accent-foreground shadow-lg/5">
-                    <ProjectTile icon={draggingProject.icon} />
+                    <ProjectTile
+                      icon={draggingProject.icon}
+                      seed={draggingProject.id}
+                    />
                     <span className="truncate">{draggingProject.name}</span>
                   </div>
                 ) : null}
