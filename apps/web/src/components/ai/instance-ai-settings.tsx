@@ -304,6 +304,17 @@ export function InstanceAiSettingsPage() {
             title={t("ai:instance.speechTitle")}
             description={t("ai:instance.speechDescription")}
           >
+            <ChoiceSelect
+              settings={settings.data}
+              settingKey="ai.speech.format"
+              label={t("ai:instance.speechFormat")}
+              hint={t("ai:instance.speechFormatHint")}
+              options={[
+                { value: "openai", label: t("ai:instance.speechFormatOpenai") },
+                { value: "fish", label: "Fish Audio" },
+              ]}
+            />
+            <Separator />
             <FieldsForm
               settings={settings.data}
               fields={[
@@ -317,6 +328,7 @@ export function InstanceAiSettingsPage() {
                 {
                   key: "ai.speech.model",
                   label: t("ai:instance.speechModel"),
+                  hint: t("ai:instance.speechModelHint"),
                   placeholder: "whisper-1",
                 },
                 {
@@ -325,6 +337,12 @@ export function InstanceAiSettingsPage() {
                   secret: true,
                 },
               ]}
+              extra={
+                <AiTestButton
+                  label={t("ai:instance.testSpeech")}
+                  run={() => testInstanceAiConnection("speech")}
+                />
+              }
             />
           </InstanceSection>
         </>

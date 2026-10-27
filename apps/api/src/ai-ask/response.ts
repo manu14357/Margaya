@@ -9,7 +9,7 @@ export const askSourceSchema = z
   .object({
     ref: z.string().openapi({
       description:
-        "The citation token the answer uses inside square brackets: T:<task key> for a task, P:<page title> for a page, C:<task key>/<comment id prefix> for a comment, W:<n> for a web search result.",
+        "The citation token the answer uses inside square brackets: T:<task key> for a task, P:<page title> for a page, C:<task key>/<comment id prefix> for a comment, W:<n> for a web search result, D:<n> for a section of Margaya's documentation (kind web, linking to the docs site).",
       example: "T:WEB-12",
     }),
     kind: z.enum(ASK_SOURCE_KINDS),

@@ -1,11 +1,16 @@
 import { eq } from "drizzle-orm";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { resetAiGatewayState } from "../../apps/api/src/ai/gateway";
+import { getAiInstanceConfig } from "../../apps/api/src/ai/instance-config";
 import { setFakeResponder } from "../../apps/api/src/ai/provider/fake";
 import type { ChatRequest } from "../../apps/api/src/ai/types";
 import { saveWorkspaceAiSettings } from "../../apps/api/src/ai/workspace-settings";
 import { memoryNotesFor } from "../../apps/api/src/ai-memory-notes/load";
-import { setSpeechFetch } from "../../apps/api/src/ai-speech";
+import {
+  setSpeechFetch,
+  speechDestinationAllowed,
+  testSpeechEndpoint,
+} from "../../apps/api/src/ai-speech";
 import { setWebSearchFetch, webSearch } from "../../apps/api/src/ai-web-search";
 import db, { schema } from "../../apps/api/src/database";
 import { aiUsageTable } from "../../apps/api/src/database/schema";
@@ -821,5 +826,137 @@ describe("Speech to text", () => {
     const wrong = new FormData();
     wrong.set("audio", new File(["x"], "a.txt", { type: "text/plain" }));
     expect((await transcribe(s, s.mia, wrong)).status).toBe(400);
+  });
+
+  it("tests the speech endpoint with a second of silence", async () => {
+    const speechAt = (baseUrl: string) => ({
+      ...getAiInstanceConfig(),
+      speech: {
+        format: "openai" as const,
+        baseUrl,
+        model: "whisper-1",
+        apiKey: "",
+      },
+    });
+    let sent: { url: string; type: string } | null = null;
+    setSpeechFetch(async (input, init) => {
+      const file = (init?.body as FormData | undefined)?.get("file") as File;
+      sent = { url: String(input), type: file.type };
+      return new Response(JSON.stringify({ text: "" }), {
+        headers: { "content-type": "application/json" },
+      });
+    });
+    const ok = await testSpeechEndpoint(speechAt("http://127.0.0.1:9000/v1"));
+    expect(ok).toMatchObject({
+      ok: true,
+      destination: "local",
+      model: "whisper-1",
+    });
+    expect(sent).toEqual({
+      url: "http://127.0.0.1:9000/v1/audio/transcriptions",
+      type: "audio/wav",
+    });
+
+    // A non-OpenAI endpoint answers 404: the message names the URL called.
+    setSpeechFetch(async () => new Response("no", { status: 404 }));
+    const missing = await testSpeechEndpoint(
+      speechAt("http://127.0.0.1:9000/v1/asr"),
+    );
+    expect(missing).toMatchObject({ ok: false, code: "AI_NOT_CONFIGURED" });
+    expect(missing.message).toContain(
+      "http://127.0.0.1:9000/v1/asr/audio/transcriptions",
+    );
+
+    const unset = await testSpeechEndpoint(speechAt(""));
+    expect(unset).toMatchObject({ ok: false, code: "AI_NOT_CONFIGURED" });
+  });
+
+  it("speaks Fish Audio's format: the URL as given, the file as audio, no model", async () => {
+    let sent: { url: string; fields: string[]; auth: string | null } | null =
+      null;
+    setSpeechFetch(async (input, init) => {
+      const form = init?.body as FormData | undefined;
+      sent = {
+        url: String(input),
+        fields: [...(form?.keys() ?? [])].sort(),
+        auth: new Headers(init?.headers).get("authorization"),
+      };
+      return new Response(JSON.stringify({ text: "Hello", duration: 1 }), {
+        headers: { "content-type": "application/json" },
+      });
+    });
+    const fish = {
+      ...getAiInstanceConfig(),
+      speech: {
+        format: "fish" as const,
+        baseUrl: "https://api.fish.audio/v1/asr",
+        model: "",
+        apiKey: "fish-key",
+      },
+    };
+    const result = await testSpeechEndpoint(fish);
+    expect(result).toMatchObject({ ok: true, destination: "cloud" });
+    expect(sent).toEqual({
+      url: "https://api.fish.audio/v1/asr",
+      fields: ["audio", "ignore_timestamps"],
+      auth: "Bearer fish-key",
+    });
+
+    // The model goes in Fish Audio's "model" header.
+    let model: string | null = null;
+    setSpeechFetch(async (_input, init) => {
+      model = new Headers(init?.headers).get("model");
+      return new Response(JSON.stringify({ text: "" }), {
+        headers: { "content-type": "application/json" },
+      });
+    });
+    await testSpeechEndpoint({
+      ...fish,
+      speech: { ...fish.speech, model: "transcribe-1-pro" },
+    });
+    expect(model).toBe("transcribe-1-pro");
+
+    // No credit: Fish Audio answers 402 with its reason, shown to the admin.
+    setSpeechFetch(
+      async () =>
+        new Response(
+          JSON.stringify({ status: 402, message: "Insufficient API credit" }),
+          { status: 402, headers: { "content-type": "application/json" } },
+        ),
+    );
+    const broke = await testSpeechEndpoint(fish);
+    expect(broke).toMatchObject({ ok: false, code: "AI_NOT_CONFIGURED" });
+    expect(broke.message).toContain("no credit left (402)");
+    expect(broke.message).toContain("Insufficient API credit");
+  });
+
+  it("lets a cloud speech service and a local model go together; Local only stops it", async () => {
+    const at = (baseUrl: string, localOnly: boolean) => ({
+      ...getAiInstanceConfig(),
+      localOnly,
+      // Private data goes to the local model: speech is a separate choice.
+      route: { ...getAiInstanceConfig().route, private: "local" as const },
+      speech: { format: "openai" as const, baseUrl, model: "m", apiKey: "" },
+    });
+    const cloud = "https://203.0.113.5/v1";
+    expect(
+      await speechDestinationAllowed(at(cloud, false), { localOnly: false }),
+    ).toEqual({ ok: true, local: false });
+    expect(
+      (await speechDestinationAllowed(at(cloud, true), { localOnly: false }))
+        .ok,
+    ).toBe(false);
+    expect(
+      (await speechDestinationAllowed(at(cloud, false), { localOnly: true }))
+        .ok,
+    ).toBe(false);
+    // An endpoint on your own network is always fine.
+    expect(
+      (
+        await speechDestinationAllowed(at("http://10.0.0.5:8000/v1", true), {
+          localOnly: true,
+        })
+      ).ok,
+    ).toBe(true);
   });
 });

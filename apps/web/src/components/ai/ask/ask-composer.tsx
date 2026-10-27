@@ -1,5 +1,6 @@
 import {
   ArrowUp,
+  AudioLines,
   Bot,
   Boxes,
   FileText,
@@ -11,11 +12,14 @@ import {
   Mic,
   Paperclip,
   RefreshCcw,
+  Repeat,
   Slash,
   Sparkles,
   Square,
   SquareCheck,
   User,
+  Volume2,
+  VolumeX,
   X,
 } from "lucide-react";
 import {
@@ -57,6 +61,7 @@ import type {
   AskContextKind,
 } from "./use-ask-session";
 import { useSpeechInput } from "./use-speech-input";
+import type { VoiceMode } from "./use-voice-mode";
 
 export type AskMode = "ask" | "build" | "autopilot";
 
@@ -222,6 +227,7 @@ export function AskComposer({
   skills,
   lang,
   onSend,
+  voice,
   onCommand,
   onSendToAgent,
 }: {
@@ -238,6 +244,8 @@ export function AskComposer({
   skills: readonly AskSkillOption[];
   lang: string;
   onSend: (payload: AskComposerPayload) => void;
+  /** Hands-free voice mode (the panel's controller). */
+  voice?: VoiceMode;
   onCommand: (command: AskSlashCommand, context: AskContextItem[]) => void;
   onSendToAgent?: (payload: {
     agent: AskContextItem;
@@ -321,7 +329,17 @@ export function AskComposer({
     },
     onError: (error) =>
       toast.error(
-        t(error === "denied" ? "ai:ask.voice.denied" : "ai:ask.voice.failed"),
+        t(
+          error === "denied"
+            ? "ai:ask.voice.denied"
+            : error === "unavailable"
+              ? "ai:ask.voice.unavailable"
+              : error === "empty"
+                ? "ai:ask.voice.empty"
+                : error === "blocked"
+                  ? "ai:ask.voice.blocked"
+                  : "ai:ask.voice.failed",
+        ),
       ),
   });
 
@@ -596,6 +614,16 @@ export function AskComposer({
           maxLength={MAX_QUESTION_CHARS}
           className="flex min-w-0 [&_textarea]:max-h-40 [&_textarea]:min-h-8 [&_textarea]:resize-none [&_textarea]:overflow-y-auto [&_textarea]:bg-transparent [&_textarea]:px-2 [&_textarea]:py-1.5 [&_textarea]:text-sm [&_textarea]:placeholder:text-muted-foreground"
         />
+        {voice && voice.phase !== "off" && <VoiceModeStrip voice={voice} />}
+        {speech.state !== "idle" && (
+          <VoiceStatus
+            state={speech.state}
+            startedAt={speech.startedAt}
+            level={speech.level}
+            onStop={speech.stop}
+            onCancel={speech.cancel}
+          />
+        )}
         <div className="flex items-center gap-0.5">
           {modes.length > 1 && (
             <fieldset
@@ -652,7 +680,10 @@ export function AskComposer({
                 recording ? t("ai:ask.voice.stop") : t("ai:ask.voice.start")
               }
               pressed={recording}
-              disabled={speech.state === "transcribing"}
+              disabled={
+                speech.state === "transcribing" ||
+                (voice !== undefined && voice.phase !== "off")
+              }
               onClick={speech.toggle}
               className={cn(
                 recording &&
@@ -664,6 +695,21 @@ export function AskComposer({
               ) : (
                 <Mic aria-hidden />
               )}
+            </ToolButton>
+          )}
+          {voice?.supported && (
+            <ToolButton
+              label={
+                voice.phase === "off"
+                  ? t("ai:ask.voiceMode.start")
+                  : t("ai:ask.voiceMode.stop")
+              }
+              pressed={voice.phase !== "off"}
+              disabled={recording || speech.state === "transcribing"}
+              onClick={voice.toggle}
+              className={cn(voice.phase !== "off" && "text-primary")}
+            >
+              <AudioLines aria-hidden />
             </ToolButton>
           )}
           <span className="sr-only" role="status">
@@ -702,6 +748,216 @@ export function AskComposer({
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+/** m:ss since a moment, updated each second. */
+function useElapsedSeconds(since: number | null): number {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    if (since === null) return;
+    setNow(Date.now());
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, [since]);
+  return since === null ? 0 : Math.max(0, Math.floor((now - since) / 1000));
+}
+
+/**
+ * What voice input is doing, in view: "Listening… 0:04" with a live level
+ * and Discard/Stop while recording, then "Transcribing…" until the text
+ * arrives in the composer.
+ */
+function VoiceStatus({
+  state,
+  startedAt,
+  level,
+  onStop,
+  onCancel,
+}: {
+  state: "recording" | "transcribing";
+  startedAt: number | null;
+  level: number;
+  onStop: () => void;
+  onCancel: () => void;
+}) {
+  const { t } = useTranslation();
+  const seconds = useElapsedSeconds(state === "recording" ? startedAt : null);
+  const time = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+  return (
+    <div
+      data-testid="voice-status"
+      className="mx-1 mb-1 flex items-center gap-2 rounded-lg border bg-muted/40 px-2.5 py-1.5 text-xs"
+    >
+      {state === "recording" ? (
+        <>
+          <span
+            aria-hidden
+            className="size-2 shrink-0 rounded-full bg-destructive motion-safe:animate-pulse"
+          />
+          <span className="font-medium">{t("ai:ask.voice.recording")}</span>
+          <span className="text-muted-foreground tabular-nums">{time}</span>
+          <span aria-hidden className="flex h-4 items-end gap-0.5">
+            {[0.25, 0.55, 1, 0.7, 0.4].map((weight) => (
+              <span
+                key={weight}
+                className="w-0.5 rounded-full bg-foreground/60 transition-[height] duration-100"
+                style={{
+                  height: `${Math.max(15, Math.min(100, level * weight * 160))}%`,
+                }}
+              />
+            ))}
+          </span>
+          <span className="ms-auto flex gap-1">
+            <Button type="button" size="xs" variant="ghost" onClick={onCancel}>
+              {t("ai:ask.voice.discard")}
+            </Button>
+            <Button type="button" size="xs" variant="outline" onClick={onStop}>
+              <Square aria-hidden className="size-3" />
+              {t("ai:ask.stop")}
+            </Button>
+          </span>
+        </>
+      ) : (
+        <>
+          <Loader2
+            aria-hidden
+            className="size-3.5 shrink-0 motion-safe:animate-spin"
+          />
+          <span className="ask-shimmer font-medium">
+            {t("ai:ask.voice.transcribing")}
+          </span>
+        </>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Voice mode at a glance: listening (time and level), transcribing, working,
+ * speaking (Skip) or waiting for "confirm" (with buttons for the same), plus
+ * End and the two preferences.
+ */
+function VoiceModeStrip({ voice }: { voice: VoiceMode }) {
+  const { t } = useTranslation();
+  const listening = voice.phase === "listening" || voice.phase === "confirming";
+  const seconds = useElapsedSeconds(listening ? voice.startedAt : null);
+  const time = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+  const label =
+    voice.phase === "listening"
+      ? t("ai:ask.voice.recording")
+      : voice.phase === "confirming"
+        ? t("ai:ask.voiceMode.confirming")
+        : voice.phase === "transcribing"
+          ? t("ai:ask.voice.transcribing")
+          : voice.phase === "speaking"
+            ? t("ai:ask.voiceMode.speaking")
+            : t("ai:ask.voiceMode.thinking");
+  const busy = voice.phase === "transcribing" || voice.phase === "thinking";
+  return (
+    <div
+      data-testid="voice-mode"
+      data-phase={voice.phase}
+      className="mx-1 mb-1 flex flex-wrap items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-2.5 py-1.5 text-xs"
+    >
+      {listening ? (
+        <span
+          aria-hidden
+          className="size-2 shrink-0 rounded-full bg-destructive motion-safe:animate-pulse"
+        />
+      ) : busy ? (
+        <Loader2
+          aria-hidden
+          className="size-3.5 shrink-0 motion-safe:animate-spin"
+        />
+      ) : (
+        <Volume2
+          aria-hidden
+          className="size-3.5 shrink-0 motion-safe:animate-pulse"
+        />
+      )}
+      <span
+        role="status"
+        className={cn(
+          "font-medium",
+          (busy || voice.phase === "speaking") && "ask-shimmer",
+        )}
+      >
+        {label}
+      </span>
+      {listening && (
+        <>
+          <span className="text-muted-foreground tabular-nums">{time}</span>
+          <span aria-hidden className="flex h-4 items-end gap-0.5">
+            {[0.25, 0.55, 1, 0.7, 0.4].map((weight) => (
+              <span
+                key={weight}
+                className="w-0.5 rounded-full bg-foreground/60 transition-[height] duration-100"
+                style={{
+                  height: `${Math.max(15, Math.min(100, voice.level * weight * 160))}%`,
+                }}
+              />
+            ))}
+          </span>
+        </>
+      )}
+      <span className="ms-auto flex items-center gap-1">
+        {voice.phase === "confirming" && (
+          <>
+            <Button
+              type="button"
+              size="xs"
+              variant="ghost"
+              onClick={voice.cancel}
+            >
+              {t("ai:build.chat.cancel")}
+            </Button>
+            <Button type="button" size="xs" onClick={voice.confirm}>
+              {t("ai:build.chat.confirm")}
+            </Button>
+          </>
+        )}
+        {voice.phase === "speaking" && (
+          <Button type="button" size="xs" variant="ghost" onClick={voice.skip}>
+            {t("ai:ask.voiceMode.skip")}
+          </Button>
+        )}
+        <Button
+          type="button"
+          size="icon-xs"
+          variant="ghost"
+          aria-pressed={voice.prefs.speakReplies}
+          aria-label={t("ai:ask.voiceMode.readAloud")}
+          title={t("ai:ask.voiceMode.readAloud")}
+          onClick={() =>
+            voice.setPrefs({ speakReplies: !voice.prefs.speakReplies })
+          }
+        >
+          {voice.prefs.speakReplies ? (
+            <Volume2 aria-hidden />
+          ) : (
+            <VolumeX aria-hidden />
+          )}
+        </Button>
+        <Button
+          type="button"
+          size="icon-xs"
+          variant="ghost"
+          aria-pressed={voice.prefs.keepListening}
+          aria-label={t("ai:ask.voiceMode.keepListening")}
+          title={t("ai:ask.voiceMode.keepListening")}
+          className={cn(voice.prefs.keepListening && "text-primary")}
+          onClick={() =>
+            voice.setPrefs({ keepListening: !voice.prefs.keepListening })
+          }
+        >
+          <Repeat aria-hidden />
+        </Button>
+        <Button type="button" size="xs" variant="outline" onClick={voice.stop}>
+          {t("ai:ask.voiceMode.end")}
+        </Button>
+      </span>
     </div>
   );
 }

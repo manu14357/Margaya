@@ -93,6 +93,7 @@ import {
   type AskStreamer,
   useAskSession,
 } from "./use-ask-session";
+import { useVoiceMode } from "./use-voice-mode";
 
 // Suggestions on an empty conversation; a project gets project questions.
 const WORKSPACE_SUGGESTIONS = [
@@ -416,6 +417,40 @@ export default function AskPanel() {
     });
   };
 
+  // Hands-free: what is said is sent as if typed, and the answer is read out.
+  const voice = useVoiceMode({
+    workspaceId,
+    server: features?.speech === true,
+    lang: i18n.resolvedLanguage ?? i18n.language ?? "en-US",
+    mode,
+    askTurns: session.turns,
+    buildTurns: build.turns,
+    send: (text) =>
+      send({
+        text,
+        context: [],
+        attachments: [],
+        webSearch: false,
+        skill: null,
+      }),
+    applyBuild: (turnId) => void build.apply(turnId),
+    cancelBuild: (turnId) => build.cancel(turnId),
+    onError: (error) =>
+      toast.error(
+        t(
+          error === "denied"
+            ? "ai:ask.voice.denied"
+            : error === "unavailable"
+              ? "ai:ask.voice.unavailable"
+              : error === "empty"
+                ? "ai:ask.voice.empty"
+                : error === "blocked"
+                  ? "ai:ask.voice.blocked"
+                  : "ai:ask.voice.failed",
+        ),
+      ),
+  });
+
   const sendQuestion = (question: string) => {
     if (streaming) return;
     if (mode !== "ask") setMode("ask");
@@ -632,10 +667,12 @@ export default function AskPanel() {
       { you: t("ai:ask.you"), answer: t("ai:ask.answer") },
     );
 
+  // Where the next question goes (the current settings), so a change of
+  // model shows at once; the last answer's model only until that loads.
   const meta = [...session.turns].reverse().find((turn) => turn.meta)?.meta;
-  const model = meta?.model || availability.data?.model || null;
-  const destination = (meta?.destination ||
-    availability.data?.destination ||
+  const model = availability.data?.model || meta?.model || null;
+  const destination = (availability.data?.destination ||
+    meta?.destination ||
     null) as keyof typeof AI_DESTINATION_KEYS | null;
   const modelLabel = model
     ? destination && destination in AI_DESTINATION_KEYS
@@ -1065,6 +1102,7 @@ export default function AskPanel() {
               }))}
               lang={i18n.resolvedLanguage ?? i18n.language ?? "en-US"}
               onSend={send}
+              voice={voice}
               onCommand={runCommand}
               onSendToAgent={(payload) => void sendToAgent(payload)}
             />

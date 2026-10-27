@@ -10313,8 +10313,12 @@
 				"stop": "Hentikan dikte",
 				"recording": "Mendengarkan…",
 				"transcribing": "Mentranskripsi…",
-				"denied": "Izinkan akses mikrofon untuk mendikte.",
-				"failed": "Rekaman tidak dapat diubah menjadi teks."
+				"denied": "Akses mikrofon diblokir. Izinkan untuk situs ini dari ikon di bilah alamat, lalu coba lagi.",
+				"failed": "Rekaman tidak dapat diubah menjadi teks.",
+				"unavailable": "Tidak ada mikrofon yang tersedia. Sambungkan satu, atau tutup aplikasi lain yang sedang memakainya.",
+				"discard": "Buang",
+				"empty": "Tidak ada yang terdengar. Coba lagi sedikit lebih dekat ke mikrofon.",
+				"blocked": "Input suara mati karena «Mode khusus lokal» aktif: rekaman tidak boleh dikirim ke layanan suara di cloud. Admin bisa mematikannya di Pengaturan > Instans > AI; jika data pribadi diarahkan ke model lokal, jawaban tetap berasal darinya."
 			},
 			"agent": {
 				"ready": "Kirim permintaan ini ke {{agent}}.",
@@ -10387,6 +10391,25 @@
 				"saved": "Disimpan sebagai halaman",
 				"open": "Buka halaman",
 				"error": "Halaman tidak dapat disimpan"
+			},
+			"voiceMode": {
+				"start": "Mode suara",
+				"stop": "Akhiri mode suara",
+				"end": "Akhiri",
+				"thinking": "Sedang dikerjakan…",
+				"speaking": "Berbicara…",
+				"skip": "Lewati",
+				"confirming": "Ucapkan “konfirmasi” atau “batal”",
+				"confirmPrompt": "Ucapkan konfirmasi atau batal.",
+				"readAloud": "Bacakan jawaban",
+				"keepListening": "Terus mendengarkan setelah setiap jawaban",
+				"confirmWords": "konfirmasi, ya, iya, oke, ok, boleh, setuju, lanjut, lakukan, terapkan",
+				"cancelWords": "batal, tidak, nggak, enggak, jangan, berhenti, stop, tidak jadi, gak jadi",
+				"cancelled": "Dibatalkan. Tidak ada yang diubah.",
+				"applied": "Selesai. {{done}} dari {{total}} perubahan diterapkan.",
+				"needsClick": "Untuk menghapus, klik kartunya.",
+				"chartNote": "Saya sudah menampilkan grafik di layar.",
+				"moreNote": "Sisanya ada di layar."
 			}
 		},
 		"writing": {
@@ -10668,9 +10691,14 @@
 			"speechTitle": "Ucapan ke teks",
 			"speechDescription": "Input suara di obrolan. Tanpa ini, peramban yang mampu akan mengenali ucapan sendiri.",
 			"speechBaseUrl": "URL endpoint",
-			"speechBaseUrlHint": "Endpoint transkripsi yang kompatibel dengan OpenAI, misalnya server Whisper lokal.",
+			"speechBaseUrlHint": "Endpoint transkripsi. Dengan format kompatibel OpenAI, Margaya menambahkan /audio/transcriptions ke URL ini, seperti untuk server Whisper lokal; dengan Fish Audio, ia mengirim ke URL persis seperti yang dimasukkan.",
 			"speechModel": "Model",
-			"speechKey": "Kunci API"
+			"speechKey": "Kunci API",
+			"testSpeech": "Uji ucapan ke teks",
+			"speechFormat": "Format API",
+			"speechFormatHint": "Cara audio dikirim. Untuk Fish Audio, gunakan https://api.fish.audio/v1/asr sebagai endpoint.",
+			"speechFormatOpenai": "Kompatibel dengan OpenAI",
+			"speechModelHint": "Untuk Fish Audio: transcribe-1-pro atau transcribe-1, atau biarkan kosong."
 		},
 		"workspace": {
 			"navLabel": "AI",

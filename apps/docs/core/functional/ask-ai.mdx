@@ -17,7 +17,7 @@ Ask opens as a chat window in the bottom-right corner. The page behind it stays 
 
 **Open full page** in the chat header opens the same conversation as a page of its own, with your history down the left side. Select the **×** in its header to go back to the page you opened it from, or to the workspace home. **Open full page** and **Expand** are hidden on phones, where the chat already fills the screen.
 
-The header shows which model answers and whether it runs on a **local** model or in the **cloud**, for example `nemotron-3-ultra:cloud · Local`. While an answer is on its way, the chat window stays still: only the border of the question box gently pulses and the **Thinking…** label shimmers. Both stay still if your system asks for reduced motion.
+The header shows the model your next question goes to, from the current AI settings, and whether it runs on a **local** model or in the **cloud**, for example `nemotron-3-ultra:cloud · Local`. After an admin changes the model or where private data goes, the header follows within a minute. While an answer is on its way, the chat window stays still: only the border of the question box gently pulses and the **Thinking…** label shimmers. Both stay still if your system asks for reduced motion.
 
 The **⋯** menu in the header renames or pins the conversation, exports it as a Markdown file, saves it as a page in a project you pick, or deletes it.
 
@@ -57,6 +57,12 @@ Facts in an answer are followed by small chips: a task key such as **WEB-12**, a
 Under each answer, **Sources** lists what the answer cites, then the closest other matches that Ask looked at. **Copy** copies the answer with plain citations and a list of links.
 
 <Screenshot src="ai/ask-answer" alt="The Ask AI panel scoped to Website relaunch with the question What's blocking Sprint 14?, an answer with citation chips for WEB-1, WEB-6, a comment on WEB-1 and WEB-2, and the Sources list with a closest match" caption="Each fact links to the task, page or comment it comes from." />
+
+## Questions about using Margaya
+
+Ask also knows Margaya's own guides. Ask how to do something ("How do I turn on AI for a workspace?", "How do repeating tasks work?", "Where do I connect GitHub?"), or ask whether it can see the documentation, and the answer comes from the guides that ship with your Margaya server. Each fact gets a chip with the guide's name; selecting it opens that guide on the documentation site.
+
+Questions about your team's work are answered from your workspace only: the guides are added when a question is about using Margaya (it asks how, where or for help, or names Margaya). Searching the guides happens on your server and sends nothing anywhere.
 
 ## Work with an answer
 
@@ -144,7 +150,26 @@ Use the thumbs up or down under an answer; a thumbs down asks for an optional sh
 
 ## Speak your question
 
-Select the microphone to dictate, and select it again to stop. Depending on the server, the browser's own speech recognition is used (in your Margaya language), or the recording is sent to the server's speech-to-text endpoint and only the text comes back. The microphone is hidden when neither is available. Either way you can edit the text before sending; nothing is sent automatically, and recordings are never stored.
+Select the microphone to dictate, and select it again to stop. While it records, a strip above the box shows **Listening…** with the time and a level meter, and **Discard** or **Stop**; then **Transcribing…** until the text appears. Depending on the server, the browser's own speech recognition is used (in your Margaya language), or the recording is sent to the server's speech-to-text endpoint and only the text comes back. The microphone is hidden when neither is available. You can edit the text before sending; dictation never sends by itself, and recordings are never stored.
+
+## Voice mode
+
+Select **Voice mode** (the sound-wave button next to the microphone) to talk with Ask hands-free:
+
+1. Speak your question. Voice mode notices when you stop talking (a pause of about a second) and stops recording by itself. If you say nothing for about eight seconds, it ends.
+2. Your words are sent as your message, exactly as if you had typed them, so you can see what was heard.
+3. The answer appears as usual and is read aloud in your browser's voice. Citations, tables and code are left out of what is spoken; a chart is announced as being on screen, and a long answer stops after a few sentences.
+
+The strip above the box shows each step: **Listening…**, **Transcribing…**, **Working on it…**, **Speaking…** (with **Skip**). **End** stops voice mode at any time. Two switches in the strip are remembered in this browser:
+
+- **Read answers aloud**: off shows answers without speaking them.
+- **Keep listening after each answer**: on, voice mode listens again for a follow-up after every answer, until you select **End** or stay silent.
+
+Voice mode never listens while it speaks. Your browser's echo cancellation keeps most of a spoken answer out of the next recording; with speakers rather than headphones, wait for it to finish or select **Skip**.
+
+In Build mode, voice mode reads the proposed changes and asks you to say **confirm** or **cancel** (or select the same buttons). Anything else you say is taken as a new request, and the proposal stays on screen. Deleting a task always needs a click on its card. See [Build mode](/core/functional/build-mode#build-by-voice).
+
+Voice mode uses the same speech-to-text as dictation, so it follows the same privacy rules: with **Local only** on, recordings never go to a cloud speech service. Spoken answers use the voices built into your browser and never leave your device.
 
 ## History
 
@@ -165,7 +190,7 @@ A workspace admin can turn on **Keep chat history on the server** instead. Your 
 
 `POST /api/ai/ask` takes `workspaceId` and `question`, plus optional `projectId`, `history` (earlier questions and answers of the conversation), `locale`, `context` (up to 10 `{kind, id}` items, where `kind` is `task`, `page`, `project`, `cycle`, `module`, `user` or `agent`), `webSearch`, `attachments` (up to 3 `{name, mediaType, data}` with base64 `data`) and `skillId`. It streams Server-Sent Events: `meta` carries `sources` and the `model`, `reasoning` events show that the model is thinking (with text only when the server shows reasoning), `delta` the answer text, and `done` the `citations` the answer uses, `noResults`, `followUps` (at most two suggested questions, often none) and `reasoningMs` (how long the model thought, or `null`). Send `Accept: application/json` (or `?stream=false`) to get one JSON body instead. If the model fails or writes nothing, the stream ends with an `error` event (`AI_PROVIDER_ERROR`), and the JSON form answers `502` with that code, never an empty `text`.
 
-Citation tokens look like `[T:WEB-12]` for a task, `[P:Release plan]` for a page, `[C:WEB-12/ab12cd]` for a comment and `[W:1]` for a web result. Each token matches the `ref` of one entry in `sources`, which also gives its `url`.
+Citation tokens look like `[T:WEB-12]` for a task, `[P:Release plan]` for a page, `[C:WEB-12/ab12cd]` for a comment, `[W:1]` for a web result and `[D:1]` for a section of Margaya's documentation (a `web` source whose `url` points to the docs site). Each token matches the `ref` of one entry in `sources`, which also gives its `url`.
 
 An answer may contain a fenced code block with the language `chart` holding JSON: `{"type": "bar" | "donut" | "line", "title": string, "data": [{"label": string, "value": number}], "unit"?: string}`, or, for several series over the same labels, `{"type": "line" | "bar", "title": string, "series": [{"name": string, "data": [{"label": string, "value": number}]}], "unit"?: string}`. Clients that can't draw it can show the data as a list.
 

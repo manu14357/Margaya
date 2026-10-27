@@ -10460,8 +10460,12 @@
 				"stop": "Diktəni dayandır",
 				"recording": "Dinlənilir…",
 				"transcribing": "Mətnə çevrilir…",
-				"denied": "Diktə etmək üçün mikrofona giriş icazəsi verin.",
-				"failed": "Səs yazısını mətnə çevirmək mümkün olmadı."
+				"denied": "Mikrofona giriş bloklanıb. Ünvan çubuğundakı işarədən bu sayt üçün icazə verin və yenidən cəhd edin.",
+				"failed": "Səs yazısını mətnə çevirmək mümkün olmadı.",
+				"unavailable": "Mikrofon mövcud deyil. Birini qoşun və ya onu istifadə edən digər tətbiqləri bağlayın.",
+				"discard": "Ləğv et",
+				"empty": "Heç nə eşidilmədi. Mikrofona bir az yaxın olaraq yenidən cəhd edin.",
+				"blocked": "Səsli giriş bağlıdır, çünki «Yalnız lokal rejim» aktivdir: səs yazıları buluddakı nitq xidmətinə göndərilə bilməz. Admin bunu Parametrlər > Nümunə > Süni intellekt bölməsində söndürə bilər; şəxsi məlumatlar yerli modelə yönləndirilibsə, cavablar yenə də ondan gələcək."
 			},
 			"agent": {
 				"ready": "Bu sorğunu {{agent}} agentinə göndərin.",
@@ -10534,6 +10538,25 @@
 				"saved": "Səhifə kimi saxlanıldı",
 				"open": "Səhifəni aç",
 				"error": "Səhifəni saxlamaq mümkün olmadı"
+			},
+			"voiceMode": {
+				"start": "Səs rejimi",
+				"stop": "Səs rejimini bitir",
+				"end": "Bitir",
+				"thinking": "Üzərində işləyirəm…",
+				"speaking": "Danışıram…",
+				"skip": "Keç",
+				"confirming": "“Təsdiqlə” və ya “ləğv et” deyin",
+				"confirmPrompt": "Təsdiqlə və ya ləğv et deyin.",
+				"readAloud": "Cavabları səsli oxu",
+				"keepListening": "Hər cavabdan sonra dinləməyə davam et",
+				"confirmWords": "təsdiqlə, bəli, hə, oldu, yaxşı, ok, razıyam, davam et, tətbiq et",
+				"cancelWords": "ləğv et, xeyr, yox, dayan, imtina, boş ver, lazım deyil",
+				"cancelled": "Ləğv edildi. Heç nə dəyişmədi.",
+				"applied": "Hazırdır. {{total}} dəyişiklikdən {{done}} tətbiq edildi.",
+				"needsClick": "Silmək üçün onun kartına klikləmək lazımdır.",
+				"chartNote": "Ekrana qrafik çıxardım.",
+				"moreNote": "Qalanı ekrandadır."
 			}
 		},
 		"writing": {
@@ -10816,9 +10839,14 @@
 			"speechTitle": "Nitqdən mətnə",
 			"speechDescription": "Söhbətdə səsli daxiletmə. Bu olmadan, bacaran brauzerlər nitqi özləri tanıyır.",
 			"speechBaseUrl": "Son nöqtə URL-i",
-			"speechBaseUrlHint": "OpenAI ilə uyğun transkripsiya son nöqtəsi, məsələn, lokal Whisper serveri.",
+			"speechBaseUrlHint": "Transkripsiya ünvanı. OpenAI ilə uyğun formatda Margaya bu URL-ə /audio/transcriptions əlavə edir (məsələn, yerli Whisper serveri üçün); Fish Audio ilə isə daxil edilmiş URL-ə göndərir.",
 			"speechModel": "Model",
-			"speechKey": "API açarı"
+			"speechKey": "API açarı",
+			"testSpeech": "Nitqdən mətnə çevirməni yoxla",
+			"speechFormat": "API formatı",
+			"speechFormatHint": "Səsin necə göndərildiyi. Fish Audio üçün ünvan olaraq https://api.fish.audio/v1/asr istifadə edin.",
+			"speechFormatOpenai": "OpenAI ilə uyğun",
+			"speechModelHint": "Fish Audio üçün: transcribe-1-pro və ya transcribe-1, ya da boş saxlayın."
 		},
 		"workspace": {
 			"navLabel": "Sİ",

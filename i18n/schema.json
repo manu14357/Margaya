@@ -43131,6 +43131,18 @@
 								},
 								"failed": {
 									"type": "string"
+								},
+								"unavailable": {
+									"type": "string"
+								},
+								"discard": {
+									"type": "string"
+								},
+								"empty": {
+									"type": "string"
+								},
+								"blocked": {
+									"type": "string"
 								}
 							},
 							"required": [
@@ -43139,7 +43151,87 @@
 								"recording",
 								"transcribing",
 								"denied",
-								"failed"
+								"failed",
+								"unavailable",
+								"discard",
+								"empty",
+								"blocked"
+							]
+						},
+						"voiceMode": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"start": {
+									"type": "string"
+								},
+								"stop": {
+									"type": "string"
+								},
+								"end": {
+									"type": "string"
+								},
+								"thinking": {
+									"type": "string"
+								},
+								"speaking": {
+									"type": "string"
+								},
+								"skip": {
+									"type": "string"
+								},
+								"confirming": {
+									"type": "string"
+								},
+								"confirmPrompt": {
+									"type": "string"
+								},
+								"readAloud": {
+									"type": "string"
+								},
+								"keepListening": {
+									"type": "string"
+								},
+								"confirmWords": {
+									"type": "string"
+								},
+								"cancelWords": {
+									"type": "string"
+								},
+								"cancelled": {
+									"type": "string"
+								},
+								"applied": {
+									"type": "string"
+								},
+								"needsClick": {
+									"type": "string"
+								},
+								"chartNote": {
+									"type": "string"
+								},
+								"moreNote": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"start",
+								"stop",
+								"end",
+								"thinking",
+								"speaking",
+								"skip",
+								"confirming",
+								"confirmPrompt",
+								"readAloud",
+								"keepListening",
+								"confirmWords",
+								"cancelWords",
+								"cancelled",
+								"applied",
+								"needsClick",
+								"chartNote",
+								"moreNote"
 							]
 						},
 						"agent": {
@@ -43481,6 +43573,7 @@
 						"modes",
 						"attachments",
 						"voice",
+						"voiceMode",
 						"agent",
 						"thinking",
 						"versions",
@@ -44531,6 +44624,21 @@
 						},
 						"speechKey": {
 							"type": "string"
+						},
+						"testSpeech": {
+							"type": "string"
+						},
+						"speechFormat": {
+							"type": "string"
+						},
+						"speechFormatHint": {
+							"type": "string"
+						},
+						"speechFormatOpenai": {
+							"type": "string"
+						},
+						"speechModelHint": {
+							"type": "string"
 						}
 					},
 					"required": [
@@ -44611,7 +44719,12 @@
 						"speechBaseUrl",
 						"speechBaseUrlHint",
 						"speechModel",
-						"speechKey"
+						"speechKey",
+						"testSpeech",
+						"speechFormat",
+						"speechFormatHint",
+						"speechFormatOpenai",
+						"speechModelHint"
 					]
 				},
 				"workspace": {

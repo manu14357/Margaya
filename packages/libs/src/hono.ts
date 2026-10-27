@@ -11,11 +11,15 @@ export const windowId = Math.random().toString(36).substring(2, 11);
 
 export const client = hc<AppType>(apiUrl, {
   fetch: (input: RequestInfo | URL, init?: RequestInit) => {
+    // A form upload (FormData) needs the browser's multipart Content-Type,
+    // boundary included; forcing JSON would leave the server an empty form.
+    const isForm =
+      typeof FormData !== "undefined" && init?.body instanceof FormData;
     return fetch(input, {
       ...init,
       headers: {
         ...init?.headers,
-        "Content-Type": "application/json",
+        ...(isForm ? {} : { "Content-Type": "application/json" }),
         "X-Margaya-Window-Id": windowId,
       },
       credentials: "include",

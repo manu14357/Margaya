@@ -92,6 +92,9 @@ COPY --from=builder --chown=appuser:appuser /app/apps/api/drizzle ./apps/api/dri
 COPY --from=builder --chown=appuser:appuser /app/packages/email ./packages/email
 COPY --from=builder --chown=appuser:appuser /app/packages/permissions ./packages/permissions
 COPY --from=builder --chown=appuser:appuser /app/packages/editor-schema/dist ./packages/editor-schema/dist
+# Margaya's guides, which Ask AI searches for questions about using Margaya
+COPY --chown=appuser:appuser apps/docs/core ./apps/docs/core
+ENV MARGAYA_DOCS_DIR=/app/apps/docs/core
 
 # Fail the build early if the runtime dependency layout is broken on the target architecture
 RUN cd /app/apps/api && node -e "const fs=require('fs');for(const m of ['bcryptjs','hono','pg','drizzle-orm','better-auth','ioredis','valibot','octokit','@modelcontextprotocol/sdk','@margaya/editor-schema']){fs.accessSync('node_modules/'+m+'/package.json')};fs.accessSync('node_modules/@margaya/editor-schema/dist/index.js')" && \

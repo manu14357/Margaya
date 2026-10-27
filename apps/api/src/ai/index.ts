@@ -1,4 +1,5 @@
 import { checkVectorStore } from "../ai-memory/vector-store";
+import { testSpeechEndpoint } from "../ai-speech";
 import { requireInstanceAdmin } from "../instance-admin/middleware";
 import {
   apiRouter,
@@ -197,7 +198,7 @@ const instanceTestRoute = createRoute({
   path: "/instance/test",
   tags: TAGS,
   summary: "Test the instance AI connection",
-  description: `Send one tiny request to the saved cloud provider or local endpoint. Failures answer 200 with ok false and a curated message. Limited to 10 a minute per admin.${ADMIN_NOTE}`,
+  description: `Send one tiny request to the saved cloud provider, local endpoint or speech-to-text endpoint. Failures answer 200 with ok false and a curated message. Limited to 10 a minute per admin.${ADMIN_NOTE}`,
   middleware: [requireUserSession, requireInstanceAdmin] as const,
   request: { body: json(instanceAiTestBody) },
   responses: {
@@ -310,6 +311,9 @@ const ai = apiRouter<BaseVariables & { workspaceId: string }>()
   .openapi(instanceTestRoute, async (c) => {
     await enforceRateLimits([[aiTestLimiter, c.get("userId")]]);
     const { target } = c.req.valid("json");
+    if (target === "speech") {
+      return c.json(await testSpeechEndpoint(getAiInstanceConfig()), 200);
+    }
     return c.json(
       await testAiConnection({
         instance: getAiInstanceConfig(),

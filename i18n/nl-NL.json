@@ -10460,8 +10460,12 @@
 				"stop": "Dicteren stoppen",
 				"recording": "Luisteren…",
 				"transcribing": "Transcriberen…",
-				"denied": "Geef toegang tot de microfoon om te dicteren.",
-				"failed": "Kan de opname niet omzetten in tekst."
+				"denied": "Toegang tot de microfoon is geblokkeerd. Sta die voor deze site toe via het pictogram in de adresbalk en probeer het opnieuw.",
+				"failed": "Kan de opname niet omzetten in tekst.",
+				"unavailable": "Er is geen microfoon beschikbaar. Sluit er een aan of sluit andere apps die hem gebruiken.",
+				"discard": "Verwerpen",
+				"empty": "Er was niets te horen. Probeer het opnieuw iets dichter bij de microfoon.",
+				"blocked": "Spraakinvoer staat uit omdat 'Alleen-lokaal-modus' aan staat: opnamen mogen niet naar de spraakdienst in de cloud. Een beheerder kan dit uitzetten onder Instellingen > Instantie > AI; als privégegevens naar het lokale model gaan, komen de antwoorden daar nog steeds vandaan."
 			},
 			"agent": {
 				"ready": "Stuur dit verzoek naar {{agent}}.",
@@ -10534,6 +10538,25 @@
 				"saved": "Opgeslagen als pagina",
 				"open": "Pagina openen",
 				"error": "Kan de pagina niet opslaan"
+			},
+			"voiceMode": {
+				"start": "Spraakmodus",
+				"stop": "Spraakmodus beëindigen",
+				"end": "Beëindigen",
+				"thinking": "Ik ben ermee bezig…",
+				"speaking": "Spreekt…",
+				"skip": "Overslaan",
+				"confirming": "Zeg ‘bevestigen’ of ‘annuleren’",
+				"confirmPrompt": "Zeg bevestigen of annuleren.",
+				"readAloud": "Antwoorden voorlezen",
+				"keepListening": "Na elk antwoord blijven luisteren",
+				"confirmWords": "bevestigen, ja, jawel, jep, ok, oké, prima, doe maar, ga je gang, toepassen",
+				"cancelWords": "annuleren, nee, neen, stop, afbreken, laat maar, toch niet, niet doen",
+				"cancelled": "Geannuleerd. Er is niets gewijzigd.",
+				"applied": "Klaar. {{done}} van de {{total}} wijzigingen toegepast.",
+				"needsClick": "Voor een verwijdering moet je op de kaart klikken.",
+				"chartNote": "Ik heb een grafiek op het scherm gezet.",
+				"moreNote": "De rest staat op het scherm."
 			}
 		},
 		"writing": {
@@ -10816,9 +10839,14 @@
 			"speechTitle": "Spraak naar tekst",
 			"speechDescription": "Spraakinvoer in de chat. Zonder deze instelling herkennen browsers die dat kunnen de spraak zelf.",
 			"speechBaseUrl": "Endpoint-URL",
-			"speechBaseUrlHint": "Een OpenAI-compatibel transcriptie-endpoint, zoals een lokale Whisper-server.",
+			"speechBaseUrlHint": "Het transcriptie-endpoint. Bij OpenAI-compatibel voegt Margaya /audio/transcriptions aan deze URL toe, zoals voor een lokale Whisper-server; bij Fish Audio stuurt het naar de URL zoals ingevoerd.",
 			"speechModel": "Spraakmodel",
-			"speechKey": "API-sleutel"
+			"speechKey": "API-sleutel",
+			"testSpeech": "Spraak naar tekst testen",
+			"speechFormat": "API-indeling",
+			"speechFormatHint": "Hoe audio wordt verstuurd. Gebruik voor Fish Audio https://api.fish.audio/v1/asr als endpoint.",
+			"speechFormatOpenai": "OpenAI-compatibel",
+			"speechModelHint": "Voor Fish Audio: transcribe-1-pro of transcribe-1, of laat het leeg."
 		},
 		"workspace": {
 			"navLabel": "AI",

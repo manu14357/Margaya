@@ -77,8 +77,9 @@ export function AiTestButton({ label, run, disabled }: AiTestButtonProps) {
           </>
         )}
       </p>
-      {/* The server's own reason (e.g. "rejected the API key"), for admins diagnosing setup. */}
-      {result && !ok && result.message && (
+      {/* The server's own reason (e.g. "rejected the API key"), or a note on
+          a success (e.g. local-only routing keeps data away from it). */}
+      {result?.message && (
         <p className="basis-full text-muted-foreground text-xs">
           {result.message}
         </p>

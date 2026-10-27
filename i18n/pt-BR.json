@@ -10609,8 +10609,12 @@
 				"stop": "Parar de ditar",
 				"recording": "Ouvindo…",
 				"transcribing": "Transcrevendo…",
-				"denied": "Permita o acesso ao microfone para ditar.",
-				"failed": "Não foi possível transformar a gravação em texto."
+				"denied": "O acesso ao microfone está bloqueado. Permita para este site pelo ícone na barra de endereço e tente de novo.",
+				"failed": "Não foi possível transformar a gravação em texto.",
+				"unavailable": "Nenhum microfone disponível. Conecte um ou feche outros apps que estejam usando o microfone.",
+				"discard": "Descartar",
+				"empty": "Não deu para ouvir nada. Tente de novo um pouco mais perto do microfone.",
+				"blocked": "A entrada por voz está desativada porque “Modo somente local” está ativado: as gravações não podem ir para o serviço de voz na nuvem. Um administrador pode desativar isso em Configurações > Instância > IA; com os dados privados indo para o modelo local, as respostas continuam vindo dele."
 			},
 			"agent": {
 				"ready": "Envie este pedido para {{agent}}.",
@@ -10683,6 +10687,25 @@
 				"saved": "Salvo como página",
 				"open": "Abrir página",
 				"error": "Não foi possível salvar a página"
+			},
+			"voiceMode": {
+				"start": "Modo de voz",
+				"stop": "Sair do modo de voz",
+				"end": "Encerrar",
+				"thinking": "Trabalhando nisso…",
+				"speaking": "Falando…",
+				"skip": "Pular",
+				"confirming": "Diga “confirmar” ou “cancelar”",
+				"confirmPrompt": "Diga confirmar ou cancelar.",
+				"readAloud": "Ler respostas em voz alta",
+				"keepListening": "Continuar ouvindo após cada resposta",
+				"confirmWords": "confirmar, sim, isso, beleza, ok, okay, claro, pode fazer, manda ver, aplicar",
+				"cancelWords": "cancelar, não, para, pare, esquece, deixa pra lá, nem pensar",
+				"cancelled": "Cancelado. Nada foi alterado.",
+				"applied": "Pronto. {{done}} de {{total}} alterações aplicadas.",
+				"needsClick": "Para excluir, clique no card.",
+				"chartNote": "Coloquei um gráfico na tela.",
+				"moreNote": "O resto está na tela."
 			}
 		},
 		"writing": {
@@ -10966,9 +10989,14 @@
 			"speechTitle": "Fala para texto",
 			"speechDescription": "Entrada de voz no chat. Sem isso, os navegadores compatíveis reconhecem a fala por conta própria.",
 			"speechBaseUrl": "URL do endpoint",
-			"speechBaseUrlHint": "Um endpoint de transcrição compatível com OpenAI, como um servidor Whisper local.",
+			"speechBaseUrlHint": "O endpoint de transcrição. No formato compatível com OpenAI, o Margaya adiciona /audio/transcriptions a esta URL, como para um servidor Whisper local; com o Fish Audio, envia para a URL exatamente como foi digitada.",
 			"speechModel": "Modelo",
-			"speechKey": "Chave de API"
+			"speechKey": "Chave de API",
+			"testSpeech": "Testar fala para texto",
+			"speechFormat": "Formato da API",
+			"speechFormatHint": "Como o áudio é enviado. Para o Fish Audio, use https://api.fish.audio/v1/asr como endpoint.",
+			"speechFormatOpenai": "Compatível com OpenAI",
+			"speechModelHint": "Para o Fish Audio: transcribe-1-pro ou transcribe-1, ou deixe em branco."
 		},
 		"workspace": {
 			"navLabel": "IA",

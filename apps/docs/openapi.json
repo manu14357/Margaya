@@ -19689,9 +19689,10 @@
             "type": "string",
             "enum": [
               "cloud",
-              "local"
+              "local",
+              "speech"
             ],
-            "description": "Which endpoint to test. Default: the cloud provider."
+            "description": "Which endpoint to test: the cloud provider (default), the local model, or the speech-to-text endpoint (sent one second of silence)."
           }
         },
         "additionalProperties": false
@@ -19845,7 +19846,7 @@
         "properties": {
           "ref": {
             "type": "string",
-            "description": "The citation token the answer uses inside square brackets: T:<task key> for a task, P:<page title> for a page, C:<task key>/<comment id prefix> for a comment, W:<n> for a web search result.",
+            "description": "The citation token the answer uses inside square brackets: T:<task key> for a task, P:<page title> for a page, C:<task key>/<comment id prefix> for a comment, W:<n> for a web search result, D:<n> for a section of Margaya's documentation (kind web, linking to the docs site).",
             "example": "T:WEB-12"
           },
           "kind": {
@@ -65874,7 +65875,7 @@
           "AI"
         ],
         "summary": "Test the instance AI connection",
-        "description": "Send one tiny request to the saved cloud provider or local endpoint. Failures answer 200 with ok false and a curated message. Limited to 10 a minute per admin. Instance admins only, with a signed-in session: API keys are refused.",
+        "description": "Send one tiny request to the saved cloud provider, local endpoint or speech-to-text endpoint. Failures answer 200 with ok false and a curated message. Limited to 10 a minute per admin. Instance admins only, with a signed-in session: API keys are refused.",
         "requestBody": {
           "required": true,
           "content": {
@@ -65998,7 +65999,7 @@
           "AI"
         ],
         "summary": "Ask about the workspace",
-        "description": "Answer a question about the workspace in plain language, in the caller's language, from tasks, pages and comments they can see (full-text search plus structured task filters such as overdue, mine, completed, blocking, a cycle or an assignee named in the question: workspace members match by full or first name, agents by full name). Questions about someone's tasks look at open work and fall back to finished work when nothing is open. Live task data comes before pages, which may be outdated. A follow-up that names nothing itself (\"and its description?\") is about the tasks the previous answer in `history` cited. `context` items (\"@\" mentions) are loaded first; `attachments` add images (for vision models) or text files; `webSearch` adds web results cited as [W:n] (only the question goes to the search provider); `skillId` adds a saved skill's prompt as the person's instructions; the workspace's memory notes are background. Restricted projects are left out unless the workspace includes them, and projects with AI off never are. The answer cites sources as [T:WEB-12], [P:<page title>], [C:<task key>/<comment id prefix>] or [W:<n>]; `sources` lists what it may cite. Counting, breakdown, trend and chart questions (how many, by status, priority, assignee, label, cycle or module, created vs completed per week or day, burn-up, a chart or graph) also get live numbers computed over the tasks the caller can see, and the answer may contain a fenced ```chart block of JSON {type: bar|donut|line, title, data: [{label, value}] or series: [{name, data: [{label, value}]}], unit?} for the client to draw. `done` adds `followUps` (0-2 suggested questions, often none) and `reasoningMs`; `reasoning` events stream while the model thinks (text only when the instance shows reasoning). When nothing relevant is found, no model call is made and `noResults` is true. An answer cut off before any visible text (a reasoning model out of room) ends with an AI_PROVIDER_ERROR error event instead of an empty answer, or a 502 with the JSON fallback. Needs ai:use and AI on for the instance, the workspace and (with projectId) the project.",
+        "description": "Answer a question about the workspace in plain language, in the caller's language, from tasks, pages and comments they can see (full-text search plus structured task filters such as overdue, mine, completed, blocking, a cycle or an assignee named in the question: workspace members match by full or first name, agents by full name). Questions about someone's tasks look at open work and fall back to finished work when nothing is open. Live task data comes before pages, which may be outdated. A follow-up that names nothing itself (\"and its description?\") is about the tasks the previous answer in `history` cited. `context` items (\"@\" mentions) are loaded first; `attachments` add images (for vision models) or text files; `webSearch` adds web results cited as [W:n] (only the question goes to the search provider); Margaya's own documentation is searched too, so questions about using Margaya are answered from the guides and cited as [D:n]; `skillId` adds a saved skill's prompt as the person's instructions; the workspace's memory notes are background. Restricted projects are left out unless the workspace includes them, and projects with AI off never are. The answer cites sources as [T:WEB-12], [P:<page title>], [C:<task key>/<comment id prefix>], [W:<n>] or [D:<n>]; `sources` lists what it may cite. Counting, breakdown, trend and chart questions (how many, by status, priority, assignee, label, cycle or module, created vs completed per week or day, burn-up, a chart or graph) also get live numbers computed over the tasks the caller can see, and the answer may contain a fenced ```chart block of JSON {type: bar|donut|line, title, data: [{label, value}] or series: [{name, data: [{label, value}]}], unit?} for the client to draw. `done` adds `followUps` (0-2 suggested questions, often none) and `reasoningMs`; `reasoning` events stream while the model thinks (text only when the instance shows reasoning). When nothing relevant is found, no model call is made and `noResults` is true. An answer cut off before any visible text (a reasoning model out of room) ends with an AI_PROVIDER_ERROR error event instead of an empty answer, or a 502 with the JSON fallback. Needs ai:use and AI on for the instance, the workspace and (with projectId) the project.",
         "requestBody": {
           "required": true,
           "content": {

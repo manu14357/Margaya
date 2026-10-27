@@ -107,7 +107,7 @@ These instance settings live under **Settings** > **Instance** > **AI**, in the 
 - **Show reasoning** sends a reasoning model's thinking text to the person who asked. Off by default: people then only see how long the model thought. Reasoning is never stored or logged either way.
 - **Thinking on local models**: by default Margaya asks local reasoning models (Qwen, DeepSeek R1, models on Ollama) not to think, which keeps answers fast. Set it to **On** to let them think; Margaya still adds extra room for their reasoning tokens.
 - **Search provider**: **SearXNG** (enter your SearXNG base URL; its JSON output must be enabled), **Brave Search** or **Tavily** (enter the API key). Only a person's question is sent to the provider, never workspace content. A SearXNG URL must be a public address like other outbound calls; for one on your own network set `MARGAYA_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS=true`.
-- **Speech to text**: an OpenAI-compatible transcription endpoint (`…/audio/transcriptions`), such as a local Whisper server or `https://api.openai.com/v1` with `whisper-1`. An endpoint on your own network counts as local; workspaces whose data may only go to local models never send recordings to a cloud endpoint. Transcriptions appear in usage as **Speech to text**.
+- **Speech to text**: choose the **API format**. **OpenAI-compatible** posts to `<endpoint>/audio/transcriptions` with a model, for example a local Whisper server, `https://api.openai.com/v1` with `whisper-1`, or `https://api.groq.com/openai/v1` with `whisper-large-v3`. **Fish Audio** posts to the endpoint exactly as entered, `https://api.fish.audio/v1/asr`; its model (`transcribe-1-pro` or `transcribe-1`) is optional and sent as a header. Fish Audio answers 402 when the account has no API credit left. **Test speech to text** sends one second of silence and shows the URL it called when something is wrong. An endpoint on your own network counts as local. Only **Local only** (on the instance or a workspace) keeps recordings off a cloud endpoint; the private-data route chooses the model, not the speech service, so a local model and a cloud speech service such as Groq can be combined. Transcriptions appear in usage as **Speech to text**.
 
 Each workspace then decides under **Settings** > **Workspace** > **AI**, in the **Ask AI chat** section:
 
@@ -185,7 +185,7 @@ Every AI setting can also come from the environment. A set variable wins over th
 | `MARGAYA_AI_WEB_SEARCH_PROVIDER` | `off`, `searxng`, `brave` or `tavily` |
 | `MARGAYA_AI_WEB_SEARCH_URL`, `MARGAYA_AI_WEB_SEARCH_API_KEY` | SearXNG base URL, or the Brave or Tavily key |
 | `MARGAYA_AI_WEB_SEARCH_RPM` | Web searches per minute per workspace (default 60) |
-| `MARGAYA_AI_SPEECH_BASE_URL`, `MARGAYA_AI_SPEECH_MODEL`, `MARGAYA_AI_SPEECH_API_KEY` | Speech-to-text endpoint |
+| `MARGAYA_AI_SPEECH_FORMAT` (`openai` or `fish`), `MARGAYA_AI_SPEECH_BASE_URL`, `MARGAYA_AI_SPEECH_MODEL`, `MARGAYA_AI_SPEECH_API_KEY` | Speech-to-text endpoint |
 
 With the Helm chart, set these under `margaya.env.ai` in your values, and reference keys from Secrets.
 
@@ -199,4 +199,7 @@ With the Helm chart, set these under `margaya.env.ai` in your values, and refere
 - **"The AI service didn't respond"** (`AI_PROVIDER_ERROR`): the provider failed or timed out, or a reasoning model ran out of room before it wrote an answer. Try again; if it keeps happening, use **Test provider** or **Test local model** on the instance page.
 - **"The AI model declined this request"** (`AI_REFUSED`): the provider refused to answer. Rephrase the request.
 - **"This workspace doesn't keep AI conversations on the server"** (`AI_HISTORY_OFF`): the conversations API was called while **Keep chat history on the server** is off. History stays in each browser until a workspace admin turns it on.
+- **"Voice input is off because Local-only mode is on"**: the speech-to-text endpoint is in the cloud and **Local-only mode** is on. Turn Local-only mode off (private data can still go to the local model), or use a speech endpoint on your own network.
+- **"Couldn't turn the recording into text"**: use **Test speech to text** on the instance page; it names the URL it called and the service's own reason. A 402 from Fish Audio means the account has no API credit left (API credit is separate from platform credit).
+- **"Microphone access is blocked"**: the browser refused the microphone. Allow it for the site from the icon in the address bar. If you run your own reverse proxy, make sure it doesn't send a `Permissions-Policy` header that turns the microphone off (see [Nginx](/core/reverse-proxy/nginx)).
 - **"pgvector not available"**: the database has no pgvector extension, or Margaya's database user may not create it. Use the pgvector image (see [Enable semantic search](#enable-semantic-search)); search keeps working with full text meanwhile.

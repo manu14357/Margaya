@@ -6,7 +6,6 @@ import {
   getAiInstanceConfig,
   speechConfigured,
 } from "../ai/instance-config";
-import { allowedTarget } from "../ai/router";
 import { aiErrorResponse } from "../ai/sse";
 import { emptyUsage } from "../ai/types";
 import {
@@ -70,14 +69,223 @@ export function setSpeechFetch(next: typeof fetch | null): void {
   fetchImpl = next ?? ((...args) => fetch(...args));
 }
 
-/** Whether audio of this workspace may go to the speech endpoint. */
+/**
+ * Whether audio of this workspace may go to the speech endpoint. Only
+ * "Local only" (instance or workspace) keeps recordings off a cloud
+ * endpoint: the private-data route chooses which model reads workspace
+ * data, while the speech endpoint is a separate service the admin chose for
+ * voice, so a local model and cloud speech can be combined.
+ */
 export async function speechDestinationAllowed(
   instance: AiInstanceConfig,
   policy: Pick<WorkspaceAiPolicy, "localOnly">,
 ): Promise<{ ok: boolean; local: boolean }> {
   const local = await isPrivateHost(new URL(instance.speech.baseUrl).hostname);
-  const target = allowedTarget("private", instance, policy);
-  return { ok: local || target === "cloud", local };
+  return { ok: local || !(instance.localOnly || policy.localOnly), local };
+}
+
+/**
+ * Where audio is posted: <url>/audio/transcriptions for OpenAI-compatible
+ * endpoints, Fish Audio's ASR URL exactly as given.
+ */
+export function speechUrl(instance: AiInstanceConfig): string {
+  const base = instance.speech.baseUrl.replace(/\/+$/, "");
+  return instance.speech.format === "fish"
+    ? base
+    : `${base}/audio/transcriptions`;
+}
+
+/**
+ * Posts one recording to the speech endpoint and returns its text. Errors
+ * are curated AiErrors; `detail` adds the URL to them (for admins testing
+ * the endpoint, never for people dictating).
+ */
+async function callSpeechEndpoint(
+  instance: AiInstanceConfig,
+  audio: File,
+  options: { language?: string; signal?: AbortSignal; detail?: boolean },
+): Promise<string> {
+  const url = speechUrl(instance);
+  const where = options.detail ? ` (${url})` : "";
+  const local = await isPrivateHost(new URL(url).hostname);
+  if (!local) {
+    try {
+      await assertPublicDestination(url, "Speech endpoint");
+    } catch {
+      throw new AiError(
+        "AI_NOT_CONFIGURED",
+        "The speech endpoint must be a public address",
+      );
+    }
+  }
+  const fish = instance.speech.format === "fish";
+  const form = new FormData();
+  // Fish Audio: the file is "audio" and there is no model or format field.
+  form.set(fish ? "audio" : "file", audio, audio.name || "recording.webm");
+  if (fish) {
+    form.set("ignore_timestamps", "true");
+  } else {
+    form.set("model", instance.speech.model);
+    form.set("response_format", "json");
+  }
+  if (options.language) form.set("language", options.language.toLowerCase());
+
+  const headers: Record<string, string> = {};
+  if (instance.speech.apiKey) {
+    headers.authorization = `Bearer ${instance.speech.apiKey}`;
+  }
+  // Fish Audio picks its model (transcribe-1-pro, transcribe-1) from a
+  // header; a form field would be ignored.
+  if (fish && instance.speech.model) headers.model = instance.speech.model;
+  const response = await fetchImpl(url, {
+    method: "POST",
+    headers,
+    body: form,
+    signal: options.signal
+      ? AbortSignal.any([AbortSignal.timeout(TIMEOUT_MS), options.signal])
+      : AbortSignal.timeout(TIMEOUT_MS),
+    redirect: "error",
+  });
+  if (!response.ok) {
+    // The service's own reason ({"message": "..."}), for admins testing only.
+    const raw = await response.text().catch(() => "");
+    let reason = "";
+    if (options.detail) {
+      try {
+        const message = (JSON.parse(raw) as { message?: unknown }).message;
+        if (typeof message === "string") reason = ` ${message.slice(0, 200)}`;
+      } catch {
+        // Not JSON: no reason to show.
+      }
+    }
+    if (response.status === 401 || response.status === 403) {
+      throw new AiError(
+        "AI_NOT_CONFIGURED",
+        `The speech endpoint rejected the API key${where}.${reason}`,
+      );
+    }
+    if (response.status === 402) {
+      throw new AiError(
+        "AI_NOT_CONFIGURED",
+        `The speech service account has no credit left (402)${where}. Add API credit with the provider, then test again.${reason}`,
+      );
+    }
+    if (response.status === 429) {
+      throw new AiError(
+        "AI_RATE_LIMITED",
+        `The speech service is at its limit for now (429)${where}. Try again in a moment.${reason}`,
+      );
+    }
+    if (response.status === 404 || response.status === 405) {
+      throw new AiError(
+        "AI_NOT_CONFIGURED",
+        fish
+          ? `The speech endpoint was not found${where}. For Fish Audio use https://api.fish.audio/v1/asr.`
+          : `The speech endpoint or model was not found${where}. Margaya posts to <endpoint>/audio/transcriptions, so the endpoint must be OpenAI-compatible; for Fish Audio choose that API format.`,
+      );
+    }
+    throw new AiError(
+      "AI_PROVIDER_ERROR",
+      `The speech endpoint failed (${response.status})${where}.${reason}`,
+    );
+  }
+  let body: { text?: unknown };
+  try {
+    body = (await response.json()) as { text?: unknown };
+  } catch {
+    throw new AiError(
+      "AI_PROVIDER_ERROR",
+      `The speech endpoint did not answer with JSON${where}`,
+    );
+  }
+  return typeof body.text === "string"
+    ? body.text.trim().slice(0, MAX_TEXT_CHARS)
+    : "";
+}
+
+/** One second of 16 kHz mono silence as a WAV file: a tiny test upload. */
+function silentWav(): File {
+  const samples = 16_000;
+  const buffer = new ArrayBuffer(44 + samples * 2);
+  const view = new DataView(buffer);
+  const ascii = (offset: number, text: string) => {
+    for (let i = 0; i < text.length; i++) {
+      view.setUint8(offset + i, text.charCodeAt(i));
+    }
+  };
+  ascii(0, "RIFF");
+  view.setUint32(4, 36 + samples * 2, true);
+  ascii(8, "WAVE");
+  ascii(12, "fmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, 1, true);
+  view.setUint32(24, 16_000, true);
+  view.setUint32(28, 32_000, true);
+  view.setUint16(32, 2, true);
+  view.setUint16(34, 16, true);
+  ascii(36, "data");
+  view.setUint32(40, samples * 2, true);
+  return new File([buffer], "test.wav", { type: "audio/wav" });
+}
+
+/**
+ * The instance speech test: one second of silence to the saved endpoint.
+ * Silence may come back as empty text; any well-formed answer passes.
+ */
+export async function testSpeechEndpoint(instance: AiInstanceConfig) {
+  const result = {
+    provider: speechConfigured(instance)
+      ? instance.speech.format === "fish"
+        ? "fish_audio"
+        : "openai_compatible"
+      : null,
+    model: instance.speech.model || null,
+    destination: null as "cloud" | "local" | null,
+  };
+  if (!speechConfigured(instance)) {
+    return {
+      ...result,
+      ok: false,
+      code: "AI_NOT_CONFIGURED",
+      message:
+        instance.speech.format === "fish"
+          ? "Set the endpoint URL first"
+          : "Set the endpoint URL and model first",
+      latencyMs: null,
+    };
+  }
+  result.destination = (await isPrivateHost(
+    new URL(instance.speech.baseUrl).hostname,
+  ))
+    ? "local"
+    : "cloud";
+  const startedAt = performance.now();
+  try {
+    await callSpeechEndpoint(instance, silentWav(), { detail: true });
+    return {
+      ...result,
+      ok: true,
+      code: null,
+      // It answers, but with "Local only" no workspace may send it audio.
+      message:
+        result.destination === "cloud" && instance.localOnly
+          ? "Local-only mode is on, so workspaces won't send recordings to this cloud endpoint. Use a speech endpoint on your own network, or turn Local-only mode off (private data can still go to the local model)."
+          : null,
+      latencyMs: Math.round(performance.now() - startedAt),
+    };
+  } catch (error) {
+    return {
+      ...result,
+      ok: false,
+      code: error instanceof AiError ? error.code : "AI_PROVIDER_ERROR",
+      message:
+        error instanceof AiError
+          ? error.message
+          : `The speech endpoint could not be reached (${speechUrl(instance)})`,
+      latencyMs: Math.round(performance.now() - startedAt),
+    };
+  }
 }
 
 function baseType(type: string): string {
@@ -167,63 +375,14 @@ const aiSpeech = apiRouter<BaseVariables & { workspaceId: string }>().openapi(
     await assertWithinBudget({ workspaceId, userId, policy });
     await enforceRateLimits([[limiter, userId]]);
 
-    const url = `${instance.speech.baseUrl.replace(/\/+$/, "")}/audio/transcriptions`;
-    if (!destination.local) {
-      try {
-        await assertPublicDestination(url, "Speech endpoint");
-      } catch {
-        throw new AiError(
-          "AI_NOT_CONFIGURED",
-          "The speech endpoint must be a public address",
-        );
-      }
-    }
-    const form = new FormData();
-    form.set("file", audio, audio.name || "recording.webm");
-    form.set("model", instance.speech.model);
-    form.set("response_format", "json");
-    if (language) form.set("language", language.toLowerCase());
-
     const startedAt = performance.now();
     let status: UsageStatus = "error";
     let text = "";
     try {
-      const response = await fetchImpl(url, {
-        method: "POST",
-        headers: instance.speech.apiKey
-          ? { authorization: `Bearer ${instance.speech.apiKey}` }
-          : {},
-        body: form,
-        signal: AbortSignal.any([
-          AbortSignal.timeout(TIMEOUT_MS),
-          c.req.raw.signal,
-        ]),
-        redirect: "error",
+      text = await callSpeechEndpoint(instance, audio, {
+        language,
+        signal: c.req.raw.signal,
       });
-      if (!response.ok) {
-        await response.text().catch(() => "");
-        if (response.status === 401 || response.status === 403) {
-          throw new AiError(
-            "AI_NOT_CONFIGURED",
-            "The speech endpoint rejected the API key",
-          );
-        }
-        if (response.status === 404) {
-          throw new AiError(
-            "AI_NOT_CONFIGURED",
-            "The speech endpoint or model was not found",
-          );
-        }
-        throw new AiError(
-          "AI_PROVIDER_ERROR",
-          `The speech endpoint failed (${response.status})`,
-        );
-      }
-      const body = (await response.json()) as { text?: unknown };
-      text =
-        typeof body.text === "string"
-          ? body.text.trim().slice(0, MAX_TEXT_CHARS)
-          : "";
       status = "ok";
     } catch (error) {
       if (c.req.raw.signal.aborted) status = "cancelled";

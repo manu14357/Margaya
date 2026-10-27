@@ -10460,8 +10460,12 @@
 				"stop": "Dikteyi durdur",
 				"recording": "Dinleniyor…",
 				"transcribing": "Metne dönüştürülüyor…",
-				"denied": "Dikte etmek için mikrofon erişimine izin verin.",
-				"failed": "Kayıt metne dönüştürülemedi."
+				"denied": "Mikrofon erişimi engellendi. Adres çubuğundaki simgeden bu site için izin verin ve tekrar deneyin.",
+				"failed": "Kayıt metne dönüştürülemedi.",
+				"unavailable": "Kullanılabilir mikrofon yok. Bir mikrofon bağlayın veya onu kullanan diğer uygulamaları kapatın.",
+				"discard": "Vazgeç",
+				"empty": "Hiçbir şey duyulmadı. Mikrofona biraz daha yakından tekrar deneyin.",
+				"blocked": "Sesli giriş kapalı çünkü «Yalnızca yerel mod» açık: kayıtlar buluttaki konuşma hizmetine gönderilemez. Bir yönetici bunu Ayarlar > Örnek > Yapay zekâ bölümünden kapatabilir; özel veriler yerel modele yönlendirilirse yanıtlar yine ondan gelir."
 			},
 			"agent": {
 				"ready": "Bu isteği {{agent}} ajanına gönderin.",
@@ -10534,6 +10538,25 @@
 				"saved": "Sayfa olarak kaydedildi",
 				"open": "Sayfayı aç",
 				"error": "Sayfa kaydedilemedi"
+			},
+			"voiceMode": {
+				"start": "Sesli mod",
+				"stop": "Sesli modu kapat",
+				"end": "Bitir",
+				"thinking": "Üzerinde çalışıyorum…",
+				"speaking": "Konuşuyor…",
+				"skip": "Atla",
+				"confirming": "“Onayla” ya da “iptal” deyin",
+				"confirmPrompt": "Onayla ya da iptal deyin.",
+				"readAloud": "Yanıtları sesli oku",
+				"keepListening": "Her yanıttan sonra dinlemeye devam et",
+				"confirmWords": "onayla, evet, tamam, olur, ok, okey, peki, yap, devam et, uygula",
+				"cancelWords": "iptal, hayır, yok, dur, vazgeç, boş ver, yapma, iptal et",
+				"cancelled": "İptal edildi. Hiçbir şey değişmedi.",
+				"applied": "Tamam. {{total}} değişiklikten {{done}} tanesi uygulandı.",
+				"needsClick": "Silmek için kartına tıklamanız gerekiyor.",
+				"chartNote": "Ekrana bir grafik koydum.",
+				"moreNote": "Gerisi ekranda."
 			}
 		},
 		"writing": {
@@ -10816,9 +10839,14 @@
 			"speechTitle": "Konuşmadan metne",
 			"speechDescription": "Sohbette sesli giriş. Bu ayar olmadan, destekleyen tarayıcılar konuşmayı kendileri tanır.",
 			"speechBaseUrl": "Uç nokta URL'si",
-			"speechBaseUrlHint": "OpenAI uyumlu bir transkripsiyon uç noktası, örneğin yerel bir Whisper sunucusu.",
+			"speechBaseUrlHint": "Transkripsiyon uç noktası. OpenAI uyumlu biçimde Margaya, yerel bir Whisper sunucusundaki gibi bu URL'ye /audio/transcriptions ekler; Fish Audio'da girilen URL'ye olduğu gibi gönderir.",
 			"speechModel": "Konuşma modeli",
-			"speechKey": "API anahtarı"
+			"speechKey": "API anahtarı",
+			"testSpeech": "Konuşmayı metne çevirmeyi test et",
+			"speechFormat": "API biçimi",
+			"speechFormatHint": "Sesin nasıl gönderildiği. Fish Audio için uç nokta olarak https://api.fish.audio/v1/asr kullanın.",
+			"speechFormatOpenai": "OpenAI uyumlu",
+			"speechModelHint": "Fish Audio için: transcribe-1-pro veya transcribe-1; ya da boş bırakın."
 		},
 		"workspace": {
 			"navLabel": "YZ",

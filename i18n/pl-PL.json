@@ -10758,8 +10758,12 @@
 				"stop": "Zatrzymaj dyktowanie",
 				"recording": "Słucham…",
 				"transcribing": "Transkrypcja…",
-				"denied": "Zezwól na dostęp do mikrofonu, aby dyktować.",
-				"failed": "Nie udało się zamienić nagrania na tekst."
+				"denied": "Dostęp do mikrofonu jest zablokowany. Zezwól na niego dla tej witryny za pomocą ikony na pasku adresu i spróbuj ponownie.",
+				"failed": "Nie udało się zamienić nagrania na tekst.",
+				"unavailable": "Brak dostępnego mikrofonu. Podłącz mikrofon lub zamknij inne aplikacje, które go używają.",
+				"discard": "Odrzuć",
+				"empty": "Nic nie usłyszano. Spróbuj ponownie trochę bliżej mikrofonu.",
+				"blocked": "Wprowadzanie głosowe jest wyłączone, bo włączono „Tryb tylko lokalny”: nagrania nie mogą trafiać do usługi mowy w chmurze. Administrator może to wyłączyć w Ustawienia > Instancja > AI; jeśli dane prywatne trafiają do modelu lokalnego, odpowiedzi nadal pochodzą z niego."
 			},
 			"agent": {
 				"ready": "Wyślij tę prośbę do agenta {{agent}}.",
@@ -10832,6 +10836,25 @@
 				"saved": "Zapisano jako stronę",
 				"open": "Otwórz stronę",
 				"error": "Nie udało się zapisać strony"
+			},
+			"voiceMode": {
+				"start": "Tryb głosowy",
+				"stop": "Zakończ tryb głosowy",
+				"end": "Zakończ",
+				"thinking": "Pracuję nad tym…",
+				"speaking": "Mówię…",
+				"skip": "Pomiń",
+				"confirming": "Powiedz „potwierdź” lub „anuluj”",
+				"confirmPrompt": "Powiedz potwierdź albo anuluj.",
+				"readAloud": "Czytaj odpowiedzi na głos",
+				"keepListening": "Słuchaj dalej po każdej odpowiedzi",
+				"confirmWords": "potwierdź, tak, no tak, jasne, ok, okej, dobra, zrób to, dawaj, zastosuj",
+				"cancelWords": "anuluj, nie, stop, przestań, zatrzymaj, nieważne, daj spokój, nie rób tego",
+				"cancelled": "Anulowano. Nic nie zostało zmienione.",
+				"applied": "Gotowe. Zastosowano {{done}} z {{total}} zmian.",
+				"needsClick": "Usunięcie wymaga kliknięcia jego karty.",
+				"chartNote": "Wykres jest na ekranie.",
+				"moreNote": "Reszta jest na ekranie."
 			}
 		},
 		"writing": {
@@ -11116,9 +11139,14 @@
 			"speechTitle": "Mowa na tekst",
 			"speechDescription": "Wprowadzanie głosowe w czacie. Bez tego przeglądarki, które to potrafią, same rozpoznają mowę.",
 			"speechBaseUrl": "Adres URL punktu końcowego",
-			"speechBaseUrlHint": "Punkt końcowy transkrypcji zgodny z OpenAI, np. lokalny serwer Whisper.",
+			"speechBaseUrlHint": "Punkt końcowy transkrypcji. W formacie zgodnym z OpenAI Margaya dodaje /audio/transcriptions do tego adresu, jak dla lokalnego serwera Whisper; w Fish Audio wysyła na adres dokładnie w podanej postaci.",
 			"speechModel": "Model mowy",
-			"speechKey": "Klucz API"
+			"speechKey": "Klucz API",
+			"testSpeech": "Przetestuj zamianę mowy na tekst",
+			"speechFormat": "Format API",
+			"speechFormatHint": "Sposób wysyłania dźwięku. Dla Fish Audio użyj https://api.fish.audio/v1/asr jako punktu końcowego.",
+			"speechFormatOpenai": "Zgodny z OpenAI",
+			"speechModelHint": "Dla Fish Audio: transcribe-1-pro lub transcribe-1 albo zostaw puste."
 		},
 		"workspace": {
 			"navLabel": "AI",

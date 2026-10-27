@@ -10609,8 +10609,12 @@
 				"stop": "Arrêter la dictée",
 				"recording": "Écoute…",
 				"transcribing": "Transcription…",
-				"denied": "Autorisez l'accès au micro pour dicter.",
-				"failed": "Impossible de convertir l'enregistrement en texte."
+				"denied": "L'accès au micro est bloqué. Autorisez-le pour ce site depuis l'icône de la barre d'adresse, puis réessayez.",
+				"failed": "Impossible de convertir l'enregistrement en texte.",
+				"unavailable": "Aucun micro n'est disponible. Branchez-en un ou fermez les autres applications qui l'utilisent.",
+				"discard": "Annuler",
+				"empty": "Rien n'a été entendu. Réessayez un peu plus près du micro.",
+				"blocked": "La saisie vocale est désactivée car « Mode local uniquement » est activé : les enregistrements ne peuvent pas aller au service vocal dans le cloud. Un administrateur peut le désactiver dans Paramètres > Instance > IA ; si les données privées vont au modèle local, les réponses viennent toujours de lui."
 			},
 			"agent": {
 				"ready": "Envoyer cette demande à {{agent}}.",
@@ -10683,6 +10687,25 @@
 				"saved": "Enregistré comme page",
 				"open": "Ouvrir la page",
 				"error": "Impossible d'enregistrer la page"
+			},
+			"voiceMode": {
+				"start": "Mode vocal",
+				"stop": "Quitter le mode vocal",
+				"end": "Terminer",
+				"thinking": "Je m'en occupe…",
+				"speaking": "Je parle…",
+				"skip": "Passer",
+				"confirming": "Dites « confirmer » ou « annuler »",
+				"confirmPrompt": "Dites confirmer ou annuler.",
+				"readAloud": "Lire les réponses à voix haute",
+				"keepListening": "Continuer à écouter après chaque réponse",
+				"confirmWords": "confirmer, oui, ouais, d'accord, ok, okay, bien sûr, vas-y, allez-y, appliquer",
+				"cancelWords": "annuler, non, stop, arrête, laisse tomber, pas question, tant pis",
+				"cancelled": "Annulé. Rien n'a été modifié.",
+				"applied": "Terminé. {{done}} modifications sur {{total}} appliquées.",
+				"needsClick": "Pour une suppression, cliquez sur sa carte.",
+				"chartNote": "J'ai affiché un graphique à l'écran.",
+				"moreNote": "La suite est à l'écran."
 			}
 		},
 		"writing": {
@@ -10966,9 +10989,14 @@
 			"speechTitle": "Reconnaissance vocale",
 			"speechDescription": "Saisie vocale dans le chat. Sans elle, les navigateurs qui en sont capables reconnaissent eux-mêmes la parole.",
 			"speechBaseUrl": "URL du point de terminaison",
-			"speechBaseUrlHint": "Un point de terminaison de transcription compatible OpenAI, comme un serveur Whisper local.",
+			"speechBaseUrlHint": "Le point de terminaison de transcription. En compatible OpenAI, Margaya ajoute /audio/transcriptions à cette URL, comme pour un serveur Whisper local ; avec Fish Audio, il envoie à l'URL telle que saisie.",
 			"speechModel": "Modèle",
-			"speechKey": "Clé API"
+			"speechKey": "Clé API",
+			"testSpeech": "Tester la transcription vocale",
+			"speechFormat": "Format de l'API",
+			"speechFormatHint": "Comment l'audio est envoyé. Pour Fish Audio, utilisez https://api.fish.audio/v1/asr comme point de terminaison.",
+			"speechFormatOpenai": "Compatible OpenAI",
+			"speechModelHint": "Pour Fish Audio : transcribe-1-pro ou transcribe-1, ou laissez vide."
 		},
 		"workspace": {
 			"navLabel": "IA",

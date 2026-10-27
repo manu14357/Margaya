@@ -10313,8 +10313,12 @@
 				"stop": "停止语音输入",
 				"recording": "正在聆听…",
 				"transcribing": "正在转写…",
-				"denied": "请允许访问麦克风以使用语音输入。",
-				"failed": "无法将录音转为文字。"
+				"denied": "麦克风访问已被阻止。请通过地址栏中的图标允许此网站使用麦克风，然后重试。",
+				"failed": "无法将录音转为文字。",
+				"unavailable": "没有可用的麦克风。请连接一个麦克风，或关闭正在使用它的其他应用。",
+				"discard": "放弃",
+				"empty": "没有听到任何声音。请靠近麦克风一些再试一次。",
+				"blocked": "已开启“仅本地模式”，所以语音输入不可用：录音不能发送到云端语音服务。管理员可以在“设置 > 实例 > AI”中关闭它；若私有数据仍路由到本地模型，回答依旧来自本地模型。"
 			},
 			"agent": {
 				"ready": "将此请求发送给 {{agent}}。",
@@ -10387,6 +10391,25 @@
 				"saved": "已另存为页面",
 				"open": "打开页面",
 				"error": "无法保存页面"
+			},
+			"voiceMode": {
+				"start": "语音模式",
+				"stop": "退出语音模式",
+				"end": "结束",
+				"thinking": "正在处理…",
+				"speaking": "正在朗读…",
+				"skip": "跳过",
+				"confirming": "请说“确认”或“取消”",
+				"confirmPrompt": "请说确认或取消。",
+				"readAloud": "朗读回答",
+				"keepListening": "每次回答后继续聆听",
+				"confirmWords": "确认, 是, 是的, 好, 好的, 可以, 行, 没问题, 执行, 确定",
+				"cancelWords": "取消, 不, 不要, 不用了, 算了, 停, 停止, 别",
+				"cancelled": "已取消，没有做任何更改。",
+				"applied": "完成。已应用 {{total}} 项更改中的 {{done}} 项。",
+				"needsClick": "删除需要在对应卡片上点击。",
+				"chartNote": "我已在屏幕上显示了图表。",
+				"moreNote": "其余内容在屏幕上。"
 			}
 		},
 		"writing": {
@@ -10668,9 +10691,14 @@
 			"speechTitle": "语音转文字",
 			"speechDescription": "对话中的语音输入。未设置时，支持语音识别的浏览器会自行识别。",
 			"speechBaseUrl": "端点 URL",
-			"speechBaseUrlHint": "兼容 OpenAI 的转写端点，例如本地 Whisper 服务器。",
+			"speechBaseUrlHint": "转写端点。选择兼容 OpenAI 时，Margaya 会在此 URL 后加上 /audio/transcriptions（例如本地 Whisper 服务器）；选择 Fish Audio 时，直接发送到所填的 URL。",
 			"speechModel": "模型",
-			"speechKey": "API 密钥"
+			"speechKey": "API 密钥",
+			"testSpeech": "测试语音转文字",
+			"speechFormat": "API 格式",
+			"speechFormatHint": "音频的发送方式。使用 Fish Audio 时，请将端点设为 https://api.fish.audio/v1/asr。",
+			"speechFormatOpenai": "兼容 OpenAI",
+			"speechModelHint": "Fish Audio 可填 transcribe-1-pro 或 transcribe-1，也可以留空。"
 		},
 		"workspace": {
 			"navLabel": "AI",

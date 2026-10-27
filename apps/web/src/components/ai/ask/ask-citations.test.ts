@@ -68,6 +68,25 @@ describe("Ask citations", () => {
     ).toMatch(/^Fixed \[WEB-12\]\./);
   });
 
+  it("links documentation citations out, labelled by guide", () => {
+    const doc: AskSource = {
+      ref: "D:1",
+      kind: "web",
+      id: "https://margaya.app/docs/core/functional/ai-setup#0",
+      title: "Margaya docs: AI Setup: Turn on AI for a workspace",
+      url: "https://margaya.app/docs/core/functional/ai-setup",
+      projectId: null,
+      updatedAt: null,
+    };
+    const { cited } = linkCitations(
+      "Turn it on in settings [D:1].",
+      new Map([[doc.ref, doc]]),
+    );
+    expect(cited).toEqual([doc]);
+    expect(citationLabel(doc)).toBe("AI Setup");
+    expect(readAskSources([doc])).toEqual([doc]);
+  });
+
   it("labels chips by key, title or the comment's task", () => {
     expect(citationLabel(task)).toBe("WEB-12");
     expect(citationLabel(comment)).toBe("WEB-12");

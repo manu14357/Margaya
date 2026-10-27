@@ -229,6 +229,8 @@ export const AI_PROVIDER_VALUES = [
 export const AI_RESTRICTED_ROUTES = ["blocked", "local", "cloud"] as const;
 export const AI_PRIVATE_ROUTES = ["local", "cloud"] as const;
 export const AI_LOCAL_THINKING_VALUES = ["off", "on"] as const;
+/** Speech-to-text request formats: OpenAI's /audio/transcriptions, or Fish Audio's /v1/asr. */
+export const AI_SPEECH_FORMATS = ["openai", "fish"] as const;
 export const AI_WEB_SEARCH_PROVIDERS = [
   "off",
   "searxng",
@@ -480,8 +482,19 @@ const AI_SETTINGS: SettingDefinition[] = [
     readEnv: trimmed("MARGAYA_AI_WEB_SEARCH_API_KEY"),
   },
   {
-    // An OpenAI-compatible speech-to-text endpoint (/audio/transcriptions),
-    // e.g. a local Whisper server or https://api.openai.com/v1.
+    // How audio is sent: "openai" posts to <url>/audio/transcriptions with a
+    // model; "fish" posts to the URL as given (Fish Audio's /v1/asr).
+    key: "ai.speech.format",
+    group: "ai",
+    secret: false,
+    default: "openai",
+    schema: z.enum(AI_SPEECH_FORMATS),
+    envVar: "MARGAYA_AI_SPEECH_FORMAT",
+    readEnv: oneOf("MARGAYA_AI_SPEECH_FORMAT", AI_SPEECH_FORMATS, "openai"),
+  },
+  {
+    // A speech-to-text endpoint: an OpenAI-compatible base URL (a local
+    // Whisper server, https://api.openai.com/v1) or Fish Audio's ASR URL.
     key: "ai.speech.baseUrl",
     group: "ai",
     secret: false,

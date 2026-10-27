@@ -10313,8 +10313,12 @@
 				"stop": "Dừng đọc chính tả",
 				"recording": "Đang nghe…",
 				"transcribing": "Đang chuyển thành văn bản…",
-				"denied": "Hãy cho phép truy cập micrô để đọc chính tả.",
-				"failed": "Không thể chuyển bản ghi âm thành văn bản."
+				"denied": "Quyền truy cập micrô đang bị chặn. Hãy cho phép trang này từ biểu tượng trên thanh địa chỉ rồi thử lại.",
+				"failed": "Không thể chuyển bản ghi âm thành văn bản.",
+				"unavailable": "Không có micrô nào khả dụng. Hãy kết nối một micrô hoặc đóng các ứng dụng khác đang dùng nó.",
+				"discard": "Bỏ",
+				"empty": "Không nghe thấy gì. Hãy thử lại gần micrô hơn một chút.",
+				"blocked": "Nhập bằng giọng nói đang tắt vì bật “Chế độ chỉ cục bộ”: bản ghi âm không được gửi đến dịch vụ giọng nói trên đám mây. Quản trị viên có thể tắt mục này trong Cài đặt > Phiên bản > AI; nếu dữ liệu riêng tư được chuyển đến mô hình cục bộ, câu trả lời vẫn đến từ mô hình đó."
 			},
 			"agent": {
 				"ready": "Gửi yêu cầu này đến {{agent}}.",
@@ -10387,6 +10391,25 @@
 				"saved": "Đã lưu thành trang",
 				"open": "Mở trang",
 				"error": "Không thể lưu trang"
+			},
+			"voiceMode": {
+				"start": "Chế độ giọng nói",
+				"stop": "Thoát chế độ giọng nói",
+				"end": "Kết thúc",
+				"thinking": "Đang xử lý…",
+				"speaking": "Đang nói…",
+				"skip": "Bỏ qua",
+				"confirming": "Hãy nói “xác nhận” hoặc “hủy”",
+				"confirmPrompt": "Hãy nói xác nhận hoặc hủy.",
+				"readAloud": "Đọc to câu trả lời",
+				"keepListening": "Tiếp tục nghe sau mỗi câu trả lời",
+				"confirmWords": "xác nhận, có, vâng, ừ, được, ok, oke, đồng ý, làm đi, áp dụng",
+				"cancelWords": "hủy, huỷ, không, thôi, dừng, dừng lại, bỏ đi, đừng, không cần",
+				"cancelled": "Đã hủy. Không có gì thay đổi.",
+				"applied": "Xong. Đã áp dụng {{done}} trên {{total}} thay đổi.",
+				"needsClick": "Để xóa, hãy bấm vào thẻ của mục đó.",
+				"chartNote": "Tôi đã hiển thị biểu đồ trên màn hình.",
+				"moreNote": "Phần còn lại có trên màn hình."
 			}
 		},
 		"writing": {
@@ -10668,9 +10691,14 @@
 			"speechTitle": "Chuyển giọng nói thành văn bản",
 			"speechDescription": "Nhập bằng giọng nói trong trò chuyện. Nếu không thiết lập, các trình duyệt hỗ trợ sẽ tự nhận dạng giọng nói.",
 			"speechBaseUrl": "URL điểm cuối",
-			"speechBaseUrlHint": "Điểm cuối chuyển văn bản tương thích OpenAI, chẳng hạn máy chủ Whisper cục bộ.",
+			"speechBaseUrlHint": "Endpoint chép lời. Với định dạng tương thích OpenAI, Margaya thêm /audio/transcriptions vào URL này, như với máy chủ Whisper cục bộ; với Fish Audio, nó gửi đến đúng URL đã nhập.",
 			"speechModel": "Mô hình",
-			"speechKey": "Khóa API"
+			"speechKey": "Khóa API",
+			"testSpeech": "Kiểm tra chuyển giọng nói thành văn bản",
+			"speechFormat": "Định dạng API",
+			"speechFormatHint": "Cách gửi âm thanh. Với Fish Audio, hãy dùng https://api.fish.audio/v1/asr làm endpoint.",
+			"speechFormatOpenai": "Tương thích OpenAI",
+			"speechModelHint": "Với Fish Audio: transcribe-1-pro hoặc transcribe-1, hoặc để trống."
 		},
 		"workspace": {
 			"navLabel": "AI",

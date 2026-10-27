@@ -870,8 +870,10 @@ describe("Ask answers", () => {
     expect(screen.getByTestId("ask-thinking").textContent).toContain(
       "Let me count.",
     );
+    // The header names where the next question goes (the settings), not
+    // the model that answered this one.
     expect(screen.getByTestId("ask-model").textContent).toBe(
-      "minimax-m3 · ai:destinations.cloud",
+      "nemotron-3-ultra:cloud · ai:destinations.local",
     );
 
     await act(async () => {

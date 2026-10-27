@@ -10460,8 +10460,12 @@
 				"stop": "Diktat beenden",
 				"recording": "Hört zu …",
 				"transcribing": "Wird transkribiert …",
-				"denied": "Erlaube den Mikrofonzugriff, um zu diktieren.",
-				"failed": "Die Aufnahme konnte nicht in Text umgewandelt werden."
+				"denied": "Der Mikrofonzugriff ist blockiert. Erlaube ihn für diese Seite über das Symbol in der Adressleiste und versuche es erneut.",
+				"failed": "Die Aufnahme konnte nicht in Text umgewandelt werden.",
+				"unavailable": "Kein Mikrofon verfügbar. Schließe eins an oder beende andere Apps, die es verwenden.",
+				"discard": "Verwerfen",
+				"empty": "Ich habe nichts verstanden. Versuche es etwas näher am Mikrofon noch einmal.",
+				"blocked": "Spracheingabe ist aus, weil „Nur-lokal-Modus“ an ist: Aufnahmen dürfen nicht an den Sprachdienst in der Cloud. Ein Admin kann „Nur lokal“ unter Einstellungen > Instanz > KI ausschalten; werden private Daten ans lokale Modell geleitet, antwortet weiterhin dieses."
 			},
 			"agent": {
 				"ready": "Diese Anfrage an {{agent}} senden.",
@@ -10534,6 +10538,25 @@
 				"saved": "Als Seite gespeichert",
 				"open": "Seite öffnen",
 				"error": "Die Seite konnte nicht gespeichert werden"
+			},
+			"voiceMode": {
+				"start": "Sprachmodus",
+				"stop": "Sprachmodus beenden",
+				"end": "Beenden",
+				"thinking": "Ich arbeite daran …",
+				"speaking": "Spricht …",
+				"skip": "Überspringen",
+				"confirming": "Sag „bestätigen“ oder „abbrechen“",
+				"confirmPrompt": "Sag bestätigen oder abbrechen.",
+				"readAloud": "Antworten vorlesen",
+				"keepListening": "Nach jeder Antwort weiter zuhören",
+				"confirmWords": "bestätigen, ja, jawohl, jep, ok, okay, klar, mach das, los, übernehmen",
+				"cancelWords": "abbrechen, nein, nö, stopp, halt, vergiss es, lass es",
+				"cancelled": "Abgebrochen. Es wurde nichts geändert.",
+				"applied": "Fertig. {{done}} von {{total}} Änderungen übernommen.",
+				"needsClick": "Zum Löschen musst du auf die Karte klicken.",
+				"chartNote": "Ich zeige dir ein Diagramm auf dem Bildschirm.",
+				"moreNote": "Der Rest steht auf dem Bildschirm."
 			}
 		},
 		"writing": {
@@ -10816,9 +10839,14 @@
 			"speechTitle": "Sprache zu Text",
 			"speechDescription": "Spracheingabe im Chat. Ohne sie erkennen Browser, die das können, Sprache selbst.",
 			"speechBaseUrl": "Endpunkt-URL",
-			"speechBaseUrlHint": "Ein OpenAI-kompatibler Transkriptions-Endpunkt, zum Beispiel ein lokaler Whisper-Server.",
+			"speechBaseUrlHint": "Der Transkriptions-Endpunkt. Bei OpenAI-kompatibel hängt Margaya /audio/transcriptions an diese URL an, etwa für einen lokalen Whisper-Server; bei Fish Audio sendet es an die URL wie eingegeben.",
 			"speechModel": "Modell",
-			"speechKey": "API-Schlüssel"
+			"speechKey": "API-Schlüssel",
+			"testSpeech": "Spracherkennung testen",
+			"speechFormat": "API-Format",
+			"speechFormatHint": "Wie Audio gesendet wird. Für Fish Audio nutze https://api.fish.audio/v1/asr als Endpunkt.",
+			"speechFormatOpenai": "OpenAI-kompatibel",
+			"speechModelHint": "Für Fish Audio: transcribe-1-pro oder transcribe-1, oder leer lassen."
 		},
 		"workspace": {
 			"navLabel": "KI",

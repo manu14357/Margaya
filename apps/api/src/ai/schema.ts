@@ -111,8 +111,9 @@ export const instanceAiUsageQuery = aiUsageQuery.omit({ workspaceId: true });
 
 export const instanceAiTestBody = z
   .strictObject({
-    target: z.enum(["cloud", "local"]).optional().openapi({
-      description: "Which endpoint to test. Default: the cloud provider.",
+    target: z.enum(["cloud", "local", "speech"]).optional().openapi({
+      description:
+        "Which endpoint to test: the cloud provider (default), the local model, or the speech-to-text endpoint (sent one second of silence).",
     }),
   })
   .openapi("InstanceAiTest");

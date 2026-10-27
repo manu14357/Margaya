@@ -76,3 +76,4 @@ sudo systemctl restart nginx
 
 - This configuration is for a single server, if you want to use a load balancer, you need to configure it accordingly.
 - This configuration is for a single domain, if you want to use a subdomain, you need to configure it accordingly.
+- Margaya sends its own `Permissions-Policy` header, which allows the microphone for the site itself so voice input in Ask AI works. If your proxy adds a `Permissions-Policy` header of its own, include `microphone=(self)`; `microphone=()` turns voice input off, and the chat then reports that microphone access is blocked.

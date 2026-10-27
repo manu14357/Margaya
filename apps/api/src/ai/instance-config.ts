@@ -41,7 +41,12 @@ export type AiInstanceConfig = {
     apiKey: string;
   };
   /** OpenAI-compatible speech-to-text endpoint. */
-  speech: { baseUrl: string; model: string; apiKey: string };
+  speech: {
+    format: "openai" | "fish";
+    baseUrl: string;
+    model: string;
+    apiKey: string;
+  };
 };
 
 export type WebSearchProvider = "off" | "searxng" | "brave" | "tavily";
@@ -128,6 +133,7 @@ export function aiInstanceConfigOf(
       apiKey: str(snapshot, "ai.webSearch.apiKey"),
     },
     speech: {
+      format: str(snapshot, "ai.speech.format") === "fish" ? "fish" : "openai",
       baseUrl: str(snapshot, "ai.speech.baseUrl"),
       model: str(snapshot, "ai.speech.model"),
       apiKey: str(snapshot, "ai.speech.apiKey"),
@@ -151,7 +157,11 @@ export function webSearchConfigured(config: AiInstanceConfig): boolean {
 
 /** Whether server speech-to-text is set up. */
 export function speechConfigured(config: AiInstanceConfig): boolean {
-  return Boolean(config.speech.baseUrl && config.speech.model);
+  // Fish Audio's ASR takes no model.
+  return Boolean(
+    config.speech.baseUrl &&
+      (config.speech.format === "fish" || config.speech.model),
+  );
 }
 
 /** The instance AI settings in effect now. */

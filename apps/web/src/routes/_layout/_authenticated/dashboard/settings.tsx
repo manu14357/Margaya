@@ -71,8 +71,11 @@ function SettingsFrame({ children }: { children: ReactNode }) {
       <ContextPanelSlot fallback={<SettingsInlineNav />}>
         <SettingsPanelNav />
       </ContextPanelSlot>
+      {/* relative: screen-reader-only tables (position: absolute) stay in
+          this scroller instead of stretching the document, which otherwise
+          lets scrollIntoView scroll the whole window. */}
       <div
-        className="min-h-0 flex-1 overflow-y-auto overscroll-contain"
+        className="relative min-h-0 flex-1 overflow-y-auto overscroll-contain"
         data-slot="settings-canvas"
       >
         {children}

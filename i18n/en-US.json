@@ -10460,8 +10460,31 @@
 				"stop": "Stop dictating",
 				"recording": "Listening…",
 				"transcribing": "Transcribing…",
-				"denied": "Allow microphone access to dictate.",
-				"failed": "Couldn't turn the recording into text."
+				"denied": "Microphone access is blocked. Allow it for this site from the icon in the address bar, then try again.",
+				"failed": "Couldn't turn the recording into text.",
+				"unavailable": "No microphone is available. Connect one, or close other apps that are using it.",
+				"discard": "Discard",
+				"empty": "I didn't catch anything. Try again a little closer to the microphone.",
+				"blocked": "Voice input is off because Local-only mode is on: recordings can't go to the cloud speech service. An admin can turn Local only off under Settings > Instance > AI; with private data routed to the local model, answers still come from it."
+			},
+			"voiceMode": {
+				"start": "Voice mode",
+				"stop": "End voice mode",
+				"end": "End",
+				"thinking": "Working on it…",
+				"speaking": "Speaking…",
+				"skip": "Skip",
+				"confirming": "Say confirm or cancel",
+				"confirmPrompt": "Say confirm or cancel.",
+				"readAloud": "Read answers aloud",
+				"keepListening": "Keep listening after each answer",
+				"confirmWords": "confirm, yes, yeah, yep, ok, okay, sure, do it, go ahead, apply",
+				"cancelWords": "cancel, no, nope, stop, abort, never mind, don't",
+				"cancelled": "Cancelled. Nothing was changed.",
+				"applied": "Done. {{done}} of {{total}} changes applied.",
+				"needsClick": "A deletion needs a click on its card.",
+				"chartNote": "I've put a chart on screen.",
+				"moreNote": "The rest is on screen."
 			},
 			"agent": {
 				"ready": "Send this request to {{agent}}.",
@@ -10816,9 +10839,14 @@
 			"speechTitle": "Speech to text",
 			"speechDescription": "Voice input in the chat. Without it, browsers that can do it recognize speech themselves.",
 			"speechBaseUrl": "Endpoint URL",
-			"speechBaseUrlHint": "An OpenAI-compatible transcription endpoint, such as a local Whisper server.",
+			"speechBaseUrlHint": "The transcription endpoint. With OpenAI-compatible, Margaya adds /audio/transcriptions to this URL, as for a local Whisper server; with Fish Audio it posts to the URL as entered.",
 			"speechModel": "Model",
-			"speechKey": "API key"
+			"speechKey": "API key",
+			"testSpeech": "Test speech to text",
+			"speechFormat": "API format",
+			"speechFormatHint": "How audio is sent. For Fish Audio, use https://api.fish.audio/v1/asr as the endpoint.",
+			"speechFormatOpenai": "OpenAI-compatible",
+			"speechModelHint": "For Fish Audio: transcribe-1-pro or transcribe-1, or leave it empty."
 		},
 		"workspace": {
 			"navLabel": "AI",

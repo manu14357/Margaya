@@ -66,6 +66,8 @@ COPY --from=api-builder /app/apps/api/drizzle ./apps/api/drizzle
 COPY --from=api-builder /app/packages/email ./packages/email
 COPY --from=api-builder /app/packages/permissions ./packages/permissions
 COPY --from=api-builder /app/packages/editor-schema/dist ./packages/editor-schema/dist
+# Margaya's guides, which Ask AI searches for questions about using Margaya
+COPY apps/docs/core ./apps/docs/core
 
 FROM --platform=$BUILDPLATFORM node:24.19.0-alpine AS web-builder
 
@@ -112,6 +114,7 @@ RUN apk add --no-cache nginx=~1.30.4 && \
 WORKDIR /app
 
 COPY --from=api-runtime --chown=appuser:appuser /app /app
+ENV MARGAYA_DOCS_DIR=/app/apps/docs/core
 
 # Fail the build early if the runtime dependency layout is broken on the target architecture
 RUN cd /app/apps/api && node -e "const fs=require('fs');for(const m of ['bcryptjs','hono','pg','drizzle-orm','better-auth','ioredis','valibot','octokit','@modelcontextprotocol/sdk']){fs.accessSync('node_modules/'+m+'/package.json')}" && \

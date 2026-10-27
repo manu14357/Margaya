@@ -10609,8 +10609,12 @@
 				"stop": "Interrompi la dettatura",
 				"recording": "In ascolto…",
 				"transcribing": "Trascrizione in corso…",
-				"denied": "Consenti l'accesso al microfono per dettare.",
-				"failed": "Impossibile trasformare la registrazione in testo."
+				"denied": "L'accesso al microfono è bloccato. Consentilo per questo sito dall'icona nella barra degli indirizzi, poi riprova.",
+				"failed": "Impossibile trasformare la registrazione in testo.",
+				"unavailable": "Nessun microfono disponibile. Collegane uno o chiudi le altre app che lo stanno usando.",
+				"discard": "Scarta",
+				"empty": "Non ho sentito nulla. Riprova un po' più vicino al microfono.",
+				"blocked": "L'input vocale è disattivato perché «Modalità solo locale» è attivo: le registrazioni non possono andare al servizio vocale nel cloud. Un amministratore può disattivarlo in Impostazioni > Istanza > IA; se i dati privati vanno al modello locale, le risposte continuano ad arrivare da lì."
 			},
 			"agent": {
 				"ready": "Invia questa richiesta a {{agent}}.",
@@ -10683,6 +10687,25 @@
 				"saved": "Salvato come pagina",
 				"open": "Apri pagina",
 				"error": "Impossibile salvare la pagina"
+			},
+			"voiceMode": {
+				"start": "Modalità vocale",
+				"stop": "Esci dalla modalità vocale",
+				"end": "Termina",
+				"thinking": "Ci sto lavorando…",
+				"speaking": "Sto parlando…",
+				"skip": "Salta",
+				"confirming": "Di' «conferma» o «annulla»",
+				"confirmPrompt": "Di' conferma o annulla.",
+				"readAloud": "Leggi le risposte ad alta voce",
+				"keepListening": "Continua ad ascoltare dopo ogni risposta",
+				"confirmWords": "conferma, sì, si, ok, okay, va bene, certo, fallo, vai, procedi, applica",
+				"cancelWords": "annulla, no, stop, fermati, lascia stare, lascia perdere, niente",
+				"cancelled": "Annullato. Non è stato modificato nulla.",
+				"applied": "Fatto. Applicate {{done}} modifiche su {{total}}.",
+				"needsClick": "Per eliminare qualcosa, fai clic sulla sua scheda.",
+				"chartNote": "Ho mostrato un grafico sullo schermo.",
+				"moreNote": "Il resto è sullo schermo."
 			}
 		},
 		"writing": {
@@ -10966,9 +10989,14 @@
 			"speechTitle": "Riconoscimento vocale",
 			"speechDescription": "Input vocale nella chat. Senza di esso, i browser che lo supportano riconoscono la voce da soli.",
 			"speechBaseUrl": "URL dell'endpoint",
-			"speechBaseUrlHint": "Un endpoint di trascrizione compatibile con OpenAI, ad esempio un server Whisper locale.",
+			"speechBaseUrlHint": "L'endpoint di trascrizione. Con compatibile OpenAI, Margaya aggiunge /audio/transcriptions a questo URL, come per un server Whisper locale; con Fish Audio invia all'URL così come inserito.",
 			"speechModel": "Modello",
-			"speechKey": "Chiave API"
+			"speechKey": "Chiave API",
+			"testSpeech": "Prova la trascrizione vocale",
+			"speechFormat": "Formato API",
+			"speechFormatHint": "Come viene inviato l'audio. Per Fish Audio usa https://api.fish.audio/v1/asr come endpoint.",
+			"speechFormatOpenai": "Compatibile con OpenAI",
+			"speechModelHint": "Per Fish Audio: transcribe-1-pro o transcribe-1, oppure lascialo vuoto."
 		},
 		"workspace": {
 			"navLabel": "IA",

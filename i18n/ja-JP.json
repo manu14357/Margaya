@@ -10313,8 +10313,12 @@
 				"stop": "音声入力を停止",
 				"recording": "聞き取っています…",
 				"transcribing": "文字起こししています…",
-				"denied": "音声入力するにはマイクへのアクセスを許可してください。",
-				"failed": "録音をテキストに変換できませんでした。"
+				"denied": "マイクへのアクセスがブロックされています。アドレスバーのアイコンからこのサイトに許可してから、もう一度お試しください。",
+				"failed": "録音をテキストに変換できませんでした。",
+				"unavailable": "使用できるマイクがありません。マイクを接続するか、マイクを使用している他のアプリを閉じてください。",
+				"discard": "破棄",
+				"empty": "音声を聞き取れませんでした。マイクに少し近づいてもう一度お試しください。",
+				"blocked": "「ローカル専用モード」がオンのため音声入力は使えません。録音をクラウドの音声サービスに送れません。管理者は「設定 > インスタンス > AI」でオフにできます。非公開データをローカルモデルに送る設定なら、回答は引き続きローカルモデルから返ります。"
 			},
 			"agent": {
 				"ready": "このリクエストを {{agent}} に送信します。",
@@ -10387,6 +10391,25 @@
 				"saved": "ページとして保存しました",
 				"open": "ページを開く",
 				"error": "ページを保存できませんでした"
+			},
+			"voiceMode": {
+				"start": "音声モード",
+				"stop": "音声モードを終了",
+				"end": "終了",
+				"thinking": "作業しています…",
+				"speaking": "読み上げています…",
+				"skip": "スキップ",
+				"confirming": "「確定」または「キャンセル」と言ってください",
+				"confirmPrompt": "確定、またはキャンセルと言ってください。",
+				"readAloud": "回答を読み上げる",
+				"keepListening": "回答のたびに聞き取りを続ける",
+				"confirmWords": "確定, はい, うん, 確定して, オーケー, ok, いいよ, お願いします, 実行して, 進めて",
+				"cancelWords": "キャンセル, いいえ, いや, ううん, やめて, ストップ, 中止, キャンセルして, 取り消して",
+				"cancelled": "キャンセルしました。何も変更していません。",
+				"applied": "完了しました。{{total}} 件中 {{done}} 件の変更を適用しました。",
+				"needsClick": "削除するには、そのカードをクリックしてください。",
+				"chartNote": "画面にグラフを表示しました。",
+				"moreNote": "続きは画面に表示しています。"
 			}
 		},
 		"writing": {
@@ -10668,9 +10691,14 @@
 			"speechTitle": "音声のテキスト変換",
 			"speechDescription": "チャットでの音声入力。設定がない場合は、対応するブラウザが自身で音声を認識します。",
 			"speechBaseUrl": "エンドポイント URL",
-			"speechBaseUrlHint": "OpenAI 互換の文字起こしエンドポイント (ローカルの Whisper サーバーなど)。",
+			"speechBaseUrlHint": "文字起こしのエンドポイントです。OpenAI 互換では、ローカルの Whisper サーバーなどと同様に、この URL の末尾に /audio/transcriptions を付けて送信します。Fish Audio では入力した URL にそのまま送信します。",
 			"speechModel": "モデル",
-			"speechKey": "API キー"
+			"speechKey": "API キー",
+			"testSpeech": "音声入力をテスト",
+			"speechFormat": "API 形式",
+			"speechFormatHint": "音声の送信方法です。Fish Audio の場合はエンドポイントに https://api.fish.audio/v1/asr を指定してください。",
+			"speechFormatOpenai": "OpenAI 互換",
+			"speechModelHint": "Fish Audio の場合は transcribe-1-pro または transcribe-1。空欄のままでもかまいません。"
 		},
 		"workspace": {
 			"navLabel": "AI",

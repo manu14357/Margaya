@@ -213,7 +213,9 @@ Name | Description |
 | `MARGAYA_AI_SHOW_REASONING` | Show a reasoning model's thinking text to the person who asked.
 | `MARGAYA_AI_LOCAL_THINKING` | `on` lets local reasoning models think (default `off`).
 | `MARGAYA_AI_WEB_SEARCH_PROVIDER`, `MARGAYA_AI_WEB_SEARCH_URL`, `MARGAYA_AI_WEB_SEARCH_API_KEY` | Web search: `off`, `searxng`, `brave` or `tavily`, with the SearXNG URL or the API key.
-| `MARGAYA_AI_SPEECH_BASE_URL`, `MARGAYA_AI_SPEECH_MODEL`, `MARGAYA_AI_SPEECH_API_KEY` | A speech-to-text endpoint for voice input.
+| `MARGAYA_AI_SPEECH_FORMAT` (`openai`, the default, or `fish` for Fish Audio), `MARGAYA_AI_SPEECH_BASE_URL`, `MARGAYA_AI_SPEECH_MODEL`, `MARGAYA_AI_SPEECH_API_KEY` | A speech-to-text endpoint for voice input.
+| `MARGAYA_DOCS_DIR` | Where the API finds Margaya's guides, which Ask searches for questions about using Margaya. The images set it to `/app/apps/docs/core`; elsewhere it defaults to `../docs/core` from the API folder. Without the folder, Ask simply doesn't use the guides.
+| `MARGAYA_DOCS_URL` | The documentation site Ask's guide links point to. Default `https://margaya.app/docs`.
 
 These are server-only and have no field in the panel:
 

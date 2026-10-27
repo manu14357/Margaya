@@ -90,7 +90,9 @@ export async function getInstanceAiStatus() {
   return ok(await client.ai.instance.status.$get());
 }
 
-export async function testInstanceAiConnection(target: "cloud" | "local") {
+export async function testInstanceAiConnection(
+  target: "cloud" | "local" | "speech",
+) {
   return ok(await client.ai.instance.test.$post({ json: { target } }));
 }
 

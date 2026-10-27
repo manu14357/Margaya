@@ -2,14 +2,16 @@ import type { AskSource } from "@/fetchers/ai/ask";
 import { parseAskChart } from "./ask-blocks";
 
 // Citation tokens in Ask answers: [T:WEB-12] (task), [P:<page title>] (page),
-// [C:WEB-12/ab12cd] (comment) and [W:1] (a web search result). The API lists
-// what an answer may cite; tokens that match none stay plain text, so an
-// invented one never links.
+// [C:WEB-12/ab12cd] (comment), [W:1] (a web search result) and [D:1] (a
+// section of Margaya's documentation, linking out like a web result). The
+// API lists what an answer may cite; tokens that match none stay plain text,
+// so an invented one never links.
 
 // The match includes a space left between a citation and the punctuation
 // after it ("[T:WEB-6] , so"): a linked citation drops it, so the comma sits
 // right after the chip. Unknown tokens keep their text as written.
-const CITATION_RULE = /\[([TPCW]):([^\]\n]{1,100})\](?:[ \t]+(?=[,.;:!?)…]))?/g;
+const CITATION_RULE =
+  /\[([TPCWD]):([^\]\n]{1,100})\](?:[ \t]+(?=[,.;:!?)…]))?/g;
 
 export const CITE_HREF_PREFIX = "#ask-cite-";
 
@@ -30,6 +32,11 @@ export function withoutInternalRefs(text: string): string {
 export function citationLabel(source: AskSource): string {
   const value = source.ref.slice(2);
   if (source.kind === "comment") return value.split("/")[0] ?? value;
+  if (source.ref.startsWith("D:")) {
+    // "Margaya docs: AI Setup: Turn on AI" reads as "AI Setup".
+    const name = source.title.replace(/^Margaya docs:\s*/, "").split(":")[0];
+    return (name?.length ?? 0) > 32 ? `${name?.slice(0, 31)}…` : name || "Docs";
+  }
   if (source.kind === "web") {
     try {
       return new URL(source.url).hostname.replace(/^www\./, "");
