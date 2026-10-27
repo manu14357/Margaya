@@ -33,6 +33,7 @@ const LINKS: LandingLinks = {
   features: {
     plan: `${PUBLIC_SITE_URL}/features/plan`,
     views: `${PUBLIC_SITE_URL}/features/views`,
+    ai: `${PUBLIC_SITE_URL}/features/ai`,
     docs: `${PUBLIC_SITE_URL}/features/docs`,
     automate: `${PUBLIC_SITE_URL}/features/automate`,
     selfHost: `${PUBLIC_SITE_URL}/features/self-host`,
@@ -84,7 +85,14 @@ export default function PublicLanding() {
       locale,
       locales,
       setLocale: (code) => void setLocale(code),
-      theme,
+      // The landing offers light, dark and system; a contrast theme shows
+      // as its base mode there.
+      theme:
+        theme === "light-contrast"
+          ? "light"
+          : theme === "dark-contrast"
+            ? "dark"
+            : theme,
       setTheme: (next) => setTheme(next),
     }),
     [locale, locales, setLocale, theme, setTheme],
