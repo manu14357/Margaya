@@ -41,7 +41,9 @@ export default defineConfig({
   ],
   server: {
     host: true,
-    hmr: true,
+    // The e2e suite turns HMR off: an edit to the working tree mid-run would
+    // otherwise hot-update or reload the pages under test.
+    hmr: process.env.MARGAYA_DISABLE_HMR !== "true",
     port: 5173,
   },
   optimizeDeps: {

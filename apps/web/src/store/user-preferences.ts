@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import type { SidebarLayout } from "@/lib/sidebar-layout";
 
 export const WEEK_START_DAYS = [0, 1, 6] as const;
 export type WeekStartDay = (typeof WEEK_START_DAYS)[number];
@@ -8,23 +9,37 @@ export function isWeekStartDay(value: number): value is WeekStartDay {
   return WEEK_START_DAYS.some((day) => day === value);
 }
 
-export const ACTIVITY_FILTERS = ["all", "comments", "updates"] as const;
+/** Theme choices; the contrast themes are high-contrast light and dark. */
+export const THEMES = [
+  "light",
+  "dark",
+  "system",
+  "light-contrast",
+  "dark-contrast",
+] as const;
+export type Theme = (typeof THEMES)[number];
+
+export function isTheme(value: unknown): value is Theme {
+  return THEMES.some((theme) => theme === value);
+}
+
+export const ACTIVITY_FILTERS = [
+  "all",
+  "comments",
+  "updates",
+  // What AI agents did (eventData.via).
+  "agents",
+] as const;
 export type ActivityFilter = (typeof ACTIVITY_FILTERS)[number];
 export const ACTIVITY_SORTS = ["newest", "oldest"] as const;
 export type ActivitySort = (typeof ACTIVITY_SORTS)[number];
 
 type UserPreferencesStore = {
-  theme: "light" | "dark" | "system";
-  setTheme: (
-    theme: "light" | "dark" | "system",
-    coordinates?: { x: number; y: number },
-  ) => void;
+  theme: Theme;
+  setTheme: (theme: Theme, coordinates?: { x: number; y: number }) => void;
 
   viewMode: "board" | "list";
   setViewMode: (mode: "board" | "list") => void;
-
-  compactMode: boolean;
-  setCompactMode: (compact: boolean) => void;
 
   showTaskNumbers: boolean;
   setShowTaskNumbers: (show: boolean) => void;
@@ -52,6 +67,10 @@ type UserPreferencesStore = {
   sidebarDefaultOpen: boolean;
   setSidebarDefaultOpen: (open: boolean) => void;
 
+  /** The user's rail and Projects panel order and hidden items; null is the default. */
+  sidebarLayout: SidebarLayout | null;
+  setSidebarLayout: (layout: SidebarLayout | null) => void;
+
   weekStartsOn: WeekStartDay;
   setWeekStartsOn: (weekStartsOn: WeekStartDay) => void;
 
@@ -60,16 +79,45 @@ type UserPreferencesStore = {
   setActivityFilter: (filter: ActivityFilter) => void;
   activitySort: ActivitySort;
   setActivitySort: (sort: ActivitySort) => void;
+
+  /** The fixed formatting toolbar above an editable page. */
+  pagesFormatToolbar: boolean;
+  setPagesFormatToolbar: (show: boolean) => void;
+
+  /**
+   * The account time zone (IANA), cached from the server; null until known
+   * or when never chosen. Task queries prefer it over the browser's zone.
+   */
+  timeZone: string | null;
+  setTimeZone: (timeZone: string | null) => void;
+};
+
+/** Defaults of the preferences the server keeps per user. */
+export const DEFAULT_USER_PREFERENCES = {
+  // New visitors start light, and so does anyone who never chose a theme.
+  theme: "light" as Theme,
+  viewMode: "board" as "board" | "list",
+  showTaskNumbers: true,
+  showAssignees: true,
+  showDueDates: true,
+  showLabels: true,
+  showPriority: true,
+  showEstimates: true,
+  showTaskItemCounts: true,
+  sidebarDefaultOpen: true,
+  sidebarLayout: null as SidebarLayout | null,
+  weekStartsOn: 0 as WeekStartDay,
+  activityFilter: "all" as ActivityFilter,
+  activitySort: "newest" as ActivitySort,
+  pagesFormatToolbar: true,
 };
 
 export const useUserPreferencesStore = create<UserPreferencesStore>()(
   persist(
     (set) => ({
-      theme: "dark",
-      setTheme: (
-        theme: "light" | "dark" | "system",
-        coordinates?: { x: number; y: number },
-      ) => {
+      // New visitors start light; a saved choice is restored by `persist`.
+      theme: DEFAULT_USER_PREFERENCES.theme,
+      setTheme: (theme: Theme, coordinates?: { x: number; y: number }) => {
         if (coordinates) {
           document.documentElement.style.setProperty(
             "--x",
@@ -95,9 +143,6 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
 
       viewMode: "board",
       setViewMode: (mode) => set({ viewMode: mode }),
-
-      compactMode: false,
-      setCompactMode: (compact) => set({ compactMode: compact }),
 
       showTaskNumbers: true,
       setShowTaskNumbers: (show) => set({ showTaskNumbers: show }),
@@ -140,6 +185,9 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
       sidebarDefaultOpen: true,
       setSidebarDefaultOpen: (open) => set({ sidebarDefaultOpen: open }),
 
+      sidebarLayout: null,
+      setSidebarLayout: (sidebarLayout) => set({ sidebarLayout }),
+
       weekStartsOn: 0,
       setWeekStartsOn: (weekStartsOn) => set({ weekStartsOn }),
 
@@ -147,11 +195,21 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
       setActivityFilter: (activityFilter) => set({ activityFilter }),
       activitySort: "newest",
       setActivitySort: (activitySort) => set({ activitySort }),
+
+      pagesFormatToolbar: true,
+      setPagesFormatToolbar: (pagesFormatToolbar) =>
+        set({ pagesFormatToolbar }),
+
+      timeZone: null,
+      setTimeZone: (timeZone) => set({ timeZone }),
     }),
     {
       name: "user-preferences",
       storage: createJSONStorage(() => localStorage),
       onRehydrateStorage: () => (state) => {
+        if (state && !isTheme(state.theme)) {
+          state.setTheme(DEFAULT_USER_PREFERENCES.theme);
+        }
         if (state && !isWeekStartDay(state.weekStartsOn)) {
           state.setWeekStartsOn(0);
         }

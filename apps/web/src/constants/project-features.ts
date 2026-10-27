@@ -6,6 +6,7 @@ import {
   IterationCw,
   Layers,
   Ruler,
+  Sparkles,
   Timer,
 } from "lucide-react";
 import type { Project } from "@/types/project";
@@ -22,6 +23,7 @@ export const PROJECT_FEATURE_KEYS = [
   "intake",
   "estimates",
   "timeTracking",
+  "ai",
 ] as const;
 
 export type ProjectFeatureKey = (typeof PROJECT_FEATURE_KEYS)[number];
@@ -33,7 +35,8 @@ export type ProjectFeatureField =
   | "pagesEnabled"
   | "intakeEnabled"
   | "estimatesEnabled"
-  | "timeTrackingEnabled";
+  | "timeTrackingEnabled"
+  | "aiEnabled";
 
 export type ProjectFeatureFlags = Record<ProjectFeatureField, boolean>;
 
@@ -101,6 +104,15 @@ export const PROJECT_FEATURES: readonly ProjectFeatureDefinition[] = [
     titleKey: "settings:projectFeatures.items.timeTracking.title",
     descriptionKey: "settings:projectFeatures.items.timeTracking.description",
     icon: Timer,
+    isAvailable: true,
+  },
+  {
+    // Shown only while the workspace has AI on (features settings page).
+    key: "ai",
+    field: "aiEnabled",
+    titleKey: "settings:projectFeatures.items.ai.title",
+    descriptionKey: "settings:projectFeatures.items.ai.description",
+    icon: Sparkles,
     isAvailable: true,
   },
 ];

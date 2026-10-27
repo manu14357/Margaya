@@ -1,0 +1,142 @@
+/*
+ * Semantic colour system for the board, gantt, calendar and dashboard.
+ * Colour always carries meaning (status, priority, area), never decoration.
+ * Each status has `solid` (dots, bars, edges), `tint` (column / cell surfaces)
+ * and `fg` (text on the tint). Light values sit on `:root`, dark on `.dark`.
+ */
+
+:root {
+  /* Status groups. "review" is the hue for a second started column (e.g. In review). */
+  --status-backlog: #94a3b8;
+  --status-backlog-tint: #f1f5f9;
+  --status-backlog-fg: #475569;
+  --status-unstarted: #3b82f6;
+  --status-unstarted-tint: #eff6ff;
+  --status-unstarted-fg: #1d4ed8;
+  --status-started: #f59e0b;
+  --status-started-tint: #fffbeb;
+  --status-started-fg: #b45309;
+  --status-review: #8b5cf6;
+  --status-review-tint: #f5f3ff;
+  --status-review-fg: #6d28d9;
+  --status-completed: #10b981;
+  --status-completed-tint: #ecfdf5;
+  --status-completed-fg: #047857;
+  --status-cancelled: #f43f5e;
+  --status-cancelled-tint: #fff1f2;
+  --status-cancelled-fg: #be123c;
+
+  /* Priority */
+  --priority-urgent: #dc2626;
+  --priority-high: #ea580c;
+  --priority-medium: #a16207;
+  --priority-low: #2563eb;
+  --priority-none: #94a3b8;
+
+  /* Areas (icon rail, dashboard widgets, page headers) */
+  --area-home: #059669;
+  --area-inbox: #2563eb;
+  --area-work: #7c3aed;
+  --area-projects: #b45309;
+  --area-pages: #0d9488;
+  --area-analytics: #db2777;
+  --area-settings: #64748b;
+
+  /* Avatars: eight hues, chosen by a stable hash of the user id */
+  --avatar-1: #059669;
+  --avatar-2: #2563eb;
+  --avatar-3: #7c3aed;
+  --avatar-4: #db2777;
+  --avatar-5: #d97706;
+  --avatar-6: #0d9488;
+  --avatar-7: #dc2626;
+  --avatar-8: #4f46e5;
+
+  /* Timeline */
+  --today: #047857;
+  --today-tint: #ecfdf5;
+  --weekend-tint: #f6f7f5;
+  --dependency: #94a3b8;
+  --dependency-conflict: #dc2626;
+}
+
+.dark {
+  --status-backlog: #94a3b8;
+  --status-backlog-tint: #16191a;
+  --status-backlog-fg: #cbd5e1;
+  --status-unstarted: #60a5fa;
+  --status-unstarted-tint: #111a2a;
+  --status-unstarted-fg: #93c5fd;
+  --status-started: #fbbf24;
+  --status-started-tint: #221b0d;
+  --status-started-fg: #fcd34d;
+  --status-review: #a78bfa;
+  --status-review-tint: #1b1630;
+  --status-review-fg: #c4b5fd;
+  --status-completed: #34d399;
+  --status-completed-tint: #0f241b;
+  --status-completed-fg: #6ee7b7;
+  --status-cancelled: #fb7185;
+  --status-cancelled-tint: #2a1218;
+  --status-cancelled-fg: #fda4af;
+
+  --priority-urgent: #f87171;
+  --priority-high: #fb923c;
+  --priority-medium: #facc15;
+  --priority-low: #60a5fa;
+  --priority-none: #64748b;
+
+  --area-home: #34d399;
+  --area-inbox: #60a5fa;
+  --area-work: #a78bfa;
+  --area-projects: #fbbf24;
+  --area-pages: #2dd4bf;
+  --area-analytics: #f472b6;
+  --area-settings: #94a3b8;
+
+  --avatar-1: #34d399;
+  --avatar-2: #60a5fa;
+  --avatar-3: #a78bfa;
+  --avatar-4: #f472b6;
+  --avatar-5: #fbbf24;
+  --avatar-6: #2dd4bf;
+  --avatar-7: #f87171;
+  --avatar-8: #818cf8;
+
+  --today: #34d399;
+  --today-tint: #10241c;
+  --weekend-tint: #121414;
+  --dependency: #64748b;
+  --dependency-conflict: #f87171;
+}
+
+/* High-contrast themes: text on tints reaches 7:1; solids stay recognisable. */
+.contrast:not(.dark) {
+  --status-backlog-fg: #2d3a4a;
+  --status-unstarted-fg: #1a3591;
+  --status-started-fg: #713c00;
+  --status-review-fg: #4c1d95;
+  --status-completed-fg: #035436;
+  --status-cancelled-fg: #8a1030;
+  --priority-medium: #854d0e;
+  --today: #035c42;
+  --dependency: #4b5563;
+}
+
+.dark.contrast {
+  --status-backlog-fg: #e2e8f0;
+  --status-backlog-tint: #11161b;
+  --status-unstarted-fg: #bfdbfe;
+  --status-unstarted-tint: #0b1424;
+  --status-started-fg: #fde68a;
+  --status-started-tint: #1c160a;
+  --status-review-fg: #ddd6fe;
+  --status-review-tint: #151027;
+  --status-completed-fg: #a7f3d0;
+  --status-completed-tint: #0a1d15;
+  --status-cancelled-fg: #fecdd3;
+  --status-cancelled-tint: #220e13;
+  --today: #6ee7b7;
+  --weekend-tint: #0a0d0b;
+  --dependency: #9ca3af;
+}

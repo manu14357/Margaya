@@ -16,7 +16,7 @@ type ScheduleViewPreferences = {
   setGanttZoom: (zoom: GanttZoom) => void;
 };
 
-const DEFAULTS = {
+export const SCHEDULE_VIEW_DEFAULTS = {
   calendarMode: "month",
   calendarShowWeekends: true,
   ganttZoom: "month",
@@ -30,7 +30,7 @@ const DEFAULTS = {
 export const useScheduleViewPreferences = create<ScheduleViewPreferences>()(
   persist(
     (set) => ({
-      ...DEFAULTS,
+      ...SCHEDULE_VIEW_DEFAULTS,
       setCalendarMode: (calendarMode) => set({ calendarMode }),
       setCalendarShowWeekends: (calendarShowWeekends) =>
         set({ calendarShowWeekends }),
@@ -50,14 +50,14 @@ export const useScheduleViewPreferences = create<ScheduleViewPreferences>()(
           ...current,
           calendarMode: CALENDAR_MODES.includes(stored.calendarMode as never)
             ? (stored.calendarMode as CalendarMode)
-            : DEFAULTS.calendarMode,
+            : SCHEDULE_VIEW_DEFAULTS.calendarMode,
           calendarShowWeekends:
             typeof stored.calendarShowWeekends === "boolean"
               ? stored.calendarShowWeekends
-              : DEFAULTS.calendarShowWeekends,
+              : SCHEDULE_VIEW_DEFAULTS.calendarShowWeekends,
           ganttZoom: GANTT_ZOOMS.includes(stored.ganttZoom as never)
             ? (stored.ganttZoom as GanttZoom)
-            : DEFAULTS.ganttZoom,
+            : SCHEDULE_VIEW_DEFAULTS.ganttZoom,
         };
       },
     },

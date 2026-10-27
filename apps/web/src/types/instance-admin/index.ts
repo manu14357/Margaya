@@ -44,3 +44,11 @@ export type InstanceAdmin = InferResponseType<
   Routes["admins"]["$get"],
   200
 >[number];
+
+export type InstanceUserPage = InferResponseType<Routes["users"]["$get"], 200>;
+export type InstanceUser = InstanceUserPage["items"][number];
+export type InstanceUserDetail = InferResponseType<
+  Routes["users"][":userId"]["$get"],
+  200
+>;
+export type InstanceUserStatus = "all" | "admins" | "banned";

@@ -27,6 +27,11 @@ export const shortcuts = {
     prefix: getModifierKeyText(),
     open: "k",
   },
+  // Opens or closes the Ask AI chat, even while typing in it.
+  ask: {
+    prefix: getModifierKeyText(),
+    toggle: "j",
+  },
   search: {
     prefix: "/",
   },

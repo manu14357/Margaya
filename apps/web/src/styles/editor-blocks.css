@@ -192,21 +192,31 @@
     display: none;
   }
 
+  /* 20px, fading in after a short hover delay so it doesn't flicker as the
+     pointer crosses blocks. Opacity only, so reduced motion keeps it. */
   .margaya-block-handle {
     position: absolute;
     z-index: 15;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 0.35rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 0.25rem;
     color: var(--muted-foreground);
     cursor: grab;
     opacity: 0.75;
+    animation: margaya-block-handle-in 150ms cubic-bezier(0.23, 1, 0.32, 1)
+      150ms backwards;
     transition:
-      opacity 0.12s ease,
-      background-color 0.12s ease;
+      opacity 0.15s ease,
+      background-color 0.15s ease;
+  }
+
+  @keyframes margaya-block-handle-in {
+    from {
+      opacity: 0;
+    }
   }
 
   .margaya-block-handle:hover,

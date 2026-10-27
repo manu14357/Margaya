@@ -24,6 +24,7 @@ import { Route as AuthVerifyOtpRouteImport } from './routes/auth/verify-otp'
 import { Route as DeviceIndexRouteImport } from './routes/device/index'
 import { Route as DeviceApproveRouteImport } from './routes/device/approve'
 import { Route as McpAuthorizeRouteImport } from './routes/mcp.authorize'
+import { Route as PublicPageTokenRouteImport } from './routes/public-page.$token'
 import { Route as PublicProjectTokenRouteImport } from './routes/public-project.$token'
 import { Route as LayoutAuthenticatedDashboardRouteImport } from './routes/_layout/_authenticated/dashboard'
 import { Route as LayoutAuthenticatedInvitationsRouteImport } from './routes/_layout/_authenticated/invitations'
@@ -46,11 +47,17 @@ import { Route as LayoutAuthenticatedDashboardSettingsAccountPreferencesRouteImp
 import { Route as LayoutAuthenticatedDashboardSettingsAccountSecurityRouteImport } from './routes/_layout/_authenticated/dashboard/settings/account/security'
 import { Route as LayoutAuthenticatedDashboardSettingsInstanceIndexRouteImport } from './routes/_layout/_authenticated/dashboard/settings/instance/index'
 import { Route as LayoutAuthenticatedDashboardSettingsInstanceAdminsRouteImport } from './routes/_layout/_authenticated/dashboard/settings/instance/admins'
+import { Route as LayoutAuthenticatedDashboardSettingsInstanceAiRouteImport } from './routes/_layout/_authenticated/dashboard/settings/instance/ai'
 import { Route as LayoutAuthenticatedDashboardSettingsInstanceAuthenticationRouteImport } from './routes/_layout/_authenticated/dashboard/settings/instance/authentication'
 import { Route as LayoutAuthenticatedDashboardSettingsInstanceEmailRouteImport } from './routes/_layout/_authenticated/dashboard/settings/instance/email'
 import { Route as LayoutAuthenticatedDashboardSettingsInstanceGeneralRouteImport } from './routes/_layout/_authenticated/dashboard/settings/instance/general'
 import { Route as LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRouteImport } from './routes/_layout/_authenticated/dashboard/settings/instance/public-boards'
+import { Route as LayoutAuthenticatedDashboardSettingsInstanceUsersRouteImport } from './routes/_layout/_authenticated/dashboard/settings/instance/users'
 import { Route as LayoutAuthenticatedDashboardSettingsInstanceWorkspacesRouteImport } from './routes/_layout/_authenticated/dashboard/settings/instance/workspaces'
+import { Route as LayoutAuthenticatedDashboardSettingsWorkspaceAgentsRouteImport } from './routes/_layout/_authenticated/dashboard/settings/workspace/agents'
+import { Route as LayoutAuthenticatedDashboardSettingsWorkspaceAiRouteImport } from './routes/_layout/_authenticated/dashboard/settings/workspace/ai'
+import { Route as LayoutAuthenticatedDashboardSettingsWorkspaceAiMemoryRouteImport } from './routes/_layout/_authenticated/dashboard/settings/workspace/ai-memory'
+import { Route as LayoutAuthenticatedDashboardSettingsWorkspaceAiSkillsRouteImport } from './routes/_layout/_authenticated/dashboard/settings/workspace/ai-skills'
 import { Route as LayoutAuthenticatedDashboardSettingsWorkspaceAuditLogRouteImport } from './routes/_layout/_authenticated/dashboard/settings/workspace/audit-log'
 import { Route as LayoutAuthenticatedDashboardSettingsWorkspaceBillingRouteImport } from './routes/_layout/_authenticated/dashboard/settings/workspace/billing'
 import { Route as LayoutAuthenticatedDashboardSettingsWorkspaceExportsRouteImport } from './routes/_layout/_authenticated/dashboard/settings/workspace/exports'
@@ -59,6 +66,8 @@ import { Route as LayoutAuthenticatedDashboardSettingsWorkspaceLabelsRouteImport
 import { Route as LayoutAuthenticatedDashboardSettingsWorkspaceRolesRouteImport } from './routes/_layout/_authenticated/dashboard/settings/workspace/roles'
 import { Route as LayoutAuthenticatedDashboardSettingsWorkspaceTrashRouteImport } from './routes/_layout/_authenticated/dashboard/settings/workspace/trash'
 import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdIndexRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/index'
+import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAgentsRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/agents'
+import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAiRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/ai'
 import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAnalyticsRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/analytics'
 import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdArchivesRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/archives'
 import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdDraftsRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/drafts'
@@ -171,6 +180,11 @@ const DeviceApproveRoute = DeviceApproveRouteImport.update({
 const McpAuthorizeRoute = McpAuthorizeRouteImport.update({
   id: '/mcp/authorize',
   path: '/mcp/authorize',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicPageTokenRoute = PublicPageTokenRouteImport.update({
+  id: '/public-page/$token',
+  path: '/public-page/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PublicProjectTokenRoute = PublicProjectTokenRouteImport.update({
@@ -304,6 +318,12 @@ const LayoutAuthenticatedDashboardSettingsInstanceAdminsRoute =
     path: '/admins',
     getParentRoute: () => LayoutAuthenticatedDashboardSettingsInstanceRoute,
   } as any)
+const LayoutAuthenticatedDashboardSettingsInstanceAiRoute =
+  LayoutAuthenticatedDashboardSettingsInstanceAiRouteImport.update({
+    id: '/ai',
+    path: '/ai',
+    getParentRoute: () => LayoutAuthenticatedDashboardSettingsInstanceRoute,
+  } as any)
 const LayoutAuthenticatedDashboardSettingsInstanceAuthenticationRoute =
   LayoutAuthenticatedDashboardSettingsInstanceAuthenticationRouteImport.update({
     id: '/authentication',
@@ -328,11 +348,41 @@ const LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRoute =
     path: '/public-boards',
     getParentRoute: () => LayoutAuthenticatedDashboardSettingsInstanceRoute,
   } as any)
+const LayoutAuthenticatedDashboardSettingsInstanceUsersRoute =
+  LayoutAuthenticatedDashboardSettingsInstanceUsersRouteImport.update({
+    id: '/users',
+    path: '/users',
+    getParentRoute: () => LayoutAuthenticatedDashboardSettingsInstanceRoute,
+  } as any)
 const LayoutAuthenticatedDashboardSettingsInstanceWorkspacesRoute =
   LayoutAuthenticatedDashboardSettingsInstanceWorkspacesRouteImport.update({
     id: '/workspaces',
     path: '/workspaces',
     getParentRoute: () => LayoutAuthenticatedDashboardSettingsInstanceRoute,
+  } as any)
+const LayoutAuthenticatedDashboardSettingsWorkspaceAgentsRoute =
+  LayoutAuthenticatedDashboardSettingsWorkspaceAgentsRouteImport.update({
+    id: '/agents',
+    path: '/agents',
+    getParentRoute: () => LayoutAuthenticatedDashboardSettingsWorkspaceRoute,
+  } as any)
+const LayoutAuthenticatedDashboardSettingsWorkspaceAiRoute =
+  LayoutAuthenticatedDashboardSettingsWorkspaceAiRouteImport.update({
+    id: '/ai',
+    path: '/ai',
+    getParentRoute: () => LayoutAuthenticatedDashboardSettingsWorkspaceRoute,
+  } as any)
+const LayoutAuthenticatedDashboardSettingsWorkspaceAiMemoryRoute =
+  LayoutAuthenticatedDashboardSettingsWorkspaceAiMemoryRouteImport.update({
+    id: '/ai-memory',
+    path: '/ai-memory',
+    getParentRoute: () => LayoutAuthenticatedDashboardSettingsWorkspaceRoute,
+  } as any)
+const LayoutAuthenticatedDashboardSettingsWorkspaceAiSkillsRoute =
+  LayoutAuthenticatedDashboardSettingsWorkspaceAiSkillsRouteImport.update({
+    id: '/ai-skills',
+    path: '/ai-skills',
+    getParentRoute: () => LayoutAuthenticatedDashboardSettingsWorkspaceRoute,
   } as any)
 const LayoutAuthenticatedDashboardSettingsWorkspaceAuditLogRoute =
   LayoutAuthenticatedDashboardSettingsWorkspaceAuditLogRouteImport.update({
@@ -380,6 +430,18 @@ const LayoutAuthenticatedDashboardWorkspaceWorkspaceIdIndexRoute =
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdIndexRouteImport.update({
     id: '/',
     path: '/',
+    getParentRoute: () => LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute,
+  } as any)
+const LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAgentsRoute =
+  LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAgentsRouteImport.update({
+    id: '/agents',
+    path: '/agents',
+    getParentRoute: () => LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute,
+  } as any)
+const LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAiRoute =
+  LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAiRouteImport.update({
+    id: '/ai',
+    path: '/ai',
     getParentRoute: () => LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute,
   } as any)
 const LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAnalyticsRoute =
@@ -713,6 +775,7 @@ export interface FileRoutesByFullPath {
   '/auth/verify-otp': typeof AuthVerifyOtpRoute
   '/device/approve': typeof DeviceApproveRoute
   '/mcp/authorize': typeof McpAuthorizeRoute
+  '/public-page/$token': typeof PublicPageTokenRoute
   '/public-project/$token': typeof PublicProjectTokenRoute
   '/device/': typeof DeviceIndexRoute
   '/dashboard': typeof LayoutAuthenticatedDashboardRouteWithChildren
@@ -735,11 +798,17 @@ export interface FileRoutesByFullPath {
   '/dashboard/settings/account/preferences': typeof LayoutAuthenticatedDashboardSettingsAccountPreferencesRoute
   '/dashboard/settings/account/security': typeof LayoutAuthenticatedDashboardSettingsAccountSecurityRoute
   '/dashboard/settings/instance/admins': typeof LayoutAuthenticatedDashboardSettingsInstanceAdminsRoute
+  '/dashboard/settings/instance/ai': typeof LayoutAuthenticatedDashboardSettingsInstanceAiRoute
   '/dashboard/settings/instance/authentication': typeof LayoutAuthenticatedDashboardSettingsInstanceAuthenticationRoute
   '/dashboard/settings/instance/email': typeof LayoutAuthenticatedDashboardSettingsInstanceEmailRoute
   '/dashboard/settings/instance/general': typeof LayoutAuthenticatedDashboardSettingsInstanceGeneralRoute
   '/dashboard/settings/instance/public-boards': typeof LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRoute
+  '/dashboard/settings/instance/users': typeof LayoutAuthenticatedDashboardSettingsInstanceUsersRoute
   '/dashboard/settings/instance/workspaces': typeof LayoutAuthenticatedDashboardSettingsInstanceWorkspacesRoute
+  '/dashboard/settings/workspace/agents': typeof LayoutAuthenticatedDashboardSettingsWorkspaceAgentsRoute
+  '/dashboard/settings/workspace/ai': typeof LayoutAuthenticatedDashboardSettingsWorkspaceAiRoute
+  '/dashboard/settings/workspace/ai-memory': typeof LayoutAuthenticatedDashboardSettingsWorkspaceAiMemoryRoute
+  '/dashboard/settings/workspace/ai-skills': typeof LayoutAuthenticatedDashboardSettingsWorkspaceAiSkillsRoute
   '/dashboard/settings/workspace/audit-log': typeof LayoutAuthenticatedDashboardSettingsWorkspaceAuditLogRoute
   '/dashboard/settings/workspace/billing': typeof LayoutAuthenticatedDashboardSettingsWorkspaceBillingRoute
   '/dashboard/settings/workspace/exports': typeof LayoutAuthenticatedDashboardSettingsWorkspaceExportsRoute
@@ -747,6 +816,8 @@ export interface FileRoutesByFullPath {
   '/dashboard/settings/workspace/labels': typeof LayoutAuthenticatedDashboardSettingsWorkspaceLabelsRoute
   '/dashboard/settings/workspace/roles': typeof LayoutAuthenticatedDashboardSettingsWorkspaceRolesRoute
   '/dashboard/settings/workspace/trash': typeof LayoutAuthenticatedDashboardSettingsWorkspaceTrashRoute
+  '/dashboard/workspace/$workspaceId/agents': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAgentsRoute
+  '/dashboard/workspace/$workspaceId/ai': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAiRoute
   '/dashboard/workspace/$workspaceId/analytics': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAnalyticsRoute
   '/dashboard/workspace/$workspaceId/archives': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdArchivesRoute
   '/dashboard/workspace/$workspaceId/drafts': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdDraftsRoute
@@ -802,6 +873,7 @@ export interface FileRoutesByTo {
   '/auth/verify-otp': typeof AuthVerifyOtpRoute
   '/device/approve': typeof DeviceApproveRoute
   '/mcp/authorize': typeof McpAuthorizeRoute
+  '/public-page/$token': typeof PublicPageTokenRoute
   '/public-project/$token': typeof PublicProjectTokenRoute
   '/device': typeof DeviceIndexRoute
   '/invitations': typeof LayoutAuthenticatedInvitationsRoute
@@ -821,11 +893,17 @@ export interface FileRoutesByTo {
   '/dashboard/settings/account/preferences': typeof LayoutAuthenticatedDashboardSettingsAccountPreferencesRoute
   '/dashboard/settings/account/security': typeof LayoutAuthenticatedDashboardSettingsAccountSecurityRoute
   '/dashboard/settings/instance/admins': typeof LayoutAuthenticatedDashboardSettingsInstanceAdminsRoute
+  '/dashboard/settings/instance/ai': typeof LayoutAuthenticatedDashboardSettingsInstanceAiRoute
   '/dashboard/settings/instance/authentication': typeof LayoutAuthenticatedDashboardSettingsInstanceAuthenticationRoute
   '/dashboard/settings/instance/email': typeof LayoutAuthenticatedDashboardSettingsInstanceEmailRoute
   '/dashboard/settings/instance/general': typeof LayoutAuthenticatedDashboardSettingsInstanceGeneralRoute
   '/dashboard/settings/instance/public-boards': typeof LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRoute
+  '/dashboard/settings/instance/users': typeof LayoutAuthenticatedDashboardSettingsInstanceUsersRoute
   '/dashboard/settings/instance/workspaces': typeof LayoutAuthenticatedDashboardSettingsInstanceWorkspacesRoute
+  '/dashboard/settings/workspace/agents': typeof LayoutAuthenticatedDashboardSettingsWorkspaceAgentsRoute
+  '/dashboard/settings/workspace/ai': typeof LayoutAuthenticatedDashboardSettingsWorkspaceAiRoute
+  '/dashboard/settings/workspace/ai-memory': typeof LayoutAuthenticatedDashboardSettingsWorkspaceAiMemoryRoute
+  '/dashboard/settings/workspace/ai-skills': typeof LayoutAuthenticatedDashboardSettingsWorkspaceAiSkillsRoute
   '/dashboard/settings/workspace/audit-log': typeof LayoutAuthenticatedDashboardSettingsWorkspaceAuditLogRoute
   '/dashboard/settings/workspace/billing': typeof LayoutAuthenticatedDashboardSettingsWorkspaceBillingRoute
   '/dashboard/settings/workspace/exports': typeof LayoutAuthenticatedDashboardSettingsWorkspaceExportsRoute
@@ -833,6 +911,8 @@ export interface FileRoutesByTo {
   '/dashboard/settings/workspace/labels': typeof LayoutAuthenticatedDashboardSettingsWorkspaceLabelsRoute
   '/dashboard/settings/workspace/roles': typeof LayoutAuthenticatedDashboardSettingsWorkspaceRolesRoute
   '/dashboard/settings/workspace/trash': typeof LayoutAuthenticatedDashboardSettingsWorkspaceTrashRoute
+  '/dashboard/workspace/$workspaceId/agents': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAgentsRoute
+  '/dashboard/workspace/$workspaceId/ai': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAiRoute
   '/dashboard/workspace/$workspaceId/analytics': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAnalyticsRoute
   '/dashboard/workspace/$workspaceId/archives': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdArchivesRoute
   '/dashboard/workspace/$workspaceId/drafts': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdDraftsRoute
@@ -892,6 +972,7 @@ export interface FileRoutesById {
   '/auth/verify-otp': typeof AuthVerifyOtpRoute
   '/device/approve': typeof DeviceApproveRoute
   '/mcp/authorize': typeof McpAuthorizeRoute
+  '/public-page/$token': typeof PublicPageTokenRoute
   '/public-project/$token': typeof PublicProjectTokenRoute
   '/device/': typeof DeviceIndexRoute
   '/_layout/_authenticated/dashboard': typeof LayoutAuthenticatedDashboardRouteWithChildren
@@ -914,11 +995,17 @@ export interface FileRoutesById {
   '/_layout/_authenticated/dashboard/settings/account/preferences': typeof LayoutAuthenticatedDashboardSettingsAccountPreferencesRoute
   '/_layout/_authenticated/dashboard/settings/account/security': typeof LayoutAuthenticatedDashboardSettingsAccountSecurityRoute
   '/_layout/_authenticated/dashboard/settings/instance/admins': typeof LayoutAuthenticatedDashboardSettingsInstanceAdminsRoute
+  '/_layout/_authenticated/dashboard/settings/instance/ai': typeof LayoutAuthenticatedDashboardSettingsInstanceAiRoute
   '/_layout/_authenticated/dashboard/settings/instance/authentication': typeof LayoutAuthenticatedDashboardSettingsInstanceAuthenticationRoute
   '/_layout/_authenticated/dashboard/settings/instance/email': typeof LayoutAuthenticatedDashboardSettingsInstanceEmailRoute
   '/_layout/_authenticated/dashboard/settings/instance/general': typeof LayoutAuthenticatedDashboardSettingsInstanceGeneralRoute
   '/_layout/_authenticated/dashboard/settings/instance/public-boards': typeof LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRoute
+  '/_layout/_authenticated/dashboard/settings/instance/users': typeof LayoutAuthenticatedDashboardSettingsInstanceUsersRoute
   '/_layout/_authenticated/dashboard/settings/instance/workspaces': typeof LayoutAuthenticatedDashboardSettingsInstanceWorkspacesRoute
+  '/_layout/_authenticated/dashboard/settings/workspace/agents': typeof LayoutAuthenticatedDashboardSettingsWorkspaceAgentsRoute
+  '/_layout/_authenticated/dashboard/settings/workspace/ai': typeof LayoutAuthenticatedDashboardSettingsWorkspaceAiRoute
+  '/_layout/_authenticated/dashboard/settings/workspace/ai-memory': typeof LayoutAuthenticatedDashboardSettingsWorkspaceAiMemoryRoute
+  '/_layout/_authenticated/dashboard/settings/workspace/ai-skills': typeof LayoutAuthenticatedDashboardSettingsWorkspaceAiSkillsRoute
   '/_layout/_authenticated/dashboard/settings/workspace/audit-log': typeof LayoutAuthenticatedDashboardSettingsWorkspaceAuditLogRoute
   '/_layout/_authenticated/dashboard/settings/workspace/billing': typeof LayoutAuthenticatedDashboardSettingsWorkspaceBillingRoute
   '/_layout/_authenticated/dashboard/settings/workspace/exports': typeof LayoutAuthenticatedDashboardSettingsWorkspaceExportsRoute
@@ -926,6 +1013,8 @@ export interface FileRoutesById {
   '/_layout/_authenticated/dashboard/settings/workspace/labels': typeof LayoutAuthenticatedDashboardSettingsWorkspaceLabelsRoute
   '/_layout/_authenticated/dashboard/settings/workspace/roles': typeof LayoutAuthenticatedDashboardSettingsWorkspaceRolesRoute
   '/_layout/_authenticated/dashboard/settings/workspace/trash': typeof LayoutAuthenticatedDashboardSettingsWorkspaceTrashRoute
+  '/_layout/_authenticated/dashboard/workspace/$workspaceId/agents': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAgentsRoute
+  '/_layout/_authenticated/dashboard/workspace/$workspaceId/ai': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAiRoute
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/analytics': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAnalyticsRoute
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/archives': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdArchivesRoute
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/drafts': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdDraftsRoute
@@ -984,6 +1073,7 @@ export interface FileRouteTypes {
     | '/auth/verify-otp'
     | '/device/approve'
     | '/mcp/authorize'
+    | '/public-page/$token'
     | '/public-project/$token'
     | '/device/'
     | '/dashboard'
@@ -1006,11 +1096,17 @@ export interface FileRouteTypes {
     | '/dashboard/settings/account/preferences'
     | '/dashboard/settings/account/security'
     | '/dashboard/settings/instance/admins'
+    | '/dashboard/settings/instance/ai'
     | '/dashboard/settings/instance/authentication'
     | '/dashboard/settings/instance/email'
     | '/dashboard/settings/instance/general'
     | '/dashboard/settings/instance/public-boards'
+    | '/dashboard/settings/instance/users'
     | '/dashboard/settings/instance/workspaces'
+    | '/dashboard/settings/workspace/agents'
+    | '/dashboard/settings/workspace/ai'
+    | '/dashboard/settings/workspace/ai-memory'
+    | '/dashboard/settings/workspace/ai-skills'
     | '/dashboard/settings/workspace/audit-log'
     | '/dashboard/settings/workspace/billing'
     | '/dashboard/settings/workspace/exports'
@@ -1018,6 +1114,8 @@ export interface FileRouteTypes {
     | '/dashboard/settings/workspace/labels'
     | '/dashboard/settings/workspace/roles'
     | '/dashboard/settings/workspace/trash'
+    | '/dashboard/workspace/$workspaceId/agents'
+    | '/dashboard/workspace/$workspaceId/ai'
     | '/dashboard/workspace/$workspaceId/analytics'
     | '/dashboard/workspace/$workspaceId/archives'
     | '/dashboard/workspace/$workspaceId/drafts'
@@ -1073,6 +1171,7 @@ export interface FileRouteTypes {
     | '/auth/verify-otp'
     | '/device/approve'
     | '/mcp/authorize'
+    | '/public-page/$token'
     | '/public-project/$token'
     | '/device'
     | '/invitations'
@@ -1092,11 +1191,17 @@ export interface FileRouteTypes {
     | '/dashboard/settings/account/preferences'
     | '/dashboard/settings/account/security'
     | '/dashboard/settings/instance/admins'
+    | '/dashboard/settings/instance/ai'
     | '/dashboard/settings/instance/authentication'
     | '/dashboard/settings/instance/email'
     | '/dashboard/settings/instance/general'
     | '/dashboard/settings/instance/public-boards'
+    | '/dashboard/settings/instance/users'
     | '/dashboard/settings/instance/workspaces'
+    | '/dashboard/settings/workspace/agents'
+    | '/dashboard/settings/workspace/ai'
+    | '/dashboard/settings/workspace/ai-memory'
+    | '/dashboard/settings/workspace/ai-skills'
     | '/dashboard/settings/workspace/audit-log'
     | '/dashboard/settings/workspace/billing'
     | '/dashboard/settings/workspace/exports'
@@ -1104,6 +1209,8 @@ export interface FileRouteTypes {
     | '/dashboard/settings/workspace/labels'
     | '/dashboard/settings/workspace/roles'
     | '/dashboard/settings/workspace/trash'
+    | '/dashboard/workspace/$workspaceId/agents'
+    | '/dashboard/workspace/$workspaceId/ai'
     | '/dashboard/workspace/$workspaceId/analytics'
     | '/dashboard/workspace/$workspaceId/archives'
     | '/dashboard/workspace/$workspaceId/drafts'
@@ -1162,6 +1269,7 @@ export interface FileRouteTypes {
     | '/auth/verify-otp'
     | '/device/approve'
     | '/mcp/authorize'
+    | '/public-page/$token'
     | '/public-project/$token'
     | '/device/'
     | '/_layout/_authenticated/dashboard'
@@ -1184,11 +1292,17 @@ export interface FileRouteTypes {
     | '/_layout/_authenticated/dashboard/settings/account/preferences'
     | '/_layout/_authenticated/dashboard/settings/account/security'
     | '/_layout/_authenticated/dashboard/settings/instance/admins'
+    | '/_layout/_authenticated/dashboard/settings/instance/ai'
     | '/_layout/_authenticated/dashboard/settings/instance/authentication'
     | '/_layout/_authenticated/dashboard/settings/instance/email'
     | '/_layout/_authenticated/dashboard/settings/instance/general'
     | '/_layout/_authenticated/dashboard/settings/instance/public-boards'
+    | '/_layout/_authenticated/dashboard/settings/instance/users'
     | '/_layout/_authenticated/dashboard/settings/instance/workspaces'
+    | '/_layout/_authenticated/dashboard/settings/workspace/agents'
+    | '/_layout/_authenticated/dashboard/settings/workspace/ai'
+    | '/_layout/_authenticated/dashboard/settings/workspace/ai-memory'
+    | '/_layout/_authenticated/dashboard/settings/workspace/ai-skills'
     | '/_layout/_authenticated/dashboard/settings/workspace/audit-log'
     | '/_layout/_authenticated/dashboard/settings/workspace/billing'
     | '/_layout/_authenticated/dashboard/settings/workspace/exports'
@@ -1196,6 +1310,8 @@ export interface FileRouteTypes {
     | '/_layout/_authenticated/dashboard/settings/workspace/labels'
     | '/_layout/_authenticated/dashboard/settings/workspace/roles'
     | '/_layout/_authenticated/dashboard/settings/workspace/trash'
+    | '/_layout/_authenticated/dashboard/workspace/$workspaceId/agents'
+    | '/_layout/_authenticated/dashboard/workspace/$workspaceId/ai'
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/analytics'
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/archives'
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/drafts'
@@ -1247,6 +1363,7 @@ export interface RootRouteChildren {
   DeviceRoute: typeof DeviceRouteWithChildren
   TestErrorRoute: typeof TestErrorRoute
   McpAuthorizeRoute: typeof McpAuthorizeRoute
+  PublicPageTokenRoute: typeof PublicPageTokenRoute
   PublicProjectTokenRoute: typeof PublicProjectTokenRoute
   InvitationAcceptInviteIdRoute: typeof InvitationAcceptInviteIdRoute
 }
@@ -1356,6 +1473,13 @@ declare module '@tanstack/react-router' {
       path: '/mcp/authorize'
       fullPath: '/mcp/authorize'
       preLoaderRoute: typeof McpAuthorizeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/public-page/$token': {
+      id: '/public-page/$token'
+      path: '/public-page/$token'
+      fullPath: '/public-page/$token'
+      preLoaderRoute: typeof PublicPageTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/public-project/$token': {
@@ -1512,6 +1636,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceAdminsRouteImport
       parentRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceRoute
     }
+    '/_layout/_authenticated/dashboard/settings/instance/ai': {
+      id: '/_layout/_authenticated/dashboard/settings/instance/ai'
+      path: '/ai'
+      fullPath: '/dashboard/settings/instance/ai'
+      preLoaderRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceAiRouteImport
+      parentRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceRoute
+    }
     '/_layout/_authenticated/dashboard/settings/instance/authentication': {
       id: '/_layout/_authenticated/dashboard/settings/instance/authentication'
       path: '/authentication'
@@ -1540,12 +1671,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRouteImport
       parentRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceRoute
     }
+    '/_layout/_authenticated/dashboard/settings/instance/users': {
+      id: '/_layout/_authenticated/dashboard/settings/instance/users'
+      path: '/users'
+      fullPath: '/dashboard/settings/instance/users'
+      preLoaderRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceUsersRouteImport
+      parentRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceRoute
+    }
     '/_layout/_authenticated/dashboard/settings/instance/workspaces': {
       id: '/_layout/_authenticated/dashboard/settings/instance/workspaces'
       path: '/workspaces'
       fullPath: '/dashboard/settings/instance/workspaces'
       preLoaderRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceWorkspacesRouteImport
       parentRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceRoute
+    }
+    '/_layout/_authenticated/dashboard/settings/workspace/agents': {
+      id: '/_layout/_authenticated/dashboard/settings/workspace/agents'
+      path: '/agents'
+      fullPath: '/dashboard/settings/workspace/agents'
+      preLoaderRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceAgentsRouteImport
+      parentRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceRoute
+    }
+    '/_layout/_authenticated/dashboard/settings/workspace/ai': {
+      id: '/_layout/_authenticated/dashboard/settings/workspace/ai'
+      path: '/ai'
+      fullPath: '/dashboard/settings/workspace/ai'
+      preLoaderRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceAiRouteImport
+      parentRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceRoute
+    }
+    '/_layout/_authenticated/dashboard/settings/workspace/ai-memory': {
+      id: '/_layout/_authenticated/dashboard/settings/workspace/ai-memory'
+      path: '/ai-memory'
+      fullPath: '/dashboard/settings/workspace/ai-memory'
+      preLoaderRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceAiMemoryRouteImport
+      parentRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceRoute
+    }
+    '/_layout/_authenticated/dashboard/settings/workspace/ai-skills': {
+      id: '/_layout/_authenticated/dashboard/settings/workspace/ai-skills'
+      path: '/ai-skills'
+      fullPath: '/dashboard/settings/workspace/ai-skills'
+      preLoaderRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceAiSkillsRouteImport
+      parentRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceRoute
     }
     '/_layout/_authenticated/dashboard/settings/workspace/audit-log': {
       id: '/_layout/_authenticated/dashboard/settings/workspace/audit-log'
@@ -1601,6 +1767,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/dashboard/workspace/$workspaceId/'
       preLoaderRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdIndexRouteImport
+      parentRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute
+    }
+    '/_layout/_authenticated/dashboard/workspace/$workspaceId/agents': {
+      id: '/_layout/_authenticated/dashboard/workspace/$workspaceId/agents'
+      path: '/agents'
+      fullPath: '/dashboard/workspace/$workspaceId/agents'
+      preLoaderRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAgentsRouteImport
+      parentRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute
+    }
+    '/_layout/_authenticated/dashboard/workspace/$workspaceId/ai': {
+      id: '/_layout/_authenticated/dashboard/workspace/$workspaceId/ai'
+      path: '/ai'
+      fullPath: '/dashboard/workspace/$workspaceId/ai'
+      preLoaderRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAiRouteImport
       parentRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute
     }
     '/_layout/_authenticated/dashboard/workspace/$workspaceId/analytics': {
@@ -1915,10 +2095,12 @@ const LayoutAuthenticatedDashboardSettingsAccountRouteWithChildren =
 
 interface LayoutAuthenticatedDashboardSettingsInstanceRouteChildren {
   LayoutAuthenticatedDashboardSettingsInstanceAdminsRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceAdminsRoute
+  LayoutAuthenticatedDashboardSettingsInstanceAiRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceAiRoute
   LayoutAuthenticatedDashboardSettingsInstanceAuthenticationRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceAuthenticationRoute
   LayoutAuthenticatedDashboardSettingsInstanceEmailRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceEmailRoute
   LayoutAuthenticatedDashboardSettingsInstanceGeneralRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceGeneralRoute
   LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRoute: typeof LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRoute
+  LayoutAuthenticatedDashboardSettingsInstanceUsersRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceUsersRoute
   LayoutAuthenticatedDashboardSettingsInstanceWorkspacesRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceWorkspacesRoute
   LayoutAuthenticatedDashboardSettingsInstanceIndexRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceIndexRoute
 }
@@ -1927,6 +2109,8 @@ const LayoutAuthenticatedDashboardSettingsInstanceRouteChildren: LayoutAuthentic
   {
     LayoutAuthenticatedDashboardSettingsInstanceAdminsRoute:
       LayoutAuthenticatedDashboardSettingsInstanceAdminsRoute,
+    LayoutAuthenticatedDashboardSettingsInstanceAiRoute:
+      LayoutAuthenticatedDashboardSettingsInstanceAiRoute,
     LayoutAuthenticatedDashboardSettingsInstanceAuthenticationRoute:
       LayoutAuthenticatedDashboardSettingsInstanceAuthenticationRoute,
     LayoutAuthenticatedDashboardSettingsInstanceEmailRoute:
@@ -1935,6 +2119,8 @@ const LayoutAuthenticatedDashboardSettingsInstanceRouteChildren: LayoutAuthentic
       LayoutAuthenticatedDashboardSettingsInstanceGeneralRoute,
     LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRoute:
       LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRoute,
+    LayoutAuthenticatedDashboardSettingsInstanceUsersRoute:
+      LayoutAuthenticatedDashboardSettingsInstanceUsersRoute,
     LayoutAuthenticatedDashboardSettingsInstanceWorkspacesRoute:
       LayoutAuthenticatedDashboardSettingsInstanceWorkspacesRoute,
     LayoutAuthenticatedDashboardSettingsInstanceIndexRoute:
@@ -1980,6 +2166,10 @@ const LayoutAuthenticatedDashboardSettingsProjectsRouteWithChildren =
   )
 
 interface LayoutAuthenticatedDashboardSettingsWorkspaceRouteChildren {
+  LayoutAuthenticatedDashboardSettingsWorkspaceAgentsRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceAgentsRoute
+  LayoutAuthenticatedDashboardSettingsWorkspaceAiRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceAiRoute
+  LayoutAuthenticatedDashboardSettingsWorkspaceAiMemoryRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceAiMemoryRoute
+  LayoutAuthenticatedDashboardSettingsWorkspaceAiSkillsRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceAiSkillsRoute
   LayoutAuthenticatedDashboardSettingsWorkspaceAuditLogRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceAuditLogRoute
   LayoutAuthenticatedDashboardSettingsWorkspaceBillingRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceBillingRoute
   LayoutAuthenticatedDashboardSettingsWorkspaceExportsRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceExportsRoute
@@ -1993,6 +2183,14 @@ interface LayoutAuthenticatedDashboardSettingsWorkspaceRouteChildren {
 
 const LayoutAuthenticatedDashboardSettingsWorkspaceRouteChildren: LayoutAuthenticatedDashboardSettingsWorkspaceRouteChildren =
   {
+    LayoutAuthenticatedDashboardSettingsWorkspaceAgentsRoute:
+      LayoutAuthenticatedDashboardSettingsWorkspaceAgentsRoute,
+    LayoutAuthenticatedDashboardSettingsWorkspaceAiRoute:
+      LayoutAuthenticatedDashboardSettingsWorkspaceAiRoute,
+    LayoutAuthenticatedDashboardSettingsWorkspaceAiMemoryRoute:
+      LayoutAuthenticatedDashboardSettingsWorkspaceAiMemoryRoute,
+    LayoutAuthenticatedDashboardSettingsWorkspaceAiSkillsRoute:
+      LayoutAuthenticatedDashboardSettingsWorkspaceAiSkillsRoute,
     LayoutAuthenticatedDashboardSettingsWorkspaceAuditLogRoute:
       LayoutAuthenticatedDashboardSettingsWorkspaceAuditLogRoute,
     LayoutAuthenticatedDashboardSettingsWorkspaceBillingRoute:
@@ -2043,6 +2241,8 @@ const LayoutAuthenticatedDashboardSettingsRouteWithChildren =
   )
 
 interface LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRouteChildren {
+  LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAgentsRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAgentsRoute
+  LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAiRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAiRoute
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAnalyticsRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAnalyticsRoute
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdArchivesRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdArchivesRoute
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdDraftsRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdDraftsRoute
@@ -2079,6 +2279,10 @@ interface LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRouteChildren {
 
 const LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRouteChildren: LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRouteChildren =
   {
+    LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAgentsRoute:
+      LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAgentsRoute,
+    LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAiRoute:
+      LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAiRoute,
     LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAnalyticsRoute:
       LayoutAuthenticatedDashboardWorkspaceWorkspaceIdAnalyticsRoute,
     LayoutAuthenticatedDashboardWorkspaceWorkspaceIdArchivesRoute:
@@ -2246,6 +2450,7 @@ const rootRouteChildren: RootRouteChildren = {
   DeviceRoute: DeviceRouteWithChildren,
   TestErrorRoute: TestErrorRoute,
   McpAuthorizeRoute: McpAuthorizeRoute,
+  PublicPageTokenRoute: PublicPageTokenRoute,
   PublicProjectTokenRoute: PublicProjectTokenRoute,
   InvitationAcceptInviteIdRoute: InvitationAcceptInviteIdRoute,
 }

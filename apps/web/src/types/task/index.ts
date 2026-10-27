@@ -57,6 +57,8 @@ type Task = {
   cycleId?: string | null;
   /** A point of the project's active estimate system, or null. */
   estimatePointId?: string | null;
+  /** True while the task repeats (board and list payloads). */
+  isRecurring?: boolean;
   /** Set while the task is archived; archived tasks keep their column. */
   archivedAt?: string | null;
   /** Who created the task; null for integration-made tasks. */
