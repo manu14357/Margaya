@@ -21,7 +21,7 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import { produce } from "immer";
 import { Archive, ChevronRight, Flag, Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { type CSSProperties, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import FocusedTaskShortcuts from "@/components/task/task-shortcuts/focused-task-shortcuts";
 import CaptureBar from "@/components/task-draft/capture-bar";
@@ -34,6 +34,7 @@ import { useRenderWindow } from "@/hooks/use-render-window";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { cn } from "@/lib/cn";
 import { getColumnIcon } from "@/lib/column";
+import { COLUMN_GROUP_META, columnGroupOf } from "@/lib/column-groups";
 import { placementWrites } from "@/lib/placement-writes";
 import { assigneesOfTask } from "@/lib/task-assignees";
 import { formatTaskKey } from "@/lib/task-key";
@@ -91,6 +92,8 @@ function ListGroup({
   // Large groups mount their rows as they scroll into view.
   const { count, hasMore, sentinelRef } = useRenderWindow(column.tasks.length);
   const visibleTasks = column.tasks.slice(0, count);
+  const group = columnGroupOf(column);
+  const groupMeta = COLUMN_GROUP_META[group];
   const { setNodeRef } = useDroppable({
     id: column.id,
     data: {
@@ -108,7 +111,16 @@ function ListGroup({
           "bg-accent/35 outline-2 outline-primary/60 outline-dashed -outline-offset-2",
       )}
     >
-      <div className="group/header sticky top-0 z-10 flex h-8 items-center justify-between border-border/50 border-b bg-muted/80 px-2 backdrop-blur supports-[backdrop-filter]:bg-muted/70 md:px-3">
+      <div
+        className="group/header sticky top-0 z-10 flex h-8 items-center justify-between border-border/50 border-b px-2 shadow-[inset_3px_0_0_var(--group-color)] md:px-3"
+        style={
+          {
+            "--group-color": groupMeta.color,
+            backgroundColor: groupMeta.tint,
+          } as CSSProperties
+        }
+        data-group={group}
+      >
         <button
           type="button"
           onClick={onToggle}
@@ -130,7 +142,10 @@ function ListGroup({
             )}
           </span>
           <span className="truncate">{column.name}</span>
-          <span className="font-normal text-muted-foreground text-xs tabular-nums">
+          <span
+            className="rounded-full bg-card px-1.5 font-medium text-[11px] tabular-nums leading-4 ring-1 ring-(--group-color)/30"
+            style={{ color: groupMeta.foreground }}
+          >
             {column.tasks.length}
           </span>
         </button>
@@ -140,7 +155,7 @@ function ListGroup({
             <button
               type="button"
               onClick={onAddTask}
-              className="flex size-6 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              className="flex size-6 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-background/70 hover:text-foreground"
               title={t("tasks:listView.addTask")}
             >
               <Plus className="size-3.5" />
@@ -151,7 +166,7 @@ function ListGroup({
             <button
               type="button"
               onClick={onArchive}
-              className="flex size-6 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              className="flex size-6 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-background/70 hover:text-foreground"
               title={t("tasks:listView.archiveAllTooltip")}
             >
               <Archive className="size-3.5" />

@@ -2,6 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { shortcuts } from "@/constants/shortcuts";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
+import { shortcutKey } from "@/lib/shortcut-key";
 import useBulkSelectionStore from "@/store/bulk-selection";
 import type { TriageKind } from "./triage-triggers";
 
@@ -76,7 +77,7 @@ export function useListTriage() {
       // closes and hands focus back to it.
       if (owner && !owner.matches("[data-triage]")) return;
 
-      const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+      const key = shortcutKey(event);
       const focused = useBulkSelectionStore.getState().focusedTaskId;
       let handled = true;
 

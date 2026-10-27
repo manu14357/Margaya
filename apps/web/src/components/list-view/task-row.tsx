@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { type CSSProperties, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { RecurringIndicator } from "@/components/task/recurring-indicator";
 import {
   AlertDialog,
   AlertDialogClose,
@@ -37,13 +38,14 @@ import {
 } from "@/lib/due-date-status";
 import { getExternalWebUrl, openExternalWebUrl } from "@/lib/external-url";
 import { TaskPropertySlotOutlet } from "@/lib/task-property-slots";
+import { toastTaskTrashed } from "@/lib/task-undo";
 import { toast } from "@/lib/toast";
 import useBulkSelectionStore from "@/store/bulk-selection";
 import useProjectStore from "@/store/project";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 import type Task from "@/types/task";
 import TaskCardContextMenuContent from "../kanban-board/task-card-context-menu/task-card-context-menu-content";
-import { TaskLabels } from "../kanban-board/task-labels";
+import { LabelChips } from "../shared/label-chips";
 import AssigneeAvatarStack from "../task/assignee-avatar-stack";
 import { ContextMenu, ContextMenuTrigger } from "../ui/context-menu";
 import {
@@ -171,8 +173,11 @@ function TaskRow({ task, projectSlug }: TaskRowProps) {
 
   const handleDeleteTask = async () => {
     try {
-      await deleteTask(task.id);
-      toast.success(t("tasks:delete.success"));
+      const deleted = await deleteTask(task.id);
+      toastTaskTrashed(
+        { taskId: deleted.id, projectId: deleted.projectId },
+        { t },
+      );
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : t("tasks:delete.error"),
@@ -203,7 +208,9 @@ function TaskRow({ task, projectSlug }: TaskRowProps) {
             onKeyDown={handleKeyDown}
             className={cn(
               "group relative flex min-h-9 cursor-pointer items-center gap-1.5 px-2 py-0.5 transition-colors md:gap-2 md:px-3",
-              isTaskSelected ? "bg-accent/45" : "hover:bg-accent/60",
+              isTaskSelected
+                ? "bg-accent/45"
+                : "hover:bg-accent/70 hover:shadow-[inset_2px_0_0_var(--primary)]",
             )}
             {...attributes}
             {...listeners}
@@ -222,7 +229,9 @@ function TaskRow({ task, projectSlug }: TaskRowProps) {
                   {task.title}
                 </span>
                 <div className="hidden items-center gap-1 sm:flex">
-                  {showLabels && <TaskLabels labels={task.labels ?? []} />}
+                  {showLabels && (
+                    <LabelChips labels={task.labels ?? []} max={3} />
+                  )}
 
                   <TaskPropertySlotOutlet
                     location="cardChip"
@@ -345,7 +354,7 @@ function TaskRow({ task, projectSlug }: TaskRowProps) {
 
             {showDueDates && task.dueDate && (
               <div
-                className={`flex h-5 shrink-0 items-center gap-1 rounded px-1.5 text-[10px] ${dueDateStatusColors[getDueDateStatus(task.dueDate, taskIsCompleted)]}`}
+                className={`flex h-5 shrink-0 items-center gap-1 rounded-full px-1.5 font-medium text-[10px] ${dueDateStatusColors[getDueDateStatus(task.dueDate, taskIsCompleted)]}`}
               >
                 {getDueDateStatus(task.dueDate, taskIsCompleted) ===
                   "overdue" && <CalendarX className="w-3 h-3" />}
@@ -358,6 +367,8 @@ function TaskRow({ task, projectSlug }: TaskRowProps) {
                 <span>{format(new Date(task.dueDate), "MMM d")}</span>
               </div>
             )}
+
+            {task.isRecurring && <RecurringIndicator />}
 
             {showAssignees && (
               <AssigneeTrigger task={task} workspaceId={workspace?.id ?? ""}>
