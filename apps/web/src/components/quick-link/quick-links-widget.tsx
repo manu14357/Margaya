@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Link2, Plus } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import WidgetSection, {
@@ -61,6 +61,8 @@ export default function QuickLinksWidget({
   return (
     <WidgetSection
       title={t("home:widgets.quickLinks")}
+      icon={Link2}
+      tone="var(--area-inbox)"
       actions={
         <Button variant="ghost" size="xs" onClick={openAdd}>
           <Plus />
