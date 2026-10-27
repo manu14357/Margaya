@@ -1,0 +1,7 @@
+ID,Team,Title,Description,Status,Estimate,Priority,Project,Creator,Assignee,Labels,Cycle Name,Created,Updated,Started,Completed,Canceled,Archived,Due Date,Parent issue,Blocked by,Related to
+ENG-1,Engineering,Set up CI,"Run tests on **every** push.
+Cache the dependencies.",Todo,2,High,Platform,Ben Builder,ben@example.test,"Infra, CI",,Wed Jan 10 2024 09:00:00 GMT+0000 (Coordinated Universal Time),2024-01-12T09:00:00.000Z,,,,,2024-02-15,,,ENG-3
+ENG-2,Engineering,Add a caching step,,In Progress,,Medium,Platform,Ben Builder,Casey Unknown,CI,,2024-01-11T09:00:00.000Z,2024-01-12T10:00:00.000Z,2024-01-12T10:00:00.000Z,,,,,ENG-1,ENG-3,
+ENG-3,Engineering,Pick a runner,,Done,,Urgent,Platform,Ben Builder,ben@example.test,,,2024-01-09T09:00:00.000Z,2024-01-11T09:00:00.000Z,2024-01-10T09:00:00.000Z,2024-01-11T09:00:00.000Z,,,,,,
+ENG-4,Engineering,Drop the old jobs,,Canceled,,No priority,Platform,Ben Builder,,,,2024-01-09T09:00:00.000Z,2024-01-10T09:00:00.000Z,,,2024-01-10T09:00:00.000Z,,,,,
+ENG-5,Engineering,Archived issue,,Backlog,,Low,Platform,Ben Builder,,,,2024-01-01T09:00:00.000Z,2024-01-02T09:00:00.000Z,,,,2024-01-03T09:00:00.000Z,,,,

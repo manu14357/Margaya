@@ -88,11 +88,19 @@ export async function draftScene() {
 
   const as =
     (user: User) =>
-    (method: string, path: string, body?: unknown): Promise<Response> => {
+    (
+      method: string,
+      path: string,
+      body?: unknown,
+      headers?: Record<string, string>,
+    ): Promise<Response> => {
       mockAuthenticatedSession(user);
+      const init = body === undefined ? { method } : json(method, body);
       return app.request(
         `/api${path}`,
-        body === undefined ? { method } : json(method, body),
+        headers
+          ? { ...init, headers: { ...(init.headers as object), ...headers } }
+          : init,
       );
     };
 

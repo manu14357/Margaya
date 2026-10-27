@@ -75,6 +75,9 @@ process.env.DISABLE_PASSWORD_REGISTRATION = "false";
 process.env.DISABLE_EMAIL_OTP_SIGN_IN = "false";
 process.env.DISABLE_LOGIN_FORM = "";
 process.env.DEMO_MODE = "false";
+// Without S3, uploads would fall back to the local file store; tests that
+// exercise it turn it on with a temporary MARGAYA_STORAGE_DIR.
+process.env.MARGAYA_LOCAL_STORAGE = "false";
 // Requests from app.request() carry no client IP, so every test would share
 // one bucket per path. auth-rate-limit.test.ts turns it back on.
 process.env.AUTH_RATE_LIMIT_ENABLED = "false";
