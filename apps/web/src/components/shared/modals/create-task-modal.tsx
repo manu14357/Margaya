@@ -5,6 +5,8 @@ import {
   Check,
   FilePen,
   FolderKanban,
+  LayoutTemplate,
+  ListTree,
   Plus,
   Search,
   Tag,
@@ -14,8 +16,18 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { AiTaskWriter } from "@/components/ai/ai-task-writer";
+import LiveLabelSuggestions from "@/components/ai/triage/live-label-suggestions";
+import TemplateMenu from "@/components/project/task-templates/template-menu";
 import AssigneeAvatarStack from "@/components/task/assignee-avatar-stack";
 import AssigneeMultiSelect from "@/components/task/assignee-multi-select";
+import ParentTaskOptions, {
+  type ParentOption,
+  type ProjectBoardTask,
+} from "@/components/task/parent-task-options";
+import SimilarTaskHints, {
+  type SimilarTask,
+} from "@/components/task/similar-task-hints";
 import TaskDescriptionEditor from "@/components/task/task-description-editor";
 import DeleteDraftDialog from "@/components/task-draft/delete-draft-dialog";
 import { usePublishDraftFlow } from "@/components/task-draft/use-publish-draft-flow";
@@ -71,10 +83,15 @@ import { useDeleteTask } from "@/hooks/mutations/task/use-delete-task";
 import { useUpdateTask } from "@/hooks/mutations/task/use-update-task";
 import { useCreateTaskDraft } from "@/hooks/mutations/task-draft/use-create-task-draft";
 import { useUpdateTaskDraft } from "@/hooks/mutations/task-draft/use-update-task-draft";
+import useCreateTaskRelation from "@/hooks/mutations/task-relation/use-create-task-relation";
+import useSetTaskParent from "@/hooks/mutations/task-relation/use-set-task-parent";
 import { useGetColumns } from "@/hooks/queries/column/use-get-columns";
 import useGetCustomFieldsByProject from "@/hooks/queries/custom-field/use-get-custom-fields-by-project";
+import { useActiveEstimate } from "@/hooks/queries/estimate/use-active-estimate";
 import useGetLabelsByWorkspace from "@/hooks/queries/label/use-get-labels-by-workspace";
 import useGetProjects from "@/hooks/queries/project/use-get-projects";
+import { useSimilarTasks } from "@/hooks/queries/task/use-similar-tasks";
+import { useTaskTemplates } from "@/hooks/queries/task-template/use-task-templates";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useDefaultAssigneePrefill } from "@/hooks/use-default-assignee-prefill";
 import { useAssigneePeople } from "@/hooks/use-task-assignees";
@@ -104,10 +121,15 @@ import {
   runCreateModalSlots,
   TaskPropertySlotOutlet,
 } from "@/lib/task-property-slots";
+import {
+  type AppliedTemplateTrace,
+  fillFormFromTemplate,
+} from "@/lib/task-template";
 import { toast } from "@/lib/toast";
 import useProjectStore from "@/store/project";
 import type Task from "@/types/task";
 import type { TaskDraft } from "@/types/task-draft";
+import type { TaskTemplate } from "@/types/task-template";
 
 type CreateTaskModalProps = {
   open: boolean;
@@ -124,11 +146,16 @@ type CreateTaskModalProps = {
 
 export type CreateTaskPrefill = {
   title?: string;
+  /** Markdown, e.g. an Ask answer turned into a task. */
+  description?: string;
   priority?: string;
   assigneeIds?: readonly string[];
   dueDate?: Date;
   labels?: ReadonlyArray<{ name: string; color: string }>;
 };
+
+/** A task being created has no sub-tasks: any task of the project fits. */
+const everyTask = (tasks: ProjectBoardTask[]) => tasks;
 
 function sameIds(a: readonly string[], b: readonly string[]): boolean {
   return a.length === b.length && a.every((id, index) => id === b[index]);
@@ -291,15 +318,19 @@ function CreateTaskModalContent({
   const { data: workspaceLabels = [] } = useGetLabelsByWorkspace(
     workspace?.id || "",
   );
-  const { canCreateTasks, canCreateLabels } = useWorkspacePermission();
+  const { canCreateTasks, canCreateLabels, canUpdateTasks } =
+    useWorkspacePermission();
   const canCreateTaskCapability = canCreateTasks();
+  // Linking under a parent changes the parent too (task:update); a draft
+  // keeps its chosen parent until it is published.
+  const canPickParent = canUpdateTasks();
   const canCreateLabelCapability = canCreateLabels();
 
   const [title, setTitle] = useState(
     initialValues?.title ?? prefill?.title ?? "",
   );
   const [description, setDescription] = useState(
-    initialValues?.description ?? "",
+    initialValues?.description ?? prefill?.description ?? "",
   );
   const [priority, setPriority] = useState<Priority>(
     ((initialValues?.priority ?? prefill?.priority) as Priority | undefined) ??
@@ -315,6 +346,17 @@ function CreateTaskModalContent({
     initialValues?.dueDate ?? prefill?.dueDate,
   );
   const [createMore, setCreateMore] = useState(false);
+  // Kept by Create more, so several sub-tasks can be added in a row.
+  const [parent, setParent] = useState<ParentOption | null>(() =>
+    draft?.parentTask
+      ? {
+          id: draft.parentTask.id,
+          key: draft.parentTask.key,
+          title: draft.parentTask.title,
+        }
+      : null,
+  );
+  const [parentOpen, setParentOpen] = useState(false);
   const [labels, setLabels] = useState<Label[]>(() =>
     draft && initialValues
       ? initialValues.labels.map((label) => draftLabelState(label, draft))
@@ -334,6 +376,19 @@ function CreateTaskModalContent({
   const [draftStatus, setDraftStatus] = useState<string | null>(
     initialValues?.status ?? null,
   );
+  // A picked task template: its column wins over the `status` prop, and its
+  // sub-tasks are created under the new task after it is saved.
+  const [templateStatus, setTemplateStatus] = useState<string | null>(null);
+  const [templateSubtasks, setTemplateSubtasks] = useState<string[]>([]);
+  const [appliedTemplate, setAppliedTemplate] = useState<{
+    name: string;
+    trace: AppliedTemplateTrace;
+  } | null>(null);
+  const clearTemplate = () => {
+    setTemplateStatus(null);
+    setTemplateSubtasks([]);
+    setAppliedTemplate(null);
+  };
 
   const [labelsOpen, setLabelsOpen] = useState(false);
   const [labelsStep, setLabelsStep] = useState<PopoverStep>("select");
@@ -381,9 +436,25 @@ function CreateTaskModalContent({
   const changeProject = (nextProjectId: string) => {
     if (nextProjectId === selectedProjectId) return;
     setSelectedProjectId(nextProjectId);
+    // A parent belongs to its project.
+    setParent(null);
     setSlotValues({});
     setDraftStatus(null);
+    clearTemplate();
   };
+
+  // Templates belong to a project and never apply to a draft being edited.
+  const { data: projectTemplates } = useTaskTemplates(
+    workspace?.id ?? "",
+    resolvedProjectId,
+    { enabled: !draft },
+  );
+  const templates = draft ? [] : (projectTemplates ?? []);
+  const { pointsById: activeEstimatePoints } = useActiveEstimate({
+    projectId: resolvedProjectId,
+    workspaceId: workspace?.id ?? "",
+    enabled: templates.length > 0,
+  });
 
   const searchInputRef = useRef<HTMLInputElement>(null);
   const uploadCreationPromiseRef = useRef<Promise<Task | null> | null>(null);
@@ -398,6 +469,8 @@ function CreateTaskModalContent({
   const { mutateAsync: createTask } = useCreateTask();
   const { mutateAsync: updateTask } = useUpdateTask();
   const { mutateAsync: deleteTask } = useDeleteTask();
+  const { mutateAsync: setTaskParent } = useSetTaskParent();
+  const { mutateAsync: createTaskRelation } = useCreateTaskRelation();
 
   const { data: rawCustomFields } = useGetCustomFieldsByProject(
     resolvedProjectId,
@@ -471,7 +544,7 @@ function CreateTaskModalContent({
     projectId: draft ? selectedProjectId : resolvedProjectId,
     title,
     description,
-    status: draft ? draftStatus : (status ?? null),
+    status: draft ? draftStatus : (templateStatus ?? status ?? null),
     priority,
     assigneeIds,
     labels,
@@ -479,6 +552,7 @@ function CreateTaskModalContent({
     dueDate,
     customFieldValues,
     slotValues,
+    parentTaskId: parent?.id ?? null,
   };
   const currentDraftFields = formToDraftFields(draftFormValues);
   const draftChanges = baselineFields
@@ -496,6 +570,7 @@ function CreateTaskModalContent({
           dueDate ||
           selectedProjectId ||
           labels.length > 0 ||
+          templateSubtasks.length > 0 ||
           uploadTask,
       );
 
@@ -520,6 +595,7 @@ function CreateTaskModalContent({
   const handleClose = () => {
     activeRef.current = false;
     discardUploadTask();
+    setDuplicateOf(null);
     onClose();
   };
 
@@ -668,6 +744,17 @@ function CreateTaskModalContent({
     draft,
   ]);
 
+  // Duplicate hints while a new task's title is typed (never in a draft's
+  // own editor, never blocking).
+  const [similarDismissed, setSimilarDismissed] = useState(false);
+  const similarTasks = useSimilarTasks(
+    resolvedProjectId || undefined,
+    title,
+    open && !draft && !similarDismissed,
+  );
+  // "Duplicate of…" picked from the hints; linked once the task exists.
+  const [duplicateOf, setDuplicateOf] = useState<SimilarTask | null>(null);
+
   const { mutateAsync: createDraft } = useCreateTaskDraft();
   const { mutateAsync: updateDraft } = useUpdateTaskDraft();
   const publishDraft = usePublishDraftFlow(workspace?.id ?? "");
@@ -790,7 +877,8 @@ function CreateTaskModalContent({
       const currentUpload = uploadTaskRef.current;
       if (currentUpload && currentUpload.projectId !== resolvedProjectId)
         return;
-      const taskStatus = status ?? entryColumn?.slug ?? "to-do";
+      const taskStatus =
+        templateStatus ?? status ?? entryColumn?.slug ?? "to-do";
       didSubmitRef.current = true;
 
       const savedTask = currentUpload
@@ -827,8 +915,19 @@ function CreateTaskModalContent({
                   fieldId,
                   value,
                 })),
+              // Created and linked in one transaction.
+              parentId: parent?.id,
             }),
           );
+
+      // The upload task exists already, so its parent is set afterwards.
+      if (currentUpload && parent) {
+        await setTaskParent({
+          taskId: savedTask.id,
+          parentTaskId: parent.id,
+          projectId: resolvedProjectId,
+        });
+      }
 
       for (const label of labels) {
         try {
@@ -857,6 +956,40 @@ function CreateTaskModalContent({
 
       await runCreateModalSlots({ task: savedTask, values: slotValues });
 
+      if (duplicateOf) {
+        try {
+          await createTaskRelation({
+            sourceTaskId: savedTask.id,
+            targetTaskId: duplicateOf.id,
+            relationType: "duplicate",
+          });
+        } catch {
+          toast.error(t("ai:duplicates.linkError", { key: duplicateOf.key }));
+        }
+      }
+
+      // The template's checklist, in order, under the saved task. The task
+      // exists either way, so a failed sub-task is reported, not thrown.
+      let failedSubtasks = 0;
+      for (const subtaskTitle of canPickParent ? templateSubtasks : []) {
+        try {
+          await createTask({
+            title: subtaskTitle,
+            description: "",
+            assigneeIds: [],
+            priority: "no-priority",
+            projectId: resolvedProjectId,
+            status: entryColumn?.slug ?? "to-do",
+            parentId: savedTask.id,
+          });
+        } catch {
+          failedSubtasks += 1;
+        }
+      }
+      if (failedSubtasks > 0) {
+        toast.error(t("templates:use.subtaskError", { count: failedSubtasks }));
+      }
+
       uploadTaskRef.current = null;
       if (!activeRef.current) return;
       setUploadTask(savedTask);
@@ -869,6 +1002,8 @@ function CreateTaskModalContent({
 
       if (createMore) {
         setTitle("");
+        setSimilarDismissed(false);
+        setDuplicateOf(null);
         setDescription("");
         setPriority("no-priority");
         assigneePrefill.reset();
@@ -885,6 +1020,7 @@ function CreateTaskModalContent({
         setUploadTask(null);
         setCustomFieldValues(buildDefaultCustomFieldValues());
         setSlotValues({});
+        clearTemplate();
       } else {
         closeAndReset();
       }
@@ -918,7 +1054,9 @@ function CreateTaskModalContent({
 
   const selectedPriority = priorityOptions.find((p) => p.value === priority);
 
-  const shownStatus = draft ? (draftStatus ?? undefined) : status;
+  const shownStatus = draft
+    ? (draftStatus ?? undefined)
+    : (templateStatus ?? status);
   const statusLabel = useMemo(() => {
     if (shownStatus) {
       return (
@@ -929,6 +1067,43 @@ function CreateTaskModalContent({
     return entryColumn?.name ?? t("tasks:status.in-progress");
   }, [shownStatus, t, projectColumns, entryColumn?.name]);
   const selectedAssignees = resolveAssignees(assigneeIds, people);
+
+  /** Fills the form from a template; everything stays editable after. */
+  const pickTemplate = (template: TaskTemplate) => {
+    const fill = fillFormFromTemplate(
+      template,
+      { title, description, priority, assigneeIds, labels },
+      appliedTemplate?.trace ?? null,
+    );
+    setTitle(fill.title);
+    setDescription(fill.description);
+    setPriority(fill.priority as Priority);
+    if (fill.assigneeIds) {
+      assigneePrefill.markTouched();
+      setAssigneeIds(fill.assigneeIds);
+    }
+    if (fill.addLabels.length > 0) {
+      setLabels((current) => [
+        ...current,
+        ...fill.addLabels.map((label) => ({
+          ...label,
+          taskId: null,
+          workspaceId: workspace?.id ?? "",
+          createdAt: "",
+        })),
+      ]);
+    }
+    setTemplateStatus(fill.status);
+    // "estimate" is the estimates slice's create-modal slot; its chip shows
+    // the value, and only a point of the active system (with task:update)
+    // can be set after the create.
+    const pointId = fill.estimatePointId;
+    if (pointId && canPickParent && activeEstimatePoints.has(pointId)) {
+      setSlotValues((previous) => ({ ...previous, estimate: pointId }));
+    }
+    setTemplateSubtasks(canPickParent ? fill.subtasks : []);
+    setAppliedTemplate({ name: template.name, trace: fill.trace });
+  };
 
   useEffect(() => {
     if (labelsOpen && labelsStep === "select" && searchInputRef.current) {
@@ -1191,7 +1366,47 @@ function CreateTaskModalContent({
               required
             />
 
-            <div className="min-h-[200px]">
+            {!similarDismissed && similarTasks.length > 0 && (
+              <SimilarTaskHints
+                tasks={similarTasks}
+                taskHref={(similarTaskId) =>
+                  `/dashboard/workspace/${workspace?.id ?? ""}/project/${resolvedProjectId}/task/${similarTaskId}`
+                }
+                onDismiss={() => setSimilarDismissed(true)}
+                ai={
+                  resolvedProjectId
+                    ? { projectId: resolvedProjectId, title, description }
+                    : undefined
+                }
+                onMarkDuplicate={canUpdateTasks() ? setDuplicateOf : undefined}
+                markedId={duplicateOf?.id ?? null}
+              />
+            )}
+            {duplicateOf && !draft && (
+              <p className="flex flex-wrap items-center gap-2 text-muted-foreground text-xs">
+                {t("ai:duplicates.willLink", { key: duplicateOf.key })}
+                <button
+                  type="button"
+                  className="rounded-sm underline-offset-2 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  onClick={() => setDuplicateOf(null)}
+                >
+                  {t("ai:duplicates.undo")}
+                </button>
+              </p>
+            )}
+
+            <div className="min-h-[200px] space-y-2">
+              <AiTaskWriter
+                workspaceId={workspace?.id || ""}
+                projectId={resolvedProjectId || null}
+                title={title}
+                description={description}
+                onUse={(markdown) => {
+                  setDescription(markdown);
+                  // The editor takes its value on mount.
+                  setEditorVersion((version) => version + 1);
+                }}
+              />
               <TaskDescriptionEditor
                 key={editorVersion}
                 value={description}
@@ -1235,6 +1450,16 @@ function CreateTaskModalContent({
               </div>
             )}
 
+            {resolvedProjectId && (
+              <LiveLabelSuggestions
+                projectId={resolvedProjectId}
+                title={title}
+                description={description}
+                selectedLabelIds={labels.map((label) => label.id)}
+                enabled={canCreateLabelCapability || canUpdateTasks()}
+                onAdd={(label) => toggleLabel(label.name)}
+              />
+            )}
             {labels.length > 0 && (
               <div className="flex flex-wrap mb-2">
                 {labels.map((label) => (
@@ -1255,6 +1480,55 @@ function CreateTaskModalContent({
                   </Badge>
                 ))}
               </div>
+            )}
+
+            {templateSubtasks.length > 0 && (
+              <section
+                aria-labelledby="create-task-template-subtasks"
+                className="space-y-1"
+              >
+                <h4
+                  id="create-task-template-subtasks"
+                  className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground"
+                >
+                  <ListTree aria-hidden className="w-3.5 h-3.5" />
+                  {t("templates:use.subtasksTitle", {
+                    count: templateSubtasks.length,
+                  })}
+                </h4>
+                <ul className="space-y-0.5">
+                  {templateSubtasks.map((subtaskTitle, index) => (
+                    <li
+                      // biome-ignore lint/suspicious/noArrayIndexKey: titles may repeat; the order is the identity
+                      key={index}
+                      className="group flex items-center gap-2 rounded-md px-2 py-1 text-sm hover:bg-accent/40"
+                    >
+                      <span
+                        aria-hidden
+                        className="size-3.5 shrink-0 rounded-full border border-border"
+                      />
+                      <span className="min-w-0 flex-1 truncate">
+                        {subtaskTitle}
+                      </span>
+                      <button
+                        type="button"
+                        disabled={isSubmitting}
+                        aria-label={t("templates:use.removeSubtask", {
+                          title: subtaskTitle,
+                        })}
+                        className="flex size-6 shrink-0 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        onClick={() =>
+                          setTemplateSubtasks((current) =>
+                            current.filter((_, at) => at !== index),
+                          )
+                        }
+                      >
+                        <X className="size-3.5" />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </section>
             )}
 
             <div className="flex flex-wrap items-center gap-2 py-2">
@@ -1320,10 +1594,95 @@ function CreateTaskModalContent({
                   </PopoverContent>
                 </Popover>
               )}
+              {templates.length > 0 && (
+                <TemplateMenu
+                  templates={templates}
+                  onPick={pickTemplate}
+                  trigger={
+                    <button
+                      type="button"
+                      disabled={isSubmitting}
+                      aria-label={
+                        appliedTemplate
+                          ? t("templates:use.applied", {
+                              name: appliedTemplate.name,
+                            })
+                          : t("templates:use.menuLabel")
+                      }
+                      className={cn(
+                        "flex max-w-48 items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors border border-border hover:bg-accent/50",
+                        appliedTemplate
+                          ? "bg-accent/30 text-foreground"
+                          : "text-muted-foreground",
+                      )}
+                    >
+                      <LayoutTemplate className="w-3.5 h-3.5 shrink-0" />
+                      <span className="truncate">
+                        {appliedTemplate?.name ?? t("templates:use.button")}
+                      </span>
+                    </button>
+                  }
+                />
+              )}
               <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-accent/50 text-foreground rounded-md text-xs font-medium border border-border">
                 <div className="w-1.5 h-1.5 bg-foreground rounded-full" />
                 {statusLabel}
               </div>
+
+              {canPickParent && resolvedProjectId && (
+                <Popover open={parentOpen} onOpenChange={setParentOpen}>
+                  <PopoverTrigger asChild>
+                    <button
+                      type="button"
+                      disabled={isSubmitting}
+                      aria-label={
+                        parent
+                          ? t("tasks:parent.tooltip", {
+                              key: parent.key,
+                              title: parent.title,
+                            })
+                          : t("tasks:parent.add")
+                      }
+                      className={cn(
+                        "flex max-w-56 items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors border border-border hover:bg-accent/50",
+                        parent
+                          ? "bg-accent/30 text-foreground"
+                          : "text-muted-foreground",
+                      )}
+                    >
+                      <ListTree className="w-3.5 h-3.5 shrink-0" />
+                      {parent ? (
+                        <>
+                          <span className="shrink-0 font-mono">
+                            {parent.key}
+                          </span>
+                          <span className="min-w-0 truncate">
+                            {parent.title}
+                          </span>
+                        </>
+                      ) : (
+                        <span>{t("tasks:parent.add")}</span>
+                      )}
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    className="w-72 max-w-[calc(100vw-2rem)] p-0"
+                    align="start"
+                  >
+                    {parentOpen && (
+                      <ParentTaskOptions
+                        projectId={resolvedProjectId}
+                        current={parent}
+                        candidates={everyTask}
+                        onChoose={(next) => {
+                          setParent(next);
+                          setParentOpen(false);
+                        }}
+                      />
+                    )}
+                  </PopoverContent>
+                </Popover>
+              )}
 
               <Popover>
                 <PopoverTrigger asChild>

@@ -46,12 +46,14 @@ let members: Array<{
 }> = [];
 
 beforeEach(() => {
+  canUpdateTasks = true;
   workspaceId = "workspace-1";
   projects = [
     { id: "project-1", name: "Alpha", slug: "alp" },
     { id: "project-2", name: "Beta", slug: "bet" },
   ];
   storedProject = null;
+  similarTasks = [];
   columns = undefined;
   members = [];
   useLocation.mockReturnValue({ pathname: "/dashboard/workspace/workspace-1" });
@@ -145,10 +147,64 @@ vi.mock(
   }),
 );
 
+let canUpdateTasks = true;
+const setTaskParent = vi.fn(async (input: Record<string, unknown>) => input);
+
 vi.mock("@/hooks/use-workspace-permission", () => ({
   useWorkspacePermission: () => ({
     canCreateTasks: () => true,
     canCreateLabels: () => true,
+    canUpdateTasks: () => canUpdateTasks,
+  }),
+}));
+
+vi.mock("@/hooks/mutations/task-relation/use-set-task-parent", () => ({
+  default: () => ({ mutateAsync: setTaskParent }),
+}));
+
+const createTaskRelation = vi.fn(
+  async (input: Record<string, unknown>) => input,
+);
+vi.mock("@/hooks/mutations/task-relation/use-create-task-relation", () => ({
+  default: () => ({ mutateAsync: createTaskRelation }),
+}));
+
+vi.mock("@/hooks/queries/ai/use-ai", () => ({
+  useAiAvailability: () => ({ available: false }),
+}));
+
+let similarTasks: { id: string; key: string; title: string }[] = [];
+const useSimilarTasks = vi.fn(
+  (_projectId: string | undefined, _title: string, enabled: boolean) =>
+    enabled ? similarTasks : [],
+);
+vi.mock("@/hooks/queries/task/use-similar-tasks", () => ({
+  useSimilarTasks: (
+    projectId: string | undefined,
+    title: string,
+    enabled: boolean,
+  ) => useSimilarTasks(projectId, title, enabled),
+}));
+
+vi.mock("@/hooks/queries/task/use-get-tasks", () => ({
+  useGetTasks: (projectId: string) => ({
+    isLoading: false,
+    data: projectId
+      ? {
+          slug: "alp",
+          columns: [
+            {
+              id: "ready",
+              position: 0,
+              group: "unstarted",
+              tasks: [
+                { id: "parent-1", number: 7, title: "Epic", status: "ready" },
+              ],
+            },
+          ],
+          plannedTasks: [],
+        }
+      : undefined,
   }),
 }));
 
@@ -646,6 +702,162 @@ function clickBackdrop() {
 const saveAsDraftButton = () =>
   screen.getByRole("button", { name: /common:modals.createTask.saveAsDraft/ });
 
+describe("CreateTaskModal parent", () => {
+  beforeEach(() => {
+    useLocation.mockReturnValue({
+      pathname: "/dashboard/workspace/workspace-1/project/project-1/board",
+    });
+    columns = [
+      { slug: "ready", name: "Ready", position: 0, group: "unstarted" },
+    ];
+  });
+
+  function chooseParent() {
+    fireEvent.click(screen.getByRole("button", { name: "tasks:parent.add" }));
+    fireEvent.click(screen.getByRole("button", { name: /ALP-7/ }));
+  }
+
+  it("creates the task under the chosen parent in one call", async () => {
+    render(<CreateTaskModal open onClose={vi.fn()} />, {
+      wrapper: createWrapper(),
+    });
+    chooseParent();
+    expect(
+      screen.getByRole("button", { name: "tasks:parent.tooltip" }),
+    ).toHaveTextContent("ALP-7");
+
+    enterTitle("Child task");
+    submit();
+
+    await vi.waitFor(() => {
+      expect(createTask).toHaveBeenCalledWith(
+        expect.objectContaining({
+          projectId: "project-1",
+          parentId: "parent-1",
+        }),
+      );
+    });
+    expect(setTaskParent).not.toHaveBeenCalled();
+  });
+
+  it("sends no parent when none is chosen", async () => {
+    render(<CreateTaskModal open onClose={vi.fn()} />, {
+      wrapper: createWrapper(),
+    });
+    enterTitle("Plain task");
+    submit();
+    await vi.waitFor(() => expect(createTask).toHaveBeenCalled());
+    expect(createTask.mock.calls[0]?.[0]?.parentId).toBeUndefined();
+  });
+
+  it("saves the chosen parent with Save as draft", async () => {
+    const onClose = vi.fn();
+    render(<CreateTaskModal open onClose={onClose} />, {
+      wrapper: createWrapper(),
+    });
+    enterTitle("Child task");
+    chooseParent();
+    expect(saveAsDraftButton()).toBeEnabled();
+    fireEvent.click(saveAsDraftButton());
+    await vi.waitFor(() => expect(onClose).toHaveBeenCalledTimes(1));
+    expect(createDraft).toHaveBeenCalledWith({
+      workspaceId: "workspace-1",
+      fields: expect.objectContaining({
+        projectId: "project-1",
+        parentTaskId: "parent-1",
+      }),
+    });
+  });
+
+  it("hides the parent picker without task:update", () => {
+    canUpdateTasks = false;
+    render(<CreateTaskModal open onClose={vi.fn()} />, {
+      wrapper: createWrapper(),
+    });
+    expect(
+      screen.queryByRole("button", { name: "tasks:parent.add" }),
+    ).not.toBeInTheDocument();
+  });
+});
+
+describe("CreateTaskModal similar tasks", () => {
+  beforeEach(() => {
+    useLocation.mockReturnValue({
+      pathname: "/dashboard/workspace/workspace-1/project/project-1/board",
+    });
+  });
+
+  it("hints at open tasks like the title, and can be dismissed", async () => {
+    similarTasks = [{ id: "task-9", key: "ALP-9", title: "Login page broken" }];
+    render(<CreateTaskModal open onClose={vi.fn()} />, {
+      wrapper: createWrapper(),
+    });
+    enterTitle("Login page is broken");
+    expect(useSimilarTasks).toHaveBeenLastCalledWith(
+      "project-1",
+      "Login page is broken",
+      true,
+    );
+    const open = screen.getByRole("link", {
+      name: "tasks:create.similarOpenLabel",
+    });
+    expect(open).toHaveAttribute(
+      "href",
+      "/dashboard/workspace/workspace-1/project/project-1/task/task-9",
+    );
+    expect(open).toHaveAttribute("target", "_blank");
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "tasks:create.similarDismiss" }),
+    );
+    expect(
+      screen.queryByRole("link", { name: "tasks:create.similarOpenLabel" }),
+    ).not.toBeInTheDocument();
+
+    submit();
+    await vi.waitFor(() => expect(createTask).toHaveBeenCalled());
+  });
+
+  it("links the new task as a duplicate of a hint, or not after undo", async () => {
+    similarTasks = [{ id: "task-9", key: "ALP-9", title: "Login page broken" }];
+    createTaskRelation.mockClear();
+    render(<CreateTaskModal open onClose={vi.fn()} />, {
+      wrapper: createWrapper(),
+    });
+    enterTitle("Login page is broken");
+    fireEvent.click(
+      screen.getByRole("button", { name: "ai:duplicates.markLabel" }),
+    );
+    expect(screen.getByText("ai:duplicates.willLink")).toBeInTheDocument();
+    // Dismissing the hints keeps the choice.
+    fireEvent.click(
+      screen.getByRole("button", { name: "tasks:create.similarDismiss" }),
+    );
+    expect(screen.getByText("ai:duplicates.willLink")).toBeInTheDocument();
+
+    submit();
+    await vi.waitFor(() =>
+      expect(createTaskRelation).toHaveBeenCalledWith({
+        sourceTaskId: "task-1",
+        targetTaskId: "task-9",
+        relationType: "duplicate",
+      }),
+    );
+  });
+
+  it("offers no duplicate link without task:update", () => {
+    canUpdateTasks = false;
+    similarTasks = [{ id: "task-9", key: "ALP-9", title: "Login page broken" }];
+    render(<CreateTaskModal open onClose={vi.fn()} />, {
+      wrapper: createWrapper(),
+    });
+    enterTitle("Login page is broken");
+    expect(
+      screen.queryByRole("button", { name: "ai:duplicates.markLabel" }),
+    ).not.toBeInTheDocument();
+  });
+});
+
 describe("CreateTaskModal save as draft", () => {
   it("is disabled with an empty form and enabled after typing", () => {
     render(<CreateTaskModal open onClose={vi.fn()} />, {
@@ -761,6 +973,8 @@ const storedDraft = {
   cycleId: "cycle-1",
   moduleIds: [],
   estimatePointId: null,
+  parentTaskId: null,
+  parentTask: null,
   createdAt: "2026-08-05T00:00:00.000Z",
   updatedAt: "2026-08-05T00:00:00.000Z",
 };
@@ -895,5 +1109,110 @@ describe("CreateTaskModal draft editor", () => {
     });
     clickBackdrop();
     expect(onClose).toHaveBeenCalledTimes(1);
+  });
+});
+
+let taskTemplates: Array<Record<string, unknown>> = [];
+vi.mock("@/hooks/queries/task-template/use-task-templates", () => ({
+  useTaskTemplates: () => ({ data: taskTemplates }),
+}));
+vi.mock("@/hooks/queries/estimate/use-active-estimate", () => ({
+  useActiveEstimate: () => ({ pointsById: new Map() }),
+}));
+
+describe("CreateTaskModal task templates", () => {
+  const bugTemplate = {
+    id: "tpl-1",
+    name: "Bug report",
+    titlePattern: "Bug: {title}",
+    description: "",
+    priority: "high",
+    assigneeIds: [],
+    labels: [],
+    column: { id: "col-doing", name: "Doing", slug: "doing" },
+    estimatePointId: null,
+    subtasks: ["Reproduce", "Fix"],
+  };
+
+  beforeEach(() => {
+    taskTemplates = [];
+    useLocation.mockReturnValue({
+      pathname: "/dashboard/workspace/workspace-1/project/project-1/board",
+    });
+    columns = [
+      { slug: "doing", name: "Doing", position: 0, group: "started" },
+      { slug: "ready", name: "Ready", position: 1, group: "unstarted" },
+    ];
+  });
+
+  it("stays out of the way when the project has no templates", () => {
+    render(<CreateTaskModal open onClose={vi.fn()} />, {
+      wrapper: createWrapper(),
+    });
+    expect(
+      screen.queryByRole("button", { name: "templates:use.menuLabel" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("fills the form and creates the checklist under the new task", async () => {
+    taskTemplates = [bugTemplate];
+    render(<CreateTaskModal open onClose={vi.fn()} />, {
+      wrapper: createWrapper(),
+    });
+    enterTitle("crash");
+    fireEvent.click(
+      screen.getByRole("button", { name: "templates:use.menuLabel" }),
+    );
+    fireEvent.click(
+      await screen.findByRole("menuitem", { name: /Bug report/ }),
+    );
+
+    expect(
+      screen.getByPlaceholderText(
+        "common:modals.createTask.taskTitlePlaceholder",
+      ),
+    ).toHaveValue("Bug: crash");
+    const checklist = screen.getByRole("region", {
+      name: "templates:use.subtasksTitle",
+    });
+    // The first row is "Reproduce"; removing it leaves "Fix".
+    const [removeFirst] = within(checklist).getAllByRole("button", {
+      name: "templates:use.removeSubtask",
+    });
+    if (!removeFirst) throw new Error("no checklist rows");
+    fireEvent.click(removeFirst);
+
+    submit();
+    await vi.waitFor(() => expect(createTask).toHaveBeenCalledTimes(2));
+    expect(createTask.mock.calls[0]?.[0]).toMatchObject({
+      title: "Bug: crash",
+      status: "doing",
+      priority: "high",
+      projectId: "project-1",
+    });
+    expect(createTask.mock.calls[1]?.[0]).toMatchObject({
+      title: "Fix",
+      parentId: "task-1",
+      status: "ready",
+    });
+  });
+
+  it("leaves the checklist out without task:update", async () => {
+    canUpdateTasks = false;
+    taskTemplates = [bugTemplate];
+    render(<CreateTaskModal open onClose={vi.fn()} />, {
+      wrapper: createWrapper(),
+    });
+    fireEvent.click(
+      screen.getByRole("button", { name: "templates:use.menuLabel" }),
+    );
+    fireEvent.click(
+      await screen.findByRole("menuitem", { name: /Bug report/ }),
+    );
+    expect(
+      screen.queryByRole("region", { name: "templates:use.subtasksTitle" }),
+    ).not.toBeInTheDocument();
+    submit();
+    await vi.waitFor(() => expect(createTask).toHaveBeenCalledTimes(1));
   });
 });

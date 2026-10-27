@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { Lock } from "lucide-react";
+import { useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Breadcrumb,
@@ -9,6 +10,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -23,9 +25,18 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import icons from "@/constants/project-icons";
 import useCreateProject from "@/hooks/mutations/project/use-create-project";
+import useGetProjects from "@/hooks/queries/project/use-get-projects";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
+import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { cn } from "@/lib/cn";
 import generateProjectSlug from "@/lib/generate-project-id";
 import { HttpError } from "@/lib/http-error";
@@ -44,13 +55,38 @@ function CreateProjectModal({ open, onClose }: CreateProjectModalProps) {
   const [iconPopoverOpen, setIconPopoverOpen] = useState(false);
   const [iconSearch, setIconSearch] = useState("");
   const [keyConflict, setKeyConflict] = useState<string | null>(null);
+  // "" is a blank project; otherwise the project whose setup is copied.
+  const [fromProjectId, setFromProjectId] = useState("");
+  const [copyTemplates, setCopyTemplates] = useState(false);
+  const [copyOpenTasks, setCopyOpenTasks] = useState(false);
+  const [restricted, setRestricted] = useState(false);
+  const fieldId = useId();
   const queryClient = useQueryClient();
   const { data: workspace } = useActiveWorkspace();
+  const { data: sourceProjects = [] } = useGetProjects({
+    workspaceId: open ? (workspace?.id ?? "") : "",
+  });
+  const sourceProject = sourceProjects.find(
+    (project) => project.id === fromProjectId,
+  );
+  const { canCreateTasks } = useWorkspacePermission();
+  // Copying open tasks creates tasks, which needs task:create.
+  const canCopyOpenTasks = canCreateTasks();
   const { mutateAsync } = useCreateProject({
     name,
     slug,
     workspaceId: workspace?.id ?? "",
     icon: selectedIcon,
+    visibility: restricted ? "restricted" : "open",
+    ...(sourceProject
+      ? {
+          fromProjectId: sourceProject.id,
+          copy: {
+            taskTemplates: copyTemplates,
+            openTasks: canCopyOpenTasks && copyOpenTasks,
+          },
+        }
+      : {}),
   });
   const SelectedIcon =
     icons[selectedIcon as keyof typeof icons] || icons.Layout;
@@ -66,6 +102,10 @@ function CreateProjectModal({ open, onClose }: CreateProjectModalProps) {
     setIconPopoverOpen(false);
     setIconSearch("");
     setKeyConflict(null);
+    setFromProjectId("");
+    setCopyTemplates(false);
+    setCopyOpenTasks(false);
+    setRestricted(false);
     onClose();
   };
 
@@ -244,6 +284,109 @@ function CreateProjectModal({ open, onClose }: CreateProjectModalProps) {
                 })}
               </p>
             )}
+          </div>
+
+          <div className="space-y-2 px-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span
+                id={`${fieldId}-source`}
+                className="text-muted-foreground text-sm font-medium"
+              >
+                {t("common:modals.createProject.startFrom")}
+              </span>
+              <Select
+                value={fromProjectId}
+                onValueChange={(value) => setFromProjectId(value as string)}
+              >
+                <SelectTrigger
+                  aria-labelledby={`${fieldId}-source`}
+                  className="h-8 min-w-0 flex-1 text-sm sm:max-w-64"
+                >
+                  <SelectValue>
+                    {sourceProject?.name ??
+                      t("common:modals.createProject.blankProject")}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">
+                    {t("common:modals.createProject.blankProject")}
+                  </SelectItem>
+                  {sourceProjects.map((project) => (
+                    <SelectItem key={project.id} value={project.id}>
+                      {project.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            {sourceProject && (
+              <div className="space-y-2 rounded-xl border border-border px-3 py-2.5">
+                <p className="text-muted-foreground text-xs">
+                  {t("common:modals.createProject.copyHint")}
+                </p>
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    id={`${fieldId}-templates`}
+                    checked={copyTemplates}
+                    onCheckedChange={(checked) =>
+                      setCopyTemplates(Boolean(checked))
+                    }
+                  />
+                  <label htmlFor={`${fieldId}-templates`} className="text-sm">
+                    {t("common:modals.createProject.includeTemplates")}
+                  </label>
+                </div>
+                {canCopyOpenTasks && (
+                  <div className="flex items-start gap-2">
+                    <Checkbox
+                      id={`${fieldId}-tasks`}
+                      className="mt-0.5"
+                      checked={copyOpenTasks}
+                      aria-describedby={`${fieldId}-tasks-hint`}
+                      onCheckedChange={(checked) =>
+                        setCopyOpenTasks(Boolean(checked))
+                      }
+                    />
+                    <div className="space-y-0.5">
+                      <label htmlFor={`${fieldId}-tasks`} className="text-sm">
+                        {t("common:modals.createProject.includeOpenTasks")}
+                      </label>
+                      <p
+                        id={`${fieldId}-tasks-hint`}
+                        className="text-muted-foreground text-xs"
+                      >
+                        {t("common:modals.createProject.openTasksHint")}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className="flex items-start gap-2 px-3">
+            <Checkbox
+              id={`${fieldId}-restricted`}
+              className="mt-0.5"
+              checked={restricted}
+              aria-describedby={`${fieldId}-restricted-hint`}
+              onCheckedChange={(checked) => setRestricted(Boolean(checked))}
+            />
+            <div className="space-y-0.5">
+              <label
+                htmlFor={`${fieldId}-restricted`}
+                className="flex items-center gap-1.5 text-sm"
+              >
+                <Lock className="size-3 text-muted-foreground" aria-hidden />
+                {t("common:modals.createProject.restricted")}
+              </label>
+              <p
+                id={`${fieldId}-restricted-hint`}
+                className="text-muted-foreground text-xs"
+              >
+                {t("common:modals.createProject.restrictedHint")}
+              </p>
+            </div>
           </div>
 
           <DialogFooter>
