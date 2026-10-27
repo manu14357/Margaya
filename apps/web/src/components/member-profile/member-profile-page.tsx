@@ -94,6 +94,7 @@ function AssignedList({
       emptyDescription=""
       taskId={taskId}
       onCloseTask={closeTask}
+      quickAdd={false}
     />
   );
 }

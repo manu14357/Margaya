@@ -44,12 +44,14 @@ export default function MemberProfileOverview({
     value: number;
     preset?: string;
     tone?: "danger";
+    accent?: string;
   }> = [
     {
       key: "assignedOpen",
       label: t("team:profile.stats.assignedOpen"),
       value: summary.counts.assignedOpen,
       preset: "open",
+      accent: "var(--area-work)",
     },
     {
       key: "overdue",
@@ -63,11 +65,13 @@ export default function MemberProfileOverview({
       label: t("team:profile.stats.completed30"),
       value: summary.counts.completed30,
       preset: "completed30",
+      accent: "var(--status-completed-fg)",
     },
     {
       key: "created30",
       label: t("team:profile.stats.created30"),
       value: summary.counts.created30,
+      accent: "var(--area-inbox)",
     },
   ];
 
@@ -90,6 +94,7 @@ export default function MemberProfileOverview({
                 key={tile.key}
                 label={tile.label}
                 tone={tile.tone}
+                accent={tile.accent}
                 value={
                   isLoading ? (
                     <Skeleton className="mt-1 h-6 w-10" />
@@ -140,7 +145,10 @@ export default function MemberProfileOverview({
                       <span className="min-w-0 flex-1 truncate">
                         {t(meta.labelKey)}
                       </span>
-                      <span className="text-muted-foreground tabular-nums">
+                      <span
+                        className="font-medium tabular-nums"
+                        style={{ color: meta.foreground }}
+                      >
                         {isLoading ? "" : summary.groups[group]}
                       </span>
                     </button>
@@ -169,8 +177,11 @@ export default function MemberProfileOverview({
                 </span>
                 <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
                   <span
-                    className="block h-full rounded-full bg-primary/60"
-                    style={{ width: `${(entry.count / maxPriority) * 100}%` }}
+                    className="block h-full rounded-full"
+                    style={{
+                      width: `${(entry.count / maxPriority) * 100}%`,
+                      backgroundColor: `var(--priority-${entry.priority === "no-priority" ? "none" : entry.priority})`,
+                    }}
                   />
                 </span>
                 <span className="w-8 text-right text-muted-foreground tabular-nums">
