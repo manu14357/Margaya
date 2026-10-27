@@ -1,8 +1,12 @@
 import { useNavigate } from "@tanstack/react-router";
 import {
+  Boxes,
   FileText,
   FolderKanban,
   Hash,
+  Inbox,
+  IterationCw,
+  Layers,
   MessageSquare,
   Search,
   Users,
@@ -10,6 +14,10 @@ import {
 } from "lucide-react";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  HighlightedSnippet,
+  type SearchSnippet,
+} from "@/components/shared/highlighted-snippet";
 import {
   Command,
   CommandCollection,
@@ -28,13 +36,24 @@ import { shortcuts } from "@/constants/shortcuts";
 import useGlobalSearch from "@/hooks/queries/search/use-global-search";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useRegisterShortcuts } from "@/hooks/use-keyboard-shortcuts";
+import {
+  type PlanningResultType,
+  planningResultPath,
+} from "@/lib/search-result-path";
 
 type SearchResultItem = {
   id: string;
   title: string;
   description?: string;
   content?: string;
-  type: "task" | "project" | "workspace" | "comment" | "activity" | "page";
+  type:
+    | "task"
+    | "project"
+    | "workspace"
+    | "comment"
+    | "activity"
+    | "page"
+    | PlanningResultType;
   projectName?: string;
   projectId?: string;
   workspaceId?: string;
@@ -42,6 +61,9 @@ type SearchResultItem = {
   projectSlug?: string;
   priority?: string;
   status?: string;
+  /** For comments and activities: the task they belong to. */
+  taskId?: string;
+  snippet?: SearchSnippet;
 };
 
 type SearchGroup = {
@@ -87,6 +109,14 @@ function SearchCommandMenu({ open, setOpen }: SearchCommandMenuProps) {
   const handleSelect = (item: SearchResultItem) => {
     setOpen(false);
     setQuery("");
+
+    const planningPath = workspace?.id
+      ? planningResultPath(item, workspace.id)
+      : null;
+    if (planningPath) {
+      navigate({ href: planningPath });
+      return;
+    }
 
     switch (item.type) {
       case "task":
@@ -136,13 +166,13 @@ function SearchCommandMenu({ open, setOpen }: SearchCommandMenuProps) {
         break;
       case "comment":
       case "activity":
-        if (item.projectId && item.id && workspace?.id) {
+        if (item.projectId && item.taskId && workspace?.id) {
           navigate({
             to: "/dashboard/workspace/$workspaceId/project/$projectId/task/$taskId",
             params: {
               workspaceId: workspace.id,
               projectId: item.projectId,
-              taskId: item.id,
+              taskId: item.taskId,
             },
           });
         }
@@ -162,6 +192,14 @@ function SearchCommandMenu({ open, setOpen }: SearchCommandMenuProps) {
         return MessageSquare;
       case "activity":
         return Zap;
+      case "cycle":
+        return IterationCw;
+      case "module":
+        return Boxes;
+      case "view":
+        return Layers;
+      case "intake":
+        return Inbox;
       default:
         return FileText;
     }
@@ -193,6 +231,14 @@ function SearchCommandMenu({ open, setOpen }: SearchCommandMenuProps) {
           return t("navigation:search.groups.activity");
         case "page":
           return t("navigation:search.groups.page");
+        case "cycle":
+          return t("navigation:projectNav.cycles");
+        case "module":
+          return t("navigation:projectNav.modules");
+        case "view":
+          return t("navigation:projectNav.views");
+        case "intake":
+          return t("navigation:projectNav.intake");
         default:
           return t("navigation:search.groups.fallback");
       }
@@ -255,7 +301,19 @@ function SearchCommandMenu({ open, setOpen }: SearchCommandMenuProps) {
                               <div className="font-medium text-sm truncate">
                                 {item.title}
                               </div>
-                              {item.type === "page" ? (
+                              {item.snippet ? (
+                                <>
+                                  {item.type !== "task" && item.projectName && (
+                                    <div className="text-xs text-muted-foreground truncate mt-1">
+                                      {item.projectName}
+                                    </div>
+                                  )}
+                                  <HighlightedSnippet
+                                    snippet={item.snippet}
+                                    className="text-xs text-muted-foreground/80 line-clamp-2 mt-0.5"
+                                  />
+                                </>
+                              ) : item.type === "page" ? (
                                 <>
                                   {item.projectName && (
                                     <div className="text-xs text-muted-foreground truncate mt-1">
