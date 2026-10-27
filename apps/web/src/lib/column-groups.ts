@@ -38,8 +38,13 @@ type ColumnGroupMeta = {
   icon: LucideIcon;
   labelKey: `tasks:columnGroups.${ColumnGroup}.label`;
   descriptionKey: `tasks:columnGroups.${ColumnGroup}.description`;
+  /** Status hue from `--status-*` in styles/semantic-colors.css. */
   iconClassName: string;
   barClassName: string;
+  /** The raw status variables, for inline tints (dots, header bands). */
+  color: string;
+  tint: string;
+  foreground: string;
   /** Fixed order for pickers and aggregations; never forces the board order. */
   rank: number;
 };
@@ -51,46 +56,64 @@ export const COLUMN_GROUP_META: Record<ColumnGroup, ColumnGroupMeta> = {
     descriptionKey: "tasks:columnGroups.triage.description",
     iconClassName: "text-muted-foreground",
     barClassName: "bg-muted-foreground/20",
+    color: "var(--status-backlog)",
+    tint: "var(--status-backlog-tint)",
+    foreground: "var(--status-backlog-fg)",
     rank: -1,
   },
   backlog: {
     icon: CircleDashed,
     labelKey: "tasks:columnGroups.backlog.label",
     descriptionKey: "tasks:columnGroups.backlog.description",
-    iconClassName: "text-muted-foreground",
-    barClassName: "bg-muted-foreground/40",
+    iconClassName: "text-(--status-backlog)",
+    barClassName: "bg-(--status-backlog)",
+    color: "var(--status-backlog)",
+    tint: "var(--status-backlog-tint)",
+    foreground: "var(--status-backlog-fg)",
     rank: 0,
   },
   unstarted: {
     icon: Circle,
     labelKey: "tasks:columnGroups.unstarted.label",
     descriptionKey: "tasks:columnGroups.unstarted.description",
-    iconClassName: "text-info-foreground",
-    barClassName: "bg-info",
+    iconClassName: "text-(--status-unstarted)",
+    barClassName: "bg-(--status-unstarted)",
+    color: "var(--status-unstarted)",
+    tint: "var(--status-unstarted-tint)",
+    foreground: "var(--status-unstarted-fg)",
     rank: 1,
   },
   started: {
     icon: CircleDot,
     labelKey: "tasks:columnGroups.started.label",
     descriptionKey: "tasks:columnGroups.started.description",
-    iconClassName: "text-warning-foreground",
-    barClassName: "bg-warning",
+    iconClassName: "text-(--status-started)",
+    barClassName: "bg-(--status-started)",
+    color: "var(--status-started)",
+    tint: "var(--status-started-tint)",
+    foreground: "var(--status-started-fg)",
     rank: 2,
   },
   completed: {
     icon: CircleCheck,
     labelKey: "tasks:columnGroups.completed.label",
     descriptionKey: "tasks:columnGroups.completed.description",
-    iconClassName: "text-success-foreground",
-    barClassName: "bg-success",
+    iconClassName: "text-(--status-completed)",
+    barClassName: "bg-(--status-completed)",
+    color: "var(--status-completed)",
+    tint: "var(--status-completed-tint)",
+    foreground: "var(--status-completed-fg)",
     rank: 3,
   },
   cancelled: {
     icon: CircleX,
     labelKey: "tasks:columnGroups.cancelled.label",
     descriptionKey: "tasks:columnGroups.cancelled.description",
-    iconClassName: "text-destructive-foreground",
-    barClassName: "bg-destructive/60",
+    iconClassName: "text-(--status-cancelled)",
+    barClassName: "bg-(--status-cancelled)",
+    color: "var(--status-cancelled)",
+    tint: "var(--status-cancelled-tint)",
+    foreground: "var(--status-cancelled-fg)",
     rank: 4,
   },
 };

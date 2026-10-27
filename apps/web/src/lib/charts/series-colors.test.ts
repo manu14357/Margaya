@@ -98,11 +98,11 @@ describe("buildSeriesColors", () => {
       ["backlog", "unstarted", "started", "completed", "cancelled"],
       { scheme: "group" },
     );
-    expect(colors.get("backlog")?.fill).toBe("fill-muted-foreground/40");
-    expect(colors.get("unstarted")?.fill).toBe("fill-info");
-    expect(colors.get("started")?.fill).toBe("fill-warning");
-    expect(colors.get("completed")?.fill).toBe("fill-success");
-    expect(colors.get("cancelled")?.fill).toBe("fill-destructive/60");
+    expect(colors.get("backlog")?.fill).toBe("fill-(--status-backlog)");
+    expect(colors.get("unstarted")?.fill).toBe("fill-(--status-unstarted)");
+    expect(colors.get("started")?.fill).toBe("fill-(--status-started)");
+    expect(colors.get("completed")?.fill).toBe("fill-(--status-completed)");
+    expect(colors.get("cancelled")?.fill).toBe("fill-(--status-cancelled)");
     for (const group of Object.keys(GROUP_CHART_COLORS) as Array<
       keyof typeof GROUP_CHART_COLORS
     >) {
@@ -118,11 +118,11 @@ describe("buildSeriesColors", () => {
       { scheme: "priority" },
     );
     expect(colors.get("urgent")).toBe(PRIORITY_CHART_COLORS.urgent);
-    expect(colors.get("urgent")?.fill).toBe("fill-destructive");
-    expect(colors.get("high")?.fill).toBe("fill-warning");
-    expect(colors.get("medium")?.fill).toBe("fill-warning/55");
-    expect(colors.get("low")?.fill).toBe("fill-info");
-    expect(colors.get("no-priority")?.fill).toBe("fill-muted-foreground/35");
+    expect(colors.get("urgent")?.fill).toBe("fill-(--priority-urgent)");
+    expect(colors.get("high")?.fill).toBe("fill-(--priority-high)");
+    expect(colors.get("medium")?.fill).toBe("fill-(--priority-medium)");
+    expect(colors.get("low")?.fill).toBe("fill-(--priority-low)");
+    expect(colors.get("no-priority")?.fill).toBe("fill-(--priority-none)");
   });
 
   it("gives other and none their muted classes in every scheme", () => {

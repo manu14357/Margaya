@@ -29,7 +29,7 @@ export function formatEstimateNumber(value: number): string {
 
 /**
  * How an estimate value reads: time as a duration, points as the number
- * ("5", or "5 pts" with `withUnit`), categories as the category.
+ * ("5", or "5 pts" and "1 pt" with `withUnit`), categories as the category.
  */
 export function formatEstimateValue(
   type: EstimateType,
@@ -44,7 +44,10 @@ export function formatEstimateValue(
   if (!Number.isFinite(number)) return String(value);
   if (type === "time") return formatDuration(number, t);
   const text = formatEstimateNumber(number);
-  return withUnit ? t("tasks:estimate.pointsValue", { value: text }) : text;
+  // `count` picks "1 pt" or "2 pts"; `value` keeps the rounded number.
+  return withUnit
+    ? t("tasks:estimate.pointsValue", { value: text, count: number })
+    : text;
 }
 
 /** A stored value as the text to edit: time values become durations. */

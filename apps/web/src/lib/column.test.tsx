@@ -56,3 +56,19 @@ describe("group icon fallback", () => {
     expect(getColumnIcon("custom", false).type).toBe(Circle);
   });
 });
+
+describe("status tone", () => {
+  it("wears the group hue by default", () => {
+    expect(
+      renderToStaticMarkup(getColumnIcon("x", false, "Search", "started")),
+    ).toContain("text-(--status-started)");
+  });
+
+  it("stays neutral for the board", () => {
+    const markup = renderToStaticMarkup(
+      getColumnIcon("x", true, "Search", "completed", { neutral: true }),
+    );
+    expect(markup).toContain("text-muted-foreground");
+    expect(markup).not.toContain("--status-");
+  });
+});

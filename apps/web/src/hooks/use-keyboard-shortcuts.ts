@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { isTypingTarget, shortcutKey } from "@/lib/shortcut-key";
 
 export function getModifierKeyText(): string {
   if (typeof window === "undefined") return "";
@@ -172,20 +173,21 @@ export function KeyboardShortcutsProvider({
 
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
-      const target = event.target as HTMLElement;
-      const isEditingText =
-        target.tagName === "INPUT" ||
-        target.tagName === "TEXTAREA" ||
-        target.contentEditable === "true";
+      // An IME is mid-composition; the key belongs to it.
+      if (event.isComposing || event.key === "Process") return;
+      const isEditingText = isTypingTarget(event.target);
       if (isEditingText && !event.metaKey && !event.ctrlKey) {
         return;
       }
 
-      const key = event.key.toLowerCase();
+      const key = shortcutKey(event).toLowerCase();
 
       // Editors own their chords (cmd+b bold in TipTap and friends); only
-      // the palette toggle may pass while typing.
-      if (isEditingText && (key !== "k" || event.altKey || event.shiftKey)) {
+      // the palette (K) and Ask AI (J) toggles may pass while typing.
+      if (
+        isEditingText &&
+        ((key !== "k" && key !== "j") || event.altKey || event.shiftKey)
+      ) {
         return;
       }
 

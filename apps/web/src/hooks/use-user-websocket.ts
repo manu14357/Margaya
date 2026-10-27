@@ -2,7 +2,9 @@ import { windowId } from "@margaya/libs";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { getApiUrl } from "@/fetchers/get-api-url";
+import { agentKeys } from "@/hooks/queries/ai/use-agents";
 import { taskDraftQueryKeys } from "@/hooks/queries/task-draft/task-draft-query-keys";
+import { handleAgentUserMessage } from "@/lib/ai/agent-realtime";
 import { authClient } from "@/lib/auth-client";
 import { handleHomeUserMessage } from "@/lib/home-realtime";
 import { onSignOut } from "@/lib/sign-out";
@@ -87,6 +89,19 @@ export function useUserWebSocket() {
             // Subscribed views and "Your work" follow my subscriptions.
             void invalidateTaskQueries(queryClient);
           }
+          // My access to a restricted project changed: project lists,
+          // favourites, recents and task queries refetch.
+          if (message.type === "PROJECT_ACCESS_CHANGED") {
+            for (const queryKey of [
+              ["projects"],
+              ["favorites"],
+              ["recent-visits"],
+              ["project-access"],
+            ]) {
+              queryClient.invalidateQueries({ queryKey });
+            }
+            void invalidateTaskQueries(queryClient);
+          }
           if (message.type === "FAVORITES_UPDATED") {
             queryClient.invalidateQueries({
               queryKey: message.workspaceId
@@ -103,11 +118,28 @@ export function useUserWebSocket() {
                 : taskDraftQueryKeys.all(),
             });
           }
+          // Someone joined, left or changed role, or an agent was added or
+          // removed: member lists, pickers, @mentions and my own role refetch.
+          if (message.type === "WORKSPACE_MEMBERS_UPDATED") {
+            for (const queryKey of [
+              ["workspace-users"],
+              ["active-workspace-users"],
+              ["workspace-member"],
+              ["workspace-user", "active"],
+              ["workspace", "full"],
+              ["workspace-capabilities"],
+              agentKeys.all,
+            ]) {
+              queryClient.invalidateQueries({ queryKey });
+            }
+          }
           // Stickies, quick links and Home widgets; this tab's own echo is
           // skipped.
           handleHomeUserMessage(queryClient, message, windowId);
           // My exports: the history refreshes; ready or failed ones toast.
           handleTaskExportUserMessage(queryClient, message);
+          // Agent runs and approvals (Agent Desk, approval cards).
+          handleAgentUserMessage(queryClient, message);
         } catch {
           // Ignore malformed messages
         }

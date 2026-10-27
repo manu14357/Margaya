@@ -31,6 +31,8 @@ export type DraftFormValues = {
   customFieldValues: Readonly<Record<string, string>>;
   /** One value per create-modal slot. */
   slotValues: Readonly<Record<string, unknown>>;
+  /** The chosen parent task of the project, if any. */
+  parentTaskId?: string | null;
 };
 
 /** Every field a draft stores, in the request's shape. */
@@ -50,6 +52,7 @@ export type DraftFields = Required<
     | "cycleId"
     | "moduleIds"
     | "estimatePointId"
+    | "parentTaskId"
   >
 >;
 
@@ -59,6 +62,7 @@ const PROJECT_BOUND_FIELDS = [
   "cycleId",
   "moduleIds",
   "estimatePointId",
+  "parentTaskId",
 ] as const satisfies ReadonlyArray<keyof DraftFields>;
 
 type Priority = NonNullable<TaskDraftPatch["priority"]>;
@@ -131,6 +135,7 @@ export function formToDraftFields(values: DraftFormValues): DraftFields {
     estimatePointId: bound
       ? slotId(values.slotValues[DRAFT_SLOT_IDS.estimate])
       : null,
+    parentTaskId: bound ? (values.parentTaskId ?? null) : null,
   };
 }
 
@@ -158,6 +163,7 @@ export function draftToFormValues(draft: TaskDraft): DraftFormValues {
       draft.customFieldValues.map(({ fieldId, value }) => [fieldId, value]),
     ),
     slotValues,
+    parentTaskId: draft.parentTaskId,
   };
 }
 
@@ -176,7 +182,8 @@ export function hasDraftContent(values: DraftFormValues): boolean {
       fields.customFieldValues.length ||
       fields.cycleId ||
       fields.moduleIds.length ||
-      fields.estimatePointId,
+      fields.estimatePointId ||
+      fields.parentTaskId,
   );
 }
 

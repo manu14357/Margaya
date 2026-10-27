@@ -50,7 +50,12 @@ const CAPABILITIES = {
   deleteWorkspace: { workspace: ["delete"] },
   // The workspace audit log (owners and admins by default).
   readAuditLog: { audit_log: ["read"] },
+  // AI features, and the workspace's AI settings and usage.
+  useAi: { ai: ["use"] },
+  manageAi: { ai: ["manage"] },
   inviteUsers: { invitation: ["create"] },
+  // Change a pending invitation's role (re-issuing it, in effect).
+  manageInvitations: { invitation: ["create", "cancel"] },
   manageTeam: { member: ["update", "delete"] },
   removeMembers: { member: ["delete"] },
 } as const satisfies Record<string, Record<string, string[]>>;
@@ -156,7 +161,10 @@ export function useWorkspacePermission() {
       canManageWebhooks: () => can.manageWebhooks,
       canDeleteWorkspace: () => can.deleteWorkspace,
       canReadAuditLog: () => can.readAuditLog,
+      canUseAi: () => can.useAi,
+      canManageAi: () => can.manageAi,
       canInviteUsers: () => can.inviteUsers,
+      canManageInvitations: () => can.manageInvitations,
       canManageTeam: () => can.manageTeam,
       canRemoveMembers: () => can.removeMembers,
       // Escape hatch for ad-hoc permission checks (uncached). Prefer adding

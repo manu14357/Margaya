@@ -8,6 +8,7 @@ import { invalidatePlanningProgress } from "@/hooks/mutations/task/invalidate-pl
 import { archiveQueryKeys } from "@/hooks/queries/archive/archive-query-keys";
 import { intakeQueryKeys } from "@/hooks/queries/intake/intake-query-keys";
 import { moduleQueryKeys } from "@/hooks/queries/module/module-query-keys";
+import { pageQueryKeys } from "@/hooks/queries/page/page-query-keys";
 import { descriptionVersionKeys } from "@/hooks/queries/task-description-version/keys";
 import { trashQueryKeys } from "@/hooks/queries/trash/trash-query-keys";
 import { authClient } from "@/lib/auth-client";
@@ -57,7 +58,53 @@ const TRASH_HINTS = new Set([
 ]);
 
 const MAX_RETRIES = 5;
+
+// When each project's socket last closed (navigating away, a dropped
+// connection). Queries don't refetch on mount, so changes made meanwhile by
+// people, agents or automations are caught up when it opens again.
+const closedAt = new Map<string, number>();
+
+/** Forgets closed sockets: a new session starts with an empty cache. */
+export function forgetClosedProjectSockets() {
+  closedAt.clear();
+}
+onSignOut(forgetClosedProjectSockets);
+
+/** Everything a project's live messages keep current, refreshed at once. */
+function catchUpProject(
+  queryClient: ReturnType<typeof useQueryClient>,
+  projectId: string,
+) {
+  void invalidateTaskQueries(queryClient, projectId);
+  for (const queryKey of [
+    ["tasks", projectId],
+    ["projects"],
+    intakeQueryKeys.lists(projectId),
+    intakeQueryKeys.summary(projectId),
+    moduleQueryKeys.taskMap(projectId),
+    pageQueryKeys.list(projectId),
+    pageQueryKeys.taskReferences(),
+  ]) {
+    queryClient.invalidateQueries({ queryKey });
+  }
+  invalidatePlanningProgress(queryClient, projectId);
+  // Open task details, comments and history refetch; ones not on screen are
+  // dropped so they load fresh when opened.
+  for (const queryKey of [
+    ["task"],
+    ["activities"],
+    ["comments"],
+    ["task-relations"],
+    ["labels"],
+  ]) {
+    queryClient.removeQueries({ queryKey, type: "inactive" });
+    queryClient.invalidateQueries({ queryKey });
+  }
+}
 const BASE_DELAY = 1000; // 1 second
+
+/** Close code of a project socket whose access was revoked (API ws/index.ts). */
+const PROJECT_ACCESS_REVOKED = 4404;
 
 // Cloudflare closes idle WebSocket connections after 100 seconds of no traffic.
 // We send a lightweight ping every 30 seconds to keep the connection alive.
@@ -95,6 +142,10 @@ export function useProjectWebSocket(projectId: string) {
       ws.onopen = () => {
         if (disposed || activeSocket !== ws) return;
         retries = 0; // Reset retries on successful connection
+        if (closedAt.has(projectId)) {
+          closedAt.delete(projectId);
+          catchUpProject(queryClient, projectId);
+        }
         // Start keepalive pings to prevent Cloudflare idle timeout (100s)
         clearPing();
         pingInterval = setInterval(() => {
@@ -108,6 +159,15 @@ export function useProjectWebSocket(projectId: string) {
         if (disposed || activeSocket !== ws) return;
         try {
           const message = JSON.parse(event.data);
+          // Who can see the project changed (restricted projects): the
+          // member list and the project lists refresh.
+          if (message.type === "PROJECT_ACCESS_CHANGED") {
+            queryClient.invalidateQueries({
+              queryKey: ["project-access", message.projectId],
+            });
+            queryClient.invalidateQueries({ queryKey: ["projects"] });
+            return;
+          }
           // Task query results (filters, spreadsheets, views) follow every
           // change to the project's tasks and what groups them; only
           // mounted queries refetch.
@@ -265,6 +325,19 @@ export function useProjectWebSocket(projectId: string) {
             }
             return;
           }
+          // A coding-agent handoff moved: its timeline, and the pull
+          // request links it came with.
+          if (message.type === "CODING_HANDOFF_UPDATED") {
+            if (message.taskId) {
+              queryClient.invalidateQueries({
+                queryKey: ["coding-agent", "task", message.taskId],
+              });
+              queryClient.invalidateQueries({
+                queryKey: ["external-links", message.taskId],
+              });
+            }
+            return;
+          }
           // Reactions are not part of the board or the activity feed.
           if (message.type === "REACTIONS_UPDATED") {
             if (message.taskId) {
@@ -418,11 +491,18 @@ export function useProjectWebSocket(projectId: string) {
         }
       };
 
-      ws.onclose = () => {
+      ws.onclose = (event) => {
         if (disposed || activeSocket !== ws) return;
         clearPing();
         activeSocket = null;
+        closedAt.set(projectId, Date.now());
 
+        // 4404: access to the project was revoked. Reconnecting would be
+        // refused; the project lists refetch and drop it instead.
+        if (event.code === PROJECT_ACCESS_REVOKED) {
+          queryClient.invalidateQueries({ queryKey: ["projects"] });
+          return;
+        }
         if (retries < MAX_RETRIES) {
           const delay = BASE_DELAY * 2 ** retries; // 1s, 2s, 4s, 8s, 16s
           retries += 1;
@@ -432,6 +512,9 @@ export function useProjectWebSocket(projectId: string) {
     }
     function dispose() {
       disposed = true;
+      if (activeSocket?.readyState === WebSocket.OPEN) {
+        closedAt.set(projectId, Date.now());
+      }
       clearPing();
       if (retryTimeout !== null) {
         clearTimeout(retryTimeout);

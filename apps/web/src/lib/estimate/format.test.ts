@@ -1,3 +1,5 @@
+import enUS from "@i18n/en-US.json";
+import { createInstance } from "i18next";
 import { describe, expect, it } from "vitest";
 import { durationParts, parseDurationInput } from "./duration";
 import {
@@ -81,6 +83,29 @@ describe("formatEstimateValue", () => {
     expect(formatEstimateValue("points", "2.5", { withUnit: true, t })).toBe(
       "2.5 pts",
     );
+  });
+
+  it("uses the singular unit for one point", async () => {
+    const i18n = createInstance();
+    await i18n.init({
+      lng: "en-US",
+      resources: { "en-US": { tasks: enUS.tasks } },
+      interpolation: { escapeValue: false },
+    });
+    const real: Translate = (key, options) => i18n.t(key, options);
+    expect(
+      formatEstimateValue("points", "1", { withUnit: true, t: real }),
+    ).toBe("1 pt");
+    expect(
+      formatEstimateValue("points", "2", { withUnit: true, t: real }),
+    ).toBe("2 pts");
+    expect(
+      real("tasks:estimate.totals.points", {
+        completed: "0",
+        total: "1",
+        count: 1,
+      }),
+    ).toBe("0 / 1 pt");
   });
 
   it("shows categories as they are", () => {

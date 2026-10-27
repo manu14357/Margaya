@@ -1,9 +1,12 @@
 import { act, cleanup, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { useProjectWebSocket } from "./use-project-websocket";
+import {
+  forgetClosedProjectSockets,
+  useProjectWebSocket,
+} from "./use-project-websocket";
 
 const { client, auth } = vi.hoisted(() => ({
-  client: { invalidateQueries: vi.fn() },
+  client: { invalidateQueries: vi.fn(), removeQueries: vi.fn() },
   auth: { userId: "user-a" as string | null },
 }));
 vi.mock("@tanstack/react-query", () => ({ useQueryClient: () => client }));
@@ -16,12 +19,15 @@ vi.mock("@/lib/auth-client", () => ({
 }));
 vi.mock("@margaya/libs", () => ({ windowId: "local-test" }));
 
+// Browsers always pass a CloseEvent; 1006 is a dropped connection.
+const ABNORMAL_CLOSE = { code: 1006 };
+
 class TestSocket {
   static OPEN = 1;
   static instances: TestSocket[] = [];
   readyState = 0;
   onopen: (() => void) | null = null;
-  onclose: (() => void) | null = null;
+  onclose: ((event: { code: number }) => void) | null = null;
   onmessage: ((event: { data: string }) => void) | null = null;
   send = vi.fn();
   // Deliberately delay close events to reproduce the project-switch race.
@@ -45,12 +51,31 @@ describe("project WebSocket lifecycle", () => {
     TestSocket.instances = [];
     auth.userId = "user-a";
     client.invalidateQueries.mockClear();
+    client.removeQueries.mockClear();
+    forgetClosedProjectSockets();
   });
   afterEach(() => {
     cleanup();
     vi.useRealTimers();
     vi.unstubAllGlobals();
     vi.unstubAllEnvs();
+  });
+
+  it("catches up on a project's changes when its socket opens again", () => {
+    const first = renderHook(() => useProjectWebSocket("project-a"));
+    act(() => TestSocket.instances[0]?.open());
+    expect(client.invalidateQueries).not.toHaveBeenCalled();
+    first.unmount();
+
+    renderHook(() => useProjectWebSocket("project-a"));
+    act(() => TestSocket.instances[1]?.open());
+    expect(client.invalidateQueries).toHaveBeenCalledWith({
+      queryKey: ["tasks", "project-a"],
+    });
+    expect(client.removeQueries).toHaveBeenCalledWith({
+      queryKey: ["task"],
+      type: "inactive",
+    });
   });
 
   it("ignores late old-project events without stopping the new project's keepalive", () => {
@@ -64,7 +89,7 @@ describe("project WebSocket lifecycle", () => {
     const current = TestSocket.instances[1];
     act(() => {
       current.open();
-      old.onclose?.();
+      old.onclose?.(ABNORMAL_CLOSE);
       old.onopen?.();
       old.onmessage?.({
         data: JSON.stringify({
@@ -83,7 +108,7 @@ describe("project WebSocket lifecycle", () => {
     expect(current.send).toHaveBeenCalledWith('{"type":"ping"}');
     expect(client.invalidateQueries).not.toHaveBeenCalled();
     unmount();
-    act(() => current.onclose?.());
+    act(() => current.onclose?.(ABNORMAL_CLOSE));
     expect(current.close).toHaveBeenCalledOnce();
     expect(vi.getTimerCount()).toBe(0);
   });
@@ -92,7 +117,7 @@ describe("project WebSocket lifecycle", () => {
     const { rerender, unmount } = renderHook(() =>
       useProjectWebSocket("project-a"),
     );
-    act(() => TestSocket.instances[0].onclose?.());
+    act(() => TestSocket.instances[0].onclose?.(ABNORMAL_CLOSE));
     expect(vi.getTimerCount()).toBe(1);
     auth.userId = null;
     rerender();
@@ -109,7 +134,7 @@ describe("project WebSocket lifecycle", () => {
     const { unmount } = renderHook(() => useProjectWebSocket("project-a"));
     for (let retry = 0; retry < 5; retry++) {
       act(() => {
-        TestSocket.instances.at(-1)?.onclose?.();
+        TestSocket.instances.at(-1)?.onclose?.(ABNORMAL_CLOSE);
         vi.advanceTimersByTime(1000 * 2 ** retry);
       });
       expect(TestSocket.instances).toHaveLength(retry + 2);
@@ -123,7 +148,7 @@ describe("project WebSocket lifecycle", () => {
           taskId: "task-a",
         }),
       });
-      last?.onclose?.();
+      last?.onclose?.(ABNORMAL_CLOSE);
       vi.advanceTimersByTime(60_000);
     });
     expect(TestSocket.instances).toHaveLength(6);
@@ -132,6 +157,20 @@ describe("project WebSocket lifecycle", () => {
     });
     expect(client.invalidateQueries).toHaveBeenCalledWith({
       queryKey: ["task", "task-a"],
+    });
+    unmount();
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it("stops reconnecting and refetches the project lists when access is revoked", () => {
+    const { unmount } = renderHook(() => useProjectWebSocket("project-a"));
+    act(() => {
+      TestSocket.instances[0].onclose?.({ code: 4404 });
+      vi.advanceTimersByTime(60_000);
+    });
+    expect(TestSocket.instances).toHaveLength(1);
+    expect(client.invalidateQueries).toHaveBeenCalledWith({
+      queryKey: ["projects"],
     });
     unmount();
     expect(vi.getTimerCount()).toBe(0);

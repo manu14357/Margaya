@@ -5,7 +5,8 @@ import {
 
 // The analytics page's tabs (B8 §1.2, §1.6): Overview only in workspace
 // scope; Cycles, Modules and Intake only while a scope project has the
-// feature on (Intake also needs intake:read).
+// feature on (Intake also needs intake:read); Delivery (forecast and risks)
+// only in project scope.
 
 export const ANALYTICS_TABS = [
   "overview",
@@ -13,6 +14,7 @@ export const ANALYTICS_TABS = [
   "cycles",
   "modules",
   "intake",
+  "delivery",
 ] as const;
 
 export type AnalyticsTab = (typeof ANALYTICS_TABS)[number];
@@ -51,6 +53,8 @@ export function availableAnalyticsTabs(
         return any("modules");
       case "intake":
         return canReadIntake && any("intake");
+      case "delivery":
+        return kind === "project";
     }
     return false;
   });

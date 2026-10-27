@@ -13,6 +13,8 @@ type TaskSetArgs = {
   archived?: AnalyticsTaskSet["archived"];
   showSubTasks?: boolean;
   weekStartsOn: WeekStart;
+  /** Defaults to the user's zone (`userTimeZone()`). */
+  timeZone?: string;
 };
 
 export function taskSetBase({
@@ -22,6 +24,7 @@ export function taskSetBase({
   archived = "exclude",
   showSubTasks = true,
   weekStartsOn,
+  timeZone,
 }: TaskSetArgs): AnalyticsTaskSet {
   return {
     workspaceId,
@@ -29,7 +32,7 @@ export function taskSetBase({
     filters: filters as AnalyticsTaskSet["filters"],
     archived,
     showSubTasks,
-    context: queryContext(weekStartsOn),
+    context: queryContext(weekStartsOn, timeZone),
   };
 }
 

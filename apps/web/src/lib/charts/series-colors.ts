@@ -42,29 +42,33 @@ export const NONE_CHART_COLOR: ChartColor = {
 
 /**
  * Column group identity colors: the SVG twins of `barClassName` in
- * lib/column-groups.ts. Keep the two in step.
+ * lib/column-groups.ts (`--status-*`). Keep the two in step.
  */
 export const GROUP_CHART_COLORS: Record<CreatableColumnGroup, ChartColor> = {
   backlog: {
-    fill: "fill-muted-foreground/40",
-    stroke: "stroke-muted-foreground/40",
-    swatch: "bg-muted-foreground/40",
+    fill: "fill-(--status-backlog)",
+    stroke: "stroke-(--status-backlog)",
+    swatch: "bg-(--status-backlog)",
   },
-  unstarted: { fill: "fill-info", stroke: "stroke-info", swatch: "bg-info" },
+  unstarted: {
+    fill: "fill-(--status-unstarted)",
+    stroke: "stroke-(--status-unstarted)",
+    swatch: "bg-(--status-unstarted)",
+  },
   started: {
-    fill: "fill-warning",
-    stroke: "stroke-warning",
-    swatch: "bg-warning",
+    fill: "fill-(--status-started)",
+    stroke: "stroke-(--status-started)",
+    swatch: "bg-(--status-started)",
   },
   completed: {
-    fill: "fill-success",
-    stroke: "stroke-success",
-    swatch: "bg-success",
+    fill: "fill-(--status-completed)",
+    stroke: "stroke-(--status-completed)",
+    swatch: "bg-(--status-completed)",
   },
   cancelled: {
-    fill: "fill-destructive/60",
-    stroke: "stroke-destructive/60",
-    swatch: "bg-destructive/60",
+    fill: "fill-(--status-cancelled)",
+    stroke: "stroke-(--status-cancelled)",
+    swatch: "bg-(--status-cancelled)",
   },
 };
 
@@ -78,31 +82,32 @@ export const CHART_PRIORITIES = [
 
 export type ChartPriority = (typeof CHART_PRIORITIES)[number];
 
-/**
- * Priority identity colors, mirroring constants/priority-colors.ts, where
- * medium is the lighter step of high.
- */
+/** Priority identity colors (`--priority-*`), mirroring lib/priority.tsx. */
 export const PRIORITY_CHART_COLORS: Record<ChartPriority, ChartColor> = {
   urgent: {
-    fill: "fill-destructive",
-    stroke: "stroke-destructive",
-    swatch: "bg-destructive",
+    fill: "fill-(--priority-urgent)",
+    stroke: "stroke-(--priority-urgent)",
+    swatch: "bg-(--priority-urgent)",
   },
   high: {
-    fill: "fill-warning",
-    stroke: "stroke-warning",
-    swatch: "bg-warning",
+    fill: "fill-(--priority-high)",
+    stroke: "stroke-(--priority-high)",
+    swatch: "bg-(--priority-high)",
   },
   medium: {
-    fill: "fill-warning/55",
-    stroke: "stroke-warning/55",
-    swatch: "bg-warning/55",
+    fill: "fill-(--priority-medium)",
+    stroke: "stroke-(--priority-medium)",
+    swatch: "bg-(--priority-medium)",
   },
-  low: { fill: "fill-info", stroke: "stroke-info", swatch: "bg-info" },
+  low: {
+    fill: "fill-(--priority-low)",
+    stroke: "stroke-(--priority-low)",
+    swatch: "bg-(--priority-low)",
+  },
   "no-priority": {
-    fill: "fill-muted-foreground/35",
-    stroke: "stroke-muted-foreground/35",
-    swatch: "bg-muted-foreground/35",
+    fill: "fill-(--priority-none)",
+    stroke: "stroke-(--priority-none)",
+    swatch: "bg-(--priority-none)",
   },
 };
 

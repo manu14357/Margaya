@@ -40,11 +40,14 @@ export function getDueDateStatus(
   return "far-future";
 }
 
+// Overdue reads red and soon reads amber; the ring keeps the pill visible on
+// tinted rows. Text tokens stay above 4.5:1 on their own wash in both themes.
 export const dueDateStatusColors = {
-  overdue: "bg-destructive/10 text-destructive-foreground",
-  "due-soon": "bg-warning/10 text-warning-foreground",
-  "far-future": "bg-muted/50 text-muted-foreground",
-  "no-due-date": "bg-muted/50 text-muted-foreground",
+  overdue:
+    "bg-destructive/10 text-destructive-foreground ring-1 ring-destructive/25",
+  "due-soon": "bg-warning/12 text-warning-foreground ring-1 ring-warning/30",
+  "far-future": "bg-muted/60 text-muted-foreground",
+  "no-due-date": "bg-muted/60 text-muted-foreground",
 } as const;
 
 export const dueDateStatusIcons = {

@@ -74,7 +74,12 @@ export function useTaskCommentAuthors(
     queryFn: ({ signal }) => getTaskComments(taskId ?? "", signal),
     enabled: enabled && Boolean(taskId),
     staleTime: 30_000,
+    // A deleted author has no entry: the comment shows as "Deleted user".
     select: (comments) =>
-      new Map(comments.map((comment) => [comment.id, comment.user])),
+      new Map(
+        comments.flatMap((comment) =>
+          comment.user ? [[comment.id, comment.user] as const] : [],
+        ),
+      ),
   });
 }

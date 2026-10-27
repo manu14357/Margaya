@@ -15,7 +15,9 @@ export const INSTANCE_PAGES = [
   "email",
   "workspaces",
   "publicBoards",
+  "users",
   "admins",
+  "ai",
 ] as const;
 export type InstancePage = (typeof INSTANCE_PAGES)[number];
 
@@ -25,7 +27,9 @@ export const INSTANCE_PAGE_PATHS = {
   email: "/dashboard/settings/instance/email",
   workspaces: "/dashboard/settings/instance/workspaces",
   publicBoards: "/dashboard/settings/instance/public-boards",
+  users: "/dashboard/settings/instance/users",
   admins: "/dashboard/settings/instance/admins",
+  ai: "/dashboard/settings/instance/ai",
 } as const satisfies Record<InstancePage, string>;
 
 /** The catalog groups each page manages. */
@@ -42,7 +46,9 @@ export const PAGE_GROUPS: Record<InstancePage, readonly string[]> = {
   email: ["smtp"],
   workspaces: ["workspaces"],
   publicBoards: ["publicBoards"],
+  users: [],
   admins: [],
+  ai: ["ai"],
 };
 
 export function settingsForPage(

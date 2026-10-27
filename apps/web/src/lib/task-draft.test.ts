@@ -44,6 +44,8 @@ const draft: TaskDraft = {
   cycleId: "c1",
   moduleIds: ["m1", "m2"],
   estimatePointId: "e1",
+  parentTaskId: null,
+  parentTask: null,
   createdAt: "2026-05-01T00:00:00.000Z",
   updatedAt: "2026-05-02T00:00:00.000Z",
 };
@@ -81,6 +83,7 @@ describe("formToDraftFields", () => {
       cycleId: "c1",
       moduleIds: ["m1"],
       estimatePointId: "e1",
+      parentTaskId: null,
     });
   });
 
@@ -130,6 +133,18 @@ describe("draftToFormValues", () => {
       estimatePointId: "e1",
       customFieldValues: [{ fieldId: "f1", value: "3" }],
     });
+  });
+
+  it("keeps the draft's parent, and drops it without a project", () => {
+    const values = draftToFormValues({
+      ...draft,
+      parentTaskId: "t1",
+      parentTask: { id: "t1", key: "web-1", title: "Epic" },
+    });
+    expect(formToDraftFields(values).parentTaskId).toBe("t1");
+    expect(
+      formToDraftFields({ ...values, projectId: "" }).parentTaskId,
+    ).toBeNull();
   });
 
   it("leaves slots unset for a draft without them", () => {
@@ -192,6 +207,7 @@ describe("diffDraftFields", () => {
       cycleId: null,
       moduleIds: [],
       estimatePointId: null,
+      parentTaskId: null,
     });
   });
 });

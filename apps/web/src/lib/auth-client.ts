@@ -9,6 +9,7 @@ import {
   lastLoginMethodClient,
   magicLinkClient,
   organizationClient,
+  twoFactorClient,
 } from "better-auth/client/plugins";
 import type { AccessControl } from "better-auth/plugins/access";
 import { createAuthClient } from "better-auth/react";
@@ -51,6 +52,9 @@ export const authClient = createAuthClient({
     deviceAuthorizationClient(),
     apiKeyClient(),
     adminClient(),
+    // Sign-in answers { twoFactorRedirect: true } when a code is needed; the
+    // sign-in screen shows the code step itself.
+    twoFactorClient(),
     inferAdditionalFields({
       user: {
         locale: {

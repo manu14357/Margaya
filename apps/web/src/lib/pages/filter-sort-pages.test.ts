@@ -3,7 +3,9 @@ import {
   countPagesByTab,
   type FilterablePage,
   filterPages,
+  hasPageChipFilters,
   hasPageFilters,
+  isCreatedWithin,
   isPageListTab,
   isPageSort,
   sortPages,
@@ -115,5 +117,72 @@ describe("sortPages", () => {
     expect(isPageSort({ field: "priority", direction: "asc" })).toBe(false);
     expect(isPageListTab("archived")).toBe(true);
     expect(isPageListTab("trash")).toBe(false);
+  });
+});
+
+describe("favorites and created-date filters", () => {
+  // Local time on purpose: "today" starts at the viewer's midnight.
+  const now = new Date(2026, 9, 20, 9, 30);
+  const at = (days: number, hours = 0) =>
+    new Date(
+      now.getTime() - days * 24 * 60 * 60 * 1000 - hours * 60 * 60 * 1000,
+    );
+
+  it("keeps only favorites once they are known", () => {
+    const pages = [page("a"), page("b"), page("c")];
+    const filters = { ...base, tab: "public" as const, favoritesOnly: true };
+    expect(
+      filterPages(pages, { ...filters, favoriteIds: new Set(["b"]) }).map(
+        (item) => item.id,
+      ),
+    ).toEqual(["b"]);
+    // Until the favorites load, the filter waits instead of hiding all.
+    expect(filterPages(pages, filters)).toHaveLength(3);
+  });
+
+  it("counts today from local midnight", () => {
+    const midnight = new Date(2026, 9, 20, 0, 0);
+    const justBefore = new Date(midnight.getTime() - 1);
+    expect(isCreatedWithin(midnight, "today", now)).toBe(true);
+    expect(isCreatedWithin(justBefore, "today", now)).toBe(false);
+    expect(isCreatedWithin(justBefore.toISOString(), "today", now)).toBe(false);
+  });
+
+  it("uses rolling 7 and 30 day windows, and older beyond 30", () => {
+    expect(isCreatedWithin(at(7), "last7", now)).toBe(true);
+    expect(isCreatedWithin(at(7, 1), "last7", now)).toBe(false);
+    expect(isCreatedWithin(at(30), "last30", now)).toBe(true);
+    expect(isCreatedWithin(at(30, 1), "last30", now)).toBe(false);
+    expect(isCreatedWithin(at(30), "older", now)).toBe(false);
+    expect(isCreatedWithin(at(30, 1), "older", now)).toBe(true);
+    expect(isCreatedWithin(at(400), "any", now)).toBe(true);
+  });
+
+  it("filters the list by the created window", () => {
+    const pages = [
+      page("new", { createdAt: at(0, 1).toISOString() }),
+      page("week", { createdAt: at(5).toISOString() }),
+      page("old", { createdAt: at(60).toISOString() }),
+    ];
+    const ids = (createdWithin: "today" | "last7" | "older") =>
+      filterPages(pages, { ...base, tab: "public", createdWithin, now }).map(
+        (item) => item.id,
+      );
+    expect(ids("today")).toEqual(["new"]);
+    expect(ids("last7")).toEqual(["new", "week"]);
+    expect(ids("older")).toEqual(["old"]);
+  });
+
+  it("reports chip filters apart from the search text", () => {
+    expect(hasPageChipFilters({ ownerIds: [] })).toBe(false);
+    expect(hasPageChipFilters({ ownerIds: [], favoritesOnly: true })).toBe(
+      true,
+    );
+    expect(hasPageChipFilters({ ownerIds: [], createdWithin: "last30" })).toBe(
+      true,
+    );
+    expect(
+      hasPageFilters({ query: "", ownerIds: [], createdWithin: "any" }),
+    ).toBe(false);
   });
 });

@@ -45,7 +45,13 @@ describe("tabs", () => {
     ).toEqual(["overview", "tasks"]);
     expect(
       availableAnalyticsTabs("project", [plain], { canReadIntake: true }),
-    ).toEqual(["tasks"]);
+    ).toEqual(["tasks", "delivery"]);
+  });
+
+  it("shows Delivery only in project scope", () => {
+    expect(
+      availableAnalyticsTabs("workspace", [plain], { canReadIntake: true }),
+    ).not.toContain("delivery");
   });
 
   it("shows feature tabs while a scope project has the feature on", () => {
@@ -59,7 +65,7 @@ describe("tabs", () => {
   it("needs intake:read for the Intake tab", () => {
     expect(
       availableAnalyticsTabs("project", [withIntake], { canReadIntake: false }),
-    ).toEqual(["tasks"]);
+    ).toEqual(["tasks", "delivery"]);
   });
 
   it("falls back to the default tab for unknown or hidden tabs", () => {

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  getFlowAnomalyTarget,
   getNotificationActorName,
   getNotificationContent,
   getNotificationPreview,
@@ -119,6 +120,57 @@ describe("notification display content", () => {
         t,
       ),
     ).toBe("notifications:events.task_mention.content");
+  });
+
+  it("renders cycle rollover summaries by outcome", () => {
+    const moved = notification("cycle_rollover", {
+      cycleName: "Sprint 1",
+      targetCycleName: "Sprint 2",
+      outcome: "moved",
+      count: 3,
+    });
+    expect(getNotificationTitle(moved, t)).toBe(
+      "notifications:events.cycle_rollover.title",
+    );
+    expect(getNotificationContent(moved, t)).toBe(
+      "notifications:events.cycle_rollover.content",
+    );
+    expect(isSystemNotification(moved)).toBe(true);
+    expect(
+      getNotificationContent(
+        notification("cycle_rollover", { outcome: "no_next_cycle", count: 2 }),
+        t,
+      ),
+    ).toBe("notifications:events.cycle_rollover.contentNoNext");
+  });
+
+  it("renders flow anomaly alerts by metric and opens the project", () => {
+    const alert = notification("flow_anomaly", {
+      projectId: "p1",
+      projectName: "Web",
+      metric: "throughput",
+      direction: "low",
+      value: 2,
+      baselineMedian: 14,
+    });
+    expect(getNotificationTitle(alert, t)).toBe(
+      "notifications:events.flow_anomaly.title",
+    );
+    expect(getNotificationContent(alert, t)).toBe(
+      "notifications:events.flow_anomaly.throughput_low",
+    );
+    expect(isSystemNotification(alert)).toBe(true);
+    expect(getFlowAnomalyTarget(alert)).toEqual({ projectId: "p1" });
+    expect(
+      getFlowAnomalyTarget(notification("cycle_rollover", { projectId: "p1" })),
+    ).toBeNull();
+    const odd = notification("flow_anomaly", {
+      metric: "wip",
+      direction: "low",
+    });
+    expect(getNotificationContent({ ...odd, content: "stored" }, t)).toBe(
+      "stored",
+    );
   });
 
   it("falls back to the stored title and content for unknown types", () => {
@@ -252,5 +304,22 @@ describe("actors", () => {
     expect(isSystemNotification(notification("task_overdue", {}))).toBe(true);
     expect(isSystemNotification(notification("info", {}))).toBe(true);
     expect(isSystemNotification(notification("task_comment", {}))).toBe(false);
+  });
+
+  it("renders an agent's answer as the agent's own row, with its text", () => {
+    const item: NotificationTextSource = {
+      type: "ai_agent_reply",
+      title: "Maya answered your request",
+      content: "The login timeout is set in auth.ts.",
+      eventData: { runId: "r1", agentName: "Maya" },
+      actor: { name: "Maya" },
+    };
+    expect(isSystemNotification(item)).toBe(false);
+    expect(getNotificationActorName(item)).toBe("Maya");
+    expect(getNotificationVerb(item, t)).toBe("ai:agents.reply.verb");
+    expect(getNotificationTitle(item, t)).toBe("ai:agents.reply.title");
+    expect(getNotificationContent(item, t)).toBe(
+      "The login timeout is set in auth.ts.",
+    );
   });
 });

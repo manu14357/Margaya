@@ -1,9 +1,11 @@
+import { useUserPreferencesStore } from "@/store/user-preferences";
 import type { TaskQueryInclude, TaskQueryRequest } from "@/types/task-query";
 import { withBaseConditions } from "./filter-tree";
 import type { FilterCondition, TaskQueryScope, TaskQueryState } from "./model";
 
 // Builds engine requests from a list's state. Date filters compare calendar
-// days in the browser's time zone and week start (B4 K4).
+// days in the user's time zone (the account zone when chosen, else the
+// browser's) and week start (B4 K4).
 
 export type WeekStart = 0 | 1 | 6;
 
@@ -15,8 +17,22 @@ export function browserTimeZone(): string {
   }
 }
 
-export function queryContext(weekStartsOn: WeekStart) {
-  return { timeZone: browserTimeZone(), weekStartsOn };
+/** The zone task queries count days in: the account's, else the browser's. */
+export function userTimeZone(): string {
+  return useUserPreferencesStore.getState().timeZone ?? browserTimeZone();
+}
+
+/** `userTimeZone()` as a hook, so a request rebuilds when the zone loads. */
+export function useUserTimeZone(): string {
+  const timeZone = useUserPreferencesStore((state) => state.timeZone);
+  return timeZone ?? browserTimeZone();
+}
+
+export function queryContext(
+  weekStartsOn: WeekStart,
+  timeZone: string = userTimeZone(),
+) {
+  return { timeZone, weekStartsOn };
 }
 
 export function scopeProjectIds(scope: TaskQueryScope): string[] | undefined {
@@ -43,6 +59,8 @@ type BuildArgs = {
   baseConditions?: readonly FilterCondition[];
   search?: string;
   weekStartsOn: WeekStart;
+  /** Defaults to `userTimeZone()`. */
+  timeZone?: string;
 };
 
 /** A rows request: groups with their first page of rows. */
@@ -53,6 +71,7 @@ export function buildRowsRequest({
   baseConditions = [],
   search,
   weekStartsOn,
+  timeZone,
   limit,
   ungrouped = false,
 }: BuildArgs & { limit: number; ungrouped?: boolean }): TaskQueryRequest {
@@ -82,7 +101,7 @@ export function buildRowsRequest({
     include,
     page: { limit },
     mode: "rows",
-    context: queryContext(weekStartsOn),
+    context: queryContext(weekStartsOn, timeZone),
   };
 }
 
@@ -93,6 +112,7 @@ export function buildIdsRequest({
   state,
   baseConditions = [],
   weekStartsOn,
+  timeZone,
 }: BuildArgs): TaskQueryRequest {
   const projectIds = scopeProjectIds(scope);
   return {
@@ -102,7 +122,7 @@ export function buildIdsRequest({
     archived: state.archived,
     display: { showSubTasks: state.display.showSubTasks },
     mode: "ids",
-    context: queryContext(weekStartsOn),
+    context: queryContext(weekStartsOn, timeZone),
   };
 }
 

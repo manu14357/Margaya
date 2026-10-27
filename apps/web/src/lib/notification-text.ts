@@ -31,6 +31,8 @@ const ACTOR_TYPES = new Set([
   "intake_declined",
   "intake_duplicate",
   "page_mention",
+  "ai_approval_requested",
+  "ai_agent_reply",
 ]);
 
 const TITLE_KEYS: Record<string, string> = {
@@ -48,6 +50,12 @@ const TITLE_KEYS: Record<string, string> = {
   intake_declined: "notifications:events.intake_declined.title",
   intake_duplicate: "notifications:events.intake_duplicate.title",
   page_mention: "notifications:events.page_mention.title",
+  cycle_rollover: "notifications:events.cycle_rollover.title",
+  flow_anomaly: "notifications:events.flow_anomaly.title",
+  automation_notice: "notifications:events.automation_notice.title",
+  ai_approval_requested: "ai:agents.inbox.title",
+  ai_agent_reply: "ai:agents.reply.title",
+  ai_budget_warning: "ai:budget.notice.title",
 };
 
 const CONTENT_KEYS: Record<string, string> = {
@@ -68,6 +76,8 @@ const VERB_KEYS: Record<string, string> = {
   intake_accepted: "notifications:inbox.verbs.intake_accepted",
   intake_declined: "notifications:inbox.verbs.intake_declined",
   intake_duplicate: "notifications:inbox.verbs.intake_duplicate",
+  ai_approval_requested: "ai:agents.inbox.verb",
+  ai_agent_reply: "ai:agents.reply.verb",
 };
 
 export function getEventDataRecord(
@@ -112,12 +122,22 @@ function formatDueDate(value: string | null): string | null {
   return Number.isNaN(date.getTime()) ? value : formatDateMedium(date);
 }
 
+/** An agent paused its run to ask the person something. */
+function isAgentQuestion(
+  type: string,
+  eventData: Record<string, unknown> | null,
+): boolean {
+  return type === "ai_agent_reply" && eventData?.needsInput === true;
+}
+
 export function getNotificationTitle(
   notification: NotificationTextSource,
   t: TranslateFn,
 ) {
   const eventData = getEventDataRecord(notification.eventData);
-  const key = TITLE_KEYS[notification.type];
+  const key = isAgentQuestion(notification.type, eventData)
+    ? "ai:agents.needsInput.notificationTitle"
+    : TITLE_KEYS[notification.type];
   if (eventData && key) {
     return t(key, {
       ...eventData,
@@ -205,9 +225,61 @@ export function getNotificationContent(
     case "intake_declined":
     case "intake_duplicate":
       return getIntakeContent(notification.type, eventData, fallback, t);
+    case "cycle_rollover":
+      return eventData.outcome === "no_next_cycle"
+        ? t("notifications:events.cycle_rollover.contentNoNext", options)
+        : t("notifications:events.cycle_rollover.content", options);
+    case "flow_anomaly":
+      return getFlowAnomalyContent(eventData, fallback, t);
+    case "ai_budget_warning":
+      return t("ai:budget.notice.content", {
+        percent: eventData.usedPercent,
+        defaultValue: fallback,
+      });
+    case "automation_notice":
+      // The rule's own message, written by whoever set the rule up.
+      return typeof eventData.message === "string" && eventData.message
+        ? eventData.message
+        : t("notifications:events.automation_notice.content", options);
     default:
       return fallback;
   }
+}
+
+const FLOW_ANOMALY_KEYS: Record<string, string> = {
+  throughput_low: "notifications:events.flow_anomaly.throughput_low",
+  wip_high: "notifications:events.flow_anomaly.wip_high",
+  cycle_time_high: "notifications:events.flow_anomaly.cycle_time_high",
+};
+
+/** "Throughput fell to 2 tasks this week (usually about 14)", and kin. */
+function getFlowAnomalyContent(
+  eventData: Record<string, unknown>,
+  fallback: string,
+  t: TranslateFn,
+) {
+  const key =
+    FLOW_ANOMALY_KEYS[
+      `${String(eventData.metric)}_${String(eventData.direction)}`
+    ];
+  if (!key) return fallback;
+  return t(key, {
+    value: eventData.value,
+    baseline: eventData.baselineMedian,
+    defaultValue: fallback,
+  });
+}
+
+/** A flow alert opens the project's Delivery analytics. */
+export function getFlowAnomalyTarget(
+  notification: NotificationTextSource,
+): { projectId: string } | null {
+  if (notification.type !== "flow_anomaly") return null;
+  const projectId = stringField(
+    getEventDataRecord(notification.eventData),
+    "projectId",
+  );
+  return projectId ? { projectId } : null;
 }
 
 /** A requester's outcome: accepted into a column, declined, duplicate. */
@@ -329,6 +401,9 @@ export function getNotificationVerb(
   t: TranslateFn,
 ) {
   const eventData = getEventDataRecord(notification.eventData) ?? {};
+  if (isAgentQuestion(notification.type, eventData)) {
+    return t("ai:agents.needsInput.verb");
+  }
   const verbKey = VERB_KEYS[notification.type];
   if (verbKey) return t(verbKey);
   switch (notification.type) {

@@ -89,7 +89,7 @@ describe("bucketLabel", () => {
 
   it("formats estimate values by their system type", () => {
     expect(bucketLabel("estimate", "points:3", context)).toBe(
-      'tasks:estimate.pointsValue {"value":"3"}',
+      'tasks:estimate.pointsValue {"value":"3","count":3}',
     );
     expect(bucketLabel("estimate", "time:90", context)).toBe(
       'tasks:estimate.duration.hoursMinutes {"hours":1,"minutes":30}',
