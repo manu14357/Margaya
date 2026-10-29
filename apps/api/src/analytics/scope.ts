@@ -36,7 +36,9 @@ export function assertRunnableFilters(filters: FilterNode | null | undefined) {
 
 /**
  * Scope projects (404 for one outside the workspace, 400 for a bad time
- * zone or custom field), the caller and today: at most two statements.
+ * zone or custom field), the caller and today: two statements (the
+ * workspace's zone with the caller's hidden projects, then the projects),
+ * three when the filters use custom fields.
  */
 export function loadAnalyticsContext(
   tx: TaskReadDatabase,

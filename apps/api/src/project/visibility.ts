@@ -4,9 +4,9 @@
 // decides whether someone may see a project goes through this module:
 //   - `projectReach` answers for one project (lookups, WebSockets, jobs);
 //   - `hiddenProjectIds` lists what a user may not see in a workspace, for
-//     workspace-wide reads (lists, search, analytics, inbox...). It is empty,
-//     and costs one indexed query, when the workspace has no restricted
-//     project, so open workspaces never pay for a join.
+//     workspace-wide reads (lists, search, analytics, inbox...). It costs
+//     one indexed query, and is empty when the workspace has no restricted
+//     project.
 // Someone who may not see a project gets 404, never 403, so its existence
 // is not revealed.
 
@@ -28,6 +28,7 @@ import {
   projectMemberTable,
   projectTable,
   userTable,
+  workspaceTable,
   workspaceUserTable,
 } from "../database/schema";
 import {
@@ -208,51 +209,56 @@ export function hiddenProjectIds(
   userId: string,
   workspaceId: string,
 ): Promise<string[]> {
-  return memo(`hidden:${userId}:${workspaceId}`, async () => {
-    const restricted = await db
-      .select({ id: projectTable.id, memberId: projectMemberTable.userId })
-      .from(projectTable)
-      .leftJoin(
-        projectMemberTable,
-        and(
-          eq(projectMemberTable.projectId, projectTable.id),
-          eq(projectMemberTable.userId, userId),
-        ),
-      )
-      .where(
-        and(
-          eq(projectTable.workspaceId, workspaceId),
-          eq(projectTable.visibility, "restricted"),
-        ),
-      );
-    const hidden = restricted
-      .filter((row) => !row.memberId)
-      .map((row) => row.id);
-    if (hidden.length === 0) return [];
+  return memo(
+    `hidden:${userId}:${workspaceId}`,
+    async () =>
+      (await workspaceZoneAndHiddenProjects(db, userId, workspaceId)).hidden,
+  );
+}
 
-    const [who] = await db
-      .select({
-        workspaceRole: workspaceUserTable.role,
-        userRole: userTable.role,
-      })
-      .from(userTable)
-      .leftJoin(
-        workspaceUserTable,
-        and(
-          eq(workspaceUserTable.workspaceId, workspaceId),
-          eq(workspaceUserTable.userId, userTable.id),
-        ),
-      )
-      .where(eq(userTable.id, userId))
-      .limit(1);
-    if (
-      who &&
-      (isWorkspaceManagerRole(who.workspaceRole) || instanceReach(who.userRole))
-    ) {
-      return [];
-    }
-    return hidden;
-  });
+type Reader = Pick<typeof db, "select">;
+
+/**
+ * The workspace's stored time zone (null when unset or the workspace is
+ * unknown) and the projects `hiddenProjectIds` hides from `userId`, in one
+ * statement, for reads that need both (the task query context).
+ */
+export async function workspaceZoneAndHiddenProjects(
+  reader: Reader,
+  userId: string,
+  workspaceId: string,
+): Promise<{ timezone: string | null; hidden: string[] }> {
+  const [row] = await reader
+    .select({
+      timezone: workspaceTable.timezone,
+      workspaceRole: workspaceUserTable.role,
+      userRole: userTable.role,
+      restricted: sql<string[]>`coalesce(array(
+        select ${projectTable.id} from ${projectTable}
+        where ${projectTable.workspaceId} = ${workspaceTable.id}
+          and ${projectTable.visibility} = 'restricted'
+          and not exists (
+            select 1 from ${projectMemberTable}
+            where ${projectMemberTable.projectId} = ${projectTable.id}
+              and ${projectMemberTable.userId} = ${userId}
+          )
+      ), '{}')`,
+    })
+    .from(workspaceTable)
+    .leftJoin(
+      workspaceUserTable,
+      and(
+        eq(workspaceUserTable.workspaceId, workspaceTable.id),
+        eq(workspaceUserTable.userId, userId),
+      ),
+    )
+    .leftJoin(userTable, eq(userTable.id, userId))
+    .where(eq(workspaceTable.id, workspaceId))
+    .limit(1);
+  if (!row) return { timezone: null, hidden: [] };
+  const sees =
+    isWorkspaceManagerRole(row.workspaceRole) || instanceReach(row.userRole);
+  return { timezone: row.timezone, hidden: sees ? [] : row.restricted };
 }
 
 /**
