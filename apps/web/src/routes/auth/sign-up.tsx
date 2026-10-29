@@ -20,6 +20,7 @@ import useGetConfig from "@/hooks/queries/config/use-get-config";
 import useInstanceStatus from "@/hooks/queries/instance/use-instance-status";
 import { customInstanceName, safeRedirectPath } from "@/lib/auth-branding";
 import { authClient } from "@/lib/auth-client";
+import { HttpError } from "@/lib/http-error";
 import { toast } from "@/lib/toast";
 
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as
@@ -66,7 +67,9 @@ function SignUp() {
   useEffect(() => {
     if (isInstanceStatusError) {
       toast.error(
-        instanceStatusError instanceof Error
+        // The server's own message when it answered; when it can't be
+        // reached, the network error says nothing a person can act on.
+        instanceStatusError instanceof HttpError
           ? instanceStatusError.message
           : t("auth:signUp.instanceStatusError", {
               defaultValue:

@@ -16,6 +16,7 @@ import useInstanceStatus from "@/hooks/queries/instance/use-instance-status";
 import { customInstanceName, customOAuthLabel } from "@/lib/auth-branding";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/cn";
+import { HttpError } from "@/lib/http-error";
 import { toast } from "@/lib/toast";
 import { AuthDivider } from "../../components/auth/divider";
 import { AuthLayout } from "../../components/auth/layout";
@@ -95,7 +96,9 @@ function SignIn() {
   useEffect(() => {
     if (isInstanceStatusError) {
       toast.error(
-        instanceStatusError instanceof Error
+        // The server's own message when it answered; when it can't be
+        // reached, the network error says nothing a person can act on.
+        instanceStatusError instanceof HttpError
           ? instanceStatusError.message
           : t("auth:signIn.instanceStatusError", {
               defaultValue:
