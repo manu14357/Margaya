@@ -1,22 +1,18 @@
-import { getApiUrl } from "@/fetchers/get-api-url";
+import { client } from "@margaya/libs";
 
 export async function submitMcpAuthorizationDecision(
   requestId: string,
   approved: boolean,
 ): Promise<string> {
-  const response = await fetch(
-    getApiUrl(`/mcp/authorize/request/${encodeURIComponent(requestId)}`),
-    {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ approved }),
-    },
-  );
+  // The client does not encode path params.
+  const response = await client.mcp.authorize.request[":requestId"].$post({
+    param: { requestId: encodeURIComponent(requestId) },
+    json: { approved },
+  });
   if (!response.ok) {
     throw new Error("Could not complete the authorization request.");
   }
 
-  const body = (await response.json()) as { redirect: string };
+  const body = await response.json();
   return body.redirect;
 }

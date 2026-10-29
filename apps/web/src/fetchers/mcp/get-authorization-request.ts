@@ -1,4 +1,4 @@
-import { getApiUrl } from "@/fetchers/get-api-url";
+import { client } from "@margaya/libs";
 
 export type McpAuthorizationRequest = {
   clientName: string;
@@ -8,18 +8,15 @@ export type McpAuthorizationRequest = {
 export async function getMcpAuthorizationRequest(
   requestId: string,
 ): Promise<McpAuthorizationRequest> {
-  const response = await fetch(
-    getApiUrl(`/mcp/authorize/request/${encodeURIComponent(requestId)}`),
-    { credentials: "include" },
-  );
+  // The client does not encode path params.
+  const response = await client.mcp.authorize.request[":requestId"].$get({
+    param: { requestId: encodeURIComponent(requestId) },
+  });
   if (!response.ok) {
     throw new Error("This authorization request is invalid or has expired.");
   }
 
-  const body = (await response.json()) as {
-    client_name: string;
-    redirect_uri: string;
-  };
+  const body = await response.json();
   return {
     clientName: body.client_name,
     redirectUri: body.redirect_uri,

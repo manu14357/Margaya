@@ -1,38 +1,24 @@
-import { getApiUrl } from "@/fetchers/get-api-url";
-
+import { client } from "@margaya/libs";
+import type { InferResponseType } from "hono/client";
 import { HttpError } from "@/lib/http-error";
-export type DiscordIntegration = {
-  id: string;
-  projectId: string;
-  channelName: string | null;
-  webhookConfigured: boolean;
-  maskedWebhookUrl: string;
-  events: {
-    taskCreated: boolean;
-    taskStatusChanged: boolean;
-    taskPriorityChanged: boolean;
-    taskTitleChanged: boolean;
-    taskDescriptionChanged: boolean;
-    taskCommentCreated: boolean;
-  };
-  isActive: boolean | null;
-  createdAt: string;
-  updatedAt: string;
-} | null;
+
+export type DiscordIntegration = InferResponseType<
+  (typeof client)["discord-integration"]["project"][":projectId"]["$get"],
+  200
+>;
 
 async function getDiscordIntegration(projectId: string) {
-  const response = await fetch(
-    getApiUrl(`/discord-integration/project/${projectId}`),
-    {
-      credentials: "include",
-    },
-  );
+  const response = await client["discord-integration"].project[
+    ":projectId"
+  ].$get({
+    param: { projectId },
+  });
 
   if (!response.ok) {
     throw new HttpError(response.status, await response.text());
   }
 
-  return (await response.json()) as DiscordIntegration;
+  return response.json();
 }
 
 export default getDiscordIntegration;

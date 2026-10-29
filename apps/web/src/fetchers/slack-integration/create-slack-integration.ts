@@ -1,41 +1,27 @@
-import { getApiUrl } from "@/fetchers/get-api-url";
+import { client } from "@margaya/libs";
+import type { InferRequestType } from "hono/client";
 import { HttpError } from "@/lib/http-error";
-import type { SlackIntegration } from "./get-slack-integration";
 
-export type CreateSlackIntegrationRequest = {
-  webhookUrl: string;
-  channelName?: string;
-  events?: {
-    taskCreated?: boolean;
-    taskStatusChanged?: boolean;
-    taskPriorityChanged?: boolean;
-    taskTitleChanged?: boolean;
-    taskDescriptionChanged?: boolean;
-    taskCommentCreated?: boolean;
-  };
-};
+export type CreateSlackIntegrationRequest = InferRequestType<
+  (typeof client)["slack-integration"]["project"][":projectId"]["$post"]
+>["json"];
 
 async function createSlackIntegration(
   projectId: string,
   json: CreateSlackIntegrationRequest,
 ) {
-  const response = await fetch(
-    getApiUrl(`/slack-integration/project/${projectId}`),
-    {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(json),
-    },
-  );
+  const response = await client["slack-integration"].project[
+    ":projectId"
+  ].$post({
+    param: { projectId },
+    json,
+  });
 
   if (!response.ok) {
     throw new HttpError(response.status, await response.text());
   }
 
-  return (await response.json()) as SlackIntegration;
+  return response.json();
 }
 
 export default createSlackIntegration;

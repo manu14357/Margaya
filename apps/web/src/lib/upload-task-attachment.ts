@@ -30,6 +30,7 @@ export async function uploadTaskAttachment({
     size: file.size,
   });
 
+  // Presigned storage URL, not an API route: the client would add JSON headers.
   const response = await fetch(upload.uploadUrl, {
     method: "PUT",
     headers: upload.headers,

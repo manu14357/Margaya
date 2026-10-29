@@ -228,7 +228,8 @@ const decideAuthorizationRequestRoute = createRoute({
   },
 });
 
-mcp
+// Kept as a value so the consent routes' types reach AppType for the web client.
+const mcpOAuthRoutes = mcp
   .openapi(
     registerRoute,
     async (c) => c.json(await registerMcpClient(c.req.valid("json")), 200),
@@ -409,6 +410,7 @@ mcp.get("/.well-known/oauth-authorization-server/api", (c) =>
 );
 
 export default mcp;
+export type McpOAuthRoutes = typeof mcpOAuthRoutes;
 
 export function mcpWellKnownRoutes(baseUrl: string) {
   const wellKnown = new Hono();

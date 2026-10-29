@@ -1,47 +1,22 @@
-import { getApiUrl } from "@/fetchers/get-api-url";
+import { client } from "@margaya/libs";
+import type { InferRequestType } from "hono/client";
 import { HttpError } from "@/lib/http-error";
 import type { NotificationPreferences } from "./get-notification-preferences";
 
-export type UpdateNotificationPreferencesRequest = {
-  emailEnabled?: boolean;
-  ntfyEnabled?: boolean;
-  ntfyServerUrl?: string | null;
-  ntfyTopic?: string | null;
-  ntfyToken?: string | null;
-  gotifyEnabled?: boolean;
-  gotifyServerUrl?: string | null;
-  gotifyToken?: string | null;
-  webhookEnabled?: boolean;
-  webhookUrl?: string | null;
-  webhookSecret?: string | null;
-  taskAssignmentEnabled?: boolean;
-  taskCommentEnabled?: boolean;
-  taskStatusChangeEnabled?: boolean;
-  taskUpdateEnabled?: boolean;
-  dueDateReminderEnabled?: boolean;
-  dueDateReminderLeadTimeMinutes?: number;
-  digestFrequency?: "off" | "daily" | "weekly";
-  digestWeekday?: number;
-  digestHour?: number;
-};
+export type UpdateNotificationPreferencesRequest = InferRequestType<
+  (typeof client)["notification-preferences"]["$put"]
+>["json"];
 
 async function updateNotificationPreferences(
   json: UpdateNotificationPreferencesRequest,
 ): Promise<NotificationPreferences> {
-  const response = await fetch(getApiUrl("/notification-preferences"), {
-    body: JSON.stringify(json),
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "PUT",
-  });
+  const response = await client["notification-preferences"].$put({ json });
 
   if (!response.ok) {
     throw new HttpError(response.status, await response.text());
   }
 
-  return (await response.json()) as NotificationPreferences;
+  return response.json();
 }
 
 export default updateNotificationPreferences;

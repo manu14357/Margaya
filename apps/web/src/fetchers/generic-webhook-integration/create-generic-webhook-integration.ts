@@ -1,48 +1,27 @@
-import { getApiUrl } from "@/fetchers/get-api-url";
+import { client } from "@margaya/libs";
+import type { InferRequestType } from "hono/client";
 import { HttpError } from "@/lib/http-error";
-import type { GenericWebhookIntegration } from "./get-generic-webhook-integration";
 
-export type CreateGenericWebhookIntegrationRequest = {
-  webhookUrl: string;
-  secret?: string;
-  events?: {
-    taskCreated?: boolean;
-    taskStatusChanged?: boolean;
-    taskPriorityChanged?: boolean;
-    taskTitleChanged?: boolean;
-    taskDescriptionChanged?: boolean;
-    taskCommentCreated?: boolean;
-    taskDeleted?: boolean;
-    taskMoved?: boolean;
-    taskDueDateChanged?: boolean;
-    taskAssigneeChanged?: boolean;
-    taskUnassigned?: boolean;
-    dueDateReminder?: boolean;
-  };
-  dueDateReminderLeadTimeMinutes?: number;
-};
+export type CreateGenericWebhookIntegrationRequest = InferRequestType<
+  (typeof client)["generic-webhook-integration"]["project"][":projectId"]["$post"]
+>["json"];
 
 async function createGenericWebhookIntegration(
   projectId: string,
   json: CreateGenericWebhookIntegrationRequest,
 ) {
-  const response = await fetch(
-    getApiUrl(`/generic-webhook-integration/project/${projectId}`),
-    {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(json),
-    },
-  );
+  const response = await client["generic-webhook-integration"].project[
+    ":projectId"
+  ].$post({
+    param: { projectId },
+    json,
+  });
 
   if (!response.ok) {
     throw new HttpError(response.status, await response.text());
   }
 
-  return (await response.json()) as GenericWebhookIntegration;
+  return response.json();
 }
 
 export default createGenericWebhookIntegration;

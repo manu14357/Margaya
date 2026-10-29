@@ -1,38 +1,25 @@
-import { getApiUrl } from "@/fetchers/get-api-url";
+import { client } from "@margaya/libs";
+import type { InferRequestType } from "hono/client";
 import { HttpError } from "@/lib/http-error";
 import type { NotificationPreferences } from "./get-notification-preferences";
 
-export type UpsertNotificationWorkspaceRuleRequest = {
-  isActive: boolean;
-  emailEnabled: boolean;
-  ntfyEnabled: boolean;
-  gotifyEnabled: boolean;
-  webhookEnabled: boolean;
-  projectMode: "all" | "selected";
-  selectedProjectIds?: string[];
-};
+export type UpsertNotificationWorkspaceRuleRequest = InferRequestType<
+  (typeof client)["notification-preferences"]["workspaces"][":workspaceId"]["$put"]
+>["json"];
 
 async function upsertNotificationWorkspaceRule(
   workspaceId: string,
   json: UpsertNotificationWorkspaceRuleRequest,
 ): Promise<NotificationPreferences> {
-  const response = await fetch(
-    getApiUrl(`/notification-preferences/workspaces/${workspaceId}`),
-    {
-      body: JSON.stringify(json),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "PUT",
-    },
-  );
+  const response = await client["notification-preferences"].workspaces[
+    ":workspaceId"
+  ].$put({ param: { workspaceId }, json });
 
   if (!response.ok) {
     throw new HttpError(response.status, await response.text());
   }
 
-  return (await response.json()) as NotificationPreferences;
+  return response.json();
 }
 
 export default upsertNotificationWorkspaceRule;

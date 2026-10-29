@@ -1,36 +1,21 @@
-import { getApiUrl } from "@/fetchers/get-api-url";
-
+import { client } from "@margaya/libs";
+import type { InferResponseType } from "hono/client";
 import { HttpError } from "@/lib/http-error";
-export type TelegramIntegration = {
-  id: string;
-  projectId: string;
-  chatId: string;
-  threadId: number | null;
-  chatLabel: string | null;
-  botTokenConfigured: boolean;
-  maskedBotToken: string;
-  events: {
-    taskCreated: boolean;
-    taskStatusChanged: boolean;
-    taskPriorityChanged: boolean;
-    taskTitleChanged: boolean;
-    taskDescriptionChanged: boolean;
-    taskCommentCreated: boolean;
-  };
-  isActive: boolean | null;
-  createdAt: string;
-  updatedAt: string;
-} | null;
+
+export type TelegramIntegration = InferResponseType<
+  (typeof client)["telegram-integration"]["project"][":projectId"]["$get"],
+  200
+>;
 
 async function getTelegramIntegration(projectId: string) {
-  const response = await fetch(
-    getApiUrl(`/telegram-integration/project/${projectId}`),
-    {
-      credentials: "include",
-    },
-  );
+  const response = await client["telegram-integration"].project[
+    ":projectId"
+  ].$get({
+    param: { projectId },
+  });
 
-  if (response.status === 404) {
+  // A 404 means no integration; it is not a declared status, hence the cast.
+  if ((response.status as number) === 404) {
     return null;
   }
 
@@ -38,7 +23,7 @@ async function getTelegramIntegration(projectId: string) {
     throw new HttpError(response.status, await response.text());
   }
 
-  return (await response.json()) as TelegramIntegration;
+  return response.json();
 }
 
 export default getTelegramIntegration;

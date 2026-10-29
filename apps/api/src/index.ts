@@ -86,7 +86,7 @@ import invitation from "./invitation";
 import jiraImport from "./jira-import";
 import label from "./label";
 import mattermostIntegration from "./mattermost-integration";
-import mcpRoutes, { mcpWellKnownRoutes } from "./mcp";
+import mcpRoutes, { type McpOAuthRoutes, mcpWellKnownRoutes } from "./mcp";
 import { migrateColumns } from "./migrations/column-migration";
 import { migrateNotificationInbox } from "./migrations/notification-inbox-migration";
 import { migratePublications } from "./migrations/publication-migration";
@@ -327,7 +327,7 @@ export function createApp() {
     return c.json({ status: "ok" });
   });
 
-  api.openapi(
+  const instanceStatusApi = api.openapi(
     createRoute({
       method: "get",
       operationId: "getInstanceStatus",
@@ -1178,6 +1178,7 @@ export function createApp() {
     aiFiltersApi,
     aiBudgetApi,
     oauthApi,
+    instanceStatusApi,
   };
 }
 
@@ -1386,6 +1387,7 @@ const {
   aiFiltersApi,
   aiBudgetApi,
   oauthApi,
+  instanceStatusApi,
 } = createdApp;
 
 const entrypoint = process.argv[1];
@@ -1486,6 +1488,8 @@ export type AppType =
   | typeof instanceAdminApi
   | typeof apiKeyApi
   | typeof invitationPublicApi
-  | typeof oauthApi;
+  | typeof oauthApi
+  | typeof instanceStatusApi
+  | McpOAuthRoutes;
 
 export default app;

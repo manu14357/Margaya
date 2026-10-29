@@ -1,44 +1,27 @@
-import { getApiUrl } from "@/fetchers/get-api-url";
+import { client } from "@margaya/libs";
+import type { InferRequestType } from "hono/client";
 import { HttpError } from "@/lib/http-error";
-import type { TelegramIntegration } from "./get-telegram-integration";
 
-export type UpdateTelegramIntegrationRequest = {
-  botToken?: string;
-  chatId?: string;
-  threadId?: number | null;
-  chatLabel?: string | null;
-  isActive?: boolean;
-  events?: {
-    taskCreated?: boolean;
-    taskStatusChanged?: boolean;
-    taskPriorityChanged?: boolean;
-    taskTitleChanged?: boolean;
-    taskDescriptionChanged?: boolean;
-    taskCommentCreated?: boolean;
-  };
-};
+export type UpdateTelegramIntegrationRequest = InferRequestType<
+  (typeof client)["telegram-integration"]["project"][":projectId"]["$patch"]
+>["json"];
 
 async function updateTelegramIntegration(
   projectId: string,
   json: UpdateTelegramIntegrationRequest,
 ) {
-  const response = await fetch(
-    getApiUrl(`/telegram-integration/project/${projectId}`),
-    {
-      method: "PATCH",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(json),
-    },
-  );
+  const response = await client["telegram-integration"].project[
+    ":projectId"
+  ].$patch({
+    param: { projectId },
+    json,
+  });
 
   if (!response.ok) {
     throw new HttpError(response.status, await response.text());
   }
 
-  return (await response.json()) as TelegramIntegration;
+  return response.json();
 }
 
 export default updateTelegramIntegration;
