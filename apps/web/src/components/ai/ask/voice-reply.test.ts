@@ -97,7 +97,7 @@ describe("speakable text", () => {
 describe("speech chunks", () => {
   it("keeps whole sentences under the limit", () => {
     const chunks = speechChunks(
-      "One short. Two short. " + "A long sentence, with commas, ".repeat(12),
+      `One short. Two short. ${"A long sentence, with commas, ".repeat(12)}`,
       120,
     );
     expect(chunks[0]).toBe("One short. Two short.");

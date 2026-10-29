@@ -24,7 +24,12 @@ async function ok<T>(response: {
 export type BuildPlanRequest = InferRequestType<
   ChatClient["plan"]["$post"]
 >["json"];
-export type BuildPlan = InferResponseType<ChatClient["plan"]["$post"], 200>;
+// The 200 is also the SSE stream (declared as a string, returned as a raw
+// Response); the JSON plan is what's left.
+export type BuildPlan = Exclude<
+  InferResponseType<ChatClient["plan"]["$post"], 200>,
+  string | Response
+>;
 export type BuildAction = BuildPlan["actions"][number];
 export type BuildActionOp = BuildAction["op"];
 export type BuildProblem = NonNullable<BuildAction["problem"]>;

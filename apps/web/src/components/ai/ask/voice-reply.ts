@@ -28,7 +28,9 @@ export type SilenceEvent = "end" | "no-speech" | "max" | null;
  * speech at all, or at the length limit. The speech threshold follows the
  * room: three times its measured background level, never below `floor`.
  */
-export function createSilenceDetector(options: Partial<typeof SILENCE> = {}) {
+export function createSilenceDetector(
+  options: Partial<Record<keyof typeof SILENCE, number>> = {},
+) {
   const o = { ...SILENCE, ...options };
   let startedAt: number | null = null;
   let noise = 0;

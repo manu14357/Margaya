@@ -67,7 +67,7 @@ describe("useVoiceMode", () => {
     const { result, rerender } = renderHook(
       (props: { askTurns: readonly AskTurn[] }) =>
         useVoiceMode({ ...base, ...props }),
-      { initialProps: { askTurns: [] } },
+      { initialProps: { askTurns: [] as readonly AskTurn[] } },
     );
 
     act(() => result.current.toggle());
