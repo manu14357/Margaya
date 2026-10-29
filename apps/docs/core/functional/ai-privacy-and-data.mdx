@@ -38,12 +38,12 @@ With **Redact personal data** on (for the server, or for one workspace), emails,
 
 ## What is never stored
 
-- **Prompts and answers.** Margaya doesn't keep what was sent to a model or what came back, for any feature. The one exception is chat history that a workspace opts into (below).
+- **Prompts and answers.** By default Margaya doesn't keep what was sent to a model or what came back, for any feature. The exceptions are chat history that a workspace opts into, and agent run text when an instance admin turns on **Keep prompts and answers** (both below).
 - **Reasoning.** A reasoning model's thinking text is shown only to the person who asked, and only when the instance shows reasoning. It is never stored or logged.
 - **Attachments.** Files attached to an Ask question are used for that question only. Location and camera data are removed from PNG, JPEG and WebP images first.
 - **Recordings.** With the server's speech-to-text endpoint, a dictated question is turned into text and only the text comes back; neither the recording nor the text is stored. Only **Local-only mode** (on the instance or a workspace) keeps recordings away from a speech service in the cloud; where private data goes chooses the AI model, not the speech service, so a local model and a cloud speech service can be combined. In voice mode, answers are read aloud by the voices built into your browser, so the spoken text never leaves your device. When the browser's own speech recognition is used instead, nothing reaches Margaya until you send the question. With **Capture**, a screen recording stays on your device: only a few still frames are sent.
 - **Margaya's guides.** For questions about using Margaya, Ask searches the documentation that ships with your server. The guides are public text: searching them sends nothing anywhere, and links open the public documentation site.
-- **Agent run input.** What you asked an agent is kept only while the run works, and dropped when it ends.
+- **Agent run input.** What you asked an agent is kept only while the run works, and dropped when it ends, unless the instance keeps prompts.
 
 ## What is kept
 
@@ -53,12 +53,30 @@ With **Redact personal data** on (for the server, or for one workspace), emails,
 | **Ratings** | A thumbs up or down, the optional reason, the feature and the model. Never the question or the answer. | People with **Manage AI**, next to usage. |
 | **Chat history on the server** | Only when the workspace turns on **Keep chat history on the server**: each person's Ask conversations, up to 100 questions each, without reasoning. Otherwise history stays in each browser. | Only the person who had the conversation. Nobody else can open it, admins included. |
 | **Memory notes and skills** | The text people saved under **AI memory** and **AI skills**. | See [AI skills and memory](/core/functional/ai-skills-and-memory). |
-| **Agent runs** | The agent's summary, its changes with values before and after, and its steps with shortened, redacted tool arguments. | The person the run worked for; everyone with **Manage AI**. |
+| **Agent runs** | The agent's summary (its answer, at most 2,000 characters, also used for follow-ups), its changes with values before and after, and its steps with shortened, redacted tool arguments. With **Keep prompts and answers** on, also the request text and the model's text of each step. | The person the run worked for; everyone with **Manage AI**. The request text: only the person the run worked for. |
 | **Stakeholder briefs** | The computed facts each brief was written from, so the next brief can show what changed. The brief's text is kept only if you save it as a page. | Shown as **What changed since the last brief**. |
 | **Translations** | One cached translation per text and language, so the next reader gets it without a new request. Replaced when the text changes, deleted with it. | Everyone who can see the text. |
 | **Search index** | With semantic search on: vectors of tasks, pages and comments, without their text. Deleted with the item, or when semantic search is turned off. | Used only for search, with the usual permission checks. |
 
 Anything you choose to save, such as a summary saved as a page or comment, an applied suggestion or a created task, becomes ordinary workspace content.
+
+## Keep prompts and answers
+
+**Keep prompts and answers** (instance setting `ai.retention.storePrompts`, or `MARGAYA_AI_STORE_PROMPTS`) is **off by default**. It decides whether AI request and answer text is kept after the work is done:
+
+| | Off (default) | On |
+|---|---|---|
+| **Usage ledger** | Counts, cost, model and outcome. Never text. | The same: the ledger never holds text. |
+| **Agent run request** | Kept while the run works or waits for your answer, then dropped. | Kept after the run ends, with your answers to its questions. Shown only to the person the run worked for. |
+| **Agent run steps** | Tool names, outcomes, token counts and shortened, redacted arguments. | Also what the model wrote at each step (up to 8,000 characters). |
+| **Agent run summary and changes** | Kept: the summary is the agent's answer, and the changes are needed to review and undo them. | Kept. |
+| **Audit log** | Who did what, when, for whom. Never prompt text. | The same. |
+
+Even with it on, Margaya never stores the context it assembles from your workspace (task text, comments, pages, search results): that is a copy of data that lives elsewhere and would outlive its deletion. Approvals keep a preview of the proposed change either way, because you need it to decide.
+
+- **It applies going forward.** The setting is read when a run ends, or when the model answers a step. Turning it on doesn't recover text from earlier runs; turning it off stops keeping new text, and text kept meanwhile stays with its run.
+- **Ask chat history is separate.** A workspace that turns on **Keep chat history on the server** keeps its people's Ask conversations whatever this setting says: that history is an explicit opt-in, and it is what lets people reopen recent conversations on another device. Turning this setting off neither turns that history off nor deletes it. Without the workspace opt-in, history stays in each browser.
+- While it is on, workspace admins see **Prompts kept** next to where their data goes in the workspace's AI settings.
 
 ## Web search
 

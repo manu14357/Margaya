@@ -64,6 +64,8 @@ export const AUDIT_ACTIONS = [
   "agent.schedule_updated",
   "agent.schedule_deleted",
   "agent.schedule_disabled",
+  "agent.intake_trigger_updated",
+  "agent.intake_trigger_disabled",
   "ai.connector_created",
   "ai.connector_updated",
   "ai.connector_deleted",

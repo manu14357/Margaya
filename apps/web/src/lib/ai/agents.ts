@@ -50,6 +50,7 @@ export const TRIGGER_KEYS: Record<string, string> = {
   schedule: "ai:agents.desk.trigger.schedule",
   automation: "ai:agents.desk.trigger.automation",
   chat: "ai:agents.desk.trigger.chat",
+  intake: "ai:agents.desk.trigger.intake",
 };
 
 // Run stop codes that are not AI gateway errors (those use ai:errors.*).

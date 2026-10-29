@@ -53,6 +53,8 @@ Privacy and limits:
 
 Capture needs the **Use AI** permission (`ai:use`) and Intake **create**. Adding labels needs **label:update**, assigning an owner needs **task:assign**, and attaching images needs **task:update**. It's also available through the API as [`POST /ai/capture/{projectId}`](/api-reference/endpoints/ai/aiCaptureAnalyze).
 
+An [AI agent](/core/functional/ai-agents#new-intake-requests) can also run on every new request, for example to comment with a short triage before anyone looks. It never accepts, declines or moves a request.
+
 ## Review the queue
 
 The **Open** tab lists requests waiting for a decision; **Closed** lists accepted, declined and duplicate ones. Search by title, **Filter** by status, priority or who submitted it, and **Sort** by submission date, last activity or task key.

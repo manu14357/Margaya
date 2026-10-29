@@ -483,6 +483,17 @@ function RunDetail({
         </p>
       )}
 
+      {data.request && (
+        <section className="flex flex-col gap-1.5">
+          <h3 className="font-medium text-muted-foreground text-xs">
+            {t("ai:agents.desk.request")}
+          </h3>
+          <p className="whitespace-pre-wrap rounded-lg border border-border p-3 text-sm">
+            {data.request}
+          </p>
+        </section>
+      )}
+
       {data.outputSummary && (
         <section className="flex flex-col gap-1.5">
           <h3 className="flex items-center gap-1.5 font-medium text-muted-foreground text-xs">
@@ -540,6 +551,11 @@ function RunDetail({
                     ),
                   })}
                 </span>
+              )}
+              {step.text && (
+                <p className="line-clamp-4 w-full whitespace-pre-wrap text-muted-foreground">
+                  {step.text}
+                </p>
               )}
             </li>
           ))}

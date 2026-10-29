@@ -386,6 +386,18 @@ const AI_SETTINGS: SettingDefinition[] = [
     envVar: null,
   },
   {
+    // Keep the text of agent requests and of what the model wrote in the
+    // run log. Off: runs keep counts, steps and their final summary only.
+    // Ask history a workspace opted into is governed by its own switch.
+    key: "ai.retention.storePrompts",
+    group: "ai",
+    secret: false,
+    default: false,
+    schema: bool,
+    envVar: "MARGAYA_AI_STORE_PROMPTS",
+    readEnv: enabledFlag("MARGAYA_AI_STORE_PROMPTS"),
+  },
+  {
     key: "ai.allowWorkspaceKeys",
     group: "ai",
     secret: false,

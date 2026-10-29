@@ -33,6 +33,26 @@ export const agentSchema = z
     webAccess: z.boolean().openapi({
       description: "The agent may search the web and call MCP connectors.",
     }),
+    intakeTrigger: z
+      .object({
+        enabled: z.boolean(),
+        prompt: z.string().nullable().openapi({
+          description:
+            "What each run is asked to do; null uses the built-in triage request.",
+        }),
+        runsAs: z
+          .object({ id: z.string(), name: z.string() })
+          .nullable()
+          .openapi({
+            description:
+              "The person whose rights cap the runs: whoever last turned the trigger on or saved it. When they leave or lose ai:use or intake:read, it turns itself off.",
+          }),
+      })
+      .nullable()
+      .openapi({
+        description:
+          "Run on every new intake request in the agent's projects. Only for people with ai:manage (null for others).",
+      }),
     ownerId: z.string().nullable(),
     createdAt: responseTimestamp,
     updatedAt: responseTimestamp,
@@ -74,10 +94,18 @@ export const agentRunSchema = z
       .nullable()
       .openapi({ description: "The project the run works in." }),
     trigger: z
-      .enum(["mention", "assign", "manual", "schedule", "automation", "chat"])
+      .enum([
+        "mention",
+        "assign",
+        "manual",
+        "schedule",
+        "automation",
+        "chat",
+        "intake",
+      ])
       .openapi({
         description:
-          "What started the run: an @mention, an assignment, Run agent, a schedule, an automation rule, or a follow-up to an earlier run (chat).",
+          "What started the run: an @mention, an assignment, Run agent, a schedule, an automation rule, a follow-up to an earlier run (chat), or a new intake request (intake).",
       }),
     followUpOf: z.string().nullable().openapi({
       description: "The earlier run a chat follow-up continues.",
@@ -90,6 +118,10 @@ export const agentRunSchema = z
         description:
           "While the run needs input: the agent's question and suggested answers. Only for the person it asks.",
       }),
+    request: z.string().nullable().openapi({
+      description:
+        "The request text the run was given (Run agent, a schedule, an automation rule, an intake trigger or a follow-up). Only for the person the run works for; once the run ends, kept only when the instance stores prompts (ai.retention.storePrompts).",
+    }),
     error: z.string().nullable().openapi({
       description:
         "A stable code when the run stopped: AI_BUDGET_EXCEEDED, AI_DISABLED, PRINCIPAL_LEFT, NOT_IN_SCOPE (outside the agent's projects or the person's reach), TIME_LIMIT, OUTPUT_LIMIT, TURN_LIMIT, INTERRUPTED, APPROVAL_EXPIRED (its held changes expired undecided), NEEDS_INPUT_EXPIRED (its question went unanswered for 24 hours), …",
@@ -136,6 +168,10 @@ export const agentRunStepSchema = z
     change: z.record(z.string(), z.unknown()).nullable().openapi({
       description:
         "The change-set entry of a write: op, the task, and before and after values.",
+    }),
+    text: z.string().nullable().openapi({
+      description:
+        "What the model wrote in a model step; null unless the instance stores prompts (ai.retention.storePrompts).",
     }),
     links: z
       .object({

@@ -211,6 +211,7 @@ Name | Description |
 | `MARGAYA_AI_LOCAL_ONLY` | `true` sends every AI request to the local model.
 | `MARGAYA_AI_EMBEDDINGS_BASE_URL`, `MARGAYA_AI_EMBEDDINGS_MODEL`, `MARGAYA_AI_EMBEDDINGS_API_KEY` | An embeddings endpoint for semantic search (also needs pgvector).
 | `MARGAYA_AI_SHOW_REASONING` | Show a reasoning model's thinking text to the person who asked.
+| `MARGAYA_AI_STORE_PROMPTS` | `true` keeps the text of agent requests and what the model wrote in each agent run's log (default off). See [AI Privacy and Data](/core/functional/ai-privacy-and-data#keep-prompts-and-answers).
 | `MARGAYA_AI_LOCAL_THINKING` | `on` lets local reasoning models think (default `off`).
 | `MARGAYA_AI_WEB_SEARCH_PROVIDER`, `MARGAYA_AI_WEB_SEARCH_URL`, `MARGAYA_AI_WEB_SEARCH_API_KEY` | Web search: `off`, `searxng`, `brave` or `tavily`, with the SearXNG URL or the API key.
 | `MARGAYA_AI_SPEECH_FORMAT` (`openai`, the default, or `fish` for Fish Audio), `MARGAYA_AI_SPEECH_BASE_URL`, `MARGAYA_AI_SPEECH_MODEL`, `MARGAYA_AI_SPEECH_API_KEY` | A speech-to-text endpoint for voice input.

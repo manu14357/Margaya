@@ -24,6 +24,7 @@ import {
 } from "./desk";
 import { publishRunUpdated } from "./events";
 import { createAgent, deleteAgent, listAgents, updateAgent } from "./identity";
+import { setIntakeTrigger } from "./intake-trigger";
 import {
   agentApprovalListSchema,
   agentListSchema,
@@ -52,6 +53,7 @@ import {
   approvalIdParam,
   createAgentBody,
   createScheduleBody,
+  intakeTriggerBody,
   listRunsQuery,
   runFollowUpBody,
   runIdParam,
@@ -388,6 +390,28 @@ const deleteScheduleRoute = createRoute({
   },
 });
 
+const intakeTriggerRoute = createRoute({
+  method: "patch",
+  operationId: "setAgentIntakeTrigger",
+  path: "/{agentId}/intake-trigger",
+  tags: TAGS,
+  summary: "Set an agent's intake trigger",
+  description:
+    "Turn on or off running the agent on every new intake request in its projects (for example to triage it), and set what each run does. Runs act for whoever last turned it on, capped at the agent's role and their rights; the trigger turns itself off when that person leaves or loses ai:use or intake:read. Requests filed by agents start nothing, requests from outside the workspace (public boards, forms) hold every write for approval, and one agent starts at most 30 intake runs an hour. Needs ai:manage; turning it on also needs ai:use and intake:read.",
+  middleware: [workspaceAccess.fromBody(), requireAiManage] as const,
+  request: { params: agentIdParam, body: json(intakeTriggerBody) },
+  responses: {
+    200: jsonResponse("The agent", agentSchema),
+    400: errorResponse(
+      "Invalid body, or the agent's role can't read intake requests (code AGENT_CANT_READ_INTAKE)",
+    ),
+    403: errorResponse(
+      "No workspace access, no ai:manage, or (turning it on) no ai:use or intake:read: the runs act for you",
+    ),
+    404: errorResponse("Agent not found"),
+  },
+});
+
 const replyRoute = createRoute({
   method: "post",
   operationId: "replyToAgentRun",
@@ -479,6 +503,19 @@ const aiAgent = apiRouter<BaseVariables & { workspaceId: string }>()
         workspaceId: c.get("workspaceId"),
         agentId: param.agentId,
         scheduleId: param.scheduleId,
+      }),
+      200,
+    );
+  })
+  .openapi(intakeTriggerRoute, async (c) => {
+    const body = c.req.valid("json");
+    return c.json(
+      await setIntakeTrigger({
+        workspaceId: c.get("workspaceId"),
+        agentId: c.req.valid("param").agentId,
+        userId: c.get("userId"),
+        enabled: body.enabled,
+        prompt: body.prompt,
       }),
       200,
     );

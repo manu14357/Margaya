@@ -154,6 +154,22 @@ export const runFollowUpBody = z
   })
   .openapi("AgentRunFollowUp");
 
+// --- The intake trigger ---
+
+export const intakeTriggerBody = z
+  .strictObject({
+    workspaceId,
+    enabled: z.boolean().openapi({
+      description:
+        "Run the agent on every new intake request in its projects. Turning it on makes you the person the runs act for.",
+    }),
+    prompt: z.string().trim().max(4_000).nullable().optional().openapi({
+      description:
+        "What each run should do. Null or blank: triage (summarize, judge urgency, point out gaps and duplicates in a comment). Omitted: unchanged.",
+    }),
+  })
+  .openapi("AgentIntakeTrigger");
+
 // --- Schedules ---
 
 export const scheduleIdParam = z.object({

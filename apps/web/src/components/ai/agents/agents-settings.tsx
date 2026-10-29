@@ -1,5 +1,5 @@
 import type { TFunction } from "i18next";
-import { Bot, CalendarClock, Pencil, Plus, Trash2 } from "lucide-react";
+import { Bot, CalendarClock, Inbox, Pencil, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -60,6 +60,7 @@ import { HttpError } from "@/lib/http-error";
 import { toast } from "@/lib/toast";
 import { AgentAccessFields } from "./agent-access-fields";
 import { AgentBadge } from "./agent-badge";
+import { AgentIntakeTriggerDialog } from "./agent-intake-trigger";
 import { AgentSchedulesDialog, type ScheduleSeed } from "./agent-schedules";
 import {
   AgentTemplatePicker,
@@ -108,6 +109,7 @@ export function AgentsSettingsPage() {
     seed: ScheduleSeed | null;
   } | null>(null);
   const [deleting, setDeleting] = useState<Agent | null>(null);
+  const [intake, setIntake] = useState<Agent | null>(null);
 
   return (
     <SettingsPage
@@ -157,6 +159,7 @@ export function AgentsSettingsPage() {
                     agent={agent}
                     onEdit={() => setEditing(agent)}
                     onSchedules={() => setScheduling({ agent, seed: null })}
+                    onIntake={() => setIntake(agent)}
                     onDelete={() => setDeleting(agent)}
                   />
                 ))}
@@ -186,6 +189,13 @@ export function AgentsSettingsPage() {
           onClose={() => setScheduling(null)}
         />
       )}
+      {intake && (
+        <AgentIntakeTriggerDialog
+          workspaceId={workspaceId}
+          agent={intake}
+          onClose={() => setIntake(null)}
+        />
+      )}
       {allowed && !agents.isLoading && !agents.isError && (
         <ConnectorsSection workspaceId={workspaceId} canManage={allowed} />
       )}
@@ -203,12 +213,14 @@ function AgentRow({
   agent,
   onEdit,
   onSchedules,
+  onIntake,
   onDelete,
 }: {
   workspaceId: string;
   agent: Agent;
   onEdit: () => void;
   onSchedules: () => void;
+  onIntake: () => void;
   onDelete: () => void;
 }) {
   const { t, i18n } = useTranslation();
@@ -242,6 +254,11 @@ function AgentRow({
           {!agent.enabled && (
             <Badge variant="outline" className="text-muted-foreground">
               {t("ai:agents.off")}
+            </Badge>
+          )}
+          {agent.intakeTrigger?.enabled && (
+            <Badge variant="outline">
+              {t("ai:agents.intakeTrigger.badge")}
             </Badge>
           )}
         </div>
@@ -284,6 +301,14 @@ function AgentRow({
           onClick={onSchedules}
         >
           <CalendarClock aria-hidden />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          aria-label={t("ai:agents.intakeTrigger.open", { name: agent.name })}
+          onClick={onIntake}
+        >
+          <Inbox aria-hidden />
         </Button>
         <Button
           variant="ghost"

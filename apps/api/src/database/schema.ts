@@ -3898,6 +3898,17 @@ export const agentTable = pgTable(
     skillIds: jsonb("skill_ids").$type<string[]>().notNull().default([]),
     // The agent may use web search and the workspace's connectors.
     webAccess: boolean("web_access").notNull().default(false),
+    // Run on every new intake request in the agent's projects (triage).
+    // The runs act for intake_trigger_by, whoever last turned it on.
+    intakeTriggerEnabled: boolean("intake_trigger_enabled")
+      .notNull()
+      .default(false),
+    // What the run is asked to do; null uses the built-in triage request.
+    intakeTriggerPrompt: text("intake_trigger_prompt"),
+    intakeTriggerBy: text("intake_trigger_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
     createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -3964,7 +3975,13 @@ export const aiRunTable = pgTable(
     }),
     trigger: text("trigger")
       .$type<
-        "mention" | "assign" | "manual" | "schedule" | "automation" | "chat"
+        | "mention"
+        | "assign"
+        | "manual"
+        | "schedule"
+        | "automation"
+        | "chat"
+        | "intake"
       >()
       .notNull(),
     triggerRef: jsonb("trigger_ref").$type<Record<string, string>>(),
@@ -3986,8 +4003,9 @@ export const aiRunTable = pgTable(
       withTimezone: true,
     }),
     attemptCount: integer("attempt_count").notNull().default(0),
-    // The manual request text; cleared when the run ends unless the
-    // instance stores prompts.
+    // The request text; when the run ends it is cleared, or kept (with the
+    // answers to its questions) when the instance stores prompts
+    // (ai.retention.storePrompts).
     // While paused for a person (needs_input) also the agent's question and
     // the answers so far; a follow-up ("chat") run carries the earlier
     // summary as context.
@@ -4019,9 +4037,11 @@ export const aiRunTable = pgTable(
   ],
 );
 
-// One step of a run: a model call or a tool call. Arguments are redacted;
-// no prompt or answer bodies. Write steps carry a `change` (the change set
-// entry with before and after values) used for review and undo.
+// One step of a run: a model call or a tool call. Arguments are redacted.
+// A model step keeps the text the model wrote only when the instance stores
+// prompts (ai.retention.storePrompts); otherwise no prompt or answer
+// bodies. Write steps carry a `change` (the change set entry with before
+// and after values) used for review and undo.
 export const aiRunStepTable = pgTable(
   "ai_run_step",
   {
@@ -4052,6 +4072,8 @@ export const aiRunStepTable = pgTable(
       >()
       .notNull(),
     resultRef: jsonb("result_ref").$type<Record<string, unknown>>(),
+    // The model's text of a model step, only when prompts are stored.
+    outputText: text("output_text"),
     change: jsonb("change").$type<Record<string, unknown>>(),
     tokenIn: integer("token_in").notNull().default(0),
     tokenOut: integer("token_out").notNull().default(0),

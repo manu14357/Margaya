@@ -110,6 +110,10 @@ export const aiSettingsSchema = z
       privateRoute: z.enum(["local", "cloud"]),
       redaction: z.boolean(),
       zeroRetention: z.boolean(),
+      storePrompts: z.boolean().openapi({
+        description:
+          "The instance keeps agent request text and model output in the run log (ai.retention.storePrompts). Off: usage and audit metadata only.",
+      }),
       webSearchAvailable: z.boolean().openapi({
         description: "The instance has a web search provider set up.",
       }),

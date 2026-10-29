@@ -1,5 +1,6 @@
 import { createId } from "@paralleldrive/cuid2";
 import { and, asc, eq, gte, inArray, isNull, ne, sql } from "drizzle-orm";
+import { alias } from "drizzle-orm/pg-core";
 import { HTTPException } from "hono/http-exception";
 import { startOfUtcMonth } from "../ai/usage";
 import { recordAudit } from "../audit-log/record";
@@ -113,6 +114,9 @@ async function assertNameFree(
   }
 }
 
+// The person an agent's intake runs act for.
+const intakeByUser = alias(userTable, "intake_trigger_user");
+
 const agentColumns = {
   id: agentTable.id,
   userId: agentTable.userId,
@@ -128,6 +132,10 @@ const agentColumns = {
   projectIds: agentTable.projectIds,
   skillIds: agentTable.skillIds,
   webAccess: agentTable.webAccess,
+  intakeTriggerEnabled: agentTable.intakeTriggerEnabled,
+  intakeTriggerPrompt: agentTable.intakeTriggerPrompt,
+  intakeTriggerBy: agentTable.intakeTriggerBy,
+  intakeTriggerByName: intakeByUser.name,
   createdAt: agentTable.createdAt,
   updatedAt: agentTable.updatedAt,
   image: userTable.image,
@@ -150,6 +158,11 @@ export type AgentRow = {
   projectIds: string[] | null;
   skillIds: string[];
   webAccess: boolean;
+  intakeTriggerEnabled: boolean;
+  intakeTriggerPrompt: string | null;
+  /** The person intake runs act for. */
+  intakeTriggerBy: string | null;
+  intakeTriggerByName: string | null;
   createdAt: Date;
   updatedAt: Date;
   image: string | null;
@@ -161,6 +174,7 @@ function agentQuery() {
     .select(agentColumns)
     .from(agentTable)
     .innerJoin(userTable, eq(userTable.id, agentTable.userId))
+    .leftJoin(intakeByUser, eq(intakeByUser.id, agentTable.intakeTriggerBy))
     .leftJoin(
       workspaceUserTable,
       and(
@@ -249,6 +263,15 @@ export function serializeAgent(
     projectIds: canManage ? row.projectIds : null,
     skillIds: canManage ? row.skillIds : null,
     webAccess: row.webAccess,
+    intakeTrigger: canManage
+      ? {
+          enabled: row.intakeTriggerEnabled,
+          prompt: row.intakeTriggerPrompt,
+          runsAs: row.intakeTriggerBy
+            ? { id: row.intakeTriggerBy, name: row.intakeTriggerByName ?? "" }
+            : null,
+        }
+      : null,
     ownerId: row.ownerId,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,

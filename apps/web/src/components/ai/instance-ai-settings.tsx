@@ -206,6 +206,13 @@ export function InstanceAiSettingsPage() {
             <Separator />
             <SettingSwitchRow
               settings={settings.data}
+              settingKey="ai.retention.storePrompts"
+              label={t("ai:instance.storePrompts")}
+              hint={t("ai:instance.storePromptsHint")}
+            />
+            <Separator />
+            <SettingSwitchRow
+              settings={settings.data}
               settingKey="ai.allowWorkspaceKeys"
               label={t("ai:instance.allowWorkspaceKeys")}
               hint={t("ai:instance.allowWorkspaceKeysHint")}

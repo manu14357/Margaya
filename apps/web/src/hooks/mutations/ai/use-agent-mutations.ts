@@ -1,5 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
+  type SetAgentIntakeTriggerInput,
+  setAgentIntakeTrigger,
+} from "@/fetchers/ai/agent-intake-trigger";
+import {
   type CreateAgentInput,
   cancelAgentRun,
   createAgent,
@@ -42,6 +46,19 @@ export function useUpdateAgent() {
     mutationFn: (input: { agentId: string; patch: UpdateAgentInput }) =>
       updateAgent(input.agentId, input.patch),
     onSuccess: (_agent, input) => invalidate(input.patch.workspaceId),
+  });
+}
+
+/** Turns an agent's intake trigger on or off and sets its prompt. */
+export function useSetAgentIntakeTrigger() {
+  const invalidate = useInvalidateAgents();
+  return useMutation({
+    mutationFn: (input: {
+      agentId: string;
+      trigger: SetAgentIntakeTriggerInput;
+    }) => setAgentIntakeTrigger(input.agentId, input.trigger),
+    onSuccess: (_agent, input) => invalidate(input.trigger.workspaceId),
+    meta: { refreshTaskQueries: false },
   });
 }
 

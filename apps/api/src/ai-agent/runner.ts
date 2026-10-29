@@ -9,7 +9,13 @@ import {
 } from "../database/schema";
 import { eventContext } from "../events";
 import { publishRunUpdated } from "./events";
-import { type AiRunRow, finishRun, ownedBy, settleRun } from "./run-state";
+import {
+  type AiRunRow,
+  finishRun,
+  ownedBy,
+  retainedInput,
+  settleRun,
+} from "./run-state";
 import { executeRun } from "./runtime";
 
 export type { AiRunRow };
@@ -267,6 +273,7 @@ export async function maintainAgentRuns(now: Date = new Date()) {
               error: "INTERRUPTED",
               lockedUntil: null,
               finishedAt: now,
+              input: retainedInput(),
             },
       )
       .where(
@@ -321,13 +328,14 @@ export async function maintainAgentRuns(now: Date = new Date()) {
   }
 
   // Questions nobody answered within a day: the run fails, and its
-  // question (and any answers) are dropped with its input.
+  // question is dropped with its input (the request and earlier answers
+  // stay only when the instance stores prompts).
   const unanswered = await db
     .update(aiRunTable)
     .set({
       status: "failed",
       error: "NEEDS_INPUT_EXPIRED",
-      input: null,
+      input: retainedInput(),
       finishedAt: now,
     })
     .where(

@@ -4,12 +4,18 @@ import { loadWorkspaceAiPolicy } from "../ai/workspace-settings";
 import db from "../database";
 import { agentTable, projectTable, userTable } from "../database/schema";
 import { subscribeToEvent } from "../events";
+import {
+  INTAKE_ITEM_CREATED,
+  type IntakeItemCreatedEvent,
+} from "../intake/events";
 import { parseMentionIds } from "../utils/parse-mentions";
+import { onIntakeItemCreated } from "./intake-trigger";
 import { enqueueRun } from "./runner";
 
 // Event subscribers that only enqueue (report 02, G9): an @mention of an
 // agent in a comment, or assigning a task to an agent, queues a run whose
-// principal is the person who did it. Nothing happens unless AI is on for
+// principal is the person who did it. A new intake request queues a run of
+// every agent with the intake trigger on (intake-trigger.ts). Nothing happens unless AI is on for
 // the instance, the workspace and the project, and agents never trigger
 // agents (no loops).
 
@@ -177,3 +183,6 @@ export async function enqueueAutomationRun(input: {
 subscribeToEvent("comment.created", onCommentCreated);
 subscribeToEvent("task.assignee_changed", onAssigned);
 subscribeToEvent("task.created", onTaskCreated);
+subscribeToEvent<IntakeItemCreatedEvent>(INTAKE_ITEM_CREATED, (event) =>
+  onIntakeItemCreated(event),
+);

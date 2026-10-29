@@ -87,6 +87,10 @@ export const AUDIT_ACTION_KEYS = {
     "settings:workspaceAuditLog.actions.agentScheduleDeleted",
   "agent.schedule_disabled":
     "settings:workspaceAuditLog.actions.agentScheduleDisabled",
+  "agent.intake_trigger_updated":
+    "settings:workspaceAuditLog.actions.agentIntakeTriggerUpdated",
+  "agent.intake_trigger_disabled":
+    "settings:workspaceAuditLog.actions.agentIntakeTriggerDisabled",
   "ai.connector_created":
     "settings:workspaceAuditLog.actions.aiConnectorCreated",
   "ai.connector_updated":

@@ -243,6 +243,9 @@ function WorkspaceAiForm({
             {instance.zeroRetention && (
               <Badge variant="outline">{t("ai:workspace.zeroRetention")}</Badge>
             )}
+            {instance.storePrompts && (
+              <Badge variant="outline">{t("ai:workspace.storesPrompts")}</Badge>
+            )}
           </SettingsRow>
           <SettingsRow
             label={t("ai:test.title")}

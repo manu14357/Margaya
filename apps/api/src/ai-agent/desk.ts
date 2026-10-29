@@ -29,6 +29,7 @@ import { jsonHttpError } from "../estimate/write";
 import { canSeeProject, hiddenProjectIds } from "../project/visibility";
 import { publishRunUpdated } from "./events";
 import { agentMonthSpendMicros } from "./identity";
+import { retainedInput } from "./run-state";
 import { enqueueRun, kickAgentRunner } from "./runner";
 
 // Agent Desk reads: runs, their steps (the change set) and approvals. People
@@ -206,6 +207,10 @@ function serializeRun(
     followUpOf: row.triggerRef?.previousRunId ?? null,
     status: row.status,
     question: asked,
+    // The person's own words, for them only. After the run ends it is
+    // there only when the instance stores prompts.
+    request:
+      row.principalUserId === viewerId ? (row.input?.prompt ?? null) : null,
     error: row.error,
     outputSummary: row.outputSummary,
     tokenIn: row.tokenIn ?? 0,
@@ -319,6 +324,7 @@ export async function getRun(input: {
             ? (step.resultRef.reason as string)
             : null,
         change: step.change,
+        text: step.outputText,
         links: changeLinks(input.workspaceId, step.change, step.resultRef),
         tokenIn: step.tokenIn,
         tokenOut: step.tokenOut,
@@ -527,8 +533,10 @@ export async function cancelRun(input: {
       status: "cancelled",
       finishedAt: new Date(),
       lockedUntil: null,
-      // A cancelled question drops its request and answers too.
-      ...(row.status === "needs_input" ? { input: null } : {}),
+      // A cancelled run keeps its request (and answers) only when the
+      // instance stores prompts; an open question never stays. A running
+      // run's worker can't finish it any more, so this is the last write.
+      input: retainedInput(),
     })
     .where(
       and(

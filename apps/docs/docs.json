@@ -747,6 +747,7 @@
 							"api-reference/endpoints/ai-agents/createAgentSchedule",
 							"api-reference/endpoints/ai-agents/updateAgentSchedule",
 							"api-reference/endpoints/ai-agents/deleteAgentSchedule",
+							"api-reference/endpoints/ai-agents/setAgentIntakeTrigger",
 							"api-reference/endpoints/ai-agents/replyToAgentRun",
 							"api-reference/endpoints/ai-agents/followUpAgentRun",
 							"api-reference/endpoints/ai-agents/updateAgent",

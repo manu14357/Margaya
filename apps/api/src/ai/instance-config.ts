@@ -27,6 +27,11 @@ export type AiInstanceConfig = {
   redaction: boolean;
   /** Recorded: the provider agreement includes zero data retention. */
   zeroRetention: boolean;
+  /**
+   * Keep agent request text and model output in the run log (off: counts
+   * and metadata only). Workspace Ask history has its own opt-in.
+   */
+  storePrompts: boolean;
   allowWorkspaceKeys: boolean;
   embeddings: { baseUrl: string; model: string; apiKey: string };
   /** Send reasoning text to the asker (the duration is always sent). */
@@ -119,6 +124,7 @@ export function aiInstanceConfigOf(
     },
     redaction: flag(snapshot, "ai.redaction.enabled"),
     zeroRetention: flag(snapshot, "ai.zeroRetention"),
+    storePrompts: flag(snapshot, "ai.retention.storePrompts"),
     allowWorkspaceKeys: flag(snapshot, "ai.allowWorkspaceKeys"),
     embeddings: {
       baseUrl: str(snapshot, "ai.embeddings.baseUrl"),

@@ -1,4 +1,5 @@
-import { and, asc, count, eq, inArray, sql } from "drizzle-orm";
+import { and, asc, count, eq, inArray, type SQL, sql } from "drizzle-orm";
+import { getAiInstanceConfig } from "../ai/instance-config";
 import db from "../database";
 import {
   aiApprovalTable,
@@ -21,6 +22,19 @@ export function ownedBy(row: Pick<AiRunRow, "id" | "attemptCount">) {
   );
 }
 
+/**
+ * What of a run's input outlives the run (ai.retention.storePrompts). Off,
+ * the default: nothing. On: the request text and the answers to its
+ * questions; an open question and a follow-up's copied context never stay.
+ * Read when the run ends, so the switch applies from then on.
+ */
+export function retainedInput(
+  storePrompts: boolean = getAiInstanceConfig().storePrompts,
+): SQL | null {
+  if (!storePrompts) return null;
+  return sql`nullif(jsonb_strip_nulls(jsonb_build_object('prompt', ${aiRunTable.input}->'prompt', 'answers', ${aiRunTable.input}->'answers')), '{}'::jsonb)`;
+}
+
 /** Ends a run this worker owns (no-op when it was cancelled meanwhile). */
 export async function finishRun(
   row: AiRunRow,
@@ -39,8 +53,9 @@ export async function finishRun(
       lockedUntil: null,
       finishedAt: new Date(),
       apiKeyId: null,
-      // A manual run's prompt is needed only while the run executes.
-      input: null,
+      // The request is needed only while the run executes, unless the
+      // instance stores prompts.
+      input: retainedInput(),
     })
     .where(ownedBy(row))
     .returning();

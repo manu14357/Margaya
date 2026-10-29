@@ -40,6 +40,7 @@ export async function getWorkspaceAiSettings(workspaceId: string) {
       privateRoute: instance.route.private,
       redaction: instance.redaction,
       zeroRetention: instance.zeroRetention,
+      storePrompts: instance.storePrompts,
       webSearchAvailable: webSearchConfigured(instance),
     },
     workspace: {

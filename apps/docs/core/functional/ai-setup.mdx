@@ -76,6 +76,8 @@ If the only allowed destination is a local model and none is set up, the request
 
 **Zero data retention** records that your agreement with the provider keeps no data. Margaya shows it to workspace admins; the provider enforces it. For Anthropic, zero data retention is an organization-level arrangement made with Anthropic.
 
+**Keep prompts and answers** is off by default. Turned on, agent runs keep the request they were given and what the model wrote at each step, for review in the Agent Desk; workspace admins see **Prompts kept** in their AI settings. Off, runs keep only usage and audit metadata. See [AI Privacy and Data](/core/functional/ai-privacy-and-data#keep-prompts-and-answers).
+
 ## Turn on AI for a workspace
 
 Open **Settings** > **Workspace** > **AI** (needs **Manage AI**).
@@ -181,6 +183,7 @@ Every AI setting can also come from the environment. A set variable wins over th
 | `MARGAYA_AI_WORKSPACE_RPM`, `MARGAYA_AI_USER_RPM` | AI requests per minute per workspace (default 120) and per person (default 30) |
 | `MARGAYA_AI_USER_CONCURRENCY` | Simultaneous AI requests per person (default 2) |
 | `MARGAYA_AI_SHOW_REASONING` | Show reasoning text to the asker (`true` or `false`) |
+| `MARGAYA_AI_STORE_PROMPTS` | Keep agent request text and model output in run logs (`true` or `false`, default `false`) |
 | `MARGAYA_AI_LOCAL_THINKING` | Let local models think (`on` or `off`, default `off`) |
 | `MARGAYA_AI_WEB_SEARCH_PROVIDER` | `off`, `searxng`, `brave` or `tavily` |
 | `MARGAYA_AI_WEB_SEARCH_URL`, `MARGAYA_AI_WEB_SEARCH_API_KEY` | SearXNG base URL, or the Brave or Tavily key |

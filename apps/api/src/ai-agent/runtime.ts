@@ -10,6 +10,7 @@ import {
 } from "../ai/context";
 import { isAiError } from "../ai/errors";
 import { aiComplete } from "../ai/gateway";
+import { getAiInstanceConfig } from "../ai/instance-config";
 import { buildSystemPrompt, wrapUntrusted } from "../ai/prompt";
 import type { ChatContent, ChatMessage } from "../ai/types";
 import { loadWorkspaceAiPolicy } from "../ai/workspace-settings";
@@ -51,6 +52,7 @@ import {
   ASSIGN_REQUEST,
   allowListed,
   BACKGROUND_TRIGGERS,
+  INTAKE_REQUEST,
   priorProgress,
   skillInstructions,
   triggerNote,
@@ -85,7 +87,8 @@ export { ASSIGN_REQUEST };
 //      allow-list;
 //   3. mints a short-lived internal key with exactly those rights;
 //   4. loops model → tools (at most 25 tool calls, 10 minutes, the agent's
-//      monthly budget), recording every step without prompt bodies;
+//      monthly budget), recording every step without prompt bodies (a
+//      model step keeps its text only when the instance stores prompts);
 //   5. applies writes through the API or holds them for approval;
 //   6. pauses when the agent asks its person a question (ask_person), and
 //      continues from its step log once they answer.
@@ -98,6 +101,8 @@ const WRAP_UP_TURNS = 3;
 const WRAP_UP_NOTE =
   "You are almost out of steps. Stop reading and searching: make the requested change now with the write tools, then end with a short summary.";
 const WALL_CLOCK_MS = 10 * 60 * 1000;
+// What a model step keeps of the model's text when prompts are stored.
+const MAX_STEP_TEXT = 8_000;
 // Room for a reasoning model's thinking plus a drafted description or comment.
 const TURN_MAX_TOKENS = 8_000;
 
@@ -226,6 +231,7 @@ async function triggerText(run: AiRunRow): Promise<string> {
     return comment?.content ?? "";
   }
   if (run.trigger === "assign") return ASSIGN_REQUEST;
+  if (run.trigger === "intake") return run.input?.prompt || INTAKE_REQUEST;
   return run.input?.prompt ?? "";
 }
 
@@ -459,6 +465,13 @@ export async function executeRun(run: AiRunRow): Promise<void> {
     api = agentApi(key.token);
 
     const policy = await loadWorkspaceAiPolicy(run.workspaceId);
+    // A request written from outside the workspace never changes anything
+    // without a person's approval.
+    const holdWrites =
+      policy.requireApprovalForWrites ||
+      (run.trigger === "intake" && run.triggerRef?.origin === "outside");
+    // Model text is kept only when the instance stores prompts.
+    const keepText = getAiInstanceConfig().storePrompts;
     const ctx: ToolContext = {
       workspaceId: run.workspaceId,
       principalUserId: run.principalUserId,
@@ -558,6 +571,8 @@ export async function executeRun(run: AiRunRow): Promise<void> {
           stop: result.stop,
           toolCalls: result.toolCalls.length,
         },
+        outputText:
+          keepText && result.text ? result.text.slice(0, MAX_STEP_TEXT) : null,
         tokenIn: result.usage.input,
         tokenOut: result.usage.output,
         costMicros: result.costMicros,
@@ -754,7 +769,7 @@ export async function executeRun(run: AiRunRow): Promise<void> {
           const needsApproval =
             def.risk === "destructive" ||
             def.alwaysApprove === true ||
-            policy.requireApprovalForWrites;
+            holdWrites;
           if (needsApproval) {
             const step = await addStep({
               runId: run.id,

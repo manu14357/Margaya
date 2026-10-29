@@ -64,10 +64,11 @@ There are several ways to start a run:
 - **Assign it** a task. The agent reads the task. If the task asks for a clear, small piece of work, it does that and reports back with a comment; otherwise it comments with a short plan or the questions it needs answered. It doesn't rename the task, rewrite its description or create sub-tasks, pages or links unless the task asks for that.
 - **Run it** from the task: choose **Run agent** in the task's action bar, pick an agent, say what it should do and choose **Run**. The same dialog lists recent runs on the task.
 - **Schedule it**: see [Schedules](#schedules).
+- **Let it triage intake**: see [New intake requests](#new-intake-requests).
 - **Automate it**: the [automation](/core/functional/automations) action **Run agent** starts the agent when something happens to a task (created, status, assignee, label or priority changed, a comment, …), with the rule's filters.
 - **Follow up**: in the Agent Desk, reply to a finished run to continue the conversation. A follow-up is a new run of the same agent, on the same task or project, that knows the earlier answer.
 
-Agents never start each other: a comment, assignment or other change made by an agent doesn't trigger a run, also not through an automation rule.
+Agents never start each other: a comment, assignment, intake request or other change made by an agent doesn't trigger a run, also not through an automation rule.
 
 ## Schedules
 
@@ -79,6 +80,22 @@ Run an agent on a timetable, for example a standup summary every weekday morning
 4. Write what the agent should do on each run and save.
 
 Each schedule shows its next run. Schedules run at most every 15 minutes, and an agent has at most 20. A scheduled run acts for **the person who last saved the schedule**, capped at their rights. If that person leaves the workspace or loses **Use AI**, or the project is no longer within the agent's projects, the schedule turns itself off and the audit log says why. While the agent or AI is off, scheduled runs are skipped. If the server was down at the scheduled time, the missed run happens once when it is back.
+
+## New intake requests
+
+An agent can run on every new [intake](/core/functional/intake) request, for example to triage it before a person looks. You need **Manage AI**, and to turn it on also **Use AI** and permission to read intake requests.
+
+1. In **Settings → Workspace → Agents**, choose **Intake requests** (the inbox icon) on the agent.
+2. Turn on **Run on new intake requests**.
+3. Optionally, write what it should do, for example "suggest a priority and labels, and point out duplicates". Left empty, the agent triages: it posts one short comment on what the request asks for, how urgent it looks and what's missing, and doesn't change the request unless its instructions say so.
+4. Choose **Save**. The agent shows an **Intake** badge in the list.
+
+The agent runs on requests in the projects it may work in, where **Intake** and **AI** are on. It never accepts, declines or moves a request: a person decides that from the **Intake** tab.
+
+- Runs act for **the person who last turned the trigger on**, capped at the agent's role and their rights, with the same approval and undo rules as other runs. If that person leaves the workspace or loses **Use AI** or the right to read intake requests, the trigger turns itself off and the audit log says why. Requests in a restricted project they can't see are skipped.
+- A request from outside the workspace (a public board, a form, or anyone who isn't a member) holds **every** change for approval, whatever the workspace's approval setting: its text was written by someone with no rights in the workspace.
+- Requests filed by an agent start nothing, so agents can't trigger each other.
+- One agent starts at most 30 intake runs an hour; later requests in that hour are skipped. Requests are also skipped while the agent's or the workspace's budget is used up.
 
 ## Questions: when an agent needs input
 
@@ -140,12 +157,13 @@ Open **Your work → Agent Desk** (it appears once the workspace has an agent). 
 
 Select a run to see:
 
-- who it ran for, how it started (mention, assignment, Run agent, schedule, automation or follow-up), how long it worked, its cost, tokens and number of tool calls;
+- who it ran for, how it started (mention, assignment, Run agent, schedule, automation, intake request or follow-up), how long it worked, its cost, tokens and number of tool calls;
+- for the person it worked for, the request it was given (while it works, and afterwards only when the server keeps prompts);
 - its question and a reply box while it needs input;
 - why it stopped, if it didn't finish (for example a used-up budget or a 10-minute limit);
 - the agent's summary;
 - the change set, with **Undo**, **Approve** and **Reject**;
-- the steps: every model call and tool call in order, with its outcome.
+- the steps: every model call and tool call in order, with its outcome, and what the model wrote when the server keeps prompts.
 
 <Screenshot src="ai/agent-run" alt="A Triage Bot run on MOB-3 Crash when rotating the task sheet: cost, tokens and tool calls, the summary, a change set of a priority change, two sub-tasks and a comment, each with Undo, and the eight steps" caption="Every change in a run can be undone on its own." />
 
@@ -154,7 +172,7 @@ You see your own runs; people with **Manage AI** see every run in the workspace.
 ## Where agent work shows up
 
 - **Activity:** rows and comments made by an agent show the **Agent** badge and "on behalf of" the person who asked. In a task's activity, choose **Agents** under **Show** to see only agent work.
-- **Audit log:** agent actions are recorded with the agent as the actor and the person it acted for, along with the run. Creating, changing and deleting agents, schedules and connectors, schedules turning themselves off, approvals, rejections and undos are recorded too.
+- **Audit log:** agent actions are recorded with the agent as the actor and the person it acted for, along with the run. Creating, changing and deleting agents, schedules and connectors, changes to an agent's intake trigger, schedules and intake triggers turning themselves off, approvals, rejections and undos are recorded too.
 - **Usage:** every model call is counted in the AI usage ledger as **Agents**, with the agent and the run.
 
 ## Limits
@@ -162,7 +180,7 @@ You see your own runs; people with **Manage AI** see every run in the workspace.
 - At most 16 model turns, 25 tool calls and 10 minutes per run. Near the limit the agent is told to finish; a run that still runs out of steps stops with a reason and a comment on the task, instead of reporting success.
 - At most 25 agents per workspace.
 - Runs use the server's job queue in the database, so they work on a single server and across several servers without extra services. A run interrupted by a restart is retried unless it had already made changes; then it stops and its changes stay reviewable.
-- Model prompts and answers are never stored. A run keeps what you asked only while it works and drops it when it ends; afterwards it keeps its summary, its change set and its steps, which hold only shortened, redacted tool arguments.
+- By default, model prompts and answers are not stored. A run keeps what you asked only while it works and drops it when it ends; afterwards it keeps its summary, its change set and its steps, which hold only shortened, redacted tool arguments. An instance admin can turn on **Keep prompts and answers** to also keep the request and the model's text of each step (see [AI Privacy and Data](/core/functional/ai-privacy-and-data#keep-prompts-and-answers)).
 
 ## For external agents (MCP)
 

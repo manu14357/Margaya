@@ -19034,6 +19034,10 @@
               "zeroRetention": {
                 "type": "boolean"
               },
+              "storePrompts": {
+                "type": "boolean",
+                "description": "The instance keeps agent request text and model output in the run log (ai.retention.storePrompts). Off: usage and audit metadata only."
+              },
               "webSearchAvailable": {
                 "type": "boolean",
                 "description": "The instance has a web search provider set up."
@@ -19050,6 +19054,7 @@
               "privateRoute",
               "redaction",
               "zeroRetention",
+              "storePrompts",
               "webSearchAvailable"
             ]
           },
@@ -25540,6 +25545,49 @@
             "type": "boolean",
             "description": "The agent may search the web and call MCP connectors."
           },
+          "intakeTrigger": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "enabled": {
+                "type": "boolean"
+              },
+              "prompt": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "What each run is asked to do; null uses the built-in triage request."
+              },
+              "runsAs": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name"
+                ],
+                "description": "The person whose rights cap the runs: whoever last turned the trigger on or saved it. When they leave or lose ai:use or intake:read, it turns itself off."
+              }
+            },
+            "required": [
+              "enabled",
+              "prompt",
+              "runsAs"
+            ],
+            "description": "Run on every new intake request in the agent's projects. Only for people with ai:manage (null for others)."
+          },
           "ownerId": {
             "type": [
               "string",
@@ -25571,6 +25619,7 @@
           "projectIds",
           "skillIds",
           "webAccess",
+          "intakeTrigger",
           "ownerId",
           "createdAt",
           "updatedAt"
@@ -25882,6 +25931,33 @@
         "required": [
           "id"
         ]
+      },
+      "AgentIntakeTrigger": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Workspace ID"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Run the agent on every new intake request in its projects. Turning it on makes you the person the runs act for."
+          },
+          "prompt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 4000,
+            "description": "What each run should do. Null or blank: triage (summarize, judge urgency, point out gaps and duplicates in a comment). Omitted: unchanged."
+          }
+        },
+        "required": [
+          "workspaceId",
+          "enabled"
+        ],
+        "additionalProperties": false
       },
       "StartedAgentRun": {
         "type": "object",
@@ -26284,9 +26360,10 @@
               "manual",
               "schedule",
               "automation",
-              "chat"
+              "chat",
+              "intake"
             ],
-            "description": "What started the run: an @mention, an assignment, Run agent, a schedule, an automation rule, or a follow-up to an earlier run (chat)."
+            "description": "What started the run: an @mention, an assignment, Run agent, a schedule, an automation rule, a follow-up to an earlier run (chat), or a new intake request (intake)."
           },
           "followUpOf": {
             "type": [
@@ -26328,6 +26405,13 @@
               "options"
             ],
             "description": "While the run needs input: the agent's question and suggested answers. Only for the person it asks."
+          },
+          "request": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The request text the run was given (Run agent, a schedule, an automation rule, an intake trigger or a follow-up). Only for the person the run works for; once the run ends, kept only when the instance stores prompts (ai.retention.storePrompts)."
           },
           "error": {
             "type": [
@@ -26390,6 +26474,7 @@
           "followUpOf",
           "status",
           "question",
+          "request",
           "error",
           "outputSummary",
           "tokenIn",
@@ -26493,6 +26578,13 @@
             "additionalProperties": {},
             "description": "The change-set entry of a write: op, the task, and before and after values."
           },
+          "text": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "What the model wrote in a model step; null unless the instance stores prompts (ai.retention.storePrompts)."
+          },
           "links": {
             "type": "object",
             "properties": {
@@ -26589,6 +26681,7 @@
           "status",
           "reason",
           "change",
+          "text",
           "links",
           "tokenIn",
           "tokenOut",
@@ -71152,6 +71245,82 @@
           },
           "404": {
             "description": "Agent or schedule not found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai/agents/{agentId}/intake-trigger": {
+      "patch": {
+        "operationId": "setAgentIntakeTrigger",
+        "tags": [
+          "AI agents"
+        ],
+        "summary": "Set an agent's intake trigger",
+        "description": "Turn on or off running the agent on every new intake request in its projects (for example to triage it), and set what each run does. Runs act for whoever last turned it on, capped at the agent's role and their rights; the trigger turns itself off when that person leaves or loses ai:use or intake:read. Requests filed by agents start nothing, requests from outside the workspace (public boards, forms) hold every write for approval, and one agent starts at most 30 intake runs an hour. Needs ai:manage; turning it on also needs ai:use and intake:read.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "required": true,
+            "name": "agentId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentIntakeTrigger"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The agent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Agent"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body, or the agent's role can't read intake requests (code AGENT_CANT_READ_INTAKE)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "No workspace access, no ai:manage, or (turning it on) no ai:use or intake:read: the runs act for you",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Agent not found",
             "content": {
               "text/plain": {
                 "schema": {
