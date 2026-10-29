@@ -39,6 +39,7 @@ export const clickup: Comparison = {
     publicBoards: ["partial", "Public share links"],
     automations: ["yes", "Usage limits by plan"],
     api: "yes",
+    aiAssistant: ["yes", "ClickUp Brain, credits vary by plan"],
     mcp: ["yes", "Official MCP server"],
     integrations: "yes",
     openSource: "no",

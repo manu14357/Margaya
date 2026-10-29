@@ -60,6 +60,8 @@ export const comparison: {
       { key: "cycles", cells: [true, true, true] },
       { key: "intake", cells: [true, true, true] },
       { key: "analytics", cells: [true, true, true] },
+      // AI usage isn't bundled: every plan brings its own provider key or model.
+      { key: "ai", cells: ["ownKey", "ownKey", "ownKey"] },
       { key: "roles", cells: [true, "notNeeded", true] },
     ],
   },

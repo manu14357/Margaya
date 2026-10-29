@@ -38,6 +38,7 @@ export const youtrack: Comparison = {
     publicBoards: ["partial", "Guest access to projects"],
     automations: ["yes", "Scriptable JavaScript workflows"],
     api: "yes",
+    aiAssistant: ["yes", "AI Assistant, on Cloud and Server"],
     mcp: ["yes", "MCP server"],
     integrations: "yes",
     openSource: "no",

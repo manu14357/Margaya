@@ -39,6 +39,7 @@ export const leantime: Comparison = {
     publicBoards: "no",
     automations: "no",
     api: ["yes", "JSON-RPC API"],
+    aiAssistant: ["yes", "On the Cloud Pro plan, with AI credits"],
     mcp: ["partial", "Through plugins"],
     integrations: ["partial", "Chat notifications and plugins"],
     openSource: ["yes", "AGPLv3"],

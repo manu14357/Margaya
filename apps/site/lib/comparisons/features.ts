@@ -107,6 +107,11 @@ export const compareFeatures: Record<FeatureKey, Feature> = {
     label: "REST API and webhooks",
     margaya: ["yes", "OpenAPI spec, signed webhooks"],
   },
+  aiAssistant: {
+    area: "automation",
+    label: "Built-in AI assistant",
+    margaya: ["yes", "Off by default; Claude or a model you host"],
+  },
   mcp: {
     area: "automation",
     label: "MCP for AI assistants",

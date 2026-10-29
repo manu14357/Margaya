@@ -39,6 +39,7 @@ export const monday: Comparison = {
     publicBoards: ["partial", "Shareable boards on paid plans"],
     automations: ["yes", "Recipes with monthly action limits"],
     api: ["yes", "GraphQL API and webhooks"],
+    aiAssistant: ["yes", "Sidekick and agents on paid plans, with AI credits"],
     mcp: ["yes", "Official MCP server"],
     integrations: ["yes", "Large app marketplace"],
     openSource: "no",

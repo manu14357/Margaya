@@ -38,6 +38,7 @@ export const kanboard: Comparison = {
     publicBoards: ["yes", "Public read-only boards"],
     automations: ["yes", "Automatic actions"],
     api: ["yes", "JSON-RPC API and webhooks"],
+    aiAssistant: ["no", "Not built in"],
     mcp: ["no", "Not built in"],
     integrations: ["partial", "Through plugins"],
     openSource: ["yes", "MIT"],

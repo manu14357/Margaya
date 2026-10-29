@@ -38,6 +38,7 @@ export const shortcut: Comparison = {
     publicBoards: "no",
     automations: ["partial", "Git-driven workflow updates"],
     api: "yes",
+    aiAssistant: ["partial", "Korey, a separate AI agent from Shortcut"],
     mcp: ["yes", "Official MCP server"],
     integrations: "yes",
     openSource: "no",

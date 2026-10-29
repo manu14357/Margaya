@@ -39,6 +39,7 @@ export type FeatureKey =
   | "publicBoards"
   | "automations"
   | "api"
+  | "aiAssistant"
   | "mcp"
   | "integrations"
   | "openSource"

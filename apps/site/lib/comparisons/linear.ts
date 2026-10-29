@@ -39,6 +39,7 @@ export const linear: Comparison = {
     publicBoards: "no",
     automations: ["partial", "Git workflows, auto-close and triage rules"],
     api: ["yes", "GraphQL API and webhooks"],
+    aiAssistant: ["yes", "Linear Agent, on every plan"],
     mcp: ["yes", "Official MCP server"],
     integrations: "yes",
     openSource: "no",

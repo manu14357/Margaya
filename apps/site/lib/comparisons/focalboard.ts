@@ -38,6 +38,7 @@ export const focalboard: Comparison = {
     publicBoards: ["partial", "Shared read-only links"],
     automations: "no",
     api: ["partial", "REST API"],
+    aiAssistant: ["no", "Not built in"],
     mcp: ["no", "Not built in"],
     integrations: ["partial", "Mattermost"],
     openSource: "yes",

@@ -38,6 +38,7 @@ export const vikunja: Comparison = {
     publicBoards: ["partial", "Link shares"],
     automations: "no",
     api: ["yes", "REST API and webhooks"],
+    aiAssistant: ["no", "Not built in"],
     mcp: ["no", "Not built in"],
     integrations: ["partial", "CalDAV and importers"],
     openSource: ["yes", "AGPLv3"],

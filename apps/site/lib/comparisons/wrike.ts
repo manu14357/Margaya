@@ -38,6 +38,7 @@ export const wrike: Comparison = {
     publicBoards: ["partial", "External collaborators"],
     automations: ["yes", "Automation engine with plan limits"],
     api: "yes",
+    aiAssistant: ["yes", "Copilot and agents from the Business plan"],
     mcp: ["yes", "Wrike MCP server"],
     integrations: "yes",
     openSource: "no",

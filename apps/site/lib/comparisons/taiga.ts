@@ -38,6 +38,7 @@ export const taiga: Comparison = {
     publicBoards: ["yes", "Public projects"],
     automations: "no",
     api: ["yes", "REST API and webhooks"],
+    aiAssistant: ["no", "Not built in"],
     mcp: ["no", "Not built in"],
     integrations: ["yes", "GitHub, GitLab, Slack and more"],
     openSource: ["yes", "MPL-2.0"],

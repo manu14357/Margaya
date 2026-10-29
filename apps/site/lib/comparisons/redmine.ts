@@ -38,6 +38,7 @@ export const redmine: Comparison = {
     publicBoards: ["yes", "Public projects"],
     automations: ["partial", "Workflows by role and tracker"],
     api: "yes",
+    aiAssistant: ["partial", "Through third-party plugins"],
     mcp: ["no", "Not built in"],
     integrations: ["partial", "Repositories and plugins"],
     openSource: ["yes", "GPLv2"],

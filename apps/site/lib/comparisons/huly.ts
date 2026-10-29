@@ -38,6 +38,7 @@ export const huly: Comparison = {
     publicBoards: "no",
     automations: "no",
     api: ["partial", "API client libraries"],
+    aiAssistant: ["no", "Huly AI announced, not yet released"],
     mcp: ["no", "Not built in"],
     integrations: ["yes", "GitHub sync, Telegram and email"],
     openSource: ["yes", "EPL-2.0"],

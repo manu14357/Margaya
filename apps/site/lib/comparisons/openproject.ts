@@ -39,6 +39,7 @@ export const openproject: Comparison = {
     publicBoards: ["yes", "Public projects"],
     automations: ["partial", "Workflows by role and type"],
     api: ["yes", "REST API and webhooks"],
+    aiAssistant: ["no", "AI text actions in development"],
     mcp: ["partial", "Community servers"],
     integrations: ["yes", "GitHub, GitLab, Nextcloud and more"],
     openSource: ["yes", "GPLv3"],

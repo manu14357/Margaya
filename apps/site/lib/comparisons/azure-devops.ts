@@ -38,6 +38,7 @@ export const azureDevops: Comparison = {
     publicBoards: ["yes", "Public projects"],
     automations: ["yes", "Rules and Azure Pipelines"],
     api: "yes",
+    aiAssistant: ["partial", "Hands work items to GitHub Copilot"],
     mcp: ["yes", "Azure DevOps MCP server"],
     integrations: "yes",
     openSource: "no",

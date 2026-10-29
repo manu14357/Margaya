@@ -38,6 +38,7 @@ export const wekan: Comparison = {
     publicBoards: ["yes", "Public boards"],
     automations: ["yes", "Rules with triggers and actions"],
     api: ["yes", "REST API and webhooks"],
+    aiAssistant: ["no", "Bots can hand cards to outside AI agents"],
     mcp: ["no", "Not built in"],
     integrations: ["partial", "Outgoing webhooks"],
     openSource: ["yes", "MIT"],

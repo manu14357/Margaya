@@ -63,12 +63,15 @@ type DocsIndex = {
   redirects: Map<string, string>;
 };
 
-// Mintlify skips these repository files; so does the site.
+// Mintlify skips these repository files; so does the site. AGENTS and CLAUDE
+// are the folder's guides for coding agents, not docs pages.
 const IGNORED_PAGES = new Set([
   "README",
   "CONTRIBUTING",
   "LICENSE",
   "CHANGELOG",
+  "AGENTS",
+  "CLAUDE",
 ]);
 
 /** `index` -> /docs, `core/index` -> /docs/core, `core/cycles` -> /docs/core/cycles. */

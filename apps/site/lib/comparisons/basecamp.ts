@@ -39,6 +39,7 @@ export const basecamp: Comparison = {
     publicBoards: ["partial", "Public links to items"],
     automations: ["partial", "Automatic check-ins"],
     api: ["yes", "REST API and webhooks"],
+    aiAssistant: ["no", "Agent access through its API and CLI"],
     mcp: ["no", "Not built in"],
     integrations: ["partial", "Third-party add-ons"],
     openSource: "no",

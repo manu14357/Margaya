@@ -38,6 +38,7 @@ export const notion: Comparison = {
     publicBoards: ["yes", "Publish pages to the web"],
     automations: ["yes", "Database automations on paid plans"],
     api: "yes",
+    aiAssistant: ["yes", "Notion AI, full use from the Business plan"],
     mcp: ["yes", "Official MCP server"],
     integrations: "yes",
     openSource: "no",

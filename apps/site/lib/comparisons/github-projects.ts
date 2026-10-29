@@ -38,6 +38,7 @@ export const githubProjects: Comparison = {
     publicBoards: ["yes", "Public projects"],
     automations: ["yes", "Built-in workflows and Actions"],
     api: ["yes", "GraphQL API and webhooks"],
+    aiAssistant: ["yes", "GitHub Copilot, free tier and paid plans"],
     mcp: ["yes", "GitHub MCP server"],
     integrations: ["yes", "GitHub Marketplace"],
     openSource: "no",

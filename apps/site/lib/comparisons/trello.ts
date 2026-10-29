@@ -38,6 +38,7 @@ export const trello: Comparison = {
     publicBoards: "yes",
     automations: ["yes", "Butler, with run limits by plan"],
     api: "yes",
+    aiAssistant: ["partial", "AI capture on Standard, board AI on Premium"],
     mcp: ["no", "Not built in"],
     integrations: ["yes", "Power-Ups"],
     openSource: "no",

@@ -39,6 +39,7 @@ export const jira: Comparison = {
     publicBoards: ["partial", "Possible through permission settings"],
     automations: ["yes", "Rule builder, with run limits by plan"],
     api: "yes",
+    aiAssistant: ["yes", "Rovo, on paid Cloud plans"],
     mcp: ["yes", "Atlassian's hosted MCP server"],
     integrations: ["yes", "Large app marketplace"],
     openSource: "no",

@@ -38,6 +38,7 @@ export const asana: Comparison = {
     publicBoards: "no",
     automations: ["yes", "Rules on paid plans"],
     api: "yes",
+    aiAssistant: ["yes", "AI Studio and AI Teammates, on paid plans"],
     mcp: ["yes", "Official MCP server"],
     integrations: "yes",
     openSource: "no",

@@ -11,7 +11,7 @@ export const privacyPolicy: LegalDocument = {
   title: "Privacy policy",
   intro:
     "How Margaya handles personal data, whether you run it yourself or use Margaya Cloud. Written to be read, not skimmed past.",
-  updated: "2026-10-15",
+  updated: "2026-10-29",
   summaryTitle: "The short version",
   summary: [
     "Self-hosting means your data stays on your servers. The maintainers receive none of it.",
@@ -124,6 +124,10 @@ export const privacyPolicy: LegalDocument = {
         {
           type: "p",
           text: "Integrations are your choice. When you connect GitHub, Gitea, Slack, Discord, Telegram, Mattermost, ntfy, Gotify or a webhook, Margaya sends the events you configure to that service, and its own terms apply there. The same goes for API keys and MCP clients you authorise.",
+        },
+        {
+          type: "p",
+          text: "AI features are off until a workspace admin turns them on, and Margaya Cloud doesn't send your data to an AI provider of its own choosing. When a workspace turns AI on, the text a feature needs, such as your question and the tasks it reads, goes to the provider whose API key the workspace added, and that provider's terms apply there. We don't use your data to train models. For budgets we keep usage metadata (the feature, model, token count and cost); prompts and answers are stored only if you turn on server history.",
         },
       ],
     },
