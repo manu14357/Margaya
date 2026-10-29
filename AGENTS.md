@@ -100,6 +100,15 @@ Use the smallest proof that covers the changed behavior, then broaden it when th
 
 Run repository-wide checks when a change crosses packages broadly, before a requested commit or pull request, or when explicitly asked. Report what ran and what did not.
 
+## Folder guides, skills and agents
+
+- Folders with their own rules have an `AGENTS.md`: `apps/api`, `apps/web`, `apps/docs`, `apps/site`, `packages/libs`, `packages/permissions`, `packages/mcp`, `packages/email`, `tests`, `charts/margaya` and `i18n`. Read the one for the folder you change.
+- Step-by-step workflows live in `.claude/skills/<name>/SKILL.md`:
+  - API and data: `api-endpoint`, `database-migration`, `realtime-events`, `permissions`, `integration-plugin`, `ai-feature`, `mcp-tool`.
+  - Web, text and docs: `web-data-flow`, `i18n`, `docs-and-openapi`.
+  - Running and shipping: `testing`, `local-stack`, `commit-and-release`.
+- Review and helper agents live in `.claude/agents/`: `authz-reviewer`, `migration-reviewer`, `i18n-translator`, `docs-writer` and `change-verifier`.
+
 ## Glossary
 
 - **instance**: one deployed Margaya installation.

@@ -87,7 +87,9 @@ tests/e2e/.web-dist/
 .mcp.json
 .kiro/
 .agents/
-.claude/
+.claude/*
+!.claude/skills/
+!.claude/agents/
 PENDING_WORK.md
 tmp/
 .tmp/
@@ -95,3 +97,6 @@ scratch/
 
 # Local test logins (never commit)
 creds.md
+
+# Social media drafts and assets (never commit)
+social-media/
