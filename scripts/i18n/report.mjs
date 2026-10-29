@@ -31,11 +31,23 @@ const { staticKeys, dynamicCalls, dynamicPrefixes } = await collectUsedKeys(
 const missing = new Set(
   [...staticKeys].filter((key) => !isRepresentedByLocaleKeys(key, localeKeys)),
 );
+// Read as whole objects outside apps/web, so no t() call names them:
+// packages/landing and apps/site take the landing, pricing and press
+// namespaces, the API builds invitation emails from invitations.email, and
+// the email package reads the emails namespace through a generated file.
+const externallyReadPrefixes = [
+  "emails:",
+  "landing:",
+  "pricing:",
+  "press:",
+  "invitations:email.",
+];
 const unused = new Set(
   [...localeKeys].filter(
     (key) =>
       !isLocaleKeyUsed(key, staticKeys) &&
-      !dynamicPrefixes.some((prefix) => key.startsWith(prefix)),
+      !dynamicPrefixes.some((prefix) => key.startsWith(prefix)) &&
+      !externallyReadPrefixes.some((prefix) => key.startsWith(prefix)),
   ),
 );
 
@@ -201,14 +213,46 @@ async function collectUsedKeys(files, knownNamespaces) {
       }
     }
 
+    // A key built outside t(), such as `ai:errors.${code}` returned by a
+    // helper and resolved later: everything under its prefix may be used.
     for (const match of source.matchAll(
-      /\b(?:[\w$]+\.)?t\(\s*(`[^`]*\$\{[^`]*\}`|[^'"`\s][^,\n)]*)/gu,
+      /`([a-z][\w-]*):([A-Za-z0-9_.-]*)\$\{/gu,
+    )) {
+      if (knownNamespaces.has(match[1])) {
+        dynamicPrefixes.push(`${match[1]}:${match[2]}`);
+      }
+    }
+
+    // `const K = "settings:automationRules"` then t(`${K}.editor.when`): swap
+    // in the file's own string constants before deciding what is dynamic.
+    const constants = new Map();
+    for (const match of source.matchAll(
+      /\bconst\s+([A-Za-z_$][\w$]*)\s*=\s*(['"])([^'"\\]*)\2/gu,
+    )) {
+      constants.set(match[1], match[3]);
+    }
+
+    for (const match of source.matchAll(
+      /\b(?:[\w$]+\.)?t\(\s*(`[^`]*\$\{[^`]*`|[^'"`\s][^,\n)]*)/gu,
     )) {
       const call = match[0].trim();
+      const template = match[1].startsWith("`")
+        ? match[1]
+            .slice(1, -1)
+            .replace(/\$\{\s*([A-Za-z_$][\w$]*)\s*\}/gu, (whole, name) =>
+              constants.has(name) ? constants.get(name) : whole,
+            )
+        : null;
+
+      if (template !== null && !template.includes("${")) {
+        staticKeys.add(template);
+        continue;
+      }
+
       dynamicCalls.push(`${path.relative(repoRoot, file)}: ${call}`);
-      const prefixMatch = call.match(/`([^`$]*)\$\{/u);
-      if (prefixMatch?.[1]) {
-        dynamicPrefixes.push(prefixMatch[1]);
+      const prefix = template?.split("${")[0];
+      if (prefix) {
+        dynamicPrefixes.push(prefix);
       }
     }
   }

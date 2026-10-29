@@ -28,25 +28,25 @@ const RUN = {
   },
 };
 
+// The npm-installed pnpm is a JS file run by Node; @pnpm/exe is a native binary.
+function pnpm(args) {
+  if (packageManager.endsWith(".exe")) {
+    execFileSync(packageManager, args, RUN);
+  } else {
+    execFileSync(process.execPath, [packageManager, ...args], RUN);
+  }
+}
+
 function generate(into) {
-  execFileSync(
-    process.execPath,
-    [packageManager, "turbo", "build", "--filter=@margaya/api^..."],
-    RUN,
-  );
-  execFileSync(
-    process.execPath,
-    [
-      packageManager,
-      "--filter",
-      "@margaya/api",
-      "exec",
-      "tsx",
-      "scripts/export-openapi.ts",
-      into,
-    ],
-    RUN,
-  );
+  pnpm(["turbo", "build", "--filter=@margaya/api^..."]);
+  pnpm([
+    "--filter",
+    "@margaya/api",
+    "exec",
+    "tsx",
+    "scripts/export-openapi.ts",
+    into,
+  ]);
 }
 
 function run() {

@@ -12,6 +12,7 @@
 			"!**/coverage",
 			"!**/tsconfig*.json",
 			"!**/routeTree.gen.ts",
+			"!**/messages.generated.ts",
 			"!**/next-env.d.ts",
 			"!**/dist",
 			"!**/cache",
@@ -69,6 +70,16 @@
 				"rules": {
 					"suspicious": {
 						"noTemplateCurlyInString": "off",
+						"noUndeclaredEnvVars": "off"
+					}
+				}
+			}
+		},
+		{
+			"includes": ["tests/api/**", "tests/api-integration/**"],
+			"linter": {
+				"rules": {
+					"suspicious": {
 						"noUndeclaredEnvVars": "off"
 					}
 				}

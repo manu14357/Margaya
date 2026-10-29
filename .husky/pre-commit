@@ -1,2 +1,4 @@
 set -e
-pnpm exec biome ci .
+# Only the staged files, so an unrelated formatting error elsewhere can't block
+# a commit; CI still runs `biome ci .` over the whole repository.
+pnpm exec biome check --staged --vcs-enabled=true --vcs-client-kind=git --no-errors-on-unmatched
