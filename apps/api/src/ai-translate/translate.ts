@@ -82,8 +82,7 @@ async function commentSource(scope: AiScope, id: string): Promise<Source> {
     .where(eq(activityTable.id, id))
     .limit(1);
   if (
-    !row ||
-    row.type !== "comment" ||
+    row?.type !== "comment" ||
     row.taskDeletedAt ||
     row.workspaceId !== scope.workspaceId
   ) {

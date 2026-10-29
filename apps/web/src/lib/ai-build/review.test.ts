@@ -8,9 +8,11 @@ import {
   toReview,
 } from "./review";
 
+const project = { name: "Relaunch", key: "RL", description: "Q4" };
+
 const proposal: BuildProposal = {
   summary: "Two sprints.",
-  project: { name: "Relaunch", key: "RL", description: "Q4" },
+  project,
   columns: [{ name: "QA" }],
   labels: [
     { name: "Design", color: "purple" },
@@ -52,6 +54,12 @@ const proposal: BuildProposal = {
   ],
 };
 
+function at<T>(items: T[], index: number): T {
+  const item = items[index];
+  if (item === undefined) throw new Error(`No item at index ${index}`);
+  return item;
+}
+
 describe("review", () => {
   it("round-trips an untouched proposal", () => {
     expect(toProposal(toReview(proposal))).toEqual(proposal);
@@ -60,16 +68,19 @@ describe("review", () => {
 
   it("leaves out what was unchecked and clears references to it", () => {
     const draft = toReview(proposal);
-    draft.columns[0] = { ...draft.columns[0]!, include: false };
-    draft.labels[1] = { ...draft.labels[1]!, include: false };
-    draft.cycles[0] = { ...draft.cycles[0]!, include: false };
-    draft.modules[0] = { ...draft.modules[0]!, include: false };
-    draft.tasks[1] = { ...draft.tasks[1]!, include: false };
-    const first = draft.tasks[0]!;
+    draft.columns[0] = { ...at(draft.columns, 0), include: false };
+    draft.labels[1] = { ...at(draft.labels, 1), include: false };
+    draft.cycles[0] = { ...at(draft.cycles, 0), include: false };
+    draft.modules[0] = { ...at(draft.modules, 0), include: false };
+    draft.tasks[1] = { ...at(draft.tasks, 1), include: false };
+    const first = at(draft.tasks, 0);
     draft.tasks[0] = {
       ...first,
       title: "  Audit pages ",
-      subtasks: [first.subtasks[0]!, { ...first.subtasks[1]!, include: false }],
+      subtasks: [
+        at(first.subtasks, 0),
+        { ...at(first.subtasks, 1), include: false },
+      ],
     };
 
     const result = toProposal(draft);
@@ -93,7 +104,7 @@ describe("review", () => {
 
   it("turns a cycle with one date into a draft", () => {
     const draft = toReview(proposal);
-    draft.cycles[0] = { ...draft.cycles[0]!, endDate: null };
+    draft.cycles[0] = { ...at(draft.cycles, 0), endDate: null };
     expect(toProposal(draft).cycles[0]).toMatchObject({
       startDate: null,
       endDate: null,
@@ -119,9 +130,9 @@ describe("review", () => {
   it("needs a project name and key, and something besides the project", () => {
     const draft = toReview(proposal);
     expect(canCreate(draft)).toBe(true);
-    expect(
-      canCreate({ ...draft, project: { ...proposal.project!, key: " " } }),
-    ).toBe(false);
+    expect(canCreate({ ...draft, project: { ...project, key: " " } })).toBe(
+      false,
+    );
     expect(
       canCreate({
         ...draft,

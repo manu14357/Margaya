@@ -172,7 +172,6 @@ export default function PublishPageDialog({
                       size="icon-sm"
                       aria-label={t("pages:publish.openLink")}
                       render={
-                        // biome-ignore lint/a11y/useAnchorContent: the button renders the icon
                         <a href={link} target="_blank" rel="noreferrer" />
                       }
                     >

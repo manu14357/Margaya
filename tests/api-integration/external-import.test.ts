@@ -95,6 +95,12 @@ async function tasksByKey(projectId: string, source: Source) {
   return new Map(rows.map((row) => [row.key ?? "", row.task]));
 }
 
+function mustGet<V>(map: Map<string, V>, key: string): V {
+  const value = map.get(key);
+  if (value === undefined) throw new Error(`Nothing imported for ${key}`);
+  return value;
+}
+
 async function labelNames(taskId: string) {
   const rows = await db
     .select({ name: schema.labelTable.name })
@@ -176,7 +182,7 @@ describe("Trello import", () => {
     });
 
     const tasks = await tasksByKey(s.project.id, "trello");
-    const login = tasks.get("AbC12345");
+    const login = mustGet(tasks, "AbC12345");
     expect(login).toMatchObject({
       title: "Fix login redirect",
       status: "to-do",
@@ -184,17 +190,17 @@ describe("Trello import", () => {
       startDate: new Date("2024-01-20T09:00:00.000Z"),
       createdAt: new Date(0x65a0f000 * 1000),
     });
-    expect(login?.description).toContain("Users land on **home**");
-    expect(login?.description).toContain(
+    expect(login.description).toContain("Users land on **home**");
+    expect(login.description).toContain(
       "**Steps**\n\n- [ ] Patch the callback\n- [x] Reproduce",
     );
-    expect(await labelNames(login!.id)).toEqual(["Bug", "green"]);
-    expect(await assigneeIds(login!.id)).toEqual([s.ben.id]);
+    expect(await labelNames(login.id)).toEqual(["Bug", "green"]);
+    expect(await assigneeIds(login.id)).toEqual([s.ben.id]);
 
-    const notes = tasks.get("DeF67890");
-    expect(notes?.status).toBe("in-progress");
-    expect(await assigneeIds(notes!.id)).toEqual([]);
-    expect(notes?.description).toBe(
+    const notes = mustGet(tasks, "DeF67890");
+    expect(notes.status).toBe("in-progress");
+    expect(await assigneeIds(notes.id)).toEqual([]);
+    expect(notes.description).toBe(
       "_Assigned in Trello to Casey Unknown (no matching workspace member)._",
     );
 
@@ -207,7 +213,7 @@ describe("Trello import", () => {
       .from(schema.activityTable)
       .where(
         and(
-          eq(schema.activityTable.taskId, login!.id),
+          eq(schema.activityTable.taskId, login.id),
           eq(schema.activityTable.type, "comment"),
         ),
       );
@@ -279,7 +285,7 @@ describe("Linear import", () => {
     });
 
     const tasks = await tasksByKey(s.project.id, "linear");
-    const ci = tasks.get("ENG-1");
+    const ci = mustGet(tasks, "ENG-1");
     expect(ci).toMatchObject({
       title: "Set up CI",
       status: "to-do",
@@ -288,11 +294,11 @@ describe("Linear import", () => {
       dueDate: new Date("2024-02-15T00:00:00.000Z"),
       createdBy: s.ben.id,
     });
-    expect(ci?.description).toBe(
+    expect(ci.description).toBe(
       "Run tests on **every** push.\nCache the dependencies.",
     );
-    expect(await labelNames(ci!.id)).toEqual(["CI", "Infra"]);
-    expect(await assigneeIds(ci!.id)).toEqual([s.ben.id]);
+    expect(await labelNames(ci.id)).toEqual(["CI", "Infra"]);
+    expect(await assigneeIds(ci.id)).toEqual([s.ben.id]);
 
     expect(tasks.get("ENG-2")).toMatchObject({
       status: "in-progress",
@@ -308,7 +314,7 @@ describe("Linear import", () => {
       priority: "no-priority",
     });
 
-    const id = (key: string) => tasks.get(key)!.id;
+    const id = (key: string) => mustGet(tasks, key).id;
     const relations = await relationsOf([...tasks.values()].map((t) => t.id));
     expect(relations).toEqual(
       expect.arrayContaining([
@@ -350,7 +356,7 @@ describe("Asana import", () => {
     });
 
     const tasks = await tasksByKey(s.project.id, "asana");
-    const plan = tasks.get("1200000000000001");
+    const plan = mustGet(tasks, "1200000000000001");
     expect(plan).toMatchObject({
       title: "Plan the launch",
       status: "to-do",
@@ -359,8 +365,8 @@ describe("Asana import", () => {
       startDate: new Date("2024-01-10T00:00:00.000Z"),
       dueDate: new Date("2024-01-31T00:00:00.000Z"),
     });
-    expect(await labelNames(plan!.id)).toEqual(["Marketing", "Q1"]);
-    expect(await assigneeIds(plan!.id)).toEqual([s.ben.id]);
+    expect(await labelNames(plan.id)).toEqual(["Marketing", "Q1"]);
+    expect(await assigneeIds(plan.id)).toEqual([s.ben.id]);
 
     const venue = tasks.get("1200000000000002");
     expect(venue).toMatchObject({ status: "in-progress", priority: "low" });
@@ -370,7 +376,7 @@ describe("Asana import", () => {
     expect(tasks.get("1200000000000003")?.status).toBe("done");
     expect(tasks.get("1200000000000004")?.status).toBe("planned");
 
-    const id = (key: string) => tasks.get(key)!.id;
+    const id = (key: string) => mustGet(tasks, key).id;
     const relations = await relationsOf([...tasks.values()].map((t) => t.id));
     expect(relations).toEqual(
       expect.arrayContaining([

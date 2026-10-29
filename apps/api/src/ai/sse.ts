@@ -51,7 +51,10 @@ type StreamOptions = {
    */
   finalize?: (
     result: AiResult,
-  ) => Promise<Record<string, unknown> | void> | Record<string, unknown> | void;
+  ) =>
+    | Promise<Record<string, unknown> | undefined>
+    | Record<string, unknown>
+    | undefined;
   /** Send reasoning text; default: the instance setting ai.showReasoning. */
   showReasoning?: boolean;
 };

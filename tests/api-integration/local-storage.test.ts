@@ -126,7 +126,9 @@ describe("local file store", () => {
   it("refuses tampered links, other content types, wrong sizes and a second upload", async () => {
     const s = await scene();
     const upload = await s.createUpload();
-    const [payload, signature] = upload.uploadUrl.split("/").pop()!.split(".");
+    const token = upload.uploadUrl.split("/").pop();
+    if (!token) throw new Error("The upload URL has no token");
+    const [payload, signature] = token.split(".");
 
     // Re-pointing the payload at another workspace's folder breaks the signature.
     const forged = Buffer.from(

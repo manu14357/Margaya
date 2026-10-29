@@ -22,7 +22,7 @@ export async function handleRecurringCompletion(data: {
     .from(taskRecurrenceTable)
     .where(eq(taskRecurrenceTable.taskId, data.taskId))
     .limit(1);
-  if (!rule || rule.trigger !== "completion") return null;
+  if (rule?.trigger !== "completion") return null;
   return spawnNextInstance({
     ruleId: rule.id,
     sourceTaskId: data.taskId,

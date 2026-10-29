@@ -325,7 +325,7 @@ async function deliveryLines(
         );
       }
     }
-    if (r.criticalPath && r.criticalPath.finishDate) {
+    if (r.criticalPath?.finishDate) {
       lines.push(
         `Critical path: ${r.criticalPath.total} ${r.criticalPath.unit}, projected to finish ${r.criticalPath.finishDate}${r.criticalPath.slackDays === null ? "" : ` (slack ${r.criticalPath.slackDays} days)`}.`,
       );

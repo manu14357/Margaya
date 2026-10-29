@@ -475,7 +475,7 @@ export function composeIssueBody(input: {
     delivery.join("\n"),
     HANDOFF_MARKER,
   ]
-    .filter((part) => part && part.trim())
+    .filter((part) => part?.trim())
     .join("\n\n");
   return body;
 }

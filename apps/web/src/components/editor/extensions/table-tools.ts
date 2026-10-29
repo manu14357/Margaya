@@ -135,7 +135,7 @@ export function moveTableRow(
   to: number,
 ): boolean {
   const table = editor.state.doc.nodeAt(tablePos);
-  if (!table || table.type.name !== "table") return false;
+  if (table?.type.name !== "table") return false;
   const next = reorderTableRows(table, from, to);
   if (!next) return false;
   const column = tableAtSelection(editor.state)?.column ?? 0;
@@ -150,7 +150,7 @@ export function moveTableColumn(
   to: number,
 ): boolean {
   const table = editor.state.doc.nodeAt(tablePos);
-  if (!table || table.type.name !== "table") return false;
+  if (table?.type.name !== "table") return false;
   const next = reorderTableColumns(table, from, to);
   if (!next) return false;
   const row = tableAtSelection(editor.state)?.row ?? 0;

@@ -348,7 +348,11 @@ describe("validateActions", () => {
 });
 
 describe("task keys a plan reads", () => {
-  it("takes keys from the request, then the last two turns", async () => {
+  // The planner's first import loads most of the API, which can take longer
+  // than the default 5 s while the full suite runs in parallel.
+  it("takes keys from the request, then the last two turns", {
+    timeout: 30_000,
+  }, async () => {
     const { typedTaskKeys } = await import(
       "../../../apps/api/src/ai-chat-build/planner"
     );
