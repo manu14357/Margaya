@@ -1,5 +1,7 @@
 import { Link, Section, Text } from "@react-email/components";
 import React from "react";
+import { emailCopy, fill, plural } from "./copy";
+import { type EmailLocale, resolveEmailLocale } from "./resolve-locale";
 import { EmailShell, styles } from "./shell";
 
 void React;
@@ -8,53 +10,58 @@ export type TrialReminderEmailProps = {
   workspaceName: string;
   daysLeft: number;
   billingUrl: string;
+  locale?: string | null;
 };
 
-function title(workspaceName: string, daysLeft: number) {
+export function trialReminderTitle(
+  locale: EmailLocale,
+  workspaceName: string,
+  daysLeft: number,
+): string {
+  const copy = emailCopy(locale).trialReminder;
   if (daysLeft <= 0) {
-    return `The trial for ${workspaceName} has ended`;
+    return fill(copy.endedTitle, { workspaceName });
   }
-  if (daysLeft === 1) {
-    return `1 day left on your ${workspaceName} trial`;
-  }
-  return `${daysLeft} days left on your ${workspaceName} trial`;
-}
-
-function subtitle(daysLeft: number) {
-  if (daysLeft <= 0) {
-    return "Your workspace is read-only until you choose a plan. Nothing has been deleted, and your data is still there.";
-  }
-  return "Choose a plan to keep creating and editing when the trial ends.";
+  // Count first: filling the name first would expand a "{{count}}" typed
+  // into the workspace name.
+  return fill(plural(copy, "daysLeftTitle", locale, daysLeft), {
+    workspaceName,
+  });
 }
 
 const TrialReminderEmail = ({
   workspaceName,
   daysLeft,
   billingUrl,
+  locale,
 }: TrialReminderEmailProps) => {
+  const resolved = resolveEmailLocale(locale);
+  const copy = emailCopy(resolved).trialReminder;
+  const title = trialReminderTitle(resolved, workspaceName, daysLeft);
+
   return (
     <EmailShell
-      preview={title(workspaceName, daysLeft)}
-      title={title(workspaceName, daysLeft)}
-      subtitle={subtitle(daysLeft)}
+      preview={title}
+      title={title}
+      subtitle={daysLeft <= 0 ? copy.endedSubtitle : copy.activeSubtitle}
     >
       <Section>
         <Link style={styles.button} href={billingUrl}>
-          Choose a plan
+          {copy.cta}
         </Link>
-        <Text style={styles.paragraph}>
-          Margaya is also free forever if you host it yourself, with every
-          feature included. You can export your data at any time and move it to
-          your own server.
-        </Text>
+        <Text style={styles.paragraph}>{copy.selfHost}</Text>
         <Section style={styles.divider} />
-        <Text style={styles.footer}>
-          You are receiving this because you own this workspace on Margaya
-          Cloud.
-        </Text>
+        <Text style={styles.footer}>{copy.footer}</Text>
       </Section>
     </EmailShell>
   );
 };
+
+TrialReminderEmail.PreviewProps = {
+  workspaceName: "Acme",
+  daysLeft: 3,
+  billingUrl: "https://cloud.margaya.app/dashboard/settings/workspace/billing",
+  locale: "en",
+} as TrialReminderEmailProps;
 
 export default TrialReminderEmail;

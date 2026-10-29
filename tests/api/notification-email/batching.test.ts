@@ -9,6 +9,7 @@ import {
   batchSubject,
   groupBatchItems,
 } from "../../../apps/api/src/notification-email/grouping";
+import { emailLocales } from "../../../packages/email/src/templates/resolve-locale";
 
 describe("parseEmailBatchWindowSeconds", () => {
   it("defaults to five minutes when unset, blank or not a number", () => {
@@ -117,5 +118,40 @@ describe("batchSubject", () => {
       item("c", 3, pricing),
     ]);
     expect(batchSubject(groups)).toBe("3 updates in Margaya");
+  });
+
+  it("speaks the recipient's language with its plural forms", () => {
+    const one = groupBatchItems([item("a", 1, launch), item("b", 2, launch)]);
+    const many = groupBatchItems([
+      item("a", 1, launch),
+      item("b", 2, pricing),
+      item("c", 3, pricing),
+      item("d", 4, pricing),
+      item("e", 5, pricing),
+    ]);
+    expect(batchSubject(one, "en-US")).toBe("2 updates on Launch plan");
+    expect(batchSubject(one, "de-DE")).toBe(
+      "2 Aktualisierungen zu Launch plan",
+    );
+    expect(batchSubject(one, "ru-RU")).toBe(
+      "2 обновления в задаче Launch plan",
+    );
+    expect(batchSubject(many, "ru-RU")).toBe("5 обновлений в Margaya");
+    expect(batchSubject(many, "pl-PL")).toBe(
+      "5 aktualizacji w aplikacji Margaya",
+    );
+    expect(batchSubject(many, "ja-JP")).toBe("Margaya の更新 5 件");
+    expect(batchSubject(many, "xx")).toBe("5 updates in Margaya");
+  });
+
+  it("has a translated subject for every email locale", () => {
+    const groups = groupBatchItems([item("a", 1, launch), item("b", 2, null)]);
+    const english = batchSubject(groups, "en");
+    for (const locale of emailLocales.filter((code) => code !== "en")) {
+      const subject = batchSubject(groups, locale);
+      expect(subject, locale).not.toBe(english);
+      expect(subject, locale).toContain("2");
+      expect(subject, locale).toContain("Margaya");
+    }
   });
 });

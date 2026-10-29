@@ -447,6 +447,31 @@ describe("auto-disable", () => {
     expect(enabled.health.failureStreak).toBe(0);
   });
 
+  it("emails the creator in their language", async () => {
+    const s = await webhookScene();
+    await db
+      .update(schema.userTable)
+      .set({ locale: "de-DE" })
+      .where(eq(schema.userTable.id, s.ada.id));
+    const webhook = await failingWebhook(
+      s,
+      4,
+      new Date(Date.now() - 25 * HOUR),
+    );
+    await failOnce(s, webhook);
+    expect(sendEmail).toHaveBeenCalledTimes(1);
+    const [, subject, data] = sendEmail.mock.calls[0] as unknown as [
+      string,
+      string,
+      { title: string; message: string; actionLabel: string; locale: string },
+    ];
+    expect(subject).toBe("Ein Margaya-Webhook wurde deaktiviert");
+    expect(data.title).toBe("Webhook deaktiviert");
+    expect(data.message).toContain("Zustellungen an 127.0.0.1");
+    expect(data.actionLabel).toBe("Webhook-Einstellungen öffnen");
+    expect(data.locale).toBe("de-DE");
+  });
+
   it("resets the streak on a success", async () => {
     const s = await webhookScene();
     const now = new Date();

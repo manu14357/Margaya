@@ -188,6 +188,7 @@ describe("A5 test email", () => {
     ).toEqual({ sent: true, code: "ok", message: "The test email was sent." });
     expect(send).toHaveBeenLastCalledWith("admin@example.com", {
       instanceName: "Margaya",
+      locale: null,
     });
 
     for (const code of [
@@ -230,6 +231,7 @@ describe("A5 test email", () => {
     }
     expect(send).toHaveBeenLastCalledWith("someone@example.test", {
       instanceName: "Margaya",
+      locale: null,
     });
   });
 

@@ -129,6 +129,69 @@ describe("batched notification emails", () => {
     expect(sendBatch).toHaveBeenCalledTimes(1);
   });
 
+  it("words a batch in a German recipient's language", async () => {
+    const scene = await watcherScene();
+    await db
+      .update(schema.userTable)
+      .set({ locale: "de-DE" })
+      .where(eq(schema.userTable.id, scene.cid.id));
+    await threeChanges(scene);
+
+    await flushNotificationEmails(later(301));
+    expect(sendBatch).toHaveBeenCalledWith(
+      scene.cid.email,
+      `3 Aktualisierungen zu ${scene.target.title}`,
+      expect.objectContaining({
+        locale: "de-DE",
+        groups: [
+          expect.objectContaining({
+            changes: [
+              expect.objectContaining({
+                summary: "Aufgabenstatus geändert",
+                detail: `Der Status der Aufgabe "${scene.target.title}" wurde von "Zu erledigen" zu "In Bearbeitung" geändert`,
+              }),
+              expect.objectContaining({
+                summary: "Ada hat deine Aufgabe kommentiert",
+                detail: `Neuer Kommentar zu „${scene.target.title}“: Ship it`,
+              }),
+              expect.objectContaining({
+                summary: "Aufgabe aktualisiert",
+                detail: `Priorität von „${scene.target.title}“ von Niedrig auf Dringend geändert`,
+              }),
+            ],
+          }),
+        ],
+      }),
+    );
+  });
+
+  it("words a single queued email in a Russian recipient's language", async () => {
+    const scene = await watcherScene();
+    await db
+      .update(schema.userTable)
+      .set({ locale: "ru-RU" })
+      .where(eq(schema.userTable.id, scene.cid.id));
+    await notifyTaskEvent({
+      taskId: scene.target.id,
+      kind: "statusChanged",
+      actorId: scene.ada.id,
+      eventData: { oldStatus: "to-do", newStatus: "done" },
+    });
+    await waitForQueued(1);
+
+    await flushNotificationEmails(later(301));
+    expect(sendBatch).not.toHaveBeenCalled();
+    expect(sendEmail).toHaveBeenCalledWith(
+      scene.cid.email,
+      "Статус задачи изменён",
+      expect.objectContaining({
+        title: "Статус задачи изменён",
+        message: `Статус задачи «${scene.target.title}» изменён с «К выполнению» на «Готово»`,
+        locale: "ru-RU",
+      }),
+    );
+  });
+
   it("leaves rows claimed by another sender alone", async () => {
     const scene = await watcherScene();
     await threeChanges(scene);

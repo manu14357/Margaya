@@ -24,6 +24,11 @@ export {
   type SmtpSecurity,
   setSmtpConfigProvider,
 } from "./smtp-config";
+export { emailCopy, fill, notificationCopy, plural } from "./templates/copy";
+export type {
+  EmailMessages,
+  NotificationTexts,
+} from "./templates/messages.generated";
 export type {
   NotificationBatchChange,
   NotificationBatchEmailProps,
@@ -36,4 +41,9 @@ export type {
   DigestWorkspace,
   NotificationDigestEmailProps,
 } from "./templates/notification-digest";
+export {
+  type EmailLocale,
+  emailLocales,
+  resolveEmailLocale,
+} from "./templates/resolve-locale";
 export { sendTestEmail } from "./test-email";

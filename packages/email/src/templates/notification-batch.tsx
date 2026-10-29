@@ -1,5 +1,6 @@
 import { Link, Section, Text } from "@react-email/components";
 import React from "react";
+import { emailCopy, plural } from "./copy";
 import { resolveEmailLocale } from "./resolve-locale";
 import { EmailShell, styles } from "./shell";
 
@@ -33,48 +34,6 @@ export type NotificationBatchEmailProps = {
   locale?: string | null;
 };
 
-const messages = {
-  en: {
-    preview: "Your recent Margaya updates",
-    title: (count: number) =>
-      count === 1 ? "1 new update" : `${count} new updates`,
-    subtitle: "Changes on your tasks, grouped since the last email.",
-    by: "by",
-    open: "Open task",
-    manage: "Manage notification settings",
-    footer: "Margaya notification",
-  },
-  de: {
-    preview: "Deine neuesten Margaya-Updates",
-    title: (count: number) =>
-      count === 1 ? "1 neue Aktualisierung" : `${count} neue Aktualisierungen`,
-    subtitle:
-      "Aenderungen an deinen Aufgaben, gesammelt seit der letzten E-Mail.",
-    by: "von",
-    open: "Aufgabe oeffnen",
-    manage: "Benachrichtigungseinstellungen verwalten",
-    footer: "Margaya-Benachrichtigung",
-  },
-  vi: {
-    preview: "Các cập nhật Margaya gần đây của bạn",
-    title: (count: number) => `${count} cập nhật mới`,
-    subtitle: "Thay đổi trên các công việc của bạn kể từ email trước.",
-    by: "bởi",
-    open: "Mở công việc",
-    manage: "Quản lý cài đặt thông báo",
-    footer: "Thông báo Margaya",
-  },
-  ja: {
-    preview: "Margaya の最近の更新",
-    title: (count: number) => `${count} 件の新しい更新`,
-    subtitle: "前回のメール以降のタスクの変更をまとめました。",
-    by: "変更者:",
-    open: "タスクを開く",
-    manage: "通知設定を管理",
-    footer: "Margaya 通知",
-  },
-} as const;
-
 const groupStyle = {
   margin: "0 0 16px",
   padding: "12px 14px",
@@ -102,8 +61,9 @@ const NotificationBatchEmail = ({
   settingsUrl,
   locale,
 }: NotificationBatchEmailProps) => {
-  const copy = messages[resolveEmailLocale(locale)];
-  const title = copy.title(countChanges(groups));
+  const lang = resolveEmailLocale(locale);
+  const copy = emailCopy(lang).notificationBatch;
+  const title = plural(copy, "title", lang, countChanges(groups));
 
   return (
     <EmailShell preview={copy.preview} title={title} subtitle={copy.subtitle}>

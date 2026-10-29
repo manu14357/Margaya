@@ -66,7 +66,7 @@ describe("getInvitationEmailSubject", () => {
     );
   });
 
-  it("uses the English fallback for unsupported locales", () => {
+  it("uses Spanish copy for Spanish locales", () => {
     const locale = "es-ES";
     const inviterName = "Alice";
     const workspaceName = "Producto";
@@ -77,6 +77,26 @@ describe("getInvitationEmailSubject", () => {
       workspaceName,
     );
 
-    expect(subject).toBe("Alice invited you to join Producto on Margaya");
+    expect(subject).toBe("Alice te ha invitado a unirte a Producto en Margaya");
+  });
+
+  it("uses Simplified Chinese copy for Chinese locales", () => {
+    expect(getInvitationEmailSubject("zh-CN", "Alice", "产品")).toBe(
+      "Alice 邀请你加入 Margaya 上的 产品",
+    );
+  });
+
+  it("uses the English fallback for unknown locales", () => {
+    const locale = "sv-SE";
+    const inviterName = "Alice";
+    const workspaceName = "Produkt";
+
+    const subject = getInvitationEmailSubject(
+      locale,
+      inviterName,
+      workspaceName,
+    );
+
+    expect(subject).toBe("Alice invited you to join Produkt on Margaya");
   });
 });

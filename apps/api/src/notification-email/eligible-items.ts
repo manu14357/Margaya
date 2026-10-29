@@ -19,7 +19,7 @@ import {
 import { notMutedSql } from "../notification/recipients";
 import { notificationResourceAccess } from "../notification/resource-access";
 import {
-  buildDeliveryContent,
+  buildRecipientDeliveryContent,
   buildTaskUrl,
 } from "../notification-preferences/delivery";
 import { visibleTaskCondition } from "../task/scope";
@@ -160,15 +160,18 @@ export async function loadEligibleBatchItems(
       continue;
     }
 
-    const content = buildDeliveryContent({
-      type: row.type,
-      title: row.title ?? null,
-      content: row.content ?? null,
-      eventData:
-        row.eventData && typeof row.eventData === "object"
-          ? (row.eventData as Record<string, unknown>)
-          : null,
-    });
+    const content = buildRecipientDeliveryContent(
+      {
+        type: row.type,
+        title: row.title ?? null,
+        content: row.content ?? null,
+        eventData:
+          row.eventData && typeof row.eventData === "object"
+            ? (row.eventData as Record<string, unknown>)
+            : null,
+      },
+      user.locale,
+    );
     items.push({
       notificationId: row.id,
       createdAt: row.createdAt,

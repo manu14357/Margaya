@@ -12,7 +12,9 @@ import {
 
 const sendTrialReminderEmail = vi.fn();
 
-vi.mock("@margaya/email", () => ({
+vi.mock("@margaya/email", async () => ({
+  ...(await import("../../packages/email/src/templates/resolve-locale")),
+  ...(await import("../../packages/email/src/templates/copy")),
   isSmtpConfigured: () => true,
   sendTrialReminderEmail: (...args: unknown[]) =>
     sendTrialReminderEmail(...args),
@@ -134,6 +136,24 @@ describe("trial reminder emails", () => {
     ];
     expect(subject).toContain("has ended");
     expect(data.daysLeft).toBe(0);
+  });
+
+  it("writes the subject and the body in the owner's locale", async () => {
+    const { user } = await seedTrial(new Date(Date.now() + 2.5 * DAY));
+    await db
+      .update(schema.userTable)
+      .set({ locale: "ru-RU" })
+      .where(eq(schema.userTable.id, user.id));
+
+    await checkTrialReminders();
+
+    const [, subject, data] = sendTrialReminderEmail.mock.calls[0] as [
+      string,
+      string,
+      { daysLeft: number; locale: string | null },
+    ];
+    expect(subject).toContain("закончится через 3 дня");
+    expect(data.locale).toBe("ru-RU");
   });
 
   it("never sends the same reminder twice", async () => {

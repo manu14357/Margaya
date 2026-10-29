@@ -1,5 +1,6 @@
 import { apiKey } from "@better-auth/api-key";
 import {
+  emailCopy,
   OTP_EXPIRY_SECONDS,
   sendEmailChangedEmail,
   sendMagicLinkEmail,
@@ -182,58 +183,8 @@ async function getUserLocale(email: string) {
   return user?.locale ?? null;
 }
 
-function getLocaleKey(locale?: string | null) {
-  const normalized = locale?.toLowerCase();
-  if (normalized?.startsWith("de")) return "de";
-  if (normalized?.startsWith("vi")) return "vi";
-  if (normalized?.startsWith("ja")) return "ja";
-  return "en";
-}
-
 function getAuthEmailCopy(locale?: string | null) {
-  const localeKey = getLocaleKey(locale);
-
-  if (localeKey === "de") {
-    return {
-      magicLinkSubject: "Anmeldelink für Margaya",
-      otpSubject: "Bestätigungscode für Margaya",
-      verifyEmailSubject: "Bestätige deine E-Mail-Adresse für Margaya",
-      passwordResetSubject: "Setze dein Margaya-Passwort zurück",
-      changeEmailSubject: "Bestätige deine neue E-Mail-Adresse für Margaya",
-      emailChangedSubject: "Deine Margaya-E-Mail-Adresse wurde geändert",
-    };
-  }
-
-  if (localeKey === "vi") {
-    return {
-      magicLinkSubject: "Liên kết đăng nhập Margaya",
-      otpSubject: "Mã xác minh Margaya",
-      verifyEmailSubject: "Xác minh email của bạn cho Margaya",
-      passwordResetSubject: "Đặt lại mật khẩu Margaya của bạn",
-      changeEmailSubject: "Xác nhận địa chỉ email mới cho Margaya",
-      emailChangedSubject: "Địa chỉ email Margaya của bạn đã được thay đổi",
-    };
-  }
-
-  if (localeKey === "ja") {
-    return {
-      magicLinkSubject: "Margaya ログインリンク",
-      otpSubject: "Margaya 認証コード",
-      verifyEmailSubject: "Margaya メールアドレスの確認",
-      passwordResetSubject: "Margaya パスワードのリセット",
-      changeEmailSubject: "Margaya 新しいメールアドレスの確認",
-      emailChangedSubject: "Margaya のメールアドレスが変更されました",
-    };
-  }
-
-  return {
-    magicLinkSubject: "Login for Margaya",
-    otpSubject: "Authentication code for Margaya",
-    verifyEmailSubject: "Verify your email for Margaya",
-    passwordResetSubject: "Reset your Margaya password",
-    changeEmailSubject: "Confirm your new email for Margaya",
-    emailChangedSubject: "Your Margaya email address was changed",
-  };
+  return emailCopy(locale).authSubjects;
 }
 
 function getDeviceAuthClientIds(): Set<string> {

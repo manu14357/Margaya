@@ -84,6 +84,21 @@ describe("sendTestEmail", () => {
     }
   });
 
+  it("sends the copy in the given locale", async () => {
+    const sink = await relay({ AUTH: "235 ok\r\n" });
+    useRelay(sink.port);
+    try {
+      const result = await sendTestEmail("admin@example.test", {
+        instanceName: "Acme",
+        locale: "de-DE",
+      });
+      expect(result.sent).toBe(true);
+      expect(sink.subjects).toEqual(["Subject: Test-E-Mail von Acme"]);
+    } finally {
+      await sink.close();
+    }
+  });
+
   it("classifies a rejected login without echoing it", async () => {
     vi.spyOn(console, "error").mockImplementation(() => undefined);
     const sink = await relay({ AUTH: "535 5.7.8 bad credentials\r\n" });

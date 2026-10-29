@@ -1,4 +1,9 @@
-import { isSmtpConfigured, sendTrialReminderEmail } from "@margaya/email";
+import {
+  emailCopy,
+  fill,
+  isSmtpConfigured,
+  sendTrialReminderEmail,
+} from "@margaya/email";
 import { and, asc, eq, gt, isNotNull, isNull, lte } from "drizzle-orm";
 import { isBillingEnabled } from "../billing/config";
 import db from "../database";
@@ -32,19 +37,27 @@ function sleep(ms: number) {
 
 type ReminderType = "trial_ending" | "trial_expired";
 
-const REMINDERS: {
-  type: ReminderType;
-  subject: (workspaceName: string) => string;
-}[] = [
-  {
-    type: "trial_ending",
-    subject: (name) => `Your ${name} trial ends in 3 days`,
-  },
-  {
-    type: "trial_expired",
-    subject: (name) => `Your ${name} trial has ended`,
-  },
+const REMINDERS: { type: ReminderType }[] = [
+  { type: "trial_ending" },
+  { type: "trial_expired" },
 ];
+
+// The ending window (2 to 3 days out) always rounds up to 3 days left, so the
+// trialEnding subject names three days, in each language's form for 3.
+const SUBJECT_KEYS = {
+  trial_ending: "trialEnding",
+  trial_expired: "trialExpired",
+} as const satisfies Record<ReminderType, string>;
+
+export function trialReminderSubject(
+  type: ReminderType,
+  workspaceName: string,
+  locale?: string | null,
+): string {
+  return fill(emailCopy(locale).trialSubjects[SUBJECT_KEYS[type]], {
+    workspaceName,
+  });
+}
 
 function clientUrl() {
   return (
@@ -81,6 +94,7 @@ async function getWorkspacesNeedingReminder(
       workspaceName: workspaceTable.name,
       trialEndsAt: workspaceBillingTable.trialEndsAt,
       email: userTable.email,
+      locale: userTable.locale,
     })
     .from(workspaceBillingTable)
     .innerJoin(
@@ -184,11 +198,12 @@ export async function checkTrialReminders(): Promise<{ degraded: boolean }> {
 
       await sendTrialReminderEmail(
         row.email,
-        reminder.subject(row.workspaceName),
+        trialReminderSubject(reminder.type, row.workspaceName, row.locale),
         {
           workspaceName: row.workspaceName,
           daysLeft,
           billingUrl: `${clientUrl()}/dashboard/settings/workspace/billing`,
+          locale: row.locale,
         },
       );
       sent++;

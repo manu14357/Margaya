@@ -19,6 +19,7 @@ import {
   safeOutboundError,
   sendOutboundRequest,
 } from "../utils/outbound-request";
+import { localizeNotificationText } from "./notification-text";
 import { decryptSecret } from "./secrets";
 
 type ResolvedNotificationContext = {
@@ -265,6 +266,24 @@ export function buildDeliveryContent(notification: {
   }
 }
 
+/**
+ * What an email or push message to one person says: the notification in
+ * their language, rendered from `type` and `eventData`. English, free text
+ * and anything that cannot be rendered keep buildDeliveryContent's wording,
+ * which webhooks also send.
+ */
+export function buildRecipientDeliveryContent(
+  notification: Parameters<typeof buildDeliveryContent>[0],
+  locale: string | null | undefined,
+): DeliveryContent {
+  const english = buildDeliveryContent(notification);
+  const localized = localizeNotificationText(notification, locale);
+  return {
+    title: localized?.title ?? english.title,
+    body: localized?.body ?? english.body,
+  };
+}
+
 async function resolveNotificationContext(notification: {
   resourceType: string | null;
   resourceId: string | null;
@@ -508,7 +527,7 @@ export async function deliverNotification(
     return;
   }
 
-  const content = buildDeliveryContent({
+  const source = {
     type: notification.type,
     title: notification.title ?? null,
     content: notification.content ?? null,
@@ -516,7 +535,11 @@ export async function deliverNotification(
       notification.eventData && typeof notification.eventData === "object"
         ? (notification.eventData as Record<string, unknown>)
         : null,
-  });
+  };
+  // Webhooks are machine payloads and keep the English text; email and
+  // push speak the recipient's language.
+  const content = buildDeliveryContent(source);
+  const personal = buildRecipientDeliveryContent(source, user.locale);
 
   const webhookPayload = {
     notification: {
@@ -561,11 +584,10 @@ export async function deliverNotification(
     deliveries.push(
       getEmailBatchWindowSeconds() > 0
         ? enqueueNotificationEmail(notification.id, notification.userId)
-        : sendNotificationEmail(user.email, content.title, {
-            title: content.title,
-            message: content.body,
+        : sendNotificationEmail(user.email, personal.title, {
+            title: personal.title,
+            message: personal.body,
             actionUrl: context.taskUrl,
-            actionLabel: context.taskUrl ? "Open in Margaya" : undefined,
             locale: user.locale ?? null,
           }).then(() => undefined),
     );
@@ -582,8 +604,8 @@ export async function deliverNotification(
         serverUrl: decryptedPreference.ntfyServerUrl,
         topic: decryptedPreference.ntfyTopic,
         token: decryptedPreference.ntfyToken,
-        title: content.title,
-        body: content.body,
+        title: personal.title,
+        body: personal.body,
         clickUrl: context.taskUrl,
       }),
     );
@@ -599,8 +621,8 @@ export async function deliverNotification(
       sendGotifyNotification({
         serverUrl: decryptedPreference.gotifyServerUrl,
         token: decryptedPreference.gotifyToken,
-        title: content.title,
-        body: content.body,
+        title: personal.title,
+        body: personal.body,
         clickUrl: context.taskUrl,
       }),
     );

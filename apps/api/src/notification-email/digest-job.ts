@@ -6,6 +6,7 @@ import { withJobLease } from "../scheduler/leader-lock";
 import { getUserTimezone } from "../utils/timezone";
 import { buildDigestWorkspaces } from "./digest-content";
 import { digestSince, isDigestDue } from "./digest-schedule";
+import { digestSubject } from "./digest-subject";
 import { notificationSettingsUrl } from "./links";
 
 export const NOTIFICATION_DIGEST_LEASE = "notification-digest";
@@ -16,11 +17,6 @@ const LEASE_MS = 14 * 60 * 1000;
 const preference = userNotificationPreferenceTable;
 
 export type DigestOutcome = { sent: number; degraded: boolean };
-
-const SUBJECTS = {
-  daily: "Your Margaya daily digest",
-  weekly: "Your Margaya weekly digest",
-} as const;
 
 /**
  * Stamps the period as handled, only if no one else did since we read it.
@@ -100,7 +96,7 @@ export async function sendDigestIfDue(
     if (workspaces.length === 0) return false;
     const result = await sendNotificationDigestEmail(
       candidate.email,
-      SUBJECTS[frequency],
+      digestSubject(frequency, candidate.locale),
       {
         frequency,
         workspaces,

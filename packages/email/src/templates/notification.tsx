@@ -1,6 +1,6 @@
 import { Link, Section, Text } from "@react-email/components";
 import React from "react";
-import { resolveEmailLocale } from "./resolve-locale";
+import { emailCopy } from "./copy";
 import { EmailShell, styles } from "./shell";
 
 void React;
@@ -13,34 +13,6 @@ export type NotificationEmailProps = {
   locale?: string | null;
 };
 
-const messages = {
-  en: {
-    preview: "You have a new Margaya notification",
-    subtitle: "A notification matched your delivery preferences.",
-    footer: "Margaya notification",
-    actionLabel: "Open in Margaya",
-  },
-  de: {
-    preview: "Du hast eine neue Margaya-Benachrichtigung",
-    subtitle:
-      "Eine Benachrichtigung entspricht deinen Zustellungs-Einstellungen.",
-    footer: "Margaya-Benachrichtigung",
-    actionLabel: "In Margaya oeffnen",
-  },
-  vi: {
-    preview: "Bạn có thông báo mới từ Margaya",
-    subtitle: "Một thông báo khớp với tùy chọn nhận thông báo của bạn.",
-    footer: "Thông báo Margaya",
-    actionLabel: "Mở trong Margaya",
-  },
-  ja: {
-    preview: "Margaya の新しい通知",
-    subtitle: "配信設定に一致する通知がありました。",
-    footer: "Margaya 通知",
-    actionLabel: "Margaya で開く",
-  },
-} as const;
-
 const NotificationEmail = ({
   title,
   message,
@@ -48,7 +20,7 @@ const NotificationEmail = ({
   actionLabel,
   locale,
 }: NotificationEmailProps) => {
-  const copy = messages[resolveEmailLocale(locale)];
+  const copy = emailCopy(locale).notification;
 
   return (
     <EmailShell preview={copy.preview} title={title} subtitle={copy.subtitle}>

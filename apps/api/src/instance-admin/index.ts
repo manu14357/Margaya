@@ -430,6 +430,9 @@ const instanceAdmin = apiRouter()
         to: c.req.valid("json").to,
         callerEmail: c.get("userEmail"),
         callerId: c.get("userId"),
+        // The session user carries the `locale` additional field.
+        callerLocale: (c.get("user") as { locale?: string | null } | null)
+          ?.locale,
       }),
       200,
     ),

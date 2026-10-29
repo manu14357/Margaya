@@ -236,4 +236,44 @@ describe("notification digests", () => {
       }),
     );
   });
+
+  it("lists mentions in a Russian recipient's language", async () => {
+    const scene = await digestUser("daily");
+    await db
+      .update(schema.userTable)
+      .set({ locale: "ru-RU" })
+      .where(eq(schema.userTable.id, scene.cid.id));
+    const target = await scene.task([scene.ada.id]);
+    await db.insert(schema.notificationTable).values({
+      userId: scene.cid.id,
+      workspaceId: scene.workspace.id,
+      type: "task_mention",
+      resourceType: "task",
+      resourceId: target.id,
+      eventData: {
+        taskTitle: target.title,
+        mentionerName: "Ada",
+        source: "comment",
+      },
+      createdAt: new Date("2026-10-14T06:00:00.000Z"),
+    });
+
+    await sendNotificationDigests(wednesday("08:15"));
+    expect(sendDigest).toHaveBeenCalledWith(
+      scene.cid.email,
+      "Ваша ежедневная сводка Margaya",
+      expect.objectContaining({
+        workspaces: [
+          expect.objectContaining({
+            mentions: [
+              expect.objectContaining({
+                title: "Ada упомянул вас",
+                detail: `Ada упомянул вас в комментарии к задаче ${target.title}`,
+              }),
+            ],
+          }),
+        ],
+      }),
+    );
+  });
 });

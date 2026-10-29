@@ -1,3 +1,4 @@
+import { readEmailMessages, renderEmailMessages } from "./email-messages.mjs";
 import {
   defaultLocale,
   flattenLocale,
@@ -215,6 +216,23 @@ for (const locale of filteredLocales) {
     await writeJson(locale.path, locale.data);
     console.log(
       "  Added missing keys, using the locale's own plural wording where it had one.",
+    );
+    console.log(
+      "  The added values are English placeholders: translate each one before committing (pnpm i18n:report lists them).",
+    );
+  }
+}
+
+// The email package reads its copy from a file generated from the JSON.
+if (!localeFilter) {
+  const { source, missing } = renderEmailMessages(locales);
+  if (missing) {
+    hasIssues = true;
+    console.log(`No "emails" namespace in: ${missing.join(", ")}.`);
+  } else if ((await readEmailMessages()) !== source) {
+    hasIssues = true;
+    console.log(
+      "packages/email/src/templates/messages.generated.ts is out of date. Run `pnpm i18n:emails`.",
     );
   }
 }

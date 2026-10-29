@@ -59,6 +59,32 @@ describe("delivery of watcher notifications", () => {
     expect(sendEmail).toHaveBeenCalledTimes(1);
   });
 
+  it("emails a German subscriber in German, with translated column names", async () => {
+    const { ada, cid, target } = await subscriberWithEmail(true);
+    await db
+      .update(schema.userTable)
+      .set({ locale: "de-DE" })
+      .where(eq(schema.userTable.id, cid.id));
+    await notifyTaskEvent({
+      taskId: target.id,
+      kind: "statusChanged",
+      actorId: ada.id,
+      eventData: { oldStatus: "in-progress", newStatus: "in-review" },
+    });
+    await vi.waitFor(() => expect(sendEmail).toHaveBeenCalledTimes(1), {
+      timeout: 5000,
+    });
+    expect(sendEmail).toHaveBeenCalledWith(
+      cid.email,
+      "Aufgabenstatus geändert",
+      expect.objectContaining({
+        title: "Aufgabenstatus geändert",
+        message: `Der Status der Aufgabe "${target.title}" wurde von "In Bearbeitung" zu "In Prüfung" geändert`,
+        locale: "de-DE",
+      }),
+    );
+  });
+
   it("delivers nothing under an inactive workspace rule, keeping the in-app row", async () => {
     const { ada, cid, target } = await subscriberWithEmail(false);
     await notifyTaskEvent({

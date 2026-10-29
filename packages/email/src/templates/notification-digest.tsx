@@ -1,5 +1,6 @@
 import { Link, Section, Text } from "@react-email/components";
 import React from "react";
+import { emailCopy, fill, plural } from "./copy";
 import { resolveEmailLocale } from "./resolve-locale";
 import { EmailShell, styles } from "./shell";
 
@@ -67,108 +68,6 @@ export type NotificationDigestEmailProps = {
   locale?: string | null;
 };
 
-const messages = {
-  en: {
-    title: { daily: "Your daily digest", weekly: "Your weekly digest" },
-    preview: "Your Margaya summary",
-    subtitle:
-      "Your open tasks that are overdue or due within 7 days, and what is new in your inbox.",
-    dueHeading: "Due soon and overdue",
-    overdue: "Overdue",
-    due: "Due",
-    more: (count: number) => `and ${count} more`,
-    mentionsHeading: (count: number) =>
-      count === 1 ? "1 new mention" : `${count} new mentions`,
-    unread: (count: number) =>
-      count === 1
-        ? "1 unread notification in your inbox"
-        : `${count} unread notifications in your inbox`,
-    openInbox: "Open inbox",
-    manage: "Manage notification settings",
-    footer: "You chose to receive this digest.",
-    blockedHeading: "Blocked",
-    waitingOn: (keys: string) => `Waiting on ${keys}`,
-    hiddenBlockers: (count: number) =>
-      count === 1 ? "1 task you can't see" : `${count} tasks you can't see`,
-    followingHeading: "Changes on tasks you follow",
-    changes: (count: number) => (count === 1 ? "1 change" : `${count} changes`),
-  },
-  de: {
-    title: {
-      daily: "Deine taegliche Zusammenfassung",
-      weekly: "Deine woechentliche Zusammenfassung",
-    },
-    preview: "Deine Margaya-Zusammenfassung",
-    subtitle:
-      "Deine offenen Aufgaben, die ueberfaellig oder in 7 Tagen faellig sind, und Neues in deinem Posteingang.",
-    dueHeading: "Bald faellig und ueberfaellig",
-    overdue: "Ueberfaellig",
-    due: "Faellig",
-    more: (count: number) => `und ${count} weitere`,
-    mentionsHeading: (count: number) =>
-      count === 1 ? "1 neue Erwaehnung" : `${count} neue Erwaehnungen`,
-    unread: (count: number) =>
-      count === 1
-        ? "1 ungelesene Benachrichtigung im Posteingang"
-        : `${count} ungelesene Benachrichtigungen im Posteingang`,
-    openInbox: "Posteingang oeffnen",
-    manage: "Benachrichtigungseinstellungen verwalten",
-    footer: "Du hast diese Zusammenfassung abonniert.",
-    blockedHeading: "Blockiert",
-    waitingOn: (keys: string) => `Wartet auf ${keys}`,
-    hiddenBlockers: (count: number) =>
-      count === 1
-        ? "1 Aufgabe, die du nicht sehen kannst"
-        : `${count} Aufgaben, die du nicht sehen kannst`,
-    followingHeading: "Aenderungen an Aufgaben, denen du folgst",
-    changes: (count: number) =>
-      count === 1 ? "1 Aenderung" : `${count} Aenderungen`,
-  },
-  vi: {
-    title: {
-      daily: "Bản tóm tắt hằng ngày",
-      weekly: "Bản tóm tắt hằng tuần",
-    },
-    preview: "Bản tóm tắt Margaya của bạn",
-    subtitle:
-      "Công việc đang mở đã quá hạn hoặc đến hạn trong 7 ngày, và nội dung mới trong hộp thư.",
-    dueHeading: "Sắp đến hạn và quá hạn",
-    overdue: "Quá hạn",
-    due: "Hạn",
-    more: (count: number) => `và ${count} công việc khác`,
-    mentionsHeading: (count: number) => `${count} lượt nhắc mới`,
-    unread: (count: number) => `${count} thông báo chưa đọc trong hộp thư`,
-    openInbox: "Mở hộp thư",
-    manage: "Quản lý cài đặt thông báo",
-    footer: "Bạn đã chọn nhận bản tóm tắt này.",
-    blockedHeading: "Đang bị chặn",
-    waitingOn: (keys: string) => `Đang chờ ${keys}`,
-    hiddenBlockers: (count: number) => `${count} công việc bạn không xem được`,
-    followingHeading: "Thay đổi trên công việc bạn theo dõi",
-    changes: (count: number) => `${count} thay đổi`,
-  },
-  ja: {
-    title: { daily: "毎日のダイジェスト", weekly: "毎週のダイジェスト" },
-    preview: "Margaya のまとめ",
-    subtitle:
-      "期限切れまたは 7 日以内に期限を迎える未完了タスクと、受信トレイの新着です。",
-    dueHeading: "期限間近・期限切れ",
-    overdue: "期限切れ",
-    due: "期限",
-    more: (count: number) => `ほか ${count} 件`,
-    mentionsHeading: (count: number) => `${count} 件の新しいメンション`,
-    unread: (count: number) => `受信トレイに未読の通知が ${count} 件あります`,
-    openInbox: "受信トレイを開く",
-    manage: "通知設定を管理",
-    footer: "このダイジェストの受信を選択しています。",
-    blockedHeading: "ブロック中",
-    waitingOn: (keys: string) => `${keys} を待っています`,
-    hiddenBlockers: (count: number) => `表示できないタスク ${count} 件`,
-    followingHeading: "フォロー中のタスクの変更",
-    changes: (count: number) => `${count} 件の変更`,
-  },
-} as const;
-
 const workspaceStyle = {
   margin: "0 0 16px",
   padding: "12px 14px",
@@ -200,7 +99,8 @@ const NotificationDigestEmail = ({
   settingsUrl,
   locale,
 }: NotificationDigestEmailProps) => {
-  const copy = messages[resolveEmailLocale(locale)];
+  const lang = resolveEmailLocale(locale);
+  const copy = emailCopy(lang).notificationDigest;
 
   return (
     <EmailShell
@@ -230,7 +130,7 @@ const NotificationDigestEmail = ({
                 ))}
                 {workspace.moreDueTasks > 0 ? (
                   <Text style={{ ...styles.muted, margin: "4px 0 0" }}>
-                    {copy.more(workspace.moreDueTasks)}
+                    {plural(copy, "more", lang, workspace.moreDueTasks)}
                   </Text>
                 ) : null}
               </>
@@ -238,7 +138,12 @@ const NotificationDigestEmail = ({
             {workspace.mentionCount > 0 ? (
               <>
                 <Text style={sectionHeading}>
-                  {copy.mentionsHeading(workspace.mentionCount)}
+                  {plural(
+                    copy,
+                    "mentionsHeading",
+                    lang,
+                    workspace.mentionCount,
+                  )}
                 </Text>
                 {workspace.mentions.map((mention) => (
                   <Text key={mention.id} style={line}>
@@ -264,7 +169,14 @@ const NotificationDigestEmail = ({
                   const waiting = [
                     ...task.blockers,
                     ...(task.hiddenBlockers > 0
-                      ? [copy.hiddenBlockers(task.hiddenBlockers)]
+                      ? [
+                          plural(
+                            copy,
+                            "hiddenBlockers",
+                            lang,
+                            task.hiddenBlockers,
+                          ),
+                        ]
                       : []),
                   ].join(", ");
                   return (
@@ -274,14 +186,14 @@ const NotificationDigestEmail = ({
                         {task.title}
                       </Link>
                       <span style={{ color: "#5f6b65" }}>
-                        {` · ${copy.waitingOn(waiting)} · ${task.projectName}`}
+                        {` · ${fill(copy.waitingOn, { keys: waiting })} · ${task.projectName}`}
                       </span>
                     </Text>
                   );
                 })}
                 {workspace.brief.moreBlocked > 0 ? (
                   <Text style={{ ...styles.muted, margin: "4px 0 0" }}>
-                    {copy.more(workspace.brief.moreBlocked)}
+                    {plural(copy, "more", lang, workspace.brief.moreBlocked)}
                   </Text>
                 ) : null}
               </>
@@ -296,20 +208,20 @@ const NotificationDigestEmail = ({
                       {task.title}
                     </Link>
                     <span style={{ color: "#5f6b65" }}>
-                      {` · ${copy.changes(task.changes)} · ${task.projectName}`}
+                      {` · ${plural(copy, "changes", lang, task.changes)} · ${task.projectName}`}
                     </span>
                   </Text>
                 ))}
                 {workspace.brief.moreFollowing > 0 ? (
                   <Text style={{ ...styles.muted, margin: "4px 0 0" }}>
-                    {copy.more(workspace.brief.moreFollowing)}
+                    {plural(copy, "more", lang, workspace.brief.moreFollowing)}
                   </Text>
                 ) : null}
               </>
             ) : null}
             {workspace.unreadCount > 0 ? (
               <Text style={{ ...line, margin: "10px 0 0" }}>
-                {copy.unread(workspace.unreadCount)} ·{" "}
+                {plural(copy, "unread", lang, workspace.unreadCount)} ·{" "}
                 <Link href={workspace.inboxUrl}>{copy.openInbox}</Link>
               </Text>
             ) : null}

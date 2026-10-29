@@ -33,7 +33,12 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
  */
 export async function sendTestEmail(
   to: string,
-  options: { instanceName: string; timeoutMs?: number },
+  options: {
+    instanceName: string;
+    /** The requesting admin's app locale; English when absent. */
+    locale?: string | null;
+    timeoutMs?: number;
+  },
 ): Promise<SmtpTestResult> {
   const config = currentSmtpConfig();
   if (!config || !isSmtpConfigComplete(config)) {
@@ -56,14 +61,13 @@ export async function sendTestEmail(
     await withTimeout(
       (async () => {
         await transport.verify();
-        const html = await render(
-          TestEmail({ instanceName: options.instanceName }),
-        );
+        const { instanceName, locale } = options;
+        const html = await render(TestEmail({ instanceName, locale }));
         await transport.sendMail({
           from: config.from,
           to,
-          subject: testEmailSubject(options.instanceName),
-          text: testEmailText(options.instanceName),
+          subject: testEmailSubject(instanceName, locale),
+          text: testEmailText(instanceName, locale),
           html,
         });
       })(),

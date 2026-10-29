@@ -35,17 +35,21 @@ async function sendBatch(recipient: BatchRecipient, items: BatchItem[]) {
       title: only.title,
       message: only.body,
       actionUrl: only.task?.url ?? null,
-      actionLabel: only.task ? "Open in Margaya" : undefined,
+      // No actionLabel: the template's default is in the recipient's language.
       locale: recipient.locale,
     });
     return;
   }
   const groups = groupBatchItems(items);
-  await sendNotificationBatchEmail(recipient.email, batchSubject(groups), {
-    groups,
-    settingsUrl: notificationSettingsUrl(),
-    locale: recipient.locale,
-  });
+  await sendNotificationBatchEmail(
+    recipient.email,
+    batchSubject(groups, recipient.locale),
+    {
+      groups,
+      settingsUrl: notificationSettingsUrl(),
+      locale: recipient.locale,
+    },
+  );
 }
 
 /**

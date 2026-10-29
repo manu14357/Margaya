@@ -31,7 +31,7 @@ import { computeMyBrief } from "../insight/my-brief";
 import { inboxViewCondition } from "../notification/inbox";
 import { notificationResourceAccess } from "../notification/resource-access";
 import {
-  buildDeliveryContent,
+  buildRecipientDeliveryContent,
   buildTaskUrl,
 } from "../notification-preferences/delivery";
 import { projectVisibleSql } from "../project/visibility";
@@ -288,15 +288,18 @@ export async function buildDigestWorkspaces(
     const listedMentions: DigestMention[] = mentions
       .slice(0, MAX_MENTIONS_LISTED)
       .map((row) => {
-        const content = buildDeliveryContent({
-          type: row.type,
-          title: row.title ?? null,
-          content: row.content ?? null,
-          eventData:
-            row.eventData && typeof row.eventData === "object"
-              ? (row.eventData as Record<string, unknown>)
-              : null,
-        });
+        const content = buildRecipientDeliveryContent(
+          {
+            type: row.type,
+            title: row.title ?? null,
+            content: row.content ?? null,
+            eventData:
+              row.eventData && typeof row.eventData === "object"
+                ? (row.eventData as Record<string, unknown>)
+                : null,
+          },
+          input.locale,
+        );
         return {
           id: row.id,
           title: content.title,

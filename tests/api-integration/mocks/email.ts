@@ -1,6 +1,17 @@
 import type { EmailResult } from "../../../packages/email/src/send-email";
 
 export { OTP_EXPIRY_SECONDS } from "../../../packages/email/src/otp-expiry";
+export {
+  emailCopy,
+  fill,
+  notificationCopy,
+  plural,
+} from "../../../packages/email/src/templates/copy";
+export {
+  type EmailLocale,
+  emailLocales,
+  resolveEmailLocale,
+} from "../../../packages/email/src/templates/resolve-locale";
 
 export async function sendMagicLinkEmail(
   _to: string,
@@ -93,7 +104,7 @@ export function setTestEmailResult(result: TestEmailResult): void {
 
 export async function sendTestEmail(
   _to: string,
-  _options: { instanceName: string },
+  _options: { instanceName: string; locale?: string | null },
 ): Promise<TestEmailResult> {
   return nextTestEmailResult;
 }

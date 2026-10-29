@@ -1,4 +1,10 @@
-import type { NotificationBatchGroup } from "@margaya/email";
+import {
+  emailCopy,
+  fill,
+  type NotificationBatchGroup,
+  plural,
+  resolveEmailLocale,
+} from "@margaya/email";
 
 /** One queued notification that passed every send-time check. */
 export type BatchItem = {
@@ -68,11 +74,16 @@ export function groupBatchItems(
 }
 
 /** The subject of a batched email (two or more changes). */
-export function batchSubject(groups: readonly NotificationBatchGroup[]) {
+export function batchSubject(
+  groups: readonly NotificationBatchGroup[],
+  locale?: string | null,
+) {
+  const lang = resolveEmailLocale(locale);
+  const copy = emailCopy(lang).batchSubject;
   const changes = groups.reduce((sum, group) => sum + group.changes.length, 0);
   const [only] = groups;
   if (groups.length === 1 && only?.url) {
-    return `${changes} updates on ${only.title}`;
+    return fill(plural(copy, "task", lang, changes), { title: only.title });
   }
-  return `${changes} updates in Margaya`;
+  return plural(copy, "all", lang, changes);
 }

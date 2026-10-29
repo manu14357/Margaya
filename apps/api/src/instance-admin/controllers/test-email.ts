@@ -11,6 +11,7 @@ export async function sendInstanceTestEmail(input: {
   to?: string;
   callerEmail: string;
   callerId: string;
+  callerLocale?: string | null;
 }) {
   const to = input.to || input.callerEmail;
   if (!EMAIL.test(to)) {
@@ -21,5 +22,8 @@ export async function sendInstanceTestEmail(input: {
   if (!settings.derived.smtpConfigured) {
     throw new HTTPException(409, { message: "Set up email first" });
   }
-  return sendTestEmail(to, { instanceName: settings.effective.instanceName });
+  return sendTestEmail(to, {
+    instanceName: settings.effective.instanceName,
+    locale: input.callerLocale ?? null,
+  });
 }
