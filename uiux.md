@@ -288,6 +288,8 @@ Semantic tokens are used through arbitrary values, for example `bg-[var(--status
 <meta name="theme-color" content="#0c0d0d" media="(prefers-color-scheme: dark)" />
 ```
 
+In Margaya the web app's Content-Security-Policy blocks inline scripts, so the same logic lives in `apps/web/public/theme-init.js`, loaded as a blocking script at the top of `<head>`. It reads the theme from the `user-preferences` store in localStorage, which also covers the high-contrast themes.
+
 ---
 
 ## 4. Typography
