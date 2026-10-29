@@ -10,16 +10,10 @@
 			"markAllRead": "すべて既読にする",
 			"remove": "削除",
 			"reset": "リセット",
-			"filter": "フィルター",
-			"clearAllFilters": "すべてのフィルターをクリア",
 			"undo": "元に戻す"
 		},
 		"a11y": {
 			"toggleSidebar": "サイドバーを切り替え"
-		},
-		"sidebar": {
-			"title": "サイドバー",
-			"mobileDescription": "モバイルサイドバーを表示します。"
 		},
 		"empty": {
 			"loading": "読み込み中..."
@@ -36,29 +30,12 @@
 			"label": "パンくずリスト",
 			"more": "その他の階層"
 		},
-		"language": {
-			"english": "英語",
-			"german": "ドイツ語",
-			"greek": "ギリシャ語",
-			"macedonian": "マケドニア語",
-			"french": "フランス語",
-			"spanish": "スペイン語",
-			"dutch": "オランダ語",
-			"korean": "韓国語",
-			"chinese": "中国語",
-			"italian": "イタリア語"
-		},
 		"people": {
 			"someone": "ユーザー",
 			"unknown": "不明なユーザー"
 		},
 		"error": {
 			"title": "問題が発生しました",
-			"description": "ページが予期せずクラッシュしました。再読み込みすると解決することがあります。",
-			"troubleshooting": "トラブルシューティングの手順:",
-			"tryAgain": "もう一度試す",
-			"viewDeploymentGuide": "デプロイガイドを見る",
-			"refreshPage": "ページを更新",
 			"messages": {
 				"cors": "サーバーに接続できません。CORS設定に問題がある可能性があります。",
 				"network": "ネットワークエラーが発生しました。インターネット接続を確認して再試行してください。",
@@ -97,7 +74,6 @@
 				"keyLabel": "キー:",
 				"keyHint": "チケットIDに使用されます (例: {{example}}-123)",
 				"createButton": "プロジェクトを作成",
-				"successToast": "プロジェクトを作成しました",
 				"errorToast": "プロジェクトの作成に失敗しました",
 				"keyTaken": "このワークスペースには、キー {{key}} のプロジェクトが既に存在します",
 				"blankProject": "空のプロジェクト",
@@ -132,7 +108,6 @@
 				"successUpdated": "タスクを更新しました",
 				"createError": "タスクの作成に失敗しました",
 				"priority": "優先度",
-				"statusFallback": "進行中",
 				"startDate": "開始日",
 				"dueDate": "期限",
 				"clearStartDate": "開始日をクリア",
@@ -331,7 +306,6 @@
 			"namePlaceholder": "山田 太郎",
 			"failedSignUp": "アカウント作成に失敗しました",
 			"accountCreated": "アカウントを作成しました",
-			"passwordTooShort": "パスワードが短すぎます",
 			"creatingAccount": "アカウントを作成中...",
 			"createAccount": "アカウントを作成"
 		},
@@ -345,7 +319,6 @@
 			"invitationExpired": "招待の有効期限が切れています",
 			"errorLoadDescription": "招待情報の読み込みに失敗しました。招待が無効であるか、有効期限が切れている可能性があります。",
 			"goToSignIn": "サインインへ",
-			"workspaceLabel": "ワークスペース: {{workspaceName}}",
 			"joinWorkspace": "{{workspaceName}} に参加",
 			"inviteBodySignedIn": "<inviter>{{inviterName}}</inviter> さんからワークスペースへの招待が届いています。",
 			"inviteBodySignedOut": "<inviter>{{inviterName}}</inviter> さんから Margaya のワークスペースへの招待が届いています。",
@@ -375,7 +348,6 @@
 			"creating": "作成中...",
 			"createWorkspace": "ワークスペースを作成",
 			"workspaceCreatedTitle": "ワークスペースを作成しました",
-			"redirectingToWorkspace": "<name>{{name}}</name> に移動しています...",
 			"toast": {
 				"workspaceCreated": "ワークスペースを作成しました",
 				"createFailed": "ワークスペースの作成に失敗しました",
@@ -439,8 +411,6 @@
 			"namePlaceholder": "例: 山田 太郎",
 			"saving": "保存中...",
 			"continue": "続ける",
-			"welcome": "ようこそ、{{name}} さん！",
-			"redirecting": "ダッシュボードに移動しています...",
 			"toast": {
 				"updateSuccess": "プロフィールを更新しました",
 				"updateFailed": "プロフィールの更新に失敗しました"
@@ -541,7 +511,6 @@
 	},
 	"settings": {
 		"account": "アカウント",
-		"developer": "開発者",
 		"information": "基本情報",
 		"notifications": "通知",
 		"preferences": "環境設定",
@@ -667,23 +636,7 @@
 			"noProjectsInWorkspace": "このワークスペースにはまだプロジェクトがありません。",
 			"createRule": "ルールを作成",
 			"removeRule": "ルールを削除",
-			"toastEmailSaved": "メール通知設定を保存しました",
-			"toastEmailSaveFailed": "メール通知設定の保存に失敗しました",
-			"toastNtfySaved": "ntfy 設定を保存しました",
-			"toastNtfySaveFailed": "ntfy 設定の保存に失敗しました",
-			"toastNtfyDisconnected": "ntfy の接続を解除しました",
-			"toastNtfyDisconnectFailed": "ntfy の接続解除に失敗しました",
-			"toastGotifySaved": "Gotify 設定を保存しました",
-			"toastGotifySaveFailed": "Gotify 設定の保存に失敗しました",
-			"toastGotifyDisconnected": "Gotify の接続を解除しました",
-			"toastGotifyDisconnectFailed": "Gotify の接続解除に失敗しました",
-			"toastWebhookSaved": "Webhook 設定を保存しました",
-			"toastWebhookSaveFailed": "Webhook 設定の保存に失敗しました",
-			"toastWebhookDisconnected": "Webhook の接続を解除しました",
-			"toastWebhookDisconnectFailed": "Webhook の接続解除に失敗しました",
-			"toastRuleSaved": "{{workspaceName}} の通知ルールを保存しました",
 			"toastRuleSaveFailed": "ワークスペースの通知ルールの保存に失敗しました",
-			"toastRuleRemoved": "{{workspaceName}} の通知ルールを削除しました",
 			"toastRuleRemoveFailed": "ワークスペースの通知ルールの削除に失敗しました",
 			"toastPreferencesSaved": "通知設定を保存しました",
 			"toastPreferencesSaveFailed": "通知設定の保存に失敗しました",
@@ -739,7 +692,6 @@
 			"selectViewMode": "ビューモードを選択",
 			"board": "ボード",
 			"list": "リスト",
-			"gantt": "ガント",
 			"sidebarDefault": "サイドバーの初期状態",
 			"sidebarDefaultDescription": "起動時にサイドバーを展開した状態に保ちます",
 			"displayOptions": "表示オプション",
@@ -844,14 +796,8 @@
 			"dangerZone": "危険な操作",
 			"dangerZoneSubtitle": "取り消し不可能な破壊的操作です。",
 			"deleteWorkspace": "ワークスペースを削除",
-			"deleteWorkspaceDescription": "ワークスペースの完全削除を予約します",
-			"deleteModalTitle": "ワークスペースを削除しますか？",
-			"deleteModalDescription": "これによりワークスペース「{{name}}」とそのすべてのデータが完全に削除されます。この操作は取り消せません。",
-			"deleteModalConfirm": "ワークスペースを削除",
 			"toastUpdated": "ワークスペースを更新しました",
 			"toastUpdateError": "ワークスペースの更新に失敗しました",
-			"toastDeleted": "ワークスペースを削除しました",
-			"toastDeleteError": "ワークスペースの削除に失敗しました",
 			"validation": {
 				"nameRequired": "ワークスペース名は必須です",
 				"nameShort": "ワークスペース名は2文字以上で入力してください"
@@ -1302,21 +1248,6 @@
 			"chatGroupTitle": "チャットと Webhook",
 			"codeGroupTitle": "コードホスティング"
 		},
-		"projectVisibility": {
-			"pageTitle": "プロジェクトの公開範囲",
-			"title": "公開設定",
-			"subtitle": "プロジェクトの閲覧およびアクセス権限を管理します。",
-			"sectionTitle": "公開設定",
-			"sectionSubtitle": "公開アクセスを切り替え、公開 URL を共有します。",
-			"publicAccess": "公開アクセス",
-			"publicAccessHint": "URL を知っているすべてのユーザーにこのプロジェクトの閲覧を許可します",
-			"publicUrl": "公開 URL",
-			"publicUrlHint": "プロジェクトが公開されている場合、このリンクを共有できます",
-			"copy": "コピー",
-			"copiedToast": "コピーしました",
-			"toastUpdated": "公開設定を更新しました",
-			"toastUpdateError": "公開設定の更新に失敗しました"
-		},
 		"projectWorkflow": {
 			"pageTitle": "ワークフロー設定",
 			"title": "ワークフロー",
@@ -1533,7 +1464,6 @@
 			},
 			"connect": "Slack に接続",
 			"saveChanges": "変更を保存",
-			"update": "Slack を更新",
 			"disconnect": "接続解除"
 		},
 		"discordIntegration": {
@@ -1571,7 +1501,6 @@
 			},
 			"connect": "Discord に接続",
 			"saveChanges": "変更を保存",
-			"update": "Discord を更新",
 			"disconnect": "接続解除"
 		},
 		"genericWebhookIntegration": {
@@ -1688,9 +1617,7 @@
 			"exportTasks": "タスクをエクスポート",
 			"importTasks": "タスクをインポート",
 			"dialogTitle": "タスクをインポート",
-			"dialogDescription": "このプロジェクトにインポートするタスクを含む JSON ファイルをアップロードします。",
 			"expectedFormat": "想定される形式:",
-			"dropHint": "ここに JSON ファイルをドラッグ＆ドロップしてください",
 			"selectFile": "ファイルを選択",
 			"exporting": "タスクをエクスポート中...",
 			"exportSuccess": "タスクをエクスポートしました",
@@ -1701,7 +1628,6 @@
 			"importError": "タスクのインポートに失敗しました",
 			"invalidFormat": "インポートファイルの形式が無効です",
 			"noFileDropped": "ファイルがドロップされませんでした",
-			"notJsonFile": "JSON ファイルをアップロードしてください",
 			"exportCsv": "CSV(スプレッドシート)",
 			"exportJson": "JSON(再インポート用)",
 			"exportStarted": "エクスポートを開始しました。「ワークスペース設定 → エクスポート」で確認できます。",
@@ -1955,7 +1881,6 @@
 				"saveError": "Mattermost 連携の保存に失敗しました",
 				"updateError": "Mattermost 連携の更新に失敗しました"
 			},
-			"update": "Mattermost を更新",
 			"validation": {
 				"webhookInvalid": "有効な Mattermost Webhook URL を入力してください"
 			},
@@ -1967,13 +1892,11 @@
 			"addButton": "追加",
 			"createError": "カスタムフィールドの作成に失敗しました。",
 			"createSuccess": "カスタムフィールドを作成しました。",
-			"creating": "作成中...",
 			"defaultLabel": "デフォルト",
 			"defaultValuePlaceholder": "デフォルト値",
 			"deleteButton": "削除",
 			"deleteError": "カスタムフィールドの削除に失敗しました。",
 			"deleteSuccess": "カスタムフィールドを削除しました。",
-			"deleting": "削除中...",
 			"empty": "カスタムフィールドはまだ設定されていません。",
 			"loading": "カスタムフィールドを読み込み中...",
 			"namePlaceholder": "フィールド名",
@@ -2890,7 +2813,9 @@
 				"agentScheduleDisabled": "エージェントのスケジュールをオフにしました",
 				"aiConnectorCreated": "MCP コネクタを追加しました",
 				"aiConnectorUpdated": "MCP コネクタを変更しました",
-				"aiConnectorDeleted": "MCP コネクタを削除しました"
+				"aiConnectorDeleted": "MCP コネクタを削除しました",
+				"agentIntakeTriggerUpdated": "エージェントの受付トリガーを変更しました",
+				"agentIntakeTriggerDisabled": "エージェントの受付トリガーをオフにしました"
 			},
 			"actor": {
 				"apiKey": "API キー",
@@ -3226,8 +3151,7 @@
 			"empty": "結果が見つかりません。",
 			"footer": {
 				"navigate": "移動",
-				"open": "開く",
-				"close": "閉じる"
+				"open": "開く"
 			},
 			"goToInbox": "受信トレイへ移動",
 			"newView": "新しいビュー",
@@ -3254,11 +3178,10 @@
 			},
 			"recent": "最近",
 			"removeScope": "すべてを検索",
-			"scope": "In"
+			"scope": "対象"
 		},
 		"notifications": "通知",
 		"sidebar": {
-			"overview": "概要",
 			"projects": "プロジェクト",
 			"members": "メンバー",
 			"invitations": "招待",
@@ -3266,12 +3189,9 @@
 			"backToBoard": "ボードに戻る",
 			"favorites": "お気に入り",
 			"allTasks": "すべてのタスク",
-			"inbox": "受信トレイ",
 			"myWork": "自分の作業",
 			"home": "ホーム",
-			"personal": "個人",
 			"stickies": "付箋",
-			"analytics": "アナリティクス",
 			"drafts": "下書き"
 		},
 		"projectList": {
@@ -3299,10 +3219,6 @@
 				"page": "ページ"
 			}
 		},
-		"settingsLayout": {
-			"toggleSidebar": "サイドバーを切り替え",
-			"back": "戻る"
-		},
 		"userMenu": {
 			"signedOutSuccess": "サインアウトしました",
 			"signOutFailed": "サインアウトに失敗しました",
@@ -3315,13 +3231,11 @@
 		"workspaceSwitcher": {
 			"workspaces": "ワークスペース",
 			"switching": "切り替え中...",
-			"addWorkspace": "ワークスペースを追加",
-			"selectWorkspace": "ワークスペースを選択"
+			"addWorkspace": "ワークスペースを追加"
 		},
 		"page": {
 			"projectsTitle": "プロジェクト",
 			"settingsTitle": "設定",
-			"backToWorkspace": "ワークスペースに戻る",
 			"settingsWorkspaceTab": "ワークスペース",
 			"settingsInstanceTab": "インスタンス",
 			"settingsNotFoundBack": "アカウント設定",
@@ -3351,7 +3265,6 @@
 			"items": {
 				"openCommandPalette": "コマンドパレットを開く",
 				"globalSearch": "全体検索",
-				"toggleSidebar": "サイドバーを切り替え",
 				"showShortcuts": "キーボードショートカットを表示",
 				"closeModal": "モーダル/ポップオーバーを閉じる",
 				"createTask": "タスクを作成",
@@ -3457,15 +3370,11 @@
 	},
 	"notifications": {
 		"title": "通知",
-		"newCount_other": "{{count}} 件の新着",
-		"emptyTitle": "通知はまだありません",
-		"emptySubtitle": "更新やアクティビティがここに表示されます。",
 		"clearAll": "すべての通知を消去",
 		"clearDialogTitle": "すべての通知を消去しますか？",
 		"clearDialogDescription": "これにより、すべての通知が完全に削除されます。この操作は取り消せません。",
 		"shortcuts": {
-			"open": "通知を開く",
-			"inbox": "受信トレイを開く"
+			"open": "通知を開く"
 		},
 		"reminderLeadTime": {
 			"minutes_other": "{{count}} 分",
@@ -3617,7 +3526,6 @@
 				"fiveDays": "5日",
 				"oneDay": "1日",
 				"oneWeek": "1週間",
-				"pickDate": "日付を選択",
 				"pickTime": "時刻を選択",
 				"submit": "スヌーズ",
 				"threeDays": "3日",
@@ -4002,10 +3910,9 @@
 				"recurredToScheduled": "次の繰り返しがスケジュールどおりに作成されました: <task>{{task}}</task>"
 			}
 		},
-		"title": "タスク",
 		"status": {
 			"label": "ステータス",
-			"to-do": "To Do",
+			"to-do": "未着手",
 			"in-progress": "進行中",
 			"in-review": "レビュー中",
 			"done": "完了",
@@ -4241,7 +4148,6 @@
 			"labels": "ラベル",
 			"copyTaskLink": "タスクのリンクをコピー",
 			"copyTaskBranch": "タスクのブランチ名をコピー",
-			"start": "開始",
 			"startDate": "開始日",
 			"noDate": "日付なし",
 			"addLabel": "ラベルを追加",
@@ -4307,22 +4213,11 @@
 			"moveAllTooltip": "計画済みのタスクをすべて{{column}}に移動",
 			"moveAll": "すべて移動",
 			"addTask": "タスクを追加",
-			"filter": "フィルター",
-			"addFilter": "フィルターを追加...",
 			"sections": {
 				"planned": "計画中",
 				"archived": "アーカイブ済み"
 			},
-			"noTasksInSection": "{{section}} のタスクはありません",
-			"filters": {
-				"priority": "優先度: {{name}}",
-				"assignee": "担当者: {{name}}",
-				"due": "期限: {{date}}",
-				"label": "ラベル: {{name}}",
-				"dueThisWeek": "今週が期限",
-				"dueNextWeek": "来週が期限",
-				"noDueDate": "期限なし"
-			}
+			"noTasksInSection": "{{section}} のタスクはありません"
 		},
 		"sort": {
 			"label": "並び替え",
@@ -4342,11 +4237,6 @@
 		},
 		"boardFilters": {
 			"filterBy": "絞り込み",
-			"allStatuses": "すべてのステータス",
-			"allPriorities": "すべての優先度",
-			"allAssignees": "すべての担当者",
-			"allDueDates": "すべての期限",
-			"allLabels": "すべてのラベル",
 			"selectedCount": "{{count}} 件選択中",
 			"subjects": {
 				"status": "ステータス",
@@ -4357,14 +4247,8 @@
 				"estimate": "見積もり"
 			},
 			"operators": {
-				"isAnyOf": "次のいずれか",
-				"includeAnyOf": "次のいずれかを含む"
-			},
-			"all": "すべて",
-			"allCustomFieldValues": "すべての値",
-			"noCustomFieldValues": "カスタムフィールドの値がありません",
-			"noValuesUsedYet": "まだ使用されている値がありません",
-			"unassigned": "未割り当て"
+				"isAnyOf": "次のいずれか"
+			}
 		},
 		"calendar": {
 			"pageTitle": "{{name}} – カレンダー",
@@ -4429,10 +4313,8 @@
 		},
 		"archive": {
 			"success": "{{count}} 件のタスクをアーカイブしました",
-			"archive": "アーカイブ",
 			"archived": "タスクをアーカイブしました",
 			"badge": "アーカイブ済み",
-			"bulkArchived_other": "{{count}}件のタスクをアーカイブしました",
 			"error": "タスクをアーカイブできませんでした",
 			"restore": "復元",
 			"restored": "タスクを復元しました",
@@ -4467,10 +4349,6 @@
 			"updateError": "期限の更新に失敗しました",
 			"clearSuccess": "期限をクリアしました",
 			"clearError": "期限のクリアに失敗しました"
-		},
-		"labels": {
-			"label": "ラベル",
-			"empty": "利用可能なラベルがありません"
 		},
 		"update": {
 			"success": "タスクを更新しました",
@@ -4785,7 +4663,6 @@
 				"project": "プロジェクト",
 				"status": "ステータス"
 			},
-			"needsSingleProject": "ステータスでのグループ化には単一のプロジェクトが必要です",
 			"none": "なし",
 			"order": {
 				"assignee": "担当者",
@@ -4872,14 +4749,14 @@
 			"noOptions": "オプションなし",
 			"operators": {
 				"between": "の間",
-				"is": "is",
+				"is": "である",
 				"isEmpty": "が空",
 				"isNoneOf": "のいずれでもない",
 				"isNot": "ではない",
 				"isNotEmpty": "が空でない",
 				"moreThanAgo": "…より前",
 				"moreThanAhead": "…より先",
-				"on": "on",
+				"on": "当日",
 				"onOrAfter": "以降",
 				"onOrBefore": "以前",
 				"withinLast": "過去",
@@ -4892,9 +4769,7 @@
 				"completed": "完了日",
 				"created": "作成日",
 				"createdBy": "作成者",
-				"customFields": "カスタムフィールド",
 				"cycle": "サイクル",
-				"estimate": "見積もり",
 				"group": "グループ",
 				"mentions": "メンション",
 				"module": "モジュール",
@@ -4908,7 +4783,7 @@
 			"values": {
 				"currentCycle": "現在のサイクル",
 				"false": "いいえ",
-				"me": "Me",
+				"me": "自分",
 				"noAssignee": "担当者なし",
 				"noCreator": "作成者なし",
 				"noCycle": "サイクルなし",
@@ -4945,8 +4820,6 @@
 			"expandSubTasks": "サブタスクを表示",
 			"hideColumn": "列を非表示",
 			"loadError": "タスクを読み込めませんでした",
-			"newTask": "新しいタスク",
-			"newTaskPlaceholder": "タスク名を入力して Enter",
 			"selectTask": "{{key}}を選択",
 			"sortAsc": "昇順で並べ替え",
 			"sortDesc": "降順で並べ替え",
@@ -4972,7 +4845,7 @@
 		"timeTracking": {
 			"duration": "所要時間",
 			"durationInvalid": "1分から24時間の間で、1h 30m のように入力してください。",
-			"durationPlaceholder": "e.g. 1h 30m",
+			"durationPlaceholder": "例: 1h 30m",
 			"empty": "記録された時間はまだありません",
 			"entries": "時間の記録",
 			"formerMember": "元メンバー",
@@ -5151,11 +5024,6 @@
 		"noPendingDescription": "ワークスペースに招待されると、招待がここに表示されます。",
 		"continueToSetup": "セットアップに進む",
 		"skipForNow": "今はスキップ",
-		"table": {
-			"workspace": "ワークスペース",
-			"invitedBy": "招待者",
-			"expires": "有効期限"
-		},
 		"toast": {
 			"acceptError": "招待の承諾に失敗しました",
 			"acceptSuccess": "招待を承諾しました！チームへようこそ。",
@@ -5191,7 +5059,6 @@
 				"inProgress": "進行中"
 			},
 			"noDueDate": "期限なし",
-			"reorderHandle": "プロジェクトの並び替え",
 			"reorderError": "プロジェクトの並び替えに失敗しました"
 		},
 		"search": {
@@ -5216,7 +5083,6 @@
 			"pageTitle": "ワークスペースを作成",
 			"heading": "新しいワークスペースを作成",
 			"subtitle": "ワークスペースは、チームがプロジェクト、サイクル、課題に取り組むための共有環境です。",
-			"nameLabel": "ワークスペース名",
 			"namePlaceholder": "ワークスペース名を入力",
 			"descriptionLabel": "説明 (任意)",
 			"descriptionPlaceholder": "ワークスペースの説明を追加",
@@ -5340,11 +5206,8 @@
 			"columns": {
 				"name": "名前",
 				"role": "ロール",
-				"joined": "参加日",
-				"actions": "操作"
+				"joined": "参加日"
 			},
-			"memberRolePending": "{{role}} (保留中)",
-			"ariaCancelInvitation": "招待をキャンセル",
 			"ariaInvitationActions": "招待の操作",
 			"ariaRemoveMember": "メンバーを削除",
 			"removeDialogTitle": "チームメンバーを削除しますか？",
@@ -5393,7 +5256,6 @@
 		}
 	},
 	"publicProject": {
-		"pageTitle": "公開ビュー",
 		"badge": "公開",
 		"readOnly": "閲覧専用",
 		"error": {
@@ -5406,12 +5268,10 @@
 		"taskDetail": {
 			"labels": "ラベル",
 			"externalLinks": "外部リンク",
-			"pullRequestFallback": "プルリクエスト",
 			"issueFallback": "Issue",
 			"prStatusMerged": "マージ済み",
 			"prStatusDraft": "下書き",
 			"prStatusOpen": "オープン",
-			"dueWithDate": "期限: {{date}}",
 			"created": "作成日",
 			"dueDateLabel": "期限",
 			"assignees": "担当者",
@@ -5435,9 +5295,7 @@
 			"backlog": "バックログ",
 			"chip": "{{subject}}: {{value}}",
 			"clearFilters": "フィルターをクリア",
-			"collapse": "{{name}} を折りたたむ",
 			"emptyColumn": "タスクはありません",
-			"expand": "{{name}} を展開",
 			"filter": "フィルター",
 			"filters": "フィルター",
 			"layout": "レイアウト",
@@ -5684,7 +5542,7 @@
 				"done": "完了",
 				"inProgress": "進行中",
 				"inReview": "確認中",
-				"todo": "To do"
+				"todo": "未着手"
 			},
 			"analytics": {
 				"allProjects": "すべてのプロジェクト",
@@ -6191,19 +6049,19 @@
 				"statuses": {
 					"done": {
 						"meta": "14 件の課題",
-						"name": "Done"
+						"name": "完了"
 					},
 					"inProgress": {
 						"meta": "9 件の課題",
-						"name": "In Progress"
+						"name": "進行中"
 					},
 					"open": {
 						"meta": "14 件の課題",
-						"name": "Open"
+						"name": "オープン"
 					},
 					"review": {
 						"meta": "5 件の課題",
-						"name": "Code Review"
+						"name": "コードレビュー"
 					}
 				},
 				"statusesTitle": "ステータス",
@@ -6228,7 +6086,7 @@
 				},
 				"tool": "create_task",
 				"toolDone": "完了",
-				"via": "via MCP"
+				"via": "MCP 経由"
 			},
 			"modules": {
 				"gallery": "ギャラリー",
@@ -6304,7 +6162,7 @@
 				"statusPicker": "ステータスを変更…",
 				"taskDescription": "訪問者がヘルプセンターを離れずに答えを見つけられるようにします。記事をインデックス化し、入力に合わせて最適な結果を表示します。",
 				"toast": "ステータスを変更しました",
-				"typed": "> status"
+				"typed": "> ステータス"
 			},
 			"planning": {
 				"doneOfScope": "{{done}}/{{scope}} 完了",
@@ -6340,7 +6198,7 @@
 				"downvote": "反対票（{{count}}）",
 				"myRequests": "自分のリクエスト",
 				"note": "リクエストはチームが確認してからボードに追加されます。",
-				"poweredBy": "Powered by Margaya",
+				"poweredBy": "Margaya で作成",
 				"search": "タスクを検索",
 				"send": "リクエストを送信",
 				"sent": "リクエストを送信しました",
@@ -7550,7 +7408,7 @@
 			"clear": "フィルターをクリア",
 			"filterBy": "フィルター条件",
 			"includesAnyOf": "のいずれかを含む",
-			"is": "is",
+			"is": "である",
 			"isAnyOf": "のいずれか",
 			"lead": "リード",
 			"members": "メンバー",
@@ -7734,7 +7592,7 @@
 			"completed30": "30日間の完了数",
 			"created": "作成",
 			"dueThisWeek": "今週が期限",
-			"notAvailable": "n/a",
+			"notAvailable": "該当なし",
 			"overdue": "期限超過",
 			"subscribed": "サブスクライブ中"
 		},
@@ -7750,7 +7608,6 @@
 			"cancelled_other": "{{count}}件キャンセル",
 			"priorities": "優先度別の未完了作業",
 			"recentActivity": "最近のアクティビティ",
-			"title": "作業量",
 			"byState": "状態別"
 		},
 		"activity": {
@@ -7828,7 +7685,6 @@
 			"all": "すべて",
 			"emptyDescription": "フィルターやレイアウトをビューとして保存し、チームと共有できます。",
 			"emptyTitle": "ビューはまだありません",
-			"favorite": "お気に入り",
 			"mine": "自分の",
 			"more": "ビュー",
 			"newView": "新しいビュー",
@@ -7972,11 +7828,9 @@
 			"inbox": "受信トレイ",
 			"label": "続きから再開",
 			"myWork": "自分の作業",
-			"open_other": "未完了 {{count}} 件",
 			"overdue_other": "期限切れ {{count}} 件",
 			"stickies": "付箋",
 			"stickiesHint": "自分だけが見られる非公開メモ",
-			"unread_other": "未読 {{count}} 件",
 			"openCaption": "未完了",
 			"unreadCaption": "未読"
 		}
@@ -8036,7 +7890,6 @@
 			"submit": "リクエストを送信",
 			"title": "新しいリクエスト",
 			"titlePlaceholder": "何が必要ですか?",
-			"titleRequired": "タイトルを入力してください",
 			"toast": "リクエストを送信しました",
 			"toastView": "表示",
 			"pastedImages": "貼り付けた画像",
@@ -8127,7 +7980,7 @@
 		"filters": {
 			"button": "フィルター",
 			"clear": "フィルターをクリア",
-			"me": "Me",
+			"me": "自分",
 			"priority": "優先度",
 			"remove": "フィルターを削除",
 			"status": "ステータス",
@@ -8215,7 +8068,6 @@
 			"pending": "このタスクは受付で待機中です。",
 			"snoozed": "このタスクは受付で{{date}}までスヌーズされています。"
 		},
-		"title": "受付",
 		"triage": {
 			"backToList": "リクエストに戻る",
 			"detailLabel": "リクエスト",
@@ -9178,7 +9030,6 @@
 	},
 	"instanceAdmin": {
 		"admins": {
-			"actions": "管理者の操作",
 			"add": "管理者を追加",
 			"addConfirm": "管理者を追加",
 			"addDescription": "インスタンス管理者は、この領域のすべての設定を変更でき、任意のワークスペースを開けます。",
@@ -9296,7 +9147,7 @@
 				"fileStorage": "ファイルストレージ",
 				"notConfigured": "未設定",
 				"off": "オフ",
-				"on": "On",
+				"on": "オン",
 				"realtime": "リアルタイム",
 				"realtimeMemory": "メモリ内",
 				"realtimeRedis": "Redis ({{mode}})",
@@ -9382,7 +9233,6 @@
 		"save": "保存",
 		"saved": "設定を保存しました",
 		"saveError": "設定を保存できませんでした",
-		"saving": "保存中…",
 		"secret": {
 			"cancel": "キャンセル",
 			"clear": "クリア",
@@ -9392,8 +9242,6 @@
 			"saved": "保存済み",
 			"unreadable": "保存されているシークレットを読み取れません(サーバーの AUTH_SECRET が変更されました)。もう一度入力してください。"
 		},
-		"sidebarSubtitle": "インスタンス管理",
-		"sidebarTitle": "インスタンス",
 		"source": {
 			"default": "デフォルト",
 			"environment": "環境変数: {{variable}}",
@@ -9446,97 +9294,97 @@
 	},
 	"press": {
 		"boilerplate": {
-			"description": "Ready-made descriptions. Trim them if you need to, but please keep the facts as they are.",
+			"description": "そのまま使える紹介文です。必要に応じて短くしていただいて構いませんが、事実関係は変えないでください。",
 			"long": {
-				"label": "About 150 words",
-				"text": "Margaya is an open-source project management platform built for teams that want to plan and ship work without the tool becoming a job of its own. Tasks move through board, list, spreadsheet, calendar and Gantt views of the same data. Cycles, modules, estimates and an intake inbox are there when a team needs planning, and stay out of the way when it doesn't. Teams write docs together next to their tasks, collect requests on public boards, and follow progress with analytics and an audit log. A REST API with an OpenAPI description, webhooks, an MCP server and integrations with GitHub, Gitea, Slack, Discord and others connect Margaya to the rest of a team's tools. The interface is available in 20 languages. Margaya is released under the MIT licence and runs on a single server with Docker, or on Kubernetes with Helm; Margaya Cloud offers the same product as a managed service."
+				"label": "約 150 語",
+				"text": "Margaya は、ツールの管理そのものが仕事にならずに、作業を計画して届けたいチームのために作られたオープンソースのプロジェクト管理プラットフォームです。タスクは、同じデータを表示するボード、リスト、スプレッドシート、カレンダー、ガントの各ビューを行き来します。サイクル、モジュール、見積もり、受付インボックスは、チームが計画を必要とするときに使え、必要ないときは邪魔になりません。チームはタスクの隣でドキュメントを共同編集し、公開ボードで要望を集め、アナリティクスと監査ログで進捗を追えます。OpenAPI 定義付きの REST API、Webhook、MCP サーバー、そして GitHub、Gitea、Slack、Discord などとの連携により、Margaya をチームのほかのツールとつなげられます。インターフェースは 20 言語に対応しています。Margaya は MIT ライセンスで公開されており、Docker で 1 台のサーバー上に、または Helm で Kubernetes 上に構築できます。Margaya Cloud では同じ製品をマネージドサービスとして提供しています。"
 			},
 			"short": {
-				"label": "About 50 words",
-				"text": "Margaya is an open-source project management platform for teams that want clear ownership without heavy process. Plan work on boards, lists, spreadsheets, calendars and Gantt charts, write docs beside the tasks, and connect your tools through a REST API and MCP. Run it yourself under the MIT licence, or use Margaya Cloud."
+				"label": "約 50 語",
+				"text": "Margaya は、重いプロセスなしで担当をはっきりさせたいチームのためのオープンソースのプロジェクト管理プラットフォームです。ボード、リスト、スプレッドシート、カレンダー、ガントチャートで作業を計画し、タスクの隣でドキュメントを書き、REST API と MCP でツールを連携できます。MIT ライセンスで自分で運用することも、Margaya Cloud を使うこともできます。"
 			},
-			"title": "Boilerplate"
+			"title": "定型の紹介文"
 		},
 		"colours": {
-			"copyHex": "Copy {{hex}}",
-			"description": "Margaya is deliberately quiet: near-black, off-white and a few greys, so the work on screen supplies the colour.",
+			"copyHex": "{{hex}} をコピー",
+			"description": "Margaya はあえて控えめな配色です。黒に近い色、オフホワイト、数色のグレーだけを使い、色は画面上の作業そのものが添えます。",
 			"graphite": {
-				"name": "Graphite",
-				"usage": "Text and primary buttons in the light theme"
+				"name": "グラファイト",
+				"usage": "ライトテーマのテキストとプライマリボタン"
 			},
 			"ink": {
-				"name": "Ink",
-				"usage": "The logo, and the dark theme's background"
+				"name": "インク",
+				"usage": "ロゴと、ダークテーマの背景"
 			},
 			"mist": {
-				"name": "Mist",
-				"usage": "Panels and sidebars in the light theme"
+				"name": "ミスト",
+				"usage": "ライトテーマのパネルとサイドバー"
 			},
 			"mono": {
 				"name": "Geist Mono",
-				"usage": "Code, keyboard shortcuts and task IDs"
+				"usage": "コード、キーボードショートカット、タスク ID"
 			},
 			"paper": {
-				"name": "Paper",
-				"usage": "The light logo, and primary buttons in the dark theme"
+				"name": "ペーパー",
+				"usage": "ライト版のロゴと、ダークテーマのプライマリボタン"
 			},
-			"sample": "Plan the work. Ship the work.",
+			"sample": "仕事を計画し、仕事を届ける。",
 			"sans": {
 				"name": "Geist",
-				"usage": "Interface, headings and the wordmark, set semibold with tight tracking"
+				"usage": "インターフェース、見出し、ワードマーク。セミボールドで字間を詰めて使用"
 			},
-			"title": "Colours and type",
-			"typeTitle": "Typography",
+			"title": "カラーと書体",
+			"typeTitle": "タイポグラフィ",
 			"white": {
-				"name": "White",
-				"usage": "The light theme's background"
+				"name": "ホワイト",
+				"usage": "ライトテーマの背景"
 			}
 		},
 		"contact": {
-			"body": "Margaya is built in the open, so the maintainers answer on GitHub. Start a discussion for interviews and questions about the project, or open an issue if something in this kit is missing or out of date.",
-			"discussions": "Start a discussion",
-			"issues": "Open an issue",
-			"title": "Talk to the maintainers"
+			"body": "Margaya はオープンに開発されているため、メンテナーは GitHub で対応しています。取材やプロジェクトに関するご質問は Discussion を、このキットに不足や古い情報があれば Issue を作成してください。",
+			"discussions": "Discussion を始める",
+			"issues": "Issue を作成",
+			"title": "メンテナーへの連絡"
 		},
-		"copied": "Copied",
-		"copy": "Copy",
-		"copyUrl": "Copy URL",
-		"description": "Margaya's press kit: boilerplate text, logos, product screenshots, brand colours and typography, with direct download links.",
-		"download": "Download",
-		"downloadKit": "Download the press kit",
+		"copied": "コピーしました",
+		"copy": "コピー",
+		"copyUrl": "URL をコピー",
+		"description": "Margaya のプレスキット: 紹介文、ロゴ、製品のスクリーンショット、ブランドカラー、タイポグラフィを直接ダウンロードできます。",
+		"download": "ダウンロード",
+		"downloadKit": "プレスキットをダウンロード",
 		"downloadKitMeta": "ZIP, {{size}}",
-		"eyebrow": "Press kit",
+		"eyebrow": "プレスキット",
 		"facts": {
-			"description": "The essentials, in one place.",
+			"description": "要点をひとまとめに。",
 			"founded": {
-				"label": "Founded",
+				"label": "設立",
 				"value": "2026"
 			},
 			"hosting": {
-				"label": "Hosting",
-				"value": "Self-hosted with Docker or Helm, or managed on Margaya Cloud"
+				"label": "ホスティング",
+				"value": "Docker または Helm でセルフホスト、または Margaya Cloud でマネージド運用"
 			},
 			"interfaces": {
-				"label": "Interfaces",
-				"value": "REST API with an OpenAPI description, plus an MCP server"
+				"label": "インターフェース",
+				"value": "OpenAPI 定義付きの REST API と MCP サーバー"
 			},
 			"languages": {
-				"label": "Languages",
-				"value": "20 interface languages"
+				"label": "言語",
+				"value": "20 のインターフェース言語"
 			},
 			"licence": {
-				"label": "Licence",
-				"value": "MIT, for every feature"
+				"label": "ライセンス",
+				"value": "MIT (すべての機能が対象)"
 			},
 			"source": {
-				"label": "Source code",
+				"label": "ソースコード",
 				"value": "github.com/manu14357/Margaya"
 			},
 			"stack": {
-				"label": "Stack",
-				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
+				"label": "技術スタック",
+				"value": "TypeScript、Hono、React、PostgreSQL (Redis は任意)"
 			},
-			"title": "Quick facts",
+			"title": "概要",
 			"ai": {
 				"label": "AI",
 				"value": "任意で、初期設定はオフ: AI に質問、作成モード、AI エージェント。Claude またはセルフホストのモデルで動作"
@@ -9544,212 +9392,218 @@
 		},
 		"guidelines": {
 			"do": {
-				"contrast": "Use the dark wordmark on light backgrounds and the light wordmark on dark ones.",
-				"link": "Link to margaya.app or the GitHub repository when you mention the project.",
-				"name": "Write the name as “Margaya”, with a capital M, in running text.",
-				"space": "Leave clear space around the logo at least as wide as the icon's ears."
+				"contrast": "明るい背景にはダークのワードマークを、暗い背景にはライトのワードマークを使ってください。",
+				"link": "プロジェクトに言及する際は、margaya.app または GitHub リポジトリへのリンクを付けてください。",
+				"name": "本文中では、名前を M を大文字にして「Margaya」と表記してください。",
+				"space": "ロゴの周囲には、少なくともアイコンの耳の幅以上の余白を空けてください。"
 			},
 			"dont": {
-				"distort": "Stretch, rotate, outline or add effects to the logo.",
-				"edit": "Edit screenshots to show features that Margaya doesn't have.",
-				"endorse": "Suggest that the Margaya maintainers endorse a product, service or opinion.",
-				"recolour": "Recolour the logo, or place it on busy images where it loses contrast."
+				"distort": "ロゴを引き伸ばしたり、回転させたり、輪郭線や効果を加えたりすること。",
+				"edit": "Margaya にない機能を見せるためにスクリーンショットを編集すること。",
+				"endorse": "Margaya のメンテナーが製品、サービス、意見を支持しているかのように示すこと。",
+				"recolour": "ロゴの色を変えること、またはコントラストが失われるような複雑な画像の上に置くこと。"
 			},
-			"dontTitle": "Please don't",
-			"doTitle": "Please do",
-			"title": "Using the brand"
+			"dontTitle": "禁止事項",
+			"doTitle": "推奨事項",
+			"title": "ブランドの使い方"
 		},
-		"headline": "Margaya is open-source project management you can run on your own server.",
-		"intro": "Short and long descriptions, logos, screenshots, colours and type, ready for articles, videos and talks. Everything on this page may be used for editorial coverage of Margaya.",
+		"headline": "Margaya は、自分のサーバーで運用できるオープンソースのプロジェクト管理ツールです。",
+		"intro": "短い紹介文と長い紹介文、ロゴ、スクリーンショット、カラー、書体を、記事・動画・講演向けにご用意しています。このページの内容はすべて、Margaya を取り上げる編集記事にご利用いただけます。",
 		"logos": {
-			"description": "Use the wordmark wherever there is room for it, and the icon where space is tight. Each file has a permanent address you can link to.",
+			"description": "スペースに余裕がある場所ではワードマークを、狭い場所ではアイコンをお使いください。各ファイルにはリンクできる固定のアドレスがあります。",
 			"iconPng": {
-				"alt": "The Margaya app icon",
+				"alt": "Margaya のアプリアイコン",
 				"detail": "PNG, 512 × 512",
-				"name": "App icon"
+				"name": "アプリアイコン"
 			},
 			"iconSvg": {
-				"alt": "The Margaya icon: a light cat face on a dark rounded square",
-				"detail": "SVG, scales to any size",
-				"name": "Icon"
+				"alt": "Margaya のアイコン: 暗い角丸の正方形に明るい猫の顔",
+				"detail": "SVG、どのサイズにも拡大縮小可能",
+				"name": "アイコン"
 			},
-			"title": "Logos",
+			"title": "ロゴ",
 			"wordmarkDark": {
-				"alt": "The Margaya wordmark in near-black on a light background",
-				"detail": "SVG, for light backgrounds",
-				"name": "Wordmark, dark"
+				"alt": "明るい背景に黒に近い色で描かれた Margaya のワードマーク",
+				"detail": "SVG、明るい背景用",
+				"name": "ワードマーク (ダーク)"
 			},
 			"wordmarkLight": {
-				"alt": "The Margaya wordmark in off-white on a dark background",
-				"detail": "SVG, for dark backgrounds",
-				"name": "Wordmark, light"
+				"alt": "暗い背景にオフホワイトで描かれた Margaya のワードマーク",
+				"detail": "SVG、暗い背景用",
+				"name": "ワードマーク (ライト)"
 			}
 		},
-		"onThisPage": "On this page",
+		"onThisPage": "このページの内容",
 		"screenshots": {
-			"close": "Close",
-			"counter": "{{current}} of {{total}}",
-			"dark": "Dark",
-			"description": "Real Margaya screens in the light and dark themes. Select one to see it at full size.",
-			"empty": "A fresh set of screenshots is on its way. Until then, the press kit download has the current set.",
-			"light": "Light",
-			"next": "Next screenshot",
-			"open": "View larger: {{title}}",
-			"previous": "Previous screenshot",
+			"close": "閉じる",
+			"counter": "{{current}} / {{total}}",
+			"dark": "ダーク",
+			"description": "ライトテーマとダークテーマの実際の Margaya の画面です。選択すると原寸で表示されます。",
+			"empty": "新しいスクリーンショットを準備中です。それまでは、プレスキットのダウンロードに現在のものが含まれています。",
+			"light": "ライト",
+			"next": "次のスクリーンショット",
+			"open": "拡大表示: {{title}}",
+			"previous": "前のスクリーンショット",
 			"size": "{{width}} × {{height}}, PNG",
-			"title": "Product screenshots"
+			"title": "製品のスクリーンショット"
 		},
-		"title": "Press kit",
-		"downloadPng": "Download PNG"
+		"title": "プレスキット",
+		"downloadPng": "PNG をダウンロード"
 	},
 	"pricing": {
 		"cta": {
-			"description": "Start a Cloud trial with no card, or follow the install guide and run Margaya on your own hardware.",
-			"primary": "Start a free trial",
-			"secondary": "Read the install guide",
-			"title": "Pick the way that fits, and change your mind later."
+			"description": "カード不要で Cloud のトライアルを始めるか、インストールガイドに沿って自分のハードウェアで Margaya を動かしましょう。",
+			"primary": "無料トライアルを開始",
+			"secondary": "インストールガイドを読む",
+			"title": "合う方法を選んで、あとから変えてもかまいません。"
 		},
-		"description": "The self-hosted build is the whole product under the MIT licence, with no seat limits and no paid tier. Margaya Cloud is the same software, hosted in the EU and kept up to date for you.",
-		"eyebrow": "Pricing",
+		"description": "セルフホスト版は MIT ライセンスのもとで提供される製品のすべてで、シート数の上限も有料プランもありません。Margaya Cloud は同じソフトウェアを EU でホストし、常に最新の状態に保ちます。",
+		"eyebrow": "料金",
 		"faq": {
 			"items": {
 				"cancel": {
-					"answer": "Your plan stays active until the end of the period you've paid for. Export your work as CSV, Excel or JSON before then if you want to keep a copy.",
-					"question": "What happens if I cancel?"
+					"answer": "支払い済みの期間が終わるまでプランは有効です。コピーを残したい場合は、それまでに作業内容を CSV、Excel、JSON でエクスポートしてください。",
+					"question": "解約するとどうなりますか?"
 				},
 				"founding": {
-					"answer": "Workspaces created before paid plans launched keep free access for at least 12 months, and you'll get six months' notice before anything changes.",
-					"question": "I signed up before paid plans existed. What changes?"
+					"answer": "有料プランの開始前に作成されたワークスペースは、少なくとも 12 か月間は無料で利用でき、変更がある場合は 6 か月前にお知らせします。",
+					"question": "有料プランができる前に登録しました。何が変わりますか?"
 				},
 				"payments": {
-					"answer": "Payments go through Creem, which acts as merchant of record and handles sales tax and VAT where they apply. Your card details never reach Margaya.",
-					"question": "Who handles payments and tax?"
+					"answer": "支払いは Creem を通じて行われます。Creem が販売者 (Merchant of Record) として、該当する売上税や付加価値税を処理します。カード情報が Margaya に届くことはありません。",
+					"question": "支払いと税金は誰が扱いますか?"
 				},
 				"seats": {
-					"answer": "Cloud Team is billed for each member of the workspace. When someone joins or leaves, the seat count on the subscription is updated to match.",
-					"question": "How are Cloud Team members counted?"
+					"answer": "Cloud チーム はワークスペースのメンバーごとに請求されます。誰かが参加または退出すると、サブスクリプションのシート数もそれに合わせて更新されます。",
+					"question": "Cloud チーム のメンバーはどのように数えられますか?"
 				},
 				"selfHostHelp": {
-					"answer": "From the maintainers and the community on GitHub, through discussions and issues. Installation, upgrades and configuration are covered in the documentation.",
-					"question": "Where do self-hosters get help?"
+					"answer": "GitHub の Discussion や Issue を通じて、メンテナーとコミュニティからサポートを受けられます。インストール、アップグレード、設定についてはドキュメントで説明しています。",
+					"question": "セルフホストの場合、どこでサポートを受けられますか?"
 				},
 				"selfHostLimits": {
-					"answer": "No. The code you install is the code that runs Margaya Cloud, and all of it is MIT licensed. There are no licence keys, seat limits or paid features to unlock.",
-					"question": "Is the self-hosted version missing anything?"
+					"answer": "ありません。インストールするコードは Margaya Cloud を動かしているコードと同じで、すべて MIT ライセンスです。ライセンスキーもシート数の上限も、解放が必要な有料機能もありません。",
+					"question": "セルフホスト版に足りない機能はありますか?"
 				},
 				"trial": {
-					"answer": "A new Cloud workspace gets 14 days with everything included, and you don't need a card to start. Before it ends, choose a plan or export your tasks.",
-					"question": "How does the Cloud trial work?"
+					"answer": "新しい Cloud ワークスペースでは、14 日間すべての機能を利用でき、開始にカードは不要です。期間が終わる前に、プランを選ぶかタスクをエクスポートしてください。",
+					"question": "Cloud のトライアルはどのような仕組みですか?"
 				},
 				"yearly": {
-					"answer": "Yes. A year costs the same as ten months, so both Cloud plans come with two months free when you pay yearly.",
-					"question": "Is yearly billing cheaper?"
+					"answer": "はい。1 年分の料金は 10 か月分と同じなので、どちらの Cloud プランも年払いなら 2 か月分が無料になります。",
+					"question": "年払いのほうが安くなりますか?"
+				},
+				"ai": {
+					"question": "AI は含まれていますか?",
+					"answer": "どのプランにも AI 機能(AI に質問、作成モード、エージェント、文章作成の補助)があります。管理者が有効にするまではオフのままです。AI の利用料金は価格に含まれていません。ワークスペースの AI 設定に自分の API キーを追加すると、AI プロバイダーから直接請求されます。セルフホストのインスタンスでは、Ollama や vLLM を使って自分で動かすモデルも利用できます。"
 				}
 			},
-			"title": "Questions about pricing"
+			"title": "料金に関するよくある質問"
 		},
 		"interval": {
-			"annual": "Yearly",
-			"label": "Billing period",
-			"monthly": "Monthly",
-			"saving": "2 months free"
+			"annual": "年払い",
+			"label": "請求期間",
+			"monthly": "月払い",
+			"saving": "2 か月分無料"
 		},
-		"metaDescription": "Margaya is free to self-host, forever. Margaya Cloud costs $4 a month for one person or $5 per member a month for teams, with a 14-day free trial.",
+		"metaDescription": "Margaya はセルフホストならずっと無料です。Margaya Cloud は個人なら月額 $4、チームならメンバー 1 人あたり月額 $5 で、14 日間の無料トライアルがあります。",
 		"plans": {
 			"personal": {
-				"annualNote": "Works out at {{price}} a month",
-				"annualPeriod": "per year",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month",
-				"monthlyPeriod": "per month",
-				"name": "Cloud Personal",
+				"annualNote": "月あたり {{price}} 相当",
+				"annualPeriod": "/ 年",
+				"cta": "14 日間のトライアルを開始",
+				"monthlyNote": "毎月請求",
+				"monthlyPeriod": "/ 月",
+				"name": "Cloud パーソナル",
 				"points": {
-					"everything": "Every feature in the self-hosted build",
-					"help": "Support by email",
-					"managed": "Backups and updates handled for you",
-					"one": "One person, unlimited projects and tasks"
+					"everything": "セルフホスト版のすべての機能",
+					"help": "メールでのサポート",
+					"managed": "バックアップとアップデートはおまかせ",
+					"one": "1 人で、プロジェクトもタスクも無制限"
 				},
-				"tagline": "Managed hosting for one person"
+				"tagline": "個人向けのマネージドホスティング"
 			},
 			"selfHosted": {
-				"cta": "Read the install guide",
-				"name": "Self-hosted",
-				"note": "MIT licence. No key, no seat limit.",
-				"period": "forever",
+				"cta": "インストールガイドを読む",
+				"name": "セルフホスト",
+				"note": "MIT ライセンス。キー不要、シート数の上限なし。",
+				"period": "ずっと",
 				"points": {
-					"data": "Your database, your backups, your rules",
-					"deploy": "Docker on one server, or Helm on Kubernetes",
-					"everything": "Every feature, for as many people as you like",
-					"help": "Community help on GitHub"
+					"data": "データベースもバックアップもルールも自分のもの",
+					"deploy": "1 台のサーバーで Docker、または Kubernetes で Helm",
+					"everything": "すべての機能を、何人でも",
+					"help": "GitHub でのコミュニティサポート"
 				},
-				"tagline": "On servers you run"
+				"tagline": "自分で運用するサーバーで"
 			},
 			"team": {
-				"annualNote": "Works out at {{price}} per member a month",
-				"annualPeriod": "per member, per year",
-				"badge": "For teams",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month for each workspace member",
-				"monthlyPeriod": "per member, per month",
-				"name": "Cloud Team",
+				"annualNote": "メンバー 1 人あたり月 {{price}} 相当",
+				"annualPeriod": "/ メンバー / 年",
+				"badge": "チーム向け",
+				"cta": "14 日間のトライアルを開始",
+				"monthlyNote": "ワークスペースのメンバーごとに毎月請求",
+				"monthlyPeriod": "/ メンバー / 月",
+				"name": "Cloud チーム",
 				"points": {
-					"help": "Priority support by email",
-					"managed": "Backups and updates handled for you",
-					"people": "Everyone in the workspace, unlimited projects",
-					"roles": "Workspace roles and permissions"
+					"help": "メールでの優先サポート",
+					"managed": "バックアップとアップデートはおまかせ",
+					"people": "ワークスペースの全員で、プロジェクト数無制限",
+					"roles": "ワークスペースのロールと権限"
 				},
-				"tagline": "Managed hosting for a whole team"
+				"tagline": "チーム全体のためのマネージドホスティング"
 			}
 		},
 		"table": {
-			"description": "The features are the same everywhere. What changes is who runs the servers and where you go for help.",
-			"feature": "Feature",
+			"description": "機能はどこでも同じです。違うのは、誰がサーバーを運用し、どこでサポートを受けるかです。",
+			"feature": "機能",
 			"groups": {
-				"connect": "Connect",
-				"planning": "Planning and insight",
-				"running": "Running it",
-				"work": "The work"
+				"connect": "連携",
+				"planning": "計画と分析",
+				"running": "運用",
+				"work": "日々の作業"
 			},
-			"included": "Included",
-			"notIncluded": "Not included",
+			"included": "含まれる",
+			"notIncluded": "含まれない",
 			"rows": {
-				"admin": "Instance settings: sign-in providers, email, storage",
-				"analytics": "Analytics and audit log",
-				"api": "REST API, webhooks and MCP",
-				"backups": "Backups",
-				"cycles": "Cycles, modules and estimates",
-				"docs": "Docs written together, next to the tasks",
-				"export": "Export to CSV, Excel or JSON",
-				"hosting": "Where it runs",
-				"intake": "Intake inbox and triage",
-				"integrations": "GitHub, Gitea, Slack, Discord and more",
-				"jira": "Jira import",
-				"people": "People",
-				"projects": "Projects and tasks",
-				"publicBoards": "Public boards with voting",
-				"roles": "Workspace roles and permissions",
-				"support": "Support",
-				"updates": "Updates",
-				"views": "Board, list, spreadsheet, calendar and Gantt views"
+				"admin": "インスタンス設定: サインインプロバイダー、メール、ストレージ",
+				"analytics": "アナリティクスと監査ログ",
+				"api": "REST API、Webhook、MCP",
+				"backups": "バックアップ",
+				"cycles": "サイクル、モジュール、見積もり",
+				"docs": "タスクの隣で共同編集するドキュメント",
+				"export": "CSV、Excel、JSON へのエクスポート",
+				"hosting": "稼働場所",
+				"intake": "受付インボックスと仕分け",
+				"integrations": "GitHub、Gitea、Slack、Discord など",
+				"jira": "Jira からのインポート",
+				"people": "利用人数",
+				"projects": "プロジェクトとタスク",
+				"publicBoards": "投票機能付きの公開ボード",
+				"roles": "ワークスペースのロールと権限",
+				"support": "サポート",
+				"updates": "アップデート",
+				"views": "ボード、リスト、スプレッドシート、カレンダー、ガントの各ビュー",
+				"ai": "AI: AI に質問、作成モード、エージェント"
 			},
-			"title": "Compare the plans",
+			"title": "プランを比較",
 			"values": {
-				"automatic": "Automatic",
-				"community": "Community on GitHub",
-				"email": "Email",
-				"eu": "EU data centres",
-				"notNeeded": "Not needed for one",
-				"one": "Just you",
-				"perMember": "Unlimited, billed per member",
-				"priorityEmail": "Priority email",
-				"unlimited": "Unlimited",
-				"yours": "You run them",
-				"yourSchedule": "When you choose",
-				"yourServers": "Your servers"
+				"automatic": "自動",
+				"community": "GitHub のコミュニティ",
+				"email": "メール",
+				"eu": "EU のデータセンター",
+				"notNeeded": "1 人なら不要",
+				"one": "自分だけ",
+				"perMember": "無制限 (メンバーごとに請求)",
+				"priorityEmail": "優先メール",
+				"unlimited": "無制限",
+				"yours": "自分で運用",
+				"yourSchedule": "好きなタイミングで",
+				"yourServers": "自分のサーバー",
+				"ownKey": "自分の AI キーまたはモデル"
 			}
 		},
-		"title": "One product. Two ways to run it.",
-		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+		"title": "製品はひとつ。運用方法はふたつ。",
+		"trialNote": "Cloud プランは 14 日間のトライアルから始まります。開始にカードは不要です。"
 	},
 	"templates": {
 		"form": {
@@ -10007,7 +9861,6 @@
 			},
 			"chat": {
 				"planLabel": "提案された変更",
-				"planning": "変更を計画しています…",
 				"nothing": "このリクエストで変更するものはありません。",
 				"awaiting": "応答待ち",
 				"ready": "準備できた変更: {{count}} 件。続けるには確定してください。",
@@ -10553,11 +10406,7 @@
 			"retro": "振り返り",
 			"my_brief": "自分のブリーフ",
 			"embedding": "検索インデックス作成",
-			"coding_handoff": "コーディングエージェント向けブリーフ",
-			"build_chat": "チャットで作成",
-			"nl_filter": "自然言語フィルター",
-			"inbox_digest": "受信トレイの要約",
-			"speech": "音声入力"
+			"coding_handoff": "コーディングエージェント向けブリーフ"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -10698,7 +10547,9 @@
 			"speechFormat": "API 形式",
 			"speechFormatHint": "音声の送信方法です。Fish Audio の場合はエンドポイントに https://api.fish.audio/v1/asr を指定してください。",
 			"speechFormatOpenai": "OpenAI 互換",
-			"speechModelHint": "Fish Audio の場合は transcribe-1-pro または transcribe-1。空欄のままでもかまいません。"
+			"speechModelHint": "Fish Audio の場合は transcribe-1-pro または transcribe-1。空欄のままでもかまいません。",
+			"storePrompts": "プロンプトと回答を保存",
+			"storePromptsHint": "エージェントへの依頼のテキストと、モデルが書いた内容を各実行のログに保存します。オフ：実行には件数、ステップ、要約だけが残ります。今後終了する実行に適用されます。ワークスペースがサーバーに保存する Ask の履歴には別のスイッチがあります。"
 		},
 		"workspace": {
 			"navLabel": "AI",
@@ -10776,7 +10627,8 @@
 			"storeConversations": "チャット履歴をサーバーに保存",
 			"storeConversationsHint": "各メンバーの会話をワークスペースに保存し、どのデバイスからでも開き直せるようにします。オフ: 会話は各ブラウザにのみ保存されます。",
 			"allowAutopilot": "オートパイロットを許可",
-			"allowAutopilotHint": "作成モードで確認なしに変更を適用できるようにします。すべての変更は記録され、元に戻すことができます。"
+			"allowAutopilotHint": "作成モードで確認なしに変更を適用できるようにします。すべての変更は記録され、元に戻すことができます。",
+			"storesPrompts": "プロンプトを保存中"
 		},
 		"agents": {
 			"navLabel": "エージェント",
@@ -10980,11 +10832,13 @@
 					"manual": "タスクから実行",
 					"schedule": "スケジュール",
 					"automation": "オートメーション",
-					"chat": "フォローアップ"
+					"chat": "フォローアップ",
+					"intake": "受付依頼"
 				},
 				"project": "プロジェクト:",
 				"workedSeconds": "作業時間 {{count}} 秒",
-				"workedMinutes": "作業時間 {{count}} 分"
+				"workedMinutes": "作業時間 {{count}} 分",
+				"request": "依頼"
 			},
 			"connectors": {
 				"title": "コネクタ",
@@ -11125,6 +10979,27 @@
 					"assign": "割り当て",
 					"schedule": "スケジュール",
 					"automation": "オートメーション"
+				}
+			},
+			"intakeTrigger": {
+				"open": "{{name}} の新しい受付依頼",
+				"badge": "受付",
+				"title": "受付依頼：{{name}}",
+				"hint": "エージェントのプロジェクトに新しい受付依頼が届くたびに実行します（たとえば振り分けのため）。変更には他の実行と同じ承認と取り消しのルールが適用されます。",
+				"enabled": "新しい受付依頼で実行",
+				"enabledHint": "受付と AI がオンのプロジェクトで、エージェントのプロジェクト内に限ります。",
+				"prompt": "何をさせますか？",
+				"promptPlaceholder": "例：優先度とラベルを提案し、重複を指摘する。",
+				"promptHint": "空欄なら振り分け：依頼の内容、緊急度、不足している情報を短くコメントします。",
+				"runsAs": "{{name}} のために実行します。トリガーをオンにして保存すると、あなたがその人になります。",
+				"runsAsYou": "オンにするとあなたのために、最大であなたの権限で実行します。ワークスペースを離れるか、AI や受付へのアクセスを失うとオフになります。",
+				"outsideNote": "ワークスペース外からの依頼（公開ボード、フォーム）は、承認なしに何も変更しません。",
+				"limitNote": "エージェントごとに 1 時間あたり最大 30 回の受付実行。エージェントが出した依頼では何も起動しません。",
+				"saved": "受付トリガーを保存しました",
+				"saveError": "受付トリガーを保存できませんでした。もう一度お試しください。",
+				"errors": {
+					"forbidden": "受付の実行はあなたの代わりに動くため、AI へのアクセスと受付依頼を読む権限が必要です。",
+					"AGENT_CANT_READ_INTAKE": "このエージェントのロールは受付依頼を読めません。読めるロールを割り当ててください。"
 				}
 			}
 		},
@@ -11351,7 +11226,6 @@
 			"unmeasured_other": "着手が記録されていないタスク {{count}} 件は除外されています。"
 		},
 		"capacity": {
-			"meter": "通常のサイクルと比べた計画中の作業量",
 			"within": "通常のサイクルの {{percent}}% を計画中",
 			"over": "キャパシティ超過：通常のサイクルの {{percent}}% を計画中",
 			"noDates": "キャパシティを確認するには、サイクルの日付を設定してください。",
@@ -11447,6 +11321,137 @@
 			"emailTitle": "マイブリーフをダイジェストに追加",
 			"emailDescription": "ダイジェストに、ブロック中のタスクとフォロー中のタスクの変更も表示します。毎日または毎週のダイジェストが必要です。",
 			"emailError": "この設定を保存できませんでした。"
+		}
+	},
+	"emails": {
+		"otp": {
+			"preview": "Margaya の確認コード",
+			"title": "確認コード",
+			"subtitle": "サインインを完了するには、このワンタイムコードを入力してください。",
+			"verifySubtitle": "メールアドレスを確認するには、このワンタイムコードを入力してください。",
+			"changeSubtitle": "このアドレスを Margaya アカウントの新しいメールアドレスとして確認するには、このワンタイムコードを入力してください。",
+			"code": "はあなたの Margaya 確認コードです。",
+			"expiry": "このコードの有効期限は{{minutes}}分です。",
+			"ignore": "心当たりがない場合は、このメールを無視してかまいません。",
+			"footer": "Margaya セキュリティメール"
+		},
+		"magicLink": {
+			"preview": "Margaya にサインイン",
+			"title": "安全なサインインリンク",
+			"subtitle": "このリンクから Margaya ワークスペースにアクセスできます。",
+			"cta": "Margaya にサインイン",
+			"expiry": "セキュリティのため、このリンクは5分で有効期限が切れます。",
+			"ignore": "心当たりがない場合は、このメールを無視してかまいません。",
+			"footer": "Margaya セキュリティメール"
+		},
+		"passwordReset": {
+			"preview": "Margaya のパスワードをリセット",
+			"title": "パスワードのリセット",
+			"subtitleWithName": "{{name}} さん、下のボタンから新しいパスワードを設定してください。",
+			"subtitleDefault": "下のボタンから新しいパスワードを設定してください。",
+			"cta": "パスワードをリセット",
+			"expiry": "このリンクの有効期限は1時間です。",
+			"ignore": "心当たりがない場合は、変更は行われません。",
+			"footer": "Margaya セキュリティメール"
+		},
+		"emailChanged": {
+			"preview": "Margaya のメールアドレスが変更されました",
+			"title": "メールアドレスが変更されました",
+			"body": "Margaya アカウントのメールアドレスは {{email}} になりました。今後、ログインリンク、コード、通知はこのアドレスに送信されます。",
+			"warning": "この変更に心当たりがない場合は、すぐに Margaya の管理者に連絡してください。",
+			"footer": "Margaya セキュリティメール"
+		},
+		"authSubjects": {
+			"magicLinkSubject": "Margaya ログインリンク",
+			"otpSubject": "Margaya 認証コード",
+			"verifyEmailSubject": "Margaya メールアドレスの確認",
+			"passwordResetSubject": "Margaya パスワードのリセット",
+			"changeEmailSubject": "Margaya 新しいメールアドレスの確認",
+			"emailChangedSubject": "Margaya のメールアドレスが変更されました"
+		},
+		"notification": {
+			"preview": "Margaya の新しい通知",
+			"subtitle": "配信設定に一致する通知がありました。",
+			"footer": "Margaya 通知",
+			"actionLabel": "Margaya で開く"
+		},
+		"notificationBatch": {
+			"preview": "Margaya の最近の更新",
+			"title_other": "{{count}} 件の新しい更新",
+			"subtitle": "前回のメール以降のタスクの変更をまとめました。",
+			"by": "変更者:",
+			"open": "タスクを開く",
+			"manage": "通知設定を管理",
+			"footer": "Margaya 通知"
+		},
+		"notificationDigest": {
+			"title": {
+				"daily": "毎日のダイジェスト",
+				"weekly": "毎週のダイジェスト"
+			},
+			"preview": "Margaya のまとめ",
+			"subtitle": "期限切れまたは 7 日以内に期限を迎える未完了タスクと、受信トレイの新着です。",
+			"dueHeading": "期限間近・期限切れ",
+			"overdue": "期限切れ",
+			"due": "期限",
+			"more_other": "ほか {{count}} 件",
+			"mentionsHeading_other": "{{count}} 件の新しいメンション",
+			"unread_other": "受信トレイに未読の通知が {{count}} 件あります",
+			"openInbox": "受信トレイを開く",
+			"manage": "通知設定を管理",
+			"footer": "このダイジェストの受信を選択しています。",
+			"blockedHeading": "ブロック中",
+			"waitingOn": "{{keys}} を待っています",
+			"hiddenBlockers_other": "表示できないタスク {{count}} 件",
+			"followingHeading": "フォロー中のタスクの変更",
+			"changes_other": "{{count}} 件の変更"
+		},
+		"batchSubject": {
+			"task_other": "{{title}} の更新 {{count}} 件",
+			"all_other": "Margaya の更新 {{count}} 件"
+		},
+		"digestSubject": {
+			"daily": "Margaya の毎日のダイジェスト",
+			"weekly": "Margaya の毎週のダイジェスト"
+		},
+		"workspaceDeletion": {
+			"fallbackName": "ワークスペース",
+			"openWorkspace": "ワークスペースを開く",
+			"scheduledSubject": "{{name}} の削除が予定されています",
+			"scheduledTitle": "{{name}} は {{date}} に削除されます",
+			"scheduledTitleNoDate": "{{name}} はまもなく削除されます",
+			"scheduledMessage": "オーナーがこのワークスペースの削除を予定しました。{{date}} までは読み取り専用ですが、内容を開いたりエクスポートしたりでき、オーナーは削除を取り消せます。その日以降、プロジェクト、タスク、ページは完全に削除されます。",
+			"scheduledMessageNoDate": "オーナーがこのワークスペースの削除を予定しました。削除されるまでは読み取り専用ですが、内容を開いたりエクスポートしたりでき、オーナーは削除を取り消せます。削除後、プロジェクト、タスク、ページは完全に削除されます。",
+			"cancelledSubject": "{{name}} は削除されません",
+			"cancelledTitle": "{{name}} が元に戻りました",
+			"cancelledMessage": "オーナーが予定されていた削除を取り消しました。ワークスペースは読み取り専用ではなくなり、API キーと Webhook も再び動作します。"
+		},
+		"webhookDisabled": {
+			"subject": "Margaya の Webhook が無効化されました",
+			"title": "Webhook が無効化されました",
+			"message": "{{host}} への配信が 1 日以上失敗し続けたため、Margaya は Webhook を無効化しました。エンドポイントを修正してから、ワークスペース設定で Webhook を再度有効にしてください。",
+			"messageNoHost": "エンドポイントへの配信が 1 日以上失敗し続けたため、Margaya は Webhook を無効化しました。エンドポイントを修正してから、ワークスペース設定で Webhook を再度有効にしてください。",
+			"actionLabel": "Webhook 設定を開く"
+		},
+		"trialReminder": {
+			"endedTitle": "{{workspaceName}} のトライアルが終了しました",
+			"daysLeftTitle_other": "{{workspaceName}} のトライアル期間は残り {{count}} 日です",
+			"endedSubtitle": "プランを選択するまで、ワークスペースは読み取り専用になります。削除されたものはなく、データはそのまま残っています。",
+			"activeSubtitle": "トライアル終了後も作成や編集を続けるには、プランを選択してください。",
+			"cta": "プランを選択",
+			"selfHost": "Margaya はセルフホストすれば、すべての機能を含めてずっと無料でご利用いただけます。データはいつでもエクスポートして、ご自身のサーバーに移行できます。",
+			"footer": "このメールは、Margaya Cloud でこのワークスペースのオーナーであるあなたにお送りしています。"
+		},
+		"trialSubjects": {
+			"trialEnding": "{{workspaceName}} のトライアルはあと 3 日で終了します",
+			"trialExpired": "{{workspaceName}} のトライアルが終了しました"
+		},
+		"testEmail": {
+			"subject": "{{instanceName}} からのテストメール",
+			"text": "これは {{instanceName}} から送信されたテストメールです。このメールを読めていれば、メール配信は正常に機能しています。"
+		},
+		"notificationText": {
+			"commentWithoutPreview": "「{{taskTitle}}」に新しいコメントがあります"
 		}
 	}
 }

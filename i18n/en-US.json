@@ -10,16 +10,10 @@
 			"markAllRead": "Mark all read",
 			"remove": "Remove",
 			"reset": "Reset",
-			"filter": "Filter",
-			"clearAllFilters": "Clear all filters",
 			"undo": "Undo"
 		},
 		"a11y": {
 			"toggleSidebar": "Toggle sidebar"
-		},
-		"sidebar": {
-			"title": "Sidebar",
-			"mobileDescription": "Displays the mobile sidebar."
 		},
 		"empty": {
 			"loading": "Loading..."
@@ -41,18 +35,6 @@
 			"false": "False",
 			"undefined": "Undefined",
 			"notSet": "Not set"
-		},
-		"language": {
-			"english": "English",
-			"german": "German",
-			"greek": "Greek",
-			"macedonian": "Macedonian",
-			"french": "French",
-			"spanish": "Spanish",
-			"dutch": "Dutch",
-			"korean": "Korean",
-			"chinese": "Chinese",
-			"italian": "Italian"
 		},
 		"preferences": {
 			"languageCurrent": "Language: {{language}}",
@@ -95,11 +77,6 @@
 		},
 		"error": {
 			"title": "Something went wrong",
-			"description": "The page crashed unexpectedly. Refreshing usually fixes it.",
-			"troubleshooting": "Troubleshooting steps:",
-			"tryAgain": "Try again",
-			"viewDeploymentGuide": "View deployment guide",
-			"refreshPage": "Refresh page",
 			"messages": {
 				"cors": "Unable to connect to the server. This might be due to CORS configuration issues.",
 				"network": "Network error. Please check your internet connection and try again.",
@@ -144,7 +121,6 @@
 				"keyLabel": "Key:",
 				"keyHint": "Used for ticket IDs (e.g., {{example}}-123)",
 				"createButton": "Create project",
-				"successToast": "Project created successfully",
 				"errorToast": "Failed to create project",
 				"keyTaken": "A project with the key {{key}} already exists in this workspace",
 				"startFrom": "Start from",
@@ -179,7 +155,6 @@
 				"successUpdated": "Task updated successfully",
 				"createError": "Failed to create task",
 				"priority": "Priority",
-				"statusFallback": "In Progress",
 				"startDate": "Start date",
 				"dueDate": "Due date",
 				"clearStartDate": "Clear start date",
@@ -331,7 +306,6 @@
 			"namePlaceholder": "John Doe",
 			"failedSignUp": "Failed to sign up",
 			"accountCreated": "Account created successfully",
-			"passwordTooShort": "Password is too short",
 			"creatingAccount": "Creating account...",
 			"createAccount": "Create account"
 		},
@@ -345,7 +319,6 @@
 			"invitationExpired": "Invitation expired",
 			"errorLoadDescription": "Failed to load invitation details. The invitation may be invalid or expired.",
 			"goToSignIn": "Go to sign in",
-			"workspaceLabel": "Workspace: {{workspaceName}}",
 			"joinWorkspace": "Join {{workspaceName}}",
 			"inviteBodySignedIn": "<inviter>{{inviterName}}</inviter> has invited you to join their workspace.",
 			"inviteBodySignedOut": "<inviter>{{inviterName}}</inviter> has invited you to join their workspace on Margaya.",
@@ -375,7 +348,6 @@
 			"creating": "Creating...",
 			"createWorkspace": "Create workspace",
 			"workspaceCreatedTitle": "Workspace created",
-			"redirectingToWorkspace": "Taking you to <name>{{name}}</name>...",
 			"toast": {
 				"workspaceCreated": "Workspace created successfully",
 				"createFailed": "Failed to create workspace",
@@ -439,8 +411,6 @@
 			"namePlaceholder": "e.g. John Doe",
 			"saving": "Saving...",
 			"continue": "Continue",
-			"welcome": "Welcome, {{name}}!",
-			"redirecting": "Taking you to your dashboard...",
 			"toast": {
 				"updateSuccess": "Profile updated successfully",
 				"updateFailed": "Failed to update profile"
@@ -541,7 +511,6 @@
 	},
 	"settings": {
 		"account": "Account",
-		"developer": "Developer",
 		"information": "Information",
 		"notifications": "Notifications",
 		"preferences": "Preferences",
@@ -687,23 +656,7 @@
 			"noProjectsInWorkspace": "No projects available for this workspace yet.",
 			"createRule": "Create rule",
 			"removeRule": "Remove rule",
-			"toastEmailSaved": "Email notification settings saved",
-			"toastEmailSaveFailed": "Failed to save email settings",
-			"toastNtfySaved": "ntfy settings saved",
-			"toastNtfySaveFailed": "Failed to save ntfy settings",
-			"toastNtfyDisconnected": "ntfy disconnected",
-			"toastNtfyDisconnectFailed": "Failed to disconnect ntfy",
-			"toastGotifySaved": "Gotify settings saved",
-			"toastGotifySaveFailed": "Failed to save Gotify settings",
-			"toastGotifyDisconnected": "Gotify disconnected",
-			"toastGotifyDisconnectFailed": "Failed to disconnect Gotify",
-			"toastWebhookSaved": "Webhook settings saved",
-			"toastWebhookSaveFailed": "Failed to save webhook settings",
-			"toastWebhookDisconnected": "Webhook disconnected",
-			"toastWebhookDisconnectFailed": "Failed to disconnect webhook",
-			"toastRuleSaved": "Saved notification rule for {{workspaceName}}",
 			"toastRuleSaveFailed": "Failed to save workspace notification rule",
-			"toastRuleRemoved": "Removed notification rule for {{workspaceName}}",
 			"toastRuleRemoveFailed": "Failed to remove workspace notification rule",
 			"toastPreferencesSaved": "Notification preferences saved",
 			"toastPreferencesSaveFailed": "Failed to save notification preferences",
@@ -739,7 +692,6 @@
 			"selectViewMode": "Select a view mode",
 			"board": "Board",
 			"list": "List",
-			"gantt": "Gantt",
 			"sidebarDefault": "Sidebar default",
 			"sidebarDefaultDescription": "Keep sidebar expanded on startup",
 			"displayOptions": "Display options",
@@ -890,14 +842,8 @@
 			"dangerZone": "Danger zone",
 			"dangerZoneSubtitle": "Irreversible and destructive actions.",
 			"deleteWorkspace": "Delete workspace",
-			"deleteWorkspaceDescription": "Schedule workspace to be permanently deleted",
-			"deleteModalTitle": "Delete workspace?",
-			"deleteModalDescription": "This will permanently delete the workspace \"{{name}}\" and all its data. This action cannot be undone.",
-			"deleteModalConfirm": "Delete workspace",
 			"toastUpdated": "Workspace updated successfully",
 			"toastUpdateError": "Failed to update workspace",
-			"toastDeleted": "Workspace deleted successfully",
-			"toastDeleteError": "Failed to delete workspace",
 			"validation": {
 				"nameRequired": "Workspace name is required",
 				"nameShort": "Workspace name must be at least 2 characters"
@@ -1564,7 +1510,9 @@
 				"agentScheduleDisabled": "Turned off an agent schedule",
 				"aiConnectorCreated": "Added an MCP connector",
 				"aiConnectorUpdated": "Changed an MCP connector",
-				"aiConnectorDeleted": "Deleted an MCP connector"
+				"aiConnectorDeleted": "Deleted an MCP connector",
+				"agentIntakeTriggerUpdated": "Changed an agent's intake trigger",
+				"agentIntakeTriggerDisabled": "Turned off an agent's intake trigger"
 			}
 		},
 		"workspaceWebhooks": {
@@ -1926,21 +1874,6 @@
 			"codeGroupTitle": "Code hosting",
 			"chatGroupTitle": "Chat and webhooks"
 		},
-		"projectVisibility": {
-			"pageTitle": "Project visibility",
-			"title": "Visibility",
-			"subtitle": "Control who can view and access your project.",
-			"sectionTitle": "Visibility",
-			"sectionSubtitle": "Toggle public access and share the public URL.",
-			"publicAccess": "Public access",
-			"publicAccessHint": "Allow anyone with the URL to view this project",
-			"publicUrl": "Public URL",
-			"publicUrlHint": "Share this link if the project is public",
-			"copy": "Copy",
-			"copiedToast": "Copied",
-			"toastUpdated": "Visibility updated",
-			"toastUpdateError": "Failed to update visibility"
-		},
 		"projectPublish": {
 			"title": "Publish",
 			"pageTitle": "Publish",
@@ -2176,14 +2109,12 @@
 			"optionsPlaceholder": "Options separated by commas",
 			"required": "Required",
 			"addButton": "Add",
-			"creating": "Creating...",
 			"loading": "Loading custom fields...",
 			"empty": "No custom fields configured yet.",
 			"defaultLabel": "Default",
 			"createSuccess": "Custom field created.",
 			"createError": "Failed to create custom field.",
 			"deleteButton": "Delete",
-			"deleting": "Deleting...",
 			"deleteSuccess": "Custom field deleted.",
 			"deleteError": "Failed to delete custom field.",
 			"types": {
@@ -2372,7 +2303,6 @@
 			},
 			"connect": "Connect Slack",
 			"saveChanges": "Save changes",
-			"update": "Update Slack",
 			"disconnect": "Disconnect"
 		},
 		"discordIntegration": {
@@ -2410,7 +2340,6 @@
 			},
 			"connect": "Connect Discord",
 			"saveChanges": "Save changes",
-			"update": "Update Discord",
 			"disconnect": "Disconnect"
 		},
 		"mattermostIntegration": {
@@ -2448,7 +2377,6 @@
 			},
 			"connect": "Connect Mattermost",
 			"saveChanges": "Save changes",
-			"update": "Update Mattermost",
 			"disconnect": "Disconnect"
 		},
 		"genericWebhookIntegration": {
@@ -2565,9 +2493,7 @@
 			"exportTasks": "Export tasks",
 			"importTasks": "Import tasks",
 			"dialogTitle": "Import tasks",
-			"dialogDescription": "Upload a JSON file containing tasks to import into this project.",
 			"expectedFormat": "Expected format:",
-			"dropHint": "Drag and drop your JSON file here",
 			"selectFile": "Select file",
 			"exporting": "Exporting tasks...",
 			"exportSuccess": "Tasks exported successfully",
@@ -2578,7 +2504,6 @@
 			"importError": "Failed to import tasks",
 			"invalidFormat": "Invalid import file format",
 			"noFileDropped": "No file was dropped",
-			"notJsonFile": "Please upload a JSON file",
 			"exportJson": "JSON (for re-import)",
 			"exportCsv": "CSV (spreadsheet)",
 			"exportXlsx": "Excel (.xlsx)",
@@ -3277,8 +3202,7 @@
 			"empty": "No results found.",
 			"footer": {
 				"navigate": "Navigate",
-				"open": "Open",
-				"close": "Close"
+				"open": "Open"
 			},
 			"newView": "New view",
 			"goToInbox": "Go to Inbox",
@@ -3309,9 +3233,7 @@
 		},
 		"notifications": "Notifications",
 		"sidebar": {
-			"overview": "Overview",
 			"projects": "Projects",
-			"inbox": "Inbox",
 			"favorites": "Favorites",
 			"members": "Members",
 			"invitations": "Invitations",
@@ -3321,9 +3243,7 @@
 			"myWork": "Your work",
 			"drafts": "Drafts",
 			"home": "Home",
-			"personal": "Personal",
-			"stickies": "Stickies",
-			"analytics": "Analytics"
+			"stickies": "Stickies"
 		},
 		"projectMenu": {
 			"publish": "Publish…"
@@ -3377,10 +3297,6 @@
 				"fallback": "Results"
 			}
 		},
-		"settingsLayout": {
-			"toggleSidebar": "Toggle sidebar",
-			"back": "Back"
-		},
 		"userMenu": {
 			"signedOutSuccess": "Signed out successfully",
 			"signOutFailed": "Failed to sign out",
@@ -3393,13 +3309,11 @@
 		"workspaceSwitcher": {
 			"workspaces": "Workspaces",
 			"switching": "Switching...",
-			"addWorkspace": "Add workspace",
-			"selectWorkspace": "Select workspace"
+			"addWorkspace": "Add workspace"
 		},
 		"page": {
 			"projectsTitle": "Projects",
 			"settingsTitle": "Settings",
-			"backToWorkspace": "Back to workspace",
 			"settingsWorkspaceTab": "Workspace",
 			"settingsInstanceTab": "Instance",
 			"settingsNotFoundTitle": "This settings page wasn't found",
@@ -3429,7 +3343,6 @@
 			"items": {
 				"openCommandPalette": "Open command palette",
 				"globalSearch": "Global search",
-				"toggleSidebar": "Toggle sidebar",
 				"showShortcuts": "Show keyboard shortcuts",
 				"closeModal": "Close modal/popover",
 				"createTask": "Create task",
@@ -3509,16 +3422,11 @@
 	},
 	"notifications": {
 		"title": "Notifications",
-		"newCount_one": "{{count}} new",
-		"newCount_other": "{{count}} new",
-		"emptyTitle": "No notifications yet",
-		"emptySubtitle": "You'll see updates and activity here.",
 		"clearAll": "Clear all notifications",
 		"clearDialogTitle": "Clear all notifications?",
 		"clearDialogDescription": "This permanently removes every notification in this workspace. You can't undo this action.",
 		"shortcuts": {
-			"open": "Open notifications",
-			"inbox": "Open inbox"
+			"open": "Open notifications"
 		},
 		"reminderLeadTime": {
 			"minutes_one": "{{count}} minute",
@@ -3668,7 +3576,6 @@
 				"dialogTitle": "Snooze until",
 				"date": "Date",
 				"time": "Time",
-				"pickDate": "Pick a date",
 				"pickTime": "Pick a time",
 				"submit": "Snooze"
 			},
@@ -4069,7 +3976,6 @@
 				"recurredToScheduled": "The next repeat was created on schedule: <task>{{task}}</task>"
 			}
 		},
-		"title": "Tasks",
 		"subscription": {
 			"subscribe": "Subscribe",
 			"unsubscribe": "Unsubscribe",
@@ -4354,7 +4260,6 @@
 			"copyTaskBranch": "Copy task branch",
 			"branchCopied": "Copied {{branch}}",
 			"addLabel": "Add label",
-			"start": "Start",
 			"startDate": "Start date",
 			"noDate": "No date"
 		},
@@ -4418,22 +4323,11 @@
 			"moveAllTooltip": "Move all planned tasks to {{column}}",
 			"moveAll": "Move all",
 			"addTask": "Add task",
-			"filter": "Filter",
-			"addFilter": "Add filter...",
 			"sections": {
 				"planned": "Planned",
 				"archived": "Archived"
 			},
-			"noTasksInSection": "No {{section}} tasks",
-			"filters": {
-				"priority": "Priority: {{name}}",
-				"assignee": "Assignee: {{name}}",
-				"due": "Due: {{date}}",
-				"label": "Label: {{name}}",
-				"dueThisWeek": "Due this week",
-				"dueNextWeek": "Due next week",
-				"noDueDate": "No due date"
-			}
+			"noTasksInSection": "No {{section}} tasks"
 		},
 		"sort": {
 			"label": "Sort",
@@ -4453,17 +4347,7 @@
 		},
 		"boardFilters": {
 			"filterBy": "Filter by",
-			"allStatuses": "All statuses",
-			"allPriorities": "All priorities",
-			"allAssignees": "All assignees",
-			"unassigned": "Unassigned",
-			"allDueDates": "All due dates",
-			"allLabels": "All labels",
-			"noValuesUsedYet": "No values used yet",
-			"noCustomFieldValues": "No custom field values",
-			"allCustomFieldValues": "All values",
 			"selectedCount": "{{count}} selected",
-			"all": "All",
 			"subjects": {
 				"status": "Status",
 				"priority": "Priority",
@@ -4473,8 +4357,7 @@
 				"estimate": "Estimate"
 			},
 			"operators": {
-				"isAnyOf": "is any of",
-				"includeAnyOf": "include any of"
+				"isAnyOf": "is any of"
 			}
 		},
 		"calendar": {
@@ -4540,12 +4423,9 @@
 		},
 		"archive": {
 			"success": "Archived {{count}} tasks",
-			"archive": "Archive",
 			"restore": "Restore",
 			"archived": "Task archived",
 			"restored": "Task restored",
-			"bulkArchived_one": "Archived {{count}} task",
-			"bulkArchived_other": "Archived {{count}} tasks",
 			"error": "Couldn't archive the task",
 			"restoreError": "Couldn't restore the task",
 			"badge": "Archived"
@@ -4667,10 +4547,6 @@
 			"updateError": "Failed to update task due date",
 			"clearSuccess": "Task due date cleared",
 			"clearError": "Failed to clear due date"
-		},
-		"labels": {
-			"label": "Labels",
-			"empty": "No labels available"
 		},
 		"update": {
 			"success": "Task updated successfully",
@@ -5023,14 +4899,12 @@
 				"createdBy": "Created by",
 				"cycle": "Cycle",
 				"module": "Module",
-				"estimate": "Estimate",
 				"startDate": "Start date",
 				"created": "Created",
 				"updated": "Updated",
 				"completed": "Completed",
 				"parent": "Parent",
 				"project": "Project",
-				"customFields": "Custom fields",
 				"subscribed": "Subscribed",
 				"mentions": "Mentions"
 			},
@@ -5106,7 +4980,6 @@
 			"showEmptyGroups": "Show empty groups",
 			"properties": "Properties",
 			"columns": "Columns",
-			"needsSingleProject": "Group by status needs a single project",
 			"groups": {
 				"status": "Status",
 				"group": "Group",
@@ -5177,8 +5050,6 @@
 			"sortDesc": "Sort descending",
 			"clearSort": "Clear sort",
 			"hideColumn": "Hide column",
-			"newTask": "New task",
-			"newTaskPlaceholder": "Task title, then Enter",
 			"expandSubTasks": "Show sub-tasks",
 			"collapseSubTasks": "Hide sub-tasks",
 			"loadError": "Couldn't load tasks",
@@ -5236,11 +5107,6 @@
 			"accept": "Accept invitation to {{workspace}}",
 			"reject": "Reject invitation to {{workspace}}"
 		},
-		"table": {
-			"workspace": "Workspace",
-			"invitedBy": "Invited by",
-			"expires": "Expires"
-		},
 		"toast": {
 			"acceptError": "Failed to accept invitation",
 			"acceptSuccess": "Invitation accepted! Welcome to the team.",
@@ -5272,7 +5138,6 @@
 				"inProgress": "In progress"
 			},
 			"noDueDate": "No due date",
-			"reorderHandle": "Reorder project",
 			"reorderError": "Failed to reorder projects"
 		},
 		"search": {
@@ -5298,7 +5163,6 @@
 			"pageTitle": "Create workspace",
 			"heading": "Create a new workspace",
 			"subtitle": "Workspaces are shared environments where teams can work on projects, cycles and issues.",
-			"nameLabel": "Workspace name",
 			"namePlaceholder": "Enter workspace name",
 			"descriptionLabel": "Description (optional)",
 			"descriptionPlaceholder": "Add a description for your workspace",
@@ -5455,11 +5319,8 @@
 			"columns": {
 				"name": "Name",
 				"role": "Role",
-				"joined": "Joined",
-				"actions": "Actions"
+				"joined": "Joined"
 			},
-			"memberRolePending": "{{role}} (Pending)",
-			"ariaCancelInvitation": "Cancel invitation",
 			"ariaInvitationActions": "Invitation actions",
 			"ariaRemoveMember": "Remove member",
 			"removeDialogTitle": "Remove team member?",
@@ -5479,7 +5340,6 @@
 		}
 	},
 	"publicProject": {
-		"pageTitle": "Public view",
 		"badge": "Public",
 		"readOnly": "Read-only",
 		"error": {
@@ -5515,9 +5375,7 @@
 			"emptyColumn": "No tasks here",
 			"noMatches": "No tasks match these filters",
 			"loadMore": "Load more ({{count}})",
-			"loadError": "Couldn't load the tasks",
-			"collapse": "Collapse {{name}}",
-			"expand": "Expand {{name}}"
+			"loadError": "Couldn't load the tasks"
 		},
 		"card": {
 			"votesTooltip": "{{up}} upvotes · {{down}} downvotes",
@@ -5626,12 +5484,10 @@
 		"taskDetail": {
 			"labels": "Labels",
 			"externalLinks": "External links",
-			"pullRequestFallback": "Pull request",
 			"issueFallback": "Issue",
 			"prStatusMerged": "Merged",
 			"prStatusDraft": "Draft",
 			"prStatusOpen": "Open",
-			"dueWithDate": "Due {{date}}",
 			"created": "Created",
 			"dueDateLabel": "Due date",
 			"status": "Status",
@@ -5898,7 +5754,8 @@
 				"updates": "Updates",
 				"backups": "Backups",
 				"admin": "Instance settings: sign-in providers, email, storage",
-				"support": "Support"
+				"support": "Support",
+				"ai": "AI: Ask AI, Build mode and agents"
 			},
 			"values": {
 				"unlimited": "Unlimited",
@@ -5912,7 +5769,8 @@
 				"yours": "You run them",
 				"community": "Community on GitHub",
 				"email": "Email",
-				"priorityEmail": "Priority email"
+				"priorityEmail": "Priority email",
+				"ownKey": "Your own AI key or model"
 			}
 		},
 		"faq": {
@@ -5949,6 +5807,10 @@
 				"selfHostHelp": {
 					"question": "Where do self-hosters get help?",
 					"answer": "From the maintainers and the community on GitHub, through discussions and issues. Installation, upgrades and configuration are covered in the documentation."
+				},
+				"ai": {
+					"question": "Is AI included?",
+					"answer": "Every plan has the AI features: Ask AI, Build mode, agents and writing help. They stay off until an admin turns them on. AI usage isn't included in the price: you add your own API key in the workspace's AI settings, and the AI provider bills you directly. Self-hosted instances can also use a model you run yourself, through Ollama or vLLM."
 				}
 			}
 		},
@@ -7638,7 +7500,6 @@
 	},
 	"intake": {
 		"pageTitle": "Intake · {{project}}",
-		"title": "Intake",
 		"newRequest": "New request",
 		"badge": {
 			"aria": "{{count}} requests waiting for review"
@@ -7820,7 +7681,6 @@
 			"saved": "Request updated",
 			"error": "Couldn't submit the request",
 			"saveError": "Couldn't update the request",
-			"titleRequired": "Add a title",
 			"discardTitle": "Discard this request?",
 			"discardDescription": "What you typed will be lost.",
 			"discard": "Discard",
@@ -8700,8 +8560,7 @@
 			"updated": "Updated {{time}}",
 			"emptyTitle": "No views yet",
 			"emptyDescription": "Save filters and layouts as views and share them with your team.",
-			"searchEmpty": "No views match “{{query}}”",
-			"favorite": "Favorite"
+			"searchEmpty": "No views match “{{query}}”"
 		},
 		"access": {
 			"workspace": "Workspace",
@@ -8801,7 +8660,6 @@
 			"notAvailable": "n/a"
 		},
 		"workload": {
-			"title": "Workload",
 			"priorities": "Open work by priority",
 			"byProject": "By project",
 			"recentActivity": "Recent activity",
@@ -8941,11 +8799,7 @@
 			"inbox": "Inbox",
 			"myWork": "Your work",
 			"stickies": "Stickies",
-			"unread_one": "{{count}} unread",
-			"unread_other": "{{count}} unread",
 			"caughtUp": "All caught up",
-			"open_one": "{{count}} open",
-			"open_other": "{{count}} open",
 			"overdue_one": "{{count}} overdue",
 			"overdue_other": "{{count}} overdue",
 			"stickiesHint": "Private notes, only for you",
@@ -9610,8 +9464,6 @@
 	},
 	"instanceAdmin": {
 		"pageTitle": "Instance · {{page}}",
-		"sidebarTitle": "Instance",
-		"sidebarSubtitle": "Instance admin",
 		"nav": {
 			"general": "General",
 			"authentication": "Authentication",
@@ -9634,7 +9486,6 @@
 		"loadError": "Couldn't load instance settings",
 		"retry": "Retry",
 		"save": "Save",
-		"saving": "Saving…",
 		"secret": {
 			"saved": "Saved",
 			"replace": "Replace",
@@ -9867,7 +9718,6 @@
 				"email": "Email"
 			},
 			"you": "You",
-			"actions": "Admin actions",
 			"remove": "Remove admin…",
 			"removeTitle": "Remove {{name}} as instance admin?",
 			"removeDescription": "They keep their account and their workspaces.",
@@ -10154,7 +10004,6 @@
 			},
 			"chat": {
 				"planLabel": "Proposed changes",
-				"planning": "Planning changes…",
 				"nothing": "Nothing to change for this request.",
 				"awaiting": "Awaiting response",
 				"ready": "Changes ready: {{count}}. Confirm to continue.",
@@ -10700,11 +10549,7 @@
 			"retro": "Retrospectives",
 			"my_brief": "My brief",
 			"embedding": "Search indexing",
-			"coding_handoff": "Coding agent briefs",
-			"build_chat": "Build in chat",
-			"nl_filter": "Natural-language filters",
-			"inbox_digest": "Inbox digests",
-			"speech": "Speech to text"
+			"coding_handoff": "Coding agent briefs"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -10846,7 +10691,9 @@
 			"speechFormat": "API format",
 			"speechFormatHint": "How audio is sent. For Fish Audio, use https://api.fish.audio/v1/asr as the endpoint.",
 			"speechFormatOpenai": "OpenAI-compatible",
-			"speechModelHint": "For Fish Audio: transcribe-1-pro or transcribe-1, or leave it empty."
+			"speechModelHint": "For Fish Audio: transcribe-1-pro or transcribe-1, or leave it empty.",
+			"storePrompts": "Keep prompts and answers",
+			"storePromptsHint": "Keep the text of agent requests and what the model wrote in each run's log. Off: runs keep only counts, steps and their summary. Applies to runs that end from now on. Ask history that a workspace keeps on the server has its own switch."
 		},
 		"workspace": {
 			"navLabel": "AI",
@@ -10924,7 +10771,8 @@
 			"storeConversations": "Keep chat history on the server",
 			"storeConversationsHint": "Each person's conversations are saved in the workspace so they can reopen them on any device. Off: they stay in each browser only.",
 			"allowAutopilot": "Allow Autopilot",
-			"allowAutopilotHint": "Build mode may apply changes without a confirmation. Every change is still logged and can be undone."
+			"allowAutopilotHint": "Build mode may apply changes without a confirmation. Every change is still logged and can be undone.",
+			"storesPrompts": "Prompts kept"
 		},
 		"agents": {
 			"navLabel": "Agents",
@@ -11128,11 +10976,13 @@
 					"manual": "Run from a task",
 					"schedule": "Scheduled",
 					"automation": "Automation",
-					"chat": "Follow-up"
+					"chat": "Follow-up",
+					"intake": "Intake request"
 				},
 				"project": "Project:",
 				"workedSeconds": "Worked for {{count}} s",
-				"workedMinutes": "Worked for {{count}} min"
+				"workedMinutes": "Worked for {{count}} min",
+				"request": "Request"
 			},
 			"connectors": {
 				"title": "Connectors",
@@ -11273,6 +11123,27 @@
 					"assign": "Assign",
 					"schedule": "Schedule",
 					"automation": "Automation"
+				}
+			},
+			"intakeTrigger": {
+				"open": "New intake requests for {{name}}",
+				"badge": "Intake",
+				"title": "Intake requests: {{name}}",
+				"hint": "Run the agent on every new intake request in its projects, for example to triage it. Its changes follow the same approval and undo rules as other runs.",
+				"enabled": "Run on new intake requests",
+				"enabledHint": "Only in projects with Intake and AI turned on, and within the agent's projects.",
+				"prompt": "What should it do?",
+				"promptPlaceholder": "For example: suggest a priority and labels, and point out duplicates.",
+				"promptHint": "Leave empty to triage: a short comment on what the request asks for, how urgent it looks and what is missing.",
+				"runsAs": "Runs for {{name}}. Saving with the trigger on makes you that person.",
+				"runsAsYou": "Runs for you once you turn it on, with at most your rights. It turns off if you leave the workspace or lose AI or intake access.",
+				"outsideNote": "Requests from outside the workspace (public boards, forms) never change anything without approval.",
+				"limitNote": "At most 30 intake runs per hour per agent. Requests filed by agents start nothing.",
+				"saved": "Intake trigger saved",
+				"saveError": "Couldn't save the intake trigger. Try again.",
+				"errors": {
+					"forbidden": "Intake runs act for you, so you need AI access and permission to read intake requests.",
+					"AGENT_CANT_READ_INTAKE": "This agent's role can't read intake requests. Give it a role that can."
 				}
 			}
 		},
@@ -11503,7 +11374,6 @@
 			"unmeasured_other": "{{count}} tasks have no recorded start and are left out."
 		},
 		"capacity": {
-			"meter": "Planned work compared with a usual cycle",
 			"within": "Planned at {{percent}}% of a usual cycle",
 			"over": "Over capacity: planned at {{percent}}% of a usual cycle",
 			"noDates": "Set the cycle's dates to check its capacity.",
@@ -11610,6 +11480,146 @@
 			"emailTitle": "Add My brief to the digest",
 			"emailDescription": "Your digest also lists your blocked tasks and changes on tasks you follow. Needs a daily or weekly digest.",
 			"emailError": "Couldn't save this setting."
+		}
+	},
+	"emails": {
+		"otp": {
+			"preview": "Your Margaya verification code",
+			"title": "Your verification code",
+			"subtitle": "Enter this one-time code to finish signing in.",
+			"verifySubtitle": "Enter this one-time code to verify your email address.",
+			"changeSubtitle": "Enter this one-time code to confirm this as the new email address of your Margaya account.",
+			"code": "is your Margaya verification code.",
+			"expiry": "This code expires in {{minutes}} minutes.",
+			"ignore": "If you didn't request this, you can ignore this email.",
+			"footer": "Margaya security email"
+		},
+		"magicLink": {
+			"preview": "Sign in to Margaya",
+			"title": "Your secure sign-in link",
+			"subtitle": "Use this link to continue to your Margaya workspace.",
+			"cta": "Sign in to Margaya",
+			"expiry": "This link expires in 5 minutes for your security.",
+			"ignore": "If you didn't request this, you can ignore this email.",
+			"footer": "Margaya security email"
+		},
+		"passwordReset": {
+			"preview": "Reset your Margaya password",
+			"title": "Reset your password",
+			"subtitleWithName": "Hi {{name}}, use the button below to set a new password.",
+			"subtitleDefault": "Use the button below to set a new password.",
+			"cta": "Reset password",
+			"expiry": "This reset link expires in 1 hour.",
+			"ignore": "If you didn't request this, no changes will be made.",
+			"footer": "Margaya security email"
+		},
+		"emailChanged": {
+			"preview": "Your Margaya email address was changed",
+			"title": "Your email address was changed",
+			"body": "The email address of your Margaya account is now {{email}}. Sign-in links, codes and notifications go there from now on.",
+			"warning": "If you didn't make this change, contact your Margaya administrator right away.",
+			"footer": "Margaya security email"
+		},
+		"authSubjects": {
+			"magicLinkSubject": "Login for Margaya",
+			"otpSubject": "Authentication code for Margaya",
+			"verifyEmailSubject": "Verify your email for Margaya",
+			"passwordResetSubject": "Reset your Margaya password",
+			"changeEmailSubject": "Confirm your new email for Margaya",
+			"emailChangedSubject": "Your Margaya email address was changed"
+		},
+		"notification": {
+			"preview": "You have a new Margaya notification",
+			"subtitle": "A notification matched your delivery preferences.",
+			"footer": "Margaya notification",
+			"actionLabel": "Open in Margaya"
+		},
+		"notificationBatch": {
+			"preview": "Your recent Margaya updates",
+			"title_one": "{{count}} new update",
+			"title_other": "{{count}} new updates",
+			"subtitle": "Changes on your tasks, grouped since the last email.",
+			"by": "by",
+			"open": "Open task",
+			"manage": "Manage notification settings",
+			"footer": "Margaya notification"
+		},
+		"notificationDigest": {
+			"title": {
+				"daily": "Your daily digest",
+				"weekly": "Your weekly digest"
+			},
+			"preview": "Your Margaya summary",
+			"subtitle": "Your open tasks that are overdue or due within 7 days, and what is new in your inbox.",
+			"dueHeading": "Due soon and overdue",
+			"overdue": "Overdue",
+			"due": "Due",
+			"more_one": "and {{count}} more",
+			"more_other": "and {{count}} more",
+			"mentionsHeading_one": "{{count}} new mention",
+			"mentionsHeading_other": "{{count}} new mentions",
+			"unread_one": "{{count}} unread notification in your inbox",
+			"unread_other": "{{count}} unread notifications in your inbox",
+			"openInbox": "Open inbox",
+			"manage": "Manage notification settings",
+			"footer": "You chose to receive this digest.",
+			"blockedHeading": "Blocked",
+			"waitingOn": "Waiting on {{keys}}",
+			"hiddenBlockers_one": "{{count}} task you can't see",
+			"hiddenBlockers_other": "{{count}} tasks you can't see",
+			"followingHeading": "Changes on tasks you follow",
+			"changes_one": "{{count}} change",
+			"changes_other": "{{count}} changes"
+		},
+		"batchSubject": {
+			"task_one": "{{count}} updates on {{title}}",
+			"task_other": "{{count}} updates on {{title}}",
+			"all_one": "{{count}} updates in Margaya",
+			"all_other": "{{count}} updates in Margaya"
+		},
+		"digestSubject": {
+			"daily": "Your Margaya daily digest",
+			"weekly": "Your Margaya weekly digest"
+		},
+		"workspaceDeletion": {
+			"fallbackName": "A workspace",
+			"openWorkspace": "Open workspace",
+			"scheduledSubject": "{{name}} is scheduled for deletion",
+			"scheduledTitle": "{{name}} will be deleted on {{date}}",
+			"scheduledTitleNoDate": "{{name}} will be deleted soon",
+			"scheduledMessage": "The owner scheduled this workspace for deletion. Until {{date}} it is read-only: you can still open and export its work, and the owner can cancel the deletion. After that date its projects, tasks and pages are deleted for good.",
+			"scheduledMessageNoDate": "The owner scheduled this workspace for deletion. Until then it is read-only: you can still open and export its work, and the owner can cancel the deletion. After that its projects, tasks and pages are deleted for good.",
+			"cancelledSubject": "{{name}} will not be deleted",
+			"cancelledTitle": "{{name}} is back",
+			"cancelledMessage": "The owner cancelled the scheduled deletion. The workspace is no longer read-only, and its API keys and webhooks work again."
+		},
+		"webhookDisabled": {
+			"subject": "A Margaya webhook was disabled",
+			"title": "Webhook disabled",
+			"message": "Deliveries to {{host}} failed repeatedly for more than a day, so Margaya disabled the webhook. Fix the endpoint, then enable it again in workspace settings.",
+			"messageNoHost": "Deliveries to the endpoint failed repeatedly for more than a day, so Margaya disabled the webhook. Fix the endpoint, then enable it again in workspace settings.",
+			"actionLabel": "Open webhook settings"
+		},
+		"trialReminder": {
+			"endedTitle": "The trial for {{workspaceName}} has ended",
+			"daysLeftTitle_one": "{{count}} day left on your {{workspaceName}} trial",
+			"daysLeftTitle_other": "{{count}} days left on your {{workspaceName}} trial",
+			"endedSubtitle": "Your workspace is read-only until you choose a plan. Nothing has been deleted, and your data is still there.",
+			"activeSubtitle": "Choose a plan to keep creating and editing when the trial ends.",
+			"cta": "Choose a plan",
+			"selfHost": "Margaya is also free forever if you host it yourself, with every feature included. You can export your data at any time and move it to your own server.",
+			"footer": "You are receiving this because you own this workspace on Margaya Cloud."
+		},
+		"trialSubjects": {
+			"trialEnding": "Your {{workspaceName}} trial ends in 3 days",
+			"trialExpired": "Your {{workspaceName}} trial has ended"
+		},
+		"testEmail": {
+			"subject": "Test email from {{instanceName}}",
+			"text": "This is a test email from {{instanceName}}. If you can read it, email delivery works."
+		},
+		"notificationText": {
+			"commentWithoutPreview": "New comment on {{taskTitle}}"
 		}
 	}
 }

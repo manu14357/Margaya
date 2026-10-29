@@ -10,16 +10,10 @@
 			"markAllRead": "Marcar tudo como lido",
 			"remove": "Remover",
 			"reset": "Redefinir",
-			"filter": "Filtrar",
-			"clearAllFilters": "Limpar todos os filtros",
 			"undo": "Desfazer"
 		},
 		"a11y": {
 			"toggleSidebar": "Alternar barra lateral"
-		},
-		"sidebar": {
-			"title": "Barra lateral",
-			"mobileDescription": "Exibe a barra lateral no celular."
 		},
 		"empty": {
 			"loading": "Carregando..."
@@ -36,29 +30,12 @@
 			"label": "Trilha de navegação",
 			"more": "Mais"
 		},
-		"language": {
-			"english": "Inglês",
-			"german": "Alemão",
-			"greek": "Grego",
-			"macedonian": "Macedônio",
-			"french": "Francês",
-			"spanish": "Espanhol",
-			"dutch": "Holandês",
-			"korean": "Coreano",
-			"chinese": "Chinês",
-			"italian": "Italiano"
-		},
 		"people": {
 			"someone": "Alguém",
 			"unknown": "Desconhecido"
 		},
 		"error": {
 			"title": "Algo deu errado",
-			"troubleshooting": "Passos para solução de problemas:",
-			"tryAgain": "Tentar novamente",
-			"viewDeploymentGuide": "Ver guia de implantação",
-			"refreshPage": "Atualizar página",
-			"description": "A página travou inesperadamente. Atualizar a página geralmente resolve.",
 			"messages": {
 				"auth": "Falha na autenticação. Entre novamente.",
 				"cors": "Não foi possível conectar ao servidor. Isso pode ser causado por um problema de configuração de CORS.",
@@ -97,7 +74,6 @@
 				"keyLabel": "Chave:",
 				"keyHint": "Usado para IDs de tickets (ex.: {{example}}-123)",
 				"createButton": "Criar projeto",
-				"successToast": "Projeto criado com sucesso",
 				"errorToast": "Falha ao criar projeto",
 				"keyTaken": "Já existe um projeto com a chave {{key}} neste espaço de trabalho",
 				"blankProject": "Projeto em branco",
@@ -132,7 +108,6 @@
 				"successUpdated": "Tarefa atualizada com sucesso",
 				"createError": "Falha ao criar tarefa",
 				"priority": "Prioridade",
-				"statusFallback": "Em andamento",
 				"startDate": "Data de início",
 				"dueDate": "Data de vencimento",
 				"clearStartDate": "Limpar data de início",
@@ -331,7 +306,6 @@
 			"namePlaceholder": "João da Silva",
 			"failedSignUp": "Falha ao criar conta",
 			"accountCreated": "Conta criada com sucesso",
-			"passwordTooShort": "A senha é muito curta",
 			"creatingAccount": "Criando conta...",
 			"createAccount": "Criar conta"
 		},
@@ -345,7 +319,6 @@
 			"invitationExpired": "Convite expirado",
 			"errorLoadDescription": "Falha ao carregar os detalhes do convite. O convite pode ser inválido ou ter expirado.",
 			"goToSignIn": "Ir para o login",
-			"workspaceLabel": "Espaço de trabalho: {{workspaceName}}",
 			"joinWorkspace": "Entrar em {{workspaceName}}",
 			"inviteBodySignedIn": "<inviter>{{inviterName}}</inviter> convidou você para participar do espaço de trabalho dele.",
 			"inviteBodySignedOut": "<inviter>{{inviterName}}</inviter> convidou você para participar do espaço de trabalho dele no Margaya.",
@@ -375,7 +348,6 @@
 			"creating": "Criando...",
 			"createWorkspace": "Criar espaço de trabalho",
 			"workspaceCreatedTitle": "Espaço de trabalho criado",
-			"redirectingToWorkspace": "Levando você para <name>{{name}}</name>...",
 			"toast": {
 				"workspaceCreated": "Espaço de trabalho criado com sucesso",
 				"createFailed": "Falha ao criar espaço de trabalho",
@@ -439,8 +411,6 @@
 			"namePlaceholder": "ex.: João da Silva",
 			"saving": "Salvando...",
 			"continue": "Continuar",
-			"welcome": "Bem-vindo, {{name}}!",
-			"redirecting": "Levando você para o seu painel...",
 			"toast": {
 				"updateSuccess": "Perfil atualizado com sucesso",
 				"updateFailed": "Falha ao atualizar perfil"
@@ -541,7 +511,6 @@
 	},
 	"settings": {
 		"account": "Conta",
-		"developer": "Desenvolvedor",
 		"information": "Informações",
 		"notifications": "Notificações",
 		"preferences": "Preferências",
@@ -667,23 +636,7 @@
 			"noProjectsInWorkspace": "Ainda não há projetos disponíveis para este espaço de trabalho.",
 			"createRule": "Criar regra",
 			"removeRule": "Remover regra",
-			"toastEmailSaved": "Configurações de notificação por e-mail salvas",
-			"toastEmailSaveFailed": "Falha ao salvar configurações de e-mail",
-			"toastNtfySaved": "Configurações do ntfy salvas",
-			"toastNtfySaveFailed": "Falha ao salvar configurações do ntfy",
-			"toastNtfyDisconnected": "ntfy desconectado",
-			"toastNtfyDisconnectFailed": "Falha ao desconectar o ntfy",
-			"toastGotifySaved": "Configurações do Gotify salvas",
-			"toastGotifySaveFailed": "Falha ao salvar configurações do Gotify",
-			"toastGotifyDisconnected": "Gotify desconectado",
-			"toastGotifyDisconnectFailed": "Falha ao desconectar o Gotify",
-			"toastWebhookSaved": "Configurações do webhook salvas",
-			"toastWebhookSaveFailed": "Falha ao salvar configurações do webhook",
-			"toastWebhookDisconnected": "Webhook desconectado",
-			"toastWebhookDisconnectFailed": "Falha ao desconectar o webhook",
-			"toastRuleSaved": "Regra de notificação salva para {{workspaceName}}",
 			"toastRuleSaveFailed": "Falha ao salvar regra de notificação do espaço de trabalho",
-			"toastRuleRemoved": "Regra de notificação removida para {{workspaceName}}",
 			"toastRuleRemoveFailed": "Falha ao remover regra de notificação do espaço de trabalho",
 			"toastPreferencesSaved": "Preferências de notificação salvas",
 			"toastPreferencesSaveFailed": "Falha ao salvar preferências de notificação",
@@ -739,7 +692,6 @@
 			"selectViewMode": "Selecione um modo de visualização",
 			"board": "Quadro",
 			"list": "Lista",
-			"gantt": "Gantt",
 			"sidebarDefault": "Barra lateral padrão",
 			"sidebarDefaultDescription": "Manter a barra lateral expandida ao iniciar",
 			"displayOptions": "Opções de exibição",
@@ -844,14 +796,8 @@
 			"dangerZone": "Zona de perigo",
 			"dangerZoneSubtitle": "Ações irreversíveis e destrutivas.",
 			"deleteWorkspace": "Excluir espaço de trabalho",
-			"deleteWorkspaceDescription": "Agendar exclusão permanente do espaço de trabalho",
-			"deleteModalTitle": "Excluir espaço de trabalho?",
-			"deleteModalDescription": "Isso excluirá permanentemente o espaço de trabalho \"{{name}}\" e todos os seus dados. Esta ação não pode ser desfeita.",
-			"deleteModalConfirm": "Excluir espaço de trabalho",
 			"toastUpdated": "Espaço de trabalho atualizado com sucesso",
 			"toastUpdateError": "Falha ao atualizar espaço de trabalho",
-			"toastDeleted": "Espaço de trabalho excluído com sucesso",
-			"toastDeleteError": "Falha ao excluir espaço de trabalho",
 			"validation": {
 				"nameRequired": "O nome do espaço de trabalho é obrigatório",
 				"nameShort": "O nome do espaço de trabalho deve ter pelo menos 2 caracteres"
@@ -1304,21 +1250,6 @@
 			"chatGroupTitle": "Chat e webhooks",
 			"codeGroupTitle": "Hospedagem de código"
 		},
-		"projectVisibility": {
-			"pageTitle": "Visibilidade do projeto",
-			"title": "Visibilidade",
-			"subtitle": "Controle quem pode visualizar e acessar seu projeto.",
-			"sectionTitle": "Visibilidade",
-			"sectionSubtitle": "Alterne o acesso público e compartilhe a URL pública.",
-			"publicAccess": "Acesso público",
-			"publicAccessHint": "Permitir que qualquer pessoa com a URL visualize este projeto",
-			"publicUrl": "URL pública",
-			"publicUrlHint": "Compartilhe este link se o projeto for público",
-			"copy": "Copiar",
-			"copiedToast": "Copiado",
-			"toastUpdated": "Visibilidade atualizada",
-			"toastUpdateError": "Falha ao atualizar visibilidade"
-		},
 		"projectWorkflow": {
 			"pageTitle": "Configurações do fluxo de trabalho",
 			"title": "Fluxo de trabalho",
@@ -1535,7 +1466,6 @@
 			},
 			"connect": "Conectar Slack",
 			"saveChanges": "Salvar alterações",
-			"update": "Atualizar Slack",
 			"disconnect": "Desconectar"
 		},
 		"discordIntegration": {
@@ -1573,7 +1503,6 @@
 			},
 			"connect": "Conectar Discord",
 			"saveChanges": "Salvar alterações",
-			"update": "Atualizar Discord",
 			"disconnect": "Desconectar"
 		},
 		"genericWebhookIntegration": {
@@ -1690,9 +1619,7 @@
 			"exportTasks": "Exportar tarefas",
 			"importTasks": "Importar tarefas",
 			"dialogTitle": "Importar tarefas",
-			"dialogDescription": "Envie um arquivo JSON contendo tarefas para importar neste projeto.",
 			"expectedFormat": "Formato esperado:",
-			"dropHint": "Arraste e solte seu arquivo JSON aqui",
 			"selectFile": "Selecionar arquivo",
 			"exporting": "Exportando tarefas...",
 			"exportSuccess": "Tarefas exportadas com sucesso",
@@ -1703,7 +1630,6 @@
 			"importError": "Falha ao importar tarefas",
 			"invalidFormat": "Formato de arquivo de importação inválido",
 			"noFileDropped": "Nenhum arquivo foi solto",
-			"notJsonFile": "Envie um arquivo JSON",
 			"exportCsv": "CSV (planilha)",
 			"exportJson": "JSON (para reimportação)",
 			"exportStarted": "Exportação iniciada. Você a encontrará em Configurações do espaço de trabalho → Exportações.",
@@ -1751,46 +1677,46 @@
 				"result": {
 					"details": "Detalhes",
 					"done": "Concluir",
-					"failed_many": "{{count}} tasks failed",
+					"failed_many": "{{count}} tarefas falharam",
 					"failed_one": "{{count}} tarefa falhou",
 					"failed_other": "{{count}} tarefas falharam",
-					"imported_many": "Imported {{count}} tasks",
+					"imported_many": "{{count}} tarefas importadas",
 					"imported_one": "{{count}} tarefa importada",
 					"imported_other": "{{count}} tarefas importadas",
 					"row": "Linha {{row}}: {{message}}",
 					"stopped": "A importação foi interrompida antes do fim: {{message}}"
 				},
 				"review": {
-					"invalidDate_many": "{{count}} dates couldn't be read. Left empty.",
+					"invalidDate_many": "{{count}} datas não puderam ser lidas. Deixadas em branco.",
 					"invalidDate_one": "{{count}} data não pôde ser lida. Deixada em branco.",
 					"invalidDate_other": "{{count}} datas não puderam ser lidas. Deixadas em branco.",
-					"newLabels_many": "{{count}} labels are new and will be created.",
+					"newLabels_many": "{{count}} etiquetas são novas e serão criadas.",
 					"newLabels_one": "{{count}} etiqueta é nova e será criada.",
 					"newLabels_other": "{{count}} etiquetas são novas e serão criadas.",
 					"preview": "Pré-visualização",
-					"skipped_many": "{{count}} rows skipped (no title)",
+					"skipped_many": "{{count}} linhas ignoradas (sem título)",
 					"skipped_one": "{{count}} linha ignorada (sem título)",
 					"skipped_other": "{{count}} linhas ignoradas (sem título)",
-					"unmatchedAssignee_many": "{{count}} people aren't workspace members. Those tasks stay unassigned.",
+					"unmatchedAssignee_many": "{{count}} pessoas não são membros do espaço de trabalho. Essas tarefas ficam sem responsável.",
 					"unmatchedAssignee_one": "{{count}} pessoa não é membro do espaço de trabalho. Essas tarefas ficam sem responsável.",
 					"unmatchedAssignee_other": "{{count}} pessoas não são membros do espaço de trabalho. Essas tarefas ficam sem responsável.",
-					"unmatchedCycle_many": "{{count}} cycles can't take tasks (not found, completed or archived). Skipped.",
+					"unmatchedCycle_many": "{{count}} ciclos não podem receber tarefas (não encontrados, concluídos ou arquivados). Ignorados.",
 					"unmatchedCycle_one": "{{count}} ciclo não pode receber tarefas (não encontrado, concluído ou arquivado). Ignorado.",
 					"unmatchedCycle_other": "{{count}} ciclos não podem receber tarefas (não encontrados, concluídos ou arquivados). Ignorados.",
-					"unmatchedEstimate_many": "{{count}} estimates don't match the project's estimate system. Skipped.",
+					"unmatchedEstimate_many": "{{count}} estimativas não correspondem ao sistema de estimativa do projeto. Ignoradas.",
 					"unmatchedEstimate_one": "{{count}} estimativa não corresponde ao sistema de estimativa do projeto. Ignorada.",
 					"unmatchedEstimate_other": "{{count}} estimativas não correspondem ao sistema de estimativa do projeto. Ignoradas.",
-					"unmatchedModule_many": "{{count}} modules weren't found. Skipped.",
+					"unmatchedModule_many": "{{count}} módulos não foram encontrados. Ignorados.",
 					"unmatchedModule_one": "{{count}} módulo não foi encontrado. Ignorado.",
 					"unmatchedModule_other": "{{count}} módulos não foram encontrados. Ignorados.",
-					"unmatchedStatus_many": "{{count}} statuses don't match a column. Those tasks go to the Backlog.",
+					"unmatchedStatus_many": "{{count}} status não correspondem a uma coluna. Essas tarefas vão para o Backlog.",
 					"unmatchedStatus_one": "{{count}} status não corresponde a uma coluna. Essas tarefas vão para o Backlog.",
 					"unmatchedStatus_other": "{{count}} status não correspondem a uma coluna. Essas tarefas vão para o Backlog.",
-					"willImport_many": "{{count}} tasks will be imported",
+					"willImport_many": "{{count}} tarefas serão importadas",
 					"willImport_one": "{{count}} tarefa será importada",
 					"willImport_other": "{{count}} tarefas serão importadas"
 				},
-				"rowCount_many": "{{count}} rows",
+				"rowCount_many": "{{count}} linhas",
 				"rowCount_one": "{{count}} linha",
 				"rowCount_other": "{{count}} linhas",
 				"selectFile": "Selecionar arquivo CSV",
@@ -1883,7 +1809,7 @@
 			},
 			"unsupportedFile": "Envie um arquivo JSON ou CSV",
 			"jira": {
-				"alreadyImported_many": "{{count}} issues were imported into this project before.",
+				"alreadyImported_many": "{{count}} issues já foram importadas para este projeto antes.",
 				"alreadyImported_one": "{{count}} issue já foi importada para este projeto antes.",
 				"alreadyImported_other": "{{count}} issues já foram importadas para este projeto antes.",
 				"backlog": "Backlog",
@@ -1892,7 +1818,7 @@
 				"componentsAsModules": "Colocar componentes em módulos",
 				"contents": "{{comments}} comentários, {{subtasks}} subtarefas, {{links}} vínculos entre issues",
 				"cyclesOff": "Os ciclos estão desativados neste projeto.",
-				"detectedColumns_many": "{{count}} columns detected",
+				"detectedColumns_many": "{{count}} colunas detectadas",
 				"detectedColumns_one": "{{count}} coluna detectada",
 				"detectedColumns_other": "{{count}} colunas detectadas",
 				"dropHint": "Arraste e solte aqui a exportação CSV do Jira",
@@ -1901,16 +1827,16 @@
 				"howToStep2": "Escolha Exportar → Exportar CSV (todos os campos).",
 				"howToStep3": "Envie aqui o arquivo .csv baixado.",
 				"howToTitle": "Como exportar do Jira",
-				"importAction_many": "Import {{count}} issues",
+				"importAction_many": "Importar {{count}} issues",
 				"importAction_one": "Importar {{count}} issue",
 				"importAction_other": "Importar {{count}} issues",
 				"importComments": "Importar comentários",
-				"importing_many": "Importing {{count}} issues…",
+				"importing_many": "Importando {{count}} issues…",
 				"importing_one": "Importando {{count}} issue…",
 				"importing_other": "Importando {{count}} issues…",
-				"issueCount_many": "{{count}} issues",
-				"issueCount_one": "{{count}} issue",
-				"issueCount_other": "{{count}} issues",
+				"issueCount_many": "{{count}} itens",
+				"issueCount_one": "{{count}} item",
+				"issueCount_other": "{{count}} itens",
 				"issueTypeAsLabel": "Adicionar o tipo de issue como etiqueta",
 				"jiraStatus": "Status do Jira",
 				"limits": "Até 5 MB e 5.000 issues por arquivo. Os anexos ficam no Jira; os nomes e links deles são adicionados à descrição.",
@@ -1921,11 +1847,11 @@
 				"modulesOff": "Os módulos estão desativados neste projeto.",
 				"noPermission": "Você não tem permissão para criá-los.",
 				"optionsTitle": "Opções",
-				"peopleMatched_many": "{{count}} people match workspace members by email or name.",
+				"peopleMatched_many": "{{count}} pessoas correspondem a membros do espaço de trabalho por e-mail ou nome.",
 				"peopleMatched_one": "{{count}} pessoa corresponde a um membro do espaço de trabalho por e-mail ou nome.",
 				"peopleMatched_other": "{{count}} pessoas correspondem a membros do espaço de trabalho por e-mail ou nome.",
 				"peopleTitle": "Pessoas",
-				"peopleUnmatched_many": "{{count}} people aren't members ({{names}}). Their issues stay unassigned.",
+				"peopleUnmatched_many": "{{count}} pessoas não são membros ({{names}}). As issues delas ficam sem responsável.",
 				"peopleUnmatched_one": "{{count}} pessoa não é membro ({{names}}). As issues dela ficam sem responsável.",
 				"peopleUnmatched_other": "{{count}} pessoas não são membros ({{names}}). As issues delas ficam sem responsável.",
 				"previewError": "Não foi possível ler o arquivo",
@@ -1933,21 +1859,21 @@
 				"reading": "Lendo a exportação…",
 				"repeatedColumn": "{{name}} ×{{count}}",
 				"result": {
-					"created_many": "{{count}} tasks created",
+					"created_many": "{{count}} tarefas criadas",
 					"created_one": "{{count}} tarefa criada",
 					"created_other": "{{count}} tarefas criadas",
 					"error": "Linha {{line}} ({{key}}): {{message}}",
 					"extras": "{{comments}} comentários e {{relations}} relações adicionados.",
-					"failed_many": "{{count}} issues failed",
+					"failed_many": "{{count}} issues falharam",
 					"failed_one": "{{count}} issue falhou",
 					"failed_other": "{{count}} issues falharam",
-					"skipped_many": "{{count}} issues skipped (imported before)",
+					"skipped_many": "{{count}} issues ignoradas (importadas antes)",
 					"skipped_one": "{{count}} issue ignorada (importada antes)",
 					"skipped_other": "{{count}} issues ignoradas (importadas antes)",
-					"unmatched_many": "{{count}} people aren't workspace members; their issues are unassigned:",
+					"unmatched_many": "{{count}} pessoas não são membros do espaço de trabalho; as issues delas ficaram sem responsável:",
 					"unmatched_one": "{{count}} pessoa não é membro do espaço de trabalho; as issues dela ficaram sem responsável:",
 					"unmatched_other": "{{count}} pessoas não são membros do espaço de trabalho; as issues delas ficaram sem responsável:",
-					"updated_many": "{{count}} tasks updated",
+					"updated_many": "{{count}} tarefas atualizadas",
 					"updated_one": "{{count}} tarefa atualizada",
 					"updated_other": "{{count}} tarefas atualizadas",
 					"warning": "{{message}} ({{count}})"
@@ -1956,12 +1882,12 @@
 				"sourceHint": "Vindo do Jira? Importe a exportação CSV dele com status, pessoas, subtarefas e comentários.",
 				"sprintsAsCycles": "Colocar sprints em ciclos",
 				"statusesTitle": "Status",
-				"statusMeta_many": "{{count}} issues",
-				"statusMeta_one": "{{count}} issue",
-				"statusMeta_other": "{{count}} issues",
-				"statusMetaCategory_many": "{{count}} issues · {{category}}",
-				"statusMetaCategory_one": "{{count}} issue · {{category}}",
-				"statusMetaCategory_other": "{{count}} issues · {{category}}",
+				"statusMeta_many": "{{count}} itens",
+				"statusMeta_one": "{{count}} item",
+				"statusMeta_other": "{{count}} itens",
+				"statusMetaCategory_many": "{{count}} itens · {{category}}",
+				"statusMetaCategory_one": "{{count}} item · {{category}}",
+				"statusMetaCategory_other": "{{count}} itens · {{category}}",
 				"steps": {
 					"import": "Importar",
 					"map": "Mapear"
@@ -2025,7 +1951,6 @@
 				"saveError": "Falha ao salvar a integração com o Mattermost",
 				"updateError": "Falha ao atualizar a integração com o Mattermost"
 			},
-			"update": "Atualizar Mattermost",
 			"validation": {
 				"webhookInvalid": "Digite uma URL de webhook do Mattermost válida"
 			},
@@ -2037,13 +1962,11 @@
 			"addButton": "Adicionar",
 			"createError": "Falha ao criar campo personalizado.",
 			"createSuccess": "Campo personalizado criado.",
-			"creating": "Criando...",
 			"defaultLabel": "Padrão",
 			"defaultValuePlaceholder": "Valor padrão",
 			"deleteButton": "Excluir",
 			"deleteError": "Falha ao excluir campo personalizado.",
 			"deleteSuccess": "Campo personalizado excluído.",
-			"deleting": "Excluindo...",
 			"empty": "Nenhum campo personalizado configurado ainda.",
 			"loading": "Carregando campos personalizados...",
 			"namePlaceholder": "Nome do campo",
@@ -2139,7 +2062,7 @@
 			"deletePoint": {
 				"clear": "Limpar a estimativa delas",
 				"confirm": "Excluir valor",
-				"description_many": "{{count}} tasks use this estimate.",
+				"description_many": "{{count}} tarefas usam essa estimativa.",
 				"description_one": "{{count}} tarefa usa essa estimativa.",
 				"description_other": "{{count}} tarefas usam essa estimativa.",
 				"moveTo": "Mover para",
@@ -2147,7 +2070,7 @@
 			},
 			"deleteSystem": {
 				"confirm": "Excluir sistema",
-				"descriptionActive_many": "{{count}} tasks will lose their estimate. This can't be undone.",
+				"descriptionActive_many": "{{count}} tarefas perderão sua estimativa. Isso não pode ser desfeito.",
 				"descriptionActive_one": "{{count}} tarefa perderá sua estimativa. Isso não pode ser desfeito.",
 				"descriptionActive_other": "{{count}} tarefas perderão sua estimativa. Isso não pode ser desfeito.",
 				"descriptionActiveNone": "Nenhuma tarefa usa esse sistema. Isso não pode ser desfeito.",
@@ -2177,11 +2100,11 @@
 				"description": "Escolha o que acontece com as tarefas que já têm uma estimativa.",
 				"fromLabel": "Valor atual",
 				"noTasks": "Nenhuma tarefa tem estimativa ainda.",
-				"rowTasks_many": "{{count}} tasks",
+				"rowTasks_many": "{{count}} tarefas",
 				"rowTasks_one": "{{count}} tarefa",
 				"rowTasks_other": "{{count}} tarefas",
 				"submit": "Trocar",
-				"submitWithTasks_many": "Switch and update {{count}} tasks",
+				"submitWithTasks_many": "Trocar e atualizar {{count}} tarefas",
 				"submitWithTasks_one": "Trocar e atualizar {{count}} tarefa",
 				"submitWithTasks_other": "Trocar e atualizar {{count}} tarefas",
 				"targetAria": "Novo valor para {{value}}",
@@ -2254,7 +2177,7 @@
 					"points": "Adicione um número, por exemplo 8",
 					"time": "Adicione uma duração, por exemplo 1h 30m"
 				},
-				"taskCount_many": "{{count}} tasks",
+				"taskCount_many": "{{count}} tarefas",
 				"taskCount_one": "{{count}} tarefa",
 				"taskCount_other": "{{count}} tarefas"
 			}
@@ -2288,14 +2211,14 @@
 				"titleOn": "Ativar o encerramento automático?"
 			},
 			"description": "O Margaya verifica estas regras a cada hora e organiza as tarefas que ninguém mexe há um tempo. As alterações ficam registradas no histórico de cada tarefa.",
-			"lastArchived_many": "Last archived {{count}} tasks {{time}}",
+			"lastArchived_many": "Última vez: {{count}} tarefas arquivadas {{time}}",
 			"lastArchived_one": "Última vez: {{count}} tarefa arquivada {{time}}",
 			"lastArchived_other": "Última vez: {{count}} tarefas arquivadas {{time}}",
-			"lastClosed_many": "Last closed {{count}} tasks {{time}}",
+			"lastClosed_many": "Última vez: {{count}} tarefas encerradas {{time}}",
 			"lastClosed_one": "Última vez: {{count}} tarefa encerrada {{time}}",
 			"lastClosed_other": "Última vez: {{count}} tarefas encerradas {{time}}",
 			"loadError": "Não foi possível carregar as automações",
-			"months_many": "{{count}} months",
+			"months_many": "{{count}} meses",
 			"months_one": "{{count}} mês",
 			"months_other": "{{count}} meses",
 			"neverArchived": "Nada arquivado ainda",
@@ -2303,7 +2226,7 @@
 			"noPermission": "Somente quem pode gerenciar este projeto pode alterar as automações.",
 			"preview": {
 				"capped": "Mais de 10.000 tarefas correspondem no momento",
-				"count_many": "{{count}} tasks match right now",
+				"count_many": "{{count}} tarefas correspondem no momento",
 				"count_one": "{{count}} tarefa corresponde no momento",
 				"count_other": "{{count}} tarefas correspondem no momento",
 				"loading": "Contando as tarefas correspondentes…",
@@ -2354,7 +2277,7 @@
 				"includeArchived": "Incluir tarefas arquivadas",
 				"noProjectsFound": "Nenhum projeto encontrado",
 				"projects": "Projetos",
-				"projectsCount_many": "{{count}} projects",
+				"projectsCount_many": "{{count}} projetos",
 				"projectsCount_one": "{{count}} projeto",
 				"projectsCount_other": "{{count}} projetos",
 				"searchProjects": "Buscar projetos",
@@ -2396,7 +2319,7 @@
 				"loadMore": "Carregar mais",
 				"mine": "Minhas exportações",
 				"scopeLabel": "De quem são as exportações",
-				"summaryProjects_many": "{{format}} · {{count}} projects",
+				"summaryProjects_many": "{{format}} · {{count}} projetos",
 				"summaryProjects_one": "{{format}} · {{name}}",
 				"summaryProjects_other": "{{format}} · {{count}} projetos",
 				"title": "Exportações anteriores"
@@ -2512,7 +2435,7 @@
 			"enable": "Ativar",
 			"events": {
 				"all": "Todos os eventos",
-				"count_many": "{{count}} events",
+				"count_many": "{{count}} eventos",
 				"count_one": "{{count}} evento",
 				"count_other": "{{count}} eventos"
 			},
@@ -2986,7 +2909,9 @@
 				"agentScheduleDisabled": "Desativou um agendamento de agente",
 				"aiConnectorCreated": "Adicionou um conector MCP",
 				"aiConnectorUpdated": "Alterou um conector MCP",
-				"aiConnectorDeleted": "Excluiu um conector MCP"
+				"aiConnectorDeleted": "Excluiu um conector MCP",
+				"agentIntakeTriggerUpdated": "Alterou o gatilho de entrada de um agente",
+				"agentIntakeTriggerDisabled": "Desligou o gatilho de entrada de um agente"
 			},
 			"actor": {
 				"apiKey": "Chave de API",
@@ -3105,11 +3030,11 @@
 			"retry": "Tentar novamente",
 			"searchProjects": "Pesquisar projetos excluídos",
 			"searchTasks": "Pesquisar tarefas excluídas",
-			"taskCount_many": "{{count}} tasks",
+			"taskCount_many": "{{count}} tarefas",
 			"taskCount_one": "{{count}} tarefa",
 			"taskCount_other": "{{count}} tarefas",
 			"toast": {
-				"emptied_many": "{{count}} tasks deleted permanently",
+				"emptied_many": "{{count}} tarefas excluídas permanentemente",
 				"emptied_one": "{{count}} tarefa excluída permanentemente",
 				"emptied_other": "{{count}} tarefas excluídas permanentemente",
 				"projectPurged": "Projeto excluído permanentemente",
@@ -3120,7 +3045,7 @@
 				"taskPurged": "Tarefa excluída permanentemente",
 				"taskRestored": "Tarefa restaurada"
 			},
-			"withSubTasks_many": "with {{count}} sub-tasks",
+			"withSubTasks_many": "com {{count}} subtarefas",
 			"withSubTasks_one": "com {{count}} subtarefa",
 			"withSubTasks_other": "com {{count}} subtarefas",
 			"workspaceNav": "Excluídos recentemente",
@@ -3330,8 +3255,7 @@
 			"empty": "Nenhum resultado encontrado.",
 			"footer": {
 				"navigate": "Navegar",
-				"open": "Abrir",
-				"close": "Fechar"
+				"open": "Abrir"
 			},
 			"goToInbox": "Ir para a caixa de entrada",
 			"newView": "Nova visualização",
@@ -3358,11 +3282,10 @@
 			},
 			"recent": "Recentes",
 			"removeScope": "Pesquisar em tudo",
-			"scope": "In"
+			"scope": "Em"
 		},
 		"notifications": "Notificações",
 		"sidebar": {
-			"overview": "Visão geral",
 			"projects": "Projetos",
 			"members": "Membros",
 			"invitations": "Convites",
@@ -3370,12 +3293,9 @@
 			"backToBoard": "Voltar ao quadro",
 			"favorites": "Favoritos",
 			"allTasks": "Todas as tarefas",
-			"inbox": "Caixa de entrada",
 			"myWork": "Seu trabalho",
 			"home": "Início",
-			"personal": "Pessoal",
 			"stickies": "Notas adesivas",
-			"analytics": "Análises",
 			"drafts": "Rascunhos"
 		},
 		"projectList": {
@@ -3403,10 +3323,6 @@
 				"page": "Páginas"
 			}
 		},
-		"settingsLayout": {
-			"toggleSidebar": "Alternar barra lateral",
-			"back": "Voltar"
-		},
 		"userMenu": {
 			"signedOutSuccess": "Logout realizado com sucesso",
 			"signOutFailed": "Falha ao sair",
@@ -3419,13 +3335,11 @@
 		"workspaceSwitcher": {
 			"workspaces": "Espaços de trabalho",
 			"switching": "Alternando...",
-			"addWorkspace": "Adicionar espaço de trabalho",
-			"selectWorkspace": "Selecionar espaço de trabalho"
+			"addWorkspace": "Adicionar espaço de trabalho"
 		},
 		"page": {
 			"projectsTitle": "Projetos",
 			"settingsTitle": "Configurações",
-			"backToWorkspace": "Voltar ao espaço de trabalho",
 			"settingsWorkspaceTab": "Espaço de trabalho",
 			"settingsInstanceTab": "Instância",
 			"settingsNotFoundBack": "Configurações da conta",
@@ -3455,7 +3369,6 @@
 			"items": {
 				"openCommandPalette": "Abrir paleta de comandos",
 				"globalSearch": "Busca global",
-				"toggleSidebar": "Alternar barra lateral",
 				"showShortcuts": "Mostrar atalhos de teclado",
 				"closeModal": "Fechar modal/pop-up",
 				"createTask": "Criar tarefa",
@@ -3553,7 +3466,7 @@
 			"settings": "Configurações",
 			"switchWorkspace": "Trocar de espaço de trabalho: {{name}}",
 			"togglePanel": "Mostrar ou ocultar o painel",
-			"unreadAria_many": "{{count}} unread",
+			"unreadAria_many": "{{count}} não lidas",
 			"unreadAria_one": "{{count}} não lida",
 			"unreadAria_other": "{{count}} não lidas",
 			"unreadOnly": "Somente não lidas",
@@ -3563,16 +3476,11 @@
 	},
 	"notifications": {
 		"title": "Notificações",
-		"newCount_one": "{{count}} nova",
-		"newCount_other": "{{count}} novas",
-		"emptyTitle": "Ainda não há notificações",
-		"emptySubtitle": "Você verá atualizações e atividades aqui.",
 		"clearAll": "Limpar todas as notificações",
 		"clearDialogTitle": "Limpar todas as notificações?",
 		"clearDialogDescription": "Isso removerá permanentemente todas as notificações. Você não pode desfazer esta ação.",
 		"shortcuts": {
-			"open": "Abrir notificações",
-			"inbox": "Abrir a caixa de entrada"
+			"open": "Abrir notificações"
 		},
 		"reminderLeadTime": {
 			"minutes_one": "{{count}} minuto",
@@ -3669,7 +3577,6 @@
 				"content": "{{taskKey}} {{taskTitle}}"
 			}
 		},
-		"newCount_many": "{{count}} novas",
 		"inbox": {
 			"actions": {
 				"archive": "Arquivar",
@@ -3735,7 +3642,6 @@
 				"fiveDays": "5 dias",
 				"oneDay": "1 dia",
 				"oneWeek": "1 semana",
-				"pickDate": "Escolha uma data",
 				"pickTime": "Escolha um horário",
 				"submit": "Adiar",
 				"threeDays": "3 dias",
@@ -3747,14 +3653,14 @@
 			"tabs": {
 				"all": "Todas",
 				"mentions": "Menções",
-				"unreadAria_many": "{{count}} unread",
+				"unreadAria_many": "{{count}} não lidas",
 				"unreadAria_one": "{{count}} não lida",
 				"unreadAria_other": "{{count}} não lidas"
 			},
 			"toasts": {
 				"archived": "Notificação arquivada",
 				"error": "Não foi possível atualizar a notificação",
-				"markedAllRead_many": "Marked {{count}} notifications as read",
+				"markedAllRead_many": "{{count}} notificações marcadas como lidas",
 				"markedAllRead_one": "{{count}} notificação marcada como lida",
 				"markedAllRead_other": "{{count}} notificações marcadas como lidas",
 				"snoozed": "Adiada até {{date}}",
@@ -3992,7 +3898,7 @@
 			"error": "Não foi possível atualizar a reação",
 			"labels": {
 				"airplane": "Avião",
-				"boom": "Boom",
+				"boom": "Explosão",
 				"confused": "Confuso",
 				"eyes": "Olhos",
 				"heart": "Coração",
@@ -4024,10 +3930,10 @@
 		},
 		"automation": {
 			"actor": "Automação",
-			"archived_many": "archived this task after {{count}} months without updates",
+			"archived_many": "arquivou esta tarefa após {{count}} meses sem atualizações",
 			"archived_one": "arquivou esta tarefa após {{count}} mês sem atualizações",
 			"archived_other": "arquivou esta tarefa após {{count}} meses sem atualizações",
-			"closed_many": "closed this task after {{count}} months without updates, moving it to {{to}}",
+			"closed_many": "encerrou esta tarefa após {{count}} meses sem atualizações, movendo-a para {{to}}",
 			"closed_one": "encerrou esta tarefa após {{count}} mês sem atualizações, movendo-a para {{to}}",
 			"closed_other": "encerrou esta tarefa após {{count}} meses sem atualizações, movendo-a para {{to}}",
 			"rolledOver": "moveu esta tarefa de {{from}} para {{to}} quando o ciclo terminou",
@@ -4138,7 +4044,6 @@
 				"recurredToScheduled": "A próxima repetição foi criada conforme o agendamento: <task>{{task}}</task>"
 			}
 		},
-		"title": "Tarefas",
 		"status": {
 			"label": "Status",
 			"to-do": "A Fazer",
@@ -4377,7 +4282,6 @@
 			"labels": "Etiquetas",
 			"copyTaskLink": "Copiar link da tarefa",
 			"copyTaskBranch": "Copiar branch da tarefa",
-			"start": "Início",
 			"startDate": "Data de início",
 			"noDate": "Sem data",
 			"addLabel": "Adicionar etiqueta",
@@ -4443,22 +4347,11 @@
 			"moveAllTooltip": "Mover todas as tarefas planejadas para {{column}}",
 			"moveAll": "Mover tudo",
 			"addTask": "Adicionar tarefa",
-			"filter": "Filtrar",
-			"addFilter": "Adicionar filtro...",
 			"sections": {
 				"planned": "Planejado",
 				"archived": "Arquivado"
 			},
-			"noTasksInSection": "Nenhuma tarefa em {{section}}",
-			"filters": {
-				"priority": "Prioridade: {{name}}",
-				"assignee": "Responsável: {{name}}",
-				"due": "Vencimento: {{date}}",
-				"label": "Etiqueta: {{name}}",
-				"dueThisWeek": "Vence esta semana",
-				"dueNextWeek": "Vence na próxima semana",
-				"noDueDate": "Sem data de vencimento"
-			}
+			"noTasksInSection": "Nenhuma tarefa em {{section}}"
 		},
 		"sort": {
 			"label": "Ordenar",
@@ -4478,11 +4371,6 @@
 		},
 		"boardFilters": {
 			"filterBy": "Filtrar por",
-			"allStatuses": "Todos os status",
-			"allPriorities": "Todas as prioridades",
-			"allAssignees": "Todos os responsáveis",
-			"allDueDates": "Todas as datas de vencimento",
-			"allLabels": "Todas as etiquetas",
 			"selectedCount": "{{count}} selecionado(s)",
 			"subjects": {
 				"status": "Status",
@@ -4493,14 +4381,8 @@
 				"estimate": "Estimativa"
 			},
 			"operators": {
-				"isAnyOf": "é qualquer um de",
-				"includeAnyOf": "inclui qualquer um de"
-			},
-			"all": "Todos",
-			"allCustomFieldValues": "Todos os valores",
-			"noCustomFieldValues": "Nenhum valor de campo personalizado",
-			"noValuesUsedYet": "Nenhum valor usado ainda",
-			"unassigned": "Não atribuído"
+				"isAnyOf": "é qualquer um de"
+			}
 		},
 		"gantt": {
 			"pageTitle": "{{name}} – Gantt",
@@ -4543,12 +4425,8 @@
 		},
 		"archive": {
 			"success": "{{count}} tarefas arquivadas",
-			"archive": "Arquivar",
 			"archived": "Tarefa arquivada",
 			"badge": "Arquivada",
-			"bulkArchived_many": "Archived {{count}} tasks",
-			"bulkArchived_one": "{{count}} tarefa arquivada",
-			"bulkArchived_other": "{{count}} tarefas arquivadas",
 			"error": "Não foi possível arquivar a tarefa",
 			"restore": "Restaurar",
 			"restored": "Tarefa restaurada",
@@ -4585,10 +4463,6 @@
 			"updateError": "Falha ao atualizar a data de vencimento da tarefa",
 			"clearSuccess": "Data de vencimento da tarefa removida",
 			"clearError": "Falha ao limpar a data de vencimento"
-		},
-		"labels": {
-			"label": "Etiquetas",
-			"empty": "Nenhuma etiqueta disponível"
 		},
 		"update": {
 			"success": "Tarefa atualizada com sucesso",
@@ -4651,16 +4525,16 @@
 			"clearDueDate": "Limpar data de vencimento",
 			"updateStartDateError": "Falha ao atualizar a data de início. A data de início não pode ser posterior à data de vencimento de uma tarefa.",
 			"addAssignee": "Adicionar responsável",
-			"addAssigneeSuccess_many": "Added {{name}} to {{count}} tasks",
+			"addAssigneeSuccess_many": "{{name}} adicionado a {{count}} tarefas",
 			"addAssigneeSuccess_one": "{{name}} adicionado a {{count}} tarefa",
 			"addAssigneeSuccess_other": "{{name}} adicionado a {{count}} tarefas",
 			"assigneesError": "Falha ao atualizar responsáveis",
 			"clearAssignees": "Remover todos os responsáveis",
-			"clearAssigneesSuccess_many": "Cleared assignees on {{count}} tasks",
+			"clearAssigneesSuccess_many": "Responsáveis removidos de {{count}} tarefas",
 			"clearAssigneesSuccess_one": "Responsáveis removidos de {{count}} tarefa",
 			"clearAssigneesSuccess_other": "Responsáveis removidos de {{count}} tarefas",
 			"removeAssignee": "Remover responsável",
-			"removeAssigneeSuccess_many": "Removed {{name}} from {{count}} tasks",
+			"removeAssigneeSuccess_many": "{{name}} removido de {{count}} tarefas",
 			"removeAssigneeSuccess_one": "{{name}} removido de {{count}} tarefa",
 			"removeAssigneeSuccess_other": "{{name}} removido de {{count}} tarefas",
 			"clearSelection": "Limpar seleção"
@@ -4745,7 +4619,7 @@
 			"bulk": {
 				"action": "Estimativa",
 				"error": "Não foi possível alterar a estimativa das tarefas selecionadas",
-				"updated_many": "Updated the estimate of {{count}} tasks",
+				"updated_many": "Estimativa atualizada de {{count}} tarefas",
 				"updated_one": "Estimativa atualizada de {{count}} tarefa",
 				"updated_other": "Estimativa atualizada de {{count}} tarefas"
 			},
@@ -4811,7 +4685,7 @@
 			"open": "Abrir",
 			"title": "Anexos",
 			"toast": {
-				"attached_many": "Attached {{count}} files",
+				"attached_many": "{{count}} arquivos anexados",
 				"attached_one": "{{count}} arquivo anexado",
 				"attached_other": "{{count}} arquivos anexados",
 				"deleted": "Anexo excluído",
@@ -4939,7 +4813,6 @@
 				"project": "Projeto",
 				"status": "Status"
 			},
-			"needsSingleProject": "Agrupar por status exige um único projeto",
 			"none": "Nenhum",
 			"order": {
 				"assignee": "Responsável",
@@ -5021,21 +4894,21 @@
 			},
 			"matchAll": "Atender a todos",
 			"matchAny": "Atender a qualquer um",
-			"mobileSummary_many": "{{count}} filters",
+			"mobileSummary_many": "{{count}} filtros",
 			"mobileSummary_one": "{{count}} filtro",
 			"mobileSummary_other": "{{count}} filtros",
 			"nestedReadOnly": "Esta visualização usa filtros avançados que não podem ser editados aqui",
 			"noOptions": "Nenhuma opção",
 			"operators": {
 				"between": "entre",
-				"is": "is",
+				"is": "é",
 				"isEmpty": "está vazio",
 				"isNoneOf": "não é nenhum de",
 				"isNot": "não é",
 				"isNotEmpty": "não está vazio",
 				"moreThanAgo": "há mais de …",
 				"moreThanAhead": "daqui a mais de …",
-				"on": "on",
+				"on": "em",
 				"onOrAfter": "em ou depois de",
 				"onOrBefore": "em ou antes de",
 				"withinLast": "nos últimos",
@@ -5048,9 +4921,7 @@
 				"completed": "Concluído",
 				"created": "Criado",
 				"createdBy": "Criado por",
-				"customFields": "Campos personalizados",
 				"cycle": "Ciclo",
-				"estimate": "Estimativa",
 				"group": "Grupo",
 				"mentions": "Menções",
 				"module": "Módulo",
@@ -5064,7 +4935,7 @@
 			"values": {
 				"currentCycle": "Ciclo atual",
 				"false": "Falso",
-				"me": "Me",
+				"me": "Eu",
 				"noAssignee": "Sem responsável",
 				"noCreator": "Sem criador",
 				"noCycle": "Sem ciclo",
@@ -5078,11 +4949,11 @@
 		},
 		"groups": {
 			"all": "Todas as tarefas",
-			"hiddenGroups_many": "{{count}} more groups not shown",
+			"hiddenGroups_many": "Mais {{count}} grupos não exibidos",
 			"hiddenGroups_one": "Mais {{count}} grupo não exibido",
 			"hiddenGroups_other": "Mais {{count}} grupos não exibidos",
 			"loadMore": "Carregar mais ({{count}})",
-			"moduleCount_many": "{{count}} modules",
+			"moduleCount_many": "{{count}} módulos",
 			"moduleCount_one": "{{count}} módulo",
 			"moduleCount_other": "{{count}} módulos",
 			"moveError": "Não foi possível mover a tarefa",
@@ -5105,15 +4976,13 @@
 			"expandSubTasks": "Mostrar subtarefas",
 			"hideColumn": "Ocultar coluna",
 			"loadError": "Não foi possível carregar as tarefas",
-			"newTask": "Nova tarefa",
-			"newTaskPlaceholder": "Título da tarefa e depois Enter",
 			"selectTask": "Selecionar {{key}}",
 			"sortAsc": "Ordem crescente",
 			"sortDesc": "Ordem decrescente",
 			"task": "Tarefa"
 		},
 		"subscription": {
-			"count_many": "{{count}} people subscribed",
+			"count_many": "{{count}} pessoas seguindo",
 			"count_one": "{{count}} pessoa seguindo",
 			"count_other": "{{count}} pessoas seguindo",
 			"error": "Não foi possível atualizar sua assinatura",
@@ -5134,7 +5003,7 @@
 		"timeTracking": {
 			"duration": "Duração",
 			"durationInvalid": "Digite uma duração entre 1 minuto e 24 horas, como 1h 30m.",
-			"durationPlaceholder": "e.g. 1h 30m",
+			"durationPlaceholder": "ex.: 1h 30m",
 			"empty": "Nenhum tempo registrado ainda",
 			"entries": "Registros de tempo",
 			"formerMember": "Ex-membro",
@@ -5290,7 +5159,7 @@
 			"restored": "Descrição restaurada",
 			"restoreError": "Não foi possível restaurar esta versão",
 			"retry": "Tentar novamente",
-			"size_many": "{{count}} characters",
+			"size_many": "{{count}} caracteres",
 			"size_one": "{{count}} caractere",
 			"size_other": "{{count}} caracteres",
 			"title": "Histórico da descrição",
@@ -5315,11 +5184,6 @@
 		"noPendingDescription": "Quando alguém convidar você para um espaço de trabalho, o convite aparece aqui.",
 		"continueToSetup": "Continuar para a configuração",
 		"skipForNow": "Pular por enquanto",
-		"table": {
-			"workspace": "Espaço de trabalho",
-			"invitedBy": "Convidado por",
-			"expires": "Expira"
-		},
 		"toast": {
 			"acceptError": "Falha ao aceitar convite",
 			"acceptSuccess": "Convite aceito! Bem-vindo à equipe.",
@@ -5355,7 +5219,6 @@
 				"inProgress": "Em andamento"
 			},
 			"noDueDate": "Sem data de vencimento",
-			"reorderHandle": "Reordenar projeto",
 			"reorderError": "Falha ao reordenar os projetos"
 		},
 		"search": {
@@ -5382,7 +5245,6 @@
 			"pageTitle": "Criar espaço de trabalho",
 			"heading": "Criar um novo espaço de trabalho",
 			"subtitle": "Espaços de trabalho são ambientes compartilhados onde as equipes podem trabalhar em projetos, ciclos e issues.",
-			"nameLabel": "Nome do espaço de trabalho",
 			"namePlaceholder": "Digite o nome do espaço de trabalho",
 			"descriptionLabel": "Descrição (opcional)",
 			"descriptionPlaceholder": "Adicione uma descrição para o seu espaço de trabalho",
@@ -5405,7 +5267,7 @@
 			"bulk": {
 				"delete": "Excluir",
 				"deleteDescription": "Elas serão movidas para a lixeira do projeto, onde você pode restaurá-las.",
-				"deleteTitle_many": "Delete {{count}} tasks?",
+				"deleteTitle_many": "Excluir {{count}} tarefas?",
 				"deleteTitle_one": "Excluir {{count}} tarefa?",
 				"deleteTitle_other": "Excluir {{count}} tarefas?",
 				"restore": "Restaurar",
@@ -5443,7 +5305,7 @@
 				"projects": "Projetos",
 				"tasks": "Tarefas"
 			},
-			"taskCount_many": "{{count}} tasks",
+			"taskCount_many": "{{count}} tarefas",
 			"taskCount_one": "{{count}} tarefa",
 			"taskCount_other": "{{count}} tarefas",
 			"title": "Arquivos",
@@ -5453,11 +5315,11 @@
 				"projectRestored": "Projeto restaurado",
 				"restoreError": "Não foi possível restaurar",
 				"taskRestored": "Tarefa restaurada",
-				"tasksDeleted_many": "Deleted {{count}} tasks",
+				"tasksDeleted_many": "{{count}} tarefas excluídas",
 				"tasksDeleted_one": "{{count}} tarefa excluída",
 				"tasksDeleted_other": "{{count}} tarefas excluídas",
 				"tasksDeleteError": "Não foi possível excluir as tarefas",
-				"tasksRestored_many": "Restored {{count}} tasks",
+				"tasksRestored_many": "{{count}} tarefas restauradas",
 				"tasksRestored_one": "{{count}} tarefa restaurada",
 				"tasksRestored_other": "{{count}} tarefas restauradas",
 				"tasksRestoreError": "Não foi possível restaurar as tarefas"
@@ -5514,11 +5376,8 @@
 			"columns": {
 				"name": "Nome",
 				"role": "Função",
-				"joined": "Entrou em",
-				"actions": "Ações"
+				"joined": "Entrou em"
 			},
-			"memberRolePending": "{{role}} (Pendente)",
-			"ariaCancelInvitation": "Cancelar convite",
 			"ariaInvitationActions": "Ações do convite",
 			"ariaRemoveMember": "Remover membro",
 			"removeDialogTitle": "Remover membro da equipe?",
@@ -5567,7 +5426,6 @@
 		}
 	},
 	"publicProject": {
-		"pageTitle": "Visualização pública",
 		"badge": "Público",
 		"readOnly": "Somente leitura",
 		"error": {
@@ -5580,12 +5438,10 @@
 		"taskDetail": {
 			"labels": "Etiquetas",
 			"externalLinks": "Links externos",
-			"pullRequestFallback": "Pull request",
 			"issueFallback": "Issue",
 			"prStatusMerged": "Mesclado",
 			"prStatusDraft": "Rascunho",
 			"prStatusOpen": "Aberto",
-			"dueWithDate": "Vence em {{date}}",
 			"created": "Criado",
 			"dueDateLabel": "Data de vencimento",
 			"assignees": "Responsáveis",
@@ -5609,9 +5465,7 @@
 			"backlog": "Backlog",
 			"chip": "{{subject}}: {{value}}",
 			"clearFilters": "Limpar filtros",
-			"collapse": "Recolher {{name}}",
 			"emptyColumn": "Nenhuma tarefa aqui",
-			"expand": "Expandir {{name}}",
 			"filter": "Filtrar",
 			"filters": "Filtros",
 			"layout": "Layout",
@@ -5636,7 +5490,7 @@
 			}
 		},
 		"card": {
-			"comments_many": "{{count}} comments",
+			"comments_many": "{{count}} comentários",
 			"comments_one": "{{count}} comentário",
 			"comments_other": "{{count}} comentários",
 			"votesTooltip": "{{up}} votos a favor · {{down}} votos contra"
@@ -5706,7 +5560,7 @@
 			"notFound": "Esta tarefa não está no quadro"
 		},
 		"reactions": {
-			"count_many": "{{count}} reactions",
+			"count_many": "{{count}} reações",
 			"count_one": "{{count}} reação",
 			"count_other": "{{count}} reações",
 			"error": "Não foi possível atualizar a reação",
@@ -5862,7 +5716,7 @@
 				"done": "Concluído",
 				"inProgress": "Em andamento",
 				"inReview": "Em revisão",
-				"todo": "To do"
+				"todo": "A fazer"
 			},
 			"analytics": {
 				"allProjects": "Todos os projetos",
@@ -6161,7 +6015,7 @@
 				"recentTimes": {
 					"page": "1h",
 					"project": "2h",
-					"task": "10m"
+					"task": "10 min"
 				},
 				"saving": "Salvando…",
 				"stickies": "Notas adesivas",
@@ -6179,7 +6033,7 @@
 					"commented": {
 						"preview": "Os botões desativados passam agora.",
 						"task": "Verificar o contraste de cores nas configurações",
-						"time": "1d"
+						"time": "1 d"
 					},
 					"due": {
 						"task": "Corrigir o redirecionamento do login",
@@ -6188,7 +6042,7 @@
 					"mention": {
 						"preview": "@adam você pode conferir a linha de totais antes de sexta?",
 						"task": "Adicionar exportação CSV aos relatórios",
-						"time": "5m"
+						"time": "5 min"
 					},
 					"moved": {
 						"task": "Fazer cache das listas de projetos no servidor",
@@ -6309,7 +6163,7 @@
 						"name": "Discord"
 					},
 					"gitea": {
-						"detail": "Issues, pull requests, webhooks",
+						"detail": "Issues, pull requests e webhooks",
 						"name": "Gitea"
 					},
 					"github": {
@@ -6359,7 +6213,7 @@
 				"fileName": "jira-export.csv",
 				"importAction": "Importar 42 issues",
 				"importing": "Importando 42 issues…",
-				"issueCount": "42 issues",
+				"issueCount": "42 itens",
 				"jiraStatus": "Status no Jira",
 				"limits": "Até 5 MB e 5.000 issues por arquivo.",
 				"next": "Próximo",
@@ -6368,20 +6222,20 @@
 				"source": "Jira (exportação CSV)",
 				"statuses": {
 					"done": {
-						"meta": "14 issues",
-						"name": "Done"
+						"meta": "14 itens",
+						"name": "Concluído"
 					},
 					"inProgress": {
-						"meta": "9 issues",
-						"name": "In Progress"
+						"meta": "9 itens",
+						"name": "Em andamento"
 					},
 					"open": {
-						"meta": "14 issues",
-						"name": "Open"
+						"meta": "14 itens",
+						"name": "Aberto"
 					},
 					"review": {
-						"meta": "5 issues",
-						"name": "Code Review"
+						"meta": "5 itens",
+						"name": "Revisão de código"
 					}
 				},
 				"statusesTitle": "Status",
@@ -6757,7 +6611,7 @@
 				},
 				"openSource": {
 					"detail": "Licença MIT",
-					"title": "Open source"
+					"title": "Código aberto"
 				},
 				"selfHosted": {
 					"detail": "Docker ou Helm",
@@ -6993,7 +6847,7 @@
 					"body": "Usuários e projetos ilimitados nos seus próprios servidores, com todos os recursos incluídos.",
 					"cta": "Ler o guia de instalação",
 					"name": "Auto-hospedado",
-					"price": "$0",
+					"price": "US$ 0",
 					"suffix": "para sempre"
 				},
 				"title": "Grátis para você rodar. Justo quando nós rodamos para você."
@@ -7428,7 +7282,7 @@
 			"edit": "Editar",
 			"menu": "Ações do ciclo",
 			"restore": "Restaurar",
-			"transfer_many": "Transfer {{count}} unfinished tasks",
+			"transfer_many": "Transferir {{count}} tarefas não concluídas",
 			"transfer_one": "Transferir {{count}} tarefa não concluída",
 			"transfer_other": "Transferir {{count}} tarefas não concluídas"
 		},
@@ -7438,7 +7292,7 @@
 			"emptyTitle": "Nenhum ciclo em andamento",
 			"noHighPriority": "Não há tarefas urgentes ou de alta prioridade em aberto.",
 			"openCycle": "Abrir ciclo",
-			"pending_many": "{{count}} tasks left",
+			"pending_many": "{{count}} tarefas restantes",
 			"pending_one": "{{count}} tarefa restante",
 			"pending_other": "{{count}} tarefas restantes",
 			"progressDone": "{{done}} de {{total}} concluídas",
@@ -7452,13 +7306,13 @@
 			"noResults": "Nenhuma tarefa correspondente"
 		},
 		"badge": {
-			"daysLeft_many": "{{count}} days left",
+			"daysLeft_many": "{{count}} dias restantes",
 			"daysLeft_one": "{{count}} dia restante",
 			"daysLeft_other": "{{count}} dias restantes",
 			"ended": "Encerrado em {{date}}",
 			"endsToday": "Termina hoje",
 			"noDates": "Sem datas",
-			"startsIn_many": "Starts in {{count}} days",
+			"startsIn_many": "Começa em {{count}} dias",
 			"startsIn_one": "Começa em {{count}} dia",
 			"startsIn_other": "Começa em {{count}} dias",
 			"startsTomorrow": "Começa amanhã"
@@ -7466,10 +7320,10 @@
 		"bulk": {
 			"action": "Ciclo",
 			"error": "Não foi possível alterar o ciclo das tarefas selecionadas",
-			"moved_many": "Moved {{count}} tasks to {{name}}",
+			"moved_many": "{{count}} tarefas movidas para {{name}}",
 			"moved_one": "{{count}} tarefa movida para {{name}}",
 			"moved_other": "{{count}} tarefas movidas para {{name}}",
-			"removed_many": "Removed {{count}} tasks from their cycles",
+			"removed_many": "{{count}} tarefas removidas dos ciclos",
 			"removed_one": "{{count}} tarefa removida do ciclo",
 			"removed_other": "{{count}} tarefas removidas dos ciclos"
 		},
@@ -7489,7 +7343,7 @@
 		"delete": {
 			"cancel": "Cancelar",
 			"confirm": "Excluir ciclo",
-			"description_many": "“{{name}}” will be deleted. Its {{count}} tasks stay in the project.",
+			"description_many": "“{{name}}” será excluído. Suas {{count}} tarefas permanecem no projeto.",
 			"description_one": "“{{name}}” será excluído. Sua {{count}} tarefa permanece no projeto.",
 			"description_other": "“{{name}}” será excluído. Suas {{count}} tarefas permanecem no projeto.",
 			"title": "Excluir ciclo?"
@@ -7507,15 +7361,15 @@
 			"notFoundDescription": "Ele pode ter sido excluído.",
 			"notFoundTitle": "Este ciclo não existe",
 			"switchCycle": "Trocar ciclo",
-			"taskCount_many": "{{count}} tasks",
+			"taskCount_many": "{{count}} tarefas",
 			"taskCount_one": "{{count}} tarefa",
 			"taskCount_other": "{{count}} tarefas",
-			"taskCountTooltip_many": "{{count}} tasks in this cycle",
+			"taskCountTooltip_many": "{{count}} tarefas neste ciclo",
 			"taskCountTooltip_one": "{{count}} tarefa neste ciclo",
 			"taskCountTooltip_other": "{{count}} tarefas neste ciclo",
 			"togglePanel": "Alternar detalhes do ciclo",
 			"transferAction": "Transferir tarefas",
-			"transferBanner_many": "{{count}} tasks weren't finished in this cycle.",
+			"transferBanner_many": "{{count}} tarefas não foram concluídas neste ciclo.",
 			"transferBanner_one": "{{count}} tarefa não foi concluída neste ciclo.",
 			"transferBanner_other": "{{count}} tarefas não foram concluídas neste ciclo."
 		},
@@ -7620,11 +7474,11 @@
 			"saveError": "Não foi possível salvar o ciclo",
 			"taskMoved": "Movida para {{name}}",
 			"taskRemoved": "Removida do ciclo",
-			"tasksAdded_many": "Added {{count}} tasks to {{name}}",
+			"tasksAdded_many": "{{count}} tarefas adicionadas a {{name}}",
 			"tasksAdded_one": "{{count}} tarefa adicionada a {{name}}",
 			"tasksAdded_other": "{{count}} tarefas adicionadas a {{name}}",
 			"transferError": "Não foi possível transferir as tarefas",
-			"transferred_many": "Moved {{count}} tasks to {{name}}",
+			"transferred_many": "{{count}} tarefas movidas para {{name}}",
 			"transferred_one": "{{count}} tarefa movida para {{name}}",
 			"transferred_other": "{{count}} tarefas movidas para {{name}}",
 			"updated": "Ciclo atualizado"
@@ -7635,7 +7489,7 @@
 			"noResults": "Nenhum ciclo encontrado",
 			"noTargets": "Nenhum ciclo pode receber essas tarefas. Crie um novo ciclo primeiro.",
 			"searchPlaceholder": "Buscar ciclos",
-			"title_many": "Transfer {{count}} unfinished tasks",
+			"title_many": "Transferir {{count}} tarefas não concluídas",
 			"title_one": "Transferir {{count}} tarefa não concluída",
 			"title_other": "Transferir {{count}} tarefas não concluídas"
 		},
@@ -7654,7 +7508,7 @@
 			"keySpace": "Espaço",
 			"open": "Planejar ciclo",
 			"paneLabel": "Lado do planejador",
-			"plannedCount_many": "{{count}} tasks planned",
+			"plannedCount_many": "{{count}} tarefas planejadas",
 			"plannedCount_one": "{{count}} tarefa planejada",
 			"plannedCount_other": "{{count}} tarefas planejadas",
 			"removeTask": "Remover {{key}} {{title}} do ciclo"
@@ -7706,7 +7560,7 @@
 		"delete": {
 			"cancel": "Cancelar",
 			"confirm": "Excluir módulo",
-			"description_many": "{{name}} will be deleted. Its {{count}} tasks stay in the project.",
+			"description_many": "{{name}} será excluído. Suas {{count}} tarefas permanecem no projeto.",
 			"description_one": "{{name}} será excluído. Sua {{count}} tarefa permanece no projeto.",
 			"description_other": "{{name}} será excluído. Suas {{count}} tarefas permanecem no projeto.",
 			"title": "Excluir módulo?"
@@ -7723,7 +7577,7 @@
 			"notFound": "Módulo não encontrado",
 			"notFoundDescription": "Ele pode ter sido excluído ou pertence a outro projeto.",
 			"switchModule": "Trocar módulo",
-			"taskCount_many": "{{count}} tasks",
+			"taskCount_many": "{{count}} tarefas",
 			"taskCount_one": "{{count}} tarefa",
 			"taskCount_other": "{{count}} tarefas",
 			"taskCountTooltip": "Tarefas neste módulo",
@@ -7762,13 +7616,13 @@
 			"clear": "Limpar filtros",
 			"filterBy": "Filtrar por",
 			"includesAnyOf": "inclui qualquer um de",
-			"is": "is",
+			"is": "é",
 			"isAnyOf": "é qualquer um de",
 			"lead": "Líder",
 			"members": "Membros",
 			"menu": "Filtrar",
 			"noLead": "Sem líder",
-			"selectedCount_many": "{{count}} selected",
+			"selectedCount_many": "{{count}} selecionados",
 			"selectedCount_one": "{{count}} selecionado",
 			"selectedCount_other": "{{count}} selecionados",
 			"status": "Status"
@@ -7844,7 +7698,7 @@
 			"none": "Nenhum módulo",
 			"noResults": "Nenhum módulo encontrado",
 			"searchPlaceholder": "Buscar módulos",
-			"selectedCount_many": "{{count}} modules",
+			"selectedCount_many": "{{count}} módulos",
 			"selectedCount_one": "{{count}} módulo",
 			"selectedCount_other": "{{count}} módulos"
 		},
@@ -7860,7 +7714,7 @@
 			"startsOn": "Começa em {{date}}"
 		},
 		"sidebar": {
-			"cancelledCount_many": "{{count}} cancelled",
+			"cancelledCount_many": "{{count}} canceladas",
 			"cancelledCount_one": "{{count}} cancelada",
 			"cancelledCount_other": "{{count}} canceladas",
 			"lead": "Líder",
@@ -7873,7 +7727,7 @@
 			"targetDate": "Alvo",
 			"tasks": "Tarefas",
 			"title": "Detalhes do módulo",
-			"totalTasks_many": "{{count}} tasks",
+			"totalTasks_many": "{{count}} tarefas",
 			"totalTasks_one": "{{count}} tarefa",
 			"totalTasks_other": "{{count}} tarefas"
 		},
@@ -7902,10 +7756,10 @@
 			"restored": "Módulo restaurado",
 			"restoreError": "Não foi possível restaurar o módulo",
 			"saveError": "Não foi possível salvar o módulo",
-			"tasksAdded_many": "Added {{count}} tasks to {{name}}",
+			"tasksAdded_many": "{{count}} tarefas adicionadas a {{name}}",
 			"tasksAdded_one": "{{count}} tarefa adicionada a {{name}}",
 			"tasksAdded_other": "{{count}} tarefas adicionadas a {{name}}",
-			"tasksRemoved_many": "Removed {{count}} tasks from {{name}}",
+			"tasksRemoved_many": "{{count}} tarefas removidas de {{name}}",
 			"tasksRemoved_one": "{{count}} tarefa removida de {{name}}",
 			"tasksRemoved_other": "{{count}} tarefas removidas de {{name}}",
 			"updated": "Módulo atualizado"
@@ -7931,7 +7785,7 @@
 			"title": "Adicionar tarefas existentes",
 			"searchPlaceholder": "Buscar tarefas por chave ou título",
 			"submit_one": "Adicionar {{count}} tarefa",
-			"submit_many": "Add {{count}} tasks",
+			"submit_many": "Adicionar {{count}} tarefas",
 			"submit_other": "Adicionar {{count}} tarefas"
 		},
 		"retry": "Tentar novamente"
@@ -7960,7 +7814,7 @@
 			"completed30": "Concluídas em 30 dias",
 			"created": "Criadas",
 			"dueThisWeek": "Vencem esta semana",
-			"notAvailable": "n/a",
+			"notAvailable": "n/d",
 			"overdue": "Atrasadas",
 			"subscribed": "Seguindo"
 		},
@@ -7973,12 +7827,11 @@
 		"title": "Seu trabalho",
 		"workload": {
 			"byProject": "Por projeto",
-			"cancelled_many": "{{count}} cancelled",
+			"cancelled_many": "{{count}} canceladas",
 			"cancelled_one": "{{count}} cancelada",
 			"cancelled_other": "{{count}} canceladas",
 			"priorities": "Trabalho em aberto por prioridade",
 			"recentActivity": "Atividade recente",
-			"title": "Carga de trabalho",
 			"byState": "Por estado"
 		},
 		"activity": {
@@ -8029,7 +7882,7 @@
 			"back": "Voltar para as visualizações",
 			"notFoundDescription": "Ela pode ter sido excluída ou o proprietário a manteve privada.",
 			"notFoundTitle": "Esta visualização não existe ou é privada",
-			"taskCount_many": "{{count}} tasks",
+			"taskCount_many": "{{count}} tarefas",
 			"taskCount_one": "{{count}} tarefa",
 			"taskCount_other": "{{count}} tarefas",
 			"unsaved": "Alterações não salvas"
@@ -8058,7 +7911,6 @@
 			"all": "Todas",
 			"emptyDescription": "Salve filtros e layouts como visualizações e compartilhe com sua equipe.",
 			"emptyTitle": "Nenhuma visualização ainda",
-			"favorite": "Favorita",
 			"mine": "Minhas",
 			"more": "Visualizações",
 			"newView": "Nova visualização",
@@ -8202,17 +8054,11 @@
 			"inbox": "Caixa de entrada",
 			"label": "Retomar de onde parou",
 			"myWork": "Seu trabalho",
-			"open_many": "{{count}} open",
-			"open_one": "{{count}} aberta",
-			"open_other": "{{count}} abertas",
-			"overdue_many": "{{count}} overdue",
+			"overdue_many": "{{count}} atrasadas",
 			"overdue_one": "{{count}} atrasada",
 			"overdue_other": "{{count}} atrasadas",
 			"stickies": "Notas",
 			"stickiesHint": "Notas privadas, só para você",
-			"unread_many": "{{count}} unread",
-			"unread_one": "{{count}} não lida",
-			"unread_other": "{{count}} não lidas",
 			"openCaption": "abertas",
 			"unreadCaption": "não lidas"
 		}
@@ -8272,7 +8118,6 @@
 			"submit": "Enviar solicitação",
 			"title": "Nova solicitação",
 			"titlePlaceholder": "Do que você precisa?",
-			"titleRequired": "Adicione um título",
 			"toast": "Solicitação enviada",
 			"toastView": "Ver",
 			"pastedImages": "Imagens coladas",
@@ -8363,7 +8208,7 @@
 		"filters": {
 			"button": "Filtrar",
 			"clear": "Limpar filtros",
-			"me": "Me",
+			"me": "Eu",
 			"priority": "Prioridade",
 			"remove": "Remover filtro",
 			"status": "Status",
@@ -8420,7 +8265,7 @@
 				"description": "Adicionada ao quadro",
 				"label": "Aceita"
 			},
-			"daysLeft_many": "{{count}} days left",
+			"daysLeft_many": "{{count}} dias restantes",
 			"daysLeft_one": "{{count}} dia restante",
 			"daysLeft_other": "{{count}} dias restantes",
 			"declined": {
@@ -8453,7 +8298,6 @@
 			"pending": "Esta tarefa está aguardando na entrada.",
 			"snoozed": "Esta tarefa está adiada na entrada até {{date}}."
 		},
-		"title": "Entrada",
 		"triage": {
 			"backToList": "Voltar às solicitações",
 			"detailLabel": "Solicitação",
@@ -8538,7 +8382,7 @@
 			"sortByValue": "Ordenar por valor",
 			"subtitle": "Escolha o que comparar. Os filtros acima também se aplicam aqui.",
 			"title": "Gráfico personalizado",
-			"truncatedSegments_many": "{{count}} more grouped as Other",
+			"truncatedSegments_many": "mais {{count}} agrupados em Outros",
 			"truncatedSegments_one": "mais {{count}} agrupado em Outros",
 			"truncatedSegments_other": "mais {{count}} agrupados em Outros",
 			"truncatedX": "Mostrando os primeiros {{shown}} de {{total}} {{dimension}}",
@@ -8610,7 +8454,7 @@
 		"export": {
 			"button": "Exportar CSV",
 			"error": "Não foi possível exportar esta tabela",
-			"success_many": "Exported {{count}} rows",
+			"success_many": "{{count}} linhas exportadas",
 			"success_one": "{{count}} linha exportada",
 			"success_other": "{{count}} linhas exportadas"
 		},
@@ -8618,7 +8462,7 @@
 			"allProjects": "Todos os projetos",
 			"clearSelection": "Limpar seleção",
 			"noProjectsFound": "Nenhum projeto encontrado",
-			"projectsCount_many": "{{count}} projects",
+			"projectsCount_many": "{{count}} projetos",
 			"projectsCount_one": "{{count}} projeto",
 			"projectsCount_other": "{{count}} projetos",
 			"refresh": "Atualizar",
@@ -8690,7 +8534,7 @@
 		"openInAnalytics": "Abrir em Análises",
 		"other": "Outros",
 		"overview": {
-			"donutCenter_many": "{{count}} tasks",
+			"donutCenter_many": "{{count}} tarefas",
 			"donutCenter_one": "{{count}} tarefa",
 			"donutCenter_other": "{{count}} tarefas",
 			"open": "{{count}} abertas",
@@ -9020,7 +8864,7 @@
 			"current": "Versão atual",
 			"empty": "Nenhuma versão salva ainda. As versões são salvas enquanto você edita.",
 			"loadError": "Não foi possível carregar esta versão",
-			"others_many": "+{{count}} others",
+			"others_many": "+{{count}} outros",
 			"others_one": "+{{count}} outro",
 			"others_other": "+{{count}} outros",
 			"previewTitle": "Versão de {{date}}",
@@ -9430,7 +9274,6 @@
 	},
 	"instanceAdmin": {
 		"admins": {
-			"actions": "Ações do administrador",
 			"add": "Adicionar administrador",
 			"addConfirm": "Adicionar administrador",
 			"addDescription": "Os administradores da instância podem alterar todas as configurações desta área e abrir qualquer espaço de trabalho.",
@@ -9548,7 +9391,7 @@
 				"fileStorage": "Armazenamento de arquivos",
 				"notConfigured": "Não configurado",
 				"off": "Desativado",
-				"on": "On",
+				"on": "Ativado",
 				"realtime": "Tempo real",
 				"realtimeMemory": "Em memória",
 				"realtimeRedis": "Redis ({{mode}})",
@@ -9634,7 +9477,6 @@
 		"save": "Salvar",
 		"saved": "Configurações salvas",
 		"saveError": "Não foi possível salvar as configurações",
-		"saving": "Salvando…",
 		"secret": {
 			"cancel": "Cancelar",
 			"clear": "Limpar",
@@ -9644,8 +9486,6 @@
 			"saved": "Salvo",
 			"unreadable": "Não foi possível ler o segredo salvo (o AUTH_SECRET do servidor mudou). Digite-o novamente."
 		},
-		"sidebarSubtitle": "Administração da instância",
-		"sidebarTitle": "Instância",
 		"source": {
 			"default": "Padrão",
 			"environment": "Ambiente: {{variable}}",
@@ -9698,97 +9538,97 @@
 	},
 	"press": {
 		"boilerplate": {
-			"description": "Ready-made descriptions. Trim them if you need to, but please keep the facts as they are.",
+			"description": "Descrições prontas. Encurte se precisar, mas mantenha os fatos como estão.",
 			"long": {
-				"label": "About 150 words",
-				"text": "Margaya is an open-source project management platform built for teams that want to plan and ship work without the tool becoming a job of its own. Tasks move through board, list, spreadsheet, calendar and Gantt views of the same data. Cycles, modules, estimates and an intake inbox are there when a team needs planning, and stay out of the way when it doesn't. Teams write docs together next to their tasks, collect requests on public boards, and follow progress with analytics and an audit log. A REST API with an OpenAPI description, webhooks, an MCP server and integrations with GitHub, Gitea, Slack, Discord and others connect Margaya to the rest of a team's tools. The interface is available in 20 languages. Margaya is released under the MIT licence and runs on a single server with Docker, or on Kubernetes with Helm; Margaya Cloud offers the same product as a managed service."
+				"label": "Cerca de 150 palavras",
+				"text": "O Margaya é uma plataforma de gerenciamento de projetos de código aberto feita para equipes que querem planejar e entregar trabalho sem que a ferramenta vire um trabalho à parte. As tarefas passam por visualizações em quadro, lista, planilha, calendário e Gantt dos mesmos dados. Ciclos, módulos, estimativas e uma caixa de entrada estão lá quando a equipe precisa planejar, e ficam fora do caminho quando não precisa. As equipes escrevem documentos juntas ao lado das tarefas, reúnem pedidos em quadros públicos e acompanham o progresso com análises e um log de auditoria. Uma API REST com descrição OpenAPI, webhooks, um servidor MCP e integrações com GitHub, Gitea, Slack, Discord e outros conectam o Margaya ao restante das ferramentas da equipe. A interface está disponível em 20 idiomas. O Margaya é distribuído sob a licença MIT e roda em um único servidor com Docker ou no Kubernetes com Helm; o Margaya Cloud oferece o mesmo produto como serviço gerenciado."
 			},
 			"short": {
-				"label": "About 50 words",
-				"text": "Margaya is an open-source project management platform for teams that want clear ownership without heavy process. Plan work on boards, lists, spreadsheets, calendars and Gantt charts, write docs beside the tasks, and connect your tools through a REST API and MCP. Run it yourself under the MIT licence, or use Margaya Cloud."
+				"label": "Cerca de 50 palavras",
+				"text": "O Margaya é uma plataforma de gerenciamento de projetos de código aberto para equipes que querem responsabilidades claras sem processos pesados. Planeje o trabalho em quadros, listas, planilhas, calendários e gráficos de Gantt, escreva documentos ao lado das tarefas e conecte suas ferramentas por uma API REST e MCP. Rode você mesmo sob a licença MIT ou use o Margaya Cloud."
 			},
-			"title": "Boilerplate"
+			"title": "Textos institucionais"
 		},
 		"colours": {
-			"copyHex": "Copy {{hex}}",
-			"description": "Margaya is deliberately quiet: near-black, off-white and a few greys, so the work on screen supplies the colour.",
+			"copyHex": "Copiar {{hex}}",
+			"description": "O Margaya é discreto de propósito: quase preto, branco suave e alguns tons de cinza, para que o trabalho na tela traga a cor.",
 			"graphite": {
-				"name": "Graphite",
-				"usage": "Text and primary buttons in the light theme"
+				"name": "Grafite",
+				"usage": "Texto e botões principais no tema claro"
 			},
 			"ink": {
-				"name": "Ink",
-				"usage": "The logo, and the dark theme's background"
+				"name": "Tinta",
+				"usage": "O logotipo e o fundo do tema escuro"
 			},
 			"mist": {
-				"name": "Mist",
-				"usage": "Panels and sidebars in the light theme"
+				"name": "Névoa",
+				"usage": "Painéis e barras laterais no tema claro"
 			},
 			"mono": {
 				"name": "Geist Mono",
-				"usage": "Code, keyboard shortcuts and task IDs"
+				"usage": "Código, atalhos de teclado e IDs de tarefas"
 			},
 			"paper": {
-				"name": "Paper",
-				"usage": "The light logo, and primary buttons in the dark theme"
+				"name": "Papel",
+				"usage": "O logotipo claro e os botões principais no tema escuro"
 			},
-			"sample": "Plan the work. Ship the work.",
+			"sample": "Planeje o trabalho. Entregue o trabalho.",
 			"sans": {
 				"name": "Geist",
-				"usage": "Interface, headings and the wordmark, set semibold with tight tracking"
+				"usage": "Interface, títulos e logotipo com nome, em seminegrito com espaçamento justo"
 			},
-			"title": "Colours and type",
-			"typeTitle": "Typography",
+			"title": "Cores e tipografia",
+			"typeTitle": "Tipografia",
 			"white": {
-				"name": "White",
-				"usage": "The light theme's background"
+				"name": "Branco",
+				"usage": "O fundo do tema claro"
 			}
 		},
 		"contact": {
-			"body": "Margaya is built in the open, so the maintainers answer on GitHub. Start a discussion for interviews and questions about the project, or open an issue if something in this kit is missing or out of date.",
-			"discussions": "Start a discussion",
-			"issues": "Open an issue",
-			"title": "Talk to the maintainers"
+			"body": "O Margaya é desenvolvido abertamente, então os mantenedores respondem no GitHub. Abra uma discussão para entrevistas e perguntas sobre o projeto, ou abra uma issue se algo neste kit estiver faltando ou desatualizado.",
+			"discussions": "Abrir uma discussão",
+			"issues": "Abrir uma issue",
+			"title": "Fale com os mantenedores"
 		},
-		"copied": "Copied",
-		"copy": "Copy",
-		"copyUrl": "Copy URL",
-		"description": "Margaya's press kit: boilerplate text, logos, product screenshots, brand colours and typography, with direct download links.",
-		"download": "Download",
-		"downloadKit": "Download the press kit",
+		"copied": "Copiado",
+		"copy": "Copiar",
+		"copyUrl": "Copiar URL",
+		"description": "Kit de imprensa do Margaya: textos institucionais, logotipos, capturas de tela do produto, cores e tipografia da marca, com links diretos para download.",
+		"download": "Baixar",
+		"downloadKit": "Baixar o kit de imprensa",
 		"downloadKitMeta": "ZIP, {{size}}",
-		"eyebrow": "Press kit",
+		"eyebrow": "Kit de imprensa",
 		"facts": {
-			"description": "The essentials, in one place.",
+			"description": "O essencial, em um só lugar.",
 			"founded": {
-				"label": "Founded",
+				"label": "Fundação",
 				"value": "2026"
 			},
 			"hosting": {
-				"label": "Hosting",
-				"value": "Self-hosted with Docker or Helm, or managed on Margaya Cloud"
+				"label": "Hospedagem",
+				"value": "Auto-hospedado com Docker ou Helm, ou gerenciado no Margaya Cloud"
 			},
 			"interfaces": {
 				"label": "Interfaces",
-				"value": "REST API with an OpenAPI description, plus an MCP server"
+				"value": "API REST com descrição OpenAPI, além de um servidor MCP"
 			},
 			"languages": {
-				"label": "Languages",
-				"value": "20 interface languages"
+				"label": "Idiomas",
+				"value": "Interface em 20 idiomas"
 			},
 			"licence": {
-				"label": "Licence",
-				"value": "MIT, for every feature"
+				"label": "Licença",
+				"value": "MIT, para todos os recursos"
 			},
 			"source": {
-				"label": "Source code",
+				"label": "Código-fonte",
 				"value": "github.com/manu14357/Margaya"
 			},
 			"stack": {
 				"label": "Stack",
-				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
+				"value": "TypeScript, Hono, React e PostgreSQL, com Redis opcional"
 			},
-			"title": "Quick facts",
+			"title": "Fatos rápidos",
 			"ai": {
 				"label": "IA",
 				"value": "Opcional e desativada por padrão: Perguntar à IA, modo Criar e agentes de IA, com o Claude ou um modelo auto-hospedado"
@@ -9796,212 +9636,218 @@
 		},
 		"guidelines": {
 			"do": {
-				"contrast": "Use the dark wordmark on light backgrounds and the light wordmark on dark ones.",
-				"link": "Link to margaya.app or the GitHub repository when you mention the project.",
-				"name": "Write the name as “Margaya”, with a capital M, in running text.",
-				"space": "Leave clear space around the logo at least as wide as the icon's ears."
+				"contrast": "Use o logotipo com nome escuro em fundos claros e o claro em fundos escuros.",
+				"link": "Inclua um link para margaya.app ou para o repositório no GitHub ao mencionar o projeto.",
+				"name": "Escreva o nome como “Margaya”, com M maiúsculo, no texto corrido.",
+				"space": "Deixe ao redor do logotipo um espaço livre pelo menos da largura das orelhas do ícone."
 			},
 			"dont": {
-				"distort": "Stretch, rotate, outline or add effects to the logo.",
-				"edit": "Edit screenshots to show features that Margaya doesn't have.",
-				"endorse": "Suggest that the Margaya maintainers endorse a product, service or opinion.",
-				"recolour": "Recolour the logo, or place it on busy images where it loses contrast."
+				"distort": "Esticar, girar, contornar ou aplicar efeitos ao logotipo.",
+				"edit": "Editar capturas de tela para mostrar recursos que o Margaya não tem.",
+				"endorse": "Sugerir que os mantenedores do Margaya endossam um produto, serviço ou opinião.",
+				"recolour": "Mudar as cores do logotipo ou colocá-lo sobre imagens carregadas, onde ele perde contraste."
 			},
-			"dontTitle": "Please don't",
-			"doTitle": "Please do",
-			"title": "Using the brand"
+			"dontTitle": "Não faça",
+			"doTitle": "Faça",
+			"title": "Como usar a marca"
 		},
-		"headline": "Margaya is open-source project management you can run on your own server.",
-		"intro": "Short and long descriptions, logos, screenshots, colours and type, ready for articles, videos and talks. Everything on this page may be used for editorial coverage of Margaya.",
+		"headline": "O Margaya é um gerenciador de projetos de código aberto que você pode rodar no seu próprio servidor.",
+		"intro": "Descrições curtas e longas, logotipos, capturas de tela, cores e tipografia, prontos para artigos, vídeos e palestras. Tudo nesta página pode ser usado na cobertura editorial do Margaya.",
 		"logos": {
-			"description": "Use the wordmark wherever there is room for it, and the icon where space is tight. Each file has a permanent address you can link to.",
+			"description": "Use o logotipo com nome sempre que houver espaço e o ícone quando o espaço for curto. Cada arquivo tem um endereço permanente que você pode usar em links.",
 			"iconPng": {
-				"alt": "The Margaya app icon",
+				"alt": "O ícone do app Margaya",
 				"detail": "PNG, 512 × 512",
-				"name": "App icon"
+				"name": "Ícone do app"
 			},
 			"iconSvg": {
-				"alt": "The Margaya icon: a light cat face on a dark rounded square",
-				"detail": "SVG, scales to any size",
-				"name": "Icon"
+				"alt": "O ícone do Margaya: um rosto de gato claro sobre um quadrado escuro de cantos arredondados",
+				"detail": "SVG, em qualquer tamanho",
+				"name": "Ícone"
 			},
-			"title": "Logos",
+			"title": "Logotipos",
 			"wordmarkDark": {
-				"alt": "The Margaya wordmark in near-black on a light background",
-				"detail": "SVG, for light backgrounds",
-				"name": "Wordmark, dark"
+				"alt": "O logotipo com nome do Margaya em quase preto sobre fundo claro",
+				"detail": "SVG, para fundos claros",
+				"name": "Logotipo com nome, escuro"
 			},
 			"wordmarkLight": {
-				"alt": "The Margaya wordmark in off-white on a dark background",
-				"detail": "SVG, for dark backgrounds",
-				"name": "Wordmark, light"
+				"alt": "O logotipo com nome do Margaya em branco suave sobre fundo escuro",
+				"detail": "SVG, para fundos escuros",
+				"name": "Logotipo com nome, claro"
 			}
 		},
-		"onThisPage": "On this page",
+		"onThisPage": "Nesta página",
 		"screenshots": {
-			"close": "Close",
-			"counter": "{{current}} of {{total}}",
-			"dark": "Dark",
-			"description": "Real Margaya screens in the light and dark themes. Select one to see it at full size.",
-			"empty": "A fresh set of screenshots is on its way. Until then, the press kit download has the current set.",
-			"light": "Light",
-			"next": "Next screenshot",
-			"open": "View larger: {{title}}",
-			"previous": "Previous screenshot",
+			"close": "Fechar",
+			"counter": "{{current}} de {{total}}",
+			"dark": "Escuro",
+			"description": "Telas reais do Margaya nos temas claro e escuro. Selecione uma para vê-la em tamanho real.",
+			"empty": "Um novo conjunto de capturas de tela está a caminho. Até lá, o download do kit de imprensa traz o conjunto atual.",
+			"light": "Claro",
+			"next": "Próxima captura",
+			"open": "Ver maior: {{title}}",
+			"previous": "Captura anterior",
 			"size": "{{width}} × {{height}}, PNG",
-			"title": "Product screenshots"
+			"title": "Capturas de tela do produto"
 		},
-		"title": "Press kit",
-		"downloadPng": "Download PNG"
+		"title": "Kit de imprensa",
+		"downloadPng": "Baixar PNG"
 	},
 	"pricing": {
 		"cta": {
-			"description": "Start a Cloud trial with no card, or follow the install guide and run Margaya on your own hardware.",
-			"primary": "Start a free trial",
-			"secondary": "Read the install guide",
-			"title": "Pick the way that fits, and change your mind later."
+			"description": "Comece um teste do Cloud sem cartão ou siga o guia de instalação e rode o Margaya no seu próprio hardware.",
+			"primary": "Comece um teste grátis",
+			"secondary": "Ler o guia de instalação",
+			"title": "Escolha o caminho que combina com você e mude de ideia depois."
 		},
-		"description": "The self-hosted build is the whole product under the MIT licence, with no seat limits and no paid tier. Margaya Cloud is the same software, hosted in the EU and kept up to date for you.",
-		"eyebrow": "Pricing",
+		"description": "A versão auto-hospedada é o produto completo sob a licença MIT, sem limite de assentos e sem plano pago. O Margaya Cloud é o mesmo software, hospedado na UE e sempre atualizado para você.",
+		"eyebrow": "Preços",
 		"faq": {
 			"items": {
 				"cancel": {
-					"answer": "Your plan stays active until the end of the period you've paid for. Export your work as CSV, Excel or JSON before then if you want to keep a copy.",
-					"question": "What happens if I cancel?"
+					"answer": "Seu plano continua ativo até o fim do período que você já pagou. Antes disso, exporte seu trabalho em CSV, Excel ou JSON se quiser guardar uma cópia.",
+					"question": "O que acontece se eu cancelar?"
 				},
 				"founding": {
-					"answer": "Workspaces created before paid plans launched keep free access for at least 12 months, and you'll get six months' notice before anything changes.",
-					"question": "I signed up before paid plans existed. What changes?"
+					"answer": "Espaços de trabalho criados antes do lançamento dos planos pagos mantêm acesso gratuito por pelo menos 12 meses, e você será avisado com seis meses de antecedência antes de qualquer mudança.",
+					"question": "Eu me cadastrei antes de existirem planos pagos. O que muda?"
 				},
 				"payments": {
-					"answer": "Payments go through Creem, which acts as merchant of record and handles sales tax and VAT where they apply. Your card details never reach Margaya.",
-					"question": "Who handles payments and tax?"
+					"answer": "Os pagamentos passam pela Creem, que atua como merchant of record e cuida dos impostos sobre vendas e do IVA quando se aplicam. Os dados do seu cartão nunca chegam ao Margaya.",
+					"question": "Quem cuida dos pagamentos e dos impostos?"
 				},
 				"seats": {
-					"answer": "Cloud Team is billed for each member of the workspace. When someone joins or leaves, the seat count on the subscription is updated to match.",
-					"question": "How are Cloud Team members counted?"
+					"answer": "O Cloud Equipe é cobrado por membro do espaço de trabalho. Quando alguém entra ou sai, a quantidade de assentos da assinatura é ajustada.",
+					"question": "Como os membros do Cloud Equipe são contados?"
 				},
 				"selfHostHelp": {
-					"answer": "From the maintainers and the community on GitHub, through discussions and issues. Installation, upgrades and configuration are covered in the documentation.",
-					"question": "Where do self-hosters get help?"
+					"answer": "Com os mantenedores e a comunidade no GitHub, por meio de discussões e issues. Instalação, atualizações e configuração estão descritas na documentação.",
+					"question": "Onde quem auto-hospeda encontra ajuda?"
 				},
 				"selfHostLimits": {
-					"answer": "No. The code you install is the code that runs Margaya Cloud, and all of it is MIT licensed. There are no licence keys, seat limits or paid features to unlock.",
-					"question": "Is the self-hosted version missing anything?"
+					"answer": "Não. O código que você instala é o mesmo que roda o Margaya Cloud, e todo ele tem licença MIT. Não há chaves de licença, limites de assentos nem recursos pagos para desbloquear.",
+					"question": "Falta alguma coisa na versão auto-hospedada?"
 				},
 				"trial": {
-					"answer": "A new Cloud workspace gets 14 days with everything included, and you don't need a card to start. Before it ends, choose a plan or export your tasks.",
-					"question": "How does the Cloud trial work?"
+					"answer": "Um novo espaço de trabalho no Cloud ganha 14 dias com tudo incluído, e você não precisa de cartão para começar. Antes do fim do teste, escolha um plano ou exporte suas tarefas.",
+					"question": "Como funciona o teste do Cloud?"
 				},
 				"yearly": {
-					"answer": "Yes. A year costs the same as ten months, so both Cloud plans come with two months free when you pay yearly.",
-					"question": "Is yearly billing cheaper?"
+					"answer": "Sim. Um ano custa o mesmo que dez meses, então os dois planos Cloud vêm com dois meses grátis quando você paga anualmente.",
+					"question": "A cobrança anual sai mais barata?"
+				},
+				"ai": {
+					"question": "A IA está incluída?",
+					"answer": "Todos os planos têm os recursos de IA: Perguntar à IA, o modo Criar, agentes e ajuda na escrita. Eles ficam desativados até que um administrador os ative. O uso de IA não está incluído no preço: você adiciona sua própria chave de API nas configurações de IA do espaço de trabalho, e o provedor de IA cobra diretamente de você. Instâncias auto-hospedadas também podem usar um modelo que você roda por conta própria, via Ollama ou vLLM."
 				}
 			},
-			"title": "Questions about pricing"
+			"title": "Perguntas sobre preços"
 		},
 		"interval": {
-			"annual": "Yearly",
-			"label": "Billing period",
-			"monthly": "Monthly",
-			"saving": "2 months free"
+			"annual": "Anual",
+			"label": "Período de cobrança",
+			"monthly": "Mensal",
+			"saving": "2 meses grátis"
 		},
-		"metaDescription": "Margaya is free to self-host, forever. Margaya Cloud costs $4 a month for one person or $5 per member a month for teams, with a 14-day free trial.",
+		"metaDescription": "O Margaya é gratuito para auto-hospedar, para sempre. O Margaya Cloud custa US$ 4 por mês para uma pessoa ou US$ 5 por membro por mês para equipes, com 14 dias de teste grátis.",
 		"plans": {
 			"personal": {
-				"annualNote": "Works out at {{price}} a month",
-				"annualPeriod": "per year",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month",
-				"monthlyPeriod": "per month",
-				"name": "Cloud Personal",
+				"annualNote": "Sai por {{price}} por mês",
+				"annualPeriod": "por ano",
+				"cta": "Comece o teste de 14 dias",
+				"monthlyNote": "Cobrado todo mês",
+				"monthlyPeriod": "por mês",
+				"name": "Cloud Pessoal",
 				"points": {
-					"everything": "Every feature in the self-hosted build",
-					"help": "Support by email",
-					"managed": "Backups and updates handled for you",
-					"one": "One person, unlimited projects and tasks"
+					"everything": "Todos os recursos da versão auto-hospedada",
+					"help": "Suporte por e-mail",
+					"managed": "Backups e atualizações por nossa conta",
+					"one": "Uma pessoa, projetos e tarefas ilimitados"
 				},
-				"tagline": "Managed hosting for one person"
+				"tagline": "Hospedagem gerenciada para uma pessoa"
 			},
 			"selfHosted": {
-				"cta": "Read the install guide",
-				"name": "Self-hosted",
-				"note": "MIT licence. No key, no seat limit.",
-				"period": "forever",
+				"cta": "Ler o guia de instalação",
+				"name": "Auto-hospedado",
+				"note": "Licença MIT. Sem chave, sem limite de assentos.",
+				"period": "para sempre",
 				"points": {
-					"data": "Your database, your backups, your rules",
-					"deploy": "Docker on one server, or Helm on Kubernetes",
-					"everything": "Every feature, for as many people as you like",
-					"help": "Community help on GitHub"
+					"data": "Seu banco de dados, seus backups, suas regras",
+					"deploy": "Docker em um servidor ou Helm no Kubernetes",
+					"everything": "Todos os recursos, para quantas pessoas você quiser",
+					"help": "Ajuda da comunidade no GitHub"
 				},
-				"tagline": "On servers you run"
+				"tagline": "Nos servidores que você administra"
 			},
 			"team": {
-				"annualNote": "Works out at {{price}} per member a month",
-				"annualPeriod": "per member, per year",
-				"badge": "For teams",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month for each workspace member",
-				"monthlyPeriod": "per member, per month",
-				"name": "Cloud Team",
+				"annualNote": "Sai por {{price}} por membro por mês",
+				"annualPeriod": "por membro, por ano",
+				"badge": "Para equipes",
+				"cta": "Comece o teste de 14 dias",
+				"monthlyNote": "Cobrado todo mês por membro do espaço de trabalho",
+				"monthlyPeriod": "por membro, por mês",
+				"name": "Cloud Equipe",
 				"points": {
-					"help": "Priority support by email",
-					"managed": "Backups and updates handled for you",
-					"people": "Everyone in the workspace, unlimited projects",
-					"roles": "Workspace roles and permissions"
+					"help": "Suporte prioritário por e-mail",
+					"managed": "Backups e atualizações por nossa conta",
+					"people": "Todos no espaço de trabalho, projetos ilimitados",
+					"roles": "Funções e permissões do espaço de trabalho"
 				},
-				"tagline": "Managed hosting for a whole team"
+				"tagline": "Hospedagem gerenciada para uma equipe inteira"
 			}
 		},
 		"table": {
-			"description": "The features are the same everywhere. What changes is who runs the servers and where you go for help.",
-			"feature": "Feature",
+			"description": "Os recursos são os mesmos em todos os planos. O que muda é quem administra os servidores e onde você busca ajuda.",
+			"feature": "Recurso",
 			"groups": {
-				"connect": "Connect",
-				"planning": "Planning and insight",
-				"running": "Running it",
-				"work": "The work"
+				"connect": "Conexões",
+				"planning": "Planejamento e insights",
+				"running": "Operação",
+				"work": "O trabalho"
 			},
-			"included": "Included",
-			"notIncluded": "Not included",
+			"included": "Incluído",
+			"notIncluded": "Não incluído",
 			"rows": {
-				"admin": "Instance settings: sign-in providers, email, storage",
-				"analytics": "Analytics and audit log",
-				"api": "REST API, webhooks and MCP",
+				"admin": "Configurações da instância: provedores de login, e-mail, armazenamento",
+				"analytics": "Análises e log de auditoria",
+				"api": "API REST, webhooks e MCP",
 				"backups": "Backups",
-				"cycles": "Cycles, modules and estimates",
-				"docs": "Docs written together, next to the tasks",
-				"export": "Export to CSV, Excel or JSON",
-				"hosting": "Where it runs",
-				"intake": "Intake inbox and triage",
-				"integrations": "GitHub, Gitea, Slack, Discord and more",
-				"jira": "Jira import",
-				"people": "People",
-				"projects": "Projects and tasks",
-				"publicBoards": "Public boards with voting",
-				"roles": "Workspace roles and permissions",
-				"support": "Support",
-				"updates": "Updates",
-				"views": "Board, list, spreadsheet, calendar and Gantt views"
+				"cycles": "Ciclos, módulos e estimativas",
+				"docs": "Documentos escritos em equipe, ao lado das tarefas",
+				"export": "Exportação para CSV, Excel ou JSON",
+				"hosting": "Onde roda",
+				"intake": "Caixa de entrada e triagem",
+				"integrations": "GitHub, Gitea, Slack, Discord e mais",
+				"jira": "Importação do Jira",
+				"people": "Pessoas",
+				"projects": "Projetos e tarefas",
+				"publicBoards": "Quadros públicos com votação",
+				"roles": "Funções e permissões do espaço de trabalho",
+				"support": "Suporte",
+				"updates": "Atualizações",
+				"views": "Visualizações em quadro, lista, planilha, calendário e Gantt",
+				"ai": "IA: Perguntar à IA, modo Criar e agentes"
 			},
-			"title": "Compare the plans",
+			"title": "Compare os planos",
 			"values": {
-				"automatic": "Automatic",
-				"community": "Community on GitHub",
-				"email": "Email",
-				"eu": "EU data centres",
-				"notNeeded": "Not needed for one",
-				"one": "Just you",
-				"perMember": "Unlimited, billed per member",
-				"priorityEmail": "Priority email",
-				"unlimited": "Unlimited",
-				"yours": "You run them",
-				"yourSchedule": "When you choose",
-				"yourServers": "Your servers"
+				"automatic": "Automáticas",
+				"community": "Comunidade no GitHub",
+				"email": "E-mail",
+				"eu": "Data centers na UE",
+				"notNeeded": "Desnecessário para uma pessoa",
+				"one": "Só você",
+				"perMember": "Ilimitado, cobrado por membro",
+				"priorityEmail": "E-mail prioritário",
+				"unlimited": "Ilimitado",
+				"yours": "Você cuida deles",
+				"yourSchedule": "Quando você quiser",
+				"yourServers": "Seus servidores",
+				"ownKey": "Sua própria chave ou modelo de IA"
 			}
 		},
-		"title": "One product. Two ways to run it.",
-		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+		"title": "Um produto. Duas formas de rodar.",
+		"trialNote": "Os planos Cloud começam com 14 dias de teste. Não é preciso cartão para começar."
 	},
 	"templates": {
 		"form": {
@@ -10303,7 +10149,6 @@
 			},
 			"chat": {
 				"planLabel": "Alterações propostas",
-				"planning": "Planejando alterações…",
 				"nothing": "Nada a alterar para este pedido.",
 				"awaiting": "Aguardando resposta",
 				"ready": "Alterações prontas: {{count}}. Confirme para continuar.",
@@ -10849,11 +10694,7 @@
 			"retro": "Retrospectivas",
 			"my_brief": "Meu resumo",
 			"embedding": "Indexação da busca",
-			"coding_handoff": "Briefings para agentes de código",
-			"build_chat": "Criar pelo chat",
-			"nl_filter": "Filtros em linguagem natural",
-			"inbox_digest": "Resumos da caixa de entrada",
-			"speech": "Fala para texto"
+			"coding_handoff": "Briefings para agentes de código"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -10996,7 +10837,9 @@
 			"speechFormat": "Formato da API",
 			"speechFormatHint": "Como o áudio é enviado. Para o Fish Audio, use https://api.fish.audio/v1/asr como endpoint.",
 			"speechFormatOpenai": "Compatível com OpenAI",
-			"speechModelHint": "Para o Fish Audio: transcribe-1-pro ou transcribe-1, ou deixe em branco."
+			"speechModelHint": "Para o Fish Audio: transcribe-1-pro ou transcribe-1, ou deixe em branco.",
+			"storePrompts": "Guardar prompts e respostas",
+			"storePromptsHint": "Guarde o texto das solicitações aos agentes e o que o modelo escreveu no registro de cada execução. Desligado: as execuções guardam só contagens, etapas e o resumo. Vale para execuções que terminarem a partir de agora. O histórico do Ask que um workspace guarda no servidor tem a própria chave."
 		},
 		"workspace": {
 			"navLabel": "IA",
@@ -11075,7 +10918,8 @@
 			"storeConversations": "Manter o histórico do chat no servidor",
 			"storeConversationsHint": "As conversas de cada pessoa são salvas no espaço de trabalho para que ela possa reabri-las em qualquer dispositivo. Desativado: ficam apenas em cada navegador.",
 			"allowAutopilot": "Permitir piloto automático",
-			"allowAutopilotHint": "O modo Criar pode aplicar alterações sem confirmação. Toda alteração continua registrada e pode ser desfeita."
+			"allowAutopilotHint": "O modo Criar pode aplicar alterações sem confirmação. Toda alteração continua registrada e pode ser desfeita.",
+			"storesPrompts": "Prompts guardados"
 		},
 		"agents": {
 			"navLabel": "Agentes",
@@ -11279,11 +11123,13 @@
 					"manual": "Executado a partir de uma tarefa",
 					"schedule": "Agendada",
 					"automation": "Automação",
-					"chat": "Continuação"
+					"chat": "Continuação",
+					"intake": "Solicitação de entrada"
 				},
 				"project": "Projeto:",
 				"workedSeconds": "Trabalhou {{count}} s",
-				"workedMinutes": "Trabalhou {{count}} min"
+				"workedMinutes": "Trabalhou {{count}} min",
+				"request": "Solicitação"
 			},
 			"connectors": {
 				"title": "Conectores",
@@ -11424,6 +11270,27 @@
 					"assign": "Atribuição",
 					"schedule": "Agendamento",
 					"automation": "Automação"
+				}
+			},
+			"intakeTrigger": {
+				"open": "Novas solicitações de entrada para {{name}}",
+				"badge": "Entrada",
+				"title": "Solicitações de entrada: {{name}}",
+				"hint": "Execute o agente a cada nova solicitação de entrada nos projetos dele, por exemplo para triá-la. As alterações dele seguem as mesmas regras de aprovação e desfazer das outras execuções.",
+				"enabled": "Executar em novas solicitações de entrada",
+				"enabledHint": "Só em projetos com Entrada e IA ligados e dentro dos projetos do agente.",
+				"prompt": "O que ele deve fazer?",
+				"promptPlaceholder": "Por exemplo: sugerir prioridade e etiquetas e apontar duplicatas.",
+				"promptHint": "Deixe em branco para triar: um comentário curto sobre o que a solicitação pede, quão urgente parece e o que está faltando.",
+				"runsAs": "Executa para {{name}}. Salvar com o gatilho ligado torna você essa pessoa.",
+				"runsAsYou": "Executa para você assim que você o ligar, com no máximo as suas permissões. Ele desliga se você sair do workspace ou perder o acesso à IA ou à entrada.",
+				"outsideNote": "Solicitações de fora do workspace (quadros públicos, formulários) nunca alteram nada sem aprovação.",
+				"limitNote": "No máximo 30 execuções de entrada por hora por agente. Solicitações enviadas por agentes não iniciam nada.",
+				"saved": "Gatilho de entrada salvo",
+				"saveError": "Não foi possível salvar o gatilho de entrada. Tente de novo.",
+				"errors": {
+					"forbidden": "As execuções de entrada agem por você, então você precisa de acesso à IA e de permissão para ler solicitações de entrada.",
+					"AGENT_CANT_READ_INTAKE": "A função deste agente não pode ler solicitações de entrada. Dê a ele uma função que possa."
 				}
 			}
 		},
@@ -11658,7 +11525,6 @@
 			"unmeasured_other": "{{count}} tarefas não têm início registrado e ficaram de fora."
 		},
 		"capacity": {
-			"meter": "Trabalho planejado comparado a um ciclo habitual",
 			"within": "Planejado em {{percent}}% de um ciclo habitual",
 			"over": "Acima da capacidade: planejado em {{percent}}% de um ciclo habitual",
 			"noDates": "Defina as datas do ciclo para verificar a capacidade.",
@@ -11776,6 +11642,155 @@
 			"emailTitle": "Adicionar Meu resumo ao resumo por e-mail",
 			"emailDescription": "O resumo por e-mail também lista suas tarefas bloqueadas e mudanças em tarefas que você segue. Requer um resumo diário ou semanal.",
 			"emailError": "Não foi possível salvar esta configuração."
+		}
+	},
+	"emails": {
+		"otp": {
+			"preview": "Seu código de verificação do Margaya",
+			"title": "Seu código de verificação",
+			"subtitle": "Digite este código de uso único para concluir o login.",
+			"verifySubtitle": "Digite este código de uso único para verificar seu endereço de e-mail.",
+			"changeSubtitle": "Digite este código de uso único para confirmar este endereço como o novo e-mail da sua conta do Margaya.",
+			"code": "é o seu código de verificação do Margaya.",
+			"expiry": "Este código expira em {{minutes}} minutos.",
+			"ignore": "Se você não fez esta solicitação, pode ignorar este e-mail.",
+			"footer": "E-mail de segurança do Margaya"
+		},
+		"magicLink": {
+			"preview": "Entrar no Margaya",
+			"title": "Seu link de acesso seguro",
+			"subtitle": "Use este link para continuar no seu espaço de trabalho do Margaya.",
+			"cta": "Entrar no Margaya",
+			"expiry": "Para sua segurança, este link expira em 5 minutos.",
+			"ignore": "Se você não fez esta solicitação, pode ignorar este e-mail.",
+			"footer": "E-mail de segurança do Margaya"
+		},
+		"passwordReset": {
+			"preview": "Redefina sua senha do Margaya",
+			"title": "Redefinir sua senha",
+			"subtitleWithName": "Olá, {{name}}! Use o botão abaixo para definir uma nova senha.",
+			"subtitleDefault": "Use o botão abaixo para definir uma nova senha.",
+			"cta": "Redefinir senha",
+			"expiry": "Este link de redefinição expira em 1 hora.",
+			"ignore": "Se você não fez esta solicitação, nenhuma alteração será feita.",
+			"footer": "E-mail de segurança do Margaya"
+		},
+		"emailChanged": {
+			"preview": "Seu endereço de e-mail do Margaya foi alterado",
+			"title": "Seu endereço de e-mail foi alterado",
+			"body": "O endereço de e-mail da sua conta do Margaya agora é {{email}}. A partir de agora, links de acesso, códigos e notificações serão enviados para esse endereço.",
+			"warning": "Se você não fez essa alteração, entre em contato com o administrador do Margaya imediatamente.",
+			"footer": "E-mail de segurança do Margaya"
+		},
+		"authSubjects": {
+			"magicLinkSubject": "Link de acesso ao Margaya",
+			"otpSubject": "Código de verificação do Margaya",
+			"verifyEmailSubject": "Verifique seu e-mail para o Margaya",
+			"passwordResetSubject": "Redefina sua senha do Margaya",
+			"changeEmailSubject": "Confirme seu novo e-mail para o Margaya",
+			"emailChangedSubject": "Seu endereço de e-mail do Margaya foi alterado"
+		},
+		"notification": {
+			"preview": "Você tem uma nova notificação do Margaya",
+			"subtitle": "Uma notificação corresponde às suas preferências de entrega.",
+			"footer": "Notificação do Margaya",
+			"actionLabel": "Abrir no Margaya"
+		},
+		"notificationBatch": {
+			"preview": "Suas atualizações recentes do Margaya",
+			"title_one": "{{count}} nova atualização",
+			"title_many": "{{count}} novas atualizações",
+			"title_other": "{{count}} novas atualizações",
+			"subtitle": "Alterações nas suas tarefas, agrupadas desde o último e-mail.",
+			"by": "por",
+			"open": "Abrir tarefa",
+			"manage": "Gerenciar configurações de notificação",
+			"footer": "Notificação do Margaya"
+		},
+		"notificationDigest": {
+			"title": {
+				"daily": "Seu resumo diário",
+				"weekly": "Seu resumo semanal"
+			},
+			"preview": "Seu resumo do Margaya",
+			"subtitle": "Suas tarefas abertas atrasadas ou que vencem nos próximos 7 dias, e as novidades da sua caixa de entrada.",
+			"dueHeading": "Vencendo em breve e atrasadas",
+			"overdue": "Atrasada",
+			"due": "Vence",
+			"more_one": "e mais {{count}}",
+			"more_many": "e mais {{count}}",
+			"more_other": "e mais {{count}}",
+			"mentionsHeading_one": "{{count}} nova menção",
+			"mentionsHeading_many": "{{count}} novas menções",
+			"mentionsHeading_other": "{{count}} novas menções",
+			"unread_one": "{{count}} notificação não lida na sua caixa de entrada",
+			"unread_many": "{{count}} notificações não lidas na sua caixa de entrada",
+			"unread_other": "{{count}} notificações não lidas na sua caixa de entrada",
+			"openInbox": "Abrir caixa de entrada",
+			"manage": "Gerenciar configurações de notificação",
+			"footer": "Você optou por receber este resumo.",
+			"blockedHeading": "Bloqueadas",
+			"waitingOn": "Aguardando {{keys}}",
+			"hiddenBlockers_one": "{{count}} tarefa que você não pode ver",
+			"hiddenBlockers_many": "{{count}} tarefas que você não pode ver",
+			"hiddenBlockers_other": "{{count}} tarefas que você não pode ver",
+			"followingHeading": "Alterações em tarefas que você acompanha",
+			"changes_one": "{{count}} alteração",
+			"changes_many": "{{count}} alterações",
+			"changes_other": "{{count}} alterações"
+		},
+		"batchSubject": {
+			"task_one": "{{count}} atualização em {{title}}",
+			"task_many": "{{count}} atualizações em {{title}}",
+			"task_other": "{{count}} atualizações em {{title}}",
+			"all_one": "{{count}} atualização no Margaya",
+			"all_many": "{{count}} atualizações no Margaya",
+			"all_other": "{{count}} atualizações no Margaya"
+		},
+		"digestSubject": {
+			"daily": "Seu resumo diário do Margaya",
+			"weekly": "Seu resumo semanal do Margaya"
+		},
+		"workspaceDeletion": {
+			"fallbackName": "Um espaço de trabalho",
+			"openWorkspace": "Abrir espaço de trabalho",
+			"scheduledSubject": "{{name}} está programado para exclusão",
+			"scheduledTitle": "{{name}} será excluído em {{date}}",
+			"scheduledTitleNoDate": "{{name}} será excluído em breve",
+			"scheduledMessage": "O proprietário programou a exclusão deste espaço de trabalho. Até {{date}}, ele fica somente leitura: você ainda pode abrir e exportar o conteúdo, e o proprietário pode cancelar a exclusão. Depois dessa data, os projetos, tarefas e páginas dele serão excluídos definitivamente.",
+			"scheduledMessageNoDate": "O proprietário programou a exclusão deste espaço de trabalho. Até a exclusão, ele fica somente leitura: você ainda pode abrir e exportar o conteúdo, e o proprietário pode cancelar a exclusão. Depois disso, os projetos, tarefas e páginas dele serão excluídos definitivamente.",
+			"cancelledSubject": "{{name}} não será excluído",
+			"cancelledTitle": "{{name}} está de volta",
+			"cancelledMessage": "O proprietário cancelou a exclusão programada. O espaço de trabalho não está mais somente leitura, e as chaves de API e os webhooks dele voltaram a funcionar."
+		},
+		"webhookDisabled": {
+			"subject": "Um webhook do Margaya foi desativado",
+			"title": "Webhook desativado",
+			"message": "As entregas para {{host}} falharam repetidamente por mais de um dia, então o Margaya desativou o webhook. Corrija o endpoint e ative o webhook novamente nas configurações do espaço de trabalho.",
+			"messageNoHost": "As entregas para o endpoint falharam repetidamente por mais de um dia, então o Margaya desativou o webhook. Corrija o endpoint e ative o webhook novamente nas configurações do espaço de trabalho.",
+			"actionLabel": "Abrir configurações do webhook"
+		},
+		"trialReminder": {
+			"endedTitle": "O período de teste de {{workspaceName}} terminou",
+			"daysLeftTitle_one": "Falta {{count}} dia para o fim do teste de {{workspaceName}}",
+			"daysLeftTitle_many": "Faltam {{count}} dias para o fim do teste de {{workspaceName}}",
+			"daysLeftTitle_other": "Faltam {{count}} dias para o fim do teste de {{workspaceName}}",
+			"endedSubtitle": "Seu espaço de trabalho fica somente leitura até você escolher um plano. Nada foi excluído, e seus dados continuam lá.",
+			"activeSubtitle": "Escolha um plano para continuar criando e editando quando o teste terminar.",
+			"cta": "Escolher um plano",
+			"selfHost": "O Margaya também é gratuito para sempre se você hospedar por conta própria, com todos os recursos incluídos. Você pode exportar seus dados a qualquer momento e levá-los para o seu próprio servidor.",
+			"footer": "Você está recebendo este e-mail porque é proprietário deste espaço de trabalho no Margaya Cloud."
+		},
+		"trialSubjects": {
+			"trialEnding": "Seu teste de {{workspaceName}} termina em 3 dias",
+			"trialExpired": "Seu teste de {{workspaceName}} terminou"
+		},
+		"testEmail": {
+			"subject": "E-mail de teste de {{instanceName}}",
+			"text": "Este é um e-mail de teste de {{instanceName}}. Se você consegue lê-lo, o envio de e-mails está funcionando."
+		},
+		"notificationText": {
+			"commentWithoutPreview": "Novo comentário em {{taskTitle}}"
 		}
 	}
 }

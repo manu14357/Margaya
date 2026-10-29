@@ -10,16 +10,10 @@
 			"markAllRead": "全部标为已读",
 			"remove": "移除",
 			"reset": "重置",
-			"filter": "筛选",
-			"clearAllFilters": "清除全部筛选",
 			"undo": "撤销"
 		},
 		"a11y": {
 			"toggleSidebar": "切换侧边栏"
-		},
-		"sidebar": {
-			"title": "侧边栏",
-			"mobileDescription": "显示移动端侧边栏。"
 		},
 		"empty": {
 			"loading": "加载中…"
@@ -36,29 +30,12 @@
 			"label": "面包屑",
 			"more": "更多"
 		},
-		"language": {
-			"english": "英语",
-			"german": "德语",
-			"greek": "希腊语",
-			"macedonian": "马其顿语",
-			"french": "法语",
-			"spanish": "西班牙语",
-			"dutch": "荷兰语",
-			"korean": "韩语",
-			"chinese": "中文",
-			"italian": "意大利语"
-		},
 		"people": {
 			"someone": "某人",
 			"unknown": "未知"
 		},
 		"error": {
 			"title": "出错了",
-			"description": "页面意外崩溃，刷新一下通常就能恢复。",
-			"troubleshooting": "故障排查步骤：",
-			"tryAgain": "重试",
-			"viewDeploymentGuide": "查看部署指南",
-			"refreshPage": "刷新页面",
 			"messages": {
 				"cors": "无法连接服务器，可能是 CORS 配置问题。",
 				"network": "网络异常，请检查网络连接后重试。",
@@ -97,7 +74,6 @@
 				"keyLabel": "标识：",
 				"keyHint": "用于工单 ID（例如 {{example}}-123）",
 				"createButton": "创建项目",
-				"successToast": "项目创建成功",
 				"errorToast": "项目创建失败",
 				"keyTaken": "此工作区中已存在标识为 {{key}} 的项目",
 				"blankProject": "空白项目",
@@ -132,7 +108,6 @@
 				"successUpdated": "任务更新成功",
 				"createError": "任务创建失败",
 				"priority": "优先级",
-				"statusFallback": "进行中",
 				"startDate": "开始日期",
 				"dueDate": "截止日期",
 				"clearStartDate": "清除开始日期",
@@ -331,7 +306,6 @@
 			"namePlaceholder": "张三",
 			"failedSignUp": "注册失败",
 			"accountCreated": "账户创建成功",
-			"passwordTooShort": "密码太短",
 			"creatingAccount": "正在创建账户...",
 			"createAccount": "创建账户"
 		},
@@ -345,7 +319,6 @@
 			"invitationExpired": "邀请已过期",
 			"errorLoadDescription": "加载邀请详情失败，邀请可能无效或已过期。",
 			"goToSignIn": "前往登录",
-			"workspaceLabel": "工作区：{{workspaceName}}",
 			"joinWorkspace": "加入 {{workspaceName}}",
 			"inviteBodySignedIn": "<inviter>{{inviterName}}</inviter> 邀请你加入他们的工作区。",
 			"inviteBodySignedOut": "<inviter>{{inviterName}}</inviter> 邀请你加入他们 Margaya 上的工作区。",
@@ -375,7 +348,6 @@
 			"creating": "创建中…",
 			"createWorkspace": "创建工作区",
 			"workspaceCreatedTitle": "工作区已创建",
-			"redirectingToWorkspace": "正在前往 <name>{{name}}</name>…",
 			"toast": {
 				"workspaceCreated": "工作区创建成功",
 				"createFailed": "工作区创建失败",
@@ -439,8 +411,6 @@
 			"namePlaceholder": "例如：张三",
 			"saving": "保存中…",
 			"continue": "继续",
-			"welcome": "欢迎，{{name}}！",
-			"redirecting": "正在前往控制台…",
 			"toast": {
 				"updateSuccess": "资料更新成功",
 				"updateFailed": "资料更新失败"
@@ -541,7 +511,6 @@
 	},
 	"settings": {
 		"account": "账户",
-		"developer": "开发者",
 		"information": "信息",
 		"notifications": "通知",
 		"preferences": "偏好设置",
@@ -667,23 +636,7 @@
 			"noProjectsInWorkspace": "该工作区暂无项目。",
 			"createRule": "新建规则",
 			"removeRule": "移除规则",
-			"toastEmailSaved": "邮件通知设置已保存",
-			"toastEmailSaveFailed": "保存邮件设置失败",
-			"toastNtfySaved": "ntfy 设置已保存",
-			"toastNtfySaveFailed": "保存 ntfy 设置失败",
-			"toastNtfyDisconnected": "ntfy 已断开",
-			"toastNtfyDisconnectFailed": "断开 ntfy 失败",
-			"toastGotifySaved": "Gotify 设置已保存",
-			"toastGotifySaveFailed": "保存 Gotify 设置失败",
-			"toastGotifyDisconnected": "Gotify 已断开",
-			"toastGotifyDisconnectFailed": "断开 Gotify 失败",
-			"toastWebhookSaved": "Webhook 设置已保存",
-			"toastWebhookSaveFailed": "保存 Webhook 设置失败",
-			"toastWebhookDisconnected": "Webhook 已断开",
-			"toastWebhookDisconnectFailed": "断开 Webhook 失败",
-			"toastRuleSaved": "已保存 {{workspaceName}} 的通知规则",
 			"toastRuleSaveFailed": "保存工作区通知规则失败",
-			"toastRuleRemoved": "已移除 {{workspaceName}} 的通知规则",
 			"toastRuleRemoveFailed": "移除工作区通知规则失败",
 			"toastPreferencesSaved": "通知偏好已保存",
 			"toastPreferencesSaveFailed": "保存通知偏好失败",
@@ -739,7 +692,6 @@
 			"selectViewMode": "选择视图模式",
 			"board": "看板",
 			"list": "列表",
-			"gantt": "甘特图",
 			"sidebarDefault": "侧边栏默认状态",
 			"sidebarDefaultDescription": "启动时保持侧边栏展开",
 			"displayOptions": "显示选项",
@@ -844,14 +796,8 @@
 			"dangerZone": "危险操作",
 			"dangerZoneSubtitle": "不可逆的破坏性操作。",
 			"deleteWorkspace": "删除工作区",
-			"deleteWorkspaceDescription": "将工作区安排为永久删除",
-			"deleteModalTitle": "删除工作区？",
-			"deleteModalDescription": "这将永久删除工作区 \"{{name}}\" 及其所有数据，此操作不可撤销。",
-			"deleteModalConfirm": "删除工作区",
 			"toastUpdated": "工作区更新成功",
 			"toastUpdateError": "更新工作区失败",
-			"toastDeleted": "工作区已删除",
-			"toastDeleteError": "删除工作区失败",
 			"validation": {
 				"nameRequired": "工作区名称不能为空",
 				"nameShort": "工作区名称至少需要 2 个字符"
@@ -1302,21 +1248,6 @@
 			"chatGroupTitle": "聊天与 Webhook",
 			"codeGroupTitle": "代码托管"
 		},
-		"projectVisibility": {
-			"pageTitle": "项目可见性",
-			"title": "可见性",
-			"subtitle": "控制谁可以查看和访问你的项目。",
-			"sectionTitle": "可见性",
-			"sectionSubtitle": "切换公开访问并分享公开链接。",
-			"publicAccess": "公开访问",
-			"publicAccessHint": "允许拥有此链接的任何人查看此项目",
-			"publicUrl": "公开链接",
-			"publicUrlHint": "项目公开后分享此链接",
-			"copy": "复制",
-			"copiedToast": "已复制",
-			"toastUpdated": "可见性已更新",
-			"toastUpdateError": "更新可见性失败"
-		},
 		"projectWorkflow": {
 			"pageTitle": "工作流设置",
 			"title": "工作流",
@@ -1533,7 +1464,6 @@
 			},
 			"connect": "连接 Slack",
 			"saveChanges": "保存更改",
-			"update": "更新 Slack",
 			"disconnect": "断开连接"
 		},
 		"discordIntegration": {
@@ -1571,7 +1501,6 @@
 			},
 			"connect": "连接 Discord",
 			"saveChanges": "保存更改",
-			"update": "更新 Discord",
 			"disconnect": "断开连接"
 		},
 		"mattermostIntegration": {
@@ -1609,7 +1538,6 @@
 			},
 			"connect": "连接 Mattermost",
 			"saveChanges": "保存更改",
-			"update": "更新 Mattermost",
 			"disconnect": "断开连接"
 		},
 		"genericWebhookIntegration": {
@@ -1726,9 +1654,7 @@
 			"exportTasks": "导出任务",
 			"importTasks": "导入任务",
 			"dialogTitle": "导入任务",
-			"dialogDescription": "上传包含任务的 JSON 文件以导入此项目。",
 			"expectedFormat": "预期格式：",
-			"dropHint": "将 JSON 文件拖到这里",
 			"selectFile": "选择文件",
 			"exporting": "正在导出任务…",
 			"exportSuccess": "任务导出成功",
@@ -1739,7 +1665,6 @@
 			"importError": "导入任务失败",
 			"invalidFormat": "导入文件格式无效",
 			"noFileDropped": "未拖入文件",
-			"notJsonFile": "请上传 JSON 文件",
 			"exportCsv": "CSV（电子表格）",
 			"exportJson": "JSON（用于重新导入）",
 			"exportStarted": "导出已开始。你可以在“工作区设置 → 导出”中找到它。",
@@ -1967,13 +1892,11 @@
 			"addButton": "添加",
 			"createError": "创建自定义字段失败。",
 			"createSuccess": "自定义字段已创建。",
-			"creating": "创建中...",
 			"defaultLabel": "默认",
 			"defaultValuePlaceholder": "默认值",
 			"deleteButton": "删除",
 			"deleteError": "删除自定义字段失败。",
 			"deleteSuccess": "自定义字段已删除。",
-			"deleting": "删除中...",
 			"empty": "尚未配置自定义字段。",
 			"loading": "正在加载自定义字段...",
 			"namePlaceholder": "字段名称",
@@ -2356,7 +2279,7 @@
 					"status": "状态",
 					"summary": "摘要"
 				},
-				"durationValue": "{{ms}} ms",
+				"durationValue": "{{ms}} 毫秒",
 				"emptyDescription": "发送一个测试事件来检查你的端点。",
 				"emptyTitle": "暂无投递",
 				"filterEvent": "事件",
@@ -2890,7 +2813,9 @@
 				"agentScheduleDisabled": "关闭了智能体计划",
 				"aiConnectorCreated": "添加了 MCP 连接器",
 				"aiConnectorUpdated": "修改了 MCP 连接器",
-				"aiConnectorDeleted": "删除了 MCP 连接器"
+				"aiConnectorDeleted": "删除了 MCP 连接器",
+				"agentIntakeTriggerUpdated": "更改了智能体的收集箱触发器",
+				"agentIntakeTriggerDisabled": "关闭了智能体的收集箱触发器"
 			},
 			"actor": {
 				"apiKey": "API 密钥",
@@ -3226,8 +3151,7 @@
 			"empty": "未找到结果。",
 			"footer": {
 				"navigate": "导航",
-				"open": "打开",
-				"close": "关闭"
+				"open": "打开"
 			},
 			"goToInbox": "前往收件箱",
 			"newView": "新建视图",
@@ -3254,11 +3178,10 @@
 			},
 			"recent": "最近",
 			"removeScope": "搜索全部",
-			"scope": "In"
+			"scope": "范围"
 		},
 		"notifications": "通知",
 		"sidebar": {
-			"overview": "概览",
 			"projects": "项目",
 			"members": "成员",
 			"invitations": "邀请",
@@ -3266,12 +3189,9 @@
 			"backToBoard": "返回看板",
 			"favorites": "收藏",
 			"allTasks": "所有任务",
-			"inbox": "收件箱",
 			"myWork": "我的工作",
 			"home": "主页",
-			"personal": "个人",
 			"stickies": "便签",
-			"analytics": "分析",
 			"drafts": "草稿"
 		},
 		"projectList": {
@@ -3299,10 +3219,6 @@
 				"page": "页面"
 			}
 		},
-		"settingsLayout": {
-			"toggleSidebar": "切换侧边栏",
-			"back": "返回"
-		},
 		"userMenu": {
 			"signedOutSuccess": "已成功退出登录",
 			"signOutFailed": "退出登录失败",
@@ -3315,13 +3231,11 @@
 		"workspaceSwitcher": {
 			"workspaces": "工作区",
 			"switching": "切换中…",
-			"addWorkspace": "添加工作区",
-			"selectWorkspace": "选择工作区"
+			"addWorkspace": "添加工作区"
 		},
 		"page": {
 			"projectsTitle": "项目",
 			"settingsTitle": "设置",
-			"backToWorkspace": "返回工作区",
 			"settingsWorkspaceTab": "工作区",
 			"settingsInstanceTab": "实例",
 			"settingsNotFoundBack": "账户设置",
@@ -3351,7 +3265,6 @@
 			"items": {
 				"openCommandPalette": "打开命令面板",
 				"globalSearch": "全局搜索",
-				"toggleSidebar": "切换侧边栏",
 				"showShortcuts": "显示键盘快捷键",
 				"closeModal": "关闭弹窗/弹层",
 				"createTask": "创建任务",
@@ -3457,15 +3370,11 @@
 	},
 	"notifications": {
 		"title": "通知",
-		"newCount_other": "{{count}} 条新通知",
-		"emptyTitle": "暂无通知",
-		"emptySubtitle": "更新和活动将显示在这里。",
 		"clearAll": "清空所有通知",
 		"clearDialogTitle": "清空所有通知？",
 		"clearDialogDescription": "这将永久删除所有通知，此操作不可撤销。",
 		"shortcuts": {
-			"open": "打开通知",
-			"inbox": "打开收件箱"
+			"open": "打开通知"
 		},
 		"reminderLeadTime": {
 			"minutes_other": "{{count}} 分钟",
@@ -3617,7 +3526,6 @@
 				"fiveDays": "5 天",
 				"oneDay": "1 天",
 				"oneWeek": "1 周",
-				"pickDate": "选择日期",
 				"pickTime": "选择时间",
 				"submit": "稍后提醒",
 				"threeDays": "3 天",
@@ -4002,7 +3910,6 @@
 				"recurredToScheduled": "已按计划创建下一次重复：<task>{{task}}</task>"
 			}
 		},
-		"title": "任务",
 		"status": {
 			"label": "状态",
 			"to-do": "待办",
@@ -4241,7 +4148,6 @@
 			"labels": "标签",
 			"copyTaskLink": "复制任务链接",
 			"copyTaskBranch": "复制任务分支",
-			"start": "开始",
 			"startDate": "开始日期",
 			"noDate": "无日期",
 			"addLabel": "添加标签",
@@ -4307,22 +4213,11 @@
 			"moveAllTooltip": "将所有已计划任务移动到{{column}}",
 			"moveAll": "全部移动",
 			"addTask": "添加任务",
-			"filter": "筛选",
-			"addFilter": "添加筛选…",
 			"sections": {
 				"planned": "已计划",
 				"archived": "已归档"
 			},
-			"noTasksInSection": "无 {{section}} 任务",
-			"filters": {
-				"priority": "优先级：{{name}}",
-				"assignee": "负责人：{{name}}",
-				"due": "截止：{{date}}",
-				"label": "标签：{{name}}",
-				"dueThisWeek": "本周到期",
-				"dueNextWeek": "下周到期",
-				"noDueDate": "无截止日期"
-			}
+			"noTasksInSection": "无 {{section}} 任务"
 		},
 		"sort": {
 			"label": "排序",
@@ -4342,11 +4237,6 @@
 		},
 		"boardFilters": {
 			"filterBy": "筛选条件",
-			"allStatuses": "所有状态",
-			"allPriorities": "所有优先级",
-			"allAssignees": "所有负责人",
-			"allDueDates": "所有截止日期",
-			"allLabels": "所有标签",
 			"selectedCount": "已选 {{count}} 个",
 			"subjects": {
 				"status": "状态",
@@ -4357,14 +4247,8 @@
 				"estimate": "预估"
 			},
 			"operators": {
-				"isAnyOf": "为以下任一",
-				"includeAnyOf": "包含以下任一"
-			},
-			"all": "全部",
-			"allCustomFieldValues": "所有取值",
-			"noCustomFieldValues": "没有自定义字段取值",
-			"noValuesUsedYet": "尚未使用任何取值",
-			"unassigned": "未指派"
+				"isAnyOf": "为以下任一"
+			}
 		},
 		"calendar": {
 			"pageTitle": "{{name}} – 日历",
@@ -4429,10 +4313,8 @@
 		},
 		"archive": {
 			"success": "已归档 {{count}} 个任务",
-			"archive": "归档",
 			"archived": "任务已归档",
 			"badge": "已归档",
-			"bulkArchived_other": "已归档 {{count}} 个任务",
 			"error": "无法归档任务",
 			"restore": "恢复",
 			"restored": "任务已恢复",
@@ -4467,10 +4349,6 @@
 			"updateError": "更新任务截止日期失败",
 			"clearSuccess": "任务截止日期已清除",
 			"clearError": "清除截止日期失败"
-		},
-		"labels": {
-			"label": "标签",
-			"empty": "无可用标签"
 		},
 		"update": {
 			"success": "任务更新成功",
@@ -4785,7 +4663,6 @@
 				"project": "项目",
 				"status": "状态"
 			},
-			"needsSingleProject": "按状态分组需要选择单个项目",
 			"none": "无",
 			"order": {
 				"assignee": "负责人",
@@ -4872,14 +4749,14 @@
 			"noOptions": "无选项",
 			"operators": {
 				"between": "介于",
-				"is": "is",
+				"is": "是",
 				"isEmpty": "为空",
 				"isNoneOf": "不是其中任何一个",
 				"isNot": "不是",
 				"isNotEmpty": "不为空",
 				"moreThanAgo": "早于……之前",
 				"moreThanAhead": "晚于……之后",
-				"on": "on",
+				"on": "为",
 				"onOrAfter": "不早于",
 				"onOrBefore": "不晚于",
 				"withinLast": "过去",
@@ -4892,9 +4769,7 @@
 				"completed": "完成时间",
 				"created": "创建时间",
 				"createdBy": "创建者",
-				"customFields": "自定义字段",
 				"cycle": "迭代",
-				"estimate": "预估",
 				"group": "分组",
 				"mentions": "提及",
 				"module": "模块",
@@ -4908,7 +4783,7 @@
 			"values": {
 				"currentCycle": "当前迭代",
 				"false": "否",
-				"me": "Me",
+				"me": "我",
 				"noAssignee": "无负责人",
 				"noCreator": "无创建者",
 				"noCycle": "无迭代",
@@ -4945,8 +4820,6 @@
 			"expandSubTasks": "显示子任务",
 			"hideColumn": "隐藏列",
 			"loadError": "无法加载任务",
-			"newTask": "新建任务",
-			"newTaskPlaceholder": "输入任务标题，然后按 Enter",
 			"selectTask": "选择 {{key}}",
 			"sortAsc": "升序排序",
 			"sortDesc": "降序排序",
@@ -4972,7 +4845,7 @@
 		"timeTracking": {
 			"duration": "时长",
 			"durationInvalid": "请输入 1 分钟到 24 小时之间的时长，例如 1h 30m。",
-			"durationPlaceholder": "e.g. 1h 30m",
+			"durationPlaceholder": "例如 1h 30m",
 			"empty": "暂无工时记录",
 			"entries": "工时记录",
 			"formerMember": "前成员",
@@ -5151,11 +5024,6 @@
 		"noPendingDescription": "有人邀请你加入工作区时，邀请会显示在这里。",
 		"continueToSetup": "继续设置",
 		"skipForNow": "暂时跳过",
-		"table": {
-			"workspace": "工作区",
-			"invitedBy": "邀请人",
-			"expires": "过期时间"
-		},
 		"toast": {
 			"acceptError": "接受邀请失败",
 			"acceptSuccess": "邀请已接受，欢迎加入团队！",
@@ -5191,7 +5059,6 @@
 				"inProgress": "进行中"
 			},
 			"noDueDate": "无截止日期",
-			"reorderHandle": "重新排序项目",
 			"reorderError": "重新排序项目失败"
 		},
 		"search": {
@@ -5216,7 +5083,6 @@
 			"pageTitle": "创建工作区",
 			"heading": "创建新工作区",
 			"subtitle": "工作区是团队协作开展项目、迭代和问题的共享环境。",
-			"nameLabel": "工作区名称",
 			"namePlaceholder": "输入工作区名称",
 			"descriptionLabel": "描述（可选）",
 			"descriptionPlaceholder": "为工作区添加描述",
@@ -5340,11 +5206,8 @@
 			"columns": {
 				"name": "姓名",
 				"role": "角色",
-				"joined": "加入于",
-				"actions": "操作"
+				"joined": "加入于"
 			},
-			"memberRolePending": "{{role}}（待处理）",
-			"ariaCancelInvitation": "取消邀请",
 			"ariaInvitationActions": "邀请操作",
 			"ariaRemoveMember": "移除成员",
 			"removeDialogTitle": "移除团队成员？",
@@ -5393,7 +5256,6 @@
 		}
 	},
 	"publicProject": {
-		"pageTitle": "公开视图",
 		"badge": "公开",
 		"readOnly": "只读",
 		"error": {
@@ -5406,12 +5268,10 @@
 		"taskDetail": {
 			"labels": "标签",
 			"externalLinks": "外部链接",
-			"pullRequestFallback": "Pull Request",
 			"issueFallback": "Issue",
 			"prStatusMerged": "已合并",
 			"prStatusDraft": "草稿",
 			"prStatusOpen": "打开",
-			"dueWithDate": "{{date}} 到期",
 			"created": "创建于",
 			"dueDateLabel": "截止日期",
 			"assignees": "负责人",
@@ -5435,9 +5295,7 @@
 			"backlog": "待办",
 			"chip": "{{subject}}：{{value}}",
 			"clearFilters": "清除筛选",
-			"collapse": "折叠 {{name}}",
 			"emptyColumn": "这里没有任务",
-			"expand": "展开 {{name}}",
 			"filter": "筛选",
 			"filters": "筛选",
 			"layout": "布局",
@@ -5594,10 +5452,10 @@
 				"typed": "修复登录后的跳转 @adam !high #bug"
 			},
 			"labels": {
-				"bug": "bug",
-				"design": "design",
-				"docs": "docs",
-				"feature": "feature"
+				"bug": "缺陷",
+				"design": "设计",
+				"docs": "文档",
+				"feature": "功能"
 			},
 			"people": {
 				"adam": {
@@ -5684,7 +5542,7 @@
 				"done": "已完成",
 				"inProgress": "进行中",
 				"inReview": "审核中",
-				"todo": "To do"
+				"todo": "待办"
 			},
 			"analytics": {
 				"allProjects": "所有项目",
@@ -5981,9 +5839,9 @@
 					"tasks": "任务"
 				},
 				"recentTimes": {
-					"page": "1h",
-					"project": "2h",
-					"task": "10m"
+					"page": "1 小时",
+					"project": "2 小时",
+					"task": "10 分钟"
 				},
 				"saving": "正在保存…",
 				"stickies": "便签",
@@ -5996,25 +5854,25 @@
 				"items": {
 					"assigned": {
 						"task": "重试失败的 Webhook",
-						"time": "1h"
+						"time": "1 小时"
 					},
 					"commented": {
 						"preview": "禁用状态的按钮现在也达标了。",
 						"task": "检查设置页的颜色对比度",
-						"time": "1d"
+						"time": "1 天"
 					},
 					"due": {
 						"task": "修复登录后的跳转",
-						"time": "2h"
+						"time": "2 小时"
 					},
 					"mention": {
 						"preview": "@adam 周五前能帮忙核对一下合计行吗？",
 						"task": "为报表添加 CSV 导出",
-						"time": "5m"
+						"time": "5 分钟"
 					},
 					"moved": {
 						"task": "在服务器端缓存项目列表",
-						"time": "3h"
+						"time": "3 小时"
 					}
 				},
 				"markAllRead": "全部标记为已读",
@@ -6191,19 +6049,19 @@
 				"statuses": {
 					"done": {
 						"meta": "14 个问题",
-						"name": "Done"
+						"name": "已完成"
 					},
 					"inProgress": {
 						"meta": "9 个问题",
-						"name": "In Progress"
+						"name": "进行中"
 					},
 					"open": {
 						"meta": "14 个问题",
-						"name": "Open"
+						"name": "待处理"
 					},
 					"review": {
 						"meta": "5 个问题",
-						"name": "Code Review"
+						"name": "代码审查"
 					}
 				},
 				"statusesTitle": "状态",
@@ -6228,7 +6086,7 @@
 				},
 				"tool": "create_task",
 				"toolDone": "完成",
-				"via": "via MCP"
+				"via": "通过 MCP"
 			},
 			"modules": {
 				"gallery": "画廊",
@@ -6304,7 +6162,7 @@
 				"statusPicker": "更改状态…",
 				"taskDescription": "访客应能在不离开帮助中心的情况下找到答案。为文章建立索引，并在输入时显示最匹配的结果。",
 				"toast": "状态已更改",
-				"typed": "> status"
+				"typed": "> 状态"
 			},
 			"planning": {
 				"doneOfScope": "已完成 {{done}}/{{scope}}",
@@ -7445,7 +7303,7 @@
 			"hintSearch": "搜索",
 			"hintSwitch": "切换侧栏",
 			"hintToggle": "添加或移除",
-			"keySpace": "Space",
+			"keySpace": "空格",
 			"open": "规划迭代",
 			"paneLabel": "规划器侧栏",
 			"plannedCount_other": "已规划 {{count}} 个任务",
@@ -7550,7 +7408,7 @@
 			"clear": "清除筛选",
 			"filterBy": "筛选条件",
 			"includesAnyOf": "包含以下任一",
-			"is": "is",
+			"is": "是",
 			"isAnyOf": "为以下任一",
 			"lead": "负责人",
 			"members": "成员",
@@ -7734,7 +7592,7 @@
 			"completed30": "30 天内完成",
 			"created": "已创建",
 			"dueThisWeek": "本周到期",
-			"notAvailable": "n/a",
+			"notAvailable": "无",
 			"overdue": "已逾期",
 			"subscribed": "已订阅"
 		},
@@ -7750,7 +7608,6 @@
 			"cancelled_other": "{{count}} 个已取消",
 			"priorities": "按优先级划分的未完成工作",
 			"recentActivity": "最近活动",
-			"title": "工作量",
 			"byState": "按状态"
 		},
 		"activity": {
@@ -7828,7 +7685,6 @@
 			"all": "全部",
 			"emptyDescription": "将筛选条件和布局保存为视图，并与团队共享。",
 			"emptyTitle": "还没有视图",
-			"favorite": "收藏",
 			"mine": "我的",
 			"more": "视图",
 			"newView": "新建视图",
@@ -7972,11 +7828,9 @@
 			"inbox": "收件箱",
 			"label": "继续上次的工作",
 			"myWork": "我的工作",
-			"open_other": "{{count}} 项进行中",
 			"overdue_other": "{{count}} 项已逾期",
 			"stickies": "便签",
 			"stickiesHint": "私人笔记，仅你可见",
-			"unread_other": "{{count}} 条未读",
 			"openCaption": "进行中",
 			"unreadCaption": "未读"
 		}
@@ -8036,7 +7890,6 @@
 			"submit": "提交请求",
 			"title": "新建请求",
 			"titlePlaceholder": "你需要什么？",
-			"titleRequired": "请输入标题",
 			"toast": "请求已提交",
 			"toastView": "查看",
 			"pastedImages": "已粘贴的图片",
@@ -8127,7 +7980,7 @@
 		"filters": {
 			"button": "筛选",
 			"clear": "清除筛选",
-			"me": "Me",
+			"me": "我",
 			"priority": "优先级",
 			"remove": "移除筛选",
 			"status": "状态",
@@ -8215,7 +8068,6 @@
 			"pending": "此任务正在收集箱中等待处理。",
 			"snoozed": "此任务在收集箱中已稍后提醒至 {{date}}。"
 		},
-		"title": "收集箱",
 		"triage": {
 			"backToList": "返回请求列表",
 			"detailLabel": "请求",
@@ -9178,7 +9030,6 @@
 	},
 	"instanceAdmin": {
 		"admins": {
-			"actions": "管理员操作",
 			"add": "添加管理员",
 			"addConfirm": "添加管理员",
 			"addDescription": "实例管理员可以更改此区域的所有设置，并打开任意工作区。",
@@ -9296,7 +9147,7 @@
 				"fileStorage": "文件存储",
 				"notConfigured": "未配置",
 				"off": "关闭",
-				"on": "On",
+				"on": "开启",
 				"realtime": "实时",
 				"realtimeMemory": "内存",
 				"realtimeRedis": "Redis（{{mode}}）",
@@ -9382,7 +9233,6 @@
 		"save": "保存",
 		"saved": "设置已保存",
 		"saveError": "无法保存设置",
-		"saving": "正在保存…",
 		"secret": {
 			"cancel": "取消",
 			"clear": "清除",
@@ -9392,8 +9242,6 @@
 			"saved": "已保存",
 			"unreadable": "无法读取已保存的密钥（服务器的 AUTH_SECRET 已更改）。请重新输入。"
 		},
-		"sidebarSubtitle": "实例管理员",
-		"sidebarTitle": "实例",
 		"source": {
 			"default": "默认",
 			"environment": "环境变量：{{variable}}",
@@ -9446,97 +9294,97 @@
 	},
 	"press": {
 		"boilerplate": {
-			"description": "Ready-made descriptions. Trim them if you need to, but please keep the facts as they are.",
+			"description": "现成的介绍文字。可按需删减，但请保持事实准确不变。",
 			"long": {
-				"label": "About 150 words",
-				"text": "Margaya is an open-source project management platform built for teams that want to plan and ship work without the tool becoming a job of its own. Tasks move through board, list, spreadsheet, calendar and Gantt views of the same data. Cycles, modules, estimates and an intake inbox are there when a team needs planning, and stay out of the way when it doesn't. Teams write docs together next to their tasks, collect requests on public boards, and follow progress with analytics and an audit log. A REST API with an OpenAPI description, webhooks, an MCP server and integrations with GitHub, Gitea, Slack, Discord and others connect Margaya to the rest of a team's tools. The interface is available in 20 languages. Margaya is released under the MIT licence and runs on a single server with Docker, or on Kubernetes with Helm; Margaya Cloud offers the same product as a managed service."
+				"label": "约 150 词",
+				"text": "Margaya 是一款开源项目管理平台，专为希望规划和交付工作、又不想让工具本身变成额外负担的团队而打造。任务在同一份数据的看板、列表、电子表格、日历和甘特图视图之间流转。迭代、模块、预估和收集箱在团队需要规划时随时可用，不需要时也不会碍事。团队在任务旁协作撰写文档，在公开看板上收集需求，并通过分析和审计日志跟踪进度。带 OpenAPI 描述的 REST API、Webhook、MCP 服务器，以及与 GitHub、Gitea、Slack、Discord 等工具的集成，将 Margaya 与团队的其他工具连接起来。界面提供 20 种语言。Margaya 以 MIT 许可发布，可通过 Docker 在单台服务器上运行，也可通过 Helm 部署到 Kubernetes；Margaya Cloud 则以托管服务的形式提供同一款产品。"
 			},
 			"short": {
-				"label": "About 50 words",
-				"text": "Margaya is an open-source project management platform for teams that want clear ownership without heavy process. Plan work on boards, lists, spreadsheets, calendars and Gantt charts, write docs beside the tasks, and connect your tools through a REST API and MCP. Run it yourself under the MIT licence, or use Margaya Cloud."
+				"label": "约 50 词",
+				"text": "Margaya 是一款开源项目管理平台，适合希望权责清晰又不想被繁重流程拖累的团队。你可以在看板、列表、电子表格、日历和甘特图中规划工作，在任务旁撰写文档，并通过 REST API 和 MCP 连接各种工具。可依据 MIT 许可自行部署，也可以使用 Margaya Cloud。"
 			},
-			"title": "Boilerplate"
+			"title": "标准介绍"
 		},
 		"colours": {
-			"copyHex": "Copy {{hex}}",
-			"description": "Margaya is deliberately quiet: near-black, off-white and a few greys, so the work on screen supplies the colour.",
+			"copyHex": "复制 {{hex}}",
+			"description": "Margaya 有意保持低调：近黑、米白和几种灰色，让屏幕上的工作内容来提供色彩。",
 			"graphite": {
-				"name": "Graphite",
-				"usage": "Text and primary buttons in the light theme"
+				"name": "石墨",
+				"usage": "浅色主题中的文字和主按钮"
 			},
 			"ink": {
-				"name": "Ink",
-				"usage": "The logo, and the dark theme's background"
+				"name": "墨色",
+				"usage": "Logo 以及深色主题的背景"
 			},
 			"mist": {
-				"name": "Mist",
-				"usage": "Panels and sidebars in the light theme"
+				"name": "雾灰",
+				"usage": "浅色主题中的面板和侧边栏"
 			},
 			"mono": {
 				"name": "Geist Mono",
-				"usage": "Code, keyboard shortcuts and task IDs"
+				"usage": "代码、键盘快捷键和任务 ID"
 			},
 			"paper": {
-				"name": "Paper",
-				"usage": "The light logo, and primary buttons in the dark theme"
+				"name": "纸白",
+				"usage": "浅色 Logo 以及深色主题中的主按钮"
 			},
-			"sample": "Plan the work. Ship the work.",
+			"sample": "规划工作，交付成果。",
 			"sans": {
 				"name": "Geist",
-				"usage": "Interface, headings and the wordmark, set semibold with tight tracking"
+				"usage": "界面、标题和文字标志，使用半粗体并收紧字距"
 			},
-			"title": "Colours and type",
-			"typeTitle": "Typography",
+			"title": "色彩与字体",
+			"typeTitle": "字体",
 			"white": {
-				"name": "White",
-				"usage": "The light theme's background"
+				"name": "白色",
+				"usage": "浅色主题的背景"
 			}
 		},
 		"contact": {
-			"body": "Margaya is built in the open, so the maintainers answer on GitHub. Start a discussion for interviews and questions about the project, or open an issue if something in this kit is missing or out of date.",
-			"discussions": "Start a discussion",
-			"issues": "Open an issue",
-			"title": "Talk to the maintainers"
+			"body": "Margaya 以开放方式开发，因此维护者会在 GitHub 上回复。如需采访或对项目有疑问，请发起讨论；如果资料包中有缺失或过时的内容，请提交 Issue。",
+			"discussions": "发起讨论",
+			"issues": "提交 Issue",
+			"title": "联系维护者"
 		},
-		"copied": "Copied",
-		"copy": "Copy",
-		"copyUrl": "Copy URL",
-		"description": "Margaya's press kit: boilerplate text, logos, product screenshots, brand colours and typography, with direct download links.",
-		"download": "Download",
-		"downloadKit": "Download the press kit",
+		"copied": "已复制",
+		"copy": "复制",
+		"copyUrl": "复制 URL",
+		"description": "Margaya 媒体资料包：标准介绍文案、Logo、产品截图、品牌色彩与字体，并附直接下载链接。",
+		"download": "下载",
+		"downloadKit": "下载媒体资料包",
 		"downloadKitMeta": "ZIP, {{size}}",
-		"eyebrow": "Press kit",
+		"eyebrow": "媒体资料包",
 		"facts": {
-			"description": "The essentials, in one place.",
+			"description": "核心信息，一处尽览。",
 			"founded": {
-				"label": "Founded",
+				"label": "创立时间",
 				"value": "2026"
 			},
 			"hosting": {
-				"label": "Hosting",
-				"value": "Self-hosted with Docker or Helm, or managed on Margaya Cloud"
+				"label": "部署方式",
+				"value": "通过 Docker 或 Helm 自托管，或使用 Margaya Cloud 托管服务"
 			},
 			"interfaces": {
-				"label": "Interfaces",
-				"value": "REST API with an OpenAPI description, plus an MCP server"
+				"label": "接口",
+				"value": "带 OpenAPI 描述的 REST API，以及一个 MCP 服务器"
 			},
 			"languages": {
-				"label": "Languages",
-				"value": "20 interface languages"
+				"label": "语言",
+				"value": "20 种界面语言"
 			},
 			"licence": {
-				"label": "Licence",
-				"value": "MIT, for every feature"
+				"label": "许可证",
+				"value": "MIT，覆盖全部功能"
 			},
 			"source": {
-				"label": "Source code",
+				"label": "源代码",
 				"value": "github.com/manu14357/Margaya"
 			},
 			"stack": {
-				"label": "Stack",
-				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
+				"label": "技术栈",
+				"value": "TypeScript、Hono、React 和 PostgreSQL，Redis 可选"
 			},
-			"title": "Quick facts",
+			"title": "速览",
 			"ai": {
 				"label": "AI",
 				"value": "可选，默认关闭：问 AI、构建模式和 AI 智能体，可运行在 Claude 或自托管模型上"
@@ -9544,212 +9392,218 @@
 		},
 		"guidelines": {
 			"do": {
-				"contrast": "Use the dark wordmark on light backgrounds and the light wordmark on dark ones.",
-				"link": "Link to margaya.app or the GitHub repository when you mention the project.",
-				"name": "Write the name as “Margaya”, with a capital M, in running text.",
-				"space": "Leave clear space around the logo at least as wide as the icon's ears."
+				"contrast": "在浅色背景上使用深色文字标志，在深色背景上使用浅色文字标志。",
+				"link": "提及本项目时，请链接到 margaya.app 或 GitHub 仓库。",
+				"name": "在正文中将名称写作“Margaya”，首字母 M 大写。",
+				"space": "Logo 四周留出的空白至少与图标耳朵的宽度相当。"
 			},
 			"dont": {
-				"distort": "Stretch, rotate, outline or add effects to the logo.",
-				"edit": "Edit screenshots to show features that Margaya doesn't have.",
-				"endorse": "Suggest that the Margaya maintainers endorse a product, service or opinion.",
-				"recolour": "Recolour the logo, or place it on busy images where it loses contrast."
+				"distort": "拉伸、旋转、描边 Logo 或为其添加特效。",
+				"edit": "修改截图以展示 Margaya 并不具备的功能。",
+				"endorse": "暗示 Margaya 维护者为某个产品、服务或观点背书。",
+				"recolour": "更改 Logo 颜色，或将其放在杂乱的图片上导致对比度不足。"
 			},
-			"dontTitle": "Please don't",
-			"doTitle": "Please do",
-			"title": "Using the brand"
+			"dontTitle": "请勿这样做",
+			"doTitle": "建议这样做",
+			"title": "品牌使用规范"
 		},
-		"headline": "Margaya is open-source project management you can run on your own server.",
-		"intro": "Short and long descriptions, logos, screenshots, colours and type, ready for articles, videos and talks. Everything on this page may be used for editorial coverage of Margaya.",
+		"headline": "Margaya 是一款可以运行在你自己服务器上的开源项目管理工具。",
+		"intro": "长短介绍、Logo、截图、色彩和字体，可直接用于文章、视频和演讲。本页所有内容均可用于对 Margaya 的新闻报道。",
 		"logos": {
-			"description": "Use the wordmark wherever there is room for it, and the icon where space is tight. Each file has a permanent address you can link to.",
+			"description": "空间充足时使用文字标志，空间紧凑时使用图标。每个文件都有可直接链接的永久地址。",
 			"iconPng": {
-				"alt": "The Margaya app icon",
+				"alt": "Margaya 应用图标",
 				"detail": "PNG, 512 × 512",
-				"name": "App icon"
+				"name": "应用图标"
 			},
 			"iconSvg": {
-				"alt": "The Margaya icon: a light cat face on a dark rounded square",
-				"detail": "SVG, scales to any size",
-				"name": "Icon"
+				"alt": "Margaya 图标：深色圆角方块上的浅色猫脸",
+				"detail": "SVG，可缩放至任意尺寸",
+				"name": "图标"
 			},
-			"title": "Logos",
+			"title": "Logo",
 			"wordmarkDark": {
-				"alt": "The Margaya wordmark in near-black on a light background",
-				"detail": "SVG, for light backgrounds",
-				"name": "Wordmark, dark"
+				"alt": "浅色背景上的近黑色 Margaya 文字标志",
+				"detail": "SVG，用于浅色背景",
+				"name": "文字标志（深色）"
 			},
 			"wordmarkLight": {
-				"alt": "The Margaya wordmark in off-white on a dark background",
-				"detail": "SVG, for dark backgrounds",
-				"name": "Wordmark, light"
+				"alt": "深色背景上的米白色 Margaya 文字标志",
+				"detail": "SVG，用于深色背景",
+				"name": "文字标志（浅色）"
 			}
 		},
-		"onThisPage": "On this page",
+		"onThisPage": "本页内容",
 		"screenshots": {
-			"close": "Close",
-			"counter": "{{current}} of {{total}}",
-			"dark": "Dark",
-			"description": "Real Margaya screens in the light and dark themes. Select one to see it at full size.",
-			"empty": "A fresh set of screenshots is on its way. Until then, the press kit download has the current set.",
-			"light": "Light",
-			"next": "Next screenshot",
-			"open": "View larger: {{title}}",
-			"previous": "Previous screenshot",
+			"close": "关闭",
+			"counter": "第 {{current}} 张，共 {{total}} 张",
+			"dark": "深色",
+			"description": "Margaya 浅色和深色主题下的真实界面。选择一张即可查看原尺寸。",
+			"empty": "新一批截图正在准备中。在此之前，媒体资料包下载中包含当前的截图。",
+			"light": "浅色",
+			"next": "下一张截图",
+			"open": "查看大图：{{title}}",
+			"previous": "上一张截图",
 			"size": "{{width}} × {{height}}, PNG",
-			"title": "Product screenshots"
+			"title": "产品截图"
 		},
-		"title": "Press kit",
-		"downloadPng": "Download PNG"
+		"title": "媒体资料包",
+		"downloadPng": "下载 PNG"
 	},
 	"pricing": {
 		"cta": {
-			"description": "Start a Cloud trial with no card, or follow the install guide and run Margaya on your own hardware.",
-			"primary": "Start a free trial",
-			"secondary": "Read the install guide",
-			"title": "Pick the way that fits, and change your mind later."
+			"description": "无需绑卡即可开始 Cloud 试用，或按照安装指南在你自己的硬件上运行 Margaya。",
+			"primary": "开始免费试用",
+			"secondary": "阅读安装指南",
+			"title": "选择适合你的方式，以后随时可以改变主意。"
 		},
-		"description": "The self-hosted build is the whole product under the MIT licence, with no seat limits and no paid tier. Margaya Cloud is the same software, hosted in the EU and kept up to date for you.",
-		"eyebrow": "Pricing",
+		"description": "自托管版本就是采用 MIT 许可的完整产品，不限席位，也没有付费层级。Margaya Cloud 是同一套软件，托管在欧盟，并由我们为你保持最新。",
+		"eyebrow": "价格",
 		"faq": {
 			"items": {
 				"cancel": {
-					"answer": "Your plan stays active until the end of the period you've paid for. Export your work as CSV, Excel or JSON before then if you want to keep a copy.",
-					"question": "What happens if I cancel?"
+					"answer": "你的方案会保持有效，直到已付费周期结束。如果想保留一份副本，请在此之前将工作导出为 CSV、Excel 或 JSON。",
+					"question": "如果我取消会怎样？"
 				},
 				"founding": {
-					"answer": "Workspaces created before paid plans launched keep free access for at least 12 months, and you'll get six months' notice before anything changes.",
-					"question": "I signed up before paid plans existed. What changes?"
+					"answer": "在付费方案推出前创建的工作区将保留至少 12 个月的免费使用权，任何变更都会提前六个月通知你。",
+					"question": "我在付费方案推出之前就注册了，会有什么变化？"
 				},
 				"payments": {
-					"answer": "Payments go through Creem, which acts as merchant of record and handles sales tax and VAT where they apply. Your card details never reach Margaya.",
-					"question": "Who handles payments and tax?"
+					"answer": "付款通过 Creem 处理，它作为记录商户（merchant of record），在适用时负责销售税和增值税。你的银行卡信息不会传到 Margaya。",
+					"question": "谁来处理付款和税费？"
 				},
 				"seats": {
-					"answer": "Cloud Team is billed for each member of the workspace. When someone joins or leaves, the seat count on the subscription is updated to match.",
-					"question": "How are Cloud Team members counted?"
+					"answer": "Cloud 团队版按工作区的每位成员计费。有人加入或离开时，订阅中的席位数会随之更新。",
+					"question": "Cloud 团队版的成员如何计算？"
 				},
 				"selfHostHelp": {
-					"answer": "From the maintainers and the community on GitHub, through discussions and issues. Installation, upgrades and configuration are covered in the documentation.",
-					"question": "Where do self-hosters get help?"
+					"answer": "在 GitHub 上通过讨论区和 Issue 向维护者和社区求助。安装、升级和配置都在文档中有详细说明。",
+					"question": "自托管用户去哪里获取帮助？"
 				},
 				"selfHostLimits": {
-					"answer": "No. The code you install is the code that runs Margaya Cloud, and all of it is MIT licensed. There are no licence keys, seat limits or paid features to unlock.",
-					"question": "Is the self-hosted version missing anything?"
+					"answer": "不会。你安装的代码就是运行 Margaya Cloud 的代码，全部采用 MIT 许可。没有许可证密钥、席位限制，也没有需要解锁的付费功能。",
+					"question": "自托管版本会缺少什么功能吗？"
 				},
 				"trial": {
-					"answer": "A new Cloud workspace gets 14 days with everything included, and you don't need a card to start. Before it ends, choose a plan or export your tasks.",
-					"question": "How does the Cloud trial work?"
+					"answer": "新建的 Cloud 工作区可获得 14 天全功能试用，开始时无需绑卡。试用结束前，请选择一个方案或导出你的任务。",
+					"question": "Cloud 试用是怎样的？"
 				},
 				"yearly": {
-					"answer": "Yes. A year costs the same as ten months, so both Cloud plans come with two months free when you pay yearly.",
-					"question": "Is yearly billing cheaper?"
+					"answer": "是的。一年的价格等于十个月，因此按年付费时，两个 Cloud 方案都相当于免费两个月。",
+					"question": "按年付费更便宜吗？"
+				},
+				"ai": {
+					"question": "包含 AI 吗？",
+					"answer": "所有方案都提供 AI 功能：问 AI、构建模式、智能体和写作辅助。在管理员开启之前，它们始终关闭。AI 用量不包含在价格中：你在工作区的 AI 设置中添加自己的 API 密钥，由 AI 服务商直接向你收费。自托管实例还可以通过 Ollama 或 vLLM 使用你自己运行的模型。"
 				}
 			},
-			"title": "Questions about pricing"
+			"title": "价格相关问题"
 		},
 		"interval": {
-			"annual": "Yearly",
-			"label": "Billing period",
-			"monthly": "Monthly",
-			"saving": "2 months free"
+			"annual": "按年",
+			"label": "计费周期",
+			"monthly": "按月",
+			"saving": "免 2 个月费用"
 		},
-		"metaDescription": "Margaya is free to self-host, forever. Margaya Cloud costs $4 a month for one person or $5 per member a month for teams, with a 14-day free trial.",
+		"metaDescription": "Margaya 自托管永久免费。Margaya Cloud 个人每月 $4，团队每位成员每月 $5，并提供 14 天免费试用。",
 		"plans": {
 			"personal": {
-				"annualNote": "Works out at {{price}} a month",
-				"annualPeriod": "per year",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month",
-				"monthlyPeriod": "per month",
-				"name": "Cloud Personal",
+				"annualNote": "折合每月 {{price}}",
+				"annualPeriod": "每年",
+				"cta": "开始 14 天试用",
+				"monthlyNote": "按月计费",
+				"monthlyPeriod": "每月",
+				"name": "Cloud 个人版",
 				"points": {
-					"everything": "Every feature in the self-hosted build",
-					"help": "Support by email",
-					"managed": "Backups and updates handled for you",
-					"one": "One person, unlimited projects and tasks"
+					"everything": "包含自托管版本的全部功能",
+					"help": "邮件支持",
+					"managed": "备份和更新由我们负责",
+					"one": "一人使用，不限项目和任务"
 				},
-				"tagline": "Managed hosting for one person"
+				"tagline": "为个人提供的托管服务"
 			},
 			"selfHosted": {
-				"cta": "Read the install guide",
-				"name": "Self-hosted",
-				"note": "MIT licence. No key, no seat limit.",
-				"period": "forever",
+				"cta": "阅读安装指南",
+				"name": "自托管",
+				"note": "MIT 许可。无需密钥，不限席位。",
+				"period": "永久",
 				"points": {
-					"data": "Your database, your backups, your rules",
-					"deploy": "Docker on one server, or Helm on Kubernetes",
-					"everything": "Every feature, for as many people as you like",
-					"help": "Community help on GitHub"
+					"data": "你的数据库、你的备份、你的规则",
+					"deploy": "单台服务器用 Docker，或在 Kubernetes 上用 Helm",
+					"everything": "全部功能，人数不限",
+					"help": "GitHub 社区支持"
 				},
-				"tagline": "On servers you run"
+				"tagline": "运行在你自己管理的服务器上"
 			},
 			"team": {
-				"annualNote": "Works out at {{price}} per member a month",
-				"annualPeriod": "per member, per year",
-				"badge": "For teams",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month for each workspace member",
-				"monthlyPeriod": "per member, per month",
-				"name": "Cloud Team",
+				"annualNote": "折合每位成员每月 {{price}}",
+				"annualPeriod": "每位成员每年",
+				"badge": "适合团队",
+				"cta": "开始 14 天试用",
+				"monthlyNote": "按工作区成员数每月计费",
+				"monthlyPeriod": "每位成员每月",
+				"name": "Cloud 团队版",
 				"points": {
-					"help": "Priority support by email",
-					"managed": "Backups and updates handled for you",
-					"people": "Everyone in the workspace, unlimited projects",
-					"roles": "Workspace roles and permissions"
+					"help": "优先邮件支持",
+					"managed": "备份和更新由我们负责",
+					"people": "工作区内所有成员，不限项目",
+					"roles": "工作区角色与权限"
 				},
-				"tagline": "Managed hosting for a whole team"
+				"tagline": "为整个团队提供的托管服务"
 			}
 		},
 		"table": {
-			"description": "The features are the same everywhere. What changes is who runs the servers and where you go for help.",
-			"feature": "Feature",
+			"description": "各方案的功能完全相同，区别只在于由谁运行服务器、去哪里寻求帮助。",
+			"feature": "功能",
 			"groups": {
-				"connect": "Connect",
-				"planning": "Planning and insight",
-				"running": "Running it",
-				"work": "The work"
+				"connect": "连接",
+				"planning": "规划与洞察",
+				"running": "运行",
+				"work": "工作"
 			},
-			"included": "Included",
-			"notIncluded": "Not included",
+			"included": "包含",
+			"notIncluded": "不包含",
 			"rows": {
-				"admin": "Instance settings: sign-in providers, email, storage",
-				"analytics": "Analytics and audit log",
-				"api": "REST API, webhooks and MCP",
-				"backups": "Backups",
-				"cycles": "Cycles, modules and estimates",
-				"docs": "Docs written together, next to the tasks",
-				"export": "Export to CSV, Excel or JSON",
-				"hosting": "Where it runs",
-				"intake": "Intake inbox and triage",
-				"integrations": "GitHub, Gitea, Slack, Discord and more",
-				"jira": "Jira import",
-				"people": "People",
-				"projects": "Projects and tasks",
-				"publicBoards": "Public boards with voting",
-				"roles": "Workspace roles and permissions",
-				"support": "Support",
-				"updates": "Updates",
-				"views": "Board, list, spreadsheet, calendar and Gantt views"
+				"admin": "实例设置：登录方式、邮件、存储",
+				"analytics": "分析与审计日志",
+				"api": "REST API、Webhook 和 MCP",
+				"backups": "备份",
+				"cycles": "迭代、模块和预估",
+				"docs": "在任务旁协作撰写的文档",
+				"export": "导出为 CSV、Excel 或 JSON",
+				"hosting": "运行位置",
+				"intake": "收集箱与分派处理",
+				"integrations": "GitHub、Gitea、Slack、Discord 等",
+				"jira": "Jira 导入",
+				"people": "人数",
+				"projects": "项目和任务",
+				"publicBoards": "支持投票的公开看板",
+				"roles": "工作区角色与权限",
+				"support": "支持",
+				"updates": "更新",
+				"views": "看板、列表、电子表格、日历和甘特图视图",
+				"ai": "AI：问 AI、构建模式和智能体"
 			},
-			"title": "Compare the plans",
+			"title": "比较方案",
 			"values": {
-				"automatic": "Automatic",
-				"community": "Community on GitHub",
-				"email": "Email",
-				"eu": "EU data centres",
-				"notNeeded": "Not needed for one",
-				"one": "Just you",
-				"perMember": "Unlimited, billed per member",
-				"priorityEmail": "Priority email",
-				"unlimited": "Unlimited",
-				"yours": "You run them",
-				"yourSchedule": "When you choose",
-				"yourServers": "Your servers"
+				"automatic": "自动",
+				"community": "GitHub 社区",
+				"email": "邮件",
+				"eu": "欧盟数据中心",
+				"notNeeded": "单人使用无需",
+				"one": "仅限你自己",
+				"perMember": "不限，按成员计费",
+				"priorityEmail": "优先邮件",
+				"unlimited": "不限",
+				"yours": "由你负责",
+				"yourSchedule": "由你决定时间",
+				"yourServers": "你的服务器",
+				"ownKey": "你自己的 AI 密钥或模型"
 			}
 		},
-		"title": "One product. Two ways to run it.",
-		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+		"title": "同一款产品，两种运行方式。",
+		"trialNote": "Cloud 方案均从 14 天试用开始，开始时无需绑卡。"
 	},
 	"templates": {
 		"form": {
@@ -10007,7 +9861,6 @@
 			},
 			"chat": {
 				"planLabel": "建议的更改",
-				"planning": "正在规划更改…",
 				"nothing": "此请求没有需要更改的内容。",
 				"awaiting": "等待回应",
 				"ready": "已就绪的更改：{{count}} 项。确认后继续。",
@@ -10553,11 +10406,7 @@
 			"retro": "回顾",
 			"my_brief": "我的简报",
 			"embedding": "搜索索引",
-			"coding_handoff": "编码智能体任务简报",
-			"build_chat": "在聊天中构建",
-			"nl_filter": "自然语言筛选",
-			"inbox_digest": "收件箱摘要",
-			"speech": "语音转文字"
+			"coding_handoff": "编码智能体任务简报"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -10698,7 +10547,9 @@
 			"speechFormat": "API 格式",
 			"speechFormatHint": "音频的发送方式。使用 Fish Audio 时，请将端点设为 https://api.fish.audio/v1/asr。",
 			"speechFormatOpenai": "兼容 OpenAI",
-			"speechModelHint": "Fish Audio 可填 transcribe-1-pro 或 transcribe-1，也可以留空。"
+			"speechModelHint": "Fish Audio 可填 transcribe-1-pro 或 transcribe-1，也可以留空。",
+			"storePrompts": "保存提示词和回答",
+			"storePromptsHint": "在每次运行的日志中保存发给智能体的请求文本以及模型写下的内容。关闭时：运行只保留计数、步骤和摘要。对从现在起结束的运行生效。工作区在服务器上保存的 Ask 历史有单独的开关。"
 		},
 		"workspace": {
 			"navLabel": "AI",
@@ -10776,7 +10627,8 @@
 			"storeConversations": "在服务器上保存对话历史",
 			"storeConversationsHint": "每个人的对话都保存在工作区中，可以在任何设备上重新打开。关闭时：对话只保留在各自的浏览器中。",
 			"allowAutopilot": "允许自动驾驶",
-			"allowAutopilotHint": "构建模式可以无需确认直接应用更改。每项更改仍会被记录，并且可以撤销。"
+			"allowAutopilotHint": "构建模式可以无需确认直接应用更改。每项更改仍会被记录，并且可以撤销。",
+			"storesPrompts": "保存提示词"
 		},
 		"agents": {
 			"navLabel": "智能体",
@@ -10980,11 +10832,13 @@
 					"manual": "从任务中运行",
 					"schedule": "定时",
 					"automation": "自动化",
-					"chat": "后续"
+					"chat": "后续",
+					"intake": "收集箱请求"
 				},
 				"project": "项目：",
 				"workedSeconds": "工作了 {{count}} 秒",
-				"workedMinutes": "工作了 {{count}} 分钟"
+				"workedMinutes": "工作了 {{count}} 分钟",
+				"request": "请求"
 			},
 			"connectors": {
 				"title": "连接器",
@@ -11125,6 +10979,27 @@
 					"assign": "分配",
 					"schedule": "计划",
 					"automation": "自动化"
+				}
+			},
+			"intakeTrigger": {
+				"open": "{{name}} 的新收集箱请求",
+				"badge": "收集箱",
+				"title": "收集箱请求：{{name}}",
+				"hint": "每当智能体的项目中有新的收集箱请求时运行它，例如进行分拣。它的更改遵循与其他运行相同的审批和撤销规则。",
+				"enabled": "收到新收集箱请求时运行",
+				"enabledHint": "仅限开启了收集箱和 AI 的项目，并且在智能体的项目范围内。",
+				"prompt": "它应该做什么？",
+				"promptPlaceholder": "例如：建议优先级和标签，并指出重复项。",
+				"promptHint": "留空则进行分拣：用一条简短评论说明请求的内容、紧急程度以及缺少的信息。",
+				"runsAs": "代表 {{name}} 运行。在触发器开启时保存，代表的人就会变成你。",
+				"runsAsYou": "开启后即代表你运行，权限不超过你的权限。如果你离开工作区或失去 AI 或收集箱访问权限，它会自动关闭。",
+				"outsideNote": "来自工作区外部的请求（公开看板、表单）未经审批绝不会更改任何内容。",
+				"limitNote": "每个智能体每小时最多 30 次收集箱运行。由智能体提交的请求不会触发任何运行。",
+				"saved": "收集箱触发器已保存",
+				"saveError": "无法保存收集箱触发器，请重试。",
+				"errors": {
+					"forbidden": "收集箱运行代表你执行，因此你需要 AI 访问权限和读取收集箱请求的权限。",
+					"AGENT_CANT_READ_INTAKE": "此智能体的角色无法读取收集箱请求。请给它一个可以读取的角色。"
 				}
 			}
 		},
@@ -11351,7 +11226,6 @@
 			"unmeasured_other": "{{count}} 个任务没有记录开始时间，已排除。"
 		},
 		"capacity": {
-			"meter": "计划工作量与常规周期的对比",
 			"within": "计划量为常规周期的 {{percent}}%",
 			"over": "超出容量：计划量为常规周期的 {{percent}}%",
 			"noDates": "设置周期日期后即可检查容量。",
@@ -11447,6 +11321,137 @@
 			"emailTitle": "将我的简报加入摘要邮件",
 			"emailDescription": "摘要邮件还会列出你被阻塞的任务和你关注的任务的变更。需要开启每日或每周摘要。",
 			"emailError": "无法保存此设置。"
+		}
+	},
+	"emails": {
+		"otp": {
+			"preview": "你的 Margaya 验证码",
+			"title": "你的验证码",
+			"subtitle": "输入此一次性验证码以完成登录。",
+			"verifySubtitle": "输入此一次性验证码以验证你的邮箱地址。",
+			"changeSubtitle": "输入此一次性验证码，确认将此地址设为你的 Margaya 账户的新邮箱地址。",
+			"code": "是你的 Margaya 验证码。",
+			"expiry": "此验证码将在 {{minutes}} 分钟后失效。",
+			"ignore": "如果这不是你本人的操作，可以忽略此邮件。",
+			"footer": "Margaya 安全邮件"
+		},
+		"magicLink": {
+			"preview": "登录 Margaya",
+			"title": "你的安全登录链接",
+			"subtitle": "使用此链接进入你的 Margaya 工作区。",
+			"cta": "登录 Margaya",
+			"expiry": "为了你的账户安全，此链接将在 5 分钟后失效。",
+			"ignore": "如果这不是你本人的操作，可以忽略此邮件。",
+			"footer": "Margaya 安全邮件"
+		},
+		"passwordReset": {
+			"preview": "重置你的 Margaya 密码",
+			"title": "重置密码",
+			"subtitleWithName": "{{name}}，你好！请点击下方按钮设置新密码。",
+			"subtitleDefault": "请点击下方按钮设置新密码。",
+			"cta": "重置密码",
+			"expiry": "此重置链接将在 1 小时后失效。",
+			"ignore": "如果这不是你本人的操作，你的账户不会有任何更改。",
+			"footer": "Margaya 安全邮件"
+		},
+		"emailChanged": {
+			"preview": "你的 Margaya 邮箱地址已更改",
+			"title": "你的邮箱地址已更改",
+			"body": "你的 Margaya 账户邮箱地址已更改为 {{email}}。今后登录链接、验证码和通知都将发送到该地址。",
+			"warning": "如果这不是你本人的操作，请立即联系 Margaya 管理员。",
+			"footer": "Margaya 安全邮件"
+		},
+		"authSubjects": {
+			"magicLinkSubject": "Margaya 登录链接",
+			"otpSubject": "Margaya 验证码",
+			"verifyEmailSubject": "验证你的 Margaya 邮箱地址",
+			"passwordResetSubject": "重置你的 Margaya 密码",
+			"changeEmailSubject": "确认你的 Margaya 新邮箱地址",
+			"emailChangedSubject": "你的 Margaya 邮箱地址已更改"
+		},
+		"notification": {
+			"preview": "你有一条新的 Margaya 通知",
+			"subtitle": "有一条通知符合你的推送设置。",
+			"footer": "Margaya 通知",
+			"actionLabel": "在 Margaya 中打开"
+		},
+		"notificationBatch": {
+			"preview": "你最近的 Margaya 动态",
+			"title_other": "{{count}} 条新动态",
+			"subtitle": "自上一封邮件以来你的任务变更汇总。",
+			"by": "修改者:",
+			"open": "打开任务",
+			"manage": "管理通知设置",
+			"footer": "Margaya 通知"
+		},
+		"notificationDigest": {
+			"title": {
+				"daily": "你的每日摘要",
+				"weekly": "你的每周摘要"
+			},
+			"preview": "你的 Margaya 摘要",
+			"subtitle": "你名下已逾期或将在 7 天内到期的未完成任务，以及收件箱中的新动态。",
+			"dueHeading": "即将到期与已逾期",
+			"overdue": "已逾期",
+			"due": "到期",
+			"more_other": "还有 {{count}} 项",
+			"mentionsHeading_other": "{{count}} 条新提及",
+			"unread_other": "收件箱中有 {{count}} 条未读通知",
+			"openInbox": "打开收件箱",
+			"manage": "管理通知设置",
+			"footer": "你收到这封摘要，是因为你选择了订阅。",
+			"blockedHeading": "已阻塞",
+			"waitingOn": "等待 {{keys}}",
+			"hiddenBlockers_other": "{{count}} 个你无法查看的任务",
+			"followingHeading": "你关注的任务的变更",
+			"changes_other": "{{count}} 处变更"
+		},
+		"batchSubject": {
+			"task_other": "“{{title}}”有 {{count}} 条新动态",
+			"all_other": "Margaya 有 {{count}} 条新动态"
+		},
+		"digestSubject": {
+			"daily": "你的 Margaya 每日摘要",
+			"weekly": "你的 Margaya 每周摘要"
+		},
+		"workspaceDeletion": {
+			"fallbackName": "某个工作区",
+			"openWorkspace": "打开工作区",
+			"scheduledSubject": "{{name}} 已计划删除",
+			"scheduledTitle": "{{name}} 将于 {{date}} 删除",
+			"scheduledTitleNoDate": "{{name}} 即将被删除",
+			"scheduledMessage": "所有者已计划删除此工作区。在 {{date}} 之前，它为只读：你仍可打开和导出其内容，所有者也可以取消删除。该日期之后，其项目、任务和页面将被永久删除。",
+			"scheduledMessageNoDate": "所有者已计划删除此工作区。在删除之前，它为只读：你仍可打开和导出其内容，所有者也可以取消删除。删除之后，其项目、任务和页面将被永久删除。",
+			"cancelledSubject": "{{name}} 不会被删除",
+			"cancelledTitle": "{{name}} 已恢复",
+			"cancelledMessage": "所有者已取消计划中的删除。工作区不再是只读状态，其 API 密钥和 Webhook 也已恢复工作。"
+		},
+		"webhookDisabled": {
+			"subject": "一个 Margaya Webhook 已停用",
+			"title": "Webhook 已停用",
+			"message": "向 {{host}} 的投递在一天多的时间里屡次失败，因此 Margaya 已停用该 Webhook。请修复端点，然后在工作区设置中重新启用该 Webhook。",
+			"messageNoHost": "向端点的投递在一天多的时间里屡次失败，因此 Margaya 已停用该 Webhook。请修复端点，然后在工作区设置中重新启用该 Webhook。",
+			"actionLabel": "打开 Webhook 设置"
+		},
+		"trialReminder": {
+			"endedTitle": "{{workspaceName}} 的试用已结束",
+			"daysLeftTitle_other": "{{workspaceName}} 的试用还剩 {{count}} 天",
+			"endedSubtitle": "在你选择方案之前，工作区将保持只读。没有任何内容被删除，你的数据都还在。",
+			"activeSubtitle": "请选择方案，以便试用结束后继续创建和编辑。",
+			"cta": "选择方案",
+			"selfHost": "如果自行托管，Margaya 永久免费，并包含全部功能。你可以随时导出数据，并迁移到自己的服务器。",
+			"footer": "你收到这封邮件，是因为你是 Margaya Cloud 上这个工作区的所有者。"
+		},
+		"trialSubjects": {
+			"trialEnding": "{{workspaceName}} 的试用将在 3 天后结束",
+			"trialExpired": "{{workspaceName}} 的试用已结束"
+		},
+		"testEmail": {
+			"subject": "来自 {{instanceName}} 的测试邮件",
+			"text": "这是一封来自 {{instanceName}} 的测试邮件。如果你能看到它，说明邮件发送正常。"
+		},
+		"notificationText": {
+			"commentWithoutPreview": "{{taskTitle}} 有新评论"
 		}
 	}
 }

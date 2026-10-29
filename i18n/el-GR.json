@@ -10,16 +10,10 @@
 			"markAllRead": "Επισήμανση όλων ως αναγνωσμένα",
 			"remove": "Αφαίρεση",
 			"reset": "Επαναφορά",
-			"filter": "Φίλτρο",
-			"clearAllFilters": "Εκκαθάριση όλων των φίλτρων",
 			"undo": "Αναίρεση"
 		},
 		"a11y": {
 			"toggleSidebar": "Εναλλαγή πλαϊνής μπάρας"
-		},
-		"sidebar": {
-			"title": "Πλαϊνή μπάρα",
-			"mobileDescription": "Εμφανίζει την πλαϊνή μπάρα για κινητά."
 		},
 		"empty": {
 			"loading": "Φόρτωση..."
@@ -36,29 +30,12 @@
 			"label": "Διαδρομή πλοήγησης",
 			"more": "Περισσότερα"
 		},
-		"language": {
-			"english": "Αγγλικά",
-			"german": "Γερμανικά",
-			"greek": "Ελληνικά",
-			"macedonian": "Μακεδονικά",
-			"french": "Γαλλικά",
-			"spanish": "Ισπανικά",
-			"dutch": "Ολλανδικά",
-			"korean": "Κορεατικά",
-			"chinese": "Κινεζικά",
-			"italian": "Ιταλικά"
-		},
 		"people": {
 			"someone": "Κάποιος",
 			"unknown": "Άγνωστος"
 		},
 		"error": {
 			"title": "Κάτι πήγε στραβά",
-			"troubleshooting": "Βήματα αντιμετώπισης προβλημάτων:",
-			"tryAgain": "Δοκιμάστε ξανά",
-			"viewDeploymentGuide": "Προβολή οδηγού εγκατάστασης",
-			"refreshPage": "Ανανέωση σελίδας",
-			"description": "Η σελίδα παρουσίασε απρόσμενο σφάλμα. Η ανανέωση συνήθως το διορθώνει.",
 			"messages": {
 				"auth": "Η ταυτοποίηση απέτυχε. Παρακαλούμε συνδεθείτε ξανά.",
 				"cors": "Δεν ήταν δυνατή η σύνδεση με τον διακομιστή. Αυτό ενδέχεται να οφείλεται σε ζήτημα ρύθμισης CORS.",
@@ -97,7 +74,6 @@
 				"keyLabel": "Κλειδί:",
 				"keyHint": "Χρησιμοποιείται για IDs αιτημάτων (π.χ. {{example}}-123)",
 				"createButton": "Δημιουργία έργου",
-				"successToast": "Το έργο δημιουργήθηκε με επιτυχία",
 				"errorToast": "Αποτυχία δημιουργίας έργου",
 				"keyTaken": "Υπάρχει ήδη ένα έργο με το κλειδί {{key}} σε αυτόν τον χώρο εργασίας",
 				"blankProject": "Κενό έργο",
@@ -132,7 +108,6 @@
 				"successUpdated": "Η εργασία ενημερώθηκε με επιτυχία",
 				"createError": "Αποτυχία δημιουργίας εργασίας",
 				"priority": "Προτεραιότητα",
-				"statusFallback": "Σε εξέλιξη",
 				"startDate": "Ημερομηνία έναρξης",
 				"dueDate": "Ημερομηνία λήξης",
 				"clearStartDate": "Εκκαθάριση ημερομηνίας έναρξης",
@@ -331,7 +306,6 @@
 			"namePlaceholder": "Γιάννης Παπαδόπουλος",
 			"failedSignUp": "Αποτυχία εγγραφής",
 			"accountCreated": "Ο λογαριασμός δημιουργήθηκε με επιτυχία",
-			"passwordTooShort": "Ο κωδικός είναι πολύ σύντομος",
 			"creatingAccount": "Δημιουργία λογαριασμού...",
 			"createAccount": "Δημιουργία λογαριασμού"
 		},
@@ -345,7 +319,6 @@
 			"invitationExpired": "Η πρόσκληση έληξε",
 			"errorLoadDescription": "Αποτυχία φόρτωσης των στοιχείων της πρόσκλησης. Η πρόσκληση ενδέχεται να είναι μη έγκυρη ή να έχει λήξει.",
 			"goToSignIn": "Μετάβαση στη σύνδεση",
-			"workspaceLabel": "Χώρος εργασίας: {{workspaceName}}",
 			"joinWorkspace": "Συμμετοχή στο {{workspaceName}}",
 			"inviteBodySignedIn": "Ο/Η <inviter>{{inviterName}}</inviter> σας προσκάλεσε να συμμετάσχετε στον χώρο εργασίας του/της.",
 			"inviteBodySignedOut": "Ο/Η <inviter>{{inviterName}}</inviter> σας προσκάλεσε να συμμετάσχετε στον χώρο εργασίας του/της στο Margaya.",
@@ -375,7 +348,6 @@
 			"creating": "Γίνεται δημιουργία...",
 			"createWorkspace": "Δημιουργία χώρου εργασίας",
 			"workspaceCreatedTitle": "Ο χώρος εργασίας δημιουργήθηκε",
-			"redirectingToWorkspace": "Μεταφορά στο <name>{{name}}</name>...",
 			"toast": {
 				"workspaceCreated": "Ο χώρος εργασίας δημιουργήθηκε με επιτυχία",
 				"createFailed": "Αποτυχία δημιουργίας χώρου εργασίας",
@@ -439,8 +411,6 @@
 			"namePlaceholder": "π.χ. John Doe",
 			"saving": "Γίνεται αποθήκευση...",
 			"continue": "Συνέχεια",
-			"welcome": "Καλώς ήρθατε, {{name}}!",
-			"redirecting": "Μεταφορά στον πίνακα ελέγχου σας...",
 			"toast": {
 				"updateSuccess": "Το προφίλ ενημερώθηκε με επιτυχία",
 				"updateFailed": "Αποτυχία ενημέρωσης προφίλ"
@@ -541,7 +511,6 @@
 	},
 	"settings": {
 		"account": "Λογαριασμός",
-		"developer": "Προγραμματιστής",
 		"information": "Πληροφορίες",
 		"notifications": "Ειδοποιήσεις",
 		"preferences": "Προτιμήσεις",
@@ -653,23 +622,7 @@
 			"noProjectsInWorkspace": "Δεν υπάρχουν ακόμα διαθέσιμα έργα για αυτόν τον χώρο εργασίας.",
 			"createRule": "Δημιουργία κανόνα",
 			"removeRule": "Αφαίρεση κανόνα",
-			"toastEmailSaved": "Οι ρυθμίσεις ειδοποιήσεων email αποθηκεύτηκαν",
-			"toastEmailSaveFailed": "Αποτυχία αποθήκευσης ρυθμίσεων email",
-			"toastNtfySaved": "Οι ρυθμίσεις ntfy αποθηκεύτηκαν",
-			"toastNtfySaveFailed": "Αποτυχία αποθήκευσης ρυθμίσεων ntfy",
-			"toastNtfyDisconnected": "Το ntfy αποσυνδέθηκε",
-			"toastNtfyDisconnectFailed": "Αποτυχία αποσύνδεσης ntfy",
-			"toastGotifySaved": "Οι ρυθμίσεις Gotify αποθηκεύτηκαν",
-			"toastGotifySaveFailed": "Αποτυχία αποθήκευσης ρυθμίσεων Gotify",
-			"toastGotifyDisconnected": "Το Gotify αποσυνδέθηκε",
-			"toastGotifyDisconnectFailed": "Αποτυχία αποσύνδεσης Gotify",
-			"toastWebhookSaved": "Οι ρυθμίσεις webhook αποθηκεύτηκαν",
-			"toastWebhookSaveFailed": "Αποτυχία αποθήκευσης ρυθμίσεων webhook",
-			"toastWebhookDisconnected": "Το webhook αποσυνδέθηκε",
-			"toastWebhookDisconnectFailed": "Αποτυχία αποσύνδεσης webhook",
-			"toastRuleSaved": "Ο κανόνας ειδοποιήσεων για το {{workspaceName}} αποθηκεύτηκε",
 			"toastRuleSaveFailed": "Αποτυχία αποθήκευσης κανόνα ειδοποιήσεων χώρου εργασίας",
-			"toastRuleRemoved": "Ο κανόνας ειδοποιήσεων για το {{workspaceName}} αφαιρέθηκε",
 			"toastRuleRemoveFailed": "Αποτυχία αφαίρεσης κανόνα ειδοποιήσεων χώρου εργασίας",
 			"toastPreferencesSaved": "Οι προτιμήσεις ειδοποιήσεων αποθηκεύτηκαν",
 			"toastPreferencesSaveFailed": "Αποτυχία αποθήκευσης προτιμήσεων ειδοποιήσεων",
@@ -739,7 +692,6 @@
 			"selectViewMode": "Επιλέξτε τρόπο προβολής",
 			"board": "Πίνακας",
 			"list": "Λίστα",
-			"gantt": "Gantt",
 			"sidebarDefault": "Προεπιλογή πλευρικής στήλης",
 			"sidebarDefaultDescription": "Διατήρηση της πλαϊνής μπάρας ανεπτυγμένης κατά την εκκίνηση",
 			"displayOptions": "Επιλογές εμφάνισης",
@@ -844,14 +796,8 @@
 			"dangerZone": "Ζώνη κινδύνου",
 			"dangerZoneSubtitle": "Μη αναστρέψιμες και καταστροφικές ενέργειες.",
 			"deleteWorkspace": "Διαγραφή χώρου εργασίας",
-			"deleteWorkspaceDescription": "Προγραμματισμός οριστικής διαγραφής του χώρου εργασίας",
-			"deleteModalTitle": "Διαγραφή χώρου εργασίας;",
-			"deleteModalDescription": "Αυτό θα διαγράψει οριστικά τον χώρο εργασίας \"{{name}}\" και όλα τα δεδομένα του. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
-			"deleteModalConfirm": "Διαγραφή χώρου εργασίας",
 			"toastUpdated": "Ο χώρος εργασίας ενημερώθηκε με επιτυχία",
 			"toastUpdateError": "Αποτυχία ενημέρωσης χώρου εργασίας",
-			"toastDeleted": "Ο χώρος εργασίας διαγράφηκε με επιτυχία",
-			"toastDeleteError": "Αποτυχία διαγραφής χώρου εργασίας",
 			"validation": {
 				"nameRequired": "Το όνομα χώρου εργασίας είναι υποχρεωτικό",
 				"nameShort": "Το όνομα χώρου εργασίας πρέπει να έχει τουλάχιστον 2 χαρακτήρες"
@@ -950,21 +896,6 @@
 			"mattermostSectionTitle": "Ενσωμάτωση Mattermost",
 			"chatGroupTitle": "Συνομιλία και webhooks",
 			"codeGroupTitle": "Φιλοξενία κώδικα"
-		},
-		"projectVisibility": {
-			"pageTitle": "Ορατότητα έργου",
-			"title": "Ορατότητα",
-			"subtitle": "Ελέγξτε ποιος μπορεί να δει και να έχει πρόσβαση στο έργο σας.",
-			"sectionTitle": "Ορατότητα",
-			"sectionSubtitle": "Ενεργοποιήστε τη δημόσια πρόσβαση και κοινοποιήστε το δημόσιο URL.",
-			"publicAccess": "Δημόσια πρόσβαση",
-			"publicAccessHint": "Επιτρέψτε σε οποιονδήποτε έχει το URL να δει αυτό το έργο",
-			"publicUrl": "Δημόσιο URL",
-			"publicUrlHint": "Κοινοποιήστε αυτόν τον σύνδεσμο αν το έργο είναι δημόσιο",
-			"copy": "Αντιγραφή",
-			"copiedToast": "Αντιγράφηκε",
-			"toastUpdated": "Η ορατότητα ενημερώθηκε",
-			"toastUpdateError": "Αποτυχία ενημέρωσης ορατότητας"
 		},
 		"projectWorkflow": {
 			"pageTitle": "Ρυθμίσεις ροής εργασίας",
@@ -1177,7 +1108,6 @@
 				"saveError": "Αποτυχία αποθήκευσης της ενσωμάτωσης Slack",
 				"updateError": "Αποτυχία ενημέρωσης της ενσωμάτωσης Slack"
 			},
-			"update": "Ενημέρωση Slack",
 			"validation": {
 				"webhookInvalid": "Εισαγάγετε ένα έγκυρο URL webhook Slack"
 			},
@@ -1215,7 +1145,6 @@
 				"saveError": "Αποτυχία αποθήκευσης της ενσωμάτωσης Discord",
 				"updateError": "Αποτυχία ενημέρωσης της ενσωμάτωσης Discord"
 			},
-			"update": "Ενημέρωση Discord",
 			"validation": {
 				"webhookInvalid": "Εισαγάγετε ένα έγκυρο URL webhook Discord"
 			},
@@ -1337,9 +1266,7 @@
 			"exportTasks": "Εξαγωγή εργασιών",
 			"importTasks": "Εισαγωγή εργασιών",
 			"dialogTitle": "Εισαγωγή εργασιών",
-			"dialogDescription": "Ανεβάστε ένα αρχείο JSON που περιέχει εργασίες για εισαγωγή σε αυτό το έργο.",
 			"expectedFormat": "Αναμενόμενη μορφή:",
-			"dropHint": "Σύρετε και αποθέστε το αρχείο JSON εδώ",
 			"selectFile": "Επιλογή αρχείου",
 			"exporting": "Γίνεται εξαγωγή εργασιών...",
 			"exportSuccess": "Οι εργασίες εξήχθησαν με επιτυχία",
@@ -1350,7 +1277,6 @@
 			"importError": "Αποτυχία εισαγωγής εργασιών",
 			"invalidFormat": "Μη έγκυρη μορφή αρχείου εισαγωγής",
 			"noFileDropped": "Δεν αποθέσατε κανένα αρχείο",
-			"notJsonFile": "Παρακαλώ ανεβάστε αρχείο JSON",
 			"exportCsv": "CSV (υπολογιστικό φύλλο)",
 			"exportJson": "JSON (για επανεισαγωγή)",
 			"exportStarted": "Η εξαγωγή ξεκίνησε. Θα τη βρείτε στις Ρυθμίσεις χώρου εργασίας → Εξαγωγές.",
@@ -1990,7 +1916,6 @@
 				"saveError": "Αποτυχία αποθήκευσης της ενσωμάτωσης Mattermost",
 				"updateError": "Αποτυχία ενημέρωσης της ενσωμάτωσης Mattermost"
 			},
-			"update": "Ενημέρωση Mattermost",
 			"validation": {
 				"webhookInvalid": "Εισαγάγετε ένα έγκυρο URL webhook Mattermost"
 			},
@@ -2002,13 +1927,11 @@
 			"addButton": "Προσθήκη",
 			"createError": "Αποτυχία δημιουργίας προσαρμοσμένου πεδίου.",
 			"createSuccess": "Το προσαρμοσμένο πεδίο δημιουργήθηκε.",
-			"creating": "Γίνεται δημιουργία...",
 			"defaultLabel": "Προεπιλογή",
 			"defaultValuePlaceholder": "Προεπιλεγμένη τιμή",
 			"deleteButton": "Διαγραφή",
 			"deleteError": "Αποτυχία διαγραφής προσαρμοσμένου πεδίου.",
 			"deleteSuccess": "Το προσαρμοσμένο πεδίο διαγράφηκε.",
-			"deleting": "Γίνεται διαγραφή...",
 			"empty": "Δεν υπάρχουν ακόμα προσαρμοσμένα πεδία.",
 			"loading": "Φόρτωση προσαρμοσμένων πεδίων...",
 			"namePlaceholder": "Όνομα πεδίου",
@@ -2938,7 +2861,9 @@
 				"agentScheduleDisabled": "Απενεργοποίησε ένα πρόγραμμα πράκτορα",
 				"aiConnectorCreated": "Πρόσθεσε έναν σύνδεσμο MCP",
 				"aiConnectorUpdated": "Άλλαξε έναν σύνδεσμο MCP",
-				"aiConnectorDeleted": "Διέγραψε έναν σύνδεσμο MCP"
+				"aiConnectorDeleted": "Διέγραψε έναν σύνδεσμο MCP",
+				"agentIntakeTriggerUpdated": "Άλλαξε το έναυσμα εισερχομένων ενός πράκτορα",
+				"agentIntakeTriggerDisabled": "Απενεργοποίησε το έναυσμα εισερχομένων ενός πράκτορα"
 			},
 			"actor": {
 				"apiKey": "Κλειδί API",
@@ -3277,8 +3202,7 @@
 			"empty": "Δεν βρέθηκαν αποτελέσματα.",
 			"footer": {
 				"navigate": "Πλοήγηση",
-				"open": "Άνοιγμα",
-				"close": "Κλείσιμο"
+				"open": "Άνοιγμα"
 			},
 			"goToInbox": "Μετάβαση στα Εισερχόμενα",
 			"newView": "Νέα προβολή",
@@ -3305,11 +3229,10 @@
 			},
 			"recent": "Πρόσφατα",
 			"removeScope": "Αναζήτηση παντού",
-			"scope": "In"
+			"scope": "Σε"
 		},
 		"notifications": "Ειδοποιήσεις",
 		"sidebar": {
-			"overview": "Επισκόπηση",
 			"projects": "Έργα",
 			"members": "Μέλη",
 			"invitations": "Προσκλήσεις",
@@ -3317,12 +3240,9 @@
 			"backToBoard": "Επιστροφή στον πίνακα",
 			"favorites": "Αγαπημένα",
 			"allTasks": "Όλες οι εργασίες",
-			"inbox": "Εισερχόμενα",
 			"myWork": "Η εργασία σας",
 			"home": "Αρχική",
-			"personal": "Προσωπικά",
 			"stickies": "Αυτοκόλλητα",
-			"analytics": "Analytics",
 			"drafts": "Πρόχειρα"
 		},
 		"projectList": {
@@ -3350,10 +3270,6 @@
 				"page": "Σελίδες"
 			}
 		},
-		"settingsLayout": {
-			"toggleSidebar": "Εναλλαγή πλαϊνής μπάρας",
-			"back": "Πίσω"
-		},
 		"userMenu": {
 			"signedOutSuccess": "Αποσυνδεθήκατε με επιτυχία",
 			"signOutFailed": "Αποτυχία αποσύνδεσης",
@@ -3366,13 +3282,11 @@
 		"workspaceSwitcher": {
 			"workspaces": "Χώροι εργασίας",
 			"switching": "Γίνεται εναλλαγή...",
-			"addWorkspace": "Προσθήκη χώρου εργασίας",
-			"selectWorkspace": "Επιλέξτε χώρο εργασίας"
+			"addWorkspace": "Προσθήκη χώρου εργασίας"
 		},
 		"page": {
 			"projectsTitle": "Έργα",
 			"settingsTitle": "Ρυθμίσεις",
-			"backToWorkspace": "Πίσω στον χώρο εργασίας",
 			"settingsWorkspaceTab": "Χώρος εργασίας",
 			"settingsInstanceTab": "Εγκατάσταση",
 			"settingsNotFoundBack": "Ρυθμίσεις λογαριασμού",
@@ -3402,7 +3316,6 @@
 			"items": {
 				"openCommandPalette": "Άνοιγμα παλέτας εντολών",
 				"globalSearch": "Καθολική αναζήτηση",
-				"toggleSidebar": "Εναλλαγή πλαϊνής μπάρας",
 				"showShortcuts": "Εμφάνιση συντομεύσεων πληκτρολογίου",
 				"closeModal": "Κλείσιμο modal/popover",
 				"createTask": "Δημιουργία εργασίας",
@@ -3509,16 +3422,11 @@
 	},
 	"notifications": {
 		"title": "Ειδοποιήσεις",
-		"newCount_one": "{{count}} νέα",
-		"newCount_other": "{{count}} νέα",
-		"emptyTitle": "Δεν υπάρχουν ακόμα ειδοποιήσεις",
-		"emptySubtitle": "Θα βλέπετε εδώ ενημερώσεις και δραστηριότητα.",
 		"clearAll": "Εκκαθάριση όλων των ειδοποιήσεων",
 		"clearDialogTitle": "Εκκαθάριση όλων των ειδοποιήσεων;",
 		"clearDialogDescription": "Αυτό θα αφαιρέσει οριστικά όλες τις ειδοποιήσεις. Δεν μπορείτε να αναιρέσετε αυτήν την ενέργεια.",
 		"shortcuts": {
-			"open": "Άνοιγμα ειδοποιήσεων",
-			"inbox": "Άνοιγμα εισερχομένων"
+			"open": "Άνοιγμα ειδοποιήσεων"
 		},
 		"events": {
 			"task_created": {
@@ -3675,7 +3583,6 @@
 				"fiveDays": "5 ημέρες",
 				"oneDay": "1 ημέρα",
 				"oneWeek": "1 εβδομάδα",
-				"pickDate": "Επιλέξτε ημερομηνία",
 				"pickTime": "Επιλέξτε ώρα",
 				"submit": "Αναβολή",
 				"threeDays": "3 ημέρες",
@@ -4069,7 +3976,6 @@
 				"recurredToScheduled": "Η επόμενη επανάληψη δημιουργήθηκε βάσει προγραμματισμού: <task>{{task}}</task>"
 			}
 		},
-		"title": "Εργασίες",
 		"status": {
 			"label": "Κατάσταση",
 			"to-do": "Προς υλοποίηση",
@@ -4308,7 +4214,6 @@
 			"labels": "Ετικέτες",
 			"copyTaskLink": "Αντιγραφή συνδέσμου εργασίας",
 			"copyTaskBranch": "Αντιγραφή κλάδου εργασίας",
-			"start": "Έναρξη",
 			"startDate": "Ημερομηνία έναρξης",
 			"noDate": "Χωρίς ημερομηνία",
 			"addLabel": "Προσθήκη ετικέτας",
@@ -4374,22 +4279,11 @@
 			"moveAllTooltip": "Μετακίνηση όλων των προγραμματισμένων στο {{column}}",
 			"moveAll": "Μετακίνηση όλων",
 			"addTask": "Προσθήκη εργασίας",
-			"filter": "Φίλτρο",
-			"addFilter": "Προσθήκη φίλτρου...",
 			"sections": {
 				"planned": "Προγραμματισμένα",
 				"archived": "Αρχειοθετημένα"
 			},
-			"noTasksInSection": "Δεν υπάρχουν {{section}} εργασίες",
-			"filters": {
-				"priority": "Προτεραιότητα: {{name}}",
-				"assignee": "Ανατεθειμένος: {{name}}",
-				"due": "Λήξη: {{date}}",
-				"label": "Ετικέτα: {{name}}",
-				"dueThisWeek": "Λήγει αυτή την εβδομάδα",
-				"dueNextWeek": "Λήγει την επόμενη εβδομάδα",
-				"noDueDate": "Χωρίς ημερομηνία λήξης"
-			}
+			"noTasksInSection": "Δεν υπάρχουν {{section}} εργασίες"
 		},
 		"sort": {
 			"label": "Ταξινόμηση",
@@ -4409,11 +4303,6 @@
 		},
 		"boardFilters": {
 			"filterBy": "Φιλτράρισμα κατά",
-			"allStatuses": "Όλες οι καταστάσεις",
-			"allPriorities": "Όλες οι προτεραιότητες",
-			"allAssignees": "Όλοι οι ανατεθειμένοι",
-			"allDueDates": "Όλες οι ημερομηνίες λήξης",
-			"allLabels": "Όλες οι ετικέτες",
 			"selectedCount": "{{count}} επιλεγμένα",
 			"subjects": {
 				"status": "Κατάσταση",
@@ -4424,14 +4313,8 @@
 				"estimate": "Εκτίμηση"
 			},
 			"operators": {
-				"isAnyOf": "είναι ένα από",
-				"includeAnyOf": "περιλαμβάνει κάποιο από"
-			},
-			"all": "Όλα",
-			"allCustomFieldValues": "Όλες οι τιμές",
-			"noCustomFieldValues": "Χωρίς τιμές προσαρμοσμένου πεδίου",
-			"noValuesUsedYet": "Δεν έχουν χρησιμοποιηθεί ακόμα τιμές",
-			"unassigned": "Χωρίς ανάθεση"
+				"isAnyOf": "είναι ένα από"
+			}
 		},
 		"gantt": {
 			"pageTitle": "{{name}} – Gantt",
@@ -4474,11 +4357,8 @@
 		},
 		"archive": {
 			"success": "Αρχειοθετήθηκαν {{count}} εργασίες",
-			"archive": "Αρχειοθέτηση",
 			"archived": "Η εργασία αρχειοθετήθηκε",
 			"badge": "Αρχειοθετημένη",
-			"bulkArchived_one": "Αρχειοθετήθηκε {{count}} εργασία",
-			"bulkArchived_other": "Αρχειοθετήθηκαν {{count}} εργασίες",
 			"error": "Δεν ήταν δυνατή η αρχειοθέτηση της εργασίας",
 			"restore": "Επαναφορά",
 			"restored": "Η εργασία επαναφέρθηκε",
@@ -4514,10 +4394,6 @@
 			"updateError": "Αποτυχία ενημέρωσης ημερομηνίας λήξης εργασίας",
 			"clearSuccess": "Η ημερομηνία λήξης της εργασίας αφαιρέθηκε",
 			"clearError": "Αποτυχία αφαίρεσης ημερομηνίας λήξης"
-		},
-		"labels": {
-			"label": "Ετικέτες",
-			"empty": "Δεν υπάρχουν διαθέσιμες ετικέτες"
 		},
 		"update": {
 			"success": "Η εργασία ενημερώθηκε με επιτυχία",
@@ -4861,7 +4737,6 @@
 				"project": "Έργο",
 				"status": "Κατάσταση"
 			},
-			"needsSingleProject": "Η ομαδοποίηση κατά κατάσταση απαιτεί ένα μόνο έργο",
 			"none": "Καμία",
 			"order": {
 				"assignee": "Υπεύθυνος",
@@ -4949,14 +4824,14 @@
 			"noOptions": "Καμία επιλογή",
 			"operators": {
 				"between": "μεταξύ",
-				"is": "is",
+				"is": "είναι",
 				"isEmpty": "είναι κενό",
 				"isNoneOf": "δεν είναι κανένα από",
 				"isNot": "δεν είναι",
 				"isNotEmpty": "δεν είναι κενό",
 				"moreThanAgo": "πριν από περισσότερο από …",
 				"moreThanAhead": "σε περισσότερο από … από τώρα",
-				"on": "on",
+				"on": "την",
 				"onOrAfter": "την ή μετά από",
 				"onOrBefore": "την ή πριν από",
 				"withinLast": "τις τελευταίες",
@@ -4969,9 +4844,7 @@
 				"completed": "Ολοκληρώθηκε",
 				"created": "Δημιουργήθηκε",
 				"createdBy": "Δημιουργός",
-				"customFields": "Προσαρμοσμένα πεδία",
 				"cycle": "Κύκλος",
-				"estimate": "Εκτίμηση",
 				"group": "Ομάδα",
 				"mentions": "Αναφορές",
 				"module": "Ενότητα",
@@ -4985,7 +4858,7 @@
 			"values": {
 				"currentCycle": "Τρέχων κύκλος",
 				"false": "Όχι",
-				"me": "Me",
+				"me": "Εγώ",
 				"noAssignee": "Χωρίς υπεύθυνο",
 				"noCreator": "Χωρίς δημιουργό",
 				"noCycle": "Χωρίς κύκλο",
@@ -5024,8 +4897,6 @@
 			"expandSubTasks": "Εμφάνιση υποεργασιών",
 			"hideColumn": "Απόκρυψη στήλης",
 			"loadError": "Δεν ήταν δυνατή η φόρτωση των εργασιών",
-			"newTask": "Νέα εργασία",
-			"newTaskPlaceholder": "Τίτλος εργασίας και μετά Enter",
 			"selectTask": "Επιλογή {{key}}",
 			"sortAsc": "Αύξουσα ταξινόμηση",
 			"sortDesc": "Φθίνουσα ταξινόμηση",
@@ -5052,7 +4923,7 @@
 		"timeTracking": {
 			"duration": "Διάρκεια",
 			"durationInvalid": "Εισαγάγετε διάρκεια από 1 λεπτό έως 24 ώρες, π.χ. 1h 30m.",
-			"durationPlaceholder": "e.g. 1h 30m",
+			"durationPlaceholder": "π.χ. 1h 30m",
 			"empty": "Δεν έχει καταγραφεί χρόνος ακόμη",
 			"entries": "Καταχωρίσεις χρόνου",
 			"formerMember": "Πρώην μέλος",
@@ -5232,11 +5103,6 @@
 		"noPendingDescription": "Όταν κάποιος σας προσκαλέσει σε έναν χώρο εργασίας, η πρόσκληση θα εμφανιστεί εδώ.",
 		"continueToSetup": "Συνέχεια στη ρύθμιση",
 		"skipForNow": "Παράλειψη για τώρα",
-		"table": {
-			"workspace": "Χώρος εργασίας",
-			"invitedBy": "Προσκλήθηκε από",
-			"expires": "Λήγει"
-		},
 		"toast": {
 			"acceptError": "Αποτυχία αποδοχής πρόσκλησης",
 			"acceptSuccess": "Η πρόσκληση έγινε αποδεκτή! Καλώς ήρθατε στην ομάδα.",
@@ -5271,7 +5137,6 @@
 				"inProgress": "Σε εξέλιξη"
 			},
 			"noDueDate": "Χωρίς ημερομηνία λήξης",
-			"reorderHandle": "Αναδιάταξη έργου",
 			"reorderError": "Η αναδιάταξη των έργων απέτυχε",
 			"emptyDescriptionReadOnly": "Δεν υπάρχουν ακόμα έργα σε αυτόν τον χώρο εργασίας. Ζητήστε από έναν διαχειριστή να δημιουργήσει ένα."
 		},
@@ -5298,7 +5163,6 @@
 			"pageTitle": "Δημιουργία χώρου εργασίας",
 			"heading": "Δημιουργία νέου χώρου εργασίας",
 			"subtitle": "Οι χώροι εργασίας είναι κοινόχρηστα περιβάλλοντα όπου οι ομάδες μπορούν να εργάζονται σε έργα, κύκλους και ζητήματα.",
-			"nameLabel": "Όνομα χώρου εργασίας",
 			"namePlaceholder": "Εισαγάγετε όνομα χώρου εργασίας",
 			"descriptionLabel": "Περιγραφή (προαιρετικό)",
 			"descriptionPlaceholder": "Προσθέστε μια περιγραφή για τον χώρο εργασίας σας",
@@ -5426,11 +5290,8 @@
 			"columns": {
 				"name": "Όνομα",
 				"role": "Ρόλος",
-				"joined": "Εντάχθηκε",
-				"actions": "Ενέργειες"
+				"joined": "Εντάχθηκε"
 			},
-			"memberRolePending": "{{role}} (Σε εκκρεμότητα)",
-			"ariaCancelInvitation": "Ακύρωση πρόσκλησης",
 			"ariaRemoveMember": "Αφαίρεση μέλους",
 			"removeDialogTitle": "Αφαίρεση μέλους ομάδας;",
 			"removeDialogDescription": "Το μέλος {{name}} θα αφαιρεθεί από τον χώρο εργασίας και θα χάσει την πρόσβαση στα έργα και τις εργασίες του.",
@@ -5479,7 +5340,6 @@
 		}
 	},
 	"publicProject": {
-		"pageTitle": "Δημόσια προβολή",
 		"badge": "Δημόσιο",
 		"readOnly": "Μόνο για ανάγνωση",
 		"error": {
@@ -5492,12 +5352,10 @@
 		"taskDetail": {
 			"labels": "Ετικέτες",
 			"externalLinks": "Εξωτερικοί σύνδεσμοι",
-			"pullRequestFallback": "Pull request",
 			"issueFallback": "Ζήτημα",
 			"prStatusMerged": "Συγχωνευμένο",
 			"prStatusDraft": "Πρόχειρο",
 			"prStatusOpen": "Ανοιχτό",
-			"dueWithDate": "Λήγει {{date}}",
 			"created": "Δημιουργήθηκε",
 			"dueDateLabel": "Ημερομηνία λήξης",
 			"assignees": "Υπεύθυνοι",
@@ -5521,9 +5379,7 @@
 			"backlog": "Backlog",
 			"chip": "{{subject}}: {{value}}",
 			"clearFilters": "Εκκαθάριση φίλτρων",
-			"collapse": "Σύμπτυξη {{name}}",
 			"emptyColumn": "Δεν υπάρχουν εργασίες εδώ",
-			"expand": "Ανάπτυξη {{name}}",
 			"filter": "Φίλτρο",
 			"filters": "Φίλτρα",
 			"layout": "Διάταξη",
@@ -5682,7 +5538,7 @@
 				"typed": "Διόρθωση ανακατεύθυνσης μετά τη σύνδεση @adam !high #bug"
 			},
 			"labels": {
-				"bug": "bug",
+				"bug": "σφάλμα",
 				"design": "σχεδίαση",
 				"docs": "τεκμηρίωση",
 				"feature": "λειτουργία"
@@ -5772,7 +5628,7 @@
 				"done": "Ολοκληρώθηκε",
 				"inProgress": "Σε εξέλιξη",
 				"inReview": "Σε έλεγχο",
-				"todo": "To do"
+				"todo": "Προς υλοποίηση"
 			},
 			"analytics": {
 				"allProjects": "Όλα τα έργα",
@@ -6219,7 +6075,7 @@
 						"name": "Discord"
 					},
 					"gitea": {
-						"detail": "Issues, pull requests, webhooks",
+						"detail": "Issues, pull requests και webhooks",
 						"name": "Gitea"
 					},
 					"github": {
@@ -6279,19 +6135,19 @@
 				"statuses": {
 					"done": {
 						"meta": "14 ζητήματα",
-						"name": "Done"
+						"name": "Ολοκληρώθηκε"
 					},
 					"inProgress": {
 						"meta": "9 ζητήματα",
-						"name": "In Progress"
+						"name": "Σε εξέλιξη"
 					},
 					"open": {
 						"meta": "14 ζητήματα",
-						"name": "Open"
+						"name": "Ανοιχτό"
 					},
 					"review": {
 						"meta": "5 ζητήματα",
-						"name": "Code Review"
+						"name": "Έλεγχος κώδικα"
 					}
 				},
 				"statusesTitle": "Καταστάσεις",
@@ -6970,13 +6826,13 @@
 				},
 				"compare": {
 					"all": "Όλες οι εναλλακτικές",
-					"asana": "vs Asana",
-					"clickup": "vs ClickUp",
-					"jira": "vs Jira",
-					"linear": "vs Linear",
-					"monday": "vs monday.com",
+					"asana": "έναντι Asana",
+					"clickup": "έναντι ClickUp",
+					"jira": "έναντι Jira",
+					"linear": "έναντι Linear",
+					"monday": "έναντι monday.com",
 					"title": "Σύγκριση",
-					"trello": "vs Trello"
+					"trello": "έναντι Trello"
 				},
 				"copyright": "© {{year}} Margaya",
 				"label": "Υποσέλιδο",
@@ -7655,7 +7511,7 @@
 			"clear": "Εκκαθάριση φίλτρων",
 			"filterBy": "Φιλτράρισμα κατά",
 			"includesAnyOf": "περιλαμβάνει οποιοδήποτε από",
-			"is": "is",
+			"is": "είναι",
 			"isAnyOf": "είναι οποιοδήποτε από",
 			"lead": "Υπεύθυνος",
 			"members": "Μέλη",
@@ -7846,7 +7702,7 @@
 			"completed30": "Ολοκληρώθηκαν σε 30 ημέρες",
 			"created": "Δημιουργημένες",
 			"dueThisWeek": "Λήγουν αυτή την εβδομάδα",
-			"notAvailable": "n/a",
+			"notAvailable": "Μ/Δ",
 			"overdue": "Εκπρόθεσμες",
 			"subscribed": "Παρακολουθούμενες"
 		},
@@ -7863,7 +7719,6 @@
 			"cancelled_other": "{{count}} ακυρώθηκαν",
 			"priorities": "Ανοιχτές εργασίες ανά προτεραιότητα",
 			"recentActivity": "Πρόσφατη δραστηριότητα",
-			"title": "Φόρτος εργασίας",
 			"byState": "Ανά κατάσταση"
 		},
 		"activity": {
@@ -7942,7 +7797,6 @@
 			"all": "Όλες",
 			"emptyDescription": "Αποθηκεύστε φίλτρα και διατάξεις ως προβολές και μοιραστείτε τις με την ομάδα σας.",
 			"emptyTitle": "Δεν υπάρχουν ακόμα προβολές",
-			"favorite": "Αγαπημένη",
 			"mine": "Δικές μου",
 			"more": "Προβολές",
 			"newView": "Νέα προβολή",
@@ -8086,14 +7940,10 @@
 			"inbox": "Εισερχόμενα",
 			"label": "Επιστροφή στη δουλειά",
 			"myWork": "Η δουλειά σας",
-			"open_one": "{{count}} ανοιχτή",
-			"open_other": "{{count}} ανοιχτές",
 			"overdue_one": "{{count}} εκπρόθεσμη",
 			"overdue_other": "{{count}} εκπρόθεσμες",
 			"stickies": "Αυτοκόλλητα",
 			"stickiesHint": "Ιδιωτικές σημειώσεις, μόνο για εσάς",
-			"unread_one": "{{count}} μη αναγνωσμένο",
-			"unread_other": "{{count}} μη αναγνωσμένα",
 			"openCaption": "ανοιχτές",
 			"unreadCaption": "μη αναγνωσμένα"
 		}
@@ -8153,7 +8003,6 @@
 			"submit": "Υποβολή αιτήματος",
 			"title": "Νέο αίτημα",
 			"titlePlaceholder": "Τι χρειάζεστε;",
-			"titleRequired": "Προσθέστε τίτλο",
 			"toast": "Το αίτημα υποβλήθηκε",
 			"toastView": "Προβολή",
 			"pastedImages": "Επικολλημένες εικόνες",
@@ -8244,7 +8093,7 @@
 		"filters": {
 			"button": "Φίλτρο",
 			"clear": "Εκκαθάριση φίλτρων",
-			"me": "Me",
+			"me": "Εγώ",
 			"priority": "Προτεραιότητα",
 			"remove": "Αφαίρεση φίλτρου",
 			"status": "Κατάσταση",
@@ -8333,7 +8182,6 @@
 			"pending": "Αυτή η εργασία περιμένει στα αιτήματα.",
 			"snoozed": "Αυτή η εργασία είναι σε αναβολή στα αιτήματα έως {{date}}."
 		},
-		"title": "Αιτήματα",
 		"triage": {
 			"backToList": "Πίσω στα αιτήματα",
 			"detailLabel": "Αίτημα",
@@ -9303,7 +9151,6 @@
 	},
 	"instanceAdmin": {
 		"admins": {
-			"actions": "Ενέργειες διαχειριστή",
 			"add": "Προσθήκη διαχειριστή",
 			"addConfirm": "Προσθήκη διαχειριστή",
 			"addDescription": "Οι διαχειριστές της εγκατάστασης μπορούν να αλλάξουν κάθε ρύθμιση σε αυτή την περιοχή και να ανοίξουν οποιονδήποτε χώρο εργασίας.",
@@ -9421,7 +9268,7 @@
 				"fileStorage": "Αποθήκευση αρχείων",
 				"notConfigured": "Μη ρυθμισμένο",
 				"off": "Ανενεργό",
-				"on": "On",
+				"on": "Ενεργό",
 				"realtime": "Πραγματικός χρόνος",
 				"realtimeMemory": "Στη μνήμη",
 				"realtimeRedis": "Redis ({{mode}})",
@@ -9507,7 +9354,6 @@
 		"save": "Αποθήκευση",
 		"saved": "Οι ρυθμίσεις αποθηκεύτηκαν",
 		"saveError": "Δεν ήταν δυνατή η αποθήκευση των ρυθμίσεων",
-		"saving": "Αποθήκευση…",
 		"secret": {
 			"cancel": "Ακύρωση",
 			"clear": "Εκκαθάριση",
@@ -9517,8 +9363,6 @@
 			"saved": "Αποθηκεύτηκε",
 			"unreadable": "Το αποθηκευμένο μυστικό δεν μπορεί να αναγνωστεί (το AUTH_SECRET του διακομιστή άλλαξε). Εισαγάγετέ το ξανά."
 		},
-		"sidebarSubtitle": "Διαχειριστής εγκατάστασης",
-		"sidebarTitle": "Εγκατάσταση",
 		"source": {
 			"default": "Προεπιλογή",
 			"environment": "Περιβάλλον: {{variable}}",
@@ -9571,97 +9415,97 @@
 	},
 	"press": {
 		"boilerplate": {
-			"description": "Ready-made descriptions. Trim them if you need to, but please keep the facts as they are.",
+			"description": "Έτοιμες περιγραφές. Συντομέψτε τις αν χρειαστεί, αλλά κρατήστε τα στοιχεία όπως είναι.",
 			"long": {
-				"label": "About 150 words",
-				"text": "Margaya is an open-source project management platform built for teams that want to plan and ship work without the tool becoming a job of its own. Tasks move through board, list, spreadsheet, calendar and Gantt views of the same data. Cycles, modules, estimates and an intake inbox are there when a team needs planning, and stay out of the way when it doesn't. Teams write docs together next to their tasks, collect requests on public boards, and follow progress with analytics and an audit log. A REST API with an OpenAPI description, webhooks, an MCP server and integrations with GitHub, Gitea, Slack, Discord and others connect Margaya to the rest of a team's tools. The interface is available in 20 languages. Margaya is released under the MIT licence and runs on a single server with Docker, or on Kubernetes with Helm; Margaya Cloud offers the same product as a managed service."
+				"label": "Περίπου 150 λέξεις",
+				"text": "Το Margaya είναι μια πλατφόρμα διαχείρισης έργων ανοιχτού κώδικα, φτιαγμένη για ομάδες που θέλουν να σχεδιάζουν και να παραδίδουν δουλειά χωρίς το εργαλείο να γίνεται δουλειά από μόνο του. Οι εργασίες κινούνται σε προβολές πίνακα, λίστας, υπολογιστικού φύλλου, ημερολογίου και Gantt των ίδιων δεδομένων. Κύκλοι, ενότητες, εκτιμήσεις και εισερχόμενα αιτημάτων υπάρχουν όταν μια ομάδα χρειάζεται σχεδιασμό και μένουν στην άκρη όταν δεν τον χρειάζεται. Οι ομάδες γράφουν έγγραφα μαζί δίπλα στις εργασίες τους, συλλέγουν αιτήματα σε δημόσιους πίνακες και παρακολουθούν την πρόοδο με analytics και αρχείο ελέγχου. Ένα REST API με περιγραφή OpenAPI, webhooks, ένας διακομιστής MCP και ενσωματώσεις με GitHub, Gitea, Slack, Discord και άλλα συνδέουν το Margaya με τα υπόλοιπα εργαλεία μιας ομάδας. Η διεπαφή είναι διαθέσιμη σε 20 γλώσσες. Το Margaya διατίθεται με άδεια MIT και τρέχει σε έναν διακομιστή με Docker ή σε Kubernetes με Helm· το Margaya Cloud προσφέρει το ίδιο προϊόν ως διαχειριζόμενη υπηρεσία."
 			},
 			"short": {
-				"label": "About 50 words",
-				"text": "Margaya is an open-source project management platform for teams that want clear ownership without heavy process. Plan work on boards, lists, spreadsheets, calendars and Gantt charts, write docs beside the tasks, and connect your tools through a REST API and MCP. Run it yourself under the MIT licence, or use Margaya Cloud."
+				"label": "Περίπου 50 λέξεις",
+				"text": "Το Margaya είναι μια πλατφόρμα διαχείρισης έργων ανοιχτού κώδικα για ομάδες που θέλουν σαφείς αρμοδιότητες χωρίς βαριές διαδικασίες. Οι ομάδες σχεδιάζουν τη δουλειά σε πίνακες, λίστες, υπολογιστικά φύλλα, ημερολόγια και διαγράμματα Gantt, γράφουν έγγραφα δίπλα στις εργασίες και συνδέουν τα εργαλεία τους μέσω REST API και MCP. Μπορείτε να το τρέξετε μόνοι σας με άδεια MIT ή να χρησιμοποιήσετε το Margaya Cloud."
 			},
-			"title": "Boilerplate"
+			"title": "Έτοιμα κείμενα"
 		},
 		"colours": {
-			"copyHex": "Copy {{hex}}",
-			"description": "Margaya is deliberately quiet: near-black, off-white and a few greys, so the work on screen supplies the colour.",
+			"copyHex": "Αντιγραφή {{hex}}",
+			"description": "Το Margaya είναι σκόπιμα λιτό: σχεδόν μαύρο, υπόλευκο και λίγες αποχρώσεις του γκρι, ώστε το χρώμα να το δίνει η δουλειά στην οθόνη.",
 			"graphite": {
-				"name": "Graphite",
-				"usage": "Text and primary buttons in the light theme"
+				"name": "Γραφίτης",
+				"usage": "Κείμενο και κύρια κουμπιά στο ανοιχτό θέμα"
 			},
 			"ink": {
-				"name": "Ink",
-				"usage": "The logo, and the dark theme's background"
+				"name": "Μελάνι",
+				"usage": "Το λογότυπο και το φόντο του σκούρου θέματος"
 			},
 			"mist": {
-				"name": "Mist",
-				"usage": "Panels and sidebars in the light theme"
+				"name": "Ομίχλη",
+				"usage": "Πλαίσια και πλευρικές στήλες στο ανοιχτό θέμα"
 			},
 			"mono": {
 				"name": "Geist Mono",
-				"usage": "Code, keyboard shortcuts and task IDs"
+				"usage": "Κώδικας, συντομεύσεις πληκτρολογίου και αναγνωριστικά εργασιών"
 			},
 			"paper": {
-				"name": "Paper",
-				"usage": "The light logo, and primary buttons in the dark theme"
+				"name": "Χαρτί",
+				"usage": "Το ανοιχτόχρωμο λογότυπο και τα κύρια κουμπιά στο σκούρο θέμα"
 			},
-			"sample": "Plan the work. Ship the work.",
+			"sample": "Σχεδιάστε τη δουλειά. Παραδώστε τη δουλειά.",
 			"sans": {
 				"name": "Geist",
-				"usage": "Interface, headings and the wordmark, set semibold with tight tracking"
+				"usage": "Διεπαφή, επικεφαλίδες και λογότυπο κειμένου, σε ημιέντονα με στενή απόσταση χαρακτήρων"
 			},
-			"title": "Colours and type",
-			"typeTitle": "Typography",
+			"title": "Χρώματα και τυπογραφία",
+			"typeTitle": "Τυπογραφία",
 			"white": {
-				"name": "White",
-				"usage": "The light theme's background"
+				"name": "Λευκό",
+				"usage": "Το φόντο του ανοιχτού θέματος"
 			}
 		},
 		"contact": {
-			"body": "Margaya is built in the open, so the maintainers answer on GitHub. Start a discussion for interviews and questions about the project, or open an issue if something in this kit is missing or out of date.",
-			"discussions": "Start a discussion",
-			"issues": "Open an issue",
-			"title": "Talk to the maintainers"
+			"body": "Το Margaya αναπτύσσεται ανοιχτά, γι' αυτό οι συντηρητές απαντούν στο GitHub. Ξεκινήστε μια συζήτηση για συνεντεύξεις και ερωτήσεις σχετικά με το έργο ή ανοίξτε ένα issue αν κάτι σε αυτό το υλικό λείπει ή δεν είναι ενημερωμένο.",
+			"discussions": "Ξεκινήστε μια συζήτηση",
+			"issues": "Ανοίξτε ένα issue",
+			"title": "Μιλήστε με τους συντηρητές"
 		},
-		"copied": "Copied",
-		"copy": "Copy",
-		"copyUrl": "Copy URL",
-		"description": "Margaya's press kit: boilerplate text, logos, product screenshots, brand colours and typography, with direct download links.",
-		"download": "Download",
-		"downloadKit": "Download the press kit",
+		"copied": "Αντιγράφηκε",
+		"copy": "Αντιγραφή",
+		"copyUrl": "Αντιγραφή URL",
+		"description": "Το υλικό τύπου του Margaya: έτοιμα κείμενα παρουσίασης, λογότυπα, στιγμιότυπα του προϊόντος, χρώματα και τυπογραφία της μάρκας, με άμεσους συνδέσμους λήψης.",
+		"download": "Λήψη",
+		"downloadKit": "Λήψη του υλικού τύπου",
 		"downloadKitMeta": "ZIP, {{size}}",
-		"eyebrow": "Press kit",
+		"eyebrow": "Υλικό τύπου",
 		"facts": {
-			"description": "The essentials, in one place.",
+			"description": "Τα ουσιώδη, σε ένα σημείο.",
 			"founded": {
-				"label": "Founded",
+				"label": "Ίδρυση",
 				"value": "2026"
 			},
 			"hosting": {
-				"label": "Hosting",
-				"value": "Self-hosted with Docker or Helm, or managed on Margaya Cloud"
+				"label": "Φιλοξενία",
+				"value": "Αυτοφιλοξενία με Docker ή Helm, ή διαχειριζόμενο στο Margaya Cloud"
 			},
 			"interfaces": {
-				"label": "Interfaces",
-				"value": "REST API with an OpenAPI description, plus an MCP server"
+				"label": "Διεπαφές",
+				"value": "REST API με περιγραφή OpenAPI, καθώς και διακομιστής MCP"
 			},
 			"languages": {
-				"label": "Languages",
-				"value": "20 interface languages"
+				"label": "Γλώσσες",
+				"value": "20 γλώσσες διεπαφής"
 			},
 			"licence": {
-				"label": "Licence",
-				"value": "MIT, for every feature"
+				"label": "Άδεια χρήσης",
+				"value": "MIT, για κάθε δυνατότητα"
 			},
 			"source": {
-				"label": "Source code",
+				"label": "Πηγαίος κώδικας",
 				"value": "github.com/manu14357/Margaya"
 			},
 			"stack": {
-				"label": "Stack",
-				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
+				"label": "Τεχνολογίες",
+				"value": "TypeScript, Hono, React και PostgreSQL, με προαιρετικό Redis"
 			},
-			"title": "Quick facts",
+			"title": "Βασικά στοιχεία",
 			"ai": {
 				"label": "ΤΝ",
 				"value": "Προαιρετική και ανενεργή από προεπιλογή: Ρωτήστε την ΤΝ, λειτουργία Δημιουργία και πράκτορες ΤΝ, με το Claude ή ένα αυτοφιλοξενούμενο μοντέλο"
@@ -9669,212 +9513,218 @@
 		},
 		"guidelines": {
 			"do": {
-				"contrast": "Use the dark wordmark on light backgrounds and the light wordmark on dark ones.",
-				"link": "Link to margaya.app or the GitHub repository when you mention the project.",
-				"name": "Write the name as “Margaya”, with a capital M, in running text.",
-				"space": "Leave clear space around the logo at least as wide as the icon's ears."
+				"contrast": "Χρησιμοποιήστε το σκούρο λογότυπο κειμένου σε ανοιχτόχρωμα φόντα και το ανοιχτό σε σκουρόχρωμα.",
+				"link": "Βάλτε σύνδεσμο προς το margaya.app ή το αποθετήριο στο GitHub όταν αναφέρετε το έργο.",
+				"name": "Μέσα στο κείμενο, γράφετε το όνομα ως «Margaya», με κεφαλαίο M.",
+				"space": "Αφήστε γύρω από το λογότυπο κενό χώρο τουλάχιστον όσο το πλάτος των αυτιών του εικονιδίου."
 			},
 			"dont": {
-				"distort": "Stretch, rotate, outline or add effects to the logo.",
-				"edit": "Edit screenshots to show features that Margaya doesn't have.",
-				"endorse": "Suggest that the Margaya maintainers endorse a product, service or opinion.",
-				"recolour": "Recolour the logo, or place it on busy images where it loses contrast."
+				"distort": "Μην τεντώνετε ή περιστρέφετε το λογότυπο και μην του προσθέτετε περίγραμμα ή εφέ.",
+				"edit": "Μην επεξεργάζεστε στιγμιότυπα ώστε να δείχνουν δυνατότητες που το Margaya δεν έχει.",
+				"endorse": "Μην υπονοείτε ότι οι συντηρητές του Margaya υποστηρίζουν κάποιο προϊόν, υπηρεσία ή άποψη.",
+				"recolour": "Μην αλλάζετε τα χρώματα του λογότυπου και μην το τοποθετείτε σε φορτωμένες εικόνες όπου χάνει την αντίθεσή του."
 			},
-			"dontTitle": "Please don't",
-			"doTitle": "Please do",
-			"title": "Using the brand"
+			"dontTitle": "Τι να αποφύγετε",
+			"doTitle": "Τι να κάνετε",
+			"title": "Χρήση της μάρκας"
 		},
-		"headline": "Margaya is open-source project management you can run on your own server.",
-		"intro": "Short and long descriptions, logos, screenshots, colours and type, ready for articles, videos and talks. Everything on this page may be used for editorial coverage of Margaya.",
+		"headline": "Το Margaya είναι διαχείριση έργων ανοιχτού κώδικα που μπορείτε να τρέξετε στον δικό σας διακομιστή.",
+		"intro": "Σύντομες και εκτενείς περιγραφές, λογότυπα, στιγμιότυπα, χρώματα και γραμματοσειρές, έτοιμα για άρθρα, βίντεο και ομιλίες. Όλο το περιεχόμενο αυτής της σελίδας μπορεί να χρησιμοποιηθεί για τη δημοσιογραφική κάλυψη του Margaya.",
 		"logos": {
-			"description": "Use the wordmark wherever there is room for it, and the icon where space is tight. Each file has a permanent address you can link to.",
+			"description": "Χρησιμοποιήστε το λογότυπο κειμένου όπου υπάρχει χώρος και το εικονίδιο όπου ο χώρος είναι περιορισμένος. Κάθε αρχείο έχει μόνιμη διεύθυνση στην οποία μπορείτε να παραπέμψετε.",
 			"iconPng": {
-				"alt": "The Margaya app icon",
+				"alt": "Το εικονίδιο εφαρμογής του Margaya",
 				"detail": "PNG, 512 × 512",
-				"name": "App icon"
+				"name": "Εικονίδιο εφαρμογής"
 			},
 			"iconSvg": {
-				"alt": "The Margaya icon: a light cat face on a dark rounded square",
-				"detail": "SVG, scales to any size",
-				"name": "Icon"
+				"alt": "Το εικονίδιο του Margaya: ένα ανοιχτόχρωμο πρόσωπο γάτας σε σκουρόχρωμο στρογγυλεμένο τετράγωνο",
+				"detail": "SVG, κλιμακώνεται σε οποιοδήποτε μέγεθος",
+				"name": "Εικονίδιο"
 			},
-			"title": "Logos",
+			"title": "Λογότυπα",
 			"wordmarkDark": {
-				"alt": "The Margaya wordmark in near-black on a light background",
-				"detail": "SVG, for light backgrounds",
-				"name": "Wordmark, dark"
+				"alt": "Το λογότυπο κειμένου του Margaya σε σχεδόν μαύρο πάνω σε ανοιχτόχρωμο φόντο",
+				"detail": "SVG, για ανοιχτόχρωμα φόντα",
+				"name": "Λογότυπο κειμένου, σκούρο"
 			},
 			"wordmarkLight": {
-				"alt": "The Margaya wordmark in off-white on a dark background",
-				"detail": "SVG, for dark backgrounds",
-				"name": "Wordmark, light"
+				"alt": "Το λογότυπο κειμένου του Margaya σε υπόλευκο πάνω σε σκουρόχρωμο φόντο",
+				"detail": "SVG, για σκουρόχρωμα φόντα",
+				"name": "Λογότυπο κειμένου, ανοιχτό"
 			}
 		},
-		"onThisPage": "On this page",
+		"onThisPage": "Σε αυτή τη σελίδα",
 		"screenshots": {
-			"close": "Close",
-			"counter": "{{current}} of {{total}}",
-			"dark": "Dark",
-			"description": "Real Margaya screens in the light and dark themes. Select one to see it at full size.",
-			"empty": "A fresh set of screenshots is on its way. Until then, the press kit download has the current set.",
-			"light": "Light",
-			"next": "Next screenshot",
-			"open": "View larger: {{title}}",
-			"previous": "Previous screenshot",
+			"close": "Κλείσιμο",
+			"counter": "{{current}} από {{total}}",
+			"dark": "Σκούρο",
+			"description": "Πραγματικές οθόνες του Margaya στο ανοιχτό και στο σκούρο θέμα. Επιλέξτε μία για να τη δείτε σε πλήρες μέγεθος.",
+			"empty": "Μια νέα σειρά στιγμιότυπων έρχεται σύντομα. Μέχρι τότε, η λήψη του υλικού τύπου περιέχει την τρέχουσα σειρά.",
+			"light": "Ανοιχτό",
+			"next": "Επόμενο στιγμιότυπο",
+			"open": "Μεγαλύτερη προβολή: {{title}}",
+			"previous": "Προηγούμενο στιγμιότυπο",
 			"size": "{{width}} × {{height}}, PNG",
-			"title": "Product screenshots"
+			"title": "Στιγμιότυπα του προϊόντος"
 		},
-		"title": "Press kit",
-		"downloadPng": "Download PNG"
+		"title": "Υλικό τύπου",
+		"downloadPng": "Λήψη PNG"
 	},
 	"pricing": {
 		"cta": {
-			"description": "Start a Cloud trial with no card, or follow the install guide and run Margaya on your own hardware.",
-			"primary": "Start a free trial",
-			"secondary": "Read the install guide",
-			"title": "Pick the way that fits, and change your mind later."
+			"description": "Ξεκινήστε μια δοκιμή Cloud χωρίς κάρτα ή ακολουθήστε τον οδηγό εγκατάστασης και τρέξτε το Margaya στο δικό σας υλικό.",
+			"primary": "Ξεκινήστε δωρεάν δοκιμή",
+			"secondary": "Διαβάστε τον οδηγό εγκατάστασης",
+			"title": "Διαλέξτε τον τρόπο που σας ταιριάζει και αλλάξτε γνώμη αργότερα."
 		},
-		"description": "The self-hosted build is the whole product under the MIT licence, with no seat limits and no paid tier. Margaya Cloud is the same software, hosted in the EU and kept up to date for you.",
-		"eyebrow": "Pricing",
+		"description": "Η αυτοφιλοξενούμενη έκδοση είναι ολόκληρο το προϊόν με άδεια MIT, χωρίς όρια θέσεων και χωρίς επί πληρωμή βαθμίδα. Το Margaya Cloud είναι το ίδιο λογισμικό, φιλοξενημένο στην ΕΕ και πάντα ενημερωμένο για εσάς.",
+		"eyebrow": "Τιμές",
 		"faq": {
 			"items": {
 				"cancel": {
-					"answer": "Your plan stays active until the end of the period you've paid for. Export your work as CSV, Excel or JSON before then if you want to keep a copy.",
-					"question": "What happens if I cancel?"
+					"answer": "Το πρόγραμμά σας μένει ενεργό μέχρι το τέλος της περιόδου που έχετε πληρώσει. Μέχρι τότε, εξαγάγετε τη δουλειά σας σε CSV, Excel ή JSON αν θέλετε να κρατήσετε ένα αντίγραφο.",
+					"question": "Τι γίνεται αν ακυρώσω;"
 				},
 				"founding": {
-					"answer": "Workspaces created before paid plans launched keep free access for at least 12 months, and you'll get six months' notice before anything changes.",
-					"question": "I signed up before paid plans existed. What changes?"
+					"answer": "Οι χώροι εργασίας που δημιουργήθηκαν πριν από την κυκλοφορία των επί πληρωμή προγραμμάτων διατηρούν δωρεάν πρόσβαση για τουλάχιστον 12 μήνες, και θα ειδοποιηθείτε έξι μήνες πριν αλλάξει οτιδήποτε.",
+					"question": "Εγγράφηκα πριν υπάρξουν τα επί πληρωμή προγράμματα. Τι αλλάζει;"
 				},
 				"payments": {
-					"answer": "Payments go through Creem, which acts as merchant of record and handles sales tax and VAT where they apply. Your card details never reach Margaya.",
-					"question": "Who handles payments and tax?"
+					"answer": "Οι πληρωμές γίνονται μέσω της Creem, η οποία λειτουργεί ως πωλητής καταγραφής (merchant of record) και χειρίζεται τον φόρο πωλήσεων και τον ΦΠΑ όπου ισχύουν. Τα στοιχεία της κάρτας σας δεν φτάνουν ποτέ στο Margaya.",
+					"question": "Ποιος χειρίζεται τις πληρωμές και τους φόρους;"
 				},
 				"seats": {
-					"answer": "Cloud Team is billed for each member of the workspace. When someone joins or leaves, the seat count on the subscription is updated to match.",
-					"question": "How are Cloud Team members counted?"
+					"answer": "Το Cloud Ομάδα χρεώνεται για κάθε μέλος του χώρου εργασίας. Όταν κάποιος μπαίνει ή φεύγει, ο αριθμός θέσεων στη συνδρομή ενημερώνεται αντίστοιχα.",
+					"question": "Πώς μετριούνται τα μέλη στο Cloud Ομάδα;"
 				},
 				"selfHostHelp": {
-					"answer": "From the maintainers and the community on GitHub, through discussions and issues. Installation, upgrades and configuration are covered in the documentation.",
-					"question": "Where do self-hosters get help?"
+					"answer": "Από τους συντηρητές και την κοινότητα στο GitHub, μέσω discussions και issues. Η εγκατάσταση, οι αναβαθμίσεις και η διαμόρφωση καλύπτονται στην τεκμηρίωση.",
+					"question": "Πού βρίσκουν βοήθεια όσοι κάνουν αυτοφιλοξενία;"
 				},
 				"selfHostLimits": {
-					"answer": "No. The code you install is the code that runs Margaya Cloud, and all of it is MIT licensed. There are no licence keys, seat limits or paid features to unlock.",
-					"question": "Is the self-hosted version missing anything?"
+					"answer": "Όχι. Ο κώδικας που εγκαθιστάτε είναι ο ίδιος κώδικας που τρέχει το Margaya Cloud, και όλος διατίθεται με άδεια MIT. Δεν υπάρχουν κλειδιά άδειας, όρια θέσεων ή επί πληρωμή δυνατότητες για ξεκλείδωμα.",
+					"question": "Λείπει κάτι από την αυτοφιλοξενούμενη έκδοση;"
 				},
 				"trial": {
-					"answer": "A new Cloud workspace gets 14 days with everything included, and you don't need a card to start. Before it ends, choose a plan or export your tasks.",
-					"question": "How does the Cloud trial work?"
+					"answer": "Ένας νέος χώρος εργασίας στο Cloud έχει 14 ημέρες με όλα όσα περιλαμβάνονται, και δεν χρειάζεστε κάρτα για να ξεκινήσετε. Πριν λήξει, επιλέξτε ένα πρόγραμμα ή εξαγάγετε τις εργασίες σας.",
+					"question": "Πώς λειτουργεί η δοκιμή του Cloud;"
 				},
 				"yearly": {
-					"answer": "Yes. A year costs the same as ten months, so both Cloud plans come with two months free when you pay yearly.",
-					"question": "Is yearly billing cheaper?"
+					"answer": "Ναι. Ένας χρόνος κοστίζει όσο δέκα μήνες, οπότε και τα δύο προγράμματα Cloud έρχονται με δύο μήνες δωρεάν όταν πληρώνετε ετήσια.",
+					"question": "Είναι φθηνότερη η ετήσια χρέωση;"
+				},
+				"ai": {
+					"question": "Περιλαμβάνεται η ΤΝ;",
+					"answer": "Κάθε πρόγραμμα περιλαμβάνει τις λειτουργίες ΤΝ: Ρωτήστε την ΤΝ, τη λειτουργία Δημιουργία, πράκτορες και βοήθεια στη γραφή. Μένουν ανενεργές μέχρι να τις ενεργοποιήσει ένας διαχειριστής. Η χρήση της ΤΝ δεν περιλαμβάνεται στην τιμή: προσθέτετε το δικό σας κλειδί API στις ρυθμίσεις ΤΝ του χώρου εργασίας και ο πάροχος ΤΝ σας χρεώνει απευθείας. Οι αυτοφιλοξενούμενες εγκαταστάσεις μπορούν επίσης να χρησιμοποιούν ένα μοντέλο που εκτελείτε οι ίδιοι, μέσω Ollama ή vLLM."
 				}
 			},
-			"title": "Questions about pricing"
+			"title": "Ερωτήσεις για τις τιμές"
 		},
 		"interval": {
-			"annual": "Yearly",
-			"label": "Billing period",
-			"monthly": "Monthly",
-			"saving": "2 months free"
+			"annual": "Ετήσια",
+			"label": "Περίοδος χρέωσης",
+			"monthly": "Μηνιαία",
+			"saving": "2 μήνες δωρεάν"
 		},
-		"metaDescription": "Margaya is free to self-host, forever. Margaya Cloud costs $4 a month for one person or $5 per member a month for teams, with a 14-day free trial.",
+		"metaDescription": "Το Margaya είναι δωρεάν για αυτοφιλοξενία, για πάντα. Το Margaya Cloud κοστίζει $4 τον μήνα για ένα άτομο ή $5 ανά μέλος τον μήνα για ομάδες, με δωρεάν δοκιμή 14 ημερών.",
 		"plans": {
 			"personal": {
-				"annualNote": "Works out at {{price}} a month",
-				"annualPeriod": "per year",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month",
-				"monthlyPeriod": "per month",
-				"name": "Cloud Personal",
+				"annualNote": "Αντιστοιχεί σε {{price}} τον μήνα",
+				"annualPeriod": "τον χρόνο",
+				"cta": "Ξεκινήστε δοκιμή 14 ημερών",
+				"monthlyNote": "Χρέωση κάθε μήνα",
+				"monthlyPeriod": "τον μήνα",
+				"name": "Cloud Προσωπικό",
 				"points": {
-					"everything": "Every feature in the self-hosted build",
-					"help": "Support by email",
-					"managed": "Backups and updates handled for you",
-					"one": "One person, unlimited projects and tasks"
+					"everything": "Όλες οι δυνατότητες της αυτοφιλοξενούμενης έκδοσης",
+					"help": "Υποστήριξη μέσω email",
+					"managed": "Αντίγραφα ασφαλείας και ενημερώσεις τα αναλαμβάνουμε εμείς",
+					"one": "Ένα άτομο, απεριόριστα έργα και εργασίες"
 				},
-				"tagline": "Managed hosting for one person"
+				"tagline": "Διαχειριζόμενη φιλοξενία για ένα άτομο"
 			},
 			"selfHosted": {
-				"cta": "Read the install guide",
-				"name": "Self-hosted",
-				"note": "MIT licence. No key, no seat limit.",
-				"period": "forever",
+				"cta": "Διαβάστε τον οδηγό εγκατάστασης",
+				"name": "Αυτοφιλοξενούμενο",
+				"note": "Άδεια MIT. Χωρίς κλειδί, χωρίς όριο θέσεων.",
+				"period": "για πάντα",
 				"points": {
-					"data": "Your database, your backups, your rules",
-					"deploy": "Docker on one server, or Helm on Kubernetes",
-					"everything": "Every feature, for as many people as you like",
-					"help": "Community help on GitHub"
+					"data": "Η βάση δεδομένων σας, τα αντίγραφα ασφαλείας σας, οι κανόνες σας",
+					"deploy": "Docker σε έναν διακομιστή ή Helm σε Kubernetes",
+					"everything": "Όλες οι δυνατότητες, για όσα άτομα θέλετε",
+					"help": "Βοήθεια από την κοινότητα στο GitHub"
 				},
-				"tagline": "On servers you run"
+				"tagline": "Σε διακομιστές που διαχειρίζεστε εσείς"
 			},
 			"team": {
-				"annualNote": "Works out at {{price}} per member a month",
-				"annualPeriod": "per member, per year",
-				"badge": "For teams",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month for each workspace member",
-				"monthlyPeriod": "per member, per month",
-				"name": "Cloud Team",
+				"annualNote": "Αντιστοιχεί σε {{price}} ανά μέλος τον μήνα",
+				"annualPeriod": "ανά μέλος, τον χρόνο",
+				"badge": "Για ομάδες",
+				"cta": "Ξεκινήστε δοκιμή 14 ημερών",
+				"monthlyNote": "Χρέωση κάθε μήνα για κάθε μέλος του χώρου εργασίας",
+				"monthlyPeriod": "ανά μέλος, τον μήνα",
+				"name": "Cloud Ομάδα",
 				"points": {
-					"help": "Priority support by email",
-					"managed": "Backups and updates handled for you",
-					"people": "Everyone in the workspace, unlimited projects",
-					"roles": "Workspace roles and permissions"
+					"help": "Υποστήριξη προτεραιότητας μέσω email",
+					"managed": "Αντίγραφα ασφαλείας και ενημερώσεις τα αναλαμβάνουμε εμείς",
+					"people": "Όλοι στον χώρο εργασίας, απεριόριστα έργα",
+					"roles": "Ρόλοι και δικαιώματα χώρου εργασίας"
 				},
-				"tagline": "Managed hosting for a whole team"
+				"tagline": "Διαχειριζόμενη φιλοξενία για ολόκληρη την ομάδα"
 			}
 		},
 		"table": {
-			"description": "The features are the same everywhere. What changes is who runs the servers and where you go for help.",
-			"feature": "Feature",
+			"description": "Οι δυνατότητες είναι παντού ίδιες. Αυτό που αλλάζει είναι ποιος τρέχει τους διακομιστές και πού απευθύνεστε για βοήθεια.",
+			"feature": "Δυνατότητα",
 			"groups": {
-				"connect": "Connect",
-				"planning": "Planning and insight",
-				"running": "Running it",
-				"work": "The work"
+				"connect": "Συνδέσεις",
+				"planning": "Σχεδιασμός και εικόνα προόδου",
+				"running": "Λειτουργία",
+				"work": "Η δουλειά"
 			},
-			"included": "Included",
-			"notIncluded": "Not included",
+			"included": "Περιλαμβάνεται",
+			"notIncluded": "Δεν περιλαμβάνεται",
 			"rows": {
-				"admin": "Instance settings: sign-in providers, email, storage",
-				"analytics": "Analytics and audit log",
-				"api": "REST API, webhooks and MCP",
-				"backups": "Backups",
-				"cycles": "Cycles, modules and estimates",
-				"docs": "Docs written together, next to the tasks",
-				"export": "Export to CSV, Excel or JSON",
-				"hosting": "Where it runs",
-				"intake": "Intake inbox and triage",
-				"integrations": "GitHub, Gitea, Slack, Discord and more",
-				"jira": "Jira import",
-				"people": "People",
-				"projects": "Projects and tasks",
-				"publicBoards": "Public boards with voting",
-				"roles": "Workspace roles and permissions",
-				"support": "Support",
-				"updates": "Updates",
-				"views": "Board, list, spreadsheet, calendar and Gantt views"
+				"admin": "Ρυθμίσεις εγκατάστασης: πάροχοι σύνδεσης, email, αποθήκευση",
+				"analytics": "Analytics και αρχείο ελέγχου",
+				"api": "REST API, webhooks και MCP",
+				"backups": "Αντίγραφα ασφαλείας",
+				"cycles": "Κύκλοι, ενότητες και εκτιμήσεις",
+				"docs": "Έγγραφα που γράφονται από κοινού, δίπλα στις εργασίες",
+				"export": "Εξαγωγή σε CSV, Excel ή JSON",
+				"hosting": "Πού εκτελείται",
+				"intake": "Εισερχόμενα αιτήματα και διαλογή",
+				"integrations": "GitHub, Gitea, Slack, Discord και άλλα",
+				"jira": "Εισαγωγή από Jira",
+				"people": "Άτομα",
+				"projects": "Έργα και εργασίες",
+				"publicBoards": "Δημόσιοι πίνακες με ψηφοφορία",
+				"roles": "Ρόλοι και δικαιώματα χώρου εργασίας",
+				"support": "Υποστήριξη",
+				"updates": "Ενημερώσεις",
+				"views": "Προβολές πίνακα, λίστας, υπολογιστικού φύλλου, ημερολογίου και Gantt",
+				"ai": "ΤΝ: Ρωτήστε την ΤΝ, λειτουργία Δημιουργία και πράκτορες"
 			},
-			"title": "Compare the plans",
+			"title": "Σύγκριση προγραμμάτων",
 			"values": {
-				"automatic": "Automatic",
-				"community": "Community on GitHub",
+				"automatic": "Αυτόματα",
+				"community": "Κοινότητα στο GitHub",
 				"email": "Email",
-				"eu": "EU data centres",
-				"notNeeded": "Not needed for one",
-				"one": "Just you",
-				"perMember": "Unlimited, billed per member",
-				"priorityEmail": "Priority email",
-				"unlimited": "Unlimited",
-				"yours": "You run them",
-				"yourSchedule": "When you choose",
-				"yourServers": "Your servers"
+				"eu": "Κέντρα δεδομένων στην ΕΕ",
+				"notNeeded": "Δεν χρειάζεται για ένα άτομο",
+				"one": "Μόνο εσείς",
+				"perMember": "Απεριόριστα, με χρέωση ανά μέλος",
+				"priorityEmail": "Email προτεραιότητας",
+				"unlimited": "Απεριόριστα",
+				"yours": "Τα αναλαμβάνετε εσείς",
+				"yourSchedule": "Όποτε επιλέξετε",
+				"yourServers": "Οι διακομιστές σας",
+				"ownKey": "Δικό σας κλειδί ή μοντέλο ΤΝ"
 			}
 		},
-		"title": "One product. Two ways to run it.",
-		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+		"title": "Ένα προϊόν. Δύο τρόποι να το τρέξετε.",
+		"trialNote": "Τα προγράμματα Cloud ξεκινούν με δοκιμή 14 ημερών. Δεν χρειάζεται κάρτα για να ξεκινήσετε."
 	},
 	"templates": {
 		"form": {
@@ -10154,7 +10004,6 @@
 			},
 			"chat": {
 				"planLabel": "Προτεινόμενες αλλαγές",
-				"planning": "Σχεδιασμός αλλαγών…",
 				"nothing": "Δεν υπάρχει τίποτα να αλλάξει για αυτό το αίτημα.",
 				"awaiting": "Αναμονή απάντησης",
 				"ready": "Έτοιμες αλλαγές: {{count}}. Επιβεβαιώστε για να συνεχίσετε.",
@@ -10700,11 +10549,7 @@
 			"retro": "Αναδρομικές αξιολογήσεις",
 			"my_brief": "Η ενημέρωσή μου",
 			"embedding": "Ευρετηρίαση αναζήτησης",
-			"coding_handoff": "Οδηγίες για πράκτορες κώδικα",
-			"build_chat": "Δημιουργία στη συνομιλία",
-			"nl_filter": "Φίλτρα σε φυσική γλώσσα",
-			"inbox_digest": "Συνόψεις εισερχομένων",
-			"speech": "Ομιλία σε κείμενο"
+			"coding_handoff": "Οδηγίες για πράκτορες κώδικα"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -10846,7 +10691,9 @@
 			"speechFormat": "Μορφή API",
 			"speechFormatHint": "Πώς στέλνεται ο ήχος. Για το Fish Audio χρησιμοποιήστε ως endpoint το https://api.fish.audio/v1/asr.",
 			"speechFormatOpenai": "Συμβατό με OpenAI",
-			"speechModelHint": "Για το Fish Audio: transcribe-1-pro ή transcribe-1, ή αφήστε το κενό."
+			"speechModelHint": "Για το Fish Audio: transcribe-1-pro ή transcribe-1, ή αφήστε το κενό.",
+			"storePrompts": "Διατήρηση prompts και απαντήσεων",
+			"storePromptsHint": "Διατήρησε το κείμενο των αιτημάτων προς πράκτορες και ό,τι έγραψε το μοντέλο στο αρχείο κάθε εκτέλεσης. Απενεργοποιημένο: οι εκτελέσεις κρατούν μόνο μετρήσεις, βήματα και τη σύνοψή τους. Ισχύει για εκτελέσεις που τελειώνουν από εδώ και πέρα. Το ιστορικό Ask που κρατά ένας χώρος εργασίας στον διακομιστή έχει δικό του διακόπτη."
 		},
 		"workspace": {
 			"navLabel": "ΤΝ",
@@ -10924,7 +10771,8 @@
 			"storeConversations": "Διατήρηση ιστορικού συνομιλιών στον διακομιστή",
 			"storeConversationsHint": "Οι συζητήσεις κάθε ατόμου αποθηκεύονται στον χώρο εργασίας, ώστε να μπορεί να τις ανοίξει ξανά από οποιαδήποτε συσκευή. Απενεργοποιημένο: μένουν μόνο σε κάθε πρόγραμμα περιήγησης.",
 			"allowAutopilot": "Να επιτρέπεται ο αυτόματος πιλότος",
-			"allowAutopilotHint": "Η λειτουργία Δημιουργία μπορεί να εφαρμόζει αλλαγές χωρίς επιβεβαίωση. Κάθε αλλαγή εξακολουθεί να καταγράφεται και μπορεί να αναιρεθεί."
+			"allowAutopilotHint": "Η λειτουργία Δημιουργία μπορεί να εφαρμόζει αλλαγές χωρίς επιβεβαίωση. Κάθε αλλαγή εξακολουθεί να καταγράφεται και μπορεί να αναιρεθεί.",
+			"storesPrompts": "Τα prompts διατηρούνται"
 		},
 		"agents": {
 			"navLabel": "Πράκτορες",
@@ -11128,11 +10976,13 @@
 					"manual": "Εκτέλεση από εργασία",
 					"schedule": "Προγραμματισμένη",
 					"automation": "Αυτοματισμός",
-					"chat": "Συνέχεια"
+					"chat": "Συνέχεια",
+					"intake": "Αίτημα εισερχομένων"
 				},
 				"project": "Έργο:",
 				"workedSeconds": "Δούλεψε {{count}} δευτ.",
-				"workedMinutes": "Δούλεψε {{count}} λεπ."
+				"workedMinutes": "Δούλεψε {{count}} λεπ.",
+				"request": "Αίτημα"
 			},
 			"connectors": {
 				"title": "Σύνδεσμοι",
@@ -11274,6 +11124,27 @@
 					"schedule": "Πρόγραμμα",
 					"automation": "Αυτοματισμός"
 				}
+			},
+			"intakeTrigger": {
+				"open": "Νέα αιτήματα εισερχομένων για {{name}}",
+				"badge": "Εισερχόμενα",
+				"title": "Αιτήματα εισερχομένων: {{name}}",
+				"hint": "Εκτέλεσε τον πράκτορα σε κάθε νέο αίτημα εισερχομένων στα έργα του, για παράδειγμα για να το διαλογήσει. Οι αλλαγές του ακολουθούν τους ίδιους κανόνες έγκρισης και αναίρεσης με τις άλλες εκτελέσεις.",
+				"enabled": "Εκτέλεση σε νέα αιτήματα εισερχομένων",
+				"enabledHint": "Μόνο σε έργα με ενεργά Εισερχόμενα και AI, και εντός των έργων του πράκτορα.",
+				"prompt": "Τι πρέπει να κάνει;",
+				"promptPlaceholder": "Για παράδειγμα: πρότεινε προτεραιότητα και ετικέτες και επισήμανε διπλότυπα.",
+				"promptHint": "Άφησέ το κενό για διαλογή: ένα σύντομο σχόλιο για το τι ζητά το αίτημα, πόσο επείγον φαίνεται και τι λείπει.",
+				"runsAs": "Εκτελείται για λογαριασμό του/της {{name}}. Αν αποθηκεύσεις με ενεργό το έναυσμα, γίνεσαι εσύ αυτό το πρόσωπο.",
+				"runsAsYou": "Εκτελείται για λογαριασμό σου μόλις το ενεργοποιήσεις, με το πολύ τα δικαιώματά σου. Απενεργοποιείται αν φύγεις από τον χώρο εργασίας ή χάσεις την πρόσβαση στο AI ή στα εισερχόμενα.",
+				"outsideNote": "Αιτήματα εκτός του χώρου εργασίας (δημόσιοι πίνακες, φόρμες) δεν αλλάζουν ποτέ τίποτα χωρίς έγκριση.",
+				"limitNote": "Το πολύ 30 εκτελέσεις εισερχομένων την ώρα ανά πράκτορα. Αιτήματα που υποβάλλουν πράκτορες δεν ξεκινούν τίποτα.",
+				"saved": "Το έναυσμα εισερχομένων αποθηκεύτηκε",
+				"saveError": "Δεν ήταν δυνατή η αποθήκευση του εναύσματος εισερχομένων. Δοκίμασε ξανά.",
+				"errors": {
+					"forbidden": "Οι εκτελέσεις εισερχομένων ενεργούν για λογαριασμό σου, οπότε χρειάζεσαι πρόσβαση στο AI και δικαίωμα ανάγνωσης αιτημάτων εισερχομένων.",
+					"AGENT_CANT_READ_INTAKE": "Ο ρόλος αυτού του πράκτορα δεν μπορεί να διαβάσει αιτήματα εισερχομένων. Δώσε του έναν ρόλο που μπορεί."
+				}
 			}
 		},
 		"capture": {
@@ -11356,7 +11227,7 @@
 			"timelineLabel": "Πρόοδος πράκτορα κώδικα",
 			"sentBy": "Στάλθηκε στο {{profile}} από {{name}}",
 			"sentByUnknown": "Στάλθηκε στο {{profile}}",
-			"issueLink": "Issue #{{number}}",
+			"issueLink": "Ζήτημα #{{number}}",
 			"prLink": "Pull request #{{number}}",
 			"pending": "Όχι ακόμη",
 			"steps": {
@@ -11503,7 +11374,6 @@
 			"unmeasured_other": "{{count}} εργασίες δεν έχουν καταγεγραμμένη έναρξη και παραλείπονται."
 		},
 		"capacity": {
-			"meter": "Προγραμματισμένη δουλειά σε σύγκριση με έναν συνηθισμένο κύκλο",
 			"within": "Προγραμματισμένο στο {{percent}}% ενός συνηθισμένου κύκλου",
 			"over": "Πάνω από τη χωρητικότητα: προγραμματισμένο στο {{percent}}% ενός συνηθισμένου κύκλου",
 			"noDates": "Ορίστε τις ημερομηνίες του κύκλου για να ελέγξετε τη χωρητικότητά του.",
@@ -11610,6 +11480,146 @@
 			"emailTitle": "Προσθήκη της Σύνοψής μου στο ενημερωτικό",
 			"emailDescription": "Το ενημερωτικό θα δείχνει επίσης τις μπλοκαρισμένες εργασίες σας και αλλαγές σε εργασίες που παρακολουθείτε. Απαιτεί ημερήσιο ή εβδομαδιαίο ενημερωτικό.",
 			"emailError": "Δεν ήταν δυνατή η αποθήκευση αυτής της ρύθμισης."
+		}
+	},
+	"emails": {
+		"otp": {
+			"preview": "Ο κωδικός επαλήθευσής σας για το Margaya",
+			"title": "Ο κωδικός επαλήθευσής σας",
+			"subtitle": "Εισαγάγετε αυτόν τον κωδικό μίας χρήσης για να ολοκληρώσετε τη σύνδεση.",
+			"verifySubtitle": "Εισαγάγετε αυτόν τον κωδικό μίας χρήσης για να επαληθεύσετε τη διεύθυνση email σας.",
+			"changeSubtitle": "Εισαγάγετε αυτόν τον κωδικό μίας χρήσης για να επιβεβαιώσετε αυτή τη διεύθυνση ως τη νέα διεύθυνση email του λογαριασμού σας στο Margaya.",
+			"code": "είναι ο κωδικός επαλήθευσής σας για το Margaya.",
+			"expiry": "Αυτός ο κωδικός λήγει σε {{minutes}} λεπτά.",
+			"ignore": "Αν δεν το ζητήσατε εσείς, μπορείτε να αγνοήσετε αυτό το email.",
+			"footer": "Email ασφαλείας Margaya"
+		},
+		"magicLink": {
+			"preview": "Σύνδεση στο Margaya",
+			"title": "Ο ασφαλής σύνδεσμος σύνδεσής σας",
+			"subtitle": "Χρησιμοποιήστε αυτόν τον σύνδεσμο για να συνεχίσετε στον χώρο εργασίας σας στο Margaya.",
+			"cta": "Σύνδεση στο Margaya",
+			"expiry": "Για την ασφάλειά σας, αυτός ο σύνδεσμος λήγει σε 5 λεπτά.",
+			"ignore": "Αν δεν το ζητήσατε εσείς, μπορείτε να αγνοήσετε αυτό το email.",
+			"footer": "Email ασφαλείας Margaya"
+		},
+		"passwordReset": {
+			"preview": "Επαναφορά του κωδικού πρόσβασης Margaya",
+			"title": "Επαναφορά κωδικού πρόσβασης",
+			"subtitleWithName": "Γεια σας {{name}}, χρησιμοποιήστε το παρακάτω κουμπί για να ορίσετε νέο κωδικό πρόσβασης.",
+			"subtitleDefault": "Χρησιμοποιήστε το παρακάτω κουμπί για να ορίσετε νέο κωδικό πρόσβασης.",
+			"cta": "Επαναφορά κωδικού πρόσβασης",
+			"expiry": "Αυτός ο σύνδεσμος επαναφοράς λήγει σε 1 ώρα.",
+			"ignore": "Αν δεν το ζητήσατε εσείς, δεν θα γίνει καμία αλλαγή.",
+			"footer": "Email ασφαλείας Margaya"
+		},
+		"emailChanged": {
+			"preview": "Η διεύθυνση email σας στο Margaya άλλαξε",
+			"title": "Η διεύθυνση email σας άλλαξε",
+			"body": "Η διεύθυνση email του λογαριασμού σας στο Margaya είναι πλέον {{email}}. Από εδώ και πέρα, οι σύνδεσμοι σύνδεσης, οι κωδικοί και οι ειδοποιήσεις θα αποστέλλονται εκεί.",
+			"warning": "Αν δεν κάνατε εσείς αυτή την αλλαγή, επικοινωνήστε αμέσως με τον διαχειριστή του Margaya.",
+			"footer": "Email ασφαλείας Margaya"
+		},
+		"authSubjects": {
+			"magicLinkSubject": "Σύνδεσμος σύνδεσης για το Margaya",
+			"otpSubject": "Κωδικός επαλήθευσης για το Margaya",
+			"verifyEmailSubject": "Επαληθεύστε το email σας για το Margaya",
+			"passwordResetSubject": "Επαναφορά του κωδικού πρόσβασης Margaya",
+			"changeEmailSubject": "Επιβεβαιώστε το νέο σας email για το Margaya",
+			"emailChangedSubject": "Η διεύθυνση email σας στο Margaya άλλαξε"
+		},
+		"notification": {
+			"preview": "Έχετε μια νέα ειδοποίηση από το Margaya",
+			"subtitle": "Μια ειδοποίηση ταιριάζει με τις προτιμήσεις παράδοσής σας.",
+			"footer": "Ειδοποίηση Margaya",
+			"actionLabel": "Άνοιγμα στο Margaya"
+		},
+		"notificationBatch": {
+			"preview": "Οι πρόσφατες ενημερώσεις σας στο Margaya",
+			"title_one": "{{count}} νέα ενημέρωση",
+			"title_other": "{{count}} νέες ενημερώσεις",
+			"subtitle": "Αλλαγές στις εργασίες σας, ομαδοποιημένες από το τελευταίο email.",
+			"by": "από",
+			"open": "Άνοιγμα εργασίας",
+			"manage": "Διαχείριση ρυθμίσεων ειδοποιήσεων",
+			"footer": "Ειδοποίηση Margaya"
+		},
+		"notificationDigest": {
+			"title": {
+				"daily": "Η ημερήσια σύνοψή σας",
+				"weekly": "Η εβδομαδιαία σύνοψή σας"
+			},
+			"preview": "Η σύνοψή σας στο Margaya",
+			"subtitle": "Οι ανοιχτές εργασίες σας που είναι εκπρόθεσμες ή λήγουν μέσα σε 7 ημέρες, και τι νέο υπάρχει στα εισερχόμενά σας.",
+			"dueHeading": "Λήγουν σύντομα και εκπρόθεσμες",
+			"overdue": "Εκπρόθεσμη",
+			"due": "Λήξη",
+			"more_one": "και {{count}} ακόμη",
+			"more_other": "και {{count}} ακόμη",
+			"mentionsHeading_one": "{{count}} νέα αναφορά",
+			"mentionsHeading_other": "{{count}} νέες αναφορές",
+			"unread_one": "{{count}} μη αναγνωσμένη ειδοποίηση στα εισερχόμενά σας",
+			"unread_other": "{{count}} μη αναγνωσμένες ειδοποιήσεις στα εισερχόμενά σας",
+			"openInbox": "Άνοιγμα εισερχομένων",
+			"manage": "Διαχείριση ρυθμίσεων ειδοποιήσεων",
+			"footer": "Επιλέξατε να λαμβάνετε αυτή τη σύνοψη.",
+			"blockedHeading": "Μπλοκαρισμένες",
+			"waitingOn": "Περιμένει {{keys}}",
+			"hiddenBlockers_one": "{{count}} εργασία που δεν μπορείτε να δείτε",
+			"hiddenBlockers_other": "{{count}} εργασίες που δεν μπορείτε να δείτε",
+			"followingHeading": "Αλλαγές σε εργασίες που παρακολουθείτε",
+			"changes_one": "{{count}} αλλαγή",
+			"changes_other": "{{count}} αλλαγές"
+		},
+		"batchSubject": {
+			"task_one": "{{count}} ενημέρωση για {{title}}",
+			"task_other": "{{count}} ενημερώσεις για {{title}}",
+			"all_one": "{{count}} ενημέρωση στο Margaya",
+			"all_other": "{{count}} ενημερώσεις στο Margaya"
+		},
+		"digestSubject": {
+			"daily": "Η ημερήσια σύνοψή σας στο Margaya",
+			"weekly": "Η εβδομαδιαία σύνοψή σας στο Margaya"
+		},
+		"workspaceDeletion": {
+			"fallbackName": "Ένας χώρος εργασίας",
+			"openWorkspace": "Άνοιγμα χώρου εργασίας",
+			"scheduledSubject": "{{name}}: προγραμματίστηκε διαγραφή",
+			"scheduledTitle": "{{name}}: θα διαγραφεί στις {{date}}",
+			"scheduledTitleNoDate": "{{name}}: θα διαγραφεί σύντομα",
+			"scheduledMessage": "Ο κάτοχος προγραμμάτισε τη διαγραφή αυτού του χώρου εργασίας. Μέχρι τις {{date}} είναι μόνο για ανάγνωση: μπορείτε ακόμη να ανοίγετε και να εξάγετε το περιεχόμενό του, και ο κάτοχος μπορεί να ακυρώσει τη διαγραφή. Μετά από αυτή την ημερομηνία τα έργα, οι εργασίες και οι σελίδες του διαγράφονται οριστικά.",
+			"scheduledMessageNoDate": "Ο κάτοχος προγραμμάτισε τη διαγραφή αυτού του χώρου εργασίας. Μέχρι τη διαγραφή είναι μόνο για ανάγνωση: μπορείτε ακόμη να ανοίγετε και να εξάγετε το περιεχόμενό του, και ο κάτοχος μπορεί να ακυρώσει τη διαγραφή. Μετά τα έργα, οι εργασίες και οι σελίδες του διαγράφονται οριστικά.",
+			"cancelledSubject": "{{name}}: η διαγραφή ακυρώθηκε",
+			"cancelledTitle": "{{name}}: ξανά διαθέσιμο",
+			"cancelledMessage": "Ο κάτοχος ακύρωσε την προγραμματισμένη διαγραφή. Ο χώρος εργασίας δεν είναι πλέον μόνο για ανάγνωση, και τα κλειδιά API και τα webhooks του λειτουργούν ξανά."
+		},
+		"webhookDisabled": {
+			"subject": "Ένα webhook του Margaya απενεργοποιήθηκε",
+			"title": "Το webhook απενεργοποιήθηκε",
+			"message": "Οι παραδόσεις προς το {{host}} απέτυχαν επανειλημμένα για περισσότερο από μία ημέρα, γι' αυτό το Margaya απενεργοποίησε το webhook. Διορθώστε το endpoint και ενεργοποιήστε ξανά το webhook στις ρυθμίσεις του χώρου εργασίας.",
+			"messageNoHost": "Οι παραδόσεις προς το endpoint απέτυχαν επανειλημμένα για περισσότερο από μία ημέρα, γι' αυτό το Margaya απενεργοποίησε το webhook. Διορθώστε το endpoint και ενεργοποιήστε ξανά το webhook στις ρυθμίσεις του χώρου εργασίας.",
+			"actionLabel": "Άνοιγμα ρυθμίσεων webhook"
+		},
+		"trialReminder": {
+			"endedTitle": "Η δοκιμαστική περίοδος του χώρου εργασίας {{workspaceName}} έληξε",
+			"daysLeftTitle_one": "Απομένει {{count}} ημέρα από τη δοκιμαστική περίοδο του χώρου εργασίας {{workspaceName}}",
+			"daysLeftTitle_other": "Απομένουν {{count}} ημέρες από τη δοκιμαστική περίοδο του χώρου εργασίας {{workspaceName}}",
+			"endedSubtitle": "Ο χώρος εργασίας σας είναι μόνο για ανάγνωση μέχρι να επιλέξετε πρόγραμμα. Δεν έχει διαγραφεί τίποτα και τα δεδομένα σας είναι ακόμη εκεί.",
+			"activeSubtitle": "Επιλέξτε πρόγραμμα για να συνεχίσετε να δημιουργείτε και να επεξεργάζεστε όταν λήξει η δοκιμαστική περίοδος.",
+			"cta": "Επιλογή προγράμματος",
+			"selfHost": "Το Margaya είναι επίσης δωρεάν για πάντα αν το φιλοξενείτε μόνοι σας, με όλες τις λειτουργίες. Μπορείτε να εξαγάγετε τα δεδομένα σας οποιαδήποτε στιγμή και να τα μεταφέρετε στον δικό σας διακομιστή.",
+			"footer": "Λαμβάνετε αυτό το μήνυμα επειδή είστε κάτοχος αυτού του χώρου εργασίας στο Margaya Cloud."
+		},
+		"trialSubjects": {
+			"trialEnding": "Η δοκιμαστική περίοδος του χώρου εργασίας {{workspaceName}} λήγει σε 3 ημέρες",
+			"trialExpired": "Η δοκιμαστική περίοδος του χώρου εργασίας {{workspaceName}} έληξε"
+		},
+		"testEmail": {
+			"subject": "Δοκιμαστικό email από {{instanceName}}",
+			"text": "Αυτό είναι ένα δοκιμαστικό email από {{instanceName}}. Αν μπορείτε να το διαβάσετε, η αποστολή email λειτουργεί."
+		},
+		"notificationText": {
+			"commentWithoutPreview": "Νέο σχόλιο στην εργασία {{taskTitle}}"
 		}
 	}
 }

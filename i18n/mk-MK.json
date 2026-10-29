@@ -10,16 +10,10 @@
 			"markAllRead": "Означи ги сите како прочитани",
 			"remove": "Отстрани",
 			"reset": "Ресетирај",
-			"filter": "Филтрирај",
-			"clearAllFilters": "Исчисти ги сите филтри",
 			"undo": "Врати"
 		},
 		"a11y": {
 			"toggleSidebar": "Вклучи/исклучи странична лента"
-		},
-		"sidebar": {
-			"title": "Странична лента",
-			"mobileDescription": "Ја прикажува мобилната странична лента."
 		},
 		"empty": {
 			"loading": "Се вчитува..."
@@ -36,29 +30,12 @@
 			"label": "Навигација",
 			"more": "Повеќе"
 		},
-		"language": {
-			"english": "Англиски",
-			"german": "Германски",
-			"greek": "Грчки",
-			"macedonian": "Македонски",
-			"french": "Француски",
-			"spanish": "Шпански",
-			"dutch": "Холандски",
-			"korean": "Корејски",
-			"chinese": "Кинески",
-			"italian": "Италијански"
-		},
 		"people": {
 			"someone": "Некој",
 			"unknown": "Непознат"
 		},
 		"error": {
 			"title": "Нешто тргна наопаку",
-			"troubleshooting": "Чекори за решавање проблеми:",
-			"tryAgain": "Обиди се повторно",
-			"viewDeploymentGuide": "Види го водичот за распоредување",
-			"refreshPage": "Освежи ја страницата",
-			"description": "Страницата неочекувано престана да работи. Освежувањето обично помага.",
 			"messages": {
 				"auth": "Автентикацијата не успеа. Најави се повторно.",
 				"cors": "Не може да се поврзе со серверот. Ова може да се должи на проблеми со конфигурацијата на CORS.",
@@ -97,7 +74,6 @@
 				"keyLabel": "Клуч:",
 				"keyHint": "Се користи за ID на тикети (пр. {{example}}-123)",
 				"createButton": "Креирај проект",
-				"successToast": "Проектот е успешно креиран",
 				"errorToast": "Неуспешно креирање на проект",
 				"keyTaken": "Проект со клучот {{key}} веќе постои во овој работен простор",
 				"blankProject": "Празен проект",
@@ -132,7 +108,6 @@
 				"successUpdated": "Задачата е успешно ажурирана",
 				"createError": "Неуспешно креирање на задача",
 				"priority": "Приоритет",
-				"statusFallback": "Во тек",
 				"startDate": "Почетен датум",
 				"dueDate": "Краен рок",
 				"clearStartDate": "Исчисти почетен датум",
@@ -331,7 +306,6 @@
 			"namePlaceholder": "Петар Петровски",
 			"failedSignUp": "Неуспешна регистрација",
 			"accountCreated": "Сметката е успешно креирана",
-			"passwordTooShort": "Лозинката е прекратка",
 			"creatingAccount": "Се креира сметка...",
 			"createAccount": "Креирај сметка"
 		},
@@ -345,7 +319,6 @@
 			"invitationExpired": "Поканата истече",
 			"errorLoadDescription": "Неуспешно вчитување на деталите за поканата. Поканата може да е невалидна или истечена.",
 			"goToSignIn": "Оди на најавување",
-			"workspaceLabel": "Работен простор: {{workspaceName}}",
 			"joinWorkspace": "Приклучи се на {{workspaceName}}",
 			"inviteBodySignedIn": "<inviter>{{inviterName}}</inviter> те покани да се приклучиш на нивниот работен простор.",
 			"inviteBodySignedOut": "<inviter>{{inviterName}}</inviter> те покани да се приклучиш на нивниот работен простор на Margaya.",
@@ -375,7 +348,6 @@
 			"creating": "Се креира...",
 			"createWorkspace": "Креирај работен простор",
 			"workspaceCreatedTitle": "Работниот простор е креиран",
-			"redirectingToWorkspace": "Те носиме на <name>{{name}}</name>...",
 			"toast": {
 				"workspaceCreated": "Работниот простор е успешно креиран",
 				"createFailed": "Неуспешно креирање на работен простор",
@@ -439,8 +411,6 @@
 			"namePlaceholder": "пр. Петар Петровски",
 			"saving": "Се зачувува...",
 			"continue": "Продолжи",
-			"welcome": "Добредојде, {{name}}!",
-			"redirecting": "Те носиме на контролната табла...",
 			"toast": {
 				"updateSuccess": "Профилот е успешно ажуриран",
 				"updateFailed": "Неуспешно ажурирање на профилот"
@@ -541,7 +511,6 @@
 	},
 	"settings": {
 		"account": "Сметка",
-		"developer": "Програмер",
 		"information": "Информации",
 		"notifications": "Известувања",
 		"preferences": "Преференции",
@@ -653,23 +622,7 @@
 			"noProjectsInWorkspace": "Сè уште нема достапни проекти за овој работен простор.",
 			"createRule": "Креирај правило",
 			"removeRule": "Отстрани правило",
-			"toastEmailSaved": "Поставките за известувања по е-пошта се зачувани",
-			"toastEmailSaveFailed": "Неуспешно зачувување на поставките за е-пошта",
-			"toastNtfySaved": "ntfy поставките се зачувани",
-			"toastNtfySaveFailed": "Неуспешно зачувување на ntfy поставките",
-			"toastNtfyDisconnected": "ntfy е исклучен",
-			"toastNtfyDisconnectFailed": "Неуспешно исклучување на ntfy",
-			"toastGotifySaved": "Gotify поставките се зачувани",
-			"toastGotifySaveFailed": "Неуспешно зачувување на Gotify поставките",
-			"toastGotifyDisconnected": "Gotify е исклучен",
-			"toastGotifyDisconnectFailed": "Неуспешно исклучување на Gotify",
-			"toastWebhookSaved": "Webhook поставките се зачувани",
-			"toastWebhookSaveFailed": "Неуспешно зачувување на webhook поставките",
-			"toastWebhookDisconnected": "Webhook-от е исклучен",
-			"toastWebhookDisconnectFailed": "Неуспешно исклучување на webhook-от",
-			"toastRuleSaved": "Правилото за известувања за {{workspaceName}} е зачувано",
 			"toastRuleSaveFailed": "Неуспешно зачувување на правилото за известувања на работниот простор",
-			"toastRuleRemoved": "Правилото за известувања за {{workspaceName}} е отстрането",
 			"toastRuleRemoveFailed": "Неуспешно отстранување на правилото за известувања на работниот простор",
 			"toastPreferencesSaved": "Преференциите за известувања се зачувани",
 			"toastPreferencesSaveFailed": "Неуспешно зачувување на преференциите за известувања",
@@ -739,7 +692,6 @@
 			"selectViewMode": "Избери режим на приказ",
 			"board": "Табла",
 			"list": "Листа",
-			"gantt": "Гант",
 			"sidebarDefault": "Стандардна состојба на страничната лента",
 			"sidebarDefaultDescription": "Задржи ја страничната лента отворена при стартување",
 			"displayOptions": "Опции за приказ",
@@ -844,14 +796,8 @@
 			"dangerZone": "Опасна зона",
 			"dangerZoneSubtitle": "Неповратни и деструктивни акции.",
 			"deleteWorkspace": "Избриши работен простор",
-			"deleteWorkspaceDescription": "Закажи трајно бришење на работниот простор",
-			"deleteModalTitle": "Да се избрише работниот простор?",
-			"deleteModalDescription": "Ова трајно ќе го избрише работниот простор \"{{name}}\" и сите негови податоци. Оваа акција не може да се врати.",
-			"deleteModalConfirm": "Избриши работен простор",
 			"toastUpdated": "Работниот простор е успешно ажуриран",
 			"toastUpdateError": "Неуспешно ажурирање на работниот простор",
-			"toastDeleted": "Работниот простор е успешно избришан",
-			"toastDeleteError": "Неуспешно бришење на работниот простор",
 			"validation": {
 				"nameRequired": "Името на работниот простор е задолжително",
 				"nameShort": "Името на работниот простор мора да има најмалку 2 знаци"
@@ -950,21 +896,6 @@
 			"mattermostSectionTitle": "Интеграција со Mattermost",
 			"chatGroupTitle": "Разговори и webhook-и",
 			"codeGroupTitle": "Хостирање на код"
-		},
-		"projectVisibility": {
-			"pageTitle": "Видливост на проектот",
-			"title": "Видливост",
-			"subtitle": "Контролирај кој може да го гледа и пристапува твојот проект.",
-			"sectionTitle": "Видливост",
-			"sectionSubtitle": "Вклучи јавен пристап и сподели го јавниот URL.",
-			"publicAccess": "Јавен пристап",
-			"publicAccessHint": "Дозволи секој со URL да го гледа овој проект",
-			"publicUrl": "Јавен URL",
-			"publicUrlHint": "Сподели го овој линк ако проектот е јавен",
-			"copy": "Копирај",
-			"copiedToast": "Копирано",
-			"toastUpdated": "Видливоста е ажурирана",
-			"toastUpdateError": "Неуспешно ажурирање на видливоста"
 		},
 		"projectWorkflow": {
 			"pageTitle": "Поставки за работниот тек",
@@ -1182,7 +1113,6 @@
 			},
 			"connect": "Поврзи Slack",
 			"saveChanges": "Зачувај промени",
-			"update": "Ажурирај Slack",
 			"disconnect": "Откачи"
 		},
 		"discordIntegration": {
@@ -1220,7 +1150,6 @@
 			},
 			"connect": "Поврзи Discord",
 			"saveChanges": "Зачувај промени",
-			"update": "Ажурирај Discord",
 			"disconnect": "Откачи"
 		},
 		"genericWebhookIntegration": {
@@ -1337,9 +1266,7 @@
 			"exportTasks": "Извези задачи",
 			"importTasks": "Увези задачи",
 			"dialogTitle": "Увоз на задачи",
-			"dialogDescription": "Прикачи JSON датотека со задачи за увоз во овој проект.",
 			"expectedFormat": "Очекуван формат:",
-			"dropHint": "Повлечи и пушти ја JSON датотеката тука",
 			"selectFile": "Избери датотека",
 			"exporting": "Се извезуваат задачи...",
 			"exportSuccess": "Задачите се успешно извезени",
@@ -1350,7 +1277,6 @@
 			"importError": "Неуспешен увоз на задачи",
 			"invalidFormat": "Невалиден формат на датотека за увоз",
 			"noFileDropped": "Не е пуштена датотека",
-			"notJsonFile": "Прикачи JSON датотека",
 			"exportCsv": "CSV (табеларна пресметка)",
 			"exportJson": "JSON (за повторен увоз)",
 			"exportStarted": "Извозот започна. Ќе го најдеш во Поставки на работен простор → Извози.",
@@ -1990,7 +1916,6 @@
 				"saveError": "Не успеа зачувувањето на интеграцијата со Mattermost",
 				"updateError": "Не успеа ажурирањето на интеграцијата со Mattermost"
 			},
-			"update": "Ажурирај Mattermost",
 			"validation": {
 				"webhookInvalid": "Внеси валидно URL на webhook за Mattermost"
 			},
@@ -2002,13 +1927,11 @@
 			"addButton": "Додади",
 			"createError": "Не успеа креирањето на прилагоденото поле.",
 			"createSuccess": "Прилагоденото поле е креирано.",
-			"creating": "Креирање...",
 			"defaultLabel": "Стандардно",
 			"defaultValuePlaceholder": "Стандардна вредност",
 			"deleteButton": "Избриши",
 			"deleteError": "Не успеа бришењето на прилагоденото поле.",
 			"deleteSuccess": "Прилагоденото поле е избришано.",
-			"deleting": "Бришење...",
 			"empty": "Сè уште нема конфигурирано прилагодени полиња.",
 			"loading": "Се вчитуваат прилагодените полиња...",
 			"namePlaceholder": "Име на полето",
@@ -2938,7 +2861,9 @@
 				"agentScheduleDisabled": "Исклучи распоред на агент",
 				"aiConnectorCreated": "Додаде MCP-конектор",
 				"aiConnectorUpdated": "Промени MCP-конектор",
-				"aiConnectorDeleted": "Избриша MCP-конектор"
+				"aiConnectorDeleted": "Избриша MCP-конектор",
+				"agentIntakeTriggerUpdated": "Го промени активаторот за влезни барања на агент",
+				"agentIntakeTriggerDisabled": "Го исклучи активаторот за влезни барања на агент"
 			},
 			"actor": {
 				"apiKey": "API клуч",
@@ -3277,8 +3202,7 @@
 			"empty": "Нема пронајдени резултати.",
 			"footer": {
 				"navigate": "Навигирај",
-				"open": "Отвори",
-				"close": "Затвори"
+				"open": "Отвори"
 			},
 			"goToInbox": "Оди во приемното сандаче",
 			"newView": "Нов приказ",
@@ -3305,11 +3229,10 @@
 			},
 			"recent": "Неодамнешни",
 			"removeScope": "Барај насекаде",
-			"scope": "In"
+			"scope": "Во"
 		},
 		"notifications": "Известувања",
 		"sidebar": {
-			"overview": "Преглед",
 			"projects": "Проекти",
 			"members": "Членови",
 			"invitations": "Покани",
@@ -3317,12 +3240,9 @@
 			"backToBoard": "Назад на табла",
 			"favorites": "Омилени",
 			"allTasks": "Сите задачи",
-			"inbox": "Приемно сандаче",
 			"myWork": "Твојата работа",
 			"home": "Почетна",
-			"personal": "Лично",
 			"stickies": "Лепенки",
-			"analytics": "Аналитика",
 			"drafts": "Нацрти"
 		},
 		"projectList": {
@@ -3350,10 +3270,6 @@
 				"page": "Страници"
 			}
 		},
-		"settingsLayout": {
-			"toggleSidebar": "Вклучи/исклучи странична лента",
-			"back": "Назад"
-		},
 		"userMenu": {
 			"signedOutSuccess": "Успешно одјавен",
 			"signOutFailed": "Неуспешна одјава",
@@ -3366,13 +3282,11 @@
 		"workspaceSwitcher": {
 			"workspaces": "Работни простори",
 			"switching": "Се префрлува...",
-			"addWorkspace": "Додади работен простор",
-			"selectWorkspace": "Избери работен простор"
+			"addWorkspace": "Додади работен простор"
 		},
 		"page": {
 			"projectsTitle": "Проекти",
 			"settingsTitle": "Поставки",
-			"backToWorkspace": "Назад до работниот простор",
 			"settingsWorkspaceTab": "Работен простор",
 			"settingsInstanceTab": "Инстанца",
 			"settingsNotFoundBack": "Поставки на сметката",
@@ -3402,7 +3316,6 @@
 			"items": {
 				"openCommandPalette": "Отвори палета на команди",
 				"globalSearch": "Глобално пребарување",
-				"toggleSidebar": "Вклучи/исклучи странична лента",
 				"showShortcuts": "Прикажи кратенки на тастатура",
 				"closeModal": "Затвори модал/мени",
 				"createTask": "Креирај задача",
@@ -3509,16 +3422,11 @@
 	},
 	"notifications": {
 		"title": "Известувања",
-		"newCount_one": "{{count}} ново",
-		"newCount_other": "{{count}} нови",
-		"emptyTitle": "Нема известувања засега",
-		"emptySubtitle": "Тука ќе ги гледаш ажурирањата и активностите.",
 		"clearAll": "Исчисти ги сите известувања",
 		"clearDialogTitle": "Исчисти ги сите известувања?",
 		"clearDialogDescription": "Ова трајно ќе ги отстрани сите известувања. Не можеш да ја вратиш оваа акција.",
 		"shortcuts": {
-			"open": "Отвори известувања",
-			"inbox": "Отвори приемно сандаче"
+			"open": "Отвори известувања"
 		},
 		"events": {
 			"task_created": {
@@ -3675,7 +3583,6 @@
 				"fiveDays": "5 дена",
 				"oneDay": "1 ден",
 				"oneWeek": "1 недела",
-				"pickDate": "Избери датум",
 				"pickTime": "Избери време",
 				"submit": "Одложи",
 				"threeDays": "3 дена",
@@ -4069,7 +3976,6 @@
 				"recurredToScheduled": "Следното повторување е создадено според распоредот: <task>{{task}}</task>"
 			}
 		},
-		"title": "Задачи",
 		"status": {
 			"label": "Статус",
 			"to-do": "За правење",
@@ -4308,7 +4214,6 @@
 			"labels": "Етикети",
 			"copyTaskLink": "Копирај линк на задача",
 			"copyTaskBranch": "Копирај гранка на задача",
-			"start": "Почеток",
 			"startDate": "Почетен датум",
 			"noDate": "Без датум",
 			"addLabel": "Додади етикета",
@@ -4374,22 +4279,11 @@
 			"moveAllTooltip": "Премести ги сите планирани во {{column}}",
 			"moveAll": "Премести ги сите",
 			"addTask": "Додади задача",
-			"filter": "Филтрирај",
-			"addFilter": "Додади филтер...",
 			"sections": {
 				"planned": "Планирано",
 				"archived": "Архивирано"
 			},
-			"noTasksInSection": "Нема {{section}} задачи",
-			"filters": {
-				"priority": "Приоритет: {{name}}",
-				"assignee": "Доделен: {{name}}",
-				"due": "Рок: {{date}}",
-				"label": "Етикета: {{name}}",
-				"dueThisWeek": "Рок оваа недела",
-				"dueNextWeek": "Рок следна недела",
-				"noDueDate": "Без краен рок"
-			}
+			"noTasksInSection": "Нема {{section}} задачи"
 		},
 		"sort": {
 			"label": "Подреди",
@@ -4409,11 +4303,6 @@
 		},
 		"boardFilters": {
 			"filterBy": "Филтрирај по",
-			"allStatuses": "Сите статуси",
-			"allPriorities": "Сите приоритети",
-			"allAssignees": "Сите доделени",
-			"allDueDates": "Сите крајни рокови",
-			"allLabels": "Сите етикети",
 			"selectedCount": "{{count}} избрани",
 			"subjects": {
 				"status": "Статус",
@@ -4424,14 +4313,8 @@
 				"estimate": "Проценка"
 			},
 			"operators": {
-				"isAnyOf": "е било кој од",
-				"includeAnyOf": "вклучува било кој од"
-			},
-			"all": "Сите",
-			"allCustomFieldValues": "Сите вредности",
-			"noCustomFieldValues": "Нема вредности за прилагодени полиња",
-			"noValuesUsedYet": "Сè уште нема користени вредности",
-			"unassigned": "Недоделен"
+				"isAnyOf": "е било кој од"
+			}
 		},
 		"gantt": {
 			"pageTitle": "{{name}} – Гант",
@@ -4474,11 +4357,8 @@
 		},
 		"archive": {
 			"success": "Архивирани {{count}} задачи",
-			"archive": "Архивирај",
 			"archived": "Задачата е архивирана",
 			"badge": "Архивирано",
-			"bulkArchived_one": "Архивирана е {{count}} задача",
-			"bulkArchived_other": "Архивирани се {{count}} задачи",
 			"error": "Не успеав да ја архивирам задачата",
 			"restore": "Врати",
 			"restored": "Задачата е вратена",
@@ -4514,10 +4394,6 @@
 			"updateError": "Неуспешно ажурирање на краен рок на задача",
 			"clearSuccess": "Краениот рок на задачата е исчистен",
 			"clearError": "Неуспешно чистење на краен рок"
-		},
-		"labels": {
-			"label": "Етикети",
-			"empty": "Нема достапни етикети"
 		},
 		"update": {
 			"success": "Задачата е успешно ажурирана",
@@ -4861,7 +4737,6 @@
 				"project": "Проект",
 				"status": "Статус"
 			},
-			"needsSingleProject": "Групирањето по статус бара еден проект",
 			"none": "Нема",
 			"order": {
 				"assignee": "Доделен",
@@ -4949,14 +4824,14 @@
 			"noOptions": "Нема опции",
 			"operators": {
 				"between": "помеѓу",
-				"is": "is",
+				"is": "е",
 				"isEmpty": "е празно",
 				"isNoneOf": "не е ниту едно од",
 				"isNot": "не е",
 				"isNotEmpty": "не е празно",
 				"moreThanAgo": "пред повеќе од …",
 				"moreThanAhead": "по повеќе од … од сега",
-				"on": "on",
+				"on": "на",
 				"onOrAfter": "на или по",
 				"onOrBefore": "на или пред",
 				"withinLast": "во последните",
@@ -4969,9 +4844,7 @@
 				"completed": "Завршено",
 				"created": "Креирано",
 				"createdBy": "Креирано од",
-				"customFields": "Прилагодени полиња",
 				"cycle": "Циклус",
-				"estimate": "Проценка",
 				"group": "Група",
 				"mentions": "Спомнувања",
 				"module": "Модул",
@@ -4985,7 +4858,7 @@
 			"values": {
 				"currentCycle": "Тековен циклус",
 				"false": "Не",
-				"me": "Me",
+				"me": "Јас",
 				"noAssignee": "Без доделен",
 				"noCreator": "Без автор",
 				"noCycle": "Без циклус",
@@ -5024,8 +4897,6 @@
 			"expandSubTasks": "Прикажи подзадачи",
 			"hideColumn": "Скриј колона",
 			"loadError": "Не успеав да ги вчитам задачите",
-			"newTask": "Нова задача",
-			"newTaskPlaceholder": "Наслов на задачата, потоа Enter",
 			"selectTask": "Избери {{key}}",
 			"sortAsc": "Подреди растечки",
 			"sortDesc": "Подреди опаѓачки",
@@ -5052,7 +4923,7 @@
 		"timeTracking": {
 			"duration": "Времетраење",
 			"durationInvalid": "Внеси времетраење од 1 минута до 24 часа, на пример 1h 30m.",
-			"durationPlaceholder": "e.g. 1h 30m",
+			"durationPlaceholder": "на пр. 1h 30m",
 			"empty": "Сè уште нема запишано време",
 			"entries": "Записи за време",
 			"formerMember": "Поранешен член",
@@ -5232,11 +5103,6 @@
 		"noPendingDescription": "Кога некој ќе те покани во работен простор, поканата ќе се појави тука.",
 		"continueToSetup": "Продолжи кон поставување",
 		"skipForNow": "Прескокни засега",
-		"table": {
-			"workspace": "Работен простор",
-			"invitedBy": "Поканет од",
-			"expires": "Истекува"
-		},
 		"toast": {
 			"acceptError": "Неуспешно прифаќање на покана",
 			"acceptSuccess": "Поканата е прифатена! Добредојде во тимот.",
@@ -5271,7 +5137,6 @@
 				"inProgress": "Во тек"
 			},
 			"noDueDate": "Без краен рок",
-			"reorderHandle": "Прередување на проектот",
 			"reorderError": "Прередувањето на проектите не успеа",
 			"emptyDescriptionReadOnly": "Сè уште нема проекти во овој работен простор. Замоли администратор да креира еден."
 		},
@@ -5298,7 +5163,6 @@
 			"pageTitle": "Креирање работен простор",
 			"heading": "Креирај нов работен простор",
 			"subtitle": "Работните простори се споделени средини каде тимовите можат да работат на проекти, циклуси и задачи.",
-			"nameLabel": "Име на работниот простор",
 			"namePlaceholder": "Внеси име на работен простор",
 			"descriptionLabel": "Опис (опционално)",
 			"descriptionPlaceholder": "Додади опис за твојот работен простор",
@@ -5426,11 +5290,8 @@
 			"columns": {
 				"name": "Име",
 				"role": "Улога",
-				"joined": "Приклучен",
-				"actions": "Акции"
+				"joined": "Приклучен"
 			},
-			"memberRolePending": "{{role}} (На чекање)",
-			"ariaCancelInvitation": "Откажи покана",
 			"ariaRemoveMember": "Отстрани член",
 			"removeDialogTitle": "Да се отстрани членот на тимот?",
 			"removeDialogDescription": "{{name}} ќе биде отстранет од работниот простор и ќе го изгуби пристапот до неговите проекти и задачи.",
@@ -5479,7 +5340,6 @@
 		}
 	},
 	"publicProject": {
-		"pageTitle": "Јавен приказ",
 		"badge": "Јавен",
 		"readOnly": "Само за читање",
 		"error": {
@@ -5492,12 +5352,10 @@
 		"taskDetail": {
 			"labels": "Етикети",
 			"externalLinks": "Надворешни врски",
-			"pullRequestFallback": "Pull request",
 			"issueFallback": "Задача",
 			"prStatusMerged": "Споен",
 			"prStatusDraft": "Нацрт",
 			"prStatusOpen": "Отворен",
-			"dueWithDate": "Рок {{date}}",
 			"created": "Креирана",
 			"dueDateLabel": "Краен рок",
 			"assignees": "Задолжени",
@@ -5521,9 +5379,7 @@
 			"backlog": "Беклог",
 			"chip": "{{subject}}: {{value}}",
 			"clearFilters": "Исчисти филтри",
-			"collapse": "Собери {{name}}",
 			"emptyColumn": "Нема задачи овде",
-			"expand": "Прошири {{name}}",
 			"filter": "Филтрирај",
 			"filters": "Филтри",
 			"layout": "Распоред",
@@ -5682,7 +5538,7 @@
 				"typed": "Поправи пренасочување по најава @adam !high #bug"
 			},
 			"labels": {
-				"bug": "bug",
+				"bug": "грешка",
 				"design": "дизајн",
 				"docs": "документација",
 				"feature": "функција"
@@ -5772,7 +5628,7 @@
 				"done": "Завршено",
 				"inProgress": "Во тек",
 				"inReview": "На преглед",
-				"todo": "To do"
+				"todo": "За правење"
 			},
 			"analytics": {
 				"allProjects": "Сите проекти",
@@ -6219,7 +6075,7 @@
 						"name": "Discord"
 					},
 					"gitea": {
-						"detail": "Issues, pull requests, webhooks",
+						"detail": "Задачи, pull requests, webhooks",
 						"name": "Gitea"
 					},
 					"github": {
@@ -6279,19 +6135,19 @@
 				"statuses": {
 					"done": {
 						"meta": "14 проблеми",
-						"name": "Done"
+						"name": "Завршено"
 					},
 					"inProgress": {
 						"meta": "9 проблеми",
-						"name": "In Progress"
+						"name": "Во тек"
 					},
 					"open": {
 						"meta": "14 проблеми",
-						"name": "Open"
+						"name": "Отворено"
 					},
 					"review": {
 						"meta": "5 проблеми",
-						"name": "Code Review"
+						"name": "Преглед на код"
 					}
 				},
 				"statusesTitle": "Статуси",
@@ -7655,7 +7511,7 @@
 			"clear": "Исчисти филтри",
 			"filterBy": "Филтрирај по",
 			"includesAnyOf": "вклучува кое било од",
-			"is": "is",
+			"is": "е",
 			"isAnyOf": "е било кој од",
 			"lead": "Лидер",
 			"members": "Членови",
@@ -7846,7 +7702,7 @@
 			"completed30": "Завршено во 30 дена",
 			"created": "Креирано",
 			"dueThisWeek": "Рок оваа недела",
-			"notAvailable": "n/a",
+			"notAvailable": "н/д",
 			"overdue": "Задоцнето",
 			"subscribed": "Претплатено"
 		},
@@ -7863,7 +7719,6 @@
 			"cancelled_other": "{{count}} откажани",
 			"priorities": "Отворена работа по приоритет",
 			"recentActivity": "Скорашна активност",
-			"title": "Оптовареност",
 			"byState": "Според состојба"
 		},
 		"activity": {
@@ -7942,7 +7797,6 @@
 			"all": "Сите",
 			"emptyDescription": "Зачувај филтри и распореди како прикази и сподели ги со тимот.",
 			"emptyTitle": "Сè уште нема прикази",
-			"favorite": "Омилен",
 			"mine": "Мои",
 			"more": "Прикази",
 			"newView": "Нов приказ",
@@ -8086,14 +7940,10 @@
 			"inbox": "Прием",
 			"label": "Врати се во работата",
 			"myWork": "Твојата работа",
-			"open_one": "{{count}} отворена",
-			"open_other": "{{count}} отворени",
 			"overdue_one": "{{count}} задоцнета",
 			"overdue_other": "{{count}} задоцнети",
 			"stickies": "Лепливи белешки",
 			"stickiesHint": "Приватни белешки, само за тебе",
-			"unread_one": "{{count}} непрочитано",
-			"unread_other": "{{count}} непрочитани",
 			"openCaption": "отворени",
 			"unreadCaption": "непрочитани"
 		}
@@ -8153,7 +8003,6 @@
 			"submit": "Поднеси барање",
 			"title": "Ново барање",
 			"titlePlaceholder": "Што ти треба?",
-			"titleRequired": "Додај наслов",
 			"toast": "Барањето е поднесено",
 			"toastView": "Прикажи",
 			"pastedImages": "Залепени слики",
@@ -8244,7 +8093,7 @@
 		"filters": {
 			"button": "Филтер",
 			"clear": "Исчисти ги филтрите",
-			"me": "Me",
+			"me": "Јас",
 			"priority": "Приоритет",
 			"remove": "Отстрани филтер",
 			"status": "Статус",
@@ -8333,7 +8182,6 @@
 			"pending": "Оваа задача чека во барањата.",
 			"snoozed": "Оваа задача е одложена во барањата до {{date}}."
 		},
-		"title": "Барања",
 		"triage": {
 			"backToList": "Назад до барањата",
 			"detailLabel": "Барање",
@@ -9303,7 +9151,6 @@
 	},
 	"instanceAdmin": {
 		"admins": {
-			"actions": "Дејства за администратор",
 			"add": "Додади администратор",
 			"addConfirm": "Додади администратор",
 			"addDescription": "Администраторите на инстанцата можат да менуваат секоја поставка во оваа област и да отвораат кој било работен простор.",
@@ -9421,7 +9268,7 @@
 				"fileStorage": "Складирање датотеки",
 				"notConfigured": "Не е конфигурирано",
 				"off": "Исклучено",
-				"on": "On",
+				"on": "Вклучено",
 				"realtime": "Во реално време",
 				"realtimeMemory": "Во меморија",
 				"realtimeRedis": "Redis ({{mode}})",
@@ -9507,7 +9354,6 @@
 		"save": "Зачувај",
 		"saved": "Поставките се зачувани",
 		"saveError": "Поставките не може да се зачуваат",
-		"saving": "Се зачувува…",
 		"secret": {
 			"cancel": "Откажи",
 			"clear": "Исчисти",
@@ -9517,8 +9363,6 @@
 			"saved": "Зачувано",
 			"unreadable": "Зачуваната тајна не може да се прочита (AUTH_SECRET на серверот е променет). Внеси ја повторно."
 		},
-		"sidebarSubtitle": "Администратор на инстанца",
-		"sidebarTitle": "Инстанца",
 		"source": {
 			"default": "Стандардно",
 			"environment": "Околина: {{variable}}",
@@ -9571,97 +9415,97 @@
 	},
 	"press": {
 		"boilerplate": {
-			"description": "Ready-made descriptions. Trim them if you need to, but please keep the facts as they are.",
+			"description": "Готови описи. Скрати ги ако треба, но те молиме фактите остави ги какви што се.",
 			"long": {
-				"label": "About 150 words",
-				"text": "Margaya is an open-source project management platform built for teams that want to plan and ship work without the tool becoming a job of its own. Tasks move through board, list, spreadsheet, calendar and Gantt views of the same data. Cycles, modules, estimates and an intake inbox are there when a team needs planning, and stay out of the way when it doesn't. Teams write docs together next to their tasks, collect requests on public boards, and follow progress with analytics and an audit log. A REST API with an OpenAPI description, webhooks, an MCP server and integrations with GitHub, Gitea, Slack, Discord and others connect Margaya to the rest of a team's tools. The interface is available in 20 languages. Margaya is released under the MIT licence and runs on a single server with Docker, or on Kubernetes with Helm; Margaya Cloud offers the same product as a managed service."
+				"label": "Околу 150 зборови",
+				"text": "Margaya е платформа за управување со проекти со отворен код, создадена за тимови што сакаат да ја планираат и испорачуваат работата без алатката да стане посебна работа. Задачите минуваат низ приказите табла, листа, табела, календар и Гант на истите податоци. Циклусите, модулите, проценките и сандачето за барања се тука кога тимот има потреба од планирање, а не пречат кога нема. Тимовите заедно пишуваат документи веднаш до своите задачи, собираат барања на јавни табли и го следат напредокот со аналитика и ревизорски дневник. REST API со OpenAPI опис, webhooks, MCP сервер и интеграции со GitHub, Gitea, Slack, Discord и други ја поврзуваат Margaya со останатите алатки на тимот. Интерфејсот е достапен на 20 јазици. Margaya е објавена под лиценцата MIT и работи на еден сервер со Docker или на Kubernetes со Helm; Margaya Cloud го нуди истиот производ како управувана услуга."
 			},
 			"short": {
-				"label": "About 50 words",
-				"text": "Margaya is an open-source project management platform for teams that want clear ownership without heavy process. Plan work on boards, lists, spreadsheets, calendars and Gantt charts, write docs beside the tasks, and connect your tools through a REST API and MCP. Run it yourself under the MIT licence, or use Margaya Cloud."
+				"label": "Околу 50 зборови",
+				"text": "Margaya е платформа за управување со проекти со отворен код за тимови што сакаат јасна одговорност без тежок процес. Планирај ја работата на табли, листи, табели, календари и Гант-дијаграми, пишувај документи веднаш до задачите и поврзи ги своите алатки преку REST API и MCP. Води ја сам под лиценцата MIT или користи Margaya Cloud."
 			},
-			"title": "Boilerplate"
+			"title": "Стандардни описи"
 		},
 		"colours": {
-			"copyHex": "Copy {{hex}}",
-			"description": "Margaya is deliberately quiet: near-black, off-white and a few greys, so the work on screen supplies the colour.",
+			"copyHex": "Копирај {{hex}}",
+			"description": "Margaya е намерно тивка: речиси црна, скршено бела и неколку сиви, за бојата да ја даде работата на екранот.",
 			"graphite": {
-				"name": "Graphite",
-				"usage": "Text and primary buttons in the light theme"
+				"name": "Графит",
+				"usage": "Текст и главни копчиња во светлата тема"
 			},
 			"ink": {
-				"name": "Ink",
-				"usage": "The logo, and the dark theme's background"
+				"name": "Мастило",
+				"usage": "Логото и позадината на темната тема"
 			},
 			"mist": {
-				"name": "Mist",
-				"usage": "Panels and sidebars in the light theme"
+				"name": "Магла",
+				"usage": "Панели и странични ленти во светлата тема"
 			},
 			"mono": {
 				"name": "Geist Mono",
-				"usage": "Code, keyboard shortcuts and task IDs"
+				"usage": "Код, кратенки на тастатурата и ID на задачи"
 			},
 			"paper": {
-				"name": "Paper",
-				"usage": "The light logo, and primary buttons in the dark theme"
+				"name": "Хартија",
+				"usage": "Светлото лого и главните копчиња во темната тема"
 			},
-			"sample": "Plan the work. Ship the work.",
+			"sample": "Испланирај ја работата. Испорачај ја работата.",
 			"sans": {
 				"name": "Geist",
-				"usage": "Interface, headings and the wordmark, set semibold with tight tracking"
+				"usage": "Интерфејс, наслови и зборовниот знак, во полузадебелен рез со тесно растојание меѓу буквите"
 			},
-			"title": "Colours and type",
-			"typeTitle": "Typography",
+			"title": "Бои и фонтови",
+			"typeTitle": "Типографија",
 			"white": {
-				"name": "White",
-				"usage": "The light theme's background"
+				"name": "Бела",
+				"usage": "Позадината на светлата тема"
 			}
 		},
 		"contact": {
-			"body": "Margaya is built in the open, so the maintainers answer on GitHub. Start a discussion for interviews and questions about the project, or open an issue if something in this kit is missing or out of date.",
-			"discussions": "Start a discussion",
-			"issues": "Open an issue",
-			"title": "Talk to the maintainers"
+			"body": "Margaya се развива отворено, па одржувачите одговараат на GitHub. Започни дискусија за интервјуа и прашања за проектот, или отвори issue ако нешто во овој пакет недостасува или е застарено.",
+			"discussions": "Започни дискусија",
+			"issues": "Отвори issue",
+			"title": "Разговарај со одржувачите"
 		},
-		"copied": "Copied",
-		"copy": "Copy",
-		"copyUrl": "Copy URL",
-		"description": "Margaya's press kit: boilerplate text, logos, product screenshots, brand colours and typography, with direct download links.",
-		"download": "Download",
-		"downloadKit": "Download the press kit",
+		"copied": "Копирано",
+		"copy": "Копирај",
+		"copyUrl": "Копирај URL",
+		"description": "Пакетот за медиуми на Margaya: готови описи, логоа, снимки од екранот на производот, бои на брендот и типографија, со директни врски за преземање.",
+		"download": "Преземи",
+		"downloadKit": "Преземи го пакетот за медиуми",
 		"downloadKitMeta": "ZIP, {{size}}",
-		"eyebrow": "Press kit",
+		"eyebrow": "Пакет за медиуми",
 		"facts": {
-			"description": "The essentials, in one place.",
+			"description": "Најважното, на едно место.",
 			"founded": {
-				"label": "Founded",
+				"label": "Основано",
 				"value": "2026"
 			},
 			"hosting": {
-				"label": "Hosting",
-				"value": "Self-hosted with Docker or Helm, or managed on Margaya Cloud"
+				"label": "Хостинг",
+				"value": "Сопствен хостинг со Docker или Helm, или управуван на Margaya Cloud"
 			},
 			"interfaces": {
-				"label": "Interfaces",
-				"value": "REST API with an OpenAPI description, plus an MCP server"
+				"label": "Интерфејси",
+				"value": "REST API со OpenAPI опис, плус MCP сервер"
 			},
 			"languages": {
-				"label": "Languages",
-				"value": "20 interface languages"
+				"label": "Јазици",
+				"value": "20 јазици на интерфејсот"
 			},
 			"licence": {
-				"label": "Licence",
-				"value": "MIT, for every feature"
+				"label": "Лиценца",
+				"value": "MIT, за секоја функција"
 			},
 			"source": {
-				"label": "Source code",
+				"label": "Изворен код",
 				"value": "github.com/manu14357/Margaya"
 			},
 			"stack": {
-				"label": "Stack",
-				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
+				"label": "Технологии",
+				"value": "TypeScript, Hono, React и PostgreSQL, со опционален Redis"
 			},
-			"title": "Quick facts",
+			"title": "Кратки факти",
 			"ai": {
 				"label": "AI",
 				"value": "Опционално и стандардно исклучено: Прашај ја AI, режимот Изгради и AI агенти, на Claude или на модел на сопствен хостинг"
@@ -9669,212 +9513,218 @@
 		},
 		"guidelines": {
 			"do": {
-				"contrast": "Use the dark wordmark on light backgrounds and the light wordmark on dark ones.",
-				"link": "Link to margaya.app or the GitHub repository when you mention the project.",
-				"name": "Write the name as “Margaya”, with a capital M, in running text.",
-				"space": "Leave clear space around the logo at least as wide as the icon's ears."
+				"contrast": "Користи го темниот зборовен знак на светли позадини, а светлиот на темни.",
+				"link": "Постави врска до margaya.app или до репозиториумот на GitHub кога го спомнуваш проектот.",
+				"name": "Во текстот пишувај го името како „Margaya“, со голема буква M.",
+				"space": "Остави празен простор околу логото, широк барем колку ушите на иконата."
 			},
 			"dont": {
-				"distort": "Stretch, rotate, outline or add effects to the logo.",
-				"edit": "Edit screenshots to show features that Margaya doesn't have.",
-				"endorse": "Suggest that the Margaya maintainers endorse a product, service or opinion.",
-				"recolour": "Recolour the logo, or place it on busy images where it loses contrast."
+				"distort": "Да го развлекуваш, ротираш, оцртуваш логото или да додаваш ефекти.",
+				"edit": "Да уредуваш снимки од екранот за да прикажеш функции што Margaya ги нема.",
+				"endorse": "Да сугерираш дека одржувачите на Margaya поддржуваат некој производ, услуга или мислење.",
+				"recolour": "Да ја менуваш бојата на логото или да го ставаш на шарени слики каде што го губи контрастот."
 			},
-			"dontTitle": "Please don't",
-			"doTitle": "Please do",
-			"title": "Using the brand"
+			"dontTitle": "Те молиме, немој",
+			"doTitle": "Те молиме, прави го ова",
+			"title": "Користење на брендот"
 		},
-		"headline": "Margaya is open-source project management you can run on your own server.",
-		"intro": "Short and long descriptions, logos, screenshots, colours and type, ready for articles, videos and talks. Everything on this page may be used for editorial coverage of Margaya.",
+		"headline": "Margaya е алатка за управување со проекти со отворен код што можеш да ја водиш на сопствен сервер.",
+		"intro": "Кратки и долги описи, логоа, снимки од екранот, бои и фонтови, подготвени за статии, видеа и предавања. Сè на оваа страница може да се користи за уредувачко известување за Margaya.",
 		"logos": {
-			"description": "Use the wordmark wherever there is room for it, and the icon where space is tight. Each file has a permanent address you can link to.",
+			"description": "Користи го зборовниот знак секаде каде што има место за него, а иконата каде што просторот е тесен. Секоја датотека има трајна адреса до која можеш да поврзеш.",
 			"iconPng": {
-				"alt": "The Margaya app icon",
+				"alt": "Иконата на апликацијата Margaya",
 				"detail": "PNG, 512 × 512",
-				"name": "App icon"
+				"name": "Икона на апликацијата"
 			},
 			"iconSvg": {
-				"alt": "The Margaya icon: a light cat face on a dark rounded square",
-				"detail": "SVG, scales to any size",
-				"name": "Icon"
+				"alt": "Иконата на Margaya: светло мачешко лице на темен квадрат со заоблени агли",
+				"detail": "SVG, се скалира на која било големина",
+				"name": "Икона"
 			},
-			"title": "Logos",
+			"title": "Логоа",
 			"wordmarkDark": {
-				"alt": "The Margaya wordmark in near-black on a light background",
-				"detail": "SVG, for light backgrounds",
-				"name": "Wordmark, dark"
+				"alt": "Зборовниот знак на Margaya во речиси црна боја на светла позадина",
+				"detail": "SVG, за светли позадини",
+				"name": "Зборовен знак, темен"
 			},
 			"wordmarkLight": {
-				"alt": "The Margaya wordmark in off-white on a dark background",
-				"detail": "SVG, for dark backgrounds",
-				"name": "Wordmark, light"
+				"alt": "Зборовниот знак на Margaya во скршено бела боја на темна позадина",
+				"detail": "SVG, за темни позадини",
+				"name": "Зборовен знак, светол"
 			}
 		},
-		"onThisPage": "On this page",
+		"onThisPage": "На оваа страница",
 		"screenshots": {
-			"close": "Close",
-			"counter": "{{current}} of {{total}}",
-			"dark": "Dark",
-			"description": "Real Margaya screens in the light and dark themes. Select one to see it at full size.",
-			"empty": "A fresh set of screenshots is on its way. Until then, the press kit download has the current set.",
-			"light": "Light",
-			"next": "Next screenshot",
-			"open": "View larger: {{title}}",
-			"previous": "Previous screenshot",
+			"close": "Затвори",
+			"counter": "{{current}} од {{total}}",
+			"dark": "Темна",
+			"description": "Вистински екрани од Margaya во светла и темна тема. Избери еден за да го видиш во полна големина.",
+			"empty": "Нов сет снимки од екранот е на пат. Дотогаш, преземањето на пакетот за медиуми го содржи тековниот сет.",
+			"light": "Светла",
+			"next": "Следна снимка од екранот",
+			"open": "Погледни поголемо: {{title}}",
+			"previous": "Претходна снимка од екранот",
 			"size": "{{width}} × {{height}}, PNG",
-			"title": "Product screenshots"
+			"title": "Снимки од екранот на производот"
 		},
-		"title": "Press kit",
-		"downloadPng": "Download PNG"
+		"title": "Пакет за медиуми",
+		"downloadPng": "Преземи PNG"
 	},
 	"pricing": {
 		"cta": {
-			"description": "Start a Cloud trial with no card, or follow the install guide and run Margaya on your own hardware.",
-			"primary": "Start a free trial",
-			"secondary": "Read the install guide",
-			"title": "Pick the way that fits, and change your mind later."
+			"description": "Започни пробен период на Cloud без картичка, или следи го упатството за инсталација и води ја Margaya на сопствен хардвер.",
+			"primary": "Започни бесплатен пробен период",
+			"secondary": "Прочитај го упатството за инсталација",
+			"title": "Избери го начинот што ти одговара, а подоцна можеш да се предомислиш."
 		},
-		"description": "The self-hosted build is the whole product under the MIT licence, with no seat limits and no paid tier. Margaya Cloud is the same software, hosted in the EU and kept up to date for you.",
-		"eyebrow": "Pricing",
+		"description": "Верзијата за сопствен хостинг е целиот производ под лиценцата MIT, без ограничување на места и без платено ниво. Margaya Cloud е истиот софтвер, хостиран во ЕУ и секогаш ажуриран за тебе.",
+		"eyebrow": "Цени",
 		"faq": {
 			"items": {
 				"cancel": {
-					"answer": "Your plan stays active until the end of the period you've paid for. Export your work as CSV, Excel or JSON before then if you want to keep a copy.",
-					"question": "What happens if I cancel?"
+					"answer": "Твојот план останува активен до крајот на платениот период. Дотогаш извези ја работата во CSV, Excel или JSON ако сакаш да зачуваш копија.",
+					"question": "Што се случува ако откажам?"
 				},
 				"founding": {
-					"answer": "Workspaces created before paid plans launched keep free access for at least 12 months, and you'll get six months' notice before anything changes.",
-					"question": "I signed up before paid plans existed. What changes?"
+					"answer": "Работните простори создадени пред воведувањето на платените планови задржуваат бесплатен пристап најмалку 12 месеци, а за секоја промена ќе бидеш известен шест месеци однапред.",
+					"question": "Се регистрирав пред да постојат платени планови. Што се менува?"
 				},
 				"payments": {
-					"answer": "Payments go through Creem, which acts as merchant of record and handles sales tax and VAT where they apply. Your card details never reach Margaya.",
-					"question": "Who handles payments and tax?"
+					"answer": "Плаќањата одат преку Creem, кој делува како merchant of record и се грижи за данокот на промет и ДДВ таму каде што важат. Податоците од твојата картичка никогаш не стигнуваат до Margaya.",
+					"question": "Кој се грижи за плаќањата и даноците?"
 				},
 				"seats": {
-					"answer": "Cloud Team is billed for each member of the workspace. When someone joins or leaves, the seat count on the subscription is updated to match.",
-					"question": "How are Cloud Team members counted?"
+					"answer": "Cloud Тим се наплатува за секој член на работниот простор. Кога некој ќе се приклучи или ќе си замине, бројот на места во претплатата се ажурира соодветно.",
+					"question": "Како се бројат членовите на Cloud Тим?"
 				},
 				"selfHostHelp": {
-					"answer": "From the maintainers and the community on GitHub, through discussions and issues. Installation, upgrades and configuration are covered in the documentation.",
-					"question": "Where do self-hosters get help?"
+					"answer": "Од одржувачите и заедницата на GitHub, преку дискусии и issues. Инсталацијата, надградбите и конфигурацијата се опишани во документацијата.",
+					"question": "Каде добиваат помош тие што користат сопствен хостинг?"
 				},
 				"selfHostLimits": {
-					"answer": "No. The code you install is the code that runs Margaya Cloud, and all of it is MIT licensed. There are no licence keys, seat limits or paid features to unlock.",
-					"question": "Is the self-hosted version missing anything?"
+					"answer": "Не. Кодот што го инсталираш е истиот код што ја води Margaya Cloud, и целиот е под лиценцата MIT. Нема лиценцни клучеви, ограничувања на места или платени функции за отклучување.",
+					"question": "Дали на верзијата за сопствен хостинг ѝ недостасува нешто?"
 				},
 				"trial": {
-					"answer": "A new Cloud workspace gets 14 days with everything included, and you don't need a card to start. Before it ends, choose a plan or export your tasks.",
-					"question": "How does the Cloud trial work?"
+					"answer": "Новиот работен простор на Cloud добива 14 дена со сè вклучено, а за почеток не ти треба картичка. Пред да истече, избери план или извези ги задачите.",
+					"question": "Како функционира пробниот период на Cloud?"
 				},
 				"yearly": {
-					"answer": "Yes. A year costs the same as ten months, so both Cloud plans come with two months free when you pay yearly.",
-					"question": "Is yearly billing cheaper?"
+					"answer": "Да. Една година чини колку десет месеци, па двата плана на Cloud доаѓаат со два месеци бесплатно кога плаќаш годишно.",
+					"question": "Дали годишната наплата е поевтина?"
+				},
+				"ai": {
+					"question": "Дали AI е вклучена?",
+					"answer": "Секој план ги има AI функциите: Прашај ја AI, режимот Изгради, агентите и помошта при пишување. Остануваат исклучени додека администратор не ги вклучи. Користењето AI не е вклучено во цената: додаваш свој API клуч во AI-поставките на работниот простор, а AI-провајдерот ти наплатува директно. Инсталациите на сопствен сервер можат да користат и сопствен модел преку Ollama или vLLM."
 				}
 			},
-			"title": "Questions about pricing"
+			"title": "Прашања за цените"
 		},
 		"interval": {
-			"annual": "Yearly",
-			"label": "Billing period",
-			"monthly": "Monthly",
-			"saving": "2 months free"
+			"annual": "Годишно",
+			"label": "Период на наплата",
+			"monthly": "Месечно",
+			"saving": "2 месеци бесплатно"
 		},
-		"metaDescription": "Margaya is free to self-host, forever. Margaya Cloud costs $4 a month for one person or $5 per member a month for teams, with a 14-day free trial.",
+		"metaDescription": "Margaya е бесплатна за сопствен хостинг, засекогаш. Margaya Cloud чини $4 месечно за една личност или $5 по член месечно за тимови, со 14-дневен бесплатен пробен период.",
 		"plans": {
 			"personal": {
-				"annualNote": "Works out at {{price}} a month",
-				"annualPeriod": "per year",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month",
-				"monthlyPeriod": "per month",
-				"name": "Cloud Personal",
+				"annualNote": "Излегува {{price}} месечно",
+				"annualPeriod": "годишно",
+				"cta": "Започни 14-дневен пробен период",
+				"monthlyNote": "Се наплатува секој месец",
+				"monthlyPeriod": "месечно",
+				"name": "Cloud Лично",
 				"points": {
-					"everything": "Every feature in the self-hosted build",
-					"help": "Support by email",
-					"managed": "Backups and updates handled for you",
-					"one": "One person, unlimited projects and tasks"
+					"everything": "Секоја функција од верзијата за сопствен хостинг",
+					"help": "Поддршка по е-пошта",
+					"managed": "Резервните копии и ажурирањата се грижиме ние",
+					"one": "Една личност, неограничени проекти и задачи"
 				},
-				"tagline": "Managed hosting for one person"
+				"tagline": "Управуван хостинг за една личност"
 			},
 			"selfHosted": {
-				"cta": "Read the install guide",
-				"name": "Self-hosted",
-				"note": "MIT licence. No key, no seat limit.",
-				"period": "forever",
+				"cta": "Прочитај го упатството за инсталација",
+				"name": "Сопствен хостинг",
+				"note": "Лиценца MIT. Без клуч, без ограничување на места.",
+				"period": "засекогаш",
 				"points": {
-					"data": "Your database, your backups, your rules",
-					"deploy": "Docker on one server, or Helm on Kubernetes",
-					"everything": "Every feature, for as many people as you like",
-					"help": "Community help on GitHub"
+					"data": "Твојата база на податоци, твоите резервни копии, твоите правила",
+					"deploy": "Docker на еден сервер или Helm на Kubernetes",
+					"everything": "Секоја функција, за колку што сакаш луѓе",
+					"help": "Помош од заедницата на GitHub"
 				},
-				"tagline": "On servers you run"
+				"tagline": "На сервери што ги водиш ти"
 			},
 			"team": {
-				"annualNote": "Works out at {{price}} per member a month",
-				"annualPeriod": "per member, per year",
-				"badge": "For teams",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month for each workspace member",
-				"monthlyPeriod": "per member, per month",
-				"name": "Cloud Team",
+				"annualNote": "Излегува {{price}} по член месечно",
+				"annualPeriod": "по член, годишно",
+				"badge": "За тимови",
+				"cta": "Започни 14-дневен пробен период",
+				"monthlyNote": "Се наплатува секој месец за секој член на работниот простор",
+				"monthlyPeriod": "по член, месечно",
+				"name": "Cloud Тим",
 				"points": {
-					"help": "Priority support by email",
-					"managed": "Backups and updates handled for you",
-					"people": "Everyone in the workspace, unlimited projects",
-					"roles": "Workspace roles and permissions"
+					"help": "Приоритетна поддршка по е-пошта",
+					"managed": "Резервните копии и ажурирањата се грижиме ние",
+					"people": "Сите во работниот простор, неограничени проекти",
+					"roles": "Улоги и дозволи во работниот простор"
 				},
-				"tagline": "Managed hosting for a whole team"
+				"tagline": "Управуван хостинг за цел тим"
 			}
 		},
 		"table": {
-			"description": "The features are the same everywhere. What changes is who runs the servers and where you go for help.",
-			"feature": "Feature",
+			"description": "Функциите се исти насекаде. Се менува само кој ги води серверите и каде бараш помош.",
+			"feature": "Функција",
 			"groups": {
-				"connect": "Connect",
-				"planning": "Planning and insight",
-				"running": "Running it",
-				"work": "The work"
+				"connect": "Поврзување",
+				"planning": "Планирање и увид",
+				"running": "Одржување",
+				"work": "Работата"
 			},
-			"included": "Included",
-			"notIncluded": "Not included",
+			"included": "Вклучено",
+			"notIncluded": "Не е вклучено",
 			"rows": {
-				"admin": "Instance settings: sign-in providers, email, storage",
-				"analytics": "Analytics and audit log",
-				"api": "REST API, webhooks and MCP",
-				"backups": "Backups",
-				"cycles": "Cycles, modules and estimates",
-				"docs": "Docs written together, next to the tasks",
-				"export": "Export to CSV, Excel or JSON",
-				"hosting": "Where it runs",
-				"intake": "Intake inbox and triage",
-				"integrations": "GitHub, Gitea, Slack, Discord and more",
-				"jira": "Jira import",
-				"people": "People",
-				"projects": "Projects and tasks",
-				"publicBoards": "Public boards with voting",
-				"roles": "Workspace roles and permissions",
-				"support": "Support",
-				"updates": "Updates",
-				"views": "Board, list, spreadsheet, calendar and Gantt views"
+				"admin": "Поставки на инстанцата: провајдери за најава, е-пошта, складирање",
+				"analytics": "Аналитика и ревизорски дневник",
+				"api": "REST API, webhooks и MCP",
+				"backups": "Резервни копии",
+				"cycles": "Циклуси, модули и проценки",
+				"docs": "Документи пишувани заедно, веднаш до задачите",
+				"export": "Извоз во CSV, Excel или JSON",
+				"hosting": "Каде работи",
+				"intake": "Сандаче за барања и сортирање",
+				"integrations": "GitHub, Gitea, Slack, Discord и други",
+				"jira": "Увоз од Jira",
+				"people": "Луѓе",
+				"projects": "Проекти и задачи",
+				"publicBoards": "Јавни табли со гласање",
+				"roles": "Улоги и дозволи во работниот простор",
+				"support": "Поддршка",
+				"updates": "Ажурирања",
+				"views": "Прикази табла, листа, табела, календар и Гант",
+				"ai": "AI: Прашај ја AI, режим Изгради и агенти"
 			},
-			"title": "Compare the plans",
+			"title": "Спореди ги плановите",
 			"values": {
-				"automatic": "Automatic",
-				"community": "Community on GitHub",
-				"email": "Email",
-				"eu": "EU data centres",
-				"notNeeded": "Not needed for one",
-				"one": "Just you",
-				"perMember": "Unlimited, billed per member",
-				"priorityEmail": "Priority email",
-				"unlimited": "Unlimited",
-				"yours": "You run them",
-				"yourSchedule": "When you choose",
-				"yourServers": "Your servers"
+				"automatic": "Автоматски",
+				"community": "Заедницата на GitHub",
+				"email": "Е-пошта",
+				"eu": "Податочни центри во ЕУ",
+				"notNeeded": "Не е потребно за една личност",
+				"one": "Само ти",
+				"perMember": "Неограничено, се наплатува по член",
+				"priorityEmail": "Приоритетна е-пошта",
+				"unlimited": "Неограничено",
+				"yours": "Ги водиш ти",
+				"yourSchedule": "Кога ќе одлучиш",
+				"yourServers": "Твоите сервери",
+				"ownKey": "Твој AI клуч или модел"
 			}
 		},
-		"title": "One product. Two ways to run it.",
-		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+		"title": "Еден производ. Два начина да го водиш.",
+		"trialNote": "Плановите на Cloud почнуваат со 14-дневен пробен период. Не ти треба картичка за да почнеш."
 	},
 	"templates": {
 		"form": {
@@ -10154,7 +10004,6 @@
 			},
 			"chat": {
 				"planLabel": "Предложени промени",
-				"planning": "Се планираат промени…",
 				"nothing": "Нема ништо за менување за ова барање.",
 				"awaiting": "Чека одговор",
 				"ready": "Подготвени промени: {{count}}. Потврдете за да продолжите.",
@@ -10700,11 +10549,7 @@
 			"retro": "Ретроспективи",
 			"my_brief": "Мој извештај",
 			"embedding": "Индексирање за пребарување",
-			"coding_handoff": "Брифови за агенти за кодирање",
-			"build_chat": "Создавање во разговор",
-			"nl_filter": "Филтри на природен јазик",
-			"inbox_digest": "Резимеа на сандачето",
-			"speech": "Говор во текст"
+			"coding_handoff": "Брифови за агенти за кодирање"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -10846,7 +10691,9 @@
 			"speechFormat": "Формат на API",
 			"speechFormatHint": "Како се праќа аудиото. За Fish Audio користете https://api.fish.audio/v1/asr како крајна точка.",
 			"speechFormatOpenai": "Компатибилно со OpenAI",
-			"speechModelHint": "За Fish Audio: transcribe-1-pro или transcribe-1, или оставете празно."
+			"speechModelHint": "За Fish Audio: transcribe-1-pro или transcribe-1, или оставете празно.",
+			"storePrompts": "Чувај ги промптовите и одговорите",
+			"storePromptsHint": "Чувај го текстот на барањата до агентите и она што го напишал моделот во дневникот на секое извршување. Исклучено: извршувањата чуваат само бројки, чекори и резиме. Важи за извршувања што ќе завршат отсега. Историјата на Ask што работниот простор ја чува на серверот има свој прекинувач."
 		},
 		"workspace": {
 			"navLabel": "AI",
@@ -10924,7 +10771,8 @@
 			"storeConversations": "Чувај ја историјата на разговори на серверот",
 			"storeConversationsHint": "Разговорите на секоја личност се зачувуваат во работниот простор за да може повторно да ги отвори на кој било уред. Исклучено: остануваат само во секој прелистувач.",
 			"allowAutopilot": "Дозволи Автопилот",
-			"allowAutopilotHint": "Режимот Изгради може да применува промени без потврда. Секоја промена сепак се евидентира и може да се врати."
+			"allowAutopilotHint": "Режимот Изгради може да применува промени без потврда. Секоја промена сепак се евидентира и може да се врати.",
+			"storesPrompts": "Промптовите се чуваат"
 		},
 		"agents": {
 			"navLabel": "Агенти",
@@ -11128,11 +10976,13 @@
 					"manual": "Стартуван од задача",
 					"schedule": "Закажано",
 					"automation": "Автоматизација",
-					"chat": "Продолжение"
+					"chat": "Продолжение",
+					"intake": "Влезно барање"
 				},
 				"project": "Проект:",
 				"workedSeconds": "Работеше {{count}} с",
-				"workedMinutes": "Работеше {{count}} мин"
+				"workedMinutes": "Работеше {{count}} мин",
+				"request": "Барање"
 			},
 			"connectors": {
 				"title": "Конектори",
@@ -11273,6 +11123,27 @@
 					"assign": "Доделување",
 					"schedule": "Распоред",
 					"automation": "Автоматизација"
+				}
+			},
+			"intakeTrigger": {
+				"open": "Нови влезни барања за {{name}}",
+				"badge": "Прием",
+				"title": "Влезни барања: {{name}}",
+				"hint": "Изврши го агентот за секое ново влезно барање во неговите проекти, на пример за да го распредели. Неговите промени ги следат истите правила за одобрување и враќање како и другите извршувања.",
+				"enabled": "Извршувај при нови влезни барања",
+				"enabledHint": "Само во проекти со вклучен Прием и ВИ и во рамки на проектите на агентот.",
+				"prompt": "Што треба да прави?",
+				"promptPlaceholder": "На пример: предложи приоритет и ознаки и посочи дупликати.",
+				"promptHint": "Остави празно за распределба: краток коментар за тоа што бара барањето, колку итно изгледа и што недостасува.",
+				"runsAs": "Работи за {{name}}. Ако зачуваш со вклучен активатор, ти стануваш таа личност.",
+				"runsAsYou": "Работи за тебе штом го вклучиш, со најмногу твоите права. Се исклучува ако го напуштиш работниот простор или го изгубиш пристапот до ВИ или влезните барања.",
+				"outsideNote": "Барањата од надвор од работниот простор (јавни табли, формулари) никогаш ништо не менуваат без одобрување.",
+				"limitNote": "Најмногу 30 извршувања за влезни барања на час по агент. Барањата поднесени од агенти не започнуваат ништо.",
+				"saved": "Активаторот за влезни барања е зачуван",
+				"saveError": "Активаторот за влезни барања не може да се зачува. Обиди се повторно.",
+				"errors": {
+					"forbidden": "Извршувањата за влезни барања дејствуваат за тебе, па ти треба пристап до ВИ и дозвола за читање влезни барања.",
+					"AGENT_CANT_READ_INTAKE": "Улогата на овој агент не може да чита влезни барања. Дај му улога што може."
 				}
 			}
 		},
@@ -11503,7 +11374,6 @@
 			"unmeasured_other": "{{count}} задачи немаат запишан почеток и се изоставени."
 		},
 		"capacity": {
-			"meter": "Планирана работа во споредба со вообичаен циклус",
 			"within": "Планирано на {{percent}}% од вообичаен циклус",
 			"over": "Над капацитетот: планирано на {{percent}}% од вообичаен циклус",
 			"noDates": "Поставете ги датумите на циклусот за да го проверите капацитетот.",
@@ -11610,6 +11480,146 @@
 			"emailTitle": "Додај „Мој преглед“ во збирниот извештај",
 			"emailDescription": "Збирниот извештај ќе ги наведе и вашите блокирани задачи и промените на задачите што ги следите. Потребен е дневен или неделен збирен извештај.",
 			"emailError": "Ова поставување не може да се зачува."
+		}
+	},
+	"emails": {
+		"otp": {
+			"preview": "Твојот код за потврда за Margaya",
+			"title": "Твојот код за потврда",
+			"subtitle": "Внеси го овој еднократен код за да ја завршиш најавата.",
+			"verifySubtitle": "Внеси го овој еднократен код за да ја потврдиш својата адреса на е-пошта.",
+			"changeSubtitle": "Внеси го овој еднократен код за да ја потврдиш оваа адреса како нова адреса на е-пошта на твојата сметка во Margaya.",
+			"code": "е твојот код за потврда за Margaya.",
+			"expiry": "Овој код истекува за {{minutes}} минути.",
+			"ignore": "Ако не го побара ова, можеш да ја занемариш оваа е-порака.",
+			"footer": "Безбедносна е-порака од Margaya"
+		},
+		"magicLink": {
+			"preview": "Најави се на Margaya",
+			"title": "Твојата безбедна врска за најава",
+			"subtitle": "Користи ја оваа врска за да продолжиш во твојот работен простор во Margaya.",
+			"cta": "Најави се на Margaya",
+			"expiry": "Од безбедносни причини, оваа врска истекува за 5 минути.",
+			"ignore": "Ако не го побара ова, можеш да ја занемариш оваа е-порака.",
+			"footer": "Безбедносна е-порака од Margaya"
+		},
+		"passwordReset": {
+			"preview": "Ресетирај ја лозинката за Margaya",
+			"title": "Ресетирај ја лозинката",
+			"subtitleWithName": "Здраво {{name}}, користи го копчето подолу за да поставиш нова лозинка.",
+			"subtitleDefault": "Користи го копчето подолу за да поставиш нова лозинка.",
+			"cta": "Ресетирај лозинка",
+			"expiry": "Оваа врска за ресетирање истекува за 1 час.",
+			"ignore": "Ако не го побара ова, нема да се направат никакви промени.",
+			"footer": "Безбедносна е-порака од Margaya"
+		},
+		"emailChanged": {
+			"preview": "Твојата адреса на е-пошта во Margaya е променета",
+			"title": "Твојата адреса на е-пошта е променета",
+			"body": "Адресата на е-пошта на твојата сметка во Margaya сега е {{email}}. Отсега врските за најава, кодовите и известувањата ќе стигнуваат таму.",
+			"warning": "Ако не ја направи оваа промена, веднаш контактирај го администраторот на Margaya.",
+			"footer": "Безбедносна е-порака од Margaya"
+		},
+		"authSubjects": {
+			"magicLinkSubject": "Врска за најава на Margaya",
+			"otpSubject": "Код за потврда за Margaya",
+			"verifyEmailSubject": "Потврди ја својата е-пошта за Margaya",
+			"passwordResetSubject": "Ресетирај ја лозинката за Margaya",
+			"changeEmailSubject": "Потврди ја новата е-пошта за Margaya",
+			"emailChangedSubject": "Твојата адреса на е-пошта во Margaya е променета"
+		},
+		"notification": {
+			"preview": "Имаш ново известување од Margaya",
+			"subtitle": "Едно известување одговара на твоите поставки за доставување.",
+			"footer": "Известување од Margaya",
+			"actionLabel": "Отвори во Margaya"
+		},
+		"notificationBatch": {
+			"preview": "Твоите неодамнешни ажурирања од Margaya",
+			"title_one": "{{count}} ново ажурирање",
+			"title_other": "{{count}} нови ажурирања",
+			"subtitle": "Промени на твоите задачи, групирани од последната е-порака.",
+			"by": "од",
+			"open": "Отвори задача",
+			"manage": "Управувај со поставките за известувања",
+			"footer": "Известување од Margaya"
+		},
+		"notificationDigest": {
+			"title": {
+				"daily": "Твојот дневен преглед",
+				"weekly": "Твојот неделен преглед"
+			},
+			"preview": "Твојот преглед од Margaya",
+			"subtitle": "Твоите отворени задачи што се задоцнети или имаат рок во наредните 7 дена, и што е ново во приемното сандаче.",
+			"dueHeading": "Со близок рок и задоцнети",
+			"overdue": "Задоцнето",
+			"due": "Рок",
+			"more_one": "и уште {{count}}",
+			"more_other": "и уште {{count}}",
+			"mentionsHeading_one": "{{count}} ново спомнување",
+			"mentionsHeading_other": "{{count}} нови спомнувања",
+			"unread_one": "{{count}} непрочитано известување во приемното сандаче",
+			"unread_other": "{{count}} непрочитани известувања во приемното сандаче",
+			"openInbox": "Отвори го приемното сандаче",
+			"manage": "Управувај со поставките за известувања",
+			"footer": "Избра да го добиваш овој преглед.",
+			"blockedHeading": "Блокирани",
+			"waitingOn": "Чека на {{keys}}",
+			"hiddenBlockers_one": "{{count}} задача што не можеш да ја видиш",
+			"hiddenBlockers_other": "{{count}} задачи што не можеш да ги видиш",
+			"followingHeading": "Промени на задачите што ги следиш",
+			"changes_one": "{{count}} промена",
+			"changes_other": "{{count}} промени"
+		},
+		"batchSubject": {
+			"task_one": "{{count}} ажурирање за {{title}}",
+			"task_other": "{{count}} ажурирања за {{title}}",
+			"all_one": "{{count}} ажурирање во Margaya",
+			"all_other": "{{count}} ажурирања во Margaya"
+		},
+		"digestSubject": {
+			"daily": "Твојот дневен преглед од Margaya",
+			"weekly": "Твојот неделен преглед од Margaya"
+		},
+		"workspaceDeletion": {
+			"fallbackName": "Работен простор",
+			"openWorkspace": "Отвори го работниот простор",
+			"scheduledSubject": "{{name}}: закажано бришење",
+			"scheduledTitle": "{{name}} ќе биде избришан на {{date}}",
+			"scheduledTitleNoDate": "{{name}} наскоро ќе биде избришан",
+			"scheduledMessage": "Сопственикот го закажа бришењето на овој работен простор. До {{date}} е само за читање: сè уште можеш да ја отвораш и извезуваш неговата содржина, а сопственикот може да го откаже бришењето. По тој датум неговите проекти, задачи и страници трајно ќе се избришат.",
+			"scheduledMessageNoDate": "Сопственикот го закажа бришењето на овој работен простор. До бришењето е само за читање: сè уште можеш да ја отвораш и извезуваш неговата содржина, а сопственикот може да го откаже бришењето. Потоа неговите проекти, задачи и страници трајно ќе се избришат.",
+			"cancelledSubject": "{{name}} нема да биде избришан",
+			"cancelledTitle": "{{name}} повторно е активен",
+			"cancelledMessage": "Сопственикот го откажа закажаното бришење. Работниот простор веќе не е само за читање, а неговите API клучеви и webhooks повторно работат."
+		},
+		"webhookDisabled": {
+			"subject": "Еден webhook во Margaya е исклучен",
+			"title": "Webhook-от е исклучен",
+			"message": "Доставите до {{host}} постојано не успеваа повеќе од еден ден, па Margaya го исклучи webhook-от. Поправи го endpoint-от, па повторно вклучи го webhook-от во поставките на работниот простор.",
+			"messageNoHost": "Доставите до endpoint-от постојано не успеваа повеќе од еден ден, па Margaya го исклучи webhook-от. Поправи го endpoint-от, па повторно вклучи го webhook-от во поставките на работниот простор.",
+			"actionLabel": "Отвори ги поставките за webhook"
+		},
+		"trialReminder": {
+			"endedTitle": "Пробниот период за {{workspaceName}} заврши",
+			"daysLeftTitle_one": "Уште {{count}} ден од пробниот период за {{workspaceName}}",
+			"daysLeftTitle_other": "Уште {{count}} дена од пробниот период за {{workspaceName}}",
+			"endedSubtitle": "Твојот работен простор е само за читање додека не избереш план. Ништо не е избришано и твоите податоци се сè уште тука.",
+			"activeSubtitle": "Избери план за да продолжиш да креираш и уредуваш кога ќе заврши пробниот период.",
+			"cta": "Избери план",
+			"selfHost": "Margaya е бесплатна засекогаш кога се хостира самостојно, со сите функции вклучени. Во секое време можеш да ги извезеш податоците и да ги преместиш на сопствен сервер.",
+			"footer": "Ја добиваш оваа порака бидејќи си сопственик на овој работен простор на Margaya Cloud."
+		},
+		"trialSubjects": {
+			"trialEnding": "Пробниот период за {{workspaceName}} завршува за 3 дена",
+			"trialExpired": "Пробниот период за {{workspaceName}} заврши"
+		},
+		"testEmail": {
+			"subject": "Тест-порака од {{instanceName}}",
+			"text": "Ова е тест-порака од {{instanceName}}. Ако можеш да ја прочиташ, испраќањето е-пошта работи."
+		},
+		"notificationText": {
+			"commentWithoutPreview": "Нов коментар на {{taskTitle}}"
 		}
 	}
 }

@@ -10,16 +10,10 @@
 			"markAllRead": "Đánh dấu đã đọc tất cả",
 			"remove": "Gỡ bỏ",
 			"reset": "Đặt lại",
-			"filter": "Lọc",
-			"clearAllFilters": "Xóa tất cả bộ lọc",
 			"undo": "Hoàn tác"
 		},
 		"a11y": {
 			"toggleSidebar": "Bật/tắt thanh bên"
-		},
-		"sidebar": {
-			"title": "Thanh bên",
-			"mobileDescription": "Hiển thị thanh bên trên di động."
 		},
 		"empty": {
 			"loading": "Đang tải..."
@@ -36,29 +30,12 @@
 			"label": "Đường dẫn",
 			"more": "Thêm"
 		},
-		"language": {
-			"english": "Tiếng Anh",
-			"german": "Tiếng Đức",
-			"greek": "Tiếng Hy Lạp",
-			"macedonian": "Tiếng Macedonia",
-			"french": "Tiếng Pháp",
-			"spanish": "Tiếng Tây Ban Nha",
-			"dutch": "Tiếng Hà Lan",
-			"korean": "Tiếng Hàn",
-			"chinese": "Tiếng Trung",
-			"italian": "Tiếng Ý"
-		},
 		"people": {
 			"someone": "Ai đó",
 			"unknown": "Không xác định"
 		},
 		"error": {
 			"title": "Đã xảy ra lỗi",
-			"troubleshooting": "Các bước khắc phục:",
-			"tryAgain": "Thử lại",
-			"viewDeploymentGuide": "Xem hướng dẫn triển khai",
-			"refreshPage": "Làm mới trang",
-			"description": "Trang đã gặp sự cố ngoài ý muốn. Tải lại trang thường sẽ khắc phục được vấn đề này.",
 			"messages": {
 				"auth": "Xác thực thất bại. Vui lòng đăng nhập lại.",
 				"cors": "Không thể kết nối đến máy chủ. Nguyên nhân có thể do cấu hình CORS.",
@@ -97,7 +74,6 @@
 				"keyLabel": "Mã:",
 				"keyHint": "Dùng cho mã số phiếu (ví dụ: {{example}}-123)",
 				"createButton": "Tạo dự án",
-				"successToast": "Tạo dự án thành công",
 				"errorToast": "Không thể tạo dự án",
 				"keyTaken": "Đã có một dự án với mã {{key}} trong không gian làm việc này",
 				"blankProject": "Dự án trống",
@@ -132,7 +108,6 @@
 				"successUpdated": "Cập nhật công việc thành công",
 				"createError": "Không thể tạo công việc",
 				"priority": "Mức ưu tiên",
-				"statusFallback": "Đang thực hiện",
 				"startDate": "Ngày bắt đầu",
 				"dueDate": "Ngày đến hạn",
 				"clearStartDate": "Xóa ngày bắt đầu",
@@ -331,7 +306,6 @@
 			"namePlaceholder": "Nguyễn Văn A",
 			"failedSignUp": "Đăng ký thất bại",
 			"accountCreated": "Tạo tài khoản thành công",
-			"passwordTooShort": "Mật khẩu quá ngắn",
 			"creatingAccount": "Đang tạo tài khoản...",
 			"createAccount": "Tạo tài khoản"
 		},
@@ -345,7 +319,6 @@
 			"invitationExpired": "Lời mời đã hết hạn",
 			"errorLoadDescription": "Không thể tải thông tin lời mời. Lời mời có thể không hợp lệ hoặc đã hết hạn.",
 			"goToSignIn": "Đến trang đăng nhập",
-			"workspaceLabel": "Không gian làm việc: {{workspaceName}}",
 			"joinWorkspace": "Tham gia {{workspaceName}}",
 			"inviteBodySignedIn": "<inviter>{{inviterName}}</inviter> đã mời bạn tham gia không gian làm việc của họ.",
 			"inviteBodySignedOut": "<inviter>{{inviterName}}</inviter> đã mời bạn tham gia không gian làm việc của họ trên Margaya.",
@@ -375,7 +348,6 @@
 			"creating": "Đang tạo...",
 			"createWorkspace": "Tạo không gian làm việc",
 			"workspaceCreatedTitle": "Đã tạo không gian làm việc",
-			"redirectingToWorkspace": "Đang đưa bạn đến <name>{{name}}</name>...",
 			"toast": {
 				"workspaceCreated": "Tạo không gian làm việc thành công",
 				"createFailed": "Không thể tạo không gian làm việc",
@@ -439,8 +411,6 @@
 			"namePlaceholder": "ví dụ: Nguyễn Văn A",
 			"saving": "Đang lưu...",
 			"continue": "Tiếp tục",
-			"welcome": "Chào mừng, {{name}}!",
-			"redirecting": "Đang đưa bạn đến bảng điều khiển...",
 			"toast": {
 				"updateSuccess": "Cập nhật hồ sơ thành công",
 				"updateFailed": "Không thể cập nhật hồ sơ"
@@ -541,7 +511,6 @@
 	},
 	"settings": {
 		"account": "Tài khoản",
-		"developer": "Nhà phát triển",
 		"information": "Thông tin",
 		"notifications": "Thông báo",
 		"preferences": "Tùy chọn",
@@ -667,23 +636,7 @@
 			"noProjectsInWorkspace": "Chưa có dự án nào khả dụng cho không gian làm việc này.",
 			"createRule": "Tạo quy tắc",
 			"removeRule": "Gỡ bỏ quy tắc",
-			"toastEmailSaved": "Đã lưu cài đặt thông báo email",
-			"toastEmailSaveFailed": "Không thể lưu cài đặt email",
-			"toastNtfySaved": "Đã lưu cài đặt ntfy",
-			"toastNtfySaveFailed": "Không thể lưu cài đặt ntfy",
-			"toastNtfyDisconnected": "Đã ngắt kết nối ntfy",
-			"toastNtfyDisconnectFailed": "Không thể ngắt kết nối ntfy",
-			"toastGotifySaved": "Đã lưu cài đặt Gotify",
-			"toastGotifySaveFailed": "Không thể lưu cài đặt Gotify",
-			"toastGotifyDisconnected": "Đã ngắt kết nối Gotify",
-			"toastGotifyDisconnectFailed": "Không thể ngắt kết nối Gotify",
-			"toastWebhookSaved": "Đã lưu cài đặt webhook",
-			"toastWebhookSaveFailed": "Không thể lưu cài đặt webhook",
-			"toastWebhookDisconnected": "Đã ngắt kết nối webhook",
-			"toastWebhookDisconnectFailed": "Không thể ngắt kết nối webhook",
-			"toastRuleSaved": "Đã lưu quy tắc thông báo cho {{workspaceName}}",
 			"toastRuleSaveFailed": "Không thể lưu quy tắc thông báo không gian làm việc",
-			"toastRuleRemoved": "Đã gỡ quy tắc thông báo cho {{workspaceName}}",
 			"toastRuleRemoveFailed": "Không thể gỡ quy tắc thông báo không gian làm việc",
 			"toastPreferencesSaved": "Đã lưu tùy chọn thông báo",
 			"toastPreferencesSaveFailed": "Không thể lưu tùy chọn thông báo",
@@ -739,7 +692,6 @@
 			"selectViewMode": "Chọn chế độ xem",
 			"board": "Bảng",
 			"list": "Danh sách",
-			"gantt": "Gantt",
 			"sidebarDefault": "Thanh bên mặc định",
 			"sidebarDefaultDescription": "Giữ thanh bên mở rộng khi khởi động",
 			"displayOptions": "Tùy chọn hiển thị",
@@ -844,14 +796,8 @@
 			"dangerZone": "Vùng nguy hiểm",
 			"dangerZoneSubtitle": "Các hành động không thể hoàn tác và mang tính phá hủy.",
 			"deleteWorkspace": "Xóa không gian làm việc",
-			"deleteWorkspaceDescription": "Lên lịch xóa vĩnh viễn không gian làm việc",
-			"deleteModalTitle": "Xóa không gian làm việc?",
-			"deleteModalDescription": "Thao tác này sẽ xóa vĩnh viễn không gian làm việc \"{{name}}\" và toàn bộ dữ liệu của nó. Hành động này không thể hoàn tác.",
-			"deleteModalConfirm": "Xóa không gian làm việc",
 			"toastUpdated": "Cập nhật không gian làm việc thành công",
 			"toastUpdateError": "Không thể cập nhật không gian làm việc",
-			"toastDeleted": "Xóa không gian làm việc thành công",
-			"toastDeleteError": "Không thể xóa không gian làm việc",
 			"validation": {
 				"nameRequired": "Cần có tên không gian làm việc",
 				"nameShort": "Tên không gian làm việc phải có ít nhất 2 ký tự"
@@ -1302,21 +1248,6 @@
 			"chatGroupTitle": "Chat và webhook",
 			"codeGroupTitle": "Lưu trữ mã nguồn"
 		},
-		"projectVisibility": {
-			"pageTitle": "Chế độ hiển thị của dự án",
-			"title": "Chế độ hiển thị",
-			"subtitle": "Kiểm soát ai có thể xem và truy cập dự án của bạn.",
-			"sectionTitle": "Chế độ hiển thị",
-			"sectionSubtitle": "Bật/tắt truy cập công khai và chia sẻ URL công khai.",
-			"publicAccess": "Truy cập công khai",
-			"publicAccessHint": "Cho phép bất kỳ ai có URL xem dự án này",
-			"publicUrl": "URL công khai",
-			"publicUrlHint": "Chia sẻ liên kết này nếu dự án ở chế độ công khai",
-			"copy": "Sao chép",
-			"copiedToast": "Đã sao chép",
-			"toastUpdated": "Đã cập nhật chế độ hiển thị",
-			"toastUpdateError": "Không thể cập nhật chế độ hiển thị"
-		},
 		"projectWorkflow": {
 			"pageTitle": "Cài đặt quy trình",
 			"title": "Quy trình làm việc",
@@ -1533,7 +1464,6 @@
 			},
 			"connect": "Kết nối Slack",
 			"saveChanges": "Lưu thay đổi",
-			"update": "Cập nhật Slack",
 			"disconnect": "Ngắt kết nối"
 		},
 		"discordIntegration": {
@@ -1571,7 +1501,6 @@
 			},
 			"connect": "Kết nối Discord",
 			"saveChanges": "Lưu thay đổi",
-			"update": "Cập nhật Discord",
 			"disconnect": "Ngắt kết nối"
 		},
 		"genericWebhookIntegration": {
@@ -1688,9 +1617,7 @@
 			"exportTasks": "Xuất công việc",
 			"importTasks": "Nhập công việc",
 			"dialogTitle": "Nhập công việc",
-			"dialogDescription": "Tải lên một file JSON chứa công việc để nhập vào dự án này.",
 			"expectedFormat": "Định dạng mong đợi:",
-			"dropHint": "Kéo và thả file JSON của bạn vào đây",
 			"selectFile": "Chọn tệp",
 			"exporting": "Đang xuất công việc...",
 			"exportSuccess": "Xuất công việc thành công",
@@ -1701,7 +1628,6 @@
 			"importError": "Không thể nhập công việc",
 			"invalidFormat": "Định dạng file nhập không hợp lệ",
 			"noFileDropped": "Không có file nào được thả",
-			"notJsonFile": "Vui lòng tải lên một file JSON",
 			"exportCsv": "CSV (bảng tính)",
 			"exportJson": "JSON (để nhập lại)",
 			"exportStarted": "Đã bắt đầu xuất. Bạn sẽ thấy nó trong Cài đặt không gian làm việc → Xuất dữ liệu.",
@@ -1955,7 +1881,6 @@
 				"saveError": "Không thể lưu tích hợp Mattermost",
 				"updateError": "Không thể cập nhật tích hợp Mattermost"
 			},
-			"update": "Cập nhật Mattermost",
 			"validation": {
 				"webhookInvalid": "Nhập một URL webhook Mattermost hợp lệ"
 			},
@@ -1967,13 +1892,11 @@
 			"addButton": "Thêm",
 			"createError": "Không thể tạo trường tùy chỉnh.",
 			"createSuccess": "Đã tạo trường tùy chỉnh.",
-			"creating": "Đang tạo...",
 			"defaultLabel": "Mặc định",
 			"defaultValuePlaceholder": "Giá trị mặc định",
 			"deleteButton": "Xóa",
 			"deleteError": "Không thể xóa trường tùy chỉnh.",
 			"deleteSuccess": "Đã xóa trường tùy chỉnh.",
-			"deleting": "Đang xóa...",
 			"empty": "Chưa có trường tùy chỉnh nào được cấu hình.",
 			"loading": "Đang tải trường tùy chỉnh...",
 			"namePlaceholder": "Tên trường",
@@ -2890,7 +2813,9 @@
 				"agentScheduleDisabled": "Đã tắt lịch của tác tử",
 				"aiConnectorCreated": "Đã thêm trình kết nối MCP",
 				"aiConnectorUpdated": "Đã thay đổi trình kết nối MCP",
-				"aiConnectorDeleted": "Đã xóa trình kết nối MCP"
+				"aiConnectorDeleted": "Đã xóa trình kết nối MCP",
+				"agentIntakeTriggerUpdated": "Đã thay đổi trình kích hoạt tiếp nhận của một tác tử",
+				"agentIntakeTriggerDisabled": "Đã tắt trình kích hoạt tiếp nhận của một tác tử"
 			},
 			"actor": {
 				"apiKey": "Khóa API",
@@ -3226,8 +3151,7 @@
 			"empty": "Không tìm thấy kết quả nào.",
 			"footer": {
 				"navigate": "Điều hướng",
-				"open": "Mở",
-				"close": "Đóng"
+				"open": "Mở"
 			},
 			"goToInbox": "Đi tới Hộp thư đến",
 			"newView": "Chế độ xem mới",
@@ -3254,11 +3178,10 @@
 			},
 			"recent": "Gần đây",
 			"removeScope": "Tìm kiếm ở mọi nơi",
-			"scope": "In"
+			"scope": "Trong"
 		},
 		"notifications": "Thông báo",
 		"sidebar": {
-			"overview": "Tổng quan",
 			"projects": "Dự án",
 			"members": "Thành viên",
 			"invitations": "Lời mời",
@@ -3266,12 +3189,9 @@
 			"backToBoard": "Quay lại bảng",
 			"favorites": "Mục yêu thích",
 			"allTasks": "Tất cả công việc",
-			"inbox": "Hộp thư đến",
 			"myWork": "Công việc của bạn",
 			"home": "Trang chủ",
-			"personal": "Cá nhân",
 			"stickies": "Ghi chú nhanh",
-			"analytics": "Phân tích",
 			"drafts": "Bản nháp"
 		},
 		"projectList": {
@@ -3299,10 +3219,6 @@
 				"page": "Trang"
 			}
 		},
-		"settingsLayout": {
-			"toggleSidebar": "Bật/tắt thanh bên",
-			"back": "Quay lại"
-		},
 		"userMenu": {
 			"signedOutSuccess": "Đăng xuất thành công",
 			"signOutFailed": "Không thể đăng xuất",
@@ -3315,13 +3231,11 @@
 		"workspaceSwitcher": {
 			"workspaces": "Không gian làm việc",
 			"switching": "Đang chuyển...",
-			"addWorkspace": "Thêm không gian làm việc",
-			"selectWorkspace": "Chọn không gian làm việc"
+			"addWorkspace": "Thêm không gian làm việc"
 		},
 		"page": {
 			"projectsTitle": "Dự án",
 			"settingsTitle": "Cài đặt",
-			"backToWorkspace": "Quay lại không gian làm việc",
 			"settingsWorkspaceTab": "Không gian làm việc",
 			"settingsInstanceTab": "Phiên bản",
 			"settingsNotFoundBack": "Cài đặt tài khoản",
@@ -3351,7 +3265,6 @@
 			"items": {
 				"openCommandPalette": "Mở bảng lệnh",
 				"globalSearch": "Tìm kiếm toàn cục",
-				"toggleSidebar": "Bật/tắt thanh bên",
 				"showShortcuts": "Hiện phím tắt",
 				"closeModal": "Đóng modal/popover",
 				"createTask": "Tạo công việc",
@@ -3457,15 +3370,11 @@
 	},
 	"notifications": {
 		"title": "Thông báo",
-		"newCount_other": "{{count}} mới",
-		"emptyTitle": "Chưa có thông báo nào",
-		"emptySubtitle": "Bạn sẽ thấy các cập nhật và hoạt động ở đây.",
 		"clearAll": "Xóa tất cả thông báo",
 		"clearDialogTitle": "Xóa tất cả thông báo?",
 		"clearDialogDescription": "Thao tác này sẽ xóa vĩnh viễn tất cả thông báo. Bạn không thể hoàn tác hành động này.",
 		"shortcuts": {
-			"open": "Mở thông báo",
-			"inbox": "Mở hộp thư đến"
+			"open": "Mở thông báo"
 		},
 		"reminderLeadTime": {
 			"minutes_other": "{{count}} phút",
@@ -3617,7 +3526,6 @@
 				"fiveDays": "5 ngày",
 				"oneDay": "1 ngày",
 				"oneWeek": "1 tuần",
-				"pickDate": "Chọn ngày",
 				"pickTime": "Chọn giờ",
 				"submit": "Tạm hoãn",
 				"threeDays": "3 ngày",
@@ -4002,7 +3910,6 @@
 				"recurredToScheduled": "Lần lặp tiếp theo đã được tạo theo lịch: <task>{{task}}</task>"
 			}
 		},
-		"title": "Nhiệm vụ",
 		"status": {
 			"label": "Trạng thái",
 			"to-do": "Cần làm",
@@ -4241,7 +4148,6 @@
 			"labels": "Nhãn",
 			"copyTaskLink": "Sao chép liên kết công việc",
 			"copyTaskBranch": "Sao chép nhánh công việc",
-			"start": "Bắt đầu",
 			"startDate": "Ngày bắt đầu",
 			"noDate": "Không có ngày",
 			"addLabel": "Thêm nhãn",
@@ -4307,22 +4213,11 @@
 			"moveAllTooltip": "Chuyển tất cả công việc đã lên kế hoạch sang {{column}}",
 			"moveAll": "Chuyển tất cả",
 			"addTask": "Thêm công việc",
-			"filter": "Lọc",
-			"addFilter": "Thêm bộ lọc...",
 			"sections": {
 				"planned": "Đã lên kế hoạch",
 				"archived": "Đã lưu trữ"
 			},
-			"noTasksInSection": "Không có công việc {{section}}",
-			"filters": {
-				"priority": "Mức ưu tiên: {{name}}",
-				"assignee": "Người được giao: {{name}}",
-				"due": "Đến hạn: {{date}}",
-				"label": "Nhãn: {{name}}",
-				"dueThisWeek": "Đến hạn tuần này",
-				"dueNextWeek": "Đến hạn tuần sau",
-				"noDueDate": "Không có ngày đến hạn"
-			}
+			"noTasksInSection": "Không có công việc {{section}}"
 		},
 		"sort": {
 			"label": "Sắp xếp",
@@ -4342,11 +4237,6 @@
 		},
 		"boardFilters": {
 			"filterBy": "Lọc theo",
-			"allStatuses": "Tất cả trạng thái",
-			"allPriorities": "Tất cả mức ưu tiên",
-			"allAssignees": "Tất cả người được giao",
-			"allDueDates": "Tất cả ngày đến hạn",
-			"allLabels": "Tất cả nhãn",
 			"selectedCount": "Đã chọn {{count}}",
 			"subjects": {
 				"status": "Trạng thái",
@@ -4357,14 +4247,8 @@
 				"estimate": "Ước tính"
 			},
 			"operators": {
-				"isAnyOf": "là một trong",
-				"includeAnyOf": "bao gồm một trong"
-			},
-			"all": "Tất cả",
-			"allCustomFieldValues": "Tất cả giá trị",
-			"noCustomFieldValues": "Không có giá trị trường tùy chỉnh",
-			"noValuesUsedYet": "Chưa có giá trị nào được sử dụng",
-			"unassigned": "Chưa giao"
+				"isAnyOf": "là một trong"
+			}
 		},
 		"gantt": {
 			"pageTitle": "{{name}} – Gantt",
@@ -4407,10 +4291,8 @@
 		},
 		"archive": {
 			"success": "Đã lưu trữ {{count}} công việc",
-			"archive": "Lưu trữ",
 			"archived": "Đã lưu trữ công việc",
 			"badge": "Đã lưu trữ",
-			"bulkArchived_other": "Đã lưu trữ {{count}} công việc",
 			"error": "Không thể lưu trữ công việc",
 			"restore": "Khôi phục",
 			"restored": "Đã khôi phục công việc",
@@ -4445,10 +4327,6 @@
 			"updateError": "Không thể cập nhật ngày đến hạn công việc",
 			"clearSuccess": "Đã xóa ngày đến hạn công việc",
 			"clearError": "Không thể xóa ngày đến hạn"
-		},
-		"labels": {
-			"label": "Nhãn",
-			"empty": "Không có nhãn khả dụng"
 		},
 		"update": {
 			"success": "Cập nhật công việc thành công",
@@ -4785,7 +4663,6 @@
 				"project": "Dự án",
 				"status": "Trạng thái"
 			},
-			"needsSingleProject": "Nhóm theo trạng thái cần chọn một dự án duy nhất",
 			"none": "Không có",
 			"order": {
 				"assignee": "Người được giao",
@@ -4872,14 +4749,14 @@
 			"noOptions": "Không có tùy chọn",
 			"operators": {
 				"between": "trong khoảng",
-				"is": "is",
+				"is": "là",
 				"isEmpty": "trống",
 				"isNoneOf": "không phải là bất kỳ",
 				"isNot": "không phải",
 				"isNotEmpty": "không trống",
 				"moreThanAgo": "cách đây hơn …",
 				"moreThanAhead": "hơn … kể từ bây giờ",
-				"on": "on",
+				"on": "vào",
 				"onOrAfter": "vào hoặc sau",
 				"onOrBefore": "vào hoặc trước",
 				"withinLast": "trong vòng … qua",
@@ -4892,9 +4769,7 @@
 				"completed": "Ngày hoàn thành",
 				"created": "Ngày tạo",
 				"createdBy": "Người tạo",
-				"customFields": "Trường tùy chỉnh",
 				"cycle": "Chu kỳ",
-				"estimate": "Ước tính",
 				"group": "Nhóm",
 				"mentions": "Lượt nhắc đến",
 				"module": "Mô-đun",
@@ -4908,7 +4783,7 @@
 			"values": {
 				"currentCycle": "Chu kỳ hiện tại",
 				"false": "Sai",
-				"me": "Me",
+				"me": "Tôi",
 				"noAssignee": "Chưa giao cho ai",
 				"noCreator": "Không có người tạo",
 				"noCycle": "Không có chu kỳ",
@@ -4945,8 +4820,6 @@
 			"expandSubTasks": "Hiện công việc con",
 			"hideColumn": "Ẩn cột",
 			"loadError": "Không thể tải công việc",
-			"newTask": "Công việc mới",
-			"newTaskPlaceholder": "Nhập tiêu đề công việc rồi nhấn Enter",
 			"selectTask": "Chọn {{key}}",
 			"sortAsc": "Sắp xếp tăng dần",
 			"sortDesc": "Sắp xếp giảm dần",
@@ -4972,7 +4845,7 @@
 		"timeTracking": {
 			"duration": "Thời lượng",
 			"durationInvalid": "Nhập thời lượng từ 1 phút đến 24 giờ, ví dụ 1h 30m.",
-			"durationPlaceholder": "e.g. 1h 30m",
+			"durationPlaceholder": "vd: 1h 30m",
 			"empty": "Chưa ghi nhận thời gian nào",
 			"entries": "Bản ghi thời gian",
 			"formerMember": "Cựu thành viên",
@@ -5151,11 +5024,6 @@
 		"noPendingDescription": "Khi ai đó mời bạn vào một không gian làm việc, lời mời sẽ hiện ở đây.",
 		"continueToSetup": "Tiếp tục thiết lập",
 		"skipForNow": "Bỏ qua lúc này",
-		"table": {
-			"workspace": "Không gian làm việc",
-			"invitedBy": "Người mời",
-			"expires": "Hết hạn"
-		},
 		"toast": {
 			"acceptError": "Không thể chấp nhận lời mời",
 			"acceptSuccess": "Đã chấp nhận lời mời! Chào mừng bạn đến với nhóm.",
@@ -5191,7 +5059,6 @@
 				"inProgress": "Đang thực hiện"
 			},
 			"noDueDate": "Không có ngày đến hạn",
-			"reorderHandle": "Sắp xếp lại dự án",
 			"reorderError": "Không thể sắp xếp lại dự án"
 		},
 		"search": {
@@ -5216,7 +5083,6 @@
 			"pageTitle": "Tạo không gian làm việc",
 			"heading": "Tạo một không gian làm việc mới",
 			"subtitle": "Không gian làm việc là môi trường chung nơi các nhóm có thể làm việc trên dự án, chu kỳ và vấn đề.",
-			"nameLabel": "Tên không gian làm việc",
 			"namePlaceholder": "Nhập tên không gian làm việc",
 			"descriptionLabel": "Mô tả (không bắt buộc)",
 			"descriptionPlaceholder": "Thêm mô tả cho không gian làm việc của bạn",
@@ -5340,11 +5206,8 @@
 			"columns": {
 				"name": "Tên",
 				"role": "Vai trò",
-				"joined": "Ngày tham gia",
-				"actions": "Hành động"
+				"joined": "Ngày tham gia"
 			},
-			"memberRolePending": "{{role}} (Đang chờ)",
-			"ariaCancelInvitation": "Hủy lời mời",
 			"ariaInvitationActions": "Hành động lời mời",
 			"ariaRemoveMember": "Gỡ thành viên",
 			"removeDialogTitle": "Xóa thành viên nhóm?",
@@ -5393,7 +5256,6 @@
 		}
 	},
 	"publicProject": {
-		"pageTitle": "Chế độ xem công khai",
 		"badge": "Công khai",
 		"readOnly": "Chỉ đọc",
 		"error": {
@@ -5406,12 +5268,10 @@
 		"taskDetail": {
 			"labels": "Nhãn",
 			"externalLinks": "Liên kết bên ngoài",
-			"pullRequestFallback": "Pull request",
 			"issueFallback": "Issue",
 			"prStatusMerged": "Đã gộp",
 			"prStatusDraft": "Bản nháp",
 			"prStatusOpen": "Đang mở",
-			"dueWithDate": "Đến hạn {{date}}",
 			"created": "Đã tạo",
 			"dueDateLabel": "Ngày đến hạn",
 			"assignees": "Người được giao",
@@ -5435,9 +5295,7 @@
 			"backlog": "Backlog",
 			"chip": "{{subject}}: {{value}}",
 			"clearFilters": "Xóa bộ lọc",
-			"collapse": "Thu gọn {{name}}",
 			"emptyColumn": "Không có công việc nào ở đây",
-			"expand": "Mở rộng {{name}}",
 			"filter": "Lọc",
 			"filters": "Bộ lọc",
 			"layout": "Bố cục",
@@ -5594,7 +5452,7 @@
 				"typed": "Sửa lỗi chuyển hướng đăng nhập @adam !high #bug"
 			},
 			"labels": {
-				"bug": "bug",
+				"bug": "lỗi",
 				"design": "thiết kế",
 				"docs": "tài liệu",
 				"feature": "tính năng"
@@ -5632,7 +5490,7 @@
 				"handbook": "Sổ tay nhóm",
 				"mobile": "Ứng dụng di động",
 				"platform": "API nền tảng",
-				"website": "Website"
+				"website": "Trang web"
 			},
 			"sheet": {
 				"activity": "Hoạt động",
@@ -5684,7 +5542,7 @@
 				"done": "Xong",
 				"inProgress": "Đang thực hiện",
 				"inReview": "Đang xem xét",
-				"todo": "To do"
+				"todo": "Cần làm"
 			},
 			"analytics": {
 				"allProjects": "Tất cả dự án",
@@ -5746,7 +5604,7 @@
 				"entries": {
 					"apiKey": {
 						"action": "Đã tạo một khóa API",
-						"target": "CI deploy",
+						"target": "Triển khai CI",
 						"time": "Vừa xong",
 						"type": "Khóa API"
 					},
@@ -5764,7 +5622,7 @@
 					},
 					"publicBoard": {
 						"action": "Đã công khai một bảng",
-						"target": "Website",
+						"target": "Trang web",
 						"time": "Hôm qua",
 						"type": "Dự án"
 					},
@@ -5851,7 +5709,7 @@
 				"tasks": {
 					"redirect": {
 						"due": "12 thg 10",
-						"project": "Website",
+						"project": "Trang web",
 						"title": "Sửa lỗi chuyển hướng đăng nhập"
 					},
 					"release": {
@@ -5970,7 +5828,7 @@
 				"quickLinks": "Liên kết nhanh",
 				"recentItems": {
 					"page": "Kế hoạch ra mắt",
-					"project": "Website",
+					"project": "Trang web",
 					"task": "Sửa lỗi chuyển hướng đăng nhập"
 				},
 				"recents": "Gần đây",
@@ -5981,9 +5839,9 @@
 					"tasks": "Công việc"
 				},
 				"recentTimes": {
-					"page": "1h",
-					"project": "2h",
-					"task": "10m"
+					"page": "1 giờ",
+					"project": "2 giờ",
+					"task": "10 phút"
 				},
 				"saving": "Đang lưu…",
 				"stickies": "Ghi chú nhanh",
@@ -5996,25 +5854,25 @@
 				"items": {
 					"assigned": {
 						"task": "Thử lại webhook bị lỗi",
-						"time": "1h"
+						"time": "1 giờ"
 					},
 					"commented": {
 						"preview": "Các nút bị vô hiệu hóa giờ đã đạt chuẩn.",
 						"task": "Kiểm tra độ tương phản màu trong cài đặt",
-						"time": "1d"
+						"time": "1 ngày"
 					},
 					"due": {
 						"task": "Sửa lỗi chuyển hướng đăng nhập",
-						"time": "2h"
+						"time": "2 giờ"
 					},
 					"mention": {
 						"preview": "@adam bạn kiểm tra giúp dòng tổng trước thứ Sáu nhé?",
 						"task": "Thêm xuất CSV cho báo cáo",
-						"time": "5m"
+						"time": "5 phút"
 					},
 					"moved": {
 						"task": "Lưu cache danh sách dự án trên máy chủ",
-						"time": "3h"
+						"time": "3 giờ"
 					}
 				},
 				"markAllRead": "Đánh dấu tất cả đã đọc",
@@ -6191,19 +6049,19 @@
 				"statuses": {
 					"done": {
 						"meta": "14 issue",
-						"name": "Done"
+						"name": "Hoàn thành"
 					},
 					"inProgress": {
 						"meta": "9 issue",
-						"name": "In Progress"
+						"name": "Đang thực hiện"
 					},
 					"open": {
 						"meta": "14 issue",
-						"name": "Open"
+						"name": "Mở"
 					},
 					"review": {
 						"meta": "5 issue",
-						"name": "Code Review"
+						"name": "Xem xét mã"
 					}
 				},
 				"statusesTitle": "Trạng thái",
@@ -6215,7 +6073,7 @@
 				"title": "Nhập từ Jira"
 			},
 			"mcp": {
-				"agent": "Agent",
+				"agent": "Tác tử",
 				"connected": "Đã kết nối với Margaya qua MCP",
 				"placeholder": "Hỏi agent…",
 				"prompt": "Tạo ba công việc cho danh sách kiểm tra ra mắt",
@@ -7445,7 +7303,7 @@
 			"hintSearch": "Tìm kiếm",
 			"hintSwitch": "Đổi bên",
 			"hintToggle": "Thêm hoặc xóa",
-			"keySpace": "Space",
+			"keySpace": "Phím cách",
 			"open": "Lập kế hoạch chu kỳ",
 			"paneLabel": "Bên của trình lập kế hoạch",
 			"plannedCount_other": "Đã lên kế hoạch {{count}} công việc",
@@ -7550,7 +7408,7 @@
 			"clear": "Xóa bộ lọc",
 			"filterBy": "Lọc theo",
 			"includesAnyOf": "bao gồm một trong",
-			"is": "is",
+			"is": "là",
 			"isAnyOf": "là một trong",
 			"lead": "Người phụ trách",
 			"members": "Thành viên",
@@ -7734,7 +7592,7 @@
 			"completed30": "Hoàn thành trong 30 ngày",
 			"created": "Đã tạo",
 			"dueThisWeek": "Đến hạn tuần này",
-			"notAvailable": "n/a",
+			"notAvailable": "không có",
 			"overdue": "Quá hạn",
 			"subscribed": "Đã đăng ký"
 		},
@@ -7750,7 +7608,6 @@
 			"cancelled_other": "{{count}} đã hủy",
 			"priorities": "Công việc đang mở theo mức ưu tiên",
 			"recentActivity": "Hoạt động gần đây",
-			"title": "Khối lượng công việc",
 			"byState": "Theo trạng thái"
 		},
 		"activity": {
@@ -7828,7 +7685,6 @@
 			"all": "Tất cả",
 			"emptyDescription": "Lưu bộ lọc và bố cục thành chế độ xem rồi chia sẻ với nhóm của bạn.",
 			"emptyTitle": "Chưa có chế độ xem nào",
-			"favorite": "Yêu thích",
 			"mine": "Của tôi",
 			"more": "Chế độ xem",
 			"newView": "Chế độ xem mới",
@@ -7972,11 +7828,9 @@
 			"inbox": "Hộp thư đến",
 			"label": "Quay lại làm tiếp",
 			"myWork": "Công việc của bạn",
-			"open_other": "{{count}} đang mở",
 			"overdue_other": "{{count}} quá hạn",
 			"stickies": "Ghi chú dán",
 			"stickiesHint": "Ghi chú riêng tư, chỉ mình bạn thấy",
-			"unread_other": "{{count}} chưa đọc",
 			"openCaption": "đang mở",
 			"unreadCaption": "chưa đọc"
 		}
@@ -8036,7 +7890,6 @@
 			"submit": "Gửi yêu cầu",
 			"title": "Yêu cầu mới",
 			"titlePlaceholder": "Bạn cần gì?",
-			"titleRequired": "Hãy nhập tiêu đề",
 			"toast": "Đã gửi yêu cầu",
 			"toastView": "Xem",
 			"pastedImages": "Ảnh đã dán",
@@ -8127,7 +7980,7 @@
 		"filters": {
 			"button": "Lọc",
 			"clear": "Xóa bộ lọc",
-			"me": "Me",
+			"me": "Tôi",
 			"priority": "Mức ưu tiên",
 			"remove": "Xóa bộ lọc",
 			"status": "Trạng thái",
@@ -8215,7 +8068,6 @@
 			"pending": "Công việc này đang chờ trong mục tiếp nhận.",
 			"snoozed": "Công việc này đang được tạm hoãn trong mục tiếp nhận đến {{date}}."
 		},
-		"title": "Tiếp nhận",
 		"triage": {
 			"backToList": "Quay lại các yêu cầu",
 			"detailLabel": "Yêu cầu",
@@ -9178,7 +9030,6 @@
 	},
 	"instanceAdmin": {
 		"admins": {
-			"actions": "Thao tác quản trị viên",
 			"add": "Thêm quản trị viên",
 			"addConfirm": "Thêm quản trị viên",
 			"addDescription": "Quản trị viên phiên bản có thể thay đổi mọi cài đặt trong khu vực này và mở bất kỳ không gian làm việc nào.",
@@ -9296,7 +9147,7 @@
 				"fileStorage": "Lưu trữ tệp",
 				"notConfigured": "Chưa cấu hình",
 				"off": "Tắt",
-				"on": "On",
+				"on": "Bật",
 				"realtime": "Thời gian thực",
 				"realtimeMemory": "Trong bộ nhớ",
 				"realtimeRedis": "Redis ({{mode}})",
@@ -9382,7 +9233,6 @@
 		"save": "Lưu",
 		"saved": "Đã lưu cài đặt",
 		"saveError": "Không thể lưu cài đặt",
-		"saving": "Đang lưu…",
 		"secret": {
 			"cancel": "Hủy",
 			"clear": "Xóa",
@@ -9392,8 +9242,6 @@
 			"saved": "Đã lưu",
 			"unreadable": "Không thể đọc khóa bí mật đã lưu (AUTH_SECRET của máy chủ đã thay đổi). Hãy nhập lại."
 		},
-		"sidebarSubtitle": "Quản trị phiên bản",
-		"sidebarTitle": "Phiên bản",
 		"source": {
 			"default": "Mặc định",
 			"environment": "Môi trường: {{variable}}",
@@ -9446,97 +9294,97 @@
 	},
 	"press": {
 		"boilerplate": {
-			"description": "Ready-made descriptions. Trim them if you need to, but please keep the facts as they are.",
+			"description": "Các mô tả viết sẵn. Bạn có thể rút gọn nếu cần, nhưng xin giữ nguyên các dữ kiện.",
 			"long": {
-				"label": "About 150 words",
-				"text": "Margaya is an open-source project management platform built for teams that want to plan and ship work without the tool becoming a job of its own. Tasks move through board, list, spreadsheet, calendar and Gantt views of the same data. Cycles, modules, estimates and an intake inbox are there when a team needs planning, and stay out of the way when it doesn't. Teams write docs together next to their tasks, collect requests on public boards, and follow progress with analytics and an audit log. A REST API with an OpenAPI description, webhooks, an MCP server and integrations with GitHub, Gitea, Slack, Discord and others connect Margaya to the rest of a team's tools. The interface is available in 20 languages. Margaya is released under the MIT licence and runs on a single server with Docker, or on Kubernetes with Helm; Margaya Cloud offers the same product as a managed service."
+				"label": "Khoảng 150 từ",
+				"text": "Margaya là nền tảng quản lý dự án mã nguồn mở dành cho những nhóm muốn lập kế hoạch và hoàn thành công việc mà không để chính công cụ trở thành một gánh nặng. Công việc đi qua các chế độ xem bảng, danh sách, bảng tính, lịch và Gantt của cùng một dữ liệu. Chu kỳ, mô-đun, ước tính và hộp tiếp nhận luôn sẵn sàng khi nhóm cần lập kế hoạch, và không cản đường khi không cần. Các nhóm cùng viết tài liệu ngay cạnh công việc, thu thập yêu cầu trên bảng công khai và theo dõi tiến độ bằng phân tích và nhật ký kiểm tra. REST API có mô tả OpenAPI, webhook, máy chủ MCP và tích hợp với GitHub, Gitea, Slack, Discord cùng nhiều dịch vụ khác kết nối Margaya với các công cụ còn lại của nhóm. Giao diện có sẵn bằng 20 ngôn ngữ. Margaya được phát hành theo giấy phép MIT và chạy trên một máy chủ với Docker, hoặc trên Kubernetes với Helm; Margaya Cloud cung cấp cùng sản phẩm đó dưới dạng dịch vụ được quản lý."
 			},
 			"short": {
-				"label": "About 50 words",
-				"text": "Margaya is an open-source project management platform for teams that want clear ownership without heavy process. Plan work on boards, lists, spreadsheets, calendars and Gantt charts, write docs beside the tasks, and connect your tools through a REST API and MCP. Run it yourself under the MIT licence, or use Margaya Cloud."
+				"label": "Khoảng 50 từ",
+				"text": "Margaya là nền tảng quản lý dự án mã nguồn mở cho những nhóm muốn phân công rõ ràng mà không cần quy trình nặng nề. Lập kế hoạch công việc trên bảng, danh sách, bảng tính, lịch và biểu đồ Gantt, viết tài liệu ngay cạnh công việc, và kết nối các công cụ của bạn qua REST API và MCP. Tự vận hành theo giấy phép MIT, hoặc dùng Margaya Cloud."
 			},
-			"title": "Boilerplate"
+			"title": "Đoạn giới thiệu soạn sẵn"
 		},
 		"colours": {
-			"copyHex": "Copy {{hex}}",
-			"description": "Margaya is deliberately quiet: near-black, off-white and a few greys, so the work on screen supplies the colour.",
+			"copyHex": "Sao chép {{hex}}",
+			"description": "Margaya được thiết kế trầm lặng có chủ đích: gần đen, trắng ngà và vài sắc xám, để chính công việc trên màn hình mang lại màu sắc.",
 			"graphite": {
-				"name": "Graphite",
-				"usage": "Text and primary buttons in the light theme"
+				"name": "Than chì",
+				"usage": "Chữ và nút chính trong giao diện sáng"
 			},
 			"ink": {
-				"name": "Ink",
-				"usage": "The logo, and the dark theme's background"
+				"name": "Mực",
+				"usage": "Logo và nền của giao diện tối"
 			},
 			"mist": {
-				"name": "Mist",
-				"usage": "Panels and sidebars in the light theme"
+				"name": "Sương",
+				"usage": "Bảng điều khiển và thanh bên trong giao diện sáng"
 			},
 			"mono": {
 				"name": "Geist Mono",
-				"usage": "Code, keyboard shortcuts and task IDs"
+				"usage": "Mã, phím tắt và mã công việc"
 			},
 			"paper": {
-				"name": "Paper",
-				"usage": "The light logo, and primary buttons in the dark theme"
+				"name": "Giấy",
+				"usage": "Logo sáng và nút chính trong giao diện tối"
 			},
-			"sample": "Plan the work. Ship the work.",
+			"sample": "Lên kế hoạch. Hoàn thành công việc.",
 			"sans": {
 				"name": "Geist",
-				"usage": "Interface, headings and the wordmark, set semibold with tight tracking"
+				"usage": "Giao diện, tiêu đề và logo chữ, đặt ở độ đậm vừa với khoảng cách chữ khít"
 			},
-			"title": "Colours and type",
-			"typeTitle": "Typography",
+			"title": "Màu sắc và kiểu chữ",
+			"typeTitle": "Kiểu chữ",
 			"white": {
-				"name": "White",
-				"usage": "The light theme's background"
+				"name": "Trắng",
+				"usage": "Nền của giao diện sáng"
 			}
 		},
 		"contact": {
-			"body": "Margaya is built in the open, so the maintainers answer on GitHub. Start a discussion for interviews and questions about the project, or open an issue if something in this kit is missing or out of date.",
-			"discussions": "Start a discussion",
-			"issues": "Open an issue",
-			"title": "Talk to the maintainers"
+			"body": "Margaya được phát triển công khai, nên những người duy trì trả lời trên GitHub. Hãy bắt đầu một thảo luận cho phỏng vấn và câu hỏi về dự án, hoặc mở một issue nếu bộ tài liệu này thiếu hoặc lỗi thời ở đâu đó.",
+			"discussions": "Bắt đầu thảo luận",
+			"issues": "Mở issue",
+			"title": "Liên hệ những người duy trì dự án"
 		},
-		"copied": "Copied",
-		"copy": "Copy",
-		"copyUrl": "Copy URL",
-		"description": "Margaya's press kit: boilerplate text, logos, product screenshots, brand colours and typography, with direct download links.",
-		"download": "Download",
-		"downloadKit": "Download the press kit",
+		"copied": "Đã sao chép",
+		"copy": "Sao chép",
+		"copyUrl": "Sao chép URL",
+		"description": "Bộ tài liệu báo chí của Margaya: đoạn giới thiệu soạn sẵn, logo, ảnh chụp màn hình sản phẩm, màu sắc và kiểu chữ thương hiệu, kèm liên kết tải xuống trực tiếp.",
+		"download": "Tải xuống",
+		"downloadKit": "Tải bộ tài liệu báo chí",
 		"downloadKitMeta": "ZIP, {{size}}",
-		"eyebrow": "Press kit",
+		"eyebrow": "Bộ tài liệu báo chí",
 		"facts": {
-			"description": "The essentials, in one place.",
+			"description": "Những điều cốt lõi, gom về một chỗ.",
 			"founded": {
-				"label": "Founded",
+				"label": "Thành lập",
 				"value": "2026"
 			},
 			"hosting": {
-				"label": "Hosting",
-				"value": "Self-hosted with Docker or Helm, or managed on Margaya Cloud"
+				"label": "Lưu trữ",
+				"value": "Tự lưu trữ với Docker hoặc Helm, hoặc dùng dịch vụ được quản lý trên Margaya Cloud"
 			},
 			"interfaces": {
-				"label": "Interfaces",
-				"value": "REST API with an OpenAPI description, plus an MCP server"
+				"label": "Giao tiếp",
+				"value": "REST API có mô tả OpenAPI, cùng một máy chủ MCP"
 			},
 			"languages": {
-				"label": "Languages",
-				"value": "20 interface languages"
+				"label": "Ngôn ngữ",
+				"value": "Giao diện 20 ngôn ngữ"
 			},
 			"licence": {
-				"label": "Licence",
-				"value": "MIT, for every feature"
+				"label": "Giấy phép",
+				"value": "MIT, cho mọi tính năng"
 			},
 			"source": {
-				"label": "Source code",
+				"label": "Mã nguồn",
 				"value": "github.com/manu14357/Margaya"
 			},
 			"stack": {
-				"label": "Stack",
-				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
+				"label": "Công nghệ",
+				"value": "TypeScript, Hono, React và PostgreSQL, Redis là tùy chọn"
 			},
-			"title": "Quick facts",
+			"title": "Thông tin nhanh",
 			"ai": {
 				"label": "AI",
 				"value": "Tùy chọn và tắt theo mặc định: Hỏi AI, chế độ Xây dựng và tác tử AI, chạy trên Claude hoặc mô hình tự lưu trữ"
@@ -9544,212 +9392,218 @@
 		},
 		"guidelines": {
 			"do": {
-				"contrast": "Use the dark wordmark on light backgrounds and the light wordmark on dark ones.",
-				"link": "Link to margaya.app or the GitHub repository when you mention the project.",
-				"name": "Write the name as “Margaya”, with a capital M, in running text.",
-				"space": "Leave clear space around the logo at least as wide as the icon's ears."
+				"contrast": "Dùng logo chữ tối trên nền sáng và logo chữ sáng trên nền tối.",
+				"link": "Liên kết đến margaya.app hoặc kho GitHub khi nhắc đến dự án.",
+				"name": "Viết tên là “Margaya”, với chữ M viết hoa, trong văn bản.",
+				"space": "Chừa khoảng trống quanh logo ít nhất bằng chiều rộng đôi tai của biểu tượng."
 			},
 			"dont": {
-				"distort": "Stretch, rotate, outline or add effects to the logo.",
-				"edit": "Edit screenshots to show features that Margaya doesn't have.",
-				"endorse": "Suggest that the Margaya maintainers endorse a product, service or opinion.",
-				"recolour": "Recolour the logo, or place it on busy images where it loses contrast."
+				"distort": "Kéo giãn, xoay, viền hoặc thêm hiệu ứng cho logo.",
+				"edit": "Chỉnh sửa ảnh chụp màn hình để hiển thị tính năng mà Margaya không có.",
+				"endorse": "Ngụ ý rằng những người duy trì Margaya ủng hộ một sản phẩm, dịch vụ hay quan điểm nào đó.",
+				"recolour": "Đổi màu logo, hoặc đặt logo trên hình ảnh rối mắt khiến nó mất độ tương phản."
 			},
-			"dontTitle": "Please don't",
-			"doTitle": "Please do",
-			"title": "Using the brand"
+			"dontTitle": "Không nên",
+			"doTitle": "Nên",
+			"title": "Sử dụng thương hiệu"
 		},
-		"headline": "Margaya is open-source project management you can run on your own server.",
-		"intro": "Short and long descriptions, logos, screenshots, colours and type, ready for articles, videos and talks. Everything on this page may be used for editorial coverage of Margaya.",
+		"headline": "Margaya là phần mềm quản lý dự án mã nguồn mở mà bạn có thể chạy trên máy chủ của riêng mình.",
+		"intro": "Mô tả ngắn và dài, logo, ảnh chụp màn hình, màu sắc và kiểu chữ, sẵn sàng cho bài viết, video và bài thuyết trình. Mọi thứ trên trang này đều có thể dùng cho nội dung biên tập về Margaya.",
 		"logos": {
-			"description": "Use the wordmark wherever there is room for it, and the icon where space is tight. Each file has a permanent address you can link to.",
+			"description": "Dùng logo chữ ở bất cứ đâu có đủ chỗ, và dùng biểu tượng khi không gian chật hẹp. Mỗi tệp có một địa chỉ cố định mà bạn có thể liên kết đến.",
 			"iconPng": {
-				"alt": "The Margaya app icon",
+				"alt": "Biểu tượng ứng dụng Margaya",
 				"detail": "PNG, 512 × 512",
-				"name": "App icon"
+				"name": "Biểu tượng ứng dụng"
 			},
 			"iconSvg": {
-				"alt": "The Margaya icon: a light cat face on a dark rounded square",
-				"detail": "SVG, scales to any size",
-				"name": "Icon"
+				"alt": "Biểu tượng Margaya: một khuôn mặt mèo màu sáng trên hình vuông tối bo góc",
+				"detail": "SVG, co giãn mọi kích thước",
+				"name": "Biểu tượng"
 			},
-			"title": "Logos",
+			"title": "Logo",
 			"wordmarkDark": {
-				"alt": "The Margaya wordmark in near-black on a light background",
-				"detail": "SVG, for light backgrounds",
-				"name": "Wordmark, dark"
+				"alt": "Logo chữ Margaya màu gần đen trên nền sáng",
+				"detail": "SVG, cho nền sáng",
+				"name": "Logo chữ, tối"
 			},
 			"wordmarkLight": {
-				"alt": "The Margaya wordmark in off-white on a dark background",
-				"detail": "SVG, for dark backgrounds",
-				"name": "Wordmark, light"
+				"alt": "Logo chữ Margaya màu trắng ngà trên nền tối",
+				"detail": "SVG, cho nền tối",
+				"name": "Logo chữ, sáng"
 			}
 		},
-		"onThisPage": "On this page",
+		"onThisPage": "Trên trang này",
 		"screenshots": {
-			"close": "Close",
-			"counter": "{{current}} of {{total}}",
-			"dark": "Dark",
-			"description": "Real Margaya screens in the light and dark themes. Select one to see it at full size.",
-			"empty": "A fresh set of screenshots is on its way. Until then, the press kit download has the current set.",
-			"light": "Light",
-			"next": "Next screenshot",
-			"open": "View larger: {{title}}",
-			"previous": "Previous screenshot",
+			"close": "Đóng",
+			"counter": "{{current}} / {{total}}",
+			"dark": "Tối",
+			"description": "Màn hình thật của Margaya ở giao diện sáng và tối. Chọn một ảnh để xem kích thước đầy đủ.",
+			"empty": "Một bộ ảnh chụp màn hình mới đang được chuẩn bị. Trong lúc chờ, gói tải xuống của bộ tài liệu báo chí có bộ ảnh hiện tại.",
+			"light": "Sáng",
+			"next": "Ảnh tiếp theo",
+			"open": "Xem ảnh lớn: {{title}}",
+			"previous": "Ảnh trước",
 			"size": "{{width}} × {{height}}, PNG",
-			"title": "Product screenshots"
+			"title": "Ảnh chụp màn hình sản phẩm"
 		},
-		"title": "Press kit",
-		"downloadPng": "Download PNG"
+		"title": "Bộ tài liệu báo chí",
+		"downloadPng": "Tải PNG"
 	},
 	"pricing": {
 		"cta": {
-			"description": "Start a Cloud trial with no card, or follow the install guide and run Margaya on your own hardware.",
-			"primary": "Start a free trial",
-			"secondary": "Read the install guide",
-			"title": "Pick the way that fits, and change your mind later."
+			"description": "Bắt đầu dùng thử Cloud mà không cần thẻ, hoặc làm theo hướng dẫn cài đặt và chạy Margaya trên phần cứng của riêng bạn.",
+			"primary": "Dùng thử miễn phí",
+			"secondary": "Đọc hướng dẫn cài đặt",
+			"title": "Chọn cách phù hợp, và đổi ý sau cũng được."
 		},
-		"description": "The self-hosted build is the whole product under the MIT licence, with no seat limits and no paid tier. Margaya Cloud is the same software, hosted in the EU and kept up to date for you.",
-		"eyebrow": "Pricing",
+		"description": "Bản tự lưu trữ là toàn bộ sản phẩm theo giấy phép MIT, không giới hạn số người dùng và không có gói trả phí. Margaya Cloud là cùng một phần mềm, được lưu trữ tại EU và luôn được cập nhật cho bạn.",
+		"eyebrow": "Bảng giá",
 		"faq": {
 			"items": {
 				"cancel": {
-					"answer": "Your plan stays active until the end of the period you've paid for. Export your work as CSV, Excel or JSON before then if you want to keep a copy.",
-					"question": "What happens if I cancel?"
+					"answer": "Gói của bạn vẫn hoạt động đến hết kỳ bạn đã thanh toán. Trước thời điểm đó, hãy xuất công việc ra CSV, Excel hoặc JSON nếu muốn giữ một bản sao.",
+					"question": "Điều gì xảy ra nếu tôi hủy?"
 				},
 				"founding": {
-					"answer": "Workspaces created before paid plans launched keep free access for at least 12 months, and you'll get six months' notice before anything changes.",
-					"question": "I signed up before paid plans existed. What changes?"
+					"answer": "Các không gian làm việc tạo trước khi ra mắt gói trả phí được giữ quyền truy cập miễn phí ít nhất 12 tháng, và bạn sẽ được báo trước sáu tháng trước khi có bất kỳ thay đổi nào.",
+					"question": "Tôi đăng ký trước khi có gói trả phí. Điều gì thay đổi?"
 				},
 				"payments": {
-					"answer": "Payments go through Creem, which acts as merchant of record and handles sales tax and VAT where they apply. Your card details never reach Margaya.",
-					"question": "Who handles payments and tax?"
+					"answer": "Thanh toán được xử lý qua Creem, đơn vị đóng vai trò người bán chính thức và lo thuế bán hàng cũng như VAT khi áp dụng. Thông tin thẻ của bạn không bao giờ đến Margaya.",
+					"question": "Ai xử lý thanh toán và thuế?"
 				},
 				"seats": {
-					"answer": "Cloud Team is billed for each member of the workspace. When someone joins or leaves, the seat count on the subscription is updated to match.",
-					"question": "How are Cloud Team members counted?"
+					"answer": "Cloud Nhóm tính phí cho mỗi thành viên của không gian làm việc. Khi có người tham gia hoặc rời đi, số người dùng trong gói đăng ký sẽ được cập nhật tương ứng.",
+					"question": "Thành viên Cloud Nhóm được tính như thế nào?"
 				},
 				"selfHostHelp": {
-					"answer": "From the maintainers and the community on GitHub, through discussions and issues. Installation, upgrades and configuration are covered in the documentation.",
-					"question": "Where do self-hosters get help?"
+					"answer": "Từ những người duy trì dự án và cộng đồng trên GitHub, qua các thảo luận và issue. Cài đặt, nâng cấp và cấu hình đều được trình bày trong tài liệu.",
+					"question": "Người tự lưu trữ nhận trợ giúp ở đâu?"
 				},
 				"selfHostLimits": {
-					"answer": "No. The code you install is the code that runs Margaya Cloud, and all of it is MIT licensed. There are no licence keys, seat limits or paid features to unlock.",
-					"question": "Is the self-hosted version missing anything?"
+					"answer": "Không. Mã bạn cài đặt cũng chính là mã đang chạy Margaya Cloud, và toàn bộ đều theo giấy phép MIT. Không có khóa bản quyền, giới hạn người dùng hay tính năng trả phí nào cần mở khóa.",
+					"question": "Bản tự lưu trữ có thiếu gì không?"
 				},
 				"trial": {
-					"answer": "A new Cloud workspace gets 14 days with everything included, and you don't need a card to start. Before it ends, choose a plan or export your tasks.",
-					"question": "How does the Cloud trial work?"
+					"answer": "Một không gian làm việc Cloud mới có 14 ngày với đầy đủ mọi thứ, và bạn không cần thẻ để bắt đầu. Trước khi hết hạn, hãy chọn một gói hoặc xuất công việc của bạn.",
+					"question": "Bản dùng thử Cloud hoạt động thế nào?"
 				},
 				"yearly": {
-					"answer": "Yes. A year costs the same as ten months, so both Cloud plans come with two months free when you pay yearly.",
-					"question": "Is yearly billing cheaper?"
+					"answer": "Có. Một năm có giá bằng mười tháng, nên cả hai gói Cloud đều được miễn phí hai tháng khi bạn trả theo năm.",
+					"question": "Thanh toán theo năm có rẻ hơn không?"
+				},
+				"ai": {
+					"question": "Có bao gồm AI không?",
+					"answer": "Gói nào cũng có các tính năng AI: Hỏi AI, chế độ Xây dựng, tác tử và hỗ trợ viết. Chúng luôn tắt cho đến khi quản trị viên bật lên. Chi phí sử dụng AI không nằm trong giá: bạn thêm khóa API của riêng mình trong phần cài đặt AI của không gian làm việc, và nhà cung cấp AI tính phí trực tiếp cho bạn. Bản tự lưu trữ cũng có thể dùng mô hình do bạn tự chạy, qua Ollama hoặc vLLM."
 				}
 			},
-			"title": "Questions about pricing"
+			"title": "Câu hỏi về giá"
 		},
 		"interval": {
-			"annual": "Yearly",
-			"label": "Billing period",
-			"monthly": "Monthly",
-			"saving": "2 months free"
+			"annual": "Hằng năm",
+			"label": "Chu kỳ thanh toán",
+			"monthly": "Hằng tháng",
+			"saving": "Miễn phí 2 tháng"
 		},
-		"metaDescription": "Margaya is free to self-host, forever. Margaya Cloud costs $4 a month for one person or $5 per member a month for teams, with a 14-day free trial.",
+		"metaDescription": "Margaya miễn phí khi tự lưu trữ, mãi mãi. Margaya Cloud có giá $4 mỗi tháng cho một người hoặc $5 mỗi thành viên mỗi tháng cho nhóm, kèm 14 ngày dùng thử miễn phí.",
 		"plans": {
 			"personal": {
-				"annualNote": "Works out at {{price}} a month",
-				"annualPeriod": "per year",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month",
-				"monthlyPeriod": "per month",
-				"name": "Cloud Personal",
+				"annualNote": "Tương đương {{price}} mỗi tháng",
+				"annualPeriod": "mỗi năm",
+				"cta": "Dùng thử 14 ngày",
+				"monthlyNote": "Thanh toán hằng tháng",
+				"monthlyPeriod": "mỗi tháng",
+				"name": "Cloud Cá nhân",
 				"points": {
-					"everything": "Every feature in the self-hosted build",
-					"help": "Support by email",
-					"managed": "Backups and updates handled for you",
-					"one": "One person, unlimited projects and tasks"
+					"everything": "Mọi tính năng của bản tự lưu trữ",
+					"help": "Hỗ trợ qua email",
+					"managed": "Sao lưu và cập nhật do chúng tôi lo",
+					"one": "Một người, không giới hạn dự án và công việc"
 				},
-				"tagline": "Managed hosting for one person"
+				"tagline": "Lưu trữ được quản lý cho một người"
 			},
 			"selfHosted": {
-				"cta": "Read the install guide",
-				"name": "Self-hosted",
-				"note": "MIT licence. No key, no seat limit.",
-				"period": "forever",
+				"cta": "Đọc hướng dẫn cài đặt",
+				"name": "Tự lưu trữ",
+				"note": "Giấy phép MIT. Không cần khóa, không giới hạn người dùng.",
+				"period": "mãi mãi",
 				"points": {
-					"data": "Your database, your backups, your rules",
-					"deploy": "Docker on one server, or Helm on Kubernetes",
-					"everything": "Every feature, for as many people as you like",
-					"help": "Community help on GitHub"
+					"data": "Cơ sở dữ liệu của bạn, bản sao lưu của bạn, luật chơi của bạn",
+					"deploy": "Docker trên một máy chủ, hoặc Helm trên Kubernetes",
+					"everything": "Mọi tính năng, cho bao nhiêu người tùy bạn",
+					"help": "Hỗ trợ từ cộng đồng trên GitHub"
 				},
-				"tagline": "On servers you run"
+				"tagline": "Trên máy chủ do bạn vận hành"
 			},
 			"team": {
-				"annualNote": "Works out at {{price}} per member a month",
-				"annualPeriod": "per member, per year",
-				"badge": "For teams",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month for each workspace member",
-				"monthlyPeriod": "per member, per month",
-				"name": "Cloud Team",
+				"annualNote": "Tương đương {{price}} mỗi thành viên mỗi tháng",
+				"annualPeriod": "mỗi thành viên, mỗi năm",
+				"badge": "Dành cho nhóm",
+				"cta": "Dùng thử 14 ngày",
+				"monthlyNote": "Thanh toán hằng tháng cho mỗi thành viên không gian làm việc",
+				"monthlyPeriod": "mỗi thành viên, mỗi tháng",
+				"name": "Cloud Nhóm",
 				"points": {
-					"help": "Priority support by email",
-					"managed": "Backups and updates handled for you",
-					"people": "Everyone in the workspace, unlimited projects",
-					"roles": "Workspace roles and permissions"
+					"help": "Hỗ trợ ưu tiên qua email",
+					"managed": "Sao lưu và cập nhật do chúng tôi lo",
+					"people": "Mọi người trong không gian làm việc, không giới hạn dự án",
+					"roles": "Vai trò và quyền trong không gian làm việc"
 				},
-				"tagline": "Managed hosting for a whole team"
+				"tagline": "Lưu trữ được quản lý cho cả nhóm"
 			}
 		},
 		"table": {
-			"description": "The features are the same everywhere. What changes is who runs the servers and where you go for help.",
-			"feature": "Feature",
+			"description": "Tính năng ở đâu cũng như nhau. Điều khác biệt là ai vận hành máy chủ và bạn tìm trợ giúp ở đâu.",
+			"feature": "Tính năng",
 			"groups": {
-				"connect": "Connect",
-				"planning": "Planning and insight",
-				"running": "Running it",
-				"work": "The work"
+				"connect": "Kết nối",
+				"planning": "Lập kế hoạch và phân tích",
+				"running": "Vận hành",
+				"work": "Công việc"
 			},
-			"included": "Included",
-			"notIncluded": "Not included",
+			"included": "Có",
+			"notIncluded": "Không có",
 			"rows": {
-				"admin": "Instance settings: sign-in providers, email, storage",
-				"analytics": "Analytics and audit log",
-				"api": "REST API, webhooks and MCP",
-				"backups": "Backups",
-				"cycles": "Cycles, modules and estimates",
-				"docs": "Docs written together, next to the tasks",
-				"export": "Export to CSV, Excel or JSON",
-				"hosting": "Where it runs",
-				"intake": "Intake inbox and triage",
-				"integrations": "GitHub, Gitea, Slack, Discord and more",
-				"jira": "Jira import",
-				"people": "People",
-				"projects": "Projects and tasks",
-				"publicBoards": "Public boards with voting",
-				"roles": "Workspace roles and permissions",
-				"support": "Support",
-				"updates": "Updates",
-				"views": "Board, list, spreadsheet, calendar and Gantt views"
+				"admin": "Cài đặt phiên bản: nhà cung cấp đăng nhập, email, lưu trữ",
+				"analytics": "Phân tích và nhật ký kiểm tra",
+				"api": "REST API, webhook và MCP",
+				"backups": "Sao lưu",
+				"cycles": "Chu kỳ, mô-đun và ước tính",
+				"docs": "Tài liệu cùng nhau viết, ngay cạnh công việc",
+				"export": "Xuất ra CSV, Excel hoặc JSON",
+				"hosting": "Nơi vận hành",
+				"intake": "Hộp tiếp nhận và phân loại",
+				"integrations": "GitHub, Gitea, Slack, Discord và nhiều hơn nữa",
+				"jira": "Nhập từ Jira",
+				"people": "Số người",
+				"projects": "Dự án và công việc",
+				"publicBoards": "Bảng công khai có bình chọn",
+				"roles": "Vai trò và quyền trong không gian làm việc",
+				"support": "Hỗ trợ",
+				"updates": "Cập nhật",
+				"views": "Chế độ xem bảng, danh sách, bảng tính, lịch và Gantt",
+				"ai": "AI: Hỏi AI, chế độ Xây dựng và tác tử"
 			},
-			"title": "Compare the plans",
+			"title": "So sánh các gói",
 			"values": {
-				"automatic": "Automatic",
-				"community": "Community on GitHub",
+				"automatic": "Tự động",
+				"community": "Cộng đồng trên GitHub",
 				"email": "Email",
-				"eu": "EU data centres",
-				"notNeeded": "Not needed for one",
-				"one": "Just you",
-				"perMember": "Unlimited, billed per member",
-				"priorityEmail": "Priority email",
-				"unlimited": "Unlimited",
-				"yours": "You run them",
-				"yourSchedule": "When you choose",
-				"yourServers": "Your servers"
+				"eu": "Trung tâm dữ liệu tại EU",
+				"notNeeded": "Không cần khi dùng một mình",
+				"one": "Chỉ mình bạn",
+				"perMember": "Không giới hạn, tính phí theo thành viên",
+				"priorityEmail": "Email ưu tiên",
+				"unlimited": "Không giới hạn",
+				"yours": "Bạn tự đảm nhận",
+				"yourSchedule": "Khi bạn chọn",
+				"yourServers": "Máy chủ của bạn",
+				"ownKey": "Khóa hoặc mô hình AI của riêng bạn"
 			}
 		},
-		"title": "One product. Two ways to run it.",
-		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+		"title": "Một sản phẩm. Hai cách vận hành.",
+		"trialNote": "Các gói Cloud bắt đầu với 14 ngày dùng thử. Không cần thẻ để bắt đầu."
 	},
 	"templates": {
 		"form": {
@@ -10007,7 +9861,6 @@
 			},
 			"chat": {
 				"planLabel": "Thay đổi được đề xuất",
-				"planning": "Đang lên kế hoạch thay đổi…",
 				"nothing": "Không có gì cần thay đổi cho yêu cầu này.",
 				"awaiting": "Đang chờ phản hồi",
 				"ready": "Thay đổi sẵn sàng: {{count}}. Xác nhận để tiếp tục.",
@@ -10553,11 +10406,7 @@
 			"retro": "Họp nhìn lại",
 			"my_brief": "Bản tóm lược của tôi",
 			"embedding": "Lập chỉ mục tìm kiếm",
-			"coding_handoff": "Bản giao việc cho tác tử lập trình",
-			"build_chat": "Tạo trong trò chuyện",
-			"nl_filter": "Bộ lọc bằng ngôn ngữ tự nhiên",
-			"inbox_digest": "Tóm tắt hộp thư",
-			"speech": "Giọng nói thành văn bản"
+			"coding_handoff": "Bản giao việc cho tác tử lập trình"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -10698,7 +10547,9 @@
 			"speechFormat": "Định dạng API",
 			"speechFormatHint": "Cách gửi âm thanh. Với Fish Audio, hãy dùng https://api.fish.audio/v1/asr làm endpoint.",
 			"speechFormatOpenai": "Tương thích OpenAI",
-			"speechModelHint": "Với Fish Audio: transcribe-1-pro hoặc transcribe-1, hoặc để trống."
+			"speechModelHint": "Với Fish Audio: transcribe-1-pro hoặc transcribe-1, hoặc để trống.",
+			"storePrompts": "Lưu prompt và câu trả lời",
+			"storePromptsHint": "Lưu nội dung yêu cầu gửi tác tử và những gì mô hình đã viết vào nhật ký của mỗi lần chạy. Tắt: lần chạy chỉ giữ số đếm, các bước và bản tóm tắt. Áp dụng cho các lần chạy kết thúc từ bây giờ. Lịch sử Ask mà không gian làm việc lưu trên máy chủ có công tắc riêng."
 		},
 		"workspace": {
 			"navLabel": "AI",
@@ -10776,7 +10627,8 @@
 			"storeConversations": "Lưu lịch sử trò chuyện trên máy chủ",
 			"storeConversationsHint": "Cuộc trò chuyện của mỗi người được lưu trong không gian làm việc để họ mở lại trên mọi thiết bị. Khi tắt: chúng chỉ nằm trong từng trình duyệt.",
 			"allowAutopilot": "Cho phép Tự động lái",
-			"allowAutopilotHint": "Chế độ Xây dựng có thể áp dụng thay đổi mà không cần xác nhận. Mọi thay đổi vẫn được ghi lại và có thể hoàn tác."
+			"allowAutopilotHint": "Chế độ Xây dựng có thể áp dụng thay đổi mà không cần xác nhận. Mọi thay đổi vẫn được ghi lại và có thể hoàn tác.",
+			"storesPrompts": "Đang lưu prompt"
 		},
 		"agents": {
 			"navLabel": "Tác tử",
@@ -10980,11 +10832,13 @@
 					"manual": "Chạy từ công việc",
 					"schedule": "Theo lịch",
 					"automation": "Tự động hóa",
-					"chat": "Tiếp nối"
+					"chat": "Tiếp nối",
+					"intake": "Yêu cầu tiếp nhận"
 				},
 				"project": "Dự án:",
 				"workedSeconds": "Đã làm việc {{count}} giây",
-				"workedMinutes": "Đã làm việc {{count}} phút"
+				"workedMinutes": "Đã làm việc {{count}} phút",
+				"request": "Yêu cầu"
 			},
 			"connectors": {
 				"title": "Trình kết nối",
@@ -11125,6 +10979,27 @@
 					"assign": "Giao việc",
 					"schedule": "Lịch",
 					"automation": "Tự động hóa"
+				}
+			},
+			"intakeTrigger": {
+				"open": "Yêu cầu tiếp nhận mới cho {{name}}",
+				"badge": "Tiếp nhận",
+				"title": "Yêu cầu tiếp nhận: {{name}}",
+				"hint": "Chạy tác tử với mỗi yêu cầu tiếp nhận mới trong các dự án của nó, ví dụ để phân loại. Thay đổi của nó tuân theo cùng quy tắc phê duyệt và hoàn tác như các lần chạy khác.",
+				"enabled": "Chạy khi có yêu cầu tiếp nhận mới",
+				"enabledHint": "Chỉ trong các dự án bật Tiếp nhận và AI, và trong phạm vi dự án của tác tử.",
+				"prompt": "Nó nên làm gì?",
+				"promptPlaceholder": "Ví dụ: đề xuất mức ưu tiên và nhãn, và chỉ ra các mục trùng lặp.",
+				"promptHint": "Để trống để phân loại: một bình luận ngắn về nội dung yêu cầu, mức độ khẩn cấp và những gì còn thiếu.",
+				"runsAs": "Chạy thay cho {{name}}. Lưu khi bật trình kích hoạt sẽ biến bạn thành người đó.",
+				"runsAsYou": "Chạy thay bạn ngay khi bạn bật, với tối đa quyền của bạn. Nó tự tắt nếu bạn rời không gian làm việc hoặc mất quyền truy cập AI hay tiếp nhận.",
+				"outsideNote": "Yêu cầu từ bên ngoài không gian làm việc (bảng công khai, biểu mẫu) không bao giờ thay đổi gì khi chưa được phê duyệt.",
+				"limitNote": "Tối đa 30 lần chạy tiếp nhận mỗi giờ cho mỗi tác tử. Yêu cầu do tác tử gửi không khởi động gì.",
+				"saved": "Đã lưu trình kích hoạt tiếp nhận",
+				"saveError": "Không thể lưu trình kích hoạt tiếp nhận. Hãy thử lại.",
+				"errors": {
+					"forbidden": "Các lần chạy tiếp nhận hành động thay bạn, nên bạn cần quyền truy cập AI và quyền đọc yêu cầu tiếp nhận.",
+					"AGENT_CANT_READ_INTAKE": "Vai trò của tác tử này không đọc được yêu cầu tiếp nhận. Hãy gán cho nó một vai trò đọc được."
 				}
 			}
 		},
@@ -11351,7 +11226,6 @@
 			"unmeasured_other": "{{count}} công việc không có thời điểm bắt đầu nên không được tính."
 		},
 		"capacity": {
-			"meter": "Khối lượng đã lên kế hoạch so với một chu kỳ thông thường",
 			"within": "Đã lên kế hoạch {{percent}}% một chu kỳ thông thường",
 			"over": "Vượt năng lực: đã lên kế hoạch {{percent}}% một chu kỳ thông thường",
 			"noDates": "Đặt ngày cho chu kỳ để kiểm tra năng lực.",
@@ -11447,6 +11321,137 @@
 			"emailTitle": "Thêm Bản tin của tôi vào bản tóm tắt",
 			"emailDescription": "Bản tóm tắt sẽ liệt kê cả công việc bị chặn và thay đổi trên công việc bạn theo dõi. Cần bản tóm tắt hằng ngày hoặc hằng tuần.",
 			"emailError": "Không lưu được cài đặt này."
+		}
+	},
+	"emails": {
+		"otp": {
+			"preview": "Mã xác minh Margaya của bạn",
+			"title": "Mã xác minh của bạn",
+			"subtitle": "Nhập mã dùng một lần này để hoàn tất đăng nhập.",
+			"verifySubtitle": "Nhập mã dùng một lần này để xác minh địa chỉ email của bạn.",
+			"changeSubtitle": "Nhập mã dùng một lần này để xác nhận đây là địa chỉ email mới cho tài khoản Margaya của bạn.",
+			"code": "là mã xác minh Margaya của bạn.",
+			"expiry": "Mã này sẽ hết hạn sau {{minutes}} phút.",
+			"ignore": "Nếu bạn không yêu cầu điều này, bạn có thể bỏ qua email này.",
+			"footer": "Email bảo mật Margaya"
+		},
+		"magicLink": {
+			"preview": "Đăng nhập vào Margaya",
+			"title": "Liên kết đăng nhập an toàn của bạn",
+			"subtitle": "Dùng liên kết này để tiếp tục vào không gian làm việc Margaya.",
+			"cta": "Đăng nhập vào Margaya",
+			"expiry": "Vì lý do bảo mật, liên kết này sẽ hết hạn sau 5 phút.",
+			"ignore": "Nếu bạn không yêu cầu điều này, bạn có thể bỏ qua email này.",
+			"footer": "Email bảo mật Margaya"
+		},
+		"passwordReset": {
+			"preview": "Đặt lại mật khẩu Margaya của bạn",
+			"title": "Đặt lại mật khẩu",
+			"subtitleWithName": "Chào {{name}}, hãy dùng nút bên dưới để đặt mật khẩu mới.",
+			"subtitleDefault": "Hãy dùng nút bên dưới để đặt mật khẩu mới.",
+			"cta": "Đặt lại mật khẩu",
+			"expiry": "Liên kết đặt lại này sẽ hết hạn sau 1 giờ.",
+			"ignore": "Nếu bạn không yêu cầu điều này, sẽ không có thay đổi nào được thực hiện.",
+			"footer": "Email bảo mật Margaya"
+		},
+		"emailChanged": {
+			"preview": "Địa chỉ email Margaya của bạn đã được thay đổi",
+			"title": "Địa chỉ email của bạn đã được thay đổi",
+			"body": "Địa chỉ email của tài khoản Margaya của bạn giờ là {{email}}. Từ nay liên kết đăng nhập, mã và thông báo sẽ được gửi đến địa chỉ đó.",
+			"warning": "Nếu bạn không thực hiện thay đổi này, hãy liên hệ ngay với quản trị viên Margaya.",
+			"footer": "Email bảo mật Margaya"
+		},
+		"authSubjects": {
+			"magicLinkSubject": "Liên kết đăng nhập Margaya",
+			"otpSubject": "Mã xác minh Margaya",
+			"verifyEmailSubject": "Xác minh email của bạn cho Margaya",
+			"passwordResetSubject": "Đặt lại mật khẩu Margaya của bạn",
+			"changeEmailSubject": "Xác nhận địa chỉ email mới cho Margaya",
+			"emailChangedSubject": "Địa chỉ email Margaya của bạn đã được thay đổi"
+		},
+		"notification": {
+			"preview": "Bạn có thông báo mới từ Margaya",
+			"subtitle": "Một thông báo khớp với tùy chọn nhận thông báo của bạn.",
+			"footer": "Thông báo Margaya",
+			"actionLabel": "Mở trong Margaya"
+		},
+		"notificationBatch": {
+			"preview": "Các cập nhật Margaya gần đây của bạn",
+			"title_other": "{{count}} cập nhật mới",
+			"subtitle": "Thay đổi trên các công việc của bạn kể từ email trước.",
+			"by": "bởi",
+			"open": "Mở công việc",
+			"manage": "Quản lý cài đặt thông báo",
+			"footer": "Thông báo Margaya"
+		},
+		"notificationDigest": {
+			"title": {
+				"daily": "Bản tóm tắt hằng ngày",
+				"weekly": "Bản tóm tắt hằng tuần"
+			},
+			"preview": "Bản tóm tắt Margaya của bạn",
+			"subtitle": "Công việc đang mở đã quá hạn hoặc đến hạn trong 7 ngày, và nội dung mới trong hộp thư.",
+			"dueHeading": "Sắp đến hạn và quá hạn",
+			"overdue": "Quá hạn",
+			"due": "Hạn",
+			"more_other": "và {{count}} công việc khác",
+			"mentionsHeading_other": "{{count}} lượt nhắc mới",
+			"unread_other": "{{count}} thông báo chưa đọc trong hộp thư",
+			"openInbox": "Mở hộp thư",
+			"manage": "Quản lý cài đặt thông báo",
+			"footer": "Bạn đã chọn nhận bản tóm tắt này.",
+			"blockedHeading": "Đang bị chặn",
+			"waitingOn": "Đang chờ {{keys}}",
+			"hiddenBlockers_other": "{{count}} công việc bạn không xem được",
+			"followingHeading": "Thay đổi trên công việc bạn theo dõi",
+			"changes_other": "{{count}} thay đổi"
+		},
+		"batchSubject": {
+			"task_other": "{{count}} cập nhật cho {{title}}",
+			"all_other": "{{count}} cập nhật trong Margaya"
+		},
+		"digestSubject": {
+			"daily": "Bản tóm tắt Margaya hằng ngày của bạn",
+			"weekly": "Bản tóm tắt Margaya hằng tuần của bạn"
+		},
+		"workspaceDeletion": {
+			"fallbackName": "Một không gian làm việc",
+			"openWorkspace": "Mở không gian làm việc",
+			"scheduledSubject": "{{name}} đã được lên lịch xóa",
+			"scheduledTitle": "{{name}} sẽ bị xóa vào {{date}}",
+			"scheduledTitleNoDate": "{{name}} sẽ sớm bị xóa",
+			"scheduledMessage": "Chủ sở hữu đã lên lịch xóa không gian làm việc này. Cho đến {{date}}, nó ở chế độ chỉ đọc: bạn vẫn có thể mở và xuất nội dung, và chủ sở hữu có thể hủy việc xóa. Sau ngày đó, toàn bộ dự án, công việc và trang của nó sẽ bị xóa vĩnh viễn.",
+			"scheduledMessageNoDate": "Chủ sở hữu đã lên lịch xóa không gian làm việc này. Cho đến khi bị xóa, nó ở chế độ chỉ đọc: bạn vẫn có thể mở và xuất nội dung, và chủ sở hữu có thể hủy việc xóa. Sau đó, toàn bộ dự án, công việc và trang của nó sẽ bị xóa vĩnh viễn.",
+			"cancelledSubject": "{{name}} sẽ không bị xóa",
+			"cancelledTitle": "{{name}} đã trở lại",
+			"cancelledMessage": "Chủ sở hữu đã hủy lịch xóa. Không gian làm việc không còn ở chế độ chỉ đọc, và khóa API cùng webhook của nó hoạt động trở lại."
+		},
+		"webhookDisabled": {
+			"subject": "Một webhook Margaya đã bị tắt",
+			"title": "Đã tắt webhook",
+			"message": "Việc gửi đến {{host}} liên tục thất bại trong hơn một ngày, nên Margaya đã tắt webhook. Hãy sửa điểm cuối, rồi bật lại webhook trong cài đặt không gian làm việc.",
+			"messageNoHost": "Việc gửi đến điểm cuối liên tục thất bại trong hơn một ngày, nên Margaya đã tắt webhook. Hãy sửa điểm cuối, rồi bật lại webhook trong cài đặt không gian làm việc.",
+			"actionLabel": "Mở cài đặt webhook"
+		},
+		"trialReminder": {
+			"endedTitle": "Thời gian dùng thử của {{workspaceName}} đã kết thúc",
+			"daysLeftTitle_other": "Còn {{count}} ngày dùng thử cho {{workspaceName}}",
+			"endedSubtitle": "Không gian làm việc của bạn ở chế độ chỉ đọc cho đến khi bạn chọn một gói. Không có gì bị xóa và dữ liệu của bạn vẫn còn nguyên.",
+			"activeSubtitle": "Hãy chọn một gói để tiếp tục tạo và chỉnh sửa khi thời gian dùng thử kết thúc.",
+			"cta": "Chọn gói",
+			"selfHost": "Margaya cũng miễn phí vĩnh viễn nếu bạn tự lưu trữ, với đầy đủ mọi tính năng. Bạn có thể xuất dữ liệu bất cứ lúc nào và chuyển sang máy chủ của riêng bạn.",
+			"footer": "Bạn nhận được email này vì bạn là chủ sở hữu không gian làm việc này trên Margaya Cloud."
+		},
+		"trialSubjects": {
+			"trialEnding": "Thời gian dùng thử {{workspaceName}} sẽ kết thúc sau 3 ngày",
+			"trialExpired": "Thời gian dùng thử {{workspaceName}} đã kết thúc"
+		},
+		"testEmail": {
+			"subject": "Email thử nghiệm từ {{instanceName}}",
+			"text": "Đây là email thử nghiệm từ {{instanceName}}. Nếu bạn đọc được email này, việc gửi email đang hoạt động."
+		},
+		"notificationText": {
+			"commentWithoutPreview": "Bình luận mới trên {{taskTitle}}"
 		}
 	}
 }

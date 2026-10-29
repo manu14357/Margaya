@@ -10,16 +10,10 @@
 			"markAllRead": "Hamısını oxunmuş kimi işarələ",
 			"remove": "Çıxar",
 			"reset": "Sıfırla",
-			"filter": "Süzgəc",
-			"clearAllFilters": "Bütün süzgəcləri təmizlə",
 			"undo": "Geri al"
 		},
 		"a11y": {
 			"toggleSidebar": "Yan paneli aç/bağla"
-		},
-		"sidebar": {
-			"title": "Yan panel",
-			"mobileDescription": "Mobil yan paneli göstərir."
 		},
 		"empty": {
 			"loading": "Yüklənir..."
@@ -36,29 +30,12 @@
 			"label": "Naviqasiya yolu",
 			"more": "Daha çox"
 		},
-		"language": {
-			"english": "İngilis",
-			"german": "Alman",
-			"greek": "Yunan",
-			"macedonian": "Makedon",
-			"french": "Fransız",
-			"spanish": "İspan",
-			"dutch": "Holland",
-			"korean": "Koreya",
-			"chinese": "Çin",
-			"italian": "İtalyan"
-		},
 		"people": {
 			"someone": "Kimsə",
 			"unknown": "Naməlum"
 		},
 		"error": {
 			"title": "Xəta baş verdi",
-			"description": "Səhifə gözlənilmədən çökdü. Yeniləmək adətən problemi həll edir.",
-			"troubleshooting": "Problemin həlli addımları:",
-			"tryAgain": "Yenidən cəhd edin",
-			"viewDeploymentGuide": "Yerləşdirmə bələdçisinə bax",
-			"refreshPage": "Səhifəni yenilə",
 			"messages": {
 				"cors": "Serverə qoşulmaq mümkün olmadı. Buna CORS parametrlərindəki problemlər səbəb ola bilər.",
 				"network": "Şəbəkə xətası. İnternetə qoşulmanızı yoxlayıb yenidən cəhd edin.",
@@ -97,7 +74,6 @@
 				"keyLabel": "Açar:",
 				"keyHint": "Tapşırıq identifikatorları üçün istifadə olunur (məs., {{example}}-123)",
 				"createButton": "Layihə yarat",
-				"successToast": "Layihə uğurla yaradıldı",
 				"errorToast": "Layihəni yaratmaq alınmadı",
 				"keyTaken": "Bu iş sahəsində {{key}} açarına malik layihə artıq mövcuddur",
 				"blankProject": "Boş layihə",
@@ -132,7 +108,6 @@
 				"successUpdated": "Tapşırıq uğurla yeniləndi",
 				"createError": "Tapşırığı yaratmaq alınmadı",
 				"priority": "Prioritet",
-				"statusFallback": "İcra olunur",
 				"startDate": "Başlama tarixi",
 				"dueDate": "Son tarix",
 				"clearStartDate": "Başlama tarixini təmizlə",
@@ -331,7 +306,6 @@
 			"namePlaceholder": "Əli Məmmədov",
 			"failedSignUp": "Qeydiyyatdan keçmək alınmadı",
 			"accountCreated": "Hesab uğurla yaradıldı",
-			"passwordTooShort": "Parol çox qısadır",
 			"creatingAccount": "Hesab yaradılır...",
 			"createAccount": "Hesab yarat"
 		},
@@ -345,7 +319,6 @@
 			"invitationExpired": "Dəvətin müddəti bitib",
 			"errorLoadDescription": "Dəvətin təfərrüatlarını yükləmək alınmadı. Dəvət etibarsız ola və ya vaxtı bitmiş ola bilər.",
 			"goToSignIn": "Daxil olmağa keç",
-			"workspaceLabel": "İş sahəsi: {{workspaceName}}",
 			"joinWorkspace": "{{workspaceName}} iş sahəsinə qoşul",
 			"inviteBodySignedIn": "<inviter>{{inviterName}}</inviter> sizi öz iş sahəsinə qoşulmağa dəvət edib.",
 			"inviteBodySignedOut": "<inviter>{{inviterName}}</inviter> sizi Margaya-da öz iş sahəsinə qoşulmağa dəvət edib.",
@@ -375,7 +348,6 @@
 			"creating": "Yaradılır...",
 			"createWorkspace": "İş sahəsi yarat",
 			"workspaceCreatedTitle": "İş sahəsi yaradıldı",
-			"redirectingToWorkspace": "<name>{{name}}</name> iş sahəsinə yönləndirilirsiniz...",
 			"toast": {
 				"workspaceCreated": "İş sahəsi uğurla yaradıldı",
 				"createFailed": "İş sahəsini yaratmaq alınmadı",
@@ -439,8 +411,6 @@
 			"namePlaceholder": "Məs., John Doe",
 			"saving": "Yadda saxlanılır...",
 			"continue": "Davam et",
-			"welcome": "Xoş gəlmisiniz, {{name}}!",
-			"redirecting": "İdarəetmə panelinizə yönləndirilirsiniz...",
 			"toast": {
 				"updateSuccess": "Profil uğurla yeniləndi",
 				"updateFailed": "Profili yeniləmək alınmadı"
@@ -541,7 +511,6 @@
 	},
 	"settings": {
 		"account": "Hesab",
-		"developer": "Proqramçı",
 		"information": "Məlumat",
 		"notifications": "Bildirişlər",
 		"preferences": "Tərcihlər",
@@ -667,23 +636,7 @@
 			"noProjectsInWorkspace": "Bu iş sahəsində hələ layihə yoxdur.",
 			"createRule": "Qayda yarat",
 			"removeRule": "Qaydanı çıxar",
-			"toastEmailSaved": "E-poçt bildiriş parametrləri yadda saxlanıldı",
-			"toastEmailSaveFailed": "E-poçt parametrlərini yadda saxlamaq alınmadı",
-			"toastNtfySaved": "ntfy parametrləri yadda saxlanıldı",
-			"toastNtfySaveFailed": "ntfy parametrlərini yadda saxlamaq alınmadı",
-			"toastNtfyDisconnected": "ntfy ayrıldı",
-			"toastNtfyDisconnectFailed": "ntfy-ni ayırmaq alınmadı",
-			"toastGotifySaved": "Gotify parametrləri yadda saxlanıldı",
-			"toastGotifySaveFailed": "Gotify parametrlərini yadda saxlamaq alınmadı",
-			"toastGotifyDisconnected": "Gotify ayrıldı",
-			"toastGotifyDisconnectFailed": "Gotify-ı ayırmaq alınmadı",
-			"toastWebhookSaved": "Webhook-un parametrləri yadda saxlanıldı",
-			"toastWebhookSaveFailed": "Webhook-un parametrlərini yadda saxlamaq alınmadı",
-			"toastWebhookDisconnected": "Webhook ayrıldı",
-			"toastWebhookDisconnectFailed": "Webhook-u ayırmaq alınmadı",
-			"toastRuleSaved": "{{workspaceName}} üçün bildiriş qaydası yadda saxlanıldı",
 			"toastRuleSaveFailed": "İş sahəsinin bildiriş qaydasını yadda saxlamaq alınmadı",
-			"toastRuleRemoved": "{{workspaceName}} üçün bildiriş qaydası çıxarıldı",
 			"toastRuleRemoveFailed": "İş sahəsinin bildiriş qaydasını çıxarmaq alınmadı",
 			"toastPreferencesSaved": "Bildiriş tərcihləri yadda saxlanıldı",
 			"toastPreferencesSaveFailed": "Bildiriş tərcihlərini yadda saxlamaq alınmadı",
@@ -739,7 +692,6 @@
 			"selectViewMode": "Görünüş rejimini seçin",
 			"board": "Lövhə",
 			"list": "Siyahı",
-			"gantt": "Qant diaqramı",
 			"sidebarDefault": "Yan panelin defolt vəziyyəti",
 			"sidebarDefaultDescription": "Başlanğıcda yan paneli açıq saxla",
 			"displayOptions": "Göstərmə seçimləri",
@@ -844,14 +796,8 @@
 			"dangerZone": "Təhlükəli bölmə",
 			"dangerZoneSubtitle": "Geri qaytarılmayan və məlumatları məhv edən əməliyyatlar.",
 			"deleteWorkspace": "İş sahəsini sil",
-			"deleteWorkspaceDescription": "İş sahəsinin həmişəlik silinməsini planlaşdır",
-			"deleteModalTitle": "İş sahəsi silinsin?",
-			"deleteModalDescription": "Bu, \"{{name}}\" iş sahəsini və bütün məlumatlarını həmişəlik siləcək. Bu əməliyyat geri qaytarıla bilməz.",
-			"deleteModalConfirm": "İş sahəsini sil",
 			"toastUpdated": "İş sahəsi uğurla yeniləndi",
 			"toastUpdateError": "İş sahəsini yeniləmək alınmadı",
-			"toastDeleted": "İş sahəsi uğurla silindi",
-			"toastDeleteError": "İş sahəsini silmək alınmadı",
 			"validation": {
 				"nameRequired": "İş sahəsinin adı tələb olunur",
 				"nameShort": "İş sahəsinin adı ən azı 2 simvoldan ibarət olmalıdır"
@@ -1303,21 +1249,6 @@
 			"chatGroupTitle": "Çat və webhook-lar",
 			"codeGroupTitle": "Kod hostinqi"
 		},
-		"projectVisibility": {
-			"pageTitle": "Layihənin görünürlüyü",
-			"title": "Görünürlük",
-			"subtitle": "Layihənizi kimin görə və ona daxil ola biləcəyini idarə edin.",
-			"sectionTitle": "Görünürlük",
-			"sectionSubtitle": "İctimai girişi açıb-bağlayın və ictimai URL-i paylaşın.",
-			"publicAccess": "İctimai giriş",
-			"publicAccessHint": "URL-i olan hər kəsin bu layihəyə baxmasına icazə ver",
-			"publicUrl": "İctimai URL",
-			"publicUrlHint": "Layihə ictimaidirsə, bu keçidi paylaşın",
-			"copy": "Kopyala",
-			"copiedToast": "Kopyalandı",
-			"toastUpdated": "Görünürlük yeniləndi",
-			"toastUpdateError": "Görünürlüğü yeniləmək alınmadı"
-		},
 		"projectWorkflow": {
 			"pageTitle": "İş axını parametrləri",
 			"title": "İş axını",
@@ -1534,7 +1465,6 @@
 			},
 			"connect": "Slack-ə qoşul",
 			"saveChanges": "Dəyişiklikləri yadda saxla",
-			"update": "Slack-i yenilə",
 			"disconnect": "Ayır"
 		},
 		"discordIntegration": {
@@ -1572,7 +1502,6 @@
 			},
 			"connect": "Discord-a qoşul",
 			"saveChanges": "Dəyişiklikləri yadda saxla",
-			"update": "Discord-u yenilə",
 			"disconnect": "Ayır"
 		},
 		"mattermostIntegration": {
@@ -1610,7 +1539,6 @@
 			},
 			"connect": "Mattermost-a qoşul",
 			"saveChanges": "Dəyişiklikləri yadda saxla",
-			"update": "Mattermost-u yenilə",
 			"disconnect": "Ayır"
 		},
 		"genericWebhookIntegration": {
@@ -1727,9 +1655,7 @@
 			"exportTasks": "Tapşırıqları ixrac et",
 			"importTasks": "Tapşırıqları idxal et",
 			"dialogTitle": "Tapşırıqların idxalı",
-			"dialogDescription": "Bu layihəyə idxal ediləcək tapşırıqları ehtiva edən JSON faylı yükləyin.",
 			"expectedFormat": "Gözlənilən format:",
-			"dropHint": "JSON faylınızı buraya sürükləyib buraxın",
 			"selectFile": "Fayl seçin",
 			"exporting": "Tapşırıqlar ixrac edilir...",
 			"exportSuccess": "Tapşırıqlar uğurla ixrac edildi",
@@ -1740,7 +1666,6 @@
 			"importError": "Tapşırıqları idxal etmək alınmadı",
 			"invalidFormat": "İdxal faylının formatı yanlışdır",
 			"noFileDropped": "Fayl buraxılmayıb",
-			"notJsonFile": "JSON faylı yükləyin",
 			"exportCsv": "CSV (cədvəl)",
 			"exportJson": "JSON (təkrar idxal üçün)",
 			"exportStarted": "İxrac başladı. Onu İş sahəsi parametrləri → İxraclar bölməsində tapa bilərsiniz.",
@@ -2002,13 +1927,11 @@
 			"addButton": "Əlavə et",
 			"createError": "Xüsusi sahə yaradıla bilmədi.",
 			"createSuccess": "Xüsusi sahə yaradıldı.",
-			"creating": "Yaradılır...",
 			"defaultLabel": "Standart",
 			"defaultValuePlaceholder": "Standart dəyər",
 			"deleteButton": "Sil",
 			"deleteError": "Xüsusi sahə silinə bilmədi.",
 			"deleteSuccess": "Xüsusi sahə silindi.",
-			"deleting": "Silinir...",
 			"empty": "Hələ heç bir xüsusi sahə konfiqurasiya edilməyib.",
 			"loading": "Xüsusi sahələr yüklənir...",
 			"namePlaceholder": "Sahə adı",
@@ -2938,7 +2861,9 @@
 				"agentScheduleDisabled": "Agent cədvəlini söndürdü",
 				"aiConnectorCreated": "MCP konnektoru əlavə etdi",
 				"aiConnectorUpdated": "MCP konnektorunu dəyişdi",
-				"aiConnectorDeleted": "MCP konnektorunu sildi"
+				"aiConnectorDeleted": "MCP konnektorunu sildi",
+				"agentIntakeTriggerUpdated": "Agentin qəbul tətikləyicisini dəyişdi",
+				"agentIntakeTriggerDisabled": "Agentin qəbul tətikləyicisini söndürdü"
 			},
 			"actor": {
 				"apiKey": "API açarı",
@@ -3277,8 +3202,7 @@
 			"empty": "Nəticə tapılmadı.",
 			"footer": {
 				"navigate": "Keçid et",
-				"open": "Aç",
-				"close": "Bağla"
+				"open": "Aç"
 			},
 			"goToInbox": "Gələnlərə keç",
 			"newView": "Yeni görünüş",
@@ -3305,11 +3229,10 @@
 			},
 			"recent": "Son",
 			"removeScope": "Hər yerdə axtar",
-			"scope": "In"
+			"scope": "Layihə:"
 		},
 		"notifications": "Bildirişlər",
 		"sidebar": {
-			"overview": "İcmal",
 			"projects": "Layihələr",
 			"members": "Üzvlər",
 			"invitations": "Dəvətlər",
@@ -3317,12 +3240,9 @@
 			"backToBoard": "Lövhəyə qayıt",
 			"favorites": "Sevimlilər",
 			"allTasks": "Bütün tapşırıqlar",
-			"inbox": "Gələnlər",
 			"myWork": "Sizin işiniz",
 			"home": "Ana səhifə",
-			"personal": "Şəxsi",
 			"stickies": "Yapışqan qeydlər",
-			"analytics": "Analitika",
 			"drafts": "Qaralamalar"
 		},
 		"projectList": {
@@ -3350,10 +3270,6 @@
 				"page": "Səhifələr"
 			}
 		},
-		"settingsLayout": {
-			"toggleSidebar": "Yan paneli aç/bağla",
-			"back": "Geri"
-		},
 		"userMenu": {
 			"signedOutSuccess": "Uğurla çıxış edildi",
 			"signOutFailed": "Çıxış etmək alınmadı",
@@ -3366,13 +3282,11 @@
 		"workspaceSwitcher": {
 			"workspaces": "İş sahələri",
 			"switching": "Dəyişdirilir...",
-			"addWorkspace": "İş sahəsi əlavə et",
-			"selectWorkspace": "İş sahəsi seç"
+			"addWorkspace": "İş sahəsi əlavə et"
 		},
 		"page": {
 			"projectsTitle": "Layihələr",
 			"settingsTitle": "Parametrlər",
-			"backToWorkspace": "İş sahəsinə qayıt",
 			"settingsWorkspaceTab": "İş sahəsi",
 			"settingsInstanceTab": "Quraşdırma",
 			"settingsNotFoundBack": "Hesab parametrləri",
@@ -3402,7 +3316,6 @@
 			"items": {
 				"openCommandPalette": "Əmr palitrasını aç",
 				"globalSearch": "Ümumi axtarış",
-				"toggleSidebar": "Yan paneli aç/bağla",
 				"showShortcuts": "Klaviatura qısayollarını göstər",
 				"closeModal": "Modal/açılan pəncərəni bağla",
 				"createTask": "Tapşırıq yarat",
@@ -3509,16 +3422,11 @@
 	},
 	"notifications": {
 		"title": "Bildirişlər",
-		"newCount_one": "{{count}} yeni",
-		"newCount_other": "{{count}} yeni",
-		"emptyTitle": "Hələ bildiriş yoxdur",
-		"emptySubtitle": "Yenilikləri və fəaliyyəti burada görəcəksiniz.",
 		"clearAll": "Bütün bildirişləri təmizlə",
 		"clearDialogTitle": "Bütün bildirişlər təmizlənsin?",
 		"clearDialogDescription": "Bu, bütün bildirişləri həmişəlik siləcək. Bu əməliyyatı geri qaytara bilməzsiniz.",
 		"shortcuts": {
-			"open": "Bildirişləri aç",
-			"inbox": "Gələnləri aç"
+			"open": "Bildirişləri aç"
 		},
 		"reminderLeadTime": {
 			"minutes_one": "{{count}} dəqiqə",
@@ -3675,7 +3583,6 @@
 				"fiveDays": "5 gün",
 				"oneDay": "1 gün",
 				"oneWeek": "1 həftə",
-				"pickDate": "Tarix seçin",
 				"pickTime": "Vaxt seçin",
 				"submit": "Təxirə sal",
 				"threeDays": "3 gün",
@@ -4069,7 +3976,6 @@
 				"recurredToScheduled": "Növbəti təkrar plana uyğun olaraq yaradıldı: <task>{{task}}</task>"
 			}
 		},
-		"title": "Tapşırıqlar",
 		"status": {
 			"label": "Vəziyyət",
 			"to-do": "Görüləcək",
@@ -4308,7 +4214,6 @@
 			"labels": "Etiketlər",
 			"copyTaskLink": "Tapşırığın keçidini kopyala",
 			"copyTaskBranch": "Tapşırığın budağını kopyala",
-			"start": "Başlat",
 			"startDate": "Başlama tarixi",
 			"noDate": "Tarix yoxdur",
 			"addLabel": "Etiket əlavə et",
@@ -4374,22 +4279,11 @@
 			"moveAllTooltip": "Bütün planlaşdırılmış tapşırıqları «{{column}}» bölməsinə köçür",
 			"moveAll": "Hamısını köçür",
 			"addTask": "Tapşırıq əlavə et",
-			"filter": "Süzgəc",
-			"addFilter": "Süzgəc əlavə et...",
 			"sections": {
 				"planned": "Planlaşdırılmış",
 				"archived": "Arxivlənmiş"
 			},
-			"noTasksInSection": "{{section}} bölməsində tapşırıq yoxdur",
-			"filters": {
-				"priority": "Prioritet: {{name}}",
-				"assignee": "İcraçı: {{name}}",
-				"due": "Son tarix: {{date}}",
-				"label": "Etiket: {{name}}",
-				"dueThisWeek": "Son tarixi bu həftə olan",
-				"dueNextWeek": "Son tarixi gələn həftə olan",
-				"noDueDate": "Son tarix yoxdur"
-			}
+			"noTasksInSection": "{{section}} bölməsində tapşırıq yoxdur"
 		},
 		"sort": {
 			"label": "Sırala",
@@ -4409,11 +4303,6 @@
 		},
 		"boardFilters": {
 			"filterBy": "Filtrləmə meyarı",
-			"allStatuses": "Bütün vəziyyətlər",
-			"allPriorities": "Bütün prioritetlər",
-			"allAssignees": "Bütün icraçılar",
-			"allDueDates": "Bütün son tarixlər",
-			"allLabels": "Bütün etiketlər",
 			"selectedCount": "{{count}} seçilib",
 			"subjects": {
 				"status": "Vəziyyət",
@@ -4424,14 +4313,8 @@
 				"estimate": "Qiymətləndirmə"
 			},
 			"operators": {
-				"isAnyOf": "Bunlardan biridir",
-				"includeAnyOf": "Bunlardan hər hansı birini ehtiva edir"
-			},
-			"all": "Hamısı",
-			"allCustomFieldValues": "Bütün dəyərlər",
-			"noCustomFieldValues": "Xüsusi sahə dəyəri yoxdur",
-			"noValuesUsedYet": "Hələ heç bir dəyər istifadə olunmayıb",
-			"unassigned": "Təyin olunmayıb"
+				"isAnyOf": "Bunlardan biridir"
+			}
 		},
 		"calendar": {
 			"pageTitle": "{{name}} – Təqvim",
@@ -4496,11 +4379,8 @@
 		},
 		"archive": {
 			"success": "{{count}} tapşırıq arxivləndi",
-			"archive": "Arxivlə",
 			"archived": "Tapşırıq arxivləndi",
 			"badge": "Arxivlənib",
-			"bulkArchived_one": "{{count}} tapşırıq arxivləndi",
-			"bulkArchived_other": "{{count}} tapşırıq arxivləndi",
 			"error": "Tapşırığı arxivləmək mümkün olmadı",
 			"restore": "Bərpa et",
 			"restored": "Tapşırıq bərpa edildi",
@@ -4536,10 +4416,6 @@
 			"updateError": "Tapşırığın son tarixini yeniləmək alınmadı",
 			"clearSuccess": "Tapşırığın son tarixi təmizləndi",
 			"clearError": "Son tarixi təmizləmək alınmadı"
-		},
-		"labels": {
-			"label": "Etiketlər",
-			"empty": "Mövcud etiket yoxdur"
 		},
 		"update": {
 			"success": "Tapşırıq uğurla yeniləndi",
@@ -4861,7 +4737,6 @@
 				"project": "Layihə",
 				"status": "Vəziyyət"
 			},
-			"needsSingleProject": "Vəziyyətə görə qruplaşdırma üçün tək layihə lazımdır",
 			"none": "Yoxdur",
 			"order": {
 				"assignee": "İcraçı",
@@ -4949,14 +4824,14 @@
 			"noOptions": "Seçim yoxdur",
 			"operators": {
 				"between": "arasında",
-				"is": "is",
+				"is": "bərabərdir",
 				"isEmpty": "boşdur",
 				"isNoneOf": "heç biri deyil",
 				"isNot": "bərabər deyil",
 				"isNotEmpty": "boş deyil",
 				"moreThanAgo": "… əvvəldən çox",
 				"moreThanAhead": "indidən … sonradan çox",
-				"on": "on",
+				"on": "bu tarixdə",
 				"onOrAfter": "bu tarixdə və ya sonra",
 				"onOrBefore": "bu tarixdə və ya əvvəl",
 				"withinLast": "son",
@@ -4969,9 +4844,7 @@
 				"completed": "Tamamlanıb",
 				"created": "Yaradılıb",
 				"createdBy": "Yaradan",
-				"customFields": "Fərdi sahələr",
 				"cycle": "Dövr",
-				"estimate": "Qiymətləndirmə",
 				"group": "Qrup",
 				"mentions": "Xatırlatmalar",
 				"module": "Modul",
@@ -4985,7 +4858,7 @@
 			"values": {
 				"currentCycle": "Cari dövr",
 				"false": "Xeyr",
-				"me": "Me",
+				"me": "Mən",
 				"noAssignee": "İcraçı yoxdur",
 				"noCreator": "Yaradan yoxdur",
 				"noCycle": "Dövr yoxdur",
@@ -5024,8 +4897,6 @@
 			"expandSubTasks": "Alt tapşırıqları göstər",
 			"hideColumn": "Sütunu gizlət",
 			"loadError": "Tapşırıqları yükləmək mümkün olmadı",
-			"newTask": "Yeni tapşırıq",
-			"newTaskPlaceholder": "Tapşırıq başlığı, sonra Enter",
 			"selectTask": "{{key}} seç",
 			"sortAsc": "Artan sırala",
 			"sortDesc": "Azalan sırala",
@@ -5052,7 +4923,7 @@
 		"timeTracking": {
 			"duration": "Müddət",
 			"durationInvalid": "1 dəqiqə ilə 24 saat arasında müddət daxil edin, məsələn 1h 30m.",
-			"durationPlaceholder": "e.g. 1h 30m",
+			"durationPlaceholder": "məs. 1h 30m",
 			"empty": "Hələ qeyd edilmiş vaxt yoxdur",
 			"entries": "Vaxt qeydləri",
 			"formerMember": "Keçmiş üzv",
@@ -5232,11 +5103,6 @@
 		"noPendingDescription": "Kimsə sizi iş sahəsinə dəvət edəndə dəvət burada görünəcək.",
 		"continueToSetup": "Quraşdırmaya davam et",
 		"skipForNow": "Hələlik ötür",
-		"table": {
-			"workspace": "İş sahəsi",
-			"invitedBy": "Dəvət edən",
-			"expires": "Bitmə vaxtı"
-		},
 		"toast": {
 			"acceptError": "Dəvəti qəbul etmək alınmadı",
 			"acceptSuccess": "Dəvət qəbul edildi! Komandaya xoş gəlmisiniz.",
@@ -5272,7 +5138,6 @@
 				"inProgress": "İcra olunur"
 			},
 			"noDueDate": "Son tarix yoxdur",
-			"reorderHandle": "Layihənin sırasını dəyiş",
 			"reorderError": "Layihələrin sırasını dəyişmək alınmadı"
 		},
 		"search": {
@@ -5298,7 +5163,6 @@
 			"pageTitle": "İş sahəsi yarat",
 			"heading": "Yeni iş sahəsi yarat",
 			"subtitle": "İş sahələri komandaların layihələr, dövrlər və məsələlər üzərində işləyə bildiyi ortaq mühitlərdir.",
-			"nameLabel": "İş sahəsinin adı",
 			"namePlaceholder": "İş sahəsinin adını daxil edin",
 			"descriptionLabel": "Təsvir (istəyə bağlı)",
 			"descriptionPlaceholder": "İş sahəniz üçün təsvir əlavə edin",
@@ -5426,11 +5290,8 @@
 			"columns": {
 				"name": "Ad",
 				"role": "Rol",
-				"joined": "Qoşulub",
-				"actions": "Əməliyyatlar"
+				"joined": "Qoşulub"
 			},
-			"memberRolePending": "{{role}} (gözləyir)",
-			"ariaCancelInvitation": "Dəvəti ləğv et",
 			"ariaInvitationActions": "Dəvət əməliyyatları",
 			"ariaRemoveMember": "Üzvü çıxar",
 			"removeDialogTitle": "Komanda üzvü çıxarılsın?",
@@ -5479,7 +5340,6 @@
 		}
 	},
 	"publicProject": {
-		"pageTitle": "İctimai görünüş",
 		"badge": "İctimai",
 		"readOnly": "Yalnız oxumaq üçün",
 		"error": {
@@ -5492,12 +5352,10 @@
 		"taskDetail": {
 			"labels": "Etiketlər",
 			"externalLinks": "Xarici keçidlər",
-			"pullRequestFallback": "Birləşdirmə sorğusu",
 			"issueFallback": "Məsələ",
 			"prStatusMerged": "Birləşdirilib",
 			"prStatusDraft": "Qaralama",
 			"prStatusOpen": "Açıq",
-			"dueWithDate": "Son tarix: {{date}}",
 			"created": "Yaradılıb",
 			"dueDateLabel": "Son tarix",
 			"assignees": "İcraçılar",
@@ -5521,9 +5379,7 @@
 			"backlog": "Backlog",
 			"chip": "{{subject}}: {{value}}",
 			"clearFilters": "Filtrləri təmizlə",
-			"collapse": "{{name}} elementini yığ",
 			"emptyColumn": "Burada tapşırıq yoxdur",
-			"expand": "{{name}} elementini aç",
 			"filter": "Filtr",
 			"filters": "Filtrlər",
 			"layout": "Düzən",
@@ -5682,7 +5538,7 @@
 				"typed": "Girişdən sonra yönləndirməni düzəlt @adam !high #bug"
 			},
 			"labels": {
-				"bug": "bug",
+				"bug": "xəta",
 				"design": "dizayn",
 				"docs": "sənədlər",
 				"feature": "funksiya"
@@ -5772,7 +5628,7 @@
 				"done": "Hazırdır",
 				"inProgress": "İcra olunur",
 				"inReview": "Yoxlanılır",
-				"todo": "To do"
+				"todo": "Görüləcək"
 			},
 			"analytics": {
 				"allProjects": "Bütün layihələr",
@@ -6279,19 +6135,19 @@
 				"statuses": {
 					"done": {
 						"meta": "14 məsələ",
-						"name": "Done"
+						"name": "Hazırdır"
 					},
 					"inProgress": {
 						"meta": "9 məsələ",
-						"name": "In Progress"
+						"name": "İcra olunur"
 					},
 					"open": {
 						"meta": "14 məsələ",
-						"name": "Open"
+						"name": "Açıq"
 					},
 					"review": {
 						"meta": "5 məsələ",
-						"name": "Code Review"
+						"name": "Kod yoxlaması"
 					}
 				},
 				"statusesTitle": "Vəziyyətlər",
@@ -6970,13 +6826,13 @@
 				},
 				"compare": {
 					"all": "Bütün alternativlər",
-					"asana": "vs Asana",
-					"clickup": "vs ClickUp",
-					"jira": "vs Jira",
-					"linear": "vs Linear",
-					"monday": "vs monday.com",
+					"asana": "Asana ilə müqayisə",
+					"clickup": "ClickUp ilə müqayisə",
+					"jira": "Jira ilə müqayisə",
+					"linear": "Linear ilə müqayisə",
+					"monday": "monday.com ilə müqayisə",
 					"title": "Müqayisə",
-					"trello": "vs Trello"
+					"trello": "Trello ilə müqayisə"
 				},
 				"copyright": "© {{year}} Margaya",
 				"label": "Səhifənin altlığı",
@@ -7655,7 +7511,7 @@
 			"clear": "Süzgəcləri təmizlə",
 			"filterBy": "Süzgəc meyarı",
 			"includesAnyOf": "bunlardan birini daxil edir",
-			"is": "is",
+			"is": "bərabərdir",
 			"isAnyOf": "bunlardan biridir",
 			"lead": "Məsul şəxs",
 			"members": "Üzvlər",
@@ -7846,7 +7702,7 @@
 			"completed30": "30 gündə tamamlanan",
 			"created": "Yaradılan",
 			"dueThisWeek": "Bu həftə bitir",
-			"notAvailable": "n/a",
+			"notAvailable": "yoxdur",
 			"overdue": "Vaxtı keçmiş",
 			"subscribed": "İzlənən"
 		},
@@ -7863,7 +7719,6 @@
 			"cancelled_other": "{{count}} ləğv edildi",
 			"priorities": "Prioritetə görə açıq işlər",
 			"recentActivity": "Son fəaliyyət",
-			"title": "İş yükü",
 			"byState": "Vəziyyətə görə"
 		},
 		"activity": {
@@ -7942,7 +7797,6 @@
 			"all": "Hamısı",
 			"emptyDescription": "Süzgəcləri və düzənləri görünüş kimi saxlayın və komandanızla paylaşın.",
 			"emptyTitle": "Hələ görünüş yoxdur",
-			"favorite": "Sevimli",
 			"mine": "Mənim",
 			"more": "Görünüşlər",
 			"newView": "Yeni görünüş",
@@ -8086,14 +7940,10 @@
 			"inbox": "Gələnlər",
 			"label": "Yenidən işə qayıdın",
 			"myWork": "Sizin işiniz",
-			"open_one": "{{count}} açıq",
-			"open_other": "{{count}} açıq",
 			"overdue_one": "{{count}} gecikmiş",
 			"overdue_other": "{{count}} gecikmiş",
 			"stickies": "Yapışqanlı qeydlər",
 			"stickiesHint": "Şəxsi qeydlər, yalnız sizin üçün",
-			"unread_one": "{{count}} oxunmamış",
-			"unread_other": "{{count}} oxunmamış",
 			"openCaption": "açıq",
 			"unreadCaption": "oxunmamış"
 		}
@@ -8153,7 +8003,6 @@
 			"submit": "Sorğunu göndər",
 			"title": "Yeni sorğu",
 			"titlePlaceholder": "Nəyə ehtiyacınız var?",
-			"titleRequired": "Başlıq əlavə edin",
 			"toast": "Sorğu göndərildi",
 			"toastView": "Bax",
 			"pastedImages": "Yapışdırılmış şəkillər",
@@ -8244,7 +8093,7 @@
 		"filters": {
 			"button": "Süzgəc",
 			"clear": "Süzgəcləri təmizlə",
-			"me": "Me",
+			"me": "Mən",
 			"priority": "Prioritet",
 			"remove": "Süzgəci sil",
 			"status": "Vəziyyət",
@@ -8333,7 +8182,6 @@
 			"pending": "Bu tapşırıq sorğularda gözləyir.",
 			"snoozed": "Bu tapşırıq sorğularda {{date}} tarixinədək təxirə salınıb."
 		},
-		"title": "Sorğular",
 		"triage": {
 			"backToList": "Sorğulara qayıt",
 			"detailLabel": "Sorğu",
@@ -9303,7 +9151,6 @@
 	},
 	"instanceAdmin": {
 		"admins": {
-			"actions": "Admin əməliyyatları",
 			"add": "Admin əlavə et",
 			"addConfirm": "Admin əlavə et",
 			"addDescription": "Quraşdırma adminləri bu sahədəki hər parametri dəyişə və istənilən iş sahəsini aça bilər.",
@@ -9421,7 +9268,7 @@
 				"fileStorage": "Fayl saxlama",
 				"notConfigured": "Konfiqurasiya edilməyib",
 				"off": "Söndürülüb",
-				"on": "On",
+				"on": "Qoşulub",
 				"realtime": "Real vaxt",
 				"realtimeMemory": "Yaddaşda",
 				"realtimeRedis": "Redis ({{mode}})",
@@ -9507,7 +9354,6 @@
 		"save": "Saxla",
 		"saved": "Parametrlər saxlanıldı",
 		"saveError": "Parametrlər saxlanıla bilmədi",
-		"saving": "Saxlanılır…",
 		"secret": {
 			"cancel": "Ləğv et",
 			"clear": "Təmizlə",
@@ -9517,8 +9363,6 @@
 			"saved": "Saxlanılıb",
 			"unreadable": "Saxlanılmış sirr oxuna bilmir (serverin AUTH_SECRET dəyəri dəyişib). Onu yenidən daxil edin."
 		},
-		"sidebarSubtitle": "Quraşdırma admini",
-		"sidebarTitle": "Quraşdırma",
 		"source": {
 			"default": "Defolt",
 			"environment": "Mühit: {{variable}}",
@@ -9571,97 +9415,97 @@
 	},
 	"press": {
 		"boilerplate": {
-			"description": "Ready-made descriptions. Trim them if you need to, but please keep the facts as they are.",
+			"description": "Hazır təsvirlər. Lazım olsa qısaldın, amma faktları olduğu kimi saxlayın.",
 			"long": {
-				"label": "About 150 words",
-				"text": "Margaya is an open-source project management platform built for teams that want to plan and ship work without the tool becoming a job of its own. Tasks move through board, list, spreadsheet, calendar and Gantt views of the same data. Cycles, modules, estimates and an intake inbox are there when a team needs planning, and stay out of the way when it doesn't. Teams write docs together next to their tasks, collect requests on public boards, and follow progress with analytics and an audit log. A REST API with an OpenAPI description, webhooks, an MCP server and integrations with GitHub, Gitea, Slack, Discord and others connect Margaya to the rest of a team's tools. The interface is available in 20 languages. Margaya is released under the MIT licence and runs on a single server with Docker, or on Kubernetes with Helm; Margaya Cloud offers the same product as a managed service."
+				"label": "Təxminən 150 söz",
+				"text": "Margaya işi planlaşdırıb təhvil vermək istəyən, lakin alətin özünün ayrıca işə çevrilməsini istəməyən komandalar üçün yaradılmış açıq mənbəli layihə idarəetmə platformasıdır. Tapşırıqlar eyni məlumatların lövhə, siyahı, cədvəl, təqvim və Qant görünüşlərində irəliləyir. Dövrlər, modullar, qiymətləndirmələr və qəbul qutusu komandaya planlaşdırma lazım olanda yanındadır, lazım olmayanda isə mane olmur. Komandalar tapşırıqlarının yanında birlikdə sənəd yazır, ictimai lövhələrdə sorğular toplayır və irəliləyişi analitika və audit jurnalı ilə izləyir. OpenAPI təsviri olan REST API, webhook-lar, MCP serveri və GitHub, Gitea, Slack, Discord və digərləri ilə inteqrasiyalar Margaya-nı komandanın digər alətləri ilə birləşdirir. İnterfeys 20 dildə mövcuddur. Margaya MIT lisenziyası ilə yayımlanır və Docker ilə tək serverdə və ya Helm ilə Kubernetes-də işləyir; Margaya Cloud eyni məhsulu idarə olunan xidmət kimi təqdim edir."
 			},
 			"short": {
-				"label": "About 50 words",
-				"text": "Margaya is an open-source project management platform for teams that want clear ownership without heavy process. Plan work on boards, lists, spreadsheets, calendars and Gantt charts, write docs beside the tasks, and connect your tools through a REST API and MCP. Run it yourself under the MIT licence, or use Margaya Cloud."
+				"label": "Təxminən 50 söz",
+				"text": "Margaya ağır proseslər olmadan aydın məsuliyyət bölgüsü istəyən komandalar üçün açıq mənbəli layihə idarəetmə platformasıdır. Komandalar işi lövhələrdə, siyahılarda, cədvəllərdə, təqvimlərdə və Qant diaqramlarında planlaşdırır, sənədləri tapşırıqların yanında yazır və alətlərini REST API və MCP vasitəsilə qoşur. Margaya-nı MIT lisenziyası ilə özünüz işlədə və ya Margaya Cloud-dan istifadə edə bilərsiniz."
 			},
-			"title": "Boilerplate"
+			"title": "Hazır mətnlər"
 		},
 		"colours": {
-			"copyHex": "Copy {{hex}}",
-			"description": "Margaya is deliberately quiet: near-black, off-white and a few greys, so the work on screen supplies the colour.",
+			"copyHex": "{{hex}} kopyala",
+			"description": "Margaya qəsdən sakit görünür: demək olar ki, qara, süd rəngi və bir neçə boz ton; beləcə rəngi ekrandakı iş verir.",
 			"graphite": {
-				"name": "Graphite",
-				"usage": "Text and primary buttons in the light theme"
+				"name": "Qrafit",
+				"usage": "Açıq mövzuda mətn və əsas düymələr"
 			},
 			"ink": {
-				"name": "Ink",
-				"usage": "The logo, and the dark theme's background"
+				"name": "Mürəkkəb",
+				"usage": "Loqo və tünd mövzunun fonu"
 			},
 			"mist": {
-				"name": "Mist",
-				"usage": "Panels and sidebars in the light theme"
+				"name": "Duman",
+				"usage": "Açıq mövzuda panellər və yan panellər"
 			},
 			"mono": {
 				"name": "Geist Mono",
-				"usage": "Code, keyboard shortcuts and task IDs"
+				"usage": "Kod, klaviatura qısayolları və tapşırıq ID-ləri"
 			},
 			"paper": {
-				"name": "Paper",
-				"usage": "The light logo, and primary buttons in the dark theme"
+				"name": "Kağız",
+				"usage": "Açıq loqo və tünd mövzuda əsas düymələr"
 			},
-			"sample": "Plan the work. Ship the work.",
+			"sample": "İşi planlaşdırın. İşi təhvil verin.",
 			"sans": {
 				"name": "Geist",
-				"usage": "Interface, headings and the wordmark, set semibold with tight tracking"
+				"usage": "İnterfeys, başlıqlar və yazılı loqo, sıx hərf aralığı ilə yarıqalın"
 			},
-			"title": "Colours and type",
-			"typeTitle": "Typography",
+			"title": "Rənglər və şrift",
+			"typeTitle": "Tipoqrafiya",
 			"white": {
-				"name": "White",
-				"usage": "The light theme's background"
+				"name": "Ağ",
+				"usage": "Açıq mövzunun fonu"
 			}
 		},
 		"contact": {
-			"body": "Margaya is built in the open, so the maintainers answer on GitHub. Start a discussion for interviews and questions about the project, or open an issue if something in this kit is missing or out of date.",
-			"discussions": "Start a discussion",
-			"issues": "Open an issue",
-			"title": "Talk to the maintainers"
+			"body": "Margaya açıq şəkildə hazırlanır, buna görə layihə komandası GitHub-da cavab verir. Müsahibələr və layihə ilə bağlı suallar üçün müzakirə başladın, bu dəstdə nəsə çatışmırsa və ya köhnəlibsə, issue açın.",
+			"discussions": "Müzakirə başladın",
+			"issues": "Issue açın",
+			"title": "Layihə komandası ilə əlaqə"
 		},
-		"copied": "Copied",
-		"copy": "Copy",
-		"copyUrl": "Copy URL",
-		"description": "Margaya's press kit: boilerplate text, logos, product screenshots, brand colours and typography, with direct download links.",
-		"download": "Download",
-		"downloadKit": "Download the press kit",
+		"copied": "Kopyalandı",
+		"copy": "Kopyala",
+		"copyUrl": "URL-i kopyala",
+		"description": "Margaya-nın mətbuat dəsti: hazır təqdimat mətnləri, loqolar, məhsulun ekran görüntüləri, brend rəngləri və tipoqrafiya, birbaşa yükləmə keçidləri ilə.",
+		"download": "Yüklə",
+		"downloadKit": "Mətbuat dəstini yükləyin",
 		"downloadKitMeta": "ZIP, {{size}}",
-		"eyebrow": "Press kit",
+		"eyebrow": "Mətbuat dəsti",
 		"facts": {
-			"description": "The essentials, in one place.",
+			"description": "Əsas məlumatlar bir yerdə.",
 			"founded": {
-				"label": "Founded",
+				"label": "Yaradılıb",
 				"value": "2026"
 			},
 			"hosting": {
-				"label": "Hosting",
-				"value": "Self-hosted with Docker or Helm, or managed on Margaya Cloud"
+				"label": "Hostinq",
+				"value": "Docker və ya Helm ilə öz serverinizdə, ya da Margaya Cloud-da idarə olunan xidmət kimi"
 			},
 			"interfaces": {
-				"label": "Interfaces",
-				"value": "REST API with an OpenAPI description, plus an MCP server"
+				"label": "İnterfeyslər",
+				"value": "OpenAPI təsviri olan REST API, üstəlik MCP serveri"
 			},
 			"languages": {
-				"label": "Languages",
-				"value": "20 interface languages"
+				"label": "Dillər",
+				"value": "20 interfeys dili"
 			},
 			"licence": {
-				"label": "Licence",
-				"value": "MIT, for every feature"
+				"label": "Lisenziya",
+				"value": "MIT, bütün imkanlar üçün"
 			},
 			"source": {
-				"label": "Source code",
+				"label": "Mənbə kodu",
 				"value": "github.com/manu14357/Margaya"
 			},
 			"stack": {
-				"label": "Stack",
-				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
+				"label": "Texnologiyalar",
+				"value": "TypeScript, Hono, React və PostgreSQL, istəyə görə Redis"
 			},
-			"title": "Quick facts",
+			"title": "Qısa faktlar",
 			"ai": {
 				"label": "Sİ",
 				"value": "İstəyə bağlı və defolt olaraq söndürülü: Sİ-dən soruş, Qur rejimi və Sİ agentləri, Claude və ya öz serverinizdəki modellə"
@@ -9669,212 +9513,218 @@
 		},
 		"guidelines": {
 			"do": {
-				"contrast": "Use the dark wordmark on light backgrounds and the light wordmark on dark ones.",
-				"link": "Link to margaya.app or the GitHub repository when you mention the project.",
-				"name": "Write the name as “Margaya”, with a capital M, in running text.",
-				"space": "Leave clear space around the logo at least as wide as the icon's ears."
+				"contrast": "Açıq fonlarda tünd yazılı loqodan, tünd fonlarda isə açıq yazılı loqodan istifadə edin.",
+				"link": "Layihədən bəhs edəndə margaya.app saytına və ya GitHub repozitoriyasına keçid verin.",
+				"name": "Mətnin içində adı böyük M hərfi ilə “Margaya” kimi yazın.",
+				"space": "Loqonun ətrafında ən azı ikonanın qulaqları qədər boş yer saxlayın."
 			},
 			"dont": {
-				"distort": "Stretch, rotate, outline or add effects to the logo.",
-				"edit": "Edit screenshots to show features that Margaya doesn't have.",
-				"endorse": "Suggest that the Margaya maintainers endorse a product, service or opinion.",
-				"recolour": "Recolour the logo, or place it on busy images where it loses contrast."
+				"distort": "Loqonu dartmayın, döndərməyin, ona kontur və ya effekt əlavə etməyin.",
+				"edit": "Margaya-da olmayan imkanları göstərmək üçün ekran görüntülərini redaktə etməyin.",
+				"endorse": "Margaya komandasının hər hansı məhsulu, xidməti və ya fikri dəstəklədiyini ima etməyin.",
+				"recolour": "Loqonun rəngini dəyişməyin və onu kontrastını itirdiyi qarışıq şəkillərin üzərinə qoymayın."
 			},
-			"dontTitle": "Please don't",
-			"doTitle": "Please do",
-			"title": "Using the brand"
+			"dontTitle": "Belə etməyin",
+			"doTitle": "Belə edin",
+			"title": "Brenddən istifadə"
 		},
-		"headline": "Margaya is open-source project management you can run on your own server.",
-		"intro": "Short and long descriptions, logos, screenshots, colours and type, ready for articles, videos and talks. Everything on this page may be used for editorial coverage of Margaya.",
+		"headline": "Margaya öz serverinizdə işlədə biləcəyiniz açıq mənbəli layihə idarəetmə sistemidir.",
+		"intro": "Qısa və uzun təsvirlər, loqolar, ekran görüntüləri, rənglər və şriftlər məqalələr, videolar və çıxışlar üçün hazırdır. Bu səhifədəki hər şeydən Margaya haqqında redaksiya materiallarında istifadə etmək olar.",
 		"logos": {
-			"description": "Use the wordmark wherever there is room for it, and the icon where space is tight. Each file has a permanent address you can link to.",
+			"description": "Yer olan hər yerdə yazılı loqodan, yer dar olanda isə ikonadan istifadə edin. Hər faylın keçid verə biləcəyiniz daimi ünvanı var.",
 			"iconPng": {
-				"alt": "The Margaya app icon",
+				"alt": "Margaya tətbiq ikonası",
 				"detail": "PNG, 512 × 512",
-				"name": "App icon"
+				"name": "Tətbiq ikonası"
 			},
 			"iconSvg": {
-				"alt": "The Margaya icon: a light cat face on a dark rounded square",
-				"detail": "SVG, scales to any size",
-				"name": "Icon"
+				"alt": "Margaya ikonası: küncləri yuvarlaq tünd kvadratın üzərində açıq rəngli pişik siması",
+				"detail": "SVG, istənilən ölçüyə miqyaslanır",
+				"name": "İkona"
 			},
-			"title": "Logos",
+			"title": "Loqolar",
 			"wordmarkDark": {
-				"alt": "The Margaya wordmark in near-black on a light background",
-				"detail": "SVG, for light backgrounds",
-				"name": "Wordmark, dark"
+				"alt": "Açıq fonda demək olar ki, qara rəngdə Margaya yazılı loqosu",
+				"detail": "SVG, açıq fonlar üçün",
+				"name": "Yazılı loqo, tünd"
 			},
 			"wordmarkLight": {
-				"alt": "The Margaya wordmark in off-white on a dark background",
-				"detail": "SVG, for dark backgrounds",
-				"name": "Wordmark, light"
+				"alt": "Tünd fonda süd rəngində Margaya yazılı loqosu",
+				"detail": "SVG, tünd fonlar üçün",
+				"name": "Yazılı loqo, açıq"
 			}
 		},
-		"onThisPage": "On this page",
+		"onThisPage": "Bu səhifədə",
 		"screenshots": {
-			"close": "Close",
-			"counter": "{{current}} of {{total}}",
-			"dark": "Dark",
-			"description": "Real Margaya screens in the light and dark themes. Select one to see it at full size.",
-			"empty": "A fresh set of screenshots is on its way. Until then, the press kit download has the current set.",
-			"light": "Light",
-			"next": "Next screenshot",
-			"open": "View larger: {{title}}",
-			"previous": "Previous screenshot",
+			"close": "Bağla",
+			"counter": "{{current}} / {{total}}",
+			"dark": "Tünd",
+			"description": "Açıq və tünd mövzularda real Margaya ekranları. Tam ölçüdə görmək üçün birini seçin.",
+			"empty": "Yeni ekran görüntüləri yoldadır. O vaxta qədər yüklənən mətbuat dəstində mövcud görüntülər var.",
+			"light": "Açıq",
+			"next": "Növbəti ekran görüntüsü",
+			"open": "Böyüt: {{title}}",
+			"previous": "Əvvəlki ekran görüntüsü",
 			"size": "{{width}} × {{height}}, PNG",
-			"title": "Product screenshots"
+			"title": "Məhsulun ekran görüntüləri"
 		},
-		"title": "Press kit",
-		"downloadPng": "Download PNG"
+		"title": "Mətbuat dəsti",
+		"downloadPng": "PNG yüklə"
 	},
 	"pricing": {
 		"cta": {
-			"description": "Start a Cloud trial with no card, or follow the install guide and run Margaya on your own hardware.",
-			"primary": "Start a free trial",
-			"secondary": "Read the install guide",
-			"title": "Pick the way that fits, and change your mind later."
+			"description": "Kartsız Cloud sınağına başlayın və ya quraşdırma təlimatına əməl edib Margaya-nı öz avadanlığınızda işlədin.",
+			"primary": "Pulsuz sınağa başlayın",
+			"secondary": "Quraşdırma təlimatını oxuyun",
+			"title": "Sizə uyğun yolu seçin, fikrinizi isə sonra da dəyişə bilərsiniz."
 		},
-		"description": "The self-hosted build is the whole product under the MIT licence, with no seat limits and no paid tier. Margaya Cloud is the same software, hosted in the EU and kept up to date for you.",
-		"eyebrow": "Pricing",
+		"description": "Öz serverinizdə işləyən versiya MIT lisenziyası altında tam məhsuldur: nə yer limiti, nə də ödənişli səviyyə var. Margaya Cloud eyni proqramdır, AB-də yerləşdirilir və sizin üçün daim yenilənir.",
+		"eyebrow": "Qiymətlər",
 		"faq": {
 			"items": {
 				"cancel": {
-					"answer": "Your plan stays active until the end of the period you've paid for. Export your work as CSV, Excel or JSON before then if you want to keep a copy.",
-					"question": "What happens if I cancel?"
+					"answer": "Planınız ödədiyiniz dövrün sonuna qədər aktiv qalır. Surətini saxlamaq istəyirsinizsə, o vaxta qədər işinizi CSV, Excel və ya JSON formatına ixrac edin.",
+					"question": "Ləğv etsəm nə olur?"
 				},
 				"founding": {
-					"answer": "Workspaces created before paid plans launched keep free access for at least 12 months, and you'll get six months' notice before anything changes.",
-					"question": "I signed up before paid plans existed. What changes?"
+					"answer": "Ödənişli planlar istifadəyə verilməzdən əvvəl yaradılmış iş sahələri ən azı 12 ay pulsuz giriş saxlayır və hər hansı dəyişiklikdən altı ay əvvəl sizə xəbər veriləcək.",
+					"question": "Ödənişli planlar yaranmamışdan əvvəl qeydiyyatdan keçmişəm. Nə dəyişir?"
 				},
 				"payments": {
-					"answer": "Payments go through Creem, which acts as merchant of record and handles sales tax and VAT where they apply. Your card details never reach Margaya.",
-					"question": "Who handles payments and tax?"
+					"answer": "Ödənişlər Creem vasitəsilə keçir. Creem rəsmi satıcı (merchant of record) kimi çıxış edir və tətbiq olunduğu yerlərdə satış vergisi və ƏDV ilə məşğul olur. Kart məlumatlarınız heç vaxt Margaya-ya çatmır.",
+					"question": "Ödənişlər və vergilərlə kim məşğul olur?"
 				},
 				"seats": {
-					"answer": "Cloud Team is billed for each member of the workspace. When someone joins or leaves, the seat count on the subscription is updated to match.",
-					"question": "How are Cloud Team members counted?"
+					"answer": "Cloud Komanda iş sahəsinin hər üzvü üçün ödənilir. Kimsə qoşulanda və ya ayrılanda abunədəki yer sayı buna uyğun yenilənir.",
+					"question": "Cloud Komanda planında üzvlər necə hesablanır?"
 				},
 				"selfHostHelp": {
-					"answer": "From the maintainers and the community on GitHub, through discussions and issues. Installation, upgrades and configuration are covered in the documentation.",
-					"question": "Where do self-hosters get help?"
+					"answer": "GitHub-da layihə komandasından və icmadan, müzakirələr və issue-lar vasitəsilə. Quraşdırma, yeniləmələr və konfiqurasiya sənədlərdə izah olunur.",
+					"question": "Öz serverində işlədənlər köməyi haradan alır?"
 				},
 				"selfHostLimits": {
-					"answer": "No. The code you install is the code that runs Margaya Cloud, and all of it is MIT licensed. There are no licence keys, seat limits or paid features to unlock.",
-					"question": "Is the self-hosted version missing anything?"
+					"answer": "Xeyr. Quraşdırdığınız kod Margaya Cloud-u işlədən kodun eynisidir və hamısı MIT lisenziyalıdır. Lisenziya açarları, yer limitləri və ya kilidi açılmalı ödənişli imkanlar yoxdur.",
+					"question": "Öz serverinizdəki versiyada nəsə çatışmır?"
 				},
 				"trial": {
-					"answer": "A new Cloud workspace gets 14 days with everything included, and you don't need a card to start. Before it ends, choose a plan or export your tasks.",
-					"question": "How does the Cloud trial work?"
+					"answer": "Yeni Cloud iş sahəsi hər şey daxil olmaqla 14 gün alır və başlamaq üçün karta ehtiyacınız yoxdur. Sınaq bitməzdən əvvəl bir plan seçin və ya tapşırıqlarınızı ixrac edin.",
+					"question": "Cloud sınağı necə işləyir?"
 				},
 				"yearly": {
-					"answer": "Yes. A year costs the same as ten months, so both Cloud plans come with two months free when you pay yearly.",
-					"question": "Is yearly billing cheaper?"
+					"answer": "Bəli. Bir il on ayın qiymətinə başa gəlir, buna görə illik ödədikdə hər iki Cloud planında iki ay pulsuz olur.",
+					"question": "İllik ödəniş daha ucuzdur?"
+				},
+				"ai": {
+					"question": "Sİ daxildirmi?",
+					"answer": "Bütün planlarda Sİ funksiyaları var: Sİ-dən soruş, Qur rejimi, agentlər və yazı köməyi. Admin yandırana qədər onlar söndürülü qalır. Sİ istifadəsi qiymətə daxil deyil: iş sahəsinin Sİ ayarlarında öz API açarınızı əlavə edirsiniz və Sİ provayderi hesabı birbaşa sizə göndərir. Öz serverinizdəki quraşdırmalar Ollama və ya vLLM vasitəsilə öz işlətdiyiniz modeldən də istifadə edə bilər."
 				}
 			},
-			"title": "Questions about pricing"
+			"title": "Qiymətlər haqqında suallar"
 		},
 		"interval": {
-			"annual": "Yearly",
-			"label": "Billing period",
-			"monthly": "Monthly",
-			"saving": "2 months free"
+			"annual": "İllik",
+			"label": "Ödəniş dövrü",
+			"monthly": "Aylıq",
+			"saving": "2 ay pulsuz"
 		},
-		"metaDescription": "Margaya is free to self-host, forever. Margaya Cloud costs $4 a month for one person or $5 per member a month for teams, with a 14-day free trial.",
+		"metaDescription": "Margaya-nı öz serverinizdə işlətmək həmişəlik pulsuzdur. Margaya Cloud bir nəfər üçün ayda $4, komandalar üçün isə üzv başına ayda $5 təşkil edir; 14 günlük pulsuz sınaq da var.",
 		"plans": {
 			"personal": {
-				"annualNote": "Works out at {{price}} a month",
-				"annualPeriod": "per year",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month",
-				"monthlyPeriod": "per month",
-				"name": "Cloud Personal",
+				"annualNote": "Ayda {{price}} edir",
+				"annualPeriod": "illik",
+				"cta": "14 günlük sınağa başlayın",
+				"monthlyNote": "Hər ay ödənilir",
+				"monthlyPeriod": "aylıq",
+				"name": "Cloud Şəxsi",
 				"points": {
-					"everything": "Every feature in the self-hosted build",
-					"help": "Support by email",
-					"managed": "Backups and updates handled for you",
-					"one": "One person, unlimited projects and tasks"
+					"everything": "Öz serverinizdəki versiyanın bütün imkanları",
+					"help": "E-poçt ilə dəstək",
+					"managed": "Ehtiyat nüsxələr və yeniləmələr bizim üzərimizdə",
+					"one": "Bir nəfər, limitsiz layihə və tapşırıq"
 				},
-				"tagline": "Managed hosting for one person"
+				"tagline": "Bir nəfər üçün idarə olunan hostinq"
 			},
 			"selfHosted": {
-				"cta": "Read the install guide",
-				"name": "Self-hosted",
-				"note": "MIT licence. No key, no seat limit.",
-				"period": "forever",
+				"cta": "Quraşdırma təlimatını oxuyun",
+				"name": "Öz serverinizdə",
+				"note": "MIT lisenziyası. Nə açar, nə də yer limiti var.",
+				"period": "həmişəlik",
 				"points": {
-					"data": "Your database, your backups, your rules",
-					"deploy": "Docker on one server, or Helm on Kubernetes",
-					"everything": "Every feature, for as many people as you like",
-					"help": "Community help on GitHub"
+					"data": "Sizin verilənlər bazanız, sizin ehtiyat nüsxələriniz, sizin qaydalarınız",
+					"deploy": "Bir serverdə Docker və ya Kubernetes-də Helm",
+					"everything": "Bütün imkanlar, istədiyiniz qədər insan üçün",
+					"help": "GitHub-da icma dəstəyi"
 				},
-				"tagline": "On servers you run"
+				"tagline": "Özünüzün idarə etdiyi serverlərdə"
 			},
 			"team": {
-				"annualNote": "Works out at {{price}} per member a month",
-				"annualPeriod": "per member, per year",
-				"badge": "For teams",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month for each workspace member",
-				"monthlyPeriod": "per member, per month",
-				"name": "Cloud Team",
+				"annualNote": "Üzv başına ayda {{price}} edir",
+				"annualPeriod": "üzv başına, illik",
+				"badge": "Komandalar üçün",
+				"cta": "14 günlük sınağa başlayın",
+				"monthlyNote": "Hər iş sahəsi üzvü üçün hər ay ödənilir",
+				"monthlyPeriod": "üzv başına, aylıq",
+				"name": "Cloud Komanda",
 				"points": {
-					"help": "Priority support by email",
-					"managed": "Backups and updates handled for you",
-					"people": "Everyone in the workspace, unlimited projects",
-					"roles": "Workspace roles and permissions"
+					"help": "E-poçt ilə prioritet dəstək",
+					"managed": "Ehtiyat nüsxələr və yeniləmələr bizim üzərimizdə",
+					"people": "İş sahəsindəki hər kəs, limitsiz layihə",
+					"roles": "İş sahəsinin rolları və icazələri"
 				},
-				"tagline": "Managed hosting for a whole team"
+				"tagline": "Bütöv komanda üçün idarə olunan hostinq"
 			}
 		},
 		"table": {
-			"description": "The features are the same everywhere. What changes is who runs the servers and where you go for help.",
-			"feature": "Feature",
+			"description": "İmkanlar hər yerdə eynidir. Dəyişən yalnız serverləri kimin işlətməsi və köməyə hara müraciət etməyinizdir.",
+			"feature": "İmkan",
 			"groups": {
-				"connect": "Connect",
-				"planning": "Planning and insight",
-				"running": "Running it",
-				"work": "The work"
+				"connect": "Qoşulma",
+				"planning": "Planlaşdırma və təhlil",
+				"running": "İstismar",
+				"work": "İş"
 			},
-			"included": "Included",
-			"notIncluded": "Not included",
+			"included": "Daxildir",
+			"notIncluded": "Daxil deyil",
 			"rows": {
-				"admin": "Instance settings: sign-in providers, email, storage",
-				"analytics": "Analytics and audit log",
-				"api": "REST API, webhooks and MCP",
-				"backups": "Backups",
-				"cycles": "Cycles, modules and estimates",
-				"docs": "Docs written together, next to the tasks",
-				"export": "Export to CSV, Excel or JSON",
-				"hosting": "Where it runs",
-				"intake": "Intake inbox and triage",
-				"integrations": "GitHub, Gitea, Slack, Discord and more",
-				"jira": "Jira import",
-				"people": "People",
-				"projects": "Projects and tasks",
-				"publicBoards": "Public boards with voting",
-				"roles": "Workspace roles and permissions",
-				"support": "Support",
-				"updates": "Updates",
-				"views": "Board, list, spreadsheet, calendar and Gantt views"
+				"admin": "Quraşdırma parametrləri: giriş provayderləri, e-poçt, yaddaş",
+				"analytics": "Analitika və audit jurnalı",
+				"api": "REST API, webhook-lar və MCP",
+				"backups": "Ehtiyat nüsxələr",
+				"cycles": "Dövrlər, modullar və qiymətləndirmələr",
+				"docs": "Tapşırıqların yanında birlikdə yazılan sənədlər",
+				"export": "CSV, Excel və ya JSON formatına ixrac",
+				"hosting": "Harada işləyir",
+				"intake": "Qəbul qutusu və çeşidləmə",
+				"integrations": "GitHub, Gitea, Slack, Discord və digərləri",
+				"jira": "Jira-dan idxal",
+				"people": "İnsanlar",
+				"projects": "Layihələr və tapşırıqlar",
+				"publicBoards": "Səsverməli ictimai lövhələr",
+				"roles": "İş sahəsinin rolları və icazələri",
+				"support": "Dəstək",
+				"updates": "Yeniləmələr",
+				"views": "Lövhə, siyahı, cədvəl, təqvim və Qant görünüşləri",
+				"ai": "Sİ: Sİ-dən soruş, Qur rejimi və agentlər"
 			},
-			"title": "Compare the plans",
+			"title": "Planları müqayisə edin",
 			"values": {
-				"automatic": "Automatic",
-				"community": "Community on GitHub",
-				"email": "Email",
-				"eu": "EU data centres",
-				"notNeeded": "Not needed for one",
-				"one": "Just you",
-				"perMember": "Unlimited, billed per member",
-				"priorityEmail": "Priority email",
-				"unlimited": "Unlimited",
-				"yours": "You run them",
-				"yourSchedule": "When you choose",
-				"yourServers": "Your servers"
+				"automatic": "Avtomatik",
+				"community": "GitHub-da icma",
+				"email": "E-poçt",
+				"eu": "AB-dəki data mərkəzləri",
+				"notNeeded": "Bir nəfər üçün lazım deyil",
+				"one": "Yalnız siz",
+				"perMember": "Limitsiz, üzv başına ödəniş",
+				"priorityEmail": "Prioritet e-poçt",
+				"unlimited": "Limitsiz",
+				"yours": "Özünüz idarə edirsiniz",
+				"yourSchedule": "Siz seçəndə",
+				"yourServers": "Sizin serverləriniz",
+				"ownKey": "Öz Sİ açarınız və ya modeliniz"
 			}
 		},
-		"title": "One product. Two ways to run it.",
-		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+		"title": "Bir məhsul. İşlətməyin iki yolu.",
+		"trialNote": "Cloud planları 14 günlük sınaqla başlayır. Başlamaq üçün kart tələb olunmur."
 	},
 	"templates": {
 		"form": {
@@ -10154,7 +10004,6 @@
 			},
 			"chat": {
 				"planLabel": "Təklif olunan dəyişikliklər",
-				"planning": "Dəyişikliklər planlaşdırılır…",
 				"nothing": "Bu sorğu üçün dəyişdiriləcək bir şey yoxdur.",
 				"awaiting": "Cavab gözlənilir",
 				"ready": "Hazır dəyişikliklər: {{count}}. Davam etmək üçün təsdiqləyin.",
@@ -10700,11 +10549,7 @@
 			"retro": "Retrospektivlər",
 			"my_brief": "Mənim xülasəm",
 			"embedding": "Axtarış indeksləməsi",
-			"coding_handoff": "Kodlaşdırma agentləri üçün brifinqlər",
-			"build_chat": "Söhbətdə yarat",
-			"nl_filter": "Təbii dildə filtrlər",
-			"inbox_digest": "Gələnlər qutusu xülasələri",
-			"speech": "Nitqdən mətnə"
+			"coding_handoff": "Kodlaşdırma agentləri üçün brifinqlər"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -10846,7 +10691,9 @@
 			"speechFormat": "API formatı",
 			"speechFormatHint": "Səsin necə göndərildiyi. Fish Audio üçün ünvan olaraq https://api.fish.audio/v1/asr istifadə edin.",
 			"speechFormatOpenai": "OpenAI ilə uyğun",
-			"speechModelHint": "Fish Audio üçün: transcribe-1-pro və ya transcribe-1, ya da boş saxlayın."
+			"speechModelHint": "Fish Audio üçün: transcribe-1-pro və ya transcribe-1, ya da boş saxlayın.",
+			"storePrompts": "Promptları və cavabları saxla",
+			"storePromptsHint": "Agent sorğularının mətnini və modelin yazdıqlarını hər icranın jurnalında saxla. Söndürülüb: icralar yalnız sayları, addımları və xülasəni saxlayır. İndidən sonra bitən icralara aiddir. İş sahəsinin serverdə saxladığı Ask tarixçəsinin öz açarı var."
 		},
 		"workspace": {
 			"navLabel": "Sİ",
@@ -10924,7 +10771,8 @@
 			"storeConversations": "Söhbət tarixçəsini serverdə saxla",
 			"storeConversationsHint": "Hər kəsin söhbətləri iş sahəsində saxlanılır ki, onları istənilən cihazda yenidən aça bilsinlər. Söndürülüb: söhbətlər yalnız hər brauzerin özündə qalır.",
 			"allowAutopilot": "Avtopilota icazə ver",
-			"allowAutopilotHint": "Qur rejimi dəyişiklikləri təsdiq olmadan tətbiq edə bilər. Hər dəyişiklik yenə də qeydə alınır və geri qaytarıla bilər."
+			"allowAutopilotHint": "Qur rejimi dəyişiklikləri təsdiq olmadan tətbiq edə bilər. Hər dəyişiklik yenə də qeydə alınır və geri qaytarıla bilər.",
+			"storesPrompts": "Promptlar saxlanılır"
 		},
 		"agents": {
 			"navLabel": "Agentlər",
@@ -11128,11 +10976,13 @@
 					"manual": "Tapşırıqdan işə salındı",
 					"schedule": "Planlaşdırılıb",
 					"automation": "Avtomatlaşdırma",
-					"chat": "Davam"
+					"chat": "Davam",
+					"intake": "Daxil olan sorğu"
 				},
 				"project": "Layihə:",
 				"workedSeconds": "{{count}} san işlədi",
-				"workedMinutes": "{{count}} dəq işlədi"
+				"workedMinutes": "{{count}} dəq işlədi",
+				"request": "Sorğu"
 			},
 			"connectors": {
 				"title": "Konnektorlar",
@@ -11274,6 +11124,27 @@
 					"schedule": "Cədvəl",
 					"automation": "Avtomatlaşdırma"
 				}
+			},
+			"intakeTrigger": {
+				"open": "{{name}} üçün yeni daxil olan sorğular",
+				"badge": "Qəbul",
+				"title": "Daxil olan sorğular: {{name}}",
+				"hint": "Agenti layihələrindəki hər yeni daxil olan sorğuda işə sal, məsələn onu ilkin qiymətləndirmək üçün. Onun dəyişiklikləri digər icralarla eyni təsdiq və geri qaytarma qaydalarına tabedir.",
+				"enabled": "Yeni daxil olan sorğularda işə sal",
+				"enabledHint": "Yalnız Qəbul və AI açıq olan layihələrdə və agentin layihələri daxilində.",
+				"prompt": "Nə etməlidir?",
+				"promptPlaceholder": "Məsələn: prioritet və etiketlər təklif et, dublikatları göstər.",
+				"promptHint": "İlkin qiymətləndirmə üçün boş burax: sorğunun nə istədiyi, nə qədər təcili göründüyü və nəyin çatışmadığı barədə qısa şərh.",
+				"runsAs": "{{name}} adından işləyir. Tətikləyici açıq olaraq yadda saxlasan, o şəxs sən olursan.",
+				"runsAsYou": "Açan kimi sənin adından, ən çox sənin hüquqlarınla işləyir. İş sahəsindən çıxsan və ya AI ya da qəbula girişini itirsən, söndürülür.",
+				"outsideNote": "İş sahəsindən kənardan gələn sorğular (ictimai lövhələr, formalar) təsdiqsiz heç nəyi dəyişmir.",
+				"limitNote": "Hər agent üçün saatda ən çox 30 daxil olan sorğu icrası. Agentlərin göndərdiyi sorğular heç nə başlatmır.",
+				"saved": "Qəbul tətikləyicisi yadda saxlanıldı",
+				"saveError": "Qəbul tətikləyicisini yadda saxlamaq olmadı. Yenidən cəhd et.",
+				"errors": {
+					"forbidden": "Daxil olan sorğu icraları sənin adından işləyir, ona görə AI girişinə və daxil olan sorğuları oxumaq icazəsinə ehtiyacın var.",
+					"AGENT_CANT_READ_INTAKE": "Bu agentin rolu daxil olan sorğuları oxuya bilmir. Ona bunu bacaran rol ver."
+				}
 			}
 		},
 		"capture": {
@@ -11356,8 +11227,8 @@
 			"timelineLabel": "Kodlaşdırma agentinin gedişatı",
 			"sentBy": "{{name}} tərəfindən {{profile}} profilinə göndərildi",
 			"sentByUnknown": "{{profile}} profilinə göndərildi",
-			"issueLink": "Issue #{{number}}",
-			"prLink": "Pull request #{{number}}",
+			"issueLink": "Məsələ #{{number}}",
+			"prLink": "Birləşdirmə sorğusu #{{number}}",
 			"pending": "Hələ yox",
 			"steps": {
 				"issue_created": "Issue yaradıldı",
@@ -11503,7 +11374,6 @@
 			"unmeasured_other": "Başlanğıcı qeydə alınmamış {{count}} tapşırıq nəzərə alınmadı."
 		},
 		"capacity": {
-			"meter": "Planlaşdırılan iş adi dövrlə müqayisədə",
 			"within": "Adi dövrün {{percent}}%-i qədər planlaşdırılıb",
 			"over": "Tutumdan artıq: adi dövrün {{percent}}%-i qədər planlaşdırılıb",
 			"noDates": "Tutumu yoxlamaq üçün dövrün tarixlərini təyin edin.",
@@ -11610,6 +11480,146 @@
 			"emailTitle": "Xülasəmi e-poçt icmalına əlavə et",
 			"emailDescription": "İcmal bloklanmış tapşırıqlarınızı və izlədiyiniz tapşırıqlardakı dəyişiklikləri də göstərir. Gündəlik və ya həftəlik icmal tələb olunur.",
 			"emailError": "Bu ayarı saxlamaq mümkün olmadı."
+		}
+	},
+	"emails": {
+		"otp": {
+			"preview": "Margaya təsdiq kodunuz",
+			"title": "Təsdiq kodunuz",
+			"subtitle": "Girişi tamamlamaq üçün bu birdəfəlik kodu daxil edin.",
+			"verifySubtitle": "E-poçt ünvanınızı təsdiqləmək üçün bu birdəfəlik kodu daxil edin.",
+			"changeSubtitle": "Bu ünvanı Margaya hesabınızın yeni e-poçt ünvanı kimi təsdiqləmək üçün bu birdəfəlik kodu daxil edin.",
+			"code": "Margaya təsdiq kodunuzdur.",
+			"expiry": "Bu kod {{minutes}} dəqiqə ərzində etibarlıdır.",
+			"ignore": "Bunu siz istəməmisinizsə, bu e-məktubu nəzərə almaya bilərsiniz.",
+			"footer": "Margaya təhlükəsizlik e-məktubu"
+		},
+		"magicLink": {
+			"preview": "Margaya-ya daxil olun",
+			"title": "Təhlükəsiz giriş keçidiniz",
+			"subtitle": "Margaya iş sahənizə keçmək üçün bu keçiddən istifadə edin.",
+			"cta": "Margaya-ya daxil olun",
+			"expiry": "Təhlükəsizliyiniz üçün bu keçid 5 dəqiqə ərzində etibarlıdır.",
+			"ignore": "Bunu siz istəməmisinizsə, bu e-məktubu nəzərə almaya bilərsiniz.",
+			"footer": "Margaya təhlükəsizlik e-məktubu"
+		},
+		"passwordReset": {
+			"preview": "Margaya parolunuzu sıfırlayın",
+			"title": "Parolunuzu sıfırlayın",
+			"subtitleWithName": "Salam, {{name}}! Yeni parol təyin etmək üçün aşağıdakı düymədən istifadə edin.",
+			"subtitleDefault": "Yeni parol təyin etmək üçün aşağıdakı düymədən istifadə edin.",
+			"cta": "Parolu sıfırla",
+			"expiry": "Bu sıfırlama keçidi 1 saat ərzində etibarlıdır.",
+			"ignore": "Bunu siz istəməmisinizsə, heç bir dəyişiklik edilməyəcək.",
+			"footer": "Margaya təhlükəsizlik e-məktubu"
+		},
+		"emailChanged": {
+			"preview": "Margaya e-poçt ünvanınız dəyişdirildi",
+			"title": "E-poçt ünvanınız dəyişdirildi",
+			"body": "Margaya hesabınızın yeni e-poçt ünvanı: {{email}}. Bundan sonra giriş keçidləri, kodlar və bildirişlər bu ünvana göndəriləcək.",
+			"warning": "Bu dəyişikliyi siz etməmisinizsə, dərhal Margaya administratorunuzla əlaqə saxlayın.",
+			"footer": "Margaya təhlükəsizlik e-məktubu"
+		},
+		"authSubjects": {
+			"magicLinkSubject": "Margaya giriş keçidi",
+			"otpSubject": "Margaya təsdiq kodu",
+			"verifyEmailSubject": "Margaya üçün e-poçt ünvanınızı təsdiqləyin",
+			"passwordResetSubject": "Margaya parolunuzu sıfırlayın",
+			"changeEmailSubject": "Margaya üçün yeni e-poçt ünvanınızı təsdiqləyin",
+			"emailChangedSubject": "Margaya e-poçt ünvanınız dəyişdirildi"
+		},
+		"notification": {
+			"preview": "Yeni Margaya bildirişiniz var",
+			"subtitle": "Bildiriş çatdırılma tərcihlərinizə uyğun gəldi.",
+			"footer": "Margaya bildirişi",
+			"actionLabel": "Margaya-da aç"
+		},
+		"notificationBatch": {
+			"preview": "Son Margaya yeniləmələriniz",
+			"title_one": "{{count}} yeni yeniləmə",
+			"title_other": "{{count}} yeni yeniləmə",
+			"subtitle": "Tapşırıqlarınızdakı dəyişikliklər, son e-poçtdan bəri qruplaşdırılıb.",
+			"by": "dəyişən:",
+			"open": "Tapşırığı aç",
+			"manage": "Bildiriş parametrlərini idarə et",
+			"footer": "Margaya bildirişi"
+		},
+		"notificationDigest": {
+			"title": {
+				"daily": "Gündəlik xülasəniz",
+				"weekly": "Həftəlik xülasəniz"
+			},
+			"preview": "Margaya xülasəniz",
+			"subtitle": "Vaxtı keçmiş və ya 7 gün ərzində bitən açıq tapşırıqlarınız və Gələnlərdəki yeniliklər.",
+			"dueHeading": "Müddəti yaxınlaşan və vaxtı keçmiş",
+			"overdue": "Vaxtı keçib",
+			"due": "Son tarix",
+			"more_one": "və daha {{count}}",
+			"more_other": "və daha {{count}}",
+			"mentionsHeading_one": "{{count}} yeni xatırlatma",
+			"mentionsHeading_other": "{{count}} yeni xatırlatma",
+			"unread_one": "Gələnlərdə {{count}} oxunmamış bildiriş",
+			"unread_other": "Gələnlərdə {{count}} oxunmamış bildiriş",
+			"openInbox": "Gələnləri aç",
+			"manage": "Bildiriş parametrlərini idarə et",
+			"footer": "Bu xülasəni almağı siz seçmisiniz.",
+			"blockedHeading": "Bloklanmış",
+			"waitingOn": "{{keys}} gözlənilir",
+			"hiddenBlockers_one": "görə bilmədiyiniz {{count}} tapşırıq",
+			"hiddenBlockers_other": "görə bilmədiyiniz {{count}} tapşırıq",
+			"followingHeading": "İzlədiyiniz tapşırıqlardakı dəyişikliklər",
+			"changes_one": "{{count}} dəyişiklik",
+			"changes_other": "{{count}} dəyişiklik"
+		},
+		"batchSubject": {
+			"task_one": "{{title}} üzrə {{count}} yeniləmə",
+			"task_other": "{{title}} üzrə {{count}} yeniləmə",
+			"all_one": "Margaya-da {{count}} yeniləmə",
+			"all_other": "Margaya-da {{count}} yeniləmə"
+		},
+		"digestSubject": {
+			"daily": "Gündəlik Margaya xülasəniz",
+			"weekly": "Həftəlik Margaya xülasəniz"
+		},
+		"workspaceDeletion": {
+			"fallbackName": "Bir iş sahəsi",
+			"openWorkspace": "İş sahəsini aç",
+			"scheduledSubject": "{{name}} silinmək üçün planlaşdırılıb",
+			"scheduledTitle": "{{name}} {{date}} tarixində silinəcək",
+			"scheduledTitleNoDate": "{{name}} tezliklə silinəcək",
+			"scheduledMessage": "Sahib bu iş sahəsinin silinməsini planlaşdırıb. {{date}} tarixinə qədər o, yalnız oxunuş üçündür: məzmununu hələ də aça və ixrac edə bilərsiniz, sahib isə silinməni ləğv edə bilər. Həmin tarixdən sonra onun layihələri, tapşırıqları və səhifələri həmişəlik silinəcək.",
+			"scheduledMessageNoDate": "Sahib bu iş sahəsinin silinməsini planlaşdırıb. Silinənə qədər o, yalnız oxunuş üçündür: məzmununu hələ də aça və ixrac edə bilərsiniz, sahib isə silinməni ləğv edə bilər. Bundan sonra onun layihələri, tapşırıqları və səhifələri həmişəlik silinəcək.",
+			"cancelledSubject": "{{name}} silinməyəcək",
+			"cancelledTitle": "{{name}} geri qayıtdı",
+			"cancelledMessage": "Sahib planlaşdırılmış silinməni ləğv etdi. İş sahəsi artıq yalnız oxunuş rejimində deyil, API açarları və webhook-ları yenidən işləyir."
+		},
+		"webhookDisabled": {
+			"subject": "Margaya webhook-u deaktiv edildi",
+			"title": "Webhook deaktiv edildi",
+			"message": "{{host}} ünvanına çatdırılmalar bir gündən artıq təkrar-təkrar uğursuz oldu, buna görə Margaya webhook-u deaktiv etdi. Son nöqtəni düzəldin, sonra iş sahəsi parametrlərində webhook-u yenidən aktivləşdirin.",
+			"messageNoHost": "Son nöqtəyə çatdırılmalar bir gündən artıq təkrar-təkrar uğursuz oldu, buna görə Margaya webhook-u deaktiv etdi. Son nöqtəni düzəldin, sonra iş sahəsi parametrlərində webhook-u yenidən aktivləşdirin.",
+			"actionLabel": "Webhook parametrlərini aç"
+		},
+		"trialReminder": {
+			"endedTitle": "{{workspaceName}} iş sahəsinin sınaq müddəti başa çatdı",
+			"daysLeftTitle_one": "{{workspaceName}} iş sahəsinin sınaq müddətinin bitməsinə {{count}} gün qalıb",
+			"daysLeftTitle_other": "{{workspaceName}} iş sahəsinin sınaq müddətinin bitməsinə {{count}} gün qalıb",
+			"endedSubtitle": "Plan seçənə qədər iş sahəniz yalnız oxunuş üçündür. Heç nə silinməyib, məlumatlarınız yerindədir.",
+			"activeSubtitle": "Sınaq müddəti bitdikdən sonra yaratmağa və redaktə etməyə davam etmək üçün plan seçin.",
+			"cta": "Plan seçin",
+			"selfHost": "Margaya-nı öz serverinizdə yerləşdirsəniz, bütün funksiyaları ilə birlikdə həmişəlik pulsuzdur. Məlumatlarınızı istənilən vaxt ixrac edib öz serverinizə köçürə bilərsiniz.",
+			"footer": "Bu məktubu Margaya Cloud-da bu iş sahəsinin sahibi olduğunuz üçün alırsınız."
+		},
+		"trialSubjects": {
+			"trialEnding": "{{workspaceName}} iş sahəsinin sınaq müddəti 3 gün sonra bitir",
+			"trialExpired": "{{workspaceName}} iş sahəsinin sınaq müddəti başa çatdı"
+		},
+		"testEmail": {
+			"subject": "{{instanceName}} tərəfindən göndərilən test məktubu",
+			"text": "Bu, {{instanceName}} tərəfindən göndərilən test məktubudur. Onu oxuya bilirsinizsə, e-poçt göndərişi işləyir."
+		},
+		"notificationText": {
+			"commentWithoutPreview": "{{taskTitle}} tapşırığına yeni şərh"
 		}
 	}
 }

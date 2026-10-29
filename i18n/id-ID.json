@@ -10,16 +10,10 @@
 			"markAllRead": "Tandai semua telah dibaca",
 			"remove": "Hapus",
 			"reset": "Atur ulang",
-			"filter": "Filter",
-			"clearAllFilters": "Hapus semua filter",
 			"undo": "Urungkan"
 		},
 		"a11y": {
 			"toggleSidebar": "Tampilkan/sembunyikan panel samping"
-		},
-		"sidebar": {
-			"title": "Bilah sisi",
-			"mobileDescription": "Menampilkan panel samping seluler."
 		},
 		"empty": {
 			"loading": "Memuat..."
@@ -36,29 +30,12 @@
 			"label": "Jalur navigasi",
 			"more": "Lainnya"
 		},
-		"language": {
-			"english": "Inggris",
-			"german": "Jerman",
-			"greek": "Yunani",
-			"macedonian": "Makedonia",
-			"french": "Prancis",
-			"spanish": "Spanyol",
-			"dutch": "Belanda",
-			"korean": "Korea",
-			"chinese": "Mandarin",
-			"italian": "Italia"
-		},
 		"people": {
 			"someone": "Seseorang",
 			"unknown": "Tidak diketahui"
 		},
 		"error": {
 			"title": "Terjadi kesalahan",
-			"troubleshooting": "Langkah pemecahan masalah:",
-			"tryAgain": "Coba lagi",
-			"viewDeploymentGuide": "Lihat panduan deployment",
-			"refreshPage": "Muat ulang halaman",
-			"description": "Halaman mengalami crash yang tidak terduga. Memuat ulang biasanya memperbaikinya.",
 			"messages": {
 				"auth": "Autentikasi gagal. Silakan masuk kembali.",
 				"cors": "Tidak dapat terhubung ke server. Ini mungkin disebabkan oleh masalah konfigurasi CORS.",
@@ -97,7 +74,6 @@
 				"keyLabel": "Kunci:",
 				"keyHint": "Digunakan untuk ID tiket (contoh, {{example}}-123)",
 				"createButton": "Buat proyek",
-				"successToast": "Proyek berhasil dibuat",
 				"errorToast": "Gagal membuat proyek",
 				"keyTaken": "Proyek dengan key {{key}} sudah ada di ruang kerja ini",
 				"blankProject": "Proyek kosong",
@@ -132,7 +108,6 @@
 				"successUpdated": "Tugas berhasil diperbarui",
 				"createError": "Gagal membuat tugas",
 				"priority": "Prioritas",
-				"statusFallback": "Sedang Berjalan",
 				"startDate": "Tanggal mulai",
 				"dueDate": "Tenggat",
 				"clearStartDate": "Hapus tanggal mulai",
@@ -331,7 +306,6 @@
 			"namePlaceholder": "Budi Santoso",
 			"failedSignUp": "Gagal mendaftar",
 			"accountCreated": "Akun berhasil dibuat",
-			"passwordTooShort": "Kata sandi terlalu pendek",
 			"creatingAccount": "Sedang membuat akun...",
 			"createAccount": "Buat akun"
 		},
@@ -345,7 +319,6 @@
 			"invitationExpired": "Undangan kedaluwarsa",
 			"errorLoadDescription": "Gagal memuat detail undangan. Undangan mungkin tidak valid atau sudah kedaluwarsa.",
 			"goToSignIn": "Ke halaman masuk",
-			"workspaceLabel": "Ruang kerja: {{workspaceName}}",
 			"joinWorkspace": "Gabung {{workspaceName}}",
 			"inviteBodySignedIn": "<inviter>{{inviterName}}</inviter> mengundang Anda untuk bergabung ke ruang kerjanya.",
 			"inviteBodySignedOut": "<inviter>{{inviterName}}</inviter> mengundang Anda untuk bergabung ke ruang kerjanya di Margaya.",
@@ -375,7 +348,6 @@
 			"creating": "Membuat...",
 			"createWorkspace": "Buat ruang kerja",
 			"workspaceCreatedTitle": "Ruang kerja dibuat",
-			"redirectingToWorkspace": "Mengarahkan Anda ke <name>{{name}}</name>...",
 			"toast": {
 				"workspaceCreated": "Ruang kerja berhasil dibuat",
 				"createFailed": "Gagal membuat ruang kerja",
@@ -439,8 +411,6 @@
 			"namePlaceholder": "misalnya: John Doe",
 			"saving": "Menyimpan...",
 			"continue": "Lanjutkan",
-			"welcome": "Selamat datang, {{name}}!",
-			"redirecting": "Mengarahkan Anda ke dasbor...",
 			"toast": {
 				"updateSuccess": "Profil berhasil diperbarui",
 				"updateFailed": "Gagal memperbarui profil"
@@ -541,7 +511,6 @@
 	},
 	"settings": {
 		"account": "Akun",
-		"developer": "Pengembang",
 		"information": "Informasi",
 		"notifications": "Notifikasi",
 		"preferences": "Preferensi",
@@ -653,23 +622,7 @@
 			"noProjectsInWorkspace": "Belum ada proyek yang tersedia untuk ruang kerja ini.",
 			"createRule": "Buat aturan",
 			"removeRule": "Hapus aturan",
-			"toastEmailSaved": "Pengaturan notifikasi email disimpan",
-			"toastEmailSaveFailed": "Gagal menyimpan pengaturan email",
-			"toastNtfySaved": "Pengaturan ntfy disimpan",
-			"toastNtfySaveFailed": "Gagal menyimpan pengaturan ntfy",
-			"toastNtfyDisconnected": "ntfy diputuskan",
-			"toastNtfyDisconnectFailed": "Gagal memutuskan ntfy",
-			"toastGotifySaved": "Pengaturan Gotify disimpan",
-			"toastGotifySaveFailed": "Gagal menyimpan pengaturan Gotify",
-			"toastGotifyDisconnected": "Gotify diputuskan",
-			"toastGotifyDisconnectFailed": "Gagal memutuskan Gotify",
-			"toastWebhookSaved": "Pengaturan webhook disimpan",
-			"toastWebhookSaveFailed": "Gagal menyimpan pengaturan webhook",
-			"toastWebhookDisconnected": "Webhook diputuskan",
-			"toastWebhookDisconnectFailed": "Gagal memutuskan webhook",
-			"toastRuleSaved": "Aturan notifikasi untuk {{workspaceName}} disimpan",
 			"toastRuleSaveFailed": "Gagal menyimpan aturan notifikasi ruang kerja",
-			"toastRuleRemoved": "Aturan notifikasi untuk {{workspaceName}} dihapus",
 			"toastRuleRemoveFailed": "Gagal menghapus aturan notifikasi ruang kerja",
 			"toastPreferencesSaved": "Preferensi notifikasi disimpan",
 			"toastPreferencesSaveFailed": "Gagal menyimpan preferensi notifikasi",
@@ -739,7 +692,6 @@
 			"selectViewMode": "Pilih mode tampilan",
 			"board": "Papan",
 			"list": "Daftar",
-			"gantt": "Gantt",
 			"sidebarDefault": "Default sidebar",
 			"sidebarDefaultDescription": "Biarkan sanel samping terbuka saat mulai",
 			"displayOptions": "Opsi tampilan",
@@ -844,14 +796,8 @@
 			"dangerZone": "Zona berbahaya",
 			"dangerZoneSubtitle": "Tindakan destruktif dan tidak dapat dibatalkan.",
 			"deleteWorkspace": "Hapus ruang kerja",
-			"deleteWorkspaceDescription": "Jadwalkan ruang kerja untuk dihapus permanen",
-			"deleteModalTitle": "Hapus ruang kerja?",
-			"deleteModalDescription": "Ini akan menghapus ruang kerja \"{{name}}\" dan semua datanya secara permanen. Tindakan ini tidak dapat dibatalkan.",
-			"deleteModalConfirm": "Hapus ruang kerja",
 			"toastUpdated": "Ruang kerja berhasil diperbarui",
 			"toastUpdateError": "Gagal memperbarui ruang kerja",
-			"toastDeleted": "Ruang kerja berhasil dihapus",
-			"toastDeleteError": "Gagal menghapus ruang kerja",
 			"validation": {
 				"nameRequired": "Nama ruang kerja wajib diisi",
 				"nameShort": "Nama ruang kerja harus minimal 2 karakter"
@@ -950,21 +896,6 @@
 			"mattermostSectionTitle": "Integrasi Mattermost",
 			"chatGroupTitle": "Chat dan webhook",
 			"codeGroupTitle": "Hosting kode"
-		},
-		"projectVisibility": {
-			"pageTitle": "Visibilitas proyek",
-			"title": "Visibilitas",
-			"subtitle": "Kontrol siapa yang dapat melihat dan mengakses proyek Anda.",
-			"sectionTitle": "Visibilitas",
-			"sectionSubtitle": "Aktifkan akses publik dan bagikan URL publik.",
-			"publicAccess": "Akses publik",
-			"publicAccessHint": "Izinkan siapa pun dengan URL untuk melihat proyek ini",
-			"publicUrl": "URL publik",
-			"publicUrlHint": "Bagikan tautan ini jika proyek bersifat publik",
-			"copy": "Salin",
-			"copiedToast": "Disalin",
-			"toastUpdated": "Visibilitas diperbarui",
-			"toastUpdateError": "Gagal memperbarui visibilitas"
 		},
 		"projectWorkflow": {
 			"pageTitle": "Pengaturan alur kerja",
@@ -1182,7 +1113,6 @@
 			},
 			"connect": "Hubungkan Slack",
 			"saveChanges": "Simpan perubahan",
-			"update": "Perbarui Slack",
 			"disconnect": "Putuskan"
 		},
 		"discordIntegration": {
@@ -1220,7 +1150,6 @@
 			},
 			"connect": "Hubungkan Discord",
 			"saveChanges": "Simpan perubahan",
-			"update": "Perbarui Discord",
 			"disconnect": "Putuskan"
 		},
 		"genericWebhookIntegration": {
@@ -1337,9 +1266,7 @@
 			"exportTasks": "Ekspor tugas",
 			"importTasks": "Impor tugas",
 			"dialogTitle": "Impor tugas",
-			"dialogDescription": "Unggah file JSON berisi tugas untuk diimpor ke proyek ini.",
 			"expectedFormat": "Format yang diharapkan:",
-			"dropHint": "Seret dan lepaskan file JSON Anda di sini",
 			"selectFile": "Pilih file",
 			"exporting": "Mengekspor tugas...",
 			"exportSuccess": "Tugas berhasil diekspor",
@@ -1350,7 +1277,6 @@
 			"importError": "Gagal mengimpor tugas",
 			"invalidFormat": "Format file impor tidak valid",
 			"noFileDropped": "Tidak ada file yang dilepas",
-			"notJsonFile": "Silakan unggah file JSON",
 			"exportCsv": "CSV (spreadsheet)",
 			"exportJson": "JSON (untuk impor ulang)",
 			"exportStarted": "Ekspor dimulai. Anda akan menemukannya di Pengaturan ruang kerja → Ekspor.",
@@ -1955,7 +1881,6 @@
 				"saveError": "Gagal menyimpan integrasi Mattermost",
 				"updateError": "Gagal memperbarui integrasi Mattermost"
 			},
-			"update": "Perbarui Mattermost",
 			"validation": {
 				"webhookInvalid": "Masukkan URL webhook Mattermost yang valid"
 			},
@@ -1967,13 +1892,11 @@
 			"addButton": "Tambah",
 			"createError": "Gagal membuat field kustom.",
 			"createSuccess": "Field kustom dibuat.",
-			"creating": "Membuat...",
-			"defaultLabel": "Default",
+			"defaultLabel": "Bawaan",
 			"defaultValuePlaceholder": "Nilai default",
 			"deleteButton": "Hapus",
 			"deleteError": "Gagal menghapus field kustom.",
 			"deleteSuccess": "Field kustom dihapus.",
-			"deleting": "Menghapus...",
 			"empty": "Belum ada field kustom yang dikonfigurasi.",
 			"loading": "Memuat field kustom...",
 			"namePlaceholder": "Nama field",
@@ -2890,7 +2813,9 @@
 				"agentScheduleDisabled": "Menonaktifkan jadwal agen",
 				"aiConnectorCreated": "Menambahkan konektor MCP",
 				"aiConnectorUpdated": "Mengubah konektor MCP",
-				"aiConnectorDeleted": "Menghapus konektor MCP"
+				"aiConnectorDeleted": "Menghapus konektor MCP",
+				"agentIntakeTriggerUpdated": "Mengubah pemicu intake agen",
+				"agentIntakeTriggerDisabled": "Mematikan pemicu intake agen"
 			},
 			"actor": {
 				"apiKey": "Kunci API",
@@ -3162,7 +3087,7 @@
 				"priorities": "Prioritas",
 				"cycles": "Siklus",
 				"modules": "Modul",
-				"field": "Field",
+				"field": "Kolom",
 				"operator": "Perbandingan",
 				"points": "Poin",
 				"value": "Nilai",
@@ -3226,8 +3151,7 @@
 			"empty": "Tidak ada hasil ditemukan.",
 			"footer": {
 				"navigate": "Navigasi",
-				"open": "Buka",
-				"close": "Tutup"
+				"open": "Buka"
 			},
 			"goToInbox": "Buka Kotak masuk",
 			"newView": "Tampilan baru",
@@ -3254,11 +3178,10 @@
 			},
 			"recent": "Terbaru",
 			"removeScope": "Cari di mana saja",
-			"scope": "In"
+			"scope": "Di"
 		},
 		"notifications": "Notifikasi",
 		"sidebar": {
-			"overview": "Ringkasan",
 			"projects": "Proyek",
 			"members": "Anggota",
 			"invitations": "Undangan",
@@ -3266,12 +3189,9 @@
 			"backToBoard": "Kembali ke papan",
 			"favorites": "Favorit",
 			"allTasks": "Semua tugas",
-			"inbox": "Kotak masuk",
 			"myWork": "Pekerjaan Anda",
 			"home": "Beranda",
-			"personal": "Pribadi",
 			"stickies": "Catatan tempel",
-			"analytics": "Analitik",
 			"drafts": "Draf"
 		},
 		"projectList": {
@@ -3299,10 +3219,6 @@
 				"page": "Halaman"
 			}
 		},
-		"settingsLayout": {
-			"toggleSidebar": "Tampilkan/sembunyikan panel samping",
-			"back": "Kembali"
-		},
 		"userMenu": {
 			"signedOutSuccess": "Berhasil keluar",
 			"signOutFailed": "Gagal keluar",
@@ -3315,13 +3231,11 @@
 		"workspaceSwitcher": {
 			"workspaces": "Ruang kerja",
 			"switching": "Beralih...",
-			"addWorkspace": "Tambah ruang kerja",
-			"selectWorkspace": "Pilih ruang kerja"
+			"addWorkspace": "Tambah ruang kerja"
 		},
 		"page": {
 			"projectsTitle": "Proyek",
 			"settingsTitle": "Pengaturan",
-			"backToWorkspace": "Kembali ke ruang kerja",
 			"settingsWorkspaceTab": "Ruang Kerja",
 			"settingsInstanceTab": "Instans",
 			"settingsNotFoundBack": "Pengaturan akun",
@@ -3351,7 +3265,6 @@
 			"items": {
 				"openCommandPalette": "Buka palet perintah",
 				"globalSearch": "Pencarian global",
-				"toggleSidebar": "Tampilkan/sembunyikan panel samping",
 				"showShortcuts": "Tampilkan pintasan keyboard",
 				"closeModal": "Tutup modal/popover",
 				"createTask": "Buat tugas",
@@ -3457,15 +3370,11 @@
 	},
 	"notifications": {
 		"title": "Notifikasi",
-		"newCount_other": "{{count}} baru",
-		"emptyTitle": "Belum ada notifikasi",
-		"emptySubtitle": "Pembaruan dan aktivitas akan muncul di sini.",
 		"clearAll": "Hapus semua notifikasi",
 		"clearDialogTitle": "Hapus semua notifikasi?",
 		"clearDialogDescription": "Ini akan menghapus semua notifikasi secara permanen. Anda tidak dapat membatalkan tindakan ini.",
 		"shortcuts": {
-			"open": "Buka notifikasi",
-			"inbox": "Buka kotak masuk"
+			"open": "Buka notifikasi"
 		},
 		"events": {
 			"task_created": {
@@ -3617,7 +3526,6 @@
 				"fiveDays": "5 hari",
 				"oneDay": "1 hari",
 				"oneWeek": "1 minggu",
-				"pickDate": "Pilih tanggal",
 				"pickTime": "Pilih waktu",
 				"submit": "Tunda",
 				"threeDays": "3 hari",
@@ -4002,7 +3910,6 @@
 				"recurredToScheduled": "Pengulangan berikutnya dibuat sesuai jadwal: <task>{{task}}</task>"
 			}
 		},
-		"title": "Tugas",
 		"status": {
 			"label": "Status",
 			"to-do": "Perlu Dikerjakan",
@@ -4241,7 +4148,6 @@
 			"labels": "Label",
 			"copyTaskLink": "Salin tautan tugas",
 			"copyTaskBranch": "Salin branch tugas",
-			"start": "Mulai",
 			"startDate": "Tanggal mulai",
 			"noDate": "Tanpa tanggal",
 			"addLabel": "Tambah label",
@@ -4307,22 +4213,11 @@
 			"moveAllTooltip": "Pindahkan semua tugas yang direncanakan ke {{column}}",
 			"moveAll": "Pindahkan semua",
 			"addTask": "Tambah tugas",
-			"filter": "Filter",
-			"addFilter": "Tambah filter...",
 			"sections": {
 				"planned": "Direncanakan",
 				"archived": "Diarsipkan"
 			},
-			"noTasksInSection": "Tidak ada tugas {{section}}",
-			"filters": {
-				"priority": "Prioritas: {{name}}",
-				"assignee": "Penanggung jawab: {{name}}",
-				"due": "Tenggat: {{date}}",
-				"label": "Label: {{name}}",
-				"dueThisWeek": "Tenggat minggu ini",
-				"dueNextWeek": "Tenggat minggu depan",
-				"noDueDate": "Tanpa tenggat"
-			}
+			"noTasksInSection": "Tidak ada tugas {{section}}"
 		},
 		"sort": {
 			"label": "Urutkan",
@@ -4342,11 +4237,6 @@
 		},
 		"boardFilters": {
 			"filterBy": "Filter berdasarkan",
-			"allStatuses": "Semua status",
-			"allPriorities": "Semua prioritas",
-			"allAssignees": "Semua penanggung jawab",
-			"allDueDates": "Semua tenggat",
-			"allLabels": "Semua label",
 			"selectedCount": "{{count}} dipilih",
 			"subjects": {
 				"status": "Status",
@@ -4357,14 +4247,8 @@
 				"estimate": "Estimasi"
 			},
 			"operators": {
-				"isAnyOf": "adalah salah satu dari",
-				"includeAnyOf": "menyertakan salah satu dari"
-			},
-			"all": "Semua",
-			"allCustomFieldValues": "Semua nilai",
-			"noCustomFieldValues": "Tidak ada nilai field kustom",
-			"noValuesUsedYet": "Belum ada nilai yang digunakan",
-			"unassigned": "Belum ditugaskan"
+				"isAnyOf": "adalah salah satu dari"
+			}
 		},
 		"gantt": {
 			"pageTitle": "{{name}} – Gantt",
@@ -4407,10 +4291,8 @@
 		},
 		"archive": {
 			"success": "{{count}} tugas diarsipkan",
-			"archive": "Arsipkan",
 			"archived": "Tugas diarsipkan",
 			"badge": "Diarsipkan",
-			"bulkArchived_other": "{{count}} tugas diarsipkan",
 			"error": "Tidak dapat mengarsipkan tugas",
 			"restore": "Pulihkan",
 			"restored": "Tugas dipulihkan",
@@ -4445,10 +4327,6 @@
 			"updateError": "Gagal memperbarui tenggat tugas",
 			"clearSuccess": "Tenggat tugas dihapus",
 			"clearError": "Gagal menghapus tenggat"
-		},
-		"labels": {
-			"label": "Label",
-			"empty": "Tidak ada label tersedia"
 		},
 		"update": {
 			"success": "Tugas berhasil diperbarui",
@@ -4785,7 +4663,6 @@
 				"project": "Proyek",
 				"status": "Status"
 			},
-			"needsSingleProject": "Pengelompokan menurut status memerlukan satu proyek",
 			"none": "Tidak ada",
 			"order": {
 				"assignee": "Penanggung jawab",
@@ -4872,14 +4749,14 @@
 			"noOptions": "Tidak ada opsi",
 			"operators": {
 				"between": "antara",
-				"is": "is",
+				"is": "adalah",
 				"isEmpty": "kosong",
 				"isNoneOf": "bukan salah satu dari",
 				"isNot": "bukan",
 				"isNotEmpty": "tidak kosong",
 				"moreThanAgo": "lebih dari … yang lalu",
 				"moreThanAhead": "lebih dari … dari sekarang",
-				"on": "on",
+				"on": "pada",
 				"onOrAfter": "pada atau setelah",
 				"onOrBefore": "pada atau sebelum",
 				"withinLast": "dalam … terakhir",
@@ -4892,9 +4769,7 @@
 				"completed": "Diselesaikan",
 				"created": "Dibuat",
 				"createdBy": "Dibuat oleh",
-				"customFields": "Field kustom",
 				"cycle": "Siklus",
-				"estimate": "Estimasi",
 				"group": "Grup",
 				"mentions": "Sebutan",
 				"module": "Modul",
@@ -4908,7 +4783,7 @@
 			"values": {
 				"currentCycle": "Siklus saat ini",
 				"false": "Salah",
-				"me": "Me",
+				"me": "Saya",
 				"noAssignee": "Tanpa penanggung jawab",
 				"noCreator": "Tanpa pembuat",
 				"noCycle": "Tanpa siklus",
@@ -4945,8 +4820,6 @@
 			"expandSubTasks": "Tampilkan subtugas",
 			"hideColumn": "Sembunyikan kolom",
 			"loadError": "Tidak dapat memuat tugas",
-			"newTask": "Tugas baru",
-			"newTaskPlaceholder": "Judul tugas, lalu Enter",
 			"selectTask": "Pilih {{key}}",
 			"sortAsc": "Urutkan naik",
 			"sortDesc": "Urutkan turun",
@@ -4972,7 +4845,7 @@
 		"timeTracking": {
 			"duration": "Durasi",
 			"durationInvalid": "Masukkan durasi antara 1 menit dan 24 jam, seperti 1h 30m.",
-			"durationPlaceholder": "e.g. 1h 30m",
+			"durationPlaceholder": "mis. 1h 30m",
 			"empty": "Belum ada waktu yang dicatat",
 			"entries": "Catatan waktu",
 			"formerMember": "Mantan anggota",
@@ -5151,11 +5024,6 @@
 		"noPendingDescription": "Saat seseorang mengundang Anda ke ruang kerja, undangannya muncul di sini.",
 		"continueToSetup": "Lanjutkan ke penyiapan",
 		"skipForNow": "Lewati dulu",
-		"table": {
-			"workspace": "Ruang kerja",
-			"invitedBy": "Diundang oleh",
-			"expires": "Kedaluwarsa"
-		},
 		"toast": {
 			"acceptError": "Gagal menerima undangan",
 			"acceptSuccess": "Undangan diterima! Selamat bergabung dengan tim.",
@@ -5191,7 +5059,6 @@
 				"inProgress": "Sedang berjalan"
 			},
 			"noDueDate": "Tanpa tenggat",
-			"reorderHandle": "Ubah urutan proyek",
 			"reorderError": "Gagal mengubah urutan proyek"
 		},
 		"search": {
@@ -5216,7 +5083,6 @@
 			"pageTitle": "Buat ruang kerja",
 			"heading": "Buat ruang kerja baru",
 			"subtitle": "Ruang kerja adalah lingkungan bersama tempat tim dapat bekerja pada proyek, siklus, dan issue.",
-			"nameLabel": "Nama ruang kerja",
 			"namePlaceholder": "Masukkan nama ruang kerja",
 			"descriptionLabel": "Deskripsi (opsional)",
 			"descriptionPlaceholder": "Tambahkan deskripsi untuk ruang kerja Anda",
@@ -5340,11 +5206,8 @@
 			"columns": {
 				"name": "Nama",
 				"role": "Peran",
-				"joined": "Bergabung",
-				"actions": "Aksi"
+				"joined": "Bergabung"
 			},
-			"memberRolePending": "{{role}} (Tertunda)",
-			"ariaCancelInvitation": "Batalkan undangan",
 			"ariaRemoveMember": "Hapus anggota",
 			"removeDialogTitle": "Keluarkan anggota tim?",
 			"removeDialogDescription": "{{name}} akan dikeluarkan dari ruang kerja dan kehilangan akses ke proyek serta tugasnya.",
@@ -5393,7 +5256,6 @@
 		}
 	},
 	"publicProject": {
-		"pageTitle": "Tampilan publik",
 		"badge": "Publik",
 		"readOnly": "Hanya baca",
 		"error": {
@@ -5406,12 +5268,10 @@
 		"taskDetail": {
 			"labels": "Label",
 			"externalLinks": "Tautan eksternal",
-			"pullRequestFallback": "Pull request",
 			"issueFallback": "Issue",
 			"prStatusMerged": "Digabung",
 			"prStatusDraft": "Draf",
 			"prStatusOpen": "Terbuka",
-			"dueWithDate": "Tenggat {{date}}",
 			"created": "Dibuat",
 			"dueDateLabel": "Tenggat",
 			"assignees": "Penerima tugas",
@@ -5435,9 +5295,7 @@
 			"backlog": "Backlog",
 			"chip": "{{subject}}: {{value}}",
 			"clearFilters": "Hapus filter",
-			"collapse": "Ciutkan {{name}}",
 			"emptyColumn": "Tidak ada tugas di sini",
-			"expand": "Perluas {{name}}",
 			"filter": "Filter",
 			"filters": "Filter",
 			"layout": "Tata letak",
@@ -5684,7 +5542,7 @@
 				"done": "Selesai",
 				"inProgress": "Sedang berjalan",
 				"inReview": "Sedang ditinjau",
-				"todo": "To do"
+				"todo": "Perlu dikerjakan"
 			},
 			"analytics": {
 				"allProjects": "Semua proyek",
@@ -5746,7 +5604,7 @@
 				"entries": {
 					"apiKey": {
 						"action": "Membuat kunci API",
-						"target": "CI deploy",
+						"target": "Deploy CI",
 						"time": "Baru saja",
 						"type": "Kunci API"
 					},
@@ -5914,7 +5772,7 @@
 				"title": "Rencana peluncuran",
 				"tree": {
 					"launchPlan": "Rencana peluncuran",
-					"pressKit": "Press kit",
+					"pressKit": "Kit pers",
 					"principles": "Prinsip desain",
 					"releaseNotes": "Catatan rilis",
 					"runbook": "Runbook hari peluncuran"
@@ -6191,19 +6049,19 @@
 				"statuses": {
 					"done": {
 						"meta": "14 issue",
-						"name": "Done"
+						"name": "Selesai"
 					},
 					"inProgress": {
 						"meta": "9 issue",
-						"name": "In Progress"
+						"name": "Sedang Berjalan"
 					},
 					"open": {
 						"meta": "14 issue",
-						"name": "Open"
+						"name": "Terbuka"
 					},
 					"review": {
 						"meta": "5 issue",
-						"name": "Code Review"
+						"name": "Tinjauan Kode"
 					}
 				},
 				"statusesTitle": "Status",
@@ -6583,7 +6441,7 @@
 				},
 				"selfHosted": {
 					"detail": "Docker atau Helm",
-					"title": "Self-hosted"
+					"title": "Di-hosting sendiri"
 				},
 				"singleServer": {
 					"detail": "Redis bersifat opsional",
@@ -6644,7 +6502,7 @@
 				"description": "Mulai di Margaya Cloud dalam semenit, atau jalankan di server Anda sendiri hari ini.",
 				"note": "Uji coba cloud 14 hari, tanpa kartu kredit. Gratis dan berlisensi MIT untuk self-host.",
 				"primary": "Mulai",
-				"secondary": "Self-host Margaya",
+				"secondary": "Hosting Margaya sendiri",
 				"title": "Habiskan waktu untuk pekerjaan, bukan untuk alatnya."
 			},
 			"hero": {
@@ -6652,7 +6510,7 @@
 				"titleAccent": "Lewati urusan remeh.",
 				"description": "Margaya menyatukan tugas, siklus, dokumen, dan triase dalam satu ruang kerja yang cepat, dengan asisten AI yang bisa Anda aktifkan untuk menjawab pertanyaan dan membuat perubahan. Ketik tugas, gerakkan maju, lalu kembali fokus pada pekerjaan itu sendiri.",
 				"primaryCta": "Mulai",
-				"secondaryCta": "Self-host"
+				"secondaryCta": "Hosting sendiri"
 			},
 			"insight": {
 				"description": "Buat grafik dari tugas Anda, pantau log audit, dan pulihkan apa pun dari sampah.",
@@ -6729,7 +6587,7 @@
 					},
 					"selfHost": {
 						"description": "Docker, Helm, dan database yang Anda kendalikan",
-						"title": "Self-host"
+						"title": "Hosting sendiri"
 					},
 					"views": {
 						"description": "Papan, daftar, spreadsheet, kalender, dan Gantt",
@@ -6814,7 +6672,7 @@
 				"selfHosted": {
 					"body": "Pengguna dan proyek tanpa batas di server Anda sendiri, dengan semua fitur tersedia.",
 					"cta": "Baca panduan instalasi",
-					"name": "Self-hosted",
+					"name": "Di-hosting sendiri",
 					"price": "$0",
 					"suffix": "selamanya"
 				},
@@ -6905,7 +6763,7 @@
 					"blog": "Blog",
 					"docs": "Dokumentasi",
 					"guides": "Panduan",
-					"press": "Press kit",
+					"press": "Kit pers",
 					"title": "Sumber daya"
 				},
 				"selfHosted": "Dibuat untuk di-host sendiri"
@@ -6970,7 +6828,7 @@
 				"moreFeatures": "Fitur lainnya",
 				"previewLabel": "Pratinjau produk",
 				"readDocs": "Baca dokumentasi",
-				"selfHost": "Self-host Margaya"
+				"selfHost": "Hosting Margaya sendiri"
 			},
 			"docs": {
 				"cta": {
@@ -7036,7 +6894,7 @@
 					"title": "Siap berjalan dalam hitungan menit."
 				},
 				"description": "Satu container aplikasi dan PostgreSQL. Tanpa kunci lisensi, tanpa pembatasan fitur, dan tidak ada yang dikirim kembali kepada kami.",
-				"eyebrow": "Self-host",
+				"eyebrow": "Hosting sendiri",
 				"metaDescription": "Jalankan Margaya di server Anda sendiri dengan Docker Compose atau di Kubernetes dengan Helm. Hanya PostgreSQL, Redis opsional, berlisensi MIT, dengan sampah, log audit, dan ekspor lengkap.",
 				"metaTitle": "Self-host Margaya dengan Docker atau Helm",
 				"sections": {
@@ -7550,7 +7408,7 @@
 			"clear": "Hapus filter",
 			"filterBy": "Filter berdasarkan",
 			"includesAnyOf": "mencakup salah satu dari",
-			"is": "is",
+			"is": "adalah",
 			"isAnyOf": "adalah salah satu dari",
 			"lead": "Pemimpin",
 			"members": "Anggota",
@@ -7734,7 +7592,7 @@
 			"completed30": "Selesai dalam 30 hari",
 			"created": "Dibuat",
 			"dueThisWeek": "Jatuh tempo minggu ini",
-			"notAvailable": "n/a",
+			"notAvailable": "t/a",
 			"overdue": "Terlambat",
 			"subscribed": "Dilanggani"
 		},
@@ -7750,7 +7608,6 @@
 			"cancelled_other": "{{count}} dibatalkan",
 			"priorities": "Pekerjaan terbuka menurut prioritas",
 			"recentActivity": "Aktivitas terbaru",
-			"title": "Beban kerja",
 			"byState": "Menurut status"
 		},
 		"activity": {
@@ -7828,7 +7685,6 @@
 			"all": "Semua",
 			"emptyDescription": "Simpan filter dan tata letak sebagai tampilan lalu bagikan ke tim Anda.",
 			"emptyTitle": "Belum ada tampilan",
-			"favorite": "Favorit",
 			"mine": "Milik saya",
 			"more": "Tampilan",
 			"newView": "Tampilan baru",
@@ -7972,11 +7828,9 @@
 			"inbox": "Kotak masuk",
 			"label": "Lanjutkan di mana Anda tinggalkan",
 			"myWork": "Pekerjaan Anda",
-			"open_other": "{{count}} terbuka",
 			"overdue_other": "{{count}} terlambat",
 			"stickies": "Catatan tempel",
 			"stickiesHint": "Catatan pribadi, hanya untuk Anda",
-			"unread_other": "{{count}} belum dibaca",
 			"openCaption": "terbuka",
 			"unreadCaption": "belum dibaca"
 		}
@@ -8036,7 +7890,6 @@
 			"submit": "Kirim permintaan",
 			"title": "Permintaan baru",
 			"titlePlaceholder": "Apa yang Anda butuhkan?",
-			"titleRequired": "Tambahkan judul",
 			"toast": "Permintaan dikirim",
 			"toastView": "Lihat",
 			"pastedImages": "Gambar yang ditempel",
@@ -8127,7 +7980,7 @@
 		"filters": {
 			"button": "Filter",
 			"clear": "Hapus filter",
-			"me": "Me",
+			"me": "Saya",
 			"priority": "Prioritas",
 			"remove": "Hapus filter",
 			"status": "Status",
@@ -8215,7 +8068,6 @@
 			"pending": "Tugas ini menunggu di intake.",
 			"snoozed": "Tugas ini ditunda di intake hingga {{date}}."
 		},
-		"title": "Intake",
 		"triage": {
 			"backToList": "Kembali ke permintaan",
 			"detailLabel": "Permintaan",
@@ -9178,7 +9030,6 @@
 	},
 	"instanceAdmin": {
 		"admins": {
-			"actions": "Aksi admin",
 			"add": "Tambah admin",
 			"addConfirm": "Tambah admin",
 			"addDescription": "Admin instans dapat mengubah setiap pengaturan di area ini dan membuka ruang kerja mana pun.",
@@ -9296,7 +9147,7 @@
 				"fileStorage": "Penyimpanan file",
 				"notConfigured": "Belum dikonfigurasi",
 				"off": "Nonaktif",
-				"on": "On",
+				"on": "Aktif",
 				"realtime": "Realtime",
 				"realtimeMemory": "Di memori",
 				"realtimeRedis": "Redis ({{mode}})",
@@ -9382,7 +9233,6 @@
 		"save": "Simpan",
 		"saved": "Pengaturan disimpan",
 		"saveError": "Gagal menyimpan pengaturan",
-		"saving": "Menyimpan…",
 		"secret": {
 			"cancel": "Batal",
 			"clear": "Hapus",
@@ -9392,10 +9242,8 @@
 			"saved": "Tersimpan",
 			"unreadable": "Rahasia yang tersimpan tidak dapat dibaca (AUTH_SECRET server berubah). Masukkan lagi."
 		},
-		"sidebarSubtitle": "Admin instans",
-		"sidebarTitle": "Instans",
 		"source": {
-			"default": "Default",
+			"default": "Bawaan",
 			"environment": "Lingkungan: {{variable}}",
 			"lockTooltip": "Hapus {{variable}} dan mulai ulang untuk mengelola ini di sini.",
 			"saved": "Disimpan di sini",
@@ -9446,97 +9294,97 @@
 	},
 	"press": {
 		"boilerplate": {
-			"description": "Ready-made descriptions. Trim them if you need to, but please keep the facts as they are.",
+			"description": "Deskripsi siap pakai. Silakan persingkat jika perlu, tetapi mohon jangan ubah faktanya.",
 			"long": {
-				"label": "About 150 words",
-				"text": "Margaya is an open-source project management platform built for teams that want to plan and ship work without the tool becoming a job of its own. Tasks move through board, list, spreadsheet, calendar and Gantt views of the same data. Cycles, modules, estimates and an intake inbox are there when a team needs planning, and stay out of the way when it doesn't. Teams write docs together next to their tasks, collect requests on public boards, and follow progress with analytics and an audit log. A REST API with an OpenAPI description, webhooks, an MCP server and integrations with GitHub, Gitea, Slack, Discord and others connect Margaya to the rest of a team's tools. The interface is available in 20 languages. Margaya is released under the MIT licence and runs on a single server with Docker, or on Kubernetes with Helm; Margaya Cloud offers the same product as a managed service."
+				"label": "Sekitar 150 kata",
+				"text": "Margaya adalah platform manajemen proyek open source yang dibuat untuk tim yang ingin merencanakan dan menyelesaikan pekerjaan tanpa alatnya menjadi pekerjaan tersendiri. Tugas bergerak melalui tampilan papan, daftar, spreadsheet, kalender, dan Gantt dari data yang sama. Siklus, modul, estimasi, dan kotak masuk intake tersedia saat tim membutuhkan perencanaan, dan tidak menghalangi saat tidak dibutuhkan. Tim menulis dokumen bersama di samping tugas mereka, mengumpulkan permintaan di papan publik, dan memantau kemajuan dengan analitik dan log audit. REST API dengan deskripsi OpenAPI, webhook, server MCP, serta integrasi dengan GitHub, Gitea, Slack, Discord, dan lainnya menghubungkan Margaya dengan alat-alat tim lainnya. Antarmukanya tersedia dalam 20 bahasa. Margaya dirilis di bawah lisensi MIT dan berjalan di satu server dengan Docker, atau di Kubernetes dengan Helm; Margaya Cloud menawarkan produk yang sama sebagai layanan terkelola."
 			},
 			"short": {
-				"label": "About 50 words",
-				"text": "Margaya is an open-source project management platform for teams that want clear ownership without heavy process. Plan work on boards, lists, spreadsheets, calendars and Gantt charts, write docs beside the tasks, and connect your tools through a REST API and MCP. Run it yourself under the MIT licence, or use Margaya Cloud."
+				"label": "Sekitar 50 kata",
+				"text": "Margaya adalah platform manajemen proyek open source untuk tim yang menginginkan kepemilikan tugas yang jelas tanpa proses yang berat. Rencanakan pekerjaan di papan, daftar, spreadsheet, kalender, dan diagram Gantt, tulis dokumen di samping tugas, dan hubungkan alat Anda melalui REST API dan MCP. Jalankan sendiri di bawah lisensi MIT, atau gunakan Margaya Cloud."
 			},
-			"title": "Boilerplate"
+			"title": "Teks standar"
 		},
 		"colours": {
-			"copyHex": "Copy {{hex}}",
-			"description": "Margaya is deliberately quiet: near-black, off-white and a few greys, so the work on screen supplies the colour.",
+			"copyHex": "Salin {{hex}}",
+			"description": "Margaya sengaja dibuat tenang: hampir hitam, putih pucat, dan beberapa abu-abu, sehingga pekerjaan di layarlah yang memberi warna.",
 			"graphite": {
-				"name": "Graphite",
-				"usage": "Text and primary buttons in the light theme"
+				"name": "Grafit",
+				"usage": "Teks dan tombol utama di tema terang"
 			},
 			"ink": {
-				"name": "Ink",
-				"usage": "The logo, and the dark theme's background"
+				"name": "Tinta",
+				"usage": "Logo, dan latar belakang tema gelap"
 			},
 			"mist": {
-				"name": "Mist",
-				"usage": "Panels and sidebars in the light theme"
+				"name": "Kabut",
+				"usage": "Panel dan bilah samping di tema terang"
 			},
 			"mono": {
 				"name": "Geist Mono",
-				"usage": "Code, keyboard shortcuts and task IDs"
+				"usage": "Kode, pintasan keyboard, dan ID tugas"
 			},
 			"paper": {
-				"name": "Paper",
-				"usage": "The light logo, and primary buttons in the dark theme"
+				"name": "Kertas",
+				"usage": "Logo terang, dan tombol utama di tema gelap"
 			},
-			"sample": "Plan the work. Ship the work.",
+			"sample": "Rencanakan pekerjaannya. Selesaikan pekerjaannya.",
 			"sans": {
 				"name": "Geist",
-				"usage": "Interface, headings and the wordmark, set semibold with tight tracking"
+				"usage": "Antarmuka, judul, dan logo teks, dengan ketebalan semibold dan jarak huruf rapat"
 			},
-			"title": "Colours and type",
-			"typeTitle": "Typography",
+			"title": "Warna dan huruf",
+			"typeTitle": "Tipografi",
 			"white": {
-				"name": "White",
-				"usage": "The light theme's background"
+				"name": "Putih",
+				"usage": "Latar belakang tema terang"
 			}
 		},
 		"contact": {
-			"body": "Margaya is built in the open, so the maintainers answer on GitHub. Start a discussion for interviews and questions about the project, or open an issue if something in this kit is missing or out of date.",
-			"discussions": "Start a discussion",
-			"issues": "Open an issue",
-			"title": "Talk to the maintainers"
+			"body": "Margaya dikembangkan secara terbuka, jadi pengelolanya menjawab di GitHub. Mulai diskusi untuk wawancara dan pertanyaan tentang proyek ini, atau buka issue jika ada yang kurang atau sudah usang di kit ini.",
+			"discussions": "Mulai diskusi",
+			"issues": "Buka issue",
+			"title": "Hubungi pengelola"
 		},
-		"copied": "Copied",
-		"copy": "Copy",
-		"copyUrl": "Copy URL",
-		"description": "Margaya's press kit: boilerplate text, logos, product screenshots, brand colours and typography, with direct download links.",
-		"download": "Download",
-		"downloadKit": "Download the press kit",
+		"copied": "Disalin",
+		"copy": "Salin",
+		"copyUrl": "Salin URL",
+		"description": "Kit pers Margaya: teks deskripsi siap pakai, logo, tangkapan layar produk, warna merek, dan tipografi, dengan tautan unduhan langsung.",
+		"download": "Unduh",
+		"downloadKit": "Unduh kit pers",
 		"downloadKitMeta": "ZIP, {{size}}",
-		"eyebrow": "Press kit",
+		"eyebrow": "Kit pers",
 		"facts": {
-			"description": "The essentials, in one place.",
+			"description": "Hal-hal penting, di satu tempat.",
 			"founded": {
-				"label": "Founded",
+				"label": "Didirikan",
 				"value": "2026"
 			},
 			"hosting": {
 				"label": "Hosting",
-				"value": "Self-hosted with Docker or Helm, or managed on Margaya Cloud"
+				"value": "Di-hosting sendiri dengan Docker atau Helm, atau dikelola di Margaya Cloud"
 			},
 			"interfaces": {
-				"label": "Interfaces",
-				"value": "REST API with an OpenAPI description, plus an MCP server"
+				"label": "Antarmuka",
+				"value": "REST API dengan deskripsi OpenAPI, ditambah server MCP"
 			},
 			"languages": {
-				"label": "Languages",
-				"value": "20 interface languages"
+				"label": "Bahasa",
+				"value": "20 bahasa antarmuka"
 			},
 			"licence": {
-				"label": "Licence",
-				"value": "MIT, for every feature"
+				"label": "Lisensi",
+				"value": "MIT, untuk semua fitur"
 			},
 			"source": {
-				"label": "Source code",
+				"label": "Kode sumber",
 				"value": "github.com/manu14357/Margaya"
 			},
 			"stack": {
-				"label": "Stack",
-				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
+				"label": "Teknologi",
+				"value": "TypeScript, Hono, React, dan PostgreSQL, dengan Redis opsional"
 			},
-			"title": "Quick facts",
+			"title": "Fakta singkat",
 			"ai": {
 				"label": "AI",
 				"value": "Opsional dan nonaktif secara default: Tanya AI, mode Bangun, dan agen AI, di Claude atau model yang di-host sendiri"
@@ -9544,212 +9392,218 @@
 		},
 		"guidelines": {
 			"do": {
-				"contrast": "Use the dark wordmark on light backgrounds and the light wordmark on dark ones.",
-				"link": "Link to margaya.app or the GitHub repository when you mention the project.",
-				"name": "Write the name as “Margaya”, with a capital M, in running text.",
-				"space": "Leave clear space around the logo at least as wide as the icon's ears."
+				"contrast": "Gunakan logo teks gelap di latar belakang terang dan logo teks terang di latar belakang gelap.",
+				"link": "Tautkan ke margaya.app atau repositori GitHub saat Anda menyebut proyek ini.",
+				"name": "Tulis namanya sebagai “Margaya”, dengan huruf M kapital, di dalam teks.",
+				"space": "Sisakan ruang kosong di sekitar logo, setidaknya selebar telinga ikon."
 			},
 			"dont": {
-				"distort": "Stretch, rotate, outline or add effects to the logo.",
-				"edit": "Edit screenshots to show features that Margaya doesn't have.",
-				"endorse": "Suggest that the Margaya maintainers endorse a product, service or opinion.",
-				"recolour": "Recolour the logo, or place it on busy images where it loses contrast."
+				"distort": "Meregangkan, memutar, memberi garis tepi, atau menambahkan efek pada logo.",
+				"edit": "Menyunting tangkapan layar untuk menampilkan fitur yang tidak dimiliki Margaya.",
+				"endorse": "Menyiratkan bahwa pengelola Margaya mendukung suatu produk, layanan, atau pendapat.",
+				"recolour": "Mengubah warna logo, atau menaruhnya di atas gambar ramai yang membuatnya kehilangan kontras."
 			},
-			"dontTitle": "Please don't",
-			"doTitle": "Please do",
-			"title": "Using the brand"
+			"dontTitle": "Mohon jangan",
+			"doTitle": "Silakan lakukan",
+			"title": "Menggunakan merek"
 		},
-		"headline": "Margaya is open-source project management you can run on your own server.",
-		"intro": "Short and long descriptions, logos, screenshots, colours and type, ready for articles, videos and talks. Everything on this page may be used for editorial coverage of Margaya.",
+		"headline": "Margaya adalah manajemen proyek open source yang bisa Anda jalankan di server sendiri.",
+		"intro": "Deskripsi singkat dan panjang, logo, tangkapan layar, warna, dan huruf, siap untuk artikel, video, dan presentasi. Semua yang ada di halaman ini boleh digunakan untuk liputan editorial tentang Margaya.",
 		"logos": {
-			"description": "Use the wordmark wherever there is room for it, and the icon where space is tight. Each file has a permanent address you can link to.",
+			"description": "Gunakan logo teks di mana pun ruangnya cukup, dan ikon saat ruang terbatas. Setiap file memiliki alamat permanen yang bisa Anda tautkan.",
 			"iconPng": {
-				"alt": "The Margaya app icon",
+				"alt": "Ikon aplikasi Margaya",
 				"detail": "PNG, 512 × 512",
-				"name": "App icon"
+				"name": "Ikon aplikasi"
 			},
 			"iconSvg": {
-				"alt": "The Margaya icon: a light cat face on a dark rounded square",
-				"detail": "SVG, scales to any size",
-				"name": "Icon"
+				"alt": "Ikon Margaya: wajah kucing berwarna terang di atas persegi gelap bersudut membulat",
+				"detail": "SVG, dapat diskalakan ke ukuran apa pun",
+				"name": "Ikon"
 			},
-			"title": "Logos",
+			"title": "Logo",
 			"wordmarkDark": {
-				"alt": "The Margaya wordmark in near-black on a light background",
-				"detail": "SVG, for light backgrounds",
-				"name": "Wordmark, dark"
+				"alt": "Logo teks Margaya berwarna hampir hitam di atas latar belakang terang",
+				"detail": "SVG, untuk latar belakang terang",
+				"name": "Logo teks, gelap"
 			},
 			"wordmarkLight": {
-				"alt": "The Margaya wordmark in off-white on a dark background",
-				"detail": "SVG, for dark backgrounds",
-				"name": "Wordmark, light"
+				"alt": "Logo teks Margaya berwarna putih pucat di atas latar belakang gelap",
+				"detail": "SVG, untuk latar belakang gelap",
+				"name": "Logo teks, terang"
 			}
 		},
-		"onThisPage": "On this page",
+		"onThisPage": "Di halaman ini",
 		"screenshots": {
-			"close": "Close",
-			"counter": "{{current}} of {{total}}",
-			"dark": "Dark",
-			"description": "Real Margaya screens in the light and dark themes. Select one to see it at full size.",
-			"empty": "A fresh set of screenshots is on its way. Until then, the press kit download has the current set.",
-			"light": "Light",
-			"next": "Next screenshot",
-			"open": "View larger: {{title}}",
-			"previous": "Previous screenshot",
+			"close": "Tutup",
+			"counter": "{{current}} dari {{total}}",
+			"dark": "Gelap",
+			"description": "Layar Margaya asli dalam tema terang dan gelap. Pilih salah satu untuk melihatnya dalam ukuran penuh.",
+			"empty": "Rangkaian tangkapan layar baru sedang disiapkan. Sementara itu, unduhan kit pers berisi rangkaian yang berlaku saat ini.",
+			"light": "Terang",
+			"next": "Tangkapan layar berikutnya",
+			"open": "Lihat lebih besar: {{title}}",
+			"previous": "Tangkapan layar sebelumnya",
 			"size": "{{width}} × {{height}}, PNG",
-			"title": "Product screenshots"
+			"title": "Tangkapan layar produk"
 		},
-		"title": "Press kit",
-		"downloadPng": "Download PNG"
+		"title": "Kit pers",
+		"downloadPng": "Unduh PNG"
 	},
 	"pricing": {
 		"cta": {
-			"description": "Start a Cloud trial with no card, or follow the install guide and run Margaya on your own hardware.",
-			"primary": "Start a free trial",
-			"secondary": "Read the install guide",
-			"title": "Pick the way that fits, and change your mind later."
+			"description": "Mulai uji coba Cloud tanpa kartu, atau ikuti panduan instalasi dan jalankan Margaya di perangkat keras Anda sendiri.",
+			"primary": "Mulai uji coba gratis",
+			"secondary": "Baca panduan instalasi",
+			"title": "Pilih cara yang cocok, dan Anda tetap bisa berubah pikiran nanti."
 		},
-		"description": "The self-hosted build is the whole product under the MIT licence, with no seat limits and no paid tier. Margaya Cloud is the same software, hosted in the EU and kept up to date for you.",
-		"eyebrow": "Pricing",
+		"description": "Versi yang di-hosting sendiri adalah produk lengkap di bawah lisensi MIT, tanpa batas jumlah pengguna dan tanpa paket berbayar. Margaya Cloud adalah perangkat lunak yang sama, di-hosting di UE dan selalu diperbarui untuk Anda.",
+		"eyebrow": "Harga",
 		"faq": {
 			"items": {
 				"cancel": {
-					"answer": "Your plan stays active until the end of the period you've paid for. Export your work as CSV, Excel or JSON before then if you want to keep a copy.",
-					"question": "What happens if I cancel?"
+					"answer": "Paket Anda tetap aktif hingga akhir periode yang sudah Anda bayar. Ekspor pekerjaan Anda sebagai CSV, Excel, atau JSON sebelum itu jika ingin menyimpan salinannya.",
+					"question": "Apa yang terjadi jika saya membatalkan?"
 				},
 				"founding": {
-					"answer": "Workspaces created before paid plans launched keep free access for at least 12 months, and you'll get six months' notice before anything changes.",
-					"question": "I signed up before paid plans existed. What changes?"
+					"answer": "Ruang kerja yang dibuat sebelum paket berbayar diluncurkan tetap mendapat akses gratis setidaknya selama 12 bulan, dan Anda akan diberi tahu enam bulan sebelum ada perubahan.",
+					"question": "Saya mendaftar sebelum ada paket berbayar. Apa yang berubah?"
 				},
 				"payments": {
-					"answer": "Payments go through Creem, which acts as merchant of record and handles sales tax and VAT where they apply. Your card details never reach Margaya.",
-					"question": "Who handles payments and tax?"
+					"answer": "Pembayaran diproses melalui Creem, yang bertindak sebagai merchant of record dan menangani pajak penjualan serta PPN jika berlaku. Detail kartu Anda tidak pernah sampai ke Margaya.",
+					"question": "Siapa yang menangani pembayaran dan pajak?"
 				},
 				"seats": {
-					"answer": "Cloud Team is billed for each member of the workspace. When someone joins or leaves, the seat count on the subscription is updated to match.",
-					"question": "How are Cloud Team members counted?"
+					"answer": "Cloud Tim ditagih untuk setiap anggota ruang kerja. Saat seseorang bergabung atau keluar, jumlah kursi pada langganan diperbarui agar sesuai.",
+					"question": "Bagaimana anggota Cloud Tim dihitung?"
 				},
 				"selfHostHelp": {
-					"answer": "From the maintainers and the community on GitHub, through discussions and issues. Installation, upgrades and configuration are covered in the documentation.",
-					"question": "Where do self-hosters get help?"
+					"answer": "Dari pengelola dan komunitas di GitHub, melalui diskusi dan issue. Instalasi, peningkatan versi, dan konfigurasi dibahas dalam dokumentasi.",
+					"question": "Di mana pengguna yang meng-hosting sendiri bisa mendapat bantuan?"
 				},
 				"selfHostLimits": {
-					"answer": "No. The code you install is the code that runs Margaya Cloud, and all of it is MIT licensed. There are no licence keys, seat limits or paid features to unlock.",
-					"question": "Is the self-hosted version missing anything?"
+					"answer": "Tidak. Kode yang Anda instal adalah kode yang menjalankan Margaya Cloud, dan semuanya berlisensi MIT. Tidak ada kunci lisensi, batas jumlah pengguna, atau fitur berbayar yang perlu dibuka.",
+					"question": "Apakah versi yang di-hosting sendiri kekurangan sesuatu?"
 				},
 				"trial": {
-					"answer": "A new Cloud workspace gets 14 days with everything included, and you don't need a card to start. Before it ends, choose a plan or export your tasks.",
-					"question": "How does the Cloud trial work?"
+					"answer": "Ruang kerja Cloud baru mendapat 14 hari dengan semua fitur, dan Anda tidak perlu kartu untuk memulai. Sebelum masa itu berakhir, pilih paket atau ekspor tugas Anda.",
+					"question": "Bagaimana cara kerja uji coba Cloud?"
 				},
 				"yearly": {
-					"answer": "Yes. A year costs the same as ten months, so both Cloud plans come with two months free when you pay yearly.",
-					"question": "Is yearly billing cheaper?"
+					"answer": "Ya. Satu tahun seharga sepuluh bulan, jadi kedua paket Cloud mendapat gratis dua bulan jika Anda membayar tahunan.",
+					"question": "Apakah penagihan tahunan lebih murah?"
+				},
+				"ai": {
+					"question": "Apakah AI sudah termasuk?",
+					"answer": "Setiap paket memiliki fitur AI: Tanya AI, mode Bangun, agen, dan bantuan menulis. Fitur ini tetap nonaktif sampai admin mengaktifkannya. Penggunaan AI tidak termasuk dalam harga: Anda menambahkan kunci API sendiri di pengaturan AI ruang kerja, dan penyedia AI menagih Anda secara langsung. Instans yang di-hosting sendiri juga dapat memakai model yang Anda jalankan sendiri, melalui Ollama atau vLLM."
 				}
 			},
-			"title": "Questions about pricing"
+			"title": "Pertanyaan tentang harga"
 		},
 		"interval": {
-			"annual": "Yearly",
-			"label": "Billing period",
-			"monthly": "Monthly",
-			"saving": "2 months free"
+			"annual": "Tahunan",
+			"label": "Periode penagihan",
+			"monthly": "Bulanan",
+			"saving": "Gratis 2 bulan"
 		},
-		"metaDescription": "Margaya is free to self-host, forever. Margaya Cloud costs $4 a month for one person or $5 per member a month for teams, with a 14-day free trial.",
+		"metaDescription": "Margaya gratis untuk di-hosting sendiri, selamanya. Margaya Cloud seharga $4 per bulan untuk satu orang atau $5 per anggota per bulan untuk tim, dengan uji coba gratis 14 hari.",
 		"plans": {
 			"personal": {
-				"annualNote": "Works out at {{price}} a month",
-				"annualPeriod": "per year",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month",
-				"monthlyPeriod": "per month",
-				"name": "Cloud Personal",
+				"annualNote": "Setara {{price}} per bulan",
+				"annualPeriod": "per tahun",
+				"cta": "Mulai uji coba 14 hari",
+				"monthlyNote": "Ditagih setiap bulan",
+				"monthlyPeriod": "per bulan",
+				"name": "Cloud Pribadi",
 				"points": {
-					"everything": "Every feature in the self-hosted build",
-					"help": "Support by email",
-					"managed": "Backups and updates handled for you",
-					"one": "One person, unlimited projects and tasks"
+					"everything": "Semua fitur versi yang di-hosting sendiri",
+					"help": "Dukungan melalui email",
+					"managed": "Cadangan dan pembaruan diurus untuk Anda",
+					"one": "Satu orang, proyek dan tugas tanpa batas"
 				},
-				"tagline": "Managed hosting for one person"
+				"tagline": "Hosting terkelola untuk satu orang"
 			},
 			"selfHosted": {
-				"cta": "Read the install guide",
-				"name": "Self-hosted",
-				"note": "MIT licence. No key, no seat limit.",
-				"period": "forever",
+				"cta": "Baca panduan instalasi",
+				"name": "Di-hosting sendiri",
+				"note": "Lisensi MIT. Tanpa kunci, tanpa batas pengguna.",
+				"period": "selamanya",
 				"points": {
-					"data": "Your database, your backups, your rules",
-					"deploy": "Docker on one server, or Helm on Kubernetes",
-					"everything": "Every feature, for as many people as you like",
-					"help": "Community help on GitHub"
+					"data": "Database Anda, cadangan Anda, aturan Anda",
+					"deploy": "Docker di satu server, atau Helm di Kubernetes",
+					"everything": "Semua fitur, untuk berapa pun jumlah orangnya",
+					"help": "Bantuan komunitas di GitHub"
 				},
-				"tagline": "On servers you run"
+				"tagline": "Di server yang Anda kelola"
 			},
 			"team": {
-				"annualNote": "Works out at {{price}} per member a month",
-				"annualPeriod": "per member, per year",
-				"badge": "For teams",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month for each workspace member",
-				"monthlyPeriod": "per member, per month",
-				"name": "Cloud Team",
+				"annualNote": "Setara {{price}} per anggota per bulan",
+				"annualPeriod": "per anggota, per tahun",
+				"badge": "Untuk tim",
+				"cta": "Mulai uji coba 14 hari",
+				"monthlyNote": "Ditagih setiap bulan untuk setiap anggota ruang kerja",
+				"monthlyPeriod": "per anggota, per bulan",
+				"name": "Cloud Tim",
 				"points": {
-					"help": "Priority support by email",
-					"managed": "Backups and updates handled for you",
-					"people": "Everyone in the workspace, unlimited projects",
-					"roles": "Workspace roles and permissions"
+					"help": "Dukungan prioritas melalui email",
+					"managed": "Cadangan dan pembaruan diurus untuk Anda",
+					"people": "Semua orang di ruang kerja, proyek tanpa batas",
+					"roles": "Peran dan izin ruang kerja"
 				},
-				"tagline": "Managed hosting for a whole team"
+				"tagline": "Hosting terkelola untuk seluruh tim"
 			}
 		},
 		"table": {
-			"description": "The features are the same everywhere. What changes is who runs the servers and where you go for help.",
-			"feature": "Feature",
+			"description": "Fiturnya sama di mana pun. Yang berbeda adalah siapa yang menjalankan server dan ke mana Anda mencari bantuan.",
+			"feature": "Fitur",
 			"groups": {
-				"connect": "Connect",
-				"planning": "Planning and insight",
-				"running": "Running it",
-				"work": "The work"
+				"connect": "Koneksi",
+				"planning": "Perencanaan dan wawasan",
+				"running": "Pengoperasian",
+				"work": "Pekerjaan"
 			},
-			"included": "Included",
-			"notIncluded": "Not included",
+			"included": "Termasuk",
+			"notIncluded": "Tidak termasuk",
 			"rows": {
-				"admin": "Instance settings: sign-in providers, email, storage",
-				"analytics": "Analytics and audit log",
-				"api": "REST API, webhooks and MCP",
-				"backups": "Backups",
-				"cycles": "Cycles, modules and estimates",
-				"docs": "Docs written together, next to the tasks",
-				"export": "Export to CSV, Excel or JSON",
-				"hosting": "Where it runs",
-				"intake": "Intake inbox and triage",
-				"integrations": "GitHub, Gitea, Slack, Discord and more",
-				"jira": "Jira import",
-				"people": "People",
-				"projects": "Projects and tasks",
-				"publicBoards": "Public boards with voting",
-				"roles": "Workspace roles and permissions",
-				"support": "Support",
-				"updates": "Updates",
-				"views": "Board, list, spreadsheet, calendar and Gantt views"
+				"admin": "Pengaturan instans: penyedia login, email, penyimpanan",
+				"analytics": "Analitik dan log audit",
+				"api": "REST API, webhook, dan MCP",
+				"backups": "Cadangan",
+				"cycles": "Siklus, modul, dan estimasi",
+				"docs": "Dokumen yang ditulis bersama, di samping tugas",
+				"export": "Ekspor ke CSV, Excel, atau JSON",
+				"hosting": "Tempat berjalan",
+				"intake": "Kotak masuk intake dan triase",
+				"integrations": "GitHub, Gitea, Slack, Discord, dan lainnya",
+				"jira": "Impor dari Jira",
+				"people": "Orang",
+				"projects": "Proyek dan tugas",
+				"publicBoards": "Papan publik dengan voting",
+				"roles": "Peran dan izin ruang kerja",
+				"support": "Dukungan",
+				"updates": "Pembaruan",
+				"views": "Tampilan papan, daftar, spreadsheet, kalender, dan Gantt",
+				"ai": "AI: Tanya AI, mode Bangun, dan agen"
 			},
-			"title": "Compare the plans",
+			"title": "Bandingkan paket",
 			"values": {
-				"automatic": "Automatic",
-				"community": "Community on GitHub",
+				"automatic": "Otomatis",
+				"community": "Komunitas di GitHub",
 				"email": "Email",
-				"eu": "EU data centres",
-				"notNeeded": "Not needed for one",
-				"one": "Just you",
-				"perMember": "Unlimited, billed per member",
-				"priorityEmail": "Priority email",
-				"unlimited": "Unlimited",
-				"yours": "You run them",
-				"yourSchedule": "When you choose",
-				"yourServers": "Your servers"
+				"eu": "Pusat data di UE",
+				"notNeeded": "Tidak diperlukan untuk satu orang",
+				"one": "Hanya Anda",
+				"perMember": "Tanpa batas, ditagih per anggota",
+				"priorityEmail": "Email prioritas",
+				"unlimited": "Tanpa batas",
+				"yours": "Anda yang menjalankannya",
+				"yourSchedule": "Kapan pun Anda pilih",
+				"yourServers": "Server Anda",
+				"ownKey": "Kunci atau model AI Anda sendiri"
 			}
 		},
-		"title": "One product. Two ways to run it.",
-		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+		"title": "Satu produk. Dua cara menjalankannya.",
+		"trialNote": "Paket Cloud dimulai dengan uji coba 14 hari. Tidak perlu kartu untuk memulai."
 	},
 	"templates": {
 		"form": {
@@ -10007,7 +9861,6 @@
 			},
 			"chat": {
 				"planLabel": "Perubahan yang diusulkan",
-				"planning": "Merencanakan perubahan…",
 				"nothing": "Tidak ada yang perlu diubah untuk permintaan ini.",
 				"awaiting": "Menunggu tanggapan",
 				"ready": "Perubahan siap: {{count}}. Konfirmasi untuk melanjutkan.",
@@ -10553,11 +10406,7 @@
 			"retro": "Retrospektif",
 			"my_brief": "Ringkasan saya",
 			"embedding": "Pengindeksan pencarian",
-			"coding_handoff": "Brief untuk agen koding",
-			"build_chat": "Buat di obrolan",
-			"nl_filter": "Filter bahasa alami",
-			"inbox_digest": "Ringkasan kotak masuk",
-			"speech": "Ucapan ke teks"
+			"coding_handoff": "Brief untuk agen koding"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -10698,7 +10547,9 @@
 			"speechFormat": "Format API",
 			"speechFormatHint": "Cara audio dikirim. Untuk Fish Audio, gunakan https://api.fish.audio/v1/asr sebagai endpoint.",
 			"speechFormatOpenai": "Kompatibel dengan OpenAI",
-			"speechModelHint": "Untuk Fish Audio: transcribe-1-pro atau transcribe-1, atau biarkan kosong."
+			"speechModelHint": "Untuk Fish Audio: transcribe-1-pro atau transcribe-1, atau biarkan kosong.",
+			"storePrompts": "Simpan prompt dan jawaban",
+			"storePromptsHint": "Simpan teks permintaan ke agen dan apa yang ditulis model di log setiap run. Mati: run hanya menyimpan hitungan, langkah, dan ringkasannya. Berlaku untuk run yang berakhir mulai sekarang. Riwayat Ask yang disimpan workspace di server punya sakelarnya sendiri."
 		},
 		"workspace": {
 			"navLabel": "AI",
@@ -10776,7 +10627,8 @@
 			"storeConversations": "Simpan riwayat obrolan di server",
 			"storeConversationsHint": "Percakapan setiap orang disimpan di ruang kerja agar dapat dibuka lagi di perangkat mana pun. Nonaktif: percakapan hanya tersimpan di masing-masing peramban.",
 			"allowAutopilot": "Izinkan Pilot otomatis",
-			"allowAutopilotHint": "Mode Bangun boleh menerapkan perubahan tanpa konfirmasi. Setiap perubahan tetap dicatat dan dapat diurungkan."
+			"allowAutopilotHint": "Mode Bangun boleh menerapkan perubahan tanpa konfirmasi. Setiap perubahan tetap dicatat dan dapat diurungkan.",
+			"storesPrompts": "Prompt disimpan"
 		},
 		"agents": {
 			"navLabel": "Agen",
@@ -10980,11 +10832,13 @@
 					"manual": "Dijalankan dari tugas",
 					"schedule": "Terjadwal",
 					"automation": "Otomatisasi",
-					"chat": "Lanjutan"
+					"chat": "Lanjutan",
+					"intake": "Permintaan intake"
 				},
 				"project": "Proyek:",
 				"workedSeconds": "Bekerja {{count}} dtk",
-				"workedMinutes": "Bekerja {{count}} mnt"
+				"workedMinutes": "Bekerja {{count}} mnt",
+				"request": "Permintaan"
 			},
 			"connectors": {
 				"title": "Konektor",
@@ -11125,6 +10979,27 @@
 					"assign": "Penugasan",
 					"schedule": "Jadwal",
 					"automation": "Otomatisasi"
+				}
+			},
+			"intakeTrigger": {
+				"open": "Permintaan intake baru untuk {{name}}",
+				"badge": "Intake",
+				"title": "Permintaan intake: {{name}}",
+				"hint": "Jalankan agen pada setiap permintaan intake baru di proyeknya, misalnya untuk memilahnya. Perubahannya mengikuti aturan persetujuan dan urungkan yang sama dengan run lain.",
+				"enabled": "Jalankan pada permintaan intake baru",
+				"enabledHint": "Hanya di proyek dengan Intake dan AI aktif, dan di dalam proyek agen.",
+				"prompt": "Apa yang harus dilakukannya?",
+				"promptPlaceholder": "Misalnya: sarankan prioritas dan label, dan tunjukkan duplikat.",
+				"promptHint": "Kosongkan untuk memilah: komentar singkat tentang apa yang diminta, seberapa mendesak kelihatannya, dan apa yang kurang.",
+				"runsAs": "Berjalan untuk {{name}}. Menyimpan dengan pemicu aktif menjadikan Anda orang tersebut.",
+				"runsAsYou": "Berjalan untuk Anda begitu Anda mengaktifkannya, dengan paling banyak hak Anda. Pemicu mati jika Anda keluar dari workspace atau kehilangan akses AI atau intake.",
+				"outsideNote": "Permintaan dari luar workspace (papan publik, formulir) tidak pernah mengubah apa pun tanpa persetujuan.",
+				"limitNote": "Paling banyak 30 run intake per jam per agen. Permintaan yang diajukan agen tidak memulai apa pun.",
+				"saved": "Pemicu intake disimpan",
+				"saveError": "Tidak dapat menyimpan pemicu intake. Coba lagi.",
+				"errors": {
+					"forbidden": "Run intake bertindak untuk Anda, jadi Anda perlu akses AI dan izin membaca permintaan intake.",
+					"AGENT_CANT_READ_INTAKE": "Peran agen ini tidak dapat membaca permintaan intake. Beri peran yang bisa."
 				}
 			}
 		},
@@ -11351,7 +11226,6 @@
 			"unmeasured_other": "{{count}} tugas tanpa waktu mulai tercatat tidak dihitung."
 		},
 		"capacity": {
-			"meter": "Pekerjaan yang direncanakan dibanding siklus biasa",
 			"within": "Direncanakan {{percent}}% dari siklus biasa",
 			"over": "Melebihi kapasitas: direncanakan {{percent}}% dari siklus biasa",
 			"noDates": "Atur tanggal siklus untuk memeriksa kapasitasnya.",
@@ -11447,6 +11321,137 @@
 			"emailTitle": "Tambahkan Ringkasan saya ke email ringkasan",
 			"emailDescription": "Email ringkasan juga mencantumkan tugas Anda yang diblokir dan perubahan pada tugas yang Anda ikuti. Memerlukan ringkasan harian atau mingguan.",
 			"emailError": "Tidak dapat menyimpan pengaturan ini."
+		}
+	},
+	"emails": {
+		"otp": {
+			"preview": "Kode verifikasi Margaya Anda",
+			"title": "Kode verifikasi Anda",
+			"subtitle": "Masukkan kode sekali pakai ini untuk menyelesaikan proses masuk.",
+			"verifySubtitle": "Masukkan kode sekali pakai ini untuk memverifikasi alamat email Anda.",
+			"changeSubtitle": "Masukkan kode sekali pakai ini untuk mengonfirmasi alamat ini sebagai alamat email baru akun Margaya Anda.",
+			"code": "adalah kode verifikasi Margaya Anda.",
+			"expiry": "Kode ini berlaku selama {{minutes}} menit.",
+			"ignore": "Jika Anda tidak memintanya, Anda dapat mengabaikan email ini.",
+			"footer": "Email keamanan Margaya"
+		},
+		"magicLink": {
+			"preview": "Masuk ke Margaya",
+			"title": "Tautan masuk aman Anda",
+			"subtitle": "Gunakan tautan ini untuk melanjutkan ke ruang kerja Margaya Anda.",
+			"cta": "Masuk ke Margaya",
+			"expiry": "Demi keamanan Anda, tautan ini hanya berlaku selama 5 menit.",
+			"ignore": "Jika Anda tidak memintanya, Anda dapat mengabaikan email ini.",
+			"footer": "Email keamanan Margaya"
+		},
+		"passwordReset": {
+			"preview": "Reset kata sandi Margaya Anda",
+			"title": "Reset kata sandi Anda",
+			"subtitleWithName": "Hai {{name}}, gunakan tombol di bawah untuk membuat kata sandi baru.",
+			"subtitleDefault": "Gunakan tombol di bawah untuk membuat kata sandi baru.",
+			"cta": "Reset kata sandi",
+			"expiry": "Tautan reset ini berlaku selama 1 jam.",
+			"ignore": "Jika Anda tidak memintanya, tidak akan ada perubahan apa pun.",
+			"footer": "Email keamanan Margaya"
+		},
+		"emailChanged": {
+			"preview": "Alamat email Margaya Anda telah diubah",
+			"title": "Alamat email Anda telah diubah",
+			"body": "Alamat email akun Margaya Anda sekarang {{email}}. Mulai sekarang, tautan masuk, kode, dan notifikasi akan dikirim ke alamat tersebut.",
+			"warning": "Jika Anda tidak melakukan perubahan ini, segera hubungi administrator Margaya Anda.",
+			"footer": "Email keamanan Margaya"
+		},
+		"authSubjects": {
+			"magicLinkSubject": "Tautan masuk Margaya",
+			"otpSubject": "Kode verifikasi Margaya",
+			"verifyEmailSubject": "Verifikasi email Anda untuk Margaya",
+			"passwordResetSubject": "Reset kata sandi Margaya Anda",
+			"changeEmailSubject": "Konfirmasi email baru Anda untuk Margaya",
+			"emailChangedSubject": "Alamat email Margaya Anda telah diubah"
+		},
+		"notification": {
+			"preview": "Anda punya notifikasi Margaya baru",
+			"subtitle": "Sebuah notifikasi cocok dengan preferensi pengiriman Anda.",
+			"footer": "Notifikasi Margaya",
+			"actionLabel": "Buka di Margaya"
+		},
+		"notificationBatch": {
+			"preview": "Pembaruan Margaya terbaru Anda",
+			"title_other": "{{count}} pembaruan baru",
+			"subtitle": "Perubahan pada tugas Anda, dikelompokkan sejak email terakhir.",
+			"by": "oleh",
+			"open": "Buka tugas",
+			"manage": "Kelola pengaturan notifikasi",
+			"footer": "Notifikasi Margaya"
+		},
+		"notificationDigest": {
+			"title": {
+				"daily": "Ringkasan harian Anda",
+				"weekly": "Ringkasan mingguan Anda"
+			},
+			"preview": "Ringkasan Margaya Anda",
+			"subtitle": "Tugas terbuka Anda yang terlambat atau jatuh tempo dalam 7 hari, serta yang baru di kotak masuk Anda.",
+			"dueHeading": "Segera jatuh tempo dan terlambat",
+			"overdue": "Terlambat",
+			"due": "Jatuh tempo",
+			"more_other": "dan {{count}} lainnya",
+			"mentionsHeading_other": "{{count}} sebutan baru",
+			"unread_other": "{{count}} notifikasi belum dibaca di kotak masuk Anda",
+			"openInbox": "Buka kotak masuk",
+			"manage": "Kelola pengaturan notifikasi",
+			"footer": "Anda memilih untuk menerima ringkasan ini.",
+			"blockedHeading": "Terblokir",
+			"waitingOn": "Menunggu {{keys}}",
+			"hiddenBlockers_other": "{{count}} tugas yang tidak dapat Anda lihat",
+			"followingHeading": "Perubahan pada tugas yang Anda ikuti",
+			"changes_other": "{{count}} perubahan"
+		},
+		"batchSubject": {
+			"task_other": "{{count}} pembaruan pada {{title}}",
+			"all_other": "{{count}} pembaruan di Margaya"
+		},
+		"digestSubject": {
+			"daily": "Ringkasan harian Margaya Anda",
+			"weekly": "Ringkasan mingguan Margaya Anda"
+		},
+		"workspaceDeletion": {
+			"fallbackName": "Sebuah ruang kerja",
+			"openWorkspace": "Buka ruang kerja",
+			"scheduledSubject": "{{name}} dijadwalkan untuk dihapus",
+			"scheduledTitle": "{{name}} akan dihapus pada {{date}}",
+			"scheduledTitleNoDate": "{{name}} akan segera dihapus",
+			"scheduledMessage": "Pemilik menjadwalkan penghapusan ruang kerja ini. Hingga {{date}}, ruang kerja ini hanya bisa dibaca: Anda masih bisa membuka dan mengekspor isinya, dan pemilik dapat membatalkan penghapusan. Setelah tanggal itu, semua proyek, tugas, dan halamannya dihapus permanen.",
+			"scheduledMessageNoDate": "Pemilik menjadwalkan penghapusan ruang kerja ini. Hingga saat penghapusan, ruang kerja ini hanya bisa dibaca: Anda masih bisa membuka dan mengekspor isinya, dan pemilik dapat membatalkan penghapusan. Setelah itu, semua proyek, tugas, dan halamannya dihapus permanen.",
+			"cancelledSubject": "{{name}} tidak akan dihapus",
+			"cancelledTitle": "{{name}} kembali",
+			"cancelledMessage": "Pemilik membatalkan penghapusan yang dijadwalkan. Ruang kerja ini tidak lagi hanya-baca, dan kunci API serta webhook-nya berfungsi kembali."
+		},
+		"webhookDisabled": {
+			"subject": "Sebuah webhook Margaya dinonaktifkan",
+			"title": "Webhook dinonaktifkan",
+			"message": "Pengiriman ke {{host}} gagal berulang kali selama lebih dari sehari, jadi Margaya menonaktifkan webhook tersebut. Perbaiki endpoint, lalu aktifkan kembali webhook di pengaturan ruang kerja.",
+			"messageNoHost": "Pengiriman ke endpoint gagal berulang kali selama lebih dari sehari, jadi Margaya menonaktifkan webhook tersebut. Perbaiki endpoint, lalu aktifkan kembali webhook di pengaturan ruang kerja.",
+			"actionLabel": "Buka pengaturan webhook"
+		},
+		"trialReminder": {
+			"endedTitle": "Uji coba {{workspaceName}} telah berakhir",
+			"daysLeftTitle_other": "Sisa {{count}} hari uji coba {{workspaceName}}",
+			"endedSubtitle": "Ruang kerja Anda hanya bisa dibaca sampai Anda memilih paket. Tidak ada yang dihapus, dan data Anda masih ada.",
+			"activeSubtitle": "Pilih paket agar Anda tetap bisa membuat dan mengedit setelah uji coba berakhir.",
+			"cta": "Pilih paket",
+			"selfHost": "Margaya juga gratis selamanya jika Anda meng-host-nya sendiri, dengan semua fitur. Anda bisa mengekspor data kapan saja dan memindahkannya ke server Anda sendiri.",
+			"footer": "Anda menerima email ini karena Anda pemilik ruang kerja ini di Margaya Cloud."
+		},
+		"trialSubjects": {
+			"trialEnding": "Uji coba {{workspaceName}} Anda berakhir dalam 3 hari",
+			"trialExpired": "Uji coba {{workspaceName}} Anda telah berakhir"
+		},
+		"testEmail": {
+			"subject": "Email uji dari {{instanceName}}",
+			"text": "Ini adalah email uji dari {{instanceName}}. Jika Anda bisa membacanya, pengiriman email berfungsi."
+		},
+		"notificationText": {
+			"commentWithoutPreview": "Komentar baru pada {{taskTitle}}"
 		}
 	}
 }

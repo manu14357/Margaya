@@ -10,16 +10,10 @@
 			"markAllRead": "Oznacz wszystko jako przeczytane",
 			"remove": "Usuń",
 			"reset": "Resetuj",
-			"filter": "Filtruj",
-			"clearAllFilters": "Wyczyść wszystkie filtry",
 			"undo": "Cofnij"
 		},
 		"a11y": {
 			"toggleSidebar": "Przełącz pasek boczny"
-		},
-		"sidebar": {
-			"title": "Pasek boczny",
-			"mobileDescription": "Wyświetla mobilny pasek boczny."
 		},
 		"empty": {
 			"loading": "Ładowanie..."
@@ -36,29 +30,12 @@
 			"label": "Nawigacja okruszkowa",
 			"more": "Więcej"
 		},
-		"language": {
-			"english": "Angielski",
-			"german": "Niemiecki",
-			"greek": "Grecki",
-			"macedonian": "Macedoński",
-			"french": "Francuski",
-			"spanish": "Hiszpański",
-			"dutch": "Niderlandzki",
-			"korean": "Koreański",
-			"chinese": "Chiński",
-			"italian": "Włoski"
-		},
 		"people": {
 			"someone": "Ktoś",
 			"unknown": "Nieznany"
 		},
 		"error": {
 			"title": "Coś poszło nie tak",
-			"description": "Strona niespodziewanie się zawiesiła. Odświeżenie powinno pomóc.",
-			"troubleshooting": "Kroki diagnostyczne:",
-			"tryAgain": "Spróbuj ponownie",
-			"viewDeploymentGuide": "Zobacz przewodnik wdrażania",
-			"refreshPage": "Odśwież stronę",
 			"messages": {
 				"cors": "Nie można połączyć się z serwerem. Przyczyną mogą być ustawienia CORS.",
 				"network": "Błąd sieci. Sprawdź połączenie z internetem i spróbuj ponownie.",
@@ -97,7 +74,6 @@
 				"keyLabel": "Klucz:",
 				"keyHint": "Używany w identyfikatorach zadań (np. {{example}}-123)",
 				"createButton": "Utwórz projekt",
-				"successToast": "Projekt został utworzony",
 				"errorToast": "Nie udało się utworzyć projektu",
 				"keyTaken": "Projekt z kluczem {{key}} już istnieje w tym obszarze roboczym",
 				"blankProject": "Pusty projekt",
@@ -132,7 +108,6 @@
 				"successUpdated": "Zadanie zostało zaktualizowane",
 				"createError": "Nie udało się utworzyć zadania",
 				"priority": "Priorytet",
-				"statusFallback": "W trakcie",
 				"startDate": "Data rozpoczęcia",
 				"dueDate": "Termin",
 				"clearStartDate": "Wyczyść datę rozpoczęcia",
@@ -331,7 +306,6 @@
 			"namePlaceholder": "Jan Kowalski",
 			"failedSignUp": "Nie udało się zarejestrować",
 			"accountCreated": "Konto zostało utworzone",
-			"passwordTooShort": "Hasło jest zbyt krótkie",
 			"creatingAccount": "Tworzenie konta...",
 			"createAccount": "Utwórz konto"
 		},
@@ -345,7 +319,6 @@
 			"invitationExpired": "Zaproszenie wygasło",
 			"errorLoadDescription": "Nie udało się wczytać szczegółów zaproszenia. Zaproszenie może być nieprawidłowe lub wygasłe.",
 			"goToSignIn": "Przejdź do logowania",
-			"workspaceLabel": "Obszar roboczy: {{workspaceName}}",
 			"joinWorkspace": "Dołącz do {{workspaceName}}",
 			"inviteBodySignedIn": "<inviter>{{inviterName}}</inviter> zaprosił Cię do dołączenia do swojego obszaru roboczego.",
 			"inviteBodySignedOut": "<inviter>{{inviterName}}</inviter> zaprosił Cię do dołączenia do swojego obszaru roboczego w Margaya.",
@@ -375,7 +348,6 @@
 			"creating": "Tworzenie...",
 			"createWorkspace": "Utwórz obszar roboczy",
 			"workspaceCreatedTitle": "Obszar roboczy utworzony",
-			"redirectingToWorkspace": "Przenoszenie do <name>{{name}}</name>...",
 			"toast": {
 				"workspaceCreated": "Obszar roboczy został utworzony",
 				"createFailed": "Nie udało się utworzyć obszaru roboczego",
@@ -439,8 +411,6 @@
 			"namePlaceholder": "np. Jan Kowalski",
 			"saving": "Zapisywanie...",
 			"continue": "Kontynuuj",
-			"welcome": "Witaj, {{name}}!",
-			"redirecting": "Przenoszenie do pulpitu...",
 			"toast": {
 				"updateSuccess": "Profil został zaktualizowany",
 				"updateFailed": "Nie udało się zaktualizować profilu"
@@ -580,8 +550,7 @@
 			"empty": "Nie znaleziono wyników.",
 			"footer": {
 				"navigate": "Nawiguj",
-				"open": "Otwórz",
-				"close": "Zamknij"
+				"open": "Otwórz"
 			},
 			"goToInbox": "Przejdź do skrzynki odbiorczej",
 			"newView": "Nowy widok",
@@ -608,11 +577,10 @@
 			},
 			"recent": "Ostatnie",
 			"removeScope": "Szukaj wszędzie",
-			"scope": "In"
+			"scope": "W"
 		},
 		"notifications": "Powiadomienia",
 		"sidebar": {
-			"overview": "Przegląd",
 			"projects": "Projekty",
 			"members": "Członkowie",
 			"invitations": "Zaproszenia",
@@ -620,12 +588,9 @@
 			"backToBoard": "Wróć do tablicy",
 			"favorites": "Ulubione",
 			"allTasks": "Wszystkie zadania",
-			"inbox": "Skrzynka odbiorcza",
 			"myWork": "Twoja praca",
 			"home": "Strona główna",
-			"personal": "Osobiste",
 			"stickies": "Karteczki",
-			"analytics": "Analityka",
 			"drafts": "Wersje robocze"
 		},
 		"projectList": {
@@ -653,10 +618,6 @@
 				"page": "Strony"
 			}
 		},
-		"settingsLayout": {
-			"toggleSidebar": "Przełącz pasek boczny",
-			"back": "Wstecz"
-		},
 		"userMenu": {
 			"signedOutSuccess": "Pomyślnie wylogowano",
 			"signOutFailed": "Nie udało się wylogować",
@@ -669,13 +630,11 @@
 		"workspaceSwitcher": {
 			"workspaces": "Obszary robocze",
 			"switching": "Przełączanie...",
-			"addWorkspace": "Dodaj obszar roboczy",
-			"selectWorkspace": "Wybierz obszar roboczy"
+			"addWorkspace": "Dodaj obszar roboczy"
 		},
 		"page": {
 			"projectsTitle": "Projekty",
 			"settingsTitle": "Ustawienia",
-			"backToWorkspace": "Wróć do obszaru roboczego",
 			"settingsWorkspaceTab": "Obszar roboczy",
 			"settingsInstanceTab": "Instancja",
 			"settingsNotFoundBack": "Ustawienia konta",
@@ -705,7 +664,6 @@
 			"items": {
 				"openCommandPalette": "Otwórz paletę poleceń",
 				"globalSearch": "Globalne wyszukiwanie",
-				"toggleSidebar": "Przełącz pasek boczny",
 				"showShortcuts": "Pokaż skróty klawiszowe",
 				"closeModal": "Zamknij okno lub menu",
 				"createTask": "Utwórz zadanie",
@@ -814,18 +772,11 @@
 	},
 	"notifications": {
 		"title": "Powiadomienia",
-		"newCount_one": "{{count}} nowe",
-		"newCount_few": "{{count}} nowe",
-		"newCount_many": "{{count}} nowych",
-		"newCount_other": "{{count}} nowych",
-		"emptyTitle": "Brak powiadomień",
-		"emptySubtitle": "Tutaj zobaczysz aktualizacje i aktywność.",
 		"clearAll": "Wyczyść wszystkie powiadomienia",
 		"clearDialogTitle": "Wyczyścić wszystkie powiadomienia?",
 		"clearDialogDescription": "To trwale usunie wszystkie powiadomienia. Nie można tego cofnąć.",
 		"shortcuts": {
-			"open": "Otwórz powiadomienia",
-			"inbox": "Otwórz skrzynkę odbiorczą"
+			"open": "Otwórz powiadomienia"
 		},
 		"reminderLeadTime": {
 			"minutes_one": "{{count}} minuta",
@@ -992,7 +943,6 @@
 				"fiveDays": "5 dni",
 				"oneDay": "1 dzień",
 				"oneWeek": "1 tydzień",
-				"pickDate": "Wybierz datę",
 				"pickTime": "Wybierz godzinę",
 				"submit": "Odłóż",
 				"threeDays": "3 dni",
@@ -1100,7 +1050,6 @@
 				"inProgress": "W trakcie"
 			},
 			"noDueDate": "Brak terminu",
-			"reorderHandle": "Przestaw projekt",
 			"reorderError": "Nie udało się zmienić kolejności projektów"
 		},
 		"search": {
@@ -1128,7 +1077,6 @@
 			"pageTitle": "Tworzenie obszaru roboczego",
 			"heading": "Utwórz nowy obszar roboczy",
 			"subtitle": "Obszary robocze to współdzielone środowiska, w których zespoły mogą pracować nad projektami, cyklami i zgłoszeniami.",
-			"nameLabel": "Nazwa obszaru roboczego",
 			"namePlaceholder": "Wprowadź nazwę obszaru roboczego",
 			"descriptionLabel": "Opis (opcjonalnie)",
 			"descriptionPlaceholder": "Dodaj opis swojego obszaru roboczego",
@@ -1264,11 +1212,8 @@
 			"columns": {
 				"name": "Nazwa",
 				"role": "Rola",
-				"joined": "Dołączył",
-				"actions": "Działania"
+				"joined": "Dołączył"
 			},
-			"memberRolePending": "{{role}} (oczekuje)",
-			"ariaCancelInvitation": "Anuluj zaproszenie",
 			"ariaInvitationActions": "Działania związane z zaproszeniem",
 			"ariaRemoveMember": "Usuń członka",
 			"removeDialogTitle": "Usunąć członka zespołu?",
@@ -1317,7 +1262,6 @@
 		}
 	},
 	"publicProject": {
-		"pageTitle": "Widok publiczny",
 		"badge": "Publiczny",
 		"readOnly": "Tylko do odczytu",
 		"error": {
@@ -1330,12 +1274,10 @@
 		"taskDetail": {
 			"labels": "Etykiety",
 			"externalLinks": "Linki zewnętrzne",
-			"pullRequestFallback": "Żądanie scalenia",
 			"issueFallback": "Zgłoszenie",
 			"prStatusMerged": "Scalone",
 			"prStatusDraft": "Szkic",
 			"prStatusOpen": "Otwarte",
-			"dueWithDate": "Termin {{date}}",
 			"created": "Utworzono",
 			"dueDateLabel": "Termin",
 			"assignees": "Osoby przypisane",
@@ -1359,9 +1301,7 @@
 			"backlog": "Backlog",
 			"chip": "{{subject}}: {{value}}",
 			"clearFilters": "Wyczyść filtry",
-			"collapse": "Zwiń {{name}}",
 			"emptyColumn": "Brak zadań",
-			"expand": "Rozwiń {{name}}",
 			"filter": "Filtr",
 			"filters": "Filtry",
 			"layout": "Układ",
@@ -1512,11 +1452,6 @@
 		"noPendingDescription": "Gdy ktoś zaprosi Cię do obszaru roboczego, zaproszenie pojawi się tutaj.",
 		"continueToSetup": "Przejdź do konfiguracji",
 		"skipForNow": "Pomiń na razie",
-		"table": {
-			"workspace": "Obszar roboczy",
-			"invitedBy": "Zaproszony przez",
-			"expires": "Wygasa"
-		},
 		"toast": {
 			"acceptError": "Nie udało się zaakceptować zaproszenia",
 			"acceptSuccess": "Zaproszenie zaakceptowane! Witamy w zespole.",
@@ -1876,7 +1811,6 @@
 			"deleteAria": "Usuń kolumnę {{name}}",
 			"nameAria": "Nazwa kolumny {{name}}"
 		},
-		"developer": "Deweloper",
 		"developerPage": {
 			"apiKeysCardDescription": "Twórz klucze API i zarządzaj nimi, aby programowo uzyskiwać dostęp do Margaya.",
 			"apiKeysCardTitle": "Klucze API",
@@ -1916,7 +1850,6 @@
 				"saveError": "Nie udało się zapisać integracji z Discordem",
 				"updateError": "Nie udało się zaktualizować integracji z Discordem"
 			},
-			"update": "Zaktualizuj Discord",
 			"validation": {
 				"webhookInvalid": "Wpisz prawidłowy adres URL webhooka Discord"
 			},
@@ -2225,28 +2158,12 @@
 			"statusPaused": "Wstrzymano",
 			"subtitle": "Wybierz sposób dostarczania powiadomień konta Margaya i używane kanały.",
 			"title": "Powiadomienia",
-			"toastEmailSaved": "Zapisano ustawienia powiadomień e-mail",
-			"toastEmailSaveFailed": "Nie udało się zapisać ustawień e-mail",
-			"toastGotifyDisconnected": "Odłączono Gotify",
-			"toastGotifyDisconnectFailed": "Nie udało się odłączyć Gotify",
-			"toastGotifySaved": "Zapisano ustawienia Gotify",
-			"toastGotifySaveFailed": "Nie udało się zapisać ustawień Gotify",
-			"toastNtfyDisconnected": "Odłączono ntfy",
-			"toastNtfyDisconnectFailed": "Nie udało się odłączyć ntfy",
-			"toastNtfySaved": "Zapisano ustawienia ntfy",
-			"toastNtfySaveFailed": "Nie udało się zapisać ustawień ntfy",
 			"toastPreferencesSaved": "Zapisano preferencje powiadomień",
 			"toastPreferencesSaveFailed": "Nie udało się zapisać preferencji powiadomień",
-			"toastRuleRemoved": "Usunięto regułę powiadomień dla {{workspaceName}}",
 			"toastRuleRemovedGeneric": "Usunięto regułę powiadomień obszaru roboczego",
 			"toastRuleRemoveFailed": "Nie udało się usunąć reguły powiadomień obszaru roboczego",
-			"toastRuleSaved": "Zapisano regułę powiadomień dla {{workspaceName}}",
 			"toastRuleSavedGeneric": "Zapisano regułę powiadomień obszaru roboczego",
 			"toastRuleSaveFailed": "Nie udało się zapisać reguły powiadomień obszaru roboczego",
-			"toastWebhookDisconnected": "Odłączono webhook",
-			"toastWebhookDisconnectFailed": "Nie udało się odłączyć webhooka",
-			"toastWebhookSaved": "Zapisano ustawienia webhooka",
-			"toastWebhookSaveFailed": "Nie udało się zapisać ustawień webhooka",
 			"token": "Token",
 			"topic": "Temat",
 			"webhookChannelHintDisabled": "Najpierw skonfiguruj i włącz webhook globalnie.",
@@ -2303,7 +2220,6 @@
 			"dueDatesDescription": "Wyświetlaj terminy zadań",
 			"firstDayOfWeek": "Pierwszy dzień tygodnia",
 			"firstDayOfWeekDescription": "Wybierz dzień, od którego rozpoczynają się kalendarze i widoki tygodniowe",
-			"gantt": "Wykres Gantta",
 			"labels": "Etykiety",
 			"labelsDescription": "Pokaż etykiety i tagi zadań",
 			"language": "Język",
@@ -2406,21 +2322,6 @@
 			"noProjects": "Brak projektów",
 			"selectProject": "Wybierz projekt"
 		},
-		"projectVisibility": {
-			"copiedToast": "Skopiowano",
-			"copy": "Kopiuj",
-			"pageTitle": "Widoczność projektu",
-			"publicAccess": "Publiczny dostęp",
-			"publicAccessHint": "Pozwól każdemu, kto ma adres URL, wyświetlać ten projekt",
-			"publicUrl": "Publiczny Adres URL",
-			"publicUrlHint": "Udostępnij ten link, jeśli projekt jest publiczny",
-			"sectionSubtitle": "Włącz dostęp publiczny i udostępnij publiczny adres URL.",
-			"sectionTitle": "Widoczność",
-			"subtitle": "Określ, kto może wyświetlać projekt i uzyskać do niego dostęp.",
-			"title": "Widoczność",
-			"toastUpdated": "Widoczność zaktualizowano",
-			"toastUpdateError": "Nie udało się zaktualizować widoczności"
-		},
 		"projectWorkflow": {
 			"automationDescription": "Mapuj zdarzenia integracji na kolumny. Gdy wystąpi zdarzenie, powiązane zadanie zostanie przeniesione do wybranej kolumny.",
 			"automationTitle": "Reguły integracji",
@@ -2481,7 +2382,6 @@
 				"saveError": "Nie udało się zapisać integracji ze Slackiem",
 				"updateError": "Nie udało się zaktualizować integracji ze Slackiem"
 			},
-			"update": "Zaktualizuj Slack",
 			"validation": {
 				"webhookInvalid": "Wpisz prawidłowy adres URL webhooka Slack"
 			},
@@ -2490,9 +2390,7 @@
 			"webhookPlaceholder": "https://hooks.slack.com/services/..."
 		},
 		"tasksImportExport": {
-			"dialogDescription": "Prześlij plik JSON zawierający zadania, aby zaimportować je do tego projektu.",
 			"dialogTitle": "Import zadań",
-			"dropHint": "Przeciągnij i upuść tutaj plik JSON",
 			"expectedFormat": "Oczekiwany format:",
 			"exportError": "Nie udało się wyeksportować zadań",
 			"exporting": "Eksportowanie zadań...",
@@ -2505,7 +2403,6 @@
 			"importTasks": "Importuj zadania",
 			"invalidFormat": "Nieprawidłowy format pliku importu",
 			"noFileDropped": "Nie upuszczono pliku",
-			"notJsonFile": "Prześlij plik JSON",
 			"selectFile": "Wybierz plik",
 			"exportCsv": "CSV (arkusz kalkulacyjny)",
 			"exportJson": "JSON (do ponownego importu)",
@@ -2873,11 +2770,7 @@
 		"workspaceGeneral": {
 			"dangerZone": "Strefa niebezpieczna",
 			"dangerZoneSubtitle": "Nieodwracalne i destrukcyjne działania.",
-			"deleteModalConfirm": "Usuń obszar roboczy",
-			"deleteModalDescription": "Obszar roboczy „{{name}}” i wszystkie jego dane zostaną trwale usunięte. Tej operacji nie można cofnąć.",
-			"deleteModalTitle": "Usunąć obszar roboczy?",
 			"deleteWorkspace": "Usuń obszar roboczy",
-			"deleteWorkspaceDescription": "Trwale usuń ten obszar roboczy",
 			"descriptionHint": "Krótki opis obszaru roboczego",
 			"descriptionLabel": "Opis",
 			"descriptionPlaceholder": "Wpisz opis obszaru roboczego",
@@ -2887,8 +2780,6 @@
 			"pageTitle": "Ustawienia ogólne",
 			"subtitle": "Zarządzaj nazwą i opisem obszaru roboczego.",
 			"title": "Ustawienia ogólne",
-			"toastDeleted": "Obszar roboczy usunięto pomyślnie",
-			"toastDeleteError": "Nie udało się usunąć obszaru roboczego",
 			"toastUpdated": "Obszar roboczy zaktualizowano pomyślnie",
 			"toastUpdateError": "Nie udało się zaktualizować obszaru roboczego",
 			"transferOwnership": {
@@ -3308,7 +3199,6 @@
 				"saveError": "Nie udało się zapisać integracji z Mattermost",
 				"updateError": "Nie udało się zaktualizować integracji z Mattermost"
 			},
-			"update": "Zaktualizuj Mattermost",
 			"validation": {
 				"webhookInvalid": "Podaj prawidłowy URL webhooka Mattermost"
 			},
@@ -3320,13 +3210,11 @@
 			"addButton": "Dodaj",
 			"createError": "Nie udało się utworzyć pola niestandardowego.",
 			"createSuccess": "Utworzono pole niestandardowe.",
-			"creating": "Tworzenie...",
 			"defaultLabel": "Domyślne",
 			"defaultValuePlaceholder": "Wartość domyślna",
 			"deleteButton": "Usuń",
 			"deleteError": "Nie udało się usunąć pola niestandardowego.",
 			"deleteSuccess": "Usunięto pole niestandardowe.",
-			"deleting": "Usuwanie...",
 			"empty": "Nie skonfigurowano jeszcze żadnych pól niestandardowych.",
 			"loading": "Wczytywanie pól niestandardowych...",
 			"namePlaceholder": "Nazwa pola",
@@ -4282,7 +4170,9 @@
 				"agentScheduleDisabled": "Wyłączył(a) harmonogram agenta",
 				"aiConnectorCreated": "Dodał(a) konektor MCP",
 				"aiConnectorUpdated": "Zmienił(a) konektor MCP",
-				"aiConnectorDeleted": "Usunął(-ęła) konektor MCP"
+				"aiConnectorDeleted": "Usunął(-ęła) konektor MCP",
+				"agentIntakeTriggerUpdated": "Zmienił(a) wyzwalacz zgłoszeń agenta",
+				"agentIntakeTriggerDisabled": "Wyłączył(a) wyzwalacz zgłoszeń agenta"
 			},
 			"actor": {
 				"apiKey": "Klucz API",
@@ -4659,7 +4549,6 @@
 				"recurredToScheduled": "Następne powtórzenie zostało utworzone zgodnie z harmonogramem: <task>{{task}}</task>"
 			}
 		},
-		"title": "Zadania",
 		"actions": {
 			"archive": "Archiwizuj",
 			"delete": "Usuń...",
@@ -4671,13 +4560,8 @@
 		},
 		"archive": {
 			"success": "Zarchiwizowano zadań: {{count}}",
-			"archive": "Archiwizuj",
 			"archived": "Zadanie zarchiwizowane",
 			"badge": "Zarchiwizowane",
-			"bulkArchived_few": "Zarchiwizowano {{count}} zadania",
-			"bulkArchived_many": "Zarchiwizowano {{count}} zadań",
-			"bulkArchived_one": "Zarchiwizowano {{count}} zadanie",
-			"bulkArchived_other": "Zarchiwizowane zadania: {{count}}",
 			"error": "Nie udało się zarchiwizować zadania",
 			"restore": "Przywróć",
 			"restored": "Zadanie przywrócone",
@@ -4688,18 +4572,7 @@
 			"unassigned": "Nieprzypisane"
 		},
 		"backlog": {
-			"addFilter": "Dodaj filtr...",
 			"addTask": "Dodaj zadanie",
-			"filter": "Filtruj",
-			"filters": {
-				"assignee": "Osoba przypisana: {{name}}",
-				"due": "Termin: {{date}}",
-				"dueNextWeek": "Termin w przyszłym tygodniu",
-				"dueThisWeek": "Termin w tym tygodniu",
-				"label": "Etykieta: {{name}}",
-				"noDueDate": "Brak terminu",
-				"priority": "Priorytet: {{name}}"
-			},
 			"moveAll": "Przenieś wszystkie",
 			"moveAllConfirm": "Przenieść wszystkie zaplanowane zadania ({{count}}) do „{{column}}”?",
 			"moveAllSuccess": "Przeniesiono {{count}} zadań do „{{column}}”",
@@ -4714,14 +4587,8 @@
 			}
 		},
 		"boardFilters": {
-			"allAssignees": "Wszystkie przypisane osoby",
-			"allDueDates": "Wszystkie terminy",
-			"allLabels": "Wszystkie etykiety",
-			"allPriorities": "Wszystkie priorytety",
-			"allStatuses": "Wszystkie statusy",
 			"filterBy": "Filtruj według",
 			"operators": {
-				"includeAnyOf": "zawiera dowolny z",
 				"isAnyOf": "jest jednym z"
 			},
 			"selectedCount": "Wybrano: {{count}}",
@@ -4732,12 +4599,7 @@
 				"priority": "Priorytet",
 				"status": "Status",
 				"estimate": "Szacunek"
-			},
-			"all": "Wszystkie",
-			"allCustomFieldValues": "Wszystkie wartości",
-			"noCustomFieldValues": "Brak wartości pól niestandardowych",
-			"noValuesUsedYet": "Nie użyto jeszcze żadnych wartości",
-			"unassigned": "Nieprzypisane"
+			}
 		},
 		"boardSearchPlaceholder": "Szukaj zadań...",
 		"bulk": {
@@ -5055,10 +4917,6 @@
 			"emptyAction": "Dodaj zadanie",
 			"emptyTitle": "Brak zadań"
 		},
-		"labels": {
-			"empty": "Brak dostępnych etykiet",
-			"label": "Etykiety"
-		},
 		"listView": {
 			"addTask": "Dodaj zadanie",
 			"archiveAllTooltip": "Archiwizuj wszystkie ukończone zadania",
@@ -5138,7 +4996,6 @@
 			"copyTaskLink": "Kopiuj link do zadania",
 			"labels": "Etykiety",
 			"noDate": "Brak daty",
-			"start": "Początek",
 			"startDate": "Data rozpoczęcia",
 			"title": "Właściwości",
 			"addLabel": "Dodaj etykietę",
@@ -5469,7 +5326,6 @@
 				"project": "Projekt",
 				"status": "Status"
 			},
-			"needsSingleProject": "Grupowanie według statusu wymaga jednego projektu",
 			"none": "Brak",
 			"order": {
 				"assignee": "Osoba przypisana",
@@ -5559,14 +5415,14 @@
 			"noOptions": "Brak opcji",
 			"operators": {
 				"between": "między",
-				"is": "is",
+				"is": "jest",
 				"isEmpty": "jest puste",
 				"isNoneOf": "nie jest żadnym z",
 				"isNot": "nie jest",
 				"isNotEmpty": "nie jest puste",
 				"moreThanAgo": "ponad … temu",
 				"moreThanAhead": "ponad … w przód",
-				"on": "on",
+				"on": "w dniu",
 				"onOrAfter": "w dniu lub po",
 				"onOrBefore": "w dniu lub przed",
 				"withinLast": "w ciągu ostatnich",
@@ -5579,9 +5435,7 @@
 				"completed": "Ukończono",
 				"created": "Utworzono",
 				"createdBy": "Autor",
-				"customFields": "Pola niestandardowe",
 				"cycle": "Cykl",
-				"estimate": "Szacunek",
 				"group": "Grupa",
 				"mentions": "Wzmianki",
 				"module": "Moduł",
@@ -5595,7 +5449,7 @@
 			"values": {
 				"currentCycle": "Bieżący cykl",
 				"false": "Nie",
-				"me": "Me",
+				"me": "Ja",
 				"noAssignee": "Bez osoby przypisanej",
 				"noCreator": "Bez autora",
 				"noCycle": "Bez cyklu",
@@ -5638,8 +5492,6 @@
 			"expandSubTasks": "Pokaż podzadania",
 			"hideColumn": "Ukryj kolumnę",
 			"loadError": "Nie udało się wczytać zadań",
-			"newTask": "Nowe zadanie",
-			"newTaskPlaceholder": "Tytuł zadania, potem Enter",
 			"selectTask": "Wybierz {{key}}",
 			"sortAsc": "Sortuj rosnąco",
 			"sortDesc": "Sortuj malejąco",
@@ -5668,7 +5520,7 @@
 		"timeTracking": {
 			"duration": "Czas trwania",
 			"durationInvalid": "Wpisz czas trwania od 1 minuty do 24 godzin, na przykład 1h 30m.",
-			"durationPlaceholder": "e.g. 1h 30m",
+			"durationPlaceholder": "np. 1h 30m",
 			"empty": "Nie zarejestrowano jeszcze czasu",
 			"entries": "Wpisy czasu",
 			"formerMember": "Były członek",
@@ -5862,7 +5714,7 @@
 				"typed": "Napraw przekierowanie po logowaniu @adam !high #bug"
 			},
 			"labels": {
-				"bug": "bug",
+				"bug": "błąd",
 				"design": "design",
 				"docs": "dokumentacja",
 				"feature": "funkcja"
@@ -5952,7 +5804,7 @@
 				"done": "Gotowe",
 				"inProgress": "W toku",
 				"inReview": "Do przeglądu",
-				"todo": "To do"
+				"todo": "Do zrobienia"
 			},
 			"analytics": {
 				"allProjects": "Wszystkie projekty",
@@ -6459,19 +6311,19 @@
 				"statuses": {
 					"done": {
 						"meta": "14 zgłoszeń",
-						"name": "Done"
+						"name": "Gotowe"
 					},
 					"inProgress": {
 						"meta": "9 zgłoszeń",
-						"name": "In Progress"
+						"name": "W toku"
 					},
 					"open": {
 						"meta": "14 zgłoszeń",
-						"name": "Open"
+						"name": "Otwarte"
 					},
 					"review": {
 						"meta": "5 zgłoszeń",
-						"name": "Code Review"
+						"name": "Przegląd kodu"
 					}
 				},
 				"statusesTitle": "Statusy",
@@ -7869,7 +7721,7 @@
 			"clear": "Wyczyść filtry",
 			"filterBy": "Filtruj według",
 			"includesAnyOf": "zawiera dowolny z",
-			"is": "is",
+			"is": "jest",
 			"isAnyOf": "to dowolny z",
 			"lead": "Lider",
 			"members": "Członkowie",
@@ -8074,7 +7926,7 @@
 			"completed30": "Ukończone w ciągu 30 dni",
 			"created": "Utworzone",
 			"dueThisWeek": "Termin w tym tygodniu",
-			"notAvailable": "n/a",
+			"notAvailable": "b.d.",
 			"overdue": "Po terminie",
 			"subscribed": "Obserwowane"
 		},
@@ -8093,7 +7945,6 @@
 			"cancelled_other": "Anulowano: {{count}}",
 			"priorities": "Otwarta praca według priorytetu",
 			"recentActivity": "Ostatnia aktywność",
-			"title": "Obciążenie",
 			"byState": "Według stanu"
 		},
 		"activity": {
@@ -8174,7 +8025,6 @@
 			"all": "Wszystkie",
 			"emptyDescription": "Zapisuj filtry i układy jako widoki i udostępniaj je zespołowi.",
 			"emptyTitle": "Brak widoków",
-			"favorite": "Ulubione",
 			"mine": "Moje",
 			"more": "Widoki",
 			"newView": "Nowy widok",
@@ -8318,20 +8168,12 @@
 			"inbox": "Skrzynka odbiorcza",
 			"label": "Wróć do pracy",
 			"myWork": "Twoja praca",
-			"open_few": "{{count}} otwarte",
-			"open_many": "{{count}} otwartych",
-			"open_one": "{{count}} otwarte",
-			"open_other": "Otwarte: {{count}}",
 			"overdue_few": "{{count}} po terminie",
 			"overdue_many": "{{count}} po terminie",
 			"overdue_one": "{{count}} po terminie",
 			"overdue_other": "Po terminie: {{count}}",
 			"stickies": "Karteczki",
 			"stickiesHint": "Prywatne notatki, tylko dla Ciebie",
-			"unread_few": "{{count}} nieprzeczytane",
-			"unread_many": "{{count}} nieprzeczytanych",
-			"unread_one": "{{count}} nieprzeczytane",
-			"unread_other": "Nieprzeczytane: {{count}}",
 			"openCaption": "otwarte",
 			"unreadCaption": "nieprzeczytane"
 		}
@@ -8391,7 +8233,6 @@
 			"submit": "Wyślij zgłoszenie",
 			"title": "Nowe zgłoszenie",
 			"titlePlaceholder": "Czego potrzebujesz?",
-			"titleRequired": "Dodaj tytuł",
 			"toast": "Zgłoszenie wysłane",
 			"toastView": "Zobacz",
 			"pastedImages": "Wklejone obrazy",
@@ -8482,7 +8323,7 @@
 		"filters": {
 			"button": "Filtr",
 			"clear": "Wyczyść filtry",
-			"me": "Me",
+			"me": "Ja",
 			"priority": "Priorytet",
 			"remove": "Usuń filtr",
 			"status": "Status",
@@ -8573,7 +8414,6 @@
 			"pending": "To zadanie czeka w zgłoszeniach.",
 			"snoozed": "To zadanie jest odłożone w zgłoszeniach do {{date}}."
 		},
-		"title": "Zgłoszenia",
 		"triage": {
 			"backToList": "Wróć do zgłoszeń",
 			"detailLabel": "Zgłoszenie",
@@ -9557,7 +9397,6 @@
 	},
 	"instanceAdmin": {
 		"admins": {
-			"actions": "Akcje administratora",
 			"add": "Dodaj administratora",
 			"addConfirm": "Dodaj administratora",
 			"addDescription": "Administratorzy instancji mogą zmieniać każde ustawienie w tym obszarze i otwierać dowolny obszar roboczy.",
@@ -9675,7 +9514,7 @@
 				"fileStorage": "Przechowywanie plików",
 				"notConfigured": "Nie skonfigurowano",
 				"off": "Wyłączone",
-				"on": "On",
+				"on": "Włączone",
 				"realtime": "Czas rzeczywisty",
 				"realtimeMemory": "W pamięci",
 				"realtimeRedis": "Redis ({{mode}})",
@@ -9761,7 +9600,6 @@
 		"save": "Zapisz",
 		"saved": "Ustawienia zapisane",
 		"saveError": "Nie udało się zapisać ustawień",
-		"saving": "Zapisywanie…",
 		"secret": {
 			"cancel": "Anuluj",
 			"clear": "Wyczyść",
@@ -9771,8 +9609,6 @@
 			"saved": "Zapisano",
 			"unreadable": "Nie można odczytać zapisanego sekretu (zmienił się AUTH_SECRET serwera). Wpisz go ponownie."
 		},
-		"sidebarSubtitle": "Administrator instancji",
-		"sidebarTitle": "Instancja",
 		"source": {
 			"default": "Domyślne",
 			"environment": "Środowisko: {{variable}}",
@@ -9825,97 +9661,97 @@
 	},
 	"press": {
 		"boilerplate": {
-			"description": "Ready-made descriptions. Trim them if you need to, but please keep the facts as they are.",
+			"description": "Opisy gotowe do użycia. W razie potrzeby możesz je skrócić, ale prosimy nie zmieniać faktów.",
 			"long": {
-				"label": "About 150 words",
-				"text": "Margaya is an open-source project management platform built for teams that want to plan and ship work without the tool becoming a job of its own. Tasks move through board, list, spreadsheet, calendar and Gantt views of the same data. Cycles, modules, estimates and an intake inbox are there when a team needs planning, and stay out of the way when it doesn't. Teams write docs together next to their tasks, collect requests on public boards, and follow progress with analytics and an audit log. A REST API with an OpenAPI description, webhooks, an MCP server and integrations with GitHub, Gitea, Slack, Discord and others connect Margaya to the rest of a team's tools. The interface is available in 20 languages. Margaya is released under the MIT licence and runs on a single server with Docker, or on Kubernetes with Helm; Margaya Cloud offers the same product as a managed service."
+				"label": "Około 150 słów",
+				"text": "Margaya to open source’owa platforma do zarządzania projektami, stworzona dla zespołów, które chcą planować i dostarczać pracę tak, by samo narzędzie nie stało się osobnym zajęciem. Zadania przechodzą przez widoki tablicy, listy, arkusza, kalendarza i Gantta, oparte na tych samych danych. Cykle, moduły, szacunki i skrzynka zgłoszeń są dostępne, gdy zespół potrzebuje planowania, i nie przeszkadzają, gdy go nie potrzebuje. Zespoły wspólnie piszą dokumenty obok swoich zadań, zbierają prośby na tablicach publicznych i śledzą postępy dzięki analityce i dziennikowi audytu. REST API z opisem OpenAPI, webhooki, serwer MCP oraz integracje z GitHubem, Gitea, Slackiem, Discordem i innymi łączą Margaya z resztą narzędzi zespołu. Interfejs jest dostępny w 20 językach. Margaya jest udostępniana na licencji MIT i działa na jednym serwerze z Dockerem albo na Kubernetesie z Helmem; Margaya Cloud oferuje ten sam produkt jako usługę zarządzaną."
 			},
 			"short": {
-				"label": "About 50 words",
-				"text": "Margaya is an open-source project management platform for teams that want clear ownership without heavy process. Plan work on boards, lists, spreadsheets, calendars and Gantt charts, write docs beside the tasks, and connect your tools through a REST API and MCP. Run it yourself under the MIT licence, or use Margaya Cloud."
+				"label": "Około 50 słów",
+				"text": "Margaya to open source’owa platforma do zarządzania projektami dla zespołów, które chcą jasnego podziału odpowiedzialności bez ciężkich procesów. Planuj pracę na tablicach, listach, w arkuszach, kalendarzach i na wykresach Gantta, pisz dokumenty obok zadań i łącz swoje narzędzia przez REST API i MCP. Uruchom ją samodzielnie na licencji MIT albo korzystaj z Margaya Cloud."
 			},
-			"title": "Boilerplate"
+			"title": "Gotowe opisy"
 		},
 		"colours": {
-			"copyHex": "Copy {{hex}}",
-			"description": "Margaya is deliberately quiet: near-black, off-white and a few greys, so the work on screen supplies the colour.",
+			"copyHex": "Kopiuj {{hex}}",
+			"description": "Margaya jest celowo stonowana: niemal czerń, złamana biel i kilka szarości, tak aby kolor wnosiła praca widoczna na ekranie.",
 			"graphite": {
-				"name": "Graphite",
-				"usage": "Text and primary buttons in the light theme"
+				"name": "Grafit",
+				"usage": "Tekst i główne przyciski w jasnym motywie"
 			},
 			"ink": {
-				"name": "Ink",
-				"usage": "The logo, and the dark theme's background"
+				"name": "Atrament",
+				"usage": "Logo oraz tło ciemnego motywu"
 			},
 			"mist": {
-				"name": "Mist",
-				"usage": "Panels and sidebars in the light theme"
+				"name": "Mgła",
+				"usage": "Panele i paski boczne w jasnym motywie"
 			},
 			"mono": {
 				"name": "Geist Mono",
-				"usage": "Code, keyboard shortcuts and task IDs"
+				"usage": "Kod, skróty klawiszowe i identyfikatory zadań"
 			},
 			"paper": {
-				"name": "Paper",
-				"usage": "The light logo, and primary buttons in the dark theme"
+				"name": "Papier",
+				"usage": "Jasne logo oraz główne przyciski w ciemnym motywie"
 			},
-			"sample": "Plan the work. Ship the work.",
+			"sample": "Zaplanuj pracę. Dostarcz pracę.",
 			"sans": {
 				"name": "Geist",
-				"usage": "Interface, headings and the wordmark, set semibold with tight tracking"
+				"usage": "Interfejs, nagłówki i logotyp, w odmianie półgrubej z ciasnym odstępem między literami"
 			},
-			"title": "Colours and type",
-			"typeTitle": "Typography",
+			"title": "Kolory i kroje pisma",
+			"typeTitle": "Typografia",
 			"white": {
-				"name": "White",
-				"usage": "The light theme's background"
+				"name": "Biel",
+				"usage": "Tło jasnego motywu"
 			}
 		},
 		"contact": {
-			"body": "Margaya is built in the open, so the maintainers answer on GitHub. Start a discussion for interviews and questions about the project, or open an issue if something in this kit is missing or out of date.",
-			"discussions": "Start a discussion",
-			"issues": "Open an issue",
-			"title": "Talk to the maintainers"
+			"body": "Margaya powstaje otwarcie, więc opiekunowie odpowiadają na GitHubie. Rozpocznij dyskusję w sprawie wywiadów i pytań o projekt albo zgłoś problem, jeśli czegoś w tych materiałach brakuje lub coś jest nieaktualne.",
+			"discussions": "Rozpocznij dyskusję",
+			"issues": "Zgłoś problem",
+			"title": "Porozmawiaj z opiekunami projektu"
 		},
-		"copied": "Copied",
-		"copy": "Copy",
-		"copyUrl": "Copy URL",
-		"description": "Margaya's press kit: boilerplate text, logos, product screenshots, brand colours and typography, with direct download links.",
-		"download": "Download",
-		"downloadKit": "Download the press kit",
+		"copied": "Skopiowano",
+		"copy": "Kopiuj",
+		"copyUrl": "Kopiuj URL",
+		"description": "Materiały prasowe Margaya: gotowe opisy, logo, zrzuty ekranu produktu, kolory marki i typografia, z bezpośrednimi linkami do pobrania.",
+		"download": "Pobierz",
+		"downloadKit": "Pobierz materiały prasowe",
 		"downloadKitMeta": "ZIP, {{size}}",
-		"eyebrow": "Press kit",
+		"eyebrow": "Materiały prasowe",
 		"facts": {
-			"description": "The essentials, in one place.",
+			"description": "To, co najważniejsze, w jednym miejscu.",
 			"founded": {
-				"label": "Founded",
+				"label": "Rok powstania",
 				"value": "2026"
 			},
 			"hosting": {
 				"label": "Hosting",
-				"value": "Self-hosted with Docker or Helm, or managed on Margaya Cloud"
+				"value": "Własny hosting z Dockerem lub Helmem albo usługa zarządzana w Margaya Cloud"
 			},
 			"interfaces": {
-				"label": "Interfaces",
-				"value": "REST API with an OpenAPI description, plus an MCP server"
+				"label": "Interfejsy",
+				"value": "REST API z opisem OpenAPI oraz serwer MCP"
 			},
 			"languages": {
-				"label": "Languages",
-				"value": "20 interface languages"
+				"label": "Języki",
+				"value": "20 języków interfejsu"
 			},
 			"licence": {
-				"label": "Licence",
-				"value": "MIT, for every feature"
+				"label": "Licencja",
+				"value": "MIT, dla wszystkich funkcji"
 			},
 			"source": {
-				"label": "Source code",
+				"label": "Kod źródłowy",
 				"value": "github.com/manu14357/Margaya"
 			},
 			"stack": {
-				"label": "Stack",
-				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
+				"label": "Stos technologiczny",
+				"value": "TypeScript, Hono, React i PostgreSQL, opcjonalnie Redis"
 			},
-			"title": "Quick facts",
+			"title": "Najważniejsze fakty",
 			"ai": {
 				"label": "AI",
 				"value": "Opcjonalne i domyślnie wyłączone: Zapytaj AI, tryb Buduj i agenci AI, na Claude albo na modelu hostowanym samodzielnie"
@@ -9923,212 +9759,218 @@
 		},
 		"guidelines": {
 			"do": {
-				"contrast": "Use the dark wordmark on light backgrounds and the light wordmark on dark ones.",
-				"link": "Link to margaya.app or the GitHub repository when you mention the project.",
-				"name": "Write the name as “Margaya”, with a capital M, in running text.",
-				"space": "Leave clear space around the logo at least as wide as the icon's ears."
+				"contrast": "Używaj ciemnego logotypu na jasnych tłach, a jasnego na ciemnych.",
+				"link": "Dodawaj link do margaya.app lub repozytorium na GitHubie, gdy wspominasz o projekcie.",
+				"name": "W tekście zapisuj nazwę jako „Margaya”, z wielką literą M.",
+				"space": "Zostaw wokół logo wolną przestrzeń co najmniej tak szeroką jak uszy ikony."
 			},
 			"dont": {
-				"distort": "Stretch, rotate, outline or add effects to the logo.",
-				"edit": "Edit screenshots to show features that Margaya doesn't have.",
-				"endorse": "Suggest that the Margaya maintainers endorse a product, service or opinion.",
-				"recolour": "Recolour the logo, or place it on busy images where it loses contrast."
+				"distort": "Rozciągać, obracać, obrysowywać logo ani dodawać do niego efektów.",
+				"edit": "Edytować zrzutów ekranu tak, by pokazywały funkcje, których Margaya nie ma.",
+				"endorse": "Sugerować, że opiekunowie Margaya popierają jakiś produkt, usługę lub opinię.",
+				"recolour": "Zmieniać kolorów logo ani umieszczać go na zbyt złożonych obrazach, na których traci kontrast."
 			},
-			"dontTitle": "Please don't",
-			"doTitle": "Please do",
-			"title": "Using the brand"
+			"dontTitle": "Prosimy nie",
+			"doTitle": "Prosimy",
+			"title": "Korzystanie z marki"
 		},
-		"headline": "Margaya is open-source project management you can run on your own server.",
-		"intro": "Short and long descriptions, logos, screenshots, colours and type, ready for articles, videos and talks. Everything on this page may be used for editorial coverage of Margaya.",
+		"headline": "Margaya to open source’owe narzędzie do zarządzania projektami, które możesz uruchomić na własnym serwerze.",
+		"intro": "Krótkie i długie opisy, logo, zrzuty ekranu, kolory i kroje pisma, gotowe do artykułów, filmów i wystąpień. Wszystkie materiały z tej strony można wykorzystywać w publikacjach redakcyjnych o Margaya.",
 		"logos": {
-			"description": "Use the wordmark wherever there is room for it, and the icon where space is tight. Each file has a permanent address you can link to.",
+			"description": "Używaj logotypu wszędzie tam, gdzie jest na niego miejsce, a ikony tam, gdzie miejsca jest mało. Każdy plik ma stały adres, do którego możesz linkować.",
 			"iconPng": {
-				"alt": "The Margaya app icon",
+				"alt": "Ikona aplikacji Margaya",
 				"detail": "PNG, 512 × 512",
-				"name": "App icon"
+				"name": "Ikona aplikacji"
 			},
 			"iconSvg": {
-				"alt": "The Margaya icon: a light cat face on a dark rounded square",
-				"detail": "SVG, scales to any size",
-				"name": "Icon"
+				"alt": "Ikona Margaya: jasny koci pyszczek na ciemnym kwadracie z zaokrąglonymi rogami",
+				"detail": "SVG, skaluje się do dowolnego rozmiaru",
+				"name": "Ikona"
 			},
-			"title": "Logos",
+			"title": "Logo",
 			"wordmarkDark": {
-				"alt": "The Margaya wordmark in near-black on a light background",
-				"detail": "SVG, for light backgrounds",
-				"name": "Wordmark, dark"
+				"alt": "Logotyp Margaya w kolorze niemal czarnym na jasnym tle",
+				"detail": "SVG, na jasne tła",
+				"name": "Logotyp, ciemny"
 			},
 			"wordmarkLight": {
-				"alt": "The Margaya wordmark in off-white on a dark background",
-				"detail": "SVG, for dark backgrounds",
-				"name": "Wordmark, light"
+				"alt": "Logotyp Margaya w kolorze złamanej bieli na ciemnym tle",
+				"detail": "SVG, na ciemne tła",
+				"name": "Logotyp, jasny"
 			}
 		},
-		"onThisPage": "On this page",
+		"onThisPage": "Na tej stronie",
 		"screenshots": {
-			"close": "Close",
-			"counter": "{{current}} of {{total}}",
-			"dark": "Dark",
-			"description": "Real Margaya screens in the light and dark themes. Select one to see it at full size.",
-			"empty": "A fresh set of screenshots is on its way. Until then, the press kit download has the current set.",
-			"light": "Light",
-			"next": "Next screenshot",
-			"open": "View larger: {{title}}",
-			"previous": "Previous screenshot",
+			"close": "Zamknij",
+			"counter": "{{current}} z {{total}}",
+			"dark": "Ciemny",
+			"description": "Prawdziwe ekrany Margaya w jasnym i ciemnym motywie. Wybierz jeden, aby zobaczyć go w pełnym rozmiarze.",
+			"empty": "Nowy zestaw zrzutów ekranu jest w drodze. Do tego czasu aktualny zestaw znajdziesz w paczce materiałów prasowych do pobrania.",
+			"light": "Jasny",
+			"next": "Następny zrzut ekranu",
+			"open": "Pokaż większy: {{title}}",
+			"previous": "Poprzedni zrzut ekranu",
 			"size": "{{width}} × {{height}}, PNG",
-			"title": "Product screenshots"
+			"title": "Zrzuty ekranu produktu"
 		},
-		"title": "Press kit",
-		"downloadPng": "Download PNG"
+		"title": "Materiały prasowe",
+		"downloadPng": "Pobierz PNG"
 	},
 	"pricing": {
 		"cta": {
-			"description": "Start a Cloud trial with no card, or follow the install guide and run Margaya on your own hardware.",
-			"primary": "Start a free trial",
-			"secondary": "Read the install guide",
-			"title": "Pick the way that fits, and change your mind later."
+			"description": "Zacznij okres próbny Cloud bez karty albo skorzystaj z przewodnika instalacji i uruchom Margaya na własnym sprzęcie.",
+			"primary": "Zacznij bezpłatny okres próbny",
+			"secondary": "Przeczytaj przewodnik instalacji",
+			"title": "Wybierz to, co Ci pasuje, i zmień zdanie później."
 		},
-		"description": "The self-hosted build is the whole product under the MIT licence, with no seat limits and no paid tier. Margaya Cloud is the same software, hosted in the EU and kept up to date for you.",
-		"eyebrow": "Pricing",
+		"description": "Wersja do własnego hostingu to cały produkt na licencji MIT, bez limitu stanowisk i bez płatnego planu. Margaya Cloud to to samo oprogramowanie, hostowane w UE i aktualizowane za Ciebie.",
+		"eyebrow": "Cennik",
 		"faq": {
 			"items": {
 				"cancel": {
-					"answer": "Your plan stays active until the end of the period you've paid for. Export your work as CSV, Excel or JSON before then if you want to keep a copy.",
-					"question": "What happens if I cancel?"
+					"answer": "Twój plan pozostaje aktywny do końca opłaconego okresu. Jeśli chcesz zachować kopię, wyeksportuj wcześniej swoją pracę do CSV, Excela lub JSON.",
+					"question": "Co się stanie, jeśli zrezygnuję?"
 				},
 				"founding": {
-					"answer": "Workspaces created before paid plans launched keep free access for at least 12 months, and you'll get six months' notice before anything changes.",
-					"question": "I signed up before paid plans existed. What changes?"
+					"answer": "Obszary robocze utworzone przed wprowadzeniem płatnych planów zachowują bezpłatny dostęp przez co najmniej 12 miesięcy, a o każdej zmianie dowiesz się z sześciomiesięcznym wyprzedzeniem.",
+					"question": "Moje konto powstało, zanim pojawiły się płatne plany. Co się zmienia?"
 				},
 				"payments": {
-					"answer": "Payments go through Creem, which acts as merchant of record and handles sales tax and VAT where they apply. Your card details never reach Margaya.",
-					"question": "Who handles payments and tax?"
+					"answer": "Płatności przechodzą przez Creem, który działa jako merchant of record i rozlicza podatek od sprzedaży oraz VAT tam, gdzie mają zastosowanie. Dane Twojej karty nigdy nie trafiają do Margaya.",
+					"question": "Kto obsługuje płatności i podatki?"
 				},
 				"seats": {
-					"answer": "Cloud Team is billed for each member of the workspace. When someone joins or leaves, the seat count on the subscription is updated to match.",
-					"question": "How are Cloud Team members counted?"
+					"answer": "Cloud Zespół jest rozliczany za każdego członka obszaru roboczego. Gdy ktoś dołącza lub odchodzi, liczba stanowisk w subskrypcji jest odpowiednio aktualizowana.",
+					"question": "Jak liczeni są członkowie w Cloud Zespół?"
 				},
 				"selfHostHelp": {
-					"answer": "From the maintainers and the community on GitHub, through discussions and issues. Installation, upgrades and configuration are covered in the documentation.",
-					"question": "Where do self-hosters get help?"
+					"answer": "U opiekunów projektu i społeczności na GitHubie, w dyskusjach i zgłoszeniach. Instalację, aktualizacje i konfigurację opisuje dokumentacja.",
+					"question": "Gdzie szukać pomocy przy własnym hostingu?"
 				},
 				"selfHostLimits": {
-					"answer": "No. The code you install is the code that runs Margaya Cloud, and all of it is MIT licensed. There are no licence keys, seat limits or paid features to unlock.",
-					"question": "Is the self-hosted version missing anything?"
+					"answer": "Nie. Kod, który instalujesz, to ten sam kod, na którym działa Margaya Cloud, i cały jest na licencji MIT. Nie ma kluczy licencyjnych, limitów stanowisk ani płatnych funkcji do odblokowania.",
+					"question": "Czy w wersji do własnego hostingu czegoś brakuje?"
 				},
 				"trial": {
-					"answer": "A new Cloud workspace gets 14 days with everything included, and you don't need a card to start. Before it ends, choose a plan or export your tasks.",
-					"question": "How does the Cloud trial work?"
+					"answer": "Nowy obszar roboczy w Cloud dostaje 14 dni ze wszystkimi funkcjami, a na start nie potrzebujesz karty. Zanim okres się skończy, wybierz plan lub wyeksportuj swoje zadania.",
+					"question": "Jak działa okres próbny Cloud?"
 				},
 				"yearly": {
-					"answer": "Yes. A year costs the same as ten months, so both Cloud plans come with two months free when you pay yearly.",
-					"question": "Is yearly billing cheaper?"
+					"answer": "Tak. Rok kosztuje tyle co dziesięć miesięcy, więc przy płatności rocznej oba plany Cloud mają dwa miesiące gratis.",
+					"question": "Czy rozliczenie roczne jest tańsze?"
+				},
+				"ai": {
+					"question": "Czy AI jest w cenie?",
+					"answer": "Każdy plan ma funkcje AI: Zapytaj AI, tryb Buduj, agentów i pomoc w pisaniu. Pozostają wyłączone, dopóki administrator ich nie włączy. Korzystanie z AI nie jest wliczone w cenę: dodajesz własny klucz API w ustawieniach AI przestrzeni roboczej, a dostawca AI rozlicza się z Tobą bezpośrednio. Instalacje na własnym serwerze mogą też korzystać z własnego modelu przez Ollama lub vLLM."
 				}
 			},
-			"title": "Questions about pricing"
+			"title": "Pytania o cennik"
 		},
 		"interval": {
-			"annual": "Yearly",
-			"label": "Billing period",
-			"monthly": "Monthly",
-			"saving": "2 months free"
+			"annual": "Rocznie",
+			"label": "Okres rozliczeniowy",
+			"monthly": "Miesięcznie",
+			"saving": "2 miesiące gratis"
 		},
-		"metaDescription": "Margaya is free to self-host, forever. Margaya Cloud costs $4 a month for one person or $5 per member a month for teams, with a 14-day free trial.",
+		"metaDescription": "Margaya jest bezpłatna przy własnym hostingu, na zawsze. Margaya Cloud kosztuje 4 $ miesięcznie za jedną osobę lub 5 $ za członka miesięcznie dla zespołów, z 14-dniowym bezpłatnym okresem próbnym.",
 		"plans": {
 			"personal": {
-				"annualNote": "Works out at {{price}} a month",
-				"annualPeriod": "per year",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month",
-				"monthlyPeriod": "per month",
-				"name": "Cloud Personal",
+				"annualNote": "Wychodzi {{price}} miesięcznie",
+				"annualPeriod": "rocznie",
+				"cta": "Zacznij 14-dniowy okres próbny",
+				"monthlyNote": "Rozliczane co miesiąc",
+				"monthlyPeriod": "miesięcznie",
+				"name": "Cloud Osobisty",
 				"points": {
-					"everything": "Every feature in the self-hosted build",
-					"help": "Support by email",
-					"managed": "Backups and updates handled for you",
-					"one": "One person, unlimited projects and tasks"
+					"everything": "Wszystkie funkcje wersji do własnego hostingu",
+					"help": "Wsparcie przez e-mail",
+					"managed": "Kopie zapasowe i aktualizacje po naszej stronie",
+					"one": "Jedna osoba, bez limitu projektów i zadań"
 				},
-				"tagline": "Managed hosting for one person"
+				"tagline": "Zarządzany hosting dla jednej osoby"
 			},
 			"selfHosted": {
-				"cta": "Read the install guide",
-				"name": "Self-hosted",
-				"note": "MIT licence. No key, no seat limit.",
-				"period": "forever",
+				"cta": "Przeczytaj przewodnik instalacji",
+				"name": "Własny hosting",
+				"note": "Licencja MIT. Bez klucza, bez limitu stanowisk.",
+				"period": "na zawsze",
 				"points": {
-					"data": "Your database, your backups, your rules",
-					"deploy": "Docker on one server, or Helm on Kubernetes",
-					"everything": "Every feature, for as many people as you like",
-					"help": "Community help on GitHub"
+					"data": "Twoja baza danych, Twoje kopie zapasowe, Twoje zasady",
+					"deploy": "Docker na jednym serwerze albo Helm na Kubernetesie",
+					"everything": "Wszystkie funkcje, dla dowolnej liczby osób",
+					"help": "Pomoc społeczności na GitHubie"
 				},
-				"tagline": "On servers you run"
+				"tagline": "Na serwerach, którymi zarządzasz"
 			},
 			"team": {
-				"annualNote": "Works out at {{price}} per member a month",
-				"annualPeriod": "per member, per year",
-				"badge": "For teams",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month for each workspace member",
-				"monthlyPeriod": "per member, per month",
-				"name": "Cloud Team",
+				"annualNote": "Wychodzi {{price}} za członka miesięcznie",
+				"annualPeriod": "za członka, rocznie",
+				"badge": "Dla zespołów",
+				"cta": "Zacznij 14-dniowy okres próbny",
+				"monthlyNote": "Rozliczane co miesiąc za każdego członka obszaru roboczego",
+				"monthlyPeriod": "za członka, miesięcznie",
+				"name": "Cloud Zespół",
 				"points": {
-					"help": "Priority support by email",
-					"managed": "Backups and updates handled for you",
-					"people": "Everyone in the workspace, unlimited projects",
-					"roles": "Workspace roles and permissions"
+					"help": "Priorytetowe wsparcie przez e-mail",
+					"managed": "Kopie zapasowe i aktualizacje po naszej stronie",
+					"people": "Wszyscy w obszarze roboczym, bez limitu projektów",
+					"roles": "Role i uprawnienia w obszarze roboczym"
 				},
-				"tagline": "Managed hosting for a whole team"
+				"tagline": "Zarządzany hosting dla całego zespołu"
 			}
 		},
 		"table": {
-			"description": "The features are the same everywhere. What changes is who runs the servers and where you go for help.",
-			"feature": "Feature",
+			"description": "Funkcje są wszędzie takie same. Różni się tylko to, kto utrzymuje serwery i gdzie szukasz pomocy.",
+			"feature": "Funkcja",
 			"groups": {
-				"connect": "Connect",
-				"planning": "Planning and insight",
-				"running": "Running it",
-				"work": "The work"
+				"connect": "Połączenia",
+				"planning": "Planowanie i wgląd",
+				"running": "Utrzymanie",
+				"work": "Praca"
 			},
-			"included": "Included",
-			"notIncluded": "Not included",
+			"included": "W zestawie",
+			"notIncluded": "Brak",
 			"rows": {
-				"admin": "Instance settings: sign-in providers, email, storage",
-				"analytics": "Analytics and audit log",
-				"api": "REST API, webhooks and MCP",
-				"backups": "Backups",
-				"cycles": "Cycles, modules and estimates",
-				"docs": "Docs written together, next to the tasks",
-				"export": "Export to CSV, Excel or JSON",
-				"hosting": "Where it runs",
-				"intake": "Intake inbox and triage",
-				"integrations": "GitHub, Gitea, Slack, Discord and more",
-				"jira": "Jira import",
-				"people": "People",
-				"projects": "Projects and tasks",
-				"publicBoards": "Public boards with voting",
-				"roles": "Workspace roles and permissions",
-				"support": "Support",
-				"updates": "Updates",
-				"views": "Board, list, spreadsheet, calendar and Gantt views"
+				"admin": "Ustawienia instancji: dostawcy logowania, e-mail, przechowywanie plików",
+				"analytics": "Analityka i dziennik audytu",
+				"api": "REST API, webhooki i MCP",
+				"backups": "Kopie zapasowe",
+				"cycles": "Cykle, moduły i szacunki",
+				"docs": "Dokumenty pisane wspólnie, obok zadań",
+				"export": "Eksport do CSV, Excela lub JSON",
+				"hosting": "Gdzie działa",
+				"intake": "Skrzynka zgłoszeń i segregacja",
+				"integrations": "GitHub, Gitea, Slack, Discord i inne",
+				"jira": "Import z Jiry",
+				"people": "Osoby",
+				"projects": "Projekty i zadania",
+				"publicBoards": "Tablice publiczne z głosowaniem",
+				"roles": "Role i uprawnienia w obszarze roboczym",
+				"support": "Wsparcie",
+				"updates": "Aktualizacje",
+				"views": "Widoki tablicy, listy, arkusza, kalendarza i Gantta",
+				"ai": "AI: Zapytaj AI, tryb Buduj i agenci"
 			},
-			"title": "Compare the plans",
+			"title": "Porównaj plany",
 			"values": {
-				"automatic": "Automatic",
-				"community": "Community on GitHub",
-				"email": "Email",
-				"eu": "EU data centres",
-				"notNeeded": "Not needed for one",
-				"one": "Just you",
-				"perMember": "Unlimited, billed per member",
-				"priorityEmail": "Priority email",
-				"unlimited": "Unlimited",
-				"yours": "You run them",
-				"yourSchedule": "When you choose",
-				"yourServers": "Your servers"
+				"automatic": "Automatyczne",
+				"community": "Społeczność na GitHubie",
+				"email": "E-mail",
+				"eu": "Centra danych w UE",
+				"notNeeded": "Niepotrzebne dla jednej osoby",
+				"one": "Tylko Ty",
+				"perMember": "Bez limitu, rozliczane za członka",
+				"priorityEmail": "Priorytetowy e-mail",
+				"unlimited": "Bez limitu",
+				"yours": "Po Twojej stronie",
+				"yourSchedule": "Kiedy zechcesz",
+				"yourServers": "Twoje serwery",
+				"ownKey": "Własny klucz lub model AI"
 			}
 		},
-		"title": "One product. Two ways to run it.",
-		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+		"title": "Jeden produkt. Dwa sposoby uruchomienia.",
+		"trialNote": "Plany Cloud zaczynają się od 14-dniowego okresu próbnego. Na start nie potrzebujesz karty."
 	},
 	"templates": {
 		"form": {
@@ -10452,7 +10294,6 @@
 			},
 			"chat": {
 				"planLabel": "Proponowane zmiany",
-				"planning": "Planowanie zmian…",
 				"nothing": "Dla tej prośby nie ma nic do zmiany.",
 				"awaiting": "Oczekiwanie na odpowiedź",
 				"ready": "Gotowe zmiany: {{count}}. Potwierdź, aby kontynuować.",
@@ -10998,11 +10839,7 @@
 			"retro": "Retrospektywy",
 			"my_brief": "Moje podsumowanie",
 			"embedding": "Indeksowanie wyszukiwania",
-			"coding_handoff": "Briefy dla agentów kodujących",
-			"build_chat": "Tworzenie w czacie",
-			"nl_filter": "Filtry w języku naturalnym",
-			"inbox_digest": "Podsumowania skrzynki odbiorczej",
-			"speech": "Mowa na tekst"
+			"coding_handoff": "Briefy dla agentów kodujących"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -11146,7 +10983,9 @@
 			"speechFormat": "Format API",
 			"speechFormatHint": "Sposób wysyłania dźwięku. Dla Fish Audio użyj https://api.fish.audio/v1/asr jako punktu końcowego.",
 			"speechFormatOpenai": "Zgodny z OpenAI",
-			"speechModelHint": "Dla Fish Audio: transcribe-1-pro lub transcribe-1 albo zostaw puste."
+			"speechModelHint": "Dla Fish Audio: transcribe-1-pro lub transcribe-1 albo zostaw puste.",
+			"storePrompts": "Przechowuj prompty i odpowiedzi",
+			"storePromptsHint": "Przechowuj tekst próśb do agentów i to, co napisał model, w dzienniku każdego uruchomienia. Wyłączone: uruchomienia zachowują tylko liczniki, kroki i podsumowanie. Dotyczy uruchomień kończących się od teraz. Historia Ask, którą przestrzeń robocza trzyma na serwerze, ma własny przełącznik."
 		},
 		"workspace": {
 			"navLabel": "AI",
@@ -11226,7 +11065,8 @@
 			"storeConversations": "Przechowuj historię czatu na serwerze",
 			"storeConversationsHint": "Rozmowy każdej osoby są zapisywane w obszarze roboczym, więc można je otworzyć na dowolnym urządzeniu. Wyłączone: pozostają tylko w danej przeglądarce.",
 			"allowAutopilot": "Zezwól na autopilota",
-			"allowAutopilotHint": "Tryb Buduj może wprowadzać zmiany bez potwierdzenia. Każda zmiana jest nadal rejestrowana i można ją cofnąć."
+			"allowAutopilotHint": "Tryb Buduj może wprowadzać zmiany bez potwierdzenia. Każda zmiana jest nadal rejestrowana i można ją cofnąć.",
+			"storesPrompts": "Prompty przechowywane"
 		},
 		"agents": {
 			"navLabel": "Agenci",
@@ -11430,11 +11270,13 @@
 					"manual": "Uruchomiono z zadania",
 					"schedule": "Zaplanowane",
 					"automation": "Automatyzacja",
-					"chat": "Kontynuacja"
+					"chat": "Kontynuacja",
+					"intake": "Nowe zgłoszenie"
 				},
 				"project": "Projekt:",
 				"workedSeconds": "Pracował {{count}} s",
-				"workedMinutes": "Pracował {{count}} min"
+				"workedMinutes": "Pracował {{count}} min",
+				"request": "Prośba"
 			},
 			"connectors": {
 				"title": "Konektory",
@@ -11575,6 +11417,27 @@
 					"assign": "Przypisanie",
 					"schedule": "Harmonogram",
 					"automation": "Automatyzacja"
+				}
+			},
+			"intakeTrigger": {
+				"open": "Nowe zgłoszenia dla {{name}}",
+				"badge": "Zgłoszenia",
+				"title": "Zgłoszenia: {{name}}",
+				"hint": "Uruchamiaj agenta przy każdym nowym zgłoszeniu w jego projektach, na przykład aby je wstępnie ocenić. Jego zmiany podlegają tym samym zasadom zatwierdzania i cofania co inne uruchomienia.",
+				"enabled": "Uruchamiaj przy nowych zgłoszeniach",
+				"enabledHint": "Tylko w projektach z włączonymi Zgłoszeniami i AI oraz w obrębie projektów agenta.",
+				"prompt": "Co ma robić?",
+				"promptPlaceholder": "Na przykład: zaproponuj priorytet i etykiety oraz wskaż duplikaty.",
+				"promptHint": "Zostaw puste, aby ocenić: krótki komentarz o tym, o co prosi zgłoszenie, jak pilne się wydaje i czego brakuje.",
+				"runsAs": "Działa w imieniu: {{name}}. Zapisanie z włączonym wyzwalaczem sprawia, że to Ty nią zostajesz.",
+				"runsAsYou": "Działa w Twoim imieniu, gdy go włączysz, z co najwyżej Twoimi uprawnieniami. Wyłącza się, gdy opuścisz przestrzeń roboczą lub stracisz dostęp do AI lub zgłoszeń.",
+				"outsideNote": "Zgłoszenia spoza przestrzeni roboczej (publiczne tablice, formularze) nigdy niczego nie zmieniają bez zatwierdzenia.",
+				"limitNote": "Najwyżej 30 uruchomień dla zgłoszeń na godzinę na agenta. Zgłoszenia złożone przez agentów niczego nie uruchamiają.",
+				"saved": "Zapisano wyzwalacz zgłoszeń",
+				"saveError": "Nie udało się zapisać wyzwalacza zgłoszeń. Spróbuj ponownie.",
+				"errors": {
+					"forbidden": "Uruchomienia dla zgłoszeń działają w Twoim imieniu, więc potrzebujesz dostępu do AI i uprawnienia do czytania zgłoszeń.",
+					"AGENT_CANT_READ_INTAKE": "Rola tego agenta nie pozwala czytać zgłoszeń. Nadaj mu rolę, która na to pozwala."
 				}
 			}
 		},
@@ -11813,7 +11676,6 @@
 			"unmeasured_other": "{{count}} zadania nie ma zarejestrowanego rozpoczęcia i zostało pominięte."
 		},
 		"capacity": {
-			"meter": "Zaplanowana praca w porównaniu ze zwykłym cyklem",
 			"within": "Zaplanowano {{percent}}% zwykłego cyklu",
 			"over": "Ponad możliwości: zaplanowano {{percent}}% zwykłego cyklu",
 			"noDates": "Ustaw daty cyklu, aby sprawdzić jego przepustowość.",
@@ -11942,6 +11804,164 @@
 			"emailTitle": "Dodaj Mój przegląd do podsumowania e-mail",
 			"emailDescription": "Podsumowanie pokaże też Twoje zablokowane zadania i zmiany w obserwowanych zadaniach. Wymaga podsumowania dziennego lub tygodniowego.",
 			"emailError": "Nie udało się zapisać tego ustawienia."
+		}
+	},
+	"emails": {
+		"otp": {
+			"preview": "Twój kod weryfikacyjny Margaya",
+			"title": "Twój kod weryfikacyjny",
+			"subtitle": "Wpisz ten jednorazowy kod, aby dokończyć logowanie.",
+			"verifySubtitle": "Wpisz ten jednorazowy kod, aby zweryfikować swój adres e-mail.",
+			"changeSubtitle": "Wpisz ten jednorazowy kod, aby potwierdzić ten adres jako nowy adres e-mail Twojego konta Margaya.",
+			"code": "to Twój kod weryfikacyjny Margaya.",
+			"expiry": "Ten kod wygasa po {{minutes}} minutach.",
+			"ignore": "Jeśli to nie Twoja prośba, możesz zignorować tę wiadomość.",
+			"footer": "Wiadomość dotycząca bezpieczeństwa Margaya"
+		},
+		"magicLink": {
+			"preview": "Zaloguj się do Margaya",
+			"title": "Twój bezpieczny link do logowania",
+			"subtitle": "Użyj tego linku, aby przejść do swojego obszaru roboczego w Margaya.",
+			"cta": "Zaloguj się do Margaya",
+			"expiry": "Ze względów bezpieczeństwa ten link wygasa po 5 minutach.",
+			"ignore": "Jeśli to nie Twoja prośba, możesz zignorować tę wiadomość.",
+			"footer": "Wiadomość dotycząca bezpieczeństwa Margaya"
+		},
+		"passwordReset": {
+			"preview": "Zresetuj hasło do Margaya",
+			"title": "Zresetuj hasło",
+			"subtitleWithName": "Cześć {{name}}, użyj przycisku poniżej, aby ustawić nowe hasło.",
+			"subtitleDefault": "Użyj przycisku poniżej, aby ustawić nowe hasło.",
+			"cta": "Resetuj hasło",
+			"expiry": "Ten link do resetowania hasła wygasa po 1 godzinie.",
+			"ignore": "Jeśli to nie Twoja prośba, nic nie zostanie zmienione.",
+			"footer": "Wiadomość dotycząca bezpieczeństwa Margaya"
+		},
+		"emailChanged": {
+			"preview": "Adres e-mail Twojego konta Margaya został zmieniony",
+			"title": "Twój adres e-mail został zmieniony",
+			"body": "Adres e-mail Twojego konta Margaya to teraz {{email}}. Od tej chwili linki do logowania, kody i powiadomienia będą trafiać na ten adres.",
+			"warning": "Jeśli ta zmiana nie pochodzi od Ciebie, natychmiast skontaktuj się z administratorem Margaya.",
+			"footer": "Wiadomość dotycząca bezpieczeństwa Margaya"
+		},
+		"authSubjects": {
+			"magicLinkSubject": "Link do logowania w Margaya",
+			"otpSubject": "Kod weryfikacyjny Margaya",
+			"verifyEmailSubject": "Zweryfikuj swój adres e-mail w Margaya",
+			"passwordResetSubject": "Zresetuj hasło do Margaya",
+			"changeEmailSubject": "Potwierdź nowy adres e-mail w Margaya",
+			"emailChangedSubject": "Adres e-mail Twojego konta Margaya został zmieniony"
+		},
+		"notification": {
+			"preview": "Masz nowe powiadomienie w aplikacji Margaya",
+			"subtitle": "Powiadomienie pasuje do Twoich preferencji dostarczania.",
+			"footer": "Powiadomienie z aplikacji Margaya",
+			"actionLabel": "Otwórz w aplikacji Margaya"
+		},
+		"notificationBatch": {
+			"preview": "Twoje ostatnie aktualizacje w aplikacji Margaya",
+			"title_one": "{{count}} nowa aktualizacja",
+			"title_few": "{{count}} nowe aktualizacje",
+			"title_many": "{{count}} nowych aktualizacji",
+			"title_other": "{{count}} nowej aktualizacji",
+			"subtitle": "Zmiany w Twoich zadaniach zebrane od ostatniego e-maila.",
+			"by": "autor:",
+			"open": "Otwórz zadanie",
+			"manage": "Zarządzaj ustawieniami powiadomień",
+			"footer": "Powiadomienie z aplikacji Margaya"
+		},
+		"notificationDigest": {
+			"title": {
+				"daily": "Twoje codzienne podsumowanie",
+				"weekly": "Twoje cotygodniowe podsumowanie"
+			},
+			"preview": "Twoje podsumowanie z aplikacji Margaya",
+			"subtitle": "Twoje otwarte zadania po terminie lub z terminem w ciągu 7 dni oraz nowości w skrzynce odbiorczej.",
+			"dueHeading": "Bliski termin i po terminie",
+			"overdue": "Po terminie",
+			"due": "Termin",
+			"more_one": "i jeszcze {{count}}",
+			"more_few": "i jeszcze {{count}}",
+			"more_many": "i jeszcze {{count}}",
+			"more_other": "i jeszcze {{count}}",
+			"mentionsHeading_one": "{{count}} nowa wzmianka",
+			"mentionsHeading_few": "{{count}} nowe wzmianki",
+			"mentionsHeading_many": "{{count}} nowych wzmianek",
+			"mentionsHeading_other": "{{count}} nowej wzmianki",
+			"unread_one": "{{count}} nieprzeczytane powiadomienie w skrzynce odbiorczej",
+			"unread_few": "{{count}} nieprzeczytane powiadomienia w skrzynce odbiorczej",
+			"unread_many": "{{count}} nieprzeczytanych powiadomień w skrzynce odbiorczej",
+			"unread_other": "{{count}} nieprzeczytanego powiadomienia w skrzynce odbiorczej",
+			"openInbox": "Otwórz skrzynkę",
+			"manage": "Zarządzaj ustawieniami powiadomień",
+			"footer": "Otrzymujesz to podsumowanie zgodnie ze swoimi ustawieniami.",
+			"blockedHeading": "Zablokowane",
+			"waitingOn": "Czeka na {{keys}}",
+			"hiddenBlockers_one": "{{count}} zadanie, którego nie widzisz",
+			"hiddenBlockers_few": "{{count}} zadania, których nie widzisz",
+			"hiddenBlockers_many": "{{count}} zadań, których nie widzisz",
+			"hiddenBlockers_other": "{{count}} zadania, których nie widzisz",
+			"followingHeading": "Zmiany w obserwowanych zadaniach",
+			"changes_one": "{{count}} zmiana",
+			"changes_few": "{{count}} zmiany",
+			"changes_many": "{{count}} zmian",
+			"changes_other": "{{count}} zmiany"
+		},
+		"batchSubject": {
+			"task_one": "{{count}} aktualizacja w zadaniu {{title}}",
+			"task_few": "{{count}} aktualizacje w zadaniu {{title}}",
+			"task_many": "{{count}} aktualizacji w zadaniu {{title}}",
+			"task_other": "{{count}} aktualizacji w zadaniu {{title}}",
+			"all_one": "{{count}} aktualizacja w aplikacji Margaya",
+			"all_few": "{{count}} aktualizacje w aplikacji Margaya",
+			"all_many": "{{count}} aktualizacji w aplikacji Margaya",
+			"all_other": "{{count}} aktualizacji w aplikacji Margaya"
+		},
+		"digestSubject": {
+			"daily": "Twoje codzienne podsumowanie z aplikacji Margaya",
+			"weekly": "Twoje cotygodniowe podsumowanie z aplikacji Margaya"
+		},
+		"workspaceDeletion": {
+			"fallbackName": "Obszar roboczy",
+			"openWorkspace": "Otwórz obszar roboczy",
+			"scheduledSubject": "{{name}}: zaplanowano usunięcie",
+			"scheduledTitle": "{{name}} zostanie usunięty {{date}}",
+			"scheduledTitleNoDate": "{{name}} wkrótce zostanie usunięty",
+			"scheduledMessage": "Właściciel zaplanował usunięcie tego obszaru roboczego. Do {{date}} jest on tylko do odczytu: nadal możesz otwierać i eksportować jego zawartość, a właściciel może anulować usunięcie. Po tej dacie jego projekty, zadania i strony zostaną trwale usunięte.",
+			"scheduledMessageNoDate": "Właściciel zaplanował usunięcie tego obszaru roboczego. Do czasu usunięcia jest on tylko do odczytu: nadal możesz otwierać i eksportować jego zawartość, a właściciel może anulować usunięcie. Potem jego projekty, zadania i strony zostaną trwale usunięte.",
+			"cancelledSubject": "{{name}} nie zostanie usunięty",
+			"cancelledTitle": "{{name}} znów działa",
+			"cancelledMessage": "Właściciel anulował zaplanowane usunięcie. Obszar roboczy nie jest już tylko do odczytu, a jego klucze API i webhooki znów działają."
+		},
+		"webhookDisabled": {
+			"subject": "Webhook w aplikacji Margaya został wyłączony",
+			"title": "Webhook wyłączony",
+			"message": "Dostarczanie do {{host}} wielokrotnie kończyło się błędem przez ponad dobę, więc Margaya wyłączyła webhook. Popraw punkt końcowy, a następnie włącz webhook ponownie w ustawieniach obszaru roboczego.",
+			"messageNoHost": "Dostarczanie do punktu końcowego wielokrotnie kończyło się błędem przez ponad dobę, więc Margaya wyłączyła webhook. Popraw punkt końcowy, a następnie włącz webhook ponownie w ustawieniach obszaru roboczego.",
+			"actionLabel": "Otwórz ustawienia webhooka"
+		},
+		"trialReminder": {
+			"endedTitle": "Okres próbny obszaru roboczego {{workspaceName}} dobiegł końca",
+			"daysLeftTitle_one": "Do końca okresu próbnego obszaru roboczego {{workspaceName}} został {{count}} dzień",
+			"daysLeftTitle_few": "Do końca okresu próbnego obszaru roboczego {{workspaceName}} zostały {{count}} dni",
+			"daysLeftTitle_many": "Do końca okresu próbnego obszaru roboczego {{workspaceName}} zostało {{count}} dni",
+			"daysLeftTitle_other": "Do końca okresu próbnego obszaru roboczego {{workspaceName}} zostało {{count}} dnia",
+			"endedSubtitle": "Twój obszar roboczy jest tylko do odczytu, dopóki nie wybierzesz planu. Nic nie zostało usunięte, a Twoje dane nadal są na miejscu.",
+			"activeSubtitle": "Wybierz plan, aby po zakończeniu okresu próbnego nadal tworzyć i edytować.",
+			"cta": "Wybierz plan",
+			"selfHost": "Margaya jest też bezpłatna na zawsze, jeśli hostujesz ją samodzielnie, ze wszystkimi funkcjami. W każdej chwili możesz wyeksportować swoje dane i przenieść je na własny serwer.",
+			"footer": "Otrzymujesz tę wiadomość, ponieważ jesteś właścicielem tego obszaru roboczego w Margaya Cloud."
+		},
+		"trialSubjects": {
+			"trialEnding": "Okres próbny obszaru roboczego {{workspaceName}} kończy się za 3 dni",
+			"trialExpired": "Okres próbny obszaru roboczego {{workspaceName}} dobiegł końca"
+		},
+		"testEmail": {
+			"subject": "Testowy e-mail z instancji {{instanceName}}",
+			"text": "To jest testowy e-mail wysłany przez instancję {{instanceName}}. Jeśli możesz go przeczytać, wysyłanie e-maili działa."
+		},
+		"notificationText": {
+			"commentWithoutPreview": "Nowy komentarz w {{taskTitle}}"
 		}
 	}
 }

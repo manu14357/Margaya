@@ -10,16 +10,10 @@
 			"markAllRead": "सभी पढ़ा हुआ करें",
 			"remove": "निकालें",
 			"reset": "रीसेट करें",
-			"filter": "फ़िल्टर",
-			"clearAllFilters": "सभी फ़िल्टर साफ़ करें",
 			"undo": "पूर्ववत करें"
 		},
 		"a11y": {
 			"toggleSidebar": "साइडबार टॉगल करें"
-		},
-		"sidebar": {
-			"title": "साइडबार",
-			"mobileDescription": "मोबाइल साइडबार दिखाता है।"
 		},
 		"empty": {
 			"loading": "लोड हो रहा है..."
@@ -36,29 +30,12 @@
 			"label": "ब्रेडक्रंब",
 			"more": "और"
 		},
-		"language": {
-			"english": "अंग्रेज़ी",
-			"german": "जर्मन",
-			"greek": "ग्रीक",
-			"macedonian": "मैसेडोनियन",
-			"french": "फ़्रेंच",
-			"spanish": "स्पेनिश",
-			"dutch": "डच",
-			"korean": "कोरियन",
-			"chinese": "चीनी",
-			"italian": "इतालवी"
-		},
 		"people": {
 			"someone": "कोई",
 			"unknown": "अज्ञात"
 		},
 		"error": {
 			"title": "कुछ गलत हो गया",
-			"troubleshooting": "समस्या निवारण कदम:",
-			"tryAgain": "फिर कोशिश करें",
-			"viewDeploymentGuide": "डिप्लॉयमेंट गाइड देखें",
-			"refreshPage": "पेज रीफ़्रेश करें",
-			"description": "पेज अप्रत्याशित रूप से क्रैश हो गया। रीफ़्रेश करने से आमतौर पर यह ठीक हो जाता है।",
 			"messages": {
 				"auth": "प्रमाणीकरण विफल। कृपया फिर से साइन इन करें।",
 				"cors": "सर्वर से कनेक्ट नहीं हो सका। यह CORS कॉन्फ़िगरेशन से जुड़ी समस्या के कारण हो सकता है।",
@@ -97,7 +74,6 @@
 				"keyLabel": "कुंजी:",
 				"keyHint": "टिकट ID के लिए उपयोग (जैसे, {{example}}-123)",
 				"createButton": "प्रोजेक्ट बनाएँ",
-				"successToast": "प्रोजेक्ट सफलतापूर्वक बनाया गया",
 				"errorToast": "प्रोजेक्ट बनाने में विफल",
 				"keyTaken": "इस वर्कस्पेस में {{key}} कुंजी वाला एक प्रोजेक्ट पहले से मौजूद है",
 				"blankProject": "खाली प्रोजेक्ट",
@@ -132,7 +108,6 @@
 				"successUpdated": "कार्य सफलतापूर्वक अपडेट किया गया",
 				"createError": "कार्य बनाने में विफल",
 				"priority": "प्राथमिकता",
-				"statusFallback": "प्रगति में",
 				"startDate": "शुरू की तारीख",
 				"dueDate": "नियत तारीख",
 				"clearStartDate": "शुरू की तारीख साफ़ करें",
@@ -331,7 +306,6 @@
 			"namePlaceholder": "राहुल शर्मा",
 			"failedSignUp": "साइन अप विफल",
 			"accountCreated": "खाता सफलतापूर्वक बनाया गया",
-			"passwordTooShort": "पासवर्ड बहुत छोटा है",
 			"creatingAccount": "खाता बन रहा है...",
 			"createAccount": "खाता बनाएँ"
 		},
@@ -345,7 +319,6 @@
 			"invitationExpired": "निमंत्रण की अवधि समाप्त हो गई",
 			"errorLoadDescription": "निमंत्रण विवरण लोड करने में विफल। निमंत्रण अमान्य या समाप्त हो सकता है।",
 			"goToSignIn": "साइन इन पर जाएँ",
-			"workspaceLabel": "वर्कस्पेस: {{workspaceName}}",
 			"joinWorkspace": "{{workspaceName}} में शामिल हों",
 			"inviteBodySignedIn": "<inviter>{{inviterName}}</inviter> ने आपको अपने वर्कस्पेस में शामिल होने का निमंत्रण दिया है।",
 			"inviteBodySignedOut": "<inviter>{{inviterName}}</inviter> ने आपको Margaya पर अपने वर्कस्पेस में शामिल होने का निमंत्रण दिया है।",
@@ -375,7 +348,6 @@
 			"creating": "बना रहे हैं...",
 			"createWorkspace": "वर्कस्पेस बनाएँ",
 			"workspaceCreatedTitle": "वर्कस्पेस बनाया गया",
-			"redirectingToWorkspace": "आपको <name>{{name}}</name> पर ले जा रहे हैं...",
 			"toast": {
 				"workspaceCreated": "वर्कस्पेस सफलतापूर्वक बनाया गया",
 				"createFailed": "वर्कस्पेस बनाने में विफल",
@@ -439,8 +411,6 @@
 			"namePlaceholder": "जैसे राहुल शर्मा",
 			"saving": "सहेज रहे हैं...",
 			"continue": "जारी रखें",
-			"welcome": "स्वागत है, {{name}}!",
-			"redirecting": "आपको अपने डैशबोर्ड पर ले जा रहे हैं...",
 			"toast": {
 				"updateSuccess": "प्रोफ़ाइल सफलतापूर्वक अपडेट की गई",
 				"updateFailed": "प्रोफ़ाइल अपडेट करने में विफल"
@@ -541,7 +511,6 @@
 	},
 	"settings": {
 		"account": "खाता",
-		"developer": "डेवलपर",
 		"information": "जानकारी",
 		"notifications": "सूचनाएँ",
 		"preferences": "प्राथमिकताएँ",
@@ -667,23 +636,7 @@
 			"noProjectsInWorkspace": "इस वर्कस्पेस के लिए अभी तक कोई प्रोजेक्ट उपलब्ध नहीं।",
 			"createRule": "नियम बनाएँ",
 			"removeRule": "नियम हटाएँ",
-			"toastEmailSaved": "ईमेल सूचना सेटिंग सहेजी गई",
-			"toastEmailSaveFailed": "ईमेल सेटिंग सहेजने में विफल",
-			"toastNtfySaved": "ntfy सेटिंग सहेजी गई",
-			"toastNtfySaveFailed": "ntfy सेटिंग सहेजने में विफल",
-			"toastNtfyDisconnected": "ntfy डिस्कनेक्ट किया गया",
-			"toastNtfyDisconnectFailed": "ntfy डिस्कनेक्ट करने में विफल",
-			"toastGotifySaved": "Gotify सेटिंग सहेजी गई",
-			"toastGotifySaveFailed": "Gotify सेटिंग सहेजने में विफल",
-			"toastGotifyDisconnected": "Gotify डिस्कनेक्ट किया गया",
-			"toastGotifyDisconnectFailed": "Gotify डिस्कनेक्ट करने में विफल",
-			"toastWebhookSaved": "वेबहुक सेटिंग सहेजी गई",
-			"toastWebhookSaveFailed": "वेबहुक सेटिंग सहेजने में विफल",
-			"toastWebhookDisconnected": "वेबहुक डिस्कनेक्ट किया गया",
-			"toastWebhookDisconnectFailed": "वेबहुक डिस्कनेक्ट करने में विफल",
-			"toastRuleSaved": "{{workspaceName}} के लिए सूचना नियम सहेजा गया",
 			"toastRuleSaveFailed": "वर्कस्पेस सूचना नियम सहेजने में विफल",
-			"toastRuleRemoved": "{{workspaceName}} के लिए सूचना नियम हटाया गया",
 			"toastRuleRemoveFailed": "वर्कस्पेस सूचना नियम हटाने में विफल",
 			"toastPreferencesSaved": "सूचना प्राथमिकताएँ सहेजी गईं",
 			"toastPreferencesSaveFailed": "सूचना प्राथमिकताएँ सहेजने में विफल",
@@ -739,7 +692,6 @@
 			"selectViewMode": "दृश्य मोड चुनें",
 			"board": "बोर्ड",
 			"list": "सूची",
-			"gantt": "गैंट",
 			"sidebarDefault": "साइडबार की डिफ़ॉल्ट स्थिति",
 			"sidebarDefaultDescription": "शुरुआत पर साइडबार विस्तारित रखें",
 			"displayOptions": "प्रदर्शन विकल्प",
@@ -844,14 +796,8 @@
 			"dangerZone": "खतरनाक ज़ोन",
 			"dangerZoneSubtitle": "अपरिवर्तनीय और विनाशकारी कार्रवाइयाँ।",
 			"deleteWorkspace": "वर्कस्पेस हटाएँ",
-			"deleteWorkspaceDescription": "वर्कस्पेस को स्थायी रूप से हटाने के लिए शेड्यूल करें",
-			"deleteModalTitle": "वर्कस्पेस हटाएँ?",
-			"deleteModalDescription": "यह वर्कस्पेस \"{{name}}\" और इसके सभी डेटा को स्थायी रूप से हटा देगा। यह कार्रवाई पूर्ववत नहीं की जा सकती।",
-			"deleteModalConfirm": "वर्कस्पेस हटाएँ",
 			"toastUpdated": "वर्कस्पेस सफलतापूर्वक अपडेट किया गया",
 			"toastUpdateError": "वर्कस्पेस अपडेट करने में विफल",
-			"toastDeleted": "वर्कस्पेस सफलतापूर्वक हटाया गया",
-			"toastDeleteError": "वर्कस्पेस हटाने में विफल",
 			"validation": {
 				"nameRequired": "वर्कस्पेस का नाम आवश्यक है",
 				"nameShort": "वर्कस्पेस का नाम कम से कम 2 अक्षरों का होना चाहिए"
@@ -1303,21 +1249,6 @@
 			"chatGroupTitle": "चैट और वेबहुक",
 			"codeGroupTitle": "कोड होस्टिंग"
 		},
-		"projectVisibility": {
-			"pageTitle": "प्रोजेक्ट की दृश्यता",
-			"title": "दृश्यता",
-			"subtitle": "नियंत्रित करें कि आपका प्रोजेक्ट कौन देख और एक्सेस कर सकता है।",
-			"sectionTitle": "दृश्यता",
-			"sectionSubtitle": "सार्वजनिक पहुँच टॉगल करें और सार्वजनिक URL साझा करें।",
-			"publicAccess": "सार्वजनिक पहुँच",
-			"publicAccessHint": "URL वाले किसी भी व्यक्ति को इस प्रोजेक्ट को देखने दें",
-			"publicUrl": "सार्वजनिक URL",
-			"publicUrlHint": "प्रोजेक्ट सार्वजनिक होने पर यह लिंक साझा करें",
-			"copy": "कॉपी करें",
-			"copiedToast": "कॉपी किया",
-			"toastUpdated": "दृश्यता अपडेट की गई",
-			"toastUpdateError": "दृश्यता अपडेट करने में विफल"
-		},
 		"projectWorkflow": {
 			"pageTitle": "वर्कफ़्लो सेटिंग",
 			"title": "वर्कफ़्लो",
@@ -1534,7 +1465,6 @@
 			},
 			"connect": "Slack कनेक्ट करें",
 			"saveChanges": "परिवर्तन सहेजें",
-			"update": "Slack अपडेट करें",
 			"disconnect": "डिस्कनेक्ट करें"
 		},
 		"discordIntegration": {
@@ -1572,7 +1502,6 @@
 			},
 			"connect": "Discord कनेक्ट करें",
 			"saveChanges": "परिवर्तन सहेजें",
-			"update": "Discord अपडेट करें",
 			"disconnect": "डिस्कनेक्ट करें"
 		},
 		"genericWebhookIntegration": {
@@ -1689,9 +1618,7 @@
 			"exportTasks": "कार्य एक्सपोर्ट करें",
 			"importTasks": "कार्य इंपोर्ट करें",
 			"dialogTitle": "कार्य इंपोर्ट करें",
-			"dialogDescription": "इस प्रोजेक्ट में आयात करने के लिए कार्यों वाली JSON फ़ाइल अपलोड करें।",
 			"expectedFormat": "अपेक्षित प्रारूप:",
-			"dropHint": "अपनी JSON फ़ाइल यहाँ खींचें और छोड़ें",
 			"selectFile": "फ़ाइल चुनें",
 			"exporting": "कार्य निर्यात हो रहे हैं...",
 			"exportSuccess": "कार्य सफलतापूर्वक निर्यात किए गए",
@@ -1702,7 +1629,6 @@
 			"importError": "कार्य आयात करने में विफल",
 			"invalidFormat": "अमान्य आयात फ़ाइल प्रारूप",
 			"noFileDropped": "कोई फ़ाइल नहीं छोड़ी गई",
-			"notJsonFile": "कृपया JSON फ़ाइल अपलोड करें",
 			"exportCsv": "CSV (स्प्रेडशीट)",
 			"exportJson": "JSON (दोबारा आयात के लिए)",
 			"exportStarted": "निर्यात शुरू हो गया। इसे वर्कस्पेस सेटिंग → निर्यात में पाएँगे।",
@@ -1990,7 +1916,6 @@
 				"saveError": "Mattermost एकीकरण सहेजने में विफल",
 				"updateError": "Mattermost एकीकरण अपडेट करने में विफल"
 			},
-			"update": "Mattermost अपडेट करें",
 			"validation": {
 				"webhookInvalid": "एक मान्य Mattermost वेबहुक URL दर्ज करें"
 			},
@@ -2002,13 +1927,11 @@
 			"addButton": "जोड़ें",
 			"createError": "कस्टम फ़ील्ड बनाने में विफल।",
 			"createSuccess": "कस्टम फ़ील्ड बनाया गया।",
-			"creating": "बनाया जा रहा है...",
 			"defaultLabel": "डिफ़ॉल्ट",
 			"defaultValuePlaceholder": "डिफ़ॉल्ट मान",
 			"deleteButton": "हटाएँ",
 			"deleteError": "कस्टम फ़ील्ड हटाने में विफल।",
 			"deleteSuccess": "कस्टम फ़ील्ड हटाया गया।",
-			"deleting": "हटाया जा रहा है...",
 			"empty": "अभी तक कोई कस्टम फ़ील्ड कॉन्फ़िगर नहीं किया गया है।",
 			"loading": "कस्टम फ़ील्ड लोड हो रहे हैं...",
 			"namePlaceholder": "फ़ील्ड नाम",
@@ -2938,7 +2861,9 @@
 				"agentScheduleDisabled": "एक एजेंट शेड्यूल बंद किया",
 				"aiConnectorCreated": "एक MCP कनेक्टर जोड़ा",
 				"aiConnectorUpdated": "एक MCP कनेक्टर बदला",
-				"aiConnectorDeleted": "एक MCP कनेक्टर हटाया"
+				"aiConnectorDeleted": "एक MCP कनेक्टर हटाया",
+				"agentIntakeTriggerUpdated": "एक एजेंट का इनटेक ट्रिगर बदला",
+				"agentIntakeTriggerDisabled": "एक एजेंट का इनटेक ट्रिगर बंद किया"
 			},
 			"actor": {
 				"apiKey": "API कुंजी",
@@ -3277,8 +3202,7 @@
 			"empty": "कोई परिणाम नहीं मिला।",
 			"footer": {
 				"navigate": "नेविगेट करें",
-				"open": "खोलें",
-				"close": "बंद करें"
+				"open": "खोलें"
 			},
 			"goToInbox": "इनबॉक्स पर जाएँ",
 			"newView": "नया दृश्य",
@@ -3305,11 +3229,10 @@
 			},
 			"recent": "हाल के",
 			"removeScope": "हर जगह खोजें",
-			"scope": "In"
+			"scope": "प्रोजेक्ट:"
 		},
 		"notifications": "सूचनाएँ",
 		"sidebar": {
-			"overview": "अवलोकन",
 			"projects": "प्रोजेक्ट",
 			"members": "सदस्य",
 			"invitations": "निमंत्रण",
@@ -3317,12 +3240,9 @@
 			"backToBoard": "बोर्ड पर वापस जाएँ",
 			"favorites": "पसंदीदा",
 			"allTasks": "सभी कार्य",
-			"inbox": "इनबॉक्स",
 			"myWork": "आपका कार्य",
 			"home": "होम",
-			"personal": "निजी",
 			"stickies": "स्टिकी नोट",
-			"analytics": "एनालिटिक्स",
 			"drafts": "ड्राफ़्ट"
 		},
 		"projectList": {
@@ -3350,10 +3270,6 @@
 				"page": "पेज"
 			}
 		},
-		"settingsLayout": {
-			"toggleSidebar": "साइडबार टॉगल करें",
-			"back": "वापस"
-		},
 		"userMenu": {
 			"signedOutSuccess": "सफलतापूर्वक साइन आउट किया",
 			"signOutFailed": "साइन आउट विफल",
@@ -3366,13 +3282,11 @@
 		"workspaceSwitcher": {
 			"workspaces": "वर्कस्पेस",
 			"switching": "बदल रहे हैं...",
-			"addWorkspace": "वर्कस्पेस जोड़ें",
-			"selectWorkspace": "वर्कस्पेस चुनें"
+			"addWorkspace": "वर्कस्पेस जोड़ें"
 		},
 		"page": {
 			"projectsTitle": "प्रोजेक्ट",
 			"settingsTitle": "सेटिंग",
-			"backToWorkspace": "वर्कस्पेस पर वापस जाएँ",
 			"settingsWorkspaceTab": "वर्कस्पेस",
 			"settingsInstanceTab": "इंस्टेंस",
 			"settingsNotFoundBack": "खाता सेटिंग",
@@ -3402,7 +3316,6 @@
 			"items": {
 				"openCommandPalette": "कमांड पैलेट खोलें",
 				"globalSearch": "वैश्विक खोज",
-				"toggleSidebar": "साइडबार टॉगल करें",
 				"showShortcuts": "कीबोर्ड शॉर्टकट दिखाएँ",
 				"closeModal": "मोडल/पॉपओवर बंद करें",
 				"createTask": "कार्य बनाएँ",
@@ -3509,16 +3422,11 @@
 	},
 	"notifications": {
 		"title": "सूचनाएँ",
-		"newCount_one": "{{count}} नई",
-		"newCount_other": "{{count}} नई",
-		"emptyTitle": "अभी तक कोई सूचना नहीं",
-		"emptySubtitle": "आप यहाँ अपडेट और गतिविधि देखेंगे।",
 		"clearAll": "सभी सूचनाएँ साफ़ करें",
 		"clearDialogTitle": "सभी सूचनाएँ साफ़ करें?",
 		"clearDialogDescription": "यह सभी सूचनाओं को स्थायी रूप से हटा देगा। यह कार्रवाई पूर्ववत नहीं की जा सकती।",
 		"shortcuts": {
-			"open": "सूचनाएँ खोलें",
-			"inbox": "इनबॉक्स खोलें"
+			"open": "सूचनाएँ खोलें"
 		},
 		"reminderLeadTime": {
 			"minutes_one": "{{count}} मिनट",
@@ -3675,7 +3583,6 @@
 				"fiveDays": "5 दिन",
 				"oneDay": "1 दिन",
 				"oneWeek": "1 सप्ताह",
-				"pickDate": "तारीख चुनें",
 				"pickTime": "समय चुनें",
 				"submit": "स्नूज़ करें",
 				"threeDays": "3 दिन",
@@ -4069,7 +3976,6 @@
 				"recurredToScheduled": "अगला दोहराव शेड्यूल के अनुसार बनाया गया: <task>{{task}}</task>"
 			}
 		},
-		"title": "कार्य",
 		"status": {
 			"label": "स्थिति",
 			"to-do": "करना है",
@@ -4308,7 +4214,6 @@
 			"labels": "लेबल",
 			"copyTaskLink": "कार्य लिंक कॉपी करें",
 			"copyTaskBranch": "कार्य शाखा कॉपी करें",
-			"start": "शुरू",
 			"startDate": "शुरू की तारीख",
 			"noDate": "कोई तारीख नहीं",
 			"addLabel": "लेबल जोड़ें",
@@ -4374,22 +4279,11 @@
 			"moveAllTooltip": "सभी नियोजित को {{column}} में ले जाएँ",
 			"moveAll": "सभी को ले जाएँ",
 			"addTask": "कार्य जोड़ें",
-			"filter": "फ़िल्टर",
-			"addFilter": "फ़िल्टर जोड़ें...",
 			"sections": {
 				"planned": "नियोजित",
 				"archived": "संग्रहित"
 			},
-			"noTasksInSection": "कोई {{section}} कार्य नहीं",
-			"filters": {
-				"priority": "प्राथमिकता: {{name}}",
-				"assignee": "सौंपा गया: {{name}}",
-				"due": "देय: {{date}}",
-				"label": "लेबल: {{name}}",
-				"dueThisWeek": "इस सप्ताह देय",
-				"dueNextWeek": "अगले सप्ताह देय",
-				"noDueDate": "कोई नियत तारीख नहीं"
-			}
+			"noTasksInSection": "कोई {{section}} कार्य नहीं"
 		},
 		"sort": {
 			"label": "क्रमबद्ध करें",
@@ -4409,11 +4303,6 @@
 		},
 		"boardFilters": {
 			"filterBy": "इसके अनुसार फ़िल्टर करें",
-			"allStatuses": "सभी स्थितियाँ",
-			"allPriorities": "सभी प्राथमिकताएँ",
-			"allAssignees": "सभी सौंपे गए",
-			"allDueDates": "सभी नियत तारीखें",
-			"allLabels": "सभी लेबल",
 			"selectedCount": "{{count}} चयनित",
 			"subjects": {
 				"status": "स्थिति",
@@ -4424,14 +4313,8 @@
 				"estimate": "अनुमान"
 			},
 			"operators": {
-				"isAnyOf": "में से कोई है",
-				"includeAnyOf": "में से कोई शामिल है"
-			},
-			"all": "सभी",
-			"allCustomFieldValues": "सभी मान",
-			"noCustomFieldValues": "कोई कस्टम फ़ील्ड मान नहीं",
-			"noValuesUsedYet": "अभी तक किसी मान का उपयोग नहीं हुआ",
-			"unassigned": "असाइन नहीं"
+				"isAnyOf": "में से कोई है"
+			}
 		},
 		"gantt": {
 			"pageTitle": "{{name}} – गैंट",
@@ -4474,11 +4357,8 @@
 		},
 		"archive": {
 			"success": "{{count}} कार्य संग्रहित किए गए",
-			"archive": "संग्रहित करें",
 			"archived": "कार्य संग्रहित किया गया",
 			"badge": "संग्रहित",
-			"bulkArchived_one": "{{count}} कार्य संग्रहित किया गया",
-			"bulkArchived_other": "{{count}} कार्य संग्रहित किए गए",
 			"error": "कार्य संग्रहित नहीं किया जा सका",
 			"restore": "पुनर्स्थापित करें",
 			"restored": "कार्य पुनर्स्थापित किया गया",
@@ -4514,10 +4394,6 @@
 			"updateError": "कार्य की नियत तारीख अपडेट करने में विफल",
 			"clearSuccess": "कार्य की नियत तारीख साफ़ की गई",
 			"clearError": "नियत तारीख साफ़ करने में विफल"
-		},
-		"labels": {
-			"label": "लेबल",
-			"empty": "कोई लेबल उपलब्ध नहीं"
 		},
 		"update": {
 			"success": "कार्य सफलतापूर्वक अपडेट किया गया",
@@ -4861,7 +4737,6 @@
 				"project": "प्रोजेक्ट",
 				"status": "स्थिति"
 			},
-			"needsSingleProject": "स्थिति के आधार पर समूह बनाने के लिए एक ही प्रोजेक्ट चाहिए",
 			"none": "कोई नहीं",
 			"order": {
 				"assignee": "सौंपा गया",
@@ -4949,14 +4824,14 @@
 			"noOptions": "कोई विकल्प नहीं",
 			"operators": {
 				"between": "के बीच",
-				"is": "is",
+				"is": "है",
 				"isEmpty": "खाली है",
 				"isNoneOf": "इनमें से कोई नहीं",
 				"isNot": "नहीं है",
 				"isNotEmpty": "खाली नहीं है",
 				"moreThanAgo": "… से अधिक पहले",
 				"moreThanAhead": "अब से … से अधिक बाद",
-				"on": "on",
+				"on": "इस दिन",
 				"onOrAfter": "इस दिन या उसके बाद",
 				"onOrBefore": "इस दिन या उससे पहले",
 				"withinLast": "पिछले",
@@ -4969,9 +4844,7 @@
 				"completed": "पूरा हुआ",
 				"created": "बनाया गया",
 				"createdBy": "बनाने वाला",
-				"customFields": "कस्टम फ़ील्ड",
 				"cycle": "साइकल",
-				"estimate": "अनुमान",
 				"group": "समूह",
 				"mentions": "उल्लेख",
 				"module": "मॉड्यूल",
@@ -4985,7 +4858,7 @@
 			"values": {
 				"currentCycle": "वर्तमान साइकल",
 				"false": "गलत",
-				"me": "Me",
+				"me": "मैं",
 				"noAssignee": "कोई असाइनी नहीं",
 				"noCreator": "कोई निर्माता नहीं",
 				"noCycle": "कोई साइकल नहीं",
@@ -5024,8 +4897,6 @@
 			"expandSubTasks": "उप-कार्य दिखाएँ",
 			"hideColumn": "कॉलम छिपाएँ",
 			"loadError": "कार्य लोड नहीं हो सके",
-			"newTask": "नया कार्य",
-			"newTaskPlaceholder": "कार्य का शीर्षक लिखें, फिर Enter दबाएँ",
 			"selectTask": "{{key}} चुनें",
 			"sortAsc": "आरोही क्रम में क्रमबद्ध करें",
 			"sortDesc": "अवरोही क्रम में क्रमबद्ध करें",
@@ -5052,7 +4923,7 @@
 		"timeTracking": {
 			"duration": "अवधि",
 			"durationInvalid": "1 मिनट से 24 घंटे के बीच की अवधि दर्ज करें, जैसे 1h 30m।",
-			"durationPlaceholder": "e.g. 1h 30m",
+			"durationPlaceholder": "जैसे 1h 30m",
 			"empty": "अभी तक कोई समय दर्ज नहीं",
 			"entries": "समय प्रविष्टियाँ",
 			"formerMember": "पूर्व सदस्य",
@@ -5232,11 +5103,6 @@
 		"noPendingDescription": "जब कोई आपको किसी वर्कस्पेस में आमंत्रित करेगा, तो निमंत्रण यहाँ दिखाई देगा।",
 		"continueToSetup": "सेटअप जारी रखें",
 		"skipForNow": "अभी के लिए छोड़ें",
-		"table": {
-			"workspace": "वर्कस्पेस",
-			"invitedBy": "आमंत्रित करने वाला",
-			"expires": "समाप्ति"
-		},
 		"toast": {
 			"acceptError": "निमंत्रण स्वीकार करने में विफल",
 			"acceptSuccess": "निमंत्रण स्वीकार किया! टीम में स्वागत है।",
@@ -5272,7 +5138,6 @@
 				"inProgress": "प्रगति में"
 			},
 			"noDueDate": "कोई नियत तारीख नहीं",
-			"reorderHandle": "प्रोजेक्ट का क्रम बदलें",
 			"reorderError": "प्रोजेक्ट का क्रम बदलने में विफल"
 		},
 		"search": {
@@ -5298,7 +5163,6 @@
 			"pageTitle": "वर्कस्पेस बनाएँ",
 			"heading": "नया वर्कस्पेस बनाएँ",
 			"subtitle": "वर्कस्पेस साझा वातावरण हैं जहाँ टीमें प्रोजेक्ट, साइकल और मुद्दों पर काम कर सकती हैं।",
-			"nameLabel": "वर्कस्पेस का नाम",
 			"namePlaceholder": "वर्कस्पेस का नाम दर्ज करें",
 			"descriptionLabel": "विवरण (वैकल्पिक)",
 			"descriptionPlaceholder": "अपने वर्कस्पेस के लिए विवरण जोड़ें",
@@ -5426,11 +5290,8 @@
 			"columns": {
 				"name": "नाम",
 				"role": "भूमिका",
-				"joined": "शामिल हुए",
-				"actions": "कार्रवाइयाँ"
+				"joined": "शामिल हुए"
 			},
-			"memberRolePending": "{{role}} (लंबित)",
-			"ariaCancelInvitation": "निमंत्रण रद्द करें",
 			"ariaInvitationActions": "निमंत्रण कार्रवाइयाँ",
 			"ariaRemoveMember": "सदस्य हटाएँ",
 			"removeDialogTitle": "टीम सदस्य को हटाएँ?",
@@ -5479,7 +5340,6 @@
 		}
 	},
 	"publicProject": {
-		"pageTitle": "सार्वजनिक व्यू",
 		"badge": "सार्वजनिक",
 		"readOnly": "केवल-पढ़ें",
 		"error": {
@@ -5492,12 +5352,10 @@
 		"taskDetail": {
 			"labels": "लेबल",
 			"externalLinks": "बाहरी लिंक",
-			"pullRequestFallback": "पुल अनुरोध",
 			"issueFallback": "मुद्दा",
 			"prStatusMerged": "मर्ज किया गया",
 			"prStatusDraft": "ड्राफ़्ट",
 			"prStatusOpen": "खुला",
-			"dueWithDate": "{{date}} तक देय",
 			"created": "बनाया गया",
 			"dueDateLabel": "नियत तिथि",
 			"assignees": "असाइनी",
@@ -5521,9 +5379,7 @@
 			"backlog": "बैकलॉग",
 			"chip": "{{subject}}: {{value}}",
 			"clearFilters": "फ़िल्टर साफ़ करें",
-			"collapse": "{{name}} को समेटें",
 			"emptyColumn": "यहाँ कोई कार्य नहीं",
-			"expand": "{{name}} को फैलाएँ",
 			"filter": "फ़िल्टर",
 			"filters": "फ़िल्टर",
 			"layout": "लेआउट",
@@ -5682,7 +5538,7 @@
 				"typed": "लॉगिन रीडायरेक्ट ठीक करें @adam !high #bug"
 			},
 			"labels": {
-				"bug": "bug",
+				"bug": "बग",
 				"design": "डिज़ाइन",
 				"docs": "डॉक्स",
 				"feature": "फ़ीचर"
@@ -5720,7 +5576,7 @@
 				"handbook": "टीम हैंडबुक",
 				"mobile": "मोबाइल ऐप",
 				"platform": "प्लेटफ़ॉर्म API",
-				"website": "Website"
+				"website": "वेबसाइट"
 			},
 			"sheet": {
 				"activity": "गतिविधि",
@@ -5772,7 +5628,7 @@
 				"done": "हो गया",
 				"inProgress": "प्रगति में",
 				"inReview": "समीक्षा में",
-				"todo": "To do"
+				"todo": "करना है"
 			},
 			"analytics": {
 				"allProjects": "सभी प्रोजेक्ट",
@@ -5852,7 +5708,7 @@
 					},
 					"publicBoard": {
 						"action": "एक सार्वजनिक बोर्ड प्रकाशित किया",
-						"target": "Website",
+						"target": "वेबसाइट",
 						"time": "कल",
 						"type": "प्रोजेक्ट"
 					},
@@ -5939,7 +5795,7 @@
 				"tasks": {
 					"redirect": {
 						"due": "12 अक्टू॰",
-						"project": "Website",
+						"project": "वेबसाइट",
 						"title": "लॉगिन रीडायरेक्ट ठीक करें"
 					},
 					"release": {
@@ -6058,7 +5914,7 @@
 				"quickLinks": "त्वरित लिंक",
 				"recentItems": {
 					"page": "लॉन्च योजना",
-					"project": "Website",
+					"project": "वेबसाइट",
 					"task": "लॉगिन रीडायरेक्ट ठीक करें"
 				},
 				"recents": "हाल के",
@@ -6279,19 +6135,19 @@
 				"statuses": {
 					"done": {
 						"meta": "14 इश्यू",
-						"name": "Done"
+						"name": "पूरा हुआ"
 					},
 					"inProgress": {
 						"meta": "9 इश्यू",
-						"name": "In Progress"
+						"name": "प्रगति में"
 					},
 					"open": {
 						"meta": "14 इश्यू",
-						"name": "Open"
+						"name": "खुला"
 					},
 					"review": {
 						"meta": "5 इश्यू",
-						"name": "Code Review"
+						"name": "कोड समीक्षा"
 					}
 				},
 				"statusesTitle": "स्थितियाँ",
@@ -6316,7 +6172,7 @@
 				},
 				"tool": "create_task",
 				"toolDone": "हो गया",
-				"via": "via MCP"
+				"via": "MCP के ज़रिए"
 			},
 			"modules": {
 				"gallery": "गैलरी",
@@ -7655,7 +7511,7 @@
 			"clear": "फ़िल्टर साफ़ करें",
 			"filterBy": "इसके अनुसार फ़िल्टर करें",
 			"includesAnyOf": "इनमें से किसी को शामिल करता है",
-			"is": "is",
+			"is": "है",
 			"isAnyOf": "इनमें से कोई भी",
 			"lead": "प्रमुख",
 			"members": "सदस्य",
@@ -7846,7 +7702,7 @@
 			"completed30": "30 दिनों में पूरे हुए",
 			"created": "बनाए गए",
 			"dueThisWeek": "इस सप्ताह देय",
-			"notAvailable": "n/a",
+			"notAvailable": "उपलब्ध नहीं",
 			"overdue": "समय-सीमा पार",
 			"subscribed": "सदस्यता ली हुई"
 		},
@@ -7863,7 +7719,6 @@
 			"cancelled_other": "{{count}} रद्द",
 			"priorities": "प्राथमिकता के अनुसार खुले कार्य",
 			"recentActivity": "हाल की गतिविधि",
-			"title": "कार्यभार",
 			"byState": "स्थिति के अनुसार"
 		},
 		"activity": {
@@ -7942,7 +7797,6 @@
 			"all": "सभी",
 			"emptyDescription": "फ़िल्टर और लेआउट को दृश्य के रूप में सहेजें और अपनी टीम के साथ साझा करें।",
 			"emptyTitle": "अभी कोई दृश्य नहीं",
-			"favorite": "पसंदीदा",
 			"mine": "मेरे",
 			"more": "दृश्य",
 			"newView": "नया दृश्य",
@@ -8086,14 +7940,10 @@
 			"inbox": "इनबॉक्स",
 			"label": "वहीं से फिर शुरू करें",
 			"myWork": "आपका काम",
-			"open_one": "{{count}} खुला",
-			"open_other": "{{count}} खुले",
 			"overdue_one": "{{count}} अतिदेय",
 			"overdue_other": "{{count}} अतिदेय",
 			"stickies": "स्टिकी नोट",
 			"stickiesHint": "निजी नोट, सिर्फ़ आपके लिए",
-			"unread_one": "{{count}} अपठित",
-			"unread_other": "{{count}} अपठित",
 			"openCaption": "खुले",
 			"unreadCaption": "अपठित"
 		}
@@ -8153,7 +8003,6 @@
 			"submit": "अनुरोध सबमिट करें",
 			"title": "नया अनुरोध",
 			"titlePlaceholder": "आपको क्या चाहिए?",
-			"titleRequired": "शीर्षक जोड़ें",
 			"toast": "अनुरोध सबमिट किया गया",
 			"toastView": "देखें",
 			"pastedImages": "पेस्ट की गई इमेज",
@@ -8244,7 +8093,7 @@
 		"filters": {
 			"button": "फ़िल्टर",
 			"clear": "फ़िल्टर साफ़ करें",
-			"me": "Me",
+			"me": "मैं",
 			"priority": "प्राथमिकता",
 			"remove": "फ़िल्टर हटाएँ",
 			"status": "स्थिति",
@@ -8333,7 +8182,6 @@
 			"pending": "यह कार्य इनटेक में प्रतीक्षा में है।",
 			"snoozed": "यह कार्य इनटेक में {{date}} तक स्नूज़ किया गया है।"
 		},
-		"title": "इनटेक",
 		"triage": {
 			"backToList": "अनुरोधों पर वापस जाएँ",
 			"detailLabel": "अनुरोध",
@@ -9303,7 +9151,6 @@
 	},
 	"instanceAdmin": {
 		"admins": {
-			"actions": "एडमिन कार्रवाइयाँ",
 			"add": "एडमिन जोड़ें",
 			"addConfirm": "एडमिन जोड़ें",
 			"addDescription": "इंस्टेंस एडमिन इस क्षेत्र की हर सेटिंग बदल सकते हैं और किसी भी वर्कस्पेस को खोल सकते हैं।",
@@ -9421,7 +9268,7 @@
 				"fileStorage": "फ़ाइल स्टोरेज",
 				"notConfigured": "कॉन्फ़िगर नहीं किया गया",
 				"off": "बंद",
-				"on": "On",
+				"on": "चालू",
 				"realtime": "रियलटाइम",
 				"realtimeMemory": "मेमोरी में",
 				"realtimeRedis": "Redis ({{mode}})",
@@ -9450,8 +9297,8 @@
 			"buttonLabelHint": "साइन-इन बटन पर दिखाया जाता है, जैसे \"Okta के साथ जारी रखें\"",
 			"callbackHint": "इस URL को अपने OAuth ऐप में जोड़ें",
 			"callbackUrl": "कॉलबैक URL",
-			"clientId": "Client ID",
-			"clientSecret": "Client secret",
+			"clientId": "क्लाइंट ID",
+			"clientSecret": "क्लाइंट सीक्रेट",
 			"copied": "कॉपी किया",
 			"copy": "कॉपी करें",
 			"discoveryHint": "या नीचे के तीन एंडपॉइंट भरें",
@@ -9507,7 +9354,6 @@
 		"save": "सहेजें",
 		"saved": "सेटिंग सहेजी गईं",
 		"saveError": "सेटिंग सहेजी नहीं जा सकीं",
-		"saving": "सहेज रहे हैं…",
 		"secret": {
 			"cancel": "रद्द करें",
 			"clear": "साफ़ करें",
@@ -9517,8 +9363,6 @@
 			"saved": "सहेजा गया",
 			"unreadable": "सहेजा गया सीक्रेट पढ़ा नहीं जा सकता (सर्वर का AUTH_SECRET बदल गया है)। इसे फिर से दर्ज करें।"
 		},
-		"sidebarSubtitle": "इंस्टेंस एडमिन",
-		"sidebarTitle": "इंस्टेंस",
 		"source": {
 			"default": "डिफ़ॉल्ट",
 			"environment": "एनवायरनमेंट: {{variable}}",
@@ -9571,97 +9415,97 @@
 	},
 	"press": {
 		"boilerplate": {
-			"description": "Ready-made descriptions. Trim them if you need to, but please keep the facts as they are.",
+			"description": "तैयार विवरण। ज़रूरत हो तो छोटा कर लें, लेकिन तथ्यों को जैसा है वैसा ही रखें।",
 			"long": {
-				"label": "About 150 words",
-				"text": "Margaya is an open-source project management platform built for teams that want to plan and ship work without the tool becoming a job of its own. Tasks move through board, list, spreadsheet, calendar and Gantt views of the same data. Cycles, modules, estimates and an intake inbox are there when a team needs planning, and stay out of the way when it doesn't. Teams write docs together next to their tasks, collect requests on public boards, and follow progress with analytics and an audit log. A REST API with an OpenAPI description, webhooks, an MCP server and integrations with GitHub, Gitea, Slack, Discord and others connect Margaya to the rest of a team's tools. The interface is available in 20 languages. Margaya is released under the MIT licence and runs on a single server with Docker, or on Kubernetes with Helm; Margaya Cloud offers the same product as a managed service."
+				"label": "लगभग 150 शब्द",
+				"text": "Margaya एक ओपन-सोर्स प्रोजेक्ट मैनेजमेंट प्लेटफ़ॉर्म है, जो उन टीमों के लिए बना है जो काम की योजना बनाना और उसे पूरा करना चाहती हैं, बिना इसके कि टूल ख़ुद एक अलग काम बन जाए। कार्य एक ही डेटा के बोर्ड, सूची, स्प्रेडशीट, कैलेंडर और गैंट दृश्यों में आगे बढ़ते हैं। साइकल, मॉड्यूल, अनुमान और इनटेक इनबॉक्स तब मौजूद रहते हैं जब टीम को योजना की ज़रूरत हो, और जब ज़रूरत न हो तो रास्ते में नहीं आते। टीमें अपने कार्यों के बगल में मिलकर डॉक्स लिखती हैं, सार्वजनिक बोर्ड पर अनुरोध इकट्ठा करती हैं, और एनालिटिक्स और ऑडिट लॉग से प्रगति पर नज़र रखती हैं। OpenAPI विवरण वाला REST API, वेबहुक, एक MCP सर्वर और GitHub, Gitea, Slack, Discord व अन्य के साथ इंटीग्रेशन Margaya को टीम के बाकी टूल से जोड़ते हैं। इंटरफ़ेस 20 भाषाओं में उपलब्ध है। Margaya MIT लाइसेंस के तहत जारी किया गया है और Docker के साथ एक सर्वर पर, या Helm के साथ Kubernetes पर चलता है; Margaya Cloud वही प्रोडक्ट एक प्रबंधित सेवा के रूप में देता है।"
 			},
 			"short": {
-				"label": "About 50 words",
-				"text": "Margaya is an open-source project management platform for teams that want clear ownership without heavy process. Plan work on boards, lists, spreadsheets, calendars and Gantt charts, write docs beside the tasks, and connect your tools through a REST API and MCP. Run it yourself under the MIT licence, or use Margaya Cloud."
+				"label": "लगभग 50 शब्द",
+				"text": "Margaya उन टीमों के लिए एक ओपन-सोर्स प्रोजेक्ट मैनेजमेंट प्लेटफ़ॉर्म है जो भारी प्रक्रियाओं के बिना साफ़ ज़िम्मेदारी चाहती हैं। टीमें बोर्ड, सूचियों, स्प्रेडशीट, कैलेंडर और गैंट चार्ट पर काम की योजना बनाती हैं, कार्यों के बगल में डॉक्स लिखती हैं, और REST API और MCP के ज़रिए अपने टूल जोड़ती हैं। Margaya को MIT लाइसेंस के तहत ख़ुद चलाएँ, या Margaya Cloud इस्तेमाल करें।"
 			},
-			"title": "Boilerplate"
+			"title": "तैयार विवरण"
 		},
 		"colours": {
-			"copyHex": "Copy {{hex}}",
-			"description": "Margaya is deliberately quiet: near-black, off-white and a few greys, so the work on screen supplies the colour.",
+			"copyHex": "{{hex}} कॉपी करें",
+			"description": "Margaya जान-बूझकर सादा है: लगभग काला, ऑफ़-व्हाइट और कुछ ग्रे, ताकि स्क्रीन पर दिख रहा काम ही रंग भरे।",
 			"graphite": {
-				"name": "Graphite",
-				"usage": "Text and primary buttons in the light theme"
+				"name": "ग्रेफ़ाइट",
+				"usage": "हल्की थीम में टेक्स्ट और मुख्य बटन"
 			},
 			"ink": {
-				"name": "Ink",
-				"usage": "The logo, and the dark theme's background"
+				"name": "स्याही",
+				"usage": "लोगो, और गहरी थीम की पृष्ठभूमि"
 			},
 			"mist": {
-				"name": "Mist",
-				"usage": "Panels and sidebars in the light theme"
+				"name": "धुंध",
+				"usage": "हल्की थीम में पैनल और साइडबार"
 			},
 			"mono": {
 				"name": "Geist Mono",
-				"usage": "Code, keyboard shortcuts and task IDs"
+				"usage": "कोड, कीबोर्ड शॉर्टकट और कार्य ID"
 			},
 			"paper": {
-				"name": "Paper",
-				"usage": "The light logo, and primary buttons in the dark theme"
+				"name": "काग़ज़",
+				"usage": "हल्का लोगो, और गहरी थीम में मुख्य बटन"
 			},
-			"sample": "Plan the work. Ship the work.",
+			"sample": "काम की योजना बनाएँ। काम पूरा करें।",
 			"sans": {
 				"name": "Geist",
-				"usage": "Interface, headings and the wordmark, set semibold with tight tracking"
+				"usage": "इंटरफ़ेस, शीर्षक और वर्डमार्क, सेमीबोल्ड में और कसी हुई ट्रैकिंग के साथ"
 			},
-			"title": "Colours and type",
-			"typeTitle": "Typography",
+			"title": "रंग और टाइपोग्राफ़ी",
+			"typeTitle": "टाइपोग्राफ़ी",
 			"white": {
-				"name": "White",
-				"usage": "The light theme's background"
+				"name": "सफ़ेद",
+				"usage": "हल्की थीम की पृष्ठभूमि"
 			}
 		},
 		"contact": {
-			"body": "Margaya is built in the open, so the maintainers answer on GitHub. Start a discussion for interviews and questions about the project, or open an issue if something in this kit is missing or out of date.",
-			"discussions": "Start a discussion",
-			"issues": "Open an issue",
-			"title": "Talk to the maintainers"
+			"body": "Margaya खुले तौर पर बनाया जाता है, इसलिए मेंटेनर्स GitHub पर जवाब देते हैं। इंटरव्यू और प्रोजेक्ट से जुड़े सवालों के लिए डिस्कशन शुरू करें, या अगर इस किट में कुछ छूटा हो या पुराना हो गया हो तो इश्यू खोलें।",
+			"discussions": "डिस्कशन शुरू करें",
+			"issues": "इश्यू खोलें",
+			"title": "मेंटेनर्स से बात करें"
 		},
-		"copied": "Copied",
-		"copy": "Copy",
-		"copyUrl": "Copy URL",
-		"description": "Margaya's press kit: boilerplate text, logos, product screenshots, brand colours and typography, with direct download links.",
-		"download": "Download",
-		"downloadKit": "Download the press kit",
+		"copied": "कॉपी किया",
+		"copy": "कॉपी करें",
+		"copyUrl": "URL कॉपी करें",
+		"description": "Margaya की प्रेस किट: तैयार परिचय टेक्स्ट, लोगो, प्रोडक्ट स्क्रीनशॉट, ब्रांड के रंग और टाइपोग्राफ़ी, सीधे डाउनलोड लिंक के साथ।",
+		"download": "डाउनलोड करें",
+		"downloadKit": "प्रेस किट डाउनलोड करें",
 		"downloadKitMeta": "ZIP, {{size}}",
-		"eyebrow": "Press kit",
+		"eyebrow": "प्रेस किट",
 		"facts": {
-			"description": "The essentials, in one place.",
+			"description": "ज़रूरी जानकारी, एक ही जगह।",
 			"founded": {
-				"label": "Founded",
+				"label": "स्थापना",
 				"value": "2026"
 			},
 			"hosting": {
-				"label": "Hosting",
-				"value": "Self-hosted with Docker or Helm, or managed on Margaya Cloud"
+				"label": "होस्टिंग",
+				"value": "Docker या Helm के साथ सेल्फ़-होस्टेड, या Margaya Cloud पर प्रबंधित"
 			},
 			"interfaces": {
-				"label": "Interfaces",
-				"value": "REST API with an OpenAPI description, plus an MCP server"
+				"label": "इंटरफ़ेस",
+				"value": "OpenAPI विवरण के साथ REST API, और एक MCP सर्वर"
 			},
 			"languages": {
-				"label": "Languages",
-				"value": "20 interface languages"
+				"label": "भाषाएँ",
+				"value": "इंटरफ़ेस की 20 भाषाएँ"
 			},
 			"licence": {
-				"label": "Licence",
-				"value": "MIT, for every feature"
+				"label": "लाइसेंस",
+				"value": "MIT, हर सुविधा के लिए"
 			},
 			"source": {
-				"label": "Source code",
+				"label": "सोर्स कोड",
 				"value": "github.com/manu14357/Margaya"
 			},
 			"stack": {
-				"label": "Stack",
-				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
+				"label": "टेक स्टैक",
+				"value": "TypeScript, Hono, React और PostgreSQL, वैकल्पिक Redis के साथ"
 			},
-			"title": "Quick facts",
+			"title": "मुख्य तथ्य",
 			"ai": {
 				"label": "AI",
 				"value": "वैकल्पिक और डिफ़ॉल्ट रूप से बंद: AI से पूछें, बनाएँ मोड और AI एजेंट, Claude या सेल्फ़-होस्टेड मॉडल पर"
@@ -9669,212 +9513,218 @@
 		},
 		"guidelines": {
 			"do": {
-				"contrast": "Use the dark wordmark on light backgrounds and the light wordmark on dark ones.",
-				"link": "Link to margaya.app or the GitHub repository when you mention the project.",
-				"name": "Write the name as “Margaya”, with a capital M, in running text.",
-				"space": "Leave clear space around the logo at least as wide as the icon's ears."
+				"contrast": "हल्की पृष्ठभूमि पर गहरा वर्डमार्क और गहरी पृष्ठभूमि पर हल्का वर्डमार्क इस्तेमाल करें।",
+				"link": "प्रोजेक्ट का ज़िक्र करते समय margaya.app या GitHub रिपॉज़िटरी का लिंक दें।",
+				"name": "सामान्य टेक्स्ट में नाम को बड़े M के साथ “Margaya” लिखें।",
+				"space": "लोगो के चारों ओर कम से कम आइकन के कानों जितनी चौड़ी खाली जगह छोड़ें।"
 			},
 			"dont": {
-				"distort": "Stretch, rotate, outline or add effects to the logo.",
-				"edit": "Edit screenshots to show features that Margaya doesn't have.",
-				"endorse": "Suggest that the Margaya maintainers endorse a product, service or opinion.",
-				"recolour": "Recolour the logo, or place it on busy images where it loses contrast."
+				"distort": "लोगो को खींचना, घुमाना, उस पर आउटलाइन लगाना या इफ़ेक्ट जोड़ना।",
+				"edit": "स्क्रीनशॉट को एडिट करके ऐसी सुविधाएँ दिखाना जो Margaya में नहीं हैं।",
+				"endorse": "यह संकेत देना कि Margaya के मेंटेनर्स किसी प्रोडक्ट, सेवा या राय का समर्थन करते हैं।",
+				"recolour": "लोगो का रंग बदलना, या उसे ऐसी भीड़-भाड़ वाली तस्वीरों पर रखना जहाँ उसका कंट्रास्ट खो जाए।"
 			},
-			"dontTitle": "Please don't",
-			"doTitle": "Please do",
-			"title": "Using the brand"
+			"dontTitle": "कृपया ऐसा न करें",
+			"doTitle": "कृपया ऐसा करें",
+			"title": "ब्रांड का उपयोग"
 		},
-		"headline": "Margaya is open-source project management you can run on your own server.",
-		"intro": "Short and long descriptions, logos, screenshots, colours and type, ready for articles, videos and talks. Everything on this page may be used for editorial coverage of Margaya.",
+		"headline": "Margaya एक ओपन-सोर्स प्रोजेक्ट मैनेजमेंट टूल है, जिसे आप अपने सर्वर पर चला सकते हैं।",
+		"intro": "छोटे और लंबे विवरण, लोगो, स्क्रीनशॉट, रंग और फ़ॉन्ट, लेखों, वीडियो और टॉक के लिए तैयार। इस पेज की हर चीज़ का उपयोग Margaya की संपादकीय कवरेज के लिए किया जा सकता है।",
 		"logos": {
-			"description": "Use the wordmark wherever there is room for it, and the icon where space is tight. Each file has a permanent address you can link to.",
+			"description": "जहाँ जगह हो वहाँ वर्डमार्क इस्तेमाल करें, और जहाँ जगह कम हो वहाँ आइकन। हर फ़ाइल का एक स्थायी पता है जिससे आप लिंक कर सकते हैं।",
 			"iconPng": {
-				"alt": "The Margaya app icon",
+				"alt": "Margaya ऐप आइकन",
 				"detail": "PNG, 512 × 512",
-				"name": "App icon"
+				"name": "ऐप आइकन"
 			},
 			"iconSvg": {
-				"alt": "The Margaya icon: a light cat face on a dark rounded square",
-				"detail": "SVG, scales to any size",
-				"name": "Icon"
+				"alt": "Margaya आइकन: गोल कोनों वाले गहरे वर्ग पर हल्के रंग का बिल्ली का चेहरा",
+				"detail": "SVG, किसी भी आकार में स्केल होता है",
+				"name": "आइकन"
 			},
-			"title": "Logos",
+			"title": "लोगो",
 			"wordmarkDark": {
-				"alt": "The Margaya wordmark in near-black on a light background",
-				"detail": "SVG, for light backgrounds",
-				"name": "Wordmark, dark"
+				"alt": "हल्की पृष्ठभूमि पर लगभग काले रंग में Margaya वर्डमार्क",
+				"detail": "SVG, हल्की पृष्ठभूमि के लिए",
+				"name": "वर्डमार्क, गहरा"
 			},
 			"wordmarkLight": {
-				"alt": "The Margaya wordmark in off-white on a dark background",
-				"detail": "SVG, for dark backgrounds",
-				"name": "Wordmark, light"
+				"alt": "गहरी पृष्ठभूमि पर ऑफ़-व्हाइट रंग में Margaya वर्डमार्क",
+				"detail": "SVG, गहरी पृष्ठभूमि के लिए",
+				"name": "वर्डमार्क, हल्का"
 			}
 		},
-		"onThisPage": "On this page",
+		"onThisPage": "इस पेज पर",
 		"screenshots": {
-			"close": "Close",
-			"counter": "{{current}} of {{total}}",
-			"dark": "Dark",
-			"description": "Real Margaya screens in the light and dark themes. Select one to see it at full size.",
-			"empty": "A fresh set of screenshots is on its way. Until then, the press kit download has the current set.",
-			"light": "Light",
-			"next": "Next screenshot",
-			"open": "View larger: {{title}}",
-			"previous": "Previous screenshot",
+			"close": "बंद करें",
+			"counter": "{{total}} में से {{current}}",
+			"dark": "गहरी",
+			"description": "हल्की और गहरी थीम में Margaya की असली स्क्रीन। पूरे आकार में देखने के लिए किसी एक को चुनें।",
+			"empty": "स्क्रीनशॉट का नया सेट जल्द आ रहा है। तब तक, प्रेस किट डाउनलोड में मौजूदा सेट है।",
+			"light": "हल्की",
+			"next": "अगला स्क्रीनशॉट",
+			"open": "बड़ा करके देखें: {{title}}",
+			"previous": "पिछला स्क्रीनशॉट",
 			"size": "{{width}} × {{height}}, PNG",
-			"title": "Product screenshots"
+			"title": "प्रोडक्ट स्क्रीनशॉट"
 		},
-		"title": "Press kit",
-		"downloadPng": "Download PNG"
+		"title": "प्रेस किट",
+		"downloadPng": "PNG डाउनलोड करें"
 	},
 	"pricing": {
 		"cta": {
-			"description": "Start a Cloud trial with no card, or follow the install guide and run Margaya on your own hardware.",
-			"primary": "Start a free trial",
-			"secondary": "Read the install guide",
-			"title": "Pick the way that fits, and change your mind later."
+			"description": "बिना कार्ड के Cloud ट्रायल शुरू करें, या इंस्टॉल गाइड देखकर Margaya को अपने हार्डवेयर पर चलाएँ।",
+			"primary": "मुफ़्त ट्रायल शुरू करें",
+			"secondary": "इंस्टॉल गाइड पढ़ें",
+			"title": "जो तरीक़ा आपके लिए सही हो, उसे चुनें, और बाद में चाहें तो बदल लें।"
 		},
-		"description": "The self-hosted build is the whole product under the MIT licence, with no seat limits and no paid tier. Margaya Cloud is the same software, hosted in the EU and kept up to date for you.",
-		"eyebrow": "Pricing",
+		"description": "सेल्फ़-होस्टेड बिल्ड MIT लाइसेंस के तहत पूरा प्रोडक्ट है: न सीटों की कोई सीमा, न कोई पेड टियर। Margaya Cloud वही सॉफ़्टवेयर है, EU में होस्ट किया गया और आपके लिए हमेशा अप-टू-डेट रखा गया।",
+		"eyebrow": "मूल्य",
 		"faq": {
 			"items": {
 				"cancel": {
-					"answer": "Your plan stays active until the end of the period you've paid for. Export your work as CSV, Excel or JSON before then if you want to keep a copy.",
-					"question": "What happens if I cancel?"
+					"answer": "आपका प्लान उस अवधि के अंत तक सक्रिय रहता है जिसका आपने भुगतान किया है। अगर आप एक कॉपी रखना चाहते हैं, तो उससे पहले अपना काम CSV, Excel या JSON में निर्यात कर लें।",
+					"question": "अगर मैं रद्द कर दूँ तो क्या होगा?"
 				},
 				"founding": {
-					"answer": "Workspaces created before paid plans launched keep free access for at least 12 months, and you'll get six months' notice before anything changes.",
-					"question": "I signed up before paid plans existed. What changes?"
+					"answer": "पेड प्लान लॉन्च होने से पहले बने वर्कस्पेस को कम से कम 12 महीने तक मुफ़्त एक्सेस मिलता रहेगा, और कुछ भी बदलने से छह महीने पहले आपको सूचना दी जाएगी।",
+					"question": "मैंने पेड प्लान आने से पहले साइन अप किया था। क्या बदलेगा?"
 				},
 				"payments": {
-					"answer": "Payments go through Creem, which acts as merchant of record and handles sales tax and VAT where they apply. Your card details never reach Margaya.",
-					"question": "Who handles payments and tax?"
+					"answer": "भुगतान Creem के ज़रिए होते हैं, जो मर्चेंट ऑफ़ रिकॉर्ड के रूप में काम करता है और जहाँ लागू हो वहाँ सेल्स टैक्स और VAT सँभालता है। आपके कार्ड की जानकारी कभी Margaya तक नहीं पहुँचती।",
+					"question": "भुगतान और टैक्स कौन सँभालता है?"
 				},
 				"seats": {
-					"answer": "Cloud Team is billed for each member of the workspace. When someone joins or leaves, the seat count on the subscription is updated to match.",
-					"question": "How are Cloud Team members counted?"
+					"answer": "Cloud टीम का बिल वर्कस्पेस के हर सदस्य के लिए बनता है। जब कोई जुड़ता या छोड़ता है, तो सब्सक्रिप्शन में सीटों की संख्या उसी हिसाब से अपडेट हो जाती है।",
+					"question": "Cloud टीम में सदस्यों की गिनती कैसे होती है?"
 				},
 				"selfHostHelp": {
-					"answer": "From the maintainers and the community on GitHub, through discussions and issues. Installation, upgrades and configuration are covered in the documentation.",
-					"question": "Where do self-hosters get help?"
+					"answer": "GitHub पर मेंटेनर्स और कम्युनिटी से, डिस्कशन और इश्यू के ज़रिए। इंस्टॉलेशन, अपग्रेड और कॉन्फ़िगरेशन की जानकारी दस्तावेज़ीकरण में है।",
+					"question": "सेल्फ़-होस्ट करने वालों को मदद कहाँ मिलती है?"
 				},
 				"selfHostLimits": {
-					"answer": "No. The code you install is the code that runs Margaya Cloud, and all of it is MIT licensed. There are no licence keys, seat limits or paid features to unlock.",
-					"question": "Is the self-hosted version missing anything?"
+					"answer": "नहीं। आप जो कोड इंस्टॉल करते हैं, वही कोड Margaya Cloud चलाता है, और वह पूरा MIT लाइसेंस के तहत है। न कोई लाइसेंस कुंजी है, न सीटों की सीमा, न अनलॉक करने के लिए कोई पेड सुविधा।",
+					"question": "क्या सेल्फ़-होस्टेड वर्शन में कुछ कमी है?"
 				},
 				"trial": {
-					"answer": "A new Cloud workspace gets 14 days with everything included, and you don't need a card to start. Before it ends, choose a plan or export your tasks.",
-					"question": "How does the Cloud trial work?"
+					"answer": "नए Cloud वर्कस्पेस को सब कुछ शामिल के साथ 14 दिन मिलते हैं, और शुरू करने के लिए कार्ड की ज़रूरत नहीं होती। ट्रायल ख़त्म होने से पहले कोई प्लान चुनें या अपने कार्य निर्यात कर लें।",
+					"question": "Cloud ट्रायल कैसे काम करता है?"
 				},
 				"yearly": {
-					"answer": "Yes. A year costs the same as ten months, so both Cloud plans come with two months free when you pay yearly.",
-					"question": "Is yearly billing cheaper?"
+					"answer": "हाँ। एक साल की क़ीमत दस महीनों के बराबर है, इसलिए सालाना भुगतान करने पर दोनों Cloud प्लान में दो महीने मुफ़्त मिलते हैं।",
+					"question": "क्या सालाना बिलिंग सस्ती है?"
+				},
+				"ai": {
+					"question": "क्या AI शामिल है?",
+					"answer": "हर प्लान में AI सुविधाएँ हैं: AI से पूछें, बनाएँ मोड, एजेंट और लिखने में मदद। जब तक कोई एडमिन इन्हें चालू नहीं करता, ये बंद रहती हैं। AI का इस्तेमाल कीमत में शामिल नहीं है: आप वर्कस्पेस की AI सेटिंग्स में अपनी API कुंजी जोड़ते हैं, और AI प्रदाता सीधे आपसे शुल्क लेता है। सेल्फ़-होस्टेड इंस्टेंस Ollama या vLLM के ज़रिए आपका अपना चलाया हुआ मॉडल भी इस्तेमाल कर सकते हैं।"
 				}
 			},
-			"title": "Questions about pricing"
+			"title": "मूल्य से जुड़े सवाल"
 		},
 		"interval": {
-			"annual": "Yearly",
-			"label": "Billing period",
-			"monthly": "Monthly",
-			"saving": "2 months free"
+			"annual": "वार्षिक",
+			"label": "बिलिंग अवधि",
+			"monthly": "मासिक",
+			"saving": "2 महीने मुफ़्त"
 		},
-		"metaDescription": "Margaya is free to self-host, forever. Margaya Cloud costs $4 a month for one person or $5 per member a month for teams, with a 14-day free trial.",
+		"metaDescription": "Margaya सेल्फ़-होस्ट करने के लिए हमेशा मुफ़्त है। Margaya Cloud एक व्यक्ति के लिए $4 प्रति माह या टीमों के लिए $5 प्रति सदस्य प्रति माह है, साथ में 14 दिन का मुफ़्त ट्रायल।",
 		"plans": {
 			"personal": {
-				"annualNote": "Works out at {{price}} a month",
-				"annualPeriod": "per year",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month",
-				"monthlyPeriod": "per month",
-				"name": "Cloud Personal",
+				"annualNote": "यानी {{price}} प्रति माह",
+				"annualPeriod": "प्रति वर्ष",
+				"cta": "14 दिन का ट्रायल शुरू करें",
+				"monthlyNote": "हर महीने बिल किया जाता है",
+				"monthlyPeriod": "प्रति माह",
+				"name": "Cloud पर्सनल",
 				"points": {
-					"everything": "Every feature in the self-hosted build",
-					"help": "Support by email",
-					"managed": "Backups and updates handled for you",
-					"one": "One person, unlimited projects and tasks"
+					"everything": "सेल्फ़-होस्टेड बिल्ड की हर सुविधा",
+					"help": "ईमेल से सहायता",
+					"managed": "बैकअप और अपडेट हम सँभालते हैं",
+					"one": "एक व्यक्ति, असीमित प्रोजेक्ट और कार्य"
 				},
-				"tagline": "Managed hosting for one person"
+				"tagline": "एक व्यक्ति के लिए प्रबंधित होस्टिंग"
 			},
 			"selfHosted": {
-				"cta": "Read the install guide",
-				"name": "Self-hosted",
-				"note": "MIT licence. No key, no seat limit.",
-				"period": "forever",
+				"cta": "इंस्टॉल गाइड पढ़ें",
+				"name": "सेल्फ़-होस्टेड",
+				"note": "MIT लाइसेंस। न कुंजी, न सीटों की सीमा।",
+				"period": "हमेशा के लिए",
 				"points": {
-					"data": "Your database, your backups, your rules",
-					"deploy": "Docker on one server, or Helm on Kubernetes",
-					"everything": "Every feature, for as many people as you like",
-					"help": "Community help on GitHub"
+					"data": "आपका डेटाबेस, आपके बैकअप, आपके नियम",
+					"deploy": "एक सर्वर पर Docker, या Kubernetes पर Helm",
+					"everything": "हर सुविधा, जितने चाहें उतने लोगों के लिए",
+					"help": "GitHub पर कम्युनिटी से मदद"
 				},
-				"tagline": "On servers you run"
+				"tagline": "आपके अपने चलाए सर्वर पर"
 			},
 			"team": {
-				"annualNote": "Works out at {{price}} per member a month",
-				"annualPeriod": "per member, per year",
-				"badge": "For teams",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month for each workspace member",
-				"monthlyPeriod": "per member, per month",
-				"name": "Cloud Team",
+				"annualNote": "यानी {{price}} प्रति सदस्य प्रति माह",
+				"annualPeriod": "प्रति सदस्य, प्रति वर्ष",
+				"badge": "टीमों के लिए",
+				"cta": "14 दिन का ट्रायल शुरू करें",
+				"monthlyNote": "हर वर्कस्पेस सदस्य के लिए हर महीने बिल किया जाता है",
+				"monthlyPeriod": "प्रति सदस्य, प्रति माह",
+				"name": "Cloud टीम",
 				"points": {
-					"help": "Priority support by email",
-					"managed": "Backups and updates handled for you",
-					"people": "Everyone in the workspace, unlimited projects",
-					"roles": "Workspace roles and permissions"
+					"help": "ईमेल से प्राथमिकता वाली सहायता",
+					"managed": "बैकअप और अपडेट हम सँभालते हैं",
+					"people": "वर्कस्पेस में हर कोई, असीमित प्रोजेक्ट",
+					"roles": "वर्कस्पेस भूमिकाएँ और अनुमतियाँ"
 				},
-				"tagline": "Managed hosting for a whole team"
+				"tagline": "पूरी टीम के लिए प्रबंधित होस्टिंग"
 			}
 		},
 		"table": {
-			"description": "The features are the same everywhere. What changes is who runs the servers and where you go for help.",
-			"feature": "Feature",
+			"description": "सुविधाएँ हर जगह एक जैसी हैं। फ़र्क़ सिर्फ़ इतना है कि सर्वर कौन चलाता है और मदद के लिए आप कहाँ जाते हैं।",
+			"feature": "सुविधा",
 			"groups": {
-				"connect": "Connect",
-				"planning": "Planning and insight",
-				"running": "Running it",
-				"work": "The work"
+				"connect": "कनेक्ट करें",
+				"planning": "योजना और जानकारी",
+				"running": "संचालन",
+				"work": "काम"
 			},
-			"included": "Included",
-			"notIncluded": "Not included",
+			"included": "शामिल",
+			"notIncluded": "शामिल नहीं",
 			"rows": {
-				"admin": "Instance settings: sign-in providers, email, storage",
-				"analytics": "Analytics and audit log",
-				"api": "REST API, webhooks and MCP",
-				"backups": "Backups",
-				"cycles": "Cycles, modules and estimates",
-				"docs": "Docs written together, next to the tasks",
-				"export": "Export to CSV, Excel or JSON",
-				"hosting": "Where it runs",
-				"intake": "Intake inbox and triage",
-				"integrations": "GitHub, Gitea, Slack, Discord and more",
-				"jira": "Jira import",
-				"people": "People",
-				"projects": "Projects and tasks",
-				"publicBoards": "Public boards with voting",
-				"roles": "Workspace roles and permissions",
-				"support": "Support",
-				"updates": "Updates",
-				"views": "Board, list, spreadsheet, calendar and Gantt views"
+				"admin": "इंस्टेंस सेटिंग: साइन-इन प्रोवाइडर, ईमेल, स्टोरेज",
+				"analytics": "एनालिटिक्स और ऑडिट लॉग",
+				"api": "REST API, वेबहुक और MCP",
+				"backups": "बैकअप",
+				"cycles": "साइकल, मॉड्यूल और अनुमान",
+				"docs": "कार्यों के बगल में मिलकर लिखे गए डॉक्स",
+				"export": "CSV, Excel या JSON में निर्यात",
+				"hosting": "यह कहाँ चलता है",
+				"intake": "इनटेक इनबॉक्स और ट्राइएज",
+				"integrations": "GitHub, Gitea, Slack, Discord और भी बहुत कुछ",
+				"jira": "Jira से आयात",
+				"people": "लोग",
+				"projects": "प्रोजेक्ट और कार्य",
+				"publicBoards": "वोटिंग वाले सार्वजनिक बोर्ड",
+				"roles": "वर्कस्पेस भूमिकाएँ और अनुमतियाँ",
+				"support": "सहायता",
+				"updates": "अपडेट",
+				"views": "बोर्ड, सूची, स्प्रेडशीट, कैलेंडर और गैंट दृश्य",
+				"ai": "AI: AI से पूछें, बनाएँ मोड और एजेंट"
 			},
-			"title": "Compare the plans",
+			"title": "प्लान की तुलना करें",
 			"values": {
-				"automatic": "Automatic",
-				"community": "Community on GitHub",
-				"email": "Email",
-				"eu": "EU data centres",
-				"notNeeded": "Not needed for one",
-				"one": "Just you",
-				"perMember": "Unlimited, billed per member",
-				"priorityEmail": "Priority email",
-				"unlimited": "Unlimited",
-				"yours": "You run them",
-				"yourSchedule": "When you choose",
-				"yourServers": "Your servers"
+				"automatic": "अपने-आप",
+				"community": "GitHub पर कम्युनिटी",
+				"email": "ईमेल",
+				"eu": "EU डेटा सेंटर",
+				"notNeeded": "एक व्यक्ति के लिए ज़रूरी नहीं",
+				"one": "सिर्फ़ आप",
+				"perMember": "असीमित, प्रति सदस्य बिलिंग",
+				"priorityEmail": "प्राथमिकता वाला ईमेल",
+				"unlimited": "असीमित",
+				"yours": "आप ख़ुद सँभालते हैं",
+				"yourSchedule": "जब आप चाहें",
+				"yourServers": "आपके सर्वर",
+				"ownKey": "आपकी अपनी AI कुंजी या मॉडल"
 			}
 		},
-		"title": "One product. Two ways to run it.",
-		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+		"title": "एक प्रोडक्ट। चलाने के दो तरीक़े।",
+		"trialNote": "Cloud प्लान 14 दिन के ट्रायल से शुरू होते हैं। शुरू करने के लिए कार्ड की ज़रूरत नहीं।"
 	},
 	"templates": {
 		"form": {
@@ -10154,7 +10004,6 @@
 			},
 			"chat": {
 				"planLabel": "प्रस्तावित बदलाव",
-				"planning": "बदलावों की योजना बन रही है…",
 				"nothing": "इस अनुरोध के लिए बदलने को कुछ नहीं है।",
 				"awaiting": "जवाब का इंतज़ार",
 				"ready": "तैयार बदलाव: {{count}}। जारी रखने के लिए पुष्टि करें।",
@@ -10700,11 +10549,7 @@
 			"retro": "रेट्रोस्पेक्टिव",
 			"my_brief": "मेरा ब्रीफ़",
 			"embedding": "खोज इंडेक्सिंग",
-			"coding_handoff": "कोडिंग एजेंट के लिए ब्रीफ़",
-			"build_chat": "चैट में बनाएँ",
-			"nl_filter": "सामान्य भाषा में फ़िल्टर",
-			"inbox_digest": "इनबॉक्स सारांश",
-			"speech": "वाक् से पाठ"
+			"coding_handoff": "कोडिंग एजेंट के लिए ब्रीफ़"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -10846,7 +10691,9 @@
 			"speechFormat": "API फ़ॉर्मैट",
 			"speechFormatHint": "ऑडियो कैसे भेजा जाता है। Fish Audio के लिए एंडपॉइंट के रूप में https://api.fish.audio/v1/asr उपयोग करें।",
 			"speechFormatOpenai": "OpenAI-संगत",
-			"speechModelHint": "Fish Audio के लिए: transcribe-1-pro या transcribe-1, या इसे खाली छोड़ दें।"
+			"speechModelHint": "Fish Audio के लिए: transcribe-1-pro या transcribe-1, या इसे खाली छोड़ दें।",
+			"storePrompts": "प्रॉम्प्ट और जवाब रखें",
+			"storePromptsHint": "एजेंट अनुरोधों का टेक्स्ट और मॉडल ने जो लिखा, उसे हर रन के लॉग में रखें। बंद: रन सिर्फ़ गिनती, चरण और अपना सारांश रखते हैं। यह अब से खत्म होने वाले रन पर लागू होता है। कोई वर्कस्पेस सर्वर पर जो Ask इतिहास रखता है, उसका अपना स्विच है।"
 		},
 		"workspace": {
 			"navLabel": "AI",
@@ -10924,7 +10771,8 @@
 			"storeConversations": "चैट इतिहास सर्वर पर रखें",
 			"storeConversationsHint": "हर व्यक्ति की बातचीत वर्कस्पेस में सहेजी जाती है ताकि वह उसे किसी भी डिवाइस पर फिर से खोल सके। बंद: बातचीत सिर्फ़ हर ब्राउज़र में रहती है।",
 			"allowAutopilot": "ऑटोपायलट की अनुमति दें",
-			"allowAutopilotHint": "बनाएँ मोड बिना पुष्टि के बदलाव लागू कर सकता है। हर बदलाव फिर भी दर्ज होता है और पूर्ववत किया जा सकता है।"
+			"allowAutopilotHint": "बनाएँ मोड बिना पुष्टि के बदलाव लागू कर सकता है। हर बदलाव फिर भी दर्ज होता है और पूर्ववत किया जा सकता है।",
+			"storesPrompts": "प्रॉम्प्ट रखे जाते हैं"
 		},
 		"agents": {
 			"navLabel": "एजेंट",
@@ -11128,11 +10976,13 @@
 					"manual": "किसी कार्य से चलाया गया",
 					"schedule": "शेड्यूल किया गया",
 					"automation": "ऑटोमेशन",
-					"chat": "आगे की बातचीत"
+					"chat": "आगे की बातचीत",
+					"intake": "इनटेक अनुरोध"
 				},
 				"project": "प्रोजेक्ट:",
 				"workedSeconds": "{{count}} सेकंड काम किया",
-				"workedMinutes": "{{count}} मिनट काम किया"
+				"workedMinutes": "{{count}} मिनट काम किया",
+				"request": "अनुरोध"
 			},
 			"connectors": {
 				"title": "कनेक्टर",
@@ -11274,6 +11124,27 @@
 					"schedule": "शेड्यूल",
 					"automation": "ऑटोमेशन"
 				}
+			},
+			"intakeTrigger": {
+				"open": "{{name}} के लिए नए इनटेक अनुरोध",
+				"badge": "इनटेक",
+				"title": "इनटेक अनुरोध: {{name}}",
+				"hint": "एजेंट को उसके प्रोजेक्ट्स में हर नए इनटेक अनुरोध पर चलाएँ, जैसे उसे छाँटने के लिए। इसके बदलाव दूसरे रन जैसे ही स्वीकृति और पूर्ववत नियमों का पालन करते हैं।",
+				"enabled": "नए इनटेक अनुरोधों पर चलाएँ",
+				"enabledHint": "सिर्फ़ उन प्रोजेक्ट्स में जहाँ इनटेक और AI चालू हैं, और एजेंट के प्रोजेक्ट्स के भीतर।",
+				"prompt": "इसे क्या करना चाहिए?",
+				"promptPlaceholder": "उदाहरण: प्राथमिकता और लेबल सुझाएँ, और डुप्लिकेट बताएँ।",
+				"promptHint": "छाँटने के लिए खाली छोड़ें: एक छोटी टिप्पणी कि अनुरोध क्या माँगता है, कितना ज़रूरी लगता है और क्या कमी है।",
+				"runsAs": "{{name}} की ओर से चलता है। ट्रिगर चालू रखकर सहेजने पर आप वह व्यक्ति बन जाते हैं।",
+				"runsAsYou": "चालू करते ही आपकी ओर से, अधिकतम आपके अधिकारों के साथ चलता है। अगर आप वर्कस्पेस छोड़ते हैं या AI या इनटेक की पहुँच खो देते हैं, तो यह बंद हो जाता है।",
+				"outsideNote": "वर्कस्पेस के बाहर से आए अनुरोध (सार्वजनिक बोर्ड, फ़ॉर्म) स्वीकृति के बिना कभी कुछ नहीं बदलते।",
+				"limitNote": "हर एजेंट के लिए प्रति घंटे अधिकतम 30 इनटेक रन। एजेंटों के दर्ज किए अनुरोध कुछ शुरू नहीं करते।",
+				"saved": "इनटेक ट्रिगर सहेजा गया",
+				"saveError": "इनटेक ट्रिगर सहेजा नहीं जा सका। फिर से कोशिश करें।",
+				"errors": {
+					"forbidden": "इनटेक रन आपकी ओर से काम करते हैं, इसलिए आपको AI पहुँच और इनटेक अनुरोध पढ़ने की अनुमति चाहिए।",
+					"AGENT_CANT_READ_INTAKE": "इस एजेंट की भूमिका इनटेक अनुरोध नहीं पढ़ सकती। इसे ऐसी भूमिका दें जो पढ़ सके।"
+				}
 			}
 		},
 		"capture": {
@@ -11356,8 +11227,8 @@
 			"timelineLabel": "कोडिंग एजेंट की प्रगति",
 			"sentBy": "{{name}} ने {{profile}} को भेजा",
 			"sentByUnknown": "{{profile}} को भेजा गया",
-			"issueLink": "Issue #{{number}}",
-			"prLink": "Pull request #{{number}}",
+			"issueLink": "इश्यू #{{number}}",
+			"prLink": "पुल अनुरोध #{{number}}",
 			"pending": "अभी नहीं",
 			"steps": {
 				"issue_created": "Issue बना",
@@ -11503,7 +11374,6 @@
 			"unmeasured_other": "{{count}} कार्यों की शुरुआत दर्ज नहीं है, इसलिए उन्हें छोड़ दिया गया।"
 		},
 		"capacity": {
-			"meter": "सामान्य चक्र की तुलना में योजनाबद्ध काम",
 			"within": "सामान्य चक्र के {{percent}}% पर योजना",
 			"over": "क्षमता से अधिक: सामान्य चक्र के {{percent}}% पर योजना",
 			"noDates": "क्षमता जाँचने के लिए चक्र की तारीख़ें सेट करें।",
@@ -11610,6 +11480,146 @@
 			"emailTitle": "मेरा ब्रीफ़ डाइजेस्ट में जोड़ें",
 			"emailDescription": "डाइजेस्ट में आपके रुके हुए कार्य और आपके फ़ॉलो किए कार्यों में बदलाव भी दिखेंगे। दैनिक या साप्ताहिक डाइजेस्ट ज़रूरी है।",
 			"emailError": "यह सेटिंग सहेजी नहीं जा सकी।"
+		}
+	},
+	"emails": {
+		"otp": {
+			"preview": "आपका Margaya सत्यापन कोड",
+			"title": "आपका सत्यापन कोड",
+			"subtitle": "साइन इन पूरा करने के लिए यह एक-बार वाला कोड दर्ज करें।",
+			"verifySubtitle": "अपना ईमेल पता सत्यापित करने के लिए यह एक-बार वाला कोड दर्ज करें।",
+			"changeSubtitle": "इस पते को अपने Margaya खाते के नए ईमेल पते के रूप में पुष्टि करने के लिए यह एक-बार वाला कोड दर्ज करें।",
+			"code": "आपका Margaya सत्यापन कोड है।",
+			"expiry": "यह कोड {{minutes}} मिनट में समाप्त हो जाएगा।",
+			"ignore": "अगर आपने इसका अनुरोध नहीं किया था, तो आप इस ईमेल को अनदेखा कर सकते हैं।",
+			"footer": "Margaya सुरक्षा ईमेल"
+		},
+		"magicLink": {
+			"preview": "Margaya में साइन इन करें",
+			"title": "आपका सुरक्षित साइन-इन लिंक",
+			"subtitle": "अपने Margaya वर्कस्पेस पर जाने के लिए इस लिंक का उपयोग करें।",
+			"cta": "Margaya में साइन इन करें",
+			"expiry": "आपकी सुरक्षा के लिए, यह लिंक 5 मिनट में समाप्त हो जाएगा।",
+			"ignore": "अगर आपने इसका अनुरोध नहीं किया था, तो आप इस ईमेल को अनदेखा कर सकते हैं।",
+			"footer": "Margaya सुरक्षा ईमेल"
+		},
+		"passwordReset": {
+			"preview": "अपना Margaya पासवर्ड रीसेट करें",
+			"title": "अपना पासवर्ड रीसेट करें",
+			"subtitleWithName": "नमस्ते {{name}}, नया पासवर्ड सेट करने के लिए नीचे दिए गए बटन का उपयोग करें।",
+			"subtitleDefault": "नया पासवर्ड सेट करने के लिए नीचे दिए गए बटन का उपयोग करें।",
+			"cta": "पासवर्ड रीसेट करें",
+			"expiry": "यह रीसेट लिंक 1 घंटे में समाप्त हो जाएगा।",
+			"ignore": "अगर आपने इसका अनुरोध नहीं किया था, तो कोई बदलाव नहीं किया जाएगा।",
+			"footer": "Margaya सुरक्षा ईमेल"
+		},
+		"emailChanged": {
+			"preview": "आपका Margaya ईमेल पता बदल दिया गया है",
+			"title": "आपका ईमेल पता बदल दिया गया है",
+			"body": "आपके Margaya खाते का ईमेल पता अब {{email}} है। अब से साइन-इन लिंक, कोड और सूचनाएँ इसी पते पर भेजी जाएँगी।",
+			"warning": "अगर यह बदलाव आपने नहीं किया है, तो तुरंत अपने Margaya व्यवस्थापक से संपर्क करें।",
+			"footer": "Margaya सुरक्षा ईमेल"
+		},
+		"authSubjects": {
+			"magicLinkSubject": "Margaya साइन-इन लिंक",
+			"otpSubject": "Margaya सत्यापन कोड",
+			"verifyEmailSubject": "Margaya के लिए अपना ईमेल सत्यापित करें",
+			"passwordResetSubject": "अपना Margaya पासवर्ड रीसेट करें",
+			"changeEmailSubject": "Margaya के लिए अपने नए ईमेल की पुष्टि करें",
+			"emailChangedSubject": "आपका Margaya ईमेल पता बदल दिया गया है"
+		},
+		"notification": {
+			"preview": "आपके लिए Margaya की एक नई सूचना है",
+			"subtitle": "एक सूचना आपकी डिलीवरी प्राथमिकताओं से मेल खाती है।",
+			"footer": "Margaya सूचना",
+			"actionLabel": "Margaya में खोलें"
+		},
+		"notificationBatch": {
+			"preview": "Margaya के आपके हाल के अपडेट",
+			"title_one": "{{count}} नया अपडेट",
+			"title_other": "{{count}} नए अपडेट",
+			"subtitle": "पिछले ईमेल के बाद से आपके कार्यों में हुए बदलाव, एक साथ।",
+			"by": "बदलाव करने वाले:",
+			"open": "कार्य खोलें",
+			"manage": "सूचना सेटिंग प्रबंधित करें",
+			"footer": "Margaya सूचना"
+		},
+		"notificationDigest": {
+			"title": {
+				"daily": "आपका दैनिक सारांश",
+				"weekly": "आपका साप्ताहिक सारांश"
+			},
+			"preview": "आपका Margaya सारांश",
+			"subtitle": "आपके खुले कार्य जो समय-सीमा पार कर चुके हैं या 7 दिनों के भीतर नियत हैं, और आपके इनबॉक्स में क्या नया है।",
+			"dueHeading": "जल्द नियत और समय-सीमा पार",
+			"overdue": "समय-सीमा पार",
+			"due": "नियत",
+			"more_one": "और {{count}} अन्य",
+			"more_other": "और {{count}} अन्य",
+			"mentionsHeading_one": "{{count}} नया उल्लेख",
+			"mentionsHeading_other": "{{count}} नए उल्लेख",
+			"unread_one": "आपके इनबॉक्स में {{count}} अपठित सूचना",
+			"unread_other": "आपके इनबॉक्स में {{count}} अपठित सूचनाएँ",
+			"openInbox": "इनबॉक्स खोलें",
+			"manage": "सूचना सेटिंग प्रबंधित करें",
+			"footer": "आपने यह सारांश पाने का विकल्प चुना है।",
+			"blockedHeading": "रुके हुए",
+			"waitingOn": "{{keys}} की प्रतीक्षा",
+			"hiddenBlockers_one": "{{count}} कार्य जिसे आप नहीं देख सकते",
+			"hiddenBlockers_other": "{{count}} कार्य जिन्हें आप नहीं देख सकते",
+			"followingHeading": "आपके फ़ॉलो किए कार्यों में बदलाव",
+			"changes_one": "{{count}} बदलाव",
+			"changes_other": "{{count}} बदलाव"
+		},
+		"batchSubject": {
+			"task_one": "{{title}} पर {{count}} अपडेट",
+			"task_other": "{{title}} पर {{count}} अपडेट",
+			"all_one": "Margaya में {{count}} अपडेट",
+			"all_other": "Margaya में {{count}} अपडेट"
+		},
+		"digestSubject": {
+			"daily": "आपका दैनिक Margaya सारांश",
+			"weekly": "आपका साप्ताहिक Margaya सारांश"
+		},
+		"workspaceDeletion": {
+			"fallbackName": "एक वर्कस्पेस",
+			"openWorkspace": "वर्कस्पेस खोलें",
+			"scheduledSubject": "{{name}} को हटाने का समय तय किया गया है",
+			"scheduledTitle": "{{name}} को {{date}} को हटा दिया जाएगा",
+			"scheduledTitleNoDate": "{{name}} को जल्द ही हटा दिया जाएगा",
+			"scheduledMessage": "मालिक ने इस वर्कस्पेस को हटाने का समय तय किया है। {{date}} तक यह केवल पढ़ने के लिए है: आप अब भी इसकी सामग्री खोल और एक्सपोर्ट कर सकते हैं, और मालिक इसे हटाना रद्द कर सकता है। उस तारीख के बाद इसके प्रोजेक्ट, कार्य और पेज स्थायी रूप से हटा दिए जाएँगे।",
+			"scheduledMessageNoDate": "मालिक ने इस वर्कस्पेस को हटाने का समय तय किया है। हटाए जाने तक यह केवल पढ़ने के लिए है: आप अब भी इसकी सामग्री खोल और एक्सपोर्ट कर सकते हैं, और मालिक इसे हटाना रद्द कर सकता है। उसके बाद इसके प्रोजेक्ट, कार्य और पेज स्थायी रूप से हटा दिए जाएँगे।",
+			"cancelledSubject": "{{name}} नहीं हटाया जाएगा",
+			"cancelledTitle": "{{name}} वापस आ गया है",
+			"cancelledMessage": "मालिक ने तय किया गया हटाना रद्द कर दिया है। वर्कस्पेस अब केवल पढ़ने के लिए नहीं है, और इसकी API कुंजियाँ और webhooks फिर से काम करते हैं।"
+		},
+		"webhookDisabled": {
+			"subject": "Margaya का एक वेबहुक अक्षम कर दिया गया",
+			"title": "वेबहुक अक्षम किया गया",
+			"message": "{{host}} पर डिलीवरी एक दिन से ज़्यादा समय तक बार-बार विफल रही, इसलिए Margaya ने वेबहुक को अक्षम कर दिया। एंडपॉइंट ठीक करें, फिर वर्कस्पेस सेटिंग में वेबहुक को दोबारा सक्षम करें।",
+			"messageNoHost": "एंडपॉइंट पर डिलीवरी एक दिन से ज़्यादा समय तक बार-बार विफल रही, इसलिए Margaya ने वेबहुक को अक्षम कर दिया। एंडपॉइंट ठीक करें, फिर वर्कस्पेस सेटिंग में वेबहुक को दोबारा सक्षम करें।",
+			"actionLabel": "वेबहुक सेटिंग खोलें"
+		},
+		"trialReminder": {
+			"endedTitle": "{{workspaceName}} का ट्रायल समाप्त हो गया है",
+			"daysLeftTitle_one": "{{workspaceName}} के ट्रायल में {{count}} दिन बाक़ी है",
+			"daysLeftTitle_other": "{{workspaceName}} के ट्रायल में {{count}} दिन बाक़ी हैं",
+			"endedSubtitle": "जब तक आप कोई प्लान नहीं चुनते, आपका वर्कस्पेस केवल पढ़ने के लिए रहेगा। कुछ भी हटाया नहीं गया है, और आपका डेटा अब भी मौजूद है।",
+			"activeSubtitle": "ट्रायल समाप्त होने के बाद भी बनाते और संपादित करते रहने के लिए कोई प्लान चुनें।",
+			"cta": "प्लान चुनें",
+			"selfHost": "अगर आप Margaya को ख़ुद होस्ट करते हैं, तो यह हमेशा के लिए मुफ़्त है और इसमें हर सुविधा शामिल है। आप कभी भी अपना डेटा एक्सपोर्ट करके अपने सर्वर पर ले जा सकते हैं।",
+			"footer": "आपको यह ईमेल इसलिए मिला है क्योंकि Margaya Cloud पर यह वर्कस्पेस आपका है।"
+		},
+		"trialSubjects": {
+			"trialEnding": "{{workspaceName}} का ट्रायल 3 दिन में समाप्त हो रहा है",
+			"trialExpired": "{{workspaceName}} का ट्रायल समाप्त हो गया है"
+		},
+		"testEmail": {
+			"subject": "{{instanceName}} से टेस्ट ईमेल",
+			"text": "यह {{instanceName}} से भेजा गया एक टेस्ट ईमेल है। अगर आप इसे पढ़ पा रहे हैं, तो ईमेल भेजना काम कर रहा है।"
+		},
+		"notificationText": {
+			"commentWithoutPreview": "{{taskTitle}} पर नई टिप्पणी"
 		}
 	}
 }

@@ -10,16 +10,10 @@
 			"markAllRead": "Позначити все як прочитане",
 			"remove": "Прибрати",
 			"reset": "Скинути",
-			"filter": "Фільтр",
-			"clearAllFilters": "Очистити всі фільтри",
 			"undo": "Скасувати"
 		},
 		"a11y": {
 			"toggleSidebar": "Перемикач бічної панелі"
-		},
-		"sidebar": {
-			"title": "Бічна панель",
-			"mobileDescription": "Відображає мобільну бічну панель."
 		},
 		"empty": {
 			"loading": "Завантаження..."
@@ -36,29 +30,12 @@
 			"label": "Навігаційна стежка",
 			"more": "Більше"
 		},
-		"language": {
-			"english": "Англійська",
-			"german": "Німецька",
-			"greek": "Грецька",
-			"macedonian": "Македонська",
-			"french": "Французька",
-			"spanish": "Іспанська",
-			"dutch": "Нідерландська",
-			"korean": "Корейська",
-			"chinese": "Китайська",
-			"italian": "Італійська"
-		},
 		"people": {
 			"someone": "Хтось",
 			"unknown": "Невідомо"
 		},
 		"error": {
 			"title": "Щось пішло не так",
-			"troubleshooting": "Кроки для усунення проблеми:",
-			"tryAgain": "Спробувати ще раз",
-			"viewDeploymentGuide": "Відкрити посібник із розгортання",
-			"refreshPage": "Оновити сторінку",
-			"description": "Сторінка несподівано завершилася з помилкою. Оновлення сторінки зазвичай допомагає.",
 			"messages": {
 				"auth": "Не вдалося виконати автентифікацію. Будь ласка, увійдіть знову.",
 				"cors": "Не вдалося підключитися до сервера. Можливо, це пов'язано з проблемами налаштування CORS.",
@@ -97,7 +74,6 @@
 				"keyLabel": "Ключ:",
 				"keyHint": "Використовується для ID тікетів (напр., {{example}}-123)",
 				"createButton": "Створити проєкт",
-				"successToast": "Проєкт успішно створено",
 				"errorToast": "Не вдалося створити проєкт",
 				"keyTaken": "Проєкт із ключем {{key}} вже існує в цьому робочому просторі",
 				"blankProject": "Порожній проєкт",
@@ -132,7 +108,6 @@
 				"successUpdated": "Завдання успішно оновлено",
 				"createError": "Не вдалося створити завдання",
 				"priority": "Пріоритет",
-				"statusFallback": "В роботі",
 				"startDate": "Дата початку",
 				"dueDate": "Дата завершення",
 				"clearStartDate": "Очистити дату початку",
@@ -331,7 +306,6 @@
 			"namePlaceholder": "Іван Петренко",
 			"failedSignUp": "Не вдалося зареєструватися",
 			"accountCreated": "Обліковий запис успішно створено",
-			"passwordTooShort": "Пароль занадто короткий",
 			"creatingAccount": "Створення облікового запису...",
 			"createAccount": "Створити обліковий запис"
 		},
@@ -345,7 +319,6 @@
 			"invitationExpired": "Термін дії запрошення минув",
 			"errorLoadDescription": "Не вдалося завантажити деталі запрошення. Запрошення може бути недійсним або простроченим.",
 			"goToSignIn": "Перейти до входу",
-			"workspaceLabel": "Робочий простір: {{workspaceName}}",
 			"joinWorkspace": "Приєднатися до {{workspaceName}}",
 			"inviteBodySignedIn": "<inviter>{{inviterName}}</inviter> запросив вас приєднатися до свого робочого простору.",
 			"inviteBodySignedOut": "<inviter>{{inviterName}}</inviter> запросив вас приєднатися до свого робочого простору в Margaya.",
@@ -375,7 +348,6 @@
 			"creating": "Створення...",
 			"createWorkspace": "Створити робочий простір",
 			"workspaceCreatedTitle": "Робочий простір створено",
-			"redirectingToWorkspace": "Переходимо до <name>{{name}}</name>...",
 			"toast": {
 				"workspaceCreated": "Робочий простір успішно створено",
 				"createFailed": "Не вдалося створити робочий простір",
@@ -439,8 +411,6 @@
 			"namePlaceholder": "напр. Іван Петренко",
 			"saving": "Збереження...",
 			"continue": "Продовжити",
-			"welcome": "Ласкаво просимо, {{name}}!",
-			"redirecting": "Переходимо до вашої панелі керування...",
 			"toast": {
 				"updateSuccess": "Профіль успішно оновлено",
 				"updateFailed": "Не вдалося оновити профіль"
@@ -541,7 +511,6 @@
 	},
 	"settings": {
 		"account": "Обліковий запис",
-		"developer": "Розробник",
 		"information": "Інформація",
 		"notifications": "Сповіщення",
 		"preferences": "Налаштування",
@@ -653,23 +622,7 @@
 			"noProjectsInWorkspace": "У цьому робочому просторі ще немає доступних проєктів.",
 			"createRule": "Створити правило",
 			"removeRule": "Видалити правило",
-			"toastEmailSaved": "Налаштування сповіщень електронною поштою збережено",
-			"toastEmailSaveFailed": "Не вдалося зберегти налаштування пошти",
-			"toastNtfySaved": "Налаштування ntfy збережено",
-			"toastNtfySaveFailed": "Не вдалося зберегти налаштування ntfy",
-			"toastNtfyDisconnected": "ntfy від'єднано",
-			"toastNtfyDisconnectFailed": "Не вдалося від'єднати ntfy",
-			"toastGotifySaved": "Налаштування Gotify збережено",
-			"toastGotifySaveFailed": "Не вдалося зберегти налаштування Gotify",
-			"toastGotifyDisconnected": "Gotify від'єднано",
-			"toastGotifyDisconnectFailed": "Не вдалося від'єднати Gotify",
-			"toastWebhookSaved": "Налаштування вебхука збережено",
-			"toastWebhookSaveFailed": "Не вдалося зберегти налаштування вебхука",
-			"toastWebhookDisconnected": "Вебхук від'єднано",
-			"toastWebhookDisconnectFailed": "Не вдалося від'єднати вебхук",
-			"toastRuleSaved": "Правило сповіщень для {{workspaceName}} збережено",
 			"toastRuleSaveFailed": "Не вдалося зберегти правило сповіщень робочого простору",
-			"toastRuleRemoved": "Правило сповіщень для {{workspaceName}} видалено",
 			"toastRuleRemoveFailed": "Не вдалося видалити правило сповіщень робочого простору",
 			"toastPreferencesSaved": "Налаштування сповіщень збережено",
 			"toastPreferencesSaveFailed": "Не вдалося зберегти налаштування сповіщень",
@@ -739,7 +692,6 @@
 			"selectViewMode": "Обрати режим перегляду",
 			"board": "Дошка",
 			"list": "Список",
-			"gantt": "Ґант",
 			"sidebarDefault": "Бічна панель за замовчуванням",
 			"sidebarDefaultDescription": "Тримати бічну панель розгорнутою при запуску",
 			"displayOptions": "Параметри відображення",
@@ -844,14 +796,8 @@
 			"dangerZone": "Небезпечна зона",
 			"dangerZoneSubtitle": "Незворотні та руйнівні дії.",
 			"deleteWorkspace": "Видалити робочий простір",
-			"deleteWorkspaceDescription": "Запланувати остаточне видалення робочого простору",
-			"deleteModalTitle": "Видалити робочий простір?",
-			"deleteModalDescription": "Це назавжди видалить робочий простір «{{name}}» та всі його дані. Цю дію неможливо скасувати.",
-			"deleteModalConfirm": "Видалити робочий простір",
 			"toastUpdated": "Робочий простір успішно оновлено",
 			"toastUpdateError": "Не вдалося оновити робочий простір",
-			"toastDeleted": "Робочий простір успішно видалено",
-			"toastDeleteError": "Не вдалося видалити робочий простір",
 			"validation": {
 				"nameRequired": "Назва робочого простору є обов'язковою",
 				"nameShort": "Назва робочого простору має містити щонайменше 2 символи"
@@ -950,21 +896,6 @@
 			"mattermostSectionTitle": "Інтеграція з Mattermost",
 			"chatGroupTitle": "Чати та вебхуки",
 			"codeGroupTitle": "Хостинг коду"
-		},
-		"projectVisibility": {
-			"pageTitle": "Видимість проєкту",
-			"title": "Видимість",
-			"subtitle": "Контролюйте, хто може переглядати ваш проєкт та мати до нього доступ.",
-			"sectionTitle": "Видимість",
-			"sectionSubtitle": "Перемикайте публічний доступ та поширюйте публічне посилання.",
-			"publicAccess": "Публічний доступ",
-			"publicAccessHint": "Дозволити перегляд цього проєкту всім, хто має посилання",
-			"publicUrl": "Публічне посилання",
-			"publicUrlHint": "Поділіться цим посиланням, якщо проєкт публічний",
-			"copy": "Копіювати",
-			"copiedToast": "Скопійовано",
-			"toastUpdated": "Видимість оновлено",
-			"toastUpdateError": "Не вдалося оновити видимість"
 		},
 		"projectWorkflow": {
 			"pageTitle": "Налаштування робочого процесу",
@@ -1182,7 +1113,6 @@
 			},
 			"connect": "Підключити Slack",
 			"saveChanges": "Зберегти зміни",
-			"update": "Оновити Slack",
 			"disconnect": "Від'єднати"
 		},
 		"discordIntegration": {
@@ -1220,7 +1150,6 @@
 			},
 			"connect": "Підключити Discord",
 			"saveChanges": "Зберегти зміни",
-			"update": "Оновити Discord",
 			"disconnect": "Від'єднати"
 		},
 		"genericWebhookIntegration": {
@@ -1337,9 +1266,7 @@
 			"exportTasks": "Експортувати завдання",
 			"importTasks": "Імпортувати завдання",
 			"dialogTitle": "Імпорт завдань",
-			"dialogDescription": "Завантажте JSON-файл із завданнями для імпорту до цього проєкту.",
 			"expectedFormat": "Очікуваний формат:",
-			"dropHint": "Перетягніть ваш JSON-файл сюди",
 			"selectFile": "Вибрати файл",
 			"exporting": "Експорт завдань...",
 			"exportSuccess": "Завдання успішно експортовано",
@@ -1350,7 +1277,6 @@
 			"importError": "Не вдалося імпортувати завдання",
 			"invalidFormat": "Невірний формат файлу імпорту",
 			"noFileDropped": "Файл не було перетягнуто",
-			"notJsonFile": "Завантажте JSON-файл",
 			"exportCsv": "CSV (таблиця)",
 			"exportJson": "JSON (для повторного імпорту)",
 			"exportStarted": "Експорт запущено. Його можна знайти в розділі «Налаштування робочого простору» → «Експорт».",
@@ -2060,7 +1986,6 @@
 				"saveError": "Не вдалося зберегти інтеграцію з Mattermost",
 				"updateError": "Не вдалося оновити інтеграцію з Mattermost"
 			},
-			"update": "Оновити Mattermost",
 			"validation": {
 				"webhookInvalid": "Введіть коректний URL вебхука Mattermost"
 			},
@@ -2072,13 +1997,11 @@
 			"addButton": "Додати",
 			"createError": "Не вдалося створити власне поле.",
 			"createSuccess": "Власне поле створено.",
-			"creating": "Створення...",
 			"defaultLabel": "За замовчуванням",
 			"defaultValuePlaceholder": "Значення за замовчуванням",
 			"deleteButton": "Видалити",
 			"deleteError": "Не вдалося видалити власне поле.",
 			"deleteSuccess": "Власне поле видалено.",
-			"deleting": "Видалення...",
 			"empty": "Власні поля ще не налаштовано.",
 			"loading": "Завантаження власних полів...",
 			"namePlaceholder": "Назва поля",
@@ -2497,7 +2420,7 @@
 					"status": "Статус",
 					"summary": "Підсумок"
 				},
-				"durationValue": "{{ms}} ms",
+				"durationValue": "{{ms}} мс",
 				"emptyDescription": "Надішліть тестову подію, щоб перевірити кінцеву точку.",
 				"emptyTitle": "Доставок поки немає",
 				"filterEvent": "Подія",
@@ -3034,7 +2957,9 @@
 				"agentScheduleDisabled": "Вимкнув(-ла) розклад агента",
 				"aiConnectorCreated": "Додав(-ла) MCP-конектор",
 				"aiConnectorUpdated": "Змінив(-ла) MCP-конектор",
-				"aiConnectorDeleted": "Видалив(-ла) MCP-конектор"
+				"aiConnectorDeleted": "Видалив(-ла) MCP-конектор",
+				"agentIntakeTriggerUpdated": "Змінив(ла) тригер прийому агента",
+				"agentIntakeTriggerDisabled": "Вимкнув(ла) тригер прийому агента"
 			},
 			"actor": {
 				"apiKey": "API-ключ",
@@ -3383,8 +3308,7 @@
 			"empty": "Нічого не знайдено.",
 			"footer": {
 				"navigate": "Навігація",
-				"open": "Відкрити",
-				"close": "Закрити"
+				"open": "Відкрити"
 			},
 			"goToInbox": "Перейти до вхідних",
 			"newView": "Новий перегляд",
@@ -3411,11 +3335,10 @@
 			},
 			"recent": "Нещодавні",
 			"removeScope": "Шукати скрізь",
-			"scope": "In"
+			"scope": "У"
 		},
 		"notifications": "Сповіщення",
 		"sidebar": {
-			"overview": "Огляд",
 			"projects": "Проєкти",
 			"members": "Учасники",
 			"invitations": "Запрошення",
@@ -3423,12 +3346,9 @@
 			"backToBoard": "Назад до дошки",
 			"favorites": "Обране",
 			"allTasks": "Усі завдання",
-			"inbox": "Вхідні",
 			"myWork": "Ваша робота",
 			"home": "Головна",
-			"personal": "Особисте",
 			"stickies": "Стікери",
-			"analytics": "Аналітика",
 			"drafts": "Чернетки"
 		},
 		"projectList": {
@@ -3456,10 +3376,6 @@
 				"page": "Сторінки"
 			}
 		},
-		"settingsLayout": {
-			"toggleSidebar": "Перемикач бічної панелі",
-			"back": "Назад"
-		},
 		"userMenu": {
 			"signedOutSuccess": "Вихід виконано успішно",
 			"signOutFailed": "Не вдалося вийти",
@@ -3472,13 +3388,11 @@
 		"workspaceSwitcher": {
 			"workspaces": "Робочі простори",
 			"switching": "Перемикання...",
-			"addWorkspace": "Додати робочий простір",
-			"selectWorkspace": "Обрати робочий простір"
+			"addWorkspace": "Додати робочий простір"
 		},
 		"page": {
 			"projectsTitle": "Проєкти",
 			"settingsTitle": "Налаштування",
-			"backToWorkspace": "Назад до робочого простору",
 			"settingsWorkspaceTab": "Робочий простір",
 			"settingsInstanceTab": "Інстанс",
 			"settingsNotFoundBack": "Налаштування облікового запису",
@@ -3508,7 +3422,6 @@
 			"items": {
 				"openCommandPalette": "Відкрити командну палітру",
 				"globalSearch": "Глобальний пошук",
-				"toggleSidebar": "Перемикач бічної панелі",
 				"showShortcuts": "Показати гарячі клавіші",
 				"closeModal": "Закрити модальне/спливаюче вікно",
 				"createTask": "Створити завдання",
@@ -3617,18 +3530,11 @@
 	},
 	"notifications": {
 		"title": "Сповіщення",
-		"newCount_one": "{{count}} нове",
-		"newCount_few": "{{count}} нових",
-		"newCount_many": "{{count}} нових",
-		"newCount_other": "{{count}} нових",
-		"emptyTitle": "Сповіщень ще немає",
-		"emptySubtitle": "Тут з'являтимуться оновлення та активність.",
 		"clearAll": "Очистити всі сповіщення",
 		"clearDialogTitle": "Очистити всі сповіщення?",
 		"clearDialogDescription": "Це назавжди видалить усі сповіщення. Цю дію неможливо скасувати.",
 		"shortcuts": {
-			"open": "Відкрити сповіщення",
-			"inbox": "Відкрити вхідні"
+			"open": "Відкрити сповіщення"
 		},
 		"events": {
 			"task_created": {
@@ -3795,7 +3701,6 @@
 				"fiveDays": "5 днів",
 				"oneDay": "1 день",
 				"oneWeek": "1 тиждень",
-				"pickDate": "Виберіть дату",
 				"pickTime": "Виберіть час",
 				"submit": "Відкласти",
 				"threeDays": "3 дні",
@@ -4207,7 +4112,6 @@
 				"recurredToScheduled": "Наступне повторення створено за розкладом: <task>{{task}}</task>"
 			}
 		},
-		"title": "Завдання",
 		"status": {
 			"label": "Статус",
 			"to-do": "До виконання",
@@ -4446,7 +4350,6 @@
 			"labels": "Мітки",
 			"copyTaskLink": "Копіювати посилання на завдання",
 			"copyTaskBranch": "Копіювати гілку завдання",
-			"start": "Початок",
 			"startDate": "Дата початку",
 			"noDate": "Немає дати",
 			"addLabel": "Додати мітку",
@@ -4512,22 +4415,11 @@
 			"moveAllTooltip": "Перемістити всі заплановані до «{{column}}»",
 			"moveAll": "Перемістити всі",
 			"addTask": "Додати завдання",
-			"filter": "Фільтр",
-			"addFilter": "Додати фільтр...",
 			"sections": {
 				"planned": "Заплановані",
 				"archived": "Архівовані"
 			},
-			"noTasksInSection": "Немає завдань у розділі «{{section}}»",
-			"filters": {
-				"priority": "Пріоритет: {{name}}",
-				"assignee": "Виконавець: {{name}}",
-				"due": "Термін: {{date}}",
-				"label": "Мітка: {{name}}",
-				"dueThisWeek": "Термін цього тижня",
-				"dueNextWeek": "Термін наступного тижня",
-				"noDueDate": "Без дати завершення"
-			}
+			"noTasksInSection": "Немає завдань у розділі «{{section}}»"
 		},
 		"sort": {
 			"label": "Сортування",
@@ -4547,11 +4439,6 @@
 		},
 		"boardFilters": {
 			"filterBy": "Фільтрувати за",
-			"allStatuses": "Усі статуси",
-			"allPriorities": "Усі пріоритети",
-			"allAssignees": "Усі виконавці",
-			"allDueDates": "Усі дати завершення",
-			"allLabels": "Усі мітки",
 			"selectedCount": "{{count}} обрано",
 			"subjects": {
 				"status": "Статус",
@@ -4562,14 +4449,8 @@
 				"estimate": "Оцінка"
 			},
 			"operators": {
-				"isAnyOf": "є будь-яким з",
-				"includeAnyOf": "включає будь-який з"
-			},
-			"all": "Усі",
-			"allCustomFieldValues": "Усі значення",
-			"noCustomFieldValues": "Немає значень власних полів",
-			"noValuesUsedYet": "Значення ще не використовувалися",
-			"unassigned": "Не призначено"
+				"isAnyOf": "є будь-яким з"
+			}
 		},
 		"gantt": {
 			"pageTitle": "{{name}} – Ґант",
@@ -4612,13 +4493,8 @@
 		},
 		"archive": {
 			"success": "Архівовано {{count}} завдань",
-			"archive": "Архівувати",
 			"archived": "Завдання архівовано",
 			"badge": "Архівовано",
-			"bulkArchived_few": "Архівовано {{count}} завдання",
-			"bulkArchived_many": "Архівовано {{count}} завдань",
-			"bulkArchived_one": "Архівовано {{count}} завдання",
-			"bulkArchived_other": "Архівовано завдань: {{count}}",
 			"error": "Не вдалося архівувати завдання",
 			"restore": "Відновити",
 			"restored": "Завдання відновлено",
@@ -4639,7 +4515,7 @@
 			"merged": "Змерджено",
 			"draft": "Чернетка",
 			"open": "Відкрито",
-			"label": "Pull request",
+			"label": "Пул-реквест",
 			"count_one": "{{count}} PR",
 			"count_few": "{{count}} пул-реквести",
 			"count_many": "{{count}} пул-реквестів",
@@ -4656,10 +4532,6 @@
 			"updateError": "Не вдалося оновити дату завершення завдання",
 			"clearSuccess": "Дату завершення завдання очищено",
 			"clearError": "Не вдалося очистити дату завершення"
-		},
-		"labels": {
-			"label": "Мітки",
-			"empty": "Немає доступних міток"
 		},
 		"update": {
 			"success": "Завдання успішно оновлено",
@@ -5017,7 +4889,6 @@
 				"project": "Проєкт",
 				"status": "Статус"
 			},
-			"needsSingleProject": "Групування за статусом можливе лише для одного проєкту",
 			"none": "Немає",
 			"order": {
 				"assignee": "Виконавець",
@@ -5107,14 +4978,14 @@
 			"noOptions": "Немає варіантів",
 			"operators": {
 				"between": "між",
-				"is": "is",
+				"is": "дорівнює",
 				"isEmpty": "порожнє",
 				"isNoneOf": "не входить до",
 				"isNot": "не дорівнює",
 				"isNotEmpty": "не порожнє",
 				"moreThanAgo": "більше ніж … тому",
 				"moreThanAhead": "більше ніж … наперед",
-				"on": "on",
+				"on": "у день",
 				"onOrAfter": "не раніше",
 				"onOrBefore": "не пізніше",
 				"withinLast": "за останні",
@@ -5127,9 +4998,7 @@
 				"completed": "Завершено",
 				"created": "Створено",
 				"createdBy": "Автор",
-				"customFields": "Користувацькі поля",
 				"cycle": "Цикл",
-				"estimate": "Оцінка",
 				"group": "Група",
 				"mentions": "Згадки",
 				"module": "Модуль",
@@ -5143,7 +5012,7 @@
 			"values": {
 				"currentCycle": "Поточний цикл",
 				"false": "Ні",
-				"me": "Me",
+				"me": "Я",
 				"noAssignee": "Без виконавця",
 				"noCreator": "Без автора",
 				"noCycle": "Без циклу",
@@ -5186,8 +5055,6 @@
 			"expandSubTasks": "Показати підзавдання",
 			"hideColumn": "Приховати колонку",
 			"loadError": "Не вдалося завантажити завдання",
-			"newTask": "Нове завдання",
-			"newTaskPlaceholder": "Назва завдання, потім Enter",
 			"selectTask": "Вибрати {{key}}",
 			"sortAsc": "За зростанням",
 			"sortDesc": "За спаданням",
@@ -5216,7 +5083,7 @@
 		"timeTracking": {
 			"duration": "Тривалість",
 			"durationInvalid": "Введіть тривалість від 1 хвилини до 24 годин, наприклад 1г 30хв.",
-			"durationPlaceholder": "e.g. 1h 30m",
+			"durationPlaceholder": "напр. 1h 30m",
 			"empty": "Час поки не записано",
 			"entries": "Записи часу",
 			"formerMember": "Колишній учасник",
@@ -5398,11 +5265,6 @@
 		"noPendingDescription": "Коли хтось запросить вас до робочого простору, запрошення з’явиться тут.",
 		"continueToSetup": "Перейти до налаштування",
 		"skipForNow": "Пропустити поки що",
-		"table": {
-			"workspace": "Робочий простір",
-			"invitedBy": "Запросив(ла)",
-			"expires": "Закінчується"
-		},
 		"toast": {
 			"acceptError": "Не вдалося прийняти запрошення",
 			"acceptSuccess": "Запрошення прийнято! Ласкаво просимо до команди.",
@@ -5437,7 +5299,6 @@
 				"inProgress": "В роботі"
 			},
 			"noDueDate": "Без дати завершення",
-			"reorderHandle": "Змінити порядок проєкту",
 			"reorderError": "Не вдалося змінити порядок проєктів",
 			"emptyDescriptionReadOnly": "У цьому робочому просторі ще немає проєктів. Попросіть адміністратора створити проєкт."
 		},
@@ -5466,7 +5327,6 @@
 			"pageTitle": "Створення робочого простору",
 			"heading": "Створити новий робочий простір",
 			"subtitle": "Робочі простори є спільними середовищами, де команди можуть працювати над проєктами, циклами та завданнями.",
-			"nameLabel": "Назва робочого простору",
 			"namePlaceholder": "Введіть назву робочого простору",
 			"descriptionLabel": "Опис (необов'язково)",
 			"descriptionPlaceholder": "Додайте опис для вашого робочого простору",
@@ -5602,11 +5462,8 @@
 			"columns": {
 				"name": "Ім'я",
 				"role": "Роль",
-				"joined": "Приєднався",
-				"actions": "Дії"
+				"joined": "Приєднався"
 			},
-			"memberRolePending": "{{role}} (Очікує)",
-			"ariaCancelInvitation": "Скасувати запрошення",
 			"ariaRemoveMember": "Видалити учасника",
 			"removeDialogTitle": "Видалити учасника?",
 			"removeDialogDescription": "{{name}} буде видалено з робочого простору, і доступ до його проєктів і завдань буде втрачено.",
@@ -5655,7 +5512,6 @@
 		}
 	},
 	"publicProject": {
-		"pageTitle": "Публічний вигляд",
 		"badge": "Публічний",
 		"readOnly": "Лише для читання",
 		"error": {
@@ -5668,12 +5524,10 @@
 		"taskDetail": {
 			"labels": "Мітки",
 			"externalLinks": "Зовнішні посилання",
-			"pullRequestFallback": "Pull request",
 			"issueFallback": "Завдання",
 			"prStatusMerged": "Змерджено",
 			"prStatusDraft": "Чернетка",
 			"prStatusOpen": "Відкрито",
-			"dueWithDate": "Термін {{date}}",
 			"created": "Створено",
 			"dueDateLabel": "Термін виконання",
 			"assignees": "Виконавці",
@@ -5697,9 +5551,7 @@
 			"backlog": "Беклог",
 			"chip": "{{subject}}: {{value}}",
 			"clearFilters": "Скинути фільтри",
-			"collapse": "Згорнути {{name}}",
 			"emptyColumn": "Тут немає завдань",
-			"expand": "Розгорнути {{name}}",
 			"filter": "Фільтр",
 			"filters": "Фільтри",
 			"layout": "Режим перегляду",
@@ -5862,7 +5714,7 @@
 				"typed": "Виправити редирект після входу @adam !high #bug"
 			},
 			"labels": {
-				"bug": "bug",
+				"bug": "баг",
 				"design": "дизайн",
 				"docs": "документація",
 				"feature": "функція"
@@ -5952,7 +5804,7 @@
 				"done": "Готово",
 				"inProgress": "В роботі",
 				"inReview": "На перевірці",
-				"todo": "To do"
+				"todo": "До виконання"
 			},
 			"analytics": {
 				"allProjects": "Усі проєкти",
@@ -6249,9 +6101,9 @@
 					"tasks": "Завдання"
 				},
 				"recentTimes": {
-					"page": "1h",
-					"project": "2h",
-					"task": "10m"
+					"page": "1 год",
+					"project": "2 год",
+					"task": "10 хв"
 				},
 				"saving": "Збереження…",
 				"stickies": "Стікери",
@@ -6264,25 +6116,25 @@
 				"items": {
 					"assigned": {
 						"task": "Повторювати невдалі вебхуки",
-						"time": "1h"
+						"time": "1 год"
 					},
 					"commented": {
 						"preview": "Неактивні кнопки тепер проходять перевірку.",
 						"task": "Перевірити контраст кольорів у налаштуваннях",
-						"time": "1d"
+						"time": "1 дн."
 					},
 					"due": {
 						"task": "Виправити редирект після входу",
-						"time": "2h"
+						"time": "2 год"
 					},
 					"mention": {
 						"preview": "@adam можеш перевірити рядок підсумків до п'ятниці?",
 						"task": "Додати експорт у CSV до звітів",
-						"time": "5m"
+						"time": "5 хв"
 					},
 					"moved": {
 						"task": "Кешувати списки проєктів на сервері",
-						"time": "3h"
+						"time": "3 год"
 					}
 				},
 				"markAllRead": "Позначити всі як прочитані",
@@ -6459,19 +6311,19 @@
 				"statuses": {
 					"done": {
 						"meta": "14 задач",
-						"name": "Done"
+						"name": "Готово"
 					},
 					"inProgress": {
 						"meta": "9 задач",
-						"name": "In Progress"
+						"name": "В роботі"
 					},
 					"open": {
 						"meta": "14 задач",
-						"name": "Open"
+						"name": "Відкрито"
 					},
 					"review": {
 						"meta": "5 задач",
-						"name": "Code Review"
+						"name": "Рев’ю коду"
 					}
 				},
 				"statusesTitle": "Статуси",
@@ -6572,7 +6424,7 @@
 				"statusPicker": "Змінити статус…",
 				"taskDescription": "Відвідувачі мають знаходити відповіді, не залишаючи довідковий центр. Проіндексувати статті й показувати найкращі збіги просто під час введення.",
 				"toast": "Статус змінено",
-				"typed": "> status"
+				"typed": "> статус"
 			},
 			"planning": {
 				"doneOfScope": "Готово: {{done}}/{{scope}}",
@@ -6863,7 +6715,7 @@
 				}
 			},
 			"faq": {
-				"eyebrow": "FAQ",
+				"eyebrow": "Часті запитання",
 				"items": {
 					"api": {
 						"answer": "Кожен екземпляр має REST API, описаний в OpenAPI, а також API-ключі й вихідні вебхуки. Вбудований MCP-ендпоінт дає ШІ-агентам змогу читати й оновлювати завдання від імені людини, яка їх схвалила.",
@@ -7150,13 +7002,13 @@
 				},
 				"compare": {
 					"all": "Усі альтернативи",
-					"asana": "vs Asana",
-					"clickup": "vs ClickUp",
-					"jira": "vs Jira",
-					"linear": "vs Linear",
-					"monday": "vs monday.com",
+					"asana": "Порівняння з Asana",
+					"clickup": "Порівняння з ClickUp",
+					"jira": "Порівняння з Jira",
+					"linear": "Порівняння з Linear",
+					"monday": "Порівняння з monday.com",
 					"title": "Порівняння",
-					"trello": "vs Trello"
+					"trello": "Порівняння з Trello"
 				},
 				"copyright": "© {{year}} Margaya",
 				"label": "Підвал сайту",
@@ -7755,7 +7607,7 @@
 			"hintSearch": "Пошук",
 			"hintSwitch": "Змінити сторону",
 			"hintToggle": "Додати або прибрати",
-			"keySpace": "Space",
+			"keySpace": "Пробіл",
 			"open": "Запланувати цикл",
 			"paneLabel": "Сторона планувальника",
 			"plannedCount_few": "Заплановано {{count}} завдання",
@@ -7869,7 +7721,7 @@
 			"clear": "Очистити фільтри",
 			"filterBy": "Фільтрувати за",
 			"includesAnyOf": "містить будь-яке з",
-			"is": "is",
+			"is": "дорівнює",
 			"isAnyOf": "будь-який із",
 			"lead": "Відповідальний",
 			"members": "Учасники",
@@ -8074,7 +7926,7 @@
 			"completed30": "Завершено за 30 днів",
 			"created": "Створено",
 			"dueThisWeek": "Термін цього тижня",
-			"notAvailable": "n/a",
+			"notAvailable": "н/д",
 			"overdue": "Прострочено",
 			"subscribed": "Підписки"
 		},
@@ -8093,7 +7945,6 @@
 			"cancelled_other": "Скасовано: {{count}}",
 			"priorities": "Відкриті завдання за пріоритетом",
 			"recentActivity": "Остання активність",
-			"title": "Навантаження",
 			"byState": "За станами"
 		},
 		"activity": {
@@ -8174,7 +8025,6 @@
 			"all": "Усі",
 			"emptyDescription": "Зберігайте фільтри та макети як перегляди й діліться ними з командою.",
 			"emptyTitle": "Переглядів поки немає",
-			"favorite": "Обране",
 			"mine": "Мої",
 			"more": "Перегляди",
 			"newView": "Новий перегляд",
@@ -8318,20 +8168,12 @@
 			"inbox": "Вхідні",
 			"label": "Повернутися до справ",
 			"myWork": "Ваша робота",
-			"open_few": "{{count}} відкриті",
-			"open_many": "{{count}} відкритих",
-			"open_one": "{{count}} відкрите",
-			"open_other": "Відкритих: {{count}}",
 			"overdue_few": "{{count}} прострочені",
 			"overdue_many": "{{count}} прострочених",
 			"overdue_one": "{{count}} прострочене",
 			"overdue_other": "Прострочених: {{count}}",
 			"stickies": "Стікери",
 			"stickiesHint": "Особисті нотатки, лише для вас",
-			"unread_few": "{{count}} непрочитані",
-			"unread_many": "{{count}} непрочитаних",
-			"unread_one": "{{count}} непрочитане",
-			"unread_other": "Непрочитаних: {{count}}",
 			"openCaption": "відкритих",
 			"unreadCaption": "непрочитаних"
 		}
@@ -8391,7 +8233,6 @@
 			"submit": "Надіслати запит",
 			"title": "Новий запит",
 			"titlePlaceholder": "Що вам потрібно?",
-			"titleRequired": "Додайте назву",
 			"toast": "Запит надіслано",
 			"toastView": "Переглянути",
 			"pastedImages": "Вставлені зображення",
@@ -8482,7 +8323,7 @@
 		"filters": {
 			"button": "Фільтр",
 			"clear": "Скинути фільтри",
-			"me": "Me",
+			"me": "Я",
 			"priority": "Пріоритет",
 			"remove": "Прибрати фільтр",
 			"status": "Статус",
@@ -8573,7 +8414,6 @@
 			"pending": "Це завдання очікує в запитах.",
 			"snoozed": "Це завдання відкладено в запитах до {{date}}."
 		},
-		"title": "Запити",
 		"triage": {
 			"backToList": "Назад до запитів",
 			"detailLabel": "Запит",
@@ -9557,7 +9397,6 @@
 	},
 	"instanceAdmin": {
 		"admins": {
-			"actions": "Дії з адміністратором",
 			"add": "Додати адміністратора",
 			"addConfirm": "Додати адміністратора",
 			"addDescription": "Адміністратори інстансу можуть змінювати будь-які налаштування в цьому розділі та відкривати будь-який робочий простір.",
@@ -9675,7 +9514,7 @@
 				"fileStorage": "Сховище файлів",
 				"notConfigured": "Не налаштовано",
 				"off": "Вимкнено",
-				"on": "On",
+				"on": "Увімкнено",
 				"realtime": "Реальний час",
 				"realtimeMemory": "У пам'яті",
 				"realtimeRedis": "Redis ({{mode}})",
@@ -9761,7 +9600,6 @@
 		"save": "Зберегти",
 		"saved": "Налаштування збережено",
 		"saveError": "Не вдалося зберегти налаштування",
-		"saving": "Збереження…",
 		"secret": {
 			"cancel": "Скасувати",
 			"clear": "Очистити",
@@ -9771,8 +9609,6 @@
 			"saved": "Збережено",
 			"unreadable": "Збережений секрет неможливо прочитати (змінився AUTH_SECRET сервера). Введіть його знову."
 		},
-		"sidebarSubtitle": "Адміністратор інстансу",
-		"sidebarTitle": "Інстанс",
 		"source": {
 			"default": "За замовчуванням",
 			"environment": "Середовище: {{variable}}",
@@ -9825,97 +9661,97 @@
 	},
 	"press": {
 		"boilerplate": {
-			"description": "Ready-made descriptions. Trim them if you need to, but please keep the facts as they are.",
+			"description": "Готові описи. Скорочуйте їх за потреби, але, будь ласка, не змінюйте факти.",
 			"long": {
-				"label": "About 150 words",
-				"text": "Margaya is an open-source project management platform built for teams that want to plan and ship work without the tool becoming a job of its own. Tasks move through board, list, spreadsheet, calendar and Gantt views of the same data. Cycles, modules, estimates and an intake inbox are there when a team needs planning, and stay out of the way when it doesn't. Teams write docs together next to their tasks, collect requests on public boards, and follow progress with analytics and an audit log. A REST API with an OpenAPI description, webhooks, an MCP server and integrations with GitHub, Gitea, Slack, Discord and others connect Margaya to the rest of a team's tools. The interface is available in 20 languages. Margaya is released under the MIT licence and runs on a single server with Docker, or on Kubernetes with Helm; Margaya Cloud offers the same product as a managed service."
+				"label": "Близько 150 слів",
+				"text": "Margaya — платформа керування проєктами з відкритим кодом для команд, які хочуть планувати й випускати роботу, не перетворюючи сам інструмент на окрему роботу. Завдання проходять через дошку, список, таблицю, календар і діаграму Ганта — це подання тих самих даних. Цикли, модулі, оцінки та вхідні запити доступні, коли команді потрібне планування, і не заважають, коли воно не потрібне. Команди разом пишуть документи поруч із завданнями, збирають запити на публічних дошках і стежать за прогресом за допомогою аналітики та журналу аудиту. REST API з описом OpenAPI, вебхуки, MCP-сервер та інтеграції з GitHub, Gitea, Slack, Discord та іншими сервісами пов’язують Margaya з рештою інструментів команди. Інтерфейс доступний 20 мовами. Margaya поширюється під ліцензією MIT і працює на одному сервері з Docker або в Kubernetes з Helm; Margaya Cloud пропонує той самий продукт як керований сервіс."
 			},
 			"short": {
-				"label": "About 50 words",
-				"text": "Margaya is an open-source project management platform for teams that want clear ownership without heavy process. Plan work on boards, lists, spreadsheets, calendars and Gantt charts, write docs beside the tasks, and connect your tools through a REST API and MCP. Run it yourself under the MIT licence, or use Margaya Cloud."
+				"label": "Близько 50 слів",
+				"text": "Margaya — платформа керування проєктами з відкритим кодом для команд, яким потрібна чітка відповідальність без важких процесів. Плануйте роботу на дошках, у списках, таблицях, календарях і діаграмах Ганта, пишіть документи поруч із завданнями та підключайте свої інструменти через REST API і MCP. Запускайте її самі під ліцензією MIT або користуйтеся Margaya Cloud."
 			},
-			"title": "Boilerplate"
+			"title": "Готові тексти"
 		},
 		"colours": {
-			"copyHex": "Copy {{hex}}",
-			"description": "Margaya is deliberately quiet: near-black, off-white and a few greys, so the work on screen supplies the colour.",
+			"copyHex": "Копіювати {{hex}}",
+			"description": "Margaya навмисно стримана: майже чорний, молочно-білий і кілька сірих, щоб колір на екран приносила сама робота.",
 			"graphite": {
-				"name": "Graphite",
-				"usage": "Text and primary buttons in the light theme"
+				"name": "Графіт",
+				"usage": "Текст і основні кнопки у світлій темі"
 			},
 			"ink": {
-				"name": "Ink",
-				"usage": "The logo, and the dark theme's background"
+				"name": "Чорнило",
+				"usage": "Логотип і тло темної теми"
 			},
 			"mist": {
-				"name": "Mist",
-				"usage": "Panels and sidebars in the light theme"
+				"name": "Туман",
+				"usage": "Панелі та бічні панелі у світлій темі"
 			},
 			"mono": {
 				"name": "Geist Mono",
-				"usage": "Code, keyboard shortcuts and task IDs"
+				"usage": "Код, комбінації клавіш та ідентифікатори завдань"
 			},
 			"paper": {
-				"name": "Paper",
-				"usage": "The light logo, and primary buttons in the dark theme"
+				"name": "Папір",
+				"usage": "Світлий логотип і основні кнопки в темній темі"
 			},
-			"sample": "Plan the work. Ship the work.",
+			"sample": "Плануйте роботу. Випускайте роботу.",
 			"sans": {
 				"name": "Geist",
-				"usage": "Interface, headings and the wordmark, set semibold with tight tracking"
+				"usage": "Інтерфейс, заголовки та словесний знак — напівжирним накресленням із щільним трекінгом"
 			},
-			"title": "Colours and type",
-			"typeTitle": "Typography",
+			"title": "Кольори та шрифти",
+			"typeTitle": "Типографіка",
 			"white": {
-				"name": "White",
-				"usage": "The light theme's background"
+				"name": "Білий",
+				"usage": "Тло світлої теми"
 			}
 		},
 		"contact": {
-			"body": "Margaya is built in the open, so the maintainers answer on GitHub. Start a discussion for interviews and questions about the project, or open an issue if something in this kit is missing or out of date.",
-			"discussions": "Start a discussion",
-			"issues": "Open an issue",
-			"title": "Talk to the maintainers"
+			"body": "Margaya розробляється відкрито, тож мейнтейнери відповідають на GitHub. Створіть обговорення для інтерв’ю та запитань про проєкт або відкрийте issue, якщо в цьому наборі чогось бракує чи щось застаріло.",
+			"discussions": "Створити обговорення",
+			"issues": "Відкрити issue",
+			"title": "Зв’язатися з мейнтейнерами"
 		},
-		"copied": "Copied",
-		"copy": "Copy",
-		"copyUrl": "Copy URL",
-		"description": "Margaya's press kit: boilerplate text, logos, product screenshots, brand colours and typography, with direct download links.",
-		"download": "Download",
-		"downloadKit": "Download the press kit",
+		"copied": "Скопійовано",
+		"copy": "Копіювати",
+		"copyUrl": "Копіювати URL",
+		"description": "Прескіт Margaya: готові тексти, логотипи, скриншоти продукту, фірмові кольори та шрифти з прямими посиланнями на завантаження.",
+		"download": "Завантажити",
+		"downloadKit": "Завантажити прескіт",
 		"downloadKitMeta": "ZIP, {{size}}",
-		"eyebrow": "Press kit",
+		"eyebrow": "Прескіт",
 		"facts": {
-			"description": "The essentials, in one place.",
+			"description": "Найважливіше в одному місці.",
 			"founded": {
-				"label": "Founded",
+				"label": "Заснування",
 				"value": "2026"
 			},
 			"hosting": {
-				"label": "Hosting",
-				"value": "Self-hosted with Docker or Helm, or managed on Margaya Cloud"
+				"label": "Розміщення",
+				"value": "На власному сервері з Docker або Helm чи керований хостинг у Margaya Cloud"
 			},
 			"interfaces": {
-				"label": "Interfaces",
-				"value": "REST API with an OpenAPI description, plus an MCP server"
+				"label": "Інтерфейси",
+				"value": "REST API з описом OpenAPI, а також MCP-сервер"
 			},
 			"languages": {
-				"label": "Languages",
-				"value": "20 interface languages"
+				"label": "Мови",
+				"value": "Інтерфейс 20 мовами"
 			},
 			"licence": {
-				"label": "Licence",
-				"value": "MIT, for every feature"
+				"label": "Ліцензія",
+				"value": "MIT, для всіх функцій"
 			},
 			"source": {
-				"label": "Source code",
+				"label": "Вихідний код",
 				"value": "github.com/manu14357/Margaya"
 			},
 			"stack": {
-				"label": "Stack",
-				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
+				"label": "Стек",
+				"value": "TypeScript, Hono, React і PostgreSQL, Redis — за бажанням"
 			},
-			"title": "Quick facts",
+			"title": "Коротко про головне",
 			"ai": {
 				"label": "ШІ",
 				"value": "Необов’язково й вимкнено за замовчуванням: «Запитати ШІ», режим «Створення» та ШІ-агенти — на Claude або на моделі, розгорнутій у себе"
@@ -9923,212 +9759,218 @@
 		},
 		"guidelines": {
 			"do": {
-				"contrast": "Use the dark wordmark on light backgrounds and the light wordmark on dark ones.",
-				"link": "Link to margaya.app or the GitHub repository when you mention the project.",
-				"name": "Write the name as “Margaya”, with a capital M, in running text.",
-				"space": "Leave clear space around the logo at least as wide as the icon's ears."
+				"contrast": "Використовуйте темний словесний знак на світлому тлі, а світлий — на темному.",
+				"link": "Згадуючи проєкт, додавайте посилання на margaya.app або репозиторій на GitHub.",
+				"name": "У тексті пишіть назву як «Margaya», з великої літери M.",
+				"space": "Залишайте навколо логотипа вільне поле не менше за ширину вух значка."
 			},
 			"dont": {
-				"distort": "Stretch, rotate, outline or add effects to the logo.",
-				"edit": "Edit screenshots to show features that Margaya doesn't have.",
-				"endorse": "Suggest that the Margaya maintainers endorse a product, service or opinion.",
-				"recolour": "Recolour the logo, or place it on busy images where it loses contrast."
+				"distort": "Розтягувати, повертати, обводити логотип або додавати до нього ефекти.",
+				"edit": "Редагувати скриншоти, щоб показати функції, яких у Margaya немає.",
+				"endorse": "Натякати, що мейнтейнери Margaya підтримують якийсь продукт, сервіс чи думку.",
+				"recolour": "Перефарбовувати логотип або розміщувати його на строкатих зображеннях, де він втрачає контраст."
 			},
-			"dontTitle": "Please don't",
-			"doTitle": "Please do",
-			"title": "Using the brand"
+			"dontTitle": "Будь ласка, не робіть так",
+			"doTitle": "Будь ласка, робіть так",
+			"title": "Використання бренду"
 		},
-		"headline": "Margaya is open-source project management you can run on your own server.",
-		"intro": "Short and long descriptions, logos, screenshots, colours and type, ready for articles, videos and talks. Everything on this page may be used for editorial coverage of Margaya.",
+		"headline": "Margaya — система керування проєктами з відкритим кодом, яку можна запустити на власному сервері.",
+		"intro": "Короткі й довгі описи, логотипи, скриншоти, кольори та шрифти — для статей, відео й доповідей. Усе на цій сторінці можна використовувати в редакційних матеріалах про Margaya.",
 		"logos": {
-			"description": "Use the wordmark wherever there is room for it, and the icon where space is tight. Each file has a permanent address you can link to.",
+			"description": "Використовуйте словесний знак скрізь, де для нього вистачає місця, а значок — там, де місця мало. Кожен файл має постійну адресу, на яку можна посилатися.",
 			"iconPng": {
-				"alt": "The Margaya app icon",
+				"alt": "Значок застосунку Margaya",
 				"detail": "PNG, 512 × 512",
-				"name": "App icon"
+				"name": "Значок застосунку"
 			},
 			"iconSvg": {
-				"alt": "The Margaya icon: a light cat face on a dark rounded square",
-				"detail": "SVG, scales to any size",
-				"name": "Icon"
+				"alt": "Значок Margaya: світла котяча мордочка на темному квадраті із заокругленими кутами",
+				"detail": "SVG, масштабується до будь-якого розміру",
+				"name": "Значок"
 			},
-			"title": "Logos",
+			"title": "Логотипи",
 			"wordmarkDark": {
-				"alt": "The Margaya wordmark in near-black on a light background",
-				"detail": "SVG, for light backgrounds",
-				"name": "Wordmark, dark"
+				"alt": "Словесний знак Margaya майже чорного кольору на світлому тлі",
+				"detail": "SVG, для світлого тла",
+				"name": "Словесний знак, темний"
 			},
 			"wordmarkLight": {
-				"alt": "The Margaya wordmark in off-white on a dark background",
-				"detail": "SVG, for dark backgrounds",
-				"name": "Wordmark, light"
+				"alt": "Словесний знак Margaya молочно-білого кольору на темному тлі",
+				"detail": "SVG, для темного тла",
+				"name": "Словесний знак, світлий"
 			}
 		},
-		"onThisPage": "On this page",
+		"onThisPage": "На цій сторінці",
 		"screenshots": {
-			"close": "Close",
-			"counter": "{{current}} of {{total}}",
-			"dark": "Dark",
-			"description": "Real Margaya screens in the light and dark themes. Select one to see it at full size.",
-			"empty": "A fresh set of screenshots is on its way. Until then, the press kit download has the current set.",
-			"light": "Light",
-			"next": "Next screenshot",
-			"open": "View larger: {{title}}",
-			"previous": "Previous screenshot",
+			"close": "Закрити",
+			"counter": "{{current}} з {{total}}",
+			"dark": "Темна",
+			"description": "Справжні екрани Margaya у світлій і темній темах. Виберіть скриншот, щоб відкрити його в повному розмірі.",
+			"empty": "Новий набір скриншотів уже готується. А поки актуальний набір є в архіві прескіту.",
+			"light": "Світла",
+			"next": "Наступний скриншот",
+			"open": "Збільшити: {{title}}",
+			"previous": "Попередній скриншот",
 			"size": "{{width}} × {{height}}, PNG",
-			"title": "Product screenshots"
+			"title": "Скриншоти продукту"
 		},
-		"title": "Press kit",
-		"downloadPng": "Download PNG"
+		"title": "Прескіт",
+		"downloadPng": "Завантажити PNG"
 	},
 	"pricing": {
 		"cta": {
-			"description": "Start a Cloud trial with no card, or follow the install guide and run Margaya on your own hardware.",
-			"primary": "Start a free trial",
-			"secondary": "Read the install guide",
-			"title": "Pick the way that fits, and change your mind later."
+			"description": "Почніть пробний період Cloud без картки або скористайтеся посібником зі встановлення й запустіть Margaya на власному обладнанні.",
+			"primary": "Почати безкоштовний пробний період",
+			"secondary": "Читати посібник зі встановлення",
+			"title": "Виберіть відповідний варіант — передумати можна пізніше."
 		},
-		"description": "The self-hosted build is the whole product under the MIT licence, with no seat limits and no paid tier. Margaya Cloud is the same software, hosted in the EU and kept up to date for you.",
-		"eyebrow": "Pricing",
+		"description": "Версія для власного сервера — це весь продукт під ліцензією MIT, без обмежень на кількість місць і без платної редакції. Margaya Cloud — те саме ПЗ, розміщене в ЄС і завжди оновлене за вас.",
+		"eyebrow": "Ціни",
 		"faq": {
 			"items": {
 				"cancel": {
-					"answer": "Your plan stays active until the end of the period you've paid for. Export your work as CSV, Excel or JSON before then if you want to keep a copy.",
-					"question": "What happens if I cancel?"
+					"answer": "Тариф залишається активним до кінця оплаченого періоду. До того експортуйте свою роботу в CSV, Excel або JSON, якщо хочете зберегти копію.",
+					"question": "Що буде, якщо я скасую підписку?"
 				},
 				"founding": {
-					"answer": "Workspaces created before paid plans launched keep free access for at least 12 months, and you'll get six months' notice before anything changes.",
-					"question": "I signed up before paid plans existed. What changes?"
+					"answer": "Робочі простори, створені до запуску платних тарифів, зберігають безкоштовний доступ щонайменше на 12 місяців, а про будь-які зміни ви дізнаєтеся за шість місяців.",
+					"question": "Я зареєструвався до появи платних тарифів. Що зміниться?"
 				},
 				"payments": {
-					"answer": "Payments go through Creem, which acts as merchant of record and handles sales tax and VAT where they apply. Your card details never reach Margaya.",
-					"question": "Who handles payments and tax?"
+					"answer": "Платежі проходять через Creem, який виступає продавцем і бере на себе податок із продажів і ПДВ там, де вони застосовуються. Дані вашої картки ніколи не потрапляють до Margaya.",
+					"question": "Хто займається платежами й податками?"
 				},
 				"seats": {
-					"answer": "Cloud Team is billed for each member of the workspace. When someone joins or leaves, the seat count on the subscription is updated to match.",
-					"question": "How are Cloud Team members counted?"
+					"answer": "Cloud Командний оплачується за кожного учасника робочого простору. Коли хтось приєднується або йде, кількість місць у підписці оновлюється відповідно.",
+					"question": "Як рахуються учасники в Cloud Командний?"
 				},
 				"selfHostHelp": {
-					"answer": "From the maintainers and the community on GitHub, through discussions and issues. Installation, upgrades and configuration are covered in the documentation.",
-					"question": "Where do self-hosters get help?"
+					"answer": "У мейнтейнерів і спільноти на GitHub — в обговореннях та issues. Встановлення, оновлення й налаштування описано в документації.",
+					"question": "Де отримати допомогу, якщо Margaya на власному сервері?"
 				},
 				"selfHostLimits": {
-					"answer": "No. The code you install is the code that runs Margaya Cloud, and all of it is MIT licensed. There are no licence keys, seat limits or paid features to unlock.",
-					"question": "Is the self-hosted version missing anything?"
+					"answer": "Ні. Код, який ви встановлюєте, — той самий, на якому працює Margaya Cloud, і весь він під ліцензією MIT. Жодних ліцензійних ключів, обмежень місць чи платних функцій, які треба розблоковувати.",
+					"question": "Чогось бракує у версії для власного сервера?"
 				},
 				"trial": {
-					"answer": "A new Cloud workspace gets 14 days with everything included, and you don't need a card to start. Before it ends, choose a plan or export your tasks.",
-					"question": "How does the Cloud trial work?"
+					"answer": "Новий робочий простір у Cloud отримує 14 днів з усіма можливостями, і картка для старту не потрібна. До завершення терміну виберіть тариф або експортуйте свої завдання.",
+					"question": "Як працює пробний період Cloud?"
 				},
 				"yearly": {
-					"answer": "Yes. A year costs the same as ten months, so both Cloud plans come with two months free when you pay yearly.",
-					"question": "Is yearly billing cheaper?"
+					"answer": "Так. Рік коштує стільки ж, скільки десять місяців, тож за річної оплати обидва тарифи Cloud дають два місяці безкоштовно.",
+					"question": "Річна оплата дешевша?"
+				},
+				"ai": {
+					"question": "ШІ входить у тариф?",
+					"answer": "У кожному тарифі є функції ШІ: «Запитати ШІ», режим «Створення», агенти й допомога з текстом. Вони вимкнені, доки їх не ввімкне адміністратор. Використання ШІ не входить у ціну: ви додаєте власний API-ключ у налаштуваннях ШІ робочого простору, і постачальник ШІ виставляє рахунок вам напряму. На власному сервері можна також використовувати власну модель через Ollama або vLLM."
 				}
 			},
-			"title": "Questions about pricing"
+			"title": "Запитання про ціни"
 		},
 		"interval": {
-			"annual": "Yearly",
-			"label": "Billing period",
-			"monthly": "Monthly",
-			"saving": "2 months free"
+			"annual": "Щороку",
+			"label": "Період оплати",
+			"monthly": "Щомісяця",
+			"saving": "2 місяці безкоштовно"
 		},
-		"metaDescription": "Margaya is free to self-host, forever. Margaya Cloud costs $4 a month for one person or $5 per member a month for teams, with a 14-day free trial.",
+		"metaDescription": "Margaya безкоштовна на власному сервері — назавжди. Margaya Cloud коштує $4 на місяць для однієї людини або $5 за учасника на місяць для команд, із 14-денним безкоштовним пробним періодом.",
 		"plans": {
 			"personal": {
-				"annualNote": "Works out at {{price}} a month",
-				"annualPeriod": "per year",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month",
-				"monthlyPeriod": "per month",
-				"name": "Cloud Personal",
+				"annualNote": "Виходить {{price}} на місяць",
+				"annualPeriod": "на рік",
+				"cta": "Почати 14-денний пробний період",
+				"monthlyNote": "Оплата щомісяця",
+				"monthlyPeriod": "на місяць",
+				"name": "Cloud Персональний",
 				"points": {
-					"everything": "Every feature in the self-hosted build",
-					"help": "Support by email",
-					"managed": "Backups and updates handled for you",
-					"one": "One person, unlimited projects and tasks"
+					"everything": "Усі функції версії для власного сервера",
+					"help": "Підтримка електронною поштою",
+					"managed": "Резервні копії та оновлення — на нас",
+					"one": "Одна людина, необмежена кількість проєктів і завдань"
 				},
-				"tagline": "Managed hosting for one person"
+				"tagline": "Керований хостинг для однієї людини"
 			},
 			"selfHosted": {
-				"cta": "Read the install guide",
-				"name": "Self-hosted",
-				"note": "MIT licence. No key, no seat limit.",
-				"period": "forever",
+				"cta": "Читати посібник зі встановлення",
+				"name": "Власний сервер",
+				"note": "Ліцензія MIT. Без ключа й без обмеження місць.",
+				"period": "назавжди",
 				"points": {
-					"data": "Your database, your backups, your rules",
-					"deploy": "Docker on one server, or Helm on Kubernetes",
-					"everything": "Every feature, for as many people as you like",
-					"help": "Community help on GitHub"
+					"data": "Ваша база даних, ваші резервні копії, ваші правила",
+					"deploy": "Docker на одному сервері або Helm у Kubernetes",
+					"everything": "Усі функції — для будь-якої кількості людей",
+					"help": "Допомога спільноти на GitHub"
 				},
-				"tagline": "On servers you run"
+				"tagline": "На серверах, якими керуєте ви"
 			},
 			"team": {
-				"annualNote": "Works out at {{price}} per member a month",
-				"annualPeriod": "per member, per year",
-				"badge": "For teams",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month for each workspace member",
-				"monthlyPeriod": "per member, per month",
-				"name": "Cloud Team",
+				"annualNote": "Виходить {{price}} за учасника на місяць",
+				"annualPeriod": "за учасника на рік",
+				"badge": "Для команд",
+				"cta": "Почати 14-денний пробний період",
+				"monthlyNote": "Оплата щомісяця за кожного учасника робочого простору",
+				"monthlyPeriod": "за учасника на місяць",
+				"name": "Cloud Командний",
 				"points": {
-					"help": "Priority support by email",
-					"managed": "Backups and updates handled for you",
-					"people": "Everyone in the workspace, unlimited projects",
-					"roles": "Workspace roles and permissions"
+					"help": "Пріоритетна підтримка електронною поштою",
+					"managed": "Резервні копії та оновлення — на нас",
+					"people": "Усі учасники робочого простору, необмежена кількість проєктів",
+					"roles": "Ролі та права доступу в робочому просторі"
 				},
-				"tagline": "Managed hosting for a whole team"
+				"tagline": "Керований хостинг для всієї команди"
 			}
 		},
 		"table": {
-			"description": "The features are the same everywhere. What changes is who runs the servers and where you go for help.",
-			"feature": "Feature",
+			"description": "Функції всюди однакові. Змінюється лише те, хто керує серверами і куди звертатися по допомогу.",
+			"feature": "Функція",
 			"groups": {
-				"connect": "Connect",
-				"planning": "Planning and insight",
-				"running": "Running it",
-				"work": "The work"
+				"connect": "Підключення",
+				"planning": "Планування й аналітика",
+				"running": "Експлуатація",
+				"work": "Робота"
 			},
-			"included": "Included",
-			"notIncluded": "Not included",
+			"included": "Включено",
+			"notIncluded": "Не включено",
 			"rows": {
-				"admin": "Instance settings: sign-in providers, email, storage",
-				"analytics": "Analytics and audit log",
-				"api": "REST API, webhooks and MCP",
-				"backups": "Backups",
-				"cycles": "Cycles, modules and estimates",
-				"docs": "Docs written together, next to the tasks",
-				"export": "Export to CSV, Excel or JSON",
-				"hosting": "Where it runs",
-				"intake": "Intake inbox and triage",
-				"integrations": "GitHub, Gitea, Slack, Discord and more",
-				"jira": "Jira import",
-				"people": "People",
-				"projects": "Projects and tasks",
-				"publicBoards": "Public boards with voting",
-				"roles": "Workspace roles and permissions",
-				"support": "Support",
-				"updates": "Updates",
-				"views": "Board, list, spreadsheet, calendar and Gantt views"
+				"admin": "Налаштування інстансу: способи входу, пошта, сховище",
+				"analytics": "Аналітика й журнал аудиту",
+				"api": "REST API, вебхуки та MCP",
+				"backups": "Резервні копії",
+				"cycles": "Цикли, модулі й оцінки",
+				"docs": "Спільні документи поруч із завданнями",
+				"export": "Експорт у CSV, Excel або JSON",
+				"hosting": "Де працює",
+				"intake": "Вхідні запити та сортування",
+				"integrations": "GitHub, Gitea, Slack, Discord та інші",
+				"jira": "Імпорт із Jira",
+				"people": "Люди",
+				"projects": "Проєкти й завдання",
+				"publicBoards": "Публічні дошки з голосуванням",
+				"roles": "Ролі та права доступу в робочому просторі",
+				"support": "Підтримка",
+				"updates": "Оновлення",
+				"views": "Дошка, список, таблиця, календар і діаграма Ганта",
+				"ai": "ШІ: «Запитати ШІ», режим «Створення» та агенти"
 			},
-			"title": "Compare the plans",
+			"title": "Порівняння тарифів",
 			"values": {
-				"automatic": "Automatic",
-				"community": "Community on GitHub",
-				"email": "Email",
-				"eu": "EU data centres",
-				"notNeeded": "Not needed for one",
-				"one": "Just you",
-				"perMember": "Unlimited, billed per member",
-				"priorityEmail": "Priority email",
-				"unlimited": "Unlimited",
-				"yours": "You run them",
-				"yourSchedule": "When you choose",
-				"yourServers": "Your servers"
+				"automatic": "Автоматично",
+				"community": "Спільнота на GitHub",
+				"email": "Електронною поштою",
+				"eu": "Дата-центри в ЄС",
+				"notNeeded": "Не потрібно для однієї людини",
+				"one": "Лише ви",
+				"perMember": "Без обмежень, оплата за учасника",
+				"priorityEmail": "Пріоритетно поштою",
+				"unlimited": "Без обмежень",
+				"yours": "Робите ви",
+				"yourSchedule": "Коли вирішите ви",
+				"yourServers": "Ваші сервери",
+				"ownKey": "Власний ключ або модель ШІ"
 			}
 		},
-		"title": "One product. Two ways to run it.",
-		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+		"title": "Один продукт. Два способи його запускати.",
+		"trialNote": "Тарифи Cloud починаються з 14-денного пробного періоду. Банківська картка для старту не потрібна."
 	},
 	"templates": {
 		"form": {
@@ -10452,7 +10294,6 @@
 			},
 			"chat": {
 				"planLabel": "Запропоновані зміни",
-				"planning": "Планування змін…",
 				"nothing": "За цим запитом нічого змінювати.",
 				"awaiting": "Очікує відповіді",
 				"ready": "Готово змін: {{count}}. Підтвердьте, щоб продовжити.",
@@ -10998,11 +10839,7 @@
 			"retro": "Ретроспективи",
 			"my_brief": "Моє зведення",
 			"embedding": "Індексування для пошуку",
-			"coding_handoff": "Завдання для агентів-програмістів",
-			"build_chat": "Створення в чаті",
-			"nl_filter": "Фільтри природною мовою",
-			"inbox_digest": "Підсумки вхідних",
-			"speech": "Мовлення в текст"
+			"coding_handoff": "Завдання для агентів-програмістів"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -11146,7 +10983,9 @@
 			"speechFormat": "Формат API",
 			"speechFormatHint": "Як надсилається аудіо. Для Fish Audio вкажіть ендпоінт https://api.fish.audio/v1/asr.",
 			"speechFormatOpenai": "Сумісний з OpenAI",
-			"speechModelHint": "Для Fish Audio: transcribe-1-pro або transcribe-1, або залиште порожнім."
+			"speechModelHint": "Для Fish Audio: transcribe-1-pro або transcribe-1, або залиште порожнім.",
+			"storePrompts": "Зберігати промпти й відповіді",
+			"storePromptsHint": "Зберігати текст запитів до агентів і те, що написала модель, у журналі кожного запуску. Вимкнено: запуски зберігають лише лічильники, кроки та підсумок. Діє для запусків, що завершаться відтепер. Історія Ask, яку робочий простір зберігає на сервері, має власний перемикач."
 		},
 		"workspace": {
 			"navLabel": "ШІ",
@@ -11226,7 +11065,8 @@
 			"storeConversations": "Зберігати історію чату на сервері",
 			"storeConversationsHint": "Розмови кожної людини зберігаються в робочому просторі, тож їх можна відкрити на будь-якому пристрої. Якщо вимкнено: вони залишаються лише в кожному браузері.",
 			"allowAutopilot": "Дозволити автопілот",
-			"allowAutopilotHint": "Режим «Створення» може застосовувати зміни без підтвердження. Кожна зміна все одно записується в журнал і може бути скасована."
+			"allowAutopilotHint": "Режим «Створення» може застосовувати зміни без підтвердження. Кожна зміна все одно записується в журнал і може бути скасована.",
+			"storesPrompts": "Промпти зберігаються"
 		},
 		"agents": {
 			"navLabel": "Агенти",
@@ -11430,11 +11270,13 @@
 					"manual": "Запуск із завдання",
 					"schedule": "За розкладом",
 					"automation": "Автоматизація",
-					"chat": "Продовження"
+					"chat": "Продовження",
+					"intake": "Вхідна заявка"
 				},
 				"project": "Проєкт:",
 				"workedSeconds": "Працював {{count}} с",
-				"workedMinutes": "Працював {{count}} хв"
+				"workedMinutes": "Працював {{count}} хв",
+				"request": "Запит"
 			},
 			"connectors": {
 				"title": "Конектори",
@@ -11575,6 +11417,27 @@
 					"assign": "Призначення",
 					"schedule": "Розклад",
 					"automation": "Автоматизація"
+				}
+			},
+			"intakeTrigger": {
+				"open": "Нові вхідні заявки для {{name}}",
+				"badge": "Прийом",
+				"title": "Вхідні заявки: {{name}}",
+				"hint": "Запускати агента на кожну нову вхідну заявку в його проєктах, наприклад щоб розібрати її. Його зміни підлягають тим самим правилам схвалення й скасування, що й інші запуски.",
+				"enabled": "Запускати на нові вхідні заявки",
+				"enabledHint": "Лише в проєктах з увімкненим прийомом і ШІ і в межах проєктів агента.",
+				"prompt": "Що він має робити?",
+				"promptPlaceholder": "Наприклад: запропонувати пріоритет і мітки та вказати на дублікати.",
+				"promptHint": "Залиште порожнім для розбору: короткий коментар про те, про що просить заявка, наскільки вона термінова і чого бракує.",
+				"runsAs": "Працює від імені {{name}}. Якщо зберегти з увімкненим тригером, цією людиною станете ви.",
+				"runsAsYou": "Працює від вашого імені, щойно ви його ввімкнете, і не більше ваших прав. Вимикається, якщо ви залишите робочий простір або втратите доступ до ШІ чи прийому.",
+				"outsideNote": "Заявки ззовні робочого простору (публічні дошки, форми) нічого не змінюють без схвалення.",
+				"limitNote": "Не більше 30 запусків для прийому на годину на агента. Заявки, подані агентами, нічого не запускають.",
+				"saved": "Тригер прийому збережено",
+				"saveError": "Не вдалося зберегти тригер прийому. Спробуйте ще раз.",
+				"errors": {
+					"forbidden": "Запуски для прийому діють від вашого імені, тож потрібні доступ до ШІ та право читати вхідні заявки.",
+					"AGENT_CANT_READ_INTAKE": "Роль цього агента не дозволяє читати вхідні заявки. Призначте йому роль, яка це дозволяє."
 				}
 			}
 		},
@@ -11813,7 +11676,6 @@
 			"unmeasured_other": "{{count}} завдання без записаного старту не враховано."
 		},
 		"capacity": {
-			"meter": "Запланована робота порівняно зі звичайним циклом",
 			"within": "Заплановано {{percent}}% звичайного циклу",
 			"over": "Понад можливості: заплановано {{percent}}% звичайного циклу",
 			"noDates": "Задайте дати циклу, щоб перевірити його завантаження.",
@@ -11942,6 +11804,164 @@
 			"emailTitle": "Додавати «Мій підсумок» до дайджесту",
 			"emailDescription": "Дайджест також покаже ваші заблоковані завдання та зміни у відстежуваних завданнях. Потрібен щоденний або щотижневий дайджест.",
 			"emailError": "Не вдалося зберегти це налаштування."
+		}
+	},
+	"emails": {
+		"otp": {
+			"preview": "Ваш код підтвердження Margaya",
+			"title": "Ваш код підтвердження",
+			"subtitle": "Введіть цей одноразовий код, щоб завершити вхід.",
+			"verifySubtitle": "Введіть цей одноразовий код, щоб підтвердити адресу електронної пошти.",
+			"changeSubtitle": "Введіть цей одноразовий код, щоб підтвердити цю адресу як нову адресу електронної пошти вашого облікового запису Margaya.",
+			"code": "— ваш код підтвердження Margaya.",
+			"expiry": "Код діє {{minutes}} хв.",
+			"ignore": "Якщо ви цього не запитували, просто проігноруйте цей лист.",
+			"footer": "Сповіщення безпеки Margaya"
+		},
+		"magicLink": {
+			"preview": "Вхід до Margaya",
+			"title": "Ваше захищене посилання для входу",
+			"subtitle": "Перейдіть за цим посиланням, щоб продовжити роботу в робочому просторі Margaya.",
+			"cta": "Увійти до Margaya",
+			"expiry": "З міркувань безпеки посилання діє 5 хвилин.",
+			"ignore": "Якщо ви цього не запитували, просто проігноруйте цей лист.",
+			"footer": "Сповіщення безпеки Margaya"
+		},
+		"passwordReset": {
+			"preview": "Скидання пароля Margaya",
+			"title": "Скидання пароля",
+			"subtitleWithName": "Вітаємо, {{name}}! Натисніть кнопку нижче, щоб встановити новий пароль.",
+			"subtitleDefault": "Натисніть кнопку нижче, щоб встановити новий пароль.",
+			"cta": "Скинути пароль",
+			"expiry": "Посилання для скидання діє 1 годину.",
+			"ignore": "Якщо ви не надсилали цей запит, жодних змін не буде внесено.",
+			"footer": "Сповіщення безпеки Margaya"
+		},
+		"emailChanged": {
+			"preview": "Адресу електронної пошти в Margaya змінено",
+			"title": "Адресу електронної пошти змінено",
+			"body": "Нова адреса електронної пошти вашого облікового запису Margaya: {{email}}. Відтепер посилання для входу, коди та сповіщення надходитимуть на неї.",
+			"warning": "Якщо ви не змінювали адресу, негайно зверніться до адміністратора Margaya.",
+			"footer": "Сповіщення безпеки Margaya"
+		},
+		"authSubjects": {
+			"magicLinkSubject": "Посилання для входу до Margaya",
+			"otpSubject": "Код підтвердження Margaya",
+			"verifyEmailSubject": "Підтвердьте адресу електронної пошти для Margaya",
+			"passwordResetSubject": "Скидання пароля Margaya",
+			"changeEmailSubject": "Підтвердьте нову адресу електронної пошти для Margaya",
+			"emailChangedSubject": "Адресу електронної пошти в Margaya змінено"
+		},
+		"notification": {
+			"preview": "У вас нове сповіщення Margaya",
+			"subtitle": "Сповіщення відповідає вашим налаштуванням доставки.",
+			"footer": "Сповіщення Margaya",
+			"actionLabel": "Відкрити в Margaya"
+		},
+		"notificationBatch": {
+			"preview": "Ваші останні оновлення в Margaya",
+			"title_one": "{{count}} нове оновлення",
+			"title_few": "{{count}} нові оновлення",
+			"title_many": "{{count}} нових оновлень",
+			"title_other": "{{count}} нового оновлення",
+			"subtitle": "Зміни у ваших завданнях, зібрані з часу останнього листа.",
+			"by": "автор:",
+			"open": "Відкрити завдання",
+			"manage": "Налаштувати сповіщення",
+			"footer": "Сповіщення Margaya"
+		},
+		"notificationDigest": {
+			"title": {
+				"daily": "Ваш щоденний дайджест",
+				"weekly": "Ваш щотижневий дайджест"
+			},
+			"preview": "Ваш дайджест Margaya",
+			"subtitle": "Ваші відкриті завдання, які прострочені або мають термін у найближчі 7 днів, і що нового у вхідних.",
+			"dueHeading": "Скоро термін і прострочені",
+			"overdue": "Прострочено",
+			"due": "Термін",
+			"more_one": "і ще {{count}}",
+			"more_few": "і ще {{count}}",
+			"more_many": "і ще {{count}}",
+			"more_other": "і ще {{count}}",
+			"mentionsHeading_one": "{{count}} нова згадка",
+			"mentionsHeading_few": "{{count}} нові згадки",
+			"mentionsHeading_many": "{{count}} нових згадок",
+			"mentionsHeading_other": "{{count}} нової згадки",
+			"unread_one": "{{count}} непрочитане сповіщення у вхідних",
+			"unread_few": "{{count}} непрочитані сповіщення у вхідних",
+			"unread_many": "{{count}} непрочитаних сповіщень у вхідних",
+			"unread_other": "{{count}} непрочитаного сповіщення у вхідних",
+			"openInbox": "Відкрити вхідні",
+			"manage": "Налаштувати сповіщення",
+			"footer": "Ви отримуєте цей дайджест, бо підписалися на нього.",
+			"blockedHeading": "Заблоковані",
+			"waitingOn": "Чекає на {{keys}}",
+			"hiddenBlockers_one": "{{count}} завдання, яке ви не бачите",
+			"hiddenBlockers_few": "{{count}} завдання, які ви не бачите",
+			"hiddenBlockers_many": "{{count}} завдань, які ви не бачите",
+			"hiddenBlockers_other": "{{count}} завдання, які ви не бачите",
+			"followingHeading": "Зміни у відстежуваних завданнях",
+			"changes_one": "{{count}} зміна",
+			"changes_few": "{{count}} зміни",
+			"changes_many": "{{count}} змін",
+			"changes_other": "{{count}} зміни"
+		},
+		"batchSubject": {
+			"task_one": "{{count}} оновлення в завданні {{title}}",
+			"task_few": "{{count}} оновлення в завданні {{title}}",
+			"task_many": "{{count}} оновлень у завданні {{title}}",
+			"task_other": "{{count}} оновлення в завданні {{title}}",
+			"all_one": "{{count}} оновлення в Margaya",
+			"all_few": "{{count}} оновлення в Margaya",
+			"all_many": "{{count}} оновлень у Margaya",
+			"all_other": "{{count}} оновлення в Margaya"
+		},
+		"digestSubject": {
+			"daily": "Ваш щоденний дайджест Margaya",
+			"weekly": "Ваш щотижневий дайджест Margaya"
+		},
+		"workspaceDeletion": {
+			"fallbackName": "Робочий простір",
+			"openWorkspace": "Відкрити робочий простір",
+			"scheduledSubject": "{{name}}: заплановано видалення",
+			"scheduledTitle": "{{name}} буде видалено {{date}}",
+			"scheduledTitleNoDate": "{{name}} незабаром буде видалено",
+			"scheduledMessage": "Власник запланував видалення цього робочого простору. До {{date}} він доступний лише для читання: ви досі можете відкривати й експортувати його вміст, а власник може скасувати видалення. Після цієї дати його проєкти, завдання та сторінки буде остаточно видалено.",
+			"scheduledMessageNoDate": "Власник запланував видалення цього робочого простору. До видалення він доступний лише для читання: ви досі можете відкривати й експортувати його вміст, а власник може скасувати видалення. Після цього його проєкти, завдання та сторінки буде остаточно видалено.",
+			"cancelledSubject": "{{name}} не буде видалено",
+			"cancelledTitle": "{{name}} знову доступний",
+			"cancelledMessage": "Власник скасував заплановане видалення. Робочий простір більше не доступний лише для читання, а його API-ключі та вебхуки знову працюють."
+		},
+		"webhookDisabled": {
+			"subject": "Вебхук Margaya вимкнено",
+			"title": "Вебхук вимкнено",
+			"message": "Доставка на {{host}} понад добу раз у раз завершувалася збоєм, тому Margaya вимкнула вебхук. Виправте кінцеву точку та ввімкніть вебхук знову в налаштуваннях робочого простору.",
+			"messageNoHost": "Доставка на кінцеву точку понад добу раз у раз завершувалася збоєм, тому Margaya вимкнула вебхук. Виправте кінцеву точку та ввімкніть вебхук знову в налаштуваннях робочого простору.",
+			"actionLabel": "Відкрити налаштування вебхука"
+		},
+		"trialReminder": {
+			"endedTitle": "Пробний період робочого простору {{workspaceName}} завершився",
+			"daysLeftTitle_one": "До кінця пробного періоду робочого простору {{workspaceName}} залишився {{count}} день",
+			"daysLeftTitle_few": "До кінця пробного періоду робочого простору {{workspaceName}} залишилося {{count}} дні",
+			"daysLeftTitle_many": "До кінця пробного періоду робочого простору {{workspaceName}} залишилося {{count}} днів",
+			"daysLeftTitle_other": "До кінця пробного періоду робочого простору {{workspaceName}} залишилося {{count}} дня",
+			"endedSubtitle": "Робочий простір доступний лише для читання, доки ви не оберете тариф. Нічого не видалено, усі ваші дані на місці.",
+			"activeSubtitle": "Оберіть тариф, щоб і далі створювати та редагувати після завершення пробного періоду.",
+			"cta": "Обрати тариф",
+			"selfHost": "Крім того, на власному сервері Margaya безкоштовна назавжди й з усіма функціями. Ви можете будь-коли експортувати дані й перенести їх туди.",
+			"footer": "Ви отримали цей лист, тому що є власником цього робочого простору в Margaya Cloud."
+		},
+		"trialSubjects": {
+			"trialEnding": "Пробний період робочого простору {{workspaceName}} завершиться через 3 дні",
+			"trialExpired": "Пробний період робочого простору {{workspaceName}} завершився"
+		},
+		"testEmail": {
+			"subject": "Тестовий лист від {{instanceName}}",
+			"text": "Це тестовий лист від {{instanceName}}. Якщо ви його читаєте, надсилання пошти працює."
+		},
+		"notificationText": {
+			"commentWithoutPreview": "Новий коментар до {{taskTitle}}"
 		}
 	}
 }

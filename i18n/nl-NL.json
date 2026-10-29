@@ -10,16 +10,10 @@
 			"markAllRead": "Alles als gelezen markeren",
 			"remove": "Verwijderen",
 			"reset": "Herstellen",
-			"filter": "Filteren",
-			"clearAllFilters": "Alle filters wissen",
 			"undo": "Ongedaan maken"
 		},
 		"a11y": {
 			"toggleSidebar": "Zijbalk in-/uitschakelen"
-		},
-		"sidebar": {
-			"title": "Zijbalk",
-			"mobileDescription": "Toont de mobiele zijbalk."
 		},
 		"empty": {
 			"loading": "Laden..."
@@ -36,29 +30,12 @@
 			"label": "Broodkruimelpad",
 			"more": "Meer"
 		},
-		"language": {
-			"dutch": "Nederlands",
-			"english": "Engels",
-			"german": "Duits",
-			"greek": "Grieks",
-			"macedonian": "Macedonisch",
-			"french": "Frans",
-			"korean": "Koreaans",
-			"chinese": "Chinees",
-			"italian": "Italiaans",
-			"spanish": "Spaans"
-		},
 		"people": {
 			"someone": "Iemand",
 			"unknown": "Onbekend"
 		},
 		"error": {
 			"title": "Er is iets misgegaan",
-			"troubleshooting": "Stappen voor probleemoplossing:",
-			"tryAgain": "Opnieuw proberen",
-			"viewDeploymentGuide": "Implementatiegids bekijken",
-			"refreshPage": "Pagina vernieuwen",
-			"description": "De pagina is onverwacht vastgelopen. Vernieuwen lost dit meestal op.",
 			"messages": {
 				"auth": "Authenticatie mislukt. Meld je opnieuw aan.",
 				"cors": "Kan geen verbinding maken met de server. Dit kan komen door een CORS-configuratieprobleem.",
@@ -97,7 +74,6 @@
 				"keyLabel": "Sleutel:",
 				"keyHint": "Gebruikt voor ticket-ID's (bijv. {{example}}-123)",
 				"createButton": "Project aanmaken",
-				"successToast": "Project succesvol aangemaakt",
 				"errorToast": "Aanmaken van project mislukt",
 				"keyTaken": "Er bestaat al een project met de sleutel {{key}} in deze werkruimte",
 				"blankProject": "Leeg project",
@@ -132,7 +108,6 @@
 				"successUpdated": "Taak succesvol bijgewerkt",
 				"createError": "Aanmaken van taak mislukt",
 				"priority": "Prioriteit",
-				"statusFallback": "In uitvoering",
 				"startDate": "Startdatum",
 				"dueDate": "Einddatum",
 				"clearStartDate": "Startdatum wissen",
@@ -331,7 +306,6 @@
 			"namePlaceholder": "Jan Janssen",
 			"failedSignUp": "Registratie mislukt",
 			"accountCreated": "Account succesvol aangemaakt",
-			"passwordTooShort": "Wachtwoord is te kort",
 			"creatingAccount": "Account wordt aangemaakt...",
 			"createAccount": "Account aanmaken"
 		},
@@ -345,7 +319,6 @@
 			"invitationExpired": "Uitnodiging verlopen",
 			"errorLoadDescription": "Laden van uitnodigingsgegevens mislukt. De uitnodiging is mogelijk ongeldig of verlopen.",
 			"goToSignIn": "Naar inloggen",
-			"workspaceLabel": "Werkruimte: {{workspaceName}}",
 			"joinWorkspace": "Deelnemen aan {{workspaceName}}",
 			"inviteBodySignedIn": "<inviter>{{inviterName}}</inviter> heeft je uitgenodigd voor hun werkruimte.",
 			"inviteBodySignedOut": "<inviter>{{inviterName}}</inviter> heeft je uitgenodigd om deel te nemen aan hun werkruimte op Margaya.",
@@ -375,7 +348,6 @@
 			"creating": "Aanmaken...",
 			"createWorkspace": "Werkruimte maken",
 			"workspaceCreatedTitle": "Werkruimte aangemaakt",
-			"redirectingToWorkspace": "Je wordt doorverbonden naar <name>{{name}}</name>...",
 			"toast": {
 				"workspaceCreated": "Werkruimte succesvol aangemaakt",
 				"createFailed": "Aanmaken werkruimte mislukt",
@@ -439,8 +411,6 @@
 			"namePlaceholder": "bijv. Jan Janssen",
 			"saving": "Opslaan...",
 			"continue": "Doorgaan",
-			"welcome": "Welkom, {{name}}!",
-			"redirecting": "Je wordt doorverbonden naar je dashboard...",
 			"toast": {
 				"updateSuccess": "Profiel succesvol bijgewerkt",
 				"updateFailed": "Bijwerken profiel mislukt"
@@ -541,7 +511,6 @@
 	},
 	"settings": {
 		"account": "Account",
-		"developer": "Ontwikkelaar",
 		"information": "Informatie",
 		"preferences": "Voorkeuren",
 		"apiKeys": "API-sleutels",
@@ -614,7 +583,6 @@
 			"selectViewMode": "Selecteer een weergavemodus",
 			"board": "Bord",
 			"list": "Lijst",
-			"gantt": "Gantt",
 			"sidebarDefault": "Standaard zijbalk",
 			"sidebarDefaultDescription": "Houd de zijbalk uitgeklapt bij het opstarten",
 			"displayOptions": "Weergaveopties",
@@ -719,14 +687,8 @@
 			"dangerZone": "Gevarenzone",
 			"dangerZoneSubtitle": "Onomkeerbare en destructieve acties.",
 			"deleteWorkspace": "Werkruimte verwijderen",
-			"deleteWorkspaceDescription": "Plan de werkruimte in om permanent te worden verwijderd",
-			"deleteModalTitle": "Werkruimte verwijderen?",
-			"deleteModalDescription": "Dit zal de werkruimte \"{{name}}\" en alle bijbehorende data permanent verwijderen. Dit kan niet ongedaan worden gemaakt.",
-			"deleteModalConfirm": "Werkruimte verwijderen",
 			"toastUpdated": "Werkruimte succesvol bijgewerkt",
 			"toastUpdateError": "Bijwerken werkruimte mislukt",
-			"toastDeleted": "Werkruimte verwijderd",
-			"toastDeleteError": "Verwijderen werkruimte mislukt",
 			"validation": {
 				"nameRequired": "Werkruimtenaam is verplicht",
 				"nameShort": "Werkruimtenaam moet minimaal 2 tekens bevatten"
@@ -825,21 +787,6 @@
 			"mattermostSectionTitle": "Mattermost-integratie",
 			"chatGroupTitle": "Chat en webhooks",
 			"codeGroupTitle": "Codehosting"
-		},
-		"projectVisibility": {
-			"pageTitle": "Zichtbaarheid van het project",
-			"title": "Zichtbaarheid",
-			"subtitle": "Bepaal wie je project kan bekijken en openen.",
-			"sectionTitle": "Zichtbaarheid",
-			"sectionSubtitle": "Schakel publieke toegang in en deel de publieke URL.",
-			"publicAccess": "Publieke toegang",
-			"publicAccessHint": "Sta iedereen met de URL toe om dit project te bekijken",
-			"publicUrl": "Publieke URL",
-			"publicUrlHint": "Deel deze link als het project openbaar is",
-			"copy": "Kopiëren",
-			"copiedToast": "Gekopieerd",
-			"toastUpdated": "Zichtbaarheid bijgewerkt",
-			"toastUpdateError": "Bijwerken zichtbaarheid mislukt"
 		},
 		"projectWorkflow": {
 			"pageTitle": "Workflowinstellingen",
@@ -981,7 +928,6 @@
 			},
 			"connect": "Verbind Slack",
 			"saveChanges": "Wijzigingen opslaan",
-			"update": "Slack bijwerken",
 			"disconnect": "Ontkoppelen"
 		},
 		"discordIntegration": {
@@ -1019,7 +965,6 @@
 			},
 			"connect": "Verbind Discord",
 			"saveChanges": "Wijzigingen opslaan",
-			"update": "Discord bijwerken",
 			"disconnect": "Ontkoppelen"
 		},
 		"genericWebhookIntegration": {
@@ -1090,9 +1035,7 @@
 			"exportTasks": "Taken exporteren",
 			"importTasks": "Taken importeren",
 			"dialogTitle": "Taken importeren",
-			"dialogDescription": "Upload een JSON-bestand met taken om in dit project te importeren.",
 			"expectedFormat": "Verwacht formaat:",
-			"dropHint": "Sleep je JSON-bestand hiernaartoe",
 			"selectFile": "Bestand selecteren",
 			"exporting": "Taken exporteren...",
 			"exportSuccess": "Taken succesvol geëxporteerd",
@@ -1103,7 +1046,6 @@
 			"importError": "Importeren van taken mislukt",
 			"invalidFormat": "Ongeldig bestandsformaat",
 			"noFileDropped": "Geen bestand geüpload",
-			"notJsonFile": "Upload a.u.b. een JSON-bestand",
 			"exportCsv": "CSV (spreadsheet)",
 			"exportJson": "JSON (voor opnieuw importeren)",
 			"exportStarted": "Export gestart. Je vindt hem onder Werkruimte-instellingen → Exports.",
@@ -1441,23 +1383,7 @@
 			"noProjectsInWorkspace": "Nog geen projecten beschikbaar voor deze werkruimte.",
 			"createRule": "Regel aanmaken",
 			"removeRule": "Regel verwijderen",
-			"toastEmailSaved": "E-mailmeldingsinstellingen opgeslagen",
-			"toastEmailSaveFailed": "Opslaan e-mailinstellingen mislukt",
-			"toastNtfySaved": "ntfy-instellingen opgeslagen",
-			"toastNtfySaveFailed": "Opslaan ntfy-instellingen mislukt",
-			"toastNtfyDisconnected": "ntfy ontkoppeld",
-			"toastNtfyDisconnectFailed": "Ontkoppelen ntfy mislukt",
-			"toastGotifySaved": "Gotify-instellingen opgeslagen",
-			"toastGotifySaveFailed": "Opslaan Gotify-instellingen mislukt",
-			"toastGotifyDisconnected": "Gotify ontkoppeld",
-			"toastGotifyDisconnectFailed": "Ontkoppelen Gotify mislukt",
-			"toastWebhookSaved": "Webhook-instellingen opgeslagen",
-			"toastWebhookSaveFailed": "Opslaan webhook-instellingen mislukt",
-			"toastWebhookDisconnected": "Webhook ontkoppeld",
-			"toastWebhookDisconnectFailed": "Ontkoppelen webhook mislukt",
-			"toastRuleSaved": "Meldingsregel opgeslagen voor {{workspaceName}}",
 			"toastRuleSaveFailed": "Opslaan werkruimte-meldingsregel mislukt",
-			"toastRuleRemoved": "Meldingsregel verwijderd voor {{workspaceName}}",
 			"toastRuleRemoveFailed": "Verwijderen werkruimte-meldingsregel mislukt",
 			"toastPreferencesSaved": "Meldingsvoorkeuren opgeslagen",
 			"toastPreferencesSaveFailed": "Opslaan meldingsvoorkeuren mislukt",
@@ -1990,7 +1916,6 @@
 				"saveError": "Opslaan van Mattermost-integratie mislukt",
 				"updateError": "Bijwerken van Mattermost-integratie mislukt"
 			},
-			"update": "Mattermost bijwerken",
 			"validation": {
 				"webhookInvalid": "Voer een geldige Mattermost-webhook-URL in"
 			},
@@ -2002,13 +1927,11 @@
 			"addButton": "Toevoegen",
 			"createError": "Aanmaken van aangepast veld mislukt.",
 			"createSuccess": "Aangepast veld aangemaakt.",
-			"creating": "Aanmaken...",
 			"defaultLabel": "Standaard",
 			"defaultValuePlaceholder": "Standaardwaarde",
 			"deleteButton": "Verwijderen",
 			"deleteError": "Verwijderen van aangepast veld mislukt.",
 			"deleteSuccess": "Aangepast veld verwijderd.",
-			"deleting": "Verwijderen...",
 			"empty": "Nog geen aangepaste velden ingesteld.",
 			"loading": "Aangepaste velden laden...",
 			"namePlaceholder": "Veldnaam",
@@ -2938,7 +2861,9 @@
 				"agentScheduleDisabled": "Heeft een agentplanning uitgeschakeld",
 				"aiConnectorCreated": "Heeft een MCP-connector toegevoegd",
 				"aiConnectorUpdated": "Heeft een MCP-connector gewijzigd",
-				"aiConnectorDeleted": "Heeft een MCP-connector verwijderd"
+				"aiConnectorDeleted": "Heeft een MCP-connector verwijderd",
+				"agentIntakeTriggerUpdated": "Heeft de intake-trigger van een agent gewijzigd",
+				"agentIntakeTriggerDisabled": "Heeft de intake-trigger van een agent uitgezet"
 			},
 			"actor": {
 				"apiKey": "API-sleutel",
@@ -3277,8 +3202,7 @@
 			"empty": "Geen resultaten gevonden.",
 			"footer": {
 				"navigate": "Navigeren",
-				"open": "Openen",
-				"close": "Sluiten"
+				"open": "Openen"
 			},
 			"goToInbox": "Ga naar Inbox",
 			"newView": "Nieuwe weergave",
@@ -3309,7 +3233,6 @@
 		},
 		"notifications": "Meldingen",
 		"sidebar": {
-			"overview": "Overzicht",
 			"projects": "Projecten",
 			"members": "Leden",
 			"invitations": "Uitnodigingen",
@@ -3317,12 +3240,9 @@
 			"backToBoard": "Terug naar bord",
 			"favorites": "Favorieten",
 			"allTasks": "Alle taken",
-			"inbox": "Inbox",
 			"myWork": "Jouw werk",
 			"home": "Home",
-			"personal": "Persoonlijk",
 			"stickies": "Plaknotities",
-			"analytics": "Analyse",
 			"drafts": "Concepten"
 		},
 		"projectList": {
@@ -3350,10 +3270,6 @@
 				"page": "Pagina's"
 			}
 		},
-		"settingsLayout": {
-			"toggleSidebar": "Zijbalk in-/uitschakelen",
-			"back": "Terug"
-		},
 		"userMenu": {
 			"signedOutSuccess": "Succesvol uitgelogd",
 			"signOutFailed": "Uitloggen mislukt",
@@ -3366,13 +3282,11 @@
 		"workspaceSwitcher": {
 			"workspaces": "Werkruimtes",
 			"switching": "Wisselen...",
-			"addWorkspace": "Werkruimte toevoegen",
-			"selectWorkspace": "Werkruimte selecteren"
+			"addWorkspace": "Werkruimte toevoegen"
 		},
 		"page": {
 			"projectsTitle": "Projecten",
 			"settingsTitle": "Instellingen",
-			"backToWorkspace": "Terug naar de werkruimte",
 			"settingsWorkspaceTab": "Werkruimte",
 			"settingsInstanceTab": "Instantie",
 			"settingsNotFoundBack": "Accountinstellingen",
@@ -3402,7 +3316,6 @@
 			"items": {
 				"openCommandPalette": "Opdrachtpalet openen",
 				"globalSearch": "Globaal zoeken",
-				"toggleSidebar": "Zijbalk in-/uitschakelen",
 				"showShortcuts": "Sneltoetsen tonen",
 				"closeModal": "Venster/popover sluiten",
 				"createTask": "Taak aanmaken",
@@ -3509,16 +3422,11 @@
 	},
 	"notifications": {
 		"title": "Meldingen",
-		"newCount_one": "{{count}} nieuw",
-		"newCount_other": "{{count}} nieuw",
-		"emptyTitle": "Nog geen meldingen",
-		"emptySubtitle": "Updates en activiteiten verschijnen hier.",
 		"clearAll": "Alle meldingen wissen",
 		"clearDialogTitle": "Alle meldingen wissen?",
 		"clearDialogDescription": "Dit zal alle meldingen permanent verwijderen. Dit kan niet ongedaan worden gemaakt.",
 		"shortcuts": {
-			"open": "Meldingen openen",
-			"inbox": "Inbox openen"
+			"open": "Meldingen openen"
 		},
 		"events": {
 			"task_created": {
@@ -3675,7 +3583,6 @@
 				"fiveDays": "5 dagen",
 				"oneDay": "1 dag",
 				"oneWeek": "1 week",
-				"pickDate": "Kies een datum",
 				"pickTime": "Kies een tijd",
 				"submit": "Uitstellen",
 				"threeDays": "3 dagen",
@@ -4069,7 +3976,6 @@
 				"recurredToScheduled": "De volgende herhaling is volgens planning aangemaakt: <task>{{task}}</task>"
 			}
 		},
-		"title": "Taken",
 		"status": {
 			"label": "Status",
 			"to-do": "Te doen",
@@ -4308,7 +4214,6 @@
 			"labels": "Labels",
 			"copyTaskLink": "Taaklink kopiëren",
 			"copyTaskBranch": "Taakbranch kopiëren",
-			"start": "Start",
 			"startDate": "Startdatum",
 			"noDate": "Geen datum",
 			"addLabel": "Label toevoegen",
@@ -4363,22 +4268,11 @@
 			"moveAllTooltip": "Alle geplande taken verplaatsen naar {{column}}",
 			"moveAll": "Alles verplaatsen",
 			"addTask": "Taak toevoegen",
-			"filter": "Filteren",
-			"addFilter": "Filter toevoegen...",
 			"sections": {
 				"planned": "Gepland",
 				"archived": "Gearchiveerd"
 			},
-			"noTasksInSection": "Geen {{section}} taken",
-			"filters": {
-				"priority": "Prioriteit: {{name}}",
-				"assignee": "Toegewezen aan: {{name}}",
-				"due": "Einddatum: {{date}}",
-				"label": "Label: {{name}}",
-				"dueThisWeek": "Deze week vervallen",
-				"dueNextWeek": "Volgende week vervallen",
-				"noDueDate": "Geen einddatum"
-			}
+			"noTasksInSection": "Geen {{section}} taken"
 		},
 		"sort": {
 			"label": "Sorteren",
@@ -4398,11 +4292,6 @@
 		},
 		"boardFilters": {
 			"filterBy": "Filteren op",
-			"allStatuses": "Alle statussen",
-			"allPriorities": "Alle prioriteiten",
-			"allAssignees": "Alle personen",
-			"allDueDates": "Alle einddatums",
-			"allLabels": "Alle labels",
 			"selectedCount": "{{count}} geselecteerd",
 			"subjects": {
 				"status": "Status",
@@ -4413,14 +4302,8 @@
 				"estimate": "Inschatting"
 			},
 			"operators": {
-				"isAnyOf": "is een van",
-				"includeAnyOf": "bevat een van"
-			},
-			"all": "Alle",
-			"allCustomFieldValues": "Alle waarden",
-			"noCustomFieldValues": "Geen waarden voor aangepast veld",
-			"noValuesUsedYet": "Nog geen waarden gebruikt",
-			"unassigned": "Niet toegewezen"
+				"isAnyOf": "is een van"
+			}
 		},
 		"gantt": {
 			"pageTitle": "{{name}} – Gantt",
@@ -4463,11 +4346,8 @@
 		},
 		"archive": {
 			"success": "{{count}} taken gearchiveerd",
-			"archive": "Archiveren",
 			"archived": "Taak gearchiveerd",
 			"badge": "Gearchiveerd",
-			"bulkArchived_one": "{{count}} taak gearchiveerd",
-			"bulkArchived_other": "{{count}} taken gearchiveerd",
 			"error": "Kan de taak niet archiveren",
 			"restore": "Herstellen",
 			"restored": "Taak hersteld",
@@ -4503,10 +4383,6 @@
 			"updateError": "Bijwerken einddatum mislukt",
 			"clearSuccess": "Einddatum taak verwijderd",
 			"clearError": "Verwijderen einddatum mislukt"
-		},
-		"labels": {
-			"label": "Labels",
-			"empty": "Geen labels beschikbaar"
 		},
 		"update": {
 			"success": "Taak succesvol bijgewerkt",
@@ -4861,7 +4737,6 @@
 				"project": "Project",
 				"status": "Status"
 			},
-			"needsSingleProject": "Groeperen op status vereist één project",
 			"none": "Geen",
 			"order": {
 				"assignee": "Toegewezen persoon",
@@ -4956,7 +4831,7 @@
 				"isNotEmpty": "is niet leeg",
 				"moreThanAgo": "meer dan … geleden",
 				"moreThanAhead": "over meer dan …",
-				"on": "on",
+				"on": "op",
 				"onOrAfter": "op of na",
 				"onOrBefore": "op of vóór",
 				"withinLast": "in de afgelopen",
@@ -4969,9 +4844,7 @@
 				"completed": "Voltooid",
 				"created": "Aangemaakt",
 				"createdBy": "Aangemaakt door",
-				"customFields": "Aangepaste velden",
 				"cycle": "Cyclus",
-				"estimate": "Schatting",
 				"group": "Groep",
 				"mentions": "Vermeldingen",
 				"module": "Module",
@@ -4985,7 +4858,7 @@
 			"values": {
 				"currentCycle": "Huidige cyclus",
 				"false": "Onwaar",
-				"me": "Me",
+				"me": "Ik",
 				"noAssignee": "Geen toegewezen persoon",
 				"noCreator": "Geen maker",
 				"noCycle": "Geen cyclus",
@@ -5024,8 +4897,6 @@
 			"expandSubTasks": "Subtaken tonen",
 			"hideColumn": "Kolom verbergen",
 			"loadError": "Kan taken niet laden",
-			"newTask": "Nieuwe taak",
-			"newTaskPlaceholder": "Taaktitel, dan Enter",
 			"selectTask": "{{key}} selecteren",
 			"sortAsc": "Oplopend sorteren",
 			"sortDesc": "Aflopend sorteren",
@@ -5052,7 +4923,7 @@
 		"timeTracking": {
 			"duration": "Duur",
 			"durationInvalid": "Voer een duur in tussen 1 minuut en 24 uur, zoals 1h 30m.",
-			"durationPlaceholder": "e.g. 1h 30m",
+			"durationPlaceholder": "bijv. 1h 30m",
 			"empty": "Nog geen tijd geregistreerd",
 			"entries": "Tijdregistraties",
 			"formerMember": "Oud-lid",
@@ -5232,11 +5103,6 @@
 		"noPendingDescription": "Als iemand je uitnodigt voor een werkruimte, verschijnt de uitnodiging hier.",
 		"continueToSetup": "Doorgaan naar de installatie",
 		"skipForNow": "Nu overslaan",
-		"table": {
-			"workspace": "Werkruimte",
-			"invitedBy": "Uitgenodigd door",
-			"expires": "Verloopt op"
-		},
 		"toast": {
 			"acceptError": "Accepteren van uitnodiging mislukt",
 			"acceptSuccess": "Uitnodiging geaccepteerd! Welkom bij het team.",
@@ -5271,7 +5137,6 @@
 				"inProgress": "In behandeling"
 			},
 			"noDueDate": "Geen einddatum",
-			"reorderHandle": "Project opnieuw ordenen",
 			"reorderError": "Projecten opnieuw ordenen mislukt",
 			"emptyDescriptionReadOnly": "Er zijn nog geen projecten in deze werkruimte. Vraag een beheerder om er een aan te maken."
 		},
@@ -5298,7 +5163,6 @@
 			"pageTitle": "Werkruimte aanmaken",
 			"heading": "Maak een nieuwe werkruimte",
 			"subtitle": "Werkruimtes zijn gedeelde omgevingen waar teams samenwerken aan projecten en taken.",
-			"nameLabel": "Naam van de werkruimte",
 			"namePlaceholder": "Voer naam in",
 			"descriptionLabel": "Beschrijving (optioneel)",
 			"descriptionPlaceholder": "Voeg een beschrijving toe",
@@ -5426,11 +5290,8 @@
 			"columns": {
 				"name": "Naam",
 				"role": "Rol",
-				"joined": "Lid sinds",
-				"actions": "Acties"
+				"joined": "Lid sinds"
 			},
-			"memberRolePending": "{{role}} (In afwachting)",
-			"ariaCancelInvitation": "Uitnodiging annuleren",
 			"ariaRemoveMember": "Lid verwijderen",
 			"removeDialogTitle": "Teamlid verwijderen?",
 			"removeDialogDescription": "{{name}} wordt uit de werkruimte verwijderd en verliest de toegang tot de projecten en taken ervan.",
@@ -5479,7 +5340,6 @@
 		}
 	},
 	"publicProject": {
-		"pageTitle": "Openbare weergave",
 		"badge": "Openbaar",
 		"readOnly": "Alleen-lezen",
 		"error": {
@@ -5492,12 +5352,10 @@
 		"taskDetail": {
 			"labels": "Labels",
 			"externalLinks": "Externe links",
-			"pullRequestFallback": "Pull request",
 			"issueFallback": "Issue",
 			"prStatusMerged": "Samengevoegd",
 			"prStatusDraft": "Concept",
 			"prStatusOpen": "Open",
-			"dueWithDate": "Vervalt op {{date}}",
 			"created": "Aangemaakt",
 			"dueDateLabel": "Deadline",
 			"assignees": "Toegewezen personen",
@@ -5521,9 +5379,7 @@
 			"backlog": "Backlog",
 			"chip": "{{subject}}: {{value}}",
 			"clearFilters": "Filters wissen",
-			"collapse": "{{name}} samenvouwen",
 			"emptyColumn": "Geen taken hier",
-			"expand": "{{name}} uitvouwen",
 			"filter": "Filteren",
 			"filters": "Filters",
 			"layout": "Indeling",
@@ -5772,7 +5628,7 @@
 				"done": "Gereed",
 				"inProgress": "In behandeling",
 				"inReview": "Ter beoordeling",
-				"todo": "To do"
+				"todo": "Te doen"
 			},
 			"analytics": {
 				"allProjects": "Alle projecten",
@@ -7846,7 +7702,7 @@
 			"completed30": "Voltooid in 30 dagen",
 			"created": "Aangemaakt",
 			"dueThisWeek": "Deze week af",
-			"notAvailable": "n/a",
+			"notAvailable": "n.v.t.",
 			"overdue": "Achterstallig",
 			"subscribed": "Gevolgd"
 		},
@@ -7863,7 +7719,6 @@
 			"cancelled_other": "{{count}} geannuleerd",
 			"priorities": "Openstaand werk per prioriteit",
 			"recentActivity": "Recente activiteit",
-			"title": "Werkdruk",
 			"byState": "Per status"
 		},
 		"activity": {
@@ -7942,7 +7797,6 @@
 			"all": "Alle",
 			"emptyDescription": "Sla filters en indelingen op als weergaven en deel ze met je team.",
 			"emptyTitle": "Nog geen weergaven",
-			"favorite": "Favoriet",
 			"mine": "Van mij",
 			"more": "Weergaven",
 			"newView": "Nieuwe weergave",
@@ -8086,14 +7940,10 @@
 			"inbox": "Inbox",
 			"label": "Ga verder waar je was",
 			"myWork": "Jouw werk",
-			"open_one": "{{count}} open",
-			"open_other": "{{count}} open",
 			"overdue_one": "{{count}} te laat",
 			"overdue_other": "{{count}} te laat",
 			"stickies": "Plaknotities",
 			"stickiesHint": "Privénotities, alleen voor jou",
-			"unread_one": "{{count}} ongelezen",
-			"unread_other": "{{count}} ongelezen",
 			"openCaption": "open",
 			"unreadCaption": "ongelezen"
 		}
@@ -8153,7 +8003,6 @@
 			"submit": "Verzoek indienen",
 			"title": "Nieuw verzoek",
 			"titlePlaceholder": "Wat heb je nodig?",
-			"titleRequired": "Voeg een titel toe",
 			"toast": "Verzoek ingediend",
 			"toastView": "Bekijken",
 			"pastedImages": "Geplakte afbeeldingen",
@@ -8244,7 +8093,7 @@
 		"filters": {
 			"button": "Filteren",
 			"clear": "Filters wissen",
-			"me": "Me",
+			"me": "Ik",
 			"priority": "Prioriteit",
 			"remove": "Filter verwijderen",
 			"status": "Status",
@@ -8333,7 +8182,6 @@
 			"pending": "Deze taak wacht in de intake.",
 			"snoozed": "Deze taak is in de intake uitgesteld tot {{date}}."
 		},
-		"title": "Intake",
 		"triage": {
 			"backToList": "Terug naar de verzoeken",
 			"detailLabel": "Verzoek",
@@ -9303,7 +9151,6 @@
 	},
 	"instanceAdmin": {
 		"admins": {
-			"actions": "Beheerdersacties",
 			"add": "Beheerder toevoegen",
 			"addConfirm": "Beheerder toevoegen",
 			"addDescription": "Instantiebeheerders kunnen elke instelling in dit gedeelte wijzigen en elke werkruimte openen.",
@@ -9421,7 +9268,7 @@
 				"fileStorage": "Bestandsopslag",
 				"notConfigured": "Niet geconfigureerd",
 				"off": "Uit",
-				"on": "On",
+				"on": "Aan",
 				"realtime": "Realtime",
 				"realtimeMemory": "In het geheugen",
 				"realtimeRedis": "Redis ({{mode}})",
@@ -9507,7 +9354,6 @@
 		"save": "Opslaan",
 		"saved": "Instellingen opgeslagen",
 		"saveError": "De instellingen konden niet worden opgeslagen",
-		"saving": "Opslaan…",
 		"secret": {
 			"cancel": "Annuleren",
 			"clear": "Wissen",
@@ -9517,8 +9363,6 @@
 			"saved": "Opgeslagen",
 			"unreadable": "Het opgeslagen geheim kan niet worden gelezen (de AUTH_SECRET van de server is gewijzigd). Voer het opnieuw in."
 		},
-		"sidebarSubtitle": "Instantiebeheer",
-		"sidebarTitle": "Instantie",
 		"source": {
 			"default": "Standaard",
 			"environment": "Omgeving: {{variable}}",
@@ -9571,97 +9415,97 @@
 	},
 	"press": {
 		"boilerplate": {
-			"description": "Ready-made descriptions. Trim them if you need to, but please keep the facts as they are.",
+			"description": "Kant-en-klare beschrijvingen. Kort ze gerust in als dat nodig is, maar laat de feiten zoals ze zijn.",
 			"long": {
-				"label": "About 150 words",
-				"text": "Margaya is an open-source project management platform built for teams that want to plan and ship work without the tool becoming a job of its own. Tasks move through board, list, spreadsheet, calendar and Gantt views of the same data. Cycles, modules, estimates and an intake inbox are there when a team needs planning, and stay out of the way when it doesn't. Teams write docs together next to their tasks, collect requests on public boards, and follow progress with analytics and an audit log. A REST API with an OpenAPI description, webhooks, an MCP server and integrations with GitHub, Gitea, Slack, Discord and others connect Margaya to the rest of a team's tools. The interface is available in 20 languages. Margaya is released under the MIT licence and runs on a single server with Docker, or on Kubernetes with Helm; Margaya Cloud offers the same product as a managed service."
+				"label": "Ongeveer 150 woorden",
+				"text": "Margaya is een opensource platform voor projectmanagement, gemaakt voor teams die werk willen plannen en opleveren zonder dat de tool zelf een baan wordt. Taken gaan door bord-, lijst-, spreadsheet-, kalender- en Gantt-weergaven van dezelfde gegevens. Cyclussen, modules, inschattingen en een intake-inbox zijn er wanneer een team planning nodig heeft, en blijven uit de weg wanneer dat niet zo is. Teams schrijven samen documenten naast hun taken, verzamelen verzoeken op openbare borden en volgen de voortgang met analyses en een auditlog. Een REST API met een OpenAPI-beschrijving, webhooks, een MCP-server en integraties met GitHub, Gitea, Slack, Discord en meer verbinden Margaya met de rest van de tools van een team. De interface is beschikbaar in 20 talen. Margaya wordt uitgebracht onder de MIT-licentie en draait op één server met Docker, of op Kubernetes met Helm; Margaya Cloud biedt hetzelfde product als beheerde dienst."
 			},
 			"short": {
-				"label": "About 50 words",
-				"text": "Margaya is an open-source project management platform for teams that want clear ownership without heavy process. Plan work on boards, lists, spreadsheets, calendars and Gantt charts, write docs beside the tasks, and connect your tools through a REST API and MCP. Run it yourself under the MIT licence, or use Margaya Cloud."
+				"label": "Ongeveer 50 woorden",
+				"text": "Margaya is een opensource platform voor projectmanagement voor teams die duidelijk eigenaarschap willen zonder zware processen. Plan werk op borden, lijsten, spreadsheets, kalenders en Gantt-diagrammen, schrijf documenten naast de taken en koppel je tools via een REST API en MCP. Draai het zelf onder de MIT-licentie, of gebruik Margaya Cloud."
 			},
-			"title": "Boilerplate"
+			"title": "Standaardteksten"
 		},
 		"colours": {
-			"copyHex": "Copy {{hex}}",
-			"description": "Margaya is deliberately quiet: near-black, off-white and a few greys, so the work on screen supplies the colour.",
+			"copyHex": "{{hex}} kopiëren",
+			"description": "Margaya is bewust ingetogen: bijna-zwart, gebroken wit en een paar grijstinten, zodat het werk op het scherm de kleur levert.",
 			"graphite": {
-				"name": "Graphite",
-				"usage": "Text and primary buttons in the light theme"
+				"name": "Grafiet",
+				"usage": "Tekst en primaire knoppen in het lichte thema"
 			},
 			"ink": {
-				"name": "Ink",
-				"usage": "The logo, and the dark theme's background"
+				"name": "Inkt",
+				"usage": "Het logo, en de achtergrond van het donkere thema"
 			},
 			"mist": {
-				"name": "Mist",
-				"usage": "Panels and sidebars in the light theme"
+				"name": "Nevel",
+				"usage": "Panelen en zijbalken in het lichte thema"
 			},
 			"mono": {
 				"name": "Geist Mono",
-				"usage": "Code, keyboard shortcuts and task IDs"
+				"usage": "Code, sneltoetsen en taak-ID's"
 			},
 			"paper": {
-				"name": "Paper",
-				"usage": "The light logo, and primary buttons in the dark theme"
+				"name": "Papier",
+				"usage": "Het lichte logo, en primaire knoppen in het donkere thema"
 			},
-			"sample": "Plan the work. Ship the work.",
+			"sample": "Plan het werk. Lever het werk op.",
 			"sans": {
 				"name": "Geist",
-				"usage": "Interface, headings and the wordmark, set semibold with tight tracking"
+				"usage": "Interface, koppen en het woordmerk, in semibold met krappe letterafstand"
 			},
-			"title": "Colours and type",
-			"typeTitle": "Typography",
+			"title": "Kleuren en letters",
+			"typeTitle": "Typografie",
 			"white": {
-				"name": "White",
-				"usage": "The light theme's background"
+				"name": "Wit",
+				"usage": "De achtergrond van het lichte thema"
 			}
 		},
 		"contact": {
-			"body": "Margaya is built in the open, so the maintainers answer on GitHub. Start a discussion for interviews and questions about the project, or open an issue if something in this kit is missing or out of date.",
-			"discussions": "Start a discussion",
-			"issues": "Open an issue",
-			"title": "Talk to the maintainers"
+			"body": "Margaya wordt in de openbaarheid ontwikkeld, dus de maintainers antwoorden op GitHub. Start een discussie voor interviews en vragen over het project, of open een issue als er iets in deze kit ontbreekt of verouderd is.",
+			"discussions": "Discussie starten",
+			"issues": "Issue openen",
+			"title": "Neem contact op met de maintainers"
 		},
-		"copied": "Copied",
-		"copy": "Copy",
-		"copyUrl": "Copy URL",
-		"description": "Margaya's press kit: boilerplate text, logos, product screenshots, brand colours and typography, with direct download links.",
-		"download": "Download",
-		"downloadKit": "Download the press kit",
+		"copied": "Gekopieerd",
+		"copy": "Kopiëren",
+		"copyUrl": "URL kopiëren",
+		"description": "De perskit van Margaya: standaardteksten, logo's, productscreenshots, merkkleuren en typografie, met directe downloadlinks.",
+		"download": "Downloaden",
+		"downloadKit": "Perskit downloaden",
 		"downloadKitMeta": "ZIP, {{size}}",
-		"eyebrow": "Press kit",
+		"eyebrow": "Perskit",
 		"facts": {
-			"description": "The essentials, in one place.",
+			"description": "Het belangrijkste, op één plek.",
 			"founded": {
-				"label": "Founded",
+				"label": "Opgericht",
 				"value": "2026"
 			},
 			"hosting": {
 				"label": "Hosting",
-				"value": "Self-hosted with Docker or Helm, or managed on Margaya Cloud"
+				"value": "Zelf gehost met Docker of Helm, of beheerd op Margaya Cloud"
 			},
 			"interfaces": {
-				"label": "Interfaces",
-				"value": "REST API with an OpenAPI description, plus an MCP server"
+				"label": "Koppelingen",
+				"value": "REST API met een OpenAPI-beschrijving, plus een MCP-server"
 			},
 			"languages": {
-				"label": "Languages",
-				"value": "20 interface languages"
+				"label": "Talen",
+				"value": "20 interfacetalen"
 			},
 			"licence": {
-				"label": "Licence",
-				"value": "MIT, for every feature"
+				"label": "Licentie",
+				"value": "MIT, voor alle functies"
 			},
 			"source": {
-				"label": "Source code",
+				"label": "Broncode",
 				"value": "github.com/manu14357/Margaya"
 			},
 			"stack": {
-				"label": "Stack",
-				"value": "TypeScript, Hono, React and PostgreSQL, with optional Redis"
+				"label": "Techniek",
+				"value": "TypeScript, Hono, React en PostgreSQL, met optioneel Redis"
 			},
-			"title": "Quick facts",
+			"title": "Kerngegevens",
 			"ai": {
 				"label": "AI",
 				"value": "Optioneel en standaard uit: Vraag het AI, de modus Bouwen en AI-agents, op Claude of een zelf gehost model"
@@ -9669,212 +9513,218 @@
 		},
 		"guidelines": {
 			"do": {
-				"contrast": "Use the dark wordmark on light backgrounds and the light wordmark on dark ones.",
-				"link": "Link to margaya.app or the GitHub repository when you mention the project.",
-				"name": "Write the name as “Margaya”, with a capital M, in running text.",
-				"space": "Leave clear space around the logo at least as wide as the icon's ears."
+				"contrast": "Gebruik het donkere woordmerk op lichte achtergronden en het lichte woordmerk op donkere.",
+				"link": "Link naar margaya.app of de GitHub-repository wanneer je het project noemt.",
+				"name": "Schrijf de naam in lopende tekst als ‘Margaya’, met een hoofdletter M.",
+				"space": "Laat rond het logo vrije ruimte die minstens zo breed is als de oren van het icoon."
 			},
 			"dont": {
-				"distort": "Stretch, rotate, outline or add effects to the logo.",
-				"edit": "Edit screenshots to show features that Margaya doesn't have.",
-				"endorse": "Suggest that the Margaya maintainers endorse a product, service or opinion.",
-				"recolour": "Recolour the logo, or place it on busy images where it loses contrast."
+				"distort": "Het logo uitrekken, draaien, omlijnen of er effecten aan toevoegen.",
+				"edit": "Screenshots bewerken om functies te tonen die Margaya niet heeft.",
+				"endorse": "Suggereren dat de maintainers van Margaya een product, dienst of mening onderschrijven.",
+				"recolour": "Het logo een andere kleur geven, of het op drukke afbeeldingen plaatsen waar het contrast verloren gaat."
 			},
-			"dontTitle": "Please don't",
-			"doTitle": "Please do",
-			"title": "Using the brand"
+			"dontTitle": "Liever niet",
+			"doTitle": "Graag wel",
+			"title": "Het merk gebruiken"
 		},
-		"headline": "Margaya is open-source project management you can run on your own server.",
-		"intro": "Short and long descriptions, logos, screenshots, colours and type, ready for articles, videos and talks. Everything on this page may be used for editorial coverage of Margaya.",
+		"headline": "Margaya is opensource projectmanagement dat je op je eigen server kunt draaien.",
+		"intro": "Korte en lange beschrijvingen, logo's, screenshots, kleuren en lettertypen, klaar voor artikelen, video's en presentaties. Alles op deze pagina mag worden gebruikt voor redactionele berichtgeving over Margaya.",
 		"logos": {
-			"description": "Use the wordmark wherever there is room for it, and the icon where space is tight. Each file has a permanent address you can link to.",
+			"description": "Gebruik het woordmerk overal waar er ruimte voor is, en het icoon waar de ruimte krap is. Elk bestand heeft een vast adres waarnaar je kunt linken.",
 			"iconPng": {
-				"alt": "The Margaya app icon",
+				"alt": "Het app-icoon van Margaya",
 				"detail": "PNG, 512 × 512",
-				"name": "App icon"
+				"name": "App-icoon"
 			},
 			"iconSvg": {
-				"alt": "The Margaya icon: a light cat face on a dark rounded square",
-				"detail": "SVG, scales to any size",
-				"name": "Icon"
+				"alt": "Het Margaya-icoon: een lichte kattenkop op een donker vierkant met afgeronde hoeken",
+				"detail": "SVG, schaalbaar naar elk formaat",
+				"name": "Icoon"
 			},
-			"title": "Logos",
+			"title": "Logo's",
 			"wordmarkDark": {
-				"alt": "The Margaya wordmark in near-black on a light background",
-				"detail": "SVG, for light backgrounds",
-				"name": "Wordmark, dark"
+				"alt": "Het Margaya-woordmerk in bijna-zwart op een lichte achtergrond",
+				"detail": "SVG, voor lichte achtergronden",
+				"name": "Woordmerk, donker"
 			},
 			"wordmarkLight": {
-				"alt": "The Margaya wordmark in off-white on a dark background",
-				"detail": "SVG, for dark backgrounds",
-				"name": "Wordmark, light"
+				"alt": "Het Margaya-woordmerk in gebroken wit op een donkere achtergrond",
+				"detail": "SVG, voor donkere achtergronden",
+				"name": "Woordmerk, licht"
 			}
 		},
-		"onThisPage": "On this page",
+		"onThisPage": "Op deze pagina",
 		"screenshots": {
-			"close": "Close",
-			"counter": "{{current}} of {{total}}",
-			"dark": "Dark",
-			"description": "Real Margaya screens in the light and dark themes. Select one to see it at full size.",
-			"empty": "A fresh set of screenshots is on its way. Until then, the press kit download has the current set.",
-			"light": "Light",
-			"next": "Next screenshot",
-			"open": "View larger: {{title}}",
-			"previous": "Previous screenshot",
+			"close": "Sluiten",
+			"counter": "{{current}} van {{total}}",
+			"dark": "Donker",
+			"description": "Echte Margaya-schermen in het lichte en donkere thema. Selecteer er een om hem op volle grootte te bekijken.",
+			"empty": "Er komt een nieuwe set screenshots aan. Tot die tijd bevat de perskit-download de huidige set.",
+			"light": "Licht",
+			"next": "Volgende screenshot",
+			"open": "Groter bekijken: {{title}}",
+			"previous": "Vorige screenshot",
 			"size": "{{width}} × {{height}}, PNG",
-			"title": "Product screenshots"
+			"title": "Productscreenshots"
 		},
-		"title": "Press kit",
-		"downloadPng": "Download PNG"
+		"title": "Perskit",
+		"downloadPng": "PNG downloaden"
 	},
 	"pricing": {
 		"cta": {
-			"description": "Start a Cloud trial with no card, or follow the install guide and run Margaya on your own hardware.",
-			"primary": "Start a free trial",
-			"secondary": "Read the install guide",
-			"title": "Pick the way that fits, and change your mind later."
+			"description": "Start een Cloud-proefperiode zonder kaart, of volg de installatiegids en draai Margaya op je eigen hardware.",
+			"primary": "Start een gratis proefperiode",
+			"secondary": "Lees de installatiegids",
+			"title": "Kies wat bij je past, en bedenk je later gerust."
 		},
-		"description": "The self-hosted build is the whole product under the MIT licence, with no seat limits and no paid tier. Margaya Cloud is the same software, hosted in the EU and kept up to date for you.",
-		"eyebrow": "Pricing",
+		"description": "De zelf gehoste versie is het complete product onder de MIT-licentie, zonder limiet op het aantal gebruikers en zonder betaalde variant. Margaya Cloud is dezelfde software, gehost in de EU en voor je up-to-date gehouden.",
+		"eyebrow": "Prijzen",
 		"faq": {
 			"items": {
 				"cancel": {
-					"answer": "Your plan stays active until the end of the period you've paid for. Export your work as CSV, Excel or JSON before then if you want to keep a copy.",
-					"question": "What happens if I cancel?"
+					"answer": "Je abonnement blijft actief tot het einde van de periode waarvoor je hebt betaald. Exporteer je werk vóór die tijd als CSV, Excel of JSON als je een kopie wilt bewaren.",
+					"question": "Wat gebeurt er als ik opzeg?"
 				},
 				"founding": {
-					"answer": "Workspaces created before paid plans launched keep free access for at least 12 months, and you'll get six months' notice before anything changes.",
-					"question": "I signed up before paid plans existed. What changes?"
+					"answer": "Werkruimten die zijn aangemaakt voordat de betaalde abonnementen startten, houden minstens 12 maanden gratis toegang, en je hoort het zes maanden van tevoren als er iets verandert.",
+					"question": "Ik heb me aangemeld voordat er betaalde abonnementen waren. Wat verandert er?"
 				},
 				"payments": {
-					"answer": "Payments go through Creem, which acts as merchant of record and handles sales tax and VAT where they apply. Your card details never reach Margaya.",
-					"question": "Who handles payments and tax?"
+					"answer": "Betalingen lopen via Creem, dat optreedt als merchant of record en omzetbelasting en btw afhandelt waar die van toepassing zijn. Je kaartgegevens komen nooit bij Margaya terecht.",
+					"question": "Wie regelt betalingen en belasting?"
 				},
 				"seats": {
-					"answer": "Cloud Team is billed for each member of the workspace. When someone joins or leaves, the seat count on the subscription is updated to match.",
-					"question": "How are Cloud Team members counted?"
+					"answer": "Cloud Team wordt gefactureerd per lid van de werkruimte. Als iemand erbij komt of vertrekt, wordt het aantal plaatsen in het abonnement daarop aangepast.",
+					"question": "Hoe worden leden van Cloud Team geteld?"
 				},
 				"selfHostHelp": {
-					"answer": "From the maintainers and the community on GitHub, through discussions and issues. Installation, upgrades and configuration are covered in the documentation.",
-					"question": "Where do self-hosters get help?"
+					"answer": "Van de maintainers en de community op GitHub, via discussies en issues. Installatie, upgrades en configuratie worden behandeld in de documentatie.",
+					"question": "Waar krijgen zelfhosters hulp?"
 				},
 				"selfHostLimits": {
-					"answer": "No. The code you install is the code that runs Margaya Cloud, and all of it is MIT licensed. There are no licence keys, seat limits or paid features to unlock.",
-					"question": "Is the self-hosted version missing anything?"
+					"answer": "Nee. De code die je installeert is de code waarop Margaya Cloud draait, en alles valt onder de MIT-licentie. Er zijn geen licentiesleutels, gebruikerslimieten of betaalde functies om te ontgrendelen.",
+					"question": "Mist er iets in de zelf gehoste versie?"
 				},
 				"trial": {
-					"answer": "A new Cloud workspace gets 14 days with everything included, and you don't need a card to start. Before it ends, choose a plan or export your tasks.",
-					"question": "How does the Cloud trial work?"
+					"answer": "Een nieuwe Cloud-werkruimte krijgt 14 dagen met alles inbegrepen, en je hebt geen kaart nodig om te beginnen. Kies voor het einde een abonnement of exporteer je taken.",
+					"question": "Hoe werkt de proefperiode van Cloud?"
 				},
 				"yearly": {
-					"answer": "Yes. A year costs the same as ten months, so both Cloud plans come with two months free when you pay yearly.",
-					"question": "Is yearly billing cheaper?"
+					"answer": "Ja. Een jaar kost hetzelfde als tien maanden, dus bij jaarlijkse betaling krijg je bij beide Cloud-abonnementen twee maanden gratis.",
+					"question": "Is jaarlijks betalen goedkoper?"
+				},
+				"ai": {
+					"question": "Zit AI erbij inbegrepen?",
+					"answer": "Elk abonnement heeft de AI-functies: Vraag het AI, de modus Bouwen, agents en schrijfhulp. Ze blijven uit tot een beheerder ze inschakelt. AI-gebruik zit niet in de prijs: je voegt je eigen API-sleutel toe in de AI-instellingen van de workspace en de AI-aanbieder rekent rechtstreeks met je af. Zelf gehoste installaties kunnen ook een model gebruiken dat je zelf draait, via Ollama of vLLM."
 				}
 			},
-			"title": "Questions about pricing"
+			"title": "Vragen over prijzen"
 		},
 		"interval": {
-			"annual": "Yearly",
-			"label": "Billing period",
-			"monthly": "Monthly",
-			"saving": "2 months free"
+			"annual": "Jaarlijks",
+			"label": "Factuurperiode",
+			"monthly": "Maandelijks",
+			"saving": "2 maanden gratis"
 		},
-		"metaDescription": "Margaya is free to self-host, forever. Margaya Cloud costs $4 a month for one person or $5 per member a month for teams, with a 14-day free trial.",
+		"metaDescription": "Margaya is gratis om zelf te hosten, voor altijd. Margaya Cloud kost $4 per maand voor één persoon of $5 per lid per maand voor teams, met een gratis proefperiode van 14 dagen.",
 		"plans": {
 			"personal": {
-				"annualNote": "Works out at {{price}} a month",
-				"annualPeriod": "per year",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month",
-				"monthlyPeriod": "per month",
-				"name": "Cloud Personal",
+				"annualNote": "Komt neer op {{price}} per maand",
+				"annualPeriod": "per jaar",
+				"cta": "Start een proefperiode van 14 dagen",
+				"monthlyNote": "Elke maand gefactureerd",
+				"monthlyPeriod": "per maand",
+				"name": "Cloud Persoonlijk",
 				"points": {
-					"everything": "Every feature in the self-hosted build",
-					"help": "Support by email",
-					"managed": "Backups and updates handled for you",
-					"one": "One person, unlimited projects and tasks"
+					"everything": "Alle functies van de zelf gehoste versie",
+					"help": "Ondersteuning per e-mail",
+					"managed": "Back-ups en updates worden voor je geregeld",
+					"one": "Eén persoon, onbeperkt projecten en taken"
 				},
-				"tagline": "Managed hosting for one person"
+				"tagline": "Beheerde hosting voor één persoon"
 			},
 			"selfHosted": {
-				"cta": "Read the install guide",
-				"name": "Self-hosted",
-				"note": "MIT licence. No key, no seat limit.",
-				"period": "forever",
+				"cta": "Lees de installatiegids",
+				"name": "Zelf gehost",
+				"note": "MIT-licentie. Geen sleutel, geen gebruikerslimiet.",
+				"period": "voor altijd",
 				"points": {
-					"data": "Your database, your backups, your rules",
-					"deploy": "Docker on one server, or Helm on Kubernetes",
-					"everything": "Every feature, for as many people as you like",
-					"help": "Community help on GitHub"
+					"data": "Jouw database, jouw back-ups, jouw regels",
+					"deploy": "Docker op één server, of Helm op Kubernetes",
+					"everything": "Alle functies, voor zoveel mensen als je wilt",
+					"help": "Hulp van de community op GitHub"
 				},
-				"tagline": "On servers you run"
+				"tagline": "Op servers die je zelf beheert"
 			},
 			"team": {
-				"annualNote": "Works out at {{price}} per member a month",
-				"annualPeriod": "per member, per year",
-				"badge": "For teams",
-				"cta": "Start a 14-day trial",
-				"monthlyNote": "Billed every month for each workspace member",
-				"monthlyPeriod": "per member, per month",
+				"annualNote": "Komt neer op {{price}} per lid per maand",
+				"annualPeriod": "per lid, per jaar",
+				"badge": "Voor teams",
+				"cta": "Start een proefperiode van 14 dagen",
+				"monthlyNote": "Elke maand gefactureerd per lid van de werkruimte",
+				"monthlyPeriod": "per lid, per maand",
 				"name": "Cloud Team",
 				"points": {
-					"help": "Priority support by email",
-					"managed": "Backups and updates handled for you",
-					"people": "Everyone in the workspace, unlimited projects",
-					"roles": "Workspace roles and permissions"
+					"help": "Ondersteuning met voorrang per e-mail",
+					"managed": "Back-ups en updates worden voor je geregeld",
+					"people": "Iedereen in de werkruimte, onbeperkt projecten",
+					"roles": "Rollen en rechten in de werkruimte"
 				},
-				"tagline": "Managed hosting for a whole team"
+				"tagline": "Beheerde hosting voor een heel team"
 			}
 		},
 		"table": {
-			"description": "The features are the same everywhere. What changes is who runs the servers and where you go for help.",
-			"feature": "Feature",
+			"description": "De functies zijn overal hetzelfde. Wat verschilt, is wie de servers draait en waar je terechtkunt voor hulp.",
+			"feature": "Functie",
 			"groups": {
-				"connect": "Connect",
-				"planning": "Planning and insight",
-				"running": "Running it",
-				"work": "The work"
+				"connect": "Koppelen",
+				"planning": "Planning en inzicht",
+				"running": "Beheer",
+				"work": "Het werk"
 			},
-			"included": "Included",
-			"notIncluded": "Not included",
+			"included": "Inbegrepen",
+			"notIncluded": "Niet inbegrepen",
 			"rows": {
-				"admin": "Instance settings: sign-in providers, email, storage",
-				"analytics": "Analytics and audit log",
-				"api": "REST API, webhooks and MCP",
-				"backups": "Backups",
-				"cycles": "Cycles, modules and estimates",
-				"docs": "Docs written together, next to the tasks",
-				"export": "Export to CSV, Excel or JSON",
-				"hosting": "Where it runs",
-				"intake": "Intake inbox and triage",
-				"integrations": "GitHub, Gitea, Slack, Discord and more",
-				"jira": "Jira import",
-				"people": "People",
-				"projects": "Projects and tasks",
-				"publicBoards": "Public boards with voting",
-				"roles": "Workspace roles and permissions",
-				"support": "Support",
+				"admin": "Instantie-instellingen: aanmeldproviders, e-mail, opslag",
+				"analytics": "Analyse en auditlog",
+				"api": "REST API, webhooks en MCP",
+				"backups": "Back-ups",
+				"cycles": "Cyclussen, modules en inschattingen",
+				"docs": "Samen geschreven documenten, naast de taken",
+				"export": "Exporteren naar CSV, Excel of JSON",
+				"hosting": "Waar het draait",
+				"intake": "Intake-inbox en beoordeling",
+				"integrations": "GitHub, Gitea, Slack, Discord en meer",
+				"jira": "Importeren uit Jira",
+				"people": "Mensen",
+				"projects": "Projecten en taken",
+				"publicBoards": "Openbare borden met stemmen",
+				"roles": "Rollen en rechten in de werkruimte",
+				"support": "Ondersteuning",
 				"updates": "Updates",
-				"views": "Board, list, spreadsheet, calendar and Gantt views"
+				"views": "Bord-, lijst-, spreadsheet-, kalender- en Gantt-weergaven",
+				"ai": "AI: Vraag het AI, modus Bouwen en agents"
 			},
-			"title": "Compare the plans",
+			"title": "Vergelijk de abonnementen",
 			"values": {
-				"automatic": "Automatic",
-				"community": "Community on GitHub",
-				"email": "Email",
-				"eu": "EU data centres",
-				"notNeeded": "Not needed for one",
-				"one": "Just you",
-				"perMember": "Unlimited, billed per member",
-				"priorityEmail": "Priority email",
-				"unlimited": "Unlimited",
-				"yours": "You run them",
-				"yourSchedule": "When you choose",
-				"yourServers": "Your servers"
+				"automatic": "Automatisch",
+				"community": "Community op GitHub",
+				"email": "E-mail",
+				"eu": "Datacenters in de EU",
+				"notNeeded": "Niet nodig voor één persoon",
+				"one": "Alleen jij",
+				"perMember": "Onbeperkt, gefactureerd per lid",
+				"priorityEmail": "E-mail met voorrang",
+				"unlimited": "Onbeperkt",
+				"yours": "Die regel je zelf",
+				"yourSchedule": "Wanneer jij wilt",
+				"yourServers": "Je eigen servers",
+				"ownKey": "Je eigen AI-sleutel of -model"
 			}
 		},
-		"title": "One product. Two ways to run it.",
-		"trialNote": "Cloud plans start with a 14-day trial. No card needed to begin."
+		"title": "Eén product. Twee manieren om het te draaien.",
+		"trialNote": "Cloud-abonnementen beginnen met een proefperiode van 14 dagen. Je hebt geen kaart nodig om te starten."
 	},
 	"templates": {
 		"form": {
@@ -10154,7 +10004,6 @@
 			},
 			"chat": {
 				"planLabel": "Voorgestelde wijzigingen",
-				"planning": "Wijzigingen plannen…",
 				"nothing": "Niets te wijzigen voor dit verzoek.",
 				"awaiting": "Wacht op antwoord",
 				"ready": "Wijzigingen klaar: {{count}}. Bevestig om door te gaan.",
@@ -10700,11 +10549,7 @@
 			"retro": "Retrospectieven",
 			"my_brief": "Mijn briefing",
 			"embedding": "Zoekindexering",
-			"coding_handoff": "Briefings voor codeeragents",
-			"build_chat": "Bouwen in de chat",
-			"nl_filter": "Filters in gewone taal",
-			"inbox_digest": "Samenvattingen van de inbox",
-			"speech": "Spraak naar tekst"
+			"coding_handoff": "Briefings voor codeeragents"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -10846,7 +10691,9 @@
 			"speechFormat": "API-indeling",
 			"speechFormatHint": "Hoe audio wordt verstuurd. Gebruik voor Fish Audio https://api.fish.audio/v1/asr als endpoint.",
 			"speechFormatOpenai": "OpenAI-compatibel",
-			"speechModelHint": "Voor Fish Audio: transcribe-1-pro of transcribe-1, of laat het leeg."
+			"speechModelHint": "Voor Fish Audio: transcribe-1-pro of transcribe-1, of laat het leeg.",
+			"storePrompts": "Prompts en antwoorden bewaren",
+			"storePromptsHint": "Bewaar de tekst van agentverzoeken en wat het model schreef in het logboek van elke run. Uit: runs bewaren alleen tellingen, stappen en hun samenvatting. Geldt voor runs die vanaf nu eindigen. Ask-geschiedenis die een workspace op de server bewaart, heeft een eigen schakelaar."
 		},
 		"workspace": {
 			"navLabel": "AI",
@@ -10924,7 +10771,8 @@
 			"storeConversations": "Chatgeschiedenis op de server bewaren",
 			"storeConversationsHint": "De gesprekken van iedereen worden in de werkruimte opgeslagen, zodat ze die op elk apparaat kunnen heropenen. Uit: ze blijven alleen in de eigen browser.",
 			"allowAutopilot": "Automatische piloot toestaan",
-			"allowAutopilotHint": "De modus Bouwen mag wijzigingen doorvoeren zonder bevestiging. Elke wijziging wordt nog steeds vastgelegd en kan ongedaan worden gemaakt."
+			"allowAutopilotHint": "De modus Bouwen mag wijzigingen doorvoeren zonder bevestiging. Elke wijziging wordt nog steeds vastgelegd en kan ongedaan worden gemaakt.",
+			"storesPrompts": "Prompts bewaard"
 		},
 		"agents": {
 			"navLabel": "Agents",
@@ -11128,11 +10976,13 @@
 					"manual": "Gestart vanuit een taak",
 					"schedule": "Gepland",
 					"automation": "Automatisering",
-					"chat": "Vervolg"
+					"chat": "Vervolg",
+					"intake": "Intake-verzoek"
 				},
 				"project": "Project:",
 				"workedSeconds": "Werkte {{count}} s",
-				"workedMinutes": "Werkte {{count}} min"
+				"workedMinutes": "Werkte {{count}} min",
+				"request": "Verzoek"
 			},
 			"connectors": {
 				"title": "Connectors",
@@ -11273,6 +11123,27 @@
 					"assign": "Toewijzing",
 					"schedule": "Planning",
 					"automation": "Automatisering"
+				}
+			},
+			"intakeTrigger": {
+				"open": "Nieuwe intake-verzoeken voor {{name}}",
+				"badge": "Intake",
+				"title": "Intake-verzoeken: {{name}}",
+				"hint": "Laat de agent draaien bij elk nieuw intake-verzoek in zijn projecten, bijvoorbeeld om het te beoordelen. Zijn wijzigingen volgen dezelfde regels voor goedkeuren en ongedaan maken als andere runs.",
+				"enabled": "Draaien bij nieuwe intake-verzoeken",
+				"enabledHint": "Alleen in projecten met Intake en AI aan, en binnen de projecten van de agent.",
+				"prompt": "Wat moet hij doen?",
+				"promptPlaceholder": "Bijvoorbeeld: stel een prioriteit en labels voor en wijs op duplicaten.",
+				"promptHint": "Laat leeg om te beoordelen: een korte opmerking over wat het verzoek vraagt, hoe dringend het lijkt en wat er ontbreekt.",
+				"runsAs": "Draait voor {{name}}. Opslaan met de trigger aan maakt jou die persoon.",
+				"runsAsYou": "Draait voor jou zodra je hem aanzet, met hoogstens jouw rechten. Hij gaat uit als je de workspace verlaat of je toegang tot AI of intake verliest.",
+				"outsideNote": "Verzoeken van buiten de workspace (openbare borden, formulieren) veranderen nooit iets zonder goedkeuring.",
+				"limitNote": "Hoogstens 30 intake-runs per uur per agent. Verzoeken die agents indienen, starten niets.",
+				"saved": "Intake-trigger opgeslagen",
+				"saveError": "Kan de intake-trigger niet opslaan. Probeer het opnieuw.",
+				"errors": {
+					"forbidden": "Intake-runs handelen voor jou, dus je hebt AI-toegang nodig en het recht om intake-verzoeken te lezen.",
+					"AGENT_CANT_READ_INTAKE": "De rol van deze agent kan geen intake-verzoeken lezen. Geef hem een rol die dat wel kan."
 				}
 			}
 		},
@@ -11503,7 +11374,6 @@
 			"unmeasured_other": "{{count}} taken hebben geen geregistreerde start en tellen niet mee."
 		},
 		"capacity": {
-			"meter": "Gepland werk vergeleken met een gebruikelijke cyclus",
 			"within": "Gepland op {{percent}}% van een gebruikelijke cyclus",
 			"over": "Boven capaciteit: gepland op {{percent}}% van een gebruikelijke cyclus",
 			"noDates": "Stel de datums van de cyclus in om de capaciteit te controleren.",
@@ -11610,6 +11480,146 @@
 			"emailTitle": "Mijn overzicht aan de samenvatting toevoegen",
 			"emailDescription": "Je samenvatting toont dan ook je geblokkeerde taken en wijzigingen in taken die je volgt. Vereist een dagelijkse of wekelijkse samenvatting.",
 			"emailError": "Deze instelling kon niet worden opgeslagen."
+		}
+	},
+	"emails": {
+		"otp": {
+			"preview": "Je Margaya-verificatiecode",
+			"title": "Je verificatiecode",
+			"subtitle": "Voer deze eenmalige code in om het inloggen af te ronden.",
+			"verifySubtitle": "Voer deze eenmalige code in om je e-mailadres te verifiëren.",
+			"changeSubtitle": "Voer deze eenmalige code in om dit adres te bevestigen als het nieuwe e-mailadres van je Margaya-account.",
+			"code": "is je Margaya-verificatiecode.",
+			"expiry": "Deze code verloopt over {{minutes}} minuten.",
+			"ignore": "Heb je dit niet aangevraagd? Dan kun je deze e-mail negeren.",
+			"footer": "Beveiligingsmail van Margaya"
+		},
+		"magicLink": {
+			"preview": "Inloggen bij Margaya",
+			"title": "Je beveiligde inloglink",
+			"subtitle": "Gebruik deze link om verder te gaan naar je Margaya-werkruimte.",
+			"cta": "Inloggen bij Margaya",
+			"expiry": "Voor je veiligheid verloopt deze link over 5 minuten.",
+			"ignore": "Heb je dit niet aangevraagd? Dan kun je deze e-mail negeren.",
+			"footer": "Beveiligingsmail van Margaya"
+		},
+		"passwordReset": {
+			"preview": "Stel je Margaya-wachtwoord opnieuw in",
+			"title": "Wachtwoord opnieuw instellen",
+			"subtitleWithName": "Hoi {{name}}, gebruik de knop hieronder om een nieuw wachtwoord in te stellen.",
+			"subtitleDefault": "Gebruik de knop hieronder om een nieuw wachtwoord in te stellen.",
+			"cta": "Wachtwoord opnieuw instellen",
+			"expiry": "Deze resetlink verloopt over 1 uur.",
+			"ignore": "Heb je dit niet aangevraagd? Dan wordt er niets gewijzigd.",
+			"footer": "Beveiligingsmail van Margaya"
+		},
+		"emailChanged": {
+			"preview": "Je Margaya-e-mailadres is gewijzigd",
+			"title": "Je e-mailadres is gewijzigd",
+			"body": "Het e-mailadres van je Margaya-account is nu {{email}}. Inloglinks, codes en meldingen gaan vanaf nu naar dat adres.",
+			"warning": "Heb je deze wijziging niet zelf gedaan? Neem dan meteen contact op met je Margaya-beheerder.",
+			"footer": "Beveiligingsmail van Margaya"
+		},
+		"authSubjects": {
+			"magicLinkSubject": "Inloglink voor Margaya",
+			"otpSubject": "Verificatiecode voor Margaya",
+			"verifyEmailSubject": "Verifieer je e-mailadres voor Margaya",
+			"passwordResetSubject": "Stel je Margaya-wachtwoord opnieuw in",
+			"changeEmailSubject": "Bevestig je nieuwe e-mailadres voor Margaya",
+			"emailChangedSubject": "Je Margaya-e-mailadres is gewijzigd"
+		},
+		"notification": {
+			"preview": "Je hebt een nieuwe melding van Margaya",
+			"subtitle": "Een melding komt overeen met je bezorgvoorkeuren.",
+			"footer": "Melding van Margaya",
+			"actionLabel": "Openen in Margaya"
+		},
+		"notificationBatch": {
+			"preview": "Je recente updates in Margaya",
+			"title_one": "{{count}} nieuwe update",
+			"title_other": "{{count}} nieuwe updates",
+			"subtitle": "Wijzigingen in je taken, gebundeld sinds de vorige e-mail.",
+			"by": "door",
+			"open": "Taak openen",
+			"manage": "Meldingsinstellingen beheren",
+			"footer": "Melding van Margaya"
+		},
+		"notificationDigest": {
+			"title": {
+				"daily": "Je dagelijkse overzicht",
+				"weekly": "Je wekelijkse overzicht"
+			},
+			"preview": "Je Margaya-overzicht",
+			"subtitle": "Je open taken die achterstallig zijn of binnen 7 dagen vervallen, en wat er nieuw is in je inbox.",
+			"dueHeading": "Binnenkort en achterstallig",
+			"overdue": "Achterstallig",
+			"due": "Vervalt",
+			"more_one": "en nog {{count}}",
+			"more_other": "en nog {{count}}",
+			"mentionsHeading_one": "{{count}} nieuwe vermelding",
+			"mentionsHeading_other": "{{count}} nieuwe vermeldingen",
+			"unread_one": "{{count}} ongelezen melding in je inbox",
+			"unread_other": "{{count}} ongelezen meldingen in je inbox",
+			"openInbox": "Inbox openen",
+			"manage": "Meldingsinstellingen beheren",
+			"footer": "Je hebt ervoor gekozen dit overzicht te ontvangen.",
+			"blockedHeading": "Geblokkeerd",
+			"waitingOn": "Wacht op {{keys}}",
+			"hiddenBlockers_one": "{{count}} taak die je niet kunt zien",
+			"hiddenBlockers_other": "{{count}} taken die je niet kunt zien",
+			"followingHeading": "Wijzigingen in taken die je volgt",
+			"changes_one": "{{count}} wijziging",
+			"changes_other": "{{count}} wijzigingen"
+		},
+		"batchSubject": {
+			"task_one": "{{count}} nieuwe update voor {{title}}",
+			"task_other": "{{count}} nieuwe updates voor {{title}}",
+			"all_one": "{{count}} nieuwe update in Margaya",
+			"all_other": "{{count}} nieuwe updates in Margaya"
+		},
+		"digestSubject": {
+			"daily": "Je dagelijkse Margaya-overzicht",
+			"weekly": "Je wekelijkse Margaya-overzicht"
+		},
+		"workspaceDeletion": {
+			"fallbackName": "Een werkruimte",
+			"openWorkspace": "Werkruimte openen",
+			"scheduledSubject": "{{name}} staat gepland voor verwijdering",
+			"scheduledTitle": "{{name}} wordt op {{date}} verwijderd",
+			"scheduledTitleNoDate": "{{name}} wordt binnenkort verwijderd",
+			"scheduledMessage": "De eigenaar heeft deze werkruimte gepland voor verwijdering. Tot {{date}} is ze alleen-lezen: je kunt de inhoud nog openen en exporteren, en de eigenaar kan de verwijdering annuleren. Na die datum worden de projecten, taken en pagina's definitief verwijderd.",
+			"scheduledMessageNoDate": "De eigenaar heeft deze werkruimte gepland voor verwijdering. Tot de verwijdering is ze alleen-lezen: je kunt de inhoud nog openen en exporteren, en de eigenaar kan de verwijdering annuleren. Daarna worden de projecten, taken en pagina's definitief verwijderd.",
+			"cancelledSubject": "{{name}} wordt niet verwijderd",
+			"cancelledTitle": "{{name}} is terug",
+			"cancelledMessage": "De eigenaar heeft de geplande verwijdering geannuleerd. De werkruimte is niet langer alleen-lezen, en de API-sleutels en webhooks werken weer."
+		},
+		"webhookDisabled": {
+			"subject": "Een Margaya-webhook is uitgeschakeld",
+			"title": "Webhook uitgeschakeld",
+			"message": "Afleveringen aan {{host}} zijn meer dan een dag herhaaldelijk mislukt, dus Margaya heeft de webhook uitgeschakeld. Herstel het endpoint en schakel de webhook daarna weer in via de werkruimte-instellingen.",
+			"messageNoHost": "Afleveringen aan het endpoint zijn meer dan een dag herhaaldelijk mislukt, dus Margaya heeft de webhook uitgeschakeld. Herstel het endpoint en schakel de webhook daarna weer in via de werkruimte-instellingen.",
+			"actionLabel": "Webhook-instellingen openen"
+		},
+		"trialReminder": {
+			"endedTitle": "De proefperiode van {{workspaceName}} is afgelopen",
+			"daysLeftTitle_one": "Nog {{count}} dag in je proefperiode van {{workspaceName}}",
+			"daysLeftTitle_other": "Nog {{count}} dagen in je proefperiode van {{workspaceName}}",
+			"endedSubtitle": "Je werkruimte is alleen-lezen totdat je een abonnement kiest. Er is niets verwijderd en je gegevens zijn er nog.",
+			"activeSubtitle": "Kies een abonnement om na de proefperiode te blijven maken en bewerken.",
+			"cta": "Kies een abonnement",
+			"selfHost": "Margaya is ook voor altijd gratis als je het zelf host, met alle functies. Je kunt je gegevens op elk moment exporteren en naar je eigen server verhuizen.",
+			"footer": "Je ontvangt deze e-mail omdat je eigenaar bent van deze werkruimte op Margaya Cloud."
+		},
+		"trialSubjects": {
+			"trialEnding": "Je proefperiode van {{workspaceName}} eindigt over 3 dagen",
+			"trialExpired": "Je proefperiode van {{workspaceName}} is afgelopen"
+		},
+		"testEmail": {
+			"subject": "Testmail van {{instanceName}}",
+			"text": "Dit is een testmail van {{instanceName}}. Als je dit kunt lezen, werkt het versturen van e-mail."
+		},
+		"notificationText": {
+			"commentWithoutPreview": "Nieuwe reactie op {{taskTitle}}"
 		}
 	}
 }
