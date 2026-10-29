@@ -9,8 +9,8 @@ docker compose -f compose.e2e.yml up -d   # MailPit (global setup also tries thi
 pnpm e2e                                  # headless, Microsoft Edge
 pnpm e2e:ui                               # Playwright UI mode
 pnpm --filter @margaya/e2e test:headed    # watch the browser
-pnpm e2e specs/app/board                  # one folder or file
-E2E_WEB_SERVER=dev pnpm e2e specs/app/board  # Vite dev server instead of a build
+pnpm e2e specs/app/tasks                  # one folder or file
+E2E_WEB_SERVER=dev pnpm e2e specs/app/tasks  # Vite dev server instead of a build
 pnpm --filter @margaya/e2e report         # open the last HTML report
 pnpm --filter @margaya/e2e db:reset       # recreate margaya_e2e after migrations change
 ```

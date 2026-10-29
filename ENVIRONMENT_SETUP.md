@@ -246,7 +246,7 @@ For a complete list of all environment variables, their descriptions, and config
    - Don't mix http and https in development
 
 4. **Verify Server Accessibility:**
-   - Test if the API is accessible: `curl http://localhost:1337/config`
+   - Test if the API is accessible: `curl http://localhost:1337/api/health`
    - Check if the server is running on the correct port
 
 ### Database Connection Issues

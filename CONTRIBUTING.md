@@ -134,9 +134,9 @@ The root `package.json` includes scripts to keep locale files in sync:
 | Command | Description |
 | ------- | ----------- |
 | `pnpm i18n:check [locale]` | Compares `en-US.json` with the other locale files and reports missing or extra keys. You can filter by locale, for example `pnpm i18n:check de-DE`. |
-| `pnpm i18n:check:fix [locale]` | Adds missing keys to other locale files using the English source text from `en-US.json`. |
-| `pnpm i18n:report` | Scans `.ts` and `.tsx` files in the React app and reports missing keys, unused locale keys, and dynamic translation calls that static analysis cannot verify. |
-| `pnpm i18n:report:fix` | Removes unused keys from `en-US.json` and the other locale files. |
+| `pnpm i18n:check:fix [locale]` | Adds missing keys to other locale files using the English source text from `en-US.json`. Translate every added value before you commit. |
+| `pnpm i18n:report` | Scans `.ts` and `.tsx` files in the React app and reports missing keys, unused locale keys, values still identical to English, and dynamic translation calls that static analysis cannot verify. The `landing`, `pricing`, `press` and `invitations.email` copy is read outside the React app and never counts as unused. |
+| `pnpm i18n:report:fix` | Removes the unused keys from `en-US.json` and the other locale files. Review the list from `pnpm i18n:report` first. |
 | `pnpm i18n:schema` | Generates [`i18n/schema.json`](./i18n/schema.json) from `en-US.json` for editor and tooling validation. |
 
 #### Adding a new locale
@@ -177,8 +177,8 @@ t("projects:greeting", { name: userName });
 #### Contribution notes
 
 - If you change UI copy, update the locale files in the same PR
-- If you remove or rename translation keys, run `pnpm i18n:report:fix` to keep locale files clean
-- If a locale is not fully translated yet, leaving the English source text as a placeholder is fine
+- If you remove or rename translation keys, run `pnpm i18n:report`, check the unused list, then `pnpm i18n:report:fix` to keep locale files clean
+- Every locale gets a real translation. Don't leave English text in another locale; if you can't translate a string, say so in your pull request so a maintainer can
 
 ### Project Structure
 

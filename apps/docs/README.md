@@ -30,4 +30,4 @@ docker compose -f compose.local.yml up -d --build site
 - `index.mdx`: docs landing page
 - `core/**`: product and deployment guides
 - `api-reference/**`: overview/auth pages
-- API endpoint pages are generated from `openapi.json`
+- `api-reference/endpoints/**`: one hand-written page per operation in `openapi.json`, each listed in `docs.json`; the page body is rendered from the spec
