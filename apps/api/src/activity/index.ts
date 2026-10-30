@@ -85,7 +85,7 @@ const getActivitiesRoute = createRoute({
   tags: ["Activity"],
   summary: "Get task activity",
   description:
-    "Get a task's full activity feed, newest first: comments alongside system events such as status and assignee changes.",
+    "Get a task's full activity feed, newest first: comments alongside system events such as status and assignee changes. Replies are in the same list: parentId names the top-level comment each one belongs to.",
   middleware: [workspaceAccess.fromTaskId()] as const,
   request: { params: taskIdParam },
   responses: {
@@ -138,7 +138,7 @@ const createCommentRoute = createRoute({
   tags: ["Activity"],
   summary: "Create comment",
   description:
-    "Add a comment to a task. Equivalent to POST /comment/{taskId}, kept for the activity-feed client.",
+    "Add a comment to a task, or a reply with parentId. Equivalent to POST /comment/{taskId}, kept for the activity-feed client.",
   middleware: [
     workspaceAccess.fromTaskId(),
     requireWorkspacePermission({ task: ["update"] }),
@@ -155,6 +155,7 @@ const createCommentRoute = createRoute({
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
+    404: errorResponse("parentId is not a comment on this task"),
   },
 });
 
@@ -252,8 +253,13 @@ const activity = apiRouter()
     );
   })
   .openapi(createCommentRoute, async (c) => {
-    const { taskId, comment } = c.req.valid("json");
-    return c.json(await createComment(taskId, c.get("userId"), comment), 200);
+    const { taskId, comment, parentId } = c.req.valid("json");
+    return c.json(
+      await createComment(taskId, c.get("userId"), comment, undefined, {
+        parentId,
+      }),
+      200,
+    );
   })
   .openapi(updateCommentRoute, async (c) => {
     const { activityId, comment } = c.req.valid("json");

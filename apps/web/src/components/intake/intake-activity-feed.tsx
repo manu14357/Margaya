@@ -1,7 +1,11 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Activity from "@/components/activity";
+import {
+  arrangeActivities,
+  groupCommentReplies,
+} from "@/components/activity/activity-feed-options";
 import CommentInput from "@/components/activity/comment-input";
-import { isCommentActivity } from "@/components/activity/utils";
 import { Timeline } from "@/components/ui/timeline";
 import useGetActivitiesByTaskId from "@/hooks/queries/activity/use-get-activities-by-task-id";
 
@@ -17,7 +21,16 @@ export default function IntakeActivityFeed({
   canComment: boolean;
 }) {
   const { t } = useTranslation();
-  const { data: activities = [] } = useGetActivitiesByTaskId(taskId);
+  const { data: allActivities = [] } = useGetActivitiesByTaskId(taskId);
+  // Replies show in their comment's thread, not as rows of their own.
+  const activities = useMemo(
+    () => arrangeActivities(allActivities, "all", "newest"),
+    [allActivities],
+  );
+  const commentReplies = useMemo(
+    () => groupCommentReplies(allActivities),
+    [allActivities],
+  );
 
   return (
     <div className="flex flex-col gap-4">
@@ -26,17 +39,18 @@ export default function IntakeActivityFeed({
       {activities.length > 0 ? (
         <Timeline>
           {activities.map((activity, index) => {
-            const next = activities[index + 1];
             return (
               <Activity
                 key={activity.id}
                 activity={activity}
                 step={activities.length - index}
-                showConnector={
-                  !isCommentActivity(activity) &&
-                  Boolean(next) &&
-                  !isCommentActivity(next)
+                rail
+                replies={
+                  activity.parentId
+                    ? undefined
+                    : (commentReplies.get(activity.id) ?? [])
                 }
+                canReply={canComment}
               />
             );
           })}

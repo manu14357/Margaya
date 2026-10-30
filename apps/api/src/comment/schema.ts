@@ -23,6 +23,10 @@ export const createCommentBody = z.object({
     description:
       "internal (default) or public: also shown on the project's public board. Public needs a published board with comments on (409 otherwise).",
   }),
+  parentId: z.string().min(1).max(128).optional().openapi({
+    description:
+      "Reply in a thread: the id of a comment on the same task. A reply to a reply joins the top-level comment's thread (threads are one level deep). 404 when the comment is not on this task.",
+  }),
 });
 
 export const updateCommentBody = z.object({ content: z.string().min(1) });

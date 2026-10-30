@@ -159,6 +159,7 @@ export async function commentSnapshot(
       userId: activityTable.userId,
       externalUserName: activityTable.externalUserName,
       visibility: activityTable.visibility,
+      parentId: activityTable.parentId,
       createdAt: activityTable.createdAt,
       updatedAt: activityTable.updatedAt,
       number: taskTable.number,
@@ -179,6 +180,8 @@ export async function commentSnapshot(
     taskKey: formatTaskKey(row.slug, row.number),
     content: row.content,
     visibility: row.visibility,
+    // The thread's top-level comment when this is a reply, else null.
+    parentId: row.parentId,
     author,
     ...(row.externalUserName ? { externalUserName: row.externalUserName } : {}),
     createdAt: row.createdAt,

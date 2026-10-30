@@ -37,7 +37,10 @@ export type TaskEventInput = {
   actorId?: string | null;
   /** Kind `mention`: the newly mentioned users. */
   mentionedIds?: readonly string[];
-  /** Kind `assigned`: the added users. */
+  /**
+   * Kind `assigned`: the added users. Watcher kinds: extra people to reach
+   * besides the watchers (a reply's thread participants).
+   */
   directIds?: readonly string[];
   /** Users who must not get this one (already notified otherwise). */
   excludeIds?: readonly string[];

@@ -1,5 +1,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import type { ComponentProps, ReactElement, ReactNode } from "react";
 import { cloneElement, isValidElement } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -30,6 +36,35 @@ const authState = vi.hoisted(() => ({
 vi.mock("@/components/providers/auth-provider/hooks/use-auth", () => ({
   useAuth: () => ({ user: authState.user }),
 }));
+
+const clipboard = vi.hoisted(() => ({
+  copy: vi.fn(async (_text: string) => true),
+  deleteComment: vi.fn(),
+  toastSuccess: vi.fn(),
+}));
+
+vi.mock("@/lib/copy-to-clipboard", () => ({
+  copyToClipboard: clipboard.copy,
+}));
+
+vi.mock("@/lib/toast", () => ({
+  toast: { success: clipboard.toastSuccess, error: vi.fn() },
+}));
+
+vi.mock("@/hooks/mutations/comment/use-delete-comment", () => ({
+  default: () => ({ mutate: clipboard.deleteComment, isPending: false }),
+}));
+
+/** Opens the card's "⋯" menu and lists its items. */
+async function menuItems() {
+  fireEvent.click(
+    screen.getByRole("button", {
+      name: "activity:commentVisibility.moreActions",
+    }),
+  );
+  await screen.findAllByRole("menuitem");
+  return screen.getAllByRole("menuitem").map((item) => item.textContent);
+}
 
 vi.mock("@/hooks/mutations/comment/use-update-comment", () => ({
   default: () => ({
@@ -225,24 +260,21 @@ describe("CommentCard on a project with a public board", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("gives moderators a menu on others' public comments", () => {
+  it("adds the moderation items to the comment's menu", async () => {
     renderPublic();
-    expect(
-      screen.getByRole("button", {
-        name: "activity:commentVisibility.moreActions",
-      }),
-    ).toBeInTheDocument();
+    expect(await menuItems()).toEqual([
+      "tasks:contextMenu.copyLink",
+      "activity:commentVisibility.hideFromBoard",
+      "activity:commentVisibility.moderatorDelete",
+      "activity:commentVisibility.blockFromBoard",
+    ]);
   });
 
-  it("gives no menu to members without moderation on others' comments", () => {
+  it("offers no moderation to members without it on others' comments", async () => {
     renderPublic({
       publicBoard: { projectId: "p1", open: true, canModerate: false },
     });
-    expect(
-      screen.queryByRole("button", {
-        name: "activity:commentVisibility.moreActions",
-      }),
-    ).not.toBeInTheDocument();
+    expect(await menuItems()).toEqual(["tasks:contextMenu.copyLink"]);
   });
 });
 
@@ -377,5 +409,115 @@ describe("CommentCard edited marker", () => {
     cleanup();
     renderWithTimes("2026-04-05T09:38:50.000Z");
     expect(screen.queryByTestId("comment-edited")).toBeNull();
+  });
+});
+
+describe("CommentCard actions", () => {
+  afterEach(() => {
+    authState.user = null;
+    clipboard.copy.mockClear();
+    clipboard.deleteComment.mockClear();
+    clipboard.toastSuccess.mockClear();
+  });
+
+  function renderCard(props: Partial<ComponentProps<typeof CommentCard>> = {}) {
+    const queryClient = new QueryClient();
+    queryClient.setQueryData(["task", "task-1"], { projectId: "p1" });
+    return render(
+      <QueryClientProvider client={queryClient}>
+        <CommentCard
+          commentId="comment-1"
+          taskId="task-1"
+          content="Ship it"
+          createdAt="2026-04-05T09:38:50.000Z"
+          user={{ id: "user-1", name: "Tin", image: null }}
+          reactionGroups={[]}
+          workspaceId="ws-1"
+          {...props}
+        />
+      </QueryClientProvider>,
+    );
+  }
+
+  it("heads the card with who commented and when", () => {
+    renderCard();
+    expect(
+      screen.getByText("activity:comment.commentedAgo 2 hours ago"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "activity:reactions.add" }),
+    ).toBeInTheDocument();
+  });
+
+  it("offers Reply in the card's footer and its menu", async () => {
+    const onReply = vi.fn();
+    renderCard({ onReply, replyLabel: "Reply to Tin" });
+    fireEvent.click(screen.getByRole("button", { name: "Reply to Tin" }));
+    expect(onReply).toHaveBeenCalledTimes(1);
+
+    expect(await menuItems()).toEqual([
+      "activity:comment.thread.reply",
+      "tasks:contextMenu.copyLink",
+    ]);
+    fireEvent.click(
+      screen.getByRole("menuitem", { name: "activity:comment.thread.reply" }),
+    );
+    expect(onReply).toHaveBeenCalledTimes(2);
+  });
+
+  it("gives the author Edit and Delete in the menu", async () => {
+    authState.user = { id: "user-1" };
+    renderCard({ onReply: vi.fn() });
+    expect(await menuItems()).toEqual([
+      "activity:comment.thread.reply",
+      "activity:comment.edit",
+      "tasks:contextMenu.copyLink",
+      "activity:comment.delete",
+    ]);
+    fireEvent.click(
+      screen.getByRole("menuitem", { name: "activity:comment.delete" }),
+    );
+    expect(clipboard.deleteComment).toHaveBeenCalledWith({
+      activityId: "comment-1",
+    });
+  });
+
+  it("copies a link to the comment on its task's page", async () => {
+    renderCard();
+    await menuItems();
+    fireEvent.click(
+      screen.getByRole("menuitem", { name: "tasks:contextMenu.copyLink" }),
+    );
+    await waitFor(() => expect(clipboard.copy).toHaveBeenCalled());
+    expect(clipboard.copy.mock.calls[0]?.[0]).toMatch(
+      /\/dashboard\/workspace\/ws-1\/project\/p1\/task\/task-1#comment-comment-1$/,
+    );
+    await waitFor(() =>
+      expect(clipboard.toastSuccess).toHaveBeenCalledWith(
+        "activity:comment.linkCopied",
+      ),
+    );
+  });
+
+  it("renders its thread inside the card", () => {
+    renderCard({ children: <ol aria-label="thread" /> });
+    expect(document.getElementById("comment-comment-1")).toContainElement(
+      screen.getByRole("list", { name: "thread" }),
+    );
+  });
+
+  it("shows a reply as a compact row without a footer Reply", () => {
+    renderCard({
+      variant: "reply",
+      onReply: undefined,
+      replyLabel: "Reply to Tin",
+    });
+    expect(screen.getByText("2 hours ago")).toBeInTheDocument();
+    expect(
+      screen.queryByText(/activity:comment.commentedAgo/),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Reply to Tin" }),
+    ).not.toBeInTheDocument();
   });
 });

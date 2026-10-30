@@ -130,6 +130,17 @@ function isAgentQuestion(
   return type === "ai_agent_reply" && eventData?.needsInput === true;
 }
 
+/** A comment notification about a reply in a thread. */
+function isCommentReply(
+  type: string,
+  eventData: Record<string, unknown> | null,
+): boolean {
+  return (
+    type === "task_comment" &&
+    stringField(eventData, "parentCommentId") !== null
+  );
+}
+
 export function getNotificationTitle(
   notification: NotificationTextSource,
   t: TranslateFn,
@@ -137,7 +148,9 @@ export function getNotificationTitle(
   const eventData = getEventDataRecord(notification.eventData);
   const key = isAgentQuestion(notification.type, eventData)
     ? "ai:agents.needsInput.notificationTitle"
-    : TITLE_KEYS[notification.type];
+    : isCommentReply(notification.type, eventData)
+      ? "notifications:events.task_comment.titleReply"
+      : TITLE_KEYS[notification.type];
   if (eventData && key) {
     return t(key, {
       ...eventData,
@@ -194,6 +207,9 @@ export function getNotificationContent(
   if (!eventData) return fallback;
 
   const options = { ...eventData, defaultValue: fallback };
+  if (isCommentReply(notification.type, eventData)) {
+    return t("notifications:events.task_comment.contentReply", options);
+  }
   const contentKey = CONTENT_KEYS[notification.type];
   if (contentKey) return t(contentKey, options);
   switch (notification.type) {
@@ -403,6 +419,9 @@ export function getNotificationVerb(
   const eventData = getEventDataRecord(notification.eventData) ?? {};
   if (isAgentQuestion(notification.type, eventData)) {
     return t("ai:agents.needsInput.verb");
+  }
+  if (isCommentReply(notification.type, eventData)) {
+    return t("notifications:inbox.verbs.task_comment_reply");
   }
   const verbKey = VERB_KEYS[notification.type];
   if (verbKey) return t(verbKey);

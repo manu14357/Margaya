@@ -128,6 +128,9 @@ export function buildCandidates(input: CandidateInput): Candidate[] {
       for (const row of input.subscriberRows) {
         if (row.subscribed) offer(row.userId, "subscriber");
       }
+      // Targeted people join the watchers (a reply's thread participants);
+      // muting the task still silences them.
+      for (const id of input.directIds ?? []) offer(id, "direct");
     }
   }
 

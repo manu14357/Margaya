@@ -60,6 +60,25 @@ describe("recipient policy", () => {
     }
   });
 
+  it("adds a reply's thread participants to the watchers, minus muted users and the actor", () => {
+    expect(
+      buildCandidates({
+        kind: "comment",
+        assigneeIds: ["a"],
+        subscriberRows: rows([
+          ["s", true],
+          ["muted", false],
+        ]),
+        directIds: ["author", "muted", "replier", "s"],
+        actorId: "replier",
+      }),
+    ).toEqual([
+      { userId: "author", reason: "direct" },
+      { userId: "s", reason: "direct" },
+      { userId: "a", reason: "assignee" },
+    ]);
+  });
+
   it("keeps muted users for direct kinds", () => {
     expect(
       buildCandidates({

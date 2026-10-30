@@ -13,6 +13,8 @@ type ReactionBarProps = {
   groups: readonly ReactionGroup[];
   /** Render the add button even when nobody reacted yet. */
   showAddButton?: boolean;
+  /** Leave out the add button: the caller offers its own picker. */
+  hidePicker?: boolean;
   className?: string;
 };
 
@@ -22,6 +24,7 @@ export default function ReactionBar({
   commentId,
   groups,
   showAddButton = false,
+  hidePicker = false,
   className,
 }: ReactionBarProps) {
   const { user } = useAuth();
@@ -43,10 +46,12 @@ export default function ReactionBar({
             }
           />
         ))}
-        <ReactionPicker
-          groups={visible}
-          onPick={(emoji, reacted) => toggle({ commentId, emoji, reacted })}
-        />
+        {!hidePicker && (
+          <ReactionPicker
+            groups={visible}
+            onPick={(emoji, reacted) => toggle({ commentId, emoji, reacted })}
+          />
+        )}
       </div>
     </TooltipProvider>
   );

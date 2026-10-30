@@ -34,7 +34,7 @@ const getTaskCommentsRoute = createRoute({
   tags: ["Comments"],
   summary: "Get task comments",
   description:
-    "Get every comment on a task, oldest first, each with its author's name and avatar.",
+    "Get every comment on a task, oldest first, each with its author's name and avatar. Replies are in the same list: parentId names the top-level comment each one belongs to.",
   middleware: [workspaceAccess.fromTaskId()] as const,
   request: { params: taskIdParam },
   responses: {
@@ -53,7 +53,7 @@ const createTaskCommentRoute = createRoute({
   tags: ["Comments"],
   summary: "Create task comment",
   description:
-    "Add a comment to a task. Mentions in the content notify and subscribe the mentioned members, every assignee and subscriber is notified too, and the author (unless the comment is imported with an external author) becomes a subscriber. Returns the stored activity row, which carries no author object -- read the list route for that.",
+    "Add a comment to a task, or a reply with parentId. Mentions in the content notify and subscribe the mentioned members, every assignee and subscriber is notified too, and the author (unless the comment is imported with an external author) becomes a subscriber. A reply also notifies the people already in its thread (the top-level comment's author and earlier repliers), and a reply under an AI agent's comment reaches that agent as an @mention would. Returns the stored activity row, which carries no author object -- read the list route for that.",
   middleware: [
     workspaceAccess.fromTaskId(),
     requireWorkspacePermission({ task: ["update"] }),
@@ -71,6 +71,7 @@ const createTaskCommentRoute = createRoute({
     403: errorResponse(
       "No workspace access, missing task:update permission, or external attribution without workspace:manage_settings",
     ),
+    404: errorResponse("parentId is not a comment on this task"),
     409: errorResponse(
       "Public comments need a published board with comments turned on",
     ),
@@ -131,7 +132,7 @@ const comment = apiRouter()
   )
   .openapi(createTaskCommentRoute, async (c) => {
     const { taskId } = c.req.valid("param");
-    const { content, externalUserName, externalSource, visibility } =
+    const { content, externalUserName, externalSource, visibility, parentId } =
       c.req.valid("json");
     if (visibility === "public" && !(await publicCommentsOpenForTask(taskId))) {
       throw new HTTPException(409, { message: MODERATION_MESSAGES.needsBoard });
@@ -155,6 +156,7 @@ const comment = apiRouter()
     return c.json(
       await createComment(taskId, c.get("userId"), content, external, {
         visibility: visibility ?? "internal",
+        parentId,
       }),
       200,
     );

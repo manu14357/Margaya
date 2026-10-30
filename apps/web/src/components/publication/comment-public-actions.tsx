@@ -1,5 +1,4 @@
-import { MoreHorizontal } from "lucide-react";
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   AlertDialog,
@@ -11,13 +10,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/menu";
+import { DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/menu";
 import { usePublicCommentModeration } from "@/hooks/mutations/publication/use-public-comment-moderation";
 import { toast } from "@/lib/toast";
 import type { CommentVisibility, PublicAuthorKind } from "@/types/publication";
@@ -74,13 +67,19 @@ type CommentPublicActionsProps = CommentPublicActionInput & {
   commentId: string;
   taskId: string;
   authorName: string;
+  /**
+   * Renders the comment's own "⋯" menu with these items in it. The confirm
+   * and block dialogs stay out here, so they outlast the closed menu.
+   */
+  children: (items: ReactNode) => ReactNode;
 };
 
-/** The "⋯" menu: Make public / internal, Hide from board, Delete, Block. */
+/** Make public / internal, Hide from board, Delete and Block, as menu items. */
 export default function CommentPublicActions({
   commentId,
   taskId,
   authorName,
+  children,
   ...input
 }: CommentPublicActionsProps) {
   const { t } = useTranslation();
@@ -89,7 +88,6 @@ export default function CommentPublicActions({
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [blocking, setBlocking] = useState<BlockTarget | null>(null);
   const actions = commentPublicActions(input);
-  if (!Object.values(actions).some(Boolean)) return null;
 
   const changeVisibility = (visibility: CommentVisibility, done: string) =>
     setVisibility.mutate(
@@ -117,82 +115,70 @@ export default function CommentPublicActions({
     );
   };
 
-  return (
+  const items = (
     <>
-      <DropdownMenu>
-        <DropdownMenuTrigger
-          render={
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-6 w-6 rounded-md p-0 text-muted-foreground hover:text-foreground"
-              aria-label={t("activity:commentVisibility.moreActions")}
-            />
+      <DropdownMenuSeparator />
+      {actions.makePublic && (
+        <DropdownMenuItem
+          onClick={() =>
+            changeVisibility(
+              "public",
+              t("activity:commentVisibility.madePublic"),
+            )
           }
         >
-          <MoreHorizontal className="size-3.5" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {actions.makePublic && (
-            <DropdownMenuItem
-              onClick={() =>
-                changeVisibility(
-                  "public",
-                  t("activity:commentVisibility.madePublic"),
-                )
-              }
-            >
-              {t("activity:commentVisibility.makePublic")}
-            </DropdownMenuItem>
-          )}
-          {actions.makeInternal && (
-            <DropdownMenuItem
-              onClick={() =>
-                changeVisibility(
-                  "internal",
-                  t("activity:commentVisibility.madeInternal"),
-                )
-              }
-            >
-              {t("activity:commentVisibility.makeInternal")}
-            </DropdownMenuItem>
-          )}
-          {actions.hide && (
-            <DropdownMenuItem
-              onClick={() =>
-                changeVisibility(
-                  "internal",
-                  t("settings:projectPublish.moderation.hidden"),
-                )
-              }
-            >
-              {t("activity:commentVisibility.hideFromBoard")}
-            </DropdownMenuItem>
-          )}
-          {actions.remove && (
-            <DropdownMenuItem
-              variant="destructive"
-              onClick={() => setConfirmDelete(true)}
-            >
-              {t("activity:commentVisibility.moderatorDelete")}
-            </DropdownMenuItem>
-          )}
-          {actions.block && input.authorId && (
-            <>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                variant="destructive"
-                onClick={() =>
-                  input.authorId &&
-                  setBlocking({ userId: input.authorId, name: authorName })
-                }
-              >
-                {t("activity:commentVisibility.blockFromBoard")}
-              </DropdownMenuItem>
-            </>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
+          {t("activity:commentVisibility.makePublic")}
+        </DropdownMenuItem>
+      )}
+      {actions.makeInternal && (
+        <DropdownMenuItem
+          onClick={() =>
+            changeVisibility(
+              "internal",
+              t("activity:commentVisibility.madeInternal"),
+            )
+          }
+        >
+          {t("activity:commentVisibility.makeInternal")}
+        </DropdownMenuItem>
+      )}
+      {actions.hide && (
+        <DropdownMenuItem
+          onClick={() =>
+            changeVisibility(
+              "internal",
+              t("settings:projectPublish.moderation.hidden"),
+            )
+          }
+        >
+          {t("activity:commentVisibility.hideFromBoard")}
+        </DropdownMenuItem>
+      )}
+      {actions.remove && (
+        <DropdownMenuItem
+          variant="destructive"
+          onClick={() => setConfirmDelete(true)}
+        >
+          {t("activity:commentVisibility.moderatorDelete")}
+        </DropdownMenuItem>
+      )}
+      {actions.block && input.authorId && (
+        <DropdownMenuItem
+          variant="destructive"
+          onClick={() =>
+            input.authorId &&
+            setBlocking({ userId: input.authorId, name: authorName })
+          }
+        >
+          {t("activity:commentVisibility.blockFromBoard")}
+        </DropdownMenuItem>
+      )}
+    </>
+  );
+
+  return (
+    <>
+      {children(items)}
 
       <AlertDialog open={confirmDelete} onOpenChange={setConfirmDelete}>
         <AlertDialogContent>

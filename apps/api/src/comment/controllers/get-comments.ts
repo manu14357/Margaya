@@ -20,6 +20,7 @@ async function getComments(taskId: string) {
       userName: userTable.name,
       userImage: userTable.image,
       visibility: activityTable.visibility,
+      parentId: activityTable.parentId,
       isAnonymous: userTable.isAnonymous,
       memberId: workspaceUserTable.userId,
     })
@@ -54,6 +55,7 @@ async function getComments(taskId: string) {
     createdAt: c.createdAt,
     updatedAt: c.updatedAt,
     visibility: c.visibility,
+    parentId: c.parentId,
     user:
       c.userId === null
         ? null

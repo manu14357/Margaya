@@ -554,7 +554,8 @@ export function registerTools(
   server.registerTool(
     "list_task_comments",
     {
-      description: "List comments on a task.",
+      description:
+        "List comments on a task, oldest first. Replies carry the parentId of their thread's top-level comment.",
       inputSchema: z.object({ taskId: nonEmptyString }),
     },
     async (args) =>
@@ -568,17 +569,22 @@ export function registerTools(
   server.registerTool(
     "create_task_comment",
     {
-      description: "Add a comment to a task.",
+      description:
+        "Add a comment to a task. Pass parentId (a comment id from list_task_comments) to reply in that comment's thread; a reply to a reply joins its top-level comment's thread.",
       inputSchema: z.object({
         taskId: nonEmptyString,
         content: nonEmptyString,
+        parentId: nonEmptyString.max(128).optional(),
       }),
     },
     async (args) =>
       run(() =>
         client.json(`/api/comment/${encodeURIComponent(args.taskId)}`, {
           method: "POST",
-          body: JSON.stringify({ content: args.content }),
+          body: JSON.stringify({
+            content: args.content,
+            ...(args.parentId ? { parentId: args.parentId } : {}),
+          }),
         }),
       ),
   );

@@ -71,6 +71,23 @@ describe("notification display content", () => {
     expect(getNotificationPreview(item)).toBe("Ready for review");
   });
 
+  it("renders a reply's comment notification as a reply", () => {
+    const item = notification("task_comment", {
+      taskTitle: "Launch website",
+      commenterName: "Mina",
+      commentPreview: "Agreed",
+      parentCommentId: "c1",
+    });
+
+    expect(getNotificationTitle(item, t)).toBe(
+      "notifications:events.task_comment.titleReply",
+    );
+    expect(getNotificationContent(item, t)).toBe(
+      "notifications:events.task_comment.contentReply",
+    );
+    expect(getNotificationPreview(item)).toBe("Agreed");
+  });
+
   it("renders task_updated content per field", () => {
     expect(
       getNotificationContent(
@@ -195,6 +212,11 @@ describe("inbox verbs", () => {
       "notifications:inbox.verbs.task_assignee_changed",
     ],
     ["task_comment", {}, "notifications:inbox.verbs.task_comment"],
+    [
+      "task_comment",
+      { parentCommentId: "c1" },
+      "notifications:inbox.verbs.task_comment_reply",
+    ],
     ["time_entry_created", {}, "notifications:inbox.verbs.time_entry_created"],
     ["task_overdue", {}, "notifications:inbox.verbs.task_overdue"],
     ["task_mention", {}, "notifications:inbox.verbs.task_mention"],

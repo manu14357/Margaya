@@ -247,16 +247,26 @@ export const timeEntryTableRelations = relations(timeEntryTable, ({ one }) => ({
   }),
 }));
 
-export const activityTableRelations = relations(activityTable, ({ one }) => ({
-  task: one(taskTable, {
-    fields: [activityTable.taskId],
-    references: [taskTable.id],
+export const activityTableRelations = relations(
+  activityTable,
+  ({ one, many }) => ({
+    task: one(taskTable, {
+      fields: [activityTable.taskId],
+      references: [taskTable.id],
+    }),
+    user: one(userTable, {
+      fields: [activityTable.userId],
+      references: [userTable.id],
+    }),
+    // A reply's top-level comment, and a comment's replies.
+    parent: one(activityTable, {
+      fields: [activityTable.parentId],
+      references: [activityTable.id],
+      relationName: "comment_thread",
+    }),
+    replies: many(activityTable, { relationName: "comment_thread" }),
   }),
-  user: one(userTable, {
-    fields: [activityTable.userId],
-    references: [userTable.id],
-  }),
-}));
+);
 
 export const assetTableRelations = relations(assetTable, ({ one }) => ({
   workspace: one(workspaceTable, {

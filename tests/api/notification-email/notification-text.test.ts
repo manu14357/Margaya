@@ -39,6 +39,23 @@ describe("buildRecipientDeliveryContent", () => {
     );
   });
 
+  it("words a reply in a thread as a reply", () => {
+    const reply = source("task_comment", {
+      taskTitle: "Draft",
+      commenterName: "Ada",
+      commentPreview: "Agreed",
+      parentCommentId: "c1",
+    });
+    expect(buildRecipientDeliveryContent(reply, "en-US")).toEqual({
+      title: "Ada replied to a comment",
+      body: "New reply on Draft: Agreed",
+    });
+    expect(buildRecipientDeliveryContent(reply, "de-DE")).toEqual({
+      title: "Ada hat auf einen Kommentar geantwortet",
+      body: "Neue Antwort zu „Draft“: Agreed",
+    });
+  });
+
   it("translates a move between default columns for a German recipient", () => {
     expect(buildRecipientDeliveryContent(statusMove, "de-DE")).toEqual({
       title: "Aufgabenstatus geändert",

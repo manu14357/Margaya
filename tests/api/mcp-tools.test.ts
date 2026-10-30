@@ -59,6 +59,22 @@ describe("MCP tool catalog", () => {
     expect(request.auth).toBe("Bearer test-token");
   });
 
+  it("posts a comment, or a reply in a thread with parentId", async () => {
+    await call("create_task_comment", { taskId: "t 1", content: "Hi" });
+    expect(lastRequest()).toMatchObject({
+      url: "http://api.test/api/comment/t%201",
+      method: "POST",
+      body: { content: "Hi" },
+    });
+
+    await call("create_task_comment", {
+      taskId: "t1",
+      content: "Agreed",
+      parentId: "c1",
+    });
+    expect(lastRequest().body).toEqual({ content: "Agreed", parentId: "c1" });
+  });
+
   it("passes only the search filters that were supplied", async () => {
     await call("search", { q: "login bug" });
     expect(lastRequest().url).toBe("http://api.test/api/search?q=login+bug");

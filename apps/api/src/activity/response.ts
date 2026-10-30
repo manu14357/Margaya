@@ -29,6 +29,10 @@ export const activitySchema = z
       description:
         "Comments only: public comments also show on the project's public board. Everything else is internal.",
     }),
+    parentId: z.string().nullable().openapi({
+      description:
+        "Comments only: the top-level comment this one replies to, or null. Threads are one level deep; deleting a comment turns its replies into top-level comments.",
+    }),
   })
   .openapi("Activity");
 

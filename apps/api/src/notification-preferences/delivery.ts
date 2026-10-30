@@ -244,6 +244,18 @@ export function buildDeliveryContent(notification: {
         notification.eventData,
         "commentPreview",
       );
+      if (getStringValue(notification.eventData, "parentCommentId")) {
+        return {
+          title: commenterName
+            ? `${commenterName} replied to a comment`
+            : "New reply to a comment",
+          body: taskTitle
+            ? commentPreview
+              ? `New reply on ${taskTitle}: ${commentPreview}`
+              : `A new reply was added to ${taskTitle}.`
+            : "A new reply was added to a Margaya task.",
+        };
+      }
       // Neutral wording: watchers receive it too, not only assignees.
       return {
         title: commenterName

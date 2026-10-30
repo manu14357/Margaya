@@ -842,8 +842,25 @@ export const activityTable = pgTable(
       .$type<"internal" | "public">()
       .notNull()
       .default("internal"),
+    // A reply's top-level comment (one level of threads); null for
+    // top-level comments and every other activity type.
+    parentId: text("parent_id"),
   },
   (table) => [
+    // Deleting a comment keeps its replies: they move up into the feed as
+    // top-level comments, as a deleted page's children move to the root.
+    foreignKey({
+      name: "activity_parent_id_activity_id_fk",
+      columns: [table.parentId],
+      foreignColumns: [table.id],
+    })
+      .onDelete("set null")
+      .onUpdate("cascade"),
+    // Loading a thread's replies; only replies have a parent, so the index
+    // stays as small as the replies themselves.
+    index("activity_parent_id_idx")
+      .on(table.parentId)
+      .where(sql`${table.parentId} is not null`),
     index("activity_task_id_idx").on(table.taskId),
     index("activity_userId_idx").on(table.userId),
     // "Your work" and member profile feeds: one person's newest rows first,

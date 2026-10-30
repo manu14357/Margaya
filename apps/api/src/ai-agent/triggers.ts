@@ -2,7 +2,12 @@ import { and, eq, inArray } from "drizzle-orm";
 import { getAiInstanceConfig } from "../ai/instance-config";
 import { loadWorkspaceAiPolicy } from "../ai/workspace-settings";
 import db from "../database";
-import { agentTable, projectTable, userTable } from "../database/schema";
+import {
+  activityTable,
+  agentTable,
+  projectTable,
+  userTable,
+} from "../database/schema";
 import { subscribeToEvent } from "../events";
 import {
   INTAKE_ITEM_CREATED,
@@ -13,7 +18,8 @@ import { onIntakeItemCreated } from "./intake-trigger";
 import { enqueueRun } from "./runner";
 
 // Event subscribers that only enqueue (report 02, G9): an @mention of an
-// agent in a comment, or assigning a task to an agent, queues a run whose
+// agent in a comment, a reply in a thread under an agent's comment, or
+// assigning a task to an agent, queues a run whose
 // principal is the person who did it. A new intake request queues a run of
 // every agent with the intake trigger on (intake-trigger.ts). Nothing happens unless AI is on for
 // the instance, the workspace and the project, and agents never trigger
@@ -68,6 +74,16 @@ async function agentsAmong(workspaceId: string, userIds: string[]) {
     );
 }
 
+/** The author of a thread's top-level comment, when it still has one. */
+async function threadAuthorId(parentId: string): Promise<string | null> {
+  const [row] = await db
+    .select({ userId: activityTable.userId })
+    .from(activityTable)
+    .where(eq(activityTable.id, parentId))
+    .limit(1);
+  return row?.userId ?? null;
+}
+
 export async function onCommentCreated(data: {
   id: string;
   taskId: string;
@@ -75,13 +91,27 @@ export async function onCommentCreated(data: {
   content: string | null;
   projectId: string;
   origin?: string;
+  /** Set on replies: the thread's top-level comment. */
+  parentId?: string | null;
 }) {
   if (data.origin && data.origin !== "app") return;
-  const mentioned = parseMentionIds(data.content);
-  if (mentioned.length === 0 || !data.userId) return;
+  if (!data.userId) return;
+  // A reply under an agent's comment reaches that agent the way an
+  // @mention does: same run, rights, approvals and limits. One run per
+  // agent per comment, even when the reply also mentions it.
+  const threadAuthor = data.parentId
+    ? await threadAuthorId(data.parentId)
+    : null;
+  const addressed = [
+    ...new Set([
+      ...parseMentionIds(data.content),
+      ...(threadAuthor ? [threadAuthor] : []),
+    ]),
+  ];
+  if (addressed.length === 0) return;
   const source = await taskSource(data.projectId);
   if (!source || !(await aiOn(source))) return;
-  const agents = await agentsAmong(source.workspaceId, mentioned);
+  const agents = await agentsAmong(source.workspaceId, addressed);
   if (agents.length === 0 || !(await isHuman(data.userId))) return;
   for (const agent of agents) {
     await enqueueRun({

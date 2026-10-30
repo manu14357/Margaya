@@ -542,6 +542,80 @@ describe("triggers", () => {
   });
 });
 
+describe("comment threads", () => {
+  it("runs when someone replies under its comment, and answers in the thread", async () => {
+    const { s, bot, task } = await agentScene();
+    const [parent] = await db
+      .insert(activityTable)
+      .values({
+        taskId: task.id,
+        type: "comment",
+        userId: bot.userId,
+        content: "I set this to low priority.",
+      })
+      .returning();
+    if (!parent) throw new Error("no parent comment");
+    const prompts: string[] = [];
+    setFakeResponder((request) => {
+      prompts.push(
+        request.messages
+          .map((message) =>
+            typeof message.content === "string"
+              ? message.content
+              : JSON.stringify(message.content),
+          )
+          .join("\n"),
+      );
+      return null;
+    });
+
+    // No mention: replying in the agent's thread addresses it.
+    await s.ok(s.mia, "POST", `/comment/${task.id}`, {
+      content: `Why low? ${marker("add_comment", { task: task.id, body: "It affects few users.", replyTo: parent.id })}`,
+      parentId: parent.id,
+    });
+    expect(await drainAgentRuns()).toBe(1);
+    const [runRow] = await db.select().from(aiRunTable);
+    expect(runRow).toMatchObject({
+      trigger: "mention",
+      principalUserId: s.mia.id,
+      status: "succeeded",
+    });
+    expect(prompts[0]).toContain(`thread of comment ${parent.id}`);
+    expect(prompts[0]).toContain("I set this to low priority.");
+
+    const answers = await db
+      .select()
+      .from(activityTable)
+      .where(
+        and(
+          eq(activityTable.taskId, task.id),
+          eq(activityTable.userId, bot.userId),
+          eq(activityTable.content, "It affects few users."),
+        ),
+      );
+    expect(answers).toHaveLength(1);
+    expect(answers[0]?.parentId).toBe(parent.id);
+    // The agent's own reply never triggers another run.
+    expect(await drainAgentRuns()).toBe(0);
+  });
+
+  it("is not reached by replies under someone else's comment", async () => {
+    const { s, task } = await agentScene();
+    const parent = await s.ok<{ id: string }>(
+      s.mia,
+      "POST",
+      `/comment/${task.id}`,
+      { content: "A question for the team" },
+    );
+    await s.ok(s.owner, "POST", `/comment/${task.id}`, {
+      content: "An answer",
+      parentId: parent.id,
+    });
+    expect(await drainAgentRuns()).toBe(0);
+  });
+});
+
 describe("the queue", () => {
   it("claims each run once under concurrent workers", async () => {
     const { s, bot, task } = await agentScene();

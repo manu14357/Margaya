@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   arrangeActivities,
   EDITED_THRESHOLD_MS,
+  groupCommentReplies,
   isCommentEdited,
 } from "./activity-feed-options";
 
@@ -92,6 +93,63 @@ describe("arrangeActivities", () => {
     const copy = [...feed];
     arrangeActivities(feed, "all", "oldest");
     expect(feed).toEqual(copy);
+  });
+});
+
+describe("comment threads", () => {
+  // Newest first, as the API sends them.
+  const thread = [
+    {
+      id: "r2",
+      type: "comment",
+      content: "Second reply",
+      createdAt: "2026-10-04T10:00:00Z",
+      parentId: "c1",
+    },
+    {
+      id: "r1",
+      type: "comment",
+      content: "First reply",
+      createdAt: "2026-10-02T10:00:00Z",
+      parentId: "c1",
+    },
+    {
+      id: "orphan",
+      type: "comment",
+      content: "Its comment is not in the feed",
+      createdAt: "2026-10-02T09:00:00Z",
+      parentId: "gone",
+    },
+    {
+      id: "c1",
+      type: "comment",
+      content: "Top-level",
+      createdAt: "2026-10-01T10:00:00Z",
+      parentId: null,
+    },
+  ];
+
+  it("leaves replies out of the feed when their comment is in it", () => {
+    expect(ids(arrangeActivities(thread, "all", "newest"))).toEqual([
+      "orphan",
+      "c1",
+    ]);
+    expect(ids(arrangeActivities(thread, "comments", "oldest"))).toEqual([
+      "c1",
+      "orphan",
+    ]);
+  });
+
+  it("drops replies with the other comments when only updates show", () => {
+    expect(arrangeActivities(thread, "updates", "newest")).toEqual([]);
+  });
+
+  it("groups replies by thread, oldest first", () => {
+    const groups = groupCommentReplies(thread);
+    expect(ids(groups.get("c1") ?? [])).toEqual(["r1", "r2"]);
+    expect(ids(groups.get("gone") ?? [])).toEqual(["orphan"]);
+    expect(groups.has("c1")).toBe(true);
+    expect(groups.size).toBe(2);
   });
 });
 

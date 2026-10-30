@@ -105,6 +105,9 @@ describe("inbox socket hints", () => {
     );
     expect(keys).toContain(JSON.stringify(["reactions", "t1"]));
     expect(keys).toContain(JSON.stringify(["task-subscription", "t1"]));
+    // Replies arrive on the same hint: the feed carries the threads.
+    expect(keys).toContain(JSON.stringify(["activities", "t1"]));
+    expect(keys).toContain(JSON.stringify(["comments", "t1"]));
     unmount();
   });
 

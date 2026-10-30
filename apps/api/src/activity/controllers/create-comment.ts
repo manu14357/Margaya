@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNotNull, or } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import { withAgentVia } from "../../ai-agent/attribution";
 import { withAutomationMarker } from "../../automation-rule/context";
@@ -25,7 +25,64 @@ export type CreateCommentOptions = {
   origin?: CommentOrigin;
   /** Public board comments are never parsed for mentions (K15). */
   parseMentions?: boolean;
+  /**
+   * Reply to this comment of the same task. Threads are one level deep: a
+   * reply to a reply joins its top-level comment's thread.
+   */
+  parentId?: string;
 };
+
+/**
+ * The top-level comment a reply attaches to, or a 404 when `parentId` is
+ * not a comment of this task. Checking the task keeps a reply from naming
+ * (or probing for) a comment the caller cannot see.
+ */
+async function resolveReplyParent(taskId: string, parentId: string) {
+  const [parent] = await db
+    .select({
+      id: activityTable.id,
+      parentId: activityTable.parentId,
+    })
+    .from(activityTable)
+    .where(
+      and(
+        eq(activityTable.id, parentId),
+        eq(activityTable.taskId, taskId),
+        eq(activityTable.type, "comment"),
+        isNotNull(activityTable.content),
+      ),
+    )
+    .limit(1);
+  if (!parent) {
+    throw new HTTPException(404, { message: "Parent comment not found" });
+  }
+  return parent.parentId ?? parent.id;
+}
+
+/**
+ * The people already in a thread: the top-level comment's author and
+ * everyone who replied, without the new reply's author.
+ */
+async function threadParticipantIds(
+  parentId: string,
+  actorId: string,
+): Promise<string[]> {
+  const rows = await db
+    .selectDistinct({ userId: activityTable.userId })
+    .from(activityTable)
+    .where(
+      and(
+        eq(activityTable.type, "comment"),
+        or(
+          eq(activityTable.id, parentId),
+          eq(activityTable.parentId, parentId),
+        ),
+      ),
+    );
+  return rows
+    .map((row) => row.userId)
+    .filter((id): id is string => Boolean(id) && id !== actorId);
+}
 
 async function isWorkspaceMemberOfTask(taskId: string, userId: string) {
   const [membership] = await db
@@ -53,8 +110,13 @@ async function createComment(
     visibility = "internal",
     origin = "app",
     parseMentions = true,
+    parentId: requestedParentId,
   }: CreateCommentOptions = {},
 ) {
+  const parentId = requestedParentId
+    ? await resolveReplyParent(taskId, requestedParentId)
+    : null;
+
   const [activity] = await db
     .insert(activityTable)
     .values({
@@ -63,6 +125,7 @@ async function createComment(
       userId,
       content,
       visibility,
+      parentId,
       // An agent's comment says who it acted for (AI-generated marker); an
       // automation rule's comment carries the "Automation" marker.
       eventData: withAutomationMarker(withAgentVia(null)),
@@ -130,15 +193,18 @@ async function createComment(
 
   // Every watcher (assignees and subscribers) hears about the comment,
   // except the author, muted users and anyone the mention already notified.
+  // A reply also reaches the people already in its thread, watching or not.
   await notifyTaskEvent({
     taskId,
     kind: "comment",
     actorId: userId,
     excludeIds: mentioned,
+    directIds: parentId ? await threadParticipantIds(parentId, userId) : [],
     eventData: {
       commenterName: user?.name ?? null,
       commentId: activity.id,
       commentPreview: plainTextPreview(content),
+      ...(parentId ? { parentCommentId: parentId } : {}),
     },
   });
 

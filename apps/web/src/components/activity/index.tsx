@@ -7,10 +7,12 @@ import {
   CircleAlert,
   History,
   IterationCw,
+  MessageSquare,
   Ruler,
   Trash2,
   UserRound,
 } from "lucide-react";
+import type { ReactNode, Ref } from "react";
 import { useTranslation } from "react-i18next";
 import { AgentBadge } from "@/components/ai/agents/agent-badge";
 import EstimateActivityText from "@/components/estimate/estimate-activity-text";
@@ -23,6 +25,7 @@ import {
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import useGetWorkspaceUsers from "@/hooks/queries/workspace-users/use-get-workspace-users";
 import { agentViaOf } from "@/lib/ai/agents";
+import { cn } from "@/lib/cn";
 import { formatDateMedium, formatRelativeTime } from "@/lib/format";
 import { getInitials } from "@/lib/get-initials";
 import { getPriorityLabel, getStatusLabel } from "@/lib/i18n/domain";
@@ -38,6 +41,7 @@ import {
 import { TimelineContent, TimelineItem } from "../ui/timeline";
 import { automationActivityText, automationOf } from "./automation-activity";
 import CommentCard from "./comment-card";
+import CommentThread, { useReplyComposer } from "./comment-thread";
 import {
   getTaskDetailActivityIcon,
   renderTaskDetailActivity,
@@ -60,6 +64,8 @@ type ActivityItem = {
   externalUrl?: string | null;
   /** Comments only: public comments also show on the public board. */
   visibility?: "internal" | "public";
+  /** Replies only: the top-level comment of their thread. */
+  parentId?: string | null;
 };
 
 /** A comment author as the comment list reports them (B12 §3.3). */
@@ -600,23 +606,110 @@ function renderActivityContent({
   );
 }
 
-function Activity({
-  activity,
-  step,
-  showConnector = false,
-  commentReactions,
-  commentAuthors,
-  publicBoard,
-}: {
-  activity: ActivityItem;
-  step: number;
-  showConnector?: boolean;
+type CommentContext = {
   /** Each comment's reaction groups; undefined while they load. */
   commentReactions?: ReadonlyMap<string, readonly ReactionGroup[]>;
   /** Comment authors by comment id, loaded when the project has a board. */
   commentAuthors?: ReadonlyMap<string, CommentAuthor>;
   /** The project's public board, passed down once by the task view. */
   publicBoard?: CommentPublicBoard;
+};
+
+/** "by Agent X on behalf of Y" (ai-agent attribution), or null. */
+function AgentViaLine({ eventData }: { eventData: unknown }) {
+  const { t } = useTranslation();
+  const via = agentViaOf(eventData);
+  if (!via) return null;
+  return (
+    <span className="inline-flex items-center gap-1 text-muted-foreground text-xs">
+      <AgentBadge />
+      {via.onBehalfOfName
+        ? t("ai:agents.activity.onBehalfOf", { name: via.onBehalfOfName })
+        : null}
+    </span>
+  );
+}
+
+/**
+ * One row of the feed: its icon tile in a narrow column, the row's content
+ * beside it. With `rail`, a thin line runs through the column and joins
+ * the tiles of neighbouring rows into one timeline.
+ */
+function FeedRow({
+  step,
+  rail,
+  tile,
+  tileClassName,
+  tileOffsetClassName,
+  className,
+  children,
+}: {
+  step: number;
+  rail: boolean;
+  tile: ReactNode;
+  tileClassName?: string;
+  /** Lines the tile up with the content's first line. */
+  tileOffsetClassName: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  const line = rail ? "w-px bg-border" : "w-px";
+  return (
+    <TimelineItem
+      className={cn("m-0! flex-row items-stretch gap-3 py-0!", className)}
+      step={step}
+    >
+      <div
+        aria-hidden="true"
+        className="flex w-6 shrink-0 flex-col items-center"
+      >
+        <span
+          className={cn(
+            "shrink-0",
+            line,
+            tileOffsetClassName,
+            "group-first/timeline-item:bg-transparent",
+          )}
+        />
+        <span
+          className={cn(
+            "flex size-6 shrink-0 items-center justify-center text-muted-foreground",
+            tileClassName,
+          )}
+        >
+          {tile}
+        </span>
+        <span
+          className={cn(
+            "flex-1",
+            line,
+            "group-last/timeline-item:bg-transparent",
+          )}
+        />
+      </div>
+      {children}
+    </TimelineItem>
+  );
+}
+
+/** One comment's card, top-level or a reply. */
+function CommentActivityCard({
+  activity,
+  commentReactions,
+  commentAuthors,
+  publicBoard,
+  variant,
+  onReply,
+  replyLabel,
+  replyButtonRef,
+  children,
+}: CommentContext & {
+  activity: ActivityItem;
+  variant?: "card" | "reply";
+  onReply?: () => void;
+  replyLabel?: string;
+  replyButtonRef?: Ref<HTMLButtonElement>;
+  children?: ReactNode;
 }) {
   const { t } = useTranslation();
   const { data: workspace } = useActiveWorkspace();
@@ -632,84 +725,210 @@ function Activity({
 
   const isExternalComment = Boolean(activity.externalSource);
   const actorName = user?.user?.name || t("common:people.someone");
-  // "by Agent X on behalf of Y" (ai-agent attribution).
   const via = agentViaOf(activity.eventData);
-  const viaLine = via ? (
-    <span className="inline-flex items-center gap-1 text-muted-foreground text-xs">
-      <AgentBadge />
-      {via.onBehalfOfName
-        ? t("ai:agents.activity.onBehalfOf", { name: via.onBehalfOfName })
-        : null}
-    </span>
-  ) : null;
 
-  if (isCommentActivity(activity)) {
-    // Public board authors are usually outsiders, missing from the members.
-    const author = commentAuthors?.get(activity.id);
-    // A comment an automation rule wrote is signed "Automation".
-    const ruleComment = automationOf(activity)?.rule === "custom";
-    const commentUser = ruleComment
+  // Public board authors are usually outsiders, missing from the members.
+  const author = commentAuthors?.get(activity.id);
+  // A comment an automation rule wrote is signed "Automation".
+  const ruleComment = automationOf(activity)?.rule === "custom";
+  const commentUser = ruleComment
+    ? {
+        id: undefined,
+        name: t("activity:automation.actor"),
+        email: undefined,
+        image: undefined,
+      }
+    : isExternalComment
       ? {
           id: undefined,
-          name: t("activity:automation.actor"),
+          name: activity.externalUserName ?? t("activity:githubUser"),
           email: undefined,
-          image: undefined,
+          image: activity.externalUserAvatar ?? undefined,
         }
-      : isExternalComment
+      : !activity.userId
         ? {
+            // The author's account was deleted; the comment stays.
             id: undefined,
-            name: activity.externalUserName ?? t("activity:githubUser"),
+            name: via
+              ? t("ai:agents.desk.deletedAgent")
+              : t("publicProject:comments.deletedUser"),
             email: undefined,
-            image: activity.externalUserAvatar ?? undefined,
+            image: undefined,
           }
-        : !activity.userId
-          ? {
-              // The author's account was deleted; the comment stays.
-              id: undefined,
-              name: via
-                ? t("ai:agents.desk.deletedAgent")
-                : t("publicProject:comments.deletedUser"),
-              email: undefined,
-              image: undefined,
-            }
-          : {
-              id: user?.user?.id ?? activity.userId ?? undefined,
-              name: user?.user?.name ?? author?.name,
-              email: user?.user?.email,
-              image: user?.user?.image ?? author?.image,
-            };
+        : {
+            id: user?.user?.id ?? activity.userId ?? undefined,
+            name: user?.user?.name ?? author?.name,
+            email: user?.user?.email,
+            image: user?.user?.image ?? author?.image,
+          };
 
-    return (
-      <TimelineItem className="m-0! flex-row items-start py-2!" step={step}>
-        <TimelineContent className="min-w-0 flex-1">
-          {viaLine && <div className="mb-1 ps-1">{viaLine}</div>}
-          <CommentCard
-            commentId={activity.id}
-            taskId={activity.taskId}
-            content={activity.content || ""}
-            user={commentUser}
-            createdAt={activity.createdAt}
-            updatedAt={activity.updatedAt}
-            importedBy={
-              activity.userId && activity.externalSource !== "github"
-                ? actorName
-                : undefined
-            }
-            externalSource={activity.externalSource}
-            externalUrl={activity.externalUrl}
-            reactionGroups={
-              commentReactions
-                ? (commentReactions.get(activity.id) ?? [])
-                : undefined
-            }
-            visibility={activity.visibility}
-            authorKind={isExternalComment ? undefined : authorKindOf(author)}
-            publicBoard={publicBoard}
-          />
-        </TimelineContent>
-      </TimelineItem>
-    );
+  return (
+    <CommentCard
+      commentId={activity.id}
+      taskId={activity.taskId}
+      content={activity.content || ""}
+      user={commentUser}
+      createdAt={activity.createdAt}
+      updatedAt={activity.updatedAt}
+      importedBy={
+        activity.userId && activity.externalSource !== "github"
+          ? actorName
+          : undefined
+      }
+      externalSource={activity.externalSource}
+      externalUrl={activity.externalUrl}
+      reactionGroups={
+        commentReactions ? (commentReactions.get(activity.id) ?? []) : undefined
+      }
+      visibility={activity.visibility}
+      authorKind={isExternalComment ? undefined : authorKindOf(author)}
+      publicBoard={publicBoard}
+      variant={variant}
+      badges={via ? <AgentViaLine eventData={activity.eventData} /> : null}
+      onReply={onReply}
+      replyLabel={replyLabel}
+      replyButtonRef={replyButtonRef}
+      workspaceId={workspace?.id}
+    >
+      {children}
+    </CommentCard>
+  );
+}
+
+/** The name a comment is signed with, for labels such as "Reply to …". */
+function commentAuthorName(
+  activity: ActivityItem,
+  memberName: string | null | undefined,
+  author: CommentAuthor | undefined,
+) {
+  if (activity.externalSource) return activity.externalUserName ?? null;
+  return memberName ?? author?.name ?? null;
+}
+
+type ActivityProps = CommentContext & {
+  activity: ActivityItem;
+  step: number;
+  /** Joins this row to its neighbours with the feed's timeline line. */
+  rail?: boolean;
+  /**
+   * A top-level comment's replies, oldest first: renders its thread inside
+   * the card and, with `canReply`, the Reply actions. Undefined renders no
+   * thread (feeds that list comments without their threads).
+   */
+  replies?: readonly ActivityItem[];
+  /** The viewer may comment on the task. */
+  canReply?: boolean;
+};
+
+/** A comment on the feed: its card, with its thread inside. */
+function CommentActivity({
+  activity,
+  step,
+  rail = false,
+  replies,
+  canReply = false,
+  ...context
+}: ActivityProps) {
+  const { t } = useTranslation();
+  const { data: workspace } = useActiveWorkspace();
+  const { data: workspaceUsers } = useGetWorkspaceUsers({
+    workspaceId: workspace?.id,
+  });
+  const composer = useReplyComposer();
+
+  const memberName = activity.userId
+    ? workspaceUsers?.find(
+        (workspaceUser) => workspaceUser.user?.id === activity.userId,
+      )?.user?.name
+    : null;
+  const parentAuthorName = commentAuthorName(
+    activity,
+    memberName,
+    context.commentAuthors?.get(activity.id),
+  );
+  const replyLabel = parentAuthorName
+    ? t("activity:comment.thread.replyTo", { name: parentAuthorName })
+    : t("activity:comment.thread.reply");
+  const threaded = replies !== undefined;
+
+  return (
+    <FeedRow
+      step={step}
+      rail={rail}
+      tile={<MessageSquare className="size-3.5" />}
+      tileClassName="rounded-md border border-border bg-card"
+      tileOffsetClassName="h-4"
+    >
+      <TimelineContent className="min-w-0 flex-1 py-2">
+        <CommentActivityCard
+          activity={activity}
+          {...context}
+          onReply={threaded && canReply ? composer.open : undefined}
+          replyLabel={replyLabel}
+          replyButtonRef={composer.replyButtonRef}
+        >
+          {threaded && (
+            <CommentThread
+              taskId={activity.taskId}
+              parentId={activity.id}
+              replyLabel={replyLabel}
+              replies={replies}
+              canReply={canReply}
+              composer={composer}
+              renderReply={(reply) => (
+                <CommentActivityCard
+                  activity={reply}
+                  variant="reply"
+                  {...context}
+                />
+              )}
+            />
+          )}
+        </CommentActivityCard>
+      </TimelineContent>
+    </FeedRow>
+  );
+}
+
+function Activity(props: ActivityProps) {
+  if (isCommentActivity(props.activity)) {
+    return <CommentActivity {...props} />;
   }
+  return (
+    <HistoryActivity
+      activity={props.activity}
+      step={props.step}
+      rail={props.rail}
+    />
+  );
+}
+
+/** A history line: who changed what, and when. */
+function HistoryActivity({
+  activity,
+  step,
+  rail = false,
+}: {
+  activity: ActivityItem;
+  step: number;
+  rail?: boolean;
+}) {
+  const { t } = useTranslation();
+  const { data: workspace } = useActiveWorkspace();
+  const { data: workspaceUsers } = useGetWorkspaceUsers({
+    workspaceId: workspace?.id,
+  });
+
+  const user = activity.userId
+    ? workspaceUsers?.find(
+        (workspaceUser) => workspaceUser.user?.id === activity.userId,
+      )
+    : null;
+
+  const actorName = user?.user?.name || t("common:people.someone");
+  const viaLine = agentViaOf(activity.eventData) ? (
+    <AgentViaLine eventData={activity.eventData} />
+  ) : null;
 
   const activityIcon = getActivityTypeIcon(activity.type);
   // The wake-up job ends snoozes: nobody did it, so no name or avatar.
@@ -722,67 +941,66 @@ function Activity({
   const automation = automationOf(activity);
 
   return (
-    <TimelineItem
-      className="relative m-0! flex-row items-center gap-3 py-2.5!"
+    <FeedRow
       step={step}
+      rail={rail}
+      tile={activityIcon}
+      tileClassName="text-muted-foreground/80 [&_svg]:size-3.5"
+      tileOffsetClassName="h-2"
     >
-      {showConnector && (
-        <span className="-translate-x-1/2 absolute top-9 bottom-0 left-3 w-px bg-[color-mix(in_srgb,var(--foreground)_18%,transparent)] dark:bg-[color-mix(in_srgb,var(--foreground)_26%,transparent)]" />
-      )}
-      <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-full text-muted-foreground/80">
-        {activityIcon}
-      </span>
-      {automation ? (
-        <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
-          <Bot className="size-3.5" />
-        </span>
-      ) : (
-        !isSystemRow && (
-          <ActorAvatar user={user || null} fallbackName={actorName} />
-        )
-      )}
-      <TimelineContent className="text-sm leading-6 text-foreground">
+      <div className="flex min-w-0 flex-1 items-start gap-2 py-2">
         {automation ? (
-          <>
-            <span className="font-medium">
-              {t("activity:automation.actor")}
-            </span>{" "}
-          </>
+          <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
+            <Bot className="size-3.5" />
+          </span>
         ) : (
           !isSystemRow && (
-            <>
-              <UserHoverName
-                user={user || null}
-                fallbackName={actorName}
-              />{" "}
-            </>
+            <ActorAvatar user={user || null} fallbackName={actorName} />
           )
         )}
-        {automation && automation.rule !== "custom" ? (
-          <span className="text-sm text-muted-foreground">
-            {automationActivityText(activity, automation, t)}
+        <TimelineContent className="min-w-0 text-foreground text-sm leading-6">
+          {automation ? (
+            <>
+              <span className="font-medium">
+                {t("activity:automation.actor")}
+              </span>{" "}
+            </>
+          ) : (
+            !isSystemRow && (
+              <>
+                <UserHoverName
+                  user={user || null}
+                  fallbackName={actorName}
+                />{" "}
+              </>
+            )
+          )}
+          {automation && automation.rule !== "custom" ? (
+            <span className="text-muted-foreground text-sm">
+              {automationActivityText(activity, automation, t)}
+            </span>
+          ) : (
+            renderActivityContent({
+              activity,
+              workspaceUsers: workspaceUsers as WorkspaceUser[] | undefined,
+              workspaceId: workspace?.id,
+              t,
+            })
+          )}{" "}
+          {viaLine && <>{viaLine} </>}
+          {automation?.rule === "custom" && automation.ruleName && (
+            <span className="text-muted-foreground text-xs">
+              {t("activity:automation.byRule", {
+                name: automation.ruleName,
+              })}{" "}
+            </span>
+          )}
+          <span className="whitespace-nowrap text-muted-foreground/70 text-xs">
+            {formatRelativeTime(activity.createdAt)}
           </span>
-        ) : (
-          renderActivityContent({
-            activity,
-            workspaceUsers: workspaceUsers as WorkspaceUser[] | undefined,
-            workspaceId: workspace?.id,
-            t,
-          })
-        )}{" "}
-        {viaLine && <>{viaLine} </>}
-        {automation?.rule === "custom" && automation.ruleName && (
-          <span className="text-muted-foreground text-xs">
-            {t("activity:automation.byRule", {
-              name: automation.ruleName,
-            })}{" "}
-          </span>
-        )}
-        <span className="whitespace-nowrap text-muted-foreground/70 text-xs">
-          {formatRelativeTime(activity.createdAt)}
-        </span>
-      </TimelineContent>
-    </TimelineItem>
+        </TimelineContent>
+      </div>
+    </FeedRow>
   );
 }
 

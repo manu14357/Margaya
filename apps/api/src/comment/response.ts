@@ -24,6 +24,10 @@ export const commentSchema = z
     visibility: z.enum(["internal", "public"]).openapi({
       description: "public comments also show on the public board.",
     }),
+    parentId: z.string().nullable().openapi({
+      description:
+        "The top-level comment this one replies to, or null for a top-level comment. Threads are one level deep; deleting a comment turns its replies into top-level comments.",
+    }),
     // A union keeps the null in the OpenAPI document next to the $ref.
     user: z.union([commentAuthorSchema, z.null()]).openapi({
       description:

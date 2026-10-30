@@ -115,6 +115,10 @@ function titleTemplate(
         : texts.ai.agents.reply.title;
     case "ai_budget_warning":
       return texts.ai.budget.notice.title;
+    case "task_comment":
+      return typeof data.parentCommentId === "string"
+        ? texts.notifications.events.task_comment.titleReply
+        : texts.notifications.events.task_comment.title;
     default:
       return (
         texts.notifications.events as unknown as Record<
@@ -196,6 +200,9 @@ function bodyText(
     case "page_mention":
       return fillAll(events[type].content, values);
     case "task_comment":
+      if (typeof data.parentCommentId === "string" && values.commentPreview) {
+        return fillAll(events.task_comment.contentReply, values);
+      }
       return values.commentPreview
         ? fillAll(events.task_comment.content, values)
         : fillAll(
