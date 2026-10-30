@@ -3460,7 +3460,9 @@
 			},
 			"task_comment": {
 				"title": "{{commenterName}} commented",
-				"content": "New comment on {{taskTitle}}: {{commentPreview}}"
+				"content": "New comment on {{taskTitle}}: {{commentPreview}}",
+				"titleReply": "{{commenterName}} replied to a comment",
+				"contentReply": "New reply on {{taskTitle}}: {{commentPreview}}"
 			},
 			"due_date_reminder": {
 				"title": "Task due soon",
@@ -3644,7 +3646,8 @@
 				"intake_declined": "declined your request",
 				"intake_duplicate": "marked your request as a duplicate",
 				"page_mention": "mentioned you in a page",
-				"page_mention_titled": "mentioned you in {{pageTitle}}"
+				"page_mention_titled": "mentioned you in {{pageTitle}}",
+				"task_comment_reply": "replied to a comment"
 			},
 			"dropdown": {
 				"openInbox": "Open inbox",
@@ -3798,7 +3801,21 @@
 				}
 			},
 			"importedFrom": "Imported from {{source}}",
-			"importedBy": "Imported by {{name}}"
+			"importedBy": "Imported by {{name}}",
+			"thread": {
+				"reply": "Reply",
+				"replyTo": "Reply to {{name}}",
+				"replies": "Replies",
+				"placeholder": "Write a reply...",
+				"send": "Send reply",
+				"added": "Reply added",
+				"failedToAdd": "Failed to add reply",
+				"showFewer": "Show fewer replies",
+				"showMore_one": "Show {{count}} more reply",
+				"showMore_other": "Show {{count}} more replies"
+			},
+			"commentedAgo": "commented {{time}}",
+			"linkCopied": "Comment link copied"
 		},
 		"addedToCycle": "added the task to cycle {{name}}",
 		"removedFromCycle": "removed the task from cycle {{name}}",
@@ -7145,8 +7162,6 @@
 						"description": "Docker, Helm and a database you control"
 					}
 				},
-				"compare": "Compare",
-				"blog": "Blog",
 				"explore": "Explore",
 				"featuresIntro": "Six short tours of Margaya. Each has a live demo you can take over.",
 				"newTab": "(opens in a new tab)"
@@ -7161,22 +7176,11 @@
 					"changelog": "Changelog",
 					"roadmap": "Roadmap"
 				},
-				"compare": {
-					"title": "Compare",
-					"jira": "vs Jira",
-					"trello": "vs Trello",
-					"linear": "vs Linear",
-					"asana": "vs Asana",
-					"clickup": "vs ClickUp",
-					"monday": "vs monday.com",
-					"all": "All alternatives"
-				},
 				"resources": {
 					"title": "Resources",
 					"docs": "Documentation",
 					"api": "API reference",
 					"guides": "Guides",
-					"blog": "Blog",
 					"press": "Press kit"
 				},
 				"company": {
@@ -10868,7 +10872,8 @@
 				"bulk_move_status": "Change status of several tasks",
 				"ask_person": "Ask a question",
 				"web_search": "Web search",
-				"connector": "Outside service: {{tool}}"
+				"connector": "Outside service: {{tool}}",
+				"update_page": "Edit page"
 			},
 			"runErrors": {
 				"AGENT_GONE": "The agent was deleted.",
@@ -10914,8 +10919,11 @@
 					"page": "New page",
 					"relation": "Link ({{relation}})",
 					"delete": "Move to trash",
-					"connectorCall": "Call to {{connector}}"
-				}
+					"connectorCall": "Call to {{connector}}",
+					"pageContent": "Page content",
+					"pageSection": "Added section"
+				},
+				"undoPageError": "Couldn't undo this edit. The page was changed since; restore an earlier version from its history instead."
 			},
 			"inbox": {
 				"title": "{{agentName}} needs your approval",
@@ -10982,7 +10990,8 @@
 				"project": "Project:",
 				"workedSeconds": "Worked for {{count}} s",
 				"workedMinutes": "Worked for {{count}} min",
-				"request": "Request"
+				"request": "Request",
+				"selectRunTitle": "See what your agents did"
 			},
 			"connectors": {
 				"title": "Connectors",
@@ -11122,7 +11131,8 @@
 					"mention": "Mention",
 					"assign": "Assign",
 					"schedule": "Schedule",
-					"automation": "Automation"
+					"automation": "Automation",
+					"intake": "Intake"
 				}
 			},
 			"intakeTrigger": {

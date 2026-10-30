@@ -3405,7 +3405,9 @@
 			},
 			"task_comment": {
 				"title": "{{commenterName}} đã bình luận công việc của bạn",
-				"content": "Bình luận mới trên {{taskTitle}}: {{commentPreview}}"
+				"content": "Bình luận mới trên {{taskTitle}}: {{commentPreview}}",
+				"titleReply": "{{commenterName}} đã trả lời một bình luận",
+				"contentReply": "Câu trả lời mới trên {{taskTitle}}: {{commentPreview}}"
 			},
 			"due_date_reminder": {
 				"title": "Công việc sắp đến hạn",
@@ -3579,7 +3581,8 @@
 				"intake_declined": "đã từ chối yêu cầu của bạn",
 				"intake_duplicate": "đã đánh dấu yêu cầu của bạn là trùng lặp",
 				"page_mention": "đã nhắc đến bạn trong một trang",
-				"page_mention_titled": "đã nhắc đến bạn trong {{pageTitle}}"
+				"page_mention_titled": "đã nhắc đến bạn trong {{pageTitle}}",
+				"task_comment_reply": "đã trả lời một bình luận"
 			},
 			"viewing": {
 				"archived": "Đang xem các thông báo đã lưu trữ",
@@ -3724,7 +3727,20 @@
 			"importedBy": "Được nhập bởi {{name}}",
 			"delete": "Xóa bình luận",
 			"edited": "(đã chỉnh sửa)",
-			"editedAt": "Đã chỉnh sửa {{time}}"
+			"editedAt": "Đã chỉnh sửa {{time}}",
+			"thread": {
+				"reply": "Trả lời",
+				"replyTo": "Trả lời {{name}}",
+				"replies": "Các câu trả lời",
+				"placeholder": "Viết câu trả lời...",
+				"send": "Gửi câu trả lời",
+				"added": "Đã thêm câu trả lời",
+				"failedToAdd": "Không thể thêm câu trả lời",
+				"showFewer": "Hiển thị ít câu trả lời hơn",
+				"showMore_other": "Hiển thị thêm {{count}} câu trả lời"
+			},
+			"commentedAgo": "đã bình luận {{time}}",
+			"linkCopied": "Đã sao chép liên kết bình luận"
 		},
 		"addedToCycle": "đã thêm công việc vào chu kỳ {{name}}",
 		"deletedCycle": "đã gỡ công việc khỏi một chu kỳ đã bị xóa",
@@ -6603,8 +6619,6 @@
 				"openMenu": "Mở menu",
 				"pricing": "Bảng giá",
 				"signIn": "Đăng nhập",
-				"blog": "Blog",
-				"compare": "So sánh",
 				"explore": "Khám phá",
 				"featuresIntro": "Sáu chuyến tham quan ngắn về Margaya. Mỗi chuyến đều có bản demo trực tiếp mà bạn có thể tự điều khiển.",
 				"newTab": "(mở trong thẻ mới)"
@@ -6738,16 +6752,6 @@
 					"terms": "Điều khoản",
 					"title": "Công ty"
 				},
-				"compare": {
-					"all": "Tất cả lựa chọn thay thế",
-					"asana": "So với Asana",
-					"clickup": "So với ClickUp",
-					"jira": "So với Jira",
-					"linear": "So với Linear",
-					"monday": "So với monday.com",
-					"title": "So sánh",
-					"trello": "So với Trello"
-				},
 				"copyright": "© {{year}} Margaya",
 				"label": "Chân trang",
 				"mission": "Lên kế hoạch, hoàn thành công việc và làm chủ công cụ bạn dùng để làm việc.",
@@ -6760,7 +6764,6 @@
 				},
 				"resources": {
 					"api": "Tài liệu tham khảo API",
-					"blog": "Blog",
 					"docs": "Tài liệu",
 					"guides": "Hướng dẫn",
 					"press": "Bộ tài liệu báo chí",
@@ -10724,7 +10727,8 @@
 				"bulk_move_status": "Đổi trạng thái của nhiều công việc",
 				"ask_person": "Đặt câu hỏi",
 				"web_search": "Tìm kiếm web",
-				"connector": "Dịch vụ bên ngoài: {{tool}}"
+				"connector": "Dịch vụ bên ngoài: {{tool}}",
+				"update_page": "Sửa trang"
 			},
 			"runErrors": {
 				"AGENT_GONE": "Tác tử đã bị xóa.",
@@ -10770,8 +10774,11 @@
 					"page": "Trang mới",
 					"relation": "Liên kết ({{relation}})",
 					"delete": "Chuyển vào thùng rác",
-					"connectorCall": "Gọi tới {{connector}}"
-				}
+					"connectorCall": "Gọi tới {{connector}}",
+					"pageContent": "Nội dung trang",
+					"pageSection": "Phần đã thêm"
+				},
+				"undoPageError": "Không thể hoàn tác chỉnh sửa này. Trang đã thay đổi kể từ đó; hãy khôi phục một phiên bản trước từ lịch sử của trang."
 			},
 			"inbox": {
 				"title": "{{agentName}} cần bạn phê duyệt",
@@ -10838,7 +10845,8 @@
 				"project": "Dự án:",
 				"workedSeconds": "Đã làm việc {{count}} giây",
 				"workedMinutes": "Đã làm việc {{count}} phút",
-				"request": "Yêu cầu"
+				"request": "Yêu cầu",
+				"selectRunTitle": "Xem các tác tử của bạn đã làm gì"
 			},
 			"connectors": {
 				"title": "Trình kết nối",
@@ -10978,7 +10986,8 @@
 					"mention": "Nhắc đến",
 					"assign": "Giao việc",
 					"schedule": "Lịch",
-					"automation": "Tự động hóa"
+					"automation": "Tự động hóa",
+					"intake": "Tiếp nhận"
 				}
 			},
 			"intakeTrigger": {

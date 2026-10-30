@@ -3517,7 +3517,9 @@
 			},
 			"task_comment": {
 				"title": "{{commenterName}} comentou na sua tarefa",
-				"content": "Novo comentário em {{taskTitle}}: {{commentPreview}}"
+				"content": "Novo comentário em {{taskTitle}}: {{commentPreview}}",
+				"titleReply": "{{commenterName}} respondeu a um comentário",
+				"contentReply": "Nova resposta em {{taskTitle}}: {{commentPreview}}"
 			},
 			"due_date_reminder": {
 				"title": "Tarefa vence em breve",
@@ -3699,7 +3701,8 @@
 				"intake_declined": "recusou sua solicitação",
 				"intake_duplicate": "marcou sua solicitação como duplicata",
 				"page_mention": "mencionou você em uma página",
-				"page_mention_titled": "mencionou você em {{pageTitle}}"
+				"page_mention_titled": "mencionou você em {{pageTitle}}",
+				"task_comment_reply": "respondeu a um comentário"
 			},
 			"viewing": {
 				"archived": "Exibindo notificações arquivadas",
@@ -3844,7 +3847,22 @@
 			"importedBy": "Importado por {{name}}",
 			"delete": "Excluir comentário",
 			"edited": "(editado)",
-			"editedAt": "Editado {{time}}"
+			"editedAt": "Editado {{time}}",
+			"thread": {
+				"reply": "Responder",
+				"replyTo": "Responder a {{name}}",
+				"replies": "Respostas",
+				"placeholder": "Escreva uma resposta...",
+				"send": "Enviar resposta",
+				"added": "Resposta adicionada",
+				"failedToAdd": "Falha ao adicionar resposta",
+				"showFewer": "Mostrar menos respostas",
+				"showMore_one": "Mostrar mais {{count}} resposta",
+				"showMore_many": "Mostrar mais {{count}} respostas",
+				"showMore_other": "Mostrar mais {{count}} respostas"
+			},
+			"commentedAgo": "comentou {{time}}",
+			"linkCopied": "Link do comentário copiado"
 		},
 		"addedToCycle": "adicionou a tarefa ao ciclo {{name}}",
 		"deletedCycle": "removeu a tarefa de um ciclo excluído",
@@ -6777,8 +6795,6 @@
 				"openMenu": "Abrir menu",
 				"pricing": "Preços",
 				"signIn": "Entrar",
-				"blog": "Blog",
-				"compare": "Comparar",
 				"explore": "Explorar",
 				"featuresIntro": "Seis tours rápidos pelo Margaya. Cada um tem uma demo ao vivo que você pode controlar.",
 				"newTab": "(abre em uma nova aba)"
@@ -6912,16 +6928,6 @@
 					"terms": "Termos",
 					"title": "Empresa"
 				},
-				"compare": {
-					"all": "Todas as alternativas",
-					"asana": "vs Asana",
-					"clickup": "vs ClickUp",
-					"jira": "vs Jira",
-					"linear": "vs Linear",
-					"monday": "vs monday.com",
-					"title": "Comparar",
-					"trello": "vs Trello"
-				},
 				"copyright": "© {{year}} Margaya",
 				"label": "Rodapé",
 				"mission": "Organize o trabalho, entregue e seja dono da ferramenta em que você o faz.",
@@ -6934,7 +6940,6 @@
 				},
 				"resources": {
 					"api": "Referência da API",
-					"blog": "Blog",
 					"docs": "Documentação",
 					"guides": "Guias",
 					"press": "Kit de imprensa",
@@ -11015,7 +11020,8 @@
 				"bulk_move_status": "Alterar o status de várias tarefas",
 				"ask_person": "Fazer uma pergunta",
 				"web_search": "Busca na web",
-				"connector": "Serviço externo: {{tool}}"
+				"connector": "Serviço externo: {{tool}}",
+				"update_page": "Editar página"
 			},
 			"runErrors": {
 				"AGENT_GONE": "O agente foi excluído.",
@@ -11061,8 +11067,11 @@
 					"page": "Nova página",
 					"relation": "Vínculo ({{relation}})",
 					"delete": "Mover para a lixeira",
-					"connectorCall": "Chamada para {{connector}}"
-				}
+					"connectorCall": "Chamada para {{connector}}",
+					"pageContent": "Conteúdo da página",
+					"pageSection": "Seção adicionada"
+				},
+				"undoPageError": "Não foi possível desfazer esta edição. A página mudou desde então; restaure uma versão anterior pelo histórico dela."
 			},
 			"inbox": {
 				"title": "{{agentName}} precisa da sua aprovação",
@@ -11129,7 +11138,8 @@
 				"project": "Projeto:",
 				"workedSeconds": "Trabalhou {{count}} s",
 				"workedMinutes": "Trabalhou {{count}} min",
-				"request": "Solicitação"
+				"request": "Solicitação",
+				"selectRunTitle": "Veja o que seus agentes fizeram"
 			},
 			"connectors": {
 				"title": "Conectores",
@@ -11269,7 +11279,8 @@
 					"mention": "Menção",
 					"assign": "Atribuição",
 					"schedule": "Agendamento",
-					"automation": "Automação"
+					"automation": "Automação",
+					"intake": "Entrada"
 				}
 			},
 			"intakeTrigger": {

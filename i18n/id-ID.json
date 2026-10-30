@@ -3405,7 +3405,9 @@
 			},
 			"task_comment": {
 				"title": "{{commenterName}} mengomentari tugas Anda",
-				"content": "Komentar baru pada {{taskTitle}}: {{commentPreview}}"
+				"content": "Komentar baru pada {{taskTitle}}: {{commentPreview}}",
+				"titleReply": "{{commenterName}} membalas komentar",
+				"contentReply": "Balasan baru pada {{taskTitle}}: {{commentPreview}}"
 			},
 			"due_date_reminder": {
 				"title": "Tenggat tugas segera tiba",
@@ -3579,7 +3581,8 @@
 				"intake_declined": "menolak permintaan Anda",
 				"intake_duplicate": "menandai permintaan Anda sebagai duplikat",
 				"page_mention": "menyebut Anda di sebuah halaman",
-				"page_mention_titled": "menyebut Anda di {{pageTitle}}"
+				"page_mention_titled": "menyebut Anda di {{pageTitle}}",
+				"task_comment_reply": "membalas komentar"
 			},
 			"viewing": {
 				"archived": "Melihat notifikasi yang diarsipkan",
@@ -3724,7 +3727,20 @@
 			"importedBy": "Diimpor oleh {{name}}",
 			"delete": "Hapus komentar",
 			"edited": "(diedit)",
-			"editedAt": "Diedit {{time}}"
+			"editedAt": "Diedit {{time}}",
+			"thread": {
+				"reply": "Balas",
+				"replyTo": "Balas {{name}}",
+				"replies": "Balasan",
+				"placeholder": "Tulis balasan...",
+				"send": "Kirim balasan",
+				"added": "Balasan ditambahkan",
+				"failedToAdd": "Gagal menambahkan balasan",
+				"showFewer": "Tampilkan lebih sedikit balasan",
+				"showMore_other": "Tampilkan {{count}} balasan lainnya"
+			},
+			"commentedAgo": "berkomentar {{time}}",
+			"linkCopied": "Tautan komentar disalin"
 		},
 		"addedToCycle": "menambahkan tugas ke siklus {{name}}",
 		"deletedCycle": "menghapus tugas dari siklus yang telah dihapus",
@@ -6603,8 +6619,6 @@
 				"openMenu": "Buka menu",
 				"pricing": "Harga",
 				"signIn": "Masuk",
-				"blog": "Blog",
-				"compare": "Bandingkan",
 				"explore": "Jelajahi",
 				"featuresIntro": "Enam tur singkat tentang Margaya. Masing-masing punya demo langsung yang bisa Anda coba sendiri.",
 				"newTab": "(terbuka di tab baru)"
@@ -6738,16 +6752,6 @@
 					"terms": "Ketentuan",
 					"title": "Perusahaan"
 				},
-				"compare": {
-					"all": "Semua alternatif",
-					"asana": "vs Asana",
-					"clickup": "vs ClickUp",
-					"jira": "vs Jira",
-					"linear": "vs Linear",
-					"monday": "vs monday.com",
-					"title": "Bandingkan",
-					"trello": "vs Trello"
-				},
 				"copyright": "© {{year}} Margaya",
 				"label": "Kaki halaman",
 				"mission": "Rencanakan pekerjaan, rilis, dan miliki alat yang Anda gunakan untuk mengerjakannya.",
@@ -6760,7 +6764,6 @@
 				},
 				"resources": {
 					"api": "Referensi API",
-					"blog": "Blog",
 					"docs": "Dokumentasi",
 					"guides": "Panduan",
 					"press": "Kit pers",
@@ -10724,7 +10727,8 @@
 				"bulk_move_status": "Ubah status beberapa tugas",
 				"ask_person": "Ajukan pertanyaan",
 				"web_search": "Pencarian web",
-				"connector": "Layanan eksternal: {{tool}}"
+				"connector": "Layanan eksternal: {{tool}}",
+				"update_page": "Edit halaman"
 			},
 			"runErrors": {
 				"AGENT_GONE": "Agen telah dihapus.",
@@ -10770,8 +10774,11 @@
 					"page": "Halaman baru",
 					"relation": "Tautan ({{relation}})",
 					"delete": "Pindahkan ke sampah",
-					"connectorCall": "Panggilan ke {{connector}}"
-				}
+					"connectorCall": "Panggilan ke {{connector}}",
+					"pageContent": "Isi halaman",
+					"pageSection": "Bagian yang ditambahkan"
+				},
+				"undoPageError": "Tidak dapat mengurungkan suntingan ini. Halaman sudah berubah sejak itu; pulihkan versi sebelumnya dari riwayatnya."
 			},
 			"inbox": {
 				"title": "{{agentName}} memerlukan persetujuan Anda",
@@ -10838,7 +10845,8 @@
 				"project": "Proyek:",
 				"workedSeconds": "Bekerja {{count}} dtk",
 				"workedMinutes": "Bekerja {{count}} mnt",
-				"request": "Permintaan"
+				"request": "Permintaan",
+				"selectRunTitle": "Lihat apa yang dikerjakan agen Anda"
 			},
 			"connectors": {
 				"title": "Konektor",
@@ -10978,7 +10986,8 @@
 					"mention": "Sebutan",
 					"assign": "Penugasan",
 					"schedule": "Jadwal",
-					"automation": "Otomatisasi"
+					"automation": "Otomatisasi",
+					"intake": "Intake"
 				}
 			},
 			"intakeTrigger": {

@@ -3460,7 +3460,9 @@
 			},
 			"task_comment": {
 				"title": "{{commenterName}} tapşırığınıza şərh yazdı",
-				"content": "{{taskTitle}} tapşırığına yeni şərh: {{commentPreview}}"
+				"content": "{{taskTitle}} tapşırığına yeni şərh: {{commentPreview}}",
+				"titleReply": "{{commenterName}} şərhə cavab yazdı",
+				"contentReply": "{{taskTitle}} tapşırığında yeni cavab: {{commentPreview}}"
 			},
 			"due_date_reminder": {
 				"title": "Tapşırığın son tarixi yaxınlaşır",
@@ -3638,7 +3640,8 @@
 				"intake_declined": "sorğunuzu rədd etdi",
 				"intake_duplicate": "sorğunuzu təkrar kimi işarələdi",
 				"page_mention": "sizi səhifədə qeyd etdi",
-				"page_mention_titled": "sizi {{pageTitle}} səhifəsində qeyd etdi"
+				"page_mention_titled": "sizi {{pageTitle}} səhifəsində qeyd etdi",
+				"task_comment_reply": "şərhə cavab yazdı"
 			},
 			"viewing": {
 				"archived": "Arxivlənmiş bildirişlərə baxılır",
@@ -3783,7 +3786,21 @@
 			"importedBy": "{{name}} tərəfindən idxal edilib",
 			"delete": "Şərhi sil",
 			"edited": "(redaktə edilib)",
-			"editedAt": "{{time}} redaktə edilib"
+			"editedAt": "{{time}} redaktə edilib",
+			"thread": {
+				"reply": "Cavab ver",
+				"replyTo": "Cavab ver: {{name}}",
+				"replies": "Cavablar",
+				"placeholder": "Cavab yazın...",
+				"send": "Cavabı göndər",
+				"added": "Cavab əlavə edildi",
+				"failedToAdd": "Cavab əlavə etmək alınmadı",
+				"showFewer": "Daha az cavab göstər",
+				"showMore_one": "Daha {{count}} cavabı göstər",
+				"showMore_other": "Daha {{count}} cavabı göstər"
+			},
+			"commentedAgo": "{{time}} şərh yazdı",
+			"linkCopied": "Şərh keçidi kopyalandı"
 		},
 		"addedToCycle": "tapşırığı {{name}} dövrünə əlavə etdi",
 		"deletedCycle": "tapşırığı silinmiş dövrdən çıxardı",
@@ -6689,8 +6706,6 @@
 				"openMenu": "Menyunu aç",
 				"pricing": "Qiymətlər",
 				"signIn": "Daxil ol",
-				"blog": "Bloq",
-				"compare": "Müqayisə",
 				"explore": "Kəşf et",
 				"featuresIntro": "Margaya üzrə altı qısa tur. Hər birində idarəsini öz üzərinizə götürə biləcəyiniz canlı demo var.",
 				"newTab": "(yeni vərəqdə açılır)"
@@ -6824,16 +6839,6 @@
 					"terms": "Şərtlər",
 					"title": "Şirkət"
 				},
-				"compare": {
-					"all": "Bütün alternativlər",
-					"asana": "Asana ilə müqayisə",
-					"clickup": "ClickUp ilə müqayisə",
-					"jira": "Jira ilə müqayisə",
-					"linear": "Linear ilə müqayisə",
-					"monday": "monday.com ilə müqayisə",
-					"title": "Müqayisə",
-					"trello": "Trello ilə müqayisə"
-				},
 				"copyright": "© {{year}} Margaya",
 				"label": "Səhifənin altlığı",
 				"mission": "İşi planlayın, təhvil verin və bunu etdiyiniz alətin sahibi olun.",
@@ -6846,7 +6851,6 @@
 				},
 				"resources": {
 					"api": "API arayışı",
-					"blog": "Bloq",
 					"docs": "Sənədlər",
 					"guides": "Bələdçilər",
 					"press": "Mətbuat dəsti",
@@ -10868,7 +10872,8 @@
 				"bulk_move_status": "Bir neçə tapşırığın vəziyyətini dəyiş",
 				"ask_person": "Sual ver",
 				"web_search": "Vebdə axtarış",
-				"connector": "Xarici xidmət: {{tool}}"
+				"connector": "Xarici xidmət: {{tool}}",
+				"update_page": "Səhifəni redaktə et"
 			},
 			"runErrors": {
 				"AGENT_GONE": "Agent silinib.",
@@ -10914,8 +10919,11 @@
 					"page": "Yeni səhifə",
 					"relation": "Əlaqə ({{relation}})",
 					"delete": "Zibil qutusuna köçür",
-					"connectorCall": "{{connector}} çağırışı"
-				}
+					"connectorCall": "{{connector}} çağırışı",
+					"pageContent": "Səhifənin məzmunu",
+					"pageSection": "Əlavə edilmiş bölmə"
+				},
+				"undoPageError": "Bu redaktəni geri almaq mümkün olmadı. Səhifə o vaxtdan bəri dəyişdirilib; əvəzində onun tarixçəsindən əvvəlki versiyanı bərpa edin."
 			},
 			"inbox": {
 				"title": "{{agentName}} təsdiqinizi gözləyir",
@@ -10982,7 +10990,8 @@
 				"project": "Layihə:",
 				"workedSeconds": "{{count}} san işlədi",
 				"workedMinutes": "{{count}} dəq işlədi",
-				"request": "Sorğu"
+				"request": "Sorğu",
+				"selectRunTitle": "Agentlərinizin nə etdiyinə baxın"
 			},
 			"connectors": {
 				"title": "Konnektorlar",
@@ -11122,7 +11131,8 @@
 					"mention": "Qeyd",
 					"assign": "Təyinat",
 					"schedule": "Cədvəl",
-					"automation": "Avtomatlaşdırma"
+					"automation": "Avtomatlaşdırma",
+					"intake": "Qəbul"
 				}
 			},
 			"intakeTrigger": {

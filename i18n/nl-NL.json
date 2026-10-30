@@ -3457,7 +3457,9 @@
 			},
 			"task_comment": {
 				"title": "{{commenterName}} heeft gereageerd op je taak",
-				"content": "Nieuwe reactie op {{taskTitle}}: {{commentPreview}}"
+				"content": "Nieuwe reactie op {{taskTitle}}: {{commentPreview}}",
+				"titleReply": "{{commenterName}} heeft een reactie beantwoord",
+				"contentReply": "Nieuw antwoord op {{taskTitle}}: {{commentPreview}}"
 			},
 			"due_date_reminder": {
 				"title": "Taak vervalt binnenkort",
@@ -3638,7 +3640,8 @@
 				"intake_declined": "heeft je verzoek afgewezen",
 				"intake_duplicate": "heeft je verzoek als duplicaat gemarkeerd",
 				"page_mention": "heeft je genoemd op een pagina",
-				"page_mention_titled": "heeft je genoemd in {{pageTitle}}"
+				"page_mention_titled": "heeft je genoemd in {{pageTitle}}",
+				"task_comment_reply": "heeft een reactie beantwoord"
 			},
 			"viewing": {
 				"archived": "Gearchiveerde meldingen worden getoond",
@@ -3783,7 +3786,21 @@
 			"importedBy": "Geïmporteerd door {{name}}",
 			"delete": "Reactie verwijderen",
 			"edited": "(bewerkt)",
-			"editedAt": "Bewerkt {{time}}"
+			"editedAt": "Bewerkt {{time}}",
+			"thread": {
+				"reply": "Beantwoorden",
+				"replyTo": "{{name}} beantwoorden",
+				"replies": "Antwoorden",
+				"placeholder": "Schrijf een antwoord...",
+				"send": "Antwoord plaatsen",
+				"added": "Antwoord toegevoegd",
+				"failedToAdd": "Toevoegen antwoord mislukt",
+				"showFewer": "Minder antwoorden tonen",
+				"showMore_one": "Nog {{count}} antwoord tonen",
+				"showMore_other": "Nog {{count}} antwoorden tonen"
+			},
+			"commentedAgo": "reageerde {{time}}",
+			"linkCopied": "Link naar reactie gekopieerd"
 		},
 		"addedToCycle": "heeft de taak toegevoegd aan cyclus {{name}}",
 		"deletedCycle": "heeft de taak verwijderd uit een verwijderde cyclus",
@@ -6689,8 +6706,6 @@
 				"openMenu": "Menu openen",
 				"pricing": "Prijzen",
 				"signIn": "Inloggen",
-				"blog": "Blog",
-				"compare": "Vergelijken",
 				"explore": "Ontdekken",
 				"featuresIntro": "Zes korte rondleidingen door Margaya. Elk heeft een live demo die je zelf kunt overnemen.",
 				"newTab": "(opent in een nieuw tabblad)"
@@ -6824,16 +6839,6 @@
 					"terms": "Voorwaarden",
 					"title": "Bedrijf"
 				},
-				"compare": {
-					"all": "Alle alternatieven",
-					"asana": "vs Asana",
-					"clickup": "vs ClickUp",
-					"jira": "vs Jira",
-					"linear": "vs Linear",
-					"monday": "vs monday.com",
-					"title": "Vergelijken",
-					"trello": "vs Trello"
-				},
 				"copyright": "© {{year}} Margaya",
 				"label": "Voettekst",
 				"mission": "Plan het werk, lever het op en wees eigenaar van de tool waarin je het doet.",
@@ -6846,7 +6851,6 @@
 				},
 				"resources": {
 					"api": "API-referentie",
-					"blog": "Blog",
 					"docs": "Documentatie",
 					"guides": "Handleidingen",
 					"press": "Perskit",
@@ -10868,7 +10872,8 @@
 				"bulk_move_status": "Status van meerdere taken wijzigen",
 				"ask_person": "Vraag stellen",
 				"web_search": "Zoeken op het web",
-				"connector": "Externe dienst: {{tool}}"
+				"connector": "Externe dienst: {{tool}}",
+				"update_page": "Pagina bewerken"
 			},
 			"runErrors": {
 				"AGENT_GONE": "De agent is verwijderd.",
@@ -10914,8 +10919,11 @@
 					"page": "Nieuwe pagina",
 					"relation": "Koppeling ({{relation}})",
 					"delete": "Naar prullenbak verplaatsen",
-					"connectorCall": "Aanroep naar {{connector}}"
-				}
+					"connectorCall": "Aanroep naar {{connector}}",
+					"pageContent": "Pagina-inhoud",
+					"pageSection": "Toegevoegde sectie"
+				},
+				"undoPageError": "Kan deze bewerking niet ongedaan maken. De pagina is intussen gewijzigd; herstel in plaats daarvan een eerdere versie uit de geschiedenis."
 			},
 			"inbox": {
 				"title": "{{agentName}} heeft je goedkeuring nodig",
@@ -10982,7 +10990,8 @@
 				"project": "Project:",
 				"workedSeconds": "Werkte {{count}} s",
 				"workedMinutes": "Werkte {{count}} min",
-				"request": "Verzoek"
+				"request": "Verzoek",
+				"selectRunTitle": "Bekijk wat je agents hebben gedaan"
 			},
 			"connectors": {
 				"title": "Connectors",
@@ -11122,7 +11131,8 @@
 					"mention": "Vermelding",
 					"assign": "Toewijzing",
 					"schedule": "Planning",
-					"automation": "Automatisering"
+					"automation": "Automatisering",
+					"intake": "Intake"
 				}
 			},
 			"intakeTrigger": {

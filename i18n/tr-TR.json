@@ -3457,7 +3457,9 @@
 			},
 			"task_comment": {
 				"title": "{{commenterName}} talebinize yorum yaptı",
-				"content": "{{taskTitle}} talebine yeni yorum: {{commentPreview}}"
+				"content": "{{taskTitle}} talebine yeni yorum: {{commentPreview}}",
+				"titleReply": "{{commenterName}} bir yoruma yanıt verdi",
+				"contentReply": "{{taskTitle}} talebinde yeni yanıt: {{commentPreview}}"
 			},
 			"due_date_reminder": {
 				"title": "Görevin bitiş tarihi yaklaşıyor",
@@ -3638,7 +3640,8 @@
 				"intake_declined": "isteğinizi reddetti",
 				"intake_duplicate": "isteğinizi yinelenen olarak işaretledi",
 				"page_mention": "bir sayfada sizden bahsetti",
-				"page_mention_titled": "{{pageTitle}} sayfasında sizden bahsetti"
+				"page_mention_titled": "{{pageTitle}} sayfasında sizden bahsetti",
+				"task_comment_reply": "bir yoruma yanıt verdi"
 			},
 			"viewing": {
 				"archived": "Arşivlenen bildirimler görüntüleniyor",
@@ -3783,7 +3786,21 @@
 			"importedBy": "{{name}} tarafından içe aktarıldı",
 			"delete": "Yorumu sil",
 			"edited": "(düzenlendi)",
-			"editedAt": "{{time}} düzenlendi"
+			"editedAt": "{{time}} düzenlendi",
+			"thread": {
+				"reply": "Yanıtla",
+				"replyTo": "Yanıtla: {{name}}",
+				"replies": "Yanıtlar",
+				"placeholder": "Bir yanıt yazın...",
+				"send": "Yanıtı gönder",
+				"added": "Yanıt eklendi",
+				"failedToAdd": "Yanıt eklenemedi",
+				"showFewer": "Daha az yanıt göster",
+				"showMore_one": "{{count}} yanıt daha göster",
+				"showMore_other": "{{count}} yanıt daha göster"
+			},
+			"commentedAgo": "{{time}} yorum yaptı",
+			"linkCopied": "Yorum bağlantısı kopyalandı"
 		},
 		"addedToCycle": "görevi {{name}} döngüsüne ekledi",
 		"deletedCycle": "görevi silinmiş bir döngüden çıkardı",
@@ -6689,8 +6706,6 @@
 				"openMenu": "Menüyü aç",
 				"pricing": "Fiyatlandırma",
 				"signIn": "Giriş yap",
-				"blog": "Blog",
-				"compare": "Karşılaştır",
 				"explore": "Keşfet",
 				"featuresIntro": "Margaya'da altı kısa tur. Her birinde kontrolü devralabileceğiniz canlı bir demo var.",
 				"newTab": "(yeni sekmede açılır)"
@@ -6824,16 +6839,6 @@
 					"terms": "Koşullar",
 					"title": "Şirket"
 				},
-				"compare": {
-					"all": "Tüm alternatifler",
-					"asana": "Asana ile kıyas",
-					"clickup": "ClickUp ile kıyas",
-					"jira": "Jira ile kıyas",
-					"linear": "Linear ile kıyas",
-					"monday": "monday.com ile kıyas",
-					"title": "Karşılaştır",
-					"trello": "Trello ile kıyas"
-				},
 				"copyright": "© {{year}} Margaya",
 				"label": "Alt bilgi",
 				"mission": "İşi planlayın, teslim edin ve bunu yaptığınız aracın sahibi olun.",
@@ -6846,7 +6851,6 @@
 				},
 				"resources": {
 					"api": "API başvurusu",
-					"blog": "Blog",
 					"docs": "Belgeler",
 					"guides": "Kılavuzlar",
 					"press": "Basın kiti",
@@ -10868,7 +10872,8 @@
 				"bulk_move_status": "Birden çok görevin durumunu değiştir",
 				"ask_person": "Soru sor",
 				"web_search": "Web araması",
-				"connector": "Dış hizmet: {{tool}}"
+				"connector": "Dış hizmet: {{tool}}",
+				"update_page": "Sayfayı düzenle"
 			},
 			"runErrors": {
 				"AGENT_GONE": "Ajan silindi.",
@@ -10914,8 +10919,11 @@
 					"page": "Yeni sayfa",
 					"relation": "Bağlantı ({{relation}})",
 					"delete": "Çöp kutusuna taşı",
-					"connectorCall": "{{connector}} çağrısı"
-				}
+					"connectorCall": "{{connector}} çağrısı",
+					"pageContent": "Sayfa içeriği",
+					"pageSection": "Eklenen bölüm"
+				},
+				"undoPageError": "Bu düzenleme geri alınamadı. Sayfa o zamandan beri değişti; bunun yerine geçmişinden önceki bir sürümü geri yükleyin."
 			},
 			"inbox": {
 				"title": "{{agentName}} onayınızı bekliyor",
@@ -10982,7 +10990,8 @@
 				"project": "Proje:",
 				"workedSeconds": "{{count}} sn çalıştı",
 				"workedMinutes": "{{count}} dk çalıştı",
-				"request": "İstek"
+				"request": "İstek",
+				"selectRunTitle": "Ajanlarınızın ne yaptığını görün"
 			},
 			"connectors": {
 				"title": "Bağlayıcılar",
@@ -11122,7 +11131,8 @@
 					"mention": "Bahsetme",
 					"assign": "Atama",
 					"schedule": "Zamanlama",
-					"automation": "Otomasyon"
+					"automation": "Otomasyon",
+					"intake": "Giriş"
 				}
 			},
 			"intakeTrigger": {

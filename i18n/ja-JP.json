@@ -3405,7 +3405,9 @@
 			},
 			"task_comment": {
 				"title": "{{commenterName}} さんがあなたのタスクにコメントしました",
-				"content": "「{{taskTitle}}」への新しいコメント: {{commentPreview}}"
+				"content": "「{{taskTitle}}」への新しいコメント: {{commentPreview}}",
+				"titleReply": "{{commenterName}} さんがコメントに返信しました",
+				"contentReply": "「{{taskTitle}}」への新しい返信: {{commentPreview}}"
 			},
 			"due_date_reminder": {
 				"title": "タスクの期限が近づいています",
@@ -3579,7 +3581,8 @@
 				"intake_declined": "があなたのリクエストを却下しました",
 				"intake_duplicate": "があなたのリクエストを重複としてマークしました",
 				"page_mention": "がページであなたをメンションしました",
-				"page_mention_titled": "が {{pageTitle}} であなたをメンションしました"
+				"page_mention_titled": "が {{pageTitle}} であなたをメンションしました",
+				"task_comment_reply": "がコメントに返信しました"
 			},
 			"viewing": {
 				"archived": "アーカイブ済みの通知を表示しています",
@@ -3724,7 +3727,20 @@
 			"importedBy": "{{name}} によるインポート",
 			"delete": "コメントを削除",
 			"edited": "（編集済み）",
-			"editedAt": "{{time}} に編集"
+			"editedAt": "{{time}} に編集",
+			"thread": {
+				"reply": "返信",
+				"replyTo": "{{name}} さんに返信",
+				"replies": "返信一覧",
+				"placeholder": "返信を入力...",
+				"send": "返信を送信",
+				"added": "返信を追加しました",
+				"failedToAdd": "返信の追加に失敗しました",
+				"showFewer": "返信を折りたたむ",
+				"showMore_other": "さらに {{count}} 件の返信を表示"
+			},
+			"commentedAgo": "{{time}}にコメント",
+			"linkCopied": "コメントのリンクをコピーしました"
 		},
 		"addedToCycle": "がタスクをサイクル「{{name}}」に追加しました",
 		"deletedCycle": "が削除されたサイクルからタスクを削除しました",
@@ -6603,8 +6619,6 @@
 				"openMenu": "メニューを開く",
 				"pricing": "料金",
 				"signIn": "サインイン",
-				"blog": "ブログ",
-				"compare": "比較",
 				"explore": "詳しく見る",
 				"featuresIntro": "Margaya を紹介する 6 つの短いツアーです。どれもライブデモを実際に操作できます。",
 				"newTab": "（新しいタブで開きます）"
@@ -6738,16 +6752,6 @@
 					"terms": "利用規約",
 					"title": "会社情報"
 				},
-				"compare": {
-					"all": "すべての代替ツール",
-					"asana": "Asana との比較",
-					"clickup": "ClickUp との比較",
-					"jira": "Jira との比較",
-					"linear": "Linear との比較",
-					"monday": "monday.com との比較",
-					"title": "比較",
-					"trello": "Trello との比較"
-				},
 				"copyright": "© {{year}} Margaya",
 				"label": "フッター",
 				"mission": "仕事を計画し、届け、そのためのツールを自分のものに。",
@@ -6760,7 +6764,6 @@
 				},
 				"resources": {
 					"api": "API リファレンス",
-					"blog": "ブログ",
 					"docs": "ドキュメント",
 					"guides": "ガイド",
 					"press": "プレスキット",
@@ -10724,7 +10727,8 @@
 				"bulk_move_status": "複数のタスクのステータスを変更",
 				"ask_person": "質問する",
 				"web_search": "Web 検索",
-				"connector": "外部サービス: {{tool}}"
+				"connector": "外部サービス: {{tool}}",
+				"update_page": "ページを編集"
 			},
 			"runErrors": {
 				"AGENT_GONE": "エージェントは削除されました。",
@@ -10770,8 +10774,11 @@
 					"page": "新しいページ",
 					"relation": "リンク ({{relation}})",
 					"delete": "ゴミ箱に移動",
-					"connectorCall": "{{connector}} の呼び出し"
-				}
+					"connectorCall": "{{connector}} の呼び出し",
+					"pageContent": "ページの内容",
+					"pageSection": "追加されたセクション"
+				},
+				"undoPageError": "この編集を元に戻せませんでした。その後ページが変更されています。代わりに履歴から以前のバージョンを復元してください。"
 			},
 			"inbox": {
 				"title": "{{agentName}} があなたの承認を待っています",
@@ -10838,7 +10845,8 @@
 				"project": "プロジェクト:",
 				"workedSeconds": "作業時間 {{count}} 秒",
 				"workedMinutes": "作業時間 {{count}} 分",
-				"request": "依頼"
+				"request": "依頼",
+				"selectRunTitle": "エージェントの作業を確認"
 			},
 			"connectors": {
 				"title": "コネクタ",
@@ -10978,7 +10986,8 @@
 					"mention": "メンション",
 					"assign": "割り当て",
 					"schedule": "スケジュール",
-					"automation": "オートメーション"
+					"automation": "オートメーション",
+					"intake": "受付"
 				}
 			},
 			"intakeTrigger": {

@@ -3405,7 +3405,9 @@
 			},
 			"task_comment": {
 				"title": "{{commenterName}} 评论了你的任务",
-				"content": "新评论于 {{taskTitle}}：{{commentPreview}}"
+				"content": "新评论于 {{taskTitle}}：{{commentPreview}}",
+				"titleReply": "{{commenterName}} 回复了一条评论",
+				"contentReply": "{{taskTitle}} 中的新回复：{{commentPreview}}"
 			},
 			"due_date_reminder": {
 				"title": "任务即将到期",
@@ -3579,7 +3581,8 @@
 				"intake_declined": "拒绝了你的请求",
 				"intake_duplicate": "将你的请求标记为重复项",
 				"page_mention": "在页面中提到了你",
-				"page_mention_titled": "在 {{pageTitle}} 中提到了你"
+				"page_mention_titled": "在 {{pageTitle}} 中提到了你",
+				"task_comment_reply": "回复了一条评论"
 			},
 			"viewing": {
 				"archived": "正在查看已归档的通知",
@@ -3724,7 +3727,20 @@
 			"importedBy": "由 {{name}} 导入",
 			"delete": "删除评论",
 			"edited": "（已编辑）",
-			"editedAt": "编辑于 {{time}}"
+			"editedAt": "编辑于 {{time}}",
+			"thread": {
+				"reply": "回复",
+				"replyTo": "回复 {{name}}",
+				"replies": "回复列表",
+				"placeholder": "写下回复…",
+				"send": "发送回复",
+				"added": "回复已添加",
+				"failedToAdd": "添加回复失败",
+				"showFewer": "收起回复",
+				"showMore_other": "显示另外 {{count}} 条回复"
+			},
+			"commentedAgo": "{{time}}评论",
+			"linkCopied": "已复制评论链接"
 		},
 		"addedToCycle": "将任务添加到迭代 {{name}}",
 		"deletedCycle": "将任务从已删除的迭代中移除",
@@ -6603,8 +6619,6 @@
 				"openMenu": "打开菜单",
 				"pricing": "价格",
 				"signIn": "登录",
-				"blog": "博客",
-				"compare": "对比",
 				"explore": "探索",
 				"featuresIntro": "六个简短的 Margaya 导览，每个都附带可亲自上手操作的在线演示。",
 				"newTab": "（在新标签页中打开）"
@@ -6738,16 +6752,6 @@
 					"terms": "条款",
 					"title": "公司"
 				},
-				"compare": {
-					"all": "所有替代方案",
-					"asana": "对比 Asana",
-					"clickup": "对比 ClickUp",
-					"jira": "对比 Jira",
-					"linear": "对比 Linear",
-					"monday": "对比 monday.com",
-					"title": "对比",
-					"trello": "对比 Trello"
-				},
 				"copyright": "© {{year}} Margaya",
 				"label": "页脚",
 				"mission": "规划工作，交付成果，并真正拥有你用来完成工作的工具。",
@@ -6760,7 +6764,6 @@
 				},
 				"resources": {
 					"api": "API 参考",
-					"blog": "博客",
 					"docs": "文档",
 					"guides": "指南",
 					"press": "媒体资料包",
@@ -10724,7 +10727,8 @@
 				"bulk_move_status": "更改多个任务的状态",
 				"ask_person": "提问",
 				"web_search": "网络搜索",
-				"connector": "外部服务：{{tool}}"
+				"connector": "外部服务：{{tool}}",
+				"update_page": "编辑页面"
 			},
 			"runErrors": {
 				"AGENT_GONE": "该智能体已被删除。",
@@ -10770,8 +10774,11 @@
 					"page": "新页面",
 					"relation": "关联（{{relation}}）",
 					"delete": "移至回收站",
-					"connectorCall": "调用 {{connector}}"
-				}
+					"connectorCall": "调用 {{connector}}",
+					"pageContent": "页面内容",
+					"pageSection": "新增部分"
+				},
+				"undoPageError": "无法撤销此编辑。页面在此之后已被修改；请改为从其历史记录中恢复较早的版本。"
 			},
 			"inbox": {
 				"title": "{{agentName}} 需要你的审批",
@@ -10838,7 +10845,8 @@
 				"project": "项目：",
 				"workedSeconds": "工作了 {{count}} 秒",
 				"workedMinutes": "工作了 {{count}} 分钟",
-				"request": "请求"
+				"request": "请求",
+				"selectRunTitle": "查看智能体做了什么"
 			},
 			"connectors": {
 				"title": "连接器",
@@ -10978,7 +10986,8 @@
 					"mention": "提及",
 					"assign": "分配",
 					"schedule": "计划",
-					"automation": "自动化"
+					"automation": "自动化",
+					"intake": "收集箱"
 				}
 			},
 			"intakeTrigger": {

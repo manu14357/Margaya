@@ -816,7 +816,9 @@
 			},
 			"task_comment": {
 				"title": "{{commenterName}} skomentował Twoje zadanie",
-				"content": "Nowy komentarz w {{taskTitle}}: {{commentPreview}}"
+				"content": "Nowy komentarz w {{taskTitle}}: {{commentPreview}}",
+				"titleReply": "{{commenterName}} odpowiedział na komentarz",
+				"contentReply": "Nowa odpowiedź w {{taskTitle}}: {{commentPreview}}"
 			},
 			"due_date_reminder": {
 				"title": "Termin zadania wkrótce",
@@ -1002,7 +1004,8 @@
 				"intake_declined": "odrzucił Twoje zgłoszenie",
 				"intake_duplicate": "oznaczył Twoje zgłoszenie jako duplikat",
 				"page_mention": "wspomniał(a) o Tobie na stronie",
-				"page_mention_titled": "wspomniał(a) o Tobie na stronie „{{pageTitle}}”"
+				"page_mention_titled": "wspomniał(a) o Tobie na stronie „{{pageTitle}}”",
+				"task_comment_reply": "odpowiedział na komentarz"
 			},
 			"viewing": {
 				"archived": "Przeglądasz zarchiwizowane powiadomienia",
@@ -1579,7 +1582,23 @@
 			"importedBy": "Zaimportowane przez {{name}}",
 			"delete": "Usuń komentarz",
 			"edited": "(edytowano)",
-			"editedAt": "Edytowano {{time}}"
+			"editedAt": "Edytowano {{time}}",
+			"thread": {
+				"reply": "Odpowiedz",
+				"replyTo": "Odpowiedz użytkownikowi {{name}}",
+				"replies": "Odpowiedzi",
+				"placeholder": "Napisz odpowiedź...",
+				"send": "Wyślij odpowiedź",
+				"added": "Dodano odpowiedź",
+				"failedToAdd": "Nie udało się dodać odpowiedzi",
+				"showFewer": "Pokaż mniej odpowiedzi",
+				"showMore_one": "Pokaż jeszcze {{count}} odpowiedź",
+				"showMore_few": "Pokaż jeszcze {{count}} odpowiedzi",
+				"showMore_many": "Pokaż jeszcze {{count}} odpowiedzi",
+				"showMore_other": "Pokaż jeszcze {{count}} odpowiedzi"
+			},
+			"commentedAgo": "skomentował(a) {{time}}",
+			"linkCopied": "Skopiowano link do komentarza"
 		},
 		"created": "utworzył(a) to zadanie",
 		"githubUser": "Użytkownik GitHub",
@@ -6865,8 +6884,6 @@
 				"openMenu": "Otwórz menu",
 				"pricing": "Cennik",
 				"signIn": "Zaloguj się",
-				"blog": "Blog",
-				"compare": "Porównaj",
 				"explore": "Odkrywaj",
 				"featuresIntro": "Sześć krótkich przewodników po aplikacji Margaya. Każdy z demo na żywo, które możesz przejąć.",
 				"newTab": "(otwiera się w nowej karcie)"
@@ -7000,16 +7017,6 @@
 					"terms": "Regulamin",
 					"title": "Firma"
 				},
-				"compare": {
-					"all": "Wszystkie alternatywy",
-					"asana": "vs Asana",
-					"clickup": "vs ClickUp",
-					"jira": "vs Jira",
-					"linear": "vs Linear",
-					"monday": "vs monday.com",
-					"title": "Porównania",
-					"trello": "vs Trello"
-				},
 				"copyright": "© {{year}} Margaya",
 				"label": "Stopka",
 				"mission": "Planuj pracę, dowoź ją i miej na własność narzędzie, w którym ją wykonujesz.",
@@ -7022,7 +7029,6 @@
 				},
 				"resources": {
 					"api": "Dokumentacja API",
-					"blog": "Blog",
 					"docs": "Dokumentacja",
 					"guides": "Poradniki",
 					"press": "Materiały prasowe",
@@ -11162,7 +11168,8 @@
 				"bulk_move_status": "Zmiana statusu kilku zadań",
 				"ask_person": "Zadaj pytanie",
 				"web_search": "Wyszukiwanie w sieci",
-				"connector": "Usługa zewnętrzna: {{tool}}"
+				"connector": "Usługa zewnętrzna: {{tool}}",
+				"update_page": "Edytuj stronę"
 			},
 			"runErrors": {
 				"AGENT_GONE": "Agent został usunięty.",
@@ -11208,8 +11215,11 @@
 					"page": "Nowa strona",
 					"relation": "Powiązanie ({{relation}})",
 					"delete": "Przenieś do kosza",
-					"connectorCall": "Wywołanie {{connector}}"
-				}
+					"connectorCall": "Wywołanie {{connector}}",
+					"pageContent": "Treść strony",
+					"pageSection": "Dodana sekcja"
+				},
+				"undoPageError": "Nie udało się cofnąć tej edycji. Strona zmieniła się w międzyczasie; zamiast tego przywróć wcześniejszą wersję z jej historii."
 			},
 			"inbox": {
 				"title": "{{agentName}} potrzebuje Twojego zatwierdzenia",
@@ -11276,7 +11286,8 @@
 				"project": "Projekt:",
 				"workedSeconds": "Pracował {{count}} s",
 				"workedMinutes": "Pracował {{count}} min",
-				"request": "Prośba"
+				"request": "Prośba",
+				"selectRunTitle": "Zobacz, co zrobili Twoi agenci"
 			},
 			"connectors": {
 				"title": "Konektory",
@@ -11416,7 +11427,8 @@
 					"mention": "Wzmianka",
 					"assign": "Przypisanie",
 					"schedule": "Harmonogram",
-					"automation": "Automatyzacja"
+					"automation": "Automatyzacja",
+					"intake": "Zgłoszenia"
 				}
 			},
 			"intakeTrigger": {

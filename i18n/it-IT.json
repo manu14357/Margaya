@@ -3517,7 +3517,9 @@
 			},
 			"task_comment": {
 				"title": "{{commenterName}} ha commentato la tua attività",
-				"content": "Nuovo commento su {{taskTitle}}: {{commentPreview}}"
+				"content": "Nuovo commento su {{taskTitle}}: {{commentPreview}}",
+				"titleReply": "{{commenterName}} ha risposto a un commento",
+				"contentReply": "Nuova risposta su {{taskTitle}}: {{commentPreview}}"
 			},
 			"due_date_reminder": {
 				"title": "Attività in scadenza",
@@ -3699,7 +3701,8 @@
 				"intake_declined": "ha rifiutato la tua richiesta",
 				"intake_duplicate": "ha segnato la tua richiesta come duplicato",
 				"page_mention": "ti ha menzionato in una pagina",
-				"page_mention_titled": "ti ha menzionato in {{pageTitle}}"
+				"page_mention_titled": "ti ha menzionato in {{pageTitle}}",
+				"task_comment_reply": "ha risposto a un commento"
 			},
 			"viewing": {
 				"archived": "Visualizzazione delle notifiche archiviate",
@@ -3844,7 +3847,22 @@
 			"importedBy": "Importato da {{name}}",
 			"delete": "Elimina commento",
 			"edited": "(modificato)",
-			"editedAt": "Modificato {{time}}"
+			"editedAt": "Modificato {{time}}",
+			"thread": {
+				"reply": "Rispondi",
+				"replyTo": "Rispondi a {{name}}",
+				"replies": "Risposte",
+				"placeholder": "Scrivi una risposta...",
+				"send": "Invia risposta",
+				"added": "Risposta aggiunta",
+				"failedToAdd": "Aggiunta risposta fallita",
+				"showFewer": "Mostra meno risposte",
+				"showMore_one": "Mostra {{count}} altra risposta",
+				"showMore_many": "Mostra altre {{count}} risposte",
+				"showMore_other": "Mostra altre {{count}} risposte"
+			},
+			"commentedAgo": "ha commentato {{time}}",
+			"linkCopied": "Link del commento copiato"
 		},
 		"addedToCycle": "ha aggiunto l'attività al ciclo {{name}}",
 		"deletedCycle": "ha rimosso l'attività da un ciclo eliminato",
@@ -6777,8 +6795,6 @@
 				"openMenu": "Apri menu",
 				"pricing": "Prezzi",
 				"signIn": "Accedi",
-				"blog": "Blog",
-				"compare": "Confronta",
 				"explore": "Esplora",
 				"featuresIntro": "Sei brevi tour di Margaya. Ognuno ha una demo dal vivo che puoi usare in prima persona.",
 				"newTab": "(si apre in una nuova scheda)"
@@ -6912,16 +6928,6 @@
 					"terms": "Termini",
 					"title": "Azienda"
 				},
-				"compare": {
-					"all": "Tutte le alternative",
-					"asana": "vs Asana",
-					"clickup": "vs ClickUp",
-					"jira": "vs Jira",
-					"linear": "vs Linear",
-					"monday": "vs monday.com",
-					"title": "Confronta",
-					"trello": "vs Trello"
-				},
 				"copyright": "© {{year}} Margaya",
 				"label": "Piè di pagina",
 				"mission": "Pianifica il lavoro, rilascialo e possiedi lo strumento con cui lo fai.",
@@ -6934,7 +6940,6 @@
 				},
 				"resources": {
 					"api": "Riferimento API",
-					"blog": "Blog",
 					"docs": "Documentazione",
 					"guides": "Guide",
 					"press": "Cartella stampa",
@@ -11015,7 +11020,8 @@
 				"bulk_move_status": "Cambia lo stato di più attività",
 				"ask_person": "Fai una domanda",
 				"web_search": "Ricerca web",
-				"connector": "Servizio esterno: {{tool}}"
+				"connector": "Servizio esterno: {{tool}}",
+				"update_page": "Modifica pagina"
 			},
 			"runErrors": {
 				"AGENT_GONE": "L'agente è stato eliminato.",
@@ -11061,8 +11067,11 @@
 					"page": "Nuova pagina",
 					"relation": "Collegamento ({{relation}})",
 					"delete": "Sposta nel cestino",
-					"connectorCall": "Chiamata a {{connector}}"
-				}
+					"connectorCall": "Chiamata a {{connector}}",
+					"pageContent": "Contenuto della pagina",
+					"pageSection": "Sezione aggiunta"
+				},
+				"undoPageError": "Impossibile annullare questa modifica. La pagina è cambiata nel frattempo; ripristina invece una versione precedente dalla sua cronologia."
 			},
 			"inbox": {
 				"title": "{{agentName}} ha bisogno della tua approvazione",
@@ -11129,7 +11138,8 @@
 				"project": "Progetto:",
 				"workedSeconds": "Ha lavorato {{count}} s",
 				"workedMinutes": "Ha lavorato {{count}} min",
-				"request": "Richiesta"
+				"request": "Richiesta",
+				"selectRunTitle": "Guarda cosa hanno fatto i tuoi agenti"
 			},
 			"connectors": {
 				"title": "Connettori",
@@ -11269,7 +11279,8 @@
 					"mention": "Menzione",
 					"assign": "Assegnazione",
 					"schedule": "Pianificazione",
-					"automation": "Automazione"
+					"automation": "Automazione",
+					"intake": "Richieste"
 				}
 			},
 			"intakeTrigger": {

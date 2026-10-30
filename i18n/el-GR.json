@@ -3457,7 +3457,9 @@
 			},
 			"task_comment": {
 				"title": "Ο/Η {{commenterName}} σχολίασε την εργασία σας",
-				"content": "Νέο σχόλιο στην εργασία {{taskTitle}}: {{commentPreview}}"
+				"content": "Νέο σχόλιο στην εργασία {{taskTitle}}: {{commentPreview}}",
+				"titleReply": "Ο/Η {{commenterName}} απάντησε σε σχόλιο",
+				"contentReply": "Νέα απάντηση στην εργασία {{taskTitle}}: {{commentPreview}}"
 			},
 			"due_date_reminder": {
 				"title": "Η εργασία λήγει σύντομα",
@@ -3638,7 +3640,8 @@
 				"intake_declined": "απέρριψε το αίτημά σας",
 				"intake_duplicate": "επισήμανε το αίτημά σας ως διπλότυπο",
 				"page_mention": "σας ανέφερε σε μια σελίδα",
-				"page_mention_titled": "σας ανέφερε στο {{pageTitle}}"
+				"page_mention_titled": "σας ανέφερε στο {{pageTitle}}",
+				"task_comment_reply": "απάντησε σε σχόλιο"
 			},
 			"viewing": {
 				"archived": "Προβολή αρχειοθετημένων ειδοποιήσεων",
@@ -3783,7 +3786,21 @@
 			"importedBy": "Εισήχθη από {{name}}",
 			"delete": "Διαγραφή σχολίου",
 			"edited": "(επεξεργάστηκε)",
-			"editedAt": "Επεξεργάστηκε {{time}}"
+			"editedAt": "Επεξεργάστηκε {{time}}",
+			"thread": {
+				"reply": "Απάντηση",
+				"replyTo": "Απάντηση στον/στην {{name}}",
+				"replies": "Απαντήσεις",
+				"placeholder": "Γράψτε μια απάντηση...",
+				"send": "Αποστολή απάντησης",
+				"added": "Η απάντηση προστέθηκε",
+				"failedToAdd": "Αποτυχία προσθήκης απάντησης",
+				"showFewer": "Εμφάνιση λιγότερων απαντήσεων",
+				"showMore_one": "Εμφάνιση {{count}} ακόμη απάντησης",
+				"showMore_other": "Εμφάνιση {{count}} ακόμη απαντήσεων"
+			},
+			"commentedAgo": "σχολίασε {{time}}",
+			"linkCopied": "Ο σύνδεσμος του σχολίου αντιγράφηκε"
 		},
 		"addedToCycle": "πρόσθεσε την εργασία στον κύκλο {{name}}",
 		"deletedCycle": "αφαίρεσε την εργασία από έναν διαγραμμένο κύκλο",
@@ -6689,8 +6706,6 @@
 				"openMenu": "Άνοιγμα μενού",
 				"pricing": "Τιμές",
 				"signIn": "Σύνδεση",
-				"blog": "Blog",
-				"compare": "Σύγκριση",
 				"explore": "Εξερεύνηση",
 				"featuresIntro": "Έξι σύντομες περιηγήσεις στο Margaya. Η καθεμία έχει ζωντανή επίδειξη που μπορείτε να χειριστείτε μόνοι σας.",
 				"newTab": "(ανοίγει σε νέα καρτέλα)"
@@ -6824,16 +6839,6 @@
 					"terms": "Όροι",
 					"title": "Εταιρεία"
 				},
-				"compare": {
-					"all": "Όλες οι εναλλακτικές",
-					"asana": "έναντι Asana",
-					"clickup": "έναντι ClickUp",
-					"jira": "έναντι Jira",
-					"linear": "έναντι Linear",
-					"monday": "έναντι monday.com",
-					"title": "Σύγκριση",
-					"trello": "έναντι Trello"
-				},
 				"copyright": "© {{year}} Margaya",
 				"label": "Υποσέλιδο",
 				"mission": "Σχεδιάστε τη δουλειά, παραδώστε την και κατέχετε το εργαλείο με το οποίο την κάνετε.",
@@ -6846,7 +6851,6 @@
 				},
 				"resources": {
 					"api": "Αναφορά API",
-					"blog": "Blog",
 					"docs": "Τεκμηρίωση",
 					"guides": "Οδηγοί",
 					"press": "Υλικό τύπου",
@@ -10868,7 +10872,8 @@
 				"bulk_move_status": "Αλλαγή κατάστασης πολλών εργασιών",
 				"ask_person": "Υποβολή ερώτησης",
 				"web_search": "Αναζήτηση στο διαδίκτυο",
-				"connector": "Εξωτερική υπηρεσία: {{tool}}"
+				"connector": "Εξωτερική υπηρεσία: {{tool}}",
+				"update_page": "Επεξεργασία σελίδας"
 			},
 			"runErrors": {
 				"AGENT_GONE": "Ο πράκτορας διαγράφηκε.",
@@ -10914,8 +10919,11 @@
 					"page": "Νέα σελίδα",
 					"relation": "Σύνδεση ({{relation}})",
 					"delete": "Μετακίνηση στον κάδο",
-					"connectorCall": "Κλήση προς {{connector}}"
-				}
+					"connectorCall": "Κλήση προς {{connector}}",
+					"pageContent": "Περιεχόμενο σελίδας",
+					"pageSection": "Ενότητα που προστέθηκε"
+				},
+				"undoPageError": "Δεν ήταν δυνατή η αναίρεση αυτής της επεξεργασίας. Η σελίδα άλλαξε στο μεταξύ· επαναφέρετε μια παλαιότερη έκδοση από το ιστορικό της."
 			},
 			"inbox": {
 				"title": "{{agentName}}: απαιτείται η έγκρισή σας",
@@ -10982,7 +10990,8 @@
 				"project": "Έργο:",
 				"workedSeconds": "Δούλεψε {{count}} δευτ.",
 				"workedMinutes": "Δούλεψε {{count}} λεπ.",
-				"request": "Αίτημα"
+				"request": "Αίτημα",
+				"selectRunTitle": "Δείτε τι έκαναν οι πράκτορές σας"
 			},
 			"connectors": {
 				"title": "Σύνδεσμοι",
@@ -11122,7 +11131,8 @@
 					"mention": "Αναφορά",
 					"assign": "Ανάθεση",
 					"schedule": "Πρόγραμμα",
-					"automation": "Αυτοματισμός"
+					"automation": "Αυτοματισμός",
+					"intake": "Εισερχόμενα"
 				}
 			},
 			"intakeTrigger": {

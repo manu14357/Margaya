@@ -3460,7 +3460,9 @@
 			},
 			"task_comment": {
 				"title": "{{commenterName}} ने आपके कार्य पर टिप्पणी की",
-				"content": "{{taskTitle}} पर नई टिप्पणी: {{commentPreview}}"
+				"content": "{{taskTitle}} पर नई टिप्पणी: {{commentPreview}}",
+				"titleReply": "{{commenterName}} ने एक टिप्पणी का जवाब दिया",
+				"contentReply": "{{taskTitle}} पर नया जवाब: {{commentPreview}}"
 			},
 			"due_date_reminder": {
 				"title": "कार्य जल्द ही देय है",
@@ -3638,7 +3640,8 @@
 				"intake_declined": "ने आपका अनुरोध अस्वीकार किया",
 				"intake_duplicate": "ने आपके अनुरोध को डुप्लिकेट चिह्नित किया",
 				"page_mention": "ने एक पेज में आपका उल्लेख किया",
-				"page_mention_titled": "ने {{pageTitle}} में आपका उल्लेख किया"
+				"page_mention_titled": "ने {{pageTitle}} में आपका उल्लेख किया",
+				"task_comment_reply": "ने एक टिप्पणी का जवाब दिया"
 			},
 			"viewing": {
 				"archived": "संग्रहित सूचनाएँ देखी जा रही हैं",
@@ -3783,7 +3786,21 @@
 			"importedBy": "{{name}} द्वारा इम्पोर्ट किया गया",
 			"delete": "टिप्पणी हटाएँ",
 			"edited": "(संपादित)",
-			"editedAt": "{{time}} संपादित किया गया"
+			"editedAt": "{{time}} संपादित किया गया",
+			"thread": {
+				"reply": "जवाब दें",
+				"replyTo": "{{name}} को जवाब दें",
+				"replies": "जवाब",
+				"placeholder": "जवाब लिखें...",
+				"send": "जवाब भेजें",
+				"added": "जवाब जोड़ा गया",
+				"failedToAdd": "जवाब जोड़ने में विफल",
+				"showFewer": "कम जवाब दिखाएँ",
+				"showMore_one": "{{count}} और जवाब दिखाएँ",
+				"showMore_other": "{{count}} और जवाब दिखाएँ"
+			},
+			"commentedAgo": "{{time}} टिप्पणी की",
+			"linkCopied": "टिप्पणी का लिंक कॉपी हो गया"
 		},
 		"addedToCycle": "कार्य साइकल {{name}} में जोड़ा",
 		"deletedCycle": "कार्य हटाए गए साइकल से हटाया",
@@ -6689,8 +6706,6 @@
 				"openMenu": "मेनू खोलें",
 				"pricing": "मूल्य",
 				"signIn": "साइन इन करें",
-				"blog": "ब्लॉग",
-				"compare": "तुलना करें",
 				"explore": "एक्सप्लोर करें",
 				"featuresIntro": "Margaya के छह छोटे टूर। हर एक में लाइव डेमो है, जिसे आप खुद चलाकर देख सकते हैं।",
 				"newTab": "(नए टैब में खुलता है)"
@@ -6824,16 +6839,6 @@
 					"terms": "शर्तें",
 					"title": "कंपनी"
 				},
-				"compare": {
-					"all": "सभी विकल्प",
-					"asana": "Asana से तुलना",
-					"clickup": "ClickUp से तुलना",
-					"jira": "Jira से तुलना",
-					"linear": "Linear से तुलना",
-					"monday": "monday.com से तुलना",
-					"title": "तुलना",
-					"trello": "Trello से तुलना"
-				},
 				"copyright": "© {{year}} Margaya",
 				"label": "फ़ुटर",
 				"mission": "काम की योजना बनाएँ, उसे शिप करें, और जिस टूल में काम करते हैं, उसके मालिक बनें।",
@@ -6846,7 +6851,6 @@
 				},
 				"resources": {
 					"api": "API संदर्भ",
-					"blog": "ब्लॉग",
 					"docs": "दस्तावेज़ीकरण",
 					"guides": "गाइड",
 					"press": "प्रेस किट",
@@ -10868,7 +10872,8 @@
 				"bulk_move_status": "कई कार्यों की स्थिति बदलें",
 				"ask_person": "सवाल पूछें",
 				"web_search": "वेब खोज",
-				"connector": "बाहरी सेवा: {{tool}}"
+				"connector": "बाहरी सेवा: {{tool}}",
+				"update_page": "पेज संपादित करें"
 			},
 			"runErrors": {
 				"AGENT_GONE": "एजेंट हटा दिया गया था।",
@@ -10914,8 +10919,11 @@
 					"page": "नया पेज",
 					"relation": "लिंक ({{relation}})",
 					"delete": "ट्रैश में भेजें",
-					"connectorCall": "{{connector}} को कॉल"
-				}
+					"connectorCall": "{{connector}} को कॉल",
+					"pageContent": "पेज की सामग्री",
+					"pageSection": "जोड़ा गया अनुभाग"
+				},
+				"undoPageError": "यह संपादन पूर्ववत नहीं हो सका। तब से पेज बदल गया है; इसके बजाय इसके इतिहास से पिछला संस्करण पुनर्स्थापित करें।"
 			},
 			"inbox": {
 				"title": "{{agentName}} को आपकी मंज़ूरी चाहिए",
@@ -10982,7 +10990,8 @@
 				"project": "प्रोजेक्ट:",
 				"workedSeconds": "{{count}} सेकंड काम किया",
 				"workedMinutes": "{{count}} मिनट काम किया",
-				"request": "अनुरोध"
+				"request": "अनुरोध",
+				"selectRunTitle": "देखें कि आपके एजेंट ने क्या किया"
 			},
 			"connectors": {
 				"title": "कनेक्टर",
@@ -11122,7 +11131,8 @@
 					"mention": "उल्लेख",
 					"assign": "असाइनमेंट",
 					"schedule": "शेड्यूल",
-					"automation": "ऑटोमेशन"
+					"automation": "ऑटोमेशन",
+					"intake": "इनटेक"
 				}
 			},
 			"intakeTrigger": {

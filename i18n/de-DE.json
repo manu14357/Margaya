@@ -3460,7 +3460,9 @@
 			},
 			"task_comment": {
 				"title": "{{commenterName}} hat deine Aufgabe kommentiert",
-				"content": "Neuer Kommentar zu „{{taskTitle}}“: {{commentPreview}}"
+				"content": "Neuer Kommentar zu „{{taskTitle}}“: {{commentPreview}}",
+				"titleReply": "{{commenterName}} hat auf einen Kommentar geantwortet",
+				"contentReply": "Neue Antwort zu „{{taskTitle}}“: {{commentPreview}}"
 			},
 			"due_date_reminder": {
 				"title": "Aufgabe bald fällig",
@@ -3638,7 +3640,8 @@
 				"intake_declined": "hat deine Anfrage abgelehnt",
 				"intake_duplicate": "hat deine Anfrage als Duplikat markiert",
 				"page_mention": "hat dich auf einer Seite erwähnt",
-				"page_mention_titled": "hat dich in {{pageTitle}} erwähnt"
+				"page_mention_titled": "hat dich in {{pageTitle}} erwähnt",
+				"task_comment_reply": "hat auf einen Kommentar geantwortet"
 			},
 			"viewing": {
 				"archived": "Archivierte Benachrichtigungen werden angezeigt",
@@ -3783,7 +3786,21 @@
 			"importedBy": "Importiert von {{name}}",
 			"delete": "Kommentar löschen",
 			"edited": "(bearbeitet)",
-			"editedAt": "Bearbeitet {{time}}"
+			"editedAt": "Bearbeitet {{time}}",
+			"thread": {
+				"reply": "Antworten",
+				"replyTo": "{{name}} antworten",
+				"replies": "Antworten",
+				"placeholder": "Schreibe eine Antwort...",
+				"send": "Antwort senden",
+				"added": "Antwort hinzugefügt",
+				"failedToAdd": "Antwort konnte nicht hinzugefügt werden",
+				"showFewer": "Weniger Antworten anzeigen",
+				"showMore_one": "{{count}} weitere Antwort anzeigen",
+				"showMore_other": "{{count}} weitere Antworten anzeigen"
+			},
+			"commentedAgo": "hat {{time}} kommentiert",
+			"linkCopied": "Kommentarlink kopiert"
 		},
 		"addedToCycle": "hat die Aufgabe zum Zyklus {{name}} hinzugefügt",
 		"deletedCycle": "hat die Aufgabe aus einem gelöschten Zyklus entfernt",
@@ -6689,8 +6706,6 @@
 				"openMenu": "Menü öffnen",
 				"pricing": "Preise",
 				"signIn": "Anmelden",
-				"blog": "Blog",
-				"compare": "Vergleichen",
 				"explore": "Entdecken",
 				"featuresIntro": "Sechs kurze Touren durch Margaya. Jede mit einer Live-Demo, die du selbst steuern kannst.",
 				"newTab": "(öffnet in einem neuen Tab)"
@@ -6824,16 +6839,6 @@
 					"terms": "Nutzungsbedingungen",
 					"title": "Unternehmen"
 				},
-				"compare": {
-					"all": "Alle Alternativen",
-					"asana": "vs. Asana",
-					"clickup": "vs. ClickUp",
-					"jira": "vs. Jira",
-					"linear": "vs. Linear",
-					"monday": "vs. monday.com",
-					"title": "Vergleichen",
-					"trello": "vs. Trello"
-				},
 				"copyright": "© {{year}} Margaya",
 				"label": "Fußzeile",
 				"mission": "Arbeit organisieren, ausliefern – und das Tool besitzen, mit dem du sie erledigst.",
@@ -6846,7 +6851,6 @@
 				},
 				"resources": {
 					"api": "API-Referenz",
-					"blog": "Blog",
 					"docs": "Dokumentation",
 					"guides": "Anleitungen",
 					"press": "Pressemappe",
@@ -10868,7 +10872,8 @@
 				"bulk_move_status": "Status mehrerer Aufgaben ändern",
 				"ask_person": "Frage stellen",
 				"web_search": "Websuche",
-				"connector": "Externer Dienst: {{tool}}"
+				"connector": "Externer Dienst: {{tool}}",
+				"update_page": "Seite bearbeiten"
 			},
 			"runErrors": {
 				"AGENT_GONE": "Der Agent wurde gelöscht.",
@@ -10914,8 +10919,11 @@
 					"page": "Neue Seite",
 					"relation": "Verknüpfung ({{relation}})",
 					"delete": "In den Papierkorb verschieben",
-					"connectorCall": "Aufruf an {{connector}}"
-				}
+					"connectorCall": "Aufruf an {{connector}}",
+					"pageContent": "Seiteninhalt",
+					"pageSection": "Hinzugefügter Abschnitt"
+				},
+				"undoPageError": "Diese Bearbeitung konnte nicht rückgängig gemacht werden. Die Seite wurde inzwischen geändert; stelle stattdessen eine frühere Version aus ihrem Verlauf wieder her."
 			},
 			"inbox": {
 				"title": "{{agentName}} braucht deine Genehmigung",
@@ -10982,7 +10990,8 @@
 				"project": "Projekt:",
 				"workedSeconds": "Arbeitete {{count}} s",
 				"workedMinutes": "Arbeitete {{count}} Min.",
-				"request": "Anfrage"
+				"request": "Anfrage",
+				"selectRunTitle": "Sieh dir an, was deine Agenten getan haben"
 			},
 			"connectors": {
 				"title": "Konnektoren",
@@ -11122,7 +11131,8 @@
 					"mention": "Erwähnung",
 					"assign": "Zuweisung",
 					"schedule": "Zeitplan",
-					"automation": "Automatisierung"
+					"automation": "Automatisierung",
+					"intake": "Eingang"
 				}
 			},
 			"intakeTrigger": {

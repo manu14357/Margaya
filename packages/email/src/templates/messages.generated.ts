@@ -2879,7 +2879,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} commented",
-					"content": "New comment on {{taskTitle}}: {{commentPreview}}"
+					"content": "New comment on {{taskTitle}}: {{commentPreview}}",
+					"titleReply": "{{commenterName}} replied to a comment",
+					"contentReply": "New reply on {{taskTitle}}: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "Task due soon",
@@ -3011,7 +3013,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} tapşırığınıza şərh yazdı",
-					"content": "{{taskTitle}} tapşırığına yeni şərh: {{commentPreview}}"
+					"content": "{{taskTitle}} tapşırığına yeni şərh: {{commentPreview}}",
+					"titleReply": "{{commenterName}} şərhə cavab yazdı",
+					"contentReply": "{{taskTitle}} tapşırığında yeni cavab: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "Tapşırığın son tarixi yaxınlaşır",
@@ -3143,7 +3147,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} hat deine Aufgabe kommentiert",
-					"content": "Neuer Kommentar zu „{{taskTitle}}“: {{commentPreview}}"
+					"content": "Neuer Kommentar zu „{{taskTitle}}“: {{commentPreview}}",
+					"titleReply": "{{commenterName}} hat auf einen Kommentar geantwortet",
+					"contentReply": "Neue Antwort zu „{{taskTitle}}“: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "Aufgabe bald fällig",
@@ -3280,7 +3286,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "Ο/Η {{commenterName}} σχολίασε την εργασία σας",
-					"content": "Νέο σχόλιο στην εργασία {{taskTitle}}: {{commentPreview}}"
+					"content": "Νέο σχόλιο στην εργασία {{taskTitle}}: {{commentPreview}}",
+					"titleReply": "Ο/Η {{commenterName}} απάντησε σε σχόλιο",
+					"contentReply": "Νέα απάντηση στην εργασία {{taskTitle}}: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "Η εργασία λήγει σύντομα",
@@ -3412,7 +3420,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} ha comentado en tu tarea",
-					"content": "Nuevo comentario en {{taskTitle}}: {{commentPreview}}"
+					"content": "Nuevo comentario en {{taskTitle}}: {{commentPreview}}",
+					"titleReply": "{{commenterName}} ha respondido a un comentario",
+					"contentReply": "Nueva respuesta en {{taskTitle}}: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "Tarea próxima a vencer",
@@ -3549,7 +3559,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} a commenté votre tâche",
-					"content": "Nouveau commentaire sur {{taskTitle}} : {{commentPreview}}"
+					"content": "Nouveau commentaire sur {{taskTitle}} : {{commentPreview}}",
+					"titleReply": "{{commenterName}} a répondu à un commentaire",
+					"contentReply": "Nouvelle réponse sur {{taskTitle}} : {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "Échéance proche",
@@ -3681,7 +3693,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} ने आपके कार्य पर टिप्पणी की",
-					"content": "{{taskTitle}} पर नई टिप्पणी: {{commentPreview}}"
+					"content": "{{taskTitle}} पर नई टिप्पणी: {{commentPreview}}",
+					"titleReply": "{{commenterName}} ने एक टिप्पणी का जवाब दिया",
+					"contentReply": "{{taskTitle}} पर नया जवाब: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "कार्य जल्द ही देय है",
@@ -3818,7 +3832,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} mengomentari tugas Anda",
-					"content": "Komentar baru pada {{taskTitle}}: {{commentPreview}}"
+					"content": "Komentar baru pada {{taskTitle}}: {{commentPreview}}",
+					"titleReply": "{{commenterName}} membalas komentar",
+					"contentReply": "Balasan baru pada {{taskTitle}}: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "Tenggat tugas segera tiba",
@@ -3940,7 +3956,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} ha commentato la tua attività",
-					"content": "Nuovo commento su {{taskTitle}}: {{commentPreview}}"
+					"content": "Nuovo commento su {{taskTitle}}: {{commentPreview}}",
+					"titleReply": "{{commenterName}} ha risposto a un commento",
+					"contentReply": "Nuova risposta su {{taskTitle}}: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "Attività in scadenza",
@@ -4077,7 +4095,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} さんがあなたのタスクにコメントしました",
-					"content": "「{{taskTitle}}」への新しいコメント: {{commentPreview}}"
+					"content": "「{{taskTitle}}」への新しいコメント: {{commentPreview}}",
+					"titleReply": "{{commenterName}} さんがコメントに返信しました",
+					"contentReply": "「{{taskTitle}}」への新しい返信: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "タスクの期限が近づいています",
@@ -4209,7 +4229,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}}님이 내 작업에 댓글을 남겼습니다",
-					"content": "{{taskTitle}}의 새 댓글: {{commentPreview}}"
+					"content": "{{taskTitle}}의 새 댓글: {{commentPreview}}",
+					"titleReply": "{{commenterName}}님이 댓글에 답글을 남겼습니다",
+					"contentReply": "{{taskTitle}}의 새 답글: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "작업 마감 임박",
@@ -4336,7 +4358,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} коментираше на твојата задача",
-					"content": "Нов коментар на {{taskTitle}}: {{commentPreview}}"
+					"content": "Нов коментар на {{taskTitle}}: {{commentPreview}}",
+					"titleReply": "{{commenterName}} одговори на коментар",
+					"contentReply": "Нов одговор на {{taskTitle}}: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "Задачата наскоро доспева",
@@ -4468,7 +4492,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} heeft gereageerd op je taak",
-					"content": "Nieuwe reactie op {{taskTitle}}: {{commentPreview}}"
+					"content": "Nieuwe reactie op {{taskTitle}}: {{commentPreview}}",
+					"titleReply": "{{commenterName}} heeft een reactie beantwoord",
+					"contentReply": "Nieuw antwoord op {{taskTitle}}: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "Taak vervalt binnenkort",
@@ -4595,7 +4621,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} skomentował Twoje zadanie",
-					"content": "Nowy komentarz w {{taskTitle}}: {{commentPreview}}"
+					"content": "Nowy komentarz w {{taskTitle}}: {{commentPreview}}",
+					"titleReply": "{{commenterName}} odpowiedział na komentarz",
+					"contentReply": "Nowa odpowiedź w {{taskTitle}}: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "Termin zadania wkrótce",
@@ -4737,7 +4765,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} comentou na sua tarefa",
-					"content": "Novo comentário em {{taskTitle}}: {{commentPreview}}"
+					"content": "Novo comentário em {{taskTitle}}: {{commentPreview}}",
+					"titleReply": "{{commenterName}} respondeu a um comentário",
+					"contentReply": "Nova resposta em {{taskTitle}}: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "Tarefa vence em breve",
@@ -4879,7 +4909,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} прокомментировал вашу задачу",
-					"content": "Новый комментарий к задаче «{{taskTitle}}»: {{commentPreview}}"
+					"content": "Новый комментарий к задаче «{{taskTitle}}»: {{commentPreview}}",
+					"titleReply": "{{commenterName}} ответил на комментарий",
+					"contentReply": "Новый ответ в задаче «{{taskTitle}}»: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "Скоро срок выполнения задачи",
@@ -5021,7 +5053,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} talebinize yorum yaptı",
-					"content": "{{taskTitle}} talebine yeni yorum: {{commentPreview}}"
+					"content": "{{taskTitle}} talebine yeni yorum: {{commentPreview}}",
+					"titleReply": "{{commenterName}} bir yoruma yanıt verdi",
+					"contentReply": "{{taskTitle}} talebinde yeni yanıt: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "Görevin bitiş tarihi yaklaşıyor",
@@ -5153,7 +5187,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} прокоментував ваше завдання",
-					"content": "Новий коментар до {{taskTitle}}: {{commentPreview}}"
+					"content": "Новий коментар до {{taskTitle}}: {{commentPreview}}",
+					"titleReply": "{{commenterName}} відповів на коментар",
+					"contentReply": "Нова відповідь до {{taskTitle}}: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "Наближається термін завдання",
@@ -5290,7 +5326,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} đã bình luận công việc của bạn",
-					"content": "Bình luận mới trên {{taskTitle}}: {{commentPreview}}"
+					"content": "Bình luận mới trên {{taskTitle}}: {{commentPreview}}",
+					"titleReply": "{{commenterName}} đã trả lời một bình luận",
+					"contentReply": "Câu trả lời mới trên {{taskTitle}}: {{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "Công việc sắp đến hạn",
@@ -5417,7 +5455,9 @@ const notificationTexts = {
 				},
 				"task_comment": {
 					"title": "{{commenterName}} 评论了你的任务",
-					"content": "新评论于 {{taskTitle}}：{{commentPreview}}"
+					"content": "新评论于 {{taskTitle}}：{{commentPreview}}",
+					"titleReply": "{{commenterName}} 回复了一条评论",
+					"contentReply": "{{taskTitle}} 中的新回复：{{commentPreview}}"
 				},
 				"due_date_reminder": {
 					"title": "任务即将到期",

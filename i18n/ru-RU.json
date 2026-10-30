@@ -3573,7 +3573,9 @@
 			},
 			"task_comment": {
 				"title": "{{commenterName}} прокомментировал вашу задачу",
-				"content": "Новый комментарий к задаче «{{taskTitle}}»: {{commentPreview}}"
+				"content": "Новый комментарий к задаче «{{taskTitle}}»: {{commentPreview}}",
+				"titleReply": "{{commenterName}} ответил на комментарий",
+				"contentReply": "Новый ответ в задаче «{{taskTitle}}»: {{commentPreview}}"
 			},
 			"due_date_reminder": {
 				"title": "Скоро срок выполнения задачи",
@@ -3768,7 +3770,8 @@
 				"intake_declined": "отклонил вашу заявку",
 				"intake_duplicate": "пометил вашу заявку как дубликат",
 				"page_mention": "упомянул(а) вас на странице",
-				"page_mention_titled": "упомянул(а) вас на странице «{{pageTitle}}»"
+				"page_mention_titled": "упомянул(а) вас на странице «{{pageTitle}}»",
+				"task_comment_reply": "ответил на комментарий"
 			},
 			"viewing": {
 				"archived": "Просмотр архивных уведомлений",
@@ -3911,7 +3914,23 @@
 			"importedBy": "Импортировано пользователем {{name}}",
 			"delete": "Удалить комментарий",
 			"edited": "(изменено)",
-			"editedAt": "Изменено {{time}}"
+			"editedAt": "Изменено {{time}}",
+			"thread": {
+				"reply": "Ответить",
+				"replyTo": "Ответить пользователю {{name}}",
+				"replies": "Ответы",
+				"placeholder": "Напишите ответ...",
+				"send": "Отправить ответ",
+				"added": "Ответ добавлен",
+				"failedToAdd": "Не удалось добавить ответ",
+				"showFewer": "Показать меньше ответов",
+				"showMore_one": "Показать ещё {{count}} ответ",
+				"showMore_few": "Показать ещё {{count}} ответа",
+				"showMore_many": "Показать ещё {{count}} ответов",
+				"showMore_other": "Показать ещё {{count}} ответа"
+			},
+			"commentedAgo": "прокомментировал {{time}}",
+			"linkCopied": "Ссылка на комментарий скопирована"
 		},
 		"moved": "переместил задачу из «{{from}}» в «{{to}}»",
 		"created": "создал эту задачу",
@@ -6917,8 +6936,6 @@
 				"openMenu": "Открыть меню",
 				"pricing": "Цены",
 				"signIn": "Войти",
-				"blog": "Блог",
-				"compare": "Сравнение",
 				"explore": "Обзор",
 				"featuresIntro": "Шесть коротких туров по Margaya. В каждом — живое демо, которым можно управлять самому.",
 				"newTab": "(открывается в новой вкладке)"
@@ -7052,16 +7069,6 @@
 					"terms": "Условия использования",
 					"title": "Компания"
 				},
-				"compare": {
-					"all": "Все альтернативы",
-					"asana": "Сравнение с Asana",
-					"clickup": "Сравнение с ClickUp",
-					"jira": "Сравнение с Jira",
-					"linear": "Сравнение с Linear",
-					"monday": "Сравнение с monday.com",
-					"title": "Сравнение",
-					"trello": "Сравнение с Trello"
-				},
 				"copyright": "© {{year}} Margaya",
 				"label": "Подвал сайта",
 				"mission": "Планируйте работу, доводите её до релиза и владейте инструментом, в котором её делаете.",
@@ -7074,7 +7081,6 @@
 				},
 				"resources": {
 					"api": "Справочник API",
-					"blog": "Блог",
 					"docs": "Документация",
 					"guides": "Руководства",
 					"press": "Пресс-кит",
@@ -11214,7 +11220,8 @@
 				"bulk_move_status": "Смена статуса нескольких задач",
 				"ask_person": "Задать вопрос",
 				"web_search": "Поиск в интернете",
-				"connector": "Внешний сервис: {{tool}}"
+				"connector": "Внешний сервис: {{tool}}",
+				"update_page": "Изменить страницу"
 			},
 			"runErrors": {
 				"AGENT_GONE": "Агент был удалён.",
@@ -11260,8 +11267,11 @@
 					"page": "Новая страница",
 					"relation": "Связь ({{relation}})",
 					"delete": "Переместить в корзину",
-					"connectorCall": "Вызов {{connector}}"
-				}
+					"connectorCall": "Вызов {{connector}}",
+					"pageContent": "Содержимое страницы",
+					"pageSection": "Добавленный раздел"
+				},
+				"undoPageError": "Не удалось отменить эту правку. Страница с тех пор изменилась; восстановите вместо этого более раннюю версию из её истории."
 			},
 			"inbox": {
 				"title": "{{agentName}} ждёт вашего одобрения",
@@ -11328,7 +11338,8 @@
 				"project": "Проект:",
 				"workedSeconds": "Работал {{count}} с",
 				"workedMinutes": "Работал {{count}} мин",
-				"request": "Запрос"
+				"request": "Запрос",
+				"selectRunTitle": "Посмотрите, что сделали ваши агенты"
 			},
 			"connectors": {
 				"title": "Коннекторы",
@@ -11468,7 +11479,8 @@
 					"mention": "Упоминание",
 					"assign": "Назначение",
 					"schedule": "Расписание",
-					"automation": "Автоматизация"
+					"automation": "Автоматизация",
+					"intake": "Заявки"
 				}
 			},
 			"intakeTrigger": {

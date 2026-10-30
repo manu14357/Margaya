@@ -14232,9 +14232,15 @@
 								},
 								"content": {
 									"type": "string"
+								},
+								"titleReply": {
+									"type": "string"
+								},
+								"contentReply": {
+									"type": "string"
 								}
 							},
-							"required": ["title", "content"]
+							"required": ["title", "content", "titleReply", "contentReply"]
 						},
 						"due_date_reminder": {
 							"type": "object",
@@ -14935,6 +14941,9 @@
 								},
 								"page_mention_titled": {
 									"type": "string"
+								},
+								"task_comment_reply": {
+									"type": "string"
 								}
 							},
 							"required": [
@@ -14952,7 +14961,8 @@
 								"intake_declined",
 								"intake_duplicate",
 								"page_mention",
-								"page_mention_titled"
+								"page_mention_titled",
+								"task_comment_reply"
 							]
 						},
 						"dropdown": {
@@ -15549,6 +15559,70 @@
 						},
 						"importedBy": {
 							"type": "string"
+						},
+						"thread": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"reply": {
+									"type": "string"
+								},
+								"replyTo": {
+									"type": "string"
+								},
+								"replies": {
+									"type": "string"
+								},
+								"placeholder": {
+									"type": "string"
+								},
+								"send": {
+									"type": "string"
+								},
+								"added": {
+									"type": "string"
+								},
+								"failedToAdd": {
+									"type": "string"
+								},
+								"showFewer": {
+									"type": "string"
+								},
+								"showMore_one": {
+									"type": "string"
+								},
+								"showMore_zero": {
+									"type": "string"
+								},
+								"showMore_two": {
+									"type": "string"
+								},
+								"showMore_few": {
+									"type": "string"
+								},
+								"showMore_many": {
+									"type": "string"
+								},
+								"showMore_other": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"reply",
+								"replyTo",
+								"replies",
+								"placeholder",
+								"send",
+								"added",
+								"failedToAdd",
+								"showFewer"
+							]
+						},
+						"commentedAgo": {
+							"type": "string"
+						},
+						"linkCopied": {
+							"type": "string"
 						}
 					},
 					"required": [
@@ -15572,7 +15646,10 @@
 						"submitShortcut",
 						"editor",
 						"importedFrom",
-						"importedBy"
+						"importedBy",
+						"thread",
+						"commentedAgo",
+						"linkCopied"
 					]
 				},
 				"addedToCycle": {
@@ -29189,12 +29266,6 @@
 										"selfHost"
 									]
 								},
-								"compare": {
-									"type": "string"
-								},
-								"blog": {
-									"type": "string"
-								},
 								"explore": {
 									"type": "string"
 								},
@@ -29218,8 +29289,6 @@
 								"closeMenu",
 								"menu",
 								"items",
-								"compare",
-								"blog",
 								"explore",
 								"featuresIntro",
 								"newTab"
@@ -29257,46 +29326,6 @@
 									},
 									"required": ["title", "pricing", "changelog", "roadmap"]
 								},
-								"compare": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"title": {
-											"type": "string"
-										},
-										"jira": {
-											"type": "string"
-										},
-										"trello": {
-											"type": "string"
-										},
-										"linear": {
-											"type": "string"
-										},
-										"asana": {
-											"type": "string"
-										},
-										"clickup": {
-											"type": "string"
-										},
-										"monday": {
-											"type": "string"
-										},
-										"all": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"title",
-										"jira",
-										"trello",
-										"linear",
-										"asana",
-										"clickup",
-										"monday",
-										"all"
-									]
-								},
 								"resources": {
 									"type": "object",
 									"additionalProperties": false,
@@ -29313,21 +29342,11 @@
 										"guides": {
 											"type": "string"
 										},
-										"blog": {
-											"type": "string"
-										},
 										"press": {
 											"type": "string"
 										}
 									},
-									"required": [
-										"title",
-										"docs",
-										"api",
-										"guides",
-										"blog",
-										"press"
-									]
+									"required": ["title", "docs", "api", "guides", "press"]
 								},
 								"company": {
 									"type": "object",
@@ -29363,7 +29382,6 @@
 								"mission",
 								"missionNote",
 								"product",
-								"compare",
 								"resources",
 								"company",
 								"copyright",
@@ -44727,6 +44745,9 @@
 								},
 								"connector": {
 									"type": "string"
+								},
+								"update_page": {
+									"type": "string"
 								}
 							},
 							"required": [
@@ -44744,7 +44765,8 @@
 								"bulk_move_status",
 								"ask_person",
 								"web_search",
-								"connector"
+								"connector",
+								"update_page"
 							]
 						},
 						"runErrors": {
@@ -44899,6 +44921,12 @@
 										},
 										"connectorCall": {
 											"type": "string"
+										},
+										"pageContent": {
+											"type": "string"
+										},
+										"pageSection": {
+											"type": "string"
 										}
 									},
 									"required": [
@@ -44913,8 +44941,13 @@
 										"page",
 										"relation",
 										"delete",
-										"connectorCall"
+										"connectorCall",
+										"pageContent",
+										"pageSection"
 									]
+								},
+								"undoPageError": {
+									"type": "string"
 								}
 							},
 							"required": [
@@ -44933,7 +44966,8 @@
 								"openSubtask",
 								"openLinked",
 								"empty",
-								"fields"
+								"fields",
+								"undoPageError"
 							]
 						},
 						"inbox": {
@@ -45195,6 +45229,9 @@
 								},
 								"request": {
 									"type": "string"
+								},
+								"selectRunTitle": {
+									"type": "string"
 								}
 							},
 							"required": [
@@ -45225,7 +45262,8 @@
 								"cancelError",
 								"trigger",
 								"project",
-								"request"
+								"request",
+								"selectRunTitle"
 							]
 						},
 						"connectors": {
@@ -45771,9 +45809,18 @@
 										},
 										"automation": {
 											"type": "string"
+										},
+										"intake": {
+											"type": "string"
 										}
 									},
-									"required": ["mention", "assign", "schedule", "automation"]
+									"required": [
+										"mention",
+										"assign",
+										"schedule",
+										"automation",
+										"intake"
+									]
 								}
 							},
 							"required": [

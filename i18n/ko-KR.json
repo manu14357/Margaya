@@ -3405,7 +3405,9 @@
 			},
 			"task_comment": {
 				"title": "{{commenterName}}님이 내 작업에 댓글을 남겼습니다",
-				"content": "{{taskTitle}}의 새 댓글: {{commentPreview}}"
+				"content": "{{taskTitle}}의 새 댓글: {{commentPreview}}",
+				"titleReply": "{{commenterName}}님이 댓글에 답글을 남겼습니다",
+				"contentReply": "{{taskTitle}}의 새 답글: {{commentPreview}}"
 			},
 			"due_date_reminder": {
 				"title": "작업 마감 임박",
@@ -3579,7 +3581,8 @@
 				"intake_declined": "요청을 거절했습니다",
 				"intake_duplicate": "요청을 중복으로 표시했습니다",
 				"page_mention": "페이지에서 회원님을 멘션했습니다",
-				"page_mention_titled": "{{pageTitle}}에서 회원님을 멘션했습니다"
+				"page_mention_titled": "{{pageTitle}}에서 회원님을 멘션했습니다",
+				"task_comment_reply": "댓글에 답글을 남겼습니다"
 			},
 			"viewing": {
 				"archived": "보관된 알림을 보고 있습니다",
@@ -3724,7 +3727,20 @@
 			"importedBy": "{{name}}님이 가져옴",
 			"delete": "댓글 삭제",
 			"edited": "(수정됨)",
-			"editedAt": "{{time}}에 수정됨"
+			"editedAt": "{{time}}에 수정됨",
+			"thread": {
+				"reply": "답글",
+				"replyTo": "{{name}}님에게 답글",
+				"replies": "답글 목록",
+				"placeholder": "답글을 입력하세요...",
+				"send": "답글 보내기",
+				"added": "답글이 추가되었습니다",
+				"failedToAdd": "답글 추가에 실패했습니다",
+				"showFewer": "답글 접기",
+				"showMore_other": "답글 {{count}}개 더 보기"
+			},
+			"commentedAgo": "{{time}}에 댓글을 남김",
+			"linkCopied": "댓글 링크를 복사했습니다"
 		},
 		"addedToCycle": "작업을 사이클 {{name}}에 추가함",
 		"deletedCycle": "삭제된 사이클에서 작업을 제거함",
@@ -6603,8 +6619,6 @@
 				"openMenu": "메뉴 열기",
 				"pricing": "요금",
 				"signIn": "로그인",
-				"blog": "블로그",
-				"compare": "비교",
 				"explore": "둘러보기",
 				"featuresIntro": "Margaya를 둘러보는 짧은 투어 여섯 가지입니다. 각 투어에는 직접 조작해 볼 수 있는 라이브 데모가 있습니다.",
 				"newTab": "(새 탭에서 열림)"
@@ -6738,16 +6752,6 @@
 					"terms": "이용약관",
 					"title": "회사"
 				},
-				"compare": {
-					"all": "모든 대안",
-					"asana": "Asana와 비교",
-					"clickup": "ClickUp과 비교",
-					"jira": "Jira와 비교",
-					"linear": "Linear와 비교",
-					"monday": "monday.com과 비교",
-					"title": "비교",
-					"trello": "Trello와 비교"
-				},
 				"copyright": "© {{year}} Margaya",
 				"label": "푸터",
 				"mission": "일을 계획하고, 출시하고, 그 일을 하는 도구를 직접 소유하세요.",
@@ -6760,7 +6764,6 @@
 				},
 				"resources": {
 					"api": "API 레퍼런스",
-					"blog": "블로그",
 					"docs": "문서",
 					"guides": "가이드",
 					"press": "보도 자료 키트",
@@ -10724,7 +10727,8 @@
 				"bulk_move_status": "여러 작업의 상태 변경",
 				"ask_person": "질문하기",
 				"web_search": "웹 검색",
-				"connector": "외부 서비스: {{tool}}"
+				"connector": "외부 서비스: {{tool}}",
+				"update_page": "페이지 편집"
 			},
 			"runErrors": {
 				"AGENT_GONE": "에이전트가 삭제되었습니다.",
@@ -10770,8 +10774,11 @@
 					"page": "새 페이지",
 					"relation": "연결 ({{relation}})",
 					"delete": "휴지통으로 이동",
-					"connectorCall": "{{connector}} 호출"
-				}
+					"connectorCall": "{{connector}} 호출",
+					"pageContent": "페이지 내용",
+					"pageSection": "추가된 섹션"
+				},
+				"undoPageError": "이 편집을 실행 취소하지 못했습니다. 그사이 페이지가 변경되었습니다. 대신 기록에서 이전 버전을 복원하세요."
 			},
 			"inbox": {
 				"title": "{{agentName}}이(가) 회원님의 승인을 기다리고 있습니다",
@@ -10838,7 +10845,8 @@
 				"project": "프로젝트:",
 				"workedSeconds": "{{count}}초 동안 작업",
 				"workedMinutes": "{{count}}분 동안 작업",
-				"request": "요청"
+				"request": "요청",
+				"selectRunTitle": "에이전트가 한 일 보기"
 			},
 			"connectors": {
 				"title": "커넥터",
@@ -10978,7 +10986,8 @@
 					"mention": "멘션",
 					"assign": "할당",
 					"schedule": "일정",
-					"automation": "자동화"
+					"automation": "자동화",
+					"intake": "인테이크"
 				}
 			},
 			"intakeTrigger": {

@@ -3457,7 +3457,9 @@
 			},
 			"task_comment": {
 				"title": "{{commenterName}} коментираше на твојата задача",
-				"content": "Нов коментар на {{taskTitle}}: {{commentPreview}}"
+				"content": "Нов коментар на {{taskTitle}}: {{commentPreview}}",
+				"titleReply": "{{commenterName}} одговори на коментар",
+				"contentReply": "Нов одговор на {{taskTitle}}: {{commentPreview}}"
 			},
 			"due_date_reminder": {
 				"title": "Задачата наскоро доспева",
@@ -3638,7 +3640,8 @@
 				"intake_declined": "го одби твоето барање",
 				"intake_duplicate": "го означи твоето барање како дупликат",
 				"page_mention": "те спомена на страница",
-				"page_mention_titled": "те спомена во {{pageTitle}}"
+				"page_mention_titled": "те спомена во {{pageTitle}}",
+				"task_comment_reply": "одговори на коментар"
 			},
 			"viewing": {
 				"archived": "Прегледуваш архивирани известувања",
@@ -3783,7 +3786,21 @@
 			"importedBy": "Увезено од {{name}}",
 			"delete": "Избриши коментар",
 			"edited": "(уредено)",
-			"editedAt": "Уредено {{time}}"
+			"editedAt": "Уредено {{time}}",
+			"thread": {
+				"reply": "Одговори",
+				"replyTo": "Одговори на {{name}}",
+				"replies": "Одговори на коментарот",
+				"placeholder": "Напиши одговор...",
+				"send": "Испрати одговор",
+				"added": "Одговорот е додаден",
+				"failedToAdd": "Неуспешно додавање на одговор",
+				"showFewer": "Прикажи помалку одговори",
+				"showMore_one": "Прикажи уште {{count}} одговор",
+				"showMore_other": "Прикажи уште {{count}} одговори"
+			},
+			"commentedAgo": "коментираше {{time}}",
+			"linkCopied": "Врската до коментарот е копирана"
 		},
 		"addedToCycle": "ја додаде задачата во циклусот {{name}}",
 		"deletedCycle": "ја отстрани задачата од избришан циклус",
@@ -6689,8 +6706,6 @@
 				"openMenu": "Отвори мени",
 				"pricing": "Цени",
 				"signIn": "Најави се",
-				"blog": "Блог",
-				"compare": "Споредба",
 				"explore": "Истражи",
 				"featuresIntro": "Шест кратки обиколки низ Margaya. Секоја има демо во живо што можеш сам да го преземеш.",
 				"newTab": "(се отвора во ново јазиче)"
@@ -6824,16 +6839,6 @@
 					"terms": "Услови",
 					"title": "Компанија"
 				},
-				"compare": {
-					"all": "Сите алтернативи",
-					"asana": "vs Asana",
-					"clickup": "vs ClickUp",
-					"jira": "vs Jira",
-					"linear": "vs Linear",
-					"monday": "vs monday.com",
-					"title": "Споредба",
-					"trello": "vs Trello"
-				},
 				"copyright": "© {{year}} Margaya",
 				"label": "Подножје",
 				"mission": "Планирај ја работата, испорачај ја и поседувај го алатот во кој ја работиш.",
@@ -6846,7 +6851,6 @@
 				},
 				"resources": {
 					"api": "API референца",
-					"blog": "Блог",
 					"docs": "Документација",
 					"guides": "Водичи",
 					"press": "Пакет за медиуми",
@@ -10868,7 +10872,8 @@
 				"bulk_move_status": "Промена на статус на повеќе задачи",
 				"ask_person": "Постави прашање",
 				"web_search": "Пребарување на интернет",
-				"connector": "Надворешна услуга: {{tool}}"
+				"connector": "Надворешна услуга: {{tool}}",
+				"update_page": "Уреди страница"
 			},
 			"runErrors": {
 				"AGENT_GONE": "Агентот е избришан.",
@@ -10914,8 +10919,11 @@
 					"page": "Нова страница",
 					"relation": "Врска ({{relation}})",
 					"delete": "Премести во корпа",
-					"connectorCall": "Повик до {{connector}}"
-				}
+					"connectorCall": "Повик до {{connector}}",
+					"pageContent": "Содржина на страницата",
+					"pageSection": "Додаден дел"
+				},
+				"undoPageError": "Ова уредување не можеше да се врати. Страницата во меѓувреме е променета; наместо тоа, вратете претходна верзија од нејзината историја."
 			},
 			"inbox": {
 				"title": "{{agentName}} чека твое одобрување",
@@ -10982,7 +10990,8 @@
 				"project": "Проект:",
 				"workedSeconds": "Работеше {{count}} с",
 				"workedMinutes": "Работеше {{count}} мин",
-				"request": "Барање"
+				"request": "Барање",
+				"selectRunTitle": "Види што направија твоите агенти"
 			},
 			"connectors": {
 				"title": "Конектори",
@@ -11122,7 +11131,8 @@
 					"mention": "Спомнување",
 					"assign": "Доделување",
 					"schedule": "Распоред",
-					"automation": "Автоматизација"
+					"automation": "Автоматизација",
+					"intake": "Прием"
 				}
 			},
 			"intakeTrigger": {
