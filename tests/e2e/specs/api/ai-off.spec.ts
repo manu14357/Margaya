@@ -101,6 +101,7 @@ type Usage = {
   byModel: unknown[];
   byUser: unknown[];
   byDay: unknown[];
+  feedback: { up: number; down: number; byFeature: unknown[] };
 };
 
 const ZERO: Totals = {
@@ -411,6 +412,7 @@ test(
       byModel: [],
       byUser: [],
       byDay: [],
+      feedback: { up: 0, down: 0, byFeature: [] },
     });
     // The failed test above was refused before any call: nothing is billed.
     const month = await expectJson<Usage>(
