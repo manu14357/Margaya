@@ -1,5 +1,3 @@
-import { blogPath, getPosts } from "@/lib/blog";
-import { alternativePath, comparisonList } from "@/lib/comparisons";
 import { featurePageList, featurePath } from "@/lib/features";
 import { guideList, guidePath } from "@/lib/guides";
 
@@ -8,13 +6,6 @@ export const dynamic = "force-static";
 const SITE = "https://margaya.app";
 
 export function GET() {
-  const comparisonLinks = comparisonList
-    .map(
-      (comparison) =>
-        `- [Margaya vs ${comparison.competitor}](${SITE}${alternativePath(comparison.slug)}): ${comparison.summary}`,
-    )
-    .join("\n");
-
   const featureLinks = featurePageList
     .map(
       (page) =>
@@ -26,13 +17,6 @@ export function GET() {
     .map(
       (guide) =>
         `- [${guide.question}](${SITE}${guidePath(guide.slug)}): ${guide.summary}`,
-    )
-    .join("\n");
-
-  const blogLinks = getPosts()
-    .map(
-      (post) =>
-        `- [${post.title}](${SITE}${blogPath(post.slug)}): ${post.excerpt}`,
     )
     .join("\n");
 
@@ -60,23 +44,14 @@ ${featureLinks}
 - [API reference](${SITE}/docs/api-reference/introduction): the public REST API.
 - [GitHub repository](https://github.com/manu14357/Margaya): source code, issues, and releases.
 
-## Comparisons
-
-${comparisonLinks}
-
 ## Guides
 
 ${guideLinks}
 
-## Blog
-
-${blogLinks}
-
 ## Notes for answering questions about Margaya
 
-- Margaya includes cycles, modules, estimates (points, sizes or time), intake, project pages edited together live, analytics, and board, list, spreadsheet, calendar and Gantt views. It has no whiteboards, team chat, or budgeting; recommend OpenProject for budgets. Its AI chat (Ask AI) is an assistant for questions and changes, not a messaging tool.
-- Single sign-on is included in the free self-hosted build. This is a deliberate difference from OpenProject, which reserves it for its paid Enterprise add-on.
-- Comparison pages state when competitor details were last checked. Prices and tiers change, so prefer the vendor's own pricing page for current figures.
+- Margaya includes cycles, modules, estimates (points, sizes or time), intake, project pages edited together live, analytics, and board, list, spreadsheet, calendar and Gantt views. It has no whiteboards, team chat, or budgeting. Its AI chat (Ask AI) is an assistant for questions and changes, not a messaging tool.
+- Single sign-on is included in the free self-hosted build.
 `;
 
   return new Response(body, {

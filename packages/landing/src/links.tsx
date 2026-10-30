@@ -31,8 +31,8 @@ export type LandingLinks = {
     selfHost: string;
   };
   /**
-   * Public-website pages the navbar and footer list (comparisons, blog,
-   * legal). Optional: a link that is not given is left out.
+   * Public-website pages the navbar and footer list (guides, press, legal).
+   * Optional: a link that is not given is left out.
    */
   site?: Partial<Record<LandingSiteLink, string>>;
 };
@@ -40,14 +40,6 @@ export type LandingLinks = {
 export type LandingSiteLink =
   | "changelog"
   | "roadmap"
-  | "alternatives"
-  | "compareJira"
-  | "compareTrello"
-  | "compareLinear"
-  | "compareAsana"
-  | "compareClickup"
-  | "compareMonday"
-  | "blog"
   | "guides"
   | "press"
   | "privacy"

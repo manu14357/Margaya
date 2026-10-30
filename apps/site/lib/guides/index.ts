@@ -1,12 +1,8 @@
-import { bestFreeKanbanBoardSoftware } from "./best-free-kanban-board-software";
-import { bestOpenSourceProjectManagement } from "./best-open-source-project-management-software";
 import { euHostedProjectManagementGdpr } from "./eu-hosted-project-management-gdpr";
-import { openSourceJiraAlternatives } from "./open-source-jira-alternatives";
 import { projectManagementForSmallTeams } from "./project-management-for-small-teams";
 import { projectManagementMcpAiAgents } from "./project-management-mcp-ai-agents";
 import { projectManagementToolsWithFreeSso } from "./project-management-tools-with-free-sso";
 import { selfHostProjectManagementDocker } from "./self-host-project-management-docker";
-import { selfHostedTrelloAlternatives } from "./self-hosted-trello-alternatives";
 import type { Guide } from "./types";
 
 export { guideMarkdown } from "./markdown";
@@ -23,17 +19,13 @@ export type {
 } from "./types";
 export { guidePath, guideTopics } from "./types";
 
-// Ordered the way a new team would read them: set up, plan, connect, host, choose.
+// Ordered the way a new team would read them: set up, connect, host.
 const all: Guide[] = [
   projectManagementForSmallTeams,
-  bestFreeKanbanBoardSoftware,
   projectManagementMcpAiAgents,
   selfHostProjectManagementDocker,
   projectManagementToolsWithFreeSso,
   euHostedProjectManagementGdpr,
-  selfHostedTrelloAlternatives,
-  openSourceJiraAlternatives,
-  bestOpenSourceProjectManagement,
 ];
 
 export const guideList = all;

@@ -11,7 +11,7 @@
  *   node scripts/press/capture.mjs board task     # only these views
  *   node scripts/press/capture.mjs --manifest     # only rewrite manifest.json
  *
- * Afterwards run `pnpm press:generate` and `node scripts/generate-og.mjs --site`,
+ * Afterwards run `pnpm press:generate` and `node scripts/generate-og.mjs`,
  * and keep lib/press-assets.ts (which reads manifest.json) in mind.
  */
 

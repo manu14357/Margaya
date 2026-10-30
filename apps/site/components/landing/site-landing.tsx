@@ -33,7 +33,7 @@ import { siteLinks } from "@/lib/site-links";
  *
  * `localized` pages (the home page and the feature pages) follow the
  * visitor's language and offer the language controls. Every other page
- * (docs, blog, legal) has English content, so it stays English and offers
+ * (docs, guides, legal) has English content, so it stays English and offers
  * the theme only.
  */
 export function SiteLandingProviders({

@@ -2,17 +2,15 @@ import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 import { GuideCard } from "@/components/content/guide-card";
 import { ProductShot } from "@/components/content/product-shot";
-import { BlogPostCard } from "@/components/landing/blog-post-card";
 import { Footer } from "@/components/landing/footer";
 import { breadcrumbJsonLd, JsonLd } from "@/components/landing/json-ld";
 import { Navbar } from "@/components/landing/navbar";
 import { PageIntro } from "@/components/landing/page-intro";
-import { getPosts } from "@/lib/blog";
 import { countSteps, guideList, guidePath, guideTopics } from "@/lib/guides";
 
 const SITE = "https://margaya.app";
 const DESCRIPTION =
-  "Step-by-step guides to setting up Margaya, planning work, connecting AI agents, self-hosting with Docker or Helm, single sign-on, EU data residency and moving from Jira or Trello.";
+  "Step-by-step guides to setting up Margaya, planning work, connecting AI agents, self-hosting with Docker or Helm, single sign-on and EU data residency.";
 
 export const metadata: Metadata = {
   title: "Guides",
@@ -27,7 +25,6 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  const posts = getPosts().slice(0, 3);
   const [lead] = guideList;
   const topics = guideTopics
     .map((topic) => ({
@@ -73,7 +70,7 @@ export default function Page() {
               align="center"
               eyebrow="Guides"
               title="Do the thing, step by step"
-              description="Practical guides to setting up Margaya, running it on your own server and moving your work across, plus fair answers to the questions teams ask before they choose a tool."
+              description="Practical guides to setting up Margaya, connecting AI agents and running it on your own server."
             />
 
             <nav aria-label="Guide topics" className="mt-10">
@@ -165,35 +162,6 @@ export default function Page() {
             </section>
           ))}
         </div>
-
-        {posts.length > 0 ? (
-          <section
-            aria-labelledby="from-the-blog"
-            className="border-border/70 border-t px-6 py-16 md:py-20"
-          >
-            <div className="mx-auto w-full max-w-6xl">
-              <div className="flex flex-wrap items-end justify-between gap-4">
-                <h2
-                  className="font-medium text-2xl md:text-3xl"
-                  id="from-the-blog"
-                >
-                  From the blog
-                </h2>
-                <a
-                  className="text-muted-foreground text-sm transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-4"
-                  href="/blog"
-                >
-                  All posts
-                </a>
-              </div>
-              <div className="mt-10 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-                {posts.map((post) => (
-                  <BlogPostCard key={post.slug} post={post} />
-                ))}
-              </div>
-            </div>
-          </section>
-        ) : null}
       </main>
       <Footer />
     </>

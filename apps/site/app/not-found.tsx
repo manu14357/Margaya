@@ -55,17 +55,10 @@ const links: FinderLink[] = [
   },
   {
     label: "Guides",
-    hint: "Step-by-step setups and migrations",
+    hint: "Step-by-step setups and how-tos",
     href: "/guides",
     group: "Site",
-    keywords: "how to tutorial jira trello sso mcp",
-  },
-  {
-    label: "Blog",
-    hint: "Comparisons and notes from the team",
-    href: "/blog",
-    group: "Site",
-    keywords: "posts articles alternatives",
+    keywords: "how to tutorial docker sso mcp",
   },
   {
     label: "Pricing",
@@ -73,13 +66,6 @@ const links: FinderLink[] = [
     href: siteLinks.pricing,
     group: "Site",
     keywords: "price cost plans cloud",
-  },
-  {
-    label: "Comparisons",
-    hint: "Margaya side by side with other tools",
-    href: "/alternatives",
-    group: "Site",
-    keywords: "vs alternative jira linear asana trello",
   },
 ];
 

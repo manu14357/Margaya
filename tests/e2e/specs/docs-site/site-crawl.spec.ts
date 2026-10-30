@@ -76,14 +76,7 @@ test.describe("sitemap and robots", () => {
     const pages = await request.get("/sitemap-pages.xml");
     expect(pages.status()).toBe(200);
     expect(parseSitemapLocations(await pages.text())).toEqual(
-      expect.arrayContaining([
-        "/",
-        "/pricing",
-        "/press",
-        "/blog",
-        "/guides",
-        "/alternatives",
-      ]),
+      expect.arrayContaining(["/", "/pricing", "/press", "/guides"]),
     );
   });
 
@@ -99,10 +92,7 @@ test.describe("sitemap and robots", () => {
     expectNoProblems((s) => (s.status === 200 ? null : `HTTP ${s.status}`));
   });
 
-  test("the RSS feed and llms.txt are served", async ({ request }) => {
-    const rss = await request.get("/blog/rss.xml");
-    expect(rss.status()).toBe(200);
-    expect(await rss.text()).toContain("<rss");
+  test("llms.txt is served", async ({ request }) => {
     const llms = await request.get("/llms.txt");
     expect(llms.status()).toBe(200);
     expect(await llms.text()).toMatch(/^# Margaya/);
@@ -301,7 +291,7 @@ test.describe("links", () => {
   test("images on every page load", async ({ page }) => {
     // Rendered check on the pages that carry the most imagery.
     const problems: string[] = [];
-    for (const path of ["/", "/blog", "/alternatives", "/guides"]) {
+    for (const path of ["/", "/guides"]) {
       await page.goto(path, { waitUntil: "load" });
       const broken = await page.evaluate(() =>
         [...document.images]

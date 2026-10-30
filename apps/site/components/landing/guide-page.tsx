@@ -11,7 +11,6 @@ import { CtaBand } from "@/components/content/cta-band";
 import { InlineText } from "@/components/content/inline-text";
 import { ProductShot } from "@/components/content/product-shot";
 import { ReadingProgress } from "@/components/content/reading-progress";
-import { BlogToc, BlogTocDisclosure } from "@/components/landing/blog-toc";
 import { Footer } from "@/components/landing/footer";
 import {
   breadcrumbJsonLd,
@@ -19,14 +18,23 @@ import {
   JsonLd,
 } from "@/components/landing/json-ld";
 import { Navbar } from "@/components/landing/navbar";
-import { formatBlogDate } from "@/lib/blog/format";
-import type { TocEntry } from "@/lib/blog/types";
+import { Toc, TocDisclosure, type TocEntry } from "@/components/landing/toc";
 import type { Guide, GuideStep } from "@/lib/guides";
 import { countSteps, guidePath, guideTopics } from "@/lib/guides";
 
 const SITE = "https://margaya.app";
 const LINK =
   "transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-4";
+
+/** A YYYY-MM-DD date as "15 October 2026", the same in every time zone. */
+function formatDate(value: string) {
+  return new Date(`${value}T00:00:00Z`).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
 
 /** Guide copy marks code with backticks; structured data wants plain text. */
 function plain(text: string) {
@@ -263,7 +271,7 @@ export function GuidePage({ data }: { data: Guide }) {
                   className="ml-1 text-foreground"
                   dateTime={data.updatedOn}
                 >
-                  {formatBlogDate(data.updatedOn)}
+                  {formatDate(data.updatedOn)}
                 </time>
               </li>
             </ul>
@@ -300,13 +308,13 @@ export function GuidePage({ data }: { data: Guide }) {
           <div className="mx-auto grid w-full max-w-3xl gap-10 lg:max-w-6xl lg:grid-cols-[14rem_minmax(0,1fr)] xl:grid-cols-[15rem_minmax(0,46rem)_13rem] xl:justify-between">
             <aside className="max-lg:hidden">
               <div className="sticky top-24">
-                <BlogToc entries={toc} label="In this guide" />
+                <Toc entries={toc} label="In this guide" />
               </div>
             </aside>
 
             <article className="min-w-0" id="guide-body">
               <div className="mb-10 lg:hidden">
-                <BlogTocDisclosure entries={toc} label="In this guide" />
+                <TocDisclosure entries={toc} label="In this guide" />
               </div>
 
               <div className="space-y-16">

@@ -2,8 +2,13 @@
 
 import { ArrowUp, ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
-import type { TocEntry } from "@/lib/blog/types";
 import { cn } from "@/lib/utils";
+
+export type TocEntry = {
+  id: string;
+  text: string;
+  depth: number;
+};
 
 function useActiveHeading(entries: TocEntry[]) {
   const [activeId, setActiveId] = useState(entries[0]?.id ?? "");
@@ -78,7 +83,7 @@ function TocList({
 }
 
 /** The sticky outline beside the article on wide screens. */
-export function BlogToc({
+export function Toc({
   entries,
   label = "On this page",
 }: {
@@ -108,7 +113,7 @@ export function BlogToc({
 }
 
 /** The same outline, folded into a disclosure above the article on small screens. */
-export function BlogTocDisclosure({
+export function TocDisclosure({
   entries,
   label = "On this page",
 }: {

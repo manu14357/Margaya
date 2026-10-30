@@ -1,5 +1,4 @@
 import type { LandingLinks } from "@margaya/landing";
-import { alternativePath } from "@/lib/comparisons/types";
 import { featurePath } from "@/lib/features";
 
 const GITHUB_URL = "https://github.com/manu14357/Margaya";
@@ -26,14 +25,6 @@ export const siteLinks: LandingLinks = {
   site: {
     changelog: `${GITHUB_URL}/releases`,
     roadmap: `${GITHUB_URL}/issues`,
-    alternatives: "/alternatives",
-    compareJira: alternativePath("jira"),
-    compareTrello: alternativePath("trello"),
-    compareLinear: alternativePath("linear"),
-    compareAsana: alternativePath("asana"),
-    compareClickup: alternativePath("clickup"),
-    compareMonday: alternativePath("monday"),
-    blog: "/blog",
     guides: "/guides",
     press: "/press",
     privacy: "/privacy",

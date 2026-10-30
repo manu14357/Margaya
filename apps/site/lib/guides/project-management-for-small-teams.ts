@@ -175,10 +175,10 @@ export const projectManagementForSmallTeams: Guide = {
   ],
   next: [
     {
-      label: "Run a fast Kanban board",
-      href: "/guides/best-free-kanban-board-software",
+      label: "Save and share views",
+      href: "/docs/core/functional/views",
       description:
-        "Columns, filters, saved views and automations that keep a board tidy.",
+        "Save the filters and layouts you check every day, and share them.",
     },
     {
       label: "Keyboard shortcuts",

@@ -30,7 +30,7 @@ export type GuideCode = {
   content: string;
 };
 
-/** A comparison entry inside a section, e.g. one tool on a shortlist. */
+/** A named entry inside a section, e.g. one option or one feature. */
 export type GuideItem = {
   name: string;
   body: string;
@@ -57,7 +57,7 @@ export type GuideSection = {
   shot?: GuideShot;
 };
 
-export type GuideTopic = "start" | "plan" | "connect" | "self-host" | "choose";
+export type GuideTopic = "start" | "plan" | "connect" | "self-host";
 
 export const guideTopics: { id: GuideTopic; label: string; blurb: string }[] = [
   {
@@ -79,11 +79,6 @@ export const guideTopics: { id: GuideTopic; label: string; blurb: string }[] = [
     id: "self-host",
     label: "Run it yourself",
     blurb: "Servers, sign-in and where your data lives.",
-  },
-  {
-    id: "choose",
-    label: "Choose a tool",
-    blurb: "Fair comparisons, and how to move your work across.",
   },
 ];
 

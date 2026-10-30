@@ -59,10 +59,6 @@ test.describe("landing page", () => {
       "href",
       "/pricing",
     );
-    await expect(nav.getByRole("link", { name: "Blog" })).toHaveAttribute(
-      "href",
-      "/blog",
-    );
     await expect(nav.getByRole("button", { name: "Resources" })).toBeVisible();
     // No hosted service yet: the navbar has no Sign in button.
     await expect(header.getByRole("button", { name: "Sign in" })).toHaveCount(
@@ -107,9 +103,7 @@ test.describe("landing page", () => {
       "Getting Started",
       "Features",
       "Pricing",
-      "Comparisons",
       "Guides",
-      "Blog",
       "Press kit",
       "Documentation",
       "Privacy Policy",
@@ -124,7 +118,7 @@ test.describe("landing page", () => {
     ).toHaveAttribute("href", "mailto:support@margaya.app");
   });
 
-  test("the Resources menu lists documentation, guides, comparisons and the roadmap", async ({
+  test("the Resources menu lists documentation, guides and the roadmap", async ({
     page,
   }) => {
     await page.goto("/");
@@ -137,9 +131,6 @@ test.describe("landing page", () => {
       "href",
       "/guides",
     );
-    await expect(
-      header.getByRole("link", { name: "Compare tools" }),
-    ).toHaveAttribute("href", "/alternatives");
     await expect(header.getByRole("link", { name: "Roadmap" })).toHaveAttribute(
       "href",
       new RegExp(`^${CLOUD_URL}/public-project/`),
@@ -170,14 +161,7 @@ test.describe("landing page", () => {
       .map(toLocalPath)
       .filter((value): value is string => value !== null && !isDocsPath(value));
     expect(targets).toEqual(
-      expect.arrayContaining([
-        "/",
-        "/pricing",
-        "/blog",
-        "/guides",
-        "/alternatives",
-        "/press",
-      ]),
+      expect.arrayContaining(["/", "/pricing", "/guides", "/press"]),
     );
     const statuses = await fetchStatuses(request, targets);
     expect(brokenEntries(statuses)).toEqual([]);
@@ -244,19 +228,9 @@ test.describe("marketing pages", () => {
     },
     { path: "/press", title: "Press kit | Margaya", h1: "Margaya press kit" },
     {
-      path: "/alternatives",
-      title: "Margaya alternatives and comparisons | Margaya",
-      h1: "How Margaya compares",
-    },
-    {
       path: "/guides",
       title: "Guides | Margaya",
       h1: "Straight answers about project tools",
-    },
-    {
-      path: "/blog",
-      title: "Blog | Margaya",
-      h1: "Straight comparisons, no marketing maths",
     },
     {
       path: "/privacy",
@@ -323,48 +297,6 @@ test.describe("marketing pages", () => {
     await expect(
       main.getByRole("link", { name: "Read installation guide" }),
     ).toHaveAttribute("href", "/docs/core/installation");
-  });
-
-  test("the comparisons index links to each comparison page", async ({
-    page,
-  }) => {
-    await page.goto("/alternatives");
-    const jira = page.getByRole("link", { name: /Margaya vs Jira/ });
-    await expect(jira).toHaveAttribute("href", "/jira-alternative");
-    await jira.click();
-    await expect(page).toHaveURL(/\/jira-alternative$/);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-      "The open-source Jira alternative",
-    );
-    await expect(page).toHaveTitle("Open-source Jira alternative | Margaya");
-  });
-
-  test("the blog index opens a post and filters by category", async ({
-    page,
-  }) => {
-    await page.goto("/blog");
-    const categories = page.getByRole("navigation", {
-      name: "Blog categories",
-    });
-    await expect(
-      categories.getByRole("link", { name: "All posts" }),
-    ).toHaveAttribute("aria-current", "page");
-    await categories.getByRole("link", { name: "Alternatives" }).click();
-    await expect(page).toHaveURL(/\/blog\/category\/alternatives$/);
-    await expect(
-      page
-        .getByRole("navigation", { name: "Blog categories" })
-        .getByRole("link", { name: "Alternatives" }),
-    ).toHaveAttribute("aria-current", "page");
-
-    const post = page.locator('main a[href^="/blog/best-"]').first();
-    const href = await post.getAttribute("href");
-    await post.click();
-    await expect(page).toHaveURL(new RegExp(`${href}$`));
-    await expect(page.getByRole("heading", { level: 1 })).toBeVisible({
-      timeout: 90_000,
-    });
-    await expect(page.getByRole("main")).toContainText("Margaya");
   });
 
   test("the guides index opens a guide", async ({ page }) => {
@@ -436,10 +368,8 @@ test.describe("mobile viewport", () => {
     for (const name of [
       "Product",
       "Pricing",
-      "Blog",
       "Documentation",
       "Guides",
-      "Compare tools",
       "Roadmap",
     ]) {
       await expect(menu.getByRole("link", { name, exact: true })).toBeVisible();
@@ -464,13 +394,7 @@ test.describe("mobile viewport", () => {
     });
   });
 
-  for (const path of [
-    "/",
-    "/pricing",
-    "/press",
-    "/blog",
-    "/jira-alternative",
-  ]) {
+  for (const path of ["/", "/pricing", "/press", "/guides"]) {
     test(`${path} fits the viewport without horizontal scrolling`, async ({
       page,
     }) => {

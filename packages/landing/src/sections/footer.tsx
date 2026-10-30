@@ -14,7 +14,7 @@ const FOCUS =
 
 /**
  * The public footer, in two bands: the logo with a short mission beside the
- * link columns (Product, Compare, Resources, Company), then a bottom bar
+ * link columns (Product, Resources, Company), then a bottom bar
  * with the copyright, the self-hosting note and compact language and theme
  * controls (when the host provides `LandingPrefs`). Site-only pages come
  * from `links.site`; a link the host does not give is left out, and a
@@ -48,26 +48,12 @@ export function LandingFooter() {
       ],
     },
     {
-      key: "compare",
-      title: footer.compare.title,
-      links: [
-        { label: footer.compare.jira, href: site.compareJira },
-        { label: footer.compare.trello, href: site.compareTrello },
-        { label: footer.compare.linear, href: site.compareLinear },
-        { label: footer.compare.asana, href: site.compareAsana },
-        { label: footer.compare.clickup, href: site.compareClickup },
-        { label: footer.compare.monday, href: site.compareMonday },
-        { label: footer.compare.all, href: site.alternatives },
-      ],
-    },
-    {
       key: "resources",
       title: footer.resources.title,
       links: [
         { label: footer.resources.docs, href: links.docs },
         { label: footer.resources.api, href: links.apiReference },
         { label: footer.resources.guides, href: site.guides },
-        { label: footer.resources.blog, href: site.blog },
         { label: footer.resources.press, href: site.press },
       ],
     },
@@ -111,7 +97,7 @@ export function LandingFooter() {
 
         <nav
           aria-label={footer.label}
-          className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4"
+          className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3"
         >
           {visibleColumns.map((column) => (
             <div key={column.key} className="min-w-0">

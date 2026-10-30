@@ -37,11 +37,11 @@ test("an unknown top-level URL answers 404, not a server error", async ({
   expect(response.status()).toBe(404);
 });
 
-test("known comparison slugs still resolve next to the catch-all route", async ({
+test("the removed comparison and blog pages answer 404", async ({
   request,
 }) => {
-  for (const path of ["/jira-alternative", "/trello-alternative"]) {
-    const response = await request.get(path);
-    expect(response.status(), path).toBe(200);
+  for (const path of ["/alternatives", "/jira-alternative", "/blog"]) {
+    const response = await request.get(path, { timeout: 240_000 });
+    expect(response.status(), path).toBe(404);
   }
 });
