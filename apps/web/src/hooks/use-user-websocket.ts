@@ -7,6 +7,7 @@ import { taskDraftQueryKeys } from "@/hooks/queries/task-draft/task-draft-query-
 import { handleAgentUserMessage } from "@/lib/ai/agent-realtime";
 import { authClient } from "@/lib/auth-client";
 import { handleHomeUserMessage } from "@/lib/home-realtime";
+import { onWake, reconnectDelay } from "@/lib/realtime-reconnect";
 import { onSignOut } from "@/lib/sign-out";
 import { handleTaskExportUserMessage } from "@/lib/task-export/realtime";
 import { invalidateTaskQueries } from "@/lib/task-query/cache";
@@ -17,8 +18,6 @@ export function getUserWsUrl() {
   return `${wsBase}/user?windowId=${encodeURIComponent(windowId)}`;
 }
 
-const MAX_RETRIES = 5;
-const BASE_DELAY = 1000;
 const WS_PING_INTERVAL_MS = 30_000;
 
 /**
@@ -36,6 +35,8 @@ export function useUserWebSocket() {
     let disposed = false;
     let activeSocket: WebSocket | null = null;
     let retries = 0;
+    // A dropped socket missed messages: catch up when it opens again.
+    let dropped = false;
     let retryTimeout: ReturnType<typeof setTimeout> | null = null;
     let pingInterval: ReturnType<typeof setInterval> | null = null;
 
@@ -56,6 +57,12 @@ export function useUserWebSocket() {
       ws.onopen = () => {
         if (disposed || activeSocket !== ws) return;
         retries = 0;
+        if (dropped) {
+          dropped = false;
+          // Notifications, agent runs, drafts, members and more may have
+          // changed meanwhile; only queries on screen refetch.
+          void queryClient.invalidateQueries();
+        }
         clearPing();
         pingInterval = setInterval(() => {
           if (ws.readyState === WebSocket.OPEN) {
@@ -149,12 +156,9 @@ export function useUserWebSocket() {
         if (disposed || activeSocket !== ws) return;
         clearPing();
         activeSocket = null;
-
-        if (retries < MAX_RETRIES) {
-          const delay = BASE_DELAY * 2 ** retries;
-          retries += 1;
-          retryTimeout = setTimeout(connect, delay);
-        }
+        dropped = true;
+        retryTimeout = setTimeout(connect, reconnectDelay(retries));
+        retries += 1;
       };
     }
 
@@ -169,9 +173,16 @@ export function useUserWebSocket() {
 
     // Close before the session ends, so no reconnect races the sign-out.
     const stopOnSignOut = onSignOut(dispose);
+    // Back in view or online: reconnect now rather than after the backoff.
+    const stopWake = onWake(() => {
+      if (disposed || retryTimeout === null) return;
+      clearTimeout(retryTimeout);
+      connect();
+    });
     connect();
 
     return () => {
+      stopWake();
       stopOnSignOut();
       dispose();
     };

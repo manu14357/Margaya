@@ -928,6 +928,17 @@ export default function CommentEditor({
     [handleAssetFileUpload, resolvedPlaceholder, toShikiLanguage],
   );
 
+  // With immediatelyRender: false, TipTap's own autofocus runs before the
+  // view is attached and does nothing, so focus once the editor exists. A
+  // reply box that opens without focus sends typing to the page shortcuts.
+  useEffect(() => {
+    if (!autoFocus || !editor) return;
+    const frame = requestAnimationFrame(() => {
+      if (!editor.isDestroyed) editor.commands.focus("end");
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [autoFocus, editor]);
+
   useEffect(() => {
     if (!onAttachActionChange) return;
 

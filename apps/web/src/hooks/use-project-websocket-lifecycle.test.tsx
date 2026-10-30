@@ -130,12 +130,12 @@ describe("project WebSocket lifecycle", () => {
     expect(vi.getTimerCount()).toBe(0);
   });
 
-  it("preserves bounded exponential reconnects and active message invalidation", () => {
+  it("keeps reconnecting with a capped backoff and still invalidates on messages", () => {
     const { unmount } = renderHook(() => useProjectWebSocket("project-a"));
-    for (let retry = 0; retry < 5; retry++) {
+    for (let retry = 0; retry < 8; retry++) {
       act(() => {
         TestSocket.instances.at(-1)?.onclose?.(ABNORMAL_CLOSE);
-        vi.advanceTimersByTime(1000 * 2 ** retry);
+        vi.advanceTimersByTime(Math.min(1000 * 2 ** retry, 30_000));
       });
       expect(TestSocket.instances).toHaveLength(retry + 2);
     }
@@ -149,9 +149,9 @@ describe("project WebSocket lifecycle", () => {
         }),
       });
       last?.onclose?.(ABNORMAL_CLOSE);
-      vi.advanceTimersByTime(60_000);
+      vi.advanceTimersByTime(30_000);
     });
-    expect(TestSocket.instances).toHaveLength(6);
+    expect(TestSocket.instances).toHaveLength(10);
     expect(client.invalidateQueries).toHaveBeenCalledWith({
       queryKey: ["tasks", "project-a"],
     });

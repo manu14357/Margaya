@@ -13,6 +13,7 @@ import { descriptionVersionKeys } from "@/hooks/queries/task-description-version
 import { trashQueryKeys } from "@/hooks/queries/trash/trash-query-keys";
 import { authClient } from "@/lib/auth-client";
 import { handlePageHint } from "@/lib/pages/page-realtime";
+import { onWake, reconnectDelay } from "@/lib/realtime-reconnect";
 import { onSignOut } from "@/lib/sign-out";
 import { invalidateTaskQueries } from "@/lib/task-query/cache";
 
@@ -57,8 +58,6 @@ const TRASH_HINTS = new Set([
   "PROJECT_UPDATED",
 ]);
 
-const MAX_RETRIES = 5;
-
 // When each project's socket last closed (navigating away, a dropped
 // connection). Queries don't refetch on mount, so changes made meanwhile by
 // people, agents or automations are caught up when it opens again.
@@ -101,7 +100,6 @@ function catchUpProject(
     queryClient.invalidateQueries({ queryKey });
   }
 }
-const BASE_DELAY = 1000; // 1 second
 
 /** Close code of a project socket whose access was revoked (API ws/index.ts). */
 const PROJECT_ACCESS_REVOKED = 4404;
@@ -503,11 +501,8 @@ export function useProjectWebSocket(projectId: string) {
           queryClient.invalidateQueries({ queryKey: ["projects"] });
           return;
         }
-        if (retries < MAX_RETRIES) {
-          const delay = BASE_DELAY * 2 ** retries; // 1s, 2s, 4s, 8s, 16s
-          retries += 1;
-          retryTimeout = setTimeout(connect, delay);
-        }
+        retryTimeout = setTimeout(connect, reconnectDelay(retries));
+        retries += 1;
       };
     }
     function dispose() {
@@ -524,9 +519,16 @@ export function useProjectWebSocket(projectId: string) {
 
     // Close before the session ends, so no reconnect races the sign-out.
     const stopOnSignOut = onSignOut(dispose);
+    // Back in view or online: reconnect now rather than after the backoff.
+    const stopWake = onWake(() => {
+      if (disposed || retryTimeout === null) return;
+      clearTimeout(retryTimeout);
+      connect();
+    });
     connect();
 
     return () => {
+      stopWake();
       stopOnSignOut();
       dispose();
     };

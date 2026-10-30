@@ -104,22 +104,42 @@ describe("user WebSocket lifecycle", () => {
     unmount();
     expect(vi.getTimerCount()).toBe(0);
   });
-  it("retains the five-retry limit and does not duplicate retries on repeated close events", () => {
+  it("keeps reconnecting with a backoff capped at 30 s, without duplicate retries", () => {
     const { unmount } = renderHook(useUserWebSocket);
-    for (let retry = 0; retry < 5; retry++) {
+    // An outage longer than the old five retries (about 31 s) still recovers.
+    for (let retry = 0; retry < 8; retry++) {
       act(() => {
         const current = TestSocket.instances.at(-1);
         current?.onclose?.();
         current?.onclose?.();
-        vi.advanceTimersByTime(1000 * 2 ** retry);
+        vi.advanceTimersByTime(Math.min(1000 * 2 ** retry, 30_000));
       });
       expect(TestSocket.instances).toHaveLength(retry + 2);
     }
+    unmount();
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it("catches up on everything on screen when a dropped socket opens again", () => {
+    const { unmount } = renderHook(useUserWebSocket);
+    act(() => TestSocket.instances[0]?.open());
+    expect(client.invalidateQueries).not.toHaveBeenCalled();
     act(() => {
-      TestSocket.instances.at(-1)?.onclose?.();
-      vi.advanceTimersByTime(60_000);
+      TestSocket.instances[0]?.onclose?.();
+      vi.advanceTimersByTime(1000);
     });
-    expect(TestSocket.instances).toHaveLength(6);
+    act(() => TestSocket.instances[1]?.open());
+    expect(client.invalidateQueries).toHaveBeenCalledWith();
+    unmount();
+  });
+
+  it("reconnects at once when the tab becomes visible during a backoff", () => {
+    const { unmount } = renderHook(useUserWebSocket);
+    act(() => {
+      TestSocket.instances[0]?.onclose?.();
+      document.dispatchEvent(new Event("visibilitychange"));
+    });
+    expect(TestSocket.instances).toHaveLength(2);
     unmount();
     expect(vi.getTimerCount()).toBe(0);
   });
