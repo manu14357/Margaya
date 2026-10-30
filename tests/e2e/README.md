@@ -16,7 +16,8 @@ pnpm --filter @margaya/e2e db:reset       # recreate margaya_e2e after migration
 ```
 
 Requires the `margaya-test-pg` Postgres container on `127.0.0.1:55432` and
-Microsoft Edge. Account details: [`creds.md`](../../creds.md).
+Microsoft Edge. Account details: [`creds.md`](../../creds.md). To use another
+Postgres, set `E2E_DATABASE_URL` (the database is created if it is missing).
 
 ## What a run does
 

@@ -30,7 +30,10 @@ export const E2E_WEB_MODE: "preview" | "dev" =
 export const E2E_WEB_DIST = path.join(E2E_ROOT, ".web-dist");
 
 export const E2E_DATABASE_NAME = "margaya_e2e";
-export const E2E_DATABASE_URL = `postgresql://margaya:margaya@127.0.0.1:55432/${E2E_DATABASE_NAME}`;
+// E2E_DATABASE_URL overrides it, e.g. when port 55432 is taken or reserved.
+export const E2E_DATABASE_URL =
+  process.env.E2E_DATABASE_URL ??
+  `postgresql://margaya:margaya@127.0.0.1:55432/${E2E_DATABASE_NAME}`;
 
 export const MAILPIT_URL = "http://127.0.0.1:8025";
 export const MAILPIT_SMTP_PORT = 1025;
