@@ -36,6 +36,7 @@ export const TOOL_KEYS: Record<string, string> = {
   move_status: "ai:agents.tools.move_status",
   create_subtask: "ai:agents.tools.create_subtask",
   create_page: "ai:agents.tools.create_page",
+  update_page: "ai:agents.tools.update_page",
   link_tasks: "ai:agents.tools.link_tasks",
   delete_task: "ai:agents.tools.delete_task",
   bulk_move_status: "ai:agents.tools.bulk_move_status",
@@ -196,6 +197,38 @@ export function changeDiff(
             before: null,
             after: text(change.title),
           },
+        ],
+      };
+    case "update_page":
+      return {
+        taskLabel,
+        lines: [
+          ...(after.title !== undefined
+            ? [
+                {
+                  labelKey: "ai:agents.change.fields.title",
+                  before: text(before.title),
+                  after: text(after.title),
+                },
+              ]
+            : []),
+          ...(after.content === undefined
+            ? []
+            : change.mode === "append"
+              ? [
+                  {
+                    labelKey: "ai:agents.change.fields.pageSection",
+                    before: null,
+                    after: text(change.appended),
+                  },
+                ]
+              : [
+                  {
+                    labelKey: "ai:agents.change.fields.pageContent",
+                    before: null,
+                    after: text(after.content),
+                  },
+                ]),
         ],
       };
     case "link_tasks":

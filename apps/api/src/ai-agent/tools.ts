@@ -1,4 +1,5 @@
-import { and, asc, eq, inArray, isNull, sql } from "drizzle-orm";
+import { jsonToMarkdown, markdownToJson } from "@margaya/editor-schema";
+import { and, asc, eq, inArray, isNull, or, sql } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import { z } from "zod";
 import {
@@ -14,11 +15,25 @@ import { wrapUntrusted } from "../ai/prompt";
 import { createRedactor } from "../ai/redact";
 import type { ChatTool } from "../ai/types";
 import db from "../database";
-import { columnTable, projectTable, taskTable } from "../database/schema";
+import {
+  activityTable,
+  columnTable,
+  pageReferenceTable,
+  pageTable,
+  projectTable,
+  taskTable,
+} from "../database/schema";
+import { pageRoomHooks } from "../page/content";
 import { searchWorkspace } from "../search/search-workspace";
 import { VALID_PRIORITIES } from "../task/validate-task-fields";
 import { RELATION_INPUT_NAMES } from "../task-relation/types";
-import type { Change, TaskFields } from "./changes";
+import {
+  type Change,
+  type PageFields,
+  pageContentHash,
+  type TaskFields,
+} from "./changes";
+import { pagePath, scrubAgentText } from "./known-entities";
 import {
   type PermissionMap,
   principalProjectAllows,
@@ -240,6 +255,78 @@ function notFound(error: unknown): never {
   throw error;
 }
 
+// Pages longer than this are left to people: the change set keeps the
+// content before and after.
+const MAX_PAGE_CHARS = 200_000;
+
+/** Live pages linked to a task that the run may read, oldest first. */
+async function linkedPages(ctx: ToolContext, taskId: string) {
+  const projectIds = [...ctx.scope.projectIds];
+  if (!ctx.scope.can.readPages || projectIds.length === 0) return [];
+  return db
+    .select({
+      id: pageTable.id,
+      title: pageTable.title,
+      projectId: pageTable.projectId,
+    })
+    .from(pageReferenceTable)
+    .innerJoin(pageTable, eq(pageTable.id, pageReferenceTable.pageId))
+    .innerJoin(projectTable, eq(projectTable.id, pageTable.projectId))
+    .where(
+      and(
+        eq(pageReferenceTable.entityType, "task"),
+        eq(pageReferenceTable.entityId, taskId),
+        eq(pageTable.workspaceId, ctx.workspaceId),
+        inArray(pageTable.projectId, projectIds),
+        eq(projectTable.pagesEnabled, true),
+        isNull(pageTable.archivedAt),
+        or(
+          eq(pageTable.access, "public"),
+          eq(pageTable.ownerId, ctx.principalUserId),
+        ),
+      ),
+    )
+    .orderBy(asc(pageTable.createdAt), asc(pageTable.id))
+    .limit(10);
+}
+
+/**
+ * The pages linked to a task, so the agent revises one with update_page
+ * instead of creating another copy. Null when there are none.
+ */
+export async function linkedPagesNote(
+  ctx: ToolContext,
+  taskId: string,
+): Promise<string | null> {
+  const pages = await linkedPages(ctx, taskId);
+  if (pages.length === 0) return null;
+  const list = pages
+    .map(
+      (page) =>
+        `- "${page.title || "Untitled"}" (page id ${page.id}, link ${pagePath(ctx.workspaceId, page.projectId, page.id)})`,
+    )
+    .join("\n");
+  return [
+    "Pages already linked to this task. To revise or extend one, read it with read_page and change it with update_page; don't create another page for the same thing:",
+    wrapUntrusted({ source: "pages:linked", text: list, maxChars: 4_000 }),
+  ].join("\n");
+}
+
+/** A leading task link of the old content, kept when new content drops it. */
+function keepTaskLink(before: string, content: string): string {
+  const link = /^\s*(<margaya-issue-link\s[^>]*\/>)/.exec(before)?.[1];
+  const taskId = link ? /task-id="([^"]*)"/.exec(link)?.[1] : undefined;
+  if (!link || !taskId || content.includes(`task-id="${taskId}"`)) {
+    return `${content.trim()}\n`;
+  }
+  return `${link}\n\n${content.trim()}\n`;
+}
+
+/** Markdown as the page stores it, to tell a real change from a no-op. */
+function storedForm(markdown: string): string {
+  return jsonToMarkdown(markdownToJson(markdown));
+}
+
 // --- The catalog ---
 
 export const AGENT_TOOLS: ToolDef[] = [
@@ -257,10 +344,12 @@ export const AGENT_TOOLS: ToolDef[] = [
       }).catch(notFound);
       ctx.seen.push(...items);
       const columns = await projectColumns(task.projectId);
+      const pages = await linkedPagesNote(ctx, task.id);
       return [
         `Task id: ${task.id} (key ${task.slug.toUpperCase()}-${task.number ?? 0}, project id ${task.projectId})`,
         `Statuses in this project: ${columns.map((c) => c.slug).join(", ")}`,
         renderContext(items, { maxChars: 20_000 }),
+        ...(pages ? [pages] : []),
       ].join("\n");
     },
   }),
@@ -293,7 +382,10 @@ export const AGENT_TOOLS: ToolDef[] = [
         maxChars: 16_000,
       }).catch(notFound);
       ctx.seen.push(item);
-      return renderContext([item], { maxChars: 18_000 });
+      return [
+        `Page id: ${item.id} (link ${item.url})`,
+        renderContext([item], { maxChars: 18_000 }),
+      ].join("\n");
     },
   }),
   tool({
@@ -340,21 +432,44 @@ export const AGENT_TOOLS: ToolDef[] = [
   tool({
     name: "add_comment",
     description:
-      "Comment on a task. Use it to answer the person who asked you, or to report what you did.",
+      "Comment on a task. Use it to answer the person who asked you, or to report what you did. Pass replyTo (a comment id on the same task) to answer in that comment's thread.",
     risk: "write",
     requires: { task: ["update"] },
     schema: z
-      .object({ task: taskRef, body: z.string().trim().min(1).max(10_000) })
+      .object({
+        task: taskRef,
+        body: z.string().trim().min(1).max(10_000),
+        replyTo: z.string().trim().min(1).max(128).optional(),
+      })
       .strict(),
     async plan(ctx, args) {
       const task = await findTask(ctx, args.task);
       await assertPrincipalMay(ctx, task.projectId, { task: ["update"] });
+      let parentId: string | undefined;
+      if (args.replyTo) {
+        const [parent] = await db
+          .select({ id: activityTable.id, parentId: activityTable.parentId })
+          .from(activityTable)
+          .where(
+            and(
+              eq(activityTable.id, args.replyTo),
+              eq(activityTable.taskId, task.id),
+              eq(activityTable.type, "comment"),
+            ),
+          )
+          .limit(1);
+        if (!parent) throw new ToolError("Comment not found on this task");
+        // Threads are one level deep: a reply to a reply joins its thread.
+        parentId = parent.parentId ?? parent.id;
+      }
       return {
         op: "comment",
         taskId: task.id,
         projectId: task.projectId,
         taskLabel: taskLabel(task),
-        content: args.body,
+        // People read it: ids become keys, titles and names.
+        content: await scrubAgentText(ctx, args.body),
+        ...(parentId ? { parentId } : {}),
       };
     },
   }),
@@ -526,6 +641,106 @@ export const AGENT_TOOLS: ToolDef[] = [
         content: args.content,
         taskKey: `${task.slug.toUpperCase()}-${task.number ?? 0}`,
         taskUrl: `/dashboard/workspace/${ctx.workspaceId}/project/${task.projectId}/task/${task.id}`,
+      };
+    },
+  }),
+  tool({
+    name: "update_page",
+    description:
+      'Edit an existing page: replace its whole content with new Markdown (mode "replace", the default), or add a section at the end (mode "append"); optionally rename it. Use it to revise a page the task already has (read_task lists them) instead of creating another copy with create_page. Read the page first.',
+    risk: "write",
+    requires: { page: ["update"] },
+    schema: z
+      .object({
+        page: z.string().trim().min(1).max(100).describe("The page id"),
+        title: z.string().trim().min(1).max(200).optional(),
+        content: z.string().trim().min(1).max(MAX_PAGE_CHARS).optional(),
+        mode: z.enum(["replace", "append"]).optional(),
+      })
+      .strict()
+      .refine(
+        (args) => args.title !== undefined || args.content !== undefined,
+        {
+          message: "Give a title, content or both",
+        },
+      ),
+    async plan(ctx, args) {
+      const item = await loadPageContext(ctx.scope, args.page, {
+        maxChars: 100,
+      }).catch(notFound);
+      if (!item.projectId) {
+        throw new ToolError("Only project pages can be edited");
+      }
+      await assertPrincipalMay(ctx, item.projectId, { page: ["update"] });
+      // An open editor on this instance saves first, so "before" holds
+      // what people just typed and a replace can't drop it.
+      await pageRoomHooks()
+        .liveDocument(item.id)
+        .catch(() => null);
+      const [page] = await db
+        .select({
+          title: pageTable.title,
+          access: pageTable.access,
+          isLocked: pageTable.isLocked,
+          archivedAt: pageTable.archivedAt,
+          contentMarkdown: pageTable.contentMarkdown,
+        })
+        .from(pageTable)
+        .where(eq(pageTable.id, item.id))
+        .limit(1);
+      if (!page) throw new ToolError("Page not found");
+      if (page.access !== "public") {
+        throw new ToolError(
+          "Agents can only edit pages everyone in the project can see",
+        );
+      }
+      if (page.isLocked || page.archivedAt) {
+        throw new ToolError("The page is locked or archived");
+      }
+      const current = page.contentMarkdown;
+      if (current.length > MAX_PAGE_CHARS) {
+        throw new ToolError("This page is too long for an agent to edit");
+      }
+      const mode = args.mode ?? "replace";
+      const before: PageFields = {};
+      const after: PageFields = {};
+      if (args.title !== undefined && args.title !== page.title) {
+        before.title = page.title;
+        after.title = args.title;
+      }
+      let appended: string | undefined;
+      if (args.content !== undefined) {
+        const next =
+          mode === "append"
+            ? `${current.trimEnd()}\n\n${args.content.trim()}\n`
+            : keepTaskLink(current, args.content);
+        if (storedForm(next) !== current) {
+          if (next.length > MAX_PAGE_CHARS) {
+            throw new ToolError(
+              "The page would get too long. Replace its content with a shorter version instead.",
+            );
+          }
+          before.content = current;
+          after.content = next;
+          if (mode === "append") appended = args.content.trim();
+        }
+      }
+      if (Object.keys(after).length === 0) {
+        throw new NothingToChange(
+          "Nothing to change: the page already says this.",
+        );
+      }
+      return {
+        op: "update_page",
+        projectId: item.projectId,
+        taskId: null,
+        taskLabel: page.title || "Untitled",
+        pageId: item.id,
+        mode: after.content === undefined ? "replace" : mode,
+        before,
+        after,
+        ...(appended ? { appended } : {}),
+        baseHash: pageContentHash(current),
       };
     },
   }),

@@ -12,10 +12,13 @@ type ChangeLinks = { taskUrl: string | null; createdUrl: string | null };
 const MARKDOWN_FIELDS = new Set([
   "ai:agents.change.fields.description",
   "ai:agents.change.fields.comment",
+  "ai:agents.change.fields.pageContent",
+  "ai:agents.change.fields.pageSection",
 ]);
 
 const OPEN_KEYS: Record<string, string> = {
   create_page: "ai:agents.change.openPage",
+  update_page: "ai:agents.change.openPage",
   create_subtask: "ai:agents.change.openSubtask",
   link_tasks: "ai:agents.change.openLinked",
 };

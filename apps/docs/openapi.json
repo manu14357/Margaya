@@ -2881,6 +2881,13 @@
               "public"
             ],
             "description": "Comments only: public comments also show on the project's public board. Everything else is internal."
+          },
+          "parentId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Comments only: the top-level comment this one replies to, or null. Threads are one level deep; deleting a comment turns its replies into top-level comments."
           }
         },
         "required": [
@@ -2895,7 +2902,8 @@
           "externalUserAvatar",
           "externalSource",
           "externalUrl",
-          "visibility"
+          "visibility",
+          "parentId"
         ]
       },
       "Comment": {
@@ -2933,6 +2941,13 @@
             ],
             "description": "public comments also show on the public board."
           },
+          "parentId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The top-level comment this one replies to, or null for a top-level comment. Threads are one level deep; deleting a comment turns its replies into top-level comments."
+          },
           "user": {
             "anyOf": [
               {
@@ -2953,6 +2968,7 @@
           "createdAt",
           "updatedAt",
           "visibility",
+          "parentId",
           "user"
         ]
       },
@@ -25656,6 +25672,7 @@
               "enum": [
                 "mention",
                 "assign",
+                "intake",
                 "schedule",
                 "automation"
               ]
@@ -26605,7 +26622,7 @@
               "taskUrl",
               "createdUrl"
             ],
-            "description": "App paths of the task a change touched and of what it created or linked (a page, a sub-task, the other task); null when none."
+            "description": "App paths of the task a change touched and of what it created, edited or linked (a page, a sub-task, the other task); null when none."
           },
           "tokenIn": {
             "type": "integer"
@@ -39470,7 +39487,7 @@
           "Activity"
         ],
         "summary": "Get task activity",
-        "description": "Get a task's full activity feed, newest first: comments alongside system events such as status and assignee changes.",
+        "description": "Get a task's full activity feed, newest first: comments alongside system events such as status and assignee changes. Replies are in the same list: parentId names the top-level comment each one belongs to.",
         "parameters": [
           {
             "schema": {
@@ -39625,7 +39642,7 @@
           "Activity"
         ],
         "summary": "Create comment",
-        "description": "Add a comment to a task. Equivalent to POST /comment/{taskId}, kept for the activity-feed client.",
+        "description": "Add a comment to a task, or a reply with parentId. Equivalent to POST /comment/{taskId}, kept for the activity-feed client.",
         "requestBody": {
           "required": true,
           "content": {
@@ -39639,6 +39656,12 @@
                   "comment": {
                     "type": "string",
                     "maxLength": 10000
+                  },
+                  "parentId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128,
+                    "description": "Reply in a thread: the id of a comment on the same task. A reply to a reply joins the top-level comment's thread (threads are one level deep). 404 when the comment is not on this task."
                   }
                 },
                 "required": [
@@ -39675,6 +39698,16 @@
           },
           "403": {
             "description": "No workspace access, or missing task:update permission",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "parentId is not a comment on this task",
             "content": {
               "text/plain": {
                 "schema": {
@@ -39840,7 +39873,7 @@
           "Comments"
         ],
         "summary": "Get task comments",
-        "description": "Get every comment on a task, oldest first, each with its author's name and avatar.",
+        "description": "Get every comment on a task, oldest first, each with its author's name and avatar. Replies are in the same list: parentId names the top-level comment each one belongs to.",
         "parameters": [
           {
             "schema": {
@@ -39896,7 +39929,7 @@
           "Comments"
         ],
         "summary": "Create task comment",
-        "description": "Add a comment to a task. Mentions in the content notify and subscribe the mentioned members, every assignee and subscriber is notified too, and the author (unless the comment is imported with an external author) becomes a subscriber. Returns the stored activity row, which carries no author object -- read the list route for that.",
+        "description": "Add a comment to a task, or a reply with parentId. Mentions in the content notify and subscribe the mentioned members, every assignee and subscriber is notified too, and the author (unless the comment is imported with an external author) becomes a subscriber. A reply also notifies the people already in its thread (the top-level comment's author and earlier repliers), and a reply under an AI agent's comment reaches that agent as an @mention would. Returns the stored activity row, which carries no author object -- read the list route for that.",
         "parameters": [
           {
             "schema": {
@@ -39940,6 +39973,12 @@
                       "public"
                     ],
                     "description": "internal (default) or public: also shown on the project's public board. Public needs a published board with comments on (409 otherwise)."
+                  },
+                  "parentId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128,
+                    "description": "Reply in a thread: the id of a comment on the same task. A reply to a reply joins the top-level comment's thread (threads are one level deep). 404 when the comment is not on this task."
                   }
                 },
                 "required": [
@@ -39975,6 +40014,16 @@
           },
           "403": {
             "description": "No workspace access, missing task:update permission, or external attribution without workspace:manage_settings",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "parentId is not a comment on this task",
             "content": {
               "text/plain": {
                 "schema": {

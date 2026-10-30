@@ -68,6 +68,50 @@ describe("changeDiff", () => {
       },
     ]);
   });
+
+  it("shows a page edit: a renamed title and the new content or added section", () => {
+    const replaced = changeDiff(
+      {
+        op: "update_page",
+        taskLabel: "Login spec",
+        mode: "replace",
+        before: { title: "Login spec", content: "Old" },
+        after: { title: "Login page specification", content: "New" },
+      },
+      labels,
+    );
+    expect(replaced.taskLabel).toBe("Login spec");
+    expect(replaced.lines).toEqual([
+      {
+        labelKey: "ai:agents.change.fields.title",
+        before: "Login spec",
+        after: "Login page specification",
+      },
+      {
+        labelKey: "ai:agents.change.fields.pageContent",
+        before: null,
+        after: "New",
+      },
+    ]);
+    const appended = changeDiff(
+      {
+        op: "update_page",
+        taskLabel: "Login spec",
+        mode: "append",
+        before: { content: "Old" },
+        after: { content: "Old\n\n## Risks" },
+        appended: "## Risks",
+      },
+      labels,
+    );
+    expect(appended.lines).toEqual([
+      {
+        labelKey: "ai:agents.change.fields.pageSection",
+        before: null,
+        after: "## Risks",
+      },
+    ]);
+  });
 });
 
 describe("agent attribution", () => {

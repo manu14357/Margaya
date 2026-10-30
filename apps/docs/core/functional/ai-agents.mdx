@@ -61,6 +61,7 @@ Agents:
 There are several ways to start a run:
 
 - **Mention it** in a comment: `@Triage Bot why does this time out?`. The agent reads the task and your comment and answers in the thread. It changes the task only when your comment asks it to.
+- **Reply under its comment**: a reply in the thread of a comment the agent wrote reaches the agent as a mention does, with the same rights, approvals and limits. The agent reads the comment you replied to and answers in the same thread.
 - **Assign it** a task. The agent reads the task. If the task asks for a clear, small piece of work, it does that and reports back with a comment; otherwise it comments with a short plan or the questions it needs answered. It doesn't rename the task, rewrite its description or create sub-tasks, pages or links unless the task asks for that.
 - **Run it** from the task: choose **Run agent** in the task's action bar, pick an agent, say what it should do and choose **Run**. The same dialog lists recent runs on the task.
 - **Schedule it**: see [Schedules](#schedules).
@@ -101,6 +102,8 @@ The agent runs on requests in the projects it may work in, where **Intake** and 
 
 When an agent can't continue without you, for example to choose between two options, it asks. The run pauses with the status **Needs input**, you get the question in your inbox, and the Agent Desk shows it with a reply box (and the agent's suggested answers as buttons). Your answer resumes the same run where it stopped. A question nobody answers within 24 hours ends the run as failed. Only the person the run works for can answer.
 
+When a task already has a page linked to it, such as a spec, an agent asked to write or revise it edits that page instead of creating another copy. In comments and answers, agents refer to tasks by key, to pages by a link with their title, and to projects and people by name, never by internal ids.
+
 If a mention or assignment ends without a comment on the task, for example because the agent's role can't comment, the agent's answer goes to your inbox instead, with a link to the run in the Agent Desk.
 
 ### What an agent can do
@@ -108,7 +111,7 @@ If a mention or assignment ends without a comment on the task, for example becau
 | Kind | Tools |
 |---|---|
 | Read | Read a task with its latest comments, read a project and its statuses, read a page, search the workspace. |
-| Change | Comment, update a task's title, priority, due date or description, change its status, create a sub-task, link two tasks, create a project page linked to the task. |
+| Change | Comment, update a task's title, priority, due date or description, change its status, create a sub-task, link two tasks, create a project page linked to the task, edit a page (replace its content, add a section or rename it). |
 | Destructive | Move a task to the trash, change the status of several tasks at once. These always wait for approval. |
 | Ask | Ask the person a question and pause until they answer. |
 | Outside (web access only) | Search the web; read from and act in connected services. Actions in a connected service always wait for approval and can't be undone. |
@@ -142,7 +145,7 @@ Task descriptions, comments, pages and search results can be written by anyone, 
 
 Every change a run makes is part of its **change set**: what it changed, with the values before and after.
 
-- **Applied right away, with Undo.** By default, ordinary changes (comments, field updates, status changes, sub-tasks, links, pages) apply at once. **Undo** reverts one change: old values come back, a comment, sub-task or link the agent created is removed, a page it created is archived, a trashed task is restored. Undoing a sub-task needs permission to delete tasks.
+- **Applied right away, with Undo.** By default, ordinary changes (comments, field updates, status changes, sub-tasks, links, pages) apply at once. **Undo** reverts one change: old values come back, a comment, sub-task or link the agent created is removed, a page it created is archived, a page it edited gets its old title and content back, a trashed task is restored. Undoing a sub-task needs permission to delete tasks. A page edit can be undone only while nobody has changed the page since; after that, restore an earlier version from the page's history.
 - **Waiting for approval.** Destructive changes always wait. In **Settings → Workspace → AI**, **Approve AI changes** makes every agent change wait. A waiting change appears in the inbox of the person who asked, with a before/after preview and **Approve** or **Reject**. Approving applies it with your current rights; rejecting discards it. Approvals expire after 24 hours.
 
 Once nothing in a run waits any more, the run ends: it **succeeded** if it changed something, it is **cancelled** if you rejected everything it proposed, and it **failed** if its proposals expired. Its summary gets a line saying what was approved, rejected or expired.

@@ -66,11 +66,13 @@ export function changeLinks(
   const createdUrl =
     c.op === "create_page" && text(ref.pageId)
       ? `${base}/pages/${ref.pageId}`
-      : c.op === "create_subtask"
-        ? taskPath(text(ref.taskId))
-        : c.op === "link_tasks"
-          ? taskPath(text(c.targetTaskId))
-          : null;
+      : c.op === "update_page" && text(c.pageId)
+        ? `${base}/pages/${c.pageId}`
+        : c.op === "create_subtask"
+          ? taskPath(text(ref.taskId))
+          : c.op === "link_tasks"
+            ? taskPath(text(c.targetTaskId))
+            : null;
   return { taskUrl: taskPath(text(c.taskId)), createdUrl };
 }
 
