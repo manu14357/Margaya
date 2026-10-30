@@ -84,6 +84,8 @@ type CommentCardProps = {
   authorKind?: PublicAuthorKind;
   /** The project's public board, when it has one. */
   publicBoard?: CommentPublicBoard;
+  /** A reply's top-level comment's visibility; undefined for top-level. */
+  parentVisibility?: CommentVisibility;
   /**
    * `card` is a top-level comment in its own bordered card; `reply` is a
    * compact row inside its parent's card.
@@ -125,6 +127,7 @@ export default function CommentCard({
   visibility = "internal",
   authorKind,
   publicBoard,
+  parentVisibility,
   variant = "card",
   badges,
   onReply,
@@ -155,6 +158,7 @@ export default function CommentCard({
     authorId: user?.id ?? null,
     imported: Boolean(externalSource),
     publicBoard,
+    parentVisibility,
   };
   const showPublicActions = hasCommentPublicActions(publicActionInput);
   const sourceName = externalSource

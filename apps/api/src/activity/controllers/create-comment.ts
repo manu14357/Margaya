@@ -1,4 +1,5 @@
 import { and, eq, isNotNull, or } from "drizzle-orm";
+import { alias } from "drizzle-orm/pg-core";
 import { HTTPException } from "hono/http-exception";
 import { withAgentVia } from "../../ai-agent/attribution";
 import { withAutomationMarker } from "../../automation-rule/context";
@@ -32,18 +33,45 @@ export type CreateCommentOptions = {
   parentId?: string;
 };
 
+const PARENT_NOT_FOUND = "Parent comment not found";
+export const PUBLIC_REPLY_NEEDS_PUBLIC_PARENT =
+  "A reply can only be public when the comment it answers is public";
+
+const PARENT_FOREIGN_KEY = "activity_parent_id_activity_id_fk";
+
 /**
- * The top-level comment a reply attaches to, or a 404 when `parentId` is
- * not a comment of this task. Checking the task keeps a reply from naming
- * (or probing for) a comment the caller cannot see.
+ * The parent was deleted after `resolveReplyParent` found it: the insert
+ * breaks the parent foreign key. Any other failure is a real error.
+ */
+function isParentGone(error: unknown) {
+  const cause = error instanceof Error ? (error.cause ?? error) : error;
+  return (
+    typeof cause === "object" &&
+    cause !== null &&
+    "code" in cause &&
+    cause.code === "23503" &&
+    "constraint" in cause &&
+    cause.constraint === PARENT_FOREIGN_KEY
+  );
+}
+
+const threadTop = alias(activityTable, "thread_top");
+
+/**
+ * The top-level comment a reply attaches to, with its visibility, or a 404
+ * when `parentId` is not a comment of this task. Checking the task keeps a
+ * reply from naming (or probing for) a comment the caller cannot see.
  */
 async function resolveReplyParent(taskId: string, parentId: string) {
   const [parent] = await db
     .select({
       id: activityTable.id,
       parentId: activityTable.parentId,
+      visibility: activityTable.visibility,
+      topVisibility: threadTop.visibility,
     })
     .from(activityTable)
+    .leftJoin(threadTop, eq(threadTop.id, activityTable.parentId))
     .where(
       and(
         eq(activityTable.id, parentId),
@@ -54,9 +82,11 @@ async function resolveReplyParent(taskId: string, parentId: string) {
     )
     .limit(1);
   if (!parent) {
-    throw new HTTPException(404, { message: "Parent comment not found" });
+    throw new HTTPException(404, { message: PARENT_NOT_FOUND });
   }
-  return parent.parentId ?? parent.id;
+  return parent.parentId
+    ? { id: parent.parentId, visibility: parent.topVisibility ?? "internal" }
+    : { id: parent.id, visibility: parent.visibility };
 }
 
 /**
@@ -113,9 +143,17 @@ async function createComment(
     parentId: requestedParentId,
   }: CreateCommentOptions = {},
 ) {
-  const parentId = requestedParentId
+  const parent = requestedParentId
     ? await resolveReplyParent(taskId, requestedParentId)
     : null;
+  // The public board lists comments flat: a public answer to an internal
+  // comment would show there without the question it answers.
+  if (parent && visibility === "public" && parent.visibility !== "public") {
+    throw new HTTPException(400, {
+      message: PUBLIC_REPLY_NEEDS_PUBLIC_PARENT,
+    });
+  }
+  const parentId = parent?.id ?? null;
 
   const [activity] = await db
     .insert(activityTable)
@@ -136,7 +174,15 @@ async function createComment(
           }
         : {}),
     })
-    .returning();
+    .returning()
+    .catch((error: unknown) => {
+      // Deleted between the check above and this insert: the same answer
+      // as a parent that was never there.
+      if (parentId && isParentGone(error)) {
+        throw new HTTPException(404, { message: PARENT_NOT_FOUND });
+      }
+      throw error;
+    });
 
   if (!activity) {
     throw new HTTPException(500, {

@@ -33,6 +33,8 @@ export type CommentPublicActionInput = {
   /** Imported comments (GitHub, Jira…) never go public. */
   imported: boolean;
   publicBoard?: CommentPublicBoard;
+  /** A reply's top-level comment: a reply goes public only under a public one. */
+  parentVisibility?: CommentVisibility;
 };
 
 /** Which public-board actions a comment's "⋯" menu offers (B12 §1.6). */
@@ -43,12 +45,17 @@ export function commentPublicActions({
   authorId,
   imported,
   publicBoard,
+  parentVisibility,
 }: CommentPublicActionInput) {
   const isPublic = visibility === "public";
   const moderator = Boolean(publicBoard?.canModerate) && !isAuthor;
   return {
     makePublic:
-      isAuthor && !isPublic && !imported && Boolean(publicBoard?.open),
+      isAuthor &&
+      !isPublic &&
+      !imported &&
+      Boolean(publicBoard?.open) &&
+      parentVisibility !== "internal",
     makeInternal: isAuthor && isPublic,
     hide: moderator && isPublic,
     remove: moderator && isPublic,

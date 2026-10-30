@@ -31,6 +31,7 @@ import {
 } from "../../apps/api/src/database/schema";
 import { resetRateLimitMemory } from "../../apps/api/src/utils/rate-limit";
 import { defaultRolePayloads } from "../../packages/permissions/src";
+import { withParentDeletedOnReply } from "./helpers/comment-race";
 import { resetTestDatabase } from "./helpers/database";
 import { draftScene } from "./helpers/drafts";
 
@@ -598,6 +599,38 @@ describe("comment threads", () => {
     expect(answers[0]?.parentId).toBe(parent.id);
     // The agent's own reply never triggers another run.
     expect(await drainAgentRuns()).toBe(0);
+  });
+
+  it("reports a thread deleted before its reply lands as not found", async () => {
+    const { s, bot, task } = await agentScene();
+    const parent = await s.ok<{ id: string }>(
+      s.mia,
+      "POST",
+      `/comment/${task.id}`,
+      { content: "A question" },
+    );
+    const answered = await withParentDeletedOnReply(parent.id, () =>
+      run(
+        s,
+        s.mia,
+        bot.id,
+        task.id,
+        `Answer ${marker("add_comment", { task: task.id, body: "Too late.", replyTo: parent.id })}`,
+      ),
+    );
+    expect(toolSteps(answered)).toEqual([
+      expect.objectContaining({ toolName: "add_comment", status: "error" }),
+    ]);
+    const [step] = await db
+      .select({ resultRef: aiRunStepTable.resultRef })
+      .from(aiRunStepTable)
+      .where(eq(aiRunStepTable.toolName, "add_comment"));
+    expect(step?.resultRef).toEqual({ reason: "API_ERROR", status: 404 });
+    const stored = await db
+      .select()
+      .from(activityTable)
+      .where(eq(activityTable.content, "Too late."));
+    expect(stored).toHaveLength(0);
   });
 
   it("is not reached by replies under someone else's comment", async () => {

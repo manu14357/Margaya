@@ -2,8 +2,10 @@ import { and, eq, ne } from "drizzle-orm";
 import { beforeEach, describe, expect, it } from "vitest";
 import db, { schema } from "../../apps/api/src/database";
 import { muteUser } from "../../apps/api/src/subscription/service";
+import { withParentDeletedOnReply } from "./helpers/comment-race";
 import { resetTestDatabase } from "./helpers/database";
 import { draftScene } from "./helpers/drafts";
+import { callMcpTool } from "./helpers/trash";
 
 type Scene = Awaited<ReturnType<typeof draftScene>>;
 type CommentJson = { id: string; parentId: string | null; content: string };
@@ -259,5 +261,168 @@ describe("API integration: comment threads", () => {
       `/comment/${task.id}`,
     );
     expect(listed.map((c) => c.id)).toEqual([parent.id]);
+  });
+
+  it("answers 404 when the parent is deleted just before the reply is stored", async () => {
+    const { s, task } = await threadScene();
+    const first = await comment(s, s.mia, task.id, "Gone soon");
+    const second = await comment(s, s.mia, task.id, "Also gone soon");
+    const third = await comment(s, s.mia, task.id, "Gone for MCP too");
+
+    const viaComment = await withParentDeletedOnReply(first.id, () =>
+      s.as(s.ada)("POST", `/comment/${task.id}`, {
+        content: "Racing reply",
+        parentId: first.id,
+      }),
+    );
+    expect(viaComment.status).toBe(404);
+    expect(await viaComment.text()).toBe("Parent comment not found");
+
+    const viaFeed = await withParentDeletedOnReply(second.id, () =>
+      s.as(s.ada)("POST", "/activity/comment", {
+        taskId: task.id,
+        comment: "Racing reply",
+        parentId: second.id,
+      }),
+    );
+    expect(viaFeed.status).toBe(404);
+    expect(await viaFeed.text()).toBe("Parent comment not found");
+
+    const viaMcp = await withParentDeletedOnReply(third.id, () =>
+      callMcpTool(s.app, s.ada.id, "create_task_comment", {
+        taskId: task.id,
+        content: "Racing reply",
+        parentId: third.id,
+      }),
+    );
+    expect(viaMcp.isError).toBe(true);
+    expect(viaMcp.text).toContain("Parent comment not found");
+
+    const stored = await db
+      .select()
+      .from(schema.activityTable)
+      .where(eq(schema.activityTable.content, "Racing reply"));
+    expect(stored).toHaveLength(0);
+    // Only the parent was lost; comments on the task still work.
+    const fine = await comment(s, s.ada, task.id, "After the race");
+    expect(fine.parentId).toBeNull();
+  });
+});
+
+describe("API integration: public replies", () => {
+  async function publicScene() {
+    const scene = await threadScene();
+    await db.insert(schema.projectPublicationTable).values({
+      projectId: scene.s.web.project.id,
+      linkToken: `token-${scene.s.web.project.id}`,
+      publishedAt: new Date(),
+      commentsEnabled: true,
+    });
+    return scene;
+  }
+
+  const publicComment = (
+    s: Scene,
+    user: Scene["mia"],
+    taskId: string,
+    content: string,
+    parentId?: string,
+  ) =>
+    s.as(user)("POST", `/comment/${taskId}`, {
+      content,
+      visibility: "public",
+      ...(parentId ? { parentId } : {}),
+    });
+
+  it("stores a public reply under a public comment", async () => {
+    const { s, task } = await publicScene();
+    const parent = (await (
+      await publicComment(s, s.mia, task.id, "Public question")
+    ).json()) as CommentJson & { visibility: string };
+    expect(parent.visibility).toBe("public");
+
+    const reply = await publicComment(
+      s,
+      s.ada,
+      task.id,
+      "Public answer",
+      parent.id,
+    );
+    expect(reply.status, await reply.clone().text()).toBe(200);
+    expect(await reply.json()).toMatchObject({
+      parentId: parent.id,
+      visibility: "public",
+    });
+    // An internal reply under a public comment stays allowed.
+    const internal = await comment(s, s.owner, task.id, "Team note", parent.id);
+    expect(internal.parentId).toBe(parent.id);
+  });
+
+  it("refuses a public reply to an internal comment, also via a reply", async () => {
+    const { s, task } = await publicScene();
+    const parent = await comment(s, s.mia, task.id, "Internal question");
+    const reply = await comment(
+      s,
+      s.ada,
+      task.id,
+      "Internal answer",
+      parent.id,
+    );
+
+    for (const parentId of [parent.id, reply.id]) {
+      const response = await publicComment(
+        s,
+        s.owner,
+        task.id,
+        "Public answer",
+        parentId,
+      );
+      expect(response.status, parentId).toBe(400);
+      expect(await response.text()).toBe(
+        "A reply can only be public when the comment it answers is public",
+      );
+    }
+    const stored = await db
+      .select()
+      .from(schema.activityTable)
+      .where(eq(schema.activityTable.content, "Public answer"));
+    expect(stored).toHaveLength(0);
+  });
+
+  it("makes a reply public only while its comment is public", async () => {
+    const { s, task } = await publicScene();
+    const parent = await comment(s, s.mia, task.id, "Internal question");
+    const reply = await comment(s, s.ada, task.id, "Answer", parent.id);
+    const visibilityPath = (id: string) =>
+      `/publication/comment/${id}/visibility`;
+
+    const refused = await s.as(s.ada)("PATCH", visibilityPath(reply.id), {
+      visibility: "public",
+    });
+    expect(refused.status).toBe(400);
+    expect(await refused.text()).toBe(
+      "A reply can only be public when the comment it answers is public",
+    );
+
+    await s.ok(s.mia, "PATCH", visibilityPath(parent.id), {
+      visibility: "public",
+    });
+    expect(
+      await s.ok<{ visibility: string }>(
+        s.ada,
+        "PATCH",
+        visibilityPath(reply.id),
+        { visibility: "public" },
+      ),
+    ).toMatchObject({ visibility: "public" });
+    // Back to internal is always allowed.
+    expect(
+      await s.ok<{ visibility: string }>(
+        s.ada,
+        "PATCH",
+        visibilityPath(reply.id),
+        { visibility: "internal" },
+      ),
+    ).toMatchObject({ visibility: "internal" });
   });
 });

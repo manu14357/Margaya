@@ -1,5 +1,7 @@
 import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
+import { alias } from "drizzle-orm/pg-core";
 import { HTTPException } from "hono/http-exception";
+import { PUBLIC_REPLY_NEEDS_PUBLIC_PARENT } from "../activity/controllers/create-comment";
 import deleteComment from "../activity/controllers/delete-comment";
 import db from "../database";
 import {
@@ -144,6 +146,8 @@ export async function listPublicComments(
   };
 }
 
+const threadParent = alias(activityTable, "thread_parent");
+
 async function loadComment(commentId: string) {
   const [comment] = await db
     .select({
@@ -152,9 +156,12 @@ async function loadComment(commentId: string) {
       userId: activityTable.userId,
       visibility: activityTable.visibility,
       projectId: taskTable.projectId,
+      // A reply's thread: the top-level comment it answers, if any.
+      parentVisibility: threadParent.visibility,
     })
     .from(activityTable)
     .innerJoin(taskTable, eq(taskTable.id, activityTable.taskId))
+    .leftJoin(threadParent, eq(threadParent.id, activityTable.parentId))
     .where(
       and(eq(activityTable.id, commentId), eq(activityTable.type, "comment")),
     )
@@ -191,6 +198,15 @@ export async function setCommentVisibility({
       ) {
         throw new HTTPException(409, {
           message: MODERATION_MESSAGES.needsBoard,
+        });
+      }
+      if (
+        visibility === "public" &&
+        comment.parentVisibility !== null &&
+        comment.parentVisibility !== "public"
+      ) {
+        throw new HTTPException(400, {
+          message: PUBLIC_REPLY_NEEDS_PUBLIC_PARENT,
         });
       }
     } else if (!(canShare && visibility === "internal")) {

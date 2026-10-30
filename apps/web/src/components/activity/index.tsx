@@ -699,6 +699,7 @@ function CommentActivityCard({
   commentAuthors,
   publicBoard,
   variant,
+  parentVisibility,
   onReply,
   replyLabel,
   replyButtonRef,
@@ -706,6 +707,8 @@ function CommentActivityCard({
 }: CommentContext & {
   activity: ActivityItem;
   variant?: "card" | "reply";
+  /** A reply's top-level comment's visibility. */
+  parentVisibility?: "internal" | "public";
   onReply?: () => void;
   replyLabel?: string;
   replyButtonRef?: Ref<HTMLButtonElement>;
@@ -783,6 +786,7 @@ function CommentActivityCard({
       visibility={activity.visibility}
       authorKind={isExternalComment ? undefined : authorKindOf(author)}
       publicBoard={publicBoard}
+      parentVisibility={parentVisibility}
       variant={variant}
       badges={via ? <AgentViaLine eventData={activity.eventData} /> : null}
       onReply={onReply}
@@ -850,6 +854,11 @@ function CommentActivity({
     ? t("activity:comment.thread.replyTo", { name: parentAuthorName })
     : t("activity:comment.thread.reply");
   const threaded = replies !== undefined;
+  const parentVisibility = activity.visibility ?? "internal";
+  // The public board lists comments flat, so only a public comment's
+  // replies may be public too (the API enforces the same).
+  const publicReplies =
+    Boolean(context.publicBoard?.open) && parentVisibility === "public";
 
   return (
     <FeedRow
@@ -874,11 +883,13 @@ function CommentActivity({
               replyLabel={replyLabel}
               replies={replies}
               canReply={canReply}
+              publicReplies={publicReplies}
               composer={composer}
               renderReply={(reply) => (
                 <CommentActivityCard
                   activity={reply}
                   variant="reply"
+                  parentVisibility={parentVisibility}
                   {...context}
                 />
               )}

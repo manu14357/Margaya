@@ -281,6 +281,22 @@ describe("CommentCard on a project with a public board", () => {
 describe("commentPublicActions", () => {
   const board = { projectId: "p1", open: true, canModerate: true };
 
+  it("makes a reply public only while the comment it answers is public", () => {
+    const reply = {
+      visibility: "internal" as const,
+      isAuthor: true,
+      imported: false,
+      publicBoard: board,
+    };
+    expect(
+      commentPublicActions({ ...reply, parentVisibility: "internal" })
+        .makePublic,
+    ).toBe(false);
+    expect(
+      commentPublicActions({ ...reply, parentVisibility: "public" }).makePublic,
+    ).toBe(true);
+  });
+
   it("lets the author make an internal comment public while the board is open", () => {
     expect(
       commentPublicActions({

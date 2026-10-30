@@ -340,4 +340,60 @@ describe("CommentThread", () => {
     renderThread({ canReply: false });
     expect(screen.queryByTestId("comment-thread-c1")).toBeNull();
   });
+
+  it("offers no visibility switch on replies unless public replies are open", () => {
+    renderThread();
+    fireEvent.click(screen.getByRole("button", { name: "footer-reply" }));
+    expect(
+      screen.queryByRole("button", {
+        name: "activity:commentVisibility.public",
+      }),
+    ).toBeNull();
+  });
+
+  it("sends a public reply when Public is picked, internal by default", async () => {
+    mocks.createComment.mockResolvedValue({ id: "r9" });
+    renderThread({ publicReplies: true });
+    fireEvent.click(screen.getByRole("button", { name: "footer-reply" }));
+
+    const internal = screen.getByRole("button", {
+      name: "activity:commentVisibility.internal",
+    });
+    expect(internal.getAttribute("aria-pressed")).toBe("true");
+    fireEvent.change(box(), { target: { value: "Internal first" } });
+    fireEvent.click(
+      screen.getByRole("button", { name: "activity:comment.thread.send" }),
+    );
+    await waitFor(() =>
+      expect(mocks.createComment).toHaveBeenLastCalledWith({
+        taskId: "task-1",
+        comment: "Internal first",
+        parentId: "c1",
+      }),
+    );
+    await waitFor(() => expect(screen.queryByRole("region")).toBeNull());
+
+    // A new reply starts internal again; Public sends it public.
+    fireEvent.click(screen.getByRole("button", { name: "footer-reply" }));
+    expect(
+      screen
+        .getByRole("button", { name: "activity:commentVisibility.internal" })
+        .getAttribute("aria-pressed"),
+    ).toBe("true");
+    fireEvent.click(
+      screen.getByRole("button", { name: "activity:commentVisibility.public" }),
+    );
+    fireEvent.change(box(), { target: { value: "For everyone" } });
+    fireEvent.click(
+      screen.getByRole("button", { name: "activity:comment.thread.send" }),
+    );
+    await waitFor(() =>
+      expect(mocks.createComment).toHaveBeenLastCalledWith({
+        taskId: "task-1",
+        comment: "For everyone",
+        parentId: "c1",
+        visibility: "public",
+      }),
+    );
+  });
 });

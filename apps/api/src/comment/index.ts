@@ -67,7 +67,9 @@ const createTaskCommentRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The created comment", activitySchema),
-    400: errorResponse("Invalid body, or unknown task"),
+    400: errorResponse(
+      "Invalid body, unknown task, or a public reply to an internal comment",
+    ),
     403: errorResponse(
       "No workspace access, missing task:update permission, or external attribution without workspace:manage_settings",
     ),

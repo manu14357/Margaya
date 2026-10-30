@@ -95,7 +95,13 @@ const comment = (
   parentId: parentId ?? null,
 });
 
-function renderFeed(replyCount: number) {
+function renderFeed(
+  replyCount: number,
+  {
+    visibility,
+    boardOpen,
+  }: { visibility?: "internal" | "public"; boardOpen?: boolean } = {},
+) {
   const replies = Array.from({ length: replyCount }, (_, index) =>
     comment(`r${index + 1}`, "user-2", `Reply ${index + 1}`, "c1"),
   );
@@ -105,9 +111,17 @@ function renderFeed(replyCount: number) {
         <Activity
           step={1}
           rail
-          activity={comment("c1", "user-1", "Parent comment")}
+          activity={{
+            ...comment("c1", "user-1", "Parent comment"),
+            ...(visibility ? { visibility } : {}),
+          }}
           replies={replies}
           canReply
+          publicBoard={
+            boardOpen === undefined
+              ? undefined
+              : { projectId: "p1", open: boardOpen, canModerate: false }
+          }
         />
       </Timeline>
     </QueryClientProvider>,
@@ -156,5 +170,32 @@ describe("a comment with its thread on the feed", () => {
     expect(within(card).queryByText("Reply 1")).toBeNull();
     fireEvent.click(more);
     expect(within(card).getByText("Reply 1")).toBeInTheDocument();
+  });
+
+  it("offers Public on replies only under a public comment of an open board", () => {
+    const cases = [
+      { visibility: "public", boardOpen: true, offered: true },
+      { visibility: "internal", boardOpen: true, offered: false },
+      { visibility: "public", boardOpen: false, offered: false },
+      { visibility: "public", boardOpen: undefined, offered: false },
+    ] as const;
+    for (const { visibility, boardOpen, offered } of cases) {
+      const card = renderFeed(0, { visibility, boardOpen });
+      fireEvent.click(
+        within(card).getByRole("button", {
+          name: "activity:comment.thread.replyTo:Mia",
+        }),
+      );
+      const composer = within(card).getByRole("region", {
+        name: "activity:comment.thread.replyTo:Mia",
+      });
+      expect(
+        within(composer).queryByRole("button", {
+          name: "activity:commentVisibility.public",
+        }) !== null,
+        `${visibility} / ${boardOpen}`,
+      ).toBe(offered);
+      cleanup();
+    }
   });
 });

@@ -39972,7 +39972,7 @@
                       "internal",
                       "public"
                     ],
-                    "description": "internal (default) or public: also shown on the project's public board. Public needs a published board with comments on (409 otherwise)."
+                    "description": "internal (default) or public: also shown on the project's public board. Public needs a published board with comments on (409 otherwise). A reply can only be public when the comment it answers is public (400 otherwise)."
                   },
                   "parentId": {
                     "type": "string",
@@ -40000,7 +40000,7 @@
             }
           },
           "400": {
-            "description": "Invalid body, or unknown task",
+            "description": "Invalid body, unknown task, or a public reply to an internal comment",
             "content": {
               "text/plain": {
                 "schema": {
@@ -63495,7 +63495,7 @@
           "Publishing"
         ],
         "summary": "Set comment visibility",
-        "description": "The author (with task:update) makes their comment public, while the board is published with comments on, or internal. A project:share holder can only hide someone else's public comment (make it internal).",
+        "description": "The author (with task:update) makes their comment public, while the board is published with comments on, or internal. A reply can only be made public while the comment it answers is public. A project:share holder can only hide someone else's public comment (make it internal).",
         "parameters": [
           {
             "schema": {
@@ -63541,7 +63541,7 @@
             }
           },
           "400": {
-            "description": "Invalid body, or unknown comment",
+            "description": "Invalid body, unknown comment, or making a reply to an internal comment public",
             "content": {
               "text/plain": {
                 "schema": {

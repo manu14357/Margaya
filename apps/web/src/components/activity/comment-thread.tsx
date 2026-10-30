@@ -11,6 +11,7 @@ import {
 import { useTranslation } from "react-i18next";
 import CommentEditor from "@/components/activity/comment-editor";
 import { useAuth } from "@/components/providers/auth-provider/hooks/use-auth";
+import CommentVisibilitySwitch from "@/components/publication/comment-visibility-switch";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { KbdSequence } from "@/components/ui/kbd";
@@ -24,6 +25,7 @@ import useCreateComment from "@/hooks/mutations/comment/use-create-comment";
 import { getModifierKeyText } from "@/hooks/use-keyboard-shortcuts";
 import { getInitials } from "@/lib/get-initials";
 import { toast } from "@/lib/toast";
+import type { CommentVisibility } from "@/types/publication";
 
 /** A thread shows this many of its newest replies until it is expanded. */
 export const COLLAPSED_REPLY_COUNT = 3;
@@ -60,6 +62,11 @@ type CommentThreadProps<T extends { id: string }> = {
   renderReply: (reply: T) => ReactNode;
   /** The viewer may comment: offers the reply composer. */
   canReply: boolean;
+  /**
+   * The board is published with comments on and the parent is public:
+   * offers Public next to Internal, as the main composer does.
+   */
+  publicReplies?: boolean;
   composer: ReplyComposerControl;
 };
 
@@ -79,6 +86,7 @@ export default function CommentThread<T extends { id: string }>({
   replies,
   renderReply,
   canReply,
+  publicReplies = false,
   composer,
 }: CommentThreadProps<T>) {
   const { t } = useTranslation();
@@ -146,6 +154,7 @@ export default function CommentThread<T extends { id: string }>({
               taskId={taskId}
               parentId={parentId}
               label={replyLabel}
+              publicReplies={publicReplies}
               onDone={composer.close}
               onCollapse={composer.collapse}
             />
@@ -195,6 +204,7 @@ function ReplyComposer({
   taskId,
   parentId,
   label,
+  publicReplies,
   onDone,
   onCollapse,
 }: {
@@ -202,11 +212,14 @@ function ReplyComposer({
   taskId: string;
   parentId: string;
   label: string;
+  publicReplies: boolean;
   onDone: () => void;
   onCollapse: () => void;
 }) {
   const { t } = useTranslation();
   const [content, setContent] = useState("");
+  // Every reply starts internal, like a top-level comment.
+  const [visibility, setVisibility] = useState<CommentVisibility>("internal");
   const { mutateAsync: createComment, isPending } = useCreateComment();
   const queryClient = useQueryClient();
   const hasContent = content.trim().length > 0;
@@ -214,7 +227,12 @@ function ReplyComposer({
   const handleSubmit = useCallback(async () => {
     if (!content.trim() || isPending) return;
     try {
-      await createComment({ taskId, comment: content, parentId });
+      await createComment({
+        taskId,
+        comment: content,
+        parentId,
+        ...(publicReplies && visibility === "public" ? { visibility } : {}),
+      });
       await queryClient.invalidateQueries({ queryKey: ["activities", taskId] });
       toast.success(t("activity:comment.thread.added"));
       setContent("");
@@ -229,9 +247,11 @@ function ReplyComposer({
     isPending,
     onDone,
     parentId,
+    publicReplies,
     queryClient,
     t,
     taskId,
+    visibility,
   ]);
 
   // An empty composer folds back once focus leaves it.
@@ -250,46 +270,58 @@ function ReplyComposer({
       onBlur={handleBlur}
     >
       <ViewerAvatar />
-      <div className="flex min-w-0 flex-1 items-end gap-1 rounded-lg border border-border/80 bg-background/60 py-0.5 pe-1 transition-colors focus-within:border-ring/60 focus-within:shadow-[0_0_0_2px_color-mix(in_srgb,var(--ring)_20%,transparent)]">
-        <CommentEditor
-          value={content}
-          onChange={setContent}
-          placeholder={t("activity:comment.thread.placeholder")}
-          taskId={taskId}
-          uploadSurface="comment"
-          showQuickAttachButton={false}
-          autoFocus
-          disabled={isPending}
-          className={
-            "min-w-0 flex-1 [&_.margaya-comment-editor-content_.ProseMirror]:min-h-7 [&_.margaya-comment-editor-content_.ProseMirror]:max-h-60 [&_.margaya-comment-editor-content_.ProseMirror]:px-2.5 [&_.margaya-comment-editor-content_.ProseMirror]:py-0.5"
-          }
-          onSubmitShortcut={handleSubmit}
-          onCancelShortcut={onDone}
-        />
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                type="button"
-                size="icon-xs"
-                variant="default"
-                className="mb-0.5 rounded-full"
-                onClick={handleSubmit}
-                loading={isPending}
-                disabled={!hasContent}
-                aria-label={t("activity:comment.thread.send")}
-              >
-                <ArrowUp className="size-3.5" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <KbdSequence
-                keys={[getModifierKeyText(), "Enter"]}
-                description={t("activity:comment.thread.send")}
-              />
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+      <div className="flex min-w-0 flex-1 flex-col gap-1">
+        <div className="flex min-w-0 flex-1 items-end gap-1 rounded-lg border border-border/80 bg-background/60 py-0.5 pe-1 transition-colors focus-within:border-ring/60 focus-within:shadow-[0_0_0_2px_color-mix(in_srgb,var(--ring)_20%,transparent)]">
+          <CommentEditor
+            value={content}
+            onChange={setContent}
+            placeholder={t("activity:comment.thread.placeholder")}
+            taskId={taskId}
+            uploadSurface="comment"
+            showQuickAttachButton={false}
+            autoFocus
+            disabled={isPending}
+            className={
+              "min-w-0 flex-1 [&_.margaya-comment-editor-content_.ProseMirror]:min-h-7 [&_.margaya-comment-editor-content_.ProseMirror]:max-h-60 [&_.margaya-comment-editor-content_.ProseMirror]:px-2.5 [&_.margaya-comment-editor-content_.ProseMirror]:py-0.5"
+            }
+            onSubmitShortcut={handleSubmit}
+            onCancelShortcut={onDone}
+          />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  type="button"
+                  size="icon-xs"
+                  variant="default"
+                  className="mb-0.5 rounded-full"
+                  onClick={handleSubmit}
+                  loading={isPending}
+                  disabled={!hasContent}
+                  aria-label={t("activity:comment.thread.send")}
+                >
+                  <ArrowUp className="size-3.5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <KbdSequence
+                  keys={[getModifierKeyText(), "Enter"]}
+                  description={t("activity:comment.thread.send")}
+                />
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+        {/* Below the compact box, so a narrow card keeps room to type. */}
+        {publicReplies && (
+          <div className="flex justify-end">
+            <CommentVisibilitySwitch
+              value={visibility}
+              onChange={setVisibility}
+              disabled={isPending}
+            />
+          </div>
+        )}
       </div>
     </section>
   );

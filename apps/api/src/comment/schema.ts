@@ -21,7 +21,7 @@ export const createCommentBody = z.object({
     }),
   visibility: z.enum(["internal", "public"]).optional().openapi({
     description:
-      "internal (default) or public: also shown on the project's public board. Public needs a published board with comments on (409 otherwise).",
+      "internal (default) or public: also shown on the project's public board. Public needs a published board with comments on (409 otherwise). A reply can only be public when the comment it answers is public (400 otherwise).",
   }),
   parentId: z.string().min(1).max(128).optional().openapi({
     description:

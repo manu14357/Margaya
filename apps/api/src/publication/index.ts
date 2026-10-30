@@ -177,12 +177,14 @@ const visibilityRoute = createRoute({
   tags: TAGS,
   summary: "Set comment visibility",
   description:
-    "The author (with task:update) makes their comment public, while the board is published with comments on, or internal. A project:share holder can only hide someone else's public comment (make it internal).",
+    "The author (with task:update) makes their comment public, while the board is published with comments on, or internal. A reply can only be made public while the comment it answers is public. A project:share holder can only hide someone else's public comment (make it internal).",
   middleware: [workspaceAccess.fromComment("commentId")] as const,
   request: { params: commentIdParam, body: jsonBody(commentVisibilityBody) },
   responses: {
     200: jsonResponse("The comment", activitySchema),
-    400: errorResponse("Invalid body, or unknown comment"),
+    400: errorResponse(
+      "Invalid body, unknown comment, or making a reply to an internal comment public",
+    ),
     403: errorResponse("Only the author can change this comment's visibility"),
     404: errorResponse("Comment not found"),
     409: errorResponse(
