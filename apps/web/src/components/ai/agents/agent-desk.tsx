@@ -3,6 +3,7 @@ import { Bot, Check, CircleStop, Sparkles, Undo2, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import AiMarkdown from "@/components/ai/ai-markdown";
 import Layout from "@/components/common/layout";
+import { AgentStepsIllustration } from "@/components/illustrations";
 import { MyWorkTabs } from "@/components/my-work/my-work-tabs";
 import PageTitle from "@/components/page-title";
 import { Badge } from "@/components/ui/badge";
@@ -12,6 +13,7 @@ import {
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
+  EmptyState,
   EmptyTitle,
 } from "@/components/ui/empty";
 import {
@@ -245,9 +247,12 @@ export default function AgentDesk({
                 {runId ? (
                   <RunDetail workspaceId={workspaceId} runId={runId} />
                 ) : (
-                  <p className="p-6 text-muted-foreground text-sm">
-                    {t("ai:agents.desk.selectRun")}
-                  </p>
+                  <EmptyState
+                    className="h-full py-16"
+                    illustration={<AgentStepsIllustration />}
+                    title={t("ai:agents.desk.selectRunTitle")}
+                    description={t("ai:agents.desk.selectRun")}
+                  />
                 )}
               </div>
             </div>
@@ -598,7 +603,11 @@ function ChangeItem({
       await undo.mutateAsync({ workspaceId, stepId: step.id });
       toast.success(t("ai:agents.change.undone"));
     } catch {
-      toast.error(t("ai:agents.change.undoError"));
+      toast.error(
+        step.change?.op === "update_page"
+          ? t("ai:agents.change.undoPageError")
+          : t("ai:agents.change.undoError"),
+      );
     }
   };
   const onDecide = async (decision: "approve" | "reject") => {

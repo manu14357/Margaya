@@ -75,6 +75,16 @@ function taskTarget(notification: InboxNotification) {
 }
 
 /**
+ * An agent's reply, question or approval request: the run it belongs to.
+ * The Agent Desk shows its answer, takes a reply and decides approvals;
+ * the task alone can't.
+ */
+function agentRunTarget(notification: InboxNotification) {
+  const eventData = getEventDataRecord(notification.eventData);
+  return typeof eventData?.runId === "string" ? eventData.runId : null;
+}
+
+/**
  * The bell's quick view (B10 §1.5): the active workspace's 20 newest inbox
  * notifications, with a link to the full inbox.
  */
@@ -144,6 +154,15 @@ const NotificationDropdown = forwardRef<NotificationDropdownRef>(
           navigate({
             to: "/dashboard/workspace/$workspaceId/project/$projectId/pages/$pageId",
             params: { workspaceId: taskWorkspaceId, ...page },
+          });
+          return;
+        }
+        const runId = agentRunTarget(notification);
+        if (runId && taskWorkspaceId) {
+          navigate({
+            to: "/dashboard/workspace/$workspaceId/agents",
+            params: { workspaceId: taskWorkspaceId },
+            search: { runId },
           });
           return;
         }

@@ -19,10 +19,13 @@ export function NeedsInputPanel({
   workspaceId,
   runId,
   question,
+  agentName,
 }: {
   workspaceId: string;
   runId: string;
   question: { text: string; options: string[] };
+  /** Names the agent in the title, where the run isn't otherwise shown. */
+  agentName?: string | null;
 }) {
   const { t } = useTranslation();
   const id = useId();
@@ -51,7 +54,9 @@ export function NeedsInputPanel({
         className="flex items-center gap-1.5 font-medium text-xs"
       >
         <MessageCircleQuestion className="size-3.5" aria-hidden />
-        {t("ai:agents.needsInput.title")}
+        {agentName
+          ? t("ai:agents.needsInput.notificationTitle", { agentName })
+          : t("ai:agents.needsInput.title")}
       </h3>
       <p className="whitespace-pre-wrap break-words text-sm">{question.text}</p>
       {question.options.length > 0 && (

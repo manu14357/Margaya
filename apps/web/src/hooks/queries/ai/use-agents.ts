@@ -66,6 +66,10 @@ export function useAgentRuns(
     queryKey: agentKeys.runList(workspaceId, filter),
     queryFn: () => getAgentRuns({ workspaceId, ...filter }),
     enabled: Boolean(workspaceId) && enabled,
+    // Runs change in the background: the user socket marks this list stale
+    // while the Agent Desk is closed, and the global refetchOnMount: false
+    // would otherwise show the old list when it opens again.
+    refetchOnMount: true,
     // Running work refreshes through the user socket; poll gently as well
     // while something is still in flight.
     refetchInterval: (query) =>
@@ -82,6 +86,7 @@ export function useAgentRun(workspaceId: string, runId: string | null) {
     queryKey: agentKeys.run(workspaceId, runId ?? ""),
     queryFn: () => getAgentRun(workspaceId, runId ?? ""),
     enabled: Boolean(workspaceId && runId),
+    refetchOnMount: true,
     refetchInterval: (query) =>
       query.state.data?.status === "queued" ||
       query.state.data?.status === "running"
@@ -95,5 +100,6 @@ export function useAgentApprovals(workspaceId: string, enabled = true) {
     queryKey: agentKeys.approvals(workspaceId),
     queryFn: () => getAgentApprovals(workspaceId),
     enabled: Boolean(workspaceId) && enabled,
+    refetchOnMount: true,
   });
 }

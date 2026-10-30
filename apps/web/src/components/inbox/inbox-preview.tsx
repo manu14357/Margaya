@@ -7,6 +7,7 @@ import {
   agentReplyOf,
 } from "@/components/ai/agents/agent-reply-card";
 import { ApprovalCard } from "@/components/ai/agents/approval-card";
+import { AgentItemShownAbove } from "@/components/ai/agents/task-agent-waiting";
 import TaskDetailsContent from "@/components/task/task-details-content";
 import { TaskDetailsSkeleton } from "@/components/task/task-page-skeleton";
 import TaskPropertiesSidebar from "@/components/task/task-properties-sidebar";
@@ -279,12 +280,20 @@ function TaskPreview({
                 />
               </div>
             )}
-            <TaskDetailsContent
-              taskId={task.id}
-              projectId={task.projectId}
-              workspaceId={workspaceId}
-              className="flex flex-col gap-3"
-            />
+            {/* The card above already shows this question or change. */}
+            <AgentItemShownAbove.Provider
+              value={{
+                runId: reply?.needsInput ? reply.runId : undefined,
+                approvalId: approval?.approvalId,
+              }}
+            >
+              <TaskDetailsContent
+                taskId={task.id}
+                projectId={task.projectId}
+                workspaceId={workspaceId}
+                className="flex flex-col gap-3"
+              />
+            </AgentItemShownAbove.Provider>
           </div>
         </div>
       </div>

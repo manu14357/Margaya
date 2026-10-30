@@ -3,6 +3,8 @@ import { MessageCircleQuestion, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import AiMarkdown from "@/components/ai/ai-markdown";
 import { Button } from "@/components/ui/button";
+import { useAgentRun } from "@/hooks/queries/ai/use-agents";
+import { NeedsInputPanel } from "./run-reply";
 
 /** The run an agent-answer notification points at, if it is one. */
 export function agentReplyOf(notification: {
@@ -13,7 +15,7 @@ export function agentReplyOf(notification: {
   runId: string;
   agentName: string | null;
   text: string;
-  /** The agent paused to ask a question; the answer goes in the Desk. */
+  /** The agent paused to ask a question. */
   needsInput: boolean;
 } | null {
   if (notification.type !== "ai_agent_reply") return null;
@@ -30,6 +32,8 @@ export function agentReplyOf(notification: {
 /**
  * An agent's answer that isn't on the task (it couldn't, or didn't,
  * comment), or its question, shown in the inbox with a link to its run.
+ * While the run still waits for this person, the question is answered
+ * right here.
  */
 export function AgentReplyCard({
   workspaceId,
@@ -45,6 +49,23 @@ export function AgentReplyCard({
   needsInput?: boolean;
 }) {
   const { t } = useTranslation();
+  // The run's live state: the question is only there for the person it
+  // asked, and only while the run waits.
+  const run = useAgentRun(workspaceId, needsInput ? runId : null);
+  const live = run.data?.status === "needs_input" ? run.data.question : null;
+  // Until the run loads (or when it can't), keep the notification's own
+  // wording; once it has moved on, the question no longer waits.
+  const waiting = needsInput && (live !== null || !run.data);
+  if (live) {
+    return (
+      <NeedsInputPanel
+        workspaceId={workspaceId}
+        runId={runId}
+        question={live}
+        agentName={agentName}
+      />
+    );
+  }
   const title = needsInput
     ? t("ai:agents.needsInput.title")
     : t("ai:agents.reply.cardTitle");
@@ -68,16 +89,18 @@ export function AgentReplyCard({
         )}
       </header>
       <AiMarkdown text={text} />
-      <p className="text-muted-foreground text-xs">
-        {t(
-          needsInput
-            ? "ai:agents.needsInput.inboxHint"
-            : "ai:agents.reply.hint",
-        )}
-      </p>
+      {(waiting || !needsInput) && (
+        <p className="text-muted-foreground text-xs">
+          {t(
+            needsInput
+              ? "ai:agents.needsInput.inboxHint"
+              : "ai:agents.reply.hint",
+          )}
+        </p>
+      )}
       <Button
         size="xs"
-        variant={needsInput ? "default" : "ghost"}
+        variant={waiting ? "default" : "ghost"}
         className="w-fit"
         render={
           <Link
@@ -88,9 +111,7 @@ export function AgentReplyCard({
         }
       >
         {t(
-          needsInput
-            ? "ai:agents.needsInput.answer"
-            : "ai:agents.run.viewInDesk",
+          waiting ? "ai:agents.needsInput.answer" : "ai:agents.run.viewInDesk",
         )}
       </Button>
     </section>

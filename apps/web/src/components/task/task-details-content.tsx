@@ -12,10 +12,13 @@ import {
 import { useTranslation } from "react-i18next";
 import Activity from "@/components/activity";
 import ActivityFeedControls from "@/components/activity/activity-feed-controls";
-import { arrangeActivities } from "@/components/activity/activity-feed-options";
+import {
+  arrangeActivities,
+  groupCommentReplies,
+} from "@/components/activity/activity-feed-options";
 import CommentInput from "@/components/activity/comment-input";
-import { isCommentActivity } from "@/components/activity/utils";
 import { AgentRunButton } from "@/components/ai/agents/agent-run-button";
+import { TaskAgentWaiting } from "@/components/ai/agents/task-agent-waiting";
 import { AiSpecDraftButton } from "@/components/ai/ai-spec-draft";
 import { AiSummaryButton } from "@/components/ai/ai-summary";
 import DescriptionTranslation from "@/components/ai/translate/description-translation";
@@ -144,6 +147,10 @@ export default function TaskDetailsContent({
   const activities = useMemo(
     () => arrangeActivities(allActivities, activityFilter, activitySort),
     [allActivities, activityFilter, activitySort],
+  );
+  const commentReplies = useMemo(
+    () => groupCommentReplies(allActivities),
+    [allActivities],
   );
   const { data: externalLinks = [], isLoading: isLoadingExternalLinks } =
     useExternalLinks(taskId ?? "");
@@ -669,6 +676,14 @@ export default function TaskDetailsContent({
           {allActivities.length > 0 && <ActivityFeedControls />}
         </div>
 
+        {taskId && (
+          <TaskAgentWaiting
+            workspaceId={workspaceId}
+            projectId={task?.projectId ?? projectId}
+            taskId={taskId}
+          />
+        )}
+
         {user?.id && (
           <CommentInput
             taskId={taskId}
@@ -680,21 +695,21 @@ export default function TaskDetailsContent({
         {activities.length > 0 ? (
           <Timeline>
             {activities.map((activity, index) => {
-              const nextActivity = activities[index + 1];
-              const showConnector =
-                !isCommentActivity(activity) &&
-                Boolean(nextActivity) &&
-                !isCommentActivity(nextActivity);
-
               return (
                 <Activity
                   key={activity.id}
                   activity={activity}
                   step={activities.length - index}
-                  showConnector={showConnector}
+                  rail
                   commentReactions={commentReactions}
                   commentAuthors={commentAuthors}
                   publicBoard={publicBoard}
+                  replies={
+                    activity.parentId
+                      ? undefined
+                      : (commentReplies.get(activity.id) ?? [])
+                  }
+                  canReply={Boolean(user?.id)}
                 />
               );
             })}

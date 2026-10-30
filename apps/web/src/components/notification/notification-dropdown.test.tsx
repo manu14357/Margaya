@@ -158,6 +158,41 @@ describe("NotificationDropdown", () => {
     });
   });
 
+  it("opens an agent's question in the Agent Desk, not its task", async () => {
+    api.getInbox.mockResolvedValue({
+      items: [
+        inboxNotification({
+          type: "ai_agent_reply",
+          resourceType: "task",
+          resourceId: "task-1",
+          eventData: {
+            runId: "run-1",
+            agentId: "agent-1",
+            agentName: "Spec writer",
+            needsInput: true,
+            projectId: "project-1",
+          },
+        }),
+      ],
+      nextCursor: null,
+    });
+    api.getCounts.mockResolvedValue({ unread: 1, unreadMentions: 0 });
+    api.update.mockResolvedValue({});
+    renderDropdown();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /navigation:notifications/ }),
+    );
+    fireEvent.click(
+      await screen.findByText("ai:agents.needsInput.notificationTitle"),
+    );
+    expect(api.navigate).toHaveBeenCalledWith({
+      to: "/dashboard/workspace/$workspaceId/agents",
+      params: { workspaceId: "ws" },
+      search: { runId: "run-1" },
+    });
+  });
+
   it("shows the caught-up state when the inbox is empty", async () => {
     api.getInbox.mockResolvedValue({ items: [], nextCursor: null });
     api.getCounts.mockResolvedValue({ unread: 0, unreadMentions: 0 });

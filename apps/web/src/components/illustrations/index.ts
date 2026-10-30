@@ -1,3 +1,4 @@
+export { AgentStepsIllustration } from "./agent-steps";
 export { ClearingIllustration } from "./clearing";
 export { EmptyBackdrop } from "./empty-backdrop";
 export { FallenBranchIllustration } from "./fallen-branch";
