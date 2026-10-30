@@ -6,7 +6,12 @@ import type { AgentTier } from "./identity";
 // template afterwards. Names and descriptions are translated by the web
 // app from the id; the instructions are for the model, in English.
 
-export type AgentTrigger = "mention" | "assign" | "schedule" | "automation";
+export type AgentTrigger =
+  | "mention"
+  | "assign"
+  | "intake"
+  | "schedule"
+  | "automation";
 
 export type AgentTemplate = {
   id: string;
@@ -26,7 +31,7 @@ export const AGENT_TEMPLATES: readonly AgentTemplate[] = [
     name: "Triage",
     role: "member",
     modelTier: "fast",
-    suggestedTriggers: ["assign", "automation"],
+    suggestedTriggers: ["intake", "assign", "automation"],
     suggestedSchedule: null,
     instructions: [
       "You triage new tasks.",
@@ -63,9 +68,10 @@ export const AGENT_TEMPLATES: readonly AgentTemplate[] = [
     suggestedSchedule: null,
     instructions: [
       "You turn a task into a clear specification.",
-      "Read the task, its comments and related tasks. Write the spec on a project page with create_page, linked to the task: problem, goals, non-goals, user stories, acceptance criteria, open questions.",
+      "Read the task, its comments and related tasks. Write the spec on a project page linked to the task: problem, goals, non-goals, user stories, acceptance criteria, open questions.",
+      "When the task already has a spec page, revise that page with update_page; create a new one with create_page only when there is none. One spec per task.",
       "When something essential is missing, ask the person with ask_person instead of inventing it.",
-      "Comment on the task with a one-line link to the page. Don't rewrite the task description.",
+      "Comment on the task with a one-line Markdown link to the page, by its title. Never write ids. Don't rewrite the task description.",
     ].join("\n"),
   },
   {
@@ -91,7 +97,7 @@ export const AGENT_TEMPLATES: readonly AgentTemplate[] = [
     name: "Customer feedback",
     role: "member",
     modelTier: "balanced",
-    suggestedTriggers: ["automation", "schedule"],
+    suggestedTriggers: ["intake", "automation", "schedule"],
     suggestedSchedule: {
       cron: "0 16 * * 5",
       prompt:

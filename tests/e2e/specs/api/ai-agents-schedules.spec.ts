@@ -178,7 +178,7 @@ test(
       id: "triage",
       role: "member",
       modelTier: "fast",
-      suggestedTriggers: ["assign", "automation"],
+      suggestedTriggers: ["intake", "assign", "automation"],
       suggestedSchedule: null,
     });
     expect(templates[1]?.suggestedSchedule).toMatchObject({

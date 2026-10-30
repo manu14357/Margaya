@@ -180,7 +180,7 @@ export const agentRunStepSchema = z
       })
       .openapi({
         description:
-          "App paths of the task a change touched and of what it created or linked (a page, a sub-task, the other task); null when none.",
+          "App paths of the task a change touched and of what it created, edited or linked (a page, a sub-task, the other task); null when none.",
       }),
     tokenIn: z.number().int(),
     tokenOut: z.number().int(),
@@ -248,7 +248,7 @@ export const agentTemplateSchema = z
     role: z.string(),
     modelTier: z.enum(["fast", "balanced", "deep"]),
     suggestedTriggers: z.array(
-      z.enum(["mention", "assign", "schedule", "automation"]),
+      z.enum(["mention", "assign", "intake", "schedule", "automation"]),
     ),
     suggestedSchedule: z
       .object({ cron: z.string(), prompt: z.string() })
