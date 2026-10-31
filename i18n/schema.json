@@ -2512,6 +2512,130 @@
 						},
 						"channelsDescription": {
 							"type": "string"
+						},
+						"sound": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"title": {
+									"type": "string"
+								},
+								"description": {
+									"type": "string"
+								},
+								"enabled": {
+									"type": "string"
+								},
+								"enabledDescription": {
+									"type": "string"
+								},
+								"volume": {
+									"type": "string"
+								},
+								"volumeValue": {
+									"type": "string"
+								},
+								"categoryMentions": {
+									"type": "string"
+								},
+								"categoryMentionsDescription": {
+									"type": "string"
+								},
+								"categoryAgents": {
+									"type": "string"
+								},
+								"categoryAgentsDescription": {
+									"type": "string"
+								},
+								"categoryReplies": {
+									"type": "string"
+								},
+								"categoryRepliesDescription": {
+									"type": "string"
+								},
+								"categoryOther": {
+									"type": "string"
+								},
+								"categoryOtherDescription": {
+									"type": "string"
+								},
+								"soundNone": {
+									"type": "string"
+								},
+								"soundChime": {
+									"type": "string"
+								},
+								"soundPop": {
+									"type": "string"
+								},
+								"soundDing": {
+									"type": "string"
+								},
+								"soundBell": {
+									"type": "string"
+								},
+								"soundKnock": {
+									"type": "string"
+								},
+								"soundMarimba": {
+									"type": "string"
+								},
+								"preview": {
+									"type": "string"
+								},
+								"quietHours": {
+									"type": "string"
+								},
+								"quietHoursDescription": {
+									"type": "string"
+								},
+								"quietFrom": {
+									"type": "string"
+								},
+								"quietTo": {
+									"type": "string"
+								},
+								"deviceMute": {
+									"type": "string"
+								},
+								"deviceMuteDescription": {
+									"type": "string"
+								},
+								"previewFailed": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"title",
+								"description",
+								"enabled",
+								"enabledDescription",
+								"volume",
+								"volumeValue",
+								"categoryMentions",
+								"categoryMentionsDescription",
+								"categoryAgents",
+								"categoryAgentsDescription",
+								"categoryReplies",
+								"categoryRepliesDescription",
+								"categoryOther",
+								"categoryOtherDescription",
+								"soundNone",
+								"soundChime",
+								"soundPop",
+								"soundDing",
+								"soundBell",
+								"soundKnock",
+								"soundMarimba",
+								"preview",
+								"quietHours",
+								"quietHoursDescription",
+								"quietFrom",
+								"quietTo",
+								"deviceMute",
+								"deviceMuteDescription",
+								"previewFailed"
+							]
 						}
 					},
 					"required": [
@@ -2620,7 +2744,8 @@
 						"toastRuleSavedGeneric",
 						"toastRuleRemovedGeneric",
 						"channelsTitle",
-						"channelsDescription"
+						"channelsDescription",
+						"sound"
 					]
 				},
 				"preferencesPage": {
