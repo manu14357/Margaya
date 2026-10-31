@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { NotificationPreferencesSettings } from "@/components/account/notification-preferences-settings";
+import { NotificationSoundSettings } from "@/components/account/notification-sound-settings";
 import { SettingsPage } from "@/components/settings-layout";
 
 export const Route = createFileRoute(
@@ -18,7 +19,10 @@ function RouteComponent() {
       documentTitle={t("settings:notificationsPage.pageTitle")}
       description={t("settings:notificationsPage.subtitle")}
     >
-      <NotificationPreferencesSettings />
+      <div className="flex flex-col gap-8">
+        <NotificationSoundSettings />
+        <NotificationPreferencesSettings />
+      </div>
     </SettingsPage>
   );
 }
