@@ -54,6 +54,28 @@ describe("inbox, subscription and reaction events", () => {
     removeUserConnection("user-n", conn);
   });
 
+  it("maps notification.created to NOTIFICATION_CREATED with its type and flags only", async () => {
+    const ws = makeFakeWs();
+    const conn = addUserConnection("user-c", ws);
+    await publishEvent("notification.created", {
+      notificationId: "n-1",
+      userId: "user-c",
+      notificationType: "ai_agent_reply",
+      reply: false,
+      needsInput: true,
+    });
+    await vi.waitFor(() => expect((ws as FakeWs).send).toHaveBeenCalled(), {
+      timeout: 300,
+    });
+    expect(lastMessage(ws)).toEqual({
+      type: "NOTIFICATION_CREATED",
+      notificationType: "ai_agent_reply",
+      reply: false,
+      needsInput: true,
+    });
+    removeUserConnection("user-c", conn);
+  });
+
   it("maps task.subscription_changed to SUBSCRIPTION_UPDATED for that user", async () => {
     const mine = makeFakeWs();
     const other = makeFakeWs();

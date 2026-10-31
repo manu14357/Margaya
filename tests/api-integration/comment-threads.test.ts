@@ -5,13 +5,17 @@ import { muteUser } from "../../apps/api/src/subscription/service";
 import { withParentDeletedOnReply } from "./helpers/comment-race";
 import { resetTestDatabase } from "./helpers/database";
 import { draftScene } from "./helpers/drafts";
+import { recordEvents } from "./helpers/inbox";
 import { callMcpTool } from "./helpers/trash";
 
 type Scene = Awaited<ReturnType<typeof draftScene>>;
 type CommentJson = { id: string; parentId: string | null; content: string };
 
+const created = recordEvents("notification.created");
+
 beforeEach(async () => {
   await resetTestDatabase();
+  created.length = 0;
 });
 
 async function threadScene() {
@@ -201,6 +205,16 @@ describe("API integration: comment threads", () => {
       commentPreview: "Owner replies",
     });
     expect(await commentNotifications(s.owner.id)).toHaveLength(0);
+    // The realtime hint flags it as a reply (the web app's reply sound).
+    expect(created).toContainEqual(
+      expect.objectContaining({
+        notificationId: toAda[0]?.id,
+        userId: s.ada.id,
+        notificationType: "task_comment",
+        reply: true,
+        needsInput: false,
+      }),
+    );
 
     // Owner is in the thread now; Ada answers and only Owner hears of it
     // from the thread (Ada never notifies herself).
