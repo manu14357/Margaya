@@ -7,6 +7,8 @@ import { taskDraftQueryKeys } from "@/hooks/queries/task-draft/task-draft-query-
 import { handleAgentUserMessage } from "@/lib/ai/agent-realtime";
 import { authClient } from "@/lib/auth-client";
 import { handleHomeUserMessage } from "@/lib/home-realtime";
+import { playForNotification } from "@/lib/notification-sound/notify";
+import { installAudioUnlock } from "@/lib/notification-sound/player";
 import { onWake, reconnectDelay } from "@/lib/realtime-reconnect";
 import { onSignOut } from "@/lib/sign-out";
 import { handleTaskExportUserMessage } from "@/lib/task-export/realtime";
@@ -30,6 +32,8 @@ export function useUserWebSocket() {
   const { data: session } = authClient.useSession();
   useEffect(() => {
     if (!session?.user?.id) return;
+    // Audio may only start after a click or key press on the page.
+    installAudioUnlock();
 
     // A previous session's delayed socket events must not control this session.
     let disposed = false;
@@ -78,6 +82,9 @@ export function useUserWebSocket() {
             type?: string;
             workspaceId?: string;
             taskId?: string;
+            notificationType?: string | null;
+            reply?: boolean;
+            needsInput?: boolean;
           };
           // New rows, and state changed elsewhere (another tab, a snooze
           // ending): the inbox pages, counts and the dropdown refetch.
@@ -86,6 +93,11 @@ export function useUserWebSocket() {
             message.type === "NOTIFICATIONS_UPDATED"
           ) {
             queryClient.invalidateQueries({ queryKey: ["notifications"] });
+          }
+          // Only live arrivals sound: a reconnect's catch-up refetches
+          // silently.
+          if (message.type === "NOTIFICATION_CREATED") {
+            void playForNotification(message);
           }
           if (message.type === "SUBSCRIPTION_UPDATED") {
             if (message.taskId) {

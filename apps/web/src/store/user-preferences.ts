@@ -1,5 +1,10 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import {
+  DEFAULT_NOTIFICATION_SOUND,
+  type NotificationSoundSettings,
+  normalizeNotificationSound,
+} from "@/lib/notification-sound/settings";
 import type { SidebarLayout } from "@/lib/sidebar-layout";
 
 export const WEEK_START_DAYS = [0, 1, 6] as const;
@@ -84,6 +89,10 @@ type UserPreferencesStore = {
   pagesFormatToolbar: boolean;
   setPagesFormatToolbar: (show: boolean) => void;
 
+  /** Sounds for in-app notifications. */
+  notificationSound: NotificationSoundSettings;
+  setNotificationSound: (changes: Partial<NotificationSoundSettings>) => void;
+
   /**
    * The account time zone (IANA), cached from the server; null until known
    * or when never chosen. Task queries prefer it over the browser's zone.
@@ -110,6 +119,7 @@ export const DEFAULT_USER_PREFERENCES = {
   activityFilter: "all" as ActivityFilter,
   activitySort: "newest" as ActivitySort,
   pagesFormatToolbar: true,
+  notificationSound: DEFAULT_NOTIFICATION_SOUND,
 };
 
 export const useUserPreferencesStore = create<UserPreferencesStore>()(
@@ -200,6 +210,16 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
       setPagesFormatToolbar: (pagesFormatToolbar) =>
         set({ pagesFormatToolbar }),
 
+      notificationSound: DEFAULT_USER_PREFERENCES.notificationSound,
+      // A new object on every change, so the server sync sees it.
+      setNotificationSound: (changes) =>
+        set((state) => ({
+          notificationSound: normalizeNotificationSound({
+            ...state.notificationSound,
+            ...changes,
+          }),
+        })),
+
       timeZone: null,
       setTimeZone: (timeZone) => set({ timeZone }),
     }),
@@ -218,6 +238,11 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
         }
         if (state && !ACTIVITY_SORTS.includes(state.activitySort)) {
           state.setActivitySort("newest");
+        }
+        if (state) {
+          state.setNotificationSound(
+            normalizeNotificationSound(state.notificationSound),
+          );
         }
       },
     },

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { willApply } from "@/components/ai/build/build-turn";
 import type { BuildTurn } from "@/components/ai/build/use-build-session";
+import { setVoiceActive } from "@/lib/notification-sound/player";
 import type { AskTurn } from "./use-ask-session";
 import { useSpeaker } from "./use-speaker";
 import { type SpeechError, useSpeechInput } from "./use-speech-input";
@@ -58,6 +59,11 @@ export function useVoiceMode(input: {
 }) {
   const { t } = useTranslation();
   const [phase, setPhase] = useState<VoicePhase>("off");
+  // Notification sounds stay quiet while voice mode listens or speaks.
+  useEffect(() => {
+    setVoiceActive(phase !== "off");
+    return () => setVoiceActive(false);
+  }, [phase]);
   const [prefs, setPrefsState] = useState<VoicePrefs>(readPrefs);
   const phaseRef = useRef(phase);
   phaseRef.current = phase;
