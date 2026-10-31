@@ -1,9 +1,9 @@
 ---
 title: Account Notifications
-description: Deliver your personal Margaya notifications by email (batched, with an optional digest), ntfy, Gotify, or a custom webhook with workspace and project scoping
+description: Choose notification sounds, and deliver your personal Margaya notifications by email (batched, with an optional digest), ntfy, Gotify, or a custom webhook with workspace and project scoping
 ---
 
-Margaya can keep the normal in-app notification inbox and also forward matching notifications to external channels for the signed-in user.
+Margaya can keep the normal in-app notification inbox, play a sound when a notification arrives, and forward matching notifications to external channels for the signed-in user.
 
 You can configure this under:
 
@@ -24,7 +24,7 @@ These settings are personal to the signed-in account. They do not change notific
 
 ## Choose what notifies you
 
-**Notify me about** at the top of the page decides which task events create notifications at all, in the inbox and on every channel:
+**Notify me about** decides which task events create notifications at all, in the inbox and on every channel:
 
 - **Task assignments**
 - **Comments and mentions**: new comments on tasks you're assigned to or subscribed to, replies in threads you started or replied in, and direct @mentions
@@ -35,6 +35,35 @@ These settings are personal to the signed-in account. They do not change notific
 Select **Save notification types** to apply your choices.
 
 <Screenshot src="account/notify-me-about" alt="The Notify me about section with switches for task assignments, comments and mentions, status changes, other task changes and due-date reminders, and the reminder lead time" caption="Choose which task events notify you." />
+
+## Notification sounds
+
+**Sounds** at the top of the page plays a short sound when a new notification reaches you while Margaya is open in your browser, in any tab, even in the background.
+
+- **Play sounds** turns them on or off for your account. They are on by default, for the notifications that need you.
+- **Volume** applies to every sound.
+- Pick a sound for each kind of notification, or **None** for silence. Choosing a sound plays it, and the play button next to it plays it again.
+
+| Kind | What it covers | Default |
+| --- | --- | --- |
+| **Mentions and assignments** | someone @mentions you or assigns you a task | Chime |
+| **Agent needs you** | an AI agent asks you a question or waits for your approval | Knock |
+| **Replies to you** | replies in comment threads you're in, and an agent's answer to your request | Pop |
+| **Everything else** | other comments, status changes, reminders and updates | None |
+
+The built-in sounds are Chime, Pop, Ding, Soft bell, Knock and Marimba. They are generated in the browser, so they need no downloads and work the same on self-hosted installs.
+
+- **Quiet hours** silences sounds between two times in your account's time zone. The range can cross midnight, for example 22:00 to 08:00.
+- **Mute sounds on this device** silences only the browser you're using, for example a work laptop in meetings. Every other setting here is saved to your account and follows you to every browser; this one stays on the device.
+
+To keep sounds calm:
+
+- a burst of notifications (a bulk change, for example) plays one sound, then sounds pause for a few seconds;
+- with several Margaya tabs open, only one of them plays;
+- nothing plays while voice mode listens or speaks;
+- notifications that arrive while you're offline are added to the inbox without a sound when you reconnect.
+
+Sounds follow **Notify me about** and muted tasks: a notification you turned off never sounds. The inbox and its unread badge update as before, so sound is never the only signal.
 
 ## How it works
 
@@ -196,6 +225,15 @@ Check that:
 - the workspace rule is active
 - the channel is enabled on that workspace rule
 - the project is included when using `Selected projects`
+
+### No notification sound plays
+
+Browsers allow sound only after you've clicked or pressed a key on the page, so a tab you just opened stays silent until you interact with it. Check that:
+
+- **Play sounds** is on, the kind of notification has a sound other than **None**, and the volume is above 0
+- **Mute sounds on this device** is off, and you're outside your quiet hours
+- the browser tab or site isn't muted, and the system volume is up
+- **Notify me about** includes the event, and the task isn't muted
 
 ### Email is enabled but nothing is sent
 

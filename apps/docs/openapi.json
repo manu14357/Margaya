@@ -7121,6 +7121,91 @@
                 "type": "boolean",
                 "description": "Add My brief (your blocked tasks and changes on tasks you follow) to the email digest. Off unless turned on; needs a daily or weekly digest."
               },
+              "notificationSound": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean"
+                  },
+                  "volume": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "mentions": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "chime",
+                      "pop",
+                      "ding",
+                      "bell",
+                      "knock",
+                      "marimba"
+                    ]
+                  },
+                  "agents": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "chime",
+                      "pop",
+                      "ding",
+                      "bell",
+                      "knock",
+                      "marimba"
+                    ]
+                  },
+                  "replies": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "chime",
+                      "pop",
+                      "ding",
+                      "bell",
+                      "knock",
+                      "marimba"
+                    ]
+                  },
+                  "other": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "chime",
+                      "pop",
+                      "ding",
+                      "bell",
+                      "knock",
+                      "marimba"
+                    ]
+                  },
+                  "quietHours": {
+                    "type": "boolean"
+                  },
+                  "quietStart": {
+                    "type": "string",
+                    "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                  },
+                  "quietEnd": {
+                    "type": "string",
+                    "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                  }
+                },
+                "required": [
+                  "enabled",
+                  "volume",
+                  "mentions",
+                  "agents",
+                  "replies",
+                  "other",
+                  "quietHours",
+                  "quietStart",
+                  "quietEnd"
+                ],
+                "additionalProperties": false,
+                "description": "Sounds for in-app notifications. `mentions` covers mentions and assignments, `agents` an agent's question or approval request, `replies` replies in your threads and agents' answers, `other` everything else. Quiet hours (HH:MM, in the account time zone) silence them; a range may cross midnight."
+              },
               "calendarMode": {
                 "type": "string",
                 "enum": [
@@ -7308,6 +7393,91 @@
           "myBriefEmail": {
             "type": "boolean",
             "description": "Add My brief (your blocked tasks and changes on tasks you follow) to the email digest. Off unless turned on; needs a daily or weekly digest."
+          },
+          "notificationSound": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean"
+              },
+              "volume": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "mentions": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "chime",
+                  "pop",
+                  "ding",
+                  "bell",
+                  "knock",
+                  "marimba"
+                ]
+              },
+              "agents": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "chime",
+                  "pop",
+                  "ding",
+                  "bell",
+                  "knock",
+                  "marimba"
+                ]
+              },
+              "replies": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "chime",
+                  "pop",
+                  "ding",
+                  "bell",
+                  "knock",
+                  "marimba"
+                ]
+              },
+              "other": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "chime",
+                  "pop",
+                  "ding",
+                  "bell",
+                  "knock",
+                  "marimba"
+                ]
+              },
+              "quietHours": {
+                "type": "boolean"
+              },
+              "quietStart": {
+                "type": "string",
+                "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+              },
+              "quietEnd": {
+                "type": "string",
+                "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+              }
+            },
+            "required": [
+              "enabled",
+              "volume",
+              "mentions",
+              "agents",
+              "replies",
+              "other",
+              "quietHours",
+              "quietStart",
+              "quietEnd"
+            ],
+            "additionalProperties": false,
+            "description": "Sounds for in-app notifications. `mentions` covers mentions and assignments, `agents` an agent's question or approval request, `replies` replies in your threads and agents' answers, `other` everything else. Quiet hours (HH:MM, in the account time zone) silence them; a range may cross midnight."
           },
           "calendarMode": {
             "type": "string",
