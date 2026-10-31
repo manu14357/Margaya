@@ -12,6 +12,7 @@ import { publishEvent } from "../../events";
 import { deliverNotification } from "../../notification-preferences/delivery";
 
 import { safeOutboundError } from "../../utils/outbound-request";
+import { notificationCreatedEvent } from "../created-event";
 import { preferenceKeyForType } from "../recipient-policy";
 import { canReceiveResourceNotification } from "../resource-access";
 
@@ -114,10 +115,10 @@ async function createNotification({
     .returning();
 
   if (notification) {
-    await publishEvent("notification.created", {
-      notificationId: notification.id,
-      userId,
-    });
+    await publishEvent(
+      "notification.created",
+      notificationCreatedEvent(notification),
+    );
     void deliverNotification(notification.id).catch((error) => {
       console.error("Failed to deliver notification", {
         notificationId: notification.id,

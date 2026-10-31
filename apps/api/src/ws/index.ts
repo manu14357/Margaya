@@ -4,6 +4,7 @@ import type { WSContext } from "hono/ws";
 import db from "../database";
 import { workspaceUserTable } from "../database/schema";
 import { subscribeToEvent } from "../events";
+import type { NotificationCreatedEvent } from "../notification/created-event";
 import { mayStayConnected } from "../project/visibility";
 import { isRedisConfigured } from "../redis";
 import type {
@@ -754,11 +755,17 @@ for (const [eventName, type] of [
   });
 }
 
-subscribeToEvent<{ notificationId: string; userId: string }>(
+// The type and flags (no content) let the recipient's tabs choose a sound.
+subscribeToEvent<NotificationCreatedEvent>(
   "notification.created",
   async (data) => {
     if (data.userId) {
-      broadcastToUser(data.userId, { type: "NOTIFICATION_CREATED" });
+      broadcastToUser(data.userId, {
+        type: "NOTIFICATION_CREATED",
+        notificationType: data.notificationType ?? null,
+        reply: data.reply === true,
+        needsInput: data.needsInput === true,
+      });
     }
   },
 );

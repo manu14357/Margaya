@@ -54,6 +54,20 @@ export const SIDEBAR_PANEL_SECTIONS = [
   "projects",
 ] as const;
 
+/** Built-in notification sounds the web app plays; "none" is silence. */
+export const NOTIFICATION_SOUNDS = [
+  "none",
+  "chime",
+  "pop",
+  "ding",
+  "bell",
+  "knock",
+  "marimba",
+] as const;
+
+const notificationSoundChoice = z.enum(NOTIFICATION_SOUNDS);
+const clockTime = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);
+
 export const userPreferencesShape = {
   theme: z.enum(USER_THEMES).openapi({
     description:
@@ -80,6 +94,23 @@ export const userPreferencesShape = {
     description:
       "Add My brief (your blocked tasks and changes on tasks you follow) to the email digest. Off unless turned on; needs a daily or weekly digest.",
   }),
+  notificationSound: z
+    .object({
+      enabled: z.boolean(),
+      volume: z.number().int().min(0).max(100),
+      mentions: notificationSoundChoice,
+      agents: notificationSoundChoice,
+      replies: notificationSoundChoice,
+      other: notificationSoundChoice,
+      quietHours: z.boolean(),
+      quietStart: clockTime,
+      quietEnd: clockTime,
+    })
+    .strict()
+    .openapi({
+      description:
+        "Sounds for in-app notifications. `mentions` covers mentions and assignments, `agents` an agent's question or approval request, `replies` replies in your threads and agents' answers, `other` everything else. Quiet hours (HH:MM, in the account time zone) silence them; a range may cross midnight.",
+    }),
   calendarMode: z.enum(["month", "week"]),
   calendarShowWeekends: z.boolean(),
   ganttZoom: z.enum(["week", "month", "quarter"]),

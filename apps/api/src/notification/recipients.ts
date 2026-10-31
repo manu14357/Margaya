@@ -15,6 +15,7 @@ import { deliverNotification } from "../notification-preferences/delivery";
 import { assigneeIdsOfTasks } from "../task/assignees";
 import { formatTaskKey } from "../task-activity/task-snapshot";
 import { safeOutboundError } from "../utils/outbound-request";
+import { notificationCreatedEvent } from "./created-event";
 import {
   buildCandidates,
   type Candidate,
@@ -208,10 +209,7 @@ export async function writeTaskNotifications(input: {
     .returning();
 
   for (const row of rows) {
-    await publishEvent("notification.created", {
-      notificationId: row.id,
-      userId: row.userId,
-    });
+    await publishEvent("notification.created", notificationCreatedEvent(row));
     void deliverNotification(row.id).catch((error) => {
       console.error("Failed to deliver notification", {
         notificationId: row.id,
