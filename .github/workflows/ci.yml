@@ -107,8 +107,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # One package at a time: the web and API checks together outgrow the
+      # runner's memory and it is shut down mid-run.
       - name: Run typecheck
-        run: pnpm typecheck
+        run: pnpm typecheck --concurrency=1
 
   unit:
     runs-on: ubuntu-24.04

@@ -22,6 +22,10 @@
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedSideEffectImports": true,
+
+		/* Each extra checker holds its own copy of this large program: the
+		   default four need about 9 GB, one about 4 GB and a few seconds more. */
+		"checkers": 1,
 		"paths": {
 			"@/*": ["./src/*"],
 			"@i18n/*": ["../../i18n/*"]
