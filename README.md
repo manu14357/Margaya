@@ -21,17 +21,11 @@
 </div>
 
 <p align="center">
-  <video
-    src="https://github.com/manu14357/Margaya/raw/main/docs/media/margaya-tour.mp4"
-    poster="https://github.com/manu14357/Margaya/raw/main/apps/site/public/images/docs/tasks/board-view-light.webp"
-    controls
-    muted
-    playsinline
-    width="860"></video>
+  <video src="https://github.com/user-attachments/assets/5d15c041-68a9-4cf4-b82b-dcc7454fe3a2" controls muted playsinline width="860"></video>
 </p>
 
 <p align="center">
-  <sub>▶️ A quick tour of Margaya. If the player doesn't load, <a href="https://github.com/manu14357/Margaya/raw/main/docs/media/margaya-tour.mp4">watch the demo here</a>.</sub>
+  <sub>▶️ A quick tour of Margaya.</sub>
 </p>
 
 ## What is Margaya?
