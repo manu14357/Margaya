@@ -29,6 +29,9 @@ build
 dist
 .source
 
+# "build" above matches any dir named build; keep this source directory tracked
+!apps/web/src/components/ai/build/
+
 # Next.js generated types
 next-env.d.ts
 
