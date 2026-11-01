@@ -20,9 +20,7 @@
   </h3>
 </div>
 
-<p align="center">
-  <video src="https://github.com/user-attachments/assets/5d15c041-68a9-4cf4-b82b-dcc7454fe3a2" controls muted playsinline width="860"></video>
-</p>
+https://github.com/user-attachments/assets/5d15c041-68a9-4cf4-b82b-dcc7454fe3a2
 
 <p align="center">
   <sub>▶️ A quick tour of Margaya.</sub>
