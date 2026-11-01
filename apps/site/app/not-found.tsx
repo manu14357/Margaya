@@ -61,11 +61,13 @@ const links: FinderLink[] = [
     keywords: "how to tutorial docker sso mcp",
   },
   {
-    label: "Pricing",
-    hint: "Margaya Cloud plans, and free self-hosting",
-    href: siteLinks.pricing,
+    label: "Commercial licence",
+    hint: "Using Margaya without the AGPL's conditions",
+    href:
+      siteLinks.site?.commercial ??
+      `${siteLinks.github}/blob/main/COMMERCIAL.md`,
     group: "Site",
-    keywords: "price cost plans cloud",
+    keywords: "licence license agpl commercial price cost",
   },
 ];
 
