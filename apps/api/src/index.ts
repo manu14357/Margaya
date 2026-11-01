@@ -705,7 +705,7 @@ export function createApp() {
       servers: [
         {
           url: normalizeApiServerUrl(
-            process.env.MARGAYA_API_URL || "https://cloud.margaya.app",
+            process.env.MARGAYA_API_URL || "https://margaya.example.com",
           ),
           description: "Margaya API Server",
         },

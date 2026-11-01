@@ -2,7 +2,7 @@ import { writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { createApp } from "../src/index";
 
-process.env.MARGAYA_API_URL = "https://cloud.margaya.app";
+process.env.MARGAYA_API_URL = "https://margaya.example.com";
 
 const { app } = createApp();
 const response = await app.request("/api/openapi");

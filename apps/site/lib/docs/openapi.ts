@@ -117,7 +117,7 @@ function openApi(): OpenApiSource {
 }
 
 export function openApiServerUrl(): string {
-  return openApi().servers?.[0]?.url ?? "https://cloud.margaya.app/api";
+  return openApi().servers?.[0]?.url ?? "https://margaya.example.com/api";
 }
 
 /** The component name of a `#/components/schemas/Name` reference. */
