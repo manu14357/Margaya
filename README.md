@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="apps/web/public/logo-dark.svg" alt="Margaya logo" width="240" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="apps/web/public/logo-light.svg" />
+    <img src="apps/web/public/logo-dark.svg" alt="Margaya" width="240" />
+  </picture>
 </p>
 
 <div align="center">
@@ -16,6 +19,20 @@
     <a href="https://margaya.app">Website</a>
   </h3>
 </div>
+
+<p align="center">
+  <video
+    src="https://github.com/manu14357/Margaya/raw/main/docs/media/margaya-tour.mp4"
+    poster="https://github.com/manu14357/Margaya/raw/main/apps/site/public/images/docs/tasks/board-view-light.webp"
+    controls
+    muted
+    playsinline
+    width="860"></video>
+</p>
+
+<p align="center">
+  <sub>▶️ A quick tour of Margaya. If the player doesn't load, <a href="https://github.com/manu14357/Margaya/raw/main/docs/media/margaya-tour.mp4">watch the demo here</a>.</sub>
+</p>
 
 ## What is Margaya?
 
@@ -111,6 +128,41 @@ Works with Claude, or with your own local model through any OpenAI-compatible se
 - **20 languages**
 - Light, dark and high-contrast themes
 - **Keyboard shortcuts** for everything common
+
+## Screenshots
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <img src="apps/site/public/images/docs/tasks/list-view-light.webp" alt="List view" /><br />
+      <sub><b>List</b> — group, sort and filter your tasks</sub>
+    </td>
+    <td width="50%" align="center">
+      <img src="apps/site/public/images/docs/views/calendar-layout-light.webp" alt="Calendar layout" /><br />
+      <sub><b>Calendar</b> — see due and start dates at a glance</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <img src="apps/site/public/images/docs/views/gantt-layout-light.webp" alt="Gantt timeline" /><br />
+      <sub><b>Timeline</b> — a Gantt view of the plan</sub>
+    </td>
+    <td width="50%" align="center">
+      <img src="apps/site/public/images/docs/getting-around/home-light.webp" alt="Home" /><br />
+      <sub><b>Home</b> — widgets, quick links and sticky notes</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <img src="apps/site/public/images/docs/ai/ask-answer-light.webp" alt="Ask AI" /><br />
+      <sub><b>Ask AI</b> — answers that cite your tasks and pages</sub>
+    </td>
+    <td width="50%" align="center">
+      <img src="apps/site/public/images/docs/ai/agent-desk-light.webp" alt="AI agents" /><br />
+      <sub><b>AI agents</b> — delegate work, then review and undo</sub>
+    </td>
+  </tr>
+</table>
 
 ## Getting Started
 
