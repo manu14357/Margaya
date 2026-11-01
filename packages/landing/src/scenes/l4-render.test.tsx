@@ -25,7 +25,6 @@ const links = {
   selfHost: "/docs/install",
   docs: "/docs",
   apiReference: "/docs/api",
-  pricing: "/pricing",
   github: "https://example.com/margaya",
   features: {
     plan: "/features/plan",
@@ -63,7 +62,12 @@ function show(node: React.ReactNode) {
 
 afterEach(cleanup);
 
-describe("L4 scenes render", () => {
+// Each test renders every frame of a scene: about half a second on an idle
+// machine, but CPU-bound, so a busy one or a small CI runner can pass the
+// default 5 s.
+const SCENE_TIMEOUT_MS = 20_000;
+
+describe("L4 scenes render", { timeout: SCENE_TIMEOUT_MS }, () => {
   for (const scene of scenes) {
     it(`${scene.id}: renders the first and final frames, wide and compact`, () => {
       for (const state of [scene.initialState, finalStateOf(scene)]) {

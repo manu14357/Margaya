@@ -14,7 +14,7 @@ const m = vi.hoisted(() => {
     language: "en-US",
     resolvedLanguage: "en-US",
     getResourceBundle: vi.fn((language: string) =>
-      language === "de-DE" ? { home: { nav: { pricing: "Preise" } } } : {},
+      language === "de-DE" ? { home: { nav: { docs: "Dokumentation" } } } : {},
     ),
     loadLanguages: vi.fn(async () => {}),
     changeLanguage: vi.fn(async (language: string) => {
@@ -85,10 +85,21 @@ describe("PublicLanding preferences", () => {
     m.i18n.resolvedLanguage = "de-DE";
     render(<PublicLanding />);
 
-    expect(screen.getAllByText("Preise").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Dokumentation").length).toBeGreaterThan(0);
     expect(
       screen.getByRole("button", { name: "Language: Deutsch" }),
     ).toBeInTheDocument();
+  });
+
+  it("links the licence and the commercial licence in the footer", () => {
+    render(<PublicLanding />);
+
+    expect(
+      screen
+        .getByRole("link", { name: /^Commercial licence/ })
+        .getAttribute("href"),
+    ).toBe("https://github.com/manu14357/Margaya/blob/main/COMMERCIAL.md");
+    expect(screen.queryByRole("link", { name: "Pricing" })).toBeNull();
   });
 
   it("uses the app's theme preference", () => {

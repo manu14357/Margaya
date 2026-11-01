@@ -155,10 +155,7 @@ type NavItem = { label: string; href?: string; external?: boolean };
 function useNavItems(): NavItem[] {
   const nav = useLandingCopy().home.nav;
   const links = useLandingLinks();
-  return [
-    { label: nav.pricing, href: links.pricing },
-    { label: nav.docs, href: links.docs },
-  ].filter((item) => item.href);
+  return [{ label: nav.docs, href: links.docs }].filter((item) => item.href);
 }
 
 function MobileMenu({
@@ -278,7 +275,7 @@ function MobileMenu({
 
 /**
  * The public navbar: a plain full-width bar with a hairline border, the logo; Features (a menu of the
- * five feature pages), Pricing and Docs; then the language
+ * five feature pages) and Docs; then the language
  * and theme menus (when the host provides `LandingPrefs`), GitHub, Sign in
  * and Get started. Below `lg` everything but Get started folds into a panel
  * under the bar, full width. The header stays 4rem tall: the docs layout's sticky

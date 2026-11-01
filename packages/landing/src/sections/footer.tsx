@@ -38,7 +38,6 @@ export function LandingFooter() {
         { label: nav.items.docs.title, href: links.features.docs },
         { label: nav.items.automate.title, href: links.features.automate },
         { label: nav.items.selfHost.title, href: links.features.selfHost },
-        { label: footer.product.pricing, href: links.pricing },
         {
           label: footer.product.changelog,
           href: site.changelog,
@@ -64,6 +63,11 @@ export function LandingFooter() {
         { label: footer.company.privacy, href: site.privacy },
         { label: footer.company.terms, href: site.terms },
         { label: footer.company.licence, href: site.license, external: true },
+        {
+          label: footer.company.commercial,
+          href: site.commercial,
+          external: true,
+        },
         { label: footer.company.github, href: links.github, external: true },
       ],
     },

@@ -17,7 +17,6 @@ export {
   LandingThemeMenu,
   LandingThemeSwitch,
 } from "./prefs-controls";
-export { PricingSection } from "./pricing-section";
 export { PublicBoardsSection } from "./public-boards-section";
 export {
   LandingSection,

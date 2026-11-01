@@ -28,7 +28,6 @@ const LINKS: LandingLinks = {
   selfHost: `${DOCS_URL}/core/installation`,
   docs: DOCS_URL,
   apiReference: `${DOCS_URL}/api-reference/introduction`,
-  pricing: `${PUBLIC_SITE_URL}/pricing`,
   github: GITHUB_REPOSITORY_URL,
   features: {
     plan: `${PUBLIC_SITE_URL}/features/plan`,
@@ -46,6 +45,7 @@ const LINKS: LandingLinks = {
     privacy: `${PUBLIC_SITE_URL}/privacy`,
     terms: `${PUBLIC_SITE_URL}/terms`,
     license: `${GITHUB_REPOSITORY_URL}/blob/main/LICENSE`,
+    commercial: `${GITHUB_REPOSITORY_URL}/blob/main/COMMERCIAL.md`,
   },
 };
 
