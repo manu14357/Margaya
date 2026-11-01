@@ -1,0 +1,84 @@
+---
+title: Licensing
+description: Margaya Community Edition is open source under the AGPL-3.0; a commercial licence lets businesses use it without the AGPL's conditions
+---
+
+Margaya is dual-licensed. Self-hosting runs **Margaya Community Edition (CE)**, which is open source under the [GNU Affero General Public License v3.0](https://github.com/manu14357/Margaya/blob/main/LICENSE) (AGPL-3.0-only). The same software is also available under a **commercial licence** for organisations that want to use it without the AGPL's conditions.
+
+There is one product: every feature, including single sign-on, roles, the audit log, AI, the API and MCP, is in the Community Edition. The two licences differ only in their terms.
+
+<Note>
+  This page is a plain-language summary, not legal advice. The [LICENSE](https://github.com/manu14357/Margaya/blob/main/LICENSE) file and, for commercial customers, your agreement are what apply.
+</Note>
+
+## Editions at a glance
+
+| | Community Edition (AGPL-3.0) | Commercial licence |
+| --- | --- | --- |
+| Price | Free | Paid, per agreement |
+| Features | Every feature | Every feature |
+| Run it on your own servers, including inside a company | Yes | Yes |
+| Change the code | Yes | Yes |
+| Keep your changes private from the people who use your instance | No: you must offer them the source | Yes |
+| Build Margaya into a closed-source product | No | Yes |
+| Host Margaya for customers without publishing your source | No | Yes |
+| Support, agreed response times and a written warranty | No | Optional |
+
+## What the AGPL means when you self-host
+
+- **Running an unchanged copy is free,** for any purpose, including for your company's own team. You only need to keep the source available, which the official repository already does.
+- **If you change Margaya and people use your changed version over a network,** for example your colleagues or your customers in a browser, you must offer those people the complete source code of your version under the AGPL-3.0.
+- **Offering the source is built in.** The Help menu in the app has a **Source code** link. It opens the official repository by default; if you run a changed version, set [`MARGAYA_SOURCE_URL`](/core/installation/environment-variables) to a public repository with your changes.
+- **Configuration is not a change.** Environment variables, instance settings, workspaces, your data, themes chosen in the app and reverse-proxy setups do not count as modifying Margaya.
+
+## When you need a commercial licence
+
+You need a commercial licence to use Margaya without the AGPL's conditions, for example to:
+
+- change Margaya and keep your changes private from the people who use your instance;
+- build Margaya, or parts of its code, into a closed-source product;
+- host Margaya for customers or clients without publishing your source code;
+- use Margaya where your company's policy does not allow AGPL software.
+
+## What a commercial licence includes
+
+- The right to use, change and host Margaya without the AGPL's source-sharing conditions.
+- The same software as the Community Edition, with every feature.
+- Optional support with agreed response times, upgrade help and a written warranty.
+
+## How to get one
+
+Email [manoharchoppa6@gmail.com](mailto:manoharchoppa6@gmail.com) with:
+
+- your organisation's name and country;
+- roughly how many people will use Margaya;
+- how you plan to run it (your own servers, a cloud account, for clients) and whether you will change it.
+
+The [commercial licence summary](https://github.com/manu14357/Margaya/blob/main/COMMERCIAL.md) in the repository has the same information.
+
+## FAQ
+
+### Can my company use Margaya for free?
+
+Yes. A company may self-host the Community Edition for its own team at no cost. If you only configure it and do not change its code, the AGPL asks nothing more of you. You need a commercial licence only when you want to use Margaya without the AGPL's conditions, as listed above.
+
+### Do my scripts and integrations become AGPL?
+
+No. Software that talks to Margaya through its REST API, MCP, webhooks or integrations is a separate program, and using those interfaces does not put your code under the AGPL. Copying Margaya's code into your product, or changing Margaya itself, is what the AGPL covers.
+
+### What about versions released before the AGPL?
+
+Versions of Margaya distributed before 2026-11-03 were published under the MIT License, and copies received under those terms keep them. The `@margaya/mcp` npm package stays under the MIT License.
+
+### Can I use the Margaya name and logo?
+
+The licences cover the code, not the name or logo. You may say your product works with Margaya, and run an unchanged copy under its own name. Offering a hosted or modified version under the Margaya name needs written permission; see [TRADEMARKS.md](https://github.com/manu14357/Margaya/blob/main/TRADEMARKS.md).
+
+### How are contributions licensed?
+
+Contributions are accepted under the [Contributor Licence Agreement](https://github.com/manu14357/Margaya/blob/main/CLA.md), which lets the maintainers distribute them under both the AGPL-3.0 and commercial licences. You keep the copyright in your contribution.
+
+## Next
+
+- [Installation overview](/core/installation)
+- [Environment variables](/core/installation/environment-variables)
