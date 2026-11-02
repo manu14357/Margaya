@@ -2,6 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import {
   BookOpen,
   Building2,
+  Code,
   Command as CommandIcon,
   FolderPlus,
   Keyboard,
@@ -35,7 +36,7 @@ import {
 } from "@/components/ui/menu";
 import { APP_VERSION, CHANGELOG_URL } from "@/components/version-display";
 import { shortcuts } from "@/constants/shortcuts";
-import { DOCS_URL } from "@/constants/urls";
+import { DOCS_URL, GITHUB_REPOSITORY_URL } from "@/constants/urls";
 import useSignOut from "@/hooks/mutations/use-sign-out";
 import useGetConfig from "@/hooks/queries/config/use-get-config";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
@@ -128,9 +129,14 @@ export function CreateMenu({ trigger, side = "right" }: ShellMenuProps) {
   );
 }
 
-/** Help: shortcuts, the command bar, documentation and what's new. */
+/**
+ * Help: shortcuts, the command bar, documentation, what's new and the
+ * source code (the AGPL-3.0 asks that people using an instance can get it).
+ */
 export function HelpMenu({ trigger, side = "right" }: ShellMenuProps) {
   const { t } = useTranslation();
+  const { data: config } = useGetConfig();
+  const sourceUrl = config?.sourceCodeUrl ?? GITHUB_REPOSITORY_URL;
 
   return (
     <DropdownMenu>
@@ -177,6 +183,14 @@ export function HelpMenu({ trigger, side = "right" }: ShellMenuProps) {
             <DropdownMenuShortcut className="font-mono tracking-normal">
               v{APP_VERSION}
             </DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            render={
+              <a href={sourceUrl} target="_blank" rel="noopener noreferrer" />
+            }
+          >
+            <Code />
+            {t("navigation:shell.sourceCode")}
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
