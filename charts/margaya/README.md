@@ -1,5 +1,5 @@
 # Margaya Helm Chart
-This Helm chart deploys [Margaya](https://margaya.app) - open source project management that works for you, not against you.
+This Helm chart deploys [Margaya](https://margaya.app) - open source project management that works for you, not against you. Margaya is licensed under the [GNU AGPL-3.0](https://github.com/manu14357/Margaya/blob/main/LICENSE); a [commercial license](https://github.com/manu14357/Margaya/blob/main/COMMERCIAL.md) is available for use without the AGPL's conditions.
 ## Introduction
 This chart bootstraps a Margaya deployment on a Kubernetes cluster using the Helm package manager. It deploys both the API backend and Web frontend components, along with a PostgreSQL database, with optional ingress or Gateway API resources.
 ## Prerequisites
