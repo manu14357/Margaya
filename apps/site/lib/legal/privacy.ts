@@ -1,21 +1,21 @@
-import { GITHUB_URL, type LegalDocument } from "./types";
+import { COMMERCIAL_EMAIL, GITHUB_URL, type LegalDocument } from "./types";
 
 // English only, like the other long-form site pages. Keep every statement
 // true to the code: cookies (Better Auth), Sentry (opt-in DSN, no default
-// PII), SMTP email, Creem billing and the integrations in apps/api/src.
+// PII), SMTP email, AI providers and the integrations in apps/api/src.
 export const privacyPolicy: LegalDocument = {
   path: "/privacy",
   metaTitle: "Privacy policy",
   metaDescription:
-    "How Margaya handles personal data: self-hosted instances send the maintainers nothing, and Margaya Cloud uses your data only to run the service.",
+    "How Margaya handles personal data: this website sets no cookies, and self-hosted instances send the maintainers nothing.",
   title: "Privacy policy",
   intro:
-    "How Margaya handles personal data, whether you run it yourself or use Margaya Cloud. Written to be read, not skimmed past.",
-  updated: "2026-10-29",
+    "How this website and the Margaya software handle personal data. Written to be read, not skimmed past.",
+  updated: "2026-11-03",
   summaryTitle: "The short version",
   summary: [
     "Self-hosting means your data stays on your servers. The maintainers receive none of it.",
-    "Margaya Cloud processes account and workspace data only to provide the service.",
+    "There is no hosted Margaya service, so we hold no accounts or workspace data.",
     "No advertising, no tracking cookies, no analytics scripts, and no selling of data.",
     "Integrations send data only to the services you choose to connect.",
   ],
@@ -26,7 +26,7 @@ export const privacyPolicy: LegalDocument = {
       blocks: [
         {
           type: "p",
-          text: "This policy covers two things run by the Margaya maintainers (“we”): this website, **margaya.app**, including the documentation, and the hosted service **Margaya Cloud** at cloud.margaya.app.",
+          text: "This policy covers this website, **margaya.app**, including the documentation, run by the Margaya maintainers (“we”). It also explains what the Margaya software does with data when you run it yourself.",
         },
         {
           type: "p",
@@ -40,7 +40,7 @@ export const privacyPolicy: LegalDocument = {
       blocks: [
         {
           type: "p",
-          text: "Margaya is open-source software under the MIT licence. When you install it on your own infrastructure, everything it stores (accounts, workspaces, tasks, docs, files) lives in your PostgreSQL database and your file storage.",
+          text: "Margaya is open-source software under the GNU AGPL-3.0, and you run it on your own infrastructure. Everything it stores (accounts, workspaces, tasks, docs, files) lives in your PostgreSQL database and your file storage.",
         },
         {
           type: "list",
@@ -68,38 +68,16 @@ export const privacyPolicy: LegalDocument = {
       ],
     },
     {
-      id: "cloud-data",
-      title: "What Margaya Cloud collects",
-      blocks: [
-        {
-          type: "list",
-          items: [
-            "**Account details:** your name, email address and profile picture. If you sign in with GitHub, Google or Discord, we receive the basic profile those providers share, never your password for them. Passwords you set with us are stored only as salted hashes.",
-            "**Workspace content:** the projects, tasks, comments, docs, attachments and other content you and your teammates create.",
-            "**Session and security records:** the IP address and browser of each signed-in session, and the workspace audit log of who changed what.",
-            "**Billing details:** your plan, subscription status and seat count. Card details are collected by our payment provider, Creem, and never reach Margaya.",
-          ],
-        },
-      ],
-    },
-    {
-      id: "use",
-      title: "How we use it",
+      id: "contact-data",
+      title: "When you get in touch",
       blocks: [
         {
           type: "p",
-          text: "We use this data to run Margaya Cloud for you, and for nothing else:",
+          text: `If you email us, for example about a commercial licence at ${COMMERCIAL_EMAIL}, we receive your email address and whatever you write. We use it only to answer you and, if you take a commercial licence, to keep a record of that agreement.`,
         },
         {
-          type: "list",
-          items: [
-            "signing you in and keeping your session secure;",
-            "storing your work and keeping every open view up to date in real time;",
-            "sending email you need or asked for: invitations, sign-in links, notifications and digests you've switched on, and billing notices;",
-            "billing subscriptions and running free trials;",
-            "protecting the service, for example by limiting repeated sign-in attempts;",
-            "answering you when you get in touch.",
-          ],
+          type: "p",
+          text: "Posts in GitHub discussions, issues and pull requests are public and are handled by GitHub under its own privacy policy.",
         },
         {
           type: "p",
@@ -109,16 +87,14 @@ export const privacyPolicy: LegalDocument = {
     },
     {
       id: "processors",
-      title: "Services that help run Margaya Cloud",
+      title: "Services your instance talks to",
       blocks: [
         {
           type: "list",
           items: [
-            "**Hosting:** servers, the database and file storage, in EU data centres.",
-            "**Email delivery:** a mail provider we send through over SMTP.",
-            "**Payments:** Creem, which acts as merchant of record and handles payment, invoices and tax under its own privacy policy.",
-            "**Error reports:** Sentry, when enabled, with default personal-data collection turned off.",
-            "**Sign-in providers:** GitHub, Google or Discord, only if you choose to sign in with them.",
+            "**Email delivery:** the SMTP server the operator configures.",
+            "**Error reports:** the operator's own Sentry project, only when a DSN is set, with default personal-data collection turned off.",
+            "**Sign-in providers:** GitHub, Google, Discord or an OIDC provider, only if the operator enables them and you choose to sign in with them.",
           ],
         },
         {
@@ -127,7 +103,7 @@ export const privacyPolicy: LegalDocument = {
         },
         {
           type: "p",
-          text: "AI features are off until a workspace admin turns them on, and Margaya Cloud doesn't send your data to an AI provider of its own choosing. When a workspace turns AI on, the text a feature needs, such as your question and the tasks it reads, goes to the provider whose API key the workspace added, and that provider's terms apply there. We don't use your data to train models. For budgets we keep usage metadata (the feature, model, token count and cost); prompts and answers are stored only if you turn on server history.",
+          text: "AI features are off until a workspace admin turns them on, and Margaya doesn't send your data to an AI provider of its own choosing. When a workspace turns AI on, the text a feature needs, such as your question and the tasks it reads, goes to the provider whose API key the workspace added (or to a model the operator runs locally), and that provider's terms apply there. Margaya keeps usage metadata (the feature, model, token count and cost) for budgets; prompts and answers are stored only if you turn on server history.",
         },
       ],
     },
@@ -137,7 +113,7 @@ export const privacyPolicy: LegalDocument = {
       blocks: [
         {
           type: "p",
-          text: "Margaya Cloud uses cookies only to sign you in: a session cookie (`better-auth.session_token`, sent with a `__Secure-` prefix over HTTPS) and short-lived cookies that protect sign-in flows such as “Sign in with GitHub”. They are essential, so there is no banner asking about them.",
+          text: "This website sets no cookies. A Margaya instance uses cookies only to sign you in: a session cookie (`better-auth.session_token`, sent with a `__Secure-` prefix over HTTPS) and short-lived cookies that protect sign-in flows such as “Sign in with GitHub”. They are essential and are set by the instance you sign in to, not by us.",
         },
         {
           type: "p",
@@ -152,10 +128,9 @@ export const privacyPolicy: LegalDocument = {
         {
           type: "list",
           items: [
-            "Account details and workspace content stay for as long as your account and workspaces exist.",
-            "Deleted tasks and projects go to the trash first, where they can be restored until they are permanently deleted.",
-            "When you delete your account, your account data is removed from the live database. Copies in backups disappear as those backups expire.",
-            "Billing records are kept by Creem for as long as tax law requires.",
+            "Emails you send us are kept for as long as we need them to answer you, or for as long as a commercial licence agreement and the law require.",
+            "Access logs kept by the website's hosting provider expire on that provider's schedule.",
+            "Data in a self-hosted instance is kept for as long as its operator decides. In Margaya, deleted tasks and projects go to the trash first, where they can be restored until they are permanently deleted.",
           ],
         },
       ],
@@ -167,14 +142,14 @@ export const privacyPolicy: LegalDocument = {
         {
           type: "list",
           items: [
-            "Update your profile and notification settings at any time in the app.",
-            "Export your tasks as CSV, Excel or JSON.",
-            "Delete your account from your account settings.",
+            "Clear your browser's local storage to forget your theme and language choices on this website.",
+            "In a Margaya instance, update your profile and notification settings, export your tasks as CSV, Excel or JSON, and delete your account from your account settings.",
+            "For data held in an instance someone else runs, contact that instance's operator.",
           ],
         },
         {
           type: "p",
-          text: "Depending on where you live (for example under the GDPR in the EU and UK), you can also ask to see, correct, receive a copy of, or erase your personal data, or object to how it is used, and you can complain to your local data-protection authority. Get in touch as described below and we will respond within the time the law allows.",
+          text: "Depending on where you live (for example under the GDPR in the EU and UK), you can also ask to see, correct, receive a copy of, or erase the personal data we hold about you, or object to how it is used, and you can complain to your local data-protection authority. Get in touch as described below and we will respond within the time the law allows.",
         },
       ],
     },
@@ -184,7 +159,7 @@ export const privacyPolicy: LegalDocument = {
       blocks: [
         {
           type: "p",
-          text: "Connections are encrypted with TLS. Every request is checked against your workspace role before anything is read or changed, and workspaces are kept apart from one another. Because the code is open, anyone can review how this works.",
+          text: "This website is served over TLS. In Margaya, every request is checked against your workspace role before anything is read or changed, and workspaces are kept apart from one another. Because the code is open, anyone can review how this works.",
         },
         {
           type: "p",
@@ -198,7 +173,7 @@ export const privacyPolicy: LegalDocument = {
       blocks: [
         {
           type: "p",
-          text: "Margaya is a tool for work and study, not for children. Margaya Cloud is not intended for anyone under 16.",
+          text: "Margaya is a tool for work and study, not for children. This website is not aimed at anyone under 16.",
         },
       ],
     },
@@ -208,7 +183,7 @@ export const privacyPolicy: LegalDocument = {
       blocks: [
         {
           type: "p",
-          text: "When this policy changes, the date at the top changes too. We will tell Margaya Cloud users about significant changes before they take effect. The website's source lives in the public repository, so every past version of this page is on record.",
+          text: "When this policy changes, the date at the top changes too. The website's source lives in the public repository, so every past version of this page is on record.",
         },
       ],
     },
@@ -218,7 +193,7 @@ export const privacyPolicy: LegalDocument = {
       blocks: [
         {
           type: "p",
-          text: `Questions about privacy go to the Margaya maintainers on [GitHub](${GITHUB_URL}/discussions). Please don't post personal details in public: open a discussion asking for a private channel and we will take it from there.`,
+          text: `Questions about privacy go to the Margaya maintainers on [GitHub](${GITHUB_URL}/discussions). Please don't post personal details in public: open a discussion asking for a private channel, or email [${COMMERCIAL_EMAIL}](mailto:${COMMERCIAL_EMAIL}).`,
         },
       ],
     },
