@@ -183,7 +183,7 @@ ${wrap(press.boilerplate.short.text)}
 Website     https://margaya.app
 Press page  https://margaya.app/press
 GitHub      https://github.com/manu14357/Margaya
-Licence     MIT
+Licence     ${press.facts.licence.value}
 
 
 ABOUT MARGAYA

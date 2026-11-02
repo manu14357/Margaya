@@ -35,6 +35,7 @@ Fixes #
 - [ ] I have added tests that prove my fix is effective or that my feature works
 - [ ] New and existing unit tests pass locally with my changes
 - [ ] Any dependent changes have been merged and published
+- [ ] I agree to the [Contributor Licence Agreement](https://github.com/manu14357/Margaya/blob/main/CLA.md) for this contribution
 
 ## Additional Notes
 <!-- Add any other context about the PR here -->
