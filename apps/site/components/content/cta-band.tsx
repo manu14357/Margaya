@@ -8,7 +8,7 @@ import { siteLinks } from "@/lib/site-links";
  */
 export function CtaBand({
   title = "Try it on your own work",
-  description = "Start on Margaya Cloud in a couple of minutes, or run the same open-source build on your own server. Every feature is in both.",
+  description = "Run Margaya on your own server in a few minutes. It's open source under the AGPL, with every feature included.",
 }: {
   title?: string;
   description?: string;
@@ -30,16 +30,16 @@ export function CtaBand({
       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
         <a
           className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
-          href={siteLinks.signUp}
+          href={siteLinks.selfHost}
         >
-          Start a free trial
+          Self-host it
           <ArrowRight aria-hidden="true" className="size-4" />
         </a>
         <a
           className="inline-flex h-11 items-center justify-center rounded-lg border border-border px-5 font-medium text-sm transition-colors hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
-          href={siteLinks.selfHost}
+          href={siteLinks.docs}
         >
-          Self-host it
+          Read the docs
         </a>
       </div>
     </aside>
