@@ -3396,6 +3396,7 @@
 			"unreadAria_other": "{{count}} chưa đọc",
 			"unreadOnly": "Chỉ chưa đọc",
 			"whatsNew": "Có gì mới",
+			"sourceCode": "Mã nguồn",
 			"workspaceAnalytics": "Không gian làm việc"
 		}
 	},
@@ -6483,7 +6484,7 @@
 					"title": "20 ngôn ngữ"
 				},
 				"openSource": {
-					"detail": "Giấy phép MIT",
+					"detail": "Giấy phép AGPL-3.0",
 					"title": "Mã nguồn mở"
 				},
 				"selfHosted": {
@@ -6507,11 +6508,11 @@
 						"question": "Có API không, và nó có hoạt động với AI agent không?"
 					},
 					"cost": {
-						"answer": "Tự lưu trữ hoàn toàn miễn phí. Margaya Cloud có giá $4 mỗi tháng cho một người và $5 mỗi người dùng mỗi tháng cho nhóm, kèm 14 ngày dùng thử không cần thẻ tín dụng.",
+						"answer": "Tự lưu trữ Margaya theo giấy phép AGPL-3.0 hoàn toàn miễn phí, với mọi tính năng. Các doanh nghiệp cần dùng mà không chịu các điều kiện của AGPL, chẳng hạn để giữ kín các thay đổi, có thể mua giấy phép thương mại.",
 						"question": "Chi phí là bao nhiêu?"
 					},
 					"data": {
-						"answer": "Bạn. Trên máy chủ của riêng bạn, không có gì rời khỏi hạ tầng của bạn và chúng tôi không nhận bất kỳ dữ liệu nào từ đó. Trên Margaya Cloud, không gian làm việc của bạn được lưu tại EU, và bạn có thể xuất công việc ra CSV, Excel hoặc JSON hay xóa tài khoản bất cứ lúc nào.",
+						"answer": "Bạn. Margaya chỉ chạy trên máy chủ của riêng bạn, nên không có gì rời khỏi hạ tầng của bạn và chúng tôi không nhận bất kỳ dữ liệu nào từ đó. Bạn có thể xuất công việc ra CSV, Excel hoặc JSON bất cứ lúc nào.",
 						"question": "Ai sở hữu dữ liệu của tôi?"
 					},
 					"jira": {
@@ -6523,7 +6524,7 @@
 						"question": "Ứng dụng hỗ trợ những ngôn ngữ nào?"
 					},
 					"license": {
-						"answer": "Giấy phép MIT. Không có phiên bản trả phí và không có tính năng nào bị giữ lại cho nó: đăng nhập một lần (SSO), nhật ký kiểm tra, API và MCP đều có trong bản mã nguồn mở.",
+						"answer": "GNU AGPL-3.0. Bạn có thể dùng, chỉnh sửa và lưu trữ Margaya miễn phí. Nếu bạn sửa đổi và cho người khác dùng nó qua mạng, bạn công bố các thay đổi của mình theo cùng giấy phép đó. Để dùng Margaya mà không chịu các điều kiện này, chẳng hạn để giữ kín các thay đổi hoặc tích hợp nó vào một sản phẩm đóng, bạn có thể mua giấy phép thương mại. Đăng nhập một lần (SSO), nhật ký kiểm tra, API và MCP đều có trong bản mã nguồn mở.",
 						"question": "Margaya dùng giấy phép nào?"
 					},
 					"redis": {
@@ -6546,10 +6547,10 @@
 				"title": "Câu hỏi, trả lời thẳng thắn"
 			},
 			"finalCta": {
-				"description": "Bắt đầu với Margaya Cloud chỉ trong một phút, hoặc chạy trên máy chủ của riêng bạn ngay hôm nay.",
-				"note": "Dùng thử bản cloud 14 ngày, không cần thẻ tín dụng. Tự lưu trữ miễn phí với giấy phép MIT.",
-				"primary": "Bắt đầu",
-				"secondary": "Tự lưu trữ Margaya",
+				"description": "Chạy Margaya trên máy chủ của riêng bạn ngay hôm nay, miễn phí và mã nguồn mở theo giấy phép AGPL-3.0.",
+				"note": "Nếu bạn cần dùng Margaya mà không chịu các điều kiện của AGPL, có sẵn giấy phép thương mại.",
+				"primary": "Tự cài đặt",
+				"secondary": "Đọc tài liệu",
 				"title": "Dành thời gian cho công việc, không phải cho công cụ."
 			},
 			"hero": {
@@ -6648,7 +6649,6 @@
 				"label": "Chính",
 				"menu": "Menu",
 				"openMenu": "Mở menu",
-				"pricing": "Bảng giá",
 				"signIn": "Đăng nhập",
 				"explore": "Khám phá",
 				"featuresIntro": "Sáu chuyến tham quan ngắn về Margaya. Mỗi chuyến đều có bản demo trực tiếp mà bạn có thể tự điều khiển.",
@@ -6656,7 +6656,7 @@
 			},
 			"ownIt": {
 				"cta": "Đọc hướng dẫn cài đặt",
-				"description": "Margaya chạy dưới dạng một container ứng dụng bên cạnh PostgreSQL. Bắt đầu trên một máy duy nhất và mở rộng khi cần, không cần khóa bản quyền hay phiên bản trả phí.",
+				"description": "Margaya chạy dưới dạng một container ứng dụng bên cạnh PostgreSQL. Bắt đầu trên một máy duy nhất và mở rộng khi cần, với mọi tính năng có trong bản mã nguồn mở.",
 				"eyebrow": "Làm chủ",
 				"items": {
 					"audit": {
@@ -6676,8 +6676,8 @@
 						"title": "Helm chart"
 					},
 					"license": {
-						"body": "Mọi tính năng, kể cả đăng nhập một lần (SSO), đều có trong bản mã nguồn mở. Không có phiên bản doanh nghiệp nào cả.",
-						"title": "Giấy phép MIT"
+						"body": "Mọi tính năng, kể cả đăng nhập một lần (SSO), đều là mã nguồn mở theo giấy phép GNU AGPL-3.0. Nếu bạn cần dùng Margaya mà không chịu các điều kiện của AGPL, có sẵn giấy phép thương mại.",
+						"title": "Giấy phép AGPL-3.0"
 					},
 					"redis": {
 						"body": "Chỉ thêm Redis khi bạn chạy nhiều phiên bản API và muốn cập nhật thời gian thực đến được tất cả.",
@@ -6701,27 +6701,6 @@
 					"description": "Điểm, kích cỡ hoặc thời gian. Bật theo từng dự án, chu kỳ và mô-đun sẽ tự cộng dồn cho bạn.",
 					"title": "Ước tính, nếu nhóm bạn dùng đến"
 				}
-			},
-			"pricing": {
-				"cloud": {
-					"body": "Lưu trữ được quản lý tại EU. $4 mỗi tháng cho một người, $5 mỗi người dùng mỗi tháng cho nhóm.",
-					"cta": "Dùng thử 14 ngày",
-					"name": "Margaya Cloud",
-					"price": "Từ $4",
-					"suffix": "mỗi tháng"
-				},
-				"compare": "So sánh các gói",
-				"description": "Bản tự lưu trữ có đầy đủ mọi tính năng. Margaya Cloud là cùng một sản phẩm, được lưu trữ tại EU và luôn được cập nhật cho bạn.",
-				"eyebrow": "Bảng giá",
-				"note": "Dùng thử không cần thẻ tín dụng.",
-				"selfHosted": {
-					"body": "Không giới hạn người dùng và dự án trên máy chủ của riêng bạn, bao gồm mọi tính năng.",
-					"cta": "Đọc hướng dẫn cài đặt",
-					"name": "Tự lưu trữ",
-					"price": "$0",
-					"suffix": "mãi mãi"
-				},
-				"title": "Miễn phí khi tự vận hành. Giá hợp lý khi chúng tôi vận hành giúp bạn."
 			},
 			"publicBoards": {
 				"description": "Chia sẻ công khai một bảng, thu thập yêu cầu và lượt bình chọn mà không cần cấp tài khoản.",
@@ -6778,7 +6757,8 @@
 			"footer": {
 				"company": {
 					"github": "GitHub",
-					"licence": "Giấy phép MIT",
+					"licence": "Giấy phép AGPL-3.0",
+					"commercial": "Giấy phép thương mại",
 					"privacy": "Quyền riêng tư",
 					"terms": "Điều khoản",
 					"title": "Công ty"
@@ -6786,10 +6766,9 @@
 				"copyright": "© {{year}} Margaya",
 				"label": "Chân trang",
 				"mission": "Lên kế hoạch, hoàn thành công việc và làm chủ công cụ bạn dùng để làm việc.",
-				"missionNote": "Margaya là mã nguồn mở theo giấy phép MIT. Chạy trên máy chủ của riêng bạn, hoặc bắt đầu với Margaya Cloud.",
+				"missionNote": "Margaya là mã nguồn mở theo giấy phép GNU AGPL-3.0. Chạy trên máy chủ của riêng bạn, với mọi tính năng.",
 				"product": {
 					"changelog": "Nhật ký thay đổi",
-					"pricing": "Bảng giá",
 					"roadmap": "Lộ trình",
 					"title": "Sản phẩm"
 				},
@@ -6924,12 +6903,12 @@
 			},
 			"selfHost": {
 				"cta": {
-					"description": "Làm theo hướng dẫn cài đặt, hoặc để chúng tôi lưu trữ giúp bạn.",
+					"description": "Làm theo hướng dẫn cài đặt và chạy Margaya trên máy chủ của riêng bạn.",
 					"title": "Chạy được chỉ sau vài phút."
 				},
-				"description": "Một container ứng dụng và PostgreSQL. Không khóa bản quyền, không giới hạn tính năng, và không gửi gì về cho chúng tôi.",
+				"description": "Một container ứng dụng và PostgreSQL. Có mọi tính năng, không giới hạn tính năng, và không gửi gì về cho chúng tôi.",
 				"eyebrow": "Tự lưu trữ",
-				"metaDescription": "Chạy Margaya trên máy chủ của riêng bạn bằng Docker Compose, hoặc trên Kubernetes với Helm. Chỉ cần PostgreSQL, Redis là tùy chọn, giấy phép MIT, có thùng rác, nhật ký kiểm tra và xuất dữ liệu đầy đủ.",
+				"metaDescription": "Chạy Margaya trên máy chủ của riêng bạn bằng Docker Compose, hoặc trên Kubernetes với Helm. Chỉ cần PostgreSQL, Redis là tùy chọn, giấy phép AGPL-3.0, có thùng rác, nhật ký kiểm tra và xuất dữ liệu đầy đủ.",
 				"metaTitle": "Tự lưu trữ Margaya với Docker hoặc Helm",
 				"sections": {
 					"deploy": {
@@ -6953,7 +6932,7 @@
 			},
 			"views": {
 				"cta": {
-					"description": "Mọi chế độ xem đều có sẵn, trên Cloud lẫn bản tự lưu trữ.",
+					"description": "Mọi chế độ xem đều có trong bản mã nguồn mở.",
 					"title": "Chọn bố cục phù hợp với câu hỏi."
 				},
 				"description": "Đổi bố cục mà không phải sao chép dữ liệu. Mỗi chế độ xem giữ nguyên bộ lọc, cách nhóm và các thuộc tính hiển thị của nó.",
@@ -9331,11 +9310,11 @@
 			"description": "Các mô tả viết sẵn. Bạn có thể rút gọn nếu cần, nhưng xin giữ nguyên các dữ kiện.",
 			"long": {
 				"label": "Khoảng 150 từ",
-				"text": "Margaya là nền tảng quản lý dự án mã nguồn mở dành cho những nhóm muốn lập kế hoạch và hoàn thành công việc mà không để chính công cụ trở thành một gánh nặng. Công việc đi qua các chế độ xem bảng, danh sách, bảng tính, lịch và Gantt của cùng một dữ liệu. Chu kỳ, mô-đun, ước tính và hộp tiếp nhận luôn sẵn sàng khi nhóm cần lập kế hoạch, và không cản đường khi không cần. Các nhóm cùng viết tài liệu ngay cạnh công việc, thu thập yêu cầu trên bảng công khai và theo dõi tiến độ bằng phân tích và nhật ký kiểm tra. REST API có mô tả OpenAPI, webhook, máy chủ MCP và tích hợp với GitHub, Gitea, Slack, Discord cùng nhiều dịch vụ khác kết nối Margaya với các công cụ còn lại của nhóm. Giao diện có sẵn bằng 20 ngôn ngữ. Margaya được phát hành theo giấy phép MIT và chạy trên một máy chủ với Docker, hoặc trên Kubernetes với Helm; Margaya Cloud cung cấp cùng sản phẩm đó dưới dạng dịch vụ được quản lý."
+				"text": "Margaya là nền tảng quản lý dự án mã nguồn mở dành cho những nhóm muốn lập kế hoạch và hoàn thành công việc mà không để chính công cụ trở thành một gánh nặng. Công việc đi qua các chế độ xem bảng, danh sách, bảng tính, lịch và Gantt của cùng một dữ liệu. Chu kỳ, mô-đun, ước tính và hộp tiếp nhận luôn sẵn sàng khi nhóm cần lập kế hoạch, và không cản đường khi không cần. Các nhóm cùng viết tài liệu ngay cạnh công việc, thu thập yêu cầu trên bảng công khai và theo dõi tiến độ bằng phân tích và nhật ký kiểm tra. REST API có mô tả OpenAPI, webhook, máy chủ MCP và tích hợp với GitHub, Gitea, Slack, Discord cùng nhiều dịch vụ khác kết nối Margaya với các công cụ còn lại của nhóm. Giao diện có sẵn bằng 20 ngôn ngữ. Margaya được phát hành theo giấy phép GNU AGPL-3.0, kèm giấy phép thương mại để dùng mà không chịu các điều kiện của nó, và chạy trên một máy chủ với Docker, hoặc trên Kubernetes với Helm."
 			},
 			"short": {
 				"label": "Khoảng 50 từ",
-				"text": "Margaya là nền tảng quản lý dự án mã nguồn mở cho những nhóm muốn phân công rõ ràng mà không cần quy trình nặng nề. Lập kế hoạch công việc trên bảng, danh sách, bảng tính, lịch và biểu đồ Gantt, viết tài liệu ngay cạnh công việc, và kết nối các công cụ của bạn qua REST API và MCP. Tự vận hành theo giấy phép MIT, hoặc dùng Margaya Cloud."
+				"text": "Margaya là nền tảng quản lý dự án mã nguồn mở cho những nhóm muốn phân công rõ ràng mà không cần quy trình nặng nề. Lập kế hoạch công việc trên bảng, danh sách, bảng tính, lịch và biểu đồ Gantt, viết tài liệu ngay cạnh công việc, và kết nối các công cụ của bạn qua REST API và MCP. Chạy trên máy chủ của riêng bạn, miễn phí và mã nguồn mở theo giấy phép GNU AGPL-3.0."
 			},
 			"title": "Đoạn giới thiệu soạn sẵn"
 		},
@@ -9396,7 +9375,7 @@
 			},
 			"hosting": {
 				"label": "Lưu trữ",
-				"value": "Tự lưu trữ với Docker hoặc Helm, hoặc dùng dịch vụ được quản lý trên Margaya Cloud"
+				"value": "Tự lưu trữ với Docker hoặc Helm"
 			},
 			"interfaces": {
 				"label": "Giao tiếp",
@@ -9408,7 +9387,7 @@
 			},
 			"licence": {
 				"label": "Giấy phép",
-				"value": "MIT, cho mọi tính năng"
+				"value": "AGPL-3.0, có giấy phép thương mại"
 			},
 			"source": {
 				"label": "Mã nguồn",
@@ -9483,161 +9462,6 @@
 		},
 		"title": "Bộ tài liệu báo chí",
 		"downloadPng": "Tải PNG"
-	},
-	"pricing": {
-		"cta": {
-			"description": "Bắt đầu dùng thử Cloud mà không cần thẻ, hoặc làm theo hướng dẫn cài đặt và chạy Margaya trên phần cứng của riêng bạn.",
-			"primary": "Dùng thử miễn phí",
-			"secondary": "Đọc hướng dẫn cài đặt",
-			"title": "Chọn cách phù hợp, và đổi ý sau cũng được."
-		},
-		"description": "Bản tự lưu trữ là toàn bộ sản phẩm theo giấy phép MIT, không giới hạn số người dùng và không có gói trả phí. Margaya Cloud là cùng một phần mềm, được lưu trữ tại EU và luôn được cập nhật cho bạn.",
-		"eyebrow": "Bảng giá",
-		"faq": {
-			"items": {
-				"cancel": {
-					"answer": "Gói của bạn vẫn hoạt động đến hết kỳ bạn đã thanh toán. Trước thời điểm đó, hãy xuất công việc ra CSV, Excel hoặc JSON nếu muốn giữ một bản sao.",
-					"question": "Điều gì xảy ra nếu tôi hủy?"
-				},
-				"founding": {
-					"answer": "Các không gian làm việc tạo trước khi ra mắt gói trả phí được giữ quyền truy cập miễn phí ít nhất 12 tháng, và bạn sẽ được báo trước sáu tháng trước khi có bất kỳ thay đổi nào.",
-					"question": "Tôi đăng ký trước khi có gói trả phí. Điều gì thay đổi?"
-				},
-				"payments": {
-					"answer": "Thanh toán được xử lý qua Creem, đơn vị đóng vai trò người bán chính thức và lo thuế bán hàng cũng như VAT khi áp dụng. Thông tin thẻ của bạn không bao giờ đến Margaya.",
-					"question": "Ai xử lý thanh toán và thuế?"
-				},
-				"seats": {
-					"answer": "Cloud Nhóm tính phí cho mỗi thành viên của không gian làm việc. Khi có người tham gia hoặc rời đi, số người dùng trong gói đăng ký sẽ được cập nhật tương ứng.",
-					"question": "Thành viên Cloud Nhóm được tính như thế nào?"
-				},
-				"selfHostHelp": {
-					"answer": "Từ những người duy trì dự án và cộng đồng trên GitHub, qua các thảo luận và issue. Cài đặt, nâng cấp và cấu hình đều được trình bày trong tài liệu.",
-					"question": "Người tự lưu trữ nhận trợ giúp ở đâu?"
-				},
-				"selfHostLimits": {
-					"answer": "Không. Mã bạn cài đặt cũng chính là mã đang chạy Margaya Cloud, và toàn bộ đều theo giấy phép MIT. Không có khóa bản quyền, giới hạn người dùng hay tính năng trả phí nào cần mở khóa.",
-					"question": "Bản tự lưu trữ có thiếu gì không?"
-				},
-				"trial": {
-					"answer": "Một không gian làm việc Cloud mới có 14 ngày với đầy đủ mọi thứ, và bạn không cần thẻ để bắt đầu. Trước khi hết hạn, hãy chọn một gói hoặc xuất công việc của bạn.",
-					"question": "Bản dùng thử Cloud hoạt động thế nào?"
-				},
-				"yearly": {
-					"answer": "Có. Một năm có giá bằng mười tháng, nên cả hai gói Cloud đều được miễn phí hai tháng khi bạn trả theo năm.",
-					"question": "Thanh toán theo năm có rẻ hơn không?"
-				},
-				"ai": {
-					"question": "Có bao gồm AI không?",
-					"answer": "Gói nào cũng có các tính năng AI: Hỏi AI, chế độ Xây dựng, tác tử và hỗ trợ viết. Chúng luôn tắt cho đến khi quản trị viên bật lên. Chi phí sử dụng AI không nằm trong giá: bạn thêm khóa API của riêng mình trong phần cài đặt AI của không gian làm việc, và nhà cung cấp AI tính phí trực tiếp cho bạn. Bản tự lưu trữ cũng có thể dùng mô hình do bạn tự chạy, qua Ollama hoặc vLLM."
-				}
-			},
-			"title": "Câu hỏi về giá"
-		},
-		"interval": {
-			"annual": "Hằng năm",
-			"label": "Chu kỳ thanh toán",
-			"monthly": "Hằng tháng",
-			"saving": "Miễn phí 2 tháng"
-		},
-		"metaDescription": "Margaya miễn phí khi tự lưu trữ, mãi mãi. Margaya Cloud có giá $4 mỗi tháng cho một người hoặc $5 mỗi thành viên mỗi tháng cho nhóm, kèm 14 ngày dùng thử miễn phí.",
-		"plans": {
-			"personal": {
-				"annualNote": "Tương đương {{price}} mỗi tháng",
-				"annualPeriod": "mỗi năm",
-				"cta": "Dùng thử 14 ngày",
-				"monthlyNote": "Thanh toán hằng tháng",
-				"monthlyPeriod": "mỗi tháng",
-				"name": "Cloud Cá nhân",
-				"points": {
-					"everything": "Mọi tính năng của bản tự lưu trữ",
-					"help": "Hỗ trợ qua email",
-					"managed": "Sao lưu và cập nhật do chúng tôi lo",
-					"one": "Một người, không giới hạn dự án và công việc"
-				},
-				"tagline": "Lưu trữ được quản lý cho một người"
-			},
-			"selfHosted": {
-				"cta": "Đọc hướng dẫn cài đặt",
-				"name": "Tự lưu trữ",
-				"note": "Giấy phép MIT. Không cần khóa, không giới hạn người dùng.",
-				"period": "mãi mãi",
-				"points": {
-					"data": "Cơ sở dữ liệu của bạn, bản sao lưu của bạn, luật chơi của bạn",
-					"deploy": "Docker trên một máy chủ, hoặc Helm trên Kubernetes",
-					"everything": "Mọi tính năng, cho bao nhiêu người tùy bạn",
-					"help": "Hỗ trợ từ cộng đồng trên GitHub"
-				},
-				"tagline": "Trên máy chủ do bạn vận hành"
-			},
-			"team": {
-				"annualNote": "Tương đương {{price}} mỗi thành viên mỗi tháng",
-				"annualPeriod": "mỗi thành viên, mỗi năm",
-				"badge": "Dành cho nhóm",
-				"cta": "Dùng thử 14 ngày",
-				"monthlyNote": "Thanh toán hằng tháng cho mỗi thành viên không gian làm việc",
-				"monthlyPeriod": "mỗi thành viên, mỗi tháng",
-				"name": "Cloud Nhóm",
-				"points": {
-					"help": "Hỗ trợ ưu tiên qua email",
-					"managed": "Sao lưu và cập nhật do chúng tôi lo",
-					"people": "Mọi người trong không gian làm việc, không giới hạn dự án",
-					"roles": "Vai trò và quyền trong không gian làm việc"
-				},
-				"tagline": "Lưu trữ được quản lý cho cả nhóm"
-			}
-		},
-		"table": {
-			"description": "Tính năng ở đâu cũng như nhau. Điều khác biệt là ai vận hành máy chủ và bạn tìm trợ giúp ở đâu.",
-			"feature": "Tính năng",
-			"groups": {
-				"connect": "Kết nối",
-				"planning": "Lập kế hoạch và phân tích",
-				"running": "Vận hành",
-				"work": "Công việc"
-			},
-			"included": "Có",
-			"notIncluded": "Không có",
-			"rows": {
-				"admin": "Cài đặt phiên bản: nhà cung cấp đăng nhập, email, lưu trữ",
-				"analytics": "Phân tích và nhật ký kiểm tra",
-				"api": "REST API, webhook và MCP",
-				"backups": "Sao lưu",
-				"cycles": "Chu kỳ, mô-đun và ước tính",
-				"docs": "Tài liệu cùng nhau viết, ngay cạnh công việc",
-				"export": "Xuất ra CSV, Excel hoặc JSON",
-				"hosting": "Nơi vận hành",
-				"intake": "Hộp tiếp nhận và phân loại",
-				"integrations": "GitHub, Gitea, Slack, Discord và nhiều hơn nữa",
-				"jira": "Nhập từ Jira",
-				"people": "Số người",
-				"projects": "Dự án và công việc",
-				"publicBoards": "Bảng công khai có bình chọn",
-				"roles": "Vai trò và quyền trong không gian làm việc",
-				"support": "Hỗ trợ",
-				"updates": "Cập nhật",
-				"views": "Chế độ xem bảng, danh sách, bảng tính, lịch và Gantt",
-				"ai": "AI: Hỏi AI, chế độ Xây dựng và tác tử"
-			},
-			"title": "So sánh các gói",
-			"values": {
-				"automatic": "Tự động",
-				"community": "Cộng đồng trên GitHub",
-				"email": "Email",
-				"eu": "Trung tâm dữ liệu tại EU",
-				"notNeeded": "Không cần khi dùng một mình",
-				"one": "Chỉ mình bạn",
-				"perMember": "Không giới hạn, tính phí theo thành viên",
-				"priorityEmail": "Email ưu tiên",
-				"unlimited": "Không giới hạn",
-				"yours": "Bạn tự đảm nhận",
-				"yourSchedule": "Khi bạn chọn",
-				"yourServers": "Máy chủ của bạn",
-				"ownKey": "Khóa hoặc mô hình AI của riêng bạn"
-			}
-		},
-		"title": "Một sản phẩm. Hai cách vận hành.",
-		"trialNote": "Các gói Cloud bắt đầu với 14 ngày dùng thử. Không cần thẻ để bắt đầu."
 	},
 	"templates": {
 		"form": {

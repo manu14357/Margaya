@@ -3396,6 +3396,7 @@
 			"unreadAria_other": "{{count}} 条未读",
 			"unreadOnly": "仅未读",
 			"whatsNew": "更新内容",
+			"sourceCode": "源代码",
 			"workspaceAnalytics": "工作区"
 		}
 	},
@@ -6483,7 +6484,7 @@
 					"title": "20 种语言"
 				},
 				"openSource": {
-					"detail": "MIT 许可",
+					"detail": "AGPL-3.0 许可",
 					"title": "开源"
 				},
 				"selfHosted": {
@@ -6507,11 +6508,11 @@
 						"question": "有 API 吗？能与 AI 智能体配合使用吗？"
 					},
 					"cost": {
-						"answer": "自托管免费。Margaya Cloud 个人每月 $4，团队每位用户每月 $5，并提供无需信用卡的 14 天试用。",
+						"answer": "依据 AGPL-3.0 自托管 Margaya 是免费的，包含全部功能。需要在不受 AGPL 条款约束的情况下使用它的企业（例如希望不公开自己的修改），可以购买商业许可。",
 						"question": "费用是多少？"
 					},
 					"data": {
-						"answer": "归你所有。在你自己的服务器上，数据不会离开你的基础设施，我们也不会收到任何数据。在 Margaya Cloud 上，你的工作区存储在欧盟，你可以随时将任务导出为 CSV、Excel 或 JSON，或删除账户。",
+						"answer": "归你所有。Margaya 只运行在你自己的服务器上，数据不会离开你的基础设施，我们也不会收到任何数据。你可以随时将任务导出为 CSV、Excel 或 JSON。",
 						"question": "我的数据归谁所有？"
 					},
 					"jira": {
@@ -6523,7 +6524,7 @@
 						"question": "应用支持哪些语言？"
 					},
 					"license": {
-						"answer": "MIT 许可证。没有付费版，也没有为此保留的功能：单点登录、审计日志、API 和 MCP 都包含在开源版本中。",
+						"answer": "GNU AGPL-3.0。你可以免费使用、修改和托管 Margaya。如果你修改了它并让他人通过网络使用，就需要以同一许可证公开你的修改。如果想在不受这些条款约束的情况下使用 Margaya，例如不公开你的修改或将其集成到闭源产品中，可以获取商业许可。单点登录、审计日志、API 和 MCP 都包含在开源版本中。",
 						"question": "Margaya 采用什么许可证？"
 					},
 					"redis": {
@@ -6546,10 +6547,10 @@
 				"title": "常见问题，坦诚作答"
 			},
 			"finalCta": {
-				"description": "一分钟即可开始使用 Margaya Cloud，或者今天就在你自己的服务器上运行它。",
-				"note": "云端 14 天试用，无需信用卡。自托管免费，采用 MIT 许可。",
-				"primary": "立即开始",
-				"secondary": "自托管 Margaya",
+				"description": "今天就在你自己的服务器上运行 Margaya，依据 AGPL-3.0 免费开源。",
+				"note": "如果你需要在不受 AGPL 条款约束的情况下使用 Margaya，可以获取商业许可。",
+				"primary": "自行安装",
+				"secondary": "阅读文档",
 				"title": "把时间花在工作上，而不是工具上。"
 			},
 			"hero": {
@@ -6648,7 +6649,6 @@
 				"label": "主导航",
 				"menu": "菜单",
 				"openMenu": "打开菜单",
-				"pricing": "价格",
 				"signIn": "登录",
 				"explore": "探索",
 				"featuresIntro": "六个简短的 Margaya 导览，每个都附带可亲自上手操作的在线演示。",
@@ -6656,7 +6656,7 @@
 			},
 			"ownIt": {
 				"cta": "阅读安装指南",
-				"description": "Margaya 以单个应用容器搭配 PostgreSQL 运行。从一台机器起步，需要时再扩展，无需许可证密钥，也没有付费版。",
+				"description": "Margaya 以单个应用容器搭配 PostgreSQL 运行。从一台机器起步，需要时再扩展，所有功能都包含在开源版本中。",
 				"eyebrow": "完全掌控",
 				"items": {
 					"audit": {
@@ -6676,8 +6676,8 @@
 						"title": "Helm Chart"
 					},
 					"license": {
-						"body": "包括单点登录在内的所有功能都包含在开源版本中。没有企业版。",
-						"title": "MIT 许可"
+						"body": "包括单点登录在内的所有功能均以 GNU AGPL-3.0 开源。如果你需要在不受 AGPL 条款约束的情况下使用 Margaya，可以获取商业许可。",
+						"title": "AGPL-3.0 许可"
 					},
 					"redis": {
 						"body": "只有在运行多个 API 实例、并希望实时更新送达所有实例时，才需要添加它。",
@@ -6701,27 +6701,6 @@
 					"description": "点数、尺码或工时任选。按项目启用后，迭代和模块会自动为你汇总。",
 					"title": "预估，团队用得上就开"
 				}
-			},
-			"pricing": {
-				"cloud": {
-					"body": "欧盟境内的托管服务。个人每月 $4，团队每位用户每月 $5。",
-					"cta": "开始 14 天试用",
-					"name": "Margaya Cloud",
-					"price": "$4 起",
-					"suffix": "每月"
-				},
-				"compare": "比较方案",
-				"description": "自托管版本包含全部功能。Margaya Cloud 是同一款产品，托管在欧盟，并由我们为你保持最新。",
-				"eyebrow": "价格",
-				"note": "试用无需信用卡。",
-				"selfHosted": {
-					"body": "在你自己的服务器上不限用户数和项目数，包含全部功能。",
-					"cta": "阅读安装指南",
-					"name": "自托管",
-					"price": "$0",
-					"suffix": "永久"
-				},
-				"title": "自己运行免费，托管给我们价格公道。"
 			},
 			"publicBoards": {
 				"description": "公开分享看板，无需发放账户即可收集请求和投票。",
@@ -6778,7 +6757,8 @@
 			"footer": {
 				"company": {
 					"github": "GitHub",
-					"licence": "MIT 许可",
+					"licence": "AGPL-3.0 许可",
+					"commercial": "商业许可",
 					"privacy": "隐私",
 					"terms": "条款",
 					"title": "公司"
@@ -6786,10 +6766,9 @@
 				"copyright": "© {{year}} Margaya",
 				"label": "页脚",
 				"mission": "规划工作，交付成果，并真正拥有你用来完成工作的工具。",
-				"missionNote": "Margaya 是基于 MIT 许可的开源软件。可部署在你自己的服务器上，也可以从 Margaya Cloud 开始。",
+				"missionNote": "Margaya 是基于 GNU AGPL-3.0 的开源软件。可部署在你自己的服务器上，包含全部功能。",
 				"product": {
 					"changelog": "更新日志",
-					"pricing": "价格",
 					"roadmap": "路线图",
 					"title": "产品"
 				},
@@ -6924,12 +6903,12 @@
 			},
 			"selfHost": {
 				"cta": {
-					"description": "按照安装指南操作，或者交给我们为你托管。",
+					"description": "按照安装指南操作，在你自己的服务器上运行 Margaya。",
 					"title": "几分钟即可运行起来。"
 				},
-				"description": "一个应用容器加 PostgreSQL。没有许可证密钥，没有功能限制，也不会向我们回传任何数据。",
+				"description": "一个应用容器加 PostgreSQL。包含全部功能，没有功能限制，也不会向我们回传任何数据。",
 				"eyebrow": "自托管",
-				"metaDescription": "使用 Docker Compose 在你自己的服务器上运行 Margaya，或通过 Helm 部署到 Kubernetes。只需 PostgreSQL，Redis 可选，采用 MIT 许可，并提供回收站、审计日志和完整导出。",
+				"metaDescription": "使用 Docker Compose 在你自己的服务器上运行 Margaya，或通过 Helm 部署到 Kubernetes。只需 PostgreSQL，Redis 可选，采用 AGPL-3.0 许可，并提供回收站、审计日志和完整导出。",
 				"metaTitle": "使用 Docker 或 Helm 自托管 Margaya",
 				"sections": {
 					"deploy": {
@@ -6953,7 +6932,7 @@
 			},
 			"views": {
 				"cta": {
-					"description": "所有视图在云端和自托管版本中均已包含。",
+					"description": "所有视图都包含在开源版本中。",
 					"title": "根据问题选择合适的布局。"
 				},
 				"description": "无需复制数据即可切换布局。每个视图都会保留自己的筛选、分组和可见属性。",
@@ -9331,11 +9310,11 @@
 			"description": "现成的介绍文字。可按需删减，但请保持事实准确不变。",
 			"long": {
 				"label": "约 150 词",
-				"text": "Margaya 是一款开源项目管理平台，专为希望规划和交付工作、又不想让工具本身变成额外负担的团队而打造。任务在同一份数据的看板、列表、电子表格、日历和甘特图视图之间流转。迭代、模块、预估和收集箱在团队需要规划时随时可用，不需要时也不会碍事。团队在任务旁协作撰写文档，在公开看板上收集需求，并通过分析和审计日志跟踪进度。带 OpenAPI 描述的 REST API、Webhook、MCP 服务器，以及与 GitHub、Gitea、Slack、Discord 等工具的集成，将 Margaya 与团队的其他工具连接起来。界面提供 20 种语言。Margaya 以 MIT 许可发布，可通过 Docker 在单台服务器上运行，也可通过 Helm 部署到 Kubernetes；Margaya Cloud 则以托管服务的形式提供同一款产品。"
+				"text": "Margaya 是一款开源项目管理平台，专为希望规划和交付工作、又不想让工具本身变成额外负担的团队而打造。任务在同一份数据的看板、列表、电子表格、日历和甘特图视图之间流转。迭代、模块、预估和收集箱在团队需要规划时随时可用，不需要时也不会碍事。团队在任务旁协作撰写文档，在公开看板上收集需求，并通过分析和审计日志跟踪进度。带 OpenAPI 描述的 REST API、Webhook、MCP 服务器，以及与 GitHub、Gitea、Slack、Discord 等工具的集成，将 Margaya 与团队的其他工具连接起来。界面提供 20 种语言。Margaya 以 GNU AGPL-3.0 发布，并提供可免于其条款约束的商业许可，可通过 Docker 在单台服务器上运行，也可通过 Helm 部署到 Kubernetes。"
 			},
 			"short": {
 				"label": "约 50 词",
-				"text": "Margaya 是一款开源项目管理平台，适合希望权责清晰又不想被繁重流程拖累的团队。你可以在看板、列表、电子表格、日历和甘特图中规划工作，在任务旁撰写文档，并通过 REST API 和 MCP 连接各种工具。可依据 MIT 许可自行部署，也可以使用 Margaya Cloud。"
+				"text": "Margaya 是一款开源项目管理平台，适合希望权责清晰又不想被繁重流程拖累的团队。你可以在看板、列表、电子表格、日历和甘特图中规划工作，在任务旁撰写文档，并通过 REST API 和 MCP 连接各种工具。可部署在你自己的服务器上，依据 GNU AGPL-3.0 免费开源。"
 			},
 			"title": "标准介绍"
 		},
@@ -9396,7 +9375,7 @@
 			},
 			"hosting": {
 				"label": "部署方式",
-				"value": "通过 Docker 或 Helm 自托管，或使用 Margaya Cloud 托管服务"
+				"value": "通过 Docker 或 Helm 自托管"
 			},
 			"interfaces": {
 				"label": "接口",
@@ -9408,7 +9387,7 @@
 			},
 			"licence": {
 				"label": "许可证",
-				"value": "MIT，覆盖全部功能"
+				"value": "AGPL-3.0，另提供商业许可"
 			},
 			"source": {
 				"label": "源代码",
@@ -9483,161 +9462,6 @@
 		},
 		"title": "媒体资料包",
 		"downloadPng": "下载 PNG"
-	},
-	"pricing": {
-		"cta": {
-			"description": "无需绑卡即可开始 Cloud 试用，或按照安装指南在你自己的硬件上运行 Margaya。",
-			"primary": "开始免费试用",
-			"secondary": "阅读安装指南",
-			"title": "选择适合你的方式，以后随时可以改变主意。"
-		},
-		"description": "自托管版本就是采用 MIT 许可的完整产品，不限席位，也没有付费层级。Margaya Cloud 是同一套软件，托管在欧盟，并由我们为你保持最新。",
-		"eyebrow": "价格",
-		"faq": {
-			"items": {
-				"cancel": {
-					"answer": "你的方案会保持有效，直到已付费周期结束。如果想保留一份副本，请在此之前将工作导出为 CSV、Excel 或 JSON。",
-					"question": "如果我取消会怎样？"
-				},
-				"founding": {
-					"answer": "在付费方案推出前创建的工作区将保留至少 12 个月的免费使用权，任何变更都会提前六个月通知你。",
-					"question": "我在付费方案推出之前就注册了，会有什么变化？"
-				},
-				"payments": {
-					"answer": "付款通过 Creem 处理，它作为记录商户（merchant of record），在适用时负责销售税和增值税。你的银行卡信息不会传到 Margaya。",
-					"question": "谁来处理付款和税费？"
-				},
-				"seats": {
-					"answer": "Cloud 团队版按工作区的每位成员计费。有人加入或离开时，订阅中的席位数会随之更新。",
-					"question": "Cloud 团队版的成员如何计算？"
-				},
-				"selfHostHelp": {
-					"answer": "在 GitHub 上通过讨论区和 Issue 向维护者和社区求助。安装、升级和配置都在文档中有详细说明。",
-					"question": "自托管用户去哪里获取帮助？"
-				},
-				"selfHostLimits": {
-					"answer": "不会。你安装的代码就是运行 Margaya Cloud 的代码，全部采用 MIT 许可。没有许可证密钥、席位限制，也没有需要解锁的付费功能。",
-					"question": "自托管版本会缺少什么功能吗？"
-				},
-				"trial": {
-					"answer": "新建的 Cloud 工作区可获得 14 天全功能试用，开始时无需绑卡。试用结束前，请选择一个方案或导出你的任务。",
-					"question": "Cloud 试用是怎样的？"
-				},
-				"yearly": {
-					"answer": "是的。一年的价格等于十个月，因此按年付费时，两个 Cloud 方案都相当于免费两个月。",
-					"question": "按年付费更便宜吗？"
-				},
-				"ai": {
-					"question": "包含 AI 吗？",
-					"answer": "所有方案都提供 AI 功能：问 AI、构建模式、智能体和写作辅助。在管理员开启之前，它们始终关闭。AI 用量不包含在价格中：你在工作区的 AI 设置中添加自己的 API 密钥，由 AI 服务商直接向你收费。自托管实例还可以通过 Ollama 或 vLLM 使用你自己运行的模型。"
-				}
-			},
-			"title": "价格相关问题"
-		},
-		"interval": {
-			"annual": "按年",
-			"label": "计费周期",
-			"monthly": "按月",
-			"saving": "免 2 个月费用"
-		},
-		"metaDescription": "Margaya 自托管永久免费。Margaya Cloud 个人每月 $4，团队每位成员每月 $5，并提供 14 天免费试用。",
-		"plans": {
-			"personal": {
-				"annualNote": "折合每月 {{price}}",
-				"annualPeriod": "每年",
-				"cta": "开始 14 天试用",
-				"monthlyNote": "按月计费",
-				"monthlyPeriod": "每月",
-				"name": "Cloud 个人版",
-				"points": {
-					"everything": "包含自托管版本的全部功能",
-					"help": "邮件支持",
-					"managed": "备份和更新由我们负责",
-					"one": "一人使用，不限项目和任务"
-				},
-				"tagline": "为个人提供的托管服务"
-			},
-			"selfHosted": {
-				"cta": "阅读安装指南",
-				"name": "自托管",
-				"note": "MIT 许可。无需密钥，不限席位。",
-				"period": "永久",
-				"points": {
-					"data": "你的数据库、你的备份、你的规则",
-					"deploy": "单台服务器用 Docker，或在 Kubernetes 上用 Helm",
-					"everything": "全部功能，人数不限",
-					"help": "GitHub 社区支持"
-				},
-				"tagline": "运行在你自己管理的服务器上"
-			},
-			"team": {
-				"annualNote": "折合每位成员每月 {{price}}",
-				"annualPeriod": "每位成员每年",
-				"badge": "适合团队",
-				"cta": "开始 14 天试用",
-				"monthlyNote": "按工作区成员数每月计费",
-				"monthlyPeriod": "每位成员每月",
-				"name": "Cloud 团队版",
-				"points": {
-					"help": "优先邮件支持",
-					"managed": "备份和更新由我们负责",
-					"people": "工作区内所有成员，不限项目",
-					"roles": "工作区角色与权限"
-				},
-				"tagline": "为整个团队提供的托管服务"
-			}
-		},
-		"table": {
-			"description": "各方案的功能完全相同，区别只在于由谁运行服务器、去哪里寻求帮助。",
-			"feature": "功能",
-			"groups": {
-				"connect": "连接",
-				"planning": "规划与洞察",
-				"running": "运行",
-				"work": "工作"
-			},
-			"included": "包含",
-			"notIncluded": "不包含",
-			"rows": {
-				"admin": "实例设置：登录方式、邮件、存储",
-				"analytics": "分析与审计日志",
-				"api": "REST API、Webhook 和 MCP",
-				"backups": "备份",
-				"cycles": "迭代、模块和预估",
-				"docs": "在任务旁协作撰写的文档",
-				"export": "导出为 CSV、Excel 或 JSON",
-				"hosting": "运行位置",
-				"intake": "收集箱与分派处理",
-				"integrations": "GitHub、Gitea、Slack、Discord 等",
-				"jira": "Jira 导入",
-				"people": "人数",
-				"projects": "项目和任务",
-				"publicBoards": "支持投票的公开看板",
-				"roles": "工作区角色与权限",
-				"support": "支持",
-				"updates": "更新",
-				"views": "看板、列表、电子表格、日历和甘特图视图",
-				"ai": "AI：问 AI、构建模式和智能体"
-			},
-			"title": "比较方案",
-			"values": {
-				"automatic": "自动",
-				"community": "GitHub 社区",
-				"email": "邮件",
-				"eu": "欧盟数据中心",
-				"notNeeded": "单人使用无需",
-				"one": "仅限你自己",
-				"perMember": "不限，按成员计费",
-				"priorityEmail": "优先邮件",
-				"unlimited": "不限",
-				"yours": "由你负责",
-				"yourSchedule": "由你决定时间",
-				"yourServers": "你的服务器",
-				"ownKey": "你自己的 AI 密钥或模型"
-			}
-		},
-		"title": "同一款产品，两种运行方式。",
-		"trialNote": "Cloud 方案均从 14 天试用开始，开始时无需绑卡。"
 	},
 	"templates": {
 		"form": {

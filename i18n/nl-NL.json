@@ -3448,6 +3448,7 @@
 			"unreadAria_other": "{{count}} ongelezen",
 			"unreadOnly": "Alleen ongelezen",
 			"whatsNew": "Wat is er nieuw",
+			"sourceCode": "Broncode",
 			"workspaceAnalytics": "Werkruimte"
 		}
 	},
@@ -6570,7 +6571,7 @@
 					"title": "20 talen"
 				},
 				"openSource": {
-					"detail": "MIT-licentie",
+					"detail": "AGPL-3.0-licentie",
 					"title": "Open source"
 				},
 				"selfHosted": {
@@ -6594,11 +6595,11 @@
 						"question": "Is er een API, en werkt die met AI-agents?"
 					},
 					"cost": {
-						"answer": "Zelf hosten is gratis. Margaya Cloud kost $4 per maand voor één persoon en $5 per gebruiker per maand voor teams, met een proefperiode van 14 dagen zonder creditcard.",
+						"answer": "Margaya zelf hosten onder de AGPL-3.0 is gratis, met elke functie inbegrepen. Bedrijven die het zonder de voorwaarden van de AGPL moeten gebruiken, bijvoorbeeld om hun wijzigingen privé te houden, kunnen een commerciële licentie kopen.",
 						"question": "Wat kost het?"
 					},
 					"data": {
-						"answer": "Van jou. Op je eigen server verlaat niets je infrastructuur en ontvangen wij er geen data van. Bij Margaya Cloud wordt je werkruimte in de EU opgeslagen en kun je taken op elk moment exporteren naar CSV, Excel of JSON of je account verwijderen.",
+						"answer": "Van jou. Margaya draait alleen op je eigen server, dus niets verlaat je infrastructuur en wij ontvangen er geen data van. Je kunt taken op elk moment exporteren naar CSV, Excel of JSON.",
 						"question": "Van wie is mijn data?"
 					},
 					"jira": {
@@ -6610,7 +6611,7 @@
 						"question": "Welke talen ondersteunt de app?"
 					},
 					"license": {
-						"answer": "De MIT-licentie. Er is geen betaalde editie en er wordt geen functie voor achtergehouden: single sign-on, het auditlog, de API en MCP zitten allemaal in de opensourceversie.",
+						"answer": "De GNU AGPL-3.0. Je mag Margaya gratis gebruiken, aanpassen en hosten. Pas je het aan en laat je anderen het via een netwerk gebruiken, dan publiceer je je wijzigingen onder dezelfde licentie. Wil je Margaya zonder die voorwaarden gebruiken, bijvoorbeeld om je wijzigingen privé te houden of het in een gesloten product in te bouwen, dan kun je een commerciële licentie nemen. Single sign-on, het auditlog, de API en MCP zitten allemaal in de opensourceversie.",
 						"question": "Onder welke licentie valt Margaya?"
 					},
 					"redis": {
@@ -6633,10 +6634,10 @@
 				"title": "Vragen, helder beantwoord"
 			},
 			"finalCta": {
-				"description": "Begin binnen een minuut met Margaya Cloud, of draai het vandaag nog op je eigen server.",
-				"note": "Cloud 14 dagen proberen, zonder creditcard. Zelf hosten is gratis en valt onder de MIT-licentie.",
-				"primary": "Aan de slag",
-				"secondary": "Margaya zelf hosten",
+				"description": "Draai Margaya vandaag nog op je eigen server, gratis en open source onder de AGPL-3.0.",
+				"note": "Er is een commerciële licentie beschikbaar als je Margaya zonder de voorwaarden van de AGPL moet gebruiken.",
+				"primary": "Zelf installeren",
+				"secondary": "Lees de documentatie",
 				"title": "Besteed je tijd aan het werk, niet aan de tool."
 			},
 			"hero": {
@@ -6735,7 +6736,6 @@
 				"label": "Hoofdmenu",
 				"menu": "Menu",
 				"openMenu": "Menu openen",
-				"pricing": "Prijzen",
 				"signIn": "Inloggen",
 				"explore": "Ontdekken",
 				"featuresIntro": "Zes korte rondleidingen door Margaya. Elk heeft een live demo die je zelf kunt overnemen.",
@@ -6743,7 +6743,7 @@
 			},
 			"ownIt": {
 				"cta": "Lees de installatiegids",
-				"description": "Margaya draait als één app-container naast PostgreSQL. Begin op één machine en groei wanneer het nodig is, zonder licentiesleutel of betaalde editie.",
+				"description": "Margaya draait als één app-container naast PostgreSQL. Begin op één machine en groei wanneer het nodig is, met elke functie in de opensourceversie.",
 				"eyebrow": "In eigen hand",
 				"items": {
 					"audit": {
@@ -6763,8 +6763,8 @@
 						"title": "Helm-chart"
 					},
 					"license": {
-						"body": "Elke functie, inclusief single sign-on, zit in de opensourceversie. Er bestaat geen enterprise-editie.",
-						"title": "MIT-licentie"
+						"body": "Elke functie, inclusief single sign-on, is open source onder de GNU AGPL-3.0. Er is een commerciële licentie beschikbaar als je Margaya zonder de voorwaarden van de AGPL moet gebruiken.",
+						"title": "AGPL-3.0-licentie"
 					},
 					"redis": {
 						"body": "Voeg het alleen toe als je meerdere API-instanties draait en realtime updates ze allemaal moeten bereiken.",
@@ -6788,27 +6788,6 @@
 					"description": "Punten, maten of tijd. Zet ze per project aan en cyclussen en modules tellen ze voor je op.",
 					"title": "Inschattingen, als je team ze gebruikt"
 				}
-			},
-			"pricing": {
-				"cloud": {
-					"body": "Beheerde hosting in de EU. $4 per maand voor één persoon, $5 per gebruiker per maand voor teams.",
-					"cta": "Start een proefperiode van 14 dagen",
-					"name": "Margaya Cloud",
-					"price": "Vanaf $4",
-					"suffix": "per maand"
-				},
-				"compare": "Abonnementen vergelijken",
-				"description": "De zelf gehoste versie heeft alle functies. Margaya Cloud is hetzelfde product, gehost in de EU en voor je up-to-date gehouden.",
-				"eyebrow": "Prijzen",
-				"note": "Geen creditcard nodig voor de proefperiode.",
-				"selfHosted": {
-					"body": "Onbeperkt gebruikers en projecten op je eigen servers, met alle functies inbegrepen.",
-					"cta": "Lees de installatiegids",
-					"name": "Zelf gehost",
-					"price": "$0",
-					"suffix": "voor altijd"
-				},
-				"title": "Gratis als je het zelf draait. Eerlijk als wij het voor je draaien."
 			},
 			"publicBoards": {
 				"description": "Deel een bord openbaar en verzamel verzoeken en stemmen zonder accounts uit te delen.",
@@ -6865,7 +6844,8 @@
 			"footer": {
 				"company": {
 					"github": "GitHub",
-					"licence": "MIT-licentie",
+					"licence": "AGPL-3.0-licentie",
+					"commercial": "Commerciële licentie",
 					"privacy": "Privacy",
 					"terms": "Voorwaarden",
 					"title": "Bedrijf"
@@ -6873,10 +6853,9 @@
 				"copyright": "© {{year}} Margaya",
 				"label": "Voettekst",
 				"mission": "Plan het werk, lever het op en wees eigenaar van de tool waarin je het doet.",
-				"missionNote": "Margaya is open source onder de MIT-licentie. Draai het op je eigen server of begin op Margaya Cloud.",
+				"missionNote": "Margaya is open source onder de GNU AGPL-3.0. Draai het op je eigen server, met elke functie inbegrepen.",
 				"product": {
 					"changelog": "Wijzigingslog",
-					"pricing": "Prijzen",
 					"roadmap": "Roadmap",
 					"title": "Product"
 				},
@@ -7011,12 +6990,12 @@
 			},
 			"selfHost": {
 				"cta": {
-					"description": "Volg de installatiegids, of laat ons het voor je hosten.",
+					"description": "Volg de installatiegids en draai Margaya op je eigen server.",
 					"title": "Binnen enkele minuten in de lucht."
 				},
-				"description": "Eén app-container en PostgreSQL. Geen licentiesleutel, geen afgeschermde functies en niets dat naar ons teruggaat.",
+				"description": "Eén app-container en PostgreSQL. Elke functie inbegrepen, geen afgeschermde functies en niets dat naar ons teruggaat.",
 				"eyebrow": "Zelf hosten",
-				"metaDescription": "Draai Margaya op je eigen server met Docker Compose of op Kubernetes met Helm. Alleen PostgreSQL, Redis optioneel, MIT-licentie, met prullenbak, auditlog en volledige exports.",
+				"metaDescription": "Draai Margaya op je eigen server met Docker Compose of op Kubernetes met Helm. Alleen PostgreSQL, Redis optioneel, AGPL-3.0-licentie, met prullenbak, auditlog en volledige exports.",
 				"metaTitle": "Margaya zelf hosten met Docker of Helm",
 				"sections": {
 					"deploy": {
@@ -7040,7 +7019,7 @@
 			},
 			"views": {
 				"cta": {
-					"description": "Elke weergave is inbegrepen, in de cloud en zelf gehost.",
+					"description": "Elke weergave zit in de opensourceversie.",
 					"title": "Kies de indeling die bij de vraag past."
 				},
 				"description": "Wissel van indeling zonder data te kopiëren. Elke weergave behoudt haar filters, groepering en zichtbare eigenschappen.",
@@ -9453,11 +9432,11 @@
 			"description": "Kant-en-klare beschrijvingen. Kort ze gerust in als dat nodig is, maar laat de feiten zoals ze zijn.",
 			"long": {
 				"label": "Ongeveer 150 woorden",
-				"text": "Margaya is een opensource platform voor projectmanagement, gemaakt voor teams die werk willen plannen en opleveren zonder dat de tool zelf een baan wordt. Taken gaan door bord-, lijst-, spreadsheet-, kalender- en Gantt-weergaven van dezelfde gegevens. Cyclussen, modules, inschattingen en een intake-inbox zijn er wanneer een team planning nodig heeft, en blijven uit de weg wanneer dat niet zo is. Teams schrijven samen documenten naast hun taken, verzamelen verzoeken op openbare borden en volgen de voortgang met analyses en een auditlog. Een REST API met een OpenAPI-beschrijving, webhooks, een MCP-server en integraties met GitHub, Gitea, Slack, Discord en meer verbinden Margaya met de rest van de tools van een team. De interface is beschikbaar in 20 talen. Margaya wordt uitgebracht onder de MIT-licentie en draait op één server met Docker, of op Kubernetes met Helm; Margaya Cloud biedt hetzelfde product als beheerde dienst."
+				"text": "Margaya is een opensource platform voor projectmanagement, gemaakt voor teams die werk willen plannen en opleveren zonder dat de tool zelf een baan wordt. Taken gaan door bord-, lijst-, spreadsheet-, kalender- en Gantt-weergaven van dezelfde gegevens. Cyclussen, modules, inschattingen en een intake-inbox zijn er wanneer een team planning nodig heeft, en blijven uit de weg wanneer dat niet zo is. Teams schrijven samen documenten naast hun taken, verzamelen verzoeken op openbare borden en volgen de voortgang met analyses en een auditlog. Een REST API met een OpenAPI-beschrijving, webhooks, een MCP-server en integraties met GitHub, Gitea, Slack, Discord en meer verbinden Margaya met de rest van de tools van een team. De interface is beschikbaar in 20 talen. Margaya wordt uitgebracht onder de GNU AGPL-3.0, met een commerciële licentie voor gebruik zonder de voorwaarden daarvan, en draait op één server met Docker, of op Kubernetes met Helm."
 			},
 			"short": {
 				"label": "Ongeveer 50 woorden",
-				"text": "Margaya is een opensource platform voor projectmanagement voor teams die duidelijk eigenaarschap willen zonder zware processen. Plan werk op borden, lijsten, spreadsheets, kalenders en Gantt-diagrammen, schrijf documenten naast de taken en koppel je tools via een REST API en MCP. Draai het zelf onder de MIT-licentie, of gebruik Margaya Cloud."
+				"text": "Margaya is een opensource platform voor projectmanagement voor teams die duidelijk eigenaarschap willen zonder zware processen. Plan werk op borden, lijsten, spreadsheets, kalenders en Gantt-diagrammen, schrijf documenten naast de taken en koppel je tools via een REST API en MCP. Draai het op je eigen server, gratis en open source onder de GNU AGPL-3.0."
 			},
 			"title": "Standaardteksten"
 		},
@@ -9518,7 +9497,7 @@
 			},
 			"hosting": {
 				"label": "Hosting",
-				"value": "Zelf gehost met Docker of Helm, of beheerd op Margaya Cloud"
+				"value": "Zelf gehost met Docker of Helm"
 			},
 			"interfaces": {
 				"label": "Koppelingen",
@@ -9530,7 +9509,7 @@
 			},
 			"licence": {
 				"label": "Licentie",
-				"value": "MIT, voor alle functies"
+				"value": "AGPL-3.0, met een commerciële licentie beschikbaar"
 			},
 			"source": {
 				"label": "Broncode",
@@ -9605,161 +9584,6 @@
 		},
 		"title": "Perskit",
 		"downloadPng": "PNG downloaden"
-	},
-	"pricing": {
-		"cta": {
-			"description": "Start een Cloud-proefperiode zonder kaart, of volg de installatiegids en draai Margaya op je eigen hardware.",
-			"primary": "Start een gratis proefperiode",
-			"secondary": "Lees de installatiegids",
-			"title": "Kies wat bij je past, en bedenk je later gerust."
-		},
-		"description": "De zelf gehoste versie is het complete product onder de MIT-licentie, zonder limiet op het aantal gebruikers en zonder betaalde variant. Margaya Cloud is dezelfde software, gehost in de EU en voor je up-to-date gehouden.",
-		"eyebrow": "Prijzen",
-		"faq": {
-			"items": {
-				"cancel": {
-					"answer": "Je abonnement blijft actief tot het einde van de periode waarvoor je hebt betaald. Exporteer je werk vóór die tijd als CSV, Excel of JSON als je een kopie wilt bewaren.",
-					"question": "Wat gebeurt er als ik opzeg?"
-				},
-				"founding": {
-					"answer": "Werkruimten die zijn aangemaakt voordat de betaalde abonnementen startten, houden minstens 12 maanden gratis toegang, en je hoort het zes maanden van tevoren als er iets verandert.",
-					"question": "Ik heb me aangemeld voordat er betaalde abonnementen waren. Wat verandert er?"
-				},
-				"payments": {
-					"answer": "Betalingen lopen via Creem, dat optreedt als merchant of record en omzetbelasting en btw afhandelt waar die van toepassing zijn. Je kaartgegevens komen nooit bij Margaya terecht.",
-					"question": "Wie regelt betalingen en belasting?"
-				},
-				"seats": {
-					"answer": "Cloud Team wordt gefactureerd per lid van de werkruimte. Als iemand erbij komt of vertrekt, wordt het aantal plaatsen in het abonnement daarop aangepast.",
-					"question": "Hoe worden leden van Cloud Team geteld?"
-				},
-				"selfHostHelp": {
-					"answer": "Van de maintainers en de community op GitHub, via discussies en issues. Installatie, upgrades en configuratie worden behandeld in de documentatie.",
-					"question": "Waar krijgen zelfhosters hulp?"
-				},
-				"selfHostLimits": {
-					"answer": "Nee. De code die je installeert is de code waarop Margaya Cloud draait, en alles valt onder de MIT-licentie. Er zijn geen licentiesleutels, gebruikerslimieten of betaalde functies om te ontgrendelen.",
-					"question": "Mist er iets in de zelf gehoste versie?"
-				},
-				"trial": {
-					"answer": "Een nieuwe Cloud-werkruimte krijgt 14 dagen met alles inbegrepen, en je hebt geen kaart nodig om te beginnen. Kies voor het einde een abonnement of exporteer je taken.",
-					"question": "Hoe werkt de proefperiode van Cloud?"
-				},
-				"yearly": {
-					"answer": "Ja. Een jaar kost hetzelfde als tien maanden, dus bij jaarlijkse betaling krijg je bij beide Cloud-abonnementen twee maanden gratis.",
-					"question": "Is jaarlijks betalen goedkoper?"
-				},
-				"ai": {
-					"question": "Zit AI erbij inbegrepen?",
-					"answer": "Elk abonnement heeft de AI-functies: Vraag het AI, de modus Bouwen, agents en schrijfhulp. Ze blijven uit tot een beheerder ze inschakelt. AI-gebruik zit niet in de prijs: je voegt je eigen API-sleutel toe in de AI-instellingen van de workspace en de AI-aanbieder rekent rechtstreeks met je af. Zelf gehoste installaties kunnen ook een model gebruiken dat je zelf draait, via Ollama of vLLM."
-				}
-			},
-			"title": "Vragen over prijzen"
-		},
-		"interval": {
-			"annual": "Jaarlijks",
-			"label": "Factuurperiode",
-			"monthly": "Maandelijks",
-			"saving": "2 maanden gratis"
-		},
-		"metaDescription": "Margaya is gratis om zelf te hosten, voor altijd. Margaya Cloud kost $4 per maand voor één persoon of $5 per lid per maand voor teams, met een gratis proefperiode van 14 dagen.",
-		"plans": {
-			"personal": {
-				"annualNote": "Komt neer op {{price}} per maand",
-				"annualPeriod": "per jaar",
-				"cta": "Start een proefperiode van 14 dagen",
-				"monthlyNote": "Elke maand gefactureerd",
-				"monthlyPeriod": "per maand",
-				"name": "Cloud Persoonlijk",
-				"points": {
-					"everything": "Alle functies van de zelf gehoste versie",
-					"help": "Ondersteuning per e-mail",
-					"managed": "Back-ups en updates worden voor je geregeld",
-					"one": "Eén persoon, onbeperkt projecten en taken"
-				},
-				"tagline": "Beheerde hosting voor één persoon"
-			},
-			"selfHosted": {
-				"cta": "Lees de installatiegids",
-				"name": "Zelf gehost",
-				"note": "MIT-licentie. Geen sleutel, geen gebruikerslimiet.",
-				"period": "voor altijd",
-				"points": {
-					"data": "Jouw database, jouw back-ups, jouw regels",
-					"deploy": "Docker op één server, of Helm op Kubernetes",
-					"everything": "Alle functies, voor zoveel mensen als je wilt",
-					"help": "Hulp van de community op GitHub"
-				},
-				"tagline": "Op servers die je zelf beheert"
-			},
-			"team": {
-				"annualNote": "Komt neer op {{price}} per lid per maand",
-				"annualPeriod": "per lid, per jaar",
-				"badge": "Voor teams",
-				"cta": "Start een proefperiode van 14 dagen",
-				"monthlyNote": "Elke maand gefactureerd per lid van de werkruimte",
-				"monthlyPeriod": "per lid, per maand",
-				"name": "Cloud Team",
-				"points": {
-					"help": "Ondersteuning met voorrang per e-mail",
-					"managed": "Back-ups en updates worden voor je geregeld",
-					"people": "Iedereen in de werkruimte, onbeperkt projecten",
-					"roles": "Rollen en rechten in de werkruimte"
-				},
-				"tagline": "Beheerde hosting voor een heel team"
-			}
-		},
-		"table": {
-			"description": "De functies zijn overal hetzelfde. Wat verschilt, is wie de servers draait en waar je terechtkunt voor hulp.",
-			"feature": "Functie",
-			"groups": {
-				"connect": "Koppelen",
-				"planning": "Planning en inzicht",
-				"running": "Beheer",
-				"work": "Het werk"
-			},
-			"included": "Inbegrepen",
-			"notIncluded": "Niet inbegrepen",
-			"rows": {
-				"admin": "Instantie-instellingen: aanmeldproviders, e-mail, opslag",
-				"analytics": "Analyse en auditlog",
-				"api": "REST API, webhooks en MCP",
-				"backups": "Back-ups",
-				"cycles": "Cyclussen, modules en inschattingen",
-				"docs": "Samen geschreven documenten, naast de taken",
-				"export": "Exporteren naar CSV, Excel of JSON",
-				"hosting": "Waar het draait",
-				"intake": "Intake-inbox en beoordeling",
-				"integrations": "GitHub, Gitea, Slack, Discord en meer",
-				"jira": "Importeren uit Jira",
-				"people": "Mensen",
-				"projects": "Projecten en taken",
-				"publicBoards": "Openbare borden met stemmen",
-				"roles": "Rollen en rechten in de werkruimte",
-				"support": "Ondersteuning",
-				"updates": "Updates",
-				"views": "Bord-, lijst-, spreadsheet-, kalender- en Gantt-weergaven",
-				"ai": "AI: Vraag het AI, modus Bouwen en agents"
-			},
-			"title": "Vergelijk de abonnementen",
-			"values": {
-				"automatic": "Automatisch",
-				"community": "Community op GitHub",
-				"email": "E-mail",
-				"eu": "Datacenters in de EU",
-				"notNeeded": "Niet nodig voor één persoon",
-				"one": "Alleen jij",
-				"perMember": "Onbeperkt, gefactureerd per lid",
-				"priorityEmail": "E-mail met voorrang",
-				"unlimited": "Onbeperkt",
-				"yours": "Die regel je zelf",
-				"yourSchedule": "Wanneer jij wilt",
-				"yourServers": "Je eigen servers",
-				"ownKey": "Je eigen AI-sleutel of -model"
-			}
-		},
-		"title": "Eén product. Twee manieren om het te draaien.",
-		"trialNote": "Cloud-abonnementen beginnen met een proefperiode van 14 dagen. Je hebt geen kaart nodig om te starten."
 	},
 	"templates": {
 		"form": {

@@ -3502,6 +3502,7 @@
 			"unreadAria_other": "{{count}} non lus",
 			"unreadOnly": "Non lus uniquement",
 			"whatsNew": "Nouveautés",
+			"sourceCode": "Code source",
 			"workspaceAnalytics": "Espace de travail"
 		}
 	},
@@ -6659,7 +6660,7 @@
 					"title": "20 langues"
 				},
 				"openSource": {
-					"detail": "Licence MIT",
+					"detail": "Licence AGPL-3.0",
 					"title": "Open source"
 				},
 				"selfHosted": {
@@ -6683,11 +6684,11 @@
 						"question": "Y a-t-il une API, et fonctionne-t-elle avec les agents IA ?"
 					},
 					"cost": {
-						"answer": "L'auto-hébergement est gratuit. Margaya Cloud coûte $4 par mois pour une personne et $5 par utilisateur et par mois pour les équipes, avec un essai de 14 jours sans carte bancaire.",
+						"answer": "L'auto-hébergement de Margaya sous AGPL-3.0 est gratuit, avec toutes les fonctionnalités. Les entreprises qui doivent l'utiliser sans les conditions de l'AGPL, par exemple pour garder leurs modifications privées, peuvent acheter une licence commerciale.",
 						"question": "Combien ça coûte ?"
 					},
 					"data": {
-						"answer": "À vous. Sur votre propre serveur, rien ne quitte votre infrastructure et nous n'en recevons aucune donnée. Sur Margaya Cloud, votre espace de travail est stocké dans l'UE, et vous pouvez exporter vos tâches en CSV, Excel ou JSON ou supprimer votre compte à tout moment.",
+						"answer": "À vous. Margaya tourne uniquement sur votre propre serveur : rien ne quitte votre infrastructure et nous n'en recevons aucune donnée. Vous pouvez exporter vos tâches en CSV, Excel ou JSON à tout moment.",
 						"question": "À qui appartiennent mes données ?"
 					},
 					"jira": {
@@ -6699,7 +6700,7 @@
 						"question": "Quelles langues l'application prend-elle en charge ?"
 					},
 					"license": {
-						"answer": "La licence MIT. Il n'y a pas d'édition payante ni de fonctionnalité réservée : authentification unique, journal d'audit, API et MCP sont tous dans la version open source.",
+						"answer": "La GNU AGPL-3.0. Vous pouvez utiliser, modifier et héberger Margaya gratuitement. Si vous le modifiez et le mettez à disposition d'autres personnes via un réseau, vous publiez vos modifications sous la même licence. Pour utiliser Margaya sans ces conditions, par exemple pour garder vos modifications privées ou l'intégrer à un produit fermé, vous pouvez obtenir une licence commerciale. Authentification unique, journal d'audit, API et MCP sont tous dans la version open source.",
 						"question": "Sous quelle licence est Margaya ?"
 					},
 					"redis": {
@@ -6722,10 +6723,10 @@
 				"title": "Questions, réponses sans détour"
 			},
 			"finalCta": {
-				"description": "Démarrez sur Margaya Cloud en une minute, ou installez-le sur votre propre serveur dès aujourd'hui.",
-				"note": "Essai cloud de 14 jours, sans carte bancaire. Gratuit et sous licence MIT en auto-hébergement.",
-				"primary": "Commencer",
-				"secondary": "Auto-héberger Margaya",
+				"description": "Installez Margaya sur votre propre serveur dès aujourd'hui, gratuit et open source sous AGPL-3.0.",
+				"note": "Une licence commerciale est disponible si vous devez utiliser Margaya sans les conditions de l'AGPL.",
+				"primary": "Installez-le vous-même",
+				"secondary": "Lire la documentation",
 				"title": "Consacrez votre temps au travail, pas à l'outil."
 			},
 			"hero": {
@@ -6824,7 +6825,6 @@
 				"label": "Principal",
 				"menu": "Menu",
 				"openMenu": "Ouvrir le menu",
-				"pricing": "Tarifs",
 				"signIn": "Se connecter",
 				"explore": "Explorer",
 				"featuresIntro": "Six courtes visites de Margaya, chacune avec une démo en direct que vous pouvez prendre en main.",
@@ -6832,7 +6832,7 @@
 			},
 			"ownIt": {
 				"cta": "Lire le guide d'installation",
-				"description": "Margaya tourne dans un seul conteneur applicatif à côté de PostgreSQL. Commencez sur une seule machine et évoluez quand il le faut, sans clé de licence ni édition payante.",
+				"description": "Margaya tourne dans un seul conteneur applicatif à côté de PostgreSQL. Commencez sur une seule machine et évoluez quand il le faut, avec toutes les fonctionnalités dans la version open source.",
 				"eyebrow": "Maîtrise totale",
 				"items": {
 					"audit": {
@@ -6852,8 +6852,8 @@
 						"title": "Chart Helm"
 					},
 					"license": {
-						"body": "Toutes les fonctionnalités, authentification unique comprise, sont dans la version open source. Il n'existe pas d'édition entreprise.",
-						"title": "Licence MIT"
+						"body": "Toutes les fonctionnalités, authentification unique comprise, sont open source sous GNU AGPL-3.0. Une licence commerciale est disponible si vous devez utiliser Margaya sans les conditions de l'AGPL.",
+						"title": "Licence AGPL-3.0"
 					},
 					"redis": {
 						"body": "Ajoutez-le uniquement si vous exécutez plusieurs instances de l'API et voulez que les mises à jour en temps réel les atteignent toutes.",
@@ -6877,27 +6877,6 @@
 					"description": "Points, tailles ou durée. Activez-les par projet, et les cycles et modules font les comptes pour vous.",
 					"title": "Des estimations, si votre équipe en utilise"
 				}
-			},
-			"pricing": {
-				"cloud": {
-					"body": "Hébergement géré dans l'UE. $4 par mois pour une personne, $5 par utilisateur et par mois pour les équipes.",
-					"cta": "Essai gratuit de 14 jours",
-					"name": "Margaya Cloud",
-					"price": "Dès $4",
-					"suffix": "par mois"
-				},
-				"compare": "Comparer les offres",
-				"description": "La version auto-hébergée inclut toutes les fonctionnalités. Margaya Cloud, c'est le même produit, hébergé dans l'UE et tenu à jour pour vous.",
-				"eyebrow": "Tarifs",
-				"note": "Aucune carte bancaire requise pour l'essai.",
-				"selfHosted": {
-					"body": "Utilisateurs et projets illimités sur vos propres serveurs, avec toutes les fonctionnalités.",
-					"cta": "Lire le guide d'installation",
-					"name": "Auto-hébergé",
-					"price": "$0",
-					"suffix": "pour toujours"
-				},
-				"title": "Gratuit chez vous. Juste quand on s'en occupe pour vous."
 			},
 			"publicBoards": {
 				"description": "Partagez un tableau publiquement et recueillez demandes et votes sans distribuer de comptes.",
@@ -6954,7 +6933,8 @@
 			"footer": {
 				"company": {
 					"github": "GitHub",
-					"licence": "Licence MIT",
+					"licence": "Licence AGPL-3.0",
+					"commercial": "Licence commerciale",
 					"privacy": "Confidentialité",
 					"terms": "Conditions d'utilisation",
 					"title": "Entreprise"
@@ -6962,10 +6942,9 @@
 				"copyright": "© {{year}} Margaya",
 				"label": "Pied de page",
 				"mission": "Planifiez le travail, livrez-le, et restez maître de l'outil qui vous sert à le faire.",
-				"missionNote": "Margaya est open source sous licence MIT. Installez-le sur votre propre serveur, ou démarrez sur Margaya Cloud.",
+				"missionNote": "Margaya est open source sous GNU AGPL-3.0. Installez-le sur votre propre serveur, avec toutes les fonctionnalités.",
 				"product": {
 					"changelog": "Nouveautés",
-					"pricing": "Tarifs",
 					"roadmap": "Feuille de route",
 					"title": "Produit"
 				},
@@ -7100,12 +7079,12 @@
 			},
 			"selfHost": {
 				"cta": {
-					"description": "Suivez le guide d'installation, ou laissez-nous l'héberger pour vous.",
+					"description": "Suivez le guide d'installation et faites tourner Margaya sur votre propre serveur.",
 					"title": "Opérationnel en quelques minutes."
 				},
-				"description": "Un conteneur applicatif et PostgreSQL. Pas de clé de licence, pas de fonctionnalités bridées, et rien ne nous est renvoyé.",
+				"description": "Un conteneur applicatif et PostgreSQL. Toutes les fonctionnalités incluses, aucune fonctionnalité bridée, et rien ne nous est renvoyé.",
 				"eyebrow": "Auto-hébergement",
-				"metaDescription": "Faites tourner Margaya sur votre propre serveur avec Docker Compose, ou sur Kubernetes avec Helm. PostgreSQL uniquement, Redis facultatif, sous licence MIT, avec corbeille, journal d'audit et exports complets.",
+				"metaDescription": "Faites tourner Margaya sur votre propre serveur avec Docker Compose, ou sur Kubernetes avec Helm. PostgreSQL uniquement, Redis facultatif, sous licence AGPL-3.0, avec corbeille, journal d'audit et exports complets.",
 				"metaTitle": "Auto-hébergez Margaya avec Docker ou Helm",
 				"sections": {
 					"deploy": {
@@ -7129,7 +7108,7 @@
 			},
 			"views": {
 				"cta": {
-					"description": "Toutes les vues sont incluses, dans le cloud comme en auto-hébergement.",
+					"description": "Toutes les vues sont incluses dans la version open source.",
 					"title": "Choisissez la disposition adaptée à la question."
 				},
 				"description": "Changez de disposition sans copier de données. Chaque vue conserve ses filtres, son regroupement et ses propriétés visibles.",
@@ -9577,11 +9556,11 @@
 			"description": "Des descriptions prêtes à l'emploi. Raccourcissez-les si besoin, mais merci de ne pas modifier les faits.",
 			"long": {
 				"label": "Environ 150 mots",
-				"text": "Margaya est une plateforme open source de gestion de projet conçue pour les équipes qui veulent planifier et livrer leur travail sans que l'outil devienne un travail à part entière. Les tâches circulent dans des vues tableau, liste, tableur, calendrier et Gantt des mêmes données. Cycles, modules, estimations et boîte de réception sont là quand une équipe a besoin de planifier, et restent discrets quand ce n'est pas le cas. Les équipes rédigent des docs ensemble à côté de leurs tâches, recueillent des demandes sur des tableaux publics et suivent l'avancement grâce aux analytics et à un journal d'audit. Une API REST avec description OpenAPI, des webhooks, un serveur MCP et des intégrations avec GitHub, Gitea, Slack, Discord et d'autres relient Margaya au reste des outils de l'équipe. L'interface est disponible en 20 langues. Margaya est publié sous licence MIT et tourne sur un seul serveur avec Docker, ou sur Kubernetes avec Helm ; Margaya Cloud propose le même produit sous forme de service géré."
+				"text": "Margaya est une plateforme open source de gestion de projet conçue pour les équipes qui veulent planifier et livrer leur travail sans que l'outil devienne un travail à part entière. Les tâches circulent dans des vues tableau, liste, tableur, calendrier et Gantt des mêmes données. Cycles, modules, estimations et boîte de réception sont là quand une équipe a besoin de planifier, et restent discrets quand ce n'est pas le cas. Les équipes rédigent des docs ensemble à côté de leurs tâches, recueillent des demandes sur des tableaux publics et suivent l'avancement grâce aux analytics et à un journal d'audit. Une API REST avec description OpenAPI, des webhooks, un serveur MCP et des intégrations avec GitHub, Gitea, Slack, Discord et d'autres relient Margaya au reste des outils de l'équipe. L'interface est disponible en 20 langues. Margaya est publié sous GNU AGPL-3.0, avec une licence commerciale pour l'utiliser sans ses conditions, et tourne sur un seul serveur avec Docker, ou sur Kubernetes avec Helm."
 			},
 			"short": {
 				"label": "Environ 50 mots",
-				"text": "Margaya est une plateforme open source de gestion de projet pour les équipes qui veulent des responsabilités claires sans processus lourds. Les équipes planifient le travail sur des tableaux, listes, tableurs, calendriers et diagrammes de Gantt, rédigent des docs à côté des tâches et connectent leurs outils via une API REST et MCP. Margaya s'auto-héberge sous licence MIT ou s'utilise via Margaya Cloud."
+				"text": "Margaya est une plateforme open source de gestion de projet pour les équipes qui veulent des responsabilités claires sans processus lourds. Les équipes planifient le travail sur des tableaux, listes, tableurs, calendriers et diagrammes de Gantt, rédigent des docs à côté des tâches et connectent leurs outils via une API REST et MCP. Margaya s'installe sur votre propre serveur, gratuit et open source sous GNU AGPL-3.0."
 			},
 			"title": "Textes de présentation"
 		},
@@ -9642,7 +9621,7 @@
 			},
 			"hosting": {
 				"label": "Hébergement",
-				"value": "Auto-hébergé avec Docker ou Helm, ou géré sur Margaya Cloud"
+				"value": "Auto-hébergé avec Docker ou Helm"
 			},
 			"interfaces": {
 				"label": "Interfaces",
@@ -9654,7 +9633,7 @@
 			},
 			"licence": {
 				"label": "Licence",
-				"value": "MIT, pour toutes les fonctionnalités"
+				"value": "AGPL-3.0, avec une licence commerciale disponible"
 			},
 			"source": {
 				"label": "Code source",
@@ -9729,161 +9708,6 @@
 		},
 		"title": "Kit presse",
 		"downloadPng": "Télécharger le PNG"
-	},
-	"pricing": {
-		"cta": {
-			"description": "Lancez un essai Cloud sans carte, ou suivez le guide d'installation et faites tourner Margaya sur votre propre matériel.",
-			"primary": "Commencer l'essai gratuit",
-			"secondary": "Lire le guide d'installation",
-			"title": "Choisissez la formule qui vous convient, et changez d'avis plus tard."
-		},
-		"description": "La version auto-hébergée, c'est le produit complet sous licence MIT, sans limite de places ni offre payante. Margaya Cloud, c'est le même logiciel, hébergé dans l'UE et tenu à jour pour vous.",
-		"eyebrow": "Tarifs",
-		"faq": {
-			"items": {
-				"cancel": {
-					"answer": "Votre offre reste active jusqu'à la fin de la période payée. D'ici là, exportez votre travail en CSV, Excel ou JSON si vous voulez en garder une copie.",
-					"question": "Que se passe-t-il si je résilie ?"
-				},
-				"founding": {
-					"answer": "Les espaces de travail créés avant le lancement des offres payantes conservent un accès gratuit pendant au moins 12 mois, et vous serez prévenu six mois avant tout changement.",
-					"question": "Je me suis inscrit avant l'arrivée des offres payantes. Qu'est-ce qui change ?"
-				},
-				"payments": {
-					"answer": "Les paiements passent par Creem, qui agit en tant que revendeur officiel (merchant of record) et gère la taxe sur les ventes et la TVA lorsqu'elles s'appliquent. Vos données de carte n'arrivent jamais jusqu'à Margaya.",
-					"question": "Qui gère les paiements et les taxes ?"
-				},
-				"seats": {
-					"answer": "Cloud Équipe est facturé pour chaque membre de l'espace de travail. Quand quelqu'un rejoint l'espace ou le quitte, le nombre de places de l'abonnement est ajusté en conséquence.",
-					"question": "Comment les membres sont-ils comptés dans Cloud Équipe ?"
-				},
-				"selfHostHelp": {
-					"answer": "Auprès des mainteneurs et de la communauté sur GitHub, via les discussions et les tickets. L'installation, les mises à jour et la configuration sont couvertes par la documentation.",
-					"question": "Où trouver de l'aide en auto-hébergement ?"
-				},
-				"selfHostLimits": {
-					"answer": "Non. Le code que vous installez est celui qui fait tourner Margaya Cloud, et il est entièrement sous licence MIT. Il n'y a ni clé de licence, ni limite de places, ni fonctionnalité payante à débloquer.",
-					"question": "Manque-t-il quelque chose à la version auto-hébergée ?"
-				},
-				"trial": {
-					"answer": "Un nouvel espace de travail Cloud dispose de 14 jours avec tout inclus, et vous n'avez pas besoin de carte pour commencer. Avant la fin de l'essai, choisissez une offre ou exportez vos tâches.",
-					"question": "Comment fonctionne l'essai Cloud ?"
-				},
-				"yearly": {
-					"answer": "Oui. Une année coûte le prix de dix mois : les deux offres Cloud incluent donc deux mois offerts si vous payez à l'année.",
-					"question": "La facturation annuelle est-elle moins chère ?"
-				},
-				"ai": {
-					"question": "L'IA est-elle incluse ?",
-					"answer": "Toutes les offres incluent les fonctionnalités d'IA : Demander à l'IA, le mode Construire, les agents et l'aide à la rédaction. Elles restent désactivées jusqu'à ce qu'un administrateur les active. L'utilisation de l'IA n'est pas comprise dans le prix : vous ajoutez votre propre clé d'API dans les paramètres d'IA de l'espace de travail, et le fournisseur d'IA vous facture directement. Les instances auto-hébergées peuvent aussi utiliser un modèle que vous exécutez vous-même, via Ollama ou vLLM."
-				}
-			},
-			"title": "Questions sur les tarifs"
-		},
-		"interval": {
-			"annual": "Annuel",
-			"label": "Période de facturation",
-			"monthly": "Mensuel",
-			"saving": "2 mois offerts"
-		},
-		"metaDescription": "Margaya est gratuit en auto-hébergement, pour toujours. Margaya Cloud coûte $4 par mois pour une personne ou $5 par membre et par mois pour les équipes, avec un essai gratuit de 14 jours.",
-		"plans": {
-			"personal": {
-				"annualNote": "Soit {{price}} par mois",
-				"annualPeriod": "par an",
-				"cta": "Essai gratuit de 14 jours",
-				"monthlyNote": "Facturé chaque mois",
-				"monthlyPeriod": "par mois",
-				"name": "Cloud Personnel",
-				"points": {
-					"everything": "Toutes les fonctionnalités de la version auto-hébergée",
-					"help": "Assistance par e-mail",
-					"managed": "Sauvegardes et mises à jour gérées pour vous",
-					"one": "Une personne, projets et tâches illimités"
-				},
-				"tagline": "Hébergement géré pour une personne"
-			},
-			"selfHosted": {
-				"cta": "Lire le guide d'installation",
-				"name": "Auto-hébergé",
-				"note": "Licence MIT. Ni clé, ni limite de places.",
-				"period": "pour toujours",
-				"points": {
-					"data": "Votre base de données, vos sauvegardes, vos règles",
-					"deploy": "Docker sur un seul serveur, ou Helm sur Kubernetes",
-					"everything": "Toutes les fonctionnalités, pour autant de personnes que vous voulez",
-					"help": "Aide de la communauté sur GitHub"
-				},
-				"tagline": "Sur les serveurs que vous gérez"
-			},
-			"team": {
-				"annualNote": "Soit {{price}} par membre et par mois",
-				"annualPeriod": "par membre et par an",
-				"badge": "Pour les équipes",
-				"cta": "Essai gratuit de 14 jours",
-				"monthlyNote": "Facturé chaque mois pour chaque membre de l'espace de travail",
-				"monthlyPeriod": "par membre et par mois",
-				"name": "Cloud Équipe",
-				"points": {
-					"help": "Assistance prioritaire par e-mail",
-					"managed": "Sauvegardes et mises à jour gérées pour vous",
-					"people": "Tout l'espace de travail, projets illimités",
-					"roles": "Rôles et permissions de l'espace de travail"
-				},
-				"tagline": "Hébergement géré pour toute une équipe"
-			}
-		},
-		"table": {
-			"description": "Les fonctionnalités sont les mêmes partout. Ce qui change, c'est qui gère les serveurs et à qui vous demandez de l'aide.",
-			"feature": "Fonctionnalité",
-			"groups": {
-				"connect": "Connexions",
-				"planning": "Planification et suivi",
-				"running": "Exploitation",
-				"work": "Le travail"
-			},
-			"included": "Inclus",
-			"notIncluded": "Non inclus",
-			"rows": {
-				"admin": "Paramètres de l'instance : fournisseurs de connexion, e-mail, stockage",
-				"analytics": "Analytics et journal d'audit",
-				"api": "API REST, webhooks et MCP",
-				"backups": "Sauvegardes",
-				"cycles": "Cycles, modules et estimations",
-				"docs": "Docs rédigées ensemble, à côté des tâches",
-				"export": "Export en CSV, Excel ou JSON",
-				"hosting": "Où il tourne",
-				"intake": "Boîte de réception et tri",
-				"integrations": "GitHub, Gitea, Slack, Discord et plus encore",
-				"jira": "Import depuis Jira",
-				"people": "Personnes",
-				"projects": "Projets et tâches",
-				"publicBoards": "Tableaux publics avec votes",
-				"roles": "Rôles et permissions de l'espace de travail",
-				"support": "Assistance",
-				"updates": "Mises à jour",
-				"views": "Vues tableau, liste, tableur, calendrier et Gantt",
-				"ai": "IA : Demander à l'IA, mode Construire et agents"
-			},
-			"title": "Comparer les offres",
-			"values": {
-				"automatic": "Automatiques",
-				"community": "Communauté sur GitHub",
-				"email": "E-mail",
-				"eu": "Centres de données dans l'UE",
-				"notNeeded": "Inutile pour une personne",
-				"one": "Vous seul",
-				"perMember": "Illimité, facturé par membre",
-				"priorityEmail": "E-mail prioritaire",
-				"unlimited": "Illimité",
-				"yours": "À votre charge",
-				"yourSchedule": "Quand vous le décidez",
-				"yourServers": "Vos serveurs",
-				"ownKey": "Votre propre clé ou modèle d'IA"
-			}
-		},
-		"title": "Un seul produit. Deux façons de le faire tourner.",
-		"trialNote": "Les offres Cloud commencent par un essai de 14 jours. Aucune carte requise pour démarrer."
 	},
 	"templates": {
 		"form": {

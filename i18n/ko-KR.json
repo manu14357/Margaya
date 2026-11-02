@@ -3396,6 +3396,7 @@
 			"unreadAria_other": "읽지 않음 {{count}}개",
 			"unreadOnly": "읽지 않음만",
 			"whatsNew": "새로운 소식",
+			"sourceCode": "소스 코드",
 			"workspaceAnalytics": "워크스페이스"
 		}
 	},
@@ -6483,7 +6484,7 @@
 					"title": "20개 언어"
 				},
 				"openSource": {
-					"detail": "MIT 라이선스",
+					"detail": "AGPL-3.0 라이선스",
 					"title": "오픈 소스"
 				},
 				"selfHosted": {
@@ -6507,11 +6508,11 @@
 						"question": "API가 있나요? AI 에이전트와도 쓸 수 있나요?"
 					},
 					"cost": {
-						"answer": "직접 호스팅은 무료입니다. Margaya Cloud는 1인 사용 시 월 $4, 팀은 사용자당 월 $5이며, 신용카드 없이 14일 무료 체험이 가능합니다.",
+						"answer": "AGPL-3.0으로 Margaya를 직접 호스팅하는 것은 무료이며 모든 기능이 포함됩니다. 변경 사항을 비공개로 유지하는 등 AGPL 조건 없이 사용해야 하는 기업은 상용 라이선스를 구매할 수 있습니다.",
 						"question": "비용은 얼마인가요?"
 					},
 					"data": {
-						"answer": "여러분의 것입니다. 직접 서버에서 운영하면 어떤 데이터도 인프라 밖으로 나가지 않으며, 저희도 아무 데이터를 받지 않습니다. Margaya Cloud에서는 워크스페이스가 EU에 저장되며, 언제든 작업을 CSV, Excel, JSON으로 내보내거나 계정을 삭제할 수 있습니다.",
+						"answer": "여러분의 것입니다. Margaya는 직접 운영하는 서버에서만 실행되므로 어떤 데이터도 인프라 밖으로 나가지 않으며, 저희도 아무 데이터를 받지 않습니다. 언제든 작업을 CSV, Excel, JSON으로 내보낼 수 있습니다.",
 						"question": "데이터는 누구의 소유인가요?"
 					},
 					"jira": {
@@ -6523,7 +6524,7 @@
 						"question": "앱은 어떤 언어를 지원하나요?"
 					},
 					"license": {
-						"answer": "MIT 라이선스입니다. 유료 에디션도, 이를 위해 아껴 둔 기능도 없습니다. 싱글 사인온, 감사 로그, API, MCP 모두 오픈 소스 빌드에 포함되어 있습니다.",
+						"answer": "GNU AGPL-3.0입니다. Margaya는 무료로 사용하고, 수정하고, 호스팅할 수 있습니다. 수정한 버전을 네트워크를 통해 다른 사람이 사용하게 하면, 변경 사항을 같은 라이선스로 공개해야 합니다. 변경 사항을 비공개로 유지하거나 비공개 제품에 포함하는 등 이러한 조건 없이 Margaya를 사용하려면 상용 라이선스를 받을 수 있습니다. 싱글 사인온, 감사 로그, API, MCP 모두 오픈 소스 빌드에 포함되어 있습니다.",
 						"question": "Margaya는 어떤 라이선스를 따르나요?"
 					},
 					"redis": {
@@ -6546,10 +6547,10 @@
 				"title": "자주 묻는 질문, 솔직하게 답해 드립니다"
 			},
 			"finalCta": {
-				"description": "Margaya Cloud로 1분 만에 시작하거나, 오늘 바로 내 서버에서 실행해 보세요.",
-				"note": "클라우드 14일 무료 체험, 신용카드 불필요. 직접 호스팅은 무료이며 MIT 라이선스입니다.",
-				"primary": "시작하기",
-				"secondary": "Margaya 직접 호스팅",
+				"description": "지금 바로 직접 서버에서 Margaya를 실행하세요. AGPL-3.0 기반의 무료 오픈 소스입니다.",
+				"note": "AGPL 조건 없이 Margaya를 사용해야 한다면 상용 라이선스를 이용할 수 있습니다.",
+				"primary": "직접 설치하기",
+				"secondary": "문서 읽기",
 				"title": "도구가 아니라 일에 시간을 쓰세요."
 			},
 			"hero": {
@@ -6648,7 +6649,6 @@
 				"label": "주 메뉴",
 				"menu": "메뉴",
 				"openMenu": "메뉴 열기",
-				"pricing": "요금",
 				"signIn": "로그인",
 				"explore": "둘러보기",
 				"featuresIntro": "Margaya를 둘러보는 짧은 투어 여섯 가지입니다. 각 투어에는 직접 조작해 볼 수 있는 라이브 데모가 있습니다.",
@@ -6656,7 +6656,7 @@
 			},
 			"ownIt": {
 				"cta": "설치 가이드 읽기",
-				"description": "Margaya는 PostgreSQL 옆에서 앱 컨테이너 하나로 실행됩니다. 머신 한 대로 시작해 필요할 때 확장하세요. 라이선스 키나 유료 에디션은 필요 없습니다.",
+				"description": "Margaya는 PostgreSQL 옆에서 앱 컨테이너 하나로 실행됩니다. 머신 한 대로 시작해 필요할 때 확장하세요. 모든 기능이 오픈 소스 빌드에 들어 있습니다.",
 				"eyebrow": "온전히 내 것으로",
 				"items": {
 					"audit": {
@@ -6676,8 +6676,8 @@
 						"title": "Helm 차트"
 					},
 					"license": {
-						"body": "싱글 사인온을 포함한 모든 기능이 오픈 소스 빌드에 들어 있습니다. 엔터프라이즈 에디션은 없습니다.",
-						"title": "MIT 라이선스"
+						"body": "싱글 사인온을 포함한 모든 기능이 GNU AGPL-3.0 오픈 소스입니다. AGPL 조건 없이 Margaya를 사용해야 한다면 상용 라이선스를 이용할 수 있습니다.",
+						"title": "AGPL-3.0 라이선스"
 					},
 					"redis": {
 						"body": "여러 API 인스턴스를 운영하면서 모든 인스턴스에 실시간 업데이트를 전달하려는 경우에만 추가하세요.",
@@ -6701,27 +6701,6 @@
 					"description": "포인트, 크기, 시간 중에서 고르세요. 프로젝트별로 켜 두면 사이클과 모듈이 알아서 합산합니다.",
 					"title": "추정치는 팀이 쓴다면"
 				}
-			},
-			"pricing": {
-				"cloud": {
-					"body": "EU 기반 관리형 호스팅. 1인 사용 시 월 $4, 팀은 사용자당 월 $5입니다.",
-					"cta": "14일 무료 체험 시작",
-					"name": "Margaya Cloud",
-					"price": "$4부터",
-					"suffix": "/월"
-				},
-				"compare": "요금제 비교",
-				"description": "직접 호스팅 빌드에는 모든 기능이 들어 있습니다. Margaya Cloud는 같은 제품을 EU에서 호스팅하고 항상 최신 상태로 유지해 드립니다.",
-				"eyebrow": "요금",
-				"note": "체험판에는 신용카드가 필요 없습니다.",
-				"selfHosted": {
-					"body": "내 서버에서 사용자와 프로젝트를 무제한으로, 모든 기능을 포함해 사용하세요.",
-					"cta": "설치 가이드 읽기",
-					"name": "직접 호스팅",
-					"price": "$0",
-					"suffix": "평생"
-				},
-				"title": "직접 운영하면 무료, 맡기시면 합리적인 가격."
 			},
 			"publicBoards": {
 				"description": "보드를 공개로 공유하면 계정을 발급하지 않고도 요청과 투표를 모을 수 있습니다.",
@@ -6778,7 +6757,8 @@
 			"footer": {
 				"company": {
 					"github": "GitHub",
-					"licence": "MIT 라이선스",
+					"licence": "AGPL-3.0 라이선스",
+					"commercial": "상용 라이선스",
 					"privacy": "개인정보 처리방침",
 					"terms": "이용약관",
 					"title": "회사"
@@ -6786,10 +6766,9 @@
 				"copyright": "© {{year}} Margaya",
 				"label": "푸터",
 				"mission": "일을 계획하고, 출시하고, 그 일을 하는 도구를 직접 소유하세요.",
-				"missionNote": "Margaya는 MIT 라이선스의 오픈 소스입니다. 직접 서버에서 운영하거나 Margaya Cloud에서 시작하세요.",
+				"missionNote": "Margaya는 GNU AGPL-3.0 오픈 소스입니다. 모든 기능을 갖춘 채 직접 서버에서 운영하세요.",
 				"product": {
 					"changelog": "변경 내역",
-					"pricing": "요금",
 					"roadmap": "로드맵",
 					"title": "제품"
 				},
@@ -6924,12 +6903,12 @@
 			},
 			"selfHost": {
 				"cta": {
-					"description": "설치 가이드를 따라 하거나, 호스팅을 저희에게 맡기세요.",
+					"description": "설치 가이드를 따라 직접 서버에서 Margaya를 실행하세요.",
 					"title": "몇 분이면 실행됩니다."
 				},
-				"description": "앱 컨테이너 하나와 PostgreSQL. 라이선스 키도, 기능 제한도 없고, 저희에게 전송되는 데이터도 없습니다.",
+				"description": "앱 컨테이너 하나와 PostgreSQL. 모든 기능이 포함되어 있고, 기능 제한도 없으며, 저희에게 전송되는 데이터도 없습니다.",
 				"eyebrow": "직접 호스팅",
-				"metaDescription": "Docker Compose로 내 서버에서, 또는 Helm으로 Kubernetes에서 Margaya를 실행하세요. PostgreSQL만 있으면 되고 Redis는 선택 사항이며, MIT 라이선스로 휴지통, 감사 로그, 전체 내보내기를 제공합니다.",
+				"metaDescription": "Docker Compose로 내 서버에서, 또는 Helm으로 Kubernetes에서 Margaya를 실행하세요. PostgreSQL만 있으면 되고 Redis는 선택 사항이며, AGPL-3.0 라이선스로 휴지통, 감사 로그, 전체 내보내기를 제공합니다.",
 				"metaTitle": "Docker 또는 Helm으로 Margaya 직접 호스팅하기",
 				"sections": {
 					"deploy": {
@@ -6953,7 +6932,7 @@
 			},
 			"views": {
 				"cta": {
-					"description": "모든 보기는 클라우드와 직접 호스팅 모두에 포함되어 있습니다.",
+					"description": "모든 보기가 오픈 소스 빌드에 포함되어 있습니다.",
 					"title": "궁금한 것에 맞는 레이아웃을 고르세요."
 				},
 				"description": "데이터를 복사하지 않고 레이아웃을 전환하세요. 각 보기는 필터, 그룹화, 표시할 속성을 그대로 기억합니다.",
@@ -9331,11 +9310,11 @@
 			"description": "바로 쓸 수 있는 소개문입니다. 필요하면 줄여서 쓰셔도 되지만, 사실 관계는 그대로 유지해 주세요.",
 			"long": {
 				"label": "약 150단어",
-				"text": "Margaya는 도구 관리가 또 하나의 일이 되지 않으면서 작업을 계획하고 완수하려는 팀을 위해 만든 오픈 소스 프로젝트 관리 플랫폼입니다. 작업은 같은 데이터를 보여 주는 보드, 목록, 스프레드시트, 캘린더, 간트 보기를 오갑니다. 사이클, 모듈, 추정치, 인테이크 받은편지함은 팀에 계획이 필요할 때 쓸 수 있고, 필요 없을 때는 방해가 되지 않습니다. 팀은 작업 옆에서 함께 문서를 쓰고, 공개 보드에서 요청을 모으며, 분석과 감사 로그로 진행 상황을 확인합니다. OpenAPI 명세가 포함된 REST API, 웹훅, MCP 서버, 그리고 GitHub, Gitea, Slack, Discord 등과의 연동으로 Margaya를 팀의 다른 도구와 연결할 수 있습니다. 인터페이스는 20개 언어로 제공됩니다. Margaya는 MIT 라이선스로 배포되며 Docker로 단일 서버에서, 또는 Helm으로 Kubernetes에서 실행됩니다. Margaya Cloud는 같은 제품을 관리형 서비스로 제공합니다."
+				"text": "Margaya는 도구 관리가 또 하나의 일이 되지 않으면서 작업을 계획하고 완수하려는 팀을 위해 만든 오픈 소스 프로젝트 관리 플랫폼입니다. 작업은 같은 데이터를 보여 주는 보드, 목록, 스프레드시트, 캘린더, 간트 보기를 오갑니다. 사이클, 모듈, 추정치, 인테이크 받은편지함은 팀에 계획이 필요할 때 쓸 수 있고, 필요 없을 때는 방해가 되지 않습니다. 팀은 작업 옆에서 함께 문서를 쓰고, 공개 보드에서 요청을 모으며, 분석과 감사 로그로 진행 상황을 확인합니다. OpenAPI 명세가 포함된 REST API, 웹훅, MCP 서버, 그리고 GitHub, Gitea, Slack, Discord 등과의 연동으로 Margaya를 팀의 다른 도구와 연결할 수 있습니다. 인터페이스는 20개 언어로 제공됩니다. Margaya는 GNU AGPL-3.0으로 배포되며 그 조건 없이 사용할 수 있는 상용 라이선스도 제공됩니다. Docker로 단일 서버에서, 또는 Helm으로 Kubernetes에서 실행됩니다."
 			},
 			"short": {
 				"label": "약 50단어",
-				"text": "Margaya는 무거운 절차 없이 명확한 책임 분담을 원하는 팀을 위한 오픈 소스 프로젝트 관리 플랫폼입니다. 보드, 목록, 스프레드시트, 캘린더, 간트 차트로 작업을 계획하고, 작업 옆에서 문서를 작성하며, REST API와 MCP로 도구를 연결하세요. MIT 라이선스로 직접 운영하거나 Margaya Cloud를 이용할 수 있습니다."
+				"text": "Margaya는 무거운 절차 없이 명확한 책임 분담을 원하는 팀을 위한 오픈 소스 프로젝트 관리 플랫폼입니다. 보드, 목록, 스프레드시트, 캘린더, 간트 차트로 작업을 계획하고, 작업 옆에서 문서를 작성하며, REST API와 MCP로 도구를 연결하세요. GNU AGPL-3.0 기반의 무료 오픈 소스로, 직접 서버에서 운영할 수 있습니다."
 			},
 			"title": "기본 소개문"
 		},
@@ -9396,7 +9375,7 @@
 			},
 			"hosting": {
 				"label": "호스팅",
-				"value": "Docker 또는 Helm으로 직접 호스팅하거나 Margaya Cloud에서 관리형으로 이용"
+				"value": "Docker 또는 Helm으로 직접 호스팅"
 			},
 			"interfaces": {
 				"label": "인터페이스",
@@ -9408,7 +9387,7 @@
 			},
 			"licence": {
 				"label": "라이선스",
-				"value": "MIT, 모든 기능에 적용"
+				"value": "AGPL-3.0, 상용 라이선스 제공"
 			},
 			"source": {
 				"label": "소스 코드",
@@ -9483,161 +9462,6 @@
 		},
 		"title": "보도 자료 키트",
 		"downloadPng": "PNG 다운로드"
-	},
-	"pricing": {
-		"cta": {
-			"description": "카드 없이 Cloud 체험을 시작하거나, 설치 가이드를 따라 내 하드웨어에서 Margaya를 실행하세요.",
-			"primary": "무료 체험 시작",
-			"secondary": "설치 가이드 읽기",
-			"title": "맞는 방식을 고르세요. 나중에 바꿔도 됩니다."
-		},
-		"description": "직접 호스팅 빌드는 MIT 라이선스로 제공되는 완전한 제품으로, 시트 제한도 유료 등급도 없습니다. Margaya Cloud는 같은 소프트웨어를 EU에서 호스팅하고 항상 최신 상태로 유지해 드립니다.",
-		"eyebrow": "요금",
-		"faq": {
-			"items": {
-				"cancel": {
-					"answer": "요금제는 결제한 기간이 끝날 때까지 유지됩니다. 사본을 보관하려면 그 전에 작업을 CSV, Excel, JSON으로 내보내세요.",
-					"question": "해지하면 어떻게 되나요?"
-				},
-				"founding": {
-					"answer": "유료 요금제 출시 전에 만든 워크스페이스는 최소 12개월 동안 무료로 이용할 수 있으며, 변경 사항이 있으면 6개월 전에 알려 드립니다.",
-					"question": "유료 요금제가 생기기 전에 가입했습니다. 무엇이 달라지나요?"
-				},
-				"payments": {
-					"answer": "결제는 Creem을 통해 이루어지며, Creem이 판매 대행사(merchant of record)로서 해당되는 판매세와 부가가치세를 처리합니다. 카드 정보는 Margaya에 전달되지 않습니다.",
-					"question": "결제와 세금은 누가 처리하나요?"
-				},
-				"seats": {
-					"answer": "Cloud 팀은 워크스페이스 멤버마다 요금이 청구됩니다. 누군가 참여하거나 나가면 구독의 시트 수도 그에 맞게 갱신됩니다.",
-					"question": "Cloud 팀 멤버는 어떻게 계산되나요?"
-				},
-				"selfHostHelp": {
-					"answer": "GitHub의 토론과 이슈를 통해 메인테이너와 커뮤니티의 도움을 받을 수 있습니다. 설치, 업그레이드, 설정은 문서에서 다룹니다.",
-					"question": "직접 호스팅하는 경우 어디서 도움을 받나요?"
-				},
-				"selfHostLimits": {
-					"answer": "없습니다. 설치하는 코드가 Margaya Cloud를 실행하는 코드와 같고, 모두 MIT 라이선스입니다. 라이선스 키, 시트 제한, 잠금 해제해야 하는 유료 기능이 없습니다.",
-					"question": "직접 호스팅 버전에 빠진 기능이 있나요?"
-				},
-				"trial": {
-					"answer": "새 Cloud 워크스페이스는 모든 기능이 포함된 14일을 받으며, 시작할 때 카드가 필요 없습니다. 체험이 끝나기 전에 요금제를 선택하거나 작업을 내보내세요.",
-					"question": "Cloud 체험은 어떻게 진행되나요?"
-				},
-				"yearly": {
-					"answer": "네. 1년 요금이 10개월 요금과 같아서, 연간으로 결제하면 두 Cloud 요금제 모두 2개월이 무료입니다.",
-					"question": "연간 결제가 더 저렴한가요?"
-				},
-				"ai": {
-					"question": "AI가 포함되어 있나요?",
-					"answer": "모든 요금제에 AI 기능(AI에게 묻기, 만들기 모드, 에이전트, 글쓰기 도움)이 있습니다. 관리자가 켜기 전까지는 꺼져 있습니다. AI 사용료는 가격에 포함되지 않습니다. 워크스페이스의 AI 설정에 직접 API 키를 추가하면 AI 제공업체가 여러분에게 직접 청구합니다. 직접 호스팅하는 인스턴스는 Ollama나 vLLM으로 직접 실행하는 모델도 사용할 수 있습니다."
-				}
-			},
-			"title": "요금에 관한 질문"
-		},
-		"interval": {
-			"annual": "연간",
-			"label": "결제 주기",
-			"monthly": "월간",
-			"saving": "2개월 무료"
-		},
-		"metaDescription": "Margaya는 직접 호스팅하면 평생 무료입니다. Margaya Cloud는 1인 월 $4, 팀은 멤버당 월 $5이며 14일 무료 체험을 제공합니다.",
-		"plans": {
-			"personal": {
-				"annualNote": "월 {{price}} 꼴",
-				"annualPeriod": "/년",
-				"cta": "14일 체험 시작",
-				"monthlyNote": "매월 청구",
-				"monthlyPeriod": "/월",
-				"name": "Cloud 개인",
-				"points": {
-					"everything": "직접 호스팅 빌드의 모든 기능",
-					"help": "이메일 지원",
-					"managed": "백업과 업데이트는 저희가 처리",
-					"one": "1인, 프로젝트와 작업 무제한"
-				},
-				"tagline": "1인을 위한 관리형 호스팅"
-			},
-			"selfHosted": {
-				"cta": "설치 가이드 읽기",
-				"name": "직접 호스팅",
-				"note": "MIT 라이선스. 키도, 시트 제한도 없습니다.",
-				"period": "평생",
-				"points": {
-					"data": "내 데이터베이스, 내 백업, 내 규칙",
-					"deploy": "서버 한 대에 Docker, 또는 Kubernetes에 Helm",
-					"everything": "모든 기능을 원하는 만큼의 사람과 함께",
-					"help": "GitHub 커뮤니티 지원"
-				},
-				"tagline": "내가 운영하는 서버에서"
-			},
-			"team": {
-				"annualNote": "멤버당 월 {{price}} 꼴",
-				"annualPeriod": "멤버당 /년",
-				"badge": "팀용",
-				"cta": "14일 체험 시작",
-				"monthlyNote": "워크스페이스 멤버마다 매월 청구",
-				"monthlyPeriod": "멤버당 /월",
-				"name": "Cloud 팀",
-				"points": {
-					"help": "이메일 우선 지원",
-					"managed": "백업과 업데이트는 저희가 처리",
-					"people": "워크스페이스의 모든 사람, 프로젝트 무제한",
-					"roles": "워크스페이스 역할과 권한"
-				},
-				"tagline": "팀 전체를 위한 관리형 호스팅"
-			}
-		},
-		"table": {
-			"description": "기능은 어디서나 같습니다. 달라지는 것은 서버를 누가 운영하는지, 도움을 어디서 받는지입니다.",
-			"feature": "기능",
-			"groups": {
-				"connect": "연결",
-				"planning": "계획과 인사이트",
-				"running": "운영",
-				"work": "작업"
-			},
-			"included": "포함",
-			"notIncluded": "미포함",
-			"rows": {
-				"admin": "인스턴스 설정: 로그인 공급자, 이메일, 스토리지",
-				"analytics": "분석과 감사 로그",
-				"api": "REST API, 웹훅, MCP",
-				"backups": "백업",
-				"cycles": "사이클, 모듈, 추정치",
-				"docs": "작업 옆에서 함께 쓰는 문서",
-				"export": "CSV, Excel, JSON으로 내보내기",
-				"hosting": "실행 위치",
-				"intake": "인테이크 받은편지함과 분류",
-				"integrations": "GitHub, Gitea, Slack, Discord 등",
-				"jira": "Jira 가져오기",
-				"people": "사용 인원",
-				"projects": "프로젝트와 작업",
-				"publicBoards": "투표가 가능한 공개 보드",
-				"roles": "워크스페이스 역할과 권한",
-				"support": "지원",
-				"updates": "업데이트",
-				"views": "보드, 목록, 스프레드시트, 캘린더, 간트 보기",
-				"ai": "AI: AI에게 묻기, 만들기 모드, 에이전트"
-			},
-			"title": "요금제 비교",
-			"values": {
-				"automatic": "자동",
-				"community": "GitHub 커뮤니티",
-				"email": "이메일",
-				"eu": "EU 데이터 센터",
-				"notNeeded": "1인에게는 불필요",
-				"one": "나 혼자",
-				"perMember": "무제한, 멤버당 청구",
-				"priorityEmail": "우선 이메일",
-				"unlimited": "무제한",
-				"yours": "직접 운영",
-				"yourSchedule": "원할 때",
-				"yourServers": "내 서버",
-				"ownKey": "직접 준비한 AI 키 또는 모델"
-			}
-		},
-		"title": "하나의 제품, 두 가지 운영 방식.",
-		"trialNote": "Cloud 요금제는 14일 체험으로 시작합니다. 시작할 때 카드가 필요 없습니다."
 	},
 	"templates": {
 		"form": {

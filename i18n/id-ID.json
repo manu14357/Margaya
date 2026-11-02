@@ -3396,6 +3396,7 @@
 			"unreadAria_other": "{{count}} belum dibaca",
 			"unreadOnly": "Hanya yang belum dibaca",
 			"whatsNew": "Yang baru",
+			"sourceCode": "Kode sumber",
 			"workspaceAnalytics": "Ruang kerja"
 		}
 	},
@@ -6483,7 +6484,7 @@
 					"title": "20 bahasa"
 				},
 				"openSource": {
-					"detail": "Lisensi MIT",
+					"detail": "Lisensi AGPL-3.0",
 					"title": "Open source"
 				},
 				"selfHosted": {
@@ -6507,11 +6508,11 @@
 						"question": "Apakah ada API, dan apakah bisa digunakan dengan agen AI?"
 					},
 					"cost": {
-						"answer": "Self-hosting gratis. Margaya Cloud seharga $4 per bulan untuk satu orang dan $5 per pengguna per bulan untuk tim, dengan uji coba 14 hari tanpa kartu kredit.",
+						"answer": "Self-hosting Margaya di bawah AGPL-3.0 gratis, dengan semua fitur. Bisnis yang perlu menggunakannya tanpa ketentuan AGPL, misalnya untuk merahasiakan perubahan mereka, bisa membeli lisensi komersial.",
 						"question": "Berapa biayanya?"
 					},
 					"data": {
-						"answer": "Anda. Di server Anda sendiri, tidak ada yang keluar dari infrastruktur Anda dan kami tidak menerima data apa pun darinya. Di Margaya Cloud, ruang kerja Anda disimpan di UE, dan Anda bisa mengekspor tugas ke CSV, Excel, atau JSON maupun menghapus akun kapan saja.",
+						"answer": "Anda. Margaya hanya berjalan di server Anda sendiri, jadi tidak ada yang keluar dari infrastruktur Anda dan kami tidak menerima data apa pun darinya. Anda bisa mengekspor tugas ke CSV, Excel, atau JSON kapan saja.",
 						"question": "Siapa pemilik data saya?"
 					},
 					"jira": {
@@ -6523,7 +6524,7 @@
 						"question": "Bahasa apa saja yang didukung aplikasi ini?"
 					},
 					"license": {
-						"answer": "Lisensi MIT. Tidak ada edisi berbayar dan tidak ada fitur yang ditahan untuknya: single sign-on, log audit, API, dan MCP semuanya ada di build open source.",
+						"answer": "GNU AGPL-3.0. Anda bisa menggunakan, mengubah, dan meng-hosting Margaya secara gratis. Jika Anda memodifikasinya dan membiarkan orang lain menggunakannya melalui jaringan, Anda memublikasikan perubahan Anda di bawah lisensi yang sama. Untuk menggunakan Margaya tanpa ketentuan tersebut, misalnya untuk merahasiakan perubahan Anda atau menyematkannya ke dalam produk tertutup, Anda bisa mendapatkan lisensi komersial. Single sign-on, log audit, API, dan MCP semuanya ada di build open source.",
 						"question": "Margaya menggunakan lisensi apa?"
 					},
 					"redis": {
@@ -6546,10 +6547,10 @@
 				"title": "Pertanyaan, dijawab dengan lugas"
 			},
 			"finalCta": {
-				"description": "Mulai di Margaya Cloud dalam semenit, atau jalankan di server Anda sendiri hari ini.",
-				"note": "Uji coba cloud 14 hari, tanpa kartu kredit. Gratis dan berlisensi MIT untuk self-host.",
-				"primary": "Mulai",
-				"secondary": "Hosting Margaya sendiri",
+				"description": "Jalankan Margaya di server Anda sendiri hari ini, gratis dan open source di bawah AGPL-3.0.",
+				"note": "Lisensi komersial tersedia jika Anda perlu menggunakan Margaya tanpa ketentuan AGPL.",
+				"primary": "Instal sendiri",
+				"secondary": "Baca dokumentasi",
 				"title": "Habiskan waktu untuk pekerjaan, bukan untuk alatnya."
 			},
 			"hero": {
@@ -6648,7 +6649,6 @@
 				"label": "Utama",
 				"menu": "Menu",
 				"openMenu": "Buka menu",
-				"pricing": "Harga",
 				"signIn": "Masuk",
 				"explore": "Jelajahi",
 				"featuresIntro": "Enam tur singkat tentang Margaya. Masing-masing punya demo langsung yang bisa Anda coba sendiri.",
@@ -6656,7 +6656,7 @@
 			},
 			"ownIt": {
 				"cta": "Baca panduan instalasi",
-				"description": "Margaya berjalan sebagai satu container aplikasi di samping PostgreSQL. Mulai di satu mesin dan kembangkan saat dibutuhkan, tanpa kunci lisensi atau edisi berbayar.",
+				"description": "Margaya berjalan sebagai satu container aplikasi di samping PostgreSQL. Mulai di satu mesin dan kembangkan saat dibutuhkan, dengan setiap fitur tersedia di build open source.",
 				"eyebrow": "Miliki sepenuhnya",
 				"items": {
 					"audit": {
@@ -6676,8 +6676,8 @@
 						"title": "Helm chart"
 					},
 					"license": {
-						"body": "Setiap fitur, termasuk single sign-on, tersedia di build open source. Tidak ada edisi enterprise.",
-						"title": "Lisensi MIT"
+						"body": "Setiap fitur, termasuk single sign-on, bersifat open source di bawah GNU AGPL-3.0. Lisensi komersial tersedia jika Anda perlu menggunakan Margaya tanpa ketentuan AGPL.",
+						"title": "Lisensi AGPL-3.0"
 					},
 					"redis": {
 						"body": "Tambahkan hanya jika Anda menjalankan beberapa instans API dan ingin pembaruan real-time menjangkau semuanya.",
@@ -6701,27 +6701,6 @@
 					"description": "Poin, ukuran, atau waktu. Aktifkan per proyek, dan siklus serta modul akan menghitungnya untuk Anda.",
 					"title": "Estimasi, jika tim Anda memakainya"
 				}
-			},
-			"pricing": {
-				"cloud": {
-					"body": "Hosting terkelola di UE. $4 per bulan untuk satu orang, $5 per pengguna per bulan untuk tim.",
-					"cta": "Mulai uji coba 14 hari",
-					"name": "Margaya Cloud",
-					"price": "Mulai $4",
-					"suffix": "per bulan"
-				},
-				"compare": "Bandingkan paket",
-				"description": "Build self-hosted memiliki semua fitur. Margaya Cloud adalah produk yang sama, di-hosting di UE dan selalu diperbarui untuk Anda.",
-				"eyebrow": "Harga",
-				"note": "Uji coba tidak memerlukan kartu kredit.",
-				"selfHosted": {
-					"body": "Pengguna dan proyek tanpa batas di server Anda sendiri, dengan semua fitur tersedia.",
-					"cta": "Baca panduan instalasi",
-					"name": "Di-hosting sendiri",
-					"price": "$0",
-					"suffix": "selamanya"
-				},
-				"title": "Gratis jika dijalankan sendiri. Adil jika kami yang menjalankannya untuk Anda."
 			},
 			"publicBoards": {
 				"description": "Bagikan papan secara publik dan kumpulkan permintaan serta suara tanpa perlu membagikan akun.",
@@ -6778,7 +6757,8 @@
 			"footer": {
 				"company": {
 					"github": "GitHub",
-					"licence": "Lisensi MIT",
+					"licence": "Lisensi AGPL-3.0",
+					"commercial": "Lisensi komersial",
 					"privacy": "Privasi",
 					"terms": "Ketentuan",
 					"title": "Perusahaan"
@@ -6786,10 +6766,9 @@
 				"copyright": "© {{year}} Margaya",
 				"label": "Kaki halaman",
 				"mission": "Rencanakan pekerjaan, rilis, dan miliki alat yang Anda gunakan untuk mengerjakannya.",
-				"missionNote": "Margaya adalah open source dengan lisensi MIT. Jalankan di server Anda sendiri, atau mulai di Margaya Cloud.",
+				"missionNote": "Margaya adalah open source di bawah GNU AGPL-3.0. Jalankan di server Anda sendiri, dengan semua fitur.",
 				"product": {
 					"changelog": "Log perubahan",
-					"pricing": "Harga",
 					"roadmap": "Peta jalan",
 					"title": "Produk"
 				},
@@ -6924,12 +6903,12 @@
 			},
 			"selfHost": {
 				"cta": {
-					"description": "Ikuti panduan instalasi, atau biarkan kami meng-hosting-nya untuk Anda.",
+					"description": "Ikuti panduan instalasi dan jalankan Margaya di server Anda sendiri.",
 					"title": "Siap berjalan dalam hitungan menit."
 				},
-				"description": "Satu container aplikasi dan PostgreSQL. Tanpa kunci lisensi, tanpa pembatasan fitur, dan tidak ada yang dikirim kembali kepada kami.",
+				"description": "Satu container aplikasi dan PostgreSQL. Semua fitur sudah termasuk, tanpa pembatasan fitur, dan tidak ada yang dikirim kembali kepada kami.",
 				"eyebrow": "Hosting sendiri",
-				"metaDescription": "Jalankan Margaya di server Anda sendiri dengan Docker Compose atau di Kubernetes dengan Helm. Hanya PostgreSQL, Redis opsional, berlisensi MIT, dengan sampah, log audit, dan ekspor lengkap.",
+				"metaDescription": "Jalankan Margaya di server Anda sendiri dengan Docker Compose atau di Kubernetes dengan Helm. Hanya PostgreSQL, Redis opsional, berlisensi AGPL-3.0, dengan sampah, log audit, dan ekspor lengkap.",
 				"metaTitle": "Self-host Margaya dengan Docker atau Helm",
 				"sections": {
 					"deploy": {
@@ -6953,7 +6932,7 @@
 			},
 			"views": {
 				"cta": {
-					"description": "Semua tampilan sudah termasuk, baik di Cloud maupun self-hosted.",
+					"description": "Semua tampilan sudah termasuk dalam build open source.",
 					"title": "Pilih tata letak yang sesuai dengan pertanyaannya."
 				},
 				"description": "Ganti tata letak tanpa menyalin data. Setiap tampilan menyimpan filter, pengelompokan, dan properti yang ditampilkannya.",
@@ -9331,11 +9310,11 @@
 			"description": "Deskripsi siap pakai. Silakan persingkat jika perlu, tetapi mohon jangan ubah faktanya.",
 			"long": {
 				"label": "Sekitar 150 kata",
-				"text": "Margaya adalah platform manajemen proyek open source yang dibuat untuk tim yang ingin merencanakan dan menyelesaikan pekerjaan tanpa alatnya menjadi pekerjaan tersendiri. Tugas bergerak melalui tampilan papan, daftar, spreadsheet, kalender, dan Gantt dari data yang sama. Siklus, modul, estimasi, dan kotak masuk intake tersedia saat tim membutuhkan perencanaan, dan tidak menghalangi saat tidak dibutuhkan. Tim menulis dokumen bersama di samping tugas mereka, mengumpulkan permintaan di papan publik, dan memantau kemajuan dengan analitik dan log audit. REST API dengan deskripsi OpenAPI, webhook, server MCP, serta integrasi dengan GitHub, Gitea, Slack, Discord, dan lainnya menghubungkan Margaya dengan alat-alat tim lainnya. Antarmukanya tersedia dalam 20 bahasa. Margaya dirilis di bawah lisensi MIT dan berjalan di satu server dengan Docker, atau di Kubernetes dengan Helm; Margaya Cloud menawarkan produk yang sama sebagai layanan terkelola."
+				"text": "Margaya adalah platform manajemen proyek open source yang dibuat untuk tim yang ingin merencanakan dan menyelesaikan pekerjaan tanpa alatnya menjadi pekerjaan tersendiri. Tugas bergerak melalui tampilan papan, daftar, spreadsheet, kalender, dan Gantt dari data yang sama. Siklus, modul, estimasi, dan kotak masuk intake tersedia saat tim membutuhkan perencanaan, dan tidak menghalangi saat tidak dibutuhkan. Tim menulis dokumen bersama di samping tugas mereka, mengumpulkan permintaan di papan publik, dan memantau kemajuan dengan analitik dan log audit. REST API dengan deskripsi OpenAPI, webhook, server MCP, serta integrasi dengan GitHub, Gitea, Slack, Discord, dan lainnya menghubungkan Margaya dengan alat-alat tim lainnya. Antarmukanya tersedia dalam 20 bahasa. Margaya dirilis di bawah GNU AGPL-3.0, dengan lisensi komersial untuk penggunaan tanpa ketentuannya, dan berjalan di satu server dengan Docker, atau di Kubernetes dengan Helm."
 			},
 			"short": {
 				"label": "Sekitar 50 kata",
-				"text": "Margaya adalah platform manajemen proyek open source untuk tim yang menginginkan kepemilikan tugas yang jelas tanpa proses yang berat. Rencanakan pekerjaan di papan, daftar, spreadsheet, kalender, dan diagram Gantt, tulis dokumen di samping tugas, dan hubungkan alat Anda melalui REST API dan MCP. Jalankan sendiri di bawah lisensi MIT, atau gunakan Margaya Cloud."
+				"text": "Margaya adalah platform manajemen proyek open source untuk tim yang menginginkan kepemilikan tugas yang jelas tanpa proses yang berat. Rencanakan pekerjaan di papan, daftar, spreadsheet, kalender, dan diagram Gantt, tulis dokumen di samping tugas, dan hubungkan alat Anda melalui REST API dan MCP. Jalankan di server Anda sendiri, gratis dan open source di bawah GNU AGPL-3.0."
 			},
 			"title": "Teks standar"
 		},
@@ -9396,7 +9375,7 @@
 			},
 			"hosting": {
 				"label": "Hosting",
-				"value": "Di-hosting sendiri dengan Docker atau Helm, atau dikelola di Margaya Cloud"
+				"value": "Di-hosting sendiri dengan Docker atau Helm"
 			},
 			"interfaces": {
 				"label": "Antarmuka",
@@ -9408,7 +9387,7 @@
 			},
 			"licence": {
 				"label": "Lisensi",
-				"value": "MIT, untuk semua fitur"
+				"value": "AGPL-3.0, dengan lisensi komersial tersedia"
 			},
 			"source": {
 				"label": "Kode sumber",
@@ -9483,161 +9462,6 @@
 		},
 		"title": "Kit pers",
 		"downloadPng": "Unduh PNG"
-	},
-	"pricing": {
-		"cta": {
-			"description": "Mulai uji coba Cloud tanpa kartu, atau ikuti panduan instalasi dan jalankan Margaya di perangkat keras Anda sendiri.",
-			"primary": "Mulai uji coba gratis",
-			"secondary": "Baca panduan instalasi",
-			"title": "Pilih cara yang cocok, dan Anda tetap bisa berubah pikiran nanti."
-		},
-		"description": "Versi yang di-hosting sendiri adalah produk lengkap di bawah lisensi MIT, tanpa batas jumlah pengguna dan tanpa paket berbayar. Margaya Cloud adalah perangkat lunak yang sama, di-hosting di UE dan selalu diperbarui untuk Anda.",
-		"eyebrow": "Harga",
-		"faq": {
-			"items": {
-				"cancel": {
-					"answer": "Paket Anda tetap aktif hingga akhir periode yang sudah Anda bayar. Ekspor pekerjaan Anda sebagai CSV, Excel, atau JSON sebelum itu jika ingin menyimpan salinannya.",
-					"question": "Apa yang terjadi jika saya membatalkan?"
-				},
-				"founding": {
-					"answer": "Ruang kerja yang dibuat sebelum paket berbayar diluncurkan tetap mendapat akses gratis setidaknya selama 12 bulan, dan Anda akan diberi tahu enam bulan sebelum ada perubahan.",
-					"question": "Saya mendaftar sebelum ada paket berbayar. Apa yang berubah?"
-				},
-				"payments": {
-					"answer": "Pembayaran diproses melalui Creem, yang bertindak sebagai merchant of record dan menangani pajak penjualan serta PPN jika berlaku. Detail kartu Anda tidak pernah sampai ke Margaya.",
-					"question": "Siapa yang menangani pembayaran dan pajak?"
-				},
-				"seats": {
-					"answer": "Cloud Tim ditagih untuk setiap anggota ruang kerja. Saat seseorang bergabung atau keluar, jumlah kursi pada langganan diperbarui agar sesuai.",
-					"question": "Bagaimana anggota Cloud Tim dihitung?"
-				},
-				"selfHostHelp": {
-					"answer": "Dari pengelola dan komunitas di GitHub, melalui diskusi dan issue. Instalasi, peningkatan versi, dan konfigurasi dibahas dalam dokumentasi.",
-					"question": "Di mana pengguna yang meng-hosting sendiri bisa mendapat bantuan?"
-				},
-				"selfHostLimits": {
-					"answer": "Tidak. Kode yang Anda instal adalah kode yang menjalankan Margaya Cloud, dan semuanya berlisensi MIT. Tidak ada kunci lisensi, batas jumlah pengguna, atau fitur berbayar yang perlu dibuka.",
-					"question": "Apakah versi yang di-hosting sendiri kekurangan sesuatu?"
-				},
-				"trial": {
-					"answer": "Ruang kerja Cloud baru mendapat 14 hari dengan semua fitur, dan Anda tidak perlu kartu untuk memulai. Sebelum masa itu berakhir, pilih paket atau ekspor tugas Anda.",
-					"question": "Bagaimana cara kerja uji coba Cloud?"
-				},
-				"yearly": {
-					"answer": "Ya. Satu tahun seharga sepuluh bulan, jadi kedua paket Cloud mendapat gratis dua bulan jika Anda membayar tahunan.",
-					"question": "Apakah penagihan tahunan lebih murah?"
-				},
-				"ai": {
-					"question": "Apakah AI sudah termasuk?",
-					"answer": "Setiap paket memiliki fitur AI: Tanya AI, mode Bangun, agen, dan bantuan menulis. Fitur ini tetap nonaktif sampai admin mengaktifkannya. Penggunaan AI tidak termasuk dalam harga: Anda menambahkan kunci API sendiri di pengaturan AI ruang kerja, dan penyedia AI menagih Anda secara langsung. Instans yang di-hosting sendiri juga dapat memakai model yang Anda jalankan sendiri, melalui Ollama atau vLLM."
-				}
-			},
-			"title": "Pertanyaan tentang harga"
-		},
-		"interval": {
-			"annual": "Tahunan",
-			"label": "Periode penagihan",
-			"monthly": "Bulanan",
-			"saving": "Gratis 2 bulan"
-		},
-		"metaDescription": "Margaya gratis untuk di-hosting sendiri, selamanya. Margaya Cloud seharga $4 per bulan untuk satu orang atau $5 per anggota per bulan untuk tim, dengan uji coba gratis 14 hari.",
-		"plans": {
-			"personal": {
-				"annualNote": "Setara {{price}} per bulan",
-				"annualPeriod": "per tahun",
-				"cta": "Mulai uji coba 14 hari",
-				"monthlyNote": "Ditagih setiap bulan",
-				"monthlyPeriod": "per bulan",
-				"name": "Cloud Pribadi",
-				"points": {
-					"everything": "Semua fitur versi yang di-hosting sendiri",
-					"help": "Dukungan melalui email",
-					"managed": "Cadangan dan pembaruan diurus untuk Anda",
-					"one": "Satu orang, proyek dan tugas tanpa batas"
-				},
-				"tagline": "Hosting terkelola untuk satu orang"
-			},
-			"selfHosted": {
-				"cta": "Baca panduan instalasi",
-				"name": "Di-hosting sendiri",
-				"note": "Lisensi MIT. Tanpa kunci, tanpa batas pengguna.",
-				"period": "selamanya",
-				"points": {
-					"data": "Database Anda, cadangan Anda, aturan Anda",
-					"deploy": "Docker di satu server, atau Helm di Kubernetes",
-					"everything": "Semua fitur, untuk berapa pun jumlah orangnya",
-					"help": "Bantuan komunitas di GitHub"
-				},
-				"tagline": "Di server yang Anda kelola"
-			},
-			"team": {
-				"annualNote": "Setara {{price}} per anggota per bulan",
-				"annualPeriod": "per anggota, per tahun",
-				"badge": "Untuk tim",
-				"cta": "Mulai uji coba 14 hari",
-				"monthlyNote": "Ditagih setiap bulan untuk setiap anggota ruang kerja",
-				"monthlyPeriod": "per anggota, per bulan",
-				"name": "Cloud Tim",
-				"points": {
-					"help": "Dukungan prioritas melalui email",
-					"managed": "Cadangan dan pembaruan diurus untuk Anda",
-					"people": "Semua orang di ruang kerja, proyek tanpa batas",
-					"roles": "Peran dan izin ruang kerja"
-				},
-				"tagline": "Hosting terkelola untuk seluruh tim"
-			}
-		},
-		"table": {
-			"description": "Fiturnya sama di mana pun. Yang berbeda adalah siapa yang menjalankan server dan ke mana Anda mencari bantuan.",
-			"feature": "Fitur",
-			"groups": {
-				"connect": "Koneksi",
-				"planning": "Perencanaan dan wawasan",
-				"running": "Pengoperasian",
-				"work": "Pekerjaan"
-			},
-			"included": "Termasuk",
-			"notIncluded": "Tidak termasuk",
-			"rows": {
-				"admin": "Pengaturan instans: penyedia login, email, penyimpanan",
-				"analytics": "Analitik dan log audit",
-				"api": "REST API, webhook, dan MCP",
-				"backups": "Cadangan",
-				"cycles": "Siklus, modul, dan estimasi",
-				"docs": "Dokumen yang ditulis bersama, di samping tugas",
-				"export": "Ekspor ke CSV, Excel, atau JSON",
-				"hosting": "Tempat berjalan",
-				"intake": "Kotak masuk intake dan triase",
-				"integrations": "GitHub, Gitea, Slack, Discord, dan lainnya",
-				"jira": "Impor dari Jira",
-				"people": "Orang",
-				"projects": "Proyek dan tugas",
-				"publicBoards": "Papan publik dengan voting",
-				"roles": "Peran dan izin ruang kerja",
-				"support": "Dukungan",
-				"updates": "Pembaruan",
-				"views": "Tampilan papan, daftar, spreadsheet, kalender, dan Gantt",
-				"ai": "AI: Tanya AI, mode Bangun, dan agen"
-			},
-			"title": "Bandingkan paket",
-			"values": {
-				"automatic": "Otomatis",
-				"community": "Komunitas di GitHub",
-				"email": "Email",
-				"eu": "Pusat data di UE",
-				"notNeeded": "Tidak diperlukan untuk satu orang",
-				"one": "Hanya Anda",
-				"perMember": "Tanpa batas, ditagih per anggota",
-				"priorityEmail": "Email prioritas",
-				"unlimited": "Tanpa batas",
-				"yours": "Anda yang menjalankannya",
-				"yourSchedule": "Kapan pun Anda pilih",
-				"yourServers": "Server Anda",
-				"ownKey": "Kunci atau model AI Anda sendiri"
-			}
-		},
-		"title": "Satu produk. Dua cara menjalankannya.",
-		"trialNote": "Paket Cloud dimulai dengan uji coba 14 hari. Tidak perlu kartu untuk memulai."
 	},
 	"templates": {
 		"form": {
