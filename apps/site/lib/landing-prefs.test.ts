@@ -16,7 +16,7 @@ import { THEME_STORAGE_KEY, themeScript } from "./landing-theme";
 function stubBrowser({
   languages = ["en-US"],
   dark = false,
-  bundle = { home: { nav: { pricing: "Preise" } } },
+  bundle = { home: { nav: { getStarted: "Loslegen" } } },
 }: {
   languages?: string[];
   dark?: boolean;
@@ -68,7 +68,7 @@ describe("site landing preferences", () => {
     expect(fetchMock).toHaveBeenCalledWith("/landing-copy/de-DE.json");
     const state = getLocaleState();
     expect(state.locale).toBe("de-DE");
-    expect(state.copy.home.nav.pricing).toBe("Preise");
+    expect(state.copy.home.nav.getStarted).toBe("Loslegen");
     // Untranslated keys fall back to English.
     expect(state.copy.home.nav.docs).toBe("Docs");
     expect(localStorage.getItem(LOCALE_STORAGE_KEY)).toBeNull();

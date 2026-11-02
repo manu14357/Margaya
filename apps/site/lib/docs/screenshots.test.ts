@@ -63,8 +63,11 @@ describe("<Screenshot>", () => {
 });
 
 // The quick check for docs authors: every page renders, and every screenshot
-// it names exists on disk.
-describe("docs pages", () => {
+// it names exists on disk. Rendering all ~600 pages takes about a second on an
+// idle machine but is CPU-bound, so a busy one can pass the default 5 s.
+const ALL_PAGES_TIMEOUT_MS = 30_000;
+
+describe("docs pages", { timeout: ALL_PAGES_TIMEOUT_MS }, () => {
   it("render, with every screenshot present", () => {
     const shots = readDocsShotManifest();
     for (const page of getAllDocPages()) {
