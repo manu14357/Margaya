@@ -3,6 +3,7 @@ import { isBillingEnabled } from "../billing/config";
 import { configFieldsOf } from "../instance-settings/effective-config";
 import { getInstanceSettings } from "../instance-settings/snapshot";
 import { exportRetentionDays } from "../task-export/settings";
+import { sourceCodeUrl } from "./source-code-url";
 
 config();
 
@@ -35,6 +36,7 @@ function getSettings() {
     publicLandingEnabled: fields.publicLandingEnabled,
     passwordSignUpForInvitations: fields.passwordSignUpForInvitations,
     requiredSignInProvider: fields.requiredSignInProvider,
+    sourceCodeUrl: sourceCodeUrl(),
   };
 }
 

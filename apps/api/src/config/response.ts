@@ -51,5 +51,10 @@ export const configSchema = z
         description:
           "Everyone signs in through this provider; instance admins keep password sign-in. Null when there is no requirement.",
       }),
+    sourceCodeUrl: z.string().openapi({
+      description:
+        "Where people using this instance can get its source code, as the AGPL-3.0 requires: MARGAYA_SOURCE_URL, or the official repository.",
+      example: "https://github.com/manu14357/Margaya",
+    }),
   })
   .openapi("Config");
