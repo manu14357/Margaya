@@ -71,15 +71,15 @@ For a public deployment, expose MinIO on its own hostname through your reverse p
 
 Example:
 
-- Margaya: `https://cloud.margaya.app`
-- MinIO: `https://files.cloud.margaya.app`
+- Margaya: `https://margaya.example.com`
+- MinIO: `https://files.margaya.example.com`
 
 This can be done with Caddy, Nginx, Traefik, or any other reverse proxy.
 
 Then use:
 
 ```env
-S3_ENDPOINT=https://files.cloud.margaya.app
+S3_ENDPOINT=https://files.margaya.example.com
 S3_BUCKET=margaya-uploads
 S3_ACCESS_KEY_ID=margaya
 S3_SECRET_ACCESS_KEY=<generate-a-strong-random-secret>
@@ -145,7 +145,7 @@ Recommended S3 CORS policy:
   {
     "AllowedHeaders": ["*"],
     "AllowedMethods": ["GET", "PUT", "HEAD"],
-    "AllowedOrigins": ["https://cloud.margaya.app"],
+    "AllowedOrigins": ["https://margaya.example.com"],
     "ExposeHeaders": ["ETag"]
   }
 ]
@@ -218,13 +218,13 @@ volumes:
 Matching `.env`:
 
 ```env
-MARGAYA_CLIENT_URL=https://cloud.margaya.app
-MARGAYA_API_URL=https://cloud.margaya.app/api
+MARGAYA_CLIENT_URL=https://margaya.example.com
+MARGAYA_API_URL=https://margaya.example.com/api
 
 MINIO_ROOT_USER=<generate-a-unique-admin-user>
 MINIO_ROOT_PASSWORD=<generate-a-strong-random-secret>
 
-S3_ENDPOINT=https://files.cloud.margaya.app
+S3_ENDPOINT=https://files.margaya.example.com
 S3_BUCKET=margaya-uploads
 S3_ACCESS_KEY_ID=<generate-a-unique-admin-user>
 S3_SECRET_ACCESS_KEY=<generate-a-strong-random-secret>
@@ -236,7 +236,7 @@ Before testing uploads:
 
 1. Create the `margaya-uploads` bucket.
 2. Configure MinIO CORS for your Margaya origin.
-3. Make sure `files.cloud.margaya.app` resolves publicly.
+3. Make sure `files.margaya.example.com` resolves publicly.
 
 ## Bucket lifecycle rules
 

@@ -153,6 +153,10 @@
 						]
 					},
 					{
+						"group": "Platform",
+						"pages": ["platform/licensing"]
+					},
+					{
 						"group": "GitHub Integration",
 						"pages": [
 							"core/integrations/github/setup",

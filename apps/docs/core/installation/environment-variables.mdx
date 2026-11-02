@@ -76,6 +76,12 @@ Name | Description | Default |
 --- | --- | --- |
 | `MARGAYA_PUBLIC_SITE_URL` | The public website the web app links to, such as its landing links, the Help menu and the webhook signature guide. The documentation is expected at this URL plus `/docs`. Set it on the web container (or the combined Margaya container) when you host the site yourself, for example with the `site` service in `compose.local.yml`. Unset, invalid or non-HTTP(S) values use the default. | `https://margaya.app` |
 
+### Source code (AGPL)
+
+Name | Description | Default |
+--- | --- | --- |
+| `MARGAYA_SOURCE_URL` | Where people using your instance can get its source code; the Help menu's **Source code** link opens it. Margaya is licensed under the AGPL-3.0: if you run a changed version for others over a network, point this at a public repository with your changes (or get a commercial licence; see [Licensing](/platform/licensing)). Set it on the API. Unset, invalid or non-HTTP(S) values use the default. | `https://github.com/manu14357/Margaya` |
+
 ### MCP
 
 Name | Description | Default |
