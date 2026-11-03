@@ -3448,6 +3448,7 @@
 			"unreadAria_other": "{{count}} oxunmamış",
 			"unreadOnly": "Yalnız oxunmamışlar",
 			"whatsNew": "Yeniliklər",
+			"sourceCode": "Mənbə kodu",
 			"workspaceAnalytics": "İş sahəsi"
 		}
 	},
@@ -6570,7 +6571,7 @@
 					"title": "20 dil"
 				},
 				"openSource": {
-					"detail": "MIT lisenziyası",
+					"detail": "AGPL-3.0 lisenziyası",
 					"title": "Açıq mənbə"
 				},
 				"selfHosted": {
@@ -6594,11 +6595,11 @@
 						"question": "API varmı və o, AI agentləri ilə işləyirmi?"
 					},
 					"cost": {
-						"answer": "Öz serverinizdə işlətmək pulsuzdur. Margaya Cloud bir nəfər üçün ayda $4, komandalar üçün istifadəçi başına ayda $5 təşkil edir; kredit kartı tələb etməyən 14 günlük sınaq da var.",
+						"answer": "Margaya-nı AGPL-3.0 ilə öz serverinizdə işlətmək pulsuzdur və bütün imkanlar daxildir. Ondan AGPL şərtləri olmadan, məsələn, dəyişikliklərini gizli saxlamaqla istifadə etməli olan bizneslər kommersiya lisenziyası ala bilər.",
 						"question": "Bu neçəyə başa gəlir?"
 					},
 					"data": {
-						"answer": "Sizə. Öz serverinizdə heç nə infrastrukturunuzdan kənara çıxmır və biz oradan heç bir data almırıq. Margaya Cloud-da iş sahəniz AB-də saxlanılır və tapşırıqları istənilən vaxt CSV, Excel və ya JSON formatına ixrac edə, ya da hesabınızı silə bilərsiniz.",
+						"answer": "Sizə. Margaya yalnız öz serverinizdə işləyir, ona görə heç nə infrastrukturunuzdan kənara çıxmır və biz oradan heç bir data almırıq. Tapşırıqları istənilən vaxt CSV, Excel və ya JSON formatına ixrac edə bilərsiniz.",
 						"question": "Datam kimə məxsusdur?"
 					},
 					"jira": {
@@ -6610,7 +6611,7 @@
 						"question": "Tətbiq hansı dilləri dəstəkləyir?"
 					},
 					"license": {
-						"answer": "MIT lisenziyası ilə. Ödənişli versiya və onun üçün saxlanılan imkan yoxdur: vahid giriş (SSO), audit jurnalı, API və MCP hamısı açıq mənbəli versiyadadır.",
+						"answer": "GNU AGPL-3.0 ilə. Margaya-dan pulsuz istifadə edə, onu dəyişə və öz serverinizdə yerləşdirə bilərsiniz. Onu dəyişib insanların şəbəkə üzərindən istifadəsinə versəniz, dəyişikliklərinizi eyni lisenziya ilə dərc edirsiniz. Margaya-dan bu şərtlər olmadan istifadə etmək üçün, məsələn, dəyişikliklərinizi gizli saxlamaq və ya onu qapalı məhsula daxil etmək üçün kommersiya lisenziyası əldə edə bilərsiniz. Vahid giriş (SSO), audit jurnalı, API və MCP hamısı açıq mənbəli versiyadadır.",
 						"question": "Margaya hansı lisenziya ilə yayılır?"
 					},
 					"redis": {
@@ -6633,10 +6634,10 @@
 				"title": "Suallar və aydın cavablar"
 			},
 			"finalCta": {
-				"description": "Margaya Cloud-da bir dəqiqəyə başlayın və ya bu gün öz serverinizdə işə salın.",
-				"note": "Kredit kartı olmadan 14 günlük bulud sınağı. Öz serverinizdə pulsuz və MIT lisenziyalı.",
-				"primary": "Başlayın",
-				"secondary": "Margaya-nı öz serverinizdə qurun",
+				"description": "Margaya-nı bu gün öz serverinizdə işlədin, AGPL-3.0 ilə pulsuz və açıq mənbəli.",
+				"note": "Margaya-dan AGPL şərtləri olmadan istifadə etməli olsanız, kommersiya lisenziyası mövcuddur.",
+				"primary": "Özünüz quraşdırın",
+				"secondary": "Sənədləri oxuyun",
 				"title": "Vaxtınızı alətə yox, işə sərf edin."
 			},
 			"hero": {
@@ -6735,7 +6736,6 @@
 				"label": "Əsas",
 				"menu": "Menyu",
 				"openMenu": "Menyunu aç",
-				"pricing": "Qiymətlər",
 				"signIn": "Daxil ol",
 				"explore": "Kəşf et",
 				"featuresIntro": "Margaya üzrə altı qısa tur. Hər birində idarəsini öz üzərinizə götürə biləcəyiniz canlı demo var.",
@@ -6743,7 +6743,7 @@
 			},
 			"ownIt": {
 				"cta": "Quraşdırma təlimatını oxuyun",
-				"description": "Margaya PostgreSQL-in yanında tək tətbiq konteyneri kimi işləyir. Bir maşında başlayın və ehtiyac olanda böyüyün, lisenziya açarı və ya ödənişli versiya olmadan.",
+				"description": "Margaya PostgreSQL-in yanında tək tətbiq konteyneri kimi işləyir. Bir maşında başlayın və ehtiyac olanda böyüyün; bütün imkanlar açıq mənbəli versiyadadır.",
 				"eyebrow": "Sizə məxsusdur",
 				"items": {
 					"audit": {
@@ -6763,8 +6763,8 @@
 						"title": "Helm chart"
 					},
 					"license": {
-						"body": "Vahid giriş (SSO) daxil olmaqla hər imkan açıq mənbəli versiyada gəlir. Enterprise versiyası yoxdur.",
-						"title": "MIT lisenziyası"
+						"body": "Vahid giriş (SSO) daxil olmaqla hər imkan GNU AGPL-3.0 ilə açıq mənbəlidir. Margaya-dan AGPL şərtləri olmadan istifadə etməli olsanız, kommersiya lisenziyası mövcuddur.",
+						"title": "AGPL-3.0 lisenziyası"
 					},
 					"redis": {
 						"body": "Onu yalnız bir neçə API nüsxəsi işlətdikdə və real vaxt yeniliklərinin hamısına çatmasını istədikdə əlavə edin.",
@@ -6788,27 +6788,6 @@
 					"description": "Xallar, ölçülər və ya vaxt. Onları layihə üzrə aktivləşdirin, dövrlər və modullar sizin əvəzinizə hesablasın.",
 					"title": "Qiymətləndirmələr, komandanız istifadə edirsə"
 				}
-			},
-			"pricing": {
-				"cloud": {
-					"body": "AB-də idarə olunan hostinq. Bir nəfər üçün ayda $4, komandalar üçün istifadəçi başına ayda $5.",
-					"cta": "14 günlük sınağa başlayın",
-					"name": "Margaya Cloud",
-					"price": "$4-dan",
-					"suffix": "aylıq"
-				},
-				"compare": "Planları müqayisə edin",
-				"description": "Öz serverinizdə işləyən versiyada bütün imkanlar var. Margaya Cloud eyni məhsuldur, AB-də yerləşdirilir və sizin üçün daim yenilənir.",
-				"eyebrow": "Qiymətlər",
-				"note": "Sınaq üçün kredit kartı tələb olunmur.",
-				"selfHosted": {
-					"body": "Öz serverlərinizdə limitsiz istifadəçi və layihə, bütün imkanlar daxil olmaqla.",
-					"cta": "Quraşdırma təlimatını oxuyun",
-					"name": "Öz serverinizdə",
-					"price": "$0",
-					"suffix": "həmişəlik"
-				},
-				"title": "Özünüz işlədəndə pulsuz. Biz işlədəndə ədalətli."
 			},
 			"publicBoards": {
 				"description": "Lövhəni ictimai paylaşın, hesab vermədən sorğu və səslər toplayın.",
@@ -6865,7 +6844,8 @@
 			"footer": {
 				"company": {
 					"github": "GitHub",
-					"licence": "MIT lisenziyası",
+					"licence": "AGPL-3.0 lisenziyası",
+					"commercial": "Kommersiya lisenziyası",
 					"privacy": "Məxfilik",
 					"terms": "Şərtlər",
 					"title": "Şirkət"
@@ -6873,10 +6853,9 @@
 				"copyright": "© {{year}} Margaya",
 				"label": "Səhifənin altlığı",
 				"mission": "İşi planlayın, təhvil verin və bunu etdiyiniz alətin sahibi olun.",
-				"missionNote": "Margaya MIT lisenziyası ilə açıq mənbəlidir. Öz serverinizdə işlədin və ya Margaya Cloud-da başlayın.",
+				"missionNote": "Margaya GNU AGPL-3.0 ilə açıq mənbəlidir. Onu bütün imkanları ilə öz serverinizdə işlədin.",
 				"product": {
 					"changelog": "Dəyişikliklər jurnalı",
-					"pricing": "Qiymətlər",
 					"roadmap": "Yol xəritəsi",
 					"title": "Məhsul"
 				},
@@ -7011,12 +6990,12 @@
 			},
 			"selfHost": {
 				"cta": {
-					"description": "Quraşdırma təlimatına əməl edin və ya hostinqi bizə həvalə edin.",
+					"description": "Quraşdırma təlimatına əməl edin və Margaya-nı öz serverinizdə işlədin.",
 					"title": "Bir neçə dəqiqəyə işə salın."
 				},
-				"description": "Bir tətbiq konteyneri və PostgreSQL. Lisenziya açarı yoxdur, kilidli imkan yoxdur və bizə heç nə göndərilmir.",
+				"description": "Bir tətbiq konteyneri və PostgreSQL. Bütün imkanlar daxildir, kilidli imkan yoxdur və bizə heç nə göndərilmir.",
 				"eyebrow": "Öz serverinizdə",
-				"metaDescription": "Margaya-nı öz serverinizdə Docker Compose ilə və ya Helm ilə Kubernetes-də işlədin. Yalnız PostgreSQL, Redis istəyə bağlı, MIT lisenziyalı; zibil qutusu, audit jurnalı və tam ixraclarla.",
+				"metaDescription": "Margaya-nı öz serverinizdə Docker Compose ilə və ya Helm ilə Kubernetes-də işlədin. Yalnız PostgreSQL, Redis istəyə bağlı, AGPL-3.0 lisenziyalı; zibil qutusu, audit jurnalı və tam ixraclarla.",
 				"metaTitle": "Margaya-nı Docker və ya Helm ilə öz serverinizdə qurun",
 				"sections": {
 					"deploy": {
@@ -7040,7 +7019,7 @@
 			},
 			"views": {
 				"cta": {
-					"description": "Bütün görünüşlər həm Cloud-da, həm də öz serverinizdə daxildir.",
+					"description": "Bütün görünüşlər açıq mənbəli versiyaya daxildir.",
 					"title": "Suala uyğun düzülüşü seçin."
 				},
 				"description": "Datanı kopyalamadan düzülüşü dəyişin. Hər görünüş öz filtrlərini, qruplaşdırmasını və görünən xüsusiyyətlərini saxlayır.",
@@ -9453,11 +9432,11 @@
 			"description": "Hazır təsvirlər. Lazım olsa qısaldın, amma faktları olduğu kimi saxlayın.",
 			"long": {
 				"label": "Təxminən 150 söz",
-				"text": "Margaya işi planlaşdırıb təhvil vermək istəyən, lakin alətin özünün ayrıca işə çevrilməsini istəməyən komandalar üçün yaradılmış açıq mənbəli layihə idarəetmə platformasıdır. Tapşırıqlar eyni məlumatların lövhə, siyahı, cədvəl, təqvim və Qant görünüşlərində irəliləyir. Dövrlər, modullar, qiymətləndirmələr və qəbul qutusu komandaya planlaşdırma lazım olanda yanındadır, lazım olmayanda isə mane olmur. Komandalar tapşırıqlarının yanında birlikdə sənəd yazır, ictimai lövhələrdə sorğular toplayır və irəliləyişi analitika və audit jurnalı ilə izləyir. OpenAPI təsviri olan REST API, webhook-lar, MCP serveri və GitHub, Gitea, Slack, Discord və digərləri ilə inteqrasiyalar Margaya-nı komandanın digər alətləri ilə birləşdirir. İnterfeys 20 dildə mövcuddur. Margaya MIT lisenziyası ilə yayımlanır və Docker ilə tək serverdə və ya Helm ilə Kubernetes-də işləyir; Margaya Cloud eyni məhsulu idarə olunan xidmət kimi təqdim edir."
+				"text": "Margaya işi planlaşdırıb təhvil vermək istəyən, lakin alətin özünün ayrıca işə çevrilməsini istəməyən komandalar üçün yaradılmış açıq mənbəli layihə idarəetmə platformasıdır. Tapşırıqlar eyni məlumatların lövhə, siyahı, cədvəl, təqvim və Qant görünüşlərində irəliləyir. Dövrlər, modullar, qiymətləndirmələr və qəbul qutusu komandaya planlaşdırma lazım olanda yanındadır, lazım olmayanda isə mane olmur. Komandalar tapşırıqlarının yanında birlikdə sənəd yazır, ictimai lövhələrdə sorğular toplayır və irəliləyişi analitika və audit jurnalı ilə izləyir. OpenAPI təsviri olan REST API, webhook-lar, MCP serveri və GitHub, Gitea, Slack, Discord və digərləri ilə inteqrasiyalar Margaya-nı komandanın digər alətləri ilə birləşdirir. İnterfeys 20 dildə mövcuddur. Margaya GNU AGPL-3.0 ilə yayımlanır (onun şərtləri olmadan istifadə üçün kommersiya lisenziyası da təklif olunur) və Docker ilə tək serverdə və ya Helm ilə Kubernetes-də işləyir."
 			},
 			"short": {
 				"label": "Təxminən 50 söz",
-				"text": "Margaya ağır proseslər olmadan aydın məsuliyyət bölgüsü istəyən komandalar üçün açıq mənbəli layihə idarəetmə platformasıdır. Komandalar işi lövhələrdə, siyahılarda, cədvəllərdə, təqvimlərdə və Qant diaqramlarında planlaşdırır, sənədləri tapşırıqların yanında yazır və alətlərini REST API və MCP vasitəsilə qoşur. Margaya-nı MIT lisenziyası ilə özünüz işlədə və ya Margaya Cloud-dan istifadə edə bilərsiniz."
+				"text": "Margaya ağır proseslər olmadan aydın məsuliyyət bölgüsü istəyən komandalar üçün açıq mənbəli layihə idarəetmə platformasıdır. Komandalar işi lövhələrdə, siyahılarda, cədvəllərdə, təqvimlərdə və Qant diaqramlarında planlaşdırır, sənədləri tapşırıqların yanında yazır və alətlərini REST API və MCP vasitəsilə qoşur. Margaya-nı GNU AGPL-3.0 ilə pulsuz və açıq mənbəli olaraq öz serverinizdə işlədə bilərsiniz."
 			},
 			"title": "Hazır mətnlər"
 		},
@@ -9518,7 +9497,7 @@
 			},
 			"hosting": {
 				"label": "Hostinq",
-				"value": "Docker və ya Helm ilə öz serverinizdə, ya da Margaya Cloud-da idarə olunan xidmət kimi"
+				"value": "Docker və ya Helm ilə öz serverinizdə"
 			},
 			"interfaces": {
 				"label": "İnterfeyslər",
@@ -9530,7 +9509,7 @@
 			},
 			"licence": {
 				"label": "Lisenziya",
-				"value": "MIT, bütün imkanlar üçün"
+				"value": "AGPL-3.0, kommersiya lisenziyası da mövcuddur"
 			},
 			"source": {
 				"label": "Mənbə kodu",
@@ -9605,161 +9584,6 @@
 		},
 		"title": "Mətbuat dəsti",
 		"downloadPng": "PNG yüklə"
-	},
-	"pricing": {
-		"cta": {
-			"description": "Kartsız Cloud sınağına başlayın və ya quraşdırma təlimatına əməl edib Margaya-nı öz avadanlığınızda işlədin.",
-			"primary": "Pulsuz sınağa başlayın",
-			"secondary": "Quraşdırma təlimatını oxuyun",
-			"title": "Sizə uyğun yolu seçin, fikrinizi isə sonra da dəyişə bilərsiniz."
-		},
-		"description": "Öz serverinizdə işləyən versiya MIT lisenziyası altında tam məhsuldur: nə yer limiti, nə də ödənişli səviyyə var. Margaya Cloud eyni proqramdır, AB-də yerləşdirilir və sizin üçün daim yenilənir.",
-		"eyebrow": "Qiymətlər",
-		"faq": {
-			"items": {
-				"cancel": {
-					"answer": "Planınız ödədiyiniz dövrün sonuna qədər aktiv qalır. Surətini saxlamaq istəyirsinizsə, o vaxta qədər işinizi CSV, Excel və ya JSON formatına ixrac edin.",
-					"question": "Ləğv etsəm nə olur?"
-				},
-				"founding": {
-					"answer": "Ödənişli planlar istifadəyə verilməzdən əvvəl yaradılmış iş sahələri ən azı 12 ay pulsuz giriş saxlayır və hər hansı dəyişiklikdən altı ay əvvəl sizə xəbər veriləcək.",
-					"question": "Ödənişli planlar yaranmamışdan əvvəl qeydiyyatdan keçmişəm. Nə dəyişir?"
-				},
-				"payments": {
-					"answer": "Ödənişlər Creem vasitəsilə keçir. Creem rəsmi satıcı (merchant of record) kimi çıxış edir və tətbiq olunduğu yerlərdə satış vergisi və ƏDV ilə məşğul olur. Kart məlumatlarınız heç vaxt Margaya-ya çatmır.",
-					"question": "Ödənişlər və vergilərlə kim məşğul olur?"
-				},
-				"seats": {
-					"answer": "Cloud Komanda iş sahəsinin hər üzvü üçün ödənilir. Kimsə qoşulanda və ya ayrılanda abunədəki yer sayı buna uyğun yenilənir.",
-					"question": "Cloud Komanda planında üzvlər necə hesablanır?"
-				},
-				"selfHostHelp": {
-					"answer": "GitHub-da layihə komandasından və icmadan, müzakirələr və issue-lar vasitəsilə. Quraşdırma, yeniləmələr və konfiqurasiya sənədlərdə izah olunur.",
-					"question": "Öz serverində işlədənlər köməyi haradan alır?"
-				},
-				"selfHostLimits": {
-					"answer": "Xeyr. Quraşdırdığınız kod Margaya Cloud-u işlədən kodun eynisidir və hamısı MIT lisenziyalıdır. Lisenziya açarları, yer limitləri və ya kilidi açılmalı ödənişli imkanlar yoxdur.",
-					"question": "Öz serverinizdəki versiyada nəsə çatışmır?"
-				},
-				"trial": {
-					"answer": "Yeni Cloud iş sahəsi hər şey daxil olmaqla 14 gün alır və başlamaq üçün karta ehtiyacınız yoxdur. Sınaq bitməzdən əvvəl bir plan seçin və ya tapşırıqlarınızı ixrac edin.",
-					"question": "Cloud sınağı necə işləyir?"
-				},
-				"yearly": {
-					"answer": "Bəli. Bir il on ayın qiymətinə başa gəlir, buna görə illik ödədikdə hər iki Cloud planında iki ay pulsuz olur.",
-					"question": "İllik ödəniş daha ucuzdur?"
-				},
-				"ai": {
-					"question": "Sİ daxildirmi?",
-					"answer": "Bütün planlarda Sİ funksiyaları var: Sİ-dən soruş, Qur rejimi, agentlər və yazı köməyi. Admin yandırana qədər onlar söndürülü qalır. Sİ istifadəsi qiymətə daxil deyil: iş sahəsinin Sİ ayarlarında öz API açarınızı əlavə edirsiniz və Sİ provayderi hesabı birbaşa sizə göndərir. Öz serverinizdəki quraşdırmalar Ollama və ya vLLM vasitəsilə öz işlətdiyiniz modeldən də istifadə edə bilər."
-				}
-			},
-			"title": "Qiymətlər haqqında suallar"
-		},
-		"interval": {
-			"annual": "İllik",
-			"label": "Ödəniş dövrü",
-			"monthly": "Aylıq",
-			"saving": "2 ay pulsuz"
-		},
-		"metaDescription": "Margaya-nı öz serverinizdə işlətmək həmişəlik pulsuzdur. Margaya Cloud bir nəfər üçün ayda $4, komandalar üçün isə üzv başına ayda $5 təşkil edir; 14 günlük pulsuz sınaq da var.",
-		"plans": {
-			"personal": {
-				"annualNote": "Ayda {{price}} edir",
-				"annualPeriod": "illik",
-				"cta": "14 günlük sınağa başlayın",
-				"monthlyNote": "Hər ay ödənilir",
-				"monthlyPeriod": "aylıq",
-				"name": "Cloud Şəxsi",
-				"points": {
-					"everything": "Öz serverinizdəki versiyanın bütün imkanları",
-					"help": "E-poçt ilə dəstək",
-					"managed": "Ehtiyat nüsxələr və yeniləmələr bizim üzərimizdə",
-					"one": "Bir nəfər, limitsiz layihə və tapşırıq"
-				},
-				"tagline": "Bir nəfər üçün idarə olunan hostinq"
-			},
-			"selfHosted": {
-				"cta": "Quraşdırma təlimatını oxuyun",
-				"name": "Öz serverinizdə",
-				"note": "MIT lisenziyası. Nə açar, nə də yer limiti var.",
-				"period": "həmişəlik",
-				"points": {
-					"data": "Sizin verilənlər bazanız, sizin ehtiyat nüsxələriniz, sizin qaydalarınız",
-					"deploy": "Bir serverdə Docker və ya Kubernetes-də Helm",
-					"everything": "Bütün imkanlar, istədiyiniz qədər insan üçün",
-					"help": "GitHub-da icma dəstəyi"
-				},
-				"tagline": "Özünüzün idarə etdiyi serverlərdə"
-			},
-			"team": {
-				"annualNote": "Üzv başına ayda {{price}} edir",
-				"annualPeriod": "üzv başına, illik",
-				"badge": "Komandalar üçün",
-				"cta": "14 günlük sınağa başlayın",
-				"monthlyNote": "Hər iş sahəsi üzvü üçün hər ay ödənilir",
-				"monthlyPeriod": "üzv başına, aylıq",
-				"name": "Cloud Komanda",
-				"points": {
-					"help": "E-poçt ilə prioritet dəstək",
-					"managed": "Ehtiyat nüsxələr və yeniləmələr bizim üzərimizdə",
-					"people": "İş sahəsindəki hər kəs, limitsiz layihə",
-					"roles": "İş sahəsinin rolları və icazələri"
-				},
-				"tagline": "Bütöv komanda üçün idarə olunan hostinq"
-			}
-		},
-		"table": {
-			"description": "İmkanlar hər yerdə eynidir. Dəyişən yalnız serverləri kimin işlətməsi və köməyə hara müraciət etməyinizdir.",
-			"feature": "İmkan",
-			"groups": {
-				"connect": "Qoşulma",
-				"planning": "Planlaşdırma və təhlil",
-				"running": "İstismar",
-				"work": "İş"
-			},
-			"included": "Daxildir",
-			"notIncluded": "Daxil deyil",
-			"rows": {
-				"admin": "Quraşdırma parametrləri: giriş provayderləri, e-poçt, yaddaş",
-				"analytics": "Analitika və audit jurnalı",
-				"api": "REST API, webhook-lar və MCP",
-				"backups": "Ehtiyat nüsxələr",
-				"cycles": "Dövrlər, modullar və qiymətləndirmələr",
-				"docs": "Tapşırıqların yanında birlikdə yazılan sənədlər",
-				"export": "CSV, Excel və ya JSON formatına ixrac",
-				"hosting": "Harada işləyir",
-				"intake": "Qəbul qutusu və çeşidləmə",
-				"integrations": "GitHub, Gitea, Slack, Discord və digərləri",
-				"jira": "Jira-dan idxal",
-				"people": "İnsanlar",
-				"projects": "Layihələr və tapşırıqlar",
-				"publicBoards": "Səsverməli ictimai lövhələr",
-				"roles": "İş sahəsinin rolları və icazələri",
-				"support": "Dəstək",
-				"updates": "Yeniləmələr",
-				"views": "Lövhə, siyahı, cədvəl, təqvim və Qant görünüşləri",
-				"ai": "Sİ: Sİ-dən soruş, Qur rejimi və agentlər"
-			},
-			"title": "Planları müqayisə edin",
-			"values": {
-				"automatic": "Avtomatik",
-				"community": "GitHub-da icma",
-				"email": "E-poçt",
-				"eu": "AB-dəki data mərkəzləri",
-				"notNeeded": "Bir nəfər üçün lazım deyil",
-				"one": "Yalnız siz",
-				"perMember": "Limitsiz, üzv başına ödəniş",
-				"priorityEmail": "Prioritet e-poçt",
-				"unlimited": "Limitsiz",
-				"yours": "Özünüz idarə edirsiniz",
-				"yourSchedule": "Siz seçəndə",
-				"yourServers": "Sizin serverləriniz",
-				"ownKey": "Öz Sİ açarınız və ya modeliniz"
-			}
-		},
-		"title": "Bir məhsul. İşlətməyin iki yolu.",
-		"trialNote": "Cloud planları 14 günlük sınaqla başlayır. Başlamaq üçün kart tələb olunmur."
 	},
 	"templates": {
 		"form": {

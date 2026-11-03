@@ -14110,6 +14110,9 @@
 						"whatsNew": {
 							"type": "string"
 						},
+						"sourceCode": {
+							"type": "string"
+						},
 						"recent": {
 							"type": "string"
 						},
@@ -14159,6 +14162,7 @@
 						"newWorkspace",
 						"documentation",
 						"whatsNew",
+						"sourceCode",
 						"recent",
 						"noRecent",
 						"filterProjects",
@@ -23801,579 +23805,6 @@
 				"contact"
 			]
 		},
-		"pricing": {
-			"type": "object",
-			"additionalProperties": false,
-			"properties": {
-				"metaDescription": {
-					"type": "string"
-				},
-				"eyebrow": {
-					"type": "string"
-				},
-				"title": {
-					"type": "string"
-				},
-				"description": {
-					"type": "string"
-				},
-				"interval": {
-					"type": "object",
-					"additionalProperties": false,
-					"properties": {
-						"label": {
-							"type": "string"
-						},
-						"monthly": {
-							"type": "string"
-						},
-						"annual": {
-							"type": "string"
-						},
-						"saving": {
-							"type": "string"
-						}
-					},
-					"required": ["label", "monthly", "annual", "saving"]
-				},
-				"trialNote": {
-					"type": "string"
-				},
-				"plans": {
-					"type": "object",
-					"additionalProperties": false,
-					"properties": {
-						"selfHosted": {
-							"type": "object",
-							"additionalProperties": false,
-							"properties": {
-								"name": {
-									"type": "string"
-								},
-								"tagline": {
-									"type": "string"
-								},
-								"period": {
-									"type": "string"
-								},
-								"note": {
-									"type": "string"
-								},
-								"cta": {
-									"type": "string"
-								},
-								"points": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"everything": {
-											"type": "string"
-										},
-										"data": {
-											"type": "string"
-										},
-										"deploy": {
-											"type": "string"
-										},
-										"help": {
-											"type": "string"
-										}
-									},
-									"required": ["everything", "data", "deploy", "help"]
-								}
-							},
-							"required": ["name", "tagline", "period", "note", "cta", "points"]
-						},
-						"personal": {
-							"type": "object",
-							"additionalProperties": false,
-							"properties": {
-								"name": {
-									"type": "string"
-								},
-								"tagline": {
-									"type": "string"
-								},
-								"monthlyPeriod": {
-									"type": "string"
-								},
-								"annualPeriod": {
-									"type": "string"
-								},
-								"monthlyNote": {
-									"type": "string"
-								},
-								"annualNote": {
-									"type": "string"
-								},
-								"cta": {
-									"type": "string"
-								},
-								"points": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"one": {
-											"type": "string"
-										},
-										"everything": {
-											"type": "string"
-										},
-										"managed": {
-											"type": "string"
-										},
-										"help": {
-											"type": "string"
-										}
-									},
-									"required": ["one", "everything", "managed", "help"]
-								}
-							},
-							"required": [
-								"name",
-								"tagline",
-								"monthlyPeriod",
-								"annualPeriod",
-								"monthlyNote",
-								"annualNote",
-								"cta",
-								"points"
-							]
-						},
-						"team": {
-							"type": "object",
-							"additionalProperties": false,
-							"properties": {
-								"name": {
-									"type": "string"
-								},
-								"tagline": {
-									"type": "string"
-								},
-								"badge": {
-									"type": "string"
-								},
-								"monthlyPeriod": {
-									"type": "string"
-								},
-								"annualPeriod": {
-									"type": "string"
-								},
-								"monthlyNote": {
-									"type": "string"
-								},
-								"annualNote": {
-									"type": "string"
-								},
-								"cta": {
-									"type": "string"
-								},
-								"points": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"people": {
-											"type": "string"
-										},
-										"roles": {
-											"type": "string"
-										},
-										"managed": {
-											"type": "string"
-										},
-										"help": {
-											"type": "string"
-										}
-									},
-									"required": ["people", "roles", "managed", "help"]
-								}
-							},
-							"required": [
-								"name",
-								"tagline",
-								"badge",
-								"monthlyPeriod",
-								"annualPeriod",
-								"monthlyNote",
-								"annualNote",
-								"cta",
-								"points"
-							]
-						}
-					},
-					"required": ["selfHosted", "personal", "team"]
-				},
-				"table": {
-					"type": "object",
-					"additionalProperties": false,
-					"properties": {
-						"title": {
-							"type": "string"
-						},
-						"description": {
-							"type": "string"
-						},
-						"feature": {
-							"type": "string"
-						},
-						"included": {
-							"type": "string"
-						},
-						"notIncluded": {
-							"type": "string"
-						},
-						"groups": {
-							"type": "object",
-							"additionalProperties": false,
-							"properties": {
-								"work": {
-									"type": "string"
-								},
-								"planning": {
-									"type": "string"
-								},
-								"connect": {
-									"type": "string"
-								},
-								"running": {
-									"type": "string"
-								}
-							},
-							"required": ["work", "planning", "connect", "running"]
-						},
-						"rows": {
-							"type": "object",
-							"additionalProperties": false,
-							"properties": {
-								"people": {
-									"type": "string"
-								},
-								"projects": {
-									"type": "string"
-								},
-								"views": {
-									"type": "string"
-								},
-								"docs": {
-									"type": "string"
-								},
-								"publicBoards": {
-									"type": "string"
-								},
-								"cycles": {
-									"type": "string"
-								},
-								"intake": {
-									"type": "string"
-								},
-								"analytics": {
-									"type": "string"
-								},
-								"roles": {
-									"type": "string"
-								},
-								"api": {
-									"type": "string"
-								},
-								"integrations": {
-									"type": "string"
-								},
-								"jira": {
-									"type": "string"
-								},
-								"export": {
-									"type": "string"
-								},
-								"hosting": {
-									"type": "string"
-								},
-								"updates": {
-									"type": "string"
-								},
-								"backups": {
-									"type": "string"
-								},
-								"admin": {
-									"type": "string"
-								},
-								"support": {
-									"type": "string"
-								},
-								"ai": {
-									"type": "string"
-								}
-							},
-							"required": [
-								"people",
-								"projects",
-								"views",
-								"docs",
-								"publicBoards",
-								"cycles",
-								"intake",
-								"analytics",
-								"roles",
-								"api",
-								"integrations",
-								"jira",
-								"export",
-								"hosting",
-								"updates",
-								"backups",
-								"admin",
-								"support",
-								"ai"
-							]
-						},
-						"values": {
-							"type": "object",
-							"additionalProperties": false,
-							"properties": {
-								"unlimited": {
-									"type": "string"
-								},
-								"one": {
-									"type": "string"
-								},
-								"perMember": {
-									"type": "string"
-								},
-								"notNeeded": {
-									"type": "string"
-								},
-								"yourServers": {
-									"type": "string"
-								},
-								"eu": {
-									"type": "string"
-								},
-								"yourSchedule": {
-									"type": "string"
-								},
-								"automatic": {
-									"type": "string"
-								},
-								"yours": {
-									"type": "string"
-								},
-								"community": {
-									"type": "string"
-								},
-								"email": {
-									"type": "string"
-								},
-								"priorityEmail": {
-									"type": "string"
-								},
-								"ownKey": {
-									"type": "string"
-								}
-							},
-							"required": [
-								"unlimited",
-								"one",
-								"perMember",
-								"notNeeded",
-								"yourServers",
-								"eu",
-								"yourSchedule",
-								"automatic",
-								"yours",
-								"community",
-								"email",
-								"priorityEmail",
-								"ownKey"
-							]
-						}
-					},
-					"required": [
-						"title",
-						"description",
-						"feature",
-						"included",
-						"notIncluded",
-						"groups",
-						"rows",
-						"values"
-					]
-				},
-				"faq": {
-					"type": "object",
-					"additionalProperties": false,
-					"properties": {
-						"title": {
-							"type": "string"
-						},
-						"items": {
-							"type": "object",
-							"additionalProperties": false,
-							"properties": {
-								"selfHostLimits": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"question": {
-											"type": "string"
-										},
-										"answer": {
-											"type": "string"
-										}
-									},
-									"required": ["question", "answer"]
-								},
-								"trial": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"question": {
-											"type": "string"
-										},
-										"answer": {
-											"type": "string"
-										}
-									},
-									"required": ["question", "answer"]
-								},
-								"seats": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"question": {
-											"type": "string"
-										},
-										"answer": {
-											"type": "string"
-										}
-									},
-									"required": ["question", "answer"]
-								},
-								"yearly": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"question": {
-											"type": "string"
-										},
-										"answer": {
-											"type": "string"
-										}
-									},
-									"required": ["question", "answer"]
-								},
-								"payments": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"question": {
-											"type": "string"
-										},
-										"answer": {
-											"type": "string"
-										}
-									},
-									"required": ["question", "answer"]
-								},
-								"cancel": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"question": {
-											"type": "string"
-										},
-										"answer": {
-											"type": "string"
-										}
-									},
-									"required": ["question", "answer"]
-								},
-								"founding": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"question": {
-											"type": "string"
-										},
-										"answer": {
-											"type": "string"
-										}
-									},
-									"required": ["question", "answer"]
-								},
-								"selfHostHelp": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"question": {
-											"type": "string"
-										},
-										"answer": {
-											"type": "string"
-										}
-									},
-									"required": ["question", "answer"]
-								},
-								"ai": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"question": {
-											"type": "string"
-										},
-										"answer": {
-											"type": "string"
-										}
-									},
-									"required": ["question", "answer"]
-								}
-							},
-							"required": [
-								"selfHostLimits",
-								"trial",
-								"seats",
-								"yearly",
-								"payments",
-								"cancel",
-								"founding",
-								"selfHostHelp",
-								"ai"
-							]
-						}
-					},
-					"required": ["title", "items"]
-				},
-				"cta": {
-					"type": "object",
-					"additionalProperties": false,
-					"properties": {
-						"title": {
-							"type": "string"
-						},
-						"description": {
-							"type": "string"
-						},
-						"primary": {
-							"type": "string"
-						},
-						"secondary": {
-							"type": "string"
-						}
-					},
-					"required": ["title", "description", "primary", "secondary"]
-				}
-			},
-			"required": [
-				"metaDescription",
-				"eyebrow",
-				"title",
-				"description",
-				"interval",
-				"trialNote",
-				"plans",
-				"table",
-				"faq",
-				"cta"
-			]
-		},
 		"landing": {
 			"type": "object",
 			"additionalProperties": false,
@@ -29275,9 +28706,6 @@
 								"features": {
 									"type": "string"
 								},
-								"pricing": {
-									"type": "string"
-								},
 								"docs": {
 									"type": "string"
 								},
@@ -29405,7 +28833,6 @@
 								"label",
 								"home",
 								"features",
-								"pricing",
 								"docs",
 								"github",
 								"signIn",
@@ -29439,9 +28866,6 @@
 										"title": {
 											"type": "string"
 										},
-										"pricing": {
-											"type": "string"
-										},
 										"changelog": {
 											"type": "string"
 										},
@@ -29449,7 +28873,7 @@
 											"type": "string"
 										}
 									},
-									"required": ["title", "pricing", "changelog", "roadmap"]
+									"required": ["title", "changelog", "roadmap"]
 								},
 								"resources": {
 									"type": "object",
@@ -29489,11 +28913,21 @@
 										"licence": {
 											"type": "string"
 										},
+										"commercial": {
+											"type": "string"
+										},
 										"github": {
 											"type": "string"
 										}
 									},
-									"required": ["title", "privacy", "terms", "licence", "github"]
+									"required": [
+										"title",
+										"privacy",
+										"terms",
+										"licence",
+										"commercial",
+										"github"
+									]
 								},
 								"copyright": {
 									"type": "string"
@@ -29650,80 +29084,6 @@
 								"terminalReady",
 								"items",
 								"cta"
-							]
-						},
-						"pricing": {
-							"type": "object",
-							"additionalProperties": false,
-							"properties": {
-								"eyebrow": {
-									"type": "string"
-								},
-								"title": {
-									"type": "string"
-								},
-								"description": {
-									"type": "string"
-								},
-								"selfHosted": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"name": {
-											"type": "string"
-										},
-										"price": {
-											"type": "string"
-										},
-										"suffix": {
-											"type": "string"
-										},
-										"body": {
-											"type": "string"
-										},
-										"cta": {
-											"type": "string"
-										}
-									},
-									"required": ["name", "price", "suffix", "body", "cta"]
-								},
-								"cloud": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"name": {
-											"type": "string"
-										},
-										"price": {
-											"type": "string"
-										},
-										"suffix": {
-											"type": "string"
-										},
-										"body": {
-											"type": "string"
-										},
-										"cta": {
-											"type": "string"
-										}
-									},
-									"required": ["name", "price", "suffix", "body", "cta"]
-								},
-								"note": {
-									"type": "string"
-								},
-								"compare": {
-									"type": "string"
-								}
-							},
-							"required": [
-								"eyebrow",
-								"title",
-								"description",
-								"selfHosted",
-								"cloud",
-								"note",
-								"compare"
 							]
 						},
 						"faq": {
@@ -29934,7 +29294,6 @@
 						"nav",
 						"footer",
 						"ownIt",
-						"pricing",
 						"faq",
 						"finalCta"
 					]
@@ -48338,7 +47697,6 @@
 		"team",
 		"publicProject",
 		"press",
-		"pricing",
 		"landing",
 		"intake",
 		"cycles",
