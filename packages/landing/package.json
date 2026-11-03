@@ -9,7 +9,7 @@
 		".": "./src/index.ts"
 	},
 	"sideEffects": false,
-	"license": "MIT",
+	"license": "AGPL-3.0-only",
 	"scripts": {
 		"lint": "biome check --write .",
 		"test": "vitest run --config vitest.config.ts",
