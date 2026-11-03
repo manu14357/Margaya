@@ -28,12 +28,15 @@ export type LegalDocument = {
 
 export const GITHUB_URL = "https://github.com/manu14357/Margaya";
 
+/** Where commercial-licence enquiries go. */
+export const COMMERCIAL_EMAIL = "manoharchoppa6@gmail.com";
+
 /** The words around every legal page. */
 export const legalChrome = {
   eyebrow: "Legal",
   updated: "Last updated",
   onThisPage: "On this page",
   notice:
-    "This page explains how Margaya and Margaya Cloud work; it isn't legal advice. If you run your own Margaya instance for other people, you are responsible for your own terms and privacy policy.",
+    "This page explains how this website and the Margaya software work; it isn't legal advice. If you run your own Margaya instance for other people, you are responsible for your own terms and privacy policy.",
   related: "Related",
 };
