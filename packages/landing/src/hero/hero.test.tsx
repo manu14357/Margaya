@@ -12,7 +12,6 @@ const links: LandingLinks = {
   selfHost: "https://example.com/install",
   docs: "https://example.com/docs",
   apiReference: "https://example.com/api",
-  pricing: "/pricing",
   github: "https://example.com/margaya",
   features: {
     plan: "/features/plan",

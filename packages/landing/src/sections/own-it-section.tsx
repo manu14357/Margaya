@@ -42,7 +42,7 @@ const TERMINAL = [
   { prompt: false, text: "✔ margaya   Started" },
 ];
 
-/** Docker, Helm, optional Redis, trash, audit log, MIT licence, your data. */
+/** Docker, Helm, optional Redis, trash, audit log, AGPL-3.0 licence, your data. */
 export function OwnItSection() {
   const copy = useLandingCopy().home.ownIt;
   const links = useLandingLinks();

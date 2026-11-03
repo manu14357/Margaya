@@ -22,7 +22,6 @@ import {
   LandingNavbar,
   OwnItSection,
   PlanSection,
-  PricingSection,
   PublicBoardsSection,
   TriageSection,
   ViewsSection,
@@ -83,7 +82,6 @@ export function LandingPage({ chrome = true }: { chrome?: boolean }) {
         <PublicBoardsSection />
         <KeyboardSection />
         <OwnItSection />
-        <PricingSection />
         <FaqSection />
         <FinalCtaSection />
       </main>

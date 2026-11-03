@@ -19,7 +19,6 @@ export type LandingLinks = {
   selfHost: string;
   docs: string;
   apiReference: string;
-  pricing: string;
   github: string;
   /** The feature pages on the public site. */
   features: {
@@ -31,7 +30,8 @@ export type LandingLinks = {
     selfHost: string;
   };
   /**
-   * Public-website pages the navbar and footer list (guides, press, legal).
+   * Public-website pages the navbar and footer list (guides, press, legal,
+   * licensing).
    * Optional: a link that is not given is left out.
    */
   site?: Partial<Record<LandingSiteLink, string>>;
@@ -44,7 +44,8 @@ export type LandingSiteLink =
   | "press"
   | "privacy"
   | "terms"
-  | "license";
+  | "license"
+  | "commercial";
 
 export type LandingLinkProps = Omit<
   AnchorHTMLAttributes<HTMLAnchorElement>,

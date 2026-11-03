@@ -49,9 +49,9 @@ titles, names and dates all come from `landing.demo.*`, so demos translate.
 ### Links: `LandingLinksProvider` / `useLandingLinks()`
 
 `LandingLinks` lists every href: `home`, `signIn`, `signUp`, `selfHost`
-(install guide), `docs`, `apiReference`, `pricing`, `github`,
+(install guide), `docs`, `apiReference`, `github`,
 `features.{plan,views,docs,automate,selfHost}`, and optional `site.*`
-(footer-only pages). Each app passes its own URLs.
+(footer-only pages, including `license` and `commercial`). Each app passes its own URLs.
 
 - Render links with `<LandingLink href>` (or `<LandingButton>`).
 - `linkComponent` (optional) handles same-origin paths through the app's
@@ -178,10 +178,9 @@ Rules:
 12. Public boards
 13. Keyboard
 14. Own it
-15. Pricing
-16. FAQ
-17. Final CTA
-18. Footer
+15. FAQ
+16. Final CTA
+17. Footer
 
 Each section is one file in `src/sections/`. Stubs render `SectionStub` and
 say `STUB. Owner: Lx`. When you replace a stub, keep its export name and
@@ -193,6 +192,6 @@ anchor id, and build on `LandingSection` for the heading block.
 | L2 | Views (`views-section.tsx`) and Keyboard (`keyboard-section.tsx`), plus their scenes |
 | L3 | Plan, Triage and Your day, plus their scenes |
 | L4 | Docs, Insight, Automate and Public boards, plus their scenes |
-| L5 | Site pages and shell: navbar, footer, Own it, pricing, FAQ, final CTA, and the feature pages |
+| L5 | Site pages and shell: navbar, footer, Own it, FAQ, final CTA, and the feature pages |
 
 Put new scenes in `src/scenes/<id>/` and export them from `src/scenes/index.ts`.

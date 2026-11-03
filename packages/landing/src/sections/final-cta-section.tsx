@@ -6,7 +6,7 @@ import { useLandingCopy } from "../copy";
 import { LandingButton } from "../lib/button";
 import { useLandingLinks } from "../links";
 
-/** The closing call to action: a centred heading and both ways to start. */
+/** The closing call to action: a centred heading, the install guide and the docs. */
 export function FinalCtaSection() {
   const cta = useLandingCopy().home.finalCta;
   const links = useLandingLinks();
@@ -29,12 +29,12 @@ export function FinalCtaSection() {
           {cta.description}
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <LandingButton href={links.signUp} className="w-full sm:w-auto">
+          <LandingButton href={links.selfHost} className="w-full sm:w-auto">
             {cta.primary}
             <ArrowRight aria-hidden />
           </LandingButton>
           <LandingButton
-            href={links.selfHost}
+            href={links.docs}
             variant="outline"
             className="w-full sm:w-auto"
           >
