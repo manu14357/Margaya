@@ -111,7 +111,7 @@ If your Margaya deployment is public, do not leave `S3_ENDPOINT` set to `http://
 Use a public MinIO hostname instead, for example:
 
 ```env
-S3_ENDPOINT=https://files.cloud.margaya.app
+S3_ENDPOINT=https://files.margaya.example.com
 S3_BUCKET=margaya-uploads
 S3_ACCESS_KEY_ID=margaya
 S3_SECRET_ACCESS_KEY=<generate-a-strong-random-secret>
@@ -129,8 +129,8 @@ S3_FORCE_PATH_STYLE=true
 
 The simplest production setup is:
 
-- `cloud.margaya.app` for Margaya
-- `files.cloud.margaya.app` for MinIO
+- `margaya.example.com` for Margaya
+- `files.margaya.example.com` for MinIO
 
 Expose MinIO on its own public hostname through your reverse proxy.
 
