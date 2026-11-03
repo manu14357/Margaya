@@ -32,13 +32,12 @@ const missing = new Set(
   [...staticKeys].filter((key) => !isRepresentedByLocaleKeys(key, localeKeys)),
 );
 // Read as whole objects outside apps/web, so no t() call names them:
-// packages/landing and apps/site take the landing, pricing and press
+// packages/landing and apps/site take the landing and press
 // namespaces, the API builds invitation emails from invitations.email, and
 // the email package reads the emails namespace through a generated file.
 const externallyReadPrefixes = [
   "emails:",
   "landing:",
-  "pricing:",
   "press:",
   "invitations:email.",
 ];

@@ -7,7 +7,7 @@
 
 <div align="center">
 
-[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![license](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/manu14357/Margaya/ci.yml?branch=main)](https://github.com/manu14357/Margaya/actions)
 
 </div>
@@ -32,7 +32,7 @@ Margaya is a fast, self-hosted project management platform. Your team plans, tra
 
 It is simple by default. Extra planning tools are there when you need them and out of the way when you don't.
 
-Free and open source under the MIT license.
+Open source under the [GNU AGPL-3.0](LICENSE), with a [commercial license](COMMERCIAL.md) for businesses that want to use it without the AGPL's conditions.
 
 ## Features
 
@@ -248,4 +248,9 @@ Bug reports, ideas, docs fixes and code are all welcome. See [CONTRIBUTING.md](C
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) for details.
+Margaya is dual-licensed.
+
+- **Open source:** [GNU Affero General Public License v3.0](LICENSE) (AGPL-3.0-only). Free to use, change and self-host. If you change Margaya and let people use it over a network, you must share your changes under the AGPL.
+- **Commercial:** to use Margaya without the AGPL's conditions (keep changes private, build it into a closed product, host it for customers without publishing source), you need a commercial license. See the [Licensing guide](https://margaya.app/docs/platform/licensing), [COMMERCIAL.md](COMMERCIAL.md), or email [manoharchoppa6@gmail.com](mailto:manoharchoppa6@gmail.com).
+
+The "Margaya" name and logo are covered by [TRADEMARKS.md](TRADEMARKS.md). Contributions are accepted under the [CLA](CLA.md). The `@margaya/mcp` package stays under the MIT License, and versions released before 2026-11-03 keep the MIT License they were published under.

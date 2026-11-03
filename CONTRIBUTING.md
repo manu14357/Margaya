@@ -135,7 +135,7 @@ The root `package.json` includes scripts to keep locale files in sync:
 | ------- | ----------- |
 | `pnpm i18n:check [locale]` | Compares `en-US.json` with the other locale files and reports missing or extra keys. You can filter by locale, for example `pnpm i18n:check de-DE`. |
 | `pnpm i18n:check:fix [locale]` | Adds missing keys to other locale files using the English source text from `en-US.json`. Translate every added value before you commit. |
-| `pnpm i18n:report` | Scans `.ts` and `.tsx` files in the React app and reports missing keys, unused locale keys, values still identical to English, and dynamic translation calls that static analysis cannot verify. The `landing`, `pricing`, `press` and `invitations.email` copy is read outside the React app and never counts as unused. |
+| `pnpm i18n:report` | Scans `.ts` and `.tsx` files in the React app and reports missing keys, unused locale keys, values still identical to English, and dynamic translation calls that static analysis cannot verify. The `landing`, `press` and `invitations.email` copy is read outside the React app and never counts as unused. |
 | `pnpm i18n:report:fix` | Removes the unused keys from `en-US.json` and the other locale files. Review the list from `pnpm i18n:report` first. |
 | `pnpm i18n:schema` | Generates [`i18n/schema.json`](./i18n/schema.json) from `en-US.json` for editor and tooling validation. |
 
@@ -218,6 +218,10 @@ Automated review can be part of preparing an open pull request. Address relevant
 Maintainers may close a pull request without a detailed implementation review when its description is inaccurate, its scope exceeds the linked issue, important behavior is untested, or the author cannot explain and validate the submitted work. Review feedback identifies problems; it does not replace the contributor's own investigation and validation.
 
 For more context, see [this blog article](https://roe.dev/blog/using-ai-in-open-source).
+
+## Licensing of contributions
+
+Margaya is open source under the [GNU AGPL-3.0](LICENSE) and is also sold under [commercial licenses](COMMERCIAL.md). Every contribution is accepted under the [Contributor Licence Agreement](CLA.md), which lets the maintainers distribute it under both. Tick the CLA box in your pull request; a pull request without it cannot be merged.
 
 ## Need Help?
 
