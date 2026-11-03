@@ -99,9 +99,9 @@ CUSTOM_OAUTH_SCOPES=openid,profile,email`,
         "Margaya connects to identity providers over OAuth 2.0 and OpenID Connect. Most providers that offer SAML, such as Okta, Entra ID, Keycloak and Authentik, also offer OIDC, which is what you'd use.",
     },
     {
-      question: "Is SSO included on Margaya Cloud too?",
+      question: "Is SSO included in every Margaya install?",
       answer:
-        "Yes. Single sign-on isn't an add-on on any version of Margaya. See the pricing page for current plans.",
+        "Yes. Single sign-on isn't an add-on or a higher tier. Every install includes it, and Margaya is free to use under the GNU AGPL-3.0.",
     },
     {
       question: "Can I stop sign-up entirely and invite people instead?",
@@ -132,5 +132,5 @@ CUSTOM_OAUTH_SCOPES=openid,profile,email`,
       description: "Get a Margaya server running first.",
     },
   ],
-  updatedOn: "2026-10-15",
+  updatedOn: "2026-11-03",
 };

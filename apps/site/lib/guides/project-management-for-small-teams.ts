@@ -13,7 +13,7 @@ export const projectManagementForSmallTeams: Guide = {
   topic: "start",
   timeNeeded: "15 minutes",
   before: [
-    "A Margaya account, on Margaya Cloud or your own server",
+    "A Margaya account on a server you or your team run",
     "The email addresses of the people you're inviting",
   ],
   sections: [
@@ -170,7 +170,7 @@ export const projectManagementForSmallTeams: Guide = {
     {
       question: "Is Margaya free for a small team?",
       answer:
-        "Self-hosting is free, with every feature, under the MIT licence. Margaya Cloud is the same product hosted for you. See the pricing page for current plans.",
+        "Yes. Margaya is open source, and you can run it on your own server free under the GNU AGPL-3.0, with every feature. If you want to use it without the AGPL's conditions, for example to keep your changes private, a commercial licence is available; COMMERCIAL.md in the GitHub repository explains it.",
     },
   ],
   next: [
@@ -192,5 +192,5 @@ export const projectManagementForSmallTeams: Guide = {
       description: "Set up sprints with automatic status and carry-over.",
     },
   ],
-  updatedOn: "2026-10-15",
+  updatedOn: "2026-11-03",
 };

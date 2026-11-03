@@ -13,7 +13,7 @@ export const projectManagementMcpAiAgents: Guide = {
   topic: "connect",
   timeNeeded: "10 minutes",
   before: [
-    "A Margaya account on Margaya Cloud or your own server",
+    "A Margaya account on a server you or your team run",
     "An MCP client, such as Claude Desktop, Claude Code, Cursor or Codex",
   ],
   sections: [
@@ -191,5 +191,5 @@ margaya-mcp install --target cursor-user -y --api-url https://pm.example.com`,
       description: "The REST API behind the MCP tools.",
     },
   ],
-  updatedOn: "2026-10-15",
+  updatedOn: "2026-11-03",
 };

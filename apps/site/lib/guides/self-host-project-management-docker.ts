@@ -203,7 +203,7 @@ docker compose logs -f margaya`,
     {
       question: "Is the self-hosted version limited?",
       answer:
-        "No. The self-hosted build has every feature, including single sign-on, roles, the audit log, the API and the MCP server. It's MIT licensed.",
+        "No. Self-hosting is the only way to run Margaya, and every install has every feature, including single sign-on, roles, the audit log, the API and the MCP server. It's open source under the GNU AGPL-3.0, and a commercial licence is available for use without the AGPL's conditions; COMMERCIAL.md in the GitHub repository explains it.",
     },
     {
       question: "Can the web app and the API live on different domains?",
@@ -234,5 +234,5 @@ docker compose logs -f margaya`,
       description: "Where your data goes, and the settings that keep it there.",
     },
   ],
-  updatedOn: "2026-10-15",
+  updatedOn: "2026-11-03",
 };

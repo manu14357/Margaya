@@ -9,19 +9,13 @@ export const euHostedProjectManagementGdpr: Guide = {
   summary:
     "Hosted or self-hosted, and a checklist that covers files, email, backups and integrations, not only the database.",
   answer:
-    "There are two routes: a hosted tool that stores your data in the EU, or an open-source tool you run on EU servers yourself. Margaya supports both. Margaya Cloud runs on servers in the EU, and the self-hosted build runs wherever you put it. Either way, data residency covers more than the database: check file storage, email, backups and integrations too.",
+    "There are two routes: a hosted tool that stores your data in the EU, or an open-source tool you run on EU servers yourself. Margaya is the second kind: you run it yourself, so it lives wherever you put it. Either way, data residency covers more than the database: check file storage, email, backups and integrations too.",
   topic: "self-host",
   timeNeeded: "30 minutes",
   sections: [
     {
       heading: "Choose your route",
       items: [
-        {
-          name: "Margaya Cloud",
-          href: "/privacy",
-          meta: "Hosted in the EU",
-          body: "Runs on servers in the European Union. The privacy policy names every subprocessor, including those for backups and email. You can export tasks or delete your account at any time.",
-        },
         {
           name: "Self-hosted Margaya",
           href: "/guides/self-host-project-management-docker",
@@ -104,9 +98,9 @@ export const euHostedProjectManagementGdpr: Guide = {
   ],
   faq: [
     {
-      question: "Is Margaya Cloud hosted in the EU?",
+      question: "Is there a hosted Margaya in the EU?",
       answer:
-        "Yes. Margaya Cloud runs on servers in the European Union. The privacy policy lists every subprocessor involved, including the ones used for backups, email and payments, so you can check each against your requirements.",
+        "No. There is no hosted Margaya service: you run it on your own servers, so you choose the region and every provider it talks to. It's open source and free to use under the GNU AGPL-3.0.",
     },
     {
       question: "Does self-hosting make a tool GDPR compliant?",
@@ -141,5 +135,5 @@ export const euHostedProjectManagementGdpr: Guide = {
       description: "What's recorded, who can see it, and how to export it.",
     },
   ],
-  updatedOn: "2026-10-15",
+  updatedOn: "2026-11-03",
 };

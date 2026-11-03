@@ -24,7 +24,7 @@ ${renderGuide(guide)}`;
 export function GET() {
   const body = `# Margaya, full content
 
-> Margaya is an open-source, self-hostable project management platform under the MIT license. This file contains the full text of Margaya's guides, written by the Margaya team.
+> Margaya is an open-source, self-hostable project management platform under the GNU AGPL-3.0, with a commercial licence available for use without the AGPL's conditions. This file contains the full text of Margaya's guides, written by the Margaya team.
 
 # Guides
 

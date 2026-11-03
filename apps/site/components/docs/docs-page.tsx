@@ -78,8 +78,10 @@ function DocsFooter() {
         target="_blank"
         rel="noreferrer"
       >
-        MIT licence
+        AGPL-3.0 licence
       </a>
+      <span aria-hidden="true">·</span>
+      <a href="/docs/platform/licensing">Licensing</a>
       <span aria-hidden="true">·</span>
       <a href={siteLinks.github} target="_blank" rel="noreferrer">
         GitHub
