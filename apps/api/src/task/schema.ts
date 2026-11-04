@@ -86,14 +86,15 @@ export const bulkUpdateBody = z.object({
       "updateEstimate",
       "archive",
       "unarchive",
+      "move",
     ])
     .openapi({
       description:
-        "updateAssignee replaces every task's assignees with one user (null clears them); addAssignee and removeAssignee add or remove one user and keep the others. archive and unarchive archive or restore the tasks in their columns; updateStatus with the value archived is an alias of archive, and updateStatus with a column restores archived tasks.",
+        "updateAssignee replaces every task's assignees with one user (null clears them); addAssignee and removeAssignee add or remove one user and keep the others. archive and unarchive archive or restore the tasks in their columns; updateStatus with the value archived is an alias of archive, and updateStatus with a column restores archived tasks. move sends the tasks to another project of the workspace, all or none: they get new task keys, keep their status when the destination has it and otherwise take its first column, and leave their cycle, modules and estimate. Labels and assignees stay. A custom field value follows to a destination field of the same name and type, and is removed when there is none. Tasks already in the destination are skipped.",
     }),
   value: z.string().nullable().optional().openapi({
     description:
-      "The new value for the chosen operation. Unused by `delete`, `archive` and `unarchive`; null clears the assignees (updateAssignee), a due or start date, or an estimate; updateStartDate is refused when the date falls after a selected task's due date; a user id for addAssignee and removeAssignee. updateEstimate takes a point of the project's active estimate system and needs every task in one project.",
+      "The new value for the chosen operation. Unused by `delete`, `archive` and `unarchive`; null clears the assignees (updateAssignee), a due or start date, or an estimate; updateStartDate is refused when the date falls after a selected task's due date; a user id for addAssignee and removeAssignee. updateEstimate takes a point of the project's active estimate system and needs every task in one project. move takes the destination project's id.",
   }),
 });
 
@@ -121,6 +122,10 @@ export const createTaskBody = z.object({
   parentId: z.string().min(1).optional().openapi({
     description:
       "Creates the task as a subtask of this task, in the same transaction. The parent must be a live task of the same project that is not waiting in intake, and the caller also needs task:update.",
+  }),
+  isMilestone: z.boolean().optional().openapi({
+    description:
+      "Creates the task as a milestone, which the timeline draws on its due date.",
   }),
 });
 
@@ -203,7 +208,15 @@ export const importTasksBody = z.object({
 });
 
 export const updateStatusBody = z.object({ status: z.string() });
+export const updatePositionBody = z.object({
+  position: z.number().int().min(0).max(MAX_TASK_POSITION),
+  status: z.string().optional().openapi({
+    description:
+      "The column to move the task to. Omit it to keep the column, which is all a reorder needs.",
+  }),
+});
 export const updatePriorityBody = z.object({ priority });
+export const updateMilestoneBody = z.object({ isMilestone: z.boolean() });
 export const updateAssigneeBody = z.object({
   userId: z.string().nullable().openapi({
     description:
@@ -224,6 +237,24 @@ export const patchAssigneesBody = z.object({
     .openapi({ description: "Users to remove." }),
 });
 export const updateDueDateBody = z.object({ dueDate: z.string().optional() });
+const scheduleDate = (name: string) =>
+  z
+    .string()
+    .nullable()
+    .optional()
+    .openapi({
+      description: `The new ${name}, as an ISO date or instant. null clears it; leave it out to keep the current one.`,
+      example: "2026-11-09T00:00:00.000Z",
+    });
+export const updateDatesBody = z
+  .object({
+    startDate: scheduleDate("start date"),
+    dueDate: scheduleDate("due date"),
+  })
+  .refine(
+    (body) => body.startDate !== undefined || body.dueDate !== undefined,
+    { message: "Send startDate, dueDate or both" },
+  );
 export const updateTitleBody = z.object({ title: z.string() });
 export const updateDescriptionBody = z.object({ description: z.string() });
 
