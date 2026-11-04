@@ -42,6 +42,7 @@ import {
   loadUsers,
   relationsByTask,
 } from "./related";
+import { MAX_EXPORT_COMMENTS } from "./types";
 
 // What an export reads: the tasks of the chosen projects that are on a
 // board (never intake requests still in triage; drafts are never tasks),
@@ -256,6 +257,8 @@ async function hydratePage(
   workspaceId: string,
   project: ExportProject,
   rows: BaseRow[],
+  hiddenProjectIds: readonly string[],
+  maxComments: number | null,
 ): Promise<ExportTask[]> {
   const ids = rows.map((row) => row.id);
   const [assignees, labels, subscribers, links, relationRows, comments] =
@@ -265,7 +268,7 @@ async function hydratePage(
       loadSubscriberIds(ids),
       loadLinks(ids),
       loadRelationRows(ids),
-      loadComments(ids),
+      loadComments(ids, maxComments),
     ]);
   const modules = project.modulesEnabled
     ? await loadModules(ids)
@@ -285,7 +288,7 @@ async function hydratePage(
     ...rows.flatMap((row) => row.parentId ?? []),
     ...relationRows.flatMap((row) => [row.sourceTaskId, row.targetTaskId]),
   ];
-  const keys = await loadTaskKeys(otherTaskIds);
+  const keys = await loadTaskKeys(otherTaskIds, workspaceId, hiddenProjectIds);
   const relations = relationsByTask(ids, relationRows, keys);
 
   const users = await loadUsers([
@@ -355,18 +358,31 @@ async function hydratePage(
   });
 }
 
-/** One project's exported tasks, a page at a time, by task number. */
+/**
+ * One project's exported tasks, a page at a time, by task number. Relations
+ * and parents in `hiddenProjectIds`, the projects hidden from the requester,
+ * are left out. Comments per task are capped at `maxComments`; null keeps them
+ * all.
+ */
 export async function* exportTaskPages(
   workspaceId: string,
   project: ExportProject,
   includeArchived: boolean,
+  hiddenProjectIds: readonly string[],
   pageSize = EXPORT_PAGE_SIZE,
+  maxComments: number | null = MAX_EXPORT_COMMENTS,
 ): AsyncGenerator<ExportTask[]> {
   let after: Cursor | null = null;
   for (;;) {
     const rows = await loadBaseRows(project, includeArchived, after, pageSize);
     if (rows.length === 0) return;
-    yield await hydratePage(workspaceId, project, rows);
+    yield await hydratePage(
+      workspaceId,
+      project,
+      rows,
+      hiddenProjectIds,
+      maxComments,
+    );
     if (rows.length < pageSize) return;
     const last = rows[rows.length - 1] as BaseRow;
     after = { number: last.number ?? 0, id: last.id };

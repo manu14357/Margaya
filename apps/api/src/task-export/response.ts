@@ -1,6 +1,6 @@
 import { nullableResponseTimestamp, responseTimestamp, z } from "../openapi";
 import { taskExportFormatSchema } from "./schema";
-import { TASK_EXPORT_STATUSES } from "./types";
+import { TASK_EXPORT_KINDS, TASK_EXPORT_STATUSES } from "./types";
 
 export const taskExportStatusSchema = z.enum(TASK_EXPORT_STATUSES).openapi({
   description:
@@ -11,6 +11,10 @@ export const taskExportSchema = z
   .object({
     id: z.string(),
     workspaceId: z.string(),
+    kind: z.enum(TASK_EXPORT_KINDS).openapi({
+      description:
+        "tasks, or workspace: a ZIP of the whole workspace (always JSON data). Seeing or downloading a whole-workspace export takes the permissions that starting one does.",
+    }),
     format: taskExportFormatSchema,
     projectIds: z.array(z.string()).openapi({
       description: "The exported projects, in export order.",
@@ -20,11 +24,21 @@ export const taskExportSchema = z
       .openapi({ description: "The projects that still exist." }),
     splitByProject: z.boolean(),
     includeArchived: z.boolean(),
+    includeFiles: z.boolean().openapi({
+      description: "Whole-workspace exports: stored files are in the archive.",
+    }),
     status: taskExportStatusSchema,
     error: z.string().nullable().openapi({
       description: "Why the export failed, safe to show; null otherwise.",
     }),
     taskCount: z.number().int().nullable(),
+    fileCount: z.number().int().nullable().openapi({
+      description: "Whole-workspace exports: files in the archive.",
+    }),
+    missingFileCount: z.number().int().nullable().openapi({
+      description:
+        "Whole-workspace exports: files storage no longer had, listed in files/index.json with missing set.",
+    }),
     fileName: z.string().nullable(),
     contentType: z.string().nullable(),
     sizeBytes: z.number().int().nullable(),

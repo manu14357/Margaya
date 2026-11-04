@@ -46,23 +46,25 @@ export async function listTaskExports(input: {
   workspaceId: string;
   userId: string;
   scope: "mine" | "all";
+  /** Holds WORKSPACE_EXPORT_PERMISSIONS. */
+  canSeeWorkspaceExports: boolean;
   cursor?: string;
   limit: number;
 }) {
   const after = input.cursor ? decodeExportCursor(input.cursor) : null;
-  // Other people's exports of a restricted project the caller cannot see
-  // are left out (their own stay: they ran with the access they had).
-  const hidden =
-    input.scope === "all"
-      ? await hiddenProjectIds(input.userId, input.workspaceId)
-      : [];
+  // Exports of a restricted project the caller cannot see are left out,
+  // their own too: its download answers 404 (task-export/access.ts).
+  const hidden = await hiddenProjectIds(input.userId, input.workspaceId);
   const conditions: (SQL | undefined)[] = [
     eq(taskExportTable.workspaceId, input.workspaceId),
     input.scope === "mine"
       ? eq(taskExportTable.requestedBy, input.userId)
       : undefined,
+    input.canSeeWorkspaceExports
+      ? undefined
+      : eq(taskExportTable.kind, "tasks"),
     hidden.length > 0
-      ? sql`(${taskExportTable.requestedBy} = ${input.userId} or not (${taskExportTable.projectIds} && ${textArray(hidden)}))`
+      ? sql`not (${taskExportTable.projectIds} && ${textArray(hidden)})`
       : undefined,
     after
       ? sql`(${taskExportTable.createdAt}, ${taskExportTable.id}) < (${after.createdAt}::timestamptz, ${after.id}::text)`

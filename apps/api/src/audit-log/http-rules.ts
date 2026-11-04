@@ -6,6 +6,7 @@ import { diffFields, redactUrl } from "./redact";
 import {
   apiKeySnapshot,
   integrationSnapshot,
+  invitationProjectsSnapshot,
   invitationRole,
   memberSnapshot,
   permissionChanges,
@@ -644,12 +645,36 @@ const transferRules: HttpRule[] = [
     },
   },
   {
+    method: "POST",
+    path: /^\/api\/task-export\/workspace\/?$/,
+    after: async ({ c, response }) => {
+      const workspaceId =
+        str(response.workspaceId) ??
+        (c.get("workspaceId") as string | undefined);
+      if (!workspaceId) return null;
+      return {
+        workspaceId,
+        action: "export.created",
+        target: { type: "export", id: str(response.id), label: "workspace" },
+        metadata: {
+          kind: "workspace",
+          includeFiles: response.includeFiles ?? null,
+        },
+      };
+    },
+  },
+  {
     method: "GET",
     path: /^\/api\/task-export\/([^/]+)\/download$/,
     done: (status) => status >= 200 && status < 400,
     after: async ({ c, match }) => {
       const row = c.get("taskExport") as
-        | { workspaceId: string; format: string; fileName: string | null }
+        | {
+            workspaceId: string;
+            kind: string;
+            format: string;
+            fileName: string | null;
+          }
         | undefined;
       if (!row) return null;
       return {
@@ -660,7 +685,7 @@ const transferRules: HttpRule[] = [
           id: match[1],
           label: row.fileName ?? row.format,
         },
-        metadata: { format: row.format },
+        metadata: { kind: row.kind, format: row.format },
       };
     },
   },
@@ -697,6 +722,29 @@ const invitationRules: HttpRule[] = [
           label: str(response.email),
         },
         metadata: { changes: { role: { before: previous, after: next } } },
+      };
+    },
+  },
+  {
+    method: "PUT",
+    path: /^\/api\/invitation\/([^/]+)\/projects$/,
+    before: async ({ match }) => invitationProjectsSnapshot(match[1]),
+    after: async ({ match, before }) => {
+      const previous = before as Awaited<
+        ReturnType<typeof invitationProjectsSnapshot>
+      >;
+      const next = await invitationProjectsSnapshot(match[1]);
+      if (!previous || !next) return null;
+      if (previous.projects.join() === next.projects.join()) return null;
+      return {
+        workspaceId: next.workspaceId,
+        action: "member.invitation_projects_changed",
+        target: { type: "invitation", id: match[1] ?? null, label: next.email },
+        metadata: {
+          changes: {
+            projects: { before: previous.projects, after: next.projects },
+          },
+        },
       };
     },
   },

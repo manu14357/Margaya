@@ -1,3 +1,4 @@
+import { createReadStream } from "node:fs";
 import { Readable } from "node:stream";
 import {
   CopyObjectCommand,
@@ -714,6 +715,42 @@ export async function putPrivateObject(
         ContentLength: body.byteLength,
       }),
       { abortSignal: AbortSignal.timeout(120_000) },
+    );
+  } catch {
+    throw new Error("Unable to store the object.");
+  }
+}
+
+/**
+ * `putPrivateObject` for a file on disk too large to hold in memory, streamed
+ * in one PUT (so at most 5 GB). The timeout allows for a slow link.
+ */
+export async function putPrivateObjectFromFile(
+  key: string,
+  filePath: string,
+  size: number,
+  contentType: string,
+): Promise<void> {
+  try {
+    if (usesLocalStorage()) {
+      await writeLocalObject(key, Readable.toWeb(createReadStream(filePath)), {
+        contentType,
+        maxBytes: size,
+        expectedSize: size,
+        overwrite: true,
+      });
+      return;
+    }
+    const config = getStorageConfig();
+    await getClient(config).send(
+      new PutObjectCommand({
+        Bucket: config.bucket,
+        Key: key,
+        Body: createReadStream(filePath),
+        ContentType: contentType,
+        ContentLength: size,
+      }),
+      { abortSignal: AbortSignal.timeout(60 * 60 * 1000) },
     );
   } catch {
     throw new Error("Unable to store the object.");

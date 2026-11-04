@@ -77,7 +77,7 @@ export async function deleteTaskExport(
     throw new HTTPException(404, { message: EXPORT_NOT_FOUND });
   }
   // A database-stored file went with the row.
-  if (removed.storage === "s3" && removed.objectKey) {
+  if (removed.objectKey) {
     await deleteExportFileQuietly(removed);
   }
   await publishExportStatus(removed, "deleted");

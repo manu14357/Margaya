@@ -3,6 +3,8 @@ import {
   MAX_DATABASE_EXPORT_BYTES,
   MAX_EXPORT_TASKS,
   MAX_EXPORT_UNCOMPRESSED_BYTES,
+  MAX_WORKSPACE_EXPORT_BYTES,
+  MAX_WORKSPACE_EXPORT_FILES,
 } from "./types";
 
 /**
@@ -13,6 +15,8 @@ export const exportLimits = {
   maxTasks: MAX_EXPORT_TASKS,
   maxUncompressedBytes: MAX_EXPORT_UNCOMPRESSED_BYTES,
   maxDatabaseBytes: MAX_DATABASE_EXPORT_BYTES,
+  maxWorkspaceBytes: MAX_WORKSPACE_EXPORT_BYTES,
+  maxWorkspaceFiles: MAX_WORKSPACE_EXPORT_FILES,
 };
 
 /** Days a finished file stays downloadable (EXPORT_RETENTION_DAYS, 1–30). */

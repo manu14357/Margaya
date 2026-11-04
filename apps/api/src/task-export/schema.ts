@@ -25,6 +25,14 @@ export const createTaskExportBody = z.object({
   }),
 });
 
+export const createWorkspaceExportBody = z.object({
+  workspaceId: z.string().min(1),
+  includeFiles: z.boolean().optional().default(true).openapi({
+    description:
+      "Put stored files in the archive. Without them it still lists every file in files/index.json.",
+  }),
+});
+
 export const listTaskExportsQuery = z.object({
   workspaceId: z.string().min(1),
   scope: z.enum(["mine", "all"]).optional().default("mine").openapi({

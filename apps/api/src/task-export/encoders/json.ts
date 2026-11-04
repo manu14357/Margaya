@@ -7,12 +7,15 @@ const TASK_INDENT = "    ";
 export class JsonTaskDocument {
   private count = 0;
 
-  /** `meta` holds every top-level key; `tasks` is appended last. */
-  constructor(private readonly meta: Record<string, unknown>) {}
+  /** `meta` holds every top-level key; the list (`tasks`) is appended last. */
+  constructor(
+    private readonly meta: Record<string, unknown>,
+    private readonly listKey = "tasks",
+  ) {}
 
-  /** Everything up to and including the opening bracket of `tasks`. */
+  /** Everything up to and including the opening bracket of the list. */
   head(): string {
-    const empty = JSON.stringify({ ...this.meta, tasks: [] }, null, 2);
+    const empty = JSON.stringify({ ...this.meta, [this.listKey]: [] }, null, 2);
     return empty.slice(0, empty.length - "]\n}".length);
   }
 

@@ -1,8 +1,17 @@
+import { readFile, rm } from "node:fs/promises";
 import * as Sentry from "@sentry/node";
 import { and, asc, eq, gte, lt } from "drizzle-orm";
 import db from "../database";
 import { taskExportFileTable, taskExportTable } from "../database/schema";
-import { putPrivateObject } from "../storage/s3";
+import {
+  putPrivateObject,
+  putPrivateObjectFromFile,
+  storageDriver,
+} from "../storage/s3";
+import {
+  type BuiltWorkspaceExport,
+  buildWorkspaceExport,
+} from "../workspace-export/build";
 import { publishExportStatus } from "./events";
 import {
   type BuiltExport,
@@ -31,6 +40,8 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 export const EXPORT_INTERRUPTED = "The export was interrupted. Try again.";
 export const DATABASE_STORAGE_TOO_LARGE =
   "This export is larger than 25 MB, which needs object storage (S3). Ask your administrator, or choose fewer projects.";
+export const WORKSPACE_DATABASE_STORAGE_TOO_LARGE =
+  "This export is larger than 25 MB, which needs file storage. Ask your administrator to turn it on.";
 
 let active: Promise<void> | null = null;
 let rerun = false;
@@ -80,40 +91,52 @@ async function extendLease(row: TaskExportRow): Promise<void> {
     .where(ownedBy(row));
 }
 
-async function completeExport(
-  row: TaskExportRow,
-  built: BuiltExport,
-): Promise<boolean> {
+type FinishedFile = {
+  taskCount: number;
+  fileName: string;
+  contentType: string;
+};
+
+function finishedValues(built: FinishedFile, sizeBytes: number) {
   const completedAt = new Date();
-  const finished = {
+  return {
     status: "completed" as const,
     error: null,
     taskCount: built.taskCount,
     fileName: built.fileName,
     contentType: built.contentType,
-    sizeBytes: built.body.length,
+    sizeBytes,
     lockedUntil: null,
     completedAt,
     expiresAt: new Date(completedAt.getTime() + exportRetentionDays() * DAY_MS),
   };
+}
 
-  if (isObjectStorageConfigured()) {
-    const objectKey = exportObjectKey(row.workspaceId, row.id, built.fileName);
-    await putPrivateObject(objectKey, built.body, built.contentType);
-    const [updated] = await db
-      .update(taskExportTable)
-      .set({ ...finished, storage: "s3", objectKey })
-      .where(ownedBy(row))
-      .returning({ id: taskExportTable.id });
-    if (!updated) {
-      await deleteExportFileQuietly({ id: row.id, storage: "s3", objectKey });
-    }
-    return Boolean(updated);
-  }
+type Finished = ReturnType<typeof finishedValues>;
 
-  if (built.body.length > exportLimits.maxDatabaseBytes) {
-    throw new ExportFailure(DATABASE_STORAGE_TOO_LARGE);
+/** Completes the row around an uploaded object, removing it if the row moved on. */
+async function completeStoredObject(
+  row: TaskExportRow,
+  finished: Finished,
+  storage: "s3" | "local",
+  objectKey: string,
+): Promise<boolean> {
+  const [updated] = await db
+    .update(taskExportTable)
+    .set({ ...finished, storage, objectKey })
+    .where(ownedBy(row))
+    .returning({ id: taskExportTable.id });
+  if (!updated) {
+    await deleteExportFileQuietly({ id: row.id, storage, objectKey });
   }
+  return Boolean(updated);
+}
+
+function completeInDatabase(
+  row: TaskExportRow,
+  finished: Finished,
+  body: Buffer,
+): Promise<boolean> {
   return db.transaction(async (tx) => {
     const [updated] = await tx
       .update(taskExportTable)
@@ -123,13 +146,61 @@ async function completeExport(
     if (!updated) return false;
     await tx
       .insert(taskExportFileTable)
-      .values({ exportId: row.id, content: built.body })
+      .values({ exportId: row.id, content: body })
       .onConflictDoUpdate({
         target: taskExportFileTable.exportId,
-        set: { content: built.body, createdAt: completedAt },
+        set: { content: body, createdAt: finished.completedAt },
       });
     return true;
   });
+}
+
+async function completeExport(
+  row: TaskExportRow,
+  built: BuiltExport,
+): Promise<boolean> {
+  const finished = finishedValues(built, built.body.length);
+  if (isObjectStorageConfigured()) {
+    const objectKey = exportObjectKey(row.workspaceId, row.id, built.fileName);
+    await putPrivateObject(objectKey, built.body, built.contentType);
+    return completeStoredObject(row, finished, "s3", objectKey);
+  }
+
+  if (built.body.length > exportLimits.maxDatabaseBytes) {
+    throw new ExportFailure(DATABASE_STORAGE_TOO_LARGE);
+  }
+  return completeInDatabase(row, finished, built.body);
+}
+
+async function completeWorkspaceExport(
+  row: TaskExportRow,
+  built: BuiltWorkspaceExport,
+): Promise<boolean> {
+  const finished = {
+    ...finishedValues(built, built.sizeBytes),
+    fileCount: built.fileCount,
+    missingFileCount: built.missingFileCount,
+  };
+  const store = isObjectStorageConfigured()
+    ? "s3"
+    : storageDriver() === "local"
+      ? "local"
+      : null;
+  if (store) {
+    const objectKey = exportObjectKey(row.workspaceId, row.id, built.fileName);
+    await putPrivateObjectFromFile(
+      objectKey,
+      built.filePath,
+      built.sizeBytes,
+      built.contentType,
+    );
+    return completeStoredObject(row, finished, store, objectKey);
+  }
+
+  if (built.sizeBytes > exportLimits.maxDatabaseBytes) {
+    throw new ExportFailure(WORKSPACE_DATABASE_STORAGE_TOO_LARGE);
+  }
+  return completeInDatabase(row, finished, await readFile(built.filePath));
 }
 
 async function failExport(row: TaskExportRow, message: string) {
@@ -159,10 +230,18 @@ export async function processExport(
   }, HEARTBEAT_MS);
   heartbeat.unref();
   try {
-    const built = await buildExport(row, now);
-    if (await completeExport(row, built)) {
-      await publishExportStatus(row, "completed");
+    let completed: boolean;
+    if (row.kind === "workspace") {
+      const built = await buildWorkspaceExport(row, now);
+      try {
+        completed = await completeWorkspaceExport(row, built);
+      } finally {
+        await rm(built.filePath, { force: true }).catch(() => undefined);
+      }
+    } else {
+      completed = await completeExport(row, await buildExport(row, now));
     }
+    if (completed) await publishExportStatus(row, "completed");
   } catch (error) {
     if (!(error instanceof ExportFailure)) {
       // The id only: titles and other workspace data never reach the logs.

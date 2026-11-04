@@ -41,6 +41,7 @@ export async function toTaskExportResponses(
   return rows.map((row) => ({
     id: row.id,
     workspaceId: row.workspaceId,
+    kind: row.kind,
     format: row.format,
     projectIds: row.projectIds,
     projects: row.projectIds.flatMap((id) => {
@@ -51,9 +52,12 @@ export async function toTaskExportResponses(
     }),
     splitByProject: row.splitByProject,
     includeArchived: row.includeArchived,
+    includeFiles: row.includeFiles,
     status: row.status,
     error: row.error,
     taskCount: row.taskCount,
+    fileCount: row.fileCount,
+    missingFileCount: row.missingFileCount,
     fileName: row.fileName,
     contentType: row.contentType,
     sizeBytes: row.sizeBytes,

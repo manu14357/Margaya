@@ -22,7 +22,7 @@ const EXEMPT_PATHS = [
   /^\/api\/task-query\/?$/,
   /^\/api\/analytics\/(chart|trend)$/,
   /^\/api\/estimate\/[^/]+\/totals$/,
-  /^\/api\/task-export\/?$/,
+  /^\/api\/task-export(\/workspace)?\/?$/,
   /^\/api\/workspace\/[^/]+\/deletion$/,
 ];
 

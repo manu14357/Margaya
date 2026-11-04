@@ -8,12 +8,13 @@ import {
   jsonResponse,
 } from "../openapi";
 import {
-  hasWorkspacePermission,
   requireWorkspacePermission,
+  workspacePermissionChecker,
 } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import { taskExportAccess } from "./access";
 import { createTaskExport } from "./controllers/create-task-export";
+import { createWorkspaceExport } from "./controllers/create-workspace-export";
 import {
   deleteTaskExport,
   downloadTaskExport,
@@ -27,15 +28,19 @@ import {
 } from "./response";
 import {
   createTaskExportBody,
+  createWorkspaceExportBody,
   listTaskExportsQuery,
   taskExportParam,
 } from "./schema";
 import { toTaskExportResponse } from "./serialize";
 import "./subscribers";
+import { WORKSPACE_EXPORT_PERMISSIONS } from "./types";
 
 // Asynchronous task exports. Anyone with task:read exports and manages
 // their own exports; workspace:manage_settings holders also see, download
 // and delete everyone's. Someone else's export answers 404, never 403.
+// Whole-workspace exports share the queue, history and file routes, but only
+// holders of WORKSPACE_EXPORT_PERMISSIONS start them or reach them (access.ts).
 
 const TAGS = ["Exports"];
 const readTasks = requireWorkspacePermission({ task: ["read"] });
@@ -73,6 +78,36 @@ const createTaskExportRoute = createRoute({
   },
 });
 
+const createWorkspaceExportRoute = createRoute({
+  method: "post",
+  operationId: "createWorkspaceExport",
+  path: "/workspace",
+  tags: TAGS,
+  summary: "Start whole-workspace export",
+  description:
+    "Queue a background export of the whole workspace as one ZIP: tasks with all their comments, pages, settings and stored files, in the documented margaya.workspace-export.v1 format. Secrets, private pages, trash, drafts and intake requests still in triage are never included. Only one can be in progress per workspace, at most 4 GB, and the file is kept for the export retention period. Download it from the export's download route. Needs workspace:manage_settings and to read all the archive holds (project, task, label, cycle and module read; page read and delete), also to see or download it later.",
+  middleware: [
+    workspaceAccess.fromBody(),
+    requireWorkspacePermission(WORKSPACE_EXPORT_PERMISSIONS),
+    requireEntitlement,
+  ] as const,
+  request: {
+    body: {
+      required: true,
+      content: { "application/json": { schema: createWorkspaceExportBody } },
+    },
+  },
+  responses: {
+    200: jsonResponse("The queued export", taskExportSchema),
+    400: errorResponse("Invalid body"),
+    403: errorResponse("No workspace access or missing permission"),
+    404: errorResponse("The caller is a guest"),
+    409: errorResponse(
+      "A whole-workspace export is already in progress, or the caller already has 3 exports in progress",
+    ),
+  },
+});
+
 const listTaskExportsRoute = createRoute({
   method: "get",
   operationId: "listTaskExports",
@@ -80,7 +115,7 @@ const listTaskExportsRoute = createRoute({
   tags: TAGS,
   summary: "List exports",
   description:
-    "One page of a workspace's exports, newest first: the caller's own (scope mine), or everyone's (scope all, workspace:manage_settings). Keyset paging through nextCursor. Needs task:read.",
+    "One page of a workspace's exports, newest first: the caller's own (scope mine), or everyone's (scope all, workspace:manage_settings). Keyset paging through nextCursor. Whole-workspace exports appear only for those who may start one. Needs task:read.",
   middleware: [workspaceAccess.fromQuery(), readTasks] as const,
   request: { query: listTaskExportsQuery },
   responses: {
@@ -98,7 +133,8 @@ const getTaskExportRoute = createRoute({
   path: "/{id}",
   tags: TAGS,
   summary: "Get export",
-  description: "One export and its status. Needs task:read.",
+  description:
+    "One export and its status. Needs task:read; a whole-workspace export answers 404 to anyone who may not start one.",
   middleware: [taskExportAccess(), readTasks] as const,
   request: { params: taskExportParam },
   responses: {
@@ -115,7 +151,7 @@ const downloadTaskExportRoute = createRoute({
   tags: TAGS,
   summary: "Download export",
   description:
-    "The finished file as an attachment (text/csv, application/json, xlsx or application/zip for split CSV and JSON exports). Available until expiresAt. Needs task:read.",
+    "The finished file as an attachment (text/csv, application/json, xlsx or application/zip for split CSV and JSON exports). Available until expiresAt. Needs task:read; a whole-workspace export answers 404 to anyone who may not start one.",
   middleware: [taskExportAccess(), readTasks] as const,
   request: { params: taskExportParam },
   responses: {
@@ -137,7 +173,7 @@ const deleteTaskExportRoute = createRoute({
   tags: TAGS,
   summary: "Delete export",
   description:
-    "Delete an export and its file for everyone. A queued export is simply removed. Needs task:read.",
+    "Delete an export and its file for everyone. A queued export is simply removed. Needs task:read; a whole-workspace export answers 404 to anyone who may not start one.",
   middleware: [taskExportAccess(), readTasks] as const,
   request: { params: taskExportParam },
   responses: {
@@ -163,12 +199,18 @@ const taskExport = apiRouter<
     });
     return c.json(await toTaskExportResponse(row), 200);
   })
+  .openapi(createWorkspaceExportRoute, async (c) => {
+    const row = await createWorkspaceExport({
+      workspaceId: c.get("workspaceId"),
+      userId: c.get("userId"),
+      includeFiles: c.req.valid("json").includeFiles,
+    });
+    return c.json(await toTaskExportResponse(row), 200);
+  })
   .openapi(listTaskExportsRoute, async (c) => {
     const { scope, cursor, limit } = c.req.valid("query");
-    if (
-      scope === "all" &&
-      !(await hasWorkspacePermission(c, { workspace: ["manage_settings"] }))
-    ) {
+    const can = await workspacePermissionChecker(c);
+    if (scope === "all" && !can({ workspace: ["manage_settings"] })) {
       throw new HTTPException(403, { message: ALL_EXPORTS_FORBIDDEN });
     }
     return c.json(
@@ -176,6 +218,7 @@ const taskExport = apiRouter<
         workspaceId: c.get("workspaceId"),
         userId: c.get("userId"),
         scope,
+        canSeeWorkspaceExports: can(WORKSPACE_EXPORT_PERMISSIONS),
         cursor,
         limit,
       }),
