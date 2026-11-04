@@ -76,7 +76,7 @@ test.describe("sitemap and robots", () => {
     const pages = await request.get("/sitemap-pages.xml");
     expect(pages.status()).toBe(200);
     expect(parseSitemapLocations(await pages.text())).toEqual(
-      expect.arrayContaining(["/", "/pricing", "/press", "/guides"]),
+      expect.arrayContaining(["/", "/press", "/guides"]),
     );
   });
 

@@ -9,7 +9,7 @@ import {
 
 // Opt-in docs-site project: E2E_DOCS_SITE=1 pnpm e2e --project=docs-site
 
-const CLOUD_URL = "https://cloud.margaya.app";
+const GITHUB_URL = "https://github.com/manu14357/Margaya";
 
 // `next dev` compiles each route on first request, which can take a minute.
 test.describe.configure({ timeout: 180_000 });
@@ -55,10 +55,8 @@ test.describe("landing page", () => {
       "href",
       "/#features",
     );
-    await expect(nav.getByRole("link", { name: "Pricing" })).toHaveAttribute(
-      "href",
-      "/pricing",
-    );
+    // There is no hosted service and no pricing page.
+    await expect(nav.getByRole("link", { name: "Pricing" })).toHaveCount(0);
     await expect(nav.getByRole("button", { name: "Resources" })).toBeVisible();
     // No hosted service yet: the navbar has no Sign in button.
     await expect(header.getByRole("button", { name: "Sign in" })).toHaveCount(
@@ -73,14 +71,9 @@ test.describe("landing page", () => {
       /Project management\s*that doesn.t become the project\./,
     );
     await expect(
-      main.getByRole("link", { name: "Try Margaya Cloud" }),
-    ).toHaveAttribute("href", "/docs/core/installation");
-    await expect(
       main.getByRole("link", { name: "Self-host Margaya" }).first(),
     ).toHaveAttribute("href", "/docs/core/installation");
-    await expect(
-      main.getByText("14-day cloud trial. No credit card required."),
-    ).toBeVisible();
+    await expect(main.getByText(/Margaya Cloud|free trial/i)).toHaveCount(0);
     await expect(
       main.getByRole("link", { name: "GitHub" }).first(),
     ).toHaveAttribute("href", "https://github.com/manu14357/Margaya");
@@ -99,20 +92,23 @@ test.describe("landing page", () => {
       footer.getByText("Project management that doesn't become the project."),
     ).toBeVisible();
     for (const name of [
-      "Open Cloud",
       "Getting Started",
       "Features",
-      "Pricing",
       "Guides",
       "Press kit",
       "Documentation",
       "Privacy Policy",
       "Terms of Service",
+      "AGPL-3.0 licence",
+      "Commercial licence",
     ]) {
       await expect(
         footer.getByRole("link", { name, exact: true }),
       ).toBeVisible();
     }
+    await expect(
+      footer.getByRole("link", { name: "Commercial licence", exact: true }),
+    ).toHaveAttribute("href", `${GITHUB_URL}/blob/main/COMMERCIAL.md`);
     await expect(
       footer.getByRole("link", { name: "support@margaya.app" }),
     ).toHaveAttribute("href", "mailto:support@margaya.app");
@@ -133,7 +129,7 @@ test.describe("landing page", () => {
     );
     await expect(header.getByRole("link", { name: "Roadmap" })).toHaveAttribute(
       "href",
-      new RegExp(`^${CLOUD_URL}/public-project/`),
+      `${GITHUB_URL}/issues`,
     );
 
     await header.getByRole("link", { name: "Guides" }).click();
@@ -160,9 +156,7 @@ test.describe("landing page", () => {
     const targets = (await navigationAndFooterLinks(page))
       .map(toLocalPath)
       .filter((value): value is string => value !== null && !isDocsPath(value));
-    expect(targets).toEqual(
-      expect.arrayContaining(["/", "/pricing", "/guides", "/press"]),
-    );
+    expect(targets).toEqual(expect.arrayContaining(["/", "/guides", "/press"]));
     const statuses = await fetchStatuses(request, targets);
     expect(brokenEntries(statuses)).toEqual([]);
 
@@ -221,11 +215,6 @@ test.describe("landing page", () => {
 
 test.describe("marketing pages", () => {
   const pages = [
-    {
-      path: "/pricing",
-      title: "Pricing | Margaya",
-      h1: /Free to run yourself\.\s*Fair when we run it for you\./,
-    },
     { path: "/press", title: "Press kit | Margaya", h1: "Margaya press kit" },
     {
       path: "/guides",
@@ -259,44 +248,9 @@ test.describe("marketing pages", () => {
     });
   }
 
-  test("pricing shows the three plans and switches billing interval", async ({
-    page,
-  }) => {
-    await page.goto("/pricing");
-    const main = page.getByRole("main");
-    for (const plan of ["Self-hosted", "Cloud Personal", "Cloud Team"]) {
-      await expect(
-        main.getByRole("heading", { name: plan, exact: true }),
-      ).toBeVisible();
-    }
-    await expect(main.getByText("Most popular")).toBeVisible();
-
-    const annual = main.getByRole("button", { name: /^annual/i });
-    const monthly = main.getByRole("button", { name: /^monthly/i });
-    await expect(annual).toHaveAttribute("aria-pressed", "true");
-    const trialLinks = main.getByRole("link", {
-      name: "Start 14-day free trial",
-    });
-    await expect(trialLinks.first()).toHaveAttribute(
-      "href",
-      `${CLOUD_URL}/auth/sign-up?checkout=personal-annual`,
-    );
-
-    await monthly.click();
-    await expect(monthly).toHaveAttribute("aria-pressed", "true");
-    await expect(annual).toHaveAttribute("aria-pressed", "false");
-    await expect(main.getByText("Billed monthly").first()).toBeVisible();
-    await expect(trialLinks.first()).toHaveAttribute(
-      "href",
-      `${CLOUD_URL}/auth/sign-up?checkout=personal-monthly`,
-    );
-    await expect(trialLinks.nth(1)).toHaveAttribute(
-      "href",
-      `${CLOUD_URL}/auth/sign-up?checkout=team-monthly`,
-    );
-    await expect(
-      main.getByRole("link", { name: "Read installation guide" }),
-    ).toHaveAttribute("href", "/docs/core/installation");
+  test("/pricing is gone: there is no hosted service", async ({ page }) => {
+    const response = await page.goto("/pricing");
+    expect(response?.status()).toBe(404);
   });
 
   test("the guides index opens a guide", async ({ page }) => {
@@ -357,7 +311,7 @@ test.describe("mobile viewport", () => {
     await page.goto("/");
     const header = page.getByRole("banner");
     // The desktop navigation collapses into the menu button.
-    await expect(header.getByRole("link", { name: "Pricing" })).toBeHidden();
+    await expect(header.getByRole("link", { name: "Product" })).toBeHidden();
     const menuButton = header.getByRole("button", { name: "Menu" });
     await expect(menuButton).toBeVisible();
 
@@ -365,13 +319,7 @@ test.describe("mobile viewport", () => {
     const dialog = page.getByRole("dialog", { name: "Menu" });
     await expect(dialog).toBeVisible();
     const menu = dialog.getByRole("navigation", { name: "Menu" });
-    for (const name of [
-      "Product",
-      "Pricing",
-      "Documentation",
-      "Guides",
-      "Roadmap",
-    ]) {
+    for (const name of ["Product", "Documentation", "Guides", "Roadmap"]) {
       await expect(menu.getByRole("link", { name, exact: true })).toBeVisible();
     }
     await expect(dialog.getByRole("link", { name: "Sign in" })).toHaveCount(0);
@@ -385,16 +333,16 @@ test.describe("mobile viewport", () => {
     await menuButton.click();
     await page
       .getByRole("dialog", { name: "Menu" })
-      .getByRole("link", { name: "Pricing", exact: true })
+      .getByRole("link", { name: "Documentation", exact: true })
       .click();
-    await expect(page).toHaveURL(/\/pricing$/);
+    await expect(page).toHaveURL(/\/docs\/core$/);
     await expect(page.getByRole("dialog", { name: "Menu" })).toBeHidden();
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible({
       timeout: 90_000,
     });
   });
 
-  for (const path of ["/", "/pricing", "/press", "/guides"]) {
+  for (const path of ["/", "/press", "/guides"]) {
     test(`${path} fits the viewport without horizontal scrolling`, async ({
       page,
     }) => {

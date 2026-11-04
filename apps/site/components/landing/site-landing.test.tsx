@@ -28,7 +28,7 @@ beforeEach(() => {
     "fetch",
     vi.fn(async () =>
       Response.json({
-        home: { nav: { pricing: "Preise", signIn: "Anmelden" } },
+        home: { nav: { getStarted: "Loslegen", signIn: "Anmelden" } },
       }),
     ),
   );
@@ -57,7 +57,7 @@ describe("SiteLandingProviders", () => {
     });
 
     await waitFor(() =>
-      expect(screen.getAllByText("Preise").length).toBeGreaterThan(0),
+      expect(screen.getAllByText("Loslegen").length).toBeGreaterThan(0),
     );
     expect(fetch).toHaveBeenCalledWith("/landing-copy/de-DE.json");
     expect(document.documentElement.lang).toBe("de-DE");
@@ -80,7 +80,7 @@ describe("SiteLandingProviders", () => {
     );
 
     expect(screen.queryByRole("button", { name: /Language/ })).toBeNull();
-    expect(screen.getAllByText("Pricing").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Get started").length).toBeGreaterThan(0);
     expect(fetch).not.toHaveBeenCalled();
 
     fireEvent.click(screen.getByRole("button", { name: "Theme: Light" }));
