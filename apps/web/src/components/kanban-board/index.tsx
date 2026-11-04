@@ -14,12 +14,10 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
 import { produce } from "immer";
 import { useEffect, useMemo, useState } from "react";
-import { useUpdateTask } from "@/hooks/mutations/task/use-update-task";
+import { useUpdateTaskPosition } from "@/hooks/mutations/task/use-update-task-position";
 import { useGetColumns } from "@/hooks/queries/column/use-get-columns";
-import { useRegisterShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { placementWrites } from "@/lib/placement-writes";
 import useBulkSelectionStore from "@/store/bulk-selection";
 import useProjectStore from "@/store/project";
@@ -30,6 +28,7 @@ import { BoardStageStrip } from "./board-stage-strip";
 import Column from "./column";
 import { columnTones } from "./column/column-tone";
 import TaskCard from "./task-card";
+import { useCardKeyboard } from "./use-card-keyboard";
 
 type KanbanBoardProps = {
   project: ProjectWithTasks;
@@ -48,16 +47,14 @@ function KanbanBoard({
 }: KanbanBoardProps) {
   const queryClient = useQueryClient();
   const { setProject } = useProjectStore();
-  const {
-    setAvailableTasks,
-    focusNext,
-    focusPrevious,
-    focusedTaskId,
-    clearFocus,
-  } = useBulkSelectionStore();
+  // Select the actions only: reading the whole store would re-render the
+  // board on every selection and focus change.
+  const setAvailableTasks = useBulkSelectionStore(
+    (state) => state.setAvailableTasks,
+  );
+  const clearFocus = useBulkSelectionStore((state) => state.clearFocus);
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
-  const { mutate: updateTask } = useUpdateTask();
-  const navigate = useNavigate();
+  const { mutate: updateTaskPosition } = useUpdateTaskPosition();
   useCaptureHost(capture ? project : undefined);
   // The board payload carries no column colours; the (shared, cached)
   // column list does.
@@ -84,36 +81,7 @@ function KanbanBoard({
     clearFocus();
   }, [clearFocus]);
 
-  useRegisterShortcuts({
-    shortcuts: {
-      j: () => {
-        focusNext();
-        const state = useBulkSelectionStore.getState();
-        if (state.focusedTaskId) {
-          navigate({ to: ".", search: { taskId: state.focusedTaskId } });
-        }
-      },
-      k: () => {
-        focusPrevious();
-        const state = useBulkSelectionStore.getState();
-        if (state.focusedTaskId) {
-          navigate({ to: ".", search: { taskId: state.focusedTaskId } });
-        }
-      },
-      Enter: () => {
-        if (focusedTaskId && project) {
-          navigate({
-            to: "/dashboard/workspace/$workspaceId/project/$projectId/task/$taskId",
-            params: {
-              workspaceId: project.workspaceId,
-              projectId: project.id,
-              taskId: focusedTaskId,
-            },
-          });
-        }
-      },
-    },
-  });
+  useCardKeyboard(useBulkSelectionStore, activeId !== null);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -181,7 +149,11 @@ function KanbanBoard({
         destinationColumn.tasks.splice(destinationIndex, 0, task);
 
         for (const write of placementWrites(destinationColumn.tasks)) {
-          updateTask({ ...write.task, position: write.position });
+          updateTaskPosition({
+            id: write.task.id,
+            projectId: project.id,
+            position: write.position,
+          });
           write.task.position = write.position;
         }
 
@@ -204,16 +176,25 @@ function KanbanBoard({
           destinationColumn.tasks,
           activeId,
         )) {
-          updateTask({
-            ...write.task,
-            status: destinationColumn.slug,
+          // Only the dragged card changes column. A neighbour's status may
+          // have changed since this board loaded, so it must not be sent.
+          updateTaskPosition({
+            id: write.task.id,
+            projectId: project.id,
             position: write.position,
+            ...(write.task.id === activeId
+              ? { status: destinationColumn.slug }
+              : {}),
           });
           write.task.position = write.position;
         }
 
         for (const write of placementWrites(sourceColumn.tasks)) {
-          updateTask({ ...write.task, position: write.position });
+          updateTaskPosition({
+            id: write.task.id,
+            projectId: project.id,
+            position: write.position,
+          });
           write.task.position = write.position;
         }
       }

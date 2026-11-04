@@ -27,7 +27,7 @@ export function useUpdateTask() {
       if (variables.replaceAssigneeIds) {
         queryClient.invalidateQueries({ queryKey: ["task-relations"] });
       }
-      // Drag and drop between columns changes status through this hook.
+      // A full update can change the status.
       invalidatePlanningProgress(queryClient, variables.projectId);
     },
   });

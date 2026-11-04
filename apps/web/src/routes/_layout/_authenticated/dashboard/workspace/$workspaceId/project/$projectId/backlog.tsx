@@ -12,7 +12,7 @@ import TaskToolbar from "@/components/task-filters/task-toolbar";
 import { useDisplayConfig } from "@/components/task-filters/use-display-config";
 import { Button } from "@/components/ui/button";
 import { shortcuts } from "@/constants/shortcuts";
-import { useUpdateTask } from "@/hooks/mutations/task/use-update-task";
+import { useUpdateTaskStatus } from "@/hooks/mutations/task/use-update-task-status";
 import { useEstimateSort } from "@/hooks/queries/estimate/use-estimate-sort";
 import { useGetTasks } from "@/hooks/queries/task/use-get-tasks";
 import { useClassicBoardFilter } from "@/hooks/use-classic-board-filter";
@@ -47,7 +47,7 @@ function RouteComponent() {
   const { data } = useGetTasks(projectId);
   const { project, setProject } = useProjectStore();
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-  const { mutate: updateTask } = useUpdateTask();
+  const { mutate: updateTaskStatus } = useUpdateTaskStatus();
   // The backlog keeps its own filters and order; it lists planned and
   // archived tasks, so its ids include archived ones.
   const queryState = useTaskQueryState({
@@ -179,7 +179,7 @@ function RouteComponent() {
     }
 
     for (const task of plannedTasks) {
-      updateTask({
+      updateTaskStatus({
         ...task,
         status: entrySlug,
       });
