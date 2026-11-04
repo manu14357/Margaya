@@ -60,7 +60,7 @@ Open source under the [GNU AGPL-3.0](LICENSE), with a [commercial license](COMME
 - **Modules**: track a bigger feature across many tasks
 - **Estimates**: points, sizes or time
 - **Intake**: a review queue for incoming requests
-- **Pages**: docs and specs next to your tasks, edited together live, with version history
+- **Pages**: docs and specs next to your tasks, edited together live, with comments and version history
 - **Analytics**: open, created and completed work, with CSV export
 - **Forecast and risk**: when work will likely finish and what could make it slip
 
@@ -90,7 +90,7 @@ Works with Claude, or with your own local model through any OpenAI-compatible se
 
 - **Inbox** with snooze and archive, plus email notifications and digests
 - **Realtime updates**: everyone sees changes instantly
-- **Public boards and pages**: share a project or page with anyone, with moderated comments
+- **Public boards and pages**: share a project or page with anyone; public boards can also take moderated comments
 
 ### Integrations
 
@@ -186,6 +186,11 @@ services:
       - "5173:5173"
     env_file:
       - .env
+    environment:
+      # Attachments and images when no S3 bucket is configured.
+      MARGAYA_STORAGE_DIR: /app/apps/api/data/uploads
+    volumes:
+      - uploads_data:/app/apps/api/data/uploads
     depends_on:
       postgres:
         condition: service_healthy
@@ -193,6 +198,7 @@ services:
 
 volumes:
   postgres_data:
+  uploads_data:
 ```
 
 1. Save this as `compose.yml`.
@@ -203,11 +209,15 @@ volumes:
 
 Inside Docker Compose, Margaya reaches PostgreSQL at the hostname `postgres`, and the database is not exposed outside the Compose network. If you run the API on your host for development, add a loopback-only mapping (`127.0.0.1:5432:5432`) and set `DATABASE_URL` to match.
 
+**Upgrading an install whose compose file has no `uploads_data` volume?** Your uploaded files are inside the container, and recreating it deletes them. [Move them first](https://margaya.app/docs/core/installation/migration#move-uploads-onto-a-volume).
+
+Back up the database, uploads and secrets together. See [Backup and restore](https://margaya.app/docs/core/installation/backup-and-restore).
+
 ### What you need
 
 - **Required:** PostgreSQL.
 - **Optional:** Redis, only when you run more than one API instance.
-- **Optional:** S3-compatible storage for uploads. A built-in file store is used otherwise.
+- **Optional:** S3-compatible storage for uploads. Without it, uploads go to a built-in file store on the `uploads_data` volume.
 - **Optional:** pgvector, for AI semantic search.
 
 ### Other ways to deploy

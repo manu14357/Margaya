@@ -73,7 +73,7 @@ same pod. Set margaya.env.redis.url or margaya.env.redis.existingSecret.
 {{- if not .Values.margaya.env.s3.endpoint }}
 {{- $hasS3 := false }}
 {{- range .Values.margaya.extraEnv }}{{ if eq .name "S3_ENDPOINT" }}{{ $hasS3 = true }}{{ end }}{{ end }}
-{{- if not $hasS3 }}
+{{- if and (not $hasS3) (not (include "margaya.localStorage.active" .)) }}
 
 File uploads are off: set margaya.env.s3 to enable attachments and images.
 {{- end }}
