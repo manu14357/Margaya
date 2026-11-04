@@ -20,6 +20,69 @@ cleanup() {
 
 trap cleanup EXIT INT TERM
 
+on_mounted_volume() {
+  awk -v dir="$1" '$2 != "/" && (dir == $2 || index(dir, $2 "/") == 1) { found = 1 } END { exit !found }' /proc/mounts 2>/dev/null
+}
+
+warn_auth_secret() {
+  echo "WARNING: $1" >&2
+  echo "WARNING: Saved SMTP passwords, OAuth client secrets, AI keys and webhook signing secrets are encrypted with a key derived from AUTH_SECRET. They become unreadable, and everyone is signed out, when it changes." >&2
+  echo "WARNING: Fix this by setting AUTH_SECRET in your environment (openssl rand -hex 32) or by mounting a writable volume." >&2
+}
+
+new_auth_secret() {
+  node -e 'process.stdout.write(require("node:crypto").randomBytes(32).toString("hex"))'
+}
+
+# The built-in file store's folder, by the API's own rule (localStorageRoot).
+storage_dir() {
+  dir="$(printf '%s' "${MARGAYA_STORAGE_DIR:-}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+  dir="${dir:-data/uploads}"
+  case "$dir" in
+    /*) printf '%s' "$dir" ;;
+    *) printf '%s/%s' "$PWD" "${dir#./}" ;;
+  esac
+}
+
+# A blank AUTH_SECRET is generated once and kept in the file store's folder,
+# which is on the volume in every documented install. Its leading dot keeps it
+# out of reach of the asset routes: storage keys can't start with a dot. Using
+# the store's folder means an install that already mounts a volume needs no
+# change.
+load_auth_secret() {
+  folder="$(storage_dir)"
+
+  if ! mkdir -p -- "$folder" 2>/dev/null || [ ! -d "$folder" ]; then
+    AUTH_SECRET="$(new_auth_secret)"
+    warn_auth_secret "AUTH_SECRET is not set and the folder $folder can't be used to save one, so a new secret is generated on every start."
+    return 0
+  fi
+
+  secret_file="$folder/.auth-secret"
+  if [ -e "$secret_file" ]; then
+    stored_secret="$(tr -d '\r\n' 2>/dev/null <"$secret_file" || true)"
+    if [ "${#stored_secret}" -lt 32 ]; then
+      AUTH_SECRET="$(new_auth_secret)"
+      warn_auth_secret "AUTH_SECRET is not set and $secret_file can't be read or holds less than 32 characters. It was left as it is, and a new secret is generated on every start."
+      return 0
+    fi
+    AUTH_SECRET="$stored_secret"
+    echo "AUTH_SECRET not set — using the generated secret saved in $secret_file"
+  else
+    AUTH_SECRET="$(new_auth_secret)"
+    if ! (umask 077 && printf '%s\n' "$AUTH_SECRET" >"$secret_file.tmp") 2>/dev/null || ! mv -f -- "$secret_file.tmp" "$secret_file" 2>/dev/null; then
+      rm -f -- "$secret_file.tmp" 2>/dev/null || true
+      warn_auth_secret "AUTH_SECRET is not set and $folder isn't writable, so the generated secret could not be saved and a new one is generated on every start."
+      return 0
+    fi
+    echo "AUTH_SECRET not set — generated one and saved it in $secret_file"
+  fi
+
+  if ! on_mounted_volume "$folder"; then
+    warn_auth_secret "AUTH_SECRET is saved in $secret_file, but that folder isn't on a mounted volume, so it survives a restart and is lost when the container is recreated (for example, on upgrade)."
+  fi
+}
+
 # Derive MARGAYA_API_URL from MARGAYA_CLIENT_URL if not explicitly set
 client_url_trimmed="$(printf '%s' "${MARGAYA_CLIENT_URL:-}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
 client_url="${client_url_trimmed%/}"
@@ -45,11 +108,17 @@ if [ -z "${DATABASE_URL:-}" ]; then
   fi
 fi
 
-# Auto-generate AUTH_SECRET if not set
 if [ -z "${AUTH_SECRET:-}" ]; then
-  export AUTH_SECRET="$(node -e 'process.stdout.write(require("node:crypto").randomBytes(32).toString("hex"))')"
-  echo "WARNING: AUTH_SECRET not set — generated a random secret for this session."
-  echo "WARNING: Set AUTH_SECRET in your .env to persist sessions across restarts."
+  load_auth_secret
+  export AUTH_SECRET
+fi
+
+# The built-in file store loses files without a volume, so say so at every start.
+if [ -z "${S3_ENDPOINT:-}" ] && [ -z "${S3_BUCKET:-}" ] && [ "${MARGAYA_LOCAL_STORAGE:-true}" != "false" ]; then
+  uploads_dir="$(storage_dir)"
+  if ! on_mounted_volume "$uploads_dir"; then
+    echo "WARNING: Uploads are stored in $uploads_dir, which isn't on a mounted volume. Recreating the container (for example, on upgrade) deletes them. See the upgrade notes in the docs before you recreate it." >&2
+  fi
 fi
 
 /docker-entrypoint.d/env.sh
