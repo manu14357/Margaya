@@ -1,0 +1,129 @@
+---
+title: Backup and restore
+description: Back up a self-hosted Margaya install and restore it onto a fresh one, including the database, uploaded files and secrets.
+---
+
+## What to back up
+
+A restore needs all three of these. The database alone gives you tasks with broken attachments and saved passwords nobody can read.
+
+| What | Where it lives | Without it |
+| --- | --- | --- |
+| **Database** | The `postgres_data` volume, or your own PostgreSQL server | Everything is gone. |
+| **Uploaded files** | The `uploads_data` volume, or your S3 bucket | Attachments and images in tasks and pages are broken. |
+| **Secrets** | `.env`, or `.auth-secret` on the uploads volume if you left `AUTH_SECRET` blank | Everyone is signed out. Saved SMTP passwords, OAuth client secrets, AI keys, webhook signing secrets and notification tokens can't be read and must be entered again. |
+
+If you use S3-compatible storage, back up the bucket with your provider's tools. The steps below don't copy it.
+
+<Warning>
+A backup holds your database password, signing keys and everyone's data. Keep it private, and copy it to another machine: a backup on the same server won't survive losing the server.
+</Warning>
+
+## Back up
+
+The commands below are for the Docker Compose install. Run them next to your `compose.yml`, from Linux, macOS or WSL. PowerShell can corrupt the binary output.
+
+The [backup script](https://github.com/manu14357/Margaya/blob/main/deploy/margaya-backup.sh) does all three steps, checks the result, and writes a new dated folder each time:
+
+```bash
+curl -fsSLO https://raw.githubusercontent.com/manu14357/Margaya/main/deploy/margaya-backup.sh
+sh margaya-backup.sh /path/to/backups
+```
+
+To run it nightly, add it to cron, changing to your Compose folder first. The script doesn't delete old backups.
+
+To do the same by hand:
+
+```bash
+# Database
+docker compose exec -T postgres sh -c 'pg_dump -U "$POSTGRES_USER" -Fc "$POSTGRES_DB"' > database.dump
+
+# Uploaded files, plus .auth-secret if there is one
+docker compose exec -T margaya tar -czf - -C /app/apps/api/data/uploads . > uploads.tar.gz
+
+# Secrets
+cp .env env.backup
+```
+
+You can take a backup while Margaya is running. An upload that finishes between the two steps may be in one and not the other.
+
+## Restore
+
+These steps restore onto a fresh install, in a new folder or on a new server. Use the same Margaya version as the backup, or a newer one. Migrations run when the container starts, so the data is brought up to a newer version automatically.
+
+<Steps>
+<Step>
+**Put the files in place**
+
+Create your `compose.yml` from the [compose file page](/core/installation/docker-compose), or copy your old one. Put the saved `.env` next to it, so the new install has the same `POSTGRES_PASSWORD` and `AUTH_SECRET`:
+
+```bash
+cp env.backup .env
+```
+</Step>
+
+<Step>
+**Start only the database, and load the dump**
+
+```bash
+docker compose up -d --wait postgres
+docker compose exec -T postgres sh -c 'dropdb -U "$POSTGRES_USER" --if-exists --force "$POSTGRES_DB" && createdb -U "$POSTGRES_USER" "$POSTGRES_DB"'
+docker compose exec -T postgres sh -c 'pg_restore -U "$POSTGRES_USER" -d "$POSTGRES_DB" --no-owner --no-privileges --exit-on-error' < database.dump
+```
+
+This replaces whatever is in that database. If the old install used semantic search, use the same [pgvector compose file](/core/installation/docker-compose#postgresql-with-pgvector), because the dump needs that extension.
+</Step>
+
+<Step>
+**Load the uploaded files before Margaya starts**
+
+```bash
+docker compose run --rm --no-deps -T --entrypoint sh margaya -c 'tar -xzf - -C /app/apps/api/data/uploads' < uploads.tar.gz
+```
+</Step>
+
+<Step>
+**Start Margaya and check it**
+
+```bash
+docker compose up -d
+curl -s http://localhost:5173/api/health/ready
+```
+
+You want `{"status":"ready"}`. Then sign in with an existing account, open a task with an attachment to check the file loads, and open **Settings** > **Instance** > **Email**. If a saved password says it can't be read, the `AUTH_SECRET` doesn't match the backup.
+</Step>
+</Steps>
+
+<Note>
+Restoring into a database that a running Margaya is using will fail or corrupt its view of the data. To restore over an existing install, run `docker compose stop margaya` first and follow the same steps. Empty the uploads volume first if you want it to match the backup exactly; otherwise files added since the backup stay behind, unused.
+</Note>
+
+## Test your backup
+
+Restore onto a scratch install at least once, so you know your backup works before you need it. Use a new folder, because Compose names the volumes after the folder and this keeps your real data out of it. Use another machine, or change the published port in the scratch `compose.yml` if port 5173 is taken.
+
+```bash
+mkdir margaya-restore-test && cd margaya-restore-test
+# Copy compose.yml and the backup files here, then follow the restore steps.
+```
+
+When you're done, run `docker compose down -v` from inside that folder only: `-v` deletes the volumes.
+
+## Roll back an upgrade
+
+Going back to an older image doesn't undo its migrations. To roll back:
+
+1. [Take a backup](#back-up) before you upgrade.
+2. If the upgrade goes wrong, run `docker compose stop margaya` and set the previous image tag in `compose.yml`.
+3. [Restore the database](#restore) from that backup.
+4. Run `docker compose up -d margaya`.
+
+Anything changed since the backup is lost. If the release notes say the previous version can read the new schema, you can skip the restore and keep your recent changes. See [Upgrading Margaya](/core/installation/migration#rollback).
+
+## Kubernetes
+
+The same three things apply. The [Helm chart's README](https://github.com/manu14357/Margaya/blob/main/charts/margaya/README.md#backup-and-recovery) has the `kubectl` commands. The chart keeps `AUTH_SECRET` in a Kubernetes Secret or in your own `existingSecret`, so keep a copy outside the cluster.
+
+## External PostgreSQL
+
+With your own or a managed PostgreSQL server, use its backups, or run `pg_dump -Fc` against `DATABASE_URL` with a client of the same major version. The restore command is the same `pg_restore` as above, pointed at that server.

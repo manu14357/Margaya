@@ -16,7 +16,8 @@ Database migrations run automatically at container startup, so there is no separ
 
 ## Before you upgrade
 
-- **Back up your database.** A quick `pg_dump` of the `margaya` database gives you a rollback path if something goes wrong.
+- **Check your uploads are on a volume.** If your `compose.yml` has no `uploads_data` volume and you don't use S3, your files are inside the container and recreating it deletes them. [Move them first](#move-uploads-onto-a-volume).
+- **Take a backup.** [Back up the database, uploads and secrets](/core/installation/backup-and-restore). It's your rollback path if something goes wrong.
 - **Check the release notes** for the version you're upgrading to, in case a release calls out a required environment variable change or a breaking behavior change.
 - **Pin your image tag** in production (for example `ghcr.io/manu14357/margaya:1.2.0`) rather than tracking `latest`, so upgrades happen deliberately instead of on every restart.
 
@@ -53,12 +54,66 @@ docker compose ps
 curl -s https://your-margaya-instance.com/api/health
 ```
 
-You want the `margaya` container reporting healthy and `{"status":"ok"}` from the health endpoint.
+You want the `margaya` container reporting healthy and `{"status":"ok"}` from the health endpoint. To check that it can reach the database too, use `/api/health/ready`, which answers `{"status":"ready"}`, or `503` when the database is down.
 </Step>
 </Steps>
 
+## Move uploads onto a volume
+
+Earlier versions of the README and these docs had no uploads volume in their compose file. If yours doesn't either, and you don't use S3, your files are at `/app/data/uploads` inside the container. Move them before you recreate the container. Don't run `docker compose pull` and `up` first: that deletes them.
+
+<Steps>
+<Step>
+**Copy the files out of the running container**
+
+```bash
+docker compose cp margaya:/app/data/uploads ./uploads-copy
+```
+
+Check that `./uploads-copy` holds your files before you go on. If the command says the path doesn't exist, nothing was uploaded and you can skip the last step.
+</Step>
+
+<Step>
+**Add the volume to `compose.yml`**
+
+```yml
+services:
+  margaya:
+    environment:
+      MARGAYA_STORAGE_DIR: /app/apps/api/data/uploads
+    volumes:
+      - uploads_data:/app/apps/api/data/uploads
+
+volumes:
+  uploads_data:
+```
+
+Merge these into your existing `margaya` service and `volumes` section. Then recreate the container:
+
+```bash
+docker compose up -d margaya
+```
+</Step>
+
+<Step>
+**Copy the files onto the volume**
+
+```bash
+tar -C ./uploads-copy -cf - . | docker compose exec -T margaya tar -xf - -C /app/apps/api/data/uploads
+```
+
+Run this from Linux, macOS or WSL, not PowerShell. Then restart Margaya with `docker compose restart margaya`, open a task with an attachment to check the file loads, and delete `./uploads-copy`.
+</Step>
+</Steps>
+
+If your own compose file already mounts a volume at `/app/data/uploads` without setting `MARGAYA_STORAGE_DIR`, your files are safe. Leave it as it is.
+
 ## Upgrade notes
 
+- **Readiness check.** `/api/health` only reports that the process is running. The new `/api/health/ready` also tests the database, and the Helm chart's readiness probe now uses it. If you pin `margaya.image.tag` to an older image, keep the chart on a matching version or set `margaya.readinessProbe.httpGet.path` back to `/api/health`.
+- **Blank `AUTH_SECRET`.** The bundled image used to generate a new secret on every start. It now generates one once and saves it on the uploads volume, so sessions and saved secrets survive restarts. A value you set yourself is used as before. Saved secrets that were already unreadable stay that way: enter them again once.
+- **A custom role named `guest`.** `guest` is now a [built-in role](/core/functional/guest-access) limited to chosen projects. A custom role with that name is renamed `custom-guest`, along with everyone who holds it, so they keep the access they have today.
+- **Removing a member.** Removing someone from their last workspace now [signs them out and deletes their API keys](/core/functional/collaborate-with-team#remove-a-member). Keys limited to specific projects also lose that workspace's projects.
 - **Workspace time zones.** Workspaces gain a time zone setting that defines "today" for cycle status, automations and analytics. Every existing workspace starts on **UTC**, so behavior is unchanged until an admin picks another zone in **Settings -> Workspace -> General**. Users can also set their own time zone for reminders and email digests; until they do, UTC is used.
 
 ## Rollback
@@ -70,9 +125,10 @@ docker compose pull margaya   # with the previous tag set in compose.yml or .env
 docker compose up -d margaya
 ```
 
-Restore your database backup only if the new version's migrations changed data in a way the previous version can't read. Most releases are forward-compatible at the schema level; check the release notes if you're unsure.
+Migrations run forward only: going back to an older image doesn't undo them. Restore your [database backup](/core/installation/backup-and-restore#restore) if the new version's migrations changed data in a way the previous version can't read, or if the old version won't start. Most releases are forward-compatible at the schema level; check the release notes if you're unsure. Anything changed since the backup is lost when you restore it.
 
 ## Next
 
+- [Backup and restore](/core/installation/backup-and-restore)
 - [Environment variables](/core/installation/environment-variables)
 - [Start the services](/core/installation/start-services)
