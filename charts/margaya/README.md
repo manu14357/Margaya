@@ -336,6 +336,10 @@ margaya:
 
 Leave `existingSecret.name` empty on EKS to use the service account's IAM role. Other optional variables (`S3_MAX_IMAGE_UPLOAD_BYTES`, `S3_PRESIGN_TTL_SECONDS`, SMTP, retention periods) go in `extraEnv`.
 
+### Health checks
+
+`margaya.livenessProbe` uses `/api/health`, which only reports that the process is running, so a database outage doesn't restart the pods. `margaya.readinessProbe` uses `/api/health/ready`, which also tests the database: while it answers `503`, the pod gets no traffic. If you pin `margaya.image.tag` to an image older than this check, set `margaya.readinessProbe.httpGet.path` back to `/api/health`.
+
 ### Using an Existing Secret for Sensitive Data
 For production environments, it's recommended to store sensitive data like the auth secret and database credentials in Kubernetes Secrets:
 When `postgresql.auth.existingSecret` is used with bundled PostgreSQL, the password is expanded by Kubernetes into `DATABASE_URL` at runtime and must be URL-safe. If your password contains reserved URI characters such as `@`, `:`, `/`, `#`, `%`, or spaces, use an external database and provide the complete connection URI through `margaya.env.database.external.existingSecret`.
@@ -410,10 +414,25 @@ kubectl delete pvc margaya-postgresql-data -n margaya-test --ignore-not-found
 ```
 To preserve data, rotate the password inside PostgreSQL first, then update the Helm values to match.
 ### Backup and Recovery
-For production deployments, consider implementing regular database backups:
+A restore needs three things: the database, uploads (unless you use S3) and `AUTH_SECRET`. Without the same `AUTH_SECRET`, SMTP passwords, OAuth client secrets, AI keys and webhook signing secrets saved in the app can't be read. Keep a copy of it (and of `postgresql.auth.password`) outside the cluster. The steps are in [Backup and restore](https://margaya.app/docs/core/installation/backup-and-restore); on Kubernetes the commands look like this. Don't add `-t` to them: it corrupts the binary data.
+
 ```bash
-# Example backup command
-kubectl exec -it deployment/my-margaya-postgresql -- pg_dump -U margaya_user margaya > margaya-backup.sql
+# Database
+kubectl exec deployment/my-margaya-postgresql -- pg_dump -U margaya_user -Fc margaya > margaya.dump
+
+# Uploads (built-in store only)
+kubectl exec deployment/my-margaya -- tar -czf - -C /app/apps/api/data/uploads . > uploads.tar.gz
+```
+
+To restore, scale the app down, then recreate the database and load the dump:
+
+```bash
+kubectl scale deployment/my-margaya --replicas=0
+kubectl exec deployment/my-margaya-postgresql -- dropdb -U margaya_user --if-exists --force margaya
+kubectl exec deployment/my-margaya-postgresql -- createdb -U margaya_user margaya
+kubectl exec -i deployment/my-margaya-postgresql -- pg_restore -U margaya_user -d margaya --no-owner --no-privileges < margaya.dump
+kubectl scale deployment/my-margaya --replicas=1
+kubectl exec -i deployment/my-margaya -- tar -xzf - -C /app/apps/api/data/uploads < uploads.tar.gz
 ```
 ### Migration from SQLite
 If you're migrating from a previous SQLite-based installation, you'll need to:
