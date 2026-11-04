@@ -11,6 +11,8 @@ type ToastOptions = {
   description?: string;
   action?: ToastAction;
   cancel?: ToastAction;
+  /** Stays until dismissed: for something the user still has to act on. */
+  persistent?: boolean;
 };
 
 function addToast(
@@ -26,6 +28,7 @@ function addToast(
     title,
     description: options?.description,
     type: variant,
+    ...(options?.persistent ? { timeout: 0 } : {}),
     actionProps: action
       ? {
           children: action.label,

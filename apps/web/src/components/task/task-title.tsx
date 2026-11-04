@@ -3,7 +3,6 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
-  useMemo,
   useRef,
 } from "react";
 import { useForm } from "react-hook-form";
@@ -13,7 +12,15 @@ import { Form, FormField } from "@/components/ui/form";
 import { useUpdateTaskTitle } from "@/hooks/mutations/task/use-update-task-title";
 import useGetTask from "@/hooks/queries/task/use-get-task";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
-import debounce from "@/lib/debounce";
+import { toast } from "@/lib/toast";
+import {
+  discardTaskEdit,
+  saveTaskEdit,
+  taskEditKey,
+  unsavedTaskEdit,
+} from "./task-edit-saves";
+
+const TITLE_SAVE_DEBOUNCE_MS = 800;
 
 type TaskTitleProps = {
   taskId: string;
@@ -51,33 +58,50 @@ export default function TaskTitle({ taskId }: TaskTitleProps) {
     if (task?.title !== undefined) isInitializedRef.current = true;
   }, [task?.title]);
 
-  const saveTitle = useCallback(async (title: string) => {
-    if (!isInitializedRef.current) return;
+  // A title that failed to save, or is still waiting to, stays in the field
+  // when a refetch or a return to this task brings the stored one.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: refill whenever the stored title arrives
+  useEffect(() => {
+    const unsaved = unsavedTaskEdit(taskEditKey("title", taskId));
+    if (unsaved !== undefined) form.setValue("title", unsaved);
+  }, [form, taskId, task?.title]);
 
-    const currentTask = taskRef.current;
-    const updateTaskFn = updateTaskRef.current;
-
-    if (!currentTask || !updateTaskFn) return;
-
-    try {
-      await updateTaskFn({
-        ...currentTask,
-        title,
-      });
-    } catch (error) {
-      console.error("Failed to update title:", error);
-    }
-  }, []);
-
-  const debouncedUpdate = useMemo(() => debounce(saveTitle, 800), [saveTitle]);
-
-  const handleTitleChange = useCallback(
-    (value: string) => {
+  const saveTitle = useCallback(
+    (title: string, delayMs?: number) => {
       if (!isInitializedRef.current) return;
 
-      debouncedUpdate(value);
+      const editedTask = taskRef.current;
+      if (!editedTask) return;
+
+      saveTaskEdit(
+        taskEditKey("title", editedTask.id),
+        title,
+        {
+          send: (value) => {
+            // The field may show another task by the time this runs.
+            const latest = taskRef.current;
+            const base = latest?.id === editedTask.id ? latest : editedTask;
+            return updateTaskRef.current({ ...base, title: value });
+          },
+          notifyFailed: (retry) =>
+            toast.error(t("tasks:detail.saveError.title"), {
+              persistent: true,
+              action: {
+                label: t("tasks:detail.saveError.retry"),
+                onClick: retry,
+              },
+            }),
+          dismissFailed: toast.dismiss,
+        },
+        delayMs,
+      );
     },
-    [debouncedUpdate],
+    [t],
+  );
+
+  const handleTitleChange = useCallback(
+    (value: string) => saveTitle(value, TITLE_SAVE_DEBOUNCE_MS),
+    [saveTitle],
   );
 
   // The title wraps instead of scrolling sideways: the textarea grows to fit
@@ -108,19 +132,19 @@ export default function TaskTitle({ taskId }: TaskTitleProps) {
     if (event.key === "Enter") {
       // A title is one line: Enter saves now instead of adding a newline.
       event.preventDefault();
-      debouncedUpdate.cancel();
+      discardTaskEdit(taskEditKey("title", taskId));
       const value = form.getValues("title");
-      if (value !== taskRef.current?.title) void saveTitle(value);
+      if (value !== taskRef.current?.title) saveTitle(value);
       event.currentTarget.blur();
     } else if (event.key === "Escape") {
       // Escape leaves the field first, so it doesn't also close the panel.
       event.preventDefault();
       event.stopPropagation();
-      debouncedUpdate.cancel();
+      discardTaskEdit(taskEditKey("title", taskId));
       const original = titleAtFocusRef.current;
       form.setValue("title", original);
       // Undo a save the debounce already sent.
-      if (original !== taskRef.current?.title) void saveTitle(original);
+      if (original !== taskRef.current?.title) saveTitle(original);
       event.currentTarget.blur();
     }
   };

@@ -70,7 +70,7 @@ import { useUpdateTaskDescription } from "@/hooks/mutations/task/use-update-task
 import { useAiAvailability } from "@/hooks/queries/ai/use-ai";
 import useGetTask from "@/hooks/queries/task/use-get-task";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
-import { useGetActiveWorkspaceUsers } from "@/hooks/queries/workspace-users/use-get-active-workspace-users";
+import { useMentionMembers } from "@/hooks/use-mention-members";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { cn } from "@/lib/cn";
 import { parseTaskListMarkdownToNodes } from "@/lib/editor-task-list-paste";
@@ -95,6 +95,7 @@ import {
   ShikiCodeBlock,
 } from "./extensions/shiki-code-block";
 import { TaskItemWithCheckbox } from "./extensions/task-item-with-checkbox";
+import { saveTaskEdit, taskEditKey, unsavedTaskEdit } from "./task-edit-saves";
 import "tippy.js/dist/tippy.css";
 
 type TaskDescriptionProps = {
@@ -311,19 +312,8 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
   // Mentions use the comment editor's node, so the API indexes and notifies
   // description mentions the same way.
   const { data: activeWorkspace } = useActiveWorkspace();
-  const { data: workspaceUsers } = useGetActiveWorkspaceUsers(
-    activeWorkspace?.id ?? "",
-  );
   const mentionMembersRef = useRef<MentionMember[]>([]);
-  mentionMembersRef.current = useMemo(
-    () =>
-      (workspaceUsers?.members ?? []).map((member) => ({
-        id: member.userId,
-        label: member.user?.name ?? member.user?.email ?? "",
-        image: member.user?.image ?? null,
-      })),
-    [workspaceUsers],
-  );
+  mentionMembersRef.current = useMentionMembers(activeWorkspace?.id ?? "");
   const { data: task } = useGetTask(taskId);
   const { mutateAsync: updateTaskDescription } = useUpdateTaskDescription();
   const { canUpdateTasks } = useWorkspacePermission();
@@ -606,42 +596,38 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
     };
   }, []);
 
-  const pendingDescriptionSavesRef = useRef(
-    new Map<string, ReturnType<typeof setTimeout>>(),
+  const scheduleDescriptionSave = useCallback(
+    (markdown: string) => {
+      if (!canEditRef.current) return;
+
+      const editedTask = taskRef.current;
+      if (!editedTask) return;
+
+      saveTaskEdit(
+        taskEditKey("description", editedTask.id),
+        markdown,
+        {
+          send: (value) => {
+            const latestTask = taskRef.current;
+            const base =
+              latestTask?.id === editedTask.id ? latestTask : editedTask;
+            return updateTaskRef.current({ ...base, description: value });
+          },
+          notifyFailed: (retry) =>
+            toast.error(t("tasks:detail.saveError.description"), {
+              persistent: true,
+              action: {
+                label: t("tasks:detail.saveError.retry"),
+                onClick: retry,
+              },
+            }),
+          dismissFailed: toast.dismiss,
+        },
+        DESCRIPTION_SAVE_DEBOUNCE_MS,
+      );
+    },
+    [t],
   );
-
-  const scheduleDescriptionSave = useCallback((markdown: string) => {
-    if (!canEditRef.current) return;
-
-    const editedTask = taskRef.current;
-    if (!editedTask) return;
-
-    const timers = pendingDescriptionSavesRef.current;
-    const pending = timers.get(editedTask.id);
-    if (pending) clearTimeout(pending);
-
-    timers.set(
-      editedTask.id,
-      setTimeout(async () => {
-        timers.delete(editedTask.id);
-
-        const updateTaskFn = updateTaskRef.current;
-        if (!updateTaskFn) return;
-
-        const latestTask = taskRef.current;
-        const base = latestTask?.id === editedTask.id ? latestTask : editedTask;
-
-        try {
-          await updateTaskFn({
-            ...base,
-            description: markdown,
-          });
-        } catch (error) {
-          console.error("Failed to update description:", error);
-        }
-      }, DESCRIPTION_SAVE_DEBOUNCE_MS),
-    );
-  }, []);
 
   const editor = useEditor(
     {
@@ -1064,7 +1050,12 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
       latestSyncedMarkdownRef.current = "";
     }
 
-    const incomingMarkdown = formatMarkdown(task?.description || "");
+    // Text that failed to save, or is still waiting to, wins over the stored
+    // copy, so a refetch or a return to this task can't wipe it.
+    const incomingMarkdown = formatMarkdown(
+      unsavedTaskEdit(taskEditKey("description", taskId)) ??
+        (task?.description || ""),
+    );
     if (!hasHydratedRef.current) {
       isSyncingExternalContentRef.current = true;
       latestSyncedMarkdownRef.current = incomingMarkdown;

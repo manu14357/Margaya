@@ -6,6 +6,7 @@ import {
   screen,
 } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { discardTaskEdit, taskEditKey } from "./task-edit-saves";
 import TaskTitle from "./task-title";
 
 const m = vi.hoisted(() => ({
@@ -16,6 +17,12 @@ const m = vi.hoisted(() => ({
   },
   canEdit: true,
   mutateAsync: vi.fn(),
+  toastError: vi.fn(),
+  toastDismiss: vi.fn(),
+}));
+
+vi.mock("@/lib/toast", () => ({
+  toast: { error: m.toastError, dismiss: m.toastDismiss },
 }));
 
 vi.mock("react-i18next", () => ({
@@ -36,10 +43,15 @@ beforeEach(() => {
   vi.useFakeTimers();
   m.canEdit = true;
   m.mutateAsync.mockReset().mockResolvedValue(undefined);
+  m.toastError.mockReset().mockReturnValue("failure-toast");
+  m.toastDismiss.mockReset();
+  vi.spyOn(console, "error").mockImplementation(() => {});
 });
 afterEach(() => {
   cleanup();
+  discardTaskEdit(taskEditKey("title", "task-1"));
   vi.useRealTimers();
+  vi.restoreAllMocks();
 });
 
 function titleField() {
@@ -98,6 +110,59 @@ describe("TaskTitle", () => {
     act(() => vi.advanceTimersByTime(1000));
     expect(m.mutateAsync).not.toHaveBeenCalled();
     expect(onParentKeyDown).not.toHaveBeenCalled();
+  });
+
+  it("shows a failed save, keeps the text, and saves it on retry", async () => {
+    m.mutateAsync.mockRejectedValueOnce(new Error("offline"));
+    const { unmount } = render(<TaskTitle taskId="task-1" />);
+    const field = titleField();
+    fireEvent.change(field, { target: { value: "Renamed" } });
+    await act(() => vi.advanceTimersByTimeAsync(800));
+
+    expect(m.mutateAsync).toHaveBeenCalledTimes(1);
+    expect(m.toastError).toHaveBeenCalledTimes(1);
+    const [message, options] = m.toastError.mock.calls[0] ?? [];
+    expect(message).toBe("tasks:detail.saveError.title");
+    expect(options.persistent).toBe(true);
+    expect(options.action.label).toBe("tasks:detail.saveError.retry");
+    expect(field).toHaveValue("Renamed");
+
+    const unload = new Event("beforeunload", { cancelable: true });
+    window.dispatchEvent(unload);
+    expect(unload.defaultPrevented).toBe(true);
+
+    // Closing the panel and coming back still shows the unsaved text.
+    unmount();
+    render(<TaskTitle taskId="task-1" />);
+    expect(titleField()).toHaveValue("Renamed");
+
+    await act(async () => {
+      options.action.onClick();
+      await vi.advanceTimersByTimeAsync(0);
+    });
+    expect(m.mutateAsync).toHaveBeenCalledTimes(2);
+    expect(m.mutateAsync).toHaveBeenLastCalledWith({
+      ...m.task,
+      title: "Renamed",
+    });
+
+    const afterRetry = new Event("beforeunload", { cancelable: true });
+    window.dispatchEvent(afterRetry);
+    expect(afterRetry.defaultPrevented).toBe(false);
+  });
+
+  it("warns before the tab closes while a save is waiting", async () => {
+    render(<TaskTitle taskId="task-1" />);
+    fireEvent.change(titleField(), { target: { value: "Renamed" } });
+
+    const waiting = new Event("beforeunload", { cancelable: true });
+    window.dispatchEvent(waiting);
+    expect(waiting.defaultPrevented).toBe(true);
+
+    await act(() => vi.advanceTimersByTimeAsync(800));
+    const saved = new Event("beforeunload", { cancelable: true });
+    window.dispatchEvent(saved);
+    expect(saved.defaultPrevented).toBe(false);
   });
 
   it("is read-only without permission to edit tasks", () => {

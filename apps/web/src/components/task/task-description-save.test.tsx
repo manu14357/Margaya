@@ -3,7 +3,9 @@ import { Extension } from "@tiptap/core";
 import TaskItem from "@tiptap/extension-task-item";
 import type { Editor } from "@tiptap/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { toast } from "@/lib/toast";
 import TaskDescription from "./task-description";
+import { discardTaskEdit, taskEditKey } from "./task-edit-saves";
 
 const mocks = vi.hoisted(() => ({
   t: (key: string) => key,
@@ -133,7 +135,10 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  discardTaskEdit(taskEditKey("description", "task-a"));
+  discardTaskEdit(taskEditKey("description", "task-b"));
   vi.useRealTimers();
+  vi.mocked(toast.error).mockReset();
 });
 
 describe("TaskDescription pending saves", () => {
@@ -175,6 +180,55 @@ describe("TaskDescription pending saves", () => {
     });
 
     expect(savedTaskIds().sort()).toEqual(["task-a", "task-b"]);
+  });
+});
+
+describe("TaskDescription failed saves", () => {
+  it("shows the failure, keeps the text across a return to the task, and retries", async () => {
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    mocks.mutateAsync.mockRejectedValueOnce(new Error("offline"));
+    vi.mocked(toast.error).mockReturnValue("failure-toast");
+
+    const { container, rerender } = render(<TaskDescription taskId="task-a" />);
+    await waitFor(() => expect(container.textContent).toContain("alpha"));
+    await settle();
+    act(() => {
+      latestEditor().commands.insertContent(" edited in a");
+    });
+
+    const unloadWhileWaiting = new Event("beforeunload", { cancelable: true });
+    window.dispatchEvent(unloadWhileWaiting);
+    expect(unloadWhileWaiting.defaultPrevented).toBe(true);
+
+    await vi.waitFor(() => expect(toast.error).toHaveBeenCalledTimes(1), {
+      timeout: DEBOUNCE_MS * 4,
+    });
+    const [message, options] = vi.mocked(toast.error).mock.calls[0] ?? [];
+    expect(message).toBe("tasks:detail.saveError.description");
+    expect(options?.persistent).toBe(true);
+    expect(container.textContent).toContain("edited in a");
+
+    // Away and back: the stored copy must not replace the unsaved text.
+    rerender(<TaskDescription taskId="task-b" />);
+    await waitFor(() => expect(container.textContent).toContain("bravo"));
+    rerender(<TaskDescription taskId="task-a" />);
+    await waitFor(() => expect(container.textContent).toContain("edited in a"));
+
+    await act(async () => {
+      options?.action?.onClick?.();
+    });
+    expect(mocks.mutateAsync).toHaveBeenCalledTimes(2);
+    expect(mocks.mutateAsync.mock.calls[1]?.[0]).toMatchObject({
+      id: "task-a",
+      description: expect.stringContaining("edited in a"),
+    });
+
+    const unloadAfterRetry = new Event("beforeunload", { cancelable: true });
+    window.dispatchEvent(unloadAfterRetry);
+    expect(unloadAfterRetry.defaultPrevented).toBe(false);
+    consoleError.mockRestore();
   });
 });
 
