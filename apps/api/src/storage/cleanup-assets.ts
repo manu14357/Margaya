@@ -4,6 +4,7 @@ import {
   activityTable,
   assetTable,
   commentTable,
+  taskDescriptionVersionTable,
   taskTable,
 } from "../database/schema";
 import { deleteS3Object } from "./s3";
@@ -41,7 +42,8 @@ export interface AssetCleanupScope {
 
 /**
  * Check whether an asset ID is still referenced in any content belonging to
- * the same task (description, comments, or activity comments).
+ * the same task (description, comments, activity comments, or a saved
+ * description version, which can still be restored).
  */
 async function isAssetReferencedElsewhere(
   assetId: string,
@@ -84,7 +86,19 @@ async function isAssetReferencedElsewhere(
     return true;
   }
 
-  return false;
+  const versionRefs = await db
+    .select({ content: taskDescriptionVersionTable.content })
+    .from(taskDescriptionVersionTable)
+    .where(
+      and(
+        eq(taskDescriptionVersionTable.taskId, taskId),
+        like(taskDescriptionVersionTable.content, pattern),
+      ),
+    );
+
+  return versionRefs.some((ref) =>
+    contentReferencesAsset(ref.content, assetId),
+  );
 }
 
 export async function deleteOrphanedAssets(

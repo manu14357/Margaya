@@ -1,6 +1,7 @@
 import { desc, eq, inArray } from "drizzle-orm";
 import db from "../database";
 import { taskDescriptionVersionTable } from "../database/schema";
+import { deleteOrphanedAssets } from "../storage/cleanup-assets";
 import {
   decideVersionAction,
   sameDescription,
@@ -14,6 +15,7 @@ const newestFirst = [
   desc(taskDescriptionVersionTable.id),
 ] as const;
 
+/** Removes versions past the limit and returns the text they held. */
 async function pruneVersions(tx: Transaction, taskId: string) {
   const rows = await tx
     .select({ id: taskDescriptionVersionTable.id })
@@ -21,11 +23,12 @@ async function pruneVersions(tx: Transaction, taskId: string) {
     .where(eq(taskDescriptionVersionTable.taskId, taskId))
     .orderBy(...newestFirst);
   const excess = versionsBeyondLimit(rows.map((row) => row.id));
-  if (excess.length > 0) {
-    await tx
-      .delete(taskDescriptionVersionTable)
-      .where(inArray(taskDescriptionVersionTable.id, excess));
-  }
+  if (excess.length === 0) return [];
+  const pruned = await tx
+    .delete(taskDescriptionVersionTable)
+    .where(inArray(taskDescriptionVersionTable.id, excess))
+    .returning({ content: taskDescriptionVersionTable.content });
+  return pruned.map((version) => version.content);
 }
 
 /**
@@ -33,8 +36,9 @@ async function pruneVersions(tx: Transaction, taskId: string) {
  * task without history also keeps the text it replaces (unattributed, at the
  * task's last update), so that text can be restored. Then the new text
  * updates the author's newest version (same author, under ten minutes, not
- * a restore) or becomes a new one, and only the newest 50 are kept. Two
- * racing saves may both insert; that is acceptable.
+ * a restore) or becomes a new one, and only the newest 50 are kept. Images
+ * only a pruned version still used are deleted with it. Two racing saves may
+ * both insert; that is acceptable.
  */
 export async function recordDescriptionVersion({
   taskId,
@@ -56,7 +60,7 @@ export async function recordDescriptionVersion({
 }) {
   if (sameDescription(previous, next)) return;
 
-  await db.transaction(async (tx) => {
+  const pruned = await db.transaction(async (tx) => {
     const [newest] = await tx
       .select({
         id: taskDescriptionVersionTable.id,
@@ -88,7 +92,7 @@ export async function recordDescriptionVersion({
         .update(taskDescriptionVersionTable)
         .set({ content: next, savedAt: now })
         .where(eq(taskDescriptionVersionTable.id, decision.id));
-      return;
+      return [];
     }
 
     await tx.insert(taskDescriptionVersionTable).values({
@@ -98,6 +102,13 @@ export async function recordDescriptionVersion({
       savedAt: now,
       createdAt: now,
     });
-    await pruneVersions(tx, taskId);
+    return pruneVersions(tx, taskId);
   });
+
+  // After the commit, so the cleanup no longer sees the pruned versions.
+  if (pruned.length > 0) {
+    deleteOrphanedAssets(pruned.join("\n"), null, { taskId }).catch((error) => {
+      console.error("Failed to clean up a pruned version's images:", error);
+    });
+  }
 }
