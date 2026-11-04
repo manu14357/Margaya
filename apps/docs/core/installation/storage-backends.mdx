@@ -5,12 +5,9 @@ description: Configure private uploads with MinIO, AWS S3, or Cloudflare R2.
 
 ## Overview
 
-Margaya uses S3-compatible object storage for uploads in:
+Uploads work without any of this: by default they go to a [built-in file store](/core/installation/object-storage-and-image-uploads#built-in-file-store-no-s3-needed). This page is for when you want S3-compatible object storage instead.
 
-- task descriptions
-- task comments
-
-The browser uploads directly to the configured storage backend using presigned URLs.
+With a backend configured, the browser uploads directly to it using presigned URLs.
 
 Margaya then serves uploaded assets back through its own API.
 

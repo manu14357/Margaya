@@ -27,6 +27,7 @@ Margaya ships a [Coolify-optimized Docker Compose file](https://github.com/manu1
 
 - **PostgreSQL 16** with a persistent volume; Margaya waits for its health check before starting.
 - **Margaya bundled image** (nginx + API in one container) on port `5173`.
+- **Uploads** on a persistent volume, `uploads_data`. If you deployed before this volume was added, [move your files onto it](/core/installation/migration#move-uploads-onto-a-volume) before you redeploy.
 - **Margaya version**: the image tracks `latest`, so a redeploy picks up the newest release. The API runs database migrations on startup, so set `MARGAYA_IMAGE_TAG` to a release tag if you would rather upgrade deliberately.
 - **`MARGAYA_API_URL` is derived automatically** from `MARGAYA_CLIENT_URL` by the container entrypoint — no extra API URL configuration needed.
 - **No host port mappings or custom networks**: Coolify's proxy handles all external traffic.

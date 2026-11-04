@@ -23,11 +23,18 @@ store on the API's disk, so attachments and images work on a fresh install:
 - downloads go through the same authorized `/api/asset/{id}` route as with S3:
   a file from a workspace you don't belong to answers 404, and nothing lists
   the folder
+- new files and folders are readable only by the user the API runs as (modes
+  `0600` and `0700`), so other users on a shared host can't read uploads or
+  exports. Back the folder up as that user or as root: the
+  [backup steps](/core/installation/backup-and-restore) run inside the
+  container, as that user. Folders and files an earlier version created keep
+  their modes
 - uploads that were never finalized are deleted after a day by an hourly job
 
-Back the folder up with your database. The store belongs to one machine: with
-several API instances or replicas, use S3-compatible storage or a volume they
-all share. `MARGAYA_LOCAL_STORAGE=false` turns it off. Switching to S3 later
+Without a volume on that folder, files are deleted when the container is
+recreated. [Back the folder up](/core/installation/backup-and-restore) with your
+database. The store belongs to one machine: with several API instances or
+replicas, use S3-compatible storage or a volume they all share. `MARGAYA_LOCAL_STORAGE=false` turns it off. Switching to S3 later
 applies to new uploads; files already on disk are not moved.
 
 ## S3-compatible storage
@@ -239,7 +246,7 @@ Object keys start with `S3_KEY_PREFIX` (when set), then:
 - `workspace/<id>/project/<id>/page/<id>/files/...` for files in [pages](/core/functional/pages)
 - `exports/<workspace id>/<export id>/...` for [task exports](/core/functional/export-tasks)
 
-Margaya deletes these objects itself: when an attachment is deleted, when a task or project is deleted permanently (by hand or by the trash purge after `TRASH_RETENTION_DAYS`), and when an export is deleted or expires. Deletes happen right after the database change; if storage cannot be reached at that moment, the object is left behind.
+Margaya deletes these objects itself: when an attachment is deleted, when a task or project is deleted permanently (by hand or by the trash purge after `TRASH_RETENTION_DAYS`; a file that other text in the workspace still links is kept for that text), and when an export is deleted or expires. Deletes happen right after the database change; if storage cannot be reached at that moment, the object is left behind.
 
 Margaya never deletes an upload that was not finalized: the browser closed during an upload, or finalize refused the file (wrong size or type). These objects are not linked to anything and nobody can open them through Margaya, but they use space.
 

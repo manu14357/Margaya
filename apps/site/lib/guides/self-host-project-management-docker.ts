@@ -27,7 +27,7 @@ export const selfHostProjectManagementDocker: Guide = {
         {
           title: "Create the compose file",
           body: [
-            "The compose file defines two services. `postgres` keeps its data in a named volume. `margaya` is the combined web app and API, and it waits for the database to report healthy before it starts.",
+            "The compose file defines two services. `postgres` keeps its data in a named volume. `margaya` is the combined web app and API. It keeps uploaded files in a second volume, and it waits for the database to report healthy before it starts.",
           ],
           code: {
             label: "compose.yml",
@@ -52,13 +52,18 @@ export const selfHostProjectManagementDocker: Guide = {
     ports:
       - "127.0.0.1:5173:5173"
     env_file: .env
+    environment:
+      MARGAYA_STORAGE_DIR: /app/apps/api/data/uploads
+    volumes:
+      - uploads_data:/app/apps/api/data/uploads
     depends_on:
       postgres:
         condition: service_healthy
     restart: unless-stopped
 
 volumes:
-  postgres_data:`,
+  postgres_data:
+  uploads_data:`,
           },
           callout: {
             tone: "tip",
@@ -70,7 +75,7 @@ volumes:
           title: "Write the environment file",
           body: [
             "`MARGAYA_CLIENT_URL` is the address people will type into their browser. The API is served from the same address under `/api`, so you don't need to set `MARGAYA_API_URL` unless a proxy changes that path.",
-            "Generate both secrets with `openssl rand -hex 32` and paste them in. `AUTH_SECRET` signs sessions. `NOTIFICATION_SECRET_ENCRYPTION_KEY` encrypts the webhook secrets and tokens people save in their notification settings.",
+            "Generate both secrets with `openssl rand -hex 32` and paste them in. `AUTH_SECRET` signs sessions and encrypts the passwords and keys saved in the app. `NOTIFICATION_SECRET_ENCRYPTION_KEY` encrypts the webhook secrets and tokens people save in their notification settings.",
           ],
           code: {
             label: ".env",
@@ -129,15 +134,17 @@ curl -s http://127.0.0.1:5173/api/health`,
       heading: "Keep it healthy",
       steps: [
         {
-          title: "Back up the database, and test a restore",
+          title:
+            "Back up the database, uploads and secrets, and test a restore",
           body: [
-            "All of Margaya's data lives in PostgreSQL. A nightly dump copied to another machine or to object storage is enough for most teams. A backup that sits on the same server isn't really a backup.",
-            "Restore a dump into a scratch database once, so you know it works before you need it.",
+            "Margaya's data lives in PostgreSQL and the uploads volume, and your `.env` holds the keys that unlock saved secrets. You need all three to restore. A nightly copy on another machine or in object storage is enough for most teams. A backup that sits on the same server isn't really a backup.",
+            "Restore into a scratch install once, so you know it works before you need it. The [backup and restore guide](/docs/core/installation/backup-and-restore) has the steps.",
           ],
           code: {
             label: "Terminal",
-            content:
-              "docker compose exec -T postgres pg_dump -U margaya margaya | gzip > margaya-$(date +%F).sql.gz",
+            content: `docker compose exec -T postgres pg_dump -U margaya -Fc margaya > margaya-$(date +%F).dump
+docker compose exec -T margaya tar -czf - -C /app/apps/api/data/uploads . > uploads-$(date +%F).tar.gz
+cp .env env-$(date +%F).backup`,
           },
         },
         {

@@ -31,6 +31,11 @@ services:
       - "5173:5173"
     env_file:
       - .env
+    environment:
+      # Attachments and images when no S3 bucket is configured.
+      MARGAYA_STORAGE_DIR: /app/apps/api/data/uploads
+    volumes:
+      - uploads_data:/app/apps/api/data/uploads
     depends_on:
       postgres:
         condition: service_healthy
@@ -44,6 +49,7 @@ services:
 
 volumes:
   postgres_data:
+  uploads_data:
 ```
 
 ## The services and volumes
@@ -56,6 +62,9 @@ Margaya uses the following services:
 Additionally, the following volumes are used:
 
 - `postgres_data`: The PostgreSQL data.
+- `uploads_data`: Uploaded files, and the generated `AUTH_SECRET` if you leave it blank.
+
+Both hold data you can't get back, so [back them up](/core/installation/backup-and-restore). Without `uploads_data`, uploaded files are deleted whenever the container is recreated, for example on an upgrade. If you're running without it today, [move your files first](/core/installation/migration#move-uploads-onto-a-volume).
 
 ## Required URL configuration
 
@@ -70,6 +79,8 @@ AUTH_SECRET=                             # generate: openssl rand -hex 32
 NOTIFICATION_SECRET_ENCRYPTION_KEY=      # generate: openssl rand -hex 32
 ```
 
+`AUTH_SECRET` signs sessions and encrypts the SMTP passwords, OAuth client secrets, AI keys and webhook signing secrets saved in the app, so keep it stable. If you leave it blank, Margaya generates one on first start and saves it on the `uploads_data` volume as `.auth-secret`. If it can't be saved there, a warning at startup says that saved secrets will be lost.
+
 `NOTIFICATION_SECRET_ENCRYPTION_KEY` encrypts the webhook secrets and ntfy and Gotify tokens people save in their notification settings. Margaya starts without it, but nobody can save such a secret until it is set. See the [environment variables page](/core/installation/environment-variables#notifications).
 
 `MARGAYA_API_URL` defaults to `MARGAYA_CLIENT_URL/api`; set it explicitly only if you need to override the default (e.g. a reverse proxy changes the path).
@@ -81,10 +92,11 @@ The database is reachable only inside the Compose network. For host-based develo
 
 ## Notes on object storage
 
-Margaya uses S3-compatible object storage for private uploads in task descriptions and comments.
+Uploads work without any object storage: attachments and images go to a built-in file store on the `uploads_data` volume. See [the built-in file store](/core/installation/object-storage-and-image-uploads#built-in-file-store-no-s3-needed).
 
-- Object storage is optional. Margaya runs without it, but uploads in task descriptions and comments will be unavailable.
-- For local/self-hosted setups, MinIO is the recommended option when you want uploads.
+S3-compatible object storage is optional. Use it when you run more than one API instance, or want files outside this server.
+
+- With S3 configured, new uploads go to the bucket. Files already in the built-in store are not moved.
 - The Margaya API creates presigned upload URLs and the browser uploads files directly to the configured storage backend.
 - Margaya serves uploaded assets back through its own API, so the bucket does not need to be public.
 - If you do not configure object storage, leave the `S3_*` variables unset.
@@ -92,7 +104,7 @@ Margaya uses S3-compatible object storage for private uploads in task descriptio
 
 ### Optional MinIO service
 
-Add this service and volume to your `compose.yml` only if you want uploads:
+Add this service and volume to your `compose.yml` only if you want to use MinIO for uploads:
 
 ```yml
 services:

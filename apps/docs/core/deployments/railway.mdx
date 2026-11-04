@@ -26,7 +26,8 @@ The Railway template automatically configures:
 3. **Configure Environment Variables**:
    - Set your `AUTH_SECRET` (minimum 32 characters)
    - Review other environment variables as needed
-4. **Deploy** - Railway will build and deploy all services automatically
+4. **Add a volume for uploads**: attach a Railway volume to the API service at `/app/apps/api/data/uploads`. Without one, uploaded files are deleted on every redeploy, unless you've configured [S3-compatible storage](/core/installation/storage-backends).
+5. **Deploy** - Railway will build and deploy all services automatically
 
 ## Post-Deployment Setup
 
