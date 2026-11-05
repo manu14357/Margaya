@@ -2,6 +2,10 @@ import { nullableResponseTimestamp, responseTimestamp, z } from "../openapi";
 
 const yes = (description: string) => z.boolean().openapi({ description });
 
+export const instanceReauthRequiredSchema = z
+  .object({ code: z.string(), message: z.string() })
+  .openapi("InstanceReauthRequired");
+
 export const instanceOverviewSchema = z
   .object({
     instanceName: z.string(),
@@ -205,6 +209,25 @@ export const instanceAuditPageSchema = z
     nextCursor: z.string().nullable(),
   })
   .openapi("InstanceAuditPage");
+
+export const instanceDeliveryFailuresSchema = z
+  .object({
+    items: z.array(
+      z.object({
+        id: z.string(),
+        workspaceName: z.string(),
+        webhookName: z.string().nullable(),
+        event: z.string(),
+        error: z.string().nullable().openapi({
+          description: "A safe message, never raw exception text.",
+        }),
+        responseStatus: z.number().int().nullable(),
+        attemptCount: z.number().int(),
+        failedAt: responseTimestamp,
+      }),
+    ),
+  })
+  .openapi("InstanceDeliveryFailures");
 
 export const instanceUserPageSchema = z
   .object({

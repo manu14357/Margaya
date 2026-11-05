@@ -33,6 +33,24 @@ test.afterAll(async () => {
 });
 
 test(
+  "only the instance admin reads recent delivery failures",
+  covers("listInstanceDeliveryFailures"),
+  async ({ apiAs }) => {
+    const owner = await apiAs("owner");
+    const failures = await expectJson<{ items: unknown[] }>(
+      await owner.get("/api/instance-admin/delivery-failures"),
+    );
+    expect(Array.isArray(failures.items)).toBe(true);
+
+    const admin = await apiAs("admin");
+    await expectStatus(
+      await admin.get("/api/instance-admin/delivery-failures"),
+      403,
+    );
+  },
+);
+
+test(
   "the instance admin reads the overview, workspaces and public boards",
   covers(
     "getInstanceOverview",

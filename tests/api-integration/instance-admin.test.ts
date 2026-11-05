@@ -100,6 +100,92 @@ describe("A1 overview", () => {
   });
 });
 
+describe("recent delivery failures", () => {
+  const DAY = 24 * 60 * 60 * 1000;
+
+  async function seedDeliveries() {
+    const owner = await createWorkspaceMember();
+    const [webhook] = await db
+      .insert(schema.workspaceWebhookTable)
+      .values({
+        workspaceId: owner.workspace.id,
+        name: "Billing hook",
+        url: "https://hooks.example.com/secret-token",
+        secretCiphertext: "sealed",
+        secretLast4: "abcd",
+      })
+      .returning();
+    if (!webhook) throw new Error("webhook was not created");
+    const delivery = {
+      webhookId: webhook.id,
+      workspaceId: owner.workspace.id,
+      event: "task.created",
+      entityType: "task" as const,
+      body: '{"private":"task body"}',
+    };
+    const completedAt = new Date(Date.now() - DAY);
+    await db.insert(schema.webhookDeliveryTable).values([
+      {
+        ...delivery,
+        status: "failed",
+        responseStatus: 500,
+        responseSnippet: "private response",
+        attemptCount: 6,
+        completedAt,
+      },
+      { ...delivery, event: "task.updated", status: "succeeded" },
+      {
+        ...delivery,
+        event: "task.deleted",
+        status: "failed",
+        createdAt: new Date(Date.now() - 8 * DAY),
+      },
+    ]);
+    return { owner, completedAt };
+  }
+
+  it("lists only recent failures, without the URL, body or response", async () => {
+    const { owner, completedAt } = await seedDeliveries();
+
+    const response = await adminRequest(
+      app,
+      "GET",
+      "/delivery-failures",
+      admin.cookie,
+    );
+    const text = await response.clone().text();
+    const { items } = await ok<{ items: Array<Record<string, unknown>> }>(
+      response,
+    );
+
+    expect(items).toHaveLength(1);
+    expect(items[0]).toMatchObject({
+      workspaceName: owner.workspace.name,
+      webhookName: "Billing hook",
+      event: "task.created",
+      responseStatus: 500,
+      attemptCount: 6,
+      failedAt: completedAt.toISOString(),
+    });
+    expect(text).not.toContain("secret-token");
+    expect(text).not.toContain("task body");
+    expect(text).not.toContain("private response");
+  });
+
+  it("is refused for someone who isn't an instance admin", async () => {
+    const member = await signUpWithSession(app, "member@example.com");
+
+    const response = await adminRequest(
+      app,
+      "GET",
+      "/delivery-failures",
+      member.cookie,
+    );
+
+    expect(response.status).toBe(403);
+  });
+});
+
 describe("A4 workspaces", () => {
   it("searches and pages newest first with owner and counts", async () => {
     const workspaces = [];
