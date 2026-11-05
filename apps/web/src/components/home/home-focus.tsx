@@ -4,11 +4,13 @@ import {
   CircleCheck,
   Inbox,
   type LucideIcon,
+  RefreshCw,
   StickyNote,
   UserRoundCheck,
 } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import useInboxCounts from "@/hooks/queries/notification/use-inbox-counts";
@@ -29,6 +31,7 @@ function FocusCard({
   icon: Icon,
   tone,
   title,
+  onRetry,
   children,
 }: {
   workspaceId: string;
@@ -37,33 +40,54 @@ function FocusCard({
   /** The tile's area hue, e.g. `var(--area-inbox)`. */
   tone: string;
   title: string;
+  /** The tile's number failed to load: shows Try again beside the link. */
+  onRetry?: () => void;
   children: ReactNode;
 }) {
+  const { t } = useTranslation();
   return (
-    <Card
-      render={<Link to={to} params={{ workspaceId }} />}
-      className="group relative gap-2 overflow-hidden rounded-xl px-3.5 py-3 shadow-xs outline-none transition-[background-color,box-shadow,translate] hover:-translate-y-px hover:shadow-sm focus-visible:ring-2 focus-visible:ring-ring motion-reduce:hover:translate-y-0"
-      style={{ "--tile-tone": tone } as CSSProperties}
-    >
-      <span className="flex items-center gap-2">
-        <span
-          aria-hidden
-          className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-[color-mix(in_srgb,var(--tile-tone)_14%,transparent)] text-(--tile-tone)"
+    <div className="relative flex">
+      <Card
+        render={<Link to={to} params={{ workspaceId }} />}
+        className="group relative w-full gap-2 overflow-hidden rounded-xl px-3.5 py-3 shadow-xs outline-none transition-[background-color,box-shadow,translate] hover:-translate-y-px hover:shadow-sm focus-visible:ring-2 focus-visible:ring-ring motion-reduce:hover:translate-y-0"
+        style={{ "--tile-tone": tone } as CSSProperties}
+      >
+        <span className="flex items-center gap-2">
+          <span
+            aria-hidden
+            className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-[color-mix(in_srgb,var(--tile-tone)_14%,transparent)] text-(--tile-tone)"
+          >
+            <Icon className="size-4" />
+          </span>
+          <span className="min-w-0 flex-1 truncate font-medium text-sm">
+            {title}
+          </span>
+          <ChevronRight
+            className="size-4 shrink-0 text-muted-foreground/60 transition-transform group-hover:translate-x-0.5"
+            aria-hidden
+          />
+        </span>
+        <span className="flex min-h-8 flex-wrap items-end gap-x-2 gap-y-1 text-muted-foreground text-xs">
+          {onRetry ? (
+            <span role="alert">{t("home:focus.loadError")}</span>
+          ) : (
+            children
+          )}
+        </span>
+      </Card>
+      {/* Beside the link, not in it: a link cannot contain a button. */}
+      {onRetry && (
+        <Button
+          variant="outline"
+          size="xs"
+          className="absolute end-3.5 bottom-3"
+          onClick={onRetry}
         >
-          <Icon className="size-4" />
-        </span>
-        <span className="min-w-0 flex-1 truncate font-medium text-sm">
-          {title}
-        </span>
-        <ChevronRight
-          className="size-4 shrink-0 text-muted-foreground/60 transition-transform group-hover:translate-x-0.5"
-          aria-hidden
-        />
-      </span>
-      <span className="flex min-h-8 flex-wrap items-end gap-x-2 gap-y-1 text-muted-foreground text-xs">
-        {children}
-      </span>
-    </Card>
+          <RefreshCw />
+          {t("common:states.error.tryAgain")}
+        </Button>
+      )}
+    </div>
   );
 }
 
@@ -120,6 +144,8 @@ export default function HomeFocus({ workspaceId }: { workspaceId: string }) {
   const inbox = useInboxCounts(workspaceId);
   const work = useMyWorkSummary(workspaceId);
   const unread = inbox.data?.unread ?? 0;
+  // No data and not loading: never "Caught up" or 0 for a number we don't have.
+  const inboxFailed = inbox.data === undefined && !inbox.isLoading;
   const { assignedOpen, overdue } = work.summary.counts;
 
   return (
@@ -133,6 +159,7 @@ export default function HomeFocus({ workspaceId }: { workspaceId: string }) {
         icon={Inbox}
         tone="var(--area-inbox)"
         title={t("home:focus.inbox")}
+        onRetry={inboxFailed ? () => void inbox.refetch() : undefined}
       >
         {inbox.isLoading ? (
           <Skeleton className="h-6 w-16" />
@@ -154,6 +181,7 @@ export default function HomeFocus({ workspaceId }: { workspaceId: string }) {
         icon={UserRoundCheck}
         tone="var(--area-work)"
         title={t("home:focus.myWork")}
+        onRetry={work.isUnavailable ? work.refetch : undefined}
       >
         {work.isLoading ? (
           <Skeleton className="h-6 w-20" />

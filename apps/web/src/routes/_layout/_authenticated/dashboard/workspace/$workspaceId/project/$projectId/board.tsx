@@ -1,9 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Search } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import BuildWithAiEmptyHint from "@/components/ai-build/build-with-ai-empty-hint";
-import BoardToolbar, { LayoutToggle } from "@/components/board/board-toolbar";
+import BoardToolbar from "@/components/board/board-toolbar";
 import BulkToolbar from "@/components/bulk-selection/bulk-toolbar";
 import ProjectLayout from "@/components/common/project-layout";
 import KanbanBoard from "@/components/kanban-board";
@@ -12,7 +12,14 @@ import PageTitle from "@/components/page-title";
 import CreateTaskModal from "@/components/shared/modals/create-task-modal";
 import TaskDetailsSheet from "@/components/task/task-details-sheet";
 import TaskQueryView from "@/components/task-layouts/task-query-view";
+import { Button } from "@/components/ui/button";
+import { ErrorDisplay } from "@/components/ui/error-display";
 import { Input } from "@/components/ui/input";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import SaveViewActions from "@/components/view/save-view-actions";
 import { shortcuts } from "@/constants/shortcuts";
 import { useEstimateSort } from "@/hooks/queries/estimate/use-estimate-sort";
@@ -21,6 +28,7 @@ import { useGetTasks } from "@/hooks/queries/task/use-get-tasks";
 import { useTaskQueryRows } from "@/hooks/queries/task-query/use-task-query-rows";
 import { useClassicBoardFilter } from "@/hooks/use-classic-board-filter";
 import { useRegisterShortcuts } from "@/hooks/use-keyboard-shortcuts";
+import { useLoadFailure } from "@/hooks/use-load-failure";
 import { useProjectFeatures } from "@/hooks/use-project-features";
 import { useTaskQueryState } from "@/hooks/use-task-query-state";
 import { sortTasks } from "@/lib/sort-tasks";
@@ -88,15 +96,17 @@ function RouteComponent() {
   const { projectId, workspaceId } = Route.useParams();
   const { taskId } = Route.useSearch();
   const navigate = useNavigate();
-  const { data } = useGetTasks(projectId);
+  const tasksQuery = useGetTasks(projectId);
+  const { data } = tasksQuery;
+  const loadFailure = useLoadFailure(tasksQuery);
   const { project, setProject } = useProjectStore();
   const { viewMode, setViewMode } = useUserPreferencesStore();
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [boardSearchQuery, setBoardSearchQuery] = useState("");
-  const [isBoardSearchMounted, setIsBoardSearchMounted] = useState(false);
-  const [isBoardSearchVisible, setIsBoardSearchVisible] = useState(false);
+  const [isBoardSearchOpen, setIsBoardSearchOpen] = useState(false);
   const [boardSearchInput, setBoardSearchInput] =
     useState<HTMLInputElement | null>(null);
+  const boardSearchButton = useRef<HTMLButtonElement>(null);
   // Filters and display of the Tasks section, shared by its layouts; the
   // old board filters and sort are converted on first load (B4 §3.9).
   const queryState = useTaskQueryState({
@@ -164,14 +174,9 @@ function RouteComponent() {
   }, [data, setProject]);
 
   const openBoardSearch = useCallback(() => {
-    setIsBoardSearchMounted(true);
-    window.requestAnimationFrame(() => setIsBoardSearchVisible(true));
-  }, []);
-
-  const closeBoardSearch = useCallback(() => {
-    setIsBoardSearchVisible(false);
-    window.setTimeout(() => setIsBoardSearchMounted(false), 180);
-  }, []);
+    setIsBoardSearchOpen(true);
+    boardSearchInput?.focus();
+  }, [boardSearchInput]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -188,10 +193,10 @@ function RouteComponent() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [openBoardSearch]);
 
+  // The field mounts when it opens, so it takes focus once its ref arrives.
   useEffect(() => {
-    if (!isBoardSearchMounted) return;
-    window.requestAnimationFrame(() => boardSearchInput?.focus());
-  }, [isBoardSearchMounted, boardSearchInput]);
+    boardSearchInput?.focus();
+  }, [boardSearchInput]);
 
   const descriptionSearch = useDescriptionMatches(
     projectId,
@@ -229,48 +234,60 @@ function RouteComponent() {
     };
   }, [filteredProject, sort, sortContext]);
 
-  const boardHeaderSearch = isBoardSearchMounted ? (
-    <div
-      className={`relative w-[240px] origin-top transition-[translate,scale,opacity] duration-180 ease-out ${
-        isBoardSearchVisible
-          ? "translate-y-0 scale-y-100 opacity-100"
-          : "pointer-events-none -translate-y-1 scale-y-95 opacity-0"
-      }`}
-    >
+  const boardSearch = isBoardSearchOpen ? (
+    <div className="relative w-36 sm:w-60">
       <Search className="-translate-y-1/2 pointer-events-none absolute top-1/2 left-2.5 h-3.5 w-3.5 text-muted-foreground" />
       <Input
         ref={setBoardSearchInput}
         value={boardSearchQuery}
         maxLength={256}
+        aria-label={t("tasks:boardSearchOpen")}
         onChange={(event) => setBoardSearchQuery(event.target.value)}
         onKeyDown={(event) => {
           if (event.key === "Escape" && !boardSearchQuery.trim()) {
-            closeBoardSearch();
+            setIsBoardSearchOpen(false);
+            // Back to the button that took the field's place.
+            window.requestAnimationFrame(() =>
+              boardSearchButton.current?.focus(),
+            );
           }
         }}
         onBlur={() => {
           if (!boardSearchQuery.trim()) {
-            closeBoardSearch();
+            setIsBoardSearchOpen(false);
           }
         }}
         placeholder={t("tasks:boardSearchPlaceholder")}
         className="h-7.5 [&_[data-slot=input]]:h-7 [&_[data-slot=input]]:leading-7 [&_[data-slot=input]]:pl-8 [&_[data-slot=input]]:text-xs [&_[data-slot=input]]:placeholder:text-xs [&_[data-slot=input]]:placeholder:leading-7"
       />
     </div>
-  ) : null;
+  ) : (
+    <Tooltip>
+      <TooltipTrigger
+        render={
+          <Button
+            ref={boardSearchButton}
+            variant="outline"
+            size="icon-xs"
+            aria-label={t("tasks:boardSearchOpen")}
+            onClick={openBoardSearch}
+          />
+        }
+      >
+        <Search className="size-3.5" />
+      </TooltipTrigger>
+      <TooltipContent>{t("tasks:boardSearchOpen")}</TooltipContent>
+    </Tooltip>
+  );
 
   return (
     <ProjectLayout
       projectId={projectId}
       workspaceId={workspaceId}
-      activeView="board"
-      headerActions={boardHeaderSearch}
-      tabsTrailing={
-        <LayoutToggle viewMode={viewMode} setViewMode={setViewMode} />
-      }
+      activeView={viewMode}
     >
       <PageTitle
-        title={`${project?.name} · ${viewMode === "board" ? t("tasks:view.board") : t("tasks:view.list")}`}
+        title={`${project?.name ?? ""} · ${viewMode === "board" ? t("tasks:view.board") : t("tasks:view.list")}`}
         hideAppName
       />
       <div className="relative flex flex-col h-full min-h-0 overflow-hidden">
@@ -282,14 +299,17 @@ function RouteComponent() {
           setViewMode={setViewMode}
           showLayoutToggle={false}
           actions={
-            isFeatureEnabled("views") ? (
-              <SaveViewActions
-                workspaceId={workspaceId}
-                projectId={projectId}
-                handle={queryState}
-                layout={viewMode}
-              />
-            ) : null
+            <>
+              {boardSearch}
+              {isFeatureEnabled("views") && (
+                <SaveViewActions
+                  workspaceId={workspaceId}
+                  projectId={projectId}
+                  handle={queryState}
+                  layout={viewMode}
+                />
+              )}
+            </>
           }
           status={
             isClassic
@@ -358,6 +378,13 @@ function RouteComponent() {
                 capture
               />
             )
+          ) : loadFailure && !sortedProject ? (
+            <div className="min-w-0 flex-1 overflow-auto p-4">
+              <ErrorDisplay
+                error={loadFailure.error}
+                onRetry={loadFailure.retry}
+              />
+            </div>
           ) : (
             <BoardSkeleton />
           )}

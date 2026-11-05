@@ -4,6 +4,7 @@ import ProjectCalendar from "@/components/calendar/project-calendar";
 import ProjectGantt from "@/components/gantt/project-gantt";
 import { useGetTasks } from "@/hooks/queries/task/use-get-tasks";
 import { useClassicBoardFilter } from "@/hooks/use-classic-board-filter";
+import { useLoadFailure } from "@/hooks/use-load-failure";
 import type { FilterCondition, TaskQueryState } from "@/lib/task-query/model";
 
 type ScheduleLayoutBodyProps = {
@@ -27,7 +28,9 @@ export default function ScheduleLayoutBody({
   baseConditions,
 }: ScheduleLayoutBodyProps) {
   const navigate = useNavigate();
-  const { data: loadedProject, isLoading, isError } = useGetTasks(projectId);
+  const tasksQuery = useGetTasks(projectId);
+  const { data: loadedProject, isLoading, isError } = tasksQuery;
+  const loadFailure = useLoadFailure(tasksQuery);
   const { filteredProject } = useClassicBoardFilter({
     workspaceId,
     projectId,
@@ -73,6 +76,7 @@ export default function ScheduleLayoutBody({
       loadedProject={loadedProject}
       project={filteredProject}
       isLoading={isLoading}
+      loadFailure={loadFailure}
       onOpenTask={openTask}
     />
   );

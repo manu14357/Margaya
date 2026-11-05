@@ -211,6 +211,10 @@ export function useMyWorkSummary(workspaceId: string) {
     summary,
     isLoading: results.some((result) => result.isLoading),
     isError: results.some((result) => result.isError),
+    /** A count has no value to show: its load failed, or it is paused offline. */
+    isUnavailable: results.some(
+      (result) => result.data === undefined && !result.isLoading,
+    ),
     error: results.find((result) => result.error)?.error ?? null,
     refetch: () => {
       for (const result of results) void result.refetch();

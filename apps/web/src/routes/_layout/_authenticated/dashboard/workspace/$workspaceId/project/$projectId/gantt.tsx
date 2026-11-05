@@ -6,6 +6,7 @@ import PageTitle from "@/components/page-title";
 import TaskDetailsSheet from "@/components/task/task-details-sheet";
 import ProjectFilterBar from "@/components/task-filters/project-filter-bar";
 import { useGetTasks } from "@/hooks/queries/task/use-get-tasks";
+import { useLoadFailure } from "@/hooks/use-load-failure";
 import { useProjectLayoutFilter } from "@/hooks/use-project-layout-filter";
 
 type GanttSearchParams = {
@@ -26,7 +27,9 @@ function RouteComponent() {
   const { projectId, workspaceId } = Route.useParams();
   const { taskId } = Route.useSearch();
   const navigate = useNavigate();
-  const { data: loadedProject, isLoading } = useGetTasks(projectId);
+  const tasksQuery = useGetTasks(projectId);
+  const { data: loadedProject, isLoading } = tasksQuery;
+  const loadFailure = useLoadFailure(tasksQuery);
   const {
     queryState,
     filteredProject: project,
@@ -53,6 +56,7 @@ function RouteComponent() {
         loadedProject={loadedProject}
         project={project}
         isLoading={isLoading}
+        loadFailure={loadFailure}
         filterBar={
           <ProjectFilterBar
             workspaceId={workspaceId}

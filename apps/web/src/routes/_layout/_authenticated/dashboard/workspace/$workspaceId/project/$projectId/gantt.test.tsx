@@ -17,6 +17,9 @@ vi.stubGlobal(
 );
 const scrollIntoView = vi.fn();
 Element.prototype.scrollIntoView = scrollIntoView;
+// How the timeline scrolls to today: on its scroll container, to a whole column.
+const scrollTo = vi.fn();
+Element.prototype.scrollTo = scrollTo as unknown as Element["scrollTo"];
 
 const navigate = vi.fn();
 
@@ -91,8 +94,28 @@ vi.mock("@/hooks/mutations/task/use-update-task-dates", () => ({
   useUpdateTaskDates: () => ({ mutate: updateTaskDates }),
 }));
 const dependencies = vi.fn(() => ({ data: undefined as unknown }));
+// The project has no custom fields, so the Gantt offers no field choice.
+vi.mock(
+  "@/hooks/queries/custom-field/use-get-custom-fields-by-project",
+  () => ({
+    default: () => ({ data: [] }),
+  }),
+);
+vi.mock(
+  "@/hooks/queries/custom-field/use-get-custom-field-values-by-project",
+  () => ({ default: () => ({ data: undefined }) }),
+);
 vi.mock("@/hooks/queries/task-relation/use-get-project-dependencies", () => ({
   useGetProjectDependencies: () => dependencies(),
+}));
+vi.mock("@/hooks/mutations/task-relation/use-create-task-relation", () => ({
+  default: () => ({ mutateAsync: vi.fn() }),
+}));
+vi.mock("@/hooks/mutations/task/use-apply-date-cascade", () => ({
+  useApplyDateCascade: () => ({ mutateAsync: vi.fn(), isPending: false }),
+}));
+vi.mock("@/components/gantt/gantt-add-milestone", () => ({
+  default: () => <div data-testid="gantt-add-milestone" />,
 }));
 const canUpdateTasks = vi.fn(() => true);
 const canCreateTasks = vi.fn(() => false);
@@ -133,6 +156,7 @@ vi.mock("react-i18next", () => ({
       );
     },
   }),
+  initReactI18next: { type: "3rdParty", init: vi.fn() },
 }));
 
 const GanttRoute = (Route as unknown as { component: ComponentType }).component;
@@ -184,6 +208,7 @@ afterEach(() => {
   cleanup();
   vi.useRealTimers();
   scrollIntoView.mockClear();
+  scrollTo.mockClear();
   useGetTasks.mockReset();
   routeParams.projectId = "project-1";
 });
@@ -213,9 +238,9 @@ describe("Gantt jump-to-today", () => {
 
     fireEvent.change(search, { target: { value: "" } });
 
-    expect(scrollIntoView).toHaveBeenCalledTimes(2);
-    expect(scrollIntoView).toHaveBeenLastCalledWith(
-      expect.objectContaining({ behavior: "auto", inline: "center" }),
+    expect(scrollTo).toHaveBeenCalledTimes(2);
+    expect(scrollTo).toHaveBeenLastCalledWith(
+      expect.objectContaining({ behavior: "auto" }),
     );
   });
   it("disables the button and never auto-scrolls when no task falls near today", () => {
@@ -232,10 +257,10 @@ describe("Gantt jump-to-today", () => {
 
     const button = screen.getByRole("button", { name: "Jump to today" });
     expect(button).toBeDisabled();
-    expect(scrollIntoView).not.toHaveBeenCalled();
+    expect(scrollTo).not.toHaveBeenCalled();
 
     fireEvent.click(button);
-    expect(scrollIntoView).not.toHaveBeenCalled();
+    expect(scrollTo).not.toHaveBeenCalled();
   });
 
   it("auto-centers on today and re-centers on demand when today is in range", () => {
@@ -252,9 +277,9 @@ describe("Gantt jump-to-today", () => {
 
     // The mount-time effect scrolls today's column into view without
     // animating, so it doesn't fight the user for scroll position on load.
-    expect(scrollIntoView).toHaveBeenCalledTimes(1);
-    expect(scrollIntoView).toHaveBeenLastCalledWith(
-      expect.objectContaining({ behavior: "auto", inline: "center" }),
+    expect(scrollTo).toHaveBeenCalledTimes(1);
+    expect(scrollTo).toHaveBeenLastCalledWith(
+      expect.objectContaining({ behavior: "auto" }),
     );
 
     const button = screen.getByRole("button", { name: "Jump to today" });
@@ -264,9 +289,9 @@ describe("Gantt jump-to-today", () => {
 
     // A manual click animates instead, so its intent reads as a deliberate
     // jump rather than the page settling into place.
-    expect(scrollIntoView).toHaveBeenCalledTimes(2);
-    expect(scrollIntoView).toHaveBeenLastCalledWith(
-      expect.objectContaining({ behavior: "smooth", inline: "center" }),
+    expect(scrollTo).toHaveBeenCalledTimes(2);
+    expect(scrollTo).toHaveBeenLastCalledWith(
+      expect.objectContaining({ behavior: "smooth" }),
     );
   });
 
@@ -282,7 +307,7 @@ describe("Gantt jump-to-today", () => {
 
     const { rerender } = render(<GanttRoute />);
 
-    expect(scrollIntoView).toHaveBeenCalledTimes(1);
+    expect(scrollTo).toHaveBeenCalledTimes(1);
 
     // The in-page Gantt project selector changes `projectId` without
     // unmounting this route component, so a fresh task near today on the
@@ -301,9 +326,9 @@ describe("Gantt jump-to-today", () => {
 
     rerender(<GanttRoute />);
 
-    expect(scrollIntoView).toHaveBeenCalledTimes(2);
-    expect(scrollIntoView).toHaveBeenLastCalledWith(
-      expect.objectContaining({ behavior: "auto", inline: "center" }),
+    expect(scrollTo).toHaveBeenCalledTimes(2);
+    expect(scrollTo).toHaveBeenLastCalledWith(
+      expect.objectContaining({ behavior: "auto" }),
     );
   });
 
@@ -333,6 +358,53 @@ describe("Gantt jump-to-today", () => {
       screen.getByText('No scheduled tasks match "no such task"'),
     ).toBeInTheDocument();
     expect(button).toBeDisabled();
+  });
+
+  it("centers today on whole columns, so no day is cut off at the task list's edge", () => {
+    // A 1000px wide chart with the 320px task list and 44px day columns:
+    // 15 whole columns fit beside the list.
+    const clientWidth = vi
+      .spyOn(HTMLElement.prototype, "clientWidth", "get")
+      .mockImplementation(function (this: HTMLElement) {
+        return this.dataset.testid === "gantt-scroll-container" ? 1000 : 0;
+      });
+    const rect = vi
+      .spyOn(Element.prototype, "getBoundingClientRect")
+      .mockImplementation(function (this: Element) {
+        const width = this.hasAttribute("data-today") ? 44 : 0;
+        return {
+          x: 0,
+          y: 0,
+          top: 0,
+          left: 0,
+          right: width,
+          bottom: 0,
+          width,
+          height: 0,
+          toJSON: () => null,
+        } as DOMRect;
+      });
+    mockProjectWithTask(
+      makeTask({
+        id: "current-task",
+        title: "Ongoing work",
+        startDate: "2026-08-28",
+        dueDate: "2026-09-02",
+      }),
+    );
+
+    try {
+      render(<GanttRoute />);
+      // The chart starts on Aug 16, so today (Aug 31) is day 15. Days 8 to
+      // 22 show, today in the middle, starting exactly on day 8's edge.
+      expect(scrollTo).toHaveBeenLastCalledWith({
+        left: 8 * 44,
+        behavior: "auto",
+      });
+    } finally {
+      clientWidth.mockRestore();
+      rect.mockRestore();
+    }
   });
 
   it("insets scroll-alignment by the task rail's width so a scrollIntoView center lands in the visible timeline", () => {
@@ -459,6 +531,24 @@ describe("Gantt undated tasks", () => {
 
     expect(screen.getByText("Loading...")).toBeInTheDocument();
     expect(screen.queryByText("No scheduled tasks")).toBeNull();
+  });
+
+  it("shows an error with a retry, not the empty state, when the tasks fail", () => {
+    const refetch = vi.fn(() => Promise.resolve());
+    useGetTasks.mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      error: new Error("boom"),
+      errorUpdatedAt: 1,
+      refetch,
+    });
+
+    render(<GanttRoute />);
+
+    expect(screen.queryByText("No scheduled tasks")).toBeNull();
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+    expect(refetch).toHaveBeenCalledTimes(1);
   });
 
   it("shows the undated list even when no task has dates yet", () => {
