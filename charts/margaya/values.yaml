@@ -259,6 +259,20 @@ margaya:
   #       secretKeyRef:
   #         name: margaya-notification-secrets
   #         key: encryption-key
+  #   # Web push. Off until both keys are set; generate them once with the
+  #   # admin CLI's generate-push-keys command and keep them stable.
+  #   # VAPID_SUBJECT is a mailto: or https:// contact for push services;
+  #   # unset, it is MARGAYA_CLIENT_URL when that is https://. Replace the
+  #   # example address: Apple's push service may refuse it.
+  #   - name: VAPID_PUBLIC_KEY
+  #     value: ""
+  #   - name: VAPID_PRIVATE_KEY
+  #     valueFrom:
+  #       secretKeyRef:
+  #         name: margaya-push-keys
+  #         key: private-key
+  #   - name: VAPID_SUBJECT
+  #     value: "mailto:admin@example.com"
   #   # Seconds email notifications wait to be sent as one email per person
   #   # (default 300); 0 sends each one immediately.
   #   - name: EMAIL_NOTIFICATION_BATCH_WINDOW_SECONDS
@@ -310,6 +324,9 @@ margaya:
   # extraEnvFrom:
   #   - secretRef:
   #       name: oauth-secret
+  # Liveness only asks whether the process runs, so a database outage doesn't
+  # restart the pods. Readiness tests the database and takes the pod out of
+  # the Service until it answers again.
   livenessProbe:
     httpGet:
       path: /api/health
@@ -318,10 +335,12 @@ margaya:
     periodSeconds: 10
   readinessProbe:
     httpGet:
-      path: /api/health
+      path: /api/health/ready
       port: margaya
     initialDelaySeconds: 30
     periodSeconds: 10
+    # The API gives up on the database after 3 seconds and answers 503.
+    timeoutSeconds: 5
 # Ingress configuration
 ingress:
   enabled: false

@@ -73,6 +73,8 @@ import githubIntegration, {
   handleGithubWebhookRoute,
 } from "./github-integration";
 import home from "./home";
+import identity from "./identity";
+import { REPOST_SCRIPT, REPOST_SCRIPT_PATH } from "./identity/saml-request";
 import insight from "./insight";
 import insightAi from "./insight/ai";
 import getInstanceStatus from "./instance/controllers/get-instance-status";
@@ -95,6 +97,7 @@ import { migrateTaskAssignees } from "./migrations/task-assignee-migration";
 import moduleRouter from "./module";
 import notification from "./notification";
 import notificationPreferences from "./notification-preferences";
+import { warnAboutPushSubject } from "./notification-preferences/web-push";
 import oauth from "./oauth";
 import { createRoute, errorResponse, jsonResponse, z } from "./openapi";
 import page from "./page";
@@ -147,6 +150,11 @@ import timeEntry from "./time-entry";
 import user from "./user";
 import getAvatar from "./user/controllers/get-avatar";
 import { applyRateLimitHeaders } from "./utils/api-key-rate-limit";
+import {
+  assetGone,
+  assetInTrash,
+  assetPublicHolder,
+} from "./utils/asset-trash";
 import { authenticateApiRequest } from "./utils/authenticate-api-request";
 import {
   authorizeAssetAccess,
@@ -156,6 +164,7 @@ import { backfillRolePermissions } from "./utils/backfill-role-permissions";
 import { getInvitationDetails } from "./utils/check-registration-allowed";
 import { clientIpMiddleware } from "./utils/client-ip";
 import { csrfGuard } from "./utils/csrf-guard";
+import { isDatabaseReady } from "./utils/database-ready";
 import { forwardToAuth } from "./utils/forward-to-auth";
 import { migrateApiKeyReferenceId } from "./utils/migrate-apikey-reference-id";
 import { migrateNotificationPreferencesSchema } from "./utils/migrate-notification-preferences-schema";
@@ -323,9 +332,41 @@ export function createApp() {
 
   const api = new OpenAPIHono<ApiVariables>();
 
+  // Liveness only: it stays OK while the database is down, so an orchestrator
+  // doesn't restart a healthy process for a database problem. Readiness is
+  // /health/ready.
   api.get("/health", (c) => {
     return c.json({ status: "ok" });
   });
+
+  api.openapi(
+    createRoute({
+      method: "get",
+      operationId: "getReadiness",
+      path: "/health/ready",
+      tags: ["Instance"],
+      summary: "Check readiness",
+      description:
+        "Whether this instance can serve requests: it tests the database connection. Use it for readiness probes and uptime checks; GET /health only reports that the process is running.",
+      security: [],
+      responses: {
+        200: jsonResponse(
+          "The database answered",
+          z.object({ status: z.literal("ready") }).openapi("ReadinessReady"),
+        ),
+        503: jsonResponse(
+          "The database didn't answer. Details are in the server log",
+          z
+            .object({ status: z.literal("unavailable") })
+            .openapi("ReadinessUnavailable"),
+        ),
+      },
+    }),
+    async (c) =>
+      (await isDatabaseReady(() => getDatabase().execute(sql`SELECT 1`)))
+        ? c.json({ status: "ready" as const }, 200)
+        : c.json({ status: "unavailable" as const }, 503),
+  );
 
   const instanceStatusApi = api.openapi(
     createRoute({
@@ -406,6 +447,8 @@ export function createApp() {
         summary: "Read a public project description page",
         deprecated: true,
         middleware: legacyPublicMiddleware,
+        description:
+          "The board project's description in pages of 32,768 characters, for a description larger than 64 KiB that GET /public-project/{id} omits (descriptionDeferred). `{id}` is the board's link token. Start at offset 0 and follow nextOffset until it is null; offsets count Unicode characters. Send the version from the first page with each later one: if the project was edited in between, the answer is 409 and the read starts again from offset 0. Works without signing in.",
         security: [],
         request: {
           params: z.object({ id: z.string() }),
@@ -446,6 +489,8 @@ export function createApp() {
         summary: "Read a public task description page",
         deprecated: true,
         middleware: legacyPublicMiddleware,
+        description:
+          "A task's description in pages of 32,768 characters, for a description larger than 64 KiB that GET /public-project/{id} omits (descriptionDeferred). `{id}` is the board's link token, and the task must be on that board. Start at offset 0 and follow nextOffset until it is null; offsets count Unicode characters. Send the version from the first page with each later one: if the task was edited in between, the answer is 409 and the read starts again from offset 0. Works without signing in.",
         security: [],
         request: {
           params: z.object({ id: z.string(), taskId: z.string() }),
@@ -521,7 +566,7 @@ export function createApp() {
       tags: ["Assets"],
       summary: "Download asset",
       description:
-        "Download an uploaded asset. Readable without signing in only when it is a description image of a public project (task attachments never are); image types are served inline, everything else as an attachment. Add ?download=1 to always download.",
+        "Download an uploaded asset. Readable without signing in only when it is a description image of a public project (task attachments never are) and not in the trash, or in the trash while a live task of a public project (its description or a public comment) or a published page still shows it; image types are served inline, everything else as an attachment. Add ?download=1 to always download.",
       security: [],
       request: {
         params: z.object({ id: z.string() }),
@@ -540,7 +585,7 @@ export function createApp() {
         304: { description: "Not modified" },
         404: {
           description:
-            "Asset not found, or the caller has no access to it (another workspace's file, a private page's file)",
+            "Asset not found, or the caller has no access to it (another workspace's file, a private page's file, a file outside an API key's projects or permissions, or a file of a task, page or project in the trash that no live page, task description or comment links)",
         },
       },
     }),
@@ -558,6 +603,9 @@ export function createApp() {
           isPublic: schema.projectTable.isPublic,
           pageAccess: schema.pageTable.access,
           pageOwnerId: schema.pageTable.ownerId,
+          inTrash: assetInTrash,
+          gone: assetGone,
+          publicHolder: assetPublicHolder,
           // B12 §3.13: comment uploads are not linked to their comment
           // row, so a public comment is found by its reference to the asset.
           inPublicComment: sql<boolean>`exists (
@@ -577,7 +625,10 @@ export function createApp() {
           schema.pageTable,
           eq(schema.assetTable.pageId, schema.pageTable.id),
         )
-
+        .leftJoin(
+          schema.taskTable,
+          eq(schema.assetTable.taskId, schema.taskTable.id),
+        )
         .where(eq(schema.assetTable.id, id))
         .limit(1);
 
@@ -805,6 +856,14 @@ export function createApp() {
   // Before the auth routes: the audit log records their outcomes too.
   api.use("*", auditCapture());
 
+  // The script of the SAML re-post page, whose policy allows no inline script.
+  api.get(REPOST_SCRIPT_PATH.replace(/^\/api/, ""), (c) =>
+    c.body(REPOST_SCRIPT, 200, {
+      "content-type": "text/javascript; charset=utf-8",
+      "cache-control": "public, max-age=3600",
+    }),
+  );
+
   api.on(["POST", "GET", "PUT", "PATCH", "DELETE"], "/auth/*", (c) =>
     forwardToAuth(c.req.raw),
   );
@@ -942,6 +1001,7 @@ export function createApp() {
   const auditLogApi = api.route("/audit-log", auditLog);
   const publicationApi = api.route("/publication", publication);
   const instanceAdminApi = api.route("/instance-admin", instanceAdmin);
+  const identityApi = api.route("/instance-admin/identity", identity);
   const apiKeyApi = api.route("/api-key", apiKeyRoutes);
   const aiApi = api.route("/ai", ai);
   const aiAskApi = api.route("/ai/ask", aiAsk);
@@ -1112,6 +1172,7 @@ export function createApp() {
     publicPageApi,
     publicationApi,
     instanceAdminApi,
+    identityApi,
     apiKeyApi,
     recentVisitApi,
     searchApi,
@@ -1227,6 +1288,9 @@ export async function runStartupTasks() {
 
   initializePlugins();
   initializeScheduler();
+  // A bad push key pair or a contact push services may refuse, said once now
+  // rather than at the first push.
+  warnAboutPushSubject();
   // A1: index rows written before full-text search existed, in the
   // background so a large install starts serving at once.
   void runSearchIndexBackfill().catch((error) => {
@@ -1322,6 +1386,7 @@ const {
   publicPageApi,
   publicationApi,
   instanceAdminApi,
+  identityApi,
   apiKeyApi,
   recentVisitApi,
   searchApi,
@@ -1486,6 +1551,7 @@ export type AppType =
   | typeof publicPageApi
   | typeof publicationApi
   | typeof instanceAdminApi
+  | typeof identityApi
   | typeof apiKeyApi
   | typeof invitationPublicApi
   | typeof oauthApi
