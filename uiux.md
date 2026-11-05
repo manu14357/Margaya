@@ -364,6 +364,10 @@ In Margaya the web app's Content-Security-Policy blocks inline scripts, so the s
 - Disabled style: `opacity-64`, with no pointer events.
 - Loading: the label turns transparent and a spinner is centred, so the width does not jump.
 
+### Segmented controls
+
+Every choice between a few options is a `ToggleGroup` with `variant="outline"` and `size="sm"` (`ViewChoice` wraps it for a list of options). Don't hand-roll one. The tray is `bg-muted`; the chosen segment is raised (`bg-background`, a border, a soft shadow, full-strength text) and the others have no fill. Guard `onValueChange` so that pressing the chosen segment keeps it.
+
 ### Badges and soft status chips
 
 - Status, info and warning use a **soft tint**: `bg-success/8 text-success-foreground` (`dark:bg-success/16`), and the same pattern for `warning`, `info` and `error`.

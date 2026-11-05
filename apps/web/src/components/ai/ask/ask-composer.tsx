@@ -35,6 +35,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Toggle, ToggleGroup } from "@/components/ui/toggle-group";
 import { cn } from "@/lib/cn";
 import { toast } from "@/lib/toast";
 import {
@@ -626,23 +627,23 @@ export function AskComposer({
         )}
         <div className="flex items-center gap-0.5">
           {modes.length > 1 && (
-            <fieldset
+            <ToggleGroup
+              size="sm"
+              variant="outline"
               aria-label={t("ai:ask.modes.label")}
-              className="me-1 inline-flex items-center rounded-full border p-0.5"
+              className="me-1"
+              value={[mode]}
+              onValueChange={(values) => {
+                const next = modes.find((item) => item === values[0]);
+                if (next) onModeChange(next);
+              }}
             >
               {modes.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  aria-pressed={mode === item}
-                  title={t(MODE_HINT_KEYS[item])}
-                  onClick={() => onModeChange(item)}
-                  className="rounded-full px-2 py-0.5 text-muted-foreground text-xs outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring aria-pressed:bg-accent aria-pressed:font-medium aria-pressed:text-foreground"
-                >
+                <Toggle key={item} value={item} title={t(MODE_HINT_KEYS[item])}>
                   {t(MODE_KEYS[item])}
-                </button>
+                </Toggle>
               ))}
-            </fieldset>
+            </ToggleGroup>
           )}
           {ask && features.webSearch && (
             <ToolButton

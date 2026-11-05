@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { Toggle, ToggleGroup } from "@/components/ui/toggle-group";
 import type { EditorAiTone } from "@/fetchers/ai/writing";
 import { cn } from "@/lib/cn";
 import { editorAiToneKey } from "./editor-ai-menu";
@@ -29,26 +30,22 @@ export function EditorAiToneSwitch({
       <span aria-hidden className="text-muted-foreground text-xs">
         {t("ai:writing.tone.legend")}
       </span>
-      <span className="inline-flex rounded-md border bg-background p-0.5">
+      <ToggleGroup
+        size="sm"
+        variant="outline"
+        disabled={disabled}
+        value={[value]}
+        onValueChange={(values) => {
+          const next = EDITOR_AI_TONES.find((tone) => tone === values[0]);
+          if (next) onChange(next);
+        }}
+      >
         {EDITOR_AI_TONES.map((tone) => (
-          <button
-            key={tone}
-            type="button"
-            aria-pressed={value === tone}
-            onClick={() => {
-              if (value !== tone) onChange(tone);
-            }}
-            className={cn(
-              "rounded-sm px-2 py-0.5 text-xs outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
-              value === tone
-                ? "bg-accent font-medium text-accent-foreground"
-                : "text-muted-foreground hover:text-foreground",
-            )}
-          >
+          <Toggle key={tone} value={tone}>
             {t(editorAiToneKey(tone))}
-          </button>
+          </Toggle>
         ))}
-      </span>
+      </ToggleGroup>
     </fieldset>
   );
 }

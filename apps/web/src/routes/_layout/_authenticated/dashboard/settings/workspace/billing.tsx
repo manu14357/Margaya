@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
+import { Toggle, ToggleGroup } from "@/components/ui/toggle-group";
 import {
   useCreateCheckout,
   useOpenBillingPortal,
@@ -297,23 +298,23 @@ function RouteComponent() {
                 subtitle="Switch anytime. Cancel whenever you like."
               />
               <div className="inline-flex items-center gap-2">
-                <div className="inline-flex rounded-md border border-border bg-sidebar p-0.5 text-xs">
+                <ToggleGroup
+                  size="sm"
+                  variant="outline"
+                  value={[interval]}
+                  onValueChange={(values) => {
+                    const next = values[0];
+                    if (next === "monthly" || next === "annual") {
+                      setInterval(next);
+                    }
+                  }}
+                >
                   {(["monthly", "annual"] as const).map((value) => (
-                    <button
-                      key={value}
-                      type="button"
-                      onClick={() => setInterval(value)}
-                      className={cn(
-                        "rounded-[0.3rem] px-3 py-1 font-medium capitalize transition-colors",
-                        interval === value
-                          ? "bg-background text-foreground shadow-sm"
-                          : "text-muted-foreground hover:text-foreground",
-                      )}
-                    >
+                    <Toggle key={value} value={value} className="capitalize">
                       {value}
-                    </button>
+                    </Toggle>
                   ))}
-                </div>
+                </ToggleGroup>
                 {interval === "annual" ? (
                   <Badge variant="success" size="sm">
                     2 months free

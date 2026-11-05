@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { cn } from "@/lib/cn";
+import { Toggle, ToggleGroup } from "@/components/ui/toggle-group";
 import type { TaskLayout } from "@/lib/task-query/model";
 
 const LAYOUT_META: Record<TaskLayout, { icon: ReactNode; labelKey: string }> = {
@@ -30,40 +30,50 @@ const LAYOUT_META: Record<TaskLayout, { icon: ReactNode; labelKey: string }> = {
   },
 };
 
-/** The toolbar's layout buttons (the Board/List toggle's look). */
+/**
+ * The toolbar's layout buttons: icons only on small screens, and everywhere
+ * with `iconsOnly` (under a project's tab row, which already names them).
+ */
 export default function LayoutToggle({
   layouts,
   value,
   onChange,
+  iconsOnly = false,
 }: {
   layouts: readonly TaskLayout[];
   value: TaskLayout;
   onChange: (layout: TaskLayout) => void;
+  iconsOnly?: boolean;
 }) {
   const { t } = useTranslation();
   return (
-    <div className="inline-flex items-center gap-1">
+    <ToggleGroup
+      size="sm"
+      variant="outline"
+      aria-label={t("tasks:view.layout")}
+      value={[value]}
+      onValueChange={(values) => {
+        const next = layouts.find((layout) => layout === values[0]);
+        if (next) onChange(next);
+      }}
+    >
       {layouts.map((layout) => {
         const meta = LAYOUT_META[layout];
-        const active = layout === value;
         return (
-          <button
+          <Toggle
             key={layout}
-            type="button"
-            aria-pressed={active}
-            onClick={() => onChange(layout)}
-            className={cn(
-              "inline-flex h-6 items-center gap-1 rounded-md px-2 font-medium text-xs transition-colors",
-              active
-                ? "bg-accent text-foreground"
-                : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
-            )}
+            value={layout}
+            aria-label={t(meta.labelKey)}
+            title={t(meta.labelKey)}
+            className="gap-1"
           >
             {meta.icon}
-            <span className="hidden md:inline">{t(meta.labelKey)}</span>
-          </button>
+            {!iconsOnly && (
+              <span className="hidden md:inline">{t(meta.labelKey)}</span>
+            )}
+          </Toggle>
         );
       })}
-    </div>
+    </ToggleGroup>
   );
 }

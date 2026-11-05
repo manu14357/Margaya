@@ -15,6 +15,7 @@ import AiMarkdown from "@/components/ai/ai-markdown";
 import { useAiLocale } from "@/components/editor/ai/use-editor-ai";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
+import { Toggle, ToggleGroup } from "@/components/ui/toggle-group";
 import {
   type BriefAudience,
   type BriefMeta,
@@ -241,26 +242,23 @@ export function BriefCard({
         <span id="ai-brief-audience" className="text-muted-foreground text-xs">
           {t("ai:brief.audience")}
         </span>
-        <div
-          role="radiogroup"
+        <ToggleGroup
+          size="sm"
+          variant="outline"
           aria-labelledby="ai-brief-audience"
-          className="flex items-center gap-1"
+          disabled={status === "streaming"}
+          value={[audience]}
+          onValueChange={(values) => {
+            const next = AUDIENCES.find((value) => value === values[0]);
+            if (next) setAudience(next);
+          }}
         >
           {AUDIENCES.map((value) => (
-            <Button
-              key={value}
-              type="button"
-              role="radio"
-              aria-checked={audience === value}
-              variant={audience === value ? "secondary" : "ghost"}
-              size="xs"
-              disabled={status === "streaming"}
-              onClick={() => setAudience(value)}
-            >
+            <Toggle key={value} value={value}>
               {t(`ai:brief.audiences.${value}`)}
-            </Button>
+            </Toggle>
           ))}
-        </div>
+        </ToggleGroup>
         <Button
           type="button"
           size="xs"

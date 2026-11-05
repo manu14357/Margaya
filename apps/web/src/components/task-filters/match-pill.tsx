@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { cn } from "@/lib/cn";
+import { Toggle, ToggleGroup } from "@/components/ui/toggle-group";
 import type { FilterGroupOp } from "@/lib/task-query/model";
 
 type MatchPillProps = {
@@ -11,26 +11,19 @@ type MatchPillProps = {
 /** "Match all" / "Match any": how the root conditions combine. */
 export default function MatchPill({ op, onChange, disabled }: MatchPillProps) {
   const { t } = useTranslation();
-  const item = (value: FilterGroupOp, label: string) => (
-    <button
-      type="button"
-      disabled={disabled}
-      aria-pressed={op === value}
-      onClick={() => onChange(value)}
-      className={cn(
-        "inline-flex h-6 items-center rounded-md px-2 font-medium text-xs transition-colors",
-        op === value
-          ? "bg-accent text-foreground"
-          : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
-      )}
-    >
-      {label}
-    </button>
-  );
   return (
-    <div className="inline-flex h-7 items-center gap-0.5 rounded-md border border-border bg-background px-0.5">
-      {item("and", t("tasks:filters.matchAll"))}
-      {item("or", t("tasks:filters.matchAny"))}
-    </div>
+    <ToggleGroup
+      size="sm"
+      variant="outline"
+      disabled={disabled}
+      value={[op]}
+      onValueChange={(values) => {
+        const next = values[0];
+        if (next === "and" || next === "or") onChange(next);
+      }}
+    >
+      <Toggle value="and">{t("tasks:filters.matchAll")}</Toggle>
+      <Toggle value="or">{t("tasks:filters.matchAny")}</Toggle>
+    </ToggleGroup>
   );
 }
