@@ -1,0 +1,73 @@
+---
+title: Export a Whole Workspace
+description: Download a workspace's tasks, comments, pages, settings and files as one ZIP, what the archive contains and what it leaves out
+---
+
+A whole-workspace export puts everything your team needs to take its data with it into one ZIP file: tasks with all their comments, pages, settings and files. It runs in the background, so you can keep working while the archive is built.
+
+Only workspace **Admins** and **Owners** can start one, because it holds the whole workspace. To export the tasks of some projects as a spreadsheet instead, see [Export tasks](/core/functional/export-tasks).
+
+## Start an export
+
+1. Open **Settings** > **Workspace** > **Exports**.
+2. Under **Whole workspace**, select **Export workspace**.
+3. Leave **Include files** on to put the stored files in the archive. Turn it off for a much smaller archive that still lists every file.
+4. Select **Export**.
+
+You get a notification in the app when the archive is ready, with a **Download** button. It also appears in **Previous exports** as **Whole workspace**, with how many files it holds. If storage no longer had some files, the row says how many are missing.
+
+## What the archive contains
+
+Every data file is UTF-8 JSON, and times are ISO 8601 in UTC. The format is named `margaya.workspace-export.v1`; keys may be added within a version, but not renamed or removed. The same description is in the `README.md` inside each archive.
+
+| Path | Contains |
+| --- | --- |
+| `manifest.json` | The format, when and by whom it was exported, counts, and what was left out |
+| `workspace.json` | Workspace settings, members with their email addresses and roles, teams, role permissions and labels |
+| `projects/<project>/project.json` | Project settings, columns, members, custom fields, cycles, modules and estimates |
+| `projects/<project>/tasks.json` | Every task of the project with all its comments, newest first |
+| `pages/pages.json` | Pages as Markdown, with their comments |
+| `files/index.json` | Every stored file: its name, type, size, what it belongs to and its path in the archive |
+| `files/<id>/<name>` | The files themselves |
+
+Archived projects, tasks and pages are included. `tasks.json` uses the same fields as the [JSON task export](/core/functional/export-tasks), except that every comment is there rather than the newest 200, and fields of a project feature that is turned off are filled in, because that data is kept. Each comment has an `id`, and a `parentId` when it replies to another comment.
+
+In `files/index.json`, each file has its `id`, `filename`, `mimeType`, `size`, `kind`, `surface`, `projectId`, `taskId`, `pageId`, `createdBy` and `createdAt`, plus:
+
+- `path`: where the file is in the archive, or `null` when it isn't there.
+- `missing`: `true` when storage no longer had the file.
+
+File names in the archive are made safe for any operating system, so look up the original name in `filename`. If storage fails while the archive is being built, rather than simply not having a file, the export fails instead of finishing without files. Try it again.
+
+## What is left out
+
+- **Secrets**: passwords, sessions, API keys, webhook and integration secrets, SSO and SCIM credentials, AI provider keys and public link tokens.
+- **Private pages**: even your own, because other Admins and Owners can download the archive and never see each other's private pages. Their number is in `manifest.json`. Private pages without an owner are included, because Admins and Owners can see those.
+- **Projects you can't see**: someone with a custom role that can manage settings gets only the projects they can see. Their number is in `manifest.json`, and that person can't download an archive holding projects hidden from them.
+- **The trash, task drafts, and requests still in [Intake](/core/functional/intake)**.
+- **Activity history other than comments, page versions and individual time entries**. Each task keeps its total logged time.
+- **Notifications, saved views, templates, automations, webhooks and integrations**.
+
+<Warning>The archive holds your workspace's data, including member email addresses. Keep it somewhere safe.</Warning>
+
+## Limits
+
+- One whole-workspace export in progress per workspace, and it counts towards your **3** exports in progress.
+- At most **4 GB** and **60,000** files per archive. A larger workspace can still export everything but the files, by turning off **Include files**. Self-hosted instances can then copy the files directly from their storage.
+- There is no limit on the number of tasks.
+- Archives over **256 MB** go straight to your browser's downloads, where you can follow their progress. That needs the app and the API on one site (the same domain, or subdomains of one). With the API on an entirely separate domain, download a larger archive using an API key instead.
+- The archive is built in the server's temporary folder, then kept in the configured object storage or the built-in file store. So the server needs free space for it, twice over with the built-in file store. If file storage is turned off entirely, it is kept in the database and can be at most **25 MB**.
+
+## How long files are kept
+
+The same as other exports: **7 days** after it is ready, then the file is deleted and the export shows **Expired**. Self-hosted instances can change this with `EXPORT_RETENTION_DAYS` (1 to 30 days). Deleting the export deletes its file straight away.
+
+Starting and downloading whole-workspace exports is recorded in the [audit log](/core/functional/audit-log). A workspace waiting to be deleted can still be exported.
+
+## Who can download it
+
+Workspace **Admins** and **Owners**. A custom role needs **manage settings**, and because the archive holds them, read access to projects, tasks, labels, cycles and modules, and read and delete access to pages. Someone who loses any of these can no longer see or download an export they started, and one still queued fails.
+
+## Use the API
+
+Start one with `POST /api/task-export/workspace` and an API key with full access, or one that covers the permissions above. It behaves like other exports from there: follow its status with `GET /api/task-export/{id}` (or the `EXPORT_UPDATED` message on the user WebSocket) and download the file from `GET /api/task-export/{id}/download`. See the **Exports** section of the API reference. API keys limited to specific projects can't start one.

@@ -3,7 +3,7 @@ title: Export Tasks to CSV, Excel or JSON
 description: Export the tasks of some or all projects in the background, download the file for a week, and manage who holds copies
 ---
 
-Exports turn the tasks of your projects into a file you can open in a spreadsheet or keep as an archive. They run in the background, so you can keep working while the file is built.
+Exports turn the tasks of your projects into a file you can open in a spreadsheet or keep as an archive. They run in the background, so you can keep working while the file is built. To take everything with you, including pages, settings and files, [export the whole workspace](/core/functional/export-workspace).
 
 ## Start an export
 
@@ -20,7 +20,7 @@ From a project's settings (**Settings** > **Projects** > a project > **General s
 
 You get a notification in the app when the file is ready, with a **Download** button. The **Previous exports** table shows each export's status: **Queued**, **Processing**, **Ready**, **Failed** or **Expired**, with its number of tasks, its size and how long it stays available.
 
-<Screenshot src="data/previous-exports" alt="The Exports page with two ready exports, a CSV of six projects and an Excel file of Website relaunch, each with download and delete buttons" caption="Previous exports, ready to download for 7 days." />
+<Screenshot src="data/previous-exports" alt="The Exports page with the Whole workspace export and two ready exports, a CSV of five projects and an Excel file of Website relaunch, each with download and delete buttons" caption="Previous exports, ready to download for 7 days." />
 
 ## What is exported
 
@@ -53,6 +53,8 @@ A file can be downloaded for **7 days** after it is ready; then it is deleted an
 ## Who can export
 
 Anyone who can read tasks can export, including **Viewers**. You see and download your own exports. Workspace **Admins** and **Owners** (the **manage settings** permission) can switch from **My exports** to **All exports** to see, download and delete everyone's, so they can manage who holds copies of workspace data. Deleting an export deletes its file for everyone.
+
+An export holds data from its projects, so it follows your access to them. If you are removed from a [restricted project](/core/functional/restricted-projects), your exports that include it leave your list and can't be downloaded, unless you get access back before they expire.
 
 ## Use the API
 
