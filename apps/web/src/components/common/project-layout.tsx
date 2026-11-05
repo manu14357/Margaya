@@ -26,6 +26,7 @@ import {
   type ProjectSectionId,
   projectSectionPath,
 } from "@/lib/project-sections";
+import { useUserPreferencesStore } from "@/store/user-preferences";
 
 type ProjectLayoutProps = {
   projectId: string;
@@ -51,6 +52,8 @@ type ProjectLayoutProps = {
 const LAYOUT_PATHS = {
   backlog: "/dashboard/workspace/$workspaceId/project/$projectId/backlog",
   board: "/dashboard/workspace/$workspaceId/project/$projectId/board",
+  // Board and List are one page; the viewMode preference picks which it draws.
+  list: "/dashboard/workspace/$workspaceId/project/$projectId/board",
   spreadsheet:
     "/dashboard/workspace/$workspaceId/project/$projectId/spreadsheet",
   calendar: "/dashboard/workspace/$workspaceId/project/$projectId/calendar",
@@ -82,6 +85,7 @@ export default function ProjectLayout({
 }: ProjectLayoutProps) {
   const navigate = useNavigate();
   const location = useLocation();
+  const setViewMode = useUserPreferencesStore((state) => state.setViewMode);
   const { data: project } = useGetProject({ id: projectId, workspaceId });
   const [isCreateProjectModalOpen, setIsCreateProjectModalOpen] =
     useState(false);
@@ -109,6 +113,11 @@ export default function ProjectLayout({
       to: LAYOUT_PATHS[view],
       params: { workspaceId, projectId: targetProjectId },
     });
+  };
+
+  const handleSelectView = (view: ProjectLayoutView) => {
+    if (view === "board" || view === "list") setViewMode(view);
+    goToView(view);
   };
 
   const handleSelectSection = (section: ProjectSection) => {
@@ -211,7 +220,7 @@ export default function ProjectLayout({
         sections={sections}
         activeSection={activeSection}
         activeView={shouldShowViewSwitcher ? resolvedView : null}
-        onSelectView={(view) => goToView(view)}
+        onSelectView={handleSelectView}
         onSelectSection={handleSelectSection}
         trailing={tabsTrailing}
       />

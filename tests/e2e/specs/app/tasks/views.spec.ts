@@ -16,6 +16,7 @@ import {
   dayLabel,
   dismissPopover,
   escapeRegExp,
+  layoutTab,
   localDay,
   localYmd,
   openPopover,
@@ -24,7 +25,6 @@ import {
   shortDate,
   taskCard,
   taskSheet,
-  toolbarButton,
   waitForBoardReady,
   ymd,
 } from "../../../helpers/task-ui";
@@ -55,7 +55,7 @@ test.describe("list view", () => {
 
     await page.goto(boardPath(project.id));
     await waitForBoardReady(page);
-    await toolbarButton(page, "List").click();
+    await layoutTab(page, "List").click();
 
     const group = page.getByRole("button", {
       name: "In Review 1",

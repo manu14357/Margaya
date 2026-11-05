@@ -5,8 +5,8 @@ import TaskToolbar, {
   type TaskToolbarStatus,
 } from "@/components/task-filters/task-toolbar";
 import { useDisplayConfig } from "@/components/task-filters/use-display-config";
+import { Toggle, ToggleGroup } from "@/components/ui/toggle-group";
 import type { TaskQueryStateHandle } from "@/hooks/use-task-query-state";
-import { cn } from "@/lib/cn";
 import type { TaskQueryScope } from "@/lib/task-query/model";
 
 // The filter primitives moved to the task filter bar; planning screens still
@@ -33,36 +33,10 @@ type BoardToolbarProps = {
   showLayoutToggle?: boolean;
 };
 
-function LayoutButton({
-  active,
-  onClick,
-  icon,
-  label,
-}: {
-  active: boolean;
-  onClick: () => void;
-  icon: ReactNode;
-  label: string;
-}) {
-  return (
-    <button
-      type="button"
-      aria-pressed={active}
-      className={cn(
-        "inline-flex h-6 items-center gap-1 rounded px-2 font-medium text-xs transition-colors",
-        active
-          ? "bg-background text-foreground shadow-xs"
-          : "text-muted-foreground hover:text-foreground",
-      )}
-      onClick={onClick}
-    >
-      {icon}
-      {label}
-    </button>
-  );
-}
-
-/** The Board/List segmented switch. */
+/**
+ * The Board/List switch of a cycle or module page. Icons only: the project's
+ * tab row above it already spells out these names.
+ */
 export function LayoutToggle({
   viewMode,
   setViewMode,
@@ -72,23 +46,31 @@ export function LayoutToggle({
 }) {
   const { t } = useTranslation();
   return (
-    <fieldset
+    <ToggleGroup
+      size="sm"
+      variant="outline"
       aria-label={t("tasks:view.layout")}
-      className="inline-flex min-w-0 items-center gap-0.5 rounded-md bg-muted p-0.5"
+      value={[viewMode]}
+      onValueChange={(values) => {
+        const next = values[0];
+        if (next === "board" || next === "list") setViewMode(next);
+      }}
     >
-      <LayoutButton
-        active={viewMode === "board"}
-        onClick={() => setViewMode("board")}
-        icon={<PanelsTopLeft className="h-3 w-3" />}
-        label={t("tasks:view.board")}
-      />
-      <LayoutButton
-        active={viewMode === "list"}
-        onClick={() => setViewMode("list")}
-        icon={<Rows3 className="h-3 w-3" />}
-        label={t("tasks:view.list")}
-      />
-    </fieldset>
+      <Toggle
+        value="board"
+        aria-label={t("tasks:view.board")}
+        title={t("tasks:view.board")}
+      >
+        <PanelsTopLeft className="h-3 w-3" />
+      </Toggle>
+      <Toggle
+        value="list"
+        aria-label={t("tasks:view.list")}
+        title={t("tasks:view.list")}
+      >
+        <Rows3 className="h-3 w-3" />
+      </Toggle>
+    </ToggleGroup>
   );
 }
 

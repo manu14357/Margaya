@@ -24,6 +24,7 @@ import {
   dragAndDrop,
   escapeRegExp,
   fillRichText,
+  layoutTab,
   localDay,
   localYmd,
   openDisplayMenu,
@@ -317,7 +318,7 @@ test("list triage moves with j/k, selects with x and changes priority with !", a
   });
   await page.goto(boardPath(project.id));
   await waitForBoardReady(page);
-  await toolbarButton(page, "List").click();
+  await layoutTab(page, "List").click();
   await expect(taskCard(page, second.title)).toBeVisible();
 
   await page.locator("body").click({ position: { x: 1, y: 1 } });
@@ -847,7 +848,7 @@ test.describe("filters, sort and layout", () => {
       taskCard(boardColumn(page, "To Do"), todo.title),
     ).toBeVisible();
 
-    await toolbarButton(page, "List").click();
+    await layoutTab(page, "List").click();
     // The list groups tasks under collapsible status headers.
     const todoGroup = page.getByRole("button", {
       name: "To Do 1",
@@ -872,7 +873,7 @@ test.describe("filters, sort and layout", () => {
     await page.reload();
     await expect(todoGroup).toBeVisible({ timeout: 60_000 });
 
-    await toolbarButton(page, "Board").click();
+    await layoutTab(page, "Board").click();
     await expect(
       taskCard(boardColumn(page, "In Progress"), doing.title),
     ).toBeVisible();

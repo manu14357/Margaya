@@ -1,6 +1,7 @@
 import {
   CalendarDays,
   CalendarRange,
+  Rows3,
   Sheet,
   SquareKanban,
   SquircleDashed,
@@ -19,6 +20,7 @@ import {
 export const PROJECT_LAYOUTS = [
   "backlog",
   "board",
+  "list",
   "spreadsheet",
   "calendar",
   "gantt",
@@ -29,6 +31,7 @@ export type ProjectLayoutView = (typeof PROJECT_LAYOUTS)[number];
 const LAYOUT_ICONS = {
   backlog: SquircleDashed,
   board: SquareKanban,
+  list: Rows3,
   spreadsheet: Sheet,
   calendar: CalendarRange,
   gantt: CalendarDays,
@@ -37,6 +40,7 @@ const LAYOUT_ICONS = {
 const LAYOUT_LABEL_KEYS: Record<ProjectLayoutView, string> = {
   backlog: "navigation:shell.backlog",
   board: "tasks:view.board",
+  list: "tasks:view.list",
   spreadsheet: "tasks:view.spreadsheet",
   calendar: "tasks:calendar.title",
   gantt: "tasks:view.gantt",
@@ -56,7 +60,7 @@ export type ProjectViewTabsProps = {
 };
 
 /**
- * A project's tab row: the task layouts (Backlog, Board, Spreadsheet,
+ * A project's tab row: the task layouts (Backlog, Board, List, Spreadsheet,
  * Calendar, Gantt), then the sections turned on for it (Cycles, Modules,
  * Views, Pages, Intake, Analytics). Registers the `g` section shortcuts.
  */

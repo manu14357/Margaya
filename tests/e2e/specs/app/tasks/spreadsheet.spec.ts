@@ -297,8 +297,7 @@ test("the project header switches between board and spreadsheet", async ({
 }) => {
   await openSheet(page);
   const main = page.getByRole("main");
-  // The project's layouts are tabs in the tab row (the Board/List switch sits
-  // on the right of that row).
+  // The project's layouts are tabs in the tab row.
   await main.getByRole("tab", { name: "Board", exact: true }).click();
   await expect(page).toHaveURL(/\/board/);
   await expect(page.getByRole("table")).toHaveCount(0);

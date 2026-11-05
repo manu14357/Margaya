@@ -31,6 +31,14 @@ export async function waitForBoardReady(page: Page): Promise<void> {
   ).toBeVisible({ timeout: 60_000 });
   // The Board/List choice is a per-user preference kept on the server, so a
   // spec that switched the shared owner to List leaves later specs in List.
+  const listTab = layoutTab(page, "List");
+  if (
+    (await listTab.count()) > 0 &&
+    (await listTab.getAttribute("aria-selected")) === "true"
+  ) {
+    await restoreBoardLayout(page);
+  }
+  // A cycle or module page has the same choice as a switch in its toolbar.
   const board = page
     .getByRole("group", { name: "Layout" })
     .getByRole("button", { name: "Board", exact: true });
@@ -49,9 +57,9 @@ export async function waitForBoardReady(page: Page): Promise<void> {
  * alongside.
  */
 export async function restoreBoardLayout(page: Page): Promise<void> {
-  await toolbarButton(page, "Board").click();
-  await expect(toolbarButton(page, "Board")).toHaveAttribute(
-    "aria-pressed",
+  await layoutTab(page, "Board").click();
+  await expect(layoutTab(page, "Board")).toHaveAttribute(
+    "aria-selected",
     "true",
   );
 }
@@ -228,7 +236,12 @@ export async function dismissPopover(page: Page, outside: Locator) {
   }).toPass({ timeout: 10_000 });
 }
 
-/** A board toolbar button ("Filter", "Sort", "Board", "List"). */
+/** A project's layout tab ("Board", "List", "Spreadsheet", ...). */
+export function layoutTab(page: Page, name: string): Locator {
+  return page.getByRole("main").getByRole("tab", { name, exact: true });
+}
+
+/** A board toolbar button ("Filter", "Sort", or a cycle page's "List"). */
 export function toolbarButton(page: Page, name: string): Locator {
   return page
     .getByRole("main")
