@@ -4,6 +4,7 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
+import { DeliveryFailures } from "@/components/instance-admin/delivery-failures";
 import { InstanceOverviewCard } from "@/components/instance-admin/instance-overview-card";
 import {
   InstanceLoadState,
@@ -96,6 +97,8 @@ function RouteComponent() {
           />
         )}
       </InstanceSection>
+
+      <DeliveryFailures />
     </InstancePage>
   );
 }

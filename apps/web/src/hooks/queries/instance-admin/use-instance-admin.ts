@@ -3,6 +3,7 @@ import {
   getInstanceUser,
   listInstanceAdmins,
   listInstanceAuditLog,
+  listInstanceDeliveryFailures,
   listInstancePublicBoards,
   listInstanceUsers,
   listInstanceWorkspaces,
@@ -24,6 +25,7 @@ export const instanceAdminKeys = {
   publicBoards: (q: string) => ["instance-admin", "public-boards", q] as const,
   admins: () => ["instance-admin", "admins"] as const,
   auditLog: () => ["instance-admin", "audit-log"] as const,
+  deliveryFailures: () => ["instance-admin", "delivery-failures"] as const,
   users: () => ["instance-admin", "users"] as const,
   userList: (q: string, status: InstanceUserStatus) =>
     ["instance-admin", "users", "list", q, status] as const,
@@ -36,6 +38,14 @@ export function useInstanceOverview() {
   return useQuery({
     queryKey: instanceAdminKeys.overview(),
     queryFn: getInstanceOverview,
+    refetchOnWindowFocus: true,
+  });
+}
+
+export function useInstanceDeliveryFailures() {
+  return useQuery({
+    queryKey: instanceAdminKeys.deliveryFailures(),
+    queryFn: listInstanceDeliveryFailures,
     refetchOnWindowFocus: true,
   });
 }

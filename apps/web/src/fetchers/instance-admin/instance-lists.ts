@@ -83,6 +83,15 @@ export async function listInstanceAuditLog(query: {
   return response.json();
 }
 
+/** Webhook deliveries that used up their retries in the last week. */
+export async function listInstanceDeliveryFailures() {
+  const response = await client["instance-admin"]["delivery-failures"].$get();
+  if (!response.ok) {
+    throw new HttpError(response.status, await response.text());
+  }
+  return response.json();
+}
+
 /** Accounts on the instance (guests excluded), newest first. */
 export async function listInstanceUsers(
   query: PageQuery & { status?: "all" | "admins" | "banned" },
@@ -133,6 +142,16 @@ export async function unbanInstanceUser(userId: string) {
 export async function revokeInstanceUserSessions(userId: string) {
   const response = await client["instance-admin"].users[":userId"][
     "revoke-sessions"
+  ].$post({ param: { userId } });
+  if (!response.ok) {
+    throw new HttpError(response.status, await response.text());
+  }
+  return response.json();
+}
+
+export async function resetInstanceUserTwoFactor(userId: string) {
+  const response = await client["instance-admin"].users[":userId"][
+    "reset-two-factor"
   ].$post({ param: { userId } });
   if (!response.ok) {
     throw new HttpError(response.status, await response.text());
