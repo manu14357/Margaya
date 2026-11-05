@@ -1,7 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useNavigate } from "@tanstack/react-router";
-import { format } from "date-fns";
 import {
   Calendar,
   CalendarClock,
@@ -41,7 +40,9 @@ import {
   isTaskCompleted,
 } from "@/lib/due-date-status";
 import { getExternalWebUrl, openExternalWebUrl } from "@/lib/external-url";
+import { formatDateShort } from "@/lib/format";
 import { getTaskItemStats } from "@/lib/get-task-item-stats";
+import { getPriorityLabel } from "@/lib/i18n/domain";
 import { getPriorityIcon } from "@/lib/priority";
 import { TaskPropertySlotOutlet } from "@/lib/task-property-slots";
 import { toastTaskTrashed } from "@/lib/task-undo";
@@ -50,6 +51,7 @@ import useBulkSelectionStore from "@/store/bulk-selection";
 import useProjectStore from "@/store/project";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 import type Task from "@/types/task";
+import { SelectionCheckbox } from "../bulk-selection/selection-checkbox";
 import AssigneeAvatarStack from "../task/assignee-avatar-stack";
 import TaskCardContextMenuContent from "./task-card-context-menu/task-card-context-menu-content";
 import { TaskLabels } from "./task-labels";
@@ -62,12 +64,15 @@ type TaskCardProps = {
   disableDragDrop?: boolean;
   /** The copy held under the pointer while dragging (the drag overlay). */
   overlay?: boolean;
+  /** Offers the selection control; Ctrl or ⌘ click selects regardless. */
+  selectable?: boolean;
 };
 
 function TaskCard({
   task,
   disableDragDrop = false,
   overlay = false,
+  selectable = true,
 }: TaskCardProps) {
   const { t } = useTranslation();
   const {
@@ -104,6 +109,9 @@ function TaskCard({
   );
   const isTaskFocused = useBulkSelectionStore(
     (s) => s.focusedTaskId === task.id,
+  );
+  const selectionActive = useBulkSelectionStore(
+    (s) => s.selectedTaskIds.size > 0,
   );
   const taskItemStats = useMemo(
     () =>
@@ -202,10 +210,17 @@ function TaskCard({
     }
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Escape") {
-      toggleSelection(task.id);
+  // Keys on the chips and buttons inside belong to them. Enter opens the card,
+  // which leaves Space to pick it up for a keyboard drag; once a drag is
+  // running the sensor listens on the document, so Enter there drops the card.
+  const handleCardKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.target !== e.currentTarget) return;
+    if (e.key === "Enter" && !isDragging) {
+      e.preventDefault();
+      handleTaskCardClick(e);
+      return;
     }
+    listeners?.onKeyDown?.(e);
   };
 
   const handleDeleteTask = async () => {
@@ -223,10 +238,20 @@ function TaskCard({
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    // biome-ignore lint/a11y/noStaticElementInteractions: the sortable attributes give it role="button" and a tab stop
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      onKeyDown={handleCardKeyDown}
+      data-board-card={overlay ? undefined : task.id}
+      className="group/selectable rounded-lg outline-none"
+    >
       <ContextMenu>
         <ContextMenuTrigger asChild>
-          {/** biome-ignore lint/a11y/noStaticElementInteractions: false positive for onClick and onKeyDown */}
+          {/** biome-ignore lint/a11y/useKeyWithClickEvents: the sortable wrapper around it holds focus and handles the keys */}
+          {/** biome-ignore lint/a11y/noStaticElementInteractions: the sortable wrapper around it is the interactive element */}
           <div
             onClick={handleTaskCardClick}
             data-selected={isTaskSelected || undefined}
@@ -243,22 +268,34 @@ function TaskCard({
                   ? "border-ring/40 bg-accent/50 shadow-sm ring-1 ring-inset ring-ring/30"
                   : "border-border/80"),
               isTaskFocused && !isDragging && "ring-2 ring-inset ring-ring/50",
+              !isDragging &&
+                "group-focus-visible/selectable:ring-2 group-focus-visible/selectable:ring-inset group-focus-visible/selectable:ring-ring/50",
             )}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleTaskCardClick(e);
-              } else if (e.key === "Escape") {
-                handleKeyDown(e);
-              }
-            }}
           >
+            {selectable && !overlay && (
+              <SelectionCheckbox
+                title={task.title}
+                checked={isTaskSelected}
+                selectionActive={selectionActive}
+                onToggle={() => toggleSelection(task.id)}
+                className="absolute end-1.5 top-1.5 z-10"
+              />
+            )}
+
             {showTaskNumbers && (
               <div className="mb-1 font-mono text-[11px] text-muted-foreground leading-4">
                 {project?.slug}-{task.number}
               </div>
             )}
 
-            <div className="line-clamp-3 break-words font-medium text-[13px] text-foreground leading-[18px] [hyphens:auto]">
+            <div
+              className={cn(
+                "line-clamp-3 break-words font-medium text-[13px] text-foreground leading-[18px] [hyphens:auto]",
+                // Without a number line the title shares the top row with the
+                // selection control.
+                selectable && !overlay && !showTaskNumbers && "pe-5",
+              )}
+            >
               {task.title}
             </div>
 
@@ -270,11 +307,18 @@ function TaskCard({
 
             <div className="mt-2 flex min-h-5 items-start gap-1">
               <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1">
-                {showPriority && (
-                  <span className="inline-flex h-5 items-center gap-1 rounded border border-border/70 bg-muted/55 px-1.5 font-medium text-[10px] text-muted-foreground">
-                    {getPriorityIcon(task.priority ?? "")}
-                  </span>
-                )}
+                {showPriority &&
+                  task.priority &&
+                  task.priority !== "no-priority" && (
+                    <span
+                      role="img"
+                      aria-label={getPriorityLabel(task.priority)}
+                      title={getPriorityLabel(task.priority)}
+                      className="inline-flex h-5 items-center gap-1 rounded border border-border/70 bg-muted/55 px-1.5 font-medium text-[10px] text-muted-foreground"
+                    >
+                      {getPriorityIcon(task.priority)}
+                    </span>
+                  )}
 
                 {activeCustomFieldValues.length > 0 && (
                   <HoverCard openDelay={200} closeDelay={100}>
@@ -350,7 +394,7 @@ function TaskCard({
                       "far-future" ||
                       getDueDateStatus(task.dueDate, taskIsCompleted) ===
                         "no-due-date") && <Calendar className="w-3 h-3" />}
-                    <span>{format(new Date(task.dueDate), "MMM d")}</span>
+                    <span>{formatDateShort(new Date(task.dueDate))}</span>
                   </div>
                 )}
 
@@ -388,7 +432,12 @@ function TaskCard({
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                           {getPRInfo(pullRequests[0]).icon}
                           <span>{getPRInfo(pullRequests[0]).status}</span>
-                          <span className="text-muted-foreground/50">•</span>
+                          <span
+                            aria-hidden
+                            className="text-muted-foreground/50"
+                          >
+                            •
+                          </span>
                           <span>#{pullRequests[0].externalId}</span>
                         </div>
                         <p className="text-sm font-medium leading-snug">

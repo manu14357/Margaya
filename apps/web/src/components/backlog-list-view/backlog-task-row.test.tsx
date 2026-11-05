@@ -1,8 +1,16 @@
-import { act, cleanup, render, screen } from "@testing-library/react";
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import EstimateCardChip from "@/components/estimate/estimate-card-chip";
 import { makeEstimate } from "@/components/estimate/test-fixtures";
 import { getEstimateValueMap } from "@/lib/estimate/totals";
+import { formatDateShort } from "@/lib/format";
+import { i18n } from "@/lib/i18n";
 import { registerTaskPropertySlot } from "@/lib/task-property-slots";
 import useBacklogBulkSelectionStore from "@/store/backlog-bulk-selection";
 import type Task from "@/types/task";
@@ -18,6 +26,7 @@ const mocks = vi.hoisted(() => ({
   } as Record<string, boolean>,
   activeEstimate: vi.fn(),
   customFieldValues: vi.fn(),
+  navigate: vi.fn(),
 }));
 
 const cleanups: Array<() => void> = [];
@@ -32,7 +41,7 @@ afterEach(() => {
 });
 
 vi.mock("@tanstack/react-router", () => ({
-  useNavigate: () => vi.fn(),
+  useNavigate: () => mocks.navigate,
 }));
 
 vi.mock("@/hooks/mutations/task/use-delete-task", () => ({
@@ -110,6 +119,20 @@ function isBefore(first: Node, second: Node) {
 }
 
 describe("BacklogTaskRow", () => {
+  it("writes the due date in the app's language", async () => {
+    const dueDate = "2026-10-05T12:00:00.000Z";
+    await i18n.changeLanguage("de-DE");
+    try {
+      render(<BacklogTaskRow task={{ ...task, dueDate }} />);
+      expect(
+        screen.getByText(formatDateShort(new Date(dueDate), "de-DE")),
+      ).toBeTruthy();
+      expect(screen.queryByText("Oct 5")).toBeNull();
+    } finally {
+      await i18n.changeLanguage("en-US");
+    }
+  });
+
   it("renders the card chip slots after the custom field chip, before the assignee", () => {
     mocks.customFieldValues.mockReturnValue([
       {
@@ -176,6 +199,37 @@ describe("BacklogTaskRow", () => {
     mocks.preferences.showEstimates = false;
     rerender(<BacklogTaskRow task={estimated} />);
     expect(screen.queryByTitle("tasks:estimate.label: 3")).toBeNull();
+  });
+
+  it("selects with its checkbox and leaves the other selection store alone", () => {
+    render(<BacklogTaskRow task={task} />);
+
+    fireEvent.click(screen.getByRole("checkbox"));
+    expect(useBacklogBulkSelectionStore.getState().isSelected(task.id)).toBe(
+      true,
+    );
+
+    act(() => useBacklogBulkSelectionStore.getState().clearSelection());
+    expect(screen.getByRole("checkbox")).not.toBeChecked();
+  });
+
+  it("opens the focused row with Enter, leaving Enter on its controls alone", () => {
+    render(<BacklogTaskRow task={task} />);
+
+    fireEvent.keyDown(screen.getByRole("checkbox"), { key: "Enter" });
+    expect(mocks.navigate).not.toHaveBeenCalled();
+
+    const row = screen.getByText(task.title).closest("[tabindex]") as Element;
+    fireEvent.keyDown(row, { key: "Enter" });
+    expect(mocks.navigate).toHaveBeenCalledWith({
+      to: ".",
+      search: { taskId: task.id },
+    });
+  });
+
+  it("offers no checkbox when it is not selectable", () => {
+    render(<BacklogTaskRow task={task} selectable={false} />);
+    expect(screen.queryByRole("checkbox")).toBeNull();
   });
 
   it("shows the row as selected while the task is in the selection", () => {

@@ -1,7 +1,12 @@
 import { type ReactNode, useState } from "react";
+import {
+  SelectionCheckbox,
+  useCanBulkSelect,
+} from "@/components/bulk-selection/selection-checkbox";
 import TaskCardContextMenuContent from "@/components/kanban-board/task-card-context-menu/task-card-context-menu-content";
 import AssigneeAvatarStack from "@/components/task/assignee-avatar-stack";
 import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
+import { ProjectScope } from "@/hooks/use-project-scope";
 import { cn } from "@/lib/cn";
 import { getPriorityIcon } from "@/lib/priority";
 import type { DisplayProperties } from "@/lib/task-query/model";
@@ -21,8 +26,20 @@ type QueryTaskRowProps = {
   rowEnd?: (row: TaskQueryRow) => ReactNode;
 };
 
-/** A list row of query mode: the list view's row, without drag and drop. */
-export default function QueryTaskRow({
+/**
+ * A list row of query mode: the list view's row, without drag and drop.
+ * Menus and editors in the row act in the task's own project, so its
+ * project role there decides what they offer, whatever list shows the row.
+ */
+export default function QueryTaskRow(props: QueryTaskRowProps) {
+  return (
+    <ProjectScope projectId={props.row.projectId}>
+      <QueryTaskRowBody {...props} />
+    </ProjectScope>
+  );
+}
+
+function QueryTaskRowBody({
   row,
   meta,
   properties,
@@ -35,6 +52,10 @@ export default function QueryTaskRow({
   const toggleSelection = useBulkSelectionStore((s) => s.toggleSelection);
   const selected = useBulkSelectionStore((s) => s.selectedTaskIds.has(row.id));
   const focused = useBulkSelectionStore((s) => s.focusedTaskId === row.id);
+  const selectionActive = useBulkSelectionStore(
+    (s) => s.selectedTaskIds.size > 0,
+  );
+  const selectable = useCanBulkSelect();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const assignees = (row.assigneeIds ?? []).flatMap((id) => {
     const user = meta.users.find((candidate) => candidate.id === id);
@@ -73,12 +94,20 @@ export default function QueryTaskRow({
               if (event.key === "Enter") handleClick(event);
             }}
             className={cn(
-              "group relative flex min-h-9 cursor-pointer items-center gap-1.5 px-2 py-0.5 transition-colors md:gap-2 md:px-3",
+              "group/selectable group relative flex min-h-9 cursor-pointer items-center gap-1.5 px-2 py-0.5 transition-colors md:gap-2 md:px-3",
               selected
                 ? "bg-accent/45"
                 : "hover:bg-accent/70 hover:shadow-[inset_2px_0_0_var(--primary)]",
             )}
           >
+            {selectable && (
+              <SelectionCheckbox
+                title={row.title}
+                checked={selected}
+                selectionActive={selectionActive}
+                onToggle={() => toggleSelection(row.id)}
+              />
+            )}
             {properties.priority && (
               <div className="flex size-6 shrink-0 items-center justify-center [&_svg]:size-3.5">
                 {getPriorityIcon(row.priority)}

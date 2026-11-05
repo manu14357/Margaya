@@ -21,7 +21,7 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import { produce } from "immer";
 import { Archive, ChevronRight, Flag, Plus } from "lucide-react";
-import { type CSSProperties, useEffect, useState } from "react";
+import { type CSSProperties, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import FocusedTaskShortcuts from "@/components/task/task-shortcuts/focused-task-shortcuts";
 import CaptureBar from "@/components/task-draft/capture-bar";
@@ -29,7 +29,8 @@ import useCaptureFocus from "@/components/task-draft/capture-store";
 import { useCaptureHost } from "@/components/task-draft/use-capture-host";
 import { priorityColorsTaskCard } from "@/constants/priority-colors";
 import { useBulkOperations } from "@/hooks/mutations/task/use-bulk-operations";
-import { useUpdateTask } from "@/hooks/mutations/task/use-update-task";
+import { useUpdateTaskPosition } from "@/hooks/mutations/task/use-update-task-position";
+import { useGetColumns } from "@/hooks/queries/column/use-get-columns";
 import { useRenderWindow } from "@/hooks/use-render-window";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { cn } from "@/lib/cn";
@@ -43,6 +44,11 @@ import useBulkSelectionStore from "@/store/bulk-selection";
 import useProjectStore from "@/store/project";
 import type { ProjectWithTasks } from "@/types/project";
 import BulkToolbar from "../bulk-selection/bulk-toolbar";
+import { useCanBulkSelect } from "../bulk-selection/selection-checkbox";
+import {
+  type ColumnTone,
+  columnTones,
+} from "../kanban-board/column/column-tone";
 import { ArchiveTasksModal } from "../shared/modals/archive-tasks-modal";
 import CreateTaskModal from "../shared/modals/create-task-modal";
 import TaskRow from "./task-row";
@@ -62,6 +68,8 @@ type ListViewProps = {
 
 type ListGroupProps = {
   column: ProjectColumn;
+  /** The column's colour on the board, so both views show it the same way. */
+  tone?: ColumnTone;
   project: ProjectWithTasks;
   expanded: boolean;
   showDropIndicator: boolean;
@@ -78,6 +86,7 @@ type ListGroupProps = {
  */
 function ListGroup({
   column,
+  tone,
   project,
   expanded,
   showDropIndicator,
@@ -89,11 +98,12 @@ function ListGroup({
   const { t } = useTranslation();
   const { canCreateTasks, canUpdateTasks } = useWorkspacePermission();
   const canCreate = canCreateTasks();
+  const selectable = useCanBulkSelect();
   // Large groups mount their rows as they scroll into view.
   const { count, hasMore, sentinelRef } = useRenderWindow(column.tasks.length);
   const visibleTasks = column.tasks.slice(0, count);
   const group = columnGroupOf(column);
-  const groupMeta = COLUMN_GROUP_META[group];
+  const hues = tone ?? COLUMN_GROUP_META[group];
   const { setNodeRef } = useDroppable({
     id: column.id,
     data: {
@@ -115,8 +125,8 @@ function ListGroup({
         className="group/header sticky top-0 z-10 flex h-8 items-center justify-between border-border/50 border-b px-2 shadow-[inset_3px_0_0_var(--group-color)] md:px-3"
         style={
           {
-            "--group-color": groupMeta.color,
-            backgroundColor: groupMeta.tint,
+            "--group-color": hues.color,
+            backgroundColor: hues.tint,
           } as CSSProperties
         }
         data-group={group}
@@ -139,12 +149,13 @@ function ListGroup({
               column.isFinal,
               column.icon,
               column.group,
+              { hue: hues.color },
             )}
           </span>
           <span className="truncate">{column.name}</span>
           <span
             className="rounded-full bg-card px-1.5 font-medium text-[11px] tabular-nums leading-4 ring-1 ring-(--group-color)/30"
-            style={{ color: groupMeta.foreground }}
+            style={{ color: hues.foreground }}
           >
             {column.tasks.length}
           </span>
@@ -193,7 +204,12 @@ function ListGroup({
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
                 >
-                  <TaskRow task={task} projectSlug={project.slug ?? ""} />
+                  <TaskRow
+                    task={task}
+                    projectSlug={project.slug ?? ""}
+                    statusHue={hues.color}
+                    selectable={selectable}
+                  />
                 </motion.div>
               ))}
             </AnimatePresence>
@@ -233,7 +249,7 @@ function ListView({
     (state) => state.setAvailableTasks,
   );
   const clearFocus = useBulkSelectionStore((state) => state.clearFocus);
-  const { mutate: updateTask } = useUpdateTask();
+  const { mutate: updateTaskPosition } = useUpdateTaskPosition();
   const { bulkArchive } = useBulkOperations();
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const [overColumnId, setOverColumnId] = useState<string | null>(null);
@@ -247,6 +263,18 @@ function ListView({
 
   useCaptureHost(capture ? project : undefined);
   useListTriage();
+
+  // The board payload carries no column colours; the (shared, cached) column
+  // list does.
+  const { data: columnRecords } = useGetColumns(project?.id ?? "");
+  const tones = useMemo(
+    () =>
+      columnTones(
+        project?.columns ?? [],
+        new Map(columnRecords?.map((record) => [record.slug, record.color])),
+      ),
+    [project?.columns, columnRecords],
+  );
 
   // A capture request for a collapsed group opens it first.
   const captureRequest = useCaptureFocus((state) => state.request);
@@ -364,9 +392,9 @@ function ListView({
         destinationColumn.tasks.splice(destinationIndex, 0, task);
 
         for (const write of placementWrites(destinationColumn.tasks)) {
-          updateTask({
-            ...write.task,
-            status: destinationColumn.slug,
+          updateTaskPosition({
+            id: write.task.id,
+            projectId: project.id,
             position: write.position,
           });
           write.task.position = write.position;
@@ -387,16 +415,25 @@ function ListView({
           destinationColumn.tasks,
           activeTaskId,
         )) {
-          updateTask({
-            ...write.task,
-            status: destinationColumn.slug,
+          // Only the dragged task changes column. A neighbour's status may
+          // have changed since this list loaded, so it must not be sent.
+          updateTaskPosition({
+            id: write.task.id,
+            projectId: project.id,
             position: write.position,
+            ...(write.task.id === activeTaskId
+              ? { status: destinationColumn.slug }
+              : {}),
           });
           write.task.position = write.position;
         }
 
         for (const write of placementWrites(sourceColumn.tasks)) {
-          updateTask({ ...write.task, position: write.position });
+          updateTaskPosition({
+            id: write.task.id,
+            projectId: project.id,
+            position: write.position,
+          });
           write.task.position = write.position;
         }
       }
@@ -484,6 +521,7 @@ function ListView({
           <ListGroup
             key={column.id}
             column={column}
+            tone={tones.get(column.id)}
             project={project}
             expanded={!collapsed[column.id]}
             showDropIndicator={Boolean(activeId) && overColumnId === column.id}

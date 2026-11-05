@@ -45,6 +45,14 @@ vi.mock(
   () => ({ default: () => null }),
 );
 vi.mock("./delete-task-dialog", () => ({ default: () => null }));
+vi.mock("@/hooks/use-workspace-permission", () => ({
+  useWorkspacePermission: () => ({
+    canUpdateTasks: () => true,
+    canDeleteTasks: () => true,
+    canAssignTasks: () => true,
+    canUpdateLabels: () => true,
+  }),
+}));
 
 afterEach(() => {
   cleanup();
@@ -183,6 +191,7 @@ const CAN_ALL = { updateCycles: true, updateModules: true, updateTasks: true };
 function renderQuickAddBoard(
   groupBy: "project" | "priority",
   scopeProjectId: string | null,
+  canInProject?: (projectId: string, capability: string) => boolean,
 ) {
   const data = boardData(groupBy);
   data.meta.columns = [
@@ -210,7 +219,7 @@ function renderQuickAddBoard(
       singleProject={scopeProjectId !== null}
       canUpdate
       canAssign
-      quickAdd={{ scopeProjectId, can: CAN_ALL }}
+      quickAdd={{ scopeProjectId, can: CAN_ALL, canInProject }}
     />,
   );
 }
@@ -218,6 +227,28 @@ function renderQuickAddBoard(
 describe("GroupedBoard", () => {
   it("lets cards move between priority groups", () => {
     expect(renderBoard("priority")).toHaveAttribute("aria-disabled", "false");
+  });
+
+  it("keeps a card still where its own project role only reads", () => {
+    render(
+      <GroupedBoard
+        query={
+          {
+            loadMore: vi.fn(),
+            isLoadingMore: () => false,
+          } as unknown as TaskQueryHandle
+        }
+        data={boardData("priority")}
+        properties={{ ...DEFAULT_DISPLAY_PROPERTIES, customFields: [] }}
+        workspaceId="w1"
+        singleProject={false}
+        canUpdate
+        canAssign
+        canInProject={(projectId) => projectId !== "p1"}
+      />,
+    );
+    const card = screen.getByText("Card").closest("[aria-roledescription]");
+    expect(card).toHaveAttribute("aria-disabled", "true");
   });
 
   it("offers a quick add per column that takes the group's value", () => {
@@ -232,6 +263,16 @@ describe("GroupedBoard", () => {
     expect(screen.queryByTestId("quick-add")).toBe(null);
     cleanup();
     renderQuickAddBoard("project", null);
+    expect(screen.getByTestId("quick-add").textContent).toMatch(/^p1:to-do::/);
+  });
+
+  it("adds in a project group only where that project's role may create", () => {
+    renderQuickAddBoard("project", null, (projectId, capability) =>
+      projectId === "p1" ? capability !== "createTasks" : true,
+    );
+    expect(screen.queryByTestId("quick-add")).toBe(null);
+    cleanup();
+    renderQuickAddBoard("project", null, () => true);
     expect(screen.getByTestId("quick-add").textContent).toMatch(/^p1:to-do::/);
   });
 

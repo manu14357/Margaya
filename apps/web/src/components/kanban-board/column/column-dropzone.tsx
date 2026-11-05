@@ -18,6 +18,8 @@ type ColumnDropzoneProps = {
   onDropTargetChange?: (isTarget: boolean) => void;
   /** Offered from the empty state; omitted without create permission. */
   onAddTask?: () => void;
+  /** Cards offer the selection control. */
+  selectable?: boolean;
 };
 
 /** Where a card from another column would land: a neutral dashed slot. */
@@ -37,6 +39,7 @@ export function ColumnDropzone({
   disableDragDrop = false,
   onDropTargetChange,
   onAddTask,
+  selectable = true,
 }: ColumnDropzoneProps) {
   const { t } = useTranslation();
   const { setNodeRef, isOver, active, over } = useDroppable({
@@ -96,7 +99,11 @@ export function ColumnDropzone({
                 }
                 transition={{ type: "spring", duration: 0.35, bounce: 0.15 }}
               >
-                <TaskCard task={task} disableDragDrop={disableDragDrop} />
+                <TaskCard
+                  task={task}
+                  disableDragDrop={disableDragDrop}
+                  selectable={selectable}
+                />
                 {showPlaceholder && overTaskId === task.id && (
                   <DropPlaceholder height={placeholderHeight} />
                 )}

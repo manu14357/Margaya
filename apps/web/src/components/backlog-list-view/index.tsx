@@ -26,9 +26,8 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { priorityColorsTaskCard } from "@/constants/priority-colors";
 import { useArchiveTask } from "@/hooks/mutations/task/use-archive-task";
-import { useUpdateTask } from "@/hooks/mutations/task/use-update-task";
+import { useUpdateTaskPosition } from "@/hooks/mutations/task/use-update-task-position";
 import { useUpdateTaskStatus } from "@/hooks/mutations/task/use-update-task-status";
-import { useRegisterShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { cn } from "@/lib/cn";
 import { toast } from "@/lib/toast";
 import useBacklogBulkSelectionStore from "@/store/backlog-bulk-selection";
@@ -36,6 +35,8 @@ import useProjectStore from "@/store/project";
 import type { ProjectWithTasks } from "@/types/project";
 import type Task from "@/types/task";
 import BacklogBulkToolbar from "../bulk-selection/backlog-bulk-toolbar";
+import { useCanBulkSelect } from "../bulk-selection/selection-checkbox";
+import { useCardKeyboard } from "../kanban-board/use-card-keyboard";
 import CreateTaskModal from "../shared/modals/create-task-modal";
 import BacklogTaskRow from "./backlog-task-row";
 
@@ -44,22 +45,160 @@ type BacklogListViewProps = {
   disableDragDrop?: boolean;
 };
 
+type BacklogSectionProps = {
+  sectionId: string;
+  title: string;
+  icon: typeof Clock;
+  tasks: Task[];
+  expanded: boolean;
+  /** A dragged task would land in this section. */
+  showDropIndicator: boolean;
+  onToggle: () => void;
+  /** Offered from the header; left out where tasks are not added directly. */
+  onAddTask?: () => void;
+  headerAction?: React.ReactNode;
+};
+
+/**
+ * One section of the backlog. A module-level component, so a list re-render
+ * never remounts its rows (they keep their focus, drag and selection state).
+ */
+function BacklogSection({
+  sectionId,
+  title,
+  icon: IconComponent,
+  tasks,
+  expanded,
+  showDropIndicator,
+  onToggle,
+  onAddTask,
+  headerAction,
+}: BacklogSectionProps) {
+  const { t } = useTranslation();
+  const selectable = useCanBulkSelect();
+  const { setNodeRef } = useDroppable({
+    id: sectionId,
+    data: {
+      type: "column",
+      column: { id: sectionId, name: title },
+    },
+  });
+
+  return (
+    <div
+      className={cn(
+        "border-b border-border/50 transition-colors duration-150 overflow-auto",
+        showDropIndicator &&
+          "bg-accent/35 outline-2 outline-primary/60 outline-dashed -outline-offset-2",
+      )}
+    >
+      <div
+        className={cn(
+          "flex h-8 items-center justify-between border-border/50 border-b px-2 md:px-3",
+          sectionId === "planned"
+            ? "bg-(--status-backlog-tint) shadow-[inset_3px_0_0_var(--status-backlog)]"
+            : "bg-muted/80",
+        )}
+      >
+        <button
+          type="button"
+          onClick={onToggle}
+          className="flex items-center gap-1.5 font-medium text-[13px] text-foreground transition-colors"
+        >
+          <ChevronRight
+            className={cn(
+              "w-3 h-3 transition-transform",
+              expanded && "rotate-90",
+            )}
+          />
+          <div className="flex items-center gap-2 h-4">
+            <IconComponent
+              className={cn(
+                "w-4 h-4 flex-shrink-0",
+                sectionId === "planned"
+                  ? "text-(--status-backlog-fg)"
+                  : "text-muted-foreground",
+              )}
+            />
+            <div className="flex items-center gap-1">
+              <span className="mt-1 mr-1">
+                {t(`tasks:backlog.sections.${sectionId}`, {
+                  defaultValue: title,
+                })}
+              </span>
+              <span className="rounded-full bg-card px-1.5 font-medium text-[11px] text-muted-foreground tabular-nums leading-4 ring-1 ring-border">
+                {tasks.length}
+              </span>
+            </div>
+          </div>
+        </button>
+
+        <div className="flex items-center gap-1">
+          {headerAction}
+          {onAddTask && (
+            <button
+              type="button"
+              onClick={onAddTask}
+              className="p-1 hover:bg-accent rounded text-muted-foreground hover:text-foreground transition-colors"
+              title={t("tasks:backlog.addTask")}
+            >
+              <Plus className="w-3 h-3" />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {expanded && (
+        <div
+          ref={setNodeRef}
+          className="bg-card transition-[translate,opacity] duration-150 ease-out starting:-translate-y-1 starting:opacity-0 motion-reduce:starting:translate-y-0"
+        >
+          <SortableContext items={tasks} strategy={verticalListSortingStrategy}>
+            <AnimatePresence initial={false} mode="popLayout">
+              {tasks.map((task) => (
+                <motion.div
+                  key={task.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
+                >
+                  <BacklogTaskRow task={task} selectable={selectable} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </SortableContext>
+
+          {tasks.length === 0 && (
+            <div className="py-6 px-4 text-center text-xs text-muted-foreground">
+              {t("tasks:backlog.noTasksInSection", {
+                section: t(`tasks:backlog.sections.${sectionId}`, {
+                  defaultValue: title,
+                }).toLowerCase(),
+              })}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function BacklogListView({
   project,
   disableDragDrop = false,
 }: BacklogListViewProps) {
   const { t } = useTranslation();
-  const { mutate: updateTask } = useUpdateTask();
+  const { mutate: updateTaskPosition } = useUpdateTaskPosition();
   const { mutateAsync: setArchived } = useArchiveTask();
   const { mutateAsync: updateTaskStatus } = useUpdateTaskStatus();
   const { setProject } = useProjectStore();
-  const {
-    setAvailableTasks,
-    focusNext,
-    focusPrevious,
-    focusedTaskId,
-    clearFocus,
-  } = useBacklogBulkSelectionStore();
+  // Select the actions only: reading the whole store would re-render the
+  // list on every selection and focus change.
+  const setAvailableTasks = useBacklogBulkSelectionStore(
+    (state) => state.setAvailableTasks,
+  );
+  const clearFocus = useBacklogBulkSelectionStore((state) => state.clearFocus);
   const navigate = useNavigate();
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const [overColumnId, setOverColumnId] = useState<string | null>(null);
@@ -93,36 +232,7 @@ function BacklogListView({
     clearFocus();
   }, [clearFocus]);
 
-  useRegisterShortcuts({
-    shortcuts: {
-      j: () => {
-        focusNext();
-        const state = useBacklogBulkSelectionStore.getState();
-        if (state.focusedTaskId) {
-          navigate({ to: ".", search: { taskId: state.focusedTaskId } });
-        }
-      },
-      k: () => {
-        focusPrevious();
-        const state = useBacklogBulkSelectionStore.getState();
-        if (state.focusedTaskId) {
-          navigate({ to: ".", search: { taskId: state.focusedTaskId } });
-        }
-      },
-      Enter: () => {
-        if (focusedTaskId && project) {
-          navigate({
-            to: "/dashboard/workspace/$workspaceId/project/$projectId/task/$taskId",
-            params: {
-              workspaceId: project.workspaceId,
-              projectId: project.id,
-              taskId: focusedTaskId,
-            },
-          });
-        }
-      },
-    },
-  });
+  useCardKeyboard(useBacklogBulkSelectionStore, activeId !== null);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -215,7 +325,11 @@ function BacklogListView({
         else if (sourceIndex <= destinationIndex) destinationIndex += 1;
         list.splice(destinationIndex, 0, task);
         list.forEach((t, index) => {
-          updateTask({ ...t, position: index });
+          updateTaskPosition({
+            id: t.id,
+            projectId: draft.id,
+            position: index,
+          });
         });
       });
       setProject(updatedProject);
@@ -287,137 +401,6 @@ function BacklogListView({
     }));
   };
 
-  function BacklogSection({
-    sectionId,
-    title,
-    icon: IconComponent,
-    tasks,
-    showAddButton = false,
-    headerAction,
-  }: {
-    sectionId: string;
-    title: string;
-    icon: typeof Clock;
-    tasks: Task[];
-    showAddButton?: boolean;
-    headerAction?: React.ReactNode;
-  }) {
-    const { setNodeRef } = useDroppable({
-      id: sectionId,
-      data: {
-        type: "column",
-        column: { id: sectionId, name: title },
-      },
-    });
-
-    const showDropIndicator = activeId && overColumnId === sectionId;
-
-    return (
-      <div
-        className={cn(
-          "border-b border-border/50 transition-colors duration-150 overflow-auto",
-          showDropIndicator &&
-            "bg-accent/35 outline-2 outline-primary/60 outline-dashed -outline-offset-2",
-        )}
-      >
-        <div
-          className={cn(
-            "flex h-8 items-center justify-between border-border/50 border-b px-2 md:px-3",
-            sectionId === "planned"
-              ? "bg-(--status-backlog-tint) shadow-[inset_3px_0_0_var(--status-backlog)]"
-              : "bg-muted/80",
-          )}
-        >
-          <button
-            type="button"
-            onClick={() => toggleSection(sectionId)}
-            className="flex items-center gap-1.5 font-medium text-[13px] text-foreground transition-colors"
-          >
-            <ChevronRight
-              className={cn(
-                "w-3 h-3 transition-transform",
-                expandedSections[sectionId] && "rotate-90",
-              )}
-            />
-            <div className="flex items-center gap-2 h-4">
-              <IconComponent
-                className={cn(
-                  "w-4 h-4 flex-shrink-0",
-                  sectionId === "planned"
-                    ? "text-(--status-backlog-fg)"
-                    : "text-muted-foreground",
-                )}
-              />
-              <div className="flex items-center gap-1">
-                <span className="mt-1 mr-1">
-                  {t(`tasks:backlog.sections.${sectionId}`, {
-                    defaultValue: title,
-                  })}
-                </span>
-                <span className="rounded-full bg-card px-1.5 font-medium text-[11px] text-muted-foreground tabular-nums leading-4 ring-1 ring-border">
-                  {tasks.length}
-                </span>
-              </div>
-            </div>
-          </button>
-
-          <div className="flex items-center gap-1">
-            {headerAction}
-            {showAddButton && (
-              <button
-                type="button"
-                onClick={() => {
-                  setIsTaskModalOpen(true);
-                  setActiveColumn("planned");
-                }}
-                className="p-1 hover:bg-accent rounded text-muted-foreground hover:text-foreground transition-colors"
-                title={t("tasks:backlog.addTask")}
-              >
-                <Plus className="w-3 h-3" />
-              </button>
-            )}
-          </div>
-        </div>
-
-        {expandedSections[sectionId] && (
-          <div
-            ref={setNodeRef}
-            className="bg-card transition-[translate,opacity] duration-150 ease-out starting:-translate-y-1 starting:opacity-0 motion-reduce:starting:translate-y-0"
-          >
-            <SortableContext
-              items={tasks}
-              strategy={verticalListSortingStrategy}
-            >
-              <AnimatePresence initial={false} mode="popLayout">
-                {tasks.map((task) => (
-                  <motion.div
-                    key={task.id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
-                  >
-                    <BacklogTaskRow task={task} />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </SortableContext>
-
-            {tasks.length === 0 && (
-              <div className="py-6 px-4 text-center text-xs text-muted-foreground">
-                {t("tasks:backlog.noTasksInSection", {
-                  section: t(`tasks:backlog.sections.${sectionId}`, {
-                    defaultValue: title,
-                  }).toLowerCase(),
-                })}
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    );
-  }
-
   if (!project) {
     return null;
   }
@@ -445,7 +428,13 @@ function BacklogListView({
             title={t("tasks:backlog.sections.planned")}
             icon={Clock}
             tasks={plannedTasks}
-            showAddButton={true}
+            expanded={expandedSections.planned}
+            showDropIndicator={Boolean(activeId) && overColumnId === "planned"}
+            onToggle={() => toggleSection("planned")}
+            onAddTask={() => {
+              setIsTaskModalOpen(true);
+              setActiveColumn("planned");
+            }}
           />
 
           <BacklogSection
@@ -453,6 +442,9 @@ function BacklogListView({
             title={t("tasks:backlog.sections.archived")}
             icon={Archive}
             tasks={archivedTasks}
+            expanded={expandedSections.archived}
+            showDropIndicator={Boolean(activeId) && overColumnId === "archived"}
+            onToggle={() => toggleSection("archived")}
             headerAction={
               <button
                 type="button"

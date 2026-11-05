@@ -1,9 +1,14 @@
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { useState } from "react";
+import {
+  SelectionCheckbox,
+  useCanBulkSelect,
+} from "@/components/bulk-selection/selection-checkbox";
 import TaskCardContextMenuContent from "@/components/kanban-board/task-card-context-menu/task-card-context-menu-content";
 import AssigneeAvatarStack from "@/components/task/assignee-avatar-stack";
 import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
+import { ProjectScope } from "@/hooks/use-project-scope";
 import { cn } from "@/lib/cn";
 import { getPriorityIcon } from "@/lib/priority";
 import type { DisplayProperties } from "@/lib/task-query/model";
@@ -43,12 +48,19 @@ export function QueryTaskCardBody({
           {row.key}
         </div>
       )}
-      <div className="line-clamp-3 break-words font-medium text-[13px] text-foreground leading-[18px]">
+      <div
+        className={cn(
+          "line-clamp-3 break-words font-medium text-[13px] text-foreground leading-[18px]",
+          // Without a key line the title shares the top row with the selection
+          // control.
+          !properties.key && "pe-5",
+        )}
+      >
         {row.title}
       </div>
       <div className="mt-2 flex min-h-5 items-start gap-1">
         <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1">
-          {properties.priority && (
+          {properties.priority && row.priority !== "no-priority" && (
             <span className="inline-flex h-5 items-center gap-1 rounded border border-border/70 bg-muted/55 px-1.5 font-medium text-[10px] text-muted-foreground">
               {getPriorityIcon(row.priority)}
             </span>
@@ -71,7 +83,19 @@ export function QueryTaskCardBody({
   );
 }
 
-export default function QueryTaskCard({
+/**
+ * Menus and editors in the row act in the task's own project, so its project
+ * role there decides what they offer, whatever list shows the row.
+ */
+export default function QueryTaskCard(props: QueryTaskCardProps) {
+  return (
+    <ProjectScope projectId={props.row.projectId}>
+      <ScopedQueryTaskCard {...props} />
+    </ProjectScope>
+  );
+}
+
+function ScopedQueryTaskCard({
   row,
   meta,
   properties,
@@ -86,6 +110,10 @@ export default function QueryTaskCard({
   const toggleSelection = useBulkSelectionStore((s) => s.toggleSelection);
   const selected = useBulkSelectionStore((s) => s.selectedTaskIds.has(row.id));
   const focused = useBulkSelectionStore((s) => s.focusedTaskId === row.id);
+  const selectionActive = useBulkSelectionStore(
+    (s) => s.selectedTaskIds.size > 0,
+  );
+  const selectable = useCanBulkSelect();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
@@ -111,6 +139,7 @@ export default function QueryTaskCard({
       }}
       {...attributes}
       {...listeners}
+      className="group/selectable"
     >
       <ContextMenu>
         <ContextMenuTrigger asChild>
@@ -133,6 +162,15 @@ export default function QueryTaskCard({
               row.archivedAt && "opacity-80",
             )}
           >
+            {selectable && (
+              <SelectionCheckbox
+                title={row.title}
+                checked={selected}
+                selectionActive={selectionActive}
+                onToggle={() => toggleSelection(row.id)}
+                className="absolute end-1.5 top-1.5 z-10"
+              />
+            )}
             <QueryTaskCardBody row={row} meta={meta} properties={properties} />
           </div>
         </ContextMenuTrigger>

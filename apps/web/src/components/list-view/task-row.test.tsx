@@ -1,8 +1,16 @@
-import { act, cleanup, render, screen } from "@testing-library/react";
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import EstimateCardChip from "@/components/estimate/estimate-card-chip";
 import { makeEstimate } from "@/components/estimate/test-fixtures";
 import { getEstimateValueMap } from "@/lib/estimate/totals";
+import { formatDateShort } from "@/lib/format";
+import { i18n } from "@/lib/i18n";
 import { registerTaskPropertySlot } from "@/lib/task-property-slots";
 import useBulkSelectionStore from "@/store/bulk-selection";
 import type Task from "@/types/task";
@@ -17,6 +25,7 @@ const mocks = vi.hoisted(() => ({
     showEstimates: true,
   } as Record<string, boolean>,
   activeEstimate: vi.fn(),
+  navigate: vi.fn(),
 }));
 
 const useExternalLinks = vi.fn((_taskId: string) => ({ data: [] }));
@@ -32,7 +41,7 @@ afterEach(() => {
 });
 
 vi.mock("@tanstack/react-router", () => ({
-  useNavigate: () => vi.fn(),
+  useNavigate: () => mocks.navigate,
 }));
 
 vi.mock("@/hooks/queries/external-link/use-external-links", () => ({
@@ -133,6 +142,20 @@ function isBefore(first: Node, second: Node) {
 }
 
 describe("TaskRow", () => {
+  it("writes the due date in the app's language", async () => {
+    const dueDate = "2026-10-05T12:00:00.000Z";
+    await i18n.changeLanguage("de-DE");
+    try {
+      render(<TaskRow task={{ ...task, dueDate }} projectSlug="kan" />);
+      expect(
+        screen.getByText(formatDateShort(new Date(dueDate), "de-DE")),
+      ).toBeTruthy();
+      expect(screen.queryByText("Oct 5")).toBeNull();
+    } finally {
+      await i18n.changeLanguage("en-US");
+    }
+  });
+
   it("renders labels and pull requests from the task payload without per-row requests", () => {
     render(<TaskRow task={task} projectSlug="kan" />);
 
@@ -181,6 +204,35 @@ describe("TaskRow", () => {
     mocks.preferences.showEstimates = false;
     rerender(<TaskRow task={estimated} projectSlug="kan" />);
     expect(screen.queryByTitle("tasks:estimate.label: 5")).toBeNull();
+  });
+
+  it("selects with its checkbox", () => {
+    const { container } = render(<TaskRow task={task} projectSlug="kan" />);
+
+    fireEvent.click(screen.getByRole("checkbox"));
+    expect(useBulkSelectionStore.getState().isSelected(task.id)).toBe(true);
+    expect(container.querySelector("[data-selected]")).not.toBeNull();
+
+    act(() => useBulkSelectionStore.getState().clearSelection());
+  });
+
+  it("opens the focused row with Enter, leaving Enter on its controls alone", () => {
+    render(<TaskRow task={task} projectSlug="kan" />);
+
+    fireEvent.keyDown(screen.getByRole("checkbox"), { key: "Enter" });
+    expect(mocks.navigate).not.toHaveBeenCalled();
+
+    const row = screen.getByText(task.title).closest("[tabindex]") as Element;
+    fireEvent.keyDown(row, { key: "Enter" });
+    expect(mocks.navigate).toHaveBeenCalledWith({
+      to: ".",
+      search: { taskId: task.id },
+    });
+  });
+
+  it("offers no checkbox when it is not selectable", () => {
+    render(<TaskRow task={task} projectSlug="kan" selectable={false} />);
+    expect(screen.queryByRole("checkbox")).toBeNull();
   });
 
   it("shows the row as selected while the task is in the selection", () => {

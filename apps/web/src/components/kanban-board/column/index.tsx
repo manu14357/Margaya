@@ -6,6 +6,7 @@ import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { cn } from "@/lib/cn";
 import useProjectStore from "@/store/project";
 import type { ProjectWithTasks } from "@/types/project";
+import { useCanBulkSelect } from "../../bulk-selection/selection-checkbox";
 import { ColumnDropzone } from "./column-dropzone";
 import { ColumnHeader } from "./column-header";
 import type { ColumnTone } from "./column-tone";
@@ -30,6 +31,7 @@ function Column({
   const project = useProjectStore((state) => state.project);
   const { canCreateTasks } = useWorkspacePermission();
   const canCreate = canCreateTasks();
+  const selectable = useCanBulkSelect();
   const hasCapture = capture && canCreate && Boolean(project);
 
   const addTask = () => {
@@ -42,6 +44,7 @@ function Column({
     // its name.
     <section
       aria-label={column.name}
+      data-board-column
       data-drop={isDropTarget || undefined}
       data-tone={tone?.name}
       style={tone?.style}
@@ -63,6 +66,7 @@ function Column({
           disableDragDrop={disableDragDrop}
           onDropTargetChange={setIsDropTarget}
           onAddTask={canCreate ? addTask : undefined}
+          selectable={selectable}
         />
       </div>
       {hasCapture && project && (

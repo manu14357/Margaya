@@ -1,7 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useNavigate } from "@tanstack/react-router";
-import { format } from "date-fns";
 import {
   Calendar,
   CalendarClock,
@@ -36,6 +35,8 @@ import {
   getDueDateStatus,
   isTaskCompleted,
 } from "@/lib/due-date-status";
+import { formatDateShort } from "@/lib/format";
+import { getPriorityLabel } from "@/lib/i18n/domain";
 import { getPriorityIcon } from "@/lib/priority";
 import { TaskPropertySlotOutlet } from "@/lib/task-property-slots";
 import { toast } from "@/lib/toast";
@@ -43,6 +44,7 @@ import useBacklogBulkSelectionStore from "@/store/backlog-bulk-selection";
 import useProjectStore from "@/store/project";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 import type Task from "@/types/task";
+import { SelectionCheckbox } from "../bulk-selection/selection-checkbox";
 import TaskCardContextMenuContent from "../kanban-board/task-card-context-menu/task-card-context-menu-content";
 import { LabelChips } from "../shared/label-chips";
 import AssigneeAvatarStack from "../task/assignee-avatar-stack";
@@ -50,9 +52,14 @@ import { ContextMenu, ContextMenuTrigger } from "../ui/context-menu";
 
 type BacklogTaskRowProps = {
   task: Task;
+  /** Offers the selection control; Ctrl or ⌘ click selects regardless. */
+  selectable?: boolean;
 };
 
-export default function BacklogTaskRow({ task }: BacklogTaskRowProps) {
+export default function BacklogTaskRow({
+  task,
+  selectable = true,
+}: BacklogTaskRowProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const {
@@ -86,6 +93,9 @@ export default function BacklogTaskRow({ task }: BacklogTaskRowProps) {
   );
   const isTaskFocused = useBacklogBulkSelectionStore(
     (s) => s.focusedTaskId === task.id,
+  );
+  const selectionActive = useBacklogBulkSelectionStore(
+    (s) => s.selectedTaskIds.size > 0,
   );
 
   const assignees = useTaskAssignees(task, workspace?.id ?? "");
@@ -138,10 +148,16 @@ export default function BacklogTaskRow({ task }: BacklogTaskRowProps) {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+  // Keys on the controls inside belong to them. Enter opens the row, which
+  // leaves Space to pick it up for a keyboard drag.
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.target !== e.currentTarget) return;
+    if (e.key === "Enter" && !isDragging) {
       handleClick(e as unknown as React.MouseEvent);
+      e.preventDefault();
+      return;
     }
+    listeners?.onKeyDown?.(e);
   };
 
   const handleDeleteTask = async () => {
@@ -173,19 +189,38 @@ export default function BacklogTaskRow({ task }: BacklogTaskRowProps) {
           {/* biome-ignore lint/a11y/noStaticElementInteractions: false positive for onClick and onKeyDown */}
           <div
             onClick={handleClick}
-            onKeyDown={handleKeyDown}
+            data-board-card={task.id}
             className={cn(
-              "group relative flex min-h-9 cursor-pointer items-center gap-1.5 px-2 py-0.5 transition-colors md:gap-2 md:px-3",
+              "group/selectable group relative flex min-h-9 cursor-pointer items-center gap-1.5 px-2 py-0.5 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-inset md:gap-2 md:px-3",
               isTaskSelected
                 ? "bg-accent/45"
                 : "hover:bg-accent/70 hover:shadow-[inset_2px_0_0_var(--primary)]",
             )}
             {...attributes}
             {...listeners}
+            onKeyDown={handleKeyDown}
           >
+            {selectable && (
+              <SelectionCheckbox
+                title={task.title}
+                checked={isTaskSelected}
+                selectionActive={selectionActive}
+                onToggle={() => toggleSelection(task.id)}
+              />
+            )}
             {showPriority && (
+              // An empty slot for no priority: the rows keep their alignment.
               <div className="flex size-6 shrink-0 items-center justify-center [&_svg]:size-3.5">
-                {getPriorityIcon(task.priority ?? "")}
+                {task.priority && task.priority !== "no-priority" && (
+                  <span
+                    role="img"
+                    aria-label={getPriorityLabel(task.priority)}
+                    title={getPriorityLabel(task.priority)}
+                    className="flex"
+                  >
+                    {getPriorityIcon(task.priority)}
+                  </span>
+                )}
               </div>
             )}
             {showTaskNumbers && (
@@ -219,7 +254,7 @@ export default function BacklogTaskRow({ task }: BacklogTaskRowProps) {
                   "far-future" ||
                   getDueDateStatus(task.dueDate, taskIsCompleted) ===
                     "no-due-date") && <Calendar className="w-3 h-3" />}
-                <span>{format(new Date(task.dueDate), "MMM d")}</span>
+                <span>{formatDateShort(new Date(task.dueDate))}</span>
               </div>
             )}
 

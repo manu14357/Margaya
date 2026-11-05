@@ -1,7 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useNavigate } from "@tanstack/react-router";
-import { format } from "date-fns";
 import {
   Calendar,
   CalendarClock,
@@ -37,6 +36,7 @@ import {
   isTaskCompleted,
 } from "@/lib/due-date-status";
 import { getExternalWebUrl, openExternalWebUrl } from "@/lib/external-url";
+import { formatDateShort } from "@/lib/format";
 import { TaskPropertySlotOutlet } from "@/lib/task-property-slots";
 import { toastTaskTrashed } from "@/lib/task-undo";
 import { toast } from "@/lib/toast";
@@ -44,6 +44,7 @@ import useBulkSelectionStore from "@/store/bulk-selection";
 import useProjectStore from "@/store/project";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 import type Task from "@/types/task";
+import { SelectionCheckbox } from "../bulk-selection/selection-checkbox";
 import TaskCardContextMenuContent from "../kanban-board/task-card-context-menu/task-card-context-menu-content";
 import { LabelChips } from "../shared/label-chips";
 import AssigneeAvatarStack from "../task/assignee-avatar-stack";
@@ -57,9 +58,18 @@ import {
 type TaskRowProps = {
   task: Task;
   projectSlug: string;
+  /** The colour the board gives the task's column. */
+  statusHue?: string;
+  /** Offers the selection control; Ctrl or ⌘ click selects regardless. */
+  selectable?: boolean;
 };
 
-function TaskRow({ task, projectSlug }: TaskRowProps) {
+function TaskRow({
+  task,
+  projectSlug,
+  statusHue,
+  selectable = true,
+}: TaskRowProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const {
@@ -94,6 +104,9 @@ function TaskRow({ task, projectSlug }: TaskRowProps) {
   );
   const isTaskFocused = useBulkSelectionStore(
     (s) => s.focusedTaskId === task.id,
+  );
+  const selectionActive = useBulkSelectionStore(
+    (s) => s.selectedTaskIds.size > 0,
   );
 
   const assignees = useTaskAssignees(task, workspace?.id ?? "");
@@ -165,10 +178,16 @@ function TaskRow({ task, projectSlug }: TaskRowProps) {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+  // Keys on the controls inside belong to them. Enter opens the row, which
+  // leaves Space to pick it up for a keyboard drag.
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.target !== e.currentTarget) return;
+    if (e.key === "Enter" && !isDragging) {
       handleClick(e as unknown as React.MouseEvent);
+      e.preventDefault();
+      return;
     }
+    listeners?.onKeyDown?.(e);
   };
 
   const handleDeleteTask = async () => {
@@ -205,23 +224,31 @@ function TaskRow({ task, projectSlug }: TaskRowProps) {
           {/* biome-ignore lint/a11y/noStaticElementInteractions: false positive for onClick and onKeyDown */}
           <div
             onClick={handleClick}
-            onKeyDown={handleKeyDown}
             className={cn(
-              "group relative flex min-h-9 cursor-pointer items-center gap-1.5 px-2 py-0.5 transition-colors md:gap-2 md:px-3",
+              "group/selectable group relative flex min-h-9 cursor-pointer items-center gap-1.5 px-2 py-0.5 transition-colors md:gap-2 md:px-3",
               isTaskSelected
                 ? "bg-accent/45"
                 : "hover:bg-accent/70 hover:shadow-[inset_2px_0_0_var(--primary)]",
             )}
             {...attributes}
             {...listeners}
+            onKeyDown={handleKeyDown}
           >
+            {selectable && (
+              <SelectionCheckbox
+                title={task.title}
+                checked={isTaskSelected}
+                selectionActive={selectionActive}
+                onToggle={() => toggleSelection(task.id)}
+              />
+            )}
             {showPriority && <PriorityTrigger task={task} />}
             {showTaskNumbers && (
               <div className="w-16 shrink-0 truncate font-mono text-muted-foreground text-xs">
                 {projectSlug}-{task.number}
               </div>
             )}
-            <StatusTrigger task={task} column={column} />
+            <StatusTrigger task={task} column={column} hue={statusHue} />
 
             <div className="flex min-w-0 flex-1 items-center gap-2">
               <div className="flex w-full items-center justify-between gap-2">
@@ -364,7 +391,7 @@ function TaskRow({ task, projectSlug }: TaskRowProps) {
                   "far-future" ||
                   getDueDateStatus(task.dueDate, taskIsCompleted) ===
                     "no-due-date") && <Calendar className="w-3 h-3" />}
-                <span>{format(new Date(task.dueDate), "MMM d")}</span>
+                <span>{formatDateShort(new Date(task.dueDate))}</span>
               </div>
             )}
 
