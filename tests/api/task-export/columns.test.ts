@@ -54,6 +54,8 @@ function task(overrides: Partial<ExportTask> = {}): ExportTask {
     relations: [{ type: "blocks", task: "WEB-14", direction: "outgoing" }],
     comments: [
       {
+        id: "a1",
+        parentId: null,
         author: "Mia",
         createdAt: new Date("2026-09-03T08:00:00Z"),
         text: "Looks good",
