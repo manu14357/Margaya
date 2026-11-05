@@ -65,7 +65,7 @@ export function ExportHistory({
   const handleDownload = (row: TaskExport) => {
     setDownloadingId(row.id);
     download.mutate(
-      { id: row.id, fileName: row.fileName },
+      { id: row.id, fileName: row.fileName, sizeBytes: row.sizeBytes },
       {
         onError: (error) =>
           toast.error(

@@ -51,13 +51,16 @@ export function ExportHistoryRow({
   const { t } = useTranslation();
   const status = displayExportStatus(row, now);
   const downloadable = canDownload(row, now);
-  const summary = t("settings:workspaceExports.history.summaryProjects", {
-    count: row.projectIds.length,
-    format: t(FORMAT_NAME_KEYS[row.format]),
-    name:
-      row.projects[0]?.name ??
-      t("settings:workspaceExports.history.deletedProject"),
-  });
+  const isWorkspace = row.kind === "workspace";
+  const summary = isWorkspace
+    ? t("settings:workspaceExports.history.summaryWorkspace")
+    : t("settings:workspaceExports.history.summaryProjects", {
+        count: row.projectIds.length,
+        format: t(FORMAT_NAME_KEYS[row.format]),
+        name:
+          row.projects[0]?.name ??
+          t("settings:workspaceExports.history.deletedProject"),
+      });
 
   return (
     <TableRow>
@@ -65,6 +68,22 @@ export function ExportHistoryRow({
         <span className="block truncate font-medium" title={summary}>
           {summary}
         </span>
+        {isWorkspace && row.fileCount !== null && (
+          <span className="block truncate text-muted-foreground text-xs">
+            {row.includeFiles
+              ? t("settings:workspaceExports.history.fileCount", {
+                  count: row.fileCount,
+                })
+              : t("settings:workspaceExports.history.withoutFiles")}
+          </span>
+        )}
+        {isWorkspace && Boolean(row.missingFileCount) && (
+          <span className="block truncate text-destructive text-xs">
+            {t("settings:workspaceExports.history.missingFiles", {
+              count: row.missingFileCount ?? 0,
+            })}
+          </span>
+        )}
       </TableCell>
       {showRequester && (
         <TableCell>

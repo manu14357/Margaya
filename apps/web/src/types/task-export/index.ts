@@ -15,6 +15,10 @@ export type CreateTaskExportInput = InferRequestType<
   TaskExportRoutes["$post"]
 >["json"];
 
+export type CreateWorkspaceExportInput = InferRequestType<
+  TaskExportRoutes["workspace"]["$post"]
+>["json"];
+
 export type TaskExportFormat = TaskExport["format"];
 
 export type TaskExportStatus = TaskExport["status"];

@@ -74,14 +74,17 @@ const toastNotifier: ExportNotifier = {
         action: {
           label: i18n.t("settings:workspaceExports.toast.download"),
           onClick: () => {
-            saveTaskExport({ id: exportId, fileName: row.fileName }).catch(
-              (error: unknown) =>
-                toast.error(
-                  errorText(
-                    error,
-                    "settings:workspaceExports.toast.downloadError",
-                  ),
+            saveTaskExport({
+              id: exportId,
+              fileName: row.fileName,
+              sizeBytes: row.sizeBytes,
+            }).catch((error: unknown) =>
+              toast.error(
+                errorText(
+                  error,
+                  "settings:workspaceExports.toast.downloadError",
                 ),
+              ),
             );
           },
         },

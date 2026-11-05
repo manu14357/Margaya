@@ -40,14 +40,18 @@ function exportRow(overrides: Partial<TaskExport> = {}): TaskExport {
   return {
     id: "exp-1",
     workspaceId: "ws-1",
+    kind: "tasks",
     format: "csv",
     projectIds: ["p-1"],
     projects: [{ id: "p-1", name: "Website", slug: "WEB" }],
     splitByProject: false,
     includeArchived: true,
+    includeFiles: false,
     status: "completed",
     error: null,
     taskCount: 42,
+    fileCount: null,
+    missingFileCount: null,
     fileName: "acme-tasks.csv",
     contentType: "text/csv",
     sizeBytes: 2048,
@@ -118,6 +122,40 @@ describe("ExportHistory", () => {
     expect(screen.getByText("Ada Lovelace")).toBeInTheDocument();
   });
 
+  it("names whole-workspace exports and reports their files", () => {
+    m.rows = [
+      exportRow({
+        kind: "workspace",
+        format: "json",
+        includeFiles: true,
+        fileCount: 12,
+        missingFileCount: 3,
+      }),
+      exportRow({
+        id: "exp-2",
+        kind: "workspace",
+        format: "json",
+        includeFiles: false,
+        fileCount: 0,
+        missingFileCount: 0,
+      }),
+    ];
+    renderHistory(true);
+
+    expect(
+      screen.getAllByText("settings:workspaceExports.history.summaryWorkspace"),
+    ).toHaveLength(2);
+    expect(
+      screen.getByText("settings:workspaceExports.history.fileCount:12::"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("settings:workspaceExports.history.missingFiles:3::"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("settings:workspaceExports.history.withoutFiles"),
+    ).toBeInTheDocument();
+  });
+
   it("downloads ready files only, under the row's file name", () => {
     m.rows = [
       exportRow(),
@@ -142,7 +180,7 @@ describe("ExportHistory", () => {
     expect(downloads).toHaveLength(1);
     fireEvent.click(downloads[0]);
     expect(m.download).toHaveBeenCalledWith(
-      { id: "exp-1", fileName: "acme-tasks.csv" },
+      { id: "exp-1", fileName: "acme-tasks.csv", sizeBytes: 2048 },
       expect.any(Object),
     );
     // The third row's window has passed: it reads as expired.

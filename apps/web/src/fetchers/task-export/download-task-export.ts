@@ -1,6 +1,12 @@
 import { client } from "@margaya/libs";
+import { getApiUrl } from "@/fetchers/get-api-url";
 import { HttpError } from "@/lib/http-error";
 import { fileNameFromDisposition } from "@/lib/task-export/file-name";
+
+/** The same authorized route as a link, for files too large to hold in memory. */
+export function taskExportDownloadUrl(id: string) {
+  return getApiUrl(`task-export/${encodeURIComponent(id)}/download`);
+}
 
 /**
  * The finished file through the authorized route (never a public URL).

@@ -95,6 +95,7 @@ describe("handleTaskExportUserMessage toasts", () => {
     m.getTaskExport.mockResolvedValue({
       id: "exp-ready",
       fileName: "acme-tasks.csv",
+      sizeBytes: 2048,
       error: null,
     });
     m.saveTaskExport.mockResolvedValue("acme-tasks.csv");
@@ -117,6 +118,7 @@ describe("handleTaskExportUserMessage toasts", () => {
     expect(m.saveTaskExport).toHaveBeenCalledWith({
       id: "exp-ready",
       fileName: "acme-tasks.csv",
+      sizeBytes: 2048,
     });
   });
 
