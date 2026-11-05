@@ -2,6 +2,7 @@ import { windowId } from "@margaya/libs";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { getApiUrl } from "@/fetchers/get-api-url";
+import { invalidateDeliveryQueries } from "@/hooks/mutations/delivery/invalidate-delivery-queries";
 import { invalidateEstimateQueries } from "@/hooks/mutations/estimate/invalidate-estimate-queries";
 import { invalidateIntakeQueries } from "@/hooks/mutations/intake/invalidate-intake-queries";
 import { invalidatePlanningProgress } from "@/hooks/mutations/task/invalidate-planning-progress";
@@ -13,6 +14,10 @@ import { descriptionVersionKeys } from "@/hooks/queries/task-description-version
 import { trashQueryKeys } from "@/hooks/queries/trash/trash-query-keys";
 import { authClient } from "@/lib/auth-client";
 import { handlePageHint } from "@/lib/pages/page-realtime";
+import {
+  createBatchedRefresh,
+  markProjectSocketLive,
+} from "@/lib/project-realtime";
 import { onWake, reconnectDelay } from "@/lib/realtime-reconnect";
 import { onSignOut } from "@/lib/sign-out";
 import { invalidateTaskQueries } from "@/lib/task-query/cache";
@@ -37,6 +42,7 @@ const TASK_QUERY_HINTS = new Set([
   "MODULE_UPDATED",
   "ESTIMATE_TASKS_REMAPPED",
   "TASKS_CHANGED",
+  "CUSTOM_FIELDS_UPDATED",
 ]);
 
 /** Messages that change archived counts or lists (B11 Archives). */
@@ -78,6 +84,8 @@ function catchUpProject(
   for (const queryKey of [
     ["tasks", projectId],
     ["projects"],
+    ["custom-fields", projectId],
+    ["custom-field-values"],
     intakeQueryKeys.lists(projectId),
     intakeQueryKeys.summary(projectId),
     moduleQueryKeys.taskMap(projectId),
@@ -122,6 +130,24 @@ export function useProjectWebSocket(projectId: string) {
     let retries = 0;
     let retryTimeout: ReturnType<typeof setTimeout> | null = null;
     let pingInterval: ReturnType<typeof setInterval> | null = null;
+    let releaseLive: (() => void) | null = null;
+
+    // Bulk edits arrive as one message per task. What they refresh is costly
+    // (a whole board, task lists, planning charts), so it runs in batches;
+    // queries for one task below stay immediate.
+    const refreshes = createBatchedRefresh();
+    const refreshBoard = (id: string) =>
+      refreshes.schedule(`board:${id}`, () =>
+        queryClient.invalidateQueries({ queryKey: ["tasks", id] }),
+      );
+    const refreshTaskQueries = (id: string) =>
+      refreshes.schedule(`task-query:${id}`, () =>
+        invalidateTaskQueries(queryClient, id),
+      );
+    const refreshPlanning = (id: string) =>
+      refreshes.schedule(`planning:${id}`, () =>
+        invalidatePlanningProgress(queryClient, id),
+      );
 
     function clearPing() {
       if (pingInterval !== null) {
@@ -140,6 +166,8 @@ export function useProjectWebSocket(projectId: string) {
       ws.onopen = () => {
         if (disposed || activeSocket !== ws) return;
         retries = 0; // Reset retries on successful connection
+        releaseLive?.();
+        releaseLive = markProjectSocketLive(projectId);
         if (closedAt.has(projectId)) {
           closedAt.delete(projectId);
           catchUpProject(queryClient, projectId);
@@ -163,6 +191,11 @@ export function useProjectWebSocket(projectId: string) {
             queryClient.invalidateQueries({
               queryKey: ["project-access", message.projectId],
             });
+            // Its pickers' people, and my own project role there.
+            queryClient.invalidateQueries({
+              queryKey: ["project-audience", message.projectId],
+            });
+            queryClient.invalidateQueries({ queryKey: ["project-rights"] });
             queryClient.invalidateQueries({ queryKey: ["projects"] });
             return;
           }
@@ -170,7 +203,7 @@ export function useProjectWebSocket(projectId: string) {
           // change to the project's tasks and what groups them; only
           // mounted queries refetch.
           if (TASK_QUERY_HINTS.has(message.type)) {
-            void invalidateTaskQueries(queryClient, message.projectId);
+            refreshTaskQueries(message.projectId);
           }
           // Archive counts and lists (archive, restore, delete, automation).
           if (ARCHIVE_HINTS.has(message.type)) {
@@ -208,17 +241,23 @@ export function useProjectWebSocket(projectId: string) {
             queryClient.invalidateQueries({
               queryKey: ["columns", message.projectId],
             });
-            queryClient.invalidateQueries({
-              queryKey: ["tasks", message.projectId],
-            });
+            refreshBoard(message.projectId);
             queryClient.invalidateQueries({ queryKey: ["projects"] });
-            // A column group change moves module counts and progress.
-            queryClient.invalidateQueries({
-              queryKey: moduleQueryKeys.lists(message.projectId),
-            });
-            queryClient.invalidateQueries({
-              queryKey: moduleQueryKeys.progresses(message.projectId),
-            });
+            // A column's group decides which tasks are open or done: cycle
+            // and module progress, forecasts and risks.
+            refreshPlanning(message.projectId);
+            return;
+          }
+          // A custom field was added, edited or removed. Renaming an option
+          // also rewrites task values, so open tasks refetch theirs.
+          if (message.type === "CUSTOM_FIELDS_UPDATED") {
+            for (const queryKey of [
+              ["custom-fields", message.projectId],
+              ["custom-field-values"],
+              ["custom-field-filter-values", message.projectId],
+            ]) {
+              queryClient.invalidateQueries({ queryKey });
+            }
             return;
           }
           // Settings, automations, or the archive state: favorites hide
@@ -232,38 +271,40 @@ export function useProjectWebSocket(projectId: string) {
           // hint for all of them, so everything showing tasks refreshes by
           // prefix; only mounted queries refetch.
           if (message.type === "TASKS_CHANGED") {
-            queryClient.invalidateQueries({
-              queryKey: ["tasks", message.projectId],
-            });
+            refreshBoard(message.projectId);
             for (const queryKey of [
               ["task"],
               ["activities"],
               ["task-relations"],
               ["projects"],
+              ["custom-field-values"],
             ]) {
               queryClient.invalidateQueries({ queryKey });
             }
-            invalidatePlanningProgress(queryClient, message.projectId);
+            refreshPlanning(message.projectId);
             return;
           }
-          // Cycle changes refresh the list, detail and progress queries, and
-          // favorites, whose names and archive state may have changed.
+          // Cycle changes refresh favorites, whose names and archive state
+          // may have changed, and the planning refresh: cycle lists, details
+          // and progress, and the forecasts and risks that read a cycle's end
+          // date. A membership change also sends one TASK_UPDATED per task,
+          // which asks for the same planning refresh, so it runs once.
           if (message.type === "CYCLE_UPDATED") {
-            queryClient.invalidateQueries({
-              queryKey: ["cycles", message.projectId],
-            });
             queryClient.invalidateQueries({ queryKey: ["favorites"] });
+            refreshPlanning(message.projectId);
             return;
           }
           // Module changes refresh every module query of the project, the
-          // favorites (names, archive state) and task activity (membership
-          // entries); only mounted queries refetch.
+          // favorites (names, archive state), task activity (membership
+          // entries) and the forecasts and risks that read a module's target
+          // date and tasks; only mounted queries refetch.
           if (message.type === "MODULE_UPDATED") {
             queryClient.invalidateQueries({
               queryKey: moduleQueryKeys.all(message.projectId),
             });
             queryClient.invalidateQueries({ queryKey: ["favorites"] });
             queryClient.invalidateQueries({ queryKey: ["activities"] });
+            invalidateDeliveryQueries(queryClient, message.projectId);
             return;
           }
           // Estimate system changes refresh the systems and the cycle and
@@ -276,9 +317,7 @@ export function useProjectWebSocket(projectId: string) {
           ) {
             invalidateEstimateQueries(queryClient, message.projectId);
             if (message.type === "ESTIMATE_TASKS_REMAPPED") {
-              queryClient.invalidateQueries({
-                queryKey: ["tasks", message.projectId],
-              });
+              refreshBoard(message.projectId);
               queryClient.invalidateQueries({ queryKey: ["task"] });
               queryClient.invalidateQueries({ queryKey: ["activities"] });
             }
@@ -366,13 +405,14 @@ export function useProjectWebSocket(projectId: string) {
             message.type === "TASK_RELATION_UPDATED" ||
             message.type === "COMMENT_UPDATED"
           ) {
-            queryClient.invalidateQueries({
-              queryKey: ["tasks", message.projectId],
-            });
-            // Cycle and module counts, progress and charts follow task
-            // status. The module task map only changes when a task leaves
-            // the project.
-            invalidatePlanningProgress(queryClient, message.projectId);
+            // Comments are not part of the board payload or planning totals.
+            if (message.type !== "COMMENT_UPDATED") {
+              refreshBoard(message.projectId);
+              // Cycle and module counts, progress and charts follow task
+              // status.
+              refreshPlanning(message.projectId);
+            }
+            // The module task map only changes when a task leaves the project.
             if (
               message.type === "TASK_DELETED" ||
               message.type === "TASK_RESTORED" ||
@@ -390,6 +430,12 @@ export function useProjectWebSocket(projectId: string) {
             ) {
               queryClient.invalidateQueries({ queryKey: ["task-relations"] });
             }
+            // Custom field values aren't in the board payload.
+            if (message.type === "TASK_UPDATED" && message.taskId) {
+              queryClient.invalidateQueries({
+                queryKey: ["custom-field-values", message.taskId],
+              });
+            }
             // Intake rows show their task's title and priority, and a
             // deleted request's task takes the request along.
             if (
@@ -405,7 +451,9 @@ export function useProjectWebSocket(projectId: string) {
             }
 
             if (message.type === "TASK_RELATION_UPDATED") {
-              // Both tasks list the relation and record it in their history.
+              // Each task it names lists the relation and records it in its
+              // history. Across projects, a project's message names only its
+              // own task; the other refreshes when its project's socket opens.
               for (const relatedTaskId of [
                 message.sourceTaskId,
                 message.targetTaskId,
@@ -492,6 +540,8 @@ export function useProjectWebSocket(projectId: string) {
       ws.onclose = (event) => {
         if (disposed || activeSocket !== ws) return;
         clearPing();
+        releaseLive?.();
+        releaseLive = null;
         activeSocket = null;
         closedAt.set(projectId, Date.now());
 
@@ -511,6 +561,9 @@ export function useProjectWebSocket(projectId: string) {
         closedAt.set(projectId, Date.now());
       }
       clearPing();
+      releaseLive?.();
+      releaseLive = null;
+      refreshes.dispose();
       if (retryTimeout !== null) {
         clearTimeout(retryTimeout);
       }
@@ -521,6 +574,7 @@ export function useProjectWebSocket(projectId: string) {
     const stopOnSignOut = onSignOut(dispose);
     // Back in view or online: reconnect now rather than after the backoff.
     const stopWake = onWake(() => {
+      refreshes.wake();
       if (disposed || retryTimeout === null) return;
       clearTimeout(retryTimeout);
       connect();
