@@ -12,6 +12,7 @@ import {
 import type { TaskReadDatabase } from "../task/bounded-read";
 import { VALID_PRIORITIES } from "../task/validate-task-fields";
 import { type QueryContext, textArray } from "./context";
+import { CUSTOM_FIELD_VALUE_PREFIX } from "./group";
 import {
   cycleColumns,
   type MetaStore,
@@ -20,7 +21,13 @@ import {
 } from "./hydrate";
 import { CURRENT_CYCLE } from "./keys/cycle";
 import { LABEL_NAME_PREFIX } from "./keys/label";
-import { type FilterNode, type GroupByKey, isFilterGroup } from "./schema";
+import {
+  customFieldIdOfKey,
+  type FilterNode,
+  type GroupByKey,
+  isCustomFieldDisplayKey,
+  isFilterGroup,
+} from "./schema";
 
 // Empty groups (display.showEmptyGroups): the key's possible values that no
 // matching task has yet, e.g. every priority. A root AND holding an `in`
@@ -68,6 +75,17 @@ async function domainEntries(
 ): Promise<DomainEntry[]> {
   const plain = (keys: readonly string[]) =>
     keys.map((value) => ({ key: value, aliases: [] }));
+  if (isCustomFieldDisplayKey(key)) {
+    // Only closed value lists have empty groups to show.
+    const field = context.displayFields?.get(customFieldIdOfKey(key));
+    const values =
+      field?.type === "dropdown"
+        ? field.options
+        : field?.type === "boolean"
+          ? ["false", "true"]
+          : [];
+    return plain(values.map((v) => `${CUSTOM_FIELD_VALUE_PREFIX}${v}`));
+  }
   switch (key) {
     case "status":
       return plain(

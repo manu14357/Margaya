@@ -331,6 +331,7 @@ export type CustomFieldMeta = {
   projectId: string;
   name: string;
   type: string;
+  required: boolean;
   options: unknown;
 };
 
@@ -521,6 +522,7 @@ export class MetaStore implements GroupLookup {
         projectId: customFieldDefinitionTable.projectId,
         name: customFieldDefinitionTable.name,
         type: customFieldDefinitionTable.type,
+        required: customFieldDefinitionTable.required,
         options: customFieldDefinitionTable.options,
       })
       .from(customFieldDefinitionTable)

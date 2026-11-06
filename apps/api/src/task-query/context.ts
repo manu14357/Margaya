@@ -73,7 +73,13 @@ export type QueryContext = {
   featureProjectIds: Record<PlanningFeature, string[]>;
   /** Custom fields named by conditions: field id to its project id. */
   customFields: Map<string, string>;
+  /** Custom fields the query groups or sorts by, for their type and options. */
+  displayFields?: Map<string, DisplayField>;
+  /** A guest caller's hidden projects, which even a count must not reach. */
+  guestHiddenProjectIds?: readonly string[];
 };
+
+export type DisplayField = { name: string; type: string; options: string[] };
 
 export const PROJECT_NOT_FOUND = "Project not found";
 export const UNKNOWN_TIME_ZONE = "Unknown time zone";
@@ -190,6 +196,39 @@ async function loadCustomFields(
   return fields;
 }
 
+// Unlike filter conditions, an unknown field isn't refused: a saved view that
+// grouped by a field deleted later keeps opening, with every task under "none".
+async function loadDisplayFields(
+  tx: TaskReadDatabase,
+  fieldIds: readonly string[],
+  projectIds: readonly string[],
+): Promise<Map<string, DisplayField>> {
+  const fields = new Map<string, DisplayField>();
+  if (fieldIds.length === 0 || projectIds.length === 0) return fields;
+  const rows = await tx
+    .select({
+      id: customFieldDefinitionTable.id,
+      name: customFieldDefinitionTable.name,
+      type: customFieldDefinitionTable.type,
+      options: customFieldDefinitionTable.options,
+    })
+    .from(customFieldDefinitionTable)
+    .where(
+      and(
+        inArray(customFieldDefinitionTable.id, [...new Set(fieldIds)]),
+        inArray(customFieldDefinitionTable.projectId, [...projectIds]),
+      ),
+    );
+  for (const row of rows) {
+    fields.set(row.id, {
+      name: row.name,
+      type: row.type,
+      options: Array.isArray(row.options) ? (row.options as string[]) : [],
+    });
+  }
+  return fields;
+}
+
 export function resolveTimeZone(timeZone: string | undefined): string {
   const zone = timeZone ?? "UTC";
   if (!isValidTimeZone(zone)) {
@@ -207,15 +246,20 @@ export async function buildQueryContext(
     timeZone,
     weekStartsOn,
     customFieldIds = [],
+    displayFieldIds = [],
     publicContext = false,
+    excludeProjectIds = [],
     now = new Date(),
   }: {
     workspaceId: string;
     userId: string;
     projectIds?: readonly string[];
+    /** Visible projects left out like hidden ones (analytics' role caps). */
+    excludeProjectIds?: readonly string[];
     timeZone?: string;
     weekStartsOn?: WeekStart;
     customFieldIds?: readonly string[];
+    displayFieldIds?: readonly string[];
     publicContext?: boolean;
     now?: Date;
   },
@@ -228,9 +272,15 @@ export async function buildQueryContext(
   const zone = resolveTimeZone(timeZone ?? workspaceZone);
   // Public boards name their one project and have no viewer to hide from.
   const hidden = publicContext ? [] : scope.hidden;
-  const projects = await loadScopeProjects(tx, workspaceId, projectIds, hidden);
+  const projects = await loadScopeProjects(
+    tx,
+    workspaceId,
+    projectIds,
+    excludeProjectIds.length > 0 ? [...hidden, ...excludeProjectIds] : hidden,
+  );
   const ids = projects.map((project) => project.id);
   const customFields = await loadCustomFields(tx, customFieldIds, ids);
+  const displayFields = await loadDisplayFields(tx, displayFieldIds, ids);
   return {
     workspaceId,
     userId,
@@ -248,6 +298,8 @@ export async function buildQueryContext(
       estimates: projects.filter((p) => p.estimatesEnabled).map((p) => p.id),
     },
     customFields,
+    displayFields,
+    guestHiddenProjectIds: scope.guest ? hidden : [],
   };
 }
 

@@ -1,3 +1,7 @@
+import {
+  customFieldIdOfKey,
+  isCustomFieldDisplayKey,
+} from "../task-query/schema";
 import { assertViewReferences } from "./references";
 import type { ViewDisplay, ViewDisplayProperties, ViewFilters } from "./types";
 import {
@@ -35,7 +39,13 @@ export async function assertViewContent(
     { workspaceId, projectId },
     {
       root: filters?.root ?? null,
-      customFieldColumns: displayProperties?.customFields ?? [],
+      customFieldColumns: [
+        ...(displayProperties?.customFields ?? []),
+        // Grouping or sorting by a custom field names one the same way.
+        ...[display?.groupBy, display?.subGroupBy, display?.orderBy.field]
+          .filter(isCustomFieldDisplayKey)
+          .map(customFieldIdOfKey),
+      ],
     },
   );
 }

@@ -15,8 +15,15 @@ import {
 import { voteScoreSql, voteUpsSql } from "../publication/votes";
 import { smallestAssigneeNameSql } from "../task/assignees";
 import { taskGroupSql, visibleTaskConditionOf } from "../task/scope";
-import { featureOn, type QueryContext } from "./context";
-import type { OrderByField, OrderDirection } from "./schema";
+import { featureOn, type QueryContext, textArray } from "./context";
+import { customFieldValueSql } from "./keys/custom-field";
+import {
+  type BuiltInOrderField,
+  customFieldIdOfKey,
+  isCustomFieldDisplayKey,
+  type OrderByField,
+  type OrderDirection,
+} from "./schema";
 
 // Order-by allow-list (B4 §2.7). Nulls go last in both directions; ties
 // break by createdAt descending, then id, so paging is deterministic. Keys
@@ -25,7 +32,7 @@ import type { OrderByField, OrderDirection } from "./schema";
 
 export type ResolvedOrder = { field: OrderByField; direction: OrderDirection };
 
-export const DEFAULT_DIRECTIONS: Record<OrderByField, OrderDirection> = {
+export const DEFAULT_DIRECTIONS: Record<BuiltInOrderField, OrderDirection> = {
   manual: "asc",
   createdAt: "desc",
   updatedAt: "desc",
@@ -45,6 +52,10 @@ export const DEFAULT_DIRECTIONS: Record<OrderByField, OrderDirection> = {
   archivedAt: "desc",
   voteScore: "desc",
 };
+
+export function defaultDirectionOf(field: OrderByField): OrderDirection {
+  return isCustomFieldDisplayKey(field) ? "asc" : DEFAULT_DIRECTIONS[field];
+}
 
 /** Legacy board sort values (the web's sort-tasks) to engine fields. */
 export function orderFieldFromLegacySort(sortBy: string): OrderByField | null {
@@ -66,7 +77,7 @@ export function resolveOrder(
   hasProjectScope: boolean,
 ): ResolvedOrder {
   const field = orderBy?.field ?? (hasProjectScope ? "manual" : "createdAt");
-  return { field, direction: orderBy?.direction ?? DEFAULT_DIRECTIONS[field] };
+  return { field, direction: orderBy?.direction ?? defaultDirectionOf(field) };
 }
 
 const priorityRankSql = sql`(case ${taskTable.priority}
@@ -98,7 +109,32 @@ export const subTaskCountSql = sql<number>`(
     and ${visibleTaskConditionOf(subTask)}
 )`;
 
+// Bounded so the cast can't overflow; a stored value outside it (an old import,
+// say) sorts as no value instead of failing the whole list.
+const SAFE_NUMERIC = "^-?[0-9]{1,100}([.][0-9]{1,100})?([eE][-+]?[0-9]{1,3})?$";
+
+function customFieldOrderKeys(fieldId: string, context: QueryContext): SQL[] {
+  const value = customFieldValueSql(fieldId);
+  const field = context.displayFields?.get(fieldId);
+  if (field?.type === "number") {
+    return [
+      sql`(case when ${value} ~ ${SAFE_NUMERIC} then (${value})::numeric end)`,
+    ];
+  }
+  if (field?.type === "dropdown") {
+    // Option order; a removed option still on tasks follows, by name.
+    return [
+      sql`array_position(${textArray(field.options)}, ${value})`,
+      sql`lower(${value})`,
+    ];
+  }
+  return [sql`lower(${value})`];
+}
+
 function keyExpressions(field: OrderByField, context: QueryContext): SQL[] {
+  if (isCustomFieldDisplayKey(field)) {
+    return customFieldOrderKeys(customFieldIdOfKey(field), context);
+  }
   switch (field) {
     case "manual":
       return [sql`${taskTable.position}`, sql`${taskTable.number}`];

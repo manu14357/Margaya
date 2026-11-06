@@ -11,7 +11,7 @@ import type {
   UserMeta,
 } from "./hydrate";
 import { LABEL_NAME_PREFIX } from "./keys/label";
-import type { GroupByKey } from "./schema";
+import { type GroupByKey, isCustomFieldDisplayKey } from "./schema";
 
 // Lookups for rendering group headers and cells: only entries the returned
 // rows or group keys reference. Users are workspace members, without
@@ -209,8 +209,12 @@ export async function buildMeta(
           : [];
       })
       .sort((a, b) => a.position - b.position || a.id.localeCompare(b.id)),
-    customFields: includeCustomFields
-      ? await store.loadCustomFields(projects.map((project) => project.id))
-      : [],
+    // Group headers need the field's name and type too.
+    customFields:
+      includeCustomFields ||
+      isCustomFieldDisplayKey(groupBy) ||
+      isCustomFieldDisplayKey(subGroupBy)
+        ? await store.loadCustomFields(projects.map((project) => project.id))
+        : [],
   };
 }

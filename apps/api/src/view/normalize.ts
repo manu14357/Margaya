@@ -1,10 +1,11 @@
-import { DEFAULT_DIRECTIONS } from "../task-query/order";
+import { defaultDirectionOf } from "../task-query/order";
 import {
   ARCHIVED_FILTERS,
   type ArchivedFilter,
   type FilterNode,
   GROUP_BY_KEYS,
   type GroupByKey,
+  isCustomFieldDisplayKey,
   ORDER_BY_FIELDS,
   ORDER_DIRECTIONS,
   type OrderByField,
@@ -96,7 +97,7 @@ function orderOf(
   field: OrderByField,
   direction: OrderDirection | undefined,
 ): ViewDisplay["orderBy"] {
-  return { field, direction: direction ?? DEFAULT_DIRECTIONS[field] };
+  return { field, direction: direction ?? defaultDirectionOf(field) };
 }
 
 /** Stored filters as the API returns them. The tree was validated on write. */
@@ -118,10 +119,16 @@ export function readViewDisplay(
   const raw = asRecord(stored);
   const defaults = defaultViewDisplay(scope);
   const nullableGroup = (value: unknown, fallback: GroupByKey | null) =>
-    value === null ? null : (oneOf(GROUP_BY_KEYS, value) ?? fallback);
+    value === null
+      ? null
+      : isCustomFieldDisplayKey(value)
+        ? value
+        : (oneOf(GROUP_BY_KEYS, value) ?? fallback);
   const groupBy = nullableGroup(raw.groupBy, defaults.groupBy);
   const order = asRecord(raw.orderBy);
-  const field = oneOf(ORDER_BY_FIELDS, order.field);
+  const field = isCustomFieldDisplayKey(order.field)
+    ? order.field
+    : oneOf(ORDER_BY_FIELDS, order.field);
   return {
     layout: oneOf<ViewLayout>(VIEW_LAYOUTS, raw.layout) ?? defaults.layout,
     groupBy,

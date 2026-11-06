@@ -2,9 +2,9 @@ import { responseTimestamp, z } from "../openapi";
 import {
   ARCHIVED_FILTERS,
   filterNodeSchema,
-  GROUP_BY_KEYS,
-  ORDER_BY_FIELDS,
+  groupByKeySchema,
   ORDER_DIRECTIONS,
+  orderByFieldSchema,
 } from "../task-query/schema";
 import {
   DISPLAY_PROPERTY_FLAGS,
@@ -29,10 +29,10 @@ export const viewFiltersSchema = z
 export const viewDisplaySchema = z
   .object({
     layout: z.enum(VIEW_LAYOUTS),
-    groupBy: z.enum(GROUP_BY_KEYS).nullable(),
-    subGroupBy: z.enum(GROUP_BY_KEYS).nullable(),
+    groupBy: groupByKeySchema.nullable(),
+    subGroupBy: groupByKeySchema.nullable(),
     orderBy: z.object({
-      field: z.enum(ORDER_BY_FIELDS),
+      field: orderByFieldSchema,
       direction: z.enum(ORDER_DIRECTIONS),
     }),
     showSubTasks: z.boolean(),

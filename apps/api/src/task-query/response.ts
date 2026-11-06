@@ -4,7 +4,7 @@ import { ESTIMATE_TYPES } from "../estimate/types";
 import { MODULE_STATUSES } from "../module/types";
 import { nullableResponseTimestamp, responseTimestamp, z } from "../openapi";
 import { taskExternalLinkSchema } from "../task/response";
-import { GROUP_BY_KEYS, TASK_QUERY_MODES } from "./schema";
+import { groupByKeySchema, TASK_QUERY_MODES } from "./schema";
 
 export const taskQueryRowSchema = z
   .object({
@@ -82,7 +82,7 @@ export const taskQuerySubGroupSchema = z
   .object({
     key: z.string().openapi({
       description:
-        "The group value: a column slug, group, priority, user, `name:<label>`, cycle, module, estimate point or project id; `none` for no value; `all` when ungrouped.",
+        "The group value: a column slug, group, priority, user, `name:<label>`, cycle, module, estimate point or project id, or `value:<value>` for a custom field; `none` for no value; `all` when ungrouped.",
     }),
     count: z.number().openapi({ description: "Exact distinct tasks." }),
     taskIds: z.array(z.string()).optional().openapi({
@@ -175,6 +175,7 @@ export const taskQueryMetaSchema = z
         projectId: z.string(),
         name: z.string(),
         type: z.string(),
+        required: z.boolean(),
         options: z.unknown().nullable(),
       }),
     ),
@@ -187,8 +188,8 @@ export const taskQueryMetaSchema = z
 export const taskQueryResultSchema = z
   .object({
     mode: z.enum(TASK_QUERY_MODES),
-    groupBy: z.enum(GROUP_BY_KEYS).nullable(),
-    subGroupBy: z.enum(GROUP_BY_KEYS).nullable(),
+    groupBy: groupByKeySchema.nullable(),
+    subGroupBy: groupByKeySchema.nullable(),
     today: z.string().openapi({
       description: "The requester's date (YYYY-MM-DD) in context.timeZone.",
     }),

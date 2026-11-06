@@ -23,9 +23,11 @@ import { buildMeta, type TaskQueryMeta } from "./meta";
 import { orderByItems, type ResolvedOrder, resolveOrder } from "./order";
 import {
   type ArchivedFilter,
+  customFieldIdOfKey,
   DEFAULT_ROWS_PER_GROUP,
   type FilterNode,
   type GroupByKey,
+  isCustomFieldDisplayKey,
   type TaskQueryInclude,
   type TaskQueryMode,
   type TaskQueryRequest,
@@ -680,6 +682,9 @@ export async function runTaskQuery(
       customFieldIds: filterConditions(query.filters)
         .filter((condition) => condition.key === "customField")
         .map((condition) => condition.fieldId ?? ""),
+      displayFieldIds: [query.groupBy, query.subGroupBy, query.order.field]
+        .filter(isCustomFieldDisplayKey)
+        .map(customFieldIdOfKey),
       publicContext,
     });
     const groupsByStatus = [query.groupBy, query.subGroupBy].includes("status");

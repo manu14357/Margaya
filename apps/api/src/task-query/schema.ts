@@ -24,7 +24,40 @@ export const GROUP_BY_KEYS = [
   "estimate",
   "project",
 ] as const;
-export type GroupByKey = (typeof GROUP_BY_KEYS)[number];
+
+// A custom field groups or sorts as `customField:<field id>`. A field id in
+// the key keeps saved views and cursors working on one string; a task only
+// holds values of its own project's fields, so an unknown or foreign id just
+// reads as "no value".
+export const CUSTOM_FIELD_KEY_PREFIX = "customField:";
+export type CustomFieldDisplayKey = `customField:${string}`;
+const CUSTOM_FIELD_KEY_PATTERN = /^customField:[\w-]{1,128}$/;
+
+export function isCustomFieldDisplayKey(
+  value: unknown,
+): value is CustomFieldDisplayKey {
+  return typeof value === "string" && CUSTOM_FIELD_KEY_PATTERN.test(value);
+}
+
+export function customFieldIdOfKey(key: CustomFieldDisplayKey): string {
+  return key.slice(CUSTOM_FIELD_KEY_PREFIX.length);
+}
+
+// Typed as the template literal for the client; a plain pattern at runtime,
+// which the OpenAPI generator can describe.
+export const customFieldDisplayKeySchema = z
+  .string()
+  .regex(CUSTOM_FIELD_KEY_PATTERN) as unknown as z.ZodType<
+  CustomFieldDisplayKey,
+  CustomFieldDisplayKey
+>;
+
+export type GroupByKey = (typeof GROUP_BY_KEYS)[number] | CustomFieldDisplayKey;
+
+export const groupByKeySchema = z.union([
+  z.enum(GROUP_BY_KEYS),
+  customFieldDisplayKeySchema,
+]);
 
 export const ORDER_BY_FIELDS = [
   "manual",
@@ -47,7 +80,13 @@ export const ORDER_BY_FIELDS = [
   // Public board votes (B12): ups minus downs, then ups.
   "voteScore",
 ] as const;
-export type OrderByField = (typeof ORDER_BY_FIELDS)[number];
+export type BuiltInOrderField = (typeof ORDER_BY_FIELDS)[number];
+export type OrderByField = BuiltInOrderField | CustomFieldDisplayKey;
+
+export const orderByFieldSchema = z.union([
+  z.enum(ORDER_BY_FIELDS),
+  customFieldDisplayKeySchema,
+]);
 
 export const ORDER_DIRECTIONS = ["asc", "desc"] as const;
 export type OrderDirection = (typeof ORDER_DIRECTIONS)[number];
@@ -103,7 +142,7 @@ export const filterConditionSchema = z
   .object({
     key: z.string().min(1).max(64).openapi({
       description:
-        "status, group, priority, assignee, createdBy, label, cycle, module, estimate, project, parent, customField, startDate, dueDate, createdAt, updatedAt or completedAt.",
+        "status, group, priority, assignee, createdBy, label, cycle, module, estimate, project, parent, blocked, customField, startDate, dueDate, createdAt, updatedAt or completedAt.",
     }),
     operator: z.string().min(1).max(32).openapi({
       description:
@@ -111,7 +150,7 @@ export const filterConditionSchema = z
     }),
     values: z.array(z.string()).optional().openapi({
       description:
-        "Set keys: ids or tokens, OR-ed; `none` means no value and `me` the caller (assignee, createdBy). Label values are workspace label ids or `name:<label name>`; cycle values may be `current`. Date `in`: presets today, yesterday, tomorrow, thisWeek, lastWeek, nextWeek, thisMonth, lastMonth, nextMonth, past, future, none. At most 100 values of at most 128 characters.",
+        "Set keys: ids or tokens, OR-ed; `none` means no value and `me` the caller (assignee, createdBy). Label values are workspace label ids or `name:<label name>`; cycle values may be `current`; blocked takes `true` (an open task with an open blocker, not on public boards) or `false`. Date `in`: presets today, yesterday, tomorrow, thisWeek, lastWeek, nextWeek, thisMonth, lastMonth, nextMonth, past, future, none. At most 100 values of at most 128 characters.",
     }),
     date: z
       .string()
@@ -160,10 +199,13 @@ const filterGroupSchema = z
 
 export const taskQueryOrderBySchema = z
   .object({
-    field: z.enum(ORDER_BY_FIELDS),
+    field: orderByFieldSchema.openapi({
+      description:
+        "A built-in field, or customField:<field id> to sort by a custom field's value.",
+    }),
     direction: z.enum(ORDER_DIRECTIONS).optional().openapi({
       description:
-        "Defaults per field: asc for manual, startDate, dueDate, title, number, status, assignee, label, cycle, module; desc for the rest (archivedAt included). Nulls always come last.",
+        "Defaults per field: asc for manual, startDate, dueDate, title, number, status, assignee, label, cycle, module and custom fields; desc for the rest (archivedAt included). Nulls always come last.",
     }),
   })
   .strict()
@@ -171,11 +213,11 @@ export const taskQueryOrderBySchema = z
 
 export const taskQueryDisplaySchema = z
   .object({
-    groupBy: z.enum(GROUP_BY_KEYS).nullable().optional().openapi({
+    groupBy: groupByKeySchema.nullable().optional().openapi({
       description:
-        "status needs exactly one project in scope. Ignored in ids mode.",
+        "A built-in key, or customField:<field id> to group by a custom field's value. status needs exactly one project in scope. Ignored in ids mode.",
     }),
-    subGroupBy: z.enum(GROUP_BY_KEYS).nullable().optional().openapi({
+    subGroupBy: groupByKeySchema.nullable().optional().openapi({
       description: "Needs groupBy and must differ from it.",
     }),
     orderBy: taskQueryOrderBySchema.optional().openapi({

@@ -2,7 +2,7 @@ import { z } from "../openapi";
 import {
   ARCHIVED_FILTERS,
   filterNodeSchema,
-  GROUP_BY_KEYS,
+  groupByKeySchema,
   taskQueryOrderBySchema,
 } from "../task-query/schema";
 import {
@@ -42,13 +42,13 @@ export const viewDisplayInputSchema = z
   .object({
     layout: z.enum(VIEW_LAYOUTS).optional().openapi({
       description:
-        "Workspace views: list, board or spreadsheet. Defaults: list for project views, spreadsheet for workspace views.",
+        "Workspace views: list, board, spreadsheet or gantt. Defaults: list for project views, spreadsheet for workspace views.",
     }),
-    groupBy: z.enum(GROUP_BY_KEYS).nullable().optional().openapi({
+    groupBy: groupByKeySchema.nullable().optional().openapi({
       description:
-        "status only in project views. Default: status for project views, none for workspace views.",
+        "status and customField:<field id> only in project views. Default: status for project views, none for workspace views.",
     }),
-    subGroupBy: z.enum(GROUP_BY_KEYS).nullable().optional().openapi({
+    subGroupBy: groupByKeySchema.nullable().optional().openapi({
       description: "Needs groupBy and must differ from it.",
     }),
     orderBy: taskQueryOrderBySchema.optional().openapi({

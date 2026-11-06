@@ -15,8 +15,13 @@ import { assigneesOfTaskSql } from "../task/assignees";
 import { PLANNED_STATUS, taskGroupSql } from "../task/scope";
 import { VALID_PRIORITIES } from "../task/validate-task-fields";
 import { featureOn, type QueryContext } from "./context";
+import { customFieldValueSql } from "./keys/custom-field";
 import { LABEL_NAME_PREFIX } from "./keys/label";
-import type { GroupByKey } from "./schema";
+import {
+  customFieldIdOfKey,
+  type GroupByKey,
+  isCustomFieldDisplayKey,
+} from "./schema";
 
 // Group keys per task (B4 §3.4). Single-valued keys give one text key;
 // many-valued keys (assignee, label, module) give a text array, and a task
@@ -25,6 +30,9 @@ import type { GroupByKey } from "./schema";
 
 export const NONE_GROUP = "none";
 export const ALL_GROUP = "all";
+
+/** Custom field groups are `value:<value>`, so a value "none" stays a value. */
+export const CUSTOM_FIELD_VALUE_PREFIX = "value:";
 
 export type GroupKeyExpression = { many: boolean; sql: SQL };
 
@@ -44,6 +52,12 @@ export function groupKeyExpression(
   key: GroupByKey,
   context: QueryContext,
 ): GroupKeyExpression {
+  if (isCustomFieldDisplayKey(key)) {
+    return {
+      many: false,
+      sql: sql`coalesce(${sql.raw(`'${CUSTOM_FIELD_VALUE_PREFIX}'`)} || ${customFieldValueSql(customFieldIdOfKey(key))}, ${NONE_GROUP}::text)`,
+    };
+  }
   switch (key) {
     case "status":
       return { many: false, sql: sql`${taskTable.status}` };
@@ -169,6 +183,31 @@ function cycleTuple(cycle: CycleGroupMeta): SortTuple {
   }
 }
 
+/**
+ * Dropdowns by option order (a removed option still on tasks after the rest),
+ * numbers by value, everything else by text. Dates are stored as YYYY-MM-DD,
+ * so their text order is their date order.
+ */
+function customFieldTuple(
+  fieldId: string,
+  key: string,
+  lookup: GroupLookup,
+): SortTuple {
+  const value = key.startsWith(CUSTOM_FIELD_VALUE_PREFIX)
+    ? key.slice(CUSTOM_FIELD_VALUE_PREFIX.length)
+    : key;
+  const field = lookup.context.displayFields?.get(fieldId);
+  if (field?.type === "dropdown") {
+    const index = field.options.indexOf(value);
+    return index < 0 ? [1, lower(value), value] : [0, index, value];
+  }
+  if (field?.type === "number") {
+    const parsed = Number(value);
+    return Number.isNaN(parsed) ? [1, value] : [0, parsed, value];
+  }
+  return [0, lower(value), value];
+}
+
 /** Sort position of one group key: `none` last, unknown keys before it. */
 function sortTuple(
   key: GroupByKey,
@@ -176,6 +215,9 @@ function sortTuple(
   lookup: GroupLookup,
 ): SortTuple {
   if (value === NONE_GROUP && key !== "status") return [2];
+  if (isCustomFieldDisplayKey(key)) {
+    return customFieldTuple(customFieldIdOfKey(key), value, lookup);
+  }
   switch (key) {
     case "status": {
       if (value === PLANNED_STATUS) return [0, -1, ""];

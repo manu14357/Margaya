@@ -15,6 +15,16 @@ function valueExists(fieldId: string, condition: SQL): SQL {
   )`;
 }
 
+/** The task's stored value of a field, with "" read as no value; never rows. */
+export function customFieldValueSql(fieldId: string): SQL<string | null> {
+  return sql<string | null>`(
+    select nullif(${fieldValue.value}, '')
+    from ${customFieldValueTable} as ${sql.identifier(VALUE_ALIAS)}
+    where ${fieldValue.taskId} = ${taskTable.id}
+      and ${fieldValue.fieldId} = ${fieldId}
+  )`;
+}
+
 // Values compare exactly as stored; no row, null and "" all count as no value
 // (the board's rule).
 export const customFieldKey: SetFilterKey = {
