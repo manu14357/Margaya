@@ -196,6 +196,12 @@ function useShortcutCategories(): ShortcutCategory[] {
             description: t("navigation:keyboardShortcuts.items.prevTask"),
           },
           {
+            keys: ["↑ ↓ ← →"],
+            description: t(
+              "navigation:keyboardShortcuts.items.moveBetweenCards",
+            ),
+          },
+          {
             keys: ["Enter"],
             description: t("navigation:keyboardShortcuts.items.openTask"),
           },

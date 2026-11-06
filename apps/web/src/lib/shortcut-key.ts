@@ -23,6 +23,21 @@ export function shortcutKey(event: KeyLike): string {
   return key.toLowerCase();
 }
 
+/** Focus inside these means single-key shortcuts belong to something else. */
+export const KEYS_OWNED_BY_OTHERS = [
+  "input",
+  "textarea",
+  "select",
+  "button",
+  "a[href]",
+  "[contenteditable='true']",
+  "[role='dialog']",
+  "[role='alertdialog']",
+  "[role='menu']",
+  "[role='listbox']",
+  "[data-slot='popover-popup']",
+].join(", ");
+
 /** Typing targets own every key: fields, the editors, contenteditable. */
 export function isTypingTarget(target: EventTarget | null): boolean {
   if (!(target instanceof Element)) return false;

@@ -2,24 +2,9 @@ import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { shortcuts } from "@/constants/shortcuts";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
-import { shortcutKey } from "@/lib/shortcut-key";
+import { KEYS_OWNED_BY_OTHERS, shortcutKey } from "@/lib/shortcut-key";
 import useBulkSelectionStore from "@/store/bulk-selection";
 import type { TriageKind } from "./triage-triggers";
-
-/** Focus inside these means the keys belong to something else. */
-const OWNED_BY_OTHERS = [
-  "input",
-  "textarea",
-  "select",
-  "button",
-  "a[href]",
-  "[contenteditable='true']",
-  "[role='dialog']",
-  "[role='alertdialog']",
-  "[role='menu']",
-  "[role='listbox']",
-  "[data-slot='popover-popup']",
-].join(", ");
 
 function rowOf(taskId: string) {
   return document.querySelector<HTMLElement>(
@@ -72,7 +57,7 @@ export function useListTriage() {
       if (event.defaultPrevented || activePrefix) return;
       if (event.ctrlKey || event.metaKey || event.altKey) return;
       const target = event.target as HTMLElement | null;
-      const owner = target?.closest?.(OWNED_BY_OTHERS);
+      const owner = target?.closest?.(KEYS_OWNED_BY_OTHERS);
       // A row's own property trigger keeps triage going after its popover
       // closes and hands focus back to it.
       if (owner && !owner.matches("[data-triage]")) return;
