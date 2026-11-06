@@ -1,4 +1,4 @@
-import { Filter, ListFilter } from "lucide-react";
+import { Filter, ListFilter, UserRound, UserRoundCheck } from "lucide-react";
 import {
   type ReactNode,
   useCallback,
@@ -33,6 +33,10 @@ import {
   isDateFilterKey,
   type TaskQueryScope,
 } from "@/lib/task-query/model";
+import {
+  isMyTasksFilter,
+  toggleMyTasksFilter,
+} from "@/lib/task-query/my-tasks-filter";
 import { toast } from "@/lib/toast";
 import DateConditionEditor from "./date-condition-editor";
 import DisplayMenu, { type DisplayMenuConfig } from "./display-menu";
@@ -92,7 +96,10 @@ function DraftDateChip({
   onClose: () => void;
 }) {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(true);
+  // Opened once mounted: a popover rendered already open skips its entrance
+  // and shows before it is placed.
+  const [open, setOpen] = useState(false);
+  useEffect(() => setOpen(true), []);
   return (
     <Popover
       open={open}
@@ -229,6 +236,12 @@ export default function TaskToolbar({
     ) : null;
 
   const showMatchPill = !nested && conditions.length >= 2;
+  // One click on a project's pages; across projects the Assigned views do this.
+  const showMyTasks =
+    scope.kind === "project" &&
+    !nested &&
+    subjects.some((subject) => subject.key === "assignee");
+  const myTasks = isMyTasksFilter(filters);
 
   const displayMenu = displayConfig ? (
     <DisplayMenu
@@ -277,6 +290,26 @@ export default function TaskToolbar({
           scope={scope}
           onApply={(next) => handle.setFilters(next)}
         />
+        {showMyTasks && (
+          <button
+            type="button"
+            aria-pressed={myTasks}
+            onClick={() =>
+              handle.setFilters((previous) => toggleMyTasksFilter(previous))
+            }
+            className={cn(
+              "relative inline-flex h-7 shrink-0 items-center gap-1.5 rounded-md border border-border px-2.5 font-medium text-foreground text-xs outline-none hover:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11",
+              myTasks ? "bg-accent" : "bg-background",
+            )}
+          >
+            {myTasks ? (
+              <UserRoundCheck className="h-3 w-3" />
+            ) : (
+              <UserRound className="h-3 w-3" />
+            )}
+            {t("tasks:filters.myTasks")}
+          </button>
+        )}
 
         {conditions.length > 0 && (
           <button
@@ -305,9 +338,10 @@ export default function TaskToolbar({
             />
           )}
           {chips}
-          {draft}
         </div>
-        <div className="shrink-0 sm:hidden">{draft}</div>
+        {/* Once for every width: a second, hidden copy opened its editor at
+            the page's top left corner. */}
+        {draft ? <div className="shrink-0">{draft}</div> : null}
 
         {archived !== "exclude" && showArchived && (
           <ActiveFilterChip
