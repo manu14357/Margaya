@@ -19,10 +19,17 @@ type ToneColumn = {
 };
 
 /**
- * A column's status colour as the inherited `--col` custom property. The
- * board stays neutral; only the header's small status dot reads it.
+ * A column's status colour. The board stays neutral: only the header's small
+ * status dot reads the inherited `--col` custom property. The list's group
+ * bands use the hues directly, so both views show a column the same way.
  */
-export type ColumnTone = { name: ToneName | "custom"; style: CSSProperties };
+export type ColumnTone = {
+  name: ToneName | "custom";
+  style: CSSProperties;
+  color: string;
+  tint: string;
+  foreground: string;
+};
 
 const toneStyle = (color: string) => ({ "--col": color }) as CSSProperties;
 
@@ -61,8 +68,20 @@ export function columnTones(
     tones.set(
       column.id,
       custom
-        ? { name: "custom", style: toneStyle(custom) }
-        : { name, style: toneStyle(`var(--status-${name})`) },
+        ? {
+            name: "custom",
+            style: toneStyle(custom),
+            color: custom,
+            tint: `color-mix(in srgb, ${custom} 14%, var(--card))`,
+            foreground: `color-mix(in srgb, ${custom} 45%, var(--foreground))`,
+          }
+        : {
+            name,
+            style: toneStyle(`var(--status-${name})`),
+            color: `var(--status-${name})`,
+            tint: `var(--status-${name}-tint)`,
+            foreground: `var(--status-${name}-fg)`,
+          },
     );
   }
 

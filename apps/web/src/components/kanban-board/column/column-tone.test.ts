@@ -4,6 +4,19 @@ import { columnTones } from "./column-tone";
 const column = (slug: string, group: string) => ({ id: slug, slug, group });
 
 describe("columnTones", () => {
+  it("gives a list the same hues the board's dot shows", () => {
+    const tones = columnTones([
+      column("in-progress", "started"),
+      column("in-review", "started"),
+    ]);
+
+    expect(tones.get("in-review")).toMatchObject({
+      color: "var(--status-review)",
+      tint: "var(--status-review-tint)",
+      foreground: "var(--status-review-fg)",
+    });
+  });
+
   it("colours each column by its group", () => {
     const tones = columnTones([
       column("backlog", "backlog"),

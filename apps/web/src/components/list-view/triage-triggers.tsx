@@ -41,15 +41,20 @@ const triggerClass =
 export function StatusTrigger({
   task,
   column,
+  hue,
 }: {
   task: Task;
   column: ProjectWithTasks["columns"][number] | undefined;
+  /** The colour the board gives this column. */
+  hue?: string;
 }) {
   const { t } = useTranslation();
   const { canUpdateTasks } = useWorkspacePermission();
   const name = getStatusDisplayLabel(task.status, column?.name ?? task.status);
   const icon = column
-    ? getColumnIcon(column.id, column.isFinal, column.icon, column.group)
+    ? getColumnIcon(column.id, column.isFinal, column.icon, column.group, {
+        hue,
+      })
     : null;
   if (!canUpdateTasks()) {
     return (

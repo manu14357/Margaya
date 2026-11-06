@@ -1,13 +1,11 @@
-import type { CSSProperties } from "react";
 import { cn } from "@/lib/cn";
 import { resolveLabelColor } from "@/lib/label-color";
 
 type ChipLabel = { id: string; name: string; color: string };
 
 /**
- * One label as a chip tinted from its own colour. Label colours are user
- * data (any hex), so the text stays `foreground` for contrast; the hue lives
- * in the dot, the border and a soft wash.
+ * One label as a neutral chip. Label colours are user data (any hex), so the
+ * hue lives only in the dot and the text stays `foreground` for contrast.
  */
 export function LabelChip({
   label,
@@ -20,19 +18,13 @@ export function LabelChip({
   return (
     <span
       className={cn(
-        "inline-flex h-5 min-w-0 max-w-40 items-center gap-1 rounded-full border px-1.5 font-medium text-[10px] text-foreground",
+        "inline-flex h-5 min-w-0 max-w-40 items-center gap-1 rounded-full border border-border/70 bg-muted/55 px-1.5 font-medium text-[10px] text-foreground",
         className,
       )}
-      style={
-        {
-          backgroundColor: `color-mix(in srgb, ${color} 12%, var(--card))`,
-          borderColor: `color-mix(in srgb, ${color} 38%, transparent)`,
-        } as CSSProperties
-      }
     >
       <span
         aria-hidden
-        className="size-1.5 shrink-0 rounded-full"
+        className="size-2 shrink-0 rounded-full"
         style={{ backgroundColor: color }}
       />
       <span className="min-w-0 truncate" title={label.name}>

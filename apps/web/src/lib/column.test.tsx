@@ -64,6 +64,23 @@ describe("status tone", () => {
     ).toContain("text-(--status-started)");
   });
 
+  it("shows the default review column in the review hue, as the board does", () => {
+    const markup = renderToStaticMarkup(
+      getColumnIcon("in-review", false, null, "started"),
+    );
+    expect(markup).toContain("text-(--status-review)");
+    expect(markup).not.toContain("--status-started");
+  });
+
+  it("wears the hue it is given", () => {
+    const markup = renderToStaticMarkup(
+      getColumnIcon("qa", false, null, "started", {
+        hue: "var(--status-review)",
+      }),
+    );
+    expect(markup).toContain("color:var(--status-review)");
+  });
+
   it("stays neutral for the board", () => {
     const markup = renderToStaticMarkup(
       getColumnIcon("x", true, "Search", "completed", { neutral: true }),
