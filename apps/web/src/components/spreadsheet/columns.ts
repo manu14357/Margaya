@@ -90,7 +90,9 @@ export const SPREADSHEET_COLUMNS: readonly SpreadsheetColumn[] = [
 ];
 
 export const CUSTOM_FIELD_COLUMN_WIDTH = 160;
-export const FIRST_COLUMN_WIDTH = 360;
+// A share of a narrow screen: the column is sticky, so at a fixed 360px it would
+// cover a phone and leave the other columns nothing to scroll into view.
+export const FIRST_COLUMN_WIDTH = "min(360px, 65vw)";
 
 /** The visible columns: shown properties the surface offers, in order. */
 export function visibleColumns(

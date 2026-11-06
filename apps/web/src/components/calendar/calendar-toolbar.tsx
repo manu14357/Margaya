@@ -1,13 +1,11 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import type { JSX } from "react";
+import type { JSX, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { Toggle, ToggleGroup } from "@/components/ui/toggle-group";
 import { formatDate } from "@/lib/format";
 import type { CalendarMode } from "@/store/schedule-view-preferences";
-import ViewChoice, {
-  VIEW_CHOICE_TRAY_CLASS,
-  viewChoiceButtonClass,
-} from "./view-choice";
+import ViewChoice from "./view-choice";
 
 type CalendarToolbarProps = {
   /** The visible month, or the first day of the visible week. */
@@ -21,6 +19,8 @@ type CalendarToolbarProps = {
   onPrevious: () => void;
   onNext: () => void;
   onToday: () => void;
+  /** The custom field choice, beside the other display choices. */
+  fieldPicker?: ReactNode;
 };
 
 /**
@@ -38,6 +38,7 @@ export default function CalendarToolbar({
   onPrevious,
   onNext,
   onToday,
+  fieldPicker,
 }: CalendarToolbarProps): JSX.Element {
   const { t } = useTranslation();
   const isWeek = mode === "week";
@@ -61,23 +62,23 @@ export default function CalendarToolbar({
           { value: "week", label: t("tasks:calendar.week") },
         ]}
       />
-      <span className={VIEW_CHOICE_TRAY_CLASS}>
-        <button
-          type="button"
-          aria-pressed={showWeekends}
-          onClick={() => onShowWeekendsChange(!showWeekends)}
-          className={viewChoiceButtonClass(showWeekends)}
-        >
-          {t("tasks:calendar.showWeekends")}
-        </button>
-      </span>
+      <ToggleGroup
+        size="sm"
+        variant="outline"
+        value={showWeekends ? ["weekends"] : []}
+        onValueChange={(values) => onShowWeekendsChange(values.length > 0)}
+      >
+        <Toggle value="weekends">{t("tasks:calendar.showWeekends")}</Toggle>
+      </ToggleGroup>
+      {fieldPicker}
       <span
-        className="hidden truncate font-medium text-foreground text-xs sm:inline"
+        className="truncate font-medium text-foreground text-xs"
         data-testid="calendar-month-label"
       >
         {periodLabel}
       </span>
-      <div className="flex shrink-0 items-center gap-1">
+      {/* The wider gap on touch keeps the 44px hit areas from overlapping. */}
+      <div className="flex shrink-0 items-center gap-1 pointer-coarse:gap-2">
         <Button
           variant="outline"
           size="icon-xs"

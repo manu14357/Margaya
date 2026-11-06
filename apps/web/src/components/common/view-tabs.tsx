@@ -28,7 +28,8 @@ export type ViewTabsProps = {
 
 /**
  * The underline tab row under the top bar: a page's views or sections.
- * It scrolls sideways when it runs out of room (phones).
+ * It scrolls sideways when it runs out of room (phones), and on touch screens
+ * the tabs and the row grow to a 44px target.
  */
 export function ViewTabs({
   tabs,
@@ -41,14 +42,17 @@ export function ViewTabs({
     <nav
       aria-label={label}
       className={cn(
-        "flex h-10 shrink-0 items-center gap-2 border-border/80 border-b bg-background px-2 md:px-3",
+        "flex h-10 shrink-0 items-center gap-2 border-border/80 border-b bg-background px-2 pointer-coarse:h-11 md:px-3",
         className,
       )}
       data-slot="view-tabs"
     >
       <div className="-mb-px min-w-0 flex-1 overflow-x-auto [scrollbar-width:none]">
         <Tabs value={value}>
-          <TabsList variant="underline" className="h-10 gap-0.5 py-0">
+          <TabsList
+            variant="underline"
+            className="h-10 gap-0.5 py-0 pointer-coarse:h-11"
+          >
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
@@ -62,7 +66,7 @@ export function ViewTabs({
                   <TabsTab
                     value={tab.value}
                     onClick={tab.onSelect}
-                    className="h-7 grow-0 gap-1.5 px-2 text-[13px] text-muted-foreground data-active:text-foreground sm:h-7 sm:text-[13px] data-active:[&_svg]:text-primary"
+                    className="h-7 grow-0 gap-1.5 px-2 text-[13px] text-muted-foreground pointer-coarse:h-11 data-active:text-foreground sm:h-7 sm:text-[13px] data-active:[&_svg]:text-primary"
                   >
                     {Icon && <Icon className="size-3.5" />}
                     {tab.label}

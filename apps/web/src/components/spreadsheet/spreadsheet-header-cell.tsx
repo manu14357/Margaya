@@ -42,14 +42,14 @@ export default function SpreadsheetHeaderCell({
             : "none"
       }
       style={{ width, minWidth: width, maxWidth: width }}
-      className="sticky top-0 z-10 h-8 border-border border-b border-l bg-muted p-0 text-left align-middle font-medium text-muted-foreground text-xs"
+      className="sticky top-0 z-10 h-8 border-border border-b border-l bg-muted p-0 text-left align-middle font-medium text-muted-foreground text-xs pointer-coarse:h-11"
     >
       <DropdownMenu>
         <DropdownMenuTrigger
           render={
             <button
               type="button"
-              className="flex h-8 w-full items-center gap-1 px-2 text-left outline-none hover:bg-accent/60 hover:text-foreground"
+              className="flex h-8 w-full items-center gap-1 px-2 text-left outline-none hover:bg-accent/60 hover:text-foreground pointer-coarse:h-11"
             />
           }
         >
