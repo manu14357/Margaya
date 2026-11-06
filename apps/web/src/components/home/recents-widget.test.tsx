@@ -138,6 +138,21 @@ describe("RecentsWidget", () => {
     expect(onOpenTask).toHaveBeenCalledTimes(1);
   });
 
+  it("shows five rows until asked for more", () => {
+    mocks.visits = Array.from({ length: 7 }, (_, index) => ({
+      ...taskVisit,
+      id: `rv-${index}`,
+      entity: { ...taskVisit.entity, id: `t-${index}`, name: `Task ${index}` },
+    }));
+    renderWidget();
+    expect(screen.getAllByText(/^Task \d$/)).toHaveLength(5);
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "home:recents.showMore" }),
+    );
+    expect(screen.getAllByText(/^Task \d$/)).toHaveLength(7);
+  });
+
   it("skips entity types without a web link", () => {
     mocks.visits = [
       {

@@ -13,7 +13,8 @@ import WidgetSection, { WidgetEmpty, WidgetError } from "./widget-section";
 export type RecentsTab = "all" | "task" | "project" | "page";
 
 const RECENTS_LIMIT = 20;
-const COLLAPSED_COUNT = 8;
+// Recents is a way back, not the page's main content.
+const COLLAPSED_COUNT = 5;
 
 const TAB_LABEL_KEYS: Record<RecentsTab, string> = {
   all: "home:recents.tabs.all",

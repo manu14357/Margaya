@@ -229,10 +229,11 @@ test.describe("navigation", () => {
       new RegExp(`${workspacePath(workspace.id)}/my-work`),
     );
     const tabs = page.getByRole("navigation", { name: "Your work views" });
-    await expect(tabs.getByRole("tab", { name: "Summary" })).toHaveAttribute(
+    await expect(tabs.getByRole("tab", { name: "Assigned" })).toHaveAttribute(
       "aria-selected",
       "true",
     );
+    await tabs.getByRole("tab", { name: "Summary" }).click();
     await expect(
       page.getByRole("complementary", { name: "Recent activity" }),
     ).toBeVisible();

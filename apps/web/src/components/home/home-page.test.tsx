@@ -24,6 +24,9 @@ vi.mock("@/hooks/queries/home/use-get-home-preferences", () => ({
 }));
 vi.mock("./home-greeting", () => ({ default: () => <h1>greeting</h1> }));
 vi.mock("./get-started", () => ({ default: () => null }));
+vi.mock("./due-today-section", () => ({
+  default: () => <section>due-today</section>,
+}));
 vi.mock("./manage-widgets-dialog", () => ({
   default: ({ open }: { open: boolean }) =>
     open ? <div role="dialog">manage dialog</div> : null,
@@ -42,6 +45,9 @@ vi.mock("@/components/delivery/home-risks-widget", () => ({
 }));
 vi.mock("@/components/insight/my-brief-widget", () => ({
   default: () => <section>widget:my-brief</section>,
+}));
+vi.mock("./pinned-reports-widget", () => ({
+  default: () => <section>widget:pinned-reports</section>,
 }));
 vi.mock("@/components/task/task-details-sheet", () => ({
   default: ({ taskId }: { taskId?: string }) =>
@@ -71,6 +77,31 @@ afterEach(() => {
 });
 
 describe("HomePage", () => {
+  it("adds nothing for people who haven't pinned a report", () => {
+    mocks.preferences = { isLoading: false };
+    renderHome();
+    expect(screen.queryByText("widget:pinned-reports")).toBeNull();
+  });
+
+  it("loads the pinned reports widget once it is on", async () => {
+    mocks.preferences = {
+      isLoading: false,
+      data: {
+        widgets: [
+          { key: "pinned-reports", enabled: true },
+          { key: "quick-links", enabled: false },
+          { key: "recents", enabled: false },
+          { key: "stickies", enabled: false },
+          { key: "risks", enabled: false },
+        ],
+      },
+    };
+    renderHome();
+    expect(
+      await screen.findByText("widget:pinned-reports"),
+    ).toBeInTheDocument();
+  });
+
   it("renders the widgets in the saved order, skipping disabled ones", () => {
     mocks.preferences = {
       isLoading: false,
@@ -89,6 +120,32 @@ describe("HomePage", () => {
       "widget:recents",
       "widget:risks",
     ]);
+  });
+
+  it("shows the tasks due today before the widgets, even with every widget off", () => {
+    mocks.preferences = { isLoading: false };
+    const { unmount } = renderHome();
+    const dueToday = screen.getByText("due-today");
+    const firstWidget = screen.getByText("widget:quick-links");
+    expect(
+      dueToday.compareDocumentPosition(firstWidget) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    unmount();
+
+    mocks.preferences = {
+      isLoading: false,
+      data: {
+        widgets: [
+          { key: "quick-links", enabled: false },
+          { key: "recents", enabled: false },
+          { key: "stickies", enabled: false },
+          { key: "risks", enabled: false },
+        ],
+      },
+    };
+    renderHome();
+    expect(screen.getByText("due-today")).toBeInTheDocument();
   });
 
   it("shows the empty state with Manage widgets when every widget is off", () => {
@@ -134,12 +191,13 @@ describe("HomePage", () => {
     expect(widgetOrder()[0]).toBe("widget:my-brief");
   });
 
-  it("opens the task sheet only when both search params are set", () => {
+  it("opens the task sheet only when both search params are set", async () => {
     const { unmount } = renderHome({ taskId: "t-1" });
     expect(screen.queryByText("sheet:t-1")).toBeNull();
     unmount();
 
     renderHome({ taskId: "t-1", projectId: "p-1" });
-    expect(screen.getByText("sheet:t-1")).toBeInTheDocument();
+    // The sheet loads on demand.
+    expect(await screen.findByText("sheet:t-1")).toBeInTheDocument();
   });
 });

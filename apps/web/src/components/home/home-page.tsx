@@ -1,5 +1,5 @@
 import { LayoutDashboard, SlidersHorizontal } from "lucide-react";
-import { type ComponentType, useRef, useState } from "react";
+import { type ComponentType, lazy, Suspense, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Layout from "@/components/common/layout";
 import HomeRisksWidget from "@/components/delivery/home-risks-widget";
@@ -7,7 +7,6 @@ import MyBriefWidget from "@/components/insight/my-brief-widget";
 import PageTitle from "@/components/page-title";
 import QuickLinksWidget from "@/components/quick-link/quick-links-widget";
 import StickiesWidget from "@/components/sticky/stickies-widget";
-import TaskDetailsSheet from "@/components/task/task-details-sheet";
 import { Button } from "@/components/ui/button";
 import {
   Empty,
@@ -19,6 +18,7 @@ import {
 } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
 import useGetHomePreferences from "@/hooks/queries/home/use-get-home-preferences";
+import DueTodaySection from "./due-today-section";
 import GetStarted from "./get-started";
 import HomeFocus from "./home-focus";
 import HomeGreeting from "./home-greeting";
@@ -35,12 +35,20 @@ type WidgetProps = {
   onOpenTask: (taskId: string, projectId: string) => void;
 };
 
+// The chart code loads only for people who pinned a report.
+const PinnedReportsWidget = lazy(() => import("./pinned-reports-widget"));
+// The full task view loads when a task is first opened from home.
+const TaskDetailsSheet = lazy(
+  () => import("@/components/task/task-details-sheet"),
+);
+
 const WIDGET_COMPONENTS: Record<HomeWidgetKey, ComponentType<WidgetProps>> = {
   "quick-links": QuickLinksWidget,
   recents: RecentsWidget,
   stickies: StickiesWidget,
   risks: HomeRisksWidget,
   "my-brief": MyBriefWidget,
+  "pinned-reports": PinnedReportsWidget,
 };
 
 function WidgetsSkeleton() {
@@ -66,8 +74,8 @@ type HomePageProps = {
 
 /**
  * The workspace landing page, a focused dashboard: the greeting, a strip
- * that jumps to the inbox, your work and stickies, first steps, then the
- * personal widgets in their saved order.
+ * that jumps to the inbox, your work and stickies, your tasks due today,
+ * first steps, then the personal widgets in their saved order.
  */
 export default function HomePage({
   workspaceId,
@@ -118,6 +126,7 @@ export default function HomePage({
         <Layout.ContentArea width="wide" className="space-y-6 md:py-6">
           <HomeGreeting />
           <HomeFocus workspaceId={workspaceId} />
+          <DueTodaySection workspaceId={workspaceId} onOpenTask={onOpenTask} />
           <GetStarted workspaceId={workspaceId} />
           {isLoading ? (
             <WidgetsSkeleton />
@@ -142,11 +151,9 @@ export default function HomePage({
             enabled.map(({ key }) => {
               const Widget = WIDGET_COMPONENTS[key];
               return (
-                <Widget
-                  key={key}
-                  workspaceId={workspaceId}
-                  onOpenTask={onOpenTask}
-                />
+                <Suspense key={key} fallback={null}>
+                  <Widget workspaceId={workspaceId} onOpenTask={onOpenTask} />
+                </Suspense>
               );
             })
           )}
@@ -161,12 +168,14 @@ export default function HomePage({
         onOpenChange={setManageOpen}
       />
       {sheetProjectId && (
-        <TaskDetailsSheet
-          taskId={taskId && projectId ? taskId : undefined}
-          projectId={sheetProjectId}
-          workspaceId={workspaceId}
-          onClose={onCloseTask}
-        />
+        <Suspense fallback={null}>
+          <TaskDetailsSheet
+            taskId={taskId && projectId ? taskId : undefined}
+            projectId={sheetProjectId}
+            workspaceId={workspaceId}
+            onClose={onCloseTask}
+          />
+        </Suspense>
       )}
     </>
   );

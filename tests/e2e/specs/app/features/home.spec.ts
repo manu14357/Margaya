@@ -17,7 +17,7 @@ test("Your work lists the user's recent activity, newest first", async ({
   pageAs,
 }) => {
   const { page, workspace } = await newUserWithWorkspace(pageAs);
-  const myWork = `/dashboard/workspace/${workspace.id}/my-work`;
+  const myWork = `/dashboard/workspace/${workspace.id}/my-work?tab=summary`;
 
   await page.goto(myWork);
   await expect(page.getByText("Recent activity")).toBeVisible({
