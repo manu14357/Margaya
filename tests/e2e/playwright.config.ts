@@ -13,23 +13,33 @@ import {
 
 const isCI = Boolean(process.env.CI);
 // Opt-in extras: a bundled-Chromium project (run `npx playwright install
-// chromium` first) and the public docs site (apps/site on :3001).
+// chromium` first), a 360px touch phone and the public docs site (apps/site on
+// :3001).
 const withChromium = process.env.E2E_CHROMIUM === "1";
+const withPhone = process.env.E2E_PHONE === "1";
 const withDocsSite = process.env.E2E_DOCS_SITE === "1";
 const DOCS_SITE_URL = "http://localhost:3001";
 
 const appProjects: Project[] = [
   {
     name: "msedge",
-    testIgnore: /docs-site[\\/]/,
+    testIgnore: /(docs-site|phone)[\\/]/,
     use: { ...devices["Desktop Edge"], channel: "msedge" },
   },
 ];
 if (withChromium) {
   appProjects.push({
     name: "chromium",
-    testIgnore: /docs-site[\\/]/,
+    testIgnore: /(docs-site|phone)[\\/]/,
     use: { ...devices["Desktop Chrome"] },
+  });
+}
+if (withPhone) {
+  appProjects.push({
+    name: "phone",
+    testMatch: /phone[\\/].*\.spec\.ts/,
+    // Galaxy S8: 360x740 with touch, the narrowest width the UI must support.
+    use: { ...devices["Galaxy S8"], channel: "msedge" },
   });
 }
 if (withDocsSite) {
@@ -69,6 +79,9 @@ export default defineConfig({
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     navigationTimeout: 30_000,
+    // A locator that never matches fails here instead of hanging until the
+    // test timeout. Actions that legitimately wait longer pass their own.
+    actionTimeout: 15_000,
   },
   projects: appProjects,
   webServer: [

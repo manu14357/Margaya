@@ -18,6 +18,9 @@ pnpm --filter @margaya/e2e db:reset       # recreate margaya_e2e after migration
 Requires the `margaya-test-pg` Postgres container on `127.0.0.1:55432` and
 Microsoft Edge. Account details: [`creds.md`](../../creds.md). To use another
 Postgres, set `E2E_DATABASE_URL` (the database is created if it is missing).
+To run a second suite beside the default one, also set `E2E_API_PORT`,
+`E2E_WEB_PORT` and `E2E_AUTH_DIR` (where its seeded state goes), and pass
+`--output` to keep its results apart.
 
 ## What a run does
 
@@ -86,6 +89,7 @@ tests/e2e/
     app/                 web UI flows, one folder per area (board, tasks, cycles, ...)
     api/                 public HTTP API behaviour and authorization per role
     notifications/       emails (MailPit), webhooks and other outgoing deliveries
+    phone/               main pages at 360px with touch; opt-in project, see below
     docs-site/           the public site on :3001; opt-in project, see below
 ```
 
@@ -140,8 +144,11 @@ test.use(asRole("viewer"));   // or asAnonymous
 
 ## Projects
 
-- `msedge` (default): every spec except `docs-site/`.
+- `msedge` (default): every spec except `docs-site/` and `phone/`.
 - `chromium`: opt-in with `E2E_CHROMIUM=1`, after `npx playwright install chromium`.
+- `phone`: opt-in with `E2E_PHONE=1`. Runs `specs/phone/` in Edge at 360x740 with
+  touch: `E2E_PHONE=1 pnpm e2e --project=phone` (PowerShell:
+  `$env:E2E_PHONE=1; pnpm e2e --project=phone`).
 - `docs-site`: opt-in with `E2E_DOCS_SITE=1`, which also starts `apps/site` on
   port 3001: `E2E_DOCS_SITE=1 pnpm e2e --project=docs-site` (PowerShell:
   `$env:E2E_DOCS_SITE=1; pnpm e2e --project=docs-site`).
