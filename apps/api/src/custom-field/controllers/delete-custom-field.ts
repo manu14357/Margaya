@@ -5,6 +5,7 @@ import {
   customFieldDefinitionTable,
   projectTable,
 } from "../../database/schema";
+import { publishEvent } from "../../events";
 
 async function deleteCustomField(id: string) {
   const [field] = await db
@@ -42,6 +43,11 @@ async function deleteCustomField(id: string) {
       message: "Custom field not found",
     });
   }
+
+  await publishEvent("custom_field.deleted", {
+    fieldId: id,
+    projectId: field.projectId,
+  });
 
   return {
     ...deleted,

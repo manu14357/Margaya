@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { isGuestRole } from "@margaya/permissions";
 import { eq } from "drizzle-orm";
 import type { WSContext } from "hono/ws";
 import db from "../database";
@@ -382,6 +383,7 @@ const taskUpdateEvents = [
   "task.description_changed",
   "task.cycle_changed",
   "task.estimate_changed",
+  "task.custom_field_changed",
   "task.recurrence_changed",
   "task.label_assigned",
   "task.label_unassigned",
@@ -556,6 +558,39 @@ for (const eventName of ["view.created", "view.updated", "view.deleted"]) {
   );
 }
 
+// A field was added, edited or removed: its lists, values and the task lists
+// that group or sort by it refresh (renaming an option rewrites task values).
+for (const eventName of [
+  "custom_field.created",
+  "custom_field.updated",
+  "custom_field.deleted",
+]) {
+  subscribeToEvent<{ projectId?: string; initiatorId?: string }>(
+    eventName,
+    async ({ projectId, initiatorId }) => {
+      if (!projectId) return;
+      broadcastToProject(
+        projectId,
+        { type: "CUSTOM_FIELDS_UPDATED", projectId, taskId: "" },
+        initiatorId,
+      );
+    },
+  );
+}
+
+// One hint for a bulk edit, instead of one message per task.
+subscribeToEvent<{ projectId?: string; initiatorId?: string }>(
+  "custom_field.values_changed",
+  async ({ projectId, initiatorId }) => {
+    if (!projectId) return;
+    broadcastToProject(
+      projectId,
+      { type: "TASKS_CHANGED", projectId },
+      initiatorId,
+    );
+  },
+);
+
 for (const eventName of ["project.features_updated", "project.updated"]) {
   subscribeToEvent<{ projectId?: string; initiatorId?: string }>(
     eventName,
@@ -593,6 +628,9 @@ for (const eventName of [
   "page.locked",
   "page.unlocked",
   "page.version_restored",
+  "page.comment_created",
+  "page.comment_updated",
+  "page.comment_deleted",
 ]) {
   subscribeToEvent<PageHintEvent>(eventName, async (data) =>
     sendPageUpdated(data),
@@ -614,6 +652,8 @@ for (const eventName of [
   "page.archived",
   "page.unarchived",
   "page.access_changed",
+  "page.restored",
+  "page.purged",
 ]) {
   subscribeToEvent<PageHintEvent>(
     eventName,
@@ -697,10 +737,17 @@ subscribeToEvent<{
     return;
   }
   const members = await db
-    .select({ userId: workspaceUserTable.userId })
+    .select({
+      userId: workspaceUserTable.userId,
+      role: workspaceUserTable.role,
+    })
     .from(workspaceUserTable)
     .where(eq(workspaceUserTable.workspaceId, workspaceId));
-  for (const { userId } of members) broadcastToUser(userId, hint);
+  for (const { userId, role } of members) {
+    // A guest's projects don't depend on this switch, and the hint names a
+    // project they may not know about.
+    if (!isGuestRole(role)) broadcastToUser(userId, hint);
+  }
 });
 
 // One hint per project and rule when the automation job archives or closes
@@ -878,23 +925,31 @@ for (const eventName of taskUpdateEvents) {
       return;
     }
 
+    // A project's sockets can include people who can't see another project, so
+    // a relation names both tasks only when both are known to be in this one.
+    const { targetProjectId, targetTaskId } = data;
+    const isRelation = type === "TASK_RELATION_UPDATED";
+    const nameable = (id: string | undefined) =>
+      !isRelation || targetProjectId === projectId || id === taskId
+        ? id
+        : undefined;
     broadcastToProject(
       projectId,
       {
         type,
         projectId,
         taskId: taskId,
-        sourceTaskId: data.sourceTaskId,
-        targetTaskId: data.targetTaskId,
+        sourceTaskId: nameable(data.sourceTaskId),
+        targetTaskId: nameable(targetTaskId),
       },
       initiatorId,
     );
 
     // A relation across projects also refreshes the other task's project.
-    const { targetProjectId } = data;
     if (
-      type === "TASK_RELATION_UPDATED" &&
+      isRelation &&
       targetProjectId &&
+      targetTaskId &&
       targetProjectId !== projectId
     ) {
       broadcastToProject(
@@ -902,9 +957,8 @@ for (const eventName of taskUpdateEvents) {
         {
           type,
           projectId: targetProjectId,
-          taskId,
-          sourceTaskId: data.sourceTaskId,
-          targetTaskId: data.targetTaskId,
+          taskId: targetTaskId,
+          targetTaskId,
         },
         initiatorId,
       );
@@ -916,7 +970,7 @@ type ParentRef = { id?: string; projectId?: string | null } | null;
 
 // A parent change refreshes the child's relations (and so both parents'
 // sub-task lists) in the child's project, and in a legacy old parent's
-// project when that differs.
+// project when that differs. Each project's message names only its own tasks.
 subscribeToEvent<{
   taskId?: string;
   projectId?: string;
@@ -926,14 +980,15 @@ subscribeToEvent<{
 }>("task.parent_changed", async (data) => {
   const { taskId, projectId, initiatorId, oldParent, newParent } = data;
   if (!taskId || !projectId) return;
-  const parentId = newParent?.id ?? oldParent?.id;
+  const parentHere = (parent: ParentRef | undefined) =>
+    parent?.projectId === projectId ? parent.id : undefined;
   broadcastToProject(
     projectId,
     {
       type: "TASK_RELATION_UPDATED",
       projectId,
       taskId,
-      sourceTaskId: parentId,
+      sourceTaskId: parentHere(newParent) ?? parentHere(oldParent),
       targetTaskId: taskId,
     },
     initiatorId,
@@ -948,9 +1003,8 @@ subscribeToEvent<{
       {
         type: "TASK_RELATION_UPDATED",
         projectId: oldParent.projectId,
-        taskId,
+        taskId: oldParent.id,
         sourceTaskId: oldParent.id,
-        targetTaskId: taskId,
       },
       initiatorId,
     );

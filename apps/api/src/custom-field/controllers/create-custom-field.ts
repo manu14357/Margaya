@@ -8,6 +8,7 @@ import {
   taskTable,
 } from "../../database/schema";
 
+import { publishEvent } from "../../events";
 import { validateCustomFieldValue } from "../../task/validate-task-fields";
 
 async function createCustomField(
@@ -139,6 +140,11 @@ async function createCustomField(
     }
 
     return created;
+  });
+
+  await publishEvent("custom_field.created", {
+    fieldId: field.id,
+    projectId: field.projectId,
   });
 
   return field;

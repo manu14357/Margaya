@@ -56,6 +56,10 @@ export const setCustomFieldValueResponseSchema = z
   })
   .openapi("SetCustomFieldValueResponse");
 
+export const bulkSetCustomFieldValueResponseSchema = z
+  .object({ updatedCount: z.number() })
+  .openapi("BulkSetCustomFieldValueResponse");
+
 export const reorderCustomFieldsResponseSchema = z
   .unknown()
   .openapi("ReorderCustomFieldsResponse");
