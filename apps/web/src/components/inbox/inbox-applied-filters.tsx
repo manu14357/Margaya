@@ -21,7 +21,7 @@ function FilterChip({
         type="button"
         aria-label={t("notifications:inbox.filters.remove", { name: label })}
         onClick={onRemove}
-        className="inline-flex h-full w-6 items-center justify-center rounded-r-md text-foreground/70 hover:bg-accent/70 hover:text-foreground"
+        className="relative inline-flex h-full w-6 items-center justify-center rounded-r-md text-foreground/70 hover:bg-accent/70 hover:text-foreground pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11"
       >
         <X className="size-3" />
       </button>

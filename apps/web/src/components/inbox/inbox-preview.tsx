@@ -1,6 +1,13 @@
 import { useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Bell, Maximize2, X } from "lucide-react";
-import { type ReactNode, useEffect } from "react";
+import {
+  ArrowLeft,
+  Bell,
+  ChevronDown,
+  ChevronRight,
+  Maximize2,
+  X,
+} from "lucide-react";
+import { type ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   AgentReplyCard,
@@ -8,11 +15,17 @@ import {
 } from "@/components/ai/agents/agent-reply-card";
 import { ApprovalCard } from "@/components/ai/agents/approval-card";
 import { AgentItemShownAbove } from "@/components/ai/agents/task-agent-waiting";
+import AiMarkdown from "@/components/ai/ai-markdown";
 import TaskDetailsContent from "@/components/task/task-details-content";
 import { TaskDetailsSkeleton } from "@/components/task/task-page-skeleton";
 import TaskPropertiesSidebar from "@/components/task/task-properties-sidebar";
 import TaskSubscribeButton from "@/components/task/task-subscribe-button";
 import { Button } from "@/components/ui/button";
+import {
+  Collapsible,
+  CollapsiblePanel,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   Tooltip,
   TooltipContent,
@@ -24,13 +37,16 @@ import {
   visitArchiveState,
 } from "@/hooks/mutations/recent-visit/use-record-visit";
 import useGetTask from "@/hooks/queries/task/use-get-task";
+import { ProjectScope } from "@/hooks/use-project-scope";
 import { useProjectWebSocket } from "@/hooks/use-project-websocket";
 import { formatDateTime } from "@/lib/format";
 import {
   getNotificationCommentId,
   getNotificationContent,
+  getNotificationMarkdown,
   getNotificationTitle,
   getPageNotificationTarget,
+  pageNotificationSearch,
 } from "@/lib/notification-text";
 import type { InboxNotification } from "@/types/notification";
 import { InboxPreviewEmpty, InboxPreviewUnavailable } from "./inbox-empty";
@@ -78,6 +94,7 @@ type InboxPreviewProps = {
 
 function PreviewHeader({
   notification,
+  title,
   onAction,
   onClose,
   onOpenFullPage,
@@ -85,6 +102,8 @@ function PreviewHeader({
   children,
 }: {
   notification: InboxNotification;
+  /** The task's current title; the notification's copy until it loads. */
+  title?: string;
   onAction: InboxActionHandler;
   onClose: () => void;
   onOpenFullPage?: () => void;
@@ -92,6 +111,7 @@ function PreviewHeader({
   children?: ReactNode;
 }) {
   const { t } = useTranslation();
+  const taskTitle = title ?? notification.task?.title;
   return (
     <div className="flex h-10 shrink-0 items-center gap-2 border-border border-b px-2 lg:px-3">
       {/* One pane at a time below lg: the way back to the list. */}
@@ -104,11 +124,19 @@ function PreviewHeader({
       >
         <ArrowLeft className="size-4" />
       </Button>
-      <div className="flex min-w-0 flex-1 items-center gap-2 text-muted-foreground text-xs">
+      <div className="flex min-w-0 flex-1 items-center gap-2">
         {notification.task && (
           <>
-            <span className="shrink-0 font-mono">{notification.task.key}</span>
-            <span className="truncate">{notification.task.projectName}</span>
+            {/* The body repeats the key, so a phone keeps the room for the title. */}
+            <span className="hidden shrink-0 font-mono text-muted-foreground text-xs sm:inline">
+              {notification.task.key}
+            </span>
+            <span
+              className="truncate font-medium text-foreground text-sm"
+              title={taskTitle}
+            >
+              {taskTitle}
+            </span>
           </>
         )}
       </div>
@@ -176,7 +204,10 @@ function agentApprovalOf(
     : null;
 }
 
-/** The selected notification's task, composed as in the task sheet. */
+/**
+ * The selected notification's task with the conversation first: properties
+ * stay behind a toggle, and load only once someone opens them.
+ */
 function TaskPreview({
   notification,
   task,
@@ -184,6 +215,8 @@ function TaskPreview({
   onAction,
   onClose,
   snoozeSignal,
+  propertiesOpen,
+  onPropertiesOpenChange,
 }: {
   notification: InboxNotification;
   task: NonNullable<InboxNotification["task"]>;
@@ -191,7 +224,10 @@ function TaskPreview({
   onAction: InboxActionHandler;
   onClose: () => void;
   snoozeSignal?: number;
+  propertiesOpen: boolean;
+  onPropertiesOpenChange: (open: boolean) => void;
 }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { data, isLoading, isError } = useGetTask(task.id);
   useProjectWebSocket(task.projectId);
@@ -213,6 +249,7 @@ function TaskPreview({
   const header = (
     <PreviewHeader
       notification={notification}
+      title={data?.title}
       onAction={onAction}
       onClose={onClose}
       snoozeSignal={snoozeSignal}
@@ -245,86 +282,144 @@ function TaskPreview({
   }
 
   return (
-    <>
+    // Everything here acts in the task's project.
+    <ProjectScope projectId={task.projectId}>
       {header}
-      <div
-        className="flex min-h-0 flex-1 flex-col overflow-hidden"
-        key={task.id}
-      >
-        <TaskPropertiesSidebar
-          taskId={task.id}
-          projectId={task.projectId}
-          workspaceId={workspaceId}
-          className="flex w-full shrink-0 flex-col gap-0 overflow-y-auto border-border border-b bg-sidebar"
-          compact
-        />
-        <div className="min-h-0 flex-1 overflow-y-auto">
-          <div className="px-4 py-4">
-            {approval && (
-              <div className="mb-4">
-                <ApprovalCard
-                  workspaceId={workspaceId}
-                  runId={approval.runId}
-                  approvalId={approval.approvalId}
-                />
-              </div>
+      {/* One scroll for both, so open properties can't squeeze out the task. */}
+      <div className="min-h-0 flex-1 overflow-y-auto" key={task.id}>
+        <Collapsible
+          open={propertiesOpen}
+          onOpenChange={onPropertiesOpenChange}
+          className="border-border border-b bg-sidebar"
+        >
+          <CollapsibleTrigger className="flex min-h-9 w-full items-center gap-1.5 px-3 text-left text-muted-foreground text-xs outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset pointer-coarse:min-h-11">
+            {propertiesOpen ? (
+              <ChevronDown className="size-3.5 shrink-0" aria-hidden />
+            ) : (
+              <ChevronRight className="size-3.5 shrink-0" aria-hidden />
             )}
-            {reply && (
-              <div className="mb-4">
-                <AgentReplyCard
-                  workspaceId={workspaceId}
-                  runId={reply.runId}
-                  agentName={reply.agentName}
-                  text={reply.text}
-                  needsInput={reply.needsInput}
-                />
-              </div>
-            )}
-            {/* The card above already shows this question or change. */}
-            <AgentItemShownAbove.Provider
-              value={{
-                runId: reply?.needsInput ? reply.runId : undefined,
-                approvalId: approval?.approvalId,
-              }}
-            >
-              <TaskDetailsContent
-                taskId={task.id}
-                projectId={task.projectId}
+            <span className="shrink-0">
+              {propertiesOpen
+                ? t("notifications:inbox.preview.hideProperties")
+                : t("notifications:inbox.preview.showProperties")}
+            </span>
+            <span className="ms-auto min-w-0 truncate ps-2">
+              {task.projectName}
+            </span>
+          </CollapsibleTrigger>
+          <CollapsiblePanel>
+            <TaskPropertiesSidebar
+              taskId={task.id}
+              projectId={task.projectId}
+              workspaceId={workspaceId}
+              className="flex w-full flex-col gap-0"
+              compact
+            />
+          </CollapsiblePanel>
+        </Collapsible>
+        <div className="px-4 py-4">
+          {approval && (
+            <div className="mb-4">
+              <ApprovalCard
                 workspaceId={workspaceId}
-                className="flex flex-col gap-3"
+                runId={approval.runId}
+                approvalId={approval.approvalId}
               />
-            </AgentItemShownAbove.Provider>
-          </div>
+            </div>
+          )}
+          {reply && (
+            <div className="mb-4">
+              <AgentReplyCard
+                workspaceId={workspaceId}
+                runId={reply.runId}
+                agentName={reply.agentName}
+                text={reply.text}
+                needsInput={reply.needsInput}
+              />
+            </div>
+          )}
+          {/* The card above already shows this question or change. */}
+          <AgentItemShownAbove.Provider
+            value={{
+              runId: reply?.needsInput ? reply.runId : undefined,
+              approvalId: approval?.approvalId,
+            }}
+          >
+            <TaskDetailsContent
+              taskId={task.id}
+              projectId={task.projectId}
+              workspaceId={workspaceId}
+              className="flex flex-col gap-3"
+            />
+          </AgentItemShownAbove.Provider>
         </div>
       </div>
-    </>
+    </ProjectScope>
   );
 }
 
+// Long words and links wrap, so this pane never scrolls sideways.
+const NOTICE_PANE =
+  "flex min-w-0 flex-1 items-start justify-center overflow-y-auto overflow-x-hidden p-4 sm:p-6";
+
 /** A notification without a task: workspace news, integration messages. */
-function NoticePreview({ notification }: { notification: InboxNotification }) {
+function NoticePreview({
+  notification,
+  workspaceId,
+}: {
+  notification: InboxNotification;
+  workspaceId: string;
+}) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const content = getNotificationContent(notification, t);
+  const markdown = getNotificationMarkdown(notification, t);
   const page = getPageNotificationTarget(notification);
-  const workspaceId = notification.workspaceId;
+  // An agent's question from a run without a task (a schedule, the Agent
+  // Desk): answered right here, as on a task.
+  const reply = agentReplyOf(notification);
+  if (reply?.needsInput) {
+    return (
+      <div className={NOTICE_PANE}>
+        <div className="w-full min-w-0 max-w-lg">
+          <AgentReplyCard
+            workspaceId={workspaceId}
+            runId={reply.runId}
+            agentName={reply.agentName}
+            text={reply.text}
+            needsInput
+          />
+        </div>
+      </div>
+    );
+  }
   return (
-    <div className="flex flex-1 items-start justify-center overflow-y-auto p-6">
-      <div className="flex w-full max-w-lg gap-3 rounded-xl border border-border/80 bg-card/60 p-4">
+    <div className={NOTICE_PANE}>
+      <div className="flex w-full min-w-0 max-w-lg gap-3 rounded-xl border border-border/80 bg-card/60 p-4">
         <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
           <Bell className="size-4" />
         </span>
-        <div className="flex min-w-0 flex-col gap-1">
-          <p className="font-medium text-sm">
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <p className="font-medium text-sm wrap-anywhere">
             {getNotificationTitle(notification, t)}
           </p>
-          {content && (
-            <p className="text-muted-foreground text-sm">{content}</p>
+          {markdown ? (
+            <AiMarkdown
+              text={markdown}
+              safeLinks
+              className="text-muted-foreground wrap-anywhere [&_a]:text-foreground"
+            />
+          ) : (
+            content && (
+              <p className="text-muted-foreground text-sm wrap-anywhere">
+                {content}
+              </p>
+            )
           )}
-          <p className="text-muted-foreground/70 text-xs">
+          <p className="text-muted-foreground text-xs">
             {formatDateTime(notification.createdAt)}
           </p>
-          {page && workspaceId && (
+          {page && (
             <Button
               variant="outline"
               size="xs"
@@ -333,6 +428,7 @@ function NoticePreview({ notification }: { notification: InboxNotification }) {
                 navigate({
                   to: "/dashboard/workspace/$workspaceId/project/$projectId/pages/$pageId",
                   params: { workspaceId, ...page },
+                  search: pageNotificationSearch(notification),
                 })
               }
             >
@@ -353,6 +449,9 @@ export default function InboxPreview({
   onClose,
   snoozeSignal,
 }: InboxPreviewProps) {
+  // Kept here so the choice holds while moving between notifications.
+  const [propertiesOpen, setPropertiesOpen] = useState(false);
+
   if (!notification) return <InboxPreviewEmpty />;
 
   if (notification.task) {
@@ -365,6 +464,8 @@ export default function InboxPreview({
         onAction={onAction}
         onClose={onClose}
         snoozeSignal={snoozeSignal}
+        propertiesOpen={propertiesOpen}
+        onPropertiesOpenChange={setPropertiesOpen}
       />
     );
   }
@@ -380,7 +481,7 @@ export default function InboxPreview({
       {notification.resourceType === "task" ? (
         <InboxPreviewUnavailable />
       ) : (
-        <NoticePreview notification={notification} />
+        <NoticePreview notification={notification} workspaceId={workspaceId} />
       )}
     </>
   );

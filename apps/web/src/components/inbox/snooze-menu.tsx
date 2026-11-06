@@ -106,7 +106,7 @@ export default function SnoozeMenu({
               onClick={() => onSnooze(presetTarget(preset, new Date()))}
             >
               {t(preset.labelKey)}
-              <span className="ms-auto ps-4 text-muted-foreground/72 text-xs">
+              <span className="ms-auto ps-4 text-muted-foreground text-xs">
                 {formatSnoozeTarget(presetTarget(preset, openedAt))}
               </span>
             </DropdownMenuItem>

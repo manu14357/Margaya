@@ -265,6 +265,50 @@ test("the reader snoozes with S and archives with E, moving on to the next notif
   );
 });
 
+test("the reader names the task and keeps properties behind a toggle", async ({
+  api,
+  pageAs,
+  seed,
+}) => {
+  const tasks: TestTask[] = [];
+  for (const title of ["Toggle first", "Toggle second"]) {
+    const task = await createTask(api, project.id, {
+      title: uniqueName(title),
+    });
+    await api.patch(`/api/task/assignees/${task.id}`, {
+      data: { add: [seed.users.member.id] },
+    });
+    tasks.push(task);
+  }
+  const [older, newer] = tasks as [TestTask, TestTask];
+
+  const member = await pageAs("member");
+  await openInbox(member, seed.workspace.id);
+  const first = notificationRow(member, newer, "assigned you");
+  await waitForRow(member, first);
+  await waitForRow(member, notificationRow(member, older, "assigned you"));
+
+  await first.click();
+  await expect(member.getByTitle(newer.title)).toBeVisible();
+  const properties = member.getByRole("region", { name: "Properties" });
+  const show = member.getByRole("button", { name: /^Show properties/ });
+  await expect(show).toHaveAttribute("aria-expanded", "false");
+  await expect(show).toContainText(project.name);
+  await expect(properties).toHaveCount(0);
+
+  await show.click();
+  await expect(properties).toBeVisible();
+
+  // The choice holds while moving through the list.
+  await first.focus();
+  await member.keyboard.press("j");
+  await expect(member.getByTitle(older.title)).toBeVisible();
+  await expect(properties).toBeVisible();
+
+  await member.getByRole("button", { name: /^Hide properties/ }).click();
+  await expect(properties).toHaveCount(0);
+});
+
 test("reactions on a task and a comment count every member", async ({
   page,
   api,
@@ -316,12 +360,10 @@ test("reactions on a task and a comment count every member", async ({
   await expect(theirs).toHaveAttribute("aria-pressed", "false");
   await expect(theirs).toHaveText(/1$/);
 
-  // React to the comment from its hover actions.
-  const card = page
-    .locator("div.group")
-    .filter({ hasText: "A comment worth a reaction" })
-    .last();
-  await card.hover();
+  // React to the comment from the actions on its card.
+  const card = page.locator(`#comment-${comment.id}`);
+  // Actions have no timeout of their own; this fails fast if the card is gone.
+  await expect(card).toContainText("A comment worth a reaction");
   await card.getByRole("button", { name: "Add reaction" }).click();
   await page
     .getByRole("toolbar", { name: "Pick a reaction" })
@@ -333,6 +375,5 @@ test("reactions on a task and a comment count every member", async ({
   await expect
     .poll(async () => JSON.stringify((await reactions()).comments))
     .toContain("heart");
-  void comment;
   void seed;
 });
