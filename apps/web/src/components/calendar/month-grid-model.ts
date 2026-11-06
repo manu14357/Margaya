@@ -39,7 +39,8 @@ export type WeekLayout<TTask extends PackableTask> = {
   hiddenCountByDay: number[];
   /**
    * Per weekday index, every task overlapping that day — visible or not — in
-   * the same order the lanes were packed. Backs the overflow popover.
+   * the same order the lanes were packed (open work first). Backs the overflow
+   * popover.
    */
   tasksByDay: TTask[][];
 };
@@ -69,11 +70,15 @@ export function buildMonthWeeks(
  * greedily packs the clipped segments into lanes so overlapping tasks stack
  * instead of colliding. Segments past `maxLanes` are reported per day so the
  * cell can render an overflow hint.
+ *
+ * Open work packs first, so a finished task never pushes it into the overflow;
+ * finished tasks fill whatever lanes are left.
  */
 export function packWeekLanes<TTask extends PackableTask>(
   week: Date[],
   tasks: TTask[],
   maxLanes: number,
+  isClosed: (task: TTask) => boolean = () => false,
 ): WeekLayout<TTask> {
   const hiddenCountByDay = new Array<number>(DAYS_PER_WEEK).fill(0);
   const tasksByDay: TTask[][] = Array.from({ length: DAYS_PER_WEEK }, () => []);
@@ -100,6 +105,7 @@ export function packWeekLanes<TTask extends PackableTask>(
 
       return {
         task,
+        closed: isClosed(task),
         clippedStart,
         clippedEnd,
         columnStart: clippedStart + 1,
@@ -112,6 +118,7 @@ export function packWeekLanes<TTask extends PackableTask>(
     // Longest bar first within a start column, then by id so the layout does
     // not shuffle between renders of the same data.
     .sort((left, right) => {
+      if (left.closed !== right.closed) return left.closed ? 1 : -1;
       if (left.columnStart !== right.columnStart) {
         return left.columnStart - right.columnStart;
       }
@@ -122,7 +129,9 @@ export function packWeekLanes<TTask extends PackableTask>(
     });
 
   const segments: Array<WeekSegment<TTask>> = [];
-  const laneNextFreeColumn: number[] = [];
+  // Per lane, which days are taken: finished tasks can land before an open bar
+  // that was packed earlier, so a lane's last bar does not say enough.
+  const laneDays: boolean[][] = [];
 
   for (const candidate of candidates) {
     for (
@@ -133,16 +142,17 @@ export function packWeekLanes<TTask extends PackableTask>(
       tasksByDay[dayIndex].push(candidate.task);
     }
 
-    let lane = laneNextFreeColumn.findIndex(
-      (nextFree) => nextFree <= candidate.columnStart,
+    let lane = laneDays.findIndex((taken) =>
+      taken
+        .slice(candidate.clippedStart, candidate.clippedEnd + 1)
+        .every((isTaken) => !isTaken),
     );
 
     if (lane === -1) {
-      lane = laneNextFreeColumn.length;
-      laneNextFreeColumn.push(candidate.columnEnd);
-    } else {
-      laneNextFreeColumn[lane] = candidate.columnEnd;
+      lane = laneDays.length;
+      laneDays.push(new Array<boolean>(DAYS_PER_WEEK).fill(false));
     }
+    laneDays[lane].fill(true, candidate.clippedStart, candidate.clippedEnd + 1);
 
     if (lane < maxLanes) {
       segments.push({

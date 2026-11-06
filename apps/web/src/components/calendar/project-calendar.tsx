@@ -10,11 +10,16 @@ import {
   buildMonthWeeks,
   buildWeekDays,
 } from "@/components/calendar/month-grid-model";
+import {
+  ScheduleFieldPicker,
+  useScheduleField,
+} from "@/components/calendar/schedule-field";
 import { buildStatusTones } from "@/components/calendar/status-tone";
 import CreateTaskModal, {
   type CreateTaskPrefill,
 } from "@/components/shared/modals/create-task-modal";
 import { useUpdateTaskDates } from "@/hooks/mutations/task/use-update-task-dates";
+import { useGetColumns } from "@/hooks/queries/column/use-get-columns";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { getEntryColumn, withoutTriage } from "@/lib/column-groups";
@@ -73,6 +78,7 @@ export default function ProjectCalendar({
   const setShowWeekends = useScheduleViewPreferences(
     (state) => state.setCalendarShowWeekends,
   );
+  const scheduleField = useScheduleField(projectId);
   const { canUpdateTasks, canCreateTasks } = useWorkspacePermission();
   const canEditDates = Boolean(canUpdateTasks());
   const canCreate = Boolean(canCreateTasks());
@@ -101,10 +107,20 @@ export default function ProjectCalendar({
   const visibleMonth = startOfMonth(anchorDate);
 
   const scheduledTasks = useMemo(() => toScheduledTasks(project), [project]);
-  const tones = useMemo(
-    () => buildStatusTones(loadedProject?.columns),
-    [loadedProject?.columns],
-  );
+  // The board payload carries no column colours; the (shared, cached) column
+  // list does.
+  const { data: columnRecords } = useGetColumns(projectId);
+  const tones = useMemo(() => {
+    const colors = new Map(
+      columnRecords?.map((record) => [record.slug, record.color]),
+    );
+    return buildStatusTones(
+      loadedProject?.columns.map((column) => ({
+        ...column,
+        color: colors.get(column.slug),
+      })),
+    );
+  }, [loadedProject?.columns, columnRecords]);
 
   const weeks = useMemo(
     () =>
@@ -159,6 +175,13 @@ export default function ProjectCalendar({
       onPrevious={handlePrevious}
       onNext={handleNext}
       onToday={handleToday}
+      fieldPicker={
+        <ScheduleFieldPicker
+          fields={scheduleField.fields}
+          value={scheduleField.fieldId}
+          onChange={scheduleField.setFieldId}
+        />
+      }
     />
   );
 
@@ -209,6 +232,7 @@ export default function ProjectCalendar({
         onReschedule={handleReschedule}
         onCreateTask={canCreate ? handleCreateTask : undefined}
         tones={tones}
+        field={scheduleField.display}
       />
 
       {entryColumn ? (

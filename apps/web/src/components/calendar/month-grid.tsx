@@ -26,6 +26,7 @@ import {
   toVisibleColumns,
   visibleDayIndexes,
 } from "./month-grid-model";
+import type { ScheduleFieldDisplay } from "./schedule-field-display";
 import { isClosedTone, type ToneInfo, toneOf, toneStyle } from "./status-tone";
 
 type MonthGridProps = {
@@ -44,6 +45,8 @@ type MonthGridProps = {
   onCreateTask?: (day: Date, anchor: HTMLElement) => void;
   /** Status tones by slug, from the project's columns. */
   tones?: ReadonlyMap<string, ToneInfo>;
+  /** The custom field chosen to show on tasks, if any. */
+  field?: ScheduleFieldDisplay | null;
 };
 
 function pointerClientX(event: Event): number | null {
@@ -68,6 +71,7 @@ export default function MonthGrid({
   onReschedule,
   onCreateTask,
   tones,
+  field,
 }: MonthGridProps): JSX.Element {
   // Without a month to dim against, this is the week view: one tall row with
   // the dates in the column headers.
@@ -78,8 +82,13 @@ export default function MonthGrid({
     [weekdayTemplate, showWeekends],
   );
   const layouts = useMemo(
-    () => weeks.map((week) => packWeekLanes(week, tasks, maxLanes)),
-    [weeks, tasks, maxLanes],
+    () =>
+      weeks.map((week) =>
+        packWeekLanes(week, tasks, maxLanes, (task) =>
+          isClosedTone(toneOf(task.status, tones).tone),
+        ),
+      ),
+    [weeks, tasks, maxLanes, tones],
   );
   const canDrag = canEditDates && Boolean(onReschedule);
   const grabbedDayRef = useRef<Date | null>(null);
@@ -251,6 +260,7 @@ export default function MonthGrid({
                       canDrag={canDrag}
                       dragDays={dragDays}
                       tones={tones}
+                      field={field}
                     />
                   );
                 })}

@@ -213,6 +213,72 @@ describe("packWeekLanes", () => {
   });
 });
 
+describe("packWeekLanes with finished tasks", () => {
+  const week = buildWeekDays(day(2026, 7, 12), 0);
+  const isClosed = (task: { id: string }) => task.id.startsWith("done");
+
+  it("keeps open work in the lanes and sends finished tasks to the overflow", () => {
+    const monday = week[1];
+    const tasks = [
+      scheduled("done-a", monday, monday),
+      scheduled("done-b", monday, monday),
+      scheduled("open-a", monday, monday),
+      scheduled("open-b", monday, monday),
+    ];
+
+    const { segments, hiddenCountByDay, tasksByDay } = packWeekLanes(
+      week,
+      tasks,
+      2,
+      isClosed,
+    );
+
+    expect(segments.map((segment) => segment.task.id)).toEqual([
+      "open-a",
+      "open-b",
+    ]);
+    expect(hiddenCountByDay[1]).toBe(2);
+    expect(tasksByDay[1].map((task) => task.id)).toEqual([
+      "open-a",
+      "open-b",
+      "done-a",
+      "done-b",
+    ]);
+  });
+
+  it("does not let a long finished bar push out an open task that starts later", () => {
+    const tasks = [
+      scheduled("done-long", week[0], week[6]),
+      scheduled("open-late", week[4], week[4]),
+    ];
+
+    const { segments, hiddenCountByDay } = packWeekLanes(
+      week,
+      tasks,
+      1,
+      isClosed,
+    );
+
+    expect(segments.map((segment) => segment.task.id)).toEqual(["open-late"]);
+    expect(hiddenCountByDay[4]).toBe(1);
+    expect(hiddenCountByDay[0]).toBe(1);
+  });
+
+  it("fits a finished task into the gap before an open bar in the same lane", () => {
+    const tasks = [
+      scheduled("open-late", week[3], week[4]),
+      scheduled("done-early", week[1], week[1]),
+    ];
+
+    const { segments } = packWeekLanes(week, tasks, 1, isClosed);
+
+    expect(segments.map((segment) => [segment.task.id, segment.lane])).toEqual([
+      ["open-late", 0],
+      ["done-early", 0],
+    ]);
+  });
+});
+
 describe("packWeekLanes tasksByDay", () => {
   const week = Array.from({ length: DAYS_PER_WEEK }, (_, index) =>
     day(2026, 7, 2 + index),
