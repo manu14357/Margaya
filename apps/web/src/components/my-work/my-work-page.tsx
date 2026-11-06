@@ -11,6 +11,7 @@ import {
   type MyWorkTab,
   myWorkBaseConditions,
   myWorkDefaultState,
+  myWorkTabSearch,
   presetFilters,
 } from "@/lib/task-query/my-work";
 import MyWorkSummary from "./my-work-summary";
@@ -99,8 +100,8 @@ function MyWorkList({
 }
 
 /**
- * "Your work": the view tabs (Summary, then what is assigned to, created or
- * watched by you), each list grouped by state.
+ * "Your work": the view tabs (what is assigned to, created or watched by you,
+ * each list grouped by state, then the Summary). Opens on Assigned.
  */
 export default function MyWorkPage({
   workspaceId,
@@ -116,7 +117,7 @@ export default function MyWorkPage({
       to: "/dashboard/workspace/$workspaceId/my-work",
       params: { workspaceId },
       search: {
-        tab: next === "summary" ? undefined : next,
+        tab: myWorkTabSearch(next),
         ...(nextPreset ? { filter: nextPreset } : {}),
       },
     });

@@ -64,6 +64,31 @@ describe("MyWorkPanel", () => {
     ).toHaveAttribute("data-active", "false");
   });
 
+  it("marks Assigned as current when the URL names no tab", () => {
+    renderPanel();
+    expect(
+      screen.getByText("myWork:tabs.assigned").closest("[data-active]"),
+    ).toHaveAttribute("data-active", "true");
+  });
+
+  it("lists Summary after the task lists and links to it by name", () => {
+    renderPanel();
+    const labels = screen
+      .getAllByText(/^myWork:tabs\./)
+      .map((node) => node.textContent);
+    expect(labels[0]).toBe("myWork:tabs.assigned");
+    expect(labels[labels.length - 1]).toBe("myWork:tabs.summary");
+
+    fireEvent.click(screen.getByText("myWork:tabs.summary"));
+    expect(m.navigate).toHaveBeenCalledWith(
+      expect.objectContaining({ search: { tab: "summary" } }),
+    );
+    fireEvent.click(screen.getByText("myWork:tabs.assigned"));
+    expect(m.navigate).toHaveBeenLastCalledWith(
+      expect.objectContaining({ search: { tab: undefined } }),
+    );
+  });
+
   it("opens a tab through the route's search", () => {
     renderPanel();
     fireEvent.click(screen.getByText("myWork:tabs.created"));

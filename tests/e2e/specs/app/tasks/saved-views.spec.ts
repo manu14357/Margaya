@@ -445,7 +445,7 @@ test.describe("workspace views and your work", () => {
     await expect(taskCard(page, mine.title).first()).toBeVisible();
   });
 
-  test("Your work summarises the owner's tasks and lists them by tab", async ({
+  test("Your work lists the owner's tasks by tab and summarises them", async ({
     page,
     api,
     seed,
@@ -457,11 +457,18 @@ test.describe("workspace views and your work", () => {
     });
     await page.goto(`/dashboard/workspace/${seed.workspace.id}/my-work`);
     const tabs = page.getByRole("tablist");
-    await expect(tabs.getByRole("tab", { name: "Summary" })).toHaveAttribute(
+    await expect(tabs.getByRole("tab", { name: "Assigned" })).toHaveAttribute(
       "aria-selected",
       "true",
       { timeout: 60_000 },
     );
+    await expect(
+      page
+        .getByRole("button", { name: new RegExp(escapeRegExp(assigned.title)) })
+        .first(),
+    ).toBeVisible();
+
+    await tabs.getByRole("tab", { name: "Summary" }).click();
     await expect(
       page.getByRole("button", { name: /^Assigned and open \d+$/ }),
     ).toBeVisible();
@@ -472,12 +479,6 @@ test.describe("workspace views and your work", () => {
       }),
     ).toBeVisible();
 
-    await tabs.getByRole("tab", { name: "Assigned" }).click();
-    await expect(
-      page
-        .getByRole("button", { name: new RegExp(escapeRegExp(assigned.title)) })
-        .first(),
-    ).toBeVisible();
     await tabs.getByRole("tab", { name: "Created" }).click();
     await expect(
       page

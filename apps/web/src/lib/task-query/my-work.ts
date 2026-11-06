@@ -2,16 +2,25 @@ import { SUBSCRIBER_FILTER_AVAILABLE } from "./built-in-views";
 import { DEFAULT_DISPLAY_PROPERTIES } from "./display";
 import type { FilterCondition, FilterNode, TaskQueryState } from "./model";
 
-// "Your work" (B4 §1.6): a summary and one list per relation to me.
+// "Your work" (B4 §1.6): one list per relation to me, then a summary. The page
+// opens on the first tab, so a person's own tasks come before the statistics.
 
 export const MY_WORK_TABS = [
-  "summary",
   "assigned",
   "created",
   "subscribed",
+  "summary",
 ] as const;
 export type MyWorkTab = (typeof MY_WORK_TABS)[number];
 export type MyWorkListTab = Exclude<MyWorkTab, "summary">;
+
+/** The tab the page opens on; its URL carries no `tab`. */
+export const DEFAULT_MY_WORK_TAB: MyWorkTab = "assigned";
+
+/** The `tab` search value of a tab: the default tab keeps the URL clean. */
+export function myWorkTabSearch(tab: MyWorkTab): MyWorkTab | undefined {
+  return tab === DEFAULT_MY_WORK_TAB ? undefined : tab;
+}
 
 export function isMyWorkTab(value: unknown): value is MyWorkTab {
   return (
@@ -71,7 +80,7 @@ const OPEN: FilterCondition = {
 
 /**
  * The filters a summary tile or row opens its tab with: open work, late
- * work, work due this week, work finished lately, or one project.
+ * work, work due today or this week, work finished lately, or one project.
  */
 export function presetFilters(preset: string): FilterNode | null {
   if (preset === "open") return { op: "and", children: [OPEN] };
@@ -79,6 +88,12 @@ export function presetFilters(preset: string): FilterNode | null {
     return {
       op: "and",
       children: [OPEN, { key: "dueDate", operator: "in", values: ["past"] }],
+    };
+  }
+  if (preset === "dueToday") {
+    return {
+      op: "and",
+      children: [OPEN, { key: "dueDate", operator: "in", values: ["today"] }],
     };
   }
   if (preset === "dueThisWeek") {

@@ -17,8 +17,10 @@ import {
 import { useTaskDraftCount } from "@/hooks/queries/task-draft/use-task-draft-count";
 import { useAgentDeskNav } from "@/hooks/use-agent-desk-nav";
 import {
+  DEFAULT_MY_WORK_TAB,
   isMyWorkTab,
   type MyWorkTab,
+  myWorkTabSearch,
   visibleMyWorkTabs,
 } from "@/lib/task-query/my-work";
 
@@ -46,7 +48,7 @@ export function MyWorkPanel({ workspaceId }: { workspaceId: string }) {
   const { data: draftCount = 0 } = useTaskDraftCount(workspaceId);
   const base = `/dashboard/workspace/${workspaceId}`;
   const onMyWork = pathname.startsWith(`${base}/my-work`);
-  const activeTab: MyWorkTab = isMyWorkTab(tab) ? tab : "summary";
+  const activeTab: MyWorkTab = isMyWorkTab(tab) ? tab : DEFAULT_MY_WORK_TAB;
   const draftsActive = pathname.startsWith(`${base}/drafts`);
   const deskActive = pathname.startsWith(`${base}/agents`);
   const { show: showDesk, waiting } = useAgentDeskNav(workspaceId, deskActive);
@@ -63,7 +65,7 @@ export function MyWorkPanel({ workspaceId }: { workspaceId: string }) {
             navigate({
               to: "/dashboard/workspace/$workspaceId/my-work",
               params: { workspaceId },
-              search: { tab: key === "summary" ? undefined : key },
+              search: { tab: myWorkTabSearch(key) },
             })
           }
         />

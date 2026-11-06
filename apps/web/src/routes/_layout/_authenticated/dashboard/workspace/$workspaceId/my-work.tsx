@@ -1,9 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import MyWorkPage from "@/components/my-work/my-work-page";
-import { isMyWorkTab, type MyWorkTab } from "@/lib/task-query/my-work";
+import {
+  DEFAULT_MY_WORK_TAB,
+  isMyWorkTab,
+  type MyWorkTab,
+} from "@/lib/task-query/my-work";
 
 type MyWorkSearchParams = {
-  tab?: Exclude<MyWorkTab, "summary">;
+  tab?: MyWorkTab;
   /** A summary tile's filters for the tab (open, overdue, a project). */
   filter?: string;
   taskId?: string;
@@ -14,10 +18,7 @@ export const Route = createFileRoute(
 )({
   component: RouteComponent,
   validateSearch: (search: Record<string, unknown>): MyWorkSearchParams => ({
-    tab:
-      isMyWorkTab(search.tab) && search.tab !== "summary"
-        ? search.tab
-        : undefined,
+    tab: isMyWorkTab(search.tab) ? search.tab : undefined,
     filter: typeof search.filter === "string" ? search.filter : undefined,
     taskId: typeof search.taskId === "string" ? search.taskId : undefined,
   }),
@@ -29,7 +30,7 @@ function RouteComponent() {
   return (
     <MyWorkPage
       workspaceId={workspaceId}
-      tab={tab ?? "summary"}
+      tab={tab ?? DEFAULT_MY_WORK_TAB}
       preset={filter}
       taskId={taskId}
     />

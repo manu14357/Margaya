@@ -12,7 +12,11 @@ import Layout from "@/components/common/layout";
 import type { ViewTab } from "@/components/common/view-tabs";
 import { PanelCount } from "@/components/context-panel/panel-primitives";
 import { useAgentDeskNav } from "@/hooks/use-agent-desk-nav";
-import { type MyWorkTab, visibleMyWorkTabs } from "@/lib/task-query/my-work";
+import {
+  type MyWorkTab,
+  myWorkTabSearch,
+  visibleMyWorkTabs,
+} from "@/lib/task-query/my-work";
 
 const TAB_ICONS: Record<MyWorkTab, LucideIcon> = {
   summary: LayoutDashboard,
@@ -43,7 +47,7 @@ export function MyWorkTabs({
       : navigate({
           to: "/dashboard/workspace/$workspaceId/my-work",
           params: { workspaceId },
-          search: { tab: key === "summary" ? undefined : key },
+          search: { tab: myWorkTabSearch(key) },
         });
 
   const tabs: ViewTab[] = visibleMyWorkTabs().map((key) => ({
