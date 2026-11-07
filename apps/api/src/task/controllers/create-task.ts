@@ -83,6 +83,7 @@ export type CreateTaskInput = {
   estimatePointId?: string | null;
   /** Makes the new task a subtask of this one, in the create's transaction. */
   parentId?: string;
+  isMilestone?: boolean;
 };
 
 /** Everything a create needs once validated, before the transaction. */
@@ -102,6 +103,7 @@ export type PreparedTaskCreate = {
   assigneeName: string | undefined;
   customFields: CustomFieldInput[];
   estimatePointId: string | null;
+  isMilestone?: boolean;
 };
 
 /**
@@ -122,6 +124,7 @@ export async function prepareTaskCreate({
   priority,
   customFields,
   estimatePointId,
+  isMilestone,
 }: CreateTaskInput): Promise<PreparedTaskCreate> {
   const resolvedStatus = status || "to-do";
   const resolvedPriority = priority || "no-priority";
@@ -211,6 +214,7 @@ export async function prepareTaskCreate({
     assigneeName: assignee?.name,
     customFields: mergedCustomFields,
     estimatePointId: estimatePointId || null,
+    isMilestone: isMilestone ?? false,
   };
 }
 
@@ -258,6 +262,7 @@ export async function insertTaskInTransaction(
       number: taskNumber,
       position: nextPosition,
       estimatePointId,
+      isMilestone: prepared.isMilestone ?? false,
     })
     .returning();
 

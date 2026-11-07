@@ -28,6 +28,7 @@ async function loadSourceTask(taskId: string, workspaceId: string) {
       priority: taskTable.priority,
       startDate: taskTable.startDate,
       dueDate: taskTable.dueDate,
+      isMilestone: taskTable.isMilestone,
       estimatePointId: taskTable.estimatePointId,
       number: taskTable.number,
       slug: projectTable.slug,

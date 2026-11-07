@@ -229,6 +229,7 @@ async function getTasksPage(
     priority: taskTable.priority,
     startDate: taskTable.startDate,
     dueDate: taskTable.dueDate,
+    isMilestone: taskTable.isMilestone,
     position: taskTable.position,
     createdAt: taskTable.createdAt,
     archivedAt: taskTable.archivedAt,

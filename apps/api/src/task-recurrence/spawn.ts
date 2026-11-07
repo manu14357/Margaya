@@ -140,6 +140,7 @@ export async function spawnNextInstance({
         priority: taskTable.priority,
         startDate: taskTable.startDate,
         dueDate: taskTable.dueDate,
+        isMilestone: taskTable.isMilestone,
         estimatePointId: taskTable.estimatePointId,
         status: taskTable.status,
         columnGroup: columnTable.group,
@@ -231,6 +232,7 @@ export async function spawnNextInstance({
       assigneeIds: assigneeIds.filter((id) => assignable.has(id)),
       assigneeName: undefined,
       customFields: [],
+      isMilestone: source.isMilestone,
       estimatePointId: await keptEstimate(
         tx,
         source.projectId,

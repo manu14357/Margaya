@@ -347,6 +347,7 @@ function writeCopy(input: WriteCopyInput) {
         priority: source.task.priority,
         startDate: copyDates ? source.task.startDate : null,
         dueDate: copyDates ? source.task.dueDate : null,
+        isMilestone: source.task.isMilestone,
         number,
         position,
         estimatePointId: estimateKept ? pointId : null,

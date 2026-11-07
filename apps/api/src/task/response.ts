@@ -8,6 +8,11 @@ const estimatePointIdSchema = z.string().nullable().openapi({
     "Point of the project's active estimate system, or null. Resolve its value with GET /estimate/{projectId}. Set it with PUT /task/estimate/{id}.",
 });
 
+const isMilestoneSchema = z.boolean().optional().openapi({
+  description:
+    "True when the task marks one date; the timeline draws it on its due date. Set it with PUT /task/milestone/{id}.",
+});
+
 const archivedAtSchema = nullableResponseTimestamp.optional().openapi({
   description:
     "When the task was archived; null while it is not. An archived task keeps its column (status).",
@@ -63,6 +68,7 @@ export const taskSchema = z
     priority: z.string().openapi({ description: priorityDescription }),
     startDate: nullableResponseTimestamp,
     dueDate: nullableResponseTimestamp,
+    isMilestone: isMilestoneSchema,
     completedAt: nullableResponseTimestamp.optional().openapi({
       description:
         "When the task entered a completed-group column; null while it is not completed. Archiving never changes it.",
@@ -133,6 +139,7 @@ export const boardTaskSchema = z
     priority: z.string().openapi({ description: priorityDescription }),
     startDate: nullableResponseTimestamp,
     dueDate: nullableResponseTimestamp,
+    isMilestone: isMilestoneSchema,
     position: z.number().nullable(),
     createdAt: responseTimestamp,
     archivedAt: archivedAtSchema,
