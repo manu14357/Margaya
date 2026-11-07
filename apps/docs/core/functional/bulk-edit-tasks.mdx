@@ -1,0 +1,91 @@
+---
+title: Edit Many Tasks at Once
+description: Select tasks on a board, list, spreadsheet or backlog, change them together, or move them to another project
+---
+
+Select several tasks to change them in one step: set their status, dates, priority, assignees, labels or custom fields, archive or delete them, or move them to another project.
+
+## Select tasks
+
+- **With the checkbox:** hover a card or row and tick its checkbox. On a touch screen the checkbox is always there, and once anything is selected, every checkbox stays in view.
+- **With the mouse:** hold **Ctrl** (**⌘** on macOS) and click a card or row.
+- **With the keyboard:** move to a task with `j` and `k`, and press `x`.
+
+**Ctrl+A** selects every task in the list. **Escape**, or the **×** at the end of the bar, clears the selection.
+
+<Screenshot src="tasks/bulk-toolbar" alt="The Website relaunch board with two cards ticked and the bar at the bottom showing 2 selected, Move to Backlog, Dates, Cycle, Add to module, Remove from module, Estimate and Actions" caption="Selected cards stay ticked, and the bar at the bottom holds the actions." />
+
+You can select tasks in **Board**, **List**, **Spreadsheet** and **Backlog**, and in the list layouts of views, **All tasks** and **Your work**. **Calendar** and **Gantt** have no selection. The checkboxes only appear if your role allows at least one bulk action.
+
+## Change the selected tasks
+
+The bar at the bottom holds the common actions, and **Actions** opens a searchable list of the rest.
+
+| Action | Where | Permission |
+| --- | --- | --- |
+| **Move to Backlog** | Bar | **task:update** |
+| **Dates**: pick **Start date** or **Due date**, then a day, or **Clear start date** or **Clear due date** | Bar | **task:update** |
+| **Cycle**, **Add to module…** and **Estimate**, when the project uses them | Bar | **task:update**; **Cycle** also needs **cycle:update**, and **Add to module…** needs **module:update** |
+| **Custom field** | Bar | **task:update** |
+| **Change status** | **Actions** | **task:update** |
+| **Set priority** | **Actions** | **task:update** |
+| **Move to project** | **Actions** | **task:update** on both projects |
+| **Add assignee**, **Remove assignee** and **Clear assignees** | **Actions** | **task:assign** |
+| **Add label** and **Remove label** | **Actions** | **label:update** |
+| **Archive tasks** and **Restore from archive** | **Actions** | **task:update** |
+| **Delete tasks** | **Actions** | **task:delete** |
+
+**Delete tasks** asks first and moves the tasks to the [trash](/core/functional/trash-and-restore). See also [Bulk assign across tasks](/core/functional/multiple-assignees#bulk-assign-across-tasks).
+
+The **Backlog** bar has **Move to board** and **Set due date** instead of **Move to Backlog** and **Dates**. Its **Actions** list has no **Change status**, **Remove label** or **Restore from archive**.
+
+Lists that span projects, such as **All tasks** and **Your work**, leave out actions that belong to one project, including **Change status** and **Custom field**.
+
+## Set a custom field on many tasks
+
+1. Select tasks in one project and click **Custom field** in the bar. It only appears if the project has [custom fields](/core/functional/custom-fields).
+2. Under **Choose a field**, pick the field.
+3. Choose the value:
+   - For text and numbers, type it and click **Apply**. Applying an empty value clears the field.
+   - For dropdowns, booleans and dates, pick it. **Clear value** empties the field.
+
+Every selected task gets the same value, or none of them do. A required field can't be cleared, and a dropdown option that was removed can't be set.
+
+## Move tasks to another project
+
+1. Select the tasks.
+2. Click **Actions**, and under **Move to project** pick the project. The list only has projects you can see.
+3. Read the rule in the dialog and click **Move tasks**.
+
+<Screenshot src="tasks/bulk-move-dialog" alt="The dialog asking Move 2 tasks to Mobile app?, explaining the new task keys and what happens to status, labels, assignees, cycles, modules, estimates and custom fields, with Cancel and Move tasks buttons" caption="The dialog states what happens to the tasks before anything moves." />
+
+What happens to each task:
+
+| Property | After the move |
+| --- | --- |
+| Task key | A new key from the destination project, such as `MOB-31` |
+| Status | The same status if the destination has it, otherwise its first column |
+| Labels and assignees | Kept |
+| Cycle, modules and estimate | Cleared, because they belong to the old project |
+| Custom field values | Kept only where the destination has a field with the same name and type, and a dropdown there offers the value. Other values are removed |
+| Comments, attachments and activity | Kept |
+
+Good to know:
+
+- The move is all or nothing. If one task can't move, none of them do. A task still waiting in [Intake](/core/functional/intake) stops the whole move, so accept it first.
+- Tasks already in the destination are skipped.
+- A sub-task only moves if it's selected too. Selecting a parent doesn't bring its sub-tasks along.
+- You need **task:update** in the project the tasks come from and in the destination, including any [project role](/core/functional/restricted-projects) you have there.
+- There is no undo. Moving tasks back gives them new keys again and doesn't restore their cycle, modules, estimate or removed values.
+
+To move one task and choose its column yourself, use **Move task** in the task's **Properties** panel. The same rules apply to its custom fields and labels.
+
+## Use the API
+
+`PATCH /api/task/bulk` takes `taskIds`, an `operation` and a `value`. For a move, the operation is `move` and the value is the destination project's id. `PUT /api/custom-field/value/bulk` sets a custom field. See the **Tasks** section of the API reference.
+
+## Next
+
+- [Plan and execute tasks in Board and List](/core/functional/plan-and-execute-tasks)
+- [Add custom fields to tasks](/core/functional/custom-fields)
+- [Trash and restore](/core/functional/trash-and-restore)

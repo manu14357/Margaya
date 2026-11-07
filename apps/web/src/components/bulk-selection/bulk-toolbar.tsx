@@ -54,7 +54,9 @@ import useBulkSelectionStore from "@/store/bulk-selection";
 import useProjectStore from "@/store/project";
 import { Button } from "../ui/button";
 import { Toolbar, ToolbarGroup, ToolbarSeparator } from "../ui/toolbar";
+import { BulkBarFrame } from "./bulk-bar-frame";
 import { useBulkAssigneeGroups } from "./use-bulk-assignee-groups";
+import { useBulkMoveToProject } from "./use-bulk-move-to-project";
 
 type BulkActionItem = {
   value: string;
@@ -248,6 +250,15 @@ function BulkToolbar({ projectId }: BulkToolbarProps = {}) {
     enabled: canAssign,
     onDone: finishAssigneeAction,
   });
+  const closeActions = useCallback(() => setIsActionsOpen(false), []);
+  const { groups: moveGroups, dialog: moveDialog } = useBulkMoveToProject({
+    workspaceId: workspace?.id ?? "",
+    currentProjectId: project?.id ?? projectId ?? null,
+    selectedTaskIds,
+    enabled: canEdit,
+    onPick: closeActions,
+    onDone: clearSelection,
+  });
 
   const handleBulkPriority = useCallback(
     async (priority: string) => {
@@ -411,6 +422,7 @@ function BulkToolbar({ projectId }: BulkToolbarProps = {}) {
         })),
       });
     }
+    groups.push(...moveGroups);
     groups.push(...assigneeGroups);
     if (canEdit) {
       groups.push({
@@ -465,6 +477,7 @@ function BulkToolbar({ projectId }: BulkToolbarProps = {}) {
     canDelete,
     canEditLabels,
     statusColumns,
+    moveGroups,
     assigneeGroups,
     uniqueLabels,
     handleBulkDelete,
@@ -483,11 +496,9 @@ function BulkToolbar({ projectId }: BulkToolbarProps = {}) {
   if (!canEdit && !canDelete && !canAssign && !canEditLabels) return null;
 
   return (
-    <div
-      ref={setBar}
-      className="-translate-x-1/2 fixed bottom-[calc(4.25rem+env(safe-area-inset-bottom))] left-1/2 z-50 w-max max-w-[calc(100vw-1rem)] transition-[translate,opacity] md:bottom-6 duration-200 ease-out starting:translate-y-3 starting:opacity-0 motion-reduce:starting:translate-y-0"
-    >
-      <Toolbar className="max-w-full items-center gap-1 overflow-x-auto rounded-xl border-border/80 bg-background px-1.5 py-1 shadow-lg/8 [scrollbar-width:none]">
+    <BulkBarFrame ref={setBar}>
+      {/* Scrolls on phones; wraps on wider screens when the column is narrow. */}
+      <Toolbar className="max-w-full items-center gap-1 overflow-x-auto rounded-xl border-border/80 bg-background px-1.5 py-1 shadow-lg/8 [scrollbar-width:none] md:flex-wrap md:justify-center">
         <ToolbarGroup className="shrink-0 px-1.5">
           <span className="whitespace-nowrap text-sm font-medium text-foreground">
             {t("tasks:bulk.selectedCount", { count: selectedCount })}
@@ -647,7 +658,8 @@ function BulkToolbar({ projectId }: BulkToolbarProps = {}) {
           </Command>
         </CommandDialogPopup>
       </CommandDialog>
-    </div>
+      {moveDialog}
+    </BulkBarFrame>
   );
 }
 

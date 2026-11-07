@@ -7,6 +7,7 @@ import {
   waitFor,
 } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { ShellContext } from "@/components/common/shell-context";
 import useBulkSelectionStore from "@/store/bulk-selection";
 import BulkToolbar from "./bulk-toolbar";
 
@@ -22,11 +23,14 @@ const mocks = vi.hoisted(() => ({
     bulkRemoveLabel: vi.fn(),
     bulkDueDate: vi.fn(),
     bulkStartDate: vi.fn(),
+    bulkMoveToProject: vi.fn(),
   },
   toast: { success: vi.fn(), error: vi.fn(), info: vi.fn() },
 }));
 
-vi.mock("react-i18next", () => ({
+// The real module too: the calendar's date formatting loads the i18n setup.
+vi.mock("react-i18next", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("react-i18next")>()),
   useTranslation: () => ({
     t: (key: string, options?: { count?: number }) =>
       options?.count !== undefined ? `${key}(${options.count})` : key,
@@ -34,6 +38,14 @@ vi.mock("react-i18next", () => ({
 }));
 vi.mock("@/hooks/mutations/task/use-bulk-operations", () => ({
   useBulkOperations: () => mocks.ops,
+}));
+vi.mock("@/hooks/queries/project/use-get-projects", () => ({
+  default: () => ({
+    data: [
+      { id: "project-here", name: "Here" },
+      { id: "project-there", name: "There" },
+    ],
+  }),
 }));
 vi.mock("@/hooks/queries/column/use-get-columns", () => ({
   useGetColumns: () => ({ data: [] }),
@@ -114,6 +126,28 @@ describe("BulkToolbar", () => {
     );
   });
 
+  it("sits in the shell's main column, so it centres on the work, not the window", () => {
+    const mainColumn = document.createElement("main");
+    document.body.append(mainColumn);
+    render(
+      <ShellContext.Provider
+        value={{
+          destination: "home",
+          selectDestination: vi.fn(),
+          panelSlot: null,
+          mainColumn,
+        }}
+      >
+        <BulkToolbar projectId={null} />
+      </ShellContext.Provider>,
+    );
+
+    const toolbar = screen.getByRole("toolbar");
+    expect(mainColumn.contains(toolbar)).toBe(true);
+    expect(toolbar.parentElement).toHaveClass("absolute", "left-1/2");
+    mainColumn.remove();
+  });
+
   it("restores archived tasks and says when none were archived", async () => {
     mocks.ops.bulkUnarchive.mockResolvedValue({ updatedCount: 0 });
     render(<BulkToolbar projectId={null} />);
@@ -144,6 +178,64 @@ describe("BulkToolbar", () => {
       }),
     );
     expect(mocks.ops.bulkDueDate).not.toHaveBeenCalled();
+  });
+
+  it("moves the selection to a project after confirming the rule", async () => {
+    mocks.ops.bulkMoveToProject.mockResolvedValue({ updatedCount: 2 });
+    render(<BulkToolbar projectId="project-here" />);
+    openActions();
+
+    expect(await screen.findByText("tasks:bulk.moveToProject")).toBeTruthy();
+    // The current project is not a destination.
+    expect(screen.queryByText("Here")).toBeNull();
+    fireEvent.click(screen.getByText("There"));
+
+    expect(await screen.findByRole("alertdialog")).toBeTruthy();
+    expect(screen.getByText("tasks:bulk.moveToProjectRule")).toBeTruthy();
+    expect(mocks.ops.bulkMoveToProject).not.toHaveBeenCalled();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "tasks:bulk.moveToProjectConfirm" }),
+    );
+
+    await waitFor(() =>
+      expect(mocks.ops.bulkMoveToProject).toHaveBeenCalledWith({
+        taskIds: ["t1", "t2"],
+        projectId: "project-there",
+      }),
+    );
+    await waitFor(() =>
+      expect(mocks.toast.success).toHaveBeenCalledWith(
+        "tasks:bulk.moveToProjectSuccess(2)",
+      ),
+    );
+    expect(useBulkSelectionStore.getState().selectedTaskIds.size).toBe(0);
+  });
+
+  it("keeps the selection when a move is cancelled or refused", async () => {
+    mocks.ops.bulkMoveToProject.mockRejectedValue(new Error("refused"));
+    render(<BulkToolbar projectId="project-here" />);
+    openActions();
+    fireEvent.click(await screen.findByText("There"));
+
+    fireEvent.click(await screen.findByText("common:actions.cancel"));
+    await waitFor(() => expect(screen.queryByRole("alertdialog")).toBeNull());
+    expect(mocks.ops.bulkMoveToProject).not.toHaveBeenCalled();
+
+    openActions();
+    fireEvent.click(await screen.findByText("There"));
+    fireEvent.click(
+      await screen.findByRole("button", {
+        name: "tasks:bulk.moveToProjectConfirm",
+      }),
+    );
+
+    await waitFor(() =>
+      expect(mocks.toast.error).toHaveBeenCalledWith(
+        "tasks:bulk.moveToProjectError",
+      ),
+    );
+    expect(useBulkSelectionStore.getState().selectedTaskIds.size).toBe(2);
   });
 
   it("keeps the due date as the default date field", async () => {

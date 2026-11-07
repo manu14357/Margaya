@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import bulkOperation from "@/fetchers/task/bulk-operation";
 import deleteTask from "@/fetchers/task/delete-task";
+import { invalidateDeliveryQueries } from "@/hooks/mutations/delivery/invalidate-delivery-queries";
 import { invalidateTaskQueries } from "@/lib/task-query/cache";
 
 export function useBulkOperations() {
@@ -11,6 +12,11 @@ export function useBulkOperations() {
     queryClientRef.invalidateQueries({ queryKey: ["projects"] });
     // Spreadsheets, grouped views and My work read the task query caches.
     void invalidateTaskQueries(queryClientRef);
+    // Cycle and module progress, forecasts and risks read status, dates and
+    // assignees. The tasks may span projects, so every project's refresh.
+    queryClientRef.invalidateQueries({ queryKey: ["cycles"] });
+    queryClientRef.invalidateQueries({ queryKey: ["modules"] });
+    invalidateDeliveryQueries(queryClientRef);
   };
 
   const bulkDelete = useMutation({
@@ -123,6 +129,18 @@ export function useBulkOperations() {
     onSuccess: invalidateCommon,
   });
 
+  // A move also changes open tasks' keys and activity.
+  const bulkMoveToProject = useMutation({
+    mutationFn: ({
+      taskIds,
+      projectId,
+    }: {
+      taskIds: string[];
+      projectId: string;
+    }) => bulkOperation({ taskIds, operation: "move", value: projectId }),
+    onSuccess: invalidateAssignees,
+  });
+
   const bulkPriority = useMutation({
     mutationFn: async ({
       taskIds,
@@ -218,6 +236,7 @@ export function useBulkOperations() {
     bulkClearAssignees: bulkClearAssignees.mutateAsync,
     bulkMoveToBacklog: bulkMoveToBacklog.mutateAsync,
     bulkMoveToBoard: bulkMoveToBoard.mutateAsync,
+    bulkMoveToProject: bulkMoveToProject.mutateAsync,
     bulkPriority: bulkPriority.mutateAsync,
     bulkAddLabel: bulkAddLabel.mutateAsync,
     bulkRemoveLabel: bulkRemoveLabel.mutateAsync,

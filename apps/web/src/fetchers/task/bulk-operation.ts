@@ -14,7 +14,8 @@ type BulkOperationType =
   | "updateDueDate"
   | "updateStartDate"
   | "archive"
-  | "unarchive";
+  | "unarchive"
+  | "move";
 
 async function bulkOperation({
   taskIds,
