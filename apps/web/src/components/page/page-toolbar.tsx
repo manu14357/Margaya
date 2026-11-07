@@ -52,6 +52,7 @@ import type { Page } from "@/types/page";
 import PageSyncBadge from "./collab/page-sync-badge";
 import PresenceStack, { type PresenceMember } from "./collab/presence-stack";
 import type { PageCollaboration } from "./collab/use-page-collaboration";
+import PageWatchButton from "./page-watch-button";
 import PublishPageDialog from "./publish-page-dialog";
 import SaveTemplateDialog from "./save-template-dialog";
 import type { PageActions } from "./use-page-actions";
@@ -265,6 +266,7 @@ export default function PageHeaderActions({
             feature: "pages",
           }}
         />
+        <PageWatchButton pageId={page.id} />
         <Tooltip>
           <TooltipTrigger
             render={
@@ -351,11 +353,14 @@ export default function PageHeaderActions({
             </DropdownMenuItem>
             <DropdownMenuItem onClick={onOpenHistory}>
               <History />
-              {t("pages:menu.versionHistory")}
-              <span className="ms-auto max-w-28 truncate text-muted-foreground text-xs tabular-nums">
-                {t("pages:list.editedAgo", {
-                  time: formatRelativeTime(page.updatedAt),
-                })}
+              {/* The last edit sits under the label: beside it, both got cut. */}
+              <span className="flex min-w-0 flex-col">
+                {t("pages:menu.versionHistory")}
+                <span className="text-muted-foreground text-xs tabular-nums">
+                  {t("pages:list.editedAgo", {
+                    time: formatRelativeTime(page.updatedAt),
+                  })}
+                </span>
               </span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />

@@ -86,11 +86,12 @@ describe("PageSidePanel", () => {
     expect(screen.queryByRole("complementary")).toBeNull();
   });
 
-  it("lists Outline, Info and History in that order", () => {
+  it("lists Outline, Info, Comments and History in that order", () => {
     renderPanel("outline");
     expect(screen.getAllByRole("tab").map((tab) => tab.textContent)).toEqual([
       "pages:panel.outline",
       "pages:panel.info",
+      "pages:panel.comments",
       "pages:panel.history",
     ]);
   });

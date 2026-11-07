@@ -56,6 +56,16 @@ describe("handlePageHint", () => {
   });
 
   it.each([
+    { type: "PAGES_UPDATED", projectId: "p1" },
+    { type: "PAGE_DELETED", projectId: "p1", pageId: "pg1" },
+  ])("refreshes the trash lists on $type", (message) => {
+    const client = new QueryClient();
+    const keys = keysInvalidated(client);
+    handlePageHint(client, message);
+    expect(keys()).toContain('["trash"]');
+  });
+
+  it.each([
     { type: "PAGE_UPDATED", projectId: "p1", pageId: "pg1" },
     { type: "PAGES_UPDATED", projectId: "p1" },
     { type: "PAGE_DELETED", projectId: "p1", pageId: "pg1" },

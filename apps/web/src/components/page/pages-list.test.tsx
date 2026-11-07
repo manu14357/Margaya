@@ -88,6 +88,7 @@ const ALL = {
   canMove: true,
   canCreateSubpage: true,
   canRestoreVersion: true,
+  canComment: true,
 };
 
 function makePage(overrides: Partial<PageSummary> = {}): PageSummary {

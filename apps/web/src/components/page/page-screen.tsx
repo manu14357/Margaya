@@ -678,5 +678,6 @@ const PLACEHOLDER_PAGE = {
     canMove: false,
     canCreateSubpage: false,
     canRestoreVersion: false,
+    canComment: false,
   },
 } as const;

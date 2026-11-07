@@ -37,5 +37,15 @@ export type DeletedPage = InferResponseType<
 /** The Pages list tabs (`?tab=`). */
 export type PageListTab = "public" | "private" | "archived";
 
+export type PageComment = InferResponseType<
+  (typeof client)["page"][":id"]["comments"]["$get"],
+  200
+>[number];
+
+export type PageSubscription = InferResponseType<
+  (typeof client)["page"][":id"]["subscription"]["$get"],
+  200
+>;
+
 /** The editor side panel tabs (`?panel=`). */
-export type PagePanel = "outline" | "info" | "history";
+export type PagePanel = "outline" | "info" | "comments" | "history";

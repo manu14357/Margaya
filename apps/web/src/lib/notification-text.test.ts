@@ -7,8 +7,10 @@ import {
   getNotificationTitle,
   getNotificationVerb,
   getPageMentionTitle,
+  getPageNotificationTarget,
   isSystemNotification,
   type NotificationTextSource,
+  pageNotificationSearch,
 } from "./notification-text";
 
 const t = (key: string, options?: Record<string, unknown>) => {
@@ -282,6 +284,43 @@ describe("inbox verbs", () => {
     expect(
       getPageMentionTitle(notification("task_mention", { pageTitle: "X" })),
     ).toBeNull();
+  });
+
+  it("words a page comment and a page change, titled or not", () => {
+    const comment = notification("page_comment", { pageTitle: "Plan" });
+    expect(getNotificationVerb(comment, t)).toBe(
+      "notifications:inbox.verbs.page_comment_titled(pageTitle=Plan)",
+    );
+    expect(getNotificationVerb(notification("page_comment", {}), t)).toBe(
+      "notifications:inbox.verbs.page_comment",
+    );
+    const change = notification("page_updated", { pageTitle: "Plan" });
+    expect(getNotificationVerb(change, t)).toBe(
+      "notifications:inbox.verbs.page_updated_titled(pageTitle=Plan)",
+    );
+    expect(getNotificationVerb(notification("page_updated", {}), t)).toBe(
+      "notifications:inbox.verbs.page_updated",
+    );
+    expect(getPageMentionTitle(change)).toBe("Plan");
+    expect(isSystemNotification(comment)).toBe(false);
+    expect(isSystemNotification(change)).toBe(false);
+  });
+
+  it("opens a page notification on the page, a comment on its panel", () => {
+    const target = {
+      ...notification("page_comment", { projectId: "p1" }),
+      resourceType: "page",
+      resourceId: "page_1",
+    };
+    expect(getPageNotificationTarget(target)).toEqual({
+      projectId: "p1",
+      pageId: "page_1",
+    });
+    expect(pageNotificationSearch(target)).toEqual({ panel: "comments" });
+    expect(
+      getPageNotificationTarget({ ...target, type: "page_updated" }),
+    ).toEqual({ projectId: "p1", pageId: "page_1" });
+    expect(pageNotificationSearch({ type: "page_updated" })).toEqual({});
   });
 });
 

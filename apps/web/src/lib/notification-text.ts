@@ -1,5 +1,6 @@
 import { formatDateMedium } from "@/lib/format";
 import { getPriorityLabel, getStatusLabel } from "@/lib/i18n/domain";
+import { stripModelTokens } from "@/lib/model-tokens";
 
 // Display text of notifications: the dropdown's title and content lines,
 // and the inbox rows' "{actor} {verb}" line. Generated notifications carry
@@ -31,9 +32,14 @@ const ACTOR_TYPES = new Set([
   "intake_declined",
   "intake_duplicate",
   "page_mention",
+  "page_comment",
+  "page_updated",
   "ai_approval_requested",
   "ai_agent_reply",
 ]);
+
+/** Notifications about a page; they open the page. */
+const PAGE_TYPES = new Set(["page_mention", "page_comment", "page_updated"]);
 
 const TITLE_KEYS: Record<string, string> = {
   task_created: "notifications:events.task_created.title",
@@ -50,6 +56,8 @@ const TITLE_KEYS: Record<string, string> = {
   intake_declined: "notifications:events.intake_declined.title",
   intake_duplicate: "notifications:events.intake_duplicate.title",
   page_mention: "notifications:events.page_mention.title",
+  page_comment: "notifications:events.page_comment.title",
+  page_updated: "notifications:events.page_updated.title",
   cycle_rollover: "notifications:events.cycle_rollover.title",
   flow_anomaly: "notifications:events.flow_anomaly.title",
   automation_notice: "notifications:events.automation_notice.title",
@@ -60,6 +68,8 @@ const TITLE_KEYS: Record<string, string> = {
 
 const CONTENT_KEYS: Record<string, string> = {
   page_mention: "notifications:events.page_mention.content",
+  page_comment: "notifications:events.page_comment.content",
+  page_updated: "notifications:events.page_updated.content",
   task_created: "notifications:events.task_created.content",
   workspace_created: "notifications:events.workspace_created.content",
   task_assignee_changed: "notifications:events.task_assignee_changed.content",
@@ -202,7 +212,8 @@ export function getNotificationContent(
   notification: NotificationTextSource,
   t: TranslateFn,
 ) {
-  const fallback = notification.content ?? "";
+  // Answers stored before the API stripped a model's control tokens.
+  const fallback = stripModelTokens(notification.content ?? "");
   const eventData = getEventDataRecord(notification.eventData);
   if (!eventData) return fallback;
 
@@ -342,14 +353,14 @@ export function getIntakeNotificationTarget(
   return projectId && itemId ? { projectId, itemId } : null;
 }
 
-/** A page mention opens the page: its project and id. */
+/** A page notification opens the page: its project and id. */
 export function getPageNotificationTarget(
   notification: NotificationTextSource & {
     resourceType?: string | null;
     resourceId?: string | null;
   },
 ): { projectId: string; pageId: string } | null {
-  if (notification.type !== "page_mention") return null;
+  if (!PAGE_TYPES.has(notification.type)) return null;
   const eventData = getEventDataRecord(notification.eventData);
   const projectId = stringField(eventData, "projectId");
   const pageId =
@@ -357,11 +368,18 @@ export function getPageNotificationTarget(
   return projectId && pageId ? { projectId, pageId } : null;
 }
 
-/** The mentioned page's title, when a page mention's payload carries one. */
+/** A comment notification opens the page's Comments panel. */
+export function pageNotificationSearch(notification: { type: string }): {
+  panel?: "comments";
+} {
+  return notification.type === "page_comment" ? { panel: "comments" } : {};
+}
+
+/** The page's title, when a page notification's payload carries one. */
 export function getPageMentionTitle(
   notification: NotificationTextSource,
 ): string | null {
-  if (notification.type !== "page_mention") return null;
+  if (!PAGE_TYPES.has(notification.type)) return null;
   const eventData = getEventDataRecord(notification.eventData);
   return stringField(eventData, "pageTitle")?.trim() || null;
 }
@@ -380,7 +398,8 @@ export function getNotificationActorName(
   return (
     stringField(eventData, "actorName") ??
     stringField(eventData, "commenterName") ??
-    stringField(eventData, "mentionerName")
+    stringField(eventData, "mentionerName") ??
+    stringField(eventData, "editorName")
   );
 }
 
@@ -443,6 +462,18 @@ export function getNotificationVerb(
         ? t("notifications:inbox.verbs.page_mention_titled", { pageTitle })
         : t("notifications:inbox.verbs.page_mention");
     }
+    case "page_comment": {
+      const pageTitle = getPageMentionTitle(notification);
+      return pageTitle
+        ? t("notifications:inbox.verbs.page_comment_titled", { pageTitle })
+        : t("notifications:inbox.verbs.page_comment");
+    }
+    case "page_updated": {
+      const pageTitle = getPageMentionTitle(notification);
+      return pageTitle
+        ? t("notifications:inbox.verbs.page_updated_titled", { pageTitle })
+        : t("notifications:inbox.verbs.page_updated");
+    }
     case "due_date_reminder":
       return t("notifications:inbox.verbs.due_date_reminder", {
         leadTime: getReminderLeadTime(eventData, t),
@@ -452,13 +483,82 @@ export function getNotificationVerb(
   }
 }
 
+/**
+ * The body as its sender wrote it (an agent's answer or question, a rule's
+ * or an integration's message), which may be Markdown. Null when the body
+ * shown is a sentence built here from translations: names inside those are
+ * plain text, never formatting.
+ */
+export function getNotificationMarkdown(
+  notification: NotificationTextSource,
+  t: TranslateFn,
+): string | null {
+  const content = getNotificationContent(notification, t);
+  const stored = notification.content
+    ? stripModelTokens(notification.content)
+    : null;
+  return content && content === stored ? content : null;
+}
+
+/** Markdown as one line of plain text: link and emphasis text, no syntax. */
+export function markdownToPlainText(markdown: string): string {
+  return markdown
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/<(https?:[^>\s]+)>/gi, "$1")
+    .replace(
+      /^[ \t]{0,3}(?:#{1,6}[ \t]+|>[ \t]?|(?:[-*+]|\d+[.)])[ \t]+)/gm,
+      "",
+    )
+    .replace(/^[ \t]{0,3}\[[ xX]\][ \t]+/gm, "")
+    .replace(/(\*\*|__|~~)(?=\S)(.+?)\1/g, "$2")
+    .replace(/(^|[^\w*])\*(?=\S)([^*\n]+?)\*(?!\w)/g, "$1$2")
+    .replace(/(^|\W)_(?=\S)([^_\n]+?)_(?!\w)/g, "$1$2")
+    .replace(/`+/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** Lowercase letters and digits only, for comparing what two lines say. */
+function wordsOf(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .trim();
+}
+
+/**
+ * The inbox row's second line when it has no task: a page notification's
+ * page, as a task row shows its task. Otherwise never the title, which only
+ * restates the first line ("{agent} answered your request" twice), but the
+ * body as one line of plain text, unless the first line already says that
+ * too; then there is none.
+ */
+export function getNotificationDetail(
+  notification: NotificationTextSource,
+  t: TranslateFn,
+  firstLine: string,
+): string | null {
+  const pageTitle = getPageMentionTitle(notification);
+  if (pageTitle) return pageTitle;
+  const markdown = getNotificationMarkdown(notification, t);
+  const body = markdown
+    ? markdownToPlainText(markdown)
+    : getNotificationContent(notification, t).trim();
+  const said = wordsOf(firstLine);
+  const detail = wordsOf(body);
+  if (!detail) return null;
+  if (said && (said.includes(detail) || detail.startsWith(said))) return null;
+  return body;
+}
+
 /** The plain-text comment preview of comment and mention rows. */
 export function getNotificationPreview(
   notification: NotificationTextSource,
 ): string | null {
   if (
     notification.type !== "task_comment" &&
-    notification.type !== "task_mention"
+    notification.type !== "task_mention" &&
+    notification.type !== "page_comment"
   ) {
     return null;
   }

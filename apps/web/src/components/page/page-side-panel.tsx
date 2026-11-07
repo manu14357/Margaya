@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Tabs, TabsList, TabsPanel, TabsTab } from "@/components/ui/tabs";
 import type { Page, PagePanel } from "@/types/page";
+import PageComments from "./page-comments";
 import PageInfo from "./page-info";
 import PageOutline from "./page-outline";
 import PageVersionList from "./page-version-list";
@@ -71,15 +72,16 @@ type PageSidePanelProps = {
   getMember: (userId: string | null | undefined) => PageMember | null;
 };
 
-export const PANELS: PagePanel[] = ["outline", "info", "history"];
+export const PANELS: PagePanel[] = ["outline", "info", "comments", "history"];
 const PANEL_KEYS: Record<PagePanel, string> = {
   outline: "pages:panel.outline",
   info: "pages:panel.info",
+  comments: "pages:panel.comments",
   history: "pages:panel.history",
 };
 
 /**
- * Outline · Info · History (§1.11, §1.12): docked beside the page from
+ * Outline · Info · Comments · History (§1.11, §1.12): docked beside the page from
  * 1024px, where it slides open and the text column re-centres; a sheet
  * below that.
  */
@@ -145,6 +147,9 @@ export default function PageSidePanel({
             editor={editor}
             getMember={getMember}
           />
+        </TabsPanel>
+        <TabsPanel value="comments">
+          <PageComments page={page} />
         </TabsPanel>
         <TabsPanel value="history">
           <PageVersionList

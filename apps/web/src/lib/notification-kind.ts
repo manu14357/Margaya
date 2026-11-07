@@ -35,6 +35,8 @@ const KINDS: Record<string, NotificationKind> = {
   task_comment: { icon: MessageSquare, color: "var(--area-pages)" },
   task_mention: { icon: AtSign, color: "var(--area-analytics)" },
   page_mention: { icon: AtSign, color: "var(--area-analytics)" },
+  page_comment: { icon: MessageSquare, color: "var(--area-pages)" },
+  page_updated: { icon: Pencil, color: "var(--area-settings)" },
   time_entry_created: { icon: Timer, color: "var(--area-home)" },
   due_date_reminder: { icon: AlarmClock, color: "var(--status-started-fg)" },
   task_overdue: { icon: CalendarX, color: "var(--destructive)" },

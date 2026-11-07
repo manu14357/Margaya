@@ -1,5 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
 import { pageQueryKeys } from "@/hooks/queries/page/page-query-keys";
+import { trashQueryKeys } from "@/hooks/queries/trash/trash-query-keys";
 import { notifyPageDeleted } from "./page-events";
 
 type PageHint = { type?: unknown; projectId?: unknown; pageId?: unknown };
@@ -48,6 +49,8 @@ export function handlePageHint(
         });
       }
       queryClient.invalidateQueries({ queryKey: pageQueryKeys.all() });
+      // A page restored from the trash or deleted permanently.
+      queryClient.invalidateQueries({ queryKey: trashQueryKeys.all() });
       invalidateEntities(queryClient);
       return true;
     case "PAGE_DELETED":
@@ -60,6 +63,7 @@ export function handlePageHint(
           queryKey: pageQueryKeys.list(projectId),
         });
       }
+      queryClient.invalidateQueries({ queryKey: trashQueryKeys.all() });
       invalidateEntities(queryClient);
       return true;
     default:

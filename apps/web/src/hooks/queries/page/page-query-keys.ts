@@ -9,6 +9,8 @@ export const pageQueryKeys = {
   version: (pageId: string, versionId: string) =>
     ["page", pageId, "versions", versionId] as const,
   backlinks: (pageId: string) => ["page", pageId, "backlinks"] as const,
+  comments: (pageId: string) => ["page", pageId, "comments"] as const,
+  subscription: (pageId: string) => ["page", pageId, "subscription"] as const,
   // Pages that link a task; any page change can add or drop one.
   taskReferences: () => ["page-task-references"] as const,
   taskReference: (taskId: string) => ["page-task-references", taskId] as const,

@@ -1,4 +1,5 @@
-import { Search, Star, X } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { Search, Star, Trash2, X } from "lucide-react";
 import { type ReactNode, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FilterBar } from "@/components/common/filter-bar";
@@ -324,6 +325,24 @@ export default function PagesList({
         className="min-h-11 py-0 md:px-3"
         trailing={
           <>
+            {tab === "archived" && (
+              <Button
+                variant="ghost"
+                size="xs"
+                className="text-muted-foreground"
+                render={
+                  <Link
+                    to="/dashboard/settings/projects/$projectId/trash"
+                    params={{ projectId }}
+                  />
+                }
+              >
+                <Trash2 className="size-3.5" />
+                <span className="max-sm:sr-only">
+                  {t("pages:list.recentlyDeleted")}
+                </span>
+              </Button>
+            )}
             {searchOpen ? (
               <div
                 className="relative max-w-[calc(100vw-9rem)] shrink-0 transition-[width] duration-200 ease-out motion-reduce:transition-none"

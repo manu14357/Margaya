@@ -4,7 +4,7 @@ import type { PagePanel } from "@/types/page";
 
 type PageSearchParams = { panel?: PagePanel; version?: string };
 
-const PANELS: readonly string[] = ["outline", "info", "history"];
+const PANELS: readonly string[] = ["outline", "info", "comments", "history"];
 
 export const Route = createFileRoute(
   "/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/pages/$pageId",
