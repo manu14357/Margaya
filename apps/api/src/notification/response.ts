@@ -11,11 +11,11 @@ export const notificationSchema = z
     }),
     type: z.string().openapi({
       description:
-        "One of: info, task_created, workspace_created, task_status_changed, task_assignee_changed, time_entry_created, due_date_reminder, task_overdue, task_mention, task_comment, task_updated, intake_accepted, intake_declined, intake_duplicate, page_mention, automation_notice (an automation rule's notify action; eventData.ruleName, eventData.message).",
+        "One of: info, task_created, workspace_created, task_status_changed, task_assignee_changed, time_entry_created, due_date_reminder, task_overdue, task_mention, task_comment, task_updated, intake_accepted, intake_declined, intake_duplicate, page_mention, page_comment, page_updated, automation_notice (an automation rule's notify action; eventData.ruleName, eventData.message).",
     }),
     eventData: z.unknown().openapi({
       description:
-        "Type-specific payload. Task notifications carry { taskTitle, taskKey, projectId, workspaceId, actorName }, plus { oldStatus, newStatus } for status changes, { commenterName, commentId, commentPreview } for comments, { mentionerName, source, commentId, commentPreview } for mentions, { field, oldValue, newValue } for task_updated (field is priority, dueDate or title), { leadTimeMinutes, dueDate, dueDay } for reminders (dueDay is the due date's day in the recipient's time zone), and { pageTitle, mentionerName, projectId, workspaceId } for page_mention (resourceType page).",
+        "Type-specific payload. Task notifications carry { taskTitle, taskKey, projectId, workspaceId, actorName }, plus { oldStatus, newStatus } for status changes, { commenterName, commentId, commentPreview } for comments, { mentionerName, source, commentId, commentPreview } for mentions, { field, oldValue, newValue } for task_updated (field is priority, dueDate or title), { leadTimeMinutes, dueDate, dueDay } for reminders (dueDay is the due date's day in the recipient's time zone), { pageTitle, mentionerName, projectId, workspaceId } for page_mention, { pageTitle, commenterName, commentId, commentPreview, projectId, workspaceId } for page_comment, and { pageTitle, editorName, projectId, workspaceId } for page_updated (all resourceType page).",
     }),
     isRead: z.boolean().nullable(),
     resourceId: z.string().nullable().openapi({

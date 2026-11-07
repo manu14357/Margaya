@@ -92,6 +92,7 @@ describe("page capabilities", () => {
       canMove: true,
       canCreateSubpage: true,
       canRestoreVersion: true,
+      canComment: true,
     });
   });
 
@@ -106,6 +107,7 @@ describe("page capabilities", () => {
       canMove: false,
       canCreateSubpage: true,
       canRestoreVersion: true,
+      canComment: true,
     });
   });
 
@@ -142,6 +144,7 @@ describe("page capabilities", () => {
         canArchive: true,
         canDuplicate: true,
         canCreateSubpage: true,
+        canComment: true,
       });
     }
     expect(pageCapabilities(page(LOCKED), callers.owner).canChangeAccess).toBe(
@@ -161,6 +164,7 @@ describe("page capabilities", () => {
       canMove: false,
       canCreateSubpage: false,
       canRestoreVersion: false,
+      canComment: false,
     });
     expect(pageCapabilities(page(ARCHIVED), callers.member).canDelete).toBe(
       false,

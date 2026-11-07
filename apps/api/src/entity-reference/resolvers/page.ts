@@ -19,6 +19,7 @@ export const resolvePages: EntityResolver = async (
       access: pageTable.access,
       ownerId: pageTable.ownerId,
       archivedAt: pageTable.archivedAt,
+      deletedAt: pageTable.deletedAt,
       projectId: pageTable.projectId,
       projectName: projectTable.name,
       projectArchivedAt: projectTable.archivedAt,
@@ -52,7 +53,7 @@ export const resolvePages: EntityResolver = async (
         projectId: page.projectId,
         projectName: page.projectName,
         isArchived: page.archivedAt !== null || page.projectArchivedAt !== null,
-        ...trashedFlag(page.projectDeletedAt),
+        ...trashedFlag(page.deletedAt, page.projectDeletedAt),
         feature: page.projectId ? "pages" : null,
         details: {
           logoKind: page.logoKind,

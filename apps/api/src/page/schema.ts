@@ -11,6 +11,18 @@ export const pageVersionParam = z.object({
   versionId: z.string(),
 });
 
+export const pageCommentParam = z.object({
+  id: z.string(),
+  commentId: z.string(),
+});
+
+export const pageCommentBody = z.object({
+  content: z.string().trim().min(1).max(PAGE_LIMITS.commentLength).openapi({
+    description:
+      "Markdown, at most 20,000 characters. Mentioned workspace members are notified and start watching the page.",
+  }),
+});
+
 export const projectPagesParam = z.object({ projectId: z.string() });
 
 export const taskPageReferencesParam = z.object({ taskId: z.string() });

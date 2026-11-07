@@ -199,6 +199,14 @@ function bodyText(
     case "task_overdue":
     case "page_mention":
       return fillAll(events[type].content, values);
+    case "page_comment":
+    case "page_updated":
+      // Read loosely so a missing translation falls back to the English text.
+      return fillAll(
+        (events as unknown as Record<string, Strings | undefined>)[type]
+          ?.content,
+        values,
+      );
     case "task_comment":
       if (typeof data.parentCommentId === "string" && values.commentPreview) {
         return fillAll(events.task_comment.contentReply, values);
@@ -298,8 +306,16 @@ export function localizeNotificationText(
   locale: string | null | undefined,
 ): LocalizedNotificationText | null {
   const lang = resolveEmailLocale(locale);
+  return lang === "en" ? null : renderNotificationText(notification, lang);
+}
+
+/** The app's own wording of a notification, null without event data. */
+export function renderNotificationText(
+  notification: NotificationTextSource,
+  lang: EmailLocale,
+): LocalizedNotificationText | null {
   const data = notification.eventData;
-  if (lang === "en" || !data) return null;
+  if (!data) return null;
   const texts = notificationCopy(lang);
   const values = templateValues(data);
   return {

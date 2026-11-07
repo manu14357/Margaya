@@ -6,7 +6,7 @@ import { projectVisibleSql } from "../project/visibility";
 // Membership, rather than public visibility or global admin privileges, defines
 // who may be subscribed to private task activity. Use the same predicate when
 // creating, reading and delivering notifications, including historical rows.
-// Rows of a trashed task, or of a task or page in a trashed project, are
+// Rows of a trashed task or page, or of a task or page in a trashed project, are
 // hidden while it is in the trash (C7) and come back with a restore. Rows of a
 // restricted project are hidden from people who may no longer see it.
 export function notificationResourceAccess(
@@ -34,6 +34,7 @@ export function notificationResourceAccess(
       JOIN workspace_member AS notification_member ON notification_member.workspace_id = notification_page.workspace_id
       WHERE notification_page.id = ${resourceId} AND notification_member.user_id = ${userId}
         AND (notification_page.access = 'public' OR notification_page.owner_id = ${userId})
+        AND notification_page.deleted_at IS NULL
         AND NOT EXISTS (
           SELECT 1 FROM project AS notification_page_project
           WHERE notification_page_project.id = notification_page.project_id

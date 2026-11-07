@@ -178,7 +178,7 @@ async function pageEvent(
   projectId: string | null,
 ): Promise<Built | null> {
   const changes = source.changes(payload);
-  if (source.internal === "page.deleted") {
+  if (source.internal === "page.deleted" || source.internal === "page.purged") {
     if (payload.access !== "public") return null;
     return { data: source.payloadData?.(payload) ?? {}, changes };
   }

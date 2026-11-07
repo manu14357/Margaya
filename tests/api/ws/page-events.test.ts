@@ -62,6 +62,9 @@ describe("page events on the project socket", () => {
     "page.locked",
     "page.unlocked",
     "page.version_restored",
+    "page.comment_created",
+    "page.comment_updated",
+    "page.comment_deleted",
   ])(
     "%s reaches other windows as PAGE_UPDATED with ids only",
     async (eventName) => {
@@ -88,6 +91,8 @@ describe("page events on the project socket", () => {
     "page.archived",
     "page.unarchived",
     "page.access_changed",
+    "page.restored",
+    "page.purged",
   ])("%s sends PAGES_UPDATED", async (eventName) => {
     const other = watch("proj-p", "window-2");
     await publishEvent(eventName, { ...payload, affectedPageIds: ["page-1"] });

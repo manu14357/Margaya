@@ -4,8 +4,8 @@ import { pageTable, userTable } from "../database/schema";
 import { subscribeToEvent } from "../events";
 import createNotification from "./controllers/create-notification";
 
-// Page mention notifications (B5): every page content write and every create names
-// the members mentioned now but not before (without the actor). Each one who
+// Page mention notifications (B5): every page content write, create and comment
+// names the members mentioned now but not before (without the actor). Each one who
 // is a workspace member and can see the page (public, or their own) gets a
 // page_mention notification; createNotification enforces that through the
 // page branch of the notification resource access rule.
@@ -64,6 +64,11 @@ async function notifyMentions({
   }
 }
 
-for (const eventName of ["page.created", "page.content_updated"]) {
+for (const eventName of [
+  "page.created",
+  "page.content_updated",
+  "page.comment_created",
+  "page.comment_updated",
+]) {
   subscribeToEvent<MentionEvent>(eventName, notifyMentions);
 }

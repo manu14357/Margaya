@@ -59,6 +59,7 @@ export function preferenceKeyForType(
     case "task_comment":
     case "task_mention":
     case "page_mention":
+    case "page_comment":
       return "taskCommentEnabled";
     case "task_status_changed":
     // A requester's intake outcomes are status changes of their request.
@@ -67,6 +68,7 @@ export function preferenceKeyForType(
     case "intake_duplicate":
       return "taskStatusChangeEnabled";
     case "task_updated":
+    case "page_updated":
       return "taskUpdateEnabled";
     case "due_date_reminder":
     case "task_overdue":

@@ -84,6 +84,7 @@ export async function readPageMeta(pageId: string): Promise<MetaResult> {
       isLocked: pageTable.isLocked,
       archivedAt: pageTable.archivedAt,
       contentVersion: pageTable.contentVersion,
+      deletedAt: pageTable.deletedAt,
       pagesEnabled: projectTable.pagesEnabled,
       projectDeletedAt: projectTable.deletedAt,
     })
@@ -91,8 +92,8 @@ export async function readPageMeta(pageId: string): Promise<MetaResult> {
     .leftJoin(projectTable, eq(projectTable.id, pageTable.projectId))
     .where(eq(pageTable.id, pageId))
     .limit(1);
-  // A page of a trashed project reads as gone (C7).
-  if (!row || row.projectDeletedAt) return { status: "gone" };
+  // A trashed page, or a page of a trashed project, reads as gone (C7).
+  if (!row || row.deletedAt || row.projectDeletedAt) return { status: "gone" };
   const meta = metaOf(row);
   const pagesEnabled = row.projectId ? Boolean(row.pagesEnabled) : true;
   return pagesEnabled
@@ -123,7 +124,9 @@ export async function loadPageState(pageId: string): Promise<LoadResult> {
       .leftJoin(projectTable, eq(projectTable.id, pageTable.projectId))
       .where(eq(pageTable.id, pageId))
       .limit(1);
-    if (!row || row.projectDeletedAt) return { status: "gone" };
+    if (!row || row.page.deletedAt || row.projectDeletedAt) {
+      return { status: "gone" };
+    }
     const { page } = row;
     if (page.projectId && !row.pagesEnabled) return { status: "feature-off" };
     if (page.contentYjs) {

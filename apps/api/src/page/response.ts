@@ -33,6 +33,9 @@ export const pageCapabilitiesSchema = z
         "page:create, not archived, public or the caller's own, and less than 5 levels deep.",
     }),
     canRestoreVersion: z.boolean().openapi({ description: "Same as canEdit." }),
+    canComment: z.boolean().openapi({
+      description: "Add comments: page:update, not archived.",
+    }),
   })
   .openapi("PageCapabilities");
 
@@ -104,6 +107,50 @@ export const pageSchema = z
 export const deletedPageSchema = z
   .object({ id: z.string(), projectId: z.string().nullable() })
   .openapi("DeletedPage");
+
+export const pageCommentSchema = z
+  .object({
+    id: z.string(),
+    pageId: z.string(),
+    userId: z.string().nullable().openapi({
+      description: "The author, or null when their account was deleted.",
+    }),
+    content: z.string(),
+    createdAt: responseTimestamp,
+    updatedAt: responseTimestamp,
+    user: z
+      .object({ name: z.string(), image: z.string().nullable() })
+      .nullable()
+      .openapi({
+        description: "The author, or null when their account was deleted.",
+      }),
+    canEdit: z.boolean().openapi({
+      description: "The caller wrote it and may still change the page.",
+    }),
+    canDelete: z.boolean().openapi({
+      description:
+        "The caller wrote it and has page:update, or has page:delete.",
+    }),
+  })
+  .openapi("PageComment");
+
+export const pageCommentListSchema = z
+  .array(pageCommentSchema)
+  .openapi("PageCommentList");
+
+export const deletedPageCommentSchema = z
+  .object({ id: z.string(), pageId: z.string() })
+  .openapi("DeletedPageComment");
+
+export const pageSubscriptionSchema = z
+  .object({
+    pageId: z.string(),
+    subscribed: z.boolean().openapi({
+      description:
+        "The caller watches the page: they asked to, commented, were mentioned, or own it, and did not unwatch it since.",
+    }),
+  })
+  .openapi("PageSubscription");
 
 const pageVersionShape = {
   id: z.string(),

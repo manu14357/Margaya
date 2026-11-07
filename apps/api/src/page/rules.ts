@@ -30,6 +30,12 @@ export const PAGE_MESSAGES = {
   sameProject: "The page is already in that project",
   projectNotFound: "Project not found",
   versionNotFound: "Version not found",
+  notInTrash: "Page not found in the trash",
+  commentNotFound: "Comment not found",
+  commentForbidden: "You can't comment on this page",
+  commentArchived: "This page is archived. Restore it to comment.",
+  commentEditForbidden: "Only the comment's author can edit it",
+  commentDeleteForbidden: "Only the comment's author or an admin can delete it",
 } as const;
 
 /** The caller, with their page permissions (read once per request). */
@@ -62,6 +68,7 @@ export type PageCapabilities = {
   canMove: boolean;
   canCreateSubpage: boolean;
   canRestoreVersion: boolean;
+  canComment: boolean;
 };
 
 export function isPageOwner(
@@ -114,6 +121,30 @@ export function canManagePage(
 }
 
 /**
+ * Delete, restore from the trash and delete permanently: the owner with
+ * page:update, or a page manager, of a page the caller can see.
+ */
+export function canTrashPage(
+  page: Pick<PageState, "access" | "ownerId">,
+  caller: PageCaller,
+): boolean {
+  return (
+    canSeePage(page, caller) &&
+    ((isPageOwner(page, caller) && caller.canUpdate) || caller.isManager)
+  );
+}
+
+/** page:update on a visible page that isn't archived; a lock doesn't matter. */
+export function canCommentOnPage(
+  page: Pick<PageState, "access" | "ownerId" | "archivedAt">,
+  caller: PageCaller,
+): boolean {
+  return (
+    canSeePage(page, caller) && caller.canUpdate && page.archivedAt === null
+  );
+}
+
+/**
  * What the caller may do to a page (§2.5). `depth` is the page's own depth
  * (a root page is 1).
  */
@@ -135,8 +166,7 @@ export function pageCapabilities(
     canLock: canManage,
     canChangeAccess: owner && caller.canUpdate && !archived,
     canArchive: canManage,
-    canDelete:
-      visible && archived && ((owner && caller.canUpdate) || caller.isManager),
+    canDelete: archived && canTrashPage(page, caller),
     canDuplicate: visible && caller.canCreate,
     canMove: canManage && editableState,
     canCreateSubpage:
@@ -146,6 +176,7 @@ export function pageCapabilities(
       publicOrOwner &&
       page.depth < PAGE_LIMITS.depth,
     canRestoreVersion: canEdit,
+    canComment: canCommentOnPage(page, caller),
   };
 }
 

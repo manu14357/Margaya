@@ -53,8 +53,24 @@ import {
   updatePageRoute,
 } from "./routes";
 import "../notification/page-mentions";
+import "../notification/page-watchers";
 import db from "../database";
 import { hasWorkspacePermission } from "../utils/require-workspace-permission";
+import {
+  createPageCommentRoute,
+  deletePageCommentRoute,
+  getPageSubscriptionRoute,
+  listPageCommentsRoute,
+  subscribeToPageRoute,
+  unsubscribeFromPageRoute,
+  updatePageCommentRoute,
+} from "./comment-routes";
+import {
+  createPageComment,
+  deletePageComment,
+  listPageComments,
+  updatePageComment,
+} from "./comments";
 import { getPagePublication, publishPage, unpublishPage } from "./publication";
 import {
   deletePageTemplateRoute,
@@ -69,6 +85,7 @@ import {
   listPageTemplates,
   savePageAsTemplate,
 } from "./templates";
+import { muteForPage, pageSubscriptionOf, subscribeToPage } from "./watching";
 
 type PageVariables = BaseVariables & {
   workspaceId: string;
@@ -298,6 +315,58 @@ const page = apiRouter<PageVariables>()
       200,
     ),
   )
+  .openapi(listPageCommentsRoute, async (c) =>
+    c.json(
+      await listPageComments(c.req.valid("param").id, await pageCallerOf(c)),
+      200,
+    ),
+  )
+  .openapi(createPageCommentRoute, async (c) =>
+    c.json(
+      await createPageComment(
+        c.req.valid("param").id,
+        c.req.valid("json").content,
+        await pageCallerOf(c),
+      ),
+      200,
+    ),
+  )
+  .openapi(updatePageCommentRoute, async (c) => {
+    const { id, commentId } = c.req.valid("param");
+    return c.json(
+      await updatePageComment(
+        id,
+        commentId,
+        c.req.valid("json").content,
+        await pageCallerOf(c),
+      ),
+      200,
+    );
+  })
+  .openapi(deletePageCommentRoute, async (c) => {
+    const { id, commentId } = c.req.valid("param");
+    return c.json(
+      await deletePageComment(id, commentId, await pageCallerOf(c)),
+      200,
+    );
+  })
+  .openapi(getPageSubscriptionRoute, async (c) => {
+    const caller = await pageCallerOf(c);
+    const target = await loadVisiblePage(db, c.req.valid("param").id, caller);
+    return c.json(await pageSubscriptionOf(target, caller.userId), 200);
+  })
+  .openapi(subscribeToPageRoute, async (c) => {
+    const caller = await pageCallerOf(c);
+    const target = await loadVisiblePage(db, c.req.valid("param").id, caller);
+    await subscribeToPage(target.id, [caller.userId]);
+    return c.json(await pageSubscriptionOf(target, caller.userId), 200);
+  })
+  .openapi(unsubscribeFromPageRoute, async (c) => {
+    const caller = await pageCallerOf(c);
+    const target = await loadVisiblePage(db, c.req.valid("param").id, caller);
+    await muteForPage(target.id, caller.userId);
+    return c.json(await pageSubscriptionOf(target, caller.userId), 200);
+  })
   .openapi(createPageAssetUploadRoute, async (c) => {
     const caller = await pageCallerOf(c);
     const target = await loadVisiblePage(db, c.req.valid("param").id, caller);

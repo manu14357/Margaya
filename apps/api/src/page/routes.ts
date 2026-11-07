@@ -1,10 +1,20 @@
 import { requireEntitlement } from "../billing/require-entitlement-middleware";
-import { createRoute, errorResponse, jsonResponse } from "../openapi";
+import {
+  createRoute,
+  errorResponse,
+  jsonResponse,
+  lookupNotFound,
+} from "../openapi";
 import { requireProjectFeature } from "../project/features";
 import { boundedRequestBody } from "../utils/bounded-request-body";
+import { includeBodyDestination } from "../utils/destination-project";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
-import { pageRoute } from "./middleware";
+import {
+  pageAccess,
+  pageRoute,
+  requirePagesFeatureForPage,
+} from "./middleware";
 import {
   deletedPageSchema,
   finalizedAssetSchema,
@@ -65,10 +75,10 @@ export const listPagesRoute = createRoute({
   request: { params: projectPagesParam },
   responses: {
     200: jsonResponse("The pages", pageSummaryListSchema),
-    400: errorResponse("The project could not be found"),
     403: errorResponse(
       "No workspace access, missing page:read, or the project's Pages feature is off",
     ),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -260,7 +270,7 @@ export const deletePageRoute = createRoute({
   tags: TAGS,
   summary: "Delete page",
   description:
-    "Permanently delete an archived page with its version history: its owner with page:update, or page:delete. Its sub-pages move to the top level (still archived). Links to it, favorites and recent visits are removed; its files are deleted unless another page still links them.",
+    "Move an archived page to the trash: its owner with page:update, or page:delete. Its sub-pages move to the top level (still archived). It can be restored or deleted permanently through the Trash routes until TRASH_RETENTION_DAYS have passed.",
   middleware: [...pageRoute("read")] as const,
   request: { params: pageParam },
   responses: {
@@ -296,14 +306,20 @@ export const movePageToProjectRoute = createRoute({
   tags: TAGS,
   summary: "Move page to project",
   description:
-    "Move a page and all its sub-pages to another project of the workspace with Pages on, as its last top-level page. Owner or page:delete; not while locked or archived.",
-  middleware: [...pageRoute("update"), requireEntitlement] as const,
+    "Move a page and all its sub-pages to another project of the workspace with Pages on, as its last top-level page. Owner or page:delete, with page:update in both projects; not while locked or archived. A destination the caller or a project-limited API key can't reach answers 404.",
+  middleware: [
+    pageAccess(),
+    includeBodyDestination("projectId"),
+    requireWorkspacePermission({ page: ["update"] }),
+    requirePagesFeatureForPage,
+    requireEntitlement,
+  ] as const,
   request: { params: pageParam, body: jsonBody(movePageToProjectBody) },
   responses: {
     200: jsonResponse("The moved page", pageSchema),
     400: errorResponse("The page is already in that project"),
     403: errorResponse(
-      "Not the owner or an admin, or Pages is off in either project",
+      "Not the owner or an admin, missing page:update in either project, or Pages is off in either project",
     ),
     404: errorResponse(
       "Unknown page, or the project is not an active project of the workspace",
@@ -398,8 +414,8 @@ export const listTaskPageReferencesRoute = createRoute({
   request: { params: taskPageReferencesParam },
   responses: {
     200: jsonResponse("The linking pages", pageSummaryListSchema),
-    400: errorResponse("Unknown task"),
     403: errorResponse("No workspace access, or missing page:read"),
+    404: lookupNotFound("task"),
   },
 });
 

@@ -159,6 +159,8 @@ describe("recipient policy", () => {
     );
     expect(preferenceKeyForType("task_comment")).toBe("taskCommentEnabled");
     expect(preferenceKeyForType("task_mention")).toBe("taskCommentEnabled");
+    expect(preferenceKeyForType("page_comment")).toBe("taskCommentEnabled");
+    expect(preferenceKeyForType("page_updated")).toBe("taskUpdateEnabled");
     expect(preferenceKeyForType("task_status_changed")).toBe(
       "taskStatusChangeEnabled",
     );

@@ -354,6 +354,8 @@ async function scene() {
     },
     "page.version_restored": { ...onPage, versionId: "v1" },
     "page.deleted": { ...onPage, access: "public", title: "Doc" },
+    "page.restored": { ...onPage, access: "public", title: "Doc" },
+    "page.purged": { ...onPage, access: "public", title: "Doc" },
     "view.created": onView,
     "view.updated": { ...onView, changes: ["name"] },
     "view.deleted": onView,

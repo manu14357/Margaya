@@ -874,6 +874,22 @@ const ENTRIES: Record<string, EntryInput> = {
       }),
     },
   },
+  "page.restored": {
+    entity: "page",
+    sources: { "page.restored": pageSource() },
+  },
+  "page.purged": {
+    entity: "page",
+    sources: {
+      "page.purged": pageSource({
+        payloadData: (p) => ({
+          id: value(p, "pageId"),
+          projectId: value(p, "projectId"),
+          title: value(p, "title"),
+        }),
+      }),
+    },
+  },
 
   // Views (shared views only)
   "view.created": {
@@ -986,6 +1002,14 @@ export const WEBHOOK_EXCLUDED_EVENTS: Readonly<Record<string, string>> = {
   "column.reordered": "ordering only",
   "module.reordered": "ordering only",
   "page.reordered": "ordering only",
+  "page.comment_created": "page comments stay inside the workspace",
+  "page.comment_updated": "page comments stay inside the workspace",
+  "page.comment_deleted": "page comments stay inside the workspace",
+  "custom_field.created": "custom fields stay inside the workspace",
+  "custom_field.updated": "custom fields stay inside the workspace",
+  "custom_field.deleted": "custom fields stay inside the workspace",
+  "custom_field.values_changed": "custom fields stay inside the workspace",
+  "task.custom_field_changed": "custom fields stay inside the workspace",
   "favorite.changed": "personal data",
   "sticky.changed": "personal data",
   "quick_link.changed": "personal data",
