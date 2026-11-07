@@ -2,15 +2,52 @@ import { addDays, differenceInCalendarDays, parseISO } from "date-fns";
 import { describe, expect, it } from "vitest";
 import {
   buildGanttTimeline,
+  centredDayScrollLeft,
   GANTT_WINDOW_DAYS,
   ganttZoomScale,
   parseTaskDate,
   showsDayNumber,
+  taskScheduleSpan,
 } from "./timeline";
 
 const span = (start: string, end = start) => ({
   scheduleStart: parseISO(start),
   scheduleEnd: parseISO(end),
+});
+
+describe("taskScheduleSpan", () => {
+  const dates = (startDate: string | null, dueDate: string | null) => ({
+    startDate,
+    dueDate,
+  });
+
+  it("spans a task's dates, in order, from whichever are set", () => {
+    expect(taskScheduleSpan(dates("2026-10-01", "2026-10-05"))).toEqual(
+      span("2026-10-01", "2026-10-05"),
+    );
+    expect(taskScheduleSpan(dates("2026-10-05", "2026-10-01"))).toEqual(
+      span("2026-10-01", "2026-10-05"),
+    );
+    expect(taskScheduleSpan(dates(null, "2026-10-05"))).toEqual(
+      span("2026-10-05"),
+    );
+    expect(taskScheduleSpan(dates("2026-10-05", null))).toEqual(
+      span("2026-10-05"),
+    );
+    expect(taskScheduleSpan(dates(null, null))).toBeNull();
+  });
+
+  it("puts a milestone on one day: its due date, else its start date", () => {
+    expect(
+      taskScheduleSpan({
+        ...dates("2026-10-01", "2026-10-05"),
+        isMilestone: true,
+      }),
+    ).toEqual(span("2026-10-05"));
+    expect(
+      taskScheduleSpan({ ...dates("2026-10-01", null), isMilestone: true }),
+    ).toEqual(span("2026-10-01"));
+  });
 });
 
 describe("bounded Gantt timeline", () => {
@@ -133,5 +170,44 @@ describe("Gantt zoom scale", () => {
     expect(showsDayNumber(monday, 1, false, 1)).toBe(true);
     expect(showsDayNumber(monday, 1, false, 0)).toBe(false);
     expect(showsDayNumber(wednesday, 0, false, 1)).toBe(true);
+  });
+});
+
+describe("centredDayScrollLeft", () => {
+  // A 1000px chart beside a 320px task list, with 44px day columns: 15 whole
+  // columns fit.
+  const view = { columnPx: 44, viewportPx: 1000, railPx: 320, dayCount: 91 };
+
+  it("centres the day and starts on a whole column", () => {
+    const left = centredDayScrollLeft({ ...view, dayIndex: 16 });
+    expect(left).toBe(9 * 44);
+    expect(left % 44).toBe(0);
+  });
+
+  it("never scrolls before the first day", () => {
+    expect(centredDayScrollLeft({ ...view, dayIndex: 3 })).toBe(0);
+  });
+
+  it("stops at the last whole column the chart can scroll to", () => {
+    // 320 + 91 * 44 - 1000 = 3324px of scroll; 75 whole columns of it.
+    expect(centredDayScrollLeft({ ...view, dayIndex: 90 })).toBe(75 * 44);
+  });
+
+  it("works without the task list and on narrow columns", () => {
+    expect(
+      centredDayScrollLeft({
+        columnPx: 16,
+        viewportPx: 360,
+        railPx: 0,
+        dayCount: 182,
+        dayIndex: 100,
+      }),
+    ).toBe(89 * 16);
+  });
+
+  it("does not scroll before the columns are measured", () => {
+    expect(centredDayScrollLeft({ ...view, columnPx: 0, dayIndex: 16 })).toBe(
+      0,
+    );
   });
 });

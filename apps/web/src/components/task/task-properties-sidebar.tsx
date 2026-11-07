@@ -55,6 +55,7 @@ import AssigneeProfileHoverCard from "./assignee-profile-hover-card";
 import TaskAssigneePopover from "./task-assignee-popover";
 import TaskDueDatePopover from "./task-due-date-popover";
 import TaskLabelsPopover from "./task-labels-popover";
+import TaskMilestoneProperty from "./task-milestone-property";
 import TaskMovePopover from "./task-move-popover";
 import TaskPriorityPopover from "./task-priority-popover";
 import TaskRecurrencePopover from "./task-recurrence-popover";
@@ -359,6 +360,10 @@ export default function TaskPropertiesSidebar({
                 </span>
               </Button>
             </TaskDueDatePopover>
+          </PropertyRow>
+
+          <PropertyRow property="milestone" label={t("tasks:milestone.label")}>
+            <TaskMilestoneProperty task={task} />
           </PropertyRow>
 
           <PropertyRow property="repeat" label={t("tasks:recurrence.label")}>

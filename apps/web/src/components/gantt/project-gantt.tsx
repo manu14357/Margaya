@@ -15,6 +15,7 @@ import {
   Calendar,
   ChevronLeft,
   ChevronRight,
+  OctagonAlert,
   Search,
   TriangleAlert,
 } from "lucide-react";
@@ -29,6 +30,11 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import {
+  ScheduleFieldPicker,
+  useScheduleField,
+} from "@/components/calendar/schedule-field";
+import { scheduleFieldText } from "@/components/calendar/schedule-field-display";
+import {
   buildStatusTones,
   PriorityGlyph,
   toneOf,
@@ -38,33 +44,51 @@ import ViewChoice from "@/components/calendar/view-choice";
 import {
   barHorizontalBox,
   buildDependencyLines,
+  type DependencyLine,
   type DependencyRelation,
+  milestoneHorizontalBox,
 } from "@/components/gantt/dependency-lines";
+import GanttAddMilestone from "@/components/gantt/gantt-add-milestone";
+import GanttCascadeDialog from "@/components/gantt/gantt-cascade-dialog";
 import GanttDependencyLayer from "@/components/gantt/gantt-dependency-layer";
+import GanttLinkPicker from "@/components/gantt/gantt-link-picker";
+import GanttLinkPopover, {
+  type SelectedLink,
+} from "@/components/gantt/gantt-link-popover";
+import GanttPeriodPicker from "@/components/gantt/gantt-period-picker";
 import { GanttTaskBar } from "@/components/gantt/gantt-task-bar";
 import GanttUndatedSection, {
   type UndatedDragData,
 } from "@/components/gantt/gantt-undated-section";
 import {
   buildGanttTimeline,
+  centredDayScrollLeft,
   ganttZoomScale,
-  parseTaskDate,
+  remToPx,
   showsDayNumber,
+  taskScheduleSpan,
 } from "@/components/gantt/timeline";
 import {
   matchesGanttSearch,
   selectUndatedTasks,
 } from "@/components/gantt/undated-tasks";
+import { useGanttDateCascade } from "@/components/gantt/use-gantt-date-cascade";
+import { useGanttLinkDrag } from "@/components/gantt/use-gantt-link-drag";
 import { useGanttRowCenters } from "@/components/gantt/use-gantt-row-centers";
+import { useHideClippedMonthLabels } from "@/components/gantt/use-hide-clipped-month-labels";
 import QuickAdd from "@/components/task-draft/quick-add";
 import { Button } from "@/components/ui/button";
+import { ErrorDisplay } from "@/components/ui/error-display";
 import { Input } from "@/components/ui/input";
 import { useUpdateTaskDates } from "@/hooks/mutations/task/use-update-task-dates";
+import useCreateTaskRelation from "@/hooks/mutations/task-relation/use-create-task-relation";
 import { useGetProjectDependencies } from "@/hooks/queries/task-relation/use-get-project-dependencies";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { cn } from "@/lib/cn";
 import { getEntryColumn, withoutTriage } from "@/lib/column-groups";
+import { formatDate, formatDateMedium, formatDateShort } from "@/lib/format";
+import { HttpError } from "@/lib/http-error";
 import { getPriorityLabel, getStatusLabel } from "@/lib/i18n/domain";
 import { dayIndexAtPointer, scheduleFromDay } from "@/lib/schedule-dates";
 import {
@@ -77,16 +101,6 @@ import { useScheduleViewPreferences } from "@/store/schedule-view-preferences";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 import type { ProjectWithTasks } from "@/types/project";
 import type Task from "@/types/task";
-
-/** The task list's width in pixels, from its rem value. */
-function railWidthPx(width: string): number | null {
-  const rem = Number.parseFloat(width);
-  if (!Number.isFinite(rem)) return null;
-  const rootSize = Number.parseFloat(
-    getComputedStyle(document.documentElement).fontSize,
-  );
-  return rem * (Number.isFinite(rootSize) ? rootSize : 16);
-}
 
 /** The timeline track, which accepts undated tasks dropped onto it. */
 function TimelineDropTrack({
@@ -123,6 +137,8 @@ type ProjectGanttProps = {
   /** The project narrowed by the page's filters. */
   project: ProjectWithTasks | null;
   isLoading: boolean;
+  /** The tasks could not be loaded (see useLoadFailure). */
+  loadFailure: { error: unknown; retry: () => void } | null;
   /** The page's filter bar, drawn above the Gantt's own toolbar. */
   filterBar?: ReactNode;
   onOpenTask: (taskId: string) => void;
@@ -139,6 +155,7 @@ export default function ProjectGantt({
   loadedProject,
   project,
   isLoading,
+  loadFailure,
   filterBar,
   onOpenTask,
 }: ProjectGanttProps) {
@@ -159,6 +176,7 @@ export default function ProjectGantt({
 
   const zoom = useScheduleViewPreferences((state) => state.ganttZoom);
   const setZoom = useScheduleViewPreferences((state) => state.setGanttZoom);
+  const scheduleField = useScheduleField(projectId);
   // Wider day columns on small screens so dragging and reading dates is easier.
   const { dayColumnWidthRem, windowDays, labelEveryDay } = ganttZoomScale(
     zoom,
@@ -226,21 +244,8 @@ export default function ProjectGantt({
   const parsedTasks = useMemo(() => {
     return allTasks
       .map((task) => {
-        const parsedStart =
-          parseTaskDate(task.startDate) ?? parseTaskDate(task.dueDate);
-        const parsedEnd =
-          parseTaskDate(task.dueDate) ?? parseTaskDate(task.startDate);
-
-        if (!parsedStart || !parsedEnd) return null;
-
-        const start = parsedStart <= parsedEnd ? parsedStart : parsedEnd;
-        const end = parsedEnd >= parsedStart ? parsedEnd : parsedStart;
-
-        return {
-          ...task,
-          scheduleStart: start,
-          scheduleEnd: end,
-        };
+        const span = taskScheduleSpan(task);
+        return span ? { ...task, ...span } : null;
       })
       .filter((task): task is NonNullable<typeof task> => task !== null)
       .sort(
@@ -329,13 +334,26 @@ export default function ProjectGantt({
       : 20
     : 0;
 
-  const scrollToToday = useCallback((behavior: ScrollBehavior = "smooth") => {
-    todayCellRef.current?.scrollIntoView({
-      behavior,
-      inline: "center",
-      block: "nearest",
-    });
-  }, []);
+  // Centred by hand rather than with scrollIntoView, which lands anywhere in
+  // a column and leaves a sliver of the day before it at the list's edge.
+  const scrollToToday = useCallback(
+    (behavior: ScrollBehavior = "smooth") => {
+      const scroller = scrollContainerRef.current;
+      const todayCell = todayCellRef.current;
+      if (!scroller || !todayCell || !timeline) return;
+      scroller.scrollTo({
+        left: centredDayScrollLeft({
+          dayIndex: todayIndex,
+          dayCount: timeline.days.length,
+          columnPx: todayCell.getBoundingClientRect().width,
+          viewportPx: scroller.clientWidth,
+          railPx: showTaskRail ? (remToPx(railWidth) ?? 0) : 0,
+        }),
+        behavior,
+      });
+    },
+    [timeline, todayIndex, showTaskRail, railWidth],
+  );
 
   useLayoutEffect(() => {
     const element = timelineTrackRef.current;
@@ -376,6 +394,24 @@ export default function ProjectGantt({
     scrollToToday("auto");
   }, [todayInRange, scrollToToday, projectId, scheduledTasks.length]);
 
+  // A new zoom changes the column width under the same scroll offset; keep
+  // the first visible day whole.
+  useLayoutEffect(() => {
+    const scroller = scrollContainerRef.current;
+    const columnPx = remToPx(`${dayColumnWidthRem}rem`);
+    if (!scroller || !columnPx) return;
+    scroller.scrollLeft = Math.round(scroller.scrollLeft / columnPx) * columnPx;
+  }, [dayColumnWidthRem]);
+
+  useHideClippedMonthLabels(scrollContainerRef, {
+    timeline,
+    rail: showTaskRail ? railWidth : "0rem",
+    active:
+      !loadFailure &&
+      !isLoading &&
+      (scheduledTasks.length > 0 || undatedTasks.length > 0),
+  });
+
   const relations = (dependencyData?.relations ?? []) as DependencyRelation[];
   const rowCenters = useGanttRowCenters(
     rowsRef,
@@ -396,12 +432,19 @@ export default function ProjectGantt({
     for (const task of scheduledTasks) {
       const centerY = rowCenters.get(task.id);
       if (centerY === undefined) continue;
-      const box = barHorizontalBox(
-        task,
-        timeline.rangeStart,
-        timeline.days.length,
-        pixelsPerDay,
-      );
+      const box = task.isMilestone
+        ? milestoneHorizontalBox(
+            task.scheduleEnd,
+            timeline.rangeStart,
+            timeline.days.length,
+            pixelsPerDay,
+          )
+        : barHorizontalBox(
+            task,
+            timeline.rangeStart,
+            timeline.days.length,
+            pixelsPerDay,
+          );
       if (box) bars.set(task.id, { span: task, box: { ...box, centerY } });
     }
     return buildDependencyLines(relations, bars);
@@ -415,11 +458,33 @@ export default function ProjectGantt({
       ),
     [dependencyLines],
   );
+  const blockedTaskIds = useMemo(
+    () => new Set(dependencyData?.blockedTaskIds ?? []),
+    [dependencyData?.blockedTaskIds],
+  );
+
+  // Every loaded task, not the filtered ones: a filter must not hide what a
+  // date cascade would push, or what a link's popover names.
+  const loadedTasks = useMemo(
+    () => [
+      ...(loadedProject?.columns.flatMap((column) => column.tasks) ?? []),
+      ...(loadedProject?.plannedTasks ?? []),
+    ],
+    [loadedProject],
+  );
+  const cascade = useGanttDateCascade({
+    projectId,
+    tasks: loadedTasks,
+    tones,
+    relations,
+  });
+  const offerCascade = cascade.offer;
 
   const scheduleTask = useCallback(
     (task: Task, day: Date) => {
       updateTaskDates(
-        { task, ...scheduleFromDay(day) },
+        // A milestone is a single date rather than the default span.
+        { task, ...scheduleFromDay(day, task.isMilestone ? 1 : undefined) },
         {
           onError: (error) =>
             toast.error(error.message || t("tasks:gantt.updateDatesError")),
@@ -430,6 +495,69 @@ export default function ProjectGantt({
   );
 
   const openTask = onOpenTask;
+
+  const { mutateAsync: createRelation } = useCreateTaskRelation();
+  const [linkPickerTaskId, setLinkPickerTaskId] = useState<string | null>(null);
+  const [selectedLink, setSelectedLink] = useState<SelectedLink | null>(null);
+  const linkPreviewRef = useRef<SVGSVGElement>(null);
+
+  // A drawn line reads "the source finishes, then the target starts": blocks.
+  const handleLinkDrawn = useCallback(
+    async (sourceTaskId: string, targetTaskId: string) => {
+      try {
+        const relation = await createRelation({
+          sourceTaskId,
+          targetTaskId,
+          relationType: "blocks",
+        });
+        toast.success(t("tasks:relations.added"));
+        offerCascade(sourceTaskId, {
+          relation: {
+            id: relation.id,
+            sourceTaskId,
+            targetTaskId,
+            relationType: "blocks",
+          },
+        });
+      } catch (error) {
+        // The API says why: already related, a loop, a task in intake.
+        const reason =
+          error instanceof HttpError &&
+          (error.status === 400 || error.status === 409) &&
+          error.message;
+        toast.error(reason || t("tasks:relations.linkError"));
+      }
+    },
+    [createRelation, offerCascade, t],
+  );
+
+  const startLinkDrag = useGanttLinkDrag({
+    previewRef: linkPreviewRef,
+    onLink: handleLinkDrawn,
+    onClick: setLinkPickerTaskId,
+  });
+
+  // Kept relative to the rows, so the popover follows the chart's scroll.
+  const handleLineClick = useCallback(
+    (line: DependencyLine, x: number, y: number) => {
+      const rows = rowsRef.current?.getBoundingClientRect();
+      setSelectedLink({
+        line,
+        x: x - (rows?.left ?? 0),
+        y: y - (rows?.top ?? 0),
+      });
+    },
+    [],
+  );
+
+  const handleDatesChanged = useCallback(
+    (taskId: string, span: { scheduleStart: Date; scheduleEnd: Date }) =>
+      offerCascade(taskId, { rootSpan: span }),
+    [offerCascade],
+  );
+
+  const titleOf = (taskId: string) =>
+    loadedTasks.find((task) => task.id === taskId)?.title ?? "";
 
   // Same thresholds as the board, so a press on the handle is not a drag.
   const sensors = useSensors(
@@ -472,7 +600,7 @@ export default function ProjectGantt({
     const trackRect = track.getBoundingClientRect();
     const railRight =
       scroller.getBoundingClientRect().left +
-      (showTaskRail ? (railWidthPx(railWidth) ?? 0) : 0);
+      (showTaskRail ? (remToPx(railWidth) ?? 0) : 0);
     if (dropX < Math.max(trackRect.left, railRight) || dropX > trackRect.right)
       return;
     const index = dayIndexAtPointer(
@@ -504,6 +632,22 @@ export default function ProjectGantt({
 
           {timeline && (
             <div className="flex flex-wrap items-center gap-1.5 sm:ms-auto">
+              {entryColumn ? (
+                <GanttAddMilestone
+                  projectId={projectId}
+                  status={entryColumn.slug}
+                  onCreated={(day) => {
+                    if (day < timeline.rangeStart || day > timeline.rangeEnd) {
+                      showDate(addDays(day, -7));
+                    }
+                  }}
+                />
+              ) : null}
+              <ScheduleFieldPicker
+                fields={scheduleField.fields}
+                value={scheduleField.fieldId}
+                onChange={scheduleField.setFieldId}
+              />
               <ViewChoice
                 label={t("tasks:gantt.zoom")}
                 value={zoom}
@@ -514,43 +658,39 @@ export default function ProjectGantt({
                   { value: "quarter", label: t("tasks:gantt.zoomQuarter") },
                 ]}
               />
-              <Button
-                variant="outline"
-                size="icon-xs"
-                aria-label={t("tasks:gantt.previousPeriod")}
-                disabled={!timeline.hasPrevious}
-                onClick={() =>
-                  showDate(addDays(timeline.rangeStart, -timeline.windowDays))
-                }
-              >
-                <ChevronLeft className="size-4" />
-              </Button>
-              <input
-                type="date"
-                aria-label={t("tasks:gantt.periodStart")}
-                className="h-7 rounded-md border border-border bg-background px-2 text-xs"
-                min={format(timeline.minimumStart, "yyyy-MM-dd")}
-                max={format(timeline.maximumStart, "yyyy-MM-dd")}
-                value={format(timeline.rangeStart, "yyyy-MM-dd")}
-                onChange={(event) => {
-                  const date = parseTaskDate(event.target.value);
-                  if (date) showDate(date);
-                }}
-              />
-              <span className="text-xs text-muted-foreground">
-                – {format(timeline.rangeEnd, "MMM d, yyyy")}
-              </span>
-              <Button
-                variant="outline"
-                size="icon-xs"
-                aria-label={t("tasks:gantt.nextPeriod")}
-                disabled={!timeline.hasNext}
-                onClick={() =>
-                  showDate(addDays(timeline.rangeStart, timeline.windowDays))
-                }
-              >
-                <ChevronRight className="size-4" />
-              </Button>
+              {/* One unit, so a narrow toolbar never wraps the arrows
+                  away from the period they step. */}
+              <div className="flex items-center gap-1.5">
+                <Button
+                  variant="outline"
+                  size="icon-xs"
+                  aria-label={t("tasks:gantt.previousPeriod")}
+                  disabled={!timeline.hasPrevious}
+                  onClick={() =>
+                    showDate(addDays(timeline.rangeStart, -timeline.windowDays))
+                  }
+                >
+                  <ChevronLeft className="size-4" />
+                </Button>
+                <GanttPeriodPicker
+                  start={timeline.rangeStart}
+                  end={timeline.rangeEnd}
+                  minimumStart={timeline.minimumStart}
+                  maximumStart={timeline.maximumStart}
+                  onPick={showDate}
+                />
+                <Button
+                  variant="outline"
+                  size="icon-xs"
+                  aria-label={t("tasks:gantt.nextPeriod")}
+                  disabled={!timeline.hasNext}
+                  onClick={() =>
+                    showDate(addDays(timeline.rangeStart, timeline.windowDays))
+                  }
+                >
+                  <ChevronRight className="size-4" />
+                </Button>
+              </div>
             </div>
           )}
 
@@ -568,7 +708,7 @@ export default function ProjectGantt({
           <Button
             variant="outline"
             size="xs"
-            className="min-h-11 touch-manipulation sm:hidden"
+            className="touch-manipulation sm:hidden"
             onClick={() => setIsTaskRailOpen((current) => !current)}
           >
             {showTaskRail ? (
@@ -583,7 +723,11 @@ export default function ProjectGantt({
         </div>
       </div>
 
-      {isLoading ? (
+      {loadFailure ? (
+        <div className="min-h-0 flex-1 overflow-auto p-4">
+          <ErrorDisplay error={loadFailure.error} onRetry={loadFailure.retry} />
+        </div>
+      ) : isLoading ? (
         // Not "No scheduled tasks" while the tasks are still on their way.
         <div className="flex flex-1 items-center justify-center px-6">
           <p className="text-muted-foreground text-sm">
@@ -624,7 +768,9 @@ export default function ProjectGantt({
           <div
             ref={scrollContainerRef}
             data-testid="gantt-scroll-container"
-            className="min-h-0 flex-1 overflow-auto overscroll-x-contain [-webkit-overflow-scrolling:touch]"
+            // A size container, so the undated list can span its visible
+            // width on a phone.
+            className="@container min-h-0 flex-1 overflow-auto overscroll-x-contain [-webkit-overflow-scrolling:touch]"
             style={{ scrollPaddingLeft: `${scrollPaddingLeftRem}rem` }}
           >
             <div className="relative min-w-max touch-pan-x touch-pan-y">
@@ -654,6 +800,7 @@ export default function ProjectGantt({
                     {monthBands.map((band) => (
                       <div
                         key={`month-${band.day.toISOString()}`}
+                        data-gantt-month-band
                         className="min-w-0 overflow-clip border-r border-border px-2 py-1"
                         style={{
                           gridColumn: `${band.start + 1} / span ${band.span}`,
@@ -661,12 +808,16 @@ export default function ProjectGantt({
                       >
                         {/* Stays readable while the month scrolls by. */}
                         <span
+                          data-gantt-month-label
                           className="sticky block w-max text-xs font-semibold text-foreground"
                           style={{
                             left: `calc(${showTaskRail ? railWidth : "0rem"} + 0.5rem)`,
                           }}
                         >
-                          {format(band.day, "MMMM yyyy")}
+                          {formatDate(band.day, {
+                            month: "long",
+                            year: "numeric",
+                          })}
                         </span>
                       </div>
                     ))}
@@ -690,7 +841,7 @@ export default function ProjectGantt({
                       // band names the month).
                       const weekLabel =
                         day.getDay() === weekStartsOn && !coveredByToday
-                          ? format(day, "MMM d")
+                          ? formatDateShort(day)
                           : "";
 
                       return (
@@ -771,12 +922,6 @@ export default function ProjectGantt({
                   ))}
                 </TimelineDropTrack>
 
-                <GanttDependencyLayer
-                  lines={dependencyLines}
-                  left={showTaskRail ? railWidth : "0rem"}
-                  widthRem={timeline.timelineMinWidthRem}
-                />
-
                 <div ref={rowsRef} className="relative z-10 flex flex-col">
                   {scheduledTasks.map((task, rowIndex) => {
                     const tone = toneOf(task.status, tones);
@@ -785,12 +930,20 @@ export default function ProjectGantt({
                       assigneesOfTask(task).length > 0
                         ? ` · ${formatAssigneeSummary(embeddedAssignees(task), t)}`
                         : "";
+                    const fieldValue = scheduleField.display?.values.get(
+                      task.id,
+                    );
+                    const fieldText = scheduleFieldText(
+                      scheduleField.display,
+                      task.id,
+                      t,
+                    );
                     return (
                       <div
                         key={task.id}
                         data-gantt-row={task.id}
                         className={cn(
-                          "grid items-stretch border-b border-border/60",
+                          "grid items-stretch border-b border-border/60 data-[gantt-link-target]:bg-primary/10",
                           striped && "bg-foreground/[0.025]",
                         )}
                         style={{
@@ -814,7 +967,7 @@ export default function ProjectGantt({
                           >
                             <button
                               type="button"
-                              title={`${format(task.scheduleStart, "MMM d, yyyy")} – ${format(task.scheduleEnd, "MMM d, yyyy")}${assigneeSummary}`}
+                              title={`${formatDateMedium(task.scheduleStart)} – ${formatDateMedium(task.scheduleEnd)}${fieldText ? ` · ${fieldText}` : ""}${assigneeSummary}`}
                               className="flex min-h-[44px] w-full min-w-0 items-center gap-2 px-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset sm:min-h-10 sm:px-3"
                               onClick={() => onOpenTask(task.id)}
                             >
@@ -842,9 +995,27 @@ export default function ProjectGantt({
                                   </title>
                                 </TriangleAlert>
                               ) : null}
+                              {blockedTaskIds.has(task.id) ? (
+                                <OctagonAlert
+                                  role="img"
+                                  aria-label={t("tasks:gantt.blocked")}
+                                  className="size-3.5 shrink-0 text-muted-foreground"
+                                >
+                                  <title>{t("tasks:gantt.blocked")}</title>
+                                </OctagonAlert>
+                              ) : null}
                               <span className="min-w-0 flex-1 truncate text-xs font-medium text-foreground">
                                 {task.title}
                               </span>
+                              {fieldValue ? (
+                                <span
+                                  data-testid="gantt-field-value"
+                                  className="max-w-[40%] shrink-0 truncate rounded bg-muted px-1.5 py-0.5 text-[11px] text-muted-foreground"
+                                >
+                                  <span aria-hidden="true">{fieldValue}</span>
+                                  <span className="sr-only">{fieldText}</span>
+                                </span>
+                              ) : null}
                               <PriorityGlyph
                                 priority={task.priority}
                                 label={getPriorityLabel(
@@ -881,6 +1052,9 @@ export default function ProjectGantt({
                             canEdit={canEditDates}
                             tone={tone}
                             onOpenTask={() => onOpenTask(task.id)}
+                            onLinkPointerDown={startLinkDrag}
+                            onLinkKeyboard={setLinkPickerTaskId}
+                            onDatesChanged={handleDatesChanged}
                           />
                         </div>
                       </div>
@@ -891,6 +1065,7 @@ export default function ProjectGantt({
                     tasks={undatedTasks}
                     projectSlug={project?.slug}
                     railWidth={railWidth}
+                    wide={isMobile}
                     timelineMinWidthRem={timeline.timelineMinWidthRem}
                     canEdit={canEditDates}
                     onOpenTask={openTask}
@@ -925,6 +1100,34 @@ export default function ProjectGantt({
                       />
                     </div>
                   ) : null}
+
+                  {/* Last in the rows' stacking context: over the empty row
+                      space, so a line can take a click, and under the bars
+                      (z-[1]) and the task list (z-[11]). */}
+                  <GanttDependencyLayer
+                    lines={dependencyLines}
+                    left={showTaskRail ? railWidth : "0rem"}
+                    widthRem={timeline.timelineMinWidthRem}
+                    onLineClick={canEditDates ? handleLineClick : undefined}
+                  />
+                  <svg
+                    ref={linkPreviewRef}
+                    aria-hidden="true"
+                    data-testid="gantt-link-preview"
+                    className="pointer-events-none invisible absolute top-0 z-[2] h-full overflow-visible"
+                    style={{
+                      left: showTaskRail ? railWidth : "0rem",
+                      width: `${timeline.timelineMinWidthRem}rem`,
+                    }}
+                  >
+                    <path
+                      fill="none"
+                      stroke="var(--primary)"
+                      strokeWidth={1.5}
+                      strokeDasharray="4 3"
+                      strokeLinecap="round"
+                    />
+                  </svg>
                 </div>
               </div>
             </div>
@@ -938,6 +1141,28 @@ export default function ProjectGantt({
           </DragOverlay>
         </DndContext>
       )}
+      {linkPickerTaskId ? (
+        <GanttLinkPicker
+          taskId={linkPickerTaskId}
+          projectId={projectId}
+          workspaceId={workspaceId}
+          onClose={() => setLinkPickerTaskId(null)}
+        />
+      ) : null}
+      <GanttLinkPopover
+        selected={selectedLink}
+        rowsRef={rowsRef}
+        titleOf={titleOf}
+        onClose={() => setSelectedLink(null)}
+        onReviewDates={cascade.review}
+      />
+      <GanttCascadeDialog
+        rows={cascade.preview}
+        projectSlug={loadedProject?.slug}
+        isApplying={cascade.isApplying}
+        onCancel={cascade.cancel}
+        onConfirm={() => void cascade.confirm()}
+      />
     </div>
   );
 }

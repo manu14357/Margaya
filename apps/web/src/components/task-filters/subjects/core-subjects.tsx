@@ -12,6 +12,7 @@ import {
   History,
   Layers3,
   ListTree,
+  OctagonAlert,
   Tag,
   UserPen,
   Users,
@@ -328,6 +329,26 @@ function useParentSubjects(context: FilterSubjectContext): FilterSubject[] {
   );
 }
 
+function useBlockedSubjects(): FilterSubject[] {
+  const { t } = useTranslation();
+  return useMemo(
+    () => [
+      {
+        id: "blocked",
+        key: "blocked",
+        label: t("tasks:filters.subjects.blocked"),
+        icon: OctagonAlert,
+        kind: "set",
+        options: [
+          { value: "true", label: t("tasks:filters.values.blockedYes") },
+          { value: "false", label: t("tasks:filters.values.blockedNo") },
+        ],
+      },
+    ],
+    [t],
+  );
+}
+
 function usePeopleSubjects(context: FilterSubjectContext): FilterSubject[] {
   const { t } = useTranslation();
   const mentions = useMemberOptions(
@@ -423,6 +444,11 @@ registerFilterSubject({
   id: "parent",
   order: 110,
   useSubjects: useParentSubjects,
+});
+registerFilterSubject({
+  id: "blocked",
+  order: 115,
+  useSubjects: useBlockedSubjects,
 });
 registerFilterSubject({
   id: "project",

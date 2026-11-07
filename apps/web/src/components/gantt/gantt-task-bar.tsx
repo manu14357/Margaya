@@ -43,6 +43,18 @@ type GanttTaskBarProps = {
   onOpenTask: () => void;
   /** The task's status colour; the default columns' tone otherwise. */
   tone?: ToneInfo;
+  /** A press on the link handle; drawing the line is the chart's job. */
+  onLinkPointerDown?: (
+    event: React.PointerEvent<HTMLElement>,
+    taskId: string,
+  ) => void;
+  /** Enter or Space on the link handle, which can't draw. */
+  onLinkKeyboard?: (taskId: string) => void;
+  /** After a drag's new dates are saved. */
+  onDatesChanged?: (
+    taskId: string,
+    span: { scheduleStart: Date; scheduleEnd: Date },
+  ) => void;
 };
 
 function getBarGridColumns(
@@ -73,6 +85,9 @@ export function GanttTaskBar({
   canEdit = true,
   onOpenTask,
   tone = { tone: "unstarted" },
+  onLinkPointerDown,
+  onLinkKeyboard,
+  onDatesChanged,
 }: GanttTaskBarProps) {
   const { t } = useTranslation();
   const showAssignees = useUserPreferencesStore((state) => state.showAssignees);
@@ -117,8 +132,16 @@ export function GanttTaskBar({
       try {
         await updateTaskDates({
           task,
-          startDate: toTaskDateValue(nextStart),
+          // A milestone is one date: moving it doesn't invent a start date.
+          startDate:
+            task.isMilestone && !task.startDate
+              ? null
+              : toTaskDateValue(nextStart),
           dueDate: toTaskDateValue(nextEnd),
+        });
+        onDatesChanged?.(task.id, {
+          scheduleStart: nextStart,
+          scheduleEnd: nextEnd,
         });
         return true;
       } catch (error) {
@@ -130,7 +153,7 @@ export function GanttTaskBar({
         return false;
       }
     },
-    [task, updateTaskDates, t],
+    [task, updateTaskDates, onDatesChanged, t],
   );
 
   const pxPerDay = Math.max(pixelsPerDay, 1e-6);
@@ -314,6 +337,96 @@ export function GanttTaskBar({
   const done = tone.tone === "completed";
   const cancelled = tone.tone === "cancelled";
   const closed = isClosedTone(tone.tone);
+
+  // Shown on hover or focus, and always where nothing hovers. A press draws;
+  // the keyboard opens the picker instead.
+  const linkHandle =
+    canEdit && onLinkPointerDown ? (
+      <button
+        type="button"
+        data-gantt-link-handle
+        aria-label={t("tasks:gantt.linkFrom", { title: task.title })}
+        title={t("tasks:gantt.linkHint")}
+        onPointerDown={(event) => onLinkPointerDown(event, task.id)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            onLinkKeyboard?.(task.id);
+          }
+        }}
+        className={cn(
+          "pointer-events-auto absolute top-1/2 z-30 flex -translate-y-1/2 cursor-crosshair touch-none items-center justify-center rounded-full opacity-0 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group-hover/bar:opacity-100 [@media(hover:none)]:opacity-100",
+          isMobile ? "size-11" : "size-5",
+          task.isMilestone ? "left-1/2 ml-1" : "left-full -ml-0.5",
+        )}
+      >
+        <span
+          aria-hidden="true"
+          className="size-2.5 rounded-full border-2 border-(color:--tone) bg-background"
+        />
+      </button>
+    ) : null;
+
+  if (task.isMilestone) {
+    return (
+      <div
+        className="pointer-events-none absolute inset-0 z-[1] grid items-center"
+        style={{ gridTemplateColumns: timeline.gridTemplateColumns }}
+      >
+        <div
+          style={{
+            ...toneStyle(tone),
+            gridColumn: `${lineStart} / ${lineStart + 1}`,
+          }}
+          data-tone={tone.tone}
+          data-milestone
+          className="group/bar relative flex min-w-0 items-center justify-center"
+        >
+          <button
+            type="button"
+            aria-label={t("tasks:gantt.milestone.ariaLabel", {
+              title: task.title,
+            })}
+            title={task.title}
+            className={cn(
+              "pointer-events-auto relative z-10 flex min-h-[44px] min-w-[44px] touch-manipulation items-center justify-center rounded-sm sm:min-h-7 sm:min-w-7",
+              canEdit && "cursor-grab active:cursor-grabbing",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            )}
+            onPointerDown={handleMovePointerDown}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                onOpenTask();
+              }
+            }}
+          >
+            <span
+              aria-hidden="true"
+              className={cn(
+                "block size-3.5 rotate-45 rounded-[2px] border-2 border-(color:--tone)",
+                done ? "bg-(color:--tone)" : "bg-(color:--tone-tint)",
+                closed && "opacity-60",
+              )}
+            />
+          </button>
+          {linkHandle}
+          {/* Beside the diamond: its own button already names the task. */}
+          <span
+            aria-hidden="true"
+            className={cn(
+              "pointer-events-none absolute left-1/2 ml-4 whitespace-nowrap rounded-sm bg-background/85 px-1 font-medium text-foreground text-xs",
+              closed && "text-muted-foreground",
+              cancelled && "line-through",
+            )}
+          >
+            {task.title}
+          </span>
+        </div>
+      </div>
+    );
+  }
+
   const visibleAssignees = showAssignees ? assignees.slice(0, 2) : [];
   // Whether the title (with its dot, check and faces) fits inside the bar;
   // otherwise it reads beside the bar, to the right.
@@ -360,7 +473,7 @@ export function GanttTaskBar({
         }
         data-tone={tone.tone}
         data-done={done || undefined}
-        className="relative mx-1 flex min-w-0 items-center"
+        className="group/bar relative mx-1 flex min-w-0 items-center"
       >
         <div
           className={cn(
@@ -444,6 +557,7 @@ export function GanttTaskBar({
             {faces}
           </span>
         )}
+        {linkHandle}
       </div>
     </div>
   );

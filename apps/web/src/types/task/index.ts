@@ -36,6 +36,8 @@ type Task = {
   priority: string | null;
   startDate: string | null;
   dueDate: string | null;
+  /** Marks one date: the timeline draws it as a diamond on its due date. */
+  isMilestone?: boolean;
   position: number | null;
   createdAt: string;
   updatedAt?: string;

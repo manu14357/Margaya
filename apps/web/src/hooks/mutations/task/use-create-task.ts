@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import createTask, {
   type CreateTaskRequest,
 } from "@/fetchers/task/create-task";
+import { invalidateDeliveryQueries } from "@/hooks/mutations/delivery/invalidate-delivery-queries";
 import { invalidateTaskQueries } from "@/lib/task-query/cache";
 
 function useCreateTask() {
@@ -19,6 +20,7 @@ function useCreateTask() {
       priority,
       customFields,
       parentId,
+      isMilestone,
     }: CreateTaskRequest) =>
       createTask(
         title,
@@ -31,6 +33,7 @@ function useCreateTask() {
         priority,
         customFields,
         parentId,
+        isMilestone,
       ),
     onSuccess: (data, variables) => {
       void queryClient.invalidateQueries({
@@ -39,6 +42,8 @@ function useCreateTask() {
       void queryClient.invalidateQueries({
         queryKey: ["custom-field-values", variables.projectId],
       });
+      // The project's forecast counts its open tasks.
+      invalidateDeliveryQueries(queryClient, variables.projectId);
       if (variables.parentId) {
         // The parent's sub-task list, both tasks' history and the timeline's
         // relation lines, as linking them separately would refresh.

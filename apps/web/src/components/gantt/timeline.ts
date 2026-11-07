@@ -59,6 +59,67 @@ export function parseTaskDate(value: string | null) {
     : parsed;
 }
 
+/**
+ * Where a task sits on the timeline, or null without a usable date. Reversed
+ * dates are put in order; a milestone is one day, its due date.
+ */
+export function taskScheduleSpan(task: {
+  startDate: string | null;
+  dueDate: string | null;
+  isMilestone?: boolean;
+}): { scheduleStart: Date; scheduleEnd: Date } | null {
+  const start = parseTaskDate(task.startDate) ?? parseTaskDate(task.dueDate);
+  const end = parseTaskDate(task.dueDate) ?? parseTaskDate(task.startDate);
+  if (!start || !end) return null;
+  if (task.isMilestone) return { scheduleStart: end, scheduleEnd: end };
+  return {
+    scheduleStart: start <= end ? start : end,
+    scheduleEnd: end >= start ? end : start,
+  };
+}
+
+/** A rem length (the task list's or a day column's width) in pixels. */
+export function remToPx(width: string): number | null {
+  const rem = Number.parseFloat(width);
+  if (!Number.isFinite(rem)) return null;
+  const rootSize = Number.parseFloat(
+    getComputedStyle(document.documentElement).fontSize,
+  );
+  return rem * (Number.isFinite(rootSize) ? rootSize : 16);
+}
+
+/**
+ * The scroll offset that centres a day beside the task list, rounded to a
+ * whole column so the first visible day is never cut in half at its edge.
+ * Columns are fixed-width, so a multiple of their width lines one up there.
+ */
+export function centredDayScrollLeft({
+  dayIndex,
+  dayCount,
+  columnPx,
+  viewportPx,
+  railPx,
+}: {
+  dayIndex: number;
+  dayCount: number;
+  columnPx: number;
+  /** The scroll container's width, task list included. */
+  viewportPx: number;
+  railPx: number;
+}): number {
+  if (!(columnPx > 0)) return 0;
+  const visible = Math.max(1, Math.floor((viewportPx - railPx) / columnPx));
+  const lastFirst = Math.max(
+    0,
+    Math.floor((railPx + dayCount * columnPx - viewportPx) / columnPx),
+  );
+  const first = Math.min(
+    lastFirst,
+    Math.max(0, dayIndex - Math.floor(visible / 2)),
+  );
+  return first * columnPx;
+}
+
 function clampDate(date: Date, minimum: Date, maximum: Date) {
   return new Date(
     Math.max(minimum.getTime(), Math.min(date.getTime(), maximum.getTime())),
