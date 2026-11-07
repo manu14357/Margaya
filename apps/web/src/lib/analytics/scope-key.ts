@@ -27,6 +27,8 @@ export const analyticsKeys = {
     ["analytics", workspaceId, scopeKey] as const,
   overview: (workspaceId: string, scopeKey: string, timeZone: string) =>
     ["analytics", workspaceId, scopeKey, "overview", timeZone] as const,
+  workload: (workspaceId: string, scopeKey: string) =>
+    ["analytics", workspaceId, scopeKey, "workload"] as const,
   chart: (workspaceId: string, scopeKey: string, requestHash: string) =>
     ["analytics", workspaceId, scopeKey, "chart", requestHash] as const,
   trend: (workspaceId: string, scopeKey: string, requestHash: string) =>
@@ -37,4 +39,12 @@ export const analyticsKeys = {
     ["analytics", workspaceId, scopeKey, "modules"] as const,
   intake: (workspaceId: string, scopeKey: string, requestHash: string) =>
     ["analytics", workspaceId, scopeKey, "intake", requestHash] as const,
+  time: (
+    workspaceId: string,
+    scopeKey: string,
+    from: string,
+    to: string,
+    timeZone: string,
+  ) =>
+    ["analytics", workspaceId, scopeKey, "time", from, to, timeZone] as const,
 };

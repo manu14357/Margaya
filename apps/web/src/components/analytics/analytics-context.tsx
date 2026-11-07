@@ -11,6 +11,7 @@ export type AnalyticsScopeProject = Pick<
   | "modulesEnabled"
   | "intakeEnabled"
   | "estimatesEnabled"
+  | "timeTrackingEnabled"
 >;
 
 /** Where an analytics page runs; every section reads it. */

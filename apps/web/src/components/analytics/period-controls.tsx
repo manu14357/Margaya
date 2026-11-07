@@ -130,8 +130,17 @@ function CustomRangeButton({
   );
 }
 
-/** Period select (with a custom range) and the Week / Month toggle. */
-export default function PeriodControls({ state }: { state: PeriodState }) {
+/**
+ * Period select (with a custom range) and, for reports drawn over time, the
+ * Week / Month toggle.
+ */
+export default function PeriodControls({
+  state,
+  showBucket = true,
+}: {
+  state: PeriodState;
+  showBucket?: boolean;
+}) {
   const { t } = useTranslation();
   const weeksOk = weekAllowed(state.range);
 
@@ -164,28 +173,30 @@ export default function PeriodControls({ state }: { state: PeriodState }) {
           onChange={state.setCustomRange}
         />
       )}
-      <ToggleGroup
-        size="sm"
-        variant="outline"
-        aria-label={t("analytics:bucket.label")}
-        value={[state.bucket]}
-        onValueChange={(values) => {
-          const next = values[0];
-          if (next === "week" || next === "month") state.setBucket(next);
-        }}
-      >
-        <Toggle
-          value="week"
-          disabled={!weeksOk}
-          title={weeksOk ? undefined : t("analytics:bucket.weekDisabled")}
-          className="px-2 text-xs"
+      {showBucket && (
+        <ToggleGroup
+          size="sm"
+          variant="outline"
+          aria-label={t("analytics:bucket.label")}
+          value={[state.bucket]}
+          onValueChange={(values) => {
+            const next = values[0];
+            if (next === "week" || next === "month") state.setBucket(next);
+          }}
         >
-          {t("analytics:bucket.week")}
-        </Toggle>
-        <Toggle value="month" className="px-2 text-xs">
-          {t("analytics:bucket.month")}
-        </Toggle>
-      </ToggleGroup>
+          <Toggle
+            value="week"
+            disabled={!weeksOk}
+            title={weeksOk ? undefined : t("analytics:bucket.weekDisabled")}
+            className="px-2 text-xs"
+          >
+            {t("analytics:bucket.week")}
+          </Toggle>
+          <Toggle value="month" className="px-2 text-xs">
+            {t("analytics:bucket.month")}
+          </Toggle>
+        </ToggleGroup>
+      )}
     </>
   );
 }

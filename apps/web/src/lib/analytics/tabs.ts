@@ -5,8 +5,8 @@ import {
 
 // The analytics page's tabs (B8 §1.2, §1.6): Overview only in workspace
 // scope; Cycles, Modules and Intake only while a scope project has the
-// feature on (Intake also needs intake:read); Delivery (forecast and risks)
-// only in project scope.
+// feature on (Intake also needs intake:read); Time while a scope project
+// tracks time; Delivery (forecast and risks) only in project scope.
 
 export const ANALYTICS_TABS = [
   "overview",
@@ -14,6 +14,7 @@ export const ANALYTICS_TABS = [
   "cycles",
   "modules",
   "intake",
+  "time",
   "delivery",
 ] as const;
 
@@ -39,7 +40,7 @@ export function availableAnalyticsTabs(
   projects: readonly ProjectWithFlags[],
   { canReadIntake }: { canReadIntake: boolean },
 ): AnalyticsTab[] {
-  const any = (feature: "cycles" | "modules" | "intake") =>
+  const any = (feature: "cycles" | "modules" | "intake" | "timeTracking") =>
     projects.some((project) => isProjectFeatureEnabled(project, feature));
   return ANALYTICS_TABS.filter((tab) => {
     switch (tab) {
@@ -53,6 +54,8 @@ export function availableAnalyticsTabs(
         return any("modules");
       case "intake":
         return canReadIntake && any("intake");
+      case "time":
+        return any("timeTracking");
       case "delivery":
         return kind === "project";
     }

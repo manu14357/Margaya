@@ -61,6 +61,9 @@ vi.mock("./cycles-tab", () => ({ default: () => <p>cycles tab</p> }));
 vi.mock("./modules-tab", () => ({ default: () => <p>modules tab</p> }));
 vi.mock("./intake-tab", () => ({ default: () => <p>intake tab</p> }));
 vi.mock("./delivery-tab", () => ({ default: () => <p>delivery tab</p> }));
+vi.mock("@/components/time-entry/time-report-tab", () => ({
+  default: () => <p>time tab</p>,
+}));
 
 const plain = { id: "p1", name: "Web", slug: "WEB", icon: null };
 const planned = {
@@ -120,6 +123,22 @@ describe("AnalyticsPage", () => {
       "analytics:tabs.intake",
     ]);
     expect(screen.getByText("overview tab")).toBeInTheDocument();
+  });
+
+  it("shows Time only when a project in scope tracks time", () => {
+    const tracked = { ...plain, id: "p4", timeTrackingEnabled: true };
+    state.projects = [plain];
+    expect(renderPage().tabs).not.toContain("analytics:tabs.time");
+    cleanup();
+
+    state.projects = [plain, tracked];
+    expect(renderPage({ tab: "time" }).tabs).toContain("analytics:tabs.time");
+    expect(screen.getByText("time tab")).toBeInTheDocument();
+    cleanup();
+
+    expect(renderPage({ selectedProjectIds: ["p1"] }).tabs).not.toContain(
+      "analytics:tabs.time",
+    );
   });
 
   it("hides Intake without intake:read", () => {

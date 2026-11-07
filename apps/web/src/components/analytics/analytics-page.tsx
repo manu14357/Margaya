@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import ProjectLayout from "@/components/common/project-layout";
 import WorkspaceLayout from "@/components/common/workspace-layout";
 import PageTitle from "@/components/page-title";
+import TimeReportTab from "@/components/time-entry/time-report-tab";
 import useGetProjects from "@/hooks/queries/project/use-get-projects";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
@@ -203,6 +204,7 @@ export default function AnalyticsPage({
                 {activeTab === "cycles" && <CyclesTab />}
                 {activeTab === "modules" && <ModulesTab />}
                 {activeTab === "intake" && <IntakeTab />}
+                {activeTab === "time" && <TimeReportTab />}
                 {activeTab === "delivery" && <DeliveryTab />}
               </div>
             )}

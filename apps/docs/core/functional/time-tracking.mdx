@@ -1,0 +1,84 @@
+---
+title: Track Time on Tasks
+description: Run a timer or log time on a task, correct your entries, and see totals by person and by project in Analytics
+---
+
+Time tracking records how long work took: run a timer while you work, or log the time afterwards. The totals appear on each task and in the **Time** tab of Analytics.
+
+**Time tracking** is a project feature and is on by default. To turn it off, open the project's feature settings and switch it off; the entries stay and come back if you turn it on again. See [Turn on project features](/core/functional/project-features-and-column-groups).
+
+## Run a timer
+
+1. Open a task and click its **Time spent** property. It reads **Log time** until the task has time on it.
+2. Click **Start timer**. The property now shows the running clock.
+3. When you finish, open the property again and click **Stop**. The time is logged as an entry.
+
+<Screenshot src="tasks/time-tracking-popover" alt="The Time spent popover on a Hiring task, with a running timer and its Stop button, the Duration and Note fields, and Elena Marsh's entries, including the running one, with their edit and delete buttons" caption="Start or stop a timer, log time and correct entries from the task." />
+
+You have one timer at a time, across all your workspaces. If one is running on another task, the popover says **Timer running on** and the task's key, which links to it. **Stop it and start here** stops that timer and starts a new one on this task.
+
+A timer runs on the server, so it keeps counting after you close the browser and until you stop it. There is no timer in the app's header: you find a running timer on its task, on other tasks' **Time spent** popovers and on the **Time** tab of Analytics.
+
+## Log time by hand
+
+1. Open the task's **Time spent** property.
+2. Type a **Duration**, such as `1h 30m`. You can also write `2h`, `45m`, `1.5h`, `1:30`, or `90` for minutes.
+3. Optionally add a **Note (optional)**.
+4. Click **Log time**.
+
+A logged entry ends now and can be between 1 minute and 24 hours long. To record time from another day, log it and then edit its **Start** and **End**. Logging time doesn't stop a running timer.
+
+## Correct or delete an entry
+
+Each entry in the popover shows who logged it, how long it was, its date and its note.
+
+- Click the pencil to change an entry's **Start**, **End** and **Note (optional)**, then click **Save**. The end can't be before the start.
+- A finished entry needs an end, so it can't be turned back into a running timer. On a running entry, leave **End** empty to keep it running, or fill it in to stop it.
+- Click the trash button and confirm with **Delete** to remove an entry.
+
+## Permissions
+
+| Action | Viewer | Member | Admin | Owner |
+| --- | --- | --- | --- | --- |
+| See a task's entries and total | Yes | Yes | Yes | Yes |
+| Run a timer and log time | No | Yes | Yes | Yes |
+| Change or delete your own entries | No | Yes | Yes | Yes |
+| Change or delete other people's entries | No | No | Yes | Yes |
+| See the **Time** tab of Analytics | No | Yes | Yes | Yes |
+
+Logging and changing your own entries need **task:update**. Changing other people's entries also needs **task:delete**. The **Time** tab needs the **Analytics** permission (**read**). Custom roles can mix them. In a [restricted project](/core/functional/restricted-projects), and for guests, your project role limits these too: someone added as a viewer can't change entries there, their own included.
+
+## See time reports
+
+Open **Analytics** in the sidebar for the whole workspace, or a project's **Analytics** tab, and select **Time**. The tab appears when a project in scope has time tracking on.
+
+<Screenshot src="analytics/time-report" alt="The Time tab of workspace Analytics for the last 90 days, with tiles for Time logged, Entries, People and Running now, and By person and By project tables listing hours and entries" caption="Totals by person and by project for the period you choose." />
+
+1. Pick a **Period**: **Last 30 days**, **Last 90 days**, **Last 6 months**, **Last 12 months** or a **Custom range**. In the workspace scope, use the project picker in the header to narrow it to some projects.
+2. Read the tiles: **Time logged**, **Entries**, **People** and **Running now**.
+3. Read the **By person** and **By project** tables. Click a column header to sort.
+4. Click **Export CSV** on a table to download it. **Hours** are decimals in the file, such as `1.5`.
+
+How the numbers are counted:
+
+- An entry counts on the day it started, in your time zone.
+- A running timer isn't in any total until it stops. Until then it only counts under **Running now**.
+- Entries on archived tasks count. Entries on tasks in the trash or waiting in [Intake](/core/functional/intake) don't.
+- Time logged by people who have left the workspace is added up under **Former member**.
+- Projects with time tracking off, and restricted projects you can't see, are left out.
+
+Your own running timer also shows above the tiles, with **Stop**.
+
+The report only has these totals. It doesn't list single entries or break time down by task or by day, and Margaya has no billing rates or timesheet approval. For time per task, use the **Time logged (minutes)** column of a [task export](/core/functional/export-tasks).
+
+## Use the API
+
+`POST /api/time-entry` logs time, or starts a timer when you leave out `endTime`. `POST /api/time-entry/{id}/stop` stops a timer, `GET /api/time-entry/running` returns your running timer in a workspace, and `GET /api/time-entry/report` returns the totals. See the **Time Entries** section of the API reference.
+
+An API key limited to specific projects only stops timers in those projects: if you have one running elsewhere, it keeps running alongside the new one until you next start a timer yourself.
+
+## Next
+
+- [Plan and execute tasks in Board and List](/core/functional/plan-and-execute-tasks)
+- [Understand your work with Analytics](/core/functional/analytics)
+- [Export tasks to CSV, Excel or JSON](/core/functional/export-tasks)
