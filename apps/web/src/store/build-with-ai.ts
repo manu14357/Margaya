@@ -1,7 +1,16 @@
 import { create } from "zustand";
 
 // Opens "Build with AI" from anywhere (command palette, an empty project).
-// One dialog is mounted by the command palette and reads this store.
+// One dialog is mounted by the command palette and reads this store. The last
+// plan's undo lives here too, so it survives closing the dialog to look at the
+// result; like chat Build mode's, it doesn't survive a reload.
+
+export type LastBuild = {
+  undoToken: string;
+  workspaceId: string;
+  projectId: string | null;
+  expiresAt: number;
+};
 
 type BuildWithAiState = {
   open: boolean;
@@ -9,6 +18,8 @@ type BuildWithAiState = {
   projectId: string | null;
   openBuild: (projectId?: string | null) => void;
   close: () => void;
+  lastBuild: LastBuild | null;
+  setLastBuild: (lastBuild: LastBuild | null) => void;
 };
 
 const useBuildWithAiStore = create<BuildWithAiState>((set) => ({
@@ -16,6 +27,8 @@ const useBuildWithAiStore = create<BuildWithAiState>((set) => ({
   projectId: null,
   openBuild: (projectId) => set({ open: true, projectId: projectId ?? null }),
   close: () => set({ open: false }),
+  lastBuild: null,
+  setLastBuild: (lastBuild) => set({ lastBuild }),
 }));
 
 export default useBuildWithAiStore;

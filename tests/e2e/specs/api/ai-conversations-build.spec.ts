@@ -634,6 +634,43 @@ test(
 );
 
 test(
+  "build with AI: undo needs no AI switch and refuses unknown tokens",
+  covers("aiBuildUndo"),
+  async () => {
+    const workspaceId = world.workspace.id;
+    const data = { workspaceId, undoToken: "not-a-sealed-token" };
+    // Its token is sealed by the server on apply, which needs AI on. Any other
+    // token reads as unknown.
+    for (const actor of ["member", "viewer", "owner"] as const) {
+      expect(
+        await expectStatus(
+          await world.as(actor).post("/api/ai/build/undo", { data }),
+          404,
+        ),
+      ).toContain("Nothing to undo");
+    }
+    for (const invalid of [
+      { workspaceId },
+      { workspaceId, undoToken: "" },
+      { workspaceId, undoToken: 42 },
+    ]) {
+      await expectStatus(
+        await world.as("member").post("/api/ai/build/undo", { data: invalid }),
+        400,
+      );
+    }
+    await expectStatus(
+      await outsider.ctx.post("/api/ai/build/undo", { data }),
+      403,
+    );
+    await expectStatus(
+      await world.as("anonymous").post("/api/ai/build/undo", { data }),
+      401,
+    );
+  },
+);
+
+test(
   "speech, page title and blocks, draft labels and inbox digest answer AI_DISABLED",
   covers(
     "transcribeSpeech",

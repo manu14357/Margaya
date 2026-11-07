@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Undo2 } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,9 @@ import {
   type BuildProgress,
   type BuildReport,
   proposeBuild,
+  type UndoBuildRefusal,
+  type UndoBuildResult,
+  undoBuild,
 } from "@/fetchers/ai/build";
 import { useAiAvailability } from "@/hooks/queries/ai/use-ai";
 import useGetProjects from "@/hooks/queries/project/use-get-projects";
@@ -35,10 +38,20 @@ import {
   toReview,
 } from "@/lib/ai-build/review";
 import { cn } from "@/lib/cn";
+import { HttpError } from "@/lib/http-error";
 import useBuildWithAiStore from "@/store/build-with-ai";
 import ProposalReview from "./proposal-review";
 
 type Step = "prompt" | "drafting" | "review" | "creating" | "done";
+
+// Mirrors the API's token lifetime; the API has the final say.
+const UNDO_WINDOW_MS = 60 * 60 * 1000;
+
+type UndoState =
+  | { status: "pending" }
+  | { status: "done"; result: UndoBuildResult }
+  | { status: "refused"; refusal: UndoBuildRefusal }
+  | { status: "failed"; expired: boolean };
 
 const FAILURE_KINDS = [
   "project",
@@ -70,6 +83,8 @@ export default function BuildWithAiDialog() {
   const open = useBuildWithAiStore((state) => state.open);
   const projectId = useBuildWithAiStore((state) => state.projectId);
   const close = useBuildWithAiStore((state) => state.close);
+  const lastBuild = useBuildWithAiStore((state) => state.lastBuild);
+  const setLastBuild = useBuildWithAiStore((state) => state.setLastBuild);
   const { data: workspace } = useActiveWorkspace();
   const workspaceId = workspace?.id ?? "";
   const { available } = useAiAvailability(open ? projectId : null);
@@ -93,6 +108,7 @@ export default function BuildWithAiDialog() {
   const [errorKey, setErrorKey] = useState<string | null>(null);
   const [progress, setProgress] = useState<BuildProgress | null>(null);
   const [report, setReport] = useState<BuildReport | null>(null);
+  const [undoState, setUndoState] = useState<UndoState | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
   // Each opening starts fresh, aimed at the project it was opened from.
@@ -104,12 +120,19 @@ export default function BuildWithAiDialog() {
     setErrorKey(null);
     setProgress(null);
     setReport(null);
+    setUndoState(null);
   }, [open, projectId]);
 
   if (!available) return null;
 
   const buildingHere = target === "current" && canBuildHere;
   const reviewed = draft ? toProposal(draft) : null;
+  const undoable =
+    lastBuild &&
+    lastBuild.workspaceId === workspaceId &&
+    lastBuild.expiresAt > Date.now()
+      ? lastBuild
+      : null;
 
   const handleClose = () => {
     if (step === "creating") return;
@@ -155,6 +178,20 @@ export default function BuildWithAiDialog() {
     }
   };
 
+  const refreshBuilt = (builtId: string | null) =>
+    Promise.all([
+      queryClient.invalidateQueries({ queryKey: ["projects", workspaceId] }),
+      ...(builtId
+        ? [
+            queryClient.invalidateQueries({ queryKey: ["tasks", builtId] }),
+            queryClient.invalidateQueries({ queryKey: ["columns", builtId] }),
+            queryClient.invalidateQueries({ queryKey: ["cycles", builtId] }),
+            queryClient.invalidateQueries({ queryKey: ["modules", builtId] }),
+          ]
+        : []),
+      queryClient.invalidateQueries({ queryKey: ["labels", workspaceId] }),
+    ]);
+
   const create = async () => {
     if (!draft || !reviewed) return;
     setStep("creating");
@@ -176,22 +213,57 @@ export default function BuildWithAiDialog() {
       );
       setReport(result);
       setStep("done");
-      const builtId = result.projectId;
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["projects", workspaceId] }),
-        ...(builtId
-          ? [
-              queryClient.invalidateQueries({ queryKey: ["tasks", builtId] }),
-              queryClient.invalidateQueries({ queryKey: ["columns", builtId] }),
-              queryClient.invalidateQueries({ queryKey: ["cycles", builtId] }),
-              queryClient.invalidateQueries({ queryKey: ["modules", builtId] }),
-            ]
-          : []),
-        queryClient.invalidateQueries({ queryKey: ["labels", workspaceId] }),
-      ]);
+      setUndoState(null);
+      setLastBuild(
+        result.undoToken
+          ? {
+              undoToken: result.undoToken,
+              workspaceId,
+              projectId: result.projectId,
+              expiresAt: Date.now() + UNDO_WINDOW_MS,
+            }
+          : null,
+      );
+      await refreshBuilt(result.projectId);
     } catch (error) {
       setErrorKey(aiErrorKey(error));
       setStep("review");
+    }
+  };
+
+  const undoPlan = async () => {
+    if (!undoable) return;
+    setUndoState({ status: "pending" });
+    try {
+      const outcome = await undoBuild({
+        workspaceId: undoable.workspaceId,
+        undoToken: undoable.undoToken,
+      });
+      if (outcome.refused) {
+        setUndoState({ status: "refused", refusal: outcome.refusal });
+        if (outcome.refusal.code === "BUILD_ALREADY_UNDONE") setLastBuild(null);
+        return;
+      }
+      setUndoState({ status: "done", result: outcome.result });
+      // What failed can be tried again with the same token.
+      if (outcome.result.failures.length === 0) setLastBuild(null);
+      await refreshBuilt(undoable.projectId);
+      // Don't leave the person on the board of a project that just left.
+      if (
+        outcome.result.removed.project &&
+        projectId &&
+        projectId === undoable.projectId
+      ) {
+        navigate({
+          to: "/dashboard/workspace/$workspaceId",
+          params: { workspaceId },
+        });
+        close();
+      }
+    } catch (error) {
+      const expired = error instanceof HttpError && error.status === 410;
+      setUndoState({ status: "failed", expired });
+      if (expired) setLastBuild(null);
     }
   };
 
@@ -203,6 +275,105 @@ export default function BuildWithAiDialog() {
     });
     close();
   };
+
+  const undone = undoState?.status === "done";
+  const undoStatus = undoState && undoState.status !== "pending" && (
+    <div
+      role={undoState.status === "done" ? "status" : "alert"}
+      className="space-y-2 text-sm"
+    >
+      {undoState.status === "done" && (
+        <>
+          <p>
+            {undoState.result.failures.length === 0
+              ? t("ai:build.undo.done")
+              : t("ai:build.undo.partial", {
+                  count: undoState.result.failures.length,
+                })}
+          </p>
+          {undoState.result.failures.length > 0 && (
+            <ul className="space-y-1 rounded-lg border p-3 text-xs">
+              {undoState.result.failures.map((failure, index) => (
+                <li
+                  // biome-ignore lint/suspicious/noArrayIndexKey: failures have no id.
+                  key={index}
+                  className="flex flex-wrap gap-x-2"
+                >
+                  <span className="font-medium">
+                    {t(failureKindKey(failure.kind))}
+                  </span>
+                  <span className="min-w-0 truncate">{failure.name}</span>
+                  <span className="text-muted-foreground">
+                    {failure.message}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+          {undoState.result.archived > 0 && (
+            <p className="text-muted-foreground text-xs">
+              {t("ai:build.undo.archived", {
+                count: undoState.result.archived,
+              })}
+            </p>
+          )}
+        </>
+      )}
+      {undoState.status === "refused" &&
+        (undoState.refusal.code === "BUILD_EDITED" ? (
+          <>
+            <p className="text-destructive">
+              {t("ai:build.undo.edited", { count: undoState.refusal.total })}
+            </p>
+            <ul className="space-y-1 rounded-lg border p-3 text-xs">
+              {undoState.refusal.items.map((item, index) => (
+                <li
+                  // biome-ignore lint/suspicious/noArrayIndexKey: names may repeat.
+                  key={index}
+                  className="flex flex-wrap gap-x-2"
+                >
+                  <span className="font-medium">
+                    {t(failureKindKey(item.kind))}
+                  </span>
+                  <span className="min-w-0 truncate">{item.name}</span>
+                </li>
+              ))}
+              {undoState.refusal.total > undoState.refusal.items.length && (
+                <li className="text-muted-foreground">
+                  {t("ai:build.undo.more", {
+                    count:
+                      undoState.refusal.total - undoState.refusal.items.length,
+                  })}
+                </li>
+              )}
+            </ul>
+          </>
+        ) : (
+          <p className="text-muted-foreground">{t("ai:build.undo.already")}</p>
+        ))}
+      {undoState.status === "failed" && (
+        <p className="text-destructive">
+          {undoState.expired
+            ? t("ai:build.undo.expired")
+            : t("ai:build.undo.failed")}
+        </p>
+      )}
+    </div>
+  );
+  const undoButton = undoable && (
+    <Button
+      type="button"
+      variant="outline"
+      size="sm"
+      disabled={undoState?.status === "pending"}
+      onClick={() => void undoPlan()}
+    >
+      <Undo2 aria-hidden className="size-4" />
+      {undoState?.status === "pending"
+        ? t("ai:build.undo.pending")
+        : t("ai:build.undo.button")}
+    </Button>
+  );
 
   const percent =
     progress && progress.total > 0
@@ -230,6 +401,13 @@ export default function BuildWithAiDialog() {
         <DialogPanel className="min-h-0">
           {(step === "prompt" || step === "drafting") && (
             <div className="space-y-4">
+              {undoable && (
+                <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border p-3">
+                  <p className="text-sm">{t("ai:build.undo.lastPlan")}</p>
+                  {undoButton}
+                </div>
+              )}
+              {undoStatus}
               <div className="space-y-1.5">
                 <label htmlFor={promptId} className="font-medium text-sm">
                   {t("ai:build.promptLabel")}
@@ -328,7 +506,8 @@ export default function BuildWithAiDialog() {
             </div>
           )}
 
-          {step === "done" && report && (
+          {step === "done" && report && undone && undoStatus}
+          {step === "done" && report && !undone && (
             <div className="space-y-4" aria-live="polite">
               <p className="text-sm">
                 {report.failures.length === 0
@@ -381,6 +560,12 @@ export default function BuildWithAiDialog() {
                   ))}
                 </ul>
               )}
+              {undoable && (
+                <p className="text-muted-foreground text-xs">
+                  {t("ai:build.undo.hint")}
+                </p>
+              )}
+              {undoStatus}
             </div>
           )}
 
@@ -433,10 +618,11 @@ export default function BuildWithAiDialog() {
           )}
           {step === "done" && (
             <>
+              {undoButton}
               <Button type="button" variant="ghost" onClick={handleClose}>
                 {t("ai:build.close")}
               </Button>
-              {report?.projectId && (
+              {report?.projectId && !undone && (
                 <Button type="button" onClick={openProject}>
                   {t("ai:build.openProject")}
                 </Button>

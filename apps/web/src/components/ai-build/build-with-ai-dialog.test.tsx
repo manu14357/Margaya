@@ -8,6 +8,7 @@ import {
 } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { HttpError } from "@/lib/http-error";
 import useBuildWithAiStore from "@/store/build-with-ai";
 import BuildWithAiDialog from "./build-with-ai-dialog";
 
@@ -39,9 +40,11 @@ vi.mock("@tanstack/react-router", () => ({ useNavigate: () => navigate }));
 
 const proposeBuild = vi.fn();
 const applyBuild = vi.fn();
+const undoBuild = vi.fn();
 vi.mock("@/fetchers/ai/build", () => ({
   proposeBuild: (...args: unknown[]) => proposeBuild(...args),
   applyBuild: (...args: unknown[]) => applyBuild(...args),
+  undoBuild: (...args: unknown[]) => undoBuild(...args),
 }));
 
 const PROPOSAL = {
@@ -90,8 +93,12 @@ beforeEach(() => {
   canUpdateProjects = true;
   proposeBuild.mockReset();
   applyBuild.mockReset();
+  undoBuild.mockReset();
   navigate.mockReset();
-  act(() => useBuildWithAiStore.getState().close());
+  act(() => {
+    useBuildWithAiStore.getState().close();
+    useBuildWithAiStore.getState().setLastBuild(null);
+  });
 });
 afterEach(cleanup);
 
@@ -237,5 +244,188 @@ describe("BuildWithAiDialog", () => {
       expect.objectContaining({ projectId: "p-1" }),
       expect.any(AbortSignal),
     );
+  });
+
+  describe("undo", () => {
+    const REPORT = {
+      projectId: "p-new",
+      total: 3,
+      done: 3,
+      created: {
+        project: true,
+        columns: 0,
+        cycles: 0,
+        modules: 0,
+        tasks: 2,
+        subtasks: 0,
+        labels: 0,
+      },
+      estimatesSkipped: false,
+      failures: [],
+      undoToken: "token-1",
+    };
+    const REMOVED = {
+      project: true,
+      columns: 0,
+      cycles: 0,
+      modules: 0,
+      tasks: 0,
+      subtasks: 0,
+    };
+
+    async function buildPlan(report: Record<string, unknown> = REPORT) {
+      proposeBuild.mockResolvedValue({
+        proposal: PROPOSAL,
+        target: null,
+        model: "m",
+      });
+      applyBuild.mockResolvedValue(report);
+      act(() => useBuildWithAiStore.getState().openBuild(null));
+      render(<BuildWithAiDialog />, { wrapper });
+      await draftPlan();
+      fireEvent.click(screen.getByRole("button", { name: /ai:build.create/ }));
+      await screen.findByRole("button", { name: "ai:build.close" });
+    }
+
+    const undoButton = () =>
+      screen.findByRole("button", { name: "ai:build.undo.button" });
+
+    it("undoes the plan just created and stops offering to open it", async () => {
+      undoBuild.mockResolvedValue({
+        refused: false,
+        result: { removed: REMOVED, archived: 0, failures: [] },
+      });
+      await buildPlan();
+      expect(
+        screen.getByRole("button", { name: "ai:build.openProject" }),
+      ).toBeInTheDocument();
+
+      fireEvent.click(await undoButton());
+
+      expect(await screen.findByText("ai:build.undo.done")).toBeInTheDocument();
+      expect(undoBuild).toHaveBeenCalledWith({
+        workspaceId: "ws-1",
+        undoToken: "token-1",
+      });
+      expect(
+        screen.queryByRole("button", { name: "ai:build.undo.button" }),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: "ai:build.openProject" }),
+      ).not.toBeInTheDocument();
+      expect(useBuildWithAiStore.getState().lastBuild).toBeNull();
+    });
+
+    it("offers no undo when nothing was created", async () => {
+      await buildPlan({ ...REPORT, undoToken: undefined });
+      expect(
+        screen.queryByRole("button", { name: "ai:build.undo.button" }),
+      ).not.toBeInTheDocument();
+    });
+
+    it("says what changed when it refuses, and keeps the plan", async () => {
+      undoBuild.mockResolvedValue({
+        refused: true,
+        refusal: {
+          code: "BUILD_EDITED",
+          message: "Nothing was undone",
+          items: [{ kind: "task", name: "Audit pages" }],
+          total: 3,
+        },
+      });
+      await buildPlan();
+      fireEvent.click(await undoButton());
+
+      expect(await screen.findByRole("alert")).toHaveTextContent(
+        "ai:build.undo.edited",
+      );
+      expect(screen.getByRole("alert")).toHaveTextContent("Audit pages");
+      expect(screen.getByRole("alert")).toHaveTextContent("ai:build.undo.more");
+      expect(
+        screen.getByRole("button", { name: "ai:build.openProject" }),
+      ).toBeInTheDocument();
+      // It may be tried again once the edit is dealt with.
+      expect(useBuildWithAiStore.getState().lastBuild).not.toBeNull();
+    });
+
+    it("lists what failed and keeps the token for a retry", async () => {
+      undoBuild.mockResolvedValue({
+        refused: false,
+        result: {
+          removed: { ...REMOVED, project: false, tasks: 1 },
+          archived: 1,
+          failures: [
+            { kind: "module", name: "Content", status: 403, message: "No" },
+          ],
+        },
+      });
+      await buildPlan();
+      fireEvent.click(await undoButton());
+
+      expect(
+        await screen.findByText("ai:build.undo.partial"),
+      ).toBeInTheDocument();
+      expect(screen.getByText("Content")).toBeInTheDocument();
+      expect(screen.getByText("ai:build.undo.archived")).toBeInTheDocument();
+      expect(useBuildWithAiStore.getState().lastBuild?.undoToken).toBe(
+        "token-1",
+      );
+    });
+
+    it("tells when the hour has passed", async () => {
+      undoBuild.mockRejectedValue(new HttpError(410, "Undo has expired"));
+      await buildPlan();
+      fireEvent.click(await undoButton());
+      expect(await screen.findByRole("alert")).toHaveTextContent(
+        "ai:build.undo.expired",
+      );
+      expect(useBuildWithAiStore.getState().lastBuild).toBeNull();
+    });
+
+    it("can still undo after closing the dialog to look at the result", async () => {
+      undoBuild.mockResolvedValue({
+        refused: false,
+        result: { removed: REMOVED, archived: 0, failures: [] },
+      });
+      await buildPlan();
+      fireEvent.click(screen.getByRole("button", { name: "ai:build.close" }));
+      act(() => useBuildWithAiStore.getState().openBuild(null));
+
+      expect(
+        await screen.findByText("ai:build.undo.lastPlan"),
+      ).toBeInTheDocument();
+      fireEvent.click(await undoButton());
+      expect(await screen.findByText("ai:build.undo.done")).toBeInTheDocument();
+      expect(
+        screen.queryByText("ai:build.undo.lastPlan"),
+      ).not.toBeInTheDocument();
+    });
+
+    it("doesn't offer an undo from another workspace or past its hour", () => {
+      for (const lastBuild of [
+        {
+          undoToken: "t",
+          workspaceId: "ws-other",
+          projectId: "p",
+          expiresAt: Date.now() + 60_000,
+        },
+        {
+          undoToken: "t",
+          workspaceId: "ws-1",
+          projectId: "p",
+          expiresAt: Date.now() - 1,
+        },
+      ]) {
+        act(() => {
+          useBuildWithAiStore.getState().setLastBuild(lastBuild);
+          useBuildWithAiStore.getState().openBuild(null);
+        });
+        render(<BuildWithAiDialog />, { wrapper });
+        expect(
+          screen.queryByText("ai:build.undo.lastPlan"),
+        ).not.toBeInTheDocument();
+        cleanup();
+      }
+    });
   });
 });

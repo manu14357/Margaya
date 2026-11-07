@@ -82,6 +82,8 @@ export type BuildReport = {
   };
   estimatesSkipped: boolean;
   failures: { kind: string; name: string; status: number; message: string }[];
+  /** Pass to undoBuild within an hour; absent when nothing was created. */
+  undoToken?: string;
 };
 
 /**
@@ -114,4 +116,36 @@ export async function applyBuild(
       message: error?.message ?? "",
     }),
   );
+}
+
+export type UndoBuildRequest = InferRequestType<
+  BuildClient["undo"]["$post"]
+>["json"];
+export type UndoBuildResult = InferResponseType<
+  BuildClient["undo"]["$post"],
+  200
+>;
+export type UndoBuildRefusal = InferResponseType<
+  BuildClient["undo"]["$post"],
+  409
+>;
+
+/**
+ * Reverts an applied plan. A refusal (something changed since, or it was
+ * already undone) is an answer, not an error: it changed nothing and says why.
+ */
+export async function undoBuild(
+  body: UndoBuildRequest,
+): Promise<
+  | { refused: false; result: UndoBuildResult }
+  | { refused: true; refusal: UndoBuildRefusal }
+> {
+  const response = await client.ai.build.undo.$post({ json: body });
+  if (response.status === 409) {
+    return {
+      refused: true,
+      refusal: (await response.json()) as UndoBuildRefusal,
+    };
+  }
+  return { refused: false, result: await ok<UndoBuildResult>(response) };
 }
