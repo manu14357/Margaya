@@ -13,12 +13,12 @@ import { Separator } from "@/components/ui/separator";
 import { indexSettings, isSettingLocked } from "@/lib/instance-settings";
 import type { InstanceSettings, OAuthProviderId } from "@/types/instance-admin";
 import { InstanceSection } from "./instance-page";
-import { SettingRow } from "./setting-row";
+import { SettingRow, SettingSwitchRow } from "./setting-row";
 import { useSaveInstanceSettings } from "./use-save-instance-settings";
 
 // The sign-in policy (4.11): allowed email domains for new accounts, a
-// required sign-in provider and the session lifetime. All are instance
-// settings, so environment variables lock them as usual.
+// required sign-in provider, required two-factor and the session lifetime. All
+// are instance settings, so environment variables lock them as usual.
 
 const PROVIDER_KEYS: Record<OAuthProviderId, string> = {
   github: "instanceAdmin:auth.method.github",
@@ -138,6 +138,13 @@ export function SignInPolicySection({
           </SelectContent>
         </Select>
       </SettingRow>
+      <Separator />
+      <SettingSwitchRow
+        settings={settings}
+        settingKey="auth.requireTwoFactor"
+        label={t("accountSecurity:platform.policy.requireTwoFactor")}
+        hint={t("accountSecurity:platform.policy.requireTwoFactorHint")}
+      />
       <Separator />
       <SettingRow
         id="instance-setting-session-hours"

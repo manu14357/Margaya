@@ -4,6 +4,7 @@ import {
   banInstanceUser,
   removeInstanceAdmin,
   resetInstanceUserPassword,
+  resetInstanceUserTwoFactor,
   revokeInstanceUserSessions,
   unbanInstanceUser,
 } from "@/fetchers/instance-admin/instance-lists";
@@ -112,7 +113,8 @@ type UserAction =
     }
   | { type: "unban"; userId: string }
   | { type: "revokeSessions"; userId: string }
-  | { type: "resetPassword"; userId: string; password?: string };
+  | { type: "resetPassword"; userId: string; password?: string }
+  | { type: "resetTwoFactor"; userId: string };
 
 function runUserAction(action: UserAction) {
   switch (action.type) {
@@ -130,10 +132,12 @@ function runUserAction(action: UserAction) {
         action.userId,
         action.password ? { password: action.password } : {},
       );
+    case "resetTwoFactor":
+      return resetInstanceUserTwoFactor(action.userId);
   }
 }
 
-/** Ban, unban, sign out everywhere and reset a password (4.12). */
+/** Ban, unban, sign out everywhere, reset a password or two-factor (4.12). */
 export function useInstanceUserAction() {
   const queryClient = useQueryClient();
   return useMutation({

@@ -14,8 +14,10 @@ import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as DeviceRouteImport } from './routes/device'
 import { Route as TestErrorRouteImport } from './routes/test-error'
+import { Route as TwoFactorSetupRouteImport } from './routes/two-factor-setup'
 import { Route as LayoutAuthenticatedRouteImport } from './routes/_layout/_authenticated'
 import { Route as AuthCheckEmailRouteImport } from './routes/auth/check-email'
+import { Route as AuthCompleteRouteImport } from './routes/auth/complete'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
@@ -133,6 +135,11 @@ const TestErrorRoute = TestErrorRouteImport.update({
   path: '/test-error',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TwoFactorSetupRoute = TwoFactorSetupRouteImport.update({
+  id: '/two-factor-setup',
+  path: '/two-factor-setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LayoutAuthenticatedRoute = LayoutAuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => LayoutRoute,
@@ -140,6 +147,11 @@ const LayoutAuthenticatedRoute = LayoutAuthenticatedRouteImport.update({
 const AuthCheckEmailRoute = AuthCheckEmailRouteImport.update({
   id: '/check-email',
   path: '/check-email',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthCompleteRoute = AuthCompleteRouteImport.update({
+  id: '/complete',
+  path: '/complete',
   getParentRoute: () => AuthRoute,
 } as any)
 const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
@@ -767,7 +779,9 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteWithChildren
   '/device': typeof DeviceRouteWithChildren
   '/test-error': typeof TestErrorRoute
+  '/two-factor-setup': typeof TwoFactorSetupRoute
   '/auth/check-email': typeof AuthCheckEmailRoute
+  '/auth/complete': typeof AuthCompleteRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/sign-in': typeof AuthSignInRoute
@@ -865,7 +879,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
   '/test-error': typeof TestErrorRoute
+  '/two-factor-setup': typeof TwoFactorSetupRoute
   '/auth/check-email': typeof AuthCheckEmailRoute
+  '/auth/complete': typeof AuthCompleteRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/sign-in': typeof AuthSignInRoute
@@ -963,8 +979,10 @@ export interface FileRoutesById {
   '/auth': typeof AuthRouteWithChildren
   '/device': typeof DeviceRouteWithChildren
   '/test-error': typeof TestErrorRoute
+  '/two-factor-setup': typeof TwoFactorSetupRoute
   '/_layout/_authenticated': typeof LayoutAuthenticatedRouteWithChildren
   '/auth/check-email': typeof AuthCheckEmailRoute
+  '/auth/complete': typeof AuthCompleteRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/sign-in': typeof AuthSignInRoute
@@ -1065,7 +1083,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/device'
     | '/test-error'
+    | '/two-factor-setup'
     | '/auth/check-email'
+    | '/auth/complete'
     | '/auth/forgot-password'
     | '/auth/reset-password'
     | '/auth/sign-in'
@@ -1163,7 +1183,9 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/test-error'
+    | '/two-factor-setup'
     | '/auth/check-email'
+    | '/auth/complete'
     | '/auth/forgot-password'
     | '/auth/reset-password'
     | '/auth/sign-in'
@@ -1260,8 +1282,10 @@ export interface FileRouteTypes {
     | '/auth'
     | '/device'
     | '/test-error'
+    | '/two-factor-setup'
     | '/_layout/_authenticated'
     | '/auth/check-email'
+    | '/auth/complete'
     | '/auth/forgot-password'
     | '/auth/reset-password'
     | '/auth/sign-in'
@@ -1362,6 +1386,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   DeviceRoute: typeof DeviceRouteWithChildren
   TestErrorRoute: typeof TestErrorRoute
+  TwoFactorSetupRoute: typeof TwoFactorSetupRoute
   McpAuthorizeRoute: typeof McpAuthorizeRoute
   PublicPageTokenRoute: typeof PublicPageTokenRoute
   PublicProjectTokenRoute: typeof PublicProjectTokenRoute
@@ -1405,6 +1430,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestErrorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/two-factor-setup': {
+      id: '/two-factor-setup'
+      path: '/two-factor-setup'
+      fullPath: '/two-factor-setup'
+      preLoaderRoute: typeof TwoFactorSetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_layout/_authenticated': {
       id: '/_layout/_authenticated'
       path: ''
@@ -1417,6 +1449,13 @@ declare module '@tanstack/react-router' {
       path: '/check-email'
       fullPath: '/auth/check-email'
       preLoaderRoute: typeof AuthCheckEmailRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/auth/complete': {
+      id: '/auth/complete'
+      path: '/complete'
+      fullPath: '/auth/complete'
+      preLoaderRoute: typeof AuthCompleteRouteImport
       parentRoute: typeof AuthRoute
     }
     '/auth/forgot-password': {
@@ -2412,6 +2451,7 @@ const LayoutRouteWithChildren =
 
 interface AuthRouteChildren {
   AuthCheckEmailRoute: typeof AuthCheckEmailRoute
+  AuthCompleteRoute: typeof AuthCompleteRoute
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   AuthSignInRoute: typeof AuthSignInRoute
@@ -2421,6 +2461,7 @@ interface AuthRouteChildren {
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthCheckEmailRoute: AuthCheckEmailRoute,
+  AuthCompleteRoute: AuthCompleteRoute,
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
   AuthSignInRoute: AuthSignInRoute,
@@ -2449,6 +2490,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   DeviceRoute: DeviceRouteWithChildren,
   TestErrorRoute: TestErrorRoute,
+  TwoFactorSetupRoute: TwoFactorSetupRoute,
   McpAuthorizeRoute: McpAuthorizeRoute,
   PublicPageTokenRoute: PublicPageTokenRoute,
   PublicProjectTokenRoute: PublicProjectTokenRoute,

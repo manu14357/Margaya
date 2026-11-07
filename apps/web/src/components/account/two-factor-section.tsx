@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import useGetConfig from "@/hooks/queries/config/use-get-config";
 import { accountSecurityQueryKey } from "@/hooks/queries/user/use-account-security";
 import { authClient } from "@/lib/auth-client";
+import { cn } from "@/lib/cn";
 import { toast } from "@/lib/toast";
 
 // TOTP two-factor for password sign-in: confirm the password, add the setup
@@ -35,11 +36,26 @@ export function setupKeyOf(totpURI: string): string {
   }
 }
 
-export function TwoFactorSection({ enabled }: { enabled: boolean }) {
+export function TwoFactorSection({
+  enabled,
+  setupScreen = false,
+  onFinished,
+}: {
+  enabled: boolean;
+  /**
+   * The screen for an account that must set this up: a narrow column, where
+   * asking for the password is the only thing to do.
+   */
+  setupScreen?: boolean;
+  /** Called when the person is done with their new recovery codes. */
+  onFinished?: () => void;
+}) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { data: config } = useGetConfig();
-  const [step, setStep] = useState<Step>({ kind: "idle" });
+  const [step, setStep] = useState<Step>(
+    setupScreen ? { kind: "password", purpose: "enable" } : { kind: "idle" },
+  );
   const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
@@ -126,9 +142,17 @@ export function TwoFactorSection({ enabled }: { enabled: boolean }) {
       <SettingsGroup>
         <SettingsRow
           label={t("accountSecurity:platform.twoFactor.authenticator")}
+          description={
+            enabled && config?.requireTwoFactor
+              ? t("accountSecurity:platform.twoFactor.requiredHint")
+              : undefined
+          }
           badge={
-            <Badge variant={enabled ? "success" : "outline"} size="sm">
-              {enabled
+            <Badge
+              variant={enabled || step.kind === "codes" ? "success" : "outline"}
+              size="sm"
+            >
+              {enabled || step.kind === "codes"
                 ? t("accountSecurity:platform.twoFactor.on")
                 : t("accountSecurity:platform.twoFactor.off")}
             </Badge>
@@ -146,15 +170,17 @@ export function TwoFactorSection({ enabled }: { enabled: boolean }) {
                 >
                   {t("accountSecurity:platform.twoFactor.newCodes")}
                 </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() =>
-                    setStep({ kind: "password", purpose: "disable" })
-                  }
-                >
-                  {t("accountSecurity:platform.twoFactor.turnOff")}
-                </Button>
+                {!config?.requireTwoFactor && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() =>
+                      setStep({ kind: "password", purpose: "disable" })
+                    }
+                  >
+                    {t("accountSecurity:platform.twoFactor.turnOff")}
+                  </Button>
+                )}
               </div>
             ) : (
               <Button
@@ -173,7 +199,11 @@ export function TwoFactorSection({ enabled }: { enabled: boolean }) {
             htmlFor={passwordId}
           >
             <form
-              className="flex flex-col gap-2 sm:flex-row"
+              className={
+                setupScreen
+                  ? "flex flex-col gap-2"
+                  : "flex flex-col gap-2 sm:flex-row"
+              }
               onSubmit={(event) => {
                 event.preventDefault();
                 void submitPassword(step.purpose);
@@ -225,7 +255,11 @@ export function TwoFactorSection({ enabled }: { enabled: boolean }) {
                 </a>
               </div>
               <form
-                className="flex flex-col gap-2 sm:flex-row sm:items-end"
+                className={
+                  setupScreen
+                    ? "flex flex-col gap-2"
+                    : "flex flex-col gap-2 sm:flex-row sm:items-end"
+                }
                 onSubmit={(event) => {
                   event.preventDefault();
                   void verify(step.backupCodes);
@@ -277,7 +311,12 @@ export function TwoFactorSection({ enabled }: { enabled: boolean }) {
             description={t("accountSecurity:platform.twoFactor.codesHint")}
           >
             <div className="space-y-3">
-              <ul className="grid grid-cols-2 gap-1 rounded-md border border-border bg-muted/40 p-3 font-mono text-sm sm:grid-cols-5">
+              <ul
+                className={cn(
+                  "grid grid-cols-2 gap-1 rounded-md border border-border bg-muted/40 p-3 font-mono text-sm",
+                  !setupScreen && "sm:grid-cols-5",
+                )}
+              >
                 {step.backupCodes.map((backupCode) => (
                   <li key={backupCode}>{backupCode}</li>
                 ))}
@@ -290,7 +329,13 @@ export function TwoFactorSection({ enabled }: { enabled: boolean }) {
                 >
                   {t("accountSecurity:platform.twoFactor.copyCodes")}
                 </Button>
-                <Button size="sm" onClick={reset}>
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    reset();
+                    onFinished?.();
+                  }}
+                >
                   {t("accountSecurity:platform.twoFactor.done")}
                 </Button>
               </div>

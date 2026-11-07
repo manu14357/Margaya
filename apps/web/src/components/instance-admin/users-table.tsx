@@ -49,7 +49,7 @@ import { UserDetailSheet } from "./user-detail-sheet";
 type UsersTableProps = { q: string; status: InstanceUserStatus };
 
 type Pending = {
-  kind: "ban" | "reset" | "signOut" | "details";
+  kind: "ban" | "reset" | "resetTwoFactor" | "signOut" | "details";
   user: InstanceUser;
 } | null;
 
@@ -232,6 +232,15 @@ export function UsersTable({ q, status }: UsersTableProps) {
                       >
                         {t("accountSecurity:platform.users.resetPassword")}
                       </MenuItem>
+                      {user.twoFactorEnabled && (
+                        <MenuItem
+                          onClick={() =>
+                            setPending({ kind: "resetTwoFactor", user })
+                          }
+                        >
+                          {t("accountSecurity:platform.users.resetTwoFactor")}
+                        </MenuItem>
+                      )}
                       <MenuItem
                         onClick={() => setPending({ kind: "signOut", user })}
                       >
@@ -357,6 +366,47 @@ export function UsersTable({ q, status }: UsersTableProps) {
               }}
             >
               {t("accountSecurity:platform.users.signOut")}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <AlertDialog
+        open={pending?.kind === "resetTwoFactor"}
+        onOpenChange={(open) => !open && setPending(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {t("accountSecurity:platform.users.resetTwoFactorTitle", {
+                name: pending?.user.name ?? "",
+              })}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {t("accountSecurity:platform.users.resetTwoFactorDescription")}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogClose render={<Button variant="outline" />}>
+              {t("common:actions.cancel")}
+            </AlertDialogClose>
+            <Button
+              loading={action.isPending}
+              onClick={async () => {
+                if (!pending) return;
+                const done = await run(
+                  () =>
+                    action.mutateAsync({
+                      type: "resetTwoFactor",
+                      userId: pending.user.id,
+                    }),
+                  t("accountSecurity:platform.users.twoFactorReset", {
+                    name: pending.user.name,
+                  }),
+                );
+                if (done) setPending(null);
+              }}
+            >
+              {t("accountSecurity:platform.users.resetTwoFactor")}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>

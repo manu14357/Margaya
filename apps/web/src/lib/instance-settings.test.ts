@@ -216,6 +216,18 @@ describe("sign-in methods", () => {
     expect(ready.find((m) => m.id === "emailCode")?.status).toBe("active");
   });
 
+  it("shows email codes as off while two-factor is required", () => {
+    const methods = signInMethods(
+      settingsWith(
+        [...AUTH_ENTRIES, entry("auth.requireTwoFactor", "signIn", true)],
+        {
+          smtpConfigured: true,
+        },
+      ),
+    );
+    expect(methods.find((m) => m.id === "emailCode")?.status).toBe("off");
+  });
+
   it("marks environment-locked methods", () => {
     const entries = AUTH_ENTRIES.map((e) =>
       e.key === "auth.emailCodeSignIn"

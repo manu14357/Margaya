@@ -1,10 +1,11 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { usePreferencesSync } from "@/hooks/use-preferences-sync";
 import { authClient } from "@/lib/auth-client";
+import { needsTwoFactorSetup } from "@/lib/two-factor-required";
 
 // protects all child routes, must be logged in
 export const Route = createFileRoute("/_layout/_authenticated")({
-  beforeLoad: async ({ location }) => {
+  beforeLoad: async ({ location, context }) => {
     let session = null;
     let sessionError = false;
     try {
@@ -26,6 +27,16 @@ export const Route = createFileRoute("/_layout/_authenticated")({
           // concatenation on it throws "Cannot convert object to primitive value".
           redirect: location.href,
         },
+      });
+    }
+    if (
+      session &&
+      !session.user.twoFactorEnabled &&
+      (await needsTwoFactorSetup(context.queryClient))
+    ) {
+      throw redirect({
+        to: "/two-factor-setup",
+        search: { redirect: location.href },
       });
     }
     return { session, sessionError };

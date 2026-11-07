@@ -204,8 +204,11 @@ export function signInMethods(settings: InstanceSettings): SignInMethod[] {
       id: "emailCode",
       settingKey: "auth.emailCodeSignIn",
       enabled: emailCode,
+      // A code would skip the second step, so required two-factor stops them.
       status:
-        !emailCode || !emailSignIn
+        !emailCode ||
+        !emailSignIn ||
+        settingFlag(index, "auth.requireTwoFactor")
           ? "off"
           : derived.smtpConfigured
             ? "active"

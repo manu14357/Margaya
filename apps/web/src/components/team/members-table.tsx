@@ -80,7 +80,11 @@ const AVATAR_TONES = [
 // editable workspace_role rows on every workspace creation, and owner is a
 // static built-in. The Select already lists them as built-ins, so we filter
 // them out of the custom-roles tail to avoid duplicate options.
-const RESERVED_ROLE_NAMES = new Set<string>([...DEFAULT_ROLE_NAMES, "owner"]);
+const RESERVED_ROLE_NAMES = new Set<string>([
+  ...DEFAULT_ROLE_NAMES,
+  "owner",
+  "guest",
+]);
 
 function toneFor(value: string): string {
   let hash = 0;
@@ -315,6 +319,9 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
                         <SelectItem value="admin">
                           {t("team:roles.admin", { defaultValue: "Admin" })}
                         </SelectItem>
+                        <SelectItem value="guest">
+                          {t("team:roles.guest", { defaultValue: "Guest" })}
+                        </SelectItem>
                         {/* Owner is intentionally NOT offered here: the better-auth
                             organization plugin requires an explicit ownership
                             transfer flow (a workspace must have exactly one owner).
@@ -492,7 +499,8 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
               {t("team:membersTable.removeDialogDescription", {
                 name:
                   memberToDelete?.user.name || memberToDelete?.user.email || "",
-              })}
+              })}{" "}
+              {t("team:membersTable.removeDialogAccessNote")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

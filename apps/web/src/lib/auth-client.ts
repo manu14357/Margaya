@@ -13,7 +13,11 @@ import {
 } from "better-auth/client/plugins";
 import type { AccessControl } from "better-auth/plugins/access";
 import { createAuthClient } from "better-auth/react";
-import { ac, admin, member, owner, viewer } from "./permissions";
+import { ac, admin, guest, member, owner, viewer } from "./permissions";
+import {
+  handleTwoFactorRequired,
+  TWO_FACTOR_REQUIRED,
+} from "./two-factor-required";
 
 const getBaseURL = () => {
   const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:1337";
@@ -25,9 +29,21 @@ const getBaseURL = () => {
   }
 };
 
+const BASE_PATH = "/api/auth";
+
+/** For the one request that can't wait for the client (use-sign-out.ts). */
+export const AUTH_BASE_URL = `${getBaseURL()}${BASE_PATH}`;
+
 export const authClient = createAuthClient({
   baseURL: getBaseURL(),
-  basePath: "/api/auth",
+  basePath: BASE_PATH,
+  fetchOptions: {
+    // Invitations, device approval and workspace calls all stop here when the
+    // server requires two-factor and this account hasn't set it up.
+    onError: ({ error }) => {
+      if (error.code === TWO_FACTOR_REQUIRED) handleTwoFactorRequired();
+    },
+  },
   plugins: [
     anonymousClient(),
     lastLoginMethodClient(),
@@ -43,6 +59,7 @@ export const authClient = createAuthClient({
         member,
         admin,
         owner,
+        guest,
       },
       dynamicAccessControl: {
         enabled: true,
