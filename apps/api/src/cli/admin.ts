@@ -2,17 +2,24 @@ import { randomBytes } from "node:crypto";
 import bcrypt from "bcryptjs";
 import { and, asc, eq, sql } from "drizzle-orm";
 import db, { getDatabasePool } from "../database";
-import { accountTable, sessionTable, userTable } from "../database/schema";
+import {
+  accountTable,
+  pushSubscriptionTable,
+  sessionTable,
+  userTable,
+} from "../database/schema";
 import {
   type InstanceAuditAction,
   recordInstanceAudit,
 } from "../instance-admin/audit";
+import { pushKeysEnvLines } from "../notification-preferences/web-push";
 import {
   activeInstanceAdmin,
   INSTANCE_ADMIN_LOCK_ID,
 } from "../utils/instance-admins";
 import { nonAnonymousUser } from "../utils/instance-bootstrap";
 import { checkNewPassword } from "../utils/password-policy";
+import { clearTwoFactor } from "../utils/two-factor-reset";
 
 // Offline recovery for instance admins. It talks to the database directly
 // and needs no running server, SMTP or session, so it bypasses sign-in by
@@ -33,6 +40,18 @@ Commands:
                          Uses MARGAYA_NEW_PASSWORD when set, otherwise prints a
                          generated one.
   unban-user <email>     Lift a ban so the account can sign in again
+  reset-two-factor <email>
+                         Remove two-factor from an account that lost its
+                         authenticator and recovery codes, and sign it out
+                         everywhere. It signs in with its password and, if
+                         two-factor is required, sets it up again.
+  generate-push-keys     Print a new VAPID_PUBLIC_KEY and VAPID_PRIVATE_KEY
+                         for web push, and the contact push services will see
+                         (VAPID_SUBJECT). Changing the keys later turns push
+                         off on every device until people turn it on again.
+
+Required two-factor can also be turned off from the server: set
+REQUIRE_TWO_FACTOR=false and restart.
 `;
 
 class CliError extends Error {}
@@ -177,6 +196,9 @@ async function resetPassword(email: string | undefined) {
       });
     }
     await tx.delete(sessionTable).where(eq(sessionTable.userId, user.id));
+    await tx
+      .delete(pushSubscriptionTable)
+      .where(eq(pushSubscriptionTable.userId, user.id));
   });
   await audit("cli.password_reset", user);
   console.log(`Password set for ${user.email}; every session was signed out.`);
@@ -196,12 +218,30 @@ async function unbanUser(email: string | undefined) {
   console.log(`${user.email} can sign in again.`);
 }
 
+async function resetTwoFactor(email: string | undefined) {
+  const user = await findUser(email);
+  if (!(await clearTwoFactor(user.id))) {
+    console.log(`${user.email} doesn't use two-factor.`);
+    return;
+  }
+  await audit("cli.two_factor_reset", user);
+  console.log(
+    `Two-factor removed from ${user.email}; every session was signed out.`,
+  );
+}
+
+async function generatePushKeys() {
+  console.log(pushKeysEnvLines().join("\n"));
+}
+
 const COMMANDS: Record<string, (email?: string) => Promise<void>> = {
   "list-admins": listAdmins,
   "promote-admin": promoteAdmin,
   "demote-admin": demoteAdmin,
   "reset-password": resetPassword,
   "unban-user": unbanUser,
+  "reset-two-factor": resetTwoFactor,
+  "generate-push-keys": generatePushKeys,
 };
 
 export async function runAdminCli(argv: string[]): Promise<number> {

@@ -16,6 +16,7 @@ import { auth } from "../../auth";
 import db from "../../database";
 import {
   accountTable,
+  pushSubscriptionTable,
   sessionTable,
   userTable,
   workspaceTable,
@@ -35,11 +36,13 @@ import {
 import { nonAnonymousUser } from "../../utils/instance-bootstrap";
 import { checkNewPassword } from "../../utils/password-policy";
 import { enforceRateLimits } from "../../utils/rate-limit";
+import { clearTwoFactor } from "../../utils/two-factor-reset";
 import { recordInstanceAudit } from "../audit";
 import { settingsWriteLimiter } from "../limits";
 
 // Instance user management (4.12): list and search accounts, see their
-// workspaces, ban and unban, reset a password, sign out everywhere. Admin
+// workspaces, ban and unban, reset a password or two-factor, sign out
+// everywhere. Admin
 // promotion and demotion stay on the /admins routes. Every change needs the
 // recent sign-in (reauth.ts) and lands in the instance audit trail.
 
@@ -221,6 +224,9 @@ export async function banInstanceUser(
       })
       .where(eq(userTable.id, userId));
     await tx.delete(sessionTable).where(eq(sessionTable.userId, userId));
+    await tx
+      .delete(pushSubscriptionTable)
+      .where(eq(pushSubscriptionTable.userId, userId));
     return user;
   });
   await recordInstanceAudit({
@@ -250,7 +256,7 @@ export async function unbanInstanceUser(userId: string, callerId: string) {
   return { userId, banned: false };
 }
 
-/** Signs an account out of every session (devices, browsers, the CLI). */
+/** Signs an account out of every session, and ends push to its devices. */
 export async function revokeInstanceUserSessions(
   userId: string,
   callerId: string,
@@ -262,6 +268,9 @@ export async function revokeInstanceUserSessions(
     .delete(sessionTable)
     .where(eq(sessionTable.userId, userId))
     .returning({ id: sessionTable.id });
+  await db
+    .delete(pushSubscriptionTable)
+    .where(eq(pushSubscriptionTable.userId, userId));
   await recordInstanceAudit({
     action: "user.sessions_revoked",
     target: { type: "user", id: userId, label: user.email },
@@ -269,6 +278,28 @@ export async function revokeInstanceUserSessions(
     actor: { userId: callerId },
   });
   return { userId, revoked: removed.length };
+}
+
+/**
+ * Clears the two-factor of someone who lost their authenticator and recovery
+ * codes, and signs them out everywhere. Your own goes through your account,
+ * or through the recovery CLI when that is out of reach.
+ */
+export async function resetInstanceUserTwoFactor(
+  userId: string,
+  callerId: string,
+) {
+  await enforceRateLimits([[settingsWriteLimiter, callerId]]);
+  assertNotSelf(userId, callerId, "reset two-factor for");
+  const user = await findUser(userId);
+  if (await clearTwoFactor(userId)) {
+    await recordInstanceAudit({
+      action: "user.two_factor_reset",
+      target: { type: "user", id: userId, label: user.email },
+      actor: { userId: callerId },
+    });
+  }
+  return { userId };
 }
 
 /**
@@ -334,6 +365,9 @@ export async function resetInstanceUserPassword(
       });
     }
     await tx.delete(sessionTable).where(eq(sessionTable.userId, userId));
+    await tx
+      .delete(pushSubscriptionTable)
+      .where(eq(pushSubscriptionTable.userId, userId));
   });
   await recordInstanceAudit({
     action: "user.password_set",

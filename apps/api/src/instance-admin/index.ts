@@ -14,6 +14,7 @@ import {
   listInstanceAdmins,
   removeInstanceAdmin,
 } from "./controllers/admins";
+import { listRecentDeliveryFailures } from "./controllers/failures";
 import {
   listInstancePublicBoards,
   listInstanceWorkspaces,
@@ -29,6 +30,7 @@ import {
   getInstanceUser,
   listInstanceUsers,
   resetInstanceUserPassword,
+  resetInstanceUserTwoFactor,
   revokeInstanceUserSessions,
   unbanInstanceUser,
 } from "./controllers/users";
@@ -37,8 +39,10 @@ import { confirmAdminPassword, requireRecentAuth } from "./reauth";
 import {
   instanceAdminSchema,
   instanceAuditPageSchema,
+  instanceDeliveryFailuresSchema,
   instanceOverviewSchema,
   instancePublicBoardPageSchema,
+  instanceReauthRequiredSchema,
   instanceReauthResultSchema,
   instanceSettingsSchema,
   instanceUserActionSchema,
@@ -95,11 +99,7 @@ const forbiddenOrStale = {
     "Not an instance admin, an API key instead of a user session, or no recent sign-in (JSON with code REAUTH_REQUIRED)",
   content: {
     "text/plain": { schema: z.string() },
-    "application/json": {
-      schema: z
-        .object({ code: z.string(), message: z.string() })
-        .openapi("InstanceReauthRequired"),
-    },
+    "application/json": { schema: instanceReauthRequiredSchema },
   },
 };
 const tooOften = errorResponse(
@@ -144,7 +144,7 @@ const updateSettingsRoute = createRoute({
   path: "/settings",
   tags: TAGS,
   summary: "Update instance settings",
-  description: `Save 1 to 40 settings at once; null clears a saved value. Precedence: MARGAYA_LOCK_INSTANCE_SETTINGS=true makes everything read-only; a set environment variable locks its setting (credentials lock as a group); then the saved value; then the default. Refuses a change that would leave no working sign-in method. Takes effect at once on this server and within 10 seconds on others. Limited to 30 writes a minute per admin.${ADMIN_NOTE}${REAUTH_NOTE}`,
+  description: `Save 1 to 40 settings at once; null clears a saved value. Precedence: MARGAYA_LOCK_INSTANCE_SETTINGS=true makes everything read-only; a set environment variable locks its setting (credentials lock as a group); then the saved value; then the default. Refuses a change that would leave no working sign-in method, or that requires two-factor while the caller would have to set it up first or, with no password and no working sign-in provider, could only sign in with the email links and codes it turns off. Takes effect at once on this server and within 10 seconds on others. Limited to 30 writes a minute per admin.${ADMIN_NOTE}${REAUTH_NOTE}`,
   middleware: [requireUserSession, requireInstanceAdmin, requireRecentAuth],
   request: { body: json(updateInstanceSettingsBody) },
   responses: {
@@ -152,7 +152,7 @@ const updateSettingsRoute = createRoute({
     400: errorResponse("Unknown key or invalid value"),
     403: forbiddenOrStale,
     409: errorResponse(
-      "The settings are locked, the key is set by an environment variable, or the change would remove the last sign-in method",
+      "The settings are locked, the key is set by an environment variable, the change would remove the last sign-in method, or it requires two-factor before the caller has set it up or while the caller has no password and no working sign-in provider",
     ),
     429: tooOften,
   },
@@ -300,6 +300,20 @@ const listAuditRoute = createRoute({
   },
 });
 
+const listDeliveryFailuresRoute = createRoute({
+  method: "get",
+  operationId: "listInstanceDeliveryFailures",
+  path: "/delivery-failures",
+  tags: TAGS,
+  summary: "List recent delivery failures",
+  description: `Workspace webhook deliveries that used up their retries in the last 7 days, newest first, at most 20. It never returns the destination URL, request body or response.${ADMIN_NOTE}`,
+  middleware: [requireUserSession, requireInstanceAdmin],
+  responses: {
+    200: jsonResponse("The failures", instanceDeliveryFailuresSchema),
+    403: forbidden,
+  },
+});
+
 const listUsersRoute = createRoute({
   method: "get",
   operationId: "listInstanceUsers",
@@ -374,11 +388,29 @@ const revokeUserSessionsRoute = createRoute({
   path: "/users/{userId}/revoke-sessions",
   tags: TAGS,
   summary: "Sign a user out everywhere",
-  description: `End every session of an account. Its API keys keep working; the owner revokes those. Use your own account settings for your sessions.${ADMIN_NOTE}${REAUTH_NOTE}`,
+  description: `End every session of an account. Its API keys keep working; the owner revokes those, or banning the account stops them. Use your own account settings for your sessions.${ADMIN_NOTE}${REAUTH_NOTE}`,
   middleware: [requireUserSession, requireInstanceAdmin, requireRecentAuth],
   request: { params: instanceUserParam },
   responses: {
     200: jsonResponse("Sessions ended", instanceUserActionSchema),
+    400: errorResponse("Your own account"),
+    403: forbiddenOrStale,
+    404: errorResponse("No such user"),
+    429: tooOften,
+  },
+});
+
+const resetUserTwoFactorRoute = createRoute({
+  method: "post",
+  operationId: "resetInstanceUserTwoFactor",
+  path: "/users/{userId}/reset-two-factor",
+  tags: TAGS,
+  summary: "Reset a user's two-factor",
+  description: `For someone who lost their authenticator and recovery codes: remove their two-factor and sign them out everywhere. They sign in with just their password and set it up again; if the server requires two-factor, they must before anything else. Changes nothing when two-factor is off. Use the recovery CLI for your own account.${ADMIN_NOTE}${REAUTH_NOTE}`,
+  middleware: [requireUserSession, requireInstanceAdmin, requireRecentAuth],
+  request: { params: instanceUserParam },
+  responses: {
+    200: jsonResponse("Reset", instanceUserActionSchema),
     400: errorResponse("Your own account"),
     403: forbiddenOrStale,
     404: errorResponse("No such user"),
@@ -496,6 +528,15 @@ const instanceAdmin = apiRouter()
       200,
     ),
   )
+  .openapi(resetUserTwoFactorRoute, async (c) =>
+    c.json(
+      await resetInstanceUserTwoFactor(
+        c.req.valid("param").userId,
+        c.get("userId"),
+      ),
+      200,
+    ),
+  )
   .openapi(resetUserPasswordRoute, async (c) =>
     c.json(
       await resetInstanceUserPassword(
@@ -519,6 +560,9 @@ const instanceAdmin = apiRouter()
       }),
       200,
     );
-  });
+  })
+  .openapi(listDeliveryFailuresRoute, async (c) =>
+    c.json(await listRecentDeliveryFailures(), 200),
+  );
 
 export default instanceAdmin;
