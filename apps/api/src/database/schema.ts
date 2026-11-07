@@ -40,6 +40,7 @@ import type {
 } from "../page/types";
 import type {
   TaskExportFormat,
+  TaskExportKind,
   TaskExportStatus,
   TaskExportStorage,
 } from "../task-export/types";
@@ -515,6 +516,32 @@ export const projectMemberTable = pgTable(
   ],
 );
 
+// Projects a pending invitation adds the invitee to, each with a project
+// role, when it is accepted: how a guest starts with projects.
+export const invitationProjectTable = pgTable(
+  "invitation_project",
+  {
+    invitationId: text("invitation_id")
+      .notNull()
+      .references(() => invitationTable.id, { onDelete: "cascade" }),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    role: text("role").notNull(),
+    addedBy: text("added_by").references(() => userTable.id, {
+      onDelete: "set null",
+    }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.invitationId, table.projectId] }),
+    index("invitation_project_projectId_idx").on(table.projectId),
+  ],
+);
+
 export const columnTable = pgTable(
   "column",
   {
@@ -617,6 +644,10 @@ export const taskTable = pgTable(
     priority: text("priority").default("low").notNull(),
     startDate: timestamp("start_date", { mode: "date" }),
     dueDate: timestamp("due_date", { mode: "date" }),
+    // A task that marks one date: the timeline draws it as a diamond on its
+    // due date. Everything else about it (status, relations, trash) is an
+    // ordinary task, so the rest of the app needn't know.
+    isMilestone: boolean("is_milestone").notNull().default(false),
     // Set when the task enters a completed-group column, cleared when it
     // leaves one; archiving never touches it. See task/scope.ts.
     completedAt: timestamp("completed_at", { mode: "date" }),
@@ -1112,6 +1143,39 @@ export const userNotificationPreferenceTable = pgTable(
   },
 );
 
+// One browser or installed app that receives web push for a user. The browser
+// owns the endpoint, so a device that changes accounts moves its row to the new
+// user. Rows whose push service answers 404 or 410 are deleted on delivery.
+export const pushSubscriptionTable = pgTable(
+  "push_subscription",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    endpoint: text("endpoint").notNull().unique(),
+    p256dh: text("p256dh").notNull(),
+    auth: text("auth").notNull(),
+    // A subscription only works with the key it was made with; rows from
+    // before a key rotation can never be delivered again.
+    vapidPublicKey: text("vapid_public_key").notNull(),
+    userAgent: text("user_agent"),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [index("push_subscription_user_id_idx").on(table.userId)],
+);
+
 // Email notifications waiting for their batch window
 // (EMAIL_NOTIFICATION_BATCH_WINDOW_SECONDS). The scheduler sends one email
 // per user per window and deletes the rows it handled; `claimedAt` keeps
@@ -1171,6 +1235,7 @@ export const userNotificationWorkspaceRuleTable = pgTable(
     ntfyEnabled: boolean("ntfy_enabled").default(false).notNull(),
     gotifyEnabled: boolean("gotify_enabled").default(false).notNull(),
     webhookEnabled: boolean("webhook_enabled").default(false).notNull(),
+    pushEnabled: boolean("push_enabled").default(true).notNull(),
     projectMode: text("project_mode").default("all").notNull(),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { mode: "date" })
@@ -2961,11 +3026,19 @@ export const pageTable = pgTable(
       onDelete: "set null",
       onUpdate: "cascade",
     }),
+    // Set while the page is in the trash. Only archived pages can be deleted
+    // and a trashed page stays archived, so every read that skips archived
+    // pages skips trashed ones too.
+    deletedAt: timestamp("deleted_at", { mode: "date" }),
+    deletedById: text("deleted_by_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
   },
   (table) => [
-    // Deleting a page moves its children to the root.
+    // Deleting a page for good moves any children left to the root.
     foreignKey({
       name: "page_parent_id_page_id_fk",
       columns: [table.parentId],
@@ -2984,11 +3057,80 @@ export const pageTable = pgTable(
     index("page_lockedById_idx").on(table.lockedById),
     index("page_createdById_idx").on(table.createdById),
     index("page_updatedById_idx").on(table.updatedById),
+    index("page_deletedById_idx").on(table.deletedById),
+    index("page_projectId_deletedAt_idx")
+      .on(table.projectId, table.deletedAt)
+      .where(sql`${table.deletedAt} is not null`),
     check("page_access_check", sql`${table.access} in ('public', 'private')`),
     check(
       "page_logo_check",
       sql`(${table.logoKind} is null and ${table.logoValue} is null) or (${table.logoKind} in ('emoji', 'icon') and ${table.logoValue} is not null)`,
     ),
+  ],
+);
+
+// Comments on a page. They go with the page when it is deleted for good and
+// stay internal: public links never show them. A deleted account keeps its
+// comments without an author.
+export const pageCommentTable = pgTable(
+  "page_comment",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    pageId: text("page_id")
+      .notNull()
+      .references(() => pageTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    userId: text("user_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    content: text("content").notNull(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("page_comment_page_created_idx").on(table.pageId, table.createdAt),
+    index("page_comment_user_idx").on(table.userId),
+  ],
+);
+
+// Who watches a page: its subscribed rows plus its owner, minus muted rows.
+// `subscribed = false` is an explicit unwatch (muted).
+export const pageSubscriberTable = pgTable(
+  "page_subscriber",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    pageId: text("page_id")
+      .notNull()
+      .references(() => pageTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    subscribed: boolean("subscribed").default(true).notNull(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    unique("page_subscriber_page_user_unique").on(table.pageId, table.userId),
+    index("page_subscriber_userId_idx").on(table.userId),
   ],
 );
 
@@ -3170,11 +3312,15 @@ export const taskExportTable = pgTable(
       onDelete: "set null",
       onUpdate: "cascade",
     }),
+    // "tasks", or "workspace": a ZIP of the whole workspace (workspace-export/).
+    kind: text("kind").$type<TaskExportKind>().notNull().default("tasks"),
     format: text("format").$type<TaskExportFormat>().notNull(),
     // Resolved when the export is requested, in export order.
     projectIds: text("project_ids").array().notNull(),
     splitByProject: boolean("split_by_project").notNull().default(false),
     includeArchived: boolean("include_archived").notNull().default(true),
+    // Whole-workspace exports: whether stored files go into the archive.
+    includeFiles: boolean("include_files").notNull().default(false),
     status: text("status")
       .$type<TaskExportStatus>()
       .notNull()
@@ -3182,9 +3328,12 @@ export const taskExportTable = pgTable(
     // A safe, user-facing reason; never raw exception text.
     error: text("error"),
     taskCount: integer("task_count"),
+    // Whole-workspace exports: files written, and files storage no longer had.
+    fileCount: integer("file_count"),
+    missingFileCount: integer("missing_file_count"),
     fileName: text("file_name"),
     contentType: text("content_type"),
-    sizeBytes: integer("size_bytes"),
+    sizeBytes: bigint("size_bytes", { mode: "number" }),
     storage: text("storage").$type<TaskExportStorage>(),
     // The full object key, S3_KEY_PREFIX included. Null for database
     // storage and once the file has expired.
@@ -4700,4 +4849,82 @@ export const aiConnectorTable = pgTable(
       .notNull(),
   },
   (table) => [index("ai_connector_workspace_idx").on(table.workspaceId)],
+);
+
+// SCIM provisioning connections, read by Better Auth's SCIM plugin: the
+// `providerId`, `scimToken` and `organizationId` property names are its field
+// names. Instance admins manage them (identity/); each is bound to a workspace
+// and only a hash of its token is stored.
+export const scimProviderTable = pgTable(
+  "scim_provider",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    providerId: text("provider_id").notNull().unique(),
+    scimToken: text("scim_token").notNull().unique(),
+    organizationId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    name: text("name").notNull(),
+    createdBy: text("created_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("scim_provider_workspace_idx").on(table.organizationId),
+    index("scim_provider_created_by_idx").on(table.createdBy),
+  ],
+);
+
+// SAML sign-in connections, read by Better Auth's SSO plugin (same note on the
+// property names). `samlConfig` holds only public values: the identity
+// provider's address and signing certificate.
+export const ssoProviderTable = pgTable(
+  "sso_provider",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    providerId: text("provider_id").notNull().unique(),
+    issuer: text("issuer").notNull(),
+    // Comma-separated email domains this identity provider may sign in.
+    domain: text("domain").notNull(),
+    // True on every row: an instance admin vouches for the domains.
+    domainVerified: boolean("domain_verified").notNull().default(false),
+    oidcConfig: text("oidc_config"),
+    samlConfig: text("saml_config"),
+    userId: text("user_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    organizationId: text("workspace_id").references(() => workspaceTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+    name: text("name").notNull(),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("sso_provider_domain_idx").on(table.domain),
+    index("sso_provider_user_idx").on(table.userId),
+    index("sso_provider_workspace_idx").on(table.organizationId),
+  ],
 );

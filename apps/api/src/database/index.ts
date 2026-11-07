@@ -30,13 +30,16 @@ import {
   moduleTableRelations,
   moduleTaskTableRelations,
   notificationTableRelations,
+  pageCommentTableRelations,
   pageReferenceTableRelations,
+  pageSubscriberTableRelations,
   pageTableRelations,
   pageVersionTableRelations,
   projectAutomationTableRelations,
   projectPublicationTableRelations,
   projectTableRelations,
   publicBoardBlockTableRelations,
+  pushSubscriptionTableRelations,
   quickLinkTableRelations,
   reactionTableRelations,
   recentVisitTableRelations,
@@ -107,13 +110,16 @@ import {
   moduleTable,
   moduleTaskTable,
   notificationTable,
+  pageCommentTable,
   pageReferenceTable,
+  pageSubscriberTable,
   pageTable,
   pageVersionTable,
   projectAutomationTable,
   projectPublicationTable,
   projectTable,
   publicBoardBlockTable,
+  pushSubscriptionTable,
   quickLinkTable,
   reactionTable,
   recentVisitTable,
@@ -282,6 +288,10 @@ export const schema = {
   analyticsReportTableRelations,
   pageTable,
   pageTableRelations,
+  pageCommentTable,
+  pageCommentTableRelations,
+  pageSubscriberTable,
+  pageSubscriberTableRelations,
   pageVersionTable,
   pageVersionTableRelations,
   pageReferenceTable,
@@ -297,7 +307,9 @@ export const schema = {
   projectPublicationTable,
   projectPublicationTableRelations,
   publicBoardBlockTable,
+  pushSubscriptionTable,
   publicBoardBlockTableRelations,
+  pushSubscriptionTableRelations,
   taskVoteTable,
   taskVoteTableRelations,
   instanceSettingTable,
@@ -318,6 +330,11 @@ export function getDatabasePool(): Pool {
       connectionTimeoutMillis: 5_000,
       idleTimeoutMillis: 30_000,
       max: 10,
+    });
+    // pg emits this when an idle connection drops. Unhandled, it would end
+    // the process on any database restart; the pool reconnects on its own.
+    pool.on("error", (error) => {
+      console.error("Lost an idle database connection:", error.message);
     });
   }
 

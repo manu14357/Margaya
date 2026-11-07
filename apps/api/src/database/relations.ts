@@ -34,7 +34,9 @@ import {
   moduleTable,
   moduleTaskTable,
   notificationTable,
+  pageCommentTable,
   pageReferenceTable,
+  pageSubscriberTable,
   pageTable,
   pageTemplateTable,
   pageVersionTable,
@@ -43,6 +45,7 @@ import {
   projectPublicationTable,
   projectTable,
   publicBoardBlockTable,
+  pushSubscriptionTable,
   quickLinkTable,
   reactionTable,
   recentVisitTable,
@@ -95,6 +98,7 @@ export const userTableRelations = relations(userTable, ({ many, one }) => ({
   }),
   notificationPreference: one(userNotificationPreferenceTable),
   notificationWorkspaceRules: many(userNotificationWorkspaceRuleTable),
+  pushSubscriptions: many(pushSubscriptionTable),
   sentInvitations: many(invitationTable),
   apikeys: many(apikeyTable),
   taskSubscriptions: many(taskSubscriberTable),
@@ -327,6 +331,16 @@ export const userNotificationPreferenceTableRelations = relations(
   ({ one }) => ({
     user: one(userTable, {
       fields: [userNotificationPreferenceTable.userId],
+      references: [userTable.id],
+    }),
+  }),
+);
+
+export const pushSubscriptionTableRelations = relations(
+  pushSubscriptionTable,
+  ({ one }) => ({
+    user: one(userTable, {
+      fields: [pushSubscriptionTable.userId],
       references: [userTable.id],
     }),
   }),
@@ -923,7 +937,37 @@ export const pageTableRelations = relations(pageTable, ({ one, many }) => ({
   versions: many(pageVersionTable),
   references: many(pageReferenceTable),
   assets: many(assetTable),
+  comments: many(pageCommentTable),
+  subscribers: many(pageSubscriberTable),
 }));
+
+export const pageCommentTableRelations = relations(
+  pageCommentTable,
+  ({ one }) => ({
+    page: one(pageTable, {
+      fields: [pageCommentTable.pageId],
+      references: [pageTable.id],
+    }),
+    user: one(userTable, {
+      fields: [pageCommentTable.userId],
+      references: [userTable.id],
+    }),
+  }),
+);
+
+export const pageSubscriberTableRelations = relations(
+  pageSubscriberTable,
+  ({ one }) => ({
+    page: one(pageTable, {
+      fields: [pageSubscriberTable.pageId],
+      references: [pageTable.id],
+    }),
+    user: one(userTable, {
+      fields: [pageSubscriberTable.userId],
+      references: [userTable.id],
+    }),
+  }),
+);
 
 export const pageTemplateTableRelations = relations(
   pageTemplateTable,
