@@ -62,7 +62,6 @@ const ANONYMOUS_OVERRIDES: Record<
     data: { roleName: "x", organizationId: "x", data: {} },
   },
   getOrganizationRole: { params: { roleName: "x", organizationId: "x" } },
-  removeOrganizationTeam: { data: { teamId: "x", organizationId: "x" } },
 };
 
 async function send(
@@ -368,20 +367,20 @@ test.describe("unknown ids", () => {
     expect(failures).toEqual([]);
   });
 
-  test("DELETE /estimate with an unknown project answers the documented 400", async ({
+  test("DELETE /estimate with an unknown project answers the documented 404", async ({
     apiAs,
   }) => {
-    // Regression: deleteEstimate once answered an undocumented 400. The
-    // contract now documents 400 "Unknown project" for this case.
+    // Regression: deleteEstimate once answered an undocumented 400. An
+    // unknown project now answers 404, like a hidden or trashed one.
     const admin = await apiAs("admin");
     const response = await admin.delete(
       "/api/estimate/e2e-unknown-id/e2e-unknown-id",
     );
-    const message = await expectStatus(response, 400);
-    expect(message).toContain("Workspace ID could not be determined");
+    const message = await expectStatus(response, 404);
+    expect(message).toContain("Project not found");
     const documented = operations.find(
       (operation) => operation.operationId === "deleteEstimate",
     )?.responses;
-    expect(documented).toContain("400");
+    expect(documented).toContain("404");
   });
 });

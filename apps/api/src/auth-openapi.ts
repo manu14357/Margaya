@@ -49,60 +49,6 @@ export function organizationRoutes(registry: OpenAPIHono["openAPIRegistry"]) {
 
   registry.registerPath({
     method: "post",
-    path: "/auth/organization/add-team-member",
-    tags: ["Organization Management"],
-    operationId: "addOrganizationTeamMember",
-    summary: "Add Organization Team Member",
-    description: "The newly created member",
-    request: {
-      body: {
-        required: true,
-        content: {
-          "application/json": {
-            schema: z.object({
-              teamId: z.string().openapi({
-                description: "The team the user should be a member of.",
-              }),
-              userId: z.string().openapi({
-                description:
-                  "The user Id which represents the user to be added as a member.",
-              }),
-              organizationId: z.string().optional().openapi({
-                description:
-                  "The organization ID which the team falls under. If not provided, it will default to the user's active organization.",
-              }),
-            }),
-          },
-        },
-      },
-    },
-    responses: {
-      200: {
-        description: "Success",
-        content: {
-          "application/json": {
-            schema: z.object({
-              id: z.string().openapi({
-                description: "Unique identifier of the team member",
-              }),
-              userId: z
-                .string()
-                .openapi({ description: "The user ID of the team member" }),
-              teamId: z.string().openapi({
-                description: "The team ID of the team the team member is in",
-              }),
-              createdAt: z.string().openapi({
-                description: "Timestamp when the team member was created",
-              }),
-            }),
-          },
-        },
-      },
-    },
-  });
-
-  registry.registerPath({
-    method: "post",
     path: "/auth/organization/cancel-invitation",
     tags: ["Organization Management"],
     operationId: "cancelOrganizationInvitation",
@@ -231,57 +177,6 @@ export function organizationRoutes(registry: OpenAPIHono["openAPIRegistry"]) {
     },
     responses: {
       200: { description: "Success" },
-    },
-  });
-
-  registry.registerPath({
-    method: "post",
-    path: "/auth/organization/create-team",
-    tags: ["Organization Management"],
-    operationId: "createOrganizationTeam",
-    summary: "Create Organization Team",
-    description: "Create a new team within an organization",
-    request: {
-      body: {
-        required: true,
-        content: {
-          "application/json": {
-            schema: z.object({
-              name: z.string().openapi({
-                description: 'The name of the team. Eg: "my-team"',
-              }),
-              organizationId: z.string().optional().openapi({
-                description:
-                  'The organization ID which the team will be created in. Defaults to the active organization. Eg: "organization-id"',
-              }),
-            }),
-          },
-        },
-      },
-    },
-    responses: {
-      200: {
-        description: "Success",
-        content: {
-          "application/json": {
-            schema: z.object({
-              id: z.string().openapi({
-                description: "Unique identifier of the created team",
-              }),
-              name: z.string().openapi({ description: "Name of the team" }),
-              organizationId: z.string().openapi({
-                description: "ID of the organization the team belongs to",
-              }),
-              createdAt: z.string().openapi({
-                description: "Timestamp when the team was created",
-              }),
-              updatedAt: z.string().openapi({
-                description: "Timestamp when the team was last updated",
-              }),
-            }),
-          },
-        },
-      },
     },
   });
 
@@ -518,7 +413,6 @@ export function organizationRoutes(registry: OpenAPIHono["openAPIRegistry"]) {
                 description:
                   "Resend the invitation email, if the user is already invited. Eg: true",
               }),
-              teamId: z.union([z.string(), z.array(z.string())]).optional(),
             }),
           },
         },
@@ -625,75 +519,6 @@ export function organizationRoutes(registry: OpenAPIHono["openAPIRegistry"]) {
 
   registry.registerPath({
     method: "get",
-    path: "/auth/organization/list-team-members",
-    tags: ["Organization Management"],
-    operationId: "listOrganizationTeamMembers",
-    summary: "List Organization Team Members",
-    description: "List the members of the given team.",
-    responses: {
-      200: {
-        description: "Success",
-        content: {
-          "application/json": {
-            schema: z.array(
-              z.object({
-                id: z.string().openapi({
-                  description: "Unique identifier of the team member",
-                }),
-                userId: z
-                  .string()
-                  .openapi({ description: "The user ID of the team member" }),
-                teamId: z.string().openapi({
-                  description: "The team ID of the team the team member is in",
-                }),
-                createdAt: z.string().openapi({
-                  description: "Timestamp when the team member was created",
-                }),
-              }),
-            ),
-          },
-        },
-      },
-    },
-  });
-
-  registry.registerPath({
-    method: "get",
-    path: "/auth/organization/list-teams",
-    tags: ["Organization Management"],
-    operationId: "listOrganizationTeams",
-    summary: "List Organization Teams",
-    description: "List all teams in an organization",
-    responses: {
-      200: {
-        description: "Success",
-        content: {
-          "application/json": {
-            schema: z.array(
-              z.object({
-                id: z
-                  .string()
-                  .openapi({ description: "Unique identifier of the team" }),
-                name: z.string().openapi({ description: "Name of the team" }),
-                organizationId: z.string().openapi({
-                  description: "ID of the organization the team belongs to",
-                }),
-                createdAt: z.string().openapi({
-                  description: "Timestamp when the team was created",
-                }),
-                updatedAt: z.string().openapi({
-                  description: "Timestamp when the team was last updated",
-                }),
-              }),
-            ),
-          },
-        },
-      },
-    },
-  });
-
-  registry.registerPath({
-    method: "get",
     path: "/auth/organization/list-user-invitations",
     tags: ["Organization Management"],
     operationId: "listOrganizationUserInvitations",
@@ -714,10 +539,6 @@ export function organizationRoutes(registry: OpenAPIHono["openAPIRegistry"]) {
                 inviterId: z.string().openapi({
                   description: "The ID of the user who created the invitation",
                 }),
-                teamId: z.string().nullable().optional().openapi({
-                  description:
-                    "The ID of the team associated with the invitation",
-                }),
                 status: z.string(),
                 expiresAt: z.string(),
                 createdAt: z.string(),
@@ -725,21 +546,6 @@ export function organizationRoutes(registry: OpenAPIHono["openAPIRegistry"]) {
             ),
           },
         },
-      },
-    },
-  });
-
-  registry.registerPath({
-    method: "get",
-    path: "/auth/organization/list-user-teams",
-    tags: ["Organization Management"],
-    operationId: "listOrganizationUserTeams",
-    summary: "List Organization User Teams",
-    description: "List all teams that the current user is a part of.",
-    responses: {
-      200: {
-        description: "Success",
-        content: { "application/json": { schema: z.array(z.unknown()) } },
       },
     },
   });
@@ -826,93 +632,6 @@ export function organizationRoutes(registry: OpenAPIHono["openAPIRegistry"]) {
 
   registry.registerPath({
     method: "post",
-    path: "/auth/organization/remove-team",
-    tags: ["Organization Management"],
-    operationId: "removeOrganizationTeam",
-    summary: "Remove Organization Team",
-    description: "Remove a team from an organization",
-    request: {
-      body: {
-        required: true,
-        content: {
-          "application/json": {
-            schema: z.object({
-              teamId: z.string().openapi({
-                description: 'The team ID of the team to remove. Eg: "team-id"',
-              }),
-              organizationId: z.string().optional().openapi({
-                description:
-                  'The organization ID which the team falls under. If not provided, it will default to the user\'s active organization. Eg: "organization-id"',
-              }),
-            }),
-          },
-        },
-      },
-    },
-    responses: {
-      200: {
-        description: "Success",
-        content: {
-          "application/json": {
-            schema: z.object({
-              message: z.enum(["Team removed successfully."]).openapi({
-                description:
-                  "Confirmation message indicating successful removal",
-              }),
-            }),
-          },
-        },
-      },
-    },
-  });
-
-  registry.registerPath({
-    method: "post",
-    path: "/auth/organization/remove-team-member",
-    tags: ["Organization Management"],
-    operationId: "removeOrganizationTeamMember",
-    summary: "Remove Organization Team Member",
-    description: "Remove a member from a team",
-    request: {
-      body: {
-        required: true,
-        content: {
-          "application/json": {
-            schema: z.object({
-              teamId: z.string().openapi({
-                description: "The team the user should be removed from.",
-              }),
-              userId: z.string().openapi({
-                description: "The user which should be removed from the team.",
-              }),
-              organizationId: z.string().optional().openapi({
-                description:
-                  "The organization ID which the team falls under. If not provided, it will default to the user's active organization.",
-              }),
-            }),
-          },
-        },
-      },
-    },
-    responses: {
-      200: {
-        description: "Success",
-        content: {
-          "application/json": {
-            schema: z.object({
-              message: z.enum(["Team member removed successfully."]).openapi({
-                description:
-                  "Confirmation message indicating successful removal",
-              }),
-            }),
-          },
-        },
-      },
-    },
-  });
-
-  registry.registerPath({
-    method: "post",
     path: "/auth/organization/set-active",
     tags: ["Organization Management"],
     operationId: "setOrganizationActive",
@@ -931,36 +650,6 @@ export function organizationRoutes(registry: OpenAPIHono["openAPIRegistry"]) {
               organizationSlug: z.string().optional().openapi({
                 description:
                   'The organization slug to set as active. It can be null to unset the active organization if organizationId is not provided. Eg: "org-slug"',
-              }),
-            }),
-          },
-        },
-      },
-    },
-    responses: {
-      200: {
-        description: "Success",
-        content: { "application/json": { schema: z.unknown() } },
-      },
-    },
-  });
-
-  registry.registerPath({
-    method: "post",
-    path: "/auth/organization/set-active-team",
-    tags: ["Organization Management"],
-    operationId: "setOrganizationActiveTeam",
-    summary: "Set Organization Active Team",
-    description: "Set the active team for the current active organization",
-    request: {
-      body: {
-        required: true,
-        content: {
-          "application/json": {
-            schema: z.object({
-              teamId: z.string().nullable().optional().openapi({
-                description:
-                  "The team id to set as active. It can be null to unset the active team",
               }),
             }),
           },
@@ -1115,62 +804,6 @@ export function organizationRoutes(registry: OpenAPIHono["openAPIRegistry"]) {
     },
     responses: {
       200: { description: "Success" },
-    },
-  });
-
-  registry.registerPath({
-    method: "post",
-    path: "/auth/organization/update-team",
-    tags: ["Organization Management"],
-    operationId: "updateOrganizationTeam",
-    summary: "Update Organization Team",
-    description: "Update an existing team in an organization",
-    request: {
-      body: {
-        required: true,
-        content: {
-          "application/json": {
-            schema: z.object({
-              teamId: z.string().openapi({
-                description: 'The ID of the team to be updated. Eg: "team-id"',
-              }),
-              data: z.object({
-                id: z.string().optional(),
-                name: z.string().optional(),
-                organizationId: z.string().optional(),
-                createdAt: z.string().optional(),
-                updatedAt: z.string().optional(),
-              }),
-            }),
-          },
-        },
-      },
-    },
-    responses: {
-      200: {
-        description: "Success",
-        content: {
-          "application/json": {
-            schema: z.object({
-              id: z.string().openapi({
-                description: "Unique identifier of the updated team",
-              }),
-              name: z
-                .string()
-                .openapi({ description: "Updated name of the team" }),
-              organizationId: z.string().openapi({
-                description: "ID of the organization the team belongs to",
-              }),
-              createdAt: z.string().openapi({
-                description: "Timestamp when the team was created",
-              }),
-              updatedAt: z.string().openapi({
-                description: "Timestamp when the team was last updated",
-              }),
-            }),
-          },
-        },
-      },
     },
   });
 }

@@ -489,104 +489,6 @@ test(
 );
 
 test(
-  "teams: create, rename, add and remove members, activate and remove",
-  covers(
-    "createOrganizationTeam",
-    "listOrganizationTeams",
-    "updateOrganizationTeam",
-    "addOrganizationTeamMember",
-    "listOrganizationTeamMembers",
-    "listOrganizationUserTeams",
-    "setOrganizationActiveTeam",
-    "removeOrganizationTeamMember",
-    "removeOrganizationTeam",
-  ),
-  async () => {
-    type Team = { id: string; name: string; organizationId: string };
-    const team = await expectJson<Team>(
-      await owner.ctx.post("/api/auth/organization/create-team", {
-        data: { name: uniqueName("Team"), organizationId: workspace.id },
-      }),
-    );
-    expect(team.organizationId).toBe(workspace.id);
-
-    const teams = await expectJson<Team[]>(
-      await owner.ctx.get("/api/auth/organization/list-teams", {
-        params: { organizationId: workspace.id },
-      }),
-    );
-    expect(teams.map((entry) => entry.id)).toContain(team.id);
-
-    const renamedTo = uniqueName("Team renamed");
-    const renamed = await expectJson<Team>(
-      await owner.ctx.post("/api/auth/organization/update-team", {
-        data: { teamId: team.id, data: { name: renamedTo } },
-      }),
-    );
-    expect(renamed.name).toBe(renamedTo);
-
-    const added = await expectJson<{ teamId: string; userId: string }>(
-      await owner.ctx.post("/api/auth/organization/add-team-member", {
-        data: {
-          teamId: team.id,
-          userId: member.id,
-          organizationId: workspace.id,
-        },
-      }),
-    );
-    expect(added).toMatchObject({ teamId: team.id, userId: member.id });
-
-    // Only team members may list a team's members.
-    const teamMembers = await expectJson<{ userId: string }[]>(
-      await member.ctx.get("/api/auth/organization/list-team-members", {
-        params: { teamId: team.id },
-      }),
-    );
-    expect(teamMembers.map((entry) => entry.userId)).toContain(member.id);
-
-    const userTeams = await expectJson<Team[]>(
-      await member.ctx.get("/api/auth/organization/list-user-teams"),
-    );
-    expect(userTeams.map((entry) => entry.id)).toContain(team.id);
-
-    await expectJson(
-      await member.ctx.post("/api/auth/organization/set-active-team", {
-        data: { teamId: team.id },
-      }),
-    );
-    await expectJson(
-      await member.ctx.post("/api/auth/organization/set-active-team", {
-        data: { teamId: null },
-      }),
-    );
-
-    const removedMember = await expectJson<{ message: string }>(
-      await owner.ctx.post("/api/auth/organization/remove-team-member", {
-        data: {
-          teamId: team.id,
-          userId: member.id,
-          organizationId: workspace.id,
-        },
-      }),
-    );
-    expect(removedMember.message).toMatch(/removed/i);
-
-    const removed = await expectJson<{ message: string }>(
-      await owner.ctx.post("/api/auth/organization/remove-team", {
-        data: { teamId: team.id, organizationId: workspace.id },
-      }),
-    );
-    expect(removed.message).toMatch(/removed/i);
-    const after = await expectJson<Team[]>(
-      await owner.ctx.get("/api/auth/organization/list-teams", {
-        params: { organizationId: workspace.id },
-      }),
-    );
-    expect(after.map((entry) => entry.id)).not.toContain(team.id);
-  },
-);
-
-test(
   "rename the workspace; members leave or are removed; schedule and cancel its deletion",
   covers(
     "updateOrganization",
@@ -628,11 +530,12 @@ test(
       }),
     );
     expect(removed.member.userId).toBe(invitee.id);
+    // This was their only workspace, so removing them also ended their session.
     await expectStatus(
       await invitee.ctx.get("/api/project", {
         params: { workspaceId: workspace.id },
       }),
-      403,
+      401,
     );
 
     // Deleting goes through a grace period: Better Auth's delete answers 409

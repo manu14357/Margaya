@@ -53,11 +53,14 @@ export const Route = createFileRoute(
 
 // Every permission that can be saved must also be visible and removable.
 // Include provider-owned resources and persisted unknown entries in the editor.
+// The exception is "team": the provider's vocabulary still has it and older
+// role rows may hold it, but Teams are off, so those rights do nothing.
+const HIDDEN_RESOURCES = new Set(["team"]);
+
 const RESOURCE_LABELS: Record<string, string> = {
   organization: "Workspace administration",
   member: "Members",
   invitation: "Invitations",
-  team: "Teams",
   ac: "Roles and permissions",
   project: "Projects",
   task: "Tasks",
@@ -105,18 +108,6 @@ const PERMISSION_LABELS: Record<
   "invitation:cancel": {
     label: "Cancel invitations",
     description: "Revoke pending workspace invitations.",
-  },
-  "team:create": {
-    label: "Create teams",
-    description: "Create teams in this workspace.",
-  },
-  "team:update": {
-    label: "Edit teams",
-    description: "Change teams and team membership.",
-  },
-  "team:delete": {
-    label: "Delete teams",
-    description: "Delete teams in this workspace.",
   },
   "ac:create": {
     label: "Create roles",
@@ -312,10 +303,10 @@ const PERMISSION_LABELS: Record<
 // `seedDefaultWorkspaceRoles` and the afterCreateOrganization hook). They show
 // up in `customRoles` like any other dynamic role but get a "Default" badge,
 // can't be deleted, and reserve their names against new custom roles. Owner
-// stays a static role on the auth side and is hidden from this UI, but its
-// name is still reserved here.
+// and guest stay static roles on the auth side and are hidden from this UI,
+// but their names are still reserved here.
 const DEFAULT_ROLE_NAME_SET = new Set<string>(DEFAULT_ROLE_NAMES);
-const RESERVED_ROLE_NAMES = [...DEFAULT_ROLE_NAMES, "owner"];
+const RESERVED_ROLE_NAMES = [...DEFAULT_ROLE_NAMES, "owner", "guest"];
 
 const DEFAULT_ROLE_DESCRIPTIONS: Record<string, string> = {
   viewer: "Read-only access to projects, tasks, and workspace.",
@@ -344,8 +335,9 @@ function permissionsEqual(
 }
 
 function permissionCount(permissions: Record<string, string[] | undefined>) {
-  return Object.values(permissions).reduce(
-    (sum, actions) => sum + (actions?.length ?? 0),
+  return Object.entries(permissions).reduce(
+    (sum, [resource, actions]) =>
+      HIDDEN_RESOURCES.has(resource) ? sum : sum + (actions?.length ?? 0),
     0,
   );
 }
@@ -603,7 +595,8 @@ export function PermissionList({
       ...Object.keys(permissions),
       ...Object.keys(selected ?? {}),
     ]);
-    return [...resources].map((resource) => ({
+    const visible = [...resources].filter((r) => !HIDDEN_RESOURCES.has(r));
+    return visible.map((resource) => ({
       resource,
       actions: [
         ...new Set([

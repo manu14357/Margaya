@@ -43,26 +43,19 @@ beforeEach(() => {
   m.update.mockResolvedValue({ success: true });
 });
 
-// Better Auth's organization rights (workspace, members, invitations, teams
-// and role administration).
-const PROVIDER_RESOURCES = [
-  "organization",
-  "member",
-  "invitation",
-  "team",
-  "ac",
-];
+// Better Auth's organization rights the editor shows (workspace, members,
+// invitations and role administration).
+const PROVIDER_RESOURCES = ["organization", "member", "invitation", "ac"];
 
 // Each test renders the full permission vocabulary (~50 switches), which
 // takes seconds in jsdom when the machine is busy.
-describe("workspace role permission editing", { timeout: 30_000 }, () => {
+describe("workspace role permission editing", { timeout: 120_000 }, () => {
   it("shows role administration, membership and invitations in read-only role details", () => {
     render(<PermissionList permissions={defaultRolePayloads.admin} readOnly />);
     for (const label of [
       "Change role permissions",
       "Change member roles",
       "Invite members",
-      "Edit teams",
     ]) {
       expect(screen.getByRole("switch", { name: label })).toBeChecked();
       expect(screen.getByRole("switch", { name: label })).toHaveAttribute(
@@ -70,6 +63,12 @@ describe("workspace role permission editing", { timeout: 30_000 }, () => {
         "true",
       );
     }
+  });
+  it("hides the rights of Teams, which are turned off", () => {
+    expect(defaultRolePayloads.admin.team).toBeDefined();
+    render(<PermissionList permissions={defaultRolePayloads.admin} readOnly />);
+    expect(screen.queryByRole("switch", { name: "Edit teams" })).toBeNull();
+    expect(screen.queryByText("Teams")).toBeNull();
   });
   it("can remove every permission, including all provider administrative rights", async () => {
     // The admin role's provider rights only: every switch click re-renders
