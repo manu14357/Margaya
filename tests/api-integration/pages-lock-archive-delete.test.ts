@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import { beforeEach, describe, expect, it } from "vitest";
 import db, { schema } from "../../apps/api/src/database";
+import { mockAuthenticatedSession } from "./helpers/auth";
 import { resetTestDatabase } from "./helpers/database";
 import {
   clearPageEvents,
@@ -206,10 +207,27 @@ describe("API integration: page lock, archive and delete", () => {
       { method: "DELETE" },
     );
     expect(deleted).toEqual({ id: page.id, projectId: s.project.id });
-    expect(await pageRow(page.id)).toBeUndefined();
     const childRow = await pageRow(child.id);
     expect(childRow?.parentId).toBeNull();
     expect(childRow?.archivedAt).not.toBeNull();
+
+    // It waits in the trash with everything attached to it.
+    const trashed = await pageRow(page.id);
+    expect(trashed?.deletedAt).not.toBeNull();
+    const kept = await db
+      .select()
+      .from(schema.pageVersionTable)
+      .where(eq(schema.pageVersionTable.pageId, page.id));
+    expect(kept).toHaveLength(1);
+    expect(pageEvents("page.deleted")).toHaveLength(1);
+
+    // Deleting it for good removes the rest.
+    mockAuthenticatedSession(s.ben);
+    const purged = await s.app.request(`/api/trash/page/${page.id}`, {
+      method: "DELETE",
+    });
+    expect(purged.status, await purged.clone().text()).toBe(200);
+    expect(await pageRow(page.id)).toBeUndefined();
 
     const versions = await db
       .select()
@@ -232,7 +250,6 @@ describe("API integration: page lock, archive and delete", () => {
       .where(eq(schema.recentVisitTable.entityId, page.id));
     expect(visits).toHaveLength(0);
     expect(await pageRow(linker.id)).toBeDefined();
-    expect(pageEvents("page.deleted")).toHaveLength(1);
   });
 
   it("lets a manager delete someone else's archived page", async () => {
@@ -240,6 +257,6 @@ describe("API integration: page lock, archive and delete", () => {
     const page = await s.create(s.ben);
     await s.ok(s.ben, `/${page.id}/archive`, { method: "POST" });
     await s.ok(s.admin, `/${page.id}`, { method: "DELETE" });
-    expect(await pageRow(page.id)).toBeUndefined();
+    expect((await pageRow(page.id))?.deletedById).toBe(s.admin.id);
   });
 });

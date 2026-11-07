@@ -22,6 +22,7 @@ export type PageCapabilitiesJson = {
   canMove: boolean;
   canCreateSubpage: boolean;
   canRestoreVersion: boolean;
+  canComment: boolean;
 };
 
 export type PageSummaryJson = {

@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq, isNotNull, isNull } from "drizzle-orm";
 import type { Context, Next } from "hono";
 import { HTTPException } from "hono/http-exception";
 import db from "../database";
@@ -13,9 +13,10 @@ import { PAGE_MESSAGES } from "./rules";
  * `workspaceId` and `projectId`. A missing page, or one in a workspace the
  * caller can't access, answers 404 so its existence is not revealed.
  * Visibility of private pages is checked by the controllers. Reads the raw
- * path param: route middleware runs before the validators.
+ * path param: route middleware runs before the validators. Live pages only,
+ * or with `trashed`, pages in the trash only.
  */
-export function pageAccess(idKey = "id") {
+export function pageAccess(idKey = "id", { trashed = false } = {}) {
   return async (c: Context, next: Next) => {
     const userId = c.get("userId");
     if (!userId) throw new HTTPException(401, { message: "Unauthorized" });
@@ -28,7 +29,14 @@ export function pageAccess(idKey = "id") {
             projectId: pageTable.projectId,
           })
           .from(pageTable)
-          .where(eq(pageTable.id, pageId))
+          .where(
+            and(
+              eq(pageTable.id, pageId),
+              trashed
+                ? isNotNull(pageTable.deletedAt)
+                : isNull(pageTable.deletedAt),
+            ),
+          )
           .limit(1)
       : [];
     if (!page)

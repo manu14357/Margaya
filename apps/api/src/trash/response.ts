@@ -1,4 +1,5 @@
 import { nullableResponseTimestamp, responseTimestamp, z } from "../openapi";
+import { PAGE_ACCESS, PAGE_LOGO_KINDS } from "../page/types";
 
 const deletedByShape = {
   deletedAt: responseTimestamp.openapi({ description: "When it was deleted." }),
@@ -63,6 +64,32 @@ export const trashedProjectListSchema = z
     hasMore: z.boolean(),
   })
   .openapi("TrashedProjectList");
+
+export const trashedPageSchema = z
+  .object({
+    id: z.string(),
+    projectId: z.string(),
+    title: z.string().openapi({ description: "May be empty (Untitled)." }),
+    logoKind: z.enum(PAGE_LOGO_KINDS).nullable(),
+    logoValue: z.string().nullable(),
+    access: z.enum(PAGE_ACCESS),
+    canManage: z.boolean().openapi({
+      description:
+        "The caller may restore it or delete it permanently: its owner with page:update, or page:delete.",
+    }),
+    ...deletedByShape,
+  })
+  .openapi("TrashedPage");
+
+export const trashedPageListSchema = z
+  .object({
+    items: z.array(trashedPageSchema),
+    total: z.number().int(),
+    page: z.number().int(),
+    limit: z.number().int(),
+    hasMore: z.boolean(),
+  })
+  .openapi("TrashedPageList");
 
 export const emptyTrashResultSchema = z
   .object({

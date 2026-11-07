@@ -1,18 +1,16 @@
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
-import { pageReferenceTable, pageTable } from "../../database/schema";
-import { removeEntityReferences } from "../../entity-reference/registry";
+import { pageTable } from "../../database/schema";
 import { publishEvent } from "../../events";
-import { cleanUpDeletedPageAssets, pageAssets } from "../assets";
 import { pageRoomHooks } from "../content";
-import { isPageOwner, PAGE_MESSAGES, type PageCaller } from "../rules";
-import { loadVisiblePage, pageEventPayload } from "./shared";
+import { canTrashPage, PAGE_MESSAGES, type PageCaller } from "../rules";
+import { loadVisiblePage, lockPageTree, pageEventPayload } from "./shared";
 
 /**
- * Deletes an archived page with its versions and references (K12). Its
- * children move to the root and stay archived. Links to it, favorites,
- * recent visits and its files are cleaned up after the commit, best effort.
+ * Moves an archived page to the trash (K12, C7). Its children move to the
+ * root and stay archived: they may be someone else's, so they never go with
+ * it. Everything else waits for a permanent delete (trash/page-trash.ts).
  */
 async function deletePage({
   pageId,
@@ -27,40 +25,35 @@ async function deletePage({
         message: PAGE_MESSAGES.deleteNotArchived,
       });
     }
-    if (
-      !((isPageOwner(page, caller) && caller.canUpdate) || caller.isManager)
-    ) {
+    if (!canTrashPage(page, caller)) {
       throw new HTTPException(403, { message: PAGE_MESSAGES.deleteForbidden });
     }
   };
   check(await loadVisiblePage(db, pageId, caller));
 
   await pageRoomHooks().closeRooms([pageId]);
-  const assets = await pageAssets(pageId);
 
   const page = await db.transaction(async (tx) => {
+    const located = await loadVisiblePage(tx, pageId, caller);
+    if (located.projectId) await lockPageTree(tx, located.projectId);
     const current = await loadVisiblePage(tx, pageId, caller, {
       forUpdate: true,
     });
     check(current);
-    await tx.delete(pageTable).where(eq(pageTable.id, pageId));
+    await tx
+      .update(pageTable)
+      .set({ parentId: null })
+      .where(eq(pageTable.parentId, pageId));
+    await tx
+      .update(pageTable)
+      .set({
+        deletedAt: new Date(),
+        deletedById: caller.userId,
+        parentId: null,
+      })
+      .where(eq(pageTable.id, pageId));
     return current;
   });
-
-  try {
-    await db
-      .delete(pageReferenceTable)
-      .where(
-        and(
-          eq(pageReferenceTable.entityType, "page"),
-          eq(pageReferenceTable.entityId, pageId),
-        ),
-      );
-    await removeEntityReferences("page", [pageId]);
-    await cleanUpDeletedPageAssets(page, assets);
-  } catch (error) {
-    console.error("Page delete cleanup failed:", error);
-  }
 
   // Access and title let workspace webhooks skip private pages (D14).
   await publishEvent("page.deleted", {

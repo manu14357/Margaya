@@ -71,8 +71,10 @@ export function visiblePageCondition(caller: PageCaller): SQL {
     eq(pageTable.ownerId, caller.userId),
   ];
   if (caller.isManager) conditions.push(isNull(pageTable.ownerId));
-  // Pages of a restricted project the caller cannot see stay hidden.
+  // Trashed pages read as gone; pages of a restricted project the caller
+  // cannot see stay hidden.
   return and(
+    isNull(pageTable.deletedAt),
     or(...conditions),
     projectVisibleSql(pageTable.projectId, caller.userId),
   ) as SQL;
@@ -125,8 +127,8 @@ export function toPageSummary(
 export type PageSummaryResponse = ReturnType<typeof toPageSummary>;
 
 /**
- * The page row, or 404 when it is missing or the caller can't see it.
- * `forUpdate` locks the row for the rest of the transaction.
+ * The page row, or 404 when it is missing, in the trash or the caller can't
+ * see it. `forUpdate` locks the row for the rest of the transaction.
  */
 export async function loadVisiblePage(
   reader: Transaction | typeof db,
@@ -140,7 +142,7 @@ export async function loadVisiblePage(
     .where(eq(pageTable.id, pageId))
     .limit(1);
   const [page] = forUpdate ? await query.for("update") : await query;
-  if (!page || !canSeePage(page, caller)) {
+  if (!page || page.deletedAt || !canSeePage(page, caller)) {
     throw new HTTPException(404, { message: PAGE_MESSAGES.notFound });
   }
   return page;

@@ -22,4 +22,5 @@ export const PAGE_LIMITS = {
   yjsStateBytes: 5 * 1024 * 1024,
   versionsPerPage: 20,
   versionCoalesceMs: 10 * 60 * 1000,
+  commentLength: 20_000,
 } as const;

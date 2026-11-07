@@ -6,21 +6,32 @@ import {
   errorResponse,
   jsonResponse,
 } from "../openapi";
+import { pageCallerOf } from "../page/controllers/shared";
+import { pageAccess, requirePagesFeatureForPage } from "../page/middleware";
+import { deletedPageSchema, pageSchema } from "../page/response";
+import { requireProjectFeature } from "../project/features";
 import { projectSchema } from "../project/response";
 import { requestHiddenProjectIds } from "../project/visibility";
 import { taskSchema } from "../task/response";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import { listProjectTrash, listWorkspaceTrash, liveProjectOf } from "./lists";
+import {
+  listPageTrash,
+  purgeTrashedPage,
+  restoreTrashedPage,
+} from "./page-trash";
 import { purgeTrashedProject, restoreTrashedProject } from "./project-trash";
 import {
   emptyTrashResultSchema,
+  trashedPageListSchema,
   trashedProjectListSchema,
   trashedTaskListSchema,
 } from "./response";
 import {
   listProjectTrashQuery,
   listTrashQuery,
+  trashedPageParam,
   trashedTaskParam,
   trashProjectParam,
 } from "./schema";
@@ -30,11 +41,17 @@ import {
   restoreTrashedTask,
 } from "./task-trash";
 
-// Trash and restore (C7). Deleting goes through the task and project delete
-// routes; these list the trash, restore, and delete permanently. Restoring
-// needs the same permission as deleting.
+// Trash and restore (C7). Deleting goes through the task, project and page
+// delete routes; these list the trash, restore, and delete permanently.
+// Restoring needs the same permission as deleting.
 
 const TAGS = ["Trash"];
+
+const trashedPageRoute = [
+  pageAccess("pageId", { trashed: true }),
+  requireWorkspacePermission({ page: ["read"] }),
+  requirePagesFeatureForPage,
+] as const;
 
 const listProjectTrashRoute = createRoute({
   method: "get",
@@ -185,7 +202,74 @@ const purgeProjectRoute = createRoute({
   },
 });
 
-const trash = apiRouter<BaseVariables & { workspaceId: string }>()
+const listPageTrashRoute = createRoute({
+  method: "get",
+  operationId: "listPageTrash",
+  path: "/project/{projectId}/pages",
+  tags: TAGS,
+  summary: "List a project's deleted pages",
+  description:
+    "One page of the pages deleted from a project that the caller can see, most recently deleted first, with who deleted them and when. Another user's private page is never listed. Needs page:read and the project's Pages feature.",
+  middleware: [
+    workspaceAccess.fromProject("projectId", {
+      notFoundMessage: "Project not found",
+    }),
+    requireWorkspacePermission({ page: ["read"] }),
+    requireProjectFeature("pages", { resource: "project", key: "projectId" }),
+  ] as const,
+  request: { params: trashProjectParam, query: listTrashQuery },
+  responses: {
+    200: jsonResponse("A page of trashed pages", trashedPageListSchema),
+    400: errorResponse("Invalid query"),
+    403: errorResponse(
+      "No workspace access, missing page:read, or the project's Pages feature is off",
+    ),
+    404: errorResponse("Project not found, or in the trash"),
+  },
+});
+
+const restorePageRoute = createRoute({
+  method: "post",
+  operationId: "restoreDeletedPage",
+  path: "/page/{pageId}/restore",
+  tags: TAGS,
+  summary: "Restore a deleted page",
+  description:
+    "Bring a trashed page back into the archive, at the top level, with its comments, watchers and version history (page.restored is published). Sub-pages stay where they moved when it was deleted. Its owner with page:update, or page:delete.",
+  middleware: [...trashedPageRoute] as const,
+  request: { params: trashedPageParam },
+  responses: {
+    200: jsonResponse("The restored page", pageSchema),
+    403: errorResponse(
+      "Not the owner or an admin, or the project's Pages feature is off",
+    ),
+    404: errorResponse("Page not found in the trash"),
+    409: errorResponse("The project has 5,000 pages"),
+  },
+});
+
+const purgePageRoute = createRoute({
+  method: "delete",
+  operationId: "purgePage",
+  path: "/page/{pageId}",
+  tags: TAGS,
+  summary: "Delete a page permanently",
+  description:
+    "Permanently delete a trashed page with its comments, watchers and version history (page.purged is published). Links to it, favorites and recent visits are removed; its files are deleted unless another page still links them. This cannot be undone. Its owner with page:update, or page:delete.",
+  middleware: [...trashedPageRoute] as const,
+  request: { params: trashedPageParam },
+  responses: {
+    200: jsonResponse("The deleted page", deletedPageSchema),
+    403: errorResponse(
+      "Not the owner or an admin, or the project's Pages feature is off",
+    ),
+    404: errorResponse("Page not found in the trash"),
+  },
+});
+
+const trash = apiRouter<
+  BaseVariables & { workspaceId: string; projectId: string | null }
+>()
   .openapi(listProjectTrashRoute, async (c) => {
     const project = await liveProjectOf(
       c.req.valid("param").projectId,
@@ -245,6 +329,38 @@ const trash = apiRouter<BaseVariables & { workspaceId: string }>()
       c.get("userId"),
     );
     return c.json(project, 200);
-  });
+  })
+  .openapi(listPageTrashRoute, async (c) => {
+    const { projectId } = c.req.valid("param");
+    const project = await liveProjectOf(projectId, c.get("workspaceId"));
+    if (!project)
+      throw new HTTPException(404, { message: "Project not found" });
+    return c.json(
+      await listPageTrash(
+        project.id,
+        await pageCallerOf(c),
+        c.req.valid("query"),
+      ),
+      200,
+    );
+  })
+  .openapi(restorePageRoute, async (c) =>
+    c.json(
+      await restoreTrashedPage(
+        c.req.valid("param").pageId,
+        await pageCallerOf(c),
+      ),
+      200,
+    ),
+  )
+  .openapi(purgePageRoute, async (c) =>
+    c.json(
+      await purgeTrashedPage(
+        c.req.valid("param").pageId,
+        await pageCallerOf(c),
+      ),
+      200,
+    ),
+  );
 
 export default trash;

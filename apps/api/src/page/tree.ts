@@ -11,6 +11,7 @@ import { PAGE_LIMITS } from "./types";
 function siblingCondition(projectId: string, parentId: string | null): SQL {
   return and(
     eq(pageTable.projectId, projectId),
+    isNull(pageTable.deletedAt),
     parentId === null
       ? isNull(pageTable.parentId)
       : eq(pageTable.parentId, parentId),
@@ -79,7 +80,9 @@ export async function assertProjectPageRoom(
   const [row] = await tx
     .select({ total: count() })
     .from(pageTable)
-    .where(eq(pageTable.projectId, projectId));
+    .where(
+      and(eq(pageTable.projectId, projectId), isNull(pageTable.deletedAt)),
+    );
   if ((row?.total ?? 0) + adding > PAGE_LIMITS.pagesPerProject) {
     throw new HTTPException(409, { message });
   }

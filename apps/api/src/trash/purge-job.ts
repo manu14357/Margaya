@@ -1,15 +1,17 @@
 import { and, asc, eq, isNotNull, isNull, lt } from "drizzle-orm";
 import db from "../database";
-import { projectTable, taskTable } from "../database/schema";
+import { pageTable, projectTable, taskTable } from "../database/schema";
 import { withJobLease } from "../scheduler/leader-lock";
 import { hardDeleteTasks } from "./hard-delete";
+import { hardDeletePage } from "./page-trash";
 import { hardDeleteProject } from "./project-trash";
 import { purgeCutoff, trashRetentionDays } from "./settings";
 
 // Hourly, on one instance at a time (C7): trash older than
 // TRASH_RETENTION_DAYS is deleted permanently through the same code as a
-// manual "Delete permanently". Projects go first, so their tasks leave with
-// them; then trashed tasks of live projects. 0 days turns it off.
+// manual "Delete permanently". Projects go first, so their tasks and pages
+// leave with them; then trashed tasks and pages of live projects. 0 days turns
+// it off.
 
 export const TRASH_PURGE_LEASE = "trash-purge";
 const LEASE_MS = 10 * 60 * 1000;
@@ -25,9 +27,15 @@ export type TrashPurgeOutcome = {
   degraded: boolean;
   projects: number;
   tasks: number;
+  pages: number;
 };
 
-const NOTHING: TrashPurgeOutcome = { degraded: false, projects: 0, tasks: 0 };
+const NOTHING: TrashPurgeOutcome = {
+  degraded: false,
+  projects: 0,
+  tasks: 0,
+  pages: 0,
+};
 
 async function purgeOnce(
   cutoff: Date,
@@ -92,9 +100,38 @@ async function purgeOnce(
     if (tasks.length < limits.batch) break;
   }
 
-  if (outcome.projects > 0 || outcome.tasks > 0) {
+  const failedPages = new Set<string>();
+  while (Date.now() - startedAt < limits.budgetMs) {
+    const rows = await db
+      .select({ page: pageTable })
+      .from(pageTable)
+      .innerJoin(projectTable, eq(projectTable.id, pageTable.projectId))
+      .where(
+        and(
+          isNotNull(pageTable.deletedAt),
+          lt(pageTable.deletedAt, cutoff),
+          // Pages of a trashed project leave with the project.
+          isNull(projectTable.deletedAt),
+        ),
+      )
+      .orderBy(asc(pageTable.deletedAt))
+      .limit(limits.batch + failedPages.size);
+    const due = rows.filter(({ page }) => !failedPages.has(page.id));
+    for (const { page } of due) {
+      try {
+        if (await hardDeletePage(page, null)) outcome.pages += 1;
+      } catch (error) {
+        failedPages.add(page.id);
+        outcome.degraded = true;
+        console.error(`trash: failed to purge page ${page.id}`, error);
+      }
+    }
+    if (due.length < limits.batch) break;
+  }
+
+  if (outcome.projects > 0 || outcome.tasks > 0 || outcome.pages > 0) {
     console.log(
-      `trash: purged ${outcome.projects} projects and ${outcome.tasks} tasks`,
+      `trash: purged ${outcome.projects} projects, ${outcome.tasks} tasks and ${outcome.pages} pages`,
     );
   }
   return outcome;

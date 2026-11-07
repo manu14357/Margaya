@@ -1,4 +1,4 @@
-// TRASH_RETENTION_DAYS (C7): days a trashed task or project is kept before
+// TRASH_RETENTION_DAYS (C7): days a trashed task, project or page is kept before
 // the auto purge deletes it permanently. 0 turns the auto purge off.
 
 export const DEFAULT_TRASH_RETENTION_DAYS = 30;

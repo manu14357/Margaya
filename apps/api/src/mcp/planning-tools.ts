@@ -986,7 +986,8 @@ function registerPageTools<Result>({
   register(
     "delete_page",
     {
-      description: "Delete a page. It must be archived first. Destructive.",
+      description:
+        "Move an archived page to the trash. It can be restored from there until the retention period ends. The page must be archived first.",
       inputSchema: z.object({ pageId: nonEmptyString }),
     },
     async (args) =>

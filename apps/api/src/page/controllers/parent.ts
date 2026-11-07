@@ -30,6 +30,7 @@ export async function loadParentPage(
     .limit(1);
   if (
     !parent ||
+    parent.deletedAt ||
     parent.workspaceId !== workspaceId ||
     !canSeePage(parent, caller)
   ) {
