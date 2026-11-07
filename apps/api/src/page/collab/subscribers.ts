@@ -62,6 +62,20 @@ subscribeToEvent<{ projectId?: string; disabled?: string[] }>(
   },
 );
 
+// Someone left the workspace or was removed: its rooms re-check their
+// connections now, rather than at the next periodic revalidation.
+subscribeToEvent<{ workspaceId?: string; accessEnded?: boolean }>(
+  "workspace.members_changed",
+  async ({ workspaceId, accessEnded }) => {
+    if (!workspaceId || !accessEnded) return;
+    const rows = await db
+      .select({ id: pageTable.id })
+      .from(pageTable)
+      .where(eq(pageTable.workspaceId, workspaceId));
+    await refreshPageRooms(rows.map((row) => row.id));
+  },
+);
+
 // Restricted projects: someone lost access (removed, or the project was
 // restricted). Every room of the project, here and elsewhere, re-checks its
 // connections and closes those that can no longer see the project.

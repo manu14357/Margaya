@@ -1,11 +1,15 @@
 import { eq } from "drizzle-orm";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { encodeScope } from "../../apps/api/src/api-key/scope";
 import db, { schema } from "../../apps/api/src/database";
+import { projectMemberTable } from "../../apps/api/src/database/schema";
+import { COLLAB_LIMITS } from "../../apps/api/src/page/collab/limits";
 import { encodeControl } from "../../apps/api/src/page/collab/protocol";
 import {
   flushAllPageRooms,
   shutdownPageRooms,
 } from "../../apps/api/src/page/collab/rooms";
+import { publishMembersChanged } from "../../apps/api/src/workspace/members-realtime";
 import { createApiKey } from "./helpers/api-keys";
 import {
   CollabClient,
@@ -373,6 +377,183 @@ describe("page socket follows page changes", () => {
       .where(eq(schema.workspaceUserTable.userId, s.cara.id));
     await expectOk(server.rest(s.ben, `/${page.id}/lock`, { method: "POST" }));
     expect(await cara.closed()).toBe(4403);
+  });
+
+  it("closes a removed member's socket at once, without any page change", async () => {
+    const page = await createPage(s.ben);
+    const ben = await open(s.ben, page.id);
+    const cara = await open(s.cara, page.id);
+    await db
+      .delete(schema.workspaceUserTable)
+      .where(eq(schema.workspaceUserTable.userId, s.cara.id));
+    await publishMembersChanged({
+      workspaceId: s.workspaceId,
+      userId: s.cara.id,
+      accessEnded: true,
+    });
+    expect(await cara.closed()).toBe(4403);
+    expect(ben.closeCode).toBeNull();
+  });
+});
+
+describe("page socket in a restricted project", () => {
+  async function restrictProject(projectId: string) {
+    await db
+      .update(schema.projectTable)
+      .set({ visibility: "restricted" })
+      .where(eq(schema.projectTable.id, projectId));
+  }
+  const addToProject = (projectId: string, userId: string, role: string) =>
+    db.insert(projectMemberTable).values({ projectId, userId, role });
+  const setProjectRole = (user: PageScene["ben"], role: string) =>
+    s.app.request(`/api/project/${s.project.id}/access/members/${user.id}`, {
+      ...json("PATCH", { role }),
+      headers: {
+        "content-type": "application/json",
+        cookie: `test-session=${s.owner.id}`,
+      },
+    });
+
+  it("refuses edits from a member capped to viewer, as the REST routes do", async () => {
+    const page = await createPage(s.ben, { content: "Keep" });
+    await restrictProject(s.project.id);
+    await addToProject(s.project.id, s.ben.id, "member");
+    await addToProject(s.project.id, s.cara.id, "viewer");
+
+    const rest = await server.rest(
+      s.cara,
+      `/${page.id}/content`,
+      json("PUT", { markdown: "Over REST" }),
+    );
+    expect(rest.status).toBe(403);
+
+    const cara = await open(s.cara, page.id);
+    expect(cara.markdown()).toBe("Keep");
+    expect(cara.state()?.canWrite).toBe(false);
+    const ben = await open(s.ben, page.id);
+    expect(ben.state()?.canWrite).toBe(true);
+
+    cara.write("vandalism");
+    await waitFor(() => cara.control("offline-rejected"), {
+      message: "offline-rejected",
+    });
+    ben.write("real edit");
+    await waitFor(() => cara.markdown().includes("real edit"), {
+      message: "the capped member still reading along",
+    });
+    expect(ben.markdown()).not.toContain("vandalism");
+    await flushAllPageRooms();
+    expect((await pageRow(page.id))?.contentMarkdown).not.toContain(
+      "vandalism",
+    );
+  });
+
+  it("follows a change of project role on an open socket", async () => {
+    const page = await createPage(s.ben, { content: "Keep" });
+    await restrictProject(s.project.id);
+    await addToProject(s.project.id, s.ben.id, "member");
+    await addToProject(s.project.id, s.cara.id, "member");
+    const cara = await open(s.cara, page.id);
+    expect(cara.state()?.canWrite).toBe(true);
+
+    expect((await setProjectRole(s.cara, "viewer")).status).toBe(200);
+    await waitFor(() => cara.state()?.canWrite === false, {
+      message: "read-only after the role dropped",
+    });
+    cara.write("after the change");
+    await waitFor(() => cara.control("offline-rejected"), {
+      message: "offline-rejected",
+    });
+    await flushAllPageRooms();
+    expect((await pageRow(page.id))?.contentMarkdown).not.toContain(
+      "after the change",
+    );
+
+    expect((await setProjectRole(s.cara, "member")).status).toBe(200);
+    await waitFor(() => cara.state()?.canWrite === true, {
+      message: "writable after the role rose",
+    });
+  });
+
+  it("notices a changed role at the periodic re-check, from the database", async () => {
+    // The room's timer runs inside the request that opened its first socket,
+    // whose answers about that socket's user are memoized. They must not count.
+    const limits = COLLAB_LIMITS as { revalidateMs: number };
+    const interval = limits.revalidateMs;
+    limits.revalidateMs = 50;
+    try {
+      const page = await createPage(s.ben, { content: "Keep" });
+      await restrictProject(s.project.id);
+      await addToProject(s.project.id, s.cara.id, "member");
+      const cara = await open(s.cara, page.id);
+      expect(cara.state()?.canWrite).toBe(true);
+
+      // No event: only the timer can notice either of these.
+      await db
+        .update(projectMemberTable)
+        .set({ role: "viewer" })
+        .where(eq(projectMemberTable.userId, s.cara.id));
+      await waitFor(() => cara.state()?.canWrite === false, {
+        message: "read-only after the periodic re-check",
+      });
+
+      await db
+        .delete(projectMemberTable)
+        .where(eq(projectMemberTable.userId, s.cara.id));
+      expect(await cara.closed()).toBe(4403);
+    } finally {
+      limits.revalidateMs = interval;
+    }
+  });
+
+  it("closes a project-limited key's socket when the page leaves its projects", async () => {
+    const page = await createPage(s.ben, { content: "Keep" });
+    const key = await createApiKey(
+      s.cara,
+      encodeScope({ access: "full", projectIds: [s.project.id] }) ?? undefined,
+    );
+    const limited = await CollabClient.open(server.baseUrl, page.id, {
+      authorization: key.headers.Authorization,
+    });
+    const free = await open(s.cara, page.id);
+
+    const destination = await s.project2();
+    await expectOk(
+      server.rest(
+        s.ben,
+        `/${page.id}/move`,
+        json("POST", { projectId: destination.id }),
+      ),
+    );
+    expect(await limited.closed()).toBe(4403);
+    // The same person's session isn't limited, and stays.
+    await waitFor(() => free.state()?.projectId === destination.id, {
+      message: "the move reaching the session's socket",
+    });
+    expect(free.closeCode).toBeNull();
+  });
+
+  it("applies the role of the project a page moved into", async () => {
+    const page = await createPage(s.ben, { content: "Keep" });
+    const cara = await open(s.cara, page.id);
+    expect(cara.state()?.canWrite).toBe(true);
+
+    const destination = await s.project2();
+    await restrictProject(destination.id);
+    await addToProject(destination.id, s.ben.id, "member");
+    await addToProject(destination.id, s.cara.id, "viewer");
+    await expectOk(
+      server.rest(
+        s.ben,
+        `/${page.id}/move`,
+        json("POST", { projectId: destination.id }),
+      ),
+    );
+    await waitFor(() => cara.state()?.canWrite === false, {
+      message: "read-only in the new project",
+    });
+    expect(cara.state()?.projectId).toBe(destination.id);
+    expect(cara.closeCode).toBeNull();
   });
 });
 

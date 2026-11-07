@@ -7,7 +7,37 @@ import {
   PROJECTS_MARKER,
   projectScopedWorkspaceRouteAllowed,
   readOnlyKeyAllows,
+  removeScopedProjects,
 } from "../../../apps/api/src/api-key/scope";
+
+describe("removeScopedProjects", () => {
+  const stored = {
+    [ACCESS_MARKER]: ["read"],
+    task: ["read"],
+    [PROJECTS_MARKER]: ["p1", "p2"],
+  };
+
+  it("leaves a key alone that has no limit or doesn't cover the projects", () => {
+    expect(
+      removeScopedProjects({ task: ["read"] }, new Set(["p1"])),
+    ).toBeNull();
+    expect(removeScopedProjects(stored, new Set(["p3"]))).toBeNull();
+  });
+
+  it("keeps the rest of the scope when projects remain", () => {
+    expect(removeScopedProjects(stored, new Set(["p1"]))).toEqual({
+      ...stored,
+      [PROJECTS_MARKER]: ["p2"],
+    });
+  });
+
+  it("never leaves an empty list, which would read as no limit", () => {
+    expect(removeScopedProjects(stored, new Set(["p1", "p2"]))).toBe(
+      "no-projects-left",
+    );
+    expect(decodeScope({ [PROJECTS_MARKER]: [] }).projectIds).toBeNull();
+  });
+});
 
 describe("API key scopes", () => {
   it("stores nothing for full, unlimited access", () => {

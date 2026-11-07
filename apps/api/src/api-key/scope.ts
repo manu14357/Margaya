@@ -117,6 +117,23 @@ export function decodeScope(
   };
 }
 
+/**
+ * Takes projects out of a stored scope. Null when the key isn't limited to any
+ * of them. "no-projects-left" when nothing would remain: the key must go,
+ * because an empty list reads as no project limit at all.
+ */
+export function removeScopedProjects(
+  stored: Record<string, string[]>,
+  projectIds: ReadonlySet<string>,
+): Record<string, string[]> | "no-projects-left" | null {
+  const projects = stored[PROJECTS_MARKER];
+  if (!projects || projects.length === 0) return null;
+  const kept = projects.filter((id) => !projectIds.has(id));
+  if (kept.length === projects.length) return null;
+  if (kept.length === 0) return "no-projects-left";
+  return { ...stored, [PROJECTS_MARKER]: kept };
+}
+
 /** The areas and levels of decoded statements, for display. */
 export function areasOf(
   permissions: Record<string, string[]> | null,
