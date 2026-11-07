@@ -1,0 +1,119 @@
+---
+title: Add Custom Fields to Tasks
+description: Give a project's tasks extra text, number, date, dropdown and boolean fields, then filter, group, sort, chart and edit them in bulk
+---
+
+Custom fields hold what the built-in task properties don't, such as a customer, a budget or a release train. Each field belongs to one project, and every task in that project can have a value for it.
+
+## Add a field
+
+Adding a field needs **project:update**, which Admins and Owners have by default.
+
+1. Go to **Settings**, open **Projects** and select a project.
+2. Open the **Workflow** tab and find **Custom fields**.
+3. Pick the field's type with the button at the start of the row, and type a name in **Field name**.
+4. For a dropdown, list its choices in **Options separated by commas**.
+5. Optionally set a **Default value** or tick **Required**.
+6. Click **Add**.
+
+<Screenshot src="tasks/custom-fields" alt="The Custom fields section of the Hiring project's Workflow settings, listing Seniority as a dropdown, Interview rounds as a number, Target start as a date and Referral as a boolean, above the row that adds a new field" caption="A project's custom fields, in the order tasks show them." />
+
+| Type | Holds |
+| --- | --- |
+| **Text** | Any text |
+| **Number** | A number; lists sort it by value |
+| **Date** | One day, picked from a calendar |
+| **Dropdown** | One of the options you list |
+| **Boolean** | **True** or **False** |
+
+A required field must have a default value. A new task takes that default if you don't choose a value, and the value can't be cleared later. In the **New task** dialog, every field with a default starts filled in with it.
+
+## Edit a field
+
+Click the pencil on a field to open **Edit custom field**. You can change its **Name**, its **Options** and its **Default**. A field's type and whether it's required can't change after it's created.
+
+<Screenshot src="tasks/custom-field-edit" alt="The Edit custom field dialog for Seniority, with its name, the options Junior, Mid-level, Senior and Lead, each with a remove button, Add option, and the Default picker" caption="Rename a field, edit its options or change its default." />
+
+Here is what editing a dropdown does to the values tasks already have:
+
+- **Renaming an option** updates every task using it, along with the default value, saved view filters, automation conditions and drafts.
+- **Removing an option** changes no task. Tasks that have it keep it until someone changes it, and lists still group and sort by it. It can't be chosen again, and the **Filter** menu no longer lists it, though a filter that already uses it keeps working. In the task's dropdown it's marked as a removed option.
+- **The default value** only applies to tasks created afterwards. It must stay one of the options, so removing the default option also means choosing a new default, or **No default** for a field that isn't required.
+
+A dropdown keeps at least one option, and its options must be different from each other.
+
+## Reorder or delete a field
+
+Drag a field up or down to change its position.
+
+The trash button deletes a field straight away, without asking first. Every task loses its value for that field, and you can't undo this.
+
+## Fill in values
+
+- **On a task:** open the task and expand **Custom fields**. A required field is marked with a red asterisk.
+- **While creating a task:** the **New task** dialog lists the project's fields under **Custom fields**.
+- **In a spreadsheet:** choose the fields under **Display** > **Columns**, then click a cell. Text and numbers edit in place: **Enter** or clicking away saves, and **Escape** cancels. Dropdowns, booleans and dates open a picker, where **Clear value** empties a field that isn't required.
+- **On many tasks:** select them and choose **Custom field** in the bulk toolbar. See [Edit many tasks at once](/core/functional/bulk-edit-tasks#set-a-custom-field-on-many-tasks).
+
+Board cards show a small chip with how many values a task has. Hover it to read them.
+
+## Filter, group and sort
+
+In a project's task lists:
+
+- **Filter** lists each field, on the project's **Calendar** and **Gantt** too. Dropdowns offer their current options, booleans offer **True** and **False**, and other types offer the values tasks already use.
+- **Display** > **Group by** and **Sub-group by** list each field in the **List** and **Board** layouts. Tasks with no value go in a **No value** group at the end. Cards can't be dragged between these groups, so change the value on the task instead.
+- **Display** > **Order by** lists each field. Numbers sort by value, dropdowns follow the order of their options with removed options after them, and text and dates sort alphabetically and by date.
+
+<Screenshot src="tasks/custom-field-group" alt="A list of the Hiring project's tasks grouped by Seniority, with Junior, Mid-level, Senior and Lead groups in the order of the field's options and a No value group last" caption="Group a list by a dropdown, with tasks without a value last." />
+
+## Show a field on Calendar and Gantt
+
+The project's **Calendar** and **Gantt** can show one field's value on each task:
+
+1. Open **Calendar** or **Gantt**.
+2. Open the field menu in the view's toolbar. It reads **No field** until you choose one, and only appears when the project has custom fields.
+3. Pick the field.
+
+<Screenshot src="tasks/custom-field-calendar" alt="The Hiring project's Calendar in the Month layout with Seniority chosen in the toolbar's field menu, so each task bar shows its value, such as Junior, Mid-level, Senior or Lead, after its title, while Refresh the careers page listings, which has no value, shows only its title" caption="Seniority chosen in the toolbar, shown after each task's title." />
+
+The value follows the title on calendar bars, and sits beside the task in the Gantt's task list. Hover a task to read it with the field's name. Booleans read **True** or **False**, dates use your date format, and tasks without a value show nothing.
+
+The choice is kept per project in your browser, and Calendar and Gantt share it, including in the project's saved views that use them. Choose **No field** to hide it again.
+
+## Chart fields in Analytics
+
+With one project in scope, Analytics charts its custom fields: a dropdown can be the **X-axis**, the **Segment** or the **Breakdown** rows, so you can count open, created and completed tasks per option, and a number can be summed as the **Metric**. See [Chart custom fields](/core/functional/analytics#chart-custom-fields).
+
+<Screenshot src="analytics/custom-field-chart" alt="The Custom chart card of the Hiring project with Seniority as the X-axis and Group as the segment: bars for Junior, Mid-level, Senior, Lead and No value split into Not started, Started and Completed, above a table with each option's tasks, group counts and progress" caption="Open and completed tasks per Seniority option." />
+
+## What custom fields don't do
+
+- **They stay inside one project.** **All tasks**, workspace views and **Your work** span projects, so they can't filter, group, sort or show custom fields. Saving a workspace view that groups or sorts by one is refused.
+- **Backlog, cycle and module pages** can't group or sort by them.
+- **Calendar and Gantt** show one field at a time, and a workspace view's Gantt shows none.
+- **Analytics** charts only dropdowns and sums only numbers, and only with one project in scope. It doesn't average numbers.
+
+## Move a task with custom fields
+
+Moving a task to another project keeps a value only if that project has a field with the same name and type. Case doesn't matter in the name, and a dropdown must also offer the value. Every other value on the task is removed. See [Move tasks to another project](/core/functional/bulk-edit-tasks#move-tasks-to-another-project).
+
+## Permissions
+
+| Action | Viewer | Member | Admin | Owner |
+| --- | --- | --- | --- | --- |
+| See fields and values | Yes | Yes | Yes | Yes |
+| Set values on tasks | No | Yes | Yes | Yes |
+| Add, edit, reorder and delete fields | No | No | Yes | Yes |
+
+Setting values needs **task:update**, and changing the fields themselves needs **project:update**. Custom roles can mix them.
+
+## Use the API
+
+`PATCH /api/custom-field/{id}` edits a field and `PUT /api/custom-field/value/bulk` sets one field on many tasks. See the **Custom Fields** section of the API reference.
+
+## Next
+
+- [Configure project workflows](/core/functional/configure-workflows)
+- [Edit many tasks at once](/core/functional/bulk-edit-tasks)
+- [Save and share views](/core/functional/views)

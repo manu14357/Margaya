@@ -27,12 +27,18 @@ Common examples:
 - `To Do -> In Progress -> Review -> Done`
 - `Backlog -> Ready -> In Progress -> QA -> Done`
 
+## Configure custom fields
+
+In **Workflow -> Custom fields**, add a field of type text, number, date, dropdown or boolean. Use the pencil on a field to rename it, edit its dropdown options or change its default value. A field's type, and whether it's required, can't change after it's created.
+
+Task lists can then filter, group and sort by the field, and a spreadsheet can show it as a column you edit in place. See [Add custom fields to tasks](/core/functional/custom-fields) for what editing a dropdown does to saved values, and for what fields don't do.
+
 ## Configure integration rules
 
 In **Workflow -> Integration rules**:
 
 1. For each connected integration (GitHub or Gitea), pick a column for the events you care about: **Branch push**, **PR opened**, **PR merged**, **Issue opened** and **Issue closed**.
-2. Leave an event on **Select column...** to ignore it.
+2. Leave an event on **Select column...** to ignore it. To stop an event you already mapped, click the **×** next to its column.
 3. Verify each event moves work to the expected stage.
 
 <Screenshot src="tasks/workflow-integration-rules" alt="The Integration rules section with GitHub and Gitea events Branch push, PR opened, PR merged, Issue opened and Issue closed, each with a column picker" caption="Pick a column for each integration event." />
@@ -52,4 +58,5 @@ Frequent column churn reduces reporting clarity.
 ## Next
 
 - [Plan and execute tasks in Board/List](/core/functional/plan-and-execute-tasks)
+- [Add custom fields to tasks](/core/functional/custom-fields)
 - [Collaborate with your team](/core/functional/collaborate-with-team)
