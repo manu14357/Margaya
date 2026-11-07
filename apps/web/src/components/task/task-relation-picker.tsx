@@ -46,6 +46,8 @@ type TaskRelationPickerProps = {
   projectId: string;
   workspaceId: string;
   relations: readonly RelationLike[];
+  /** The type to start on, instead of the one picked last. */
+  initialRelationKey?: RelationDisplayKey;
 };
 
 /**
@@ -59,11 +61,14 @@ export default function TaskRelationPicker({
   projectId,
   workspaceId,
   relations,
+  initialRelationKey,
 }: TaskRelationPickerProps) {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
-  const [relationKey, setRelationKey] = useState(rememberedRelationKey);
+  const [relationKey, setRelationKey] = useState(
+    initialRelationKey ?? rememberedRelationKey,
+  );
   const { data: board } = useGetTasks(projectId);
   const { data: project } = useGetProject({ id: projectId, workspaceId });
   const createRelation = useCreateTaskRelation();

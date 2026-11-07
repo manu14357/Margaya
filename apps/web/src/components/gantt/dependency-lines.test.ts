@@ -7,6 +7,7 @@ import {
   type DependencyRelation,
   dependencyPath,
   isDependencyConflict,
+  milestoneHorizontalBox,
   roundedConnectorPath,
 } from "./dependency-lines";
 
@@ -132,6 +133,20 @@ describe("barHorizontalBox", () => {
     expect(
       barHorizontalBox(span(day(11, 1), day(11, 2)), rangeStart, 30, 40),
     ).toBeNull();
+  });
+});
+
+describe("milestoneHorizontalBox", () => {
+  it("centres a milestone in its day column", () => {
+    expect(milestoneHorizontalBox(day(10, 3), day(10, 1), 10, 40)).toEqual({
+      left: 90,
+      right: 110,
+    });
+  });
+
+  it("drops a milestone outside the window", () => {
+    expect(milestoneHorizontalBox(day(9, 30), day(10, 1), 10, 40)).toBeNull();
+    expect(milestoneHorizontalBox(day(10, 11), day(10, 1), 10, 40)).toBeNull();
   });
 });
 

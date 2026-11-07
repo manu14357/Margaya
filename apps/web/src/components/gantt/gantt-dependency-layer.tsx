@@ -11,7 +11,40 @@ type GanttDependencyLayerProps = {
   /** Left edge of the timeline, as a CSS length (the task list's width). */
   left: string;
   widthRem: number;
+  /** A click on a line. Without it the lines only show. */
+  onLineClick?: (line: DependencyLine, x: number, y: number) => void;
 };
+
+/**
+ * A wider invisible stroke that takes the clicks, as 1.5px is too thin to aim
+ * at. It sits under the bars and the task list, so it never takes a press
+ * meant for them. The keyboard's way to a link is the task's Relations list.
+ */
+function LineHitArea({
+  line,
+  d,
+  onLineClick,
+}: {
+  line: DependencyLine;
+  d: string;
+  onLineClick: GanttDependencyLayerProps["onLineClick"];
+}) {
+  if (!onLineClick) return null;
+  return (
+    // biome-ignore lint/a11y/noStaticElementInteractions: a pointer shortcut; the task's Relations list is the keyboard path.
+    <path
+      d={d}
+      data-gantt-line-hit
+      data-testid="gantt-dependency-hit"
+      fill="none"
+      stroke="transparent"
+      strokeWidth={12}
+      className="cursor-pointer"
+      style={{ pointerEvents: "stroke" }}
+      onClick={(event) => onLineClick(line, event.clientX, event.clientY)}
+    />
+  );
+}
 
 function ArrowMarker({ id }: { id: string }) {
   return (
@@ -37,8 +70,8 @@ function ArrowMarker({ id }: { id: string }) {
 
 /**
  * Connectors between related bars, drawn under the bars, with rounded
- * corners and an arrowhead at the dependent's edge. Purely visual: a
- * conflict is also flagged in the task list, which is what screen readers
+ * corners and an arrowhead at the dependent's edge. Hidden from screen
+ * readers: a conflict is also flagged in the task list, which is what they
  * get; here it is drawn in the conflict colour with a warning dot halfway
  * along. Each group sets its colour through `currentColor`, so the
  * arrowheads defined inside it match its lines.
@@ -47,6 +80,7 @@ function GanttDependencyLayer({
   lines,
   left,
   widthRem,
+  onLineClick,
 }: GanttDependencyLayerProps): JSX.Element | null {
   // Marker ids go inside url(#…), so keep them to plain characters.
   const baseId = `gantt-dep-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
@@ -58,7 +92,7 @@ function GanttDependencyLayer({
     <svg
       aria-hidden="true"
       data-testid="gantt-dependency-lines"
-      className="pointer-events-none absolute top-0 z-[5] h-full overflow-visible"
+      className="pointer-events-none absolute top-0 z-0 h-full overflow-visible"
       style={{ left, width: `${widthRem}rem` }}
     >
       <g style={{ color: "var(--dependency)" }}>
@@ -67,19 +101,24 @@ function GanttDependencyLayer({
         </defs>
         {lines
           .filter((line) => !line.conflict)
-          .map((line) => (
-            <path
-              key={line.id}
-              d={roundedConnectorPath(connectorPoints(line.d))}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.5}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              markerEnd={`url(#${okArrow})`}
-              data-relation-type={line.type}
-            />
-          ))}
+          .map((line) => {
+            const d = roundedConnectorPath(connectorPoints(line.d));
+            return (
+              <g key={line.id}>
+                <path
+                  d={d}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  markerEnd={`url(#${okArrow})`}
+                  data-relation-type={line.type}
+                />
+                <LineHitArea line={line} d={d} onLineClick={onLineClick} />
+              </g>
+            );
+          })}
       </g>
       <g style={{ color: "var(--dependency-conflict)" }}>
         <defs>
@@ -90,10 +129,11 @@ function GanttDependencyLayer({
           .map((line) => {
             const points = connectorPoints(line.d);
             const middle = connectorMidpoint(points);
+            const d = roundedConnectorPath(points);
             return (
               <g key={line.id}>
                 <path
-                  d={roundedConnectorPath(points)}
+                  d={d}
                   fill="none"
                   stroke="currentColor"
                   strokeWidth={1.75}
@@ -122,6 +162,7 @@ function GanttDependencyLayer({
                     />
                   </g>
                 ) : null}
+                <LineHitArea line={line} d={d} onLineClick={onLineClick} />
               </g>
             );
           })}

@@ -36,21 +36,30 @@ export function dependencyEdges(type: DependencyType): {
 }
 
 /**
- * Whether the dates break the relation. A blocker that ends after its
- * dependent starts is a conflict; ending on the day it starts is not. The
- * ordering relations conflict when the source's edge falls after the
- * target's.
+ * How many days the target would have to move later for the relation to
+ * hold; zero or less when it holds. A blocker that ends after its dependent
+ * starts breaks it; ending on the day it starts does not. The ordering
+ * relations break when the source's edge falls after the target's.
  */
+export function dependencyOverrunDays(
+  type: DependencyType,
+  source: BarSpan,
+  target: BarSpan,
+): number {
+  const { from, to } = dependencyEdges(type);
+  const sourceDay =
+    from === "start" ? source.scheduleStart : source.scheduleEnd;
+  const targetDay = to === "start" ? target.scheduleStart : target.scheduleEnd;
+  return differenceInCalendarDays(sourceDay, targetDay);
+}
+
+/** Whether the dates break the relation. */
 export function isDependencyConflict(
   type: DependencyType,
   source: BarSpan,
   target: BarSpan,
 ): boolean {
-  const { from, to } = dependencyEdges(type);
-  const sourceDay =
-    from === "start" ? source.scheduleStart : source.scheduleEnd;
-  const targetDay = to === "start" ? target.scheduleStart : target.scheduleEnd;
-  return differenceInCalendarDays(sourceDay, targetDay) > 0;
+  return dependencyOverrunDays(type, source, target) > 0;
 }
 
 /** Horizontal run, in pixels, before a line turns. */
@@ -98,6 +107,7 @@ export type DependencyLine = {
   type: DependencyType;
   d: string;
   conflict: boolean;
+  sourceTaskId: string;
   targetTaskId: string;
 };
 
@@ -124,6 +134,7 @@ export function buildDependencyLines(
         source.span,
         target.span,
       ),
+      sourceTaskId: relation.sourceTaskId,
       targetTaskId: relation.targetTaskId,
     });
   }
@@ -149,6 +160,28 @@ export function barHorizontalBox(
   return {
     left: first * pixelsPerDay + inset,
     right: (last + 1) * pixelsPerDay - inset,
+  };
+}
+
+/** Half a milestone diamond's width, where a connector meets its point. */
+export const MILESTONE_HALF_WIDTH_PX = 10;
+
+/**
+ * Where a milestone sits horizontally: a diamond in the middle of its day
+ * column, so connectors end at its points rather than the column's edges.
+ */
+export function milestoneHorizontalBox(
+  day: Date,
+  rangeStart: Date,
+  dayCount: number,
+  pixelsPerDay: number,
+): { left: number; right: number } | null {
+  const index = differenceInCalendarDays(day, rangeStart);
+  if (index < 0 || index >= dayCount) return null;
+  const middle = (index + 0.5) * pixelsPerDay;
+  return {
+    left: middle - MILESTONE_HALF_WIDTH_PX,
+    right: middle + MILESTONE_HALF_WIDTH_PX,
   };
 }
 
