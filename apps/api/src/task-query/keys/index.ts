@@ -1,4 +1,5 @@
 import { assigneeKey } from "./assignee";
+import { blockedKey } from "./blocked";
 import { createdByKey } from "./created-by";
 import { customFieldKey } from "./custom-field";
 import { cycleKey } from "./cycle";
@@ -27,6 +28,7 @@ for (const descriptor of [
   estimateKey,
   projectKey,
   parentKey,
+  blockedKey,
   customFieldKey,
   ...dateKeys,
 ]) {

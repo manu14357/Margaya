@@ -479,6 +479,92 @@ describe("API integration: task query filters", () => {
     expect(triage.id).not.toBe(visible.id);
   });
 
+  it("filters by blocked: an open task an open task still blocks", async () => {
+    const s = await queryScene();
+    const relate = (
+      sourceTaskId: string,
+      targetTaskId: string,
+      relationType = "blocks",
+    ) =>
+      db
+        .insert(schema.taskRelationTable)
+        .values({ sourceTaskId, targetTaskId, relationType });
+
+    const blocker = await s.createTask();
+    const blocked = await s.createTask();
+    await relate(blocker.id, blocked.id);
+    // In another project: the filter still counts it.
+    const otherProject = await s.createProject("api");
+    const blockerElsewhere = await s.createTask({ projectId: otherProject.id });
+    const blockedAcross = await s.createTask();
+    await relate(blockerElsewhere.id, blockedAcross.id);
+
+    // Not blocked: the blocker is done, cancelled, archived or trashed; the
+    // relation isn't `blocks`; or the task itself is already done.
+    const done = await s.createTask({ status: "done" });
+    const afterDone = await s.createTask();
+    await relate(done.id, afterDone.id);
+    await db.insert(schema.columnTable).values({
+      projectId: s.project.id,
+      name: "Won't do",
+      slug: "wont-do",
+      position: 9,
+      group: "cancelled",
+      isFinal: true,
+    });
+    const cancelled = await s.createTask({ status: "wont-do" });
+    const afterCancelled = await s.createTask();
+    await relate(cancelled.id, afterCancelled.id);
+    const archived = await s.createTask({ archivedAt: new Date() });
+    const afterArchived = await s.createTask();
+    await relate(archived.id, afterArchived.id);
+    const trashed = await s.createTask({ deletedAt: new Date() });
+    const afterTrashed = await s.createTask();
+    await relate(trashed.id, afterTrashed.id);
+    const merelyRelated = await s.createTask();
+    await relate(blocker.id, merelyRelated.id, "related");
+    const finished = await s.createTask({ status: "done" });
+    await relate(blocker.id, finished.id);
+
+    const stillBlocked = sorted([blocked.id, blockedAcross.id]);
+    const clear = sorted([
+      blocker.id,
+      blockerElsewhere.id,
+      done.id,
+      afterDone.id,
+      cancelled.id,
+      afterCancelled.id,
+      afterArchived.id,
+      afterTrashed.id,
+      merelyRelated.id,
+      finished.id,
+    ]);
+
+    expect(await s.ids(inValues("blocked", ["true"]))).toEqual(stillBlocked);
+    expect(await s.ids(notIn("blocked", ["false"]))).toEqual(stillBlocked);
+    expect(await s.ids(inValues("blocked", ["false"]))).toEqual(clear);
+    expect(await s.ids(notIn("blocked", ["true"]))).toEqual(clear);
+    expect(await s.ids(inValues("blocked", ["true", "false"]))).toEqual(
+      sorted([...stillBlocked, ...clear]),
+    );
+    // Every task either is blocked or isn't, so `none` matches nothing.
+    expect(await s.ids(inValues("blocked", ["none"]))).toEqual([]);
+    await s.refuse(
+      { filters: inValues("blocked", ["maybe"]) },
+      400,
+      "Unsupported value for blocked: maybe",
+    );
+
+    // Finishing the blocker clears it; nothing else had to change.
+    await db
+      .update(schema.taskTable)
+      .set({ status: "done" })
+      .where(eq(schema.taskTable.id, blocker.id));
+    expect(await s.ids(inValues("blocked", ["true"]))).toEqual([
+      blockedAcross.id,
+    ]);
+  });
+
   it("applies the archived rule: exclude, include, only", async () => {
     const s = await queryScene();
     const active = await s.createTask();

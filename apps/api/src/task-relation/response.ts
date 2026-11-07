@@ -84,5 +84,9 @@ export const projectDependenciesSchema = z
       description:
         "True when the project holds more dependencies than one response carries; the oldest are returned.",
     }),
+    blockedTaskIds: z.array(z.string()).openapi({
+      description:
+        "The project's open tasks that an open task still blocks, wherever the blocker lives. Being blocked never stops a status change.",
+    }),
   })
   .openapi("ProjectDependencies");

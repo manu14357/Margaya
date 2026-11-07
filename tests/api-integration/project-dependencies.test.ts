@@ -102,6 +102,31 @@ describe("GET /task-relation/project/{projectId}", () => {
         },
       ],
       truncated: false,
+      blockedTaskIds: [b.id],
+    });
+  });
+
+  it("names blocked tasks whose blocker is in another project", async () => {
+    const member = await createWorkspaceMember();
+    const { project } = await createProjectFixture({
+      workspaceId: member.workspace.id,
+    });
+    const { project: other } = await createProjectFixture({
+      workspaceId: member.workspace.id,
+    });
+    const blocked = await seedTask(project.id, 1);
+    const free = await seedTask(project.id, 2);
+    const blocker = await seedTask(other.id, 1);
+    await relate(blocker.id, blocked.id, "blocks");
+    await relate(free.id, blocker.id, "blocks");
+
+    mockAuthenticatedSession(member.user);
+    const response = await list(project.id);
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({
+      relations: [],
+      truncated: false,
+      blockedTaskIds: [blocked.id],
     });
   });
 
