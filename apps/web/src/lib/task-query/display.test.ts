@@ -68,6 +68,41 @@ describe("task display", () => {
     ).toMatchObject({ groupBy: null, layout: "spreadsheet" });
   });
 
+  it("keeps custom field keys in a project and drops them elsewhere", () => {
+    const stored = {
+      layout: "list",
+      groupBy: "customField:f1",
+      subGroupBy: "customField:f2",
+      orderBy: { field: "customField:f1" },
+    };
+    expect(normalizeDisplay(stored, "project")).toMatchObject({
+      groupBy: "customField:f1",
+      subGroupBy: "customField:f2",
+      orderBy: { field: "customField:f1", direction: "asc" },
+    });
+    expect(normalizeDisplay(stored, "workspace")).toMatchObject({
+      groupBy: null,
+      subGroupBy: null,
+      orderBy: defaultDisplay("workspace").orderBy,
+    });
+  });
+
+  it("runs a custom field order or group in query mode", () => {
+    const base = defaultDisplay("project");
+    expect(
+      isClassicDisplay(
+        {
+          ...base,
+          orderBy: { field: "customField:f1", direction: "asc" },
+        },
+        "exclude",
+      ),
+    ).toBe(false);
+    expect(
+      isClassicDisplay({ ...base, groupBy: "customField:f1" }, "exclude"),
+    ).toBe(false);
+  });
+
   it("drops unknown display properties", () => {
     const normalized = normalizeDisplayProperties({
       key: false,

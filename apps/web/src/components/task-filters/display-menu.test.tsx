@@ -130,6 +130,49 @@ describe("useDisplayConfig", () => {
     expect(workspace.orderOptions).not.toContain("manual");
   });
 
+  it("offers a project's custom fields to group and order by", () => {
+    projects.list = [{ id: "p1" }];
+    const board = renderHook(() =>
+      useDisplayConfig({
+        workspaceId: "w1",
+        scope: { kind: "project", projectId: "p1" },
+        layout: "board",
+      }),
+    ).result.current;
+    expect(board.groupByOptions).toContain("customField:f1");
+    expect(board.orderOptions).toContain("customField:f1");
+    expect(board.displayFields).toEqual([{ id: "f1", name: "Team" }]);
+
+    const calendar = renderHook(() =>
+      useDisplayConfig({
+        workspaceId: "w1",
+        scope: { kind: "project", projectId: "p1" },
+        layout: "calendar",
+      }),
+    ).result.current;
+    expect(calendar.groupByOptions).not.toContain("customField:f1");
+
+    const classicOnly = renderHook(() =>
+      useDisplayConfig({
+        workspaceId: "w1",
+        scope: { kind: "project", projectId: "p1" },
+        layout: "board",
+        classicOnly: true,
+      }),
+    ).result.current;
+    expect(classicOnly.orderOptions).not.toContain("customField:f1");
+
+    const workspace = renderHook(() =>
+      useDisplayConfig({
+        workspaceId: "w1",
+        scope: { kind: "workspace" },
+        layout: "list",
+      }),
+    ).result.current;
+    expect(workspace.groupByOptions).not.toContain("customField:f1");
+    expect(workspace.orderOptions).not.toContain("customField:f1");
+  });
+
   it("names spreadsheet columns and offers custom fields in a project", () => {
     projects.list = [{ id: "p1" }];
     const spreadsheet = renderHook(() =>

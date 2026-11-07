@@ -3,6 +3,7 @@ import { isProjectFeatureEnabled } from "@/constants/project-features";
 import useGetCustomFieldsByProject from "@/hooks/queries/custom-field/use-get-custom-fields-by-project";
 import useGetProjects from "@/hooks/queries/project/use-get-projects";
 import {
+  customFieldKey,
   DISPLAY_PROPERTY_KEYS,
   type DisplayPropertyKey,
   GROUP_BY_KEYS,
@@ -45,8 +46,10 @@ export function useDisplayConfig({
 }: Options): DisplayMenuConfig {
   const { data: projects } = useGetProjects({ workspaceId });
   const projectId = scope.kind === "project" ? scope.projectId : "";
+  // Classic-only pages keep their fixed options; everything else in a project
+  // can group or sort by its fields.
   const { data: customFields } = useGetCustomFieldsByProject(
-    layout === "spreadsheet" ? projectId : "",
+    layout === "spreadsheet" || !classicOnly ? projectId : "",
   );
 
   return useMemo(() => {
@@ -76,25 +79,37 @@ export function useDisplayConfig({
       (key !== "module" && key !== "modules" ? true : hasModules) &&
       (key !== "estimate" || hasEstimates);
 
+    const fields =
+      scope.kind === "project" && !classicOnly
+        ? ((customFields ?? []) as Array<{ id: string; name: string }>).map(
+            (field) => ({ id: field.id, name: field.name }),
+          )
+        : [];
+    const fieldKeys = fields.map((field) => customFieldKey(field.id));
+
     const groupByOptions: GroupByKey[] =
       layout === "spreadsheet" || classicOnly
         ? []
-        : GROUP_BY_KEYS.filter(
-            (key) =>
-              featureOk(key) &&
-              (key !== "status" || scope.kind === "project") &&
-              (key !== "project" || scope.kind === "workspace"),
-          );
+        : [
+            ...GROUP_BY_KEYS.filter(
+              (key) =>
+                featureOk(key) &&
+                (key !== "status" || scope.kind === "project") &&
+                (key !== "project" || scope.kind === "workspace"),
+            ),
+            ...(layout === "list" || layout === "board" ? fieldKeys : []),
+          ];
 
-    const orderOptions: OrderByField[] = (
-      classicOnly ? CLASSIC_ORDER_FIELDS : ORDER_BY_FIELDS
-    ).filter(
-      (field) =>
-        featureOk(field) &&
-        (field !== "manual" || scope.kind === "project") &&
-        // Only the Archives list offers it (its tasks all have one).
-        field !== "archivedAt",
-    );
+    const orderOptions: OrderByField[] = [
+      ...(classicOnly ? CLASSIC_ORDER_FIELDS : ORDER_BY_FIELDS).filter(
+        (field) =>
+          featureOk(field) &&
+          (field !== "manual" || scope.kind === "project") &&
+          // Only the Archives list offers it (its tasks all have one).
+          field !== "archivedAt",
+      ),
+      ...fieldKeys,
+    ];
 
     const propertyKeys: DisplayPropertyKey[] = DISPLAY_PROPERTY_KEYS.filter(
       (key) =>
@@ -116,6 +131,7 @@ export function useDisplayConfig({
               (field) => ({ id: field.id, name: field.name }),
             )
           : undefined,
+      displayFields: fields,
     };
   }, [projects, scope, layout, classicOnly, customFields]);
 }

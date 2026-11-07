@@ -1,7 +1,7 @@
 import { useEffect, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useAuth from "@/components/providers/auth-provider/hooks/use-auth";
-import { GROUP_LABEL_KEYS } from "@/components/task-filters/display-menu";
+import { groupLabelKey } from "@/components/task-filters/display-menu";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -239,7 +239,7 @@ export default function ViewFormDialog({
                 {groupBy
                   ? t("views:dialog.summary", {
                       filters: countConditions(state.filters),
-                      group: t(GROUP_LABEL_KEYS[groupBy]),
+                      group: t(groupLabelKey(groupBy)),
                     })
                   : t("views:dialog.summaryUngrouped", {
                       filters: countConditions(state.filters),

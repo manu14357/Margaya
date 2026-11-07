@@ -21,10 +21,14 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/cn";
 import {
-  DEFAULT_ORDER_DIRECTION,
+  type BuiltInGroupByKey,
+  type BuiltInOrderField,
+  customFieldIdOfKey,
   type DisplayProperties,
   type DisplayPropertyKey,
+  defaultOrderDirection,
   type GroupByKey,
+  isCustomFieldKey,
   type OrderByField,
   type TaskDisplay,
 } from "@/lib/task-query/model";
@@ -42,6 +46,8 @@ export type DisplayMenuConfig = {
   propertiesTitle: "properties" | "columns";
   /** Custom fields that can be spreadsheet columns (project scope). */
   customFields?: ReadonlyArray<{ id: string; name: string }>;
+  /** Custom fields offered in the group and order options, for their names. */
+  displayFields?: ReadonlyArray<{ id: string; name: string }>;
 };
 
 type DisplayMenuProps = {
@@ -55,7 +61,7 @@ type DisplayMenuProps = {
 
 const NONE = "__none__";
 
-export const GROUP_LABEL_KEYS: Record<GroupByKey, string> = {
+export const GROUP_LABEL_KEYS: Record<BuiltInGroupByKey, string> = {
   status: "tasks:display.groups.status",
   group: "tasks:display.groups.group",
   priority: "tasks:display.groups.priority",
@@ -68,7 +74,14 @@ export const GROUP_LABEL_KEYS: Record<GroupByKey, string> = {
   project: "tasks:display.groups.project",
 };
 
-export const ORDER_LABEL_KEYS: Record<OrderByField, string> = {
+/** The label key of a group-by key; custom fields read generically here. */
+export function groupLabelKey(key: GroupByKey): string {
+  return isCustomFieldKey(key)
+    ? "tasks:display.groups.customField"
+    : GROUP_LABEL_KEYS[key];
+}
+
+export const ORDER_LABEL_KEYS: Record<BuiltInOrderField, string> = {
   manual: "tasks:display.order.manual",
   createdAt: "tasks:display.order.createdAt",
   updatedAt: "tasks:display.order.updatedAt",
@@ -180,6 +193,21 @@ export default function DisplayMenu({
     : (config.orderOptions[0] ?? "createdAt");
   const direction = display.orderBy.direction;
   const selectedCustomFields = displayProperties.customFields;
+  const fieldName = (key: GroupByKey | OrderByField) =>
+    isCustomFieldKey(key)
+      ? config.displayFields?.find(
+          (field) => field.id === customFieldIdOfKey(key),
+        )?.name
+      : undefined;
+  const groupLabel = (key: GroupByKey) =>
+    fieldName(key) ?? t(groupLabelKey(key));
+  const orderLabel = (field: OrderByField) =>
+    fieldName(field) ??
+    t(
+      isCustomFieldKey(field)
+        ? "tasks:display.order.customField"
+        : ORDER_LABEL_KEYS[field],
+    );
 
   return (
     <Popover>
@@ -214,7 +242,7 @@ export default function DisplayMenu({
                   >
                     <SelectValue>
                       {display.groupBy
-                        ? t(GROUP_LABEL_KEYS[display.groupBy])
+                        ? groupLabel(display.groupBy)
                         : t("tasks:display.none")}
                     </SelectValue>
                   </SelectTrigger>
@@ -224,7 +252,7 @@ export default function DisplayMenu({
                     </SelectItem>
                     {groupOptions.map((key) => (
                       <SelectItem key={key} value={key}>
-                        {t(GROUP_LABEL_KEYS[key])}
+                        {groupLabel(key)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -252,7 +280,7 @@ export default function DisplayMenu({
                     >
                       <SelectValue>
                         {display.subGroupBy
-                          ? t(GROUP_LABEL_KEYS[display.subGroupBy])
+                          ? groupLabel(display.subGroupBy)
                           : t("tasks:display.none")}
                       </SelectValue>
                     </SelectTrigger>
@@ -262,7 +290,7 @@ export default function DisplayMenu({
                       </SelectItem>
                       {subGroupOptions.map((key) => (
                         <SelectItem key={key} value={key}>
-                          {t(GROUP_LABEL_KEYS[key])}
+                          {groupLabel(key)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -272,61 +300,63 @@ export default function DisplayMenu({
             </>
           )}
 
-          <Row label={t("tasks:display.orderBy")} labelId={orderLabelId}>
-            <div className="flex items-center gap-1">
-              <Select
-                value={orderField}
-                onValueChange={(value) => {
-                  const field = value as OrderByField;
-                  onDisplayChange({
-                    orderBy: {
-                      field,
-                      direction: DEFAULT_ORDER_DIRECTION[field],
-                    },
-                  });
-                }}
-              >
-                <SelectTrigger
-                  size="sm"
-                  className="w-32 min-w-0"
-                  aria-labelledby={orderLabelId}
+          {config.orderOptions.length > 0 && (
+            <Row label={t("tasks:display.orderBy")} labelId={orderLabelId}>
+              <div className="flex items-center gap-1">
+                <Select
+                  value={orderField}
+                  onValueChange={(value) => {
+                    const field = value as OrderByField;
+                    onDisplayChange({
+                      orderBy: {
+                        field,
+                        direction: defaultOrderDirection(field),
+                      },
+                    });
+                  }}
                 >
-                  <SelectValue>{t(ORDER_LABEL_KEYS[orderField])}</SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {config.orderOptions.map((field) => (
-                    <SelectItem key={field} value={field}>
-                      {t(ORDER_LABEL_KEYS[field])}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Button
-                size="icon-xs"
-                variant="outline"
-                disabled={orderField === "manual"}
-                aria-label={
-                  direction === "asc"
-                    ? t("tasks:sort.ascending")
-                    : t("tasks:sort.descending")
-                }
-                onClick={() =>
-                  onDisplayChange({
-                    orderBy: {
-                      field: orderField,
-                      direction: direction === "asc" ? "desc" : "asc",
-                    },
-                  })
-                }
-              >
-                {direction === "asc" ? (
-                  <ArrowUpNarrowWide className="size-3.5" />
-                ) : (
-                  <ArrowDownWideNarrow className="size-3.5" />
-                )}
-              </Button>
-            </div>
-          </Row>
+                  <SelectTrigger
+                    size="sm"
+                    className="w-32 min-w-0"
+                    aria-labelledby={orderLabelId}
+                  >
+                    <SelectValue>{orderLabel(orderField)}</SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {config.orderOptions.map((field) => (
+                      <SelectItem key={field} value={field}>
+                        {orderLabel(field)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button
+                  size="icon-xs"
+                  variant="outline"
+                  disabled={orderField === "manual"}
+                  aria-label={
+                    direction === "asc"
+                      ? t("tasks:sort.ascending")
+                      : t("tasks:sort.descending")
+                  }
+                  onClick={() =>
+                    onDisplayChange({
+                      orderBy: {
+                        field: orderField,
+                        direction: direction === "asc" ? "desc" : "asc",
+                      },
+                    })
+                  }
+                >
+                  {direction === "asc" ? (
+                    <ArrowUpNarrowWide className="size-3.5" />
+                  ) : (
+                    <ArrowDownWideNarrow className="size-3.5" />
+                  )}
+                </Button>
+              </div>
+            </Row>
+          )}
 
           <Row label={t("tasks:display.showSubTasks")}>
             <Switch

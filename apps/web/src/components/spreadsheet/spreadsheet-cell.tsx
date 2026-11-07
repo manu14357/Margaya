@@ -43,7 +43,7 @@ type CellProps = {
 const cellButtonClass =
   "h-8 w-full min-w-0 justify-start gap-1.5 rounded-none px-2 font-normal text-sm";
 
-function CellButton({
+export function CellButton({
   children,
   ...props
 }: { children: ReactNode } & React.ComponentProps<typeof Button>) {
@@ -54,7 +54,7 @@ function CellButton({
   );
 }
 
-function Plain({ children }: { children: ReactNode }) {
+export function Plain({ children }: { children: ReactNode }) {
   return (
     <div className="flex h-8 min-w-0 items-center gap-1.5 px-2 text-sm">
       {children}
@@ -276,24 +276,6 @@ export default function SpreadsheetCell({
     default:
       return <Plain>{null}</Plain>;
   }
-}
-
-/** A custom field value, read-only in the spreadsheet (B4 §10). */
-export function CustomFieldCell({
-  row,
-  fieldId,
-}: {
-  row: TaskQueryRow;
-  fieldId: string;
-}) {
-  const value = row.customFieldValues?.find(
-    (entry) => entry.fieldId === fieldId,
-  )?.value;
-  return (
-    <Plain>
-      <span className="truncate">{value ?? ""}</span>
-    </Plain>
-  );
 }
 
 export { cellButtonClass };

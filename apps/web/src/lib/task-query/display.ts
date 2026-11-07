@@ -1,12 +1,13 @@
 import {
   ARCHIVED_FILTERS,
   type ArchivedFilter,
-  DEFAULT_ORDER_DIRECTION,
   DISPLAY_PROPERTY_KEYS,
   type DisplayProperties,
   type DisplayPropertyKey,
+  defaultOrderDirection,
   GROUP_BY_KEYS,
   type GroupByKey,
+  isCustomFieldKey,
   ORDER_BY_FIELDS,
   type OrderBy,
   type OrderByField,
@@ -69,11 +70,11 @@ function isOneOf<T extends string>(
 }
 
 export function isGroupByKey(value: unknown): value is GroupByKey {
-  return isOneOf(GROUP_BY_KEYS, value);
+  return isOneOf(GROUP_BY_KEYS, value) || isCustomFieldKey(value);
 }
 
 export function isOrderByField(value: unknown): value is OrderByField {
-  return isOneOf(ORDER_BY_FIELDS, value);
+  return isOneOf(ORDER_BY_FIELDS, value) || isCustomFieldKey(value);
 }
 
 export function isArchivedFilter(value: unknown): value is ArchivedFilter {
@@ -87,7 +88,7 @@ export function normalizeOrderBy(value: unknown, fallback: OrderBy): OrderBy {
   const direction =
     candidate.direction === "asc" || candidate.direction === "desc"
       ? candidate.direction
-      : DEFAULT_ORDER_DIRECTION[candidate.field];
+      : defaultOrderDirection(candidate.field);
   return { field: candidate.field, direction };
 }
 
@@ -111,18 +112,24 @@ export function normalizeDisplay(
       : isGroupByKey(candidate.groupBy)
         ? candidate.groupBy
         : defaults.groupBy;
-  // Group by status needs one project.
-  if (scope === "workspace" && groupBy === "status") groupBy = null;
+  // Group by status or a custom field needs one project.
+  const needsOneProject = (key: GroupByKey | null) =>
+    key === "status" || isCustomFieldKey(key);
+  if (scope === "workspace" && needsOneProject(groupBy)) groupBy = null;
   let subGroupBy = isGroupByKey(candidate.subGroupBy)
     ? candidate.subGroupBy
     : null;
   if (!groupBy || subGroupBy === groupBy) subGroupBy = null;
-  if (scope === "workspace" && subGroupBy === "status") subGroupBy = null;
+  if (scope === "workspace" && needsOneProject(subGroupBy)) subGroupBy = null;
+  const orderBy = normalizeOrderBy(candidate.orderBy, defaults.orderBy);
   return {
     layout,
     groupBy,
     subGroupBy,
-    orderBy: normalizeOrderBy(candidate.orderBy, defaults.orderBy),
+    orderBy:
+      scope === "workspace" && isCustomFieldKey(orderBy.field)
+        ? defaults.orderBy
+        : orderBy,
     showSubTasks:
       typeof candidate.showSubTasks === "boolean"
         ? candidate.showSubTasks

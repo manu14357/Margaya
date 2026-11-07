@@ -89,6 +89,7 @@ export const SET_FILTER_KEYS = [
   "estimate",
   "project",
   "parent",
+  "blocked",
   "customField",
   "subscriber",
   "mention",
@@ -119,6 +120,30 @@ export const CURRENT_CYCLE_VALUE = "current";
 /** Label values without a workspace label: `name:<label name>`. */
 export const LABEL_NAME_PREFIX = "name:";
 
+/** A custom field groups or sorts as `customField:<field id>` (project scope). */
+export const CUSTOM_FIELD_KEY_PREFIX = "customField:";
+export type CustomFieldDisplayKey = `customField:${string}`;
+/** Custom field groups are `value:<value>`; `none` is still no value. */
+export const CUSTOM_FIELD_VALUE_PREFIX = "value:";
+
+export function customFieldKey(fieldId: string): CustomFieldDisplayKey {
+  return `${CUSTOM_FIELD_KEY_PREFIX}${fieldId}`;
+}
+
+export function isCustomFieldKey(
+  value: unknown,
+): value is CustomFieldDisplayKey {
+  return (
+    typeof value === "string" &&
+    value.length > CUSTOM_FIELD_KEY_PREFIX.length &&
+    value.startsWith(CUSTOM_FIELD_KEY_PREFIX)
+  );
+}
+
+export function customFieldIdOfKey(key: CustomFieldDisplayKey): string {
+  return key.slice(CUSTOM_FIELD_KEY_PREFIX.length);
+}
+
 export const GROUP_BY_KEYS = [
   "status",
   "group",
@@ -131,7 +156,8 @@ export const GROUP_BY_KEYS = [
   "estimate",
   "project",
 ] as const;
-export type GroupByKey = (typeof GROUP_BY_KEYS)[number];
+export type BuiltInGroupByKey = (typeof GROUP_BY_KEYS)[number];
+export type GroupByKey = BuiltInGroupByKey | CustomFieldDisplayKey;
 
 export const ORDER_BY_FIELDS = [
   "manual",
@@ -153,14 +179,18 @@ export const ORDER_BY_FIELDS = [
   // Archives only: meaningful for archived tasks (nulls last).
   "archivedAt",
 ] as const;
-export type OrderByField = (typeof ORDER_BY_FIELDS)[number];
+export type BuiltInOrderField = (typeof ORDER_BY_FIELDS)[number];
+export type OrderByField = BuiltInOrderField | CustomFieldDisplayKey;
 
 export type OrderDirection = "asc" | "desc";
 
 export type OrderBy = { field: OrderByField; direction: OrderDirection };
 
 /** The engine's default direction per order field. */
-export const DEFAULT_ORDER_DIRECTION: Record<OrderByField, OrderDirection> = {
+export const DEFAULT_ORDER_DIRECTION: Record<
+  BuiltInOrderField,
+  OrderDirection
+> = {
   manual: "asc",
   createdAt: "desc",
   updatedAt: "desc",
@@ -179,6 +209,10 @@ export const DEFAULT_ORDER_DIRECTION: Record<OrderByField, OrderDirection> = {
   subTaskCount: "desc",
   archivedAt: "desc",
 };
+
+export function defaultOrderDirection(field: OrderByField): OrderDirection {
+  return isCustomFieldKey(field) ? "asc" : DEFAULT_ORDER_DIRECTION[field];
+}
 
 export const TASK_LAYOUTS = [
   "list",

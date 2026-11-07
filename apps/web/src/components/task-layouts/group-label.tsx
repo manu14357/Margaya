@@ -12,7 +12,14 @@ import { formatEstimateValue } from "@/lib/estimate/format";
 import { getPriorityLabel } from "@/lib/i18n/domain";
 import { resolveLabelColor } from "@/lib/label-color";
 import { getPriorityIcon } from "@/lib/priority";
-import type { GroupByKey } from "@/lib/task-query/model";
+import { customFieldValueLabel } from "@/lib/task-query/custom-field-value";
+import {
+  type BuiltInGroupByKey,
+  CUSTOM_FIELD_VALUE_PREFIX,
+  customFieldIdOfKey,
+  type GroupByKey,
+  isCustomFieldKey,
+} from "@/lib/task-query/model";
 import type { TaskQueryMeta } from "@/types/task-query";
 
 export const NONE_GROUP = "none";
@@ -46,7 +53,7 @@ function groupTone(group: string | null | undefined): GroupTone | undefined {
   return { color, tint, foreground };
 }
 
-const NONE_LABEL_KEYS: Partial<Record<GroupByKey, string>> = {
+const NONE_LABEL_KEYS: Partial<Record<BuiltInGroupByKey, string>> = {
   assignee: "tasks:groups.noAssignee",
   createdBy: "tasks:groups.noCreator",
   label: "tasks:groups.noLabel",
@@ -66,6 +73,28 @@ export function useGroupPresentation() {
   ): GroupPresentation => {
     if (!groupBy || key === ALL_GROUP) {
       return { label: t("tasks:groups.all"), icon: null };
+    }
+    if (isCustomFieldKey(groupBy)) {
+      if (key === NONE_GROUP) {
+        return {
+          label: t("tasks:groups.noFieldValue"),
+          icon: <CircleDashed className="size-3.5 text-muted-foreground" />,
+        };
+      }
+      const fieldId = customFieldIdOfKey(groupBy);
+      const field = meta.customFields.find(
+        (candidate) => candidate.id === fieldId,
+      );
+      return {
+        label: customFieldValueLabel(
+          field?.type,
+          key.startsWith(CUSTOM_FIELD_VALUE_PREFIX)
+            ? key.slice(CUSTOM_FIELD_VALUE_PREFIX.length)
+            : key,
+          t,
+        ),
+        icon: null,
+      };
     }
     if (key === NONE_GROUP && NONE_LABEL_KEYS[groupBy]) {
       return {

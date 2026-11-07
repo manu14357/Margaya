@@ -20,6 +20,7 @@ import type {
   OrderBy,
   TaskQueryScope,
 } from "@/lib/task-query/model";
+import { customFieldKey } from "@/lib/task-query/model";
 import useBulkSelectionStore from "@/store/bulk-selection";
 import {
   CUSTOM_FIELD_COLUMN_WIDTH,
@@ -65,7 +66,7 @@ export default function Spreadsheet({
   quickAdd = false,
 }: SpreadsheetProps) {
   const { t } = useTranslation();
-  const { canUpdateTasks, canAssignTasks, canCreateTasks } =
+  const { canUpdateTasks, canAssignTasks, canCreateTasks, canInProject } =
     useWorkspacePermission();
   const canEdit = canUpdateTasks();
   const canAssign = canAssignTasks();
@@ -195,7 +196,7 @@ export default function Spreadsheet({
           <tr>
             <th
               scope="col"
-              className="sticky top-0 left-0 z-20 h-8 border-border border-b bg-muted px-2 text-left align-middle font-medium text-muted-foreground text-xs"
+              className="sticky top-0 left-0 z-20 h-8 border-border border-b bg-muted px-2 text-left align-middle font-medium text-muted-foreground text-xs pointer-coarse:h-11"
               style={{
                 width: FIRST_COLUMN_WIDTH,
                 minWidth: FIRST_COLUMN_WIDTH,
@@ -223,7 +224,7 @@ export default function Spreadsheet({
                     ?.name ?? fieldId
                 }
                 width={CUSTOM_FIELD_COLUMN_WIDTH}
-                sortField={null}
+                sortField={customFieldKey(fieldId)}
                 orderBy={orderBy}
                 onSort={onSort}
                 onHide={() => onHideCustomField?.(fieldId)}
@@ -250,6 +251,13 @@ export default function Spreadsheet({
                     }))
                   }
                   {...rowProps}
+                  // A row of a cross-project list follows its own project.
+                  canEdit={
+                    canEdit && canInProject(row.projectId, "updateTasks")
+                  }
+                  canAssign={
+                    canAssign && canInProject(row.projectId, "assignTasks")
+                  }
                 />
                 {isExpanded && (
                   <SubTaskRows
@@ -258,7 +266,13 @@ export default function Spreadsheet({
                     scope={scope}
                     orderBy={orderBy}
                     properties={properties}
-                    rowProps={rowProps}
+                    rowProps={{
+                      ...rowProps,
+                      canEdit:
+                        canEdit && canInProject(row.projectId, "updateTasks"),
+                      canAssign:
+                        canAssign && canInProject(row.projectId, "assignTasks"),
+                    }}
                   />
                 )}
               </SpreadsheetRowGroup>

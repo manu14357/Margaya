@@ -6,6 +6,7 @@ import DeleteTaskDialog from "@/components/task-layouts/delete-task-dialog";
 import { useTaskOpen } from "@/components/task-layouts/use-task-open";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
+import { ProjectScope } from "@/hooks/use-project-scope";
 import { cn } from "@/lib/cn";
 import type { DisplayProperties } from "@/lib/task-query/model";
 import { rowToTask } from "@/lib/task-query/row-task";
@@ -16,7 +17,8 @@ import {
   FIRST_COLUMN_WIDTH,
   type SpreadsheetColumn,
 } from "./columns";
-import SpreadsheetCell, { CustomFieldCell } from "./spreadsheet-cell";
+import CustomFieldCell from "./custom-field-cell";
+import SpreadsheetCell from "./spreadsheet-cell";
 
 /** Sub-tasks expand inline this deep; deeper ones open in the sheet. */
 export const MAX_SUB_TASK_DEPTH = 3;
@@ -35,8 +37,20 @@ type SpreadsheetRowProps = {
   canAssign: boolean;
 };
 
-/** One task: the sticky key and title, then one cell per column. */
-export default function SpreadsheetRow({
+/**
+ * One task: the sticky key and title, then one cell per column. Menus and
+ * editors in the row act in the task's own project, so its project role
+ * there decides what they offer, whatever list shows the row.
+ */
+export default function SpreadsheetRow(props: SpreadsheetRowProps) {
+  return (
+    <ProjectScope projectId={props.row.projectId}>
+      <SpreadsheetRowBody {...props} />
+    </ProjectScope>
+  );
+}
+
+function SpreadsheetRowBody({
   row,
   meta,
   workspaceId,
@@ -67,7 +81,7 @@ export default function SpreadsheetRow({
             data-task-id={row.id}
             aria-selected={selected}
             className={cn(
-              "group h-9 text-sm",
+              "group h-9 text-sm pointer-coarse:h-11",
               selected ? "bg-accent/45" : "hover:bg-accent/60",
               focused && "outline-2 outline-ring/50 -outline-offset-2",
             )}
@@ -86,7 +100,7 @@ export default function SpreadsheetRow({
               }}
             >
               <div
-                className="flex h-9 min-w-0 items-center gap-1.5 pr-2"
+                className="flex h-9 min-w-0 items-center gap-1.5 pr-2 pointer-coarse:h-11"
                 style={{ paddingLeft: 8 + depth * 16 }}
               >
                 <Checkbox
@@ -110,7 +124,7 @@ export default function SpreadsheetRow({
                         : t("tasks:spreadsheet.expandSubTasks")
                     }
                     onClick={onToggleExpand}
-                    className="inline-flex size-4 shrink-0 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground"
+                    className="inline-flex size-4 shrink-0 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground pointer-coarse:size-7"
                   >
                     <ChevronRight
                       className={cn(
@@ -120,7 +134,7 @@ export default function SpreadsheetRow({
                     />
                   </button>
                 ) : (
-                  <span className="size-4 shrink-0" />
+                  <span className="size-4 shrink-0 pointer-coarse:size-7" />
                 )}
                 {properties.key && (
                   <span className="shrink-0 font-mono text-muted-foreground text-xs">
@@ -131,7 +145,7 @@ export default function SpreadsheetRow({
                   type="button"
                   onClick={(event) => openTask(row, event)}
                   className={cn(
-                    "min-w-0 truncate text-left hover:underline",
+                    "min-w-0 truncate text-left hover:underline pointer-coarse:h-full",
                     row.archivedAt && "text-muted-foreground",
                   )}
                 >
@@ -169,7 +183,12 @@ export default function SpreadsheetRow({
                   maxWidth: CUSTOM_FIELD_COLUMN_WIDTH,
                 }}
               >
-                <CustomFieldCell row={row} fieldId={fieldId} />
+                <CustomFieldCell
+                  row={row}
+                  fieldId={fieldId}
+                  meta={meta}
+                  canEdit={canEdit}
+                />
               </td>
             ))}
             <td className="border-border border-b" />

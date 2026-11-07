@@ -70,6 +70,7 @@ import useGetTask from "@/hooks/queries/task/use-get-task";
 import useGetTaskRelations from "@/hooks/queries/task-relation/use-get-task-relations";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { cn } from "@/lib/cn";
+import { formatDateMedium } from "@/lib/format";
 import { publicCommentsOpen } from "@/lib/publication/settings";
 import { formatTaskKey } from "@/lib/task-key";
 import { oldestParent } from "@/lib/task-relations";
@@ -463,6 +464,15 @@ export default function TaskDetailsContent({
                                   {opt}
                                 </SelectItem>
                               ))}
+                              {/* An option removed from the field stays on
+                                  tasks that hold it until someone changes it. */}
+                              {val && !field.options?.includes(val) && (
+                                <SelectItem value={val}>
+                                  {t("tasks:customFieldValue.removedOption", {
+                                    value: val,
+                                  })}
+                                </SelectItem>
+                              )}
                             </SelectContent>
                           </Select>
                         ) : field.type === "date" ? (
@@ -483,7 +493,7 @@ export default function TaskDetailsContent({
 
                                     <span className="truncate">
                                       {val && isValid(parseISO(val))
-                                        ? format(parseISO(val), "dd MMM yyyy")
+                                        ? formatDateMedium(parseISO(val))
                                         : t(
                                             "tasks:detail.pickDate",
                                             "Pick a date",
@@ -684,7 +694,9 @@ export default function TaskDetailsContent({
           />
         )}
 
-        {user?.id && (
+        {/* Commenting takes task:update in the task's project, as the API
+            checks it: a viewer there reads the thread without a composer. */}
+        {user?.id && canEdit && (
           <CommentInput
             taskId={taskId}
             projectId={task?.projectId}
@@ -709,7 +721,7 @@ export default function TaskDetailsContent({
                       ? undefined
                       : (commentReplies.get(activity.id) ?? [])
                   }
-                  canReply={Boolean(user?.id)}
+                  canReply={Boolean(user?.id) && canEdit}
                 />
               );
             })}
