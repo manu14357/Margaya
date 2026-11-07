@@ -51,6 +51,10 @@ export const accountSecuritySchema = z
       description:
         "Whether password sign-in asks for an authenticator code (TOTP).",
     }),
+    twoFactorRequired: z.boolean().openapi({
+      description:
+        "Whether this server requires two-factor of this account. If it isn't on yet, every other request answers 403 with code TWO_FACTOR_REQUIRED until it is.",
+    }),
     sessions: z.array(userSessionSchema).openapi({
       description: "Active sessions, most recently active first.",
     }),

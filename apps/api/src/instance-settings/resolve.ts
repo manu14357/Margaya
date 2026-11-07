@@ -68,6 +68,8 @@ export type EffectiveSettings = {
   /** Everyone but instance admins signs in through this provider. */
   requiredProvider: OAuthProviderId | null;
   sessionLifetimeHours: number;
+  /** Accounts that can sign in with a password must use two-factor. */
+  requireTwoFactor: boolean;
   restrictWorkspaceCreation: boolean;
   oauthEnabled: Record<OAuthProviderId, boolean>;
   customOAuth: { autoSignIn: boolean; logoutUrl: string; buttonLabel: string };
@@ -345,6 +347,7 @@ export function resolveInstanceSettings({
       str(settings, "auth.requiredProvider"),
     ),
     sessionLifetimeHours: sessionHoursOf(settings),
+    requireTwoFactor: flag(settings, "auth.requireTwoFactor"),
     restrictWorkspaceCreation: flag(settings, "workspaces.restrictCreation"),
     oauthEnabled: {
       github: flag(settings, "oauth.github.enabled"),
@@ -377,8 +380,12 @@ export function resolveInstanceSettings({
   const derived: DerivedSettings = {
     smtpConfigured,
     emailSignInActive: effective.emailSignIn,
+    // A code would skip the second step, so required two-factor turns them off.
     emailCodeActive:
-      effective.emailSignIn && effective.emailCodeSignIn && smtpConfigured,
+      effective.emailSignIn &&
+      effective.emailCodeSignIn &&
+      !effective.requireTwoFactor &&
+      smtpConfigured,
     // Today's guest rule: guests need open, email-based sign-up and sign-in.
     guestAccessActive:
       effective.guestAccess &&

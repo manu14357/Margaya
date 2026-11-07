@@ -36,6 +36,7 @@ function getSettings() {
     publicLandingEnabled: fields.publicLandingEnabled,
     passwordSignUpForInvitations: fields.passwordSignUpForInvitations,
     requiredSignInProvider: fields.requiredSignInProvider,
+    requireTwoFactor: fields.requireTwoFactor,
     sourceCodeUrl: sourceCodeUrl(),
   };
 }

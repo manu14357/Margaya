@@ -12,6 +12,10 @@ export const configSchema = z
     hasGoogleSignIn: z.boolean(),
     hasDiscordSignIn: z.boolean(),
     hasCustomOAuth: z.boolean(),
+    hasSamlSignIn: z.boolean().openapi({
+      description:
+        "An identity provider is connected for SAML sign-in, so the sign-in screen offers it.",
+    }),
     hasGuestAccess: z.boolean(),
     disableLoginForm: z.boolean(),
     customOAuthAutoLogin: z.boolean(),
@@ -51,6 +55,10 @@ export const configSchema = z
         description:
           "Everyone signs in through this provider; instance admins keep password sign-in. Null when there is no requirement.",
       }),
+    requireTwoFactor: z.boolean().openapi({
+      description:
+        "Accounts that can sign in with a password must set up two-factor before they can use anything. Email links and codes are turned off.",
+    }),
     sourceCodeUrl: z.string().openapi({
       description:
         "Where people using this instance can get its source code, as the AGPL-3.0 requires: MARGAYA_SOURCE_URL, or the official repository.",

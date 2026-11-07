@@ -7,6 +7,11 @@ import { readOnlyKeyAllows } from "../api-key/scope";
 import { auth } from "../auth";
 import { enforceApiKeyRateLimit } from "./api-key-rate-limit";
 import { touchApiKeyLastUsed } from "./api-key-usage";
+import {
+  keyOwnerMustSetUpTwoFactor,
+  mustSetUpTwoFactor,
+  twoFactorRequiredError,
+} from "./two-factor-policy";
 import { verifyApiKey } from "./verify-api-key";
 
 // User is tagged on Sentry's isolation scope; the per-request isolation
@@ -73,13 +78,26 @@ type VerifiedApiKey = NonNullable<
  * Rate-limits an API-key request (429 over the limit) and records that the
  * key was used. Session and MCP OAuth callers never come through here.
  */
-async function admitApiKey(c: Context, keyId: string) {
+async function admitApiKey(c: Context, keyId: string, ownerId: string) {
   await enforceApiKeyRateLimit(c, keyId);
+  if (await keyOwnerMustSetUpTwoFactor(ownerId)) throw twoFactorRequiredError();
   void touchApiKeyLastUsed(keyId);
 }
 
+/**
+ * Required two-factor: an account that still has to set it up gets no further
+ * than the one route the setup screen reads.
+ */
+async function assertTwoFactorPolicy(
+  c: Context,
+  user: Parameters<typeof mustSetUpTwoFactor>[0],
+) {
+  if (c.req.method === "GET" && c.req.path === "/api/user/security") return;
+  if (await mustSetUpTwoFactor(user)) throw twoFactorRequiredError();
+}
+
 async function useApiKey(c: Context, key: VerifiedApiKey) {
-  await admitApiKey(c, key.id);
+  await admitApiKey(c, key.id, key.userId);
   c.set("userId", key.userId);
   c.set("userEmail", "");
   c.set("user", null);
@@ -125,6 +143,7 @@ export async function authenticateApiRequest(c: Context): Promise<void> {
     }
     const sessionResult = await getSessionFromBearerOnlyHeaders(c);
     if (sessionResult?.user && sessionResult.session) {
+      await assertTwoFactorPolicy(c, sessionResult.user);
       c.set("user", sessionResult.user);
       c.set("session", sessionResult.session);
       c.set("userId", sessionResult.user.id);
@@ -145,12 +164,15 @@ export async function authenticateApiRequest(c: Context): Promise<void> {
     throw new HTTPException(401, { message: "Unauthorized" });
   }
 
+  await assertTwoFactorPolicy(c, sessionResult.user);
   attachUserToScope(sessionResult.user.id);
 }
 
 export async function resolveAssetBearerOrCookie(c: Context): Promise<{
   userId: string;
   apiKeyId?: string;
+  keyPermissions?: Record<string, string[]> | null;
+  keyProjectIds?: string[] | null;
 }> {
   const { token, malformed } = parseBearerToken(c.req.header("Authorization"));
   if (malformed) {
@@ -161,10 +183,12 @@ export async function resolveAssetBearerOrCookie(c: Context): Promise<{
   if (!token && apiKeyHeader) {
     const apiKeyResult = await verifyApiKey(apiKeyHeader);
     if (apiKeyResult?.valid && apiKeyResult.key) {
-      await admitApiKey(c, apiKeyResult.key.id);
+      await admitApiKey(c, apiKeyResult.key.id, apiKeyResult.key.userId);
       return {
         userId: apiKeyResult.key.userId,
         apiKeyId: apiKeyResult.key.id,
+        keyPermissions: apiKeyResult.key.permissions,
+        keyProjectIds: apiKeyResult.key.projectIds,
       };
     }
     throw new HTTPException(401, { message: "Unauthorized" });
@@ -173,14 +197,17 @@ export async function resolveAssetBearerOrCookie(c: Context): Promise<{
   if (token) {
     const apiKeyResult = await verifyApiKey(token);
     if (apiKeyResult?.valid && apiKeyResult.key) {
-      await admitApiKey(c, apiKeyResult.key.id);
+      await admitApiKey(c, apiKeyResult.key.id, apiKeyResult.key.userId);
       return {
         userId: apiKeyResult.key.userId,
         apiKeyId: apiKeyResult.key.id,
+        keyPermissions: apiKeyResult.key.permissions,
+        keyProjectIds: apiKeyResult.key.projectIds,
       };
     }
     const sessionResult = await getSessionFromBearerOnlyHeaders(c);
     if (sessionResult?.user?.id) {
+      await assertTwoFactorPolicy(c, sessionResult.user);
       return { userId: sessionResult.user.id };
     }
     throw new HTTPException(401, { message: "Unauthorized" });
@@ -191,5 +218,6 @@ export async function resolveAssetBearerOrCookie(c: Context): Promise<{
     throw new HTTPException(401, { message: "Unauthorized" });
   }
 
+  await assertTwoFactorPolicy(c, sessionResult.user);
   return { userId: sessionResult.user.id };
 }

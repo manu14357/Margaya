@@ -650,6 +650,18 @@ export const SETTINGS_CATALOG: readonly SettingDefinition[] = [
     },
   },
   {
+    // Accounts that can sign in with a password must set up two-factor before
+    // they can use anything, and email links and codes are refused because
+    // they would skip the second step (utils/two-factor-policy.ts).
+    key: "auth.requireTwoFactor",
+    group: "signIn",
+    secret: false,
+    default: false,
+    schema: bool,
+    envVar: "REQUIRE_TWO_FACTOR",
+    readEnv: enabledFlag("REQUIRE_TWO_FACTOR"),
+  },
+  {
     key: "auth.emailSignIn",
     group: "signIn",
     secret: false,

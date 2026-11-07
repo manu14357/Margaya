@@ -22,7 +22,8 @@ export function configFieldsOf(snapshot: InstanceSettingsSnapshot) {
   return {
     disableRegistration: effective.inviteOnly,
     disablePasswordRegistration: !effective.emailSignUp,
-    disableEmailOtpSignIn: !effective.emailCodeSignIn,
+    disableEmailOtpSignIn:
+      !effective.emailCodeSignIn || effective.requireTwoFactor,
     disableWorkspaceCreation: effective.restrictWorkspaceCreation,
     hasSmtp: derived.smtpConfigured,
     hasGithubSignIn: derived.providers.github.active,
@@ -45,5 +46,6 @@ export function configFieldsOf(snapshot: InstanceSettingsSnapshot) {
       derived.providers[effective.requiredProvider].active
         ? effective.requiredProvider
         : null,
+    requireTwoFactor: effective.requireTwoFactor,
   };
 }

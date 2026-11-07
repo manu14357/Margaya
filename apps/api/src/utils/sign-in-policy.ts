@@ -12,7 +12,7 @@ import { hasRegisteredUsers } from "./instance-bootstrap";
 //   admins, who keep password sign-in (and its reset) as a way back in;
 // - allowed email domains also limit who can be invited;
 // - accounts with two-factor on can't use email links or codes, which would
-//   skip the second step.
+//   skip the second step; with two-factor required, nobody can.
 // Requests that would only send an email answer exactly like a sent one, so
 // the policy never tells a stranger whether an address is an admin or uses
 // two-factor.
@@ -200,6 +200,19 @@ export async function enforceSignInPolicy({
           message: `Sign in with ${requiredProviderName(required)}.`,
         });
       }
+    }
+  }
+
+  // Required two-factor: the second step only exists on password sign-in, so
+  // nobody may use an email link or code, with or without two-factor on yet.
+  if (effective.requireTwoFactor) {
+    if (startsEmailSignIn(path, body))
+      return sendingReply(path, body)?.() ?? null;
+    if (path === "/sign-in/email-otp") throw invalidCode();
+    if (path === "/magic-link/verify") {
+      throw new APIError("FORBIDDEN", {
+        message: "Email links are turned off on this server.",
+      });
     }
   }
 

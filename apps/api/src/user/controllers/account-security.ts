@@ -2,6 +2,7 @@ import { and, desc, eq, gt } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { accountTable, sessionTable, userTable } from "../../database/schema";
+import { twoFactorApplies } from "../../utils/two-factor-policy";
 
 /**
  * The signed-in user's password state and active sessions. Session tokens
@@ -23,7 +24,11 @@ export async function getAccountSecurity(
     .limit(1);
 
   const [user] = await db
-    .select({ twoFactorEnabled: userTable.twoFactorEnabled })
+    .select({
+      twoFactorEnabled: userTable.twoFactorEnabled,
+      role: userTable.role,
+      isAnonymous: userTable.isAnonymous,
+    })
     .from(userTable)
     .where(eq(userTable.id, userId))
     .limit(1);
@@ -49,6 +54,9 @@ export async function getAccountSecurity(
   return {
     hasPassword: Boolean(credential),
     twoFactorEnabled: user?.twoFactorEnabled === true,
+    twoFactorRequired: user
+      ? await twoFactorApplies({ id: userId, ...user })
+      : false,
     sessions: sessions.map((session) => ({
       id: session.id,
       userAgent: session.userAgent,
