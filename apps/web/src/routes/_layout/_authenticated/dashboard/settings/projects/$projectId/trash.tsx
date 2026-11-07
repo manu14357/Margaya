@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { SettingsPage } from "@/components/settings-layout";
+import { SettingsPage, SettingsSection } from "@/components/settings-layout";
+import PageTrashView from "@/components/trash/page-trash-view";
 import TaskTrashView from "@/components/trash/task-trash-view";
 import useGetProject from "@/hooks/queries/project/use-get-project";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
@@ -12,7 +13,7 @@ export const Route = createFileRoute(
   component: RouteComponent,
 });
 
-/** Settings → Project → Recently deleted: the project's task trash (C7). */
+/** Settings → Project → Recently deleted: its tasks and pages (C7). */
 function RouteComponent() {
   const { t } = useTranslation();
   const { projectId } = Route.useParams();
@@ -32,10 +33,17 @@ function RouteComponent() {
       }
       description={t("settings:trash.projectSubtitle")}
     >
-      <TaskTrashView
-        projectId={projectId}
-        canDelete={!isCheckingPermissions && canDeleteTasks()}
-      />
+      <SettingsSection title={t("settings:trash.tasksHeading")}>
+        <TaskTrashView
+          projectId={projectId}
+          canDelete={!isCheckingPermissions && canDeleteTasks()}
+        />
+      </SettingsSection>
+      {project?.pagesEnabled && (
+        <SettingsSection title={t("settings:trash.pagesHeading")}>
+          <PageTrashView projectId={projectId} />
+        </SettingsSection>
+      )}
     </SettingsPage>
   );
 }

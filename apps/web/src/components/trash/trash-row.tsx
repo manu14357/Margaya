@@ -12,14 +12,16 @@ import { formatDateMedium, formatRelativeTime } from "@/lib/format";
 
 export type TrashRowItem = {
   id: string;
-  /** The task key or project key, shown before the name. */
-  label: string;
+  /** The task key or project key, shown before the name; null hides it. */
+  label: string | null;
   name: string;
   /** "with 2 sub-tasks" or "12 tasks"; null hides it. */
   detail: string | null;
   deletedAt: string;
   deletedBy: { id: string; name: string } | null;
   purgeAt: string | null;
+  /** False hides the actions on this row, whatever the list allows. */
+  canAct?: boolean;
 };
 
 type TrashRowProps = {
@@ -30,7 +32,7 @@ type TrashRowProps = {
   onPurge: () => void;
 };
 
-/** One trashed task or project: who deleted it and when, Restore, Delete. */
+/** One trashed task, project or page: who deleted it and when, Restore, Delete. */
 export default function TrashRow({
   item,
   icon,
@@ -49,9 +51,11 @@ export default function TrashRow({
       <span className="shrink-0 text-muted-foreground">{icon}</span>
       <div className="min-w-0 flex-1">
         <div className="flex min-w-0 items-center gap-2">
-          <span className="shrink-0 font-mono text-muted-foreground text-xs">
-            {item.label}
-          </span>
+          {item.label && (
+            <span className="shrink-0 font-mono text-muted-foreground text-xs">
+              {item.label}
+            </span>
+          )}
           <span className="min-w-0 truncate font-medium text-sm">
             {item.name}
           </span>
@@ -61,7 +65,8 @@ export default function TrashRow({
             </span>
           )}
         </div>
-        <p className="truncate text-muted-foreground text-xs">
+        {/* Wraps rather than truncates, so the purge date stays visible. */}
+        <p className="text-muted-foreground text-xs">
           {deletedLine}
           {item.purgeAt &&
             ` · ${t("settings:trash.purgeOn", {
@@ -69,7 +74,7 @@ export default function TrashRow({
             })}`}
         </p>
       </div>
-      {canAct && (
+      {canAct && item.canAct !== false && (
         <div className="flex shrink-0 items-center gap-1">
           <Button
             variant="ghost"

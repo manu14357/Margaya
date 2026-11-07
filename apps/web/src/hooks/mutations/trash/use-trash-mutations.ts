@@ -3,12 +3,15 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
+import { purgePage, restoreDeletedPage } from "@/fetchers/trash/page-trash";
 import { purgeProject, restoreProject } from "@/fetchers/trash/project-trash";
 import {
   emptyTaskTrash,
   purgeTask,
   restoreTask,
 } from "@/fetchers/trash/task-trash";
+import { invalidatePageQueries } from "@/hooks/mutations/page/invalidate-page-queries";
+import { invalidatePlanningProgress } from "@/hooks/mutations/task/invalidate-planning-progress";
 import { archiveQueryKeys } from "@/hooks/queries/archive/archive-query-keys";
 import { trashQueryKeys } from "@/hooks/queries/trash/trash-query-keys";
 import { invalidateTaskQueries } from "@/lib/task-query/cache";
@@ -22,6 +25,8 @@ export function refreshAfterTaskChange(
   void queryClient.invalidateQueries({ queryKey: ["tasks", projectId] });
   void queryClient.invalidateQueries({ queryKey: archiveQueryKeys.all() });
   void invalidateTaskQueries(queryClient, projectId);
+  // A restored task is back in its cycles, modules, forecasts and risks.
+  invalidatePlanningProgress(queryClient, projectId);
 }
 
 function refreshAfterProjectChange(queryClient: QueryClient) {
@@ -52,6 +57,33 @@ export function useEmptyTaskTrash(projectId: string) {
   return useMutation({
     mutationFn: () => emptyTaskTrash(projectId),
     onSettled: () => refreshAfterTaskChange(queryClient, projectId),
+  });
+}
+
+/** The trash lists, plus the project's Pages list a restored page returns to. */
+function refreshAfterPageChange(queryClient: QueryClient, projectId: string) {
+  void queryClient.invalidateQueries({ queryKey: trashQueryKeys.all() });
+  invalidatePageQueries(queryClient, {
+    projectIds: [projectId],
+    entities: true,
+  });
+}
+
+export function useRestoreDeletedPage(projectId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    meta: { refreshTaskQueries: false },
+    mutationFn: restoreDeletedPage,
+    onSettled: () => refreshAfterPageChange(queryClient, projectId),
+  });
+}
+
+export function usePurgePage(projectId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    meta: { refreshTaskQueries: false },
+    mutationFn: purgePage,
+    onSettled: () => refreshAfterPageChange(queryClient, projectId),
   });
 }
 

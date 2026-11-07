@@ -6,4 +6,6 @@ export const trashQueryKeys = {
     ["trash", "tasks", projectId, { q }] as const,
   projects: (workspaceId: string, q: string) =>
     ["trash", "projects", workspaceId, { q }] as const,
+  pages: (projectId: string, q: string) =>
+    ["trash", "pages", projectId, { q }] as const,
 };
