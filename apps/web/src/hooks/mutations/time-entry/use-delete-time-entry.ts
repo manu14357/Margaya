@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import deleteTimeEntry from "@/fetchers/time-entry/delete-time-entry";
+import { invalidateTimeEntries } from "./invalidate-time-entries";
 
 function useDeleteTimeEntry(taskId: string) {
   const queryClient = useQueryClient();
@@ -7,7 +8,7 @@ function useDeleteTimeEntry(taskId: string) {
   return useMutation({
     mutationFn: (id: string) => deleteTimeEntry(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["time-entries", taskId] });
+      invalidateTimeEntries(queryClient, [taskId]);
     },
   });
 }

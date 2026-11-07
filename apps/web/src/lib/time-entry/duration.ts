@@ -36,6 +36,28 @@ export function splitDuration(seconds: number) {
   };
 }
 
+/** A running clock's reading, H:MM:SS: "0:04:09", "12:30:00". */
+export function formatElapsed(seconds: number) {
+  const whole = Math.floor(Math.max(0, seconds));
+  const pad = (value: number) => String(value).padStart(2, "0");
+  const hours = Math.floor(whole / 3600);
+  return `${hours}:${pad(Math.floor(whole / 60) % 60)}:${pad(whole % 60)}`;
+}
+
+/** An instant as the local value of a datetime-local input, to the minute. */
+export function toDateTimeInput(instant: string) {
+  const date = new Date(instant);
+  const pad = (value: number) => String(value).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+/** A datetime-local value as an ISO instant; null when empty or unreadable. */
+export function fromDateTimeInput(value: string) {
+  if (!value) return null;
+  const time = new Date(value).getTime();
+  return Number.isNaN(time) ? null : new Date(time).toISOString();
+}
+
 type TimeEntryLike = { duration: number | null };
 
 /** Seconds logged across finished entries (a running one has no duration). */

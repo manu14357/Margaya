@@ -1,8 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
+  formatElapsed,
+  fromDateTimeInput,
   MAX_LOGGED_SECONDS,
   parseDurationInput,
   splitDuration,
+  toDateTimeInput,
   totalLoggedSeconds,
 } from "./duration";
 
@@ -44,5 +47,31 @@ describe("splitDuration and totalLoggedSeconds", () => {
         { duration: 1200 },
       ]),
     ).toBe(1800);
+  });
+});
+
+describe("formatElapsed", () => {
+  it("reads as H:MM:SS", () => {
+    expect(formatElapsed(0)).toBe("0:00:00");
+    expect(formatElapsed(249.9)).toBe("0:04:09");
+    expect(formatElapsed(45_000)).toBe("12:30:00");
+    expect(formatElapsed(360_000)).toBe("100:00:00");
+  });
+
+  it("holds at zero when the start is ahead of this device's clock", () => {
+    expect(formatElapsed(-30)).toBe("0:00:00");
+  });
+});
+
+describe("datetime-local values", () => {
+  it("round-trip to the same minute", () => {
+    const value = toDateTimeInput("2026-09-01T09:05:42.000Z");
+    expect(value).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/);
+    expect(fromDateTimeInput(value)).toBe("2026-09-01T09:05:00.000Z");
+  });
+
+  it("read an empty or broken value as null", () => {
+    expect(fromDateTimeInput("")).toBeNull();
+    expect(fromDateTimeInput("not a date")).toBeNull();
   });
 });
