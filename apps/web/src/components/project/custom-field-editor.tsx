@@ -5,6 +5,7 @@ import {
   GripVertical,
   Hash,
   List,
+  Pencil,
   Plus,
   Trash2,
   Type,
@@ -36,8 +37,10 @@ import useCreateCustomField from "@/hooks/mutations/custom-field/use-create-cust
 import useDeleteCustomField from "@/hooks/mutations/custom-field/use-delete-custom-field";
 import { useReorderCustomFields } from "@/hooks/mutations/custom-field/use-reorder-custom-field";
 import useGetCustomFieldsByProject from "@/hooks/queries/custom-field/use-get-custom-fields-by-project";
+import { formatDateMedium } from "@/lib/format";
 import { toast } from "@/lib/toast";
 import { cn } from "@/lib/utils";
+import CustomFieldEditDialog from "./custom-field-edit-dialog";
 
 type CustomFieldType = "text" | "number" | "date" | "dropdown" | "boolean";
 
@@ -92,6 +95,10 @@ export default function CustomFieldEditor({
   const [defaultValue, setDefaultValue] = useState("");
   const [optionsText, setOptionsText] = useState("");
   const [deletingFieldId, setDeletingFieldId] = useState<string | null>(null);
+  const [editingFieldId, setEditingFieldId] = useState<string | null>(null);
+  const editingField = customFields.find(
+    (field) => field.id === editingFieldId,
+  );
 
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [pendingFields, setPendingFields] = useState<
@@ -383,6 +390,18 @@ export default function CustomFieldEditor({
                   type="button"
                   variant="ghost"
                   size="sm"
+                  onClick={() => setEditingFieldId(field.id)}
+                  className="h-7 w-7 p-0 text-muted-foreground shrink-0"
+                >
+                  <Pencil className="w-3.5 h-3.5" />
+                  <span className="sr-only">
+                    {t("settings:customFields.editButton")}: {field.name}
+                  </span>
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
                   disabled={deletingField || deletingFieldId === field.id}
                   onClick={() => void handleDelete(field.id)}
                   className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive shrink-0"
@@ -468,7 +487,7 @@ export default function CustomFieldEditor({
               >
                 <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />
                 {defaultValue && isValid(parseISO(defaultValue))
-                  ? format(parseISO(defaultValue), "dd MMM yyyy")
+                  ? formatDateMedium(parseISO(defaultValue))
                   : t("tasks:detail.pickDate", "Pick a date")}
               </Button>
             </PopoverTrigger>
@@ -586,6 +605,14 @@ export default function CustomFieldEditor({
           {t("settings:customFields.addButton")}
         </Button>
       </div>
+
+      {editingField && (
+        <CustomFieldEditDialog
+          key={editingField.id}
+          field={editingField}
+          onClose={() => setEditingFieldId(null)}
+        />
+      )}
     </div>
   );
 }
