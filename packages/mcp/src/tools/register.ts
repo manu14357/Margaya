@@ -1018,7 +1018,7 @@ export function registerTools(
     "create_time_entry",
     {
       description:
-        "Log time against a task. Omit endTime to leave the entry running.",
+        "Log time against a task. Omit endTime to leave the entry running; a person has one running entry at a time, so this stops any other they have running.",
       inputSchema: z.object({
         taskId: nonEmptyString,
         startTime: isoDateTimeSchema,

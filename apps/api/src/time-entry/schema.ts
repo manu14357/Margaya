@@ -46,3 +46,25 @@ export const updateTimeEntryBody = z.object({
   endTime: timestamp.optional(),
   description: z.string().optional(),
 });
+
+export const runningTimeEntryQuery = z.object({
+  workspaceId: z.string().min(1),
+});
+
+export const timeReportQuery = z.object({
+  workspaceId: z.string().min(1),
+  projectIds: z.string().optional().openapi({
+    description:
+      "Comma-separated project ids (1–100). Omitted means every non-archived project of the workspace.",
+  }),
+  timeZone: z.string().max(64).optional().openapi({
+    description:
+      "IANA time zone for local days. Default: the workspace's time zone.",
+  }),
+  from: z.string().min(1).max(32).openapi({
+    description: "First local day, YYYY-MM-DD (inclusive).",
+  }),
+  to: z.string().min(1).max(32).openapi({
+    description: "Last local day, YYYY-MM-DD (inclusive).",
+  }),
+});

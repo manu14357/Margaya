@@ -125,7 +125,7 @@ test("time entry validation and roles", async () => {
   );
   await expectStatus(
     await world.as("member").get("/api/time-entry/e2e-unknown-entry"),
-    [400, 404],
+    404,
   );
 });
 
@@ -173,6 +173,75 @@ test("time tracking turned off answers 403 and keeps the data", async () => {
   expect(back.id).toBe(entry.id);
 });
 
+test(
+  "a timer runs one at a time, stops, and counts in the totals",
+  covers("getRunningTimeEntry", "stopTimeEntry", "getTimeReport"),
+  async () => {
+    const admin = world.as("admin");
+    const second = await createTask(world.as("owner"), project.id);
+    const startedAt = new Date(Date.now() - 120_000).toISOString();
+
+    const first = await expectJson<TimeEntry>(
+      await admin.post("/api/time-entry", {
+        data: { taskId: task.id, startTime: startedAt },
+      }),
+    );
+    const next = await expectJson<
+      TimeEntry & { stoppedEntries: { id: string; taskId: string }[] }
+    >(
+      await admin.post("/api/time-entry", {
+        data: { taskId: second.id, startTime: startedAt },
+      }),
+    );
+    expect(next.stoppedEntries).toEqual([{ id: first.id, taskId: task.id }]);
+
+    const running = await expectJson<{
+      entry: { id: string; taskId: string } | null;
+    }>(
+      await admin.get(
+        `/api/time-entry/running?workspaceId=${world.workspace.id}`,
+      ),
+    );
+    expect(running.entry).toMatchObject({ id: next.id, taskId: second.id });
+
+    // Someone else's timer can't be stopped by a plain member.
+    await expectStatus(
+      await world.as("member").post(`/api/time-entry/${next.id}/stop`),
+      403,
+    );
+    const stopped = await expectJson<TimeEntry>(
+      await admin.post(`/api/time-entry/${next.id}/stop`),
+    );
+    expect(stopped.duration).toBeGreaterThanOrEqual(120);
+
+    const day = startedAt.slice(0, 10);
+    const report = await expectJson<{
+      totalSeconds: number;
+      byPerson: { userId: string | null; seconds: number }[];
+      byProject: { projectId: string; seconds: number }[];
+    }>(
+      await admin.get(
+        `/api/time-entry/report?workspaceId=${world.workspace.id}&projectIds=${project.id}&from=${day}&to=${day}&timeZone=UTC`,
+      ),
+    );
+    expect(report.totalSeconds).toBeGreaterThanOrEqual(120);
+    expect(report.byPerson.map((row) => row.userId)).toContain(
+      world.users.admin.id,
+    );
+    expect(report.byProject.map((row) => row.projectId)).toEqual([project.id]);
+
+    // Viewers have no analytics:read by default.
+    await expectStatus(
+      await world
+        .as("viewer")
+        .get(
+          `/api/time-entry/report?workspaceId=${world.workspace.id}&from=${day}&to=${day}`,
+        ),
+      403,
+    );
+  },
+);
+
 test("a time entry can be deleted", covers("deleteTimeEntry"), async () => {
   const member = world.as("member");
   const entry = await expectJson<TimeEntry>(
@@ -189,11 +258,8 @@ test("a time entry can be deleted", covers("deleteTimeEntry"), async () => {
     403,
   );
   await expectJson(await member.delete(`/api/time-entry/${entry.id}`));
-  // Gone: the workspace can no longer be resolved from the id.
-  await expectStatus(
-    await member.get(`/api/time-entry/${entry.id}`),
-    [400, 404],
-  );
+  // Gone: the id reads as unknown.
+  await expectStatus(await member.get(`/api/time-entry/${entry.id}`), 404);
   const listed = await expectJson<TimeEntry[]>(
     await member.get(`/api/time-entry/task/${task.id}`),
   );
