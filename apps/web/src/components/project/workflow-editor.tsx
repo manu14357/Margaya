@@ -1,4 +1,6 @@
+import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -6,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useDeleteWorkflowRule } from "@/hooks/mutations/workflow-rule/use-delete-workflow-rule";
 import { useUpsertWorkflowRule } from "@/hooks/mutations/workflow-rule/use-upsert-workflow-rule";
 import { useGetColumns } from "@/hooks/queries/column/use-get-columns";
 import { useGetWorkflowRules } from "@/hooks/queries/workflow-rule/use-get-workflow-rules";
@@ -29,6 +32,8 @@ export default function WorkflowEditor({ projectId }: WorkflowEditorProps) {
   const { data: rules, isLoading: rulesLoading } =
     useGetWorkflowRules(projectId);
   const { mutateAsync: upsertRule } = useUpsertWorkflowRule();
+  const { mutateAsync: deleteRule, isPending: isRemoving } =
+    useDeleteWorkflowRule();
 
   if (columnsLoading || rulesLoading) {
     return (
@@ -45,6 +50,19 @@ export default function WorkflowEditor({ projectId }: WorkflowEditorProps) {
       </div>
     );
   }
+
+  const removeRule = async (id: string) => {
+    try {
+      await deleteRule({ id, projectId });
+      toast.success(t("settings:workflowEditor.toastRemoved"));
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : t("settings:workflowEditor.toastRemoveError"),
+      );
+    }
+  };
 
   const renderRuleSection = (
     integrationType: "github" | "gitea",
@@ -77,48 +95,64 @@ export default function WorkflowEditor({ projectId }: WorkflowEditorProps) {
               <span className="text-sm">
                 {t(`settings:workflowEditor.events.${eventType}`)}
               </span>
-              <Select
-                value={currentRule?.columnId ?? ""}
-                onValueChange={async (value) => {
-                  if (!value) return;
-                  try {
-                    await upsertRule({
-                      projectId,
-                      data: {
-                        integrationType,
-                        eventType,
-                        columnId: value,
-                      },
-                    });
-                    toast.success(t("settings:workflowEditor.toastUpdated"));
-                  } catch (error) {
-                    toast.error(
-                      error instanceof Error
-                        ? error.message
-                        : t("settings:workflowEditor.toastError"),
-                    );
-                  }
-                }}
-              >
-                <SelectTrigger className="w-48 h-8 text-sm">
-                  <SelectValue
-                    placeholder={t(
-                      "settings:workflowEditor.selectColumnPlaceholder",
-                    )}
+              <div className="flex shrink-0 items-center gap-1">
+                {currentRule && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon-sm"
+                    disabled={isRemoving}
+                    aria-label={t("settings:workflowEditor.removeRule", {
+                      event: t(`settings:workflowEditor.events.${eventType}`),
+                    })}
+                    onClick={() => removeRule(currentRule.id)}
                   >
-                    {columns.find((c) => c.id === currentRule?.columnId)
-                      ?.name ??
-                      t("settings:workflowEditor.selectColumnPlaceholder")}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {columns.map((col) => (
-                    <SelectItem key={col.id} value={col.id}>
-                      {col.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                    <X aria-hidden />
+                  </Button>
+                )}
+                <Select
+                  value={currentRule?.columnId ?? ""}
+                  onValueChange={async (value) => {
+                    if (!value) return;
+                    try {
+                      await upsertRule({
+                        projectId,
+                        data: {
+                          integrationType,
+                          eventType,
+                          columnId: value,
+                        },
+                      });
+                      toast.success(t("settings:workflowEditor.toastUpdated"));
+                    } catch (error) {
+                      toast.error(
+                        error instanceof Error
+                          ? error.message
+                          : t("settings:workflowEditor.toastError"),
+                      );
+                    }
+                  }}
+                >
+                  <SelectTrigger className="w-48 h-8 text-sm">
+                    <SelectValue
+                      placeholder={t(
+                        "settings:workflowEditor.selectColumnPlaceholder",
+                      )}
+                    >
+                      {columns.find((c) => c.id === currentRule?.columnId)
+                        ?.name ??
+                        t("settings:workflowEditor.selectColumnPlaceholder")}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {columns.map((col) => (
+                      <SelectItem key={col.id} value={col.id}>
+                        {col.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           );
         })}

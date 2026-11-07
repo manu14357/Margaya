@@ -217,7 +217,14 @@ test.describe("features", () => {
   test("with every section feature off only the layouts and Analytics remain", async ({
     pageAs,
   }) => {
-    const layouts = [/Backlog/, /Board/, /Spreadsheet/, /Calendar/, /Gantt/];
+    const layouts = [
+      /Backlog/,
+      /Board/,
+      /List/,
+      /Spreadsheet/,
+      /Calendar/,
+      /Gantt/,
+    ];
     const { page, workspace, project } = await setUpProject(pageAs);
     await page.goto(boardPath(workspace.id, project.id));
     await expect(sectionStrip(page)).toBeVisible();
@@ -440,6 +447,18 @@ test.describe("workflow", () => {
 
     await page.reload();
     await expect(merged).toHaveText("Done");
+
+    await github
+      .getByRole("button", { name: "Remove the rule for PR merged" })
+      .click();
+    await expect(page.getByText("Workflow rule removed")).toBeVisible();
+    await expect(merged).toHaveText("Select column...");
+
+    await page.reload();
+    await expect(merged).toHaveText("Select column...");
+    await expect(
+      github.getByRole("button", { name: "Remove the rule for PR merged" }),
+    ).toHaveCount(0);
   });
 });
 
