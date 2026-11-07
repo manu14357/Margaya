@@ -18,7 +18,7 @@ import {
   recordEstimateChanges,
   type TaskEstimateChange,
 } from "../../estimate/task-estimate";
-import { shareProjectEstimates } from "../../estimate/write";
+import { shareProjectEstimates, type Transaction } from "../../estimate/write";
 import { publishEvent } from "../../events";
 import { assertTasksNotInTriage } from "../../intake/guards";
 import {
@@ -27,6 +27,10 @@ import {
 } from "../../module/controllers/membership";
 import { canSeeProject } from "../../project/visibility";
 import { withAssigneeIds } from "../assignees";
+import {
+  carryCustomFieldValues,
+  dropLabelsFromOtherWorkspaces,
+} from "../move-carry-over";
 import { completedAtAssignment } from "../scope";
 import { claimTaskNumber } from "./claim-task-numbers";
 import { nextTaskPosition } from "./next-task-position";
@@ -38,11 +42,7 @@ function isSameProjectMove(
   return sourceProjectId === destinationProjectId;
 }
 
-async function resolveDestinationStatus(
-  destinationProjectId: string,
-  currentStatus: string,
-  requestedStatus?: string,
-) {
+export async function loadDestinationColumns(destinationProjectId: string) {
   const destinationColumns = await db
     .select({
       id: columnTable.id,
@@ -59,14 +59,28 @@ async function resolveDestinationStatus(
     )
     .orderBy(asc(columnTable.position));
 
-  const [firstColumn] = destinationColumns;
-
-  if (!firstColumn) {
+  if (destinationColumns.length === 0) {
     throw new HTTPException(400, {
       message: "Destination project does not have a workflow",
     });
   }
 
+  return destinationColumns;
+}
+
+type DestinationColumn = Awaited<
+  ReturnType<typeof loadDestinationColumns>
+>[number];
+
+/**
+ * The requested column, else the column with the task's current status, else
+ * the destination's first column.
+ */
+export function chooseDestinationColumn(
+  destinationColumns: DestinationColumn[],
+  currentStatus: string,
+  requestedStatus?: string,
+): DestinationColumn {
   const requestedColumn = requestedStatus
     ? destinationColumns.find((column) => column.slug === requestedStatus)
     : null;
@@ -81,7 +95,169 @@ async function resolveDestinationStatus(
     (column) => column.slug === currentStatus,
   );
 
-  return requestedColumn ?? matchingCurrentColumn ?? firstColumn;
+  return (
+    requestedColumn ??
+    matchingCurrentColumn ??
+    (destinationColumns[0] as DestinationColumn)
+  );
+}
+
+export async function findDestinationProject(
+  workspaceId: string,
+  destinationProjectId: string,
+  userId: string,
+) {
+  const destinationProject = await db.query.projectTable.findFirst({
+    where: and(
+      eq(projectTable.id, destinationProjectId),
+      eq(projectTable.workspaceId, workspaceId),
+      // A trashed project reads as gone (C7).
+      isNull(projectTable.deletedAt),
+    ),
+  });
+  // A restricted destination the caller cannot see reads as missing.
+  if (
+    !destinationProject ||
+    !(await canSeeProject(userId, destinationProject.id))
+  ) {
+    throw new HTTPException(404, {
+      message: "Project not found",
+    });
+  }
+  return destinationProject;
+}
+
+/**
+ * Moves one locked task inside the caller's transaction. Call after
+ * claimTaskNumber(s) has locked the destination project, which also keeps
+ * positions from colliding (nextTaskPosition).
+ */
+export async function applyTaskMove(
+  tx: Transaction,
+  {
+    taskId,
+    oldEstimatePointId,
+    column,
+    taskNumber,
+    destinationProjectId,
+    userId,
+  }: {
+    taskId: string;
+    oldEstimatePointId: string | null;
+    column: DestinationColumn;
+    taskNumber: number;
+    destinationProjectId: string;
+    userId: string;
+  },
+) {
+  const nextPosition = await nextTaskPosition(
+    tx,
+    destinationProjectId,
+    column.slug,
+    column.id,
+  );
+
+  const [updatedTask] = await tx
+    .update(taskTable)
+    .set({
+      projectId: destinationProjectId,
+      status: column.slug,
+      columnId: column.id,
+      completedAt: completedAtAssignment(column.group, new Date()),
+      number: taskNumber,
+      position: nextPosition,
+      // Estimate values belong to the source project's system.
+      estimatePointId: null,
+    })
+    .where(eq(taskTable.id, taskId))
+    .returning();
+
+  if (!updatedTask) {
+    throw new HTTPException(500, {
+      message: "Failed to move task",
+    });
+  }
+
+  await tx
+    .update(assetTable)
+    .set({ projectId: destinationProjectId })
+    .where(eq(assetTable.taskId, taskId));
+
+  // Cycles and modules belong to one project, so the task leaves them.
+  const cycleChange = await detachTaskFromCycle(tx, taskId, userId);
+  const moduleDetachments = await detachTaskFromOtherProjectModules(
+    tx,
+    taskId,
+    destinationProjectId,
+    userId,
+  );
+
+  const estimateChanges: TaskEstimateChange[] = [];
+  if (oldEstimatePointId) {
+    const snapshots = await pointSnapshots(tx, [oldEstimatePointId]);
+    estimateChanges.push(
+      estimateChange(
+        updatedTask,
+        snapshots.get(oldEstimatePointId) ?? null,
+        null,
+        "task_moved",
+      ),
+    );
+    await recordEstimateChanges(tx, estimateChanges, userId);
+  }
+
+  return {
+    movedTask: updatedTask,
+    cycleChange,
+    moduleDetachments,
+    estimateChanges,
+  };
+}
+
+type AppliedMove = Awaited<ReturnType<typeof applyTaskMove>>;
+type ProjectRef = { id: string; name: string };
+
+/** Publishes one committed move: activity, realtime and integrations. */
+export async function publishTaskMove({
+  move,
+  sourceProject,
+  destinationProject,
+  oldStatus,
+  userId,
+}: {
+  move: AppliedMove;
+  sourceProject: ProjectRef;
+  destinationProject: ProjectRef;
+  oldStatus: string;
+  userId: string;
+}) {
+  await publishEvent("task.moved", {
+    taskId: move.movedTask.id,
+    type: "moved",
+    userId,
+    fromProjectId: sourceProject.id,
+    fromProjectName: sourceProject.name,
+    toProjectId: destinationProject.id,
+    toProjectName: destinationProject.name,
+    oldStatus,
+    newStatus: move.movedTask.status,
+  });
+
+  await publishCycleChanges({
+    projectId: sourceProject.id,
+    userId,
+    changes: move.cycleChange ? [move.cycleChange] : [],
+  });
+  await publishModuleDetachments({
+    projectId: sourceProject.id,
+    userId,
+    entries: move.moduleDetachments,
+  });
+  await publishEstimateChanges({
+    projectId: destinationProject.id,
+    userId,
+    changes: move.estimateChanges,
+  });
 }
 
 async function moveTask({
@@ -123,138 +299,68 @@ async function moveTask({
     });
   }
 
-  const destinationProject = await db.query.projectTable.findFirst({
-    where: and(
-      eq(projectTable.id, destinationProjectId),
-      eq(projectTable.workspaceId, sourceProject.workspaceId),
-      // A trashed project reads as gone (C7).
-      isNull(projectTable.deletedAt),
-    ),
-  });
-  // A restricted destination the caller cannot see reads as missing.
-  if (
-    !destinationProject ||
-    !(await canSeeProject(currentUserId, destinationProject.id))
-  ) {
-    throw new HTTPException(404, {
-      message: "Project not found",
-    });
-  }
-
-  const resolvedColumn = await resolveDestinationStatus(
+  const destinationProject = await findDestinationProject(
+    sourceProject.workspaceId,
     destinationProjectId,
+    currentUserId,
+  );
+
+  const resolvedColumn = chooseDestinationColumn(
+    await loadDestinationColumns(destinationProjectId),
     existingTask.status,
     destinationStatus,
   );
 
-  const { movedTask, cycleChange, moduleDetachments, estimateChanges } =
-    await db.transaction(async (tx) => {
-      // Waits out a remap of the source project's estimates, then locks the
-      // task, so the estimate recorded below is exactly the one cleared.
-      await shareProjectEstimates(tx, existingTask.projectId);
-      const [locked] = await tx
-        .select({ estimatePointId: taskTable.estimatePointId })
-        .from(taskTable)
-        .where(eq(taskTable.id, taskId))
-        .for("update");
+  const { move, droppedLabels } = await db.transaction(async (tx) => {
+    // Waits out a remap of the source project's estimates, then locks the
+    // task, so the estimate recorded below is exactly the one cleared.
+    await shareProjectEstimates(tx, existingTask.projectId);
+    const [locked] = await tx
+      .select({ estimatePointId: taskTable.estimatePointId })
+      .from(taskTable)
+      .where(eq(taskTable.id, taskId))
+      .for("update");
 
-      const nextTaskNumber = await claimTaskNumber(destinationProjectId, tx);
-      const nextPosition = await nextTaskPosition(
-        tx,
-        destinationProjectId,
-        resolvedColumn.slug,
-        resolvedColumn.id,
-      );
-
-      const [updatedTask] = await tx
-        .update(taskTable)
-        .set({
-          projectId: destinationProjectId,
-          status: resolvedColumn.slug,
-          columnId: resolvedColumn.id,
-          completedAt: completedAtAssignment(resolvedColumn.group, new Date()),
-          number: nextTaskNumber,
-          position: nextPosition,
-          // Estimate values belong to the source project's system.
-          estimatePointId: null,
-        })
-        .where(eq(taskTable.id, taskId))
-        .returning();
-
-      if (!updatedTask) {
-        throw new HTTPException(500, {
-          message: "Failed to move task",
-        });
-      }
-
-      await tx
-        .update(assetTable)
-        .set({ projectId: destinationProjectId })
-        .where(eq(assetTable.taskId, taskId));
-
-      // Cycles and modules belong to one project, so the task leaves them.
-      const cycleChange = await detachTaskFromCycle(tx, taskId, currentUserId);
-      const moduleDetachments = await detachTaskFromOtherProjectModules(
-        tx,
-        taskId,
-        destinationProjectId,
-        currentUserId,
-      );
-
-      const estimateChanges: TaskEstimateChange[] = [];
-      const oldPointId = locked?.estimatePointId ?? null;
-      if (oldPointId) {
-        const snapshots = await pointSnapshots(tx, [oldPointId]);
-        estimateChanges.push(
-          estimateChange(
-            updatedTask,
-            snapshots.get(oldPointId) ?? null,
-            null,
-            "task_moved",
-          ),
-        );
-        await recordEstimateChanges(tx, estimateChanges, currentUserId);
-      }
-
-      return {
-        movedTask: updatedTask,
-        cycleChange,
-        moduleDetachments,
-        estimateChanges,
-      };
+    const taskNumber = await claimTaskNumber(destinationProjectId, tx);
+    const move = await applyTaskMove(tx, {
+      taskId,
+      oldEstimatePointId: locked?.estimatePointId ?? null,
+      column: resolvedColumn,
+      taskNumber,
+      destinationProjectId,
+      userId: currentUserId,
     });
+    await carryCustomFieldValues(tx, [taskId], destinationProjectId);
+    const droppedLabels = await dropLabelsFromOtherWorkspaces(
+      tx,
+      [taskId],
+      destinationProject.workspaceId,
+    );
 
-  await publishEvent("task.moved", {
-    taskId,
-    type: "moved",
-    userId: currentUserId,
-    fromProjectId: sourceProject.id,
-    fromProjectName: sourceProject.name,
-    toProjectId: destinationProject.id,
-    toProjectName: destinationProject.name,
+    return { move, droppedLabels };
+  });
+
+  await publishTaskMove({
+    move,
+    sourceProject,
+    destinationProject,
     oldStatus: existingTask.status,
-    newStatus: resolvedColumn.slug,
-  });
-
-  await publishCycleChanges({
-    projectId: sourceProject.id,
     userId: currentUserId,
-    changes: cycleChange ? [cycleChange] : [],
   });
-  await publishModuleDetachments({
-    projectId: sourceProject.id,
-    userId: currentUserId,
-    entries: moduleDetachments,
-  });
-  await publishEstimateChanges({
-    projectId: destinationProject.id,
-    userId: currentUserId,
-    changes: estimateChanges,
-  });
+  for (const label of droppedLabels) {
+    await publishEvent("task.label_unassigned", {
+      label,
+      task: move.movedTask,
+      projectId: destinationProject.id,
+      taskId,
+      userId: currentUserId,
+      type: "label_unassigned",
+    });
+  }
 
   // Assignees stay: both projects share the workspace, so all stay assignable.
   return {
-    task: await withAssigneeIds(movedTask),
+    task: await withAssigneeIds(move.movedTask),
     sourceProjectId: sourceProject.id,
     destinationProjectId: destinationProject.id,
   };

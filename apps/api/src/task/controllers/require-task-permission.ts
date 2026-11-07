@@ -1,6 +1,10 @@
 import type { Context, Next } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { requireEntitlement } from "../../billing/require-entitlement-middleware";
+import {
+  includeDestinationProject,
+  readJsonBody,
+} from "../../utils/destination-project";
 import { requireWorkspacePermission } from "../../utils/require-workspace-permission";
 import { resolveFullUpdateAssignees, sameAssigneeSet } from "../assignee-rules";
 import { assigneesOfTask } from "../assignees";
@@ -18,7 +22,8 @@ type BulkTaskOperation =
   | "updateStartDate"
   | "updateEstimate"
   | "archive"
-  | "unarchive";
+  | "unarchive"
+  | "move";
 
 const BULK_OPERATIONS: readonly BulkTaskOperation[] = [
   "updateStatus",
@@ -34,6 +39,7 @@ const BULK_OPERATIONS: readonly BulkTaskOperation[] = [
   "updateEstimate",
   "archive",
   "unarchive",
+  "move",
 ];
 
 const ASSIGNEE_OPERATIONS: readonly BulkTaskOperation[] = [
@@ -41,15 +47,6 @@ const ASSIGNEE_OPERATIONS: readonly BulkTaskOperation[] = [
   "addAssignee",
   "removeAssignee",
 ];
-
-// Route middleware runs before the validators, so c.req.valid() is unavailable.
-async function readJsonBody(c: Context): Promise<Record<string, unknown>> {
-  const raw = (await c.req.json().catch(() => ({}))) as unknown;
-  if (typeof raw !== "object" || raw === null || Array.isArray(raw)) {
-    return {};
-  }
-  return raw as Record<string, unknown>;
-}
 
 async function bulkOperation(c: Context): Promise<BulkTaskOperation> {
   const { operation } = await readJsonBody(c);
@@ -64,8 +61,22 @@ async function bulkOperation(c: Context): Promise<BulkTaskOperation> {
   return operation as BulkTaskOperation;
 }
 
+async function includeMoveDestination(c: Context) {
+  const { value } = await readJsonBody(c);
+  if (typeof value !== "string" || !value) {
+    throw new HTTPException(400, {
+      message: "Destination project is required",
+    });
+  }
+  await includeDestinationProject(c, value);
+}
+
 export async function requireBulkTaskPermission(c: Context, next: Next) {
   const operation = await bulkOperation(c);
+
+  if (operation === "move") {
+    await includeMoveDestination(c);
+  }
 
   if (operation === "delete") {
     return requireWorkspacePermission({ task: ["delete"] })(c, next);

@@ -39,6 +39,7 @@ import {
   assertValidPriority,
   assertValidTaskStatus,
 } from "../validate-task-fields";
+import bulkMoveTasks from "./bulk-move-tasks";
 
 type BulkOperation =
   | "updateStatus"
@@ -53,7 +54,8 @@ type BulkOperation =
   | "updateStartDate"
   | "updateEstimate"
   | "archive"
-  | "unarchive";
+  | "unarchive"
+  | "move";
 
 /** A date value of a bulk operation; null or empty clears the date. */
 function parseBulkDate(value: string | null | undefined): Date | null {
@@ -146,7 +148,8 @@ async function bulkUpdateTasks({
   if (
     effectiveOperation === "updateStatus" ||
     effectiveOperation === "archive" ||
-    effectiveOperation === "unarchive"
+    effectiveOperation === "unarchive" ||
+    effectiveOperation === "move"
   ) {
     await assertTasksNotInTriage(foundIds, TRIAGE_TASKS_MESSAGE);
   }
@@ -501,6 +504,21 @@ async function bulkUpdateTasks({
       );
       updatedCount = changes.length;
       await publishEstimateChanges({ projectId, userId, changes });
+      break;
+    }
+
+    case "move": {
+      if (!value) {
+        throw new HTTPException(400, {
+          message: "Destination project is required",
+        });
+      }
+      updatedCount = await bulkMoveTasks({
+        tasks,
+        workspaceId,
+        destinationProjectId: value,
+        userId,
+      });
       break;
     }
 
