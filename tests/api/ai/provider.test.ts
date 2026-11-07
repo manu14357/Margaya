@@ -118,6 +118,34 @@ describe("fake provider", () => {
     expect(tool.deltas.at(-1)).toEqual({ type: "stop", reason: "tool_use" });
   });
 
+  it("answers the JSON a marker gives when a schema is set", async () => {
+    // A separate server process (e2e) can't call setFakeResponder; the
+    // prompt scripts the structured answer instead.
+    const content =
+      'Plan it.\n[[fake:json {"tasks":[{"title":"Ship {it}","subtasks":[]}]}]]';
+    const scripted = await collect(
+      createFakeProvider().stream(
+        request({
+          jsonSchema: { type: "object" },
+          messages: [{ role: "user", content }],
+        }),
+        new AbortController().signal,
+      ),
+    );
+    expect(JSON.parse(scripted.text)).toEqual({
+      tasks: [{ title: "Ship {it}", subtasks: [] }],
+    });
+
+    // Without a schema the marker is plain text, echoed as usual.
+    const plain = await collect(
+      createFakeProvider().stream(
+        request({ messages: [{ role: "user", content }] }),
+        new AbortController().signal,
+      ),
+    );
+    expect(plain.text).toContain("[[fake:json");
+  });
+
   it("can be scripted", async () => {
     setFakeResponder(() => ({ text: "scripted" }));
     const { text } = await collect(

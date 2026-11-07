@@ -19,18 +19,29 @@ import { assertBuildTarget, proposeBuild } from "./proposal";
 import {
   buildProposalResponseSchema,
   buildReportSchema,
+  buildUndoRefusalSchema,
+  buildUndoResultSchema,
   duplicateCheckSchema,
 } from "./response";
 import {
   applyBuildBody,
   buildProposalBody,
   duplicateCheckBody,
+  undoBuildBody,
 } from "./schema";
+import {
+  type BuildLedger,
+  emptyLedger,
+  isBuildUndoRefusal,
+  sealBuildUndo,
+  undoBuild,
+} from "./undo";
 
 // AI build routes (B6): the duplicate check on create, and "talk to build"
-// (propose, then apply what the person reviewed). Every route is hidden
-// behind the AI switches and ai:use; the apply step creates each item
-// through the ordinary create routes, so their own permissions hold.
+// (propose, then apply what the person reviewed, and undo it). Every route
+// but undo is hidden behind the AI switches and ai:use; the apply step creates
+// each item through the ordinary create routes, so their own permissions
+// hold. Undo stays open so a plan can still be reverted if AI was turned off.
 
 const TAGS = ["AI"];
 const json = <T>(schema: T) => ({
@@ -111,7 +122,7 @@ const applyRoute = createRoute({
   tags: TAGS,
   summary: "Create a reviewed plan",
   description:
-    "Creates a reviewed proposal item by item through the ordinary create routes (project, columns, cycles, modules, tasks, labels, sub-tasks), under the caller's own permissions and with their usual events. A failed item is reported and the rest kept. Streams Server-Sent Events (progress {done, total, kind, name, ok}, then done with the report, or error); send Accept: application/json or ?stream=false for the report as one JSON body. Makes no model call.",
+    "Creates a reviewed proposal item by item through the ordinary create routes (project, columns, cycles, modules, tasks, labels, sub-tasks), under the caller's own permissions and with their usual events. A failed item is reported and the rest kept. The report carries an undo token valid for an hour. Streams Server-Sent Events (progress {done, total, kind, name, ok}, then done with the report, or error); send Accept: application/json or ?stream=false for the report as one JSON body. Makes no model call.",
   middleware: [
     workspaceAccess.fromBody(),
     requireAiUse,
@@ -139,6 +150,29 @@ const applyRoute = createRoute({
   },
 });
 
+const undoRoute = createRoute({
+  method: "post",
+  operationId: "aiBuildUndo",
+  path: "/undo",
+  tags: TAGS,
+  summary: "Undo an applied plan",
+  description:
+    "Reverts a plan created by POST /ai/build/apply, with its undo token, through the ordinary routes under the caller's own rights: a new project goes to the trash with everything in it; otherwise its tasks and sub-tasks go to the trash and its cycles, modules and columns are deleted. Items the caller may not delete are archived when the route allows it, and anything else that fails is listed. Only the person who applied the plan can undo it, within an hour. It only runs while the items are as the plan left them: if any was edited since (fields, labels, assignees, comments, attachments, time, relations, or for a column, cycle, module or new project, what it holds), nothing is undone and a 409 names them. Makes no model call.",
+  middleware: [workspaceAccess.fromBody()] as const,
+  request: { body: json(undoBuildBody) },
+  responses: {
+    200: jsonResponse("What was undone", buildUndoResultSchema),
+    400: errorResponse("Invalid body"),
+    403: errorResponse("No access to the workspace"),
+    404: errorResponse("Unknown token, or the project is out of reach"),
+    409: jsonResponse(
+      "Nothing was undone: items changed since (BUILD_EDITED), or it was already undone (BUILD_ALREADY_UNDONE)",
+      buildUndoRefusalSchema,
+    ),
+    410: errorResponse("Undo has expired"),
+  },
+});
+
 const aiBuild = apiRouter<BaseVariables & { workspaceId: string }>()
   .openapi(duplicateCheckRoute, async (c) =>
     c.json(await checkDuplicates(c, c.req.valid("json")), 200),
@@ -155,14 +189,31 @@ const aiBuild = apiRouter<BaseVariables & { workspaceId: string }>()
     // The same target checks as the proposal: a hidden project is a 404.
     await assertBuildTarget(c, projectId);
     const call = internalApi(c);
-    const run = (onProgress?: Parameters<typeof applyBuild>[0]["onProgress"]) =>
-      applyBuild({
+    const workspaceId = c.get("workspaceId");
+    const run = async (
+      onProgress?: Parameters<typeof applyBuild>[0]["onProgress"],
+    ) => {
+      const ledger: BuildLedger = emptyLedger();
+      const report = await applyBuild({
         call,
-        workspaceId: c.get("workspaceId"),
+        workspaceId,
         projectId: projectId ?? null,
         proposal,
+        ledger,
         onProgress,
       });
+      const undoToken = await sealBuildUndo({
+        ledger,
+        userId: c.get("userId"),
+        workspaceId,
+        projectId: report.projectId,
+      }).catch((error) => {
+        // The plan is created either way; it just can't be undone.
+        console.error("AI build undo token failed:", error);
+        return undefined;
+      });
+      return undoToken ? { ...report, undoToken } : report;
+    };
 
     if (!wantsAiStream(c)) return c.json(await run(), 200);
 
@@ -194,6 +245,18 @@ const aiBuild = apiRouter<BaseVariables & { workspaceId: string }>()
         });
       }
     }) as never;
+  })
+  .openapi(undoRoute, async (c) => {
+    const { undoToken } = c.req.valid("json");
+    const outcome = await undoBuild({
+      call: internalApi(c),
+      token: undoToken,
+      userId: c.get("userId"),
+      workspaceId: c.get("workspaceId"),
+    });
+    return isBuildUndoRefusal(outcome)
+      ? c.json(outcome, 409)
+      : c.json(outcome, 200);
   });
 
 export default aiBuild;

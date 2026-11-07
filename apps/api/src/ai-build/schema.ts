@@ -172,3 +172,10 @@ export const applyBuildBody = z.object({
   }),
   proposal: buildProposalSchema,
 });
+
+export const undoBuildBody = z.object({
+  workspaceId: z.string().min(1),
+  undoToken: z.string().min(1).max(200_000).openapi({
+    description: "The undoToken of the apply report.",
+  }),
+});

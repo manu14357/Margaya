@@ -1,6 +1,7 @@
 import type { InternalApi } from "./dispatch";
 import type { BuildItemKind, BuildReport } from "./response";
 import type { BuildProposal } from "./schema";
+import type { BuildLedger } from "./undo";
 
 // Creates a reviewed proposal, one item at a time, through the ordinary
 // create routes (dispatch.ts) under the caller's own permissions. A failed
@@ -70,9 +71,11 @@ export async function applyBuild(input: {
   workspaceId: string;
   projectId: string | null;
   proposal: BuildProposal;
+  /** Collects the ids of what is created, for undo. */
+  ledger: BuildLedger;
   onProgress?: (progress: BuildProgress) => void | Promise<void>;
 }): Promise<BuildReport> {
-  const { call, workspaceId, proposal } = input;
+  const { call, workspaceId, proposal, ledger } = input;
   const newProject = !input.projectId;
   const report: BuildReport = {
     projectId: input.projectId,
@@ -150,6 +153,7 @@ export async function applyBuild(input: {
     }
     report.projectId = projectId;
     report.created.project = true;
+    ledger.project = projectId;
     if (project.description.trim() && createdProject) {
       // The create route takes no description; the update route does.
       const described = await call("PUT", `/project/${projectId}`, {
@@ -181,12 +185,15 @@ export async function applyBuild(input: {
       await step("column", column.name, true);
       continue;
     }
-    const created = await call<Column>("POST", `/column/${projectId}`, {
-      name: column.name,
-    });
+    const created = await call<Column & Created>(
+      "POST",
+      `/column/${projectId}`,
+      { name: column.name },
+    );
     if (created.ok) {
       slugByName.set(column.name.toLowerCase(), created.data.slug);
       report.created.columns += 1;
+      ledger.columns.push(created.data.id);
     } else {
       fail("column", column.name, created);
     }
@@ -220,6 +227,7 @@ export async function applyBuild(input: {
     if (created.ok) {
       cycleIds.set(cycle.ref, created.data.id);
       report.created.cycles += 1;
+      ledger.cycles.push(created.data.id);
     } else {
       fail("cycle", cycle.name, created);
     }
@@ -238,6 +246,7 @@ export async function applyBuild(input: {
     if (created.ok) {
       moduleIds.set(module.ref, created.data.id);
       report.created.modules += 1;
+      ledger.modules.push(created.data.id);
     } else {
       fail("module", module.name, created);
     }
@@ -287,6 +296,7 @@ export async function applyBuild(input: {
     }
     const taskId = created.data.id;
     report.created.tasks += 1;
+    ledger.tasks.push(taskId);
 
     for (const name of task.labels) {
       const label = await call("POST", "/label", {
@@ -320,8 +330,12 @@ export async function applyBuild(input: {
         status: entrySlug,
         parentId: taskId,
       });
-      if (child.ok) report.created.subtasks += 1;
-      else fail("subtask", subtask.title, child);
+      if (child.ok) {
+        report.created.subtasks += 1;
+        ledger.subtasks.push(child.data.id);
+      } else {
+        fail("subtask", subtask.title, child);
+      }
       await step("subtask", subtask.title, child.ok);
     }
   }

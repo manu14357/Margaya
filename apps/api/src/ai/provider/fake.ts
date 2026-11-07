@@ -14,8 +14,10 @@ import type {
 // - Plain requests answer "[fake:<model>] " followed by the last user text.
 // - With a JSON schema, the answer is a minimal value matching it.
 // - Markers in the last user text steer it: `[[fake:refuse]]` refuses,
-//   `[[fake:error]]` fails like a provider outage, and
-//   `[[fake:tool:<name> <json>]]` calls a tool.
+//   `[[fake:error]]` fails like a provider outage,
+//   `[[fake:tool:<name> <json>]]` calls a tool, and with a JSON schema
+//   `[[fake:json <json>]]` answers that JSON (a separate server, as in e2e,
+//   can't be scripted any other way).
 // - Tests may script answers with `setFakeResponder`.
 
 export type FakeReply = {
@@ -128,7 +130,10 @@ function defaultReply(request: ChatRequest): FakeReply {
     };
   }
   if (request.jsonSchema) {
-    return { text: JSON.stringify(sampleForSchema(request.jsonSchema)) };
+    const scripted = /\[\[fake:json\s*(\{.*\})\s*\]\]/s.exec(text)?.[1];
+    return {
+      text: scripted ?? JSON.stringify(sampleForSchema(request.jsonSchema)),
+    };
   }
   return { text: `[fake:${request.model}] ${text.slice(0, 400)}`.trim() };
 }
