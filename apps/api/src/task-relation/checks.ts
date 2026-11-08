@@ -7,6 +7,7 @@ import {
   formatTaskKey,
   type TaskSnapshot,
 } from "../task-activity/task-snapshot";
+import { textArray } from "../task-query/context";
 
 export type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0];
 
@@ -14,6 +15,8 @@ export const TRIAGE_LINK_MESSAGE = "Tasks waiting in intake can't be linked";
 export const CIRCULAR_MESSAGE = "This would create a circular dependency";
 export const CHAIN_TOO_LONG_MESSAGE =
   "This dependency chain is too long to check";
+/** A refusal that doesn't reveal the chain through tasks the caller can't see. */
+export const HIDDEN_LINK_MESSAGE = "These tasks can't be linked";
 export const OWN_PARENT_MESSAGE = "A task can't be its own parent";
 export const SAME_PROJECT_PARENT_MESSAGE =
   "The parent must be in the same project";
@@ -87,7 +90,8 @@ export function snapshotOfLocked(task: LockedRelationTask): TaskSnapshot {
  * inside the workspace: `down` follows source → target, `up` follows
  * target → source (a task's parents). The start itself counts as reached.
  * UNION keeps a visited set, so the walk ends on any graph, legacy loops
- * included; a walk past MAX_RELATION_WALK tasks answers `too_long`.
+ * included; a walk past MAX_RELATION_WALK tasks answers `too_long`. With
+ * `skipProjectIds`, the walk doesn't pass through those projects' tasks.
  */
 export async function relationWalkReaches(
   tx: Transaction,
@@ -97,12 +101,14 @@ export async function relationWalkReaches(
     relationType,
     direction,
     workspaceId,
+    skipProjectIds = [],
   }: {
     startId: string;
     targetId: string;
     relationType: string;
     direction: "down" | "up";
     workspaceId: string;
+    skipProjectIds?: readonly string[];
   },
 ): Promise<"found" | "clear" | "too_long"> {
   const from =
@@ -125,6 +131,7 @@ export async function relationWalkReaches(
       join ${projectTable} p on p.id = t.project_id
       where r.relation_type = ${relationType}
         and p.workspace_id = ${workspaceId}
+        ${skipProjectIds.length > 0 ? sql`and p.id <> all(${textArray(skipProjectIds)})` : sql.empty()}
     )
     select coalesce(bool_or(walked.task_id = ${targetId}), false) as found,
       count(*)::int as visited

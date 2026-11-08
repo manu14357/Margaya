@@ -29,6 +29,9 @@ import { MAX_EXPORT_COMMENTS } from "./types";
 
 export type ExportUser = { id: string; name: string; email: string };
 export type ExportComment = {
+  id: string;
+  /** The comment this one replies to, when it is a reply. */
+  parentId: string | null;
   author: string | null;
   createdAt: Date;
   text: string;
@@ -63,9 +66,14 @@ export async function loadUsers(
   return new Map(rows.map((row) => [row.id, row]));
 }
 
-/** `WEB-12` style keys of these tasks, whatever their project. */
+/**
+ * `WEB-12` style keys of these tasks, in any project of the workspace the
+ * requester may see. A relation whose other task has no key here is left out.
+ */
 export async function loadTaskKeys(
   ids: Iterable<string>,
+  workspaceId: string,
+  hiddenProjectIds: readonly string[],
 ): Promise<Map<string, string>> {
   const wanted = [...new Set(ids)];
   if (wanted.length === 0) return new Map();
@@ -81,6 +89,10 @@ export async function loadTaskKeys(
     .where(
       and(
         sql`${taskTable.id} = any(${textArray(wanted)})`,
+        eq(projectTable.workspaceId, workspaceId),
+        hiddenProjectIds.length > 0
+          ? sql`${projectTable.id} <> all(${textArray(hiddenProjectIds)})`
+          : undefined,
         isNull(taskTable.deletedAt),
         isNull(projectTable.deletedAt),
       ),
@@ -273,12 +285,18 @@ export function relationsByTask(
 }
 
 /**
- * The newest comments of each task (at most the cap), newest first, plus
- * which tasks have more. Imported comments keep their external author.
+ * The newest comments of each task (at most the cap; null for all of them),
+ * newest first, plus which tasks have more. Imported comments keep their
+ * external author.
  */
-export async function loadComments(taskIds: string[]) {
+export async function loadComments(
+  taskIds: string[],
+  maxComments: number | null = MAX_EXPORT_COMMENTS,
+) {
   const ranked = db
     .select({
+      id: activityTable.id,
+      parentId: activityTable.parentId,
       taskId: activityTable.taskId,
       content: activityTable.content,
       createdAt: activityTable.createdAt,
@@ -301,18 +319,20 @@ export async function loadComments(taskIds: string[]) {
   const rows = await db
     .select()
     .from(ranked)
-    .where(lte(ranked.rank, MAX_EXPORT_COMMENTS + 1))
+    .where(maxComments === null ? undefined : lte(ranked.rank, maxComments + 1))
     .orderBy(asc(ranked.taskId), asc(ranked.rank));
 
   const comments = new Map<string, ExportComment[]>();
   const truncated = new Set<string>();
   for (const row of rows) {
-    if (row.rank > MAX_EXPORT_COMMENTS) {
+    if (maxComments !== null && row.rank > maxComments) {
       truncated.add(row.taskId);
       continue;
     }
     const list = comments.get(row.taskId) ?? [];
     list.push({
+      id: row.id,
+      parentId: row.parentId,
       author: row.authorName ?? row.externalName ?? null,
       createdAt: row.createdAt,
       text: row.content ?? "",

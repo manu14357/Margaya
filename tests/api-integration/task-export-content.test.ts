@@ -8,6 +8,10 @@ import {
 } from "../../apps/api/src/task-export/runner";
 import { readZip, zipTexts } from "../api/task-export/helpers/read-zip";
 import { resetTestDatabase } from "./helpers/database";
+import {
+  createProjectFixture,
+  createWorkspaceMember,
+} from "./helpers/fixtures";
 import { exportScene, parseCsv } from "./helpers/task-exports";
 
 beforeEach(async () => {
@@ -360,6 +364,106 @@ describe("JSON export", () => {
       cycle: null,
       timeLoggedMinutes: null,
     });
+  });
+
+  it("leaves out relations whose other task the requester can't reach", async () => {
+    const s = await exportScene();
+    const { project: secret } = await createProjectFixture({
+      workspaceId: s.workspaceId,
+      slug: "secret",
+    });
+    await db
+      .update(schema.projectTable)
+      .set({ visibility: "restricted" })
+      .where(eq(schema.projectTable.id, secret.id));
+    const hidden = await s.createTask({
+      projectId: secret.id,
+      title: "Hidden",
+    });
+    const foreign = await createWorkspaceMember();
+    const { project: foreignProject } = await createProjectFixture({
+      workspaceId: foreign.workspace.id,
+      slug: "foreign",
+    });
+    const foreignTask = await s.createTask({
+      projectId: foreignProject.id,
+      title: "Foreign",
+    });
+    const seen = await s.createTask({
+      projectId: s.api.project.id,
+      title: "Seen",
+    });
+    const waiting = await s.createTask({ title: "Waiting" });
+    const child = await s.createTask({ title: "Legacy child" });
+    await db.insert(schema.taskRelationTable).values([
+      {
+        sourceTaskId: hidden.id,
+        targetTaskId: waiting.id,
+        relationType: "blocks",
+      },
+      {
+        sourceTaskId: waiting.id,
+        targetTaskId: foreignTask.id,
+        relationType: "related",
+      },
+      {
+        sourceTaskId: seen.id,
+        targetTaskId: waiting.id,
+        relationType: "blocks",
+      },
+      // Legacy rows: a parent in another project, or another workspace.
+      {
+        sourceTaskId: hidden.id,
+        targetTaskId: child.id,
+        relationType: "subtask",
+      },
+    ]);
+
+    const exported = async (user: typeof s.mia, format: "json" | "csv") => {
+      const row = await s.runExport(user, {
+        format,
+        projectIds: [s.web.project.id],
+      });
+      expect(row.error ?? null).toBeNull();
+      return (await s.download(user, row.id)).toString("utf8");
+    };
+    type Row = {
+      key: string;
+      parent: { key: string } | null;
+      relations: { task: string; direction: string }[];
+    };
+    const tasksOf = (text: string) =>
+      new Map(
+        (JSON.parse(text) as { tasks: Row[] }).tasks.map((task) => [
+          task.key,
+          task,
+        ]),
+      );
+    const related = (task: Row | undefined) =>
+      task?.relations.map((relation) => relation.task).sort();
+
+    // A member outside the restricted project.
+    const forMember = await exported(s.mia, "json");
+    expect(forMember).not.toContain("SECRET-");
+    expect(forMember).not.toContain("FOREIGN-");
+    const memberTasks = tasksOf(forMember);
+    expect(related(memberTasks.get(`WEB-${waiting.number}`))).toEqual([
+      "API-1",
+    ]);
+    expect(memberTasks.get(`WEB-${child.number}`)?.parent).toBeNull();
+    const csv = await exported(s.mia, "csv");
+    expect(csv).not.toContain("SECRET-");
+    expect(csv).not.toContain("FOREIGN-");
+
+    // An owner reaches the restricted project; no one reaches the other workspace.
+    const forOwner = await exported(s.owner, "json");
+    expect(forOwner).not.toContain("FOREIGN-");
+    const ownerTasks = tasksOf(forOwner);
+    expect(related(ownerTasks.get(`WEB-${waiting.number}`))).toEqual([
+      "API-1",
+      "SECRET-1",
+    ]);
+    expect(ownerTasks.get(`WEB-${child.number}`)?.parent?.key).toBe("SECRET-1");
   });
 
   it("keeps the newest 200 comments and flags the rest", async () => {

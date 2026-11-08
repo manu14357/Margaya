@@ -16,6 +16,7 @@ import {
   assertParentRules,
   CHAIN_TOO_LONG_MESSAGE,
   CIRCULAR_MESSAGE,
+  HIDDEN_LINK_MESSAGE,
   type LockedRelationTask,
   lockRelationGraph,
   lockRelationTasks,
@@ -152,19 +153,33 @@ async function assertCanRelate(
   }
 
   if (isDirectionalRelationType(stored.relationType)) {
-    const walk = await relationWalkReaches(tx, {
+    const walkFromTarget = {
       startId: b,
       targetId: a,
       relationType: stored.relationType,
       direction: "down",
       workspaceId,
-    });
-    if (walk === "found") {
+    } as const;
+    const walk = await relationWalkReaches(tx, walkFromTarget);
+    if (walk === "clear") return;
+
+    // The loop is refused either way, but saying why would reveal a chain
+    // through tasks the caller can't see. Only what they can see gets named.
+    const hidden = await hiddenForCurrentRequest(workspaceId);
+    const seen =
+      hidden.length === 0
+        ? walk
+        : await relationWalkReaches(tx, {
+            ...walkFromTarget,
+            skipProjectIds: hidden,
+          });
+    if (seen === "found") {
       throw new HTTPException(400, { message: CIRCULAR_MESSAGE });
     }
-    if (walk === "too_long") {
+    if (seen === "too_long") {
       throw new HTTPException(400, { message: CHAIN_TOO_LONG_MESSAGE });
     }
+    throw new HTTPException(400, { message: HIDDEN_LINK_MESSAGE });
   }
 }
 

@@ -8,6 +8,7 @@ import {
   errorResponse,
   jsonResponse,
 } from "../openapi";
+import { hiddenForCurrentRequest } from "../project/visibility";
 import { boundedRequestBody } from "../utils/bounded-request-body";
 import {
   hasWorkspacePermission,
@@ -59,6 +60,24 @@ async function assertCanSetParent(
     parentTaskId &&
     !(await hasWorkspacePermission(c, { task: ["update"] }))
   ) {
+    throw new HTTPException(403, { message: "Insufficient permissions" });
+  }
+}
+
+/**
+ * Publishing with another project in the body creates the task there, so that
+ * project's role caps the request, not the stored one draftAccess checked. A
+ * project the caller can't reach is left to validation, which answers 404.
+ */
+async function capToPublishProject(
+  c: Context,
+  projectId: string | null | undefined,
+) {
+  if (!projectId || projectId === c.get("projectId")) return;
+  const hidden = await hiddenForCurrentRequest(c.get("workspaceId"));
+  if (hidden.includes(projectId)) return;
+  c.set("projectId", projectId);
+  if (!(await hasWorkspacePermission(c, { task: ["create"] }))) {
     throw new HTTPException(403, { message: "Insufficient permissions" });
   }
 }
@@ -200,7 +219,7 @@ const publishTaskDraftRoute = createRoute({
   tags: TAGS,
   summary: "Publish draft",
   description:
-    "Turn the caller's draft into a task and delete the draft. An optional body is saved to the draft first, like an update, and kept even if publishing fails. The task gets the next number, the caller as creator, the draft's labels, cycle, modules, estimate and parent; values that stopped being valid (or a parent the caller may no longer link, which needs task:update) are left out and listed in `dropped`. Publishes task.created and the label, membership and relation events. Needs task:create.",
+    "Turn the caller's draft into a task and delete the draft. An optional body is saved to the draft first, like an update, and kept even if publishing fails. The task gets the next number, the caller as creator, the draft's labels, cycle, modules, estimate and parent; values that stopped being valid (or a parent the caller may no longer link, which needs task:update) are left out and listed in `dropped`. Publishes task.created and the label, membership and relation events. Needs task:create, in the project named in the body when there is one.",
   middleware: [
     boundedRequestBody(TASK_DRAFT_BODY_BYTES),
     draftAccess(),
@@ -280,6 +299,7 @@ const taskDraft = apiRouter<
   )
   .openapi(publishTaskDraftRoute, async (c) => {
     const patch = c.req.valid("json") ?? {};
+    await capToPublishProject(c, patch.projectId);
     await assertCanSetParent(c, patch.parentTaskId);
     return c.json(
       await publishTaskDraft({
@@ -287,6 +307,7 @@ const taskDraft = apiRouter<
         userId: c.get("userId"),
         patch,
         canLinkParent: await hasWorkspacePermission(c, { task: ["update"] }),
+        authorizedProjectId: c.get("projectId") ?? undefined,
       }),
       200,
     );

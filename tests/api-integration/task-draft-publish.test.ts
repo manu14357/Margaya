@@ -1,6 +1,7 @@
 import { and, asc, eq } from "drizzle-orm";
 import { beforeEach, describe, expect, it } from "vitest";
 import db, { schema } from "../../apps/api/src/database";
+import { publishTaskDraft } from "../../apps/api/src/task-draft/controllers/publish-draft";
 import { resetTestDatabase } from "./helpers/database";
 import { day, draftScene, type PublishedJson } from "./helpers/drafts";
 import {
@@ -436,5 +437,27 @@ describe("publishing a draft", () => {
     });
     const read = await s.as(s.mia)("GET", `/task-draft/${draft.id}`);
     expect(read.status).toBe(404);
+  });
+});
+
+describe("drafts: a project change racing a publish", () => {
+  it("refuses a draft moved after the permission check ran", async () => {
+    const s = await draftScene();
+    const draft = await s.createDraft(s.mia, { title: "Raced" });
+
+    await expect(
+      publishTaskDraft({
+        draftId: draft.id,
+        userId: s.mia.id,
+        patch: { projectId: s.web.project.id },
+        authorizedProjectId: "project-the-check-looked-at",
+      }),
+    ).rejects.toMatchObject({ status: 409 });
+
+    const tasks = await db
+      .select()
+      .from(schema.taskTable)
+      .where(eq(schema.taskTable.title, "Raced"));
+    expect(tasks).toEqual([]);
   });
 });

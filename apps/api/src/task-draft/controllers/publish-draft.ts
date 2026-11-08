@@ -179,6 +179,7 @@ async function publishLockedDraft(
   draftId: string,
   userId: string,
   canLinkParent: boolean,
+  authorizedProjectId: string | undefined,
 ): Promise<PublishResult> {
   // A concurrent publish or delete waits here and then finds nothing.
   const [row] = await tx
@@ -192,6 +193,11 @@ async function publishLockedDraft(
   const draft: DraftValues = draftValuesOf(row);
 
   if (!draft.projectId) refuse(400, "Choose a project before publishing");
+  // The permission check ran before this lock; an update in between could have
+  // moved the draft into a project that check never looked at.
+  if (authorizedProjectId && draft.projectId !== authorizedProjectId) {
+    refuse(409, "The draft changed while publishing. Try again.");
+  }
   if (!draft.title.trim()) {
     refuse(400, "Give the task a title before publishing");
   }
@@ -388,18 +394,21 @@ export async function publishTaskDraft({
   userId,
   patch,
   canLinkParent = false,
+  authorizedProjectId,
 }: {
   draftId: string;
   userId: string;
   patch: TaskDraftPatch;
   /** task:update: without it a stored parent is dropped, not linked. */
   canLinkParent?: boolean;
+  /** The project the caller's permissions were checked against. */
+  authorizedProjectId?: string;
 }) {
   const hasPatch = Object.values(patch).some((value) => value !== undefined);
   if (hasPatch) await applyTaskDraftPatch({ draftId, userId, patch });
 
   const result = await db.transaction((tx) =>
-    publishLockedDraft(tx, draftId, userId, canLinkParent),
+    publishLockedDraft(tx, draftId, userId, canLinkParent, authorizedProjectId),
   );
   await publishAfterCommit(result, draftId);
 

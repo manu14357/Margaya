@@ -10,7 +10,12 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
 } from "../openapi";
+import {
+  hiddenForCurrentRequest,
+  uncountedProjectIds,
+} from "../project/visibility";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { validateWorkspaceAccess } from "../utils/validate-workspace-access";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
@@ -54,6 +59,30 @@ function requireUserId(c: Context) {
   return userId as string;
 }
 
+/**
+ * A relation acts on both its tasks: it can mark the other one blocked and
+ * writes in its history. Listing that task's project makes the permission
+ * check apply its project role too, next to the source's. A task the caller
+ * can't reach is the controller's to answer, as if it were missing.
+ */
+async function includeOtherTaskProject(
+  c: Context,
+  otherTaskId: string,
+  source: { workspaceId: string; projectId: string },
+) {
+  const other = await workspaceIdOfTask(otherTaskId);
+  if (
+    !other ||
+    other.workspaceId !== source.workspaceId ||
+    other.projectId === source.projectId
+  ) {
+    return;
+  }
+  const hidden = await hiddenForCurrentRequest(source.workspaceId);
+  if (hidden.includes(other.projectId)) return;
+  c.set("projectIds", [source.projectId, other.projectId]);
+}
+
 // Route middleware runs before the request validators, so these read the raw
 // request rather than c.req.valid(), which is not populated yet.
 async function scopeToSourceTask(c: Context, next: Next) {
@@ -61,6 +90,7 @@ async function scopeToSourceTask(c: Context, next: Next) {
 
   const body = (await c.req.json().catch(() => ({}))) as {
     sourceTaskId?: unknown;
+    targetTaskId?: unknown;
   };
   const sourceTaskId =
     typeof body?.sourceTaskId === "string" ? body.sourceTaskId : null;
@@ -82,6 +112,9 @@ async function scopeToSourceTask(c: Context, next: Next) {
   );
   c.set("workspaceId", workspaceId);
   c.set("projectId", projectId);
+  if (typeof body?.targetTaskId === "string") {
+    await includeOtherTaskProject(c, body.targetTaskId, source);
+  }
   return next();
 }
 
@@ -90,7 +123,10 @@ async function scopeToRelation(c: Context, next: Next) {
 
   const id = c.req.param("id");
   const [rel] = await db
-    .select({ sourceTaskId: taskRelationTable.sourceTaskId })
+    .select({
+      sourceTaskId: taskRelationTable.sourceTaskId,
+      targetTaskId: taskRelationTable.targetTaskId,
+    })
     .from(taskRelationTable)
     .where(eq(taskRelationTable.id, id ?? ""))
     .limit(1);
@@ -112,6 +148,7 @@ async function scopeToRelation(c: Context, next: Next) {
   );
   c.set("workspaceId", workspaceId);
   c.set("projectId", projectId);
+  await includeOtherTaskProject(c, rel.targetTaskId, source);
   return next();
 }
 
@@ -122,7 +159,7 @@ const getTaskRelationsRoute = createRoute({
   tags: ["Task Relations"],
   summary: "Get task relations",
   description:
-    "Get every relation where the task is the source or the target, oldest first, each with a summary of both linked tasks (including their project key, project name and status group). Linked tasks may be in other projects of the workspace. Relations pointing outside the caller's workspace are omitted.",
+    "Get every relation where the task is the source or the target, oldest first, each with a summary of both linked tasks (including their project key, project name and status group). Linked tasks may be in other projects of the workspace. Relations to a task outside the caller's workspace, or in a project the caller or their API key can't reach, are omitted.",
   middleware: [workspaceAccess.fromTaskId("taskId")] as const,
   request: { params: taskIdParam },
   responses: {
@@ -130,10 +167,8 @@ const getTaskRelationsRoute = createRoute({
       "Task relations with the linked task summaries",
       taskRelationWithTasksListSchema,
     ),
-    400: errorResponse(
-      "Unknown task, or its workspace could not be determined",
-    ),
     403: errorResponse("No access to the task's workspace"),
+    404: lookupNotFound("task"),
   },
 });
 
@@ -144,7 +179,7 @@ const getProjectDependenciesRoute = createRoute({
   tags: ["Task Relations"],
   summary: "List project dependencies",
   description:
-    "List the relations that order tasks in time (blocks, start_before and finish_before) between two non-archived tasks of the project, oldest first, as ids only. Used to draw dependency lines on the timeline. At most 5000 are returned; truncated says whether more exist.",
+    "List the relations that order tasks in time (blocks, start_before and finish_before) between two non-archived tasks of the project, oldest first, as ids only, plus the ids of the project's blocked tasks (for a guest or a project-limited API key, only by blockers in projects they reach). Used to draw dependency lines on the timeline. At most 5000 relations are returned; truncated says whether more exist.",
   middleware: [workspaceAccess.fromProject("projectId")] as const,
   request: { params: projectIdParam },
   responses: {
@@ -152,10 +187,8 @@ const getProjectDependenciesRoute = createRoute({
       "The project's dependency relations",
       projectDependenciesSchema,
     ),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
     403: errorResponse("No access to the project's workspace"),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -166,7 +199,7 @@ const createTaskRelationRoute = createRoute({
   tags: ["Task Relations"],
   summary: "Create task relation",
   description:
-    "Link two tasks of the workspace, possibly in different projects (a subtask's parent must be in its own project). Authorization is scoped to the source task's workspace. Two tasks share at most one non-subtask relation, in either direction; a task has at most 200 of them and at most one parent. blocks, start_before and finish_before relations may not form a loop of the same type. Tasks waiting in intake can't be linked. Returns the stored row, whose ids are swapped for the inverse names.",
+    "Link two tasks of the workspace, possibly in different projects (a subtask's parent must be in its own project). Needs task:update in both tasks' projects; a target the caller or their API key can't reach reads as missing. Two tasks share at most one non-subtask relation, in either direction; a task has at most 200 of them and at most one parent. blocks, start_before and finish_before relations may not form a loop of the same type. Tasks waiting in intake can't be linked. Returns the stored row, whose ids are swapped for the inverse names.",
   middleware: [
     scopeToSourceTask,
     requireWorkspacePermission({ task: ["update"] }),
@@ -181,10 +214,10 @@ const createTaskRelationRoute = createRoute({
   responses: {
     200: jsonResponse("The created relation", taskRelationSchema),
     400: errorResponse(
-      "Invalid body, a task related to itself, a task waiting in intake, a circular dependency, a parent in another project or among the task's own subtasks, or more than 200 relations",
+      "Invalid body, a task related to itself, a task waiting in intake, a circular dependency (named only when the caller can see the whole loop), a parent in another project or among the task's own subtasks, or more than 200 relations",
     ),
     403: errorResponse(
-      "No workspace access, or missing task:update permission",
+      "No workspace access, or missing task:update permission in either task's project",
     ),
     404: errorResponse("Source or target task not found"),
     409: errorResponse(
@@ -219,12 +252,14 @@ const setTaskParentRoute = createRoute({
       taskParentResultSchema,
     ),
     400: errorResponse(
-      "Invalid body, unknown task, the task itself, a parent in another project or among the task's subtasks, or a task waiting in intake",
+      "Invalid body, the task itself, a parent in another project or among the task's subtasks, or a task waiting in intake",
     ),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
-    404: errorResponse("Parent task not found"),
+    404: errorResponse(
+      "Unknown task, a task in the trash, or one in a project the caller can't see; or the parent task is not found",
+    ),
   },
 });
 
@@ -234,7 +269,8 @@ const deleteTaskRelationRoute = createRoute({
   path: "/{id}",
   tags: ["Task Relations"],
   summary: "Delete task relation",
-  description: "Remove a link between two tasks. Returns the deleted relation.",
+  description:
+    "Remove a link between two tasks. Needs task:update in both tasks' projects. Returns the deleted relation.",
   middleware: [
     scopeToRelation,
     requireWorkspacePermission({ task: ["update"] }),
@@ -243,9 +279,11 @@ const deleteTaskRelationRoute = createRoute({
   responses: {
     200: jsonResponse("The deleted relation", taskRelationSchema),
     403: errorResponse(
-      "No workspace access, or missing task:update permission",
+      "No workspace access, or missing task:update permission in either task's project",
     ),
-    404: errorResponse("Task relation not found, or its source task is gone"),
+    404: errorResponse(
+      "Task relation not found, its source task is gone, or a task is in a project the caller or their API key can't reach",
+    ),
   },
 });
 
@@ -257,7 +295,13 @@ const taskRelation = apiRouter<BaseVariables & { workspaceId: string }>()
     ),
   )
   .openapi(getProjectDependenciesRoute, async (c) =>
-    c.json(await getProjectDependencies(c.req.valid("param").projectId), 200),
+    c.json(
+      await getProjectDependencies(
+        c.req.valid("param").projectId,
+        await uncountedProjectIds(c.get("userId"), c.get("workspaceId")),
+      ),
+      200,
+    ),
   )
   .openapi(createTaskRelationRoute, async (c) => {
     const { sourceTaskId, targetTaskId, relationType } = c.req.valid("json");

@@ -6,6 +6,10 @@ import {
   taskRelationTable,
   taskTable,
 } from "../../database/schema";
+import {
+  hiddenForCurrentRequest,
+  notHiddenProject,
+} from "../../project/visibility";
 import { publishRelationEvent } from "../events";
 
 async function deleteTaskRelation(
@@ -17,10 +21,19 @@ async function deleteTaskRelation(
     .select({ id: taskTable.id })
     .from(taskTable)
     .innerJoin(projectTable, eq(taskTable.projectId, projectTable.id))
-    .where(eq(projectTable.workspaceId, workspaceId));
+    .where(
+      and(
+        eq(projectTable.workspaceId, workspaceId),
+        notHiddenProject(
+          projectTable.id,
+          await hiddenForCurrentRequest(workspaceId),
+        ),
+      ),
+    );
 
   // Check both endpoints in the delete statement itself. Legacy cross-tenant
-  // rows must not bypass the same boundary enforced on creation and reads.
+  // rows and tasks the caller can't reach must not bypass the same boundary
+  // enforced on creation and reads.
   const [relation] = await db
     .delete(taskRelationTable)
     .where(

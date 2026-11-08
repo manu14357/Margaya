@@ -3,6 +3,8 @@ import { eq } from "drizzle-orm";
 import type { WSContext } from "hono/ws";
 import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 import db, { schema } from "../../apps/api/src/database";
+import { projectMemberTable } from "../../apps/api/src/database/schema";
+import { getScopeRisks } from "../../apps/api/src/delivery/risk";
 import { createApp } from "../../apps/api/src/index";
 import {
   addConnection,
@@ -480,5 +482,319 @@ describe("API integration: restricted projects", () => {
     } finally {
       removeConnection(s.project.id, adminConn);
     }
+  });
+
+  describe("acting on a second project", () => {
+    const pageIn = async (s: Scene, ownerId: string, projectId: string) => {
+      const [page] = await db
+        .insert(schema.pageTable)
+        .values({
+          workspaceId: s.workspace.id,
+          projectId,
+          title: "Movable",
+          access: "public",
+          ownerId,
+        })
+        .returning();
+      if (!page) throw new Error("no page");
+      return page;
+    };
+    const movePage = (
+      s: Scene,
+      user: User,
+      pageId: string,
+      projectId: string,
+    ) =>
+      s
+        .as(user)
+        .request(`/api/page/${pageId}/move`, json("POST", { projectId }));
+    const projectOfPage = async (pageId: string) => {
+      const [row] = await db
+        .select({ projectId: schema.pageTable.projectId })
+        .from(schema.pageTable)
+        .where(eq(schema.pageTable.id, pageId));
+      return row?.projectId;
+    };
+
+    it("won't move a page into a project where the caller only reads", async () => {
+      const s = await seed();
+      const page = await pageIn(s, s.reader.id, s.open.id);
+      const response = await movePage(s, s.reader, page.id, s.project.id);
+      expect(response.status).toBe(403);
+      expect(await projectOfPage(page.id)).toBe(s.open.id);
+    });
+
+    it("moves a page into a restricted project where the caller may edit", async () => {
+      const s = await seed();
+      const page = await pageIn(s, s.member.id, s.open.id);
+      const response = await movePage(s, s.member, page.id, s.project.id);
+      expect(response.status, await response.clone().text()).toBe(200);
+      expect(await projectOfPage(page.id)).toBe(s.project.id);
+    });
+
+    it("reads a restricted destination as missing to someone outside it", async () => {
+      const s = await seed();
+      const page = await pageIn(s, s.outsider.id, s.open.id);
+      const response = await movePage(s, s.outsider, page.id, s.project.id);
+      expect(response.status).toBe(404);
+      expect(await projectOfPage(page.id)).toBe(s.open.id);
+    });
+
+    const createLabel = (s: Scene, user: User, taskId: string, name: string) =>
+      s.as(user).request(
+        "/api/label",
+        json("POST", {
+          workspaceId: s.workspace.id,
+          name,
+          color: "#112233",
+          taskId,
+        }),
+      );
+    const attachLabel = (s: Scene, user: User, id: string, taskId: string) =>
+      s.as(user).request(`/api/label/${id}/task`, json("PUT", { taskId }));
+    const labelNamesOn = async (taskId: string) =>
+      (
+        await db
+          .select({ name: schema.labelTable.name })
+          .from(schema.labelTable)
+          .where(eq(schema.labelTable.taskId, taskId))
+      ).map((row) => row.name);
+    const seedLabel = async (s: Scene, name: string, taskId: string | null) => {
+      const [label] = await db
+        .insert(schema.labelTable)
+        .values({ name, color: "#445566", taskId, workspaceId: s.workspace.id })
+        .returning();
+      if (!label) throw new Error("no label");
+      return label;
+    };
+
+    it("won't label a task in a project where the caller only reads", async () => {
+      const s = await seed();
+      const fromWorkspace = await seedLabel(s, "workspace-wide", null);
+      const onOpenTask = await seedLabel(s, "on-open-task", s.openTask.id);
+
+      const created = await createLabel(s, s.reader, s.task.id, "from-reader");
+      expect(created.status).toBe(403);
+      expect(
+        (await attachLabel(s, s.reader, fromWorkspace.id, s.task.id)).status,
+      ).toBe(403);
+      expect(
+        (await attachLabel(s, s.reader, onOpenTask.id, s.task.id)).status,
+      ).toBe(403);
+
+      expect(await labelNamesOn(s.task.id)).toEqual(["secret-label"]);
+      expect(await labelNamesOn(s.openTask.id)).toEqual(["on-open-task"]);
+    });
+
+    it("labels a task where the caller may", async () => {
+      const s = await seed();
+      const fromWorkspace = await seedLabel(s, "workspace-wide", null);
+      const created = await createLabel(s, s.member, s.task.id, "from-member");
+      expect(created.status, await created.clone().text()).toBe(200);
+      const attached = await attachLabel(
+        s,
+        s.member,
+        fromWorkspace.id,
+        s.task.id,
+      );
+      expect(attached.status, await attached.clone().text()).toBe(200);
+      expect((await labelNamesOn(s.task.id)).sort()).toEqual(
+        ["from-member", "secret-label", "workspace-wide"].sort(),
+      );
+    });
+
+    it("reads a task out of the caller's reach as missing when labelling", async () => {
+      const s = await seed();
+      const fromWorkspace = await seedLabel(s, "workspace-wide", null);
+      const created = await createLabel(s, s.outsider, s.task.id, "nope");
+      expect(created.status).toBe(404);
+      expect(await created.text()).toBe("Task not found");
+      const attached = await attachLabel(
+        s,
+        s.outsider,
+        fromWorkspace.id,
+        s.task.id,
+      );
+      expect(attached.status).toBe(404);
+      expect(await attached.text()).toBe("Task not found");
+    });
+
+    it("keeps its answers for an unknown task and another workspace's", async () => {
+      const s = await seed();
+      const fromWorkspace = await seedLabel(s, "workspace-wide", null);
+      const foreign = await createWorkspaceMember();
+      const { project: elsewhere } = await createProjectFixture({
+        workspaceId: foreign.workspace.id,
+      });
+      const [foreignTask] = await db
+        .insert(schema.taskTable)
+        .values({ projectId: elsewhere.id, title: "Foreign", number: 1000 })
+        .returning();
+      const foreignId = foreignTask?.id ?? "";
+
+      expect((await createLabel(s, s.member, "missing", "x")).status).toBe(404);
+      expect((await createLabel(s, s.member, foreignId, "x")).status).toBe(404);
+      expect(
+        (await attachLabel(s, s.member, fromWorkspace.id, "missing")).status,
+      ).toBe(404);
+      expect(
+        (await attachLabel(s, s.member, fromWorkspace.id, foreignId)).status,
+      ).toBe(400);
+    });
+
+    it("won't let someone capped to viewer edit or delete their own comment", async () => {
+      const s = await seed();
+      const seedComment = async (userId: string) => {
+        const [row] = await db
+          .insert(schema.activityTable)
+          .values({
+            taskId: s.task.id,
+            type: "comment",
+            userId,
+            content: "before",
+          })
+          .returning();
+        if (!row) throw new Error("no comment");
+        return row;
+      };
+      const contentOf = async (id: string) => {
+        const [row] = await db
+          .select({ content: schema.activityTable.content })
+          .from(schema.activityTable)
+          .where(eq(schema.activityTable.id, id));
+        return row?.content;
+      };
+      const edit = (user: User, activityId: string) =>
+        s
+          .as(user)
+          .request(
+            "/api/activity/comment",
+            json("PUT", { activityId, comment: "after" }),
+          );
+      const remove = (user: User, activityId: string) =>
+        s
+          .as(user)
+          .request("/api/activity/comment", json("DELETE", { activityId }));
+
+      const capped = await seedComment(s.reader.id);
+      expect((await edit(s.reader, capped.id)).status).toBe(403);
+      expect((await remove(s.reader, capped.id)).status).toBe(403);
+      expect(await contentOf(capped.id)).toBe("before");
+
+      const allowed = await seedComment(s.member.id);
+      const edited = await edit(s.member, allowed.id);
+      expect(edited.status, await edited.clone().text()).toBe(200);
+      const removed = await remove(s.member, allowed.id);
+      expect(removed.status, await removed.clone().text()).toBe(200);
+    });
+  });
+
+  describe("publishing a draft into another project", () => {
+    const draftInOpenProject = async (s: Scene, user: User, title: string) => {
+      const created = await s.as(user).request(
+        "/api/task-draft",
+        json("POST", {
+          workspaceId: s.workspace.id,
+          projectId: s.open.id,
+          title,
+        }),
+      );
+      expect(created.status, await created.clone().text()).toBe(200);
+      return ((await created.json()) as { id: string }).id;
+    };
+    const publish = (s: Scene, user: User, id: string, body: object = {}) =>
+      s.as(user).request(`/api/task-draft/${id}/publish`, json("POST", body));
+    const projectsOfTasksNamed = async (title: string) =>
+      (
+        await db
+          .select({ projectId: schema.taskTable.projectId })
+          .from(schema.taskTable)
+          .where(eq(schema.taskTable.title, title))
+      ).map((task) => task.projectId);
+
+    it("caps it by the project named in the body, not the stored one", async () => {
+      const s = await seed();
+      const draftId = await draftInOpenProject(s, s.reader, "Sneaked in");
+
+      // The reader is only a viewer on the restricted project.
+      const refused = await publish(s, s.reader, draftId, {
+        projectId: s.project.id,
+      });
+      expect(refused.status, await refused.clone().text()).toBe(403);
+      expect(await projectsOfTasksNamed("Sneaked in")).toEqual([]);
+      const [stored] = await db
+        .select({ projectId: schema.taskDraftTable.projectId })
+        .from(schema.taskDraftTable)
+        .where(eq(schema.taskDraftTable.id, draftId));
+      expect(stored?.projectId).toBe(s.open.id);
+
+      // Where the reader may create, the same draft still publishes.
+      const inOpen = await publish(s, s.reader, draftId);
+      expect(inOpen.status, await inOpen.clone().text()).toBe(200);
+      expect(await projectsOfTasksNamed("Sneaked in")).toEqual([s.open.id]);
+
+      // A project member may move it there, and an outsider reads it as missing.
+      const fromMember = await draftInOpenProject(s, s.member, "From a member");
+      const allowed = await publish(s, s.member, fromMember, {
+        projectId: s.project.id,
+      });
+      expect(allowed.status, await allowed.clone().text()).toBe(200);
+      expect(await projectsOfTasksNamed("From a member")).toEqual([
+        s.project.id,
+      ]);
+      const fromOutsider = await draftInOpenProject(s, s.outsider, "Outside");
+      const missing = await publish(s, s.outsider, fromOutsider, {
+        projectId: s.project.id,
+      });
+      expect(missing.status).toBe(404);
+      expect(await projectsOfTasksNamed("Outside")).toEqual([]);
+    });
+
+    it("asks for the right to link a parent in that project too", async () => {
+      const s = await seed();
+      await db.insert(schema.workspaceRoleTable).values({
+        workspaceId: s.workspace.id,
+        role: "task-adder",
+        permission: JSON.stringify({
+          project: ["read"],
+          task: ["create", "read"],
+        }),
+      });
+      await db.insert(projectMemberTable).values({
+        projectId: s.project.id,
+        userId: s.outsider.id,
+        role: "task-adder",
+      });
+      const draftId = await draftInOpenProject(s, s.outsider, "Adopted");
+
+      const withParent = await publish(s, s.outsider, draftId, {
+        projectId: s.project.id,
+        parentTaskId: s.task.id,
+      });
+      expect(withParent.status, await withParent.clone().text()).toBe(403);
+      expect(await db.select().from(schema.taskRelationTable)).toEqual([]);
+
+      const plain = await publish(s, s.outsider, draftId, {
+        projectId: s.project.id,
+      });
+      expect(plain.status, await plain.clone().text()).toBe(200);
+      expect(await projectsOfTasksNamed("Adopted")).toEqual([s.project.id]);
+      expect(await db.select().from(schema.taskRelationTable)).toEqual([]);
+    });
+  });
+
+  it("hides a restricted blocker from risks computed outside a request", async () => {
+    const s = await seed();
+    await db.insert(schema.taskRelationTable).values({
+      sourceTaskId: s.task.id,
+      targetTaskId: s.openTask.id,
+      relationType: "blocks",
+    });
+
+    const risks = await getScopeRisks("project", s.open.id, s.outsider.id);
+    const text = JSON.stringify(risks);
+    expect(text).not.toContain(SECRET);
+    expect(text).not.toContain(s.task.id);
+    expect(risks.hiddenBlockers).toBe(1);
   });
 });

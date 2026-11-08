@@ -65,7 +65,12 @@ export type BuiltExport = {
   taskCount: number;
 };
 
-type Unit = { projects: ExportProject[]; customColumns: string[] };
+type Unit = {
+  projects: ExportProject[];
+  customColumns: string[];
+  /** Projects hidden from the requester: relations into them are left out. */
+  hidden: readonly string[];
+};
 
 /** Counts encoded bytes and stops the export at the uncompressed cap. */
 class ByteBudget {
@@ -95,7 +100,7 @@ class Output {
   }
 }
 
-async function assertRequesterAccess(row: TaskExportRow): Promise<void> {
+export async function assertRequesterAccess(row: TaskExportRow): Promise<void> {
   if (!row.requestedBy) throw new ExportFailure(REQUESTER_GONE);
   try {
     await validateWorkspaceAccess(row.requestedBy, row.workspaceId);
@@ -116,6 +121,7 @@ async function* unitTasks(
       row.workspaceId,
       project,
       row.includeArchived,
+      unit.hidden,
     )) {
       yield* page;
     }
@@ -190,6 +196,7 @@ export async function buildExport(
       customColumns: customFieldColumns(
         await loadCustomFieldDefinitions(unitProjects),
       ),
+      hidden: [...hidden],
     });
   }
 

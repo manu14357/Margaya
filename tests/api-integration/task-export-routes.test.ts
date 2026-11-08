@@ -2,6 +2,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { eq } from "drizzle-orm";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import db, { schema } from "../../apps/api/src/database";
+import { projectMemberTable } from "../../apps/api/src/database/schema";
 import {
   runNextExport,
   startExportRunner,
@@ -294,6 +295,67 @@ describe("GET /task-export", () => {
     );
     expect(bad.status).toBe(400);
     expect(await bad.text()).toBe("Invalid cursor");
+  });
+});
+
+describe("an export of a project its requester lost", () => {
+  async function exportedThenRemoved() {
+    const s = await exportScene();
+    await s.createTask({ title: "Secret plan" });
+    await setProject(s.web.project.id, { visibility: "restricted" });
+    await db.insert(projectMemberTable).values({
+      projectId: s.web.project.id,
+      userId: s.mia.id,
+      role: "member",
+    });
+    const created = await s.startExport(s.mia, {
+      format: "csv",
+      projectIds: [s.web.project.id],
+    });
+    await drainExports();
+    await s.download(s.mia, created.id);
+
+    await db
+      .delete(projectMemberTable)
+      .where(eq(projectMemberTable.userId, s.mia.id));
+    return { s, created };
+  }
+
+  it("reads as missing, and the file can't be downloaded", async () => {
+    const { s, created } = await exportedThenRemoved();
+
+    for (const path of [
+      `/task-export/${created.id}`,
+      `/task-export/${created.id}/download`,
+    ]) {
+      const response = await s.as(s.mia)("GET", path);
+      expect(response.status, path).toBe(404);
+      expect(await response.text(), path).not.toContain("Secret plan");
+    }
+  });
+
+  it("drops out of their list, and comes back with their access", async () => {
+    const { s, created } = await exportedThenRemoved();
+    const list = () =>
+      s.ok<ExportPageJson>(
+        s.mia,
+        "GET",
+        `/task-export?workspaceId=${s.workspaceId}`,
+      );
+    expect((await list()).items).toEqual([]);
+
+    await db.insert(projectMemberTable).values({
+      projectId: s.web.project.id,
+      userId: s.mia.id,
+      role: "member",
+    });
+    expect((await list()).items.map((item) => item.id)).toEqual([created.id]);
+    await s.download(s.mia, created.id);
+  });
+
+  it("stays with an admin, who still sees the project", async () => {
+    const { s, created } = await exportedThenRemoved();
+    await s.download(s.ada, created.id);
   });
 });
 

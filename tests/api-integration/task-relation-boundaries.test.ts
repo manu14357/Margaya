@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import db, { schema } from "../../apps/api/src/database";
 import { createApp } from "../../apps/api/src/index";
+import { HIDDEN_LINK_MESSAGE } from "../../apps/api/src/task-relation/checks";
 import { mockAuthenticatedSession } from "./helpers/auth";
 import { resetTestDatabase } from "./helpers/database";
 import {
@@ -147,5 +148,78 @@ describe("task relation tenant boundaries", () => {
         targetTaskId: target.id,
       }),
     );
+  });
+});
+
+describe("the loop check and tasks the caller can't see", () => {
+  const CIRCULAR = "This would create a circular dependency";
+
+  /** Two tasks a member sees, and a task in a restricted project they don't. */
+  async function hiddenChainScene() {
+    const own = await context();
+    const task = async (projectId: string, number: number) => {
+      const [row] = await db
+        .insert(schema.taskTable)
+        .values({ projectId, title: `Task ${number}`, number })
+        .returning();
+      if (!row) throw new Error("Failed to seed a task");
+      return row;
+    };
+    const second = await task(own.task.projectId, 2);
+    const third = await task(own.task.projectId, 3);
+    const { project: restricted } = await createProjectFixture({
+      workspaceId: own.workspace.id,
+    });
+    await db
+      .update(schema.projectTable)
+      .set({ visibility: "restricted" })
+      .where(eq(schema.projectTable.id, restricted.id));
+    const hidden = await task(restricted.id, 1);
+    return { ...own, second, third, hidden };
+  }
+
+  const link = (sourceTaskId: string, targetTaskId: string) =>
+    request("", "POST", { sourceTaskId, targetTaskId, relationType: "blocks" });
+
+  it("refuses a loop closed through a hidden task without saying what it is", async () => {
+    const s = await hiddenChainScene();
+    // second -> hidden -> task, so task -> second would close a loop.
+    await seedRelation(s.second.id, s.hidden.id);
+    await seedRelation(s.hidden.id, s.task.id);
+    mockAuthenticatedSession(s.user);
+
+    const refused = await link(s.task.id, s.second.id);
+    expect(refused.status).toBe(400);
+    expect(await refused.text()).toBe(HIDDEN_LINK_MESSAGE);
+    expect(await db.query.taskRelationTable.findMany()).toHaveLength(2);
+    expect(m.publish).not.toHaveBeenCalled();
+  });
+
+  it("names a loop the caller can see, even when a hidden path closes it too", async () => {
+    const s = await hiddenChainScene();
+    await seedRelation(s.second.id, s.hidden.id);
+    await seedRelation(s.hidden.id, s.task.id);
+    await seedRelation(s.second.id, s.third.id);
+    await seedRelation(s.third.id, s.task.id);
+    mockAuthenticatedSession(s.user);
+
+    const refused = await link(s.task.id, s.second.id);
+    expect(refused.status).toBe(400);
+    expect(await refused.text()).toBe(CIRCULAR);
+  });
+
+  it("names the loop to someone who can see the whole chain", async () => {
+    const s = await hiddenChainScene();
+    await seedRelation(s.second.id, s.hidden.id);
+    await seedRelation(s.hidden.id, s.task.id);
+    await db
+      .update(schema.workspaceUserTable)
+      .set({ role: "owner" })
+      .where(eq(schema.workspaceUserTable.userId, s.user.id));
+    mockAuthenticatedSession(s.user);
+
+    const refused = await link(s.task.id, s.second.id);
+    expect(refused.status).toBe(400);
+    expect(await refused.text()).toBe(CIRCULAR);
   });
 });

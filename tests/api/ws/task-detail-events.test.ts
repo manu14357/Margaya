@@ -83,7 +83,7 @@ describe("task-detail events on the project socket", () => {
     expect(viewerB.send).not.toHaveBeenCalled();
   });
 
-  it("sends a cross-project relation change to both projects", async () => {
+  it("sends a cross-project relation change to both projects, each with its own task", async () => {
     const { viewerA, viewerB } = await publishFrom("task-relation.created", {
       projectId: "proj-a",
       targetProjectId: "proj-b",
@@ -91,17 +91,25 @@ describe("task-detail events on the project socket", () => {
       sourceTaskId: "task-1",
       targetTaskId: "task-2",
     });
-    const message = {
-      type: "TASK_RELATION_UPDATED",
-      taskId: "task-1",
-      sourceTaskId: "task-1",
-      targetTaskId: "task-2",
-    };
-    expect(messagesOf(viewerA)).toEqual([{ ...message, projectId: "proj-a" }]);
-    expect(messagesOf(viewerB)).toEqual([{ ...message, projectId: "proj-b" }]);
+    expect(messagesOf(viewerA)).toEqual([
+      {
+        type: "TASK_RELATION_UPDATED",
+        projectId: "proj-a",
+        taskId: "task-1",
+        sourceTaskId: "task-1",
+      },
+    ]);
+    expect(messagesOf(viewerB)).toEqual([
+      {
+        type: "TASK_RELATION_UPDATED",
+        projectId: "proj-b",
+        taskId: "task-2",
+        targetTaskId: "task-2",
+      },
+    ]);
   });
 
-  it("sends a same-project relation change once", async () => {
+  it("sends a same-project relation change once, with both tasks", async () => {
     const { viewerA, viewerB } = await publishFrom("task-relation.deleted", {
       projectId: "proj-a",
       targetProjectId: "proj-a",
@@ -109,11 +117,38 @@ describe("task-detail events on the project socket", () => {
       sourceTaskId: "task-1",
       targetTaskId: "task-2",
     });
-    expect(messagesOf(viewerA)).toHaveLength(1);
+    expect(messagesOf(viewerA)).toEqual([
+      {
+        type: "TASK_RELATION_UPDATED",
+        projectId: "proj-a",
+        taskId: "task-1",
+        sourceTaskId: "task-1",
+        targetTaskId: "task-2",
+      },
+    ]);
     expect(viewerB.send).not.toHaveBeenCalled();
   });
 
-  it("refreshes the child's project, and a legacy old parent's project", async () => {
+  it("names only its own task when the other task's project isn't known", async () => {
+    // A purge: the relation goes with the task, whose project is all it knows.
+    const { viewerA, viewerB } = await publishFrom("task-relation.deleted", {
+      projectId: "proj-a",
+      taskId: "task-1",
+      sourceTaskId: "task-2",
+      targetTaskId: "task-1",
+    });
+    expect(messagesOf(viewerA)).toEqual([
+      {
+        type: "TASK_RELATION_UPDATED",
+        projectId: "proj-a",
+        taskId: "task-1",
+        targetTaskId: "task-1",
+      },
+    ]);
+    expect(viewerB.send).not.toHaveBeenCalled();
+  });
+
+  it("refreshes the child's project, and a legacy old parent's project, each with its own task", async () => {
     const { viewerA, viewerB } = await publishFrom("task.parent_changed", {
       projectId: "proj-a",
       taskId: "child",
@@ -133,8 +168,24 @@ describe("task-detail events on the project socket", () => {
       {
         type: "TASK_RELATION_UPDATED",
         projectId: "proj-b",
-        taskId: "child",
+        taskId: "old",
         sourceTaskId: "old",
+      },
+    ]);
+  });
+
+  it("keeps a removed legacy parent's id out of the child's project", async () => {
+    const { viewerA } = await publishFrom("task.parent_changed", {
+      projectId: "proj-a",
+      taskId: "child",
+      oldParent: { id: "old", projectId: "proj-b" },
+      newParent: null,
+    });
+    expect(messagesOf(viewerA)).toEqual([
+      {
+        type: "TASK_RELATION_UPDATED",
+        projectId: "proj-a",
+        taskId: "child",
         targetTaskId: "child",
       },
     ]);

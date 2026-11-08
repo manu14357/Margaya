@@ -3,15 +3,17 @@ import { eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import db, { getDatabase, schema } from "../../apps/api/src/database";
+import { projectMemberTable } from "../../apps/api/src/database/schema";
 import { createApp } from "../../apps/api/src/index";
 import { runTaskQuery } from "../../apps/api/src/task-query";
+import { addPerson } from "./helpers/assignees";
 import { mockAnonymousSession, mockAuthenticatedSession } from "./helpers/auth";
 import { resetTestDatabase } from "./helpers/database";
 import {
   createProjectFixture,
   createWorkspaceMember,
 } from "./helpers/fixtures";
-import { json, queryScene } from "./helpers/task-query";
+import { json, queryScene, sorted } from "./helpers/task-query";
 
 describe("API integration: task query access and boundaries", () => {
   beforeEach(async () => {
@@ -231,6 +233,10 @@ describe("API integration: task query access and boundaries", () => {
       "Unsupported filter: createdBy",
     );
     await expectRefusal(
+      { filters: { key: "blocked", operator: "in", values: ["true"] } },
+      "Unsupported filter: blocked",
+    );
+    await expectRefusal(
       { filters: { key: "assignee", operator: "in", values: ["me"] } },
       "Unsupported value for assignee: me",
     );
@@ -244,5 +250,101 @@ describe("API integration: task query access and boundaries", () => {
     );
     expect(Object.keys(result.tasks)).toHaveLength(1);
     expect(result.meta.users).toEqual([]);
+  });
+
+  describe("the blocked filter and blockers out of reach", () => {
+    const blocked = { key: "blocked", operator: "in", values: ["true"] };
+    const clear = { key: "blocked", operator: "in", values: ["false"] };
+
+    const relateBlocks = (sourceTaskId: string, targetTaskId: string) =>
+      db
+        .insert(schema.taskRelationTable)
+        .values({ sourceTaskId, targetTaskId, relationType: "blocks" });
+
+    type Scene = Awaited<ReturnType<typeof queryScene>>;
+    const timelineBlocked = async (
+      s: Scene,
+      user: Scene["owner"],
+      projectId = s.project.id,
+    ) => {
+      mockAuthenticatedSession(user);
+      const response = await s.app.request(
+        `/api/task-relation/project/${projectId}`,
+      );
+      expect(response.status, await response.clone().text()).toBe(200);
+      const body = (await response.json()) as { blockedTaskIds: string[] };
+      return [...body.blockedTaskIds].sort();
+    };
+
+    it("counts for a guest only the blockers in their own projects", async () => {
+      const s = await queryScene();
+      const open = await s.createProject("opn");
+      const restricted = await s.createProject("rst");
+      await db
+        .update(schema.projectTable)
+        .set({ visibility: "restricted" })
+        .where(eq(schema.projectTable.id, restricted.id));
+      const guest = await addPerson(s.workspaceId, "Gus", "guest");
+      await db.insert(projectMemberTable).values({
+        projectId: s.project.id,
+        userId: guest.id,
+        role: "viewer",
+      });
+
+      const seenBlocker = await s.createTask();
+      const bySeen = await s.createTask();
+      const byOpen = await s.createTask();
+      const byRestricted = await s.createTask();
+      await relateBlocks(seenBlocker.id, bySeen.id);
+      await relateBlocks(
+        (await s.createTask({ projectId: open.id })).id,
+        byOpen.id,
+      );
+      await relateBlocks(
+        (await s.createTask({ projectId: restricted.id })).id,
+        byRestricted.id,
+      );
+
+      const inWeb = { scope: { projectIds: [s.project.id] } };
+      const hasHiddenOnes = sorted([bySeen.id, byOpen.id, byRestricted.id]);
+
+      // A guest gets no hint of a blocker outside their projects.
+      expect(await s.ids(blocked, {}, guest)).toEqual([bySeen.id]);
+      expect(await s.ids(clear, {}, guest)).toEqual(
+        sorted([seenBlocker.id, byOpen.id, byRestricted.id]),
+      );
+      expect(await timelineBlocked(s, guest)).toEqual([bySeen.id]);
+
+      // A member keeps seeing the fact, without the name.
+      expect(await s.ids(blocked, inWeb, s.ben)).toEqual(hasHiddenOnes);
+      expect(await timelineBlocked(s, s.ben)).toEqual(hasHiddenOnes);
+    });
+
+    it("never counts a blocker of another workspace or a trashed project", async () => {
+      const s = await queryScene();
+      const other = await createWorkspaceMember();
+      const { project: foreign } = await createProjectFixture({
+        workspaceId: other.workspace.id,
+      });
+      const [foreignBlocker] = await db
+        .insert(schema.taskTable)
+        .values({ projectId: foreign.id, title: "Foreign", number: 1 })
+        .returning();
+      const trashed = await s.createProject("old");
+      const trashedBlocker = await s.createTask({ projectId: trashed.id });
+      await db
+        .update(schema.projectTable)
+        .set({ deletedAt: new Date() })
+        .where(eq(schema.projectTable.id, trashed.id));
+
+      const byForeign = await s.createTask();
+      const byTrashed = await s.createTask();
+      await relateBlocks(foreignBlocker?.id ?? "", byForeign.id);
+      await relateBlocks(trashedBlocker.id, byTrashed.id);
+
+      expect(await s.ids(blocked)).toEqual([]);
+      expect(await s.ids(clear)).toEqual(sorted([byForeign.id, byTrashed.id]));
+      expect(await timelineBlocked(s, s.owner)).toEqual([]);
+    });
   });
 });

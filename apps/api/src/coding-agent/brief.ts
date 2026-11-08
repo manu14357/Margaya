@@ -21,7 +21,7 @@ import {
   taskTable,
 } from "../database/schema";
 import { generateBranchName } from "../plugins/github/utils/branch-matcher";
-import { hiddenProjectIds } from "../project/visibility";
+import { hiddenFromUserAndKey } from "../project/visibility";
 import { relationPerspective } from "../task-relation/types";
 import { workspacePermissionChecker } from "../utils/require-workspace-permission";
 import { HANDOFF_MARKER } from "./marker";
@@ -169,7 +169,7 @@ async function loadNeighbours(
 ): Promise<{ related: RelatedTask[]; pages: LinkedPage[] }> {
   const userId = c.get("userId") as string;
   const can = await workspacePermissionChecker(c);
-  const hidden = new Set(await hiddenProjectIds(userId, task.workspaceId));
+  const hidden = new Set(await hiddenFromUserAndKey(userId, task.workspaceId));
   const projects = await db
     .select({
       id: projectTable.id,
