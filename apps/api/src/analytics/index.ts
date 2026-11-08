@@ -1,4 +1,5 @@
-import type { Context } from "hono";
+import type { Context, Next } from "hono";
+import { HTTPException } from "hono/http-exception";
 import {
   apiRouter,
   type BaseVariables,
@@ -8,8 +9,10 @@ import {
 } from "../openapi";
 import type { WeekStart } from "../task-query/dates";
 import { boundedRequestBody } from "../utils/bounded-request-body";
+import { readJsonBody } from "../utils/destination-project";
 import {
   hasWorkspacePermission,
+  projectsCappedAgainst,
   requireWorkspacePermission,
 } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
@@ -17,6 +20,7 @@ import { getAnalyticsCycles } from "./controllers/get-cycles";
 import { getAnalyticsIntake } from "./controllers/get-intake";
 import { getAnalyticsModules } from "./controllers/get-modules";
 import { getAnalyticsOverview } from "./controllers/get-overview";
+import { getAnalyticsWorkload } from "./controllers/get-workload";
 import { queryAnalyticsChart } from "./controllers/query-chart";
 import { queryAnalyticsTrend } from "./controllers/query-trend";
 import {
@@ -26,6 +30,7 @@ import {
   analyticsModulesSchema,
   analyticsOverviewSchema,
   analyticsTrendResultSchema,
+  analyticsWorkloadSchema,
 } from "./response";
 import {
   analyticsChartRequestSchema,
@@ -43,10 +48,46 @@ import {
 const TAGS = ["Analytics"];
 const TASK_ANALYTICS = { analytics: ["read"], task: ["read"] };
 
+/**
+ * A project role caps analytics like any right (restricted projects, guests):
+ * naming a project whose role doesn't grant `permissions` is refused, and a
+ * workspace-wide scope leaves those projects out. Reads the raw query or body
+ * because route middleware runs before the validators.
+ */
+function capByProjectRoles(
+  permissions: Record<string, string[]>,
+  source: "query" | "body",
+) {
+  return async (c: Context, next: Next) => {
+    const capped = await projectsCappedAgainst(c, permissions);
+    if (capped.length > 0) {
+      const raw =
+        source === "query"
+          ? (c.req.query("projectIds") ?? "").split(",")
+          : obj((await readJsonBody(c)).scope).projectIds;
+      const named = Array.isArray(raw)
+        ? raw.filter((id): id is string => typeof id === "string")
+        : [];
+      if (named.some((id) => capped.includes(id.trim()))) {
+        throw new HTTPException(403, { message: CAPPED_PROJECT });
+      }
+      c.set("analyticsExcludedProjectIds", capped);
+    }
+    return next();
+  };
+}
+
+const obj = (value: unknown): Record<string, unknown> =>
+  value && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : {};
+
 const SCOPE_400 =
   "Invalid query, an unknown time zone, or not 1–100 comma-separated project ids";
 const FORBIDDEN =
-  "No workspace access, or missing analytics:read or task:read permission";
+  "No workspace access, missing analytics:read or task:read permission, or a scope project whose project role lacks them";
+const CAPPED_PROJECT =
+  "Your project role in a scope project doesn't allow these analytics";
 const NOT_FOUND = "A project id is not in the workspace";
 const TIMEOUT = "Analytics took too long; narrow the filters and try again";
 
@@ -64,10 +105,35 @@ const getOverviewRoute = createRoute({
   middleware: [
     workspaceAccess.fromQuery(),
     requireWorkspacePermission(TASK_ANALYTICS),
+    capByProjectRoles(TASK_ANALYTICS, "query"),
   ] as const,
   request: { query: analyticsScopeQuerySchema },
   responses: {
     200: jsonResponse("The overview numbers", analyticsOverviewSchema),
+    400: errorResponse(SCOPE_400),
+    401: errorResponse("Not signed in"),
+    403: errorResponse(FORBIDDEN),
+    404: errorResponse(NOT_FOUND),
+    503: errorResponse(TIMEOUT),
+  },
+});
+
+const getWorkloadRoute = createRoute({
+  method: "get",
+  operationId: "getAnalyticsWorkload",
+  path: "/workload",
+  tags: TAGS,
+  summary: "Get per-person workload",
+  description:
+    "Open work per assignee over the scope projects you can see, heaviest first: estimate points when a scope project has a points system and most open tasks are sized, otherwise task counts. A task with several assignees counts for each. Each person also gets a check against their own usual: what they finished in the last 56 days in the same scope projects, scaled to 28 days. Above it is over; without history it is unknown, never over. Archived and triage tasks are left out of open work. Computed, no AI.",
+  middleware: [
+    workspaceAccess.fromQuery(),
+    requireWorkspacePermission(TASK_ANALYTICS),
+    capByProjectRoles(TASK_ANALYTICS, "query"),
+  ] as const,
+  request: { query: analyticsScopeQuerySchema },
+  responses: {
+    200: jsonResponse("Open work per person", analyticsWorkloadSchema),
     400: errorResponse(SCOPE_400),
     401: errorResponse("Not signed in"),
     403: errorResponse(FORBIDDEN),
@@ -82,11 +148,12 @@ const queryChartRoute = createRoute({
   path: "/chart",
   tags: TAGS,
   summary: "Query an analytics chart",
-  description: `Counts tasks (or sums estimate points) by an x-axis dimension, optionally segmented by a second category dimension, over the task set that the task query filters describe. Buckets come in the dimension's natural order with none last; dates are bucketed by week or month in context.timeZone and zero-filled. At most 50 category buckets (120 date buckets, the most recent) are returned; segments beyond the top 5 (8 for labels) fold into \`other\`, whose cells are sums.${RULES}`,
+  description: `Counts tasks (or sums estimate points or a number custom field) by an x-axis dimension, optionally segmented by a second category dimension, over the task set that the task query filters describe. Buckets come in the dimension's natural order with none last (a dropdown custom field: its option order, removed options still on tasks after them); dates are bucketed by week or month in context.timeZone and zero-filled. At most 50 category buckets (120 date buckets, the most recent) are returned; segments beyond the top 5 (8 for labels) fold into \`other\`, whose cells are sums. A charted custom field must belong to a scope project the caller can see.${RULES}`,
   middleware: [
     boundedRequestBody(MAX_ANALYTICS_BODY_BYTES),
     workspaceAccess.fromBody(),
     requireWorkspacePermission(TASK_ANALYTICS),
+    capByProjectRoles(TASK_ANALYTICS, "body"),
   ] as const,
   request: {
     body: {
@@ -102,7 +169,7 @@ const queryChartRoute = createRoute({
       analyticsChartResultSchema,
     ),
     400: errorResponse(
-      "Invalid body, a segment equal to the x-axis or a date segment, status without exactly one project, an invalid filter tree, or an unknown time zone",
+      "Invalid body, a segment equal to the x-axis or a date segment, status without exactly one project, an unknown custom field or one of the wrong type (a dimension must be a dropdown, a summed metric a number), an invalid filter tree, or an unknown time zone",
     ),
     401: errorResponse("Not signed in"),
     403: errorResponse(FORBIDDEN),
@@ -123,6 +190,7 @@ const queryTrendRoute = createRoute({
     boundedRequestBody(MAX_ANALYTICS_BODY_BYTES),
     workspaceAccess.fromBody(),
     requireWorkspacePermission(TASK_ANALYTICS),
+    capByProjectRoles(TASK_ANALYTICS, "body"),
   ] as const,
   request: {
     body: {
@@ -156,6 +224,7 @@ const getCyclesRoute = createRoute({
   middleware: [
     workspaceAccess.fromQuery(),
     requireWorkspacePermission({ ...TASK_ANALYTICS, cycle: ["read"] }),
+    capByProjectRoles({ ...TASK_ANALYTICS, cycle: ["read"] }, "query"),
   ] as const,
   request: { query: analyticsScopeQuerySchema },
   responses: {
@@ -182,6 +251,7 @@ const getModulesRoute = createRoute({
   middleware: [
     workspaceAccess.fromQuery(),
     requireWorkspacePermission({ ...TASK_ANALYTICS, module: ["read"] }),
+    capByProjectRoles({ ...TASK_ANALYTICS, module: ["read"] }, "query"),
   ] as const,
   request: { query: analyticsScopeQuerySchema },
   responses: {
@@ -205,6 +275,7 @@ const getIntakeRoute = createRoute({
   middleware: [
     workspaceAccess.fromQuery(),
     requireWorkspacePermission({ ...TASK_ANALYTICS, intake: ["read"] }),
+    capByProjectRoles({ ...TASK_ANALYTICS, intake: ["read"] }, "query"),
   ] as const,
   request: { query: analyticsIntakeQuerySchema },
   responses: {
@@ -219,11 +290,15 @@ const getIntakeRoute = createRoute({
   },
 });
 
-type Variables = BaseVariables & { workspaceId: string };
+type Variables = BaseVariables & {
+  workspaceId: string;
+  analyticsExcludedProjectIds?: string[];
+};
 
 const callerOf = (c: Context<{ Variables: Variables }>) => ({
   workspaceId: c.get("workspaceId"),
   userId: c.get("userId"),
+  excludedProjectIds: c.get("analyticsExcludedProjectIds") ?? [],
 });
 
 const analytics = apiRouter<Variables>()
@@ -240,6 +315,14 @@ const analytics = apiRouter<Variables>()
         modules: await can("module"),
         intake: await can("intake"),
       },
+    });
+    return c.json(result, 200);
+  })
+  .openapi(getWorkloadRoute, async (c) => {
+    const query = c.req.valid("query");
+    const result = await getAnalyticsWorkload(callerOf(c), {
+      projectIds: parseProjectIdsParam(query.projectIds),
+      timeZone: query.timeZone,
     });
     return c.json(result, 200);
   })
@@ -295,4 +378,5 @@ export type {
   AnalyticsOverview,
   AnalyticsTrendResult,
   AnalyticsVelocityPoint,
+  AnalyticsWorkload,
 } from "./response";

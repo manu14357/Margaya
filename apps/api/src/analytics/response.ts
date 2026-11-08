@@ -1,5 +1,6 @@
 import { z } from "../openapi";
 import {
+  analyticsChartMetricSchema,
   analyticsDateBucketSchema,
   analyticsDimensionSchema,
   analyticsMetricSchema,
@@ -88,6 +89,12 @@ export const analyticsMetaSchema = z
         value: z.string(),
       }),
     ),
+    customFields: z
+      .array(z.object({ id: z.string(), name: z.string(), type: z.string() }))
+      .openapi({
+        description:
+          "The custom fields the chart groups by or sums, by name. A dropdown's keys are value:<option>, so the option text needs no lookup.",
+      }),
   })
   .openapi("AnalyticsMeta", {
     description: "Display data for the returned keys only.",
@@ -97,11 +104,11 @@ export const analyticsBucketSchema = z
   .object({
     key: z.string().openapi({
       description:
-        "The dimension key: an id, a slug, `name:<label>`, `<type>:<value>` for estimates, a bucket start day for dates, or `none`.",
+        "The dimension key: an id, a slug, `name:<label>`, `<type>:<value>` for estimates, `value:<option>` for a custom field, a bucket start day for dates, or `none`.",
     }),
     value: z.number().openapi({
       description:
-        "Distinct tasks (or their points) holding this key; each task once.",
+        "Distinct tasks (or their summed points or number field) holding this key; each task once.",
     }),
     taskCount: z.number().int(),
     cells: z.record(z.string(), z.number()).optional().openapi({
@@ -131,7 +138,7 @@ export const analyticsChartResultSchema = z
   .object({
     xAxis: analyticsDimensionSchema,
     segment: analyticsDimensionSchema.nullable(),
-    metric: analyticsMetricSchema,
+    metric: analyticsChartMetricSchema,
     dateBucket: analyticsDateBucketSchema.nullable(),
     today: day,
     totalCount: z.number().int().openapi({
@@ -369,8 +376,65 @@ export const analyticsIntakeSchema = z
   })
   .openapi("AnalyticsIntake");
 
+const workloadUnit = z.enum(["tasks", "points"]);
+
+export const analyticsWorkloadSchema = z
+  .object({
+    unit: workloadUnit.openapi({
+      description:
+        "points when a scope project has a points system and most open tasks are sized; otherwise tasks. load and cells are in this unit.",
+    }),
+    usualDays: z.number().int().openapi({
+      description: "The span a person's usual covers, in days.",
+    }),
+    historyDays: z.number().int().openapi({
+      description: "The completed work the usual is read from, in days.",
+    }),
+    members: z.array(
+      z.object({
+        userId: z.string().nullable().openapi({
+          description: "The assignee; null for unassigned work, listed last.",
+        }),
+        tasks: z.number().int().openapi({ description: "Open tasks." }),
+        points: z.number().openapi({
+          description: "Estimate points of the open tasks.",
+        }),
+        load: z.number().openapi({ description: "Open work in unit." }),
+        cells: z.object({
+          backlog: z.number(),
+          unstarted: z.number(),
+          started: z.number(),
+        }),
+        check: z
+          .object({
+            unit: workloadUnit.openapi({
+              description:
+                "tasks for a person whose own open work is mostly unsized, whatever the team's unit.",
+            }),
+            load: z.number(),
+            usual: z.number().nullable().openapi({
+              description:
+                "What they finished in a usual span, from the history; null without history.",
+            }),
+            status: z.enum(["ok", "over", "unknown"]).openapi({
+              description:
+                "over when load is above usual; unknown without history, never over.",
+            }),
+          })
+          .nullable()
+          .openapi({
+            description:
+              "Load against the person's own usual. Null for unassigned work and for callers without cycle:update.",
+          }),
+      }),
+    ),
+    meta: z.object({ users: z.array(metaUser) }),
+  })
+  .openapi("AnalyticsWorkload");
+
 export type AnalyticsChartResult = z.infer<typeof analyticsChartResultSchema>;
 export type AnalyticsMeta = z.infer<typeof analyticsMetaSchema>;
+export type AnalyticsWorkload = z.infer<typeof analyticsWorkloadSchema>;
 export type AnalyticsTrendResult = z.infer<typeof analyticsTrendResultSchema>;
 export type AnalyticsOverview = z.infer<typeof analyticsOverviewSchema>;
 export type AnalyticsCycles = z.infer<typeof analyticsCyclesSchema>;
