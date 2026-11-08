@@ -1,9 +1,13 @@
-import { type BuiltInRoleName, builtInRoles } from "@margaya/permissions";
+import {
+  type BuiltInRoleName,
+  builtInRoles,
+  GUEST_ROLE,
+} from "@margaya/permissions";
 import { and, eq } from "drizzle-orm";
 import type { Context, Next } from "hono";
 import { HTTPException } from "hono/http-exception";
 import db, { schema } from "../database";
-import { projectReach } from "../project/visibility";
+import { cappingProjectRoles, projectReach } from "../project/visibility";
 import { isInstanceAdmin } from "./is-instance-admin";
 
 type PermissionMap = Record<string, string[]>;
@@ -55,6 +59,8 @@ export async function customRoleStatements(
   workspaceId: string,
   role: string,
 ): Promise<Record<string, readonly string[]> | null> {
+  // The guest role is compiled in; no stored row can widen it.
+  if (role === GUEST_ROLE) return null;
   const [row] = await db
     .select({ permission: schema.workspaceRoleTable.permission })
     .from(schema.workspaceRoleTable)
@@ -132,6 +138,45 @@ export async function hasWorkspacePermission(
   if (!statements || !satisfies(statements, permissions)) return false;
   const ceilings = await projectRoleCeilings(c, workspaceId);
   return ceilings.every((ceiling) => satisfies(ceiling, permissions));
+}
+
+/** A role's statements as a project role: its stored row, else built in. */
+export async function projectRoleStatements(
+  workspaceId: string,
+  role: string,
+): Promise<Record<string, readonly string[]>> {
+  return (
+    (await customRoleStatements(workspaceId, role)) ??
+    builtInRoleStatements(role) ??
+    {}
+  );
+}
+
+/**
+ * The workspace's projects whose project role, for the request's user, does
+ * not grant `permissions`: reads over many projects (analytics) leave them
+ * out, as a request naming one of them is refused. Empty for owners, admins
+ * and instance admins.
+ */
+export async function projectsCappedAgainst(
+  c: Context,
+  permissions: PermissionMap,
+): Promise<string[]> {
+  const userId = c.get("userId") as string | undefined;
+  const workspaceId = c.get("workspaceId") as string | undefined;
+  if (!userId || !workspaceId || (await isInstanceAdmin(c))) return [];
+  const roles = await cappingProjectRoles(userId, workspaceId);
+  const statements = new Map<string, Record<string, readonly string[]>>();
+  const capped: string[] = [];
+  for (const { projectId, projectRole } of roles) {
+    let granted = statements.get(projectRole);
+    if (!granted) {
+      granted = await projectRoleStatements(workspaceId, projectRole);
+      statements.set(projectRole, granted);
+    }
+    if (!satisfies(granted, permissions)) capped.push(projectId);
+  }
+  return capped;
 }
 
 /**

@@ -1,4 +1,5 @@
 import {
+  GUEST_ROLE,
   grantsWithin,
   mergeStatements,
   type PermissionStatements,
@@ -86,6 +87,9 @@ export async function roleCeilingError({
 
   if (roles.length === 0) {
     return { status: 400, message: "A role is required" };
+  }
+  if (roles.includes(GUEST_ROLE) && roles.length > 1) {
+    return { status: 400, message: "A guest can't hold other roles" };
   }
   const requested = await statementsOf(workspaceId, roles);
   if ("unknown" in requested) {

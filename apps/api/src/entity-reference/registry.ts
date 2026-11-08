@@ -6,7 +6,7 @@ import {
   recentVisitTable,
 } from "../database/schema";
 import { projectFeatureField } from "../project/features";
-import { hiddenProjectIds } from "../project/visibility";
+import { hiddenProjectIds, isWorkspaceGuest } from "../project/visibility";
 import { resolveCycles } from "./resolvers/cycle";
 import { resolveModules } from "./resolvers/module";
 import { resolvePages } from "./resolvers/page";
@@ -112,13 +112,15 @@ async function resolveWithTrashed(
   const hidden = new Set(
     await hiddenProjectIds(context.userId, context.workspaceId),
   );
+  const guest = await isWorkspaceGuest(context.userId, context.workspaceId);
 
   return new Map(
     summaries.map((summary) => {
       // In a restricted project the caller may not see (project/visibility.ts).
-      const restricted = Boolean(
-        summary.projectId && hidden.has(summary.projectId),
-      );
+      // A guest has only projects, so anything outside one is hidden as well.
+      const restricted = summary.projectId
+        ? hidden.has(summary.projectId)
+        : guest;
       return [
         entityRefKey(summary.type, summary.id),
         {

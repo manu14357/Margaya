@@ -1,3 +1,4 @@
+import { isGuestRole } from "@margaya/permissions";
 import { and, eq, inArray, or } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import {
@@ -6,6 +7,7 @@ import {
 } from "../api-key/scope";
 import { auditContext } from "../audit-log/context";
 import db, { schema } from "../database";
+import { guestWorkspaceRouteAllowed } from "../project/guest-routes";
 import { PROJECT_NOT_FOUND, projectReach } from "../project/visibility";
 import { assertWorkspaceNotLocked } from "../workspace-deletion/lock";
 import {
@@ -53,12 +55,30 @@ async function assertApiKeyProjectScope(
   });
 }
 
+/**
+ * A guest (project/visibility.ts) reaches their projects and nothing else, so
+ * a request that names no project only passes on the routes that narrow their
+ * answer to those projects. Reads as missing, like any project they can't see;
+ * outside a request (jobs) it fails closed too.
+ */
+function assertGuestWorkspaceRoute() {
+  const c = auditContext.getStore()?.c;
+  const allowed =
+    c &&
+    guestWorkspaceRouteAllowed(c.req.method, c.req.path, {
+      projectId: c.req.query("projectId"),
+    });
+  if (!allowed) throw new HTTPException(404, { message: "Not found" });
+}
+
 export async function validateWorkspaceAccess(
   userId: string,
   workspaceId: string,
   apiKeyId?: string,
   /** The project the request acts on, when it acts on one. */
   projectId?: string | null,
+  /** A bulk request's projects; the caller checks each is visible. */
+  bulkProjectIds?: readonly string[],
 ): Promise<void> {
   await assertApiKeyProjectScope(workspaceId, projectId);
 
@@ -120,6 +140,14 @@ export async function validateWorkspaceAccess(
 
   // Checked after membership, so outsiders can't tell a pending deletion.
   await assertWorkspaceNotLocked(workspaceId, apiKeyId);
+
+  if (
+    !projectId &&
+    !bulkProjectIds?.length &&
+    isGuestRole(membership[0]?.role)
+  ) {
+    assertGuestWorkspaceRoute();
+  }
 
   // A restricted project the caller is not a member of reads as missing.
   if (projectId) await assertProjectInWorkspace(userId, workspaceId, projectId);
