@@ -1,0 +1,104 @@
+---
+title: Guest Access
+description: Give a client or contractor the Guest role, add them to chosen projects, and keep the rest of the workspace out of their reach
+---
+
+A **Guest** is a workspace member who reaches only the projects you add them to. Use the role for clients, contractors and anyone else who should work in one project and not see the rest of the workspace.
+
+<Info>
+The **Guest** role is not the **Guest access** switch under **Settings** > **Instance** > **Authentication**. That switch lets people use Margaya without an account, for example with **Continue as guest** on a public board. A workspace Guest has a normal account and signs in like anyone else.
+</Info>
+
+## Add a guest
+
+Invite a guest and pick their projects in one go. They join those projects as soon as they accept.
+
+### Invite them with their projects
+
+Inviting takes the same permission as inviting anyone else, which Owners and Admins have by default.
+
+1. Open **Settings** > **Members** and click **Invite member**.
+2. Enter their email address.
+3. Set **Role** to **Guest**. A **Projects** list appears.
+4. Tick each project they should reach, and pick a project role next to it. A project starts as **Viewer**, so they can only read. Choose **Member** to let them add and edit tasks and comment.
+5. Click **Send invitation**.
+
+The list offers only the projects you may share: all of them with the project **Share** permission (`project:share`, Owners and Admins by default), otherwise the projects you lead. The API checks the same when the invitation is sent, so an invitation can't share more than its sender may. If it refuses a project, the invitation still goes out and the dialog tells you its projects weren't added.
+
+<Screenshot src="tasks/invite-guest" alt="The Invite team member dialog with one email address and the Guest role selected, above a Projects list where Website relaunch is ticked with the Viewer project role, Mobile app is ticked with Member, and the other projects are unticked" caption="With the Guest role, the dialog also asks for their projects and a role in each." />
+
+When they accept, they land in those projects with the roles you picked. A project that was deleted meanwhile is skipped. If you picked none, their **Projects** page says "You haven't been added to a project yet. Ask the person who invited you to add you."
+
+### Add them to more projects later
+
+You need the project **Share** permission (`project:share`), which Owners and Admins have by default, or to be the project's lead.
+
+1. Open **Settings** > **Projects** > the project > **General settings**.
+2. In the **Access** section, select **Add member** and pick the guest. In an open project, only guests are listed, because everyone else already reaches it.
+3. The guest joins as **Viewer**, so they can only read. To let them add and edit tasks, change their project role to **Member**.
+
+This works the same for open and [restricted projects](/core/functional/restricted-projects).
+
+<Screenshot src="tasks/guest-access" alt="The Access section of an open project with Restricted off, the hint that guests reach only the projects they are added to, one guest named Maya Lind with the Viewer project role, and an Add member button" caption="In an open project, this list is how a guest gets access." />
+
+### Make an existing member a guest
+
+In **Settings** > **Members**, pick **Guest** in the person's role menu. They lose every project they aren't a member of at once, and their open boards stop updating. Pick another role to give them back the open projects.
+
+## What a guest can do
+
+Inside a project, a guest can do what both the Guest role and their project role allow.
+
+| Project role | In that project they can |
+| --- | --- |
+| **Viewer** | Read tasks, comments, labels, cycles, modules, views and pages. |
+| **Member** | Also add and edit tasks, and comment. |
+| **Admin** | The same as **Member**: a project role never adds rights. |
+
+Custom project roles are capped the same way. Moving or copying a task takes these rights in both projects, so a guest can't put a task into a project where they only read.
+
+The app shows a guest only the controls these rights allow in each project. As a **Viewer** they see the board, list, task view, pages, labels, cycles and modules without edit, create or delete controls, and tasks have no comment box.
+
+Whatever their project role, a guest can't:
+
+- delete tasks, or change a project's settings;
+- manage who has access, even as the project's lead;
+- create or edit pages, cycles, modules, views or labels;
+- send intake requests, use analytics or AI, or export tasks;
+- invite anyone.
+
+The Guest role's permissions can't be edited, and a workspace can't create a custom role named `guest`.
+
+## What a guest sees
+
+The rail shows only **Inbox**, **Your work**, **Projects** and **Settings**. Opening the workspace takes them to **Projects**, and **Settings** holds only their own account.
+
+- **Projects**, search, the inbox, **Your work**, favorites and recent items include only their projects.
+- Member lists show only their own row, and no invitations. Inside a project, the assignee and @mention pickers offer the people who can see that project, and nobody else in the workspace.
+- Everything else about the workspace is out of reach: Home, the members page, workspace-wide views and labels, analytics, the audit log, webhooks, exports, the archive and the trash. The app sends them back to **Projects**, and the API answers 404.
+- A project they aren't a member of shows "not found", so its existence isn't revealed.
+- A task's history reads "a task in another project" or "another project" when it links to, moved from or was copied from a project they aren't a member of, without the key, title or project name.
+
+The same limits apply to their API keys and MCP tools. When you remove a guest from a project, they lose it at once, and their open connections to it close.
+
+## Limits
+
+- **A guest counts as a seat.** Where a workspace is billed per seat, a guest is billed like any other member, whatever their project roles. A guest with the **Member** project role does the day-to-day work of a team member in that project, so free guests would let a whole team work as guests on one paid seat. Only [AI agents](/core/functional/ai-agents) aren't seats.
+- **A guest needs an account.** To show a project to people without one, [publish a public board](/core/functional/publish-a-project-board) instead.
+- **Guest can't be combined with another role.** The API refuses a role such as `guest,member`.
+- **An instance admin isn't limited by the role.** If an [instance admin](/core/installation/instance-admin) is also a guest of a workspace, they keep their instance-wide reach when signed in.
+- **Required two-factor applies.** A guest with a password has to set it up when the server [requires two-factor](/core/installation/instance-admin#require-two-factor).
+
+To end a guest's access altogether, see [Remove a member](/core/functional/collaborate-with-team#remove-a-member).
+
+## API
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `POST` | `/api/auth/organization/invite-member` | Invite someone with `"role": "guest"` |
+| `PUT` | `/api/invitation/{id}/projects` | Set the projects, with project roles, that a pending invitation adds them to |
+| `POST` | `/api/project/{id}/access/members` | Add them to a project with a project role |
+| `PATCH` | `/api/project/{id}/access/members/{userId}` | Change their project role |
+| `DELETE` | `/api/project/{id}/access/members/{userId}` | Remove them from the project |
+
+A guest can read `GET /api/project/access/mine` (their project roles and what each grants) and, in a project they reach, `GET /api/project/{id}/people` (who can see the project, by name). A guest gets 404 from `GET /api/project/{id}/access`, and from any workspace route that doesn't narrow its answer to their projects. Risk radars and retrospectives need analytics, so a guest gets 403 there.
