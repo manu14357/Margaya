@@ -19,6 +19,8 @@ export type ConnectionIdentity = {
   sessionId: string | null;
   apiKeyId: string | null;
   apiKeyPermissions: Record<string, string[]> | null;
+  /** The projects a project-limited API key may reach. */
+  apiKeyProjectIds?: string[] | null;
   /** "<userId>:<windowId>", as on the project socket. */
   initiatorId: string;
 };
@@ -37,6 +39,9 @@ export class PageConnection {
   closed = false;
   /** Answered the last ping. */
   alive = true;
+  /** Revalidations started, and the newest one whose result was applied. */
+  revalidationsStarted = 0;
+  revalidationApplied = 0;
   private windowStart = 0;
   private messagesInWindow = 0;
   private lastOfflineRejected = Number.NEGATIVE_INFINITY;

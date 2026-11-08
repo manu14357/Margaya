@@ -14,6 +14,7 @@ import { userLocale } from "../ai-translate/locale";
 import db from "../database";
 import { aiBriefTable, pageTable } from "../database/schema";
 import { assertProjectFeatureEnabled } from "../project/features";
+import { hasWorkspacePermission } from "../utils/require-workspace-permission";
 import {
   type BriefFacts,
   type BriefTaskRef,
@@ -140,10 +141,16 @@ export async function generateBrief(
     input.scopeType,
     input.scopeId,
   );
+  // Known only now: the project's role caps ai:use and task:read, as on the
+  // routes that resolve their project in middleware.
+  c.set("projectId", scope.projectId);
   const aiScope = await resolveAiScope(c);
   // 404 for a project the caller can't see; AI_DISABLED for AI-off ones.
   assertProjectInScope(aiScope, scope.projectId);
-  if (!aiScope.can.readTasks) {
+  if (
+    !aiScope.can.readTasks ||
+    !(await hasWorkspacePermission(c, { ai: ["use"] }))
+  ) {
     throw new HTTPException(403, { message: "Insufficient permissions" });
   }
   if (scope.type !== "project") {

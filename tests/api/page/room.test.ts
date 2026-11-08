@@ -231,6 +231,63 @@ describe("page room meta", () => {
     expect(alice.socket.closeCode).toBe(4401);
   });
 
+  it("keeps the newest check's role when an older check finishes last", async () => {
+    const { room, deps } = setup();
+    await room.ready;
+    const alice = connect(room);
+    // The timer's check read the old role and is slow; a page event's check,
+    // started after it, read the new one and answers first.
+    let finishOld: (caller: typeof writer) => void = () => {};
+    vi.mocked(deps.revalidate)
+      .mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            finishOld = (caller) => resolve({ status: "ok", caller });
+          }),
+      )
+      .mockResolvedValueOnce({
+        status: "ok",
+        caller: { ...reader, userId: writer.userId },
+      });
+
+    const periodic = room.revalidateAll();
+    await room.revalidateAll();
+    expect(alice.connection.caller.canUpdate).toBe(false);
+    expect(alice.socket.control("state")).toMatchObject({ canWrite: false });
+
+    finishOld(writer);
+    await periodic;
+    expect(alice.connection.caller.canUpdate).toBe(false);
+    expect(alice.connection.canWrite).toBe(false);
+    expect(alice.socket.control("state")).toMatchObject({ canWrite: false });
+  });
+
+  it("still applies an older check that finishes before the newer one", async () => {
+    const { room, deps } = setup();
+    await room.ready;
+    const alice = connect(room);
+    let finishNew: (caller: typeof writer) => void = () => {};
+    vi.mocked(deps.revalidate)
+      .mockResolvedValueOnce({
+        status: "ok",
+        caller: { ...reader, userId: writer.userId },
+      })
+      .mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            finishNew = (caller) => resolve({ status: "ok", caller });
+          }),
+      );
+
+    const first = room.revalidateAll();
+    const second = room.revalidateAll();
+    await first;
+    expect(alice.connection.canWrite).toBe(false);
+    finishNew(writer);
+    await second;
+    expect(alice.connection.canWrite).toBe(true);
+  });
+
   it("closes with 4404 when the page is gone at load", async () => {
     const { room } = setup("", {
       load: async () => ({ status: "gone" as const }),

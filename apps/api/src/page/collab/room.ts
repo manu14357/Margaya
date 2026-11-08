@@ -767,9 +767,14 @@ export class PageRoom {
     await Promise.all(
       [...this.connections].map(async (connection) => {
         if (connection.closed) return;
+        // The timer's check and a page event's check can overlap: a result
+        // older than one already applied read older roles, so it is dropped.
+        const generation = ++connection.revalidationsStarted;
         try {
           const result = await this.deps.revalidate(connection.identity, meta);
           if (connection.closed) return;
+          if (generation < connection.revalidationApplied) return;
+          connection.revalidationApplied = generation;
           if (result.status === "close") {
             connection.close(result.code, result.reason);
             return;

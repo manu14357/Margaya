@@ -1,11 +1,9 @@
-import { and, eq, inArray, like, ne } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../database";
-import { assetTable, pageTable } from "../database/schema";
-import {
-  contentReferencesAsset,
-  deleteS3Keys,
-} from "../storage/cleanup-assets";
+import { assetTable } from "../database/schema";
+import { handOverAssets } from "../storage/asset-handover";
+import { deleteS3Keys } from "../storage/cleanup-assets";
 import {
   assertPageAssetKeyMatchesContext,
   assertStorageConfigured,
@@ -138,53 +136,27 @@ export async function finalizePageAssetUpload(
 /** Assets of a page, read before the page is deleted (the FK nulls `pageId`). */
 export async function pageAssets(pageId: string) {
   return db
-    .select({ id: assetTable.id, objectKey: assetTable.objectKey })
+    .select({
+      id: assetTable.id,
+      objectKey: assetTable.objectKey,
+      workspaceId: assetTable.workspaceId,
+      projectId: assetTable.projectId,
+    })
     .from(assetTable)
     .where(eq(assetTable.pageId, pageId));
 }
 
 /**
- * After a page delete (§3.7): an asset another page of the workspace still
- * links (for example a duplicate) is handed to that page, preferring the
- * same project; the rest are deleted from storage and the database.
+ * After a page delete (§3.7): an asset other text of the workspace still
+ * links (a duplicate page, a task's description or comment) is handed to it,
+ * as for tasks (storage/asset-handover.ts); the rest are deleted from storage
+ * and the database.
  */
 export async function cleanUpDeletedPageAssets(
-  page: Pick<PageRecord, "id" | "workspaceId" | "projectId">,
-  assets: Array<{ id: string; objectKey: string }>,
+  page: Pick<PageRecord, "id">,
+  assets: Awaited<ReturnType<typeof pageAssets>>,
 ) {
-  const toDelete: typeof assets = [];
-  for (const asset of assets) {
-    const candidates = await db
-      .select({
-        id: pageTable.id,
-        projectId: pageTable.projectId,
-        contentMarkdown: pageTable.contentMarkdown,
-      })
-      .from(pageTable)
-      .where(
-        and(
-          eq(pageTable.workspaceId, page.workspaceId),
-          ne(pageTable.id, page.id),
-          like(pageTable.contentMarkdown, `%/api/asset/${asset.id}%`),
-        ),
-      )
-      .limit(50);
-    const holders = candidates.filter((candidate) =>
-      contentReferencesAsset(candidate.contentMarkdown, asset.id),
-    );
-    const holder =
-      holders.find((candidate) => candidate.projectId === page.projectId) ??
-      holders[0];
-    if (holder?.projectId) {
-      await db
-        .update(assetTable)
-        .set({ pageId: holder.id, projectId: holder.projectId })
-        .where(eq(assetTable.id, asset.id));
-    } else {
-      toDelete.push(asset);
-    }
-  }
-
+  const toDelete = await handOverAssets(assets, { pageIds: [page.id] });
   if (toDelete.length === 0) return;
   const results = await deleteS3Keys(toDelete.map((asset) => asset.objectKey));
   const deleted = toDelete

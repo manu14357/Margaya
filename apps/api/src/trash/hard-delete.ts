@@ -2,11 +2,13 @@ import { eq, inArray, or } from "drizzle-orm";
 import db from "../database";
 import { assetTable, taskRelationTable, taskTable } from "../database/schema";
 import { publishEvent } from "../events";
+import { handOverAssets } from "../storage/asset-handover";
 import { deleteS3Keys } from "../storage/cleanup-assets";
 
 // Permanent deletes (C7). The database cascades remove comments, labels,
-// relations, time entries, attachments and the other task-owned rows; the
-// stored files go after the rows are gone, fire-and-forget, as before.
+// relations, time entries, attachments and the other task-owned rows. Files
+// other text still links are handed to it first (storage/asset-handover.ts);
+// the rest leave storage after the rows are gone, fire-and-forget, as before.
 
 const CHUNK = 500;
 
@@ -20,18 +22,25 @@ function chunks<T>(items: T[], size = CHUNK): T[][] {
 
 async function deleteTaskRows(taskIds: string[]) {
   const deleted: (typeof taskTable.$inferSelect)[] = [];
-  for (const ids of chunks([...new Set(taskIds)])) {
+  const leaving = [...new Set(taskIds)];
+  for (const ids of chunks(leaving)) {
     const assets = await db
-      .select({ objectKey: assetTable.objectKey })
+      .select({
+        id: assetTable.id,
+        objectKey: assetTable.objectKey,
+        workspaceId: assetTable.workspaceId,
+        projectId: assetTable.projectId,
+      })
       .from(assetTable)
       .where(inArray(assetTable.taskId, ids));
+    const orphans = await handOverAssets(assets, { taskIds: leaving });
     const rows = await db
       .delete(taskTable)
       .where(inArray(taskTable.id, ids))
       .returning();
     deleted.push(...rows);
-    if (assets.length > 0) {
-      deleteS3Keys(assets.map((asset) => asset.objectKey)).catch(() => {});
+    if (orphans.length > 0) {
+      deleteS3Keys(orphans.map((asset) => asset.objectKey)).catch(() => {});
     }
   }
   return deleted;

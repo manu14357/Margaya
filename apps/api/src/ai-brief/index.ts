@@ -50,6 +50,8 @@ async function briefAccess(c: Context, next: Next) {
     brief.projectId,
   );
   c.set("workspaceId", brief.workspaceId);
+  // The project's role caps what the caller may do there (ai:use).
+  c.set("projectId", brief.projectId);
   return next();
 }
 

@@ -1,7 +1,13 @@
 import { and, eq } from "drizzle-orm";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { resetAiGatewayState } from "../../apps/api/src/ai/gateway";
-import { setFakeResponder } from "../../apps/api/src/ai/provider/fake";
+import {
+  resetAiGatewayState,
+  setAiProviderFactory,
+} from "../../apps/api/src/ai/gateway";
+import {
+  createFakeProvider,
+  setFakeResponder,
+} from "../../apps/api/src/ai/provider/fake";
 import type { ChatRequest } from "../../apps/api/src/ai/types";
 import { settleAuditWrites } from "../../apps/api/src/audit-log/record";
 import db, { schema } from "../../apps/api/src/database";
@@ -22,7 +28,12 @@ import { draftScene } from "./helpers/drafts";
 type Scene = Awaited<ReturnType<typeof draftScene>>;
 type User = Scene["mia"];
 
-const AI_ENV = ["MARGAYA_AI_ENABLED", "MARGAYA_AI_PROVIDER"] as const;
+const AI_ENV = [
+  "MARGAYA_AI_ENABLED",
+  "MARGAYA_AI_PROVIDER",
+  "MARGAYA_AI_LOCAL_BASE_URL",
+  "MARGAYA_AI_LOCAL_MODEL",
+] as const;
 
 let prompts: string[] = [];
 
@@ -36,6 +47,7 @@ beforeEach(async () => {
 afterEach(() => {
   for (const name of AI_ENV) delete process.env[name];
   setFakeResponder(null);
+  setAiProviderFactory(null);
 });
 
 function userText(request: ChatRequest): string {
@@ -610,5 +622,54 @@ describe("Stakeholder briefs", () => {
     const client = await generate(s, s.mia, body);
     expect(client.status).toBe(403);
     expect(prompts).toHaveLength(0);
+  });
+
+  it("holds generating and sharing to the caller's project role", async () => {
+    // Restricted data goes to a local model only.
+    process.env.MARGAYA_AI_LOCAL_BASE_URL = "http://local-model.test/v1";
+    process.env.MARGAYA_AI_LOCAL_MODEL = "local";
+    setAiProviderFactory(() => createFakeProvider());
+    const s = await aiScene();
+    await restrict(s.web.project.id, [s.mia]);
+    await s.ok(s.owner, "PATCH", "/ai/settings", {
+      workspaceId: s.workspaceId,
+      includeRestricted: true,
+    });
+    setFakeResponder(() => ({ text: "On track." }));
+    const body = {
+      scopeType: "project",
+      scopeId: s.web.project.id,
+      audience: "team",
+    };
+    const share = (briefId: string) =>
+      s.as(s.mia)("POST", `/ai/brief/${briefId}/share`, {});
+    const setProjectRole = (role: string) =>
+      db
+        .update(projectMemberTable)
+        .set({ role })
+        .where(
+          and(
+            eq(projectMemberTable.projectId, s.web.project.id),
+            eq(projectMemberTable.userId, s.mia.id),
+          ),
+        );
+
+    const made = await generate(s, s.mia, body);
+    expect(made.status, await made.clone().text()).toBe(200);
+    const { briefId } = (await made.json()) as BriefJson;
+
+    // A project viewer may not use AI there, whatever the workspace role says.
+    await setProjectRole("viewer");
+    expect((await generate(s, s.mia, body)).status).toBe(403);
+    expect((await share(briefId)).status).toBe(403);
+    const [kept] = await db
+      .select({ sharedAt: aiBriefTable.sharedAt })
+      .from(aiBriefTable)
+      .where(eq(aiBriefTable.id, briefId));
+    expect(kept?.sharedAt).toBeNull();
+
+    await setProjectRole("member");
+    expect((await share(briefId)).status).toBe(200);
+    expect((await generate(s, s.mia, body)).status).toBe(200);
   });
 });

@@ -3,6 +3,7 @@ import { HTTPException } from "hono/http-exception";
 import db from "../database";
 import { assetTable, projectTable, taskTable } from "../database/schema";
 import { publishEvent } from "../events";
+import { handOverAssets } from "../storage/asset-handover";
 import { deleteS3Keys } from "../storage/cleanup-assets";
 import { restoreBatch } from "./task-trash";
 
@@ -114,23 +115,30 @@ export async function restoreTrashedProject(
 
 /**
  * Permanently deletes a project: the database cascades remove its tasks and
- * everything else in it; stored task files are cleaned up afterwards.
+ * everything else in it. Files that text in another project still links are
+ * handed to it first; the other stored files are cleaned up afterwards.
  */
 export async function hardDeleteProject(
   project: ProjectRow,
   userId: string | null,
 ) {
   const assets = await db
-    .select({ objectKey: assetTable.objectKey })
+    .select({
+      id: assetTable.id,
+      objectKey: assetTable.objectKey,
+      workspaceId: assetTable.workspaceId,
+      projectId: assetTable.projectId,
+    })
     .from(assetTable)
     .where(eq(assetTable.projectId, project.id));
+  const orphans = await handOverAssets(assets, { projectId: project.id });
   const [deleted] = await db
     .delete(projectTable)
     .where(eq(projectTable.id, project.id))
     .returning();
   if (!deleted) return null;
-  if (assets.length > 0) {
-    deleteS3Keys(assets.map((asset) => asset.objectKey)).catch(() => {});
+  if (orphans.length > 0) {
+    deleteS3Keys(orphans.map((asset) => asset.objectKey)).catch(() => {});
   }
   await publishEvent("project.purged", projectEvent(deleted, userId));
   return deleted;
