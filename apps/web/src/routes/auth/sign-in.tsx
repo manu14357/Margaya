@@ -21,6 +21,7 @@ import { toast } from "@/lib/toast";
 import { AuthDivider } from "../../components/auth/divider";
 import { AuthLayout } from "../../components/auth/layout";
 import { OtpSignInForm } from "../../components/auth/otp-sign-in-form";
+import { SamlSignIn } from "../../components/auth/saml-sign-in";
 import { SignInForm } from "../../components/auth/sign-in-form";
 import { SignInFormSkeleton } from "../../components/auth/sign-in-form-skeleton";
 import { AuthToggle } from "../../components/auth/toggle";
@@ -391,6 +392,7 @@ function SignIn() {
             config?.hasGithubSignIn ||
             config?.hasDiscordSignIn ||
             config?.hasCustomOAuth ||
+            config?.hasSamlSignIn ||
             (config?.hasGuestAccess && !invitationId)) && (
             <>
               <div className="space-y-3">
@@ -511,6 +513,17 @@ function SignIn() {
                   </div>
                 )}
 
+                {config?.hasSamlSignIn && (
+                  <SamlSignIn
+                    callbackURL={getCallbackUrl()}
+                    errorCallbackURL={`${import.meta.env.VITE_CLIENT_URL}/auth/sign-in`}
+                    defaultEmail={defaultEmail}
+                    disabled={captchaPending}
+                    turnstileToken={turnstileToken}
+                    onAttemptComplete={resetCaptcha}
+                  />
+                )}
+
                 {config?.hasGuestAccess && !invitationId && (
                   <Button
                     variant="outline"
@@ -568,6 +581,17 @@ function SignIn() {
                 showForgotPassword={config?.passwordResetEnabled}
               />
             ))}
+          {/* Required two-factor turns email codes off, and someone who only
+              used those has no password: say what to do instead. */}
+          {config?.requireTwoFactor &&
+            !config.disableLoginForm &&
+            !config.requiredSignInProvider && (
+              <p className="text-center text-xs text-muted-foreground">
+                {config.passwordResetEnabled
+                  ? t("auth:signIn.emailCodesOff")
+                  : t("auth:signIn.emailCodesOffNoEmail")}
+              </p>
+            )}
           {config?.disableRegistration ||
           config?.disablePasswordRegistration ? (
             <div className="text-center pt-4">

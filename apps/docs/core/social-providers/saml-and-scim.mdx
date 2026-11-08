@@ -1,0 +1,166 @@
+---
+title: SAML Sign-in and SCIM Provisioning
+description: Let people sign in through your company's identity provider with SAML, and let it add, deactivate and remove people in a workspace with SCIM
+---
+
+Connect an identity provider to your instance in two independent ways:
+
+- **Company sign-in (SAML)**: people on your email domains sign in through the provider.
+- **Provisioning (SCIM)**: the provider adds, changes, deactivates and removes people in one workspace.
+
+You can use either one or both. Both are on **Settings** > **Instance** > **Authentication**. You need to be an [instance admin](/core/installation/instance-admin), signed in with a session: API keys are refused. Connecting, changing or removing anything needs a [recent sign-in](/core/installation/instance-admin#confirm-its-you), is limited to 30 changes a minute, and is recorded in the [audit trail](/core/installation/instance-admin#audit-trail). There are no environment variables for these connections.
+
+<Warning>
+SAML was tried with one real identity provider, Keycloak 26.4.7, run locally, in Microsoft Edge. Over plain HTTP, Margaya ran with the app and API on separate addresses, and on one address behind the Docker image's web server settings. Over HTTPS, it ran on one address behind a TLS proxy with those settings, with Keycloak over HTTPS on another site and certificates from a throwaway local authority. Both ways, connecting it on this screen, signing in, reaching the workspace through SCIM or an invitation, and removing the connection worked. An address on another domain, an altered response, an expired response, sign-in started at the provider, and a response posted at someone from another site were refused. Over HTTPS, a sign-in finished in another browser than the one it started in was refused too. Over HTTPS with the app and API on separate addresses of one site, and on two different sites, connecting, signing in, and refusing a response posted from another site or finished in another browser worked as well. On two different sites, a hand-off link sent to someone else was refused too. No other identity provider was tried. SCIM was checked with the open-source scim2-tester and with requests written to RFC 7644, not with any provider's service. Try a new connection with one test person before you roll it out.
+</Warning>
+
+The addresses you give the provider are built from `MARGAYA_API_URL`, so set that to your public API address first.
+
+## Company sign-in with SAML
+
+### Connect a provider
+
+1. In **Company sign-in (SAML)**, select **Connect provider**.
+2. Copy the **Assertion Consumer Service URL** and **Entity ID (audience)** into your identity provider. They don't change later, not even when you edit the connection.
+3. Configure the application in your provider as described in [what the provider must send](#what-the-provider-must-send).
+4. Back in Margaya, fill in the form and select **Connect**.
+
+<Screenshot src="admin/saml-connect" alt="The Connect provider panel with the Assertion Consumer Service URL and Entity ID to copy, then fields for name, email domains, issuer, single sign-on URL and signing certificate" caption="Copy the two addresses first, then fill in what your provider gives you." />
+
+| Field | What to enter |
+| --- | --- |
+| **Name** | What admins call this connection, for example the provider. |
+| **Email domains** | The domains this provider may sign in, separated by commas. Subdomains are included. A domain, or a subdomain of it, can belong to only one connection. |
+| **Identity provider entity ID (issuer)** | The provider's entity ID. |
+| **Single sign-on URL** | The provider's sign-on address for the HTTP-Redirect binding. It must use `https://`, except on `localhost`. |
+| **Signing certificate** | The provider's public X.509 certificate, as PEM or base64. A private key or an expired certificate is refused. |
+
+<Warning>
+Whoever controls this identity provider can sign in anyone on these domains whose address is verified in Margaya. Connect only a provider you trust for those domains.
+</Warning>
+
+### What the provider must send
+
+- A signed response or a signed assertion, using SHA-256 or stronger. Anything signed with SHA-1 is refused.
+- Times that match the server's clock within five minutes. A response that has expired by more than that is refused.
+- The person's email address, as the NameID or in an `email` attribute. Set the NameID format to email address.
+- Optionally, their name in a `displayName` attribute, or in `givenName` and `surname`.
+
+Margaya doesn't sign its requests and can't read encrypted assertions, so leave assertion encryption off.
+
+### How people sign in
+
+Once a connection exists, the sign-in screen shows **Continue with company sign-in**.
+
+1. Select **Continue with company sign-in**.
+2. Enter a **Work email** and select **Continue**. The email's domain decides which provider opens.
+3. Sign in at the identity provider.
+
+### Who can sign in
+
+- **Sign-in must start in Margaya.** Opening the app from the identity provider's own portal is refused with "Start company sign-in from this page. Sign-in that starts at your identity provider isn't accepted."
+- **Sign-in must finish in the browser it started in.** Starting sign-in leaves a short-lived cookie, and a response that arrives without it is refused with "Company sign-in has to finish in the browser it started in. Start again from this page, and make sure cookies are allowed." This stops someone posting their own response at you from a page of theirs, which would sign you in to their account.
+- **Only addresses on the connection's domains.** A response for any other address is refused.
+- **Existing accounts link only if their address is verified.** Otherwise the sign-in is refused, so someone who registered that address with their own password can't keep access. The person has to [verify their email](/core/functional/account-security#verify-your-email) first.
+- **New accounts follow your sign-up rules.** [Allowed email domains](/core/installation/instance-admin#sign-in-policy) apply, and with **Anyone can sign up** off, the person needs an invitation.
+- **Banned and deactivated accounts are refused.**
+
+On a plain HTTP instance the cookie can't be marked `Secure`, so browsers don't send it back on the provider's cross-site post. Margaya answers that post with a short page of its own that posts the same form again, from Margaya's address, and the cookie comes along on that one. You may see the page flash by. It runs one script, `/api/auth/sso/saml2/sp/continue.js`. If scripts are off, or a proxy in front of the API blocks that script, the page stops there: select its button to go on.
+
+<Warning>
+Plain HTTP still sends the response and the session unencrypted, so anyone who can watch the network can take them. Use HTTPS for anything people reach over a network.
+</Warning>
+
+### Limits
+
+- **On two different sites, the browser must allow the API's cookies.** With the app and API on entirely separate domains, sign-in ends on the API, which hands the session to the app (see [App and API on different sites](/core/social-providers/custom-oauth#app-and-api-on-different-sites)). That needs the browser to keep the API's cookies on the app's pages, which browsers that block third-party cookies don't. One address, or subdomains of one domain such as `app.example.com` and `api.example.com`, needs nothing of the kind.
+- **SAML doesn't add anyone to a workspace.** A new account starts with no workspace. Invite the person, or use [SCIM](#provisioning-with-scim) for that.
+- **SAML can't be the required provider.** While a [required sign-in provider](/core/installation/instance-admin#sign-in-policy) is set, the button disappears and SAML sign-in is refused.
+- **SAML doesn't count as a sign-in method for the last-method check.** Keep another method on: the [last working sign-in method](/core/installation/instance-admin#sign-in-methods) can't be turned off, and a SAML connection doesn't change that.
+- **There is no single logout.** Signing out of Margaya doesn't sign anyone out of the identity provider.
+- **Two-factor comes from the provider.** [Required two-factor](/core/installation/instance-admin#require-two-factor) only covers accounts with a password, including an account that also signs in with SAML.
+
+### Change or remove a connection
+
+Select **Edit** to change the name, domains, issuer, sign-on URL or certificate. Leave **Signing certificate** empty to keep the current one. The table shows when each certificate expires, with **Expires soon** in the last 30 days and **Expired** after that. An expired certificate stops sign-in, so replace it in time.
+
+**Remove** stops sign-in through this provider at once. Accounts stay and their owners sign in another way, while sessions that already exist keep working.
+
+## Provisioning with SCIM
+
+Each connection belongs to one workspace. To provision several workspaces, create one connection per workspace.
+
+### Connect a provider
+
+1. In **Provisioning (SCIM)**, select **Connect provider**.
+2. Enter a **Name** and choose the **Workspace**. A workspace scheduled for deletion is refused.
+3. Select **Create token**.
+4. Copy the **SCIM base URL** and **Bearer token** into your identity provider, then select **Done**.
+
+<Warning>
+You see the token only once, and Margaya stores only its hash. Give it only to the identity provider: whoever holds it can add people to the workspace, and change or deactivate the people this connection manages.
+</Warning>
+
+<Screenshot src="admin/scim-connections" alt="The Provisioning (SCIM) section with a Connect provider button, one connection named Company directory for the Studio North workspace managing 12 people, Replace token and Remove buttons, and the SCIM base URL" caption="Each connection shows its workspace and how many people it manages." />
+
+The base URL looks like `https://margaya.example.com/api/auth/scim/v2`. The provider sends the token, exactly as shown, in the `Authorization: Bearer` header. Anything else gets a `401`.
+
+### What the provider can do
+
+| In your provider | In Margaya |
+| --- | --- |
+| Add a person (`POST /Users`) | Creates an account with a verified address and no password, and adds them to the workspace with the **Member** role. |
+| Change a person (`PUT` or `PATCH /Users/{id}`) | Updates their name, address or `externalId`. A new address starts unverified. |
+| Deactivate a person (`active: false`) | Bans the account: they're signed out everywhere, can't sign in and their API keys stop working. They stay in the workspace. |
+| Reactivate a person (`active: true`) | Lifts a ban that provisioning set. |
+| Remove a person (`DELETE /Users/{id}`) | [Removes them from the workspace](/core/functional/collaborate-with-team#remove-a-member). The account stays, and the connection no longer manages it. The same address can be added back later. |
+
+These work while **Anyone can sign up** is off, because the connection counts as the invitation. [Allowed email domains](/core/installation/instance-admin#sign-in-policy) still apply.
+
+A provisioned account has no password. The person signs in with SAML, with a sign-in provider that reports the same verified address, or with an email code if your server offers them. Where email is set up, **Forgot password?** also gives the account a password.
+
+### What provisioning refuses
+
+- **Accounts it can't take over.** Adding an address that already has an account is refused when that account is an instance admin, an anonymous guest, an AI agent, banned by an instance admin, or in any other workspace, even if it's in this one too. Only an account that is in this workspace alone, or in no workspace, is linked.
+- **People it doesn't manage.** Other accounts read as not found, even in the same workspace.
+- **Instance-wide changes to someone in another workspace.** A person who also belongs to another workspace, including one they joined after being provisioned, can't be renamed, have their address changed or be deactivated, because their name, address and sign-in are the same in every workspace. The provider gets a `409` with `scimType: mutability` that says so. A routine update that keeps their current name and address still succeeds. A full update (`PUT`) without a name counts as a rename, because it would rename them to their address. To end their access here, remove them with `DELETE /Users/{id}`, which only affects this workspace.
+- **A ban an instance admin set.** Provisioning can neither lift nor replace it, so `active: true` or `active: false` for that account gets a `409` until an instance admin lifts the ban. Other changes still apply.
+- **Instance admins** can't be deactivated, even when other instance admins remain, because a ban signs them out of the whole instance. Their address can't be changed either. The provider gets a `409` with `scimType: mutability`. To end an instance admin's access to this workspace, remove them with `DELETE /Users/{id}`.
+- **A name that isn't text** gets a `400`.
+- **The workspace's only owner** can't be removed.
+- **An `active` that isn't true or false**, in any capitalization, gets a `400`.
+- **Removing what every account has.** A `PATCH` that removes `active`, `userName` or the address in `emails` gets a `400` with `scimType: mutability`: an account is always either active or not, and always has an address. Set `active` to `true` or `false`, or replace the address. A `remove` without a `path` gets a `400` with `scimType: noTarget`.
+- **Anything in a workspace scheduled for deletion**, apart from reading.
+
+### How Margaya reads people
+
+- **One address.** Each account has one email address, which is also its `userName`. The provider can change it through `userName`, or through the work or primary email in `emails`, for example `emails[type eq "work"].value`. Other addresses, such as a home one, are accepted and ignored.
+- **One name.** Margaya keeps a single name, and returns it as `name.formatted` and `displayName`. `name.givenName` is its first word and `name.familyName` the rest, so `Mary Ann Smith` reads as `Mary` and `Ann Smith`. Changing one part keeps the other, and a `formatted` name replaces the whole name.
+- **No name or `externalId` until the provider sends one.** A person added without them has none in what Margaya returns, and removing either with a `PATCH` leaves the person without it. In Margaya, an account without a name shows its address instead. Margaya keeps the address in place of a missing `externalId`, so an `externalId` that is the same as the person's address also reads as none.
+- **Reads take `attributes` and `excludedAttributes`**, on `GET /Users`, `GET /Users/{id}` and searches. `id` and `schemas` are always returned.
+- **Lists come in pages.** `GET /Users` and searches take `startIndex` (from 1) and `count`, and answer with `totalResults`, `startIndex` and `itemsPerPage`. A page holds at most 500 people, which `/ServiceProviderConfig` announces as `filter.maxResults`; without a `count` you get that many. People are in a fixed order, so the pages don't overlap.
+- **Searching with `POST`.** `POST /Users/.search` and `POST /.search` take a search request with `filter`, `attributes`, `excludedAttributes`, `startIndex` and `count`, and answer like `GET /Users`.
+- **Every error is a SCIM error**, with `schemas`, `status` and `detail`, and `scimType` where RFC 7644 defines one. An unknown path gets a `404`, a method an endpoint doesn't have gets a `405`, and a body that isn't JSON gets a `400` with `scimType: invalidSyntax`.
+
+### Limits
+
+- **Everyone joins as a Member.** There is no role or group mapping. Change a person's role under **Settings** > **Members**. To limit them to chosen projects, see [Guest Access](/core/functional/guest-access).
+- **Users only.** There are no SCIM groups, bulk requests, sorting or ETags. A filter takes one `eq` condition on `userName` or `externalId`, such as `userName eq "pat@example.com"`.
+- **Only some attributes are kept:** the address, the name, `active` and `externalId`. A change to anything else, such as a job title, is accepted and ignored.
+- **A person counts as a seat** where the workspace is billed per seat.
+
+The discovery endpoints `/ServiceProviderConfig`, `/Schemas` and `/ResourceTypes` need no token.
+
+### Replace a token or remove a connection
+
+**Replace token** stops the current token at once and shows a new one once. Provisioning stops until the provider has the new token. People stay linked.
+
+**Remove** stops the token at once. The people it added keep their accounts and memberships, and nothing updates them from the provider any more.
+
+Deleting the workspace removes its connections.
+
+## Next
+
+- [Instance administration](/core/installation/instance-admin)
+- [Custom OAuth/OIDC](/core/social-providers/custom-oauth)
+- [Audit Log](/core/functional/audit-log)
