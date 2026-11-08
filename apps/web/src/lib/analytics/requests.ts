@@ -35,10 +35,3 @@ export function taskSetBase({
     context: queryContext(weekStartsOn, timeZone),
   };
 }
-
-/** The open groups, for the workload chart's filter. */
-export const OPEN_GROUPS_FILTER: FilterNode = {
-  key: "group",
-  operator: "in",
-  values: ["backlog", "unstarted", "started"],
-};

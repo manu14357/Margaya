@@ -12,6 +12,7 @@ type OverviewEndpoint = AnalyticsApi["overview"]["$get"];
 type CyclesEndpoint = AnalyticsApi["cycles"]["$get"];
 type ModulesEndpoint = AnalyticsApi["modules"]["$get"];
 type IntakeEndpoint = AnalyticsApi["intake"]["$get"];
+type WorkloadEndpoint = AnalyticsApi["workload"]["$get"];
 
 export type AnalyticsChartRequest = InferRequestType<ChartEndpoint>["json"];
 export type AnalyticsChartResult = InferResponseType<ChartEndpoint, 200>;
@@ -38,8 +39,13 @@ export type AnalyticsModuleRow = AnalyticsModules["rows"][number];
 export type AnalyticsIntakeQuery = InferRequestType<IntakeEndpoint>["query"];
 export type AnalyticsIntake = InferResponseType<IntakeEndpoint, 200>;
 
+export type AnalyticsWorkload = InferResponseType<WorkloadEndpoint, 200>;
+export type AnalyticsWorkloadMember = AnalyticsWorkload["members"][number];
+
 export type AnalyticsDimension = AnalyticsChartRequest["xAxis"];
 export type AnalyticsMetric = NonNullable<AnalyticsChartRequest["metric"]>;
+/** Tasks or points: the trend and the toggles that only switch those two. */
+export type AnalyticsCountMetric = NonNullable<AnalyticsTrendRequest["metric"]>;
 export type AnalyticsDateBucket = AnalyticsTrendRequest["bucket"];
 
 /** The fields every task-set request shares (scope, filters, context). */
