@@ -1,3 +1,4 @@
+import deDE from "@i18n/de-DE.json";
 import enUS from "@i18n/en-US.json";
 import { cleanup, render } from "@testing-library/react";
 import i18next from "i18next";
@@ -29,8 +30,7 @@ vi.mock("@tanstack/react-router", () => ({
 }));
 
 const i18n = i18next.createInstance();
-const t = (key: string, options?: Record<string, unknown>): string =>
-  String(i18n.t(key, options as never));
+const german = i18next.createInstance();
 
 beforeAll(async () => {
   await i18n.use(initReactI18next).init({
@@ -39,19 +39,38 @@ beforeAll(async () => {
     defaultNS: "common",
     interpolation: { escapeValue: false },
   });
+  await german.use(initReactI18next).init({
+    lng: "de-DE",
+    resources: { "de-DE": deDE },
+    defaultNS: "common",
+    interpolation: { escapeValue: false },
+  });
 });
 
 afterEach(() => cleanup());
 
-function line(type: string, eventData: Record<string, unknown> = {}) {
-  const node = renderTaskDetailActivity({ type, eventData }, t, {
+function lineIn(
+  instance: typeof i18n,
+  type: string,
+  eventData: Record<string, unknown> = {},
+) {
+  const translate = (key: string, options?: Record<string, unknown>) =>
+    String(instance.t(key, options as never));
+  const node = renderTaskDetailActivity({ type, eventData }, translate, {
     workspaceId: "ws-1",
   });
   const { container } = render(
-    <I18nextProvider i18n={i18n}>{node}</I18nextProvider>,
+    <I18nextProvider i18n={instance}>{node}</I18nextProvider>,
   );
   return container;
 }
+
+function line(type: string, eventData: Record<string, unknown> = {}) {
+  return lineIn(i18n, type, eventData);
+}
+
+const t = (key: string, options?: Record<string, unknown>): string =>
+  String(i18n.t(key, options as never));
 
 const other = {
   otherTaskId: "t3",
@@ -198,6 +217,154 @@ describe("renderTaskDetailActivity", () => {
       "added the sub-task WEB-3 <task>evil</task> <b>bold</b>",
     );
     expect(tricky.querySelector("b")).toBeNull();
+  });
+
+  it("says a task in another project when the API won't name it, with no link", () => {
+    const hidden = {
+      otherTaskId: null,
+      otherTaskKey: null,
+      otherTaskTitle: null,
+      otherProjectId: null,
+      otherTaskHidden: true,
+    };
+    const added = line("relation_added", {
+      relation: "blocked_by",
+      ...hidden,
+    });
+    expect(added.textContent).toBe(
+      "marked this task as blocked by a task in another project",
+    );
+    expect(added.querySelector("a")).toBeNull();
+    expect(
+      line("relation_removed", { relation: "blocked_by", ...hidden })
+        .textContent,
+    ).toBe("removed the blocked by relation with a task in another project");
+    expect(line("subtask_added", hidden).textContent).toBe(
+      "added a sub-task in another project",
+    );
+    expect(line("subtask_removed", hidden).textContent).toBe(
+      "removed a sub-task in another project",
+    );
+    const copiedFrom = line("copied_from", {
+      sourceTaskHidden: true,
+      included: [],
+    });
+    expect(copiedFrom.textContent).toBe(
+      "created this task as a copy of a task in another project",
+    );
+    expect(copiedFrom.querySelector("a")).toBeNull();
+    expect(line("copied_to", { copyTaskHidden: true }).textContent).toBe(
+      "made a copy of this task in another project",
+    );
+    expect(
+      line("recurred_from", { sourceTaskHidden: true, reason: "completion" })
+        .textContent,
+    ).toBe("created this task as the next repeat of a task in another project");
+    expect(
+      line("recurred_from", { sourceTaskHidden: true, reason: "schedule" })
+        .textContent,
+    ).toBe(
+      "Created on schedule as the next repeat of a task in another project",
+    );
+    expect(
+      line("recurred_to", { nextTaskHidden: true, reason: "completion" })
+        .textContent,
+    ).toBe(
+      "completed this task, which created the next repeat in another project",
+    );
+    expect(
+      line("recurred_to", { nextTaskHidden: true, reason: "schedule" })
+        .textContent,
+    ).toBe("The next repeat was created on schedule in another project");
+  });
+
+  it("keeps the visible parent when only the other one is hidden", () => {
+    const hidden = {
+      id: null,
+      key: null,
+      title: null,
+      projectId: null,
+      hidden: true,
+    };
+    const next = { id: "t5", key: "WEB-5", title: "Auth", projectId: "p" };
+    const changed = line("parent_changed", {
+      oldParent: hidden,
+      newParent: next,
+    });
+    expect(changed.textContent).toBe(
+      "changed the parent from a task in another project to WEB-5 Auth",
+    );
+    expect(changed.querySelectorAll("a")).toHaveLength(1);
+    const toHidden = line("parent_changed", {
+      oldParent: next,
+      newParent: hidden,
+    });
+    expect(toHidden.textContent).toBe(
+      "changed the parent from WEB-5 Auth to a task in another project",
+    );
+    expect(toHidden.querySelectorAll("a")).toHaveLength(1);
+    expect(
+      line("parent_changed", { oldParent: hidden, newParent: hidden })
+        .textContent,
+    ).toBe("changed the parent between tasks in other projects");
+    expect(
+      line("parent_changed", { oldParent: null, newParent: hidden })
+        .textContent,
+    ).toBe("set the parent to a task in another project");
+    expect(
+      line("parent_changed", { oldParent: hidden, newParent: null })
+        .textContent,
+    ).toBe("removed a parent task in another project");
+  });
+
+  it("writes each hidden-task line as its own sentence, so languages can decline it", () => {
+    const hiddenOther = {
+      otherTaskId: null,
+      otherTaskKey: null,
+      otherTaskTitle: null,
+      otherProjectId: null,
+      otherTaskHidden: true,
+    };
+    const hiddenParent = {
+      id: null,
+      key: null,
+      title: null,
+      projectId: null,
+      hidden: true,
+    };
+    const next = { id: "t5", key: "WEB-5", title: "Auth", projectId: "p" };
+    // German needs the accusative after "durch" and "auf" but the dative after
+    // "von": one fixed phrase reads wrong in at least one of these.
+    expect(
+      lineIn(german, "relation_added", {
+        relation: "blocked_by",
+        ...hiddenOther,
+      }).textContent,
+    ).toBe(
+      "hat diese Aufgabe als blockiert durch eine Aufgabe in einem anderen Projekt markiert",
+    );
+    expect(
+      lineIn(german, "parent_changed", {
+        oldParent: null,
+        newParent: hiddenParent,
+      }).textContent,
+    ).toBe(
+      "hat die übergeordnete Aufgabe auf eine Aufgabe in einem anderen Projekt gesetzt",
+    );
+    expect(
+      lineIn(german, "parent_changed", {
+        oldParent: next,
+        newParent: hiddenParent,
+      }).textContent,
+    ).toBe(
+      "hat die übergeordnete Aufgabe von WEB-5 Auth zu einer Aufgabe in einem anderen Projekt geändert",
+    );
+    expect(
+      lineIn(german, "copied_from", { sourceTaskHidden: true }).textContent,
+    ).toBe(
+      "hat diese Aufgabe als Kopie einer Aufgabe in einem anderen Projekt erstellt",
+    );
+    expect(enUS.activity).not.toHaveProperty("hiddenTask");
   });
 
   it("leaves other activity types to the caller", () => {

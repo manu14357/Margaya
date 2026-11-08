@@ -243,6 +243,34 @@ function ActorAvatar({
   );
 }
 
+/** The API won't name a cycle of a project this reader can't see. */
+function cycleChangeCopy(
+  eventData: Record<string, unknown>,
+  t: (key: string, options?: Record<string, unknown>) => string,
+) {
+  if (eventData.reason === "cycle_deleted") return t("activity:deletedCycle");
+  const from = String(eventData.oldCycleName ?? "");
+  const to = String(eventData.newCycleName ?? "");
+  const oldHidden = eventData.oldCycleHidden === true;
+  const newHidden = eventData.newCycleHidden === true;
+  const hadCycle = oldHidden || Boolean(eventData.oldCycleId);
+  const hasCycle = newHidden || Boolean(eventData.newCycleId);
+  if (hadCycle && hasCycle) {
+    if (oldHidden && newHidden) return t("activity:movedCycleBetweenHidden");
+    if (oldHidden) return t("activity:movedCycleFromHidden", { to });
+    if (newHidden) return t("activity:movedCycleToHidden", { from });
+    return t("activity:movedCycle", { from, to });
+  }
+  if (hasCycle) {
+    return newHidden
+      ? t("activity:addedToHiddenCycle")
+      : t("activity:addedToCycle", { name: to });
+  }
+  return oldHidden
+    ? t("activity:removedFromHiddenCycle")
+    : t("activity:removedFromCycle", { name: from });
+}
+
 function renderActivityContent({
   activity,
   workspaceUsers,
@@ -287,6 +315,14 @@ function renderActivityContent({
   }
 
   if (activity.type === "status_changed") {
+    // The API won't name a column of a project this reader can't see.
+    if (eventData?.statusHidden) {
+      return (
+        <span className="text-sm text-muted-foreground">
+          {t("activity:changedStatusHidden")}
+        </span>
+      );
+    }
     if (eventData) {
       return (
         <span className="text-sm text-muted-foreground">
@@ -490,29 +526,27 @@ function renderActivityContent({
 
   if (activity.type === "moved") {
     if (eventData) {
-      return (
-        <span className="text-sm text-muted-foreground">
-          {t("activity:moved", {
-            from: String(eventData.fromProjectName ?? ""),
-            to: String(eventData.toProjectName ?? ""),
-          })}
-        </span>
-      );
+      const from = String(eventData.fromProjectName ?? "");
+      const to = String(eventData.toProjectName ?? "");
+      // The API won't name a project this reader can't see.
+      const copy =
+        eventData.fromProjectHidden && eventData.toProjectHidden
+          ? t("activity:movedBetweenHidden")
+          : eventData.fromProjectHidden
+            ? t("activity:movedFromHidden", { to })
+            : eventData.toProjectHidden
+              ? t("activity:movedToHidden", { from })
+              : t("activity:moved", { from, to });
+      return <span className="text-sm text-muted-foreground">{copy}</span>;
     }
   }
 
   if (activity.type === "cycle_changed" && eventData) {
-    const oldName = String(eventData.oldCycleName ?? "");
-    const newName = String(eventData.newCycleName ?? "");
-    const copy =
-      eventData.reason === "cycle_deleted"
-        ? t("activity:deletedCycle")
-        : eventData.oldCycleId && eventData.newCycleId
-          ? t("activity:movedCycle", { from: oldName, to: newName })
-          : eventData.newCycleId
-            ? t("activity:addedToCycle", { name: newName })
-            : t("activity:removedFromCycle", { name: oldName });
-    return <span className="text-sm text-muted-foreground">{copy}</span>;
+    return (
+      <span className="text-sm text-muted-foreground">
+        {cycleChangeCopy(eventData, t)}
+      </span>
+    );
   }
 
   if (
@@ -520,13 +554,16 @@ function renderActivityContent({
     eventData
   ) {
     const name = String(eventData.moduleName ?? "");
-    return (
-      <span className="text-sm text-muted-foreground">
-        {activity.type === "module_added"
-          ? t("activity:addedToModule", { name })
-          : t("activity:removedFromModule", { name })}
-      </span>
-    );
+    const hidden = eventData.moduleHidden === true;
+    const copy =
+      activity.type === "module_added"
+        ? hidden
+          ? t("activity:addedToHiddenModule")
+          : t("activity:addedToModule", { name })
+        : hidden
+          ? t("activity:removedFromHiddenModule")
+          : t("activity:removedFromModule", { name });
+    return <span className="text-sm text-muted-foreground">{copy}</span>;
   }
 
   if (activity.type === "estimate_changed" && eventData) {

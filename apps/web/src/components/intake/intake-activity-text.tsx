@@ -76,6 +76,10 @@ export function intakeActivityText(
         : t("activity:intake.submitted");
     }
     case "intake_accepted": {
+      // The API won't name a column of a project this reader can't see.
+      if (data.columnHidden === true) {
+        return t("activity:intake.acceptedHidden");
+      }
       const column = field(data, "columnName");
       return column
         ? t("activity:intake.accepted", { column })
@@ -98,6 +102,9 @@ export function intakeActivityText(
     case INTAKE_SNOOZE_ENDED:
       return t("activity:intake.snoozeEnded");
     case "intake_duplicate": {
+      if (data.duplicateHidden === true) {
+        return t("activity:intake.duplicateHidden");
+      }
       const key = field(data, "duplicateKey");
       return key
         ? t("activity:intake.duplicate", { key: formatIntakeKey(key) })

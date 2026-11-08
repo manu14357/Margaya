@@ -44,6 +44,20 @@ const RELATION_ADDED_KEYS: Record<RelationDisplayKey, string> = {
   finish_after: "activity:relationAdded.finish_after",
 };
 
+// A task the API won't name to this reader (it is in a project they can't
+// see) gets a whole sentence of its own: languages decline "a task in another
+// project" differently in each slot, so it can't be dropped into one.
+const RELATION_ADDED_HIDDEN_KEYS: Record<RelationDisplayKey, string> = {
+  related: "activity:relationAddedHidden.related",
+  blocking: "activity:relationAddedHidden.blocking",
+  blocked_by: "activity:relationAddedHidden.blocked_by",
+  duplicate: "activity:relationAddedHidden.duplicate",
+  start_before: "activity:relationAddedHidden.start_before",
+  start_after: "activity:relationAddedHidden.start_after",
+  finish_before: "activity:relationAddedHidden.finish_before",
+  finish_after: "activity:relationAddedHidden.finish_after",
+};
+
 const iconClass = "h-4 w-4";
 
 /** The icon of a task-detail activity type, or null for other types. */
@@ -250,6 +264,9 @@ export function renderTaskDetailActivity(
       const relation = isRelationDisplayKey(data.relation)
         ? data.relation
         : "related";
+      if (data.otherTaskHidden === true) {
+        return line(t(RELATION_ADDED_HIDDEN_KEYS[relation]));
+      }
       return withTask(
         RELATION_ADDED_KEYS[relation],
         otherTaskRef(data),
@@ -260,6 +277,13 @@ export function renderTaskDetailActivity(
       const relation = isRelationDisplayKey(data.relation)
         ? data.relation
         : "related";
+      if (data.otherTaskHidden === true) {
+        return line(
+          t("activity:relationRemovedHidden", {
+            relation: t(RELATION_META[relation].typeKey),
+          }),
+        );
+      }
       const ref = otherTaskRef(data);
       return line(
         <Trans
@@ -275,8 +299,40 @@ export function renderTaskDetailActivity(
       );
     }
     case "parent_changed": {
+      const oldHidden = record(data.oldParent).hidden === true;
+      const newHidden = record(data.newParent).hidden === true;
       const oldParent = parentRef(data.oldParent);
       const newParent = parentRef(data.newParent);
+      if (oldHidden && newHidden) {
+        return line(t("activity:parentChangedBetweenHidden"));
+      }
+      if (oldHidden && newParent) {
+        return line(
+          <Trans
+            i18nKey="activity:parentChangedFromHidden"
+            values={{ to: taskRefLabel(newParent).replace(/[<>]/g, "") }}
+            components={{
+              to: (
+                <TaskRef data={newParent} workspaceId={context.workspaceId} />
+              ),
+            }}
+          />,
+        );
+      }
+      if (newHidden && oldParent) {
+        return line(
+          <Trans
+            i18nKey="activity:parentChangedToHidden"
+            values={{ from: taskRefLabel(oldParent).replace(/[<>]/g, "") }}
+            components={{
+              from: (
+                <TaskRef data={oldParent} workspaceId={context.workspaceId} />
+              ),
+            }}
+          />,
+        );
+      }
+      if (newHidden) return line(t("activity:parentSetHidden"));
       if (oldParent && newParent) {
         return line(
           <Trans
@@ -297,14 +353,21 @@ export function renderTaskDetailActivity(
         );
       }
       if (newParent) return withTask("activity:parentSet", newParent, context);
+      if (oldHidden) return line(t("activity:parentRemovedHidden"));
       if (oldParent) {
         return withTask("activity:parentRemoved", oldParent, context);
       }
       return null;
     }
     case "subtask_added":
+      if (data.otherTaskHidden === true) {
+        return line(t("activity:subtaskAddedHidden"));
+      }
       return withTask("activity:subtaskAdded", otherTaskRef(data), context);
     case "subtask_removed":
+      if (data.otherTaskHidden === true) {
+        return line(t("activity:subtaskRemovedHidden"));
+      }
       return withTask("activity:subtaskRemoved", otherTaskRef(data), context);
     case "link_added":
     case "link_updated":
@@ -328,6 +391,9 @@ export function renderTaskDetailActivity(
       );
     }
     case "copied_from":
+      if (data.sourceTaskHidden === true) {
+        return line(t("activity:copiedFromHidden"));
+      }
       return withTask(
         "activity:copiedFrom",
         {
@@ -339,6 +405,9 @@ export function renderTaskDetailActivity(
         context,
       );
     case "copied_to":
+      if (data.copyTaskHidden === true) {
+        return line(t("activity:copiedToHidden"));
+      }
       return withTask(
         "activity:copiedTo",
         {
@@ -378,6 +447,13 @@ export function renderTaskDetailActivity(
       return line(t("tasks:recurrence.activity.removed"));
     case "recurred_from": {
       const scheduled = data.reason === "schedule";
+      if (data.sourceTaskHidden === true) {
+        return line(
+          scheduled
+            ? t("tasks:recurrence.activity.recurredFromScheduledHidden")
+            : t("tasks:recurrence.activity.recurredFromHidden"),
+        );
+      }
       return withTask(
         scheduled
           ? "tasks:recurrence.activity.recurredFromScheduled"
@@ -393,6 +469,13 @@ export function renderTaskDetailActivity(
     }
     case "recurred_to": {
       const scheduled = data.reason === "schedule";
+      if (data.nextTaskHidden === true) {
+        return line(
+          scheduled
+            ? t("tasks:recurrence.activity.recurredToScheduledHidden")
+            : t("tasks:recurrence.activity.recurredToHidden"),
+        );
+      }
       return withTask(
         scheduled
           ? "tasks:recurrence.activity.recurredToScheduled"

@@ -55,14 +55,24 @@ export function automationActivityText(
     const data = (activity.eventData ?? {}) as {
       oldCycleName?: unknown;
       newCycleName?: unknown;
+      oldCycleHidden?: unknown;
+      newCycleHidden?: unknown;
     };
+    // The API won't name a cycle of a project this reader can't see.
+    if (data.oldCycleHidden === true || data.newCycleHidden === true) {
+      return t("activity:automation.rolledOverHidden");
+    }
     const name = (value: unknown) => (typeof value === "string" ? value : "");
     return t("activity:automation.rolledOver", {
       from: name(data.oldCycleName),
       to: name(data.newCycleName),
     });
   }
-  const newStatus = (activity.eventData as { newStatus?: unknown })?.newStatus;
+  const { newStatus, statusHidden } = (activity.eventData ?? {}) as {
+    newStatus?: unknown;
+    statusHidden?: unknown;
+  };
+  if (statusHidden === true) return t("activity:changedStatusHidden");
   return t("activity:automation.closed", {
     count: marker.months,
     to: getStatusLabel(typeof newStatus === "string" ? newStatus : ""),
