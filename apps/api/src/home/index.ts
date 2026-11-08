@@ -51,7 +51,7 @@ const updateHomePreferencesRoute = createRoute({
   tags: TAGS,
   summary: "Save Home preferences",
   description:
-    "Save the caller's Home widget order and visibility. The list must name every widget exactly once; turning every widget off is allowed.",
+    "Save the caller's Home widget order and visibility, and which saved reports are pinned. The list must name every widget exactly once; turning every widget off is allowed.",
   middleware: [
     boundedRequestBody(HOME_PREFERENCES_BODY_BYTES),
     workspaceAccess.fromBody(),

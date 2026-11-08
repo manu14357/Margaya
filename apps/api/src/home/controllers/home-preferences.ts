@@ -48,7 +48,7 @@ export async function updateHomePreferences(
       message: "List every home widget exactly once",
     });
   }
-  const next = widgets.map(({ key, enabled }) => ({ key, enabled }));
+  const next = normalizeHomeWidgets(widgets);
 
   const current = await storedPreference(userId, workspaceId);
   if (current && sameWidgetList(normalizeHomeWidgets(current.widgets), next)) {

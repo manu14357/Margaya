@@ -6,14 +6,24 @@ export const HOME_WIDGET_KEYS = [
   "stickies",
   "risks",
   "my-brief",
+  "pinned-reports",
 ] as const;
 
 export type HomeWidgetKey = (typeof HOME_WIDGET_KEYS)[number];
-export type HomeWidget = { key: HomeWidgetKey; enabled: boolean };
+export type HomeWidget = {
+  key: HomeWidgetKey;
+  enabled: boolean;
+  /** pinned-reports only: the saved reports it shows, in order. */
+  reportIds?: string[];
+};
+
+/** How many saved reports one person can pin to Home. */
+export const MAX_PINNED_REPORTS = 6;
 
 /** Opt-in widgets: hidden until the person turns them on (My brief, #18). */
 export const OPT_IN_HOME_WIDGETS: ReadonlySet<HomeWidgetKey> = new Set([
   "my-brief",
+  "pinned-reports",
 ]);
 
 export const DEFAULT_HOME_WIDGETS: readonly HomeWidget[] = HOME_WIDGET_KEYS.map(
@@ -22,6 +32,14 @@ export const DEFAULT_HOME_WIDGETS: readonly HomeWidget[] = HOME_WIDGET_KEYS.map(
 
 function isHomeWidgetKey(value: unknown): value is HomeWidgetKey {
   return (HOME_WIDGET_KEYS as readonly unknown[]).includes(value);
+}
+
+function pinnedReportIds(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  const ids = value.filter(
+    (id): id is string => typeof id === "string" && id.length > 0,
+  );
+  return [...new Set(ids)].slice(0, MAX_PINNED_REPORTS);
 }
 
 /**
@@ -34,10 +52,19 @@ export function normalizeHomeWidgets(stored: unknown): HomeWidget[] {
   const seen = new Set<HomeWidgetKey>();
   for (const entry of Array.isArray(stored) ? stored : []) {
     if (typeof entry !== "object" || entry === null) continue;
-    const { key, enabled } = entry as { key?: unknown; enabled?: unknown };
+    const { key, enabled, reportIds } = entry as {
+      key?: unknown;
+      enabled?: unknown;
+      reportIds?: unknown;
+    };
     if (!isHomeWidgetKey(key) || seen.has(key)) continue;
     seen.add(key);
-    widgets.push({ key, enabled: enabled !== false });
+    const pinned = key === "pinned-reports" ? pinnedReportIds(reportIds) : [];
+    widgets.push({
+      key,
+      enabled: enabled !== false,
+      ...(pinned.length > 0 ? { reportIds: pinned } : {}),
+    });
   }
   for (const key of HOME_WIDGET_KEYS) {
     if (!seen.has(key)) {
@@ -67,7 +94,9 @@ export function sameWidgetList(
     a.length === b.length &&
     a.every(
       (widget, index) =>
-        widget.key === b[index]?.key && widget.enabled === b[index]?.enabled,
+        widget.key === b[index]?.key &&
+        widget.enabled === b[index]?.enabled &&
+        (widget.reportIds ?? []).join() === (b[index]?.reportIds ?? []).join(),
     )
   );
 }

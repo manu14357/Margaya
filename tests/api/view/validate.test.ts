@@ -145,8 +145,9 @@ describe("assertViewDisplay", () => {
     expect(
       check({ groupBy: "priority", subGroupBy: "status" }, "workspace"),
     ).toBe("400 Group by status needs a single project");
+    expect(check({ layout: "gantt" }, "workspace")).toBeNull();
     expect(check({ layout: "calendar" }, "workspace")).toBe(
-      "400 Workspace views use the list, board or spreadsheet layout",
+      "400 Workspace views use the list, board, spreadsheet or gantt layout",
     );
   });
 

@@ -257,7 +257,7 @@ describe("API integration: saved views", () => {
     });
     expect(await post({ display: { layout: "calendar" } })).toEqual({
       status: 400,
-      text: "Workspace views use the list, board or spreadsheet layout",
+      text: "Workspace views use the list, board, spreadsheet or gantt layout",
     });
     expect(
       await post({ displayProperties: { customFields: ["field-1"] } }),
@@ -268,6 +268,7 @@ describe("API integration: saved views", () => {
     expect((await inProject({ display: { layout: "gantt" } })).status).toBe(
       200,
     );
+    expect((await post({ display: { layout: "gantt" } })).status).toBe(200);
   });
 
   it("only stores references to rows of the view's workspace and project", async () => {

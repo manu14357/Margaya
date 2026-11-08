@@ -6,6 +6,7 @@ import {
   GROUP_BY_STATUS_NEEDS_ONE_PROJECT,
   GROUPS_MUST_DIFFER,
 } from "../task-query/run";
+import { isCustomFieldDisplayKey } from "../task-query/schema";
 import { filterConditions, validateFilterTree } from "../task-query/validate";
 import { todayUtc } from "../utils/calendar-date";
 import {
@@ -23,9 +24,11 @@ import {
 export const WORKSPACE_VIEW_STATUS =
   "Workspace views can't filter by status; use group instead";
 export const WORKSPACE_VIEW_LAYOUT =
-  "Workspace views use the list, board or spreadsheet layout";
+  "Workspace views use the list, board, spreadsheet or gantt layout";
 export const WORKSPACE_VIEW_CUSTOM_FIELDS =
   "Custom field columns need a project view";
+export const WORKSPACE_VIEW_CUSTOM_FIELD_DISPLAY =
+  "Grouping or sorting by a custom field needs a project view";
 
 function badRequest(message: string): never {
   throw new HTTPException(400, { message });
@@ -92,6 +95,13 @@ export function assertViewDisplay(
   if (scope === "workspace") {
     if (display.groupBy === "status" || display.subGroupBy === "status") {
       badRequest(GROUP_BY_STATUS_NEEDS_ONE_PROJECT);
+    }
+    if (
+      [display.groupBy, display.subGroupBy, display.orderBy.field].some(
+        isCustomFieldDisplayKey,
+      )
+    ) {
+      badRequest(WORKSPACE_VIEW_CUSTOM_FIELD_DISPLAY);
     }
     if (!WORKSPACE_VIEW_LAYOUTS.includes(display.layout)) {
       badRequest(WORKSPACE_VIEW_LAYOUT);

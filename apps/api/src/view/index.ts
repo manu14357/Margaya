@@ -93,7 +93,7 @@ const createViewRoute = createRoute({
   tags: TAGS,
   summary: "Create view",
   description:
-    "Save filters, display options and shown properties as a view owned by the caller, for a project (projectId) or the whole workspace. Missing parts get the defaults. Filters must pass the task query engine's validation, and every id they name must exist in the workspace (cycles, modules, estimate points, custom fields and statuses: in the view's project). Workspace views can't use status (filter or grouping) and use the list, board or spreadsheet layout.",
+    "Save filters, display options and shown properties as a view owned by the caller, for a project (projectId) or the whole workspace. Missing parts get the defaults. Filters must pass the task query engine's validation, and every id they name must exist in the workspace (cycles, modules, estimate points, custom fields and statuses: in the view's project). Workspace views can't use status (filter or grouping) and use the list, board, spreadsheet or gantt layout.",
   middleware: [
     workspaceAccess.fromBody(),
     requireWorkspacePermission({ view: ["create"] }),

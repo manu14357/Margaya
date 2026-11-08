@@ -21,11 +21,15 @@ export const VIEW_LAYOUTS = [
 ] as const;
 export type ViewLayout = (typeof VIEW_LAYOUTS)[number];
 
-/** Workspace views span projects, which calendar and gantt can't show. */
+/**
+ * Workspace views span projects. Gantt draws them as a read-only timeline, one
+ * section per project; a month calendar has no room for that.
+ */
 export const WORKSPACE_VIEW_LAYOUTS: readonly ViewLayout[] = [
   "list",
   "board",
   "spreadsheet",
+  "gantt",
 ];
 
 /** The boolean display properties, in the spreadsheet's column order. */
