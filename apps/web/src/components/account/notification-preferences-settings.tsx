@@ -2,6 +2,7 @@ import { CheckCircle, Trash2 } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { EmailDigestSettings } from "@/components/account/email-digest-settings";
+import { PushNotificationCard } from "@/components/account/push-notification-card";
 import MyBriefEmailSetting from "@/components/insight/my-brief-email-setting";
 import { SettingsSection } from "@/components/settings-layout";
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,7 @@ import {
   useUpsertNotificationWorkspaceRule,
 } from "@/hooks/mutations/notification-preferences/use-notification-preferences";
 import useGetNotificationPreferences from "@/hooks/queries/notification-preferences/use-get-notification-preferences";
+import useGetPushStatus from "@/hooks/queries/notification-preferences/use-get-push-status";
 import useGetProjects from "@/hooks/queries/project/use-get-projects";
 import useGetWorkspaces from "@/hooks/queries/workspace/use-get-workspaces";
 
@@ -45,6 +47,7 @@ type WorkspaceRuleState = {
   ntfyEnabled: boolean;
   gotifyEnabled: boolean;
   webhookEnabled: boolean;
+  pushEnabled: boolean;
   projectMode: "all" | "selected";
   selectedProjectIds: string[];
 };
@@ -70,6 +73,7 @@ function createWorkspaceRuleState(input: {
   hasEmailChannel: boolean;
   hasGotifyChannel: boolean;
   hasNtfyChannel: boolean;
+  hasPushChannel: boolean;
   hasWebhookChannel: boolean;
   rule?: WorkspaceRuleState;
 }): WorkspaceRuleState {
@@ -80,6 +84,7 @@ function createWorkspaceRuleState(input: {
       ntfyEnabled: input.rule.ntfyEnabled,
       gotifyEnabled: input.rule.gotifyEnabled,
       webhookEnabled: input.rule.webhookEnabled,
+      pushEnabled: input.rule.pushEnabled,
       projectMode: input.rule.projectMode,
       selectedProjectIds: input.rule.selectedProjectIds,
     };
@@ -91,6 +96,7 @@ function createWorkspaceRuleState(input: {
     ntfyEnabled: input.hasNtfyChannel,
     gotifyEnabled: input.hasGotifyChannel,
     webhookEnabled: input.hasWebhookChannel,
+    pushEnabled: true,
     projectMode: "all",
     selectedProjectIds: [],
   };
@@ -175,6 +181,7 @@ function WorkspaceRuleCard({
   hasEmailChannel,
   hasGotifyChannel,
   hasNtfyChannel,
+  hasPushChannel,
   hasWebhookChannel,
   onDelete,
   onSave,
@@ -184,6 +191,7 @@ function WorkspaceRuleCard({
   hasEmailChannel: boolean;
   hasGotifyChannel: boolean;
   hasNtfyChannel: boolean;
+  hasPushChannel: boolean;
   hasWebhookChannel: boolean;
   onDelete: (workspaceId: string) => Promise<unknown>;
   onSave: (workspaceId: string, rule: WorkspaceRuleState) => Promise<void>;
@@ -193,6 +201,7 @@ function WorkspaceRuleCard({
     ntfyEnabled: boolean;
     gotifyEnabled: boolean;
     webhookEnabled: boolean;
+    pushEnabled: boolean;
     projectMode: "all" | "selected";
     selectedProjectIds: string[];
   };
@@ -204,6 +213,7 @@ function WorkspaceRuleCard({
       hasEmailChannel,
       hasGotifyChannel,
       hasNtfyChannel,
+      hasPushChannel,
       hasWebhookChannel,
       rule,
     }),
@@ -224,6 +234,7 @@ function WorkspaceRuleCard({
         hasEmailChannel,
         hasGotifyChannel,
         hasNtfyChannel,
+        hasPushChannel,
         hasWebhookChannel,
         rule,
       }),
@@ -232,6 +243,7 @@ function WorkspaceRuleCard({
     hasEmailChannel,
     hasGotifyChannel,
     hasNtfyChannel,
+    hasPushChannel,
     hasWebhookChannel,
     rule,
   ]);
@@ -284,9 +296,11 @@ function WorkspaceRuleCard({
 
       <Separator />
 
+      {/* A channel that can't deliver reads as off; the saved choice is kept
+          and applies again once the channel is on. */}
       <div className="space-y-3">
         <ChannelToggle
-          checked={state.emailEnabled}
+          checked={hasEmailChannel && state.emailEnabled}
           disabled={!hasEmailChannel || isBusy}
           hint={
             hasEmailChannel
@@ -299,7 +313,7 @@ function WorkspaceRuleCard({
           }
         />
         <ChannelToggle
-          checked={state.ntfyEnabled}
+          checked={hasNtfyChannel && state.ntfyEnabled}
           disabled={!hasNtfyChannel || isBusy}
           hint={
             hasNtfyChannel
@@ -312,7 +326,7 @@ function WorkspaceRuleCard({
           }
         />
         <ChannelToggle
-          checked={state.gotifyEnabled}
+          checked={hasGotifyChannel && state.gotifyEnabled}
           disabled={!hasGotifyChannel || isBusy}
           hint={
             hasGotifyChannel
@@ -325,7 +339,7 @@ function WorkspaceRuleCard({
           }
         />
         <ChannelToggle
-          checked={state.webhookEnabled}
+          checked={hasWebhookChannel && state.webhookEnabled}
           disabled={!hasWebhookChannel || isBusy}
           hint={
             hasWebhookChannel
@@ -335,6 +349,19 @@ function WorkspaceRuleCard({
           label={t("settings:notificationsPage.workspaceCardLabelWebhook")}
           onCheckedChange={(checked) =>
             setState((current) => ({ ...current, webhookEnabled: checked }))
+          }
+        />
+        <ChannelToggle
+          checked={hasPushChannel && state.pushEnabled}
+          disabled={!hasPushChannel || isBusy}
+          hint={
+            hasPushChannel
+              ? t("settings:notificationsPage.pushChannelHintEnabled")
+              : t("settings:notificationsPage.pushChannelHintDisabled")
+          }
+          label={t("settings:notificationsPage.workspaceCardLabelPush")}
+          onCheckedChange={(checked) =>
+            setState((current) => ({ ...current, pushEnabled: checked }))
           }
         />
       </div>
@@ -478,6 +505,7 @@ export function NotificationPreferencesSettings() {
   const { t } = useTranslation();
   const { data: preferences, isLoading } = useGetNotificationPreferences();
   const { data: workspacesData } = useGetWorkspaces();
+  const { data: pushStatus } = useGetPushStatus();
   const { mutateAsync: updatePreferences, isPending: isSavingPreferences } =
     useUpdateNotificationPreferences();
   const { mutateAsync: upsertWorkspaceRule } =
@@ -748,6 +776,8 @@ export function NotificationPreferencesSettings() {
         title={t("settings:notificationsPage.channelsTitle")}
         description={t("settings:notificationsPage.channelsDescription")}
       >
+        <PushNotificationCard />
+
         <ChannelCard
           actions={
             <div className="flex gap-2">
@@ -1235,6 +1265,7 @@ export function NotificationPreferencesSettings() {
                 hasNtfyChannel={Boolean(
                   preferences?.ntfyEnabled && preferences?.ntfyConfigured,
                 )}
+                hasPushChannel={Boolean(pushStatus?.subscriptions.length)}
                 hasWebhookChannel={Boolean(
                   preferences?.webhookEnabled && preferences?.webhookConfigured,
                 )}

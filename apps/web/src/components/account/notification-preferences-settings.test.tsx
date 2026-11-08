@@ -8,6 +8,11 @@ import {
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { NotificationPreferencesSettings } from "./notification-preferences-settings";
 
+const m = vi.hoisted(() => ({
+  workspaces: [] as { id: string; name: string }[],
+  pushStatus: undefined as { subscriptions: unknown[] } | undefined,
+  upsertRule: vi.fn(),
+}));
 const updatePreferences = vi.fn();
 const preferences = {
   emailAddress: "mina@example.com",
@@ -34,7 +39,7 @@ const preferences = {
   taskUpdateEnabled: true,
   dueDateReminderEnabled: true,
   dueDateReminderLeadTimeMinutes: 1440,
-  workspaces: [],
+  workspaces: [] as Record<string, unknown>[],
   createdAt: null,
   updatedAt: null,
 };
@@ -57,6 +62,9 @@ vi.mock("@/components/insight/my-brief-email-setting", () => ({
   default: () => null,
 }));
 vi.mock("@/hooks/queries/workspace/use-get-workspaces", () => ({
+  default: () => ({ data: m.workspaces }),
+}));
+vi.mock("@/hooks/queries/project/use-get-projects", () => ({
   default: () => ({ data: [] }),
 }));
 
@@ -67,10 +75,18 @@ vi.mock(
       mutateAsync: updatePreferences,
       isPending: false,
     }),
-    useUpsertNotificationWorkspaceRule: () => ({ mutateAsync: vi.fn() }),
+    useUpsertNotificationWorkspaceRule: () => ({ mutateAsync: m.upsertRule }),
     useDeleteNotificationWorkspaceRule: () => ({ mutateAsync: vi.fn() }),
   }),
 );
+
+vi.mock("@/components/account/push-notification-card", () => ({
+  PushNotificationCard: () => null,
+}));
+
+vi.mock("@/hooks/queries/notification-preferences/use-get-push-status", () => ({
+  default: () => ({ data: m.pushStatus }),
+}));
 
 describe("NotificationPreferencesSettings", () => {
   afterEach(cleanup);
@@ -78,6 +94,98 @@ describe("NotificationPreferencesSettings", () => {
   beforeEach(() => {
     updatePreferences.mockReset();
     updatePreferences.mockResolvedValue(undefined);
+    m.upsertRule.mockReset();
+    m.upsertRule.mockResolvedValue(undefined);
+    m.workspaces = [];
+    m.pushStatus = undefined;
+    preferences.workspaces = [];
+  });
+
+  it("shows a workspace rule's push as off while no device has push, and keeps the saved choice", async () => {
+    m.workspaces = [{ id: "ws-1", name: "Acme" }];
+    m.pushStatus = { subscriptions: [] };
+    preferences.workspaces = [
+      {
+        workspaceId: "ws-1",
+        isActive: true,
+        emailEnabled: false,
+        ntfyEnabled: false,
+        gotifyEnabled: false,
+        webhookEnabled: false,
+        pushEnabled: true,
+        projectMode: "all",
+        selectedProjectIds: [],
+      },
+    ];
+    const { rerender } = render(<NotificationPreferencesSettings />);
+    const push = () =>
+      screen.getByRole("switch", {
+        name: "settings:notificationsPage.workspaceCardLabelPush",
+      });
+
+    expect(push()).not.toBeChecked();
+    expect(
+      screen.getByText("settings:notificationsPage.pushChannelHintDisabled"),
+    ).toBeTruthy();
+
+    // Saving the rule keeps push on for when a device turns it on.
+    const saves = screen.getAllByRole("button", {
+      name: "settings:notificationsPage.saveChanges",
+    });
+    fireEvent.click(saves[saves.length - 1] as HTMLElement);
+    await waitFor(() =>
+      expect(m.upsertRule).toHaveBeenCalledWith({
+        workspaceId: "ws-1",
+        json: expect.objectContaining({ pushEnabled: true }),
+      }),
+    );
+
+    m.pushStatus = { subscriptions: [{ id: "device-1" }] };
+    rerender(<NotificationPreferencesSettings />);
+    expect(push()).toBeChecked();
+  });
+
+  it("shows a workspace rule's channels as off while they are off globally, and keeps the saved choices", async () => {
+    m.workspaces = [{ id: "ws-1", name: "Acme" }];
+    // Email, ntfy, Gotify and the webhook are all off in `preferences`.
+    preferences.workspaces = [
+      {
+        workspaceId: "ws-1",
+        isActive: true,
+        emailEnabled: true,
+        ntfyEnabled: true,
+        gotifyEnabled: true,
+        webhookEnabled: true,
+        pushEnabled: false,
+        projectMode: "all",
+        selectedProjectIds: [],
+      },
+    ];
+    render(<NotificationPreferencesSettings />);
+
+    for (const channel of ["Email", "Ntfy", "Gotify", "Webhook"]) {
+      expect(
+        screen.getByRole("switch", {
+          name: `settings:notificationsPage.workspaceCardLabel${channel}`,
+        }),
+      ).not.toBeChecked();
+    }
+
+    const saves = screen.getAllByRole("button", {
+      name: "settings:notificationsPage.saveChanges",
+    });
+    fireEvent.click(saves[saves.length - 1] as HTMLElement);
+    await waitFor(() =>
+      expect(m.upsertRule).toHaveBeenCalledWith({
+        workspaceId: "ws-1",
+        json: expect.objectContaining({
+          emailEnabled: true,
+          ntfyEnabled: true,
+          gotifyEnabled: true,
+          webhookEnabled: true,
+        }),
+      }),
+    );
   });
 
   it("saves event preferences and a configurable reminder lead time", async () => {
