@@ -15,6 +15,12 @@ import { createId } from "@paralleldrive/cuid2";
 const DEFAULT_STORAGE_DIR = "./data/uploads";
 const META_DIR = ".meta";
 const TEMP_DIR = ".tmp";
+// The store holds uploads and whole-workspace exports, so on a shared host only
+// the API's own user may read it. mkdir applies the mode only to the folders it
+// creates: an existing install keeps its folders as they are, and its older
+// files keep their modes until they are replaced or deleted.
+const FILE_MODE = 0o600;
+const DIR_MODE = 0o700;
 const MAX_KEY_LENGTH = 1024;
 // Key segments: no separators, no drive letters, no percent escapes. A
 // leading dot is refused too, which keeps `.`, `..`, `.meta` and `.tmp` out.
@@ -79,8 +85,8 @@ async function readMeta(key: string, root: string): Promise<ObjectMeta | null> {
 
 async function writeMeta(key: string, root: string, meta: ObjectMeta) {
   const file = metaPath(key, root);
-  await fs.mkdir(path.dirname(file), { recursive: true });
-  await fs.writeFile(file, JSON.stringify(meta));
+  await fs.mkdir(path.dirname(file), { recursive: true, mode: DIR_MODE });
+  await fs.writeFile(file, JSON.stringify(meta), { mode: FILE_MODE });
 }
 
 function isMissing(error: unknown) {
@@ -125,8 +131,8 @@ export async function writeLocalObject(
   const root = localStorageRoot();
   const target = resolveLocalPath(key, root);
   const tempDir = path.join(root, TEMP_DIR);
-  await fs.mkdir(tempDir, { recursive: true });
-  await fs.mkdir(path.dirname(target), { recursive: true });
+  await fs.mkdir(tempDir, { recursive: true, mode: DIR_MODE });
+  await fs.mkdir(path.dirname(target), { recursive: true, mode: DIR_MODE });
   const temp = path.join(tempDir, `${Date.now()}-${createId()}.part`);
 
   const counter = { bytes: 0 };
@@ -138,7 +144,7 @@ export async function writeLocalObject(
     await pipeline(
       source,
       byteLimit(options.maxBytes, counter),
-      createWriteStream(temp, { flags: "wx" }),
+      createWriteStream(temp, { flags: "wx", mode: FILE_MODE }),
     );
     if (
       options.expectedSize !== undefined &&
@@ -207,12 +213,17 @@ export async function copyLocalObject(
 ) {
   const root = localStorageRoot();
   const destination = resolveLocalPath(destinationKey, root);
-  await fs.mkdir(path.dirname(destination), { recursive: true });
+  await fs.mkdir(path.dirname(destination), {
+    recursive: true,
+    mode: DIR_MODE,
+  });
   await fs.copyFile(
     resolveLocalPath(sourceKey, root),
     destination,
     constants.COPYFILE_EXCL,
   );
+  // copyFile gives the copy its source's mode, which an older file has wider.
+  await fs.chmod(destination, FILE_MODE);
   const meta = await readMeta(sourceKey, root);
   if (meta) await writeMeta(destinationKey, root, meta);
 }

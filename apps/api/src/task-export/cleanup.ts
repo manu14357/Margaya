@@ -2,6 +2,7 @@ import { and, asc, eq, lt, ne, notInArray } from "drizzle-orm";
 import db from "../database";
 import { taskExportTable } from "../database/schema";
 import { withJobLease } from "../scheduler/leader-lock";
+import { sweepAbandonedArchives } from "../workspace-export/build";
 import { publishExportStatus } from "./events";
 import { deleteExportFileQuietly } from "./storage";
 import { EXPORT_HISTORY_DAYS } from "./types";
@@ -131,11 +132,22 @@ async function cleanupOnce(
   return outcome;
 }
 
-/** The scheduler entry: one bounded pass on one instance at a time. */
+/**
+ * The scheduler entry: one bounded pass on one instance at a time. Every
+ * instance first sweeps its own temp folder, which no other can reach, by the
+ * clock rather than `now`, so a pass for a later date can't take a live run's
+ * archive.
+ */
 export async function runExportCleanup(
   now: Date = new Date(),
   limits: ExportCleanupLimits = DEFAULT_EXPORT_CLEANUP_LIMITS,
 ): Promise<ExportCleanupOutcome> {
+  await sweepAbandonedArchives().catch((error) => {
+    console.error(
+      "exports: sweeping abandoned workspace archives failed",
+      error,
+    );
+  });
   return withJobLease(
     TASK_EXPORT_CLEANUP_LEASE,
     () => cleanupOnce(now, limits),
