@@ -1,4 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { withPushKeptOnThisDevice } from "@/hooks/mutations/notification-preferences/use-push-subscription";
+import { PUSH_STATUS_QUERY_KEY } from "@/hooks/queries/notification-preferences/use-get-push-status";
 import { accountSecurityQueryKey } from "@/hooks/queries/user/use-account-security";
 import { authClient } from "@/lib/auth-client";
 
@@ -30,21 +32,28 @@ function useChangePassword() {
       newPassword,
       revokeOtherSessions,
     }: ChangePasswordRequest) => {
-      const { error } = await authClient.changePassword({
-        currentPassword,
-        newPassword,
-        revokeOtherSessions,
-      });
+      const change = async () => {
+        const { error } = await authClient.changePassword({
+          currentPassword,
+          newPassword,
+          revokeOtherSessions,
+        });
 
-      if (error) {
-        throw new ChangePasswordError(
-          error.message || "Failed to change password",
-          error.code,
-        );
-      }
+        if (error) {
+          throw new ChangePasswordError(
+            error.message || "Failed to change password",
+            error.code,
+          );
+        }
+      };
+      await (revokeOtherSessions ? withPushKeptOnThisDevice(change) : change());
     },
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: accountSecurityQueryKey }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: PUSH_STATUS_QUERY_KEY });
+      return queryClient.invalidateQueries({
+        queryKey: accountSecurityQueryKey,
+      });
+    },
   });
 }
 

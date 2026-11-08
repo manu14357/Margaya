@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { withPushKeptOnThisDevice } from "@/hooks/mutations/notification-preferences/use-push-subscription";
 import { authClient } from "@/lib/auth-client";
 import { isValidEmail } from "@/lib/instance-settings";
 import { toast } from "@/lib/toast";
@@ -105,10 +106,9 @@ export function ChangeEmailDialog({
     setIsPending(true);
     setError(null);
     try {
-      const { error: failure } = await authClient.emailOtp.changeEmail({
-        newEmail: trimmed,
-        otp: code,
-      });
+      const { error: failure } = await withPushKeptOnThisDevice(() =>
+        authClient.emailOtp.changeEmail({ newEmail: trimmed, otp: code }),
+      );
       if (failure) {
         setError(describe(failure));
         return;

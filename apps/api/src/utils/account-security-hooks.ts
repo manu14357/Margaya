@@ -1,7 +1,12 @@
 import { APIError } from "better-auth/api";
 import { and, eq, ne } from "drizzle-orm";
 import db from "../database";
-import { sessionTable, userTable, verificationTable } from "../database/schema";
+import {
+  pushSubscriptionTable,
+  sessionTable,
+  userTable,
+  verificationTable,
+} from "../database/schema";
 import { recordInstanceAudit } from "../instance-admin/audit";
 import {
   instanceAuditForAdminPath,
@@ -17,7 +22,10 @@ import { checkNewPassword } from "./password-policy";
 //   ALLOW_INSTANCE_ADMIN_API_KEYS=true), changes need a recent sign-in and
 //   are written to the instance audit trail;
 // - the email change: guests can't, and afterwards the old address is told
-//   and other sessions end.
+//   and other sessions end;
+// - push devices end with the sessions, so a lost device stops showing alerts.
+//   They have no link to a session, so all of them go, and the browser that
+//   stays signed in puts itself back (withPushKeptOnThisDevice in the web app).
 
 export const EMAIL_CHANGE_PATHS = new Set([
   "/email-otp/request-email-change",
@@ -35,6 +43,7 @@ type HookSession = {
 export type BeforeHookContext = {
   path: string;
   body?: Record<string, unknown>;
+  query?: Record<string, unknown>;
   headers?: Headers;
   context: object;
 };
@@ -55,14 +64,64 @@ async function emailOfUser(userId: unknown): Promise<string | null> {
   return row?.email ?? null;
 }
 
-async function emailForResetToken(token: unknown): Promise<string | null> {
+async function userOfResetToken(token: unknown): Promise<string | null> {
   if (typeof token !== "string" || !token) return null;
   const [row] = await db
     .select({ value: verificationTable.value })
     .from(verificationTable)
     .where(eq(verificationTable.identifier, `reset-password:${token}`))
     .limit(1);
-  return emailOfUser(row?.value);
+  return row?.value ?? null;
+}
+
+async function emailForResetToken(token: unknown): Promise<string | null> {
+  return emailOfUser(await userOfResetToken(token));
+}
+
+async function userOfEmail(email: unknown): Promise<string | null> {
+  if (typeof email !== "string" || !email) return null;
+  const [row] = await db
+    .select({ id: userTable.id })
+    .from(userTable)
+    .where(eq(userTable.email, email.toLowerCase()))
+    .limit(1);
+  return row?.id ?? null;
+}
+
+async function removePushDevices(userId: string) {
+  await db
+    .delete(pushSubscriptionTable)
+    .where(eq(pushSubscriptionTable.userId, userId));
+}
+
+// Who a password reset is for: the token and code are spent by the time the
+// after hook runs, so the before hook finds them (same context object).
+const passwordResetUser = new WeakMap<object, string>();
+
+/** The account whose every other session a successful request has just ended. */
+function userWhoseSessionsEnded(ctx: AfterHookContext): string | null {
+  const body = ctx.body ?? {};
+  const self = ctx.context.session?.user.id ?? null;
+  switch (ctx.path) {
+    case "/reset-password":
+    case "/email-otp/reset-password":
+      return passwordResetUser.get(ctx.context) ?? null;
+    case "/change-password":
+      return body.revokeOtherSessions === true ? self : null;
+    case "/revoke-sessions":
+    case "/revoke-other-sessions":
+      return self;
+    case "/admin/ban-user":
+    case "/admin/revoke-user-sessions":
+      return typeof body.userId === "string" ? body.userId : null;
+    default:
+      return null;
+  }
+}
+
+/** Better Auth reads the reset token from the body or the query string. */
+function resetTokenOf(ctx: BeforeHookContext): unknown {
+  return ctx.body?.token ?? ctx.query?.token;
 }
 
 /** The new password a request sets, and the account email when known. */
@@ -83,7 +142,7 @@ async function newPasswordOf(
       const password = text(body.newPassword);
       return password === null
         ? null
-        : { password, email: await emailForResetToken(body.token) };
+        : { password, email: await emailForResetToken(resetTokenOf(ctx)) };
     }
     case "/change-password": {
       const password = text(body.newPassword);
@@ -107,6 +166,14 @@ export async function enforceAccountSecurityRules(
   ctx: BeforeHookContext,
   loadSession: LoadSession,
 ): Promise<void> {
+  const resetFor =
+    ctx.path === "/reset-password"
+      ? await userOfResetToken(resetTokenOf(ctx))
+      : ctx.path === "/email-otp/reset-password"
+        ? await userOfEmail(ctx.body?.email)
+        : null;
+  if (resetFor) passwordResetUser.set(ctx.context, resetFor);
+
   const candidate = await newPasswordOf(ctx, loadSession);
   if (candidate) {
     const violation = checkNewPassword(candidate.password, {
@@ -188,6 +255,9 @@ export async function afterAccountSecurityRules(
   if (failed) return;
 
   try {
+    const sessionsEndedFor = userWhoseSessionsEnded(ctx);
+    if (sessionsEndedFor) await removePushDevices(sessionsEndedFor);
+
     const audit = instanceAuditForAdminPath(ctx.path, ctx.body);
     if (audit) {
       const actorId = ctx.context.session?.user.id ?? null;
@@ -215,6 +285,7 @@ export async function afterAccountSecurityRules(
               ne(sessionTable.id, next.session.id),
             ),
           );
+        await removePushDevices(next.user.id);
         await notifyEmailChanged({
           previousEmail: before,
           newEmail: masked(next.user.email),
