@@ -44,6 +44,33 @@ describe("securityHeaders", () => {
     );
   });
 
+  it("keeps the SAML re-post page's own policy, and only that one", async () => {
+    const own = "default-src 'none'; script-src 'self'";
+    const hono = new Hono();
+    hono.use("*", securityHeaders());
+    const page = (c: { body: (b: string, s: 200, h: object) => Response }) =>
+      c.body("<form></form>", 200, { "content-security-policy": own });
+    hono.post("/api/auth/sso/saml2/sp/acs/:id", (c) =>
+      c.req.query("page") ? page(c) : c.redirect("/elsewhere"),
+    );
+    hono.get("/api/files/thing", (c) => page(c));
+
+    const repost = await hono.request("/api/auth/sso/saml2/sp/acs/x?page=1", {
+      method: "POST",
+    });
+    expect(repost.headers.get("content-security-policy")).toBe(own);
+    const redirect = await hono.request("/api/auth/sso/saml2/sp/acs/x", {
+      method: "POST",
+    });
+    expect(redirect.headers.get("content-security-policy")).toContain(
+      "form-action 'none'",
+    );
+    const elsewhere = await hono.request("/api/files/thing");
+    expect(elsewhere.headers.get("content-security-policy")).toContain(
+      "form-action 'none'",
+    );
+  });
+
   it("covers error responses too", async () => {
     const response = await app().request("/api/broken");
     expect(response.status).toBe(500);

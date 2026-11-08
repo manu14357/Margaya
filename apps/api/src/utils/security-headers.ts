@@ -4,10 +4,17 @@ import type { Context, Next } from "hono";
 // nginx; these cover split-host installs, where browsers reach the API
 // directly. The API serves JSON, redirects and uploaded files, never pages,
 // so its content policy forbids everything, framing included. Better Auth's
-// interactive API reference is the one HTML page and keeps its scripts.
+// interactive API reference is the one HTML page and keeps its scripts. The
+// SAML assertion endpoint's re-post page (identity/saml-request.ts) brings a
+// policy of its own, which is kept.
 
 const API_CONTENT_SECURITY_POLICY =
   "default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'";
+
+const keepsOwnPolicy = (c: Context) =>
+  c.req.path.startsWith("/api/auth/reference") ||
+  (c.req.path.startsWith("/api/auth/sso/saml2/sp/acs/") &&
+    c.res.headers.has("Content-Security-Policy"));
 
 const HSTS = "max-age=15552000";
 
@@ -24,7 +31,7 @@ export function securityHeaders() {
     await next();
     try {
       const headers = c.res.headers;
-      if (!c.req.path.startsWith("/api/auth/reference")) {
+      if (!keepsOwnPolicy(c)) {
         headers.set("Content-Security-Policy", API_CONTENT_SECURITY_POLICY);
       }
       headers.set("X-Content-Type-Options", "nosniff");
