@@ -3,8 +3,10 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
 } from "../openapi";
 import { requestHiddenProjectIds } from "../project/visibility";
+import { includeBodyTaskProject } from "../utils/destination-project";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import assignLabelToTask from "./controllers/assign-label-to-task";
@@ -40,10 +42,8 @@ const getTaskLabelsRoute = createRoute({
   request: { params: taskIdParam },
   responses: {
     200: jsonResponse("List of labels for the task", labelListSchema),
-    400: errorResponse(
-      "Unknown task, or its workspace could not be determined",
-    ),
     403: errorResponse("No access to the task's workspace"),
+    404: lookupNotFound("task"),
   },
 });
 
@@ -69,9 +69,11 @@ const createLabelRoute = createRoute({
   path: "/",
   tags: ["Labels"],
   summary: "Create label",
-  description: "Create a new label in a workspace",
+  description:
+    "Create a new label in a workspace, on a task when taskId is given. A task's label needs label:create in that task's project too.",
   middleware: [
     workspaceAccess.fromBody(),
+    includeBodyTaskProject(),
     requireWorkspacePermission({ label: ["create"] }),
   ] as const,
   request: {
@@ -84,7 +86,7 @@ const createLabelRoute = createRoute({
     200: jsonResponse("Label created successfully", labelSchema),
     400: errorResponse("Invalid body, or workspace ID could not be determined"),
     403: errorResponse(
-      "No workspace access, or missing label:create permission",
+      "No workspace access, or missing label:create permission, in the workspace or the task's project",
     ),
     404: errorResponse("Task not found"),
     409: errorResponse("The workspace label is being deleted"),
@@ -102,10 +104,8 @@ const getLabelRoute = createRoute({
   request: { params: labelParam },
   responses: {
     200: jsonResponse("Label details", labelSchema),
-    400: errorResponse(
-      "Unknown label, or its workspace could not be determined",
-    ),
     403: errorResponse("No access to the label's workspace"),
+    404: lookupNotFound("label"),
   },
 });
 
@@ -115,9 +115,11 @@ const attachLabelToTaskRoute = createRoute({
   path: "/{id}/task",
   tags: ["Labels"],
   summary: "Attach label to task",
-  description: "Attach an existing label to a task",
+  description:
+    "Attach an existing label to a task. Needs label:update in the task's project, and in the project of a task the label leaves.",
   middleware: [
     workspaceAccess.fromLabel(),
+    includeBodyTaskProject(),
     requireWorkspacePermission({ label: ["update"] }),
   ] as const,
   request: {
@@ -130,12 +132,14 @@ const attachLabelToTaskRoute = createRoute({
   responses: {
     200: jsonResponse("Label attached to task successfully", labelSchema),
     400: errorResponse(
-      "Unknown label, or label and task belong to different workspaces",
+      "Invalid body, or label and task belong to different workspaces",
     ),
     403: errorResponse(
-      "No workspace access, or missing label:update permission",
+      "No workspace access, or missing label:update permission in either project",
     ),
-    404: errorResponse("Task not found"),
+    404: errorResponse(
+      "Unknown label or task, one on or in a trashed task or project, or one the caller can't see",
+    ),
     409: errorResponse("The workspace label is being deleted"),
   },
 });
@@ -154,11 +158,11 @@ const detachLabelFromTaskRoute = createRoute({
   request: { params: labelParam },
   responses: {
     200: jsonResponse("Label detached from task successfully", labelSchema),
-    400: errorResponse("Unknown label, or label is not assigned to a task"),
+    400: errorResponse("The label is not assigned to a task"),
     403: errorResponse(
       "No workspace access, or missing label:update permission",
     ),
-    404: errorResponse("Task not found"),
+    404: lookupNotFound("label"),
   },
 });
 
@@ -183,10 +187,11 @@ const updateLabelRoute = createRoute({
   responses: {
     200: jsonResponse("Label updated successfully", labelSchema),
     409: errorResponse("The workspace label is being deleted"),
-    400: errorResponse("Invalid body, or unknown label"),
+    400: errorResponse("Invalid body"),
     403: errorResponse(
       "No workspace access, or missing label:update permission",
     ),
+    404: lookupNotFound("label"),
   },
 });
 
@@ -210,13 +215,12 @@ const deleteLabelRoute = createRoute({
       pendingLabelDeletionSchema,
     ),
     429: errorResponse("Deletion capacity is busy; retry after Retry-After"),
-    400: errorResponse(
-      "Unknown label, or its workspace could not be determined",
-    ),
     403: errorResponse(
       "No workspace access, or missing label:delete permission",
     ),
-    404: errorResponse("The label's task no longer exists"),
+    404: errorResponse(
+      "Unknown label, one on a task in the trash or in a project the caller can't see, or the label's task no longer exists",
+    ),
   },
 });
 

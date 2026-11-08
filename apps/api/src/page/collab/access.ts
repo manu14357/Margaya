@@ -1,6 +1,7 @@
 import { and, eq, gt, isNull, or } from "drizzle-orm";
 import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
+import { auditContext } from "../../audit-log/context";
 import db from "../../database";
 import { apikeyTable, sessionTable } from "../../database/schema";
 import { featureDisabledMessage } from "../../project/features";
@@ -44,7 +45,11 @@ export async function authorizePageSocket(
   const { meta } = result;
 
   const apiKey = c.get("apiKey") as
-    | { id: string; permissions?: Record<string, string[]> | null }
+    | {
+        id: string;
+        permissions?: Record<string, string[]> | null;
+        projectIds?: string[] | null;
+      }
     | undefined;
   try {
     await validateWorkspaceAccess(
@@ -60,6 +65,8 @@ export async function authorizePageSocket(
     throw error;
   }
   c.set("workspaceId", meta.workspaceId);
+  // So the permissions below apply the caller's project role, as on REST.
+  c.set("projectId", meta.projectId);
 
   const caller = await pageCallerOf(c);
   if (!caller.canRead) {
@@ -79,6 +86,7 @@ export async function authorizePageSocket(
       sessionId: apiKey ? null : (session?.id ?? null),
       apiKeyId: apiKey?.id ?? null,
       apiKeyPermissions: apiKey?.permissions ?? null,
+      apiKeyProjectIds: apiKey?.projectIds ?? null,
       initiatorId:
         windowId && WINDOW_ID_PATTERN.test(windowId)
           ? `${userId}:${windowId}`
@@ -126,12 +134,17 @@ async function credentialsValid(identity: ConnectionIdentity) {
 
 /**
  * The permission lookups only read request variables, so a socket's cached
- * identity stands in for the request when re-checking it later.
+ * identity stands in for the request when re-checking it later. The project
+ * comes from the page as it is now: it may have moved.
  */
-function identityContext(identity: ConnectionIdentity): Context {
+function identityContext(
+  identity: ConnectionIdentity,
+  meta: PageMeta,
+): Context {
   const variables: Record<string, unknown> = {
     userId: identity.userId,
     workspaceId: identity.workspaceId,
+    projectId: meta.projectId,
     apiKey: identity.apiKeyId
       ? { id: identity.apiKeyId, permissions: identity.apiKeyPermissions }
       : undefined,
@@ -146,9 +159,18 @@ export type RevalidateResult =
 /**
  * Re-reads what an open socket relies on: its credentials (4401), its
  * workspace membership and page permissions, and whether it can still see
- * the page (4403).
+ * the page (4403). Runs outside the request that triggered it (a page event's,
+ * or for the timer the one that opened the room's first socket): that request's
+ * memoized project roles and API key say nothing about this socket.
  */
-export async function revalidatePageConnection(
+export function revalidatePageConnection(
+  identity: ConnectionIdentity,
+  meta: PageMeta,
+): Promise<RevalidateResult> {
+  return auditContext.exit(() => revalidate(identity, meta));
+}
+
+async function revalidate(
   identity: ConnectionIdentity,
   meta: PageMeta,
 ): Promise<RevalidateResult> {
@@ -165,6 +187,10 @@ export async function revalidatePageConnection(
     reason: PAGE_MESSAGES.notFound,
   };
   if (meta.workspaceId !== identity.workspaceId) return lost;
+  const keyProjects = identity.apiKeyProjectIds;
+  if (keyProjects?.length && !keyProjects.includes(meta.projectId ?? "")) {
+    return lost;
+  }
   try {
     // Also closes the socket once the page's restricted project is out of
     // reach (removed from it, or the project restricted).
@@ -178,7 +204,7 @@ export async function revalidatePageConnection(
     if (error instanceof HTTPException) return lost;
     throw error;
   }
-  const caller = await pageCallerOf(identityContext(identity));
+  const caller = await pageCallerOf(identityContext(identity, meta));
   if (!canSeePage(meta, caller)) return lost;
   return { status: "ok", caller };
 }

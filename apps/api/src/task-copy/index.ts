@@ -6,6 +6,7 @@ import {
   errorResponse,
   jsonResponse,
 } from "../openapi";
+import { includeBodyDestination } from "../utils/destination-project";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import copyTask from "./controllers/copy-task";
@@ -19,9 +20,10 @@ const copyTaskRoute = createRoute({
   tags: ["Tasks"],
   summary: "Make a copy of a task",
   description:
-    "Create a new task from an existing one, in its project or another project of the workspace, with a new number at the end of its column. Title, status and priority are always copied (another project gets the column with the same slug, else its entry column; a planned task stays planned). `include` picks the rest. Description images and, when included, attachments are duplicated in storage. Sub-tasks, comments, history, time entries, other relations and integration links are never copied. Needs task:create; assignees are copied without task:assign.",
+    "Create a new task from an existing one, in its project or another project of the workspace, with a new number at the end of its column. Title, status and priority are always copied (another project gets the column with the same slug, else its entry column; a planned task stays planned). `include` picks the rest. Description images and, when included, attachments are duplicated in storage. Sub-tasks, comments, history, time entries, other relations and integration links are never copied. Needs task:create in the task's project and in the destination; assignees are copied without task:assign. A destination the caller or a project-limited API key can't reach answers 404.",
   middleware: [
     workspaceAccess.fromTaskId("taskId"),
+    includeBodyDestination("projectId"),
     requireWorkspacePermission({ task: ["create"] }),
     requireEntitlement,
   ] as const,
@@ -38,12 +40,14 @@ const copyTaskRoute = createRoute({
       taskCopyResultSchema,
     ),
     400: errorResponse(
-      "Invalid body, an empty title, a destination without a workflow, a required custom field without a value, too many description images, or unknown task",
+      "Invalid body, an empty title, a destination without a workflow, a required custom field without a value, or too many description images",
     ),
     403: errorResponse(
-      "No workspace access, or missing task:create permission",
+      "No workspace access, or missing task:create permission in either project",
     ),
-    404: errorResponse("Task or destination project not found"),
+    404: errorResponse(
+      "Unknown task or destination project, one in the trash, or one the caller can't see",
+    ),
     409: errorResponse(
       "The destination project is archived, or the task is waiting in intake",
     ),

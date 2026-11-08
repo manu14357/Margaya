@@ -1,4 +1,7 @@
+import { eq } from "drizzle-orm";
 import { beforeEach, describe, expect, it } from "vitest";
+import db, { schema } from "../../apps/api/src/database";
+import { projectMemberTable } from "../../apps/api/src/database/schema";
 import { resetTestDatabase } from "./helpers/database";
 import { createWorkspaceMember } from "./helpers/fixtures";
 import { json, pageScene } from "./helpers/pages";
@@ -115,6 +118,49 @@ describe("page templates", () => {
       method: "DELETE",
     });
     expect(foreign.status).toBe(404);
+  });
+
+  it("applies the project role to deleting a project's template", async () => {
+    const s = await pageScene();
+    const source = await s.create(s.ben, { title: "Weekly sync" });
+    const inProject = await s.ok<Template>(
+      s.ben,
+      `/${source.id}/template`,
+      json("POST", { name: "Project one", scope: "project" }),
+    );
+    const forWorkspace = await s.ok<Template>(
+      s.ben,
+      `/${source.id}/template`,
+      json("POST", { name: "Workspace one", scope: "workspace" }),
+    );
+    await db
+      .update(schema.projectTable)
+      .set({ visibility: "restricted" })
+      .where(eq(schema.projectTable.id, s.project.id));
+    await db.insert(projectMemberTable).values({
+      projectId: s.project.id,
+      userId: s.ben.id,
+      role: "viewer",
+    });
+
+    const capped = await s.call(s.ben, `/template/${inProject.id}`, {
+      method: "DELETE",
+    });
+    expect(capped.status).toBe(403);
+    // A workspace template is not in the project, so the cap doesn't reach it.
+    const free = await s.call(s.ben, `/template/${forWorkspace.id}`, {
+      method: "DELETE",
+    });
+    expect(free.status, await free.clone().text()).toBe(200);
+
+    await db
+      .update(projectMemberTable)
+      .set({ role: "member" })
+      .where(eq(projectMemberTable.userId, s.ben.id));
+    const allowed = await s.call(s.ben, `/template/${inProject.id}`, {
+      method: "DELETE",
+    });
+    expect(allowed.status, await allowed.clone().text()).toBe(200);
   });
 
   it("lets who saved it, or a page manager, delete a template", async () => {

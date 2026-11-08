@@ -3,7 +3,12 @@ import type { Context, Next } from "hono";
 import { HTTPException } from "hono/http-exception";
 import db from "../database";
 import { pageTemplateTable } from "../database/schema";
-import { createRoute, errorResponse, jsonResponse } from "../openapi";
+import {
+  createRoute,
+  errorResponse,
+  jsonResponse,
+  lookupNotFound,
+} from "../openapi";
 import { requireProjectFeature } from "../project/features";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { validateWorkspaceAccess } from "../utils/validate-workspace-access";
@@ -30,9 +35,10 @@ const NOT_FOUND = "Unknown page, or another user's private page";
 const FEATURE_OFF = "the Pages feature is turned off for the page's project";
 
 /**
- * Resolves the template in the path to its workspace and checks access. A
- * template in a workspace the caller can't reach answers 404. Reads the raw
- * param: route middleware runs before the validators.
+ * Resolves the template in the path to its workspace and project (a workspace
+ * template has none) and checks access. A template in a workspace the caller
+ * can't reach answers 404. Reads the raw param: route middleware runs before
+ * the validators.
  */
 async function templateAccess(c: Context, next: Next) {
   const userId = c.get("userId");
@@ -65,6 +71,26 @@ async function templateAccess(c: Context, next: Next) {
     throw error;
   }
   c.set("workspaceId", row.workspaceId);
+  c.set("projectId", row.projectId);
+  return next();
+}
+
+/**
+ * A workspace template is offered in every project, so saving one acts on the
+ * whole workspace, which is beyond a project-limited API key. Reads the raw body:
+ * route middleware runs before the validators.
+ */
+async function workspaceTemplateAccess(c: Context, next: Next) {
+  const body = (await c.req.json().catch(() => null)) as {
+    scope?: unknown;
+  } | null;
+  if (body?.scope === "workspace") {
+    await validateWorkspaceAccess(
+      c.get("userId"),
+      c.get("workspaceId"),
+      c.get("apiKey")?.id,
+    );
+  }
   return next();
 }
 
@@ -88,10 +114,10 @@ export const listPageTemplatesRoute = createRoute({
   request: { params: projectTemplatesParam },
   responses: {
     200: jsonResponse("The templates", pageTemplateListSchema),
-    400: errorResponse("The project could not be found"),
     403: errorResponse(
       "No workspace access, missing page:read, or the project's Pages feature is off",
     ),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -103,12 +129,14 @@ export const savePageTemplateRoute = createRoute({
   summary: "Save page as template",
   description:
     "Save the page's current content, title icon included, as a template for its project or for the whole workspace. At most 200 templates per workspace. Needs page:create.",
-  middleware: [...pageRoute("create")] as const,
+  middleware: [...pageRoute("create"), workspaceTemplateAccess] as const,
   request: { params: pageParam, body: jsonBody(savePageTemplateBody) },
   responses: {
     200: jsonResponse("The template", pageTemplateSchema),
     400: errorResponse("Invalid body"),
-    403: errorResponse(`Missing page:create, or ${FEATURE_OFF}`),
+    403: errorResponse(
+      `Missing page:create, a project-limited API key saving a workspace template, or ${FEATURE_OFF}`,
+    ),
     404: errorResponse(NOT_FOUND),
     409: errorResponse("The workspace has 200 templates"),
   },
@@ -129,7 +157,9 @@ export const deletePageTemplateRoute = createRoute({
   request: { params: pageTemplateParam },
   responses: {
     200: jsonResponse("The deleted template", deletedPageTemplateSchema),
-    403: errorResponse("Not who saved it, and missing page:delete"),
+    403: errorResponse(
+      "Not who saved it, and missing page:delete; a project's template also goes by the caller's project role",
+    ),
     404: errorResponse("Unknown template"),
   },
 });
