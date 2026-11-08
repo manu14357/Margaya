@@ -89,6 +89,7 @@ describe("ManageWidgetsDialog", () => {
           { key: "stickies", enabled: true },
           { key: "risks", enabled: true },
           { key: "my-brief", enabled: false },
+          { key: "pinned-reports", enabled: false },
         ],
       }),
     );
@@ -101,6 +102,11 @@ describe("ManageWidgetsDialog", () => {
     expect(
       screen.queryByRole("switch", {
         name: "home:manage.toggle:home:widgets.risks",
+      }),
+    ).toBeNull();
+    expect(
+      screen.queryByRole("switch", {
+        name: "home:manage.toggle:home:widgets.pinnedReports",
       }),
     ).toBeNull();
 
@@ -118,6 +124,7 @@ describe("ManageWidgetsDialog", () => {
           { key: "stickies", enabled: false },
           { key: "risks", enabled: true },
           { key: "my-brief", enabled: false },
+          { key: "pinned-reports", enabled: false },
         ],
       }),
     );

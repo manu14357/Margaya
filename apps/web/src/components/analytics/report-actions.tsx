@@ -4,6 +4,8 @@ import {
   Lock,
   MoreHorizontal,
   Pencil,
+  Pin,
+  PinOff,
   Save,
   Trash2,
   Users,
@@ -37,6 +39,7 @@ import {
   useDeleteAnalyticsReport,
   useUpdateAnalyticsReport,
 } from "@/hooks/mutations/analytics-report/use-analytics-report-mutations";
+import useToggleHomeReportPin from "@/hooks/mutations/home/use-toggle-home-report-pin";
 import type { ReportNote } from "@/lib/analytics/report-config";
 import { toast } from "@/lib/toast";
 import type {
@@ -74,6 +77,10 @@ type ReportListProps = {
   onEdit: (report: AnalyticsReport) => void;
   onToggleVisibility: (report: AnalyticsReport) => void;
   onDelete: (report: AnalyticsReport) => void;
+  /** Pinned to the viewer's Home; empty until their Home settings load. */
+  pinnedIds: readonly string[];
+  canPin: boolean;
+  onTogglePin: (report: AnalyticsReport) => void;
 };
 
 function ReportList({
@@ -86,6 +93,9 @@ function ReportList({
   onEdit,
   onToggleVisibility,
   onDelete,
+  pinnedIds,
+  canPin,
+  onTogglePin,
 }: ReportListProps) {
   const { t } = useTranslation();
   if (isLoading) {
@@ -119,7 +129,7 @@ function ReportList({
     <ul className="grid max-h-80 gap-0.5 overflow-y-auto">
       {reports.map((report) => {
         const isOpen = report.id === openedId;
-        const hasActions = report.isOwner || report.canDelete;
+        const isPinned = pinnedIds.includes(report.id);
         return (
           <li
             key={report.id}
@@ -144,54 +154,59 @@ function ReportList({
                 />
               )}
             </button>
-            {hasActions && (
-              <DropdownMenu>
-                <DropdownMenuTrigger
-                  render={
-                    <Button
-                      variant="ghost"
-                      size="icon-xs"
-                      className="mr-1 shrink-0"
-                      aria-label={t("analytics:reports.actionsFor", {
-                        name: report.name,
-                      })}
-                    />
-                  }
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
+                    className="mr-1 shrink-0"
+                    aria-label={t("analytics:reports.actionsFor", {
+                      name: report.name,
+                    })}
+                  />
+                }
+              >
+                <MoreHorizontal className="size-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-52">
+                <DropdownMenuItem
+                  disabled={!canPin}
+                  onClick={() => onTogglePin(report)}
                 >
-                  <MoreHorizontal className="size-4" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-52">
-                  {report.isOwner && (
-                    <>
-                      <DropdownMenuItem onClick={() => onEdit(report)}>
-                        <Pencil />
-                        {t("analytics:reports.rename")}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => onToggleVisibility(report)}
-                      >
-                        {report.visibility === "private" ? <Users /> : <Lock />}
-                        {report.visibility === "private"
-                          ? t("analytics:reports.share")
-                          : t("analytics:reports.makePrivate")}
-                      </DropdownMenuItem>
-                    </>
-                  )}
-                  {report.isOwner && report.canDelete && (
-                    <DropdownMenuSeparator />
-                  )}
-                  {report.canDelete && (
-                    <DropdownMenuItem
-                      variant="destructive"
-                      onClick={() => onDelete(report)}
-                    >
-                      <Trash2 />
-                      {t("analytics:reports.delete")}
+                  {isPinned ? <PinOff /> : <Pin />}
+                  {isPinned
+                    ? t("analytics:reports.unpin")
+                    : t("analytics:reports.pin")}
+                </DropdownMenuItem>
+                {report.isOwner && (
+                  <>
+                    <DropdownMenuItem onClick={() => onEdit(report)}>
+                      <Pencil />
+                      {t("analytics:reports.rename")}
                     </DropdownMenuItem>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
+                    <DropdownMenuItem
+                      onClick={() => onToggleVisibility(report)}
+                    >
+                      {report.visibility === "private" ? <Users /> : <Lock />}
+                      {report.visibility === "private"
+                        ? t("analytics:reports.share")
+                        : t("analytics:reports.makePrivate")}
+                    </DropdownMenuItem>
+                  </>
+                )}
+                {report.canDelete && <DropdownMenuSeparator />}
+                {report.canDelete && (
+                  <DropdownMenuItem
+                    variant="destructive"
+                    onClick={() => onDelete(report)}
+                  >
+                    <Trash2 />
+                    {t("analytics:reports.delete")}
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </li>
         );
       })}
@@ -236,6 +251,7 @@ export default function ReportActions({
   const [deleting, setDeleting] = useState<AnalyticsReport | null>(null);
   const updateReport = useUpdateAnalyticsReport();
   const deleteReport = useDeleteAnalyticsReport();
+  const pins = useToggleHomeReportPin(workspaceId);
 
   const showError = (reason: Error, fallback: string) =>
     toast.error(reportErrorMessage(reason) ?? fallback);
@@ -319,6 +335,14 @@ export default function ReportActions({
               setListOpen(false);
               setDeleting(report);
             }}
+            pinnedIds={pins.pinnedIds}
+            canPin={pins.isReady}
+            onTogglePin={(report) =>
+              pins.toggle(
+                report.id,
+                (reports ?? []).map((entry) => entry.id),
+              )
+            }
           />
         </PopoverContent>
       </Popover>

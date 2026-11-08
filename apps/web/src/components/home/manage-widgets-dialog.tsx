@@ -120,11 +120,12 @@ export default function ManageWidgetsDialog({
   const { t } = useTranslation();
   const updatePreferences = useUpdateHomePreferences();
   const { canReadAnalytics, isCheckingPermissions } = useWorkspacePermission();
-  // The risks widget needs analytics:read; without it the row is left out,
-  // but the saved list still names it.
+  // These widgets need analytics:read; without it the row is left out, but
+  // the saved list still names it.
   const listed = widgets.filter(
     (widget) =>
-      widget.key !== "risks" || (!isCheckingPermissions && canReadAnalytics()),
+      (widget.key !== "risks" && widget.key !== "pinned-reports") ||
+      (!isCheckingPermissions && canReadAnalytics()),
   );
 
   const sensors = useSensors(
