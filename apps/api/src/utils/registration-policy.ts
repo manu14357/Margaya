@@ -16,7 +16,9 @@ export function normalizeInvitationId(value: unknown): string | undefined {
 export function isOAuthCallbackPath(path: unknown): boolean {
   return (
     typeof path === "string" &&
-    (path.startsWith("/callback/") || path.startsWith("/oauth2/callback/"))
+    (path.startsWith("/callback/") ||
+      path.startsWith("/oauth2/callback/") ||
+      path.startsWith("/sso/saml2/sp/acs/"))
   );
 }
 
@@ -71,7 +73,7 @@ export async function assertUserRegistrationAllowed(
     emailVerified?: boolean;
     isAnonymous?: boolean | null;
   },
-  context?: { path?: string; invitationId?: unknown },
+  context?: { path?: string; invitationId?: unknown; provisioned?: boolean },
 ): Promise<void> {
   if (user.isAnonymous) {
     await assertGuestRegistrationAllowed();
@@ -84,6 +86,8 @@ export async function assertUserRegistrationAllowed(
       message: "New accounts on this server must use an approved email domain.",
     });
   }
+  // SCIM: an identity provider an instance admin connected is its own invitation.
+  if (context?.provisioned) return;
   const verifiedEmailFlow =
     isOAuthCallbackPath(context?.path) ||
     context?.path === "/sign-in/email-otp" ||

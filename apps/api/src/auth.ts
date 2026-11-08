@@ -1,4 +1,6 @@
 import { apiKey } from "@better-auth/api-key";
+import { scim } from "@better-auth/scim";
+import { sso } from "@better-auth/sso";
 import {
   emailCopy,
   OTP_EXPIRY_SECONDS,
@@ -12,6 +14,7 @@ import {
   ac,
   DEFAULT_ROLE_NAMES,
   defaultRolePayloads,
+  guest,
   owner,
 } from "@margaya/permissions";
 import bcrypt from "bcryptjs";
@@ -45,18 +48,41 @@ import {
   refuseAgentMember,
   refuseAgentSession,
 } from "./ai-agent/guards";
+import { auditContext, requestActor } from "./audit-log/context";
 import {
   findBillableWorkspaces,
   formatBillableWorkspacesMessage,
 } from "./billing/controllers/find-billable-workspaces";
 import { syncWorkspaceSeats } from "./billing/controllers/sync-seats";
 import db, { schema } from "./database";
+import { scimProviderTable, ssoProviderTable } from "./database/schema";
 import { publishEvent } from "./events";
+import {
+  assertSamlEmailInDomain,
+  assertSamlSignInAllowed,
+  isClosedIdentityPath,
+  isSamlAcsPath,
+  isScimApiPath,
+  samlErrorRedirect,
+  samlFailureRedirect,
+} from "./identity/saml-policy";
+import {
+  bindRequestToBrowser,
+  consumeAnsweredRequest,
+  repostPage,
+} from "./identity/saml-request";
+import {
+  afterScimRequest,
+  guardScimRequest,
+  scimMayLinkUser,
+} from "./identity/scim-hooks";
+import { hashScimSecret } from "./identity/scim-token";
 import type {
   OAuthBuildConfig,
   OAuthProviderId,
 } from "./instance-settings/resolve";
 import { getInstanceSettings } from "./instance-settings/snapshot";
+import { applyInvitationProjects } from "./invitation/projects";
 import { clearMemberProjectRoles } from "./project/people";
 import { purgeWorkspaceExports } from "./task-export/storage";
 import deleteAccountData from "./user/controllers/delete-account-data";
@@ -67,6 +93,11 @@ import {
   EMAIL_CHANGE_PATHS,
   enforceAccountSecurityRules,
 } from "./utils/account-security-hooks";
+import {
+  authHandoff,
+  handOffSession,
+  markCrossSiteSignIn,
+} from "./utils/auth-handoff";
 import { authRateLimitConfig } from "./utils/auth-rate-limit";
 import { resolveAuthSecret } from "./utils/auth-secret";
 import { checkRegistrationAllowed } from "./utils/check-registration-allowed";
@@ -100,8 +131,13 @@ import {
   splitRoles,
 } from "./utils/role-ceiling";
 import { enforceSignInPolicy, sessionTimingOf } from "./utils/sign-in-policy";
+import { enforceTwoFactorRequirement } from "./utils/two-factor-policy";
 import { authCaptchaPaths, verifyTurnstile } from "./utils/verify-turnstile";
 import { afterWorkspaceMemberRemoved } from "./utils/workspace-member-removed";
+import {
+  isGuestNarrowedPath,
+  narrowOrganizationReadForGuest,
+} from "./workspace/guest-organization-reads";
 import { publishMembersChanged } from "./workspace/members-realtime";
 import {
   isWorkspacePendingDeletion,
@@ -145,6 +181,13 @@ async function assertOrganizationWritable(workspaceId: string | undefined) {
     throw new APIError("LOCKED", { message: WORKSPACE_LOCKED_MESSAGE });
   }
 }
+
+// The app and API on different hosts over HTTPS, where the session cookie is
+// partitioned: a provider sign-in may need handing over (utils/auth-handoff.ts).
+const crossSiteInstall = getDefaultCookieAttributes({
+  apiUrl,
+  clientUrl,
+}).partitioned;
 
 const trustedOrigins = [clientUrl];
 try {
@@ -317,11 +360,11 @@ function createAuthInstance(
         workspace_member: schema.workspaceUserTable,
         invitation: schema.invitationTable,
         workspace_role: schema.workspaceRoleTable,
-        team: schema.teamTable,
-        teamMember: schema.teamMemberTable,
         apikey: schema.apikeyTable,
         deviceCode: schema.deviceCodeTable,
         twoFactor: schema.twoFactorTable,
+        scimProvider: scimProviderTable,
+        ssoProvider: ssoProviderTable,
       },
     }),
     user: {
@@ -486,16 +529,12 @@ function createAuthInstance(
         // seeded into `workspace_role` per workspace and resolved via
         // dynamic access control, so admins can fully override (replace) their
         // permissions per workspace. See `seedDefaultWorkspaceRoles` + the
-        // afterCreateOrganization hook.
-        roles: { owner },
+        // afterCreateOrganization hook. `guest` is static too: a guest's limits
+        // must not be editable, and the name stays reserved.
+        roles: { owner, guest },
         dynamicAccessControl: {
           enabled: true,
           maximumRolesPerOrganization: 25,
-        },
-        teams: {
-          enabled: true,
-          maximumTeams: 10,
-          allowRemovingAllTeams: false,
         },
         schema: {
           organization: {
@@ -524,12 +563,6 @@ function createAuthInstance(
           },
           organizationRole: {
             modelName: "workspace_role",
-            fields: {
-              organizationId: "workspaceId",
-            },
-          },
-          team: {
-            modelName: "team",
             fields: {
               organizationId: "workspaceId",
             },
@@ -673,8 +706,17 @@ function createAuthInstance(
             }
           },
           // Accepting an invitation adds the member without afterAddMember.
-          afterAcceptInvitation: async ({ member }) => {
+          afterAcceptInvitation: async ({ invitation, member }) => {
             if (member?.organizationId) {
+              // Awaited, so the new member lands with their projects.
+              await applyInvitationProjects({
+                invitationId: invitation.id,
+                workspaceId: member.organizationId,
+                userId: member.userId,
+                inviterId: invitation.inviterId,
+              }).catch((error) => {
+                console.error("Adding an invitation's projects failed:", error);
+              });
               void publishMembersChanged({
                 workspaceId: member.organizationId,
               });
@@ -682,8 +724,10 @@ function createAuthInstance(
           },
           afterUpdateMemberRole: async ({ member }) => {
             if (member?.organizationId) {
+              // A new role can take projects away (a member made guest).
               void publishMembersChanged({
                 workspaceId: member.organizationId,
+                accessEnded: true,
               });
             }
           },
@@ -695,7 +739,13 @@ function createAuthInstance(
               );
             }
             if (member?.organizationId) {
-              afterWorkspaceMemberRemoved(member.organizationId, member.userId);
+              // Better Auth also lets someone remove themselves here.
+              const actorId = requestActor(auditContext.getStore())?.userId;
+              await afterWorkspaceMemberRemoved(
+                member.organizationId,
+                member.userId,
+                { byThemselves: actorId === member.userId },
+              );
             }
           },
         },
@@ -775,6 +825,36 @@ function createAuthInstance(
         issuer: "Margaya",
         backupCodeOptions: { amount: 10, length: 10 },
       }),
+      // Provisioning by an identity provider. Connections are made only by
+      // instance admins (identity/), which is why a token may take over an
+      // existing account at all; scimMayLinkUser says which.
+      scim({
+        storeSCIMToken: { hash: async (secret) => hashScimSecret(secret) },
+        canGenerateToken: () => false,
+        linkExistingUsers: {
+          shouldLinkUser: ({ user, provider }) =>
+            scimMayLinkUser(user.id, provider.organizationId),
+        },
+      }),
+      // SAML sign-in, same ownership. A row's `domainVerified` is the admin
+      // vouching for its domains, which is what lets a verified local account
+      // link on first sign-in. Sign-in always starts here: the before hook
+      // refuses a response that doesn't answer a request (saml-request.ts says
+      // why the plugin's own check can't do it).
+      sso({
+        domainVerification: { enabled: true },
+        organizationProvisioning: { disabled: true },
+        saml: {
+          requireTimestamps: true,
+          // The plugin's own default, set so it also reaches the SAML library:
+          // without it the library allows no skew at all, and a provider whose
+          // clock is a moment ahead has its NotBefore refused.
+          clockSkew: 5 * 60_000,
+          algorithms: { onDeprecated: "reject" },
+          idpInitiatedCallbackUrl: `${clientUrl.replace(/\/$/, "")}/auth/sign-in`,
+        },
+      }),
+      authHandoff(),
       openAPI(),
     ],
     session: {
@@ -806,16 +886,35 @@ function createAuthInstance(
       user: {
         create: {
           before: async (user, ctx) => {
+            const provisioned = isScimApiPath(ctx?.path);
+            const viaSaml = isSamlAcsPath(ctx?.path);
+            if (viaSaml) {
+              await assertSamlEmailInDomain(
+                user.email,
+                ctx?.params?.providerId,
+              );
+            }
+            // An identity provider an instance admin connected vouches for the
+            // address, and provider sign-in links only to verified accounts.
+            const identityFields =
+              provisioned || viaSaml ? { emailVerified: true } : null;
             await assertUserRegistrationAllowed(
-              user as Partial<UserWithAnonymous> & { email: string },
+              {
+                ...(user as Partial<UserWithAnonymous> & { email: string }),
+                ...identityFields,
+              },
               {
                 path: ctx?.path,
+                provisioned,
                 invitationId:
                   ctx?.body?.invitationId ||
                   ctx?.query?.invitationId ||
                   ctx?.headers?.get("x-invitation-id"),
               },
             );
+            return identityFields
+              ? { data: { ...user, ...identityFields } }
+              : undefined;
           },
           after: async (user) => {
             // The anonymous() plugin creates ephemeral users for guest
@@ -835,6 +934,28 @@ function createAuthInstance(
     },
     hooks: {
       before: createAuthMiddleware(async (ctx) => {
+        if (isClosedIdentityPath(ctx.path)) {
+          return unregisteredEndpointResponse();
+        }
+        // Provisioning carries no session and starts no sign-in, so nothing
+        // below applies to it.
+        if (isScimApiPath(ctx.path)) return guardScimRequest(ctx);
+        if (ctx.path === "/sign-in/sso" || isSamlAcsPath(ctx.path)) {
+          assertSamlSignInAllowed();
+        }
+        if (isSamlAcsPath(ctx.path)) {
+          const refused = await consumeAnsweredRequest(ctx);
+          if (refused === "repost") return repostPage(ctx);
+          if (refused) {
+            return new Response(null, {
+              status: 302,
+              headers: {
+                location: `${clientUrl.replace(/\/$/, "")}/auth/sign-in?error=${refused}`,
+              },
+            });
+          }
+        }
+
         const { effective, derived } = getInstanceSettings();
 
         const verifyingEmail = isEmailVerificationRequest(ctx.path, ctx.body);
@@ -920,6 +1041,12 @@ function createAuthInstance(
           accountEmailRequest,
         });
         if (policy) return policy;
+
+        if (effective.requireTwoFactor) {
+          await enforceTwoFactorRequirement(ctx.path, () =>
+            getSessionFromCtx(ctx, { disableRefresh: true }).catch(() => null),
+          );
+        }
 
         if (CUSTOM_ROLE_WRITE_PATHS.has(ctx.path)) {
           const session = await getSessionFromCtx(ctx, {
@@ -1089,6 +1216,15 @@ function createAuthInstance(
         }
       }),
       after: createAuthMiddleware(async (ctx) => {
+        if (isScimApiPath(ctx.path)) return afterScimRequest(ctx);
+
+        if (ctx.path === "/sign-in/sso") bindRequestToBrowser(ctx);
+        await markCrossSiteSignIn(ctx, crossSiteInstall);
+
+        if (isGuestNarrowedPath(ctx.path)) {
+          return narrowOrganizationReadForGuest(ctx);
+        }
+
         await afterAccountSecurityRules(
           ctx as unknown as AfterHookContext,
           async ({ previousEmail, newEmail, userId }) => {
@@ -1123,17 +1259,35 @@ function createAuthInstance(
                 left.userId,
               );
             }
-            afterWorkspaceMemberRemoved(
+            await afterWorkspaceMemberRemoved(
               left.organizationId,
               typeof left.userId === "string" ? left.userId : null,
+              { byThemselves: true },
             );
           }
           return;
         }
 
+        if (isSamlAcsPath(ctx.path)) {
+          const refused = samlFailureRedirect(
+            ctx.context.responseHeaders?.get("location"),
+            clientUrl,
+          );
+          if (refused) throw ctx.redirect(refused);
+          // A Response, as a thrown redirect would keep the error's status.
+          const failed = samlErrorRedirect(ctx.context.returned, clientUrl);
+          if (failed) {
+            return new Response(null, {
+              status: 302,
+              headers: { location: failed },
+            });
+          }
+        }
+
         if (
           ctx.path.startsWith("/sign-up") ||
-          ctx.path.startsWith("/sign-in")
+          ctx.path.startsWith("/sign-in") ||
+          isSamlAcsPath(ctx.path)
         ) {
           const newSession = ctx.context.newSession;
           if (newSession) {
@@ -1153,6 +1307,11 @@ function createAuthInstance(
             }
           }
         }
+
+        const handoff = crossSiteInstall
+          ? await handOffSession(ctx, clientUrl)
+          : null;
+        if (handoff) throw ctx.redirect(handoff);
       }),
     },
     advanced: {

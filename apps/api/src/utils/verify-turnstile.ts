@@ -8,6 +8,7 @@ export const authCaptchaPaths = new Set([
   "/sign-up/email",
   "/sign-in/social",
   "/sign-in/oauth2",
+  "/sign-in/sso",
   "/sign-in/anonymous",
   "/sign-in/magic-link",
   "/email-otp/send-verification-otp",

@@ -25,6 +25,9 @@ import { isTrustedOrigin } from "./trusted-origins";
 //   a provider may post them back cross-site; the OAuth state guards them.
 //   The rest of /api/auth is checked here as well as by Better Auth's own
 //   origin check, which some configurations (tests) switch off.
+// - The SAML assertion endpoint (/api/auth/sso/saml2/sp/acs/*): the identity
+//   provider's page posts it cross-site; it needs a signed response answering a
+//   request this server made, and the session cookie plays no part.
 // - MCP (/api/mcp*, /.well-known/*): bearer tokens; the consent decision
 //   checks its own origin.
 // - Signed webhooks (GitHub, Gitea, billing): no session cookie, and they
@@ -37,6 +40,7 @@ const SESSION_COOKIE = /(?:^|;\s*)(?:__Secure-|__Host-)?[\w.-]*session_token=/;
 const EXEMPT_PREFIXES = [
   "/api/auth/callback/",
   "/api/auth/oauth2/callback/",
+  "/api/auth/sso/saml2/sp/acs/",
   "/api/mcp",
   "/api/.well-known/",
 ];
