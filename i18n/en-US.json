@@ -221,10 +221,29 @@
 			"errors": {
 				"account_not_linked": "This identity could not be linked to the existing account. Sign in by email to verify the account, then try SSO again. If email sign-in is unavailable, contact your administrator.",
 				"oauth_code_verification_failed": "OAuth verification failed. Please try again.",
-				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Registration is currently disabled. You need a valid invitation to create an account."
+				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Registration is currently disabled. You need a valid invitation to create an account.",
+				"unsolicited_response": "Start company sign-in from this page. Sign-in that starts at your identity provider isn't accepted.",
+				"invalid_saml_response": "Your identity provider's response couldn't be accepted. Try again, or ask your administrator to check the connection.",
+				"replay_detected": "That sign-in response was already used. Please sign in again.",
+				"unable_to_create_user": "Your account couldn't be created. Ask your administrator for access.",
+				"invalid_request": "That sign-in request wasn't valid. Please try again.",
+				"invalid_state": "That sign-in link has expired. Please try again.",
+				"saml_deprecated_algorithm": "Your identity provider signs with an algorithm that's no longer accepted. Ask your administrator to switch it to SHA-256.",
+				"this_identity_provider_cannot_sign_in_that_email_address_": "This identity provider can't sign in with that email address.",
+				"new_accounts_on_this_server_must_use_an_approved_email_domain_": "New accounts on this server must use an approved email domain.",
+				"banned_user": "This account is banned. Ask your administrator for access.",
+				"unable_to_link_account": "This identity couldn't be linked to your account. Ask your administrator for help.",
+				"saml_other_browser": "Company sign-in has to finish in the browser it started in. Start again from this page, and make sure cookies are allowed."
 			},
 			"instanceStatusError": "Couldn't reach the server. Please retry in a moment.",
-			"titleWithInstance": "Sign in to {{name}}"
+			"titleWithInstance": "Sign in to {{name}}",
+			"continueWithSaml": "Continue with company sign-in",
+			"samlEmail": "Work email",
+			"samlSubmit": "Continue",
+			"samlNoConnection": "Company sign-in isn't set up for that email domain.",
+			"samlError": "Couldn't start company sign-in. Please try again.",
+			"emailCodesOff": "Sign-in links and codes by email are off on this server. If you only ever used those, you don't have a password yet: select Forgot password? to set one.",
+			"emailCodesOffNoEmail": "Sign-in links and codes by email are off on this server. If you only ever used those, you don't have a password yet: ask an instance admin to set one for you."
 		},
 		"providers": {
 			"google": "Google",
@@ -507,6 +526,14 @@
 			"success": "Email verified",
 			"sendFailed": "Couldn't send the code. Please try again.",
 			"verifyFailed": "That code didn't work. Check it, or send a new one."
+		},
+		"complete": {
+			"pageTitle": "Signing in",
+			"title": "Finishing sign-in",
+			"working": "Signing you in…",
+			"failedTitle": "Couldn't finish signing in",
+			"failed": "This sign-in couldn't be finished. Its link works once, for a minute, and only in the browser you signed in with. Sign in again.",
+			"backToSignIn": "Back to sign-in"
 		}
 	},
 	"settings": {
@@ -694,7 +721,30 @@
 				"deviceMute": "Mute sounds on this device",
 				"deviceMuteDescription": "Silences this browser only; your other devices keep playing.",
 				"previewFailed": "Your browser didn't play the sound. Check that this tab or site isn't muted."
-			}
+			},
+			"pushTitle": "Push notifications",
+			"pushDescription": "Alerts on your phone or computer, even when Margaya is closed. \"Notify me about\" decides what is sent, and a workspace rule below can narrow it.",
+			"pushThisDevice": "On this device",
+			"pushOnHint": "This device gets push notifications.",
+			"pushOffHint": "Your browser will ask for permission when you turn this on.",
+			"pushOffHintAllowed": "Notifications are already allowed in this browser.",
+			"pushNotSetUp": "Push isn't set up on this server. Ask your administrator to set its VAPID keys.",
+			"pushInstallFirst": "On iPhone and iPad, add Margaya to your Home Screen first: tap Share, then Add to Home Screen. Open it from there and turn this on.",
+			"pushUnsupported": "This browser can't receive push notifications here. Push needs a current browser and an HTTPS address.",
+			"pushBlocked": "Notifications are blocked for this site. Allow them in your browser's settings, then reload this page.",
+			"pushOtherDevices": "Your other devices",
+			"pushRemoveDevice": "Remove",
+			"pushRemoveDeviceLabel": "Remove {{device}}",
+			"toastPushOn": "Push notifications are on for this device.",
+			"toastPushOnFailed": "Couldn't turn on push notifications. Try again.",
+			"toastPushOff": "Push notifications are off for this device.",
+			"toastPushOffFailed": "Couldn't turn off push notifications. Try again.",
+			"toastPushDeviceRemoved": "Device removed.",
+			"toastPushDeviceRemoveFailed": "Couldn't remove the device. Try again.",
+			"workspaceCardLabelPush": "Push notifications",
+			"pushChannelHintEnabled": "Send matching workspace notifications to your devices.",
+			"pushChannelHintDisabled": "Turn on push for a device first.",
+			"pushLoadFailed": "Couldn't load your push settings. Reload this page to try again."
 		},
 		"preferencesPage": {
 			"title": "Preferences",
@@ -842,7 +892,8 @@
 			"restrictedProject": "Restricted project",
 			"toastUpdated": "Access updated",
 			"toastError": "Failed to update access",
-			"loadError": "Couldn't load access settings. Reload the page to try again."
+			"loadError": "Couldn't load access settings. Reload the page to try again.",
+			"guestsHint": "Guests reach only the projects they're added to. Add them here; the project role limits what they can do."
 		},
 		"projectPeople": {
 			"title": "People",
@@ -945,7 +996,6 @@
 				"organization": "Workspace administration",
 				"member": "Members",
 				"invitation": "Invitations",
-				"team": "Teams",
 				"ac": "Roles and permissions",
 				"cycle": "Cycles",
 				"module": "Modules",
@@ -1069,20 +1119,6 @@
 					"cancel": {
 						"label": "Cancel invitations",
 						"description": "Revoke pending workspace invitations."
-					}
-				},
-				"team": {
-					"create": {
-						"label": "Create teams",
-						"description": "Create teams in this workspace."
-					},
-					"update": {
-						"label": "Edit teams",
-						"description": "Change teams and team membership."
-					},
-					"delete": {
-						"label": "Delete teams",
-						"description": "Delete teams in this workspace."
 					}
 				},
 				"ac": {
@@ -1331,7 +1367,13 @@
 				"deleteDescription": "The file is deleted for everyone. This can't be undone.",
 				"expiredOn": "Expired {{date}}",
 				"expiresOn": "Until {{date}}",
-				"loadMore": "Load more"
+				"loadMore": "Load more",
+				"summaryWorkspace": "Whole workspace",
+				"fileCount_one": "{{count}} file",
+				"fileCount_other": "{{count}} files",
+				"withoutFiles": "Without files",
+				"missingFiles_one": "{{count}} file was missing from storage",
+				"missingFiles_other": "{{count}} files were missing from storage"
 			},
 			"status": {
 				"queued": "Queued",
@@ -1339,6 +1381,16 @@
 				"completed": "Ready",
 				"failed": "Failed",
 				"expired": "Expired"
+			},
+			"whole": {
+				"title": "Whole workspace",
+				"description": "Download everything as one ZIP: tasks with all their comments, pages, settings and files.",
+				"action": "Export workspace",
+				"dialogTitle": "Export whole workspace",
+				"dialogDescription": "The archive is built in the background. You'll be notified when it's ready.",
+				"includeFiles": "Include files",
+				"includeFilesHint": "Turn this off for a much smaller archive. It still lists every file.",
+				"leftOut": "Secrets, private pages, the trash and drafts are never included. The archive contains member email addresses, so keep it somewhere safe."
 			}
 		},
 		"workspaceDeletion": {
@@ -1543,7 +1595,9 @@
 				"aiConnectorUpdated": "Changed an MCP connector",
 				"aiConnectorDeleted": "Deleted an MCP connector",
 				"agentIntakeTriggerUpdated": "Changed an agent's intake trigger",
-				"agentIntakeTriggerDisabled": "Turned off an agent's intake trigger"
+				"agentIntakeTriggerDisabled": "Turned off an agent's intake trigger",
+				"memberProvisioned": "Added a member by provisioning",
+				"memberInvitationProjectsChanged": "Changed the projects of a pending invitation"
 			}
 		},
 		"workspaceWebhooks": {
@@ -2154,7 +2208,22 @@
 				"date": "Date",
 				"dropdown": "Dropdown",
 				"boolean": "Boolean"
-			}
+			},
+			"editButton": "Edit",
+			"editTitle": "Edit custom field",
+			"editDescription": "A field's type and whether it's required can't change after it's created.",
+			"nameLabel": "Name",
+			"optionsLabel": "Options",
+			"addOption": "Add option",
+			"removeOption": "Remove option",
+			"optionPlaceholder": "Option name",
+			"optionsHint": "Renaming an option updates every task, saved view and automation using it. Removing one leaves it on tasks that already have it until someone changes it, and it can't be chosen again.",
+			"duplicateOption": "Options must be different from each other.",
+			"noDefault": "No default",
+			"saveButton": "Save",
+			"cancelButton": "Cancel",
+			"updateSuccess": "Custom field updated.",
+			"updateError": "Failed to update custom field."
 		},
 		"githubIntegration": {
 			"validation": {
@@ -2782,7 +2851,10 @@
 				"pr_merged": "PR merged",
 				"issue_opened": "Issue opened",
 				"issue_closed": "Issue closed"
-			}
+			},
+			"removeRule": "Remove the rule for {{event}}",
+			"toastRemoved": "Workflow rule removed",
+			"toastRemoveError": "Failed to remove rule"
 		},
 		"externalLinks": {
 			"resources": "Resources",
@@ -2988,7 +3060,7 @@
 		},
 		"trash": {
 			"projectTitle": "Recently deleted",
-			"projectSubtitle": "Deleted tasks stay here until they are deleted permanently. Restoring a task brings back the sub-tasks deleted with it.",
+			"projectSubtitle": "Deleted tasks and pages stay here until they are deleted permanently. Restoring a task brings back the sub-tasks deleted with it; a restored page goes back to Archived.",
 			"workspaceTitle": "Recently deleted projects",
 			"workspaceNav": "Recently deleted",
 			"workspaceSubtitle": "Deleted projects stay here with their tasks until they are deleted permanently.",
@@ -2996,7 +3068,7 @@
 			"searchProjects": "Search deleted projects",
 			"deletedBy": "Deleted by {{name}} {{time}}",
 			"deletedAt": "Deleted {{time}}",
-			"purgeOn": "Deleted permanently on {{date}}",
+			"purgeOn": "Deletes permanently on {{date}}",
 			"withSubTasks_one": "with {{count}} sub-task",
 			"withSubTasks_other": "with {{count}} sub-tasks",
 			"taskCount_one": "{{count}} task",
@@ -3029,8 +3101,17 @@
 				"projectPurged": "Project deleted permanently",
 				"emptied_one": "{{count}} task deleted permanently",
 				"emptied_other": "{{count}} tasks deleted permanently",
-				"purgeError": "Couldn't delete it permanently"
-			}
+				"purgeError": "Couldn't delete it permanently",
+				"pageRestored": "Page restored to Archived",
+				"pagePurged": "Page deleted permanently"
+			},
+			"tasksHeading": "Tasks",
+			"pagesHeading": "Pages",
+			"searchPages": "Search deleted pages",
+			"emptyPagesTitle": "No deleted pages",
+			"emptyPagesDescription": "Archived pages you delete from this project appear here.",
+			"purgePageTitle": "Delete this page permanently?",
+			"purgePageDescription": "“{{name}}”, its comments and version history are deleted for everyone. This can't be undone."
 		},
 		"automationRules": {
 			"title": "Automations",
@@ -3412,7 +3493,8 @@
 				"taskCopyKey": "Copy the task key",
 				"taskCopyLink": "Copy the task link",
 				"taskCopyBranch": "Copy the task's branch name",
-				"taskDelete": "Delete the task"
+				"taskDelete": "Delete the task",
+				"moveBetweenCards": "Move between cards on the board"
 			}
 		},
 		"shell": {
@@ -3550,6 +3632,14 @@
 			"automation_notice": {
 				"title": "Automation: {{ruleName}}",
 				"content": "{{taskKey}} {{taskTitle}}"
+			},
+			"page_comment": {
+				"title": "{{commenterName}} commented",
+				"content": "{{commenterName}} commented on {{pageTitle}}: {{commentPreview}}"
+			},
+			"page_updated": {
+				"title": "{{editorName}} edited a page",
+				"content": "{{editorName}} edited {{pageTitle}}"
 			}
 		},
 		"inbox": {
@@ -3656,7 +3746,9 @@
 				"emptyTitle": "Select a notification",
 				"emptyDescription": "Its task opens here.",
 				"unavailable": "This task is no longer available",
-				"label": "Reading pane"
+				"label": "Reading pane",
+				"showProperties": "Show properties",
+				"hideProperties": "Hide properties"
 			},
 			"verbs": {
 				"task_created": "created this task",
@@ -3679,7 +3771,11 @@
 				"intake_duplicate": "marked your request as a duplicate",
 				"page_mention": "mentioned you in a page",
 				"page_mention_titled": "mentioned you in {{pageTitle}}",
-				"task_comment_reply": "replied to a comment"
+				"task_comment_reply": "replied to a comment",
+				"page_comment": "commented on a page",
+				"page_comment_titled": "commented on {{pageTitle}}",
+				"page_updated": "edited a page you watch",
+				"page_updated_titled": "edited {{pageTitle}}"
 			},
 			"dropdown": {
 				"openInbox": "Open inbox",
@@ -3907,7 +4003,9 @@
 			"snoozeEnded": "The snooze ended and this request is back in review",
 			"duplicate": "marked this request as a duplicate of {{key}}",
 			"duplicateDeleted": "marked this request as a duplicate of a deleted task",
-			"reopened": "reopened this request"
+			"reopened": "reopened this request",
+			"acceptedHidden": "accepted this request into another project",
+			"duplicateHidden": "marked this request as a duplicate of a task in another project"
 		},
 		"reactions": {
 			"add": "Add reaction",
@@ -3961,10 +4059,42 @@
 			"closed_one": "closed this task after {{count}} month without updates, moving it to {{to}}",
 			"closed_other": "closed this task after {{count}} months without updates, moving it to {{to}}",
 			"rolledOver": "moved this task from {{from}} to {{to}} when the cycle ended",
-			"byRule": "via {{name}}"
+			"byRule": "via {{name}}",
+			"rolledOverHidden": "moved this task to the next cycle when the cycle ended"
 		},
 		"movedToTrash": "moved this task to the trash",
-		"restoredFromTrash": "restored this task from the trash"
+		"restoredFromTrash": "restored this task from the trash",
+		"parentRemovedHidden": "removed a parent task in another project",
+		"subtaskAddedHidden": "added a sub-task in another project",
+		"subtaskRemovedHidden": "removed a sub-task in another project",
+		"copiedToHidden": "made a copy of this task in another project",
+		"relationAddedHidden": {
+			"related": "marked this task as related to a task in another project",
+			"blocking": "marked this task as blocking a task in another project",
+			"blocked_by": "marked this task as blocked by a task in another project",
+			"duplicate": "marked this task as a duplicate of a task in another project",
+			"start_before": "set this task to start before a task in another project",
+			"start_after": "set this task to start after a task in another project",
+			"finish_before": "set this task to finish before a task in another project",
+			"finish_after": "set this task to finish after a task in another project"
+		},
+		"relationRemovedHidden": "removed the {{relation}} relation with a task in another project",
+		"parentSetHidden": "set the parent to a task in another project",
+		"parentChangedFromHidden": "changed the parent from a task in another project to <to>{{to}}</to>",
+		"parentChangedToHidden": "changed the parent from <from>{{from}}</from> to a task in another project",
+		"parentChangedBetweenHidden": "changed the parent between tasks in other projects",
+		"copiedFromHidden": "created this task as a copy of a task in another project",
+		"movedFromHidden": "moved task from another project to \"{{to}}\"",
+		"movedToHidden": "moved task from \"{{from}}\" to another project",
+		"movedBetweenHidden": "moved task between other projects",
+		"changedStatusHidden": "changed status in another project",
+		"addedToHiddenCycle": "added the task to a cycle",
+		"removedFromHiddenCycle": "removed the task from a cycle",
+		"movedCycleFromHidden": "moved the task from another cycle to {{to}}",
+		"movedCycleToHidden": "moved the task from cycle {{from}} to another cycle",
+		"movedCycleBetweenHidden": "moved the task between cycles",
+		"addedToHiddenModule": "added the task to a module",
+		"removedFromHiddenModule": "removed the task from a module"
 	},
 	"tasks": {
 		"recurrence": {
@@ -4022,7 +4152,11 @@
 				"recurredFrom": "created this task as the next repeat of <task>{{task}}</task>",
 				"recurredFromScheduled": "Created on schedule as the next repeat of <task>{{task}}</task>",
 				"recurredTo": "completed this task, which created the next repeat <task>{{task}}</task>",
-				"recurredToScheduled": "The next repeat was created on schedule: <task>{{task}}</task>"
+				"recurredToScheduled": "The next repeat was created on schedule: <task>{{task}}</task>",
+				"recurredToHidden": "completed this task, which created the next repeat in another project",
+				"recurredToScheduledHidden": "The next repeat was created on schedule in another project",
+				"recurredFromHidden": "created this task as the next repeat of a task in another project",
+				"recurredFromScheduledHidden": "Created on schedule as the next repeat of a task in another project"
 			}
 		},
 		"subscription": {
@@ -4086,7 +4220,7 @@
 			"high": "High",
 			"urgent": "Urgent"
 		},
-		"boardSearchPlaceholder": "Search tickets...",
+		"boardSearchPlaceholder": "Search tasks...",
 		"view": {
 			"board": "Board",
 			"list": "List",
@@ -4241,6 +4375,11 @@
 				"mermaid": {
 					"renderFailed": "Mermaid diagram couldn't be rendered"
 				}
+			},
+			"saveError": {
+				"title": "Your title didn't save. It's still in the field, so you can try again.",
+				"description": "Your description didn't save. It's still in the editor, so you can try again.",
+				"retry": "Try again"
 			}
 		},
 		"entity": {
@@ -4461,7 +4600,43 @@
 			"schedule": "Schedule",
 			"scheduleTask": "Schedule {{title}} from today",
 			"dragToSchedule": "Drag {{title}} onto the timeline",
-			"dependencyConflict": "Starts or ends out of order with a dependency"
+			"dependencyConflict": "Starts or ends out of order with a dependency",
+			"workspaceNoTasksSubtitle": "Add a start date, due date, or both to tasks to see them on this timeline.",
+			"showMoreTasks": "Show more tasks",
+			"blocked": "Blocked by an open task",
+			"linkFrom": "Link {{title}} to another task",
+			"linkHint": "Drag to another task to make it wait for this one",
+			"link": {
+				"blocks": "{{source}} blocks {{target}}",
+				"startBefore": "{{source}} starts before {{target}}",
+				"finishBefore": "{{source}} finishes before {{target}}",
+				"conflict": "The dates break this link."
+			},
+			"milestone": {
+				"add": "Milestone",
+				"ariaLabel": "Milestone {{title}}: open or drag to move",
+				"name": "Milestone name",
+				"namePlaceholder": "Milestone name",
+				"date": "Milestone date",
+				"create": "Add milestone",
+				"createError": "Couldn't add the milestone"
+			},
+			"cascade": {
+				"offer_one": "1 linked task now starts too early",
+				"offer_other": "{{count}} linked tasks now start too early",
+				"reviewAction": "Review date changes",
+				"title_one": "Move 1 linked task?",
+				"title_other": "Move {{count}} linked tasks?",
+				"description": "These tasks would move later, just enough to fit their links, and keep their length. Nothing changes until you confirm.",
+				"to": "to",
+				"cancel": "Keep dates",
+				"confirm_one": "Move 1 task",
+				"confirm_other": "Move {{count}} tasks",
+				"moved_one": "Moved 1 task",
+				"moved_other": "Moved {{count}} tasks",
+				"partial": "Moved {{moved}} of {{total}} tasks. The rest kept their dates.",
+				"nothingToMove": "No open task with dates has to move for this link."
+			}
 		},
 		"delete": {
 			"title": "Delete task?",
@@ -4587,7 +4762,9 @@
 			"formerMemberSuffix": "{{name}} (no longer a member)",
 			"limitReached": "A task can have up to {{count}} assignees",
 			"updateError": "Failed to update assignees",
-			"unknownPerson": "Unknown person"
+			"unknownPerson": "Unknown person",
+			"noAccess": "No access to this project",
+			"noAccessSuffix": "{{name}} (no access to this project)"
 		},
 		"dueDate": {
 			"label": "Due date",
@@ -4657,7 +4834,28 @@
 			"deleteEntry": "Delete time entry from {{date}}",
 			"deleteConfirm": "Delete this entry?",
 			"deleted": "Time entry deleted",
-			"deleteError": "Couldn't delete the time entry"
+			"deleteError": "Couldn't delete the time entry",
+			"startTimer": "Start timer",
+			"startHere": "Stop it and start here",
+			"stopTimer": "Stop",
+			"timerRunning": "Timer running",
+			"timerRunningOn": "Timer running on {{task}}",
+			"timerStarted": "Timer started",
+			"timerSwitched": "Timer started. Your other timer was stopped.",
+			"timerStopped": "Timer stopped. Logged {{total}}.",
+			"timerStartError": "Couldn't start the timer",
+			"timerStopError": "Couldn't stop the timer",
+			"loadError": "Couldn't load the time entries",
+			"editEntry": "Edit time entry from {{date}}",
+			"editStart": "Start",
+			"editEnd": "End",
+			"editEndRunningHint": "Leave empty to keep it running.",
+			"editEndRequired": "Enter when this time ended.",
+			"editStartInvalid": "Enter when this time started.",
+			"editEndBeforeStart": "The end can't be before the start.",
+			"editSave": "Save",
+			"edited": "Time entry updated",
+			"editError": "Couldn't update the time entry"
 		},
 		"bulk": {
 			"selectedCount": "{{count}} selected",
@@ -4711,7 +4909,17 @@
 			"dueDate": "Due date",
 			"clearStartDate": "Clear start date",
 			"clearDueDate": "Clear due date",
-			"updateStartDateError": "Failed to update start date. A start date can't be after a task's due date."
+			"updateStartDateError": "Failed to update start date. A start date can't be after a task's due date.",
+			"selectTask": "Select {{title}}",
+			"moveToProject": "Move to project",
+			"moveToProjectTitle_one": "Move {{count}} task to {{name}}?",
+			"moveToProjectTitle_other": "Move {{count}} tasks to {{name}}?",
+			"moveToProjectRule": "They get new task keys. Each task keeps its status if the project has it, otherwise it goes to the first column. Labels and assignees stay. Cycles, modules and estimates are cleared. Custom field values stay only where the project has a field with the same name and type.",
+			"moveToProjectConfirm": "Move tasks",
+			"moveToProjectSuccess_one": "Moved {{count}} task to {{name}}",
+			"moveToProjectSuccess_other": "Moved {{count}} tasks to {{name}}",
+			"moveToProjectNone": "These tasks are already in {{name}}",
+			"moveToProjectError": "Couldn't move the tasks"
 		},
 		"editor": {
 			"table": {
@@ -4955,7 +5163,8 @@
 				"parent": "Parent",
 				"project": "Project",
 				"subscribed": "Subscribed",
-				"mentions": "Mentions"
+				"mentions": "Mentions",
+				"blocked": "Blocked"
 			},
 			"operators": {
 				"isNoneOf": "is none of",
@@ -4984,7 +5193,9 @@
 				"noParent": "No parent",
 				"currentCycle": "Current cycle",
 				"true": "True",
-				"false": "False"
+				"false": "False",
+				"blockedYes": "Yes",
+				"blockedNo": "No"
 			},
 			"dates": {
 				"today": "Today",
@@ -5017,7 +5228,8 @@
 				"exclude": "Hide archived",
 				"include": "Show archived too",
 				"only": "Only archived"
-			}
+			},
+			"myTasks": "My tasks"
 		},
 		"display": {
 			"button": "Display",
@@ -5039,7 +5251,8 @@
 				"cycle": "Cycle",
 				"module": "Module",
 				"estimate": "Estimate",
-				"project": "Project"
+				"project": "Project",
+				"customField": "Custom field"
 			},
 			"order": {
 				"manual": "Manual",
@@ -5058,7 +5271,8 @@
 				"module": "Module",
 				"estimate": "Estimate",
 				"subTaskCount": "Sub-tasks",
-				"archivedAt": "Archive date"
+				"archivedAt": "Archive date",
+				"customField": "Custom field"
 			},
 			"props": {
 				"key": "Key",
@@ -5091,7 +5305,8 @@
 			"hiddenGroups_other": "{{count}} more groups not shown",
 			"moduleCount_one": "{{count}} module",
 			"moduleCount_other": "{{count}} modules",
-			"moveError": "Couldn't move the task"
+			"moveError": "Couldn't move the task",
+			"noFieldValue": "No value"
 		},
 		"spreadsheet": {
 			"task": "Task",
@@ -5132,6 +5347,34 @@
 			"changeStatus": "Status: {{status}}",
 			"changePriority": "Priority: {{priority}}",
 			"changeAssignees": "Assignees"
+		},
+		"boardSearchOpen": "Search tasks",
+		"customFieldValue": {
+			"clear": "Clear value",
+			"edit": "Edit {{name}}",
+			"removedOption": "{{value}} (removed option)",
+			"saveError": "Couldn't save this field.",
+			"placeholder": "New value",
+			"true": "True",
+			"false": "False"
+		},
+		"customFieldBulk": {
+			"action": "Custom field",
+			"chooseField": "Choose a field",
+			"apply": "Apply",
+			"updated_one": "Updated {{count}} task",
+			"updated_other": "Updated {{count}} tasks",
+			"error": "Couldn't update the selected tasks."
+		},
+		"milestone": {
+			"label": "Milestone",
+			"hint": "Marks one date. The timeline shows it as a diamond on its due date.",
+			"updateError": "Couldn't update the milestone"
+		},
+		"scheduleField": {
+			"label": "Field shown on tasks",
+			"none": "No field",
+			"value": "{{name}}: {{value}}"
 		}
 	},
 	"invitations": {
@@ -5187,7 +5430,8 @@
 				"inProgress": "In progress"
 			},
 			"noDueDate": "No due date",
-			"reorderError": "Failed to reorder projects"
+			"reorderError": "Failed to reorder projects",
+			"emptyDescriptionGuest": "You haven't been added to a project yet. Ask the person who invited you to add you."
 		},
 		"search": {
 			"pageTitle": "Search",
@@ -5324,7 +5568,8 @@
 			"owner": "Owner",
 			"admin": "Admin",
 			"member": "Member",
-			"viewer": "Viewer"
+			"viewer": "Viewer",
+			"guest": "Guest"
 		},
 		"members": {
 			"pageTitle": "Members",
@@ -5360,7 +5605,13 @@
 			"sentSome": "Sent {{sent}} of {{total}} invitations.",
 			"failedTitle": "Not sent",
 			"rateLimited": "Too many invitations at once. Wait a minute, then send the rest.",
-			"shareLinksDescription": "Share each link with its person so they can join the workspace."
+			"shareLinksDescription": "Share each link with its person so they can join the workspace.",
+			"guestRoleHint": "Guests see only the projects you add them to, and nothing else in the workspace.",
+			"guestProjectsLabel": "Projects",
+			"guestProjectsHint": "They join the projects you tick, with the project role you pick, as soon as they accept. As Viewer they only read.",
+			"guestProjectsEmpty": "There's no project you can share. Add them to projects after they join.",
+			"guestProjectRoleFor": "Project role in {{project}}",
+			"guestProjectsFailed": "The invitation was sent, but its projects couldn't be added: {{message}}"
 		},
 		"membersTable": {
 			"emptyTitle": "No team members yet",
@@ -5385,7 +5636,8 @@
 			"roleUpdateSuccess": "Role updated",
 			"roleUpdateError": "Failed to update role",
 			"ariaInvitationRole": "Role for {{email}}",
-			"invitationRoleUpdateSuccess": "Invitation role updated"
+			"invitationRoleUpdateSuccess": "Invitation role updated",
+			"removeDialogAccessNote": "If this is their only workspace, they're also signed out and their API keys stop working."
 		}
 	},
 	"publicProject": {
@@ -6594,7 +6846,7 @@
 				"emptyTrash": "Empty trash",
 				"restore": "Restore",
 				"deletedBy": "Deleted by {{name}} {{time}}",
-				"purgeOn": "Deleted permanently on {{date}}",
+				"purgeOn": "Deletes permanently on {{date}}",
 				"empty": "No deleted tasks",
 				"restored": "Task restored",
 				"items": {
@@ -8078,7 +8330,8 @@
 			"cycles": "Cycles",
 			"modules": "Modules",
 			"intake": "Intake",
-			"delivery": "Delivery"
+			"delivery": "Delivery",
+			"time": "Time"
 		},
 		"header": {
 			"allProjects": "All projects",
@@ -8146,7 +8399,19 @@
 			"donutCenter_one": "{{count}} task",
 			"donutCenter_other": "{{count}} tasks",
 			"workload": "Workload",
-			"workloadSubtitle": "Open tasks by assignee"
+			"workloadSubtitle": "Open tasks by assignee",
+			"workloadSubtitlePoints": "Open estimate points by assignee",
+			"overloaded_one": "{{names}} has more open work than they usually finish in {{weeks}} weeks.",
+			"overloaded_other": "{{names}} have more open work than they usually finish in {{weeks}} weeks.",
+			"overUsual": "Over their usual",
+			"overTooltip": "{{name}}: over their usual",
+			"usualHint": "Usual is what each person finished in a typical {{usualWeeks}} weeks, from the last {{historyWeeks}} weeks. Someone with no recent history isn't judged.",
+			"checkColumn": "Against usual",
+			"checkOverPoints": "Over: {{load}} points, usually {{usual}}",
+			"checkOverTasks": "Over: {{load}} tasks, usually {{usual}}",
+			"checkOkPoints": "{{load}} points, usually {{usual}}",
+			"checkOkTasks": "{{load}} tasks, usually {{usual}}",
+			"checkUnknown": "No recent history"
 		},
 		"trend": {
 			"title": "Created vs completed",
@@ -8177,7 +8442,9 @@
 			"label": "Metric",
 			"tasks": "Tasks",
 			"points": "Estimate points",
-			"pointsShort": "Points"
+			"pointsShort": "Points",
+			"sum": "Sum",
+			"sumOf": "Sum of {{name}}"
 		},
 		"builder": {
 			"title": "Custom chart",
@@ -8248,8 +8515,15 @@
 				"madePrivate": "Report is now private",
 				"deleted": "Report deleted",
 				"saveError": "Couldn't save the report",
-				"deleteError": "Couldn't delete the report"
-			}
+				"deleteError": "Couldn't delete the report",
+				"pinned": "Pinned to Home",
+				"unpinned": "Unpinned from Home",
+				"pinError": "Couldn't update your Home",
+				"pinLimit_one": "You can pin up to {{count}} report. Unpin one first.",
+				"pinLimit_other": "You can pin up to {{count}} reports. Unpin one first."
+			},
+			"pin": "Pin to Home",
+			"unpin": "Unpin from Home"
 		},
 		"dimensions": {
 			"status": "Status",
@@ -8265,7 +8539,8 @@
 			"createdAt": "Created date",
 			"completedAt": "Completed date",
 			"startDate": "Start date",
-			"dueDate": "Due date"
+			"dueDate": "Due date",
+			"customField": "Custom field"
 		},
 		"dimensionsPlural": {
 			"status": "statuses",
@@ -8276,7 +8551,8 @@
 			"module": "modules",
 			"estimate": "estimates",
 			"project": "projects",
-			"period": "periods"
+			"period": "periods",
+			"customField": "values"
 		},
 		"none": {
 			"assignee": "Unassigned",
@@ -8287,7 +8563,8 @@
 			"estimate": "No estimate",
 			"completedAt": "Not completed",
 			"startDate": "No start date",
-			"dueDate": "No due date"
+			"dueDate": "No due date",
+			"customField": "No value"
 		},
 		"other": "Other",
 		"table": {
@@ -8370,6 +8647,20 @@
 			"barSummary": "{{metric}} by {{dimension}}: {{count}} buckets, highest {{label}} with {{value}}",
 			"lineSummary": "{{series}} over {{count}} periods",
 			"donutSummary": "{{total}} tasks in {{count}} groups"
+		},
+		"time": {
+			"total": "Time logged",
+			"entries": "Entries",
+			"people": "People",
+			"running": "Running now",
+			"runningNote": "Running timers join these totals once they stop.",
+			"byPerson": "By person",
+			"byProject": "By project",
+			"person": "Person",
+			"project": "Project",
+			"hours": "Hours",
+			"formerMember": "Former member",
+			"empty": "No time logged in this period"
 		}
 	},
 	"planning": {
@@ -8559,7 +8850,8 @@
 			"recents": "Recents",
 			"stickies": "Stickies",
 			"risks": "Risks",
-			"myBrief": "My brief"
+			"myBrief": "My brief",
+			"pinnedReports": "Pinned reports"
 		},
 		"manage": {
 			"title": "Manage widgets",
@@ -8663,7 +8955,22 @@
 			"overdue_other": "{{count}} overdue",
 			"stickiesHint": "Private notes, only for you",
 			"unreadCaption": "unread",
-			"openCaption": "open"
+			"openCaption": "open",
+			"loadError": "Couldn't load"
+		},
+		"dueToday": {
+			"title": "Due today",
+			"empty": "Nothing assigned to you is due today.",
+			"loadError": "Couldn't load your tasks due today",
+			"viewAll": "View all {{total}}"
+		},
+		"pinnedReports": {
+			"empty": "Pin a saved report in Analytics to see it here.",
+			"openAnalytics": "Open Analytics",
+			"loadError": "Couldn't load your pinned reports",
+			"chartError": "Couldn't load this report",
+			"unpin": "Unpin {{name}} from Home",
+			"showing": "Showing {{shown}} of {{total}}. Analytics has the rest."
 		}
 	},
 	"stickies": {
@@ -8839,7 +9146,8 @@
 					"title": "No matching pages",
 					"description": "Try a different search or clear the filters."
 				}
-			}
+			},
+			"recentlyDeleted": "Recently deleted"
 		},
 		"actions": {
 			"openInNewTab": "Open in new tab",
@@ -8884,7 +9192,7 @@
 		},
 		"deleteDialog": {
 			"title": "Delete page?",
-			"description": "“{{title}}” will be permanently deleted with its version history. Its sub-pages move to the top level. This can't be undone.",
+			"description": "“{{title}}” moves to Recently deleted in the project's settings, where it can be restored until it is deleted permanently. Its sub-pages move to the top level.",
 			"cancel": "Cancel",
 			"confirm": "Delete"
 		},
@@ -9016,7 +9324,8 @@
 			"outline": "Outline",
 			"info": "Info",
 			"history": "History",
-			"close": "Close panel"
+			"close": "Close panel",
+			"comments": "Comments"
 		},
 		"outline": {
 			"empty": {
@@ -9096,6 +9405,37 @@
 		},
 		"commandPalette": {
 			"createPage": "Create page"
+		},
+		"comments": {
+			"placeholder": "Add a comment…",
+			"add": "Comment",
+			"save": "Save",
+			"cancel": "Cancel",
+			"emptyTitle": "No comments yet",
+			"emptyDescription": "Comments here stay inside the workspace. Public links don't show them.",
+			"archivedNote": "This page is archived. Restore it to comment.",
+			"loadError": "Couldn't load the comments",
+			"retry": "Retry",
+			"deletedUser": "Deleted user",
+			"edited": "edited",
+			"menuAria": "More actions for this comment",
+			"edit": "Edit",
+			"delete": "Delete",
+			"deleteTitle": "Delete this comment?",
+			"deleteDescription": "It is removed for everyone. This can't be undone.",
+			"toasts": {
+				"empty": "Write something first",
+				"addError": "Couldn't add the comment",
+				"saveError": "Couldn't save the comment",
+				"deleteError": "Couldn't delete the comment"
+			}
+		},
+		"watch": {
+			"watch": "Watch page",
+			"unwatch": "Stop watching",
+			"watchHint": "Get notified about comments and changes",
+			"watchingHint": "You're notified about comments and changes",
+			"error": "Couldn't change watching for this page"
 		}
 	},
 	"accountSecurity": {
@@ -9154,7 +9494,9 @@
 				"sessionLifetime": "Session lifetime",
 				"sessionLifetimeHint": "How long a session lasts without use. Using it extends it.",
 				"hours": "hours",
-				"signInNotice": "Sign in with {{provider}}. Password sign-in is for instance admins only."
+				"signInNotice": "Sign in with {{provider}}. Password sign-in is for instance admins only.",
+				"requireTwoFactor": "Require two-factor",
+				"requireTwoFactorHint": "Every account with a password must set up two-factor before it can do anything else, even one that also signs in through a provider or SAML, and its API keys stop working until it does. Email links and codes turn off, so anyone who only used those can't get in until they have a password: they set one with Forgot password, or you set one for them under Users if email isn't set up. Accounts without a password follow their provider's rules. Turn it on for your own account first."
 			},
 			"twoFactor": {
 				"title": "Two-factor authentication",
@@ -9181,7 +9523,11 @@
 				"done": "Done",
 				"enabled": "Two-factor authentication is on.",
 				"disabled": "Two-factor authentication is off.",
-				"error": "Something went wrong. Try again."
+				"error": "Something went wrong. Try again.",
+				"requiredHint": "This server requires two-factor, so it can't be turned off. If you lose your device and recovery codes, an instance admin can reset it.",
+				"setupRequiredTitle": "Set up two-factor to continue",
+				"setupRequiredHint": "This server requires two-factor for every account with a password. You'll need an authenticator app.",
+				"signOutInstead": "Sign out instead"
 			},
 			"challenge": {
 				"title": "Two-factor authentication",
@@ -9253,7 +9599,11 @@
 				"noPassword": "Not set (signs in another way)",
 				"workspacesTitle": "Workspaces",
 				"noWorkspaces": "Not a member of any workspace.",
-				"joined": "Joined {{date}}"
+				"joined": "Joined {{date}}",
+				"resetTwoFactor": "Reset two-factor",
+				"resetTwoFactorTitle": "Reset two-factor for {{name}}?",
+				"resetTwoFactorDescription": "Use this when they've lost their device and recovery codes, and you've checked it's really them. Their two-factor is removed and they're signed out everywhere. They can then sign in with just their password and set it up again.",
+				"twoFactorReset": "Two-factor reset for {{name}}"
 			}
 		},
 		"password": {
@@ -9317,7 +9667,19 @@
 				"cliAdminPromoted": "Made an instance admin (recovery CLI)",
 				"cliAdminDemoted": "Removed an instance admin (recovery CLI)",
 				"cliPasswordReset": "Reset a password (recovery CLI)",
-				"cliUserUnbanned": "Lifted a ban (recovery CLI)"
+				"cliUserUnbanned": "Lifted a ban (recovery CLI)",
+				"userTwoFactorReset": "Reset an account's two-factor",
+				"cliTwoFactorReset": "Reset an account's two-factor (recovery CLI)",
+				"scimConnectionCreated": "Connected an identity provider for provisioning",
+				"scimTokenRotated": "Replaced a SCIM token",
+				"scimConnectionDeleted": "Removed a SCIM connection",
+				"scimUserProvisioned": "Added an account by provisioning",
+				"scimUserDeactivated": "Deactivated an account by provisioning",
+				"scimUserReactivated": "Reactivated an account by provisioning",
+				"scimUserRemoved": "Removed someone from a workspace by provisioning",
+				"samlConnectionCreated": "Connected an identity provider for sign-in",
+				"samlConnectionUpdated": "Changed a SAML connection",
+				"samlConnectionDeleted": "Removed a SAML connection"
 			}
 		}
 	},
@@ -9388,6 +9750,15 @@
 				"notConfigured": "Not configured",
 				"on": "On",
 				"off": "Off"
+			},
+			"deliveryFailures": {
+				"title": "Recent delivery failures",
+				"description": "Workspace webhooks that used up their retries in the last 7 days. Email and background job errors are only in the server logs.",
+				"empty": "No failed deliveries in the last 7 days.",
+				"when": "When",
+				"workspace": "Workspace",
+				"webhook": "Webhook",
+				"response": "Response"
 			}
 		},
 		"auth": {
@@ -9583,6 +9954,74 @@
 			"removeConfirm": "Remove",
 			"removed": "{{name}} is no longer an instance admin",
 			"lastAdmin": "There must be at least one instance admin"
+		},
+		"identity": {
+			"name": "Name",
+			"nameHint": "What admins call this connection, for example the provider.",
+			"remove": "Remove",
+			"removeTitle": "Remove {{name}}?",
+			"done": "Done",
+			"scim": {
+				"title": "Provisioning (SCIM)",
+				"description": "Let an identity provider add, change and remove people in one workspace.",
+				"none": "No identity provider is connected for provisioning.",
+				"connect": "Connect provider",
+				"connectDescription": "Creates a token for one workspace. You'll see it once, after connecting.",
+				"connectConfirm": "Create token",
+				"workspace": "Workspace",
+				"workspaceHint": "People this provider adds join this workspace as members.",
+				"workspacePlaceholder": "Choose a workspace",
+				"workspaceSearch": "Search workspaces",
+				"baseUrl": "SCIM base URL",
+				"token": "Bearer token",
+				"tokenTitle": "Copy the token for {{name}}",
+				"tokenDescription": "This is the only time you'll see it. Give it only to the identity provider: whoever holds it can add people to the workspace and change or deactivate the people this connection manages.",
+				"rotate": "Replace token",
+				"rotateTitle": "Replace the token for {{name}}?",
+				"rotateDescription": "The current token stops working now, so provisioning stops until the identity provider has the new one. People stay linked.",
+				"rotateConfirm": "Replace token",
+				"removeDescription": "The token stops working now. The people it added keep their accounts and memberships, and nothing updates them from the provider any more.",
+				"removed": "Removed {{name}}",
+				"columns": {
+					"name": "Name",
+					"workspace": "Workspace",
+					"people": "People"
+				}
+			},
+			"saml": {
+				"title": "Company sign-in (SAML)",
+				"description": "Let people on your email domains sign in through an identity provider.",
+				"none": "No identity provider is connected for sign-in.",
+				"connect": "Connect provider",
+				"connectConfirm": "Connect",
+				"edit": "Edit",
+				"editTitle": "Edit {{name}}",
+				"formDescription": "Whoever controls this identity provider can sign in anyone on these domains whose address is verified here, so connect only one you trust for them.",
+				"acsUrl": "Assertion Consumer Service URL",
+				"entityId": "Entity ID (audience)",
+				"addressesHint": "Enter these two at your identity provider. They don't change later.",
+				"domains": "Email domains",
+				"domainsHint": "Separate several with commas. Subdomains are included.",
+				"domainsInvalid": "Enter domains like example.com, separated by commas.",
+				"issuer": "Identity provider entity ID (issuer)",
+				"entryPoint": "Single sign-on URL",
+				"entryPointInvalid": "Use an https:// address.",
+				"certificate": "Signing certificate",
+				"certificateHint": "The identity provider's public X.509 certificate, as PEM or base64. Never a private key.",
+				"certificateKeepHint": "Leave this empty to keep the current certificate.",
+				"currentCertificate": "Current fingerprint: {{fingerprint}}",
+				"certificateExpired": "Expired",
+				"certificateExpiring": "Expires soon",
+				"connected": "Identity provider connected",
+				"saved": "Connection saved",
+				"removeDescription": "Sign-in through this identity provider stops now. Accounts stay, and people sign in another way.",
+				"removed": "Removed {{name}}",
+				"columns": {
+					"name": "Name",
+					"domains": "Email domains",
+					"certificate": "Certificate expires"
+				}
+			}
 		}
 	},
 	"templates": {
@@ -9936,6 +10375,24 @@
 				"facts": "Projects: {{projects}} · People: {{members}} · Cycles: {{cycles}}",
 				"memory": "Memory notes: {{count}}",
 				"history": "Earlier messages: {{count}}"
+			},
+			"undo": {
+				"button": "Undo plan",
+				"pending": "Undoing the plan…",
+				"hint": "You can undo this plan for an hour, as long as nothing in it has changed.",
+				"lastPlan": "You can still undo your last plan.",
+				"done": "The plan was undone. Deleted items are in the trash.",
+				"archived_one": "{{count}} item was archived instead, because you can't delete it.",
+				"archived_other": "{{count}} items were archived instead, because you can't delete them.",
+				"partial_one": "Undone, except for {{count}} item:",
+				"partial_other": "Undone, except for {{count}} items:",
+				"edited_one": "Nothing was undone: {{count}} item changed after the plan was created. Remove it by hand if you still want it gone.",
+				"edited_other": "Nothing was undone: {{count}} items changed after the plan was created. Remove them by hand if you still want them gone.",
+				"more_one": "and {{count}} more",
+				"more_other": "and {{count}} more",
+				"already": "This plan was already undone.",
+				"expired": "This plan can no longer be undone: the hour has passed.",
+				"failed": "Couldn't undo this plan."
 			}
 		},
 		"duplicates": {
@@ -11484,7 +11941,8 @@
 			"text": "This is a test email from {{instanceName}}. If you can read it, email delivery works."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "New comment on {{taskTitle}}"
+			"commentWithoutPreview": "New comment on {{taskTitle}}",
+			"pushFixedLine": "Open Margaya to see the details."
 		}
 	}
 }
