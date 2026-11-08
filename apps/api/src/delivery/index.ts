@@ -38,7 +38,7 @@ const FORECAST_DESCRIPTION =
   "Monte Carlo forecast of when the open tasks are done: the project's tasks completed per day over the last 56 days (from its start or first completion, if later; yesterday is the last day) are drawn at random, 10,000 times, with a generator seeded by the scope, today and the open count, so results are stable within a day. Returns the 50th, 85th and 95th percentile dates and, with an end date, the share of runs done by it. Below 14 days of history, 5 completions or 3 days with a completion, status is insufficient_history. Counts only.";
 
 const RISKS_DESCRIPTION =
-  "Computed risks of the open scope, ranked by severity: blocked chains (task relations blocks), the critical path over blocks and finish-before relations to the end date (weighted by the project's median cycle time), ageing work in progress past the p85 cycle time, overdue clusters and unassigned work due within 3 days. Blockers in projects you can't see are counted but never named.";
+  "Computed risks of the open scope, ranked by severity: blocked chains (task relations blocks), the critical path over blocks and finish-before relations to the end date (weighted by the project's median cycle time), ageing work in progress past the p85 cycle time, overdue clusters and unassigned work due within 3 days. Blockers in projects you can't see are counted but never named; through a project-limited API key, blockers outside its projects are left out altogether.";
 
 const cycleMiddleware = [
   cycleAccess("cycleId"),

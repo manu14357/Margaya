@@ -108,7 +108,7 @@ const capacityRoute = createRoute({
   tags: TAGS,
   summary: "Check a cycle's capacity",
   description:
-    "The cycle's committed work (tasks not cancelled; estimate points when the system is numeric and most tasks are sized) against what the team finished in comparable time: up to 6 ended cycles of the project scaled to this cycle's length, else daily throughput over the last 56 days. Over a usual cycle (the median), it suggests not-started tasks to defer, lowest priority and fewest dependants first. Per-assignee load is returned only to people with cycle:update. Computed, no AI.",
+    "The cycle's committed work (tasks not cancelled; estimate points when the system is numeric and most tasks are sized) against what the team finished in comparable time: up to 6 ended cycles of the project scaled to this cycle's length, else daily throughput over the last 56 days. Over a usual cycle (the median), it suggests not-started tasks to defer, lowest priority and fewest dependants first. With each assignee's load against what they usually finish, for everyone the route lets in. Computed, no AI.",
   middleware: [...cycleInsight] as const,
   request: { params: cycleIdParam },
   responses: {
@@ -183,15 +183,16 @@ const insight = apiRouter<Variables>()
   .openapi(calibrationRoute, async (c) =>
     c.json(await getCalibration(c.req.valid("param").projectId), 200),
   )
-  .openapi(capacityRoute, async (c) => {
-    const can = await workspacePermissionChecker(c);
-    return c.json(
+  .openapi(capacityRoute, async (c) =>
+    c.json(
+      // Per-assignee load is an analytics read like the workload's
+      // comparison: the route's audience (analytics:read) gets it.
       await getCycleCapacity(c.req.valid("param").cycleId, {
-        includeMembers: can({ cycle: ["update"] }),
+        includeMembers: true,
       }),
       200,
-    );
-  })
+    ),
+  )
   .openapi(retroRoute, async (c) =>
     c.json(
       await computeRetroFacts({

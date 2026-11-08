@@ -161,7 +161,8 @@ const blockedEntry = z.object({
   task: taskRef,
   blockers: z.array(taskRef.extend({ open: z.boolean() })),
   hiddenBlockers: z.number().int().openapi({
-    description: "Blockers in projects you can't see (counted, not named).",
+    description:
+      "Blockers in projects you can't see (counted, not named). Through a project-limited API key, those outside its projects are left out altogether.",
   }),
 });
 

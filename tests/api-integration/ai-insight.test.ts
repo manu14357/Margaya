@@ -406,6 +406,45 @@ describe("Capacity check", () => {
     expect(viewer.status).toBe(403);
   });
 
+  it("gives per-assignee load to whoever may read analytics, as the workload does", async () => {
+    const s = await scene();
+    const current = await s.insertCycle({
+      name: "Now",
+      startDate: day(-3),
+      endDate: day(6),
+    });
+    const task = await insertTask(s.web.project.id, "Planned");
+    await assign(task.id, s.mia);
+    await addToCycle(current.id, task.id);
+    // Reads analytics and cycles, updates nothing.
+    await db.insert(schema.workspaceRoleTable).values({
+      workspaceId: s.workspaceId,
+      role: "reporter",
+      permission: JSON.stringify({
+        workspace: ["read"],
+        project: ["read"],
+        task: ["read"],
+        cycle: ["read"],
+        analytics: ["read"],
+      }),
+    });
+    await db
+      .update(schema.workspaceUserTable)
+      .set({ role: "reporter" })
+      .where(
+        and(
+          eq(schema.workspaceUserTable.workspaceId, s.workspaceId),
+          eq(schema.workspaceUserTable.userId, s.vic.id),
+        ),
+      );
+    const check = await s.ok<{ members: { userId: string | null }[] | null }>(
+      s.vic,
+      "GET",
+      `/insight/capacity/cycle/${current.id}`,
+    );
+    expect(check.members?.map((member) => member.userId)).toEqual([s.mia.id]);
+  });
+
   it("says unknown without history", async () => {
     const s = await scene();
     const cycle = await s.insertCycle();

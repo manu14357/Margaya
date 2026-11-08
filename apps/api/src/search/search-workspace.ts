@@ -2,7 +2,7 @@ import { and, eq } from "drizzle-orm";
 import db from "../database";
 import { workspaceUserTable } from "../database/schema";
 import { searchPages } from "../page/search-pages";
-import { hiddenProjectIds } from "../project/visibility";
+import { hiddenFromUserAndKey } from "../project/visibility";
 import {
   builtInRoleStatements,
   customRoleStatements,
@@ -27,9 +27,10 @@ import { parseTextQuery, type SearchSnippet } from "./text-query";
  * - Searches as `userId`: they must be a workspace member (else []), and
  *   restricted projects they cannot see, trashed projects and tasks,
  *   intake requests not yet accepted, archived and other people's private
- *   pages, and projects with Pages off are never returned. Pages also need
- *   page:read. Pass `can` (from `workspacePermissionChecker(c)`) inside a
- *   request so API-key scopes and project-role ceilings apply too.
+ *   pages, and projects with Pages off are never returned, nor, inside a
+ *   request through a project-limited API key, projects outside it. Pages
+ *   also need page:read. Pass `can` (from `workspacePermissionChecker(c)`)
+ *   inside a request so API-key scopes and project-role ceilings apply too.
  * - `query` takes web-search syntax ("quoted phrase", or, -exclude); the last
  *   word matches as a prefix. A whole-query task key ("WEB-12") is the first
  *   hit with score 10.
@@ -122,7 +123,7 @@ export async function searchWorkspace({
   if (!member) return [];
   const check = can ?? member;
 
-  const hidden = await hiddenProjectIds(userId, workspaceId);
+  const hidden = await hiddenFromUserAndKey(userId, workspaceId);
   if (projectId && hidden.includes(projectId)) return [];
 
   const scope: SourceScope = {

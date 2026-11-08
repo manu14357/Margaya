@@ -9,7 +9,7 @@ import {
   taskTable,
   userTable,
 } from "../database/schema";
-import { hiddenProjectIds, PROJECT_NOT_FOUND } from "../project/visibility";
+import { hiddenFromUserAndKey, PROJECT_NOT_FOUND } from "../project/visibility";
 import { workspacePermissionChecker } from "../utils/require-workspace-permission";
 import { AiError } from "./errors";
 import { truncateText, wrapUntrusted } from "./prompt";
@@ -23,6 +23,7 @@ import { loadWorkspaceAiPolicy } from "./workspace-settings";
 // - One workspace per scope; entities from elsewhere read as not found.
 // - Restricted projects the caller can't see are hidden (404, never "found
 //   something you can't see"), like every other read (project/visibility.ts).
+//   So are projects outside the request's project-limited API key.
 // - Restricted projects the caller CAN see stay out too unless the workspace
 //   turned on "include restricted projects"; then they mark the call
 //   `restricted` for the Model Router.
@@ -100,7 +101,7 @@ export async function resolveAiScopeFor(input: {
           isNull(projectTable.deletedAt),
         ),
       ),
-    hiddenProjectIds(userId, workspaceId),
+    hiddenFromUserAndKey(userId, workspaceId),
   ]);
   const hiddenSet = new Set(hidden);
   const projectIds = new Set<string>();

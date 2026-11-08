@@ -20,7 +20,7 @@ import {
 import { median } from "../delivery/stats";
 import { getEnabledEstimate } from "../estimate/totals";
 import { isNumericEstimateType } from "../estimate/types";
-import { hiddenProjectIds } from "../project/visibility";
+import { hiddenFromUserAndKey, insideRequestKey } from "../project/visibility";
 import {
   taskColumnJoin,
   taskGroupSql,
@@ -202,7 +202,10 @@ async function reopenedIds(
   return reopened;
 }
 
-/** Blocks relations into the cycle's tasks; hidden blockers are counted. */
+/**
+ * Blocks relations into the cycle's tasks; hidden blockers are counted, but
+ * a project-limited API key doesn't hear of blockers outside its projects.
+ */
 async function blockersOf(
   members: readonly Member[],
   userId: string,
@@ -233,9 +236,10 @@ async function blockersOf(
           eq(taskRelationTable.relationType, "blocks"),
           eq(projectTable.workspaceId, workspaceId),
           visibleTaskCondition,
+          insideRequestKey(taskTable.projectId),
         ),
       ),
-    hiddenProjectIds(userId, workspaceId),
+    hiddenFromUserAndKey(userId, workspaceId),
   ]);
   const hiddenSet = new Set(hidden);
   const byTask = new Map(members.map((member) => [member.id, member]));

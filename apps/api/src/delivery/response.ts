@@ -126,7 +126,7 @@ export const riskRadarSchema = z
     }),
     hiddenBlockers: z.number().int().openapi({
       description:
-        "Blocking tasks in projects you can't see; they count in chains but are never named.",
+        "Blocking tasks in projects you can't see; they count in chains but are never named. Through a project-limited API key, those outside its projects are left out altogether.",
     }),
     history: z.object({ cycleTime: cycleTimeSchema }),
     criticalPath: z

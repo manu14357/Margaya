@@ -24,6 +24,7 @@ import { dailyThroughput } from "../delivery/flow-history";
 import { median } from "../delivery/stats";
 import { getEnabledEstimate } from "../estimate/totals";
 import { isNumericEstimateType } from "../estimate/types";
+import { insideRequestKey } from "../project/visibility";
 import { assigneesOfTasks } from "../task/assignees";
 import {
   taskColumnJoin,
@@ -89,7 +90,11 @@ async function cycleScope(cycleId: string): Promise<ScopeRow[]> {
   }));
 }
 
-/** Open tasks each scope task blocks (task relations "blocks"). */
+/**
+ * Open tasks each scope task blocks (task relations "blocks"). Like risks,
+ * tasks the caller can't see count unnamed, but a project-limited API key
+ * doesn't hear of tasks outside its projects.
+ */
 async function dependantCounts(taskIds: readonly string[]) {
   const counts = new Map<string, number>();
   if (taskIds.length === 0) return counts;
@@ -107,6 +112,7 @@ async function dependantCounts(taskIds: readonly string[]) {
         eq(taskRelationTable.relationType, "blocks"),
         visibleTaskCondition,
         sql`${taskGroupSql} in ('backlog', 'unstarted', 'started')`,
+        insideRequestKey(taskTable.projectId),
       ),
     )
     .groupBy(taskRelationTable.sourceTaskId);

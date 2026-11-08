@@ -13,7 +13,7 @@ import {
   taskRelationTable,
   taskTable,
 } from "../database/schema";
-import { hiddenProjectIds } from "../project/visibility";
+import { hiddenFromUserAndKey, insideRequestKey } from "../project/visibility";
 import type { Reader } from "../task/progress-queries";
 import {
   taskColumnJoin,
@@ -39,7 +39,9 @@ import {
 // Risk radar (A3): loads the scope's open tasks, walks their open blockers
 // upward, and hands everything to the pure signal builder. Tasks in projects
 // the caller can't see (restricted, or another workspace) stay in the graph
-// but are never returned by id, title or number.
+// but are never returned by id, title or number. Through a project-limited
+// API key the graph ends at the key's projects, so what lies outside them
+// isn't counted either.
 
 export const SCOPE_TASK_LIMIT = 2000;
 export const GRAPH_NODE_LIMIT = 5000;
@@ -99,6 +101,7 @@ async function loadBlockerGraph(reader: Reader, scopeIds: readonly string[]) {
   const finishEdges: Edge[] = [];
   let frontier = [...scopeIds];
   let truncated = false;
+  const insideKey = insideRequestKey(taskTable.projectId);
   for (let depth = 0; frontier.length > 0; depth++) {
     if (depth >= GRAPH_DEPTH_LIMIT) {
       truncated = true;
@@ -119,6 +122,7 @@ async function loadBlockerGraph(reader: Reader, scopeIds: readonly string[]) {
           inArray(taskRelationTable.relationType, [...PRECEDENCE_TYPES]),
           visibleTaskCondition,
           OPEN_GROUPS,
+          insideKey,
         ),
       );
     const next: string[] = [];
@@ -217,7 +221,7 @@ export async function computeScopeRisks(
   const scopeIds = scopeAll.slice(0, SCOPE_TASK_LIMIT);
   const graph = await loadBlockerGraph(reader, scopeIds);
   const rows = await loadTasks(reader, graph.nodes);
-  const hidden = new Set(await hiddenProjectIds(userId, scope.workspaceId));
+  const hidden = new Set(await hiddenFromUserAndKey(userId, scope.workspaceId));
   const isHidden = (row: TaskRow) =>
     row.workspaceId !== scope.workspaceId || hidden.has(row.projectId);
   const assignees = await assigneesOf(
