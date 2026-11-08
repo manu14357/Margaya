@@ -92,9 +92,33 @@ export const owner = ac.newRole({
   ai: ["use", "manage"],
 });
 
-export const builtInRoles = { viewer, member, admin, owner } as const;
+// A guest reaches only the projects they are added to, and nothing else in
+// the workspace: the API fences that (apps/api/src/project/visibility.ts), so
+// no statement here can widen it. Inside a project their project role caps
+// these rights, so a guest added as viewer only reads and one added as member
+// can also add and edit tasks and comment. It holds no settings, invitation or
+// member rights, and stays static so it can't be edited into a wider role.
+export const guest = ac.newRole({
+  project: ["read"],
+  task: ["create", "read", "update"],
+  label: ["read"],
+  cycle: ["read"],
+  module: ["read"],
+  view: ["read"],
+  page: ["read"],
+});
+
+export const builtInRoles = { guest, viewer, member, admin, owner } as const;
 
 export type BuiltInRoleName = keyof typeof builtInRoles;
+
+export const GUEST_ROLE = "guest";
+
+/** Whether a stored role ("a" or "a,b") makes its holder a guest. */
+export function isGuestRole(role: string | null | undefined): boolean {
+  if (!role) return false;
+  return role.split(",").some((name) => name.trim() === GUEST_ROLE);
+}
 
 // Default-role names that the API seeds per workspace. These ARE editable in
 // the UI (their permissions live as rows in `workspace_role`), but their names

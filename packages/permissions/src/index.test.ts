@@ -6,6 +6,8 @@ import {
   DEFAULT_ROLE_NAMES,
   defaultRolePayloads,
   grantsWithin,
+  guest,
+  isGuestRole,
   member,
   mergeStatements,
   owner,
@@ -173,17 +175,53 @@ describe("built-in role privileges", () => {
     );
   });
 
-  it("groups all four roles under builtInRoles by name", () => {
+  it("groups the built-in roles under builtInRoles by name", () => {
     expect(Object.keys(builtInRoles).sort()).toEqual([
       "admin",
+      "guest",
       "member",
       "owner",
       "viewer",
     ]);
+    expect(builtInRoles.guest).toBe(guest);
     expect(builtInRoles.viewer).toBe(viewer);
     expect(builtInRoles.member).toBe(member);
     expect(builtInRoles.admin).toBe(admin);
     expect(builtInRoles.owner).toBe(owner);
+  });
+});
+
+describe("guest role", () => {
+  it("grants project work only, with nothing at workspace level", () => {
+    expect(guest.statements).toEqual({
+      project: ["read"],
+      task: ["create", "read", "update"],
+      label: ["read"],
+      cycle: ["read"],
+      module: ["read"],
+      view: ["read"],
+      page: ["read"],
+    });
+  });
+
+  it("stays static: never seeded, so it can't be edited wider", () => {
+    expect(DEFAULT_ROLE_NAMES).not.toContain("guest");
+    expect(defaultRolePayloads).not.toHaveProperty("guest");
+  });
+
+  it("recognises a guest in a stored role, alone or in a list", () => {
+    expect(isGuestRole("guest")).toBe(true);
+    expect(isGuestRole("member, guest")).toBe(true);
+    expect(isGuestRole("member")).toBe(false);
+    expect(isGuestRole("guests")).toBe(false);
+    expect(isGuestRole(null)).toBe(false);
+    expect(isGuestRole(undefined)).toBe(false);
+  });
+
+  it("is within what members and admins may grant, not viewers", () => {
+    expect(grantsWithin(guest.statements, member.statements)).toBe(true);
+    expect(grantsWithin(guest.statements, admin.statements)).toBe(true);
+    expect(grantsWithin(guest.statements, viewer.statements)).toBe(false);
   });
 });
 

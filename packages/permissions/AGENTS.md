@@ -1,6 +1,6 @@
 # packages/permissions
 
-The canonical permission vocabulary (`statement`), the Better Auth access controller (`ac`), the built-in roles (`viewer`, `member`, `admin`, `owner`) and the helpers `mergeStatements` and `grantsWithin`. Everything lives in `src/index.ts`. Follow the root [AGENTS.md](../../AGENTS.md); skill: `permissions`.
+The canonical permission vocabulary (`statement`), the Better Auth access controller (`ac`), the built-in roles (`viewer`, `member`, `admin`, `owner`, `guest`) and the helpers `mergeStatements`, `grantsWithin` and `isGuestRole`. Everything lives in `src/index.ts`. Follow the root [AGENTS.md](../../AGENTS.md); skill: `permissions`.
 
 ## How it is consumed
 
@@ -15,6 +15,10 @@ The canonical permission vocabulary (`statement`), the Better Auth access contro
 - **A new resource** (a new key in `statement`) granted to a default role is added once to existing default role rows at API boot by `backfillRolePermissions()`, then recorded in `role_permission_backfill` and never touched again.
 - **A new action on an existing resource** is not backfilled. Existing workspaces will not get it. Decide explicitly whether they should, and if so add a migration or a dedicated backfill. Never rewrite admin-edited role rows wholesale.
 - Removing or renaming an action leaves stale entries in stored rows and API keys. Treat it as a data migration.
+
+## The guest role
+
+`guest` is static like `owner`: it is never seeded or editable and its name is reserved. Its statements only say what a guest may do inside a project they were added to, capped by their project role. What keeps them inside is the API's fence, not this file: `apps/api/src/project/visibility.ts` hides every project they are not a member of, and `apps/api/src/project/guest-routes.ts` lists the only workspace routes they may call without naming a project. A route that is not on that list answers 404, so a new workspace-wide route stays closed to guests until someone adds it after making its handler narrow to the caller's projects.
 
 ## Adding a resource or action
 
