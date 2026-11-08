@@ -4,8 +4,16 @@ import {
   errorResponse,
   jsonResponse,
 } from "../openapi";
-import { notificationPreferenceSchema } from "./response";
+import { requireUserSession } from "../utils/require-user-session";
 import {
+  deletePushSubscription,
+  getPushStatus,
+  savePushSubscription,
+} from "./push";
+import { notificationPreferenceSchema, pushStatusSchema } from "./response";
+import {
+  pushSubscriptionIdParam,
+  savePushSubscriptionBody,
   updatePreferencesBody,
   upsertWorkspaceRuleBody,
   workspaceIdParam,
@@ -96,7 +104,83 @@ const deleteWorkspaceRuleRoute = createRoute({
   },
 });
 
+const pushStatusResponse = (description: string) =>
+  jsonResponse(description, pushStatusSchema);
+
+const getPushStatusRoute = createRoute({
+  method: "get",
+  operationId: "getPushStatus",
+  path: "/push",
+  tags: ["Notification Preferences"],
+  summary: "Get web push status",
+  description:
+    "Whether this instance has push set up, and which of your devices receive it. Needs a user session: API keys are refused.",
+  middleware: [requireUserSession],
+  responses: {
+    200: pushStatusResponse("Push status and your devices"),
+    403: errorResponse("A user session is required"),
+  },
+});
+
+const savePushSubscriptionRoute = createRoute({
+  method: "put",
+  operationId: "savePushSubscription",
+  path: "/push/subscriptions",
+  tags: ["Notification Preferences"],
+  summary: "Turn on web push for a device",
+  description:
+    "Save a browser's push subscription for the current user. A device already saved under another account moves to this one; the oldest device is removed past ten. Your notification types and workspace rules decide what is sent to it.",
+  middleware: [requireUserSession],
+  request: {
+    body: {
+      required: true,
+      content: { "application/json": { schema: savePushSubscriptionBody } },
+    },
+  },
+  responses: {
+    200: pushStatusResponse("Push status and your devices"),
+    400: errorResponse("Invalid subscription"),
+    403: errorResponse("A user session is required"),
+    409: errorResponse("Push is not set up on this instance"),
+  },
+});
+
+const deletePushSubscriptionRoute = createRoute({
+  method: "delete",
+  operationId: "deletePushSubscription",
+  path: "/push/subscriptions/{id}",
+  tags: ["Notification Preferences"],
+  summary: "Turn off web push for a device",
+  description: "Stop sending push to one of your devices.",
+  middleware: [requireUserSession],
+  request: { params: pushSubscriptionIdParam },
+  responses: {
+    200: pushStatusResponse("Push status and your remaining devices"),
+    403: errorResponse("A user session is required"),
+    404: errorResponse("Device not found"),
+  },
+});
+
 const notificationPreferences = apiRouter()
+  .openapi(getPushStatusRoute, async (c) =>
+    c.json(await getPushStatus(c.get("userId")), 200),
+  )
+  .openapi(savePushSubscriptionRoute, async (c) =>
+    c.json(
+      await savePushSubscription(
+        c.get("userId"),
+        c.req.valid("json"),
+        c.req.header("user-agent"),
+      ),
+      200,
+    ),
+  )
+  .openapi(deletePushSubscriptionRoute, async (c) =>
+    c.json(
+      await deletePushSubscription(c.get("userId"), c.req.valid("param").id),
+      200,
+    ),
+  )
   .openapi(getPreferencesRoute, async (c) =>
     c.json(
       await getNotificationPreferences(

@@ -56,6 +56,7 @@ export type NotificationPreferenceResponse = {
     ntfyEnabled: boolean;
     gotifyEnabled: boolean;
     webhookEnabled: boolean;
+    pushEnabled: boolean;
     projectMode: NotificationPreferenceProjectMode;
     selectedProjectIds: string[];
     createdAt: Date;
@@ -94,6 +95,7 @@ export type UpsertWorkspaceRuleInput = {
   ntfyEnabled: boolean;
   gotifyEnabled: boolean;
   webhookEnabled: boolean;
+  pushEnabled?: boolean;
   projectMode: NotificationPreferenceProjectMode;
   selectedProjectIds?: string[];
 };
@@ -270,6 +272,7 @@ export async function getNotificationPreferences(
       ntfyEnabled: rule.ntfyEnabled ?? false,
       gotifyEnabled: rule.gotifyEnabled ?? false,
       webhookEnabled: rule.webhookEnabled ?? false,
+      pushEnabled: rule.pushEnabled ?? true,
       projectMode:
         rule.projectMode === "selected" ? "selected" : ("all" as const),
       selectedProjectIds: rule.selectedProjects.map(
@@ -620,6 +623,7 @@ export async function upsertWorkspaceRule(
         ntfyEnabled: input.ntfyEnabled,
         gotifyEnabled: input.gotifyEnabled,
         webhookEnabled: input.webhookEnabled,
+        pushEnabled: input.pushEnabled ?? existing.pushEnabled,
         projectMode: input.projectMode,
         updatedAt: new Date(),
       })
@@ -635,6 +639,7 @@ export async function upsertWorkspaceRule(
         ntfyEnabled: input.ntfyEnabled,
         gotifyEnabled: input.gotifyEnabled,
         webhookEnabled: input.webhookEnabled,
+        pushEnabled: input.pushEnabled ?? true,
         projectMode: input.projectMode,
       })
       .returning({ id: userNotificationWorkspaceRuleTable.id });

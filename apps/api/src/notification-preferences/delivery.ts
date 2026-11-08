@@ -1,9 +1,14 @@
 import { createHmac } from "node:crypto";
-import { sendNotificationEmail } from "@margaya/email";
+import {
+  emailCopy,
+  resolveEmailLocale,
+  sendNotificationEmail,
+} from "@margaya/email";
 import { and, eq, isNull } from "drizzle-orm";
 import db from "../database";
 import {
   notificationTable,
+  pageTable,
   projectTable,
   taskTable,
   userNotificationPreferenceTable,
@@ -19,8 +24,16 @@ import {
   safeOutboundError,
   sendOutboundRequest,
 } from "../utils/outbound-request";
-import { localizeNotificationText } from "./notification-text";
+import {
+  localizeNotificationText,
+  renderNotificationText,
+} from "./notification-text";
+import { sendPushToUser } from "./push";
 import { decryptSecret } from "./secrets";
+
+const MAX_PUSH_TITLE_LENGTH = 120;
+const MAX_PUSH_BODY_LENGTH = 240;
+const GENERIC_BODY = "You have a new notification in Margaya.";
 
 type ResolvedNotificationContext = {
   workspaceId: string;
@@ -30,6 +43,8 @@ type ResolvedNotificationContext = {
   taskId: string | null;
   taskTitle: string | null;
   taskUrl: string | null;
+  // Where a push opens the app. A path, so it can only stay inside the app.
+  path: string;
 };
 
 type DeliveryContent = {
@@ -37,13 +52,17 @@ type DeliveryContent = {
   body: string;
 };
 
+function buildTaskPath(workspaceId: string, projectId: string, taskId: string) {
+  return `/dashboard/workspace/${workspaceId}/project/${projectId}/task/${taskId}`;
+}
+
 export function buildTaskUrl(
   workspaceId: string,
   projectId: string,
   taskId: string,
 ) {
   const clientUrl = process.env.MARGAYA_CLIENT_URL || "http://localhost:5173";
-  return `${clientUrl}/dashboard/workspace/${workspaceId}/project/${projectId}/task/${taskId}`;
+  return `${clientUrl}${buildTaskPath(workspaceId, projectId, taskId)}`;
 }
 
 function getStringValue(
@@ -234,6 +253,35 @@ export function buildDeliveryContent(notification: {
           : "You were mentioned in a Margaya page.",
       };
     }
+    case "page_comment": {
+      const pageTitle = getStringValue(notification.eventData, "pageTitle");
+      const commenterName = getStringValue(
+        notification.eventData,
+        "commenterName",
+      );
+      const commentPreview = getStringValue(
+        notification.eventData,
+        "commentPreview",
+      );
+      return {
+        title: commenterName ? `${commenterName} commented` : "New comment",
+        body: pageTitle
+          ? commentPreview
+            ? `New comment on ${pageTitle}: ${commentPreview}`
+            : `A new comment was added to the page ${pageTitle}.`
+          : "A new comment was added to a Margaya page.",
+      };
+    }
+    case "page_updated": {
+      const pageTitle = getStringValue(notification.eventData, "pageTitle");
+      const editorName = getStringValue(notification.eventData, "editorName");
+      return {
+        title: editorName ? `${editorName} edited a page` : "A page was edited",
+        body: pageTitle
+          ? `The page ${pageTitle} was edited.`
+          : "A Margaya page you watch was edited.",
+      };
+    }
     case "task_comment": {
       const taskTitle = getStringValue(notification.eventData, "taskTitle");
       const commenterName = getStringValue(
@@ -273,7 +321,7 @@ export function buildDeliveryContent(notification: {
     default:
       return {
         title: notification.title ?? "New Margaya notification",
-        body: notification.content ?? "You have a new notification in Margaya.",
+        body: notification.content ?? GENERIC_BODY,
       };
   }
 }
@@ -341,6 +389,7 @@ async function resolveNotificationContext(notification: {
       taskId: task.taskId,
       taskTitle: task.taskTitle,
       taskUrl: buildTaskUrl(task.workspaceId, task.projectId, task.taskId),
+      path: buildTaskPath(task.workspaceId, task.projectId, task.taskId),
     };
   }
 
@@ -366,10 +415,82 @@ async function resolveNotificationContext(notification: {
       taskId: null,
       taskTitle: null,
       taskUrl: null,
+      path: `/dashboard/workspace/${workspace.workspaceId}/inbox`,
+    };
+  }
+
+  if (notification.resourceType === "page") {
+    const [page] = await db
+      .select({
+        id: pageTable.id,
+        projectId: pageTable.projectId,
+        workspaceId: pageTable.workspaceId,
+        workspaceName: workspaceTable.name,
+      })
+      .from(pageTable)
+      .innerJoin(workspaceTable, eq(pageTable.workspaceId, workspaceTable.id))
+      .where(eq(pageTable.id, notification.resourceId))
+      .limit(1);
+
+    if (!page) {
+      return null;
+    }
+
+    return {
+      workspaceId: page.workspaceId,
+      workspaceName: page.workspaceName,
+      projectId: page.projectId,
+      projectName: null,
+      taskId: null,
+      taskTitle: null,
+      taskUrl: null,
+      path: page.projectId
+        ? `/dashboard/workspace/${page.workspaceId}/project/${page.projectId}/pages/${page.id}`
+        : `/dashboard/workspace/${page.workspaceId}/inbox`,
     };
   }
 
   return null;
+}
+
+/**
+ * What a push says. Only what the alert needs: a title, one fixed line, where
+ * tapping it goes and an id so a repeat replaces it. The line is the app's own
+ * sentence for the type, naming at most the task or page. What someone wrote
+ * (comments, agent answers and questions, approval descriptions, automation
+ * messages, decline reasons) stays out because a push shows on a lock screen;
+ * the app shows it after the tap.
+ */
+function buildPushMessage(
+  notificationId: string,
+  source: Parameters<typeof buildDeliveryContent>[0],
+  locale: string | null | undefined,
+  path: string,
+) {
+  const {
+    commentPreview: _commentPreview,
+    message: _message,
+    note: _note,
+    ...eventData
+  } = source.eventData ?? {};
+  const fixed = {
+    ...source,
+    content: null,
+    eventData: source.eventData ? eventData : null,
+  };
+  const rendered = renderNotificationText(fixed, resolveEmailLocale(locale));
+  const english = buildDeliveryContent(fixed);
+  // Agent notices have no sentence of their own: their title says it all.
+  const line =
+    english.body === GENERIC_BODY
+      ? (emailCopy(locale).notificationText.pushFixedLine ?? GENERIC_BODY)
+      : english.body;
+  return {
+    title: (rendered?.title ?? english.title).slice(0, MAX_PUSH_TITLE_LENGTH),
+    body: (rendered?.body ?? line).slice(0, MAX_PUSH_BODY_LENGTH),
+    url: path,
+    tag: notificationId,
+  };
 }
 
 async function sendNtfyNotification(input: {
@@ -491,6 +612,8 @@ export async function deliverNotification(
       email: userTable.email,
       name: userTable.name,
       locale: userTable.locale,
+      banned: userTable.banned,
+      banExpires: userTable.banExpires,
     })
     .from(userTable)
     .where(eq(userTable.id, notification.userId))
@@ -499,21 +622,6 @@ export async function deliverNotification(
   if (!user) {
     return;
   }
-
-  const preference = await db.query.userNotificationPreferenceTable.findFirst({
-    where: eq(userNotificationPreferenceTable.userId, notification.userId),
-  });
-
-  if (!preference) {
-    return;
-  }
-
-  const decryptedPreference = {
-    ...preference,
-    ntfyToken: decryptSecret(preference.ntfyToken),
-    gotifyToken: decryptSecret(preference.gotifyToken),
-    webhookSecret: decryptSecret(preference.webhookSecret),
-  };
 
   const rule = await db.query.userNotificationWorkspaceRuleTable.findFirst({
     where: and(
@@ -525,19 +633,12 @@ export async function deliverNotification(
     },
   });
 
-  if (!rule?.isActive) {
-    return;
-  }
-
-  if (
-    rule.projectMode === "selected" &&
-    (!context.projectId ||
-      !rule.selectedProjects.some(
+  const ruleCoversResource =
+    Boolean(rule?.isActive) &&
+    (rule?.projectMode !== "selected" ||
+      rule.selectedProjects.some(
         (project) => project.projectId === context.projectId,
-      ))
-  ) {
-    return;
-  }
+      ));
 
   const source = {
     type: notification.type,
@@ -548,6 +649,78 @@ export async function deliverNotification(
         ? (notification.eventData as Record<string, unknown>)
         : null,
   };
+  const deliveries: Array<Promise<void>> = [];
+
+  // Turning push on for a device is the opt-in: it needs no preference row or
+  // workspace rule, and a rule only narrows it. A ban ends push like any access.
+  const isBanned =
+    user.banned === true && (!user.banExpires || user.banExpires > new Date());
+  if (!isBanned && (!rule || (ruleCoversResource && rule.pushEnabled))) {
+    deliveries.push(
+      sendPushToUser(
+        notification.userId,
+        buildPushMessage(notification.id, source, user.locale, context.path),
+        notification.type.endsWith("_mention") ? "high" : "normal",
+      ),
+    );
+  }
+
+  // Page notifications reach the inbox and push; the channels below stay
+  // task and workspace only.
+  if (rule && ruleCoversResource && notification.resourceType !== "page") {
+    const preference = await db.query.userNotificationPreferenceTable.findFirst(
+      {
+        where: eq(userNotificationPreferenceTable.userId, notification.userId),
+      },
+    );
+    if (preference) {
+      deliveries.push(
+        ...configuredChannelDeliveries({
+          notification,
+          context,
+          user,
+          preference,
+          rule,
+          source,
+        }),
+      );
+    }
+  }
+
+  const results = await Promise.allSettled(deliveries);
+  for (const result of results) {
+    if (result.status === "rejected") {
+      console.error("Notification delivery failed", {
+        notificationId,
+        error: safeOutboundError(result.reason),
+      });
+    }
+  }
+}
+
+/** Email, ntfy, Gotify and webhook sends for one notification, as configured. */
+function configuredChannelDeliveries({
+  notification,
+  context,
+  user,
+  preference,
+  rule,
+  source,
+}: {
+  notification: typeof notificationTable.$inferSelect;
+  context: ResolvedNotificationContext;
+  user: { email: string; name: string; locale: string | null };
+  preference: typeof userNotificationPreferenceTable.$inferSelect;
+  rule: typeof userNotificationWorkspaceRuleTable.$inferSelect;
+  source: Parameters<typeof buildDeliveryContent>[0];
+}): Array<Promise<void>> {
+  const decryptedPreference = {
+    ...preference,
+    ntfyToken: decryptSecret(preference.ntfyToken),
+    gotifyToken: decryptSecret(preference.gotifyToken),
+    webhookSecret: decryptSecret(preference.webhookSecret),
+  };
+
   // Webhooks are machine payloads and keep the English text; email and
   // push speak the recipient's language.
   const content = buildDeliveryContent(source);
@@ -654,13 +827,5 @@ export async function deliverNotification(
     );
   }
 
-  const results = await Promise.allSettled(deliveries);
-  for (const result of results) {
-    if (result.status === "rejected") {
-      console.error("Notification delivery failed", {
-        notificationId,
-        error: safeOutboundError(result.reason),
-      });
-    }
-  }
+  return deliveries;
 }

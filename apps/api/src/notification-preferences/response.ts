@@ -13,6 +13,10 @@ export const workspaceRuleSchema = z
     ntfyEnabled: z.boolean(),
     gotifyEnabled: z.boolean(),
     webhookEnabled: z.boolean(),
+    pushEnabled: z.boolean().openapi({
+      description:
+        "Whether your devices get push for this workspace. A workspace with no rule does.",
+    }),
     projectMode: z.enum(["all", "selected"]).openapi({
       description:
         "`all` notifies for every project in the workspace; `selected` restricts it to selectedProjectIds.",
@@ -22,6 +26,31 @@ export const workspaceRuleSchema = z
     updatedAt: responseTimestamp,
   })
   .openapi("NotificationPreferenceWorkspaceRule");
+
+// A device's encryption keys are never returned.
+const pushDeviceSchema = z
+  .object({
+    id: z.string(),
+    endpoint: z.string().openapi({
+      description: "Lets a browser recognize its own entry in the list.",
+    }),
+    userAgent: z.string().nullable(),
+    createdAt: responseTimestamp,
+  })
+  .openapi("PushDevice");
+
+export const pushStatusSchema = z
+  .object({
+    available: z.boolean().openapi({
+      description:
+        "False until the instance sets VAPID_PUBLIC_KEY and VAPID_PRIVATE_KEY.",
+    }),
+    publicKey: z.string().nullable().openapi({
+      description: "The key browsers subscribe with, when push is available.",
+    }),
+    subscriptions: z.array(pushDeviceSchema),
+  })
+  .openapi("PushStatus");
 
 export const notificationPreferenceSchema = z
   .object({

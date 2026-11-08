@@ -1,4 +1,5 @@
 import { z } from "../openapi";
+import { isP256PublicKey, isPushAuthSecret } from "./web-push";
 
 export const workspaceIdParam = z.object({ workspaceId: z.string() });
 
@@ -46,12 +47,37 @@ export const updatePreferencesBody = z.object({
   }),
 });
 
+// The shape of the browser's PushSubscription.toJSON().
+export const savePushSubscriptionBody = z.object({
+  endpoint: z.string().url().max(2048).startsWith("https://").openapi({
+    description: "The push service URL the browser gave this device.",
+  }),
+  keys: z.object({
+    p256dh: z
+      .string()
+      .max(256)
+      .refine(isP256PublicKey, "Not a P-256 public key")
+      .openapi({ description: "The device's public key, base64url." }),
+    auth: z
+      .string()
+      .max(64)
+      .refine(isPushAuthSecret, "Not a 16-byte secret")
+      .openapi({ description: "The device's auth secret, base64url." }),
+  }),
+});
+
+export const pushSubscriptionIdParam = z.object({ id: z.string() });
+
 export const upsertWorkspaceRuleBody = z.object({
   isActive: z.boolean(),
   emailEnabled: z.boolean(),
   ntfyEnabled: z.boolean(),
   gotifyEnabled: z.boolean(),
   webhookEnabled: z.boolean(),
+  pushEnabled: z.boolean().optional().openapi({
+    description:
+      "Whether your devices get push for this workspace. Left out, an existing rule keeps its value and a new rule turns it on.",
+  }),
   projectMode: z.enum(["all", "selected"]),
   selectedProjectIds: z.array(z.string()).optional().openapi({
     description: "Required in practice when projectMode is `selected`.",
