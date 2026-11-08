@@ -1,6 +1,7 @@
 import {
   builtInRoles,
   DEFAULT_ROLE_NAMES,
+  GUEST_ROLE,
   grantsWithin,
   mergeStatements,
   type PermissionStatements,
@@ -8,7 +9,7 @@ import {
 
 type RoleRow = { role: string; permission: Record<string, string[]> };
 
-const RESERVED = new Set<string>([...DEFAULT_ROLE_NAMES, "owner"]);
+const RESERVED = new Set<string>([...DEFAULT_ROLE_NAMES, GUEST_ROLE, "owner"]);
 
 /**
  * The roles someone holding `myRole` may put on an invitation, mirroring the
@@ -34,6 +35,7 @@ export function grantableRoles({
 
   const candidates = [
     ...DEFAULT_ROLE_NAMES,
+    GUEST_ROLE,
     ...workspaceRoles
       .map((row) => row.role)
       .filter((name) => !RESERVED.has(name)),

@@ -139,7 +139,7 @@ export async function addMember(
   owner: APIRequestContext,
   workspaceId: string,
   user: TestUser,
-  role: "admin" | "member" | "viewer",
+  role: "admin" | "member" | "viewer" | "guest",
 ): Promise<string> {
   const invitation = await expectJson<{ id: string }>(
     await owner.post("/api/auth/organization/invite-member", {

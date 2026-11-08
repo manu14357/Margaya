@@ -6,6 +6,7 @@ import useGrantableRoles from "@/hooks/queries/workspace/use-grantable-roles";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { defaultInviteRole } from "@/lib/grantable-roles";
 import {
+  InvitationProjectsError,
   type InviteFailure,
   MAX_INVITES_PER_SUBMIT,
   parseEmailList,
@@ -26,6 +27,9 @@ import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import InvitationLinkField from "./invitation-link-field";
 import InviteFailureList from "./invite-failure-list";
+import InviteGuestProjects, {
+  type GuestProject,
+} from "./invite-guest-projects";
 import InviteRoleSelect from "./invite-role-select";
 
 type Props = {
@@ -46,6 +50,7 @@ function InviteTeamMemberModal({ open, onClose }: Props) {
 
   const [emails, setEmails] = useState("");
   const [pickedRole, setPickedRole] = useState<string>();
+  const [guestProjects, setGuestProjects] = useState<GuestProject[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [failures, setFailures] = useState<InviteFailure[]>([]);
   const [progress, setProgress] = useState<{
@@ -92,7 +97,22 @@ function InviteTeamMemberModal({ open, onClose }: Props) {
     setFailures([]);
     const result = await sendInvitesInSequence(
       valid,
-      (email) => mutateAsync({ email, workspaceId, role }),
+      (email) =>
+        mutateAsync({
+          email,
+          workspaceId,
+          role,
+          // A guest reaches nothing else, so they start with their projects.
+          projects: role === "guest" ? guestProjects : undefined,
+        }).catch((error) => {
+          throw error instanceof InvitationProjectsError
+            ? new Error(
+                t("team:inviteModal.guestProjectsFailed", {
+                  message: error.message,
+                }),
+              )
+            : error;
+        }),
       {
         onProgress: (done, total) => setProgress({ done, total }),
         fallbackMessage: t("team:inviteModal.error"),
@@ -136,6 +156,7 @@ function InviteTeamMemberModal({ open, onClose }: Props) {
     setEmails("");
     setError(null);
     setFailures([]);
+    setGuestProjects([]);
     onClose();
   };
 
@@ -232,7 +253,8 @@ function InviteTeamMemberModal({ open, onClose }: Props) {
                 )}
               </div>
 
-              <div className="space-y-1.5">
+              {/* A grid stacks the label over the select, as for Email. */}
+              <div className="grid gap-1.5">
                 <Label htmlFor="invite-role">
                   {t("team:inviteModal.roleLabel")}
                 </Label>
@@ -249,9 +271,20 @@ function InviteTeamMemberModal({ open, onClose }: Props) {
                   id="invite-role-hint"
                   className="text-xs text-muted-foreground"
                 >
-                  {t("team:inviteModal.roleHint")}
+                  {role === "guest"
+                    ? t("team:inviteModal.guestRoleHint")
+                    : t("team:inviteModal.roleHint")}
                 </p>
               </div>
+
+              {role === "guest" && workspaceId && (
+                <InviteGuestProjects
+                  workspaceId={workspaceId}
+                  value={guestProjects}
+                  onChange={setGuestProjects}
+                  disabled={sending}
+                />
+              )}
 
               <InviteFailureList failures={failures} />
             </DialogPanel>

@@ -102,7 +102,7 @@ export function useSettingsNav() {
   // Instance admins only; the API re-checks the role on every call.
   const isInstanceAdmin = session?.user?.role === "admin";
   const { data: workspace } = useActiveWorkspace();
-  const { canManageWebhooks, canReadAuditLog, isCheckingPermissions } =
+  const { canManageWebhooks, canReadAuditLog, isCheckingPermissions, isGuest } =
     useWorkspacePermission();
   const { data: config } = useGetConfig();
   // AI settings show only once the instance has AI on, to ai:manage holders.
@@ -126,21 +126,26 @@ export function useSettingsNav() {
       to: "/dashboard/settings/account/information",
       active: area === "account",
     },
-    {
-      id: "workspace",
-      label: t("navigation:page.settingsWorkspaceTab"),
-      icon: Building2,
-      to: "/dashboard/settings/workspace/general",
-      active: area === "workspace",
-    },
-    {
-      id: "project",
-      label: t("navigation:sidebar.projects"),
-      icon: FolderKanban,
-      to: "/dashboard/settings/projects",
-      active: area === "project",
-      disabled: projects?.length === 0,
-    },
+    // A guest has only their account here (see NotForGuests).
+    ...(isGuest
+      ? []
+      : [
+          {
+            id: "workspace",
+            label: t("navigation:page.settingsWorkspaceTab"),
+            icon: Building2,
+            to: "/dashboard/settings/workspace/general",
+            active: area === "workspace",
+          },
+          {
+            id: "project",
+            label: t("navigation:sidebar.projects"),
+            icon: FolderKanban,
+            to: "/dashboard/settings/projects",
+            active: area === "project",
+            disabled: projects?.length === 0,
+          },
+        ]),
     ...(isInstanceAdmin
       ? [
           {

@@ -1,8 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
+import useProjectRights from "@/hooks/queries/project/use-project-rights";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useGetActiveWorkspaceUser } from "@/hooks/queries/workspace-users/use-active-workspace-user";
+import { useProjectScope } from "@/hooks/use-project-scope";
 import { authClient } from "@/lib/auth-client";
+import { isGuestRole } from "@/lib/guest-access";
 
 export type PermissionLevel = "owner" | "admin" | "member";
 
@@ -67,9 +70,31 @@ const CAPABILITIES = {
 // user signed out meanwhile).
 const READ_ONLY = { disableSignal: true } as const;
 
-type Capability = keyof typeof CAPABILITIES;
+export type Capability = keyof typeof CAPABILITIES;
 
 type CapabilityMap = Record<Capability, boolean>;
+
+// About the workspace itself, so a project role never caps them.
+const WORKSPACE_CAPABILITIES: ReadonlySet<Capability> = new Set([
+  "createProjects",
+  "manageWorkspace",
+  "manageWebhooks",
+  "deleteWorkspace",
+  "readAuditLog",
+  "manageAi",
+  "inviteUsers",
+  "manageInvitations",
+  "manageTeam",
+  "removeMembers",
+]);
+
+type Statements = Record<string, readonly string[]>;
+
+function grants(statements: Statements, required: Record<string, string[]>) {
+  return Object.entries(required).every(([resource, actions]) =>
+    actions.every((action) => statements[resource]?.includes(action)),
+  );
+}
 
 function emptyCapabilityMap(): CapabilityMap {
   const out = {} as CapabilityMap;
@@ -79,11 +104,29 @@ function emptyCapabilityMap(): CapabilityMap {
   return out;
 }
 
+/**
+ * What I may do, asked of the server. Inside a project (ProjectScope: project
+ * routes, a task sheet) the project's capabilities are also capped by my
+ * project role there, as the API caps them: a guest, or a restricted
+ * project's member, added as viewer gets no edit controls in that project.
+ */
 export function useWorkspacePermission() {
   const { data: activeWorkspace } = useActiveWorkspace();
   const { data: activeMember } = useGetActiveWorkspaceUser();
   const workspaceId = activeWorkspace?.id;
   const role = activeMember?.role as string | undefined;
+  const scopeProjectId = useProjectScope();
+  // One map for the whole workspace, so a list over many projects (and each
+  // of its rows) asks once.
+  const rights = useProjectRights(workspaceId);
+  const scopeRights = scopeProjectId
+    ? (rights.data?.get(scopeProjectId) ?? null)
+    : null;
+  // Off until the project's rights load, as the workspace's are until
+  // theirs do. If they can't load, the API still refuses what isn't allowed.
+  const rightsPending =
+    Boolean(scopeProjectId) && rights.isPending && !rights.isError;
+  const ceiling: Statements | null = scopeRights?.statements ?? null;
 
   // One query that fans out to all capability checks in parallel and caches
   // the resulting map by (workspaceId, role). Refetches when either changes,
@@ -124,7 +167,36 @@ export function useWorkspacePermission() {
     },
   });
 
-  const can: CapabilityMap = capabilities ?? emptyCapabilityMap();
+  const can: CapabilityMap = useMemo(() => {
+    const base = capabilities ?? emptyCapabilityMap();
+    if (!ceiling && !rightsPending) return base;
+    const capped = { ...base };
+    for (const key of Object.keys(CAPABILITIES) as Capability[]) {
+      if (WORKSPACE_CAPABILITIES.has(key)) continue;
+      capped[key] =
+        base[key] &&
+        !rightsPending &&
+        (!ceiling || grants(ceiling, CAPABILITIES[key]));
+    }
+    return capped;
+  }, [capabilities, ceiling, rightsPending]);
+
+  const rightsData = rights.data;
+  const rightsLoading = rights.isPending && !rights.isError;
+  // A task's own project, for lists over many projects whose rows don't each
+  // run this hook: the workspace's answer capped by my role there.
+  const canInProject = useCallback(
+    (projectId: string | null | undefined, capability: Capability) => {
+      const base = capabilities?.[capability] ?? false;
+      if (!base || WORKSPACE_CAPABILITIES.has(capability)) return base;
+      if (rightsLoading) return false;
+      const statements = projectId
+        ? rightsData?.get(projectId)?.statements
+        : undefined;
+      return !statements || grants(statements, CAPABILITIES[capability]);
+    },
+    [capabilities, rightsData, rightsLoading],
+  );
 
   const helpers = useMemo(() => {
     return {
@@ -176,14 +248,17 @@ export function useWorkspacePermission() {
             permissions,
             fetchOptions: READ_ONLY,
           });
-          return res.data?.success === true;
+          return (
+            res.data?.success === true &&
+            (!ceiling || grants(ceiling, permissions))
+          );
         } catch (error) {
           console.error("hasPermission check failed:", error);
           return false;
         }
       },
     };
-  }, [can, workspaceId]);
+  }, [can, ceiling, workspaceId]);
 
   return {
     ...helpers,
@@ -192,11 +267,16 @@ export function useWorkspacePermission() {
     role,
     isOwner: role === "owner",
     isAdmin: role === "owner" || role === "admin",
+    isGuest: isGuestRole(role),
+    // My role in the scope project when it caps my rights there, else null.
+    projectRole: scopeRights?.projectRole ?? null,
+    canInProject,
     // True while the first capability fetch is in flight. Useful for hiding
     // action UI during the initial render instead of flashing it on then
     // off when the server check resolves.
     isCheckingPermissions:
-      Boolean(workspaceId && role) && (isLoading || !capabilities),
+      (Boolean(workspaceId && role) && (isLoading || !capabilities)) ||
+      rightsPending,
     isRefetchingPermissions: isFetching,
   };
 }

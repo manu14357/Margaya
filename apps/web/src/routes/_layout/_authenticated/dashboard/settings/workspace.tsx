@@ -1,4 +1,5 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import NotForGuests from "@/components/settings/not-for-guests";
 import getWorkspaces from "@/fetchers/workspace/get-workspaces";
 import { authClient } from "@/lib/auth-client";
 import type Workspace from "@/types/workspace";
@@ -40,5 +41,5 @@ export const Route = createFileRoute(
     });
   },
   // The navigation lives in the settings frame (settings.tsx).
-  component: Outlet,
+  component: NotForGuests,
 });

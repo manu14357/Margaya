@@ -19,6 +19,8 @@ export function memberRoleLabel(t: TFunction, role: string): string {
       return t("team:roles.member");
     case "viewer":
       return t("team:roles.viewer");
+    case "guest":
+      return t("team:roles.guest");
     default:
       return role;
   }

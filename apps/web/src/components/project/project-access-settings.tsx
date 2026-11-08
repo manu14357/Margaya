@@ -28,6 +28,8 @@ import { Switch } from "@/components/ui/switch";
 import useProjectAccessMutation from "@/hooks/mutations/project/use-project-access";
 import useProjectAccess from "@/hooks/queries/project/use-project-access";
 import useWorkspaceRoles from "@/hooks/queries/workspace/use-workspace-roles";
+import { useGetActiveWorkspaceUsers } from "@/hooks/queries/workspace-users/use-get-active-workspace-users";
+import { isGuestRole } from "@/lib/guest-access";
 import { toast } from "@/lib/toast";
 
 const BUILT_IN_ROLES = ["viewer", "member", "admin"] as const;
@@ -39,9 +41,10 @@ function capitalize(value: string) {
 }
 
 /**
- * Project settings: open or restricted, and the members of a restricted
- * project with their project roles. The API decides who may change it
- * (project:share, or the project lead) and reports it as `canManage`.
+ * Project settings: open or restricted, and the project's members with their
+ * project roles. In an open project the list only matters for guests, who
+ * reach nothing else, so only they are offered there. The API decides who may
+ * change it (project:share, or the project lead) and reports it as `canManage`.
  */
 export default function ProjectAccessSettings({
   workspaceId,
@@ -54,6 +57,7 @@ export default function ProjectAccessSettings({
   const { data: access, isError } = useProjectAccess(projectId);
   const { mutateAsync, isPending } = useProjectAccessMutation(projectId);
   const people = useWorkspacePeople(workspaceId);
+  const { data: workspaceMembers } = useGetActiveWorkspaceUsers(workspaceId);
   const { data: workspaceRoles = [] } = useWorkspaceRoles(workspaceId);
   const [adding, setAdding] = useState(false);
 
@@ -70,8 +74,16 @@ export default function ProjectAccessSettings({
     t(`team:roles.${role}`, { defaultValue: capitalize(role) });
 
   const memberIds = new Set(access?.members.map((m) => m.userId) ?? []);
-  const candidates = people.filter((person) => !memberIds.has(person.id));
   const restricted = access?.visibility === "restricted";
+  const guestIds = new Set(
+    workspaceMembers?.members
+      .filter((member) => isGuestRole(member.role))
+      .map((member) => member.userId),
+  );
+  const candidates = people.filter(
+    (person) =>
+      !memberIds.has(person.id) && (restricted || guestIds.has(person.id)),
+  );
   const disabled = !access?.canManage || isPending;
 
   const run = async (change: Parameters<typeof mutateAsync>[0]) => {
@@ -118,10 +130,14 @@ export default function ProjectAccessSettings({
             }
           />
         </SettingsRow>
-        {restricted && access && (
+        {access && (
           <SettingsRow
             label={t("settings:projectAccess.membersLabel")}
-            description={t("settings:projectAccess.membersHint")}
+            description={
+              restricted
+                ? t("settings:projectAccess.membersHint")
+                : t("settings:projectAccess.guestsHint")
+            }
             stacked
           >
             <ul className="divide-y divide-border rounded-md border">
@@ -212,7 +228,13 @@ export default function ProjectAccessSettings({
                     isSelected={() => false}
                     onSelect={(userId) => {
                       setAdding(false);
-                      void run({ kind: "add", userId, role: "member" });
+                      // Read-only until someone chooses otherwise: a guest is
+                      // usually an outside reader.
+                      void run({
+                        kind: "add",
+                        userId,
+                        role: guestIds.has(userId) ? "viewer" : "member",
+                      });
                     }}
                   />
                 </PopoverContent>

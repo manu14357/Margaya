@@ -17,6 +17,7 @@ import { WorkspaceSwitcher } from "@/components/workspace-switcher";
 import { shortcuts } from "@/constants/shortcuts";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { cn } from "@/lib/cn";
+import { GUEST_DESTINATIONS } from "@/lib/guest-access";
 import { visibleRailItems } from "@/lib/sidebar-layout";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 
@@ -25,12 +26,15 @@ import { useUserPreferencesStore } from "@/store/user-preferences";
  * without the ones they hid (Settings sits at the foot).
  */
 export function useRailDestinations(): ShellDestination[] {
-  const { canReadAnalytics, isCheckingPermissions } = useWorkspacePermission();
+  const { canReadAnalytics, isCheckingPermissions, isGuest } =
+    useWorkspacePermission();
   const sidebarLayout = useUserPreferencesStore((state) => state.sidebarLayout);
   // Shown once the permission check settles, so it never flashes.
   const showAnalytics = !isCheckingPermissions && canReadAnalytics();
-  return visibleRailItems(sidebarLayout).filter(
-    (item) => item !== "analytics" || showAnalytics,
+  return visibleRailItems(sidebarLayout).filter((item) =>
+    isGuest
+      ? (GUEST_DESTINATIONS as readonly ShellDestination[]).includes(item)
+      : item !== "analytics" || showAnalytics,
   );
 }
 

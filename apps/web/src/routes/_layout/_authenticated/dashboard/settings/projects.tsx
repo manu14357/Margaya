@@ -7,6 +7,7 @@ import {
 import { FolderKanban } from "lucide-react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import NotForGuests from "@/components/settings/not-for-guests";
 import {
   Empty,
   EmptyDescription,
@@ -22,7 +23,11 @@ export const Route = createFileRoute(
   "/_layout/_authenticated/dashboard/settings/projects",
 )({
   // The navigation (with the project picker) lives in the settings frame.
-  component: RouteComponent,
+  component: () => (
+    <NotForGuests>
+      <RouteComponent />
+    </NotForGuests>
+  ),
 });
 
 function isProjectsRoot(pathname: string) {

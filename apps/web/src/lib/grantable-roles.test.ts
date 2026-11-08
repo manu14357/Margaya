@@ -15,7 +15,7 @@ const workspaceRoles: { role: string; permission: Record<string, string[]> }[] =
 
 describe("grantableRoles", () => {
   it("offers every role but owner to owners and instance admins", () => {
-    const all = ["viewer", "member", "admin", "reporter", "auditor"];
+    const all = ["viewer", "member", "admin", "guest", "reporter", "auditor"];
     expect(grantableRoles({ workspaceRoles, myRole: "owner" })).toEqual(all);
     expect(
       grantableRoles({ workspaceRoles, myRole: "viewer", unlimited: true }),
@@ -27,12 +27,14 @@ describe("grantableRoles", () => {
       "viewer",
       "member",
       "admin",
+      "guest",
       "reporter",
       "auditor",
     ]);
     expect(grantableRoles({ workspaceRoles, myRole: "member" })).toEqual([
       "viewer",
       "member",
+      "guest",
       "reporter",
     ]);
     expect(grantableRoles({ workspaceRoles, myRole: "viewer" })).toEqual([
@@ -44,6 +46,7 @@ describe("grantableRoles", () => {
     expect(grantableRoles({ workspaceRoles: [], myRole: "member" })).toEqual([
       "viewer",
       "member",
+      "guest",
     ]);
     expect(grantableRoles({ workspaceRoles: [], myRole: undefined })).toEqual(
       [],

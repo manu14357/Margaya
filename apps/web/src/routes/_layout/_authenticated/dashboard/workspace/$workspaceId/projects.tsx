@@ -156,7 +156,8 @@ function RouteComponent() {
     }
   }, [projects, droppedOrder]);
 
-  const { canCreateProjects, canUpdateProjects } = useWorkspacePermission();
+  const { canCreateProjects, canUpdateProjects, isGuest } =
+    useWorkspacePermission();
   const canCreate = canCreateProjects();
   // Matches the API, which gates /project/reorder on `project: ["update"]`
   // alone — not the create+update+delete bundle.
@@ -322,9 +323,11 @@ function RouteComponent() {
               </EmptyMedia>
               <EmptyTitle>{t("workspace:projects.emptyTitle")}</EmptyTitle>
               <EmptyDescription>
-                {canCreate
-                  ? t("workspace:projects.emptyDescription")
-                  : t("workspace:projects.emptyDescriptionReadOnly")}
+                {isGuest
+                  ? t("workspace:projects.emptyDescriptionGuest")
+                  : canCreate
+                    ? t("workspace:projects.emptyDescription")
+                    : t("workspace:projects.emptyDescriptionReadOnly")}
               </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
