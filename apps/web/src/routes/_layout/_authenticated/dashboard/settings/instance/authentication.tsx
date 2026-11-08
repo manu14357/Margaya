@@ -9,6 +9,8 @@ import {
   InstanceSection,
 } from "@/components/instance-admin/instance-page";
 import { OAuthProviderSheet } from "@/components/instance-admin/oauth-provider-sheet";
+import { SamlConnectionsSection } from "@/components/instance-admin/saml-connections-section";
+import { ScimConnectionsSection } from "@/components/instance-admin/scim-connections-section";
 import { SettingSwitchRow } from "@/components/instance-admin/setting-row";
 import { SignInMethodCard } from "@/components/instance-admin/sign-in-method-card";
 import { SignInPolicySection } from "@/components/instance-admin/sign-in-policy-section";
@@ -170,6 +172,10 @@ function AuthenticationSettings({ settings }: { settings: InstanceSettings }) {
       </InstanceSection>
 
       <SignInPolicySection settings={settings} />
+
+      <SamlConnectionsSection />
+
+      <ScimConnectionsSection />
 
       <OAuthProviderSheet
         open={sheetOpen}

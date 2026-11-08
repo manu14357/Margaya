@@ -11,6 +11,9 @@ export const AUDIT_ACTION_KEYS = {
     "settings:workspaceAuditLog.actions.memberInvitationDeclined",
   "member.invitation_role_changed":
     "settings:workspaceAuditLog.actions.memberInvitationRoleChanged",
+  "member.invitation_projects_changed":
+    "settings:workspaceAuditLog.actions.memberInvitationProjectsChanged",
+  "member.provisioned": "settings:workspaceAuditLog.actions.memberProvisioned",
   "member.removed": "settings:workspaceAuditLog.actions.memberRemoved",
   "member.left": "settings:workspaceAuditLog.actions.memberLeft",
   "member.role_changed": "settings:workspaceAuditLog.actions.memberRoleChanged",
