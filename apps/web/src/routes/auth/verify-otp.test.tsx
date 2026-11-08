@@ -16,6 +16,7 @@ import {
   it,
   vi,
 } from "vitest";
+import { toast } from "@/lib/toast";
 import { Route } from "./verify-otp";
 
 // The OTP input measures itself on mount, which jsdom cannot do.
@@ -125,5 +126,24 @@ describe("VerifyOtp", () => {
       { email: "invitee@margaya.test", otp: "123456" },
       undefined,
     );
+  });
+
+  // Better Auth's own words for a ban are English.
+  it("tells a banned account so in its language", async () => {
+    emailOtp.mockResolvedValue({
+      data: null,
+      error: {
+        code: "BANNED_USER",
+        message: "You have been banned from this application",
+      },
+    });
+    submitCode();
+
+    await waitFor(() =>
+      expect(toast.error).toHaveBeenCalledWith(
+        "auth:signIn.errors.banned_user",
+      ),
+    );
+    expect(push).not.toHaveBeenCalled();
   });
 });

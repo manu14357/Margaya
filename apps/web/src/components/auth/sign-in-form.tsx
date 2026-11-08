@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
+import { signInErrorMessage } from "@/lib/sign-in-error";
 import { toast } from "@/lib/toast";
 import { TwoFactorChallenge } from "./two-factor-challenge";
 
@@ -62,7 +63,13 @@ export function SignInForm({
       });
 
       if (result.error) {
-        toast.error(result.error.message || t("auth:signInForm.failedSignIn"));
+        toast.error(
+          signInErrorMessage(
+            result.error,
+            t,
+            t("auth:signInForm.failedSignIn"),
+          ),
+        );
         return;
       }
       // Two-factor accounts get a session only after the code step.

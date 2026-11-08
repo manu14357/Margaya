@@ -5,6 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
+import { isBannedError } from "@/lib/sign-in-error";
 
 type TwoFactorChallengeProps = {
   onSuccess: () => void;
@@ -44,7 +45,11 @@ export function TwoFactorChallenge({
               trustDevice,
             });
       if (result.error) {
-        setError(t("accountSecurity:platform.challenge.invalid"));
+        setError(
+          isBannedError(result.error)
+            ? t("auth:signIn.errors.banned_user")
+            : t("accountSecurity:platform.challenge.invalid"),
+        );
         return;
       }
       onSuccess();

@@ -224,6 +224,54 @@ test.describe("sign in", () => {
     expect(unauthorized).toEqual([]);
   });
 
+  // The session ends once the requests already on the wire settle, up to
+  // about 3 s after the sign-in page shows. Leaving the page in that time
+  // must still end it: on a shared computer the next person would get in.
+  for (const leave of ["closing the tab", "reloading"] as const) {
+    test(`${leave} while the sign-out waits still ends the session`, async ({
+      page,
+      request,
+    }) => {
+      const user = await signUpViaApi(page.request);
+      const workspace = await createWorkspaceViaApi(page.request);
+      await page.context().clearCookies();
+      // The dashboard's project list stays on the wire, so the sign-out has
+      // to wait for it.
+      await page.route(/\/api\/project(\?|$)/, async (route) => {
+        await new Promise((resolve) => setTimeout(resolve, 8000));
+        await route.continue().catch(() => {});
+      });
+      await signInViaUI(page, user);
+
+      const cookieHeader = (await page.context().cookies())
+        .map((cookie) => `${cookie.name}=${cookie.value}`)
+        .join("; ");
+      const listProjects = async () =>
+        (
+          await request.get(`${E2E_API_URL}/api/project`, {
+            params: { workspaceId: workspace.id },
+            headers: { Cookie: cookieHeader, Origin: E2E_WEB_URL },
+          })
+        ).status();
+      expect(await listProjects()).toBe(200);
+
+      await page.getByRole("button", { name: "Account menu" }).click();
+      await page.getByRole("menuitem", { name: "Log out" }).click();
+      await expect(page).toHaveURL(/\/auth\/sign-in/);
+      if (leave === "closing the tab") {
+        await page.close();
+      } else {
+        await page.unroute(/\/api\/project(\?|$)/);
+        await page.reload();
+        await expect(
+          page.getByRole("button", { name: "Sign in", exact: true }),
+        ).toBeVisible();
+      }
+
+      await expect.poll(listProjects).toBe(401);
+    });
+  }
+
   test("a protected page redirects to sign-in and returns there afterwards", async ({
     page,
   }) => {

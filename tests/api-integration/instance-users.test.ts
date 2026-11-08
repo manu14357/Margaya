@@ -10,9 +10,11 @@ import { createWorkspaceMember } from "./helpers/fixtures";
 import {
   adminRequest,
   authPost,
+  issuedCookies,
   resetInstanceState,
   signUpWithSession,
 } from "./helpers/instance-admin";
+import { codeFor, enrol } from "./helpers/two-factor";
 
 // 4.12: instance user management, behind the recent sign-in and recorded in
 // the instance audit trail; plus the instance audit retention job.
@@ -192,6 +194,66 @@ describe("account actions", () => {
     expect(await auditActions()).toEqual(
       expect.arrayContaining(["user.banned", "user.unbanned"]),
     );
+  });
+
+  // The web app words the refusal from this code (auth.signIn.errors), so
+  // every step that would start a session has to send it.
+  it("refuses a banned account with BANNED_USER at every sign-in step", async () => {
+    const { secret } = await enrol(app, member.cookie);
+    const halfway = await authPost(app, "/sign-in/email", {
+      email: "member@example.com",
+      password: PASSWORD,
+    });
+    expect(await halfway.clone().json()).toMatchObject({
+      twoFactorRedirect: true,
+    });
+    await json(
+      await adminRequest(
+        app,
+        "POST",
+        `/users/${member.user.id}/ban`,
+        admin.cookie,
+        {},
+      ),
+    );
+    const refusals = [
+      await authPost(app, "/sign-in/email", {
+        email: "member@example.com",
+        password: PASSWORD,
+      }),
+      await authPost(
+        app,
+        "/two-factor/verify-totp",
+        { code: codeFor(secret) },
+        { cookie: issuedCookies(halfway) },
+      ),
+    ];
+    // Email codes are refused for two-factor accounts, so a second account.
+    const other = await signUpWithSession(app, "other@example.com");
+    await json(
+      await adminRequest(
+        app,
+        "POST",
+        `/users/${other.user.id}/ban`,
+        admin.cookie,
+        {},
+      ),
+    );
+    await db.insert(schema.verificationTable).values({
+      identifier: "sign-in-otp-other@example.com",
+      value: "123456:0",
+      expiresAt: new Date(Date.now() + 60_000),
+    });
+    refusals.push(
+      await authPost(app, "/sign-in/email-otp", {
+        email: "other@example.com",
+        otp: "123456",
+      }),
+    );
+    for (const refusal of refusals) {
+      expect(refusal.status, await refusal.clone().text()).toBe(403);
+      expect(await refusal.json()).toMatchObject({ code: "BANNED_USER" });
+    }
   });
 
   it("never bans yourself or the last admin", async () => {
