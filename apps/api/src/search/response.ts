@@ -39,7 +39,7 @@ export const searchResultSchema = z
     description: z.string().optional(),
     content: z.string().optional().openapi({
       description:
-        "Matched body text, for comment and activity results. Activities get a rendered summary such as `changed status from Todo to In Progress`. Pages get a snippet of about 160 characters around the first match.",
+        "Matched body text, for comment and activity results. Activities get a rendered summary such as `changed status from Todo to In Progress`; a task in a project the caller can't see reads `a task in another project`. Pages get a snippet of about 160 characters around the first match.",
     }),
     projectId: z.string().optional(),
     projectName: z.string().optional(),

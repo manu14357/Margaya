@@ -23,13 +23,25 @@ const ACTIVITY_BATCH_SIZE = 500;
 /**
  * Writes the activity rows inside the membership transaction, so history
  * can't go missing when a subscriber fails. Deletes can touch thousands of
- * tasks, hence the batches.
+ * tasks, hence the batches. Each row stores its module's project: the task can
+ * move and the module can go, and the row must still say whose name it holds
+ * (task-activity/redact.ts).
  */
 export async function recordModuleActivity(
   tx: Transaction,
   entries: readonly ModuleActivity[],
   userId: string,
 ) {
+  const moduleIds = [...new Set(entries.map((entry) => entry.moduleId))];
+  const modules =
+    moduleIds.length === 0
+      ? []
+      : await tx
+          .select({ id: moduleTable.id, projectId: moduleTable.projectId })
+          .from(moduleTable)
+          .where(inArray(moduleTable.id, moduleIds));
+  const projectOf = new Map(modules.map((row) => [row.id, row.projectId]));
+
   for (let i = 0; i < entries.length; i += ACTIVITY_BATCH_SIZE) {
     await tx.insert(activityTable).values(
       entries
@@ -39,7 +51,10 @@ export async function recordModuleActivity(
           type,
           userId,
           content: null,
-          eventData: withAutomationMarker(eventData),
+          eventData: withAutomationMarker({
+            ...eventData,
+            moduleProjectId: projectOf.get(eventData.moduleId) ?? null,
+          }),
         })),
     );
   }

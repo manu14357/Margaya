@@ -124,12 +124,20 @@ describe("API integration: module membership", () => {
         {
           taskId: a.id,
           type: "module_added",
-          eventData: { moduleId: billing.id, moduleName: "Billing" },
+          eventData: {
+            moduleId: billing.id,
+            moduleName: "Billing",
+            moduleProjectId: expect.any(String),
+          },
         },
         {
           taskId: a.id,
           type: "module_removed",
-          eventData: { moduleId: billing.id, moduleName: "Billing" },
+          eventData: {
+            moduleId: billing.id,
+            moduleName: "Billing",
+            moduleProjectId: expect.any(String),
+          },
         },
       ]),
     );

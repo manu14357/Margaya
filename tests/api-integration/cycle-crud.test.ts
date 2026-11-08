@@ -568,8 +568,10 @@ describe("API integration: cycle CRUD", () => {
         {
           oldCycleId: cycle.id,
           oldCycleName: "Doomed",
+          oldCycleProjectId: expect.any(String),
           newCycleId: null,
           newCycleName: null,
+          newCycleProjectId: null,
           reason: "cycle_deleted",
         },
       ]);

@@ -113,16 +113,20 @@ describe("API integration: cycle membership", () => {
       {
         oldCycleId: null,
         oldCycleName: null,
+        oldCycleProjectId: null,
         newCycleId: target.id,
         newCycleName: "Target",
+        newCycleProjectId: ctx.project.id,
       },
     ]);
     expect(await cycleActivities(fromFinished.id)).toEqual([
       {
         oldCycleId: finished.id,
         oldCycleName: "Finished",
+        oldCycleProjectId: ctx.project.id,
         newCycleId: target.id,
         newCycleName: "Target",
+        newCycleProjectId: ctx.project.id,
       },
     ]);
     expect(await cycleActivities(already.id)).toEqual([]);
@@ -230,8 +234,10 @@ describe("API integration: cycle membership", () => {
       {
         oldCycleId: archived.id,
         oldCycleName: "Archived",
+        oldCycleProjectId: ctx.project.id,
         newCycleId: null,
         newCycleName: null,
+        newCycleProjectId: null,
       },
     ]);
   });
@@ -286,20 +292,26 @@ describe("API integration: cycle membership", () => {
         {
           oldCycleId: null,
           oldCycleName: null,
+          oldCycleProjectId: null,
           newCycleId: first.id,
           newCycleName: "First",
+          newCycleProjectId: ctx.project.id,
         },
         {
           oldCycleId: first.id,
           oldCycleName: "First",
+          oldCycleProjectId: ctx.project.id,
           newCycleId: second.id,
           newCycleName: "Second",
+          newCycleProjectId: ctx.project.id,
         },
         {
           oldCycleId: second.id,
           oldCycleName: "Second",
+          oldCycleProjectId: ctx.project.id,
           newCycleId: null,
           newCycleName: null,
+          newCycleProjectId: null,
         },
       ]);
     });
@@ -423,8 +435,10 @@ describe("API integration: cycle membership", () => {
     expect((await cycleActivities(task.id)).at(-1)).toEqual({
       oldCycleId: cycle.id,
       oldCycleName: "Sprint",
+      oldCycleProjectId: ctx.project.id,
       newCycleId: null,
       newCycleName: null,
+      newCycleProjectId: null,
     });
     expect(events).toContainEqual({
       type: "task.cycle_changed",

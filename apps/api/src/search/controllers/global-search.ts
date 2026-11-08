@@ -7,7 +7,10 @@ import {
   workspaceUserTable,
 } from "../../database/schema";
 import { searchPages } from "../../page/search-pages";
-import { hiddenProjectIds, notHiddenProject } from "../../project/visibility";
+import {
+  hiddenForCurrentRequest,
+  notHiddenProject,
+} from "../../project/visibility";
 import { taskDetailActivitySummary } from "../../task-activity/search-summary";
 import {
   type CommentHit,
@@ -111,6 +114,9 @@ function getActivitySearchContent(
 
   switch (type) {
     case "status_changed":
+      if (data.statusHidden === true) {
+        return "changed status in another project";
+      }
       return `changed status from ${toDisplayCase(String(data.oldStatus ?? ""))} to ${toDisplayCase(String(data.newStatus ?? ""))}`;
     case "priority_changed":
       return `changed priority from ${toDisplayCase(String(data.oldPriority ?? ""))} to ${toDisplayCase(String(data.newPriority ?? ""))}`;
@@ -248,11 +254,10 @@ async function globalSearch(params: SearchParams): Promise<{
   // their results are appended in the order below.
   const sections: Promise<SearchResult[]>[] = [];
 
-  // Restricted projects the caller is not a member of (project/visibility.ts).
+  // Projects the caller may not see, and those outside a project-limited API
+  // key (project/visibility.ts).
   const hidden = (
-    await Promise.all(
-      workspaceIds.map((id) => hiddenProjectIds(resolvedUserId, id)),
-    )
+    await Promise.all(workspaceIds.map((id) => hiddenForCurrentRequest(id)))
   ).flat();
   if (projectId && hidden.includes(projectId)) {
     return { results: [], totalCount: 0, searchQuery: query };

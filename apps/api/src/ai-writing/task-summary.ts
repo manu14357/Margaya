@@ -1,6 +1,9 @@
 import { and, desc, eq, ne } from "drizzle-orm";
+import type { AiScope } from "../ai/context";
 import db from "../database";
-import { activityTable, userTable } from "../database/schema";
+import { activityTable, taskTable, userTable } from "../database/schema";
+import { hiddenForCurrentRequest } from "../project/visibility";
+import { redactActivityRowsBy } from "../task-activity/redact";
 
 // The history half of a task summary: what happened to the task (status,
 // priority, assignee and other changes), oldest first. Comments are not
@@ -60,25 +63,51 @@ export function historyLine(row: HistoryRow): string {
     .join(" ");
 }
 
-/** The task's latest changes (not comments) as lines, oldest first. */
-export async function taskHistoryLines(taskId: string): Promise<string[]> {
-  const rows = await db
-    .select({
-      type: activityTable.type,
-      createdAt: activityTable.createdAt,
-      actor: userTable.name,
-      external: activityTable.externalUserName,
-      content: activityTable.content,
-      eventData: activityTable.eventData,
-    })
-    .from(activityTable)
-    .leftJoin(userTable, eq(userTable.id, activityTable.userId))
-    .where(
-      and(eq(activityTable.taskId, taskId), ne(activityTable.type, "comment")),
-    )
-    .orderBy(desc(activityTable.createdAt))
-    .limit(TASK_HISTORY_LIMIT);
-  return rows.reverse().map(historyLine);
+/**
+ * The task's latest changes (not comments) as lines, oldest first. A row can
+ * name another project; the prompt only names one AI may read for this caller.
+ * The call takes its data tier from the task, so a restricted project is only
+ * named in its own tasks: anywhere else it would go out as private data.
+ */
+export async function taskHistoryLines(
+  taskId: string,
+  scope: Pick<AiScope, "workspaceId" | "projectIds" | "restrictedProjectIds">,
+): Promise<string[]> {
+  const [rows, hidden] = await Promise.all([
+    db
+      .select({
+        type: activityTable.type,
+        createdAt: activityTable.createdAt,
+        actor: userTable.name,
+        external: activityTable.externalUserName,
+        content: activityTable.content,
+        eventData: activityTable.eventData,
+        taskId: activityTable.taskId,
+        taskProjectId: taskTable.projectId,
+      })
+      .from(activityTable)
+      .innerJoin(taskTable, eq(taskTable.id, activityTable.taskId))
+      .leftJoin(userTable, eq(userTable.id, activityTable.userId))
+      .where(
+        and(
+          eq(activityTable.taskId, taskId),
+          ne(activityTable.type, "comment"),
+        ),
+      )
+      .orderBy(desc(activityTable.createdAt))
+      .limit(TASK_HISTORY_LIMIT),
+    hiddenForCurrentRequest(scope.workspaceId),
+  ]);
+  const taskProjectId = rows[0]?.taskProjectId;
+  const redacted = await redactActivityRowsBy(
+    rows,
+    (projectId) =>
+      scope.projectIds.has(projectId) &&
+      !hidden.includes(projectId) &&
+      (!scope.restrictedProjectIds.has(projectId) ||
+        projectId === taskProjectId),
+  );
+  return redacted.reverse().map(historyLine);
 }
 
 export const TASK_SUMMARY_REQUEST =

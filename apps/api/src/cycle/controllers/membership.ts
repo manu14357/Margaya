@@ -1,4 +1,4 @@
-import { eq, sql } from "drizzle-orm";
+import { eq, inArray, sql } from "drizzle-orm";
 import { withAutomationMarker } from "../../automation-rule/context";
 import {
   activityTable,
@@ -23,7 +23,9 @@ const ACTIVITY_BATCH_SIZE = 500;
 
 /**
  * Writes one `cycle_changed` activity per change inside the membership
- * transaction, so history can't go missing when a subscriber fails.
+ * transaction, so history can't go missing when a subscriber fails. Each side
+ * stores its cycle's project: the task can move and the cycle can go, and the
+ * row must still say whose name it holds (task-activity/redact.ts).
  */
 export async function recordCycleChanges(
   tx: Transaction,
@@ -32,17 +34,42 @@ export async function recordCycleChanges(
   /** Marks history written by a scheduled job, which has no user. */
   automation?: { rule: "cycle_rollover" },
 ) {
+  const cycleIds = [
+    ...new Set(
+      changes
+        .flatMap((change) => [change.oldCycleId, change.newCycleId])
+        .filter((id) => id !== null),
+    ),
+  ];
+  const cycles =
+    cycleIds.length === 0
+      ? []
+      : await tx
+          .select({ id: cycleTable.id, projectId: cycleTable.projectId })
+          .from(cycleTable)
+          .where(inArray(cycleTable.id, cycleIds));
+  const projectOf = new Map(cycles.map((cycle) => [cycle.id, cycle.projectId]));
+  const projectOfCycle = (id: string | null) =>
+    (id && projectOf.get(id)) ?? null;
+
   for (let i = 0; i < changes.length; i += ACTIVITY_BATCH_SIZE) {
     await tx.insert(activityTable).values(
-      changes.slice(i, i + ACTIVITY_BATCH_SIZE).map(({ taskId, ...data }) => ({
-        taskId,
-        type: "cycle_changed",
-        userId,
-        content: null,
-        eventData: automation
-          ? { ...data, automation }
-          : withAutomationMarker(data),
-      })),
+      changes.slice(i, i + ACTIVITY_BATCH_SIZE).map(({ taskId, ...change }) => {
+        const data = {
+          ...change,
+          oldCycleProjectId: projectOfCycle(change.oldCycleId),
+          newCycleProjectId: projectOfCycle(change.newCycleId),
+        };
+        return {
+          taskId,
+          type: "cycle_changed",
+          userId,
+          content: null,
+          eventData: automation
+            ? { ...data, automation }
+            : withAutomationMarker(data),
+        };
+      }),
     );
   }
 }

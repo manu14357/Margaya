@@ -19,6 +19,10 @@ import {
 } from "../database/schema";
 import { notHiddenProject } from "../project/visibility";
 import { inTriageColumnSql, liveTaskCondition } from "../task/scope";
+import {
+  readableEventDataSql,
+  redactActivityRows,
+} from "../task-activity/redact";
 import { escapeLikePattern } from "./like-pattern";
 import { TASK_SHORT_ID_PATTERN } from "./task-short-id";
 import {
@@ -270,12 +274,14 @@ export async function findComments(scope: SourceScope): Promise<CommentHit[]> {
  * Task history other than comments (status, assignee and title changes…):
  * rows of tasks that match, or whose own text does. History has no stored
  * vector; it is computed for the workspace's rows, as the old substring
- * search scanned them, and scores below comments.
+ * search scanned them, and scores below comments. A row can name another
+ * project (task-activity/redact.ts): what the caller can't see neither
+ * matches nor comes back.
  */
 export async function findActivities(
   scope: SourceScope,
 ): Promise<CommentHit[]> {
-  const ownText = sql`coalesce(${activityTable.content}, cast(${activityTable.eventData} as text), '')`;
+  const ownText = sql`coalesce(${activityTable.content}, cast(${readableEventDataSql(scope.hidden)} as text), '')`;
   const ownHit = computedMatch([ownText], scope.query);
   const score = sql<number>`(case when ${ownHit} then 2 else 1 end)::float8`;
   const rows = await db
@@ -295,7 +301,8 @@ export async function findActivities(
     )
     .orderBy(desc(score), desc(activityTable.createdAt))
     .limit(scope.limit);
-  return rows.map((row) => ({ ...row, score: Number(row.score) }));
+  const redacted = await redactActivityRows(rows, scope);
+  return redacted.map((row) => ({ ...row, score: Number(row.score) }));
 }
 
 /** Relevance and match for a small table without a stored vector. */

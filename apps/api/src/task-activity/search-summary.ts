@@ -33,13 +33,18 @@ function taskLabel(key: unknown, title: unknown): string {
   return [text(key), text(title)].filter(Boolean).join(" ") || "a task";
 }
 
+/** A task in a project the reader can't see (task-activity/redact.ts). */
+const HIDDEN_TASK = "a task in another project";
+
 function otherTask(data: Data) {
+  if (data.otherTaskHidden === true) return HIDDEN_TASK;
   return taskLabel(data.otherTaskKey, data.otherTaskTitle);
 }
 
 function parentLabel(value: unknown) {
   if (!value || typeof value !== "object") return null;
   const parent = value as Data;
+  if (parent.hidden === true) return HIDDEN_TASK;
   return taskLabel(parent.key, parent.title);
 }
 
@@ -79,11 +84,20 @@ export function taskDetailActivitySummary(
       const to = parentLabel(data.newParent);
       if (from && to) return `changed the parent from ${from} to ${to}`;
       if (to) return `set the parent to ${to}`;
+      if (from === HIDDEN_TASK) {
+        return "removed a parent task in another project";
+      }
       return `removed the parent ${from ?? "task"}`;
     }
     case "subtask_added":
+      if (data.otherTaskHidden === true) {
+        return "added a sub-task in another project";
+      }
       return `added the sub-task ${otherTask(data)}`;
     case "subtask_removed":
+      if (data.otherTaskHidden === true) {
+        return "removed a sub-task in another project";
+      }
       return `removed the sub-task ${otherTask(data)}`;
     case "link_added":
       return `added the link ${linkLabel(data)}`;
@@ -96,8 +110,14 @@ export function taskDetailActivitySummary(
     case "attachment_removed":
       return `removed the attachment ${text(data.filename)}`;
     case "copied_from":
+      if (data.sourceTaskHidden === true) {
+        return `created this task as a copy of ${HIDDEN_TASK}`;
+      }
       return `created this task as a copy of ${taskLabel(data.sourceTaskKey, data.sourceTaskTitle)}`;
     case "copied_to":
+      if (data.copyTaskHidden === true) {
+        return "made a copy of this task in another project";
+      }
       return `made a copy of this task: ${taskLabel(data.copyTaskKey, data.copyTaskTitle)}`;
     default:
       return undefined;

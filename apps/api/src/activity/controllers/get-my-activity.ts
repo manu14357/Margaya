@@ -4,6 +4,7 @@ import db from "../../database";
 import { activityTable, projectTable, taskTable } from "../../database/schema";
 import { notHiddenProject } from "../../project/visibility";
 import { inTriageColumnSql, liveTaskCondition } from "../../task/scope";
+import { redactActivityRows } from "../../task-activity/redact";
 import { formatTaskKey } from "../../task-activity/task-snapshot";
 
 const DEFAULT_LIMIT = 10;
@@ -102,15 +103,19 @@ async function getMyActivity({
   const page = rows.slice(0, limit);
   const last = page.at(-1);
   return {
-    items: page.map((row) => ({
-      ...row.activity,
-      task: {
-        id: row.task.id,
-        key: formatTaskKey(row.projectSlug, row.task.number),
-        title: row.task.title,
-        projectId: row.task.projectId,
-      },
-    })),
+    // A row in a project the viewer sees can still name one they don't.
+    items: await redactActivityRows(
+      page.map((row) => ({
+        ...row.activity,
+        task: {
+          id: row.task.id,
+          key: formatTaskKey(row.projectSlug, row.task.number),
+          title: row.task.title,
+          projectId: row.task.projectId,
+        },
+      })),
+      { workspaceIds: [workspaceId], hidden },
+    ),
     nextCursor:
       rows.length > limit && last
         ? encodeCursor({ createdAt: last.createdAtKey, id: last.activity.id })

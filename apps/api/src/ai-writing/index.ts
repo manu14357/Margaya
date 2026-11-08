@@ -286,7 +286,7 @@ const aiWriting = apiRouter<BaseVariables & { workspaceId: string }>()
         comments: 30,
         maxChars: 12_000,
       });
-      const history = await taskHistoryLines(body.id);
+      const history = await taskHistoryLines(body.id, scope);
       const historyBlock = history.length
         ? `\n\n${wrapUntrusted({
             source: "task-history",
