@@ -14,7 +14,8 @@ import SaveViewActions from "./save-view-actions";
 
 /**
  * The layouts a view page offers: a project's view also has its Calendar and
- * Gantt; a workspace view spans projects, so it keeps to the task lists.
+ * Gantt; a workspace view spans projects, so its Gantt is a read-only timeline
+ * with one section per project, and it has no Calendar.
  */
 export function viewPageLayouts(
   view: Pick<SavedView, "projectId">,

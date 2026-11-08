@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import BulkToolbar from "@/components/bulk-selection/bulk-toolbar";
+import WorkspaceTimeline from "@/components/gantt/workspace-timeline";
 import Spreadsheet from "@/components/spreadsheet/spreadsheet";
 import TaskDetailsSheet from "@/components/task/task-details-sheet";
 import LayoutToggle from "@/components/task-filters/layout-toggle";
@@ -71,7 +72,19 @@ export default function TaskListSurface({
     scope.kind === "project" && (layout === "calendar" || layout === "gantt")
       ? layout
       : null;
-  const displayConfig = useDisplayConfig({ workspaceId, scope, layout });
+  // A workspace view's Gantt fetches its own rows, one section per project.
+  const workspaceTimeline = scope.kind === "workspace" && layout === "gantt";
+  const scopedConfig = useDisplayConfig({ workspaceId, scope, layout });
+  // It always groups by project and sorts by date, so those stay out of the menu.
+  const displayConfig = workspaceTimeline
+    ? {
+        ...scopedConfig,
+        groupByOptions: [],
+        allowSubGroup: false,
+        allowEmptyGroups: false,
+        orderOptions: [],
+      }
+    : scopedConfig;
   const rows = useTaskQueryRows({
     workspaceId,
     scope,
@@ -79,7 +92,7 @@ export default function TaskListSurface({
     baseConditions,
     limit: isSpreadsheet ? 100 : 50,
     ungrouped: isSpreadsheet,
-    enabled: !scheduleLayout,
+    enabled: !scheduleLayout && !workspaceTimeline,
   });
 
   // The sheet needs the task's own project: from the rows, else the task.
@@ -109,7 +122,7 @@ export default function TaskListSurface({
         }}
         rightSlot={
           <>
-            {showCount && rows.data && (
+            {showCount && !workspaceTimeline && rows.data && (
               <span className="rounded-md bg-muted px-1.5 py-0.5 font-medium text-muted-foreground text-xs">
                 {t("views:detail.taskCount", { count: rows.data.totalCount })}
               </span>
@@ -120,13 +133,26 @@ export default function TaskListSurface({
                 layouts={layouts}
                 value={layout}
                 onChange={(next) => handle.updateDisplay({ layout: next })}
+                iconsOnly={scope.kind === "project"}
               />
             )}
           </>
         }
       />
       <div className="flex min-h-0 flex-1 overflow-hidden bg-background">
-        {scheduleLayout && scope.kind === "project" ? (
+        {workspaceTimeline ? (
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+            <WorkspaceTimeline
+              workspaceId={workspaceId}
+              scope={scope}
+              state={handle.state}
+              baseConditions={baseConditions}
+              onClearFilters={
+                handle.hasActiveFilters ? handle.clearFilters : undefined
+              }
+            />
+          </div>
+        ) : scheduleLayout && scope.kind === "project" ? (
           <div className="flex min-h-0 min-w-0 flex-1 flex-col">
             <ScheduleLayoutBody
               layout={scheduleLayout}

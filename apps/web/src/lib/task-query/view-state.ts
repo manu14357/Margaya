@@ -19,6 +19,7 @@ export const WORKSPACE_VIEW_LAYOUTS: readonly TaskLayout[] = [
   "list",
   "board",
   "spreadsheet",
+  "gantt",
 ];
 
 export const PROJECT_VIEW_LAYOUTS: readonly TaskLayout[] = [

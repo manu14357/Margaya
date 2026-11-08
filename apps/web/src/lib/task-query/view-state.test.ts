@@ -58,10 +58,19 @@ describe("view state", () => {
   it("keeps workspace views within their layouts and without custom fields", () => {
     const state = viewToState(view({ projectId: null }));
     const content = stateToViewContent(
-      { ...state, display: { ...state.display, layout: "gantt" } },
+      { ...state, display: { ...state.display, layout: "calendar" } },
       "workspace",
     );
     expect(content.display.layout).toBe("spreadsheet");
     expect(content.displayProperties.customFields).toEqual([]);
+  });
+
+  it("keeps the timeline layout on a workspace view", () => {
+    const state = viewToState(view({ projectId: null }));
+    const content = stateToViewContent(
+      { ...state, display: { ...state.display, layout: "gantt" } },
+      "workspace",
+    );
+    expect(content.display.layout).toBe("gantt");
   });
 });

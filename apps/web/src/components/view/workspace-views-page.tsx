@@ -44,6 +44,7 @@ export const WORKSPACE_LAYOUTS: readonly TaskLayout[] = [
   "list",
   "board",
   "spreadsheet",
+  "gantt",
 ];
 
 const WORKSPACE_SCOPE: TaskQueryScope = { kind: "workspace" };
