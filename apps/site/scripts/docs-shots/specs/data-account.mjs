@@ -44,6 +44,7 @@ const TRASHED_TASKS = [
   ["Old footer link audit", []],
   ["Cookie banner copy", ["Draft the consent text", "Review with legal"]],
 ];
+const TRASHED_PAGE = "Old launch checklist";
 const WEBHOOKS = [
   {
     name: "Release notifier",
@@ -168,6 +169,19 @@ async function ensureDataDemo() {
       });
     }
     await press.call("DELETE", `/task/${task.id}`);
+  }
+
+  // A deleted page in the same trash. Pages are archived before they're deleted.
+  const trashedPages = asList(
+    await press.get(`/trash/project/${web.id}/pages`),
+    "items",
+  );
+  if (!trashedPages.some((p) => p.title === TRASHED_PAGE)) {
+    const oldPage = await press.call("POST", `/page/project/${web.id}`, {
+      title: TRASHED_PAGE,
+    });
+    await press.call("POST", `/page/${oldPage.id}/archive`);
+    await press.call("DELETE", `/page/${oldPage.id}`);
   }
 
   // A deleted project in the workspace trash.
@@ -813,6 +827,31 @@ async function reveal(page, selector) {
 
 const shot = (spec) => spec;
 
+/**
+ * Push as a server with VAPID keys reports it, whatever the capture server has.
+ * Nothing is subscribed: the switch is never turned on. Permission is granted
+ * because a headless browser may report it as blocked.
+ */
+const pushSetUp =
+  (subscriptions = []) =>
+  async (page) => {
+    await page.context().grantPermissions(["notifications"]);
+    await page.route(
+      (url) => url.pathname === "/api/notification-preferences/push",
+      (route) =>
+        route.request().method() === "GET"
+          ? route.fulfill({
+              status: 200,
+              json: {
+                available: true,
+                publicKey: "docs-shot-public-key",
+                subscriptions,
+              },
+            })
+          : route.fallback(),
+    );
+  };
+
 export default [
   // --- Imports --------------------------------------------------------
   shot({
@@ -1009,6 +1048,7 @@ export default [
     url: (seed) => `/dashboard/settings/projects/${seed.projects.web.id}/trash`,
     ready: "Cookie banner copy",
     prepare: async (page) => {
+      await page.getByText(TRASHED_PAGE).waitFor();
       await page
         .getByRole("button", { name: "More actions for Old footer link audit" })
         .click();
@@ -1018,7 +1058,7 @@ export default [
     },
     keepPointer: true,
     clip: { selector: PAGE, pad: 0 },
-    viewport: { width: 1440, height: 460 },
+    viewport: { width: 1440, height: 760 },
   }),
   shot({
     name: "data/workspace-trash",
@@ -1151,6 +1191,29 @@ export default [
     viewport: TALL,
   }),
   shot({
+    name: "account/two-factor-required",
+    url: "/two-factor-setup",
+    ready: "Set up two-factor to continue",
+    // The setting is instance wide, so only this browser is told it's on.
+    before: async (page) => {
+      await page.route("**/api/config", async (route) => {
+        const response = await route.fetch();
+        await route.fulfill({
+          response,
+          json: { ...(await response.json()), requireTwoFactor: true },
+        });
+      });
+      await page.route("**/api/user/security", async (route) => {
+        const response = await route.fetch();
+        await route.fulfill({
+          response,
+          json: { ...(await response.json()), twoFactorRequired: true },
+        });
+      });
+    },
+    clip: { selector: "main .max-w-sm", pad: 24 },
+  }),
+  shot({
     name: "account/sessions",
     url: "/dashboard/settings/account/security",
     ready: "Active sessions",
@@ -1228,9 +1291,27 @@ export default [
     name: "account/delivery-channels",
     url: "/dashboard/settings/account/notifications",
     ready: "Delivery channels",
+    before: pushSetUp(),
     prepare: (page) => reveal(page, section("Delivery channels")),
     clip: { selector: section("Delivery channels"), pad: 12 },
-    viewport: { width: 1440, height: 2200 },
+    viewport: { width: 1440, height: 2400 },
+  }),
+  shot({
+    name: "account/push-notifications",
+    url: "/dashboard/settings/account/notifications",
+    ready: "Delivery channels",
+    before: pushSetUp([
+      {
+        id: "docs-shot-phone",
+        endpoint: "https://push.example.com/docs-shot-phone",
+        userAgent:
+          "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
+        createdAt: "2026-01-15T09:00:00.000Z",
+      },
+    ]),
+    prepare: (page) => reveal(page, "[data-channel=push]"),
+    clip: { selector: "[data-channel=push]", pad: 12 },
+    viewport: TALL,
   }),
   shot({
     name: "account/email-digest",

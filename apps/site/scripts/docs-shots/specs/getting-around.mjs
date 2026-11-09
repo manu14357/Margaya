@@ -230,7 +230,7 @@ const shots = [
 
   {
     name: "getting-around/your-work-summary",
-    url: (seed) => `${ws(seed)}/my-work`,
+    url: (seed) => `${ws(seed)}/my-work?tab=summary`,
     ready: "Assigned and open",
     clip: MAIN,
   },
@@ -238,7 +238,7 @@ const shots = [
     name: "getting-around/your-work-assigned",
     url: (seed) => `${ws(seed)}/my-work?tab=assigned`,
     ready: "Redesign the pricing page",
-    clip: { x: 312, y: 0, width: 1128, height: 440 },
+    clip: { x: 312, y: 0, width: 1128, height: 449 },
   },
 
   {
@@ -257,6 +257,22 @@ const shots = [
         .getByText("Unsubscribe")
         .first()
         .waitFor({ state: "visible", timeout: 60_000 });
+      // The preview scrolls to the comment; go back up so the shot shows the
+      // description and Show properties too.
+      const show = page
+        .getByRole("button", { name: "Show properties" })
+        .first();
+      await show.waitFor({ state: "attached", timeout: 30_000 });
+      // Sub-tasks and activity load separately, and show empty states until then.
+      await page
+        .getByText("Draft the plan comparison table")
+        .last()
+        .waitFor({ state: "attached", timeout: 60_000 });
+      await page
+        .getByText("Looks great. I tightened the FAQ answers")
+        .last()
+        .waitFor({ state: "attached", timeout: 60_000 });
+      await show.evaluate((el) => el.scrollIntoView({ block: "start" }));
     },
     clip: MAIN,
   },

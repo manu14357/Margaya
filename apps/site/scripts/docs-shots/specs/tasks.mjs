@@ -2,9 +2,12 @@
  * Screenshots for the task and project-setup docs (apps/docs/core/functional).
  *
  * LOCAL DEVELOPMENT ONLY. Besides the Studio North seed, these screens need a
- * restricted project, a published board, task templates, a repeating task and
- * a task with description history. ensureTasksDemo() creates them through the
- * public API the first time and reuses them afterwards.
+ * restricted project, a published board, task templates, a repeating task, a
+ * task with description history, custom fields and logged time. ensureTasksDemo()
+ * creates them through the public API the first time and reuses them afterwards.
+ * Custom fields, dated tasks and time live on the Hiring project, which no
+ * other section's shots open; its calendar and analytics shots are here too.
+ * The press user keeps a running timer there, restarted on each run.
  */
 
 process.env.PRESS_API_URL ??= "http://127.0.0.1:1337";
@@ -13,7 +16,12 @@ const { DEMO_USERS, DEMO_WORKSPACE, signIn } = await import(
   "../../press/seed-demo.mjs"
 );
 
-/** Tasks: [title, status, priority, assignee, label?]. */
+/**
+ * Tasks: [title, status, priority, assignee, label?, start?, due?]. Start and
+ * due are day offsets from today. Only unassigned tasks and Sofia's get dates,
+ * so Your work, Home and Priya's profile look as in the other shots; the dated
+ * ones fill the Hiring calendar and the custom field chart.
+ */
 const HIRING = {
   name: "Hiring",
   slug: "HIR",
@@ -36,8 +44,54 @@ const HIRING = {
       "medium",
       "press",
     ],
-    ["Refresh the careers page listings", "to-do", "low", "sofia"],
+    ["Refresh the careers page listings", "to-do", "low", "sofia", null, 3, 9],
     ["Send take-home review notes to candidates", "done", "medium", "priya"],
+    [
+      "Phone screen for the junior support engineer",
+      "to-do",
+      "medium",
+      null,
+      null,
+      1,
+      2,
+    ],
+    ["Post the QA internship on job boards", "done", "low", null, null, -9, -7],
+    [
+      "Reference checks for the backend engineer",
+      "in-progress",
+      "high",
+      null,
+      null,
+      0,
+      2,
+    ],
+    [
+      "Take-home exercise for the frontend engineer",
+      "to-do",
+      "medium",
+      null,
+      null,
+      4,
+      6,
+    ],
+    [
+      "Portfolio review for the product designer",
+      "in-progress",
+      "medium",
+      null,
+      null,
+      -1,
+      4,
+    ],
+    [
+      "Panel interview for the engineering lead",
+      "to-do",
+      "high",
+      null,
+      null,
+      7,
+      8,
+    ],
   ],
 };
 
@@ -114,6 +168,71 @@ const TEMPLATES = [
   },
 ];
 
+const CUSTOM_FIELDS = [
+  {
+    name: "Seniority",
+    type: "dropdown",
+    options: ["Junior", "Mid-level", "Senior", "Lead"],
+  },
+  { name: "Interview rounds", type: "number" },
+  { name: "Target start", type: "date" },
+  { name: "Referral", type: "boolean", defaultValue: "false" },
+];
+const FIELD_VALUES = [
+  [
+    "Schedule final interviews for the senior designer",
+    { Seniority: "Senior", "Interview rounds": "3" },
+  ],
+  [
+    "Draft the offer letter for the frontend lead",
+    { Seniority: "Lead", "Interview rounds": "4" },
+  ],
+  [
+    "Send take-home review notes to candidates",
+    { Seniority: "Mid-level", "Interview rounds": "2" },
+  ],
+  [
+    "Phone screen for the junior support engineer",
+    { Seniority: "Junior", "Interview rounds": "1" },
+  ],
+  [
+    "Post the QA internship on job boards",
+    { Seniority: "Junior", "Interview rounds": "1" },
+  ],
+  [
+    "Reference checks for the backend engineer",
+    { Seniority: "Mid-level", "Interview rounds": "3" },
+  ],
+  [
+    "Take-home exercise for the frontend engineer",
+    { Seniority: "Mid-level", "Interview rounds": "3" },
+  ],
+  [
+    "Portfolio review for the product designer",
+    { Seniority: "Senior", "Interview rounds": "2" },
+  ],
+  [
+    "Panel interview for the engineering lead",
+    { Seniority: "Lead", "Interview rounds": "4" },
+  ],
+];
+const FIELD_VIEW = "By seniority";
+
+const TIMED_TASK = "Draft the offer letter for the frontend lead";
+/**
+ * Hours ago it started, minutes it took, and its note. The second note is long
+ * on purpose: the popover cuts it short and keeps the edit and delete buttons
+ * in view.
+ */
+const TIME_ENTRIES = [
+  [50, 90, "First pass at the offer"],
+  [
+    26,
+    45,
+    "Checked the salary band against the latest market survey and the two offers we made this spring",
+  ],
+];
+
 const REPEATING_TITLE = "Weekly dependency updates";
 const HISTORY_TITLE = "Write the API versioning policy";
 // Alternating authors, so each edit is its own version.
@@ -187,16 +306,36 @@ async function ensureTasksDemo() {
     }
     const existing = await listTasks(press, project.id);
     const tasks = {};
-    for (const [title, status, priority, who, label] of spec.tasks) {
-      const task =
-        existing.find((t) => t.title === title) ??
-        (await press.call("POST", `/task/${project.id}`, {
+    for (const [
+      title,
+      status,
+      priority,
+      who,
+      label,
+      start,
+      due,
+    ] of spec.tasks) {
+      const dates =
+        due === undefined
+          ? {}
+          : {
+              startDate: day(start, 9).toISOString(),
+              dueDate: day(due, 17).toISOString(),
+            };
+      let task = existing.find((t) => t.title === title);
+      if (!task) {
+        task = await press.call("POST", `/task/${project.id}`, {
           title,
           description: "",
           priority,
           status,
-          assigneeIds: [s[who].id],
-        }));
+          assigneeIds: who ? [s[who].id] : [],
+          ...dates,
+        });
+      } else if (dates.dueDate && !task.dueDate) {
+        // Seeded before these tasks had dates.
+        await press.call("PUT", `/task/dates/${task.id}`, dates);
+      }
       if (label && !(task.labels ?? []).some((l) => l.name === label)) {
         await press.call("PUT", `/label/${labelId(label)}/task`, {
           taskId: task.id,
@@ -222,6 +361,74 @@ async function ensureTasksDemo() {
       role,
     });
   }
+
+  // Custom fields, their values, and a view that groups by one of them.
+  await press.call("PATCH", `/project/${hiring.id}/features`, {
+    viewsEnabled: true,
+  });
+  const fields = await press.get(`/custom-field/project/${hiring.id}`);
+  const fieldIds = {};
+  for (const field of CUSTOM_FIELDS) {
+    const found =
+      fields.find((f) => f.name === field.name) ??
+      (await press.call("POST", "/custom-field", {
+        projectId: hiring.id,
+        required: false,
+        ...field,
+      }));
+    fieldIds[field.name] = found.id;
+  }
+  for (const [title, values] of FIELD_VALUES) {
+    for (const [name, value] of Object.entries(values)) {
+      await press.call("PUT", "/custom-field/value", {
+        taskId: hiring.tasks[title].id,
+        fieldId: fieldIds[name],
+        value,
+      });
+    }
+  }
+  const hiringViews = await press.get("/view", {
+    workspaceId,
+    projectId: hiring.id,
+  });
+  const fieldView =
+    (Array.isArray(hiringViews)
+      ? hiringViews
+      : (hiringViews?.views ?? [])
+    ).find((v) => v.name === FIELD_VIEW) ??
+    (await press.call("POST", "/view", {
+      workspaceId,
+      projectId: hiring.id,
+      access: "workspace",
+      name: FIELD_VIEW,
+      display: {
+        layout: "list",
+        groupBy: `customField:${fieldIds.Seniority}`,
+      },
+    }));
+
+  // Time on one task, all logged by the press user so their inbox stays as
+  // seeded, and a timer that has been running for 25 minutes.
+  const timedTaskId = hiring.tasks[TIMED_TASK].id;
+  const logged = await press.get(`/time-entry/task/${timedTaskId}`);
+  for (const [hoursAgo, minutes, description] of TIME_ENTRIES) {
+    if (logged.some((entry) => entry.description === description)) continue;
+    const start = Date.now() - hoursAgo * 60 * 60 * 1000;
+    await press.call("POST", "/time-entry", {
+      taskId: timedTaskId,
+      startTime: new Date(start).toISOString(),
+      endTime: new Date(start + minutes * 60 * 1000).toISOString(),
+      description,
+    });
+  }
+  const { entry: running } = await press.get("/time-entry/running", {
+    workspaceId,
+  });
+  if (running) await press.call("DELETE", `/time-entry/${running.id}`);
+  await press.call("POST", "/time-entry", {
+    taskId: timedTaskId,
+    startTime: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
+  });
 
   // A published roadmap with comments, reactions and votes on.
   const roadmap = await ensureProject(ROADMAP);
@@ -296,7 +503,7 @@ async function ensureTasksDemo() {
     "GET",
     `/task-recurrence/${repeating.id}`,
   );
-  if (!recurrence.ok || !recurrence.data?.frequency) {
+  if (!recurrence.ok || !recurrence.data?.recurrence) {
     await press.call("PUT", `/task-recurrence/${repeating.id}`, {
       frequency: "weekly",
       weekdays: [1],
@@ -326,7 +533,7 @@ async function ensureTasksDemo() {
 
   return {
     workspaceId,
-    hiring,
+    hiring: { ...hiring, viewId: fieldView.id, timedTaskId },
     roadmap: { ...roadmap, path: publication.path },
     api: {
       id: api.id,
@@ -380,6 +587,114 @@ async function clipAround(shot, locators, pad = 12) {
     width: Math.ceil(right - Math.floor(left)),
     height: Math.ceil(bottom - Math.floor(top)),
   };
+}
+
+const boardFilter = {
+  name: "tasks/board-filter",
+  url: (seed) => board(seed, webId(seed)),
+  ready: "Annual billing toggle",
+  prepare: async (page) => {
+    const button = page
+      .getByRole("button", { name: "Filter", exact: true })
+      .first();
+    await button.click();
+    await page.getByText("Filter by", { exact: true }).waitFor();
+    await clipAround(boardFilter, [button, page.getByRole("menu")], 12);
+  },
+};
+
+const timePopover = {
+  name: "tasks/time-tracking-popover",
+  url: (seed) =>
+    board(seed, demo.hiring.id, `?taskId=${demo.hiring.timedTaskId}`),
+  ready: TIMED_TASK,
+  prepare: async (page) => {
+    const trigger = page.getByRole("button", { name: "Timer running" });
+    await trigger.first().click();
+    await page.getByRole("list", { name: "Time entries" }).waitFor();
+    // As wide as the popover: the trigger's row reaches past it, over the panel.
+    const popup = await page.locator("[data-slot=popover-popup]").boundingBox();
+    const button = await trigger.first().boundingBox();
+    timePopover.clip = {
+      x: Math.floor(popup.x) - 2,
+      y: Math.floor(popup.y) - 2,
+      width: Math.ceil(popup.width) + 4,
+      height: Math.ceil(button.y + button.height - popup.y) + 4,
+    };
+  },
+};
+
+/** Hiring's calendar showing each task's Seniority, chosen in the toolbar. */
+const fieldCalendar = {
+  name: "tasks/custom-field-calendar",
+  url: (seed) => `${ws(seed)}/project/${demo.hiring.id}/calendar`,
+  ready: "Show weekends",
+  viewport: { width: 1440, height: 760 },
+  // The corner the runner parks the pointer in is a day cell, and hovering one
+  // shows its add button.
+  keepPointer: true,
+  prepare: async (page) => {
+    // The choice is kept in this browser context only.
+    await page.getByRole("combobox", { name: "Field shown on tasks" }).click();
+    await page.getByRole("option", { name: "Seniority", exact: true }).click();
+    await page.getByTestId("calendar-field-value").first().waitFor();
+    await page.evaluate(() => document.activeElement?.blur?.());
+    await page.mouse.move(1300, 68);
+    // Ends with the last week that has a task; week rows carry an inline grid.
+    const bottom = await page
+      .locator("[data-task-status]")
+      .evaluateAll((bars) =>
+        Math.max(
+          ...bars.map((bar) => {
+            let week = bar;
+            while (week && !week.style?.gridTemplateRows) {
+              week = week.parentElement;
+            }
+            return (week ?? bar).getBoundingClientRect().bottom;
+          }),
+        ),
+      );
+    fieldCalendar.clip = {
+      x: 312,
+      y: 0,
+      width: 1128,
+      height: Math.min(760, Math.ceil(bottom)),
+    };
+  },
+};
+
+/** Hiring's open and completed tasks per Seniority option, in Analytics. */
+const fieldChart = {
+  name: "analytics/custom-field-chart",
+  url: (seed) => `${ws(seed)}/project/${demo.hiring.id}/analytics`,
+  ready: "Custom chart",
+  viewport: { width: 1440, height: 1800 },
+  prepare: async (page) => {
+    const card = page.locator(fieldChart.clip.selector);
+    await card.scrollIntoViewIfNeeded();
+    await card.getByRole("combobox", { name: "X-axis" }).click();
+    await page.getByRole("option", { name: "Seniority", exact: true }).click();
+    await card.getByRole("combobox", { name: "Segment" }).click();
+    await page.getByRole("option", { name: "Group", exact: true }).click();
+    await card.getByText("Mid-level").first().waitFor();
+    await card.scrollIntoViewIfNeeded();
+  },
+  clip: {
+    selector:
+      'xpath=//h2[normalize-space()="Custom chart"]/ancestor::*[@data-slot="card"][1]',
+    pad: 0,
+  },
+};
+
+/** Selects two cards on the Website relaunch board. */
+async function selectTwoCards(page) {
+  for (const title of ["Newsletter sign-up flow", "Annual billing toggle"]) {
+    await page
+      .getByText(title, { exact: true })
+      .first()
+      .click({ modifiers: ["ControlOrMeta"] });
+  }
+  await page.getByRole("toolbar").getByText("2 selected").waitFor();
 }
 
 const columnGroupPicker = {
@@ -459,19 +774,7 @@ export default [
     },
     clip: dialog("Similar open tasks"),
   },
-  {
-    name: "tasks/board-filter",
-    url: (seed) => board(seed, webId(seed)),
-    ready: "Annual billing toggle",
-    prepare: async (page) => {
-      await page
-        .getByRole("button", { name: "Filter", exact: true })
-        .first()
-        .click();
-      await page.getByText("Filter by", { exact: true }).waitFor();
-    },
-    clip: { x: 316, y: 88, width: 244, height: 772 },
-  },
+  boardFilter,
   {
     name: "tasks/list-view",
     url: (seed) => board(seed, webId(seed)),
@@ -490,7 +793,10 @@ export default [
               }),
             }),
       );
-      await page.getByRole("button", { name: "List", exact: true }).click();
+      await page
+        .getByRole("main")
+        .getByRole("tab", { name: "List", exact: true })
+        .click();
       await page.waitForTimeout(800);
     },
     clip: { selector: "main", pad: 0 },
@@ -501,6 +807,72 @@ export default [
     ready: "Plan comparison table with the enterprise column",
     clip: { selector: "[role=dialog]", pad: 0 },
   },
+
+  // bulk-edit-tasks
+  {
+    name: "tasks/bulk-toolbar",
+    url: (seed) => board(seed, webId(seed)),
+    ready: "Annual billing toggle",
+    prepare: selectTwoCards,
+    clip: { selector: "main", pad: 0 },
+  },
+  {
+    name: "tasks/bulk-move-dialog",
+    url: (seed) => board(seed, webId(seed)),
+    ready: "Annual billing toggle",
+    prepare: async (page) => {
+      await selectTwoCards(page);
+      await page
+        .getByRole("toolbar")
+        .getByRole("button", { name: "Actions" })
+        .click();
+      await page
+        .getByRole("group", { name: "Move to project" })
+        .getByRole("option", { name: "Mobile app" })
+        .click();
+      // Stops at the confirmation: nothing moves.
+      await page.getByRole("alertdialog").waitFor();
+    },
+    clip: { selector: "[role=alertdialog]", pad: 0 },
+  },
+
+  // custom-fields
+  {
+    name: "tasks/custom-fields",
+    url: () => settings(demo.hiring.id, "workflow"),
+    ready: "Interview rounds",
+    viewport: TALL,
+    clip: section("Custom fields"),
+  },
+  {
+    name: "tasks/custom-field-edit",
+    url: () => settings(demo.hiring.id, "workflow"),
+    ready: "Interview rounds",
+    viewport: TALL,
+    prepare: async (page) => {
+      await page
+        .getByRole("listitem")
+        .filter({ hasText: "Seniority" })
+        .getByRole("button", { name: /^Edit/ })
+        .click();
+      await page.getByRole("button", { name: "Add option" }).waitFor();
+    },
+    clip: dialog("Edit custom field"),
+  },
+  {
+    name: "tasks/custom-field-group",
+    url: (seed) =>
+      `${ws(seed)}/project/${demo.hiring.id}/views/${demo.hiring.viewId}`,
+    ready: "No value",
+    // Tall enough for every group, down to No value.
+    viewport: { width: 1440, height: 680 },
+    clip: { selector: "main", pad: 0 },
+  },
+  fieldCalendar,
+  fieldChart,
+
+  // time-tracking
+  timePopover,
 
   // multiple-assignees
   {
@@ -541,6 +913,69 @@ export default [
         .fill("maya.lind@margaya.test, omar.haddad@margaya.test");
     },
     clip: dialog("Invite team member"),
+  },
+
+  // guest-access
+  {
+    name: "tasks/invite-guest",
+    url: (seed) => `${ws(seed)}/members`,
+    ready: "Priya Raman",
+    prepare: async (page) => {
+      await page.getByRole("button", { name: "Invite member" }).first().click();
+      const invite = page.locator(
+        '[role=dialog]:has-text("Invite team member")',
+      );
+      await invite.getByRole("textbox").first().fill("maya.lind@margaya.test");
+      await invite.getByRole("combobox").click();
+      await page.getByRole("option", { name: "Guest", exact: true }).click();
+      // One project at the default Viewer role and one raised to Member.
+      // Nothing is sent.
+      await invite.getByRole("checkbox", { name: "Website relaunch" }).click();
+      await invite.getByRole("checkbox", { name: "Mobile app" }).click();
+      await invite
+        .getByRole("combobox", { name: "Project role in Mobile app" })
+        .click();
+      await page.getByRole("option", { name: "Member", exact: true }).click();
+      await invite
+        .getByRole("combobox", { name: "Project role in Mobile app" })
+        .getByText("Member")
+        .waitFor();
+    },
+    clip: dialog("Invite team member"),
+  },
+  {
+    name: "tasks/guest-access",
+    url: (seed) => settings(webId(seed), "general"),
+    ready: "Add member",
+    viewport: TALL,
+    // Answered in the browser: a real guest in the demo workspace would show up
+    // in the member lists of other shots.
+    before: (page, seed) =>
+      page.route(
+        (url) => url.pathname === `/api/project/${webId(seed)}/access`,
+        (route) =>
+          route.request().method() === "GET"
+            ? route.fulfill({
+                status: 200,
+                json: {
+                  visibility: "open",
+                  leadUserId: null,
+                  canManage: true,
+                  members: [
+                    {
+                      userId: "docs-shot-guest",
+                      role: "viewer",
+                      addedAt: "2026-01-15T09:00:00.000Z",
+                      name: "Maya Lind",
+                      email: "maya.lind@margaya.test",
+                      image: null,
+                    },
+                  ],
+                },
+              })
+            : route.fallback(),
+      ),
+    clip: section("Access"),
   },
 
   // configure-workflows and project-features-and-column-groups

@@ -1002,6 +1002,8 @@ const summaryCard = {
     const button = page.getByRole("button", { name: "Summarize project" });
     await button.click();
     await page.getByRole("button", { name: "Try again" }).waitFor();
+    // Follows a permission check, which can finish after the summary.
+    await page.getByRole("button", { name: "Save as page" }).waitFor();
     await clipAround(this, [cardOf(page, "AI summary", "Try again")], 12);
   },
 };
@@ -1411,6 +1413,12 @@ async function sprintEnd(page, seed) {
   return String(cycle.endDate ?? cycle.cycle?.endDate).slice(0, 10);
 }
 
+/** The cycle header keeps its summary, retrospective and brief behind one button. */
+async function openCycleAiAction(page, name) {
+  await page.getByRole("button", { name: "AI actions" }).first().click();
+  await page.getByRole("menuitem", { name }).click();
+}
+
 const stakeholderBrief = {
   name: "ai/stakeholder-brief",
   url: cycleUrl,
@@ -1436,9 +1444,7 @@ const stakeholderBrief = {
     });
   },
   async prepare(page) {
-    await page
-      .getByRole("button", { name: "Write a stakeholder brief" })
-      .click();
+    await openCycleAiAction(page, "Write a stakeholder brief");
     await page.getByText("Leadership", { exact: true }).click();
     await page.getByRole("button", { name: "Write brief" }).click();
     await page.getByRole("button", { name: "Save as page" }).waitFor();
@@ -2379,7 +2385,7 @@ const cycleRetro = {
     );
   },
   async prepare(page) {
-    await page.getByRole("button", { name: "Prepare a retrospective" }).click();
+    await openCycleAiAction(page, "Prepare a retrospective");
     await page.getByRole("button", { name: "Write narrative" }).click();
     await page.getByText("Questions to discuss").first().waitFor();
     await clipAround(this, [cardOf(page, "Retrospective", "Save as page")], 2);

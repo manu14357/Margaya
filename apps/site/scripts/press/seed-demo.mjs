@@ -254,7 +254,7 @@ const PROJECTS = [
         ["press"],
         ["docs"],
         -1,
-        2,
+        0, // Due today, so Home's Due today section has tasks to show.
         "1",
       ],
       [
@@ -514,7 +514,7 @@ const PROJECTS = [
         ["press"],
         ["docs"],
         -6,
-        1,
+        0, // Due today, like the pricing FAQ.
         null,
       ],
       [

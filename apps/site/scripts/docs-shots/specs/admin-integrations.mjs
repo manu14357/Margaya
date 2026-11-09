@@ -187,6 +187,20 @@ async function mcpDeviceCode(page) {
 
 const tall = { width: 1440, height: 1200 };
 
+/**
+ * Answers one GET in the browser. Identity connections hold real addresses and
+ * a real one would need a token, so these shots show a connection nobody made.
+ */
+function mockGet(page, path, json) {
+  return page.route(
+    (url) => url.pathname === `/api${path}`,
+    (route) =>
+      route.request().method() === "GET"
+        ? route.fulfill({ status: 200, json })
+        : route.fallback(),
+  );
+}
+
 const shots = [
   // ---------------------------------------------------------------- admin
   {
@@ -217,8 +231,66 @@ const shots = [
     account: "owner",
     url: instance("authentication"),
     ready: "Allowed email domains",
-    viewport: { width: 1440, height: 1600 },
+    viewport: { width: 1440, height: 1800 },
     clip: { selector: section("Sign-in policy"), pad: 16 },
+  },
+  {
+    name: "admin/saml-connect",
+    account: "owner",
+    url: instance("authentication"),
+    ready: "Company sign-in (SAML)",
+    // Just tall enough for the form, so the sheet has no empty space.
+    viewport: { width: 1440, height: 920 },
+    before: (page) =>
+      mockGet(page, "/instance-admin/identity/saml/new", {
+        key: "examplekey01",
+        acsUrl:
+          "https://margaya.example.com/api/auth/sso/saml2/sp/acs/saml_examplekey01",
+        entityId:
+          "https://margaya.example.com/api/auth/sso/saml2/sp/metadata?providerId=saml_examplekey01",
+      }),
+    // Filled for the picture and never submitted; the certificate stays empty.
+    prepare: async (page) => {
+      await page
+        .locator(section("Company sign-in (SAML)"))
+        .getByRole("button", { name: "Connect provider" })
+        .click();
+      const sheet = page.locator("[role=dialog]");
+      await sheet.waitFor({ state: "visible" });
+      await sheet.getByLabel("Name", { exact: true }).fill("Company directory");
+      await sheet.getByLabel("Email domains").fill("studionorth.example");
+      await sheet
+        .getByLabel("Identity provider entity ID (issuer)")
+        .fill("https://id.studionorth.example/saml");
+      await sheet
+        .getByLabel("Single sign-on URL")
+        .fill("https://id.studionorth.example/sso");
+    },
+    clip: { selector: "[role=dialog]" },
+  },
+  {
+    name: "admin/scim-connections",
+    account: "owner",
+    url: instance("authentication"),
+    ready: "Provisioning (SCIM)",
+    // The last section of a long page.
+    viewport: { width: 1440, height: 2600 },
+    before: (page, seed) =>
+      mockGet(page, "/instance-admin/identity/scim", {
+        baseUrl: "https://margaya.example.com/api/auth/scim/v2",
+        items: [
+          {
+            id: "docs-scim-connection",
+            name: "Company directory",
+            workspaceId: seed.workspace.id,
+            workspaceName: "Studio North",
+            provisionedUsers: 12,
+            createdAt: "2026-01-15T09:00:00.000Z",
+            updatedAt: "2026-01-15T09:00:00.000Z",
+          },
+        ],
+      }),
+    clip: { selector: section("Provisioning (SCIM)"), pad: 16 },
   },
   {
     name: "admin/oauth-github",

@@ -4,8 +4,10 @@
  *
  * LOCAL DEVELOPMENT ONLY. Besides the Studio North seed, these screens need
  * backlog tasks, saved views, intake requests, a saved analytics report,
- * drafts, a sub-page and a page template. ensurePlanningDemo() creates them
- * through the public API the first time and reuses them afterwards.
+ * drafts, a sub-page, a page template, page comments and a milestone.
+ * ensurePlanningDemo() creates them through the public API the first time and
+ * reuses them afterwards. A few shots answer one request in the browser instead,
+ * where real data would change the press user's inbox or other shots.
  */
 
 process.env.PRESS_API_URL ??= "http://127.0.0.1:1337";
@@ -96,6 +98,29 @@ const SUB_PAGE = {
 
 const TEMPLATE_NAME = "Migration notes";
 const REPORT_NAME = "Open work by assignee";
+const MILESTONE_TITLE = "Public API v2 launch";
+const MILESTONE_BLOCKER = "Public API v2 reference docs";
+
+/** On the Relaunch plan page; the press user's own comment comes last. */
+const PAGE_COMMENTS = [
+  ["priya", "Can we move the launch checklist above the goals?"],
+  ["sofia", "Works for me. I'll add the design sign-off to it."],
+  ["press", "Done, thanks both. Let's review it on Friday."],
+];
+
+// [name, hours, entries], fictional totals for the Time tab.
+const TIME_BY_PERSON = [
+  ["Priya Raman", 18, 14],
+  ["Elena Marsh", 14.5, 11],
+  ["Jonas Weber", 12, 9],
+  ["Sofia Duarte", 8, 7],
+  ["Theo Okafor", 6, 5],
+];
+const TIME_BY_PROJECT = [
+  ["web", "Website relaunch", "WEB", "Globe", 33, 26],
+  ["api", "Platform API", "API", "Server", 16, 12],
+  ["mobile", "Mobile app", "MOB", "Smartphone", 9.5, 8],
+];
 
 function day(offset) {
   const date = new Date();
@@ -229,12 +254,45 @@ async function ensurePlanningDemo() {
     await press.get("/analytics-report", { workspaceId }),
     "reports",
   );
-  if (!reports.some((r) => r.name === REPORT_NAME)) {
-    await press.call("POST", "/analytics-report", {
+  const report =
+    reports.find((r) => r.name === REPORT_NAME) ??
+    (await press.call("POST", "/analytics-report", {
       workspaceId,
       name: REPORT_NAME,
       visibility: "workspace",
       config: { xAxis: "assignee", segment: "priority", metric: "taskCount" },
+    }));
+
+  // A milestone on Platform API, which the reference docs task blocks.
+  const platform = bySlug("API");
+  const platformBoard = await press.get(`/task/tasks/${platform.id}`, {
+    limit: 100,
+    page: 1,
+  });
+  const platformTasks = [
+    ...platformBoard.data.columns.flatMap((c) => c.tasks),
+    ...platformBoard.data.plannedTasks,
+  ];
+  const milestone =
+    platformTasks.find((t) => t.title === MILESTONE_TITLE) ??
+    (await press.call("POST", `/task/${platform.id}`, {
+      title: MILESTONE_TITLE,
+      description: "",
+      priority: "no-priority",
+      status: "to-do",
+      assigneeIds: [],
+      // Within the Month zoom's first screen, so the diamond and its label show.
+      startDate: day(5),
+      dueDate: day(5),
+      isMilestone: true,
+    }));
+  const blocker = platformTasks.find((t) => t.title === MILESTONE_BLOCKER);
+  const milestoneLinks = await press.get(`/task-relation/${milestone.id}`);
+  if (blocker && !JSON.stringify(milestoneLinks).includes(blocker.id)) {
+    await press.call("POST", "/task-relation", {
+      sourceTaskId: blocker.id,
+      targetTaskId: milestone.id,
+      relationType: "blocks",
     });
   }
 
@@ -282,6 +340,21 @@ async function ensurePlanningDemo() {
     });
   }
 
+  // Comments on the relaunch plan. The press user stops watching first, so the
+  // others' comments stay out of their inbox, and commenting last watches again.
+  if (plan) {
+    const comments = asList(
+      await press.get(`/page/${plan.id}/comments`),
+      "comments",
+    );
+    if (comments.length === 0) {
+      await press.call("DELETE", `/page/${plan.id}/subscription`);
+      for (const [who, content] of PAGE_COMMENTS) {
+        await s[who].call("POST", `/page/${plan.id}/comments`, { content });
+      }
+    }
+  }
+
   // The publish dialog needs public pages on for the workspace.
   const settings = await press.get(`/workspace/${workspaceId}/settings`);
   if (!settings.allowPublicPages) {
@@ -299,6 +372,7 @@ async function ensurePlanningDemo() {
   return {
     workspaceId,
     module: marketing?.id,
+    report: report.id,
     web: web.id,
     mobile: mobile.id,
     plan: plan?.id,
@@ -385,6 +459,98 @@ const click = (page, name, options = {}) =>
     .click();
 
 const dialog = { selector: "[role=dialog]", pad: 16 };
+
+/**
+ * Tabs and buttons that depend on permissions appear after the page goes quiet
+ * when the machine is busy, so a shot that shows them waits for the last tab.
+ */
+const waitForCapabilities = (page) =>
+  page.getByRole("tab", { name: "Analytics", exact: true }).first().waitFor();
+
+/** Answers the Time tab's requests here, so nobody's inbox hears about entries. */
+async function answerTimeReport(page, seed) {
+  await page.route(
+    (url) => url.pathname === "/api/time-entry/running",
+    (route) => route.fulfill({ status: 200, json: { entry: null } }),
+  );
+  await page.route(
+    (url) => url.pathname === "/api/time-entry/report",
+    (route) =>
+      route.fulfill({
+        status: 200,
+        json: {
+          from: new URL(route.request().url()).searchParams.get("from"),
+          to: new URL(route.request().url()).searchParams.get("to"),
+          timeZone: "UTC",
+          totalSeconds: 58.5 * 3600,
+          entryCount: 46,
+          runningCount: 1,
+          byPerson: TIME_BY_PERSON.map(([name, hours, entryCount]) => ({
+            userId: `docs-shot-${name}`,
+            name,
+            image: null,
+            seconds: hours * 3600,
+            entryCount,
+          })),
+          byProject: TIME_BY_PROJECT.map(
+            ([key, name, slug, icon, hours, entryCount]) => ({
+              projectId: seed.projects[key].id,
+              name,
+              slug,
+              icon,
+              seconds: hours * 3600,
+              entryCount,
+            }),
+          ),
+        },
+      }),
+  );
+}
+
+/**
+ * Adds a link whose dates conflict, in this browser only: the pricing page ends
+ * after the task it would block starts. Nothing is saved.
+ */
+function answerWithBrokenLink(page, seed) {
+  const { tasks, id } = seed.projects.web;
+  return page.route(
+    (url) => url.pathname === `/api/task-relation/project/${id}`,
+    async (route) => {
+      const response = await route.fetch();
+      const body = await response.json();
+      await route.fulfill({
+        response,
+        json: {
+          ...body,
+          relations: [
+            ...body.relations,
+            {
+              id: "docs-shot-link",
+              sourceTaskId: tasks.pricing.id,
+              targetTaskId: tasks.video.id,
+              relationType: "blocks",
+            },
+          ],
+        },
+      });
+    },
+  );
+}
+
+/** Clicks the red line. Broken lines draw last, and a click can't land on a bar. */
+async function openBrokenLine(page) {
+  const line = page.getByTestId("gantt-dependency-hit").last();
+  await line.waitFor({ state: "attached" });
+  const point = await line.evaluate((path) => {
+    const middle = path.getPointAtLength(path.getTotalLength() / 2);
+    const { x, y } = new DOMPoint(middle.x, middle.y).matrixTransform(
+      path.getScreenCTM() ?? undefined,
+    );
+    return { clientX: x, clientY: y };
+  });
+  await line.dispatchEvent("click", point);
+  await page.getByTestId("gantt-link-popover").waitFor();
+}
 
 export default [
   // Backlog
@@ -549,7 +715,11 @@ export default [
   {
     name: "views/calendar-layout",
     url: (seed) => `${web(seed)}/views/${demo.views["Launch calendar"]}`,
-    ready: "October",
+    ready: "Show weekends",
+    // The corner the runner parks the pointer in is a day cell, and hovering one
+    // shows its add button.
+    keepPointer: true,
+    prepare: (page) => page.mouse.move(1300, 68),
     clip: content(900),
   },
   {
@@ -557,6 +727,59 @@ export default [
     url: (seed) => `${web(seed)}/views/${demo.views["Release timeline"]}`,
     ready: "Jump to today",
     clip: content(900),
+  },
+  {
+    name: "views/gantt-link-popover",
+    url: (seed) => `${web(seed)}/gantt`,
+    ready: "Jump to today",
+    before: answerWithBrokenLink,
+    prepare: openBrokenLine,
+    clip: { selector: "[data-testid=gantt-link-popover]", pad: 140 },
+  },
+  {
+    name: "views/gantt-date-cascade",
+    url: (seed) => `${web(seed)}/gantt`,
+    ready: "Jump to today",
+    before: answerWithBrokenLink,
+    prepare: async (page) => {
+      await openBrokenLine(page);
+      await click(page, "Review date changes");
+      // Stops at the preview: nothing moves.
+      await page.getByTestId("gantt-cascade-preview").waitFor();
+    },
+    clip: { selector: "[role=alertdialog]", pad: 0 },
+  },
+  {
+    name: "views/gantt-milestone",
+    url: (seed) => `${ws(seed)}/project/${seed.projects.api.id}/gantt`,
+    ready: "Jump to today",
+    prepare: async (page) => {
+      await page
+        .getByRole("button", {
+          name: `Milestone ${MILESTONE_TITLE}: open or drag to move`,
+        })
+        .waitFor();
+      await waitForCapabilities(page);
+      await page
+        .getByRole("button", { name: "Milestone", exact: true })
+        .waitFor();
+    },
+    clip: content(574),
+  },
+  {
+    name: "views/workspace-timeline",
+    url: (seed) => `${ws(seed)}/views`,
+    ready: "Display",
+    prepare: async (page) => {
+      await click(page, "Gantt");
+      await page.getByRole("heading", { name: "Mobile app" }).waitFor();
+      await page
+        .getByRole("button", { name: "Save view", exact: true })
+        .waitFor();
+    },
+    // Tall enough for the first three projects' sections; ends between two rows.
+    viewport: { width: 1440, height: 1230 },
+    clip: content(1208),
   },
 
   // Intake
@@ -596,7 +819,73 @@ export default [
     name: "analytics/overview",
     url: (seed) => `${ws(seed)}/analytics`,
     ready: "Workload",
-    clip: content(810),
+    // Tile labels wrap onto two lines; ends below the Workload chart's last row.
+    clip: content(845),
+  },
+  {
+    name: "analytics/workload",
+    url: (seed) => `${ws(seed)}/analytics`,
+    ready: "Workload",
+    viewport: { width: 1440, height: 1700 },
+    prepare: async (page) => {
+      await page.getByText(/^Usual is what each person/).waitFor();
+      await markCard(page, "Workload", [
+        "Workload",
+        "Usual is what each person",
+      ]);
+      await page
+        .locator("[data-docs-shot]")
+        .getByRole("button", { name: "Table" })
+        .click();
+      await page.getByText("Against usual").first().waitFor();
+    },
+    clip: { selector: "[data-docs-shot]", pad: 0 },
+  },
+  {
+    name: "analytics/time-report",
+    url: (seed) => `${ws(seed)}/analytics?tab=time`,
+    ready: "By person",
+    before: answerTimeReport,
+    clip: content(560),
+  },
+  {
+    name: "analytics/home-pinned-report",
+    url: (seed) => ws(seed),
+    ready: "Pinned reports",
+    // Answered here, so the report isn't pinned for every other shot of Home.
+    before: (page, seed) =>
+      page.route(
+        (url) => url.pathname === "/api/home/preferences",
+        (route) =>
+          route.request().method() === "GET"
+            ? route.fulfill({
+                status: 200,
+                json: {
+                  workspaceId: seed.workspace.id,
+                  updatedAt: null,
+                  widgets: [
+                    {
+                      key: "pinned-reports",
+                      enabled: true,
+                      reportIds: [demo.report],
+                    },
+                    { key: "quick-links", enabled: true },
+                    { key: "recents", enabled: true },
+                    { key: "stickies", enabled: true },
+                    { key: "risks", enabled: false },
+                    { key: "my-brief", enabled: false },
+                  ],
+                },
+              })
+            : route.fallback(),
+      ),
+    prepare: async (page) => {
+      const widget = page.getByRole("region", { name: "Pinned reports" });
+      await widget.getByRole("img").first().waitFor();
+      await widget.evaluate((el) => el.setAttribute("data-docs-shot", ""));
+    },
+    clip: { selector: "[data-docs-shot]", pad: 0 },
+    viewport: { width: 1440, height: 1200 },
   },
   {
     name: "analytics/tasks-tab",
@@ -657,6 +946,17 @@ export default [
     prepare: async (page) => {
       await page.getByRole("button", { name: /panel/i }).last().click();
       await page.getByRole("tab", { name: "Outline" }).first().waitFor();
+    },
+    clip: content(640),
+  },
+  {
+    name: "pages/page-comments",
+    url: (seed) => `${web(seed)}/pages/${seed.projects.web.page.id}`,
+    ready: "Pricing page signed off",
+    prepare: async (page) => {
+      await page.getByRole("button", { name: /panel/i }).last().click();
+      await page.getByRole("tab", { name: "Comments" }).first().click();
+      await page.getByText(PAGE_COMMENTS[2][1]).first().waitFor();
     },
     clip: content(640),
   },
