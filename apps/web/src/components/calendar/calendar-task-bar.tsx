@@ -15,6 +15,10 @@ import { parseTaskDate } from "@/lib/task-schedule";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 import type { PackableTask, WeekSegment } from "./month-grid-model";
 import {
+  type ScheduleFieldDisplay,
+  scheduleFieldText,
+} from "./schedule-field-display";
+import {
   isClosedTone,
   PriorityDot,
   type ToneInfo,
@@ -71,6 +75,8 @@ type CalendarTaskBarProps = {
   dragDays?: Date[];
   /** Status tones by slug, from the project's columns. */
   tones?: ReadonlyMap<string, ToneInfo>;
+  /** The custom field chosen to show on tasks, if any. */
+  field?: ScheduleFieldDisplay | null;
 };
 
 export type CalendarDragData = { taskId: string; days: Date[] };
@@ -82,6 +88,7 @@ export default function CalendarTaskBar({
   canDrag = false,
   dragDays = [],
   tones,
+  field,
 }: CalendarTaskBarProps): JSX.Element {
   const { t } = useTranslation();
   const dragData: CalendarDragData = {
@@ -117,11 +124,14 @@ export default function CalendarTaskBar({
   const closed = isClosedTone(toneInfo.tone);
   const done = toneInfo.tone === "completed";
   const overdue = isCalendarTaskOverdue(task, closed);
+  const fieldValue = field?.values.get(task.id);
+  const fieldText = scheduleFieldText(field, task.id, t);
   const titleParts = [
     taskKey,
     task.title,
     range,
     overdue ? t("tasks:calendar.overdue") : undefined,
+    fieldText ?? undefined,
     assignees.length > 0 ? formatAssigneeSummary(assignees, t) : undefined,
   ].filter(Boolean);
 
@@ -140,6 +150,7 @@ export default function CalendarTaskBar({
       aria-label={[
         t("tasks:calendar.taskAriaLabel", { title: task.title, range }),
         overdue ? t("tasks:calendar.overdue") : null,
+        fieldText,
       ]
         .filter(Boolean)
         .join(" · ")}
@@ -168,6 +179,14 @@ export default function CalendarTaskBar({
         <PriorityDot priority={task.priority} />
       )}
       <span className="truncate">{task.title}</span>
+      {fieldValue ? (
+        <span
+          data-testid="calendar-field-value"
+          className="max-w-[45%] shrink-0 truncate font-normal opacity-75"
+        >
+          {fieldValue}
+        </span>
+      ) : null}
       {showAssignees && assignees.length > 0 && (
         <AssigneeAvatarStack
           assignees={assignees}

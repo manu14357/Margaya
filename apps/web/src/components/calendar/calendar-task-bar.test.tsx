@@ -160,4 +160,40 @@ describe("CalendarTaskBar", () => {
 
     expect(screen.getByRole("button")).not.toHaveAttribute("data-overdue");
   });
+
+  it("shows the chosen custom field's value after the title", () => {
+    render(
+      <CalendarTaskBar
+        segment={segment}
+        field={{ name: "Customer", values: new Map([["t1", "Acme"]]) }}
+        onOpenTask={vi.fn()}
+      />,
+    );
+
+    const taskBar = screen.getByRole("button");
+    expect(screen.getByTestId("calendar-field-value")).toHaveTextContent(
+      "Acme",
+    );
+    // The title comes first; the value follows it.
+    expect(taskBar.textContent).toMatch(/Design review.*Acme/);
+    expect(taskBar).toHaveAccessibleName(
+      "Design review, 2026-08-10 – 2026-08-12: open task · Customer: Acme",
+    );
+    expect(taskBar.getAttribute("title")).toContain("Customer: Acme");
+  });
+
+  it("shows nothing for a task without a value", () => {
+    render(
+      <CalendarTaskBar
+        segment={segment}
+        field={{ name: "Customer", values: new Map([["other", "Acme"]]) }}
+        onOpenTask={vi.fn()}
+      />,
+    );
+
+    expect(screen.queryByTestId("calendar-field-value")).toBeNull();
+    expect(screen.getByRole("button").getAttribute("title")).not.toContain(
+      "Customer",
+    );
+  });
 });
