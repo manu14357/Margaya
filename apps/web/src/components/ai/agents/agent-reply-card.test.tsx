@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { AgentReplyCard } from "./agent-reply-card";
+import { AgentReplyCard, agentReplyOf } from "./agent-reply-card";
 
 const m = vi.hoisted(() => ({
   run: { data: undefined as unknown },
@@ -79,5 +79,23 @@ describe("AgentReplyCard", () => {
     render(<AgentReplyCard {...props} />);
     expect(m.useAgentRun).toHaveBeenCalledWith("ws-1", null);
     expect(screen.getByText("ai:agents.reply.hint")).toBeInTheDocument();
+  });
+});
+
+describe("agentReplyOf", () => {
+  it("reads an answer stored with a model's control tokens without them", () => {
+    expect(
+      agentReplyOf({
+        type: "ai_agent_reply",
+        content:
+          "Created the standup page.<|tool_calls_section_begin|><|tool_calls_section_end|>",
+        eventData: { runId: "run-1", agentName: "Standup" },
+      }),
+    ).toEqual({
+      runId: "run-1",
+      agentName: "Standup",
+      text: "Created the standup page.",
+      needsInput: false,
+    });
   });
 });

@@ -9,10 +9,9 @@ import { isUnread } from "@/lib/inbox-cache";
 import { getNotificationKind } from "@/lib/notification-kind";
 import {
   getNotificationActorName,
+  getNotificationDetail,
   getNotificationPreview,
-  getNotificationTitle,
   getNotificationVerb,
-  getPageMentionTitle,
   isSystemNotification,
 } from "@/lib/notification-text";
 import { formatSnoozeTarget } from "@/lib/snooze-presets";
@@ -76,7 +75,10 @@ type InboxRowProps = {
   onAction: InboxActionHandler;
 };
 
-/** One notification: who did what on which task, with hover actions. */
+/**
+ * One notification: who did what on which task. Its actions appear on hover
+ * or focus; a touch screen has no hover, so there they take their own line.
+ */
 export default function InboxRow({
   notification,
   view,
@@ -91,6 +93,16 @@ export default function InboxRow({
   const verb = getNotificationVerb(notification, t);
   const preview = getNotificationPreview(notification);
   const task = notification.task;
+  const actorLabel = actorName ?? t("notifications:inbox.someone");
+  // Without a task, the second line says what the first doesn't: an agent's
+  // answer, a workspace notice's text. Never the title again.
+  const detail = task
+    ? null
+    : getNotificationDetail(
+        notification,
+        t,
+        system ? verb : `${actorLabel} ${verb}`,
+      );
 
   return (
     <div
@@ -107,7 +119,7 @@ export default function InboxRow({
         }
       }}
       className={cn(
-        "group relative flex cursor-pointer gap-3 border-border/60 border-b px-3 py-2.5 outline-none transition-colors hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+        "group relative flex cursor-pointer gap-3 border-border/60 border-b px-3 py-2.5 outline-none transition-colors hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset pointer-coarse:flex-wrap pointer-coarse:gap-y-1",
         selected && "bg-accent/60 hover:bg-accent/60",
       )}
     >
@@ -120,21 +132,23 @@ export default function InboxRow({
       <LeadingVisual notification={notification} actorName={actorName} />
       <div className="flex min-w-0 flex-1 flex-col gap-0.5">
         <div className="flex items-center gap-2">
-          <p className="min-w-0 flex-1 truncate text-sm">
+          {/* A long name gives way first, so what happened stays in view. */}
+          <p className="flex min-w-0 flex-1 gap-1 text-sm">
             {!system && (
               <span
                 className={cn(
+                  "min-w-0 max-w-1/2 shrink-0 truncate",
                   unread
                     ? "font-medium text-foreground"
                     : "text-muted-foreground",
                 )}
               >
-                {actorName ?? t("notifications:inbox.someone")}{" "}
+                {actorLabel}{" "}
               </span>
             )}
             <span
               className={cn(
-                "text-muted-foreground",
+                "min-w-0 truncate text-muted-foreground",
                 system && unread && "font-medium text-foreground",
               )}
             >
@@ -142,35 +156,32 @@ export default function InboxRow({
             </span>
           </p>
           {view === "snoozed" && notification.snoozedUntil ? (
-            <span className="flex shrink-0 items-center gap-1 text-[11px] text-muted-foreground/70">
+            <span className="flex shrink-0 items-center gap-1 text-[11px] text-muted-foreground">
               <AlarmClock className="size-3" />
               {t("notifications:inbox.snooze.until", {
                 date: formatSnoozeTarget(notification.snoozedUntil),
               })}
             </span>
           ) : (
-            <span className="shrink-0 text-[11px] text-muted-foreground/70">
+            <span className="shrink-0 text-[11px] text-muted-foreground">
               {formatRelativeTime(notification.sortAt)}
             </span>
           )}
         </div>
-        <div className="flex min-w-0 items-center gap-1.5">
-          {task ? (
-            <>
-              <span className="shrink-0 font-mono text-muted-foreground text-xs">
-                {task.key}
-              </span>
-              <span className="truncate text-sm">{task.title}</span>
-            </>
-          ) : (
-            <span className="truncate text-sm">
-              {getPageMentionTitle(notification) ??
-                getNotificationTitle(notification, t)}
+        {task ? (
+          <div className="flex min-w-0 items-center gap-1.5">
+            <span className="shrink-0 font-mono text-muted-foreground text-xs">
+              {task.key}
             </span>
-          )}
-        </div>
+            <span className="truncate text-sm">{task.title}</span>
+          </div>
+        ) : detail ? (
+          <div className="flex min-w-0 items-center gap-1.5">
+            <span className="truncate text-sm">{detail}</span>
+          </div>
+        ) : null}
         {preview && (
-          <p className="line-clamp-1 text-muted-foreground text-xs">
+          <p className="line-clamp-1 text-muted-foreground text-xs wrap-anywhere">
             {preview}
           </p>
         )}
@@ -178,7 +189,7 @@ export default function InboxRow({
       <InboxRowActions
         notification={notification}
         onAction={onAction}
-        className="absolute top-1.5 right-2 rounded-md bg-card px-0.5 opacity-0 shadow-xs transition-opacity group-focus-within:opacity-100 group-hover:opacity-100"
+        className="absolute top-1.5 right-2 rounded-md bg-card px-0.5 opacity-0 shadow-xs transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 pointer-coarse:static pointer-coarse:w-full pointer-coarse:justify-end pointer-coarse:gap-4 pointer-coarse:bg-transparent pointer-coarse:opacity-100 pointer-coarse:shadow-none"
       />
     </div>
   );

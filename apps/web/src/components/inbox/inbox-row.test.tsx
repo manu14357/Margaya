@@ -3,11 +3,31 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import InboxRow from "./inbox-row";
 import { inboxNotification } from "./inbox-test-fixtures";
 
+// English for the strings these tests read whole; other keys stay keys.
+const EN = vi.hoisted<Record<string, string>>(() => ({
+  "ai:agents.reply.title": "{{agentName}} answered your request",
+  "ai:agents.reply.verb": "answered your request",
+  "notifications:inbox.verbs.page_mention_titled":
+    "mentioned you in {{pageTitle}}",
+  "notifications:events.page_mention.content":
+    "{{mentionerName}} mentioned you in: {{pageTitle}}",
+  "notifications:inbox.verbs.page_comment_titled": "commented on {{pageTitle}}",
+  "notifications:events.page_comment.content":
+    "{{commenterName}} commented on {{pageTitle}}: {{commentPreview}}",
+}));
+
 vi.mock("react-i18next", () => ({
   initReactI18next: { type: "3rdParty", init: vi.fn() },
   useTranslation: () => ({
-    t: (key: string, values?: Record<string, unknown>) =>
-      values?.date ? `${key} ${values.date}` : key,
+    t: (key: string, values?: Record<string, unknown>) => {
+      const english = EN[key];
+      if (english) {
+        return english.replace(/{{(\w+)}}/g, (_, name: string) =>
+          String(values?.[name] ?? ""),
+        );
+      }
+      return values?.date ? `${key} ${values.date}` : key;
+    },
   }),
 }));
 vi.mock("@/lib/format", () => ({
@@ -77,6 +97,165 @@ describe("InboxRow", () => {
     expect(screen.queryByText("notifications:inbox.someone")).toBeNull();
   });
 
+  it("gives a system row without a task its content, not its title again", () => {
+    renderRow({
+      type: "workspace_created",
+      actor: null,
+      actorId: null,
+      task: null,
+      resourceType: "workspace",
+      resourceId: "ws",
+      eventData: { workspaceName: "Acme" },
+    });
+    expect(
+      screen.getAllByText("notifications:events.workspace_created.title"),
+    ).toHaveLength(1);
+    expect(
+      screen.getByText("notifications:events.workspace_created.content"),
+    ).toBeInTheDocument();
+  });
+
+  const agent = { id: "agent-1", name: "Standup", image: null };
+  const workspaceNotice = {
+    task: null,
+    resourceType: "workspace",
+    resourceId: "ws",
+    actor: agent,
+    actorId: agent.id,
+  } as const;
+
+  it("gives an agent's answer its summary as plain text, not its title again", () => {
+    renderRow({
+      ...workspaceNotice,
+      type: "ai_agent_reply",
+      title: "Standup answered your request",
+      content:
+        "Created a standup page **2026-11-05** for the Website project: [2026-11-05](/dashboard/workspace/ws/project/p1/pages/pg1).\n\n- It lists `WEB-4` as _done_.",
+      eventData: { runId: "run-1", agentName: "Standup" },
+    });
+    expect(screen.getByText("answered your request")).toBeInTheDocument();
+    expect(screen.queryByText("Standup answered your request")).toBeNull();
+    expect(
+      screen.getByText(
+        "Created a standup page 2026-11-05 for the Website project: 2026-11-05. It lists WEB-4 as done.",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("option")).not.toHaveTextContent(
+      /\*\*|\]\(|\/dashboard/,
+    );
+  });
+
+  it("gives an agent's question and proposed change their text, not the title", () => {
+    renderRow({
+      ...workspaceNotice,
+      type: "ai_agent_reply",
+      title: "Standup has a question",
+      content: "Which project should the **weekly** standup cover?",
+      eventData: { runId: "run-2", agentName: "Standup", needsInput: true },
+    });
+    expect(
+      screen.queryByText("ai:agents.needsInput.notificationTitle"),
+    ).toBeNull();
+    expect(
+      screen.getByText("Which project should the weekly standup cover?"),
+    ).toBeInTheDocument();
+    cleanup();
+
+    renderRow({
+      ...workspaceNotice,
+      type: "ai_approval_requested",
+      title: "Standup needs your approval",
+      content: 'Create page "Retro notes"',
+      eventData: { approvalId: "ap-1", runId: "run-3", agentName: "Standup" },
+    });
+    expect(screen.queryByText("ai:agents.inbox.title")).toBeNull();
+    expect(screen.getByText('Create page "Retro notes"')).toBeInTheDocument();
+  });
+
+  it("never shows a model's control tokens from a stored answer", () => {
+    renderRow({
+      ...workspaceNotice,
+      type: "ai_agent_reply",
+      title: "Standup answered your request",
+      content:
+        "Created the standup page **[2026-11-03](/dashboard/workspace/ws/project/p1/pages/pg1)**; no blocked items, so that section was left out.<|tool_calls_section_begin|><|tool_calls_section_end|>",
+      eventData: { runId: "run-5", agentName: "Standup" },
+    });
+    expect(
+      screen.getByText(
+        "Created the standup page 2026-11-03; no blocked items, so that section was left out.",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("option")).not.toHaveTextContent(/tool_calls|<\|/);
+  });
+
+  it("shows no second line when the first already says everything", () => {
+    renderRow({
+      ...workspaceNotice,
+      type: "ai_agent_reply",
+      title: "Standup answered your request",
+      content: "Standup answered your request",
+      eventData: { runId: "run-4", agentName: "Standup" },
+    });
+    expect(screen.queryByText("Standup answered your request")).toBeNull();
+  });
+
+  it("shows a page notification's page and comment, not its body again", () => {
+    const page = {
+      task: null,
+      resourceType: "page",
+      resourceId: "page-1",
+    } as const;
+    renderRow({
+      ...page,
+      type: "page_mention",
+      eventData: {
+        pageTitle: "Release plan",
+        mentionerName: "Ana Silva",
+        projectId: "project-1",
+      },
+    });
+    // The page is the subject, as a task row shows its task.
+    expect(screen.getByText("Release plan")).toBeInTheDocument();
+    expect(
+      screen.queryByText("Ana Silva mentioned you in: Release plan"),
+    ).toBeNull();
+    cleanup();
+
+    renderRow({
+      ...page,
+      type: "page_comment",
+      eventData: {
+        pageTitle: "Release plan",
+        commenterName: "Ana Silva",
+        commentPreview: "Can we ship on Friday?",
+        projectId: "project-1",
+      },
+    });
+    expect(screen.getByText("Release plan")).toBeInTheDocument();
+    expect(screen.getByText("Can we ship on Friday?")).toBeInTheDocument();
+    expect(screen.queryByText(/commented on Release plan:/)).toBeNull();
+  });
+
+  it("keeps the verb in view next to a long name", () => {
+    renderRow({
+      actor: {
+        id: "ana",
+        name: "Maximiliana Alexandrovna Wolfeschlegelsteinhausen-Bergdorff",
+        image: null,
+      },
+    });
+    const name = screen.getByText(
+      "Maximiliana Alexandrovna Wolfeschlegelsteinhausen-Bergdorff",
+    );
+    // The name gives way first, so the verb never truncates out of view.
+    expect(name).toHaveClass("truncate");
+    expect(name.className).toMatch(/max-w-/);
+    expect(
+      screen.getByText("notifications:inbox.verbs.task_comment"),
+    ).toHaveClass("truncate");
+  });
+
   it("shows the snooze end in the Snoozed view", () => {
     renderRow(
       { isSnoozed: true, snoozedUntil: "2026-09-27T09:00:00.000Z" },
@@ -114,6 +293,36 @@ describe("InboxRow", () => {
       [notification, { action: "archive" }],
     ]);
     expect(onSelect).not.toHaveBeenCalled();
+  });
+
+  // jsdom can't match pointer media queries; the phone spec proves the result.
+  it("gives touch screens visible actions on their own line", () => {
+    renderRow();
+    const row = screen.getByRole("option");
+    expect(row).toHaveClass("pointer-coarse:flex-wrap");
+    const actions = screen.getByRole("button", {
+      name: "notifications:inbox.actions.archive",
+    }).parentElement;
+    expect(actions).toHaveClass(
+      "pointer-coarse:opacity-100",
+      "pointer-coarse:static",
+      "pointer-coarse:w-full",
+    );
+  });
+
+  it("shows times at full muted contrast", () => {
+    renderRow();
+    expect(screen.getByText("2 hours ago")).toHaveClass(
+      "text-muted-foreground",
+    );
+    cleanup();
+    renderRow(
+      { isSnoozed: true, snoozedUntil: "2026-09-27T09:00:00.000Z" },
+      "snoozed",
+    );
+    expect(
+      screen.getByText("notifications:inbox.snooze.until Sat, Sep 27, 9:00 AM"),
+    ).toHaveClass("text-muted-foreground");
   });
 
   it("offers unread and move-to-inbox for read, archived rows", () => {

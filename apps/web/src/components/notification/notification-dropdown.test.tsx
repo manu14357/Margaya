@@ -193,6 +193,32 @@ describe("NotificationDropdown", () => {
     });
   });
 
+  it("shows an agent's written answer as plain text", async () => {
+    api.getInbox.mockResolvedValue({
+      items: [
+        inboxNotification({
+          type: "ai_agent_reply",
+          task: null,
+          resourceType: "workspace",
+          resourceId: "ws",
+          content:
+            "Created a standup page **2026-11-05**: [2026-11-05](/dashboard/workspace/ws/project/p1/pages/pg1).",
+          eventData: { runId: "run-1", agentName: "Standup" },
+        }),
+      ],
+      nextCursor: null,
+    });
+    api.getCounts.mockResolvedValue({ unread: 1, unreadMentions: 0 });
+    renderDropdown();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /navigation:notifications/ }),
+    );
+    expect(
+      await screen.findByText("Created a standup page 2026-11-05: 2026-11-05."),
+    ).toBeInTheDocument();
+  });
+
   it("shows the caught-up state when the inbox is empty", async () => {
     api.getInbox.mockResolvedValue({ items: [], nextCursor: null });
     api.getCounts.mockResolvedValue({ unread: 0, unreadMentions: 0 });

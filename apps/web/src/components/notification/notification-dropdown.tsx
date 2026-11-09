@@ -41,8 +41,11 @@ import {
   getFlowAnomalyTarget,
   getIntakeNotificationTarget,
   getNotificationContent,
+  getNotificationMarkdown,
   getNotificationTitle,
   getPageNotificationTarget,
+  markdownToPlainText,
+  pageNotificationSearch,
 } from "@/lib/notification-text";
 import type { InboxNotification } from "@/types/notification";
 
@@ -154,6 +157,7 @@ const NotificationDropdown = forwardRef<NotificationDropdownRef>(
           navigate({
             to: "/dashboard/workspace/$workspaceId/project/$projectId/pages/$pageId",
             params: { workspaceId: taskWorkspaceId, ...page },
+            search: pageNotificationSearch(notification),
           });
           return;
         }
@@ -275,7 +279,11 @@ const NotificationDropdown = forwardRef<NotificationDropdownRef>(
                   </div>
                 ) : (
                   notifications.map((notification) => {
-                    const content = getNotificationContent(notification, t);
+                    // A written body (an agent's answer) as plain text.
+                    const markdown = getNotificationMarkdown(notification, t);
+                    const content = markdown
+                      ? markdownToPlainText(markdown)
+                      : getNotificationContent(notification, t);
                     const unread = isUnread(notification);
                     return (
                       <DropdownMenuItem
@@ -305,7 +313,7 @@ const NotificationDropdown = forwardRef<NotificationDropdownRef>(
                           {content && (
                             <p
                               className={cn(
-                                "mt-0.5 line-clamp-1 text-xs transition-colors duration-150",
+                                "mt-0.5 line-clamp-1 text-xs transition-colors duration-150 wrap-anywhere",
                                 unread
                                   ? "text-muted-foreground"
                                   : "text-muted-foreground/60",

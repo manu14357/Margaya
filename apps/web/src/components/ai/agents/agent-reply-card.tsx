@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import AiMarkdown from "@/components/ai/ai-markdown";
 import { Button } from "@/components/ui/button";
 import { useAgentRun } from "@/hooks/queries/ai/use-agents";
+import { stripModelTokens } from "@/lib/model-tokens";
 import { NeedsInputPanel } from "./run-reply";
 
 /** The run an agent-answer notification points at, if it is one. */
@@ -20,11 +21,13 @@ export function agentReplyOf(notification: {
 } | null {
   if (notification.type !== "ai_agent_reply") return null;
   const data = notification.eventData as Record<string, unknown> | null;
-  if (typeof data?.runId !== "string" || !notification.content) return null;
+  // Answers stored before the API stripped a model's control tokens.
+  const text = stripModelTokens(notification.content ?? "");
+  if (typeof data?.runId !== "string" || !text) return null;
   return {
     runId: data.runId,
     agentName: typeof data.agentName === "string" ? data.agentName : null,
-    text: notification.content,
+    text,
     needsInput: data.needsInput === true,
   };
 }
@@ -88,7 +91,7 @@ export function AgentReplyCard({
           <span className="text-muted-foreground">{agentName}</span>
         )}
       </header>
-      <AiMarkdown text={text} />
+      <AiMarkdown text={text} safeLinks className="wrap-anywhere" />
       {(waiting || !needsInput) && (
         <p className="text-muted-foreground text-xs">
           {t(
