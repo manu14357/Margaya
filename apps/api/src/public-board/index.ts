@@ -152,6 +152,8 @@ const getTaskRoute = createRoute({
   path: "/{token}/tasks/{number}",
   tags: TAGS,
   summary: "Get a public task",
+  description:
+    "One task on the board, by its number: title, column, priority, dates, labels, external links and description. A description larger than 64 KiB is omitted with descriptionDeferred; read it through the description route. Assignees, votes, reactions and the comment count are present only when the board shows them, and `can` says what the viewer may do. Works without signing in.",
   security: [],
   middleware: readChain,
   request: { params: taskNumberParam },
@@ -168,6 +170,8 @@ const getTaskDescriptionRoute = createRoute({
   path: "/{token}/tasks/{number}/description",
   tags: TAGS,
   summary: "Read a public task's long description",
+  description:
+    "The description of a task on the board, in pages of 32,768 characters, for one larger than 64 KiB that the task read omits (descriptionDeferred). Start at offset 0 and follow nextOffset until it is null; offsets count Unicode characters. Send the version from the first page with each later one: if the task was edited in between, the answer is 409 and the read starts again from offset 0. Works without signing in.",
   security: [],
   middleware: readChain,
   request: { params: taskNumberParam, query: descriptionPageQuery },
@@ -223,12 +227,15 @@ const updateCommentRoute = createRoute({
   path: "/{token}/comments/{commentId}",
   tags: TAGS,
   summary: "Edit your public comment",
+  description:
+    "Replace the content of a public comment you wrote on this board, with the same rules as a new one: Markdown only, HTML, images and mentions stripped, at most 10 links and 5,000 characters. Only while the board has comments on; someone else's comment answers 403.",
   security: [],
   middleware: writeChain("manageOwnComment"),
   request: { params: commentParam, body: jsonBody(commentBody) },
   responses: {
     200: jsonResponse("The edited comment", publicCommentSchema),
     ...writeErrors,
+    404: errorResponse(`${BOARD_404}, or the comment isn't on the board`),
   },
 });
 
@@ -238,12 +245,15 @@ const deleteCommentRoute = createRoute({
   path: "/{token}/comments/{commentId}",
   tags: TAGS,
   summary: "Delete your public comment",
+  description:
+    "Delete a public comment you wrote on this board. Only while the board has comments on; someone else's comment answers 403.",
   security: [],
   middleware: writeChain("manageOwnComment"),
   request: { params: commentParam },
   responses: {
     200: jsonResponse("The deleted comment's id", publicIdSchema),
     ...writeErrors,
+    404: errorResponse(`${BOARD_404}, or the comment isn't on the board`),
   },
 });
 
@@ -324,12 +334,15 @@ const removeVoteRoute = createRoute({
   path: "/{token}/tasks/{number}/vote",
   tags: TAGS,
   summary: "Remove your vote",
+  description:
+    "Take back your vote on a task on the board; without a vote it is a no-op. Answers the task's vote counts. Accounts only, while the board has votes on.",
   security: [],
   middleware: writeChain("vote"),
   request: { params: taskNumberParam },
   responses: {
     200: jsonResponse("The task's votes", publicVoteStateSchema),
     ...writeErrors,
+    404: errorResponse(`${BOARD_404}, or the task isn't on the board`),
   },
 });
 
@@ -376,6 +389,8 @@ const withdrawRequestRoute = createRoute({
   path: "/{token}/requests/{requestId}",
   tags: TAGS,
   summary: "Withdraw your open request",
+  description:
+    "Withdraw a request you submitted through this board while it is still open (pending or snoozed); the request and its task are deleted. Accepted, declined and duplicate requests answer 409. Accounts only, while the board takes requests; counts toward the hourly request limit.",
   security: [],
   middleware: [
     ...writeChain("manageOwnRequest"),
@@ -390,6 +405,9 @@ const withdrawRequestRoute = createRoute({
   responses: {
     200: jsonResponse("The withdrawn request's id", publicIdSchema),
     ...writeErrors,
+    404: errorResponse(
+      `${BOARD_404}, or no request of yours with that id on this board`,
+    ),
     409: errorResponse("This request can't be withdrawn anymore"),
   },
 });

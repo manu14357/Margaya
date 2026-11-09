@@ -9,6 +9,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
 } from "../openapi";
 import {
   defaultMattermostEvents,
@@ -97,10 +98,8 @@ const getMattermostIntegrationRoute = createRoute({
       "Mattermost integration details, or null",
       mattermostIntegrationSchema.nullable(),
     ),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
     403: errorResponse("No access to the project's workspace"),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -129,6 +128,7 @@ const createMattermostIntegrationRoute = createRoute({
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -157,7 +157,9 @@ const updateMattermostIntegrationRoute = createRoute({
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
-    404: errorResponse("Mattermost integration not found"),
+    404: errorResponse(
+      "Unknown project, a project in the trash, or one the caller can't see; or the project has no Mattermost integration",
+    ),
   },
 });
 
@@ -172,13 +174,12 @@ const deleteMattermostIntegrationRoute = createRoute({
   request: { params: projectIdParam },
   responses: {
     200: jsonResponse("The integration was removed", deletedSchema),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
-    404: errorResponse("Mattermost integration not found"),
+    404: errorResponse(
+      "Unknown project, a project in the trash, or one the caller can't see; or the project has no Mattermost integration",
+    ),
   },
 });
 

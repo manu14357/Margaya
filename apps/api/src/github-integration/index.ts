@@ -11,6 +11,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
 } from "../openapi";
 import {
   type GitHubConfig,
@@ -79,12 +80,11 @@ const listRepositoriesRoute = createRoute({
       "Repositories reachable through the installed App",
       githubRepositoryListSchema,
     ),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
+    400: errorResponse("Invalid query"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -109,10 +109,11 @@ const verifyRoute = createRoute({
   },
   responses: {
     200: jsonResponse("Verification result", verificationResultSchema),
-    400: errorResponse("Invalid body, or unknown project"),
+    400: errorResponse("Invalid body, or no projectId"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -131,10 +132,8 @@ const getIntegrationRoute = createRoute({
       "GitHub integration details, or null",
       githubIntegrationSchema.nullable(),
     ),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
     403: errorResponse("No access to the project's workspace"),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -159,10 +158,11 @@ const createIntegrationRoute = createRoute({
     409: errorResponse(
       "Integration changed or another repository is already linked",
     ),
-    400: errorResponse("Invalid body, or unknown project"),
+    400: errorResponse("Invalid body"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -209,13 +209,12 @@ const deleteIntegrationRoute = createRoute({
   request: { params: projectIdParam },
   responses: {
     200: jsonResponse("The integration was removed", deleteResultSchema),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
-    404: errorResponse("GitHub integration not found"),
+    404: errorResponse(
+      "Unknown project, a project in the trash, or one the caller can't see; or the project has no GitHub integration",
+    ),
   },
 });
 

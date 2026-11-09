@@ -89,6 +89,8 @@ const getRoute = createRoute({
   path: "/{id}",
   tags: TAGS,
   summary: "Get a saved analytics report",
+  description:
+    "A shared report, or one of the caller's private ones, with its chart-builder configuration. Scope projects that are gone or in the trash are left out and counted in droppedProjectCount; ones hidden from the caller are left out without being counted.",
   middleware: [reportAccess, requireWorkspacePermission(READ)] as const,
   request: { params: reportParam },
   responses: {

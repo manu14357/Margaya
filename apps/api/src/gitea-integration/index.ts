@@ -11,6 +11,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
 } from "../openapi";
 import { type GiteaConfig, validateGiteaConfig } from "../plugins/gitea/config";
 import { handleGiteaWebhookRequest } from "../plugins/gitea/webhook-handler";
@@ -62,10 +63,11 @@ const listRepositoriesRoute = createRoute({
   },
   responses: {
     200: jsonResponse("Accessible repositories", giteaRepositoryListSchema),
-    400: errorResponse("Invalid body, or unknown project"),
+    400: errorResponse("Invalid body, or no projectId"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -86,10 +88,11 @@ const verifyRoute = createRoute({
   },
   responses: {
     200: jsonResponse("Verification result", giteaVerificationResultSchema),
-    400: errorResponse("Invalid body, or unknown project"),
+    400: errorResponse("Invalid body, or no projectId"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -108,10 +111,8 @@ const getIntegrationRoute = createRoute({
       "Gitea integration details, or null",
       giteaIntegrationSchema.nullable(),
     ),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
     403: errorResponse("No access to the project's workspace"),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -133,10 +134,11 @@ const createIntegrationRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The stored integration", giteaIntegrationSchema),
-    400: errorResponse("Invalid body, or unknown project"),
+    400: errorResponse("Invalid body"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -177,13 +179,12 @@ const deleteIntegrationRoute = createRoute({
   request: { params: projectIdParam },
   responses: {
     200: jsonResponse("The integration was removed", giteaDeleteResultSchema),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
-    404: errorResponse("Gitea integration not found"),
+    404: errorResponse(
+      "Unknown project, a project in the trash, or one the caller can't see; or the project has no Gitea integration",
+    ),
   },
 });
 

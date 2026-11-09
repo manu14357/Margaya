@@ -250,6 +250,37 @@ describe("large task descriptions", () => {
     ).json();
     expect(absent.ids).toEqual([]);
   });
+  it("finds only tasks on the board, not trashed ones or requests waiting in intake", async () => {
+    const { app, project } = await fixture(null);
+    await db.insert(schema.columnTable).values({
+      projectId: project.id,
+      name: "Triage",
+      slug: "triage",
+      position: 99,
+      group: "triage",
+    });
+    const body = `${"x".repeat(70000)} Needle`;
+    await db.insert(schema.taskTable).values(
+      [
+        { id: "on-board", status: "to-do" },
+        { id: "archived", status: "to-do", archivedAt: new Date() },
+        { id: "trashed", status: "to-do", deletedAt: new Date() },
+        { id: "in-intake", status: "triage" },
+      ].map((task, i) => ({
+        ...task,
+        projectId: project.id,
+        number: i + 2,
+        title: task.id,
+        description: body,
+      })),
+    );
+    const response = await app.request(
+      `/api/task/description-matches/${project.id}?query=needle`,
+    );
+    expect(response.status).toBe(200);
+    expect((await response.json()).ids).toEqual(["archived", "on-board"]);
+  });
+
   it("defers large project descriptions and serves complete public text with version and visibility checks", async () => {
     const { app, project } = await fixture("task body", true);
     const body = "😺project".repeat(12000);

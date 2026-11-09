@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { eq } from "drizzle-orm";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import db, { schema } from "../../apps/api/src/database";
 import { createApp } from "../../apps/api/src/index";
@@ -111,6 +112,34 @@ describe("GitHub binding HTTP and webhook tenant boundaries", () => {
         });
         expect(response.status).toBe(403);
       }
+    }
+    expect(m.installation).not.toHaveBeenCalled();
+  });
+
+  it("answers 404 for a project in the trash before provider lookup", async () => {
+    const owner = await fixture();
+    await db
+      .update(schema.projectTable)
+      .set({ deletedAt: new Date() })
+      .where(eq(schema.projectTable.id, owner.project.id));
+    const { app } = createApp();
+    mockAuthenticatedSession(owner.user);
+    for (const url of [
+      "/api/github-integration/verify",
+      "/api/github-integration/import-issues",
+      "/api/gitea-integration/import-issues",
+    ]) {
+      const response = await app.request(url, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          projectId: owner.project.id,
+          repositoryOwner: "owner",
+          repositoryName: "repo",
+        }),
+      });
+      expect(response.status, url).toBe(404);
+      expect(await response.text(), url).toBe("Project not found");
     }
     expect(m.installation).not.toHaveBeenCalled();
   });

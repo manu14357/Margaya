@@ -4,6 +4,7 @@ import { createApp } from "../../apps/api/src/index";
 type Operation = {
   operationId?: string;
   summary?: string;
+  description?: string;
   responses: Record<string, unknown>;
   security?: unknown[];
 };
@@ -92,6 +93,25 @@ describe("Margaya API OpenAPI spec", () => {
       ids.push(operation.operationId as string);
     }
     expect(new Set(ids).size, "operationIds must be unique").toBe(ids.length);
+  });
+
+  it("describes every operation", () => {
+    const missing = operations(spec)
+      .filter(([, , operation]) => !operation.description?.trim())
+      .map(([method, path]) => `${method.toUpperCase()} ${path}`);
+    expect(missing).toEqual([]);
+  });
+
+  it("keeps the retired invitation teamId optional and deprecated", () => {
+    const invitation = spec.components.schemas.WorkspaceInvitation as {
+      required?: string[];
+      properties: Record<string, { deprecated?: boolean; type?: unknown }>;
+    };
+    expect(invitation.required).not.toContain("teamId");
+    expect(invitation.properties.teamId).toMatchObject({
+      deprecated: true,
+      type: ["string", "null"],
+    });
   });
 
   it("names its entity schemas as reusable components", () => {
