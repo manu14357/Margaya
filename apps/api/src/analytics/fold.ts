@@ -2,7 +2,7 @@ import { progressPercent } from "../task/scope";
 import { bucketEnd, type DateBucket, fillDateKeys } from "./buckets";
 import {
   type AnalyticsDimension,
-  DIMENSIONS,
+  dimensionInfo,
   isDateDimension,
   NONE_KEY,
 } from "./dimensions";
@@ -165,7 +165,7 @@ function shapeXKeys(
   present: string[],
 ): XKeys {
   const { xAxis, lookup, dateBucket } = options;
-  const info = DIMENSIONS[xAxis];
+  const info = dimensionInfo(xAxis);
   if (isDateDimension(xAxis)) {
     const dated = present.filter((key) => key !== NONE_KEY);
     const filled = fillDateKeys(dated, dateBucket, info.xCap ?? dated.length);
@@ -193,7 +193,7 @@ export function shapeChart(
   const keepKey = (key: string) => includeNone || key !== NONE_KEY;
 
   const noneCount =
-    includeNone || !DIMENSIONS[xAxis].hasNone
+    includeNone || !dimensionInfo(xAxis).hasNone
       ? null
       : (aggregate.buckets.get(NONE_KEY)?.taskCount ?? 0);
 
@@ -211,7 +211,7 @@ export function shapeChart(
           lookup,
         ),
         aggregate.segments,
-        DIMENSIONS[segment].segmentCap,
+        dimensionInfo(segment).segmentCap,
       )
     : null;
 

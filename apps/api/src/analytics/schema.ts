@@ -2,6 +2,7 @@ import { HTTPException } from "hono/http-exception";
 import { z } from "../openapi";
 import {
   ARCHIVED_FILTERS,
+  customFieldDisplayKeySchema,
   filterNodeSchema,
   MAX_SCOPE_PROJECTS,
   taskQueryContextSchema,
@@ -24,6 +25,9 @@ export const STATUS_NEEDS_ONE_PROJECT =
   "Status needs a single project; use Group instead";
 export const ANALYTICS_TIMEOUT =
   "Analytics took too long; narrow the filters and try again";
+export const FIELD_NOT_A_DIMENSION =
+  "Only dropdown custom fields can be a dimension";
+export const FIELD_NOT_SUMMABLE = "Only number custom fields can be summed";
 
 const projectIdsSchema = z
   .array(z.string().min(1).max(MAX_PROJECT_ID_LENGTH))
@@ -53,10 +57,10 @@ const taskSetFields = {
 };
 
 export const analyticsDimensionSchema = z
-  .enum(ANALYTICS_DIMENSIONS)
+  .union([z.enum(ANALYTICS_DIMENSIONS), customFieldDisplayKeySchema])
   .openapi("AnalyticsDimension", {
     description:
-      "status (one project only), group, priority, assignee, createdBy, label, cycle, module, estimate, project, or a date: createdAt, completedAt, startDate, dueDate (x-axis only).",
+      "status (one project only), group, priority, assignee, createdBy, label, cycle, module, estimate, project, customField:<field id> of a dropdown field in a scope project (keys value:<option>; other projects' tasks have none), or a date: createdAt, completedAt, startDate, dueDate (x-axis only).",
   });
 
 export const analyticsMetricSchema = z
@@ -64,6 +68,13 @@ export const analyticsMetricSchema = z
   .openapi("AnalyticsMetric", {
     description:
       "taskCount counts distinct tasks; estimatePoints sums point values of projects with estimates on and an active points system (0 otherwise).",
+  });
+
+export const analyticsChartMetricSchema = z
+  .union([z.enum(ANALYTICS_METRICS), customFieldDisplayKeySchema])
+  .openapi("AnalyticsChartMetric", {
+    description:
+      "taskCount counts distinct tasks; estimatePoints sums point values of projects with estimates on and an active points system (0 otherwise); customField:<field id> sums a number field of a scope project (a task without a value adds 0).",
   });
 
 export const analyticsDateBucketSchema = z
@@ -78,7 +89,7 @@ export const analyticsChartRequestSchema = z
       description:
         "A category dimension other than the x-axis, or null for none.",
     }),
-    metric: analyticsMetricSchema.optional(),
+    metric: analyticsChartMetricSchema.optional(),
     dateBucket: analyticsDateBucketSchema.optional().openapi({
       description: "Used when the x-axis is a date. Default month.",
     }),

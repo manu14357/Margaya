@@ -1,21 +1,29 @@
 import { and, eq, type SQL, sql } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 import {
+  customFieldValueTable,
   estimatePointTable,
   estimateTable,
   taskTable,
 } from "../database/schema";
 import type { TaskReadDatabase } from "../task/bounded-read";
 import { featureOn, type QueryContext, textArray } from "../task-query/context";
+import {
+  type CustomFieldDisplayKey,
+  customFieldIdOfKey,
+  isCustomFieldDisplayKey,
+} from "../task-query/schema";
 
 // Metric weights (B8 §2A.2). A task weighs 1 for task counts. For estimate
 // points it weighs its point's numeric value, but only while its project has
 // estimates on and the point belongs to the project's active system of type
 // points; otherwise 0 (K3, K10). Time and category systems never add points,
-// and nothing casts text to a number.
+// and nothing casts text to a number unchecked. The chart can also sum a
+// number custom field: a task weighs its value, or 0 without one.
 
 export const ANALYTICS_METRICS = ["taskCount", "estimatePoints"] as const;
 export type AnalyticsMetric = (typeof ANALYTICS_METRICS)[number];
+export type ChartMetric = AnalyticsMetric | CustomFieldDisplayKey;
 
 const weightPoint = alias(estimatePointTable, "analytics_weight_point");
 const weightEstimate = alias(estimateTable, "analytics_weight_estimate");
@@ -34,8 +42,27 @@ export function pointsWeightSql(context: QueryContext): SQL {
   ), 0) else 0 end)`;
 }
 
+const weightValue = alias(customFieldValueTable, "analytics_weight_value");
+
+// Values were checked as finite numbers when set; the pattern keeps a cast
+// from ever failing the whole chart on text PostgreSQL reads differently.
+const NUMBER_TEXT = String.raw`^\s*[-+]?(\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?\s*$`;
+
+/** The task's value of a number field, 0 without one; correlated to `task`. */
+export function customFieldWeightSql(fieldId: string): SQL {
+  return sql`coalesce((
+    select case when ${weightValue.value} ~ ${NUMBER_TEXT} then ${weightValue.value}::float8 end
+    from ${customFieldValueTable} as ${sql.identifier("analytics_weight_value")}
+    where ${weightValue.taskId} = ${taskTable.id}
+      and ${weightValue.fieldId} = ${fieldId}
+  ), 0)`;
+}
+
 /** The weight w(t) of a metric as a double precision expression. */
-export function weightSql(metric: AnalyticsMetric, context: QueryContext): SQL {
+export function weightSql(metric: ChartMetric, context: QueryContext): SQL {
+  if (isCustomFieldDisplayKey(metric)) {
+    return sql`(${customFieldWeightSql(customFieldIdOfKey(metric))})::float8`;
+  }
   return metric === "estimatePoints"
     ? sql`(${pointsWeightSql(context)})::float8`
     : sql`1::float8`;

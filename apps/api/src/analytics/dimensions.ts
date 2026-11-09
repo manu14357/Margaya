@@ -13,14 +13,20 @@ import {
   groupKeyExpression,
   NONE_GROUP,
 } from "../task-query/group";
-import type { GroupByKey } from "../task-query/schema";
+import {
+  type CustomFieldDisplayKey,
+  type GroupByKey,
+  isCustomFieldDisplayKey,
+} from "../task-query/schema";
 import type { DateBucket } from "./buckets";
 
 // The dimension catalog (B8 §2A.1). Category keys reuse the task query
 // engine's group keys, so a dimension means exactly what the same grouping
 // means on a board; only the date keys and the cross-project estimate key
-// are analytics' own. Every key expression is correlated to the outer,
-// unaliased `task` row with `column` LEFT JOINed through taskColumnJoin.
+// are analytics' own. A dropdown custom field is a dimension too, as
+// `customField:<field id>` with the board's `value:<option>` keys. Every key
+// expression is correlated to the outer, unaliased `task` row with `column`
+// LEFT JOINed through taskColumnJoin.
 
 export const NONE_KEY = NONE_GROUP;
 
@@ -45,7 +51,8 @@ export const ANALYTICS_DIMENSIONS = [
   "project",
   ...DATE_DIMENSIONS,
 ] as const;
-export type AnalyticsDimension = (typeof ANALYTICS_DIMENSIONS)[number];
+export type BuiltInDimension = (typeof ANALYTICS_DIMENSIONS)[number];
+export type AnalyticsDimension = BuiltInDimension | CustomFieldDisplayKey;
 export type CategoryDimension = Exclude<AnalyticsDimension, DateDimension>;
 
 export type DimensionInfo = {
@@ -81,7 +88,7 @@ const dated = (hasNone: boolean): DimensionInfo => ({
   segmentCap: null,
 });
 
-export const DIMENSIONS: Record<AnalyticsDimension, DimensionInfo> = {
+export const DIMENSIONS: Record<BuiltInDimension, DimensionInfo> = {
   status: nominal(false, false),
   group: {
     kind: "category",
@@ -109,6 +116,15 @@ export const DIMENSIONS: Record<AnalyticsDimension, DimensionInfo> = {
   startDate: dated(true),
   dueDate: dated(true),
 };
+
+/** A dropdown's values, like any single-valued category with no value. */
+const CUSTOM_FIELD_DIMENSION = nominal(false, true);
+
+export function dimensionInfo(dimension: AnalyticsDimension): DimensionInfo {
+  return isCustomFieldDisplayKey(dimension)
+    ? CUSTOM_FIELD_DIMENSION
+    : DIMENSIONS[dimension];
+}
 
 export function isDateDimension(
   dimension: AnalyticsDimension,

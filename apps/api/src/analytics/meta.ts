@@ -175,6 +175,12 @@ export class ChartMeta {
       estimates: pick(keysOf(["estimate"]), this.estimates).map(
         ({ key, type, value }) => ({ key, type, value }),
       ),
+      // The context holds exactly the charted fields, of scope projects.
+      customFields: [...(context.displayFields ?? [])]
+        .map(([id, field]) => ({ id, name: field.name, type: field.type }))
+        .sort(
+          (a, b) => a.name.localeCompare(b.name) || a.id.localeCompare(b.id),
+        ),
     };
   }
 }

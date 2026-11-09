@@ -3,20 +3,36 @@ import { HTTPException } from "hono/http-exception";
 import { columnTable, taskTable } from "../../database/schema";
 import type { TaskReadDatabase } from "../../task/bounded-read";
 import { taskColumnJoin } from "../../task/scope";
+import {
+  type QueryContext,
+  UNKNOWN_CUSTOM_FIELD,
+} from "../../task-query/context";
 import type { GroupKeyExpression } from "../../task-query/group";
 import {
-  DIMENSIONS,
+  customFieldIdOfKey,
+  isCustomFieldDisplayKey,
+} from "../../task-query/schema";
+import {
+  type AnalyticsDimension,
+  dimensionInfo,
   dimensionKeySql,
   isDateDimension,
   NONE_KEY,
 } from "../dimensions";
 import { type ChartAggregate, shapeChart } from "../fold";
 import { ChartMeta } from "../meta";
-import { loadPointsProjectIds, round2, weightSql } from "../metrics";
+import {
+  type ChartMetric,
+  loadPointsProjectIds,
+  round2,
+  weightSql,
+} from "../metrics";
 import type { AnalyticsChartResult } from "../response";
 import {
   type AnalyticsChartRequest,
   DATES_ONLY_ON_X,
+  FIELD_NOT_A_DIMENSION,
+  FIELD_NOT_SUMMABLE,
   SEGMENT_MUST_DIFFER,
   STATUS_NEEDS_ONE_PROJECT,
 } from "../schema";
@@ -109,6 +125,33 @@ async function aggregateChart(
   return aggregate;
 }
 
+/** Custom fields the chart groups by or sums, by their keys. */
+function chartFieldIds(keys: ReadonlyArray<AnalyticsDimension | ChartMetric>) {
+  return keys.filter(isCustomFieldDisplayKey).map(customFieldIdOfKey);
+}
+
+/**
+ * 400 unless each charted field is in a scope project: a dropdown as a
+ * dimension, a number as the metric.
+ */
+function assertChartFields(
+  context: QueryContext,
+  dimensions: readonly AnalyticsDimension[],
+  metric: ChartMetric,
+) {
+  const typeOf = (key: string) => {
+    const field = context.displayFields?.get(key);
+    if (!field) badRequest(UNKNOWN_CUSTOM_FIELD);
+    return field.type;
+  };
+  for (const fieldId of chartFieldIds(dimensions)) {
+    if (typeOf(fieldId) !== "dropdown") badRequest(FIELD_NOT_A_DIMENSION);
+  }
+  for (const fieldId of chartFieldIds([metric])) {
+    if (typeOf(fieldId) !== "number") badRequest(FIELD_NOT_SUMMABLE);
+  }
+}
+
 /**
  * AN2 for a caller that passed workspace access, `analytics:read` and
  * `task:read`. 400 for an invalid combination or filter tree, 404 for a
@@ -129,8 +172,15 @@ export async function queryAnalyticsChart(
   const dateBucket = request.dateBucket ?? "month";
   const includeNone = request.includeNone ?? true;
 
+  const dimensions = segment === null ? [xAxis] : [xAxis, segment];
   return analyticsRead(async (tx) => {
-    const context = await loadTaskSetContext(tx, caller, request);
+    const context = await loadTaskSetContext(
+      tx,
+      caller,
+      request,
+      chartFieldIds([...dimensions, metric]),
+    );
+    assertChartFields(context, dimensions, metric);
     if (
       (xAxis === "status" || segment === "status") &&
       context.projectIds.length !== 1
@@ -175,8 +225,8 @@ export async function queryAnalyticsChart(
       segments: shaped.segments,
       truncated: shaped.truncated,
       multiValued: {
-        x: DIMENSIONS[xAxis].many,
-        segment: segment ? DIMENSIONS[segment].many : false,
+        x: dimensionInfo(xAxis).many,
+        segment: segment ? dimensionInfo(segment).many : false,
       },
       pointsProjectIds,
       meta: meta.build([
