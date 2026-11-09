@@ -55,7 +55,7 @@ export default function TaskRelations({
   const { data: relations = [] } = useGetTaskRelations(taskId);
   const { data: board } = useGetTasks(projectId);
   const { data: workspace } = useActiveWorkspace();
-  const { people } = useAssigneePeople(workspace?.id ?? workspaceId);
+  const { people, audience } = useAssigneePeople(workspace?.id ?? workspaceId);
   const deleteRelation = useDeleteTaskRelation(taskId);
   const { canUpdateTasks } = useWorkspacePermission();
   const canEdit = canUpdateTasks();
@@ -95,6 +95,7 @@ export default function TaskRelations({
         userId: task.userId,
         assigneeName: task.assigneeName,
       }),
+      { audience },
     );
 
   const handleOpen = (task: RelatedTaskSummary) => {

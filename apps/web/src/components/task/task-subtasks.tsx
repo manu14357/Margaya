@@ -90,7 +90,7 @@ export default function TaskSubtasks({
 
   const { data: relations = [] } = useGetTaskRelations(taskId);
   const { data: workspace } = useActiveWorkspace();
-  const { people } = useAssigneePeople(workspace?.id ?? workspaceId);
+  const { people, audience } = useAssigneePeople(workspace?.id ?? workspaceId);
   const createTask = useCreateTask();
   const { mutateAsync: deleteTask } = useDeleteTask();
   const { mutateAsync: updateTaskStatus } = useUpdateTaskStatus();
@@ -209,6 +209,7 @@ export default function TaskSubtasks({
         userId: subtask.task.userId,
         assigneeName: subtask.task.assigneeName,
       }),
+      { audience },
     );
 
   const getSelectionRadius = (index: number, isSelected: boolean) => {

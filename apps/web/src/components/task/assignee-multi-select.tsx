@@ -87,7 +87,7 @@ export default function AssigneeMultiSelect({
   const { t } = useTranslation();
   const { user } = useAuth();
   const currentUserId = user?.id ?? null;
-  const { people, isLoading } = useAssigneePeople(workspaceId);
+  const { people, isLoading, audience } = useAssigneePeople(workspaceId);
   const [query, setQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_USERS);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -117,7 +117,9 @@ export default function AssigneeMultiSelect({
   const rows = useMemo<Row[]>(() => {
     const selected = new Set(selectedIds);
     const mixed = new Set(mixedIds);
-    return resolveAssignees(order, people, embedded ?? []).map((entry) => ({
+    return resolveAssignees(order, people, embedded ?? [], {
+      audience,
+    }).map((entry) => ({
       ...entry,
       checked: selected.has(entry.id),
       mixed: !selected.has(entry.id) && mixed.has(entry.id),
@@ -127,6 +129,7 @@ export default function AssigneeMultiSelect({
   }, [
     order,
     people,
+    audience,
     embedded,
     selectedIds,
     mixedIds,
@@ -216,7 +219,7 @@ export default function AssigneeMultiSelect({
         aria-busy={row.pending || undefined}
         className={cn(
           "w-full justify-start gap-2 px-2",
-          row.isFormerMember ? "h-auto min-h-8 py-1" : "h-8",
+          row.isFormerMember || row.noAccess ? "h-auto min-h-8 py-1" : "h-8",
         )}
         onClick={() => toggle(row)}
       >
@@ -239,7 +242,7 @@ export default function AssigneeMultiSelect({
           <span
             className={cn(
               "w-full truncate text-left text-sm",
-              row.isFormerMember && "text-muted-foreground",
+              (row.isFormerMember || row.noAccess) && "text-muted-foreground",
             )}
           >
             {row.isMe ? t("tasks:assignees.you", { name }) : name}
@@ -247,6 +250,11 @@ export default function AssigneeMultiSelect({
           {row.isFormerMember && (
             <span className="text-[11px] text-muted-foreground">
               {t("tasks:assignees.formerMember")}
+            </span>
+          )}
+          {row.noAccess && (
+            <span className="text-[11px] text-muted-foreground">
+              {t("tasks:assignees.noAccess")}
             </span>
           )}
         </span>

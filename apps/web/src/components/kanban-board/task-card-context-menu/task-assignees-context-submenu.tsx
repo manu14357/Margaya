@@ -53,7 +53,7 @@ export default function TaskAssigneesContextSubmenu({
 }: TaskAssigneesContextSubmenuProps) {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const { people } = useAssigneePeople(workspaceId);
+  const { people, audience } = useAssigneePeople(workspaceId);
   const [pendingIds, setPendingIds] = useState<ReadonlySet<string>>(
     () => new Set(),
   );
@@ -70,6 +70,7 @@ export default function TaskAssigneesContextSubmenu({
     selectedIds.filter((id) => !memberIds.has(id)),
     people,
     embeddedAssignees(task),
+    { audience },
   );
   const atLimit = selectedIds.length >= MAX_TASK_ASSIGNEES;
   const target = { taskId: task.id, projectId, workspaceId };
@@ -168,7 +169,9 @@ export default function TaskAssigneesContextSubmenu({
                 {assigneeDisplayName(person, t)}
               </span>
               <span className="text-[11px] text-muted-foreground">
-                {t("tasks:assignees.formerMember")}
+                {person.noAccess
+                  ? t("tasks:assignees.noAccess")
+                  : t("tasks:assignees.formerMember")}
               </span>
             </span>
           </ContextMenuCheckboxItem>

@@ -15,7 +15,7 @@ import {
 } from "@/lib/task-assignees";
 
 type StackPerson = TaskAssignee &
-  Partial<Pick<AssigneeEntry, "isFormerMember" | "isUnknown">>;
+  Partial<Pick<AssigneeEntry, "isFormerMember" | "isUnknown" | "noAccess">>;
 
 const SIZES = {
   xs: { face: "size-4", text: "text-[9px]" },
@@ -85,8 +85,11 @@ export default function AssigneeAvatarStack({
 
   const names = assignees.map((person) => {
     const name = assigneeDisplayName(person, t);
-    return person.isFormerMember
-      ? t("tasks:assignees.formerMemberSuffix", { name })
+    if (person.isFormerMember) {
+      return t("tasks:assignees.formerMemberSuffix", { name });
+    }
+    return person.noAccess
+      ? t("tasks:assignees.noAccessSuffix", { name })
       : name;
   });
   const extra = overflowCount(assignees.length, max);

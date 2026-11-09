@@ -71,6 +71,18 @@ describe("AssigneeAvatarStack", () => {
     ]);
   });
 
+  it("names someone without access to the project with their real name and a hint", () => {
+    render(
+      <AssigneeAvatarStack
+        assignees={[{ id: "cy", name: "Cy Moss", image: null, noAccess: true }]}
+      />,
+    );
+    expect(screen.getByRole("img")).toHaveAccessibleName(
+      "tasks:assignees.stackAria(tasks:assignees.noAccessSuffix(Cy Moss))",
+    );
+    expect(screen.getByRole("img")).toHaveTextContent("CM");
+  });
+
   it("shows the muted question mark for nobody when asked", () => {
     render(<AssigneeAvatarStack assignees={[]} showEmpty />);
 

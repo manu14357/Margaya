@@ -387,8 +387,8 @@ function AssigneePicker({
   onChange: (ids: string[]) => void;
 }) {
   const { t } = useTranslation();
-  const { people } = useAssigneePeople(workspaceId);
-  const selected = resolveAssignees(selectedIds, people);
+  const { people, audience } = useAssigneePeople(workspaceId);
+  const selected = resolveAssignees(selectedIds, people, [], { audience });
 
   return (
     <Popover>

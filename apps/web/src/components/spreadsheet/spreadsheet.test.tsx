@@ -15,6 +15,8 @@ import Spreadsheet from "./spreadsheet";
 
 const state = vi.hoisted(() => ({
   canUpdate: true,
+  /** Projects where the project role only reads. */
+  readOnlyProjects: [] as string[],
   observed: [] as Array<(entries: Array<{ isIntersecting: boolean }>) => void>,
 }));
 
@@ -32,6 +34,8 @@ vi.mock("@/hooks/use-workspace-permission", () => ({
     canUpdateTasks: () => state.canUpdate,
     canAssignTasks: () => state.canUpdate,
     canCreateTasks: () => state.canUpdate,
+    canInProject: (projectId: string) =>
+      !state.readOnlyProjects.includes(projectId),
   }),
 }));
 
@@ -78,6 +82,7 @@ afterEach(() => {
   cleanup();
   document.body.innerHTML = "";
   state.canUpdate = true;
+  state.readOnlyProjects = [];
   state.observed = [];
   vi.unstubAllGlobals();
 });
@@ -250,6 +255,22 @@ describe("Spreadsheet", () => {
       .queryAllByRole("button")
       .map((button) => button.textContent);
     expect(buttons).toEqual(["Task 1"]);
+  });
+
+  it("follows each row's own project role in a cross-project sheet", () => {
+    state.readOnlyProjects = ["p2"];
+    const query = handle();
+    const data = query.data as MergedTaskQueryResult;
+    data.tasks.b = { ...row("b", 2), projectId: "p2" };
+    renderSpreadsheet(query);
+    const [, editable, readOnly] = screen.getAllByRole("row");
+    if (!editable || !readOnly) throw new Error("no rows");
+    const buttonsOf = (element: HTMLElement) =>
+      within(element)
+        .queryAllByRole("button")
+        .map((button) => button.textContent);
+    expect(buttonsOf(editable).length).toBeGreaterThan(1);
+    expect(buttonsOf(readOnly)).toEqual(["Task 2"]);
   });
 
   it("requests the next page at the end of the list", () => {

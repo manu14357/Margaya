@@ -49,6 +49,7 @@ export default function TaskQueryView({
     canCreateTasks,
     canUpdateCycles,
     canUpdateModules,
+    canInProject,
   } = useWorkspacePermission();
   const { data } = query;
   const checkCreated = useCreatedTaskCheck(query, workspaceId);
@@ -62,6 +63,7 @@ export default function TaskQueryView({
         ? {
             scopeProjectId: projectId ?? null,
             can: { updateCycles, updateModules, updateTasks },
+            canInProject,
             onCreated: (task) => void checkCreated(task),
           }
         : null,
@@ -71,6 +73,7 @@ export default function TaskQueryView({
       updateCycles,
       updateModules,
       updateTasks,
+      canInProject,
       checkCreated,
     ],
   );
@@ -111,6 +114,7 @@ export default function TaskQueryView({
       singleProject={singleProject}
       canUpdate={canUpdateTasks()}
       canAssign={canAssignTasks()}
+      canInProject={canInProject}
       quickAdd={quickAddContext}
     />
   ) : (

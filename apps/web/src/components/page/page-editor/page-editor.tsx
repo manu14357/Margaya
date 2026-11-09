@@ -30,7 +30,7 @@ import type { MentionMember } from "@/components/task/extensions/mention-list";
 import { useAiAvailability } from "@/hooks/queries/ai/use-ai";
 import { useGetPages } from "@/hooks/queries/page/use-get-pages";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
-import { useGetActiveWorkspaceUsers } from "@/hooks/queries/workspace-users/use-get-active-workspace-users";
+import { useMentionMembers } from "@/hooks/use-mention-members";
 import { cn } from "@/lib/cn";
 import { parseTaskListMarkdownToNodes } from "@/lib/editor-task-list-paste";
 import {
@@ -90,19 +90,8 @@ export default function PageEditor({
 }: PageEditorProps) {
   const { t } = useTranslation();
   const { data: activeWorkspace } = useActiveWorkspace();
-  const { data: workspaceUsers } = useGetActiveWorkspaceUsers(
-    activeWorkspace?.id ?? "",
-  );
   const membersRef = useRef<MentionMember[]>([]);
-  membersRef.current = useMemo(
-    () =>
-      (workspaceUsers?.members ?? []).map((member) => ({
-        id: member.userId,
-        label: member.user?.name ?? member.user?.email ?? "",
-        image: member.user?.image ?? null,
-      })),
-    [workspaceUsers],
-  );
+  membersRef.current = useMentionMembers(activeWorkspace?.id ?? "");
   const { data: pages } = useGetPages(projectId);
   const linkablePages = useMemo(
     () =>

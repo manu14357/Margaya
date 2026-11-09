@@ -147,6 +147,18 @@ vi.mock(
   }),
 );
 
+// In a project, the pickers offer its people; here the same people.
+vi.mock("@/hooks/queries/project/use-project-audience", () => ({
+  default: () => ({
+    data: members.map((member) => ({
+      id: member.userId,
+      name: member.user.name,
+      image: member.user.image,
+    })),
+    isLoading: false,
+  }),
+}));
+
 let canUpdateTasks = true;
 const setTaskParent = vi.fn(async (input: Record<string, unknown>) => input);
 

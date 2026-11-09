@@ -94,6 +94,7 @@ import { useSimilarTasks } from "@/hooks/queries/task/use-similar-tasks";
 import { useTaskTemplates } from "@/hooks/queries/task-template/use-task-templates";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useDefaultAssigneePrefill } from "@/hooks/use-default-assignee-prefill";
+import { ProjectScope, useProjectScope } from "@/hooks/use-project-scope";
 import { useAssigneePeople } from "@/hooks/use-task-assignees";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { cn } from "@/lib/cn";
@@ -313,7 +314,7 @@ function CreateTaskModalContent({
   );
   const location = useLocation();
   const { data: workspace } = useActiveWorkspace();
-  const { people } = useAssigneePeople(workspace?.id || "");
+  const { people, audience } = useAssigneePeople(workspace?.id || "");
   const { mutateAsync: createLabel } = useCreateLabel();
   const { data: workspaceLabels = [] } = useGetLabelsByWorkspace(
     workspace?.id || "",
@@ -1066,7 +1067,9 @@ function CreateTaskModalContent({
     }
     return entryColumn?.name ?? t("tasks:status.in-progress");
   }, [shownStatus, t, projectColumns, entryColumn?.name]);
-  const selectedAssignees = resolveAssignees(assigneeIds, people);
+  const selectedAssignees = resolveAssignees(assigneeIds, people, [], {
+    audience,
+  });
 
   /** Fills the form from a template; everything stays editable after. */
   const pickTemplate = (template: TaskTemplate) => {
@@ -2210,15 +2213,39 @@ function CreateTaskModal(props: CreateTaskModalProps) {
   // Closing or navigating ends the whole editing session, including pending
   // upload tasks, instead of carrying confidential fields into a new context.
   return (
-    <CreateTaskModalContent
-      key={JSON.stringify([
-        workspace?.id,
-        location.pathname,
-        props.projectId,
-        props.draft?.id,
-      ])}
-      {...props}
-    />
+    <ScopedToTaskProject projectId={props.draft ? undefined : props.projectId}>
+      <CreateTaskModalContent
+        key={JSON.stringify([
+          workspace?.id,
+          location.pathname,
+          props.projectId,
+          props.draft?.id,
+        ])}
+        {...props}
+      />
+    </ScopedToTaskProject>
+  );
+}
+
+/**
+ * Rights and pickers follow the project the task goes to when it is given
+ * (the modal is also opened from the command palette, outside the page).
+ */
+function ScopedToTaskProject({
+  projectId,
+  children,
+}: {
+  projectId: string | undefined;
+  children: React.ReactNode;
+}) {
+  const location = useLocation();
+  const scope = useProjectScope();
+  const routeProjectId =
+    location.pathname.match(/\/project\/([^/]+)/)?.[1] ?? null;
+  return (
+    <ProjectScope projectId={projectId || scope || routeProjectId}>
+      {children}
+    </ProjectScope>
   );
 }
 

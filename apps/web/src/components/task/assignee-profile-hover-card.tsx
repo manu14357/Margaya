@@ -45,7 +45,8 @@ export default function AssigneeProfileHoverCard({
         >
           {assignees.map((person) => {
             const name = assigneeDisplayName(person, t);
-            const linkable = !person.isFormerMember && !person.isUnknown;
+            const linkable =
+              !person.isFormerMember && !person.isUnknown && !person.noAccess;
             return (
               <li
                 key={person.id}
@@ -58,6 +59,11 @@ export default function AssigneeProfileHoverCard({
                   </AvatarFallback>
                 </Avatar>
                 <span className="min-w-0 flex-1 truncate">{name}</span>
+                {person.noAccess && (
+                  <span className="shrink-0 text-muted-foreground text-xs">
+                    {t("tasks:assignees.noAccess")}
+                  </span>
+                )}
                 {linkable && (
                   <Link
                     to="/dashboard/workspace/$workspaceId/profile/$userId"

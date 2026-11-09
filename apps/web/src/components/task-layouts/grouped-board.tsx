@@ -39,6 +39,11 @@ type GroupedBoardProps = {
   singleProject: boolean;
   canUpdate: boolean;
   canAssign: boolean;
+  /** Per card: a cross-project board follows each task's project role. */
+  canInProject?: (
+    projectId: string,
+    capability: "updateTasks" | "assignTasks",
+  ) => boolean;
   /** A quick add at the foot of each column or cell; null for none. */
   quickAdd?: QuickAddContext | null;
 };
@@ -99,6 +104,7 @@ export default function GroupedBoard({
   singleProject,
   canUpdate,
   canAssign,
+  canInProject,
   quickAdd = null,
 }: GroupedBoardProps) {
   const { t } = useTranslation();
@@ -121,6 +127,16 @@ export default function GroupedBoard({
   const subDraggable =
     subGroupBy !== null &&
     canDragBy(subGroupBy, singleProject, canUpdate, canAssign);
+  const cardDraggable = (projectId: string) => {
+    if (!canInProject) return draggable || subDraggable;
+    const update = canUpdate && canInProject(projectId, "updateTasks");
+    const assign = canAssign && canInProject(projectId, "assignTasks");
+    return (
+      canDragBy(groupBy, singleProject, update, assign) ||
+      (subGroupBy !== null &&
+        canDragBy(subGroupBy, singleProject, update, assign))
+    );
+  };
 
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
@@ -209,7 +225,7 @@ export default function GroupedBoard({
           meta={data.meta}
           properties={properties}
           workspaceId={workspaceId}
-          draggable={draggable || subDraggable}
+          draggable={cardDraggable(row.projectId)}
         />
       );
     });

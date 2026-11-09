@@ -75,7 +75,7 @@ export function useBulkAssigneeGroups({
   onDone,
 }: Options): BulkAssigneeGroup[] {
   const { t } = useTranslation();
-  const { people } = useAssigneePeople(workspaceId);
+  const { people, audience } = useAssigneePeople(workspaceId);
   const { bulkAddAssignee, bulkRemoveAssignee, bulkClearAssignees } =
     useBulkOperations();
 
@@ -87,6 +87,7 @@ export function useBulkAssigneeGroups({
       assigneeUnion(selectedTasks),
       people,
       selectedTasks.flatMap((task) => task.assignees ?? []),
+      { audience },
     );
 
     const run = async (
@@ -164,6 +165,7 @@ export function useBulkAssigneeGroups({
     selectedTaskIds,
     project,
     people,
+    audience,
     onDone,
     t,
     bulkAddAssignee,

@@ -176,7 +176,9 @@ vi.mock("@/store/project", () => ({
   }),
 }));
 
-vi.mock("react-i18next", () => ({
+// The real module too: the calendar's date formatting loads the i18n setup.
+vi.mock("react-i18next", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("react-i18next")>()),
   useTranslation: () => ({
     t: (key: string, options?: { name?: string }) =>
       options?.name ? `${key}:${options.name}` : key,

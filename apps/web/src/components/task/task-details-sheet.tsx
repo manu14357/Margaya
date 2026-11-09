@@ -16,6 +16,7 @@ import {
 } from "@/hooks/mutations/recent-visit/use-record-visit";
 import useGetProject from "@/hooks/queries/project/use-get-project";
 import useGetTask from "@/hooks/queries/task/use-get-task";
+import { ProjectScope } from "@/hooks/use-project-scope";
 import TaskActionsMenu from "./task-actions-menu";
 import TaskDeleteButton from "./task-delete-button";
 import TaskDetailsContent from "./task-details-content";
@@ -114,115 +115,118 @@ export default function TaskDetailsSheet({
   );
 
   return (
-    <Sheet open={!!taskId} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent
-        side="right"
-        aria-label={t("tasks:detail.sheetLabel")}
-        className="w-full max-w-full gap-0 p-0 md:max-w-[560px] [&>button]:hidden"
-      >
-        <header className="flex h-12 shrink-0 items-center gap-2 border-border border-b bg-background px-3">
-          <div className="flex min-w-0 flex-1 items-center gap-2">
-            <TaskKeyCopyButton
-              slug={project?.slug}
-              number={task?.number}
-              className="shrink-0 font-medium font-mono text-muted-foreground text-xs"
-            />
-            {task && (
-              <TaskStatusChip
-                status={task.status}
-                projectId={task.projectId ?? projectId}
-              />
-            )}
-            <TaskStepper
-              projectId={projectId}
-              taskId={currentTaskId}
-              onNavigate={handleStep}
-              className="ml-1"
-            />
-          </div>
-          <div className="flex shrink-0 items-center gap-0.5">
-            <TaskSubscribeButton taskId={currentTaskId} size="icon" />
-            {currentTaskId && (
-              <TaskActionsMenu
-                taskId={currentTaskId}
-                projectId={projectId}
-                workspaceId={workspaceId}
-              />
-            )}
-            {currentTaskId && (
-              <span data-task-delete="" className="contents">
-                <TaskDeleteButton
-                  taskId={currentTaskId}
-                  onDeleted={onClose}
-                  iconOnly
-                />
-              </span>
-            )}
-            <span aria-hidden className="mx-1 h-4 w-px bg-border" />
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    onClick={handleOpenFullPage}
-                    className="text-foreground"
-                    aria-label={t("tasks:detail.openInFullPage")}
-                  >
-                    <Maximize2 className="size-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  {t("tasks:detail.openInFullPage")}
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={onClose}
-              className="text-foreground"
-              aria-label={t("common:actions.close")}
-            >
-              <X className="size-4" />
-            </Button>
-          </div>
-        </header>
-
-        <TaskSurfaceShortcuts
-          taskId={taskId ? currentTaskId : undefined}
-          projectId={projectId}
-          workspaceId={workspaceId}
-        />
-        <div
-          className="min-h-0 flex-1 overflow-y-auto overscroll-contain"
-          key={currentTaskId}
-          data-task-surface=""
+    // The sheet acts in its task's project, whatever view opened it.
+    <ProjectScope projectId={task?.projectId ?? projectId}>
+      <Sheet open={!!taskId} onOpenChange={(open) => !open && onClose()}>
+        <SheetContent
+          side="right"
+          aria-label={t("tasks:detail.sheetLabel")}
+          className="w-full max-w-full gap-0 p-0 md:max-w-[560px] [&>button]:hidden"
         >
-          {/* Until the task loads (opening, or stepping to an uncached
-              one) the skeleton stands in, not an empty, editable form. */}
-          {currentTaskId && !isTaskError && task?.id !== currentTaskId ? (
-            <TaskDetailsSkeleton className="px-5 pt-4 pb-10" />
-          ) : (
-            <TaskDetailsContent
-              taskId={currentTaskId}
-              projectId={projectId}
-              workspaceId={workspaceId}
-              showKey={false}
-              className="px-5 pt-4 pb-10"
-              properties={
-                <TaskPropertiesSidebar
+          <header className="flex h-12 shrink-0 items-center gap-2 border-border border-b bg-background px-3">
+            <div className="flex min-w-0 flex-1 items-center gap-2">
+              <TaskKeyCopyButton
+                slug={project?.slug}
+                number={task?.number}
+                className="shrink-0 font-medium font-mono text-muted-foreground text-xs"
+              />
+              {task && (
+                <TaskStatusChip
+                  status={task.status}
+                  projectId={task.projectId ?? projectId}
+                />
+              )}
+              <TaskStepper
+                projectId={projectId}
+                taskId={currentTaskId}
+                onNavigate={handleStep}
+                className="ml-1"
+              />
+            </div>
+            <div className="flex shrink-0 items-center gap-0.5">
+              <TaskSubscribeButton taskId={currentTaskId} size="icon" />
+              {currentTaskId && (
+                <TaskActionsMenu
                   taskId={currentTaskId}
                   projectId={projectId}
                   workspaceId={workspaceId}
-                  className="rounded-lg border border-border bg-sidebar/40"
-                  compact
                 />
-              }
-            />
-          )}
-        </div>
-      </SheetContent>
-    </Sheet>
+              )}
+              {currentTaskId && (
+                <span data-task-delete="" className="contents">
+                  <TaskDeleteButton
+                    taskId={currentTaskId}
+                    onDeleted={onClose}
+                    iconOnly
+                  />
+                </span>
+              )}
+              <span aria-hidden className="mx-1 h-4 w-px bg-border" />
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={handleOpenFullPage}
+                      className="text-foreground"
+                      aria-label={t("tasks:detail.openInFullPage")}
+                    >
+                      <Maximize2 className="size-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    {t("tasks:detail.openInFullPage")}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={onClose}
+                className="text-foreground"
+                aria-label={t("common:actions.close")}
+              >
+                <X className="size-4" />
+              </Button>
+            </div>
+          </header>
+
+          <TaskSurfaceShortcuts
+            taskId={taskId ? currentTaskId : undefined}
+            projectId={projectId}
+            workspaceId={workspaceId}
+          />
+          <div
+            className="min-h-0 flex-1 overflow-y-auto overscroll-contain"
+            key={currentTaskId}
+            data-task-surface=""
+          >
+            {/* Until the task loads (opening, or stepping to an uncached
+              one) the skeleton stands in, not an empty, editable form. */}
+            {currentTaskId && !isTaskError && task?.id !== currentTaskId ? (
+              <TaskDetailsSkeleton className="px-5 pt-4 pb-10" />
+            ) : (
+              <TaskDetailsContent
+                taskId={currentTaskId}
+                projectId={projectId}
+                workspaceId={workspaceId}
+                showKey={false}
+                className="px-5 pt-4 pb-10"
+                properties={
+                  <TaskPropertiesSidebar
+                    taskId={currentTaskId}
+                    projectId={projectId}
+                    workspaceId={workspaceId}
+                    className="rounded-lg border border-border bg-sidebar/40"
+                    compact
+                  />
+                }
+              />
+            )}
+          </div>
+        </SheetContent>
+      </Sheet>
+    </ProjectScope>
   );
 }
