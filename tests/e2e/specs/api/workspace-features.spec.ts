@@ -18,6 +18,12 @@ import { uniqueName } from "../../helpers/ui";
 
 type Draft = Json & { title: string; projectId: string | null };
 type Export = Json & { status?: string; format?: string };
+type WorkspaceExport = Json & { status: string; projectIds: string[] };
+type Workload = {
+  unit: string;
+  members: { userId: string | null }[];
+  meta: { users: { id: string }[] };
+};
 
 let world: World;
 let project: Project;
@@ -163,6 +169,81 @@ test(
 );
 
 test(
+  "a whole-workspace export is for those who can read all of it",
+  covers("createWorkspaceExport"),
+  async () => {
+    // It runs in the background, next to whatever else the suite is doing.
+    test.setTimeout(180_000);
+    const owner = world.as("owner");
+    const member = world.as("member");
+    const workspaceId = world.workspace.id;
+    const start = "/api/task-export/workspace";
+
+    await expectStatus(
+      await member.post(start, { data: { workspaceId } }),
+      403,
+    );
+    await expectStatus(
+      await world.as("viewer").post(start, { data: { workspaceId } }),
+      403,
+    );
+    await expectStatus(
+      await world.anonymous.post(start, { data: { workspaceId } }),
+      401,
+    );
+    await expectStatus(
+      await owner.post(start, { data: { workspaceId, includeFiles: "yes" } }),
+      400,
+    );
+
+    const created = await expectJson<WorkspaceExport>(
+      await owner.post(start, { data: { workspaceId, includeFiles: false } }),
+    );
+    expect(created).toMatchObject({
+      kind: "workspace",
+      format: "json",
+      includeFiles: false,
+      includeArchived: true,
+    });
+    expect(created.projectIds).toContain(project.id);
+    const url = `/api/task-export/${created.id}`;
+
+    const listed = await expectJson<{ items: Export[] }>(
+      await owner.get("/api/task-export", { params: { workspaceId } }),
+    );
+    expect(listed.items.map((item) => item.id)).toContain(created.id);
+
+    // Anyone who may not start one can't tell it exists.
+    await expectStatus(await member.get(url), 404);
+
+    const finished = await eventually(
+      async () => {
+        const one = await expectJson<WorkspaceExport>(await owner.get(url));
+        return one.status === "queued" || one.status === "processing"
+          ? null
+          : one;
+      },
+      {
+        timeoutMs: 150_000,
+        intervalMs: 1_000,
+        what: "whole-workspace export finished",
+      },
+    );
+    expect(finished).toMatchObject({ status: "completed", downloadable: true });
+
+    const download = await owner.get(`${url}/download`);
+    expect(download.status()).toBe(200);
+    expect(download.headers()["content-type"]).toContain("zip");
+    expect((await download.body()).subarray(0, 2).toString()).toBe("PK");
+    await expectStatus(await member.get(`${url}/download`), 404);
+    await expectStatus(await member.delete(url), 404);
+
+    await expectJson(await owner.delete(url));
+    await expectStatus(await owner.get(url), 404);
+  },
+);
+
+test(
   "archives: a summary per type and archived lists",
   covers("getArchiveSummary", "listArchived"),
   async () => {
@@ -254,6 +335,66 @@ test(
         params: { workspaceId },
       }),
       401,
+    );
+  },
+);
+
+test(
+  "analytics: open work per person",
+  covers("getAnalyticsWorkload"),
+  async () => {
+    const owner = world.as("owner");
+    const workspaceId = world.workspace.id;
+    const assigneeId = world.users.member.id;
+    const scoped = await createProject(owner, workspaceId);
+    const assigneeIds = [assigneeId];
+    await createTask(owner, scoped.id, { assigneeIds });
+    await createTask(owner, scoped.id, { assigneeIds, status: "in-progress" });
+    await createTask(owner, scoped.id);
+    const params = { workspaceId, projectIds: scoped.id };
+
+    // Members hold cycle:update, so they also get each person's check.
+    const workload = await expectJson<Workload>(
+      await world.as("member").get("/api/analytics/workload", { params }),
+    );
+    expect(workload.unit).toBe("tasks");
+    expect(workload.members).toHaveLength(2);
+    expect(workload.members[0]).toMatchObject({
+      userId: assigneeId,
+      tasks: 2,
+      load: 2,
+      cells: { backlog: 0, unstarted: 1, started: 1 },
+      // Nothing finished in this project yet: unknown, never over.
+      check: { usual: null, status: "unknown" },
+    });
+    // Unassigned work comes last and has no one to check against.
+    expect(workload.members[1]).toMatchObject({
+      userId: null,
+      tasks: 1,
+      check: null,
+    });
+    expect(workload.meta.users.map((user) => user.id)).toContain(assigneeId);
+
+    // Per-person numbers stay with members and up.
+    await expectStatus(
+      await world.as("viewer").get("/api/analytics/workload", { params }),
+      403,
+    );
+    await expectStatus(
+      await world.anonymous.get("/api/analytics/workload", { params }),
+      401,
+    );
+    await expectStatus(
+      await owner.get("/api/analytics/workload", {
+        params: { ...params, timeZone: "Mars/Olympus_Mons" },
+      }),
+      400,
+    );
+    await expectStatus(
+      await owner.get("/api/analytics/workload", {
+        params: { workspaceId, projectIds: "e2e-unknown-project" },
+      }),
+      404,
     );
   },
 );

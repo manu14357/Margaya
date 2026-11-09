@@ -505,4 +505,250 @@ test.describe("custom fields", () => {
       );
     },
   );
+
+  test(
+    "edit a field: rename it, rename and remove options, change the default",
+    covers("updateCustomField"),
+    async () => {
+      type Dropdown = CustomField & { options: string[] };
+      const admin = world.as("admin");
+      const member = world.as("member");
+      const owner = world.as("owner");
+      const scoped = await createProject(owner, world.workspace.id);
+      const tier = await expectJson<Dropdown>(
+        await admin.post("/api/custom-field", {
+          data: {
+            projectId: scoped.id,
+            name: uniqueName("Tier"),
+            type: "dropdown",
+            options: ["Gold", "Silver"],
+            defaultValue: "Silver",
+          },
+        }),
+      );
+      const url = `/api/custom-field/${tier.id}`;
+
+      const name = uniqueName("Level");
+      const renamed = await expectJson<Dropdown>(
+        await admin.patch(url, { data: { name } }),
+      );
+      expect(renamed).toMatchObject({
+        name,
+        type: "dropdown",
+        options: ["Gold", "Silver"],
+        defaultValue: "Silver",
+      });
+
+      const gold = await createTask(owner, scoped.id);
+      const silver = await createTask(owner, scoped.id);
+      const setValue = (taskId: string, value: string) =>
+        member.put("/api/custom-field/value", {
+          data: { taskId, fieldId: tier.id, value },
+        });
+      const storedValue = async (taskId: string) => {
+        const values = await expectJson<FieldValue[]>(
+          await admin.get(`/api/custom-field/task/${taskId}`),
+        );
+        return values.find((value) => value.fieldId === tier.id)?.value;
+      };
+      await expectJson(await setValue(gold.id, "Gold"));
+      await expectJson(await setValue(silver.id, "Silver"));
+
+      // Renaming an option moves the values tasks already hold.
+      const moved = await expectJson<Dropdown>(
+        await admin.patch(url, {
+          data: {
+            options: ["Platinum", "Silver"],
+            renamedOptions: [{ from: "Gold", to: "Platinum" }],
+          },
+        }),
+      );
+      expect(moved.options).toEqual(["Platinum", "Silver"]);
+      expect(await storedValue(gold.id)).toBe("Platinum");
+
+      // The default has to stay one of the options.
+      await expectStatus(
+        await admin.patch(url, { data: { options: ["Platinum"] } }),
+        400,
+      );
+      const trimmed = await expectJson<Dropdown>(
+        await admin.patch(url, {
+          data: { options: ["Platinum"], defaultValue: "Platinum" },
+        }),
+      );
+      expect(trimmed).toMatchObject({
+        options: ["Platinum"],
+        defaultValue: "Platinum",
+      });
+
+      // A removed option stays on the tasks holding it, but can't be newly set.
+      expect(await storedValue(silver.id)).toBe("Silver");
+      await expectStatus(await setValue(gold.id, "Silver"), 400);
+
+      // The type is fixed, and an option list has to make sense.
+      await expectStatus(
+        await admin.patch(url, { data: { type: "text" } }),
+        400,
+      );
+      await expectStatus(
+        await admin.patch(url, { data: { options: ["Same", "Same"] } }),
+        400,
+      );
+      await expectStatus(
+        await admin.patch(url, {
+          data: { renamedOptions: [{ from: "Platinum", to: "Diamond" }] },
+        }),
+        400,
+      );
+
+      await expectStatus(
+        await member.patch(url, { data: { name: "Member rename" } }),
+        403,
+      );
+      await expectStatus(
+        await world
+          .as("viewer")
+          .patch(url, { data: { name: "Viewer rename" } }),
+        403,
+      );
+      await expectStatus(
+        await admin.patch("/api/custom-field/e2e-unknown-field", {
+          data: { name: "Nobody" },
+        }),
+        404,
+      );
+    },
+  );
+
+  test(
+    "set one field on many tasks at once",
+    covers("bulkSetCustomFieldValue"),
+    async () => {
+      const admin = world.as("admin");
+      const member = world.as("member");
+      const owner = world.as("owner");
+      const scoped = await createProject(owner, world.workspace.id);
+      const first = await createTask(owner, scoped.id);
+      const second = await createTask(owner, scoped.id);
+      const taskIds = [first.id, second.id];
+      const text = await expectJson<CustomField>(
+        await admin.post("/api/custom-field", {
+          data: {
+            projectId: scoped.id,
+            name: uniqueName("Customer"),
+            type: "text",
+          },
+        }),
+      );
+      const level = await expectJson<CustomField>(
+        await admin.post("/api/custom-field", {
+          data: {
+            projectId: scoped.id,
+            name: uniqueName("Level"),
+            type: "dropdown",
+            required: true,
+            options: ["Low", "High"],
+            defaultValue: "Low",
+          },
+        }),
+      );
+      const bulk = "/api/custom-field/value/bulk";
+      const valuesOf = async (fieldId: string) => {
+        const values = await expectJson<FieldValue[]>(
+          await member.get(`/api/custom-field/project/${scoped.id}/values`),
+        );
+        return values
+          .filter((value) => value.fieldId === fieldId)
+          .map((value) => [value.taskId, value.value])
+          .sort();
+      };
+
+      const saved = await expectJson<{ updatedCount: number }>(
+        await member.put(bulk, {
+          data: { taskIds, fieldId: text.id, value: "  Acme  " },
+        }),
+      );
+      expect(saved.updatedCount).toBe(2);
+      expect(await valuesOf(text.id)).toEqual(
+        taskIds.map((id) => [id, "Acme"]).sort(),
+      );
+
+      // An empty value clears the field, unless the field is required.
+      const cleared = await expectJson<{ updatedCount: number }>(
+        await member.put(bulk, {
+          data: { taskIds, fieldId: text.id, value: "" },
+        }),
+      );
+      expect(cleared.updatedCount).toBe(2);
+      expect(await valuesOf(text.id)).toEqual(
+        taskIds.map((id) => [id, ""]).sort(),
+      );
+      await expectStatus(
+        await member.put(bulk, {
+          data: { taskIds, fieldId: level.id, value: "" },
+        }),
+        400,
+      );
+
+      await expectJson(
+        await member.put(bulk, {
+          data: { taskIds, fieldId: level.id, value: "High" },
+        }),
+      );
+      await expectStatus(
+        await member.put(bulk, {
+          data: { taskIds, fieldId: level.id, value: "Medium" },
+        }),
+        400,
+      );
+
+      // Every task has to be in the field's project, and exist.
+      const outside = await createTask(owner, other.id);
+      await expectStatus(
+        await member.put(bulk, {
+          data: {
+            taskIds: [first.id, outside.id],
+            fieldId: text.id,
+            value: "Acme",
+          },
+        }),
+        400,
+      );
+      await expectStatus(
+        await member.put(bulk, {
+          data: {
+            taskIds: ["e2e-unknown-task"],
+            fieldId: text.id,
+            value: "Acme",
+          },
+        }),
+        404,
+      );
+      await expectStatus(
+        await member.put(bulk, {
+          data: { taskIds, fieldId: "e2e-unknown-field", value: "Acme" },
+        }),
+        404,
+      );
+      await expectStatus(
+        await member.put(bulk, {
+          data: { taskIds: [], fieldId: text.id, value: "Acme" },
+        }),
+        400,
+      );
+
+      await expectStatus(
+        await world.as("viewer").put(bulk, {
+          data: { taskIds, fieldId: text.id, value: "Acme" },
+        }),
+        403,
+      );
+      await expectStatus(
+        await world.anonymous.put(bulk, {
+          data: { taskIds, fieldId: text.id, value: "Acme" },
+        }),
+        401,
+      );
+    },
+  );
 });

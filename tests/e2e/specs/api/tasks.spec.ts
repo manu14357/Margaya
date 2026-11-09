@@ -186,7 +186,7 @@ test("task validation: bad priority, missing title, unknown column, outside assi
     }),
     403,
   );
-  await expectStatus(await owner.get("/api/task/e2e-unknown-task"), 400);
+  await expectStatus(await owner.get("/api/task/e2e-unknown-task"), 404);
   await expectJson(await owner.delete(`/api/task/${task.id}`));
 });
 
@@ -273,6 +273,164 @@ test(
     expect(activity.map((entry) => entry.type)).toEqual(
       expect.arrayContaining(["status_changed", "priority_changed"]),
     );
+  },
+);
+
+test(
+  "mark a task as a milestone and back, keeping its dates",
+  covers("updateTaskMilestone"),
+  async () => {
+    type Milestone = Task & {
+      isMilestone?: boolean;
+      startDate?: string | null;
+    };
+    const member = world.as("member");
+    const task = await createTask(world.as("owner"), project.id, {
+      startDate: "2031-04-01T00:00:00.000Z",
+      dueDate: "2031-05-01T00:00:00.000Z",
+    });
+    const url = `/api/task/milestone/${task.id}`;
+
+    const marked = await expectJson<Milestone>(
+      await member.put(url, { data: { isMilestone: true } }),
+    );
+    expect(marked.isMilestone).toBe(true);
+    expect(marked.dueDate).toBe(task.dueDate);
+    const read = await expectJson<Milestone>(
+      await world.as("viewer").get(`/api/task/${task.id}`),
+    );
+    expect(read.isMilestone).toBe(true);
+
+    // Marking it again changes nothing and still answers with the task.
+    const repeated = await expectJson<Milestone>(
+      await member.put(url, { data: { isMilestone: true } }),
+    );
+    expect(repeated.isMilestone).toBe(true);
+
+    const regular = await expectJson<Milestone>(
+      await member.put(url, { data: { isMilestone: false } }),
+    );
+    expect(regular.isMilestone).toBe(false);
+    expect(regular.dueDate).toBe(task.dueDate);
+    expect(regular.startDate).toBe((task as Milestone).startDate);
+
+    await expectStatus(
+      await world.as("viewer").put(url, { data: { isMilestone: true } }),
+      403,
+    );
+    await expectStatus(
+      await world.anonymous.put(url, { data: { isMilestone: true } }),
+      401,
+    );
+    await expectStatus(
+      await member.put(url, { data: { isMilestone: "yes" } }),
+      400,
+    );
+    await expectStatus(
+      await member.put("/api/task/milestone/e2e-unknown-task", {
+        data: { isMilestone: true },
+      }),
+      404,
+    );
+
+    await expectJson(await world.as("admin").delete(`/api/task/${task.id}`));
+    await expectStatus(
+      await member.put(url, { data: { isMilestone: true } }),
+      404,
+    );
+  },
+);
+
+test(
+  "placing a task writes only its position and status",
+  covers("updateTaskPosition"),
+  async () => {
+    const member = world.as("member");
+    const task = await createTask(world.as("owner"), project.id);
+    const title = uniqueName("Newer title");
+    await expectJson<Task>(
+      await member.put(`/api/task/title/${task.id}`, { data: { title } }),
+    );
+
+    const moved = await expectJson<Task & { position: number }>(
+      await member.put(`/api/task/position/${task.id}`, {
+        data: { position: 5, status: "done" },
+      }),
+    );
+    expect(moved).toMatchObject({ title, status: "done", position: 5 });
+
+    const reordered = await expectJson<Task & { position: number }>(
+      await member.put(`/api/task/position/${task.id}`, {
+        data: { position: 2 },
+      }),
+    );
+    expect(reordered).toMatchObject({ title, status: "done", position: 2 });
+
+    await expectStatus(
+      await member.put(`/api/task/position/${task.id}`, {
+        data: { position: 2, status: "archived" },
+      }),
+      400,
+    );
+    await expectStatus(
+      await world.as("viewer").put(`/api/task/position/${task.id}`, {
+        data: { position: 0 },
+      }),
+      403,
+    );
+    await expectJson(await world.as("owner").delete(`/api/task/${task.id}`));
+  },
+);
+
+test(
+  "moving a task's dates writes only its dates",
+  covers("updateTaskDates"),
+  async () => {
+    const member = world.as("member");
+    const task = await createTask(world.as("owner"), project.id);
+    const title = uniqueName("Newer title");
+    await expectJson<Task>(
+      await member.put(`/api/task/title/${task.id}`, { data: { title } }),
+    );
+
+    const moved = await expectJson<Task>(
+      await member.put(`/api/task/dates/${task.id}`, {
+        data: {
+          startDate: "2031-05-05T00:00:00.000Z",
+          dueDate: "2031-05-09T00:00:00.000Z",
+        },
+      }),
+    );
+    expect(moved).toMatchObject({
+      title,
+      startDate: "2031-05-05T00:00:00.000Z",
+      dueDate: "2031-05-09T00:00:00.000Z",
+    });
+
+    // A date left out stays; null clears one.
+    const cleared = await expectJson<Task>(
+      await member.put(`/api/task/dates/${task.id}`, {
+        data: { startDate: null },
+      }),
+    );
+    expect(cleared).toMatchObject({
+      startDate: null,
+      dueDate: "2031-05-09T00:00:00.000Z",
+    });
+
+    await expectStatus(
+      await member.put(`/api/task/dates/${task.id}`, {
+        data: { startDate: "2031-05-10T00:00:00.000Z" },
+      }),
+      400,
+    );
+    await expectStatus(
+      await world.as("viewer").put(`/api/task/dates/${task.id}`, {
+        data: { dueDate: "2031-06-01T00:00:00.000Z" },
+      }),
+      403,
+    );
+    await expectJson(await world.as("owner").delete(`/api/task/${task.id}`));
   },
 );
 
@@ -387,7 +545,7 @@ test(
       await admin.put("/api/task/assignee/e2e-unknown-task", {
         data: { userId: null },
       }),
-      [400, 404],
+      404,
     );
   },
 );
@@ -662,7 +820,7 @@ test("bulk operations", covers("bulkUpdateTasks"), async () => {
     }),
   );
   expect(deleted.updatedCount).toBe(2);
-  await expectStatus(await owner.get(`/api/task/${taskIds[0]}`), [400, 404]);
+  await expectStatus(await owner.get(`/api/task/${taskIds[0]}`), 404);
 });
 
 test("delete a task", covers("deleteTask"), async () => {
@@ -671,10 +829,7 @@ test("delete a task", covers("deleteTask"), async () => {
     await world.as("admin").delete(`/api/task/${task.id}`),
   );
   expect(deleted.id).toBe(task.id);
-  await expectStatus(
-    await world.as("admin").get(`/api/task/${task.id}`),
-    [400, 404],
-  );
+  await expectStatus(await world.as("admin").get(`/api/task/${task.id}`), 404);
 });
 
 test(

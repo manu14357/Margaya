@@ -13,7 +13,8 @@ import { covers } from "../../helpers/openapi";
 import { uniqueName } from "../../helpers/ui";
 
 // Pages: create, read, edit, tree moves, locks, access, archive, duplicate,
-// versions, backlinks and task references, as the Pages API exposes them.
+// versions, backlinks, task references, comments and watching, as the Pages API
+// exposes them.
 
 type Page = Json & {
   projectId: string | null;
@@ -31,6 +32,16 @@ type Version = Json & {
   title: string;
   contentMarkdown?: string;
 };
+type PageComment = {
+  id: string;
+  pageId: string;
+  userId: string | null;
+  content: string;
+  user: { name: string; image: string | null } | null;
+  canEdit: boolean;
+  canDelete: boolean;
+};
+type PageWatch = { pageId: string; subscribed: boolean };
 
 let world: World;
 let project: Project;
@@ -254,6 +265,197 @@ test(
       await owner.get(`/api/page/task/${task.id}/references`),
     );
     expect(references).toEqual([]);
+  },
+);
+
+test(
+  "comment on a page: add, read, edit and delete",
+  covers(
+    "listPageComments",
+    "createPageComment",
+    "updatePageComment",
+    "deletePageComment",
+  ),
+  async () => {
+    const member = world.as("member");
+    const viewer = world.as("viewer");
+    const admin = world.as("admin");
+    const page = await newPage();
+    const comments = `/api/page/${page.id}/comments`;
+
+    const comment = await expectJson<PageComment>(
+      await member.post(comments, { data: { content: "First thought." } }),
+    );
+    expect(comment).toMatchObject({
+      pageId: page.id,
+      userId: world.users.member.id,
+      content: "First thought.",
+      canEdit: true,
+      canDelete: true,
+    });
+
+    // A viewer reads comments but doesn't write them.
+    const seen = await expectJson<PageComment[]>(await viewer.get(comments));
+    expect(seen).toHaveLength(1);
+    expect(seen[0]).toMatchObject({
+      id: comment.id,
+      user: { name: world.users.member.name },
+      canEdit: false,
+      canDelete: false,
+    });
+    await expectStatus(
+      await viewer.post(comments, { data: { content: "Viewer note" } }),
+      403,
+    );
+    await expectStatus(await world.anonymous.get(comments), 401);
+    await expectStatus(
+      await member.post(comments, { data: { content: "   " } }),
+      400,
+    );
+
+    const edited = await expectJson<PageComment>(
+      await member.put(`${comments}/${comment.id}`, {
+        data: { content: "Second thought." },
+      }),
+    );
+    expect(edited.content).toBe("Second thought.");
+    // Only the author edits, an admin included.
+    await expectStatus(
+      await admin.put(`${comments}/${comment.id}`, {
+        data: { content: "Moderated" },
+      }),
+      403,
+    );
+    await expectStatus(
+      await member.put(`${comments}/e2e-unknown-comment`, {
+        data: { content: "Nowhere" },
+      }),
+      404,
+    );
+
+    await expectStatus(await viewer.delete(`${comments}/${comment.id}`), 403);
+    const removed = await expectJson<{ id: string; pageId: string }>(
+      await member.delete(`${comments}/${comment.id}`),
+    );
+    expect(removed).toEqual({ id: comment.id, pageId: page.id });
+    await expectStatus(await member.delete(`${comments}/${comment.id}`), 404);
+
+    // An admin may remove someone else's comment.
+    const moderated = await expectJson<PageComment>(
+      await member.post(comments, { data: { content: "Off topic." } }),
+    );
+    await expectJson(await admin.delete(`${comments}/${moderated.id}`));
+    expect(await expectJson<PageComment[]>(await member.get(comments))).toEqual(
+      [],
+    );
+  },
+);
+
+test(
+  "page comments follow the page: locked is fine, archived is not, private stays private",
+  covers("listPageComments", "createPageComment", "updatePageComment"),
+  async () => {
+    const member = world.as("member");
+    const admin = world.as("admin");
+    const page = await newPage();
+    const comments = `/api/page/${page.id}/comments`;
+
+    await expectJson(await member.post(`/api/page/${page.id}/lock`));
+    const comment = await expectJson<PageComment>(
+      await member.post(comments, { data: { content: "Still open." } }),
+    );
+    await expectJson(await member.delete(`/api/page/${page.id}/lock`));
+
+    await expectJson(await member.post(`/api/page/${page.id}/archive`));
+    await expectStatus(
+      await member.post(comments, { data: { content: "Too late." } }),
+      409,
+    );
+    await expectStatus(
+      await member.put(`${comments}/${comment.id}`, {
+        data: { content: "Too late." },
+      }),
+      409,
+    );
+    const archived = await expectJson<PageComment[]>(
+      await member.get(comments),
+    );
+    expect(archived.map((entry) => entry.id)).toEqual([comment.id]);
+
+    const secret = await newPage({ access: "private" });
+    const secretComments = `/api/page/${secret.id}/comments`;
+    await expectJson(
+      await member.post(secretComments, { data: { content: "Just for me." } }),
+    );
+    await expectStatus(await admin.get(secretComments), 404);
+    await expectStatus(
+      await admin.post(secretComments, { data: { content: "Hello?" } }),
+      404,
+    );
+  },
+);
+
+test(
+  "watch and unwatch a page",
+  covers("getPageSubscription", "subscribeToPage", "unsubscribeFromPage"),
+  async () => {
+    // The member owns pages made with newPage().
+    const member = world.as("member");
+    const viewer = world.as("viewer");
+    const page = await newPage();
+    const url = `/api/page/${page.id}/subscription`;
+    const watching = { pageId: page.id, subscribed: true };
+    const notWatching = { pageId: page.id, subscribed: false };
+
+    expect(await expectJson<PageWatch>(await member.get(url))).toEqual(
+      watching,
+    );
+    expect(await expectJson<PageWatch>(await viewer.get(url))).toEqual(
+      notWatching,
+    );
+
+    // page:read is enough, and repeating either call changes nothing.
+    for (const _ of [1, 2]) {
+      expect(await expectJson<PageWatch>(await viewer.put(url))).toEqual(
+        watching,
+      );
+    }
+    expect(await expectJson<PageWatch>(await viewer.get(url))).toEqual(
+      watching,
+    );
+    for (const _ of [1, 2]) {
+      expect(await expectJson<PageWatch>(await viewer.delete(url))).toEqual(
+        notWatching,
+      );
+    }
+
+    // The owner can stop watching too; commenting starts it again.
+    expect(await expectJson<PageWatch>(await member.delete(url))).toEqual(
+      notWatching,
+    );
+    await expectJson(
+      await member.post(`/api/page/${page.id}/comments`, {
+        data: { content: "Back on this." },
+      }),
+    );
+    expect(await expectJson<PageWatch>(await member.get(url))).toEqual(
+      watching,
+    );
+
+    const secret = await newPage({ access: "private" });
+    await expectStatus(
+      await viewer.get(`/api/page/${secret.id}/subscription`),
+      404,
+    );
+    await expectStatus(
+      await viewer.put(`/api/page/${secret.id}/subscription`),
+      404,
+    );
+    await expectStatus(
+      await viewer.delete("/api/page/e2e-unknown-page/subscription"),
+      404,
+    );
+    await expectStatus(await world.anonymous.get(url), 401);
   },
 );
 
