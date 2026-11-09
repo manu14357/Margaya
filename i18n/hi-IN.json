@@ -221,10 +221,29 @@
 			"errors": {
 				"account_not_linked": "यह पहचान मौजूदा खाते से लिंक नहीं हो सकी। खाते की पुष्टि के लिए ईमेल से साइन इन करें, फिर SSO पुनः प्रयास करें। यदि ईमेल साइन-इन उपलब्ध नहीं है, तो अपने व्यवस्थापक से संपर्क करें।",
 				"oauth_code_verification_failed": "OAuth सत्यापन विफल। कृपया पुनः प्रयास करें।",
-				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "पंजीकरण वर्तमान में अक्षम है। खाता बनाने के लिए आपको वैध निमंत्रण चाहिए।"
+				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "पंजीकरण वर्तमान में अक्षम है। खाता बनाने के लिए आपको वैध निमंत्रण चाहिए।",
+				"unsolicited_response": "कंपनी साइन-इन इसी पेज से शुरू करें। आपके पहचान प्रदाता पर शुरू किया गया साइन-इन स्वीकार नहीं किया जाता।",
+				"invalid_saml_response": "आपके पहचान प्रदाता का जवाब स्वीकार नहीं किया जा सका। फिर से कोशिश करें, या अपने व्यवस्थापक से कनेक्शन जाँचने को कहें।",
+				"replay_detected": "यह साइन-इन जवाब पहले ही उपयोग हो चुका है। कृपया फिर से साइन इन करें।",
+				"unable_to_create_user": "आपका खाता नहीं बनाया जा सका। पहुँच के लिए अपने व्यवस्थापक से कहें।",
+				"invalid_request": "यह साइन-इन अनुरोध मान्य नहीं था। कृपया फिर से कोशिश करें।",
+				"invalid_state": "इस साइन-इन लिंक की अवधि समाप्त हो गई है। कृपया फिर से कोशिश करें।",
+				"saml_deprecated_algorithm": "आपका पहचान प्रदाता ऐसे एल्गोरिदम से हस्ताक्षर करता है जो अब स्वीकार नहीं किया जाता। अपने व्यवस्थापक से इसे SHA-256 पर बदलने को कहें।",
+				"this_identity_provider_cannot_sign_in_that_email_address_": "इस पहचान प्रदाता से उस ईमेल पते के साथ साइन इन नहीं किया जा सकता।",
+				"new_accounts_on_this_server_must_use_an_approved_email_domain_": "इस सर्वर पर नए खातों को स्वीकृत ईमेल डोमेन का उपयोग करना होगा।",
+				"banned_user": "यह खाता बैन है। पहुँच के लिए अपने व्यवस्थापक से कहें।",
+				"unable_to_link_account": "यह पहचान आपके खाते से लिंक नहीं हो सकी। मदद के लिए अपने व्यवस्थापक से कहें।",
+				"saml_other_browser": "कंपनी साइन-इन उसी ब्राउज़र में पूरा होना चाहिए जिसमें वह शुरू हुआ था। इस पेज से फिर से शुरू करें, और सुनिश्चित करें कि कुकीज़ की अनुमति है।"
 			},
 			"instanceStatusError": "सर्वर से संपर्क नहीं हो सका। कृपया कुछ देर बाद पुनः प्रयास करें।",
-			"titleWithInstance": "{{name}} में साइन इन करें"
+			"titleWithInstance": "{{name}} में साइन इन करें",
+			"continueWithSaml": "कंपनी साइन-इन के साथ जारी रखें",
+			"samlEmail": "कार्यालय ईमेल",
+			"samlSubmit": "जारी रखें",
+			"samlNoConnection": "उस ईमेल डोमेन के लिए कंपनी साइन-इन सेट अप नहीं है।",
+			"samlError": "कंपनी साइन-इन शुरू नहीं हो सका। कृपया फिर से कोशिश करें।",
+			"emailCodesOff": "इस सर्वर पर ईमेल से भेजे जाने वाले साइन-इन लिंक और कोड बंद हैं। अगर आपने अब तक सिर्फ़ इन्हीं का इस्तेमाल किया है, तो आपके पास अभी कोई पासवर्ड नहीं है: पासवर्ड सेट करने के लिए “पासवर्ड भूल गए?” चुनें।",
+			"emailCodesOffNoEmail": "इस सर्वर पर ईमेल से भेजे जाने वाले साइन-इन लिंक और कोड बंद हैं। अगर आपने अब तक सिर्फ़ इन्हीं का इस्तेमाल किया है, तो आपके पास अभी कोई पासवर्ड नहीं है: किसी इंस्टेंस एडमिन से अपने लिए पासवर्ड सेट करने को कहें।"
 		},
 		"providers": {
 			"google": "Google",
@@ -420,6 +439,10 @@
 				"nameShort": "नाम कम से कम 2 अक्षरों का होना चाहिए"
 			}
 		},
+		"layout": {
+			"headline": "पूरा प्रोजेक्ट देखें। अगला कार्य उठाएँ।",
+			"lede": "उन टीमों के लिए सेल्फ़-होस्टेड प्रोजेक्ट मैनेजमेंट, जिन्हें तेज़ और शांत टूल पसंद हैं।"
+		},
 		"device": {
 			"approve": "मंज़ूर करें",
 			"approveFailed": "मंज़ूर नहीं किया जा सका",
@@ -443,10 +466,6 @@
 			"subtitle": "जारी रखने के लिए अपने CLI या ऐप का कोड दर्ज करें।",
 			"title": "डिवाइस कनेक्ट करें"
 		},
-		"layout": {
-			"headline": "पूरा प्रोजेक्ट देखें। अगला कार्य उठाएँ।",
-			"lede": "उन टीमों के लिए सेल्फ़-होस्टेड प्रोजेक्ट मैनेजमेंट, जिन्हें तेज़ और शांत टूल पसंद हैं।"
-		},
 		"mcp": {
 			"approve": "मंज़ूर करें",
 			"clientFallback": "MCP क्लाइंट",
@@ -463,22 +482,6 @@
 			"subtitle": "अपने Margaya खाते तक पहुँच देने से पहले इस अनुरोध की समीक्षा करें।",
 			"title": "MCP क्लाइंट को अधिकृत करें",
 			"warning": "यह क्लाइंट आपकी ओर से कार्य कर सकेगा और आपके वर्कस्पेस तक पहुँच पाएगा। केवल तभी आगे बढ़ें जब यह कनेक्शन आपने खुद शुरू किया हो।"
-		},
-		"emailVerification": {
-			"codeLabel": "सत्यापन कोड",
-			"codeSent": "हमने {{email}} पर 6 अंकों का कोड भेजा है। यह 5 मिनट में समाप्त हो जाएगा।",
-			"invitationsDescription": "{{email}} पर भेजे गए निमंत्रण देखने के लिए अपना ईमेल सत्यापित करें।",
-			"resend": "नया कोड भेजें",
-			"sendCode": "कोड भेजें",
-			"sendFailed": "कोड नहीं भेजा जा सका। कृपया फिर से कोशिश करें।",
-			"sending": "भेजा जा रहा है...",
-			"settingsDescription": "{{email}} सत्यापित करें, ताकि उस पर भेजे गए वर्कस्पेस निमंत्रण Margaya में दिखें।",
-			"success": "ईमेल सत्यापित हो गया",
-			"title": "अपना ईमेल सत्यापित करें",
-			"verifiedBadge": "सत्यापित",
-			"verify": "सत्यापित करें",
-			"verifyFailed": "यह कोड काम नहीं किया। इसे जाँचें, या नया कोड भेजें।",
-			"verifying": "सत्यापित किया जा रहा है..."
 		},
 		"forgotPassword": {
 			"backToSignIn": "साइन इन पर वापस जाएँ",
@@ -507,6 +510,30 @@
 			"successDescription": "आपका नया पासवर्ड सेट हो गया है और सभी सत्रों से साइन आउट कर दिया गया है। अपने नए पासवर्ड से साइन इन करें।",
 			"successTitle": "पासवर्ड अपडेट किया गया",
 			"title": "नया पासवर्ड सेट करें"
+		},
+		"emailVerification": {
+			"codeLabel": "सत्यापन कोड",
+			"codeSent": "हमने {{email}} पर 6 अंकों का कोड भेजा है। यह 5 मिनट में समाप्त हो जाएगा।",
+			"invitationsDescription": "{{email}} पर भेजे गए निमंत्रण देखने के लिए अपना ईमेल सत्यापित करें।",
+			"resend": "नया कोड भेजें",
+			"sendCode": "कोड भेजें",
+			"sendFailed": "कोड नहीं भेजा जा सका। कृपया फिर से कोशिश करें।",
+			"sending": "भेजा जा रहा है...",
+			"settingsDescription": "{{email}} सत्यापित करें, ताकि उस पर भेजे गए वर्कस्पेस निमंत्रण Margaya में दिखें।",
+			"success": "ईमेल सत्यापित हो गया",
+			"title": "अपना ईमेल सत्यापित करें",
+			"verifiedBadge": "सत्यापित",
+			"verify": "सत्यापित करें",
+			"verifyFailed": "यह कोड काम नहीं किया। इसे जाँचें, या नया कोड भेजें।",
+			"verifying": "सत्यापित किया जा रहा है..."
+		},
+		"complete": {
+			"pageTitle": "साइन इन हो रहा है",
+			"title": "साइन-इन पूरा हो रहा है",
+			"working": "आपको साइन इन किया जा रहा है…",
+			"failedTitle": "साइन-इन पूरा नहीं हो सका",
+			"failed": "यह साइन-इन पूरा नहीं हो सका। इसका लिंक सिर्फ़ एक बार, एक मिनट के लिए, और केवल उसी ब्राउज़र में काम करता है जिससे आपने साइन इन किया था। फिर से साइन इन करें।",
+			"backToSignIn": "साइन इन पर वापस जाएँ"
 		}
 	},
 	"settings": {
@@ -534,8 +561,8 @@
 				"invalidEmail": "एक मान्य ईमेल पता दर्ज करें"
 			},
 			"avatar": {
-				"hint": "PNG, JPEG, or WebP. Cropped to a square and resized to 256x256.",
-				"remove": "Remove",
+				"hint": "अपना चित्र बदलने या हटाने के लिए उस पर क्लिक करें। इसे वर्गाकार में काटकर 256x256 आकार का कर दिया जाता है।",
+				"remove": "अवतार हटाएँ",
 				"removeError": "प्रोफ़ाइल चित्र हटाने में विफल",
 				"removeSuccess": "प्रोफ़ाइल चित्र हटाया गया",
 				"updateError": "प्रोफ़ाइल चित्र अपडेट करने में विफल",
@@ -545,10 +572,10 @@
 			},
 			"deleteAccount": {
 				"confirm": "खाता हटाएँ",
-				"confirmLabel": "Confirm your email address",
+				"confirmLabel": "पुष्टि करने के लिए {{email}} टाइप करें",
 				"description": "जिन वर्कस्पेस में केवल आप ही सदस्य हैं, वे आपके खाते के साथ हटा दिए जाते हैं। बाकी जगहों पर, आपके कार्य बने रहते हैं और असाइन नहीं रह जाते, और आपकी टिप्पणियाँ हटा दी जाती हैं।",
 				"error": "खाता हटाने में विफल",
-				"modalDescription": "This cannot be undone. Type {{email}} to confirm.",
+				"modalDescription": "इससे आपका खाता हमेशा के लिए हट जाएगा और इसे पूर्ववत नहीं किया जा सकता।",
 				"modalTitle": "अपना खाता हटाएँ?",
 				"sectionSubtitle": "स्थायी कार्रवाइयाँ जो आपके पूरे खाते को प्रभावित करती हैं।",
 				"sectionTitle": "खतरे का क्षेत्र",
@@ -608,6 +635,9 @@
 			"eventComments": "टिप्पणियाँ और उल्लेख",
 			"eventCommentsHint": "आपको असाइन किए गए कार्यों पर नई टिप्पणियाँ और सीधे @उल्लेख शामिल हैं।",
 			"eventStatusChanges": "कार्य स्थिति परिवर्तन",
+			"eventStatusChangesHint": "उन कार्यों पर जो आपको सौंपे गए हैं या जिनकी आपने सदस्यता ली है।",
+			"eventTaskUpdates": "कार्य के अन्य बदलाव",
+			"eventTaskUpdatesHint": "आपके फ़ॉलो किए गए कार्यों की प्राथमिकता, नियत तारीख और शीर्षक में बदलाव।",
 			"eventDueDateReminders": "नियत तारीख अनुस्मारक",
 			"reminderLeadTimeLabel": "नियत तारीख से पहले मुझे याद दिलाएँ",
 			"reminderLeadTimeHint": "1 घंटे से 30 दिन पहले तक। अतिदेय सूचनाएँ अलग से भेजी जाती हैं।",
@@ -615,6 +645,23 @@
 			"reminderLeadTimeUnitDays": "दिन",
 			"reminderLeadTimeInvalid": "1 से {{max}} के बीच पूर्ण संख्या दर्ज करें।",
 			"saveEventPreferences": "सूचना प्रकार सहेजें",
+			"digestTitle": "ईमेल डाइजेस्ट",
+			"digestDescription": "आपके उन खुले कार्यों का सारांश ईमेल जिनकी नियत तारीख निकल चुकी है या 7 दिनों के भीतर है, साथ ही नए उल्लेख और अपठित इनबॉक्स आइटम। यह आपके समय क्षेत्र के अनुसार भेजा जाता है और बताने को कुछ न होने पर नहीं भेजा जाता।",
+			"digestFrequencyLabel": "डाइजेस्ट भेजें",
+			"digestFrequencyOff": "बंद",
+			"digestFrequencyDaily": "रोज़ाना",
+			"digestFrequencyWeekly": "साप्ताहिक",
+			"digestWeekdayLabel": "दिन",
+			"digestWeekdaySunday": "रविवार",
+			"digestWeekdayMonday": "सोमवार",
+			"digestWeekdayTuesday": "मंगलवार",
+			"digestWeekdayWednesday": "बुधवार",
+			"digestWeekdayThursday": "गुरुवार",
+			"digestWeekdayFriday": "शुक्रवार",
+			"digestWeekdaySaturday": "शनिवार",
+			"digestHourLabel": "समय",
+			"digestNoEmail": "डाइजेस्ट के लिए खाते में ईमेल पता होना ज़रूरी है।",
+			"saveDigest": "डाइजेस्ट सहेजें",
 			"workspaceCardLabelEmail": "ईमेल",
 			"workspaceCardLabelNtfy": "ntfy",
 			"workspaceCardLabelGotify": "Gotify",
@@ -642,28 +689,8 @@
 			"toastPreferencesSaveFailed": "सूचना प्राथमिकताएँ सहेजने में विफल",
 			"toastRuleSavedGeneric": "वर्कस्पेस सूचना नियम सहेजा गया",
 			"toastRuleRemovedGeneric": "वर्कस्पेस सूचना नियम हटाया गया",
-			"eventStatusChangesHint": "उन कार्यों पर जो आपको सौंपे गए हैं या जिनकी आपने सदस्यता ली है।",
-			"eventTaskUpdates": "कार्य के अन्य बदलाव",
-			"eventTaskUpdatesHint": "आपके फ़ॉलो किए गए कार्यों की प्राथमिकता, नियत तारीख और शीर्षक में बदलाव।",
-			"channelsDescription": "ऊपर चुनी गई सूचनाएँ Margaya कहाँ भेजता है।",
 			"channelsTitle": "डिलीवरी चैनल",
-			"digestDescription": "आपके उन खुले कार्यों का सारांश ईमेल जिनकी नियत तारीख निकल चुकी है या 7 दिनों के भीतर है, साथ ही नए उल्लेख और अपठित इनबॉक्स आइटम। यह आपके समय क्षेत्र के अनुसार भेजा जाता है और बताने को कुछ न होने पर नहीं भेजा जाता।",
-			"digestFrequencyDaily": "रोज़ाना",
-			"digestFrequencyLabel": "डाइजेस्ट भेजें",
-			"digestFrequencyOff": "बंद",
-			"digestFrequencyWeekly": "साप्ताहिक",
-			"digestHourLabel": "समय",
-			"digestNoEmail": "डाइजेस्ट के लिए खाते में ईमेल पता होना ज़रूरी है।",
-			"digestTitle": "ईमेल डाइजेस्ट",
-			"digestWeekdayFriday": "शुक्रवार",
-			"digestWeekdayLabel": "दिन",
-			"digestWeekdayMonday": "सोमवार",
-			"digestWeekdaySaturday": "शनिवार",
-			"digestWeekdaySunday": "रविवार",
-			"digestWeekdayThursday": "गुरुवार",
-			"digestWeekdayTuesday": "मंगलवार",
-			"digestWeekdayWednesday": "बुधवार",
-			"saveDigest": "डाइजेस्ट सहेजें",
+			"channelsDescription": "ऊपर चुनी गई सूचनाएँ Margaya कहाँ भेजता है।",
 			"sound": {
 				"title": "ध्वनियाँ",
 				"description": "जब आपके ब्राउज़र में Margaya खुला हो और कोई सूचना आए, तो ध्वनि चलाएँ।",
@@ -694,7 +721,30 @@
 				"deviceMute": "इस डिवाइस पर ध्वनियाँ म्यूट करें",
 				"deviceMuteDescription": "केवल यह ब्राउज़र म्यूट होता है; आपके अन्य डिवाइस पर ध्वनियाँ बजती रहेंगी।",
 				"previewFailed": "आपके ब्राउज़र ने ध्वनि नहीं चलाई। जाँचें कि यह टैब या साइट म्यूट तो नहीं है।"
-			}
+			},
+			"pushTitle": "पुश सूचनाएँ",
+			"pushDescription": "Margaya बंद होने पर भी आपके फ़ोन या कंप्यूटर पर अलर्ट। क्या भेजा जाएगा यह “इन विषयों पर सूचित करें” तय करता है, और नीचे दिया गया वर्कस्पेस नियम इसे सीमित कर सकता है।",
+			"pushThisDevice": "इस डिवाइस पर",
+			"pushOnHint": "इस डिवाइस पर पुश सूचनाएँ आती हैं।",
+			"pushOffHint": "इसे चालू करने पर आपका ब्राउज़र अनुमति माँगेगा।",
+			"pushOffHintAllowed": "इस ब्राउज़र में सूचनाओं की अनुमति पहले से है।",
+			"pushNotSetUp": "इस सर्वर पर पुश सेट अप नहीं है। अपने व्यवस्थापक से इसकी VAPID कुंजियाँ सेट करने को कहें।",
+			"pushInstallFirst": "iPhone और iPad पर पहले Margaya को अपनी होम स्क्रीन में जोड़ें: शेयर करें पर टैप करें, फिर होम स्क्रीन में जोड़ें पर। वहीं से इसे खोलें और यह सेटिंग चालू करें।",
+			"pushUnsupported": "यह ब्राउज़र यहाँ पुश सूचनाएँ नहीं पा सकता। पुश के लिए अपडेटेड ब्राउज़र और HTTPS पता चाहिए।",
+			"pushBlocked": "इस साइट के लिए सूचनाएँ ब्लॉक हैं। अपने ब्राउज़र की सेटिंग में इन्हें अनुमति दें, फिर यह पेज रीलोड करें।",
+			"pushOtherDevices": "आपके अन्य डिवाइस",
+			"pushRemoveDevice": "निकालें",
+			"pushRemoveDeviceLabel": "{{device}} निकालें",
+			"toastPushOn": "इस डिवाइस के लिए पुश सूचनाएँ चालू हैं।",
+			"toastPushOnFailed": "पुश सूचनाएँ चालू नहीं हो सकीं। फिर से कोशिश करें।",
+			"toastPushOff": "इस डिवाइस के लिए पुश सूचनाएँ बंद हैं।",
+			"toastPushOffFailed": "पुश सूचनाएँ बंद नहीं हो सकीं। फिर से कोशिश करें।",
+			"toastPushDeviceRemoved": "डिवाइस निकाल दिया गया।",
+			"toastPushDeviceRemoveFailed": "डिवाइस नहीं निकाला जा सका। फिर से कोशिश करें।",
+			"workspaceCardLabelPush": "पुश सूचनाएँ",
+			"pushChannelHintEnabled": "मेल खाने वाली वर्कस्पेस सूचनाएँ अपने डिवाइस पर भेजें।",
+			"pushChannelHintDisabled": "पहले किसी डिवाइस के लिए पुश चालू करें।",
+			"pushLoadFailed": "आपकी पुश सेटिंग लोड नहीं हो सकीं। फिर से कोशिश करने के लिए यह पेज रीलोड करें।"
 		},
 		"preferencesPage": {
 			"title": "प्राथमिकताएँ",
@@ -899,7 +949,6 @@
 				"organization": "वर्कस्पेस प्रशासन",
 				"member": "सदस्य",
 				"invitation": "निमंत्रण",
-				"team": "टीम",
 				"ac": "भूमिकाएँ और अनुमतियाँ",
 				"cycle": "साइकल",
 				"module": "मॉड्यूल",
@@ -1023,20 +1072,6 @@
 					"cancel": {
 						"label": "निमंत्रण रद्द करें",
 						"description": "लंबित वर्कस्पेस निमंत्रण रद्द करें।"
-					}
-				},
-				"team": {
-					"create": {
-						"label": "टीम बनाएँ",
-						"description": "इस वर्कस्पेस में टीम बनाएँ।"
-					},
-					"update": {
-						"label": "टीम संपादित करें",
-						"description": "टीम और टीम सदस्यता बदलें।"
-					},
-					"delete": {
-						"label": "टीम हटाएँ",
-						"description": "इस वर्कस्पेस में टीम हटाएँ।"
 					}
 				},
 				"ac": {
@@ -1907,7 +1942,10 @@
 				"pr_merged": "PR मर्ज हुआ",
 				"issue_opened": "Issue खोला गया",
 				"issue_closed": "Issue बंद किया गया"
-			}
+			},
+			"removeRule": "{{event}} का नियम हटाएँ",
+			"toastRemoved": "वर्कफ़्लो नियम हटाया गया",
+			"toastRemoveError": "नियम हटाने में विफल"
 		},
 		"externalLinks": {
 			"resources": "संसाधन",
@@ -1955,28 +1993,43 @@
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
 		"customFields": {
-			"addButton": "जोड़ें",
-			"createError": "कस्टम फ़ील्ड बनाने में विफल।",
-			"createSuccess": "कस्टम फ़ील्ड बनाया गया।",
-			"defaultLabel": "डिफ़ॉल्ट",
-			"defaultValuePlaceholder": "डिफ़ॉल्ट मान",
-			"deleteButton": "हटाएँ",
-			"deleteError": "कस्टम फ़ील्ड हटाने में विफल।",
-			"deleteSuccess": "कस्टम फ़ील्ड हटाया गया।",
-			"empty": "अभी तक कोई कस्टम फ़ील्ड कॉन्फ़िगर नहीं किया गया है।",
-			"loading": "कस्टम फ़ील्ड लोड हो रहे हैं...",
 			"namePlaceholder": "फ़ील्ड नाम",
+			"typePlaceholder": "फ़ील्ड प्रकार चुनें",
 			"noOptionsPlaceholder": "कोई विकल्प नहीं",
+			"defaultValuePlaceholder": "डिफ़ॉल्ट मान",
 			"optionsPlaceholder": "कॉमा से अलग किए गए विकल्प",
 			"required": "आवश्यक",
-			"typePlaceholder": "फ़ील्ड प्रकार चुनें",
+			"addButton": "जोड़ें",
+			"loading": "कस्टम फ़ील्ड लोड हो रहे हैं...",
+			"empty": "अभी तक कोई कस्टम फ़ील्ड कॉन्फ़िगर नहीं किया गया है।",
+			"defaultLabel": "डिफ़ॉल्ट",
+			"createSuccess": "कस्टम फ़ील्ड बनाया गया।",
+			"createError": "कस्टम फ़ील्ड बनाने में विफल।",
+			"deleteButton": "हटाएँ",
+			"deleteSuccess": "कस्टम फ़ील्ड हटाया गया।",
+			"deleteError": "कस्टम फ़ील्ड हटाने में विफल।",
 			"types": {
 				"boolean": "बूलियन",
 				"date": "तारीख",
 				"dropdown": "ड्रॉपडाउन",
 				"number": "संख्या",
 				"text": "टेक्स्ट"
-			}
+			},
+			"editButton": "संपादित करें",
+			"editTitle": "कस्टम फ़ील्ड संपादित करें",
+			"editDescription": "फ़ील्ड बनने के बाद उसका प्रकार और वह अनिवार्य है या नहीं, यह बदला नहीं जा सकता।",
+			"nameLabel": "नाम",
+			"optionsLabel": "विकल्प",
+			"addOption": "विकल्प जोड़ें",
+			"removeOption": "विकल्प निकालें",
+			"optionPlaceholder": "विकल्प का नाम",
+			"optionsHint": "किसी विकल्प का नाम बदलने पर उसका उपयोग करने वाले सभी कार्य, सहेजे गए दृश्य और ऑटोमेशन अपडेट हो जाते हैं। किसी विकल्प को निकालने पर वह उन कार्यों पर तब तक बना रहता है जिन पर वह पहले से है, जब तक कोई उसे बदल न दे, और उसे फिर से चुना नहीं जा सकता।",
+			"duplicateOption": "विकल्प एक-दूसरे से अलग होने चाहिए।",
+			"noDefault": "कोई डिफ़ॉल्ट नहीं",
+			"saveButton": "सहेजें",
+			"cancelButton": "रद्द करें",
+			"updateSuccess": "कस्टम फ़ील्ड अपडेट किया गया।",
+			"updateError": "कस्टम फ़ील्ड अपडेट नहीं हो सका।"
 		},
 		"projectFeatures": {
 			"disableConfirmAction": "बंद करें",
@@ -2250,6 +2303,11 @@
 			}
 		},
 		"workspaceExports": {
+			"title": "निर्यात",
+			"pageTitle": "निर्यात",
+			"subtitle": "कार्यों को CSV, Excel या JSON में निर्यात करें। फ़ाइलें {{days}} दिनों तक डाउनलोड के लिए उपलब्ध रहती हैं।",
+			"newExport": "नया निर्यात",
+			"viewExports": "निर्यात देखें",
 			"form": {
 				"activeGroup": "सक्रिय",
 				"allProjects": "सभी प्रोजेक्ट",
@@ -2277,48 +2335,6 @@
 				"json": "JSON",
 				"xlsx": "Excel"
 			},
-			"history": {
-				"all": "सभी निर्यात",
-				"columns": {
-					"actions": "कार्रवाइयाँ",
-					"created": "बनाया गया",
-					"expires": "उपलब्ध",
-					"export": "निर्यात",
-					"requestedBy": "अनुरोधकर्ता",
-					"size": "आकार",
-					"status": "स्थिति",
-					"tasks": "कार्य"
-				},
-				"delete": "हटाएँ",
-				"deleteAria": "{{name}} हटाएँ",
-				"deleteDescription": "फ़ाइल सभी के लिए हटा दी जाएगी। इसे पूर्ववत नहीं किया जा सकता।",
-				"deletedProject": "हटाया गया प्रोजेक्ट",
-				"deleteTitle": "यह निर्यात हटाएँ?",
-				"deleting": "हटा रहे हैं…",
-				"description": "पूरे हो चुके निर्यात डाउनलोड करें, या जिनकी ज़रूरत नहीं उन्हें हटा दें।",
-				"download": "डाउनलोड करें",
-				"downloadAria": "{{name}} डाउनलोड करें",
-				"empty": "अभी तक कोई निर्यात नहीं। आपके शुरू किए निर्यात यहाँ {{days}} दिनों तक दिखेंगे।",
-				"expiredOn": "{{date}} को समाप्त हुआ",
-				"expiresOn": "{{date}} तक",
-				"loadMore": "और लोड करें",
-				"mine": "मेरे निर्यात",
-				"scopeLabel": "किसके निर्यात",
-				"summaryProjects_one": "{{format}} · {{name}}",
-				"summaryProjects_other": "{{format}} · {{count}} प्रोजेक्ट",
-				"title": "पिछले निर्यात"
-			},
-			"newExport": "नया निर्यात",
-			"pageTitle": "निर्यात",
-			"status": {
-				"completed": "तैयार",
-				"expired": "समाप्त",
-				"failed": "विफल",
-				"processing": "प्रोसेस हो रहा है",
-				"queued": "कतार में"
-			},
-			"subtitle": "कार्यों को CSV, Excel या JSON में निर्यात करें। फ़ाइलें {{days}} दिनों तक डाउनलोड के लिए उपलब्ध रहती हैं।",
-			"title": "निर्यात",
 			"toast": {
 				"deleted": "निर्यात हटा दिया गया",
 				"deleteError": "निर्यात हटाया नहीं जा सका। फिर से कोशिश करें।",
@@ -2330,7 +2346,60 @@
 				"ready": "आपका निर्यात तैयार है",
 				"started": "निर्यात शुरू हो गया। तैयार होने पर हम आपको बताएँगे।"
 			},
-			"viewExports": "निर्यात देखें"
+			"history": {
+				"title": "पिछले निर्यात",
+				"description": "पूरे हो चुके निर्यात डाउनलोड करें, या जिनकी ज़रूरत नहीं उन्हें हटा दें।",
+				"scopeLabel": "किसके निर्यात",
+				"mine": "मेरे निर्यात",
+				"all": "सभी निर्यात",
+				"empty": "अभी तक कोई निर्यात नहीं। आपके शुरू किए निर्यात यहाँ {{days}} दिनों तक दिखेंगे।",
+				"columns": {
+					"actions": "कार्रवाइयाँ",
+					"created": "बनाया गया",
+					"expires": "उपलब्ध",
+					"export": "निर्यात",
+					"requestedBy": "अनुरोधकर्ता",
+					"size": "आकार",
+					"status": "स्थिति",
+					"tasks": "कार्य"
+				},
+				"summaryProjects_one": "{{format}} · {{name}}",
+				"summaryProjects_other": "{{format}} · {{count}} प्रोजेक्ट",
+				"deletedProject": "हटाया गया प्रोजेक्ट",
+				"download": "डाउनलोड करें",
+				"downloadAria": "{{name}} डाउनलोड करें",
+				"delete": "हटाएँ",
+				"deleteAria": "{{name}} हटाएँ",
+				"deleting": "हटा रहे हैं…",
+				"deleteTitle": "यह निर्यात हटाएँ?",
+				"deleteDescription": "फ़ाइल सभी के लिए हटा दी जाएगी। इसे पूर्ववत नहीं किया जा सकता।",
+				"expiredOn": "{{date}} को समाप्त हुआ",
+				"expiresOn": "{{date}} तक",
+				"loadMore": "और लोड करें",
+				"summaryWorkspace": "पूरा वर्कस्पेस",
+				"fileCount_one": "{{count}} फ़ाइल",
+				"fileCount_other": "{{count}} फ़ाइलें",
+				"withoutFiles": "बिना फ़ाइलों के",
+				"missingFiles_one": "स्टोरेज में {{count}} फ़ाइल नहीं मिली",
+				"missingFiles_other": "स्टोरेज में {{count}} फ़ाइलें नहीं मिलीं"
+			},
+			"status": {
+				"completed": "तैयार",
+				"expired": "समाप्त",
+				"failed": "विफल",
+				"processing": "प्रोसेस हो रहा है",
+				"queued": "कतार में"
+			},
+			"whole": {
+				"title": "पूरा वर्कस्पेस",
+				"description": "सब कुछ एक ZIP के रूप में डाउनलोड करें: सभी टिप्पणियों सहित कार्य, पेज, सेटिंग और फ़ाइलें।",
+				"action": "वर्कस्पेस निर्यात करें",
+				"dialogTitle": "पूरा वर्कस्पेस निर्यात करें",
+				"dialogDescription": "आर्काइव बैकग्राउंड में बनाया जाता है। तैयार होने पर आपको सूचित किया जाएगा।",
+				"includeFiles": "फ़ाइलें शामिल करें",
+				"includeFilesHint": "बहुत छोटे आर्काइव के लिए इसे बंद करें। उसमें फिर भी हर फ़ाइल की सूची रहती है।",
+				"leftOut": "सीक्रेट, निजी पेज, ट्रैश और ड्राफ़्ट कभी शामिल नहीं होते। आर्काइव में सदस्यों के ईमेल पते होते हैं, इसलिए इसे किसी सुरक्षित जगह रखें।"
+			}
 		},
 		"workspaceWebhooks": {
 			"actionsMenu": "वेबहुक कार्रवाइयाँ",
@@ -2709,7 +2778,8 @@
 			"restrictedProject": "प्रतिबंधित प्रोजेक्ट",
 			"toastUpdated": "एक्सेस अपडेट किया गया",
 			"toastError": "एक्सेस अपडेट करने में विफल",
-			"loadError": "एक्सेस सेटिंग्स लोड नहीं हो सकीं। फिर से कोशिश करने के लिए पेज रीलोड करें।"
+			"loadError": "एक्सेस सेटिंग्स लोड नहीं हो सकीं। फिर से कोशिश करने के लिए पेज रीलोड करें।",
+			"guestsHint": "अतिथि केवल उन्हीं प्रोजेक्ट तक पहुँच पाते हैं जिनमें उन्हें जोड़ा गया हो। उन्हें यहाँ जोड़ें; वे क्या कर सकते हैं, यह प्रोजेक्ट भूमिका तय करती है।"
 		},
 		"projectPeople": {
 			"defaultAssigneeHint": "कार्य बनाते समय पहले से भरा जाता है, और बिना सौंपे गए स्वीकृत अनुरोधों को सौंपा जाता है।",
@@ -2827,47 +2897,47 @@
 				"workspacePublicPagesChanged": "सार्वजनिक पेज चालू या बंद किए",
 				"pagePublished": "एक पेज को सार्वजनिक लिंक से प्रकाशित किया",
 				"pageUnpublished": "एक पेज का सार्वजनिक लिंक रद्द किया",
-				"apiKeyCreated": "एक API कुंजी बनाई",
-				"apiKeyRevoked": "एक API कुंजी रद्द की",
-				"exportCreated": "एक निर्यात शुरू किया",
-				"exportDownloaded": "एक निर्यात डाउनलोड किया",
-				"importRun": "कार्य आयात किए",
-				"integrationConnected": "एक इंटीग्रेशन कनेक्ट किया",
-				"integrationDisconnected": "एक इंटीग्रेशन डिस्कनेक्ट किया",
-				"integrationUpdated": "एक इंटीग्रेशन बदला",
+				"memberInvited": "किसी को वर्कस्पेस में आमंत्रित किया",
+				"memberInvitationRevoked": "एक निमंत्रण रद्द किया",
 				"memberInvitationAccepted": "एक निमंत्रण स्वीकार किया",
 				"memberInvitationDeclined": "एक निमंत्रण अस्वीकार किया",
 				"memberInvitationRoleChanged": "एक लंबित निमंत्रण की भूमिका बदली",
-				"memberInvitationRevoked": "एक निमंत्रण रद्द किया",
-				"memberInvited": "किसी को वर्कस्पेस में आमंत्रित किया",
-				"memberLeft": "वर्कस्पेस छोड़ा",
 				"memberRemoved": "एक सदस्य को हटाया",
+				"memberLeft": "वर्कस्पेस छोड़ा",
 				"memberRoleChanged": "एक सदस्य की भूमिका बदली",
-				"projectArchived": "एक प्रोजेक्ट संग्रहित किया",
-				"projectCreated": "एक प्रोजेक्ट बनाया",
-				"projectFeatureToggled": "प्रोजेक्ट की सुविधाएँ चालू या बंद कीं",
-				"projectPurged": "एक प्रोजेक्ट को स्थायी रूप से हटाया",
-				"projectRestored": "एक प्रोजेक्ट को ट्रैश से पुनर्स्थापित किया",
-				"projectSettingsChanged": "प्रोजेक्ट सेटिंग बदलीं",
-				"projectTrashed": "एक प्रोजेक्ट को ट्रैश में भेजा",
-				"projectUnarchived": "एक प्रोजेक्ट को संग्रह से निकाला",
-				"publicBoardLinkRotated": "एक सार्वजनिक बोर्ड का लिंक बदला",
-				"publicBoardPublished": "एक सार्वजनिक बोर्ड प्रकाशित किया",
-				"publicBoardSettingsChanged": "सार्वजनिक बोर्ड की सेटिंग बदलीं",
-				"publicBoardUnpublished": "एक सार्वजनिक बोर्ड का प्रकाशन हटाया",
 				"roleCreated": "एक भूमिका बनाई",
-				"roleDeleted": "एक भूमिका हटाई",
 				"roleUpdated": "एक भूमिका बदली",
-				"trashEmptied": "एक प्रोजेक्ट का ट्रैश खाली किया",
-				"trashPurged": "ट्रैश से कार्यों को स्थायी रूप से हटाया",
-				"unknown": "{{action}}",
+				"roleDeleted": "एक भूमिका हटाई",
+				"apiKeyCreated": "एक API कुंजी बनाई",
+				"apiKeyRevoked": "एक API कुंजी रद्द की",
 				"webhookCreated": "एक वेबहुक बनाया",
+				"webhookUpdated": "एक वेबहुक बदला",
 				"webhookDeleted": "एक वेबहुक हटाया",
 				"webhookSecretRotated": "एक वेबहुक का साइनिंग सीक्रेट बदला",
-				"webhookUpdated": "एक वेबहुक बदला",
+				"integrationConnected": "एक इंटीग्रेशन कनेक्ट किया",
+				"integrationUpdated": "एक इंटीग्रेशन बदला",
+				"integrationDisconnected": "एक इंटीग्रेशन डिस्कनेक्ट किया",
 				"workspaceCreated": "वर्कस्पेस बनाया",
-				"workspaceOwnershipTransferred": "वर्कस्पेस का स्वामित्व स्थानांतरित किया",
 				"workspaceUpdated": "वर्कस्पेस सेटिंग बदलीं",
+				"workspaceOwnershipTransferred": "वर्कस्पेस का स्वामित्व स्थानांतरित किया",
+				"projectCreated": "एक प्रोजेक्ट बनाया",
+				"projectTrashed": "एक प्रोजेक्ट को ट्रैश में भेजा",
+				"projectRestored": "एक प्रोजेक्ट को ट्रैश से पुनर्स्थापित किया",
+				"projectPurged": "एक प्रोजेक्ट को स्थायी रूप से हटाया",
+				"projectArchived": "एक प्रोजेक्ट संग्रहित किया",
+				"projectUnarchived": "एक प्रोजेक्ट को संग्रह से निकाला",
+				"projectFeatureToggled": "प्रोजेक्ट की सुविधाएँ चालू या बंद कीं",
+				"projectSettingsChanged": "प्रोजेक्ट सेटिंग बदलीं",
+				"publicBoardPublished": "एक सार्वजनिक बोर्ड प्रकाशित किया",
+				"publicBoardUnpublished": "एक सार्वजनिक बोर्ड का प्रकाशन हटाया",
+				"publicBoardLinkRotated": "एक सार्वजनिक बोर्ड का लिंक बदला",
+				"publicBoardSettingsChanged": "सार्वजनिक बोर्ड की सेटिंग बदलीं",
+				"exportCreated": "एक निर्यात शुरू किया",
+				"exportDownloaded": "एक निर्यात डाउनलोड किया",
+				"importRun": "कार्य आयात किए",
+				"trashPurged": "ट्रैश से कार्यों को स्थायी रूप से हटाया",
+				"trashEmptied": "एक प्रोजेक्ट का ट्रैश खाली किया",
+				"unknown": "{{action}}",
 				"aiSettingsUpdated": "AI सेटिंग बदलीं",
 				"aiTriageLabelsApplied": "सुझाए गए लेबल अपने आप जोड़े",
 				"agentCreated": "एक एजेंट बनाया",
@@ -2894,7 +2964,9 @@
 				"aiConnectorUpdated": "एक MCP कनेक्टर बदला",
 				"aiConnectorDeleted": "एक MCP कनेक्टर हटाया",
 				"agentIntakeTriggerUpdated": "एक एजेंट का इनटेक ट्रिगर बदला",
-				"agentIntakeTriggerDisabled": "एक एजेंट का इनटेक ट्रिगर बंद किया"
+				"agentIntakeTriggerDisabled": "एक एजेंट का इनटेक ट्रिगर बंद किया",
+				"memberProvisioned": "प्रोविज़निंग से एक सदस्य जोड़ा",
+				"memberInvitationProjectsChanged": "एक लंबित निमंत्रण के प्रोजेक्ट बदले"
 			},
 			"actor": {
 				"apiKey": "API कुंजी",
@@ -2987,50 +3059,59 @@
 			"title": "ऑडिट लॉग"
 		},
 		"trash": {
-			"deletedAt": "{{time}} हटाया गया",
-			"deletedBy": "{{name}} ने {{time}} हटाया",
-			"deletePermanently": "स्थायी रूप से हटाएँ",
-			"emptyConfirmDescription": "इस प्रोजेक्ट के ट्रैश का हर कार्य अपनी टिप्पणियों, अटैचमेंट और समय प्रविष्टियों के साथ स्थायी रूप से हटा दिया जाएगा। इसे पूर्ववत नहीं किया जा सकता।",
-			"emptyConfirmTitle": "ट्रैश खाली करें?",
-			"emptyProjectsDescription": "इस वर्कस्पेस से आप जो प्रोजेक्ट हटाते हैं, वे यहाँ दिखते हैं।",
-			"emptyProjectsTitle": "कोई हटाया गया प्रोजेक्ट नहीं",
-			"emptyTasksDescription": "इस प्रोजेक्ट से आप जो कार्य हटाते हैं, वे यहाँ दिखते हैं।",
-			"emptyTasksTitle": "कोई हटाया गया कार्य नहीं",
-			"emptyTrash": "ट्रैश खाली करें",
-			"loadError": "ट्रैश लोड नहीं हो सका",
-			"loadMore": "और लोड करें",
-			"menuAria": "{{name}} के लिए और कार्रवाइयाँ",
-			"noMatches": "आपकी खोज से कुछ मेल नहीं खाता",
-			"projectSubtitle": "हटाए गए कार्य स्थायी रूप से हटाए जाने तक यहाँ रहते हैं। किसी कार्य को पुनर्स्थापित करने पर उसके साथ हटाए गए उप-कार्य भी वापस आ जाते हैं।",
 			"projectTitle": "हाल ही में हटाए गए",
-			"purgeOn": "{{date}} को स्थायी रूप से हटा दिया जाएगा",
-			"purgeProjectDescription": "“{{name}}” और उसमें मौजूद सब कुछ सभी के लिए हटा दिया जाएगा। इसे पूर्ववत नहीं किया जा सकता।",
-			"purgeProjectTitle": "यह प्रोजेक्ट स्थायी रूप से हटाएँ?",
-			"purgeTaskDescription": "“{{name}}”, उसके साथ हटाए गए उप-कार्य, टिप्पणियाँ, अटैचमेंट और समय प्रविष्टियाँ सभी के लिए हटा दी जाएँगी। इसे पूर्ववत नहीं किया जा सकता।",
-			"purgeTaskTitle": "यह कार्य स्थायी रूप से हटाएँ?",
-			"restore": "पुनर्स्थापित करें",
-			"restoreAria": "{{name}} पुनर्स्थापित करें",
-			"retry": "पुनः प्रयास करें",
-			"searchProjects": "हटाए गए प्रोजेक्ट खोजें",
+			"projectSubtitle": "हटाए गए कार्य और पेज स्थायी रूप से हटाए जाने तक यहाँ रहते हैं। किसी कार्य को पुनर्स्थापित करने पर उसके साथ हटाए गए उप-कार्य भी वापस आ जाते हैं; पुनर्स्थापित पेज वापस संग्रहित में चला जाता है।",
+			"workspaceTitle": "हाल ही में हटाए गए प्रोजेक्ट",
+			"workspaceNav": "हाल ही में हटाए गए",
+			"workspaceSubtitle": "हटाए गए प्रोजेक्ट अपने कार्यों के साथ स्थायी रूप से हटाए जाने तक यहाँ रहते हैं।",
 			"searchTasks": "हटाए गए कार्य खोजें",
+			"searchProjects": "हटाए गए प्रोजेक्ट खोजें",
+			"deletedBy": "{{name}} ने {{time}} हटाया",
+			"deletedAt": "{{time}} हटाया गया",
+			"purgeOn": "{{date}} को स्थायी रूप से हटा दिया जाएगा",
+			"withSubTasks_one": "{{count}} उप-कार्य के साथ",
+			"withSubTasks_other": "{{count}} उप-कार्यों के साथ",
 			"taskCount_one": "{{count}} कार्य",
 			"taskCount_other": "{{count}} कार्य",
+			"restore": "पुनर्स्थापित करें",
+			"restoreAria": "{{name}} पुनर्स्थापित करें",
+			"menuAria": "{{name}} के लिए और कार्रवाइयाँ",
+			"deletePermanently": "स्थायी रूप से हटाएँ",
+			"emptyTrash": "ट्रैश खाली करें",
+			"emptyTasksTitle": "कोई हटाया गया कार्य नहीं",
+			"emptyTasksDescription": "इस प्रोजेक्ट से आप जो कार्य हटाते हैं, वे यहाँ दिखते हैं।",
+			"emptyProjectsTitle": "कोई हटाया गया प्रोजेक्ट नहीं",
+			"emptyProjectsDescription": "इस वर्कस्पेस से आप जो प्रोजेक्ट हटाते हैं, वे यहाँ दिखते हैं।",
+			"noMatches": "आपकी खोज से कुछ मेल नहीं खाता",
+			"loadError": "ट्रैश लोड नहीं हो सका",
+			"retry": "पुनः प्रयास करें",
+			"loadMore": "और लोड करें",
+			"purgeTaskTitle": "यह कार्य स्थायी रूप से हटाएँ?",
+			"purgeTaskDescription": "“{{name}}”, उसके साथ हटाए गए उप-कार्य, टिप्पणियाँ, अटैचमेंट और समय प्रविष्टियाँ सभी के लिए हटा दी जाएँगी। इसे पूर्ववत नहीं किया जा सकता।",
+			"emptyConfirmTitle": "ट्रैश खाली करें?",
+			"emptyConfirmDescription": "इस प्रोजेक्ट के ट्रैश का हर कार्य अपनी टिप्पणियों, अटैचमेंट और समय प्रविष्टियों के साथ स्थायी रूप से हटा दिया जाएगा। इसे पूर्ववत नहीं किया जा सकता।",
+			"purgeProjectTitle": "यह प्रोजेक्ट स्थायी रूप से हटाएँ?",
+			"purgeProjectDescription": "“{{name}}” और उसमें मौजूद सब कुछ सभी के लिए हटा दिया जाएगा। इसे पूर्ववत नहीं किया जा सकता।",
 			"toast": {
-				"emptied_one": "{{count}} कार्य स्थायी रूप से हटाया गया",
-				"emptied_other": "{{count}} कार्य स्थायी रूप से हटाए गए",
-				"projectPurged": "प्रोजेक्ट स्थायी रूप से हटाया गया",
+				"taskRestored": "कार्य पुनर्स्थापित किया गया",
 				"projectRestored": "प्रोजेक्ट पुनर्स्थापित किया गया",
-				"purgeError": "स्थायी रूप से हटाया नहीं जा सका",
 				"restoreBlocked": "इस कार्य को अकेले पुनर्स्थापित नहीं किया जा सकता। पहले उसका पैरेंट कार्य या प्रोजेक्ट पुनर्स्थापित करें।",
 				"restoreError": "पुनर्स्थापित नहीं किया जा सका",
 				"taskPurged": "कार्य स्थायी रूप से हटाया गया",
-				"taskRestored": "कार्य पुनर्स्थापित किया गया"
+				"projectPurged": "प्रोजेक्ट स्थायी रूप से हटाया गया",
+				"emptied_one": "{{count}} कार्य स्थायी रूप से हटाया गया",
+				"emptied_other": "{{count}} कार्य स्थायी रूप से हटाए गए",
+				"purgeError": "स्थायी रूप से हटाया नहीं जा सका",
+				"pageRestored": "पेज संग्रहित में पुनर्स्थापित किया गया",
+				"pagePurged": "पेज स्थायी रूप से हटा दिया गया"
 			},
-			"withSubTasks_one": "{{count}} उप-कार्य के साथ",
-			"withSubTasks_other": "{{count}} उप-कार्यों के साथ",
-			"workspaceNav": "हाल ही में हटाए गए",
-			"workspaceSubtitle": "हटाए गए प्रोजेक्ट अपने कार्यों के साथ स्थायी रूप से हटाए जाने तक यहाँ रहते हैं।",
-			"workspaceTitle": "हाल ही में हटाए गए प्रोजेक्ट"
+			"tasksHeading": "कार्य",
+			"pagesHeading": "पेज",
+			"searchPages": "हटाए गए पेज खोजें",
+			"emptyPagesTitle": "कोई हटाया गया पेज नहीं",
+			"emptyPagesDescription": "इस प्रोजेक्ट से आपके हटाए गए संग्रहित पेज यहाँ दिखते हैं।",
+			"purgePageTitle": "इस पेज को स्थायी रूप से हटाएँ?",
+			"purgePageDescription": "“{{name}}”, उसकी टिप्पणियाँ और संस्करण इतिहास सभी के लिए हटा दिए जाएँगे। इसे पूर्ववत नहीं किया जा सकता।"
 		},
 		"automationRules": {
 			"title": "ऑटोमेशन",
@@ -3355,11 +3436,11 @@
 				"boardView": "बोर्ड दृश्य पर स्विच करें",
 				"listView": "सूची दृश्य पर स्विच करें",
 				"backlogView": "बैकलॉग दृश्य पर स्विच करें",
+				"calendarView": "कैलेंडर दृश्य पर स्विच करें",
 				"nextTask": "अगला कार्य",
 				"prevTask": "पिछला कार्य",
 				"openTask": "चयनित कार्य खोलें",
 				"quickSelectNumber": "संख्या द्वारा विकल्प चुनें",
-				"calendarView": "कैलेंडर दृश्य पर स्विच करें",
 				"goToSection": "{{section}} पर जाएँ",
 				"goToAllTasks": "सभी कार्य पर जाएँ",
 				"goToMyWork": "आपका कार्य पर जाएँ",
@@ -3368,24 +3449,25 @@
 				"goToHome": "होम पर जाएँ",
 				"goToStickies": "स्टिकी नोट पर जाएँ",
 				"paletteActions": "कोई क्रिया चलाएँ",
+				"paletteTasks": "कुंजी या शीर्षक से कार्य खोजें",
 				"palettePeople": "किसी व्यक्ति को खोजें",
 				"palettePlaces": "किसी स्थान पर जाएँ",
-				"paletteTasks": "कुंजी या शीर्षक से कार्य खोजें",
 				"captureTask": "बोर्ड या सूची में कार्य जोड़ें",
 				"selectTask": "फ़ोकस वाला कार्य चुनें",
-				"triageAssignee": "फ़ोकस वाले कार्य के असाइनी बदलें",
-				"triagePriority": "फ़ोकस वाले कार्य की प्राथमिकता बदलें",
 				"triageStatus": "फ़ोकस वाले कार्य की स्थिति बदलें",
+				"triagePriority": "फ़ोकस वाले कार्य की प्राथमिकता बदलें",
+				"triageAssignee": "फ़ोकस वाले कार्य के असाइनी बदलें",
+				"taskStatus": "स्थिति बदलें",
+				"taskPriority": "प्राथमिकता बदलें",
 				"taskAssignees": "सौंपे गए लोग बदलें",
+				"taskLabels": "लेबल बदलें",
+				"taskDueDate": "नियत तारीख बदलें",
 				"taskAssignSelf": "खुद को सौंपें या हटाएँ",
 				"taskCopyKey": "कार्य कुंजी कॉपी करें",
 				"taskCopyLink": "कार्य लिंक कॉपी करें",
+				"taskCopyBranch": "कार्य की ब्रांच का नाम कॉपी करें",
 				"taskDelete": "कार्य हटाएँ",
-				"taskDueDate": "नियत तारीख बदलें",
-				"taskLabels": "लेबल बदलें",
-				"taskPriority": "प्राथमिकता बदलें",
-				"taskStatus": "स्थिति बदलें",
-				"taskCopyBranch": "कार्य की ब्रांच का नाम कॉपी करें"
+				"moveBetweenCards": "बोर्ड पर कार्डों के बीच जाएँ"
 			}
 		},
 		"favorites": {
@@ -3550,6 +3632,14 @@
 			"automation_notice": {
 				"title": "ऑटोमेशन: {{ruleName}}",
 				"content": "{{taskKey}} {{taskTitle}}"
+			},
+			"page_comment": {
+				"title": "{{commenterName}} ने टिप्पणी की",
+				"content": "{{commenterName}} ने {{pageTitle}} पर टिप्पणी की: {{commentPreview}}"
+			},
+			"page_updated": {
+				"title": "{{editorName}} ने एक पेज संपादित किया",
+				"content": "{{editorName}} ने {{pageTitle}} संपादित किया"
 			}
 		},
 		"inbox": {
@@ -3604,10 +3694,12 @@
 			"loadMore": "और लोड करें",
 			"pageTitle": "इनबॉक्स",
 			"preview": {
-				"emptyDescription": "उसका कार्य यहाँ खुलेगा।",
 				"emptyTitle": "कोई सूचना चुनें",
+				"emptyDescription": "उसका कार्य यहाँ खुलेगा।",
 				"unavailable": "यह कार्य अब उपलब्ध नहीं है",
-				"label": "रीडिंग पेन"
+				"label": "रीडिंग पेन",
+				"showProperties": "गुण दिखाएँ",
+				"hideProperties": "गुण छिपाएँ"
 			},
 			"retry": "पुनः प्रयास करें",
 			"snooze": {
@@ -3653,27 +3745,31 @@
 				"subscribed": "सदस्यता ली हुई"
 			},
 			"verbs": {
-				"due_date_reminder": "{{leadTime}} में देय",
-				"task_assignee_changed": "ने आपको सौंपा",
-				"task_comment": "ने टिप्पणी की",
 				"task_created": "ने यह कार्य बनाया",
+				"task_assignee_changed": "ने आपको सौंपा",
+				"task_status_changed": "ने इसे {{oldStatus}} से {{newStatus}} में ले जाया",
+				"task_comment": "ने टिप्पणी की",
 				"task_mention": "ने आपका उल्लेख किया",
 				"task_mention_comment": "ने एक टिप्पणी में आपका उल्लेख किया",
-				"task_overdue": "नियत तारीख बीत चुकी है",
-				"task_status_changed": "ने इसे {{oldStatus}} से {{newStatus}} में ले जाया",
+				"time_entry_created": "ने समय दर्ज किया",
 				"task_updated": {
 					"dueDate": "ने नियत तारीख बदलकर {{newValue}} की",
 					"dueDateCleared": "ने नियत तारीख हटा दी",
 					"priority": "ने प्राथमिकता बदलकर {{newValue}} की",
 					"title": "ने कार्य का नाम बदला"
 				},
-				"time_entry_created": "ने समय दर्ज किया",
+				"due_date_reminder": "{{leadTime}} में देय",
+				"task_overdue": "नियत तारीख बीत चुकी है",
 				"intake_accepted": "ने आपका अनुरोध स्वीकार किया",
 				"intake_declined": "ने आपका अनुरोध अस्वीकार किया",
 				"intake_duplicate": "ने आपके अनुरोध को डुप्लिकेट चिह्नित किया",
 				"page_mention": "ने एक पेज में आपका उल्लेख किया",
 				"page_mention_titled": "ने {{pageTitle}} में आपका उल्लेख किया",
-				"task_comment_reply": "ने एक टिप्पणी का जवाब दिया"
+				"task_comment_reply": "ने एक टिप्पणी का जवाब दिया",
+				"page_comment": "ने एक पेज पर टिप्पणी की",
+				"page_comment_titled": "ने {{pageTitle}} पर टिप्पणी की",
+				"page_updated": "ने वह पेज संपादित किया जिस पर आप नज़र रखते हैं",
+				"page_updated_titled": "ने {{pageTitle}} संपादित किया"
 			},
 			"viewing": {
 				"archived": "संग्रहित सूचनाएँ देखी जा रही हैं",
@@ -3704,8 +3800,21 @@
 		}
 	},
 	"activity": {
+		"feed": {
+			"all": "सभी गतिविधि",
+			"comments": "टिप्पणियाँ",
+			"label": "गतिविधि फ़िल्टर और क्रमबद्ध करें",
+			"newest": "नए पहले",
+			"noMatches": "इस फ़िल्टर के साथ दिखाने के लिए कुछ नहीं है।",
+			"oldest": "पुराने पहले",
+			"order": "क्रम",
+			"show": "दिखाएँ",
+			"updates": "अपडेट"
+		},
 		"assignedToSelf": "कार्य खुद को सौंपा",
 		"unassigned": "कार्य असाइन हटाया",
+		"unassignedUser": "{{name}} का असाइनमेंट हटाया",
+		"unassignedSelf": "खुद का असाइनमेंट हटाया",
 		"assignedTo": "कार्य {{name}} को सौंपा",
 		"changedStatus": "स्थिति {{from}} से {{to}} में बदली",
 		"changedPriority": "प्राथमिकता {{from}} से {{to}} में बदली",
@@ -3715,6 +3824,8 @@
 		"changedTitle": "शीर्षक \"{{from}}\" से \"{{to}}\" में बदला",
 		"moved": "कार्य \"{{from}}\" से \"{{to}}\" में ले गए",
 		"created": "यह कार्य बनाया",
+		"importedFromJira": "ने यह कार्य Jira {{key}} से आयात किया",
+		"importedFromSource": "ने यह कार्य {{source}} {{key}} से आयात किया",
 		"githubUser": "GitHub उपयोगकर्ता",
 		"comment": {
 			"github": "GitHub",
@@ -3835,35 +3946,26 @@
 			"linkCopied": "टिप्पणी का लिंक कॉपी हो गया"
 		},
 		"addedToCycle": "कार्य साइकल {{name}} में जोड़ा",
-		"deletedCycle": "कार्य हटाए गए साइकल से हटाया",
-		"movedCycle": "कार्य साइकल {{from}} से {{to}} में ले गए",
 		"removedFromCycle": "कार्य साइकल {{name}} से हटाया",
+		"movedCycle": "कार्य साइकल {{from}} से {{to}} में ले गए",
+		"deletedCycle": "कार्य हटाए गए साइकल से हटाया",
 		"addedToModule": "कार्य मॉड्यूल {{name}} में जोड़ा",
 		"removedFromModule": "कार्य मॉड्यूल {{name}} से हटाया",
+		"estimateSet": "अनुमान {{to}} पर सेट किया",
 		"estimateChanged": "अनुमान {{from}} से {{to}} में बदला",
+		"estimateRemoved": "अनुमान {{from}} हटाया",
 		"estimateReason": {
 			"point_deleted": "(अनुमान मान हटाया गया)",
 			"system_deleted": "(अनुमान प्रणाली हटाई गई)",
 			"system_switched": "(अनुमान प्रणाली स्विच की गई)",
 			"task_moved": "(दूसरे प्रोजेक्ट में ले जाया गया)"
 		},
-		"estimateRemoved": "अनुमान {{from}} हटाया",
-		"estimateSet": "अनुमान {{to}} पर सेट किया",
-		"unassignedSelf": "खुद का असाइनमेंट हटाया",
-		"unassignedUser": "{{name}} का असाइनमेंट हटाया",
-		"addedLabel": "<label>{{name}}</label> लेबल जोड़ा",
-		"attachmentAdded": "{{filename}} संलग्न की",
-		"attachmentRemoved": "{{filename}} संलग्नक हटाया",
+		"setStartDate": "शुरू तारीख {{date}} सेट की",
 		"changedStartDate": "शुरू तारीख {{from}} से {{to}} में बदली",
 		"clearedStartDate": "शुरू तारीख साफ़ की",
-		"copiedFrom": "इस कार्य को <task>{{task}}</task> की कॉपी के रूप में बनाया",
-		"copiedTo": "इस कार्य की कॉपी बनाई: <task>{{task}}</task>",
-		"linkAdded": "{{title}} लिंक जोड़ा",
-		"linkRemoved": "{{title}} लिंक हटाया",
-		"linkUpdated": "{{title}} लिंक अपडेट किया",
-		"parentChanged": "मूल कार्य को <from>{{from}}</from> से <to>{{to}}</to> में बदला",
-		"parentRemoved": "मूल कार्य <task>{{task}}</task> हटाया",
-		"parentSet": "मूल कार्य को <task>{{task}}</task> पर सेट किया",
+		"addedLabel": "<label>{{name}}</label> लेबल जोड़ा",
+		"removedLabel": "<label>{{name}}</label> लेबल हटाया",
+		"updatedDescription": "विवरण अपडेट किया",
 		"relationAdded": {
 			"blocked_by": "इस कार्य को <task>{{task}}</task> द्वारा ब्लॉक किया गया चिह्नित किया",
 			"blocking": "इस कार्य को <task>{{task}}</task> को ब्लॉक करने वाला चिह्नित किया",
@@ -3875,12 +3977,36 @@
 			"start_before": "इस कार्य को <task>{{task}}</task> से पहले शुरू होने के लिए सेट किया"
 		},
 		"relationRemoved": "<task>{{task}}</task> के साथ «{{relation}}» संबंध हटाया",
-		"removedLabel": "<label>{{name}}</label> लेबल हटाया",
-		"setStartDate": "शुरू तारीख {{date}} सेट की",
+		"parentSet": "मूल कार्य को <task>{{task}}</task> पर सेट किया",
+		"parentChanged": "मूल कार्य को <from>{{from}}</from> से <to>{{to}}</to> में बदला",
+		"parentRemoved": "मूल कार्य <task>{{task}}</task> हटाया",
 		"subtaskAdded": "उप-कार्य <task>{{task}}</task> जोड़ा",
 		"subtaskRemoved": "उप-कार्य <task>{{task}}</task> हटाया",
-		"updatedDescription": "विवरण अपडेट किया",
+		"linkAdded": "{{title}} लिंक जोड़ा",
+		"linkUpdated": "{{title}} लिंक अपडेट किया",
+		"linkRemoved": "{{title}} लिंक हटाया",
+		"attachmentAdded": "{{filename}} संलग्न की",
+		"attachmentRemoved": "{{filename}} संलग्नक हटाया",
+		"copiedFrom": "इस कार्य को <task>{{task}}</task> की कॉपी के रूप में बनाया",
+		"copiedTo": "इस कार्य की कॉपी बनाई: <task>{{task}}</task>",
 		"archived": "ने यह कार्य संग्रहित किया",
+		"unarchived": "ने यह कार्य पुनर्स्थापित किया",
+		"intake": {
+			"submitted": "ने यह अनुरोध सबमिट किया",
+			"submittedVia": "ने {{source}} के माध्यम से यह अनुरोध सबमिट किया",
+			"accepted": "ने यह अनुरोध {{column}} में स्वीकार किया",
+			"acceptedBacklog": "ने यह अनुरोध बैकलॉग में स्वीकार किया",
+			"declined": "ने यह अनुरोध अस्वीकार किया",
+			"declinedWithReason": "ने यह अनुरोध अस्वीकार किया: {{note}}",
+			"snoozed": "ने यह अनुरोध {{date}} तक स्नूज़ किया",
+			"unsnoozed": "ने यह अनुरोध वापस समीक्षा में भेजा",
+			"snoozeEnded": "स्नूज़ समाप्त हो गया और यह अनुरोध वापस समीक्षा में है",
+			"duplicate": "ने यह अनुरोध {{key}} का डुप्लिकेट चिह्नित किया",
+			"duplicateDeleted": "ने यह अनुरोध हटाए गए कार्य का डुप्लिकेट चिह्नित किया",
+			"reopened": "ने यह अनुरोध फिर से खोला",
+			"acceptedHidden": "ने यह अनुरोध दूसरे प्रोजेक्ट में स्वीकार किया",
+			"duplicateHidden": "ने यह अनुरोध दूसरे प्रोजेक्ट के एक कार्य का डुप्लिकेट चिह्नित किया"
+		},
 		"reactions": {
 			"add": "प्रतिक्रिया जोड़ें",
 			"error": "प्रतिक्रिया अपडेट नहीं की जा सकी",
@@ -3900,30 +4026,6 @@
 			"reactWith": "{{label}} से प्रतिक्रिया दें",
 			"remove": "{{label}} प्रतिक्रिया हटाएँ",
 			"you": "आप"
-		},
-		"unarchived": "ने यह कार्य पुनर्स्थापित किया",
-		"intake": {
-			"accepted": "ने यह अनुरोध {{column}} में स्वीकार किया",
-			"acceptedBacklog": "ने यह अनुरोध बैकलॉग में स्वीकार किया",
-			"declined": "ने यह अनुरोध अस्वीकार किया",
-			"declinedWithReason": "ने यह अनुरोध अस्वीकार किया: {{note}}",
-			"duplicate": "ने यह अनुरोध {{key}} का डुप्लिकेट चिह्नित किया",
-			"duplicateDeleted": "ने यह अनुरोध हटाए गए कार्य का डुप्लिकेट चिह्नित किया",
-			"reopened": "ने यह अनुरोध फिर से खोला",
-			"snoozed": "ने यह अनुरोध {{date}} तक स्नूज़ किया",
-			"snoozeEnded": "स्नूज़ समाप्त हो गया और यह अनुरोध वापस समीक्षा में है",
-			"submitted": "ने यह अनुरोध सबमिट किया",
-			"submittedVia": "ने {{source}} के माध्यम से यह अनुरोध सबमिट किया",
-			"unsnoozed": "ने यह अनुरोध वापस समीक्षा में भेजा"
-		},
-		"automation": {
-			"actor": "ऑटोमेशन",
-			"archived_one": "{{count}} महीने तक कोई अपडेट न होने पर इस कार्य को संग्रहित किया",
-			"archived_other": "{{count}} महीने तक कोई अपडेट न होने पर इस कार्य को संग्रहित किया",
-			"closed_one": "{{count}} महीने तक कोई अपडेट न होने पर इस कार्य को बंद किया और {{to}} में ले गया",
-			"closed_other": "{{count}} महीने तक कोई अपडेट न होने पर इस कार्य को बंद किया और {{to}} में ले गया",
-			"rolledOver": "साइकल समाप्त होने पर इस कार्य को {{from}} से {{to}} में ले गया",
-			"byRule": "{{name}} के ज़रिए"
 		},
 		"commentVisibility": {
 			"badgeExternal": "बाहरी",
@@ -3950,21 +4052,49 @@
 			"summary": "▲ {{up}} · ▼ {{down}}",
 			"tooltip": "सार्वजनिक बोर्ड से वोट"
 		},
-		"feed": {
-			"all": "सभी गतिविधि",
-			"comments": "टिप्पणियाँ",
-			"label": "गतिविधि फ़िल्टर और क्रमबद्ध करें",
-			"newest": "नए पहले",
-			"noMatches": "इस फ़िल्टर के साथ दिखाने के लिए कुछ नहीं है।",
-			"oldest": "पुराने पहले",
-			"order": "क्रम",
-			"show": "दिखाएँ",
-			"updates": "अपडेट"
+		"automation": {
+			"actor": "ऑटोमेशन",
+			"archived_one": "{{count}} महीने तक कोई अपडेट न होने पर इस कार्य को संग्रहित किया",
+			"archived_other": "{{count}} महीने तक कोई अपडेट न होने पर इस कार्य को संग्रहित किया",
+			"closed_one": "{{count}} महीने तक कोई अपडेट न होने पर इस कार्य को बंद किया और {{to}} में ले गया",
+			"closed_other": "{{count}} महीने तक कोई अपडेट न होने पर इस कार्य को बंद किया और {{to}} में ले गया",
+			"rolledOver": "साइकल समाप्त होने पर इस कार्य को {{from}} से {{to}} में ले गया",
+			"byRule": "{{name}} के ज़रिए",
+			"rolledOverHidden": "साइकल समाप्त होने पर इस कार्य को अगले साइकल में ले गया"
 		},
-		"importedFromJira": "ने यह कार्य Jira {{key}} से आयात किया",
-		"importedFromSource": "ने यह कार्य {{source}} {{key}} से आयात किया",
 		"movedToTrash": "ने यह कार्य ट्रैश में भेजा",
-		"restoredFromTrash": "ने यह कार्य ट्रैश से पुनर्स्थापित किया"
+		"restoredFromTrash": "ने यह कार्य ट्रैश से पुनर्स्थापित किया",
+		"parentRemovedHidden": "दूसरे प्रोजेक्ट का एक मूल कार्य हटाया",
+		"subtaskAddedHidden": "दूसरे प्रोजेक्ट में एक उप-कार्य जोड़ा",
+		"subtaskRemovedHidden": "दूसरे प्रोजेक्ट का एक उप-कार्य हटाया",
+		"copiedToHidden": "इस कार्य की कॉपी दूसरे प्रोजेक्ट में बनाई",
+		"relationAddedHidden": {
+			"related": "इस कार्य को दूसरे प्रोजेक्ट के एक कार्य से संबंधित के रूप में चिह्नित किया",
+			"blocking": "इस कार्य को दूसरे प्रोजेक्ट के एक कार्य को ब्लॉक करने वाला चिह्नित किया",
+			"blocked_by": "इस कार्य को दूसरे प्रोजेक्ट के एक कार्य द्वारा ब्लॉक किया गया चिह्नित किया",
+			"duplicate": "इस कार्य को दूसरे प्रोजेक्ट के एक कार्य की डुप्लिकेट के रूप में चिह्नित किया",
+			"start_before": "इस कार्य को दूसरे प्रोजेक्ट के एक कार्य से पहले शुरू होने के लिए सेट किया",
+			"start_after": "इस कार्य को दूसरे प्रोजेक्ट के एक कार्य के बाद शुरू होने के लिए सेट किया",
+			"finish_before": "इस कार्य को दूसरे प्रोजेक्ट के एक कार्य से पहले समाप्त होने के लिए सेट किया",
+			"finish_after": "इस कार्य को दूसरे प्रोजेक्ट के एक कार्य के बाद समाप्त होने के लिए सेट किया"
+		},
+		"relationRemovedHidden": "दूसरे प्रोजेक्ट के एक कार्य के साथ «{{relation}}» संबंध हटाया",
+		"parentSetHidden": "मूल कार्य को दूसरे प्रोजेक्ट के एक कार्य पर सेट किया",
+		"parentChangedFromHidden": "मूल कार्य को दूसरे प्रोजेक्ट के एक कार्य से <to>{{to}}</to> में बदला",
+		"parentChangedToHidden": "मूल कार्य को <from>{{from}}</from> से दूसरे प्रोजेक्ट के एक कार्य में बदला",
+		"parentChangedBetweenHidden": "मूल कार्य को दूसरे प्रोजेक्ट्स के कार्यों के बीच बदला",
+		"copiedFromHidden": "इस कार्य को दूसरे प्रोजेक्ट के एक कार्य की कॉपी के रूप में बनाया",
+		"movedFromHidden": "कार्य दूसरे प्रोजेक्ट से \"{{to}}\" में ले गए",
+		"movedToHidden": "कार्य \"{{from}}\" से दूसरे प्रोजेक्ट में ले गए",
+		"movedBetweenHidden": "कार्य दूसरे प्रोजेक्ट्स के बीच ले गए",
+		"changedStatusHidden": "दूसरे प्रोजेक्ट में स्थिति बदली",
+		"addedToHiddenCycle": "कार्य एक साइकल में जोड़ा",
+		"removedFromHiddenCycle": "कार्य एक साइकल से हटाया",
+		"movedCycleFromHidden": "कार्य दूसरे साइकल से {{to}} में ले गए",
+		"movedCycleToHidden": "कार्य साइकल {{from}} से दूसरे साइकल में ले गए",
+		"movedCycleBetweenHidden": "कार्य साइकलों के बीच ले गए",
+		"addedToHiddenModule": "कार्य एक मॉड्यूल में जोड़ा",
+		"removedFromHiddenModule": "कार्य एक मॉड्यूल से हटाया"
 	},
 	"tasks": {
 		"recurrence": {
@@ -4022,8 +4152,30 @@
 				"recurredFrom": "यह कार्य <task>{{task}}</task> के अगले दोहराव के रूप में बनाया",
 				"recurredFromScheduled": "शेड्यूल के अनुसार <task>{{task}}</task> के अगले दोहराव के रूप में बनाया गया",
 				"recurredTo": "यह कार्य पूरा किया, जिससे अगला दोहराव <task>{{task}}</task> बना",
-				"recurredToScheduled": "अगला दोहराव शेड्यूल के अनुसार बनाया गया: <task>{{task}}</task>"
+				"recurredToScheduled": "अगला दोहराव शेड्यूल के अनुसार बनाया गया: <task>{{task}}</task>",
+				"recurredToHidden": "यह कार्य पूरा किया, जिससे अगला दोहराव दूसरे प्रोजेक्ट में बना",
+				"recurredToScheduledHidden": "अगला दोहराव शेड्यूल के अनुसार दूसरे प्रोजेक्ट में बनाया गया",
+				"recurredFromHidden": "यह कार्य दूसरे प्रोजेक्ट के एक कार्य के अगले दोहराव के रूप में बनाया",
+				"recurredFromScheduledHidden": "शेड्यूल के अनुसार दूसरे प्रोजेक्ट के एक कार्य के अगले दोहराव के रूप में बनाया गया"
 			}
+		},
+		"subscription": {
+			"count_one": "{{count}} व्यक्ति ने सदस्यता ली",
+			"count_other": "{{count}} लोगों ने सदस्यता ली",
+			"error": "आपकी सदस्यता अपडेट नहीं की जा सकी",
+			"mutedAssignee": "आपको कार्य सौंपा गया है, पर आपने सदस्यता छोड़ दी है। उल्लेख की सूचना आपको फिर भी मिलेगी।",
+			"notSubscribed": "स्थिति में बदलाव, टिप्पणियों और अन्य बदलावों के अपडेट पाएँ।",
+			"reasons": {
+				"assignee": "आपको यह कार्य सौंपा गया है, इसलिए आपकी सदस्यता है।",
+				"commenter": "आपने टिप्पणी की है, इसलिए आपकी सदस्यता है।",
+				"creator": "आपने यह कार्य बनाया है, इसलिए आपकी सदस्यता है।",
+				"manual": "आपने इस कार्य की सदस्यता ली है।",
+				"mention": "आपका उल्लेख किया गया था, इसलिए आपकी सदस्यता है।"
+			},
+			"subscribe": "सदस्यता लें",
+			"toastSubscribed": "इस कार्य की सदस्यता ली गई",
+			"toastUnsubscribed": "सदस्यता छोड़ दी गई। उल्लेख होने पर आपको फिर भी सूचित किया जाएगा।",
+			"unsubscribe": "सदस्यता छोड़ें"
 		},
 		"status": {
 			"label": "स्थिति",
@@ -4034,6 +4186,32 @@
 			"archived": "संग्रहित",
 			"planned": "नियोजित"
 		},
+		"columnGroups": {
+			"backlog": {
+				"description": "दर्ज किया गया, अभी योजना नहीं बनाई गई",
+				"label": "बैकलॉग"
+			},
+			"cancelled": {
+				"description": "बिना काम किए बंद किया गया",
+				"label": "रद्द"
+			},
+			"completed": {
+				"description": "हो गया",
+				"label": "पूर्ण"
+			},
+			"started": {
+				"description": "काम प्रगति में है",
+				"label": "शुरू हुआ"
+			},
+			"triage": {
+				"description": "इनटेक में समीक्षा की प्रतीक्षा में",
+				"label": "समीक्षा"
+			},
+			"unstarted": {
+				"description": "योजना बनाई गई, काम शुरू नहीं हुआ",
+				"label": "शुरू नहीं हुआ"
+			}
+		},
 		"priority": {
 			"label": "प्राथमिकता",
 			"no-priority": "कोई प्राथमिकता नहीं",
@@ -4042,7 +4220,7 @@
 			"high": "उच्च",
 			"urgent": "अत्यावश्यक"
 		},
-		"boardSearchPlaceholder": "टिकट खोजें...",
+		"boardSearchPlaceholder": "कार्य खोजें...",
 		"view": {
 			"board": "बोर्ड",
 			"list": "सूची",
@@ -4059,9 +4237,16 @@
 		},
 		"detail": {
 			"subtaskOf": "उप-कार्य",
+			"customFieldUpdated": "फ़ील्ड अपडेट की गई",
+			"selectOption": "विकल्प चुनें",
 			"activity": "गतिविधि",
 			"noActivity": "कोई गतिविधि नहीं मिली",
 			"openInFullPage": "पूरे पेज में खोलें",
+			"openOnBoard": "बोर्ड पर खोलें",
+			"sheetLabel": "कार्य का विवरण",
+			"previousTask": "पिछला कार्य",
+			"nextTask": "अगला कार्य",
+			"position": "{{total}} में से {{position}}",
 			"titlePlaceholder": "शीर्षक जोड़ने के लिए क्लिक करें",
 			"addDescription": "विवरण जोड़ें...",
 			"editor": {
@@ -4191,13 +4376,11 @@
 					"toolbar": "इमेज विकल्प"
 				}
 			},
-			"customFieldUpdated": "फ़ील्ड अपडेट की गई",
-			"selectOption": "विकल्प चुनें",
-			"nextTask": "अगला कार्य",
-			"openOnBoard": "बोर्ड पर खोलें",
-			"position": "{{total}} में से {{position}}",
-			"previousTask": "पिछला कार्य",
-			"sheetLabel": "कार्य का विवरण"
+			"saveError": {
+				"title": "आपका शीर्षक सहेजा नहीं गया। यह अभी भी फ़ील्ड में है, इसलिए आप फिर से कोशिश कर सकते हैं।",
+				"description": "आपका विवरण सहेजा नहीं गया। यह अभी भी एडिटर में है, इसलिए आप फिर से कोशिश कर सकते हैं।",
+				"retry": "फिर कोशिश करें"
+			}
 		},
 		"entity": {
 			"task": "कार्य"
@@ -4365,180 +4548,6 @@
 				"isAnyOf": "में से कोई है"
 			}
 		},
-		"gantt": {
-			"pageTitle": "{{name}} – गैंट",
-			"title": "गैंट टाइमलाइन",
-			"searchPlaceholder": "कार्य खोजें...",
-			"hideTasks": "कार्य छिपाएँ",
-			"showTasks": "कार्य दिखाएँ",
-			"noTasks": "कोई शेड्यूल किए गए कार्य नहीं",
-			"noTasksSubtitle": "प्रोजेक्ट टाइमलाइन पर रखने के लिए कार्यों में शुरू तारीख, नियत तारीख, या दोनों जोड़ें।",
-			"noTasksFound": "कोई कार्य नहीं मिला",
-			"noTasksMatch": "\"{{query}}\" से मेल खाने वाले कोई शेड्यूल किए गए कार्य नहीं",
-			"taskHeader": "कार्य",
-			"updateDatesError": "कार्य की तारीखें अपडेट करने में विफल",
-			"resizeStart": "शुरू तारीख बदलें",
-			"resizeDue": "नियत तारीख बदलें",
-			"taskAriaLabel": "{{title}}: खोलें या ले जाने के लिए खींचें",
-			"jumpToToday": "आज पर जाएँ",
-			"previousPeriod": "पिछली अवधि",
-			"nextPeriod": "अगली अवधि",
-			"periodStart": "टाइमलाइन की शुरू तारीख",
-			"showTaskDates": "कार्य तारीखें दिखाएँ",
-			"dependencyConflict": "किसी निर्भरता के क्रम से बाहर शुरू या खत्म होता है",
-			"dragToSchedule": "{{title}} को टाइमलाइन पर खींचें",
-			"noDates": "कोई तारीख नहीं",
-			"noDatesCount": "कोई तारीख नहीं · {{count}}",
-			"noDatesHint": "टाइमलाइन पर खींचें या आज से शेड्यूल करें।",
-			"schedule": "शेड्यूल करें",
-			"scheduleTask": "{{title}} को आज से शेड्यूल करें",
-			"zoom": "टाइमलाइन ज़ूम",
-			"zoomMonth": "महीना",
-			"zoomQuarter": "तिमाही",
-			"zoomWeek": "सप्ताह"
-		},
-		"delete": {
-			"title": "कार्य हटाएँ?",
-			"description": "कार्य और उसके उप-कार्य प्रोजेक्ट के ट्रैश में चले जाएंगे। आप उन्हें प्रोजेक्ट सेटिंग में हाल ही में हटाए गए से पुनर्स्थापित कर सकते हैं।",
-			"action": "कार्य हटाएँ",
-			"success": "कार्य ट्रैश में भेजा गया",
-			"error": "कार्य हटाने में विफल"
-		},
-		"archive": {
-			"success": "{{count}} कार्य संग्रहित किए गए",
-			"archived": "कार्य संग्रहित किया गया",
-			"badge": "संग्रहित",
-			"error": "कार्य संग्रहित नहीं किया जा सका",
-			"restore": "पुनर्स्थापित करें",
-			"restored": "कार्य पुनर्स्थापित किया गया",
-			"restoreError": "कार्य पुनर्स्थापित नहीं किया जा सका"
-		},
-		"listView": {
-			"addTask": "कार्य जोड़ें",
-			"archiveAllTooltip": "सभी पूर्ण कार्य संग्रहित करें",
-			"noTasks": "कोई कार्य नहीं"
-		},
-		"kanban": {
-			"addTask": "कार्य जोड़ें",
-			"stages": "कॉलम",
-			"emptyAction": "कार्य जोड़ें",
-			"emptyTitle": "अभी कोई कार्य नहीं"
-		},
-		"pr": {
-			"merged": "मर्ज किया",
-			"draft": "ड्राफ़्ट",
-			"open": "खुला",
-			"label": "पुल अनुरोध",
-			"count_one": "{{count}} PR",
-			"count_other": "{{count}} PR"
-		},
-		"assignee": {
-			"label": "सौंपे गए",
-			"unassigned": "असाइन नहीं"
-		},
-		"dueDate": {
-			"label": "नियत तारीख",
-			"clear": "तारीख साफ़ करें",
-			"updateSuccess": "कार्य की नियत तारीख सफलतापूर्वक अपडेट की गई",
-			"updateError": "कार्य की नियत तारीख अपडेट करने में विफल",
-			"clearSuccess": "कार्य की नियत तारीख साफ़ की गई",
-			"clearError": "नियत तारीख साफ़ करने में विफल"
-		},
-		"update": {
-			"success": "कार्य सफलतापूर्वक अपडेट किया गया",
-			"error": "कार्य अपडेट करने में विफल"
-		},
-		"contextMenu": {
-			"copyLink": "लिंक कॉपी करें",
-			"copyLinkSuccess": "कार्य का लिंक कॉपी हो गया",
-			"estimate": "अनुमान"
-		},
-		"actions": {
-			"archive": "संग्रहित करें",
-			"markAsPlanned": "नियोजित चिह्नित करें",
-			"delete": "हटाएँ...",
-			"copyKey": "कार्य कुंजी कॉपी करें",
-			"copyLink": "लिंक कॉपी करें",
-			"makeCopy": "कॉपी बनाएँ…",
-			"moreActions": "और कार्रवाइयाँ"
-		},
-		"bulk": {
-			"selectedCount": "{{count}} चयनित",
-			"moveToBacklog": "बैकलॉग में ले जाएँ",
-			"moveToBacklogSuccess": "{{count}} कार्य बैकलॉग में ले जाए गए",
-			"moveToBacklogError": "कार्य बैकलॉग में ले जाने में विफल",
-			"moveToBoard": "बोर्ड पर ले जाएँ",
-			"moveToBoardSuccess": "{{count}} कार्य बोर्ड पर ले जाए गए",
-			"moveToBoardError": "कार्य बोर्ड पर ले जाने में विफल",
-			"delete": "कार्य हटाएँ",
-			"deleteConfirm": "{{count}} कार्यों को ट्रैश में भेजें? आप उन्हें प्रोजेक्ट सेटिंग में हाल ही में हटाए गए से पुनर्स्थापित कर सकते हैं।",
-			"deleteSuccess": "{{count}} कार्य हटाए गए",
-			"deleteError": "कार्य हटाने में विफल",
-			"archive": "कार्य संग्रहित करें",
-			"archiveSuccess": "{{count}} कार्य संग्रहित किए गए",
-			"archiveError": "कार्य संग्रहित करने में विफल",
-			"updateSuccess": "{{count}} कार्य अपडेट किए गए",
-			"updateError": "कार्य अपडेट करने में विफल",
-			"setPriority": "प्राथमिकता सेट करें",
-			"updatePriorityError": "प्राथमिकता अपडेट करने में विफल",
-			"addLabel": "लेबल जोड़ें",
-			"addLabelSuccess": "{{count}} कार्यों में लेबल जोड़ा गया",
-			"addLabelError": "लेबल जोड़ने में विफल",
-			"setDueDate": "नियत तिथि सेट करें",
-			"updateDueDateError": "नियत तारीख अपडेट करने में विफल",
-			"actions": "कार्रवाइयाँ",
-			"searchActions": "कार्रवाइयाँ खोजें...",
-			"noActionsFound": "कोई कार्रवाई नहीं मिली।",
-			"changeStatus": "स्थिति बदलें",
-			"removeLabel": "लेबल हटाएँ",
-			"removeLabelSuccess": "{{count}} कार्यों से लेबल हटाया गया",
-			"removeLabelError": "लेबल हटाने में विफल",
-			"unarchive": "संग्रह से पुनर्स्थापित करें",
-			"unarchiveSuccess": "{{count}} कार्य पुनर्स्थापित किए गए",
-			"unarchiveNone": "चुने गए कार्यों में से कोई भी संग्रहित नहीं है",
-			"unarchiveError": "कार्य पुनर्स्थापित करने में विफल",
-			"setDates": "तारीखें",
-			"dateField": "सेट करने की तारीख",
-			"startDate": "शुरू की तारीख",
-			"dueDate": "नियत तारीख",
-			"clearStartDate": "शुरू की तारीख साफ़ करें",
-			"clearDueDate": "नियत तारीख साफ़ करें",
-			"updateStartDateError": "शुरू की तारीख अपडेट करने में विफल। शुरू की तारीख कार्य की नियत तारीख के बाद नहीं हो सकती।",
-			"addAssignee": "सौंपा गया व्यक्ति जोड़ें",
-			"addAssigneeSuccess_one": "{{name}} को {{count}} कार्य में जोड़ा गया",
-			"addAssigneeSuccess_other": "{{name}} को {{count}} कार्यों में जोड़ा गया",
-			"assigneesError": "सौंपे गए लोगों को अपडेट करने में विफल",
-			"clearAssignees": "सौंपे गए साफ़ करें",
-			"clearAssigneesSuccess_one": "{{count}} कार्य पर सौंपे गए साफ़ किए गए",
-			"clearAssigneesSuccess_other": "{{count}} कार्यों पर सौंपे गए साफ़ किए गए",
-			"removeAssignee": "सौंपे गए व्यक्ति को हटाएँ",
-			"removeAssigneeSuccess_one": "{{name}} को {{count}} कार्य से हटाया गया",
-			"removeAssigneeSuccess_other": "{{name}} को {{count}} कार्यों से हटाया गया",
-			"clearSelection": "चयन हटाएँ"
-		},
-		"editor": {
-			"table": {
-				"addColumnBefore": "बाईं ओर कॉलम जोड़ें",
-				"addColumnAfter": "दाईं ओर कॉलम जोड़ें",
-				"deleteColumn": "कॉलम हटाएँ",
-				"addRowBefore": "ऊपर पंक्ति जोड़ें",
-				"addRowAfter": "नीचे पंक्ति जोड़ें",
-				"deleteRow": "पंक्ति हटाएँ",
-				"deleteTable": "तालिका हटाएँ",
-				"moveRowUp": "पंक्ति ऊपर ले जाएँ",
-				"moveRowDown": "पंक्ति नीचे ले जाएँ",
-				"moveColumnLeft": "कॉलम बाईं ओर ले जाएँ",
-				"moveColumnRight": "कॉलम दाईं ओर ले जाएँ",
-				"toggleHeaderRow": "हेडर पंक्ति",
-				"fullWidth": "पूरी चौड़ाई",
-				"dragRow": "पंक्ति {{index}}",
-				"dragColumn": "कॉलम {{index}}",
-				"dragRowHint": "पंक्ति को ले जाने के लिए खींचें, या ऐरो कुंजियों का उपयोग करें",
-				"dragColumnHint": "कॉलम को ले जाने के लिए खींचें, या ऐरो कुंजियों का उपयोग करें",
-				"insertRowHere": "यहाँ एक पंक्ति जोड़ें",
-				"insertColumnHere": "यहाँ एक कॉलम जोड़ें"
-			}
-		},
 		"calendar": {
 			"dayTasksAriaLabel": "{{date}} के सभी कार्य दिखाएँ",
 			"moreTasks": "+{{count}} और",
@@ -4561,436 +4570,89 @@
 			"week": "सप्ताह",
 			"overdue": "अतिदेय"
 		},
-		"descriptionSearchLoading": "पूर्ण विवरण खोजे जा रहे हैं…",
-		"descriptionSearchError": "विवरण खोज विफल। परिणाम अधूरे हो सकते हैं।",
-		"descriptionRetry": "पुनः प्रयास करें",
-		"descriptionLoading": "विवरण लोड हो रहा है…",
-		"descriptionLoadError": "विवरण लोड नहीं हो सका। वर्तमान संस्करण लोड करने के लिए फिर से प्रयास करें।",
-		"columnGroups": {
-			"backlog": {
-				"description": "दर्ज किया गया, अभी योजना नहीं बनाई गई",
-				"label": "बैकलॉग"
+		"gantt": {
+			"pageTitle": "{{name}} – गैंट",
+			"title": "गैंट टाइमलाइन",
+			"jumpToToday": "आज पर जाएँ",
+			"searchPlaceholder": "कार्य खोजें...",
+			"hideTasks": "कार्य छिपाएँ",
+			"showTasks": "कार्य दिखाएँ",
+			"noTasks": "कोई शेड्यूल किए गए कार्य नहीं",
+			"noTasksSubtitle": "प्रोजेक्ट टाइमलाइन पर रखने के लिए कार्यों में शुरू तारीख, नियत तारीख, या दोनों जोड़ें।",
+			"noTasksFound": "कोई कार्य नहीं मिला",
+			"noTasksMatch": "\"{{query}}\" से मेल खाने वाले कोई शेड्यूल किए गए कार्य नहीं",
+			"taskHeader": "कार्य",
+			"updateDatesError": "कार्य की तारीखें अपडेट करने में विफल",
+			"resizeStart": "शुरू तारीख बदलें",
+			"resizeDue": "नियत तारीख बदलें",
+			"taskAriaLabel": "{{title}}: खोलें या ले जाने के लिए खींचें",
+			"previousPeriod": "पिछली अवधि",
+			"nextPeriod": "अगली अवधि",
+			"periodStart": "टाइमलाइन की शुरू तारीख",
+			"showTaskDates": "कार्य तारीखें दिखाएँ",
+			"zoom": "टाइमलाइन ज़ूम",
+			"zoomWeek": "सप्ताह",
+			"zoomMonth": "महीना",
+			"zoomQuarter": "तिमाही",
+			"noDates": "कोई तारीख नहीं",
+			"noDatesCount": "कोई तारीख नहीं · {{count}}",
+			"noDatesHint": "टाइमलाइन पर खींचें या आज से शेड्यूल करें।",
+			"schedule": "शेड्यूल करें",
+			"scheduleTask": "{{title}} को आज से शेड्यूल करें",
+			"dragToSchedule": "{{title}} को टाइमलाइन पर खींचें",
+			"dependencyConflict": "किसी निर्भरता के क्रम से बाहर शुरू या खत्म होता है",
+			"workspaceNoTasksSubtitle": "कार्यों को इस टाइमलाइन पर देखने के लिए उनमें शुरू की तारीख, नियत तारीख या दोनों जोड़ें।",
+			"showMoreTasks": "और कार्य दिखाएँ",
+			"blocked": "एक खुले कार्य द्वारा ब्लॉक किया गया",
+			"linkFrom": "{{title}} को दूसरे कार्य से लिंक करें",
+			"linkHint": "दूसरे कार्य पर खींचें ताकि वह इस कार्य का इंतज़ार करे",
+			"link": {
+				"blocks": "{{source}} {{target}} को ब्लॉक कर रहा है",
+				"startBefore": "{{source}} {{target}} से पहले शुरू होता है",
+				"finishBefore": "{{source}} {{target}} से पहले पूरा होता है",
+				"conflict": "तारीखें इस लिंक को तोड़ती हैं।"
 			},
-			"cancelled": {
-				"description": "बिना काम किए बंद किया गया",
-				"label": "रद्द"
+			"milestone": {
+				"add": "माइलस्टोन",
+				"ariaLabel": "माइलस्टोन {{title}}: खोलें या ले जाने के लिए खींचें",
+				"name": "माइलस्टोन का नाम",
+				"namePlaceholder": "माइलस्टोन का नाम",
+				"date": "माइलस्टोन की तारीख",
+				"create": "माइलस्टोन जोड़ें",
+				"createError": "माइलस्टोन नहीं जोड़ा जा सका"
 			},
-			"completed": {
-				"description": "हो गया",
-				"label": "पूर्ण"
-			},
-			"started": {
-				"description": "काम प्रगति में है",
-				"label": "शुरू हुआ"
-			},
-			"triage": {
-				"description": "इनटेक में समीक्षा की प्रतीक्षा में",
-				"label": "समीक्षा"
-			},
-			"unstarted": {
-				"description": "योजना बनाई गई, काम शुरू नहीं हुआ",
-				"label": "शुरू नहीं हुआ"
+			"cascade": {
+				"offer_one": "{{count}} लिंक किया गया कार्य अब बहुत जल्दी शुरू होता है",
+				"offer_other": "{{count}} लिंक किए गए कार्य अब बहुत जल्दी शुरू होते हैं",
+				"reviewAction": "तारीख में बदलावों की समीक्षा करें",
+				"title_one": "{{count}} लिंक किया गया कार्य खिसकाएँ?",
+				"title_other": "{{count}} लिंक किए गए कार्य खिसकाएँ?",
+				"description": "ये कार्य बस उतना आगे खिसकेंगे जितना इनके लिंक के लिए ज़रूरी है, और इनकी अवधि वही रहेगी। आपकी पुष्टि से पहले कुछ नहीं बदलता।",
+				"to": "से बदलकर",
+				"cancel": "तारीखें वही रखें",
+				"confirm_one": "{{count}} कार्य खिसकाएँ",
+				"confirm_other": "{{count}} कार्य खिसकाएँ",
+				"moved_one": "{{count}} कार्य खिसकाया गया",
+				"moved_other": "{{count}} कार्य खिसकाए गए",
+				"partial": "{{total}} में से {{moved}} कार्य खिसकाए गए। बाकी की तारीखें वही रहीं।",
+				"nothingToMove": "इस लिंक के लिए तारीख वाले किसी खुले कार्य को खिसकाने की ज़रूरत नहीं है।"
 			}
 		},
-		"estimate": {
-			"bulk": {
-				"action": "अनुमान",
-				"error": "चयनित कार्यों का अनुमान बदलने में विफल",
-				"updated_one": "{{count}} कार्य का अनुमान अपडेट किया",
-				"updated_other": "{{count}} कार्यों का अनुमान अपडेट किया"
-			},
-			"chart": {
-				"points": "पॉइंट",
-				"pointsLeft": "बचे हुए पॉइंट",
-				"summaryPoints": "{{scope}} में से {{remaining}} पॉइंट बचे, {{days}} दिन शेष",
-				"summaryTime": "{{scope}} में से {{remaining}} बचा, {{days}} दिन शेष",
-				"tasks": "कार्य",
-				"time": "समय",
-				"timeLeft": "बचा हुआ समय",
-				"unitAria": "चार्ट इकाई"
-			},
-			"duration": {
-				"hours": "{{hours}} घं",
-				"hoursMinutes": "{{hours}} घं {{minutes}} मि",
-				"hourUnit": "h",
-				"minutes": "{{minutes}} मि",
-				"minuteUnit": "m"
-			},
-			"label": "अनुमान",
-			"none": "कोई अनुमान नहीं",
-			"pointsValue_one": "{{value}} अंक",
-			"pointsValue_other": "{{value}} अंक",
-			"setAria": "अनुमान सेट करें",
-			"totals": {
-				"estimated": "{{total}} में से {{estimated}} कार्यों का अनुमान लगाया गया",
-				"points_one": "{{completed}} / {{total}} अंक",
-				"points_other": "{{completed}} / {{total}} अंक",
-				"time": "{{completed}} / {{total}}"
-			},
-			"updateError": "अनुमान अपडेट करने में विफल"
+		"delete": {
+			"title": "कार्य हटाएँ?",
+			"description": "कार्य और उसके उप-कार्य प्रोजेक्ट के ट्रैश में चले जाएंगे। आप उन्हें प्रोजेक्ट सेटिंग में हाल ही में हटाए गए से पुनर्स्थापित कर सकते हैं।",
+			"action": "कार्य हटाएँ",
+			"success": "कार्य ट्रैश में भेजा गया",
+			"error": "कार्य हटाने में विफल"
 		},
-		"assignees": {
-			"clear": "सौंपे गए साफ़ करें",
-			"formerMember": "अब सदस्य नहीं है",
-			"formerMemberSuffix": "{{name}} (अब सदस्य नहीं है)",
-			"label": "सौंपे गए",
-			"limitReached": "एक कार्य में अधिकतम {{count}} लोग सौंपे जा सकते हैं",
-			"more": "+{{count}}",
-			"nameAndMore": "{{name}} +{{count}}",
-			"noMatches": "कोई मिलान वाला व्यक्ति नहीं",
-			"noMembers": "अभी सौंपने के लिए कोई सदस्य नहीं",
-			"searchPlaceholder": "लोग खोजें...",
-			"stackAria": "{{names}} को सौंपा गया",
-			"unknownPerson": "अज्ञात व्यक्ति",
-			"updateError": "सौंपे गए लोगों को अपडेट करने में विफल",
-			"you": "{{name}} (आप)"
-		},
-		"attachments": {
-			"add": "फ़ाइल संलग्न करें",
-			"delete": "हटाएँ",
-			"deleteConfirmDescription": "फ़ाइल सभी के लिए हटा दी जाएगी। यह कार्रवाई पूर्ववत नहीं की जा सकती।",
-			"deleteConfirmTitle": "{{filename}} हटाएँ?",
-			"download": "डाउनलोड करें",
-			"dropHere": "फ़ाइलें यहाँ छोड़ें या ब्राउज़ करने के लिए क्लिक करें",
-			"dropToAttach": "संलग्न करने के लिए फ़ाइलें छोड़ें",
-			"loadError": "संलग्नक लोड करने में विफल",
-			"meta": "{{size}} · {{name}} · {{time}}",
-			"metaNoUser": "{{size}} · {{time}}",
-			"open": "खोलें",
-			"title": "संलग्नक",
-			"toast": {
-				"attached_one": "{{count}} फ़ाइल संलग्न की गई",
-				"attached_other": "{{count}} फ़ाइलें संलग्न की गईं",
-				"deleted": "संलग्नक हटाया गया",
-				"deleteError": "संलग्नक हटाने में विफल",
-				"empty": "{{filename}} खाली है",
-				"failed": "{{filename}} संलग्न करने में विफल: {{reason}}",
-				"notConfigured": "इस सर्वर पर फ़ाइल अपलोड सेट अप नहीं है। स्टोरेज कॉन्फ़िगर करने के लिए अपने व्यवस्थापक से कहें।",
-				"storageError": "स्टोरेज ने अपलोड अस्वीकार कर दिया",
-				"tooMany": "आप एक बार में अधिकतम {{count}} फ़ाइलें संलग्न कर सकते हैं",
-				"unknownError": "कुछ गलत हो गया"
-			},
-			"uploading": "अपलोड हो रहा है…"
-		},
-		"copy": {
-			"alwaysCopied": "स्थिति और प्राथमिकता हमेशा कॉपी होती हैं।",
-			"cancel": "रद्द करें",
-			"includeLabel": "शामिल करें",
-			"options": {
-				"assignees": "सौंपे गए",
-				"attachments": "संलग्नक",
-				"customFields": "कस्टम फ़ील्ड मान",
-				"dates": "शुरू और नियत तारीखें",
-				"description": "विवरण",
-				"labels": "लेबल",
-				"links": "लिंक",
-				"parent": "मूल कार्य",
-				"planning": "साइकिल, मॉड्यूल और अनुमान"
-			},
-			"otherProjectHint": "स्थिति नए प्रोजेक्ट के कॉलम से मिलाई जाती है। कस्टम फ़ील्ड, मूल कार्य और योजना प्रोजेक्ट के बीच कॉपी नहीं होते।",
-			"projectLabel": "प्रोजेक्ट",
-			"submit": "कॉपी बनाएँ",
-			"title": "{{key}} की कॉपी बनाएँ",
-			"titleLabel": "शीर्षक",
-			"titleRequired": "शीर्षक आवश्यक है",
-			"titleSuffix": "{{title}} (कॉपी)",
-			"toast": {
-				"error": "कॉपी बनाने में विफल",
-				"open": "खोलें",
-				"skipped": "कॉपी नहीं हुआ: {{list}}",
-				"success": "कॉपी बनाई गई: {{key}}"
-			}
-		},
-		"detailActions": {
-			"addLink": "लिंक जोड़ें",
-			"addRelation": "संबंध जोड़ें",
-			"addSubtask": "उप-कार्य जोड़ें",
-			"attachFile": "फ़ाइल संलग्न करें"
-		},
-		"links": {
-			"add": "लिंक जोड़ें",
-			"addedAt": "{{date}} को जोड़ा गया",
-			"addedBy": "{{name}} द्वारा जोड़ा गया · {{date}}",
-			"addTitle": "लिंक जोड़ें",
-			"cancel": "रद्द करें",
-			"copyUrl": "URL कॉपी करें",
-			"edit": "संपादित करें",
-			"editTitle": "लिंक संपादित करें",
-			"errors": {
-				"credentials": "लिंक में उपयोगकर्ता नाम या पासवर्ड नहीं हो सकता",
-				"duplicate": "यह लिंक पहले से इस कार्य पर है",
-				"invalid": "एक मान्य http या https URL दर्ज करें",
-				"required": "URL आवश्यक है",
-				"titleTooLong": "शीर्षक में अधिकतम 255 अक्षर हो सकते हैं",
-				"tooLong": "लिंक में अधिकतम 2,048 अक्षर हो सकते हैं"
-			},
-			"linkTitle": "शीर्षक",
-			"loadError": "लिंक लोड करने में विफल",
-			"moreActions": "लिंक कार्रवाइयाँ",
-			"remove": "हटाएँ",
-			"removeConfirmDescription": "यह सभी के लिए कार्य से हटा दिया जाएगा।",
-			"removeConfirmTitle": "इस लिंक को हटाएँ?",
-			"retry": "पुनः प्रयास करें",
-			"save": "सहेजें",
-			"title": "लिंक",
-			"titlePlaceholder": "वैकल्पिक प्रदर्शन शीर्षक",
-			"toast": {
-				"added": "लिंक जोड़ा गया",
-				"copied": "लिंक कॉपी किया गया",
-				"error": "लिंक सहेजने में विफल",
-				"removed": "लिंक हटाया गया",
-				"updated": "लिंक अपडेट किया गया"
-			},
-			"url": "URL",
-			"urlPlaceholder": "https://example.com"
-		},
-		"create": {
-			"similarTitle": "मिलते-जुलते खुले कार्य",
-			"similarDismiss": "मिलते-जुलते कार्य छिपाएँ",
-			"similarOpen": "खोलें",
-			"similarOpenLabel": "{{key}} {{title}} को नए टैब में खोलें"
-		},
-		"parent": {
-			"add": "मूल कार्य जोड़ें",
-			"chip": "मूल",
-			"label": "मूल कार्य",
-			"noTasks": "कोई कार्य नहीं मिला",
-			"remove": "मूल कार्य हटाएँ",
-			"search": "कार्य खोजें…",
-			"tasksInProject": "इस प्रोजेक्ट में कार्य",
-			"toast": {
-				"error": "मूल कार्य बदलने में विफल",
-				"removed": "मूल कार्य हटाया गया",
-				"set": "मूल कार्य {{key}} पर सेट किया गया"
-			},
-			"tooltip": "मूल कार्य: {{key}} {{title}}"
-		},
-		"taskKey": {
-			"clipboardError": "क्लिपबोर्ड में कॉपी करने में विफल",
-			"copied": "{{key}} कॉपी की गई",
-			"copyTooltip": "कार्य कुंजी कॉपी करें"
-		},
-		"display": {
-			"button": "प्रदर्शन",
-			"columns": "कॉलम",
-			"groupBy": "समूह के आधार पर",
-			"groups": {
-				"assignee": "सौंपा गया",
-				"createdBy": "बनाने वाला",
-				"cycle": "साइकल",
-				"estimate": "अनुमान",
-				"group": "समूह",
-				"label": "लेबल",
-				"module": "मॉड्यूल",
-				"priority": "प्राथमिकता",
-				"project": "प्रोजेक्ट",
-				"status": "स्थिति"
-			},
-			"none": "कोई नहीं",
-			"order": {
-				"assignee": "सौंपा गया",
-				"completedAt": "पूरा होने की तारीख",
-				"createdAt": "हाल में बनाए गए",
-				"cycle": "साइकल",
-				"dueDate": "नियत तारीख",
-				"estimate": "अनुमान",
-				"label": "लेबल",
-				"manual": "मैन्युअल",
-				"module": "मॉड्यूल",
-				"number": "कार्य कुंजी",
-				"priority": "प्राथमिकता",
-				"startDate": "शुरू की तारीख",
-				"status": "स्थिति",
-				"subTaskCount": "उप-कार्य",
-				"title": "शीर्षक",
-				"updatedAt": "हाल में अपडेट किए गए",
-				"archivedAt": "संग्रह की तारीख"
-			},
-			"orderBy": "क्रम के आधार पर",
-			"properties": "गुण",
-			"props": {
-				"assignee": "सौंपे गए लोग",
-				"checklist": "चेकलिस्ट",
-				"createdAt": "बनाया गया",
-				"cycle": "साइकल",
-				"dueDate": "नियत तारीख",
-				"estimate": "अनुमान",
-				"key": "कुंजी",
-				"labels": "लेबल",
-				"modules": "मॉड्यूल",
-				"priority": "प्राथमिकता",
-				"startDate": "शुरू की तारीख",
-				"status": "स्थिति",
-				"subTaskCount": "उप-कार्य",
-				"updatedAt": "अपडेट किया गया"
-			},
-			"showEmptyGroups": "खाली समूह दिखाएँ",
-			"showSubTasks": "उप-कार्य दिखाएँ",
-			"subGroupBy": "उप-समूह के आधार पर"
-		},
-		"filters": {
-			"apply": "लागू करें",
-			"applyError": "फ़िल्टर लागू नहीं हो सके",
-			"archived": {
-				"exclude": "संग्रहित छिपाएँ",
-				"include": "संग्रहित भी दिखाएँ",
-				"label": "संग्रहित",
-				"only": "केवल संग्रहित"
-			},
-			"button": "फ़िल्टर",
-			"clearAll": "सभी फ़िल्टर साफ़ करें",
-			"dates": {
-				"amount": "मात्रा",
-				"custom": "कस्टम तारीख…",
-				"emptyTab": "खाली",
-				"exact": "सटीक तारीख",
-				"future": "आज के बाद",
-				"lastMonth": "पिछला महीना",
-				"lastWeek": "पिछला सप्ताह",
-				"nextMonth": "अगला महीना",
-				"nextWeek": "अगला सप्ताह",
-				"overdue": "समय-सीमा पार",
-				"past": "आज से पहले",
-				"presets": "प्रीसेट",
-				"rolling": "चलती अवधि",
-				"rollingValue": "{{amount}} {{unit}}",
-				"thisMonth": "इस महीने",
-				"thisWeek": "इस सप्ताह",
-				"today": "आज",
-				"tomorrow": "आने वाला कल",
-				"units": {
-					"days": "दिन",
-					"months": "महीने",
-					"weeks": "सप्ताह"
-				},
-				"yesterday": "बीता हुआ कल"
-			},
-			"matchAll": "सभी से मेल खाएँ",
-			"matchAny": "किसी से भी मेल खाएँ",
-			"mobileSummary_one": "{{count}} फ़िल्टर",
-			"mobileSummary_other": "{{count}} फ़िल्टर",
-			"nestedReadOnly": "यह दृश्य उन्नत फ़िल्टर का उपयोग करता है जिन्हें यहाँ संपादित नहीं किया जा सकता",
-			"noOptions": "कोई विकल्प नहीं",
-			"operators": {
-				"between": "के बीच",
-				"is": "है",
-				"isEmpty": "खाली है",
-				"isNoneOf": "इनमें से कोई नहीं",
-				"isNot": "नहीं है",
-				"isNotEmpty": "खाली नहीं है",
-				"moreThanAgo": "… से अधिक पहले",
-				"moreThanAhead": "अब से … से अधिक बाद",
-				"on": "इस दिन",
-				"onOrAfter": "इस दिन या उसके बाद",
-				"onOrBefore": "इस दिन या उससे पहले",
-				"withinLast": "पिछले",
-				"withinNext": "अगले"
-			},
-			"removeFilter": "फ़िल्टर {{subject}} हटाएँ",
-			"retry": "पुनः प्रयास करें",
-			"searchOptions": "विकल्प खोजें",
-			"subjects": {
-				"completed": "पूरा हुआ",
-				"created": "बनाया गया",
-				"createdBy": "बनाने वाला",
-				"cycle": "साइकल",
-				"group": "समूह",
-				"mentions": "उल्लेख",
-				"module": "मॉड्यूल",
-				"parent": "मूल कार्य",
-				"project": "प्रोजेक्ट",
-				"startDate": "शुरू की तारीख",
-				"subscribed": "सदस्यता ली हुई",
-				"updated": "अपडेट किया गया"
-			},
-			"tooMany": "यहाँ फ़िल्टर करने के लिए बहुत अधिक परिणाम हैं; स्प्रेडशीट खोलें",
-			"values": {
-				"currentCycle": "वर्तमान साइकल",
-				"false": "गलत",
-				"me": "मैं",
-				"noAssignee": "कोई असाइनी नहीं",
-				"noCreator": "कोई निर्माता नहीं",
-				"noCycle": "कोई साइकल नहीं",
-				"noEstimate": "कोई अनुमान नहीं",
-				"noLabel": "कोई लेबल नहीं",
-				"noModule": "कोई मॉड्यूल नहीं",
-				"none": "कोई नहीं",
-				"noParent": "कोई मूल कार्य नहीं",
-				"true": "सही"
-			}
-		},
-		"groups": {
-			"all": "सभी कार्य",
-			"hiddenGroups_one": "{{count}} और समूह नहीं दिखाया गया",
-			"hiddenGroups_other": "{{count}} और समूह नहीं दिखाए गए",
-			"loadMore": "और लोड करें ({{count}})",
-			"moduleCount_one": "{{count}} मॉड्यूल",
-			"moduleCount_other": "{{count}} मॉड्यूल",
-			"moveError": "कार्य को स्थानांतरित नहीं किया जा सका",
-			"noAssignee": "कोई असाइनी नहीं",
-			"noCreator": "कोई निर्माता नहीं",
-			"noCycle": "कोई साइकल नहीं",
-			"noEstimate": "कोई अनुमान नहीं",
-			"noLabel": "कोई लेबल नहीं",
-			"noModule": "कोई मॉड्यूल नहीं",
-			"planned": "नियोजित"
-		},
-		"queryEmpty": {
-			"clear": "फ़िल्टर साफ़ करें",
-			"description": "एक-दो फ़िल्टर हटाकर देखें।",
-			"title": "इन फ़िल्टर से कोई कार्य मेल नहीं खाता"
-		},
-		"spreadsheet": {
-			"clearSort": "क्रम हटाएँ",
-			"collapseSubTasks": "उप-कार्य छिपाएँ",
-			"expandSubTasks": "उप-कार्य दिखाएँ",
-			"hideColumn": "कॉलम छिपाएँ",
-			"loadError": "कार्य लोड नहीं हो सके",
-			"selectTask": "{{key}} चुनें",
-			"sortAsc": "आरोही क्रम में क्रमबद्ध करें",
-			"sortDesc": "अवरोही क्रम में क्रमबद्ध करें",
-			"task": "कार्य"
-		},
-		"subscription": {
-			"count_one": "{{count}} व्यक्ति ने सदस्यता ली",
-			"count_other": "{{count}} लोगों ने सदस्यता ली",
-			"error": "आपकी सदस्यता अपडेट नहीं की जा सकी",
-			"mutedAssignee": "आपको कार्य सौंपा गया है, पर आपने सदस्यता छोड़ दी है। उल्लेख की सूचना आपको फिर भी मिलेगी।",
-			"notSubscribed": "स्थिति में बदलाव, टिप्पणियों और अन्य बदलावों के अपडेट पाएँ।",
-			"reasons": {
-				"assignee": "आपको यह कार्य सौंपा गया है, इसलिए आपकी सदस्यता है।",
-				"commenter": "आपने टिप्पणी की है, इसलिए आपकी सदस्यता है।",
-				"creator": "आपने यह कार्य बनाया है, इसलिए आपकी सदस्यता है।",
-				"manual": "आपने इस कार्य की सदस्यता ली है।",
-				"mention": "आपका उल्लेख किया गया था, इसलिए आपकी सदस्यता है।"
-			},
-			"subscribe": "सदस्यता लें",
-			"toastSubscribed": "इस कार्य की सदस्यता ली गई",
-			"toastUnsubscribed": "सदस्यता छोड़ दी गई। उल्लेख होने पर आपको फिर भी सूचित किया जाएगा।",
-			"unsubscribe": "सदस्यता छोड़ें"
-		},
-		"timeTracking": {
-			"duration": "अवधि",
-			"durationInvalid": "1 मिनट से 24 घंटे के बीच की अवधि दर्ज करें, जैसे 1h 30m।",
-			"durationPlaceholder": "जैसे 1h 30m",
-			"empty": "अभी तक कोई समय दर्ज नहीं",
-			"entries": "समय प्रविष्टियाँ",
-			"formerMember": "पूर्व सदस्य",
-			"hours": "{{hours}} घंटे",
-			"hoursMinutes": "{{hours}} घंटे {{minutes}} मिनट",
-			"label": "लगा हुआ समय",
-			"logError": "समय दर्ज नहीं हो सका",
-			"logged": "समय दर्ज हो गया",
-			"logTime": "समय दर्ज करें",
-			"minutes": "{{minutes}} मिनट",
-			"note": "नोट (वैकल्पिक)",
-			"running": "चल रहा है",
-			"spentAria": "लगा हुआ समय: {{total}}। समय दर्ज करें",
-			"submit": "समय दर्ज करें",
-			"deleteConfirm": "यह प्रविष्टि हटाएँ?",
-			"deleted": "समय प्रविष्टि हटा दी गई",
-			"deleteEntry": "{{date}} की समय प्रविष्टि हटाएँ",
-			"deleteError": "समय प्रविष्टि हटाई नहीं जा सकी"
+		"archive": {
+			"success": "{{count}} कार्य संग्रहित किए गए",
+			"archived": "कार्य संग्रहित किया गया",
+			"badge": "संग्रहित",
+			"error": "कार्य संग्रहित नहीं किया जा सका",
+			"restore": "पुनर्स्थापित करें",
+			"restored": "कार्य पुनर्स्थापित किया गया",
+			"restoreError": "कार्य पुनर्स्थापित नहीं किया जा सका"
 		},
 		"archivedBanner": {
 			"message": "यह कार्य {{time}} संग्रहित किया गया था।",
@@ -5063,8 +4725,604 @@
 			},
 			"untitled": "बिना शीर्षक का ड्राफ़्ट"
 		},
+		"listView": {
+			"addTask": "कार्य जोड़ें",
+			"archiveAllTooltip": "सभी पूर्ण कार्य संग्रहित करें",
+			"noTasks": "कोई कार्य नहीं"
+		},
+		"kanban": {
+			"addTask": "कार्य जोड़ें",
+			"stages": "कॉलम",
+			"emptyAction": "कार्य जोड़ें",
+			"emptyTitle": "अभी कोई कार्य नहीं"
+		},
+		"pr": {
+			"merged": "मर्ज किया",
+			"draft": "ड्राफ़्ट",
+			"open": "खुला",
+			"label": "पुल अनुरोध",
+			"count_one": "{{count}} PR",
+			"count_other": "{{count}} PR"
+		},
+		"assignee": {
+			"label": "सौंपे गए",
+			"unassigned": "असाइन नहीं"
+		},
+		"assignees": {
+			"label": "सौंपे गए",
+			"searchPlaceholder": "लोग खोजें...",
+			"noMatches": "कोई मिलान वाला व्यक्ति नहीं",
+			"noMembers": "अभी सौंपने के लिए कोई सदस्य नहीं",
+			"you": "{{name}} (आप)",
+			"clear": "सौंपे गए साफ़ करें",
+			"more": "+{{count}}",
+			"nameAndMore": "{{name}} +{{count}}",
+			"stackAria": "{{names}} को सौंपा गया",
+			"formerMember": "अब सदस्य नहीं है",
+			"formerMemberSuffix": "{{name}} (अब सदस्य नहीं है)",
+			"limitReached": "एक कार्य में अधिकतम {{count}} लोग सौंपे जा सकते हैं",
+			"updateError": "सौंपे गए लोगों को अपडेट करने में विफल",
+			"unknownPerson": "अज्ञात व्यक्ति",
+			"noAccess": "इस प्रोजेक्ट तक पहुँच नहीं",
+			"noAccessSuffix": "{{name}} (इस प्रोजेक्ट तक पहुँच नहीं)"
+		},
+		"dueDate": {
+			"label": "नियत तारीख",
+			"clear": "तारीख साफ़ करें",
+			"updateSuccess": "कार्य की नियत तारीख सफलतापूर्वक अपडेट की गई",
+			"updateError": "कार्य की नियत तारीख अपडेट करने में विफल",
+			"clearSuccess": "कार्य की नियत तारीख साफ़ की गई",
+			"clearError": "नियत तारीख साफ़ करने में विफल"
+		},
+		"update": {
+			"success": "कार्य सफलतापूर्वक अपडेट किया गया",
+			"error": "कार्य अपडेट करने में विफल"
+		},
+		"contextMenu": {
+			"copyLink": "लिंक कॉपी करें",
+			"copyLinkSuccess": "कार्य का लिंक कॉपी हो गया",
+			"estimate": "अनुमान"
+		},
+		"actions": {
+			"archive": "संग्रहित करें",
+			"markAsPlanned": "नियोजित चिह्नित करें",
+			"delete": "हटाएँ...",
+			"copyKey": "कार्य कुंजी कॉपी करें",
+			"copyLink": "लिंक कॉपी करें",
+			"makeCopy": "कॉपी बनाएँ…",
+			"moreActions": "और कार्रवाइयाँ"
+		},
+		"commands": {
+			"assignedSelf": "आपको सौंपा गया",
+			"assignees": "सौंपे गए लोग बदलें…",
+			"assignSelf": "मुझे सौंपें",
+			"copyTitle": "शीर्षक कॉपी करें",
+			"cycle": "साइकल बदलें…",
+			"dueDate": "नियत तारीख बदलें…",
+			"estimate": "अनुमान बदलें…",
+			"group": "यह कार्य",
+			"labels": "लेबल बदलें…",
+			"module": "मॉड्यूल बदलें…",
+			"priority": "प्राथमिकता बदलें…",
+			"status": "स्थिति बदलें…",
+			"titleCopied": "कार्य का शीर्षक कॉपी किया गया",
+			"unassignedSelf": "अब यह आपको सौंपा नहीं है",
+			"unassignSelf": "मुझसे हटाएँ"
+		},
+		"readableLink": {
+			"goHome": "होम पर जाएँ",
+			"notFound": "इस वर्कस्पेस में {{key}} कुंजी वाला कोई कार्य नहीं है, या आप उसे नहीं देख सकते।"
+		},
+		"timeTracking": {
+			"label": "लगा हुआ समय",
+			"logTime": "समय दर्ज करें",
+			"spentAria": "लगा हुआ समय: {{total}}। समय दर्ज करें",
+			"duration": "अवधि",
+			"durationPlaceholder": "जैसे 1h 30m",
+			"durationInvalid": "1 मिनट से 24 घंटे के बीच की अवधि दर्ज करें, जैसे 1h 30m।",
+			"note": "नोट (वैकल्पिक)",
+			"submit": "समय दर्ज करें",
+			"logged": "समय दर्ज हो गया",
+			"logError": "समय दर्ज नहीं हो सका",
+			"empty": "अभी तक कोई समय दर्ज नहीं",
+			"entries": "समय प्रविष्टियाँ",
+			"running": "चल रहा है",
+			"formerMember": "पूर्व सदस्य",
+			"hours": "{{hours}} घंटे",
+			"minutes": "{{minutes}} मिनट",
+			"hoursMinutes": "{{hours}} घंटे {{minutes}} मिनट",
+			"deleteEntry": "{{date}} की समय प्रविष्टि हटाएँ",
+			"deleteConfirm": "यह प्रविष्टि हटाएँ?",
+			"deleted": "समय प्रविष्टि हटा दी गई",
+			"deleteError": "समय प्रविष्टि हटाई नहीं जा सकी",
+			"startTimer": "टाइमर शुरू करें",
+			"startHere": "उसे रोकें और यहाँ शुरू करें",
+			"stopTimer": "रोकें",
+			"timerRunning": "टाइमर चल रहा है",
+			"timerRunningOn": "{{task}} पर टाइमर चल रहा है",
+			"timerStarted": "टाइमर शुरू हो गया",
+			"timerSwitched": "टाइमर शुरू हो गया। आपका दूसरा टाइमर रोक दिया गया।",
+			"timerStopped": "टाइमर रुक गया। {{total}} दर्ज किया गया।",
+			"timerStartError": "टाइमर शुरू नहीं हो सका",
+			"timerStopError": "टाइमर रोका नहीं जा सका",
+			"loadError": "समय प्रविष्टियाँ लोड नहीं हो सकीं",
+			"editEntry": "{{date}} की समय प्रविष्टि संपादित करें",
+			"editStart": "शुरुआत",
+			"editEnd": "अंत",
+			"editEndRunningHint": "इसे चलता रखने के लिए खाली छोड़ें।",
+			"editEndRequired": "यह समय कब ख़त्म हुआ, दर्ज करें।",
+			"editStartInvalid": "यह समय कब शुरू हुआ, दर्ज करें।",
+			"editEndBeforeStart": "अंत शुरुआत से पहले नहीं हो सकता।",
+			"editSave": "सहेजें",
+			"edited": "समय प्रविष्टि अपडेट की गई",
+			"editError": "समय प्रविष्टि अपडेट नहीं हो सकी"
+		},
+		"bulk": {
+			"selectedCount": "{{count}} चयनित",
+			"moveToBacklog": "बैकलॉग में ले जाएँ",
+			"clearSelection": "चयन हटाएँ",
+			"moveToBacklogSuccess": "{{count}} कार्य बैकलॉग में ले जाए गए",
+			"moveToBacklogError": "कार्य बैकलॉग में ले जाने में विफल",
+			"moveToBoard": "बोर्ड पर ले जाएँ",
+			"moveToBoardSuccess": "{{count}} कार्य बोर्ड पर ले जाए गए",
+			"moveToBoardError": "कार्य बोर्ड पर ले जाने में विफल",
+			"delete": "कार्य हटाएँ",
+			"deleteConfirm": "{{count}} कार्यों को ट्रैश में भेजें? आप उन्हें प्रोजेक्ट सेटिंग में हाल ही में हटाए गए से पुनर्स्थापित कर सकते हैं।",
+			"deleteSuccess": "{{count}} कार्य हटाए गए",
+			"deleteError": "कार्य हटाने में विफल",
+			"archive": "कार्य संग्रहित करें",
+			"archiveSuccess": "{{count}} कार्य संग्रहित किए गए",
+			"archiveError": "कार्य संग्रहित करने में विफल",
+			"updateSuccess": "{{count}} कार्य अपडेट किए गए",
+			"updateError": "कार्य अपडेट करने में विफल",
+			"addAssignee": "सौंपा गया व्यक्ति जोड़ें",
+			"removeAssignee": "सौंपे गए व्यक्ति को हटाएँ",
+			"clearAssignees": "सौंपे गए साफ़ करें",
+			"addAssigneeSuccess_one": "{{name}} को {{count}} कार्य में जोड़ा गया",
+			"addAssigneeSuccess_other": "{{name}} को {{count}} कार्यों में जोड़ा गया",
+			"removeAssigneeSuccess_one": "{{name}} को {{count}} कार्य से हटाया गया",
+			"removeAssigneeSuccess_other": "{{name}} को {{count}} कार्यों से हटाया गया",
+			"clearAssigneesSuccess_one": "{{count}} कार्य पर सौंपे गए साफ़ किए गए",
+			"clearAssigneesSuccess_other": "{{count}} कार्यों पर सौंपे गए साफ़ किए गए",
+			"assigneesError": "सौंपे गए लोगों को अपडेट करने में विफल",
+			"setPriority": "प्राथमिकता सेट करें",
+			"updatePriorityError": "प्राथमिकता अपडेट करने में विफल",
+			"addLabel": "लेबल जोड़ें",
+			"addLabelSuccess": "{{count}} कार्यों में लेबल जोड़ा गया",
+			"addLabelError": "लेबल जोड़ने में विफल",
+			"setDueDate": "नियत तिथि सेट करें",
+			"updateDueDateError": "नियत तारीख अपडेट करने में विफल",
+			"actions": "कार्रवाइयाँ",
+			"searchActions": "कार्रवाइयाँ खोजें...",
+			"noActionsFound": "कोई कार्रवाई नहीं मिली।",
+			"changeStatus": "स्थिति बदलें",
+			"removeLabel": "लेबल हटाएँ",
+			"removeLabelSuccess": "{{count}} कार्यों से लेबल हटाया गया",
+			"removeLabelError": "लेबल हटाने में विफल",
+			"unarchive": "संग्रह से पुनर्स्थापित करें",
+			"unarchiveSuccess": "{{count}} कार्य पुनर्स्थापित किए गए",
+			"unarchiveNone": "चुने गए कार्यों में से कोई भी संग्रहित नहीं है",
+			"unarchiveError": "कार्य पुनर्स्थापित करने में विफल",
+			"setDates": "तारीखें",
+			"dateField": "सेट करने की तारीख",
+			"startDate": "शुरू की तारीख",
+			"dueDate": "नियत तारीख",
+			"clearStartDate": "शुरू की तारीख साफ़ करें",
+			"clearDueDate": "नियत तारीख साफ़ करें",
+			"updateStartDateError": "शुरू की तारीख अपडेट करने में विफल। शुरू की तारीख कार्य की नियत तारीख के बाद नहीं हो सकती।",
+			"selectTask": "{{title}} चुनें",
+			"moveToProject": "प्रोजेक्ट में ले जाएँ",
+			"moveToProjectTitle_one": "{{count}} कार्य {{name}} में ले जाएँ?",
+			"moveToProjectTitle_other": "{{count}} कार्य {{name}} में ले जाएँ?",
+			"moveToProjectRule": "कार्यों को नई कार्य कुंजियाँ मिलती हैं। यदि प्रोजेक्ट में वही स्थिति है तो हर कार्य अपनी स्थिति रखता है, नहीं तो पहले कॉलम में चला जाता है। लेबल और सौंपे गए लोग बने रहते हैं। साइकल, मॉड्यूल और अनुमान हटा दिए जाते हैं। कस्टम फ़ील्ड मान तभी बने रहते हैं जब प्रोजेक्ट में उसी नाम और प्रकार का फ़ील्ड हो।",
+			"moveToProjectConfirm": "कार्य ले जाएँ",
+			"moveToProjectSuccess_one": "{{count}} कार्य {{name}} में ले जाया गया",
+			"moveToProjectSuccess_other": "{{count}} कार्य {{name}} में ले जाए गए",
+			"moveToProjectNone": "ये कार्य पहले से {{name}} में हैं",
+			"moveToProjectError": "कार्य नहीं ले जाए जा सके"
+		},
+		"editor": {
+			"table": {
+				"addColumnBefore": "बाईं ओर कॉलम जोड़ें",
+				"addColumnAfter": "दाईं ओर कॉलम जोड़ें",
+				"deleteColumn": "कॉलम हटाएँ",
+				"addRowBefore": "ऊपर पंक्ति जोड़ें",
+				"addRowAfter": "नीचे पंक्ति जोड़ें",
+				"deleteRow": "पंक्ति हटाएँ",
+				"deleteTable": "तालिका हटाएँ",
+				"moveRowUp": "पंक्ति ऊपर ले जाएँ",
+				"moveRowDown": "पंक्ति नीचे ले जाएँ",
+				"moveColumnLeft": "कॉलम बाईं ओर ले जाएँ",
+				"moveColumnRight": "कॉलम दाईं ओर ले जाएँ",
+				"toggleHeaderRow": "हेडर पंक्ति",
+				"fullWidth": "पूरी चौड़ाई",
+				"dragRow": "पंक्ति {{index}}",
+				"dragColumn": "कॉलम {{index}}",
+				"dragRowHint": "पंक्ति को ले जाने के लिए खींचें, या ऐरो कुंजियों का उपयोग करें",
+				"dragColumnHint": "कॉलम को ले जाने के लिए खींचें, या ऐरो कुंजियों का उपयोग करें",
+				"insertRowHere": "यहाँ एक पंक्ति जोड़ें",
+				"insertColumnHere": "यहाँ एक कॉलम जोड़ें"
+			}
+		},
+		"descriptionSearchLoading": "पूर्ण विवरण खोजे जा रहे हैं…",
+		"descriptionSearchError": "विवरण खोज विफल। परिणाम अधूरे हो सकते हैं।",
+		"descriptionRetry": "पुनः प्रयास करें",
+		"descriptionLoading": "विवरण लोड हो रहा है…",
+		"descriptionLoadError": "विवरण लोड नहीं हो सका। वर्तमान संस्करण लोड करने के लिए फिर से प्रयास करें।",
+		"descriptionHistory": {
+			"cancel": "रद्द करें",
+			"description": "इस विवरण के सहेजे गए संस्करण, नए पहले। एक व्यक्ति के 10 मिनट के भीतर किए गए बदलाव एक ही संस्करण में रहते हैं; नवीनतम 50 रखे जाते हैं।",
+			"earlierVersion": "पिछला संस्करण",
+			"empty": "अभी तक कोई सहेजा गया संस्करण नहीं। अगले बदलाव से संस्करण रखे जाएँगे।",
+			"emptyVersion": "इस संस्करण में कोई विवरण नहीं है।",
+			"latest": "नवीनतम",
+			"list": "सहेजे गए संस्करण",
+			"loadError": "इतिहास लोड नहीं हो सका",
+			"open": "इतिहास",
+			"previewTitle": "{{date}} का संस्करण",
+			"restore": "पुनर्स्थापित करें",
+			"restoreConfirmDescription": "विवरण को इस संस्करण से बदल दिया जाएगा। मौजूदा टेक्स्ट इतिहास में रहेगा।",
+			"restoreConfirmTitle": "यह संस्करण पुनर्स्थापित करें?",
+			"restored": "विवरण पुनर्स्थापित किया गया",
+			"restoreError": "यह संस्करण पुनर्स्थापित नहीं हो सका",
+			"retry": "पुनः प्रयास करें",
+			"size_one": "{{count}} वर्ण",
+			"size_other": "{{count}} वर्ण",
+			"title": "विवरण का इतिहास",
+			"viewOnly": "केवल देखने के लिए"
+		},
+		"estimate": {
+			"bulk": {
+				"action": "अनुमान",
+				"error": "चयनित कार्यों का अनुमान बदलने में विफल",
+				"updated_one": "{{count}} कार्य का अनुमान अपडेट किया",
+				"updated_other": "{{count}} कार्यों का अनुमान अपडेट किया"
+			},
+			"chart": {
+				"points": "पॉइंट",
+				"pointsLeft": "बचे हुए पॉइंट",
+				"summaryPoints": "{{scope}} में से {{remaining}} पॉइंट बचे, {{days}} दिन शेष",
+				"summaryTime": "{{scope}} में से {{remaining}} बचा, {{days}} दिन शेष",
+				"tasks": "कार्य",
+				"time": "समय",
+				"timeLeft": "बचा हुआ समय",
+				"unitAria": "चार्ट इकाई"
+			},
+			"duration": {
+				"hours": "{{hours}} घं",
+				"hoursMinutes": "{{hours}} घं {{minutes}} मि",
+				"hourUnit": "h",
+				"minutes": "{{minutes}} मि",
+				"minuteUnit": "m"
+			},
+			"label": "अनुमान",
+			"none": "कोई अनुमान नहीं",
+			"pointsValue_one": "{{value}} अंक",
+			"pointsValue_other": "{{value}} अंक",
+			"setAria": "अनुमान सेट करें",
+			"totals": {
+				"estimated": "{{total}} में से {{estimated}} कार्यों का अनुमान लगाया गया",
+				"points_one": "{{completed}} / {{total}} अंक",
+				"points_other": "{{completed}} / {{total}} अंक",
+				"time": "{{completed}} / {{total}}"
+			},
+			"updateError": "अनुमान अपडेट करने में विफल"
+		},
+		"detailActions": {
+			"addLink": "लिंक जोड़ें",
+			"addRelation": "संबंध जोड़ें",
+			"addSubtask": "उप-कार्य जोड़ें",
+			"attachFile": "फ़ाइल संलग्न करें"
+		},
+		"taskKey": {
+			"clipboardError": "क्लिपबोर्ड में कॉपी करने में विफल",
+			"copied": "{{key}} कॉपी की गई",
+			"copyTooltip": "कार्य कुंजी कॉपी करें"
+		},
 		"pageReferences": {
 			"title": "पेजों में उल्लेखित"
+		},
+		"links": {
+			"add": "लिंक जोड़ें",
+			"addedAt": "{{date}} को जोड़ा गया",
+			"addedBy": "{{name}} द्वारा जोड़ा गया · {{date}}",
+			"addTitle": "लिंक जोड़ें",
+			"cancel": "रद्द करें",
+			"copyUrl": "URL कॉपी करें",
+			"edit": "संपादित करें",
+			"editTitle": "लिंक संपादित करें",
+			"errors": {
+				"credentials": "लिंक में उपयोगकर्ता नाम या पासवर्ड नहीं हो सकता",
+				"duplicate": "यह लिंक पहले से इस कार्य पर है",
+				"invalid": "एक मान्य http या https URL दर्ज करें",
+				"required": "URL आवश्यक है",
+				"titleTooLong": "शीर्षक में अधिकतम 255 अक्षर हो सकते हैं",
+				"tooLong": "लिंक में अधिकतम 2,048 अक्षर हो सकते हैं"
+			},
+			"linkTitle": "शीर्षक",
+			"loadError": "लिंक लोड करने में विफल",
+			"moreActions": "लिंक कार्रवाइयाँ",
+			"remove": "हटाएँ",
+			"removeConfirmDescription": "यह सभी के लिए कार्य से हटा दिया जाएगा।",
+			"removeConfirmTitle": "इस लिंक को हटाएँ?",
+			"retry": "पुनः प्रयास करें",
+			"save": "सहेजें",
+			"title": "लिंक",
+			"titlePlaceholder": "वैकल्पिक प्रदर्शन शीर्षक",
+			"toast": {
+				"added": "लिंक जोड़ा गया",
+				"copied": "लिंक कॉपी किया गया",
+				"error": "लिंक सहेजने में विफल",
+				"removed": "लिंक हटाया गया",
+				"updated": "लिंक अपडेट किया गया"
+			},
+			"url": "URL",
+			"urlPlaceholder": "https://example.com"
+		},
+		"attachments": {
+			"add": "फ़ाइल संलग्न करें",
+			"delete": "हटाएँ",
+			"deleteConfirmDescription": "फ़ाइल सभी के लिए हटा दी जाएगी। यह कार्रवाई पूर्ववत नहीं की जा सकती।",
+			"deleteConfirmTitle": "{{filename}} हटाएँ?",
+			"download": "डाउनलोड करें",
+			"dropHere": "फ़ाइलें यहाँ छोड़ें या ब्राउज़ करने के लिए क्लिक करें",
+			"dropToAttach": "संलग्न करने के लिए फ़ाइलें छोड़ें",
+			"loadError": "संलग्नक लोड करने में विफल",
+			"meta": "{{size}} · {{name}} · {{time}}",
+			"metaNoUser": "{{size}} · {{time}}",
+			"open": "खोलें",
+			"title": "संलग्नक",
+			"toast": {
+				"attached_one": "{{count}} फ़ाइल संलग्न की गई",
+				"attached_other": "{{count}} फ़ाइलें संलग्न की गईं",
+				"deleted": "संलग्नक हटाया गया",
+				"deleteError": "संलग्नक हटाने में विफल",
+				"empty": "{{filename}} खाली है",
+				"failed": "{{filename}} संलग्न करने में विफल: {{reason}}",
+				"notConfigured": "इस सर्वर पर फ़ाइल अपलोड सेट अप नहीं है। स्टोरेज कॉन्फ़िगर करने के लिए अपने व्यवस्थापक से कहें।",
+				"storageError": "स्टोरेज ने अपलोड अस्वीकार कर दिया",
+				"tooMany": "आप एक बार में अधिकतम {{count}} फ़ाइलें संलग्न कर सकते हैं",
+				"unknownError": "कुछ गलत हो गया"
+			},
+			"uploading": "अपलोड हो रहा है…"
+		},
+		"create": {
+			"similarTitle": "मिलते-जुलते खुले कार्य",
+			"similarDismiss": "मिलते-जुलते कार्य छिपाएँ",
+			"similarOpen": "खोलें",
+			"similarOpenLabel": "{{key}} {{title}} को नए टैब में खोलें"
+		},
+		"parent": {
+			"add": "मूल कार्य जोड़ें",
+			"chip": "मूल",
+			"label": "मूल कार्य",
+			"noTasks": "कोई कार्य नहीं मिला",
+			"remove": "मूल कार्य हटाएँ",
+			"search": "कार्य खोजें…",
+			"tasksInProject": "इस प्रोजेक्ट में कार्य",
+			"toast": {
+				"error": "मूल कार्य बदलने में विफल",
+				"removed": "मूल कार्य हटाया गया",
+				"set": "मूल कार्य {{key}} पर सेट किया गया"
+			},
+			"tooltip": "मूल कार्य: {{key}} {{title}}"
+		},
+		"copy": {
+			"alwaysCopied": "स्थिति और प्राथमिकता हमेशा कॉपी होती हैं।",
+			"cancel": "रद्द करें",
+			"includeLabel": "शामिल करें",
+			"options": {
+				"assignees": "सौंपे गए",
+				"attachments": "संलग्नक",
+				"customFields": "कस्टम फ़ील्ड मान",
+				"dates": "शुरू और नियत तारीखें",
+				"description": "विवरण",
+				"labels": "लेबल",
+				"links": "लिंक",
+				"parent": "मूल कार्य",
+				"planning": "साइकिल, मॉड्यूल और अनुमान"
+			},
+			"otherProjectHint": "स्थिति नए प्रोजेक्ट के कॉलम से मिलाई जाती है। कस्टम फ़ील्ड, मूल कार्य और योजना प्रोजेक्ट के बीच कॉपी नहीं होते।",
+			"projectLabel": "प्रोजेक्ट",
+			"submit": "कॉपी बनाएँ",
+			"title": "{{key}} की कॉपी बनाएँ",
+			"titleLabel": "शीर्षक",
+			"titleRequired": "शीर्षक आवश्यक है",
+			"titleSuffix": "{{title}} (कॉपी)",
+			"toast": {
+				"error": "कॉपी बनाने में विफल",
+				"open": "खोलें",
+				"skipped": "कॉपी नहीं हुआ: {{list}}",
+				"success": "कॉपी बनाई गई: {{key}}"
+			}
+		},
+		"filters": {
+			"button": "फ़िल्टर",
+			"searchOptions": "विकल्प खोजें",
+			"noOptions": "कोई विकल्प नहीं",
+			"matchAll": "सभी से मेल खाएँ",
+			"matchAny": "किसी से भी मेल खाएँ",
+			"applyError": "फ़िल्टर लागू नहीं हो सके",
+			"retry": "पुनः प्रयास करें",
+			"tooMany": "यहाँ फ़िल्टर करने के लिए बहुत अधिक परिणाम हैं; स्प्रेडशीट खोलें",
+			"nestedReadOnly": "यह दृश्य उन्नत फ़िल्टर का उपयोग करता है जिन्हें यहाँ संपादित नहीं किया जा सकता",
+			"clearAll": "सभी फ़िल्टर साफ़ करें",
+			"apply": "लागू करें",
+			"mobileSummary_one": "{{count}} फ़िल्टर",
+			"mobileSummary_other": "{{count}} फ़िल्टर",
+			"removeFilter": "फ़िल्टर {{subject}} हटाएँ",
+			"subjects": {
+				"group": "समूह",
+				"createdBy": "बनाने वाला",
+				"cycle": "साइकल",
+				"module": "मॉड्यूल",
+				"startDate": "शुरू की तारीख",
+				"created": "बनाया गया",
+				"updated": "अपडेट किया गया",
+				"completed": "पूरा हुआ",
+				"parent": "मूल कार्य",
+				"project": "प्रोजेक्ट",
+				"subscribed": "सदस्यता ली हुई",
+				"mentions": "उल्लेख",
+				"blocked": "ब्लॉक किया गया"
+			},
+			"operators": {
+				"between": "के बीच",
+				"is": "है",
+				"isEmpty": "खाली है",
+				"isNoneOf": "इनमें से कोई नहीं",
+				"isNot": "नहीं है",
+				"isNotEmpty": "खाली नहीं है",
+				"moreThanAgo": "… से अधिक पहले",
+				"moreThanAhead": "अब से … से अधिक बाद",
+				"on": "इस दिन",
+				"onOrAfter": "इस दिन या उसके बाद",
+				"onOrBefore": "इस दिन या उससे पहले",
+				"withinLast": "पिछले",
+				"withinNext": "अगले"
+			},
+			"values": {
+				"me": "मैं",
+				"none": "कोई नहीं",
+				"noAssignee": "कोई असाइनी नहीं",
+				"noCreator": "कोई निर्माता नहीं",
+				"noLabel": "कोई लेबल नहीं",
+				"noCycle": "कोई साइकल नहीं",
+				"noModule": "कोई मॉड्यूल नहीं",
+				"noEstimate": "कोई अनुमान नहीं",
+				"noParent": "कोई मूल कार्य नहीं",
+				"currentCycle": "वर्तमान साइकल",
+				"true": "सही",
+				"false": "गलत",
+				"blockedYes": "हाँ",
+				"blockedNo": "नहीं"
+			},
+			"dates": {
+				"amount": "मात्रा",
+				"custom": "कस्टम तारीख…",
+				"emptyTab": "खाली",
+				"exact": "सटीक तारीख",
+				"future": "आज के बाद",
+				"lastMonth": "पिछला महीना",
+				"lastWeek": "पिछला सप्ताह",
+				"nextMonth": "अगला महीना",
+				"nextWeek": "अगला सप्ताह",
+				"overdue": "समय-सीमा पार",
+				"past": "आज से पहले",
+				"presets": "प्रीसेट",
+				"rolling": "चलती अवधि",
+				"rollingValue": "{{amount}} {{unit}}",
+				"thisMonth": "इस महीने",
+				"thisWeek": "इस सप्ताह",
+				"today": "आज",
+				"tomorrow": "आने वाला कल",
+				"units": {
+					"days": "दिन",
+					"months": "महीने",
+					"weeks": "सप्ताह"
+				},
+				"yesterday": "बीता हुआ कल"
+			},
+			"archived": {
+				"exclude": "संग्रहित छिपाएँ",
+				"include": "संग्रहित भी दिखाएँ",
+				"label": "संग्रहित",
+				"only": "केवल संग्रहित"
+			},
+			"myTasks": "मेरे कार्य"
+		},
+		"display": {
+			"button": "प्रदर्शन",
+			"columns": "कॉलम",
+			"groupBy": "समूह के आधार पर",
+			"groups": {
+				"status": "स्थिति",
+				"group": "समूह",
+				"priority": "प्राथमिकता",
+				"assignee": "सौंपा गया",
+				"createdBy": "बनाने वाला",
+				"label": "लेबल",
+				"cycle": "साइकल",
+				"module": "मॉड्यूल",
+				"estimate": "अनुमान",
+				"project": "प्रोजेक्ट",
+				"customField": "कस्टम फ़ील्ड"
+			},
+			"none": "कोई नहीं",
+			"order": {
+				"manual": "मैन्युअल",
+				"createdAt": "हाल में बनाए गए",
+				"updatedAt": "हाल में अपडेट किए गए",
+				"completedAt": "पूरा होने की तारीख",
+				"startDate": "शुरू की तारीख",
+				"dueDate": "नियत तारीख",
+				"priority": "प्राथमिकता",
+				"title": "शीर्षक",
+				"number": "कार्य कुंजी",
+				"status": "स्थिति",
+				"assignee": "सौंपा गया",
+				"label": "लेबल",
+				"cycle": "साइकल",
+				"module": "मॉड्यूल",
+				"estimate": "अनुमान",
+				"subTaskCount": "उप-कार्य",
+				"archivedAt": "संग्रह की तारीख",
+				"customField": "कस्टम फ़ील्ड"
+			},
+			"orderBy": "क्रम के आधार पर",
+			"properties": "गुण",
+			"props": {
+				"assignee": "सौंपे गए लोग",
+				"checklist": "चेकलिस्ट",
+				"createdAt": "बनाया गया",
+				"cycle": "साइकल",
+				"dueDate": "नियत तारीख",
+				"estimate": "अनुमान",
+				"key": "कुंजी",
+				"labels": "लेबल",
+				"modules": "मॉड्यूल",
+				"priority": "प्राथमिकता",
+				"startDate": "शुरू की तारीख",
+				"status": "स्थिति",
+				"subTaskCount": "उप-कार्य",
+				"updatedAt": "अपडेट किया गया"
+			},
+			"showEmptyGroups": "खाली समूह दिखाएँ",
+			"showSubTasks": "उप-कार्य दिखाएँ",
+			"subGroupBy": "उप-समूह के आधार पर"
+		},
+		"groups": {
+			"all": "सभी कार्य",
+			"planned": "नियोजित",
+			"noAssignee": "कोई असाइनी नहीं",
+			"noCreator": "कोई निर्माता नहीं",
+			"noLabel": "कोई लेबल नहीं",
+			"noCycle": "कोई साइकल नहीं",
+			"noModule": "कोई मॉड्यूल नहीं",
+			"noEstimate": "कोई अनुमान नहीं",
+			"loadMore": "और लोड करें ({{count}})",
+			"hiddenGroups_one": "{{count}} और समूह नहीं दिखाया गया",
+			"hiddenGroups_other": "{{count}} और समूह नहीं दिखाए गए",
+			"moduleCount_one": "{{count}} मॉड्यूल",
+			"moduleCount_other": "{{count}} मॉड्यूल",
+			"moveError": "कार्य को स्थानांतरित नहीं किया जा सका",
+			"noFieldValue": "कोई मान नहीं"
+		},
+		"spreadsheet": {
+			"clearSort": "क्रम हटाएँ",
+			"collapseSubTasks": "उप-कार्य छिपाएँ",
+			"expandSubTasks": "उप-कार्य दिखाएँ",
+			"hideColumn": "कॉलम छिपाएँ",
+			"loadError": "कार्य लोड नहीं हो सके",
+			"selectTask": "{{key}} चुनें",
+			"sortAsc": "आरोही क्रम में क्रमबद्ध करें",
+			"sortDesc": "अवरोही क्रम में क्रमबद्ध करें",
+			"task": "कार्य"
+		},
+		"queryEmpty": {
+			"clear": "फ़िल्टर साफ़ करें",
+			"description": "एक-दो फ़िल्टर हटाकर देखें।",
+			"title": "इन फ़िल्टर से कोई कार्य मेल नहीं खाता"
 		},
 		"capture": {
 			"ariaLabel": "{{column}} में कार्य जोड़ें",
@@ -5090,48 +5348,33 @@
 			"changePriority": "प्राथमिकता: {{priority}}",
 			"changeStatus": "स्थिति: {{status}}"
 		},
-		"commands": {
-			"assignedSelf": "आपको सौंपा गया",
-			"assignees": "सौंपे गए लोग बदलें…",
-			"assignSelf": "मुझे सौंपें",
-			"copyTitle": "शीर्षक कॉपी करें",
-			"cycle": "साइकल बदलें…",
-			"dueDate": "नियत तारीख बदलें…",
-			"estimate": "अनुमान बदलें…",
-			"group": "यह कार्य",
-			"labels": "लेबल बदलें…",
-			"module": "मॉड्यूल बदलें…",
-			"priority": "प्राथमिकता बदलें…",
-			"status": "स्थिति बदलें…",
-			"titleCopied": "कार्य का शीर्षक कॉपी किया गया",
-			"unassignedSelf": "अब यह आपको सौंपा नहीं है",
-			"unassignSelf": "मुझसे हटाएँ"
+		"boardSearchOpen": "कार्य खोजें",
+		"customFieldValue": {
+			"clear": "मान साफ़ करें",
+			"edit": "{{name}} संपादित करें",
+			"removedOption": "{{value}} (निकाला गया विकल्प)",
+			"saveError": "यह फ़ील्ड सहेजा नहीं जा सका।",
+			"placeholder": "नया मान",
+			"true": "सही",
+			"false": "ग़लत"
 		},
-		"readableLink": {
-			"goHome": "होम पर जाएँ",
-			"notFound": "इस वर्कस्पेस में {{key}} कुंजी वाला कोई कार्य नहीं है, या आप उसे नहीं देख सकते।"
+		"customFieldBulk": {
+			"action": "कस्टम फ़ील्ड",
+			"chooseField": "फ़ील्ड चुनें",
+			"apply": "लागू करें",
+			"updated_one": "{{count}} कार्य अपडेट किया गया",
+			"updated_other": "{{count}} कार्य अपडेट किए गए",
+			"error": "चुने गए कार्य अपडेट नहीं हो सके।"
 		},
-		"descriptionHistory": {
-			"cancel": "रद्द करें",
-			"description": "इस विवरण के सहेजे गए संस्करण, नए पहले। एक व्यक्ति के 10 मिनट के भीतर किए गए बदलाव एक ही संस्करण में रहते हैं; नवीनतम 50 रखे जाते हैं।",
-			"earlierVersion": "पिछला संस्करण",
-			"empty": "अभी तक कोई सहेजा गया संस्करण नहीं। अगले बदलाव से संस्करण रखे जाएँगे।",
-			"emptyVersion": "इस संस्करण में कोई विवरण नहीं है।",
-			"latest": "नवीनतम",
-			"list": "सहेजे गए संस्करण",
-			"loadError": "इतिहास लोड नहीं हो सका",
-			"open": "इतिहास",
-			"previewTitle": "{{date}} का संस्करण",
-			"restore": "पुनर्स्थापित करें",
-			"restoreConfirmDescription": "विवरण को इस संस्करण से बदल दिया जाएगा। मौजूदा टेक्स्ट इतिहास में रहेगा।",
-			"restoreConfirmTitle": "यह संस्करण पुनर्स्थापित करें?",
-			"restored": "विवरण पुनर्स्थापित किया गया",
-			"restoreError": "यह संस्करण पुनर्स्थापित नहीं हो सका",
-			"retry": "पुनः प्रयास करें",
-			"size_one": "{{count}} वर्ण",
-			"size_other": "{{count}} वर्ण",
-			"title": "विवरण का इतिहास",
-			"viewOnly": "केवल देखने के लिए"
+		"milestone": {
+			"label": "माइलस्टोन",
+			"hint": "एक तारीख को चिह्नित करता है। टाइमलाइन इसे इसकी नियत तारीख पर हीरे के निशान के रूप में दिखाती है।",
+			"updateError": "माइलस्टोन अपडेट नहीं हो सका"
+		},
+		"scheduleField": {
+			"label": "कार्यों पर दिखने वाला फ़ील्ड",
+			"none": "कोई फ़ील्ड नहीं",
+			"value": "{{name}}: {{value}}"
 		}
 	},
 	"invitations": {
@@ -5187,7 +5430,8 @@
 				"inProgress": "प्रगति में"
 			},
 			"noDueDate": "कोई नियत तारीख नहीं",
-			"reorderError": "प्रोजेक्ट का क्रम बदलने में विफल"
+			"reorderError": "प्रोजेक्ट का क्रम बदलने में विफल",
+			"emptyDescriptionGuest": "आपको अभी तक किसी प्रोजेक्ट में नहीं जोड़ा गया है। जिन्होंने आपको आमंत्रित किया है, उनसे आपको जोड़ने को कहें।"
 		},
 		"search": {
 			"pageTitle": "खोजें",
@@ -5295,7 +5539,8 @@
 			"owner": "मालिक",
 			"admin": "व्यवस्थापक",
 			"member": "सदस्य",
-			"viewer": "दर्शक"
+			"viewer": "दर्शक",
+			"guest": "अतिथि"
 		},
 		"members": {
 			"pageTitle": "सदस्य",
@@ -5331,7 +5576,13 @@
 			"sentSome": "{{total}} में से {{sent}} निमंत्रण भेजे गए।",
 			"failedTitle": "नहीं भेजे गए",
 			"rateLimited": "एक साथ बहुत अधिक निमंत्रण। एक मिनट रुकें, फिर बाकी भेजें।",
-			"shareLinksDescription": "हर लिंक संबंधित व्यक्ति के साथ साझा करें ताकि वे वर्कस्पेस में शामिल हो सकें।"
+			"shareLinksDescription": "हर लिंक संबंधित व्यक्ति के साथ साझा करें ताकि वे वर्कस्पेस में शामिल हो सकें।",
+			"guestRoleHint": "अतिथि केवल वही प्रोजेक्ट देखते हैं जिनमें आप उन्हें जोड़ते हैं, और वर्कस्पेस में और कुछ नहीं।",
+			"guestProjectsLabel": "प्रोजेक्ट",
+			"guestProjectsHint": "निमंत्रण स्वीकार करते ही वे आपके चुने हुए प्रोजेक्ट में, आपकी चुनी हुई प्रोजेक्ट भूमिका के साथ शामिल हो जाते हैं। दर्शक के रूप में वे केवल पढ़ सकते हैं।",
+			"guestProjectsEmpty": "ऐसा कोई प्रोजेक्ट नहीं है जिसे आप साझा कर सकें। उनके शामिल होने के बाद उन्हें प्रोजेक्ट में जोड़ें।",
+			"guestProjectRoleFor": "{{project}} में प्रोजेक्ट भूमिका",
+			"guestProjectsFailed": "निमंत्रण भेज दिया गया, लेकिन उसके प्रोजेक्ट नहीं जोड़े जा सके: {{message}}"
 		},
 		"membersTable": {
 			"emptyTitle": "अभी तक कोई टीम सदस्य नहीं",
@@ -5356,7 +5607,8 @@
 			"roleUpdateSuccess": "भूमिका अपडेट की गई",
 			"roleUpdateError": "भूमिका अपडेट करने में विफल",
 			"ariaInvitationRole": "{{email}} के लिए भूमिका",
-			"invitationRoleUpdateSuccess": "निमंत्रण की भूमिका अपडेट हुई"
+			"invitationRoleUpdateSuccess": "निमंत्रण की भूमिका अपडेट हुई",
+			"removeDialogAccessNote": "यदि यह उनका एकमात्र वर्कस्पेस है, तो वे साइन आउट भी हो जाएँगे और उनकी API कुंजियाँ काम करना बंद कर देंगी।"
 		},
 		"profile": {
 			"emptyActivity": "अभी तक कोई गतिविधि नहीं",
@@ -6383,7 +6635,7 @@
 					"visibility": "दृश्यता",
 					"workflow": "वर्कफ़्लो"
 				},
-				"purgeOn": "{{date}} को स्थायी रूप से हटेगा",
+				"purgeOn": "{{date}} को स्थायी रूप से हटा दिया जाएगा",
 				"restore": "पुनर्स्थापित करें",
 				"restored": "कार्य पुनर्स्थापित हुआ",
 				"search": "हटाए गए कार्य खोजें",
@@ -7842,6 +8094,29 @@
 		}
 	},
 	"home": {
+		"pageTitle": "होम",
+		"greeting": {
+			"afternoon": "नमस्कार, {{name}}",
+			"dateTime": "{{date}} · {{time}}",
+			"evening": "शुभ संध्या, {{name}}",
+			"morning": "सुप्रभात, {{name}}"
+		},
+		"manageWidgets": "विजेट प्रबंधित करें",
+		"widgets": {
+			"quickLinks": "त्वरित लिंक",
+			"recents": "हाल के",
+			"stickies": "स्टिकी नोट",
+			"risks": "जोखिम",
+			"myBrief": "मेरा ब्रीफ़",
+			"pinnedReports": "पिन की गई रिपोर्ट"
+		},
+		"manage": {
+			"description": "चुनें कि आपके होम पर क्या दिखे और क्रम बदलने के लिए खींचें। ये सेटिंग केवल आपको दिखती हैं।",
+			"reorder": "{{widget}} का क्रम बदलें",
+			"saveError": "आपकी होम सेटिंग सहेजी नहीं जा सकीं",
+			"title": "विजेट प्रबंधित करें",
+			"toggle": "{{widget}} दिखाएँ"
+		},
 		"empty": {
 			"description": "सभी विजेट बंद हैं। अपने लिंक, हाल की विज़िट और स्टिकी नोट यहाँ देखने के लिए कुछ विजेट चालू करें।",
 			"title": "आपका होम खाली है"
@@ -7871,21 +8146,6 @@
 			},
 			"title": "शुरू करें"
 		},
-		"greeting": {
-			"afternoon": "नमस्कार, {{name}}",
-			"dateTime": "{{date}} · {{time}}",
-			"evening": "शुभ संध्या, {{name}}",
-			"morning": "सुप्रभात, {{name}}"
-		},
-		"manage": {
-			"description": "चुनें कि आपके होम पर क्या दिखे और क्रम बदलने के लिए खींचें। ये सेटिंग केवल आपको दिखती हैं।",
-			"reorder": "{{widget}} का क्रम बदलें",
-			"saveError": "आपकी होम सेटिंग सहेजी नहीं जा सकीं",
-			"title": "विजेट प्रबंधित करें",
-			"toggle": "{{widget}} दिखाएँ"
-		},
-		"manageWidgets": "विजेट प्रबंधित करें",
-		"pageTitle": "होम",
 		"quickLinks": {
 			"add": "लिंक जोड़ें",
 			"copy": "लिंक कॉपी करें",
@@ -7942,24 +8202,32 @@
 			"visited": "{{time}} विज़िट किया"
 		},
 		"retry": "पुनः प्रयास करें",
-		"widgets": {
-			"quickLinks": "त्वरित लिंक",
-			"recents": "हाल के",
-			"stickies": "स्टिकी नोट",
-			"risks": "जोखिम",
-			"myBrief": "मेरा ब्रीफ़"
-		},
 		"focus": {
-			"caughtUp": "सब देख लिया गया है",
-			"inbox": "इनबॉक्स",
 			"label": "वहीं से फिर शुरू करें",
+			"inbox": "इनबॉक्स",
 			"myWork": "आपका काम",
+			"stickies": "स्टिकी नोट",
+			"caughtUp": "सब देख लिया गया है",
 			"overdue_one": "{{count}} अतिदेय",
 			"overdue_other": "{{count}} अतिदेय",
-			"stickies": "स्टिकी नोट",
 			"stickiesHint": "निजी नोट, सिर्फ़ आपके लिए",
+			"unreadCaption": "अपठित",
 			"openCaption": "खुले",
-			"unreadCaption": "अपठित"
+			"loadError": "लोड नहीं हो सका"
+		},
+		"dueToday": {
+			"title": "आज देय",
+			"empty": "आपको सौंपा गया कुछ भी आज देय नहीं है।",
+			"loadError": "आज देय आपके कार्य लोड नहीं हो सके",
+			"viewAll": "सभी {{total}} देखें"
+		},
+		"pinnedReports": {
+			"empty": "इसे यहाँ देखने के लिए एनालिटिक्स में कोई सहेजी गई रिपोर्ट पिन करें।",
+			"openAnalytics": "एनालिटिक्स खोलें",
+			"loadError": "आपकी पिन की गई रिपोर्ट लोड नहीं हो सकीं",
+			"chartError": "यह रिपोर्ट लोड नहीं हो सकी",
+			"unpin": "{{name}} को होम से अनपिन करें",
+			"showing": "{{total}} में से {{shown}} दिखाई जा रही हैं। बाकी एनालिटिक्स में हैं।"
 		}
 	},
 	"intake": {
@@ -8251,14 +8519,111 @@
 		"viewAll": "सभी देखें"
 	},
 	"analytics": {
-		"a11y": {
-			"barSummary": "{{dimension}} के अनुसार {{metric}}: {{count}} समूह, सबसे ज़्यादा {{label}}, {{value}} के साथ",
-			"donutSummary": "{{count}} समूहों में {{total}} कार्य",
-			"lineSummary": "{{count}} अवधियों में {{series}}"
+		"pageTitle": "एनालिटिक्स",
+		"projectPageTitle": "{{project}} · एनालिटिक्स",
+		"tabs": {
+			"overview": "अवलोकन",
+			"tasks": "कार्य",
+			"cycles": "साइकल",
+			"modules": "मॉड्यूल",
+			"intake": "इनटेक",
+			"delivery": "डिलीवरी",
+			"time": "समय"
 		},
-		"breakdown": {
-			"groupRowsBy": "पंक्तियों को इसके अनुसार समूहित करें",
-			"title": "विश्लेषण"
+		"header": {
+			"allProjects": "सभी प्रोजेक्ट",
+			"clearSelection": "चयन साफ़ करें",
+			"noProjectsFound": "कोई प्रोजेक्ट नहीं मिला",
+			"projectsCount_one": "{{count}} प्रोजेक्ट",
+			"projectsCount_other": "{{count}} प्रोजेक्ट",
+			"refresh": "रीफ़्रेश करें",
+			"searchProjects": "प्रोजेक्ट खोजें",
+			"selectProjects": "प्रोजेक्ट चुनें",
+			"updatedAt": "{{time}} अपडेट किया गया"
+		},
+		"openInAnalytics": "एनालिटिक्स में खोलें",
+		"context": {
+			"cycle": "साइकल: {{name}}",
+			"module": "मॉड्यूल: {{name}}",
+			"remove": "फ़िल्टर से {{name}} हटाएँ"
+		},
+		"states": {
+			"loadError": "यह सेक्शन लोड नहीं हो सका",
+			"newProject": "नया प्रोजेक्ट",
+			"noAccessDescription": "वर्कस्पेस एडमिन से एनालिटिक्स की अनुमति माँगें।",
+			"noAccessTitle": "आपके पास एनालिटिक्स की पहुँच नहीं है",
+			"noCycles": "अभी तक कोई साइकल नहीं",
+			"noModules": "अभी तक कोई मॉड्यूल नहीं",
+			"noPeriodData": "इस अवधि में कोई डेटा नहीं",
+			"noProjectsDescription": "एनालिटिक्स आपके प्रोजेक्ट के कार्यों का सारांश देता है।",
+			"noProjectsTitle": "एनालिटिक्स देखने के लिए प्रोजेक्ट बनाएँ",
+			"noRequests": "अभी तक कोई अनुरोध नहीं",
+			"noTasks": "इन फ़िल्टर से कोई कार्य मेल नहीं खाता",
+			"retry": "पुनः प्रयास करें",
+			"timeout": "इसमें बहुत ज़्यादा समय लगा। फ़िल्टर सीमित करके फिर कोशिश करें।",
+			"noRunningCycles": "अभी कोई साइकल नहीं चल रहा है"
+		},
+		"view": {
+			"chart": "चार्ट",
+			"label": "इस रूप में दिखाएँ",
+			"table": "तालिका"
+		},
+		"kpi": {
+			"accepted": "{{count}} स्वीकृत",
+			"completedTasks": "पूर्ण कार्य",
+			"completion": "पूर्णता",
+			"completionDetail": "{{committed}} में से {{completed}}",
+			"cyclesRunning": "चल रही साइकल",
+			"members": "सदस्य",
+			"membersDetail": "{{admins}} एडमिन · {{viewers}} दर्शक",
+			"modulesInProgress": "प्रगति में मॉड्यूल",
+			"modulesTotal": "कुल {{count}}",
+			"openRequests": "खुले अनुरोध",
+			"openTasks": "खुले कार्य",
+			"overdue": "{{count}} अतिदेय",
+			"percentComplete": "{{percent}}% पूर्ण",
+			"projects": "प्रोजेक्ट",
+			"total": "कुल",
+			"upcoming": "{{count}} आगामी"
+		},
+		"overview": {
+			"projectProgress": "प्रोजेक्ट की प्रगति",
+			"projectProgressSubtitle": "सबसे ज़्यादा खुले कार्यों वाले प्रोजेक्ट पहले",
+			"open": "{{count}} खुले",
+			"showAll": "सभी {{count}} दिखाएँ",
+			"showLess": "कम दिखाएँ",
+			"tasksByGroup": "समूह के अनुसार कार्य",
+			"donutCenter_one": "{{count}} कार्य",
+			"donutCenter_other": "{{count}} कार्य",
+			"workload": "कार्यभार",
+			"workloadSubtitle": "सौंपे गए व्यक्ति के अनुसार खुले कार्य",
+			"workloadSubtitlePoints": "सौंपे गए व्यक्ति के अनुसार खुले अनुमान पॉइंट",
+			"overloaded_one": "{{names}} के पास उससे ज़्यादा खुला काम है जितना वे आम तौर पर {{weeks}} हफ़्तों में पूरा करते हैं।",
+			"overloaded_other": "{{names}} के पास उससे ज़्यादा खुला काम है जितना वे आम तौर पर {{weeks}} हफ़्तों में पूरा करते हैं।",
+			"overUsual": "सामान्य से अधिक",
+			"overTooltip": "{{name}}: सामान्य से अधिक",
+			"usualHint": "सामान्य वह है जो हर व्यक्ति ने पिछले {{historyWeeks}} हफ़्तों के आधार पर आम तौर पर {{usualWeeks}} हफ़्तों में पूरा किया। जिसका हाल का इतिहास नहीं है, उसका आकलन नहीं किया जाता।",
+			"checkColumn": "सामान्य की तुलना में",
+			"checkOverPoints": "अधिक: {{load}} पॉइंट, आम तौर पर {{usual}}",
+			"checkOverTasks": "अधिक: {{load}} कार्य, आम तौर पर {{usual}}",
+			"checkOkPoints": "{{load}} पॉइंट, आम तौर पर {{usual}}",
+			"checkOkTasks": "{{load}} कार्य, आम तौर पर {{usual}}",
+			"checkUnknown": "हाल का कोई इतिहास नहीं"
+		},
+		"trend": {
+			"completed": "पूर्ण",
+			"created": "बनाए गए",
+			"help": "बनाए गए कार्यों को उनके बनने के दिन के अनुसार गिनता है। पूर्ण कार्यों को उनके पूर्ण होने के दिन के अनुसार गिनता है, बशर्ते वे अब भी पूर्ण हों। संग्रहित कार्य तब तक शामिल नहीं होते जब तक आप उन्हें शामिल न करें।",
+			"period": "अवधि",
+			"summary": "बनाए गए {{created}} · पूर्ण {{completed}} · शुद्ध {{net}}",
+			"title": "बनाए गए बनाम पूर्ण"
+		},
+		"periods": {
+			"custom": "कस्टम सीमा",
+			"last12m": "पिछले 12 महीने",
+			"last30": "पिछले 30 दिन",
+			"last6m": "पिछले 6 महीने",
+			"last90": "पिछले 90 दिन"
 		},
 		"bucket": {
 			"label": "तारीखों को इसके अनुसार समूहित करें",
@@ -8269,6 +8634,14 @@
 		"buckets": {
 			"range": "{{from}} – {{to}}",
 			"weekOf": "{{date}} का सप्ताह"
+		},
+		"metric": {
+			"label": "मीट्रिक",
+			"tasks": "कार्य",
+			"points": "अनुमान अंक",
+			"pointsShort": "अंक",
+			"sum": "योग",
+			"sumOf": "{{name}} का योग"
 		},
 		"builder": {
 			"countSubTasks": "उप-कार्य गिनें",
@@ -8285,10 +8658,130 @@
 			"truncatedX": "{{total}} {{dimension}} में से शीर्ष {{shown}} दिखाए जा रहे हैं",
 			"xAxis": "X-अक्ष"
 		},
-		"context": {
-			"cycle": "साइकल: {{name}}",
-			"module": "मॉड्यूल: {{name}}",
-			"remove": "फ़िल्टर से {{name}} हटाएँ"
+		"reports": {
+			"open": "रिपोर्ट",
+			"listTitle": "सहेजी गई रिपोर्ट",
+			"loadError": "सहेजी गई रिपोर्ट लोड नहीं हो सकीं",
+			"empty": "अभी तक कोई सहेजी गई रिपोर्ट नहीं। बाद में इस पर लौटने के लिए यह चार्ट सहेजें।",
+			"sharedBy": "{{name}} द्वारा साझा की गई",
+			"actionsFor": "{{name}} के लिए कार्रवाइयाँ",
+			"rename": "नाम बदलें",
+			"share": "वर्कस्पेस के साथ साझा करें",
+			"makePrivate": "निजी बनाएँ",
+			"delete": "हटाएँ",
+			"save": "सहेजें",
+			"saveAsNew": "नई रिपोर्ट के रूप में सहेजें",
+			"update": "रिपोर्ट अपडेट करें",
+			"showing": "रिपोर्ट: {{name}}",
+			"unsaved": "बिना सहेजे बदलाव",
+			"close": "रिपोर्ट बंद करें",
+			"deleteTitle": "यह रिपोर्ट हटाएँ?",
+			"deleteDescription": "“{{name}}” हटा दी जाएगी। इसे पूर्ववत नहीं किया जा सकता।",
+			"deleteSharedDescription": "“{{name}}” वर्कस्पेस में सभी के लिए हटा दी जाएगी। इसे पूर्ववत नहीं किया जा सकता।",
+			"visibility": {
+				"private": "निजी",
+				"privateHint": "केवल आप इसे देख सकते हैं।",
+				"workspace": "वर्कस्पेस के साथ साझा",
+				"workspaceHint": "इस वर्कस्पेस में एनालिटिक्स की पहुँच वाला कोई भी व्यक्ति इसे खोल सकता है।"
+			},
+			"dialog": {
+				"cancel": "रद्द करें",
+				"createTitle": "रिपोर्ट सहेजें",
+				"editTitle": "रिपोर्ट संपादित करें",
+				"name": "नाम",
+				"namePlaceholder": "जैसे, सौंपे गए व्यक्ति के अनुसार खुले बग",
+				"nameRequired": "नाम दर्ज करें",
+				"save": "सहेजें",
+				"summary": "चार्ट सेटिंग, दायरे में शामिल प्रोजेक्ट और फ़िल्टर सहेजता है।",
+				"update": "बदलाव सहेजें",
+				"visibility": "इसे कौन देख सकता है"
+			},
+			"notes": {
+				"allProjects": "इसका कोई भी प्रोजेक्ट उपलब्ध नहीं है, इसलिए सभी प्रोजेक्ट दिखाए गए हैं।",
+				"builderReset": "कुछ चार्ट सेटिंग इन प्रोजेक्ट के लिए उपलब्ध नहीं हैं, इसलिए उन्हें रीसेट कर दिया गया।",
+				"dropped_one": "इस रिपोर्ट का {{count}} प्रोजेक्ट अब मौजूद नहीं है।",
+				"dropped_other": "इस रिपोर्ट के {{count}} प्रोजेक्ट अब मौजूद नहीं हैं।",
+				"leftOut_one": "इस रिपोर्ट का {{count}} प्रोजेक्ट संग्रहित है, इसलिए उसे छोड़ दिया गया।",
+				"leftOut_other": "इस रिपोर्ट के {{count}} प्रोजेक्ट संग्रहित हैं, इसलिए उन्हें छोड़ दिया गया।",
+				"otherProjects": "यह रिपोर्ट दूसरे प्रोजेक्ट के लिए सहेजी गई थी; यहाँ यह केवल इस प्रोजेक्ट को दिखाती है।"
+			},
+			"toast": {
+				"saved": "“{{name}}” सहेजी गई",
+				"updated": "रिपोर्ट अपडेट की गई",
+				"shared": "रिपोर्ट वर्कस्पेस के साथ साझा की गई",
+				"madePrivate": "रिपोर्ट अब निजी है",
+				"deleted": "रिपोर्ट हटाई गई",
+				"saveError": "रिपोर्ट सहेजी नहीं जा सकी",
+				"deleteError": "रिपोर्ट हटाई नहीं जा सकी",
+				"pinned": "होम पर पिन किया गया",
+				"unpinned": "होम से अनपिन किया गया",
+				"pinError": "आपका होम अपडेट नहीं हो सका",
+				"pinLimit_one": "आप अधिकतम {{count}} रिपोर्ट पिन कर सकते हैं। पहले कोई एक अनपिन करें।",
+				"pinLimit_other": "आप अधिकतम {{count}} रिपोर्ट पिन कर सकते हैं। पहले कोई एक अनपिन करें।"
+			},
+			"pin": "होम पर पिन करें",
+			"unpin": "होम से अनपिन करें"
+		},
+		"dimensions": {
+			"status": "स्थिति",
+			"group": "समूह",
+			"priority": "प्राथमिकता",
+			"assignee": "सौंपा गया",
+			"createdBy": "बनाने वाला",
+			"label": "लेबल",
+			"cycle": "साइकल",
+			"module": "मॉड्यूल",
+			"estimate": "अनुमान",
+			"project": "प्रोजेक्ट",
+			"createdAt": "बनाने की तारीख",
+			"completedAt": "पूर्ण होने की तारीख",
+			"startDate": "शुरू की तारीख",
+			"dueDate": "नियत तारीख",
+			"customField": "कस्टम फ़ील्ड"
+		},
+		"dimensionsPlural": {
+			"status": "स्थितियाँ",
+			"assignee": "सौंपे गए लोग",
+			"createdBy": "बनाने वाले",
+			"label": "लेबल",
+			"cycle": "साइकल",
+			"module": "मॉड्यूल",
+			"estimate": "अनुमान",
+			"project": "प्रोजेक्ट",
+			"period": "अवधियाँ",
+			"customField": "मान"
+		},
+		"none": {
+			"assignee": "किसी को नहीं सौंपा",
+			"createdBy": "अज्ञात बनाने वाला",
+			"label": "कोई लेबल नहीं",
+			"cycle": "कोई साइकल नहीं",
+			"module": "कोई मॉड्यूल नहीं",
+			"estimate": "कोई अनुमान नहीं",
+			"completedAt": "पूर्ण नहीं हुआ",
+			"startDate": "कोई शुरू की तारीख नहीं",
+			"dueDate": "कोई नियत तारीख नहीं",
+			"customField": "कोई मान नहीं"
+		},
+		"other": "अन्य",
+		"table": {
+			"periodEnd": "अवधि का अंत",
+			"periodStart": "अवधि की शुरुआत",
+			"progress": "प्रगति",
+			"showAll": "सभी {{count}} दिखाएँ",
+			"sortBy": "{{column}} के अनुसार क्रमबद्ध करें",
+			"tasks": "कार्य",
+			"total": "कुल"
+		},
+		"breakdown": {
+			"groupRowsBy": "पंक्तियों को इसके अनुसार समूहित करें",
+			"title": "विश्लेषण"
+		},
+		"export": {
+			"button": "CSV निर्यात करें",
+			"error": "यह तालिका निर्यात नहीं हो सकी",
+			"success_one": "{{count}} पंक्ति निर्यात की गई",
+			"success_other": "{{count}} पंक्तियाँ निर्यात की गईं"
 		},
 		"cycles": {
 			"averageCompleted": "औसत पूर्ण (पिछली 3)",
@@ -8321,49 +8814,15 @@
 				"running": "अभी चल रहे"
 			}
 		},
-		"dimensions": {
-			"assignee": "सौंपा गया",
-			"completedAt": "पूर्ण होने की तारीख",
-			"createdAt": "बनाने की तारीख",
-			"createdBy": "बनाने वाला",
-			"cycle": "साइकल",
-			"dueDate": "नियत तारीख",
-			"estimate": "अनुमान",
-			"group": "समूह",
-			"label": "लेबल",
-			"module": "मॉड्यूल",
-			"priority": "प्राथमिकता",
-			"project": "प्रोजेक्ट",
-			"startDate": "शुरू की तारीख",
-			"status": "स्थिति"
-		},
-		"dimensionsPlural": {
-			"assignee": "सौंपे गए लोग",
-			"createdBy": "बनाने वाले",
-			"cycle": "साइकल",
-			"estimate": "अनुमान",
-			"label": "लेबल",
-			"module": "मॉड्यूल",
-			"period": "अवधियाँ",
-			"project": "प्रोजेक्ट",
-			"status": "स्थितियाँ"
-		},
-		"export": {
-			"button": "CSV निर्यात करें",
-			"error": "यह तालिका निर्यात नहीं हो सकी",
-			"success_one": "{{count}} पंक्ति निर्यात की गई",
-			"success_other": "{{count}} पंक्तियाँ निर्यात की गईं"
-		},
-		"header": {
-			"allProjects": "सभी प्रोजेक्ट",
-			"clearSelection": "चयन साफ़ करें",
-			"noProjectsFound": "कोई प्रोजेक्ट नहीं मिला",
-			"projectsCount_one": "{{count}} प्रोजेक्ट",
-			"projectsCount_other": "{{count}} प्रोजेक्ट",
-			"refresh": "रीफ़्रेश करें",
-			"searchProjects": "प्रोजेक्ट खोजें",
-			"selectProjects": "प्रोजेक्ट चुनें",
-			"updatedAt": "{{time}} अपडेट किया गया"
+		"modules": {
+			"overdue": "अतिदेय",
+			"table": {
+				"lead": "लीड",
+				"module": "मॉड्यूल",
+				"noLead": "कोई लीड नहीं",
+				"targetDate": "लक्ष्य तारीख",
+				"title": "मॉड्यूल"
+			}
 		},
 		"intake": {
 			"accepted": "स्वीकृत",
@@ -8381,176 +8840,24 @@
 			"submitted": "भेजे गए",
 			"triaged": "छाँटे गए"
 		},
-		"kpi": {
-			"accepted": "{{count}} स्वीकृत",
-			"completedTasks": "पूर्ण कार्य",
-			"completion": "पूर्णता",
-			"completionDetail": "{{committed}} में से {{completed}}",
-			"cyclesRunning": "चल रही साइकल",
-			"members": "सदस्य",
-			"membersDetail": "{{admins}} एडमिन · {{viewers}} दर्शक",
-			"modulesInProgress": "प्रगति में मॉड्यूल",
-			"modulesTotal": "कुल {{count}}",
-			"openRequests": "खुले अनुरोध",
-			"openTasks": "खुले कार्य",
-			"overdue": "{{count}} अतिदेय",
-			"percentComplete": "{{percent}}% पूर्ण",
-			"projects": "प्रोजेक्ट",
-			"total": "कुल",
-			"upcoming": "{{count}} आगामी"
+		"a11y": {
+			"barSummary": "{{dimension}} के अनुसार {{metric}}: {{count}} समूह, सबसे ज़्यादा {{label}}, {{value}} के साथ",
+			"donutSummary": "{{count}} समूहों में {{total}} कार्य",
+			"lineSummary": "{{count}} अवधियों में {{series}}"
 		},
-		"metric": {
-			"label": "मीट्रिक",
-			"points": "अनुमान अंक",
-			"pointsShort": "अंक",
-			"tasks": "कार्य"
-		},
-		"modules": {
-			"overdue": "अतिदेय",
-			"table": {
-				"lead": "लीड",
-				"module": "मॉड्यूल",
-				"noLead": "कोई लीड नहीं",
-				"targetDate": "लक्ष्य तारीख",
-				"title": "मॉड्यूल"
-			}
-		},
-		"none": {
-			"assignee": "किसी को नहीं सौंपा",
-			"completedAt": "पूर्ण नहीं हुआ",
-			"createdBy": "अज्ञात बनाने वाला",
-			"cycle": "कोई साइकल नहीं",
-			"dueDate": "कोई नियत तारीख नहीं",
-			"estimate": "कोई अनुमान नहीं",
-			"label": "कोई लेबल नहीं",
-			"module": "कोई मॉड्यूल नहीं",
-			"startDate": "कोई शुरू की तारीख नहीं"
-		},
-		"openInAnalytics": "एनालिटिक्स में खोलें",
-		"other": "अन्य",
-		"overview": {
-			"donutCenter_one": "{{count}} कार्य",
-			"donutCenter_other": "{{count}} कार्य",
-			"open": "{{count}} खुले",
-			"projectProgress": "प्रोजेक्ट की प्रगति",
-			"projectProgressSubtitle": "सबसे ज़्यादा खुले कार्यों वाले प्रोजेक्ट पहले",
-			"showAll": "सभी {{count}} दिखाएँ",
-			"showLess": "कम दिखाएँ",
-			"tasksByGroup": "समूह के अनुसार कार्य",
-			"workload": "कार्यभार",
-			"workloadSubtitle": "सौंपे गए व्यक्ति के अनुसार खुले कार्य"
-		},
-		"pageTitle": "एनालिटिक्स",
-		"periods": {
-			"custom": "कस्टम सीमा",
-			"last12m": "पिछले 12 महीने",
-			"last30": "पिछले 30 दिन",
-			"last6m": "पिछले 6 महीने",
-			"last90": "पिछले 90 दिन"
-		},
-		"projectPageTitle": "{{project}} · एनालिटिक्स",
-		"states": {
-			"loadError": "यह सेक्शन लोड नहीं हो सका",
-			"newProject": "नया प्रोजेक्ट",
-			"noAccessDescription": "वर्कस्पेस एडमिन से एनालिटिक्स की अनुमति माँगें।",
-			"noAccessTitle": "आपके पास एनालिटिक्स की पहुँच नहीं है",
-			"noCycles": "अभी तक कोई साइकल नहीं",
-			"noModules": "अभी तक कोई मॉड्यूल नहीं",
-			"noPeriodData": "इस अवधि में कोई डेटा नहीं",
-			"noProjectsDescription": "एनालिटिक्स आपके प्रोजेक्ट के कार्यों का सारांश देता है।",
-			"noProjectsTitle": "एनालिटिक्स देखने के लिए प्रोजेक्ट बनाएँ",
-			"noRequests": "अभी तक कोई अनुरोध नहीं",
-			"noTasks": "इन फ़िल्टर से कोई कार्य मेल नहीं खाता",
-			"retry": "पुनः प्रयास करें",
-			"timeout": "इसमें बहुत ज़्यादा समय लगा। फ़िल्टर सीमित करके फिर कोशिश करें।",
-			"noRunningCycles": "अभी कोई साइकल नहीं चल रहा है"
-		},
-		"table": {
-			"periodEnd": "अवधि का अंत",
-			"periodStart": "अवधि की शुरुआत",
-			"progress": "प्रगति",
-			"showAll": "सभी {{count}} दिखाएँ",
-			"sortBy": "{{column}} के अनुसार क्रमबद्ध करें",
-			"tasks": "कार्य",
-			"total": "कुल"
-		},
-		"tabs": {
-			"cycles": "साइकल",
-			"intake": "इनटेक",
-			"modules": "मॉड्यूल",
-			"overview": "अवलोकन",
-			"tasks": "कार्य",
-			"delivery": "डिलीवरी"
-		},
-		"trend": {
-			"completed": "पूर्ण",
-			"created": "बनाए गए",
-			"help": "बनाए गए कार्यों को उनके बनने के दिन के अनुसार गिनता है। पूर्ण कार्यों को उनके पूर्ण होने के दिन के अनुसार गिनता है, बशर्ते वे अब भी पूर्ण हों। संग्रहित कार्य तब तक शामिल नहीं होते जब तक आप उन्हें शामिल न करें।",
-			"period": "अवधि",
-			"summary": "बनाए गए {{created}} · पूर्ण {{completed}} · शुद्ध {{net}}",
-			"title": "बनाए गए बनाम पूर्ण"
-		},
-		"view": {
-			"chart": "चार्ट",
-			"label": "इस रूप में दिखाएँ",
-			"table": "तालिका"
-		},
-		"reports": {
-			"actionsFor": "{{name}} के लिए कार्रवाइयाँ",
-			"close": "रिपोर्ट बंद करें",
-			"delete": "हटाएँ",
-			"deleteDescription": "“{{name}}” हटा दी जाएगी। इसे पूर्ववत नहीं किया जा सकता।",
-			"deleteSharedDescription": "“{{name}}” वर्कस्पेस में सभी के लिए हटा दी जाएगी। इसे पूर्ववत नहीं किया जा सकता।",
-			"deleteTitle": "यह रिपोर्ट हटाएँ?",
-			"dialog": {
-				"cancel": "रद्द करें",
-				"createTitle": "रिपोर्ट सहेजें",
-				"editTitle": "रिपोर्ट संपादित करें",
-				"name": "नाम",
-				"namePlaceholder": "जैसे, सौंपे गए व्यक्ति के अनुसार खुले बग",
-				"nameRequired": "नाम दर्ज करें",
-				"save": "सहेजें",
-				"summary": "चार्ट सेटिंग, दायरे में शामिल प्रोजेक्ट और फ़िल्टर सहेजता है।",
-				"update": "बदलाव सहेजें",
-				"visibility": "इसे कौन देख सकता है"
-			},
-			"empty": "अभी तक कोई सहेजी गई रिपोर्ट नहीं। बाद में इस पर लौटने के लिए यह चार्ट सहेजें।",
-			"listTitle": "सहेजी गई रिपोर्ट",
-			"loadError": "सहेजी गई रिपोर्ट लोड नहीं हो सकीं",
-			"makePrivate": "निजी बनाएँ",
-			"notes": {
-				"allProjects": "इसका कोई भी प्रोजेक्ट उपलब्ध नहीं है, इसलिए सभी प्रोजेक्ट दिखाए गए हैं।",
-				"builderReset": "कुछ चार्ट सेटिंग इन प्रोजेक्ट के लिए उपलब्ध नहीं हैं, इसलिए उन्हें रीसेट कर दिया गया।",
-				"dropped_one": "इस रिपोर्ट का {{count}} प्रोजेक्ट अब मौजूद नहीं है।",
-				"dropped_other": "इस रिपोर्ट के {{count}} प्रोजेक्ट अब मौजूद नहीं हैं।",
-				"leftOut_one": "इस रिपोर्ट का {{count}} प्रोजेक्ट संग्रहित है, इसलिए उसे छोड़ दिया गया।",
-				"leftOut_other": "इस रिपोर्ट के {{count}} प्रोजेक्ट संग्रहित हैं, इसलिए उन्हें छोड़ दिया गया।",
-				"otherProjects": "यह रिपोर्ट दूसरे प्रोजेक्ट के लिए सहेजी गई थी; यहाँ यह केवल इस प्रोजेक्ट को दिखाती है।"
-			},
-			"open": "रिपोर्ट",
-			"rename": "नाम बदलें",
-			"save": "सहेजें",
-			"saveAsNew": "नई रिपोर्ट के रूप में सहेजें",
-			"share": "वर्कस्पेस के साथ साझा करें",
-			"sharedBy": "{{name}} द्वारा साझा की गई",
-			"showing": "रिपोर्ट: {{name}}",
-			"toast": {
-				"deleted": "रिपोर्ट हटाई गई",
-				"deleteError": "रिपोर्ट हटाई नहीं जा सकी",
-				"madePrivate": "रिपोर्ट अब निजी है",
-				"saved": "“{{name}}” सहेजी गई",
-				"saveError": "रिपोर्ट सहेजी नहीं जा सकी",
-				"shared": "रिपोर्ट वर्कस्पेस के साथ साझा की गई",
-				"updated": "रिपोर्ट अपडेट की गई"
-			},
-			"unsaved": "बिना सहेजे बदलाव",
-			"update": "रिपोर्ट अपडेट करें",
-			"visibility": {
-				"private": "निजी",
-				"privateHint": "केवल आप इसे देख सकते हैं।",
-				"workspace": "वर्कस्पेस के साथ साझा",
-				"workspaceHint": "इस वर्कस्पेस में एनालिटिक्स की पहुँच वाला कोई भी व्यक्ति इसे खोल सकता है।"
-			}
+		"time": {
+			"total": "दर्ज समय",
+			"entries": "प्रविष्टियाँ",
+			"people": "लोग",
+			"running": "अभी चल रहे",
+			"runningNote": "चल रहे टाइमर रुकने के बाद इन योगों में जुड़ जाते हैं।",
+			"byPerson": "व्यक्ति के अनुसार",
+			"byProject": "प्रोजेक्ट के अनुसार",
+			"person": "व्यक्ति",
+			"project": "प्रोजेक्ट",
+			"hours": "घंटे",
+			"formerMember": "पूर्व सदस्य",
+			"empty": "इस अवधि में कोई समय दर्ज नहीं"
 		}
 	},
 	"pages": {
@@ -8631,6 +8938,59 @@
 			"file": "एक संलग्न फ़ाइल",
 			"page": "एक अन्य पेज"
 		},
+		"section": {
+			"title": "पेज"
+		},
+		"list": {
+			"documentTitle": "{{project}} · पेज",
+			"newPage": "नया पेज",
+			"tabs": {
+				"archived": "संग्रहित",
+				"private": "निजी",
+				"public": "सार्वजनिक"
+			},
+			"searchPlaceholder": "पेज खोजें",
+			"clearFilters": "फ़िल्टर साफ़ करें",
+			"sort": {
+				"created": "बनाया गया",
+				"lastEdited": "आखिरी बार संपादित",
+				"name": "नाम"
+			},
+			"untitled": "बिना शीर्षक",
+			"inParent": "{{path}} में",
+			"ownedBy": "स्वामी: {{name}}",
+			"access": {
+				"private": "निजी",
+				"public": "सार्वजनिक"
+			},
+			"editedAgo": "{{time}} संपादित किया गया",
+			"archivedOn": "{{date}} को संग्रहित",
+			"locked": "लॉक है",
+			"loadError": "पेज लोड नहीं हो सके",
+			"retry": "पुनः प्रयास करें",
+			"empty": {
+				"archived": {
+					"description": "संग्रहित पेज यहाँ दिखते हैं। आप उन्हें पुनर्स्थापित या हटा सकते हैं।",
+					"title": "कोई संग्रहित पेज नहीं"
+				},
+				"noMatch": {
+					"description": "कोई दूसरी खोज आज़माएँ या फ़िल्टर साफ़ करें।",
+					"title": "कोई मेल खाता पेज नहीं"
+				},
+				"none": {
+					"description": "पेज में स्पेक, नोट और दस्तावेज़ प्रोजेक्ट के कार्यों के ठीक पास रहते हैं।",
+					"title": "अपना पहला पेज लिखें"
+				},
+				"private": {
+					"description": "निजी पेज केवल आपको दिखते हैं।",
+					"title": "कोई निजी पेज नहीं"
+				},
+				"public": {
+					"title": "कोई सार्वजनिक पेज नहीं"
+				}
+			},
+			"recentlyDeleted": "हाल ही में हटाए गए"
+		},
 		"actions": {
 			"archive": "संग्रहित करें",
 			"copyLink": "लिंक कॉपी करें",
@@ -8646,6 +9006,123 @@
 			"restore": "पुनर्स्थापित करें",
 			"unlock": "अनलॉक करें"
 		},
+		"toasts": {
+			"accessError": "इस पेज को कौन देख सकता है, यह बदला नहीं जा सका",
+			"archived": "पेज संग्रहित हो गया",
+			"archiveError": "पेज संग्रहित नहीं हो सका",
+			"contentConflict": "यह पेज कहीं और बदल गया, इसलिए आपका आखिरी संपादन सहेजा नहीं गया। नवीनतम संस्करण दिखाया जा रहा है।",
+			"contentSaveError": "पेज सहेजा नहीं जा सका",
+			"createError": "पेज बनाया नहीं जा सका",
+			"deleted": "पेज हटा दिया गया",
+			"deleteError": "पेज हटाया नहीं जा सका",
+			"duplicated": "पेज की प्रतिलिपि बन गई",
+			"duplicateError": "पेज की प्रतिलिपि नहीं बन सकी",
+			"fullWidthError": "पेज की चौड़ाई बदली नहीं जा सकी",
+			"linkCopied": "लिंक कॉपी हो गया",
+			"locked": "पेज लॉक हो गया",
+			"lockError": "लॉक बदला नहीं जा सका",
+			"logoError": "आइकन अपडेट नहीं हो सका",
+			"madePrivate": "पेज अब निजी है",
+			"madePublic": "पेज अब सार्वजनिक है",
+			"moved": "{{project}} में ले जाया गया",
+			"moveError": "पेज ले जाया नहीं जा सका",
+			"open": "खोलें",
+			"restored": "पेज पुनर्स्थापित हो गया",
+			"restoreError": "पेज पुनर्स्थापित नहीं हो सका",
+			"titleError": "शीर्षक सहेजा नहीं जा सका",
+			"unlocked": "पेज अनलॉक हो गया"
+		},
+		"deleteDialog": {
+			"cancel": "रद्द करें",
+			"confirm": "हटाएँ",
+			"description": "“{{title}}” प्रोजेक्ट की सेटिंग में हाल ही में हटाए गए में चला जाएगा, जहाँ से स्थायी रूप से हटाए जाने तक इसे पुनर्स्थापित किया जा सकता है। उसके उप-पेज शीर्ष स्तर पर चले जाएँगे।",
+			"title": "पेज हटाएँ?"
+		},
+		"moveDialog": {
+			"cancel": "रद्द करें",
+			"confirm": "ले जाएँ",
+			"description": "पेज और उसके उप-पेज चुने गए प्रोजेक्ट में चले जाएँगे।",
+			"empty": "किसी और प्रोजेक्ट में पेज चालू नहीं हैं",
+			"searchPlaceholder": "प्रोजेक्ट खोजें",
+			"title": "पेज ले जाएँ"
+		},
+		"tree": {
+			"collapse": "{{title}} समेटें",
+			"dnd": {
+				"cancelled": "ले जाना रद्द किया गया।",
+				"dropped": "{{title}} को ले जाया गया।",
+				"invalid": "{{title}} वहाँ नहीं जा सकता।",
+				"over": "{{title}} अभी {{target}} के ऊपर है।",
+				"pickedUp": "{{title}} उठाया गया। इसे हिलाने के लिए तीर कुंजियाँ, छोड़ने के लिए Space या रद्द करने के लिए Escape दबाएँ।"
+			},
+			"empty": "अभी तक कोई पेज नहीं",
+			"expand": "{{title}} फैलाएँ",
+			"newPage": "नया पेज",
+			"title": "पेज"
+		},
+		"crumb": {
+			"noMatches": "कोई मेल खाता पेज नहीं",
+			"searchPlaceholder": "पेज खोजें"
+		},
+		"header": {
+			"copied": "कॉपी किया",
+			"copyLink": "लिंक कॉपी करें",
+			"locked": "लॉक है",
+			"lockPage": "पेज लॉक करें",
+			"moreActions": "पेज कार्रवाइयाँ",
+			"presence": "इस पेज पर मौजूद लोग: {{names}}",
+			"presenceMore": "+{{count}}",
+			"togglePanel": "साइड पैनल टॉगल करें",
+			"unlockHint": "अनलॉक करने के लिए क्लिक करें",
+			"ancestors": "पैरेंट पेज"
+		},
+		"menu": {
+			"copyMarkdown": "markdown के रूप में कॉपी करें",
+			"downloadMarkdown": "markdown के रूप में डाउनलोड करें",
+			"fullWidth": "पूरी चौड़ाई",
+			"markdownCopied": "Markdown कॉपी हो गया",
+			"versionHistory": "संस्करण इतिहास",
+			"print": "प्रिंट करें / PDF के रूप में सहेजें"
+		},
+		"editor": {
+			"addIcon": "आइकन जोड़ें",
+			"ariaLabel": "पेज की सामग्री",
+			"pageLink": {
+				"unavailable": "निजी या हटाया गया पेज"
+			},
+			"pageLinkPicker": {
+				"empty": "कोई पेज नहीं मिला",
+				"search": "पेज खोजें"
+			},
+			"placeholder": "कुछ लिखें, या कमांड के लिए / दबाएँ",
+			"slash": {
+				"commands": {
+					"divider": "विभाजक",
+					"heading-1": "शीर्षक 1",
+					"heading-2": "शीर्षक 2",
+					"heading-3": "शीर्षक 3",
+					"page-link": "पेज का लिंक"
+				}
+			},
+			"titleAria": "पेज का शीर्षक",
+			"titlePlaceholder": "बिना शीर्षक"
+		},
+		"logo": {
+			"categories": {
+				"activities": "गतिविधियाँ",
+				"food": "खाना",
+				"nature": "प्रकृति",
+				"objects": "वस्तुएँ",
+				"people": "लोग",
+				"smileys": "स्माइली",
+				"symbols": "प्रतीक",
+				"travel": "यात्रा"
+			},
+			"emoji": "इमोजी",
+			"icon": "आइकन",
+			"remove": "हटाएँ",
+			"search": "इमोजी खोजें"
+		},
 		"banners": {
 			"archived": "यह पेज संग्रहित है। संपादित करने के लिए इसे पुनर्स्थापित करें।",
 			"locked": "यह पेज लॉक है। बदलाव करने के लिए इसे अनलॉक करें।",
@@ -8656,6 +9133,15 @@
 			"storedCopy": "आखिरी सहेजा गया संस्करण दिखाया जा रहा है। कनेक्शन लौटने पर लाइव संपादन फिर शुरू हो जाएगा।",
 			"tooLarge": "यह पेज सिंक रखने के लिए बहुत बड़ा है। अपने हाल के बदलाव कॉपी करें, फिर रीलोड करें।",
 			"unlock": "अनलॉक करें"
+		},
+		"sync": {
+			"cantConnect": "कनेक्ट नहीं हो पा रहा",
+			"notSaved": "अभी सहेजा नहीं गया",
+			"notSavedHint": "हम कोशिश करते रहेंगे। यह टैब बंद न करें।",
+			"offline": "ऑफ़लाइन",
+			"offlineHint": "आप संपादन जारी रख सकते हैं। कनेक्शन लौटने पर बदलाव सिंक हो जाएँगे।",
+			"retry": "पुनः प्रयास करें",
+			"saved": "सहेजा गया"
 		},
 		"collab": {
 			"deleted": "यह पेज हटा दिया गया था",
@@ -8668,6 +9154,62 @@
 			"restoredBy": "{{name}} ने एक पुराना संस्करण पुनर्स्थापित किया",
 			"roomFull": "अभी बहुत से लोगों ने यह पेज खोल रखा है। थोड़ी देर बाद फिर कोशिश करें।",
 			"signedOut": "आपका सत्र समाप्त हो गया। संपादन जारी रखने के लिए फिर से साइन इन करें।"
+		},
+		"state": {
+			"notFound": {
+				"back": "पेजों पर वापस जाएँ",
+				"description": "हो सकता है इसे हटा दिया गया हो, या यह निजी हो।",
+				"title": "पेज नहीं मिला"
+			}
+		},
+		"panel": {
+			"outline": "रूपरेखा",
+			"info": "जानकारी",
+			"history": "इतिहास",
+			"close": "पैनल बंद करें",
+			"comments": "टिप्पणियाँ"
+		},
+		"outline": {
+			"empty": {
+				"description": "रूपरेखा यहाँ देखने के लिए शीर्षक जोड़ें।",
+				"title": "अभी तक कोई शीर्षक नहीं"
+			}
+		},
+		"info": {
+			"characters": "अक्षर",
+			"createdBy": "बनाने वाला",
+			"lastEditedBy": "आखिरी बार संपादित करने वाला",
+			"lessThanMinute": "<1 मिनट",
+			"linkedFrom": "यहाँ से लिंक किया गया",
+			"lockedBy": "लॉक करने वाला",
+			"noBacklinks": "अभी तक कोई पेज यहाँ लिंक नहीं करता",
+			"paragraphs": "अनुच्छेद",
+			"readingMinutes": "{{count}} मिनट",
+			"readingTime": "पढ़ने का समय",
+			"words": "शब्द"
+		},
+		"history": {
+			"backToCurrent": "वर्तमान पर वापस जाएँ",
+			"current": "वर्तमान संस्करण",
+			"empty": "अभी तक कोई संस्करण सहेजा नहीं गया। संपादन करते समय संस्करण सहेजे जाते हैं।",
+			"loadError": "यह संस्करण लोड नहीं हो सका",
+			"others_one": "+{{count}} अन्य",
+			"others_other": "+{{count}} अन्य",
+			"previewTitle": "{{date}} का संस्करण",
+			"restore": "पुनर्स्थापित करें",
+			"restoreCancel": "रद्द करें",
+			"restoreConfirmDescription": "मौजूदा सामग्री पहले इतिहास में सहेजी जाती है, इसलिए आप इसे पूर्ववत कर सकते हैं।",
+			"restoreConfirmTitle": "यह संस्करण पुनर्स्थापित करें?",
+			"restored": "संस्करण पुनर्स्थापित हो गया",
+			"restoreError": "यह संस्करण पुनर्स्थापित नहीं हो सका",
+			"restoring": "पुनर्स्थापित हो रहा है…",
+			"retry": "पुनः प्रयास करें",
+			"title": "संस्करण इतिहास",
+			"unknownUser": "पूर्व सदस्य",
+			"viewOnly": "केवल देखें"
+		},
+		"notification": {
+			"openPage": "पेज खोलें"
 		},
 		"toolbar": {
 			"ariaLabel": "फ़ॉर्मेटिंग टूलबार",
@@ -8706,238 +9248,36 @@
 		"commandPalette": {
 			"createPage": "पेज बनाएँ"
 		},
-		"crumb": {
-			"noMatches": "कोई मेल खाता पेज नहीं",
-			"searchPlaceholder": "पेज खोजें"
-		},
-		"deleteDialog": {
+		"comments": {
+			"placeholder": "टिप्पणी जोड़ें…",
+			"add": "टिप्पणी करें",
+			"save": "सहेजें",
 			"cancel": "रद्द करें",
-			"confirm": "हटाएँ",
-			"description": "“{{title}}” को उसके संस्करण इतिहास के साथ हमेशा के लिए हटा दिया जाएगा। उसके उप-पेज शीर्ष स्तर पर चले जाएँगे। इसे पूर्ववत नहीं किया जा सकता।",
-			"title": "पेज हटाएँ?"
-		},
-		"editor": {
-			"addIcon": "आइकन जोड़ें",
-			"ariaLabel": "पेज की सामग्री",
-			"pageLink": {
-				"unavailable": "निजी या हटाया गया पेज"
-			},
-			"pageLinkPicker": {
-				"empty": "कोई पेज नहीं मिला",
-				"search": "पेज खोजें"
-			},
-			"placeholder": "कुछ लिखें, या कमांड के लिए / दबाएँ",
-			"slash": {
-				"commands": {
-					"divider": "विभाजक",
-					"heading-1": "शीर्षक 1",
-					"heading-2": "शीर्षक 2",
-					"heading-3": "शीर्षक 3",
-					"page-link": "पेज का लिंक"
-				}
-			},
-			"titleAria": "पेज का शीर्षक",
-			"titlePlaceholder": "बिना शीर्षक"
-		},
-		"header": {
-			"copied": "कॉपी किया",
-			"copyLink": "लिंक कॉपी करें",
-			"locked": "लॉक है",
-			"lockPage": "पेज लॉक करें",
-			"moreActions": "पेज कार्रवाइयाँ",
-			"presence": "इस पेज पर मौजूद लोग: {{names}}",
-			"presenceMore": "+{{count}}",
-			"togglePanel": "साइड पैनल टॉगल करें",
-			"unlockHint": "अनलॉक करने के लिए क्लिक करें",
-			"ancestors": "पैरेंट पेज"
-		},
-		"history": {
-			"backToCurrent": "वर्तमान पर वापस जाएँ",
-			"current": "वर्तमान संस्करण",
-			"empty": "अभी तक कोई संस्करण सहेजा नहीं गया। संपादन करते समय संस्करण सहेजे जाते हैं।",
-			"loadError": "यह संस्करण लोड नहीं हो सका",
-			"others_one": "+{{count}} अन्य",
-			"others_other": "+{{count}} अन्य",
-			"previewTitle": "{{date}} का संस्करण",
-			"restore": "पुनर्स्थापित करें",
-			"restoreCancel": "रद्द करें",
-			"restoreConfirmDescription": "मौजूदा सामग्री पहले इतिहास में सहेजी जाती है, इसलिए आप इसे पूर्ववत कर सकते हैं।",
-			"restoreConfirmTitle": "यह संस्करण पुनर्स्थापित करें?",
-			"restored": "संस्करण पुनर्स्थापित हो गया",
-			"restoreError": "यह संस्करण पुनर्स्थापित नहीं हो सका",
-			"restoring": "पुनर्स्थापित हो रहा है…",
+			"emptyTitle": "अभी तक कोई टिप्पणी नहीं",
+			"emptyDescription": "यहाँ की टिप्पणियाँ वर्कस्पेस के भीतर ही रहती हैं। सार्वजनिक लिंक पर ये नहीं दिखतीं।",
+			"archivedNote": "यह पेज संग्रहित है। टिप्पणी करने के लिए इसे पुनर्स्थापित करें।",
+			"loadError": "टिप्पणियाँ लोड नहीं हो सकीं",
 			"retry": "पुनः प्रयास करें",
-			"title": "संस्करण इतिहास",
-			"unknownUser": "पूर्व सदस्य",
-			"viewOnly": "केवल देखें"
-		},
-		"info": {
-			"characters": "अक्षर",
-			"createdBy": "बनाने वाला",
-			"lastEditedBy": "आखिरी बार संपादित करने वाला",
-			"lessThanMinute": "<1 मिनट",
-			"linkedFrom": "यहाँ से लिंक किया गया",
-			"lockedBy": "लॉक करने वाला",
-			"noBacklinks": "अभी तक कोई पेज यहाँ लिंक नहीं करता",
-			"paragraphs": "अनुच्छेद",
-			"readingMinutes": "{{count}} मिनट",
-			"readingTime": "पढ़ने का समय",
-			"words": "शब्द"
-		},
-		"list": {
-			"access": {
-				"private": "निजी",
-				"public": "सार्वजनिक"
-			},
-			"archivedOn": "{{date}} को संग्रहित",
-			"clearFilters": "फ़िल्टर साफ़ करें",
-			"documentTitle": "{{project}} · पेज",
-			"editedAgo": "{{time}} संपादित किया गया",
-			"empty": {
-				"archived": {
-					"description": "संग्रहित पेज यहाँ दिखते हैं। आप उन्हें पुनर्स्थापित या हटा सकते हैं।",
-					"title": "कोई संग्रहित पेज नहीं"
-				},
-				"noMatch": {
-					"description": "कोई दूसरी खोज आज़माएँ या फ़िल्टर साफ़ करें।",
-					"title": "कोई मेल खाता पेज नहीं"
-				},
-				"none": {
-					"description": "पेज में स्पेक, नोट और दस्तावेज़ प्रोजेक्ट के कार्यों के ठीक पास रहते हैं।",
-					"title": "अपना पहला पेज लिखें"
-				},
-				"private": {
-					"description": "निजी पेज केवल आपको दिखते हैं।",
-					"title": "कोई निजी पेज नहीं"
-				},
-				"public": {
-					"title": "कोई सार्वजनिक पेज नहीं"
-				}
-			},
-			"inParent": "{{path}} में",
-			"loadError": "पेज लोड नहीं हो सके",
-			"locked": "लॉक है",
-			"newPage": "नया पेज",
-			"ownedBy": "स्वामी: {{name}}",
-			"retry": "पुनः प्रयास करें",
-			"searchPlaceholder": "पेज खोजें",
-			"sort": {
-				"created": "बनाया गया",
-				"lastEdited": "आखिरी बार संपादित",
-				"name": "नाम"
-			},
-			"tabs": {
-				"archived": "संग्रहित",
-				"private": "निजी",
-				"public": "सार्वजनिक"
-			},
-			"untitled": "बिना शीर्षक"
-		},
-		"logo": {
-			"categories": {
-				"activities": "गतिविधियाँ",
-				"food": "खाना",
-				"nature": "प्रकृति",
-				"objects": "वस्तुएँ",
-				"people": "लोग",
-				"smileys": "स्माइली",
-				"symbols": "प्रतीक",
-				"travel": "यात्रा"
-			},
-			"emoji": "इमोजी",
-			"icon": "आइकन",
-			"remove": "हटाएँ",
-			"search": "इमोजी खोजें"
-		},
-		"menu": {
-			"copyMarkdown": "markdown के रूप में कॉपी करें",
-			"downloadMarkdown": "markdown के रूप में डाउनलोड करें",
-			"fullWidth": "पूरी चौड़ाई",
-			"markdownCopied": "Markdown कॉपी हो गया",
-			"versionHistory": "संस्करण इतिहास",
-			"print": "प्रिंट करें / PDF के रूप में सहेजें"
-		},
-		"moveDialog": {
-			"cancel": "रद्द करें",
-			"confirm": "ले जाएँ",
-			"description": "पेज और उसके उप-पेज चुने गए प्रोजेक्ट में चले जाएँगे।",
-			"empty": "किसी और प्रोजेक्ट में पेज चालू नहीं हैं",
-			"searchPlaceholder": "प्रोजेक्ट खोजें",
-			"title": "पेज ले जाएँ"
-		},
-		"notification": {
-			"openPage": "पेज खोलें"
-		},
-		"outline": {
-			"empty": {
-				"description": "रूपरेखा यहाँ देखने के लिए शीर्षक जोड़ें।",
-				"title": "अभी तक कोई शीर्षक नहीं"
+			"deletedUser": "हटाया गया उपयोगकर्ता",
+			"edited": "संपादित",
+			"menuAria": "इस टिप्पणी के लिए और कार्रवाइयाँ",
+			"edit": "संपादित करें",
+			"delete": "हटाएँ",
+			"deleteTitle": "यह टिप्पणी हटाएँ?",
+			"deleteDescription": "यह सभी के लिए हट जाएगी। इसे पूर्ववत नहीं किया जा सकता।",
+			"toasts": {
+				"empty": "पहले कुछ लिखें",
+				"addError": "टिप्पणी नहीं जोड़ी जा सकी",
+				"saveError": "टिप्पणी सहेजी नहीं जा सकी",
+				"deleteError": "टिप्पणी हटाई नहीं जा सकी"
 			}
 		},
-		"panel": {
-			"close": "पैनल बंद करें",
-			"history": "इतिहास",
-			"info": "जानकारी",
-			"outline": "रूपरेखा"
-		},
-		"section": {
-			"title": "पेज"
-		},
-		"state": {
-			"notFound": {
-				"back": "पेजों पर वापस जाएँ",
-				"description": "हो सकता है इसे हटा दिया गया हो, या यह निजी हो।",
-				"title": "पेज नहीं मिला"
-			}
-		},
-		"sync": {
-			"cantConnect": "कनेक्ट नहीं हो पा रहा",
-			"notSaved": "अभी सहेजा नहीं गया",
-			"notSavedHint": "हम कोशिश करते रहेंगे। यह टैब बंद न करें।",
-			"offline": "ऑफ़लाइन",
-			"offlineHint": "आप संपादन जारी रख सकते हैं। कनेक्शन लौटने पर बदलाव सिंक हो जाएँगे।",
-			"retry": "पुनः प्रयास करें",
-			"saved": "सहेजा गया"
-		},
-		"toasts": {
-			"accessError": "इस पेज को कौन देख सकता है, यह बदला नहीं जा सका",
-			"archived": "पेज संग्रहित हो गया",
-			"archiveError": "पेज संग्रहित नहीं हो सका",
-			"contentConflict": "यह पेज कहीं और बदल गया, इसलिए आपका आखिरी संपादन सहेजा नहीं गया। नवीनतम संस्करण दिखाया जा रहा है।",
-			"contentSaveError": "पेज सहेजा नहीं जा सका",
-			"createError": "पेज बनाया नहीं जा सका",
-			"deleted": "पेज हटा दिया गया",
-			"deleteError": "पेज हटाया नहीं जा सका",
-			"duplicated": "पेज की प्रतिलिपि बन गई",
-			"duplicateError": "पेज की प्रतिलिपि नहीं बन सकी",
-			"fullWidthError": "पेज की चौड़ाई बदली नहीं जा सकी",
-			"linkCopied": "लिंक कॉपी हो गया",
-			"locked": "पेज लॉक हो गया",
-			"lockError": "लॉक बदला नहीं जा सका",
-			"logoError": "आइकन अपडेट नहीं हो सका",
-			"madePrivate": "पेज अब निजी है",
-			"madePublic": "पेज अब सार्वजनिक है",
-			"moved": "{{project}} में ले जाया गया",
-			"moveError": "पेज ले जाया नहीं जा सका",
-			"open": "खोलें",
-			"restored": "पेज पुनर्स्थापित हो गया",
-			"restoreError": "पेज पुनर्स्थापित नहीं हो सका",
-			"titleError": "शीर्षक सहेजा नहीं जा सका",
-			"unlocked": "पेज अनलॉक हो गया"
-		},
-		"tree": {
-			"collapse": "{{title}} समेटें",
-			"dnd": {
-				"cancelled": "ले जाना रद्द किया गया।",
-				"dropped": "{{title}} को ले जाया गया।",
-				"invalid": "{{title}} वहाँ नहीं जा सकता।",
-				"over": "{{title}} अभी {{target}} के ऊपर है।",
-				"pickedUp": "{{title}} उठाया गया। इसे हिलाने के लिए तीर कुंजियाँ, छोड़ने के लिए Space या रद्द करने के लिए Escape दबाएँ।"
-			},
-			"empty": "अभी तक कोई पेज नहीं",
-			"expand": "{{title}} फैलाएँ",
-			"newPage": "नया पेज",
-			"title": "पेज"
+		"watch": {
+			"watch": "पेज पर नज़र रखें",
+			"unwatch": "नज़र रखना बंद करें",
+			"watchHint": "टिप्पणियों और बदलावों की सूचना पाएँ",
+			"watchingHint": "आपको टिप्पणियों और बदलावों की सूचना मिलती है",
+			"error": "इस पेज पर नज़र रखने की सेटिंग बदली नहीं जा सकी"
 		}
 	},
 	"accountSecurity": {
@@ -8996,7 +9336,9 @@
 				"sessionLifetime": "सेशन की अवधि",
 				"sessionLifetimeHint": "बिना इस्तेमाल के सेशन कितनी देर चलता है। इस्तेमाल करने पर यह बढ़ जाता है।",
 				"hours": "घंटे",
-				"signInNotice": "{{provider}} से साइन इन करें। पासवर्ड साइन-इन केवल इंस्टेंस एडमिन के लिए है।"
+				"signInNotice": "{{provider}} से साइन इन करें। पासवर्ड साइन-इन केवल इंस्टेंस एडमिन के लिए है।",
+				"requireTwoFactor": "टू-फ़ैक्टर अनिवार्य करें",
+				"requireTwoFactorHint": "पासवर्ड वाले हर अकाउंट को कुछ और करने से पहले टू-फ़ैक्टर सेट अप करना होगा, भले ही वह किसी प्रदाता या SAML से भी साइन इन करता हो, और तब तक उसकी API कुंजियाँ काम नहीं करेंगी। ईमेल लिंक और कोड बंद हो जाते हैं, इसलिए जिन लोगों ने सिर्फ़ इन्हीं का इस्तेमाल किया है, वे पासवर्ड बनने तक अंदर नहीं आ सकते: वे “पासवर्ड भूल गए?” से पासवर्ड सेट करते हैं, या अगर ईमेल सेट अप नहीं है तो आप “यूज़र” में उनके लिए पासवर्ड सेट करते हैं। बिना पासवर्ड वाले अकाउंट अपने प्रदाता के नियमों का पालन करते हैं। पहले इसे अपने अकाउंट के लिए चालू करें।"
 			},
 			"twoFactor": {
 				"title": "टू-फ़ैक्टर ऑथेंटिकेशन",
@@ -9023,7 +9365,11 @@
 				"done": "हो गया",
 				"enabled": "टू-फ़ैक्टर ऑथेंटिकेशन चालू है।",
 				"disabled": "टू-फ़ैक्टर ऑथेंटिकेशन बंद है।",
-				"error": "कुछ गलत हो गया। फिर से कोशिश करें।"
+				"error": "कुछ गलत हो गया। फिर से कोशिश करें।",
+				"requiredHint": "इस सर्वर पर टू-फ़ैक्टर अनिवार्य है, इसलिए इसे बंद नहीं किया जा सकता। अगर आप अपना डिवाइस और रिकवरी कोड खो दें, तो इंस्टेंस एडमिन इसे रीसेट कर सकता है।",
+				"setupRequiredTitle": "जारी रखने के लिए टू-फ़ैक्टर सेट अप करें",
+				"setupRequiredHint": "इस सर्वर पर पासवर्ड वाले हर अकाउंट के लिए टू-फ़ैक्टर अनिवार्य है। आपको एक ऑथेंटिकेटर ऐप की ज़रूरत होगी।",
+				"signOutInstead": "इसके बजाय साइन आउट करें"
 			},
 			"challenge": {
 				"title": "टू-फ़ैक्टर ऑथेंटिकेशन",
@@ -9095,7 +9441,11 @@
 				"noPassword": "सेट नहीं (दूसरे तरीके से साइन इन करते हैं)",
 				"workspacesTitle": "वर्कस्पेस",
 				"noWorkspaces": "किसी वर्कस्पेस के सदस्य नहीं हैं।",
-				"joined": "{{date}} को जुड़े"
+				"joined": "{{date}} को जुड़े",
+				"resetTwoFactor": "टू-फ़ैक्टर रीसेट करें",
+				"resetTwoFactorTitle": "{{name}} के लिए टू-फ़ैक्टर रीसेट करें?",
+				"resetTwoFactorDescription": "इसका उपयोग तब करें जब उन्होंने अपना डिवाइस और रिकवरी कोड खो दिए हों और आपने जाँच लिया हो कि वे सचमुच वही हैं। उनका टू-फ़ैक्टर हटा दिया जाता है और वे हर जगह से साइन आउट हो जाते हैं। फिर वे केवल अपने पासवर्ड से साइन इन करके इसे दोबारा सेट अप कर सकते हैं।",
+				"twoFactorReset": "{{name}} के लिए टू-फ़ैक्टर रीसेट किया गया"
 			}
 		},
 		"password": {
@@ -9159,33 +9509,99 @@
 				"cliAdminPromoted": "इंस्टेंस एडमिन बनाया (रिकवरी CLI)",
 				"cliAdminDemoted": "एक इंस्टेंस एडमिन हटाया (रिकवरी CLI)",
 				"cliPasswordReset": "एक पासवर्ड रीसेट किया (रिकवरी CLI)",
-				"cliUserUnbanned": "बैन हटाया (रिकवरी CLI)"
+				"cliUserUnbanned": "बैन हटाया (रिकवरी CLI)",
+				"userTwoFactorReset": "एक अकाउंट का टू-फ़ैक्टर रीसेट किया",
+				"cliTwoFactorReset": "एक अकाउंट का टू-फ़ैक्टर रीसेट किया (रिकवरी CLI)",
+				"scimConnectionCreated": "प्रोविज़निंग के लिए एक पहचान प्रदाता कनेक्ट किया",
+				"scimTokenRotated": "एक SCIM टोकन बदला",
+				"scimConnectionDeleted": "एक SCIM कनेक्शन हटाया",
+				"scimUserProvisioned": "प्रोविज़निंग से एक अकाउंट जोड़ा",
+				"scimUserDeactivated": "प्रोविज़निंग से एक अकाउंट निष्क्रिय किया",
+				"scimUserReactivated": "प्रोविज़निंग से एक अकाउंट फिर से सक्रिय किया",
+				"scimUserRemoved": "प्रोविज़निंग से किसी को वर्कस्पेस से हटाया",
+				"samlConnectionCreated": "साइन-इन के लिए एक पहचान प्रदाता कनेक्ट किया",
+				"samlConnectionUpdated": "एक SAML कनेक्शन बदला",
+				"samlConnectionDeleted": "एक SAML कनेक्शन हटाया"
 			}
 		}
 	},
 	"instanceAdmin": {
-		"admins": {
-			"add": "एडमिन जोड़ें",
-			"addConfirm": "एडमिन जोड़ें",
-			"addDescription": "इंस्टेंस एडमिन इस क्षेत्र की हर सेटिंग बदल सकते हैं और किसी भी वर्कस्पेस को खोल सकते हैं।",
-			"added": "{{name}} अब इंस्टेंस एडमिन हैं",
-			"addTitle": "इंस्टेंस एडमिन जोड़ें",
-			"columns": {
-				"email": "ईमेल",
-				"name": "नाम"
-			},
+		"pageTitle": "इंस्टेंस · {{page}}",
+		"nav": {
+			"admins": "एडमिन",
+			"authentication": "प्रमाणीकरण",
 			"email": "ईमेल",
-			"emailInvalid": "मान्य ईमेल पता दर्ज करें",
-			"emailPlaceholder": "name@example.com",
-			"lastAdmin": "कम से कम एक इंस्टेंस एडमिन होना ज़रूरी है",
-			"remove": "एडमिन हटाएँ…",
-			"removeConfirm": "हटाएँ",
-			"removed": "{{name}} अब इंस्टेंस एडमिन नहीं हैं",
-			"removeDescription": "उनका खाता और उनके वर्कस्पेस बने रहते हैं।",
-			"removeTitle": "{{name}} को इंस्टेंस एडमिन से हटाएँ?",
-			"subtitle": "इंस्टेंस एडमिन इस क्षेत्र की हर सेटिंग बदल सकते हैं और किसी भी वर्कस्पेस को खोल सकते हैं।",
-			"title": "एडमिन",
-			"you": "आप"
+			"general": "सामान्य",
+			"publicBoards": "सार्वजनिक बोर्ड",
+			"workspaces": "वर्कस्पेस",
+			"ai": "AI"
+		},
+		"lockedCallout": "ये सेटिंग इस सर्वर पर एनवायरनमेंट वेरिएबल से प्रबंधित होती हैं। यहाँ बदलाव अक्षम हैं।",
+		"source": {
+			"default": "डिफ़ॉल्ट",
+			"environment": "एनवायरनमेंट: {{variable}}",
+			"lockTooltip": "इसे यहाँ से प्रबंधित करने के लिए {{variable}} हटाएँ और रीस्टार्ट करें।",
+			"saved": "यहाँ सहेजा गया",
+			"savedBy": "{{name}} ने {{date}} को सहेजा"
+		},
+		"saved": "सेटिंग सहेजी गईं",
+		"saveError": "सेटिंग सहेजी नहीं जा सकीं",
+		"loadError": "इंस्टेंस सेटिंग लोड नहीं हो सकीं",
+		"retry": "पुनः प्रयास करें",
+		"save": "सहेजें",
+		"secret": {
+			"cancel": "रद्द करें",
+			"clear": "साफ़ करें",
+			"cleared": "सीक्रेट साफ़ कर दिया गया",
+			"placeholder": "नया मान दर्ज करें",
+			"replace": "बदलें",
+			"saved": "सहेजा गया",
+			"unreadable": "सहेजा गया सीक्रेट पढ़ा नहीं जा सकता (सर्वर का AUTH_SECRET बदल गया है)। इसे फिर से दर्ज करें।"
+		},
+		"general": {
+			"title": "सामान्य",
+			"subtitle": "इस इंस्टेंस को नाम दें और इसकी सेहत जाँचें।",
+			"instanceName": "इंस्टेंस का नाम",
+			"instanceNameHint": "साइन-इन स्क्रीन और सार्वजनिक बोर्ड पर दिखाया जाता है",
+			"instanceNameRequired": "नाम दर्ज करें",
+			"instanceNameTooLong": "अधिकतम 80 वर्णों का उपयोग करें",
+			"homePage": "होम पेज",
+			"publicLanding": "उत्पाद लैंडिंग पेज दिखाएँ",
+			"publicLandingHint": "साइन इन न किए हुए विज़िटर मुख्य पते पर लैंडिंग पेज देखते हैं। बंद होने पर वे सीधे साइन-इन पर जाते हैं।",
+			"overview": "अवलोकन",
+			"version": "संस्करण",
+			"counts": {
+				"accounts": "खाते",
+				"guests": "अतिथि",
+				"projects": "प्रोजेक्ट",
+				"publishedBoards": "सार्वजनिक बोर्ड",
+				"workspaces": "वर्कस्पेस"
+			},
+			"server": {
+				"captcha": "कैप्चा",
+				"cloudMode": "क्लाउड मोड",
+				"configured": "कॉन्फ़िगर किया गया",
+				"demoMode": "डेमो मोड",
+				"email": "ईमेल",
+				"errorReporting": "त्रुटि रिपोर्टिंग",
+				"fileStorage": "फ़ाइल स्टोरेज",
+				"notConfigured": "कॉन्फ़िगर नहीं किया गया",
+				"off": "बंद",
+				"on": "चालू",
+				"realtime": "रियलटाइम",
+				"realtimeMemory": "मेमोरी में",
+				"realtimeRedis": "Redis ({{mode}})",
+				"title": "सर्वर"
+			},
+			"deliveryFailures": {
+				"title": "हाल की डिलीवरी विफलताएँ",
+				"description": "पिछले 7 दिनों में अपने सभी पुनः प्रयास पूरे कर चुके वर्कस्पेस वेबहुक। ईमेल और बैकग्राउंड जॉब की त्रुटियाँ केवल सर्वर लॉग में होती हैं।",
+				"empty": "पिछले 7 दिनों में कोई विफल डिलीवरी नहीं।",
+				"when": "कब",
+				"workspace": "वर्कस्पेस",
+				"webhook": "वेबहुक",
+				"response": "प्रतिक्रिया"
+			}
 		},
 		"auth": {
 			"anyoneCanSignUp": "कोई भी साइन अप कर सकता है",
@@ -9225,6 +9641,31 @@
 			"title": "प्रमाणीकरण",
 			"toggle": "{{method}} चालू या बंद करें"
 		},
+		"oauth": {
+			"authorizationUrl": "ऑथराइज़ेशन URL",
+			"autoSignIn": "अपने-आप साइन इन करें",
+			"autoSignInHint": "साइन-इन स्क्रीन छोड़कर सीधे इस प्रदाता पर जाएँ",
+			"buttonLabel": "बटन का लेबल",
+			"buttonLabelHint": "साइन-इन बटन पर दिखाया जाता है, जैसे \"Okta के साथ जारी रखें\"",
+			"callbackHint": "इस URL को अपने OAuth ऐप में जोड़ें",
+			"callbackUrl": "कॉलबैक URL",
+			"clientId": "क्लाइंट ID",
+			"clientSecret": "क्लाइंट सीक्रेट",
+			"copied": "कॉपी किया",
+			"copy": "कॉपी करें",
+			"discoveryHint": "या नीचे के तीन एंडपॉइंट भरें",
+			"discoveryUrl": "डिस्कवरी URL",
+			"invalidUrl": "पूरा http या https URL दर्ज करें",
+			"logoutUrl": "लॉगआउट URL",
+			"managedByEnv": "यह प्रदाता एनवायरनमेंट वेरिएबल ({{variables}}) से कॉन्फ़िगर किया गया है।",
+			"pkce": "PKCE का उपयोग करें",
+			"scopes": "स्कोप",
+			"scopesHint": "अल्पविराम से अलग करें",
+			"sheetDescription": "कोई OAuth ऐप कनेक्ट करें ताकि लोग {{provider}} से साइन इन कर सकें।",
+			"sheetTitle": "{{provider}} साइन-इन",
+			"tokenUrl": "टोकन URL",
+			"userInfoUrl": "उपयोगकर्ता जानकारी URL"
+		},
 		"email": {
 			"from": "प्रेषक",
 			"fromHint": "एक पता, या एक नाम और एक पता: Margaya <no-reply@example.com>",
@@ -9255,134 +9696,6 @@
 			"subtitle": "वह SMTP सर्वर जिससे Margaya साइन-इन कोड, आमंत्रण और सूचनाएँ भेजता है।",
 			"title": "ईमेल",
 			"username": "उपयोगकर्ता नाम"
-		},
-		"general": {
-			"counts": {
-				"accounts": "खाते",
-				"guests": "अतिथि",
-				"projects": "प्रोजेक्ट",
-				"publishedBoards": "सार्वजनिक बोर्ड",
-				"workspaces": "वर्कस्पेस"
-			},
-			"instanceName": "इंस्टेंस का नाम",
-			"instanceNameHint": "साइन-इन स्क्रीन और सार्वजनिक बोर्ड पर दिखाया जाता है",
-			"instanceNameRequired": "नाम दर्ज करें",
-			"instanceNameTooLong": "अधिकतम 80 वर्णों का उपयोग करें",
-			"homePage": "होम पेज",
-			"publicLanding": "उत्पाद लैंडिंग पेज दिखाएँ",
-			"publicLandingHint": "साइन इन न किए हुए विज़िटर मुख्य पते पर लैंडिंग पेज देखते हैं। बंद होने पर वे सीधे साइन-इन पर जाते हैं।",
-			"overview": "अवलोकन",
-			"server": {
-				"captcha": "कैप्चा",
-				"cloudMode": "क्लाउड मोड",
-				"configured": "कॉन्फ़िगर किया गया",
-				"demoMode": "डेमो मोड",
-				"email": "ईमेल",
-				"errorReporting": "त्रुटि रिपोर्टिंग",
-				"fileStorage": "फ़ाइल स्टोरेज",
-				"notConfigured": "कॉन्फ़िगर नहीं किया गया",
-				"off": "बंद",
-				"on": "चालू",
-				"realtime": "रियलटाइम",
-				"realtimeMemory": "मेमोरी में",
-				"realtimeRedis": "Redis ({{mode}})",
-				"title": "सर्वर"
-			},
-			"subtitle": "इस इंस्टेंस को नाम दें और इसकी सेहत जाँचें।",
-			"title": "सामान्य",
-			"version": "संस्करण"
-		},
-		"loadError": "इंस्टेंस सेटिंग लोड नहीं हो सकीं",
-		"lockedCallout": "ये सेटिंग इस सर्वर पर एनवायरनमेंट वेरिएबल से प्रबंधित होती हैं। यहाँ बदलाव अक्षम हैं।",
-		"nav": {
-			"admins": "एडमिन",
-			"authentication": "प्रमाणीकरण",
-			"email": "ईमेल",
-			"general": "सामान्य",
-			"publicBoards": "सार्वजनिक बोर्ड",
-			"workspaces": "वर्कस्पेस",
-			"ai": "AI"
-		},
-		"oauth": {
-			"authorizationUrl": "ऑथराइज़ेशन URL",
-			"autoSignIn": "अपने-आप साइन इन करें",
-			"autoSignInHint": "साइन-इन स्क्रीन छोड़कर सीधे इस प्रदाता पर जाएँ",
-			"buttonLabel": "बटन का लेबल",
-			"buttonLabelHint": "साइन-इन बटन पर दिखाया जाता है, जैसे \"Okta के साथ जारी रखें\"",
-			"callbackHint": "इस URL को अपने OAuth ऐप में जोड़ें",
-			"callbackUrl": "कॉलबैक URL",
-			"clientId": "क्लाइंट ID",
-			"clientSecret": "क्लाइंट सीक्रेट",
-			"copied": "कॉपी किया",
-			"copy": "कॉपी करें",
-			"discoveryHint": "या नीचे के तीन एंडपॉइंट भरें",
-			"discoveryUrl": "डिस्कवरी URL",
-			"invalidUrl": "पूरा http या https URL दर्ज करें",
-			"logoutUrl": "लॉगआउट URL",
-			"managedByEnv": "यह प्रदाता एनवायरनमेंट वेरिएबल ({{variables}}) से कॉन्फ़िगर किया गया है।",
-			"pkce": "PKCE का उपयोग करें",
-			"scopes": "स्कोप",
-			"scopesHint": "अल्पविराम से अलग करें",
-			"sheetDescription": "कोई OAuth ऐप कनेक्ट करें ताकि लोग {{provider}} से साइन इन कर सकें।",
-			"sheetTitle": "{{provider}} साइन-इन",
-			"tokenUrl": "टोकन URL",
-			"userInfoUrl": "उपयोगकर्ता जानकारी URL"
-		},
-		"pageTitle": "इंस्टेंस · {{page}}",
-		"publicBoards": {
-			"actions": "बोर्ड कार्रवाइयाँ",
-			"allow": "सार्वजनिक बोर्ड की अनुमति दें",
-			"allowHint": "बंद होने पर, हर सार्वजनिक लिंक \"नहीं मिला\" बताता है। कुछ भी हटाया नहीं जाता।",
-			"columns": {
-				"features": "सुविधाएँ",
-				"project": "प्रोजेक्ट",
-				"published": "प्रकाशित",
-				"workspace": "वर्कस्पेस"
-			},
-			"empty": "इस सर्वर पर कोई सार्वजनिक बोर्ड नहीं है।",
-			"feature": {
-				"comments": "टिप्पणियाँ",
-				"guests": "अतिथि",
-				"reactions": "प्रतिक्रियाएँ",
-				"requests": "अनुरोध",
-				"votes": "वोट"
-			},
-			"listTitle": "प्रकाशित बोर्ड",
-			"loadMore": "और लोड करें",
-			"noMatches": "कोई सार्वजनिक बोर्ड “{{query}}” से मेल नहीं खाता",
-			"openBoard": "बोर्ड खोलें",
-			"participation": "सार्वजनिक भागीदारी की अनुमति दें",
-			"participationHint": "बंद होने पर, सार्वजनिक बोर्ड केवल पढ़ने के लिए होते हैं: कोई टिप्पणी, प्रतिक्रिया, वोट या अनुरोध नहीं।",
-			"projectSettings": "प्रोजेक्ट सेटिंग",
-			"search": "बोर्ड खोजें",
-			"subtitle": "इस इंस्टेंस के सभी सार्वजनिक बोर्ड नियंत्रित करें।",
-			"title": "सार्वजनिक बोर्ड",
-			"unpublish": "प्रकाशन हटाएँ…",
-			"unpublishConfirm": "प्रकाशन हटाएँ",
-			"unpublishDescription": "जब तक कोई बोर्ड को दोबारा प्रकाशित नहीं करता, लिंक काम नहीं करेगा। सेटिंग, टिप्पणियाँ, प्रतिक्रियाएँ और वोट बने रहते हैं।",
-			"unpublished": "बोर्ड का प्रकाशन हटा दिया गया",
-			"unpublishError": "बोर्ड का प्रकाशन हटाया नहीं जा सका",
-			"unpublishTitle": "{{project}} का प्रकाशन हटाएँ?"
-		},
-		"retry": "पुनः प्रयास करें",
-		"save": "सहेजें",
-		"saved": "सेटिंग सहेजी गईं",
-		"saveError": "सेटिंग सहेजी नहीं जा सकीं",
-		"secret": {
-			"cancel": "रद्द करें",
-			"clear": "साफ़ करें",
-			"cleared": "सीक्रेट साफ़ कर दिया गया",
-			"placeholder": "नया मान दर्ज करें",
-			"replace": "बदलें",
-			"saved": "सहेजा गया",
-			"unreadable": "सहेजा गया सीक्रेट पढ़ा नहीं जा सकता (सर्वर का AUTH_SECRET बदल गया है)। इसे फिर से दर्ज करें।"
-		},
-		"source": {
-			"default": "डिफ़ॉल्ट",
-			"environment": "एनवायरनमेंट: {{variable}}",
-			"lockTooltip": "इसे यहाँ से प्रबंधित करने के लिए {{variable}} हटाएँ और रीस्टार्ट करें।",
-			"saved": "यहाँ सहेजा गया",
-			"savedBy": "{{name}} ने {{date}} को सहेजा"
 		},
 		"testEmail": {
 			"codes": {
@@ -9425,6 +9738,132 @@
 			"search": "वर्कस्पेस खोजें",
 			"subtitle": "इस इंस्टेंस के सभी वर्कस्पेस।",
 			"title": "वर्कस्पेस"
+		},
+		"publicBoards": {
+			"actions": "बोर्ड कार्रवाइयाँ",
+			"allow": "सार्वजनिक बोर्ड की अनुमति दें",
+			"allowHint": "बंद होने पर, हर सार्वजनिक लिंक \"नहीं मिला\" बताता है। कुछ भी हटाया नहीं जाता।",
+			"columns": {
+				"features": "सुविधाएँ",
+				"project": "प्रोजेक्ट",
+				"published": "प्रकाशित",
+				"workspace": "वर्कस्पेस"
+			},
+			"empty": "इस सर्वर पर कोई सार्वजनिक बोर्ड नहीं है।",
+			"feature": {
+				"comments": "टिप्पणियाँ",
+				"guests": "अतिथि",
+				"reactions": "प्रतिक्रियाएँ",
+				"requests": "अनुरोध",
+				"votes": "वोट"
+			},
+			"listTitle": "प्रकाशित बोर्ड",
+			"loadMore": "और लोड करें",
+			"noMatches": "कोई सार्वजनिक बोर्ड “{{query}}” से मेल नहीं खाता",
+			"openBoard": "बोर्ड खोलें",
+			"participation": "सार्वजनिक भागीदारी की अनुमति दें",
+			"participationHint": "बंद होने पर, सार्वजनिक बोर्ड केवल पढ़ने के लिए होते हैं: कोई टिप्पणी, प्रतिक्रिया, वोट या अनुरोध नहीं।",
+			"projectSettings": "प्रोजेक्ट सेटिंग",
+			"search": "बोर्ड खोजें",
+			"subtitle": "इस इंस्टेंस के सभी सार्वजनिक बोर्ड नियंत्रित करें।",
+			"title": "सार्वजनिक बोर्ड",
+			"unpublish": "प्रकाशन हटाएँ…",
+			"unpublishConfirm": "प्रकाशन हटाएँ",
+			"unpublishDescription": "जब तक कोई बोर्ड को दोबारा प्रकाशित नहीं करता, लिंक काम नहीं करेगा। सेटिंग, टिप्पणियाँ, प्रतिक्रियाएँ और वोट बने रहते हैं।",
+			"unpublished": "बोर्ड का प्रकाशन हटा दिया गया",
+			"unpublishError": "बोर्ड का प्रकाशन हटाया नहीं जा सका",
+			"unpublishTitle": "{{project}} का प्रकाशन हटाएँ?"
+		},
+		"admins": {
+			"add": "एडमिन जोड़ें",
+			"addConfirm": "एडमिन जोड़ें",
+			"addDescription": "इंस्टेंस एडमिन इस क्षेत्र की हर सेटिंग बदल सकते हैं और किसी भी वर्कस्पेस को खोल सकते हैं।",
+			"added": "{{name}} अब इंस्टेंस एडमिन हैं",
+			"addTitle": "इंस्टेंस एडमिन जोड़ें",
+			"columns": {
+				"email": "ईमेल",
+				"name": "नाम"
+			},
+			"email": "ईमेल",
+			"emailInvalid": "मान्य ईमेल पता दर्ज करें",
+			"emailPlaceholder": "name@example.com",
+			"lastAdmin": "कम से कम एक इंस्टेंस एडमिन होना ज़रूरी है",
+			"remove": "एडमिन हटाएँ…",
+			"removeConfirm": "हटाएँ",
+			"removed": "{{name}} अब इंस्टेंस एडमिन नहीं हैं",
+			"removeDescription": "उनका खाता और उनके वर्कस्पेस बने रहते हैं।",
+			"removeTitle": "{{name}} को इंस्टेंस एडमिन से हटाएँ?",
+			"subtitle": "इंस्टेंस एडमिन इस क्षेत्र की हर सेटिंग बदल सकते हैं और किसी भी वर्कस्पेस को खोल सकते हैं।",
+			"title": "एडमिन",
+			"you": "आप"
+		},
+		"identity": {
+			"name": "नाम",
+			"nameHint": "एडमिन इस कनेक्शन को जिस नाम से बुलाते हैं, जैसे प्रदाता का नाम।",
+			"remove": "निकालें",
+			"removeTitle": "{{name}} निकालें?",
+			"done": "हो गया",
+			"scim": {
+				"title": "प्रोविज़निंग (SCIM)",
+				"description": "किसी पहचान प्रदाता को एक वर्कस्पेस में लोगों को जोड़ने, बदलने और हटाने दें।",
+				"none": "प्रोविज़निंग के लिए कोई पहचान प्रदाता कनेक्ट नहीं है।",
+				"connect": "प्रदाता कनेक्ट करें",
+				"connectDescription": "एक वर्कस्पेस के लिए टोकन बनाता है। कनेक्ट करने के बाद यह आपको एक बार दिखेगा।",
+				"connectConfirm": "टोकन बनाएँ",
+				"workspace": "वर्कस्पेस",
+				"workspaceHint": "यह प्रदाता जिन लोगों को जोड़ता है वे इस वर्कस्पेस में सदस्य के रूप में शामिल होते हैं।",
+				"workspacePlaceholder": "वर्कस्पेस चुनें",
+				"workspaceSearch": "वर्कस्पेस खोजें",
+				"baseUrl": "SCIM बेस URL",
+				"token": "बेयरर टोकन",
+				"tokenTitle": "{{name}} के लिए टोकन कॉपी करें",
+				"tokenDescription": "यह आपको केवल इसी बार दिखेगा। इसे केवल पहचान प्रदाता को दें: जिसके पास यह होगा वह वर्कस्पेस में लोगों को जोड़ सकता है और इस कनेक्शन द्वारा प्रबंधित लोगों को बदल या निष्क्रिय कर सकता है।",
+				"rotate": "टोकन बदलें",
+				"rotateTitle": "{{name}} के लिए टोकन बदलें?",
+				"rotateDescription": "मौजूदा टोकन अभी काम करना बंद कर देता है, इसलिए जब तक पहचान प्रदाता को नया टोकन नहीं मिलता, प्रोविज़निंग रुकी रहती है। लोग लिंक बने रहते हैं।",
+				"rotateConfirm": "टोकन बदलें",
+				"removeDescription": "टोकन अभी काम करना बंद कर देता है। इसके जोड़े हुए लोगों के खाते और सदस्यताएँ बनी रहती हैं, और अब प्रदाता से उनमें कोई अपडेट नहीं होता।",
+				"removed": "{{name}} निकाला गया",
+				"columns": {
+					"name": "नाम",
+					"workspace": "वर्कस्पेस",
+					"people": "लोग"
+				}
+			},
+			"saml": {
+				"title": "कंपनी साइन-इन (SAML)",
+				"description": "अपने ईमेल डोमेन के लोगों को पहचान प्रदाता के ज़रिए साइन इन करने दें।",
+				"none": "साइन-इन के लिए कोई पहचान प्रदाता कनेक्ट नहीं है।",
+				"connect": "प्रदाता कनेक्ट करें",
+				"connectConfirm": "कनेक्ट करें",
+				"edit": "संपादित करें",
+				"editTitle": "{{name}} संपादित करें",
+				"formDescription": "जो भी इस पहचान प्रदाता को नियंत्रित करता है, वह इन डोमेन के किसी भी ऐसे व्यक्ति को साइन इन करा सकता है जिसका पता यहाँ सत्यापित है, इसलिए केवल वही प्रदाता कनेक्ट करें जिस पर आपको इन डोमेन के लिए भरोसा हो।",
+				"acsUrl": "असर्शन कंज़्यूमर सर्विस (ACS) URL",
+				"entityId": "एंटिटी ID (ऑडियंस)",
+				"addressesHint": "इन दोनों को अपने पहचान प्रदाता पर दर्ज करें। ये बाद में नहीं बदलते।",
+				"domains": "ईमेल डोमेन",
+				"domainsHint": "कई डोमेन को अल्पविराम से अलग करें। सबडोमेन शामिल हैं।",
+				"domainsInvalid": "example.com जैसे डोमेन अल्पविराम से अलग करके दर्ज करें।",
+				"issuer": "पहचान प्रदाता की एंटिटी ID (जारीकर्ता)",
+				"entryPoint": "सिंगल साइन-ऑन URL",
+				"entryPointInvalid": "https:// पते का उपयोग करें।",
+				"certificate": "साइनिंग प्रमाणपत्र",
+				"certificateHint": "पहचान प्रदाता का सार्वजनिक X.509 प्रमाणपत्र, PEM या base64 में। निजी कुंजी कभी नहीं।",
+				"certificateKeepHint": "मौजूदा प्रमाणपत्र रखने के लिए इसे खाली छोड़ें।",
+				"currentCertificate": "मौजूदा फ़िंगरप्रिंट: {{fingerprint}}",
+				"certificateExpired": "समाप्त",
+				"certificateExpiring": "जल्द समाप्त होगा",
+				"connected": "पहचान प्रदाता कनेक्ट हो गया",
+				"saved": "कनेक्शन सहेजा गया",
+				"removeDescription": "इस पहचान प्रदाता से साइन-इन अभी बंद हो जाता है। खाते बने रहते हैं, और लोग किसी और तरीके से साइन इन करते हैं।",
+				"removed": "{{name}} निकाला गया",
+				"columns": {
+					"name": "नाम",
+					"domains": "ईमेल डोमेन",
+					"certificate": "प्रमाणपत्र की समाप्ति"
+				}
+			}
 		}
 	},
 	"press": {
@@ -9936,6 +10375,24 @@
 				"facts": "प्रोजेक्ट: {{projects}} · लोग: {{members}} · चक्र: {{cycles}}",
 				"memory": "मेमोरी नोट्स: {{count}}",
 				"history": "पिछले संदेश: {{count}}"
+			},
+			"undo": {
+				"button": "योजना पूर्ववत करें",
+				"pending": "योजना पूर्ववत की जा रही है…",
+				"hint": "जब तक इसमें कुछ न बदला हो, आप इस योजना को एक घंटे तक पूर्ववत कर सकते हैं।",
+				"lastPlan": "आप अब भी अपनी पिछली योजना पूर्ववत कर सकते हैं।",
+				"done": "योजना पूर्ववत कर दी गई। हटाए गए आइटम ट्रैश में हैं।",
+				"archived_one": "{{count}} आइटम को इसके बजाय संग्रहित किया गया, क्योंकि आप इसे हटा नहीं सकते।",
+				"archived_other": "{{count}} आइटम को इसके बजाय संग्रहित किया गया, क्योंकि आप उन्हें हटा नहीं सकते।",
+				"partial_one": "{{count}} आइटम को छोड़कर पूर्ववत किया गया:",
+				"partial_other": "{{count}} आइटम को छोड़कर पूर्ववत किया गया:",
+				"edited_one": "कुछ भी पूर्ववत नहीं हुआ: योजना बनने के बाद {{count}} आइटम बदल गया। अगर आप अब भी इसे हटाना चाहते हैं, तो हाथ से हटाएँ।",
+				"edited_other": "कुछ भी पूर्ववत नहीं हुआ: योजना बनने के बाद {{count}} आइटम बदल गए। अगर आप अब भी उन्हें हटाना चाहते हैं, तो हाथ से हटाएँ।",
+				"more_one": "और {{count}} आइटम",
+				"more_other": "और {{count}} आइटम",
+				"already": "यह योजना पहले ही पूर्ववत की जा चुकी है।",
+				"expired": "यह योजना अब पूर्ववत नहीं की जा सकती: एक घंटा बीत चुका है।",
+				"failed": "यह योजना पूर्ववत नहीं हो सकी।"
 			}
 		},
 		"duplicates": {
@@ -11484,7 +11941,8 @@
 			"text": "यह {{instanceName}} से भेजा गया एक टेस्ट ईमेल है। अगर आप इसे पढ़ पा रहे हैं, तो ईमेल भेजना काम कर रहा है।"
 		},
 		"notificationText": {
-			"commentWithoutPreview": "{{taskTitle}} पर नई टिप्पणी"
+			"commentWithoutPreview": "{{taskTitle}} पर नई टिप्पणी",
+			"pushFixedLine": "विवरण देखने के लिए Margaya खोलें।"
 		}
 	}
 }

@@ -221,10 +221,29 @@
 			"errors": {
 				"account_not_linked": "この認証情報は既存のアカウントにリンクできませんでした。メールでサインインしてアカウントを確認後、再度SSOをお試しください。メールサインインが利用できない場合は、管理者にお問い合わせください。",
 				"oauth_code_verification_failed": "OAuth 認証に失敗しました。もう一度お試しください。",
-				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "現在、新規登録は無効になっています。アカウントを作成するには有効な招待が必要です。"
+				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "現在、新規登録は無効になっています。アカウントを作成するには有効な招待が必要です。",
+				"unsolicited_response": "企業サインインはこのページから開始してください。ID プロバイダー側から開始するサインインは受け付けていません。",
+				"invalid_saml_response": "ID プロバイダーからの応答を受け付けられませんでした。もう一度お試しいただくか、管理者に接続の確認を依頼してください。",
+				"replay_detected": "このサインイン応答はすでに使用されています。もう一度サインインしてください。",
+				"unable_to_create_user": "アカウントを作成できませんでした。管理者にアクセス権を依頼してください。",
+				"invalid_request": "このサインインリクエストは無効です。もう一度お試しください。",
+				"invalid_state": "このサインインリンクの有効期限が切れています。もう一度お試しください。",
+				"saml_deprecated_algorithm": "お使いの ID プロバイダーは、現在は受け付けられていないアルゴリズムで署名しています。SHA-256 に切り替えるよう管理者に依頼してください。",
+				"this_identity_provider_cannot_sign_in_that_email_address_": "この ID プロバイダーでは、そのメールアドレスでサインインできません。",
+				"new_accounts_on_this_server_must_use_an_approved_email_domain_": "このサーバーの新規アカウントには、承認済みのメールドメインを使用する必要があります。",
+				"banned_user": "このアカウントは利用停止されています。管理者にアクセス権を依頼してください。",
+				"unable_to_link_account": "この認証情報をアカウントにリンクできませんでした。管理者にお問い合わせください。",
+				"saml_other_browser": "企業サインインは、開始したブラウザで完了する必要があります。このページからやり直し、Cookie が許可されていることを確認してください。"
 			},
 			"instanceStatusError": "サーバーに接続できませんでした。しばらくしてから再試行してください。",
-			"titleWithInstance": "{{name}} にサインイン"
+			"titleWithInstance": "{{name}} にサインイン",
+			"continueWithSaml": "企業サインインで続ける",
+			"samlEmail": "勤務先メールアドレス",
+			"samlSubmit": "続ける",
+			"samlNoConnection": "このメールドメインでは企業サインインが設定されていません。",
+			"samlError": "企業サインインを開始できませんでした。もう一度お試しください。",
+			"emailCodesOff": "このサーバーでは、メールによるサインインリンクとコードがオフになっています。これまでそれらだけを使っていた場合は、まだパスワードがありません。「パスワードをお忘れですか？」を選択してパスワードを設定してください。",
+			"emailCodesOffNoEmail": "このサーバーでは、メールによるサインインリンクとコードがオフになっています。これまでそれらだけを使っていた場合は、まだパスワードがありません。インスタンス管理者にパスワードの設定を依頼してください。"
 		},
 		"providers": {
 			"google": "Google",
@@ -420,6 +439,10 @@
 				"nameShort": "名前は2文字以上で入力してください"
 			}
 		},
+		"layout": {
+			"headline": "プロジェクト全体を見渡し、次のタスクに取りかかる。",
+			"lede": "速くて静かなツールを好むチームのための、セルフホスト型プロジェクト管理。"
+		},
 		"device": {
 			"approve": "承認",
 			"approveFailed": "承認できませんでした",
@@ -443,10 +466,6 @@
 			"subtitle": "CLI またはアプリに表示されたコードを入力して続行してください。",
 			"title": "デバイスを接続"
 		},
-		"layout": {
-			"headline": "プロジェクト全体を見渡し、次のタスクに取りかかる。",
-			"lede": "速くて静かなツールを好むチームのための、セルフホスト型プロジェクト管理。"
-		},
 		"mcp": {
 			"approve": "承認",
 			"clientFallback": "MCP クライアント",
@@ -463,22 +482,6 @@
 			"subtitle": "Margaya アカウントへのアクセスを許可する前に、このリクエストを確認してください。",
 			"title": "MCP クライアントを認可",
 			"warning": "このクライアントはあなたとして操作し、ワークスペースにアクセスできるようになります。ご自身で開始した接続の場合のみ続行してください。"
-		},
-		"emailVerification": {
-			"codeLabel": "確認コード",
-			"codeSent": "{{email}} に6桁のコードを送信しました。有効期限は5分です。",
-			"invitationsDescription": "{{email}} 宛ての招待を表示するには、メールアドレスを確認してください。",
-			"resend": "新しいコードを送信",
-			"sendCode": "コードを送信",
-			"sendFailed": "コードを送信できませんでした。もう一度お試しください。",
-			"sending": "送信中...",
-			"settingsDescription": "{{email}} を確認すると、このアドレス宛てのワークスペース招待が Margaya に表示されます。",
-			"success": "メールアドレスを確認しました",
-			"title": "メールアドレスを確認",
-			"verifiedBadge": "確認済み",
-			"verify": "確認",
-			"verifyFailed": "このコードは無効です。コードを確認するか、新しいコードを送信してください。",
-			"verifying": "確認中..."
 		},
 		"forgotPassword": {
 			"backToSignIn": "サインインに戻る",
@@ -507,6 +510,30 @@
 			"successDescription": "新しいパスワードを設定し、すべてのセッションからサインアウトしました。新しいパスワードでサインインしてください。",
 			"successTitle": "パスワードを更新しました",
 			"title": "新しいパスワードを設定"
+		},
+		"emailVerification": {
+			"codeLabel": "確認コード",
+			"codeSent": "{{email}} に6桁のコードを送信しました。有効期限は5分です。",
+			"invitationsDescription": "{{email}} 宛ての招待を表示するには、メールアドレスを確認してください。",
+			"resend": "新しいコードを送信",
+			"sendCode": "コードを送信",
+			"sendFailed": "コードを送信できませんでした。もう一度お試しください。",
+			"sending": "送信中...",
+			"settingsDescription": "{{email}} を確認すると、このアドレス宛てのワークスペース招待が Margaya に表示されます。",
+			"success": "メールアドレスを確認しました",
+			"title": "メールアドレスを確認",
+			"verifiedBadge": "確認済み",
+			"verify": "確認",
+			"verifyFailed": "このコードは無効です。コードを確認するか、新しいコードを送信してください。",
+			"verifying": "確認中..."
+		},
+		"complete": {
+			"pageTitle": "サインイン中",
+			"title": "サインインを完了しています",
+			"working": "サインインしています…",
+			"failedTitle": "サインインを完了できませんでした",
+			"failed": "このサインインを完了できませんでした。リンクは 1 回だけ、1 分間、サインインに使用したブラウザーでのみ有効です。もう一度サインインしてください。",
+			"backToSignIn": "サインインに戻る"
 		}
 	},
 	"settings": {
@@ -608,6 +635,9 @@
 			"eventComments": "コメントとメンション",
 			"eventCommentsHint": "自分に割り当てられたタスクへの新規コメントや、自分宛ての @メンションが含まれます。",
 			"eventStatusChanges": "タスクのステータス変更",
+			"eventStatusChangesHint": "担当中またはサブスクライブ中のタスクが対象です。",
+			"eventTaskUpdates": "その他のタスク変更",
+			"eventTaskUpdatesHint": "フォロー中のタスクの優先度、期限、タイトルの変更。",
 			"eventDueDateReminders": "期限のリマインダー",
 			"reminderLeadTimeLabel": "期限前にリマインド",
 			"reminderLeadTimeHint": "期限の1時間前から30日前までの間で設定できます。期限切れ通知は個別に送信されます。",
@@ -615,6 +645,23 @@
 			"reminderLeadTimeUnitDays": "日",
 			"reminderLeadTimeInvalid": "1 から {{max}} までの整数を入力してください。",
 			"saveEventPreferences": "通知タイプを保存",
+			"digestTitle": "メールダイジェスト",
+			"digestDescription": "期限切れまたは7日以内に期限を迎える未完了のタスク、新しいメンション、未読の受信トレイ項目をまとめたメールです。あなたのタイムゾーンに合わせて送信され、報告する内容がない場合は送信されません。",
+			"digestFrequencyLabel": "ダイジェストを送信",
+			"digestFrequencyOff": "オフ",
+			"digestFrequencyDaily": "毎日",
+			"digestFrequencyWeekly": "毎週",
+			"digestWeekdayLabel": "曜日",
+			"digestWeekdaySunday": "日曜日",
+			"digestWeekdayMonday": "月曜日",
+			"digestWeekdayTuesday": "火曜日",
+			"digestWeekdayWednesday": "水曜日",
+			"digestWeekdayThursday": "木曜日",
+			"digestWeekdayFriday": "金曜日",
+			"digestWeekdaySaturday": "土曜日",
+			"digestHourLabel": "時刻",
+			"digestNoEmail": "ダイジェストを受け取るには、アカウントのメールアドレスが必要です。",
+			"saveDigest": "ダイジェストを保存",
 			"workspaceCardLabelEmail": "メール",
 			"workspaceCardLabelNtfy": "ntfy",
 			"workspaceCardLabelGotify": "Gotify",
@@ -642,28 +689,8 @@
 			"toastPreferencesSaveFailed": "通知設定の保存に失敗しました",
 			"toastRuleSavedGeneric": "ワークスペースの通知ルールを保存しました",
 			"toastRuleRemovedGeneric": "ワークスペースの通知ルールを削除しました",
-			"eventStatusChangesHint": "担当中またはサブスクライブ中のタスクが対象です。",
-			"eventTaskUpdates": "その他のタスク変更",
-			"eventTaskUpdatesHint": "フォロー中のタスクの優先度、期限、タイトルの変更。",
-			"channelsDescription": "上で選択した通知を Margaya が送信する先です。",
 			"channelsTitle": "配信チャンネル",
-			"digestDescription": "期限切れまたは7日以内に期限を迎える未完了のタスク、新しいメンション、未読の受信トレイ項目をまとめたメールです。あなたのタイムゾーンに合わせて送信され、報告する内容がない場合は送信されません。",
-			"digestFrequencyDaily": "毎日",
-			"digestFrequencyLabel": "ダイジェストを送信",
-			"digestFrequencyOff": "オフ",
-			"digestFrequencyWeekly": "毎週",
-			"digestHourLabel": "時刻",
-			"digestNoEmail": "ダイジェストを受け取るには、アカウントのメールアドレスが必要です。",
-			"digestTitle": "メールダイジェスト",
-			"digestWeekdayFriday": "金曜日",
-			"digestWeekdayLabel": "曜日",
-			"digestWeekdayMonday": "月曜日",
-			"digestWeekdaySaturday": "土曜日",
-			"digestWeekdaySunday": "日曜日",
-			"digestWeekdayThursday": "木曜日",
-			"digestWeekdayTuesday": "火曜日",
-			"digestWeekdayWednesday": "水曜日",
-			"saveDigest": "ダイジェストを保存",
+			"channelsDescription": "上で選択した通知を Margaya が送信する先です。",
 			"sound": {
 				"title": "サウンド",
 				"description": "ブラウザで Margaya を開いているときに通知が届くと、サウンドを再生します。",
@@ -694,7 +721,30 @@
 				"deviceMute": "このデバイスでサウンドをミュート",
 				"deviceMuteDescription": "このブラウザだけをミュートします。ほかのデバイスでは引き続き再生されます。",
 				"previewFailed": "ブラウザでサウンドを再生できませんでした。このタブまたはサイトがミュートになっていないか確認してください。"
-			}
+			},
+			"pushTitle": "プッシュ通知",
+			"pushDescription": "Margaya を閉じていても、スマートフォンやパソコンに通知が届きます。送信される内容は「通知を受け取るイベント」で決まり、下のワークスペースのルールでさらに絞り込めます。",
+			"pushThisDevice": "このデバイスで",
+			"pushOnHint": "このデバイスはプッシュ通知を受け取ります。",
+			"pushOffHint": "オンにすると、ブラウザから許可を求められます。",
+			"pushOffHintAllowed": "このブラウザでは通知がすでに許可されています。",
+			"pushNotSetUp": "このサーバーではプッシュ通知が設定されていません。管理者に VAPID キーの設定を依頼してください。",
+			"pushInstallFirst": "iPhone と iPad では、先に Margaya をホーム画面に追加してください。共有をタップし、「ホーム画面に追加」を選びます。追加したアイコンから開いて、ここをオンにしてください。",
+			"pushUnsupported": "このブラウザでは、ここからプッシュ通知を受け取れません。プッシュ通知には最新のブラウザと HTTPS のアドレスが必要です。",
+			"pushBlocked": "このサイトの通知はブロックされています。ブラウザの設定で許可してから、このページを再読み込みしてください。",
+			"pushOtherDevices": "他のデバイス",
+			"pushRemoveDevice": "削除",
+			"pushRemoveDeviceLabel": "{{device}} を削除",
+			"toastPushOn": "このデバイスのプッシュ通知をオンにしました。",
+			"toastPushOnFailed": "プッシュ通知をオンにできませんでした。もう一度お試しください。",
+			"toastPushOff": "このデバイスのプッシュ通知をオフにしました。",
+			"toastPushOffFailed": "プッシュ通知をオフにできませんでした。もう一度お試しください。",
+			"toastPushDeviceRemoved": "デバイスを削除しました。",
+			"toastPushDeviceRemoveFailed": "デバイスを削除できませんでした。もう一度お試しください。",
+			"workspaceCardLabelPush": "プッシュ通知",
+			"pushChannelHintEnabled": "条件に合うワークスペースの通知をデバイスに送信します。",
+			"pushChannelHintDisabled": "先にデバイスのプッシュ通知をオンにしてください。",
+			"pushLoadFailed": "プッシュ通知の設定を読み込めませんでした。ページを再読み込みしてもう一度お試しください。"
 		},
 		"preferencesPage": {
 			"title": "環境設定",
@@ -898,7 +948,6 @@
 				"organization": "ワークスペース管理",
 				"member": "メンバー",
 				"invitation": "招待",
-				"team": "チーム",
 				"ac": "ロールと権限",
 				"cycle": "サイクル",
 				"module": "モジュール",
@@ -1022,20 +1071,6 @@
 					"cancel": {
 						"label": "招待をキャンセル",
 						"description": "保留中のワークスペース招待を取り消せます。"
-					}
-				},
-				"team": {
-					"create": {
-						"label": "チームを作成",
-						"description": "このワークスペースにチームを作成できます。"
-					},
-					"update": {
-						"label": "チームを編集",
-						"description": "チームとチームメンバーシップを変更できます。"
-					},
-					"delete": {
-						"label": "チームを削除",
-						"description": "このワークスペースのチームを削除できます。"
 					}
 				},
 				"ac": {
@@ -1872,7 +1907,10 @@
 				"pr_merged": "PR をマージ",
 				"issue_opened": "Issue を作成",
 				"issue_closed": "Issue をクローズ"
-			}
+			},
+			"removeRule": "{{event}} のルールを削除",
+			"toastRemoved": "ワークフロールールを削除しました",
+			"toastRemoveError": "ルールの削除に失敗しました"
 		},
 		"externalLinks": {
 			"resources": "リソース",
@@ -1920,28 +1958,43 @@
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
 		"customFields": {
-			"addButton": "追加",
-			"createError": "カスタムフィールドの作成に失敗しました。",
-			"createSuccess": "カスタムフィールドを作成しました。",
-			"defaultLabel": "デフォルト",
-			"defaultValuePlaceholder": "デフォルト値",
-			"deleteButton": "削除",
-			"deleteError": "カスタムフィールドの削除に失敗しました。",
-			"deleteSuccess": "カスタムフィールドを削除しました。",
-			"empty": "カスタムフィールドはまだ設定されていません。",
-			"loading": "カスタムフィールドを読み込み中...",
 			"namePlaceholder": "フィールド名",
+			"typePlaceholder": "フィールドタイプを選択",
 			"noOptionsPlaceholder": "選択肢なし",
+			"defaultValuePlaceholder": "デフォルト値",
 			"optionsPlaceholder": "選択肢をカンマ区切りで入力",
 			"required": "必須",
-			"typePlaceholder": "フィールドタイプを選択",
+			"addButton": "追加",
+			"loading": "カスタムフィールドを読み込み中...",
+			"empty": "カスタムフィールドはまだ設定されていません。",
+			"defaultLabel": "デフォルト",
+			"createSuccess": "カスタムフィールドを作成しました。",
+			"createError": "カスタムフィールドの作成に失敗しました。",
+			"deleteButton": "削除",
+			"deleteSuccess": "カスタムフィールドを削除しました。",
+			"deleteError": "カスタムフィールドの削除に失敗しました。",
 			"types": {
 				"boolean": "真偽値",
 				"date": "日付",
 				"dropdown": "ドロップダウン",
 				"number": "数値",
 				"text": "テキスト"
-			}
+			},
+			"editButton": "編集",
+			"editTitle": "カスタムフィールドを編集",
+			"editDescription": "フィールドのタイプと必須かどうかは、作成後に変更できません。",
+			"nameLabel": "名前",
+			"optionsLabel": "選択肢",
+			"addOption": "選択肢を追加",
+			"removeOption": "選択肢を削除",
+			"optionPlaceholder": "選択肢の名前",
+			"optionsHint": "選択肢の名前を変更すると、それを使用しているすべてのタスク、保存ビュー、自動化が更新されます。削除した選択肢は、誰かが変更するまで既存のタスクに残りますが、再び選択することはできません。",
+			"duplicateOption": "選択肢はそれぞれ異なる名前にしてください。",
+			"noDefault": "デフォルトなし",
+			"saveButton": "保存",
+			"cancelButton": "キャンセル",
+			"updateSuccess": "カスタムフィールドを更新しました。",
+			"updateError": "カスタムフィールドの更新に失敗しました。"
 		},
 		"projectFeatures": {
 			"disableConfirmAction": "オフにする",
@@ -2205,6 +2258,11 @@
 			}
 		},
 		"workspaceExports": {
+			"title": "エクスポート",
+			"pageTitle": "エクスポート",
+			"subtitle": "タスクをCSV、Excel、JSONにエクスポートします。ファイルは{{days}}日間ダウンロードできます。",
+			"newExport": "新規エクスポート",
+			"viewExports": "エクスポートを表示",
 			"form": {
 				"activeGroup": "アクティブ",
 				"allProjects": "すべてのプロジェクト",
@@ -2231,47 +2289,6 @@
 				"json": "JSON",
 				"xlsx": "Excel"
 			},
-			"history": {
-				"all": "すべてのエクスポート",
-				"columns": {
-					"actions": "操作",
-					"created": "作成日時",
-					"expires": "利用可能期間",
-					"export": "エクスポート",
-					"requestedBy": "リクエストしたユーザー",
-					"size": "サイズ",
-					"status": "ステータス",
-					"tasks": "タスク"
-				},
-				"delete": "削除",
-				"deleteAria": "{{name}} を削除",
-				"deleteDescription": "ファイルはすべてのユーザーから削除されます。この操作は元に戻せません。",
-				"deletedProject": "削除されたプロジェクト",
-				"deleteTitle": "このエクスポートを削除しますか？",
-				"deleting": "削除中…",
-				"description": "完了したエクスポートをダウンロードするか、不要なものを削除します。",
-				"download": "ダウンロード",
-				"downloadAria": "{{name}} をダウンロード",
-				"empty": "エクスポートはまだありません。開始したエクスポートは{{days}}日間ここに表示されます。",
-				"expiredOn": "{{date}} に期限切れ",
-				"expiresOn": "{{date}} まで",
-				"loadMore": "さらに読み込む",
-				"mine": "自分のエクスポート",
-				"scopeLabel": "対象のエクスポート",
-				"summaryProjects_other": "{{format}} · {{count}}件のプロジェクト",
-				"title": "過去のエクスポート"
-			},
-			"newExport": "新規エクスポート",
-			"pageTitle": "エクスポート",
-			"status": {
-				"completed": "準備完了",
-				"expired": "期限切れ",
-				"failed": "失敗",
-				"processing": "処理中",
-				"queued": "待機中"
-			},
-			"subtitle": "タスクをCSV、Excel、JSONにエクスポートします。ファイルは{{days}}日間ダウンロードできます。",
-			"title": "エクスポート",
 			"toast": {
 				"deleted": "エクスポートを削除しました",
 				"deleteError": "エクスポートを削除できませんでした。もう一度お試しください。",
@@ -2283,7 +2300,57 @@
 				"ready": "エクスポートの準備ができました",
 				"started": "エクスポートを開始しました。準備ができたらお知らせします。"
 			},
-			"viewExports": "エクスポートを表示"
+			"history": {
+				"title": "過去のエクスポート",
+				"description": "完了したエクスポートをダウンロードするか、不要なものを削除します。",
+				"scopeLabel": "対象のエクスポート",
+				"mine": "自分のエクスポート",
+				"all": "すべてのエクスポート",
+				"empty": "エクスポートはまだありません。開始したエクスポートは{{days}}日間ここに表示されます。",
+				"columns": {
+					"actions": "操作",
+					"created": "作成日時",
+					"expires": "利用可能期間",
+					"export": "エクスポート",
+					"requestedBy": "リクエストしたユーザー",
+					"size": "サイズ",
+					"status": "ステータス",
+					"tasks": "タスク"
+				},
+				"summaryProjects_other": "{{format}} · {{count}}件のプロジェクト",
+				"deletedProject": "削除されたプロジェクト",
+				"download": "ダウンロード",
+				"downloadAria": "{{name}} をダウンロード",
+				"delete": "削除",
+				"deleteAria": "{{name}} を削除",
+				"deleting": "削除中…",
+				"deleteTitle": "このエクスポートを削除しますか？",
+				"deleteDescription": "ファイルはすべてのユーザーから削除されます。この操作は元に戻せません。",
+				"expiredOn": "{{date}} に期限切れ",
+				"expiresOn": "{{date}} まで",
+				"loadMore": "さらに読み込む",
+				"summaryWorkspace": "ワークスペース全体",
+				"fileCount_other": "ファイル {{count}} 件",
+				"withoutFiles": "ファイルなし",
+				"missingFiles_other": "{{count}} 件のファイルがストレージに見つかりませんでした"
+			},
+			"status": {
+				"completed": "準備完了",
+				"expired": "期限切れ",
+				"failed": "失敗",
+				"processing": "処理中",
+				"queued": "待機中"
+			},
+			"whole": {
+				"title": "ワークスペース全体",
+				"description": "タスクとそのすべてのコメント、ページ、設定、ファイルを 1 つの ZIP にまとめてダウンロードします。",
+				"action": "ワークスペースをエクスポート",
+				"dialogTitle": "ワークスペース全体をエクスポート",
+				"dialogDescription": "アーカイブはバックグラウンドで作成されます。準備ができると通知が届きます。",
+				"includeFiles": "ファイルを含める",
+				"includeFilesHint": "オフにするとアーカイブのサイズを大幅に小さくできます。その場合もすべてのファイルの一覧は含まれます。",
+				"leftOut": "シークレット、非公開ページ、ゴミ箱、下書きは含まれません。アーカイブにはメンバーのメールアドレスが含まれるため、安全な場所に保管してください。"
+			}
 		},
 		"workspaceWebhooks": {
 			"actionsMenu": "Webhookの操作",
@@ -2661,7 +2728,8 @@
 			"restrictedProject": "制限付きプロジェクト",
 			"toastUpdated": "アクセスを更新しました",
 			"toastError": "アクセスの更新に失敗しました",
-			"loadError": "アクセス設定を読み込めませんでした。ページを再読み込みしてもう一度お試しください。"
+			"loadError": "アクセス設定を読み込めませんでした。ページを再読み込みしてもう一度お試しください。",
+			"guestsHint": "ゲストは、追加されたプロジェクトにのみアクセスできます。ここで追加してください。実行できる操作はプロジェクトのロールによって制限されます。"
 		},
 		"projectPeople": {
 			"defaultAssigneeHint": "タスク作成時にあらかじめ入力され、担当者のいない承認済みリクエストにも割り当てられます。",
@@ -2779,47 +2847,47 @@
 				"workspacePublicPagesChanged": "公開ページをオンまたはオフにしました",
 				"pagePublished": "ページを公開リンクで公開しました",
 				"pageUnpublished": "ページの公開リンクを無効にしました",
-				"apiKeyCreated": "API キーを作成しました",
-				"apiKeyRevoked": "API キーを無効化しました",
-				"exportCreated": "エクスポートを開始しました",
-				"exportDownloaded": "エクスポートをダウンロードしました",
-				"importRun": "タスクをインポートしました",
-				"integrationConnected": "連携を接続しました",
-				"integrationDisconnected": "連携を切断しました",
-				"integrationUpdated": "連携を変更しました",
+				"memberInvited": "ワークスペースにユーザーを招待しました",
+				"memberInvitationRevoked": "招待を取り消しました",
 				"memberInvitationAccepted": "招待を承諾しました",
 				"memberInvitationDeclined": "招待を辞退しました",
 				"memberInvitationRoleChanged": "保留中の招待のロールを変更しました",
-				"memberInvitationRevoked": "招待を取り消しました",
-				"memberInvited": "ワークスペースにユーザーを招待しました",
-				"memberLeft": "ワークスペースから退出しました",
 				"memberRemoved": "メンバーを削除しました",
+				"memberLeft": "ワークスペースから退出しました",
 				"memberRoleChanged": "メンバーのロールを変更しました",
-				"projectArchived": "プロジェクトをアーカイブしました",
-				"projectCreated": "プロジェクトを作成しました",
-				"projectFeatureToggled": "プロジェクト機能のオン/オフを切り替えました",
-				"projectPurged": "プロジェクトを完全に削除しました",
-				"projectRestored": "プロジェクトをゴミ箱から復元しました",
-				"projectSettingsChanged": "プロジェクト設定を変更しました",
-				"projectTrashed": "プロジェクトをゴミ箱に移動しました",
-				"projectUnarchived": "プロジェクトのアーカイブを解除しました",
-				"publicBoardLinkRotated": "公開ボードのリンクを置き換えました",
-				"publicBoardPublished": "公開ボードを公開しました",
-				"publicBoardSettingsChanged": "公開ボードの設定を変更しました",
-				"publicBoardUnpublished": "公開ボードを非公開にしました",
 				"roleCreated": "ロールを作成しました",
-				"roleDeleted": "ロールを削除しました",
 				"roleUpdated": "ロールを変更しました",
-				"trashEmptied": "プロジェクトのゴミ箱を空にしました",
-				"trashPurged": "ゴミ箱のタスクを完全に削除しました",
-				"unknown": "{{action}}",
+				"roleDeleted": "ロールを削除しました",
+				"apiKeyCreated": "API キーを作成しました",
+				"apiKeyRevoked": "API キーを無効化しました",
 				"webhookCreated": "Webhook を作成しました",
+				"webhookUpdated": "Webhook を変更しました",
 				"webhookDeleted": "Webhook を削除しました",
 				"webhookSecretRotated": "Webhook の署名シークレットをローテーションしました",
-				"webhookUpdated": "Webhook を変更しました",
+				"integrationConnected": "連携を接続しました",
+				"integrationUpdated": "連携を変更しました",
+				"integrationDisconnected": "連携を切断しました",
 				"workspaceCreated": "ワークスペースを作成しました",
-				"workspaceOwnershipTransferred": "ワークスペースの所有権を譲渡しました",
 				"workspaceUpdated": "ワークスペース設定を変更しました",
+				"workspaceOwnershipTransferred": "ワークスペースの所有権を譲渡しました",
+				"projectCreated": "プロジェクトを作成しました",
+				"projectTrashed": "プロジェクトをゴミ箱に移動しました",
+				"projectRestored": "プロジェクトをゴミ箱から復元しました",
+				"projectPurged": "プロジェクトを完全に削除しました",
+				"projectArchived": "プロジェクトをアーカイブしました",
+				"projectUnarchived": "プロジェクトのアーカイブを解除しました",
+				"projectFeatureToggled": "プロジェクト機能のオン/オフを切り替えました",
+				"projectSettingsChanged": "プロジェクト設定を変更しました",
+				"publicBoardPublished": "公開ボードを公開しました",
+				"publicBoardUnpublished": "公開ボードを非公開にしました",
+				"publicBoardLinkRotated": "公開ボードのリンクを置き換えました",
+				"publicBoardSettingsChanged": "公開ボードの設定を変更しました",
+				"exportCreated": "エクスポートを開始しました",
+				"exportDownloaded": "エクスポートをダウンロードしました",
+				"importRun": "タスクをインポートしました",
+				"trashPurged": "ゴミ箱のタスクを完全に削除しました",
+				"trashEmptied": "プロジェクトのゴミ箱を空にしました",
+				"unknown": "{{action}}",
 				"aiSettingsUpdated": "AI 設定を変更しました",
 				"aiTriageLabelsApplied": "提案されたラベルを自動で追加しました",
 				"agentCreated": "エージェントを作成しました",
@@ -2846,7 +2914,9 @@
 				"aiConnectorUpdated": "MCP コネクタを変更しました",
 				"aiConnectorDeleted": "MCP コネクタを削除しました",
 				"agentIntakeTriggerUpdated": "エージェントの受付トリガーを変更しました",
-				"agentIntakeTriggerDisabled": "エージェントの受付トリガーをオフにしました"
+				"agentIntakeTriggerDisabled": "エージェントの受付トリガーをオフにしました",
+				"memberProvisioned": "プロビジョニングでメンバーを追加しました",
+				"memberInvitationProjectsChanged": "保留中の招待のプロジェクトを変更しました"
 			},
 			"actor": {
 				"apiKey": "API キー",
@@ -2939,47 +3009,56 @@
 			"title": "監査ログ"
 		},
 		"trash": {
-			"deletedAt": "{{time}}に削除",
-			"deletedBy": "{{name}} が{{time}}に削除",
-			"deletePermanently": "完全に削除",
-			"emptyConfirmDescription": "このプロジェクトのゴミ箱にあるすべてのタスクが、コメント、添付ファイル、作業時間の記録とともに完全に削除されます。この操作は元に戻せません。",
-			"emptyConfirmTitle": "ゴミ箱を空にしますか？",
-			"emptyProjectsDescription": "このワークスペースから削除したプロジェクトがここに表示されます。",
-			"emptyProjectsTitle": "削除したプロジェクトはありません",
-			"emptyTasksDescription": "このプロジェクトから削除したタスクがここに表示されます。",
-			"emptyTasksTitle": "削除したタスクはありません",
-			"emptyTrash": "ゴミ箱を空にする",
-			"loadError": "ゴミ箱を読み込めませんでした",
-			"loadMore": "さらに読み込む",
-			"menuAria": "{{name}} のその他の操作",
-			"noMatches": "検索に一致する項目はありません",
-			"projectSubtitle": "削除したタスクは、完全に削除されるまでここに保管されます。タスクを復元すると、一緒に削除されたサブタスクも元に戻ります。",
 			"projectTitle": "最近削除した項目",
+			"projectSubtitle": "削除したタスクとページは、完全に削除されるまでここに保管されます。タスクを復元すると、一緒に削除されたサブタスクも元に戻ります。復元したページは「アーカイブ済み」に戻ります。",
+			"workspaceTitle": "最近削除したプロジェクト",
+			"workspaceNav": "最近削除した項目",
+			"workspaceSubtitle": "削除したプロジェクトは、完全に削除されるまでタスクとともにここに保管されます。",
+			"searchTasks": "削除したタスクを検索",
+			"searchProjects": "削除したプロジェクトを検索",
+			"deletedBy": "{{name}} が{{time}}に削除",
+			"deletedAt": "{{time}}に削除",
 			"purgeOn": "{{date}} に完全に削除されます",
-			"purgeProjectDescription": "「{{name}}」とその中のすべてが全員に対して削除されます。この操作は元に戻せません。",
-			"purgeProjectTitle": "このプロジェクトを完全に削除しますか？",
-			"purgeTaskDescription": "「{{name}}」と、一緒に削除されたサブタスク、コメント、添付ファイル、作業時間の記録が全員に対して削除されます。この操作は元に戻せません。",
-			"purgeTaskTitle": "このタスクを完全に削除しますか？",
+			"withSubTasks_other": "サブタスク {{count}} 件を含む",
+			"taskCount_other": "{{count}} 件のタスク",
 			"restore": "復元",
 			"restoreAria": "{{name}} を復元",
+			"menuAria": "{{name}} のその他の操作",
+			"deletePermanently": "完全に削除",
+			"emptyTrash": "ゴミ箱を空にする",
+			"emptyTasksTitle": "削除したタスクはありません",
+			"emptyTasksDescription": "このプロジェクトから削除したタスクがここに表示されます。",
+			"emptyProjectsTitle": "削除したプロジェクトはありません",
+			"emptyProjectsDescription": "このワークスペースから削除したプロジェクトがここに表示されます。",
+			"noMatches": "検索に一致する項目はありません",
+			"loadError": "ゴミ箱を読み込めませんでした",
 			"retry": "再試行",
-			"searchProjects": "削除したプロジェクトを検索",
-			"searchTasks": "削除したタスクを検索",
-			"taskCount_other": "{{count}} 件のタスク",
+			"loadMore": "さらに読み込む",
+			"purgeTaskTitle": "このタスクを完全に削除しますか？",
+			"purgeTaskDescription": "「{{name}}」と、一緒に削除されたサブタスク、コメント、添付ファイル、作業時間の記録が全員に対して削除されます。この操作は元に戻せません。",
+			"emptyConfirmTitle": "ゴミ箱を空にしますか？",
+			"emptyConfirmDescription": "このプロジェクトのゴミ箱にあるすべてのタスクが、コメント、添付ファイル、作業時間の記録とともに完全に削除されます。この操作は元に戻せません。",
+			"purgeProjectTitle": "このプロジェクトを完全に削除しますか？",
+			"purgeProjectDescription": "「{{name}}」とその中のすべてが全員に対して削除されます。この操作は元に戻せません。",
 			"toast": {
-				"emptied_other": "{{count}} 件のタスクを完全に削除しました",
-				"projectPurged": "プロジェクトを完全に削除しました",
+				"taskRestored": "タスクを復元しました",
 				"projectRestored": "プロジェクトを復元しました",
-				"purgeError": "完全に削除できませんでした",
 				"restoreBlocked": "このタスクは単独では復元できません。先に親タスクまたはプロジェクトを復元してください。",
 				"restoreError": "復元できませんでした",
 				"taskPurged": "タスクを完全に削除しました",
-				"taskRestored": "タスクを復元しました"
+				"projectPurged": "プロジェクトを完全に削除しました",
+				"emptied_other": "{{count}} 件のタスクを完全に削除しました",
+				"purgeError": "完全に削除できませんでした",
+				"pageRestored": "ページを「アーカイブ済み」に復元しました",
+				"pagePurged": "ページを完全に削除しました"
 			},
-			"withSubTasks_other": "サブタスク {{count}} 件を含む",
-			"workspaceNav": "最近削除した項目",
-			"workspaceSubtitle": "削除したプロジェクトは、完全に削除されるまでタスクとともにここに保管されます。",
-			"workspaceTitle": "最近削除したプロジェクト"
+			"tasksHeading": "タスク",
+			"pagesHeading": "ページ",
+			"searchPages": "削除したページを検索",
+			"emptyPagesTitle": "削除したページはありません",
+			"emptyPagesDescription": "このプロジェクトから削除したアーカイブ済みページがここに表示されます。",
+			"purgePageTitle": "このページを完全に削除しますか？",
+			"purgePageDescription": "「{{name}}」とそのコメント、バージョン履歴が全員に対して削除されます。この操作は元に戻せません。"
 		},
 		"automationRules": {
 			"title": "自動化",
@@ -3317,24 +3396,25 @@
 				"goToHome": "ホームへ移動",
 				"goToStickies": "付箋へ移動",
 				"paletteActions": "アクションを実行",
+				"paletteTasks": "キーまたはタイトルでタスクを検索",
 				"palettePeople": "メンバーを検索",
 				"palettePlaces": "場所へ移動",
-				"paletteTasks": "キーまたはタイトルでタスクを検索",
 				"captureTask": "ボードまたはリストにタスクを追加",
 				"selectTask": "フォーカス中のタスクを選択",
-				"triageAssignee": "フォーカス中のタスクの担当者を変更",
-				"triagePriority": "フォーカス中のタスクの優先度を変更",
 				"triageStatus": "フォーカス中のタスクのステータスを変更",
+				"triagePriority": "フォーカス中のタスクの優先度を変更",
+				"triageAssignee": "フォーカス中のタスクの担当者を変更",
+				"taskStatus": "ステータスを変更",
+				"taskPriority": "優先度を変更",
 				"taskAssignees": "担当者を変更",
+				"taskLabels": "ラベルを変更",
+				"taskDueDate": "期限を変更",
 				"taskAssignSelf": "自分を割り当て/割り当て解除",
 				"taskCopyKey": "タスクキーをコピー",
 				"taskCopyLink": "タスクのリンクをコピー",
+				"taskCopyBranch": "タスクのブランチ名をコピー",
 				"taskDelete": "タスクを削除",
-				"taskDueDate": "期限を変更",
-				"taskLabels": "ラベルを変更",
-				"taskPriority": "優先度を変更",
-				"taskStatus": "ステータスを変更",
-				"taskCopyBranch": "タスクのブランチ名をコピー"
+				"moveBetweenCards": "ボード上のカード間を移動"
 			}
 		},
 		"favorites": {
@@ -3493,6 +3573,14 @@
 			"automation_notice": {
 				"title": "自動化: {{ruleName}}",
 				"content": "{{taskKey}} {{taskTitle}}"
+			},
+			"page_comment": {
+				"title": "{{commenterName}} さんがコメントしました",
+				"content": "{{commenterName}} さんが「{{pageTitle}}」にコメントしました: {{commentPreview}}"
+			},
+			"page_updated": {
+				"title": "{{editorName}} さんがページを編集しました",
+				"content": "{{editorName}} さんが「{{pageTitle}}」を編集しました"
 			}
 		},
 		"inbox": {
@@ -3547,10 +3635,12 @@
 			"loadMore": "さらに読み込む",
 			"pageTitle": "受信トレイ",
 			"preview": {
-				"emptyDescription": "該当のタスクがここに開きます。",
 				"emptyTitle": "通知を選択してください",
+				"emptyDescription": "該当のタスクがここに開きます。",
 				"unavailable": "このタスクは利用できなくなりました",
-				"label": "閲覧ペイン"
+				"label": "閲覧ペイン",
+				"showProperties": "プロパティを表示",
+				"hideProperties": "プロパティを非表示"
 			},
 			"retry": "再試行",
 			"snooze": {
@@ -3594,27 +3684,31 @@
 				"subscribed": "サブスクライブ中"
 			},
 			"verbs": {
-				"due_date_reminder": "期限まであと{{leadTime}}",
-				"task_assignee_changed": "があなたを担当にしました",
-				"task_comment": "がコメントしました",
 				"task_created": "がこのタスクを作成しました",
+				"task_assignee_changed": "があなたを担当にしました",
+				"task_status_changed": "が{{oldStatus}}から{{newStatus}}に移動しました",
+				"task_comment": "がコメントしました",
 				"task_mention": "があなたをメンションしました",
 				"task_mention_comment": "がコメントであなたをメンションしました",
-				"task_overdue": "期限を過ぎています",
-				"task_status_changed": "が{{oldStatus}}から{{newStatus}}に移動しました",
+				"time_entry_created": "が時間を記録しました",
 				"task_updated": {
 					"dueDate": "が期限を{{newValue}}に変更しました",
 					"dueDateCleared": "が期限を削除しました",
 					"priority": "が優先度を{{newValue}}に変更しました",
 					"title": "がタスク名を変更しました"
 				},
-				"time_entry_created": "が時間を記録しました",
+				"due_date_reminder": "期限まであと{{leadTime}}",
+				"task_overdue": "期限を過ぎています",
 				"intake_accepted": "があなたのリクエストを承認しました",
 				"intake_declined": "があなたのリクエストを却下しました",
 				"intake_duplicate": "があなたのリクエストを重複としてマークしました",
 				"page_mention": "がページであなたをメンションしました",
 				"page_mention_titled": "が {{pageTitle}} であなたをメンションしました",
-				"task_comment_reply": "がコメントに返信しました"
+				"task_comment_reply": "がコメントに返信しました",
+				"page_comment": "がページにコメントしました",
+				"page_comment_titled": "が「{{pageTitle}}」にコメントしました",
+				"page_updated": "がウォッチ中のページを編集しました",
+				"page_updated_titled": "が「{{pageTitle}}」を編集しました"
 			},
 			"viewing": {
 				"archived": "アーカイブ済みの通知を表示しています",
@@ -3645,8 +3739,21 @@
 		}
 	},
 	"activity": {
+		"feed": {
+			"all": "すべてのアクティビティ",
+			"comments": "コメント",
+			"label": "アクティビティの絞り込みと並べ替え",
+			"newest": "新しい順",
+			"noMatches": "このフィルターで表示できる項目はありません。",
+			"oldest": "古い順",
+			"order": "並び順",
+			"show": "表示",
+			"updates": "更新"
+		},
 		"assignedToSelf": "がタスクを自分に割り当てました",
 		"unassigned": "が担当者の割り当てを解除しました",
+		"unassignedUser": "が{{name}}の割り当てを解除しました",
+		"unassignedSelf": "が自分の割り当てを解除しました",
 		"assignedTo": "がタスクを {{name}} に割り当てました",
 		"changedStatus": "がステータスを {{from}} から {{to}} に変更しました",
 		"changedPriority": "が優先度を {{from}} から {{to}} に変更しました",
@@ -3656,6 +3763,8 @@
 		"changedTitle": "がタイトルを「{{from}}」から「{{to}}」に変更しました",
 		"moved": "がタスクを「{{from}}」から「{{to}}」に移動しました",
 		"created": "がこのタスクを作成しました",
+		"importedFromJira": "がこのタスクを Jira {{key}} からインポートしました",
+		"importedFromSource": "がこのタスクを {{source}} {{key}} からインポートしました",
 		"githubUser": "GitHub ユーザー",
 		"comment": {
 			"github": "GitHub",
@@ -3775,35 +3884,26 @@
 			"linkCopied": "コメントのリンクをコピーしました"
 		},
 		"addedToCycle": "がタスクをサイクル「{{name}}」に追加しました",
-		"deletedCycle": "が削除されたサイクルからタスクを削除しました",
-		"movedCycle": "がタスクをサイクル「{{from}}」から「{{to}}」に移動しました",
 		"removedFromCycle": "がタスクをサイクル「{{name}}」から削除しました",
+		"movedCycle": "がタスクをサイクル「{{from}}」から「{{to}}」に移動しました",
+		"deletedCycle": "が削除されたサイクルからタスクを削除しました",
 		"addedToModule": "がタスクをモジュール「{{name}}」に追加しました",
 		"removedFromModule": "がタスクをモジュール「{{name}}」から削除しました",
+		"estimateSet": "が見積もりを {{to}} に設定しました",
 		"estimateChanged": "が見積もりを {{from}} から {{to}} に変更しました",
+		"estimateRemoved": "が見積もり {{from}} を削除しました",
 		"estimateReason": {
 			"point_deleted": "（見積もりの値が削除されたため）",
 			"system_deleted": "（見積もりシステムが削除されたため）",
 			"system_switched": "（見積もりシステムが切り替えられたため）",
 			"task_moved": "（別のプロジェクトに移動したため）"
 		},
-		"estimateRemoved": "が見積もり {{from}} を削除しました",
-		"estimateSet": "が見積もりを {{to}} に設定しました",
-		"unassignedSelf": "が自分の割り当てを解除しました",
-		"unassignedUser": "が{{name}}の割り当てを解除しました",
-		"addedLabel": "がラベル <label>{{name}}</label> を追加しました",
-		"attachmentAdded": "が{{filename}}を添付しました",
-		"attachmentRemoved": "が添付ファイル{{filename}}を削除しました",
+		"setStartDate": "が開始日を {{date}} に設定しました",
 		"changedStartDate": "が開始日を {{from}} から {{to}} に変更しました",
 		"clearedStartDate": "が開始日をクリアしました",
-		"copiedFrom": "がこのタスクを<task>{{task}}</task>のコピーとして作成しました",
-		"copiedTo": "がこのタスクのコピーを作成しました: <task>{{task}}</task>",
-		"linkAdded": "がリンク {{title}} を追加しました",
-		"linkRemoved": "がリンク {{title}} を削除しました",
-		"linkUpdated": "がリンク {{title}} を更新しました",
-		"parentChanged": "が親タスクを<from>{{from}}</from>から<to>{{to}}</to>に変更しました",
-		"parentRemoved": "が親タスク<task>{{task}}</task>を削除しました",
-		"parentSet": "が親タスクを<task>{{task}}</task>に設定しました",
+		"addedLabel": "がラベル <label>{{name}}</label> を追加しました",
+		"removedLabel": "がラベル <label>{{name}}</label> を削除しました",
+		"updatedDescription": "が説明を更新しました",
 		"relationAdded": {
 			"blocked_by": "がこのタスクを<task>{{task}}</task>にブロックされていると設定しました",
 			"blocking": "がこのタスクを<task>{{task}}</task>のブロッカーに設定しました",
@@ -3815,12 +3915,36 @@
 			"start_before": "がこのタスクを<task>{{task}}</task>より前に開始するよう設定しました"
 		},
 		"relationRemoved": "が<task>{{task}}</task>との{{relation}}の関連を削除しました",
-		"removedLabel": "がラベル <label>{{name}}</label> を削除しました",
-		"setStartDate": "が開始日を {{date}} に設定しました",
+		"parentSet": "が親タスクを<task>{{task}}</task>に設定しました",
+		"parentChanged": "が親タスクを<from>{{from}}</from>から<to>{{to}}</to>に変更しました",
+		"parentRemoved": "が親タスク<task>{{task}}</task>を削除しました",
 		"subtaskAdded": "がサブタスク<task>{{task}}</task>を追加しました",
 		"subtaskRemoved": "がサブタスク<task>{{task}}</task>を削除しました",
-		"updatedDescription": "が説明を更新しました",
+		"linkAdded": "がリンク {{title}} を追加しました",
+		"linkUpdated": "がリンク {{title}} を更新しました",
+		"linkRemoved": "がリンク {{title}} を削除しました",
+		"attachmentAdded": "が{{filename}}を添付しました",
+		"attachmentRemoved": "が添付ファイル{{filename}}を削除しました",
+		"copiedFrom": "がこのタスクを<task>{{task}}</task>のコピーとして作成しました",
+		"copiedTo": "がこのタスクのコピーを作成しました: <task>{{task}}</task>",
 		"archived": "がこのタスクをアーカイブしました",
+		"unarchived": "がこのタスクを復元しました",
+		"intake": {
+			"submitted": "がこのリクエストを送信しました",
+			"submittedVia": "が{{source}}経由でこのリクエストを送信しました",
+			"accepted": "がこのリクエストを{{column}}に承認しました",
+			"acceptedBacklog": "がこのリクエストをバックログに承認しました",
+			"declined": "がこのリクエストを却下しました",
+			"declinedWithReason": "がこのリクエストを却下しました: {{note}}",
+			"snoozed": "がこのリクエストを{{date}}までスヌーズしました",
+			"unsnoozed": "がこのリクエストをレビューに戻しました",
+			"snoozeEnded": "スヌーズが終了し、このリクエストはレビューに戻りました",
+			"duplicate": "がこのリクエストを{{key}}の重複としてマークしました",
+			"duplicateDeleted": "がこのリクエストを削除済みタスクの重複としてマークしました",
+			"reopened": "がこのリクエストを再オープンしました",
+			"acceptedHidden": "がこのリクエストを別のプロジェクトに承認しました",
+			"duplicateHidden": "がこのリクエストを別のプロジェクトのタスクの重複としてマークしました"
+		},
 		"reactions": {
 			"add": "リアクションを追加",
 			"error": "リアクションを更新できませんでした",
@@ -3840,28 +3964,6 @@
 			"reactWith": "{{label}}でリアクション",
 			"remove": "{{label}}のリアクションを削除",
 			"you": "あなた"
-		},
-		"unarchived": "がこのタスクを復元しました",
-		"intake": {
-			"accepted": "がこのリクエストを{{column}}に承認しました",
-			"acceptedBacklog": "がこのリクエストをバックログに承認しました",
-			"declined": "がこのリクエストを却下しました",
-			"declinedWithReason": "がこのリクエストを却下しました: {{note}}",
-			"duplicate": "がこのリクエストを{{key}}の重複としてマークしました",
-			"duplicateDeleted": "がこのリクエストを削除済みタスクの重複としてマークしました",
-			"reopened": "がこのリクエストを再オープンしました",
-			"snoozed": "がこのリクエストを{{date}}までスヌーズしました",
-			"snoozeEnded": "スヌーズが終了し、このリクエストはレビューに戻りました",
-			"submitted": "がこのリクエストを送信しました",
-			"submittedVia": "が{{source}}経由でこのリクエストを送信しました",
-			"unsnoozed": "がこのリクエストをレビューに戻しました"
-		},
-		"automation": {
-			"actor": "自動化",
-			"archived_other": "{{count}}か月間更新がなかったため、このタスクをアーカイブしました",
-			"closed_other": "{{count}}か月間更新がなかったため、このタスクをクローズし、{{to}} に移動しました",
-			"rolledOver": "サイクルの終了に伴い、このタスクを{{from}}から{{to}}に移動しました",
-			"byRule": "{{name}} 経由"
 		},
 		"commentVisibility": {
 			"badgeExternal": "外部ユーザー",
@@ -3888,21 +3990,47 @@
 			"summary": "▲ {{up}} · ▼ {{down}}",
 			"tooltip": "公開ボードからの投票"
 		},
-		"feed": {
-			"all": "すべてのアクティビティ",
-			"comments": "コメント",
-			"label": "アクティビティの絞り込みと並べ替え",
-			"newest": "新しい順",
-			"noMatches": "このフィルターで表示できる項目はありません。",
-			"oldest": "古い順",
-			"order": "並び順",
-			"show": "表示",
-			"updates": "更新"
+		"automation": {
+			"actor": "自動化",
+			"archived_other": "{{count}}か月間更新がなかったため、このタスクをアーカイブしました",
+			"closed_other": "{{count}}か月間更新がなかったため、このタスクをクローズし、{{to}} に移動しました",
+			"rolledOver": "サイクルの終了に伴い、このタスクを{{from}}から{{to}}に移動しました",
+			"byRule": "{{name}} 経由",
+			"rolledOverHidden": "サイクルの終了に伴い、このタスクを次のサイクルに移動しました"
 		},
-		"importedFromJira": "がこのタスクを Jira {{key}} からインポートしました",
-		"importedFromSource": "がこのタスクを {{source}} {{key}} からインポートしました",
 		"movedToTrash": "がこのタスクをゴミ箱に移動しました",
-		"restoredFromTrash": "がこのタスクをゴミ箱から復元しました"
+		"restoredFromTrash": "がこのタスクをゴミ箱から復元しました",
+		"parentRemovedHidden": "が別のプロジェクトの親タスクを削除しました",
+		"subtaskAddedHidden": "が別のプロジェクトのサブタスクを追加しました",
+		"subtaskRemovedHidden": "が別のプロジェクトのサブタスクを削除しました",
+		"copiedToHidden": "が別のプロジェクトにこのタスクのコピーを作成しました",
+		"relationAddedHidden": {
+			"related": "がこのタスクを別のプロジェクトのタスクに関連付けました",
+			"blocking": "がこのタスクを別のプロジェクトのタスクのブロッカーに設定しました",
+			"blocked_by": "がこのタスクを別のプロジェクトのタスクにブロックされていると設定しました",
+			"duplicate": "がこのタスクを別のプロジェクトのタスクの重複として設定しました",
+			"start_before": "がこのタスクを別のプロジェクトのタスクより前に開始するよう設定しました",
+			"start_after": "がこのタスクを別のプロジェクトのタスクより後に開始するよう設定しました",
+			"finish_before": "がこのタスクを別のプロジェクトのタスクより前に終了するよう設定しました",
+			"finish_after": "がこのタスクを別のプロジェクトのタスクより後に終了するよう設定しました"
+		},
+		"relationRemovedHidden": "が別のプロジェクトのタスクとの{{relation}}の関連を削除しました",
+		"parentSetHidden": "が親タスクを別のプロジェクトのタスクに設定しました",
+		"parentChangedFromHidden": "が親タスクを別のプロジェクトのタスクから<to>{{to}}</to>に変更しました",
+		"parentChangedToHidden": "が親タスクを<from>{{from}}</from>から別のプロジェクトのタスクに変更しました",
+		"parentChangedBetweenHidden": "が親タスクを別のプロジェクトのタスク間で変更しました",
+		"copiedFromHidden": "がこのタスクを別のプロジェクトのタスクのコピーとして作成しました",
+		"movedFromHidden": "がタスクを別のプロジェクトから「{{to}}」に移動しました",
+		"movedToHidden": "がタスクを「{{from}}」から別のプロジェクトに移動しました",
+		"movedBetweenHidden": "がタスクを別のプロジェクト間で移動しました",
+		"changedStatusHidden": "が別のプロジェクトでステータスを変更しました",
+		"addedToHiddenCycle": "がタスクをサイクルに追加しました",
+		"removedFromHiddenCycle": "がタスクをサイクルから削除しました",
+		"movedCycleFromHidden": "がタスクを別のサイクルから「{{to}}」に移動しました",
+		"movedCycleToHidden": "がタスクをサイクル「{{from}}」から別のサイクルに移動しました",
+		"movedCycleBetweenHidden": "がタスクをサイクル間で移動しました",
+		"addedToHiddenModule": "がタスクをモジュールに追加しました",
+		"removedFromHiddenModule": "がタスクをモジュールから削除しました"
 	},
 	"tasks": {
 		"recurrence": {
@@ -3955,8 +4083,29 @@
 				"recurredFrom": "が <task>{{task}}</task> の次の繰り返しとしてこのタスクを作成しました",
 				"recurredFromScheduled": "<task>{{task}}</task> の次の繰り返しとしてスケジュールどおりに作成されました",
 				"recurredTo": "がこのタスクを完了し、次の繰り返し <task>{{task}}</task> が作成されました",
-				"recurredToScheduled": "次の繰り返しがスケジュールどおりに作成されました: <task>{{task}}</task>"
+				"recurredToScheduled": "次の繰り返しがスケジュールどおりに作成されました: <task>{{task}}</task>",
+				"recurredToHidden": "がこのタスクを完了し、次の繰り返しが別のプロジェクトに作成されました",
+				"recurredToScheduledHidden": "次の繰り返しがスケジュールどおりに別のプロジェクトに作成されました",
+				"recurredFromHidden": "が別のプロジェクトのタスクの次の繰り返しとしてこのタスクを作成しました",
+				"recurredFromScheduledHidden": "別のプロジェクトのタスクの次の繰り返しとしてスケジュールどおりに作成されました"
 			}
+		},
+		"subscription": {
+			"count_other": "{{count}}人がサブスクライブ中",
+			"error": "サブスクリプションを更新できませんでした",
+			"mutedAssignee": "担当ですがサブスクライブを解除しています。メンションは引き続き通知されます。",
+			"notSubscribed": "ステータスの変更、コメント、その他の変更の通知を受け取ります。",
+			"reasons": {
+				"assignee": "担当のため、サブスクライブしています。",
+				"commenter": "コメントしたため、サブスクライブしています。",
+				"creator": "このタスクを作成したため、サブスクライブしています。",
+				"manual": "このタスクをサブスクライブしました。",
+				"mention": "メンションされたため、サブスクライブしています。"
+			},
+			"subscribe": "サブスクライブ",
+			"toastSubscribed": "このタスクをサブスクライブしました",
+			"toastUnsubscribed": "サブスクライブを解除しました。メンションされた場合は通知されます。",
+			"unsubscribe": "サブスクライブ解除"
 		},
 		"status": {
 			"label": "ステータス",
@@ -3967,6 +4116,32 @@
 			"archived": "アーカイブ済み",
 			"planned": "計画中"
 		},
+		"columnGroups": {
+			"backlog": {
+				"description": "登録済み、未計画",
+				"label": "バックログ"
+			},
+			"cancelled": {
+				"description": "作業を行わずにクローズ",
+				"label": "キャンセル"
+			},
+			"completed": {
+				"description": "完了済み",
+				"label": "完了"
+			},
+			"started": {
+				"description": "作業中",
+				"label": "着手中"
+			},
+			"triage": {
+				"description": "受付でレビュー待ち",
+				"label": "トリアージ"
+			},
+			"unstarted": {
+				"description": "計画済み、作業はまだ始まっていません",
+				"label": "未着手"
+			}
+		},
 		"priority": {
 			"label": "優先度",
 			"no-priority": "優先度なし",
@@ -3975,7 +4150,7 @@
 			"high": "高",
 			"urgent": "緊急"
 		},
-		"boardSearchPlaceholder": "チケットを検索...",
+		"boardSearchPlaceholder": "タスクを検索...",
 		"view": {
 			"board": "ボード",
 			"list": "リスト",
@@ -3992,9 +4167,16 @@
 		},
 		"detail": {
 			"subtaskOf": "親タスク:",
+			"customFieldUpdated": "フィールドを更新しました",
+			"selectOption": "オプションを選択",
 			"activity": "アクティビティ",
 			"noActivity": "アクティビティはありません",
 			"openInFullPage": "フルページで開く",
+			"openOnBoard": "ボードで開く",
+			"sheetLabel": "タスクの詳細",
+			"previousTask": "前のタスク",
+			"nextTask": "次のタスク",
+			"position": "{{position}} / {{total}}",
 			"titlePlaceholder": "クリックしてタイトルを追加",
 			"addDescription": "説明を追加...",
 			"editor": {
@@ -4124,13 +4306,11 @@
 					"toolbar": "画像オプション"
 				}
 			},
-			"customFieldUpdated": "フィールドを更新しました",
-			"selectOption": "オプションを選択",
-			"nextTask": "次のタスク",
-			"openOnBoard": "ボードで開く",
-			"position": "{{position}} / {{total}}",
-			"previousTask": "前のタスク",
-			"sheetLabel": "タスクの詳細"
+			"saveError": {
+				"title": "タイトルを保存できませんでした。入力内容はフィールドに残っているので、もう一度お試しください。",
+				"description": "説明を保存できませんでした。内容はエディターに残っているので、もう一度お試しください。",
+				"retry": "もう一度試す"
+			}
 		},
 		"entity": {
 			"task": "タスク"
@@ -4323,6 +4503,7 @@
 		"gantt": {
 			"pageTitle": "{{name}} – ガントチャート",
 			"title": "ガントタイムライン",
+			"jumpToToday": "今日に移動",
 			"searchPlaceholder": "タスクを検索...",
 			"hideTasks": "タスクを非表示",
 			"showTasks": "タスクを表示",
@@ -4335,22 +4516,53 @@
 			"resizeStart": "開始日を変更",
 			"resizeDue": "期限を変更",
 			"taskAriaLabel": "{{title}}: 開く、またはドラッグして移動",
-			"jumpToToday": "今日に移動",
 			"previousPeriod": "前の期間",
 			"nextPeriod": "次の期間",
 			"periodStart": "タイムラインの開始日",
 			"showTaskDates": "タスクの日付を表示",
-			"dependencyConflict": "開始日または終了日が依存関係の順序と矛盾しています",
-			"dragToSchedule": "{{title}} をタイムラインにドラッグ",
+			"zoom": "タイムラインのズーム",
+			"zoomWeek": "週",
+			"zoomMonth": "月",
+			"zoomQuarter": "四半期",
 			"noDates": "日付なし",
 			"noDatesCount": "日付なし · {{count}}",
 			"noDatesHint": "タイムラインにドラッグするか、今日から日程を設定します。",
 			"schedule": "日程を設定",
 			"scheduleTask": "{{title}} を今日から設定",
-			"zoom": "タイムラインのズーム",
-			"zoomMonth": "月",
-			"zoomQuarter": "四半期",
-			"zoomWeek": "週"
+			"dragToSchedule": "{{title}} をタイムラインにドラッグ",
+			"dependencyConflict": "開始日または終了日が依存関係の順序と矛盾しています",
+			"workspaceNoTasksSubtitle": "タスクに開始日や期限を設定すると、このタイムラインに表示されます。",
+			"showMoreTasks": "さらにタスクを表示",
+			"blocked": "未完了のタスクによってブロックされています",
+			"linkFrom": "{{title}} を別のタスクにリンク",
+			"linkHint": "別のタスクにドラッグすると、そのタスクはこのタスクを待つようになります",
+			"link": {
+				"blocks": "{{source}} は {{target}} をブロックしています",
+				"startBefore": "{{source}} は {{target}} より前に開始します",
+				"finishBefore": "{{source}} は {{target}} より前に完了します",
+				"conflict": "日付がこのリンクと矛盾しています。"
+			},
+			"milestone": {
+				"add": "マイルストーン",
+				"ariaLabel": "マイルストーン {{title}}: 開く、またはドラッグして移動",
+				"name": "マイルストーン名",
+				"namePlaceholder": "マイルストーン名",
+				"date": "マイルストーンの日付",
+				"create": "マイルストーンを追加",
+				"createError": "マイルストーンを追加できませんでした"
+			},
+			"cascade": {
+				"offer_other": "リンクされた {{count}} 件のタスクの開始が早すぎます",
+				"reviewAction": "日付の変更を確認",
+				"title_other": "リンクされた {{count}} 件のタスクを移動しますか？",
+				"description": "これらのタスクは、リンクの条件を満たすのに必要な分だけ後ろに移動し、期間は変わりません。確定するまで何も変更されません。",
+				"to": "から",
+				"cancel": "日付を維持",
+				"confirm_other": "{{count}} 件のタスクを移動",
+				"moved_other": "{{count}} 件のタスクを移動しました",
+				"partial": "{{total}} 件中 {{moved}} 件のタスクを移動しました。残りのタスクの日付は変更されていません。",
+				"nothingToMove": "このリンクのために移動が必要な、日付付きの未完了タスクはありません。"
+			}
 		},
 		"delete": {
 			"title": "タスクを削除しますか？",
@@ -4367,551 +4579,6 @@
 			"restore": "復元",
 			"restored": "タスクを復元しました",
 			"restoreError": "タスクを復元できませんでした"
-		},
-		"listView": {
-			"addTask": "タスクを追加",
-			"archiveAllTooltip": "完了したタスクをすべてアーカイブ",
-			"noTasks": "タスクはありません"
-		},
-		"kanban": {
-			"addTask": "タスクを追加",
-			"stages": "カラム",
-			"emptyAction": "タスクを追加",
-			"emptyTitle": "まだタスクはありません"
-		},
-		"pr": {
-			"merged": "マージ済み",
-			"draft": "下書き",
-			"open": "オープン",
-			"label": "プルリクエスト",
-			"count_other": "{{count}} 件の PR"
-		},
-		"assignee": {
-			"label": "担当者",
-			"unassigned": "未割り当て"
-		},
-		"dueDate": {
-			"label": "期限",
-			"clear": "日付をクリア",
-			"updateSuccess": "期限を更新しました",
-			"updateError": "期限の更新に失敗しました",
-			"clearSuccess": "期限をクリアしました",
-			"clearError": "期限のクリアに失敗しました"
-		},
-		"update": {
-			"success": "タスクを更新しました",
-			"error": "タスクの更新に失敗しました"
-		},
-		"contextMenu": {
-			"copyLink": "リンクをコピー",
-			"copyLinkSuccess": "タスクのリンクをコピーしました",
-			"estimate": "見積もり"
-		},
-		"actions": {
-			"archive": "アーカイブ",
-			"markAsPlanned": "計画中に設定",
-			"delete": "削除...",
-			"copyKey": "タスクキーをコピー",
-			"copyLink": "リンクをコピー",
-			"makeCopy": "コピーを作成…",
-			"moreActions": "その他の操作"
-		},
-		"bulk": {
-			"selectedCount": "{{count}} 件選択中",
-			"moveToBacklog": "バックログに移動",
-			"moveToBacklogSuccess": "{{count}} 件のタスクをバックログに移動しました",
-			"moveToBacklogError": "バックログへの移動に失敗しました",
-			"moveToBoard": "ボードへ移動",
-			"moveToBoardSuccess": "{{count}} 件のタスクをボードに移動しました",
-			"moveToBoardError": "ボードへの移動に失敗しました",
-			"delete": "タスクを削除",
-			"deleteConfirm": "{{count}} 件のタスクをゴミ箱に移動しますか？プロジェクト設定の「最近削除した項目」から復元できます。",
-			"deleteSuccess": "{{count}} 件のタスクを削除しました",
-			"deleteError": "タスクの削除に失敗しました",
-			"archive": "タスクをアーカイブ",
-			"archiveSuccess": "{{count}} 件のタスクをアーカイブしました",
-			"archiveError": "タスクのアーカイブに失敗しました",
-			"updateSuccess": "{{count}} 件のタスクを更新しました",
-			"updateError": "タスクの更新に失敗しました",
-			"setPriority": "優先度を設定",
-			"updatePriorityError": "優先度の更新に失敗しました",
-			"addLabel": "ラベルを追加",
-			"addLabelSuccess": "{{count}} 件のタスクにラベルを追加しました",
-			"addLabelError": "ラベルの追加に失敗しました",
-			"setDueDate": "期限を設定",
-			"updateDueDateError": "期限の更新に失敗しました",
-			"actions": "操作",
-			"searchActions": "操作を検索...",
-			"noActionsFound": "操作が見つかりません。",
-			"changeStatus": "ステータスを変更",
-			"removeLabel": "ラベルを削除",
-			"removeLabelSuccess": "{{count}} 件のタスクからラベルを削除しました",
-			"removeLabelError": "ラベルの削除に失敗しました",
-			"unarchive": "アーカイブから復元",
-			"unarchiveSuccess": "{{count}} 件のタスクを復元しました",
-			"unarchiveNone": "選択したタスクにアーカイブ済みのものはありません",
-			"unarchiveError": "タスクの復元に失敗しました",
-			"setDates": "日付",
-			"dateField": "設定する日付",
-			"startDate": "開始日",
-			"dueDate": "期限",
-			"clearStartDate": "開始日をクリア",
-			"clearDueDate": "期限をクリア",
-			"updateStartDateError": "開始日の更新に失敗しました。開始日をタスクの期限より後にすることはできません。",
-			"addAssignee": "担当者を追加",
-			"addAssigneeSuccess_other": "{{name}}を{{count}}件のタスクに追加しました",
-			"assigneesError": "担当者の更新に失敗しました",
-			"clearAssignees": "担当者をクリア",
-			"clearAssigneesSuccess_other": "{{count}}件のタスクの担当者をクリアしました",
-			"removeAssignee": "担当者を削除",
-			"removeAssigneeSuccess_other": "{{count}}件のタスクから{{name}}を削除しました",
-			"clearSelection": "選択を解除"
-		},
-		"editor": {
-			"table": {
-				"addColumnBefore": "左に列を挿入",
-				"addColumnAfter": "右に列を挿入",
-				"deleteColumn": "列を削除",
-				"addRowBefore": "上に行を挿入",
-				"addRowAfter": "下に行を挿入",
-				"deleteRow": "行を削除",
-				"deleteTable": "表を削除",
-				"moveRowUp": "行を上へ移動",
-				"moveRowDown": "行を下へ移動",
-				"moveColumnLeft": "列を左へ移動",
-				"moveColumnRight": "列を右へ移動",
-				"toggleHeaderRow": "見出し行",
-				"fullWidth": "全幅",
-				"dragRow": "{{index}} 行目",
-				"dragColumn": "{{index}} 列目",
-				"dragRowHint": "ドラッグして行を移動するか、矢印キーを使用します",
-				"dragColumnHint": "ドラッグして列を移動するか、矢印キーを使用します",
-				"insertRowHere": "ここに行を挿入",
-				"insertColumnHere": "ここに列を挿入"
-			}
-		},
-		"descriptionSearchLoading": "説明文を全文検索中…",
-		"descriptionSearchError": "説明文の検索に失敗しました。結果が不完全な可能性があります。",
-		"descriptionRetry": "再試行",
-		"descriptionLoading": "説明を読み込み中…",
-		"descriptionLoadError": "説明を読み込めませんでした。再試行すると最新版を読み込みます。",
-		"columnGroups": {
-			"backlog": {
-				"description": "登録済み、未計画",
-				"label": "バックログ"
-			},
-			"cancelled": {
-				"description": "作業を行わずにクローズ",
-				"label": "キャンセル"
-			},
-			"completed": {
-				"description": "完了済み",
-				"label": "完了"
-			},
-			"started": {
-				"description": "作業中",
-				"label": "着手中"
-			},
-			"triage": {
-				"description": "受付でレビュー待ち",
-				"label": "トリアージ"
-			},
-			"unstarted": {
-				"description": "計画済み、作業はまだ始まっていません",
-				"label": "未着手"
-			}
-		},
-		"estimate": {
-			"bulk": {
-				"action": "見積もり",
-				"error": "選択したタスクの見積もりを変更できませんでした",
-				"updated_other": "{{count}} 件のタスクの見積もりを更新しました"
-			},
-			"chart": {
-				"points": "ポイント",
-				"pointsLeft": "残りポイント",
-				"summaryPoints": "{{scope}} ポイント中 {{remaining}} ポイント残り、残り {{days}} 日",
-				"summaryTime": "{{scope}} 中 {{remaining}} 残り、残り {{days}} 日",
-				"tasks": "タスク",
-				"time": "時間",
-				"timeLeft": "残り時間",
-				"unitAria": "グラフの単位"
-			},
-			"duration": {
-				"hours": "{{hours}}時間",
-				"hoursMinutes": "{{hours}}時間{{minutes}}分",
-				"hourUnit": "h",
-				"minutes": "{{minutes}}分",
-				"minuteUnit": "m"
-			},
-			"label": "見積もり",
-			"none": "見積もりなし",
-			"pointsValue_other": "{{value}} pt",
-			"setAria": "見積もりを設定",
-			"totals": {
-				"estimated": "{{total}} 件中 {{estimated}} 件のタスクを見積もり済み",
-				"points_other": "{{completed}} / {{total}} pt",
-				"time": "{{completed}} / {{total}}"
-			},
-			"updateError": "見積もりの更新に失敗しました"
-		},
-		"assignees": {
-			"clear": "担当者をクリア",
-			"formerMember": "メンバーではありません",
-			"formerMemberSuffix": "{{name}}（メンバーではありません）",
-			"label": "担当者",
-			"limitReached": "タスクに設定できる担当者は最大{{count}}人です",
-			"more": "+{{count}}",
-			"nameAndMore": "{{name}} +{{count}}",
-			"noMatches": "一致するメンバーがいません",
-			"noMembers": "割り当て可能なメンバーがまだいません",
-			"searchPlaceholder": "メンバーを検索...",
-			"stackAria": "{{names}} に割り当て済み",
-			"unknownPerson": "不明なユーザー",
-			"updateError": "担当者の更新に失敗しました",
-			"you": "{{name}}（あなた）"
-		},
-		"attachments": {
-			"add": "ファイルを添付",
-			"delete": "削除",
-			"deleteConfirmDescription": "全員に対してファイルが削除されます。この操作は取り消せません。",
-			"deleteConfirmTitle": "{{filename}} を削除しますか？",
-			"download": "ダウンロード",
-			"dropHere": "ここにファイルをドロップするか、クリックして選択",
-			"dropToAttach": "ファイルをドロップして添付",
-			"loadError": "添付ファイルを読み込めませんでした",
-			"meta": "{{size}} · {{name}} · {{time}}",
-			"metaNoUser": "{{size}} · {{time}}",
-			"open": "開く",
-			"title": "添付ファイル",
-			"toast": {
-				"attached_other": "{{count}} 件のファイルを添付しました",
-				"deleted": "添付ファイルを削除しました",
-				"deleteError": "添付ファイルを削除できませんでした",
-				"empty": "{{filename}} は空です",
-				"failed": "{{filename}} を添付できませんでした: {{reason}}",
-				"notConfigured": "このサーバーではファイルのアップロードが設定されていません。管理者にストレージの設定を依頼してください。",
-				"storageError": "ストレージがアップロードを拒否しました",
-				"tooMany": "一度に添付できるファイルは最大{{count}}件です",
-				"unknownError": "問題が発生しました"
-			},
-			"uploading": "アップロード中…"
-		},
-		"copy": {
-			"alwaysCopied": "ステータスと優先度は常にコピーされます。",
-			"cancel": "キャンセル",
-			"includeLabel": "含める項目",
-			"options": {
-				"assignees": "担当者",
-				"attachments": "添付ファイル",
-				"customFields": "カスタムフィールドの値",
-				"dates": "開始日と期限",
-				"description": "説明",
-				"labels": "ラベル",
-				"links": "リンク",
-				"parent": "親タスク",
-				"planning": "サイクル、モジュール、見積もり"
-			},
-			"otherProjectHint": "ステータスは新しいプロジェクトのカラムに合わせて設定されます。カスタムフィールド、親タスク、計画情報はプロジェクトをまたいでコピーされません。",
-			"projectLabel": "プロジェクト",
-			"submit": "コピーを作成",
-			"title": "{{key}} のコピーを作成",
-			"titleLabel": "タイトル",
-			"titleRequired": "タイトルを入力してください",
-			"titleSuffix": "{{title}}（コピー）",
-			"toast": {
-				"error": "コピーを作成できませんでした",
-				"open": "開く",
-				"skipped": "コピーされませんでした: {{list}}",
-				"success": "コピーを作成しました: {{key}}"
-			}
-		},
-		"detailActions": {
-			"addLink": "リンクを追加",
-			"addRelation": "関連を追加",
-			"addSubtask": "サブタスクを追加",
-			"attachFile": "ファイルを添付"
-		},
-		"links": {
-			"add": "リンクを追加",
-			"addedAt": "{{date}} に追加",
-			"addedBy": "{{name}} が追加 · {{date}}",
-			"addTitle": "リンクを追加",
-			"cancel": "キャンセル",
-			"copyUrl": "URLをコピー",
-			"edit": "編集",
-			"editTitle": "リンクを編集",
-			"errors": {
-				"credentials": "リンクにユーザー名やパスワードを含めることはできません",
-				"duplicate": "このリンクは既にこのタスクに追加されています",
-				"invalid": "有効なhttpまたはhttpsのURLを入力してください",
-				"required": "URLを入力してください",
-				"titleTooLong": "タイトルは255文字以内で入力してください",
-				"tooLong": "リンクは2,048文字以内で入力してください"
-			},
-			"linkTitle": "タイトル",
-			"loadError": "リンクを読み込めませんでした",
-			"moreActions": "リンクの操作",
-			"remove": "削除",
-			"removeConfirmDescription": "全員のタスクからこのリンクが削除されます。",
-			"removeConfirmTitle": "このリンクを削除しますか？",
-			"retry": "再試行",
-			"save": "保存",
-			"title": "リンク",
-			"titlePlaceholder": "表示用タイトル（任意）",
-			"toast": {
-				"added": "リンクを追加しました",
-				"copied": "リンクをコピーしました",
-				"error": "リンクを保存できませんでした",
-				"removed": "リンクを削除しました",
-				"updated": "リンクを更新しました"
-			},
-			"url": "URL",
-			"urlPlaceholder": "https://example.com"
-		},
-		"create": {
-			"similarTitle": "類似する未完了のタスク",
-			"similarDismiss": "類似タスクを非表示",
-			"similarOpen": "開く",
-			"similarOpenLabel": "{{key}} {{title}} を新しいタブで開く"
-		},
-		"parent": {
-			"add": "親タスクを追加",
-			"chip": "親タスク",
-			"label": "親タスク",
-			"noTasks": "タスクが見つかりません",
-			"remove": "親タスクを削除",
-			"search": "タスクを検索…",
-			"tasksInProject": "このプロジェクトのタスク",
-			"toast": {
-				"error": "親タスクを変更できませんでした",
-				"removed": "親タスクを削除しました",
-				"set": "親タスクを{{key}}に設定しました"
-			},
-			"tooltip": "親タスク: {{key}} {{title}}"
-		},
-		"taskKey": {
-			"clipboardError": "クリップボードにコピーできませんでした",
-			"copied": "{{key}} をコピーしました",
-			"copyTooltip": "タスクキーをコピー"
-		},
-		"display": {
-			"button": "表示",
-			"columns": "列",
-			"groupBy": "グループ化",
-			"groups": {
-				"assignee": "担当者",
-				"createdBy": "作成者",
-				"cycle": "サイクル",
-				"estimate": "見積もり",
-				"group": "グループ",
-				"label": "ラベル",
-				"module": "モジュール",
-				"priority": "優先度",
-				"project": "プロジェクト",
-				"status": "ステータス"
-			},
-			"none": "なし",
-			"order": {
-				"assignee": "担当者",
-				"completedAt": "完了日",
-				"createdAt": "作成日（新しい順）",
-				"cycle": "サイクル",
-				"dueDate": "期限",
-				"estimate": "見積もり",
-				"label": "ラベル",
-				"manual": "手動",
-				"module": "モジュール",
-				"number": "タスクキー",
-				"priority": "優先度",
-				"startDate": "開始日",
-				"status": "ステータス",
-				"subTaskCount": "サブタスク",
-				"title": "タイトル",
-				"updatedAt": "更新日（新しい順）",
-				"archivedAt": "アーカイブ日"
-			},
-			"orderBy": "並べ替え",
-			"properties": "プロパティ",
-			"props": {
-				"assignee": "担当者",
-				"checklist": "チェックリスト",
-				"createdAt": "作成日",
-				"cycle": "サイクル",
-				"dueDate": "期限",
-				"estimate": "見積もり",
-				"key": "キー",
-				"labels": "ラベル",
-				"modules": "モジュール",
-				"priority": "優先度",
-				"startDate": "開始日",
-				"status": "ステータス",
-				"subTaskCount": "サブタスク",
-				"updatedAt": "更新日"
-			},
-			"showEmptyGroups": "空のグループを表示",
-			"showSubTasks": "サブタスクを表示",
-			"subGroupBy": "サブグループ化"
-		},
-		"filters": {
-			"apply": "適用",
-			"applyError": "フィルターを適用できませんでした",
-			"archived": {
-				"exclude": "アーカイブ済みを非表示",
-				"include": "アーカイブ済みも表示",
-				"label": "アーカイブ済み",
-				"only": "アーカイブ済みのみ"
-			},
-			"button": "フィルター",
-			"clearAll": "すべてのフィルターをクリア",
-			"dates": {
-				"amount": "数量",
-				"custom": "カスタム日付…",
-				"emptyTab": "空",
-				"exact": "日付を指定",
-				"future": "今日より後",
-				"lastMonth": "先月",
-				"lastWeek": "先週",
-				"nextMonth": "来月",
-				"nextWeek": "来週",
-				"overdue": "期限超過",
-				"past": "今日より前",
-				"presets": "プリセット",
-				"rolling": "相対期間",
-				"rollingValue": "{{amount}}{{unit}}",
-				"thisMonth": "今月",
-				"thisWeek": "今週",
-				"today": "今日",
-				"tomorrow": "明日",
-				"units": {
-					"days": "日",
-					"months": "か月",
-					"weeks": "週間"
-				},
-				"yesterday": "昨日"
-			},
-			"matchAll": "すべてに一致",
-			"matchAny": "いずれかに一致",
-			"mobileSummary_other": "{{count}}件のフィルター",
-			"nestedReadOnly": "このビューはここで編集できない高度なフィルターを使用しています",
-			"noOptions": "オプションなし",
-			"operators": {
-				"between": "の間",
-				"is": "である",
-				"isEmpty": "が空",
-				"isNoneOf": "のいずれでもない",
-				"isNot": "ではない",
-				"isNotEmpty": "が空でない",
-				"moreThanAgo": "…より前",
-				"moreThanAhead": "…より先",
-				"on": "当日",
-				"onOrAfter": "以降",
-				"onOrBefore": "以前",
-				"withinLast": "過去",
-				"withinNext": "今後"
-			},
-			"removeFilter": "フィルター「{{subject}}」を削除",
-			"retry": "再試行",
-			"searchOptions": "オプションを検索",
-			"subjects": {
-				"completed": "完了日",
-				"created": "作成日",
-				"createdBy": "作成者",
-				"cycle": "サイクル",
-				"group": "グループ",
-				"mentions": "メンション",
-				"module": "モジュール",
-				"parent": "親タスク",
-				"project": "プロジェクト",
-				"startDate": "開始日",
-				"subscribed": "サブスクライブ中",
-				"updated": "更新日"
-			},
-			"tooMany": "一致件数が多すぎるためここでは絞り込めません。スプレッドシートを開いてください",
-			"values": {
-				"currentCycle": "現在のサイクル",
-				"false": "いいえ",
-				"me": "自分",
-				"noAssignee": "担当者なし",
-				"noCreator": "作成者なし",
-				"noCycle": "サイクルなし",
-				"noEstimate": "見積もりなし",
-				"noLabel": "ラベルなし",
-				"noModule": "モジュールなし",
-				"none": "なし",
-				"noParent": "親タスクなし",
-				"true": "はい"
-			}
-		},
-		"groups": {
-			"all": "すべてのタスク",
-			"hiddenGroups_other": "ほか{{count}}個のグループは表示されていません",
-			"loadMore": "さらに読み込む（{{count}}）",
-			"moduleCount_other": "{{count}}個のモジュール",
-			"moveError": "タスクを移動できませんでした",
-			"noAssignee": "担当者なし",
-			"noCreator": "作成者なし",
-			"noCycle": "サイクルなし",
-			"noEstimate": "見積もりなし",
-			"noLabel": "ラベルなし",
-			"noModule": "モジュールなし",
-			"planned": "計画済み"
-		},
-		"queryEmpty": {
-			"clear": "フィルターをクリア",
-			"description": "フィルターをいくつか外してみてください。",
-			"title": "条件に一致するタスクはありません"
-		},
-		"spreadsheet": {
-			"clearSort": "並べ替えを解除",
-			"collapseSubTasks": "サブタスクを非表示",
-			"expandSubTasks": "サブタスクを表示",
-			"hideColumn": "列を非表示",
-			"loadError": "タスクを読み込めませんでした",
-			"selectTask": "{{key}}を選択",
-			"sortAsc": "昇順で並べ替え",
-			"sortDesc": "降順で並べ替え",
-			"task": "タスク"
-		},
-		"subscription": {
-			"count_other": "{{count}}人がサブスクライブ中",
-			"error": "サブスクリプションを更新できませんでした",
-			"mutedAssignee": "担当ですがサブスクライブを解除しています。メンションは引き続き通知されます。",
-			"notSubscribed": "ステータスの変更、コメント、その他の変更の通知を受け取ります。",
-			"reasons": {
-				"assignee": "担当のため、サブスクライブしています。",
-				"commenter": "コメントしたため、サブスクライブしています。",
-				"creator": "このタスクを作成したため、サブスクライブしています。",
-				"manual": "このタスクをサブスクライブしました。",
-				"mention": "メンションされたため、サブスクライブしています。"
-			},
-			"subscribe": "サブスクライブ",
-			"toastSubscribed": "このタスクをサブスクライブしました",
-			"toastUnsubscribed": "サブスクライブを解除しました。メンションされた場合は通知されます。",
-			"unsubscribe": "サブスクライブ解除"
-		},
-		"timeTracking": {
-			"duration": "所要時間",
-			"durationInvalid": "1分から24時間の間で、1h 30m のように入力してください。",
-			"durationPlaceholder": "例: 1h 30m",
-			"empty": "記録された時間はまだありません",
-			"entries": "時間の記録",
-			"formerMember": "元メンバー",
-			"hours": "{{hours}}時間",
-			"hoursMinutes": "{{hours}}時間{{minutes}}分",
-			"label": "作業時間",
-			"logError": "時間を記録できませんでした",
-			"logged": "時間を記録しました",
-			"logTime": "時間を記録",
-			"minutes": "{{minutes}}分",
-			"note": "メモ(任意)",
-			"running": "計測中",
-			"spentAria": "作業時間: {{total}}。時間を記録",
-			"submit": "時間を記録",
-			"deleteConfirm": "この記録を削除しますか？",
-			"deleted": "時間記録を削除しました",
-			"deleteEntry": "{{date}} の時間記録を削除",
-			"deleteError": "時間記録を削除できませんでした"
 		},
 		"archivedBanner": {
 			"message": "このタスクは {{time}} にアーカイブされました。",
@@ -4984,8 +4651,590 @@
 			},
 			"untitled": "無題の下書き"
 		},
+		"listView": {
+			"addTask": "タスクを追加",
+			"archiveAllTooltip": "完了したタスクをすべてアーカイブ",
+			"noTasks": "タスクはありません"
+		},
+		"kanban": {
+			"addTask": "タスクを追加",
+			"stages": "カラム",
+			"emptyAction": "タスクを追加",
+			"emptyTitle": "まだタスクはありません"
+		},
+		"pr": {
+			"merged": "マージ済み",
+			"draft": "下書き",
+			"open": "オープン",
+			"label": "プルリクエスト",
+			"count_other": "{{count}} 件の PR"
+		},
+		"assignee": {
+			"label": "担当者",
+			"unassigned": "未割り当て"
+		},
+		"assignees": {
+			"label": "担当者",
+			"searchPlaceholder": "メンバーを検索...",
+			"noMatches": "一致するメンバーがいません",
+			"noMembers": "割り当て可能なメンバーがまだいません",
+			"you": "{{name}}（あなた）",
+			"clear": "担当者をクリア",
+			"more": "+{{count}}",
+			"nameAndMore": "{{name}} +{{count}}",
+			"stackAria": "{{names}} に割り当て済み",
+			"formerMember": "メンバーではありません",
+			"formerMemberSuffix": "{{name}}（メンバーではありません）",
+			"limitReached": "タスクに設定できる担当者は最大{{count}}人です",
+			"updateError": "担当者の更新に失敗しました",
+			"unknownPerson": "不明なユーザー",
+			"noAccess": "このプロジェクトへのアクセス権なし",
+			"noAccessSuffix": "{{name}}（このプロジェクトへのアクセス権なし）"
+		},
+		"dueDate": {
+			"label": "期限",
+			"clear": "日付をクリア",
+			"updateSuccess": "期限を更新しました",
+			"updateError": "期限の更新に失敗しました",
+			"clearSuccess": "期限をクリアしました",
+			"clearError": "期限のクリアに失敗しました"
+		},
+		"update": {
+			"success": "タスクを更新しました",
+			"error": "タスクの更新に失敗しました"
+		},
+		"contextMenu": {
+			"copyLink": "リンクをコピー",
+			"copyLinkSuccess": "タスクのリンクをコピーしました",
+			"estimate": "見積もり"
+		},
+		"actions": {
+			"archive": "アーカイブ",
+			"markAsPlanned": "計画中に設定",
+			"delete": "削除...",
+			"copyKey": "タスクキーをコピー",
+			"copyLink": "リンクをコピー",
+			"makeCopy": "コピーを作成…",
+			"moreActions": "その他の操作"
+		},
+		"commands": {
+			"assignedSelf": "あなたに割り当てました",
+			"assignees": "担当者を変更…",
+			"assignSelf": "自分に割り当て",
+			"copyTitle": "タイトルをコピー",
+			"cycle": "サイクルを変更…",
+			"dueDate": "期限を変更…",
+			"estimate": "見積もりを変更…",
+			"group": "このタスク",
+			"labels": "ラベルを変更…",
+			"module": "モジュールを変更…",
+			"priority": "優先度を変更…",
+			"status": "ステータスを変更…",
+			"titleCopied": "タスクのタイトルをコピーしました",
+			"unassignedSelf": "あなたの割り当てを解除しました",
+			"unassignSelf": "自分の割り当てを解除"
+		},
+		"readableLink": {
+			"goHome": "ホームへ移動",
+			"notFound": "このワークスペースにキー {{key}} のタスクがないか、表示する権限がありません。"
+		},
+		"timeTracking": {
+			"label": "作業時間",
+			"logTime": "時間を記録",
+			"spentAria": "作業時間: {{total}}。時間を記録",
+			"duration": "所要時間",
+			"durationPlaceholder": "例: 1h 30m",
+			"durationInvalid": "1分から24時間の間で、1h 30m のように入力してください。",
+			"note": "メモ(任意)",
+			"submit": "時間を記録",
+			"logged": "時間を記録しました",
+			"logError": "時間を記録できませんでした",
+			"empty": "記録された時間はまだありません",
+			"entries": "時間の記録",
+			"running": "計測中",
+			"formerMember": "元メンバー",
+			"hours": "{{hours}}時間",
+			"minutes": "{{minutes}}分",
+			"hoursMinutes": "{{hours}}時間{{minutes}}分",
+			"deleteEntry": "{{date}} の時間記録を削除",
+			"deleteConfirm": "この記録を削除しますか？",
+			"deleted": "時間記録を削除しました",
+			"deleteError": "時間記録を削除できませんでした",
+			"startTimer": "タイマーを開始",
+			"startHere": "停止してここで開始",
+			"stopTimer": "停止",
+			"timerRunning": "タイマー計測中",
+			"timerRunningOn": "{{task}} でタイマー計測中",
+			"timerStarted": "タイマーを開始しました",
+			"timerSwitched": "タイマーを開始しました。別のタイマーは停止しました。",
+			"timerStopped": "タイマーを停止しました。{{total}} を記録しました。",
+			"timerStartError": "タイマーを開始できませんでした",
+			"timerStopError": "タイマーを停止できませんでした",
+			"loadError": "時間記録を読み込めませんでした",
+			"editEntry": "{{date}} の時間記録を編集",
+			"editStart": "開始",
+			"editEnd": "終了",
+			"editEndRunningHint": "空欄のままにすると計測を続けます。",
+			"editEndRequired": "終了時刻を入力してください。",
+			"editStartInvalid": "開始時刻を入力してください。",
+			"editEndBeforeStart": "終了時刻を開始時刻より前にすることはできません。",
+			"editSave": "保存",
+			"edited": "時間記録を更新しました",
+			"editError": "時間記録を更新できませんでした"
+		},
+		"bulk": {
+			"selectedCount": "{{count}} 件選択中",
+			"moveToBacklog": "バックログに移動",
+			"clearSelection": "選択を解除",
+			"moveToBacklogSuccess": "{{count}} 件のタスクをバックログに移動しました",
+			"moveToBacklogError": "バックログへの移動に失敗しました",
+			"moveToBoard": "ボードへ移動",
+			"moveToBoardSuccess": "{{count}} 件のタスクをボードに移動しました",
+			"moveToBoardError": "ボードへの移動に失敗しました",
+			"delete": "タスクを削除",
+			"deleteConfirm": "{{count}} 件のタスクをゴミ箱に移動しますか？プロジェクト設定の「最近削除した項目」から復元できます。",
+			"deleteSuccess": "{{count}} 件のタスクを削除しました",
+			"deleteError": "タスクの削除に失敗しました",
+			"archive": "タスクをアーカイブ",
+			"archiveSuccess": "{{count}} 件のタスクをアーカイブしました",
+			"archiveError": "タスクのアーカイブに失敗しました",
+			"updateSuccess": "{{count}} 件のタスクを更新しました",
+			"updateError": "タスクの更新に失敗しました",
+			"addAssignee": "担当者を追加",
+			"removeAssignee": "担当者を削除",
+			"clearAssignees": "担当者をクリア",
+			"addAssigneeSuccess_other": "{{name}}を{{count}}件のタスクに追加しました",
+			"removeAssigneeSuccess_other": "{{count}}件のタスクから{{name}}を削除しました",
+			"clearAssigneesSuccess_other": "{{count}}件のタスクの担当者をクリアしました",
+			"assigneesError": "担当者の更新に失敗しました",
+			"setPriority": "優先度を設定",
+			"updatePriorityError": "優先度の更新に失敗しました",
+			"addLabel": "ラベルを追加",
+			"addLabelSuccess": "{{count}} 件のタスクにラベルを追加しました",
+			"addLabelError": "ラベルの追加に失敗しました",
+			"setDueDate": "期限を設定",
+			"updateDueDateError": "期限の更新に失敗しました",
+			"actions": "操作",
+			"searchActions": "操作を検索...",
+			"noActionsFound": "操作が見つかりません。",
+			"changeStatus": "ステータスを変更",
+			"removeLabel": "ラベルを削除",
+			"removeLabelSuccess": "{{count}} 件のタスクからラベルを削除しました",
+			"removeLabelError": "ラベルの削除に失敗しました",
+			"unarchive": "アーカイブから復元",
+			"unarchiveSuccess": "{{count}} 件のタスクを復元しました",
+			"unarchiveNone": "選択したタスクにアーカイブ済みのものはありません",
+			"unarchiveError": "タスクの復元に失敗しました",
+			"setDates": "日付",
+			"dateField": "設定する日付",
+			"startDate": "開始日",
+			"dueDate": "期限",
+			"clearStartDate": "開始日をクリア",
+			"clearDueDate": "期限をクリア",
+			"updateStartDateError": "開始日の更新に失敗しました。開始日をタスクの期限より後にすることはできません。",
+			"selectTask": "{{title}} を選択",
+			"moveToProject": "プロジェクトに移動",
+			"moveToProjectTitle_other": "{{count}} 件のタスクを {{name}} に移動しますか？",
+			"moveToProjectRule": "タスクには新しいタスクキーが割り当てられます。移動先のプロジェクトに同じステータスがあればそのまま維持され、なければ最初のカラムに移動します。ラベルと担当者は維持されます。サイクル、モジュール、見積もりはクリアされます。カスタムフィールドの値は、移動先に同じ名前とタイプのフィールドがある場合のみ維持されます。",
+			"moveToProjectConfirm": "タスクを移動",
+			"moveToProjectSuccess_other": "{{count}} 件のタスクを {{name}} に移動しました",
+			"moveToProjectNone": "これらのタスクはすでに {{name}} にあります",
+			"moveToProjectError": "タスクを移動できませんでした"
+		},
+		"editor": {
+			"table": {
+				"addColumnBefore": "左に列を挿入",
+				"addColumnAfter": "右に列を挿入",
+				"deleteColumn": "列を削除",
+				"addRowBefore": "上に行を挿入",
+				"addRowAfter": "下に行を挿入",
+				"deleteRow": "行を削除",
+				"deleteTable": "表を削除",
+				"moveRowUp": "行を上へ移動",
+				"moveRowDown": "行を下へ移動",
+				"moveColumnLeft": "列を左へ移動",
+				"moveColumnRight": "列を右へ移動",
+				"toggleHeaderRow": "見出し行",
+				"fullWidth": "全幅",
+				"dragRow": "{{index}} 行目",
+				"dragColumn": "{{index}} 列目",
+				"dragRowHint": "ドラッグして行を移動するか、矢印キーを使用します",
+				"dragColumnHint": "ドラッグして列を移動するか、矢印キーを使用します",
+				"insertRowHere": "ここに行を挿入",
+				"insertColumnHere": "ここに列を挿入"
+			}
+		},
+		"descriptionSearchLoading": "説明文を全文検索中…",
+		"descriptionSearchError": "説明文の検索に失敗しました。結果が不完全な可能性があります。",
+		"descriptionRetry": "再試行",
+		"descriptionLoading": "説明を読み込み中…",
+		"descriptionLoadError": "説明を読み込めませんでした。再試行すると最新版を読み込みます。",
+		"descriptionHistory": {
+			"cancel": "キャンセル",
+			"description": "この説明の保存済みバージョンです（新しい順）。同じユーザーによる10分以内の編集は1つのバージョンにまとめられ、最新の50件が保持されます。",
+			"earlierVersion": "以前のバージョン",
+			"empty": "保存済みのバージョンはまだありません。次の編集からバージョンが保持されます。",
+			"emptyVersion": "このバージョンには説明がありません。",
+			"latest": "最新",
+			"list": "保存済みバージョン",
+			"loadError": "履歴を読み込めませんでした",
+			"open": "履歴",
+			"previewTitle": "{{date}} のバージョン",
+			"restore": "復元",
+			"restoreConfirmDescription": "説明がこのバージョンに置き換えられます。現在のテキストは履歴に残ります。",
+			"restoreConfirmTitle": "このバージョンを復元しますか？",
+			"restored": "説明を復元しました",
+			"restoreError": "このバージョンを復元できませんでした",
+			"retry": "再試行",
+			"size_other": "{{count}} 文字",
+			"title": "説明の履歴",
+			"viewOnly": "表示のみ"
+		},
+		"estimate": {
+			"bulk": {
+				"action": "見積もり",
+				"error": "選択したタスクの見積もりを変更できませんでした",
+				"updated_other": "{{count}} 件のタスクの見積もりを更新しました"
+			},
+			"chart": {
+				"points": "ポイント",
+				"pointsLeft": "残りポイント",
+				"summaryPoints": "{{scope}} ポイント中 {{remaining}} ポイント残り、残り {{days}} 日",
+				"summaryTime": "{{scope}} 中 {{remaining}} 残り、残り {{days}} 日",
+				"tasks": "タスク",
+				"time": "時間",
+				"timeLeft": "残り時間",
+				"unitAria": "グラフの単位"
+			},
+			"duration": {
+				"hours": "{{hours}}時間",
+				"hoursMinutes": "{{hours}}時間{{minutes}}分",
+				"hourUnit": "h",
+				"minutes": "{{minutes}}分",
+				"minuteUnit": "m"
+			},
+			"label": "見積もり",
+			"none": "見積もりなし",
+			"pointsValue_other": "{{value}} pt",
+			"setAria": "見積もりを設定",
+			"totals": {
+				"estimated": "{{total}} 件中 {{estimated}} 件のタスクを見積もり済み",
+				"points_other": "{{completed}} / {{total}} pt",
+				"time": "{{completed}} / {{total}}"
+			},
+			"updateError": "見積もりの更新に失敗しました"
+		},
+		"detailActions": {
+			"addLink": "リンクを追加",
+			"addRelation": "関連を追加",
+			"addSubtask": "サブタスクを追加",
+			"attachFile": "ファイルを添付"
+		},
+		"taskKey": {
+			"clipboardError": "クリップボードにコピーできませんでした",
+			"copied": "{{key}} をコピーしました",
+			"copyTooltip": "タスクキーをコピー"
+		},
 		"pageReferences": {
 			"title": "ページ内でのメンション"
+		},
+		"links": {
+			"add": "リンクを追加",
+			"addedAt": "{{date}} に追加",
+			"addedBy": "{{name}} が追加 · {{date}}",
+			"addTitle": "リンクを追加",
+			"cancel": "キャンセル",
+			"copyUrl": "URLをコピー",
+			"edit": "編集",
+			"editTitle": "リンクを編集",
+			"errors": {
+				"credentials": "リンクにユーザー名やパスワードを含めることはできません",
+				"duplicate": "このリンクは既にこのタスクに追加されています",
+				"invalid": "有効なhttpまたはhttpsのURLを入力してください",
+				"required": "URLを入力してください",
+				"titleTooLong": "タイトルは255文字以内で入力してください",
+				"tooLong": "リンクは2,048文字以内で入力してください"
+			},
+			"linkTitle": "タイトル",
+			"loadError": "リンクを読み込めませんでした",
+			"moreActions": "リンクの操作",
+			"remove": "削除",
+			"removeConfirmDescription": "全員のタスクからこのリンクが削除されます。",
+			"removeConfirmTitle": "このリンクを削除しますか？",
+			"retry": "再試行",
+			"save": "保存",
+			"title": "リンク",
+			"titlePlaceholder": "表示用タイトル（任意）",
+			"toast": {
+				"added": "リンクを追加しました",
+				"copied": "リンクをコピーしました",
+				"error": "リンクを保存できませんでした",
+				"removed": "リンクを削除しました",
+				"updated": "リンクを更新しました"
+			},
+			"url": "URL",
+			"urlPlaceholder": "https://example.com"
+		},
+		"attachments": {
+			"add": "ファイルを添付",
+			"delete": "削除",
+			"deleteConfirmDescription": "全員に対してファイルが削除されます。この操作は取り消せません。",
+			"deleteConfirmTitle": "{{filename}} を削除しますか？",
+			"download": "ダウンロード",
+			"dropHere": "ここにファイルをドロップするか、クリックして選択",
+			"dropToAttach": "ファイルをドロップして添付",
+			"loadError": "添付ファイルを読み込めませんでした",
+			"meta": "{{size}} · {{name}} · {{time}}",
+			"metaNoUser": "{{size}} · {{time}}",
+			"open": "開く",
+			"title": "添付ファイル",
+			"toast": {
+				"attached_other": "{{count}} 件のファイルを添付しました",
+				"deleted": "添付ファイルを削除しました",
+				"deleteError": "添付ファイルを削除できませんでした",
+				"empty": "{{filename}} は空です",
+				"failed": "{{filename}} を添付できませんでした: {{reason}}",
+				"notConfigured": "このサーバーではファイルのアップロードが設定されていません。管理者にストレージの設定を依頼してください。",
+				"storageError": "ストレージがアップロードを拒否しました",
+				"tooMany": "一度に添付できるファイルは最大{{count}}件です",
+				"unknownError": "問題が発生しました"
+			},
+			"uploading": "アップロード中…"
+		},
+		"create": {
+			"similarTitle": "類似する未完了のタスク",
+			"similarDismiss": "類似タスクを非表示",
+			"similarOpen": "開く",
+			"similarOpenLabel": "{{key}} {{title}} を新しいタブで開く"
+		},
+		"parent": {
+			"add": "親タスクを追加",
+			"chip": "親タスク",
+			"label": "親タスク",
+			"noTasks": "タスクが見つかりません",
+			"remove": "親タスクを削除",
+			"search": "タスクを検索…",
+			"tasksInProject": "このプロジェクトのタスク",
+			"toast": {
+				"error": "親タスクを変更できませんでした",
+				"removed": "親タスクを削除しました",
+				"set": "親タスクを{{key}}に設定しました"
+			},
+			"tooltip": "親タスク: {{key}} {{title}}"
+		},
+		"copy": {
+			"alwaysCopied": "ステータスと優先度は常にコピーされます。",
+			"cancel": "キャンセル",
+			"includeLabel": "含める項目",
+			"options": {
+				"assignees": "担当者",
+				"attachments": "添付ファイル",
+				"customFields": "カスタムフィールドの値",
+				"dates": "開始日と期限",
+				"description": "説明",
+				"labels": "ラベル",
+				"links": "リンク",
+				"parent": "親タスク",
+				"planning": "サイクル、モジュール、見積もり"
+			},
+			"otherProjectHint": "ステータスは新しいプロジェクトのカラムに合わせて設定されます。カスタムフィールド、親タスク、計画情報はプロジェクトをまたいでコピーされません。",
+			"projectLabel": "プロジェクト",
+			"submit": "コピーを作成",
+			"title": "{{key}} のコピーを作成",
+			"titleLabel": "タイトル",
+			"titleRequired": "タイトルを入力してください",
+			"titleSuffix": "{{title}}（コピー）",
+			"toast": {
+				"error": "コピーを作成できませんでした",
+				"open": "開く",
+				"skipped": "コピーされませんでした: {{list}}",
+				"success": "コピーを作成しました: {{key}}"
+			}
+		},
+		"filters": {
+			"button": "フィルター",
+			"searchOptions": "オプションを検索",
+			"noOptions": "オプションなし",
+			"matchAll": "すべてに一致",
+			"matchAny": "いずれかに一致",
+			"applyError": "フィルターを適用できませんでした",
+			"retry": "再試行",
+			"tooMany": "一致件数が多すぎるためここでは絞り込めません。スプレッドシートを開いてください",
+			"nestedReadOnly": "このビューはここで編集できない高度なフィルターを使用しています",
+			"clearAll": "すべてのフィルターをクリア",
+			"apply": "適用",
+			"mobileSummary_other": "{{count}}件のフィルター",
+			"removeFilter": "フィルター「{{subject}}」を削除",
+			"subjects": {
+				"group": "グループ",
+				"createdBy": "作成者",
+				"cycle": "サイクル",
+				"module": "モジュール",
+				"startDate": "開始日",
+				"created": "作成日",
+				"updated": "更新日",
+				"completed": "完了日",
+				"parent": "親タスク",
+				"project": "プロジェクト",
+				"subscribed": "サブスクライブ中",
+				"mentions": "メンション",
+				"blocked": "ブロック中"
+			},
+			"operators": {
+				"between": "の間",
+				"is": "である",
+				"isEmpty": "が空",
+				"isNoneOf": "のいずれでもない",
+				"isNot": "ではない",
+				"isNotEmpty": "が空でない",
+				"moreThanAgo": "…より前",
+				"moreThanAhead": "…より先",
+				"on": "当日",
+				"onOrAfter": "以降",
+				"onOrBefore": "以前",
+				"withinLast": "過去",
+				"withinNext": "今後"
+			},
+			"values": {
+				"me": "自分",
+				"none": "なし",
+				"noAssignee": "担当者なし",
+				"noCreator": "作成者なし",
+				"noLabel": "ラベルなし",
+				"noCycle": "サイクルなし",
+				"noModule": "モジュールなし",
+				"noEstimate": "見積もりなし",
+				"noParent": "親タスクなし",
+				"currentCycle": "現在のサイクル",
+				"true": "はい",
+				"false": "いいえ",
+				"blockedYes": "はい",
+				"blockedNo": "いいえ"
+			},
+			"dates": {
+				"amount": "数量",
+				"custom": "カスタム日付…",
+				"emptyTab": "空",
+				"exact": "日付を指定",
+				"future": "今日より後",
+				"lastMonth": "先月",
+				"lastWeek": "先週",
+				"nextMonth": "来月",
+				"nextWeek": "来週",
+				"overdue": "期限超過",
+				"past": "今日より前",
+				"presets": "プリセット",
+				"rolling": "相対期間",
+				"rollingValue": "{{amount}}{{unit}}",
+				"thisMonth": "今月",
+				"thisWeek": "今週",
+				"today": "今日",
+				"tomorrow": "明日",
+				"units": {
+					"days": "日",
+					"months": "か月",
+					"weeks": "週間"
+				},
+				"yesterday": "昨日"
+			},
+			"archived": {
+				"exclude": "アーカイブ済みを非表示",
+				"include": "アーカイブ済みも表示",
+				"label": "アーカイブ済み",
+				"only": "アーカイブ済みのみ"
+			},
+			"myTasks": "自分のタスク"
+		},
+		"display": {
+			"button": "表示",
+			"columns": "列",
+			"groupBy": "グループ化",
+			"groups": {
+				"status": "ステータス",
+				"group": "グループ",
+				"priority": "優先度",
+				"assignee": "担当者",
+				"createdBy": "作成者",
+				"label": "ラベル",
+				"cycle": "サイクル",
+				"module": "モジュール",
+				"estimate": "見積もり",
+				"project": "プロジェクト",
+				"customField": "カスタムフィールド"
+			},
+			"none": "なし",
+			"order": {
+				"manual": "手動",
+				"createdAt": "作成日（新しい順）",
+				"updatedAt": "更新日（新しい順）",
+				"completedAt": "完了日",
+				"startDate": "開始日",
+				"dueDate": "期限",
+				"priority": "優先度",
+				"title": "タイトル",
+				"number": "タスクキー",
+				"status": "ステータス",
+				"assignee": "担当者",
+				"label": "ラベル",
+				"cycle": "サイクル",
+				"module": "モジュール",
+				"estimate": "見積もり",
+				"subTaskCount": "サブタスク",
+				"archivedAt": "アーカイブ日",
+				"customField": "カスタムフィールド"
+			},
+			"orderBy": "並べ替え",
+			"properties": "プロパティ",
+			"props": {
+				"assignee": "担当者",
+				"checklist": "チェックリスト",
+				"createdAt": "作成日",
+				"cycle": "サイクル",
+				"dueDate": "期限",
+				"estimate": "見積もり",
+				"key": "キー",
+				"labels": "ラベル",
+				"modules": "モジュール",
+				"priority": "優先度",
+				"startDate": "開始日",
+				"status": "ステータス",
+				"subTaskCount": "サブタスク",
+				"updatedAt": "更新日"
+			},
+			"showEmptyGroups": "空のグループを表示",
+			"showSubTasks": "サブタスクを表示",
+			"subGroupBy": "サブグループ化"
+		},
+		"groups": {
+			"all": "すべてのタスク",
+			"planned": "計画済み",
+			"noAssignee": "担当者なし",
+			"noCreator": "作成者なし",
+			"noLabel": "ラベルなし",
+			"noCycle": "サイクルなし",
+			"noModule": "モジュールなし",
+			"noEstimate": "見積もりなし",
+			"loadMore": "さらに読み込む（{{count}}）",
+			"hiddenGroups_other": "ほか{{count}}個のグループは表示されていません",
+			"moduleCount_other": "{{count}}個のモジュール",
+			"moveError": "タスクを移動できませんでした",
+			"noFieldValue": "値なし"
+		},
+		"spreadsheet": {
+			"clearSort": "並べ替えを解除",
+			"collapseSubTasks": "サブタスクを非表示",
+			"expandSubTasks": "サブタスクを表示",
+			"hideColumn": "列を非表示",
+			"loadError": "タスクを読み込めませんでした",
+			"selectTask": "{{key}}を選択",
+			"sortAsc": "昇順で並べ替え",
+			"sortDesc": "降順で並べ替え",
+			"task": "タスク"
+		},
+		"queryEmpty": {
+			"clear": "フィルターをクリア",
+			"description": "フィルターをいくつか外してみてください。",
+			"title": "条件に一致するタスクはありません"
 		},
 		"capture": {
 			"ariaLabel": "{{column}} にタスクを追加",
@@ -5011,47 +5260,32 @@
 			"changePriority": "優先度: {{priority}}",
 			"changeStatus": "ステータス: {{status}}"
 		},
-		"commands": {
-			"assignedSelf": "あなたに割り当てました",
-			"assignees": "担当者を変更…",
-			"assignSelf": "自分に割り当て",
-			"copyTitle": "タイトルをコピー",
-			"cycle": "サイクルを変更…",
-			"dueDate": "期限を変更…",
-			"estimate": "見積もりを変更…",
-			"group": "このタスク",
-			"labels": "ラベルを変更…",
-			"module": "モジュールを変更…",
-			"priority": "優先度を変更…",
-			"status": "ステータスを変更…",
-			"titleCopied": "タスクのタイトルをコピーしました",
-			"unassignedSelf": "あなたの割り当てを解除しました",
-			"unassignSelf": "自分の割り当てを解除"
+		"boardSearchOpen": "タスクを検索",
+		"customFieldValue": {
+			"clear": "値をクリア",
+			"edit": "{{name}} を編集",
+			"removedOption": "{{value}}（削除された選択肢）",
+			"saveError": "このフィールドを保存できませんでした。",
+			"placeholder": "新しい値",
+			"true": "はい",
+			"false": "いいえ"
 		},
-		"readableLink": {
-			"goHome": "ホームへ移動",
-			"notFound": "このワークスペースにキー {{key}} のタスクがないか、表示する権限がありません。"
+		"customFieldBulk": {
+			"action": "カスタムフィールド",
+			"chooseField": "フィールドを選択",
+			"apply": "適用",
+			"updated_other": "{{count}} 件のタスクを更新しました",
+			"error": "選択したタスクを更新できませんでした。"
 		},
-		"descriptionHistory": {
-			"cancel": "キャンセル",
-			"description": "この説明の保存済みバージョンです（新しい順）。同じユーザーによる10分以内の編集は1つのバージョンにまとめられ、最新の50件が保持されます。",
-			"earlierVersion": "以前のバージョン",
-			"empty": "保存済みのバージョンはまだありません。次の編集からバージョンが保持されます。",
-			"emptyVersion": "このバージョンには説明がありません。",
-			"latest": "最新",
-			"list": "保存済みバージョン",
-			"loadError": "履歴を読み込めませんでした",
-			"open": "履歴",
-			"previewTitle": "{{date}} のバージョン",
-			"restore": "復元",
-			"restoreConfirmDescription": "説明がこのバージョンに置き換えられます。現在のテキストは履歴に残ります。",
-			"restoreConfirmTitle": "このバージョンを復元しますか？",
-			"restored": "説明を復元しました",
-			"restoreError": "このバージョンを復元できませんでした",
-			"retry": "再試行",
-			"size_other": "{{count}} 文字",
-			"title": "説明の履歴",
-			"viewOnly": "表示のみ"
+		"milestone": {
+			"label": "マイルストーン",
+			"hint": "1 つの日付を示します。タイムラインでは期限の位置にひし形で表示されます。",
+			"updateError": "マイルストーンを更新できませんでした"
+		},
+		"scheduleField": {
+			"label": "タスクに表示するフィールド",
+			"none": "フィールドなし",
+			"value": "{{name}}：{{value}}"
 		}
 	},
 	"invitations": {
@@ -5107,7 +5341,8 @@
 				"inProgress": "進行中"
 			},
 			"noDueDate": "期限なし",
-			"reorderError": "プロジェクトの並び替えに失敗しました"
+			"reorderError": "プロジェクトの並び替えに失敗しました",
+			"emptyDescriptionGuest": "まだどのプロジェクトにも追加されていません。招待した人に追加を依頼してください。"
 		},
 		"search": {
 			"pageTitle": "検索",
@@ -5210,7 +5445,8 @@
 			"owner": "オーナー",
 			"admin": "管理者",
 			"member": "メンバー",
-			"viewer": "閲覧者"
+			"viewer": "閲覧者",
+			"guest": "ゲスト"
 		},
 		"members": {
 			"pageTitle": "メンバー",
@@ -5246,7 +5482,13 @@
 			"sentSome": "{{total}} 件中 {{sent}} 件の招待を送信しました。",
 			"failedTitle": "未送信",
 			"rateLimited": "一度に送る招待が多すぎます。1 分待ってから残りを送信してください。",
-			"shareLinksDescription": "各リンクをそれぞれの相手に共有して、ワークスペースに参加してもらいましょう。"
+			"shareLinksDescription": "各リンクをそれぞれの相手に共有して、ワークスペースに参加してもらいましょう。",
+			"guestRoleHint": "ゲストには追加したプロジェクトのみが表示され、ワークスペース内のその他の情報は表示されません。",
+			"guestProjectsLabel": "プロジェクト",
+			"guestProjectsHint": "招待を承諾するとすぐに、チェックしたプロジェクトに、選択したプロジェクトのロールで参加します。閲覧者は閲覧のみ可能です。",
+			"guestProjectsEmpty": "共有できるプロジェクトがありません。参加後にプロジェクトへ追加してください。",
+			"guestProjectRoleFor": "{{project}} でのプロジェクトのロール",
+			"guestProjectsFailed": "招待は送信されましたが、プロジェクトを追加できませんでした: {{message}}"
 		},
 		"membersTable": {
 			"emptyTitle": "チームメンバーがまだいません",
@@ -5271,7 +5513,8 @@
 			"roleUpdateSuccess": "ロールを更新しました",
 			"roleUpdateError": "ロールの更新に失敗しました",
 			"ariaInvitationRole": "{{email}} のロール",
-			"invitationRoleUpdateSuccess": "招待のロールを更新しました"
+			"invitationRoleUpdateSuccess": "招待のロールを更新しました",
+			"removeDialogAccessNote": "これがこのユーザーの唯一のワークスペースの場合、サインアウトされ、APIキーも使用できなくなります。"
 		},
 		"profile": {
 			"emptyActivity": "まだアクティビティはありません",
@@ -7729,6 +7972,29 @@
 		}
 	},
 	"home": {
+		"pageTitle": "ホーム",
+		"greeting": {
+			"afternoon": "こんにちは、{{name}}さん",
+			"dateTime": "{{date}} · {{time}}",
+			"evening": "こんばんは、{{name}}さん",
+			"morning": "おはようございます、{{name}}さん"
+		},
+		"manageWidgets": "ウィジェットを管理",
+		"widgets": {
+			"quickLinks": "クイックリンク",
+			"recents": "最近使用",
+			"stickies": "付箋",
+			"risks": "リスク",
+			"myBrief": "マイブリーフ",
+			"pinnedReports": "ピン留めしたレポート"
+		},
+		"manage": {
+			"description": "ホームに表示する項目を選び、ドラッグして並べ替えます。この設定は自分にのみ表示されます。",
+			"reorder": "{{widget}}を並べ替え",
+			"saveError": "ホームの設定を保存できませんでした",
+			"title": "ウィジェットを管理",
+			"toggle": "{{widget}}を表示"
+		},
 		"empty": {
 			"description": "すべてのウィジェットがオフです。オンにすると、リンク、最近の訪問先、付箋がここに表示されます。",
 			"title": "ホームは空です"
@@ -7758,21 +8024,6 @@
 			},
 			"title": "はじめに"
 		},
-		"greeting": {
-			"afternoon": "こんにちは、{{name}}さん",
-			"dateTime": "{{date}} · {{time}}",
-			"evening": "こんばんは、{{name}}さん",
-			"morning": "おはようございます、{{name}}さん"
-		},
-		"manage": {
-			"description": "ホームに表示する項目を選び、ドラッグして並べ替えます。この設定は自分にのみ表示されます。",
-			"reorder": "{{widget}}を並べ替え",
-			"saveError": "ホームの設定を保存できませんでした",
-			"title": "ウィジェットを管理",
-			"toggle": "{{widget}}を表示"
-		},
-		"manageWidgets": "ウィジェットを管理",
-		"pageTitle": "ホーム",
 		"quickLinks": {
 			"add": "リンクを追加",
 			"copy": "リンクをコピー",
@@ -7829,23 +8080,31 @@
 			"visited": "{{time}}に訪問"
 		},
 		"retry": "再試行",
-		"widgets": {
-			"quickLinks": "クイックリンク",
-			"recents": "最近使用",
-			"stickies": "付箋",
-			"risks": "リスク",
-			"myBrief": "マイブリーフ"
-		},
 		"focus": {
-			"caughtUp": "すべて確認済みです",
-			"inbox": "受信トレイ",
 			"label": "続きから再開",
+			"inbox": "受信トレイ",
 			"myWork": "自分の作業",
-			"overdue_other": "期限切れ {{count}} 件",
 			"stickies": "付箋",
+			"caughtUp": "すべて確認済みです",
+			"overdue_other": "期限切れ {{count}} 件",
 			"stickiesHint": "自分だけが見られる非公開メモ",
+			"unreadCaption": "未読",
 			"openCaption": "未完了",
-			"unreadCaption": "未読"
+			"loadError": "読み込めませんでした"
+		},
+		"dueToday": {
+			"title": "今日が期限",
+			"empty": "今日が期限の担当タスクはありません。",
+			"loadError": "今日が期限のタスクを読み込めませんでした",
+			"viewAll": "{{total}} 件すべて表示"
+		},
+		"pinnedReports": {
+			"empty": "アナリティクスで保存したレポートをピン留めすると、ここに表示されます。",
+			"openAnalytics": "アナリティクスを開く",
+			"loadError": "ピン留めしたレポートを読み込めませんでした",
+			"chartError": "このレポートを読み込めませんでした",
+			"unpin": "{{name}} のホームへのピン留めを解除",
+			"showing": "{{total}} 件中 {{shown}} 件を表示中。残りはアナリティクスで確認できます。"
 		}
 	},
 	"intake": {
@@ -8136,14 +8395,108 @@
 		"viewAll": "すべて表示"
 	},
 	"analytics": {
-		"a11y": {
-			"barSummary": "{{dimension}}別の{{metric}}: {{count}}区分、最大は {{label}} の {{value}}",
-			"donutSummary": "{{count}}グループに{{total}}件のタスク",
-			"lineSummary": "{{count}}期間にわたる{{series}}"
+		"pageTitle": "アナリティクス",
+		"projectPageTitle": "{{project}} · アナリティクス",
+		"tabs": {
+			"overview": "概要",
+			"tasks": "タスク",
+			"cycles": "サイクル",
+			"modules": "モジュール",
+			"intake": "受付",
+			"delivery": "デリバリー",
+			"time": "時間"
 		},
-		"breakdown": {
-			"groupRowsBy": "行のグループ化",
-			"title": "内訳"
+		"header": {
+			"allProjects": "すべてのプロジェクト",
+			"clearSelection": "選択をクリア",
+			"noProjectsFound": "プロジェクトが見つかりません",
+			"projectsCount_other": "{{count}}件のプロジェクト",
+			"refresh": "更新",
+			"searchProjects": "プロジェクトを検索",
+			"selectProjects": "プロジェクトを選択",
+			"updatedAt": "{{time}} に更新"
+		},
+		"openInAnalytics": "アナリティクスで開く",
+		"context": {
+			"cycle": "サイクル: {{name}}",
+			"module": "モジュール: {{name}}",
+			"remove": "{{name}} をフィルターから削除"
+		},
+		"states": {
+			"loadError": "このセクションを読み込めませんでした",
+			"newProject": "新しいプロジェクト",
+			"noAccessDescription": "ワークスペースの管理者に「アナリティクス」権限を依頼してください。",
+			"noAccessTitle": "アナリティクスへのアクセス権がありません",
+			"noCycles": "サイクルはまだありません",
+			"noModules": "モジュールはまだありません",
+			"noPeriodData": "この期間のデータはありません",
+			"noProjectsDescription": "アナリティクスは、プロジェクト内のタスクを集計します。",
+			"noProjectsTitle": "アナリティクスを見るにはプロジェクトを作成してください",
+			"noRequests": "リクエストはまだありません",
+			"noTasks": "これらのフィルターに一致するタスクはありません",
+			"retry": "再試行",
+			"timeout": "時間がかかりすぎました。フィルターを絞り込んで、もう一度お試しください。",
+			"noRunningCycles": "現在進行中のサイクルはありません"
+		},
+		"view": {
+			"chart": "グラフ",
+			"label": "表示形式",
+			"table": "表"
+		},
+		"kpi": {
+			"accepted": "承認済み {{count}} 件",
+			"completedTasks": "完了したタスク",
+			"completion": "完了率",
+			"completionDetail": "{{committed}} 件中 {{completed}} 件",
+			"cyclesRunning": "進行中のサイクル",
+			"members": "メンバー",
+			"membersDetail": "管理者 {{admins}} 人 · 閲覧者 {{viewers}} 人",
+			"modulesInProgress": "進行中のモジュール",
+			"modulesTotal": "合計 {{count}} 件",
+			"openRequests": "未処理のリクエスト",
+			"openTasks": "未完了のタスク",
+			"overdue": "期限超過 {{count}} 件",
+			"percentComplete": "{{percent}}% 完了",
+			"projects": "プロジェクト",
+			"total": "合計",
+			"upcoming": "予定 {{count}} 件"
+		},
+		"overview": {
+			"projectProgress": "プロジェクトの進捗",
+			"projectProgressSubtitle": "未完了のタスクが多いプロジェクト順",
+			"open": "未完了 {{count}} 件",
+			"showAll": "{{count}}件すべてを表示",
+			"showLess": "表示を減らす",
+			"tasksByGroup": "グループ別のタスク",
+			"donutCenter_other": "{{count}}件のタスク",
+			"workload": "ワークロード",
+			"workloadSubtitle": "担当者別の未完了タスク",
+			"workloadSubtitlePoints": "担当者別の未完了の見積もりポイント",
+			"overloaded_other": "{{names}} さんの未完了の作業量は、普段 {{weeks}} 週間で完了する量を超えています。",
+			"overUsual": "普段より多い",
+			"overTooltip": "{{name}}: 普段より多い",
+			"usualHint": "「普段」とは、過去 {{historyWeeks}} 週間のデータから見た、各メンバーが標準的な {{usualWeeks}} 週間で完了する量です。最近の履歴がないメンバーは判定されません。",
+			"checkColumn": "普段との比較",
+			"checkOverPoints": "超過: {{load}} ポイント（普段は {{usual}}）",
+			"checkOverTasks": "超過: タスク {{load}} 件（普段は {{usual}} 件）",
+			"checkOkPoints": "{{load}} ポイント（普段は {{usual}}）",
+			"checkOkTasks": "タスク {{load}} 件（普段は {{usual}} 件）",
+			"checkUnknown": "最近の履歴なし"
+		},
+		"trend": {
+			"completed": "完了",
+			"created": "作成",
+			"help": "作成数は、タスクが作成された日で集計します。完了数は、タスクが完了した日で集計し、現在も完了状態のものに限ります。アーカイブ済みのタスクは、含める設定にしない限り除外されます。",
+			"period": "期間",
+			"summary": "作成 {{created}} · 完了 {{completed}} · 差分 {{net}}",
+			"title": "作成数と完了数"
+		},
+		"periods": {
+			"custom": "期間を指定",
+			"last12m": "過去12か月",
+			"last30": "過去30日間",
+			"last6m": "過去6か月",
+			"last90": "過去90日間"
 		},
 		"bucket": {
 			"label": "日付のグループ化",
@@ -8154,6 +8507,14 @@
 		"buckets": {
 			"range": "{{from}} – {{to}}",
 			"weekOf": "{{date}} の週"
+		},
+		"metric": {
+			"label": "指標",
+			"tasks": "タスク",
+			"points": "見積もりポイント",
+			"pointsShort": "ポイント",
+			"sum": "合計",
+			"sumOf": "{{name}} の合計"
 		},
 		"builder": {
 			"countSubTasks": "サブタスクを含めて集計",
@@ -8169,10 +8530,126 @@
 			"truncatedX": "{{total}}件の{{dimension}}のうち上位{{shown}}件を表示しています",
 			"xAxis": "X軸"
 		},
-		"context": {
-			"cycle": "サイクル: {{name}}",
-			"module": "モジュール: {{name}}",
-			"remove": "{{name}} をフィルターから削除"
+		"reports": {
+			"open": "レポート",
+			"listTitle": "保存済みのレポート",
+			"loadError": "保存済みのレポートを読み込めませんでした",
+			"empty": "保存済みのレポートはまだありません。このグラフを保存すると、後で再表示できます。",
+			"sharedBy": "{{name}}が共有",
+			"actionsFor": "{{name}}の操作",
+			"rename": "名前を変更",
+			"share": "ワークスペースと共有",
+			"makePrivate": "非公開にする",
+			"delete": "削除",
+			"save": "保存",
+			"saveAsNew": "新規として保存",
+			"update": "レポートを更新",
+			"showing": "レポート: {{name}}",
+			"unsaved": "未保存の変更",
+			"close": "レポートを閉じる",
+			"deleteTitle": "このレポートを削除しますか？",
+			"deleteDescription": "「{{name}}」を削除します。この操作は元に戻せません。",
+			"deleteSharedDescription": "「{{name}}」はワークスペースの全員に対して削除されます。この操作は元に戻せません。",
+			"visibility": {
+				"private": "非公開",
+				"privateHint": "自分だけが閲覧できます。",
+				"workspace": "ワークスペースと共有",
+				"workspaceHint": "このワークスペースでアナリティクスへのアクセス権を持つ全員が開けます。"
+			},
+			"dialog": {
+				"cancel": "キャンセル",
+				"createTitle": "レポートを保存",
+				"editTitle": "レポートを編集",
+				"name": "名前",
+				"namePlaceholder": "例: 担当者別の未解決バグ",
+				"nameRequired": "名前を入力してください",
+				"save": "保存",
+				"summary": "グラフの設定、対象のプロジェクト、フィルターを保存します。",
+				"update": "変更を保存",
+				"visibility": "閲覧できるユーザー"
+			},
+			"notes": {
+				"allProjects": "対象のプロジェクトがどれも利用できないため、すべてのプロジェクトを表示しています。",
+				"builderReset": "一部のグラフ設定はこれらのプロジェクトでは利用できないため、リセットされました。",
+				"dropped_other": "このレポートのプロジェクトのうち{{count}}件は存在しなくなりました。",
+				"leftOut_other": "このレポートのプロジェクトのうち{{count}}件はアーカイブ済みのため除外されました。",
+				"otherProjects": "このレポートは別のプロジェクト用に保存されたものです。ここではこのプロジェクトのみを表示します。"
+			},
+			"toast": {
+				"saved": "「{{name}}」を保存しました",
+				"updated": "レポートを更新しました",
+				"shared": "レポートをワークスペースと共有しました",
+				"madePrivate": "レポートを非公開にしました",
+				"deleted": "レポートを削除しました",
+				"saveError": "レポートを保存できませんでした",
+				"deleteError": "レポートを削除できませんでした",
+				"pinned": "ホームにピン留めしました",
+				"unpinned": "ホームのピン留めを解除しました",
+				"pinError": "ホームを更新できませんでした",
+				"pinLimit_other": "ピン留めできるレポートは {{count}} 件までです。先にいずれかのピン留めを解除してください。"
+			},
+			"pin": "ホームにピン留め",
+			"unpin": "ホームのピン留めを解除"
+		},
+		"dimensions": {
+			"status": "ステータス",
+			"group": "グループ",
+			"priority": "優先度",
+			"assignee": "担当者",
+			"createdBy": "作成者",
+			"label": "ラベル",
+			"cycle": "サイクル",
+			"module": "モジュール",
+			"estimate": "見積もり",
+			"project": "プロジェクト",
+			"createdAt": "作成日",
+			"completedAt": "完了日",
+			"startDate": "開始日",
+			"dueDate": "期限",
+			"customField": "カスタムフィールド"
+		},
+		"dimensionsPlural": {
+			"status": "ステータス",
+			"assignee": "担当者",
+			"createdBy": "作成者",
+			"label": "ラベル",
+			"cycle": "サイクル",
+			"module": "モジュール",
+			"estimate": "見積もり",
+			"project": "プロジェクト",
+			"period": "期間",
+			"customField": "値"
+		},
+		"none": {
+			"assignee": "未割り当て",
+			"createdBy": "作成者不明",
+			"label": "ラベルなし",
+			"cycle": "サイクルなし",
+			"module": "モジュールなし",
+			"estimate": "見積もりなし",
+			"completedAt": "未完了",
+			"startDate": "開始日なし",
+			"dueDate": "期限なし",
+			"customField": "値なし"
+		},
+		"other": "その他",
+		"table": {
+			"periodEnd": "期間の終了",
+			"periodStart": "期間の開始",
+			"progress": "進捗",
+			"showAll": "{{count}}件すべてを表示",
+			"sortBy": "{{column}} で並べ替え",
+			"tasks": "タスク",
+			"total": "合計"
+		},
+		"breakdown": {
+			"groupRowsBy": "行のグループ化",
+			"title": "内訳"
+		},
+		"export": {
+			"button": "CSVをエクスポート",
+			"error": "この表をエクスポートできませんでした",
+			"success_other": "{{count}}行をエクスポートしました"
 		},
 		"cycles": {
 			"averageCompleted": "完了の平均(直近3件)",
@@ -8205,47 +8682,15 @@
 				"running": "進行中"
 			}
 		},
-		"dimensions": {
-			"assignee": "担当者",
-			"completedAt": "完了日",
-			"createdAt": "作成日",
-			"createdBy": "作成者",
-			"cycle": "サイクル",
-			"dueDate": "期限",
-			"estimate": "見積もり",
-			"group": "グループ",
-			"label": "ラベル",
-			"module": "モジュール",
-			"priority": "優先度",
-			"project": "プロジェクト",
-			"startDate": "開始日",
-			"status": "ステータス"
-		},
-		"dimensionsPlural": {
-			"assignee": "担当者",
-			"createdBy": "作成者",
-			"cycle": "サイクル",
-			"estimate": "見積もり",
-			"label": "ラベル",
-			"module": "モジュール",
-			"period": "期間",
-			"project": "プロジェクト",
-			"status": "ステータス"
-		},
-		"export": {
-			"button": "CSVをエクスポート",
-			"error": "この表をエクスポートできませんでした",
-			"success_other": "{{count}}行をエクスポートしました"
-		},
-		"header": {
-			"allProjects": "すべてのプロジェクト",
-			"clearSelection": "選択をクリア",
-			"noProjectsFound": "プロジェクトが見つかりません",
-			"projectsCount_other": "{{count}}件のプロジェクト",
-			"refresh": "更新",
-			"searchProjects": "プロジェクトを検索",
-			"selectProjects": "プロジェクトを選択",
-			"updatedAt": "{{time}} に更新"
+		"modules": {
+			"overdue": "期限超過",
+			"table": {
+				"lead": "リード",
+				"module": "モジュール",
+				"noLead": "リードなし",
+				"targetDate": "目標日",
+				"title": "モジュール"
+			}
 		},
 		"intake": {
 			"accepted": "承認済み",
@@ -8263,173 +8708,24 @@
 			"submitted": "送信済み",
 			"triaged": "仕分け済み"
 		},
-		"kpi": {
-			"accepted": "承認済み {{count}} 件",
-			"completedTasks": "完了したタスク",
-			"completion": "完了率",
-			"completionDetail": "{{committed}} 件中 {{completed}} 件",
-			"cyclesRunning": "進行中のサイクル",
-			"members": "メンバー",
-			"membersDetail": "管理者 {{admins}} 人 · 閲覧者 {{viewers}} 人",
-			"modulesInProgress": "進行中のモジュール",
-			"modulesTotal": "合計 {{count}} 件",
-			"openRequests": "未処理のリクエスト",
-			"openTasks": "未完了のタスク",
-			"overdue": "期限超過 {{count}} 件",
-			"percentComplete": "{{percent}}% 完了",
-			"projects": "プロジェクト",
-			"total": "合計",
-			"upcoming": "予定 {{count}} 件"
+		"a11y": {
+			"barSummary": "{{dimension}}別の{{metric}}: {{count}}区分、最大は {{label}} の {{value}}",
+			"donutSummary": "{{count}}グループに{{total}}件のタスク",
+			"lineSummary": "{{count}}期間にわたる{{series}}"
 		},
-		"metric": {
-			"label": "指標",
-			"points": "見積もりポイント",
-			"pointsShort": "ポイント",
-			"tasks": "タスク"
-		},
-		"modules": {
-			"overdue": "期限超過",
-			"table": {
-				"lead": "リード",
-				"module": "モジュール",
-				"noLead": "リードなし",
-				"targetDate": "目標日",
-				"title": "モジュール"
-			}
-		},
-		"none": {
-			"assignee": "未割り当て",
-			"completedAt": "未完了",
-			"createdBy": "作成者不明",
-			"cycle": "サイクルなし",
-			"dueDate": "期限なし",
-			"estimate": "見積もりなし",
-			"label": "ラベルなし",
-			"module": "モジュールなし",
-			"startDate": "開始日なし"
-		},
-		"openInAnalytics": "アナリティクスで開く",
-		"other": "その他",
-		"overview": {
-			"donutCenter_other": "{{count}}件のタスク",
-			"open": "未完了 {{count}} 件",
-			"projectProgress": "プロジェクトの進捗",
-			"projectProgressSubtitle": "未完了のタスクが多いプロジェクト順",
-			"showAll": "{{count}}件すべてを表示",
-			"showLess": "表示を減らす",
-			"tasksByGroup": "グループ別のタスク",
-			"workload": "ワークロード",
-			"workloadSubtitle": "担当者別の未完了タスク"
-		},
-		"pageTitle": "アナリティクス",
-		"periods": {
-			"custom": "期間を指定",
-			"last12m": "過去12か月",
-			"last30": "過去30日間",
-			"last6m": "過去6か月",
-			"last90": "過去90日間"
-		},
-		"projectPageTitle": "{{project}} · アナリティクス",
-		"states": {
-			"loadError": "このセクションを読み込めませんでした",
-			"newProject": "新しいプロジェクト",
-			"noAccessDescription": "ワークスペースの管理者に「アナリティクス」権限を依頼してください。",
-			"noAccessTitle": "アナリティクスへのアクセス権がありません",
-			"noCycles": "サイクルはまだありません",
-			"noModules": "モジュールはまだありません",
-			"noPeriodData": "この期間のデータはありません",
-			"noProjectsDescription": "アナリティクスは、プロジェクト内のタスクを集計します。",
-			"noProjectsTitle": "アナリティクスを見るにはプロジェクトを作成してください",
-			"noRequests": "リクエストはまだありません",
-			"noTasks": "これらのフィルターに一致するタスクはありません",
-			"retry": "再試行",
-			"timeout": "時間がかかりすぎました。フィルターを絞り込んで、もう一度お試しください。",
-			"noRunningCycles": "現在進行中のサイクルはありません"
-		},
-		"table": {
-			"periodEnd": "期間の終了",
-			"periodStart": "期間の開始",
-			"progress": "進捗",
-			"showAll": "{{count}}件すべてを表示",
-			"sortBy": "{{column}} で並べ替え",
-			"tasks": "タスク",
-			"total": "合計"
-		},
-		"tabs": {
-			"cycles": "サイクル",
-			"intake": "受付",
-			"modules": "モジュール",
-			"overview": "概要",
-			"tasks": "タスク",
-			"delivery": "デリバリー"
-		},
-		"trend": {
-			"completed": "完了",
-			"created": "作成",
-			"help": "作成数は、タスクが作成された日で集計します。完了数は、タスクが完了した日で集計し、現在も完了状態のものに限ります。アーカイブ済みのタスクは、含める設定にしない限り除外されます。",
-			"period": "期間",
-			"summary": "作成 {{created}} · 完了 {{completed}} · 差分 {{net}}",
-			"title": "作成数と完了数"
-		},
-		"view": {
-			"chart": "グラフ",
-			"label": "表示形式",
-			"table": "表"
-		},
-		"reports": {
-			"actionsFor": "{{name}}の操作",
-			"close": "レポートを閉じる",
-			"delete": "削除",
-			"deleteDescription": "「{{name}}」を削除します。この操作は元に戻せません。",
-			"deleteSharedDescription": "「{{name}}」はワークスペースの全員に対して削除されます。この操作は元に戻せません。",
-			"deleteTitle": "このレポートを削除しますか？",
-			"dialog": {
-				"cancel": "キャンセル",
-				"createTitle": "レポートを保存",
-				"editTitle": "レポートを編集",
-				"name": "名前",
-				"namePlaceholder": "例: 担当者別の未解決バグ",
-				"nameRequired": "名前を入力してください",
-				"save": "保存",
-				"summary": "グラフの設定、対象のプロジェクト、フィルターを保存します。",
-				"update": "変更を保存",
-				"visibility": "閲覧できるユーザー"
-			},
-			"empty": "保存済みのレポートはまだありません。このグラフを保存すると、後で再表示できます。",
-			"listTitle": "保存済みのレポート",
-			"loadError": "保存済みのレポートを読み込めませんでした",
-			"makePrivate": "非公開にする",
-			"notes": {
-				"allProjects": "対象のプロジェクトがどれも利用できないため、すべてのプロジェクトを表示しています。",
-				"builderReset": "一部のグラフ設定はこれらのプロジェクトでは利用できないため、リセットされました。",
-				"dropped_other": "このレポートのプロジェクトのうち{{count}}件は存在しなくなりました。",
-				"leftOut_other": "このレポートのプロジェクトのうち{{count}}件はアーカイブ済みのため除外されました。",
-				"otherProjects": "このレポートは別のプロジェクト用に保存されたものです。ここではこのプロジェクトのみを表示します。"
-			},
-			"open": "レポート",
-			"rename": "名前を変更",
-			"save": "保存",
-			"saveAsNew": "新規として保存",
-			"share": "ワークスペースと共有",
-			"sharedBy": "{{name}}が共有",
-			"showing": "レポート: {{name}}",
-			"toast": {
-				"deleted": "レポートを削除しました",
-				"deleteError": "レポートを削除できませんでした",
-				"madePrivate": "レポートを非公開にしました",
-				"saved": "「{{name}}」を保存しました",
-				"saveError": "レポートを保存できませんでした",
-				"shared": "レポートをワークスペースと共有しました",
-				"updated": "レポートを更新しました"
-			},
-			"unsaved": "未保存の変更",
-			"update": "レポートを更新",
-			"visibility": {
-				"private": "非公開",
-				"privateHint": "自分だけが閲覧できます。",
-				"workspace": "ワークスペースと共有",
-				"workspaceHint": "このワークスペースでアナリティクスへのアクセス権を持つ全員が開けます。"
-			}
+		"time": {
+			"total": "記録時間",
+			"entries": "記録数",
+			"people": "人数",
+			"running": "計測中",
+			"runningNote": "計測中のタイマーは、停止後にこの合計に加算されます。",
+			"byPerson": "ユーザー別",
+			"byProject": "プロジェクト別",
+			"person": "ユーザー",
+			"project": "プロジェクト",
+			"hours": "時間",
+			"formerMember": "元メンバー",
+			"empty": "この期間に記録された時間はありません"
 		}
 	},
 	"pages": {
@@ -8510,6 +8806,59 @@
 			"file": "添付ファイル",
 			"page": "別のページ"
 		},
+		"section": {
+			"title": "ページ"
+		},
+		"list": {
+			"documentTitle": "{{project}} · ページ",
+			"newPage": "新しいページ",
+			"tabs": {
+				"archived": "アーカイブ済み",
+				"private": "非公開",
+				"public": "公開"
+			},
+			"searchPlaceholder": "ページを検索",
+			"clearFilters": "フィルターをクリア",
+			"sort": {
+				"created": "作成日",
+				"lastEdited": "最終編集",
+				"name": "名前"
+			},
+			"untitled": "無題",
+			"inParent": "{{path}} 内",
+			"ownedBy": "オーナー: {{name}}",
+			"access": {
+				"private": "非公開",
+				"public": "公開"
+			},
+			"editedAgo": "{{time}} に編集",
+			"archivedOn": "{{date}} にアーカイブ",
+			"locked": "ロック中",
+			"loadError": "ページを読み込めませんでした",
+			"retry": "再試行",
+			"empty": {
+				"archived": {
+					"description": "アーカイブしたページはここに表示されます。復元または削除できます。",
+					"title": "アーカイブ済みのページはありません"
+				},
+				"noMatch": {
+					"description": "別のキーワードで検索するか、フィルターをクリアしてください。",
+					"title": "一致するページはありません"
+				},
+				"none": {
+					"description": "ページには、仕様、メモ、ドキュメントをプロジェクトのタスクのすぐそばにまとめられます。",
+					"title": "最初のページを書きましょう"
+				},
+				"private": {
+					"description": "非公開ページはあなただけに表示されます。",
+					"title": "非公開ページはありません"
+				},
+				"public": {
+					"title": "公開ページはありません"
+				}
+			},
+			"recentlyDeleted": "最近削除した項目"
+		},
 		"actions": {
 			"archive": "アーカイブ",
 			"copyLink": "リンクをコピー",
@@ -8525,6 +8874,123 @@
 			"restore": "復元",
 			"unlock": "ロック解除"
 		},
+		"toasts": {
+			"accessError": "このページの閲覧範囲を変更できませんでした",
+			"archived": "ページをアーカイブしました",
+			"archiveError": "ページをアーカイブできませんでした",
+			"contentConflict": "このページは別の場所で変更されたため、直前の編集は保存されませんでした。最新バージョンを表示しています。",
+			"contentSaveError": "ページを保存できませんでした",
+			"createError": "ページを作成できませんでした",
+			"deleted": "ページを削除しました",
+			"deleteError": "ページを削除できませんでした",
+			"duplicated": "ページを複製しました",
+			"duplicateError": "ページを複製できませんでした",
+			"fullWidthError": "ページの幅を変更できませんでした",
+			"linkCopied": "リンクをコピーしました",
+			"locked": "ページをロックしました",
+			"lockError": "ロックを変更できませんでした",
+			"logoError": "アイコンを更新できませんでした",
+			"madePrivate": "ページを非公開にしました",
+			"madePublic": "ページを公開にしました",
+			"moved": "{{project}} に移動しました",
+			"moveError": "ページを移動できませんでした",
+			"open": "開く",
+			"restored": "ページを復元しました",
+			"restoreError": "ページを復元できませんでした",
+			"titleError": "タイトルを保存できませんでした",
+			"unlocked": "ページのロックを解除しました"
+		},
+		"deleteDialog": {
+			"cancel": "キャンセル",
+			"confirm": "削除",
+			"description": "「{{title}}」はプロジェクト設定の「最近削除した項目」に移動し、完全に削除されるまでは復元できます。サブページは最上位に移動します。",
+			"title": "ページを削除しますか？"
+		},
+		"moveDialog": {
+			"cancel": "キャンセル",
+			"confirm": "移動",
+			"description": "このページとサブページが、選択したプロジェクトに移動します。",
+			"empty": "ページ機能がオンになっている他のプロジェクトはありません",
+			"searchPlaceholder": "プロジェクトを検索",
+			"title": "ページを移動"
+		},
+		"tree": {
+			"collapse": "{{title}} を折りたたむ",
+			"dnd": {
+				"cancelled": "移動をキャンセルしました。",
+				"dropped": "{{title}} を移動しました。",
+				"invalid": "{{title}} はそこに移動できません。",
+				"over": "{{title}} が {{target}} の上にあります。",
+				"pickedUp": "{{title}} を持ち上げました。矢印キーで移動、スペースキーでドロップ、Escapeキーでキャンセルします。"
+			},
+			"empty": "ページはまだありません",
+			"expand": "{{title}} を展開",
+			"newPage": "新しいページ",
+			"title": "ページ"
+		},
+		"crumb": {
+			"noMatches": "一致するページはありません",
+			"searchPlaceholder": "ページを検索"
+		},
+		"header": {
+			"copied": "コピーしました",
+			"copyLink": "リンクをコピー",
+			"locked": "ロック中",
+			"lockPage": "ページをロック",
+			"moreActions": "ページの操作",
+			"presence": "このページを見ているユーザー: {{names}}",
+			"presenceMore": "+{{count}}",
+			"togglePanel": "サイドパネルを切り替え",
+			"unlockHint": "クリックしてロック解除",
+			"ancestors": "親ページ"
+		},
+		"menu": {
+			"copyMarkdown": "Markdownとしてコピー",
+			"downloadMarkdown": "Markdownとしてダウンロード",
+			"fullWidth": "全幅",
+			"markdownCopied": "Markdownをコピーしました",
+			"versionHistory": "バージョン履歴",
+			"print": "印刷 / PDF として保存"
+		},
+		"editor": {
+			"addIcon": "アイコンを追加",
+			"ariaLabel": "ページの内容",
+			"pageLink": {
+				"unavailable": "非公開または削除されたページ"
+			},
+			"pageLinkPicker": {
+				"empty": "ページが見つかりません",
+				"search": "ページを検索"
+			},
+			"placeholder": "入力を開始するか、/ を押してコマンドを表示",
+			"slash": {
+				"commands": {
+					"divider": "区切り線",
+					"heading-1": "見出し1",
+					"heading-2": "見出し2",
+					"heading-3": "見出し3",
+					"page-link": "ページへのリンク"
+				}
+			},
+			"titleAria": "ページのタイトル",
+			"titlePlaceholder": "無題"
+		},
+		"logo": {
+			"categories": {
+				"activities": "アクティビティ",
+				"food": "食べ物",
+				"nature": "自然",
+				"objects": "物",
+				"people": "人物",
+				"smileys": "スマイリー",
+				"symbols": "記号",
+				"travel": "旅行"
+			},
+			"emoji": "絵文字",
+			"icon": "アイコン",
+			"remove": "削除",
+			"search": "絵文字を検索"
+		},
 		"banners": {
 			"archived": "このページはアーカイブされています。編集するには復元してください。",
 			"locked": "このページはロックされています。変更するにはロックを解除してください。",
@@ -8535,6 +9001,15 @@
 			"storedCopy": "最後に保存されたバージョンを表示しています。接続が回復すると、リアルタイム編集が再開されます。",
 			"tooLarge": "このページは大きすぎて同期を続けられません。最近の変更をコピーしてから、再読み込みしてください。",
 			"unlock": "ロック解除"
+		},
+		"sync": {
+			"cantConnect": "接続できません",
+			"notSaved": "未保存",
+			"notSavedHint": "保存を再試行し続けます。このタブを閉じないでください。",
+			"offline": "オフライン",
+			"offlineHint": "編集は続けられます。接続が回復すると変更が同期されます。",
+			"retry": "再試行",
+			"saved": "保存済み"
 		},
 		"collab": {
 			"deleted": "このページは削除されました",
@@ -8547,6 +9022,61 @@
 			"restoredBy": "{{name}} さんが以前のバージョンを復元しました",
 			"roomFull": "現在、このページを開いているユーザーが多すぎます。しばらくしてからもう一度お試しください。",
 			"signedOut": "セッションが終了しました。編集を続けるには、もう一度サインインしてください。"
+		},
+		"state": {
+			"notFound": {
+				"back": "ページに戻る",
+				"description": "削除されたか、非公開のページの可能性があります。",
+				"title": "ページが見つかりません"
+			}
+		},
+		"panel": {
+			"outline": "アウトライン",
+			"info": "情報",
+			"history": "履歴",
+			"close": "パネルを閉じる",
+			"comments": "コメント"
+		},
+		"outline": {
+			"empty": {
+				"description": "見出しを追加すると、ここにアウトラインが表示されます。",
+				"title": "見出しはまだありません"
+			}
+		},
+		"info": {
+			"characters": "文字数",
+			"createdBy": "作成者",
+			"lastEditedBy": "最終編集者",
+			"lessThanMinute": "1分未満",
+			"linkedFrom": "リンク元",
+			"lockedBy": "ロックしたユーザー",
+			"noBacklinks": "このページへのリンクはまだありません",
+			"paragraphs": "段落数",
+			"readingMinutes": "{{count}}分",
+			"readingTime": "読了時間",
+			"words": "単語数"
+		},
+		"history": {
+			"backToCurrent": "現在のバージョンに戻る",
+			"current": "現在のバージョン",
+			"empty": "保存されたバージョンはまだありません。バージョンは編集中に保存されます。",
+			"loadError": "このバージョンを読み込めませんでした",
+			"others_other": "他 {{count}} 人",
+			"previewTitle": "{{date}} のバージョン",
+			"restore": "復元",
+			"restoreCancel": "キャンセル",
+			"restoreConfirmDescription": "現在の内容が先に履歴に保存されるため、元に戻すことができます。",
+			"restoreConfirmTitle": "このバージョンを復元しますか？",
+			"restored": "バージョンを復元しました",
+			"restoreError": "このバージョンを復元できませんでした",
+			"restoring": "復元中…",
+			"retry": "再試行",
+			"title": "バージョン履歴",
+			"unknownUser": "元メンバー",
+			"viewOnly": "表示のみ"
+		},
+		"notification": {
+			"openPage": "ページを開く"
 		},
 		"toolbar": {
 			"ariaLabel": "書式ツールバー",
@@ -8585,237 +9115,36 @@
 		"commandPalette": {
 			"createPage": "ページを作成"
 		},
-		"crumb": {
-			"noMatches": "一致するページはありません",
-			"searchPlaceholder": "ページを検索"
-		},
-		"deleteDialog": {
+		"comments": {
+			"placeholder": "コメントを追加…",
+			"add": "コメントする",
+			"save": "保存",
 			"cancel": "キャンセル",
-			"confirm": "削除",
-			"description": "「{{title}}」はバージョン履歴とともに完全に削除されます。サブページは最上位に移動します。この操作は元に戻せません。",
-			"title": "ページを削除しますか？"
-		},
-		"editor": {
-			"addIcon": "アイコンを追加",
-			"ariaLabel": "ページの内容",
-			"pageLink": {
-				"unavailable": "非公開または削除されたページ"
-			},
-			"pageLinkPicker": {
-				"empty": "ページが見つかりません",
-				"search": "ページを検索"
-			},
-			"placeholder": "入力を開始するか、/ を押してコマンドを表示",
-			"slash": {
-				"commands": {
-					"divider": "区切り線",
-					"heading-1": "見出し1",
-					"heading-2": "見出し2",
-					"heading-3": "見出し3",
-					"page-link": "ページへのリンク"
-				}
-			},
-			"titleAria": "ページのタイトル",
-			"titlePlaceholder": "無題"
-		},
-		"header": {
-			"copied": "コピーしました",
-			"copyLink": "リンクをコピー",
-			"locked": "ロック中",
-			"lockPage": "ページをロック",
-			"moreActions": "ページの操作",
-			"presence": "このページを見ているユーザー: {{names}}",
-			"presenceMore": "+{{count}}",
-			"togglePanel": "サイドパネルを切り替え",
-			"unlockHint": "クリックしてロック解除",
-			"ancestors": "親ページ"
-		},
-		"history": {
-			"backToCurrent": "現在のバージョンに戻る",
-			"current": "現在のバージョン",
-			"empty": "保存されたバージョンはまだありません。バージョンは編集中に保存されます。",
-			"loadError": "このバージョンを読み込めませんでした",
-			"others_other": "他 {{count}} 人",
-			"previewTitle": "{{date}} のバージョン",
-			"restore": "復元",
-			"restoreCancel": "キャンセル",
-			"restoreConfirmDescription": "現在の内容が先に履歴に保存されるため、元に戻すことができます。",
-			"restoreConfirmTitle": "このバージョンを復元しますか？",
-			"restored": "バージョンを復元しました",
-			"restoreError": "このバージョンを復元できませんでした",
-			"restoring": "復元中…",
+			"emptyTitle": "コメントはまだありません",
+			"emptyDescription": "ここのコメントはワークスペース内にとどまります。公開リンクには表示されません。",
+			"archivedNote": "このページはアーカイブされています。コメントするには復元してください。",
+			"loadError": "コメントを読み込めませんでした",
 			"retry": "再試行",
-			"title": "バージョン履歴",
-			"unknownUser": "元メンバー",
-			"viewOnly": "表示のみ"
-		},
-		"info": {
-			"characters": "文字数",
-			"createdBy": "作成者",
-			"lastEditedBy": "最終編集者",
-			"lessThanMinute": "1分未満",
-			"linkedFrom": "リンク元",
-			"lockedBy": "ロックしたユーザー",
-			"noBacklinks": "このページへのリンクはまだありません",
-			"paragraphs": "段落数",
-			"readingMinutes": "{{count}}分",
-			"readingTime": "読了時間",
-			"words": "単語数"
-		},
-		"list": {
-			"access": {
-				"private": "非公開",
-				"public": "公開"
-			},
-			"archivedOn": "{{date}} にアーカイブ",
-			"clearFilters": "フィルターをクリア",
-			"documentTitle": "{{project}} · ページ",
-			"editedAgo": "{{time}} に編集",
-			"empty": {
-				"archived": {
-					"description": "アーカイブしたページはここに表示されます。復元または削除できます。",
-					"title": "アーカイブ済みのページはありません"
-				},
-				"noMatch": {
-					"description": "別のキーワードで検索するか、フィルターをクリアしてください。",
-					"title": "一致するページはありません"
-				},
-				"none": {
-					"description": "ページには、仕様、メモ、ドキュメントをプロジェクトのタスクのすぐそばにまとめられます。",
-					"title": "最初のページを書きましょう"
-				},
-				"private": {
-					"description": "非公開ページはあなただけに表示されます。",
-					"title": "非公開ページはありません"
-				},
-				"public": {
-					"title": "公開ページはありません"
-				}
-			},
-			"inParent": "{{path}} 内",
-			"loadError": "ページを読み込めませんでした",
-			"locked": "ロック中",
-			"newPage": "新しいページ",
-			"ownedBy": "オーナー: {{name}}",
-			"retry": "再試行",
-			"searchPlaceholder": "ページを検索",
-			"sort": {
-				"created": "作成日",
-				"lastEdited": "最終編集",
-				"name": "名前"
-			},
-			"tabs": {
-				"archived": "アーカイブ済み",
-				"private": "非公開",
-				"public": "公開"
-			},
-			"untitled": "無題"
-		},
-		"logo": {
-			"categories": {
-				"activities": "アクティビティ",
-				"food": "食べ物",
-				"nature": "自然",
-				"objects": "物",
-				"people": "人物",
-				"smileys": "スマイリー",
-				"symbols": "記号",
-				"travel": "旅行"
-			},
-			"emoji": "絵文字",
-			"icon": "アイコン",
-			"remove": "削除",
-			"search": "絵文字を検索"
-		},
-		"menu": {
-			"copyMarkdown": "Markdownとしてコピー",
-			"downloadMarkdown": "Markdownとしてダウンロード",
-			"fullWidth": "全幅",
-			"markdownCopied": "Markdownをコピーしました",
-			"versionHistory": "バージョン履歴",
-			"print": "印刷 / PDF として保存"
-		},
-		"moveDialog": {
-			"cancel": "キャンセル",
-			"confirm": "移動",
-			"description": "このページとサブページが、選択したプロジェクトに移動します。",
-			"empty": "ページ機能がオンになっている他のプロジェクトはありません",
-			"searchPlaceholder": "プロジェクトを検索",
-			"title": "ページを移動"
-		},
-		"notification": {
-			"openPage": "ページを開く"
-		},
-		"outline": {
-			"empty": {
-				"description": "見出しを追加すると、ここにアウトラインが表示されます。",
-				"title": "見出しはまだありません"
+			"deletedUser": "削除されたユーザー",
+			"edited": "編集済み",
+			"menuAria": "このコメントのその他の操作",
+			"edit": "編集",
+			"delete": "削除",
+			"deleteTitle": "このコメントを削除しますか？",
+			"deleteDescription": "全員に対して削除されます。この操作は元に戻せません。",
+			"toasts": {
+				"empty": "先に内容を入力してください",
+				"addError": "コメントを追加できませんでした",
+				"saveError": "コメントを保存できませんでした",
+				"deleteError": "コメントを削除できませんでした"
 			}
 		},
-		"panel": {
-			"close": "パネルを閉じる",
-			"history": "履歴",
-			"info": "情報",
-			"outline": "アウトライン"
-		},
-		"section": {
-			"title": "ページ"
-		},
-		"state": {
-			"notFound": {
-				"back": "ページに戻る",
-				"description": "削除されたか、非公開のページの可能性があります。",
-				"title": "ページが見つかりません"
-			}
-		},
-		"sync": {
-			"cantConnect": "接続できません",
-			"notSaved": "未保存",
-			"notSavedHint": "保存を再試行し続けます。このタブを閉じないでください。",
-			"offline": "オフライン",
-			"offlineHint": "編集は続けられます。接続が回復すると変更が同期されます。",
-			"retry": "再試行",
-			"saved": "保存済み"
-		},
-		"toasts": {
-			"accessError": "このページの閲覧範囲を変更できませんでした",
-			"archived": "ページをアーカイブしました",
-			"archiveError": "ページをアーカイブできませんでした",
-			"contentConflict": "このページは別の場所で変更されたため、直前の編集は保存されませんでした。最新バージョンを表示しています。",
-			"contentSaveError": "ページを保存できませんでした",
-			"createError": "ページを作成できませんでした",
-			"deleted": "ページを削除しました",
-			"deleteError": "ページを削除できませんでした",
-			"duplicated": "ページを複製しました",
-			"duplicateError": "ページを複製できませんでした",
-			"fullWidthError": "ページの幅を変更できませんでした",
-			"linkCopied": "リンクをコピーしました",
-			"locked": "ページをロックしました",
-			"lockError": "ロックを変更できませんでした",
-			"logoError": "アイコンを更新できませんでした",
-			"madePrivate": "ページを非公開にしました",
-			"madePublic": "ページを公開にしました",
-			"moved": "{{project}} に移動しました",
-			"moveError": "ページを移動できませんでした",
-			"open": "開く",
-			"restored": "ページを復元しました",
-			"restoreError": "ページを復元できませんでした",
-			"titleError": "タイトルを保存できませんでした",
-			"unlocked": "ページのロックを解除しました"
-		},
-		"tree": {
-			"collapse": "{{title}} を折りたたむ",
-			"dnd": {
-				"cancelled": "移動をキャンセルしました。",
-				"dropped": "{{title}} を移動しました。",
-				"invalid": "{{title}} はそこに移動できません。",
-				"over": "{{title}} が {{target}} の上にあります。",
-				"pickedUp": "{{title}} を持ち上げました。矢印キーで移動、スペースキーでドロップ、Escapeキーでキャンセルします。"
-			},
-			"empty": "ページはまだありません",
-			"expand": "{{title}} を展開",
-			"newPage": "新しいページ",
-			"title": "ページ"
+		"watch": {
+			"watch": "ページをウォッチ",
+			"unwatch": "ウォッチを解除",
+			"watchHint": "コメントと変更の通知を受け取ります",
+			"watchingHint": "コメントと変更の通知を受け取っています",
+			"error": "このページのウォッチ設定を変更できませんでした"
 		}
 	},
 	"accountSecurity": {
@@ -8874,7 +9203,9 @@
 				"sessionLifetime": "セッションの有効期間",
 				"sessionLifetimeHint": "使われていないセッションが有効な期間です。使うと延長されます。",
 				"hours": "時間",
-				"signInNotice": "{{provider}} でサインインしてください。パスワードでのサインインはインスタンス管理者専用です。"
+				"signInNotice": "{{provider}} でサインインしてください。パスワードでのサインインはインスタンス管理者専用です。",
+				"requireTwoFactor": "2 要素認証を必須にする",
+				"requireTwoFactorHint": "パスワードを持つすべてのアカウントは、プロバイダーや SAML でもサインインする場合を含め、2 要素認証を設定するまで他の操作ができず、APIキーも使用できなくなります。メールのリンクとコードはオフになるため、それらだけを使っていたユーザーはパスワードを設定するまでサインインできません。本人が「パスワードをお忘れですか？」から設定するか、メールが設定されていない場合はあなたが「ユーザー」で代わりに設定します。パスワードのないアカウントには、そのプロバイダーのルールが適用されます。先に自分のアカウントでオンにしてください。"
 			},
 			"twoFactor": {
 				"title": "2 要素認証",
@@ -8901,7 +9232,11 @@
 				"done": "完了",
 				"enabled": "2 要素認証がオンになりました。",
 				"disabled": "2 要素認証がオフになりました。",
-				"error": "問題が発生しました。もう一度お試しください。"
+				"error": "問題が発生しました。もう一度お試しください。",
+				"requiredHint": "このサーバーでは 2 要素認証が必須のため、オフにできません。デバイスと回復コードを紛失した場合は、インスタンス管理者がリセットできます。",
+				"setupRequiredTitle": "続行するには 2 要素認証を設定してください",
+				"setupRequiredHint": "このサーバーでは、パスワードを持つすべてのアカウントに 2 要素認証が必須です。認証アプリが必要です。",
+				"signOutInstead": "代わりにサインアウト"
 			},
 			"challenge": {
 				"title": "2 要素認証",
@@ -8973,7 +9308,11 @@
 				"noPassword": "未設定 (別の方法でサインイン)",
 				"workspacesTitle": "ワークスペース",
 				"noWorkspaces": "どのワークスペースにも参加していません。",
-				"joined": "{{date}} に参加"
+				"joined": "{{date}} に参加",
+				"resetTwoFactor": "2 要素認証をリセット",
+				"resetTwoFactorTitle": "{{name}} の 2 要素認証をリセットしますか？",
+				"resetTwoFactorDescription": "ユーザーがデバイスと回復コードを紛失し、本人であることを確認できた場合に使用してください。2 要素認証が削除され、すべての場所からサインアウトされます。その後、パスワードだけでサインインして、もう一度設定できます。",
+				"twoFactorReset": "{{name}} の 2 要素認証をリセットしました"
 			}
 		},
 		"password": {
@@ -9037,33 +9376,99 @@
 				"cliAdminPromoted": "インスタンス管理者に昇格しました (復旧 CLI)",
 				"cliAdminDemoted": "インスタンス管理者を削除しました (復旧 CLI)",
 				"cliPasswordReset": "パスワードを再設定しました (復旧 CLI)",
-				"cliUserUnbanned": "利用停止を解除しました (復旧 CLI)"
+				"cliUserUnbanned": "利用停止を解除しました (復旧 CLI)",
+				"userTwoFactorReset": "アカウントの 2 要素認証をリセットしました",
+				"cliTwoFactorReset": "アカウントの 2 要素認証をリセットしました（リカバリ CLI）",
+				"scimConnectionCreated": "プロビジョニング用の ID プロバイダーを接続しました",
+				"scimTokenRotated": "SCIM トークンを置き換えました",
+				"scimConnectionDeleted": "SCIM 接続を削除しました",
+				"scimUserProvisioned": "プロビジョニングでアカウントを追加しました",
+				"scimUserDeactivated": "プロビジョニングでアカウントを無効化しました",
+				"scimUserReactivated": "プロビジョニングでアカウントを再有効化しました",
+				"scimUserRemoved": "プロビジョニングでユーザーをワークスペースから削除しました",
+				"samlConnectionCreated": "サインイン用の ID プロバイダーを接続しました",
+				"samlConnectionUpdated": "SAML 接続を変更しました",
+				"samlConnectionDeleted": "SAML 接続を削除しました"
 			}
 		}
 	},
 	"instanceAdmin": {
-		"admins": {
-			"add": "管理者を追加",
-			"addConfirm": "管理者を追加",
-			"addDescription": "インスタンス管理者は、この領域のすべての設定を変更でき、任意のワークスペースを開けます。",
-			"added": "{{name}} さんがインスタンス管理者になりました",
-			"addTitle": "インスタンス管理者を追加",
-			"columns": {
-				"email": "メール",
-				"name": "名前"
-			},
+		"pageTitle": "インスタンス · {{page}}",
+		"nav": {
+			"admins": "管理者",
+			"authentication": "認証",
 			"email": "メール",
-			"emailInvalid": "有効なメールアドレスを入力してください",
-			"emailPlaceholder": "name@example.com",
-			"lastAdmin": "インスタンス管理者は1人以上必要です",
-			"remove": "管理者から外す…",
-			"removeConfirm": "外す",
-			"removed": "{{name}} さんはインスタンス管理者ではなくなりました",
-			"removeDescription": "アカウントとワークスペースは保持されます。",
-			"removeTitle": "{{name}} さんをインスタンス管理者から外しますか？",
-			"subtitle": "インスタンス管理者は、この領域のすべての設定を変更でき、任意のワークスペースを開けます。",
-			"title": "管理者",
-			"you": "あなた"
+			"general": "一般",
+			"publicBoards": "公開ボード",
+			"workspaces": "ワークスペース",
+			"ai": "AI"
+		},
+		"lockedCallout": "これらの設定は、このサーバーの環境変数で管理されています。ここでの変更は無効です。",
+		"source": {
+			"default": "デフォルト",
+			"environment": "環境変数: {{variable}}",
+			"lockTooltip": "ここで管理するには、{{variable}} を削除して再起動してください。",
+			"saved": "ここで保存",
+			"savedBy": "{{name}} さんが {{date}} に保存"
+		},
+		"saved": "設定を保存しました",
+		"saveError": "設定を保存できませんでした",
+		"loadError": "インスタンス設定を読み込めませんでした",
+		"retry": "再試行",
+		"save": "保存",
+		"secret": {
+			"cancel": "キャンセル",
+			"clear": "クリア",
+			"cleared": "シークレットをクリアしました",
+			"placeholder": "新しい値を入力",
+			"replace": "置き換え",
+			"saved": "保存済み",
+			"unreadable": "保存されているシークレットを読み取れません(サーバーの AUTH_SECRET が変更されました)。もう一度入力してください。"
+		},
+		"general": {
+			"title": "一般",
+			"subtitle": "インスタンスの名前を設定し、状態を確認します。",
+			"instanceName": "インスタンス名",
+			"instanceNameHint": "サインイン画面と公開ボードに表示されます",
+			"instanceNameRequired": "名前を入力してください",
+			"instanceNameTooLong": "80文字以内で入力してください",
+			"homePage": "ホームページ",
+			"publicLanding": "製品のランディングページを表示",
+			"publicLandingHint": "サインインしていない訪問者には、ルートアドレスでランディングページが表示されます。オフにすると、直接サインイン画面に移動します。",
+			"overview": "概要",
+			"version": "バージョン",
+			"counts": {
+				"accounts": "アカウント",
+				"guests": "ゲスト",
+				"projects": "プロジェクト",
+				"publishedBoards": "公開ボード",
+				"workspaces": "ワークスペース"
+			},
+			"server": {
+				"captcha": "CAPTCHA",
+				"cloudMode": "クラウドモード",
+				"configured": "設定済み",
+				"demoMode": "デモモード",
+				"email": "メール",
+				"errorReporting": "エラーレポート",
+				"fileStorage": "ファイルストレージ",
+				"notConfigured": "未設定",
+				"off": "オフ",
+				"on": "オン",
+				"realtime": "リアルタイム",
+				"realtimeMemory": "メモリ内",
+				"realtimeRedis": "Redis ({{mode}})",
+				"title": "サーバー"
+			},
+			"deliveryFailures": {
+				"title": "最近の配信失敗",
+				"description": "過去 7 日間に再試行の上限に達したワークスペースの Webhook です。メールとバックグラウンドジョブのエラーはサーバーログにのみ記録されます。",
+				"empty": "過去 7 日間に配信の失敗はありません。",
+				"when": "日時",
+				"workspace": "ワークスペース",
+				"webhook": "Webhook",
+				"response": "レスポンス"
+			}
 		},
 		"auth": {
 			"anyoneCanSignUp": "誰でもサインアップ可能",
@@ -9103,6 +9508,31 @@
 			"title": "認証",
 			"toggle": "{{method}} のオン/オフを切り替え"
 		},
+		"oauth": {
+			"authorizationUrl": "認可URL",
+			"autoSignIn": "自動でサインイン",
+			"autoSignInHint": "サインイン画面を省略して、このプロバイダーに直接移動します",
+			"buttonLabel": "ボタンのラベル",
+			"buttonLabelHint": "サインインボタンに表示されます(例: 「Oktaで続行」)",
+			"callbackHint": "このURLをOAuthアプリに追加してください",
+			"callbackUrl": "コールバックURL",
+			"clientId": "クライアントID",
+			"clientSecret": "クライアントシークレット",
+			"copied": "コピーしました",
+			"copy": "コピー",
+			"discoveryHint": "または、下の3つのエンドポイントを入力してください",
+			"discoveryUrl": "ディスカバリーURL",
+			"invalidUrl": "httpまたはhttpsの絶対URLを入力してください",
+			"logoutUrl": "ログアウトURL",
+			"managedByEnv": "このプロバイダーは環境変数({{variables}})で設定されています。",
+			"pkce": "PKCEを使用",
+			"scopes": "スコープ",
+			"scopesHint": "カンマ区切り",
+			"sheetDescription": "OAuthアプリを接続して、{{provider}} でサインインできるようにします。",
+			"sheetTitle": "{{provider}} でのサインイン",
+			"tokenUrl": "トークンURL",
+			"userInfoUrl": "ユーザー情報URL"
+		},
 		"email": {
 			"from": "送信元",
 			"fromHint": "メールアドレス、または名前とアドレス: Margaya <no-reply@example.com>",
@@ -9133,134 +9563,6 @@
 			"subtitle": "Margayaがサインインコード、招待、通知を送信するSMTPサーバーです。",
 			"title": "メール",
 			"username": "ユーザー名"
-		},
-		"general": {
-			"counts": {
-				"accounts": "アカウント",
-				"guests": "ゲスト",
-				"projects": "プロジェクト",
-				"publishedBoards": "公開ボード",
-				"workspaces": "ワークスペース"
-			},
-			"instanceName": "インスタンス名",
-			"instanceNameHint": "サインイン画面と公開ボードに表示されます",
-			"instanceNameRequired": "名前を入力してください",
-			"instanceNameTooLong": "80文字以内で入力してください",
-			"homePage": "ホームページ",
-			"publicLanding": "製品のランディングページを表示",
-			"publicLandingHint": "サインインしていない訪問者には、ルートアドレスでランディングページが表示されます。オフにすると、直接サインイン画面に移動します。",
-			"overview": "概要",
-			"server": {
-				"captcha": "CAPTCHA",
-				"cloudMode": "クラウドモード",
-				"configured": "設定済み",
-				"demoMode": "デモモード",
-				"email": "メール",
-				"errorReporting": "エラーレポート",
-				"fileStorage": "ファイルストレージ",
-				"notConfigured": "未設定",
-				"off": "オフ",
-				"on": "オン",
-				"realtime": "リアルタイム",
-				"realtimeMemory": "メモリ内",
-				"realtimeRedis": "Redis ({{mode}})",
-				"title": "サーバー"
-			},
-			"subtitle": "インスタンスの名前を設定し、状態を確認します。",
-			"title": "一般",
-			"version": "バージョン"
-		},
-		"loadError": "インスタンス設定を読み込めませんでした",
-		"lockedCallout": "これらの設定は、このサーバーの環境変数で管理されています。ここでの変更は無効です。",
-		"nav": {
-			"admins": "管理者",
-			"authentication": "認証",
-			"email": "メール",
-			"general": "一般",
-			"publicBoards": "公開ボード",
-			"workspaces": "ワークスペース",
-			"ai": "AI"
-		},
-		"oauth": {
-			"authorizationUrl": "認可URL",
-			"autoSignIn": "自動でサインイン",
-			"autoSignInHint": "サインイン画面を省略して、このプロバイダーに直接移動します",
-			"buttonLabel": "ボタンのラベル",
-			"buttonLabelHint": "サインインボタンに表示されます(例: 「Oktaで続行」)",
-			"callbackHint": "このURLをOAuthアプリに追加してください",
-			"callbackUrl": "コールバックURL",
-			"clientId": "クライアントID",
-			"clientSecret": "クライアントシークレット",
-			"copied": "コピーしました",
-			"copy": "コピー",
-			"discoveryHint": "または、下の3つのエンドポイントを入力してください",
-			"discoveryUrl": "ディスカバリーURL",
-			"invalidUrl": "httpまたはhttpsの絶対URLを入力してください",
-			"logoutUrl": "ログアウトURL",
-			"managedByEnv": "このプロバイダーは環境変数({{variables}})で設定されています。",
-			"pkce": "PKCEを使用",
-			"scopes": "スコープ",
-			"scopesHint": "カンマ区切り",
-			"sheetDescription": "OAuthアプリを接続して、{{provider}} でサインインできるようにします。",
-			"sheetTitle": "{{provider}} でのサインイン",
-			"tokenUrl": "トークンURL",
-			"userInfoUrl": "ユーザー情報URL"
-		},
-		"pageTitle": "インスタンス · {{page}}",
-		"publicBoards": {
-			"actions": "ボードの操作",
-			"allow": "公開ボードを許可",
-			"allowHint": "オフにすると、すべての公開リンクが「見つかりません」と応答します。データは削除されません。",
-			"columns": {
-				"features": "機能",
-				"project": "プロジェクト",
-				"published": "公開日",
-				"workspace": "ワークスペース"
-			},
-			"empty": "このサーバーに公開ボードはありません。",
-			"feature": {
-				"comments": "コメント",
-				"guests": "ゲスト",
-				"reactions": "リアクション",
-				"requests": "リクエスト",
-				"votes": "投票"
-			},
-			"listTitle": "公開中のボード",
-			"loadMore": "さらに読み込む",
-			"noMatches": "「{{query}}」に一致する公開ボードはありません",
-			"openBoard": "ボードを開く",
-			"participation": "公開での参加を許可",
-			"participationHint": "オフにすると、公開ボードは閲覧専用になります。コメント、リアクション、投票、リクエストはできません。",
-			"projectSettings": "プロジェクト設定",
-			"search": "ボードを検索",
-			"subtitle": "このインスタンス全体の公開ボードを管理します。",
-			"title": "公開ボード",
-			"unpublish": "公開を停止…",
-			"unpublishConfirm": "公開を停止",
-			"unpublishDescription": "ボードが再び公開されるまで、リンクは無効になります。設定、コメント、リアクション、投票は保持されます。",
-			"unpublished": "ボードの公開を停止しました",
-			"unpublishError": "ボードの公開を停止できませんでした",
-			"unpublishTitle": "{{project}} の公開を停止しますか？"
-		},
-		"retry": "再試行",
-		"save": "保存",
-		"saved": "設定を保存しました",
-		"saveError": "設定を保存できませんでした",
-		"secret": {
-			"cancel": "キャンセル",
-			"clear": "クリア",
-			"cleared": "シークレットをクリアしました",
-			"placeholder": "新しい値を入力",
-			"replace": "置き換え",
-			"saved": "保存済み",
-			"unreadable": "保存されているシークレットを読み取れません(サーバーの AUTH_SECRET が変更されました)。もう一度入力してください。"
-		},
-		"source": {
-			"default": "デフォルト",
-			"environment": "環境変数: {{variable}}",
-			"lockTooltip": "ここで管理するには、{{variable}} を削除して再起動してください。",
-			"saved": "ここで保存",
-			"savedBy": "{{name}} さんが {{date}} に保存"
 		},
 		"testEmail": {
 			"codes": {
@@ -9303,6 +9605,132 @@
 			"search": "ワークスペースを検索",
 			"subtitle": "このインスタンスのすべてのワークスペースです。",
 			"title": "ワークスペース"
+		},
+		"publicBoards": {
+			"actions": "ボードの操作",
+			"allow": "公開ボードを許可",
+			"allowHint": "オフにすると、すべての公開リンクが「見つかりません」と応答します。データは削除されません。",
+			"columns": {
+				"features": "機能",
+				"project": "プロジェクト",
+				"published": "公開日",
+				"workspace": "ワークスペース"
+			},
+			"empty": "このサーバーに公開ボードはありません。",
+			"feature": {
+				"comments": "コメント",
+				"guests": "ゲスト",
+				"reactions": "リアクション",
+				"requests": "リクエスト",
+				"votes": "投票"
+			},
+			"listTitle": "公開中のボード",
+			"loadMore": "さらに読み込む",
+			"noMatches": "「{{query}}」に一致する公開ボードはありません",
+			"openBoard": "ボードを開く",
+			"participation": "公開での参加を許可",
+			"participationHint": "オフにすると、公開ボードは閲覧専用になります。コメント、リアクション、投票、リクエストはできません。",
+			"projectSettings": "プロジェクト設定",
+			"search": "ボードを検索",
+			"subtitle": "このインスタンス全体の公開ボードを管理します。",
+			"title": "公開ボード",
+			"unpublish": "公開を停止…",
+			"unpublishConfirm": "公開を停止",
+			"unpublishDescription": "ボードが再び公開されるまで、リンクは無効になります。設定、コメント、リアクション、投票は保持されます。",
+			"unpublished": "ボードの公開を停止しました",
+			"unpublishError": "ボードの公開を停止できませんでした",
+			"unpublishTitle": "{{project}} の公開を停止しますか？"
+		},
+		"admins": {
+			"add": "管理者を追加",
+			"addConfirm": "管理者を追加",
+			"addDescription": "インスタンス管理者は、この領域のすべての設定を変更でき、任意のワークスペースを開けます。",
+			"added": "{{name}} さんがインスタンス管理者になりました",
+			"addTitle": "インスタンス管理者を追加",
+			"columns": {
+				"email": "メール",
+				"name": "名前"
+			},
+			"email": "メール",
+			"emailInvalid": "有効なメールアドレスを入力してください",
+			"emailPlaceholder": "name@example.com",
+			"lastAdmin": "インスタンス管理者は1人以上必要です",
+			"remove": "管理者から外す…",
+			"removeConfirm": "外す",
+			"removed": "{{name}} さんはインスタンス管理者ではなくなりました",
+			"removeDescription": "アカウントとワークスペースは保持されます。",
+			"removeTitle": "{{name}} さんをインスタンス管理者から外しますか？",
+			"subtitle": "インスタンス管理者は、この領域のすべての設定を変更でき、任意のワークスペースを開けます。",
+			"title": "管理者",
+			"you": "あなた"
+		},
+		"identity": {
+			"name": "名前",
+			"nameHint": "管理者がこの接続を呼ぶ名前です。たとえばプロバイダー名などです。",
+			"remove": "削除",
+			"removeTitle": "{{name}} を削除しますか？",
+			"done": "完了",
+			"scim": {
+				"title": "プロビジョニング（SCIM）",
+				"description": "ID プロバイダーが 1 つのワークスペースのユーザーを追加、変更、削除できるようにします。",
+				"none": "プロビジョニング用に接続された ID プロバイダーはありません。",
+				"connect": "プロバイダーを接続",
+				"connectDescription": "1 つのワークスペース用のトークンを作成します。接続後に一度だけ表示されます。",
+				"connectConfirm": "トークンを作成",
+				"workspace": "ワークスペース",
+				"workspaceHint": "このプロバイダーが追加したユーザーは、メンバーとしてこのワークスペースに参加します。",
+				"workspacePlaceholder": "ワークスペースを選択",
+				"workspaceSearch": "ワークスペースを検索",
+				"baseUrl": "SCIM ベース URL",
+				"token": "Bearer トークン",
+				"tokenTitle": "{{name}} のトークンをコピー",
+				"tokenDescription": "表示されるのは今回限りです。ID プロバイダーにのみ渡してください。このトークンを持つ人は、ワークスペースにユーザーを追加し、この接続が管理するユーザーを変更または無効化できます。",
+				"rotate": "トークンを置き換える",
+				"rotateTitle": "{{name}} のトークンを置き換えますか？",
+				"rotateDescription": "現在のトークンはただちに使えなくなり、ID プロバイダーに新しいトークンを設定するまでプロビジョニングは停止します。ユーザーのリンクは維持されます。",
+				"rotateConfirm": "トークンを置き換える",
+				"removeDescription": "トークンはただちに使えなくなります。このトークンで追加されたユーザーのアカウントとメンバーシップは維持されますが、プロバイダーから更新されることはなくなります。",
+				"removed": "{{name}} を削除しました",
+				"columns": {
+					"name": "名前",
+					"workspace": "ワークスペース",
+					"people": "ユーザー"
+				}
+			},
+			"saml": {
+				"title": "企業サインイン（SAML）",
+				"description": "お使いのメールドメインのユーザーが ID プロバイダー経由でサインインできるようにします。",
+				"none": "サインイン用に接続された ID プロバイダーはありません。",
+				"connect": "プロバイダーを接続",
+				"connectConfirm": "接続",
+				"edit": "編集",
+				"editTitle": "{{name}} を編集",
+				"formDescription": "この ID プロバイダーを管理する人は、ここでアドレスが確認済みである、これらのドメインのどのユーザーとしてもサインインさせることができます。これらのドメインについて信頼できるプロバイダーのみを接続してください。",
+				"acsUrl": "アサーションコンシューマーサービス（ACS）URL",
+				"entityId": "エンティティ ID（オーディエンス）",
+				"addressesHint": "この 2 つを ID プロバイダーに入力してください。後から変わることはありません。",
+				"domains": "メールドメイン",
+				"domainsHint": "複数ある場合はカンマで区切ります。サブドメインも含まれます。",
+				"domainsInvalid": "example.com のようなドメインをカンマで区切って入力してください。",
+				"issuer": "ID プロバイダーのエンティティ ID（発行者）",
+				"entryPoint": "シングルサインオン URL",
+				"entryPointInvalid": "https:// のアドレスを使用してください。",
+				"certificate": "署名証明書",
+				"certificateHint": "ID プロバイダーの公開 X.509 証明書（PEM または base64 形式）です。秘密鍵は絶対に入力しないでください。",
+				"certificateKeepHint": "現在の証明書を維持する場合は空欄のままにしてください。",
+				"currentCertificate": "現在のフィンガープリント: {{fingerprint}}",
+				"certificateExpired": "期限切れ",
+				"certificateExpiring": "まもなく期限切れ",
+				"connected": "ID プロバイダーを接続しました",
+				"saved": "接続を保存しました",
+				"removeDescription": "この ID プロバイダー経由のサインインはただちに停止します。アカウントは維持され、ユーザーは別の方法でサインインします。",
+				"removed": "{{name}} を削除しました",
+				"columns": {
+					"name": "名前",
+					"domains": "メールドメイン",
+					"certificate": "証明書の有効期限"
+				}
+			}
 		}
 	},
 	"press": {
@@ -9792,6 +10220,20 @@
 				"facts": "プロジェクト: {{projects}} · メンバー: {{members}} · サイクル: {{cycles}}",
 				"memory": "メモリーノート: {{count}}",
 				"history": "以前のメッセージ: {{count}}"
+			},
+			"undo": {
+				"button": "計画を元に戻す",
+				"pending": "計画を元に戻しています…",
+				"hint": "内容が変更されていなければ、この計画は 1 時間以内なら元に戻せます。",
+				"lastPlan": "前回の計画はまだ元に戻せます。",
+				"done": "計画を元に戻しました。削除された項目はゴミ箱にあります。",
+				"archived_other": "削除する権限がないため、{{count}} 件の項目は代わりにアーカイブされました。",
+				"partial_other": "{{count}} 件の項目を除いて元に戻しました:",
+				"edited_other": "何も元に戻されませんでした: 計画の作成後に {{count}} 件の項目が変更されています。それでも不要な場合は手動で削除してください。",
+				"more_other": "他 {{count}} 件",
+				"already": "この計画はすでに元に戻されています。",
+				"expired": "1 時間が経過したため、この計画は元に戻せなくなりました。",
+				"failed": "この計画を元に戻せませんでした。"
 			}
 		},
 		"duplicates": {
@@ -11315,7 +11757,8 @@
 			"text": "これは {{instanceName}} から送信されたテストメールです。このメールを読めていれば、メール配信は正常に機能しています。"
 		},
 		"notificationText": {
-			"commentWithoutPreview": "「{{taskTitle}}」に新しいコメントがあります"
+			"commentWithoutPreview": "「{{taskTitle}}」に新しいコメントがあります",
+			"pushFixedLine": "詳細を確認するには Margaya を開いてください。"
 		}
 	}
 }

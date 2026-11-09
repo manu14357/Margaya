@@ -141,7 +141,8 @@ const messages = {
 			"text": "This is a test email from {{instanceName}}. If you can read it, email delivery works."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "New comment on {{taskTitle}}"
+			"commentWithoutPreview": "New comment on {{taskTitle}}",
+			"pushFixedLine": "Open Margaya to see the details."
 		}
 	},
 	az: {
@@ -281,7 +282,8 @@ const messages = {
 			"text": "Bu, {{instanceName}} tərəfindən göndərilən test məktubudur. Onu oxuya bilirsinizsə, e-poçt göndərişi işləyir."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "{{taskTitle}} tapşırığına yeni şərh"
+			"commentWithoutPreview": "{{taskTitle}} tapşırığına yeni şərh",
+			"pushFixedLine": "Təfərrüatları görmək üçün Margaya-nı açın."
 		}
 	},
 	de: {
@@ -421,7 +423,8 @@ const messages = {
 			"text": "Dies ist eine Test-E-Mail von {{instanceName}}. Wenn du sie lesen kannst, funktioniert der E-Mail-Versand."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Neuer Kommentar zu „{{taskTitle}}“"
+			"commentWithoutPreview": "Neuer Kommentar zu „{{taskTitle}}“",
+			"pushFixedLine": "Öffne Margaya, um die Details zu sehen."
 		}
 	},
 	el: {
@@ -561,7 +564,8 @@ const messages = {
 			"text": "Αυτό είναι ένα δοκιμαστικό email από {{instanceName}}. Αν μπορείτε να το διαβάσετε, η αποστολή email λειτουργεί."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Νέο σχόλιο στην εργασία {{taskTitle}}"
+			"commentWithoutPreview": "Νέο σχόλιο στην εργασία {{taskTitle}}",
+			"pushFixedLine": "Ανοίξτε το Margaya για να δείτε τις λεπτομέρειες."
 		}
 	},
 	es: {
@@ -710,7 +714,8 @@ const messages = {
 			"text": "Este es un correo de prueba de {{instanceName}}. Si puedes leerlo, el envío de correo funciona."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Nuevo comentario en {{taskTitle}}"
+			"commentWithoutPreview": "Nuevo comentario en {{taskTitle}}",
+			"pushFixedLine": "Abre Margaya para ver los detalles."
 		}
 	},
 	fr: {
@@ -859,7 +864,8 @@ const messages = {
 			"text": "Ceci est un e-mail de test envoyé par {{instanceName}}. Si vous pouvez le lire, l'envoi d'e-mails fonctionne."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Nouveau commentaire sur {{taskTitle}}"
+			"commentWithoutPreview": "Nouveau commentaire sur {{taskTitle}}",
+			"pushFixedLine": "Ouvrez Margaya pour voir les détails."
 		}
 	},
 	hi: {
@@ -999,7 +1005,8 @@ const messages = {
 			"text": "यह {{instanceName}} से भेजा गया एक टेस्ट ईमेल है। अगर आप इसे पढ़ पा रहे हैं, तो ईमेल भेजना काम कर रहा है।"
 		},
 		"notificationText": {
-			"commentWithoutPreview": "{{taskTitle}} पर नई टिप्पणी"
+			"commentWithoutPreview": "{{taskTitle}} पर नई टिप्पणी",
+			"pushFixedLine": "विवरण देखने के लिए Margaya खोलें।"
 		}
 	},
 	id: {
@@ -1130,7 +1137,8 @@ const messages = {
 			"text": "Ini adalah email uji dari {{instanceName}}. Jika Anda bisa membacanya, pengiriman email berfungsi."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Komentar baru pada {{taskTitle}}"
+			"commentWithoutPreview": "Komentar baru pada {{taskTitle}}",
+			"pushFixedLine": "Buka Margaya untuk melihat detailnya."
 		}
 	},
 	it: {
@@ -1279,7 +1287,8 @@ const messages = {
 			"text": "Questa è un'email di prova da {{instanceName}}. Se riesci a leggerla, l'invio delle email funziona."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Nuovo commento su {{taskTitle}}"
+			"commentWithoutPreview": "Nuovo commento su {{taskTitle}}",
+			"pushFixedLine": "Apri Margaya per vedere i dettagli."
 		}
 	},
 	ja: {
@@ -1410,7 +1419,8 @@ const messages = {
 			"text": "これは {{instanceName}} から送信されたテストメールです。このメールを読めていれば、メール配信は正常に機能しています。"
 		},
 		"notificationText": {
-			"commentWithoutPreview": "「{{taskTitle}}」に新しいコメントがあります"
+			"commentWithoutPreview": "「{{taskTitle}}」に新しいコメントがあります",
+			"pushFixedLine": "詳細を確認するには Margaya を開いてください。"
 		}
 	},
 	ko: {
@@ -1541,7 +1551,8 @@ const messages = {
 			"text": "{{instanceName}}에서 보낸 테스트 이메일입니다. 이 메일을 읽을 수 있다면 이메일 전송이 정상적으로 작동하는 것입니다."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "{{taskTitle}}에 새 댓글이 달렸습니다"
+			"commentWithoutPreview": "{{taskTitle}}에 새 댓글이 달렸습니다",
+			"pushFixedLine": "Margaya를 열어 세부 정보를 확인하세요."
 		}
 	},
 	mk: {
@@ -1681,7 +1692,8 @@ const messages = {
 			"text": "Ова е тест-порака од {{instanceName}}. Ако можеш да ја прочиташ, испраќањето е-пошта работи."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Нов коментар на {{taskTitle}}"
+			"commentWithoutPreview": "Нов коментар на {{taskTitle}}",
+			"pushFixedLine": "Отвори ја Margaya за да ги видиш деталите."
 		}
 	},
 	nl: {
@@ -1821,7 +1833,8 @@ const messages = {
 			"text": "Dit is een testmail van {{instanceName}}. Als je dit kunt lezen, werkt het versturen van e-mail."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Nieuwe reactie op {{taskTitle}}"
+			"commentWithoutPreview": "Nieuwe reactie op {{taskTitle}}",
+			"pushFixedLine": "Open Margaya om de details te bekijken."
 		}
 	},
 	pl: {
@@ -1979,7 +1992,8 @@ const messages = {
 			"text": "To jest testowy e-mail wysłany przez instancję {{instanceName}}. Jeśli możesz go przeczytać, wysyłanie e-maili działa."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Nowy komentarz w {{taskTitle}}"
+			"commentWithoutPreview": "Nowy komentarz w {{taskTitle}}",
+			"pushFixedLine": "Otwórz Margaya, aby zobaczyć szczegóły."
 		}
 	},
 	pt: {
@@ -2128,7 +2142,8 @@ const messages = {
 			"text": "Este é um e-mail de teste de {{instanceName}}. Se você consegue lê-lo, o envio de e-mails está funcionando."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Novo comentário em {{taskTitle}}"
+			"commentWithoutPreview": "Novo comentário em {{taskTitle}}",
+			"pushFixedLine": "Abra o Margaya para ver os detalhes."
 		}
 	},
 	ru: {
@@ -2286,7 +2301,8 @@ const messages = {
 			"text": "Это тестовое письмо от {{instanceName}}. Если вы его читаете, отправка почты работает."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Новый комментарий к задаче «{{taskTitle}}»"
+			"commentWithoutPreview": "Новый комментарий к задаче «{{taskTitle}}»",
+			"pushFixedLine": "Откройте Margaya, чтобы посмотреть подробности."
 		}
 	},
 	tr: {
@@ -2426,7 +2442,8 @@ const messages = {
 			"text": "Bu, {{instanceName}} tarafından gönderilen bir test e-postasıdır. Bunu okuyabiliyorsanız e-posta gönderimi çalışıyor."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "{{taskTitle}} talebine yeni yorum"
+			"commentWithoutPreview": "{{taskTitle}} talebine yeni yorum",
+			"pushFixedLine": "Ayrıntıları görmek için Margaya'yı açın."
 		}
 	},
 	uk: {
@@ -2584,7 +2601,8 @@ const messages = {
 			"text": "Це тестовий лист від {{instanceName}}. Якщо ви його читаєте, надсилання пошти працює."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Новий коментар до {{taskTitle}}"
+			"commentWithoutPreview": "Новий коментар до {{taskTitle}}",
+			"pushFixedLine": "Відкрийте Margaya, щоб переглянути деталі."
 		}
 	},
 	vi: {
@@ -2715,7 +2733,8 @@ const messages = {
 			"text": "Đây là email thử nghiệm từ {{instanceName}}. Nếu bạn đọc được email này, việc gửi email đang hoạt động."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Bình luận mới trên {{taskTitle}}"
+			"commentWithoutPreview": "Bình luận mới trên {{taskTitle}}",
+			"pushFixedLine": "Mở Margaya để xem chi tiết."
 		}
 	},
 	zh: {
@@ -2846,7 +2865,8 @@ const messages = {
 			"text": "这是一封来自 {{instanceName}} 的测试邮件。如果你能看到它，说明邮件发送正常。"
 		},
 		"notificationText": {
-			"commentWithoutPreview": "{{taskTitle}} 有新评论"
+			"commentWithoutPreview": "{{taskTitle}} 有新评论",
+			"pushFixedLine": "打开 Margaya 查看详情。"
 		}
 	},
 } satisfies Record<EmailLocale, object>;
@@ -2937,6 +2957,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "Automation: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} commented",
+					"content": "{{commenterName}} commented on {{pageTitle}}: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} edited a page",
+					"content": "{{editorName}} edited {{pageTitle}}"
 				}
 			},
 			"reminderLeadTime": {
@@ -3071,6 +3099,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "Avtomatlaşdırma: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} şərh yazdı",
+					"content": "{{commenterName}} {{pageTitle}} səhifəsinə şərh yazdı: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} səhifəni redaktə etdi",
+					"content": "{{editorName}} {{pageTitle}} səhifəsini redaktə etdi"
 				}
 			},
 			"reminderLeadTime": {
@@ -3205,6 +3241,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "Automatisierung: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} hat kommentiert",
+					"content": "{{commenterName}} hat {{pageTitle}} kommentiert: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} hat eine Seite bearbeitet",
+					"content": "{{editorName}} hat {{pageTitle}} bearbeitet"
 				}
 			},
 			"reminderLeadTime": {
@@ -3274,11 +3318,6 @@ const notificationTexts = {
 					"title": "Σας ανατέθηκε εργασία",
 					"content": "Σας ανατέθηκε η εργασία: {{taskTitle}}"
 				},
-				"time_entry_created": {
-					"title": "Η χρονομέτρηση ξεκίνησε",
-					"contentWithTask": "Η χρονομέτρηση ξεκίνησε για την εργασία: {{taskTitle}}",
-					"contentWithoutTask": "Η χρονομέτρηση ξεκίνησε για μια εργασία"
-				},
 				"task_mention": {
 					"title": "Ο/Η {{mentionerName}} σας ανέφερε",
 					"content": "Ο/Η {{mentionerName}} σας ανέφερε στην εργασία: {{taskTitle}}",
@@ -3297,6 +3336,11 @@ const notificationTexts = {
 				"task_overdue": {
 					"title": "Εκπρόθεσμη εργασία",
 					"content": "Η εργασία {{taskTitle}} έχει ξεπεράσει την ημερομηνία λήξης της"
+				},
+				"time_entry_created": {
+					"title": "Η χρονομέτρηση ξεκίνησε",
+					"contentWithTask": "Η χρονομέτρηση ξεκίνησε για την εργασία: {{taskTitle}}",
+					"contentWithoutTask": "Η χρονομέτρηση ξεκίνησε για μια εργασία"
 				},
 				"task_updated": {
 					"dueDate": "Η ημερομηνία λήξης της εργασίας \"{{taskTitle}}\" άλλαξε σε {{newValue}}",
@@ -3339,6 +3383,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "Αυτοματισμός: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "Ο/Η {{commenterName}} σχολίασε",
+					"content": "Ο/Η {{commenterName}} σχολίασε τη σελίδα {{pageTitle}}: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "Ο/Η {{editorName}} επεξεργάστηκε μια σελίδα",
+					"content": "Ο/Η {{editorName}} επεξεργάστηκε τη σελίδα {{pageTitle}}"
 				}
 			},
 			"reminderLeadTime": {
@@ -3408,11 +3460,6 @@ const notificationTexts = {
 					"title": "Se te ha asignado una tarea",
 					"content": "Se te ha asignado la tarea: {{taskTitle}}"
 				},
-				"time_entry_created": {
-					"title": "Monitoreo de tiempo activado",
-					"contentWithTask": "El monitoreo de la tarea se ha activado para: {{taskTitle}}",
-					"contentWithoutTask": "Se ha activado el monitoreo de una tarea"
-				},
 				"task_mention": {
 					"title": "{{mentionerName}} te ha mencionado",
 					"content": "{{mentionerName}} te ha mencionado en: {{taskTitle}}",
@@ -3431,6 +3478,11 @@ const notificationTexts = {
 				"task_overdue": {
 					"title": "Tarea vencida",
 					"content": "{{taskTitle}} ha superado su fecha de vencimiento"
+				},
+				"time_entry_created": {
+					"title": "Monitoreo de tiempo activado",
+					"contentWithTask": "El monitoreo de la tarea se ha activado para: {{taskTitle}}",
+					"contentWithoutTask": "Se ha activado el monitoreo de una tarea"
 				},
 				"task_updated": {
 					"dueDate": "La fecha de vencimiento de «{{taskTitle}}» cambió a {{newValue}}",
@@ -3475,6 +3527,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "Automatización: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} ha comentado",
+					"content": "{{commenterName}} ha comentado en {{pageTitle}}: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} ha editado una página",
+					"content": "{{editorName}} ha editado {{pageTitle}}"
 				}
 			},
 			"reminderLeadTime": {
@@ -3552,11 +3612,6 @@ const notificationTexts = {
 					"content": "{{mentionerName}} vous a mentionné dans : {{taskTitle}}",
 					"contentComment": "{{mentionerName}} vous a mentionné dans un commentaire sur {{taskTitle}}"
 				},
-				"time_entry_created": {
-					"title": "Suivi du temps démarré",
-					"contentWithTask": "Le suivi du temps a démarré sur la tâche : {{taskTitle}}",
-					"contentWithoutTask": "Le suivi du temps a démarré sur une tâche"
-				},
 				"task_comment": {
 					"title": "{{commenterName}} a commenté votre tâche",
 					"content": "Nouveau commentaire sur {{taskTitle}} : {{commentPreview}}",
@@ -3570,6 +3625,11 @@ const notificationTexts = {
 				"task_overdue": {
 					"title": "Tâche en retard",
 					"content": "{{taskTitle}} a dépassé sa date d'échéance"
+				},
+				"time_entry_created": {
+					"title": "Suivi du temps démarré",
+					"contentWithTask": "Le suivi du temps a démarré sur la tâche : {{taskTitle}}",
+					"contentWithoutTask": "Le suivi du temps a démarré sur une tâche"
 				},
 				"task_updated": {
 					"dueDate": "L'échéance de « {{taskTitle}} » a été changée en {{newValue}}",
@@ -3614,6 +3674,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "Automatisation : {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} a commenté",
+					"content": "{{commenterName}} a commenté {{pageTitle}} : {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} a modifié une page",
+					"content": "{{editorName}} a modifié {{pageTitle}}"
 				}
 			},
 			"reminderLeadTime": {
@@ -3623,7 +3691,7 @@ const notificationTexts = {
 				"hours_other": "{{count}} heures",
 				"days_one": "{{count}} jour",
 				"days_other": "{{count}} jours",
-				"minutes_many": "{{count}} minutes",
+				"minutes_many": "{{count}} de minutes",
 				"days_many": "{{count}} jours",
 				"hours_many": "{{count}} heures"
 			}
@@ -3751,6 +3819,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "ऑटोमेशन: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} ने टिप्पणी की",
+					"content": "{{commenterName}} ने {{pageTitle}} पर टिप्पणी की: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} ने एक पेज संपादित किया",
+					"content": "{{editorName}} ने {{pageTitle}} संपादित किया"
 				}
 			},
 			"reminderLeadTime": {
@@ -3825,11 +3901,6 @@ const notificationTexts = {
 					"content": "{{mentionerName}} menyebut Anda di: {{taskTitle}}",
 					"contentComment": "{{mentionerName}} menyebut Anda dalam komentar pada {{taskTitle}}"
 				},
-				"time_entry_created": {
-					"title": "Pelacakan waktu dimulai",
-					"contentWithTask": "Pelacakan waktu dimulai pada tugas: {{taskTitle}}",
-					"contentWithoutTask": "Pelacakan waktu dimulai pada sebuah tugas"
-				},
 				"task_comment": {
 					"title": "{{commenterName}} mengomentari tugas Anda",
 					"content": "Komentar baru pada {{taskTitle}}: {{commentPreview}}",
@@ -3843,6 +3914,11 @@ const notificationTexts = {
 				"task_overdue": {
 					"title": "Tugas terlambat",
 					"content": "{{taskTitle}} telah melewati tenggatnya"
+				},
+				"time_entry_created": {
+					"title": "Pelacakan waktu dimulai",
+					"contentWithTask": "Pelacakan waktu dimulai pada tugas: {{taskTitle}}",
+					"contentWithoutTask": "Pelacakan waktu dimulai pada sebuah tugas"
 				},
 				"task_updated": {
 					"dueDate": "Tenggat \"{{taskTitle}}\" diubah menjadi {{newValue}}",
@@ -3883,6 +3959,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "Otomatisasi: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} berkomentar",
+					"content": "{{commenterName}} berkomentar di {{pageTitle}}: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} mengedit halaman",
+					"content": "{{editorName}} mengedit {{pageTitle}}"
 				}
 			},
 			"reminderLeadTime": {
@@ -4016,6 +4100,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "Automazione: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} ha commentato",
+					"content": "{{commenterName}} ha commentato {{pageTitle}}: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} ha modificato una pagina",
+					"content": "{{editorName}} ha modificato {{pageTitle}}"
 				}
 			},
 			"reminderLeadTime": {
@@ -4151,6 +4243,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "自動化: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} さんがコメントしました",
+					"content": "{{commenterName}} さんが「{{pageTitle}}」にコメントしました: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} さんがページを編集しました",
+					"content": "{{editorName}} さんが「{{pageTitle}}」を編集しました"
 				}
 			},
 			"reminderLeadTime": {
@@ -4217,11 +4317,6 @@ const notificationTexts = {
 					"title": "작업이 나에게 할당됨",
 					"content": "다음 작업이 할당되었습니다: {{taskTitle}}"
 				},
-				"time_entry_created": {
-					"title": "시간 추적 시작됨",
-					"contentWithTask": "다음 작업의 시간 추적이 시작되었습니다: {{taskTitle}}",
-					"contentWithoutTask": "작업의 시간 추적이 시작되었습니다"
-				},
 				"task_mention": {
 					"title": "{{mentionerName}}님이 나를 멘션했습니다",
 					"content": "{{mentionerName}}님이 다음에서 나를 멘션했습니다: {{taskTitle}}",
@@ -4240,6 +4335,11 @@ const notificationTexts = {
 				"task_overdue": {
 					"title": "작업 기한 초과",
 					"content": "{{taskTitle}}이(가) 마감일을 지났습니다"
+				},
+				"time_entry_created": {
+					"title": "시간 추적 시작됨",
+					"contentWithTask": "다음 작업의 시간 추적이 시작되었습니다: {{taskTitle}}",
+					"contentWithoutTask": "작업의 시간 추적이 시작되었습니다"
 				},
 				"task_updated": {
 					"dueDate": "\"{{taskTitle}}\"의 마감일이 {{newValue}}(으)로 변경되었습니다",
@@ -4280,6 +4380,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "자동화: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}}님이 댓글을 남겼습니다",
+					"content": "{{commenterName}}님이 {{pageTitle}}에 댓글을 남겼습니다: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}}님이 페이지를 편집했습니다",
+					"content": "{{editorName}}님이 {{pageTitle}}을(를) 편집했습니다"
 				}
 			},
 			"reminderLeadTime": {
@@ -4346,11 +4454,6 @@ const notificationTexts = {
 					"title": "Задачата ти е доделена",
 					"content": "Ти е доделена задачата: {{taskTitle}}"
 				},
-				"time_entry_created": {
-					"title": "Следењето на време е започнато",
-					"contentWithTask": "Следењето на време е започнато на задачата: {{taskTitle}}",
-					"contentWithoutTask": "Следењето на време е започнато на задача"
-				},
 				"task_mention": {
 					"title": "{{mentionerName}} те спомна",
 					"content": "{{mentionerName}} те спомна во: {{taskTitle}}",
@@ -4369,6 +4472,11 @@ const notificationTexts = {
 				"task_overdue": {
 					"title": "Задачата е задоцнета",
 					"content": "{{taskTitle}} го помина крајниот рок"
+				},
+				"time_entry_created": {
+					"title": "Следењето на време е започнато",
+					"contentWithTask": "Следењето на време е започнато на задачата: {{taskTitle}}",
+					"contentWithoutTask": "Следењето на време е започнато на задача"
 				},
 				"task_updated": {
 					"dueDate": "Крајниот рок на „{{taskTitle}}“ е променет на {{newValue}}",
@@ -4411,6 +4519,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "Автоматизација: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} коментираше",
+					"content": "{{commenterName}} коментираше на {{pageTitle}}: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} уреди страница",
+					"content": "{{editorName}} ја уреди {{pageTitle}}"
 				}
 			},
 			"reminderLeadTime": {
@@ -4480,11 +4596,6 @@ const notificationTexts = {
 					"title": "Taak aan jou toegewezen",
 					"content": "Je bent toegewezen aan taak: {{taskTitle}}"
 				},
-				"time_entry_created": {
-					"title": "Tijdregistratie gestart",
-					"contentWithTask": "Tijdregistratie gestart voor taak: {{taskTitle}}",
-					"contentWithoutTask": "Tijdregistratie gestart voor een taak"
-				},
 				"task_mention": {
 					"title": "{{mentionerName}} heeft je vermeld",
 					"content": "{{mentionerName}} heeft je vermeld in: {{taskTitle}}",
@@ -4503,6 +4614,11 @@ const notificationTexts = {
 				"task_overdue": {
 					"title": "Taak te laat",
 					"content": "{{taskTitle}} is over de einddatum heen"
+				},
+				"time_entry_created": {
+					"title": "Tijdregistratie gestart",
+					"contentWithTask": "Tijdregistratie gestart voor taak: {{taskTitle}}",
+					"contentWithoutTask": "Tijdregistratie gestart voor een taak"
 				},
 				"task_updated": {
 					"dueDate": "Einddatum van \"{{taskTitle}}\" gewijzigd naar {{newValue}}",
@@ -4545,6 +4661,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "Automatisering: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} heeft gereageerd",
+					"content": "{{commenterName}} heeft gereageerd op {{pageTitle}}: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} heeft een pagina bewerkt",
+					"content": "{{editorName}} heeft {{pageTitle}} bewerkt"
 				}
 			},
 			"reminderLeadTime": {
@@ -4683,6 +4807,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "Automatyzacja: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} dodał komentarz",
+					"content": "{{commenterName}} skomentował stronę {{pageTitle}}: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} edytował stronę",
+					"content": "{{editorName}} edytował stronę {{pageTitle}}"
 				}
 			},
 			"reminderLeadTime": {
@@ -4825,6 +4957,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "Automação: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} comentou",
+					"content": "{{commenterName}} comentou em {{pageTitle}}: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} editou uma página",
+					"content": "{{editorName}} editou {{pageTitle}}"
 				}
 			},
 			"reminderLeadTime": {
@@ -4897,11 +5037,6 @@ const notificationTexts = {
 					"title": "Задача назначена вам",
 					"content": "Вам назначена задача: {{taskTitle}}"
 				},
-				"time_entry_created": {
-					"title": "Трекинг времени начат",
-					"contentWithTask": "Трекинг времени начат для задачи: {{taskTitle}}",
-					"contentWithoutTask": "Трекинг времени начат для задачи"
-				},
 				"task_mention": {
 					"title": "{{mentionerName}} упомянул вас",
 					"content": "{{mentionerName}} упомянул вас в задаче: {{taskTitle}}",
@@ -4920,6 +5055,11 @@ const notificationTexts = {
 				"task_overdue": {
 					"title": "Задача просрочена",
 					"content": "Срок выполнения задачи «{{taskTitle}}» истёк"
+				},
+				"time_entry_created": {
+					"title": "Трекинг времени начат",
+					"contentWithTask": "Трекинг времени начат для задачи: {{taskTitle}}",
+					"contentWithoutTask": "Трекинг времени начат для задачи"
 				},
 				"task_updated": {
 					"dueDate": "Срок выполнения задачи «{{taskTitle}}» изменён на {{newValue}}",
@@ -4966,6 +5106,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "Автоматизация: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} оставил комментарий",
+					"content": "{{commenterName}} прокомментировал страницу «{{pageTitle}}»: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} изменил страницу",
+					"content": "{{editorName}} изменил страницу «{{pageTitle}}»"
 				}
 			},
 			"reminderLeadTime": {
@@ -5046,11 +5194,6 @@ const notificationTexts = {
 					"content": "{{mentionerName}} sizden şu talepte bahsetti: {{taskTitle}}",
 					"contentComment": "{{mentionerName}}, {{taskTitle}} talebindeki bir yorumda sizden bahsetti"
 				},
-				"time_entry_created": {
-					"title": "Zaman takibi başlatıldı",
-					"contentWithTask": "Şu görevte zaman takibi başlatıldı: {{taskTitle}}",
-					"contentWithoutTask": "Bir görevte zaman takibi başlatıldı"
-				},
 				"task_comment": {
 					"title": "{{commenterName}} talebinize yorum yaptı",
 					"content": "{{taskTitle}} talebine yeni yorum: {{commentPreview}}",
@@ -5064,6 +5207,11 @@ const notificationTexts = {
 				"task_overdue": {
 					"title": "Görev gecikti",
 					"content": "{{taskTitle}} talebinin bitiş tarihi geçti"
+				},
+				"time_entry_created": {
+					"title": "Zaman takibi başlatıldı",
+					"contentWithTask": "Şu görevte zaman takibi başlatıldı: {{taskTitle}}",
+					"contentWithoutTask": "Bir görevte zaman takibi başlatıldı"
 				},
 				"task_updated": {
 					"dueDate": "\"{{taskTitle}}\" talebinin bitiş tarihi {{newValue}} olarak değiştirildi",
@@ -5106,6 +5254,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "Otomasyon: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} yorum yaptı",
+					"content": "{{commenterName}}, {{pageTitle}} sayfasına yorum yaptı: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} bir sayfayı düzenledi",
+					"content": "{{editorName}}, {{pageTitle}} sayfasını düzenledi"
 				}
 			},
 			"reminderLeadTime": {
@@ -5175,11 +5331,6 @@ const notificationTexts = {
 					"title": "Завдання призначено вам",
 					"content": "Вас призначено на завдання: {{taskTitle}}"
 				},
-				"time_entry_created": {
-					"title": "Відлік часу розпочато",
-					"contentWithTask": "Відлік часу розпочато для завдання: {{taskTitle}}",
-					"contentWithoutTask": "Відлік часу розпочато для завдання"
-				},
 				"task_mention": {
 					"title": "{{mentionerName}} згадав вас",
 					"content": "{{mentionerName}} згадав вас у: {{taskTitle}}",
@@ -5198,6 +5349,11 @@ const notificationTexts = {
 				"task_overdue": {
 					"title": "Завдання прострочено",
 					"content": "Дата завершення {{taskTitle}} вже минула"
+				},
+				"time_entry_created": {
+					"title": "Відлік часу розпочато",
+					"contentWithTask": "Відлік часу розпочато для завдання: {{taskTitle}}",
+					"contentWithoutTask": "Відлік часу розпочато для завдання"
 				},
 				"task_updated": {
 					"dueDate": "Дату завершення завдання «{{taskTitle}}» змінено на {{newValue}}",
@@ -5244,6 +5400,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "Автоматизація: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} залишив коментар",
+					"content": "{{commenterName}} прокоментував сторінку «{{pageTitle}}»: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} відредагував сторінку",
+					"content": "{{editorName}} відредагував сторінку «{{pageTitle}}»"
 				}
 			},
 			"reminderLeadTime": {
@@ -5382,6 +5546,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "Tự động hóa: {{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} đã bình luận",
+					"content": "{{commenterName}} đã bình luận về {{pageTitle}}: {{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} đã chỉnh sửa một trang",
+					"content": "{{editorName}} đã chỉnh sửa {{pageTitle}}"
 				}
 			},
 			"reminderLeadTime": {
@@ -5511,6 +5683,14 @@ const notificationTexts = {
 				"automation_notice": {
 					"title": "自动化：{{ruleName}}",
 					"content": "{{taskKey}} {{taskTitle}}"
+				},
+				"page_comment": {
+					"title": "{{commenterName}} 发表了评论",
+					"content": "{{commenterName}} 评论了 {{pageTitle}}：{{commentPreview}}"
+				},
+				"page_updated": {
+					"title": "{{editorName}} 编辑了页面",
+					"content": "{{editorName}} 编辑了 {{pageTitle}}"
 				}
 			},
 			"reminderLeadTime": {

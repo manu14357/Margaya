@@ -221,10 +221,29 @@
 			"errors": {
 				"account_not_linked": "Identitas ini tidak dapat ditautkan ke akun yang sudah ada. Masuk dengan email untuk memverifikasi akun, lalu coba SSO lagi. Jika masuk dengan email tidak tersedia, hubungi administrator Anda.",
 				"oauth_code_verification_failed": "Verifikasi OAuth gagal. Silakan coba lagi.",
-				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Pendaftaran saat ini dinonaktifkan. Anda memerlukan undangan yang valid untuk membuat akun."
+				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Pendaftaran saat ini dinonaktifkan. Anda memerlukan undangan yang valid untuk membuat akun.",
+				"unsolicited_response": "Mulai masuk perusahaan dari halaman ini. Proses masuk yang dimulai dari penyedia identitas Anda tidak diterima.",
+				"invalid_saml_response": "Respons dari penyedia identitas Anda tidak dapat diterima. Coba lagi, atau minta administrator Anda memeriksa koneksinya.",
+				"replay_detected": "Respons masuk tersebut sudah digunakan. Silakan masuk lagi.",
+				"unable_to_create_user": "Akun Anda tidak dapat dibuat. Minta akses kepada administrator Anda.",
+				"invalid_request": "Permintaan masuk tersebut tidak valid. Silakan coba lagi.",
+				"invalid_state": "Tautan masuk tersebut telah kedaluwarsa. Silakan coba lagi.",
+				"saml_deprecated_algorithm": "Penyedia identitas Anda menandatangani dengan algoritma yang tidak lagi diterima. Minta administrator Anda menggantinya ke SHA-256.",
+				"this_identity_provider_cannot_sign_in_that_email_address_": "Penyedia identitas ini tidak dapat digunakan untuk masuk dengan alamat email tersebut.",
+				"new_accounts_on_this_server_must_use_an_approved_email_domain_": "Akun baru di server ini harus menggunakan domain email yang disetujui.",
+				"banned_user": "Akun ini diblokir. Minta akses kepada administrator Anda.",
+				"unable_to_link_account": "Identitas ini tidak dapat ditautkan ke akun Anda. Minta bantuan administrator Anda.",
+				"saml_other_browser": "Masuk perusahaan harus diselesaikan di browser tempat proses itu dimulai. Mulai lagi dari halaman ini, dan pastikan cookie diizinkan."
 			},
 			"instanceStatusError": "Tidak dapat menghubungi server. Silakan coba lagi beberapa saat lagi.",
-			"titleWithInstance": "Masuk ke {{name}}"
+			"titleWithInstance": "Masuk ke {{name}}",
+			"continueWithSaml": "Lanjutkan dengan masuk perusahaan",
+			"samlEmail": "Email kerja",
+			"samlSubmit": "Lanjutkan",
+			"samlNoConnection": "Masuk perusahaan belum diatur untuk domain email tersebut.",
+			"samlError": "Tidak dapat memulai masuk perusahaan. Silakan coba lagi.",
+			"emailCodesOff": "Tautan dan kode masuk lewat email dinonaktifkan di server ini. Jika selama ini Anda hanya menggunakannya, Anda belum punya kata sandi: pilih “Lupa kata sandi?” untuk membuatnya.",
+			"emailCodesOffNoEmail": "Tautan dan kode masuk lewat email dinonaktifkan di server ini. Jika selama ini Anda hanya menggunakannya, Anda belum punya kata sandi: minta admin instans untuk membuatkannya untuk Anda."
 		},
 		"providers": {
 			"google": "Google",
@@ -420,6 +439,10 @@
 				"nameShort": "Nama harus minimal 2 karakter"
 			}
 		},
+		"layout": {
+			"headline": "Lihat seluruh proyek. Ambil tugas berikutnya.",
+			"lede": "Manajemen proyek self-hosted untuk tim yang menyukai alat yang cepat dan tenang."
+		},
 		"device": {
 			"approve": "Setujui",
 			"approveFailed": "Tidak dapat menyetujui",
@@ -443,10 +466,6 @@
 			"subtitle": "Masukkan kode dari CLI atau aplikasi Anda untuk melanjutkan.",
 			"title": "Hubungkan perangkat"
 		},
-		"layout": {
-			"headline": "Lihat seluruh proyek. Ambil tugas berikutnya.",
-			"lede": "Manajemen proyek self-hosted untuk tim yang menyukai alat yang cepat dan tenang."
-		},
 		"mcp": {
 			"approve": "Setujui",
 			"clientFallback": "Klien MCP",
@@ -463,22 +482,6 @@
 			"subtitle": "Tinjau permintaan ini sebelum memberikan akses ke akun Margaya Anda.",
 			"title": "Otorisasi klien MCP",
 			"warning": "Klien ini akan dapat bertindak atas nama Anda dan mengakses ruang kerja Anda. Lanjutkan hanya jika Anda yang memulai koneksi ini."
-		},
-		"emailVerification": {
-			"codeLabel": "Kode verifikasi",
-			"codeSent": "Kami mengirim kode 6 digit ke {{email}}. Kode berlaku selama 5 menit.",
-			"invitationsDescription": "Verifikasi email Anda untuk melihat undangan yang dikirim ke {{email}}.",
-			"resend": "Kirim kode baru",
-			"sendCode": "Kirim kode",
-			"sendFailed": "Tidak dapat mengirim kode. Silakan coba lagi.",
-			"sending": "Mengirim...",
-			"settingsDescription": "Verifikasi {{email}} agar undangan ruang kerja yang dikirim ke alamat itu muncul di Margaya.",
-			"success": "Email terverifikasi",
-			"title": "Verifikasi email Anda",
-			"verifiedBadge": "Terverifikasi",
-			"verify": "Verifikasi",
-			"verifyFailed": "Kode itu tidak berhasil. Periksa kembali, atau kirim kode baru.",
-			"verifying": "Memverifikasi..."
 		},
 		"forgotPassword": {
 			"backToSignIn": "Kembali ke halaman masuk",
@@ -507,6 +510,30 @@
 			"successDescription": "Kata sandi baru Anda sudah diatur dan semua sesi telah dikeluarkan. Masuk dengan kata sandi baru Anda.",
 			"successTitle": "Kata sandi diperbarui",
 			"title": "Buat kata sandi baru"
+		},
+		"emailVerification": {
+			"codeLabel": "Kode verifikasi",
+			"codeSent": "Kami mengirim kode 6 digit ke {{email}}. Kode berlaku selama 5 menit.",
+			"invitationsDescription": "Verifikasi email Anda untuk melihat undangan yang dikirim ke {{email}}.",
+			"resend": "Kirim kode baru",
+			"sendCode": "Kirim kode",
+			"sendFailed": "Tidak dapat mengirim kode. Silakan coba lagi.",
+			"sending": "Mengirim...",
+			"settingsDescription": "Verifikasi {{email}} agar undangan ruang kerja yang dikirim ke alamat itu muncul di Margaya.",
+			"success": "Email terverifikasi",
+			"title": "Verifikasi email Anda",
+			"verifiedBadge": "Terverifikasi",
+			"verify": "Verifikasi",
+			"verifyFailed": "Kode itu tidak berhasil. Periksa kembali, atau kirim kode baru.",
+			"verifying": "Memverifikasi..."
+		},
+		"complete": {
+			"pageTitle": "Sedang masuk",
+			"title": "Menyelesaikan proses masuk",
+			"working": "Sedang masuk ke akun Anda…",
+			"failedTitle": "Tidak dapat menyelesaikan proses masuk",
+			"failed": "Proses masuk ini tidak dapat diselesaikan. Tautannya hanya berfungsi sekali, selama satu menit, dan hanya di browser yang Anda gunakan untuk masuk. Silakan masuk lagi.",
+			"backToSignIn": "Kembali ke halaman masuk"
 		}
 	},
 	"settings": {
@@ -534,8 +561,8 @@
 				"invalidEmail": "Masukkan alamat email yang valid"
 			},
 			"avatar": {
-				"hint": "PNG, JPEG, or WebP. Cropped to a square and resized to 256x256.",
-				"remove": "Remove",
+				"hint": "Klik foto Anda untuk mengubah atau menghapusnya. Foto akan dipotong menjadi persegi dan diubah ukurannya menjadi 256x256.",
+				"remove": "Hapus avatar",
 				"removeError": "Gagal menghapus foto profil",
 				"removeSuccess": "Foto profil dihapus",
 				"updateError": "Gagal memperbarui foto profil",
@@ -545,10 +572,10 @@
 			},
 			"deleteAccount": {
 				"confirm": "Hapus akun",
-				"confirmLabel": "Confirm your email address",
+				"confirmLabel": "Ketik {{email}} untuk mengonfirmasi",
 				"description": "Ruang kerja yang hanya Anda ikuti akan dihapus bersama akun Anda. Di tempat lain, tugas Anda tetap ada namun menjadi belum ditugaskan, dan komentar Anda dihapus.",
 				"error": "Gagal menghapus akun",
-				"modalDescription": "This cannot be undone. Type {{email}} to confirm.",
+				"modalDescription": "Tindakan ini menghapus akun Anda secara permanen dan tidak dapat dibatalkan.",
 				"modalTitle": "Hapus akun Anda?",
 				"sectionSubtitle": "Tindakan permanen yang memengaruhi seluruh akun Anda.",
 				"sectionTitle": "Zona berbahaya",
@@ -601,6 +628,40 @@
 			"workspaceRulesTitle": "Aturan pengiriman ruang kerja",
 			"workspaceRulesDescription": "Gunakan ulang kanal global Anda, lalu tentukan ruang kerja dan proyek mana yang boleh mengirim notifikasi akun.",
 			"workspaceCardHint": "Pilih kanal yang dapat digunakan ruang kerja ini untuk notifikasi akun.",
+			"workspaceEnabledLabel": "Aktifkan notifikasi untuk {{workspaceName}}",
+			"eventPreferencesTitle": "Beri tahu saya tentang",
+			"eventPreferencesDescription": "Pilih event tugas mana yang membuat notifikasi dalam aplikasi dan dapat dikirim ke kanal yang terhubung.",
+			"eventTaskAssignments": "Penugasan tugas",
+			"eventComments": "Komentar dan sebutan",
+			"eventCommentsHint": "Termasuk komentar baru pada tugas yang ditugaskan kepada Anda dan @mention langsung.",
+			"eventStatusChanges": "Perubahan status tugas",
+			"eventStatusChangesHint": "Pada tugas yang ditugaskan kepada Anda atau yang Anda langgani.",
+			"eventTaskUpdates": "Perubahan tugas lainnya",
+			"eventTaskUpdatesHint": "Perubahan prioritas, tenggat, dan judul pada tugas yang Anda ikuti.",
+			"eventDueDateReminders": "Pengingat tenggat",
+			"reminderLeadTimeLabel": "Ingatkan saya sebelum tenggat",
+			"reminderLeadTimeHint": "Antara 1 jam hingga 30 hari sebelumnya. Notifikasi keterlambatan dikirim secara terpisah.",
+			"reminderLeadTimeUnitHours": "Jam",
+			"reminderLeadTimeUnitDays": "Hari",
+			"reminderLeadTimeInvalid": "Masukkan bilangan bulat antara 1 dan {{max}}.",
+			"saveEventPreferences": "Simpan jenis notifikasi",
+			"digestTitle": "Ringkasan email",
+			"digestDescription": "Email ringkasan berisi tugas terbuka Anda yang terlambat atau jatuh tempo dalam 7 hari, sebutan baru, dan item kotak masuk yang belum dibaca. Email dikirim sesuai zona waktu Anda dan dilewati jika tidak ada yang perlu dilaporkan.",
+			"digestFrequencyLabel": "Kirim ringkasan",
+			"digestFrequencyOff": "Mati",
+			"digestFrequencyDaily": "Harian",
+			"digestFrequencyWeekly": "Mingguan",
+			"digestWeekdayLabel": "Hari",
+			"digestWeekdaySunday": "Minggu",
+			"digestWeekdayMonday": "Senin",
+			"digestWeekdayTuesday": "Selasa",
+			"digestWeekdayWednesday": "Rabu",
+			"digestWeekdayThursday": "Kamis",
+			"digestWeekdayFriday": "Jumat",
+			"digestWeekdaySaturday": "Sabtu",
+			"digestHourLabel": "Waktu",
+			"digestNoEmail": "Ringkasan memerlukan alamat email akun.",
+			"saveDigest": "Simpan ringkasan",
 			"workspaceCardLabelEmail": "Email",
 			"workspaceCardLabelNtfy": "ntfy",
 			"workspaceCardLabelGotify": "Gotify",
@@ -628,42 +689,8 @@
 			"toastPreferencesSaveFailed": "Gagal menyimpan preferensi notifikasi",
 			"toastRuleSavedGeneric": "Aturan notifikasi ruang kerja disimpan",
 			"toastRuleRemovedGeneric": "Aturan notifikasi ruang kerja dihapus",
-			"workspaceEnabledLabel": "Aktifkan notifikasi untuk {{workspaceName}}",
-			"eventPreferencesTitle": "Beri tahu saya tentang",
-			"eventPreferencesDescription": "Pilih event tugas mana yang membuat notifikasi dalam aplikasi dan dapat dikirim ke kanal yang terhubung.",
-			"eventTaskAssignments": "Penugasan tugas",
-			"eventComments": "Komentar dan sebutan",
-			"eventCommentsHint": "Termasuk komentar baru pada tugas yang ditugaskan kepada Anda dan @mention langsung.",
-			"eventStatusChanges": "Perubahan status tugas",
-			"eventDueDateReminders": "Pengingat tenggat",
-			"reminderLeadTimeLabel": "Ingatkan saya sebelum tenggat",
-			"reminderLeadTimeHint": "Antara 1 jam hingga 30 hari sebelumnya. Notifikasi keterlambatan dikirim secara terpisah.",
-			"reminderLeadTimeUnitHours": "Jam",
-			"reminderLeadTimeUnitDays": "Hari",
-			"reminderLeadTimeInvalid": "Masukkan bilangan bulat antara 1 dan {{max}}.",
-			"saveEventPreferences": "Simpan jenis notifikasi",
-			"eventStatusChangesHint": "Pada tugas yang ditugaskan kepada Anda atau yang Anda langgani.",
-			"eventTaskUpdates": "Perubahan tugas lainnya",
-			"eventTaskUpdatesHint": "Perubahan prioritas, tenggat, dan judul pada tugas yang Anda ikuti.",
-			"channelsDescription": "Tempat Margaya mengirim notifikasi yang Anda pilih di atas.",
 			"channelsTitle": "Kanal pengiriman",
-			"digestDescription": "Email ringkasan berisi tugas terbuka Anda yang terlambat atau jatuh tempo dalam 7 hari, sebutan baru, dan item kotak masuk yang belum dibaca. Email dikirim sesuai zona waktu Anda dan dilewati jika tidak ada yang perlu dilaporkan.",
-			"digestFrequencyDaily": "Harian",
-			"digestFrequencyLabel": "Kirim ringkasan",
-			"digestFrequencyOff": "Mati",
-			"digestFrequencyWeekly": "Mingguan",
-			"digestHourLabel": "Waktu",
-			"digestNoEmail": "Ringkasan memerlukan alamat email akun.",
-			"digestTitle": "Ringkasan email",
-			"digestWeekdayFriday": "Jumat",
-			"digestWeekdayLabel": "Hari",
-			"digestWeekdayMonday": "Senin",
-			"digestWeekdaySaturday": "Sabtu",
-			"digestWeekdaySunday": "Minggu",
-			"digestWeekdayThursday": "Kamis",
-			"digestWeekdayTuesday": "Selasa",
-			"digestWeekdayWednesday": "Rabu",
-			"saveDigest": "Simpan ringkasan",
+			"channelsDescription": "Tempat Margaya mengirim notifikasi yang Anda pilih di atas.",
 			"sound": {
 				"title": "Suara",
 				"description": "Putar suara saat notifikasi masuk ketika Margaya terbuka di browser Anda.",
@@ -694,7 +721,30 @@
 				"deviceMute": "Bisukan suara di perangkat ini",
 				"deviceMuteDescription": "Hanya membisukan browser ini; perangkat Anda yang lain tetap memutar suara.",
 				"previewFailed": "Browser Anda tidak memutar suara. Pastikan tab atau situs ini tidak dibisukan."
-			}
+			},
+			"pushTitle": "Notifikasi push",
+			"pushDescription": "Peringatan di ponsel atau komputer Anda, bahkan saat Margaya ditutup. “Beri tahu saya tentang” menentukan apa yang dikirim, dan aturan ruang kerja di bawah dapat mempersempitnya.",
+			"pushThisDevice": "Di perangkat ini",
+			"pushOnHint": "Perangkat ini menerima notifikasi push.",
+			"pushOffHint": "Browser Anda akan meminta izin saat Anda mengaktifkannya.",
+			"pushOffHintAllowed": "Notifikasi sudah diizinkan di browser ini.",
+			"pushNotSetUp": "Push belum diatur di server ini. Minta administrator Anda mengatur kunci VAPID.",
+			"pushInstallFirst": "Di iPhone dan iPad, tambahkan Margaya ke Layar Utama terlebih dahulu: ketuk Bagikan, lalu Tambah ke Layar Utama. Buka dari sana lalu aktifkan ini.",
+			"pushUnsupported": "Browser ini tidak dapat menerima notifikasi push di sini. Push memerlukan browser terbaru dan alamat HTTPS.",
+			"pushBlocked": "Notifikasi diblokir untuk situs ini. Izinkan di pengaturan browser Anda, lalu muat ulang halaman ini.",
+			"pushOtherDevices": "Perangkat Anda yang lain",
+			"pushRemoveDevice": "Hapus",
+			"pushRemoveDeviceLabel": "Hapus {{device}}",
+			"toastPushOn": "Notifikasi push aktif untuk perangkat ini.",
+			"toastPushOnFailed": "Tidak dapat mengaktifkan notifikasi push. Coba lagi.",
+			"toastPushOff": "Notifikasi push nonaktif untuk perangkat ini.",
+			"toastPushOffFailed": "Tidak dapat menonaktifkan notifikasi push. Coba lagi.",
+			"toastPushDeviceRemoved": "Perangkat dihapus.",
+			"toastPushDeviceRemoveFailed": "Tidak dapat menghapus perangkat. Coba lagi.",
+			"workspaceCardLabelPush": "Notifikasi push",
+			"pushChannelHintEnabled": "Kirim notifikasi ruang kerja yang sesuai ke perangkat Anda.",
+			"pushChannelHintDisabled": "Aktifkan push untuk perangkat terlebih dahulu.",
+			"pushLoadFailed": "Tidak dapat memuat pengaturan push Anda. Muat ulang halaman untuk mencoba lagi."
 		},
 		"preferencesPage": {
 			"title": "Preferensi",
@@ -1521,7 +1571,10 @@
 				"pr_merged": "PR digabung",
 				"issue_opened": "Issue dibuka",
 				"issue_closed": "Issue ditutup"
-			}
+			},
+			"removeRule": "Hapus aturan untuk {{event}}",
+			"toastRemoved": "Aturan alur kerja dihapus",
+			"toastRemoveError": "Gagal menghapus aturan"
 		},
 		"externalLinks": {
 			"resources": "Sumber daya",
@@ -1569,7 +1622,6 @@
 				"organization": "Administrasi ruang kerja",
 				"member": "Anggota",
 				"invitation": "Undangan",
-				"team": "Tim",
 				"ac": "Peran dan izin",
 				"cycle": "Siklus",
 				"module": "Modul",
@@ -1693,20 +1745,6 @@
 					"cancel": {
 						"label": "Batalkan undangan",
 						"description": "Cabut undangan ruang kerja yang tertunda."
-					}
-				},
-				"team": {
-					"create": {
-						"label": "Buat tim",
-						"description": "Buat tim di ruang kerja ini."
-					},
-					"update": {
-						"label": "Ubah tim",
-						"description": "Ubah tim dan keanggotaan tim."
-					},
-					"delete": {
-						"label": "Hapus tim",
-						"description": "Hapus tim di ruang kerja ini."
 					}
 				},
 				"ac": {
@@ -1920,28 +1958,43 @@
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
 		"customFields": {
-			"addButton": "Tambah",
-			"createError": "Gagal membuat field kustom.",
-			"createSuccess": "Field kustom dibuat.",
-			"defaultLabel": "Bawaan",
-			"defaultValuePlaceholder": "Nilai default",
-			"deleteButton": "Hapus",
-			"deleteError": "Gagal menghapus field kustom.",
-			"deleteSuccess": "Field kustom dihapus.",
-			"empty": "Belum ada field kustom yang dikonfigurasi.",
-			"loading": "Memuat field kustom...",
 			"namePlaceholder": "Nama field",
+			"typePlaceholder": "Pilih tipe field",
 			"noOptionsPlaceholder": "Tidak ada opsi",
+			"defaultValuePlaceholder": "Nilai default",
 			"optionsPlaceholder": "Opsi dipisahkan dengan koma",
 			"required": "Wajib",
-			"typePlaceholder": "Pilih tipe field",
+			"addButton": "Tambah",
+			"loading": "Memuat field kustom...",
+			"empty": "Belum ada field kustom yang dikonfigurasi.",
+			"defaultLabel": "Bawaan",
+			"createSuccess": "Field kustom dibuat.",
+			"createError": "Gagal membuat field kustom.",
+			"deleteButton": "Hapus",
+			"deleteSuccess": "Field kustom dihapus.",
+			"deleteError": "Gagal menghapus field kustom.",
 			"types": {
 				"boolean": "Boolean",
 				"date": "Tanggal",
 				"dropdown": "Dropdown",
 				"number": "Angka",
 				"text": "Teks"
-			}
+			},
+			"editButton": "Edit",
+			"editTitle": "Edit field kustom",
+			"editDescription": "Tipe field dan status wajibnya tidak dapat diubah setelah dibuat.",
+			"nameLabel": "Nama",
+			"optionsLabel": "Opsi",
+			"addOption": "Tambah opsi",
+			"removeOption": "Hapus opsi",
+			"optionPlaceholder": "Nama opsi",
+			"optionsHint": "Mengganti nama opsi akan memperbarui setiap tugas, tampilan tersimpan, dan otomatisasi yang menggunakannya. Opsi yang dihapus tetap ada pada tugas yang sudah memilikinya sampai seseorang mengubahnya, dan tidak dapat dipilih lagi.",
+			"duplicateOption": "Opsi harus berbeda satu sama lain.",
+			"noDefault": "Tanpa default",
+			"saveButton": "Simpan",
+			"cancelButton": "Batal",
+			"updateSuccess": "Field kustom diperbarui.",
+			"updateError": "Gagal memperbarui field kustom."
 		},
 		"projectFeatures": {
 			"disableConfirmAction": "Nonaktifkan",
@@ -2205,6 +2258,11 @@
 			}
 		},
 		"workspaceExports": {
+			"title": "Ekspor",
+			"pageTitle": "Ekspor",
+			"subtitle": "Ekspor tugas ke CSV, Excel, atau JSON. File siap diunduh selama {{days}} hari.",
+			"newExport": "Ekspor baru",
+			"viewExports": "Lihat ekspor",
 			"form": {
 				"activeGroup": "Aktif",
 				"allProjects": "Semua proyek",
@@ -2231,47 +2289,6 @@
 				"json": "JSON",
 				"xlsx": "Excel"
 			},
-			"history": {
-				"all": "Semua ekspor",
-				"columns": {
-					"actions": "Aksi",
-					"created": "Dibuat",
-					"expires": "Tersedia",
-					"export": "Ekspor",
-					"requestedBy": "Diminta oleh",
-					"size": "Ukuran",
-					"status": "Status",
-					"tasks": "Tugas"
-				},
-				"delete": "Hapus",
-				"deleteAria": "Hapus {{name}}",
-				"deleteDescription": "File akan dihapus untuk semua orang. Tindakan ini tidak dapat dibatalkan.",
-				"deletedProject": "Proyek yang dihapus",
-				"deleteTitle": "Hapus ekspor ini?",
-				"deleting": "Menghapus…",
-				"description": "Unduh ekspor yang sudah selesai, atau hapus yang tidak lagi Anda perlukan.",
-				"download": "Unduh",
-				"downloadAria": "Unduh {{name}}",
-				"empty": "Belum ada ekspor. Ekspor yang Anda mulai akan muncul di sini selama {{days}} hari.",
-				"expiredOn": "Kedaluwarsa {{date}}",
-				"expiresOn": "Hingga {{date}}",
-				"loadMore": "Muat lebih banyak",
-				"mine": "Ekspor saya",
-				"scopeLabel": "Ekspor milik siapa",
-				"summaryProjects_other": "{{format}} · {{count}} proyek",
-				"title": "Ekspor sebelumnya"
-			},
-			"newExport": "Ekspor baru",
-			"pageTitle": "Ekspor",
-			"status": {
-				"completed": "Siap",
-				"expired": "Kedaluwarsa",
-				"failed": "Gagal",
-				"processing": "Diproses",
-				"queued": "Dalam antrean"
-			},
-			"subtitle": "Ekspor tugas ke CSV, Excel, atau JSON. File siap diunduh selama {{days}} hari.",
-			"title": "Ekspor",
 			"toast": {
 				"deleted": "Ekspor dihapus",
 				"deleteError": "Gagal menghapus ekspor. Coba lagi.",
@@ -2283,7 +2300,57 @@
 				"ready": "Ekspor Anda sudah siap",
 				"started": "Ekspor dimulai. Kami akan memberi tahu Anda saat sudah siap."
 			},
-			"viewExports": "Lihat ekspor"
+			"history": {
+				"title": "Ekspor sebelumnya",
+				"description": "Unduh ekspor yang sudah selesai, atau hapus yang tidak lagi Anda perlukan.",
+				"scopeLabel": "Ekspor milik siapa",
+				"mine": "Ekspor saya",
+				"all": "Semua ekspor",
+				"empty": "Belum ada ekspor. Ekspor yang Anda mulai akan muncul di sini selama {{days}} hari.",
+				"columns": {
+					"actions": "Aksi",
+					"created": "Dibuat",
+					"expires": "Tersedia",
+					"export": "Ekspor",
+					"requestedBy": "Diminta oleh",
+					"size": "Ukuran",
+					"status": "Status",
+					"tasks": "Tugas"
+				},
+				"summaryProjects_other": "{{format}} · {{count}} proyek",
+				"deletedProject": "Proyek yang dihapus",
+				"download": "Unduh",
+				"downloadAria": "Unduh {{name}}",
+				"delete": "Hapus",
+				"deleteAria": "Hapus {{name}}",
+				"deleting": "Menghapus…",
+				"deleteTitle": "Hapus ekspor ini?",
+				"deleteDescription": "File akan dihapus untuk semua orang. Tindakan ini tidak dapat dibatalkan.",
+				"expiredOn": "Kedaluwarsa {{date}}",
+				"expiresOn": "Hingga {{date}}",
+				"loadMore": "Muat lebih banyak",
+				"summaryWorkspace": "Seluruh ruang kerja",
+				"fileCount_other": "{{count}} file",
+				"withoutFiles": "Tanpa file",
+				"missingFiles_other": "{{count}} file hilang dari penyimpanan"
+			},
+			"status": {
+				"completed": "Siap",
+				"expired": "Kedaluwarsa",
+				"failed": "Gagal",
+				"processing": "Diproses",
+				"queued": "Dalam antrean"
+			},
+			"whole": {
+				"title": "Seluruh ruang kerja",
+				"description": "Unduh semuanya sebagai satu ZIP: tugas beserta semua komentarnya, halaman, pengaturan, dan file.",
+				"action": "Ekspor ruang kerja",
+				"dialogTitle": "Ekspor seluruh ruang kerja",
+				"dialogDescription": "Arsip dibuat di latar belakang. Anda akan diberi tahu saat siap.",
+				"includeFiles": "Sertakan file",
+				"includeFilesHint": "Nonaktifkan ini agar arsip jauh lebih kecil. Arsip tetap mencantumkan setiap file.",
+				"leftOut": "Rahasia, halaman pribadi, sampah, dan draf tidak pernah disertakan. Arsip berisi alamat email anggota, jadi simpan di tempat yang aman."
+			}
 		},
 		"workspaceWebhooks": {
 			"actionsMenu": "Aksi webhook",
@@ -2661,7 +2728,8 @@
 			"restrictedProject": "Proyek terbatas",
 			"toastUpdated": "Akses diperbarui",
 			"toastError": "Gagal memperbarui akses",
-			"loadError": "Tidak dapat memuat pengaturan akses. Muat ulang halaman untuk mencoba lagi."
+			"loadError": "Tidak dapat memuat pengaturan akses. Muat ulang halaman untuk mencoba lagi.",
+			"guestsHint": "Tamu hanya dapat mengakses proyek tempat mereka ditambahkan. Tambahkan mereka di sini; peran proyek membatasi apa yang dapat mereka lakukan."
 		},
 		"projectPeople": {
 			"defaultAssigneeHint": "Terisi otomatis saat Anda membuat tugas, dan ditugaskan ke permintaan yang diterima tanpa penanggung jawab.",
@@ -2779,47 +2847,47 @@
 				"workspacePublicPagesChanged": "Mengaktifkan atau menonaktifkan halaman publik",
 				"pagePublished": "Memublikasikan halaman lewat tautan publik",
 				"pageUnpublished": "Mencabut tautan publik halaman",
-				"apiKeyCreated": "Membuat kunci API",
-				"apiKeyRevoked": "Mencabut kunci API",
-				"exportCreated": "Memulai ekspor",
-				"exportDownloaded": "Mengunduh ekspor",
-				"importRun": "Mengimpor tugas",
-				"integrationConnected": "Menghubungkan integrasi",
-				"integrationDisconnected": "Memutuskan integrasi",
-				"integrationUpdated": "Mengubah integrasi",
+				"memberInvited": "Mengundang seseorang ke ruang kerja",
+				"memberInvitationRevoked": "Mencabut undangan",
 				"memberInvitationAccepted": "Menerima undangan",
 				"memberInvitationDeclined": "Menolak undangan",
 				"memberInvitationRoleChanged": "Mengubah peran undangan yang tertunda",
-				"memberInvitationRevoked": "Mencabut undangan",
-				"memberInvited": "Mengundang seseorang ke ruang kerja",
-				"memberLeft": "Keluar dari ruang kerja",
 				"memberRemoved": "Mengeluarkan anggota",
+				"memberLeft": "Keluar dari ruang kerja",
 				"memberRoleChanged": "Mengubah peran anggota",
-				"projectArchived": "Mengarsipkan proyek",
-				"projectCreated": "Membuat proyek",
-				"projectFeatureToggled": "Mengaktifkan atau menonaktifkan fitur proyek",
-				"projectPurged": "Menghapus proyek secara permanen",
-				"projectRestored": "Memulihkan proyek dari sampah",
-				"projectSettingsChanged": "Mengubah pengaturan proyek",
-				"projectTrashed": "Memindahkan proyek ke sampah",
-				"projectUnarchived": "Membatalkan arsip proyek",
-				"publicBoardLinkRotated": "Mengganti tautan papan publik",
-				"publicBoardPublished": "Memublikasikan papan publik",
-				"publicBoardSettingsChanged": "Mengubah pengaturan papan publik",
-				"publicBoardUnpublished": "Membatalkan publikasi papan publik",
 				"roleCreated": "Membuat peran",
-				"roleDeleted": "Menghapus peran",
 				"roleUpdated": "Mengubah peran",
-				"trashEmptied": "Mengosongkan sampah proyek",
-				"trashPurged": "Menghapus tugas dari sampah secara permanen",
-				"unknown": "{{action}}",
+				"roleDeleted": "Menghapus peran",
+				"apiKeyCreated": "Membuat kunci API",
+				"apiKeyRevoked": "Mencabut kunci API",
 				"webhookCreated": "Membuat webhook",
+				"webhookUpdated": "Mengubah webhook",
 				"webhookDeleted": "Menghapus webhook",
 				"webhookSecretRotated": "Mengganti rahasia penandatanganan webhook",
-				"webhookUpdated": "Mengubah webhook",
+				"integrationConnected": "Menghubungkan integrasi",
+				"integrationUpdated": "Mengubah integrasi",
+				"integrationDisconnected": "Memutuskan integrasi",
 				"workspaceCreated": "Membuat ruang kerja",
-				"workspaceOwnershipTransferred": "Mentransfer kepemilikan ruang kerja",
 				"workspaceUpdated": "Mengubah pengaturan ruang kerja",
+				"workspaceOwnershipTransferred": "Mentransfer kepemilikan ruang kerja",
+				"projectCreated": "Membuat proyek",
+				"projectTrashed": "Memindahkan proyek ke sampah",
+				"projectRestored": "Memulihkan proyek dari sampah",
+				"projectPurged": "Menghapus proyek secara permanen",
+				"projectArchived": "Mengarsipkan proyek",
+				"projectUnarchived": "Membatalkan arsip proyek",
+				"projectFeatureToggled": "Mengaktifkan atau menonaktifkan fitur proyek",
+				"projectSettingsChanged": "Mengubah pengaturan proyek",
+				"publicBoardPublished": "Memublikasikan papan publik",
+				"publicBoardUnpublished": "Membatalkan publikasi papan publik",
+				"publicBoardLinkRotated": "Mengganti tautan papan publik",
+				"publicBoardSettingsChanged": "Mengubah pengaturan papan publik",
+				"exportCreated": "Memulai ekspor",
+				"exportDownloaded": "Mengunduh ekspor",
+				"importRun": "Mengimpor tugas",
+				"trashPurged": "Menghapus tugas dari sampah secara permanen",
+				"trashEmptied": "Mengosongkan sampah proyek",
+				"unknown": "{{action}}",
 				"aiSettingsUpdated": "Mengubah pengaturan AI",
 				"aiTriageLabelsApplied": "Menambahkan label yang disarankan secara otomatis",
 				"agentCreated": "Membuat agen",
@@ -2846,7 +2914,9 @@
 				"aiConnectorUpdated": "Mengubah konektor MCP",
 				"aiConnectorDeleted": "Menghapus konektor MCP",
 				"agentIntakeTriggerUpdated": "Mengubah pemicu intake agen",
-				"agentIntakeTriggerDisabled": "Mematikan pemicu intake agen"
+				"agentIntakeTriggerDisabled": "Mematikan pemicu intake agen",
+				"memberProvisioned": "Menambahkan anggota melalui penyediaan otomatis",
+				"memberInvitationProjectsChanged": "Mengubah proyek undangan yang tertunda"
 			},
 			"actor": {
 				"apiKey": "Kunci API",
@@ -2939,47 +3009,56 @@
 			"title": "Log audit"
 		},
 		"trash": {
-			"deletedAt": "Dihapus {{time}}",
-			"deletedBy": "Dihapus oleh {{name}} {{time}}",
-			"deletePermanently": "Hapus permanen",
-			"emptyConfirmDescription": "Setiap tugas di sampah proyek ini dihapus permanen beserta komentar, lampiran, dan catatan waktunya. Tindakan ini tidak dapat dibatalkan.",
-			"emptyConfirmTitle": "Kosongkan sampah?",
-			"emptyProjectsDescription": "Proyek yang Anda hapus dari ruang kerja ini akan muncul di sini.",
-			"emptyProjectsTitle": "Tidak ada proyek yang dihapus",
-			"emptyTasksDescription": "Tugas yang Anda hapus dari proyek ini akan muncul di sini.",
-			"emptyTasksTitle": "Tidak ada tugas yang dihapus",
-			"emptyTrash": "Kosongkan sampah",
-			"loadError": "Tidak dapat memuat sampah",
-			"loadMore": "Muat lebih banyak",
-			"menuAria": "Tindakan lain untuk {{name}}",
-			"noMatches": "Tidak ada yang cocok dengan pencarian Anda",
-			"projectSubtitle": "Tugas yang dihapus tetap di sini sampai dihapus permanen. Memulihkan tugas juga mengembalikan subtugas yang ikut terhapus.",
 			"projectTitle": "Baru dihapus",
-			"purgeOn": "Dihapus permanen pada {{date}}",
-			"purgeProjectDescription": "“{{name}}” dan semua isinya akan dihapus untuk semua orang. Tindakan ini tidak dapat dibatalkan.",
-			"purgeProjectTitle": "Hapus proyek ini secara permanen?",
-			"purgeTaskDescription": "“{{name}}”, subtugas yang ikut terhapus, komentar, lampiran, dan catatan waktu akan dihapus untuk semua orang. Tindakan ini tidak dapat dibatalkan.",
-			"purgeTaskTitle": "Hapus tugas ini secara permanen?",
+			"projectSubtitle": "Tugas dan halaman yang dihapus tetap di sini sampai dihapus permanen. Memulihkan tugas juga mengembalikan subtugas yang ikut terhapus; halaman yang dipulihkan kembali ke Diarsipkan.",
+			"workspaceTitle": "Proyek yang baru dihapus",
+			"workspaceNav": "Baru dihapus",
+			"workspaceSubtitle": "Proyek yang dihapus tetap di sini beserta tugasnya sampai dihapus permanen.",
+			"searchTasks": "Cari tugas yang dihapus",
+			"searchProjects": "Cari proyek yang dihapus",
+			"deletedBy": "Dihapus oleh {{name}} {{time}}",
+			"deletedAt": "Dihapus {{time}}",
+			"purgeOn": "Akan dihapus permanen pada {{date}}",
+			"withSubTasks_other": "dengan {{count}} subtugas",
+			"taskCount_other": "{{count}} tugas",
 			"restore": "Pulihkan",
 			"restoreAria": "Pulihkan {{name}}",
+			"menuAria": "Tindakan lain untuk {{name}}",
+			"deletePermanently": "Hapus permanen",
+			"emptyTrash": "Kosongkan sampah",
+			"emptyTasksTitle": "Tidak ada tugas yang dihapus",
+			"emptyTasksDescription": "Tugas yang Anda hapus dari proyek ini akan muncul di sini.",
+			"emptyProjectsTitle": "Tidak ada proyek yang dihapus",
+			"emptyProjectsDescription": "Proyek yang Anda hapus dari ruang kerja ini akan muncul di sini.",
+			"noMatches": "Tidak ada yang cocok dengan pencarian Anda",
+			"loadError": "Tidak dapat memuat sampah",
 			"retry": "Coba lagi",
-			"searchProjects": "Cari proyek yang dihapus",
-			"searchTasks": "Cari tugas yang dihapus",
-			"taskCount_other": "{{count}} tugas",
+			"loadMore": "Muat lebih banyak",
+			"purgeTaskTitle": "Hapus tugas ini secara permanen?",
+			"purgeTaskDescription": "“{{name}}”, subtugas yang ikut terhapus, komentar, lampiran, dan catatan waktu akan dihapus untuk semua orang. Tindakan ini tidak dapat dibatalkan.",
+			"emptyConfirmTitle": "Kosongkan sampah?",
+			"emptyConfirmDescription": "Setiap tugas di sampah proyek ini dihapus permanen beserta komentar, lampiran, dan catatan waktunya. Tindakan ini tidak dapat dibatalkan.",
+			"purgeProjectTitle": "Hapus proyek ini secara permanen?",
+			"purgeProjectDescription": "“{{name}}” dan semua isinya akan dihapus untuk semua orang. Tindakan ini tidak dapat dibatalkan.",
 			"toast": {
-				"emptied_other": "{{count}} tugas dihapus permanen",
-				"projectPurged": "Proyek dihapus permanen",
+				"taskRestored": "Tugas dipulihkan",
 				"projectRestored": "Proyek dipulihkan",
-				"purgeError": "Tidak dapat menghapus permanen",
 				"restoreBlocked": "Tugas ini tidak dapat dipulihkan sendiri. Pulihkan dulu tugas induk atau proyeknya.",
 				"restoreError": "Tidak dapat memulihkan",
 				"taskPurged": "Tugas dihapus permanen",
-				"taskRestored": "Tugas dipulihkan"
+				"projectPurged": "Proyek dihapus permanen",
+				"emptied_other": "{{count}} tugas dihapus permanen",
+				"purgeError": "Tidak dapat menghapus permanen",
+				"pageRestored": "Halaman dipulihkan ke Diarsipkan",
+				"pagePurged": "Halaman dihapus permanen"
 			},
-			"withSubTasks_other": "dengan {{count}} subtugas",
-			"workspaceNav": "Baru dihapus",
-			"workspaceSubtitle": "Proyek yang dihapus tetap di sini beserta tugasnya sampai dihapus permanen.",
-			"workspaceTitle": "Proyek yang baru dihapus"
+			"tasksHeading": "Tugas",
+			"pagesHeading": "Halaman",
+			"searchPages": "Cari halaman yang dihapus",
+			"emptyPagesTitle": "Tidak ada halaman yang dihapus",
+			"emptyPagesDescription": "Halaman arsip yang Anda hapus dari proyek ini akan muncul di sini.",
+			"purgePageTitle": "Hapus halaman ini secara permanen?",
+			"purgePageDescription": "“{{name}}”, komentar, dan riwayat versinya akan dihapus untuk semua orang. Tindakan ini tidak dapat dibatalkan."
 		},
 		"automationRules": {
 			"title": "Otomatisasi",
@@ -3304,11 +3383,11 @@
 				"boardView": "Beralih ke tampilan papan",
 				"listView": "Beralih ke tampilan daftar",
 				"backlogView": "Beralih ke tampilan backlog",
+				"calendarView": "Beralih ke tampilan kalender",
 				"nextTask": "Tugas berikutnya",
 				"prevTask": "Tugas sebelumnya",
 				"openTask": "Buka tugas terpilih",
 				"quickSelectNumber": "Pilih opsi berdasarkan nomor",
-				"calendarView": "Beralih ke tampilan kalender",
 				"goToSection": "Ke {{section}}",
 				"goToAllTasks": "Buka Semua tugas",
 				"goToMyWork": "Buka Pekerjaan Anda",
@@ -3317,24 +3396,25 @@
 				"goToHome": "Buka Beranda",
 				"goToStickies": "Buka Catatan tempel",
 				"paletteActions": "Jalankan tindakan",
+				"paletteTasks": "Cari tugas berdasarkan kunci atau judul",
 				"palettePeople": "Cari orang",
 				"palettePlaces": "Lompat ke suatu tempat",
-				"paletteTasks": "Cari tugas berdasarkan kunci atau judul",
 				"captureTask": "Tambah tugas di papan atau daftar",
 				"selectTask": "Pilih tugas yang sedang difokuskan",
-				"triageAssignee": "Ubah penerima tugas yang difokuskan",
-				"triagePriority": "Ubah prioritas tugas yang difokuskan",
 				"triageStatus": "Ubah status tugas yang difokuskan",
+				"triagePriority": "Ubah prioritas tugas yang difokuskan",
+				"triageAssignee": "Ubah penerima tugas yang difokuskan",
+				"taskStatus": "Ubah status",
+				"taskPriority": "Ubah prioritas",
 				"taskAssignees": "Ubah penanggung jawab",
+				"taskLabels": "Ubah label",
+				"taskDueDate": "Ubah tenggat",
 				"taskAssignSelf": "Tugaskan atau lepaskan diri Anda",
 				"taskCopyKey": "Salin kunci tugas",
 				"taskCopyLink": "Salin tautan tugas",
+				"taskCopyBranch": "Salin nama branch tugas",
 				"taskDelete": "Hapus tugas",
-				"taskDueDate": "Ubah tenggat",
-				"taskLabels": "Ubah label",
-				"taskPriority": "Ubah prioritas",
-				"taskStatus": "Ubah status",
-				"taskCopyBranch": "Salin nama branch tugas"
+				"moveBetweenCards": "Berpindah antarkartu di papan"
 			}
 		},
 		"favorites": {
@@ -3430,11 +3510,6 @@
 				"content": "{{mentionerName}} menyebut Anda di: {{taskTitle}}",
 				"contentComment": "{{mentionerName}} menyebut Anda dalam komentar pada {{taskTitle}}"
 			},
-			"time_entry_created": {
-				"title": "Pelacakan waktu dimulai",
-				"contentWithTask": "Pelacakan waktu dimulai pada tugas: {{taskTitle}}",
-				"contentWithoutTask": "Pelacakan waktu dimulai pada sebuah tugas"
-			},
 			"task_comment": {
 				"title": "{{commenterName}} mengomentari tugas Anda",
 				"content": "Komentar baru pada {{taskTitle}}: {{commentPreview}}",
@@ -3448,6 +3523,11 @@
 			"task_overdue": {
 				"title": "Tugas terlambat",
 				"content": "{{taskTitle}} telah melewati tenggatnya"
+			},
+			"time_entry_created": {
+				"title": "Pelacakan waktu dimulai",
+				"contentWithTask": "Pelacakan waktu dimulai pada tugas: {{taskTitle}}",
+				"contentWithoutTask": "Pelacakan waktu dimulai pada sebuah tugas"
 			},
 			"task_updated": {
 				"dueDate": "Tenggat \"{{taskTitle}}\" diubah menjadi {{newValue}}",
@@ -3488,6 +3568,14 @@
 			"automation_notice": {
 				"title": "Otomatisasi: {{ruleName}}",
 				"content": "{{taskKey}} {{taskTitle}}"
+			},
+			"page_comment": {
+				"title": "{{commenterName}} berkomentar",
+				"content": "{{commenterName}} berkomentar di {{pageTitle}}: {{commentPreview}}"
+			},
+			"page_updated": {
+				"title": "{{editorName}} mengedit halaman",
+				"content": "{{editorName}} mengedit {{pageTitle}}"
 			}
 		},
 		"reminderLeadTime": {
@@ -3547,10 +3635,12 @@
 			"loadMore": "Muat lebih banyak",
 			"pageTitle": "Kotak masuk",
 			"preview": {
-				"emptyDescription": "Tugasnya akan terbuka di sini.",
 				"emptyTitle": "Pilih notifikasi",
+				"emptyDescription": "Tugasnya akan terbuka di sini.",
 				"unavailable": "Tugas ini sudah tidak tersedia",
-				"label": "Panel baca"
+				"label": "Panel baca",
+				"showProperties": "Tampilkan properti",
+				"hideProperties": "Sembunyikan properti"
 			},
 			"retry": "Coba lagi",
 			"snooze": {
@@ -3594,27 +3684,31 @@
 				"subscribed": "Dilanggani"
 			},
 			"verbs": {
-				"due_date_reminder": "Jatuh tempo dalam {{leadTime}}",
-				"task_assignee_changed": "menugaskan Anda",
-				"task_comment": "berkomentar",
 				"task_created": "membuat tugas ini",
+				"task_assignee_changed": "menugaskan Anda",
+				"task_status_changed": "memindahkannya dari {{oldStatus}} ke {{newStatus}}",
+				"task_comment": "berkomentar",
 				"task_mention": "menyebut Anda",
 				"task_mention_comment": "menyebut Anda dalam komentar",
-				"task_overdue": "Sudah lewat tenggat",
-				"task_status_changed": "memindahkannya dari {{oldStatus}} ke {{newStatus}}",
+				"time_entry_created": "mencatat waktu",
 				"task_updated": {
 					"dueDate": "mengubah tenggat menjadi {{newValue}}",
 					"dueDateCleared": "menghapus tenggat",
 					"priority": "mengubah prioritas menjadi {{newValue}}",
 					"title": "mengganti nama tugas"
 				},
-				"time_entry_created": "mencatat waktu",
+				"due_date_reminder": "Jatuh tempo dalam {{leadTime}}",
+				"task_overdue": "Sudah lewat tenggat",
 				"intake_accepted": "menerima permintaan Anda",
 				"intake_declined": "menolak permintaan Anda",
 				"intake_duplicate": "menandai permintaan Anda sebagai duplikat",
 				"page_mention": "menyebut Anda di sebuah halaman",
 				"page_mention_titled": "menyebut Anda di {{pageTitle}}",
-				"task_comment_reply": "membalas komentar"
+				"task_comment_reply": "membalas komentar",
+				"page_comment": "berkomentar di halaman",
+				"page_comment_titled": "berkomentar di {{pageTitle}}",
+				"page_updated": "mengedit halaman yang Anda pantau",
+				"page_updated_titled": "mengedit {{pageTitle}}"
 			},
 			"viewing": {
 				"archived": "Melihat notifikasi yang diarsipkan",
@@ -3645,8 +3739,21 @@
 		}
 	},
 	"activity": {
+		"feed": {
+			"all": "Semua aktivitas",
+			"comments": "Komentar",
+			"label": "Filter dan urutkan aktivitas",
+			"newest": "Terbaru dulu",
+			"noMatches": "Tidak ada yang ditampilkan dengan filter ini.",
+			"oldest": "Terlama dulu",
+			"order": "Urutan",
+			"show": "Tampilkan",
+			"updates": "Pembaruan"
+		},
 		"assignedToSelf": "menugaskan tugas kepada dirinya sendiri",
 		"unassigned": "menghapus penugasan tugas",
+		"unassignedUser": "menghapus penugasan {{name}}",
+		"unassignedSelf": "menghapus penugasan dirinya sendiri",
 		"assignedTo": "menugaskan tugas kepada {{name}}",
 		"changedStatus": "mengubah status dari {{from}} menjadi {{to}}",
 		"changedPriority": "mengubah prioritas dari {{from}} menjadi {{to}}",
@@ -3656,6 +3763,8 @@
 		"changedTitle": "mengubah judul dari \"{{from}}\" menjadi \"{{to}}\"",
 		"moved": "memindahkan tugas dari \"{{from}}\" ke \"{{to}}\"",
 		"created": "membuat tugas ini",
+		"importedFromJira": "mengimpor tugas ini dari Jira {{key}}",
+		"importedFromSource": "mengimpor tugas ini dari {{source}} {{key}}",
 		"githubUser": "Pengguna GitHub",
 		"comment": {
 			"github": "GitHub",
@@ -3775,35 +3884,26 @@
 			"linkCopied": "Tautan komentar disalin"
 		},
 		"addedToCycle": "menambahkan tugas ke siklus {{name}}",
-		"deletedCycle": "menghapus tugas dari siklus yang telah dihapus",
-		"movedCycle": "memindahkan tugas dari siklus {{from}} ke {{to}}",
 		"removedFromCycle": "menghapus tugas dari siklus {{name}}",
+		"movedCycle": "memindahkan tugas dari siklus {{from}} ke {{to}}",
+		"deletedCycle": "menghapus tugas dari siklus yang telah dihapus",
 		"addedToModule": "menambahkan tugas ke modul {{name}}",
 		"removedFromModule": "menghapus tugas dari modul {{name}}",
+		"estimateSet": "mengatur estimasi menjadi {{to}}",
 		"estimateChanged": "mengubah estimasi dari {{from}} menjadi {{to}}",
+		"estimateRemoved": "menghapus estimasi {{from}}",
 		"estimateReason": {
 			"point_deleted": "(nilai estimasi dihapus)",
 			"system_deleted": "(sistem estimasi dihapus)",
 			"system_switched": "(sistem estimasi diganti)",
 			"task_moved": "(dipindahkan ke proyek lain)"
 		},
-		"estimateRemoved": "menghapus estimasi {{from}}",
-		"estimateSet": "mengatur estimasi menjadi {{to}}",
-		"unassignedSelf": "menghapus penugasan dirinya sendiri",
-		"unassignedUser": "menghapus penugasan {{name}}",
-		"addedLabel": "menambahkan label <label>{{name}}</label>",
-		"attachmentAdded": "melampirkan {{filename}}",
-		"attachmentRemoved": "menghapus lampiran {{filename}}",
+		"setStartDate": "mengatur tanggal mulai ke {{date}}",
 		"changedStartDate": "mengubah tanggal mulai dari {{from}} menjadi {{to}}",
 		"clearedStartDate": "menghapus tanggal mulai",
-		"copiedFrom": "membuat tugas ini sebagai salinan dari <task>{{task}}</task>",
-		"copiedTo": "membuat salinan tugas ini: <task>{{task}}</task>",
-		"linkAdded": "menambahkan tautan {{title}}",
-		"linkRemoved": "menghapus tautan {{title}}",
-		"linkUpdated": "memperbarui tautan {{title}}",
-		"parentChanged": "mengubah tugas induk dari <from>{{from}}</from> menjadi <to>{{to}}</to>",
-		"parentRemoved": "menghapus tugas induk <task>{{task}}</task>",
-		"parentSet": "mengatur tugas induk menjadi <task>{{task}}</task>",
+		"addedLabel": "menambahkan label <label>{{name}}</label>",
+		"removedLabel": "menghapus label <label>{{name}}</label>",
+		"updatedDescription": "memperbarui deskripsi",
 		"relationAdded": {
 			"blocked_by": "menandai tugas ini diblokir oleh <task>{{task}}</task>",
 			"blocking": "menandai tugas ini memblokir <task>{{task}}</task>",
@@ -3815,12 +3915,36 @@
 			"start_before": "mengatur tugas ini agar dimulai sebelum <task>{{task}}</task>"
 		},
 		"relationRemoved": "menghapus relasi {{relation}} dengan <task>{{task}}</task>",
-		"removedLabel": "menghapus label <label>{{name}}</label>",
-		"setStartDate": "mengatur tanggal mulai ke {{date}}",
+		"parentSet": "mengatur tugas induk menjadi <task>{{task}}</task>",
+		"parentChanged": "mengubah tugas induk dari <from>{{from}}</from> menjadi <to>{{to}}</to>",
+		"parentRemoved": "menghapus tugas induk <task>{{task}}</task>",
 		"subtaskAdded": "menambahkan subtugas <task>{{task}}</task>",
 		"subtaskRemoved": "menghapus subtugas <task>{{task}}</task>",
-		"updatedDescription": "memperbarui deskripsi",
+		"linkAdded": "menambahkan tautan {{title}}",
+		"linkUpdated": "memperbarui tautan {{title}}",
+		"linkRemoved": "menghapus tautan {{title}}",
+		"attachmentAdded": "melampirkan {{filename}}",
+		"attachmentRemoved": "menghapus lampiran {{filename}}",
+		"copiedFrom": "membuat tugas ini sebagai salinan dari <task>{{task}}</task>",
+		"copiedTo": "membuat salinan tugas ini: <task>{{task}}</task>",
 		"archived": "mengarsipkan tugas ini",
+		"unarchived": "memulihkan tugas ini",
+		"intake": {
+			"submitted": "mengirim permintaan ini",
+			"submittedVia": "mengirim permintaan ini melalui {{source}}",
+			"accepted": "menerima permintaan ini ke {{column}}",
+			"acceptedBacklog": "menerima permintaan ini ke backlog",
+			"declined": "menolak permintaan ini",
+			"declinedWithReason": "menolak permintaan ini: {{note}}",
+			"snoozed": "menunda permintaan ini hingga {{date}}",
+			"unsnoozed": "mengembalikan permintaan ini ke tinjauan",
+			"snoozeEnded": "Penundaan berakhir dan permintaan ini kembali ke tinjauan",
+			"duplicate": "menandai permintaan ini sebagai duplikat dari {{key}}",
+			"duplicateDeleted": "menandai permintaan ini sebagai duplikat dari tugas yang sudah dihapus",
+			"reopened": "membuka kembali permintaan ini",
+			"acceptedHidden": "menerima permintaan ini ke proyek lain",
+			"duplicateHidden": "menandai permintaan ini sebagai duplikat dari tugas di proyek lain"
+		},
 		"reactions": {
 			"add": "Tambah reaksi",
 			"error": "Tidak dapat memperbarui reaksi",
@@ -3840,28 +3964,6 @@
 			"reactWith": "Bereaksi dengan {{label}}",
 			"remove": "Hapus reaksi {{label}}",
 			"you": "Anda"
-		},
-		"unarchived": "memulihkan tugas ini",
-		"intake": {
-			"accepted": "menerima permintaan ini ke {{column}}",
-			"acceptedBacklog": "menerima permintaan ini ke backlog",
-			"declined": "menolak permintaan ini",
-			"declinedWithReason": "menolak permintaan ini: {{note}}",
-			"duplicate": "menandai permintaan ini sebagai duplikat dari {{key}}",
-			"duplicateDeleted": "menandai permintaan ini sebagai duplikat dari tugas yang sudah dihapus",
-			"reopened": "membuka kembali permintaan ini",
-			"snoozed": "menunda permintaan ini hingga {{date}}",
-			"snoozeEnded": "Penundaan berakhir dan permintaan ini kembali ke tinjauan",
-			"submitted": "mengirim permintaan ini",
-			"submittedVia": "mengirim permintaan ini melalui {{source}}",
-			"unsnoozed": "mengembalikan permintaan ini ke tinjauan"
-		},
-		"automation": {
-			"actor": "Otomatisasi",
-			"archived_other": "mengarsipkan tugas ini setelah {{count}} bulan tanpa pembaruan",
-			"closed_other": "menutup tugas ini setelah {{count}} bulan tanpa pembaruan, dan memindahkannya ke {{to}}",
-			"rolledOver": "memindahkan tugas ini dari {{from}} ke {{to}} saat siklus berakhir",
-			"byRule": "melalui {{name}}"
 		},
 		"commentVisibility": {
 			"badgeExternal": "Eksternal",
@@ -3888,21 +3990,47 @@
 			"summary": "▲ {{up}} · ▼ {{down}}",
 			"tooltip": "Suara dari papan publik"
 		},
-		"feed": {
-			"all": "Semua aktivitas",
-			"comments": "Komentar",
-			"label": "Filter dan urutkan aktivitas",
-			"newest": "Terbaru dulu",
-			"noMatches": "Tidak ada yang ditampilkan dengan filter ini.",
-			"oldest": "Terlama dulu",
-			"order": "Urutan",
-			"show": "Tampilkan",
-			"updates": "Pembaruan"
+		"automation": {
+			"actor": "Otomatisasi",
+			"archived_other": "mengarsipkan tugas ini setelah {{count}} bulan tanpa pembaruan",
+			"closed_other": "menutup tugas ini setelah {{count}} bulan tanpa pembaruan, dan memindahkannya ke {{to}}",
+			"rolledOver": "memindahkan tugas ini dari {{from}} ke {{to}} saat siklus berakhir",
+			"byRule": "melalui {{name}}",
+			"rolledOverHidden": "memindahkan tugas ini ke siklus berikutnya saat siklus berakhir"
 		},
-		"importedFromJira": "mengimpor tugas ini dari Jira {{key}}",
-		"importedFromSource": "mengimpor tugas ini dari {{source}} {{key}}",
 		"movedToTrash": "memindahkan tugas ini ke sampah",
-		"restoredFromTrash": "memulihkan tugas ini dari sampah"
+		"restoredFromTrash": "memulihkan tugas ini dari sampah",
+		"parentRemovedHidden": "menghapus tugas induk di proyek lain",
+		"subtaskAddedHidden": "menambahkan subtugas di proyek lain",
+		"subtaskRemovedHidden": "menghapus subtugas di proyek lain",
+		"copiedToHidden": "membuat salinan tugas ini di proyek lain",
+		"relationAddedHidden": {
+			"related": "menandai tugas ini terkait dengan tugas di proyek lain",
+			"blocking": "menandai tugas ini memblokir tugas di proyek lain",
+			"blocked_by": "menandai tugas ini diblokir oleh tugas di proyek lain",
+			"duplicate": "menandai tugas ini sebagai duplikat dari tugas di proyek lain",
+			"start_before": "mengatur tugas ini agar dimulai sebelum tugas di proyek lain",
+			"start_after": "mengatur tugas ini agar dimulai setelah tugas di proyek lain",
+			"finish_before": "mengatur tugas ini agar selesai sebelum tugas di proyek lain",
+			"finish_after": "mengatur tugas ini agar selesai setelah tugas di proyek lain"
+		},
+		"relationRemovedHidden": "menghapus relasi {{relation}} dengan tugas di proyek lain",
+		"parentSetHidden": "mengatur tugas induk menjadi tugas di proyek lain",
+		"parentChangedFromHidden": "mengubah tugas induk dari tugas di proyek lain menjadi <to>{{to}}</to>",
+		"parentChangedToHidden": "mengubah tugas induk dari <from>{{from}}</from> menjadi tugas di proyek lain",
+		"parentChangedBetweenHidden": "mengubah tugas induk di antara tugas-tugas di proyek lain",
+		"copiedFromHidden": "membuat tugas ini sebagai salinan dari tugas di proyek lain",
+		"movedFromHidden": "memindahkan tugas dari proyek lain ke \"{{to}}\"",
+		"movedToHidden": "memindahkan tugas dari \"{{from}}\" ke proyek lain",
+		"movedBetweenHidden": "memindahkan tugas di antara proyek lain",
+		"changedStatusHidden": "mengubah status di proyek lain",
+		"addedToHiddenCycle": "menambahkan tugas ke sebuah siklus",
+		"removedFromHiddenCycle": "menghapus tugas dari sebuah siklus",
+		"movedCycleFromHidden": "memindahkan tugas dari siklus lain ke {{to}}",
+		"movedCycleToHidden": "memindahkan tugas dari siklus {{from}} ke siklus lain",
+		"movedCycleBetweenHidden": "memindahkan tugas antarsiklus",
+		"addedToHiddenModule": "menambahkan tugas ke sebuah modul",
+		"removedFromHiddenModule": "menghapus tugas dari sebuah modul"
 	},
 	"tasks": {
 		"recurrence": {
@@ -3955,8 +4083,29 @@
 				"recurredFrom": "membuat tugas ini sebagai pengulangan berikutnya dari <task>{{task}}</task>",
 				"recurredFromScheduled": "Dibuat sesuai jadwal sebagai pengulangan berikutnya dari <task>{{task}}</task>",
 				"recurredTo": "menyelesaikan tugas ini, sehingga pengulangan berikutnya <task>{{task}}</task> dibuat",
-				"recurredToScheduled": "Pengulangan berikutnya dibuat sesuai jadwal: <task>{{task}}</task>"
+				"recurredToScheduled": "Pengulangan berikutnya dibuat sesuai jadwal: <task>{{task}}</task>",
+				"recurredToHidden": "menyelesaikan tugas ini, sehingga pengulangan berikutnya dibuat di proyek lain",
+				"recurredToScheduledHidden": "Pengulangan berikutnya dibuat sesuai jadwal di proyek lain",
+				"recurredFromHidden": "membuat tugas ini sebagai pengulangan berikutnya dari tugas di proyek lain",
+				"recurredFromScheduledHidden": "Dibuat sesuai jadwal sebagai pengulangan berikutnya dari tugas di proyek lain"
 			}
+		},
+		"subscription": {
+			"count_other": "{{count}} orang berlangganan",
+			"error": "Tidak dapat memperbarui langganan Anda",
+			"mutedAssignee": "Anda ditugaskan tetapi berhenti berlangganan. Anda tetap akan menerima pemberitahuan saat disebut.",
+			"notSubscribed": "Dapatkan pembaruan tentang perubahan status, komentar, dan perubahan lainnya.",
+			"reasons": {
+				"assignee": "Anda berlangganan karena ditugaskan.",
+				"commenter": "Anda berlangganan karena Anda berkomentar.",
+				"creator": "Anda berlangganan karena Anda membuat tugas ini.",
+				"manual": "Anda berlangganan tugas ini.",
+				"mention": "Anda berlangganan karena disebut."
+			},
+			"subscribe": "Berlangganan",
+			"toastSubscribed": "Berlangganan tugas ini",
+			"toastUnsubscribed": "Berhenti berlangganan. Anda tetap akan diberi tahu saat disebut.",
+			"unsubscribe": "Berhenti berlangganan"
 		},
 		"status": {
 			"label": "Status",
@@ -3967,6 +4116,32 @@
 			"archived": "Diarsipkan",
 			"planned": "Direncanakan"
 		},
+		"columnGroups": {
+			"backlog": {
+				"description": "Tercatat, belum direncanakan",
+				"label": "Backlog"
+			},
+			"cancelled": {
+				"description": "Ditutup tanpa menyelesaikan pekerjaan",
+				"label": "Dibatalkan"
+			},
+			"completed": {
+				"description": "Selesai",
+				"label": "Selesai"
+			},
+			"started": {
+				"description": "Pekerjaan sedang berlangsung",
+				"label": "Dimulai"
+			},
+			"triage": {
+				"description": "Menunggu peninjauan di penerimaan",
+				"label": "Triase"
+			},
+			"unstarted": {
+				"description": "Direncanakan, pekerjaan belum dimulai",
+				"label": "Belum dimulai"
+			}
+		},
 		"priority": {
 			"label": "Prioritas",
 			"no-priority": "Tanpa prioritas",
@@ -3975,7 +4150,7 @@
 			"high": "Tinggi",
 			"urgent": "Mendesak"
 		},
-		"boardSearchPlaceholder": "Cari tiket...",
+		"boardSearchPlaceholder": "Cari tugas...",
 		"view": {
 			"board": "Papan",
 			"list": "Daftar",
@@ -3992,9 +4167,16 @@
 		},
 		"detail": {
 			"subtaskOf": "Subtugas dari",
+			"customFieldUpdated": "Field diperbarui",
+			"selectOption": "Pilih opsi",
 			"activity": "Aktivitas",
 			"noActivity": "Tidak ada aktivitas ditemukan",
 			"openInFullPage": "Buka di halaman penuh",
+			"openOnBoard": "Buka di papan",
+			"sheetLabel": "Detail tugas",
+			"previousTask": "Tugas sebelumnya",
+			"nextTask": "Tugas berikutnya",
+			"position": "{{position}} dari {{total}}",
 			"titlePlaceholder": "Klik untuk menambahkan judul",
 			"addDescription": "Tambahkan deskripsi...",
 			"editor": {
@@ -4124,13 +4306,11 @@
 					"toolbar": "Opsi gambar"
 				}
 			},
-			"customFieldUpdated": "Field diperbarui",
-			"selectOption": "Pilih opsi",
-			"nextTask": "Tugas berikutnya",
-			"openOnBoard": "Buka di papan",
-			"position": "{{position}} dari {{total}}",
-			"previousTask": "Tugas sebelumnya",
-			"sheetLabel": "Detail tugas"
+			"saveError": {
+				"title": "Judul Anda tidak tersimpan. Judulnya masih ada di kolom, jadi Anda dapat mencoba lagi.",
+				"description": "Deskripsi Anda tidak tersimpan. Deskripsinya masih ada di editor, jadi Anda dapat mencoba lagi.",
+				"retry": "Coba lagi"
+			}
 		},
 		"entity": {
 			"task": "Tugas"
@@ -4298,176 +4478,6 @@
 				"isAnyOf": "adalah salah satu dari"
 			}
 		},
-		"gantt": {
-			"pageTitle": "{{name}} – Gantt",
-			"title": "Linimasa Gantt",
-			"searchPlaceholder": "Cari tugas...",
-			"hideTasks": "Sembunyikan tugas",
-			"showTasks": "Tampilkan tugas",
-			"noTasks": "Tidak ada tugas terjadwal",
-			"noTasksSubtitle": "Tambahkan tanggal mulai, tenggat, atau keduanya ke tugas untuk menempatkannya di linimasa proyek.",
-			"noTasksFound": "Tugas tidak ditemukan",
-			"noTasksMatch": "Tidak ada tugas terjadwal yang cocok dengan \"{{query}}\"",
-			"taskHeader": "Tugas",
-			"updateDatesError": "Gagal memperbarui tanggal tugas",
-			"resizeStart": "Ubah ukuran tanggal mulai",
-			"resizeDue": "Ubah ukuran tenggat",
-			"taskAriaLabel": "{{title}}: buka atau seret untuk memindahkan",
-			"jumpToToday": "Lompat ke hari ini",
-			"previousPeriod": "Periode sebelumnya",
-			"nextPeriod": "Periode berikutnya",
-			"periodStart": "Tanggal mulai linimasa",
-			"showTaskDates": "Tampilkan tanggal tugas",
-			"dependencyConflict": "Mulai atau selesai tidak sesuai urutan dependensi",
-			"dragToSchedule": "Seret {{title}} ke linimasa",
-			"noDates": "Tanpa tanggal",
-			"noDatesCount": "Tanpa tanggal · {{count}}",
-			"noDatesHint": "Seret ke linimasa atau jadwalkan mulai hari ini.",
-			"schedule": "Jadwalkan",
-			"scheduleTask": "Jadwalkan {{title}} mulai hari ini",
-			"zoom": "Zoom linimasa",
-			"zoomMonth": "Bulan",
-			"zoomQuarter": "Kuartal",
-			"zoomWeek": "Minggu"
-		},
-		"delete": {
-			"title": "Hapus tugas?",
-			"description": "Tugas dan subtugasnya dipindahkan ke sampah proyek. Anda dapat memulihkannya dari Baru dihapus di pengaturan proyek.",
-			"action": "Hapus tugas",
-			"success": "Tugas dipindahkan ke sampah",
-			"error": "Gagal menghapus tugas"
-		},
-		"archive": {
-			"success": "{{count}} tugas diarsipkan",
-			"archived": "Tugas diarsipkan",
-			"badge": "Diarsipkan",
-			"error": "Tidak dapat mengarsipkan tugas",
-			"restore": "Pulihkan",
-			"restored": "Tugas dipulihkan",
-			"restoreError": "Tidak dapat memulihkan tugas"
-		},
-		"listView": {
-			"addTask": "Tambah tugas",
-			"archiveAllTooltip": "Arsipkan semua tugas yang selesai",
-			"noTasks": "Tidak ada tugas"
-		},
-		"kanban": {
-			"addTask": "Tambah tugas",
-			"stages": "Kolom",
-			"emptyAction": "Tambah tugas",
-			"emptyTitle": "Belum ada tugas"
-		},
-		"pr": {
-			"merged": "Digabung",
-			"draft": "Draf",
-			"open": "Terbuka",
-			"label": "Pull request",
-			"count_other": "{{count}} PR"
-		},
-		"assignee": {
-			"label": "Penanggung jawab",
-			"unassigned": "Belum ditugaskan"
-		},
-		"dueDate": {
-			"label": "Tenggat",
-			"clear": "Hapus tanggal",
-			"updateSuccess": "Tenggat tugas berhasil diperbarui",
-			"updateError": "Gagal memperbarui tenggat tugas",
-			"clearSuccess": "Tenggat tugas dihapus",
-			"clearError": "Gagal menghapus tenggat"
-		},
-		"update": {
-			"success": "Tugas berhasil diperbarui",
-			"error": "Gagal memperbarui tugas"
-		},
-		"contextMenu": {
-			"copyLink": "Salin tautan",
-			"copyLinkSuccess": "Tautan tugas disalin",
-			"estimate": "Estimasi"
-		},
-		"actions": {
-			"archive": "Arsipkan",
-			"markAsPlanned": "Tandai sebagai direncanakan",
-			"delete": "Hapus...",
-			"copyKey": "Salin kode tugas",
-			"copyLink": "Salin tautan",
-			"makeCopy": "Buat salinan…",
-			"moreActions": "Tindakan lain"
-		},
-		"bulk": {
-			"selectedCount": "{{count}} dipilih",
-			"moveToBacklog": "Pindahkan ke Backlog",
-			"moveToBacklogSuccess": "{{count}} tugas dipindahkan ke backlog",
-			"moveToBacklogError": "Gagal memindahkan tugas ke backlog",
-			"moveToBoard": "Pindahkan ke papan",
-			"moveToBoardSuccess": "{{count}} tugas dipindahkan ke papan",
-			"moveToBoardError": "Gagal memindahkan tugas ke papan",
-			"delete": "Hapus tugas",
-			"deleteConfirm": "Pindahkan {{count}} tugas ke sampah? Anda dapat memulihkannya dari Baru dihapus di pengaturan proyek.",
-			"deleteSuccess": "{{count}} tugas dihapus",
-			"deleteError": "Gagal menghapus tugas",
-			"archive": "Arsipkan tugas",
-			"archiveSuccess": "{{count}} tugas diarsipkan",
-			"archiveError": "Gagal mengarsipkan tugas",
-			"updateSuccess": "{{count}} tugas diperbarui",
-			"updateError": "Gagal memperbarui tugas",
-			"setPriority": "Atur prioritas",
-			"updatePriorityError": "Gagal memperbarui prioritas",
-			"addLabel": "Tambah label",
-			"addLabelSuccess": "Label ditambahkan ke {{count}} tugas",
-			"addLabelError": "Gagal menambahkan label",
-			"setDueDate": "Atur tenggat",
-			"updateDueDateError": "Gagal memperbarui tenggat",
-			"actions": "Aksi",
-			"searchActions": "Cari aksi...",
-			"noActionsFound": "Tidak ada aksi ditemukan.",
-			"changeStatus": "Ubah status",
-			"removeLabel": "Hapus label",
-			"removeLabelSuccess": "Label dihapus dari {{count}} tugas",
-			"removeLabelError": "Gagal menghapus label",
-			"unarchive": "Pulihkan dari arsip",
-			"unarchiveSuccess": "{{count}} tugas dipulihkan",
-			"unarchiveNone": "Tidak ada tugas terpilih yang diarsipkan",
-			"unarchiveError": "Gagal memulihkan tugas",
-			"setDates": "Tanggal",
-			"dateField": "Tanggal yang diatur",
-			"startDate": "Tanggal mulai",
-			"dueDate": "Tenggat",
-			"clearStartDate": "Hapus tanggal mulai",
-			"clearDueDate": "Hapus tenggat",
-			"updateStartDateError": "Gagal memperbarui tanggal mulai. Tanggal mulai tidak boleh setelah tenggat tugas.",
-			"addAssignee": "Tambah penanggung jawab",
-			"addAssigneeSuccess_other": "Menambahkan {{name}} ke {{count}} tugas",
-			"assigneesError": "Gagal memperbarui penanggung jawab",
-			"clearAssignees": "Hapus penanggung jawab",
-			"clearAssigneesSuccess_other": "Menghapus penanggung jawab pada {{count}} tugas",
-			"removeAssignee": "Hapus penanggung jawab",
-			"removeAssigneeSuccess_other": "Menghapus {{name}} dari {{count}} tugas",
-			"clearSelection": "Hapus pilihan"
-		},
-		"editor": {
-			"table": {
-				"addColumnBefore": "Sisipkan kolom di kiri",
-				"addColumnAfter": "Sisipkan kolom di kanan",
-				"deleteColumn": "Hapus kolom",
-				"addRowBefore": "Sisipkan baris di atas",
-				"addRowAfter": "Sisipkan baris di bawah",
-				"deleteRow": "Hapus baris",
-				"deleteTable": "Hapus tabel",
-				"moveRowUp": "Pindahkan baris ke atas",
-				"moveRowDown": "Pindahkan baris ke bawah",
-				"moveColumnLeft": "Pindahkan kolom ke kiri",
-				"moveColumnRight": "Pindahkan kolom ke kanan",
-				"toggleHeaderRow": "Baris header",
-				"fullWidth": "Lebar penuh",
-				"dragRow": "Baris {{index}}",
-				"dragColumn": "Kolom {{index}}",
-				"dragRowHint": "Seret untuk memindahkan baris, atau gunakan tombol panah",
-				"dragColumnHint": "Seret untuk memindahkan kolom, atau gunakan tombol panah",
-				"insertRowHere": "Sisipkan baris di sini",
-				"insertColumnHere": "Sisipkan kolom di sini"
-			}
-		},
 		"calendar": {
 			"dayTasksAriaLabel": "Tampilkan semua tugas untuk {{date}}",
 			"moreTasks": "+{{count}} lagi",
@@ -4490,428 +4500,85 @@
 			"week": "Minggu",
 			"overdue": "Terlambat"
 		},
-		"descriptionSearchLoading": "Mencari deskripsi lengkap…",
-		"descriptionSearchError": "Pencarian deskripsi gagal. Hasil mungkin tidak lengkap.",
-		"descriptionRetry": "Coba lagi",
-		"descriptionLoading": "Memuat deskripsi…",
-		"descriptionLoadError": "Deskripsi tidak dapat dimuat. Coba lagi untuk memuat versi terbaru.",
-		"columnGroups": {
-			"backlog": {
-				"description": "Tercatat, belum direncanakan",
-				"label": "Backlog"
+		"gantt": {
+			"pageTitle": "{{name}} – Gantt",
+			"title": "Linimasa Gantt",
+			"jumpToToday": "Lompat ke hari ini",
+			"searchPlaceholder": "Cari tugas...",
+			"hideTasks": "Sembunyikan tugas",
+			"showTasks": "Tampilkan tugas",
+			"noTasks": "Tidak ada tugas terjadwal",
+			"noTasksSubtitle": "Tambahkan tanggal mulai, tenggat, atau keduanya ke tugas untuk menempatkannya di linimasa proyek.",
+			"noTasksFound": "Tugas tidak ditemukan",
+			"noTasksMatch": "Tidak ada tugas terjadwal yang cocok dengan \"{{query}}\"",
+			"taskHeader": "Tugas",
+			"updateDatesError": "Gagal memperbarui tanggal tugas",
+			"resizeStart": "Ubah ukuran tanggal mulai",
+			"resizeDue": "Ubah ukuran tenggat",
+			"taskAriaLabel": "{{title}}: buka atau seret untuk memindahkan",
+			"previousPeriod": "Periode sebelumnya",
+			"nextPeriod": "Periode berikutnya",
+			"periodStart": "Tanggal mulai linimasa",
+			"showTaskDates": "Tampilkan tanggal tugas",
+			"zoom": "Zoom linimasa",
+			"zoomWeek": "Minggu",
+			"zoomMonth": "Bulan",
+			"zoomQuarter": "Kuartal",
+			"noDates": "Tanpa tanggal",
+			"noDatesCount": "Tanpa tanggal · {{count}}",
+			"noDatesHint": "Seret ke linimasa atau jadwalkan mulai hari ini.",
+			"schedule": "Jadwalkan",
+			"scheduleTask": "Jadwalkan {{title}} mulai hari ini",
+			"dragToSchedule": "Seret {{title}} ke linimasa",
+			"dependencyConflict": "Mulai atau selesai tidak sesuai urutan dependensi",
+			"workspaceNoTasksSubtitle": "Tambahkan tanggal mulai, tenggat, atau keduanya ke tugas untuk melihatnya di linimasa ini.",
+			"showMoreTasks": "Tampilkan lebih banyak tugas",
+			"blocked": "Diblokir oleh tugas terbuka",
+			"linkFrom": "Tautkan {{title}} ke tugas lain",
+			"linkHint": "Seret ke tugas lain agar tugas itu menunggu tugas ini",
+			"link": {
+				"blocks": "{{source}} memblokir {{target}}",
+				"startBefore": "{{source}} dimulai sebelum {{target}}",
+				"finishBefore": "{{source}} selesai sebelum {{target}}",
+				"conflict": "Tanggalnya melanggar tautan ini."
 			},
-			"cancelled": {
-				"description": "Ditutup tanpa menyelesaikan pekerjaan",
-				"label": "Dibatalkan"
+			"milestone": {
+				"add": "Tonggak",
+				"ariaLabel": "Tonggak {{title}}: buka atau seret untuk memindahkan",
+				"name": "Nama tonggak",
+				"namePlaceholder": "Nama tonggak",
+				"date": "Tanggal tonggak",
+				"create": "Tambah tonggak",
+				"createError": "Tidak dapat menambahkan tonggak"
 			},
-			"completed": {
-				"description": "Selesai",
-				"label": "Selesai"
-			},
-			"started": {
-				"description": "Pekerjaan sedang berlangsung",
-				"label": "Dimulai"
-			},
-			"triage": {
-				"description": "Menunggu peninjauan di penerimaan",
-				"label": "Triase"
-			},
-			"unstarted": {
-				"description": "Direncanakan, pekerjaan belum dimulai",
-				"label": "Belum dimulai"
+			"cascade": {
+				"offer_other": "{{count}} tugas tertaut kini dimulai terlalu awal",
+				"reviewAction": "Tinjau perubahan tanggal",
+				"title_other": "Pindahkan {{count}} tugas tertaut?",
+				"description": "Tugas-tugas ini akan dimundurkan, secukupnya agar sesuai dengan tautannya, dan durasinya tetap. Tidak ada yang berubah sampai Anda mengonfirmasi.",
+				"to": "ke",
+				"cancel": "Pertahankan tanggal",
+				"confirm_other": "Pindahkan {{count}} tugas",
+				"moved_other": "{{count}} tugas dipindahkan",
+				"partial": "{{moved}} dari {{total}} tugas dipindahkan. Sisanya tetap pada tanggalnya.",
+				"nothingToMove": "Tidak ada tugas terbuka bertanggal yang perlu dipindahkan untuk tautan ini."
 			}
 		},
-		"estimate": {
-			"bulk": {
-				"action": "Estimasi",
-				"error": "Gagal mengubah estimasi tugas yang dipilih",
-				"updated_other": "Memperbarui estimasi {{count}} tugas"
-			},
-			"chart": {
-				"points": "Poin",
-				"pointsLeft": "Poin tersisa",
-				"summaryPoints": "{{remaining}} dari {{scope}} poin tersisa, {{days}} hari tersisa",
-				"summaryTime": "{{remaining}} dari {{scope}} tersisa, {{days}} hari tersisa",
-				"tasks": "Tugas",
-				"time": "Waktu",
-				"timeLeft": "Waktu tersisa",
-				"unitAria": "Satuan grafik"
-			},
-			"duration": {
-				"hours": "{{hours}} j",
-				"hoursMinutes": "{{hours}} j {{minutes}} m",
-				"hourUnit": "h",
-				"minutes": "{{minutes}} m",
-				"minuteUnit": "m"
-			},
-			"label": "Estimasi",
-			"none": "Tidak ada estimasi",
-			"pointsValue_other": "{{value}} poin",
-			"setAria": "Atur estimasi",
-			"totals": {
-				"estimated": "{{estimated}} dari {{total}} tugas diestimasi",
-				"points_other": "{{completed}} / {{total}} poin",
-				"time": "{{completed}} / {{total}}"
-			},
-			"updateError": "Gagal memperbarui estimasi"
+		"delete": {
+			"title": "Hapus tugas?",
+			"description": "Tugas dan subtugasnya dipindahkan ke sampah proyek. Anda dapat memulihkannya dari Baru dihapus di pengaturan proyek.",
+			"action": "Hapus tugas",
+			"success": "Tugas dipindahkan ke sampah",
+			"error": "Gagal menghapus tugas"
 		},
-		"assignees": {
-			"clear": "Hapus penanggung jawab",
-			"formerMember": "Bukan lagi anggota",
-			"formerMemberSuffix": "{{name}} (bukan lagi anggota)",
-			"label": "Penanggung jawab",
-			"limitReached": "Satu tugas dapat memiliki hingga {{count}} penanggung jawab",
-			"more": "+{{count}}",
-			"nameAndMore": "{{name}} +{{count}}",
-			"noMatches": "Tidak ada orang yang cocok",
-			"noMembers": "Belum ada anggota untuk ditugaskan",
-			"searchPlaceholder": "Cari orang...",
-			"stackAria": "Ditugaskan kepada {{names}}",
-			"unknownPerson": "Orang tidak dikenal",
-			"updateError": "Gagal memperbarui penanggung jawab",
-			"you": "{{name}} (Anda)"
-		},
-		"attachments": {
-			"add": "Lampirkan file",
-			"delete": "Hapus",
-			"deleteConfirmDescription": "File akan dihapus untuk semua orang. Tindakan ini tidak dapat dibatalkan.",
-			"deleteConfirmTitle": "Hapus {{filename}}?",
-			"download": "Unduh",
-			"dropHere": "Lepas file di sini atau klik untuk memilih",
-			"dropToAttach": "Lepas file untuk melampirkan",
-			"loadError": "Tidak dapat memuat lampiran",
-			"meta": "{{size}} · {{name}} · {{time}}",
-			"metaNoUser": "{{size}} · {{time}}",
-			"open": "Buka",
-			"title": "Lampiran",
-			"toast": {
-				"attached_other": "Melampirkan {{count}} file",
-				"deleted": "Lampiran dihapus",
-				"deleteError": "Tidak dapat menghapus lampiran",
-				"empty": "{{filename}} kosong",
-				"failed": "Tidak dapat melampirkan {{filename}}: {{reason}}",
-				"notConfigured": "Unggah file belum diatur di server ini. Minta administrator Anda mengonfigurasi penyimpanan.",
-				"storageError": "penyimpanan menolak unggahan",
-				"tooMany": "Anda dapat melampirkan hingga {{count}} file sekaligus",
-				"unknownError": "terjadi kesalahan"
-			},
-			"uploading": "Mengunggah…"
-		},
-		"copy": {
-			"alwaysCopied": "Status dan prioritas selalu disalin.",
-			"cancel": "Batal",
-			"includeLabel": "Sertakan",
-			"options": {
-				"assignees": "Penanggung jawab",
-				"attachments": "Lampiran",
-				"customFields": "Nilai bidang khusus",
-				"dates": "Tanggal mulai dan tenggat",
-				"description": "Deskripsi",
-				"labels": "Label",
-				"links": "Tautan",
-				"parent": "Tugas induk",
-				"planning": "Siklus, modul, dan estimasi"
-			},
-			"otherProjectHint": "Status akan disesuaikan dengan kolom proyek baru. Bidang khusus, tugas induk, dan informasi perencanaan tidak disalin antar proyek.",
-			"projectLabel": "Proyek",
-			"submit": "Buat salinan",
-			"title": "Buat salinan {{key}}",
-			"titleLabel": "Judul",
-			"titleRequired": "Judul wajib diisi",
-			"titleSuffix": "{{title}} (salinan)",
-			"toast": {
-				"error": "Tidak dapat membuat salinan",
-				"open": "Buka",
-				"skipped": "Tidak disalin: {{list}}",
-				"success": "Salinan dibuat: {{key}}"
-			}
-		},
-		"detailActions": {
-			"addLink": "Tambah tautan",
-			"addRelation": "Tambah relasi",
-			"addSubtask": "Tambah subtugas",
-			"attachFile": "Lampirkan file"
-		},
-		"links": {
-			"add": "Tambah tautan",
-			"addedAt": "Ditambahkan {{date}}",
-			"addedBy": "Ditambahkan oleh {{name}} · {{date}}",
-			"addTitle": "Tambah tautan",
-			"cancel": "Batal",
-			"copyUrl": "Salin URL",
-			"edit": "Edit",
-			"editTitle": "Edit tautan",
-			"errors": {
-				"credentials": "Tautan tidak boleh berisi nama pengguna atau kata sandi",
-				"duplicate": "Tautan ini sudah ada pada tugas ini",
-				"invalid": "Masukkan URL http atau https yang valid",
-				"required": "URL wajib diisi",
-				"titleTooLong": "Judul paling banyak 255 karakter",
-				"tooLong": "Tautan paling banyak 2.048 karakter"
-			},
-			"linkTitle": "Judul",
-			"loadError": "Tidak dapat memuat tautan",
-			"moreActions": "Tindakan tautan",
-			"remove": "Hapus",
-			"removeConfirmDescription": "Tautan ini akan dihapus dari tugas untuk semua orang.",
-			"removeConfirmTitle": "Hapus tautan ini?",
-			"retry": "Coba lagi",
-			"save": "Simpan",
-			"title": "Tautan",
-			"titlePlaceholder": "Judul tampilan (opsional)",
-			"toast": {
-				"added": "Tautan ditambahkan",
-				"copied": "Tautan disalin",
-				"error": "Tidak dapat menyimpan tautan",
-				"removed": "Tautan dihapus",
-				"updated": "Tautan diperbarui"
-			},
-			"url": "URL",
-			"urlPlaceholder": "https://example.com"
-		},
-		"create": {
-			"similarTitle": "Tugas terbuka yang mirip",
-			"similarDismiss": "Sembunyikan tugas yang mirip",
-			"similarOpen": "Buka",
-			"similarOpenLabel": "Buka {{key}} {{title}} di tab baru"
-		},
-		"parent": {
-			"add": "Tambah tugas induk",
-			"chip": "Tugas induk",
-			"label": "Tugas induk",
-			"noTasks": "Tugas tidak ditemukan",
-			"remove": "Hapus tugas induk",
-			"search": "Cari tugas…",
-			"tasksInProject": "Tugas dalam proyek ini",
-			"toast": {
-				"error": "Tidak dapat mengubah tugas induk",
-				"removed": "Tugas induk dihapus",
-				"set": "Tugas induk diatur ke {{key}}"
-			},
-			"tooltip": "Tugas induk: {{key}} {{title}}"
-		},
-		"taskKey": {
-			"clipboardError": "Tidak dapat menyalin ke clipboard",
-			"copied": "Menyalin {{key}}",
-			"copyTooltip": "Salin kode tugas"
-		},
-		"display": {
-			"button": "Tampilan",
-			"columns": "Kolom",
-			"groupBy": "Kelompokkan menurut",
-			"groups": {
-				"assignee": "Penanggung jawab",
-				"createdBy": "Dibuat oleh",
-				"cycle": "Siklus",
-				"estimate": "Estimasi",
-				"group": "Grup",
-				"label": "Label",
-				"module": "Modul",
-				"priority": "Prioritas",
-				"project": "Proyek",
-				"status": "Status"
-			},
-			"none": "Tidak ada",
-			"order": {
-				"assignee": "Penanggung jawab",
-				"completedAt": "Tanggal selesai",
-				"createdAt": "Terakhir dibuat",
-				"cycle": "Siklus",
-				"dueDate": "Tenggat",
-				"estimate": "Estimasi",
-				"label": "Label",
-				"manual": "Manual",
-				"module": "Modul",
-				"number": "Key tugas",
-				"priority": "Prioritas",
-				"startDate": "Tanggal mulai",
-				"status": "Status",
-				"subTaskCount": "Subtugas",
-				"title": "Judul",
-				"updatedAt": "Terakhir diperbarui",
-				"archivedAt": "Tanggal arsip"
-			},
-			"orderBy": "Urutkan menurut",
-			"properties": "Properti",
-			"props": {
-				"assignee": "Penanggung jawab",
-				"checklist": "Daftar periksa",
-				"createdAt": "Dibuat",
-				"cycle": "Siklus",
-				"dueDate": "Tenggat",
-				"estimate": "Estimasi",
-				"key": "Kunci",
-				"labels": "Label",
-				"modules": "Modul",
-				"priority": "Prioritas",
-				"startDate": "Tanggal mulai",
-				"status": "Status",
-				"subTaskCount": "Subtugas",
-				"updatedAt": "Diperbarui"
-			},
-			"showEmptyGroups": "Tampilkan grup kosong",
-			"showSubTasks": "Tampilkan subtugas",
-			"subGroupBy": "Subkelompok menurut"
-		},
-		"filters": {
-			"apply": "Terapkan",
-			"applyError": "Tidak dapat menerapkan filter",
-			"archived": {
-				"exclude": "Sembunyikan yang diarsipkan",
-				"include": "Tampilkan juga yang diarsipkan",
-				"label": "Diarsipkan",
-				"only": "Hanya yang diarsipkan"
-			},
-			"button": "Filter",
-			"clearAll": "Hapus semua filter",
-			"dates": {
-				"amount": "Jumlah",
-				"custom": "Tanggal kustom…",
-				"emptyTab": "Kosong",
-				"exact": "Tanggal tepat",
-				"future": "Setelah hari ini",
-				"lastMonth": "Bulan lalu",
-				"lastWeek": "Minggu lalu",
-				"nextMonth": "Bulan depan",
-				"nextWeek": "Minggu depan",
-				"overdue": "Terlambat",
-				"past": "Sebelum hari ini",
-				"presets": "Preset",
-				"rolling": "Bergulir",
-				"rollingValue": "{{amount}} {{unit}}",
-				"thisMonth": "Bulan ini",
-				"thisWeek": "Minggu ini",
-				"today": "Hari ini",
-				"tomorrow": "Besok",
-				"units": {
-					"days": "hari",
-					"months": "bulan",
-					"weeks": "minggu"
-				},
-				"yesterday": "Kemarin"
-			},
-			"matchAll": "Cocokkan semua",
-			"matchAny": "Cocokkan salah satu",
-			"mobileSummary_other": "{{count}} filter",
-			"nestedReadOnly": "Tampilan ini memakai filter lanjutan yang tidak dapat diedit di sini",
-			"noOptions": "Tidak ada opsi",
-			"operators": {
-				"between": "antara",
-				"is": "adalah",
-				"isEmpty": "kosong",
-				"isNoneOf": "bukan salah satu dari",
-				"isNot": "bukan",
-				"isNotEmpty": "tidak kosong",
-				"moreThanAgo": "lebih dari … yang lalu",
-				"moreThanAhead": "lebih dari … dari sekarang",
-				"on": "pada",
-				"onOrAfter": "pada atau setelah",
-				"onOrBefore": "pada atau sebelum",
-				"withinLast": "dalam … terakhir",
-				"withinNext": "dalam … ke depan"
-			},
-			"removeFilter": "Hapus filter {{subject}}",
-			"retry": "Coba lagi",
-			"searchOptions": "Cari opsi",
-			"subjects": {
-				"completed": "Diselesaikan",
-				"created": "Dibuat",
-				"createdBy": "Dibuat oleh",
-				"cycle": "Siklus",
-				"group": "Grup",
-				"mentions": "Sebutan",
-				"module": "Modul",
-				"parent": "Induk",
-				"project": "Proyek",
-				"startDate": "Tanggal mulai",
-				"subscribed": "Dilanggani",
-				"updated": "Diperbarui"
-			},
-			"tooMany": "Terlalu banyak hasil untuk difilter di sini; buka spreadsheet",
-			"values": {
-				"currentCycle": "Siklus saat ini",
-				"false": "Salah",
-				"me": "Saya",
-				"noAssignee": "Tanpa penanggung jawab",
-				"noCreator": "Tanpa pembuat",
-				"noCycle": "Tanpa siklus",
-				"noEstimate": "Tanpa estimasi",
-				"noLabel": "Tanpa label",
-				"noModule": "Tanpa modul",
-				"none": "Tidak ada",
-				"noParent": "Tanpa induk",
-				"true": "Benar"
-			}
-		},
-		"groups": {
-			"all": "Semua tugas",
-			"hiddenGroups_other": "{{count}} grup lainnya tidak ditampilkan",
-			"loadMore": "Muat lebih banyak ({{count}})",
-			"moduleCount_other": "{{count}} modul",
-			"moveError": "Tidak dapat memindahkan tugas",
-			"noAssignee": "Tanpa penanggung jawab",
-			"noCreator": "Tanpa pembuat",
-			"noCycle": "Tanpa siklus",
-			"noEstimate": "Tanpa estimasi",
-			"noLabel": "Tanpa label",
-			"noModule": "Tanpa modul",
-			"planned": "Terencana"
-		},
-		"queryEmpty": {
-			"clear": "Hapus filter",
-			"description": "Coba hapus satu atau dua filter.",
-			"title": "Tidak ada tugas yang cocok dengan filter ini"
-		},
-		"spreadsheet": {
-			"clearSort": "Hapus pengurutan",
-			"collapseSubTasks": "Sembunyikan subtugas",
-			"expandSubTasks": "Tampilkan subtugas",
-			"hideColumn": "Sembunyikan kolom",
-			"loadError": "Tidak dapat memuat tugas",
-			"selectTask": "Pilih {{key}}",
-			"sortAsc": "Urutkan naik",
-			"sortDesc": "Urutkan turun",
-			"task": "Tugas"
-		},
-		"subscription": {
-			"count_other": "{{count}} orang berlangganan",
-			"error": "Tidak dapat memperbarui langganan Anda",
-			"mutedAssignee": "Anda ditugaskan tetapi berhenti berlangganan. Anda tetap akan menerima pemberitahuan saat disebut.",
-			"notSubscribed": "Dapatkan pembaruan tentang perubahan status, komentar, dan perubahan lainnya.",
-			"reasons": {
-				"assignee": "Anda berlangganan karena ditugaskan.",
-				"commenter": "Anda berlangganan karena Anda berkomentar.",
-				"creator": "Anda berlangganan karena Anda membuat tugas ini.",
-				"manual": "Anda berlangganan tugas ini.",
-				"mention": "Anda berlangganan karena disebut."
-			},
-			"subscribe": "Berlangganan",
-			"toastSubscribed": "Berlangganan tugas ini",
-			"toastUnsubscribed": "Berhenti berlangganan. Anda tetap akan diberi tahu saat disebut.",
-			"unsubscribe": "Berhenti berlangganan"
-		},
-		"timeTracking": {
-			"duration": "Durasi",
-			"durationInvalid": "Masukkan durasi antara 1 menit dan 24 jam, seperti 1h 30m.",
-			"durationPlaceholder": "mis. 1h 30m",
-			"empty": "Belum ada waktu yang dicatat",
-			"entries": "Catatan waktu",
-			"formerMember": "Mantan anggota",
-			"hours": "{{hours}} jam",
-			"hoursMinutes": "{{hours}} jam {{minutes}} mnt",
-			"label": "Waktu yang dihabiskan",
-			"logError": "Gagal mencatat waktu",
-			"logged": "Waktu dicatat",
-			"logTime": "Catat waktu",
-			"minutes": "{{minutes}} mnt",
-			"note": "Catatan (opsional)",
-			"running": "Berjalan",
-			"spentAria": "Waktu yang dihabiskan: {{total}}. Catat waktu",
-			"submit": "Catat waktu",
-			"deleteConfirm": "Hapus catatan ini?",
-			"deleted": "Catatan waktu dihapus",
-			"deleteEntry": "Hapus catatan waktu dari {{date}}",
-			"deleteError": "Gagal menghapus catatan waktu"
+		"archive": {
+			"success": "{{count}} tugas diarsipkan",
+			"archived": "Tugas diarsipkan",
+			"badge": "Diarsipkan",
+			"error": "Tidak dapat mengarsipkan tugas",
+			"restore": "Pulihkan",
+			"restored": "Tugas dipulihkan",
+			"restoreError": "Tidak dapat memulihkan tugas"
 		},
 		"archivedBanner": {
 			"message": "Tugas ini diarsipkan {{time}}.",
@@ -4984,8 +4651,590 @@
 			},
 			"untitled": "Draf tanpa judul"
 		},
+		"listView": {
+			"addTask": "Tambah tugas",
+			"archiveAllTooltip": "Arsipkan semua tugas yang selesai",
+			"noTasks": "Tidak ada tugas"
+		},
+		"kanban": {
+			"addTask": "Tambah tugas",
+			"stages": "Kolom",
+			"emptyAction": "Tambah tugas",
+			"emptyTitle": "Belum ada tugas"
+		},
+		"pr": {
+			"merged": "Digabung",
+			"draft": "Draf",
+			"open": "Terbuka",
+			"label": "Pull request",
+			"count_other": "{{count}} PR"
+		},
+		"assignee": {
+			"label": "Penanggung jawab",
+			"unassigned": "Belum ditugaskan"
+		},
+		"assignees": {
+			"label": "Penanggung jawab",
+			"searchPlaceholder": "Cari orang...",
+			"noMatches": "Tidak ada orang yang cocok",
+			"noMembers": "Belum ada anggota untuk ditugaskan",
+			"you": "{{name}} (Anda)",
+			"clear": "Hapus penanggung jawab",
+			"more": "+{{count}}",
+			"nameAndMore": "{{name}} +{{count}}",
+			"stackAria": "Ditugaskan kepada {{names}}",
+			"formerMember": "Bukan lagi anggota",
+			"formerMemberSuffix": "{{name}} (bukan lagi anggota)",
+			"limitReached": "Satu tugas dapat memiliki hingga {{count}} penanggung jawab",
+			"updateError": "Gagal memperbarui penanggung jawab",
+			"unknownPerson": "Orang tidak dikenal",
+			"noAccess": "Tidak punya akses ke proyek ini",
+			"noAccessSuffix": "{{name}} (tidak punya akses ke proyek ini)"
+		},
+		"dueDate": {
+			"label": "Tenggat",
+			"clear": "Hapus tanggal",
+			"updateSuccess": "Tenggat tugas berhasil diperbarui",
+			"updateError": "Gagal memperbarui tenggat tugas",
+			"clearSuccess": "Tenggat tugas dihapus",
+			"clearError": "Gagal menghapus tenggat"
+		},
+		"update": {
+			"success": "Tugas berhasil diperbarui",
+			"error": "Gagal memperbarui tugas"
+		},
+		"contextMenu": {
+			"copyLink": "Salin tautan",
+			"copyLinkSuccess": "Tautan tugas disalin",
+			"estimate": "Estimasi"
+		},
+		"actions": {
+			"archive": "Arsipkan",
+			"markAsPlanned": "Tandai sebagai direncanakan",
+			"delete": "Hapus...",
+			"copyKey": "Salin kode tugas",
+			"copyLink": "Salin tautan",
+			"makeCopy": "Buat salinan…",
+			"moreActions": "Tindakan lain"
+		},
+		"commands": {
+			"assignedSelf": "Ditugaskan kepada Anda",
+			"assignees": "Ubah penanggung jawab…",
+			"assignSelf": "Tugaskan ke saya",
+			"copyTitle": "Salin judul",
+			"cycle": "Ubah siklus…",
+			"dueDate": "Ubah tenggat…",
+			"estimate": "Ubah estimasi…",
+			"group": "Tugas ini",
+			"labels": "Ubah label…",
+			"module": "Ubah modul…",
+			"priority": "Ubah prioritas…",
+			"status": "Ubah status…",
+			"titleCopied": "Judul tugas disalin",
+			"unassignedSelf": "Anda tidak lagi ditugaskan",
+			"unassignSelf": "Lepaskan saya"
+		},
+		"readableLink": {
+			"goHome": "Buka Beranda",
+			"notFound": "Tidak ada tugas dengan kunci {{key}} di ruang kerja ini, atau Anda tidak dapat melihatnya."
+		},
+		"timeTracking": {
+			"label": "Waktu yang dihabiskan",
+			"logTime": "Catat waktu",
+			"spentAria": "Waktu yang dihabiskan: {{total}}. Catat waktu",
+			"duration": "Durasi",
+			"durationPlaceholder": "mis. 1h 30m",
+			"durationInvalid": "Masukkan durasi antara 1 menit dan 24 jam, seperti 1h 30m.",
+			"note": "Catatan (opsional)",
+			"submit": "Catat waktu",
+			"logged": "Waktu dicatat",
+			"logError": "Gagal mencatat waktu",
+			"empty": "Belum ada waktu yang dicatat",
+			"entries": "Catatan waktu",
+			"running": "Berjalan",
+			"formerMember": "Mantan anggota",
+			"hours": "{{hours}} jam",
+			"minutes": "{{minutes}} mnt",
+			"hoursMinutes": "{{hours}} jam {{minutes}} mnt",
+			"deleteEntry": "Hapus catatan waktu dari {{date}}",
+			"deleteConfirm": "Hapus catatan ini?",
+			"deleted": "Catatan waktu dihapus",
+			"deleteError": "Gagal menghapus catatan waktu",
+			"startTimer": "Mulai pengatur waktu",
+			"startHere": "Hentikan dan mulai di sini",
+			"stopTimer": "Hentikan",
+			"timerRunning": "Pengatur waktu berjalan",
+			"timerRunningOn": "Pengatur waktu berjalan pada {{task}}",
+			"timerStarted": "Pengatur waktu dimulai",
+			"timerSwitched": "Pengatur waktu dimulai. Pengatur waktu Anda yang lain dihentikan.",
+			"timerStopped": "Pengatur waktu dihentikan. {{total}} dicatat.",
+			"timerStartError": "Tidak dapat memulai pengatur waktu",
+			"timerStopError": "Tidak dapat menghentikan pengatur waktu",
+			"loadError": "Tidak dapat memuat catatan waktu",
+			"editEntry": "Edit catatan waktu dari {{date}}",
+			"editStart": "Mulai",
+			"editEnd": "Selesai",
+			"editEndRunningHint": "Biarkan kosong agar tetap berjalan.",
+			"editEndRequired": "Masukkan waktu selesainya.",
+			"editStartInvalid": "Masukkan waktu mulainya.",
+			"editEndBeforeStart": "Waktu selesai tidak boleh sebelum waktu mulai.",
+			"editSave": "Simpan",
+			"edited": "Catatan waktu diperbarui",
+			"editError": "Tidak dapat memperbarui catatan waktu"
+		},
+		"bulk": {
+			"selectedCount": "{{count}} dipilih",
+			"moveToBacklog": "Pindahkan ke Backlog",
+			"clearSelection": "Hapus pilihan",
+			"moveToBacklogSuccess": "{{count}} tugas dipindahkan ke backlog",
+			"moveToBacklogError": "Gagal memindahkan tugas ke backlog",
+			"moveToBoard": "Pindahkan ke papan",
+			"moveToBoardSuccess": "{{count}} tugas dipindahkan ke papan",
+			"moveToBoardError": "Gagal memindahkan tugas ke papan",
+			"delete": "Hapus tugas",
+			"deleteConfirm": "Pindahkan {{count}} tugas ke sampah? Anda dapat memulihkannya dari Baru dihapus di pengaturan proyek.",
+			"deleteSuccess": "{{count}} tugas dihapus",
+			"deleteError": "Gagal menghapus tugas",
+			"archive": "Arsipkan tugas",
+			"archiveSuccess": "{{count}} tugas diarsipkan",
+			"archiveError": "Gagal mengarsipkan tugas",
+			"updateSuccess": "{{count}} tugas diperbarui",
+			"updateError": "Gagal memperbarui tugas",
+			"addAssignee": "Tambah penanggung jawab",
+			"removeAssignee": "Hapus penanggung jawab",
+			"clearAssignees": "Hapus penanggung jawab",
+			"addAssigneeSuccess_other": "Menambahkan {{name}} ke {{count}} tugas",
+			"removeAssigneeSuccess_other": "Menghapus {{name}} dari {{count}} tugas",
+			"clearAssigneesSuccess_other": "Menghapus penanggung jawab pada {{count}} tugas",
+			"assigneesError": "Gagal memperbarui penanggung jawab",
+			"setPriority": "Atur prioritas",
+			"updatePriorityError": "Gagal memperbarui prioritas",
+			"addLabel": "Tambah label",
+			"addLabelSuccess": "Label ditambahkan ke {{count}} tugas",
+			"addLabelError": "Gagal menambahkan label",
+			"setDueDate": "Atur tenggat",
+			"updateDueDateError": "Gagal memperbarui tenggat",
+			"actions": "Aksi",
+			"searchActions": "Cari aksi...",
+			"noActionsFound": "Tidak ada aksi ditemukan.",
+			"changeStatus": "Ubah status",
+			"removeLabel": "Hapus label",
+			"removeLabelSuccess": "Label dihapus dari {{count}} tugas",
+			"removeLabelError": "Gagal menghapus label",
+			"unarchive": "Pulihkan dari arsip",
+			"unarchiveSuccess": "{{count}} tugas dipulihkan",
+			"unarchiveNone": "Tidak ada tugas terpilih yang diarsipkan",
+			"unarchiveError": "Gagal memulihkan tugas",
+			"setDates": "Tanggal",
+			"dateField": "Tanggal yang diatur",
+			"startDate": "Tanggal mulai",
+			"dueDate": "Tenggat",
+			"clearStartDate": "Hapus tanggal mulai",
+			"clearDueDate": "Hapus tenggat",
+			"updateStartDateError": "Gagal memperbarui tanggal mulai. Tanggal mulai tidak boleh setelah tenggat tugas.",
+			"selectTask": "Pilih {{title}}",
+			"moveToProject": "Pindahkan ke proyek",
+			"moveToProjectTitle_other": "Pindahkan {{count}} tugas ke {{name}}?",
+			"moveToProjectRule": "Tugas mendapat kunci tugas baru. Setiap tugas mempertahankan statusnya jika proyek memilikinya; jika tidak, tugas masuk ke kolom pertama. Label dan penanggung jawab tetap. Siklus, modul, dan estimasi dikosongkan. Nilai field kustom hanya tetap jika proyek memiliki field dengan nama dan tipe yang sama.",
+			"moveToProjectConfirm": "Pindahkan tugas",
+			"moveToProjectSuccess_other": "{{count}} tugas dipindahkan ke {{name}}",
+			"moveToProjectNone": "Tugas-tugas ini sudah ada di {{name}}",
+			"moveToProjectError": "Tidak dapat memindahkan tugas"
+		},
+		"editor": {
+			"table": {
+				"addColumnBefore": "Sisipkan kolom di kiri",
+				"addColumnAfter": "Sisipkan kolom di kanan",
+				"deleteColumn": "Hapus kolom",
+				"addRowBefore": "Sisipkan baris di atas",
+				"addRowAfter": "Sisipkan baris di bawah",
+				"deleteRow": "Hapus baris",
+				"deleteTable": "Hapus tabel",
+				"moveRowUp": "Pindahkan baris ke atas",
+				"moveRowDown": "Pindahkan baris ke bawah",
+				"moveColumnLeft": "Pindahkan kolom ke kiri",
+				"moveColumnRight": "Pindahkan kolom ke kanan",
+				"toggleHeaderRow": "Baris header",
+				"fullWidth": "Lebar penuh",
+				"dragRow": "Baris {{index}}",
+				"dragColumn": "Kolom {{index}}",
+				"dragRowHint": "Seret untuk memindahkan baris, atau gunakan tombol panah",
+				"dragColumnHint": "Seret untuk memindahkan kolom, atau gunakan tombol panah",
+				"insertRowHere": "Sisipkan baris di sini",
+				"insertColumnHere": "Sisipkan kolom di sini"
+			}
+		},
+		"descriptionSearchLoading": "Mencari deskripsi lengkap…",
+		"descriptionSearchError": "Pencarian deskripsi gagal. Hasil mungkin tidak lengkap.",
+		"descriptionRetry": "Coba lagi",
+		"descriptionLoading": "Memuat deskripsi…",
+		"descriptionLoadError": "Deskripsi tidak dapat dimuat. Coba lagi untuk memuat versi terbaru.",
+		"descriptionHistory": {
+			"cancel": "Batal",
+			"description": "Versi tersimpan dari deskripsi ini, terbaru dulu. Suntingan oleh satu orang dalam 10 menit digabung dalam satu versi; 50 versi terbaru disimpan.",
+			"earlierVersion": "Versi sebelumnya",
+			"empty": "Belum ada versi tersimpan. Versi disimpan mulai suntingan berikutnya.",
+			"emptyVersion": "Versi ini tidak memiliki deskripsi.",
+			"latest": "Terbaru",
+			"list": "Versi tersimpan",
+			"loadError": "Tidak dapat memuat riwayat",
+			"open": "Riwayat",
+			"previewTitle": "Versi dari {{date}}",
+			"restore": "Pulihkan",
+			"restoreConfirmDescription": "Deskripsi akan diganti dengan versi ini. Teks saat ini tetap ada di riwayat.",
+			"restoreConfirmTitle": "Pulihkan versi ini?",
+			"restored": "Deskripsi dipulihkan",
+			"restoreError": "Tidak dapat memulihkan versi ini",
+			"retry": "Coba lagi",
+			"size_other": "{{count}} karakter",
+			"title": "Riwayat deskripsi",
+			"viewOnly": "Hanya lihat"
+		},
+		"estimate": {
+			"bulk": {
+				"action": "Estimasi",
+				"error": "Gagal mengubah estimasi tugas yang dipilih",
+				"updated_other": "Memperbarui estimasi {{count}} tugas"
+			},
+			"chart": {
+				"points": "Poin",
+				"pointsLeft": "Poin tersisa",
+				"summaryPoints": "{{remaining}} dari {{scope}} poin tersisa, {{days}} hari tersisa",
+				"summaryTime": "{{remaining}} dari {{scope}} tersisa, {{days}} hari tersisa",
+				"tasks": "Tugas",
+				"time": "Waktu",
+				"timeLeft": "Waktu tersisa",
+				"unitAria": "Satuan grafik"
+			},
+			"duration": {
+				"hours": "{{hours}} j",
+				"hoursMinutes": "{{hours}} j {{minutes}} m",
+				"hourUnit": "h",
+				"minutes": "{{minutes}} m",
+				"minuteUnit": "m"
+			},
+			"label": "Estimasi",
+			"none": "Tidak ada estimasi",
+			"pointsValue_other": "{{value}} poin",
+			"setAria": "Atur estimasi",
+			"totals": {
+				"estimated": "{{estimated}} dari {{total}} tugas diestimasi",
+				"points_other": "{{completed}} / {{total}} poin",
+				"time": "{{completed}} / {{total}}"
+			},
+			"updateError": "Gagal memperbarui estimasi"
+		},
+		"detailActions": {
+			"addLink": "Tambah tautan",
+			"addRelation": "Tambah relasi",
+			"addSubtask": "Tambah subtugas",
+			"attachFile": "Lampirkan file"
+		},
+		"taskKey": {
+			"clipboardError": "Tidak dapat menyalin ke clipboard",
+			"copied": "Menyalin {{key}}",
+			"copyTooltip": "Salin kode tugas"
+		},
 		"pageReferences": {
 			"title": "Disebut di halaman"
+		},
+		"links": {
+			"add": "Tambah tautan",
+			"addedAt": "Ditambahkan {{date}}",
+			"addedBy": "Ditambahkan oleh {{name}} · {{date}}",
+			"addTitle": "Tambah tautan",
+			"cancel": "Batal",
+			"copyUrl": "Salin URL",
+			"edit": "Edit",
+			"editTitle": "Edit tautan",
+			"errors": {
+				"credentials": "Tautan tidak boleh berisi nama pengguna atau kata sandi",
+				"duplicate": "Tautan ini sudah ada pada tugas ini",
+				"invalid": "Masukkan URL http atau https yang valid",
+				"required": "URL wajib diisi",
+				"titleTooLong": "Judul paling banyak 255 karakter",
+				"tooLong": "Tautan paling banyak 2.048 karakter"
+			},
+			"linkTitle": "Judul",
+			"loadError": "Tidak dapat memuat tautan",
+			"moreActions": "Tindakan tautan",
+			"remove": "Hapus",
+			"removeConfirmDescription": "Tautan ini akan dihapus dari tugas untuk semua orang.",
+			"removeConfirmTitle": "Hapus tautan ini?",
+			"retry": "Coba lagi",
+			"save": "Simpan",
+			"title": "Tautan",
+			"titlePlaceholder": "Judul tampilan (opsional)",
+			"toast": {
+				"added": "Tautan ditambahkan",
+				"copied": "Tautan disalin",
+				"error": "Tidak dapat menyimpan tautan",
+				"removed": "Tautan dihapus",
+				"updated": "Tautan diperbarui"
+			},
+			"url": "URL",
+			"urlPlaceholder": "https://example.com"
+		},
+		"attachments": {
+			"add": "Lampirkan file",
+			"delete": "Hapus",
+			"deleteConfirmDescription": "File akan dihapus untuk semua orang. Tindakan ini tidak dapat dibatalkan.",
+			"deleteConfirmTitle": "Hapus {{filename}}?",
+			"download": "Unduh",
+			"dropHere": "Lepas file di sini atau klik untuk memilih",
+			"dropToAttach": "Lepas file untuk melampirkan",
+			"loadError": "Tidak dapat memuat lampiran",
+			"meta": "{{size}} · {{name}} · {{time}}",
+			"metaNoUser": "{{size}} · {{time}}",
+			"open": "Buka",
+			"title": "Lampiran",
+			"toast": {
+				"attached_other": "Melampirkan {{count}} file",
+				"deleted": "Lampiran dihapus",
+				"deleteError": "Tidak dapat menghapus lampiran",
+				"empty": "{{filename}} kosong",
+				"failed": "Tidak dapat melampirkan {{filename}}: {{reason}}",
+				"notConfigured": "Unggah file belum diatur di server ini. Minta administrator Anda mengonfigurasi penyimpanan.",
+				"storageError": "penyimpanan menolak unggahan",
+				"tooMany": "Anda dapat melampirkan hingga {{count}} file sekaligus",
+				"unknownError": "terjadi kesalahan"
+			},
+			"uploading": "Mengunggah…"
+		},
+		"create": {
+			"similarTitle": "Tugas terbuka yang mirip",
+			"similarDismiss": "Sembunyikan tugas yang mirip",
+			"similarOpen": "Buka",
+			"similarOpenLabel": "Buka {{key}} {{title}} di tab baru"
+		},
+		"parent": {
+			"add": "Tambah tugas induk",
+			"chip": "Tugas induk",
+			"label": "Tugas induk",
+			"noTasks": "Tugas tidak ditemukan",
+			"remove": "Hapus tugas induk",
+			"search": "Cari tugas…",
+			"tasksInProject": "Tugas dalam proyek ini",
+			"toast": {
+				"error": "Tidak dapat mengubah tugas induk",
+				"removed": "Tugas induk dihapus",
+				"set": "Tugas induk diatur ke {{key}}"
+			},
+			"tooltip": "Tugas induk: {{key}} {{title}}"
+		},
+		"copy": {
+			"alwaysCopied": "Status dan prioritas selalu disalin.",
+			"cancel": "Batal",
+			"includeLabel": "Sertakan",
+			"options": {
+				"assignees": "Penanggung jawab",
+				"attachments": "Lampiran",
+				"customFields": "Nilai bidang khusus",
+				"dates": "Tanggal mulai dan tenggat",
+				"description": "Deskripsi",
+				"labels": "Label",
+				"links": "Tautan",
+				"parent": "Tugas induk",
+				"planning": "Siklus, modul, dan estimasi"
+			},
+			"otherProjectHint": "Status akan disesuaikan dengan kolom proyek baru. Bidang khusus, tugas induk, dan informasi perencanaan tidak disalin antar proyek.",
+			"projectLabel": "Proyek",
+			"submit": "Buat salinan",
+			"title": "Buat salinan {{key}}",
+			"titleLabel": "Judul",
+			"titleRequired": "Judul wajib diisi",
+			"titleSuffix": "{{title}} (salinan)",
+			"toast": {
+				"error": "Tidak dapat membuat salinan",
+				"open": "Buka",
+				"skipped": "Tidak disalin: {{list}}",
+				"success": "Salinan dibuat: {{key}}"
+			}
+		},
+		"filters": {
+			"button": "Filter",
+			"searchOptions": "Cari opsi",
+			"noOptions": "Tidak ada opsi",
+			"matchAll": "Cocokkan semua",
+			"matchAny": "Cocokkan salah satu",
+			"applyError": "Tidak dapat menerapkan filter",
+			"retry": "Coba lagi",
+			"tooMany": "Terlalu banyak hasil untuk difilter di sini; buka spreadsheet",
+			"nestedReadOnly": "Tampilan ini memakai filter lanjutan yang tidak dapat diedit di sini",
+			"clearAll": "Hapus semua filter",
+			"apply": "Terapkan",
+			"mobileSummary_other": "{{count}} filter",
+			"removeFilter": "Hapus filter {{subject}}",
+			"subjects": {
+				"group": "Grup",
+				"createdBy": "Dibuat oleh",
+				"cycle": "Siklus",
+				"module": "Modul",
+				"startDate": "Tanggal mulai",
+				"created": "Dibuat",
+				"updated": "Diperbarui",
+				"completed": "Diselesaikan",
+				"parent": "Induk",
+				"project": "Proyek",
+				"subscribed": "Dilanggani",
+				"mentions": "Sebutan",
+				"blocked": "Diblokir"
+			},
+			"operators": {
+				"between": "antara",
+				"is": "adalah",
+				"isEmpty": "kosong",
+				"isNoneOf": "bukan salah satu dari",
+				"isNot": "bukan",
+				"isNotEmpty": "tidak kosong",
+				"moreThanAgo": "lebih dari … yang lalu",
+				"moreThanAhead": "lebih dari … dari sekarang",
+				"on": "pada",
+				"onOrAfter": "pada atau setelah",
+				"onOrBefore": "pada atau sebelum",
+				"withinLast": "dalam … terakhir",
+				"withinNext": "dalam … ke depan"
+			},
+			"values": {
+				"me": "Saya",
+				"none": "Tidak ada",
+				"noAssignee": "Tanpa penanggung jawab",
+				"noCreator": "Tanpa pembuat",
+				"noLabel": "Tanpa label",
+				"noCycle": "Tanpa siklus",
+				"noModule": "Tanpa modul",
+				"noEstimate": "Tanpa estimasi",
+				"noParent": "Tanpa induk",
+				"currentCycle": "Siklus saat ini",
+				"true": "Benar",
+				"false": "Salah",
+				"blockedYes": "Ya",
+				"blockedNo": "Tidak"
+			},
+			"dates": {
+				"amount": "Jumlah",
+				"custom": "Tanggal kustom…",
+				"emptyTab": "Kosong",
+				"exact": "Tanggal tepat",
+				"future": "Setelah hari ini",
+				"lastMonth": "Bulan lalu",
+				"lastWeek": "Minggu lalu",
+				"nextMonth": "Bulan depan",
+				"nextWeek": "Minggu depan",
+				"overdue": "Terlambat",
+				"past": "Sebelum hari ini",
+				"presets": "Preset",
+				"rolling": "Bergulir",
+				"rollingValue": "{{amount}} {{unit}}",
+				"thisMonth": "Bulan ini",
+				"thisWeek": "Minggu ini",
+				"today": "Hari ini",
+				"tomorrow": "Besok",
+				"units": {
+					"days": "hari",
+					"months": "bulan",
+					"weeks": "minggu"
+				},
+				"yesterday": "Kemarin"
+			},
+			"archived": {
+				"exclude": "Sembunyikan yang diarsipkan",
+				"include": "Tampilkan juga yang diarsipkan",
+				"label": "Diarsipkan",
+				"only": "Hanya yang diarsipkan"
+			},
+			"myTasks": "Tugas saya"
+		},
+		"display": {
+			"button": "Tampilan",
+			"columns": "Kolom",
+			"groupBy": "Kelompokkan menurut",
+			"groups": {
+				"status": "Status",
+				"group": "Grup",
+				"priority": "Prioritas",
+				"assignee": "Penanggung jawab",
+				"createdBy": "Dibuat oleh",
+				"label": "Label",
+				"cycle": "Siklus",
+				"module": "Modul",
+				"estimate": "Estimasi",
+				"project": "Proyek",
+				"customField": "Field kustom"
+			},
+			"none": "Tidak ada",
+			"order": {
+				"manual": "Manual",
+				"createdAt": "Terakhir dibuat",
+				"updatedAt": "Terakhir diperbarui",
+				"completedAt": "Tanggal selesai",
+				"startDate": "Tanggal mulai",
+				"dueDate": "Tenggat",
+				"priority": "Prioritas",
+				"title": "Judul",
+				"number": "Key tugas",
+				"status": "Status",
+				"assignee": "Penanggung jawab",
+				"label": "Label",
+				"cycle": "Siklus",
+				"module": "Modul",
+				"estimate": "Estimasi",
+				"subTaskCount": "Subtugas",
+				"archivedAt": "Tanggal arsip",
+				"customField": "Field kustom"
+			},
+			"orderBy": "Urutkan menurut",
+			"properties": "Properti",
+			"props": {
+				"assignee": "Penanggung jawab",
+				"checklist": "Daftar periksa",
+				"createdAt": "Dibuat",
+				"cycle": "Siklus",
+				"dueDate": "Tenggat",
+				"estimate": "Estimasi",
+				"key": "Kunci",
+				"labels": "Label",
+				"modules": "Modul",
+				"priority": "Prioritas",
+				"startDate": "Tanggal mulai",
+				"status": "Status",
+				"subTaskCount": "Subtugas",
+				"updatedAt": "Diperbarui"
+			},
+			"showEmptyGroups": "Tampilkan grup kosong",
+			"showSubTasks": "Tampilkan subtugas",
+			"subGroupBy": "Subkelompok menurut"
+		},
+		"groups": {
+			"all": "Semua tugas",
+			"planned": "Terencana",
+			"noAssignee": "Tanpa penanggung jawab",
+			"noCreator": "Tanpa pembuat",
+			"noLabel": "Tanpa label",
+			"noCycle": "Tanpa siklus",
+			"noModule": "Tanpa modul",
+			"noEstimate": "Tanpa estimasi",
+			"loadMore": "Muat lebih banyak ({{count}})",
+			"hiddenGroups_other": "{{count}} grup lainnya tidak ditampilkan",
+			"moduleCount_other": "{{count}} modul",
+			"moveError": "Tidak dapat memindahkan tugas",
+			"noFieldValue": "Tanpa nilai"
+		},
+		"spreadsheet": {
+			"clearSort": "Hapus pengurutan",
+			"collapseSubTasks": "Sembunyikan subtugas",
+			"expandSubTasks": "Tampilkan subtugas",
+			"hideColumn": "Sembunyikan kolom",
+			"loadError": "Tidak dapat memuat tugas",
+			"selectTask": "Pilih {{key}}",
+			"sortAsc": "Urutkan naik",
+			"sortDesc": "Urutkan turun",
+			"task": "Tugas"
+		},
+		"queryEmpty": {
+			"clear": "Hapus filter",
+			"description": "Coba hapus satu atau dua filter.",
+			"title": "Tidak ada tugas yang cocok dengan filter ini"
 		},
 		"capture": {
 			"ariaLabel": "Tambah tugas ke {{column}}",
@@ -5011,47 +5260,32 @@
 			"changePriority": "Prioritas: {{priority}}",
 			"changeStatus": "Status: {{status}}"
 		},
-		"commands": {
-			"assignedSelf": "Ditugaskan kepada Anda",
-			"assignees": "Ubah penanggung jawab…",
-			"assignSelf": "Tugaskan ke saya",
-			"copyTitle": "Salin judul",
-			"cycle": "Ubah siklus…",
-			"dueDate": "Ubah tenggat…",
-			"estimate": "Ubah estimasi…",
-			"group": "Tugas ini",
-			"labels": "Ubah label…",
-			"module": "Ubah modul…",
-			"priority": "Ubah prioritas…",
-			"status": "Ubah status…",
-			"titleCopied": "Judul tugas disalin",
-			"unassignedSelf": "Anda tidak lagi ditugaskan",
-			"unassignSelf": "Lepaskan saya"
+		"boardSearchOpen": "Cari tugas",
+		"customFieldValue": {
+			"clear": "Hapus nilai",
+			"edit": "Edit {{name}}",
+			"removedOption": "{{value}} (opsi dihapus)",
+			"saveError": "Tidak dapat menyimpan field ini.",
+			"placeholder": "Nilai baru",
+			"true": "Benar",
+			"false": "Salah"
 		},
-		"readableLink": {
-			"goHome": "Buka Beranda",
-			"notFound": "Tidak ada tugas dengan kunci {{key}} di ruang kerja ini, atau Anda tidak dapat melihatnya."
+		"customFieldBulk": {
+			"action": "Field kustom",
+			"chooseField": "Pilih field",
+			"apply": "Terapkan",
+			"updated_other": "{{count}} tugas diperbarui",
+			"error": "Tidak dapat memperbarui tugas yang dipilih."
 		},
-		"descriptionHistory": {
-			"cancel": "Batal",
-			"description": "Versi tersimpan dari deskripsi ini, terbaru dulu. Suntingan oleh satu orang dalam 10 menit digabung dalam satu versi; 50 versi terbaru disimpan.",
-			"earlierVersion": "Versi sebelumnya",
-			"empty": "Belum ada versi tersimpan. Versi disimpan mulai suntingan berikutnya.",
-			"emptyVersion": "Versi ini tidak memiliki deskripsi.",
-			"latest": "Terbaru",
-			"list": "Versi tersimpan",
-			"loadError": "Tidak dapat memuat riwayat",
-			"open": "Riwayat",
-			"previewTitle": "Versi dari {{date}}",
-			"restore": "Pulihkan",
-			"restoreConfirmDescription": "Deskripsi akan diganti dengan versi ini. Teks saat ini tetap ada di riwayat.",
-			"restoreConfirmTitle": "Pulihkan versi ini?",
-			"restored": "Deskripsi dipulihkan",
-			"restoreError": "Tidak dapat memulihkan versi ini",
-			"retry": "Coba lagi",
-			"size_other": "{{count}} karakter",
-			"title": "Riwayat deskripsi",
-			"viewOnly": "Hanya lihat"
+		"milestone": {
+			"label": "Tonggak",
+			"hint": "Menandai satu tanggal. Linimasa menampilkannya sebagai berlian pada tenggatnya.",
+			"updateError": "Tidak dapat memperbarui tonggak"
+		},
+		"scheduleField": {
+			"label": "Field yang ditampilkan pada tugas",
+			"none": "Tanpa field",
+			"value": "{{name}}: {{value}}"
 		}
 	},
 	"invitations": {
@@ -5107,7 +5341,8 @@
 				"inProgress": "Sedang berjalan"
 			},
 			"noDueDate": "Tanpa tenggat",
-			"reorderError": "Gagal mengubah urutan proyek"
+			"reorderError": "Gagal mengubah urutan proyek",
+			"emptyDescriptionGuest": "Anda belum ditambahkan ke proyek mana pun. Minta orang yang mengundang Anda untuk menambahkan Anda."
 		},
 		"search": {
 			"pageTitle": "Cari",
@@ -5210,7 +5445,8 @@
 			"owner": "Pemilik",
 			"admin": "Admin",
 			"member": "Anggota",
-			"viewer": "Lihat Saja"
+			"viewer": "Lihat Saja",
+			"guest": "Tamu"
 		},
 		"members": {
 			"pageTitle": "Anggota",
@@ -5246,7 +5482,13 @@
 			"sentSome": "Terkirim {{sent}} dari {{total}} undangan.",
 			"failedTitle": "Tidak terkirim",
 			"rateLimited": "Terlalu banyak undangan sekaligus. Tunggu satu menit, lalu kirim sisanya.",
-			"shareLinksDescription": "Bagikan setiap tautan kepada orangnya agar mereka dapat bergabung ke ruang kerja."
+			"shareLinksDescription": "Bagikan setiap tautan kepada orangnya agar mereka dapat bergabung ke ruang kerja.",
+			"guestRoleHint": "Tamu hanya melihat proyek tempat Anda menambahkan mereka, dan tidak melihat hal lain di ruang kerja.",
+			"guestProjectsLabel": "Proyek",
+			"guestProjectsHint": "Begitu menerima undangan, mereka bergabung ke proyek yang Anda centang, dengan peran proyek yang Anda pilih. Dengan peran Lihat Saja, mereka hanya dapat membaca.",
+			"guestProjectsEmpty": "Tidak ada proyek yang dapat Anda bagikan. Tambahkan mereka ke proyek setelah mereka bergabung.",
+			"guestProjectRoleFor": "Peran proyek di {{project}}",
+			"guestProjectsFailed": "Undangan sudah dikirim, tetapi proyeknya tidak dapat ditambahkan: {{message}}"
 		},
 		"membersTable": {
 			"emptyTitle": "Belum ada anggota tim",
@@ -5256,6 +5498,7 @@
 				"role": "Peran",
 				"joined": "Bergabung"
 			},
+			"ariaInvitationActions": "Tindakan undangan",
 			"ariaRemoveMember": "Hapus anggota",
 			"removeDialogTitle": "Keluarkan anggota tim?",
 			"removeDialogDescription": "{{name}} akan dikeluarkan dari ruang kerja dan kehilangan akses ke proyek serta tugasnya.",
@@ -5271,7 +5514,7 @@
 			"roleUpdateError": "Gagal memperbarui peran",
 			"ariaInvitationRole": "Peran untuk {{email}}",
 			"invitationRoleUpdateSuccess": "Peran undangan diperbarui",
-			"ariaInvitationActions": "Tindakan undangan"
+			"removeDialogAccessNote": "Jika ini satu-satunya ruang kerja mereka, mereka juga akan dikeluarkan dan API key mereka berhenti berfungsi."
 		},
 		"profile": {
 			"emptyActivity": "Belum ada aktivitas",
@@ -6296,7 +6539,7 @@
 					"visibility": "Visibilitas",
 					"workflow": "Alur kerja"
 				},
-				"purgeOn": "Dihapus permanen pada {{date}}",
+				"purgeOn": "Akan dihapus permanen pada {{date}}",
 				"restore": "Pulihkan",
 				"restored": "Tugas dipulihkan",
 				"search": "Cari tugas yang dihapus",
@@ -7729,6 +7972,29 @@
 		}
 	},
 	"home": {
+		"pageTitle": "Beranda",
+		"greeting": {
+			"afternoon": "Selamat siang, {{name}}",
+			"dateTime": "{{date}} · {{time}}",
+			"evening": "Selamat malam, {{name}}",
+			"morning": "Selamat pagi, {{name}}"
+		},
+		"manageWidgets": "Kelola widget",
+		"widgets": {
+			"quickLinks": "Tautan cepat",
+			"recents": "Terbaru",
+			"stickies": "Catatan tempel",
+			"risks": "Risiko",
+			"myBrief": "Ringkasan saya",
+			"pinnedReports": "Laporan yang disematkan"
+		},
+		"manage": {
+			"description": "Pilih apa yang tampil di beranda dan seret untuk mengubah urutan. Hanya Anda yang melihat pengaturan ini.",
+			"reorder": "Ubah urutan {{widget}}",
+			"saveError": "Tidak dapat menyimpan pengaturan beranda Anda",
+			"title": "Kelola widget",
+			"toggle": "Tampilkan {{widget}}"
+		},
 		"empty": {
 			"description": "Semua widget dimatikan. Aktifkan beberapa untuk melihat tautan, kunjungan terbaru, dan catatan tempel Anda di sini.",
 			"title": "Beranda Anda kosong"
@@ -7758,21 +8024,6 @@
 			},
 			"title": "Mulai"
 		},
-		"greeting": {
-			"afternoon": "Selamat siang, {{name}}",
-			"dateTime": "{{date}} · {{time}}",
-			"evening": "Selamat malam, {{name}}",
-			"morning": "Selamat pagi, {{name}}"
-		},
-		"manage": {
-			"description": "Pilih apa yang tampil di beranda dan seret untuk mengubah urutan. Hanya Anda yang melihat pengaturan ini.",
-			"reorder": "Ubah urutan {{widget}}",
-			"saveError": "Tidak dapat menyimpan pengaturan beranda Anda",
-			"title": "Kelola widget",
-			"toggle": "Tampilkan {{widget}}"
-		},
-		"manageWidgets": "Kelola widget",
-		"pageTitle": "Beranda",
 		"quickLinks": {
 			"add": "Tambah tautan",
 			"copy": "Salin tautan",
@@ -7829,23 +8080,31 @@
 			"visited": "Dikunjungi {{time}}"
 		},
 		"retry": "Coba lagi",
-		"widgets": {
-			"quickLinks": "Tautan cepat",
-			"recents": "Terbaru",
-			"stickies": "Catatan tempel",
-			"risks": "Risiko",
-			"myBrief": "Ringkasan saya"
-		},
 		"focus": {
-			"caughtUp": "Semua sudah terbaca",
-			"inbox": "Kotak masuk",
 			"label": "Lanjutkan di mana Anda tinggalkan",
+			"inbox": "Kotak masuk",
 			"myWork": "Pekerjaan Anda",
-			"overdue_other": "{{count}} terlambat",
 			"stickies": "Catatan tempel",
+			"caughtUp": "Semua sudah terbaca",
+			"overdue_other": "{{count}} terlambat",
 			"stickiesHint": "Catatan pribadi, hanya untuk Anda",
+			"unreadCaption": "belum dibaca",
 			"openCaption": "terbuka",
-			"unreadCaption": "belum dibaca"
+			"loadError": "Tidak dapat memuat"
+		},
+		"dueToday": {
+			"title": "Jatuh tempo hari ini",
+			"empty": "Tidak ada tugas Anda yang jatuh tempo hari ini.",
+			"loadError": "Tidak dapat memuat tugas Anda yang jatuh tempo hari ini",
+			"viewAll": "Lihat semua {{total}}"
+		},
+		"pinnedReports": {
+			"empty": "Sematkan laporan tersimpan di Analitik untuk melihatnya di sini.",
+			"openAnalytics": "Buka Analitik",
+			"loadError": "Tidak dapat memuat laporan yang Anda sematkan",
+			"chartError": "Tidak dapat memuat laporan ini",
+			"unpin": "Lepas sematan {{name}} dari Beranda",
+			"showing": "Menampilkan {{shown}} dari {{total}}. Selebihnya ada di Analitik."
 		}
 	},
 	"intake": {
@@ -8136,14 +8395,108 @@
 		"viewAll": "Lihat semua"
 	},
 	"analytics": {
-		"a11y": {
-			"barSummary": "{{metric}} menurut {{dimension}}: {{count}} kelompok, tertinggi {{label}} dengan {{value}}",
-			"donutSummary": "{{total}} tugas dalam {{count}} grup",
-			"lineSummary": "{{series}} selama {{count}} periode"
+		"pageTitle": "Analitik",
+		"projectPageTitle": "{{project}} · Analitik",
+		"tabs": {
+			"overview": "Ringkasan",
+			"tasks": "Tugas",
+			"cycles": "Siklus",
+			"modules": "Modul",
+			"intake": "Intake",
+			"delivery": "Pengiriman",
+			"time": "Waktu"
 		},
-		"breakdown": {
-			"groupRowsBy": "Kelompokkan baris menurut",
-			"title": "Rincian"
+		"header": {
+			"allProjects": "Semua proyek",
+			"clearSelection": "Hapus pilihan",
+			"noProjectsFound": "Proyek tidak ditemukan",
+			"projectsCount_other": "{{count}} proyek",
+			"refresh": "Segarkan",
+			"searchProjects": "Cari proyek",
+			"selectProjects": "Pilih proyek",
+			"updatedAt": "Diperbarui {{time}}"
+		},
+		"openInAnalytics": "Buka di analitik",
+		"context": {
+			"cycle": "Siklus: {{name}}",
+			"module": "Modul: {{name}}",
+			"remove": "Hapus {{name}} dari filter"
+		},
+		"states": {
+			"loadError": "Gagal memuat bagian ini",
+			"newProject": "Proyek baru",
+			"noAccessDescription": "Minta admin ruang kerja untuk izin Analitik.",
+			"noAccessTitle": "Anda tidak memiliki akses ke analitik",
+			"noCycles": "Belum ada siklus",
+			"noModules": "Belum ada modul",
+			"noPeriodData": "Tidak ada data pada periode ini",
+			"noProjectsDescription": "Analitik merangkum tugas-tugas di proyek Anda.",
+			"noProjectsTitle": "Buat proyek untuk melihat analitik",
+			"noRequests": "Belum ada permintaan",
+			"noTasks": "Tidak ada tugas yang cocok dengan filter ini",
+			"retry": "Coba lagi",
+			"timeout": "Proses ini terlalu lama. Persempit filter dan coba lagi.",
+			"noRunningCycles": "Tidak ada siklus yang sedang berjalan saat ini"
+		},
+		"view": {
+			"chart": "Bagan",
+			"label": "Tampilkan sebagai",
+			"table": "Tabel"
+		},
+		"kpi": {
+			"accepted": "{{count}} diterima",
+			"completedTasks": "Tugas selesai",
+			"completion": "Penyelesaian",
+			"completionDetail": "{{completed}} dari {{committed}}",
+			"cyclesRunning": "Siklus berjalan",
+			"members": "Anggota",
+			"membersDetail": "{{admins}} admin · {{viewers}} pemirsa",
+			"modulesInProgress": "Modul sedang berjalan",
+			"modulesTotal": "Total {{count}}",
+			"openRequests": "Permintaan terbuka",
+			"openTasks": "Tugas terbuka",
+			"overdue": "{{count}} terlambat",
+			"percentComplete": "{{percent}}% selesai",
+			"projects": "Proyek",
+			"total": "Total",
+			"upcoming": "{{count}} akan datang"
+		},
+		"overview": {
+			"projectProgress": "Progres proyek",
+			"projectProgressSubtitle": "Proyek dengan tugas terbuka terbanyak lebih dulu",
+			"open": "{{count}} terbuka",
+			"showAll": "Tampilkan semua {{count}}",
+			"showLess": "Tampilkan lebih sedikit",
+			"tasksByGroup": "Tugas menurut grup",
+			"donutCenter_other": "{{count}} tugas",
+			"workload": "Beban kerja",
+			"workloadSubtitle": "Tugas terbuka menurut penanggung jawab",
+			"workloadSubtitlePoints": "Poin estimasi terbuka menurut penanggung jawab",
+			"overloaded_other": "{{names}} memiliki pekerjaan terbuka lebih banyak daripada yang biasanya mereka selesaikan dalam {{weeks}} minggu.",
+			"overUsual": "Di atas biasanya",
+			"overTooltip": "{{name}}: di atas biasanya",
+			"usualHint": "Biasanya adalah jumlah yang diselesaikan setiap orang dalam {{usualWeeks}} minggu pada umumnya, berdasarkan {{historyWeeks}} minggu terakhir. Orang tanpa riwayat terbaru tidak dinilai.",
+			"checkColumn": "Dibanding biasanya",
+			"checkOverPoints": "Lebih: {{load}} poin, biasanya {{usual}}",
+			"checkOverTasks": "Lebih: {{load}} tugas, biasanya {{usual}}",
+			"checkOkPoints": "{{load}} poin, biasanya {{usual}}",
+			"checkOkTasks": "{{load}} tugas, biasanya {{usual}}",
+			"checkUnknown": "Tidak ada riwayat terbaru"
+		},
+		"trend": {
+			"completed": "Selesai",
+			"created": "Dibuat",
+			"help": "Dibuat menghitung tugas berdasarkan hari pembuatannya. Selesai menghitung tugas berdasarkan hari penyelesaiannya, selama masih berstatus selesai. Tugas yang diarsipkan tidak disertakan kecuali Anda menyertakannya.",
+			"period": "Periode",
+			"summary": "Dibuat {{created}} · Selesai {{completed}} · Bersih {{net}}",
+			"title": "Dibuat vs selesai"
+		},
+		"periods": {
+			"custom": "Rentang kustom",
+			"last12m": "12 bulan terakhir",
+			"last30": "30 hari terakhir",
+			"last6m": "6 bulan terakhir",
+			"last90": "90 hari terakhir"
 		},
 		"bucket": {
 			"label": "Kelompokkan tanggal menurut",
@@ -8154,6 +8507,14 @@
 		"buckets": {
 			"range": "{{from}} – {{to}}",
 			"weekOf": "Minggu {{date}}"
+		},
+		"metric": {
+			"label": "Metrik",
+			"tasks": "Tugas",
+			"points": "Poin estimasi",
+			"pointsShort": "Poin",
+			"sum": "Jumlah",
+			"sumOf": "Jumlah {{name}}"
 		},
 		"builder": {
 			"countSubTasks": "Hitung subtugas",
@@ -8169,10 +8530,126 @@
 			"truncatedX": "Menampilkan {{shown}} teratas dari {{total}} {{dimension}}",
 			"xAxis": "Sumbu X"
 		},
-		"context": {
-			"cycle": "Siklus: {{name}}",
-			"module": "Modul: {{name}}",
-			"remove": "Hapus {{name}} dari filter"
+		"reports": {
+			"open": "Laporan",
+			"listTitle": "Laporan tersimpan",
+			"loadError": "Tidak dapat memuat laporan tersimpan",
+			"empty": "Belum ada laporan tersimpan. Simpan grafik ini agar dapat kembali melihatnya nanti.",
+			"sharedBy": "Dibagikan oleh {{name}}",
+			"actionsFor": "Tindakan untuk {{name}}",
+			"rename": "Ganti nama",
+			"share": "Bagikan ke ruang kerja",
+			"makePrivate": "Jadikan pribadi",
+			"delete": "Hapus",
+			"save": "Simpan",
+			"saveAsNew": "Simpan sebagai baru",
+			"update": "Perbarui laporan",
+			"showing": "Laporan: {{name}}",
+			"unsaved": "Perubahan belum disimpan",
+			"close": "Tutup laporan",
+			"deleteTitle": "Hapus laporan ini?",
+			"deleteDescription": "“{{name}}” akan dihapus. Tindakan ini tidak dapat dibatalkan.",
+			"deleteSharedDescription": "“{{name}}” akan dihapus untuk semua orang di ruang kerja. Tindakan ini tidak dapat dibatalkan.",
+			"visibility": {
+				"private": "Pribadi",
+				"privateHint": "Hanya Anda yang dapat melihatnya.",
+				"workspace": "Dibagikan ke ruang kerja",
+				"workspaceHint": "Semua orang dengan akses analitik di ruang kerja ini dapat membukanya."
+			},
+			"dialog": {
+				"cancel": "Batal",
+				"createTitle": "Simpan laporan",
+				"editTitle": "Edit laporan",
+				"name": "Nama",
+				"namePlaceholder": "mis. Bug terbuka per penanggung jawab",
+				"nameRequired": "Masukkan nama",
+				"save": "Simpan",
+				"summary": "Menyimpan pengaturan grafik, proyek yang tercakup, dan filter.",
+				"update": "Simpan perubahan",
+				"visibility": "Siapa yang dapat melihatnya"
+			},
+			"notes": {
+				"allProjects": "Tidak ada proyeknya yang tersedia, jadi semua proyek ditampilkan.",
+				"builderReset": "Beberapa pengaturan grafik tidak tersedia untuk proyek-proyek ini dan telah diatur ulang.",
+				"dropped_other": "{{count}} proyek dalam laporan ini sudah tidak ada.",
+				"leftOut_other": "{{count}} proyek dalam laporan ini diarsipkan dan tidak disertakan.",
+				"otherProjects": "Laporan ini disimpan untuk proyek lain; di sini hanya proyek ini yang ditampilkan."
+			},
+			"toast": {
+				"saved": "“{{name}}” disimpan",
+				"updated": "Laporan diperbarui",
+				"shared": "Laporan dibagikan ke ruang kerja",
+				"madePrivate": "Laporan sekarang bersifat pribadi",
+				"deleted": "Laporan dihapus",
+				"saveError": "Tidak dapat menyimpan laporan",
+				"deleteError": "Tidak dapat menghapus laporan",
+				"pinned": "Disematkan ke Beranda",
+				"unpinned": "Sematan dilepas dari Beranda",
+				"pinError": "Tidak dapat memperbarui Beranda Anda",
+				"pinLimit_other": "Anda dapat menyematkan hingga {{count}} laporan. Lepas sematan salah satunya terlebih dahulu."
+			},
+			"pin": "Sematkan ke Beranda",
+			"unpin": "Lepas sematan dari Beranda"
+		},
+		"dimensions": {
+			"status": "Status",
+			"group": "Grup",
+			"priority": "Prioritas",
+			"assignee": "Penanggung jawab",
+			"createdBy": "Dibuat oleh",
+			"label": "Label",
+			"cycle": "Siklus",
+			"module": "Modul",
+			"estimate": "Estimasi",
+			"project": "Proyek",
+			"createdAt": "Tanggal dibuat",
+			"completedAt": "Tanggal selesai",
+			"startDate": "Tanggal mulai",
+			"dueDate": "Tenggat",
+			"customField": "Field kustom"
+		},
+		"dimensionsPlural": {
+			"status": "status",
+			"assignee": "penanggung jawab",
+			"createdBy": "pembuat",
+			"label": "label",
+			"cycle": "siklus",
+			"module": "modul",
+			"estimate": "estimasi",
+			"project": "proyek",
+			"period": "periode",
+			"customField": "nilai"
+		},
+		"none": {
+			"assignee": "Belum ditugaskan",
+			"createdBy": "Pembuat tidak dikenal",
+			"label": "Tanpa label",
+			"cycle": "Tanpa siklus",
+			"module": "Tanpa modul",
+			"estimate": "Tanpa estimasi",
+			"completedAt": "Belum selesai",
+			"startDate": "Tanpa tanggal mulai",
+			"dueDate": "Tanpa tenggat",
+			"customField": "Tanpa nilai"
+		},
+		"other": "Lainnya",
+		"table": {
+			"periodEnd": "Akhir periode",
+			"periodStart": "Awal periode",
+			"progress": "Progres",
+			"showAll": "Tampilkan semua {{count}}",
+			"sortBy": "Urutkan menurut {{column}}",
+			"tasks": "Tugas",
+			"total": "Total"
+		},
+		"breakdown": {
+			"groupRowsBy": "Kelompokkan baris menurut",
+			"title": "Rincian"
+		},
+		"export": {
+			"button": "Ekspor CSV",
+			"error": "Gagal mengekspor tabel ini",
+			"success_other": "{{count}} baris diekspor"
 		},
 		"cycles": {
 			"averageCompleted": "Rata-rata selesai (3 terakhir)",
@@ -8205,47 +8682,15 @@
 				"running": "Sedang berjalan"
 			}
 		},
-		"dimensions": {
-			"assignee": "Penanggung jawab",
-			"completedAt": "Tanggal selesai",
-			"createdAt": "Tanggal dibuat",
-			"createdBy": "Dibuat oleh",
-			"cycle": "Siklus",
-			"dueDate": "Tenggat",
-			"estimate": "Estimasi",
-			"group": "Grup",
-			"label": "Label",
-			"module": "Modul",
-			"priority": "Prioritas",
-			"project": "Proyek",
-			"startDate": "Tanggal mulai",
-			"status": "Status"
-		},
-		"dimensionsPlural": {
-			"assignee": "penanggung jawab",
-			"createdBy": "pembuat",
-			"cycle": "siklus",
-			"estimate": "estimasi",
-			"label": "label",
-			"module": "modul",
-			"period": "periode",
-			"project": "proyek",
-			"status": "status"
-		},
-		"export": {
-			"button": "Ekspor CSV",
-			"error": "Gagal mengekspor tabel ini",
-			"success_other": "{{count}} baris diekspor"
-		},
-		"header": {
-			"allProjects": "Semua proyek",
-			"clearSelection": "Hapus pilihan",
-			"noProjectsFound": "Proyek tidak ditemukan",
-			"projectsCount_other": "{{count}} proyek",
-			"refresh": "Segarkan",
-			"searchProjects": "Cari proyek",
-			"selectProjects": "Pilih proyek",
-			"updatedAt": "Diperbarui {{time}}"
+		"modules": {
+			"overdue": "Terlambat",
+			"table": {
+				"lead": "Pemimpin",
+				"module": "Modul",
+				"noLead": "Tanpa pemimpin",
+				"targetDate": "Tanggal target",
+				"title": "Modul"
+			}
 		},
 		"intake": {
 			"accepted": "Diterima",
@@ -8263,173 +8708,24 @@
 			"submitted": "Dikirim",
 			"triaged": "Dipilah"
 		},
-		"kpi": {
-			"accepted": "{{count}} diterima",
-			"completedTasks": "Tugas selesai",
-			"completion": "Penyelesaian",
-			"completionDetail": "{{completed}} dari {{committed}}",
-			"cyclesRunning": "Siklus berjalan",
-			"members": "Anggota",
-			"membersDetail": "{{admins}} admin · {{viewers}} pemirsa",
-			"modulesInProgress": "Modul sedang berjalan",
-			"modulesTotal": "Total {{count}}",
-			"openRequests": "Permintaan terbuka",
-			"openTasks": "Tugas terbuka",
-			"overdue": "{{count}} terlambat",
-			"percentComplete": "{{percent}}% selesai",
-			"projects": "Proyek",
-			"total": "Total",
-			"upcoming": "{{count}} akan datang"
+		"a11y": {
+			"barSummary": "{{metric}} menurut {{dimension}}: {{count}} kelompok, tertinggi {{label}} dengan {{value}}",
+			"donutSummary": "{{total}} tugas dalam {{count}} grup",
+			"lineSummary": "{{series}} selama {{count}} periode"
 		},
-		"metric": {
-			"label": "Metrik",
-			"points": "Poin estimasi",
-			"pointsShort": "Poin",
-			"tasks": "Tugas"
-		},
-		"modules": {
-			"overdue": "Terlambat",
-			"table": {
-				"lead": "Pemimpin",
-				"module": "Modul",
-				"noLead": "Tanpa pemimpin",
-				"targetDate": "Tanggal target",
-				"title": "Modul"
-			}
-		},
-		"none": {
-			"assignee": "Belum ditugaskan",
-			"completedAt": "Belum selesai",
-			"createdBy": "Pembuat tidak dikenal",
-			"cycle": "Tanpa siklus",
-			"dueDate": "Tanpa tenggat",
-			"estimate": "Tanpa estimasi",
-			"label": "Tanpa label",
-			"module": "Tanpa modul",
-			"startDate": "Tanpa tanggal mulai"
-		},
-		"openInAnalytics": "Buka di analitik",
-		"other": "Lainnya",
-		"overview": {
-			"donutCenter_other": "{{count}} tugas",
-			"open": "{{count}} terbuka",
-			"projectProgress": "Progres proyek",
-			"projectProgressSubtitle": "Proyek dengan tugas terbuka terbanyak lebih dulu",
-			"showAll": "Tampilkan semua {{count}}",
-			"showLess": "Tampilkan lebih sedikit",
-			"tasksByGroup": "Tugas menurut grup",
-			"workload": "Beban kerja",
-			"workloadSubtitle": "Tugas terbuka menurut penanggung jawab"
-		},
-		"pageTitle": "Analitik",
-		"periods": {
-			"custom": "Rentang kustom",
-			"last12m": "12 bulan terakhir",
-			"last30": "30 hari terakhir",
-			"last6m": "6 bulan terakhir",
-			"last90": "90 hari terakhir"
-		},
-		"projectPageTitle": "{{project}} · Analitik",
-		"states": {
-			"loadError": "Gagal memuat bagian ini",
-			"newProject": "Proyek baru",
-			"noAccessDescription": "Minta admin ruang kerja untuk izin Analitik.",
-			"noAccessTitle": "Anda tidak memiliki akses ke analitik",
-			"noCycles": "Belum ada siklus",
-			"noModules": "Belum ada modul",
-			"noPeriodData": "Tidak ada data pada periode ini",
-			"noProjectsDescription": "Analitik merangkum tugas-tugas di proyek Anda.",
-			"noProjectsTitle": "Buat proyek untuk melihat analitik",
-			"noRequests": "Belum ada permintaan",
-			"noTasks": "Tidak ada tugas yang cocok dengan filter ini",
-			"retry": "Coba lagi",
-			"timeout": "Proses ini terlalu lama. Persempit filter dan coba lagi.",
-			"noRunningCycles": "Tidak ada siklus yang sedang berjalan saat ini"
-		},
-		"table": {
-			"periodEnd": "Akhir periode",
-			"periodStart": "Awal periode",
-			"progress": "Progres",
-			"showAll": "Tampilkan semua {{count}}",
-			"sortBy": "Urutkan menurut {{column}}",
-			"tasks": "Tugas",
-			"total": "Total"
-		},
-		"tabs": {
-			"cycles": "Siklus",
-			"intake": "Intake",
-			"modules": "Modul",
-			"overview": "Ringkasan",
-			"tasks": "Tugas",
-			"delivery": "Pengiriman"
-		},
-		"trend": {
-			"completed": "Selesai",
-			"created": "Dibuat",
-			"help": "Dibuat menghitung tugas berdasarkan hari pembuatannya. Selesai menghitung tugas berdasarkan hari penyelesaiannya, selama masih berstatus selesai. Tugas yang diarsipkan tidak disertakan kecuali Anda menyertakannya.",
-			"period": "Periode",
-			"summary": "Dibuat {{created}} · Selesai {{completed}} · Bersih {{net}}",
-			"title": "Dibuat vs selesai"
-		},
-		"view": {
-			"chart": "Bagan",
-			"label": "Tampilkan sebagai",
-			"table": "Tabel"
-		},
-		"reports": {
-			"actionsFor": "Tindakan untuk {{name}}",
-			"close": "Tutup laporan",
-			"delete": "Hapus",
-			"deleteDescription": "“{{name}}” akan dihapus. Tindakan ini tidak dapat dibatalkan.",
-			"deleteSharedDescription": "“{{name}}” akan dihapus untuk semua orang di ruang kerja. Tindakan ini tidak dapat dibatalkan.",
-			"deleteTitle": "Hapus laporan ini?",
-			"dialog": {
-				"cancel": "Batal",
-				"createTitle": "Simpan laporan",
-				"editTitle": "Edit laporan",
-				"name": "Nama",
-				"namePlaceholder": "mis. Bug terbuka per penanggung jawab",
-				"nameRequired": "Masukkan nama",
-				"save": "Simpan",
-				"summary": "Menyimpan pengaturan grafik, proyek yang tercakup, dan filter.",
-				"update": "Simpan perubahan",
-				"visibility": "Siapa yang dapat melihatnya"
-			},
-			"empty": "Belum ada laporan tersimpan. Simpan grafik ini agar dapat kembali melihatnya nanti.",
-			"listTitle": "Laporan tersimpan",
-			"loadError": "Tidak dapat memuat laporan tersimpan",
-			"makePrivate": "Jadikan pribadi",
-			"notes": {
-				"allProjects": "Tidak ada proyeknya yang tersedia, jadi semua proyek ditampilkan.",
-				"builderReset": "Beberapa pengaturan grafik tidak tersedia untuk proyek-proyek ini dan telah diatur ulang.",
-				"dropped_other": "{{count}} proyek dalam laporan ini sudah tidak ada.",
-				"leftOut_other": "{{count}} proyek dalam laporan ini diarsipkan dan tidak disertakan.",
-				"otherProjects": "Laporan ini disimpan untuk proyek lain; di sini hanya proyek ini yang ditampilkan."
-			},
-			"open": "Laporan",
-			"rename": "Ganti nama",
-			"save": "Simpan",
-			"saveAsNew": "Simpan sebagai baru",
-			"share": "Bagikan ke ruang kerja",
-			"sharedBy": "Dibagikan oleh {{name}}",
-			"showing": "Laporan: {{name}}",
-			"toast": {
-				"deleted": "Laporan dihapus",
-				"deleteError": "Tidak dapat menghapus laporan",
-				"madePrivate": "Laporan sekarang bersifat pribadi",
-				"saved": "“{{name}}” disimpan",
-				"saveError": "Tidak dapat menyimpan laporan",
-				"shared": "Laporan dibagikan ke ruang kerja",
-				"updated": "Laporan diperbarui"
-			},
-			"unsaved": "Perubahan belum disimpan",
-			"update": "Perbarui laporan",
-			"visibility": {
-				"private": "Pribadi",
-				"privateHint": "Hanya Anda yang dapat melihatnya.",
-				"workspace": "Dibagikan ke ruang kerja",
-				"workspaceHint": "Semua orang dengan akses analitik di ruang kerja ini dapat membukanya."
-			}
+		"time": {
+			"total": "Waktu tercatat",
+			"entries": "Entri",
+			"people": "Orang",
+			"running": "Sedang berjalan",
+			"runningNote": "Pengatur waktu yang berjalan masuk ke total ini setelah berhenti.",
+			"byPerson": "Menurut orang",
+			"byProject": "Menurut proyek",
+			"person": "Orang",
+			"project": "Proyek",
+			"hours": "Jam",
+			"formerMember": "Mantan anggota",
+			"empty": "Tidak ada waktu tercatat pada periode ini"
 		}
 	},
 	"pages": {
@@ -8510,6 +8806,59 @@
 			"file": "berkas lampiran",
 			"page": "halaman lain"
 		},
+		"section": {
+			"title": "Halaman"
+		},
+		"list": {
+			"documentTitle": "{{project}} · Halaman",
+			"newPage": "Halaman baru",
+			"tabs": {
+				"archived": "Diarsipkan",
+				"private": "Pribadi",
+				"public": "Publik"
+			},
+			"searchPlaceholder": "Cari halaman",
+			"clearFilters": "Hapus filter",
+			"sort": {
+				"created": "Dibuat",
+				"lastEdited": "Terakhir diedit",
+				"name": "Nama"
+			},
+			"untitled": "Tanpa judul",
+			"inParent": "di {{path}}",
+			"ownedBy": "Dimiliki oleh {{name}}",
+			"access": {
+				"private": "Pribadi",
+				"public": "Publik"
+			},
+			"editedAgo": "Diedit {{time}}",
+			"archivedOn": "Diarsipkan {{date}}",
+			"locked": "Terkunci",
+			"loadError": "Gagal memuat halaman",
+			"retry": "Coba lagi",
+			"empty": {
+				"archived": {
+					"description": "Halaman yang diarsipkan muncul di sini. Anda dapat memulihkan atau menghapusnya.",
+					"title": "Tidak ada halaman yang diarsipkan"
+				},
+				"noMatch": {
+					"description": "Coba pencarian lain atau hapus filter.",
+					"title": "Tidak ada halaman yang cocok"
+				},
+				"none": {
+					"description": "Halaman menyimpan spesifikasi, catatan, dan dokumen tepat di samping tugas proyek.",
+					"title": "Tulis halaman pertama Anda"
+				},
+				"private": {
+					"description": "Halaman pribadi hanya terlihat oleh Anda.",
+					"title": "Tidak ada halaman pribadi"
+				},
+				"public": {
+					"title": "Tidak ada halaman publik"
+				}
+			},
+			"recentlyDeleted": "Baru dihapus"
+		},
 		"actions": {
 			"archive": "Arsipkan",
 			"copyLink": "Salin tautan",
@@ -8525,6 +8874,123 @@
 			"restore": "Pulihkan",
 			"unlock": "Buka kunci"
 		},
+		"toasts": {
+			"accessError": "Gagal mengubah siapa yang dapat melihat halaman ini",
+			"archived": "Halaman diarsipkan",
+			"archiveError": "Gagal mengarsipkan halaman",
+			"contentConflict": "Halaman ini berubah di tempat lain, sehingga suntingan terakhir Anda tidak tersimpan. Menampilkan versi terbaru.",
+			"contentSaveError": "Gagal menyimpan halaman",
+			"createError": "Gagal membuat halaman",
+			"deleted": "Halaman dihapus",
+			"deleteError": "Gagal menghapus halaman",
+			"duplicated": "Halaman diduplikasi",
+			"duplicateError": "Gagal menduplikasi halaman",
+			"fullWidthError": "Gagal mengubah lebar halaman",
+			"linkCopied": "Tautan disalin",
+			"locked": "Halaman dikunci",
+			"lockError": "Gagal mengubah kunci",
+			"logoError": "Gagal memperbarui ikon",
+			"madePrivate": "Halaman kini pribadi",
+			"madePublic": "Halaman kini publik",
+			"moved": "Dipindahkan ke {{project}}",
+			"moveError": "Gagal memindahkan halaman",
+			"open": "Buka",
+			"restored": "Halaman dipulihkan",
+			"restoreError": "Gagal memulihkan halaman",
+			"titleError": "Gagal menyimpan judul",
+			"unlocked": "Kunci halaman dibuka"
+		},
+		"deleteDialog": {
+			"cancel": "Batal",
+			"confirm": "Hapus",
+			"description": "“{{title}}” pindah ke Baru dihapus di pengaturan proyek, tempat halaman dapat dipulihkan sampai dihapus permanen. Subhalamannya pindah ke tingkat teratas.",
+			"title": "Hapus halaman?"
+		},
+		"moveDialog": {
+			"cancel": "Batal",
+			"confirm": "Pindahkan",
+			"description": "Halaman dan subhalamannya dipindahkan ke proyek yang dipilih.",
+			"empty": "Tidak ada proyek lain yang mengaktifkan Halaman",
+			"searchPlaceholder": "Cari proyek",
+			"title": "Pindahkan halaman"
+		},
+		"tree": {
+			"collapse": "Ciutkan {{title}}",
+			"dnd": {
+				"cancelled": "Pemindahan dibatalkan.",
+				"dropped": "{{title}} dipindahkan.",
+				"invalid": "{{title}} tidak dapat ditempatkan di sana.",
+				"over": "{{title}} berada di atas {{target}}.",
+				"pickedUp": "{{title}} diangkat. Gunakan tombol panah untuk memindahkannya, Space untuk menjatuhkannya, atau Escape untuk membatalkan."
+			},
+			"empty": "Belum ada halaman",
+			"expand": "Perluas {{title}}",
+			"newPage": "Halaman baru",
+			"title": "Halaman"
+		},
+		"crumb": {
+			"noMatches": "Tidak ada halaman yang cocok",
+			"searchPlaceholder": "Cari halaman"
+		},
+		"header": {
+			"copied": "Disalin",
+			"copyLink": "Salin tautan",
+			"locked": "Terkunci",
+			"lockPage": "Kunci halaman",
+			"moreActions": "Aksi halaman",
+			"presence": "Orang di halaman ini: {{names}}",
+			"presenceMore": "+{{count}}",
+			"togglePanel": "Tampilkan/sembunyikan panel samping",
+			"unlockHint": "Klik untuk membuka kunci",
+			"ancestors": "Halaman induk"
+		},
+		"menu": {
+			"copyMarkdown": "Salin sebagai markdown",
+			"downloadMarkdown": "Unduh sebagai markdown",
+			"fullWidth": "Lebar penuh",
+			"markdownCopied": "Markdown disalin",
+			"versionHistory": "Riwayat versi",
+			"print": "Cetak / Simpan sebagai PDF"
+		},
+		"editor": {
+			"addIcon": "Tambah ikon",
+			"ariaLabel": "Konten halaman",
+			"pageLink": {
+				"unavailable": "Halaman pribadi atau sudah dihapus"
+			},
+			"pageLinkPicker": {
+				"empty": "Halaman tidak ditemukan",
+				"search": "Cari halaman"
+			},
+			"placeholder": "Tulis sesuatu, atau tekan / untuk perintah",
+			"slash": {
+				"commands": {
+					"divider": "Pemisah",
+					"heading-1": "Judul 1",
+					"heading-2": "Judul 2",
+					"heading-3": "Judul 3",
+					"page-link": "Tautan ke halaman"
+				}
+			},
+			"titleAria": "Judul halaman",
+			"titlePlaceholder": "Tanpa judul"
+		},
+		"logo": {
+			"categories": {
+				"activities": "Aktivitas",
+				"food": "Makanan",
+				"nature": "Alam",
+				"objects": "Objek",
+				"people": "Orang",
+				"smileys": "Smiley",
+				"symbols": "Simbol",
+				"travel": "Perjalanan"
+			},
+			"emoji": "Emoji",
+			"icon": "Ikon",
+			"remove": "Hapus",
+			"search": "Cari emoji"
+		},
 		"banners": {
 			"archived": "Halaman ini diarsipkan. Pulihkan untuk mengedit.",
 			"locked": "Halaman ini terkunci. Buka kunci untuk membuat perubahan.",
@@ -8535,6 +9001,15 @@
 			"storedCopy": "Menampilkan versi tersimpan terakhir. Pengeditan langsung dilanjutkan saat koneksi kembali.",
 			"tooLarge": "Halaman ini terlalu besar untuk terus disinkronkan. Salin perubahan terbaru Anda, lalu muat ulang.",
 			"unlock": "Buka kunci"
+		},
+		"sync": {
+			"cantConnect": "Tidak dapat terhubung",
+			"notSaved": "Belum tersimpan",
+			"notSavedHint": "Kami akan terus mencoba. Jangan tutup tab ini.",
+			"offline": "Offline",
+			"offlineHint": "Anda dapat terus mengedit. Perubahan disinkronkan saat koneksi kembali.",
+			"retry": "Coba lagi",
+			"saved": "Tersimpan"
 		},
 		"collab": {
 			"deleted": "Halaman ini telah dihapus",
@@ -8547,6 +9022,61 @@
 			"restoredBy": "{{name}} memulihkan versi sebelumnya",
 			"roomFull": "Terlalu banyak orang yang membuka halaman ini saat ini. Coba lagi sebentar lagi.",
 			"signedOut": "Sesi Anda telah berakhir. Masuk lagi untuk terus mengedit."
+		},
+		"state": {
+			"notFound": {
+				"back": "Kembali ke halaman",
+				"description": "Halaman mungkin telah dihapus, atau bersifat pribadi.",
+				"title": "Halaman tidak ditemukan"
+			}
+		},
+		"panel": {
+			"outline": "Kerangka",
+			"info": "Info",
+			"history": "Riwayat",
+			"close": "Tutup panel",
+			"comments": "Komentar"
+		},
+		"outline": {
+			"empty": {
+				"description": "Tambahkan judul bagian untuk melihat kerangka di sini.",
+				"title": "Belum ada judul bagian"
+			}
+		},
+		"info": {
+			"characters": "Karakter",
+			"createdBy": "Dibuat oleh",
+			"lastEditedBy": "Terakhir diedit oleh",
+			"lessThanMinute": "<1 mnt",
+			"linkedFrom": "Ditautkan dari",
+			"lockedBy": "Dikunci oleh",
+			"noBacklinks": "Belum ada halaman yang menaut ke sini",
+			"paragraphs": "Paragraf",
+			"readingMinutes": "{{count}} mnt",
+			"readingTime": "Waktu baca",
+			"words": "Kata"
+		},
+		"history": {
+			"backToCurrent": "Kembali ke versi saat ini",
+			"current": "Versi saat ini",
+			"empty": "Belum ada versi tersimpan. Versi disimpan saat Anda mengedit.",
+			"loadError": "Gagal memuat versi ini",
+			"others_other": "+{{count}} lainnya",
+			"previewTitle": "Versi dari {{date}}",
+			"restore": "Pulihkan",
+			"restoreCancel": "Batal",
+			"restoreConfirmDescription": "Konten saat ini disimpan ke riwayat terlebih dahulu, sehingga Anda dapat membatalkannya.",
+			"restoreConfirmTitle": "Pulihkan versi ini?",
+			"restored": "Versi dipulihkan",
+			"restoreError": "Gagal memulihkan versi ini",
+			"restoring": "Memulihkan…",
+			"retry": "Coba lagi",
+			"title": "Riwayat versi",
+			"unknownUser": "Mantan anggota",
+			"viewOnly": "Hanya lihat"
+		},
+		"notification": {
+			"openPage": "Buka halaman"
 		},
 		"toolbar": {
 			"ariaLabel": "Bilah alat format",
@@ -8585,237 +9115,36 @@
 		"commandPalette": {
 			"createPage": "Buat halaman"
 		},
-		"crumb": {
-			"noMatches": "Tidak ada halaman yang cocok",
-			"searchPlaceholder": "Cari halaman"
-		},
-		"deleteDialog": {
+		"comments": {
+			"placeholder": "Tambahkan komentar…",
+			"add": "Komentari",
+			"save": "Simpan",
 			"cancel": "Batal",
-			"confirm": "Hapus",
-			"description": "“{{title}}” akan dihapus secara permanen beserta riwayat versinya. Subhalamannya pindah ke tingkat teratas. Tindakan ini tidak dapat dibatalkan.",
-			"title": "Hapus halaman?"
-		},
-		"editor": {
-			"addIcon": "Tambah ikon",
-			"ariaLabel": "Konten halaman",
-			"pageLink": {
-				"unavailable": "Halaman pribadi atau sudah dihapus"
-			},
-			"pageLinkPicker": {
-				"empty": "Halaman tidak ditemukan",
-				"search": "Cari halaman"
-			},
-			"placeholder": "Tulis sesuatu, atau tekan / untuk perintah",
-			"slash": {
-				"commands": {
-					"divider": "Pemisah",
-					"heading-1": "Judul 1",
-					"heading-2": "Judul 2",
-					"heading-3": "Judul 3",
-					"page-link": "Tautan ke halaman"
-				}
-			},
-			"titleAria": "Judul halaman",
-			"titlePlaceholder": "Tanpa judul"
-		},
-		"header": {
-			"copied": "Disalin",
-			"copyLink": "Salin tautan",
-			"locked": "Terkunci",
-			"lockPage": "Kunci halaman",
-			"moreActions": "Aksi halaman",
-			"presence": "Orang di halaman ini: {{names}}",
-			"presenceMore": "+{{count}}",
-			"togglePanel": "Tampilkan/sembunyikan panel samping",
-			"unlockHint": "Klik untuk membuka kunci",
-			"ancestors": "Halaman induk"
-		},
-		"history": {
-			"backToCurrent": "Kembali ke versi saat ini",
-			"current": "Versi saat ini",
-			"empty": "Belum ada versi tersimpan. Versi disimpan saat Anda mengedit.",
-			"loadError": "Gagal memuat versi ini",
-			"others_other": "+{{count}} lainnya",
-			"previewTitle": "Versi dari {{date}}",
-			"restore": "Pulihkan",
-			"restoreCancel": "Batal",
-			"restoreConfirmDescription": "Konten saat ini disimpan ke riwayat terlebih dahulu, sehingga Anda dapat membatalkannya.",
-			"restoreConfirmTitle": "Pulihkan versi ini?",
-			"restored": "Versi dipulihkan",
-			"restoreError": "Gagal memulihkan versi ini",
-			"restoring": "Memulihkan…",
+			"emptyTitle": "Belum ada komentar",
+			"emptyDescription": "Komentar di sini tetap berada di dalam ruang kerja. Tautan publik tidak menampilkannya.",
+			"archivedNote": "Halaman ini diarsipkan. Pulihkan untuk berkomentar.",
+			"loadError": "Tidak dapat memuat komentar",
 			"retry": "Coba lagi",
-			"title": "Riwayat versi",
-			"unknownUser": "Mantan anggota",
-			"viewOnly": "Hanya lihat"
-		},
-		"info": {
-			"characters": "Karakter",
-			"createdBy": "Dibuat oleh",
-			"lastEditedBy": "Terakhir diedit oleh",
-			"lessThanMinute": "<1 mnt",
-			"linkedFrom": "Ditautkan dari",
-			"lockedBy": "Dikunci oleh",
-			"noBacklinks": "Belum ada halaman yang menaut ke sini",
-			"paragraphs": "Paragraf",
-			"readingMinutes": "{{count}} mnt",
-			"readingTime": "Waktu baca",
-			"words": "Kata"
-		},
-		"list": {
-			"access": {
-				"private": "Pribadi",
-				"public": "Publik"
-			},
-			"archivedOn": "Diarsipkan {{date}}",
-			"clearFilters": "Hapus filter",
-			"documentTitle": "{{project}} · Halaman",
-			"editedAgo": "Diedit {{time}}",
-			"empty": {
-				"archived": {
-					"description": "Halaman yang diarsipkan muncul di sini. Anda dapat memulihkan atau menghapusnya.",
-					"title": "Tidak ada halaman yang diarsipkan"
-				},
-				"noMatch": {
-					"description": "Coba pencarian lain atau hapus filter.",
-					"title": "Tidak ada halaman yang cocok"
-				},
-				"none": {
-					"description": "Halaman menyimpan spesifikasi, catatan, dan dokumen tepat di samping tugas proyek.",
-					"title": "Tulis halaman pertama Anda"
-				},
-				"private": {
-					"description": "Halaman pribadi hanya terlihat oleh Anda.",
-					"title": "Tidak ada halaman pribadi"
-				},
-				"public": {
-					"title": "Tidak ada halaman publik"
-				}
-			},
-			"inParent": "di {{path}}",
-			"loadError": "Gagal memuat halaman",
-			"locked": "Terkunci",
-			"newPage": "Halaman baru",
-			"ownedBy": "Dimiliki oleh {{name}}",
-			"retry": "Coba lagi",
-			"searchPlaceholder": "Cari halaman",
-			"sort": {
-				"created": "Dibuat",
-				"lastEdited": "Terakhir diedit",
-				"name": "Nama"
-			},
-			"tabs": {
-				"archived": "Diarsipkan",
-				"private": "Pribadi",
-				"public": "Publik"
-			},
-			"untitled": "Tanpa judul"
-		},
-		"logo": {
-			"categories": {
-				"activities": "Aktivitas",
-				"food": "Makanan",
-				"nature": "Alam",
-				"objects": "Objek",
-				"people": "Orang",
-				"smileys": "Smiley",
-				"symbols": "Simbol",
-				"travel": "Perjalanan"
-			},
-			"emoji": "Emoji",
-			"icon": "Ikon",
-			"remove": "Hapus",
-			"search": "Cari emoji"
-		},
-		"menu": {
-			"copyMarkdown": "Salin sebagai markdown",
-			"downloadMarkdown": "Unduh sebagai markdown",
-			"fullWidth": "Lebar penuh",
-			"markdownCopied": "Markdown disalin",
-			"versionHistory": "Riwayat versi",
-			"print": "Cetak / Simpan sebagai PDF"
-		},
-		"moveDialog": {
-			"cancel": "Batal",
-			"confirm": "Pindahkan",
-			"description": "Halaman dan subhalamannya dipindahkan ke proyek yang dipilih.",
-			"empty": "Tidak ada proyek lain yang mengaktifkan Halaman",
-			"searchPlaceholder": "Cari proyek",
-			"title": "Pindahkan halaman"
-		},
-		"notification": {
-			"openPage": "Buka halaman"
-		},
-		"outline": {
-			"empty": {
-				"description": "Tambahkan judul bagian untuk melihat kerangka di sini.",
-				"title": "Belum ada judul bagian"
+			"deletedUser": "Pengguna yang dihapus",
+			"edited": "diedit",
+			"menuAria": "Tindakan lain untuk komentar ini",
+			"edit": "Edit",
+			"delete": "Hapus",
+			"deleteTitle": "Hapus komentar ini?",
+			"deleteDescription": "Komentar dihapus untuk semua orang. Tindakan ini tidak dapat dibatalkan.",
+			"toasts": {
+				"empty": "Tulis sesuatu terlebih dahulu",
+				"addError": "Tidak dapat menambahkan komentar",
+				"saveError": "Tidak dapat menyimpan komentar",
+				"deleteError": "Tidak dapat menghapus komentar"
 			}
 		},
-		"panel": {
-			"close": "Tutup panel",
-			"history": "Riwayat",
-			"info": "Info",
-			"outline": "Kerangka"
-		},
-		"section": {
-			"title": "Halaman"
-		},
-		"state": {
-			"notFound": {
-				"back": "Kembali ke halaman",
-				"description": "Halaman mungkin telah dihapus, atau bersifat pribadi.",
-				"title": "Halaman tidak ditemukan"
-			}
-		},
-		"sync": {
-			"cantConnect": "Tidak dapat terhubung",
-			"notSaved": "Belum tersimpan",
-			"notSavedHint": "Kami akan terus mencoba. Jangan tutup tab ini.",
-			"offline": "Offline",
-			"offlineHint": "Anda dapat terus mengedit. Perubahan disinkronkan saat koneksi kembali.",
-			"retry": "Coba lagi",
-			"saved": "Tersimpan"
-		},
-		"toasts": {
-			"accessError": "Gagal mengubah siapa yang dapat melihat halaman ini",
-			"archived": "Halaman diarsipkan",
-			"archiveError": "Gagal mengarsipkan halaman",
-			"contentConflict": "Halaman ini berubah di tempat lain, sehingga suntingan terakhir Anda tidak tersimpan. Menampilkan versi terbaru.",
-			"contentSaveError": "Gagal menyimpan halaman",
-			"createError": "Gagal membuat halaman",
-			"deleted": "Halaman dihapus",
-			"deleteError": "Gagal menghapus halaman",
-			"duplicated": "Halaman diduplikasi",
-			"duplicateError": "Gagal menduplikasi halaman",
-			"fullWidthError": "Gagal mengubah lebar halaman",
-			"linkCopied": "Tautan disalin",
-			"locked": "Halaman dikunci",
-			"lockError": "Gagal mengubah kunci",
-			"logoError": "Gagal memperbarui ikon",
-			"madePrivate": "Halaman kini pribadi",
-			"madePublic": "Halaman kini publik",
-			"moved": "Dipindahkan ke {{project}}",
-			"moveError": "Gagal memindahkan halaman",
-			"open": "Buka",
-			"restored": "Halaman dipulihkan",
-			"restoreError": "Gagal memulihkan halaman",
-			"titleError": "Gagal menyimpan judul",
-			"unlocked": "Kunci halaman dibuka"
-		},
-		"tree": {
-			"collapse": "Ciutkan {{title}}",
-			"dnd": {
-				"cancelled": "Pemindahan dibatalkan.",
-				"dropped": "{{title}} dipindahkan.",
-				"invalid": "{{title}} tidak dapat ditempatkan di sana.",
-				"over": "{{title}} berada di atas {{target}}.",
-				"pickedUp": "{{title}} diangkat. Gunakan tombol panah untuk memindahkannya, Space untuk menjatuhkannya, atau Escape untuk membatalkan."
-			},
-			"empty": "Belum ada halaman",
-			"expand": "Perluas {{title}}",
-			"newPage": "Halaman baru",
-			"title": "Halaman"
+		"watch": {
+			"watch": "Pantau halaman",
+			"unwatch": "Berhenti memantau",
+			"watchHint": "Dapatkan notifikasi tentang komentar dan perubahan",
+			"watchingHint": "Anda mendapat notifikasi tentang komentar dan perubahan",
+			"error": "Tidak dapat mengubah status pantau halaman ini"
 		}
 	},
 	"accountSecurity": {
@@ -8874,7 +9203,9 @@
 				"sessionLifetime": "Durasi sesi",
 				"sessionLifetimeHint": "Berapa lama sesi bertahan tanpa digunakan. Menggunakannya akan memperpanjangnya.",
 				"hours": "jam",
-				"signInNotice": "Masuk dengan {{provider}}. Masuk dengan kata sandi hanya untuk admin instans."
+				"signInNotice": "Masuk dengan {{provider}}. Masuk dengan kata sandi hanya untuk admin instans.",
+				"requireTwoFactor": "Wajibkan autentikasi dua faktor",
+				"requireTwoFactorHint": "Setiap akun yang memiliki kata sandi harus menyiapkan autentikasi dua faktor sebelum dapat melakukan hal lain, meskipun akun itu juga masuk melalui penyedia atau SAML, dan API key-nya berhenti berfungsi sampai hal itu dilakukan. Tautan dan kode email dinonaktifkan, sehingga siapa pun yang hanya menggunakannya tidak bisa masuk sampai memiliki kata sandi: mereka membuatnya lewat “Lupa kata sandi?”, atau Anda membuatkannya untuk mereka di “Pengguna” jika email belum disiapkan. Akun tanpa kata sandi mengikuti aturan penyedianya. Aktifkan untuk akun Anda sendiri terlebih dahulu."
 			},
 			"twoFactor": {
 				"title": "Autentikasi dua faktor",
@@ -8901,7 +9232,11 @@
 				"done": "Selesai",
 				"enabled": "Autentikasi dua faktor aktif.",
 				"disabled": "Autentikasi dua faktor nonaktif.",
-				"error": "Terjadi kesalahan. Coba lagi."
+				"error": "Terjadi kesalahan. Coba lagi.",
+				"requiredHint": "Server ini mewajibkan autentikasi dua faktor, jadi tidak dapat dinonaktifkan. Jika Anda kehilangan perangkat dan kode pemulihan, admin instans dapat meresetnya.",
+				"setupRequiredTitle": "Siapkan autentikasi dua faktor untuk melanjutkan",
+				"setupRequiredHint": "Server ini mewajibkan autentikasi dua faktor untuk setiap akun yang memiliki kata sandi. Anda memerlukan aplikasi autentikator.",
+				"signOutInstead": "Keluar saja"
 			},
 			"challenge": {
 				"title": "Autentikasi dua faktor",
@@ -8973,7 +9308,11 @@
 				"noPassword": "Belum diatur (masuk dengan cara lain)",
 				"workspacesTitle": "Ruang kerja",
 				"noWorkspaces": "Bukan anggota ruang kerja mana pun.",
-				"joined": "Bergabung {{date}}"
+				"joined": "Bergabung {{date}}",
+				"resetTwoFactor": "Reset autentikasi dua faktor",
+				"resetTwoFactorTitle": "Reset autentikasi dua faktor untuk {{name}}?",
+				"resetTwoFactorDescription": "Gunakan ini saat mereka kehilangan perangkat dan kode pemulihan, dan Anda sudah memastikan itu benar-benar mereka. Autentikasi dua faktor mereka dihapus dan mereka dikeluarkan dari semua perangkat. Setelah itu mereka dapat masuk hanya dengan kata sandi dan menyiapkannya lagi.",
+				"twoFactorReset": "Autentikasi dua faktor direset untuk {{name}}"
 			}
 		},
 		"password": {
@@ -9037,33 +9376,99 @@
 				"cliAdminPromoted": "Menjadikan admin instans (CLI pemulihan)",
 				"cliAdminDemoted": "Menghapus admin instans (CLI pemulihan)",
 				"cliPasswordReset": "Mereset kata sandi (CLI pemulihan)",
-				"cliUserUnbanned": "Membuka blokir (CLI pemulihan)"
+				"cliUserUnbanned": "Membuka blokir (CLI pemulihan)",
+				"userTwoFactorReset": "Mereset autentikasi dua faktor sebuah akun",
+				"cliTwoFactorReset": "Mereset autentikasi dua faktor sebuah akun (CLI pemulihan)",
+				"scimConnectionCreated": "Menghubungkan penyedia identitas untuk penyediaan otomatis",
+				"scimTokenRotated": "Mengganti token SCIM",
+				"scimConnectionDeleted": "Menghapus koneksi SCIM",
+				"scimUserProvisioned": "Menambahkan akun melalui penyediaan otomatis",
+				"scimUserDeactivated": "Menonaktifkan akun melalui penyediaan otomatis",
+				"scimUserReactivated": "Mengaktifkan kembali akun melalui penyediaan otomatis",
+				"scimUserRemoved": "Mengeluarkan seseorang dari ruang kerja melalui penyediaan otomatis",
+				"samlConnectionCreated": "Menghubungkan penyedia identitas untuk masuk",
+				"samlConnectionUpdated": "Mengubah koneksi SAML",
+				"samlConnectionDeleted": "Menghapus koneksi SAML"
 			}
 		}
 	},
 	"instanceAdmin": {
-		"admins": {
-			"add": "Tambah admin",
-			"addConfirm": "Tambah admin",
-			"addDescription": "Admin instans dapat mengubah setiap pengaturan di area ini dan membuka ruang kerja mana pun.",
-			"added": "{{name}} kini menjadi admin instans",
-			"addTitle": "Tambah admin instans",
-			"columns": {
-				"email": "Email",
-				"name": "Nama"
-			},
+		"pageTitle": "Instans · {{page}}",
+		"nav": {
+			"admins": "Admin",
+			"authentication": "Autentikasi",
 			"email": "Email",
-			"emailInvalid": "Masukkan alamat email yang valid",
-			"emailPlaceholder": "name@example.com",
-			"lastAdmin": "Harus ada setidaknya satu admin instans",
-			"remove": "Hapus admin…",
-			"removeConfirm": "Hapus",
-			"removed": "{{name}} bukan lagi admin instans",
-			"removeDescription": "Mereka tetap memiliki akun dan ruang kerja mereka.",
-			"removeTitle": "Hapus {{name}} sebagai admin instans?",
-			"subtitle": "Admin instans dapat mengubah setiap pengaturan di area ini dan membuka ruang kerja mana pun.",
-			"title": "Admin",
-			"you": "Anda"
+			"general": "Umum",
+			"publicBoards": "Papan publik",
+			"workspaces": "Ruang kerja",
+			"ai": "AI"
+		},
+		"lockedCallout": "Pengaturan ini dikelola dengan variabel lingkungan di server ini. Perubahan di sini dinonaktifkan.",
+		"source": {
+			"default": "Bawaan",
+			"environment": "Lingkungan: {{variable}}",
+			"lockTooltip": "Hapus {{variable}} dan mulai ulang untuk mengelola ini di sini.",
+			"saved": "Disimpan di sini",
+			"savedBy": "Disimpan oleh {{name}} pada {{date}}"
+		},
+		"saved": "Pengaturan disimpan",
+		"saveError": "Gagal menyimpan pengaturan",
+		"loadError": "Gagal memuat pengaturan instans",
+		"retry": "Coba lagi",
+		"save": "Simpan",
+		"secret": {
+			"cancel": "Batal",
+			"clear": "Hapus",
+			"cleared": "Rahasia dihapus",
+			"placeholder": "Masukkan nilai baru",
+			"replace": "Ganti",
+			"saved": "Tersimpan",
+			"unreadable": "Rahasia yang tersimpan tidak dapat dibaca (AUTH_SECRET server berubah). Masukkan lagi."
+		},
+		"general": {
+			"title": "Umum",
+			"subtitle": "Beri nama instans ini dan periksa kondisinya.",
+			"instanceName": "Nama instans",
+			"instanceNameHint": "Ditampilkan di layar masuk dan di papan publik",
+			"instanceNameRequired": "Masukkan nama",
+			"instanceNameTooLong": "Gunakan maksimal 80 karakter",
+			"homePage": "Halaman beranda",
+			"publicLanding": "Tampilkan halaman landing produk",
+			"publicLandingHint": "Pengunjung yang belum masuk melihat halaman landing di alamat utama. Jika dimatikan, mereka langsung diarahkan ke halaman masuk.",
+			"overview": "Ringkasan",
+			"version": "Versi",
+			"counts": {
+				"accounts": "Akun",
+				"guests": "Tamu",
+				"projects": "Proyek",
+				"publishedBoards": "Papan publik",
+				"workspaces": "Ruang kerja"
+			},
+			"server": {
+				"captcha": "Captcha",
+				"cloudMode": "Mode cloud",
+				"configured": "Dikonfigurasi",
+				"demoMode": "Mode demo",
+				"email": "Email",
+				"errorReporting": "Pelaporan error",
+				"fileStorage": "Penyimpanan file",
+				"notConfigured": "Belum dikonfigurasi",
+				"off": "Nonaktif",
+				"on": "Aktif",
+				"realtime": "Realtime",
+				"realtimeMemory": "Di memori",
+				"realtimeRedis": "Redis ({{mode}})",
+				"title": "Server"
+			},
+			"deliveryFailures": {
+				"title": "Kegagalan pengiriman terbaru",
+				"description": "Webhook ruang kerja yang kehabisan percobaan ulang dalam 7 hari terakhir. Kesalahan email dan tugas latar belakang hanya ada di log server.",
+				"empty": "Tidak ada pengiriman gagal dalam 7 hari terakhir.",
+				"when": "Waktu",
+				"workspace": "Ruang kerja",
+				"webhook": "Webhook",
+				"response": "Respons"
+			}
 		},
 		"auth": {
 			"anyoneCanSignUp": "Siapa saja dapat mendaftar",
@@ -9103,6 +9508,31 @@
 			"title": "Autentikasi",
 			"toggle": "Aktifkan atau nonaktifkan {{method}}"
 		},
+		"oauth": {
+			"authorizationUrl": "URL otorisasi",
+			"autoSignIn": "Masuk otomatis",
+			"autoSignInHint": "Lewati layar masuk dan langsung ke penyedia ini",
+			"buttonLabel": "Label tombol",
+			"buttonLabelHint": "Ditampilkan pada tombol masuk, misalnya \"Lanjutkan dengan Okta\"",
+			"callbackHint": "Tambahkan URL ini ke aplikasi OAuth Anda",
+			"callbackUrl": "URL callback",
+			"clientId": "Client ID",
+			"clientSecret": "Client secret",
+			"copied": "Disalin",
+			"copy": "Salin",
+			"discoveryHint": "Atau isi tiga endpoint di bawah",
+			"discoveryUrl": "URL discovery",
+			"invalidUrl": "Masukkan URL http atau https absolut",
+			"logoutUrl": "URL keluar",
+			"managedByEnv": "Penyedia ini dikonfigurasi dengan variabel lingkungan ({{variables}}).",
+			"pkce": "Gunakan PKCE",
+			"scopes": "Scope",
+			"scopesHint": "Dipisahkan dengan koma",
+			"sheetDescription": "Hubungkan aplikasi OAuth agar orang dapat masuk dengan {{provider}}.",
+			"sheetTitle": "Masuk dengan {{provider}}",
+			"tokenUrl": "URL token",
+			"userInfoUrl": "URL info pengguna"
+		},
 		"email": {
 			"from": "Dari",
 			"fromHint": "Sebuah alamat, atau nama dan alamat: Margaya <no-reply@example.com>",
@@ -9133,134 +9563,6 @@
 			"subtitle": "Server SMTP yang digunakan Margaya untuk mengirim kode masuk, undangan, dan notifikasi.",
 			"title": "Email",
 			"username": "Nama pengguna"
-		},
-		"general": {
-			"counts": {
-				"accounts": "Akun",
-				"guests": "Tamu",
-				"projects": "Proyek",
-				"publishedBoards": "Papan publik",
-				"workspaces": "Ruang kerja"
-			},
-			"instanceName": "Nama instans",
-			"instanceNameHint": "Ditampilkan di layar masuk dan di papan publik",
-			"instanceNameRequired": "Masukkan nama",
-			"instanceNameTooLong": "Gunakan maksimal 80 karakter",
-			"homePage": "Halaman beranda",
-			"publicLanding": "Tampilkan halaman landing produk",
-			"publicLandingHint": "Pengunjung yang belum masuk melihat halaman landing di alamat utama. Jika dimatikan, mereka langsung diarahkan ke halaman masuk.",
-			"overview": "Ringkasan",
-			"server": {
-				"captcha": "Captcha",
-				"cloudMode": "Mode cloud",
-				"configured": "Dikonfigurasi",
-				"demoMode": "Mode demo",
-				"email": "Email",
-				"errorReporting": "Pelaporan error",
-				"fileStorage": "Penyimpanan file",
-				"notConfigured": "Belum dikonfigurasi",
-				"off": "Nonaktif",
-				"on": "Aktif",
-				"realtime": "Realtime",
-				"realtimeMemory": "Di memori",
-				"realtimeRedis": "Redis ({{mode}})",
-				"title": "Server"
-			},
-			"subtitle": "Beri nama instans ini dan periksa kondisinya.",
-			"title": "Umum",
-			"version": "Versi"
-		},
-		"loadError": "Gagal memuat pengaturan instans",
-		"lockedCallout": "Pengaturan ini dikelola dengan variabel lingkungan di server ini. Perubahan di sini dinonaktifkan.",
-		"nav": {
-			"admins": "Admin",
-			"authentication": "Autentikasi",
-			"email": "Email",
-			"general": "Umum",
-			"publicBoards": "Papan publik",
-			"workspaces": "Ruang kerja",
-			"ai": "AI"
-		},
-		"oauth": {
-			"authorizationUrl": "URL otorisasi",
-			"autoSignIn": "Masuk otomatis",
-			"autoSignInHint": "Lewati layar masuk dan langsung ke penyedia ini",
-			"buttonLabel": "Label tombol",
-			"buttonLabelHint": "Ditampilkan pada tombol masuk, misalnya \"Lanjutkan dengan Okta\"",
-			"callbackHint": "Tambahkan URL ini ke aplikasi OAuth Anda",
-			"callbackUrl": "URL callback",
-			"clientId": "Client ID",
-			"clientSecret": "Client secret",
-			"copied": "Disalin",
-			"copy": "Salin",
-			"discoveryHint": "Atau isi tiga endpoint di bawah",
-			"discoveryUrl": "URL discovery",
-			"invalidUrl": "Masukkan URL http atau https absolut",
-			"logoutUrl": "URL keluar",
-			"managedByEnv": "Penyedia ini dikonfigurasi dengan variabel lingkungan ({{variables}}).",
-			"pkce": "Gunakan PKCE",
-			"scopes": "Scope",
-			"scopesHint": "Dipisahkan dengan koma",
-			"sheetDescription": "Hubungkan aplikasi OAuth agar orang dapat masuk dengan {{provider}}.",
-			"sheetTitle": "Masuk dengan {{provider}}",
-			"tokenUrl": "URL token",
-			"userInfoUrl": "URL info pengguna"
-		},
-		"pageTitle": "Instans · {{page}}",
-		"publicBoards": {
-			"actions": "Aksi papan",
-			"allow": "Izinkan papan publik",
-			"allowHint": "Jika nonaktif, setiap tautan publik menjawab \"tidak ditemukan\". Tidak ada yang dihapus.",
-			"columns": {
-				"features": "Fitur",
-				"project": "Proyek",
-				"published": "Dipublikasikan",
-				"workspace": "Ruang kerja"
-			},
-			"empty": "Tidak ada papan publik di server ini.",
-			"feature": {
-				"comments": "Komentar",
-				"guests": "Tamu",
-				"reactions": "Reaksi",
-				"requests": "Permintaan",
-				"votes": "Suara"
-			},
-			"listTitle": "Papan yang dipublikasikan",
-			"loadMore": "Muat lebih banyak",
-			"noMatches": "Tidak ada papan publik yang cocok dengan “{{query}}”",
-			"openBoard": "Buka papan",
-			"participation": "Izinkan partisipasi publik",
-			"participationHint": "Jika nonaktif, papan publik hanya dapat dibaca: tanpa komentar, reaksi, suara, atau permintaan.",
-			"projectSettings": "Pengaturan proyek",
-			"search": "Cari papan",
-			"subtitle": "Kendalikan papan publik di seluruh instans ini.",
-			"title": "Papan publik",
-			"unpublish": "Batalkan publikasi…",
-			"unpublishConfirm": "Batalkan publikasi",
-			"unpublishDescription": "Tautan berhenti berfungsi sampai seseorang mempublikasikan papan lagi. Pengaturan, komentar, reaksi, dan suara tetap disimpan.",
-			"unpublished": "Publikasi papan dibatalkan",
-			"unpublishError": "Gagal membatalkan publikasi papan",
-			"unpublishTitle": "Batalkan publikasi {{project}}?"
-		},
-		"retry": "Coba lagi",
-		"save": "Simpan",
-		"saved": "Pengaturan disimpan",
-		"saveError": "Gagal menyimpan pengaturan",
-		"secret": {
-			"cancel": "Batal",
-			"clear": "Hapus",
-			"cleared": "Rahasia dihapus",
-			"placeholder": "Masukkan nilai baru",
-			"replace": "Ganti",
-			"saved": "Tersimpan",
-			"unreadable": "Rahasia yang tersimpan tidak dapat dibaca (AUTH_SECRET server berubah). Masukkan lagi."
-		},
-		"source": {
-			"default": "Bawaan",
-			"environment": "Lingkungan: {{variable}}",
-			"lockTooltip": "Hapus {{variable}} dan mulai ulang untuk mengelola ini di sini.",
-			"saved": "Disimpan di sini",
-			"savedBy": "Disimpan oleh {{name}} pada {{date}}"
 		},
 		"testEmail": {
 			"codes": {
@@ -9303,6 +9605,132 @@
 			"search": "Cari ruang kerja",
 			"subtitle": "Semua ruang kerja di instans ini.",
 			"title": "Ruang kerja"
+		},
+		"publicBoards": {
+			"actions": "Aksi papan",
+			"allow": "Izinkan papan publik",
+			"allowHint": "Jika nonaktif, setiap tautan publik menjawab \"tidak ditemukan\". Tidak ada yang dihapus.",
+			"columns": {
+				"features": "Fitur",
+				"project": "Proyek",
+				"published": "Dipublikasikan",
+				"workspace": "Ruang kerja"
+			},
+			"empty": "Tidak ada papan publik di server ini.",
+			"feature": {
+				"comments": "Komentar",
+				"guests": "Tamu",
+				"reactions": "Reaksi",
+				"requests": "Permintaan",
+				"votes": "Suara"
+			},
+			"listTitle": "Papan yang dipublikasikan",
+			"loadMore": "Muat lebih banyak",
+			"noMatches": "Tidak ada papan publik yang cocok dengan “{{query}}”",
+			"openBoard": "Buka papan",
+			"participation": "Izinkan partisipasi publik",
+			"participationHint": "Jika nonaktif, papan publik hanya dapat dibaca: tanpa komentar, reaksi, suara, atau permintaan.",
+			"projectSettings": "Pengaturan proyek",
+			"search": "Cari papan",
+			"subtitle": "Kendalikan papan publik di seluruh instans ini.",
+			"title": "Papan publik",
+			"unpublish": "Batalkan publikasi…",
+			"unpublishConfirm": "Batalkan publikasi",
+			"unpublishDescription": "Tautan berhenti berfungsi sampai seseorang mempublikasikan papan lagi. Pengaturan, komentar, reaksi, dan suara tetap disimpan.",
+			"unpublished": "Publikasi papan dibatalkan",
+			"unpublishError": "Gagal membatalkan publikasi papan",
+			"unpublishTitle": "Batalkan publikasi {{project}}?"
+		},
+		"admins": {
+			"add": "Tambah admin",
+			"addConfirm": "Tambah admin",
+			"addDescription": "Admin instans dapat mengubah setiap pengaturan di area ini dan membuka ruang kerja mana pun.",
+			"added": "{{name}} kini menjadi admin instans",
+			"addTitle": "Tambah admin instans",
+			"columns": {
+				"email": "Email",
+				"name": "Nama"
+			},
+			"email": "Email",
+			"emailInvalid": "Masukkan alamat email yang valid",
+			"emailPlaceholder": "name@example.com",
+			"lastAdmin": "Harus ada setidaknya satu admin instans",
+			"remove": "Hapus admin…",
+			"removeConfirm": "Hapus",
+			"removed": "{{name}} bukan lagi admin instans",
+			"removeDescription": "Mereka tetap memiliki akun dan ruang kerja mereka.",
+			"removeTitle": "Hapus {{name}} sebagai admin instans?",
+			"subtitle": "Admin instans dapat mengubah setiap pengaturan di area ini dan membuka ruang kerja mana pun.",
+			"title": "Admin",
+			"you": "Anda"
+		},
+		"identity": {
+			"name": "Nama",
+			"nameHint": "Sebutan admin untuk koneksi ini, misalnya nama penyedianya.",
+			"remove": "Hapus",
+			"removeTitle": "Hapus {{name}}?",
+			"done": "Selesai",
+			"scim": {
+				"title": "Penyediaan otomatis (SCIM)",
+				"description": "Izinkan penyedia identitas menambah, mengubah, dan menghapus orang di satu ruang kerja.",
+				"none": "Belum ada penyedia identitas yang terhubung untuk penyediaan otomatis.",
+				"connect": "Hubungkan penyedia",
+				"connectDescription": "Membuat token untuk satu ruang kerja. Anda akan melihatnya sekali, setelah terhubung.",
+				"connectConfirm": "Buat token",
+				"workspace": "Ruang kerja",
+				"workspaceHint": "Orang yang ditambahkan penyedia ini bergabung ke ruang kerja ini sebagai anggota.",
+				"workspacePlaceholder": "Pilih ruang kerja",
+				"workspaceSearch": "Cari ruang kerja",
+				"baseUrl": "URL dasar SCIM",
+				"token": "Token bearer",
+				"tokenTitle": "Salin token untuk {{name}}",
+				"tokenDescription": "Ini satu-satunya kesempatan Anda melihatnya. Berikan hanya kepada penyedia identitas: siapa pun yang memegangnya dapat menambahkan orang ke ruang kerja serta mengubah atau menonaktifkan orang yang dikelola koneksi ini.",
+				"rotate": "Ganti token",
+				"rotateTitle": "Ganti token untuk {{name}}?",
+				"rotateDescription": "Token saat ini langsung berhenti berfungsi, sehingga penyediaan otomatis berhenti sampai penyedia identitas memiliki token baru. Orang tetap tertaut.",
+				"rotateConfirm": "Ganti token",
+				"removeDescription": "Token langsung berhenti berfungsi. Orang yang ditambahkannya tetap memiliki akun dan keanggotaan mereka, dan tidak ada lagi pembaruan dari penyedia.",
+				"removed": "{{name}} dihapus",
+				"columns": {
+					"name": "Nama",
+					"workspace": "Ruang kerja",
+					"people": "Orang"
+				}
+			},
+			"saml": {
+				"title": "Masuk perusahaan (SAML)",
+				"description": "Izinkan orang di domain email Anda masuk melalui penyedia identitas.",
+				"none": "Belum ada penyedia identitas yang terhubung untuk masuk.",
+				"connect": "Hubungkan penyedia",
+				"connectConfirm": "Hubungkan",
+				"edit": "Edit",
+				"editTitle": "Edit {{name}}",
+				"formDescription": "Siapa pun yang mengendalikan penyedia identitas ini dapat memasukkan siapa pun di domain ini yang alamatnya terverifikasi di sini, jadi hubungkan hanya penyedia yang Anda percayai untuk domain tersebut.",
+				"acsUrl": "URL Assertion Consumer Service",
+				"entityId": "ID entitas (audiens)",
+				"addressesHint": "Masukkan keduanya di penyedia identitas Anda. Keduanya tidak akan berubah nanti.",
+				"domains": "Domain email",
+				"domainsHint": "Pisahkan beberapa domain dengan koma. Subdomain ikut disertakan.",
+				"domainsInvalid": "Masukkan domain seperti example.com, dipisahkan dengan koma.",
+				"issuer": "ID entitas penyedia identitas (penerbit)",
+				"entryPoint": "URL single sign-on",
+				"entryPointInvalid": "Gunakan alamat https://.",
+				"certificate": "Sertifikat penandatanganan",
+				"certificateHint": "Sertifikat X.509 publik penyedia identitas, dalam format PEM atau base64. Jangan pernah memasukkan kunci privat.",
+				"certificateKeepHint": "Biarkan kosong untuk mempertahankan sertifikat saat ini.",
+				"currentCertificate": "Sidik jari saat ini: {{fingerprint}}",
+				"certificateExpired": "Kedaluwarsa",
+				"certificateExpiring": "Segera kedaluwarsa",
+				"connected": "Penyedia identitas terhubung",
+				"saved": "Koneksi disimpan",
+				"removeDescription": "Proses masuk melalui penyedia identitas ini langsung berhenti. Akun tetap ada, dan orang masuk dengan cara lain.",
+				"removed": "{{name}} dihapus",
+				"columns": {
+					"name": "Nama",
+					"domains": "Domain email",
+					"certificate": "Sertifikat kedaluwarsa"
+				}
+			}
 		}
 	},
 	"press": {
@@ -9792,6 +10220,20 @@
 				"facts": "Proyek: {{projects}} · Orang: {{members}} · Siklus: {{cycles}}",
 				"memory": "Catatan memori: {{count}}",
 				"history": "Pesan sebelumnya: {{count}}"
+			},
+			"undo": {
+				"button": "Urungkan rencana",
+				"pending": "Mengurungkan rencana…",
+				"hint": "Anda dapat mengurungkan rencana ini selama satu jam, selama tidak ada isinya yang berubah.",
+				"lastPlan": "Anda masih dapat mengurungkan rencana terakhir.",
+				"done": "Rencana telah diurungkan. Item yang dihapus ada di sampah.",
+				"archived_other": "{{count}} item diarsipkan sebagai gantinya, karena Anda tidak dapat menghapusnya.",
+				"partial_other": "Diurungkan, kecuali {{count}} item:",
+				"edited_other": "Tidak ada yang diurungkan: {{count}} item berubah setelah rencana dibuat. Hapus secara manual jika Anda masih ingin menghilangkannya.",
+				"more_other": "dan {{count}} lainnya",
+				"already": "Rencana ini sudah diurungkan.",
+				"expired": "Rencana ini tidak dapat diurungkan lagi: satu jam telah berlalu.",
+				"failed": "Tidak dapat mengurungkan rencana ini."
 			}
 		},
 		"duplicates": {
@@ -11315,7 +11757,8 @@
 			"text": "Ini adalah email uji dari {{instanceName}}. Jika Anda bisa membacanya, pengiriman email berfungsi."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Komentar baru pada {{taskTitle}}"
+			"commentWithoutPreview": "Komentar baru pada {{taskTitle}}",
+			"pushFixedLine": "Buka Margaya untuk melihat detailnya."
 		}
 	}
 }

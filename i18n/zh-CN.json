@@ -221,10 +221,29 @@
 			"errors": {
 				"account_not_linked": "该身份无法关联到现有账户。请先用邮箱登录以验证账户，然后再尝试 SSO。如果无法使用邮箱登录，请联系管理员。",
 				"oauth_code_verification_failed": "OAuth 校验失败，请重试。",
-				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "已关闭注册。创建账户需要有效的邀请。"
+				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "已关闭注册。创建账户需要有效的邀请。",
+				"unsolicited_response": "请从此页面发起企业登录。不接受从身份提供方发起的登录。",
+				"invalid_saml_response": "无法接受身份提供方的响应。请重试，或请管理员检查连接。",
+				"replay_detected": "此登录响应已被使用。请重新登录。",
+				"unable_to_create_user": "无法创建你的账户。请向管理员申请访问权限。",
+				"invalid_request": "此登录请求无效。请重试。",
+				"invalid_state": "此登录链接已过期。请重试。",
+				"saml_deprecated_algorithm": "你的身份提供方使用的签名算法已不再被接受。请让管理员将其切换为 SHA-256。",
+				"this_identity_provider_cannot_sign_in_that_email_address_": "无法通过此身份提供方使用该邮箱地址登录。",
+				"new_accounts_on_this_server_must_use_an_approved_email_domain_": "此服务器上的新账户必须使用已批准的邮箱域名。",
+				"banned_user": "此账户已被封禁。请向管理员申请访问权限。",
+				"unable_to_link_account": "无法将此身份关联到你的账户。请向管理员寻求帮助。",
+				"saml_other_browser": "企业登录必须在发起登录的同一浏览器中完成。请从此页面重新开始，并确保已允许 Cookie。"
 			},
 			"instanceStatusError": "无法连接服务器，请稍后重试。",
-			"titleWithInstance": "登录 {{name}}"
+			"titleWithInstance": "登录 {{name}}",
+			"continueWithSaml": "使用企业登录继续",
+			"samlEmail": "工作邮箱",
+			"samlSubmit": "继续",
+			"samlNoConnection": "该邮箱域名尚未设置企业登录。",
+			"samlError": "无法发起企业登录。请重试。",
+			"emailCodesOff": "此服务器已关闭通过邮件发送的登录链接和验证码。如果你一直只用这些方式登录，你还没有密码：请选择“忘记密码？”来设置密码。",
+			"emailCodesOffNoEmail": "此服务器已关闭通过邮件发送的登录链接和验证码。如果你一直只用这些方式登录，你还没有密码：请让实例管理员为你设置一个。"
 		},
 		"providers": {
 			"google": "Google",
@@ -420,6 +439,10 @@
 				"nameShort": "姓名至少需要 2 个字符"
 			}
 		},
+		"layout": {
+			"headline": "纵览整个项目，接手下一个任务。",
+			"lede": "为喜欢快速、安静工具的团队打造的自托管项目管理。"
+		},
 		"device": {
 			"approve": "批准",
 			"approveFailed": "无法批准",
@@ -443,10 +466,6 @@
 			"subtitle": "输入 CLI 或应用中显示的代码以继续。",
 			"title": "连接设备"
 		},
-		"layout": {
-			"headline": "纵览整个项目，接手下一个任务。",
-			"lede": "为喜欢快速、安静工具的团队打造的自托管项目管理。"
-		},
 		"mcp": {
 			"approve": "批准",
 			"clientFallback": "MCP 客户端",
@@ -463,22 +482,6 @@
 			"subtitle": "授予访问你 Margaya 账户的权限之前，请先查看此请求。",
 			"title": "授权 MCP 客户端",
 			"warning": "此客户端将能够以你的身份操作并访问你的工作区。只有在连接由你本人发起时才继续。"
-		},
-		"emailVerification": {
-			"codeLabel": "验证码",
-			"codeSent": "我们已向 {{email}} 发送 6 位验证码，5 分钟内有效。",
-			"invitationsDescription": "验证邮箱后即可查看发送到 {{email}} 的邀请。",
-			"resend": "重新发送验证码",
-			"sendCode": "发送验证码",
-			"sendFailed": "无法发送验证码，请重试。",
-			"sending": "正在发送…",
-			"settingsDescription": "验证 {{email}} 后，发送到该地址的工作区邀请会显示在 Margaya 中。",
-			"success": "邮箱已验证",
-			"title": "验证邮箱",
-			"verifiedBadge": "已验证",
-			"verify": "验证",
-			"verifyFailed": "验证码无效。请检查后重试，或重新发送验证码。",
-			"verifying": "正在验证…"
 		},
 		"forgotPassword": {
 			"backToSignIn": "返回登录",
@@ -507,6 +510,30 @@
 			"successDescription": "新密码已设置，所有会话均已退出登录。请使用新密码登录。",
 			"successTitle": "密码已更新",
 			"title": "设置新密码"
+		},
+		"emailVerification": {
+			"codeLabel": "验证码",
+			"codeSent": "我们已向 {{email}} 发送 6 位验证码，5 分钟内有效。",
+			"invitationsDescription": "验证邮箱后即可查看发送到 {{email}} 的邀请。",
+			"resend": "重新发送验证码",
+			"sendCode": "发送验证码",
+			"sendFailed": "无法发送验证码，请重试。",
+			"sending": "正在发送…",
+			"settingsDescription": "验证 {{email}} 后，发送到该地址的工作区邀请会显示在 Margaya 中。",
+			"success": "邮箱已验证",
+			"title": "验证邮箱",
+			"verifiedBadge": "已验证",
+			"verify": "验证",
+			"verifyFailed": "验证码无效。请检查后重试，或重新发送验证码。",
+			"verifying": "正在验证…"
+		},
+		"complete": {
+			"pageTitle": "正在登录",
+			"title": "正在完成登录",
+			"working": "正在为你登录…",
+			"failedTitle": "无法完成登录",
+			"failed": "此次登录无法完成。其链接只能使用一次，有效期一分钟，且只能在你登录时使用的浏览器中打开。请重新登录。",
+			"backToSignIn": "返回登录"
 		}
 	},
 	"settings": {
@@ -608,6 +635,9 @@
 			"eventComments": "评论和提及",
 			"eventCommentsHint": "包括你被指派任务的新评论和 @ 提及。",
 			"eventStatusChanges": "任务状态变更",
+			"eventStatusChangesHint": "适用于分配给你或你已订阅的任务。",
+			"eventTaskUpdates": "其他任务变更",
+			"eventTaskUpdatesHint": "你关注的任务的优先级、截止日期和标题变更。",
 			"eventDueDateReminders": "截止日期提醒",
 			"reminderLeadTimeLabel": "在截止日期前提醒我",
 			"reminderLeadTimeHint": "提前 1 小时到 30 天之间。逾期通知会单独发送。",
@@ -615,6 +645,23 @@
 			"reminderLeadTimeUnitDays": "天",
 			"reminderLeadTimeInvalid": "请输入 1 到 {{max}} 之间的整数。",
 			"saveEventPreferences": "保存通知类型",
+			"digestTitle": "邮件摘要",
+			"digestDescription": "一封汇总邮件，包含你已逾期或 7 天内到期的未完成任务、新的提及和未读的收件箱消息。按你的时区发送，没有内容时不会发送。",
+			"digestFrequencyLabel": "发送摘要",
+			"digestFrequencyOff": "关闭",
+			"digestFrequencyDaily": "每天",
+			"digestFrequencyWeekly": "每周",
+			"digestWeekdayLabel": "星期",
+			"digestWeekdaySunday": "星期日",
+			"digestWeekdayMonday": "星期一",
+			"digestWeekdayTuesday": "星期二",
+			"digestWeekdayWednesday": "星期三",
+			"digestWeekdayThursday": "星期四",
+			"digestWeekdayFriday": "星期五",
+			"digestWeekdaySaturday": "星期六",
+			"digestHourLabel": "时间",
+			"digestNoEmail": "需要账户邮箱地址才能接收摘要。",
+			"saveDigest": "保存摘要设置",
 			"workspaceCardLabelEmail": "邮箱",
 			"workspaceCardLabelNtfy": "ntfy",
 			"workspaceCardLabelGotify": "Gotify",
@@ -642,28 +689,8 @@
 			"toastPreferencesSaveFailed": "保存通知偏好失败",
 			"toastRuleSavedGeneric": "工作区通知规则已保存",
 			"toastRuleRemovedGeneric": "工作区通知规则已移除",
-			"eventStatusChangesHint": "适用于分配给你或你已订阅的任务。",
-			"eventTaskUpdates": "其他任务变更",
-			"eventTaskUpdatesHint": "你关注的任务的优先级、截止日期和标题变更。",
-			"channelsDescription": "Margaya 会把你在上方选择的通知发送到这些位置。",
 			"channelsTitle": "送达渠道",
-			"digestDescription": "一封汇总邮件，包含你已逾期或 7 天内到期的未完成任务、新的提及和未读的收件箱消息。按你的时区发送，没有内容时不会发送。",
-			"digestFrequencyDaily": "每天",
-			"digestFrequencyLabel": "发送摘要",
-			"digestFrequencyOff": "关闭",
-			"digestFrequencyWeekly": "每周",
-			"digestHourLabel": "时间",
-			"digestNoEmail": "需要账户邮箱地址才能接收摘要。",
-			"digestTitle": "邮件摘要",
-			"digestWeekdayFriday": "星期五",
-			"digestWeekdayLabel": "星期",
-			"digestWeekdayMonday": "星期一",
-			"digestWeekdaySaturday": "星期六",
-			"digestWeekdaySunday": "星期日",
-			"digestWeekdayThursday": "星期四",
-			"digestWeekdayTuesday": "星期二",
-			"digestWeekdayWednesday": "星期三",
-			"saveDigest": "保存摘要设置",
+			"channelsDescription": "Margaya 会把你在上方选择的通知发送到这些位置。",
 			"sound": {
 				"title": "声音",
 				"description": "在浏览器中打开 Margaya 时，收到通知会播放提示音。",
@@ -694,7 +721,30 @@
 				"deviceMute": "在此设备上静音",
 				"deviceMuteDescription": "只静音此浏览器，你的其他设备仍会播放声音。",
 				"previewFailed": "浏览器未能播放声音。请检查此标签页或网站是否已静音。"
-			}
+			},
+			"pushTitle": "推送通知",
+			"pushDescription": "即使 Margaya 已关闭，也能在手机或电脑上收到提醒。“通知我关于”决定发送哪些内容，下方的工作区规则可以进一步缩小范围。",
+			"pushThisDevice": "在此设备上",
+			"pushOnHint": "此设备会收到推送通知。",
+			"pushOffHint": "开启后，浏览器会请求权限。",
+			"pushOffHintAllowed": "此浏览器已允许通知。",
+			"pushNotSetUp": "此服务器尚未设置推送。请让管理员设置 VAPID 密钥。",
+			"pushInstallFirst": "在 iPhone 和 iPad 上，请先将 Margaya 添加到主屏幕：轻点“共享”，然后选择“添加到主屏幕”。从主屏幕打开后再开启此项。",
+			"pushUnsupported": "此浏览器无法在此处接收推送通知。推送需要使用较新的浏览器和 HTTPS 地址。",
+			"pushBlocked": "此网站的通知已被阻止。请在浏览器设置中允许，然后刷新此页面。",
+			"pushOtherDevices": "你的其他设备",
+			"pushRemoveDevice": "移除",
+			"pushRemoveDeviceLabel": "移除 {{device}}",
+			"toastPushOn": "此设备的推送通知已开启。",
+			"toastPushOnFailed": "无法开启推送通知，请重试。",
+			"toastPushOff": "此设备的推送通知已关闭。",
+			"toastPushOffFailed": "无法关闭推送通知，请重试。",
+			"toastPushDeviceRemoved": "设备已移除。",
+			"toastPushDeviceRemoveFailed": "无法移除设备，请重试。",
+			"workspaceCardLabelPush": "推送通知",
+			"pushChannelHintEnabled": "将符合条件的工作区通知发送到你的设备。",
+			"pushChannelHintDisabled": "请先为某台设备开启推送。",
+			"pushLoadFailed": "无法加载推送设置。请刷新页面重试。"
 		},
 		"preferencesPage": {
 			"title": "偏好设置",
@@ -898,7 +948,6 @@
 				"organization": "工作区管理",
 				"member": "成员",
 				"invitation": "邀请",
-				"team": "团队",
 				"ac": "角色与权限",
 				"cycle": "迭代",
 				"module": "模块",
@@ -1022,20 +1071,6 @@
 					"cancel": {
 						"label": "取消邀请",
 						"description": "撤销待处理的工作区邀请。"
-					}
-				},
-				"team": {
-					"create": {
-						"label": "创建团队",
-						"description": "在此工作区中创建团队。"
-					},
-					"update": {
-						"label": "编辑团队",
-						"description": "更改团队及团队成员。"
-					},
-					"delete": {
-						"label": "删除团队",
-						"description": "删除此工作区中的团队。"
 					}
 				},
 				"ac": {
@@ -1909,7 +1944,10 @@
 				"pr_merged": "PR 已合并",
 				"issue_opened": "Issue 已创建",
 				"issue_closed": "Issue 已关闭"
-			}
+			},
+			"removeRule": "移除 {{event}} 的规则",
+			"toastRemoved": "工作流规则已移除",
+			"toastRemoveError": "移除规则失败"
 		},
 		"externalLinks": {
 			"resources": "资源",
@@ -1920,28 +1958,43 @@
 			"open": "打开"
 		},
 		"customFields": {
-			"addButton": "添加",
-			"createError": "创建自定义字段失败。",
-			"createSuccess": "自定义字段已创建。",
-			"defaultLabel": "默认",
-			"defaultValuePlaceholder": "默认值",
-			"deleteButton": "删除",
-			"deleteError": "删除自定义字段失败。",
-			"deleteSuccess": "自定义字段已删除。",
-			"empty": "尚未配置自定义字段。",
-			"loading": "正在加载自定义字段...",
 			"namePlaceholder": "字段名称",
+			"typePlaceholder": "选择字段类型",
 			"noOptionsPlaceholder": "无选项",
+			"defaultValuePlaceholder": "默认值",
 			"optionsPlaceholder": "选项以逗号分隔",
 			"required": "必填",
-			"typePlaceholder": "选择字段类型",
+			"addButton": "添加",
+			"loading": "正在加载自定义字段...",
+			"empty": "尚未配置自定义字段。",
+			"defaultLabel": "默认",
+			"createSuccess": "自定义字段已创建。",
+			"createError": "创建自定义字段失败。",
+			"deleteButton": "删除",
+			"deleteSuccess": "自定义字段已删除。",
+			"deleteError": "删除自定义字段失败。",
 			"types": {
 				"boolean": "布尔值",
 				"date": "日期",
 				"dropdown": "下拉列表",
 				"number": "数字",
 				"text": "文本"
-			}
+			},
+			"editButton": "编辑",
+			"editTitle": "编辑自定义字段",
+			"editDescription": "字段类型及是否必填在创建后无法更改。",
+			"nameLabel": "名称",
+			"optionsLabel": "选项",
+			"addOption": "添加选项",
+			"removeOption": "移除选项",
+			"optionPlaceholder": "选项名称",
+			"optionsHint": "重命名选项会更新所有使用它的任务、已保存视图和自动化。移除选项后，已使用它的任务会保留该值，直到有人更改，且无法再次选择它。",
+			"duplicateOption": "选项不能彼此相同。",
+			"noDefault": "无默认值",
+			"saveButton": "保存",
+			"cancelButton": "取消",
+			"updateSuccess": "自定义字段已更新。",
+			"updateError": "更新自定义字段失败。"
 		},
 		"projectFeatures": {
 			"disableConfirmAction": "关闭",
@@ -2205,6 +2258,11 @@
 			}
 		},
 		"workspaceExports": {
+			"title": "导出",
+			"pageTitle": "导出",
+			"subtitle": "将任务导出为 CSV、Excel 或 JSON。文件可下载 {{days}} 天。",
+			"newExport": "新建导出",
+			"viewExports": "查看导出",
 			"form": {
 				"activeGroup": "进行中",
 				"allProjects": "所有项目",
@@ -2231,47 +2289,6 @@
 				"json": "JSON",
 				"xlsx": "Excel"
 			},
-			"history": {
-				"all": "所有导出",
-				"columns": {
-					"actions": "操作",
-					"created": "创建时间",
-					"expires": "有效期",
-					"export": "导出",
-					"requestedBy": "发起人",
-					"size": "大小",
-					"status": "状态",
-					"tasks": "任务"
-				},
-				"delete": "删除",
-				"deleteAria": "删除 {{name}}",
-				"deleteDescription": "该文件将对所有人删除，且无法撤销。",
-				"deletedProject": "已删除的项目",
-				"deleteTitle": "删除此导出？",
-				"deleting": "正在删除…",
-				"description": "下载已完成的导出，或删除不再需要的导出。",
-				"download": "下载",
-				"downloadAria": "下载 {{name}}",
-				"empty": "暂无导出。你发起的导出会在此保留 {{days}} 天。",
-				"expiredOn": "已于 {{date}} 过期",
-				"expiresOn": "有效期至 {{date}}",
-				"loadMore": "加载更多",
-				"mine": "我的导出",
-				"scopeLabel": "导出范围",
-				"summaryProjects_other": "{{format}} · {{count}} 个项目",
-				"title": "历史导出"
-			},
-			"newExport": "新建导出",
-			"pageTitle": "导出",
-			"status": {
-				"completed": "已就绪",
-				"expired": "已过期",
-				"failed": "失败",
-				"processing": "处理中",
-				"queued": "排队中"
-			},
-			"subtitle": "将任务导出为 CSV、Excel 或 JSON。文件可下载 {{days}} 天。",
-			"title": "导出",
 			"toast": {
 				"deleted": "导出已删除",
 				"deleteError": "无法删除导出文件，请重试。",
@@ -2283,7 +2300,57 @@
 				"ready": "你的导出已准备就绪",
 				"started": "导出已开始。准备好后会通知你。"
 			},
-			"viewExports": "查看导出"
+			"history": {
+				"title": "历史导出",
+				"description": "下载已完成的导出，或删除不再需要的导出。",
+				"scopeLabel": "导出范围",
+				"mine": "我的导出",
+				"all": "所有导出",
+				"empty": "暂无导出。你发起的导出会在此保留 {{days}} 天。",
+				"columns": {
+					"actions": "操作",
+					"created": "创建时间",
+					"expires": "有效期",
+					"export": "导出",
+					"requestedBy": "发起人",
+					"size": "大小",
+					"status": "状态",
+					"tasks": "任务"
+				},
+				"summaryProjects_other": "{{format}} · {{count}} 个项目",
+				"deletedProject": "已删除的项目",
+				"download": "下载",
+				"downloadAria": "下载 {{name}}",
+				"delete": "删除",
+				"deleteAria": "删除 {{name}}",
+				"deleting": "正在删除…",
+				"deleteTitle": "删除此导出？",
+				"deleteDescription": "该文件将对所有人删除，且无法撤销。",
+				"expiredOn": "已于 {{date}} 过期",
+				"expiresOn": "有效期至 {{date}}",
+				"loadMore": "加载更多",
+				"summaryWorkspace": "整个工作区",
+				"fileCount_other": "{{count}} 个文件",
+				"withoutFiles": "不含文件",
+				"missingFiles_other": "存储中缺少 {{count}} 个文件"
+			},
+			"status": {
+				"completed": "已就绪",
+				"expired": "已过期",
+				"failed": "失败",
+				"processing": "处理中",
+				"queued": "排队中"
+			},
+			"whole": {
+				"title": "整个工作区",
+				"description": "将所有内容下载为一个 ZIP：任务及其全部评论、页面、设置和文件。",
+				"action": "导出工作区",
+				"dialogTitle": "导出整个工作区",
+				"dialogDescription": "归档文件将在后台生成。准备好后会通知你。",
+				"includeFiles": "包含文件",
+				"includeFilesHint": "关闭后归档文件会小很多，但仍会列出所有文件。",
+				"leftOut": "密钥、私有页面、回收站和草稿绝不会包含在内。归档文件中含有成员的邮箱地址，请妥善保管。"
+			}
 		},
 		"workspaceWebhooks": {
 			"actionsMenu": "Webhook 操作",
@@ -2661,7 +2728,8 @@
 			"restrictedProject": "受限项目",
 			"toastUpdated": "访问权限已更新",
 			"toastError": "更新访问权限失败",
-			"loadError": "无法加载访问权限设置。请刷新页面后重试。"
+			"loadError": "无法加载访问权限设置。请刷新页面后重试。",
+			"guestsHint": "访客只能访问被添加到的项目。请在此处添加他们；项目角色会限制他们能执行的操作。"
 		},
 		"projectPeople": {
 			"defaultAssigneeHint": "创建任务时自动填入，也会指派给已接受但没有负责人的请求。",
@@ -2779,47 +2847,47 @@
 				"workspacePublicPagesChanged": "开启或关闭了公开页面",
 				"pagePublished": "通过公开链接发布了页面",
 				"pageUnpublished": "撤销了页面的公开链接",
-				"apiKeyCreated": "创建了 API 密钥",
-				"apiKeyRevoked": "撤销了 API 密钥",
-				"exportCreated": "发起了导出",
-				"exportDownloaded": "下载了导出文件",
-				"importRun": "导入了任务",
-				"integrationConnected": "连接了集成",
-				"integrationDisconnected": "断开了集成",
-				"integrationUpdated": "更改了集成",
+				"memberInvited": "邀请了成员加入工作区",
+				"memberInvitationRevoked": "撤销了邀请",
 				"memberInvitationAccepted": "接受了邀请",
 				"memberInvitationDeclined": "拒绝了邀请",
 				"memberInvitationRoleChanged": "更改了待处理邀请的角色",
-				"memberInvitationRevoked": "撤销了邀请",
-				"memberInvited": "邀请了成员加入工作区",
-				"memberLeft": "退出了工作区",
 				"memberRemoved": "移除了成员",
+				"memberLeft": "退出了工作区",
 				"memberRoleChanged": "更改了成员的角色",
-				"projectArchived": "归档了项目",
-				"projectCreated": "创建了项目",
-				"projectFeatureToggled": "开启或关闭了项目功能",
-				"projectPurged": "永久删除了项目",
-				"projectRestored": "从回收站恢复了项目",
-				"projectSettingsChanged": "更改了项目设置",
-				"projectTrashed": "将项目移至回收站",
-				"projectUnarchived": "取消归档了项目",
-				"publicBoardLinkRotated": "更换了公开看板链接",
-				"publicBoardPublished": "发布了公开看板",
-				"publicBoardSettingsChanged": "更改了公开看板设置",
-				"publicBoardUnpublished": "取消发布了公开看板",
 				"roleCreated": "创建了角色",
-				"roleDeleted": "删除了角色",
 				"roleUpdated": "更改了角色",
-				"trashEmptied": "清空了项目回收站",
-				"trashPurged": "从回收站永久删除了任务",
-				"unknown": "{{action}}",
+				"roleDeleted": "删除了角色",
+				"apiKeyCreated": "创建了 API 密钥",
+				"apiKeyRevoked": "撤销了 API 密钥",
 				"webhookCreated": "创建了 Webhook",
+				"webhookUpdated": "更改了 Webhook",
 				"webhookDeleted": "删除了 Webhook",
 				"webhookSecretRotated": "轮换了 Webhook 的签名密钥",
-				"webhookUpdated": "更改了 Webhook",
+				"integrationConnected": "连接了集成",
+				"integrationUpdated": "更改了集成",
+				"integrationDisconnected": "断开了集成",
 				"workspaceCreated": "创建了工作区",
-				"workspaceOwnershipTransferred": "转移了工作区所有权",
 				"workspaceUpdated": "更改了工作区设置",
+				"workspaceOwnershipTransferred": "转移了工作区所有权",
+				"projectCreated": "创建了项目",
+				"projectTrashed": "将项目移至回收站",
+				"projectRestored": "从回收站恢复了项目",
+				"projectPurged": "永久删除了项目",
+				"projectArchived": "归档了项目",
+				"projectUnarchived": "取消归档了项目",
+				"projectFeatureToggled": "开启或关闭了项目功能",
+				"projectSettingsChanged": "更改了项目设置",
+				"publicBoardPublished": "发布了公开看板",
+				"publicBoardUnpublished": "取消发布了公开看板",
+				"publicBoardLinkRotated": "更换了公开看板链接",
+				"publicBoardSettingsChanged": "更改了公开看板设置",
+				"exportCreated": "发起了导出",
+				"exportDownloaded": "下载了导出文件",
+				"importRun": "导入了任务",
+				"trashPurged": "从回收站永久删除了任务",
+				"trashEmptied": "清空了项目回收站",
+				"unknown": "{{action}}",
 				"aiSettingsUpdated": "更改了 AI 设置",
 				"aiTriageLabelsApplied": "自动添加了建议的标签",
 				"agentCreated": "创建了智能体",
@@ -2846,7 +2914,9 @@
 				"aiConnectorUpdated": "修改了 MCP 连接器",
 				"aiConnectorDeleted": "删除了 MCP 连接器",
 				"agentIntakeTriggerUpdated": "更改了智能体的收集箱触发器",
-				"agentIntakeTriggerDisabled": "关闭了智能体的收集箱触发器"
+				"agentIntakeTriggerDisabled": "关闭了智能体的收集箱触发器",
+				"memberProvisioned": "通过预配添加了成员",
+				"memberInvitationProjectsChanged": "更改了待处理邀请的项目"
 			},
 			"actor": {
 				"apiKey": "API 密钥",
@@ -2939,47 +3009,56 @@
 			"title": "审计日志"
 		},
 		"trash": {
-			"deletedAt": "删除于 {{time}}",
-			"deletedBy": "由 {{name}} 删除 · {{time}}",
-			"deletePermanently": "永久删除",
-			"emptyConfirmDescription": "此项目回收站中的所有任务及其评论、附件和工时记录都将被永久删除。此操作无法撤销。",
-			"emptyConfirmTitle": "清空回收站？",
-			"emptyProjectsDescription": "你从此工作区删除的项目会显示在这里。",
-			"emptyProjectsTitle": "没有已删除的项目",
-			"emptyTasksDescription": "你从此项目删除的任务会显示在这里。",
-			"emptyTasksTitle": "没有已删除的任务",
-			"emptyTrash": "清空回收站",
-			"loadError": "无法加载回收站",
-			"loadMore": "加载更多",
-			"menuAria": "{{name}} 的更多操作",
-			"noMatches": "没有与搜索匹配的内容",
-			"projectSubtitle": "已删除的任务会保留在这里，直到被永久删除。恢复任务时，会一并恢复随它删除的子任务。",
 			"projectTitle": "最近删除",
+			"projectSubtitle": "已删除的任务和页面会保留在这里，直到被永久删除。恢复任务时，会一并恢复随它删除的子任务；恢复的页面会回到“已归档”。",
+			"workspaceTitle": "最近删除的项目",
+			"workspaceNav": "最近删除",
+			"workspaceSubtitle": "已删除的项目及其任务会保留在这里，直到被永久删除。",
+			"searchTasks": "搜索已删除的任务",
+			"searchProjects": "搜索已删除的项目",
+			"deletedBy": "由 {{name}} 删除 · {{time}}",
+			"deletedAt": "删除于 {{time}}",
 			"purgeOn": "将于 {{date}} 永久删除",
-			"purgeProjectDescription": "“{{name}}”及其中的所有内容将对所有人删除。此操作无法撤销。",
-			"purgeProjectTitle": "永久删除此项目？",
-			"purgeTaskDescription": "“{{name}}”及随它删除的子任务、评论、附件和工时记录将对所有人删除。此操作无法撤销。",
-			"purgeTaskTitle": "永久删除此任务？",
+			"withSubTasks_other": "含 {{count}} 个子任务",
+			"taskCount_other": "{{count}} 个任务",
 			"restore": "恢复",
 			"restoreAria": "恢复 {{name}}",
+			"menuAria": "{{name}} 的更多操作",
+			"deletePermanently": "永久删除",
+			"emptyTrash": "清空回收站",
+			"emptyTasksTitle": "没有已删除的任务",
+			"emptyTasksDescription": "你从此项目删除的任务会显示在这里。",
+			"emptyProjectsTitle": "没有已删除的项目",
+			"emptyProjectsDescription": "你从此工作区删除的项目会显示在这里。",
+			"noMatches": "没有与搜索匹配的内容",
+			"loadError": "无法加载回收站",
 			"retry": "重试",
-			"searchProjects": "搜索已删除的项目",
-			"searchTasks": "搜索已删除的任务",
-			"taskCount_other": "{{count}} 个任务",
+			"loadMore": "加载更多",
+			"purgeTaskTitle": "永久删除此任务？",
+			"purgeTaskDescription": "“{{name}}”及随它删除的子任务、评论、附件和工时记录将对所有人删除。此操作无法撤销。",
+			"emptyConfirmTitle": "清空回收站？",
+			"emptyConfirmDescription": "此项目回收站中的所有任务及其评论、附件和工时记录都将被永久删除。此操作无法撤销。",
+			"purgeProjectTitle": "永久删除此项目？",
+			"purgeProjectDescription": "“{{name}}”及其中的所有内容将对所有人删除。此操作无法撤销。",
 			"toast": {
-				"emptied_other": "已永久删除 {{count}} 个任务",
-				"projectPurged": "项目已永久删除",
+				"taskRestored": "任务已恢复",
 				"projectRestored": "项目已恢复",
-				"purgeError": "无法永久删除",
 				"restoreBlocked": "此任务无法单独恢复。请先恢复其父任务或所属项目。",
 				"restoreError": "无法恢复",
 				"taskPurged": "任务已永久删除",
-				"taskRestored": "任务已恢复"
+				"projectPurged": "项目已永久删除",
+				"emptied_other": "已永久删除 {{count}} 个任务",
+				"purgeError": "无法永久删除",
+				"pageRestored": "页面已恢复到“已归档”",
+				"pagePurged": "页面已永久删除"
 			},
-			"withSubTasks_other": "含 {{count}} 个子任务",
-			"workspaceNav": "最近删除",
-			"workspaceSubtitle": "已删除的项目及其任务会保留在这里，直到被永久删除。",
-			"workspaceTitle": "最近删除的项目"
+			"tasksHeading": "任务",
+			"pagesHeading": "页面",
+			"searchPages": "搜索已删除的页面",
+			"emptyPagesTitle": "没有已删除的页面",
+			"emptyPagesDescription": "你从此项目删除的已归档页面会显示在这里。",
+			"purgePageTitle": "永久删除此页面？",
+			"purgePageDescription": "“{{name}}”及其评论和版本历史将对所有人删除。此操作无法撤销。"
 		},
 		"automationRules": {
 			"title": "自动化",
@@ -3317,24 +3396,25 @@
 				"goToHome": "前往主页",
 				"goToStickies": "前往便签",
 				"paletteActions": "执行操作",
+				"paletteTasks": "按标识或标题查找任务",
 				"palettePeople": "查找成员",
 				"palettePlaces": "跳转到某个位置",
-				"paletteTasks": "按标识或标题查找任务",
 				"captureTask": "在看板或列表中添加任务",
 				"selectTask": "选择当前聚焦的任务",
-				"triageAssignee": "更改当前聚焦任务的负责人",
-				"triagePriority": "更改当前聚焦任务的优先级",
 				"triageStatus": "更改当前聚焦任务的状态",
+				"triagePriority": "更改当前聚焦任务的优先级",
+				"triageAssignee": "更改当前聚焦任务的负责人",
+				"taskStatus": "更改状态",
+				"taskPriority": "更改优先级",
 				"taskAssignees": "更改负责人",
+				"taskLabels": "更改标签",
+				"taskDueDate": "更改截止日期",
 				"taskAssignSelf": "指派或取消指派自己",
 				"taskCopyKey": "复制任务编号",
 				"taskCopyLink": "复制任务链接",
+				"taskCopyBranch": "复制任务的分支名称",
 				"taskDelete": "删除任务",
-				"taskDueDate": "更改截止日期",
-				"taskLabels": "更改标签",
-				"taskPriority": "更改优先级",
-				"taskStatus": "更改状态",
-				"taskCopyBranch": "复制任务的分支名称"
+				"moveBetweenCards": "在看板的卡片之间移动"
 			}
 		},
 		"favorites": {
@@ -3493,6 +3573,14 @@
 			"automation_notice": {
 				"title": "自动化：{{ruleName}}",
 				"content": "{{taskKey}} {{taskTitle}}"
+			},
+			"page_comment": {
+				"title": "{{commenterName}} 发表了评论",
+				"content": "{{commenterName}} 评论了 {{pageTitle}}：{{commentPreview}}"
+			},
+			"page_updated": {
+				"title": "{{editorName}} 编辑了页面",
+				"content": "{{editorName}} 编辑了 {{pageTitle}}"
 			}
 		},
 		"inbox": {
@@ -3547,10 +3635,12 @@
 			"loadMore": "加载更多",
 			"pageTitle": "收件箱",
 			"preview": {
-				"emptyDescription": "对应的任务将在此打开。",
 				"emptyTitle": "选择一条通知",
+				"emptyDescription": "对应的任务将在此打开。",
 				"unavailable": "此任务已不可用",
-				"label": "阅读窗格"
+				"label": "阅读窗格",
+				"showProperties": "显示属性",
+				"hideProperties": "隐藏属性"
 			},
 			"retry": "重试",
 			"snooze": {
@@ -3594,27 +3684,31 @@
 				"subscribed": "已订阅"
 			},
 			"verbs": {
-				"due_date_reminder": "{{leadTime}}后到期",
-				"task_assignee_changed": "将任务分配给了你",
-				"task_comment": "发表了评论",
 				"task_created": "创建了此任务",
+				"task_assignee_changed": "将任务分配给了你",
+				"task_status_changed": "将其从 {{oldStatus}} 移至 {{newStatus}}",
+				"task_comment": "发表了评论",
 				"task_mention": "提到了你",
 				"task_mention_comment": "在评论中提到了你",
-				"task_overdue": "已逾期",
-				"task_status_changed": "将其从 {{oldStatus}} 移至 {{newStatus}}",
+				"time_entry_created": "记录了工时",
 				"task_updated": {
 					"dueDate": "将截止日期更改为 {{newValue}}",
 					"dueDateCleared": "移除了截止日期",
 					"priority": "将优先级更改为 {{newValue}}",
 					"title": "重命名了任务"
 				},
-				"time_entry_created": "记录了工时",
+				"due_date_reminder": "{{leadTime}}后到期",
+				"task_overdue": "已逾期",
 				"intake_accepted": "接受了你的请求",
 				"intake_declined": "拒绝了你的请求",
 				"intake_duplicate": "将你的请求标记为重复项",
 				"page_mention": "在页面中提到了你",
 				"page_mention_titled": "在 {{pageTitle}} 中提到了你",
-				"task_comment_reply": "回复了一条评论"
+				"task_comment_reply": "回复了一条评论",
+				"page_comment": "评论了页面",
+				"page_comment_titled": "评论了 {{pageTitle}}",
+				"page_updated": "编辑了你关注的页面",
+				"page_updated_titled": "编辑了 {{pageTitle}}"
 			},
 			"viewing": {
 				"archived": "正在查看已归档的通知",
@@ -3645,8 +3739,21 @@
 		}
 	},
 	"activity": {
+		"feed": {
+			"all": "全部活动",
+			"comments": "评论",
+			"label": "筛选和排序活动",
+			"newest": "最新优先",
+			"noMatches": "此筛选条件下没有内容。",
+			"oldest": "最早优先",
+			"order": "顺序",
+			"show": "显示",
+			"updates": "更新"
+		},
 		"assignedToSelf": "将任务指派给了自己",
 		"unassigned": "取消了任务指派",
+		"unassignedUser": "取消了 {{name}} 的指派",
+		"unassignedSelf": "取消了自己的指派",
 		"assignedTo": "将任务指派给 {{name}}",
 		"changedStatus": "将状态从 {{from}} 改为 {{to}}",
 		"changedPriority": "将优先级从 {{from}} 改为 {{to}}",
@@ -3656,6 +3763,8 @@
 		"changedTitle": "将标题从 \"{{from}}\" 改为 \"{{to}}\"",
 		"moved": "将任务从 \"{{from}}\" 移动到 \"{{to}}\"",
 		"created": "创建了此任务",
+		"importedFromJira": "从 Jira {{key}} 导入了此任务",
+		"importedFromSource": "从 {{source}} {{key}} 导入了此任务",
 		"githubUser": "GitHub 用户",
 		"comment": {
 			"github": "GitHub",
@@ -3775,35 +3884,26 @@
 			"linkCopied": "已复制评论链接"
 		},
 		"addedToCycle": "将任务添加到迭代 {{name}}",
-		"deletedCycle": "将任务从已删除的迭代中移除",
-		"movedCycle": "将任务从迭代 {{from}} 移动到 {{to}}",
 		"removedFromCycle": "将任务从迭代 {{name}} 中移除",
+		"movedCycle": "将任务从迭代 {{from}} 移动到 {{to}}",
+		"deletedCycle": "将任务从已删除的迭代中移除",
 		"addedToModule": "将任务添加到模块 {{name}}",
 		"removedFromModule": "将任务从模块 {{name}} 中移除",
+		"estimateSet": "将预估设置为 {{to}}",
 		"estimateChanged": "将预估从 {{from}} 更改为 {{to}}",
+		"estimateRemoved": "移除了预估 {{from}}",
 		"estimateReason": {
 			"point_deleted": "（预估取值已删除）",
 			"system_deleted": "（预估系统已删除）",
 			"system_switched": "（预估系统已切换）",
 			"task_moved": "（已移动到其他项目）"
 		},
-		"estimateRemoved": "移除了预估 {{from}}",
-		"estimateSet": "将预估设置为 {{to}}",
-		"unassignedSelf": "取消了自己的指派",
-		"unassignedUser": "取消了 {{name}} 的指派",
-		"addedLabel": "添加了标签 <label>{{name}}</label>",
-		"attachmentAdded": "添加了附件 {{filename}}",
-		"attachmentRemoved": "移除了附件 {{filename}}",
+		"setStartDate": "将开始日期设为 {{date}}",
 		"changedStartDate": "将开始日期从 {{from}} 改为 {{to}}",
 		"clearedStartDate": "清除了开始日期",
-		"copiedFrom": "将此任务创建为 <task>{{task}}</task> 的副本",
-		"copiedTo": "创建了此任务的副本：<task>{{task}}</task>",
-		"linkAdded": "添加了链接 {{title}}",
-		"linkRemoved": "移除了链接 {{title}}",
-		"linkUpdated": "更新了链接 {{title}}",
-		"parentChanged": "将父任务从 <from>{{from}}</from> 改为 <to>{{to}}</to>",
-		"parentRemoved": "移除了父任务 <task>{{task}}</task>",
-		"parentSet": "将父任务设置为 <task>{{task}}</task>",
+		"addedLabel": "添加了标签 <label>{{name}}</label>",
+		"removedLabel": "移除了标签 <label>{{name}}</label>",
+		"updatedDescription": "更新了描述",
 		"relationAdded": {
 			"blocked_by": "将此任务标记为被 <task>{{task}}</task> 阻塞",
 			"blocking": "将此任务标记为阻塞 <task>{{task}}</task>",
@@ -3815,12 +3915,36 @@
 			"start_before": "将此任务设置为在 <task>{{task}}</task> 之前开始"
 		},
 		"relationRemoved": "移除了与 <task>{{task}}</task> 的{{relation}}关联",
-		"removedLabel": "移除了标签 <label>{{name}}</label>",
-		"setStartDate": "将开始日期设为 {{date}}",
+		"parentSet": "将父任务设置为 <task>{{task}}</task>",
+		"parentChanged": "将父任务从 <from>{{from}}</from> 改为 <to>{{to}}</to>",
+		"parentRemoved": "移除了父任务 <task>{{task}}</task>",
 		"subtaskAdded": "添加了子任务 <task>{{task}}</task>",
 		"subtaskRemoved": "移除了子任务 <task>{{task}}</task>",
-		"updatedDescription": "更新了描述",
+		"linkAdded": "添加了链接 {{title}}",
+		"linkUpdated": "更新了链接 {{title}}",
+		"linkRemoved": "移除了链接 {{title}}",
+		"attachmentAdded": "添加了附件 {{filename}}",
+		"attachmentRemoved": "移除了附件 {{filename}}",
+		"copiedFrom": "将此任务创建为 <task>{{task}}</task> 的副本",
+		"copiedTo": "创建了此任务的副本：<task>{{task}}</task>",
 		"archived": "归档了此任务",
+		"unarchived": "恢复了此任务",
+		"intake": {
+			"submitted": "提交了此请求",
+			"submittedVia": "通过 {{source}} 提交了此请求",
+			"accepted": "将此请求接受到 {{column}}",
+			"acceptedBacklog": "将此请求接受到待办",
+			"declined": "拒绝了此请求",
+			"declinedWithReason": "拒绝了此请求：{{note}}",
+			"snoozed": "将此请求稍后提醒至 {{date}}",
+			"unsnoozed": "将此请求重新放回审核",
+			"snoozeEnded": "稍后提醒已结束，此请求已回到审核中",
+			"duplicate": "将此请求标记为 {{key}} 的重复项",
+			"duplicateDeleted": "将此请求标记为已删除任务的重复项",
+			"reopened": "重新打开了此请求",
+			"acceptedHidden": "将此请求接受到其他项目",
+			"duplicateHidden": "将此请求标记为其他项目中某个任务的重复项"
+		},
 		"reactions": {
 			"add": "添加表情回应",
 			"error": "无法更新表情回应",
@@ -3840,28 +3964,6 @@
 			"reactWith": "用{{label}}回应",
 			"remove": "移除{{label}}回应",
 			"you": "你"
-		},
-		"unarchived": "恢复了此任务",
-		"intake": {
-			"accepted": "将此请求接受到 {{column}}",
-			"acceptedBacklog": "将此请求接受到待办",
-			"declined": "拒绝了此请求",
-			"declinedWithReason": "拒绝了此请求：{{note}}",
-			"duplicate": "将此请求标记为 {{key}} 的重复项",
-			"duplicateDeleted": "将此请求标记为已删除任务的重复项",
-			"reopened": "重新打开了此请求",
-			"snoozed": "将此请求稍后提醒至 {{date}}",
-			"snoozeEnded": "稍后提醒已结束，此请求已回到审核中",
-			"submitted": "提交了此请求",
-			"submittedVia": "通过 {{source}} 提交了此请求",
-			"unsnoozed": "将此请求重新放回审核"
-		},
-		"automation": {
-			"actor": "自动化",
-			"archived_other": "因 {{count}} 个月没有更新而归档了此任务",
-			"closed_other": "因 {{count}} 个月没有更新而关闭了此任务，并将其移至 {{to}}",
-			"rolledOver": "在迭代结束时将此任务从 {{from}} 移至 {{to}}",
-			"byRule": "通过 {{name}}"
 		},
 		"commentVisibility": {
 			"badgeExternal": "外部用户",
@@ -3888,21 +3990,47 @@
 			"summary": "▲ {{up}} · ▼ {{down}}",
 			"tooltip": "来自公开看板的投票"
 		},
-		"feed": {
-			"all": "全部活动",
-			"comments": "评论",
-			"label": "筛选和排序活动",
-			"newest": "最新优先",
-			"noMatches": "此筛选条件下没有内容。",
-			"oldest": "最早优先",
-			"order": "顺序",
-			"show": "显示",
-			"updates": "更新"
+		"automation": {
+			"actor": "自动化",
+			"archived_other": "因 {{count}} 个月没有更新而归档了此任务",
+			"closed_other": "因 {{count}} 个月没有更新而关闭了此任务，并将其移至 {{to}}",
+			"rolledOver": "在迭代结束时将此任务从 {{from}} 移至 {{to}}",
+			"byRule": "通过 {{name}}",
+			"rolledOverHidden": "在迭代结束时将此任务移至下一个迭代"
 		},
-		"importedFromJira": "从 Jira {{key}} 导入了此任务",
-		"importedFromSource": "从 {{source}} {{key}} 导入了此任务",
 		"movedToTrash": "将此任务移至回收站",
-		"restoredFromTrash": "从回收站恢复了此任务"
+		"restoredFromTrash": "从回收站恢复了此任务",
+		"parentRemovedHidden": "移除了其他项目中的父任务",
+		"subtaskAddedHidden": "添加了其他项目中的子任务",
+		"subtaskRemovedHidden": "移除了其他项目中的子任务",
+		"copiedToHidden": "在其他项目中创建了此任务的副本",
+		"relationAddedHidden": {
+			"related": "将此任务标记为与其他项目中的任务相关",
+			"blocking": "将此任务标记为阻塞其他项目中的任务",
+			"blocked_by": "将此任务标记为被其他项目中的任务阻塞",
+			"duplicate": "将此任务标记为其他项目中某个任务的重复任务",
+			"start_before": "将此任务设置为在其他项目中的任务之前开始",
+			"start_after": "将此任务设置为在其他项目中的任务之后开始",
+			"finish_before": "将此任务设置为在其他项目中的任务之前完成",
+			"finish_after": "将此任务设置为在其他项目中的任务之后完成"
+		},
+		"relationRemovedHidden": "移除了与其他项目中任务的{{relation}}关联",
+		"parentSetHidden": "将父任务设置为其他项目中的任务",
+		"parentChangedFromHidden": "将父任务从其他项目中的任务改为 <to>{{to}}</to>",
+		"parentChangedToHidden": "将父任务从 <from>{{from}}</from> 改为其他项目中的任务",
+		"parentChangedBetweenHidden": "在其他项目的任务之间更改了父任务",
+		"copiedFromHidden": "将此任务创建为其他项目中某个任务的副本",
+		"movedFromHidden": "将任务从其他项目移动到 \"{{to}}\"",
+		"movedToHidden": "将任务从 \"{{from}}\" 移动到其他项目",
+		"movedBetweenHidden": "在其他项目之间移动了任务",
+		"changedStatusHidden": "在其他项目中更改了状态",
+		"addedToHiddenCycle": "将任务添加到某个迭代",
+		"removedFromHiddenCycle": "将任务从某个迭代中移除",
+		"movedCycleFromHidden": "将任务从其他迭代移动到 {{to}}",
+		"movedCycleToHidden": "将任务从迭代 {{from}} 移动到其他迭代",
+		"movedCycleBetweenHidden": "在迭代之间移动了任务",
+		"addedToHiddenModule": "将任务添加到某个模块",
+		"removedFromHiddenModule": "将任务从某个模块中移除"
 	},
 	"tasks": {
 		"recurrence": {
@@ -3955,8 +4083,29 @@
 				"recurredFrom": "将此任务创建为 <task>{{task}}</task> 的下一次重复",
 				"recurredFromScheduled": "按计划创建为 <task>{{task}}</task> 的下一次重复",
 				"recurredTo": "完成了此任务，并创建了下一次重复 <task>{{task}}</task>",
-				"recurredToScheduled": "已按计划创建下一次重复：<task>{{task}}</task>"
+				"recurredToScheduled": "已按计划创建下一次重复：<task>{{task}}</task>",
+				"recurredToHidden": "完成了此任务，并在其他项目中创建了下一次重复",
+				"recurredToScheduledHidden": "已按计划在其他项目中创建下一次重复",
+				"recurredFromHidden": "将此任务创建为其他项目中某个任务的下一次重复",
+				"recurredFromScheduledHidden": "按计划创建为其他项目中某个任务的下一次重复"
 			}
+		},
+		"subscription": {
+			"count_other": "{{count}} 人已订阅",
+			"error": "无法更新订阅",
+			"mutedAssignee": "你被分配了此任务但已取消订阅。提及你时仍会通知你。",
+			"notSubscribed": "接收状态变更、评论及其他变更的更新。",
+			"reasons": {
+				"assignee": "你被分配了此任务，因此已订阅。",
+				"commenter": "你发表了评论，因此已订阅。",
+				"creator": "你创建了此任务，因此已订阅。",
+				"manual": "你已订阅此任务。",
+				"mention": "你被提及，因此已订阅。"
+			},
+			"subscribe": "订阅",
+			"toastSubscribed": "已订阅此任务",
+			"toastUnsubscribed": "已取消订阅。被提及时仍会通知你。",
+			"unsubscribe": "取消订阅"
 		},
 		"status": {
 			"label": "状态",
@@ -3967,6 +4116,32 @@
 			"archived": "已归档",
 			"planned": "已计划"
 		},
+		"columnGroups": {
+			"backlog": {
+				"description": "已收集，尚未规划",
+				"label": "待办"
+			},
+			"cancelled": {
+				"description": "未执行工作即关闭",
+				"label": "已取消"
+			},
+			"completed": {
+				"description": "已完成",
+				"label": "已完成"
+			},
+			"started": {
+				"description": "工作进行中",
+				"label": "进行中"
+			},
+			"triage": {
+				"description": "在收集箱中等待审核",
+				"label": "待筛选"
+			},
+			"unstarted": {
+				"description": "已规划，工作尚未开始",
+				"label": "未开始"
+			}
+		},
 		"priority": {
 			"label": "优先级",
 			"no-priority": "无优先级",
@@ -3975,7 +4150,7 @@
 			"high": "高",
 			"urgent": "紧急"
 		},
-		"boardSearchPlaceholder": "搜索工单…",
+		"boardSearchPlaceholder": "搜索任务…",
 		"view": {
 			"board": "看板",
 			"list": "列表",
@@ -3992,9 +4167,16 @@
 		},
 		"detail": {
 			"subtaskOf": "子任务属于",
+			"customFieldUpdated": "字段已更新",
+			"selectOption": "选择选项",
 			"activity": "活动",
 			"noActivity": "暂无活动",
 			"openInFullPage": "在新页面打开",
+			"openOnBoard": "在看板中打开",
+			"sheetLabel": "任务详情",
+			"previousTask": "上一个任务",
+			"nextTask": "下一个任务",
+			"position": "第 {{position}} 个，共 {{total}} 个",
 			"titlePlaceholder": "点击添加标题",
 			"addDescription": "添加描述…",
 			"editor": {
@@ -4124,13 +4306,11 @@
 					"toolbar": "图片选项"
 				}
 			},
-			"customFieldUpdated": "字段已更新",
-			"selectOption": "选择选项",
-			"nextTask": "下一个任务",
-			"openOnBoard": "在看板中打开",
-			"position": "第 {{position}} 个，共 {{total}} 个",
-			"previousTask": "上一个任务",
-			"sheetLabel": "任务详情"
+			"saveError": {
+				"title": "标题未保存。内容仍在输入框中，可以重试。",
+				"description": "描述未保存。内容仍在编辑器中，可以重试。",
+				"retry": "重试"
+			}
 		},
 		"entity": {
 			"task": "任务"
@@ -4340,17 +4520,49 @@
 			"nextPeriod": "下一时段",
 			"periodStart": "时间线起始日期",
 			"showTaskDates": "显示任务日期",
-			"dependencyConflict": "开始或结束时间与依赖关系的顺序冲突",
-			"dragToSchedule": "将 {{title}} 拖到时间线上",
+			"zoom": "时间线缩放",
+			"zoomWeek": "周",
+			"zoomMonth": "月",
+			"zoomQuarter": "季度",
 			"noDates": "无日期",
 			"noDatesCount": "无日期 · {{count}}",
 			"noDatesHint": "拖到时间线上，或从今天开始安排。",
 			"schedule": "安排",
 			"scheduleTask": "从今天开始安排 {{title}}",
-			"zoom": "时间线缩放",
-			"zoomMonth": "月",
-			"zoomQuarter": "季度",
-			"zoomWeek": "周"
+			"dragToSchedule": "将 {{title}} 拖到时间线上",
+			"dependencyConflict": "开始或结束时间与依赖关系的顺序冲突",
+			"workspaceNoTasksSubtitle": "为任务添加开始日期、截止日期或两者，即可在此时间线上查看。",
+			"showMoreTasks": "显示更多任务",
+			"blocked": "被未完成的任务阻塞",
+			"linkFrom": "将 {{title}} 关联到其他任务",
+			"linkHint": "拖到另一个任务上，使其等待此任务",
+			"link": {
+				"blocks": "{{source}} 阻塞 {{target}}",
+				"startBefore": "{{source}} 在 {{target}} 之前开始",
+				"finishBefore": "{{source}} 在 {{target}} 之前完成",
+				"conflict": "日期与此关联冲突。"
+			},
+			"milestone": {
+				"add": "里程碑",
+				"ariaLabel": "里程碑 {{title}}：打开或拖动以移动",
+				"name": "里程碑名称",
+				"namePlaceholder": "里程碑名称",
+				"date": "里程碑日期",
+				"create": "添加里程碑",
+				"createError": "无法添加里程碑"
+			},
+			"cascade": {
+				"offer_other": "{{count}} 个关联任务现在开始得太早",
+				"reviewAction": "查看日期更改",
+				"title_other": "移动 {{count}} 个关联任务？",
+				"description": "这些任务将后移，刚好满足其关联，并保持时长不变。在你确认之前不会有任何更改。",
+				"to": "到",
+				"cancel": "保留日期",
+				"confirm_other": "移动 {{count}} 个任务",
+				"moved_other": "已移动 {{count}} 个任务",
+				"partial": "已移动 {{moved}}/{{total}} 个任务。其余任务保留原日期。",
+				"nothingToMove": "没有需要因此关联而移动的带日期未完成任务。"
+			}
 		},
 		"delete": {
 			"title": "删除任务？",
@@ -4367,551 +4579,6 @@
 			"restore": "恢复",
 			"restored": "任务已恢复",
 			"restoreError": "无法恢复任务"
-		},
-		"listView": {
-			"addTask": "添加任务",
-			"archiveAllTooltip": "归档所有已完成任务",
-			"noTasks": "无任务"
-		},
-		"kanban": {
-			"addTask": "添加任务",
-			"stages": "列",
-			"emptyAction": "添加任务",
-			"emptyTitle": "还没有任务"
-		},
-		"pr": {
-			"merged": "已合并",
-			"draft": "草稿",
-			"open": "打开",
-			"label": "Pull Request",
-			"count_other": "{{count}} 个 PR"
-		},
-		"assignee": {
-			"label": "负责人",
-			"unassigned": "未指派"
-		},
-		"dueDate": {
-			"label": "截止日期",
-			"clear": "清除日期",
-			"updateSuccess": "任务截止日期更新成功",
-			"updateError": "更新任务截止日期失败",
-			"clearSuccess": "任务截止日期已清除",
-			"clearError": "清除截止日期失败"
-		},
-		"update": {
-			"success": "任务更新成功",
-			"error": "更新任务失败"
-		},
-		"contextMenu": {
-			"copyLink": "复制链接",
-			"copyLinkSuccess": "已复制任务链接",
-			"estimate": "预估"
-		},
-		"actions": {
-			"archive": "归档",
-			"markAsPlanned": "标记为已计划",
-			"delete": "删除…",
-			"copyKey": "复制任务编号",
-			"copyLink": "复制链接",
-			"makeCopy": "创建副本…",
-			"moreActions": "更多操作"
-		},
-		"bulk": {
-			"selectedCount": "已选 {{count}} 个",
-			"moveToBacklog": "移至待办",
-			"moveToBacklogSuccess": "{{count}} 个任务已移至待办",
-			"moveToBacklogError": "将任务移至待办失败",
-			"moveToBoard": "移到看板",
-			"moveToBoardSuccess": "{{count}} 个任务已移至看板",
-			"moveToBoardError": "将任务移至看板失败",
-			"delete": "删除任务",
-			"deleteConfirm": "将 {{count}} 个任务移至回收站？你可以在项目设置的“最近删除”中恢复它们。",
-			"deleteSuccess": "已删除 {{count}} 个任务",
-			"deleteError": "删除任务失败",
-			"archive": "归档任务",
-			"archiveSuccess": "已归档 {{count}} 个任务",
-			"archiveError": "归档任务失败",
-			"updateSuccess": "已更新 {{count}} 个任务",
-			"updateError": "更新任务失败",
-			"setPriority": "设置优先级",
-			"updatePriorityError": "更新优先级失败",
-			"addLabel": "添加标签",
-			"addLabelSuccess": "已为 {{count}} 个任务添加标签",
-			"addLabelError": "添加标签失败",
-			"setDueDate": "设置截止日期",
-			"updateDueDateError": "更新截止日期失败",
-			"actions": "操作",
-			"searchActions": "搜索操作…",
-			"noActionsFound": "未找到操作。",
-			"changeStatus": "更改状态",
-			"removeLabel": "移除标签",
-			"removeLabelSuccess": "已从 {{count}} 个任务移除标签",
-			"removeLabelError": "移除标签失败",
-			"unarchive": "从归档中恢复",
-			"unarchiveSuccess": "已恢复 {{count}} 个任务",
-			"unarchiveNone": "所选任务中没有已归档的任务",
-			"unarchiveError": "恢复任务失败",
-			"setDates": "日期",
-			"dateField": "要设置的日期",
-			"startDate": "开始日期",
-			"dueDate": "截止日期",
-			"clearStartDate": "清除开始日期",
-			"clearDueDate": "清除截止日期",
-			"updateStartDateError": "更新开始日期失败。开始日期不能晚于任务的截止日期。",
-			"addAssignee": "添加负责人",
-			"addAssigneeSuccess_other": "已将 {{name}} 添加到 {{count}} 个任务",
-			"assigneesError": "更新负责人失败",
-			"clearAssignees": "清除负责人",
-			"clearAssigneesSuccess_other": "已清除 {{count}} 个任务的负责人",
-			"removeAssignee": "移除负责人",
-			"removeAssigneeSuccess_other": "已从 {{count}} 个任务中移除 {{name}}",
-			"clearSelection": "取消选择"
-		},
-		"editor": {
-			"table": {
-				"addColumnBefore": "在左侧插入列",
-				"addColumnAfter": "在右侧插入列",
-				"deleteColumn": "删除列",
-				"addRowBefore": "在上方插入行",
-				"addRowAfter": "在下方插入行",
-				"deleteRow": "删除行",
-				"deleteTable": "删除表格",
-				"moveRowUp": "上移行",
-				"moveRowDown": "下移行",
-				"moveColumnLeft": "左移列",
-				"moveColumnRight": "右移列",
-				"toggleHeaderRow": "标题行",
-				"fullWidth": "全宽",
-				"dragRow": "第 {{index}} 行",
-				"dragColumn": "第 {{index}} 列",
-				"dragRowHint": "拖动以移动该行，或使用方向键",
-				"dragColumnHint": "拖动以移动该列，或使用方向键",
-				"insertRowHere": "在此插入一行",
-				"insertColumnHere": "在此插入一列"
-			}
-		},
-		"descriptionSearchLoading": "正在搜索完整描述…",
-		"descriptionSearchError": "描述搜索失败，结果可能不完整。",
-		"descriptionRetry": "重试",
-		"descriptionLoading": "正在加载描述…",
-		"descriptionLoadError": "描述加载失败，重试以加载当前版本。",
-		"columnGroups": {
-			"backlog": {
-				"description": "已收集，尚未规划",
-				"label": "待办"
-			},
-			"cancelled": {
-				"description": "未执行工作即关闭",
-				"label": "已取消"
-			},
-			"completed": {
-				"description": "已完成",
-				"label": "已完成"
-			},
-			"started": {
-				"description": "工作进行中",
-				"label": "进行中"
-			},
-			"triage": {
-				"description": "在收集箱中等待审核",
-				"label": "待筛选"
-			},
-			"unstarted": {
-				"description": "已规划，工作尚未开始",
-				"label": "未开始"
-			}
-		},
-		"estimate": {
-			"bulk": {
-				"action": "预估",
-				"error": "更改所选任务的预估失败",
-				"updated_other": "已更新 {{count}} 个任务的预估"
-			},
-			"chart": {
-				"points": "点数",
-				"pointsLeft": "剩余点数",
-				"summaryPoints": "剩余 {{remaining}}/{{scope}} 点，还剩 {{days}} 天",
-				"summaryTime": "剩余 {{remaining}}/{{scope}}，还剩 {{days}} 天",
-				"tasks": "任务",
-				"time": "时间",
-				"timeLeft": "剩余时间",
-				"unitAria": "图表单位"
-			},
-			"duration": {
-				"hours": "{{hours}} 小时",
-				"hoursMinutes": "{{hours}} 小时 {{minutes}} 分钟",
-				"hourUnit": "h",
-				"minutes": "{{minutes}} 分钟",
-				"minuteUnit": "m"
-			},
-			"label": "预估",
-			"none": "无预估",
-			"pointsValue_other": "{{value}} 点",
-			"setAria": "设置预估",
-			"totals": {
-				"estimated": "{{total}} 个任务中已有 {{estimated}} 个设置预估",
-				"points_other": "{{completed}} / {{total}} 点",
-				"time": "{{completed}} / {{total}}"
-			},
-			"updateError": "更新预估失败"
-		},
-		"assignees": {
-			"clear": "清除负责人",
-			"formerMember": "已不是成员",
-			"formerMemberSuffix": "{{name}}（已不是成员）",
-			"label": "负责人",
-			"limitReached": "一个任务最多可以有 {{count}} 个负责人",
-			"more": "+{{count}}",
-			"nameAndMore": "{{name}} +{{count}}",
-			"noMatches": "没有匹配的成员",
-			"noMembers": "暂无可指派的成员",
-			"searchPlaceholder": "搜索成员...",
-			"stackAria": "已指派给 {{names}}",
-			"unknownPerson": "未知用户",
-			"updateError": "更新负责人失败",
-			"you": "{{name}}（你）"
-		},
-		"attachments": {
-			"add": "附加文件",
-			"delete": "删除",
-			"deleteConfirmDescription": "文件将对所有人删除，此操作无法撤销。",
-			"deleteConfirmTitle": "要删除 {{filename}} 吗？",
-			"download": "下载",
-			"dropHere": "将文件拖到此处，或点击浏览",
-			"dropToAttach": "拖放文件以附加",
-			"loadError": "无法加载附件",
-			"meta": "{{size}} · {{name}} · {{time}}",
-			"metaNoUser": "{{size}} · {{time}}",
-			"open": "打开",
-			"title": "附件",
-			"toast": {
-				"attached_other": "已附加 {{count}} 个文件",
-				"deleted": "已删除附件",
-				"deleteError": "无法删除附件",
-				"empty": "{{filename}} 是空文件",
-				"failed": "无法附加 {{filename}}：{{reason}}",
-				"notConfigured": "此服务器尚未配置文件上传。请让管理员配置存储。",
-				"storageError": "存储拒绝了此次上传",
-				"tooMany": "一次最多可附加 {{count}} 个文件",
-				"unknownError": "发生了未知错误"
-			},
-			"uploading": "正在上传…"
-		},
-		"copy": {
-			"alwaysCopied": "状态和优先级始终会被复制。",
-			"cancel": "取消",
-			"includeLabel": "包含内容",
-			"options": {
-				"assignees": "负责人",
-				"attachments": "附件",
-				"customFields": "自定义字段值",
-				"dates": "开始和截止日期",
-				"description": "描述",
-				"labels": "标签",
-				"links": "链接",
-				"parent": "父任务",
-				"planning": "迭代、模块和预估"
-			},
-			"otherProjectHint": "状态会匹配到新项目的列。自定义字段、父任务和规划信息不会跨项目复制。",
-			"projectLabel": "项目",
-			"submit": "创建副本",
-			"title": "创建 {{key}} 的副本",
-			"titleLabel": "标题",
-			"titleRequired": "标题为必填项",
-			"titleSuffix": "{{title}}（副本）",
-			"toast": {
-				"error": "无法创建副本",
-				"open": "打开",
-				"skipped": "未复制：{{list}}",
-				"success": "已创建副本：{{key}}"
-			}
-		},
-		"detailActions": {
-			"addLink": "添加链接",
-			"addRelation": "添加关联",
-			"addSubtask": "添加子任务",
-			"attachFile": "附加文件"
-		},
-		"links": {
-			"add": "添加链接",
-			"addedAt": "添加于 {{date}}",
-			"addedBy": "{{name}} 添加于 {{date}}",
-			"addTitle": "添加链接",
-			"cancel": "取消",
-			"copyUrl": "复制 URL",
-			"edit": "编辑",
-			"editTitle": "编辑链接",
-			"errors": {
-				"credentials": "链接不能包含用户名或密码",
-				"duplicate": "此链接已添加到该任务",
-				"invalid": "请输入有效的 http 或 https 网址",
-				"required": "URL 为必填项",
-				"titleTooLong": "标题最多 255 个字符",
-				"tooLong": "链接最多 2,048 个字符"
-			},
-			"linkTitle": "标题",
-			"loadError": "无法加载链接",
-			"moreActions": "链接操作",
-			"remove": "移除",
-			"removeConfirmDescription": "所有人的任务中都会移除该链接。",
-			"removeConfirmTitle": "要移除此链接吗？",
-			"retry": "重试",
-			"save": "保存",
-			"title": "链接",
-			"titlePlaceholder": "显示标题（可选）",
-			"toast": {
-				"added": "已添加链接",
-				"copied": "已复制链接",
-				"error": "无法保存链接",
-				"removed": "已移除链接",
-				"updated": "已更新链接"
-			},
-			"url": "URL",
-			"urlPlaceholder": "https://example.com"
-		},
-		"create": {
-			"similarTitle": "相似的未完成任务",
-			"similarDismiss": "隐藏相似任务",
-			"similarOpen": "打开",
-			"similarOpenLabel": "在新标签页中打开 {{key}} {{title}}"
-		},
-		"parent": {
-			"add": "添加父任务",
-			"chip": "父任务",
-			"label": "父任务",
-			"noTasks": "未找到任务",
-			"remove": "移除父任务",
-			"search": "搜索任务…",
-			"tasksInProject": "此项目中的任务",
-			"toast": {
-				"error": "无法更改父任务",
-				"removed": "已移除父任务",
-				"set": "已将父任务设为 {{key}}"
-			},
-			"tooltip": "父任务：{{key}} {{title}}"
-		},
-		"taskKey": {
-			"clipboardError": "无法复制到剪贴板",
-			"copied": "已复制 {{key}}",
-			"copyTooltip": "复制任务编号"
-		},
-		"display": {
-			"button": "显示",
-			"columns": "列",
-			"groupBy": "分组依据",
-			"groups": {
-				"assignee": "负责人",
-				"createdBy": "创建者",
-				"cycle": "迭代",
-				"estimate": "预估",
-				"group": "分组",
-				"label": "标签",
-				"module": "模块",
-				"priority": "优先级",
-				"project": "项目",
-				"status": "状态"
-			},
-			"none": "无",
-			"order": {
-				"assignee": "负责人",
-				"completedAt": "完成日期",
-				"createdAt": "最近创建",
-				"cycle": "迭代",
-				"dueDate": "截止日期",
-				"estimate": "预估",
-				"label": "标签",
-				"manual": "手动",
-				"module": "模块",
-				"number": "任务编号",
-				"priority": "优先级",
-				"startDate": "开始日期",
-				"status": "状态",
-				"subTaskCount": "子任务",
-				"title": "标题",
-				"updatedAt": "最近更新",
-				"archivedAt": "归档日期"
-			},
-			"orderBy": "排序依据",
-			"properties": "属性",
-			"props": {
-				"assignee": "负责人",
-				"checklist": "检查清单",
-				"createdAt": "创建时间",
-				"cycle": "迭代",
-				"dueDate": "截止日期",
-				"estimate": "预估",
-				"key": "编号",
-				"labels": "标签",
-				"modules": "模块",
-				"priority": "优先级",
-				"startDate": "开始日期",
-				"status": "状态",
-				"subTaskCount": "子任务",
-				"updatedAt": "更新时间"
-			},
-			"showEmptyGroups": "显示空分组",
-			"showSubTasks": "显示子任务",
-			"subGroupBy": "子分组依据"
-		},
-		"filters": {
-			"apply": "应用",
-			"applyError": "无法应用筛选",
-			"archived": {
-				"exclude": "隐藏已归档",
-				"include": "同时显示已归档",
-				"label": "已归档",
-				"only": "仅已归档"
-			},
-			"button": "筛选",
-			"clearAll": "清除所有筛选",
-			"dates": {
-				"amount": "数量",
-				"custom": "自定义日期…",
-				"emptyTab": "空",
-				"exact": "指定日期",
-				"future": "今天之后",
-				"lastMonth": "上月",
-				"lastWeek": "上周",
-				"nextMonth": "下月",
-				"nextWeek": "下周",
-				"overdue": "已逾期",
-				"past": "今天之前",
-				"presets": "预设",
-				"rolling": "相对时间",
-				"rollingValue": "{{amount}} {{unit}}",
-				"thisMonth": "本月",
-				"thisWeek": "本周",
-				"today": "今天",
-				"tomorrow": "明天",
-				"units": {
-					"days": "天",
-					"months": "个月",
-					"weeks": "周"
-				},
-				"yesterday": "昨天"
-			},
-			"matchAll": "匹配全部",
-			"matchAny": "匹配任一",
-			"mobileSummary_other": "{{count}} 个筛选条件",
-			"nestedReadOnly": "此视图使用了无法在此编辑的高级筛选",
-			"noOptions": "无选项",
-			"operators": {
-				"between": "介于",
-				"is": "是",
-				"isEmpty": "为空",
-				"isNoneOf": "不是其中任何一个",
-				"isNot": "不是",
-				"isNotEmpty": "不为空",
-				"moreThanAgo": "早于……之前",
-				"moreThanAhead": "晚于……之后",
-				"on": "为",
-				"onOrAfter": "不早于",
-				"onOrBefore": "不晚于",
-				"withinLast": "过去",
-				"withinNext": "未来"
-			},
-			"removeFilter": "移除筛选 {{subject}}",
-			"retry": "重试",
-			"searchOptions": "搜索选项",
-			"subjects": {
-				"completed": "完成时间",
-				"created": "创建时间",
-				"createdBy": "创建者",
-				"cycle": "迭代",
-				"group": "分组",
-				"mentions": "提及",
-				"module": "模块",
-				"parent": "父任务",
-				"project": "项目",
-				"startDate": "开始日期",
-				"subscribed": "已订阅",
-				"updated": "更新时间"
-			},
-			"tooMany": "匹配项过多，无法在此筛选；请打开电子表格",
-			"values": {
-				"currentCycle": "当前迭代",
-				"false": "否",
-				"me": "我",
-				"noAssignee": "无负责人",
-				"noCreator": "无创建者",
-				"noCycle": "无迭代",
-				"noEstimate": "无预估",
-				"noLabel": "无标签",
-				"noModule": "无模块",
-				"none": "无",
-				"noParent": "无父任务",
-				"true": "是"
-			}
-		},
-		"groups": {
-			"all": "所有任务",
-			"hiddenGroups_other": "另有 {{count}} 个分组未显示",
-			"loadMore": "加载更多（{{count}}）",
-			"moduleCount_other": "{{count}} 个模块",
-			"moveError": "无法移动任务",
-			"noAssignee": "无负责人",
-			"noCreator": "无创建者",
-			"noCycle": "无迭代",
-			"noEstimate": "无预估",
-			"noLabel": "无标签",
-			"noModule": "无模块",
-			"planned": "已计划"
-		},
-		"queryEmpty": {
-			"clear": "清除筛选",
-			"description": "试着移除一两个筛选条件。",
-			"title": "没有符合筛选条件的任务"
-		},
-		"spreadsheet": {
-			"clearSort": "清除排序",
-			"collapseSubTasks": "隐藏子任务",
-			"expandSubTasks": "显示子任务",
-			"hideColumn": "隐藏列",
-			"loadError": "无法加载任务",
-			"selectTask": "选择 {{key}}",
-			"sortAsc": "升序排序",
-			"sortDesc": "降序排序",
-			"task": "任务"
-		},
-		"subscription": {
-			"count_other": "{{count}} 人已订阅",
-			"error": "无法更新订阅",
-			"mutedAssignee": "你被分配了此任务但已取消订阅。提及你时仍会通知你。",
-			"notSubscribed": "接收状态变更、评论及其他变更的更新。",
-			"reasons": {
-				"assignee": "你被分配了此任务，因此已订阅。",
-				"commenter": "你发表了评论，因此已订阅。",
-				"creator": "你创建了此任务，因此已订阅。",
-				"manual": "你已订阅此任务。",
-				"mention": "你被提及，因此已订阅。"
-			},
-			"subscribe": "订阅",
-			"toastSubscribed": "已订阅此任务",
-			"toastUnsubscribed": "已取消订阅。被提及时仍会通知你。",
-			"unsubscribe": "取消订阅"
-		},
-		"timeTracking": {
-			"duration": "时长",
-			"durationInvalid": "请输入 1 分钟到 24 小时之间的时长，例如 1h 30m。",
-			"durationPlaceholder": "例如 1h 30m",
-			"empty": "暂无工时记录",
-			"entries": "工时记录",
-			"formerMember": "前成员",
-			"hours": "{{hours}} 小时",
-			"hoursMinutes": "{{hours}} 小时 {{minutes}} 分钟",
-			"label": "已用工时",
-			"logError": "无法记录工时",
-			"logged": "工时已记录",
-			"logTime": "记录工时",
-			"minutes": "{{minutes}} 分钟",
-			"note": "备注（可选）",
-			"running": "计时中",
-			"spentAria": "已用工时：{{total}}。记录工时",
-			"submit": "记录工时",
-			"deleteConfirm": "删除此记录？",
-			"deleted": "工时记录已删除",
-			"deleteEntry": "删除 {{date}} 的工时记录",
-			"deleteError": "无法删除工时记录"
 		},
 		"archivedBanner": {
 			"message": "此任务已于{{time}}归档。",
@@ -4984,8 +4651,590 @@
 			},
 			"untitled": "无标题草稿"
 		},
+		"listView": {
+			"addTask": "添加任务",
+			"archiveAllTooltip": "归档所有已完成任务",
+			"noTasks": "无任务"
+		},
+		"kanban": {
+			"addTask": "添加任务",
+			"stages": "列",
+			"emptyAction": "添加任务",
+			"emptyTitle": "还没有任务"
+		},
+		"pr": {
+			"merged": "已合并",
+			"draft": "草稿",
+			"open": "打开",
+			"label": "Pull Request",
+			"count_other": "{{count}} 个 PR"
+		},
+		"assignee": {
+			"label": "负责人",
+			"unassigned": "未指派"
+		},
+		"assignees": {
+			"label": "负责人",
+			"searchPlaceholder": "搜索成员...",
+			"noMatches": "没有匹配的成员",
+			"noMembers": "暂无可指派的成员",
+			"you": "{{name}}（你）",
+			"clear": "清除负责人",
+			"more": "+{{count}}",
+			"nameAndMore": "{{name}} +{{count}}",
+			"stackAria": "已指派给 {{names}}",
+			"formerMember": "已不是成员",
+			"formerMemberSuffix": "{{name}}（已不是成员）",
+			"limitReached": "一个任务最多可以有 {{count}} 个负责人",
+			"updateError": "更新负责人失败",
+			"unknownPerson": "未知用户",
+			"noAccess": "无权访问此项目",
+			"noAccessSuffix": "{{name}}（无权访问此项目）"
+		},
+		"dueDate": {
+			"label": "截止日期",
+			"clear": "清除日期",
+			"updateSuccess": "任务截止日期更新成功",
+			"updateError": "更新任务截止日期失败",
+			"clearSuccess": "任务截止日期已清除",
+			"clearError": "清除截止日期失败"
+		},
+		"update": {
+			"success": "任务更新成功",
+			"error": "更新任务失败"
+		},
+		"contextMenu": {
+			"copyLink": "复制链接",
+			"copyLinkSuccess": "已复制任务链接",
+			"estimate": "预估"
+		},
+		"actions": {
+			"archive": "归档",
+			"markAsPlanned": "标记为已计划",
+			"delete": "删除…",
+			"copyKey": "复制任务编号",
+			"copyLink": "复制链接",
+			"makeCopy": "创建副本…",
+			"moreActions": "更多操作"
+		},
+		"commands": {
+			"assignedSelf": "已指派给你",
+			"assignees": "更改负责人…",
+			"assignSelf": "指派给我",
+			"copyTitle": "复制标题",
+			"cycle": "更改迭代…",
+			"dueDate": "更改截止日期…",
+			"estimate": "更改预估…",
+			"group": "此任务",
+			"labels": "更改标签…",
+			"module": "更改模块…",
+			"priority": "更改优先级…",
+			"status": "更改状态…",
+			"titleCopied": "任务标题已复制",
+			"unassignedSelf": "你已不再是负责人",
+			"unassignSelf": "取消指派我"
+		},
+		"readableLink": {
+			"goHome": "前往主页",
+			"notFound": "此工作区中没有编号为 {{key}} 的任务，或你无权查看。"
+		},
+		"timeTracking": {
+			"label": "已用工时",
+			"logTime": "记录工时",
+			"spentAria": "已用工时：{{total}}。记录工时",
+			"duration": "时长",
+			"durationPlaceholder": "例如 1h 30m",
+			"durationInvalid": "请输入 1 分钟到 24 小时之间的时长，例如 1h 30m。",
+			"note": "备注（可选）",
+			"submit": "记录工时",
+			"logged": "工时已记录",
+			"logError": "无法记录工时",
+			"empty": "暂无工时记录",
+			"entries": "工时记录",
+			"running": "计时中",
+			"formerMember": "前成员",
+			"hours": "{{hours}} 小时",
+			"minutes": "{{minutes}} 分钟",
+			"hoursMinutes": "{{hours}} 小时 {{minutes}} 分钟",
+			"deleteEntry": "删除 {{date}} 的工时记录",
+			"deleteConfirm": "删除此记录？",
+			"deleted": "工时记录已删除",
+			"deleteError": "无法删除工时记录",
+			"startTimer": "开始计时",
+			"startHere": "停止并在此处开始",
+			"stopTimer": "停止",
+			"timerRunning": "计时中",
+			"timerRunningOn": "正在计时：{{task}}",
+			"timerStarted": "计时已开始",
+			"timerSwitched": "计时已开始。另一个计时已停止。",
+			"timerStopped": "计时已停止。已记录 {{total}}。",
+			"timerStartError": "无法开始计时",
+			"timerStopError": "无法停止计时",
+			"loadError": "无法加载工时记录",
+			"editEntry": "编辑 {{date}} 的工时记录",
+			"editStart": "开始",
+			"editEnd": "结束",
+			"editEndRunningHint": "留空以继续计时。",
+			"editEndRequired": "请输入结束时间。",
+			"editStartInvalid": "请输入开始时间。",
+			"editEndBeforeStart": "结束时间不能早于开始时间。",
+			"editSave": "保存",
+			"edited": "工时记录已更新",
+			"editError": "无法更新工时记录"
+		},
+		"bulk": {
+			"selectedCount": "已选 {{count}} 个",
+			"moveToBacklog": "移至待办",
+			"clearSelection": "取消选择",
+			"moveToBacklogSuccess": "{{count}} 个任务已移至待办",
+			"moveToBacklogError": "将任务移至待办失败",
+			"moveToBoard": "移到看板",
+			"moveToBoardSuccess": "{{count}} 个任务已移至看板",
+			"moveToBoardError": "将任务移至看板失败",
+			"delete": "删除任务",
+			"deleteConfirm": "将 {{count}} 个任务移至回收站？你可以在项目设置的“最近删除”中恢复它们。",
+			"deleteSuccess": "已删除 {{count}} 个任务",
+			"deleteError": "删除任务失败",
+			"archive": "归档任务",
+			"archiveSuccess": "已归档 {{count}} 个任务",
+			"archiveError": "归档任务失败",
+			"updateSuccess": "已更新 {{count}} 个任务",
+			"updateError": "更新任务失败",
+			"addAssignee": "添加负责人",
+			"removeAssignee": "移除负责人",
+			"clearAssignees": "清除负责人",
+			"addAssigneeSuccess_other": "已将 {{name}} 添加到 {{count}} 个任务",
+			"removeAssigneeSuccess_other": "已从 {{count}} 个任务中移除 {{name}}",
+			"clearAssigneesSuccess_other": "已清除 {{count}} 个任务的负责人",
+			"assigneesError": "更新负责人失败",
+			"setPriority": "设置优先级",
+			"updatePriorityError": "更新优先级失败",
+			"addLabel": "添加标签",
+			"addLabelSuccess": "已为 {{count}} 个任务添加标签",
+			"addLabelError": "添加标签失败",
+			"setDueDate": "设置截止日期",
+			"updateDueDateError": "更新截止日期失败",
+			"actions": "操作",
+			"searchActions": "搜索操作…",
+			"noActionsFound": "未找到操作。",
+			"changeStatus": "更改状态",
+			"removeLabel": "移除标签",
+			"removeLabelSuccess": "已从 {{count}} 个任务移除标签",
+			"removeLabelError": "移除标签失败",
+			"unarchive": "从归档中恢复",
+			"unarchiveSuccess": "已恢复 {{count}} 个任务",
+			"unarchiveNone": "所选任务中没有已归档的任务",
+			"unarchiveError": "恢复任务失败",
+			"setDates": "日期",
+			"dateField": "要设置的日期",
+			"startDate": "开始日期",
+			"dueDate": "截止日期",
+			"clearStartDate": "清除开始日期",
+			"clearDueDate": "清除截止日期",
+			"updateStartDateError": "更新开始日期失败。开始日期不能晚于任务的截止日期。",
+			"selectTask": "选择 {{title}}",
+			"moveToProject": "移至项目",
+			"moveToProjectTitle_other": "将 {{count}} 个任务移至 {{name}}？",
+			"moveToProjectRule": "任务会获得新的任务编号。如果目标项目有相同状态，任务将保留该状态，否则移到第一列。标签和负责人保持不变。迭代、模块和预估会被清除。只有当目标项目有同名同类型的字段时，才会保留自定义字段值。",
+			"moveToProjectConfirm": "移动任务",
+			"moveToProjectSuccess_other": "已将 {{count}} 个任务移至 {{name}}",
+			"moveToProjectNone": "这些任务已在 {{name}} 中",
+			"moveToProjectError": "无法移动任务"
+		},
+		"editor": {
+			"table": {
+				"addColumnBefore": "在左侧插入列",
+				"addColumnAfter": "在右侧插入列",
+				"deleteColumn": "删除列",
+				"addRowBefore": "在上方插入行",
+				"addRowAfter": "在下方插入行",
+				"deleteRow": "删除行",
+				"deleteTable": "删除表格",
+				"moveRowUp": "上移行",
+				"moveRowDown": "下移行",
+				"moveColumnLeft": "左移列",
+				"moveColumnRight": "右移列",
+				"toggleHeaderRow": "标题行",
+				"fullWidth": "全宽",
+				"dragRow": "第 {{index}} 行",
+				"dragColumn": "第 {{index}} 列",
+				"dragRowHint": "拖动以移动该行，或使用方向键",
+				"dragColumnHint": "拖动以移动该列，或使用方向键",
+				"insertRowHere": "在此插入一行",
+				"insertColumnHere": "在此插入一列"
+			}
+		},
+		"descriptionSearchLoading": "正在搜索完整描述…",
+		"descriptionSearchError": "描述搜索失败，结果可能不完整。",
+		"descriptionRetry": "重试",
+		"descriptionLoading": "正在加载描述…",
+		"descriptionLoadError": "描述加载失败，重试以加载当前版本。",
+		"descriptionHistory": {
+			"cancel": "取消",
+			"description": "此描述的已保存版本，最新的在前。同一人在 10 分钟内的编辑会合并为一个版本；保留最近 50 个版本。",
+			"earlierVersion": "较早版本",
+			"empty": "暂无已保存的版本。从下一次编辑开始保留版本。",
+			"emptyVersion": "此版本没有描述。",
+			"latest": "最新",
+			"list": "已保存的版本",
+			"loadError": "无法加载历史",
+			"open": "历史",
+			"previewTitle": "{{date}} 的版本",
+			"restore": "恢复",
+			"restoreConfirmDescription": "描述将被替换为此版本。当前文本会保留在历史中。",
+			"restoreConfirmTitle": "恢复此版本？",
+			"restored": "描述已恢复",
+			"restoreError": "无法恢复此版本",
+			"retry": "重试",
+			"size_other": "{{count}} 个字符",
+			"title": "描述历史",
+			"viewOnly": "仅查看"
+		},
+		"estimate": {
+			"bulk": {
+				"action": "预估",
+				"error": "更改所选任务的预估失败",
+				"updated_other": "已更新 {{count}} 个任务的预估"
+			},
+			"chart": {
+				"points": "点数",
+				"pointsLeft": "剩余点数",
+				"summaryPoints": "剩余 {{remaining}}/{{scope}} 点，还剩 {{days}} 天",
+				"summaryTime": "剩余 {{remaining}}/{{scope}}，还剩 {{days}} 天",
+				"tasks": "任务",
+				"time": "时间",
+				"timeLeft": "剩余时间",
+				"unitAria": "图表单位"
+			},
+			"duration": {
+				"hours": "{{hours}} 小时",
+				"hoursMinutes": "{{hours}} 小时 {{minutes}} 分钟",
+				"hourUnit": "h",
+				"minutes": "{{minutes}} 分钟",
+				"minuteUnit": "m"
+			},
+			"label": "预估",
+			"none": "无预估",
+			"pointsValue_other": "{{value}} 点",
+			"setAria": "设置预估",
+			"totals": {
+				"estimated": "{{total}} 个任务中已有 {{estimated}} 个设置预估",
+				"points_other": "{{completed}} / {{total}} 点",
+				"time": "{{completed}} / {{total}}"
+			},
+			"updateError": "更新预估失败"
+		},
+		"detailActions": {
+			"addLink": "添加链接",
+			"addRelation": "添加关联",
+			"addSubtask": "添加子任务",
+			"attachFile": "附加文件"
+		},
+		"taskKey": {
+			"clipboardError": "无法复制到剪贴板",
+			"copied": "已复制 {{key}}",
+			"copyTooltip": "复制任务编号"
+		},
 		"pageReferences": {
 			"title": "在页面中被提及"
+		},
+		"links": {
+			"add": "添加链接",
+			"addedAt": "添加于 {{date}}",
+			"addedBy": "{{name}} 添加于 {{date}}",
+			"addTitle": "添加链接",
+			"cancel": "取消",
+			"copyUrl": "复制 URL",
+			"edit": "编辑",
+			"editTitle": "编辑链接",
+			"errors": {
+				"credentials": "链接不能包含用户名或密码",
+				"duplicate": "此链接已添加到该任务",
+				"invalid": "请输入有效的 http 或 https 网址",
+				"required": "URL 为必填项",
+				"titleTooLong": "标题最多 255 个字符",
+				"tooLong": "链接最多 2,048 个字符"
+			},
+			"linkTitle": "标题",
+			"loadError": "无法加载链接",
+			"moreActions": "链接操作",
+			"remove": "移除",
+			"removeConfirmDescription": "所有人的任务中都会移除该链接。",
+			"removeConfirmTitle": "要移除此链接吗？",
+			"retry": "重试",
+			"save": "保存",
+			"title": "链接",
+			"titlePlaceholder": "显示标题（可选）",
+			"toast": {
+				"added": "已添加链接",
+				"copied": "已复制链接",
+				"error": "无法保存链接",
+				"removed": "已移除链接",
+				"updated": "已更新链接"
+			},
+			"url": "URL",
+			"urlPlaceholder": "https://example.com"
+		},
+		"attachments": {
+			"add": "附加文件",
+			"delete": "删除",
+			"deleteConfirmDescription": "文件将对所有人删除，此操作无法撤销。",
+			"deleteConfirmTitle": "要删除 {{filename}} 吗？",
+			"download": "下载",
+			"dropHere": "将文件拖到此处，或点击浏览",
+			"dropToAttach": "拖放文件以附加",
+			"loadError": "无法加载附件",
+			"meta": "{{size}} · {{name}} · {{time}}",
+			"metaNoUser": "{{size}} · {{time}}",
+			"open": "打开",
+			"title": "附件",
+			"toast": {
+				"attached_other": "已附加 {{count}} 个文件",
+				"deleted": "已删除附件",
+				"deleteError": "无法删除附件",
+				"empty": "{{filename}} 是空文件",
+				"failed": "无法附加 {{filename}}：{{reason}}",
+				"notConfigured": "此服务器尚未配置文件上传。请让管理员配置存储。",
+				"storageError": "存储拒绝了此次上传",
+				"tooMany": "一次最多可附加 {{count}} 个文件",
+				"unknownError": "发生了未知错误"
+			},
+			"uploading": "正在上传…"
+		},
+		"create": {
+			"similarTitle": "相似的未完成任务",
+			"similarDismiss": "隐藏相似任务",
+			"similarOpen": "打开",
+			"similarOpenLabel": "在新标签页中打开 {{key}} {{title}}"
+		},
+		"parent": {
+			"add": "添加父任务",
+			"chip": "父任务",
+			"label": "父任务",
+			"noTasks": "未找到任务",
+			"remove": "移除父任务",
+			"search": "搜索任务…",
+			"tasksInProject": "此项目中的任务",
+			"toast": {
+				"error": "无法更改父任务",
+				"removed": "已移除父任务",
+				"set": "已将父任务设为 {{key}}"
+			},
+			"tooltip": "父任务：{{key}} {{title}}"
+		},
+		"copy": {
+			"alwaysCopied": "状态和优先级始终会被复制。",
+			"cancel": "取消",
+			"includeLabel": "包含内容",
+			"options": {
+				"assignees": "负责人",
+				"attachments": "附件",
+				"customFields": "自定义字段值",
+				"dates": "开始和截止日期",
+				"description": "描述",
+				"labels": "标签",
+				"links": "链接",
+				"parent": "父任务",
+				"planning": "迭代、模块和预估"
+			},
+			"otherProjectHint": "状态会匹配到新项目的列。自定义字段、父任务和规划信息不会跨项目复制。",
+			"projectLabel": "项目",
+			"submit": "创建副本",
+			"title": "创建 {{key}} 的副本",
+			"titleLabel": "标题",
+			"titleRequired": "标题为必填项",
+			"titleSuffix": "{{title}}（副本）",
+			"toast": {
+				"error": "无法创建副本",
+				"open": "打开",
+				"skipped": "未复制：{{list}}",
+				"success": "已创建副本：{{key}}"
+			}
+		},
+		"filters": {
+			"button": "筛选",
+			"searchOptions": "搜索选项",
+			"noOptions": "无选项",
+			"matchAll": "匹配全部",
+			"matchAny": "匹配任一",
+			"applyError": "无法应用筛选",
+			"retry": "重试",
+			"tooMany": "匹配项过多，无法在此筛选；请打开电子表格",
+			"nestedReadOnly": "此视图使用了无法在此编辑的高级筛选",
+			"clearAll": "清除所有筛选",
+			"apply": "应用",
+			"mobileSummary_other": "{{count}} 个筛选条件",
+			"removeFilter": "移除筛选 {{subject}}",
+			"subjects": {
+				"group": "分组",
+				"createdBy": "创建者",
+				"cycle": "迭代",
+				"module": "模块",
+				"startDate": "开始日期",
+				"created": "创建时间",
+				"updated": "更新时间",
+				"completed": "完成时间",
+				"parent": "父任务",
+				"project": "项目",
+				"subscribed": "已订阅",
+				"mentions": "提及",
+				"blocked": "被阻塞"
+			},
+			"operators": {
+				"between": "介于",
+				"is": "是",
+				"isEmpty": "为空",
+				"isNoneOf": "不是其中任何一个",
+				"isNot": "不是",
+				"isNotEmpty": "不为空",
+				"moreThanAgo": "早于……之前",
+				"moreThanAhead": "晚于……之后",
+				"on": "为",
+				"onOrAfter": "不早于",
+				"onOrBefore": "不晚于",
+				"withinLast": "过去",
+				"withinNext": "未来"
+			},
+			"values": {
+				"me": "我",
+				"none": "无",
+				"noAssignee": "无负责人",
+				"noCreator": "无创建者",
+				"noLabel": "无标签",
+				"noCycle": "无迭代",
+				"noModule": "无模块",
+				"noEstimate": "无预估",
+				"noParent": "无父任务",
+				"currentCycle": "当前迭代",
+				"true": "是",
+				"false": "否",
+				"blockedYes": "是",
+				"blockedNo": "否"
+			},
+			"dates": {
+				"amount": "数量",
+				"custom": "自定义日期…",
+				"emptyTab": "空",
+				"exact": "指定日期",
+				"future": "今天之后",
+				"lastMonth": "上月",
+				"lastWeek": "上周",
+				"nextMonth": "下月",
+				"nextWeek": "下周",
+				"overdue": "已逾期",
+				"past": "今天之前",
+				"presets": "预设",
+				"rolling": "相对时间",
+				"rollingValue": "{{amount}} {{unit}}",
+				"thisMonth": "本月",
+				"thisWeek": "本周",
+				"today": "今天",
+				"tomorrow": "明天",
+				"units": {
+					"days": "天",
+					"months": "个月",
+					"weeks": "周"
+				},
+				"yesterday": "昨天"
+			},
+			"archived": {
+				"exclude": "隐藏已归档",
+				"include": "同时显示已归档",
+				"label": "已归档",
+				"only": "仅已归档"
+			},
+			"myTasks": "我的任务"
+		},
+		"display": {
+			"button": "显示",
+			"columns": "列",
+			"groupBy": "分组依据",
+			"groups": {
+				"status": "状态",
+				"group": "分组",
+				"priority": "优先级",
+				"assignee": "负责人",
+				"createdBy": "创建者",
+				"label": "标签",
+				"cycle": "迭代",
+				"module": "模块",
+				"estimate": "预估",
+				"project": "项目",
+				"customField": "自定义字段"
+			},
+			"none": "无",
+			"order": {
+				"manual": "手动",
+				"createdAt": "最近创建",
+				"updatedAt": "最近更新",
+				"completedAt": "完成日期",
+				"startDate": "开始日期",
+				"dueDate": "截止日期",
+				"priority": "优先级",
+				"title": "标题",
+				"number": "任务编号",
+				"status": "状态",
+				"assignee": "负责人",
+				"label": "标签",
+				"cycle": "迭代",
+				"module": "模块",
+				"estimate": "预估",
+				"subTaskCount": "子任务",
+				"archivedAt": "归档日期",
+				"customField": "自定义字段"
+			},
+			"orderBy": "排序依据",
+			"properties": "属性",
+			"props": {
+				"assignee": "负责人",
+				"checklist": "检查清单",
+				"createdAt": "创建时间",
+				"cycle": "迭代",
+				"dueDate": "截止日期",
+				"estimate": "预估",
+				"key": "编号",
+				"labels": "标签",
+				"modules": "模块",
+				"priority": "优先级",
+				"startDate": "开始日期",
+				"status": "状态",
+				"subTaskCount": "子任务",
+				"updatedAt": "更新时间"
+			},
+			"showEmptyGroups": "显示空分组",
+			"showSubTasks": "显示子任务",
+			"subGroupBy": "子分组依据"
+		},
+		"groups": {
+			"all": "所有任务",
+			"planned": "已计划",
+			"noAssignee": "无负责人",
+			"noCreator": "无创建者",
+			"noLabel": "无标签",
+			"noCycle": "无迭代",
+			"noModule": "无模块",
+			"noEstimate": "无预估",
+			"loadMore": "加载更多（{{count}}）",
+			"hiddenGroups_other": "另有 {{count}} 个分组未显示",
+			"moduleCount_other": "{{count}} 个模块",
+			"moveError": "无法移动任务",
+			"noFieldValue": "无值"
+		},
+		"spreadsheet": {
+			"clearSort": "清除排序",
+			"collapseSubTasks": "隐藏子任务",
+			"expandSubTasks": "显示子任务",
+			"hideColumn": "隐藏列",
+			"loadError": "无法加载任务",
+			"selectTask": "选择 {{key}}",
+			"sortAsc": "升序排序",
+			"sortDesc": "降序排序",
+			"task": "任务"
+		},
+		"queryEmpty": {
+			"clear": "清除筛选",
+			"description": "试着移除一两个筛选条件。",
+			"title": "没有符合筛选条件的任务"
 		},
 		"capture": {
 			"ariaLabel": "添加任务到 {{column}}",
@@ -5011,47 +5260,32 @@
 			"changePriority": "优先级：{{priority}}",
 			"changeStatus": "状态：{{status}}"
 		},
-		"commands": {
-			"assignedSelf": "已指派给你",
-			"assignees": "更改负责人…",
-			"assignSelf": "指派给我",
-			"copyTitle": "复制标题",
-			"cycle": "更改迭代…",
-			"dueDate": "更改截止日期…",
-			"estimate": "更改预估…",
-			"group": "此任务",
-			"labels": "更改标签…",
-			"module": "更改模块…",
-			"priority": "更改优先级…",
-			"status": "更改状态…",
-			"titleCopied": "任务标题已复制",
-			"unassignedSelf": "你已不再是负责人",
-			"unassignSelf": "取消指派我"
+		"boardSearchOpen": "搜索任务",
+		"customFieldValue": {
+			"clear": "清除值",
+			"edit": "编辑 {{name}}",
+			"removedOption": "{{value}}（已移除的选项）",
+			"saveError": "无法保存此字段。",
+			"placeholder": "新值",
+			"true": "是",
+			"false": "否"
 		},
-		"readableLink": {
-			"goHome": "前往主页",
-			"notFound": "此工作区中没有编号为 {{key}} 的任务，或你无权查看。"
+		"customFieldBulk": {
+			"action": "自定义字段",
+			"chooseField": "选择字段",
+			"apply": "应用",
+			"updated_other": "已更新 {{count}} 个任务",
+			"error": "无法更新所选任务。"
 		},
-		"descriptionHistory": {
-			"cancel": "取消",
-			"description": "此描述的已保存版本，最新的在前。同一人在 10 分钟内的编辑会合并为一个版本；保留最近 50 个版本。",
-			"earlierVersion": "较早版本",
-			"empty": "暂无已保存的版本。从下一次编辑开始保留版本。",
-			"emptyVersion": "此版本没有描述。",
-			"latest": "最新",
-			"list": "已保存的版本",
-			"loadError": "无法加载历史",
-			"open": "历史",
-			"previewTitle": "{{date}} 的版本",
-			"restore": "恢复",
-			"restoreConfirmDescription": "描述将被替换为此版本。当前文本会保留在历史中。",
-			"restoreConfirmTitle": "恢复此版本？",
-			"restored": "描述已恢复",
-			"restoreError": "无法恢复此版本",
-			"retry": "重试",
-			"size_other": "{{count}} 个字符",
-			"title": "描述历史",
-			"viewOnly": "仅查看"
+		"milestone": {
+			"label": "里程碑",
+			"hint": "标记一个日期。时间线会在其截止日期上显示为菱形。",
+			"updateError": "无法更新里程碑"
+		},
+		"scheduleField": {
+			"label": "任务上显示的字段",
+			"none": "不显示字段",
+			"value": "{{name}}：{{value}}"
 		}
 	},
 	"invitations": {
@@ -5107,7 +5341,8 @@
 				"inProgress": "进行中"
 			},
 			"noDueDate": "无截止日期",
-			"reorderError": "重新排序项目失败"
+			"reorderError": "重新排序项目失败",
+			"emptyDescriptionGuest": "你还没有被添加到任何项目。请联系邀请你的人将你添加进去。"
 		},
 		"search": {
 			"pageTitle": "搜索",
@@ -5210,7 +5445,8 @@
 			"owner": "所有者",
 			"admin": "管理员",
 			"member": "成员",
-			"viewer": "访客"
+			"viewer": "查看者",
+			"guest": "访客"
 		},
 		"members": {
 			"pageTitle": "成员",
@@ -5246,7 +5482,13 @@
 			"sentSome": "已发送 {{sent}}/{{total}} 个邀请。",
 			"failedTitle": "未发送",
 			"rateLimited": "一次发送的邀请过多。请等待一分钟后再发送其余邀请。",
-			"shareLinksDescription": "将每个链接分享给对应的人，以便对方加入工作区。"
+			"shareLinksDescription": "将每个链接分享给对应的人，以便对方加入工作区。",
+			"guestRoleHint": "访客只能看到你添加他们的项目，看不到工作区中的其他内容。",
+			"guestProjectsLabel": "项目",
+			"guestProjectsHint": "对方接受邀请后，会立即以你选择的项目角色加入你勾选的项目。查看者只能阅读。",
+			"guestProjectsEmpty": "没有你可以共享的项目。请在对方加入后再将其添加到项目中。",
+			"guestProjectRoleFor": "在 {{project}} 中的项目角色",
+			"guestProjectsFailed": "邀请已发送，但无法添加其项目：{{message}}"
 		},
 		"membersTable": {
 			"emptyTitle": "暂无团队成员",
@@ -5271,7 +5513,8 @@
 			"roleUpdateSuccess": "角色已更新",
 			"roleUpdateError": "更新角色失败",
 			"ariaInvitationRole": "{{email}} 的角色",
-			"invitationRoleUpdateSuccess": "邀请角色已更新"
+			"invitationRoleUpdateSuccess": "邀请角色已更新",
+			"removeDialogAccessNote": "如果这是对方唯一的工作区，对方还会被退出登录，其 API 密钥也将失效。"
 		},
 		"profile": {
 			"emptyActivity": "暂无活动",
@@ -7729,6 +7972,29 @@
 		}
 	},
 	"home": {
+		"pageTitle": "主页",
+		"greeting": {
+			"afternoon": "下午好，{{name}}",
+			"dateTime": "{{date}} · {{time}}",
+			"evening": "晚上好，{{name}}",
+			"morning": "早上好，{{name}}"
+		},
+		"manageWidgets": "管理小组件",
+		"widgets": {
+			"quickLinks": "快捷链接",
+			"recents": "最近访问",
+			"stickies": "便签",
+			"risks": "风险",
+			"myBrief": "我的简报",
+			"pinnedReports": "已置顶的报表"
+		},
+		"manage": {
+			"description": "选择主页上显示的内容，并拖动调整顺序。这些设置仅你自己可见。",
+			"reorder": "调整{{widget}}的顺序",
+			"saveError": "无法保存主页设置",
+			"title": "管理小组件",
+			"toggle": "显示{{widget}}"
+		},
 		"empty": {
 			"description": "所有小组件均已关闭。开启一些小组件，即可在此查看你的链接、最近访问和便签。",
 			"title": "你的主页是空的"
@@ -7758,21 +8024,6 @@
 			},
 			"title": "开始使用"
 		},
-		"greeting": {
-			"afternoon": "下午好，{{name}}",
-			"dateTime": "{{date}} · {{time}}",
-			"evening": "晚上好，{{name}}",
-			"morning": "早上好，{{name}}"
-		},
-		"manage": {
-			"description": "选择主页上显示的内容，并拖动调整顺序。这些设置仅你自己可见。",
-			"reorder": "调整{{widget}}的顺序",
-			"saveError": "无法保存主页设置",
-			"title": "管理小组件",
-			"toggle": "显示{{widget}}"
-		},
-		"manageWidgets": "管理小组件",
-		"pageTitle": "主页",
 		"quickLinks": {
 			"add": "添加链接",
 			"copy": "复制链接",
@@ -7829,23 +8080,31 @@
 			"visited": "{{time}}访问"
 		},
 		"retry": "重试",
-		"widgets": {
-			"quickLinks": "快捷链接",
-			"recents": "最近访问",
-			"stickies": "便签",
-			"risks": "风险",
-			"myBrief": "我的简报"
-		},
 		"focus": {
-			"caughtUp": "已全部处理",
-			"inbox": "收件箱",
 			"label": "继续上次的工作",
+			"inbox": "收件箱",
 			"myWork": "我的工作",
-			"overdue_other": "{{count}} 项已逾期",
 			"stickies": "便签",
+			"caughtUp": "已全部处理",
+			"overdue_other": "{{count}} 项已逾期",
 			"stickiesHint": "私人笔记，仅你可见",
+			"unreadCaption": "未读",
 			"openCaption": "进行中",
-			"unreadCaption": "未读"
+			"loadError": "无法加载"
+		},
+		"dueToday": {
+			"title": "今天到期",
+			"empty": "今天没有分配给你的到期任务。",
+			"loadError": "无法加载今天到期的任务",
+			"viewAll": "查看全部 {{total}} 项"
+		},
+		"pinnedReports": {
+			"empty": "在“分析”中置顶已保存的报表，即可在此处查看。",
+			"openAnalytics": "打开分析",
+			"loadError": "无法加载已置顶的报表",
+			"chartError": "无法加载此报表",
+			"unpin": "从主页取消置顶 {{name}}",
+			"showing": "显示 {{shown}}/{{total}} 项。其余的在“分析”中。"
 		}
 	},
 	"intake": {
@@ -8136,14 +8395,108 @@
 		"viewAll": "查看全部"
 	},
 	"analytics": {
-		"a11y": {
-			"barSummary": "按{{dimension}}统计的{{metric}}：共 {{count}} 组，最高为 {{label}}，值为 {{value}}",
-			"donutSummary": "{{count}} 个分组中共 {{total}} 个任务",
-			"lineSummary": "{{count}} 个时间段内的{{series}}"
+		"pageTitle": "分析",
+		"projectPageTitle": "{{project}} · 分析",
+		"tabs": {
+			"overview": "概览",
+			"tasks": "任务",
+			"cycles": "迭代",
+			"modules": "模块",
+			"intake": "收集箱",
+			"delivery": "交付",
+			"time": "时间"
 		},
-		"breakdown": {
-			"groupRowsBy": "行分组依据",
-			"title": "明细"
+		"header": {
+			"allProjects": "所有项目",
+			"clearSelection": "清除选择",
+			"noProjectsFound": "未找到项目",
+			"projectsCount_other": "{{count}} 个项目",
+			"refresh": "刷新",
+			"searchProjects": "搜索项目",
+			"selectProjects": "选择项目",
+			"updatedAt": "{{time}}更新"
+		},
+		"openInAnalytics": "在分析中打开",
+		"context": {
+			"cycle": "迭代：{{name}}",
+			"module": "模块：{{name}}",
+			"remove": "从筛选中移除 {{name}}"
+		},
+		"states": {
+			"loadError": "无法加载此部分",
+			"newProject": "新建项目",
+			"noAccessDescription": "请向工作区管理员申请“分析”权限。",
+			"noAccessTitle": "你没有访问分析的权限",
+			"noCycles": "暂无迭代",
+			"noModules": "暂无模块",
+			"noPeriodData": "此时间段内没有数据",
+			"noProjectsDescription": "分析会汇总你项目中的任务。",
+			"noProjectsTitle": "创建项目后即可查看分析",
+			"noRequests": "暂无请求",
+			"noTasks": "没有符合这些筛选条件的任务",
+			"retry": "重试",
+			"timeout": "耗时过长。请缩小筛选范围后重试。",
+			"noRunningCycles": "当前没有进行中的迭代"
+		},
+		"view": {
+			"chart": "图表",
+			"label": "显示为",
+			"table": "表格"
+		},
+		"kpi": {
+			"accepted": "{{count}} 个已接受",
+			"completedTasks": "已完成的任务",
+			"completion": "完成率",
+			"completionDetail": "{{completed}} / {{committed}}",
+			"cyclesRunning": "进行中的迭代",
+			"members": "成员",
+			"membersDetail": "{{admins}} 位管理员 · {{viewers}} 位查看者",
+			"modulesInProgress": "进行中的模块",
+			"modulesTotal": "共 {{count}} 个",
+			"openRequests": "待处理的请求",
+			"openTasks": "未完成的任务",
+			"overdue": "{{count}} 个已逾期",
+			"percentComplete": "已完成 {{percent}}%",
+			"projects": "项目",
+			"total": "总计",
+			"upcoming": "{{count}} 个即将开始"
+		},
+		"overview": {
+			"projectProgress": "项目进度",
+			"projectProgressSubtitle": "未完成任务最多的项目排在前面",
+			"open": "{{count}} 个未完成",
+			"showAll": "显示全部 {{count}} 个",
+			"showLess": "收起",
+			"tasksByGroup": "按分组统计的任务",
+			"donutCenter_other": "{{count}} 个任务",
+			"workload": "工作量",
+			"workloadSubtitle": "按负责人统计的未完成任务",
+			"workloadSubtitlePoints": "按负责人统计的未完成预估点数",
+			"overloaded_other": "{{names}} 的未完成工作量超过了他们通常 {{weeks}} 周能完成的量。",
+			"overUsual": "超出平常水平",
+			"overTooltip": "{{name}}：超出平常水平",
+			"usualHint": "“平常水平”是根据最近 {{historyWeeks}} 周的数据，每个人在典型的 {{usualWeeks}} 周内完成的量。近期没有历史记录的人不作判断。",
+			"checkColumn": "与平常对比",
+			"checkOverPoints": "超出：{{load}} 点，通常 {{usual}} 点",
+			"checkOverTasks": "超出：{{load}} 个任务，通常 {{usual}} 个",
+			"checkOkPoints": "{{load}} 点，通常 {{usual}} 点",
+			"checkOkTasks": "{{load}} 个任务，通常 {{usual}} 个",
+			"checkUnknown": "近期无历史记录"
+		},
+		"trend": {
+			"completed": "完成",
+			"created": "创建",
+			"help": "“创建”按任务的创建日期统计。“完成”按任务的完成日期统计，且仅统计目前仍为已完成状态的任务。除非你选择包含，否则已归档的任务不计入。",
+			"period": "时间段",
+			"summary": "创建 {{created}} · 完成 {{completed}} · 净增 {{net}}",
+			"title": "创建与完成"
+		},
+		"periods": {
+			"custom": "自定义范围",
+			"last12m": "最近 12 个月",
+			"last30": "最近 30 天",
+			"last6m": "最近 6 个月",
+			"last90": "最近 90 天"
 		},
 		"bucket": {
 			"label": "日期分组方式",
@@ -8154,6 +8507,14 @@
 		"buckets": {
 			"range": "{{from}} – {{to}}",
 			"weekOf": "{{date}} 当周"
+		},
+		"metric": {
+			"label": "指标",
+			"tasks": "任务",
+			"points": "预估点数",
+			"pointsShort": "点数",
+			"sum": "总和",
+			"sumOf": "{{name}} 总和"
 		},
 		"builder": {
 			"countSubTasks": "统计子任务",
@@ -8169,10 +8530,126 @@
 			"truncatedX": "共 {{total}} 个{{dimension}}，显示前 {{shown}} 个",
 			"xAxis": "X 轴"
 		},
-		"context": {
-			"cycle": "迭代：{{name}}",
-			"module": "模块：{{name}}",
-			"remove": "从筛选中移除 {{name}}"
+		"reports": {
+			"open": "报表",
+			"listTitle": "已保存的报表",
+			"loadError": "无法加载已保存的报表",
+			"empty": "暂无已保存的报表。保存此图表，以便日后查看。",
+			"sharedBy": "由 {{name}} 共享",
+			"actionsFor": "{{name}} 的操作",
+			"rename": "重命名",
+			"share": "与工作区共享",
+			"makePrivate": "设为私有",
+			"delete": "删除",
+			"save": "保存",
+			"saveAsNew": "另存为新报表",
+			"update": "更新报表",
+			"showing": "报表：{{name}}",
+			"unsaved": "有未保存的更改",
+			"close": "关闭报表",
+			"deleteTitle": "删除此报表？",
+			"deleteDescription": "“{{name}}”将被删除。此操作无法撤销。",
+			"deleteSharedDescription": "“{{name}}”将对工作区中的所有人删除。此操作无法撤销。",
+			"visibility": {
+				"private": "私有",
+				"privateHint": "仅你可见。",
+				"workspace": "与工作区共享",
+				"workspaceHint": "此工作区中拥有分析访问权限的所有人都可以打开。"
+			},
+			"dialog": {
+				"cancel": "取消",
+				"createTitle": "保存报表",
+				"editTitle": "编辑报表",
+				"name": "名称",
+				"namePlaceholder": "例如：按负责人统计的未解决缺陷",
+				"nameRequired": "请输入名称",
+				"save": "保存",
+				"summary": "保存图表设置、范围内的项目和筛选条件。",
+				"update": "保存更改",
+				"visibility": "可见范围"
+			},
+			"notes": {
+				"allProjects": "其中的项目均不可用，因此显示所有项目。",
+				"builderReset": "部分图表设置不适用于这些项目，已被重置。",
+				"dropped_other": "此报表中有 {{count}} 个项目已不存在。",
+				"leftOut_other": "此报表中有 {{count}} 个项目已归档，未被纳入。",
+				"otherProjects": "此报表是为其他项目保存的；此处仅显示当前项目。"
+			},
+			"toast": {
+				"saved": "已保存“{{name}}”",
+				"updated": "报表已更新",
+				"shared": "报表已与工作区共享",
+				"madePrivate": "报表已设为私有",
+				"deleted": "报表已删除",
+				"saveError": "无法保存报表",
+				"deleteError": "无法删除报表",
+				"pinned": "已置顶到主页",
+				"unpinned": "已从主页取消置顶",
+				"pinError": "无法更新你的主页",
+				"pinLimit_other": "最多可置顶 {{count}} 个报表。请先取消置顶一个。"
+			},
+			"pin": "置顶到主页",
+			"unpin": "从主页取消置顶"
+		},
+		"dimensions": {
+			"status": "状态",
+			"group": "分组",
+			"priority": "优先级",
+			"assignee": "负责人",
+			"createdBy": "创建者",
+			"label": "标签",
+			"cycle": "迭代",
+			"module": "模块",
+			"estimate": "预估",
+			"project": "项目",
+			"createdAt": "创建日期",
+			"completedAt": "完成日期",
+			"startDate": "开始日期",
+			"dueDate": "截止日期",
+			"customField": "自定义字段"
+		},
+		"dimensionsPlural": {
+			"status": "状态",
+			"assignee": "负责人",
+			"createdBy": "创建者",
+			"label": "标签",
+			"cycle": "迭代",
+			"module": "模块",
+			"estimate": "预估",
+			"project": "项目",
+			"period": "时间段",
+			"customField": "值"
+		},
+		"none": {
+			"assignee": "未指派",
+			"createdBy": "未知创建者",
+			"label": "无标签",
+			"cycle": "无迭代",
+			"module": "无模块",
+			"estimate": "无预估",
+			"completedAt": "未完成",
+			"startDate": "无开始日期",
+			"dueDate": "无截止日期",
+			"customField": "无值"
+		},
+		"other": "其他",
+		"table": {
+			"periodEnd": "时间段结束",
+			"periodStart": "时间段开始",
+			"progress": "进度",
+			"showAll": "显示全部 {{count}} 个",
+			"sortBy": "按{{column}}排序",
+			"tasks": "任务",
+			"total": "总计"
+		},
+		"breakdown": {
+			"groupRowsBy": "行分组依据",
+			"title": "明细"
+		},
+		"export": {
+			"button": "导出 CSV",
+			"error": "无法导出此表格",
+			"success_other": "已导出 {{count}} 行"
 		},
 		"cycles": {
 			"averageCompleted": "平均完成（最近 3 个）",
@@ -8205,47 +8682,15 @@
 				"running": "进行中"
 			}
 		},
-		"dimensions": {
-			"assignee": "负责人",
-			"completedAt": "完成日期",
-			"createdAt": "创建日期",
-			"createdBy": "创建者",
-			"cycle": "迭代",
-			"dueDate": "截止日期",
-			"estimate": "预估",
-			"group": "分组",
-			"label": "标签",
-			"module": "模块",
-			"priority": "优先级",
-			"project": "项目",
-			"startDate": "开始日期",
-			"status": "状态"
-		},
-		"dimensionsPlural": {
-			"assignee": "负责人",
-			"createdBy": "创建者",
-			"cycle": "迭代",
-			"estimate": "预估",
-			"label": "标签",
-			"module": "模块",
-			"period": "时间段",
-			"project": "项目",
-			"status": "状态"
-		},
-		"export": {
-			"button": "导出 CSV",
-			"error": "无法导出此表格",
-			"success_other": "已导出 {{count}} 行"
-		},
-		"header": {
-			"allProjects": "所有项目",
-			"clearSelection": "清除选择",
-			"noProjectsFound": "未找到项目",
-			"projectsCount_other": "{{count}} 个项目",
-			"refresh": "刷新",
-			"searchProjects": "搜索项目",
-			"selectProjects": "选择项目",
-			"updatedAt": "{{time}}更新"
+		"modules": {
+			"overdue": "已逾期",
+			"table": {
+				"lead": "牵头人",
+				"module": "模块",
+				"noLead": "无牵头人",
+				"targetDate": "目标日期",
+				"title": "模块"
+			}
 		},
 		"intake": {
 			"accepted": "已接受",
@@ -8263,173 +8708,24 @@
 			"submitted": "已提交",
 			"triaged": "已分派处理"
 		},
-		"kpi": {
-			"accepted": "{{count}} 个已接受",
-			"completedTasks": "已完成的任务",
-			"completion": "完成率",
-			"completionDetail": "{{completed}} / {{committed}}",
-			"cyclesRunning": "进行中的迭代",
-			"members": "成员",
-			"membersDetail": "{{admins}} 位管理员 · {{viewers}} 位查看者",
-			"modulesInProgress": "进行中的模块",
-			"modulesTotal": "共 {{count}} 个",
-			"openRequests": "待处理的请求",
-			"openTasks": "未完成的任务",
-			"overdue": "{{count}} 个已逾期",
-			"percentComplete": "已完成 {{percent}}%",
-			"projects": "项目",
-			"total": "总计",
-			"upcoming": "{{count}} 个即将开始"
+		"a11y": {
+			"barSummary": "按{{dimension}}统计的{{metric}}：共 {{count}} 组，最高为 {{label}}，值为 {{value}}",
+			"donutSummary": "{{count}} 个分组中共 {{total}} 个任务",
+			"lineSummary": "{{count}} 个时间段内的{{series}}"
 		},
-		"metric": {
-			"label": "指标",
-			"points": "预估点数",
-			"pointsShort": "点数",
-			"tasks": "任务"
-		},
-		"modules": {
-			"overdue": "已逾期",
-			"table": {
-				"lead": "牵头人",
-				"module": "模块",
-				"noLead": "无牵头人",
-				"targetDate": "目标日期",
-				"title": "模块"
-			}
-		},
-		"none": {
-			"assignee": "未指派",
-			"completedAt": "未完成",
-			"createdBy": "未知创建者",
-			"cycle": "无迭代",
-			"dueDate": "无截止日期",
-			"estimate": "无预估",
-			"label": "无标签",
-			"module": "无模块",
-			"startDate": "无开始日期"
-		},
-		"openInAnalytics": "在分析中打开",
-		"other": "其他",
-		"overview": {
-			"donutCenter_other": "{{count}} 个任务",
-			"open": "{{count}} 个未完成",
-			"projectProgress": "项目进度",
-			"projectProgressSubtitle": "未完成任务最多的项目排在前面",
-			"showAll": "显示全部 {{count}} 个",
-			"showLess": "收起",
-			"tasksByGroup": "按分组统计的任务",
-			"workload": "工作量",
-			"workloadSubtitle": "按负责人统计的未完成任务"
-		},
-		"pageTitle": "分析",
-		"periods": {
-			"custom": "自定义范围",
-			"last12m": "最近 12 个月",
-			"last30": "最近 30 天",
-			"last6m": "最近 6 个月",
-			"last90": "最近 90 天"
-		},
-		"projectPageTitle": "{{project}} · 分析",
-		"states": {
-			"loadError": "无法加载此部分",
-			"newProject": "新建项目",
-			"noAccessDescription": "请向工作区管理员申请“分析”权限。",
-			"noAccessTitle": "你没有访问分析的权限",
-			"noCycles": "暂无迭代",
-			"noModules": "暂无模块",
-			"noPeriodData": "此时间段内没有数据",
-			"noProjectsDescription": "分析会汇总你项目中的任务。",
-			"noProjectsTitle": "创建项目后即可查看分析",
-			"noRequests": "暂无请求",
-			"noTasks": "没有符合这些筛选条件的任务",
-			"retry": "重试",
-			"timeout": "耗时过长。请缩小筛选范围后重试。",
-			"noRunningCycles": "当前没有进行中的迭代"
-		},
-		"table": {
-			"periodEnd": "时间段结束",
-			"periodStart": "时间段开始",
-			"progress": "进度",
-			"showAll": "显示全部 {{count}} 个",
-			"sortBy": "按{{column}}排序",
-			"tasks": "任务",
-			"total": "总计"
-		},
-		"tabs": {
-			"cycles": "迭代",
-			"intake": "收集箱",
-			"modules": "模块",
-			"overview": "概览",
-			"tasks": "任务",
-			"delivery": "交付"
-		},
-		"trend": {
-			"completed": "完成",
-			"created": "创建",
-			"help": "“创建”按任务的创建日期统计。“完成”按任务的完成日期统计，且仅统计目前仍为已完成状态的任务。除非你选择包含，否则已归档的任务不计入。",
-			"period": "时间段",
-			"summary": "创建 {{created}} · 完成 {{completed}} · 净增 {{net}}",
-			"title": "创建与完成"
-		},
-		"view": {
-			"chart": "图表",
-			"label": "显示为",
-			"table": "表格"
-		},
-		"reports": {
-			"actionsFor": "{{name}} 的操作",
-			"close": "关闭报表",
-			"delete": "删除",
-			"deleteDescription": "“{{name}}”将被删除。此操作无法撤销。",
-			"deleteSharedDescription": "“{{name}}”将对工作区中的所有人删除。此操作无法撤销。",
-			"deleteTitle": "删除此报表？",
-			"dialog": {
-				"cancel": "取消",
-				"createTitle": "保存报表",
-				"editTitle": "编辑报表",
-				"name": "名称",
-				"namePlaceholder": "例如：按负责人统计的未解决缺陷",
-				"nameRequired": "请输入名称",
-				"save": "保存",
-				"summary": "保存图表设置、范围内的项目和筛选条件。",
-				"update": "保存更改",
-				"visibility": "可见范围"
-			},
-			"empty": "暂无已保存的报表。保存此图表，以便日后查看。",
-			"listTitle": "已保存的报表",
-			"loadError": "无法加载已保存的报表",
-			"makePrivate": "设为私有",
-			"notes": {
-				"allProjects": "其中的项目均不可用，因此显示所有项目。",
-				"builderReset": "部分图表设置不适用于这些项目，已被重置。",
-				"dropped_other": "此报表中有 {{count}} 个项目已不存在。",
-				"leftOut_other": "此报表中有 {{count}} 个项目已归档，未被纳入。",
-				"otherProjects": "此报表是为其他项目保存的；此处仅显示当前项目。"
-			},
-			"open": "报表",
-			"rename": "重命名",
-			"save": "保存",
-			"saveAsNew": "另存为新报表",
-			"share": "与工作区共享",
-			"sharedBy": "由 {{name}} 共享",
-			"showing": "报表：{{name}}",
-			"toast": {
-				"deleted": "报表已删除",
-				"deleteError": "无法删除报表",
-				"madePrivate": "报表已设为私有",
-				"saved": "已保存“{{name}}”",
-				"saveError": "无法保存报表",
-				"shared": "报表已与工作区共享",
-				"updated": "报表已更新"
-			},
-			"unsaved": "有未保存的更改",
-			"update": "更新报表",
-			"visibility": {
-				"private": "私有",
-				"privateHint": "仅你可见。",
-				"workspace": "与工作区共享",
-				"workspaceHint": "此工作区中拥有分析访问权限的所有人都可以打开。"
-			}
+		"time": {
+			"total": "已记录工时",
+			"entries": "记录数",
+			"people": "人数",
+			"running": "计时中",
+			"runningNote": "正在运行的计时器停止后才会计入这些总计。",
+			"byPerson": "按人员",
+			"byProject": "按项目",
+			"person": "人员",
+			"project": "项目",
+			"hours": "小时",
+			"formerMember": "前成员",
+			"empty": "此期间没有记录工时"
 		}
 	},
 	"pages": {
@@ -8510,6 +8806,59 @@
 			"file": "附件",
 			"page": "另一个页面"
 		},
+		"section": {
+			"title": "页面"
+		},
+		"list": {
+			"documentTitle": "{{project}} · 页面",
+			"newPage": "新建页面",
+			"tabs": {
+				"archived": "已归档",
+				"private": "私有",
+				"public": "公开"
+			},
+			"searchPlaceholder": "搜索页面",
+			"clearFilters": "清除筛选",
+			"sort": {
+				"created": "创建时间",
+				"lastEdited": "最近编辑",
+				"name": "名称"
+			},
+			"untitled": "无标题",
+			"inParent": "位于 {{path}}",
+			"ownedBy": "所有者：{{name}}",
+			"access": {
+				"private": "私有",
+				"public": "公开"
+			},
+			"editedAgo": "{{time}}编辑",
+			"archivedOn": "{{date}}归档",
+			"locked": "已锁定",
+			"loadError": "无法加载页面",
+			"retry": "重试",
+			"empty": {
+				"archived": {
+					"description": "已归档的页面会显示在这里。你可以恢复或删除它们。",
+					"title": "暂无已归档的页面"
+				},
+				"noMatch": {
+					"description": "换个关键词搜索，或清除筛选。",
+					"title": "没有匹配的页面"
+				},
+				"none": {
+					"description": "页面可以把规格说明、笔记和文档放在项目任务旁边。",
+					"title": "写下你的第一个页面"
+				},
+				"private": {
+					"description": "私有页面仅你自己可见。",
+					"title": "暂无私有页面"
+				},
+				"public": {
+					"title": "暂无公开页面"
+				}
+			},
+			"recentlyDeleted": "最近删除"
+		},
 		"actions": {
 			"archive": "归档",
 			"copyLink": "复制链接",
@@ -8525,6 +8874,123 @@
 			"restore": "恢复",
 			"unlock": "解锁"
 		},
+		"toasts": {
+			"accessError": "无法更改谁可以查看此页面",
+			"archived": "页面已归档",
+			"archiveError": "无法归档页面",
+			"contentConflict": "此页面已在别处被修改，因此你的最后一次编辑未能保存。现在显示的是最新版本。",
+			"contentSaveError": "无法保存页面",
+			"createError": "无法创建页面",
+			"deleted": "页面已删除",
+			"deleteError": "无法删除页面",
+			"duplicated": "页面已复制",
+			"duplicateError": "无法复制页面",
+			"fullWidthError": "无法更改页面宽度",
+			"linkCopied": "链接已复制",
+			"locked": "页面已锁定",
+			"lockError": "无法更改锁定状态",
+			"logoError": "无法更新图标",
+			"madePrivate": "页面已设为私有",
+			"madePublic": "页面已设为公开",
+			"moved": "已移动到 {{project}}",
+			"moveError": "无法移动页面",
+			"open": "打开",
+			"restored": "页面已恢复",
+			"restoreError": "无法恢复页面",
+			"titleError": "无法保存标题",
+			"unlocked": "页面已解锁"
+		},
+		"deleteDialog": {
+			"cancel": "取消",
+			"confirm": "删除",
+			"description": "“{{title}}”将移至项目设置中的“最近删除”，在被永久删除之前都可以恢复。它的子页面会移到顶层。",
+			"title": "删除页面？"
+		},
+		"moveDialog": {
+			"cancel": "取消",
+			"confirm": "移动",
+			"description": "此页面及其子页面将移动到所选项目。",
+			"empty": "没有其他项目开启了“页面”功能",
+			"searchPlaceholder": "搜索项目",
+			"title": "移动页面"
+		},
+		"tree": {
+			"collapse": "折叠 {{title}}",
+			"dnd": {
+				"cancelled": "已取消移动。",
+				"dropped": "{{title}} 已移动。",
+				"invalid": "{{title}} 无法放到那里。",
+				"over": "{{title}} 位于 {{target}} 上方。",
+				"pickedUp": "已拿起 {{title}}。使用方向键移动，按空格键放下，按 Esc 取消。"
+			},
+			"empty": "暂无页面",
+			"expand": "展开 {{title}}",
+			"newPage": "新建页面",
+			"title": "页面"
+		},
+		"crumb": {
+			"noMatches": "没有匹配的页面",
+			"searchPlaceholder": "搜索页面"
+		},
+		"header": {
+			"copied": "已复制",
+			"copyLink": "复制链接",
+			"locked": "已锁定",
+			"lockPage": "锁定页面",
+			"moreActions": "页面操作",
+			"presence": "正在查看此页面的人：{{names}}",
+			"presenceMore": "+{{count}}",
+			"togglePanel": "切换侧边面板",
+			"unlockHint": "点击解锁",
+			"ancestors": "上级页面"
+		},
+		"menu": {
+			"copyMarkdown": "复制为 Markdown",
+			"downloadMarkdown": "下载为 Markdown",
+			"fullWidth": "全宽",
+			"markdownCopied": "Markdown 已复制",
+			"versionHistory": "版本历史",
+			"print": "打印 / 另存为 PDF"
+		},
+		"editor": {
+			"addIcon": "添加图标",
+			"ariaLabel": "页面内容",
+			"pageLink": {
+				"unavailable": "私有或已删除的页面"
+			},
+			"pageLinkPicker": {
+				"empty": "未找到页面",
+				"search": "搜索页面"
+			},
+			"placeholder": "开始输入，或按 / 使用命令",
+			"slash": {
+				"commands": {
+					"divider": "分隔线",
+					"heading-1": "标题 1",
+					"heading-2": "标题 2",
+					"heading-3": "标题 3",
+					"page-link": "页面链接"
+				}
+			},
+			"titleAria": "页面标题",
+			"titlePlaceholder": "无标题"
+		},
+		"logo": {
+			"categories": {
+				"activities": "活动",
+				"food": "食物",
+				"nature": "自然",
+				"objects": "物品",
+				"people": "人物",
+				"smileys": "笑脸",
+				"symbols": "符号",
+				"travel": "旅行"
+			},
+			"emoji": "表情符号",
+			"icon": "图标",
+			"remove": "移除",
+			"search": "搜索表情符号"
+		},
 		"banners": {
 			"archived": "此页面已归档。恢复后才能编辑。",
 			"locked": "此页面已锁定。解锁后才能进行修改。",
@@ -8535,6 +9001,15 @@
 			"storedCopy": "当前显示的是最后保存的版本。连接恢复后将继续实时编辑。",
 			"tooLarge": "此页面过大，无法继续同步。请复制你最近的更改，然后重新加载。",
 			"unlock": "解锁"
+		},
+		"sync": {
+			"cantConnect": "无法连接",
+			"notSaved": "尚未保存",
+			"notSavedHint": "我们会持续重试。请不要关闭此标签页。",
+			"offline": "离线",
+			"offlineHint": "你可以继续编辑。连接恢复后会同步更改。",
+			"retry": "重试",
+			"saved": "已保存"
 		},
 		"collab": {
 			"deleted": "此页面已被删除",
@@ -8547,6 +9022,61 @@
 			"restoredBy": "{{name}} 恢复了较早的版本",
 			"roomFull": "目前打开此页面的人太多了。请稍后再试。",
 			"signedOut": "你的会话已结束。请重新登录以继续编辑。"
+		},
+		"state": {
+			"notFound": {
+				"back": "返回页面",
+				"description": "它可能已被删除，或者是私有页面。",
+				"title": "未找到页面"
+			}
+		},
+		"panel": {
+			"outline": "大纲",
+			"info": "信息",
+			"history": "历史",
+			"close": "关闭面板",
+			"comments": "评论"
+		},
+		"outline": {
+			"empty": {
+				"description": "添加标题后，这里会显示大纲。",
+				"title": "暂无标题"
+			}
+		},
+		"info": {
+			"characters": "字符数",
+			"createdBy": "创建者",
+			"lastEditedBy": "最后编辑者",
+			"lessThanMinute": "不到 1 分钟",
+			"linkedFrom": "被以下页面链接",
+			"lockedBy": "锁定者",
+			"noBacklinks": "暂无页面链接到这里",
+			"paragraphs": "段落数",
+			"readingMinutes": "{{count}} 分钟",
+			"readingTime": "阅读时间",
+			"words": "字数"
+		},
+		"history": {
+			"backToCurrent": "返回当前版本",
+			"current": "当前版本",
+			"empty": "暂无已保存的版本。编辑时会自动保存版本。",
+			"loadError": "无法加载此版本",
+			"others_other": "另外 {{count}} 人",
+			"previewTitle": "{{date}}的版本",
+			"restore": "恢复",
+			"restoreCancel": "取消",
+			"restoreConfirmDescription": "当前内容会先保存到历史记录中，因此你可以撤销此操作。",
+			"restoreConfirmTitle": "恢复此版本？",
+			"restored": "版本已恢复",
+			"restoreError": "无法恢复此版本",
+			"restoring": "正在恢复…",
+			"retry": "重试",
+			"title": "版本历史",
+			"unknownUser": "前成员",
+			"viewOnly": "仅查看"
+		},
+		"notification": {
+			"openPage": "打开页面"
 		},
 		"toolbar": {
 			"ariaLabel": "格式工具栏",
@@ -8585,237 +9115,36 @@
 		"commandPalette": {
 			"createPage": "创建页面"
 		},
-		"crumb": {
-			"noMatches": "没有匹配的页面",
-			"searchPlaceholder": "搜索页面"
-		},
-		"deleteDialog": {
+		"comments": {
+			"placeholder": "添加评论…",
+			"add": "评论",
+			"save": "保存",
 			"cancel": "取消",
-			"confirm": "删除",
-			"description": "“{{title}}”及其版本历史将被永久删除。它的子页面会移到顶层。此操作无法撤销。",
-			"title": "删除页面？"
-		},
-		"editor": {
-			"addIcon": "添加图标",
-			"ariaLabel": "页面内容",
-			"pageLink": {
-				"unavailable": "私有或已删除的页面"
-			},
-			"pageLinkPicker": {
-				"empty": "未找到页面",
-				"search": "搜索页面"
-			},
-			"placeholder": "开始输入，或按 / 使用命令",
-			"slash": {
-				"commands": {
-					"divider": "分隔线",
-					"heading-1": "标题 1",
-					"heading-2": "标题 2",
-					"heading-3": "标题 3",
-					"page-link": "页面链接"
-				}
-			},
-			"titleAria": "页面标题",
-			"titlePlaceholder": "无标题"
-		},
-		"header": {
-			"copied": "已复制",
-			"copyLink": "复制链接",
-			"locked": "已锁定",
-			"lockPage": "锁定页面",
-			"moreActions": "页面操作",
-			"presence": "正在查看此页面的人：{{names}}",
-			"presenceMore": "+{{count}}",
-			"togglePanel": "切换侧边面板",
-			"unlockHint": "点击解锁",
-			"ancestors": "上级页面"
-		},
-		"history": {
-			"backToCurrent": "返回当前版本",
-			"current": "当前版本",
-			"empty": "暂无已保存的版本。编辑时会自动保存版本。",
-			"loadError": "无法加载此版本",
-			"others_other": "另外 {{count}} 人",
-			"previewTitle": "{{date}}的版本",
-			"restore": "恢复",
-			"restoreCancel": "取消",
-			"restoreConfirmDescription": "当前内容会先保存到历史记录中，因此你可以撤销此操作。",
-			"restoreConfirmTitle": "恢复此版本？",
-			"restored": "版本已恢复",
-			"restoreError": "无法恢复此版本",
-			"restoring": "正在恢复…",
+			"emptyTitle": "暂无评论",
+			"emptyDescription": "这里的评论仅在工作区内可见。公开链接不会显示它们。",
+			"archivedNote": "此页面已归档。恢复后才能评论。",
+			"loadError": "无法加载评论",
 			"retry": "重试",
-			"title": "版本历史",
-			"unknownUser": "前成员",
-			"viewOnly": "仅查看"
-		},
-		"info": {
-			"characters": "字符数",
-			"createdBy": "创建者",
-			"lastEditedBy": "最后编辑者",
-			"lessThanMinute": "不到 1 分钟",
-			"linkedFrom": "被以下页面链接",
-			"lockedBy": "锁定者",
-			"noBacklinks": "暂无页面链接到这里",
-			"paragraphs": "段落数",
-			"readingMinutes": "{{count}} 分钟",
-			"readingTime": "阅读时间",
-			"words": "字数"
-		},
-		"list": {
-			"access": {
-				"private": "私有",
-				"public": "公开"
-			},
-			"archivedOn": "{{date}}归档",
-			"clearFilters": "清除筛选",
-			"documentTitle": "{{project}} · 页面",
-			"editedAgo": "{{time}}编辑",
-			"empty": {
-				"archived": {
-					"description": "已归档的页面会显示在这里。你可以恢复或删除它们。",
-					"title": "暂无已归档的页面"
-				},
-				"noMatch": {
-					"description": "换个关键词搜索，或清除筛选。",
-					"title": "没有匹配的页面"
-				},
-				"none": {
-					"description": "页面可以把规格说明、笔记和文档放在项目任务旁边。",
-					"title": "写下你的第一个页面"
-				},
-				"private": {
-					"description": "私有页面仅你自己可见。",
-					"title": "暂无私有页面"
-				},
-				"public": {
-					"title": "暂无公开页面"
-				}
-			},
-			"inParent": "位于 {{path}}",
-			"loadError": "无法加载页面",
-			"locked": "已锁定",
-			"newPage": "新建页面",
-			"ownedBy": "所有者：{{name}}",
-			"retry": "重试",
-			"searchPlaceholder": "搜索页面",
-			"sort": {
-				"created": "创建时间",
-				"lastEdited": "最近编辑",
-				"name": "名称"
-			},
-			"tabs": {
-				"archived": "已归档",
-				"private": "私有",
-				"public": "公开"
-			},
-			"untitled": "无标题"
-		},
-		"logo": {
-			"categories": {
-				"activities": "活动",
-				"food": "食物",
-				"nature": "自然",
-				"objects": "物品",
-				"people": "人物",
-				"smileys": "笑脸",
-				"symbols": "符号",
-				"travel": "旅行"
-			},
-			"emoji": "表情符号",
-			"icon": "图标",
-			"remove": "移除",
-			"search": "搜索表情符号"
-		},
-		"menu": {
-			"copyMarkdown": "复制为 Markdown",
-			"downloadMarkdown": "下载为 Markdown",
-			"fullWidth": "全宽",
-			"markdownCopied": "Markdown 已复制",
-			"versionHistory": "版本历史",
-			"print": "打印 / 另存为 PDF"
-		},
-		"moveDialog": {
-			"cancel": "取消",
-			"confirm": "移动",
-			"description": "此页面及其子页面将移动到所选项目。",
-			"empty": "没有其他项目开启了“页面”功能",
-			"searchPlaceholder": "搜索项目",
-			"title": "移动页面"
-		},
-		"notification": {
-			"openPage": "打开页面"
-		},
-		"outline": {
-			"empty": {
-				"description": "添加标题后，这里会显示大纲。",
-				"title": "暂无标题"
+			"deletedUser": "已删除的用户",
+			"edited": "已编辑",
+			"menuAria": "此评论的更多操作",
+			"edit": "编辑",
+			"delete": "删除",
+			"deleteTitle": "删除此评论？",
+			"deleteDescription": "评论将对所有人删除。此操作无法撤销。",
+			"toasts": {
+				"empty": "请先输入内容",
+				"addError": "无法添加评论",
+				"saveError": "无法保存评论",
+				"deleteError": "无法删除评论"
 			}
 		},
-		"panel": {
-			"close": "关闭面板",
-			"history": "历史",
-			"info": "信息",
-			"outline": "大纲"
-		},
-		"section": {
-			"title": "页面"
-		},
-		"state": {
-			"notFound": {
-				"back": "返回页面",
-				"description": "它可能已被删除，或者是私有页面。",
-				"title": "未找到页面"
-			}
-		},
-		"sync": {
-			"cantConnect": "无法连接",
-			"notSaved": "尚未保存",
-			"notSavedHint": "我们会持续重试。请不要关闭此标签页。",
-			"offline": "离线",
-			"offlineHint": "你可以继续编辑。连接恢复后会同步更改。",
-			"retry": "重试",
-			"saved": "已保存"
-		},
-		"toasts": {
-			"accessError": "无法更改谁可以查看此页面",
-			"archived": "页面已归档",
-			"archiveError": "无法归档页面",
-			"contentConflict": "此页面已在别处被修改，因此你的最后一次编辑未能保存。现在显示的是最新版本。",
-			"contentSaveError": "无法保存页面",
-			"createError": "无法创建页面",
-			"deleted": "页面已删除",
-			"deleteError": "无法删除页面",
-			"duplicated": "页面已复制",
-			"duplicateError": "无法复制页面",
-			"fullWidthError": "无法更改页面宽度",
-			"linkCopied": "链接已复制",
-			"locked": "页面已锁定",
-			"lockError": "无法更改锁定状态",
-			"logoError": "无法更新图标",
-			"madePrivate": "页面已设为私有",
-			"madePublic": "页面已设为公开",
-			"moved": "已移动到 {{project}}",
-			"moveError": "无法移动页面",
-			"open": "打开",
-			"restored": "页面已恢复",
-			"restoreError": "无法恢复页面",
-			"titleError": "无法保存标题",
-			"unlocked": "页面已解锁"
-		},
-		"tree": {
-			"collapse": "折叠 {{title}}",
-			"dnd": {
-				"cancelled": "已取消移动。",
-				"dropped": "{{title}} 已移动。",
-				"invalid": "{{title}} 无法放到那里。",
-				"over": "{{title}} 位于 {{target}} 上方。",
-				"pickedUp": "已拿起 {{title}}。使用方向键移动，按空格键放下，按 Esc 取消。"
-			},
-			"empty": "暂无页面",
-			"expand": "展开 {{title}}",
-			"newPage": "新建页面",
-			"title": "页面"
+		"watch": {
+			"watch": "关注页面",
+			"unwatch": "取消关注",
+			"watchHint": "接收评论和更改的通知",
+			"watchingHint": "你会收到评论和更改的通知",
+			"error": "无法更改此页面的关注状态"
 		}
 	},
 	"accountSecurity": {
@@ -8874,7 +9203,9 @@
 				"sessionLifetime": "会话时长",
 				"sessionLifetimeHint": "会话在未使用时保持有效的时长。使用会延长会话。",
 				"hours": "小时",
-				"signInNotice": "请使用 {{provider}} 登录。密码登录仅供实例管理员使用。"
+				"signInNotice": "请使用 {{provider}} 登录。密码登录仅供实例管理员使用。",
+				"requireTwoFactor": "要求双重身份验证",
+				"requireTwoFactorHint": "所有设有密码的账户都必须先设置双重身份验证才能进行其他操作，即使该账户也通过提供方或 SAML 登录；在此之前，其 API 密钥也会失效。邮件链接和验证码将被关闭，因此只用过这些方式的用户在拥有密码之前无法登录：他们可以通过“忘记密码？”设置密码；如果未配置邮件，也可以由你在“用户”中为他们设置。没有密码的账户遵循其提供方的规则。请先为你自己的账户开启。"
 			},
 			"twoFactor": {
 				"title": "双重身份验证",
@@ -8901,7 +9232,11 @@
 				"done": "完成",
 				"enabled": "双重身份验证已开启。",
 				"disabled": "双重身份验证已关闭。",
-				"error": "出了点问题，请重试。"
+				"error": "出了点问题，请重试。",
+				"requiredHint": "此服务器要求双重身份验证，因此无法关闭。如果丢失设备和恢复码，实例管理员可以为你重置。",
+				"setupRequiredTitle": "设置双重身份验证以继续",
+				"setupRequiredHint": "此服务器要求所有设有密码的账户启用双重身份验证。你需要一个身份验证器应用。",
+				"signOutInstead": "改为退出登录"
 			},
 			"challenge": {
 				"title": "双重身份验证",
@@ -8973,7 +9308,11 @@
 				"noPassword": "未设置（通过其他方式登录）",
 				"workspacesTitle": "工作区",
 				"noWorkspaces": "不属于任何工作区。",
-				"joined": "{{date}} 加入"
+				"joined": "{{date}} 加入",
+				"resetTwoFactor": "重置双重身份验证",
+				"resetTwoFactorTitle": "要重置 {{name}} 的双重身份验证吗？",
+				"resetTwoFactorDescription": "当对方丢失了设备和恢复码，且你已确认确实是本人时使用。其双重身份验证将被移除，并在所有设备上退出登录。之后对方可以仅用密码登录并重新设置。",
+				"twoFactorReset": "已重置 {{name}} 的双重身份验证"
 			}
 		},
 		"password": {
@@ -9037,33 +9376,99 @@
 				"cliAdminPromoted": "设为实例管理员（恢复 CLI）",
 				"cliAdminDemoted": "移除了实例管理员（恢复 CLI）",
 				"cliPasswordReset": "重置了密码（恢复 CLI）",
-				"cliUserUnbanned": "解除了封禁（恢复 CLI）"
+				"cliUserUnbanned": "解除了封禁（恢复 CLI）",
+				"userTwoFactorReset": "重置了账户的双重身份验证",
+				"cliTwoFactorReset": "重置了账户的双重身份验证（恢复 CLI）",
+				"scimConnectionCreated": "连接了用于预配的身份提供方",
+				"scimTokenRotated": "更换了 SCIM 令牌",
+				"scimConnectionDeleted": "移除了 SCIM 连接",
+				"scimUserProvisioned": "通过预配添加了账户",
+				"scimUserDeactivated": "通过预配停用了账户",
+				"scimUserReactivated": "通过预配重新激活了账户",
+				"scimUserRemoved": "通过预配将用户移出了工作区",
+				"samlConnectionCreated": "连接了用于登录的身份提供方",
+				"samlConnectionUpdated": "更改了 SAML 连接",
+				"samlConnectionDeleted": "移除了 SAML 连接"
 			}
 		}
 	},
 	"instanceAdmin": {
-		"admins": {
-			"add": "添加管理员",
-			"addConfirm": "添加管理员",
-			"addDescription": "实例管理员可以更改此区域的所有设置，并打开任意工作区。",
-			"added": "{{name}} 现在是实例管理员",
-			"addTitle": "添加实例管理员",
-			"columns": {
-				"email": "邮箱",
-				"name": "名称"
+		"pageTitle": "实例 · {{page}}",
+		"nav": {
+			"admins": "管理员",
+			"authentication": "身份验证",
+			"email": "邮件",
+			"general": "常规",
+			"publicBoards": "公开看板",
+			"workspaces": "工作区",
+			"ai": "AI"
+		},
+		"lockedCallout": "这些设置由此服务器上的环境变量管理，无法在此更改。",
+		"source": {
+			"default": "默认",
+			"environment": "环境变量：{{variable}}",
+			"lockTooltip": "移除 {{variable}} 并重启后，才能在此管理。",
+			"saved": "在此保存",
+			"savedBy": "由 {{name}} 于 {{date}} 保存"
+		},
+		"saved": "设置已保存",
+		"saveError": "无法保存设置",
+		"loadError": "无法加载实例设置",
+		"retry": "重试",
+		"save": "保存",
+		"secret": {
+			"cancel": "取消",
+			"clear": "清除",
+			"cleared": "密钥已清除",
+			"placeholder": "输入新值",
+			"replace": "替换",
+			"saved": "已保存",
+			"unreadable": "无法读取已保存的密钥（服务器的 AUTH_SECRET 已更改）。请重新输入。"
+		},
+		"general": {
+			"title": "常规",
+			"subtitle": "为此实例命名并查看其运行状况。",
+			"instanceName": "实例名称",
+			"instanceNameHint": "显示在登录页面和公开看板上",
+			"instanceNameRequired": "请输入名称",
+			"instanceNameTooLong": "最多使用 80 个字符",
+			"homePage": "首页",
+			"publicLanding": "显示产品介绍页",
+			"publicLandingHint": "未登录的访客打开根地址时会看到产品介绍页。关闭后，他们会直接进入登录页面。",
+			"overview": "概览",
+			"version": "版本",
+			"counts": {
+				"accounts": "账户",
+				"guests": "访客",
+				"projects": "项目",
+				"publishedBoards": "公开看板",
+				"workspaces": "工作区"
 			},
-			"email": "邮箱",
-			"emailInvalid": "请输入有效的邮箱地址",
-			"emailPlaceholder": "name@example.com",
-			"lastAdmin": "至少需要保留一位实例管理员",
-			"remove": "移除管理员…",
-			"removeConfirm": "移除",
-			"removed": "{{name}} 不再是实例管理员",
-			"removeDescription": "对方的账户和工作区会保留。",
-			"removeTitle": "取消 {{name}} 的实例管理员身份？",
-			"subtitle": "实例管理员可以更改此区域的所有设置，并打开任意工作区。",
-			"title": "管理员",
-			"you": "你"
+			"server": {
+				"captcha": "验证码",
+				"cloudMode": "云模式",
+				"configured": "已配置",
+				"demoMode": "演示模式",
+				"email": "邮件",
+				"errorReporting": "错误上报",
+				"fileStorage": "文件存储",
+				"notConfigured": "未配置",
+				"off": "关闭",
+				"on": "开启",
+				"realtime": "实时",
+				"realtimeMemory": "内存",
+				"realtimeRedis": "Redis（{{mode}}）",
+				"title": "服务器"
+			},
+			"deliveryFailures": {
+				"title": "近期投递失败",
+				"description": "过去 7 天内已用完重试次数的工作区 Webhook。邮件和后台任务错误仅记录在服务器日志中。",
+				"empty": "过去 7 天没有投递失败。",
+				"when": "时间",
+				"workspace": "工作区",
+				"webhook": "Webhook",
+				"response": "响应"
+			}
 		},
 		"auth": {
 			"anyoneCanSignUp": "允许任何人注册",
@@ -9103,6 +9508,31 @@
 			"title": "身份验证",
 			"toggle": "开启或关闭{{method}}"
 		},
+		"oauth": {
+			"authorizationUrl": "授权 URL",
+			"autoSignIn": "自动登录",
+			"autoSignInHint": "跳过登录页面，直接前往此服务商",
+			"buttonLabel": "按钮文字",
+			"buttonLabelHint": "显示在登录按钮上，例如“使用 Okta 继续”",
+			"callbackHint": "将此 URL 添加到你的 OAuth 应用",
+			"callbackUrl": "回调 URL",
+			"clientId": "客户端 ID",
+			"clientSecret": "客户端密钥",
+			"copied": "已复制",
+			"copy": "复制",
+			"discoveryHint": "或填写下方三个端点",
+			"discoveryUrl": "发现 URL",
+			"invalidUrl": "请输入完整的 http 或 https URL",
+			"logoutUrl": "退出登录 URL",
+			"managedByEnv": "此服务商通过环境变量（{{variables}}）配置。",
+			"pkce": "使用 PKCE",
+			"scopes": "范围",
+			"scopesHint": "以逗号分隔",
+			"sheetDescription": "连接一个 OAuth 应用，让用户可以使用 {{provider}} 登录。",
+			"sheetTitle": "{{provider}} 登录",
+			"tokenUrl": "令牌 URL",
+			"userInfoUrl": "用户信息 URL"
+		},
 		"email": {
 			"from": "发件人",
 			"fromHint": "邮箱地址，或名称加地址：Margaya <no-reply@example.com>",
@@ -9133,134 +9563,6 @@
 			"subtitle": "Margaya 用来发送登录验证码、邀请和通知的 SMTP 服务器。",
 			"title": "邮件",
 			"username": "用户名"
-		},
-		"general": {
-			"counts": {
-				"accounts": "账户",
-				"guests": "访客",
-				"projects": "项目",
-				"publishedBoards": "公开看板",
-				"workspaces": "工作区"
-			},
-			"instanceName": "实例名称",
-			"instanceNameHint": "显示在登录页面和公开看板上",
-			"instanceNameRequired": "请输入名称",
-			"instanceNameTooLong": "最多使用 80 个字符",
-			"homePage": "首页",
-			"publicLanding": "显示产品介绍页",
-			"publicLandingHint": "未登录的访客打开根地址时会看到产品介绍页。关闭后，他们会直接进入登录页面。",
-			"overview": "概览",
-			"server": {
-				"captcha": "验证码",
-				"cloudMode": "云模式",
-				"configured": "已配置",
-				"demoMode": "演示模式",
-				"email": "邮件",
-				"errorReporting": "错误上报",
-				"fileStorage": "文件存储",
-				"notConfigured": "未配置",
-				"off": "关闭",
-				"on": "开启",
-				"realtime": "实时",
-				"realtimeMemory": "内存",
-				"realtimeRedis": "Redis（{{mode}}）",
-				"title": "服务器"
-			},
-			"subtitle": "为此实例命名并查看其运行状况。",
-			"title": "常规",
-			"version": "版本"
-		},
-		"loadError": "无法加载实例设置",
-		"lockedCallout": "这些设置由此服务器上的环境变量管理，无法在此更改。",
-		"nav": {
-			"admins": "管理员",
-			"authentication": "身份验证",
-			"email": "邮件",
-			"general": "常规",
-			"publicBoards": "公开看板",
-			"workspaces": "工作区",
-			"ai": "AI"
-		},
-		"oauth": {
-			"authorizationUrl": "授权 URL",
-			"autoSignIn": "自动登录",
-			"autoSignInHint": "跳过登录页面，直接前往此服务商",
-			"buttonLabel": "按钮文字",
-			"buttonLabelHint": "显示在登录按钮上，例如“使用 Okta 继续”",
-			"callbackHint": "将此 URL 添加到你的 OAuth 应用",
-			"callbackUrl": "回调 URL",
-			"clientId": "客户端 ID",
-			"clientSecret": "客户端密钥",
-			"copied": "已复制",
-			"copy": "复制",
-			"discoveryHint": "或填写下方三个端点",
-			"discoveryUrl": "发现 URL",
-			"invalidUrl": "请输入完整的 http 或 https URL",
-			"logoutUrl": "退出登录 URL",
-			"managedByEnv": "此服务商通过环境变量（{{variables}}）配置。",
-			"pkce": "使用 PKCE",
-			"scopes": "范围",
-			"scopesHint": "以逗号分隔",
-			"sheetDescription": "连接一个 OAuth 应用，让用户可以使用 {{provider}} 登录。",
-			"sheetTitle": "{{provider}} 登录",
-			"tokenUrl": "令牌 URL",
-			"userInfoUrl": "用户信息 URL"
-		},
-		"pageTitle": "实例 · {{page}}",
-		"publicBoards": {
-			"actions": "看板操作",
-			"allow": "允许公开看板",
-			"allowHint": "关闭后，所有公开链接都会返回“未找到”。不会删除任何内容。",
-			"columns": {
-				"features": "功能",
-				"project": "项目",
-				"published": "发布时间",
-				"workspace": "工作区"
-			},
-			"empty": "此服务器上没有公开看板。",
-			"feature": {
-				"comments": "评论",
-				"guests": "访客",
-				"reactions": "表情回应",
-				"requests": "请求",
-				"votes": "投票"
-			},
-			"listTitle": "已发布的看板",
-			"loadMore": "加载更多",
-			"noMatches": "没有与“{{query}}”匹配的公开看板",
-			"openBoard": "打开看板",
-			"participation": "允许公开参与",
-			"participationHint": "关闭后，公开看板为只读：不能评论、回应、投票或发送请求。",
-			"projectSettings": "项目设置",
-			"search": "搜索看板",
-			"subtitle": "管理此实例上的公开看板。",
-			"title": "公开看板",
-			"unpublish": "取消发布…",
-			"unpublishConfirm": "取消发布",
-			"unpublishDescription": "在有人再次发布看板之前，链接将无法使用。设置、评论、表情回应和投票会保留。",
-			"unpublished": "看板已取消发布",
-			"unpublishError": "无法取消发布看板",
-			"unpublishTitle": "取消发布 {{project}}？"
-		},
-		"retry": "重试",
-		"save": "保存",
-		"saved": "设置已保存",
-		"saveError": "无法保存设置",
-		"secret": {
-			"cancel": "取消",
-			"clear": "清除",
-			"cleared": "密钥已清除",
-			"placeholder": "输入新值",
-			"replace": "替换",
-			"saved": "已保存",
-			"unreadable": "无法读取已保存的密钥（服务器的 AUTH_SECRET 已更改）。请重新输入。"
-		},
-		"source": {
-			"default": "默认",
-			"environment": "环境变量：{{variable}}",
-			"lockTooltip": "移除 {{variable}} 并重启后，才能在此管理。",
-			"saved": "在此保存",
-			"savedBy": "由 {{name}} 于 {{date}} 保存"
 		},
 		"testEmail": {
 			"codes": {
@@ -9303,6 +9605,132 @@
 			"search": "搜索工作区",
 			"subtitle": "此实例上的所有工作区。",
 			"title": "工作区"
+		},
+		"publicBoards": {
+			"actions": "看板操作",
+			"allow": "允许公开看板",
+			"allowHint": "关闭后，所有公开链接都会返回“未找到”。不会删除任何内容。",
+			"columns": {
+				"features": "功能",
+				"project": "项目",
+				"published": "发布时间",
+				"workspace": "工作区"
+			},
+			"empty": "此服务器上没有公开看板。",
+			"feature": {
+				"comments": "评论",
+				"guests": "访客",
+				"reactions": "表情回应",
+				"requests": "请求",
+				"votes": "投票"
+			},
+			"listTitle": "已发布的看板",
+			"loadMore": "加载更多",
+			"noMatches": "没有与“{{query}}”匹配的公开看板",
+			"openBoard": "打开看板",
+			"participation": "允许公开参与",
+			"participationHint": "关闭后，公开看板为只读：不能评论、回应、投票或发送请求。",
+			"projectSettings": "项目设置",
+			"search": "搜索看板",
+			"subtitle": "管理此实例上的公开看板。",
+			"title": "公开看板",
+			"unpublish": "取消发布…",
+			"unpublishConfirm": "取消发布",
+			"unpublishDescription": "在有人再次发布看板之前，链接将无法使用。设置、评论、表情回应和投票会保留。",
+			"unpublished": "看板已取消发布",
+			"unpublishError": "无法取消发布看板",
+			"unpublishTitle": "取消发布 {{project}}？"
+		},
+		"admins": {
+			"add": "添加管理员",
+			"addConfirm": "添加管理员",
+			"addDescription": "实例管理员可以更改此区域的所有设置，并打开任意工作区。",
+			"added": "{{name}} 现在是实例管理员",
+			"addTitle": "添加实例管理员",
+			"columns": {
+				"email": "邮箱",
+				"name": "名称"
+			},
+			"email": "邮箱",
+			"emailInvalid": "请输入有效的邮箱地址",
+			"emailPlaceholder": "name@example.com",
+			"lastAdmin": "至少需要保留一位实例管理员",
+			"remove": "移除管理员…",
+			"removeConfirm": "移除",
+			"removed": "{{name}} 不再是实例管理员",
+			"removeDescription": "对方的账户和工作区会保留。",
+			"removeTitle": "取消 {{name}} 的实例管理员身份？",
+			"subtitle": "实例管理员可以更改此区域的所有设置，并打开任意工作区。",
+			"title": "管理员",
+			"you": "你"
+		},
+		"identity": {
+			"name": "名称",
+			"nameHint": "管理员对此连接的称呼，例如提供方名称。",
+			"remove": "移除",
+			"removeTitle": "移除 {{name}}？",
+			"done": "完成",
+			"scim": {
+				"title": "预配 (SCIM)",
+				"description": "让身份提供方在一个工作区中添加、更改和移除人员。",
+				"none": "尚未连接用于预配的身份提供方。",
+				"connect": "连接提供方",
+				"connectDescription": "为一个工作区创建令牌。连接后仅显示一次。",
+				"connectConfirm": "创建令牌",
+				"workspace": "工作区",
+				"workspaceHint": "此提供方添加的人员会以成员身份加入此工作区。",
+				"workspacePlaceholder": "选择工作区",
+				"workspaceSearch": "搜索工作区",
+				"baseUrl": "SCIM 基础 URL",
+				"token": "Bearer 令牌",
+				"tokenTitle": "复制 {{name}} 的令牌",
+				"tokenDescription": "这是你唯一一次看到它。请只提供给身份提供方：持有它的人可以向工作区添加人员，并更改或停用此连接管理的人员。",
+				"rotate": "更换令牌",
+				"rotateTitle": "要更换 {{name}} 的令牌吗？",
+				"rotateDescription": "当前令牌立即失效，在身份提供方获得新令牌之前，预配将暂停。人员的关联保持不变。",
+				"rotateConfirm": "更换令牌",
+				"removeDescription": "令牌立即失效。它添加的人员保留账户和成员身份，但不再从提供方更新。",
+				"removed": "已移除 {{name}}",
+				"columns": {
+					"name": "名称",
+					"workspace": "工作区",
+					"people": "人员"
+				}
+			},
+			"saml": {
+				"title": "企业登录 (SAML)",
+				"description": "让你的邮箱域名下的人员通过身份提供方登录。",
+				"none": "尚未连接用于登录的身份提供方。",
+				"connect": "连接提供方",
+				"connectConfirm": "连接",
+				"edit": "编辑",
+				"editTitle": "编辑 {{name}}",
+				"formDescription": "控制此身份提供方的人可以登录这些域名下任何邮箱已在此验证的用户，因此请只连接你信任其管理这些域名的提供方。",
+				"acsUrl": "断言消费者服务 (ACS) URL",
+				"entityId": "实体 ID（受众）",
+				"addressesHint": "请在身份提供方处输入这两项。它们以后不会改变。",
+				"domains": "邮箱域名",
+				"domainsHint": "多个域名用逗号分隔。包含子域名。",
+				"domainsInvalid": "请输入类似 example.com 的域名，用逗号分隔。",
+				"issuer": "身份提供方实体 ID（颁发者）",
+				"entryPoint": "单点登录 URL",
+				"entryPointInvalid": "请使用 https:// 地址。",
+				"certificate": "签名证书",
+				"certificateHint": "身份提供方的公开 X.509 证书，PEM 或 base64 格式。绝不要填写私钥。",
+				"certificateKeepHint": "留空以保留当前证书。",
+				"currentCertificate": "当前指纹：{{fingerprint}}",
+				"certificateExpired": "已过期",
+				"certificateExpiring": "即将过期",
+				"connected": "身份提供方已连接",
+				"saved": "连接已保存",
+				"removeDescription": "通过此身份提供方的登录立即停止。账户保留，用户可通过其他方式登录。",
+				"removed": "已移除 {{name}}",
+				"columns": {
+					"name": "名称",
+					"domains": "邮箱域名",
+					"certificate": "证书到期时间"
+				}
+			}
 		}
 	},
 	"press": {
@@ -9792,6 +10220,20 @@
 				"facts": "项目：{{projects}} · 成员：{{members}} · 周期：{{cycles}}",
 				"memory": "记忆笔记：{{count}}",
 				"history": "之前的消息：{{count}}"
+			},
+			"undo": {
+				"button": "撤销计划",
+				"pending": "正在撤销计划…",
+				"hint": "只要其中内容未被更改，你可以在一小时内撤销此计划。",
+				"lastPlan": "你仍可撤销上一个计划。",
+				"done": "计划已撤销。已删除的项目在回收站中。",
+				"archived_other": "由于你无权删除，{{count}} 个项目已改为归档。",
+				"partial_other": "已撤销，但以下 {{count}} 个项目除外：",
+				"edited_other": "未撤销任何内容：计划创建后有 {{count}} 个项目发生了更改。如果仍想移除，请手动操作。",
+				"more_other": "以及另外 {{count}} 个",
+				"already": "此计划已被撤销。",
+				"expired": "此计划已无法撤销：已超过一小时。",
+				"failed": "无法撤销此计划。"
 			}
 		},
 		"duplicates": {
@@ -11315,7 +11757,8 @@
 			"text": "这是一封来自 {{instanceName}} 的测试邮件。如果你能看到它，说明邮件发送正常。"
 		},
 		"notificationText": {
-			"commentWithoutPreview": "{{taskTitle}} 有新评论"
+			"commentWithoutPreview": "{{taskTitle}} 有新评论",
+			"pushFixedLine": "打开 Margaya 查看详情。"
 		}
 	}
 }
