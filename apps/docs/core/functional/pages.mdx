@@ -1,6 +1,6 @@
 ---
 title: Write Docs with Pages
-description: Write specs, notes and docs next to your tasks, edit them together live, and keep version history, backlinks and private drafts
+description: Write specs, notes and docs next to your tasks, edit them together live, comment and watch for changes, and keep version history, backlinks and private drafts
 ---
 
 Pages are project docs. Each project has its own page tree, so specs and notes live right next to the tasks they describe. Several people can edit the same page at once and see each other's cursors.
@@ -15,7 +15,7 @@ Open the project's **Pages** tab. The list has three tabs:
 
 - **Public** - pages everyone in the project's workspace with page access can see.
 - **Private** - your own private pages. Nobody else sees them.
-- **Archived** - archived pages, ready to restore or delete.
+- **Archived** - archived pages, ready to restore or delete. **Recently deleted** on this tab opens the pages you deleted, in the project's settings.
 
 To the right of the tabs:
 
@@ -54,6 +54,7 @@ Pages can be shared with people outside the workspace through a read-only link. 
 - The public page shows the title, icon and content without Margaya's menus. Mentions, task links, attached files and links to pages that are not published are replaced with neutral placeholders; a link to another published page leads to its public copy.
 - Switching **Public link** off revokes the link at once. Publishing again creates a new link, so the old one keeps answering "not available".
 - Making the page private, archiving it, or turning **Public pages** off for the workspace also revokes its link.
+- Comments stay inside the workspace. A public page shows none of them, and visitors can't add any.
 
 <Screenshot src="pages/publish-dialog" alt="The Publish to web dialog explaining that anyone with the link can read the page, with the Public link switch turned off" caption="Switch on Public link to share a read-only copy." />
 
@@ -86,7 +87,7 @@ Moving needs permission to manage the page, and the page must not be locked or a
 
 Click into the page and write. The placeholder reads "Write something, or press / for commands", and an empty line you are on shows "Type '/' for commands".
 
-The page header holds the page switcher (after the project name) and, on the right, who is here, the sync state, **Lock**, the favorite star, **Copy link** and the page menu.
+The page header holds the page switcher (after the project name) and, on the right, who is here, the sync state, **Lock**, the favorite star, [**Watch page**](#watch-a-page), **Copy link** and the page menu.
 
 **Formatting toolbar.** On wider screens an editable page has a toolbar above the text: a **Text style** menu (Text, Heading 1, Heading 2, Heading 3), then **Bold**, **Italic**, **Underline**, **Strikethrough** and **Inline code**, the three lists, **Quote**, **Code block** and **Callout**, and **Link**, **Table**, **Image** and **Divider**. On narrower screens the blocks and inserts move into **More formatting**. Hover a button to see its keyboard shortcut. Use the arrow keys to move between the toolbar's buttons. To hide the toolbar, turn off **Formatting toolbar** in the page menu; your choice is saved to your account. The toolbar is not shown on read-only, locked or archived pages.
 
@@ -158,6 +159,36 @@ If live editing can't connect, Margaya shows the last saved version with the ban
 
 A page has a size limit. If it grows too large, a banner asks you to copy your recent changes and **Reload**.
 
+## Comment on a page
+
+Open the side panel and select **Comments** to discuss a page without changing it.
+
+<Screenshot src="pages/page-comments" alt="The Relaunch plan page with the side panel open on the Comments tab, showing three comments by Priya Raman, Sofia Duarte and Elena Marsh, and a box to add a comment" caption="Comments sit in the side panel, oldest first." />
+
+- Type in **Add a comment…** and click **Comment**. You can format text and `@`mention people, as in task comments. Mentioning someone notifies them, if they can see the page.
+- The **...** menu on a comment has **Edit** and **Delete**. Only its author can edit it. Its author or someone with **Manage all pages** can delete it, and that can't be undone. A changed comment shows **edited**.
+- You can comment on a locked page. An archived page keeps its comments but takes no new ones, until you restore it.
+
+Page comments are simpler than task comments:
+
+- They're one flat list, oldest first. There are no replies or threads.
+- They attach to the whole page, not to a passage of text.
+- They have no reactions and can't hold uploaded files.
+- They stay inside the workspace. [Public pages](#publish-a-page-to-the-web) never show them, and workspace webhooks don't send them.
+
+## Watch a page
+
+Watch a page to hear about it in your [Inbox](/core/functional/inbox). The bell in the page header switches between **Watch page** and **Stop watching**. Anyone who can see a page can watch it, viewers included.
+
+You start watching a page automatically when you own it, comment on it or are mentioned in a comment. **Stop watching** works for owners too. Commenting or being mentioned in a comment later starts it again.
+
+Watchers are notified about:
+
+- **New comments.** You're told once, even if the comment also mentions you.
+- **Content changes.** You get one notification per page until you read it, and at most one an hour, so typing doesn't flood your inbox. People who edited in that same save aren't told.
+
+Your own changes never notify you, and neither does a page you can no longer see. These notifications reach your Inbox and [push notifications](/core/functional/account-notifications), but not email, ntfy, Gotify or custom webhooks. **Notify me about** applies to them: comments follow **Comments and mentions**, and content changes follow **Other task changes**.
+
 ## Lock a page
 
 The owner or a page manager can **Lock** a page from the lock button in the header or from its menu. A locked page is read-only for everyone, the owner included, shows a **Locked** badge in the header and the banner "This page is locked. Unlock it to make changes." Click the badge to unlock; "Unlocked" shows for a moment.
@@ -168,15 +199,15 @@ A lock blocks:
 - restoring a version
 - moving the page in the tree or to another project
 
-Still available on a locked page: reading, copying the link, markdown copy and download, viewing version history, duplicating, archiving, changing public or private, and **Unlock**. The Info panel shows who locked it.
+Still available on a locked page: reading, commenting, copying the link, markdown copy and download, viewing version history, duplicating, archiving, changing public or private, and **Unlock**. The Info panel shows who locked it.
 
 ## Archive, restore and delete
 
 1. **Archive** hides a page, and all of its sub-pages, from the tree and moves it to the **Archived** tab. An archived page is read-only.
 2. **Restore** brings the page and its sub-pages back. If the page's parent is still archived, it returns at the top level.
-3. **Delete** is permanent and removes the page, its version history and its uploaded files. **A page must be archived before it can be deleted.** Its sub-pages move to the top level and stay archived. Links to the page elsewhere are cleaned up.
+3. **Delete** moves the page to **Recently deleted**, where it can be restored until it is deleted permanently. **A page must be archived before it can be deleted.** Its sub-pages move to the top level and stay archived.
 
-Only the page owner or a page manager can archive or delete.
+Only the page owner or a page manager can archive or delete. See [Restore a deleted page](/core/functional/trash-and-restore#restore-a-deleted-page).
 
 ## Duplicate and move
 
@@ -194,13 +225,14 @@ Open **Version history** from the page menu (it also shows when the page was las
 
 ## Outline and Info
 
-The side panel has three tabs. Open it with the panel button at the right end of the formatting toolbar, or next to the project tabs when the toolbar is hidden. On screens 1024px and wider it slides in beside the page and the text re-centres; on smaller screens it opens as a sheet. **Close panel** sits at its top left.
+The side panel has four tabs. Open it with the panel button at the right end of the formatting toolbar, or next to the project tabs when the toolbar is hidden. On screens 1024px and wider it slides in beside the page and the text re-centres; on smaller screens it opens as a sheet. **Close panel** sits at its top left.
 
 - **Outline** - the page's headings. Add headings to fill it. The heading you are reading is highlighted; click a heading to jump to it.
 - **Info** - words, characters, paragraphs and reading time, plus who created and last edited the page, who locked it, and **Linked from**.
+- **Comments** - [comments on the page](#comment-on-a-page).
 - **History** - version history.
 
-<Screenshot src="pages/side-panel" alt="The Relaunch plan page with the side panel open on the Outline tab, listing the headings Goals, Launch checklist, Owners and Open questions" caption="The side panel's Outline tab lists the page's headings." />
+<Screenshot src="pages/side-panel" alt="The Relaunch plan page with the side panel open on the Outline tab next to the Info, Comments and History tabs, listing the headings Goals, Launch checklist, Owners and Open questions" caption="The side panel's Outline tab lists the page's headings." />
 
 While the panel is closed, a page with two or more headings shows short bars at the right edge of a wide page, one per heading. Hover or focus them to see the outline and jump to a heading, or click them to open the **Outline** tab.
 
@@ -220,9 +252,12 @@ From the page menu choose **Print / Save as PDF**, then pick a printer or **Save
 | --- | --- | --- | --- | --- |
 | See Pages and public pages | Yes | Yes | Yes | Yes |
 | Create, duplicate and edit pages | No | Yes | Yes | Yes |
+| Read comments and watch a page | Yes | Yes | Yes | Yes |
+| Add comments, and edit or delete your own | No | Yes | Yes | Yes |
+| Delete other people's comments | No | No | Yes | Yes |
 | Lock, archive and move your own pages | No | Yes | Yes | Yes |
-| Lock, archive, move and delete any page they can see | No | No | Yes | Yes |
-| Delete your own archived pages | No | Yes | Yes | Yes |
+| Lock, archive, move, delete and restore any page they can see | No | No | Yes | Yes |
+| Delete and restore your own archived pages | No | Yes | Yes | Yes |
 | See other people's private pages | No | No | No | No |
 
 These come from the workspace **Pages** permissions: **View pages**, **Create pages**, **Edit pages** and **Manage all pages**. Custom roles can mix them. A viewer sees the banner "You can view this page but not edit it."

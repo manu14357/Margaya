@@ -1,15 +1,17 @@
 ---
 title: Trash and Restore
-description: Deleted tasks and projects go to the trash first, so you can bring them back before they are deleted permanently
+description: Deleted tasks, pages and projects go to the trash first, so you can bring them back before they are deleted permanently
 ---
 
-Deleting a task or a project does not erase it right away. It moves to the trash, where it stays restorable until someone deletes it permanently or the automatic purge removes it (after 30 days by default).
+Deleting a task, a page or a project does not erase it right away. It moves to the trash, where it stays restorable until someone deletes it permanently or the automatic purge removes it (after 30 days by default).
 
 While something is in the trash, Margaya behaves as if it no longer exists: it disappears from boards, lists, Your work, search, analytics, cycles, modules, the inbox, favorites, recent items, exports, public boards, integrations and the MCP tools. Nothing about it is lost, though: comments, attachments, relations, time entries and history are kept and come back with it.
 
+Its files and images stop opening too, until it's restored. A file that a page, a task description or a comment outside the trash still shows keeps opening for people in the workspace, but not on a public board.
+
 ## Delete a task
 
-Delete a task from its menu, from the task detail, or select several tasks and use **Delete** in the bulk bar. Deleting a task also moves its sub-tasks (at every level) to the trash, together with it.
+Delete a task from its menu, from the task detail, or select several tasks and choose **Delete tasks** under **Actions** in the [bulk bar](/core/functional/bulk-edit-tasks). Deleting a task also moves its sub-tasks (at every level) to the trash, together with it.
 
 Task keys are never reused: a new task always gets a new number, even after a deleted task is gone for good.
 
@@ -23,27 +25,44 @@ Requests still waiting in [Intake](/core/functional/intake) are an exception: de
 
 Each row shows who deleted the task, when, and when it will be deleted permanently. A task deleted together with its sub-tasks shows how many came along; restoring it brings exactly those back. Sub-tasks you had deleted on their own before stay in the trash until you restore them separately.
 
-<Screenshot src="data/project-trash" alt="The Recently deleted page of Website relaunch with two deleted tasks, one with 2 sub-tasks, and a row menu open on Delete permanently" caption="A project's Recently deleted list, with Restore and Delete permanently on every row." />
+<Screenshot src="data/project-trash" alt="The Recently deleted page of Website relaunch with a Tasks section listing two deleted tasks, one with 2 sub-tasks and a row menu open on Delete permanently, and a Pages section listing one deleted page" caption="A project's Recently deleted list, with Restore and Delete permanently on every row." />
 
 A restored task goes back to its column. If that column was deleted in the meantime, the task lands in the project's first not-started column. A task whose project is itself in the trash can't be restored until you restore the project.
 
 ## Delete a task permanently
 
-In **Recently deleted**, open a task's **...** menu and choose **Delete permanently**, or click **Empty trash** to delete every task in the project's trash. Both ask for confirmation. Permanent deletes remove the task, the sub-tasks deleted with it, their comments, attachments, relations and time entries, and can't be undone.
+In **Recently deleted**, open a task's **...** menu and choose **Delete permanently**, or click **Empty trash** to delete every task in the project's trash. Both ask for confirmation. Permanent deletes remove the task, the sub-tasks deleted with it, their comments, attachments, relations and time entries, and can't be undone. A file that another task's description, a comment on another task or a page still shows (for example in a copy of the task) stays with that text; the task's other files are deleted.
+
+## Restore a deleted page
+
+A page has to be [archived](/core/functional/pages#archive-restore-and-delete) before you can delete it. Deleting it moves it to the trash, with its comments, watchers, version history and files. Its sub-pages stay behind: they move to the top level and stay archived, because they can belong to other people.
+
+1. Go to **Settings** and open **Projects**.
+2. Select the project and open **Recently deleted**. You can also click **Recently deleted** on the **Archived** tab of the project's **Pages**.
+3. Under **Pages**, find the page (search by title) and click **Restore**.
+
+The page goes back to the **Archived** tab, at the top level of the tree. Restore it from there to use it again. Any sub-pages stay where they are, and any public link stays revoked. If the project already has its limit of 5,000 pages, the restore is refused.
+
+**Delete permanently** in a row's **...** menu removes the page, its comments, watchers and version history, and can't be undone. Favorites and recent visits go with it, links to it show "Private or deleted page", and its files are deleted unless another page, a task's description or a comment still links them. The **Pages** section has no **Empty trash**.
+
+The **Pages** section only appears while **Pages** is on for the project. It lists public pages and your own private pages, and a private page stays visible to its owner alone. You can restore or delete a page you own, or any page you can see if you have **Manage all pages**. On other rows, the buttons are hidden.
+
+While a page is in the trash, its link answers "Page not found", and notifications about it are hidden until it comes back.
 
 ## Delete and restore a project
 
 Deleting a project (from its settings or the project list) moves it to the trash with all its tasks. Its board, cycles, modules, pages, views and public board are unavailable while it is there, and its key stays reserved, so no new project can take it.
 
-To bring it back, go to **Settings**, open **Workspace**, then **Recently deleted**, and click **Restore**. The project returns with the tasks that were deleted together with it; tasks deleted on their own earlier stay in the project's own trash. From the same page you can **Delete permanently** a project and everything in it.
+To bring it back, go to **Settings**, open **Workspace**, then **Recently deleted**, and click **Restore**. The project returns with the tasks that were deleted together with it; tasks deleted on their own earlier stay in the project's own trash. From the same page you can **Delete permanently** a project and everything in it. Files that a task, comment or page of another project still shows stay with that text.
 
 <Screenshot src="data/workspace-trash" alt="The workspace Recently deleted projects page with the project Spring campaign 2025, its task count and a Restore button" caption="Deleted projects wait in the workspace's Recently deleted page." />
 
 ## Permissions
 
 - Restoring needs the same permission as deleting: **task:delete** for tasks and **project:delete** for projects. Workspace admins and owners have both by default.
+- A page needs **page:update** and your ownership of the page, or **page:delete** for any page you can see. So Members can restore and delete their own pages.
 - Deleting permanently needs the same permissions.
-- Anyone who can read the project can see its **Recently deleted** list.
+- Anyone who can read the project can see its **Recently deleted** list. The **Pages** section also needs **page:read**.
 
 ## Automatic purge
 
@@ -51,6 +70,6 @@ An hourly job deletes items that have been in the trash for longer than the rete
 
 ## Webhooks, integrations and the API
 
-- `task.deleted` and `project.deleted` mean "moved to the trash", so existing integrations keep working.
-- `task.restored` and `project.restored` are sent when something comes back, and `task.purged` and `project.purged` when it is deleted permanently. See [Webhooks](/core/functional/webhooks).
-- The API's trash routes list, restore and permanently delete trashed tasks and projects. The MCP `delete_task` tool moves a task to the trash and `restore_task` brings it back.
+- `task.deleted`, `page.deleted` and `project.deleted` mean "moved to the trash", so existing integrations keep working.
+- `task.restored`, `page.restored` and `project.restored` are sent when something comes back, and `task.purged`, `page.purged` and `project.purged` when it is deleted permanently. Private pages are left out. See [Webhooks](/core/functional/webhooks).
+- The API's trash routes list, restore and permanently delete trashed tasks, pages and projects. The MCP `delete_task` tool moves a task to the trash and `restore_task` brings it back.
