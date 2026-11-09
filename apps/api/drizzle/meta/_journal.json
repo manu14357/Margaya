@@ -288,6 +288,55 @@
 			"when": 1793362481476,
 			"tag": "0040_comment_threads",
 			"breakpoints": true
+		},
+		{
+			"idx": 41,
+			"version": "7",
+			"when": 1793895588388,
+			"tag": "0041_scim_saml_connections",
+			"breakpoints": true
+		},
+		{
+			"idx": 42,
+			"version": "7",
+			"when": 1793944123135,
+			"tag": "0042_reserve_guest_role",
+			"breakpoints": true
+		},
+		{
+			"idx": 43,
+			"version": "7",
+			"when": 1793945920307,
+			"tag": "0043_page_trash_comments_watching",
+			"breakpoints": true
+		},
+		{
+			"idx": 44,
+			"version": "7",
+			"when": 1793948516959,
+			"tag": "0044_push_subscriptions",
+			"breakpoints": true
+		},
+		{
+			"idx": 45,
+			"version": "7",
+			"when": 1793950230201,
+			"tag": "0045_whole_workspace_export",
+			"breakpoints": true
+		},
+		{
+			"idx": 46,
+			"version": "7",
+			"when": 1793961031560,
+			"tag": "0046_task_milestones",
+			"breakpoints": true
+		},
+		{
+			"idx": 47,
+			"version": "7",
+			"when": 1794298499482,
+			"tag": "0047_invitation_projects",
+			"breakpoints": true
 		}
 	]
 }

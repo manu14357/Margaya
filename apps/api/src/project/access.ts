@@ -112,7 +112,7 @@ export async function ensureProjectMembers(
     .onConflictDoNothing();
 }
 
-async function publishAccessChange(
+export async function publishAccessChange(
   data: {
     projectId: string;
     workspaceId: string;

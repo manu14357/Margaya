@@ -10,12 +10,18 @@ import { INVITATION_NOT_FOUND, invitationAccess } from "./access";
 import getInvitationDetailsController from "./controllers/get-invitation-details";
 import getUserPendingInvitations from "./controllers/get-user-pending-invitations";
 import updateInvitationRole from "./controllers/update-invitation-role";
+import { setInvitationProjects } from "./projects";
 import {
   invitationDetailsSchema,
+  invitationProjectsSchema,
   pendingInvitationListSchema,
   workspaceInvitationSchema,
 } from "./response";
-import { invitationParam, updateInvitationRoleBody } from "./schema";
+import {
+  invitationParam,
+  setInvitationProjectsBody,
+  updateInvitationRoleBody,
+} from "./schema";
 
 const getPendingRoute = createRoute({
   method: "get",
@@ -77,6 +83,40 @@ const updateInvitationRoleRoute = createRoute({
   },
 });
 
+const setInvitationProjectsRoute = createRoute({
+  method: "put",
+  operationId: "setInvitationProjects",
+  path: "/{id}/projects",
+  tags: ["Invitations"],
+  summary: "Set the projects a pending invitation adds",
+  description:
+    "Replace the projects the invitee joins when they accept, each with a project role, so a guest starts with their projects. Needs invitation:create in the invitation's workspace and, for every project, what adding a member there needs: project:share (capped by your project role in a restricted project) or being its lead. A guest can't. The invitation's role must be within your own, as for a role change. On acceptance they join the projects still in the workspace; one they already belong to keeps its role.",
+  middleware: [
+    invitationAccess(),
+    requireWorkspacePermission({ invitation: ["create"] }),
+  ] as const,
+  request: {
+    params: invitationParam,
+    body: {
+      required: true,
+      content: { "application/json": { schema: setInvitationProjectsBody } },
+    },
+  },
+  responses: {
+    200: jsonResponse("The invitation's projects", invitationProjectsSchema),
+    400: errorResponse(
+      "Invalid body, a project listed twice, or an unknown project role",
+    ),
+    403: errorResponse(
+      "Missing invitation:create, neither project:share nor the lead of a listed project, or an invitation role above your own",
+    ),
+    404: errorResponse(
+      `${INVITATION_NOT_FOUND}, or a project outside the workspace or that you can't see`,
+    ),
+    409: errorResponse("The invitation is no longer pending"),
+  },
+});
+
 const invitation = apiRouter()
   .openapi(getPendingRoute, async (c) => {
     const user = c.get("user");
@@ -96,6 +136,14 @@ const invitation = apiRouter()
       instanceAdmin: await isInstanceAdmin(c),
     });
     return c.json(updated, 200);
+  })
+  .openapi(setInvitationProjectsRoute, async (c) => {
+    const projects = await setInvitationProjects(c, {
+      invitationId: c.req.valid("param").id,
+      projects: c.req.valid("json").projects,
+      instanceAdmin: await isInstanceAdmin(c),
+    });
+    return c.json({ projects }, 200);
   });
 
 export default invitation;

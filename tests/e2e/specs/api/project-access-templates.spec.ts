@@ -16,8 +16,8 @@ import { uniqueName } from "../../helpers/ui";
 
 // Restricted projects (who reaches a project, and losing or regaining it),
 // task templates, repeat rules, Trello/Linear/Asana imports (Linear's CSV
-// works offline), changing a pending invitation's role, and per-user web
-// preferences (on a throwaway account).
+// works offline), changing a pending invitation's role and its projects, and
+// per-user web preferences (on a throwaway account).
 
 type ProjectMember = {
   userId: string;
@@ -396,11 +396,11 @@ test(
       await owner.post("/api/task-template", {
         data: { projectId: UNKNOWN_ID, name: uniqueName("Ghost") },
       }),
-      400,
+      404,
     );
     await expectStatus(
       await owner.get(`/api/task-template/project/${UNKNOWN_ID}`),
-      400,
+      404,
     );
 
     const renamed = `${name} v2`;
@@ -801,6 +801,88 @@ test(
       );
     } finally {
       await joiner.ctx.dispose();
+    }
+  },
+);
+
+test(
+  "a guest invited with projects lands in them, and reads their rights and people there",
+  covers("setInvitationProjects", "getMyProjectRights", "getProjectPeople"),
+  async () => {
+    const owner = world.as("owner");
+    const guest = await signUpUser("Access guest");
+    try {
+      const invitation = await expectJson<{ id: string }>(
+        await owner.post("/api/auth/organization/invite-member", {
+          data: {
+            email: guest.email,
+            role: "guest",
+            organizationId: world.workspace.id,
+          },
+        }),
+      );
+      const projects = [{ projectId: work.id, role: "member" }];
+      expect(
+        await expectJson(
+          await owner.put(`/api/invitation/${invitation.id}/projects`, {
+            data: { projects },
+          }),
+        ),
+      ).toEqual({ projects });
+      // Inviting and sharing take their own rights.
+      await expectStatus(
+        await world
+          .as("member")
+          .put(`/api/invitation/${invitation.id}/projects`, {
+            data: { projects },
+          }),
+        403,
+      );
+      await expectStatus(
+        await owner.put(`/api/invitation/${invitation.id}/projects`, {
+          data: { projects: [{ projectId: UNKNOWN_ID, role: "viewer" }] },
+        }),
+        404,
+      );
+
+      await expectJson(
+        await guest.ctx.post("/api/auth/organization/accept-invitation", {
+          data: { invitationId: invitation.id },
+        }),
+      );
+      const mine = `/api/project/access/mine?workspaceId=${world.workspace.id}`;
+      const rights = await expectJson<{
+        projects: {
+          projectId: string;
+          projectRole: string;
+          statements: Record<string, string[]>;
+        }[];
+      }>(await guest.ctx.get(mine));
+      expect(rights.projects).toEqual([
+        expect.objectContaining({ projectId: work.id, projectRole: "member" }),
+      ]);
+      expect(rights.projects[0]?.statements.task).toContain("update");
+      expect(await expectJson(await owner.get(mine))).toEqual({ projects: [] });
+
+      const people = await expectJson<{ id: string; name: string }[]>(
+        await guest.ctx.get(`/api/project/${work.id}/people`),
+      );
+      expect(people.map((person) => person.id)).toEqual(
+        expect.arrayContaining([guest.id, world.users.owner.id]),
+      );
+      expect(JSON.stringify(people)).not.toContain(world.users.owner.email);
+      await expectStatus(
+        await guest.ctx.get(`/api/project/${restricted.id}/people`),
+        404,
+      );
+    } finally {
+      await owner.post("/api/auth/organization/remove-member", {
+        data: {
+          memberIdOrEmail: guest.email,
+          organizationId: world.workspace.id,
+        },
+      });
+      await guest.ctx.dispose();
     }
   },
 );

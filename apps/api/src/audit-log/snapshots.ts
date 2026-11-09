@@ -4,6 +4,7 @@ import db from "../database";
 import {
   apikeyTable,
   integrationTable,
+  invitationProjectTable,
   invitationTable,
   projectTable,
   userTable,
@@ -26,6 +27,36 @@ export async function userLabel(userId: string | null | undefined) {
     .where(eq(userTable.id, userId))
     .limit(1);
   return user ? user.name || user.email : null;
+}
+
+/**
+ * A pending invitation's workspace, email and projects (`projectId:role`,
+ * sorted), around a change to the projects it adds.
+ */
+export async function invitationProjectsSnapshot(
+  invitationId: string | undefined,
+) {
+  if (!invitationId) return null;
+  const [invitation] = await db
+    .select({
+      workspaceId: invitationTable.workspaceId,
+      email: invitationTable.email,
+    })
+    .from(invitationTable)
+    .where(eq(invitationTable.id, invitationId))
+    .limit(1);
+  if (!invitation) return null;
+  const rows = await db
+    .select({
+      projectId: invitationProjectTable.projectId,
+      role: invitationProjectTable.role,
+    })
+    .from(invitationProjectTable)
+    .where(eq(invitationProjectTable.invitationId, invitationId));
+  return {
+    ...invitation,
+    projects: rows.map((row) => `${row.projectId}:${row.role}`).sort(),
+  };
 }
 
 /** The role a pending invitation grants, before a change to it. */
