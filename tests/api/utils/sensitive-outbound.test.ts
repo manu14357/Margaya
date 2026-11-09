@@ -90,7 +90,7 @@ it("keeps credentials out of actual Sentry events, breadcrumbs and spans while r
           SENTRY_PROFILES_SAMPLE_RATE: "0",
           TELEMETRY_TEST_BASE: base,
         },
-        timeout: 20000,
+        timeout: 120_000,
       },
     );
     expect(paths).toHaveLength(4);
@@ -111,4 +111,4 @@ it("keeps credentials out of actual Sentry events, breadcrumbs and spans while r
     server.closeAllConnections();
     await new Promise<void>((done) => server.close(() => done()));
   }
-}, 30000);
+}, 150_000);

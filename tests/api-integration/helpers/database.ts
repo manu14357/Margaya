@@ -108,7 +108,18 @@ export async function resetTestDatabase() {
 
   const formattedTableNames = tableNames.map(quoteIdentifier).join(", ");
 
-  await db.execute(
-    sql.raw(`TRUNCATE TABLE ${formattedTableNames} RESTART IDENTITY CASCADE`),
-  );
+  // A background write left over from the previous test can deadlock with this.
+  for (let attempt = 1; ; attempt++) {
+    try {
+      await db.execute(
+        sql.raw(
+          `TRUNCATE TABLE ${formattedTableNames} RESTART IDENTITY CASCADE`,
+        ),
+      );
+      return;
+    } catch (error) {
+      const cause = (error as { cause?: { code?: string } }).cause;
+      if (cause?.code !== "40P01" || attempt >= 3) throw error;
+    }
+  }
 }
