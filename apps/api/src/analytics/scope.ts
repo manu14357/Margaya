@@ -12,7 +12,12 @@ import { ANALYTICS_TIMEOUT } from "./schema";
 // exactly the engine's semantics (scope, never triage, archived rule,
 // sub-task rule, filters).
 
-export type AnalyticsCaller = { workspaceId: string; userId: string };
+export type AnalyticsCaller = {
+  workspaceId: string;
+  userId: string;
+  /** Visible projects whose project role refuses the read: left out. */
+  excludedProjectIds?: readonly string[];
+};
 
 export type TaskSetInput = {
   scope?: { projectIds?: string[] };
@@ -38,7 +43,9 @@ export function assertRunnableFilters(filters: FilterNode | null | undefined) {
  * Scope projects (404 for one outside the workspace, 400 for a bad time
  * zone or custom field), the caller and today: two statements (the
  * workspace's zone with the caller's hidden projects, then the projects),
- * three when the filters use custom fields.
+ * one more when the filters use custom fields and one more when the chart
+ * does. Charted fields load from the scope projects only, so a field of a
+ * project the caller can't see reads as unknown.
  */
 export function loadAnalyticsContext(
   tx: TaskReadDatabase,
@@ -48,22 +55,27 @@ export function loadAnalyticsContext(
     timeZone,
     weekStartsOn,
     filters,
+    chartFieldIds,
   }: {
     projectIds?: readonly string[];
     timeZone?: string;
     weekStartsOn?: WeekStart;
     filters?: FilterNode | null;
+    /** Custom fields the chart groups by or sums. */
+    chartFieldIds?: readonly string[];
   } = {},
 ): Promise<QueryContext> {
   return buildQueryContext(tx, {
     workspaceId: caller.workspaceId,
     userId: caller.userId,
+    excludeProjectIds: caller.excludedProjectIds,
     projectIds,
     timeZone,
     weekStartsOn,
     customFieldIds: filterConditions(filters)
       .filter((condition) => condition.key === "customField")
       .map((condition) => condition.fieldId ?? ""),
+    displayFieldIds: chartFieldIds,
   });
 }
 
@@ -72,12 +84,14 @@ export function loadTaskSetContext(
   tx: TaskReadDatabase,
   caller: AnalyticsCaller,
   input: TaskSetInput,
+  chartFieldIds?: readonly string[],
 ): Promise<QueryContext> {
   return loadAnalyticsContext(tx, caller, {
     projectIds: input.scope?.projectIds,
     timeZone: input.context?.timeZone,
     weekStartsOn: input.context?.weekStartsOn,
     filters: input.filters,
+    chartFieldIds,
   });
 }
 

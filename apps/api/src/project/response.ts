@@ -112,3 +112,30 @@ export const projectAccessSchema = z
     }),
   })
   .openapi("ProjectAccess");
+
+export const projectRightsListSchema = z
+  .object({
+    projects: z.array(
+      z.object({
+        projectId: z.string(),
+        projectRole: z.string().openapi({
+          description: "The project role that caps your rights there.",
+        }),
+        statements: z.record(z.string(), z.array(z.string())).openapi({
+          description:
+            "What that project role grants, as resource to actions. You may do there what both it and your workspace role grant.",
+        }),
+      }),
+    ),
+  })
+  .openapi("ProjectRights");
+
+export const projectPersonSchema = z
+  .object({
+    id: z.string(),
+    name: z.string(),
+    image: z.string().nullable(),
+  })
+  .openapi("ProjectPerson");
+
+export const projectPeopleSchema = z.array(projectPersonSchema);

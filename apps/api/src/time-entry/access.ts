@@ -9,10 +9,11 @@ export const TIME_ENTRY_NOT_FOUND = "Time entry not found";
 
 /**
  * Resolves the time entry in the path to its workspace, checks that the
- * caller may use that workspace, and sets `workspaceId` on the context. An
- * entry the caller can't see (unknown, or in a workspace they are not part
- * of) answers 404, so the response does not confirm that it exists. Reads
- * the raw path param: route middleware runs before the validators.
+ * caller may use that workspace, and sets `workspaceId` and `projectId` on
+ * the context, so permission checks apply the caller's project role. An entry
+ * the caller can't see (unknown, or in a workspace they are not part of)
+ * answers 404, so the response does not confirm that it exists. Reads the raw
+ * path param: route middleware runs before the validators.
  */
 export function visibleTimeEntry(idKey = "id") {
   return async (c: Context, next: Next) => {
@@ -55,6 +56,7 @@ export function visibleTimeEntry(idKey = "id") {
     }
 
     c.set("workspaceId", found.workspaceId);
+    c.set("projectId", found.projectId);
     return next();
   };
 }
