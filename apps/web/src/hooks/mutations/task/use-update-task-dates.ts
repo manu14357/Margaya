@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import updateTask from "@/fetchers/task/update-task";
+import updateTaskDates from "@/fetchers/task/update-task-dates";
 import type { TaskDates } from "@/lib/schedule-dates";
 import type Task from "@/types/task";
 import { invalidatePlanningProgress } from "./invalidate-planning-progress";
@@ -39,20 +39,31 @@ export function withTaskDates<B extends BoardLike>(
   };
 }
 
+/**
+ * The request body for a move. A null date is one the task doesn't have on
+ * this board, so it is left out rather than sent as a clear: someone may have
+ * set it since the board loaded.
+ */
+export function datesToSend({ startDate, dueDate }: TaskDates) {
+  return { startDate: startDate ?? undefined, dueDate: dueDate ?? undefined };
+}
+
 type Variables = { task: Task } & TaskDates;
 type Context = { previousTask?: unknown; previousBoard?: unknown };
 
 /**
  * Sets a task's start and due dates together (calendar drops, timeline
- * scheduling). The board and the task move at once and roll back if the
- * request fails; the server copy is refetched either way.
+ * scheduling) in one atomic request that sends only the dates: the rest of
+ * `task` is this board's copy, and writing it back would undo anyone's newer
+ * edit. The board and the task move at once and roll back if the request
+ * fails; the server copy is refetched either way.
  */
 export function useUpdateTaskDates() {
   const queryClient = useQueryClient();
 
   return useMutation<unknown, Error, Variables, Context>({
     mutationFn: ({ task, startDate, dueDate }) =>
-      updateTask(task.id, { ...task, startDate, dueDate }),
+      updateTaskDates(task.id, datesToSend({ startDate, dueDate })),
     onMutate: async ({ task, startDate, dueDate }) => {
       const taskKey = ["task", task.id];
       const boardKey = ["tasks", task.projectId];
