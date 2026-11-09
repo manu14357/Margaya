@@ -4,6 +4,7 @@ import { AppShell } from "@/components/common/app-shell";
 import PageTitle from "@/components/page-title";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { usePendingCheckout } from "@/hooks/use-pending-checkout";
+import { RouteProjectScope } from "@/hooks/use-project-scope";
 
 export const Route = createFileRoute("/_layout/_authenticated/dashboard")({
   component: DashboardLayoutComponent,
@@ -23,7 +24,11 @@ function DashboardLayoutComponent() {
         hideAppName={!workspace?.name}
       />
       <AppShell>
-        <Outlet />
+        {/* A project's pages act in that project; the shell around them
+            stays about the workspace. */}
+        <RouteProjectScope>
+          <Outlet />
+        </RouteProjectScope>
       </AppShell>
     </>
   );

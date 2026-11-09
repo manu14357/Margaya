@@ -32,6 +32,8 @@ function useUpdateWorkspaceRole() {
       queryClient.invalidateQueries({
         queryKey: ["workspace-capabilities", variables.workspaceId],
       });
+      // A project role is a workspace role too: what it caps changed.
+      queryClient.invalidateQueries({ queryKey: ["project-rights"] });
     },
   });
 }

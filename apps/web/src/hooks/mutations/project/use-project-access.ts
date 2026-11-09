@@ -8,6 +8,7 @@ import {
   updateProjectVisibility,
 } from "@/fetchers/project/project-access";
 import { projectAccessQueryKey } from "@/hooks/queries/project/use-project-access";
+import { projectAudienceQueryKey } from "@/hooks/queries/project/use-project-audience";
 
 type Change =
   | { kind: "visibility"; visibility: ProjectVisibility }
@@ -38,6 +39,11 @@ function useProjectAccessMutation(projectId: string) {
     onSuccess: (access) => {
       queryClient.setQueryData(projectAccessQueryKey(projectId), access);
       queryClient.invalidateQueries({ queryKey: ["projects"] });
+      // Who its pickers offer, and my own role there if I changed it.
+      queryClient.invalidateQueries({
+        queryKey: projectAudienceQueryKey(projectId),
+      });
+      queryClient.invalidateQueries({ queryKey: ["project-rights"] });
     },
   });
 }

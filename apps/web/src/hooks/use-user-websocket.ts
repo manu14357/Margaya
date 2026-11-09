@@ -116,6 +116,8 @@ export function useUserWebSocket() {
               ["favorites"],
               ["recent-visits"],
               ["project-access"],
+              ["project-rights"],
+              ["project-audience"],
             ]) {
               queryClient.invalidateQueries({ queryKey });
             }
@@ -147,6 +149,8 @@ export function useUserWebSocket() {
               ["workspace-user", "active"],
               ["workspace", "full"],
               ["workspace-capabilities"],
+              ["project-rights"],
+              ["project-audience"],
               agentKeys.all,
             ]) {
               queryClient.invalidateQueries({ queryKey });

@@ -21,6 +21,11 @@ export type AssigneeEntry = TaskAssignee & {
   isFormerMember: boolean;
   /** Known only by id; shown as "Unknown person". */
   isUnknown: boolean;
+  /**
+   * In a project's lists: assigned, but not among the people who can see
+   * the project. Shown from the task's own assignee data.
+   */
+  noAccess?: boolean;
 };
 
 type Translate = (key: string, options?: Record<string, unknown>) => string;
@@ -114,21 +119,27 @@ function indexPeople(people: readonly TaskAssignee[]) {
 /**
  * Resolves assignee ids to display entries, in order. Active members win;
  * then the task's embedded data, then an unknown placeholder. With the member
- * list still loading (`members` undefined) nobody is flagged as former.
+ * list still loading (`members` undefined) nobody is flagged. When `members`
+ * is a project's audience, someone missing from it lacks access to the
+ * project (they may still be in the workspace), not a former member.
  */
 export function resolveAssignees(
   ids: readonly string[],
   members: readonly TaskAssignee[] | undefined,
   embedded: readonly TaskAssignee[] = [],
+  { audience = false }: { audience?: boolean } = {},
 ): AssigneeEntry[] {
   const memberIndex = members ? indexPeople(members) : undefined;
   return ids.map((id) => {
     const member = memberIndex?.get(id);
     if (member) return { ...member, isFormerMember: false, isUnknown: false };
-    const isFormerMember = memberIndex !== undefined;
+    const missing = memberIndex !== undefined;
+    const flags = audience
+      ? { isFormerMember: false, noAccess: missing }
+      : { isFormerMember: missing };
     const known = embedded.find((person) => person.id === id);
-    if (known) return { ...known, isFormerMember, isUnknown: false };
-    return { id, name: "", image: null, isFormerMember, isUnknown: true };
+    if (known) return { ...known, ...flags, isUnknown: false };
+    return { id, name: "", image: null, ...flags, isUnknown: true };
   });
 }
 

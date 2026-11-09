@@ -116,6 +116,19 @@ describe("resolveAssignees", () => {
     });
   });
 
+  it("marks someone outside a project's audience as without access, from the task's own data", () => {
+    const [entry] = resolveAssignees(["cy"], [ana], [cy], { audience: true });
+    expect(entry).toMatchObject({
+      name: "Cy Moss",
+      image: cy.image,
+      isFormerMember: false,
+      noAccess: true,
+      isUnknown: false,
+    });
+    const [member] = resolveAssignees(["ana"], [ana], [], { audience: true });
+    expect(member?.noAccess).toBeFalsy();
+  });
+
   it("uses a placeholder for a person known only by id", () => {
     const [entry] = resolveAssignees(["ghost"], [ana]);
     expect(entry).toMatchObject({
