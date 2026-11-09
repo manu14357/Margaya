@@ -5,6 +5,7 @@ import markIntakeDuplicate from "@/fetchers/intake/mark-intake-duplicate";
 import reopenIntakeItem from "@/fetchers/intake/reopen-intake-item";
 import snoozeIntakeItem from "@/fetchers/intake/snooze-intake-item";
 import unsnoozeIntakeItem from "@/fetchers/intake/unsnooze-intake-item";
+import { invalidateDeliveryQueries } from "@/hooks/mutations/delivery/invalidate-delivery-queries";
 import { intakeQueryKeys } from "@/hooks/queries/intake/intake-query-keys";
 import type { IntakeTriageAction } from "@/types/intake";
 import {
@@ -58,6 +59,8 @@ export function useTriageIntakeItem() {
           queryKey: ["tasks", item.task.projectId],
         });
         queryClient.invalidateQueries({ queryKey: ["projects"] });
+        // Out of triage, the task counts in the project's forecast.
+        invalidateDeliveryQueries(queryClient, item.task.projectId);
       }
     },
     onError: (_error, input) => {

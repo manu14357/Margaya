@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import createTaskRelation from "@/fetchers/task-relation/create-task-relation";
+import { invalidateDeliveryQueries } from "@/hooks/mutations/delivery/invalidate-delivery-queries";
 
 function useCreateTaskRelation() {
   const queryClient = useQueryClient();
@@ -16,6 +17,8 @@ function useCreateTaskRelation() {
       queryClient.invalidateQueries({
         queryKey: ["task-relations", "project"],
       });
+      // Risk radars follow blockers, across projects too.
+      invalidateDeliveryQueries(queryClient);
     },
   });
 }

@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import updateTaskDueDate from "@/fetchers/task/update-task-due-date";
+import { invalidateDeliveryQueries } from "@/hooks/mutations/delivery/invalidate-delivery-queries";
 import type Task from "@/types/task";
 
 export function useUpdateTaskDueDate() {
@@ -23,6 +24,8 @@ export function useUpdateTaskDueDate() {
       queryClient.invalidateQueries({
         queryKey: ["activities", variables.id],
       });
+      // Risk radars flag overdue work.
+      invalidateDeliveryQueries(queryClient, variables.projectId);
     },
   });
 }

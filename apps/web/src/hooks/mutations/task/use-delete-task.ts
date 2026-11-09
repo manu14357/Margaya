@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import deleteTask from "@/fetchers/task/delete-task";
 import useProjectStore from "@/store/project";
 import type { ProjectWithTasks } from "@/types/project";
+import { invalidatePlanningProgress } from "./invalidate-planning-progress";
 import { removeTaskFromProject } from "./remove-task-from-project";
 
 export function useDeleteTask() {
@@ -22,6 +23,8 @@ export function useDeleteTask() {
       void queryClient.invalidateQueries({
         queryKey: ["tasks", deletedTask.projectId],
       });
+      // A trashed task leaves its cycles, modules, forecasts and risks.
+      invalidatePlanningProgress(queryClient, deletedTask.projectId);
 
       const { project, setProject } = useProjectStore.getState();
       if (project?.id === deletedTask.projectId) {

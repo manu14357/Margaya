@@ -4,10 +4,14 @@ import type { DeliveryScopeType } from "@/types/delivery";
 // projectId] prefix, which planning-progress invalidation refreshes with
 // cycle and module progress.
 export const deliveryQueryKeys = {
+  /** Every project's, for a change that doesn't name its project. */
+  anyProject: () => ["delivery"] as const,
   all: (projectId: string) => ["delivery", projectId] as const,
   forecast: (projectId: string, scope: DeliveryScopeType, id: string) =>
     ["delivery", projectId, "forecast", scope, id] as const,
   risks: (projectId: string, scope: DeliveryScopeType, id: string) =>
     ["delivery", projectId, "risks", scope, id] as const,
+  /** Home's risks in every workspace. */
+  anyHome: () => ["delivery-home"] as const,
   home: (workspaceId: string) => ["delivery-home", workspaceId] as const,
 };

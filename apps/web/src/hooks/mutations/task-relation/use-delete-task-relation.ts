@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import deleteTaskRelation from "@/fetchers/task-relation/delete-task-relation";
+import { invalidateDeliveryQueries } from "@/hooks/mutations/delivery/invalidate-delivery-queries";
 import type { RelationLike } from "@/lib/task-relations";
 
 type Context = { previous?: RelationLike[]; otherTaskId?: string };
@@ -40,6 +41,8 @@ function useDeleteTaskRelation(taskId: string) {
       queryClient.invalidateQueries({
         queryKey: ["task-relations", "project"],
       });
+      // Risk radars follow blockers, across projects too.
+      invalidateDeliveryQueries(queryClient);
     },
   });
 }

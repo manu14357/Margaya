@@ -13,7 +13,10 @@ type ScopeArgs = {
 };
 
 // Computed on the server per request; a minute of freshness keeps a busy
-// board from recomputing on every remount. Task changes invalidate them.
+// board from recomputing on every remount. Task changes invalidate them, and
+// a stale or invalidated result reloads on mount: the app's default is not
+// to refetch on mount, which would show a cycle's old forecast after a
+// change made while its page was closed.
 const STALE_MS = 60_000;
 
 export function useForecast({
@@ -27,6 +30,7 @@ export function useForecast({
     queryFn: ({ signal }) => getForecast(scope, id ?? "", signal),
     enabled: Boolean(projectId && id) && enabled,
     staleTime: STALE_MS,
+    refetchOnMount: true,
   });
 }
 
@@ -36,6 +40,7 @@ export function useRisks({ projectId, scope, id, enabled = true }: ScopeArgs) {
     queryFn: ({ signal }) => getRisks(scope, id ?? "", signal),
     enabled: Boolean(projectId && id) && enabled,
     staleTime: STALE_MS,
+    refetchOnMount: true,
   });
 }
 
@@ -45,5 +50,6 @@ export function useHomeRisks(workspaceId: string, enabled = true) {
     queryFn: ({ signal }) => getHomeRisks(workspaceId, signal),
     enabled: Boolean(workspaceId) && enabled,
     staleTime: 5 * 60_000,
+    refetchOnMount: true,
   });
 }

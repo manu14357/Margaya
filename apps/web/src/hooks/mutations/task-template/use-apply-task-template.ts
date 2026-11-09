@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import applyTaskTemplate from "@/fetchers/task-template/apply-task-template";
+import { invalidateDeliveryQueries } from "@/hooks/mutations/delivery/invalidate-delivery-queries";
 import { invalidateTaskQueries } from "@/lib/task-query/cache";
 import type { ApplyTaskTemplateInput } from "@/types/task-template";
 
@@ -28,6 +29,8 @@ export function useApplyTaskTemplate() {
       });
       void queryClient.invalidateQueries({ queryKey: ["labels", workspaceId] });
       void invalidateTaskQueries(queryClient, projectId);
+      // The project's forecast counts its open tasks.
+      invalidateDeliveryQueries(queryClient, projectId);
       if (task.subtaskIds.length > 0) {
         void queryClient.invalidateQueries({
           queryKey: ["task-relations", task.id],

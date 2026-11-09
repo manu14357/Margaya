@@ -1,5 +1,6 @@
 import { act, cleanup, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { isProjectSocketLive } from "@/lib/project-realtime";
 import {
   forgetClosedProjectSockets,
   useProjectWebSocket,
@@ -21,6 +22,13 @@ vi.mock("@margaya/libs", () => ({ windowId: "local-test" }));
 
 // Browsers always pass a CloseEvent; 1006 is a dropped connection.
 const ABNORMAL_CLOSE = { code: 1006 };
+
+/** Lets the batched refreshes (board, task lists, planning) run. */
+function runBatchedRefreshes() {
+  act(() => {
+    vi.advanceTimersByTime(250);
+  });
+}
 
 class TestSocket {
   static OPEN = 1;
@@ -176,7 +184,7 @@ describe("project WebSocket lifecycle", () => {
     expect(vi.getTimerCount()).toBe(0);
   });
 
-  it("refetches columns, tasks and project statistics on COLUMNS_UPDATED", () => {
+  it("refetches columns, tasks, project statistics and planning on COLUMNS_UPDATED", () => {
     const { unmount } = renderHook(() => useProjectWebSocket("project-a"));
     const socket = TestSocket.instances[0];
     act(() => {
@@ -188,15 +196,21 @@ describe("project WebSocket lifecycle", () => {
         }),
       });
     });
+    runBatchedRefreshes();
     expect(client.invalidateQueries.mock.calls.map(([arg]) => arg)).toEqual([
+      { queryKey: ["columns", "project-a"] },
+      { queryKey: ["projects"] },
       // Task query results follow the project's changes (B4).
       { predicate: expect.any(Function) },
       { queryKey: ["my-work"] },
-      { queryKey: ["columns", "project-a"] },
       { queryKey: ["tasks", "project-a"] },
-      { queryKey: ["projects"] },
+      // A column's group decides which tasks count as open or done.
+      { queryKey: ["cycles", "project-a"] },
       { queryKey: ["modules", "project-a", "list"] },
+      { queryKey: ["modules", "project-a", "detail"] },
       { queryKey: ["modules", "project-a", "progress"] },
+      { queryKey: ["delivery", "project-a"] },
+      { queryKey: ["delivery-home"] },
     ]);
     unmount();
   });
@@ -234,6 +248,7 @@ describe("project WebSocket lifecycle", () => {
         data: JSON.stringify({ type: "TASKS_CHANGED", projectId: "project-a" }),
       });
     });
+    runBatchedRefreshes();
     const keys = client.invalidateQueries.mock.calls.map(([arg]) => arg);
     expect(keys).toEqual(
       expect.arrayContaining([
@@ -250,7 +265,53 @@ describe("project WebSocket lifecycle", () => {
     unmount();
   });
 
-  it("refetches cycles and favorites on CYCLE_UPDATED", () => {
+  it("refetches fields, values and task lists on CUSTOM_FIELDS_UPDATED", () => {
+    const { unmount } = renderHook(() => useProjectWebSocket("project-a"));
+    const socket = TestSocket.instances[0];
+    act(() => {
+      socket.open();
+      socket.onmessage?.({
+        data: JSON.stringify({
+          type: "CUSTOM_FIELDS_UPDATED",
+          projectId: "project-a",
+          taskId: "",
+        }),
+      });
+    });
+    runBatchedRefreshes();
+    const keys = client.invalidateQueries.mock.calls.map(([arg]) => arg);
+    expect(keys).toEqual(
+      expect.arrayContaining([
+        { predicate: expect.any(Function) },
+        { queryKey: ["custom-fields", "project-a"] },
+        { queryKey: ["custom-field-values"] },
+        { queryKey: ["custom-field-filter-values", "project-a"] },
+      ]),
+    );
+    unmount();
+  });
+
+  it("refetches an open task's values on TASK_UPDATED", () => {
+    const { unmount } = renderHook(() => useProjectWebSocket("project-a"));
+    const socket = TestSocket.instances[0];
+    act(() => {
+      socket.open();
+      socket.onmessage?.({
+        data: JSON.stringify({
+          type: "TASK_UPDATED",
+          projectId: "project-a",
+          taskId: "task-1",
+        }),
+      });
+    });
+    const keys = client.invalidateQueries.mock.calls.map(([arg]) => arg);
+    expect(keys).toContainEqual({
+      queryKey: ["custom-field-values", "task-1"],
+    });
+    unmount();
+  });
+
+  it("refetches cycles, favorites, forecasts and risks on CYCLE_UPDATED", () => {
     const { unmount } = renderHook(() => useProjectWebSocket("project-a"));
     const socket = TestSocket.instances[0];
     act(() => {
@@ -262,14 +323,43 @@ describe("project WebSocket lifecycle", () => {
         }),
       });
     });
+    runBatchedRefreshes();
     expect(client.invalidateQueries.mock.calls.map(([arg]) => arg)).toEqual([
+      { queryKey: ["archives"] },
+      { queryKey: ["favorites"] },
       // Task query results follow the project's changes (B4).
       { predicate: expect.any(Function) },
       { queryKey: ["my-work"] },
-      { queryKey: ["archives"] },
+      // A cycle's end date and tasks feed its forecast and risks.
       { queryKey: ["cycles", "project-a"] },
-      { queryKey: ["favorites"] },
+      { queryKey: ["modules", "project-a", "list"] },
+      { queryKey: ["modules", "project-a", "detail"] },
+      { queryKey: ["modules", "project-a", "progress"] },
+      { queryKey: ["delivery", "project-a"] },
+      { queryKey: ["delivery-home"] },
     ]);
+    unmount();
+  });
+
+  it("refreshes a cycle's forecast once when its tasks change", () => {
+    const { unmount } = renderHook(() => useProjectWebSocket("project-a"));
+    const socket = TestSocket.instances[0];
+    const send = (data: object) =>
+      socket.onmessage?.({
+        data: JSON.stringify({ projectId: "project-a", ...data }),
+      });
+    act(() => {
+      socket.open();
+      // A membership change: the cycle hint and one hint per task.
+      send({ type: "CYCLE_UPDATED" });
+      send({ type: "TASK_UPDATED", taskId: "t1" });
+      send({ type: "TASK_UPDATED", taskId: "t2" });
+    });
+    runBatchedRefreshes();
+    const delivery = client.invalidateQueries.mock.calls.filter(
+      ([arg]) => JSON.stringify(arg.queryKey) === '["delivery","project-a"]',
+    );
+    expect(delivery).toHaveLength(1);
     unmount();
   });
 
@@ -285,14 +375,18 @@ describe("project WebSocket lifecycle", () => {
         }),
       });
     });
+    runBatchedRefreshes();
     expect(client.invalidateQueries.mock.calls.map(([arg]) => arg)).toEqual([
-      // Task query results follow the project's changes (B4).
-      { predicate: expect.any(Function) },
-      { queryKey: ["my-work"] },
       { queryKey: ["archives"] },
       { queryKey: ["modules", "project-a"] },
       { queryKey: ["favorites"] },
       { queryKey: ["activities"] },
+      // A module's target date and tasks feed its forecast and risks.
+      { queryKey: ["delivery", "project-a"] },
+      { queryKey: ["delivery-home"] },
+      // Task query results follow the project's changes (B4).
+      { predicate: expect.any(Function) },
+      { queryKey: ["my-work"] },
     ]);
     unmount();
   });
@@ -331,16 +425,17 @@ describe("project WebSocket lifecycle", () => {
         }),
       });
     });
+    runBatchedRefreshes();
     expect(client.invalidateQueries.mock.calls.map(([arg]) => arg)).toEqual([
-      // Task query results follow the project's changes (B4).
-      { predicate: expect.any(Function) },
-      { queryKey: ["my-work"] },
       { queryKey: ["estimates", "project-a"] },
       { queryKey: ["cycles", "project-a"] },
       { queryKey: ["modules", "project-a", "progress"] },
-      { queryKey: ["tasks", "project-a"] },
       { queryKey: ["task"] },
       { queryKey: ["activities"] },
+      // Task query results follow the project's changes (B4).
+      { predicate: expect.any(Function) },
+      { queryKey: ["my-work"] },
+      { queryKey: ["tasks", "project-a"] },
     ]);
     unmount();
   });
@@ -411,6 +506,33 @@ describe("project WebSocket lifecycle", () => {
     unmount();
   });
 
+  it("refreshes the one task a cross-project relation message names, and the timeline", () => {
+    const { unmount } = renderHook(() => useProjectWebSocket("project-a"));
+    const socket = TestSocket.instances[0];
+    act(() => {
+      socket.open();
+      socket.onmessage?.({
+        data: JSON.stringify({
+          type: "TASK_RELATION_UPDATED",
+          projectId: "project-a",
+          taskId: "t2",
+          targetTaskId: "t2",
+        }),
+      });
+    });
+    const keys = client.invalidateQueries.mock.calls.map(([arg]) =>
+      JSON.stringify(arg.queryKey),
+    );
+    for (const key of ["task", "task-relations", "activities"]) {
+      expect(keys).toContain(JSON.stringify([key, "t2"]));
+    }
+    expect(keys).toContain(JSON.stringify(["task-relations", "project"]));
+    // Knowing the side it names, it doesn't refresh every open task's relations.
+    expect(keys).not.toContain(JSON.stringify(["task-relations"]));
+    expect(keys.join()).not.toContain("undefined");
+    unmount();
+  });
+
   it("refreshes the history of a task whose labels changed", () => {
     const { unmount } = renderHook(() => useProjectWebSocket("project-a"));
     const socket = TestSocket.instances[0];
@@ -449,6 +571,7 @@ describe("project WebSocket lifecycle", () => {
       socket.open();
       send("TASK_UPDATED");
     });
+    runBatchedRefreshes();
     expect(calls()).toEqual(
       expect.arrayContaining([
         JSON.stringify(["modules", "project-a", "list"]),
@@ -466,6 +589,100 @@ describe("project WebSocket lifecycle", () => {
       JSON.stringify(["modules", "project-a", "task-map"]),
     );
     unmount();
+  });
+
+  it("batches a burst of task messages while one task's queries stay immediate", () => {
+    const { unmount } = renderHook(() => useProjectWebSocket("project-a"));
+    const socket = TestSocket.instances[0];
+    const boardRefreshes = () =>
+      client.invalidateQueries.mock.calls.filter(
+        ([arg]) => JSON.stringify(arg.queryKey) === '["tasks","project-a"]',
+      ).length;
+    act(() => {
+      socket.open();
+      for (let task = 0; task < 50; task++) {
+        socket.onmessage?.({
+          data: JSON.stringify({
+            type: "TASK_UPDATED",
+            projectId: "project-a",
+            taskId: `t${task}`,
+          }),
+        });
+      }
+    });
+    expect(client.invalidateQueries).toHaveBeenCalledWith({
+      queryKey: ["task", "t49"],
+    });
+    expect(boardRefreshes()).toBe(0);
+    runBatchedRefreshes();
+    expect(boardRefreshes()).toBe(1);
+    unmount();
+  });
+
+  it("does not reload the board or planning totals for a comment", () => {
+    const { unmount } = renderHook(() => useProjectWebSocket("project-a"));
+    const socket = TestSocket.instances[0];
+    act(() => {
+      socket.open();
+      socket.onmessage?.({
+        data: JSON.stringify({
+          type: "COMMENT_UPDATED",
+          projectId: "project-a",
+          taskId: "t1",
+        }),
+      });
+    });
+    runBatchedRefreshes();
+    const keys = client.invalidateQueries.mock.calls.map(([arg]) =>
+      JSON.stringify(arg.queryKey),
+    );
+    expect(keys).toContain(JSON.stringify(["comments", "t1"]));
+    expect(keys).not.toContain(JSON.stringify(["tasks", "project-a"]));
+    expect(keys).not.toContain(JSON.stringify(["cycles", "project-a"]));
+    unmount();
+  });
+
+  it("leaves no refresh waiting after unmount, and catches up on reopening", () => {
+    const first = renderHook(() => useProjectWebSocket("project-a"));
+    const socket = TestSocket.instances[0];
+    act(() => {
+      socket.open();
+      socket.onmessage?.({
+        data: JSON.stringify({
+          type: "TASK_UPDATED",
+          projectId: "project-a",
+          taskId: "t1",
+        }),
+      });
+    });
+    client.invalidateQueries.mockClear();
+    first.unmount();
+    expect(vi.getTimerCount()).toBe(0);
+    expect(client.invalidateQueries).not.toHaveBeenCalled();
+
+    const second = renderHook(() => useProjectWebSocket("project-a"));
+    act(() => TestSocket.instances[1]?.open());
+    expect(client.invalidateQueries).toHaveBeenCalledWith({
+      queryKey: ["tasks", "project-a"],
+    });
+    second.unmount();
+  });
+
+  it("reports the socket as live only while it is connected", () => {
+    const { unmount } = renderHook(() => useProjectWebSocket("project-a"));
+    const socket = TestSocket.instances[0];
+    expect(isProjectSocketLive("project-a")).toBe(false);
+    act(() => socket.open());
+    expect(isProjectSocketLive("project-a")).toBe(true);
+    act(() => socket.onclose?.(ABNORMAL_CLOSE));
+    expect(isProjectSocketLive("project-a")).toBe(false);
+    act(() => {
+      vi.advanceTimersByTime(1000);
+      TestSocket.instances[1]?.open();
+    });
+    expect(isProjectSocketLive("project-a")).toBe(true);
+    unmount();
+    expect(isProjectSocketLive("project-a")).toBe(false);
   });
 
   it("refreshes the intake queue, badge and request on INTAKE_UPDATED", () => {

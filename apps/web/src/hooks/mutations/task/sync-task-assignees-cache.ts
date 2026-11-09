@@ -1,4 +1,5 @@
 import type { QueryClient } from "@tanstack/react-query";
+import { invalidateDeliveryQueries } from "@/hooks/mutations/delivery/invalidate-delivery-queries";
 import {
   type AssigneeFields,
   assigneesOfTask,
@@ -118,4 +119,6 @@ export function invalidateAssigneeQueries(
   ]) {
     void queryClient.invalidateQueries({ queryKey });
   }
+  // Risk radars flag unowned work and group overdue work by assignee.
+  invalidateDeliveryQueries(queryClient, projectId);
 }

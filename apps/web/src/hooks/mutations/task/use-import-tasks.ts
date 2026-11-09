@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { TaskToImport } from "@/fetchers/task/import-tasks";
+import { invalidateDeliveryQueries } from "@/hooks/mutations/delivery/invalidate-delivery-queries";
 import { cycleQueryKeys } from "@/hooks/queries/cycle/cycle-query-keys";
 import { moduleQueryKeys } from "@/hooks/queries/module/module-query-keys";
 import {
@@ -15,8 +16,8 @@ type ImportTasksVariables = {
 };
 
 /**
- * Imports tasks in sequential batches. The board, labels, cycles and modules
- * refresh once at the end, also after a partial import.
+ * Imports tasks in sequential batches. The board, labels, cycles, modules and
+ * forecasts refresh once at the end, also after a partial import.
  */
 const useImportTasks = () => {
   const queryClient = useQueryClient();
@@ -39,6 +40,7 @@ const useImportTasks = () => {
       void queryClient.invalidateQueries({
         queryKey: moduleQueryKeys.all(projectId),
       });
+      invalidateDeliveryQueries(queryClient, projectId);
     },
   });
 };

@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-query";
 import archiveTask from "@/fetchers/task/archive-task";
 import unarchiveTask from "@/fetchers/task/unarchive-task";
+import { invalidateDeliveryQueries } from "@/hooks/mutations/delivery/invalidate-delivery-queries";
 import { invalidateTaskQueries } from "@/lib/task-query/cache";
 
 type ArchiveVariables = {
@@ -30,6 +31,8 @@ export function invalidateAfterArchive(
   ]) {
     void queryClient.invalidateQueries({ queryKey });
   }
+  // Archived tasks leave forecasts and risks.
+  invalidateDeliveryQueries(queryClient, projectId);
   void invalidateTaskQueries(queryClient, projectId);
 }
 

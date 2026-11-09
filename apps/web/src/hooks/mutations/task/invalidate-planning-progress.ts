@@ -1,6 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
+import { invalidateDeliveryQueries } from "@/hooks/mutations/delivery/invalidate-delivery-queries";
 import { cycleQueryKeys } from "@/hooks/queries/cycle/cycle-query-keys";
-import { deliveryQueryKeys } from "@/hooks/queries/delivery/delivery-query-keys";
 import { moduleQueryKeys } from "@/hooks/queries/module/module-query-keys";
 
 /**
@@ -21,5 +21,5 @@ export function invalidatePlanningProgress(
     queryKey: moduleQueryKeys.progresses(projectId),
   });
   // Forecasts and risk radars read the same tasks.
-  queryClient.invalidateQueries({ queryKey: deliveryQueryKeys.all(projectId) });
+  invalidateDeliveryQueries(queryClient, projectId);
 }
