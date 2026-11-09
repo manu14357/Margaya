@@ -6,6 +6,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
 } from "../openapi";
 import { imageUploadSchema } from "../task/response";
 import { normalizeApiServerUrl } from "../utils/openapi-spec";
@@ -61,8 +62,8 @@ const listTaskAttachmentsRoute = createRoute({
   request: { params: taskIdParam },
   responses: {
     200: jsonResponse("The task's attachments", taskAttachmentListSchema),
-    400: errorResponse("Unknown task"),
     403: errorResponse("No access to the task's workspace"),
+    404: lookupNotFound("task"),
   },
 });
 
@@ -79,12 +80,12 @@ const createAttachmentUploadRoute = createRoute({
   responses: {
     200: jsonResponse("The presigned upload", imageUploadSchema),
     400: errorResponse(
-      "Invalid body, the file is too large, the task has 100 attachments, or unknown task",
+      "Invalid body, the file is too large, or the task has 100 attachments",
     ),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
-    404: errorResponse("Task not found"),
+    404: lookupNotFound("task"),
     503: errorResponse("File uploads are not configured on this instance"),
   },
 });
@@ -129,11 +130,12 @@ const deleteAttachmentRoute = createRoute({
       "The deleted attachment's id",
       taskAttachmentDeleteResultSchema,
     ),
-    400: errorResponse("Unknown task"),
     403: errorResponse(
       "No workspace access, missing task:update permission, or someone else's attachment without task:delete",
     ),
-    404: errorResponse("Attachment not found on this task"),
+    404: errorResponse(
+      "Unknown task, a task in the trash, or one in a project the caller can't see; or the attachment is not on this task",
+    ),
   },
 });
 

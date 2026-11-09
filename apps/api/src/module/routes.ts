@@ -1,5 +1,10 @@
 import { requireEntitlement } from "../billing/require-entitlement-middleware";
-import { createRoute, errorResponse, jsonResponse } from "../openapi";
+import {
+  createRoute,
+  errorResponse,
+  jsonResponse,
+  lookupNotFound,
+} from "../openapi";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import {
@@ -69,10 +74,11 @@ export const listModulesRoute = createRoute({
   request: { params: projectIdParam, query: listModulesQuery },
   responses: {
     200: jsonResponse("The project's modules", moduleListSchema),
-    400: errorResponse("Invalid query, or unknown project"),
+    400: errorResponse("Invalid query"),
     403: errorResponse(
       `No workspace access, missing module:read permission, or ${FEATURE_OFF}`,
     ),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -89,11 +95,12 @@ export const createModuleRoute = createRoute({
   responses: {
     200: jsonResponse("The created module", moduleSchema),
     400: errorResponse(
-      "Invalid body or dates, a lead or member outside the workspace, or unknown project",
+      "Invalid body or dates, or a lead or member outside the workspace",
     ),
     403: errorResponse(
       `No workspace access, missing module:create permission, or ${FEATURE_OFF}`,
     ),
+    404: lookupNotFound("project"),
     409: errorResponse("A module with this name already exists"),
   },
 });
@@ -116,6 +123,7 @@ export const reorderModulesRoute = createRoute({
     403: errorResponse(
       `No workspace access, missing module:update permission, or ${FEATURE_OFF}`,
     ),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -131,10 +139,10 @@ export const getModuleTaskMapRoute = createRoute({
   request: { params: projectIdParam },
   responses: {
     200: jsonResponse("The task and module pairs", moduleTaskMapSchema),
-    400: errorResponse("Unknown project"),
     403: errorResponse(
       `No workspace access, missing module:read permission, or ${FEATURE_OFF}`,
     ),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -153,10 +161,10 @@ export const getTaskModulesRoute = createRoute({
   request: { params: taskIdParam },
   responses: {
     200: jsonResponse("The task's modules", taskModuleRefListSchema),
-    400: errorResponse("Unknown task"),
     403: errorResponse(
       `No workspace access, missing module:read permission, or ${FEATURE_OFF}`,
     ),
+    404: lookupNotFound("task"),
   },
 });
 

@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import type { Context, Next } from "hono";
 import { HTTPException } from "hono/http-exception";
 import db from "../database";
@@ -20,10 +20,11 @@ export async function scopeToProjectFromBody(c: Context, next: Next) {
     throw new HTTPException(400, { message: "projectId is required" });
   }
 
+  // A project in the trash reads as gone, like in the other lookups.
   const [project] = await db
     .select({ workspaceId: projectTable.workspaceId })
     .from(projectTable)
-    .where(eq(projectTable.id, projectId))
+    .where(and(eq(projectTable.id, projectId), isNull(projectTable.deletedAt)))
     .limit(1);
 
   if (!project) {
@@ -37,6 +38,8 @@ export async function scopeToProjectFromBody(c: Context, next: Next) {
     projectId,
   );
   c.set("workspaceId", project.workspaceId);
+  // So the project role caps the right too (require-workspace-permission.ts).
+  c.set("projectId", projectId);
 
   return next();
 }

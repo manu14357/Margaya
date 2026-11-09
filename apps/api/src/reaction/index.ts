@@ -8,6 +8,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
 } from "../openapi";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
@@ -52,17 +53,15 @@ const commentMiddleware = [
 ] as const;
 
 const taskErrors = {
-  400: errorResponse(
-    "Unsupported reaction, or an unknown task whose workspace could not be determined",
-  ),
+  400: errorResponse("Unsupported reaction"),
   403: errorResponse("No workspace access, or missing task:read permission"),
-  404: errorResponse("Task not found"),
+  404: lookupNotFound("task"),
 };
 
 const commentErrors = {
   400: errorResponse("Unsupported reaction"),
   403: errorResponse("No workspace access, or missing task:read permission"),
-  404: errorResponse("Comment not found"),
+  404: lookupNotFound("comment"),
 };
 
 const getTaskReactionsRoute = createRoute({
@@ -80,10 +79,8 @@ const getTaskReactionsRoute = createRoute({
       "The task's and its comments' reactions",
       taskReactionsSchema,
     ),
-    400: errorResponse(
-      "Unknown task, or its workspace could not be determined",
-    ),
     403: errorResponse("No workspace access, or missing task:read permission"),
+    404: lookupNotFound("task"),
   },
 });
 

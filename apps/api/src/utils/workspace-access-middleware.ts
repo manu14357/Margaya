@@ -33,9 +33,9 @@ type WorkspaceIdSource =
 
 type WorkspaceAccessMiddlewareConfig = {
   sources: WorkspaceIdSource[];
-  // When set, a looked-up id that matches no resource answers 404 with this
-  // message instead of the generic 400. Opt-in because many routes document
-  // the 400.
+  // The 404 message for a looked-up id that matches no resource. Defaults to
+  // the resource's own ("Task not found"), the same answer as a trashed or
+  // hidden one, so an unknown id can't be told apart from them.
   notFoundMessage?: string;
 };
 
@@ -60,7 +60,7 @@ export function workspaceAccessMiddleware(
     }
 
     let workspaceId: string | null = null;
-    let unknownLookup = false;
+    let unknownLookup: LookupResource | null = null;
     // Only resolved for project-limited API keys (validateWorkspaceAccess).
     const projectScoped = Boolean(c.get("apiKey")?.projectIds?.length);
     let projectId: string | null = null;
@@ -91,11 +91,11 @@ export function workspaceAccessMiddleware(
           // through to a later source such as `?workspaceId=`.
           if (found.workspaceId === TRASHED) {
             throw new HTTPException(404, {
-              message: TRASHED_MESSAGE[source.resource],
+              message: NOT_FOUND_MESSAGE[source.resource],
             });
           }
           workspaceId = found.workspaceId;
-          unknownLookup = !workspaceId;
+          unknownLookup = workspaceId ? null : source.resource;
           // The project decides restricted access (project/visibility.ts)
           // and a project-limited key's scope.
           if (workspaceId) projectId = found.projectId;
@@ -150,8 +150,10 @@ export function workspaceAccessMiddleware(
       }
     }
 
-    if (!workspaceId && unknownLookup && config.notFoundMessage) {
-      throw new HTTPException(404, { message: config.notFoundMessage });
+    if (!workspaceId && unknownLookup) {
+      throw new HTTPException(404, {
+        message: config.notFoundMessage ?? NOT_FOUND_MESSAGE[unknownLookup],
+      });
     }
 
     if (!workspaceId) {
@@ -163,7 +165,13 @@ export function workspaceAccessMiddleware(
     const apiKey = c.get("apiKey");
     const apiKeyId = apiKey?.id;
 
-    await validateWorkspaceAccess(userId, workspaceId, apiKeyId, projectId);
+    await validateWorkspaceAccess(
+      userId,
+      workspaceId,
+      apiKeyId,
+      projectId,
+      projectIds,
+    );
     // Each task of a bulk request must be in a project the caller can see;
     // a hidden one reads as missing, like an unknown task.
     for (const id of projectIds) {
@@ -210,7 +218,7 @@ type LookupResource =
   | "trashedTask"
   | "trashedProject";
 
-const TRASHED_MESSAGE: Record<LookupResource, string> = {
+const NOT_FOUND_MESSAGE: Record<LookupResource, string> = {
   project: "Project not found",
   task: "Task not found",
   label: "Label not found",
@@ -585,9 +593,10 @@ export const workspaceAccess = {
       ],
     }),
 
-  fromCustomField: (idKey = "id") =>
+  fromCustomField: (idKey = "id", options: { notFoundMessage?: string } = {}) =>
     workspaceAccessMiddleware({
       sources: [{ type: "lookup", resource: "customField", idKey }],
+      ...options,
     }),
 
   /** A task in the trash (C7); live or unknown tasks answer 404. */

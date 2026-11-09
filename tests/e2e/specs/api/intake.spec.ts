@@ -401,7 +401,7 @@ test("withdraw or delete a request", covers("deleteIntakeItem"), async () => {
   );
   await expectStatus(
     await world.as("owner").get(`/api/task/${mine.taskId}`),
-    [400, 404],
+    404,
   );
 
   // Accepted requests are tasks now: delete the task instead.

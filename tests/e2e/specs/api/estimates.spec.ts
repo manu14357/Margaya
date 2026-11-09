@@ -218,7 +218,7 @@ test(
       await member.put("/api/task/estimate/e2e-unknown-task", {
         data: { estimatePointId: null },
       }),
-      [400, 404],
+      404,
     );
   },
 );

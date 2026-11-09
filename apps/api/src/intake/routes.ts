@@ -1,5 +1,10 @@
 import { requireEntitlement } from "../billing/require-entitlement-middleware";
-import { createRoute, errorResponse, jsonResponse } from "../openapi";
+import {
+  createRoute,
+  errorResponse,
+  jsonResponse,
+  lookupNotFound,
+} from "../openapi";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import {
@@ -64,9 +69,10 @@ export const listIntakeItemsRoute = createRoute({
   responses: {
     200: jsonResponse("A page of requests", intakeItemListSchema),
     400: errorResponse(
-      "Invalid query, a status outside the tab, an unknown priority, or unknown project",
+      "Invalid query, a status outside the tab, or an unknown priority",
     ),
     403: errorResponse(NO_ACCESS),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -86,10 +92,10 @@ export const getIntakeSummaryRoute = createRoute({
   request: { params: projectIdParam },
   responses: {
     200: jsonResponse("Open request counts", intakeSummarySchema),
-    400: errorResponse("Unknown project"),
     403: errorResponse(
       `No workspace access, missing intake:read permission, or ${FEATURE_OFF}`,
     ),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -110,10 +116,11 @@ export const createIntakeItemRoute = createRoute({
   request: { params: projectIdParam, body: jsonBody(createIntakeBody) },
   responses: {
     200: jsonResponse("The submitted request", intakeItemSchema),
-    400: errorResponse("Invalid body, or unknown project"),
+    400: errorResponse("Invalid body"),
     403: errorResponse(
       `No workspace access, missing intake:create permission, or ${FEATURE_OFF}`,
     ),
+    404: lookupNotFound("project"),
     409: errorResponse("The project is archived"),
   },
 });
@@ -132,10 +139,9 @@ export const getIntakeItemByTaskRoute = createRoute({
   request: { params: taskIdParam },
   responses: {
     200: jsonResponse("The request", intakeItemSchema),
-    400: errorResponse("Unknown task"),
     403: errorResponse(NO_ACCESS),
     404: errorResponse(
-      "The task didn't come from intake, or the caller can't see its request",
+      "Unknown task, a task in the trash, or one in a project the caller can't see; or the task didn't come from intake, or the caller can't see its request",
     ),
   },
 });

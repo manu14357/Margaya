@@ -7,6 +7,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
   z,
 } from "../openapi";
 import { taskSchema } from "../task/response";
@@ -84,8 +85,8 @@ const listRoute = createRoute({
   request: { params: listTemplatesParam },
   responses: {
     200: jsonResponse("The templates", taskTemplateListSchema),
-    400: errorResponse("Unknown project"),
     403: errorResponse("No workspace access, or missing project:read"),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -105,11 +106,12 @@ const createTemplateRoute = createRoute({
   responses: {
     200: jsonResponse("The created template", taskTemplateSchema),
     400: errorResponse(
-      "Invalid body, an unknown project, column, label or estimate value, or 50 templates already",
+      "Invalid body, an unknown column, label or estimate value, or 50 templates already",
     ),
     403: errorResponse(
       "No workspace access, missing project:update, or an assignee who is not a member",
     ),
+    404: lookupNotFound("project"),
     409: errorResponse("Another template of the project has this name"),
   },
 });

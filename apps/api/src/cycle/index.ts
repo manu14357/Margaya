@@ -5,6 +5,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
 } from "../openapi";
 import {
   hasWorkspacePermission,
@@ -89,10 +90,11 @@ const listCyclesRoute = createRoute({
   request: { params: projectIdParam, query: listCyclesQuery },
   responses: {
     200: jsonResponse("The project's cycles", cycleListSchema),
-    400: errorResponse("Invalid query, or unknown project"),
+    400: errorResponse("Invalid query"),
     403: errorResponse(
       `No workspace access, missing cycle:read permission, or ${FEATURE_OFF}`,
     ),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -114,11 +116,12 @@ const createCycleRoute = createRoute({
   responses: {
     200: jsonResponse("The created cycle", cycleSchema),
     400: errorResponse(
-      "Invalid body or dates, an owner outside the workspace, or unknown project",
+      "Invalid body or dates, or an owner outside the workspace",
     ),
     403: errorResponse(
       `No workspace access, missing cycle:create permission, or ${FEATURE_OFF}`,
     ),
+    404: lookupNotFound("project"),
     409: errorResponse("Another cycle already covers some of these dates"),
   },
 });

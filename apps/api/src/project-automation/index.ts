@@ -4,6 +4,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
 } from "../openapi";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
@@ -35,8 +36,9 @@ const previewRoute = createRoute({
   request: { params: automationProjectParam, query: automationPreviewQuery },
   responses: {
     200: jsonResponse("The matching task count", automationPreviewSchema),
-    400: errorResponse("Invalid rule or months, or unknown project"),
+    400: errorResponse("Invalid rule or months"),
     403: errorResponse("No workspace access, or missing project:read"),
+    404: lookupNotFound("project"),
     503: errorResponse("Preview took too long; retry later"),
   },
 });
@@ -53,8 +55,8 @@ const getRoute = createRoute({
   request: { params: automationProjectParam },
   responses: {
     200: jsonResponse("The project's automations", projectAutomationsSchema),
-    400: errorResponse("Unknown project"),
     403: errorResponse("No workspace access, or missing project:read"),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -88,6 +90,7 @@ const updateRoute = createRoute({
       "Invalid body, nothing to change, or auto-close without a column in the Cancelled group",
     ),
     403: errorResponse("No workspace access, or missing project:update"),
+    404: lookupNotFound("project"),
   },
 });
 

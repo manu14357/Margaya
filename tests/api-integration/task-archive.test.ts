@@ -80,7 +80,7 @@ describe("API integration: archiving keeps the column (D7)", () => {
     });
     expect(denied.status).toBe(403);
     expect((await s.call("POST", "/task/archive/task-missing")).status).toBe(
-      400,
+      404,
     );
   });
 

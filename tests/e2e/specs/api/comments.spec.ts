@@ -118,10 +118,7 @@ test(
       await member.get(`/api/comment/${task.id}`),
     );
     expect(after.map((comment) => comment.id)).not.toContain(created.id);
-    await expectStatus(
-      await member.delete(`/api/comment/${created.id}`),
-      [400, 404],
-    );
+    await expectStatus(await member.delete(`/api/comment/${created.id}`), 404);
   },
 );
 
@@ -187,7 +184,7 @@ test("viewers cannot comment; empty comments are rejected", async () => {
     await world
       .as("member")
       .post("/api/comment/e2e-unknown-task", { data: { content: "x" } }),
-    400,
+    404,
   );
 });
 
@@ -257,12 +254,12 @@ test(
       }),
     );
     expect(deleted.id).toBe(created.id);
-    // Once gone, the comment's workspace cannot be resolved any more.
+    // Once gone, the comment reads as unknown.
     await expectStatus(
       await member.delete("/api/activity/comment", {
         data: { activityId: created.id },
       }),
-      [400, 404],
+      404,
     );
   },
 );

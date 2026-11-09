@@ -5,6 +5,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
   z,
 } from "../openapi";
 import {
@@ -183,10 +184,10 @@ const visibilityRoute = createRoute({
   responses: {
     200: jsonResponse("The comment", activitySchema),
     400: errorResponse(
-      "Invalid body, unknown comment, or making a reply to an internal comment public",
+      "Invalid body, or making a reply to an internal comment public",
     ),
     403: errorResponse("Only the author can change this comment's visibility"),
-    404: errorResponse("Comment not found"),
+    404: lookupNotFound("comment"),
     409: errorResponse(
       "Public comments need a published board with comments turned on",
     ),
@@ -207,11 +208,10 @@ const moderatorDeleteRoute = createRoute({
       "The removed comment",
       z.object({ id: z.string(), taskId: z.string() }),
     ),
-    400: errorResponse("Unknown comment"),
     403: errorResponse(
       "Missing project:share, or the comment is internal (moderators only remove public comments)",
     ),
-    404: errorResponse("Comment not found"),
+    404: lookupNotFound("comment"),
   },
 });
 
@@ -279,8 +279,8 @@ const taskVotesRoute = createRoute({
   request: { params: taskIdParam },
   responses: {
     200: jsonResponse("The vote summary", taskVoteSummarySchema),
-    400: errorResponse("Unknown task"),
     403: errorResponse("No workspace access, or missing task:read"),
+    404: lookupNotFound("task"),
   },
 });
 

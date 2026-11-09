@@ -143,7 +143,7 @@ test(
     // Detaching again: the label is no longer on a task.
     await expectStatus(
       await member.delete(`/api/label/${onTask?.id ?? attached.id}/task`),
-      [400, 404],
+      404,
     );
   },
 );
@@ -201,7 +201,7 @@ test("label roles and validation", async ({ seed }) => {
     await member.put(`/api/label/${label.id}/task`, {
       data: { taskId: "e2e-unknown-task" },
     }),
-    [400, 404],
+    404,
   );
 });
 

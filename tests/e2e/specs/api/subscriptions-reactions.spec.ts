@@ -130,7 +130,7 @@ test(
 
     await expectStatus(
       await viewer.get("/api/subscription/task/e2e-unknown-task"),
-      [400, 404],
+      404,
     );
     await expectStatus(
       await world.as("anonymous").put(`/api/subscription/task/${task.id}`),

@@ -5,6 +5,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
 } from "../openapi";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
@@ -50,8 +51,8 @@ const listTaskLinksRoute = createRoute({
   request: { params: taskIdParam },
   responses: {
     200: jsonResponse("The task's links", taskLinkListSchema),
-    400: errorResponse("Unknown task"),
     403: errorResponse("No access to the task's workspace"),
+    404: lookupNotFound("task"),
   },
 });
 
@@ -68,11 +69,12 @@ const createTaskLinkRoute = createRoute({
   responses: {
     200: jsonResponse("The added link", taskLinkSchema),
     400: errorResponse(
-      "Invalid body, an invalid or unsafe URL, a title over 255 characters, the 100-link limit, or unknown task",
+      "Invalid body, an invalid or unsafe URL, a title over 255 characters, or the 100-link limit",
     ),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
+    404: lookupNotFound("task"),
     409: errorResponse("This link is already on this task"),
   },
 });
@@ -90,12 +92,14 @@ const updateTaskLinkRoute = createRoute({
   responses: {
     200: jsonResponse("The link after the change", taskLinkSchema),
     400: errorResponse(
-      "Nothing to change, an invalid or unsafe URL, a title over 255 characters, or unknown task",
+      "Nothing to change, an invalid or unsafe URL, or a title over 255 characters",
     ),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
-    404: errorResponse("Link not found on this task"),
+    404: errorResponse(
+      "Unknown task, a task in the trash, or one in a project the caller can't see; or the link is not on this task",
+    ),
     409: errorResponse("This link is already on this task"),
   },
 });
@@ -111,11 +115,12 @@ const deleteTaskLinkRoute = createRoute({
   request: { params: taskLinkParam },
   responses: {
     200: jsonResponse("The removed link's id", taskLinkDeleteResultSchema),
-    400: errorResponse("Unknown task"),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
-    404: errorResponse("Link not found on this task"),
+    404: errorResponse(
+      "Unknown task, a task in the trash, or one in a project the caller can't see; or the link is not on this task",
+    ),
   },
 });
 

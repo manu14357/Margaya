@@ -5,6 +5,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
 } from "../openapi";
 import { taskSchema } from "../task/response";
 import { taskParam } from "../task/schema";
@@ -40,11 +41,8 @@ export const listDescriptionVersionsRoute = createRoute({
   request: { params: taskParam },
   responses: {
     200: jsonResponse("The versions", taskDescriptionVersionListSchema),
-    400: errorResponse(
-      "Unknown task, or its workspace could not be determined",
-    ),
     403: errorResponse("No workspace access, or missing task:read permission"),
-    404: errorResponse("Task not found"),
+    404: lookupNotFound("task"),
   },
 });
 
@@ -62,11 +60,10 @@ export const getDescriptionVersionRoute = createRoute({
   request: { params: descriptionVersionParam },
   responses: {
     200: jsonResponse("The version", taskDescriptionVersionDetailSchema),
-    400: errorResponse(
-      "Unknown task, or its workspace could not be determined",
-    ),
     403: errorResponse("No workspace access, or missing task:read permission"),
-    404: errorResponse("Unknown task or version"),
+    404: errorResponse(
+      "Unknown task, a task in the trash, or one in a project the caller can't see; or an unknown version",
+    ),
   },
 });
 
@@ -86,13 +83,12 @@ export const restoreDescriptionVersionRoute = createRoute({
   request: { params: descriptionVersionParam },
   responses: {
     200: jsonResponse("The updated task", taskSchema),
-    400: errorResponse(
-      "Unknown task, or its workspace could not be determined",
-    ),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
-    404: errorResponse("Unknown task or version"),
+    404: errorResponse(
+      "Unknown task, a task in the trash, or one in a project the caller can't see; or an unknown version",
+    ),
   },
 });
 

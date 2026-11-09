@@ -1,4 +1,9 @@
-import { createRoute, errorResponse, jsonResponse } from "../openapi";
+import {
+  createRoute,
+  errorResponse,
+  jsonResponse,
+  lookupNotFound,
+} from "../openapi";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import { similarTasksSchema } from "./response";
@@ -21,6 +26,7 @@ export const similarTasksRoute = createRoute({
     200: jsonResponse("Similar open tasks", similarTasksSchema),
     400: errorResponse("Invalid query"),
     403: errorResponse("No workspace access or missing task:read permission"),
+    404: lookupNotFound("project"),
     503: errorResponse("The search timed out"),
   },
 });

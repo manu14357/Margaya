@@ -7,6 +7,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
 } from "../openapi";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import { externalLinkListSchema } from "./response";
@@ -24,10 +25,8 @@ const getExternalLinksByTaskRoute = createRoute({
   request: { params: taskIdParam },
   responses: {
     200: jsonResponse("External links for the task", externalLinkListSchema),
-    400: errorResponse(
-      "Unknown task, or its workspace could not be determined",
-    ),
     403: errorResponse("No access to the task's workspace"),
+    404: lookupNotFound("task"),
   },
 });
 

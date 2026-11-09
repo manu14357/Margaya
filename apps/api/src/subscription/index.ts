@@ -3,6 +3,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
 } from "../openapi";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
@@ -24,9 +25,8 @@ const middleware = [
 
 const responses = {
   200: jsonResponse("The caller's subscription", taskSubscriptionSchema),
-  400: errorResponse("Unknown task, or its workspace could not be determined"),
   403: errorResponse("No workspace access, or missing task:read permission"),
-  404: errorResponse("Task not found"),
+  404: lookupNotFound("task"),
 };
 
 const getTaskSubscriptionRoute = createRoute({

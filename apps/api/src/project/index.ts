@@ -6,6 +6,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
   z,
 } from "../openapi";
 import {
@@ -97,10 +98,8 @@ const getProjectRoute = createRoute({
   request: { params: projectParam },
   responses: {
     200: jsonResponse("Project details", projectSchema),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
     403: errorResponse("No access to the project's workspace"),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -156,11 +155,12 @@ const updateProjectRoute = createRoute({
   responses: {
     200: jsonResponse("The updated project", projectSchema),
     400: errorResponse(
-      "Invalid body, unknown project, or a lead or default assignee who is not a workspace member",
+      "Invalid body, or a lead or default assignee who is not a workspace member",
     ),
     403: errorResponse(
       "No workspace access, missing project:update, or missing project:share when visibility changes",
     ),
+    404: lookupNotFound("project"),
     409: errorResponse("Another project in the workspace already uses the key"),
   },
 });
@@ -192,6 +192,7 @@ const updateProjectFeaturesRoute = createRoute({
     403: errorResponse(
       "No workspace access, or missing project:update permission",
     ),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -210,13 +211,10 @@ const deleteProjectRoute = createRoute({
   request: { params: projectParam },
   responses: {
     200: jsonResponse("The trashed project", projectSchema),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
     403: errorResponse(
       "No workspace access, or missing project:delete permission",
     ),
-    404: errorResponse("Project not found, or already in the trash"),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -235,12 +233,10 @@ const archiveProjectRoute = createRoute({
   request: { params: projectParam },
   responses: {
     200: jsonResponse("The archived project", projectSchema),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
     403: errorResponse(
       "No workspace access, or missing project:update permission",
     ),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -259,12 +255,10 @@ const unarchiveProjectRoute = createRoute({
   request: { params: projectParam },
   responses: {
     200: jsonResponse("The restored project", projectSchema),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
     403: errorResponse(
       "No workspace access, or missing project:update permission",
     ),
+    404: lookupNotFound("project"),
   },
 });
 

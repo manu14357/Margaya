@@ -5,6 +5,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
 } from "../openapi";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
@@ -31,13 +32,10 @@ export const archiveTaskRoute = createRoute({
   request: { params: taskParam },
   responses: {
     200: jsonResponse("The task", taskSchema),
-    400: errorResponse(
-      "Unknown task, or its workspace could not be determined",
-    ),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
-    404: errorResponse("Task not found"),
+    404: lookupNotFound("task"),
     409: errorResponse(
       "The task is waiting in intake; accept it from the Intake tab instead",
     ),
@@ -60,13 +58,10 @@ export const unarchiveTaskRoute = createRoute({
   request: { params: taskParam },
   responses: {
     200: jsonResponse("The task", taskSchema),
-    400: errorResponse(
-      "Unknown task, or its workspace could not be determined",
-    ),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
-    404: errorResponse("Task not found"),
+    404: lookupNotFound("task"),
     409: errorResponse(
       "The task is waiting in intake; accept it from the Intake tab instead",
     ),

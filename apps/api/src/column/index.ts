@@ -3,6 +3,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
 } from "../openapi";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
@@ -33,10 +34,9 @@ const getColumnsRoute = createRoute({
   request: { params: projectIdParam, query: getColumnsQuery },
   responses: {
     200: jsonResponse("List of columns ordered by position", columnListSchema),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
+    400: errorResponse("Invalid query"),
     403: errorResponse("No access to the project's workspace"),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -62,11 +62,12 @@ const createColumnRoute = createRoute({
   responses: {
     200: jsonResponse("The created column", columnSchema),
     400: errorResponse(
-      "Invalid body, unknown project, the triage group, or an isFinal that contradicts the group",
+      "Invalid body, the triage group, or an isFinal that contradicts the group",
     ),
     403: errorResponse(
       "No workspace access, or missing project:update permission",
     ),
+    404: lookupNotFound("project"),
     409: errorResponse("The slug is reserved, or already used in this project"),
   },
 });
@@ -92,10 +93,13 @@ const reorderColumnsRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The reordered columns", columnListSchema),
-    400: errorResponse("A column does not belong to this project"),
+    400: errorResponse(
+      "Invalid body, or a column does not belong to this project",
+    ),
     403: errorResponse(
       "No workspace access, or missing project:update permission",
     ),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -121,11 +125,12 @@ const updateColumnRoute = createRoute({
   responses: {
     200: jsonResponse("The updated column", columnSchema),
     400: errorResponse(
-      "Invalid body, unknown column, a triage column or group, or an isFinal that contradicts the group",
+      "Invalid body, a triage column or group, or an isFinal that contradicts the group",
     ),
     403: errorResponse(
       "No workspace access, or missing project:update permission",
     ),
+    404: lookupNotFound("column"),
   },
 });
 
@@ -144,12 +149,11 @@ const deleteColumnRoute = createRoute({
   request: { params: columnParam },
   responses: {
     200: jsonResponse("The deleted column", columnSchema),
-    400: errorResponse(
-      "Unknown column, a triage column, or its workspace could not be determined",
-    ),
+    400: errorResponse("A triage column, which intake manages"),
     403: errorResponse(
       "No workspace access, or missing project:update permission",
     ),
+    404: lookupNotFound("column"),
     409: errorResponse("The column still contains tasks that are not archived"),
   },
 });

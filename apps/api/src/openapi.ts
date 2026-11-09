@@ -67,6 +67,31 @@ export function errorResponse(description: string) {
   };
 }
 
+// The 404 that the workspaceAccess lookups (utils/workspace-access-middleware.ts)
+// answer for an id that is unknown, in the trash, or hidden from the caller
+// (a restricted project, or one outside a project-limited API key).
+const LOOKUP_NOT_FOUND = {
+  project:
+    "Unknown project, a project in the trash, or one the caller can't see",
+  task: "Unknown task, a task in the trash, or one in a project the caller can't see",
+  column:
+    "Unknown column, or one in a project in the trash or that the caller can't see",
+  label:
+    "Unknown label, or one on a task in the trash or in a project the caller can't see",
+  timeEntry:
+    "Unknown time entry, or one on a task in the trash or in a project the caller can't see",
+  comment:
+    "Unknown comment, or one on a task in the trash or in a project the caller can't see",
+  workflowRule:
+    "Unknown rule, or one in a project in the trash or that the caller can't see",
+  customField:
+    "Unknown custom field, or one in a project in the trash or that the caller can't see",
+} as const;
+
+export function lookupNotFound(resource: keyof typeof LOOKUP_NOT_FOUND) {
+  return errorResponse(LOOKUP_NOT_FOUND[resource]);
+}
+
 export function jsonResponse<T extends z.ZodType>(
   description: string,
   schema: T,

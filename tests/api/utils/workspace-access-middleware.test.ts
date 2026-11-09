@@ -126,17 +126,25 @@ describe("workspaceAccess unknown lookups", () => {
       );
   }
 
-  it("answers 400 for an unknown id by default", async () => {
+  it("answers 404 for an unknown id, like a trashed or hidden one", async () => {
     const res = await getApp().request("/task/unknown-task");
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(404);
+    expect(await res.text()).toBe("Task not found");
   });
 
-  it("answers the opted-in 404 for an unknown id", async () => {
-    const res = await getApp({ notFoundMessage: "Task not found" }).request(
+  it("answers a custom message for an unknown id when one is given", async () => {
+    const res = await getApp({ notFoundMessage: "No such task here" }).request(
       "/task/unknown-task",
     );
     expect(res.status).toBe(404);
-    expect(await res.text()).toContain("Task not found");
+    expect(await res.text()).toBe("No such task here");
+  });
+
+  it("falls back to ?workspaceId= for an unknown id, as before", async () => {
+    const res = await getApp().request(
+      "/task/unknown-task?workspaceId=workspace-mine",
+    );
+    expect(res.status).toBe(200);
   });
 
   it("still authorizes a known id when the 404 is opted in", async () => {

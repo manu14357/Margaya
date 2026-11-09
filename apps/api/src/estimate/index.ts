@@ -5,6 +5,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
   z,
 } from "../openapi";
 import { requireProjectFeature } from "../project/features";
@@ -95,8 +96,8 @@ const listEstimatesRoute = createRoute({
   request: { params: projectIdParam },
   responses: {
     200: jsonResponse("The project's estimate systems", estimateListSchema),
-    400: errorResponse("Unknown project"),
     403: errorResponse(READ_FORBIDDEN),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -112,8 +113,9 @@ const estimateTotalsRoute = createRoute({
   request: { params: projectIdParam, body: jsonBody(totalsBody) },
   responses: {
     200: jsonResponse("Totals over the tasks", estimateTotalsSchema),
-    400: errorResponse("Invalid body, or unknown project"),
+    400: errorResponse("Invalid body"),
     403: errorResponse(READ_FORBIDDEN),
+    404: lookupNotFound("project"),
   },
 });
 
@@ -129,8 +131,9 @@ const createEstimateRoute = createRoute({
   request: { params: projectIdParam, body: jsonBody(createEstimateBody) },
   responses: {
     200: jsonResponse("The created estimate system", estimateSchema),
-    400: valueErrorResponse("Invalid body or values, or unknown project"),
+    400: valueErrorResponse("Invalid body or values"),
     403: errorResponse(MANAGE_FORBIDDEN),
+    404: lookupNotFound("project"),
     409: errorResponse("An estimate system with this name already exists"),
   },
 });
@@ -166,9 +169,10 @@ const deleteEstimateRoute = createRoute({
   request: { params: estimateParam },
   responses: {
     200: jsonResponse("What was deleted", estimateDeleteResultSchema),
-    400: errorResponse("Unknown project"),
     403: errorResponse(MANAGE_FORBIDDEN),
-    404: errorResponse("Estimate not found"),
+    404: errorResponse(
+      "Unknown project, a project in the trash, or one the caller can't see; or the estimate is not in the project",
+    ),
     409: errorResponse("Another estimate change is in progress; retry"),
     503: errorResponse("The update took too long; retry later"),
   },

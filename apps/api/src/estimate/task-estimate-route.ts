@@ -5,6 +5,7 @@ import {
   createRoute,
   errorResponse,
   jsonResponse,
+  lookupNotFound,
 } from "../openapi";
 import { requireProjectFeature } from "../project/features";
 import { taskSchema } from "../task/response";
@@ -40,12 +41,12 @@ export const updateTaskEstimateRoute = createRoute({
   responses: {
     200: jsonResponse("The updated task", taskSchema),
     400: errorResponse(
-      "Invalid body, unknown task, or the value is not in the project's active estimate system",
+      "Invalid body, or the value is not in the project's active estimate system",
     ),
     403: errorResponse(
       "No workspace access, missing task:update permission, or the Estimates feature is turned off for this project",
     ),
-    404: errorResponse("Task not found"),
+    404: lookupNotFound("task"),
   },
 });
 

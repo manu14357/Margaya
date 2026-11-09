@@ -91,10 +91,7 @@ test(
       await owner.delete(`/api/project/${project.id}`),
     );
     expect(deleted.id).toBe(project.id);
-    await expectStatus(
-      await owner.get(`/api/project/${project.id}`),
-      [400, 404],
-    );
+    await expectStatus(await owner.get(`/api/project/${project.id}`), 404);
   },
 );
 
@@ -177,7 +174,7 @@ test("project validation: missing fields, duplicate keys and unknown ids", async
     }),
     409,
   );
-  await expectStatus(await owner.get("/api/project/e2e-unknown-project"), 400);
+  await expectStatus(await owner.get("/api/project/e2e-unknown-project"), 404);
   await expectStatus(
     await owner.get("/api/project", {
       params: { workspaceId: "e2e-unknown-workspace" },
