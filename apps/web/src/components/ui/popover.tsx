@@ -42,6 +42,7 @@ function PopoverPopup({
   alignOffset = 0,
   tooltipStyle = false,
   anchor,
+  collisionPadding,
   ...props
 }: PopoverPrimitive.Popup.Props & {
   side?: PopoverPrimitive.Positioner.Props["side"];
@@ -50,6 +51,7 @@ function PopoverPopup({
   alignOffset?: PopoverPrimitive.Positioner.Props["alignOffset"];
   tooltipStyle?: boolean;
   anchor?: PopoverPrimitive.Positioner.Props["anchor"];
+  collisionPadding?: PopoverPrimitive.Positioner.Props["collisionPadding"];
 }) {
   return (
     <PopoverPrimitive.Portal>
@@ -57,7 +59,11 @@ function PopoverPopup({
         align={align}
         alignOffset={alignOffset}
         anchor={anchor}
-        className="z-50 h-(--positioner-height) w-(--positioner-width) max-w-(--available-width) transition-[top,left,right,bottom,transform] data-instant:transition-none"
+        // No transition on the position: the positioner starts at the page's
+        // top left corner until its anchor is measured, and a popover placed
+        // after its first frame would slide in from there.
+        className="z-50 h-(--positioner-height) w-(--positioner-width) max-w-(--available-width)"
+        collisionPadding={collisionPadding}
         data-slot="popover-positioner"
         side={side}
         sideOffset={sideOffset}
