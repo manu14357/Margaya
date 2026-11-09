@@ -12,6 +12,9 @@ const sentryOrg = process.env.SENTRY_ORG;
 const sentryProject = process.env.SENTRY_PROJECT;
 const uploadSourceMaps = Boolean(sentryAuthToken && sentryOrg && sentryProject);
 
+const dependency = (names: string) =>
+  new RegExp(`[\\\\/]node_modules[\\\\/](?:${names})[\\\\/]`);
+
 export default defineConfig({
   define: {
     __APP_VERSION__: JSON.stringify(packageJson.version),
@@ -62,7 +65,63 @@ export default defineConfig({
     // Generate maps only for private symbolication, then delete after upload.
     // "hidden" alone still writes publicly servable .map files.
     sourcemap: uploadSourceMaps ? "hidden" : false,
-    rollupOptions: {},
+    rolldownOptions: {
+      output: {
+        // By default every set of modules that the first page shares with a
+        // different mix of lazy routes became a chunk of its own: a cold load
+        // fetched several hundred files, most under 2 KB. The groups tagged
+        // $initial take only what the first page imports statically, so routes
+        // and per-language translations still load on demand. Dependencies sit
+        // apart from app code (and import nothing from it), so an app release
+        // leaves them cached.
+        codeSplitting: {
+          groups: [
+            {
+              name: "react",
+              tags: ["$initial"],
+              priority: 6,
+              // Vite's own helpers (\0 ids) are imported by nearly every chunk.
+              test: (id) =>
+                id.startsWith("\0") ||
+                dependency(
+                  "react|react-dom|scheduler|use-sync-external-store",
+                ).test(id),
+            },
+            {
+              // Every icon in use, lazy routes' too: about 300 tiny modules
+              // that otherwise spread over a hundred chunks.
+              name: "icons",
+              priority: 5,
+              test: dependency("lucide-react"),
+            },
+            {
+              name: "router",
+              tags: ["$initial"],
+              priority: 4,
+              test: dependency("@tanstack"),
+            },
+            {
+              name: "ui-kit",
+              tags: ["$initial"],
+              priority: 3,
+              test: dependency("@base-ui|@floating-ui|tabbable"),
+            },
+            {
+              name: "vendor",
+              tags: ["$initial"],
+              priority: 2,
+              test: /[\\/]node_modules[\\/]/,
+            },
+            {
+              name: "app",
+              tags: ["$initial"],
+              priority: 1,
+              test: (id) => !id.endsWith(".html"),
+            },
+          ],
+        },
+      },
+    },
     commonjsOptions: {
       include: [/better-auth/, /node_modules/],
       transformMixedEsModules: true,

@@ -29,6 +29,8 @@
   <link rel="shortcut icon" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <meta name="apple-mobile-web-app-title" content="Margaya" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <link rel="manifest" href="/site.webmanifest" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -36,10 +38,42 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c0d0d" />
   <meta name="application-name" content="Margaya">
   <link rel="canonical" href="https://margaya.app">
+  <!-- The loading mark below: CSS only, as the content policy blocks inline
+       scripts. It hides itself as soon as the app renders into #root, and takes
+       its colour from the theme tokens that theme-init.js has already chosen. -->
+  <style>
+    #boot {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: var(--muted-foreground, #5f6b65);
+      pointer-events: none;
+    }
+    #root:not(:empty) + #boot {
+      display: none;
+    }
+    #boot svg {
+      width: 48px;
+      height: 48px;
+      animation: boot-pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes boot-pulse {
+      50% { opacity: 0.4; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #boot svg { animation: none; }
+    }
+  </style>
 </head>
 
 <body>
   <div id="root"></div>
+  <div id="boot" aria-hidden="true">
+    <svg viewBox="26 22 84 92" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M30 58V26l24 18c9-3 19-3 28 0l24-18v32c0 30-16 52-38 52S30 88 30 58ZM47 72a7 9 0 1 0 14 0a7 9 0 1 0-14 0ZM75 72a7 9 0 1 0 14 0a7 9 0 1 0-14 0ZM63 86h10l-5 6Z" />
+    </svg>
+  </div>
   <script type="module" src="/src/main.tsx"></script>
 </body>
 
