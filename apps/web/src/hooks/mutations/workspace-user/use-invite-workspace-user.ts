@@ -1,6 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
+import setInvitationProjects from "@/fetchers/invitation/set-invitation-projects";
 import { authClient } from "@/lib/auth-client";
 import { HttpError } from "@/lib/http-error";
+import { InvitationProjectsError } from "@/lib/invite-emails";
 import queryClient from "@/query-client";
 
 type InviteWorkspaceUserRequest = {
@@ -10,6 +12,8 @@ type InviteWorkspaceUserRequest = {
   // above the inviter's own.
   role: string;
   resend?: boolean;
+  /** Projects the invitee joins on accepting (a guest's first projects). */
+  projects?: { projectId: string; role: string }[];
 };
 
 function useInviteWorkspaceUser() {
@@ -19,6 +23,7 @@ function useInviteWorkspaceUser() {
       email,
       role,
       resend,
+      projects,
     }: InviteWorkspaceUserRequest) => {
       const { data, error } = await authClient.organization.inviteMember({
         email,
@@ -35,6 +40,16 @@ function useInviteWorkspaceUser() {
           error.status,
           error.message || "Failed to invite workspace member",
         );
+      }
+
+      if (projects?.length && data?.id) {
+        try {
+          await setInvitationProjects(data.id, projects);
+        } catch (error) {
+          throw new InvitationProjectsError(
+            error instanceof Error ? error.message : "",
+          );
+        }
       }
 
       return data;

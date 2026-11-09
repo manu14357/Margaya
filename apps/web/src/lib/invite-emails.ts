@@ -81,3 +81,6 @@ export async function sendInvitesInSequence(
   onProgress?.(emails.length, emails.length);
   return result;
 }
+
+/** The invitation went out, but the projects it adds were refused. */
+export class InvitationProjectsError extends Error {}

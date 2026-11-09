@@ -7,19 +7,30 @@ import {
 } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { HttpError } from "@/lib/http-error";
+import { InvitationProjectsError } from "@/lib/invite-emails";
 import InviteTeamMemberModal from "./invite-team-member-modal";
 
 const mocks = vi.hoisted(() => ({
   invite: vi.fn(),
   toast: { success: vi.fn(), error: vi.fn() },
   roles: ["viewer", "member"],
+  canShare: true,
+  projects: [
+    { id: "p-shared", name: "Website", archivedAt: null, leadUserId: null },
+    { id: "p-led", name: "Launch", archivedAt: null, leadUserId: "me" },
+    { id: "p-old", name: "Old", archivedAt: "2026-01-01", leadUserId: null },
+  ],
 }));
 
 vi.mock("react-i18next", async (importOriginal) => ({
   ...(await importOriginal<typeof import("react-i18next")>()),
   useTranslation: () => ({
     t: (key: string, options?: Record<string, unknown>) =>
-      options?.emails ? `${key}:${options.emails}` : key,
+      options?.emails
+        ? `${key}:${options.emails}`
+        : options?.project || options?.message
+          ? `${key}:${options.project ?? options.message}`
+          : key,
   }),
 }));
 vi.mock("@/lib/toast", () => ({ toast: mocks.toast }));
@@ -35,8 +46,18 @@ vi.mock("@/hooks/queries/workspace/use-grantable-roles", () => ({
 vi.mock("@/hooks/use-workspace-permission", () => ({
   useWorkspacePermission: () => ({
     canInviteUsers: () => true,
+    canShareProjects: () => mocks.canShare,
     role: "member",
   }),
+}));
+vi.mock("@/hooks/queries/project/use-get-projects", () => ({
+  default: () => ({ data: mocks.projects, isLoading: false }),
+}));
+vi.mock("@/hooks/queries/workspace/use-workspace-roles", () => ({
+  default: () => ({ data: [] }),
+}));
+vi.mock("@/components/providers/auth-provider/hooks/use-auth", () => ({
+  default: () => ({ user: { id: "me" } }),
 }));
 vi.mock("./invitation-link-field", () => ({
   default: ({ invitationId }: { invitationId: string }) => (
@@ -46,6 +67,7 @@ vi.mock("./invitation-link-field", () => ({
 
 beforeEach(() => {
   mocks.roles = ["viewer", "member"];
+  mocks.canShare = true;
 });
 
 afterEach(() => {
@@ -145,5 +167,89 @@ describe("InviteTeamMemberModal", () => {
     expect(mocks.toast.success).toHaveBeenCalledWith(
       "team:inviteModal.sentSome",
     );
+  });
+
+  async function pickRole(name: string) {
+    fireEvent.click(roleSelect());
+    const option = await screen.findByRole("option", { name });
+    fireEvent.pointerDown(option, { pointerType: "mouse" });
+    fireEvent.click(option);
+    await waitFor(() => expect(roleSelect()).toHaveTextContent(name));
+  }
+
+  it("asks for a guest's projects and sends them with each invitation", async () => {
+    mocks.roles = ["viewer", "member", "guest"];
+    mocks.invite.mockImplementation(async ({ email }: { email: string }) => ({
+      id: `id-${email}`,
+    }));
+    renderModal();
+    expect(
+      screen.queryByRole("group", {
+        name: "team:inviteModal.guestProjectsLabel",
+      }),
+    ).toBeNull();
+
+    // Guest is offered by name (not a translated built-in here).
+    await pickRole("Guest");
+    const picker = screen.getByRole("group", {
+      name: "team:inviteModal.guestProjectsLabel",
+    });
+    // Archived projects aren't offered.
+    expect(picker).toHaveTextContent("Website");
+    expect(picker).not.toHaveTextContent("Old");
+
+    fireEvent.click(screen.getByRole("checkbox", { name: "Website" }));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Launch" }));
+    const launchRole = screen.getByRole("combobox", {
+      name: "team:inviteModal.guestProjectRoleFor:Launch",
+    });
+    expect(launchRole).toHaveTextContent("team:roles.viewer");
+    fireEvent.click(launchRole);
+    const member = await screen.findByRole("option", {
+      name: "team:roles.member",
+    });
+    fireEvent.pointerDown(member, { pointerType: "mouse" });
+    fireEvent.click(member);
+    await waitFor(() =>
+      expect(launchRole).toHaveTextContent("team:roles.member"),
+    );
+
+    fireEvent.change(emailBox(), { target: { value: "g@x.io" } });
+    submit();
+    expect(await screen.findByText("link:id-g@x.io")).toBeVisible();
+    expect(mocks.invite).toHaveBeenCalledWith({
+      email: "g@x.io",
+      workspaceId: "ws-1",
+      role: "guest",
+      projects: [
+        { projectId: "p-shared", role: "viewer" },
+        { projectId: "p-led", role: "member" },
+      ],
+    });
+  });
+
+  it("offers only the projects the inviter leads without project:share", async () => {
+    mocks.roles = ["guest"];
+    mocks.canShare = false;
+    renderModal();
+    await waitFor(() => expect(roleSelect()).toHaveTextContent("Guest"));
+    expect(screen.queryByRole("checkbox", { name: "Website" })).toBeNull();
+    expect(screen.getByRole("checkbox", { name: "Launch" })).toBeVisible();
+  });
+
+  it("says so when the invitation went out but its projects were refused", async () => {
+    mocks.roles = ["guest"];
+    mocks.invite.mockRejectedValue(
+      new InvitationProjectsError("Adding someone needs project:share"),
+    );
+    renderModal();
+    fireEvent.click(await screen.findByRole("checkbox", { name: "Website" }));
+    fireEvent.change(emailBox(), { target: { value: "g@x.io" } });
+    submit();
+    expect(
+      await screen.findByText(
+        /team:inviteModal\.guestProjectsFailed:Adding someone needs project:share/,
+      ),
+    ).toBeVisible();
   });
 });
