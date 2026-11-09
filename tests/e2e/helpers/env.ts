@@ -9,11 +9,15 @@ export const E2E_ROOT = path.resolve(
   "..",
 );
 export const REPO_ROOT = path.resolve(E2E_ROOT, "..", "..");
-export const AUTH_DIR = path.join(E2E_ROOT, ".auth");
+// E2E_AUTH_DIR, E2E_API_PORT and E2E_WEB_PORT run a second suite beside the
+// default one (its own servers and seeded state) without touching it.
+export const AUTH_DIR = process.env.E2E_AUTH_DIR
+  ? path.resolve(process.env.E2E_AUTH_DIR)
+  : path.join(E2E_ROOT, ".auth");
 export const SEED_MANIFEST_PATH = path.join(AUTH_DIR, "seed.json");
 
-export const E2E_API_PORT = 3337;
-export const E2E_WEB_PORT = 5174;
+export const E2E_API_PORT = Number(process.env.E2E_API_PORT) || 3337;
+export const E2E_WEB_PORT = Number(process.env.E2E_WEB_PORT) || 5174;
 export const E2E_API_URL = `http://localhost:${E2E_API_PORT}`;
 export const E2E_WEB_URL = `http://localhost:${E2E_WEB_PORT}`;
 
@@ -81,6 +85,10 @@ export const apiServerEnv: Record<string, string> = {
   // Gotify tokens); without it, storing one answers 503.
   NOTIFICATION_SECRET_ENCRYPTION_KEY:
     "margaya-e2e-only-notification-secret-key-not-for-production-0001",
+  // Turns web push on so specs can reach its settings and routes.
+  VAPID_PUBLIC_KEY:
+    "BM4OfdRX1VZeE3BoIC-wV0uQLDh4D_B7UJa5Cj_GD-POE96aD5YKmvibWm8_ZyWXw_pkai80J8MUyNU0ZZBP21s",
+  VAPID_PRIVATE_KEY: "GsqwQNeoD23t7hjX3hMKoXGK-rBalXQdATQEuJGNB6A",
 };
 
 /**

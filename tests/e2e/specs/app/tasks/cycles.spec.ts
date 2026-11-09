@@ -231,8 +231,12 @@ test("tasks join a cycle from the task picker and the Add existing dialog", asyn
   await expect(toast(page, "Added 1 task to Sprint Pick")).toBeVisible();
   await expect(taskCard(page, viaDialog.title)).toBeVisible();
   await expect(taskCard(page, outside.title)).toHaveCount(0);
+  // The details panel follows the change, its forecast included. The header's
+  // own count only shows on very wide screens.
+  const details = page.getByRole("complementary", { name: "Cycle details" });
+  await expect(details.getByText("2 tasks", { exact: true })).toBeVisible();
   await expect(
-    page.getByText("2 tasks", { exact: true }).first(),
+    details.getByRole("region", { name: "Forecast" }).getByText("2 open tasks"),
   ).toBeVisible();
 
   const board = await listBoard(api, project.id);

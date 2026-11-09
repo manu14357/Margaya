@@ -185,10 +185,8 @@ test("deleting a task from its page and from a card", async ({ page, api }) => {
   await confirm.getByRole("button", { name: "Delete task" }).click();
   await expect(toast(page, "Task moved to the trash")).toBeVisible();
   await expect(page).toHaveURL(new RegExp(`/project/${project.id}/board`));
-  // The API documents 400 "Unknown task" for ids that no longer exist.
-  expect([400, 404]).toContain(
-    (await api.get(`/api/task/${fromPage.id}`)).status(),
-  );
+  // A task in the trash reads as gone.
+  expect((await api.get(`/api/task/${fromPage.id}`)).status()).toBe(404);
 
   await waitForBoardReady(page);
   await expect(taskCard(page, fromPage.title)).toHaveCount(0);
@@ -281,19 +279,17 @@ test("comments are added with a mention, edited and deleted", async ({
   expect(comment.content).toContain("Looks good,");
   expect(comment.content).toContain(`id="${seed.users.member.id}"`);
 
-  const card = page
-    .locator("div.group")
-    .filter({ hasText: "please review" })
-    .filter({ has: page.getByText("Olivia Owner") })
-    .last();
-  await expect(card).toBeVisible();
+  const card = page.locator(`#comment-${comment.id}`);
+  await expect(card).toContainText("please review");
+  await expect(card).toContainText("Olivia Owner");
   await expect(card.getByText(/Mia Member/)).toBeVisible();
 
-  // Edit: the hover toolbar's buttons have no accessible names (tooltips only).
-  await card.hover();
-  // Hover actions: "Add reaction", then edit and delete (tooltip-only names).
-  const hoverActions = card.locator("div.absolute").getByRole("button");
-  await hoverActions.nth(-2).click();
+  const openActions = () =>
+    card.getByRole("button", { name: "More comment actions" }).click();
+
+  // Edit
+  await openActions();
+  await page.getByRole("menuitem", { name: "Edit comment" }).click();
   const editor = card.locator("[contenteditable='true']");
   await expect(editor).toBeVisible();
   await editor.click();
@@ -307,8 +303,8 @@ test("comments are added with a mention, edited and deleted", async ({
   await expect(card).toContainText("(edited)");
 
   // Delete
-  await card.hover();
-  await card.locator("div.absolute").getByRole("button").last().click();
+  await openActions();
+  await page.getByRole("menuitem", { name: "Delete comment" }).click();
   await expect(page.getByText("please review")).toHaveCount(0);
   await expect.poll(async () => (await listComments()).length).toBe(0);
 });

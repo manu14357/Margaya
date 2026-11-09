@@ -63,10 +63,13 @@ test.afterEach(async ({ api }) => {
 });
 
 /**
- * Toasts sit bottom-right over the end of the selection bar (bug #5), so
- * each round waits for the previous action's toast to leave first.
+ * Each round waits for the previous action's toast to leave, so the next
+ * round's toast is the one asserted. A toast waits while the pointer rests on
+ * it, and when the bar closes the toast can drop under a pointer left on a
+ * popover option, so the pointer moves away first, as a person's would.
  */
 async function waitForToastsToClear(page: Page) {
+  await page.mouse.move(1, 1);
   await expect(
     page
       .getByRole("region", { name: "Notifications" })
@@ -197,10 +200,7 @@ test("cycle, module and estimate apply to the selection, then archive", async ({
   await openPopover(page)
     .getByRole("button", { name: /^5 pts/ })
     .click();
-  // The toast is brief; the chips are the lasting proof.
-  await expect(toast(page, "Updated the estimate of 2 tasks"))
-    .toBeVisible({ timeout: 3_000 })
-    .catch(() => undefined);
+  await expect(toast(page, "Updated the estimate of 2 tasks")).toBeVisible();
 
   for (const task of tasks) {
     await expect(taskCard(page, task.title)).toContainText("5");

@@ -16,8 +16,7 @@ test("owner signs in and signs out through the UI", async ({ page, seed }) => {
   await expect(workspaceSwitcher(page, seed.workspace.name)).toBeVisible();
 
   await signOutViaUI(page, owner);
-  // Sign-out currently reloads the page once more (final.md #1), so the form
-  // can take a few seconds to render on the dev server.
+  // The form can take a few seconds to render on a dev server.
   await expect(
     page.getByRole("button", { name: "Sign in", exact: true }),
   ).toBeVisible({ timeout: 30_000 });

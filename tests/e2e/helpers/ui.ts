@@ -39,6 +39,9 @@ export async function signOutViaUI(page: Page, user: SeedUser): Promise<void> {
   await account.click();
   await page.getByRole("menuitem", { name: "Log out" }).click();
   await expect(page).toHaveURL(/\/auth\/sign-in/);
+  // The sign-in page shows first and the session ends right after, so only this
+  // says it has ended.
+  await expect(page.getByText("Signed out successfully")).toBeVisible();
 }
 
 /**
