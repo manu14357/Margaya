@@ -83,7 +83,10 @@ export function docsHref(id: string): string {
 function stripQuotes(value: string): string {
   const trimmed = value.trim();
   const quoted = /^(['"])(.*)\1$/.exec(trimmed);
-  return quoted ? (quoted[2] ?? "") : trimmed;
+  if (!quoted) return trimmed;
+  const inner = quoted[2] ?? "";
+  // YAML writes an apostrophe inside single quotes by doubling it.
+  return quoted[1] === "'" ? inner.replaceAll("''", "'") : inner;
 }
 
 /** Splits a page into its flat `key: value` frontmatter and its MDX body. */
