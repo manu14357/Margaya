@@ -1,4 +1,5 @@
 import { auth } from "../auth";
+import { handleScimRequest } from "../identity/scim-http";
 import { verifyApiKey } from "./verify-api-key";
 
 /**
@@ -16,6 +17,19 @@ async function refuseScopedKey(key: string): Promise<Response | null> {
 }
 
 /**
+ * A SCIM DELETE has no body, but identity providers may send their content type
+ * on every call. Better Auth parses whatever a JSON content type announces, so
+ * the empty stream would answer 400 and the person would never be removed.
+ */
+function withoutScimDeleteBody(request: Request): Request {
+  if (request.method !== "DELETE") return request;
+  return new Request(request.url, {
+    method: "DELETE",
+    headers: request.headers,
+  });
+}
+
+/**
  * Hands a request to Better Auth. A Bearer token that is not a session is
  * treated as an API key: it moves to x-api-key, the header the API key plugin
  * reads, and the Authorization header is dropped. Left in place, the bearer
@@ -23,6 +37,14 @@ async function refuseScopedKey(key: string): Promise<Response | null> {
  * null for it.
  */
 export async function forwardToAuth(request: Request): Promise<Response> {
+  // Identity providers send their own bearer token, which is neither a session
+  // nor an API key; the SCIM plugin checks it.
+  if (new URL(request.url).pathname.startsWith("/api/auth/scim/v2/")) {
+    return handleScimRequest(withoutScimDeleteBody(request), (scimRequest) =>
+      auth.handler(scimRequest),
+    );
+  }
+
   const apiKeyHeader = request.headers.get("x-api-key")?.trim();
   if (apiKeyHeader) {
     const refused = await refuseScopedKey(apiKeyHeader);
