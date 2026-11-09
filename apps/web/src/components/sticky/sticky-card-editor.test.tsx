@@ -9,7 +9,15 @@ import { Extension } from "@tiptap/core";
 import TaskItem from "@tiptap/extension-task-item";
 import type { Editor } from "@tiptap/react";
 import { useState } from "react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import type { Sticky } from "@/fetchers/sticky/get-stickies";
 import StickyCard from "./sticky-card";
 
@@ -76,6 +84,9 @@ vi.mock(
   "@/hooks/queries/workspace-users/use-get-active-workspace-users",
   () => ({ useGetActiveWorkspaceUsers: () => ({ data: { members: [] } }) }),
 );
+vi.mock("@/hooks/use-mention-members", () => ({
+  useMentionMembers: () => [],
+}));
 vi.mock("@/hooks/mutations/sticky/use-sticky-mutations", () => ({
   useUpdateSticky: () => ({ mutateAsync: mocks.save, mutate: vi.fn() }),
   useDeleteSticky: () => ({ mutate: vi.fn() }),
@@ -111,6 +122,12 @@ function editorOf(container: HTMLElement) {
   return container.querySelector<HTMLElement>('[contenteditable="true"]');
 }
 
+// The card loads the editor on demand; transforming its code the first time
+// can outlast a test's waits on a busy machine.
+beforeAll(async () => {
+  await import("./sticky-editor");
+}, 120_000);
+
 beforeEach(() => {
   mocks.save.mockReset();
   mocks.editors.length = 0;
@@ -129,6 +146,8 @@ describe("StickyCard with the real editor", () => {
     await wait(1200);
     expect(container.textContent).toContain("Alpha note");
     expect(container.textContent).toContain("Beta note");
+    // Plain notes show as text; no editor loads until someone works in one.
+    expect(editorOf(container)).toBeNull();
     // Leaving the page flushes unsaved drafts; there are none.
     unmount();
     expect(mocks.save).not.toHaveBeenCalled();
@@ -146,10 +165,12 @@ describe("StickyCard with the real editor", () => {
       return <StickyCard sticky={current} workspaceId="w1" autoFocus />;
     }
     const { container } = render(<Harness />);
-    await waitFor(() => expect(editorOf(container)).not.toBeNull());
+    // The editor loads, then takes the focus over from the preview.
+    await waitFor(() =>
+      expect(document.activeElement).toBe(editorOf(container)),
+    );
     const editor = mocks.editors.at(-1) as Editor;
 
-    fireEvent.focus(editorOf(container) as HTMLElement);
     act(() => {
       editor.commands.insertContent("Buy oat milk");
     });
@@ -178,5 +199,45 @@ describe("StickyCard with the real editor", () => {
     expect(mocks.save).not.toHaveBeenCalledWith(
       expect.objectContaining({ changes: { content: "" } }),
     );
+  });
+
+  it("types keys pressed before the editor loads into the real editor", async () => {
+    const { container } = render(
+      <StickyCard sticky={sticky("k", "Buy milk")} workspaceId="w1" />,
+    );
+    const preview = container.querySelector<HTMLElement>(
+      "[data-sticky-preview]",
+    ) as HTMLElement;
+    act(() => preview.focus());
+    fireEvent.keyDown(preview, { key: "!" });
+    await waitFor(() =>
+      expect(document.activeElement).toBe(editorOf(container)),
+    );
+    await waitFor(() =>
+      expect(mocks.save).toHaveBeenLastCalledWith(
+        expect.objectContaining({ changes: { content: "Buy milk!" } }),
+      ),
+    );
+    expect(container.querySelector("[data-sticky-preview]")).toBeNull();
+  });
+
+  it("applies a to-do ticked in the preview through the real editor", async () => {
+    const { container } = render(
+      <StickyCard
+        sticky={sticky("c", "- [ ] Buy milk\n- [ ] Call mum")}
+        workspaceId="w1"
+      />,
+    );
+    const boxes = container.querySelectorAll<HTMLElement>('[role="checkbox"]');
+    act(() => boxes[1].focus());
+    act(() => boxes[1].click());
+    await waitFor(() =>
+      expect(mocks.save).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          changes: { content: "- [ ] Buy milk\n- [x] Call mum" },
+        }),
+      ),
+    );
+    expect(container.querySelector("[data-sticky-preview]")).toBeNull();
   });
 });

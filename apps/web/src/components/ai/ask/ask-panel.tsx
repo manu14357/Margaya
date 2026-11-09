@@ -30,7 +30,7 @@ import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { useAiLocale } from "@/components/editor/ai/use-editor-ai";
 import useAuth from "@/components/providers/auth-provider/hooks/use-auth";
-import CreateTaskModal from "@/components/shared/modals/create-task-modal";
+import CreateTaskModal from "@/components/shared/modals/lazy-create-task-modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {

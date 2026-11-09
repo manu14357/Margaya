@@ -1,6 +1,5 @@
-import { type ReactElement, useState } from "react";
+import { lazy, type ReactElement, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
-import EstimateSuggestion from "@/components/insight/estimate-suggestion";
 import {
   Popover,
   PopoverContent,
@@ -11,6 +10,13 @@ import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { toast } from "@/lib/toast";
 import type { Estimate } from "@/types/estimate";
 import EstimateOptionList from "./estimate-option-list";
+
+// The suggestion brings the AI markdown renderer and editor helpers. The
+// estimate property is registered at startup, so a static import put them on
+// every first page load; this way they load when a picker first opens.
+const EstimateSuggestion = lazy(
+  () => import("@/components/insight/estimate-suggestion"),
+);
 
 type TaskEstimatePopoverProps = {
   task: { id: string; projectId: string; estimatePointId?: string | null };
@@ -58,13 +64,15 @@ export default function TaskEstimatePopover({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent className="w-56 p-0" align="start">
-        <EstimateSuggestion
-          task={task}
-          estimate={estimate}
-          open={open}
-          currentPointId={current}
-          onPick={handleSelect}
-        />
+        <Suspense fallback={null}>
+          <EstimateSuggestion
+            task={task}
+            estimate={estimate}
+            open={open}
+            currentPointId={current}
+            onPick={handleSelect}
+          />
+        </Suspense>
         <EstimateOptionList
           estimate={estimate}
           selectedId={current}

@@ -1,7 +1,5 @@
-import { isSupportedLocale } from "@i18n/resources";
 import type { Editor, EditorEvents } from "@tiptap/core";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
   type AiUiLocale,
   type EditorAiAction,
@@ -18,6 +16,7 @@ import {
   rangeMarkdown,
   replaceWithSuggestion,
 } from "./editor-ai-apply";
+import { useAiLocale } from "./use-ai-locale";
 
 export type EditorAiTarget = {
   kind: Exclude<EditorAiTargetKind, "new_task">;
@@ -93,13 +92,7 @@ export type EditorAiSession = {
 };
 
 /** The caller's UI language, when it is one the API answers in. */
-export function useAiLocale(): AiUiLocale | undefined {
-  const { i18n } = useTranslation();
-  const language = i18n?.resolvedLanguage ?? i18n?.language;
-  return language && isSupportedLocale(language)
-    ? (language as AiUiLocale)
-    : undefined;
-}
+export { useAiLocale };
 
 /**
  * Editor block AI: run an action on a selection or block, stream the

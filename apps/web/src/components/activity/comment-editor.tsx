@@ -62,7 +62,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/menu";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
-import { useGetActiveWorkspaceUsers } from "@/hooks/queries/workspace-users/use-get-active-workspace-users";
+import { useMentionMembers } from "@/hooks/use-mention-members";
 import { cn } from "@/lib/cn";
 import { parseTaskListMarkdownToNodes } from "@/lib/editor-task-list-paste";
 import {
@@ -102,6 +102,8 @@ type CommentEditorProps = {
   allowFileUploads?: boolean;
   /** Toast shown when a file is pasted or dropped with uploads off. */
   fileUploadsDisabledMessage?: string;
+  /** Called once the editor exists and holds `value`, before any edit. */
+  onEditorReady?: (editor: Editor) => void;
 };
 
 type SlashRange = { from: number; to: number };
@@ -189,24 +191,14 @@ export default function CommentEditor({
   onAttachActionChange,
   allowFileUploads = true,
   fileUploadsDisabledMessage,
+  onEditorReady,
 }: CommentEditorProps) {
   const { t } = useTranslation();
   const resolvedPlaceholder =
     placeholder ?? t("activity:comment.leavePlaceholder");
   const { data: activeWorkspace } = useActiveWorkspace();
-  const { data: workspaceUsers } = useGetActiveWorkspaceUsers(
-    activeWorkspace?.id ?? "",
-  );
   const mentionMembersRef = useRef<MentionMember[]>([]);
-  mentionMembersRef.current = useMemo(
-    () =>
-      (workspaceUsers?.members ?? []).map((member) => ({
-        id: member.userId,
-        label: member.user?.name ?? member.user?.email ?? "",
-        image: member.user?.image ?? null,
-      })),
-    [workspaceUsers],
-  );
+  mentionMembersRef.current = useMentionMembers(activeWorkspace?.id ?? "");
   const editorShellRef = useRef<HTMLDivElement | null>(null);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const dragDepthRef = useRef(0);
@@ -228,6 +220,8 @@ export default function CommentEditor({
   onCancelShortcutRef.current = onCancelShortcut;
   const readOnlyRef = useRef(readOnly);
   readOnlyRef.current = readOnly;
+  const onEditorReadyRef = useRef(onEditorReady);
+  onEditorReadyRef.current = onEditorReady;
   const pendingImageInsertRef = useRef<{
     editor: Editor;
     range?: SlashRange;
@@ -1080,6 +1074,7 @@ export default function CommentEditor({
       hasHydratedRef.current = true;
       queueMicrotask(() => {
         isSyncingRef.current = false;
+        if (!editor.isDestroyed) onEditorReadyRef.current?.(editor);
       });
       return;
     }

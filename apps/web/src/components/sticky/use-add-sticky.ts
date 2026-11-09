@@ -20,19 +20,24 @@ export const STICKIES_LIMIT = 500;
 const FOCUS_BUDGET_MS = 3000;
 
 /**
- * Scrolls a sticky into view and focuses its editor. The editor mounts a
- * little after its card, so this retries every frame for up to 3 s.
+ * Scrolls a sticky into view and focuses its text: the editor, or the static
+ * preview standing in for it, which loads the editor and hands focus on. The
+ * card mounts a little after it is created, so this retries every frame for
+ * up to 3 s.
  */
 export function focusSticky(stickyId: string, deadline?: number) {
   const until = deadline ?? Date.now() + FOCUS_BUDGET_MS;
   const card = document.querySelector<HTMLElement>(
     `[data-sticky-id="${CSS.escape(stickyId)}"]`,
   );
-  const editor = card?.querySelector<HTMLElement>('[contenteditable="true"]');
-  if (card && editor) {
+  // The preview comes first: an editor still mounting behind it is inert.
+  const text = card?.querySelector<HTMLElement>(
+    '[data-sticky-preview], [contenteditable="true"]',
+  );
+  if (card && text) {
     card.scrollIntoView({ block: "nearest" });
-    editor.focus();
-    return;
+    text.focus();
+    if (document.activeElement === text) return;
   }
   if (Date.now() < until) {
     requestAnimationFrame(() => focusSticky(stickyId, until));

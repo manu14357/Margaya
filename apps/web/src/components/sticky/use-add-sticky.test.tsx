@@ -121,6 +121,27 @@ describe("useAddSticky", () => {
     }
   });
 
+  it("focuses the preview standing in for an editor that hasn't loaded", () => {
+    const card = document.createElement("div");
+    card.dataset.stickyId = "plain";
+    card.scrollIntoView = vi.fn();
+    const preview = document.createElement("div");
+    preview.dataset.stickyPreview = "";
+    preview.tabIndex = 0;
+    // An editor mounting behind the preview comes later in the card.
+    const editor = document.createElement("div");
+    editor.setAttribute("contenteditable", "true");
+    editor.tabIndex = 0;
+    card.append(preview, editor);
+    document.body.append(card);
+    try {
+      focusSticky("plain");
+      expect(document.activeElement).toBe(preview);
+    } finally {
+      card.remove();
+    }
+  });
+
   it("toasts the cap on a 409 and a generic error otherwise", () => {
     const { result } = renderHook(() => useAddSticky("ws-1"), { wrapper });
     act(() => result.current.add());

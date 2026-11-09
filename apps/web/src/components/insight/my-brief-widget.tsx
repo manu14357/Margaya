@@ -1,9 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { Sparkles, Sunrise } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import { lazy, type ReactNode, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
-import AiMarkdown from "@/components/ai/ai-markdown";
-import { useAiLocale } from "@/components/editor/ai/use-editor-ai";
+import { useAiLocale } from "@/components/editor/ai/use-ai-locale";
 import WidgetSection, {
   WidgetEmpty,
   WidgetError,
@@ -21,6 +20,10 @@ import { useAiAvailability } from "@/hooks/queries/ai/use-ai";
 import { useMyBrief } from "@/hooks/queries/insight/use-insight";
 import { useAiTextStream } from "@/hooks/use-ai-text-stream";
 import { linkCitations } from "@/lib/ai/brief-citations";
+
+// The Markdown renderer loads with the first summary, not with Home.
+const loadAiMarkdown = () => import("@/components/ai/ai-markdown");
+const AiMarkdown = lazy(loadAiMarkdown);
 
 type MyBriefWidgetProps = {
   workspaceId: string;
@@ -248,13 +251,16 @@ function useBriefSummary(workspaceId: string) {
   const { available } = useAiAvailability();
   const stream = useAiTextStream();
   const [citations, setCitations] = useState<InsightCitation[]>([]);
-  const summarize = () =>
+  const summarize = () => {
+    // Fetched while the summary is written; a failure shows when it renders.
+    loadAiMarkdown().catch(() => {});
     void stream.start((handlers) =>
       streamMyBriefSummary(
         { workspaceId, ...(locale ? { locale } : {}) },
         { ...handlers, onMeta: (meta) => setCitations(citationsOf(meta)) },
       ),
     );
+  };
   return { available, stream, citations, summarize };
 }
 
@@ -282,6 +288,12 @@ function SummaryOutput({ summary }: { summary: Summary }) {
   const { t } = useTranslation();
   const { stream, citations } = summary;
   if (!summary.available || stream.status === "idle") return null;
+  const writing = (
+    <span className="inline-flex items-center gap-2 text-muted-foreground text-sm">
+      <Spinner className="size-3.5" />
+      {t("insight:writing")}
+    </span>
+  );
   return (
     <div
       aria-live="polite"
@@ -293,12 +305,11 @@ function SummaryOutput({ summary }: { summary: Summary }) {
           {t(stream.errorKey ?? "ai:errors.unknown")}
         </p>
       ) : stream.text ? (
-        <AiMarkdown text={linkCitations(stream.text, citations)} />
+        <Suspense fallback={writing}>
+          <AiMarkdown text={linkCitations(stream.text, citations)} />
+        </Suspense>
       ) : (
-        <span className="inline-flex items-center gap-2 text-muted-foreground text-sm">
-          <Spinner className="size-3.5" />
-          {t("insight:writing")}
-        </span>
+        writing
       )}
     </div>
   );

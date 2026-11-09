@@ -20,10 +20,10 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import CreateIntakeDialog from "@/components/intake/create-intake-dialog";
+import CreateIntakeDialog from "@/components/intake/lazy-create-intake-dialog";
 import SearchCommandMenu from "@/components/search-command-menu";
-import CreateTaskModal from "@/components/shared/modals/create-task-modal";
 import CreateWorkspaceModal from "@/components/shared/modals/create-workspace-modal";
+import CreateTaskModal from "@/components/shared/modals/lazy-create-task-modal";
 import useOpenTaskStore from "@/components/task/task-shortcuts/open-task-store";
 import {
   Command,
