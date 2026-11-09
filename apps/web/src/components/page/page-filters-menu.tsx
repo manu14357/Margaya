@@ -98,7 +98,8 @@ export default function PageFiltersMenu({
   return (
     <Popover onOpenChange={(open) => !open && setQuery("")}>
       <PopoverTrigger
-        render={<Button variant="outline" size="sm" className="gap-1.5" />}
+        // Same size as the sort button beside it.
+        render={<Button variant="outline" size="xs" className="gap-1" />}
       >
         <ListFilter className="size-3" aria-hidden="true" />
         <span className="sr-only sm:not-sr-only">

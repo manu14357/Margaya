@@ -23,11 +23,14 @@ export function KpiTile({
   icon: Icon,
   isLoading = false,
 }: KpiTileProps) {
+  // Labels and details wrap instead of truncating. The tile spans three rows
+  // of KpiRow's grid as a subgrid, so a wrapped label in one tile moves the
+  // whole row's numbers down together and they stay aligned.
   return (
-    <Card className="min-w-0 gap-1 p-4">
-      <div className="flex items-center gap-1.5 text-muted-foreground text-xs">
-        {Icon && <Icon aria-hidden className="size-3.5 shrink-0" />}
-        <span className="truncate">{label}</span>
+    <Card className="row-span-3 grid min-w-0 grid-rows-subgrid content-start gap-1 p-4">
+      <div className="flex items-start gap-1.5 text-muted-foreground text-xs">
+        {Icon && <Icon aria-hidden className="mt-px size-3.5 shrink-0" />}
+        <span className="min-w-0 break-words">{label}</span>
       </div>
       {isLoading ? (
         <Skeleton className="h-7 w-16" />
@@ -35,7 +38,9 @@ export function KpiTile({
         <div className="font-semibold text-2xl tabular-nums">{value}</div>
       )}
       {detail && !isLoading && (
-        <div className="truncate text-muted-foreground text-xs">{detail}</div>
+        <div className="min-w-0 break-words text-muted-foreground text-xs">
+          {detail}
+        </div>
       )}
     </Card>
   );

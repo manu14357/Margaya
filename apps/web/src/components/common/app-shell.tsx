@@ -61,6 +61,7 @@ function ShellFrame({ children }: { children: ReactNode }) {
   const { isMobile, open, setOpen, setOpenMobile, toggleSidebar } =
     useSidebar();
   const [panelSlot, setPanelSlot] = useState<HTMLElement | null>(null);
+  const [mainColumn, setMainColumn] = useState<HTMLElement | null>(null);
   // A rail choice without a page of its own (Pages with no project to open)
   // shows its panel until the next navigation.
   const [override, setOverride] = useState<{
@@ -133,8 +134,8 @@ function ShellFrame({ children }: { children: ReactNode }) {
   });
 
   const contextValue = useMemo(
-    () => ({ destination, selectDestination, panelSlot }),
-    [destination, selectDestination, panelSlot],
+    () => ({ destination, selectDestination, panelSlot, mainColumn }),
+    [destination, selectDestination, panelSlot, mainColumn],
   );
 
   return (
@@ -145,7 +146,8 @@ function ShellFrame({ children }: { children: ReactNode }) {
         {isDemoMode && <DemoAlert />}
         {workspaceId && <WorkspaceDeletionBanner workspaceId={workspaceId} />}
         <main
-          className="flex min-h-0 flex-1 flex-col overflow-hidden"
+          ref={setMainColumn}
+          className="relative flex min-h-0 flex-1 flex-col overflow-hidden"
           data-slot="shell-main"
         >
           {children}

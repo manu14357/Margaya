@@ -11,6 +11,8 @@ export type ShellContextValue = {
   selectDestination: (destination: ShellDestination) => void;
   /** The element pages portal extra panel content into (ContextPanelSlot). */
   panelSlot: HTMLElement | null;
+  /** The main column, beside the rail and panel; bottom bars sit inside it. */
+  mainColumn: HTMLElement | null;
 };
 
 export const ShellContext = createContext<ShellContextValue | null>(null);

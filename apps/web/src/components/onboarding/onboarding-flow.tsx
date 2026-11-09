@@ -717,7 +717,7 @@ function InviteStep({
           )}
         </div>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
-          <div className="space-y-1.5">
+          <div className="grid gap-1.5">
             <Label htmlFor="onboarding-invite-role">
               {t("team:inviteModal.roleLabel")}
             </Label>

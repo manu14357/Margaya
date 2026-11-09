@@ -1,6 +1,7 @@
 import { ArchiveRestore, Trash2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { BulkBarFrame } from "@/components/bulk-selection/bulk-bar-frame";
 import { Button } from "@/components/ui/button";
 import {
   Toolbar,
@@ -66,10 +67,7 @@ export default function ArchivedTasksBulkBar({
   };
 
   return (
-    <div
-      ref={setBar}
-      className="-translate-x-1/2 fixed bottom-6 left-1/2 z-50 transition-[translate,opacity] duration-200 ease-out starting:translate-y-3 starting:opacity-0 motion-reduce:starting:translate-y-0"
-    >
+    <BulkBarFrame ref={setBar}>
       <Toolbar className="items-center gap-1 rounded-xl border-border/80 bg-background px-1.5 py-1 shadow-lg/8">
         <ToolbarGroup className="px-1.5">
           <span className="font-medium text-foreground text-sm">
@@ -115,6 +113,6 @@ export default function ArchivedTasksBulkBar({
           </Button>
         </ToolbarGroup>
       </Toolbar>
-    </div>
+    </BulkBarFrame>
   );
 }
