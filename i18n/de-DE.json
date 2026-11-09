@@ -221,10 +221,29 @@
 			"errors": {
 				"account_not_linked": "Diese Identität konnte nicht mit dem bestehenden Konto verknüpft werden. Melde dich per E-Mail an, um das Konto zu bestätigen, und versuche SSO danach erneut. Falls die Anmeldung per E-Mail nicht verfügbar ist, wende dich an deinen Administrator.",
 				"oauth_code_verification_failed": "OAuth-Verifizierung fehlgeschlagen. Bitte versuche es erneut.",
-				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Die Registrierung ist derzeit deaktiviert. Du benötigst eine gültige Einladung, um ein Konto zu erstellen."
+				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Die Registrierung ist derzeit deaktiviert. Du benötigst eine gültige Einladung, um ein Konto zu erstellen.",
+				"unsolicited_response": "Starte die Unternehmensanmeldung von dieser Seite aus. Eine Anmeldung, die bei deinem Identitätsanbieter beginnt, wird nicht akzeptiert.",
+				"invalid_saml_response": "Die Antwort deines Identitätsanbieters konnte nicht akzeptiert werden. Versuche es erneut oder bitte deinen Administrator, die Verbindung zu prüfen.",
+				"replay_detected": "Diese Anmeldeantwort wurde bereits verwendet. Bitte melde dich erneut an.",
+				"unable_to_create_user": "Dein Konto konnte nicht erstellt werden. Bitte deinen Administrator um Zugriff.",
+				"invalid_request": "Diese Anmeldeanfrage war ungültig. Bitte versuche es erneut.",
+				"invalid_state": "Dieser Anmeldelink ist abgelaufen. Bitte versuche es erneut.",
+				"saml_deprecated_algorithm": "Dein Identitätsanbieter signiert mit einem Algorithmus, der nicht mehr akzeptiert wird. Bitte deinen Administrator, auf SHA-256 umzustellen.",
+				"this_identity_provider_cannot_sign_in_that_email_address_": "Mit diesem Identitätsanbieter ist keine Anmeldung mit dieser E-Mail-Adresse möglich.",
+				"new_accounts_on_this_server_must_use_an_approved_email_domain_": "Neue Konten auf diesem Server müssen eine zugelassene E-Mail-Domain verwenden.",
+				"banned_user": "Dieses Konto ist gesperrt. Bitte deinen Administrator um Zugriff.",
+				"unable_to_link_account": "Diese Identität konnte nicht mit deinem Konto verknüpft werden. Bitte deinen Administrator um Hilfe.",
+				"saml_other_browser": "Die Unternehmensanmeldung muss in dem Browser abgeschlossen werden, in dem sie gestartet wurde. Starte noch einmal von dieser Seite aus und stelle sicher, dass Cookies erlaubt sind."
 			},
 			"instanceStatusError": "Der Server konnte nicht erreicht werden. Bitte versuche es gleich noch einmal.",
-			"titleWithInstance": "Bei {{name}} anmelden"
+			"titleWithInstance": "Bei {{name}} anmelden",
+			"continueWithSaml": "Weiter mit Unternehmensanmeldung",
+			"samlEmail": "Geschäftliche E-Mail-Adresse",
+			"samlSubmit": "Weiter",
+			"samlNoConnection": "Für diese E-Mail-Domain ist keine Unternehmensanmeldung eingerichtet.",
+			"samlError": "Die Unternehmensanmeldung konnte nicht gestartet werden. Bitte versuche es erneut.",
+			"emailCodesOff": "Anmeldelinks und -codes per E-Mail sind auf diesem Server deaktiviert. Wenn du dich bisher nur so angemeldet hast, hast du noch kein Passwort: Wähle „Passwort vergessen?“, um eins festzulegen.",
+			"emailCodesOffNoEmail": "Anmeldelinks und -codes per E-Mail sind auf diesem Server deaktiviert. Wenn du dich bisher nur so angemeldet hast, hast du noch kein Passwort: Bitte einen Instanz-Admin, eins für dich festzulegen."
 		},
 		"providers": {
 			"google": "Google",
@@ -420,6 +439,10 @@
 				"nameShort": "Der Name muss mindestens 2 Zeichen lang sein"
 			}
 		},
+		"layout": {
+			"headline": "Das ganze Projekt im Blick. Die nächste Aufgabe in Angriff.",
+			"lede": "Selbst gehostetes Projektmanagement für Teams, die schnelle und ruhige Tools mögen."
+		},
 		"device": {
 			"approve": "Genehmigen",
 			"approveFailed": "Genehmigung fehlgeschlagen",
@@ -443,10 +466,6 @@
 			"subtitle": "Gib den Code aus deiner CLI oder App ein, um fortzufahren.",
 			"title": "Gerät verbinden"
 		},
-		"layout": {
-			"headline": "Das ganze Projekt im Blick. Die nächste Aufgabe in Angriff.",
-			"lede": "Selbst gehostetes Projektmanagement für Teams, die schnelle und ruhige Tools mögen."
-		},
 		"mcp": {
 			"approve": "Genehmigen",
 			"clientFallback": "MCP-Client",
@@ -463,22 +482,6 @@
 			"subtitle": "Prüfe diese Anfrage, bevor du Zugriff auf dein Margaya-Konto gewährst.",
 			"title": "MCP-Client autorisieren",
 			"warning": "Dieser Client kann in deinem Namen handeln und auf deine Workspaces zugreifen. Fahre nur fort, wenn du diese Verbindung gestartet hast."
-		},
-		"emailVerification": {
-			"codeLabel": "Bestätigungscode",
-			"codeSent": "Wir haben einen 6-stelligen Code an {{email}} gesendet. Er ist 5 Minuten lang gültig.",
-			"invitationsDescription": "Bestätige deine E-Mail-Adresse, um Einladungen an {{email}} zu sehen.",
-			"resend": "Neuen Code senden",
-			"sendCode": "Code senden",
-			"sendFailed": "Der Code konnte nicht gesendet werden. Bitte versuche es erneut.",
-			"sending": "Wird gesendet ...",
-			"settingsDescription": "Bestätige {{email}}, damit an diese Adresse gesendete Workspace-Einladungen in Margaya angezeigt werden.",
-			"success": "E-Mail-Adresse bestätigt",
-			"title": "Bestätige deine E-Mail-Adresse",
-			"verifiedBadge": "Bestätigt",
-			"verify": "Bestätigen",
-			"verifyFailed": "Dieser Code hat nicht funktioniert. Prüfe ihn oder fordere einen neuen an.",
-			"verifying": "Wird bestätigt ..."
 		},
 		"forgotPassword": {
 			"backToSignIn": "Zurück zur Anmeldung",
@@ -507,6 +510,30 @@
 			"successDescription": "Dein neues Passwort ist festgelegt und alle Sitzungen wurden abgemeldet. Melde dich mit deinem neuen Passwort an.",
 			"successTitle": "Passwort aktualisiert",
 			"title": "Neues Passwort festlegen"
+		},
+		"emailVerification": {
+			"codeLabel": "Bestätigungscode",
+			"codeSent": "Wir haben einen 6-stelligen Code an {{email}} gesendet. Er ist 5 Minuten lang gültig.",
+			"invitationsDescription": "Bestätige deine E-Mail-Adresse, um Einladungen an {{email}} zu sehen.",
+			"resend": "Neuen Code senden",
+			"sendCode": "Code senden",
+			"sendFailed": "Der Code konnte nicht gesendet werden. Bitte versuche es erneut.",
+			"sending": "Wird gesendet ...",
+			"settingsDescription": "Bestätige {{email}}, damit an diese Adresse gesendete Workspace-Einladungen in Margaya angezeigt werden.",
+			"success": "E-Mail-Adresse bestätigt",
+			"title": "Bestätige deine E-Mail-Adresse",
+			"verifiedBadge": "Bestätigt",
+			"verify": "Bestätigen",
+			"verifyFailed": "Dieser Code hat nicht funktioniert. Prüfe ihn oder fordere einen neuen an.",
+			"verifying": "Wird bestätigt ..."
+		},
+		"complete": {
+			"pageTitle": "Anmeldung läuft",
+			"title": "Anmeldung wird abgeschlossen",
+			"working": "Du wirst angemeldet…",
+			"failedTitle": "Anmeldung konnte nicht abgeschlossen werden",
+			"failed": "Diese Anmeldung konnte nicht abgeschlossen werden. Ihr Link funktioniert nur einmal, eine Minute lang und nur in dem Browser, in dem du dich angemeldet hast. Melde dich erneut an.",
+			"backToSignIn": "Zurück zur Anmeldung"
 		}
 	},
 	"settings": {
@@ -534,8 +561,8 @@
 				"invalidEmail": "Gib eine gültige E-Mail-Adresse ein"
 			},
 			"avatar": {
-				"hint": "PNG, JPEG, or WebP. Cropped to a square and resized to 256x256.",
-				"remove": "Remove",
+				"hint": "Klicke auf dein Bild, um es zu ändern oder zu entfernen. Es wird quadratisch zugeschnitten und auf 256x256 skaliert.",
+				"remove": "Avatar entfernen",
 				"removeError": "Profilbild konnte nicht entfernt werden",
 				"removeSuccess": "Profilbild entfernt",
 				"updateError": "Profilbild konnte nicht aktualisiert werden",
@@ -545,10 +572,10 @@
 			},
 			"deleteAccount": {
 				"confirm": "Konto löschen",
-				"confirmLabel": "Confirm your email address",
+				"confirmLabel": "Gib {{email}} ein, um zu bestätigen",
 				"description": "Workspaces, in denen nur du Mitglied bist, werden mit deinem Konto gelöscht. In anderen bleiben deine Aufgaben erhalten und werden nicht mehr zugewiesen, und deine Kommentare werden entfernt.",
 				"error": "Konto konnte nicht gelöscht werden",
-				"modalDescription": "This cannot be undone. Type {{email}} to confirm.",
+				"modalDescription": "Dadurch wird dein Konto dauerhaft gelöscht. Das lässt sich nicht rückgängig machen.",
 				"modalTitle": "Konto löschen?",
 				"sectionSubtitle": "Dauerhafte Aktionen, die dein gesamtes Konto betreffen.",
 				"sectionTitle": "Gefahrenzone",
@@ -608,6 +635,9 @@
 			"eventComments": "Kommentare und Erwähnungen",
 			"eventCommentsHint": "Umfasst neue Kommentare zu dir zugewiesenen Aufgaben und direkte @Erwähnungen.",
 			"eventStatusChanges": "Statusänderungen von Aufgaben",
+			"eventStatusChangesHint": "Bei Aufgaben, die dir zugewiesen sind oder die du abonniert hast.",
+			"eventTaskUpdates": "Andere Aufgabenänderungen",
+			"eventTaskUpdatesHint": "Änderungen an Priorität, Fälligkeitsdatum und Titel bei Aufgaben, denen du folgst.",
 			"eventDueDateReminders": "Erinnerungen an Fälligkeitstermine",
 			"reminderLeadTimeLabel": "Vor dem Fälligkeitsdatum erinnern",
 			"reminderLeadTimeHint": "Zwischen 1 Stunde und 30 Tagen vorher. Überfällige Aufgaben werden separat gemeldet.",
@@ -615,6 +645,23 @@
 			"reminderLeadTimeUnitDays": "Tage",
 			"reminderLeadTimeInvalid": "Gib eine ganze Zahl zwischen 1 und {{max}} ein.",
 			"saveEventPreferences": "Benachrichtigungstypen speichern",
+			"digestTitle": "E-Mail-Zusammenfassung",
+			"digestDescription": "Eine Zusammenfassung per E-Mail mit deinen offenen Aufgaben, die überfällig oder innerhalb von 7 Tagen fällig sind, neuen Erwähnungen und ungelesenen Posteingangselementen. Sie verwendet deine Zeitzone und entfällt, wenn es nichts zu berichten gibt.",
+			"digestFrequencyLabel": "Zusammenfassung senden",
+			"digestFrequencyOff": "Aus",
+			"digestFrequencyDaily": "Täglich",
+			"digestFrequencyWeekly": "Wöchentlich",
+			"digestWeekdayLabel": "Tag",
+			"digestWeekdaySunday": "Sonntag",
+			"digestWeekdayMonday": "Montag",
+			"digestWeekdayTuesday": "Dienstag",
+			"digestWeekdayWednesday": "Mittwoch",
+			"digestWeekdayThursday": "Donnerstag",
+			"digestWeekdayFriday": "Freitag",
+			"digestWeekdaySaturday": "Samstag",
+			"digestHourLabel": "Uhrzeit",
+			"digestNoEmail": "Für Zusammenfassungen ist eine E-Mail-Adresse im Konto erforderlich.",
+			"saveDigest": "Zusammenfassung speichern",
 			"workspaceCardLabelEmail": "E-Mail",
 			"workspaceCardLabelNtfy": "ntfy",
 			"workspaceCardLabelGotify": "Gotify",
@@ -642,28 +689,8 @@
 			"toastPreferencesSaveFailed": "Benachrichtigungseinstellungen konnten nicht gespeichert werden",
 			"toastRuleSavedGeneric": "Arbeitsbereichs-Benachrichtigungsregel gespeichert",
 			"toastRuleRemovedGeneric": "Arbeitsbereichs-Benachrichtigungsregel entfernt",
-			"eventStatusChangesHint": "Bei Aufgaben, die dir zugewiesen sind oder die du abonniert hast.",
-			"eventTaskUpdates": "Andere Aufgabenänderungen",
-			"eventTaskUpdatesHint": "Änderungen an Priorität, Fälligkeitsdatum und Titel bei Aufgaben, denen du folgst.",
-			"channelsDescription": "Wohin Margaya die oben gewählten Benachrichtigungen sendet.",
 			"channelsTitle": "Zustellkanäle",
-			"digestDescription": "Eine Zusammenfassung per E-Mail mit deinen offenen Aufgaben, die überfällig oder innerhalb von 7 Tagen fällig sind, neuen Erwähnungen und ungelesenen Posteingangselementen. Sie verwendet deine Zeitzone und entfällt, wenn es nichts zu berichten gibt.",
-			"digestFrequencyDaily": "Täglich",
-			"digestFrequencyLabel": "Zusammenfassung senden",
-			"digestFrequencyOff": "Aus",
-			"digestFrequencyWeekly": "Wöchentlich",
-			"digestHourLabel": "Uhrzeit",
-			"digestNoEmail": "Für Zusammenfassungen ist eine E-Mail-Adresse im Konto erforderlich.",
-			"digestTitle": "E-Mail-Zusammenfassung",
-			"digestWeekdayFriday": "Freitag",
-			"digestWeekdayLabel": "Tag",
-			"digestWeekdayMonday": "Montag",
-			"digestWeekdaySaturday": "Samstag",
-			"digestWeekdaySunday": "Sonntag",
-			"digestWeekdayThursday": "Donnerstag",
-			"digestWeekdayTuesday": "Dienstag",
-			"digestWeekdayWednesday": "Mittwoch",
-			"saveDigest": "Zusammenfassung speichern",
+			"channelsDescription": "Wohin Margaya die oben gewählten Benachrichtigungen sendet.",
 			"sound": {
 				"title": "Töne",
 				"description": "Spiele einen Ton ab, wenn eine Benachrichtigung eintrifft, während Margaya in deinem Browser geöffnet ist.",
@@ -694,7 +721,30 @@
 				"deviceMute": "Töne auf diesem Gerät stummschalten",
 				"deviceMuteDescription": "Schaltet nur diesen Browser stumm. Deine anderen Geräte spielen weiterhin Töne ab.",
 				"previewFailed": "Dein Browser hat den Ton nicht abgespielt. Prüfe, ob dieser Tab oder die Website stummgeschaltet ist."
-			}
+			},
+			"pushTitle": "Push-Benachrichtigungen",
+			"pushDescription": "Hinweise auf deinem Smartphone oder Computer, auch wenn Margaya geschlossen ist. „Benachrichtige mich über“ legt fest, was gesendet wird, und eine Workspace-Regel weiter unten kann das einschränken.",
+			"pushThisDevice": "Auf diesem Gerät",
+			"pushOnHint": "Dieses Gerät erhält Push-Benachrichtigungen.",
+			"pushOffHint": "Dein Browser fragt nach der Berechtigung, wenn du das einschaltest.",
+			"pushOffHintAllowed": "Benachrichtigungen sind in diesem Browser bereits erlaubt.",
+			"pushNotSetUp": "Push ist auf diesem Server nicht eingerichtet. Bitte deinen Administrator, die VAPID-Schlüssel festzulegen.",
+			"pushInstallFirst": "Füge Margaya auf iPhone und iPad zuerst zu deinem Home-Bildschirm hinzu: Tippe auf „Teilen“ und dann auf „Zum Home-Bildschirm“. Öffne Margaya von dort und schalte das hier ein.",
+			"pushUnsupported": "Dieser Browser kann hier keine Push-Benachrichtigungen empfangen. Push benötigt einen aktuellen Browser und eine HTTPS-Adresse.",
+			"pushBlocked": "Benachrichtigungen sind für diese Website blockiert. Erlaube sie in den Einstellungen deines Browsers und lade diese Seite dann neu.",
+			"pushOtherDevices": "Deine anderen Geräte",
+			"pushRemoveDevice": "Entfernen",
+			"pushRemoveDeviceLabel": "{{device}} entfernen",
+			"toastPushOn": "Push-Benachrichtigungen sind für dieses Gerät eingeschaltet.",
+			"toastPushOnFailed": "Push-Benachrichtigungen konnten nicht eingeschaltet werden. Versuche es erneut.",
+			"toastPushOff": "Push-Benachrichtigungen sind für dieses Gerät ausgeschaltet.",
+			"toastPushOffFailed": "Push-Benachrichtigungen konnten nicht ausgeschaltet werden. Versuche es erneut.",
+			"toastPushDeviceRemoved": "Gerät entfernt.",
+			"toastPushDeviceRemoveFailed": "Das Gerät konnte nicht entfernt werden. Versuche es erneut.",
+			"workspaceCardLabelPush": "Push-Benachrichtigungen",
+			"pushChannelHintEnabled": "Passende Workspace-Benachrichtigungen an deine Geräte senden.",
+			"pushChannelHintDisabled": "Schalte Push zuerst für ein Gerät ein.",
+			"pushLoadFailed": "Deine Push-Einstellungen konnten nicht geladen werden. Lade diese Seite neu, um es erneut zu versuchen."
 		},
 		"preferencesPage": {
 			"title": "Einstellungen",
@@ -1555,7 +1605,10 @@
 				"pr_merged": "PR gemergt",
 				"issue_opened": "Issue geöffnet",
 				"issue_closed": "Issue geschlossen"
-			}
+			},
+			"removeRule": "Regel für {{event}} entfernen",
+			"toastRemoved": "Workflow-Regel entfernt",
+			"toastRemoveError": "Regel konnte nicht entfernt werden"
 		},
 		"externalLinks": {
 			"resources": "Ressourcen",
@@ -1604,7 +1657,6 @@
 				"organization": "Workspace-Verwaltung",
 				"member": "Mitglieder",
 				"invitation": "Einladungen",
-				"team": "Teams",
 				"ac": "Rollen und Berechtigungen",
 				"cycle": "Zyklen",
 				"module": "Module",
@@ -1728,20 +1780,6 @@
 					"cancel": {
 						"label": "Einladungen widerrufen",
 						"description": "Ausstehende Workspace-Einladungen widerrufen."
-					}
-				},
-				"team": {
-					"create": {
-						"label": "Teams erstellen",
-						"description": "Teams in diesem Workspace erstellen."
-					},
-					"update": {
-						"label": "Teams bearbeiten",
-						"description": "Teams und Teammitgliedschaften ändern."
-					},
-					"delete": {
-						"label": "Teams löschen",
-						"description": "Teams in diesem Workspace löschen."
 					}
 				},
 				"ac": {
@@ -1955,28 +1993,43 @@
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
 		"customFields": {
-			"addButton": "Hinzufügen",
-			"createError": "Benutzerdefiniertes Feld konnte nicht erstellt werden.",
-			"createSuccess": "Benutzerdefiniertes Feld erstellt.",
-			"defaultLabel": "Standard",
-			"defaultValuePlaceholder": "Standardwert",
-			"deleteButton": "Löschen",
-			"deleteError": "Benutzerdefiniertes Feld konnte nicht gelöscht werden.",
-			"deleteSuccess": "Benutzerdefiniertes Feld gelöscht.",
-			"empty": "Noch keine benutzerdefinierten Felder konfiguriert.",
-			"loading": "Benutzerdefinierte Felder werden geladen...",
 			"namePlaceholder": "Feldname",
+			"typePlaceholder": "Feldtyp auswählen",
 			"noOptionsPlaceholder": "Keine Optionen",
+			"defaultValuePlaceholder": "Standardwert",
 			"optionsPlaceholder": "Optionen durch Kommas getrennt",
 			"required": "Erforderlich",
-			"typePlaceholder": "Feldtyp auswählen",
+			"addButton": "Hinzufügen",
+			"loading": "Benutzerdefinierte Felder werden geladen...",
+			"empty": "Noch keine benutzerdefinierten Felder konfiguriert.",
+			"defaultLabel": "Standard",
+			"createSuccess": "Benutzerdefiniertes Feld erstellt.",
+			"createError": "Benutzerdefiniertes Feld konnte nicht erstellt werden.",
+			"deleteButton": "Löschen",
+			"deleteSuccess": "Benutzerdefiniertes Feld gelöscht.",
+			"deleteError": "Benutzerdefiniertes Feld konnte nicht gelöscht werden.",
 			"types": {
 				"boolean": "Boolean",
 				"date": "Datum",
 				"dropdown": "Dropdown",
 				"number": "Zahl",
 				"text": "Text"
-			}
+			},
+			"editButton": "Bearbeiten",
+			"editTitle": "Benutzerdefiniertes Feld bearbeiten",
+			"editDescription": "Der Typ eines Felds und ob es erforderlich ist, lassen sich nach dem Erstellen nicht mehr ändern.",
+			"nameLabel": "Name",
+			"optionsLabel": "Optionen",
+			"addOption": "Option hinzufügen",
+			"removeOption": "Option entfernen",
+			"optionPlaceholder": "Name der Option",
+			"optionsHint": "Wenn du eine Option umbenennst, werden alle Aufgaben, gespeicherten Ansichten und Automatisierungen aktualisiert, die sie verwenden. Eine entfernte Option bleibt bei Aufgaben erhalten, die sie bereits haben, bis jemand sie ändert, und kann nicht erneut ausgewählt werden.",
+			"duplicateOption": "Optionen müssen sich voneinander unterscheiden.",
+			"noDefault": "Kein Standardwert",
+			"saveButton": "Speichern",
+			"cancelButton": "Abbrechen",
+			"updateSuccess": "Benutzerdefiniertes Feld aktualisiert.",
+			"updateError": "Benutzerdefiniertes Feld konnte nicht aktualisiert werden."
 		},
 		"projectFeatures": {
 			"disableConfirmAction": "Deaktivieren",
@@ -2250,6 +2303,11 @@
 			}
 		},
 		"workspaceExports": {
+			"title": "Exporte",
+			"pageTitle": "Exporte",
+			"subtitle": "Exportiere Aufgaben als CSV, Excel oder JSON. Die Dateien stehen {{days}} Tage lang zum Download bereit.",
+			"newExport": "Neuer Export",
+			"viewExports": "Exporte ansehen",
 			"form": {
 				"activeGroup": "Aktiv",
 				"allProjects": "Alle Projekte",
@@ -2277,48 +2335,6 @@
 				"json": "JSON",
 				"xlsx": "Excel"
 			},
-			"history": {
-				"all": "Alle Exporte",
-				"columns": {
-					"actions": "Aktionen",
-					"created": "Erstellt",
-					"expires": "Verfügbar",
-					"export": "Export",
-					"requestedBy": "Angefordert von",
-					"size": "Größe",
-					"status": "Status",
-					"tasks": "Aufgaben"
-				},
-				"delete": "Löschen",
-				"deleteAria": "{{name}} löschen",
-				"deleteDescription": "Die Datei wird für alle gelöscht. Das kann nicht rückgängig gemacht werden.",
-				"deletedProject": "Gelöschtes Projekt",
-				"deleteTitle": "Diesen Export löschen?",
-				"deleting": "Wird gelöscht…",
-				"description": "Lade fertige Exporte herunter oder lösche die, die du nicht mehr brauchst.",
-				"download": "Herunterladen",
-				"downloadAria": "{{name}} herunterladen",
-				"empty": "Noch keine Exporte. Von dir gestartete Exporte erscheinen hier {{days}} Tage lang.",
-				"expiredOn": "Abgelaufen am {{date}}",
-				"expiresOn": "Bis {{date}}",
-				"loadMore": "Mehr laden",
-				"mine": "Meine Exporte",
-				"scopeLabel": "Wessen Exporte",
-				"summaryProjects_one": "{{format}} · {{name}}",
-				"summaryProjects_other": "{{format}} · {{count}} Projekte",
-				"title": "Frühere Exporte"
-			},
-			"newExport": "Neuer Export",
-			"pageTitle": "Exporte",
-			"status": {
-				"completed": "Fertig",
-				"expired": "Abgelaufen",
-				"failed": "Fehlgeschlagen",
-				"processing": "Wird verarbeitet",
-				"queued": "In der Warteschlange"
-			},
-			"subtitle": "Exportiere Aufgaben als CSV, Excel oder JSON. Die Dateien stehen {{days}} Tage lang zum Download bereit.",
-			"title": "Exporte",
 			"toast": {
 				"deleted": "Export gelöscht",
 				"deleteError": "Der Export konnte nicht gelöscht werden. Versuche es erneut.",
@@ -2330,7 +2346,60 @@
 				"ready": "Dein Export ist fertig",
 				"started": "Export gestartet. Wir sagen dir Bescheid, sobald er fertig ist."
 			},
-			"viewExports": "Exporte ansehen"
+			"history": {
+				"title": "Frühere Exporte",
+				"description": "Lade fertige Exporte herunter oder lösche die, die du nicht mehr brauchst.",
+				"scopeLabel": "Wessen Exporte",
+				"mine": "Meine Exporte",
+				"all": "Alle Exporte",
+				"empty": "Noch keine Exporte. Von dir gestartete Exporte erscheinen hier {{days}} Tage lang.",
+				"columns": {
+					"actions": "Aktionen",
+					"created": "Erstellt",
+					"expires": "Verfügbar",
+					"export": "Export",
+					"requestedBy": "Angefordert von",
+					"size": "Größe",
+					"status": "Status",
+					"tasks": "Aufgaben"
+				},
+				"summaryProjects_one": "{{format}} · {{name}}",
+				"summaryProjects_other": "{{format}} · {{count}} Projekte",
+				"deletedProject": "Gelöschtes Projekt",
+				"download": "Herunterladen",
+				"downloadAria": "{{name}} herunterladen",
+				"delete": "Löschen",
+				"deleteAria": "{{name}} löschen",
+				"deleting": "Wird gelöscht…",
+				"deleteTitle": "Diesen Export löschen?",
+				"deleteDescription": "Die Datei wird für alle gelöscht. Das kann nicht rückgängig gemacht werden.",
+				"expiredOn": "Abgelaufen am {{date}}",
+				"expiresOn": "Bis {{date}}",
+				"loadMore": "Mehr laden",
+				"summaryWorkspace": "Gesamter Workspace",
+				"fileCount_one": "{{count}} Datei",
+				"fileCount_other": "{{count}} Dateien",
+				"withoutFiles": "Ohne Dateien",
+				"missingFiles_one": "{{count}} Datei fehlte im Speicher",
+				"missingFiles_other": "{{count}} Dateien fehlten im Speicher"
+			},
+			"status": {
+				"completed": "Fertig",
+				"expired": "Abgelaufen",
+				"failed": "Fehlgeschlagen",
+				"processing": "Wird verarbeitet",
+				"queued": "In der Warteschlange"
+			},
+			"whole": {
+				"title": "Gesamter Workspace",
+				"description": "Lade alles als eine ZIP-Datei herunter: Aufgaben mit allen Kommentaren, Seiten, Einstellungen und Dateien.",
+				"action": "Workspace exportieren",
+				"dialogTitle": "Gesamten Workspace exportieren",
+				"dialogDescription": "Das Archiv wird im Hintergrund erstellt. Du wirst benachrichtigt, sobald es bereit ist.",
+				"includeFiles": "Dateien einbeziehen",
+				"includeFilesHint": "Schalte das aus, um ein deutlich kleineres Archiv zu erhalten. Es listet trotzdem jede Datei auf.",
+				"leftOut": "Geheimnisse, private Seiten, der Papierkorb und Entwürfe werden nie einbezogen. Das Archiv enthält die E-Mail-Adressen der Mitglieder, bewahre es also sicher auf."
+			}
 		},
 		"workspaceWebhooks": {
 			"actionsMenu": "Webhook-Aktionen",
@@ -2709,7 +2778,8 @@
 			"restrictedProject": "Eingeschränktes Projekt",
 			"toastUpdated": "Zugriff aktualisiert",
 			"toastError": "Zugriff konnte nicht aktualisiert werden",
-			"loadError": "Zugriffseinstellungen konnten nicht geladen werden. Lade die Seite neu, um es erneut zu versuchen."
+			"loadError": "Zugriffseinstellungen konnten nicht geladen werden. Lade die Seite neu, um es erneut zu versuchen.",
+			"guestsHint": "Gäste erreichen nur die Projekte, denen sie hinzugefügt wurden. Füge sie hier hinzu; die Projektrolle begrenzt, was sie tun können."
 		},
 		"projectPeople": {
 			"defaultAssigneeHint": "Wird beim Erstellen einer Aufgabe vorausgefüllt und angenommenen Anfragen ohne Zuweisung zugewiesen.",
@@ -2827,47 +2897,47 @@
 				"workspacePublicPagesChanged": "Hat öffentliche Seiten ein- oder ausgeschaltet",
 				"pagePublished": "Hat eine Seite über einen öffentlichen Link veröffentlicht",
 				"pageUnpublished": "Hat den öffentlichen Link einer Seite widerrufen",
-				"apiKeyCreated": "Hat einen API-Schlüssel erstellt",
-				"apiKeyRevoked": "Hat einen API-Schlüssel widerrufen",
-				"exportCreated": "Hat einen Export gestartet",
-				"exportDownloaded": "Hat einen Export heruntergeladen",
-				"importRun": "Hat Aufgaben importiert",
-				"integrationConnected": "Hat eine Integration verbunden",
-				"integrationDisconnected": "Hat eine Integration getrennt",
-				"integrationUpdated": "Hat eine Integration geändert",
+				"memberInvited": "Hat jemanden in den Workspace eingeladen",
+				"memberInvitationRevoked": "Hat eine Einladung widerrufen",
 				"memberInvitationAccepted": "Hat eine Einladung angenommen",
 				"memberInvitationDeclined": "Hat eine Einladung abgelehnt",
 				"memberInvitationRoleChanged": "Hat die Rolle einer offenen Einladung geändert",
-				"memberInvitationRevoked": "Hat eine Einladung widerrufen",
-				"memberInvited": "Hat jemanden in den Workspace eingeladen",
-				"memberLeft": "Hat den Workspace verlassen",
 				"memberRemoved": "Hat ein Mitglied entfernt",
+				"memberLeft": "Hat den Workspace verlassen",
 				"memberRoleChanged": "Hat die Rolle eines Mitglieds geändert",
-				"projectArchived": "Hat ein Projekt archiviert",
-				"projectCreated": "Hat ein Projekt erstellt",
-				"projectFeatureToggled": "Hat Projektfunktionen ein- oder ausgeschaltet",
-				"projectPurged": "Hat ein Projekt endgültig gelöscht",
-				"projectRestored": "Hat ein Projekt aus dem Papierkorb wiederhergestellt",
-				"projectSettingsChanged": "Hat Projekteinstellungen geändert",
-				"projectTrashed": "Hat ein Projekt in den Papierkorb verschoben",
-				"projectUnarchived": "Hat die Archivierung eines Projekts aufgehoben",
-				"publicBoardLinkRotated": "Hat den Link eines öffentlichen Boards ersetzt",
-				"publicBoardPublished": "Hat ein öffentliches Board veröffentlicht",
-				"publicBoardSettingsChanged": "Hat Einstellungen eines öffentlichen Boards geändert",
-				"publicBoardUnpublished": "Hat die Veröffentlichung eines öffentlichen Boards aufgehoben",
 				"roleCreated": "Hat eine Rolle erstellt",
-				"roleDeleted": "Hat eine Rolle gelöscht",
 				"roleUpdated": "Hat eine Rolle geändert",
-				"trashEmptied": "Hat den Papierkorb eines Projekts geleert",
-				"trashPurged": "Hat Aufgaben endgültig aus dem Papierkorb gelöscht",
-				"unknown": "{{action}}",
+				"roleDeleted": "Hat eine Rolle gelöscht",
+				"apiKeyCreated": "Hat einen API-Schlüssel erstellt",
+				"apiKeyRevoked": "Hat einen API-Schlüssel widerrufen",
 				"webhookCreated": "Hat einen Webhook erstellt",
+				"webhookUpdated": "Hat einen Webhook geändert",
 				"webhookDeleted": "Hat einen Webhook gelöscht",
 				"webhookSecretRotated": "Hat das Signaturgeheimnis eines Webhooks erneuert",
-				"webhookUpdated": "Hat einen Webhook geändert",
+				"integrationConnected": "Hat eine Integration verbunden",
+				"integrationUpdated": "Hat eine Integration geändert",
+				"integrationDisconnected": "Hat eine Integration getrennt",
 				"workspaceCreated": "Hat den Workspace erstellt",
-				"workspaceOwnershipTransferred": "Hat die Workspace-Eigentümerschaft übertragen",
 				"workspaceUpdated": "Hat Workspace-Einstellungen geändert",
+				"workspaceOwnershipTransferred": "Hat die Workspace-Eigentümerschaft übertragen",
+				"projectCreated": "Hat ein Projekt erstellt",
+				"projectTrashed": "Hat ein Projekt in den Papierkorb verschoben",
+				"projectRestored": "Hat ein Projekt aus dem Papierkorb wiederhergestellt",
+				"projectPurged": "Hat ein Projekt endgültig gelöscht",
+				"projectArchived": "Hat ein Projekt archiviert",
+				"projectUnarchived": "Hat die Archivierung eines Projekts aufgehoben",
+				"projectFeatureToggled": "Hat Projektfunktionen ein- oder ausgeschaltet",
+				"projectSettingsChanged": "Hat Projekteinstellungen geändert",
+				"publicBoardPublished": "Hat ein öffentliches Board veröffentlicht",
+				"publicBoardUnpublished": "Hat die Veröffentlichung eines öffentlichen Boards aufgehoben",
+				"publicBoardLinkRotated": "Hat den Link eines öffentlichen Boards ersetzt",
+				"publicBoardSettingsChanged": "Hat Einstellungen eines öffentlichen Boards geändert",
+				"exportCreated": "Hat einen Export gestartet",
+				"exportDownloaded": "Hat einen Export heruntergeladen",
+				"importRun": "Hat Aufgaben importiert",
+				"trashPurged": "Hat Aufgaben endgültig aus dem Papierkorb gelöscht",
+				"trashEmptied": "Hat den Papierkorb eines Projekts geleert",
+				"unknown": "{{action}}",
 				"aiSettingsUpdated": "Hat die KI-Einstellungen geändert",
 				"aiTriageLabelsApplied": "Hat vorgeschlagene Labels automatisch hinzugefügt",
 				"agentCreated": "Hat einen Agenten erstellt",
@@ -2894,7 +2964,9 @@
 				"aiConnectorUpdated": "Hat einen MCP-Konnektor geändert",
 				"aiConnectorDeleted": "Hat einen MCP-Konnektor gelöscht",
 				"agentIntakeTriggerUpdated": "Hat den Eingangs-Auslöser eines Agenten geändert",
-				"agentIntakeTriggerDisabled": "Hat den Eingangs-Auslöser eines Agenten ausgeschaltet"
+				"agentIntakeTriggerDisabled": "Hat den Eingangs-Auslöser eines Agenten ausgeschaltet",
+				"memberProvisioned": "Hat ein Mitglied per Provisionierung hinzugefügt",
+				"memberInvitationProjectsChanged": "Hat die Projekte einer offenen Einladung geändert"
 			},
 			"actor": {
 				"apiKey": "API-Schlüssel",
@@ -2987,50 +3059,59 @@
 			"title": "Audit-Log"
 		},
 		"trash": {
-			"deletedAt": "Gelöscht {{time}}",
-			"deletedBy": "Gelöscht von {{name}} {{time}}",
-			"deletePermanently": "Endgültig löschen",
-			"emptyConfirmDescription": "Alle Aufgaben im Papierkorb dieses Projekts werden mit ihren Kommentaren, Anhängen und Zeiteinträgen endgültig gelöscht. Das kann nicht rückgängig gemacht werden.",
-			"emptyConfirmTitle": "Papierkorb leeren?",
-			"emptyProjectsDescription": "Projekte, die du aus diesem Workspace löschst, erscheinen hier.",
-			"emptyProjectsTitle": "Keine gelöschten Projekte",
-			"emptyTasksDescription": "Aufgaben, die du aus diesem Projekt löschst, erscheinen hier.",
-			"emptyTasksTitle": "Keine gelöschten Aufgaben",
-			"emptyTrash": "Papierkorb leeren",
-			"loadError": "Der Papierkorb konnte nicht geladen werden",
-			"loadMore": "Mehr laden",
-			"menuAria": "Weitere Aktionen für {{name}}",
-			"noMatches": "Keine Treffer für deine Suche",
-			"projectSubtitle": "Gelöschte Aufgaben bleiben hier, bis sie endgültig gelöscht werden. Beim Wiederherstellen einer Aufgabe kommen auch die mit ihr gelöschten Teilaufgaben zurück.",
 			"projectTitle": "Zuletzt gelöscht",
-			"purgeOn": "Wird am {{date}} endgültig gelöscht",
-			"purgeProjectDescription": "„{{name}}“ und alle Inhalte werden für alle gelöscht. Das kann nicht rückgängig gemacht werden.",
-			"purgeProjectTitle": "Dieses Projekt endgültig löschen?",
-			"purgeTaskDescription": "„{{name}}“, die mit ihr gelöschten Teilaufgaben, Kommentare, Anhänge und Zeiteinträge werden für alle gelöscht. Das kann nicht rückgängig gemacht werden.",
-			"purgeTaskTitle": "Diese Aufgabe endgültig löschen?",
-			"restore": "Wiederherstellen",
-			"restoreAria": "{{name}} wiederherstellen",
-			"retry": "Erneut versuchen",
-			"searchProjects": "Gelöschte Projekte durchsuchen",
+			"projectSubtitle": "Gelöschte Aufgaben und Seiten bleiben hier, bis sie endgültig gelöscht werden. Beim Wiederherstellen einer Aufgabe kommen auch die mit ihr gelöschten Teilaufgaben zurück; eine wiederhergestellte Seite kehrt zu „Archiviert“ zurück.",
+			"workspaceTitle": "Zuletzt gelöschte Projekte",
+			"workspaceNav": "Zuletzt gelöscht",
+			"workspaceSubtitle": "Gelöschte Projekte bleiben mit ihren Aufgaben hier, bis sie endgültig gelöscht werden.",
 			"searchTasks": "Gelöschte Aufgaben durchsuchen",
+			"searchProjects": "Gelöschte Projekte durchsuchen",
+			"deletedBy": "Gelöscht von {{name}} {{time}}",
+			"deletedAt": "Gelöscht {{time}}",
+			"purgeOn": "Wird am {{date}} endgültig gelöscht",
+			"withSubTasks_one": "mit {{count}} Teilaufgabe",
+			"withSubTasks_other": "mit {{count}} Teilaufgaben",
 			"taskCount_one": "{{count}} Aufgabe",
 			"taskCount_other": "{{count}} Aufgaben",
+			"restore": "Wiederherstellen",
+			"restoreAria": "{{name}} wiederherstellen",
+			"menuAria": "Weitere Aktionen für {{name}}",
+			"deletePermanently": "Endgültig löschen",
+			"emptyTrash": "Papierkorb leeren",
+			"emptyTasksTitle": "Keine gelöschten Aufgaben",
+			"emptyTasksDescription": "Aufgaben, die du aus diesem Projekt löschst, erscheinen hier.",
+			"emptyProjectsTitle": "Keine gelöschten Projekte",
+			"emptyProjectsDescription": "Projekte, die du aus diesem Workspace löschst, erscheinen hier.",
+			"noMatches": "Keine Treffer für deine Suche",
+			"loadError": "Der Papierkorb konnte nicht geladen werden",
+			"retry": "Erneut versuchen",
+			"loadMore": "Mehr laden",
+			"purgeTaskTitle": "Diese Aufgabe endgültig löschen?",
+			"purgeTaskDescription": "„{{name}}“, die mit ihr gelöschten Teilaufgaben, Kommentare, Anhänge und Zeiteinträge werden für alle gelöscht. Das kann nicht rückgängig gemacht werden.",
+			"emptyConfirmTitle": "Papierkorb leeren?",
+			"emptyConfirmDescription": "Alle Aufgaben im Papierkorb dieses Projekts werden mit ihren Kommentaren, Anhängen und Zeiteinträgen endgültig gelöscht. Das kann nicht rückgängig gemacht werden.",
+			"purgeProjectTitle": "Dieses Projekt endgültig löschen?",
+			"purgeProjectDescription": "„{{name}}“ und alle Inhalte werden für alle gelöscht. Das kann nicht rückgängig gemacht werden.",
 			"toast": {
-				"emptied_one": "{{count}} Aufgabe endgültig gelöscht",
-				"emptied_other": "{{count}} Aufgaben endgültig gelöscht",
-				"projectPurged": "Projekt endgültig gelöscht",
+				"taskRestored": "Aufgabe wiederhergestellt",
 				"projectRestored": "Projekt wiederhergestellt",
-				"purgeError": "Endgültiges Löschen fehlgeschlagen",
 				"restoreBlocked": "Diese Aufgabe kann nicht allein wiederhergestellt werden. Stelle zuerst die übergeordnete Aufgabe oder das Projekt wieder her.",
 				"restoreError": "Wiederherstellen fehlgeschlagen",
 				"taskPurged": "Aufgabe endgültig gelöscht",
-				"taskRestored": "Aufgabe wiederhergestellt"
+				"projectPurged": "Projekt endgültig gelöscht",
+				"emptied_one": "{{count}} Aufgabe endgültig gelöscht",
+				"emptied_other": "{{count}} Aufgaben endgültig gelöscht",
+				"purgeError": "Endgültiges Löschen fehlgeschlagen",
+				"pageRestored": "Seite unter „Archiviert“ wiederhergestellt",
+				"pagePurged": "Seite endgültig gelöscht"
 			},
-			"withSubTasks_one": "mit {{count}} Teilaufgabe",
-			"withSubTasks_other": "mit {{count}} Teilaufgaben",
-			"workspaceNav": "Zuletzt gelöscht",
-			"workspaceSubtitle": "Gelöschte Projekte bleiben mit ihren Aufgaben hier, bis sie endgültig gelöscht werden.",
-			"workspaceTitle": "Zuletzt gelöschte Projekte"
+			"tasksHeading": "Aufgaben",
+			"pagesHeading": "Seiten",
+			"searchPages": "Gelöschte Seiten durchsuchen",
+			"emptyPagesTitle": "Keine gelöschten Seiten",
+			"emptyPagesDescription": "Archivierte Seiten, die du aus diesem Projekt löschst, erscheinen hier.",
+			"purgePageTitle": "Diese Seite endgültig löschen?",
+			"purgePageDescription": "„{{name}}“, ihre Kommentare und der Versionsverlauf werden für alle gelöscht. Das kann nicht rückgängig gemacht werden."
 		},
 		"automationRules": {
 			"title": "Automatisierungen",
@@ -3355,11 +3436,11 @@
 				"boardView": "Zur Board-Ansicht wechseln",
 				"listView": "Zur Listenansicht wechseln",
 				"backlogView": "Zur Backlog-Ansicht wechseln",
+				"calendarView": "Zur Kalenderansicht wechseln",
 				"nextTask": "Nächste Aufgabe",
 				"prevTask": "Vorherige Aufgabe",
 				"openTask": "Ausgewählte Aufgabe öffnen",
 				"quickSelectNumber": "Option per Nummer auswählen",
-				"calendarView": "Zur Kalenderansicht wechseln",
 				"goToSection": "Zu {{section}} wechseln",
 				"goToAllTasks": "Zu Alle Aufgaben",
 				"goToMyWork": "Zu Meine Arbeit",
@@ -3368,24 +3449,25 @@
 				"goToHome": "Zur Startseite",
 				"goToStickies": "Zu Haftnotizen",
 				"paletteActions": "Aktion ausführen",
+				"paletteTasks": "Aufgabe nach Kürzel oder Titel finden",
 				"palettePeople": "Person finden",
 				"palettePlaces": "Zu einem Ort springen",
-				"paletteTasks": "Aufgabe nach Kürzel oder Titel finden",
 				"captureTask": "Aufgabe im Board oder in der Liste hinzufügen",
 				"selectTask": "Fokussierte Aufgabe auswählen",
-				"triageAssignee": "Zuständige der fokussierten Aufgabe ändern",
-				"triagePriority": "Priorität der fokussierten Aufgabe ändern",
 				"triageStatus": "Status der fokussierten Aufgabe ändern",
+				"triagePriority": "Priorität der fokussierten Aufgabe ändern",
+				"triageAssignee": "Zuständige der fokussierten Aufgabe ändern",
+				"taskStatus": "Status ändern",
+				"taskPriority": "Priorität ändern",
 				"taskAssignees": "Zugewiesene ändern",
+				"taskLabels": "Labels ändern",
+				"taskDueDate": "Fälligkeitsdatum ändern",
 				"taskAssignSelf": "Dich selbst zuweisen oder entfernen",
 				"taskCopyKey": "Aufgabenschlüssel kopieren",
 				"taskCopyLink": "Aufgabenlink kopieren",
+				"taskCopyBranch": "Branch-Namen der Aufgabe kopieren",
 				"taskDelete": "Aufgabe löschen",
-				"taskDueDate": "Fälligkeitsdatum ändern",
-				"taskLabels": "Labels ändern",
-				"taskPriority": "Priorität ändern",
-				"taskStatus": "Status ändern",
-				"taskCopyBranch": "Branch-Namen der Aufgabe kopieren"
+				"moveBetweenCards": "Zwischen Karten auf dem Board wechseln"
 			}
 		},
 		"favorites": {
@@ -3550,6 +3632,14 @@
 			"automation_notice": {
 				"title": "Automatisierung: {{ruleName}}",
 				"content": "{{taskKey}} {{taskTitle}}"
+			},
+			"page_comment": {
+				"title": "{{commenterName}} hat kommentiert",
+				"content": "{{commenterName}} hat {{pageTitle}} kommentiert: {{commentPreview}}"
+			},
+			"page_updated": {
+				"title": "{{editorName}} hat eine Seite bearbeitet",
+				"content": "{{editorName}} hat {{pageTitle}} bearbeitet"
 			}
 		},
 		"inbox": {
@@ -3604,10 +3694,12 @@
 			"loadMore": "Mehr laden",
 			"pageTitle": "Posteingang",
 			"preview": {
-				"emptyDescription": "Die zugehörige Aufgabe öffnet sich hier.",
 				"emptyTitle": "Benachrichtigung auswählen",
+				"emptyDescription": "Die zugehörige Aufgabe öffnet sich hier.",
 				"unavailable": "Diese Aufgabe ist nicht mehr verfügbar",
-				"label": "Lesebereich"
+				"label": "Lesebereich",
+				"showProperties": "Eigenschaften anzeigen",
+				"hideProperties": "Eigenschaften ausblenden"
 			},
 			"retry": "Erneut versuchen",
 			"snooze": {
@@ -3653,27 +3745,31 @@
 				"subscribed": "Abonniert"
 			},
 			"verbs": {
-				"due_date_reminder": "Fällig in {{leadTime}}",
-				"task_assignee_changed": "hat dir die Aufgabe zugewiesen",
-				"task_comment": "hat kommentiert",
 				"task_created": "hat diese Aufgabe erstellt",
+				"task_assignee_changed": "hat dir die Aufgabe zugewiesen",
+				"task_status_changed": "hat sie von {{oldStatus}} nach {{newStatus}} verschoben",
+				"task_comment": "hat kommentiert",
 				"task_mention": "hat dich erwähnt",
 				"task_mention_comment": "hat dich in einem Kommentar erwähnt",
-				"task_overdue": "Fälligkeitsdatum überschritten",
-				"task_status_changed": "hat sie von {{oldStatus}} nach {{newStatus}} verschoben",
+				"time_entry_created": "hat Zeit erfasst",
 				"task_updated": {
 					"dueDate": "hat das Fälligkeitsdatum auf {{newValue}} geändert",
 					"dueDateCleared": "hat das Fälligkeitsdatum entfernt",
 					"priority": "hat die Priorität auf {{newValue}} geändert",
 					"title": "hat die Aufgabe umbenannt"
 				},
-				"time_entry_created": "hat Zeit erfasst",
+				"due_date_reminder": "Fällig in {{leadTime}}",
+				"task_overdue": "Fälligkeitsdatum überschritten",
 				"intake_accepted": "hat deine Anfrage angenommen",
 				"intake_declined": "hat deine Anfrage abgelehnt",
 				"intake_duplicate": "hat deine Anfrage als Duplikat markiert",
 				"page_mention": "hat dich auf einer Seite erwähnt",
 				"page_mention_titled": "hat dich in {{pageTitle}} erwähnt",
-				"task_comment_reply": "hat auf einen Kommentar geantwortet"
+				"task_comment_reply": "hat auf einen Kommentar geantwortet",
+				"page_comment": "hat eine Seite kommentiert",
+				"page_comment_titled": "hat {{pageTitle}} kommentiert",
+				"page_updated": "hat eine Seite bearbeitet, die du beobachtest",
+				"page_updated_titled": "hat {{pageTitle}} bearbeitet"
 			},
 			"viewing": {
 				"archived": "Archivierte Benachrichtigungen werden angezeigt",
@@ -3704,8 +3800,21 @@
 		}
 	},
 	"activity": {
+		"feed": {
+			"all": "Alle Aktivitäten",
+			"comments": "Kommentare",
+			"label": "Aktivität filtern und sortieren",
+			"newest": "Neueste zuerst",
+			"noMatches": "Mit diesem Filter gibt es nichts anzuzeigen.",
+			"oldest": "Älteste zuerst",
+			"order": "Reihenfolge",
+			"show": "Anzeigen",
+			"updates": "Änderungen"
+		},
 		"assignedToSelf": "hat sich die Aufgabe selbst zugewiesen",
 		"unassigned": "hat die Zuweisung der Aufgabe entfernt",
+		"unassignedUser": "hat {{name}} nicht mehr zugewiesen",
+		"unassignedSelf": "hat sich selbst nicht mehr zugewiesen",
 		"assignedTo": "hat die Aufgabe {{name}} zugewiesen",
 		"changedStatus": "hat den Status von {{from}} zu {{to}} geändert",
 		"changedPriority": "hat die Priorität von {{from}} zu {{to}} geändert",
@@ -3715,6 +3824,8 @@
 		"changedTitle": "hat den Titel von \"{{from}}\" zu \"{{to}}\" geändert",
 		"moved": "hat die Aufgabe von \"{{from}}\" nach \"{{to}}\" verschoben",
 		"created": "hat diese Aufgabe erstellt",
+		"importedFromJira": "hat diese Aufgabe aus Jira {{key}} importiert",
+		"importedFromSource": "hat diese Aufgabe aus {{source}} {{key}} importiert",
 		"githubUser": "GitHub-Nutzer",
 		"comment": {
 			"github": "GitHub",
@@ -3835,35 +3946,26 @@
 			"linkCopied": "Kommentarlink kopiert"
 		},
 		"addedToCycle": "hat die Aufgabe zum Zyklus {{name}} hinzugefügt",
-		"deletedCycle": "hat die Aufgabe aus einem gelöschten Zyklus entfernt",
-		"movedCycle": "hat die Aufgabe vom Zyklus {{from}} zum Zyklus {{to}} verschoben",
 		"removedFromCycle": "hat die Aufgabe aus dem Zyklus {{name}} entfernt",
+		"movedCycle": "hat die Aufgabe vom Zyklus {{from}} zum Zyklus {{to}} verschoben",
+		"deletedCycle": "hat die Aufgabe aus einem gelöschten Zyklus entfernt",
 		"addedToModule": "hat die Aufgabe zum Modul {{name}} hinzugefügt",
 		"removedFromModule": "hat die Aufgabe aus dem Modul {{name}} entfernt",
+		"estimateSet": "hat die Schätzung auf {{to}} gesetzt",
 		"estimateChanged": "hat die Schätzung von {{from}} zu {{to}} geändert",
+		"estimateRemoved": "hat die Schätzung {{from}} entfernt",
 		"estimateReason": {
 			"point_deleted": "(Schätzwert gelöscht)",
 			"system_deleted": "(Schätzsystem gelöscht)",
 			"system_switched": "(Schätzsystem gewechselt)",
 			"task_moved": "(in ein anderes Projekt verschoben)"
 		},
-		"estimateRemoved": "hat die Schätzung {{from}} entfernt",
-		"estimateSet": "hat die Schätzung auf {{to}} gesetzt",
-		"unassignedSelf": "hat sich selbst nicht mehr zugewiesen",
-		"unassignedUser": "hat {{name}} nicht mehr zugewiesen",
-		"addedLabel": "hat das Label <label>{{name}}</label> hinzugefügt",
-		"attachmentAdded": "hat {{filename}} angehängt",
-		"attachmentRemoved": "hat den Anhang {{filename}} entfernt",
+		"setStartDate": "hat das Startdatum auf {{date}} gesetzt",
 		"changedStartDate": "hat das Startdatum von {{from}} zu {{to}} geändert",
 		"clearedStartDate": "hat das Startdatum entfernt",
-		"copiedFrom": "hat diese Aufgabe als Kopie von <task>{{task}}</task> erstellt",
-		"copiedTo": "hat eine Kopie dieser Aufgabe erstellt: <task>{{task}}</task>",
-		"linkAdded": "hat den Link {{title}} hinzugefügt",
-		"linkRemoved": "hat den Link {{title}} entfernt",
-		"linkUpdated": "hat den Link {{title}} aktualisiert",
-		"parentChanged": "hat die übergeordnete Aufgabe von <from>{{from}}</from> zu <to>{{to}}</to> geändert",
-		"parentRemoved": "hat die übergeordnete Aufgabe <task>{{task}}</task> entfernt",
-		"parentSet": "hat die übergeordnete Aufgabe auf <task>{{task}}</task> gesetzt",
+		"addedLabel": "hat das Label <label>{{name}}</label> hinzugefügt",
+		"removedLabel": "hat das Label <label>{{name}}</label> entfernt",
+		"updatedDescription": "hat die Beschreibung aktualisiert",
 		"relationAdded": {
 			"blocked_by": "hat diese Aufgabe als blockiert durch <task>{{task}}</task> markiert",
 			"blocking": "hat diese Aufgabe als blockierend für <task>{{task}}</task> markiert",
@@ -3875,12 +3977,36 @@
 			"start_before": "hat festgelegt, dass diese Aufgabe vor <task>{{task}}</task> beginnt"
 		},
 		"relationRemoved": "hat die Beziehung „{{relation}}“ zu <task>{{task}}</task> entfernt",
-		"removedLabel": "hat das Label <label>{{name}}</label> entfernt",
-		"setStartDate": "hat das Startdatum auf {{date}} gesetzt",
+		"parentSet": "hat die übergeordnete Aufgabe auf <task>{{task}}</task> gesetzt",
+		"parentChanged": "hat die übergeordnete Aufgabe von <from>{{from}}</from> zu <to>{{to}}</to> geändert",
+		"parentRemoved": "hat die übergeordnete Aufgabe <task>{{task}}</task> entfernt",
 		"subtaskAdded": "hat die Teilaufgabe <task>{{task}}</task> hinzugefügt",
 		"subtaskRemoved": "hat die Teilaufgabe <task>{{task}}</task> entfernt",
-		"updatedDescription": "hat die Beschreibung aktualisiert",
+		"linkAdded": "hat den Link {{title}} hinzugefügt",
+		"linkUpdated": "hat den Link {{title}} aktualisiert",
+		"linkRemoved": "hat den Link {{title}} entfernt",
+		"attachmentAdded": "hat {{filename}} angehängt",
+		"attachmentRemoved": "hat den Anhang {{filename}} entfernt",
+		"copiedFrom": "hat diese Aufgabe als Kopie von <task>{{task}}</task> erstellt",
+		"copiedTo": "hat eine Kopie dieser Aufgabe erstellt: <task>{{task}}</task>",
 		"archived": "hat diese Aufgabe archiviert",
+		"unarchived": "hat diese Aufgabe wiederhergestellt",
+		"intake": {
+			"submitted": "hat diese Anfrage eingereicht",
+			"submittedVia": "hat diese Anfrage über {{source}} eingereicht",
+			"accepted": "hat diese Anfrage in {{column}} angenommen",
+			"acceptedBacklog": "hat diese Anfrage ins Backlog übernommen",
+			"declined": "hat diese Anfrage abgelehnt",
+			"declinedWithReason": "hat diese Anfrage abgelehnt: {{note}}",
+			"snoozed": "hat diese Anfrage bis {{date}} zurückgestellt",
+			"unsnoozed": "hat diese Anfrage zurück in die Prüfung geholt",
+			"snoozeEnded": "Die Zurückstellung ist abgelaufen und diese Anfrage ist wieder in Prüfung",
+			"duplicate": "hat diese Anfrage als Duplikat von {{key}} markiert",
+			"duplicateDeleted": "hat diese Anfrage als Duplikat einer gelöschten Aufgabe markiert",
+			"reopened": "hat diese Anfrage wieder geöffnet",
+			"acceptedHidden": "hat diese Anfrage in ein anderes Projekt übernommen",
+			"duplicateHidden": "hat diese Anfrage als Duplikat einer Aufgabe in einem anderen Projekt markiert"
+		},
 		"reactions": {
 			"add": "Reaktion hinzufügen",
 			"error": "Reaktion konnte nicht aktualisiert werden",
@@ -3900,30 +4026,6 @@
 			"reactWith": "Mit {{label}} reagieren",
 			"remove": "Reaktion {{label}} entfernen",
 			"you": "Du"
-		},
-		"unarchived": "hat diese Aufgabe wiederhergestellt",
-		"intake": {
-			"accepted": "hat diese Anfrage in {{column}} angenommen",
-			"acceptedBacklog": "hat diese Anfrage ins Backlog übernommen",
-			"declined": "hat diese Anfrage abgelehnt",
-			"declinedWithReason": "hat diese Anfrage abgelehnt: {{note}}",
-			"duplicate": "hat diese Anfrage als Duplikat von {{key}} markiert",
-			"duplicateDeleted": "hat diese Anfrage als Duplikat einer gelöschten Aufgabe markiert",
-			"reopened": "hat diese Anfrage wieder geöffnet",
-			"snoozed": "hat diese Anfrage bis {{date}} zurückgestellt",
-			"snoozeEnded": "Die Zurückstellung ist abgelaufen und diese Anfrage ist wieder in Prüfung",
-			"submitted": "hat diese Anfrage eingereicht",
-			"submittedVia": "hat diese Anfrage über {{source}} eingereicht",
-			"unsnoozed": "hat diese Anfrage zurück in die Prüfung geholt"
-		},
-		"automation": {
-			"actor": "Automatisierung",
-			"archived_one": "hat diese Aufgabe nach {{count}} Monat ohne Aktualisierungen archiviert",
-			"archived_other": "hat diese Aufgabe nach {{count}} Monaten ohne Aktualisierungen archiviert",
-			"closed_one": "hat diese Aufgabe nach {{count}} Monat ohne Aktualisierungen geschlossen und nach {{to}} verschoben",
-			"closed_other": "hat diese Aufgabe nach {{count}} Monaten ohne Aktualisierungen geschlossen und nach {{to}} verschoben",
-			"rolledOver": "hat diese Aufgabe bei Zyklusende von {{from}} nach {{to}} verschoben",
-			"byRule": "über {{name}}"
 		},
 		"commentVisibility": {
 			"badgeExternal": "Extern",
@@ -3950,21 +4052,49 @@
 			"summary": "▲ {{up}} · ▼ {{down}}",
 			"tooltip": "Stimmen vom öffentlichen Board"
 		},
-		"feed": {
-			"all": "Alle Aktivitäten",
-			"comments": "Kommentare",
-			"label": "Aktivität filtern und sortieren",
-			"newest": "Neueste zuerst",
-			"noMatches": "Mit diesem Filter gibt es nichts anzuzeigen.",
-			"oldest": "Älteste zuerst",
-			"order": "Reihenfolge",
-			"show": "Anzeigen",
-			"updates": "Änderungen"
+		"automation": {
+			"actor": "Automatisierung",
+			"archived_one": "hat diese Aufgabe nach {{count}} Monat ohne Aktualisierungen archiviert",
+			"archived_other": "hat diese Aufgabe nach {{count}} Monaten ohne Aktualisierungen archiviert",
+			"closed_one": "hat diese Aufgabe nach {{count}} Monat ohne Aktualisierungen geschlossen und nach {{to}} verschoben",
+			"closed_other": "hat diese Aufgabe nach {{count}} Monaten ohne Aktualisierungen geschlossen und nach {{to}} verschoben",
+			"rolledOver": "hat diese Aufgabe bei Zyklusende von {{from}} nach {{to}} verschoben",
+			"byRule": "über {{name}}",
+			"rolledOverHidden": "hat diese Aufgabe bei Zyklusende in den nächsten Zyklus verschoben"
 		},
-		"importedFromJira": "hat diese Aufgabe aus Jira {{key}} importiert",
-		"importedFromSource": "hat diese Aufgabe aus {{source}} {{key}} importiert",
 		"movedToTrash": "hat diese Aufgabe in den Papierkorb verschoben",
-		"restoredFromTrash": "hat diese Aufgabe aus dem Papierkorb wiederhergestellt"
+		"restoredFromTrash": "hat diese Aufgabe aus dem Papierkorb wiederhergestellt",
+		"parentRemovedHidden": "hat eine übergeordnete Aufgabe in einem anderen Projekt entfernt",
+		"subtaskAddedHidden": "hat eine Teilaufgabe in einem anderen Projekt hinzugefügt",
+		"subtaskRemovedHidden": "hat eine Teilaufgabe in einem anderen Projekt entfernt",
+		"copiedToHidden": "hat eine Kopie dieser Aufgabe in einem anderen Projekt erstellt",
+		"relationAddedHidden": {
+			"related": "hat diese Aufgabe mit einer Aufgabe in einem anderen Projekt in Beziehung gesetzt",
+			"blocking": "hat diese Aufgabe als blockierend für eine Aufgabe in einem anderen Projekt markiert",
+			"blocked_by": "hat diese Aufgabe als blockiert durch eine Aufgabe in einem anderen Projekt markiert",
+			"duplicate": "hat diese Aufgabe als Duplikat einer Aufgabe in einem anderen Projekt markiert",
+			"start_before": "hat festgelegt, dass diese Aufgabe vor einer Aufgabe in einem anderen Projekt beginnt",
+			"start_after": "hat festgelegt, dass diese Aufgabe nach einer Aufgabe in einem anderen Projekt beginnt",
+			"finish_before": "hat festgelegt, dass diese Aufgabe vor einer Aufgabe in einem anderen Projekt endet",
+			"finish_after": "hat festgelegt, dass diese Aufgabe nach einer Aufgabe in einem anderen Projekt endet"
+		},
+		"relationRemovedHidden": "hat die Beziehung „{{relation}}“ zu einer Aufgabe in einem anderen Projekt entfernt",
+		"parentSetHidden": "hat die übergeordnete Aufgabe auf eine Aufgabe in einem anderen Projekt gesetzt",
+		"parentChangedFromHidden": "hat die übergeordnete Aufgabe von einer Aufgabe in einem anderen Projekt zu <to>{{to}}</to> geändert",
+		"parentChangedToHidden": "hat die übergeordnete Aufgabe von <from>{{from}}</from> zu einer Aufgabe in einem anderen Projekt geändert",
+		"parentChangedBetweenHidden": "hat die übergeordnete Aufgabe zwischen Aufgaben in anderen Projekten geändert",
+		"copiedFromHidden": "hat diese Aufgabe als Kopie einer Aufgabe in einem anderen Projekt erstellt",
+		"movedFromHidden": "hat die Aufgabe aus einem anderen Projekt nach \"{{to}}\" verschoben",
+		"movedToHidden": "hat die Aufgabe von \"{{from}}\" in ein anderes Projekt verschoben",
+		"movedBetweenHidden": "hat die Aufgabe zwischen anderen Projekten verschoben",
+		"changedStatusHidden": "hat den Status in einem anderen Projekt geändert",
+		"addedToHiddenCycle": "hat die Aufgabe zu einem Zyklus hinzugefügt",
+		"removedFromHiddenCycle": "hat die Aufgabe aus einem Zyklus entfernt",
+		"movedCycleFromHidden": "hat die Aufgabe aus einem anderen Zyklus zum Zyklus {{to}} verschoben",
+		"movedCycleToHidden": "hat die Aufgabe vom Zyklus {{from}} in einen anderen Zyklus verschoben",
+		"movedCycleBetweenHidden": "hat die Aufgabe zwischen Zyklen verschoben",
+		"addedToHiddenModule": "hat die Aufgabe zu einem Modul hinzugefügt",
+		"removedFromHiddenModule": "hat die Aufgabe aus einem Modul entfernt"
 	},
 	"tasks": {
 		"recurrence": {
@@ -4022,8 +4152,30 @@
 				"recurredFrom": "hat diese Aufgabe als nächste Wiederholung von <task>{{task}}</task> erstellt",
 				"recurredFromScheduled": "Planmäßig als nächste Wiederholung von <task>{{task}}</task> erstellt",
 				"recurredTo": "hat diese Aufgabe erledigt, wodurch die nächste Wiederholung <task>{{task}}</task> erstellt wurde",
-				"recurredToScheduled": "Die nächste Wiederholung wurde planmäßig erstellt: <task>{{task}}</task>"
+				"recurredToScheduled": "Die nächste Wiederholung wurde planmäßig erstellt: <task>{{task}}</task>",
+				"recurredToHidden": "hat diese Aufgabe erledigt, wodurch die nächste Wiederholung in einem anderen Projekt erstellt wurde",
+				"recurredToScheduledHidden": "Die nächste Wiederholung wurde planmäßig in einem anderen Projekt erstellt",
+				"recurredFromHidden": "hat diese Aufgabe als nächste Wiederholung einer Aufgabe in einem anderen Projekt erstellt",
+				"recurredFromScheduledHidden": "Planmäßig als nächste Wiederholung einer Aufgabe in einem anderen Projekt erstellt"
 			}
+		},
+		"subscription": {
+			"count_one": "{{count}} Person abonniert",
+			"count_other": "{{count}} Personen abonniert",
+			"error": "Dein Abonnement konnte nicht aktualisiert werden",
+			"mutedAssignee": "Dir ist die Aufgabe zugewiesen, du hast sie aber abbestellt. Über Erwähnungen wirst du weiterhin informiert.",
+			"notSubscribed": "Erhalte Updates zu Statusänderungen, Kommentaren und anderen Änderungen.",
+			"reasons": {
+				"assignee": "Du bist abonniert, weil dir die Aufgabe zugewiesen ist.",
+				"commenter": "Du bist abonniert, weil du kommentiert hast.",
+				"creator": "Du hast diese Aufgabe erstellt und bist deshalb abonniert.",
+				"manual": "Du hast diese Aufgabe abonniert.",
+				"mention": "Du bist abonniert, weil du erwähnt wurdest."
+			},
+			"subscribe": "Abonnieren",
+			"toastSubscribed": "Aufgabe abonniert",
+			"toastUnsubscribed": "Abbestellt. Bei Erwähnungen wirst du weiterhin benachrichtigt.",
+			"unsubscribe": "Abbestellen"
 		},
 		"status": {
 			"label": "Status",
@@ -4034,6 +4186,32 @@
 			"archived": "Archiviert",
 			"planned": "Geplant"
 		},
+		"columnGroups": {
+			"backlog": {
+				"description": "Erfasst, aber noch nicht geplant",
+				"label": "Backlog"
+			},
+			"cancelled": {
+				"description": "Geschlossen, ohne die Arbeit auszuführen",
+				"label": "Abgebrochen"
+			},
+			"completed": {
+				"description": "Erledigt",
+				"label": "Abgeschlossen"
+			},
+			"started": {
+				"description": "Arbeit in Bearbeitung",
+				"label": "Begonnen"
+			},
+			"triage": {
+				"description": "Wartet im Eingang auf Prüfung",
+				"label": "Triage"
+			},
+			"unstarted": {
+				"description": "Geplant, Arbeit noch nicht begonnen",
+				"label": "Nicht begonnen"
+			}
+		},
 		"priority": {
 			"label": "Priorität",
 			"no-priority": "Keine Priorität",
@@ -4042,7 +4220,7 @@
 			"high": "Hoch",
 			"urgent": "Dringend"
 		},
-		"boardSearchPlaceholder": "Tickets suchen...",
+		"boardSearchPlaceholder": "Aufgaben suchen...",
 		"view": {
 			"board": "Board",
 			"list": "Liste",
@@ -4059,9 +4237,16 @@
 		},
 		"detail": {
 			"subtaskOf": "Teilaufgabe von",
+			"customFieldUpdated": "Feld aktualisiert",
+			"selectOption": "Option auswählen",
 			"activity": "Aktivität",
 			"noActivity": "Keine Aktivität gefunden",
 			"openInFullPage": "Auf ganzer Seite öffnen",
+			"openOnBoard": "Im Board öffnen",
+			"sheetLabel": "Aufgabendetails",
+			"previousTask": "Vorherige Aufgabe",
+			"nextTask": "Nächste Aufgabe",
+			"position": "{{position}} von {{total}}",
 			"titlePlaceholder": "Klicken, um einen Titel hinzuzufügen",
 			"addDescription": "Beschreibung hinzufügen...",
 			"editor": {
@@ -4191,13 +4376,11 @@
 					"toolbar": "Bildoptionen"
 				}
 			},
-			"customFieldUpdated": "Feld aktualisiert",
-			"selectOption": "Option auswählen",
-			"nextTask": "Nächste Aufgabe",
-			"openOnBoard": "Im Board öffnen",
-			"position": "{{position}} von {{total}}",
-			"previousTask": "Vorherige Aufgabe",
-			"sheetLabel": "Aufgabendetails"
+			"saveError": {
+				"title": "Dein Titel wurde nicht gespeichert. Er steht noch im Feld, du kannst es also erneut versuchen.",
+				"description": "Deine Beschreibung wurde nicht gespeichert. Sie steht noch im Editor, du kannst es also erneut versuchen.",
+				"retry": "Erneut versuchen"
+			}
 		},
 		"entity": {
 			"task": "Aufgabe"
@@ -4365,180 +4548,6 @@
 				"isAnyOf": "ist einer von"
 			}
 		},
-		"gantt": {
-			"pageTitle": "{{name}} – Gantt",
-			"title": "Gantt-Zeitleiste",
-			"searchPlaceholder": "Aufgaben suchen...",
-			"hideTasks": "Aufgaben ausblenden",
-			"showTasks": "Aufgaben anzeigen",
-			"noTasks": "Keine geplanten Aufgaben",
-			"noTasksSubtitle": "Füge Aufgaben ein Startdatum, ein Fälligkeitsdatum oder beides hinzu, um sie auf der Projektzeitleiste zu platzieren.",
-			"noTasksFound": "Keine Aufgaben gefunden",
-			"noTasksMatch": "Keine geplanten Aufgaben entsprechen \"{{query}}\"",
-			"taskHeader": "Aufgabe",
-			"updateDatesError": "Aufgabendaten konnten nicht aktualisiert werden",
-			"resizeStart": "Startdatum anpassen",
-			"resizeDue": "Fälligkeitsdatum anpassen",
-			"taskAriaLabel": "{{title}}: öffnen oder ziehen zum Verschieben",
-			"jumpToToday": "Zu heute springen",
-			"previousPeriod": "Vorheriger Zeitraum",
-			"nextPeriod": "Nächster Zeitraum",
-			"periodStart": "Startdatum der Zeitleiste",
-			"showTaskDates": "Aufgabendaten anzeigen",
-			"dependencyConflict": "Beginnt oder endet nicht in der Reihenfolge einer Abhängigkeit",
-			"dragToSchedule": "{{title}} auf die Zeitachse ziehen",
-			"noDates": "Ohne Datum",
-			"noDatesCount": "Ohne Datum · {{count}}",
-			"noDatesHint": "Auf die Zeitachse ziehen oder ab heute terminieren.",
-			"schedule": "Terminieren",
-			"scheduleTask": "{{title}} ab heute terminieren",
-			"zoom": "Zeitachsen-Zoom",
-			"zoomMonth": "Monat",
-			"zoomQuarter": "Quartal",
-			"zoomWeek": "Woche"
-		},
-		"delete": {
-			"title": "Aufgabe löschen?",
-			"description": "Die Aufgabe und ihre Teilaufgaben werden in den Papierkorb des Projekts verschoben. Du kannst sie unter „Zuletzt gelöscht“ in den Projekteinstellungen wiederherstellen.",
-			"action": "Aufgabe löschen",
-			"success": "Aufgabe in den Papierkorb verschoben",
-			"error": "Aufgabe konnte nicht gelöscht werden"
-		},
-		"archive": {
-			"success": "{{count}} Aufgaben archiviert",
-			"archived": "Aufgabe archiviert",
-			"badge": "Archiviert",
-			"error": "Aufgabe konnte nicht archiviert werden",
-			"restore": "Wiederherstellen",
-			"restored": "Aufgabe wiederhergestellt",
-			"restoreError": "Aufgabe konnte nicht wiederhergestellt werden"
-		},
-		"listView": {
-			"addTask": "Aufgabe hinzufügen",
-			"archiveAllTooltip": "Alle abgeschlossenen Aufgaben archivieren",
-			"noTasks": "Keine Aufgaben"
-		},
-		"kanban": {
-			"addTask": "Aufgabe hinzufügen",
-			"stages": "Spalten",
-			"emptyAction": "Aufgabe hinzufügen",
-			"emptyTitle": "Noch keine Aufgaben"
-		},
-		"pr": {
-			"merged": "Zusammengeführt",
-			"draft": "Entwurf",
-			"open": "Offen",
-			"label": "Pull-Request",
-			"count_one": "{{count}} PR",
-			"count_other": "{{count}} PRs"
-		},
-		"assignee": {
-			"label": "Zugewiesene",
-			"unassigned": "Nicht zugewiesen"
-		},
-		"dueDate": {
-			"label": "Fälligkeitsdatum",
-			"clear": "Datum entfernen",
-			"updateSuccess": "Fälligkeitsdatum erfolgreich aktualisiert",
-			"updateError": "Fälligkeitsdatum konnte nicht aktualisiert werden",
-			"clearSuccess": "Fälligkeitsdatum entfernt",
-			"clearError": "Fälligkeitsdatum konnte nicht entfernt werden"
-		},
-		"update": {
-			"success": "Aufgabe erfolgreich aktualisiert",
-			"error": "Aufgabe konnte nicht aktualisiert werden"
-		},
-		"contextMenu": {
-			"copyLink": "Link kopieren",
-			"copyLinkSuccess": "Aufgabenlink kopiert",
-			"estimate": "Schätzung"
-		},
-		"actions": {
-			"archive": "Archivieren",
-			"markAsPlanned": "Als geplant markieren",
-			"delete": "Löschen...",
-			"copyKey": "Aufgabenschlüssel kopieren",
-			"copyLink": "Link kopieren",
-			"makeCopy": "Kopie erstellen…",
-			"moreActions": "Weitere Aktionen"
-		},
-		"bulk": {
-			"selectedCount": "{{count}} ausgewählt",
-			"moveToBacklog": "In Backlog verschieben",
-			"moveToBacklogSuccess": "{{count}} Aufgaben ins Backlog verschoben",
-			"moveToBacklogError": "Aufgaben konnten nicht ins Backlog verschoben werden",
-			"moveToBoard": "In Board verschieben",
-			"moveToBoardSuccess": "{{count}} Aufgaben aufs Board verschoben",
-			"moveToBoardError": "Aufgaben konnten nicht aufs Board verschoben werden",
-			"delete": "Aufgaben löschen",
-			"deleteConfirm": "{{count}} Aufgaben in den Papierkorb verschieben? Du kannst sie unter „Zuletzt gelöscht“ in den Projekteinstellungen wiederherstellen.",
-			"deleteSuccess": "{{count}} Aufgaben gelöscht",
-			"deleteError": "Aufgaben konnten nicht gelöscht werden",
-			"archive": "Aufgaben archivieren",
-			"archiveSuccess": "{{count}} Aufgaben archiviert",
-			"archiveError": "Aufgaben konnten nicht archiviert werden",
-			"updateSuccess": "{{count}} Aufgaben aktualisiert",
-			"updateError": "Aufgaben konnten nicht aktualisiert werden",
-			"setPriority": "Priorität festlegen",
-			"updatePriorityError": "Priorität konnte nicht aktualisiert werden",
-			"addLabel": "Label hinzufügen",
-			"addLabelSuccess": "Label zu {{count}} Aufgaben hinzugefügt",
-			"addLabelError": "Label konnte nicht hinzugefügt werden",
-			"setDueDate": "Fälligkeitsdatum festlegen",
-			"updateDueDateError": "Fälligkeitsdatum konnte nicht aktualisiert werden",
-			"actions": "Aktionen",
-			"searchActions": "Aktionen suchen...",
-			"noActionsFound": "Keine Aktionen gefunden.",
-			"changeStatus": "Status ändern",
-			"removeLabel": "Label entfernen",
-			"removeLabelSuccess": "Label von {{count}} Aufgaben entfernt",
-			"removeLabelError": "Label konnte nicht entfernt werden",
-			"unarchive": "Aus dem Archiv wiederherstellen",
-			"unarchiveSuccess": "{{count}} Aufgaben wiederhergestellt",
-			"unarchiveNone": "Keine der ausgewählten Aufgaben ist archiviert",
-			"unarchiveError": "Aufgaben konnten nicht wiederhergestellt werden",
-			"setDates": "Daten",
-			"dateField": "Zu setzendes Datum",
-			"startDate": "Startdatum",
-			"dueDate": "Fälligkeitsdatum",
-			"clearStartDate": "Startdatum entfernen",
-			"clearDueDate": "Fälligkeitsdatum entfernen",
-			"updateStartDateError": "Startdatum konnte nicht aktualisiert werden. Ein Startdatum darf nicht nach dem Fälligkeitsdatum einer Aufgabe liegen.",
-			"addAssignee": "Zugewiesene Person hinzufügen",
-			"addAssigneeSuccess_one": "{{name}} zu {{count}} Aufgabe hinzugefügt",
-			"addAssigneeSuccess_other": "{{name}} zu {{count}} Aufgaben hinzugefügt",
-			"assigneesError": "Zugewiesene konnten nicht aktualisiert werden",
-			"clearAssignees": "Alle Zugewiesenen entfernen",
-			"clearAssigneesSuccess_one": "Zugewiesene bei {{count}} Aufgabe entfernt",
-			"clearAssigneesSuccess_other": "Zugewiesene bei {{count}} Aufgaben entfernt",
-			"removeAssignee": "Zugewiesene Person entfernen",
-			"removeAssigneeSuccess_one": "{{name}} aus {{count}} Aufgabe entfernt",
-			"removeAssigneeSuccess_other": "{{name}} aus {{count}} Aufgaben entfernt",
-			"clearSelection": "Auswahl aufheben"
-		},
-		"editor": {
-			"table": {
-				"addColumnBefore": "Spalte links einfügen",
-				"addColumnAfter": "Spalte rechts einfügen",
-				"deleteColumn": "Spalte löschen",
-				"addRowBefore": "Zeile oberhalb einfügen",
-				"addRowAfter": "Zeile unterhalb einfügen",
-				"deleteRow": "Zeile löschen",
-				"deleteTable": "Tabelle löschen",
-				"moveRowUp": "Zeile nach oben verschieben",
-				"moveRowDown": "Zeile nach unten verschieben",
-				"moveColumnLeft": "Spalte nach links verschieben",
-				"moveColumnRight": "Spalte nach rechts verschieben",
-				"toggleHeaderRow": "Kopfzeile",
-				"fullWidth": "Volle Breite",
-				"dragRow": "Zeile {{index}}",
-				"dragColumn": "Spalte {{index}}",
-				"dragRowHint": "Ziehen, um die Zeile zu verschieben, oder die Pfeiltasten verwenden",
-				"dragColumnHint": "Ziehen, um die Spalte zu verschieben, oder die Pfeiltasten verwenden",
-				"insertRowHere": "Hier eine Zeile einfügen",
-				"insertColumnHere": "Hier eine Spalte einfügen"
-			}
-		},
 		"calendar": {
 			"dayTasksAriaLabel": "Alle Aufgaben für {{date}} anzeigen",
 			"moreTasks": "+{{count}} weitere",
@@ -4561,436 +4570,89 @@
 			"week": "Woche",
 			"overdue": "Überfällig"
 		},
-		"descriptionSearchLoading": "Vollständige Beschreibungen werden durchsucht…",
-		"descriptionSearchError": "Die Suche in Beschreibungen ist fehlgeschlagen. Ergebnisse sind möglicherweise unvollständig.",
-		"descriptionRetry": "Erneut versuchen",
-		"descriptionLoading": "Beschreibung wird geladen…",
-		"descriptionLoadError": "Die Beschreibung konnte nicht geladen werden. Versuche es erneut, um die aktuelle Version zu laden.",
-		"columnGroups": {
-			"backlog": {
-				"description": "Erfasst, aber noch nicht geplant",
-				"label": "Backlog"
+		"gantt": {
+			"pageTitle": "{{name}} – Gantt",
+			"title": "Gantt-Zeitleiste",
+			"jumpToToday": "Zu heute springen",
+			"searchPlaceholder": "Aufgaben suchen...",
+			"hideTasks": "Aufgaben ausblenden",
+			"showTasks": "Aufgaben anzeigen",
+			"noTasks": "Keine geplanten Aufgaben",
+			"noTasksSubtitle": "Füge Aufgaben ein Startdatum, ein Fälligkeitsdatum oder beides hinzu, um sie auf der Projektzeitleiste zu platzieren.",
+			"noTasksFound": "Keine Aufgaben gefunden",
+			"noTasksMatch": "Keine geplanten Aufgaben entsprechen \"{{query}}\"",
+			"taskHeader": "Aufgabe",
+			"updateDatesError": "Aufgabendaten konnten nicht aktualisiert werden",
+			"resizeStart": "Startdatum anpassen",
+			"resizeDue": "Fälligkeitsdatum anpassen",
+			"taskAriaLabel": "{{title}}: öffnen oder ziehen zum Verschieben",
+			"previousPeriod": "Vorheriger Zeitraum",
+			"nextPeriod": "Nächster Zeitraum",
+			"periodStart": "Startdatum der Zeitleiste",
+			"showTaskDates": "Aufgabendaten anzeigen",
+			"zoom": "Zeitachsen-Zoom",
+			"zoomWeek": "Woche",
+			"zoomMonth": "Monat",
+			"zoomQuarter": "Quartal",
+			"noDates": "Ohne Datum",
+			"noDatesCount": "Ohne Datum · {{count}}",
+			"noDatesHint": "Auf die Zeitachse ziehen oder ab heute terminieren.",
+			"schedule": "Terminieren",
+			"scheduleTask": "{{title}} ab heute terminieren",
+			"dragToSchedule": "{{title}} auf die Zeitachse ziehen",
+			"dependencyConflict": "Beginnt oder endet nicht in der Reihenfolge einer Abhängigkeit",
+			"workspaceNoTasksSubtitle": "Füge Aufgaben ein Startdatum, ein Fälligkeitsdatum oder beides hinzu, um sie auf dieser Zeitleiste zu sehen.",
+			"showMoreTasks": "Mehr Aufgaben anzeigen",
+			"blocked": "Durch eine offene Aufgabe blockiert",
+			"linkFrom": "{{title}} mit einer anderen Aufgabe verknüpfen",
+			"linkHint": "Auf eine andere Aufgabe ziehen, damit sie auf diese wartet",
+			"link": {
+				"blocks": "{{source}} blockiert {{target}}",
+				"startBefore": "{{source}} beginnt vor {{target}}",
+				"finishBefore": "{{source}} endet vor {{target}}",
+				"conflict": "Die Termine passen nicht zu dieser Verknüpfung."
 			},
-			"cancelled": {
-				"description": "Geschlossen, ohne die Arbeit auszuführen",
-				"label": "Abgebrochen"
+			"milestone": {
+				"add": "Meilenstein",
+				"ariaLabel": "Meilenstein {{title}}: öffnen oder ziehen zum Verschieben",
+				"name": "Name des Meilensteins",
+				"namePlaceholder": "Name des Meilensteins",
+				"date": "Datum des Meilensteins",
+				"create": "Meilenstein hinzufügen",
+				"createError": "Der Meilenstein konnte nicht hinzugefügt werden"
 			},
-			"completed": {
-				"description": "Erledigt",
-				"label": "Abgeschlossen"
-			},
-			"started": {
-				"description": "Arbeit in Bearbeitung",
-				"label": "Begonnen"
-			},
-			"triage": {
-				"description": "Wartet im Eingang auf Prüfung",
-				"label": "Triage"
-			},
-			"unstarted": {
-				"description": "Geplant, Arbeit noch nicht begonnen",
-				"label": "Nicht begonnen"
+			"cascade": {
+				"offer_one": "1 verknüpfte Aufgabe beginnt jetzt zu früh",
+				"offer_other": "{{count}} verknüpfte Aufgaben beginnen jetzt zu früh",
+				"reviewAction": "Datumsänderungen prüfen",
+				"title_one": "1 verknüpfte Aufgabe verschieben?",
+				"title_other": "{{count}} verknüpfte Aufgaben verschieben?",
+				"description": "Diese Aufgaben würden gerade so weit nach hinten rücken, dass sie zu ihren Verknüpfungen passen, und behalten ihre Dauer. Erst nach deiner Bestätigung ändert sich etwas.",
+				"to": "auf",
+				"cancel": "Termine beibehalten",
+				"confirm_one": "1 Aufgabe verschieben",
+				"confirm_other": "{{count}} Aufgaben verschieben",
+				"moved_one": "1 Aufgabe verschoben",
+				"moved_other": "{{count}} Aufgaben verschoben",
+				"partial": "{{moved}} von {{total}} Aufgaben verschoben. Die übrigen behalten ihre Termine.",
+				"nothingToMove": "Für diese Verknüpfung muss keine offene Aufgabe mit Terminen verschoben werden."
 			}
 		},
-		"estimate": {
-			"bulk": {
-				"action": "Schätzung",
-				"error": "Schätzung der ausgewählten Aufgaben konnte nicht geändert werden",
-				"updated_one": "Schätzung von {{count}} Aufgabe aktualisiert",
-				"updated_other": "Schätzung von {{count}} Aufgaben aktualisiert"
-			},
-			"chart": {
-				"points": "Punkte",
-				"pointsLeft": "Verbleibende Punkte",
-				"summaryPoints": "{{remaining}} von {{scope}} Punkten übrig, {{days}} Tage verbleibend",
-				"summaryTime": "{{remaining}} von {{scope}} übrig, {{days}} Tage verbleibend",
-				"tasks": "Aufgaben",
-				"time": "Zeit",
-				"timeLeft": "Verbleibende Zeit",
-				"unitAria": "Diagrammeinheit"
-			},
-			"duration": {
-				"hours": "{{hours}} Std.",
-				"hoursMinutes": "{{hours}} Std. {{minutes}} Min.",
-				"hourUnit": "h",
-				"minutes": "{{minutes}} Min.",
-				"minuteUnit": "m"
-			},
-			"label": "Schätzung",
-			"none": "Keine Schätzung",
-			"pointsValue_one": "{{value}} Pkt.",
-			"pointsValue_other": "{{value}} Pkt.",
-			"setAria": "Schätzung festlegen",
-			"totals": {
-				"estimated": "{{estimated}} von {{total}} Aufgaben geschätzt",
-				"points_one": "{{completed}} / {{total}} Pkt.",
-				"points_other": "{{completed}} / {{total}} Pkt.",
-				"time": "{{completed}} / {{total}}"
-			},
-			"updateError": "Schätzung konnte nicht aktualisiert werden"
+		"delete": {
+			"title": "Aufgabe löschen?",
+			"description": "Die Aufgabe und ihre Teilaufgaben werden in den Papierkorb des Projekts verschoben. Du kannst sie unter „Zuletzt gelöscht“ in den Projekteinstellungen wiederherstellen.",
+			"action": "Aufgabe löschen",
+			"success": "Aufgabe in den Papierkorb verschoben",
+			"error": "Aufgabe konnte nicht gelöscht werden"
 		},
-		"assignees": {
-			"clear": "Alle entfernen",
-			"formerMember": "Kein Mitglied mehr",
-			"formerMemberSuffix": "{{name}} (kein Mitglied mehr)",
-			"label": "Zugewiesene",
-			"limitReached": "Eine Aufgabe kann bis zu {{count}} Zugewiesene haben",
-			"more": "+{{count}}",
-			"nameAndMore": "{{name}} +{{count}}",
-			"noMatches": "Keine passenden Personen",
-			"noMembers": "Noch keine Mitglieder zum Zuweisen",
-			"searchPlaceholder": "Personen suchen...",
-			"stackAria": "Zugewiesen an {{names}}",
-			"unknownPerson": "Unbekannte Person",
-			"updateError": "Zugewiesene konnten nicht aktualisiert werden",
-			"you": "{{name}} (du)"
-		},
-		"attachments": {
-			"add": "Datei anhängen",
-			"delete": "Löschen",
-			"deleteConfirmDescription": "Die Datei wird für alle entfernt. Diese Aktion kann nicht rückgängig gemacht werden.",
-			"deleteConfirmTitle": "{{filename}} löschen?",
-			"download": "Herunterladen",
-			"dropHere": "Dateien hier ablegen oder klicken, um sie auszuwählen",
-			"dropToAttach": "Dateien zum Anhängen hier ablegen",
-			"loadError": "Anhänge konnten nicht geladen werden",
-			"meta": "{{size}} · {{name}} · {{time}}",
-			"metaNoUser": "{{size}} · {{time}}",
-			"open": "Öffnen",
-			"title": "Anhänge",
-			"toast": {
-				"attached_one": "{{count}} Datei angehängt",
-				"attached_other": "{{count}} Dateien angehängt",
-				"deleted": "Anhang gelöscht",
-				"deleteError": "Anhang konnte nicht gelöscht werden",
-				"empty": "{{filename}} ist leer",
-				"failed": "{{filename}} konnte nicht angehängt werden: {{reason}}",
-				"notConfigured": "Datei-Uploads sind auf diesem Server nicht eingerichtet. Bitte deinen Administrator, den Speicher zu konfigurieren.",
-				"storageError": "der Speicher hat den Upload abgelehnt",
-				"tooMany": "Du kannst bis zu {{count}} Dateien gleichzeitig anhängen",
-				"unknownError": "etwas ist schiefgelaufen"
-			},
-			"uploading": "Wird hochgeladen…"
-		},
-		"copy": {
-			"alwaysCopied": "Status und Priorität werden immer kopiert.",
-			"cancel": "Abbrechen",
-			"includeLabel": "Einschließen",
-			"options": {
-				"assignees": "Zugewiesene",
-				"attachments": "Anhänge",
-				"customFields": "Werte für benutzerdefinierte Felder",
-				"dates": "Start- und Fälligkeitsdatum",
-				"description": "Beschreibung",
-				"labels": "Labels",
-				"links": "Links",
-				"parent": "Übergeordnete Aufgabe",
-				"planning": "Zyklus, Module und Schätzung"
-			},
-			"otherProjectHint": "Der Status wird den Spalten des neuen Projekts zugeordnet. Benutzerdefinierte Felder, die übergeordnete Aufgabe und die Planung werden nicht projektübergreifend kopiert.",
-			"projectLabel": "Projekt",
-			"submit": "Kopie erstellen",
-			"title": "Kopie von {{key}} erstellen",
-			"titleLabel": "Titel",
-			"titleRequired": "Titel ist erforderlich",
-			"titleSuffix": "{{title}} (Kopie)",
-			"toast": {
-				"error": "Kopie konnte nicht erstellt werden",
-				"open": "Öffnen",
-				"skipped": "Nicht kopiert: {{list}}",
-				"success": "Kopie erstellt: {{key}}"
-			}
-		},
-		"detailActions": {
-			"addLink": "Link hinzufügen",
-			"addRelation": "Beziehung hinzufügen",
-			"addSubtask": "Teilaufgabe hinzufügen",
-			"attachFile": "Datei anhängen"
-		},
-		"links": {
-			"add": "Link hinzufügen",
-			"addedAt": "Hinzugefügt am {{date}}",
-			"addedBy": "Hinzugefügt von {{name}} · {{date}}",
-			"addTitle": "Link hinzufügen",
-			"cancel": "Abbrechen",
-			"copyUrl": "URL kopieren",
-			"edit": "Bearbeiten",
-			"editTitle": "Link bearbeiten",
-			"errors": {
-				"credentials": "Links dürfen keinen Benutzernamen und kein Passwort enthalten",
-				"duplicate": "Dieser Link ist bereits bei dieser Aufgabe vorhanden",
-				"invalid": "Gib eine gültige http- oder https-URL ein",
-				"required": "URL ist erforderlich",
-				"titleTooLong": "Titel dürfen höchstens 255 Zeichen lang sein",
-				"tooLong": "Links dürfen höchstens 2.048 Zeichen lang sein"
-			},
-			"linkTitle": "Titel",
-			"loadError": "Links konnten nicht geladen werden",
-			"moreActions": "Linkaktionen",
-			"remove": "Entfernen",
-			"removeConfirmDescription": "Er wird für alle von der Aufgabe entfernt.",
-			"removeConfirmTitle": "Diesen Link entfernen?",
-			"retry": "Erneut versuchen",
-			"save": "Speichern",
-			"title": "Links",
-			"titlePlaceholder": "Optionaler Anzeigetitel",
-			"toast": {
-				"added": "Link hinzugefügt",
-				"copied": "Link kopiert",
-				"error": "Link konnte nicht gespeichert werden",
-				"removed": "Link entfernt",
-				"updated": "Link aktualisiert"
-			},
-			"url": "URL",
-			"urlPlaceholder": "https://example.com"
-		},
-		"create": {
-			"similarTitle": "Ähnliche offene Aufgaben",
-			"similarDismiss": "Ähnliche Aufgaben ausblenden",
-			"similarOpen": "Öffnen",
-			"similarOpenLabel": "{{key}} {{title}} in einem neuen Tab öffnen"
-		},
-		"parent": {
-			"add": "Übergeordnete Aufgabe hinzufügen",
-			"chip": "Übergeordnet",
-			"label": "Übergeordnete Aufgabe",
-			"noTasks": "Keine Aufgaben gefunden",
-			"remove": "Übergeordnete Aufgabe entfernen",
-			"search": "Aufgaben suchen…",
-			"tasksInProject": "Aufgaben in diesem Projekt",
-			"toast": {
-				"error": "Übergeordnete Aufgabe konnte nicht geändert werden",
-				"removed": "Übergeordnete Aufgabe entfernt",
-				"set": "Übergeordnete Aufgabe auf {{key}} gesetzt"
-			},
-			"tooltip": "Übergeordnet: {{key}} {{title}}"
-		},
-		"taskKey": {
-			"clipboardError": "Konnte nicht in die Zwischenablage kopiert werden",
-			"copied": "{{key}} kopiert",
-			"copyTooltip": "Aufgabenschlüssel kopieren"
-		},
-		"display": {
-			"button": "Anzeige",
-			"columns": "Spalten",
-			"groupBy": "Gruppieren nach",
-			"groups": {
-				"assignee": "Zugewiesen",
-				"createdBy": "Erstellt von",
-				"cycle": "Zyklus",
-				"estimate": "Schätzung",
-				"group": "Gruppe",
-				"label": "Label",
-				"module": "Modul",
-				"priority": "Priorität",
-				"project": "Projekt",
-				"status": "Status"
-			},
-			"none": "Keine",
-			"order": {
-				"assignee": "Zugewiesen",
-				"completedAt": "Abschlussdatum",
-				"createdAt": "Zuletzt erstellt",
-				"cycle": "Zyklus",
-				"dueDate": "Fälligkeitsdatum",
-				"estimate": "Schätzung",
-				"label": "Label",
-				"manual": "Manuell",
-				"module": "Modul",
-				"number": "Aufgabenschlüssel",
-				"priority": "Priorität",
-				"startDate": "Startdatum",
-				"status": "Status",
-				"subTaskCount": "Unteraufgaben",
-				"title": "Titel",
-				"updatedAt": "Zuletzt aktualisiert",
-				"archivedAt": "Archivierungsdatum"
-			},
-			"orderBy": "Sortieren nach",
-			"properties": "Eigenschaften",
-			"props": {
-				"assignee": "Zugewiesene",
-				"checklist": "Checkliste",
-				"createdAt": "Erstellt",
-				"cycle": "Zyklus",
-				"dueDate": "Fälligkeitsdatum",
-				"estimate": "Schätzung",
-				"key": "Schlüssel",
-				"labels": "Labels",
-				"modules": "Module",
-				"priority": "Priorität",
-				"startDate": "Startdatum",
-				"status": "Status",
-				"subTaskCount": "Unteraufgaben",
-				"updatedAt": "Aktualisiert"
-			},
-			"showEmptyGroups": "Leere Gruppen anzeigen",
-			"showSubTasks": "Unteraufgaben anzeigen",
-			"subGroupBy": "Untergruppieren nach"
-		},
-		"filters": {
-			"apply": "Anwenden",
-			"applyError": "Filter konnten nicht angewendet werden",
-			"archived": {
-				"exclude": "Archivierte ausblenden",
-				"include": "Auch Archivierte anzeigen",
-				"label": "Archiviert",
-				"only": "Nur Archivierte"
-			},
-			"button": "Filter",
-			"clearAll": "Alle Filter zurücksetzen",
-			"dates": {
-				"amount": "Anzahl",
-				"custom": "Eigenes Datum…",
-				"emptyTab": "Leer",
-				"exact": "Genaues Datum",
-				"future": "Nach heute",
-				"lastMonth": "Letzter Monat",
-				"lastWeek": "Letzte Woche",
-				"nextMonth": "Nächster Monat",
-				"nextWeek": "Nächste Woche",
-				"overdue": "Überfällig",
-				"past": "Vor heute",
-				"presets": "Voreinstellungen",
-				"rolling": "Gleitend",
-				"rollingValue": "{{amount}} {{unit}}",
-				"thisMonth": "Dieser Monat",
-				"thisWeek": "Diese Woche",
-				"today": "Heute",
-				"tomorrow": "Morgen",
-				"units": {
-					"days": "Tage",
-					"months": "Monate",
-					"weeks": "Wochen"
-				},
-				"yesterday": "Gestern"
-			},
-			"matchAll": "Alle erfüllen",
-			"matchAny": "Beliebige erfüllen",
-			"mobileSummary_one": "{{count}} Filter",
-			"mobileSummary_other": "{{count}} Filter",
-			"nestedReadOnly": "Diese Ansicht verwendet erweiterte Filter, die hier nicht bearbeitet werden können",
-			"noOptions": "Keine Optionen",
-			"operators": {
-				"between": "zwischen",
-				"is": "ist",
-				"isEmpty": "ist leer",
-				"isNoneOf": "ist keines von",
-				"isNot": "ist nicht",
-				"isNotEmpty": "ist nicht leer",
-				"moreThanAgo": "vor mehr als …",
-				"moreThanAhead": "in mehr als …",
-				"on": "am",
-				"onOrAfter": "am oder nach",
-				"onOrBefore": "am oder vor",
-				"withinLast": "in den letzten",
-				"withinNext": "in den nächsten"
-			},
-			"removeFilter": "Filter {{subject}} entfernen",
-			"retry": "Erneut versuchen",
-			"searchOptions": "Optionen durchsuchen",
-			"subjects": {
-				"completed": "Abgeschlossen",
-				"created": "Erstellt",
-				"createdBy": "Erstellt von",
-				"cycle": "Zyklus",
-				"group": "Gruppe",
-				"mentions": "Erwähnungen",
-				"module": "Modul",
-				"parent": "Übergeordnet",
-				"project": "Projekt",
-				"startDate": "Startdatum",
-				"subscribed": "Abonniert",
-				"updated": "Aktualisiert"
-			},
-			"tooMany": "Zu viele Treffer zum Filtern hier; öffne die Tabelle",
-			"values": {
-				"currentCycle": "Aktueller Zyklus",
-				"false": "Falsch",
-				"me": "Ich",
-				"noAssignee": "Keine zugewiesene Person",
-				"noCreator": "Kein Ersteller",
-				"noCycle": "Kein Zyklus",
-				"noEstimate": "Keine Schätzung",
-				"noLabel": "Kein Label",
-				"noModule": "Kein Modul",
-				"none": "Keine",
-				"noParent": "Keine übergeordnete Aufgabe",
-				"true": "Wahr"
-			}
-		},
-		"groups": {
-			"all": "Alle Aufgaben",
-			"hiddenGroups_one": "{{count}} weitere Gruppe nicht angezeigt",
-			"hiddenGroups_other": "{{count}} weitere Gruppen nicht angezeigt",
-			"loadMore": "Mehr laden ({{count}})",
-			"moduleCount_one": "{{count}} Modul",
-			"moduleCount_other": "{{count}} Module",
-			"moveError": "Aufgabe konnte nicht verschoben werden",
-			"noAssignee": "Keine zugewiesene Person",
-			"noCreator": "Kein Ersteller",
-			"noCycle": "Kein Zyklus",
-			"noEstimate": "Keine Schätzung",
-			"noLabel": "Kein Label",
-			"noModule": "Kein Modul",
-			"planned": "Geplant"
-		},
-		"queryEmpty": {
-			"clear": "Filter zurücksetzen",
-			"description": "Entferne versuchsweise einen oder zwei Filter.",
-			"title": "Keine Aufgaben passen zu diesen Filtern"
-		},
-		"spreadsheet": {
-			"clearSort": "Sortierung aufheben",
-			"collapseSubTasks": "Unteraufgaben ausblenden",
-			"expandSubTasks": "Unteraufgaben anzeigen",
-			"hideColumn": "Spalte ausblenden",
-			"loadError": "Aufgaben konnten nicht geladen werden",
-			"selectTask": "{{key}} auswählen",
-			"sortAsc": "Aufsteigend sortieren",
-			"sortDesc": "Absteigend sortieren",
-			"task": "Aufgabe"
-		},
-		"subscription": {
-			"count_one": "{{count}} Person abonniert",
-			"count_other": "{{count}} Personen abonniert",
-			"error": "Dein Abonnement konnte nicht aktualisiert werden",
-			"mutedAssignee": "Dir ist die Aufgabe zugewiesen, du hast sie aber abbestellt. Über Erwähnungen wirst du weiterhin informiert.",
-			"notSubscribed": "Erhalte Updates zu Statusänderungen, Kommentaren und anderen Änderungen.",
-			"reasons": {
-				"assignee": "Du bist abonniert, weil dir die Aufgabe zugewiesen ist.",
-				"commenter": "Du bist abonniert, weil du kommentiert hast.",
-				"creator": "Du hast diese Aufgabe erstellt und bist deshalb abonniert.",
-				"manual": "Du hast diese Aufgabe abonniert.",
-				"mention": "Du bist abonniert, weil du erwähnt wurdest."
-			},
-			"subscribe": "Abonnieren",
-			"toastSubscribed": "Aufgabe abonniert",
-			"toastUnsubscribed": "Abbestellt. Bei Erwähnungen wirst du weiterhin benachrichtigt.",
-			"unsubscribe": "Abbestellen"
-		},
-		"timeTracking": {
-			"duration": "Dauer",
-			"durationInvalid": "Gib eine Dauer zwischen 1 Minute und 24 Stunden ein, z. B. 1h 30m.",
-			"durationPlaceholder": "z. B. 1h 30m",
-			"empty": "Noch keine Zeit erfasst",
-			"entries": "Zeiteinträge",
-			"formerMember": "Ehemaliges Mitglied",
-			"hours": "{{hours}} Std.",
-			"hoursMinutes": "{{hours}} Std. {{minutes}} Min.",
-			"label": "Aufgewendete Zeit",
-			"logError": "Die Zeit konnte nicht erfasst werden",
-			"logged": "Zeit erfasst",
-			"logTime": "Zeit erfassen",
-			"minutes": "{{minutes}} Min.",
-			"note": "Notiz (optional)",
-			"running": "Läuft",
-			"spentAria": "Aufgewendete Zeit: {{total}}. Zeit erfassen",
-			"submit": "Zeit erfassen",
-			"deleteConfirm": "Diesen Eintrag löschen?",
-			"deleted": "Zeiteintrag gelöscht",
-			"deleteEntry": "Zeiteintrag vom {{date}} löschen",
-			"deleteError": "Der Zeiteintrag konnte nicht gelöscht werden"
+		"archive": {
+			"success": "{{count}} Aufgaben archiviert",
+			"archived": "Aufgabe archiviert",
+			"badge": "Archiviert",
+			"error": "Aufgabe konnte nicht archiviert werden",
+			"restore": "Wiederherstellen",
+			"restored": "Aufgabe wiederhergestellt",
+			"restoreError": "Aufgabe konnte nicht wiederhergestellt werden"
 		},
 		"archivedBanner": {
 			"message": "Diese Aufgabe wurde {{time}} archiviert.",
@@ -5063,8 +4725,604 @@
 			},
 			"untitled": "Unbenannter Entwurf"
 		},
+		"listView": {
+			"addTask": "Aufgabe hinzufügen",
+			"archiveAllTooltip": "Alle abgeschlossenen Aufgaben archivieren",
+			"noTasks": "Keine Aufgaben"
+		},
+		"kanban": {
+			"addTask": "Aufgabe hinzufügen",
+			"stages": "Spalten",
+			"emptyAction": "Aufgabe hinzufügen",
+			"emptyTitle": "Noch keine Aufgaben"
+		},
+		"pr": {
+			"merged": "Zusammengeführt",
+			"draft": "Entwurf",
+			"open": "Offen",
+			"label": "Pull-Request",
+			"count_one": "{{count}} PR",
+			"count_other": "{{count}} PRs"
+		},
+		"assignee": {
+			"label": "Zugewiesene",
+			"unassigned": "Nicht zugewiesen"
+		},
+		"assignees": {
+			"label": "Zugewiesene",
+			"searchPlaceholder": "Personen suchen...",
+			"noMatches": "Keine passenden Personen",
+			"noMembers": "Noch keine Mitglieder zum Zuweisen",
+			"you": "{{name}} (du)",
+			"clear": "Alle entfernen",
+			"more": "+{{count}}",
+			"nameAndMore": "{{name}} +{{count}}",
+			"stackAria": "Zugewiesen an {{names}}",
+			"formerMember": "Kein Mitglied mehr",
+			"formerMemberSuffix": "{{name}} (kein Mitglied mehr)",
+			"limitReached": "Eine Aufgabe kann bis zu {{count}} Zugewiesene haben",
+			"updateError": "Zugewiesene konnten nicht aktualisiert werden",
+			"unknownPerson": "Unbekannte Person",
+			"noAccess": "Kein Zugriff auf dieses Projekt",
+			"noAccessSuffix": "{{name}} (kein Zugriff auf dieses Projekt)"
+		},
+		"dueDate": {
+			"label": "Fälligkeitsdatum",
+			"clear": "Datum entfernen",
+			"updateSuccess": "Fälligkeitsdatum erfolgreich aktualisiert",
+			"updateError": "Fälligkeitsdatum konnte nicht aktualisiert werden",
+			"clearSuccess": "Fälligkeitsdatum entfernt",
+			"clearError": "Fälligkeitsdatum konnte nicht entfernt werden"
+		},
+		"update": {
+			"success": "Aufgabe erfolgreich aktualisiert",
+			"error": "Aufgabe konnte nicht aktualisiert werden"
+		},
+		"contextMenu": {
+			"copyLink": "Link kopieren",
+			"copyLinkSuccess": "Aufgabenlink kopiert",
+			"estimate": "Schätzung"
+		},
+		"actions": {
+			"archive": "Archivieren",
+			"markAsPlanned": "Als geplant markieren",
+			"delete": "Löschen...",
+			"copyKey": "Aufgabenschlüssel kopieren",
+			"copyLink": "Link kopieren",
+			"makeCopy": "Kopie erstellen…",
+			"moreActions": "Weitere Aktionen"
+		},
+		"commands": {
+			"assignedSelf": "Dir zugewiesen",
+			"assignees": "Zugewiesene ändern …",
+			"assignSelf": "Mir zuweisen",
+			"copyTitle": "Titel kopieren",
+			"cycle": "Zyklus ändern …",
+			"dueDate": "Fälligkeitsdatum ändern …",
+			"estimate": "Schätzung ändern …",
+			"group": "Diese Aufgabe",
+			"labels": "Labels ändern …",
+			"module": "Module ändern …",
+			"priority": "Priorität ändern …",
+			"status": "Status ändern …",
+			"titleCopied": "Aufgabentitel kopiert",
+			"unassignedSelf": "Du bist nicht mehr zugewiesen",
+			"unassignSelf": "Meine Zuweisung entfernen"
+		},
+		"readableLink": {
+			"goHome": "Zur Startseite",
+			"notFound": "In diesem Workspace gibt es keine Aufgabe mit dem Schlüssel {{key}}, oder du kannst sie nicht sehen."
+		},
+		"timeTracking": {
+			"label": "Aufgewendete Zeit",
+			"logTime": "Zeit erfassen",
+			"spentAria": "Aufgewendete Zeit: {{total}}. Zeit erfassen",
+			"duration": "Dauer",
+			"durationPlaceholder": "z. B. 1h 30m",
+			"durationInvalid": "Gib eine Dauer zwischen 1 Minute und 24 Stunden ein, z. B. 1h 30m.",
+			"note": "Notiz (optional)",
+			"submit": "Zeit erfassen",
+			"logged": "Zeit erfasst",
+			"logError": "Die Zeit konnte nicht erfasst werden",
+			"empty": "Noch keine Zeit erfasst",
+			"entries": "Zeiteinträge",
+			"running": "Läuft",
+			"formerMember": "Ehemaliges Mitglied",
+			"hours": "{{hours}} Std.",
+			"minutes": "{{minutes}} Min.",
+			"hoursMinutes": "{{hours}} Std. {{minutes}} Min.",
+			"deleteEntry": "Zeiteintrag vom {{date}} löschen",
+			"deleteConfirm": "Diesen Eintrag löschen?",
+			"deleted": "Zeiteintrag gelöscht",
+			"deleteError": "Der Zeiteintrag konnte nicht gelöscht werden",
+			"startTimer": "Timer starten",
+			"startHere": "Stoppen und hier starten",
+			"stopTimer": "Stoppen",
+			"timerRunning": "Timer läuft",
+			"timerRunningOn": "Timer läuft für {{task}}",
+			"timerStarted": "Timer gestartet",
+			"timerSwitched": "Timer gestartet. Dein anderer Timer wurde gestoppt.",
+			"timerStopped": "Timer gestoppt. {{total}} erfasst.",
+			"timerStartError": "Der Timer konnte nicht gestartet werden",
+			"timerStopError": "Der Timer konnte nicht gestoppt werden",
+			"loadError": "Die Zeiteinträge konnten nicht geladen werden",
+			"editEntry": "Zeiteintrag vom {{date}} bearbeiten",
+			"editStart": "Beginn",
+			"editEnd": "Ende",
+			"editEndRunningHint": "Leer lassen, damit er weiterläuft.",
+			"editEndRequired": "Gib ein, wann diese Zeit geendet hat.",
+			"editStartInvalid": "Gib ein, wann diese Zeit begonnen hat.",
+			"editEndBeforeStart": "Das Ende darf nicht vor dem Beginn liegen.",
+			"editSave": "Speichern",
+			"edited": "Zeiteintrag aktualisiert",
+			"editError": "Der Zeiteintrag konnte nicht aktualisiert werden"
+		},
+		"bulk": {
+			"selectedCount": "{{count}} ausgewählt",
+			"moveToBacklog": "In Backlog verschieben",
+			"clearSelection": "Auswahl aufheben",
+			"moveToBacklogSuccess": "{{count}} Aufgaben ins Backlog verschoben",
+			"moveToBacklogError": "Aufgaben konnten nicht ins Backlog verschoben werden",
+			"moveToBoard": "In Board verschieben",
+			"moveToBoardSuccess": "{{count}} Aufgaben aufs Board verschoben",
+			"moveToBoardError": "Aufgaben konnten nicht aufs Board verschoben werden",
+			"delete": "Aufgaben löschen",
+			"deleteConfirm": "{{count}} Aufgaben in den Papierkorb verschieben? Du kannst sie unter „Zuletzt gelöscht“ in den Projekteinstellungen wiederherstellen.",
+			"deleteSuccess": "{{count}} Aufgaben gelöscht",
+			"deleteError": "Aufgaben konnten nicht gelöscht werden",
+			"archive": "Aufgaben archivieren",
+			"archiveSuccess": "{{count}} Aufgaben archiviert",
+			"archiveError": "Aufgaben konnten nicht archiviert werden",
+			"updateSuccess": "{{count}} Aufgaben aktualisiert",
+			"updateError": "Aufgaben konnten nicht aktualisiert werden",
+			"addAssignee": "Zugewiesene Person hinzufügen",
+			"removeAssignee": "Zugewiesene Person entfernen",
+			"clearAssignees": "Alle Zugewiesenen entfernen",
+			"addAssigneeSuccess_one": "{{name}} zu {{count}} Aufgabe hinzugefügt",
+			"addAssigneeSuccess_other": "{{name}} zu {{count}} Aufgaben hinzugefügt",
+			"removeAssigneeSuccess_one": "{{name}} aus {{count}} Aufgabe entfernt",
+			"removeAssigneeSuccess_other": "{{name}} aus {{count}} Aufgaben entfernt",
+			"clearAssigneesSuccess_one": "Zugewiesene bei {{count}} Aufgabe entfernt",
+			"clearAssigneesSuccess_other": "Zugewiesene bei {{count}} Aufgaben entfernt",
+			"assigneesError": "Zugewiesene konnten nicht aktualisiert werden",
+			"setPriority": "Priorität festlegen",
+			"updatePriorityError": "Priorität konnte nicht aktualisiert werden",
+			"addLabel": "Label hinzufügen",
+			"addLabelSuccess": "Label zu {{count}} Aufgaben hinzugefügt",
+			"addLabelError": "Label konnte nicht hinzugefügt werden",
+			"setDueDate": "Fälligkeitsdatum festlegen",
+			"updateDueDateError": "Fälligkeitsdatum konnte nicht aktualisiert werden",
+			"actions": "Aktionen",
+			"searchActions": "Aktionen suchen...",
+			"noActionsFound": "Keine Aktionen gefunden.",
+			"changeStatus": "Status ändern",
+			"removeLabel": "Label entfernen",
+			"removeLabelSuccess": "Label von {{count}} Aufgaben entfernt",
+			"removeLabelError": "Label konnte nicht entfernt werden",
+			"unarchive": "Aus dem Archiv wiederherstellen",
+			"unarchiveSuccess": "{{count}} Aufgaben wiederhergestellt",
+			"unarchiveNone": "Keine der ausgewählten Aufgaben ist archiviert",
+			"unarchiveError": "Aufgaben konnten nicht wiederhergestellt werden",
+			"setDates": "Daten",
+			"dateField": "Zu setzendes Datum",
+			"startDate": "Startdatum",
+			"dueDate": "Fälligkeitsdatum",
+			"clearStartDate": "Startdatum entfernen",
+			"clearDueDate": "Fälligkeitsdatum entfernen",
+			"updateStartDateError": "Startdatum konnte nicht aktualisiert werden. Ein Startdatum darf nicht nach dem Fälligkeitsdatum einer Aufgabe liegen.",
+			"selectTask": "{{title}} auswählen",
+			"moveToProject": "In Projekt verschieben",
+			"moveToProjectTitle_one": "{{count}} Aufgabe nach {{name}} verschieben?",
+			"moveToProjectTitle_other": "{{count}} Aufgaben nach {{name}} verschieben?",
+			"moveToProjectRule": "Sie erhalten neue Aufgabenschlüssel. Jede Aufgabe behält ihren Status, wenn das Projekt ihn hat, andernfalls kommt sie in die erste Spalte. Labels und Zugewiesene bleiben erhalten. Zyklen, Module und Schätzungen werden entfernt. Werte benutzerdefinierter Felder bleiben nur erhalten, wenn das Projekt ein Feld mit demselben Namen und Typ hat.",
+			"moveToProjectConfirm": "Aufgaben verschieben",
+			"moveToProjectSuccess_one": "{{count}} Aufgabe nach {{name}} verschoben",
+			"moveToProjectSuccess_other": "{{count}} Aufgaben nach {{name}} verschoben",
+			"moveToProjectNone": "Diese Aufgaben befinden sich bereits in {{name}}",
+			"moveToProjectError": "Die Aufgaben konnten nicht verschoben werden"
+		},
+		"editor": {
+			"table": {
+				"addColumnBefore": "Spalte links einfügen",
+				"addColumnAfter": "Spalte rechts einfügen",
+				"deleteColumn": "Spalte löschen",
+				"addRowBefore": "Zeile oberhalb einfügen",
+				"addRowAfter": "Zeile unterhalb einfügen",
+				"deleteRow": "Zeile löschen",
+				"deleteTable": "Tabelle löschen",
+				"moveRowUp": "Zeile nach oben verschieben",
+				"moveRowDown": "Zeile nach unten verschieben",
+				"moveColumnLeft": "Spalte nach links verschieben",
+				"moveColumnRight": "Spalte nach rechts verschieben",
+				"toggleHeaderRow": "Kopfzeile",
+				"fullWidth": "Volle Breite",
+				"dragRow": "Zeile {{index}}",
+				"dragColumn": "Spalte {{index}}",
+				"dragRowHint": "Ziehen, um die Zeile zu verschieben, oder die Pfeiltasten verwenden",
+				"dragColumnHint": "Ziehen, um die Spalte zu verschieben, oder die Pfeiltasten verwenden",
+				"insertRowHere": "Hier eine Zeile einfügen",
+				"insertColumnHere": "Hier eine Spalte einfügen"
+			}
+		},
+		"descriptionSearchLoading": "Vollständige Beschreibungen werden durchsucht…",
+		"descriptionSearchError": "Die Suche in Beschreibungen ist fehlgeschlagen. Ergebnisse sind möglicherweise unvollständig.",
+		"descriptionRetry": "Erneut versuchen",
+		"descriptionLoading": "Beschreibung wird geladen…",
+		"descriptionLoadError": "Die Beschreibung konnte nicht geladen werden. Versuche es erneut, um die aktuelle Version zu laden.",
+		"descriptionHistory": {
+			"cancel": "Abbrechen",
+			"description": "Gespeicherte Versionen dieser Beschreibung, neueste zuerst. Änderungen einer Person innerhalb von 10 Minuten bilden eine Version; die letzten 50 werden aufbewahrt.",
+			"earlierVersion": "Frühere Version",
+			"empty": "Noch keine gespeicherten Versionen. Versionen werden ab der nächsten Änderung aufbewahrt.",
+			"emptyVersion": "Diese Version hat keine Beschreibung.",
+			"latest": "Neueste",
+			"list": "Gespeicherte Versionen",
+			"loadError": "Der Verlauf konnte nicht geladen werden",
+			"open": "Verlauf",
+			"previewTitle": "Version vom {{date}}",
+			"restore": "Wiederherstellen",
+			"restoreConfirmDescription": "Die Beschreibung wird durch diese Version ersetzt. Der aktuelle Text bleibt im Verlauf erhalten.",
+			"restoreConfirmTitle": "Diese Version wiederherstellen?",
+			"restored": "Beschreibung wiederhergestellt",
+			"restoreError": "Diese Version konnte nicht wiederhergestellt werden",
+			"retry": "Erneut versuchen",
+			"size_one": "{{count}} Zeichen",
+			"size_other": "{{count}} Zeichen",
+			"title": "Beschreibungsverlauf",
+			"viewOnly": "Nur ansehen"
+		},
+		"estimate": {
+			"bulk": {
+				"action": "Schätzung",
+				"error": "Schätzung der ausgewählten Aufgaben konnte nicht geändert werden",
+				"updated_one": "Schätzung von {{count}} Aufgabe aktualisiert",
+				"updated_other": "Schätzung von {{count}} Aufgaben aktualisiert"
+			},
+			"chart": {
+				"points": "Punkte",
+				"pointsLeft": "Verbleibende Punkte",
+				"summaryPoints": "{{remaining}} von {{scope}} Punkten übrig, {{days}} Tage verbleibend",
+				"summaryTime": "{{remaining}} von {{scope}} übrig, {{days}} Tage verbleibend",
+				"tasks": "Aufgaben",
+				"time": "Zeit",
+				"timeLeft": "Verbleibende Zeit",
+				"unitAria": "Diagrammeinheit"
+			},
+			"duration": {
+				"hours": "{{hours}} Std.",
+				"hoursMinutes": "{{hours}} Std. {{minutes}} Min.",
+				"hourUnit": "h",
+				"minutes": "{{minutes}} Min.",
+				"minuteUnit": "m"
+			},
+			"label": "Schätzung",
+			"none": "Keine Schätzung",
+			"pointsValue_one": "{{value}} Pkt.",
+			"pointsValue_other": "{{value}} Pkt.",
+			"setAria": "Schätzung festlegen",
+			"totals": {
+				"estimated": "{{estimated}} von {{total}} Aufgaben geschätzt",
+				"points_one": "{{completed}} / {{total}} Pkt.",
+				"points_other": "{{completed}} / {{total}} Pkt.",
+				"time": "{{completed}} / {{total}}"
+			},
+			"updateError": "Schätzung konnte nicht aktualisiert werden"
+		},
+		"detailActions": {
+			"addLink": "Link hinzufügen",
+			"addRelation": "Beziehung hinzufügen",
+			"addSubtask": "Teilaufgabe hinzufügen",
+			"attachFile": "Datei anhängen"
+		},
+		"taskKey": {
+			"clipboardError": "Konnte nicht in die Zwischenablage kopiert werden",
+			"copied": "{{key}} kopiert",
+			"copyTooltip": "Aufgabenschlüssel kopieren"
+		},
 		"pageReferences": {
 			"title": "In Seiten erwähnt"
+		},
+		"links": {
+			"add": "Link hinzufügen",
+			"addedAt": "Hinzugefügt am {{date}}",
+			"addedBy": "Hinzugefügt von {{name}} · {{date}}",
+			"addTitle": "Link hinzufügen",
+			"cancel": "Abbrechen",
+			"copyUrl": "URL kopieren",
+			"edit": "Bearbeiten",
+			"editTitle": "Link bearbeiten",
+			"errors": {
+				"credentials": "Links dürfen keinen Benutzernamen und kein Passwort enthalten",
+				"duplicate": "Dieser Link ist bereits bei dieser Aufgabe vorhanden",
+				"invalid": "Gib eine gültige http- oder https-URL ein",
+				"required": "URL ist erforderlich",
+				"titleTooLong": "Titel dürfen höchstens 255 Zeichen lang sein",
+				"tooLong": "Links dürfen höchstens 2.048 Zeichen lang sein"
+			},
+			"linkTitle": "Titel",
+			"loadError": "Links konnten nicht geladen werden",
+			"moreActions": "Linkaktionen",
+			"remove": "Entfernen",
+			"removeConfirmDescription": "Er wird für alle von der Aufgabe entfernt.",
+			"removeConfirmTitle": "Diesen Link entfernen?",
+			"retry": "Erneut versuchen",
+			"save": "Speichern",
+			"title": "Links",
+			"titlePlaceholder": "Optionaler Anzeigetitel",
+			"toast": {
+				"added": "Link hinzugefügt",
+				"copied": "Link kopiert",
+				"error": "Link konnte nicht gespeichert werden",
+				"removed": "Link entfernt",
+				"updated": "Link aktualisiert"
+			},
+			"url": "URL",
+			"urlPlaceholder": "https://example.com"
+		},
+		"attachments": {
+			"add": "Datei anhängen",
+			"delete": "Löschen",
+			"deleteConfirmDescription": "Die Datei wird für alle entfernt. Diese Aktion kann nicht rückgängig gemacht werden.",
+			"deleteConfirmTitle": "{{filename}} löschen?",
+			"download": "Herunterladen",
+			"dropHere": "Dateien hier ablegen oder klicken, um sie auszuwählen",
+			"dropToAttach": "Dateien zum Anhängen hier ablegen",
+			"loadError": "Anhänge konnten nicht geladen werden",
+			"meta": "{{size}} · {{name}} · {{time}}",
+			"metaNoUser": "{{size}} · {{time}}",
+			"open": "Öffnen",
+			"title": "Anhänge",
+			"toast": {
+				"attached_one": "{{count}} Datei angehängt",
+				"attached_other": "{{count}} Dateien angehängt",
+				"deleted": "Anhang gelöscht",
+				"deleteError": "Anhang konnte nicht gelöscht werden",
+				"empty": "{{filename}} ist leer",
+				"failed": "{{filename}} konnte nicht angehängt werden: {{reason}}",
+				"notConfigured": "Datei-Uploads sind auf diesem Server nicht eingerichtet. Bitte deinen Administrator, den Speicher zu konfigurieren.",
+				"storageError": "der Speicher hat den Upload abgelehnt",
+				"tooMany": "Du kannst bis zu {{count}} Dateien gleichzeitig anhängen",
+				"unknownError": "etwas ist schiefgelaufen"
+			},
+			"uploading": "Wird hochgeladen…"
+		},
+		"create": {
+			"similarTitle": "Ähnliche offene Aufgaben",
+			"similarDismiss": "Ähnliche Aufgaben ausblenden",
+			"similarOpen": "Öffnen",
+			"similarOpenLabel": "{{key}} {{title}} in einem neuen Tab öffnen"
+		},
+		"parent": {
+			"add": "Übergeordnete Aufgabe hinzufügen",
+			"chip": "Übergeordnet",
+			"label": "Übergeordnete Aufgabe",
+			"noTasks": "Keine Aufgaben gefunden",
+			"remove": "Übergeordnete Aufgabe entfernen",
+			"search": "Aufgaben suchen…",
+			"tasksInProject": "Aufgaben in diesem Projekt",
+			"toast": {
+				"error": "Übergeordnete Aufgabe konnte nicht geändert werden",
+				"removed": "Übergeordnete Aufgabe entfernt",
+				"set": "Übergeordnete Aufgabe auf {{key}} gesetzt"
+			},
+			"tooltip": "Übergeordnet: {{key}} {{title}}"
+		},
+		"copy": {
+			"alwaysCopied": "Status und Priorität werden immer kopiert.",
+			"cancel": "Abbrechen",
+			"includeLabel": "Einschließen",
+			"options": {
+				"assignees": "Zugewiesene",
+				"attachments": "Anhänge",
+				"customFields": "Werte für benutzerdefinierte Felder",
+				"dates": "Start- und Fälligkeitsdatum",
+				"description": "Beschreibung",
+				"labels": "Labels",
+				"links": "Links",
+				"parent": "Übergeordnete Aufgabe",
+				"planning": "Zyklus, Module und Schätzung"
+			},
+			"otherProjectHint": "Der Status wird den Spalten des neuen Projekts zugeordnet. Benutzerdefinierte Felder, die übergeordnete Aufgabe und die Planung werden nicht projektübergreifend kopiert.",
+			"projectLabel": "Projekt",
+			"submit": "Kopie erstellen",
+			"title": "Kopie von {{key}} erstellen",
+			"titleLabel": "Titel",
+			"titleRequired": "Titel ist erforderlich",
+			"titleSuffix": "{{title}} (Kopie)",
+			"toast": {
+				"error": "Kopie konnte nicht erstellt werden",
+				"open": "Öffnen",
+				"skipped": "Nicht kopiert: {{list}}",
+				"success": "Kopie erstellt: {{key}}"
+			}
+		},
+		"filters": {
+			"button": "Filter",
+			"searchOptions": "Optionen durchsuchen",
+			"noOptions": "Keine Optionen",
+			"matchAll": "Alle erfüllen",
+			"matchAny": "Beliebige erfüllen",
+			"applyError": "Filter konnten nicht angewendet werden",
+			"retry": "Erneut versuchen",
+			"tooMany": "Zu viele Treffer zum Filtern hier; öffne die Tabelle",
+			"nestedReadOnly": "Diese Ansicht verwendet erweiterte Filter, die hier nicht bearbeitet werden können",
+			"clearAll": "Alle Filter zurücksetzen",
+			"apply": "Anwenden",
+			"mobileSummary_one": "{{count}} Filter",
+			"mobileSummary_other": "{{count}} Filter",
+			"removeFilter": "Filter {{subject}} entfernen",
+			"subjects": {
+				"group": "Gruppe",
+				"createdBy": "Erstellt von",
+				"cycle": "Zyklus",
+				"module": "Modul",
+				"startDate": "Startdatum",
+				"created": "Erstellt",
+				"updated": "Aktualisiert",
+				"completed": "Abgeschlossen",
+				"parent": "Übergeordnet",
+				"project": "Projekt",
+				"subscribed": "Abonniert",
+				"mentions": "Erwähnungen",
+				"blocked": "Blockiert"
+			},
+			"operators": {
+				"between": "zwischen",
+				"is": "ist",
+				"isEmpty": "ist leer",
+				"isNoneOf": "ist keines von",
+				"isNot": "ist nicht",
+				"isNotEmpty": "ist nicht leer",
+				"moreThanAgo": "vor mehr als …",
+				"moreThanAhead": "in mehr als …",
+				"on": "am",
+				"onOrAfter": "am oder nach",
+				"onOrBefore": "am oder vor",
+				"withinLast": "in den letzten",
+				"withinNext": "in den nächsten"
+			},
+			"values": {
+				"me": "Ich",
+				"none": "Keine",
+				"noAssignee": "Keine zugewiesene Person",
+				"noCreator": "Kein Ersteller",
+				"noLabel": "Kein Label",
+				"noCycle": "Kein Zyklus",
+				"noModule": "Kein Modul",
+				"noEstimate": "Keine Schätzung",
+				"noParent": "Keine übergeordnete Aufgabe",
+				"currentCycle": "Aktueller Zyklus",
+				"true": "Wahr",
+				"false": "Falsch",
+				"blockedYes": "Ja",
+				"blockedNo": "Nein"
+			},
+			"dates": {
+				"amount": "Anzahl",
+				"custom": "Eigenes Datum…",
+				"emptyTab": "Leer",
+				"exact": "Genaues Datum",
+				"future": "Nach heute",
+				"lastMonth": "Letzter Monat",
+				"lastWeek": "Letzte Woche",
+				"nextMonth": "Nächster Monat",
+				"nextWeek": "Nächste Woche",
+				"overdue": "Überfällig",
+				"past": "Vor heute",
+				"presets": "Voreinstellungen",
+				"rolling": "Gleitend",
+				"rollingValue": "{{amount}} {{unit}}",
+				"thisMonth": "Dieser Monat",
+				"thisWeek": "Diese Woche",
+				"today": "Heute",
+				"tomorrow": "Morgen",
+				"units": {
+					"days": "Tage",
+					"months": "Monate",
+					"weeks": "Wochen"
+				},
+				"yesterday": "Gestern"
+			},
+			"archived": {
+				"exclude": "Archivierte ausblenden",
+				"include": "Auch Archivierte anzeigen",
+				"label": "Archiviert",
+				"only": "Nur Archivierte"
+			},
+			"myTasks": "Meine Aufgaben"
+		},
+		"display": {
+			"button": "Anzeige",
+			"columns": "Spalten",
+			"groupBy": "Gruppieren nach",
+			"groups": {
+				"status": "Status",
+				"group": "Gruppe",
+				"priority": "Priorität",
+				"assignee": "Zugewiesen",
+				"createdBy": "Erstellt von",
+				"label": "Label",
+				"cycle": "Zyklus",
+				"module": "Modul",
+				"estimate": "Schätzung",
+				"project": "Projekt",
+				"customField": "Benutzerdefiniertes Feld"
+			},
+			"none": "Keine",
+			"order": {
+				"manual": "Manuell",
+				"createdAt": "Zuletzt erstellt",
+				"updatedAt": "Zuletzt aktualisiert",
+				"completedAt": "Abschlussdatum",
+				"startDate": "Startdatum",
+				"dueDate": "Fälligkeitsdatum",
+				"priority": "Priorität",
+				"title": "Titel",
+				"number": "Aufgabenschlüssel",
+				"status": "Status",
+				"assignee": "Zugewiesen",
+				"label": "Label",
+				"cycle": "Zyklus",
+				"module": "Modul",
+				"estimate": "Schätzung",
+				"subTaskCount": "Unteraufgaben",
+				"archivedAt": "Archivierungsdatum",
+				"customField": "Benutzerdefiniertes Feld"
+			},
+			"orderBy": "Sortieren nach",
+			"properties": "Eigenschaften",
+			"props": {
+				"assignee": "Zugewiesene",
+				"checklist": "Checkliste",
+				"createdAt": "Erstellt",
+				"cycle": "Zyklus",
+				"dueDate": "Fälligkeitsdatum",
+				"estimate": "Schätzung",
+				"key": "Schlüssel",
+				"labels": "Labels",
+				"modules": "Module",
+				"priority": "Priorität",
+				"startDate": "Startdatum",
+				"status": "Status",
+				"subTaskCount": "Unteraufgaben",
+				"updatedAt": "Aktualisiert"
+			},
+			"showEmptyGroups": "Leere Gruppen anzeigen",
+			"showSubTasks": "Unteraufgaben anzeigen",
+			"subGroupBy": "Untergruppieren nach"
+		},
+		"groups": {
+			"all": "Alle Aufgaben",
+			"planned": "Geplant",
+			"noAssignee": "Keine zugewiesene Person",
+			"noCreator": "Kein Ersteller",
+			"noLabel": "Kein Label",
+			"noCycle": "Kein Zyklus",
+			"noModule": "Kein Modul",
+			"noEstimate": "Keine Schätzung",
+			"loadMore": "Mehr laden ({{count}})",
+			"hiddenGroups_one": "{{count}} weitere Gruppe nicht angezeigt",
+			"hiddenGroups_other": "{{count}} weitere Gruppen nicht angezeigt",
+			"moduleCount_one": "{{count}} Modul",
+			"moduleCount_other": "{{count}} Module",
+			"moveError": "Aufgabe konnte nicht verschoben werden",
+			"noFieldValue": "Kein Wert"
+		},
+		"spreadsheet": {
+			"clearSort": "Sortierung aufheben",
+			"collapseSubTasks": "Unteraufgaben ausblenden",
+			"expandSubTasks": "Unteraufgaben anzeigen",
+			"hideColumn": "Spalte ausblenden",
+			"loadError": "Aufgaben konnten nicht geladen werden",
+			"selectTask": "{{key}} auswählen",
+			"sortAsc": "Aufsteigend sortieren",
+			"sortDesc": "Absteigend sortieren",
+			"task": "Aufgabe"
+		},
+		"queryEmpty": {
+			"clear": "Filter zurücksetzen",
+			"description": "Entferne versuchsweise einen oder zwei Filter.",
+			"title": "Keine Aufgaben passen zu diesen Filtern"
 		},
 		"capture": {
 			"ariaLabel": "Aufgabe zu {{column}} hinzufügen",
@@ -5090,48 +5348,33 @@
 			"changePriority": "Priorität: {{priority}}",
 			"changeStatus": "Status: {{status}}"
 		},
-		"commands": {
-			"assignedSelf": "Dir zugewiesen",
-			"assignees": "Zugewiesene ändern …",
-			"assignSelf": "Mir zuweisen",
-			"copyTitle": "Titel kopieren",
-			"cycle": "Zyklus ändern …",
-			"dueDate": "Fälligkeitsdatum ändern …",
-			"estimate": "Schätzung ändern …",
-			"group": "Diese Aufgabe",
-			"labels": "Labels ändern …",
-			"module": "Module ändern …",
-			"priority": "Priorität ändern …",
-			"status": "Status ändern …",
-			"titleCopied": "Aufgabentitel kopiert",
-			"unassignedSelf": "Du bist nicht mehr zugewiesen",
-			"unassignSelf": "Meine Zuweisung entfernen"
+		"boardSearchOpen": "Aufgaben suchen",
+		"customFieldValue": {
+			"clear": "Wert entfernen",
+			"edit": "{{name}} bearbeiten",
+			"removedOption": "{{value}} (entfernte Option)",
+			"saveError": "Dieses Feld konnte nicht gespeichert werden.",
+			"placeholder": "Neuer Wert",
+			"true": "Wahr",
+			"false": "Falsch"
 		},
-		"readableLink": {
-			"goHome": "Zur Startseite",
-			"notFound": "In diesem Workspace gibt es keine Aufgabe mit dem Schlüssel {{key}}, oder du kannst sie nicht sehen."
+		"customFieldBulk": {
+			"action": "Benutzerdefiniertes Feld",
+			"chooseField": "Feld auswählen",
+			"apply": "Anwenden",
+			"updated_one": "{{count}} Aufgabe aktualisiert",
+			"updated_other": "{{count}} Aufgaben aktualisiert",
+			"error": "Die ausgewählten Aufgaben konnten nicht aktualisiert werden."
 		},
-		"descriptionHistory": {
-			"cancel": "Abbrechen",
-			"description": "Gespeicherte Versionen dieser Beschreibung, neueste zuerst. Änderungen einer Person innerhalb von 10 Minuten bilden eine Version; die letzten 50 werden aufbewahrt.",
-			"earlierVersion": "Frühere Version",
-			"empty": "Noch keine gespeicherten Versionen. Versionen werden ab der nächsten Änderung aufbewahrt.",
-			"emptyVersion": "Diese Version hat keine Beschreibung.",
-			"latest": "Neueste",
-			"list": "Gespeicherte Versionen",
-			"loadError": "Der Verlauf konnte nicht geladen werden",
-			"open": "Verlauf",
-			"previewTitle": "Version vom {{date}}",
-			"restore": "Wiederherstellen",
-			"restoreConfirmDescription": "Die Beschreibung wird durch diese Version ersetzt. Der aktuelle Text bleibt im Verlauf erhalten.",
-			"restoreConfirmTitle": "Diese Version wiederherstellen?",
-			"restored": "Beschreibung wiederhergestellt",
-			"restoreError": "Diese Version konnte nicht wiederhergestellt werden",
-			"retry": "Erneut versuchen",
-			"size_one": "{{count}} Zeichen",
-			"size_other": "{{count}} Zeichen",
-			"title": "Beschreibungsverlauf",
-			"viewOnly": "Nur ansehen"
+		"milestone": {
+			"label": "Meilenstein",
+			"hint": "Markiert ein einzelnes Datum. Die Zeitleiste zeigt es als Raute an seinem Fälligkeitsdatum.",
+			"updateError": "Der Meilenstein konnte nicht aktualisiert werden"
+		},
+		"scheduleField": {
+			"label": "Auf Aufgaben angezeigtes Feld",
+			"none": "Kein Feld",
+			"value": "{{name}}: {{value}}"
 		}
 	},
 	"invitations": {
@@ -5180,6 +5423,7 @@
 			"status": "Status",
 			"emptyTitle": "Noch keine Projekte",
 			"emptyDescription": "Lege los, indem du dein erstes Projekt erstellst.",
+			"emptyDescriptionReadOnly": "In diesem Workspace gibt es noch keine Projekte. Bitte einen Admin, eines zu erstellen.",
 			"projectStatus": {
 				"notStarted": "Nicht begonnen",
 				"complete": "Abgeschlossen",
@@ -5187,7 +5431,7 @@
 			},
 			"noDueDate": "Kein Fälligkeitsdatum",
 			"reorderError": "Projekte konnten nicht neu angeordnet werden",
-			"emptyDescriptionReadOnly": "In diesem Workspace gibt es noch keine Projekte. Bitte einen Admin, eines zu erstellen."
+			"emptyDescriptionGuest": "Du wurdest noch keinem Projekt hinzugefügt. Bitte die Person, die dich eingeladen hat, dich hinzuzufügen."
 		},
 		"search": {
 			"pageTitle": "Suche",
@@ -5295,7 +5539,8 @@
 			"owner": "Eigentümer",
 			"admin": "Admin",
 			"member": "Mitglied",
-			"viewer": "Betrachter"
+			"viewer": "Betrachter",
+			"guest": "Gast"
 		},
 		"members": {
 			"pageTitle": "Mitglieder",
@@ -5331,7 +5576,13 @@
 			"sentSome": "{{sent}} von {{total}} Einladungen gesendet.",
 			"failedTitle": "Nicht gesendet",
 			"rateLimited": "Zu viele Einladungen auf einmal. Warte eine Minute und sende dann den Rest.",
-			"shareLinksDescription": "Teile jeden Link mit der jeweiligen Person, damit sie dem Workspace beitreten kann."
+			"shareLinksDescription": "Teile jeden Link mit der jeweiligen Person, damit sie dem Workspace beitreten kann.",
+			"guestRoleHint": "Gäste sehen nur die Projekte, denen du sie hinzufügst, und sonst nichts im Workspace.",
+			"guestProjectsLabel": "Projekte",
+			"guestProjectsHint": "Sobald sie die Einladung annehmen, treten sie den angehakten Projekten mit der gewählten Projektrolle bei. Als Betrachter können sie nur lesen.",
+			"guestProjectsEmpty": "Es gibt kein Projekt, das du teilen kannst. Füge sie nach ihrem Beitritt zu Projekten hinzu.",
+			"guestProjectRoleFor": "Projektrolle in {{project}}",
+			"guestProjectsFailed": "Die Einladung wurde gesendet, aber ihre Projekte konnten nicht hinzugefügt werden: {{message}}"
 		},
 		"membersTable": {
 			"emptyTitle": "Noch keine Teammitglieder",
@@ -5341,6 +5592,7 @@
 				"role": "Rolle",
 				"joined": "Beigetreten"
 			},
+			"ariaInvitationActions": "Einladungsaktionen",
 			"ariaRemoveMember": "Mitglied entfernen",
 			"removeDialogTitle": "Teammitglied entfernen?",
 			"removeDialogDescription": "{{name}} wird aus dem Workspace entfernt und verliert den Zugriff auf dessen Projekte und Aufgaben.",
@@ -5352,11 +5604,11 @@
 			"removeError": "Teammitglied konnte nicht entfernt werden",
 			"cancelInviteSuccess": "Einladung erfolgreich abgebrochen",
 			"cancelInviteError": "Einladung konnte nicht abgebrochen werden",
-			"ariaInvitationActions": "Einladungsaktionen",
 			"roleUpdateSuccess": "Rolle aktualisiert",
 			"roleUpdateError": "Rolle konnte nicht aktualisiert werden",
 			"ariaInvitationRole": "Rolle für {{email}}",
-			"invitationRoleUpdateSuccess": "Rolle der Einladung aktualisiert"
+			"invitationRoleUpdateSuccess": "Rolle der Einladung aktualisiert",
+			"removeDialogAccessNote": "Wenn das der einzige Workspace dieser Person ist, wird sie auch abgemeldet und ihre API-Schlüssel funktionieren nicht mehr."
 		},
 		"profile": {
 			"emptyActivity": "Noch keine Aktivität",
@@ -7842,6 +8094,29 @@
 		}
 	},
 	"home": {
+		"pageTitle": "Startseite",
+		"greeting": {
+			"afternoon": "Guten Tag, {{name}}",
+			"dateTime": "{{date}} · {{time}}",
+			"evening": "Guten Abend, {{name}}",
+			"morning": "Guten Morgen, {{name}}"
+		},
+		"manageWidgets": "Widgets verwalten",
+		"widgets": {
+			"quickLinks": "Schnellzugriffe",
+			"recents": "Zuletzt besucht",
+			"stickies": "Haftnotizen",
+			"risks": "Risiken",
+			"myBrief": "Mein Überblick",
+			"pinnedReports": "Angeheftete Berichte"
+		},
+		"manage": {
+			"description": "Wähle, was auf deiner Startseite erscheint, und ordne es per Drag-and-drop neu. Nur du siehst diese Einstellungen.",
+			"reorder": "{{widget}} neu anordnen",
+			"saveError": "Deine Startseiten-Einstellungen konnten nicht gespeichert werden",
+			"title": "Widgets verwalten",
+			"toggle": "{{widget}} anzeigen"
+		},
 		"empty": {
 			"description": "Alle Widgets sind ausgeschaltet. Schalte einige ein, um hier deine Links, zuletzt besuchte Seiten und Haftnotizen zu sehen.",
 			"title": "Deine Startseite ist leer"
@@ -7871,21 +8146,6 @@
 			},
 			"title": "Los geht's"
 		},
-		"greeting": {
-			"afternoon": "Guten Tag, {{name}}",
-			"dateTime": "{{date}} · {{time}}",
-			"evening": "Guten Abend, {{name}}",
-			"morning": "Guten Morgen, {{name}}"
-		},
-		"manage": {
-			"description": "Wähle, was auf deiner Startseite erscheint, und ordne es per Drag-and-drop neu. Nur du siehst diese Einstellungen.",
-			"reorder": "{{widget}} neu anordnen",
-			"saveError": "Deine Startseiten-Einstellungen konnten nicht gespeichert werden",
-			"title": "Widgets verwalten",
-			"toggle": "{{widget}} anzeigen"
-		},
-		"manageWidgets": "Widgets verwalten",
-		"pageTitle": "Startseite",
 		"quickLinks": {
 			"add": "Link hinzufügen",
 			"copy": "Link kopieren",
@@ -7942,24 +8202,32 @@
 			"visited": "Besucht {{time}}"
 		},
 		"retry": "Erneut versuchen",
-		"widgets": {
-			"quickLinks": "Schnellzugriffe",
-			"recents": "Zuletzt besucht",
-			"stickies": "Haftnotizen",
-			"risks": "Risiken",
-			"myBrief": "Mein Überblick"
-		},
 		"focus": {
-			"caughtUp": "Alles erledigt",
-			"inbox": "Posteingang",
 			"label": "Weitermachen",
+			"inbox": "Posteingang",
 			"myWork": "Deine Aufgaben",
+			"stickies": "Notizzettel",
+			"caughtUp": "Alles erledigt",
 			"overdue_one": "{{count}} überfällig",
 			"overdue_other": "{{count}} überfällig",
-			"stickies": "Notizzettel",
 			"stickiesHint": "Private Notizen, nur für dich",
+			"unreadCaption": "ungelesen",
 			"openCaption": "offen",
-			"unreadCaption": "ungelesen"
+			"loadError": "Laden fehlgeschlagen"
+		},
+		"dueToday": {
+			"title": "Heute fällig",
+			"empty": "Dir ist nichts zugewiesen, das heute fällig ist.",
+			"loadError": "Deine heute fälligen Aufgaben konnten nicht geladen werden",
+			"viewAll": "Alle {{total}} anzeigen"
+		},
+		"pinnedReports": {
+			"empty": "Hefte einen gespeicherten Bericht in Analytics an, um ihn hier zu sehen.",
+			"openAnalytics": "Analytics öffnen",
+			"loadError": "Deine angehefteten Berichte konnten nicht geladen werden",
+			"chartError": "Dieser Bericht konnte nicht geladen werden",
+			"unpin": "{{name}} von der Startseite lösen",
+			"showing": "{{shown}} von {{total}} werden angezeigt. Den Rest findest du in Analytics."
 		}
 	},
 	"intake": {
@@ -8251,14 +8519,111 @@
 		"viewAll": "Alle anzeigen"
 	},
 	"analytics": {
-		"a11y": {
-			"barSummary": "{{metric}} nach {{dimension}}: {{count}} Gruppen, am höchsten {{label}} mit {{value}}",
-			"donutSummary": "{{total}} Aufgaben in {{count}} Gruppen",
-			"lineSummary": "{{series}} über {{count}} Zeiträume"
+		"pageTitle": "Analytics",
+		"projectPageTitle": "{{project}} · Analytics",
+		"tabs": {
+			"overview": "Übersicht",
+			"tasks": "Aufgaben",
+			"cycles": "Zyklen",
+			"modules": "Module",
+			"intake": "Eingang",
+			"delivery": "Lieferung",
+			"time": "Zeit"
 		},
-		"breakdown": {
-			"groupRowsBy": "Zeilen gruppieren nach",
-			"title": "Aufschlüsselung"
+		"header": {
+			"allProjects": "Alle Projekte",
+			"clearSelection": "Auswahl aufheben",
+			"noProjectsFound": "Keine Projekte gefunden",
+			"projectsCount_one": "{{count}} Projekt",
+			"projectsCount_other": "{{count}} Projekte",
+			"refresh": "Aktualisieren",
+			"searchProjects": "Projekte suchen",
+			"selectProjects": "Projekte auswählen",
+			"updatedAt": "Aktualisiert {{time}}"
+		},
+		"openInAnalytics": "In Analytics öffnen",
+		"context": {
+			"cycle": "Zyklus: {{name}}",
+			"module": "Modul: {{name}}",
+			"remove": "{{name}} aus den Filtern entfernen"
+		},
+		"states": {
+			"loadError": "Dieser Bereich konnte nicht geladen werden",
+			"newProject": "Neues Projekt",
+			"noAccessDescription": "Bitte einen Workspace-Admin um die Analytics-Berechtigung.",
+			"noAccessTitle": "Du hast keinen Zugriff auf Analytics",
+			"noCycles": "Noch keine Zyklen",
+			"noModules": "Noch keine Module",
+			"noPeriodData": "Keine Daten in diesem Zeitraum",
+			"noProjectsDescription": "Analytics fasst die Aufgaben deiner Projekte zusammen.",
+			"noProjectsTitle": "Erstelle ein Projekt, um Analytics zu sehen",
+			"noRequests": "Noch keine Anfragen",
+			"noTasks": "Keine Aufgaben entsprechen diesen Filtern",
+			"retry": "Erneut versuchen",
+			"timeout": "Das hat zu lange gedauert. Grenze die Filter ein und versuche es erneut.",
+			"noRunningCycles": "Derzeit laufen keine Zyklen"
+		},
+		"view": {
+			"chart": "Diagramm",
+			"label": "Anzeigen als",
+			"table": "Tabelle"
+		},
+		"kpi": {
+			"accepted": "{{count}} angenommen",
+			"completedTasks": "Abgeschlossene Aufgaben",
+			"completion": "Fertigstellung",
+			"completionDetail": "{{completed}} von {{committed}}",
+			"cyclesRunning": "Laufende Zyklen",
+			"members": "Mitglieder",
+			"membersDetail": "{{admins}} Admins · {{viewers}} Betrachter",
+			"modulesInProgress": "Module in Bearbeitung",
+			"modulesTotal": "{{count}} insgesamt",
+			"openRequests": "Offene Anfragen",
+			"openTasks": "Offene Aufgaben",
+			"overdue": "{{count}} überfällig",
+			"percentComplete": "{{percent}} % abgeschlossen",
+			"projects": "Projekte",
+			"total": "Gesamt",
+			"upcoming": "{{count}} anstehend"
+		},
+		"overview": {
+			"projectProgress": "Projektfortschritt",
+			"projectProgressSubtitle": "Projekte mit den meisten offenen Aufgaben zuerst",
+			"open": "{{count}} offen",
+			"showAll": "Alle {{count}} anzeigen",
+			"showLess": "Weniger anzeigen",
+			"tasksByGroup": "Aufgaben nach Gruppe",
+			"donutCenter_one": "{{count}} Aufgabe",
+			"donutCenter_other": "{{count}} Aufgaben",
+			"workload": "Arbeitslast",
+			"workloadSubtitle": "Offene Aufgaben nach Zugewiesenen",
+			"workloadSubtitlePoints": "Offene Schätzpunkte nach Zugewiesenen",
+			"overloaded_one": "{{names}} hat mehr offene Arbeit, als diese Person normalerweise in {{weeks}} Wochen abschließt.",
+			"overloaded_other": "{{names}} haben mehr offene Arbeit, als sie normalerweise in {{weeks}} Wochen abschließen.",
+			"overUsual": "Über dem üblichen Wert",
+			"overTooltip": "{{name}}: über dem üblichen Wert",
+			"usualHint": "Üblich ist, was jede Person in typischen {{usualWeeks}} Wochen abgeschlossen hat, gemessen an den letzten {{historyWeeks}} Wochen. Wer keinen aktuellen Verlauf hat, wird nicht bewertet.",
+			"checkColumn": "Im Vergleich zum Üblichen",
+			"checkOverPoints": "Darüber: {{load}} Punkte, üblich {{usual}}",
+			"checkOverTasks": "Darüber: {{load}} Aufgaben, üblich {{usual}}",
+			"checkOkPoints": "{{load}} Punkte, üblich {{usual}}",
+			"checkOkTasks": "{{load}} Aufgaben, üblich {{usual}}",
+			"checkUnknown": "Kein aktueller Verlauf"
+		},
+		"trend": {
+			"completed": "Abgeschlossen",
+			"created": "Erstellt",
+			"help": "„Erstellt“ zählt Aufgaben nach dem Tag ihrer Erstellung. „Abgeschlossen“ zählt Aufgaben nach dem Tag ihres Abschlusses, solange sie noch abgeschlossen sind. Archivierte Aufgaben bleiben außen vor, sofern du sie nicht einbeziehst.",
+			"period": "Zeitraum",
+			"summary": "Erstellt {{created}} · Abgeschlossen {{completed}} · Netto {{net}}",
+			"title": "Erstellt vs. abgeschlossen"
+		},
+		"periods": {
+			"custom": "Eigener Zeitraum",
+			"last12m": "Letzte 12 Monate",
+			"last30": "Letzte 30 Tage",
+			"last6m": "Letzte 6 Monate",
+			"last90": "Letzte 90 Tage"
 		},
 		"bucket": {
 			"label": "Daten gruppieren nach",
@@ -8269,6 +8634,14 @@
 		"buckets": {
 			"range": "{{from}} – {{to}}",
 			"weekOf": "Woche vom {{date}}"
+		},
+		"metric": {
+			"label": "Metrik",
+			"tasks": "Aufgaben",
+			"points": "Schätzpunkte",
+			"pointsShort": "Punkte",
+			"sum": "Summe",
+			"sumOf": "Summe von {{name}}"
 		},
 		"builder": {
 			"countSubTasks": "Unteraufgaben mitzählen",
@@ -8285,10 +8658,130 @@
 			"truncatedX": "Es werden die obersten {{shown}} von {{total}} {{dimension}} angezeigt",
 			"xAxis": "X-Achse"
 		},
-		"context": {
-			"cycle": "Zyklus: {{name}}",
-			"module": "Modul: {{name}}",
-			"remove": "{{name}} aus den Filtern entfernen"
+		"reports": {
+			"open": "Berichte",
+			"listTitle": "Gespeicherte Berichte",
+			"loadError": "Gespeicherte Berichte konnten nicht geladen werden",
+			"empty": "Noch keine gespeicherten Berichte. Speichere dieses Diagramm, um später darauf zurückzukommen.",
+			"sharedBy": "Geteilt von {{name}}",
+			"actionsFor": "Aktionen für {{name}}",
+			"rename": "Umbenennen",
+			"share": "Mit Workspace teilen",
+			"makePrivate": "Privat machen",
+			"delete": "Löschen",
+			"save": "Speichern",
+			"saveAsNew": "Als neu speichern",
+			"update": "Bericht aktualisieren",
+			"showing": "Bericht: {{name}}",
+			"unsaved": "Ungespeicherte Änderungen",
+			"close": "Bericht schließen",
+			"deleteTitle": "Diesen Bericht löschen?",
+			"deleteDescription": "„{{name}}“ wird gelöscht. Das kann nicht rückgängig gemacht werden.",
+			"deleteSharedDescription": "„{{name}}“ wird für alle im Workspace gelöscht. Das kann nicht rückgängig gemacht werden.",
+			"visibility": {
+				"private": "Privat",
+				"privateHint": "Nur du kannst ihn sehen.",
+				"workspace": "Mit Workspace geteilt",
+				"workspaceHint": "Alle mit Analytics-Zugriff in diesem Workspace können ihn öffnen."
+			},
+			"dialog": {
+				"cancel": "Abbrechen",
+				"createTitle": "Bericht speichern",
+				"editTitle": "Bericht bearbeiten",
+				"name": "Name",
+				"namePlaceholder": "z. B. Offene Bugs nach Zugewiesenen",
+				"nameRequired": "Gib einen Namen ein",
+				"save": "Speichern",
+				"summary": "Speichert die Diagrammeinstellungen, die einbezogenen Projekte und die Filter.",
+				"update": "Änderungen speichern",
+				"visibility": "Wer ihn sehen kann"
+			},
+			"notes": {
+				"allProjects": "Keines seiner Projekte ist verfügbar, daher werden alle Projekte angezeigt.",
+				"builderReset": "Einige Diagrammeinstellungen sind für diese Projekte nicht verfügbar und wurden zurückgesetzt.",
+				"dropped_one": "{{count}} Projekt in diesem Bericht existiert nicht mehr.",
+				"dropped_other": "{{count}} Projekte in diesem Bericht existieren nicht mehr.",
+				"leftOut_one": "{{count}} Projekt in diesem Bericht ist archiviert und wurde ausgelassen.",
+				"leftOut_other": "{{count}} Projekte in diesem Bericht sind archiviert und wurden ausgelassen.",
+				"otherProjects": "Dieser Bericht wurde für andere Projekte gespeichert; hier zeigt er nur dieses Projekt."
+			},
+			"toast": {
+				"saved": "„{{name}}“ gespeichert",
+				"updated": "Bericht aktualisiert",
+				"shared": "Bericht mit dem Workspace geteilt",
+				"madePrivate": "Der Bericht ist jetzt privat",
+				"deleted": "Bericht gelöscht",
+				"saveError": "Der Bericht konnte nicht gespeichert werden",
+				"deleteError": "Der Bericht konnte nicht gelöscht werden",
+				"pinned": "An die Startseite angeheftet",
+				"unpinned": "Von der Startseite gelöst",
+				"pinError": "Deine Startseite konnte nicht aktualisiert werden",
+				"pinLimit_one": "Du kannst bis zu {{count}} Bericht anheften. Löse zuerst einen.",
+				"pinLimit_other": "Du kannst bis zu {{count}} Berichte anheften. Löse zuerst einen."
+			},
+			"pin": "An die Startseite anheften",
+			"unpin": "Von der Startseite lösen"
+		},
+		"dimensions": {
+			"status": "Status",
+			"group": "Gruppe",
+			"priority": "Priorität",
+			"assignee": "Zugewiesen",
+			"createdBy": "Erstellt von",
+			"label": "Label",
+			"cycle": "Zyklus",
+			"module": "Modul",
+			"estimate": "Schätzung",
+			"project": "Projekt",
+			"createdAt": "Erstellungsdatum",
+			"completedAt": "Abschlussdatum",
+			"startDate": "Startdatum",
+			"dueDate": "Fälligkeitsdatum",
+			"customField": "Benutzerdefiniertes Feld"
+		},
+		"dimensionsPlural": {
+			"status": "Status",
+			"assignee": "Zugewiesenen",
+			"createdBy": "Ersteller",
+			"label": "Labels",
+			"cycle": "Zyklen",
+			"module": "Module",
+			"estimate": "Schätzungen",
+			"project": "Projekte",
+			"period": "Zeiträume",
+			"customField": "Werten"
+		},
+		"none": {
+			"assignee": "Nicht zugewiesen",
+			"createdBy": "Unbekannter Ersteller",
+			"label": "Kein Label",
+			"cycle": "Kein Zyklus",
+			"module": "Kein Modul",
+			"estimate": "Keine Schätzung",
+			"completedAt": "Nicht abgeschlossen",
+			"startDate": "Kein Startdatum",
+			"dueDate": "Kein Fälligkeitsdatum",
+			"customField": "Kein Wert"
+		},
+		"other": "Sonstige",
+		"table": {
+			"periodEnd": "Zeitraumende",
+			"periodStart": "Zeitraumbeginn",
+			"progress": "Fortschritt",
+			"showAll": "Alle {{count}} anzeigen",
+			"sortBy": "Nach {{column}} sortieren",
+			"tasks": "Aufgaben",
+			"total": "Gesamt"
+		},
+		"breakdown": {
+			"groupRowsBy": "Zeilen gruppieren nach",
+			"title": "Aufschlüsselung"
+		},
+		"export": {
+			"button": "CSV exportieren",
+			"error": "Diese Tabelle konnte nicht exportiert werden",
+			"success_one": "{{count}} Zeile exportiert",
+			"success_other": "{{count}} Zeilen exportiert"
 		},
 		"cycles": {
 			"averageCompleted": "Ø abgeschlossen (letzte 3)",
@@ -8321,49 +8814,15 @@
 				"running": "Aktuell laufend"
 			}
 		},
-		"dimensions": {
-			"assignee": "Zugewiesen",
-			"completedAt": "Abschlussdatum",
-			"createdAt": "Erstellungsdatum",
-			"createdBy": "Erstellt von",
-			"cycle": "Zyklus",
-			"dueDate": "Fälligkeitsdatum",
-			"estimate": "Schätzung",
-			"group": "Gruppe",
-			"label": "Label",
-			"module": "Modul",
-			"priority": "Priorität",
-			"project": "Projekt",
-			"startDate": "Startdatum",
-			"status": "Status"
-		},
-		"dimensionsPlural": {
-			"assignee": "Zugewiesenen",
-			"createdBy": "Ersteller",
-			"cycle": "Zyklen",
-			"estimate": "Schätzungen",
-			"label": "Labels",
-			"module": "Module",
-			"period": "Zeiträume",
-			"project": "Projekte",
-			"status": "Status"
-		},
-		"export": {
-			"button": "CSV exportieren",
-			"error": "Diese Tabelle konnte nicht exportiert werden",
-			"success_one": "{{count}} Zeile exportiert",
-			"success_other": "{{count}} Zeilen exportiert"
-		},
-		"header": {
-			"allProjects": "Alle Projekte",
-			"clearSelection": "Auswahl aufheben",
-			"noProjectsFound": "Keine Projekte gefunden",
-			"projectsCount_one": "{{count}} Projekt",
-			"projectsCount_other": "{{count}} Projekte",
-			"refresh": "Aktualisieren",
-			"searchProjects": "Projekte suchen",
-			"selectProjects": "Projekte auswählen",
-			"updatedAt": "Aktualisiert {{time}}"
+		"modules": {
+			"overdue": "Überfällig",
+			"table": {
+				"lead": "Leitung",
+				"module": "Modul",
+				"noLead": "Kein Lead",
+				"targetDate": "Zieldatum",
+				"title": "Module"
+			}
 		},
 		"intake": {
 			"accepted": "Angenommen",
@@ -8381,176 +8840,24 @@
 			"submitted": "Eingereicht",
 			"triaged": "Triagiert"
 		},
-		"kpi": {
-			"accepted": "{{count}} angenommen",
-			"completedTasks": "Abgeschlossene Aufgaben",
-			"completion": "Fertigstellung",
-			"completionDetail": "{{completed}} von {{committed}}",
-			"cyclesRunning": "Laufende Zyklen",
-			"members": "Mitglieder",
-			"membersDetail": "{{admins}} Admins · {{viewers}} Betrachter",
-			"modulesInProgress": "Module in Bearbeitung",
-			"modulesTotal": "{{count}} insgesamt",
-			"openRequests": "Offene Anfragen",
-			"openTasks": "Offene Aufgaben",
-			"overdue": "{{count}} überfällig",
-			"percentComplete": "{{percent}} % abgeschlossen",
-			"projects": "Projekte",
-			"total": "Gesamt",
-			"upcoming": "{{count}} anstehend"
+		"a11y": {
+			"barSummary": "{{metric}} nach {{dimension}}: {{count}} Gruppen, am höchsten {{label}} mit {{value}}",
+			"donutSummary": "{{total}} Aufgaben in {{count}} Gruppen",
+			"lineSummary": "{{series}} über {{count}} Zeiträume"
 		},
-		"metric": {
-			"label": "Metrik",
-			"points": "Schätzpunkte",
-			"pointsShort": "Punkte",
-			"tasks": "Aufgaben"
-		},
-		"modules": {
-			"overdue": "Überfällig",
-			"table": {
-				"lead": "Leitung",
-				"module": "Modul",
-				"noLead": "Kein Lead",
-				"targetDate": "Zieldatum",
-				"title": "Module"
-			}
-		},
-		"none": {
-			"assignee": "Nicht zugewiesen",
-			"completedAt": "Nicht abgeschlossen",
-			"createdBy": "Unbekannter Ersteller",
-			"cycle": "Kein Zyklus",
-			"dueDate": "Kein Fälligkeitsdatum",
-			"estimate": "Keine Schätzung",
-			"label": "Kein Label",
-			"module": "Kein Modul",
-			"startDate": "Kein Startdatum"
-		},
-		"openInAnalytics": "In Analytics öffnen",
-		"other": "Sonstige",
-		"overview": {
-			"donutCenter_one": "{{count}} Aufgabe",
-			"donutCenter_other": "{{count}} Aufgaben",
-			"open": "{{count}} offen",
-			"projectProgress": "Projektfortschritt",
-			"projectProgressSubtitle": "Projekte mit den meisten offenen Aufgaben zuerst",
-			"showAll": "Alle {{count}} anzeigen",
-			"showLess": "Weniger anzeigen",
-			"tasksByGroup": "Aufgaben nach Gruppe",
-			"workload": "Arbeitslast",
-			"workloadSubtitle": "Offene Aufgaben nach Zugewiesenen"
-		},
-		"pageTitle": "Analytics",
-		"periods": {
-			"custom": "Eigener Zeitraum",
-			"last12m": "Letzte 12 Monate",
-			"last30": "Letzte 30 Tage",
-			"last6m": "Letzte 6 Monate",
-			"last90": "Letzte 90 Tage"
-		},
-		"projectPageTitle": "{{project}} · Analytics",
-		"states": {
-			"loadError": "Dieser Bereich konnte nicht geladen werden",
-			"newProject": "Neues Projekt",
-			"noAccessDescription": "Bitte einen Workspace-Admin um die Analytics-Berechtigung.",
-			"noAccessTitle": "Du hast keinen Zugriff auf Analytics",
-			"noCycles": "Noch keine Zyklen",
-			"noModules": "Noch keine Module",
-			"noPeriodData": "Keine Daten in diesem Zeitraum",
-			"noProjectsDescription": "Analytics fasst die Aufgaben deiner Projekte zusammen.",
-			"noProjectsTitle": "Erstelle ein Projekt, um Analytics zu sehen",
-			"noRequests": "Noch keine Anfragen",
-			"noTasks": "Keine Aufgaben entsprechen diesen Filtern",
-			"retry": "Erneut versuchen",
-			"timeout": "Das hat zu lange gedauert. Grenze die Filter ein und versuche es erneut.",
-			"noRunningCycles": "Derzeit laufen keine Zyklen"
-		},
-		"table": {
-			"periodEnd": "Zeitraumende",
-			"periodStart": "Zeitraumbeginn",
-			"progress": "Fortschritt",
-			"showAll": "Alle {{count}} anzeigen",
-			"sortBy": "Nach {{column}} sortieren",
-			"tasks": "Aufgaben",
-			"total": "Gesamt"
-		},
-		"tabs": {
-			"cycles": "Zyklen",
-			"intake": "Eingang",
-			"modules": "Module",
-			"overview": "Übersicht",
-			"tasks": "Aufgaben",
-			"delivery": "Lieferung"
-		},
-		"trend": {
-			"completed": "Abgeschlossen",
-			"created": "Erstellt",
-			"help": "„Erstellt“ zählt Aufgaben nach dem Tag ihrer Erstellung. „Abgeschlossen“ zählt Aufgaben nach dem Tag ihres Abschlusses, solange sie noch abgeschlossen sind. Archivierte Aufgaben bleiben außen vor, sofern du sie nicht einbeziehst.",
-			"period": "Zeitraum",
-			"summary": "Erstellt {{created}} · Abgeschlossen {{completed}} · Netto {{net}}",
-			"title": "Erstellt vs. abgeschlossen"
-		},
-		"view": {
-			"chart": "Diagramm",
-			"label": "Anzeigen als",
-			"table": "Tabelle"
-		},
-		"reports": {
-			"actionsFor": "Aktionen für {{name}}",
-			"close": "Bericht schließen",
-			"delete": "Löschen",
-			"deleteDescription": "„{{name}}“ wird gelöscht. Das kann nicht rückgängig gemacht werden.",
-			"deleteSharedDescription": "„{{name}}“ wird für alle im Workspace gelöscht. Das kann nicht rückgängig gemacht werden.",
-			"deleteTitle": "Diesen Bericht löschen?",
-			"dialog": {
-				"cancel": "Abbrechen",
-				"createTitle": "Bericht speichern",
-				"editTitle": "Bericht bearbeiten",
-				"name": "Name",
-				"namePlaceholder": "z. B. Offene Bugs nach Zugewiesenen",
-				"nameRequired": "Gib einen Namen ein",
-				"save": "Speichern",
-				"summary": "Speichert die Diagrammeinstellungen, die einbezogenen Projekte und die Filter.",
-				"update": "Änderungen speichern",
-				"visibility": "Wer ihn sehen kann"
-			},
-			"empty": "Noch keine gespeicherten Berichte. Speichere dieses Diagramm, um später darauf zurückzukommen.",
-			"listTitle": "Gespeicherte Berichte",
-			"loadError": "Gespeicherte Berichte konnten nicht geladen werden",
-			"makePrivate": "Privat machen",
-			"notes": {
-				"allProjects": "Keines seiner Projekte ist verfügbar, daher werden alle Projekte angezeigt.",
-				"builderReset": "Einige Diagrammeinstellungen sind für diese Projekte nicht verfügbar und wurden zurückgesetzt.",
-				"dropped_one": "{{count}} Projekt in diesem Bericht existiert nicht mehr.",
-				"dropped_other": "{{count}} Projekte in diesem Bericht existieren nicht mehr.",
-				"leftOut_one": "{{count}} Projekt in diesem Bericht ist archiviert und wurde ausgelassen.",
-				"leftOut_other": "{{count}} Projekte in diesem Bericht sind archiviert und wurden ausgelassen.",
-				"otherProjects": "Dieser Bericht wurde für andere Projekte gespeichert; hier zeigt er nur dieses Projekt."
-			},
-			"open": "Berichte",
-			"rename": "Umbenennen",
-			"save": "Speichern",
-			"saveAsNew": "Als neu speichern",
-			"share": "Mit Workspace teilen",
-			"sharedBy": "Geteilt von {{name}}",
-			"showing": "Bericht: {{name}}",
-			"toast": {
-				"deleted": "Bericht gelöscht",
-				"deleteError": "Der Bericht konnte nicht gelöscht werden",
-				"madePrivate": "Der Bericht ist jetzt privat",
-				"saved": "„{{name}}“ gespeichert",
-				"saveError": "Der Bericht konnte nicht gespeichert werden",
-				"shared": "Bericht mit dem Workspace geteilt",
-				"updated": "Bericht aktualisiert"
-			},
-			"unsaved": "Ungespeicherte Änderungen",
-			"update": "Bericht aktualisieren",
-			"visibility": {
-				"private": "Privat",
-				"privateHint": "Nur du kannst ihn sehen.",
-				"workspace": "Mit Workspace geteilt",
-				"workspaceHint": "Alle mit Analytics-Zugriff in diesem Workspace können ihn öffnen."
-			}
+		"time": {
+			"total": "Erfasste Zeit",
+			"entries": "Einträge",
+			"people": "Personen",
+			"running": "Läuft gerade",
+			"runningNote": "Laufende Timer fließen in diese Summen ein, sobald sie stoppen.",
+			"byPerson": "Nach Person",
+			"byProject": "Nach Projekt",
+			"person": "Person",
+			"project": "Projekt",
+			"hours": "Stunden",
+			"formerMember": "Ehemaliges Mitglied",
+			"empty": "In diesem Zeitraum wurde keine Zeit erfasst"
 		}
 	},
 	"pages": {
@@ -8631,6 +8938,59 @@
 			"file": "eine angehängte Datei",
 			"page": "eine andere Seite"
 		},
+		"section": {
+			"title": "Seiten"
+		},
+		"list": {
+			"documentTitle": "{{project}} · Seiten",
+			"newPage": "Neue Seite",
+			"tabs": {
+				"archived": "Archiviert",
+				"private": "Privat",
+				"public": "Öffentlich"
+			},
+			"searchPlaceholder": "Seiten suchen",
+			"clearFilters": "Filter zurücksetzen",
+			"sort": {
+				"created": "Erstellt",
+				"lastEdited": "Zuletzt bearbeitet",
+				"name": "Name"
+			},
+			"untitled": "Ohne Titel",
+			"inParent": "in {{path}}",
+			"ownedBy": "Gehört {{name}}",
+			"access": {
+				"private": "Privat",
+				"public": "Öffentlich"
+			},
+			"editedAgo": "Bearbeitet {{time}}",
+			"archivedOn": "Archiviert {{date}}",
+			"locked": "Gesperrt",
+			"loadError": "Die Seiten konnten nicht geladen werden",
+			"retry": "Erneut versuchen",
+			"empty": {
+				"archived": {
+					"description": "Archivierte Seiten erscheinen hier. Du kannst sie wiederherstellen oder löschen.",
+					"title": "Keine archivierten Seiten"
+				},
+				"noMatch": {
+					"description": "Versuche eine andere Suche oder setze die Filter zurück.",
+					"title": "Keine passenden Seiten"
+				},
+				"none": {
+					"description": "Seiten enthalten Spezifikationen, Notizen und Dokumente direkt neben den Aufgaben des Projekts.",
+					"title": "Schreibe deine erste Seite"
+				},
+				"private": {
+					"description": "Private Seiten sind nur für dich sichtbar.",
+					"title": "Keine privaten Seiten"
+				},
+				"public": {
+					"title": "Keine öffentlichen Seiten"
+				}
+			},
+			"recentlyDeleted": "Zuletzt gelöscht"
+		},
 		"actions": {
 			"archive": "Archivieren",
 			"copyLink": "Link kopieren",
@@ -8646,6 +9006,123 @@
 			"restore": "Wiederherstellen",
 			"unlock": "Entsperren"
 		},
+		"toasts": {
+			"accessError": "Es konnte nicht geändert werden, wer diese Seite sehen kann",
+			"archived": "Seite archiviert",
+			"archiveError": "Die Seite konnte nicht archiviert werden",
+			"contentConflict": "Diese Seite wurde anderswo geändert, daher wurde deine letzte Bearbeitung nicht gespeichert. Die neueste Version wird angezeigt.",
+			"contentSaveError": "Die Seite konnte nicht gespeichert werden",
+			"createError": "Die Seite konnte nicht erstellt werden",
+			"deleted": "Seite gelöscht",
+			"deleteError": "Die Seite konnte nicht gelöscht werden",
+			"duplicated": "Seite dupliziert",
+			"duplicateError": "Die Seite konnte nicht dupliziert werden",
+			"fullWidthError": "Die Seitenbreite konnte nicht geändert werden",
+			"linkCopied": "Link kopiert",
+			"locked": "Seite gesperrt",
+			"lockError": "Die Sperre konnte nicht geändert werden",
+			"logoError": "Das Icon konnte nicht aktualisiert werden",
+			"madePrivate": "Die Seite ist jetzt privat",
+			"madePublic": "Die Seite ist jetzt öffentlich",
+			"moved": "Nach {{project}} verschoben",
+			"moveError": "Die Seite konnte nicht verschoben werden",
+			"open": "Öffnen",
+			"restored": "Seite wiederhergestellt",
+			"restoreError": "Die Seite konnte nicht wiederhergestellt werden",
+			"titleError": "Der Titel konnte nicht gespeichert werden",
+			"unlocked": "Seite entsperrt"
+		},
+		"deleteDialog": {
+			"cancel": "Abbrechen",
+			"confirm": "Löschen",
+			"description": "„{{title}}“ wird in den Projekteinstellungen nach „Zuletzt gelöscht“ verschoben und kann dort wiederhergestellt werden, bis es endgültig gelöscht wird. Die Unterseiten rücken auf die oberste Ebene.",
+			"title": "Seite löschen?"
+		},
+		"moveDialog": {
+			"cancel": "Abbrechen",
+			"confirm": "Verschieben",
+			"description": "Die Seite und ihre Unterseiten werden in das ausgewählte Projekt verschoben.",
+			"empty": "Bei keinem anderen Projekt sind Seiten aktiviert",
+			"searchPlaceholder": "Projekte suchen",
+			"title": "Seite verschieben"
+		},
+		"tree": {
+			"collapse": "{{title}} einklappen",
+			"dnd": {
+				"cancelled": "Verschieben abgebrochen.",
+				"dropped": "{{title}} verschoben.",
+				"invalid": "{{title}} kann dort nicht abgelegt werden.",
+				"over": "{{title}} befindet sich über {{target}}.",
+				"pickedUp": "{{title}} aufgenommen. Verschiebe sie mit den Pfeiltasten, lege sie mit der Leertaste ab oder brich mit Esc ab."
+			},
+			"empty": "Noch keine Seiten",
+			"expand": "{{title}} ausklappen",
+			"newPage": "Neue Seite",
+			"title": "Seiten"
+		},
+		"crumb": {
+			"noMatches": "Keine passenden Seiten",
+			"searchPlaceholder": "Seiten suchen"
+		},
+		"header": {
+			"copied": "Kopiert",
+			"copyLink": "Link kopieren",
+			"locked": "Gesperrt",
+			"lockPage": "Seite sperren",
+			"moreActions": "Seitenaktionen",
+			"presence": "Personen auf dieser Seite: {{names}}",
+			"presenceMore": "+{{count}}",
+			"togglePanel": "Seitenleiste ein- oder ausblenden",
+			"unlockHint": "Zum Entsperren klicken",
+			"ancestors": "Übergeordnete Seiten"
+		},
+		"menu": {
+			"copyMarkdown": "Als Markdown kopieren",
+			"downloadMarkdown": "Als Markdown herunterladen",
+			"fullWidth": "Volle Breite",
+			"markdownCopied": "Markdown kopiert",
+			"versionHistory": "Versionsverlauf",
+			"print": "Drucken / Als PDF speichern"
+		},
+		"editor": {
+			"addIcon": "Icon hinzufügen",
+			"ariaLabel": "Seiteninhalt",
+			"pageLink": {
+				"unavailable": "Private oder gelöschte Seite"
+			},
+			"pageLinkPicker": {
+				"empty": "Keine Seiten gefunden",
+				"search": "Seiten suchen"
+			},
+			"placeholder": "Schreibe etwas oder drücke / für Befehle",
+			"slash": {
+				"commands": {
+					"divider": "Trennlinie",
+					"heading-1": "Überschrift 1",
+					"heading-2": "Überschrift 2",
+					"heading-3": "Überschrift 3",
+					"page-link": "Link zu Seite"
+				}
+			},
+			"titleAria": "Seitentitel",
+			"titlePlaceholder": "Ohne Titel"
+		},
+		"logo": {
+			"categories": {
+				"activities": "Aktivitäten",
+				"food": "Essen",
+				"nature": "Natur",
+				"objects": "Objekte",
+				"people": "Personen",
+				"smileys": "Smileys",
+				"symbols": "Symbole",
+				"travel": "Reisen"
+			},
+			"emoji": "Emoji",
+			"icon": "Symbol",
+			"remove": "Entfernen",
+			"search": "Emoji suchen"
+		},
 		"banners": {
 			"archived": "Diese Seite ist archiviert. Stelle sie wieder her, um sie zu bearbeiten.",
 			"locked": "Diese Seite ist gesperrt. Entsperre sie, um Änderungen vorzunehmen.",
@@ -8656,6 +9133,15 @@
 			"storedCopy": "Die zuletzt gespeicherte Version wird angezeigt. Die Live-Bearbeitung wird fortgesetzt, sobald die Verbindung wieder da ist.",
 			"tooLarge": "Diese Seite ist zu groß, um weiter synchronisiert zu werden. Kopiere deine letzten Änderungen und lade dann neu.",
 			"unlock": "Entsperren"
+		},
+		"sync": {
+			"cantConnect": "Verbindung nicht möglich",
+			"notSaved": "Noch nicht gespeichert",
+			"notSavedHint": "Wir versuchen es weiter. Schließe diesen Tab nicht.",
+			"offline": "Offline",
+			"offlineHint": "Du kannst weiter bearbeiten. Änderungen werden synchronisiert, sobald die Verbindung wieder da ist.",
+			"retry": "Erneut versuchen",
+			"saved": "Gespeichert"
 		},
 		"collab": {
 			"deleted": "Diese Seite wurde gelöscht",
@@ -8668,6 +9154,62 @@
 			"restoredBy": "{{name}} hat eine frühere Version wiederhergestellt",
 			"roomFull": "Zu viele Personen haben diese Seite gerade geöffnet. Versuche es gleich noch einmal.",
 			"signedOut": "Deine Sitzung ist abgelaufen. Melde dich erneut an, um weiter zu bearbeiten."
+		},
+		"state": {
+			"notFound": {
+				"back": "Zurück zu den Seiten",
+				"description": "Sie wurde möglicherweise gelöscht oder ist privat.",
+				"title": "Seite nicht gefunden"
+			}
+		},
+		"panel": {
+			"outline": "Gliederung",
+			"info": "Info",
+			"history": "Verlauf",
+			"close": "Bereich schließen",
+			"comments": "Kommentare"
+		},
+		"outline": {
+			"empty": {
+				"description": "Füge Überschriften hinzu, um hier eine Gliederung zu sehen.",
+				"title": "Noch keine Überschriften"
+			}
+		},
+		"info": {
+			"characters": "Zeichen",
+			"createdBy": "Erstellt von",
+			"lastEditedBy": "Zuletzt bearbeitet von",
+			"lessThanMinute": "<1 Min.",
+			"linkedFrom": "Verlinkt von",
+			"lockedBy": "Gesperrt von",
+			"noBacklinks": "Noch keine Seiten verlinken hierher",
+			"paragraphs": "Absätze",
+			"readingMinutes": "{{count}} Min.",
+			"readingTime": "Lesezeit",
+			"words": "Wörter"
+		},
+		"history": {
+			"backToCurrent": "Zurück zur aktuellen Version",
+			"current": "Aktuelle Version",
+			"empty": "Noch keine gespeicherten Versionen. Versionen werden beim Bearbeiten gespeichert.",
+			"loadError": "Diese Version konnte nicht geladen werden",
+			"others_one": "+{{count}} weitere Person",
+			"others_other": "+{{count}} weitere Personen",
+			"previewTitle": "Version vom {{date}}",
+			"restore": "Wiederherstellen",
+			"restoreCancel": "Abbrechen",
+			"restoreConfirmDescription": "Der aktuelle Inhalt wird zuerst im Verlauf gespeichert, sodass du das rückgängig machen kannst.",
+			"restoreConfirmTitle": "Diese Version wiederherstellen?",
+			"restored": "Version wiederhergestellt",
+			"restoreError": "Diese Version konnte nicht wiederhergestellt werden",
+			"restoring": "Wird wiederhergestellt…",
+			"retry": "Erneut versuchen",
+			"title": "Versionsverlauf",
+			"unknownUser": "Ehemaliges Mitglied",
+			"viewOnly": "Nur ansehen"
+		},
+		"notification": {
+			"openPage": "Seite öffnen"
 		},
 		"toolbar": {
 			"ariaLabel": "Formatierungsleiste",
@@ -8706,238 +9248,36 @@
 		"commandPalette": {
 			"createPage": "Seite erstellen"
 		},
-		"crumb": {
-			"noMatches": "Keine passenden Seiten",
-			"searchPlaceholder": "Seiten suchen"
-		},
-		"deleteDialog": {
+		"comments": {
+			"placeholder": "Kommentar hinzufügen…",
+			"add": "Kommentieren",
+			"save": "Speichern",
 			"cancel": "Abbrechen",
-			"confirm": "Löschen",
-			"description": "„{{title}}“ wird zusammen mit dem Versionsverlauf endgültig gelöscht. Die Unterseiten rücken auf die oberste Ebene. Das kann nicht rückgängig gemacht werden.",
-			"title": "Seite löschen?"
-		},
-		"editor": {
-			"addIcon": "Icon hinzufügen",
-			"ariaLabel": "Seiteninhalt",
-			"pageLink": {
-				"unavailable": "Private oder gelöschte Seite"
-			},
-			"pageLinkPicker": {
-				"empty": "Keine Seiten gefunden",
-				"search": "Seiten suchen"
-			},
-			"placeholder": "Schreibe etwas oder drücke / für Befehle",
-			"slash": {
-				"commands": {
-					"divider": "Trennlinie",
-					"heading-1": "Überschrift 1",
-					"heading-2": "Überschrift 2",
-					"heading-3": "Überschrift 3",
-					"page-link": "Link zu Seite"
-				}
-			},
-			"titleAria": "Seitentitel",
-			"titlePlaceholder": "Ohne Titel"
-		},
-		"header": {
-			"copied": "Kopiert",
-			"copyLink": "Link kopieren",
-			"locked": "Gesperrt",
-			"lockPage": "Seite sperren",
-			"moreActions": "Seitenaktionen",
-			"presence": "Personen auf dieser Seite: {{names}}",
-			"presenceMore": "+{{count}}",
-			"togglePanel": "Seitenleiste ein- oder ausblenden",
-			"unlockHint": "Zum Entsperren klicken",
-			"ancestors": "Übergeordnete Seiten"
-		},
-		"history": {
-			"backToCurrent": "Zurück zur aktuellen Version",
-			"current": "Aktuelle Version",
-			"empty": "Noch keine gespeicherten Versionen. Versionen werden beim Bearbeiten gespeichert.",
-			"loadError": "Diese Version konnte nicht geladen werden",
-			"others_one": "+{{count}} weitere Person",
-			"others_other": "+{{count}} weitere Personen",
-			"previewTitle": "Version vom {{date}}",
-			"restore": "Wiederherstellen",
-			"restoreCancel": "Abbrechen",
-			"restoreConfirmDescription": "Der aktuelle Inhalt wird zuerst im Verlauf gespeichert, sodass du das rückgängig machen kannst.",
-			"restoreConfirmTitle": "Diese Version wiederherstellen?",
-			"restored": "Version wiederhergestellt",
-			"restoreError": "Diese Version konnte nicht wiederhergestellt werden",
-			"restoring": "Wird wiederhergestellt…",
+			"emptyTitle": "Noch keine Kommentare",
+			"emptyDescription": "Kommentare hier bleiben innerhalb des Workspace. Öffentliche Links zeigen sie nicht an.",
+			"archivedNote": "Diese Seite ist archiviert. Stelle sie wieder her, um zu kommentieren.",
+			"loadError": "Die Kommentare konnten nicht geladen werden",
 			"retry": "Erneut versuchen",
-			"title": "Versionsverlauf",
-			"unknownUser": "Ehemaliges Mitglied",
-			"viewOnly": "Nur ansehen"
-		},
-		"info": {
-			"characters": "Zeichen",
-			"createdBy": "Erstellt von",
-			"lastEditedBy": "Zuletzt bearbeitet von",
-			"lessThanMinute": "<1 Min.",
-			"linkedFrom": "Verlinkt von",
-			"lockedBy": "Gesperrt von",
-			"noBacklinks": "Noch keine Seiten verlinken hierher",
-			"paragraphs": "Absätze",
-			"readingMinutes": "{{count}} Min.",
-			"readingTime": "Lesezeit",
-			"words": "Wörter"
-		},
-		"list": {
-			"access": {
-				"private": "Privat",
-				"public": "Öffentlich"
-			},
-			"archivedOn": "Archiviert {{date}}",
-			"clearFilters": "Filter zurücksetzen",
-			"documentTitle": "{{project}} · Seiten",
-			"editedAgo": "Bearbeitet {{time}}",
-			"empty": {
-				"archived": {
-					"description": "Archivierte Seiten erscheinen hier. Du kannst sie wiederherstellen oder löschen.",
-					"title": "Keine archivierten Seiten"
-				},
-				"noMatch": {
-					"description": "Versuche eine andere Suche oder setze die Filter zurück.",
-					"title": "Keine passenden Seiten"
-				},
-				"none": {
-					"description": "Seiten enthalten Spezifikationen, Notizen und Dokumente direkt neben den Aufgaben des Projekts.",
-					"title": "Schreibe deine erste Seite"
-				},
-				"private": {
-					"description": "Private Seiten sind nur für dich sichtbar.",
-					"title": "Keine privaten Seiten"
-				},
-				"public": {
-					"title": "Keine öffentlichen Seiten"
-				}
-			},
-			"inParent": "in {{path}}",
-			"loadError": "Die Seiten konnten nicht geladen werden",
-			"locked": "Gesperrt",
-			"newPage": "Neue Seite",
-			"ownedBy": "Gehört {{name}}",
-			"retry": "Erneut versuchen",
-			"searchPlaceholder": "Seiten suchen",
-			"sort": {
-				"created": "Erstellt",
-				"lastEdited": "Zuletzt bearbeitet",
-				"name": "Name"
-			},
-			"tabs": {
-				"archived": "Archiviert",
-				"private": "Privat",
-				"public": "Öffentlich"
-			},
-			"untitled": "Ohne Titel"
-		},
-		"logo": {
-			"categories": {
-				"activities": "Aktivitäten",
-				"food": "Essen",
-				"nature": "Natur",
-				"objects": "Objekte",
-				"people": "Personen",
-				"smileys": "Smileys",
-				"symbols": "Symbole",
-				"travel": "Reisen"
-			},
-			"emoji": "Emoji",
-			"icon": "Symbol",
-			"remove": "Entfernen",
-			"search": "Emoji suchen"
-		},
-		"menu": {
-			"copyMarkdown": "Als Markdown kopieren",
-			"downloadMarkdown": "Als Markdown herunterladen",
-			"fullWidth": "Volle Breite",
-			"markdownCopied": "Markdown kopiert",
-			"versionHistory": "Versionsverlauf",
-			"print": "Drucken / Als PDF speichern"
-		},
-		"moveDialog": {
-			"cancel": "Abbrechen",
-			"confirm": "Verschieben",
-			"description": "Die Seite und ihre Unterseiten werden in das ausgewählte Projekt verschoben.",
-			"empty": "Bei keinem anderen Projekt sind Seiten aktiviert",
-			"searchPlaceholder": "Projekte suchen",
-			"title": "Seite verschieben"
-		},
-		"notification": {
-			"openPage": "Seite öffnen"
-		},
-		"outline": {
-			"empty": {
-				"description": "Füge Überschriften hinzu, um hier eine Gliederung zu sehen.",
-				"title": "Noch keine Überschriften"
+			"deletedUser": "Gelöschter Benutzer",
+			"edited": "bearbeitet",
+			"menuAria": "Weitere Aktionen für diesen Kommentar",
+			"edit": "Bearbeiten",
+			"delete": "Löschen",
+			"deleteTitle": "Diesen Kommentar löschen?",
+			"deleteDescription": "Er wird für alle entfernt. Das kann nicht rückgängig gemacht werden.",
+			"toasts": {
+				"empty": "Schreib zuerst etwas",
+				"addError": "Der Kommentar konnte nicht hinzugefügt werden",
+				"saveError": "Der Kommentar konnte nicht gespeichert werden",
+				"deleteError": "Der Kommentar konnte nicht gelöscht werden"
 			}
 		},
-		"panel": {
-			"close": "Bereich schließen",
-			"history": "Verlauf",
-			"info": "Info",
-			"outline": "Gliederung"
-		},
-		"section": {
-			"title": "Seiten"
-		},
-		"state": {
-			"notFound": {
-				"back": "Zurück zu den Seiten",
-				"description": "Sie wurde möglicherweise gelöscht oder ist privat.",
-				"title": "Seite nicht gefunden"
-			}
-		},
-		"sync": {
-			"cantConnect": "Verbindung nicht möglich",
-			"notSaved": "Noch nicht gespeichert",
-			"notSavedHint": "Wir versuchen es weiter. Schließe diesen Tab nicht.",
-			"offline": "Offline",
-			"offlineHint": "Du kannst weiter bearbeiten. Änderungen werden synchronisiert, sobald die Verbindung wieder da ist.",
-			"retry": "Erneut versuchen",
-			"saved": "Gespeichert"
-		},
-		"toasts": {
-			"accessError": "Es konnte nicht geändert werden, wer diese Seite sehen kann",
-			"archived": "Seite archiviert",
-			"archiveError": "Die Seite konnte nicht archiviert werden",
-			"contentConflict": "Diese Seite wurde anderswo geändert, daher wurde deine letzte Bearbeitung nicht gespeichert. Die neueste Version wird angezeigt.",
-			"contentSaveError": "Die Seite konnte nicht gespeichert werden",
-			"createError": "Die Seite konnte nicht erstellt werden",
-			"deleted": "Seite gelöscht",
-			"deleteError": "Die Seite konnte nicht gelöscht werden",
-			"duplicated": "Seite dupliziert",
-			"duplicateError": "Die Seite konnte nicht dupliziert werden",
-			"fullWidthError": "Die Seitenbreite konnte nicht geändert werden",
-			"linkCopied": "Link kopiert",
-			"locked": "Seite gesperrt",
-			"lockError": "Die Sperre konnte nicht geändert werden",
-			"logoError": "Das Icon konnte nicht aktualisiert werden",
-			"madePrivate": "Die Seite ist jetzt privat",
-			"madePublic": "Die Seite ist jetzt öffentlich",
-			"moved": "Nach {{project}} verschoben",
-			"moveError": "Die Seite konnte nicht verschoben werden",
-			"open": "Öffnen",
-			"restored": "Seite wiederhergestellt",
-			"restoreError": "Die Seite konnte nicht wiederhergestellt werden",
-			"titleError": "Der Titel konnte nicht gespeichert werden",
-			"unlocked": "Seite entsperrt"
-		},
-		"tree": {
-			"collapse": "{{title}} einklappen",
-			"dnd": {
-				"cancelled": "Verschieben abgebrochen.",
-				"dropped": "{{title}} verschoben.",
-				"invalid": "{{title}} kann dort nicht abgelegt werden.",
-				"over": "{{title}} befindet sich über {{target}}.",
-				"pickedUp": "{{title}} aufgenommen. Verschiebe sie mit den Pfeiltasten, lege sie mit der Leertaste ab oder brich mit Esc ab."
-			},
-			"empty": "Noch keine Seiten",
-			"expand": "{{title}} ausklappen",
-			"newPage": "Neue Seite",
-			"title": "Seiten"
+		"watch": {
+			"watch": "Seite beobachten",
+			"unwatch": "Nicht mehr beobachten",
+			"watchHint": "Über Kommentare und Änderungen benachrichtigt werden",
+			"watchingHint": "Du wirst über Kommentare und Änderungen benachrichtigt",
+			"error": "Die Beobachtung dieser Seite konnte nicht geändert werden"
 		}
 	},
 	"accountSecurity": {
@@ -8996,7 +9336,9 @@
 				"sessionLifetime": "Sitzungsdauer",
 				"sessionLifetimeHint": "Wie lange eine Sitzung ohne Nutzung gültig bleibt. Nutzung verlängert sie.",
 				"hours": "Stunden",
-				"signInNotice": "Melde dich mit {{provider}} an. Die Passwort-Anmeldung ist nur für Instanz-Admins."
+				"signInNotice": "Melde dich mit {{provider}} an. Die Passwort-Anmeldung ist nur für Instanz-Admins.",
+				"requireTwoFactor": "Zwei-Faktor-Authentifizierung vorschreiben",
+				"requireTwoFactorHint": "Jedes Konto mit Passwort muss die Zwei-Faktor-Authentifizierung einrichten, bevor etwas anderes möglich ist, auch wenn es sich zusätzlich über einen Anbieter oder SAML anmeldet, und seine API-Schlüssel funktionieren bis dahin nicht. E-Mail-Links und -Codes werden deaktiviert, daher kommt, wer nur diese genutzt hat, erst wieder hinein, wenn ein Passwort vorhanden ist: Die Person legt es über „Passwort vergessen?“ fest, oder du legst es unter „Benutzer“ für sie fest, falls kein E-Mail-Versand eingerichtet ist. Konten ohne Passwort folgen den Regeln ihres Anbieters. Schalte sie zuerst für dein eigenes Konto ein."
 			},
 			"twoFactor": {
 				"title": "Zwei-Faktor-Authentifizierung",
@@ -9023,7 +9365,11 @@
 				"done": "Fertig",
 				"enabled": "Die Zwei-Faktor-Authentifizierung ist an.",
 				"disabled": "Die Zwei-Faktor-Authentifizierung ist aus.",
-				"error": "Etwas ist schiefgelaufen. Versuche es erneut."
+				"error": "Etwas ist schiefgelaufen. Versuche es erneut.",
+				"requiredHint": "Dieser Server schreibt die Zwei-Faktor-Authentifizierung vor, daher kann sie nicht ausgeschaltet werden. Wenn du dein Gerät und deine Wiederherstellungscodes verlierst, kann ein Instanz-Admin sie zurücksetzen.",
+				"setupRequiredTitle": "Richte die Zwei-Faktor-Authentifizierung ein, um fortzufahren",
+				"setupRequiredHint": "Dieser Server schreibt die Zwei-Faktor-Authentifizierung für jedes Konto mit Passwort vor. Du benötigst eine Authenticator-App.",
+				"signOutInstead": "Stattdessen abmelden"
 			},
 			"challenge": {
 				"title": "Zwei-Faktor-Authentifizierung",
@@ -9095,7 +9441,11 @@
 				"noPassword": "Nicht festgelegt (meldet sich anders an)",
 				"workspacesTitle": "Workspaces",
 				"noWorkspaces": "Kein Mitglied eines Workspace.",
-				"joined": "Beigetreten am {{date}}"
+				"joined": "Beigetreten am {{date}}",
+				"resetTwoFactor": "Zwei-Faktor-Authentifizierung zurücksetzen",
+				"resetTwoFactorTitle": "Zwei-Faktor-Authentifizierung für {{name}} zurücksetzen?",
+				"resetTwoFactorDescription": "Verwende das, wenn die Person ihr Gerät und ihre Wiederherstellungscodes verloren hat und du geprüft hast, dass sie es wirklich ist. Ihre Zwei-Faktor-Authentifizierung wird entfernt und sie wird überall abgemeldet. Danach kann sie sich nur mit ihrem Passwort anmelden und die Authentifizierung neu einrichten.",
+				"twoFactorReset": "Zwei-Faktor-Authentifizierung für {{name}} zurückgesetzt"
 			}
 		},
 		"password": {
@@ -9159,33 +9509,99 @@
 				"cliAdminPromoted": "Zum Instanz-Admin gemacht (Wiederherstellungs-CLI)",
 				"cliAdminDemoted": "Instanz-Admin entfernt (Wiederherstellungs-CLI)",
 				"cliPasswordReset": "Passwort zurückgesetzt (Wiederherstellungs-CLI)",
-				"cliUserUnbanned": "Sperre aufgehoben (Wiederherstellungs-CLI)"
+				"cliUserUnbanned": "Sperre aufgehoben (Wiederherstellungs-CLI)",
+				"userTwoFactorReset": "Zwei-Faktor-Authentifizierung eines Kontos zurückgesetzt",
+				"cliTwoFactorReset": "Zwei-Faktor-Authentifizierung eines Kontos zurückgesetzt (Wiederherstellungs-CLI)",
+				"scimConnectionCreated": "Identitätsanbieter für die Provisionierung verbunden",
+				"scimTokenRotated": "SCIM-Token ersetzt",
+				"scimConnectionDeleted": "SCIM-Verbindung entfernt",
+				"scimUserProvisioned": "Konto per Provisionierung hinzugefügt",
+				"scimUserDeactivated": "Konto per Provisionierung deaktiviert",
+				"scimUserReactivated": "Konto per Provisionierung reaktiviert",
+				"scimUserRemoved": "Person per Provisionierung aus einem Workspace entfernt",
+				"samlConnectionCreated": "Identitätsanbieter für die Anmeldung verbunden",
+				"samlConnectionUpdated": "SAML-Verbindung geändert",
+				"samlConnectionDeleted": "SAML-Verbindung entfernt"
 			}
 		}
 	},
 	"instanceAdmin": {
-		"admins": {
-			"add": "Admin hinzufügen",
-			"addConfirm": "Admin hinzufügen",
-			"addDescription": "Instanz-Admins können jede Einstellung in diesem Bereich ändern und jeden Workspace öffnen.",
-			"added": "{{name}} ist jetzt Instanz-Admin",
-			"addTitle": "Instanz-Admin hinzufügen",
-			"columns": {
-				"email": "E-Mail",
-				"name": "Name"
-			},
+		"pageTitle": "Instanz · {{page}}",
+		"nav": {
+			"admins": "Admins",
+			"authentication": "Authentifizierung",
 			"email": "E-Mail",
-			"emailInvalid": "Gib eine gültige E-Mail-Adresse ein",
-			"emailPlaceholder": "name@example.com",
-			"lastAdmin": "Es muss mindestens einen Instanz-Admin geben",
-			"remove": "Admin entfernen…",
-			"removeConfirm": "Entfernen",
-			"removed": "{{name}} ist kein Instanz-Admin mehr",
-			"removeDescription": "Das Konto und die Workspaces bleiben erhalten.",
-			"removeTitle": "{{name}} als Instanz-Admin entfernen?",
-			"subtitle": "Instanz-Admins können jede Einstellung in diesem Bereich ändern und jeden Workspace öffnen.",
-			"title": "Admins",
-			"you": "Du"
+			"general": "Allgemein",
+			"publicBoards": "Öffentliche Boards",
+			"workspaces": "Workspaces",
+			"ai": "KI"
+		},
+		"lockedCallout": "Diese Einstellungen werden auf diesem Server über Umgebungsvariablen verwaltet. Änderungen hier sind deaktiviert.",
+		"source": {
+			"default": "Standard",
+			"environment": "Umgebung: {{variable}}",
+			"lockTooltip": "Entferne {{variable}} und starte neu, um dies hier zu verwalten.",
+			"saved": "Hier gespeichert",
+			"savedBy": "Gespeichert von {{name}} am {{date}}"
+		},
+		"saved": "Einstellungen gespeichert",
+		"saveError": "Die Einstellungen konnten nicht gespeichert werden",
+		"loadError": "Die Instanzeinstellungen konnten nicht geladen werden",
+		"retry": "Erneut versuchen",
+		"save": "Speichern",
+		"secret": {
+			"cancel": "Abbrechen",
+			"clear": "Löschen",
+			"cleared": "Secret gelöscht",
+			"placeholder": "Neuen Wert eingeben",
+			"replace": "Ersetzen",
+			"saved": "Gespeichert",
+			"unreadable": "Das gespeicherte Secret kann nicht gelesen werden (das AUTH_SECRET des Servers hat sich geändert). Gib es erneut ein."
+		},
+		"general": {
+			"title": "Allgemein",
+			"subtitle": "Gib dieser Instanz einen Namen und prüfe ihren Zustand.",
+			"instanceName": "Instanzname",
+			"instanceNameHint": "Wird auf dem Anmeldebildschirm und auf öffentlichen Boards angezeigt",
+			"instanceNameRequired": "Gib einen Namen ein",
+			"instanceNameTooLong": "Verwende höchstens 80 Zeichen",
+			"homePage": "Startseite",
+			"publicLanding": "Produkt-Startseite anzeigen",
+			"publicLandingHint": "Nicht angemeldete Besucher sehen unter der Stammadresse die Startseite. Ist sie aus, gelangen sie direkt zur Anmeldung.",
+			"overview": "Übersicht",
+			"version": "Version",
+			"counts": {
+				"accounts": "Konten",
+				"guests": "Gäste",
+				"projects": "Projekte",
+				"publishedBoards": "Öffentliche Boards",
+				"workspaces": "Workspaces"
+			},
+			"server": {
+				"captcha": "Captcha",
+				"cloudMode": "Cloud-Modus",
+				"configured": "Konfiguriert",
+				"demoMode": "Demo-Modus",
+				"email": "E-Mail",
+				"errorReporting": "Fehlerberichte",
+				"fileStorage": "Dateispeicher",
+				"notConfigured": "Nicht konfiguriert",
+				"off": "Aus",
+				"on": "An",
+				"realtime": "Echtzeit",
+				"realtimeMemory": "Im Arbeitsspeicher",
+				"realtimeRedis": "Redis ({{mode}})",
+				"title": "Server"
+			},
+			"deliveryFailures": {
+				"title": "Aktuelle Zustellfehler",
+				"description": "Workspace-Webhooks, die in den letzten 7 Tagen alle Wiederholungsversuche aufgebraucht haben. Fehler bei E-Mails und Hintergrundjobs stehen nur in den Serverprotokollen.",
+				"empty": "Keine fehlgeschlagenen Zustellungen in den letzten 7 Tagen.",
+				"when": "Zeitpunkt",
+				"workspace": "Workspace",
+				"webhook": "Webhook",
+				"response": "Antwort"
+			}
 		},
 		"auth": {
 			"anyoneCanSignUp": "Jeder kann sich registrieren",
@@ -9225,6 +9641,31 @@
 			"title": "Authentifizierung",
 			"toggle": "{{method}} ein- oder ausschalten"
 		},
+		"oauth": {
+			"authorizationUrl": "Autorisierungs-URL",
+			"autoSignIn": "Automatisch anmelden",
+			"autoSignInHint": "Den Anmeldebildschirm überspringen und direkt zu diesem Anbieter gehen",
+			"buttonLabel": "Button-Beschriftung",
+			"buttonLabelHint": "Wird auf dem Anmelde-Button angezeigt, zum Beispiel „Weiter mit Okta“",
+			"callbackHint": "Füge diese URL deiner OAuth-App hinzu",
+			"callbackUrl": "Callback-URL",
+			"clientId": "Client-ID",
+			"clientSecret": "Client-Secret",
+			"copied": "Kopiert",
+			"copy": "Kopieren",
+			"discoveryHint": "Oder fülle die drei Endpunkte unten aus",
+			"discoveryUrl": "Discovery-URL",
+			"invalidUrl": "Gib eine absolute http- oder https-URL ein",
+			"logoutUrl": "Abmelde-URL",
+			"managedByEnv": "Dieser Anbieter ist über Umgebungsvariablen konfiguriert ({{variables}}).",
+			"pkce": "PKCE verwenden",
+			"scopes": "Scopes",
+			"scopesHint": "Durch Kommas getrennt",
+			"sheetDescription": "Verbinde eine OAuth-App, damit sich Personen mit {{provider}} anmelden können.",
+			"sheetTitle": "{{provider}}-Anmeldung",
+			"tokenUrl": "Token-URL",
+			"userInfoUrl": "Userinfo-URL"
+		},
 		"email": {
 			"from": "Absender",
 			"fromHint": "Eine Adresse oder ein Name und eine Adresse: Margaya <no-reply@example.com>",
@@ -9255,134 +9696,6 @@
 			"subtitle": "Der SMTP-Server, über den Margaya Anmeldecodes, Einladungen und Benachrichtigungen versendet.",
 			"title": "E-Mail",
 			"username": "Benutzername"
-		},
-		"general": {
-			"counts": {
-				"accounts": "Konten",
-				"guests": "Gäste",
-				"projects": "Projekte",
-				"publishedBoards": "Öffentliche Boards",
-				"workspaces": "Workspaces"
-			},
-			"instanceName": "Instanzname",
-			"instanceNameHint": "Wird auf dem Anmeldebildschirm und auf öffentlichen Boards angezeigt",
-			"instanceNameRequired": "Gib einen Namen ein",
-			"instanceNameTooLong": "Verwende höchstens 80 Zeichen",
-			"homePage": "Startseite",
-			"publicLanding": "Produkt-Startseite anzeigen",
-			"publicLandingHint": "Nicht angemeldete Besucher sehen unter der Stammadresse die Startseite. Ist sie aus, gelangen sie direkt zur Anmeldung.",
-			"overview": "Übersicht",
-			"server": {
-				"captcha": "Captcha",
-				"cloudMode": "Cloud-Modus",
-				"configured": "Konfiguriert",
-				"demoMode": "Demo-Modus",
-				"email": "E-Mail",
-				"errorReporting": "Fehlerberichte",
-				"fileStorage": "Dateispeicher",
-				"notConfigured": "Nicht konfiguriert",
-				"off": "Aus",
-				"on": "An",
-				"realtime": "Echtzeit",
-				"realtimeMemory": "Im Arbeitsspeicher",
-				"realtimeRedis": "Redis ({{mode}})",
-				"title": "Server"
-			},
-			"subtitle": "Gib dieser Instanz einen Namen und prüfe ihren Zustand.",
-			"title": "Allgemein",
-			"version": "Version"
-		},
-		"loadError": "Die Instanzeinstellungen konnten nicht geladen werden",
-		"lockedCallout": "Diese Einstellungen werden auf diesem Server über Umgebungsvariablen verwaltet. Änderungen hier sind deaktiviert.",
-		"nav": {
-			"admins": "Admins",
-			"authentication": "Authentifizierung",
-			"email": "E-Mail",
-			"general": "Allgemein",
-			"publicBoards": "Öffentliche Boards",
-			"workspaces": "Workspaces",
-			"ai": "KI"
-		},
-		"oauth": {
-			"authorizationUrl": "Autorisierungs-URL",
-			"autoSignIn": "Automatisch anmelden",
-			"autoSignInHint": "Den Anmeldebildschirm überspringen und direkt zu diesem Anbieter gehen",
-			"buttonLabel": "Button-Beschriftung",
-			"buttonLabelHint": "Wird auf dem Anmelde-Button angezeigt, zum Beispiel „Weiter mit Okta“",
-			"callbackHint": "Füge diese URL deiner OAuth-App hinzu",
-			"callbackUrl": "Callback-URL",
-			"clientId": "Client-ID",
-			"clientSecret": "Client-Secret",
-			"copied": "Kopiert",
-			"copy": "Kopieren",
-			"discoveryHint": "Oder fülle die drei Endpunkte unten aus",
-			"discoveryUrl": "Discovery-URL",
-			"invalidUrl": "Gib eine absolute http- oder https-URL ein",
-			"logoutUrl": "Abmelde-URL",
-			"managedByEnv": "Dieser Anbieter ist über Umgebungsvariablen konfiguriert ({{variables}}).",
-			"pkce": "PKCE verwenden",
-			"scopes": "Scopes",
-			"scopesHint": "Durch Kommas getrennt",
-			"sheetDescription": "Verbinde eine OAuth-App, damit sich Personen mit {{provider}} anmelden können.",
-			"sheetTitle": "{{provider}}-Anmeldung",
-			"tokenUrl": "Token-URL",
-			"userInfoUrl": "Userinfo-URL"
-		},
-		"pageTitle": "Instanz · {{page}}",
-		"publicBoards": {
-			"actions": "Board-Aktionen",
-			"allow": "Öffentliche Boards zulassen",
-			"allowHint": "Wenn aus, antwortet jeder öffentliche Link mit „nicht gefunden“. Es wird nichts gelöscht.",
-			"columns": {
-				"features": "Funktionen",
-				"project": "Projekt",
-				"published": "Veröffentlicht",
-				"workspace": "Workspace"
-			},
-			"empty": "Keine öffentlichen Boards auf diesem Server.",
-			"feature": {
-				"comments": "Kommentare",
-				"guests": "Gäste",
-				"reactions": "Reaktionen",
-				"requests": "Anfragen",
-				"votes": "Stimmen"
-			},
-			"listTitle": "Veröffentlichte Boards",
-			"loadMore": "Mehr laden",
-			"noMatches": "Keine öffentlichen Boards entsprechen „{{query}}“",
-			"openBoard": "Board öffnen",
-			"participation": "Öffentliche Beteiligung zulassen",
-			"participationHint": "Wenn aus, sind öffentliche Boards schreibgeschützt: keine Kommentare, Reaktionen, Stimmen oder Anfragen.",
-			"projectSettings": "Projekteinstellungen",
-			"search": "Boards suchen",
-			"subtitle": "Steuere die öffentlichen Boards dieser Instanz.",
-			"title": "Öffentliche Boards",
-			"unpublish": "Veröffentlichung aufheben…",
-			"unpublishConfirm": "Veröffentlichung aufheben",
-			"unpublishDescription": "Der Link funktioniert nicht mehr, bis jemand das Board erneut veröffentlicht. Einstellungen, Kommentare, Reaktionen und Stimmen bleiben erhalten.",
-			"unpublished": "Veröffentlichung des Boards aufgehoben",
-			"unpublishError": "Die Veröffentlichung des Boards konnte nicht aufgehoben werden",
-			"unpublishTitle": "Veröffentlichung von {{project}} aufheben?"
-		},
-		"retry": "Erneut versuchen",
-		"save": "Speichern",
-		"saved": "Einstellungen gespeichert",
-		"saveError": "Die Einstellungen konnten nicht gespeichert werden",
-		"secret": {
-			"cancel": "Abbrechen",
-			"clear": "Löschen",
-			"cleared": "Secret gelöscht",
-			"placeholder": "Neuen Wert eingeben",
-			"replace": "Ersetzen",
-			"saved": "Gespeichert",
-			"unreadable": "Das gespeicherte Secret kann nicht gelesen werden (das AUTH_SECRET des Servers hat sich geändert). Gib es erneut ein."
-		},
-		"source": {
-			"default": "Standard",
-			"environment": "Umgebung: {{variable}}",
-			"lockTooltip": "Entferne {{variable}} und starte neu, um dies hier zu verwalten.",
-			"saved": "Hier gespeichert",
-			"savedBy": "Gespeichert von {{name}} am {{date}}"
 		},
 		"testEmail": {
 			"codes": {
@@ -9425,6 +9738,132 @@
 			"search": "Workspaces suchen",
 			"subtitle": "Alle Workspaces dieser Instanz.",
 			"title": "Workspaces"
+		},
+		"publicBoards": {
+			"actions": "Board-Aktionen",
+			"allow": "Öffentliche Boards zulassen",
+			"allowHint": "Wenn aus, antwortet jeder öffentliche Link mit „nicht gefunden“. Es wird nichts gelöscht.",
+			"columns": {
+				"features": "Funktionen",
+				"project": "Projekt",
+				"published": "Veröffentlicht",
+				"workspace": "Workspace"
+			},
+			"empty": "Keine öffentlichen Boards auf diesem Server.",
+			"feature": {
+				"comments": "Kommentare",
+				"guests": "Gäste",
+				"reactions": "Reaktionen",
+				"requests": "Anfragen",
+				"votes": "Stimmen"
+			},
+			"listTitle": "Veröffentlichte Boards",
+			"loadMore": "Mehr laden",
+			"noMatches": "Keine öffentlichen Boards entsprechen „{{query}}“",
+			"openBoard": "Board öffnen",
+			"participation": "Öffentliche Beteiligung zulassen",
+			"participationHint": "Wenn aus, sind öffentliche Boards schreibgeschützt: keine Kommentare, Reaktionen, Stimmen oder Anfragen.",
+			"projectSettings": "Projekteinstellungen",
+			"search": "Boards suchen",
+			"subtitle": "Steuere die öffentlichen Boards dieser Instanz.",
+			"title": "Öffentliche Boards",
+			"unpublish": "Veröffentlichung aufheben…",
+			"unpublishConfirm": "Veröffentlichung aufheben",
+			"unpublishDescription": "Der Link funktioniert nicht mehr, bis jemand das Board erneut veröffentlicht. Einstellungen, Kommentare, Reaktionen und Stimmen bleiben erhalten.",
+			"unpublished": "Veröffentlichung des Boards aufgehoben",
+			"unpublishError": "Die Veröffentlichung des Boards konnte nicht aufgehoben werden",
+			"unpublishTitle": "Veröffentlichung von {{project}} aufheben?"
+		},
+		"admins": {
+			"add": "Admin hinzufügen",
+			"addConfirm": "Admin hinzufügen",
+			"addDescription": "Instanz-Admins können jede Einstellung in diesem Bereich ändern und jeden Workspace öffnen.",
+			"added": "{{name}} ist jetzt Instanz-Admin",
+			"addTitle": "Instanz-Admin hinzufügen",
+			"columns": {
+				"email": "E-Mail",
+				"name": "Name"
+			},
+			"email": "E-Mail",
+			"emailInvalid": "Gib eine gültige E-Mail-Adresse ein",
+			"emailPlaceholder": "name@example.com",
+			"lastAdmin": "Es muss mindestens einen Instanz-Admin geben",
+			"remove": "Admin entfernen…",
+			"removeConfirm": "Entfernen",
+			"removed": "{{name}} ist kein Instanz-Admin mehr",
+			"removeDescription": "Das Konto und die Workspaces bleiben erhalten.",
+			"removeTitle": "{{name}} als Instanz-Admin entfernen?",
+			"subtitle": "Instanz-Admins können jede Einstellung in diesem Bereich ändern und jeden Workspace öffnen.",
+			"title": "Admins",
+			"you": "Du"
+		},
+		"identity": {
+			"name": "Name",
+			"nameHint": "Wie Admins diese Verbindung nennen, zum Beispiel nach dem Anbieter.",
+			"remove": "Entfernen",
+			"removeTitle": "{{name}} entfernen?",
+			"done": "Fertig",
+			"scim": {
+				"title": "Provisionierung (SCIM)",
+				"description": "Lass einen Identitätsanbieter Personen in einem Workspace hinzufügen, ändern und entfernen.",
+				"none": "Für die Provisionierung ist kein Identitätsanbieter verbunden.",
+				"connect": "Anbieter verbinden",
+				"connectDescription": "Erstellt einen Token für einen Workspace. Du siehst ihn einmalig nach dem Verbinden.",
+				"connectConfirm": "Token erstellen",
+				"workspace": "Workspace",
+				"workspaceHint": "Personen, die dieser Anbieter hinzufügt, treten diesem Workspace als Mitglieder bei.",
+				"workspacePlaceholder": "Workspace auswählen",
+				"workspaceSearch": "Workspaces durchsuchen",
+				"baseUrl": "SCIM-Basis-URL",
+				"token": "Bearer-Token",
+				"tokenTitle": "Token für {{name}} kopieren",
+				"tokenDescription": "Du siehst ihn nur dieses eine Mal. Gib ihn nur an den Identitätsanbieter weiter: Wer ihn besitzt, kann Personen zum Workspace hinzufügen und die Personen ändern oder deaktivieren, die diese Verbindung verwaltet.",
+				"rotate": "Token ersetzen",
+				"rotateTitle": "Token für {{name}} ersetzen?",
+				"rotateDescription": "Der aktuelle Token funktioniert ab sofort nicht mehr, daher stoppt die Provisionierung, bis der Identitätsanbieter den neuen hat. Personen bleiben verknüpft.",
+				"rotateConfirm": "Token ersetzen",
+				"removeDescription": "Der Token funktioniert ab sofort nicht mehr. Die hinzugefügten Personen behalten ihre Konten und Mitgliedschaften, werden aber nicht mehr vom Anbieter aktualisiert.",
+				"removed": "{{name}} entfernt",
+				"columns": {
+					"name": "Name",
+					"workspace": "Workspace",
+					"people": "Personen"
+				}
+			},
+			"saml": {
+				"title": "Unternehmensanmeldung (SAML)",
+				"description": "Lass Personen mit deinen E-Mail-Domains sich über einen Identitätsanbieter anmelden.",
+				"none": "Für die Anmeldung ist kein Identitätsanbieter verbunden.",
+				"connect": "Anbieter verbinden",
+				"connectConfirm": "Verbinden",
+				"edit": "Bearbeiten",
+				"editTitle": "{{name}} bearbeiten",
+				"formDescription": "Wer diesen Identitätsanbieter kontrolliert, kann jede Person mit diesen Domains anmelden, deren Adresse hier bestätigt ist. Verbinde also nur einen Anbieter, dem du für diese Domains vertraust.",
+				"acsUrl": "Assertion-Consumer-Service-URL",
+				"entityId": "Entity-ID (Audience)",
+				"addressesHint": "Trage diese beiden bei deinem Identitätsanbieter ein. Sie ändern sich später nicht.",
+				"domains": "E-Mail-Domains",
+				"domainsHint": "Trenne mehrere durch Kommas. Subdomains sind eingeschlossen.",
+				"domainsInvalid": "Gib Domains wie example.com ein, getrennt durch Kommas.",
+				"issuer": "Entity-ID des Identitätsanbieters (Issuer)",
+				"entryPoint": "Single-Sign-on-URL",
+				"entryPointInvalid": "Verwende eine https://-Adresse.",
+				"certificate": "Signaturzertifikat",
+				"certificateHint": "Das öffentliche X.509-Zertifikat des Identitätsanbieters, als PEM oder Base64. Niemals ein privater Schlüssel.",
+				"certificateKeepHint": "Lass dieses Feld leer, um das aktuelle Zertifikat zu behalten.",
+				"currentCertificate": "Aktueller Fingerabdruck: {{fingerprint}}",
+				"certificateExpired": "Abgelaufen",
+				"certificateExpiring": "Läuft bald ab",
+				"connected": "Identitätsanbieter verbunden",
+				"saved": "Verbindung gespeichert",
+				"removeDescription": "Die Anmeldung über diesen Identitätsanbieter endet ab sofort. Die Konten bleiben bestehen, und die Personen melden sich auf andere Weise an.",
+				"removed": "{{name}} entfernt",
+				"columns": {
+					"name": "Name",
+					"domains": "E-Mail-Domains",
+					"certificate": "Zertifikat läuft ab"
+				}
+			}
 		}
 	},
 	"press": {
@@ -9936,6 +10375,24 @@
 				"facts": "Projekte: {{projects}} · Personen: {{members}} · Zyklen: {{cycles}}",
 				"memory": "Gedächtnisnotizen: {{count}}",
 				"history": "Frühere Nachrichten: {{count}}"
+			},
+			"undo": {
+				"button": "Plan rückgängig machen",
+				"pending": "Plan wird rückgängig gemacht…",
+				"hint": "Du kannst diesen Plan eine Stunde lang rückgängig machen, solange sich darin nichts geändert hat.",
+				"lastPlan": "Du kannst deinen letzten Plan noch rückgängig machen.",
+				"done": "Der Plan wurde rückgängig gemacht. Gelöschte Elemente liegen im Papierkorb.",
+				"archived_one": "{{count}} Element wurde stattdessen archiviert, weil du es nicht löschen kannst.",
+				"archived_other": "{{count}} Elemente wurden stattdessen archiviert, weil du sie nicht löschen kannst.",
+				"partial_one": "Rückgängig gemacht, bis auf {{count}} Element:",
+				"partial_other": "Rückgängig gemacht, bis auf {{count}} Elemente:",
+				"edited_one": "Nichts wurde rückgängig gemacht: {{count}} Element wurde nach dem Erstellen des Plans geändert. Entferne es von Hand, wenn es weg soll.",
+				"edited_other": "Nichts wurde rückgängig gemacht: {{count}} Elemente wurden nach dem Erstellen des Plans geändert. Entferne sie von Hand, wenn sie weg sollen.",
+				"more_one": "und {{count}} weiteres",
+				"more_other": "und {{count}} weitere",
+				"already": "Dieser Plan wurde bereits rückgängig gemacht.",
+				"expired": "Dieser Plan kann nicht mehr rückgängig gemacht werden: Die Stunde ist vorbei.",
+				"failed": "Dieser Plan konnte nicht rückgängig gemacht werden."
 			}
 		},
 		"duplicates": {
@@ -11484,7 +11941,8 @@
 			"text": "Dies ist eine Test-E-Mail von {{instanceName}}. Wenn du sie lesen kannst, funktioniert der E-Mail-Versand."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Neuer Kommentar zu „{{taskTitle}}“"
+			"commentWithoutPreview": "Neuer Kommentar zu „{{taskTitle}}“",
+			"pushFixedLine": "Öffne Margaya, um die Details zu sehen."
 		}
 	}
 }

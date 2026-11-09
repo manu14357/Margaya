@@ -221,10 +221,29 @@
 			"errors": {
 				"account_not_linked": "Deze identiteit kon niet aan het bestaande account worden gekoppeld. Log in met e-mail om het account te verifiëren en probeer SSO daarna opnieuw. Als inloggen met e-mail niet beschikbaar is, neem dan contact op met je beheerder.",
 				"oauth_code_verification_failed": "OAuth-verificatie mislukt. Probeer het opnieuw.",
-				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Registratie is momenteel uitgeschakeld. Je hebt een geldige uitnodiging nodig om een account aan te maken."
+				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Registratie is momenteel uitgeschakeld. Je hebt een geldige uitnodiging nodig om een account aan te maken.",
+				"unsolicited_response": "Start de bedrijfsaanmelding vanaf deze pagina. Aanmelden dat bij je identiteitsprovider begint, wordt niet geaccepteerd.",
+				"invalid_saml_response": "Het antwoord van je identiteitsprovider kon niet worden geaccepteerd. Probeer het opnieuw of vraag je beheerder om de verbinding te controleren.",
+				"replay_detected": "Dit inlogantwoord is al gebruikt. Log opnieuw in.",
+				"unable_to_create_user": "Je account kon niet worden aangemaakt. Vraag je beheerder om toegang.",
+				"invalid_request": "Dit inlogverzoek was ongeldig. Probeer het opnieuw.",
+				"invalid_state": "Deze inloglink is verlopen. Probeer het opnieuw.",
+				"saml_deprecated_algorithm": "Je identiteitsprovider ondertekent met een algoritme dat niet meer wordt geaccepteerd. Vraag je beheerder om over te schakelen op SHA-256.",
+				"this_identity_provider_cannot_sign_in_that_email_address_": "Met deze identiteitsprovider kun je niet inloggen met dit e-mailadres.",
+				"new_accounts_on_this_server_must_use_an_approved_email_domain_": "Nieuwe accounts op deze server moeten een goedgekeurd e-maildomein gebruiken.",
+				"banned_user": "Dit account is geblokkeerd. Vraag je beheerder om toegang.",
+				"unable_to_link_account": "Deze identiteit kon niet aan je account worden gekoppeld. Vraag je beheerder om hulp.",
+				"saml_other_browser": "Bedrijfsaanmelding moet worden afgerond in de browser waarin deze is gestart. Begin opnieuw vanaf deze pagina en zorg dat cookies zijn toegestaan."
 			},
 			"instanceStatusError": "Kan de server niet bereiken. Probeer het over een moment opnieuw.",
-			"titleWithInstance": "Inloggen bij {{name}}"
+			"titleWithInstance": "Inloggen bij {{name}}",
+			"continueWithSaml": "Doorgaan met bedrijfsaanmelding",
+			"samlEmail": "Zakelijk e-mailadres",
+			"samlSubmit": "Doorgaan",
+			"samlNoConnection": "Bedrijfsaanmelding is niet ingesteld voor dit e-maildomein.",
+			"samlError": "Bedrijfsaanmelding kon niet worden gestart. Probeer het opnieuw.",
+			"emailCodesOff": "Inloglinks en -codes per e-mail staan uit op deze server. Heb je alleen die ooit gebruikt, dan heb je nog geen wachtwoord: kies “Wachtwoord vergeten?” om er een in te stellen.",
+			"emailCodesOffNoEmail": "Inloglinks en -codes per e-mail staan uit op deze server. Heb je alleen die ooit gebruikt, dan heb je nog geen wachtwoord: vraag een instantiebeheerder om er een voor je in te stellen."
 		},
 		"providers": {
 			"google": "Google",
@@ -420,6 +439,10 @@
 				"nameShort": "Naam moet minimaal 2 tekens bevatten"
 			}
 		},
+		"layout": {
+			"headline": "Zie het hele project. Pak de volgende taak op.",
+			"lede": "Zelf gehoste projectbeheersoftware voor teams die van snelle, rustige tools houden."
+		},
 		"device": {
 			"approve": "Goedkeuren",
 			"approveFailed": "Goedkeuren is mislukt",
@@ -443,10 +466,6 @@
 			"subtitle": "Voer de code uit je CLI of app in om door te gaan.",
 			"title": "Een apparaat koppelen"
 		},
-		"layout": {
-			"headline": "Zie het hele project. Pak de volgende taak op.",
-			"lede": "Zelf gehoste projectbeheersoftware voor teams die van snelle, rustige tools houden."
-		},
 		"mcp": {
 			"approve": "Goedkeuren",
 			"clientFallback": "MCP-client",
@@ -463,22 +482,6 @@
 			"subtitle": "Bekijk dit verzoek voordat je toegang verleent tot je Margaya-account.",
 			"title": "MCP-client autoriseren",
 			"warning": "Deze client kan namens jou handelen en toegang krijgen tot je werkruimtes. Ga alleen door als je deze verbinding zelf hebt gestart."
-		},
-		"emailVerification": {
-			"codeLabel": "Verificatiecode",
-			"codeSent": "We hebben een 6-cijferige code naar {{email}} gestuurd. Deze verloopt over 5 minuten.",
-			"invitationsDescription": "Verifieer je e-mailadres om uitnodigingen te zien die naar {{email}} zijn gestuurd.",
-			"resend": "Nieuwe code versturen",
-			"sendCode": "Code versturen",
-			"sendFailed": "Kan de code niet versturen. Probeer het opnieuw.",
-			"sending": "Versturen...",
-			"settingsDescription": "Verifieer {{email}} zodat werkruimte-uitnodigingen die naar dit adres zijn gestuurd in Margaya verschijnen.",
-			"success": "E-mailadres geverifieerd",
-			"title": "Verifieer je e-mailadres",
-			"verifiedBadge": "Geverifieerd",
-			"verify": "Verifiëren",
-			"verifyFailed": "Die code werkte niet. Controleer hem of vraag een nieuwe aan.",
-			"verifying": "Verifiëren..."
 		},
 		"forgotPassword": {
 			"backToSignIn": "Terug naar inloggen",
@@ -507,6 +510,30 @@
 			"successDescription": "Je nieuwe wachtwoord is ingesteld en alle sessies zijn uitgelogd. Log in met je nieuwe wachtwoord.",
 			"successTitle": "Wachtwoord bijgewerkt",
 			"title": "Nieuw wachtwoord instellen"
+		},
+		"emailVerification": {
+			"codeLabel": "Verificatiecode",
+			"codeSent": "We hebben een 6-cijferige code naar {{email}} gestuurd. Deze verloopt over 5 minuten.",
+			"invitationsDescription": "Verifieer je e-mailadres om uitnodigingen te zien die naar {{email}} zijn gestuurd.",
+			"resend": "Nieuwe code versturen",
+			"sendCode": "Code versturen",
+			"sendFailed": "Kan de code niet versturen. Probeer het opnieuw.",
+			"sending": "Versturen...",
+			"settingsDescription": "Verifieer {{email}} zodat werkruimte-uitnodigingen die naar dit adres zijn gestuurd in Margaya verschijnen.",
+			"success": "E-mailadres geverifieerd",
+			"title": "Verifieer je e-mailadres",
+			"verifiedBadge": "Geverifieerd",
+			"verify": "Verifiëren",
+			"verifyFailed": "Die code werkte niet. Controleer hem of vraag een nieuwe aan.",
+			"verifying": "Verifiëren..."
+		},
+		"complete": {
+			"pageTitle": "Bezig met inloggen",
+			"title": "Inloggen afronden",
+			"working": "Je wordt ingelogd…",
+			"failedTitle": "Inloggen kon niet worden afgerond",
+			"failed": "Deze inlogpoging kon niet worden afgerond. De link ervan werkt één keer, één minuut lang, en alleen in de browser waarmee je hebt ingelogd. Log opnieuw in.",
+			"backToSignIn": "Terug naar inloggen"
 		}
 	},
 	"settings": {
@@ -533,8 +560,8 @@
 				"invalidEmail": "Voer een geldig e-mailadres in"
 			},
 			"avatar": {
-				"hint": "PNG, JPEG, or WebP. Cropped to a square and resized to 256x256.",
-				"remove": "Remove",
+				"hint": "Klik op je foto om deze te wijzigen of te verwijderen. De foto wordt vierkant bijgesneden en geschaald naar 256x256.",
+				"remove": "Avatar verwijderen",
 				"removeError": "Verwijderen profielfoto mislukt",
 				"removeSuccess": "Profielfoto verwijderd",
 				"updateError": "Bijwerken profielfoto mislukt",
@@ -544,10 +571,10 @@
 			},
 			"deleteAccount": {
 				"confirm": "Account verwijderen",
-				"confirmLabel": "Confirm your email address",
+				"confirmLabel": "Typ {{email}} om te bevestigen",
 				"description": "Werkruimtes waar alleen jij lid van bent, worden samen met je account verwijderd. Elders blijven je taken bestaan zonder toegewezen persoon, en worden je reacties verwijderd.",
 				"error": "Verwijderen van account mislukt",
-				"modalDescription": "This cannot be undone. Type {{email}} to confirm.",
+				"modalDescription": "Hiermee verwijder je je account definitief. Dit kan niet ongedaan worden gemaakt.",
 				"modalTitle": "Je account verwijderen?",
 				"sectionSubtitle": "Permanente acties die je hele account beïnvloeden.",
 				"sectionTitle": "Gevarenzone",
@@ -1282,6 +1309,8 @@
 			"createColumnsFirst": "Maak eerst kolommen aan om automatiseringsregels te configureren.",
 			"githubHeading": "GitHub",
 			"githubHint": "Wanneer een GitHub-gebeurtenis plaatsvindt, verplaats de taak naar een kolom.",
+			"giteaHeading": "Gitea",
+			"giteaHint": "Wanneer een Gitea-webhookgebeurtenis plaatsvindt, verplaats de gekoppelde taak naar een kolom.",
 			"selectColumnPlaceholder": "Selecteer kolom...",
 			"toastUpdated": "Workflow-regel bijgewerkt",
 			"toastError": "Bijwerken regel mislukt",
@@ -1292,8 +1321,9 @@
 				"issue_opened": "Issue geopend",
 				"issue_closed": "Issue gesloten"
 			},
-			"giteaHeading": "Gitea",
-			"giteaHint": "Wanneer een Gitea-webhookgebeurtenis plaatsvindt, verplaats de gekoppelde taak naar een kolom."
+			"removeRule": "Regel voor {{event}} verwijderen",
+			"toastRemoved": "Workflowregel verwijderd",
+			"toastRemoveError": "Verwijderen van regel mislukt"
 		},
 		"externalLinks": {
 			"resources": "Bronnen",
@@ -1355,6 +1385,9 @@
 			"eventComments": "Reacties en vermeldingen",
 			"eventCommentsHint": "Omvat nieuwe reacties op taken die aan jou zijn toegewezen en directe @vermeldingen.",
 			"eventStatusChanges": "Statuswijzigingen van taken",
+			"eventStatusChangesHint": "Bij taken die aan jou zijn toegewezen of die je volgt.",
+			"eventTaskUpdates": "Andere taakwijzigingen",
+			"eventTaskUpdatesHint": "Wijzigingen in prioriteit, einddatum en titel bij taken die je volgt.",
 			"eventDueDateReminders": "Einddatum-herinneringen",
 			"reminderLeadTimeLabel": "Herinner mij vóór de einddatum",
 			"reminderLeadTimeHint": "Tussen 1 uur en 30 dagen van tevoren. Meldingen over verstreken einddatums worden apart verzonden.",
@@ -1362,6 +1395,23 @@
 			"reminderLeadTimeUnitDays": "Dagen",
 			"reminderLeadTimeInvalid": "Voer een geheel getal in tussen 1 en {{max}}.",
 			"saveEventPreferences": "Meldingstypen opslaan",
+			"digestTitle": "E-mailoverzicht",
+			"digestDescription": "Een overzichtsmail van je open taken die te laat zijn of binnen 7 dagen vervallen, nieuwe vermeldingen en ongelezen inbox-items. Hij gebruikt je tijdzone en wordt overgeslagen als er niets te melden is.",
+			"digestFrequencyLabel": "Overzicht versturen",
+			"digestFrequencyOff": "Uit",
+			"digestFrequencyDaily": "Dagelijks",
+			"digestFrequencyWeekly": "Wekelijks",
+			"digestWeekdayLabel": "Dag",
+			"digestWeekdaySunday": "Zondag",
+			"digestWeekdayMonday": "Maandag",
+			"digestWeekdayTuesday": "Dinsdag",
+			"digestWeekdayWednesday": "Woensdag",
+			"digestWeekdayThursday": "Donderdag",
+			"digestWeekdayFriday": "Vrijdag",
+			"digestWeekdaySaturday": "Zaterdag",
+			"digestHourLabel": "Tijd",
+			"digestNoEmail": "Voor overzichten is een e-mailadres in je account nodig.",
+			"saveDigest": "Overzicht opslaan",
 			"workspaceCardLabelEmail": "E-mail",
 			"workspaceCardLabelNtfy": "ntfy",
 			"workspaceCardLabelGotify": "Gotify",
@@ -1389,28 +1439,8 @@
 			"toastPreferencesSaveFailed": "Opslaan meldingsvoorkeuren mislukt",
 			"toastRuleSavedGeneric": "Werkruimte-meldingsregel opgeslagen",
 			"toastRuleRemovedGeneric": "Werkruimte-meldingsregel verwijderd",
-			"eventStatusChangesHint": "Bij taken die aan jou zijn toegewezen of die je volgt.",
-			"eventTaskUpdates": "Andere taakwijzigingen",
-			"eventTaskUpdatesHint": "Wijzigingen in prioriteit, einddatum en titel bij taken die je volgt.",
-			"channelsDescription": "Waar Margaya de hierboven gekozen meldingen naartoe stuurt.",
 			"channelsTitle": "Bezorgkanalen",
-			"digestDescription": "Een overzichtsmail van je open taken die te laat zijn of binnen 7 dagen vervallen, nieuwe vermeldingen en ongelezen inbox-items. Hij gebruikt je tijdzone en wordt overgeslagen als er niets te melden is.",
-			"digestFrequencyDaily": "Dagelijks",
-			"digestFrequencyLabel": "Overzicht versturen",
-			"digestFrequencyOff": "Uit",
-			"digestFrequencyWeekly": "Wekelijks",
-			"digestHourLabel": "Tijd",
-			"digestNoEmail": "Voor overzichten is een e-mailadres in je account nodig.",
-			"digestTitle": "E-mailoverzicht",
-			"digestWeekdayFriday": "Vrijdag",
-			"digestWeekdayLabel": "Dag",
-			"digestWeekdayMonday": "Maandag",
-			"digestWeekdaySaturday": "Zaterdag",
-			"digestWeekdaySunday": "Zondag",
-			"digestWeekdayThursday": "Donderdag",
-			"digestWeekdayTuesday": "Dinsdag",
-			"digestWeekdayWednesday": "Woensdag",
-			"saveDigest": "Overzicht opslaan",
+			"channelsDescription": "Waar Margaya de hierboven gekozen meldingen naartoe stuurt.",
 			"sound": {
 				"title": "Geluiden",
 				"description": "Speel een geluid af wanneer er een melding binnenkomt terwijl Margaya open is in je browser.",
@@ -1441,7 +1471,30 @@
 				"deviceMute": "Geluiden dempen op dit apparaat",
 				"deviceMuteDescription": "Dempt alleen deze browser. Je andere apparaten blijven geluid afspelen.",
 				"previewFailed": "Je browser heeft het geluid niet afgespeeld. Controleer of dit tabblad of deze site niet gedempt is."
-			}
+			},
+			"pushTitle": "Pushmeldingen",
+			"pushDescription": "Meldingen op je telefoon of computer, ook als Margaya gesloten is. “Stuur mij meldingen over” bepaalt wat er wordt verstuurd, en een werkruimteregel hieronder kan dat beperken.",
+			"pushThisDevice": "Op dit apparaat",
+			"pushOnHint": "Dit apparaat ontvangt pushmeldingen.",
+			"pushOffHint": "Je browser vraagt om toestemming wanneer je dit inschakelt.",
+			"pushOffHintAllowed": "Meldingen zijn al toegestaan in deze browser.",
+			"pushNotSetUp": "Push is niet ingesteld op deze server. Vraag je beheerder om de VAPID-sleutels in te stellen.",
+			"pushInstallFirst": "Zet Margaya op iPhone en iPad eerst op je beginscherm: tik op Deel en daarna op Zet op beginscherm. Open Margaya vanaf daar en schakel dit in.",
+			"pushUnsupported": "Deze browser kan hier geen pushmeldingen ontvangen. Push vereist een actuele browser en een HTTPS-adres.",
+			"pushBlocked": "Meldingen zijn geblokkeerd voor deze site. Sta ze toe in de instellingen van je browser en laad deze pagina daarna opnieuw.",
+			"pushOtherDevices": "Je andere apparaten",
+			"pushRemoveDevice": "Verwijderen",
+			"pushRemoveDeviceLabel": "{{device}} verwijderen",
+			"toastPushOn": "Pushmeldingen staan aan voor dit apparaat.",
+			"toastPushOnFailed": "Pushmeldingen konden niet worden ingeschakeld. Probeer het opnieuw.",
+			"toastPushOff": "Pushmeldingen staan uit voor dit apparaat.",
+			"toastPushOffFailed": "Pushmeldingen konden niet worden uitgeschakeld. Probeer het opnieuw.",
+			"toastPushDeviceRemoved": "Apparaat verwijderd.",
+			"toastPushDeviceRemoveFailed": "Het apparaat kon niet worden verwijderd. Probeer het opnieuw.",
+			"workspaceCardLabelPush": "Pushmeldingen",
+			"pushChannelHintEnabled": "Stuur passende werkruimtemeldingen naar je apparaten.",
+			"pushChannelHintDisabled": "Schakel push eerst in voor een apparaat.",
+			"pushLoadFailed": "Je pushinstellingen konden niet worden geladen. Laad deze pagina opnieuw om het nog eens te proberen."
 		},
 		"workspaceRoles": {
 			"pageTitle": "Rollen",
@@ -1482,7 +1535,6 @@
 				"organization": "Werkruimtebeheer",
 				"member": "Leden",
 				"invitation": "Uitnodigingen",
-				"team": "Teams",
 				"ac": "Rollen en rechten",
 				"cycle": "Cyclussen",
 				"module": "Modules",
@@ -1606,20 +1658,6 @@
 					"cancel": {
 						"label": "Uitnodigingen annuleren",
 						"description": "Trek openstaande werkruimte-uitnodigingen in."
-					}
-				},
-				"team": {
-					"create": {
-						"label": "Teams aanmaken",
-						"description": "Maak teams aan in deze werkruimte."
-					},
-					"update": {
-						"label": "Teams bewerken",
-						"description": "Wijzig teams en teamlidmaatschap."
-					},
-					"delete": {
-						"label": "Teams verwijderen",
-						"description": "Verwijder teams in deze werkruimte."
 					}
 				},
 				"ac": {
@@ -1955,28 +1993,43 @@
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
 		"customFields": {
-			"addButton": "Toevoegen",
-			"createError": "Aanmaken van aangepast veld mislukt.",
-			"createSuccess": "Aangepast veld aangemaakt.",
-			"defaultLabel": "Standaard",
-			"defaultValuePlaceholder": "Standaardwaarde",
-			"deleteButton": "Verwijderen",
-			"deleteError": "Verwijderen van aangepast veld mislukt.",
-			"deleteSuccess": "Aangepast veld verwijderd.",
-			"empty": "Nog geen aangepaste velden ingesteld.",
-			"loading": "Aangepaste velden laden...",
 			"namePlaceholder": "Veldnaam",
+			"typePlaceholder": "Selecteer veldtype",
 			"noOptionsPlaceholder": "Geen opties",
+			"defaultValuePlaceholder": "Standaardwaarde",
 			"optionsPlaceholder": "Opties gescheiden door komma's",
 			"required": "Verplicht",
-			"typePlaceholder": "Selecteer veldtype",
+			"addButton": "Toevoegen",
+			"loading": "Aangepaste velden laden...",
+			"empty": "Nog geen aangepaste velden ingesteld.",
+			"defaultLabel": "Standaard",
+			"createSuccess": "Aangepast veld aangemaakt.",
+			"createError": "Aanmaken van aangepast veld mislukt.",
+			"deleteButton": "Verwijderen",
+			"deleteSuccess": "Aangepast veld verwijderd.",
+			"deleteError": "Verwijderen van aangepast veld mislukt.",
 			"types": {
 				"boolean": "Booleaans",
 				"date": "Datum",
 				"dropdown": "Keuzelijst",
 				"number": "Getal",
 				"text": "Tekst"
-			}
+			},
+			"editButton": "Bewerken",
+			"editTitle": "Aangepast veld bewerken",
+			"editDescription": "Het type van een veld en of het verplicht is, kunnen na het aanmaken niet meer worden gewijzigd.",
+			"nameLabel": "Naam",
+			"optionsLabel": "Opties",
+			"addOption": "Optie toevoegen",
+			"removeOption": "Optie verwijderen",
+			"optionPlaceholder": "Naam van de optie",
+			"optionsHint": "Als je een optie hernoemt, worden alle taken, opgeslagen weergaven en automatiseringen die deze gebruiken bijgewerkt. Een verwijderde optie blijft staan op taken die haar al hebben tot iemand dat wijzigt, en kan niet opnieuw worden gekozen.",
+			"duplicateOption": "Opties moeten van elkaar verschillen.",
+			"noDefault": "Geen standaardwaarde",
+			"saveButton": "Opslaan",
+			"cancelButton": "Annuleren",
+			"updateSuccess": "Aangepast veld bijgewerkt.",
+			"updateError": "Bijwerken van aangepast veld mislukt."
 		},
 		"projectFeatures": {
 			"disableConfirmAction": "Uitschakelen",
@@ -2250,6 +2303,11 @@
 			}
 		},
 		"workspaceExports": {
+			"title": "Exports",
+			"pageTitle": "Exports",
+			"subtitle": "Exporteer taken naar CSV, Excel of JSON. Bestanden staan {{days}} dagen klaar om te downloaden.",
+			"newExport": "Nieuwe export",
+			"viewExports": "Exports bekijken",
 			"form": {
 				"activeGroup": "Actief",
 				"allProjects": "Alle projecten",
@@ -2277,48 +2335,6 @@
 				"json": "JSON",
 				"xlsx": "Excel"
 			},
-			"history": {
-				"all": "Alle exports",
-				"columns": {
-					"actions": "Acties",
-					"created": "Aangemaakt",
-					"expires": "Beschikbaar",
-					"export": "Export",
-					"requestedBy": "Aangevraagd door",
-					"size": "Grootte",
-					"status": "Status",
-					"tasks": "Taken"
-				},
-				"delete": "Verwijderen",
-				"deleteAria": "{{name}} verwijderen",
-				"deleteDescription": "Het bestand wordt voor iedereen verwijderd. Dit kan niet ongedaan worden gemaakt.",
-				"deletedProject": "Verwijderd project",
-				"deleteTitle": "Deze export verwijderen?",
-				"deleting": "Verwijderen…",
-				"description": "Download voltooide exports of verwijder de exports die je niet meer nodig hebt.",
-				"download": "Downloaden",
-				"downloadAria": "{{name}} downloaden",
-				"empty": "Nog geen exports. Exports die je start, staan hier {{days}} dagen.",
-				"expiredOn": "Verlopen op {{date}}",
-				"expiresOn": "Tot {{date}}",
-				"loadMore": "Meer laden",
-				"mine": "Mijn exports",
-				"scopeLabel": "Van wie de exports zijn",
-				"summaryProjects_one": "{{format}} · {{name}}",
-				"summaryProjects_other": "{{format}} · {{count}} projecten",
-				"title": "Eerdere exports"
-			},
-			"newExport": "Nieuwe export",
-			"pageTitle": "Exports",
-			"status": {
-				"completed": "Klaar",
-				"expired": "Verlopen",
-				"failed": "Mislukt",
-				"processing": "Bezig met verwerken",
-				"queued": "In wachtrij"
-			},
-			"subtitle": "Exporteer taken naar CSV, Excel of JSON. Bestanden staan {{days}} dagen klaar om te downloaden.",
-			"title": "Exports",
 			"toast": {
 				"deleted": "Export verwijderd",
 				"deleteError": "De export kon niet worden verwijderd. Probeer het opnieuw.",
@@ -2330,7 +2346,60 @@
 				"ready": "Je export is klaar",
 				"started": "Export gestart. We laten het je weten als hij klaar is."
 			},
-			"viewExports": "Exports bekijken"
+			"history": {
+				"title": "Eerdere exports",
+				"description": "Download voltooide exports of verwijder de exports die je niet meer nodig hebt.",
+				"scopeLabel": "Van wie de exports zijn",
+				"mine": "Mijn exports",
+				"all": "Alle exports",
+				"empty": "Nog geen exports. Exports die je start, staan hier {{days}} dagen.",
+				"columns": {
+					"actions": "Acties",
+					"created": "Aangemaakt",
+					"expires": "Beschikbaar",
+					"export": "Export",
+					"requestedBy": "Aangevraagd door",
+					"size": "Grootte",
+					"status": "Status",
+					"tasks": "Taken"
+				},
+				"summaryProjects_one": "{{format}} · {{name}}",
+				"summaryProjects_other": "{{format}} · {{count}} projecten",
+				"deletedProject": "Verwijderd project",
+				"download": "Downloaden",
+				"downloadAria": "{{name}} downloaden",
+				"delete": "Verwijderen",
+				"deleteAria": "{{name}} verwijderen",
+				"deleting": "Verwijderen…",
+				"deleteTitle": "Deze export verwijderen?",
+				"deleteDescription": "Het bestand wordt voor iedereen verwijderd. Dit kan niet ongedaan worden gemaakt.",
+				"expiredOn": "Verlopen op {{date}}",
+				"expiresOn": "Tot {{date}}",
+				"loadMore": "Meer laden",
+				"summaryWorkspace": "Hele werkruimte",
+				"fileCount_one": "{{count}} bestand",
+				"fileCount_other": "{{count}} bestanden",
+				"withoutFiles": "Zonder bestanden",
+				"missingFiles_one": "{{count}} bestand ontbrak in de opslag",
+				"missingFiles_other": "{{count}} bestanden ontbraken in de opslag"
+			},
+			"status": {
+				"completed": "Klaar",
+				"expired": "Verlopen",
+				"failed": "Mislukt",
+				"processing": "Bezig met verwerken",
+				"queued": "In wachtrij"
+			},
+			"whole": {
+				"title": "Hele werkruimte",
+				"description": "Download alles als één ZIP-bestand: taken met al hun reacties, pagina's, instellingen en bestanden.",
+				"action": "Werkruimte exporteren",
+				"dialogTitle": "Hele werkruimte exporteren",
+				"dialogDescription": "Het archief wordt op de achtergrond gemaakt. Je krijgt een melding zodra het klaar is.",
+				"includeFiles": "Bestanden meenemen",
+				"includeFilesHint": "Schakel dit uit voor een veel kleiner archief. Elk bestand wordt nog steeds vermeld.",
+				"leftOut": "Geheimen, privépagina's, de prullenbak en concepten worden nooit meegenomen. Het archief bevat e-mailadressen van leden, dus bewaar het op een veilige plek."
+			}
 		},
 		"workspaceWebhooks": {
 			"actionsMenu": "Webhook-acties",
@@ -2709,7 +2778,8 @@
 			"restrictedProject": "Beperkt project",
 			"toastUpdated": "Toegang bijgewerkt",
 			"toastError": "Kan de toegang niet bijwerken",
-			"loadError": "Kan de toegangsinstellingen niet laden. Herlaad de pagina om het opnieuw te proberen."
+			"loadError": "Kan de toegangsinstellingen niet laden. Herlaad de pagina om het opnieuw te proberen.",
+			"guestsHint": "Gasten hebben alleen toegang tot de projecten waaraan ze zijn toegevoegd. Voeg ze hier toe; de projectrol bepaalt wat ze kunnen doen."
 		},
 		"projectPeople": {
 			"defaultAssigneeHint": "Vooraf ingevuld wanneer je een taak aanmaakt en toegewezen aan geaccepteerde aanvragen zonder toegewezen persoon.",
@@ -2827,47 +2897,47 @@
 				"workspacePublicPagesChanged": "Heeft openbare pagina's in- of uitgeschakeld",
 				"pagePublished": "Heeft een pagina gepubliceerd via een openbare link",
 				"pageUnpublished": "Heeft de openbare link van een pagina ingetrokken",
-				"apiKeyCreated": "Heeft een API-sleutel aangemaakt",
-				"apiKeyRevoked": "Heeft een API-sleutel ingetrokken",
-				"exportCreated": "Heeft een export gestart",
-				"exportDownloaded": "Heeft een export gedownload",
-				"importRun": "Heeft taken geïmporteerd",
-				"integrationConnected": "Heeft een integratie gekoppeld",
-				"integrationDisconnected": "Heeft een integratie ontkoppeld",
-				"integrationUpdated": "Heeft een integratie gewijzigd",
+				"memberInvited": "Heeft iemand uitgenodigd voor de werkruimte",
+				"memberInvitationRevoked": "Heeft een uitnodiging ingetrokken",
 				"memberInvitationAccepted": "Heeft een uitnodiging geaccepteerd",
 				"memberInvitationDeclined": "Heeft een uitnodiging afgewezen",
 				"memberInvitationRoleChanged": "Heeft de rol van een openstaande uitnodiging gewijzigd",
-				"memberInvitationRevoked": "Heeft een uitnodiging ingetrokken",
-				"memberInvited": "Heeft iemand uitgenodigd voor de werkruimte",
-				"memberLeft": "Heeft de werkruimte verlaten",
 				"memberRemoved": "Heeft een lid verwijderd",
+				"memberLeft": "Heeft de werkruimte verlaten",
 				"memberRoleChanged": "Heeft de rol van een lid gewijzigd",
-				"projectArchived": "Heeft een project gearchiveerd",
-				"projectCreated": "Heeft een project aangemaakt",
-				"projectFeatureToggled": "Heeft projectfuncties in- of uitgeschakeld",
-				"projectPurged": "Heeft een project permanent verwijderd",
-				"projectRestored": "Heeft een project uit de prullenbak hersteld",
-				"projectSettingsChanged": "Heeft projectinstellingen gewijzigd",
-				"projectTrashed": "Heeft een project naar de prullenbak verplaatst",
-				"projectUnarchived": "Heeft een project uit het archief gehaald",
-				"publicBoardLinkRotated": "Heeft de link van een openbaar bord vervangen",
-				"publicBoardPublished": "Heeft een openbaar bord gepubliceerd",
-				"publicBoardSettingsChanged": "Heeft instellingen van een openbaar bord gewijzigd",
-				"publicBoardUnpublished": "Heeft de publicatie van een openbaar bord ingetrokken",
 				"roleCreated": "Heeft een rol aangemaakt",
-				"roleDeleted": "Heeft een rol verwijderd",
 				"roleUpdated": "Heeft een rol gewijzigd",
-				"trashEmptied": "Heeft de prullenbak van een project geleegd",
-				"trashPurged": "Heeft taken permanent uit de prullenbak verwijderd",
-				"unknown": "{{action}}",
+				"roleDeleted": "Heeft een rol verwijderd",
+				"apiKeyCreated": "Heeft een API-sleutel aangemaakt",
+				"apiKeyRevoked": "Heeft een API-sleutel ingetrokken",
 				"webhookCreated": "Heeft een webhook aangemaakt",
+				"webhookUpdated": "Heeft een webhook gewijzigd",
 				"webhookDeleted": "Heeft een webhook verwijderd",
 				"webhookSecretRotated": "Heeft het ondertekeningsgeheim van een webhook vernieuwd",
-				"webhookUpdated": "Heeft een webhook gewijzigd",
+				"integrationConnected": "Heeft een integratie gekoppeld",
+				"integrationUpdated": "Heeft een integratie gewijzigd",
+				"integrationDisconnected": "Heeft een integratie ontkoppeld",
 				"workspaceCreated": "Heeft de werkruimte aangemaakt",
-				"workspaceOwnershipTransferred": "Heeft het eigendom van de werkruimte overgedragen",
 				"workspaceUpdated": "Heeft werkruimte-instellingen gewijzigd",
+				"workspaceOwnershipTransferred": "Heeft het eigendom van de werkruimte overgedragen",
+				"projectCreated": "Heeft een project aangemaakt",
+				"projectTrashed": "Heeft een project naar de prullenbak verplaatst",
+				"projectRestored": "Heeft een project uit de prullenbak hersteld",
+				"projectPurged": "Heeft een project permanent verwijderd",
+				"projectArchived": "Heeft een project gearchiveerd",
+				"projectUnarchived": "Heeft een project uit het archief gehaald",
+				"projectFeatureToggled": "Heeft projectfuncties in- of uitgeschakeld",
+				"projectSettingsChanged": "Heeft projectinstellingen gewijzigd",
+				"publicBoardPublished": "Heeft een openbaar bord gepubliceerd",
+				"publicBoardUnpublished": "Heeft de publicatie van een openbaar bord ingetrokken",
+				"publicBoardLinkRotated": "Heeft de link van een openbaar bord vervangen",
+				"publicBoardSettingsChanged": "Heeft instellingen van een openbaar bord gewijzigd",
+				"exportCreated": "Heeft een export gestart",
+				"exportDownloaded": "Heeft een export gedownload",
+				"importRun": "Heeft taken geïmporteerd",
+				"trashPurged": "Heeft taken permanent uit de prullenbak verwijderd",
+				"trashEmptied": "Heeft de prullenbak van een project geleegd",
+				"unknown": "{{action}}",
 				"aiSettingsUpdated": "Heeft de AI-instellingen gewijzigd",
 				"aiTriageLabelsApplied": "Heeft voorgestelde labels automatisch toegevoegd",
 				"agentCreated": "Heeft een agent aangemaakt",
@@ -2894,7 +2964,9 @@
 				"aiConnectorUpdated": "Heeft een MCP-connector gewijzigd",
 				"aiConnectorDeleted": "Heeft een MCP-connector verwijderd",
 				"agentIntakeTriggerUpdated": "Heeft de intake-trigger van een agent gewijzigd",
-				"agentIntakeTriggerDisabled": "Heeft de intake-trigger van een agent uitgezet"
+				"agentIntakeTriggerDisabled": "Heeft de intake-trigger van een agent uitgezet",
+				"memberProvisioned": "Heeft een lid toegevoegd via automatische inrichting",
+				"memberInvitationProjectsChanged": "Heeft de projecten van een openstaande uitnodiging gewijzigd"
 			},
 			"actor": {
 				"apiKey": "API-sleutel",
@@ -2987,50 +3059,59 @@
 			"title": "Auditlog"
 		},
 		"trash": {
-			"deletedAt": "Verwijderd {{time}}",
-			"deletedBy": "Verwijderd door {{name}} {{time}}",
-			"deletePermanently": "Permanent verwijderen",
-			"emptyConfirmDescription": "Elke taak in de prullenbak van dit project wordt permanent verwijderd, met de bijbehorende reacties, bijlagen en tijdregistraties. Dit kan niet ongedaan worden gemaakt.",
-			"emptyConfirmTitle": "Prullenbak legen?",
-			"emptyProjectsDescription": "Projecten die je uit deze werkruimte verwijdert, verschijnen hier.",
-			"emptyProjectsTitle": "Geen verwijderde projecten",
-			"emptyTasksDescription": "Taken die je uit dit project verwijdert, verschijnen hier.",
-			"emptyTasksTitle": "Geen verwijderde taken",
-			"emptyTrash": "Prullenbak legen",
-			"loadError": "Kan de prullenbak niet laden",
-			"loadMore": "Meer laden",
-			"menuAria": "Meer acties voor {{name}}",
-			"noMatches": "Niets komt overeen met je zoekopdracht",
-			"projectSubtitle": "Verwijderde taken blijven hier tot ze permanent worden verwijderd. Als je een taak herstelt, komen de subtaken die ermee zijn verwijderd ook terug.",
 			"projectTitle": "Recent verwijderd",
-			"purgeOn": "Wordt op {{date}} permanent verwijderd",
-			"purgeProjectDescription": "“{{name}}” en alles daarin worden voor iedereen verwijderd. Dit kan niet ongedaan worden gemaakt.",
-			"purgeProjectTitle": "Dit project permanent verwijderen?",
-			"purgeTaskDescription": "“{{name}}”, de subtaken die ermee zijn verwijderd, reacties, bijlagen en tijdregistraties worden voor iedereen verwijderd. Dit kan niet ongedaan worden gemaakt.",
-			"purgeTaskTitle": "Deze taak permanent verwijderen?",
-			"restore": "Herstellen",
-			"restoreAria": "{{name}} herstellen",
-			"retry": "Opnieuw proberen",
-			"searchProjects": "Verwijderde projecten zoeken",
+			"projectSubtitle": "Verwijderde taken en pagina's blijven hier tot ze permanent worden verwijderd. Als je een taak herstelt, komen de subtaken die ermee zijn verwijderd ook terug; een herstelde pagina gaat terug naar Gearchiveerd.",
+			"workspaceTitle": "Recent verwijderde projecten",
+			"workspaceNav": "Recent verwijderd",
+			"workspaceSubtitle": "Verwijderde projecten blijven hier met hun taken tot ze permanent worden verwijderd.",
 			"searchTasks": "Verwijderde taken zoeken",
+			"searchProjects": "Verwijderde projecten zoeken",
+			"deletedBy": "Verwijderd door {{name}} {{time}}",
+			"deletedAt": "Verwijderd {{time}}",
+			"purgeOn": "Wordt op {{date}} definitief verwijderd",
+			"withSubTasks_one": "met {{count}} subtaak",
+			"withSubTasks_other": "met {{count}} subtaken",
 			"taskCount_one": "{{count}} taak",
 			"taskCount_other": "{{count}} taken",
+			"restore": "Herstellen",
+			"restoreAria": "{{name}} herstellen",
+			"menuAria": "Meer acties voor {{name}}",
+			"deletePermanently": "Permanent verwijderen",
+			"emptyTrash": "Prullenbak legen",
+			"emptyTasksTitle": "Geen verwijderde taken",
+			"emptyTasksDescription": "Taken die je uit dit project verwijdert, verschijnen hier.",
+			"emptyProjectsTitle": "Geen verwijderde projecten",
+			"emptyProjectsDescription": "Projecten die je uit deze werkruimte verwijdert, verschijnen hier.",
+			"noMatches": "Niets komt overeen met je zoekopdracht",
+			"loadError": "Kan de prullenbak niet laden",
+			"retry": "Opnieuw proberen",
+			"loadMore": "Meer laden",
+			"purgeTaskTitle": "Deze taak permanent verwijderen?",
+			"purgeTaskDescription": "“{{name}}”, de subtaken die ermee zijn verwijderd, reacties, bijlagen en tijdregistraties worden voor iedereen verwijderd. Dit kan niet ongedaan worden gemaakt.",
+			"emptyConfirmTitle": "Prullenbak legen?",
+			"emptyConfirmDescription": "Elke taak in de prullenbak van dit project wordt permanent verwijderd, met de bijbehorende reacties, bijlagen en tijdregistraties. Dit kan niet ongedaan worden gemaakt.",
+			"purgeProjectTitle": "Dit project permanent verwijderen?",
+			"purgeProjectDescription": "“{{name}}” en alles daarin worden voor iedereen verwijderd. Dit kan niet ongedaan worden gemaakt.",
 			"toast": {
-				"emptied_one": "{{count}} taak permanent verwijderd",
-				"emptied_other": "{{count}} taken permanent verwijderd",
-				"projectPurged": "Project permanent verwijderd",
+				"taskRestored": "Taak hersteld",
 				"projectRestored": "Project hersteld",
-				"purgeError": "Kan niet permanent verwijderen",
 				"restoreBlocked": "Deze taak kan niet afzonderlijk worden hersteld. Herstel eerst de bovenliggende taak of het project.",
 				"restoreError": "Kan niet herstellen",
 				"taskPurged": "Taak permanent verwijderd",
-				"taskRestored": "Taak hersteld"
+				"projectPurged": "Project permanent verwijderd",
+				"emptied_one": "{{count}} taak permanent verwijderd",
+				"emptied_other": "{{count}} taken permanent verwijderd",
+				"purgeError": "Kan niet permanent verwijderen",
+				"pageRestored": "Pagina hersteld naar Gearchiveerd",
+				"pagePurged": "Pagina permanent verwijderd"
 			},
-			"withSubTasks_one": "met {{count}} subtaak",
-			"withSubTasks_other": "met {{count}} subtaken",
-			"workspaceNav": "Recent verwijderd",
-			"workspaceSubtitle": "Verwijderde projecten blijven hier met hun taken tot ze permanent worden verwijderd.",
-			"workspaceTitle": "Recent verwijderde projecten"
+			"tasksHeading": "Taken",
+			"pagesHeading": "Pagina's",
+			"searchPages": "Verwijderde pagina's zoeken",
+			"emptyPagesTitle": "Geen verwijderde pagina's",
+			"emptyPagesDescription": "Gearchiveerde pagina's die je uit dit project verwijdert, verschijnen hier.",
+			"purgePageTitle": "Deze pagina permanent verwijderen?",
+			"purgePageDescription": "“{{name}}”, de reacties en de versiegeschiedenis worden voor iedereen verwijderd. Dit kan niet ongedaan worden gemaakt."
 		},
 		"automationRules": {
 			"title": "Automatiseringen",
@@ -3355,11 +3436,11 @@
 				"boardView": "Wissel naar bordweergave",
 				"listView": "Wissel naar lijstweergave",
 				"backlogView": "Wissel naar backlog-weergave",
+				"calendarView": "Overschakelen naar kalenderweergave",
 				"nextTask": "Volgende taak",
 				"prevTask": "Vorige taak",
 				"openTask": "Geselecteerde taak openen",
 				"quickSelectNumber": "Selecteer optie via nummer",
-				"calendarView": "Overschakelen naar kalenderweergave",
 				"goToSection": "Ga naar {{section}}",
 				"goToAllTasks": "Ga naar Alle taken",
 				"goToMyWork": "Ga naar Jouw werk",
@@ -3368,24 +3449,25 @@
 				"goToHome": "Ga naar Home",
 				"goToStickies": "Ga naar Plaknotities",
 				"paletteActions": "Een actie uitvoeren",
+				"paletteTasks": "Een taak zoeken op sleutel of titel",
 				"palettePeople": "Een persoon zoeken",
 				"palettePlaces": "Naar een plek gaan",
-				"paletteTasks": "Een taak zoeken op sleutel of titel",
 				"captureTask": "Een taak toevoegen op het bord of in de lijst",
 				"selectTask": "De taak met focus selecteren",
-				"triageAssignee": "De toegewezen personen van de taak met focus wijzigen",
-				"triagePriority": "De prioriteit van de taak met focus wijzigen",
 				"triageStatus": "De status van de taak met focus wijzigen",
+				"triagePriority": "De prioriteit van de taak met focus wijzigen",
+				"triageAssignee": "De toegewezen personen van de taak met focus wijzigen",
+				"taskStatus": "Status wijzigen",
+				"taskPriority": "Prioriteit wijzigen",
 				"taskAssignees": "Toegewezen personen wijzigen",
+				"taskLabels": "Labels wijzigen",
+				"taskDueDate": "Einddatum wijzigen",
 				"taskAssignSelf": "Jezelf toewijzen of verwijderen",
 				"taskCopyKey": "Taaksleutel kopiëren",
 				"taskCopyLink": "Taaklink kopiëren",
+				"taskCopyBranch": "Branchnaam van de taak kopiëren",
 				"taskDelete": "Taak verwijderen",
-				"taskDueDate": "Einddatum wijzigen",
-				"taskLabels": "Labels wijzigen",
-				"taskPriority": "Prioriteit wijzigen",
-				"taskStatus": "Status wijzigen",
-				"taskCopyBranch": "Branchnaam van de taak kopiëren"
+				"moveBetweenCards": "Wisselen tussen kaarten op het bord"
 			}
 		},
 		"favorites": {
@@ -3477,11 +3559,6 @@
 				"title": "Taak aan jou toegewezen",
 				"content": "Je bent toegewezen aan taak: {{taskTitle}}"
 			},
-			"time_entry_created": {
-				"title": "Tijdregistratie gestart",
-				"contentWithTask": "Tijdregistratie gestart voor taak: {{taskTitle}}",
-				"contentWithoutTask": "Tijdregistratie gestart voor een taak"
-			},
 			"task_mention": {
 				"title": "{{mentionerName}} heeft je vermeld",
 				"content": "{{mentionerName}} heeft je vermeld in: {{taskTitle}}",
@@ -3500,6 +3577,11 @@
 			"task_overdue": {
 				"title": "Taak te laat",
 				"content": "{{taskTitle}} is over de einddatum heen"
+			},
+			"time_entry_created": {
+				"title": "Tijdregistratie gestart",
+				"contentWithTask": "Tijdregistratie gestart voor taak: {{taskTitle}}",
+				"contentWithoutTask": "Tijdregistratie gestart voor een taak"
 			},
 			"task_updated": {
 				"dueDate": "Einddatum van \"{{taskTitle}}\" gewijzigd naar {{newValue}}",
@@ -3542,6 +3624,14 @@
 			"automation_notice": {
 				"title": "Automatisering: {{ruleName}}",
 				"content": "{{taskKey}} {{taskTitle}}"
+			},
+			"page_comment": {
+				"title": "{{commenterName}} heeft gereageerd",
+				"content": "{{commenterName}} heeft gereageerd op {{pageTitle}}: {{commentPreview}}"
+			},
+			"page_updated": {
+				"title": "{{editorName}} heeft een pagina bewerkt",
+				"content": "{{editorName}} heeft {{pageTitle}} bewerkt"
 			}
 		},
 		"reminderLeadTime": {
@@ -3604,10 +3694,12 @@
 			"loadMore": "Meer laden",
 			"pageTitle": "Inbox",
 			"preview": {
-				"emptyDescription": "De bijbehorende taak opent hier.",
 				"emptyTitle": "Selecteer een melding",
+				"emptyDescription": "De bijbehorende taak opent hier.",
 				"unavailable": "Deze taak is niet meer beschikbaar",
-				"label": "Leesvenster"
+				"label": "Leesvenster",
+				"showProperties": "Eigenschappen tonen",
+				"hideProperties": "Eigenschappen verbergen"
 			},
 			"retry": "Opnieuw proberen",
 			"snooze": {
@@ -3653,27 +3745,31 @@
 				"subscribed": "Gevolgd"
 			},
 			"verbs": {
-				"due_date_reminder": "Verloopt over {{leadTime}}",
-				"task_assignee_changed": "heeft de taak aan jou toegewezen",
-				"task_comment": "heeft gereageerd",
 				"task_created": "heeft deze taak aangemaakt",
+				"task_assignee_changed": "heeft de taak aan jou toegewezen",
+				"task_status_changed": "heeft de taak verplaatst van {{oldStatus}} naar {{newStatus}}",
+				"task_comment": "heeft gereageerd",
 				"task_mention": "heeft je genoemd",
 				"task_mention_comment": "heeft je genoemd in een reactie",
-				"task_overdue": "Einddatum verstreken",
-				"task_status_changed": "heeft de taak verplaatst van {{oldStatus}} naar {{newStatus}}",
+				"time_entry_created": "heeft tijd geregistreerd",
 				"task_updated": {
 					"dueDate": "heeft de einddatum gewijzigd naar {{newValue}}",
 					"dueDateCleared": "heeft de einddatum verwijderd",
 					"priority": "heeft de prioriteit gewijzigd naar {{newValue}}",
 					"title": "heeft de taak hernoemd"
 				},
-				"time_entry_created": "heeft tijd geregistreerd",
+				"due_date_reminder": "Verloopt over {{leadTime}}",
+				"task_overdue": "Einddatum verstreken",
 				"intake_accepted": "heeft je verzoek geaccepteerd",
 				"intake_declined": "heeft je verzoek afgewezen",
 				"intake_duplicate": "heeft je verzoek als duplicaat gemarkeerd",
 				"page_mention": "heeft je genoemd op een pagina",
 				"page_mention_titled": "heeft je genoemd in {{pageTitle}}",
-				"task_comment_reply": "heeft een reactie beantwoord"
+				"task_comment_reply": "heeft een reactie beantwoord",
+				"page_comment": "heeft gereageerd op een pagina",
+				"page_comment_titled": "heeft gereageerd op {{pageTitle}}",
+				"page_updated": "heeft een pagina bewerkt die je volgt",
+				"page_updated_titled": "heeft {{pageTitle}} bewerkt"
 			},
 			"viewing": {
 				"archived": "Gearchiveerde meldingen worden getoond",
@@ -3704,8 +3800,21 @@
 		}
 	},
 	"activity": {
+		"feed": {
+			"all": "Alle activiteit",
+			"comments": "Reacties",
+			"label": "Activiteit filteren en sorteren",
+			"newest": "Nieuwste eerst",
+			"noMatches": "Niets te tonen met dit filter.",
+			"oldest": "Oudste eerst",
+			"order": "Volgorde",
+			"show": "Tonen",
+			"updates": "Updates"
+		},
 		"assignedToSelf": "heeft de taak aan zichzelf toegewezen",
 		"unassigned": "heeft de toewijzing verwijderd",
+		"unassignedUser": "heeft {{name}} als toegewezen persoon verwijderd",
+		"unassignedSelf": "heeft zichzelf als toegewezen persoon verwijderd",
 		"assignedTo": "heeft de taak toegewezen aan {{name}}",
 		"changedStatus": "heeft de status gewijzigd van {{from}} naar {{to}}",
 		"changedPriority": "heeft de prioriteit gewijzigd van {{from}} naar {{to}}",
@@ -3713,8 +3822,10 @@
 		"setDueDate": "heeft de einddatum ingesteld op {{date}}",
 		"changedDueDate": "heeft de einddatum gewijzigd van {{from}} naar {{to}}",
 		"changedTitle": "heeft de titel gewijzigd van \"{{from}}\" naar \"{{to}}\"",
-		"created": "heeft deze taak aangemaakt",
 		"moved": "heeft de taak van \"{{from}}\" naar \"{{to}}\" verplaatst",
+		"created": "heeft deze taak aangemaakt",
+		"importedFromJira": "heeft deze taak geïmporteerd uit Jira {{key}}",
+		"importedFromSource": "heeft deze taak geïmporteerd uit {{source}} {{key}}",
 		"githubUser": "GitHub-gebruiker",
 		"comment": {
 			"github": "GitHub",
@@ -3835,35 +3946,26 @@
 			"linkCopied": "Link naar reactie gekopieerd"
 		},
 		"addedToCycle": "heeft de taak toegevoegd aan cyclus {{name}}",
-		"deletedCycle": "heeft de taak verwijderd uit een verwijderde cyclus",
-		"movedCycle": "heeft de taak van cyclus {{from}} naar {{to}} verplaatst",
 		"removedFromCycle": "heeft de taak verwijderd uit cyclus {{name}}",
+		"movedCycle": "heeft de taak van cyclus {{from}} naar {{to}} verplaatst",
+		"deletedCycle": "heeft de taak verwijderd uit een verwijderde cyclus",
 		"addedToModule": "heeft de taak toegevoegd aan module {{name}}",
 		"removedFromModule": "heeft de taak verwijderd uit module {{name}}",
+		"estimateSet": "heeft de inschatting ingesteld op {{to}}",
 		"estimateChanged": "heeft de inschatting gewijzigd van {{from}} naar {{to}}",
+		"estimateRemoved": "heeft de inschatting {{from}} verwijderd",
 		"estimateReason": {
 			"point_deleted": "(inschattingswaarde verwijderd)",
 			"system_deleted": "(inschattingssysteem verwijderd)",
 			"system_switched": "(inschattingssysteem gewisseld)",
 			"task_moved": "(verplaatst naar een ander project)"
 		},
-		"estimateRemoved": "heeft de inschatting {{from}} verwijderd",
-		"estimateSet": "heeft de inschatting ingesteld op {{to}}",
-		"unassignedSelf": "heeft zichzelf als toegewezen persoon verwijderd",
-		"unassignedUser": "heeft {{name}} als toegewezen persoon verwijderd",
-		"addedLabel": "heeft het label <label>{{name}}</label> toegevoegd",
-		"attachmentAdded": "heeft {{filename}} bijgevoegd",
-		"attachmentRemoved": "heeft de bijlage {{filename}} verwijderd",
+		"setStartDate": "heeft de startdatum ingesteld op {{date}}",
 		"changedStartDate": "heeft de startdatum gewijzigd van {{from}} naar {{to}}",
 		"clearedStartDate": "heeft de startdatum verwijderd",
-		"copiedFrom": "heeft deze taak aangemaakt als kopie van <task>{{task}}</task>",
-		"copiedTo": "heeft een kopie van deze taak gemaakt: <task>{{task}}</task>",
-		"linkAdded": "heeft de link {{title}} toegevoegd",
-		"linkRemoved": "heeft de link {{title}} verwijderd",
-		"linkUpdated": "heeft de link {{title}} bijgewerkt",
-		"parentChanged": "heeft de bovenliggende taak gewijzigd van <from>{{from}}</from> naar <to>{{to}}</to>",
-		"parentRemoved": "heeft de bovenliggende taak <task>{{task}}</task> verwijderd",
-		"parentSet": "heeft de bovenliggende taak ingesteld op <task>{{task}}</task>",
+		"addedLabel": "heeft het label <label>{{name}}</label> toegevoegd",
+		"removedLabel": "heeft het label <label>{{name}}</label> verwijderd",
+		"updatedDescription": "heeft de beschrijving bijgewerkt",
 		"relationAdded": {
 			"blocked_by": "heeft deze taak gemarkeerd als geblokkeerd door <task>{{task}}</task>",
 			"blocking": "heeft deze taak gemarkeerd als blokkerend voor <task>{{task}}</task>",
@@ -3875,12 +3977,36 @@
 			"start_before": "heeft ingesteld dat deze taak start vóór <task>{{task}}</task>"
 		},
 		"relationRemoved": "heeft de {{relation}}-relatie met <task>{{task}}</task> verwijderd",
-		"removedLabel": "heeft het label <label>{{name}}</label> verwijderd",
-		"setStartDate": "heeft de startdatum ingesteld op {{date}}",
+		"parentSet": "heeft de bovenliggende taak ingesteld op <task>{{task}}</task>",
+		"parentChanged": "heeft de bovenliggende taak gewijzigd van <from>{{from}}</from> naar <to>{{to}}</to>",
+		"parentRemoved": "heeft de bovenliggende taak <task>{{task}}</task> verwijderd",
 		"subtaskAdded": "heeft de subtaak <task>{{task}}</task> toegevoegd",
 		"subtaskRemoved": "heeft de subtaak <task>{{task}}</task> verwijderd",
-		"updatedDescription": "heeft de beschrijving bijgewerkt",
+		"linkAdded": "heeft de link {{title}} toegevoegd",
+		"linkUpdated": "heeft de link {{title}} bijgewerkt",
+		"linkRemoved": "heeft de link {{title}} verwijderd",
+		"attachmentAdded": "heeft {{filename}} bijgevoegd",
+		"attachmentRemoved": "heeft de bijlage {{filename}} verwijderd",
+		"copiedFrom": "heeft deze taak aangemaakt als kopie van <task>{{task}}</task>",
+		"copiedTo": "heeft een kopie van deze taak gemaakt: <task>{{task}}</task>",
 		"archived": "heeft deze taak gearchiveerd",
+		"unarchived": "heeft deze taak hersteld",
+		"intake": {
+			"submitted": "heeft dit verzoek ingediend",
+			"submittedVia": "heeft dit verzoek ingediend via {{source}}",
+			"accepted": "heeft dit verzoek geaccepteerd in {{column}}",
+			"acceptedBacklog": "heeft dit verzoek geaccepteerd in de backlog",
+			"declined": "heeft dit verzoek afgewezen",
+			"declinedWithReason": "heeft dit verzoek afgewezen: {{note}}",
+			"snoozed": "heeft dit verzoek uitgesteld tot {{date}}",
+			"unsnoozed": "heeft dit verzoek terug in beoordeling gezet",
+			"snoozeEnded": "Het uitstel is verlopen en dit verzoek staat weer in beoordeling",
+			"duplicate": "heeft dit verzoek als duplicaat van {{key}} gemarkeerd",
+			"duplicateDeleted": "heeft dit verzoek als duplicaat van een verwijderde taak gemarkeerd",
+			"reopened": "heeft dit verzoek heropend",
+			"acceptedHidden": "heeft dit verzoek geaccepteerd in een ander project",
+			"duplicateHidden": "heeft dit verzoek als duplicaat van een taak in een ander project gemarkeerd"
+		},
 		"reactions": {
 			"add": "Reactie toevoegen",
 			"error": "Kan de reactie niet bijwerken",
@@ -3900,30 +4026,6 @@
 			"reactWith": "Reageer met {{label}}",
 			"remove": "Reactie {{label}} verwijderen",
 			"you": "Jij"
-		},
-		"unarchived": "heeft deze taak hersteld",
-		"intake": {
-			"accepted": "heeft dit verzoek geaccepteerd in {{column}}",
-			"acceptedBacklog": "heeft dit verzoek geaccepteerd in de backlog",
-			"declined": "heeft dit verzoek afgewezen",
-			"declinedWithReason": "heeft dit verzoek afgewezen: {{note}}",
-			"duplicate": "heeft dit verzoek als duplicaat van {{key}} gemarkeerd",
-			"duplicateDeleted": "heeft dit verzoek als duplicaat van een verwijderde taak gemarkeerd",
-			"reopened": "heeft dit verzoek heropend",
-			"snoozed": "heeft dit verzoek uitgesteld tot {{date}}",
-			"snoozeEnded": "Het uitstel is verlopen en dit verzoek staat weer in beoordeling",
-			"submitted": "heeft dit verzoek ingediend",
-			"submittedVia": "heeft dit verzoek ingediend via {{source}}",
-			"unsnoozed": "heeft dit verzoek terug in beoordeling gezet"
-		},
-		"automation": {
-			"actor": "Automatisering",
-			"archived_one": "heeft deze taak gearchiveerd na {{count}} maand zonder updates",
-			"archived_other": "heeft deze taak gearchiveerd na {{count}} maanden zonder updates",
-			"closed_one": "heeft deze taak gesloten na {{count}} maand zonder updates en verplaatst naar {{to}}",
-			"closed_other": "heeft deze taak gesloten na {{count}} maanden zonder updates en verplaatst naar {{to}}",
-			"rolledOver": "heeft deze taak van {{from}} naar {{to}} verplaatst toen de cyclus eindigde",
-			"byRule": "via {{name}}"
 		},
 		"commentVisibility": {
 			"badgeExternal": "Extern",
@@ -3950,21 +4052,49 @@
 			"summary": "▲ {{up}} · ▼ {{down}}",
 			"tooltip": "Stemmen van het openbare bord"
 		},
-		"feed": {
-			"all": "Alle activiteit",
-			"comments": "Reacties",
-			"label": "Activiteit filteren en sorteren",
-			"newest": "Nieuwste eerst",
-			"noMatches": "Niets te tonen met dit filter.",
-			"oldest": "Oudste eerst",
-			"order": "Volgorde",
-			"show": "Tonen",
-			"updates": "Updates"
+		"automation": {
+			"actor": "Automatisering",
+			"archived_one": "heeft deze taak gearchiveerd na {{count}} maand zonder updates",
+			"archived_other": "heeft deze taak gearchiveerd na {{count}} maanden zonder updates",
+			"closed_one": "heeft deze taak gesloten na {{count}} maand zonder updates en verplaatst naar {{to}}",
+			"closed_other": "heeft deze taak gesloten na {{count}} maanden zonder updates en verplaatst naar {{to}}",
+			"rolledOver": "heeft deze taak van {{from}} naar {{to}} verplaatst toen de cyclus eindigde",
+			"byRule": "via {{name}}",
+			"rolledOverHidden": "heeft deze taak naar de volgende cyclus verplaatst toen de cyclus eindigde"
 		},
-		"importedFromJira": "heeft deze taak geïmporteerd uit Jira {{key}}",
-		"importedFromSource": "heeft deze taak geïmporteerd uit {{source}} {{key}}",
 		"movedToTrash": "heeft deze taak naar de prullenbak verplaatst",
-		"restoredFromTrash": "heeft deze taak uit de prullenbak hersteld"
+		"restoredFromTrash": "heeft deze taak uit de prullenbak hersteld",
+		"parentRemovedHidden": "heeft een bovenliggende taak in een ander project verwijderd",
+		"subtaskAddedHidden": "heeft een subtaak in een ander project toegevoegd",
+		"subtaskRemovedHidden": "heeft een subtaak in een ander project verwijderd",
+		"copiedToHidden": "heeft een kopie van deze taak in een ander project gemaakt",
+		"relationAddedHidden": {
+			"related": "heeft deze taak gemarkeerd als gerelateerd aan een taak in een ander project",
+			"blocking": "heeft deze taak gemarkeerd als blokkerend voor een taak in een ander project",
+			"blocked_by": "heeft deze taak gemarkeerd als geblokkeerd door een taak in een ander project",
+			"duplicate": "heeft deze taak gemarkeerd als duplicaat van een taak in een ander project",
+			"start_before": "heeft ingesteld dat deze taak start vóór een taak in een ander project",
+			"start_after": "heeft ingesteld dat deze taak start na een taak in een ander project",
+			"finish_before": "heeft ingesteld dat deze taak wordt afgerond vóór een taak in een ander project",
+			"finish_after": "heeft ingesteld dat deze taak wordt afgerond na een taak in een ander project"
+		},
+		"relationRemovedHidden": "heeft de {{relation}}-relatie met een taak in een ander project verwijderd",
+		"parentSetHidden": "heeft de bovenliggende taak ingesteld op een taak in een ander project",
+		"parentChangedFromHidden": "heeft de bovenliggende taak gewijzigd van een taak in een ander project naar <to>{{to}}</to>",
+		"parentChangedToHidden": "heeft de bovenliggende taak gewijzigd van <from>{{from}}</from> naar een taak in een ander project",
+		"parentChangedBetweenHidden": "heeft de bovenliggende taak gewijzigd tussen taken in andere projecten",
+		"copiedFromHidden": "heeft deze taak aangemaakt als kopie van een taak in een ander project",
+		"movedFromHidden": "heeft de taak van een ander project naar \"{{to}}\" verplaatst",
+		"movedToHidden": "heeft de taak van \"{{from}}\" naar een ander project verplaatst",
+		"movedBetweenHidden": "heeft de taak tussen andere projecten verplaatst",
+		"changedStatusHidden": "heeft de status in een ander project gewijzigd",
+		"addedToHiddenCycle": "heeft de taak toegevoegd aan een cyclus",
+		"removedFromHiddenCycle": "heeft de taak verwijderd uit een cyclus",
+		"movedCycleFromHidden": "heeft de taak van een andere cyclus naar {{to}} verplaatst",
+		"movedCycleToHidden": "heeft de taak van cyclus {{from}} naar een andere cyclus verplaatst",
+		"movedCycleBetweenHidden": "heeft de taak tussen cycli verplaatst",
+		"addedToHiddenModule": "heeft de taak toegevoegd aan een module",
+		"removedFromHiddenModule": "heeft de taak verwijderd uit een module"
 	},
 	"tasks": {
 		"recurrence": {
@@ -4022,8 +4152,30 @@
 				"recurredFrom": "heeft deze taak aangemaakt als volgende herhaling van <task>{{task}}</task>",
 				"recurredFromScheduled": "Volgens planning aangemaakt als volgende herhaling van <task>{{task}}</task>",
 				"recurredTo": "heeft deze taak voltooid, waardoor de volgende herhaling <task>{{task}}</task> is aangemaakt",
-				"recurredToScheduled": "De volgende herhaling is volgens planning aangemaakt: <task>{{task}}</task>"
+				"recurredToScheduled": "De volgende herhaling is volgens planning aangemaakt: <task>{{task}}</task>",
+				"recurredToHidden": "heeft deze taak voltooid, waardoor de volgende herhaling in een ander project is aangemaakt",
+				"recurredToScheduledHidden": "De volgende herhaling is volgens planning in een ander project aangemaakt",
+				"recurredFromHidden": "heeft deze taak aangemaakt als volgende herhaling van een taak in een ander project",
+				"recurredFromScheduledHidden": "Volgens planning aangemaakt als volgende herhaling van een taak in een ander project"
 			}
+		},
+		"subscription": {
+			"count_one": "{{count}} persoon volgt",
+			"count_other": "{{count}} personen volgen",
+			"error": "Kan je abonnement niet bijwerken",
+			"mutedAssignee": "De taak is aan jou toegewezen, maar je volgt hem niet. Bij vermeldingen word je nog steeds op de hoogte gebracht.",
+			"notSubscribed": "Ontvang updates over statuswijzigingen, reacties en andere wijzigingen.",
+			"reasons": {
+				"assignee": "Je volgt deze taak omdat hij aan jou is toegewezen.",
+				"commenter": "Je volgt deze taak omdat je hebt gereageerd.",
+				"creator": "Je volgt deze taak omdat je hem hebt aangemaakt.",
+				"manual": "Je volgt deze taak.",
+				"mention": "Je volgt deze taak omdat je bent genoemd."
+			},
+			"subscribe": "Volgen",
+			"toastSubscribed": "Je volgt deze taak nu",
+			"toastUnsubscribed": "Ontvolgd. Bij vermeldingen word je nog steeds op de hoogte gebracht.",
+			"unsubscribe": "Ontvolgen"
 		},
 		"status": {
 			"label": "Status",
@@ -4034,6 +4186,32 @@
 			"archived": "Gearchiveerd",
 			"planned": "Gepland"
 		},
+		"columnGroups": {
+			"backlog": {
+				"description": "Vastgelegd, nog niet gepland",
+				"label": "Backlog"
+			},
+			"cancelled": {
+				"description": "Gesloten zonder het werk uit te voeren",
+				"label": "Geannuleerd"
+			},
+			"completed": {
+				"description": "Gereed",
+				"label": "Voltooid"
+			},
+			"started": {
+				"description": "Werk in uitvoering",
+				"label": "Gestart"
+			},
+			"triage": {
+				"description": "Wacht op beoordeling in intake",
+				"label": "Triage"
+			},
+			"unstarted": {
+				"description": "Gepland, werk nog niet begonnen",
+				"label": "Niet gestart"
+			}
+		},
 		"priority": {
 			"label": "Prioriteit",
 			"no-priority": "Geen prioriteit",
@@ -4042,7 +4220,7 @@
 			"high": "Hoog",
 			"urgent": "Urgent"
 		},
-		"boardSearchPlaceholder": "Tickets zoeken...",
+		"boardSearchPlaceholder": "Taken zoeken...",
 		"view": {
 			"board": "Bord",
 			"list": "Lijst",
@@ -4059,9 +4237,16 @@
 		},
 		"detail": {
 			"subtaskOf": "Subtaak van",
+			"customFieldUpdated": "Veld bijgewerkt",
+			"selectOption": "Selecteer optie",
 			"activity": "Activiteit",
 			"noActivity": "Geen activiteit gevonden",
 			"openInFullPage": "Openen op volledige pagina",
+			"openOnBoard": "Openen op het bord",
+			"sheetLabel": "Taakdetails",
+			"previousTask": "Vorige taak",
+			"nextTask": "Volgende taak",
+			"position": "{{position}} van {{total}}",
 			"titlePlaceholder": "Klik om een titel toe te voegen",
 			"addDescription": "Beschrijving toevoegen...",
 			"editor": {
@@ -4191,13 +4376,11 @@
 					"toolbar": "Afbeeldingsopties"
 				}
 			},
-			"customFieldUpdated": "Veld bijgewerkt",
-			"selectOption": "Selecteer optie",
-			"nextTask": "Volgende taak",
-			"openOnBoard": "Openen op het bord",
-			"position": "{{position}} van {{total}}",
-			"previousTask": "Vorige taak",
-			"sheetLabel": "Taakdetails"
+			"saveError": {
+				"title": "Je titel is niet opgeslagen. Hij staat nog in het veld, dus je kunt het opnieuw proberen.",
+				"description": "Je beschrijving is niet opgeslagen. Ze staat nog in de editor, dus je kunt het opnieuw proberen.",
+				"retry": "Opnieuw proberen"
+			}
 		},
 		"entity": {
 			"task": "Taak"
@@ -4267,6 +4450,17 @@
 			"noDate": "Geen datum",
 			"addLabel": "Label toevoegen",
 			"branchCopied": "{{branch}} gekopieerd"
+		},
+		"move": {
+			"title": "Taak verplaatsen",
+			"projectLabel": "Doelproject",
+			"projectPlaceholder": "Selecteer een project",
+			"statusLabel": "Doelstatus",
+			"statusHintKeep": "De workflow van dit project ondersteunt de huidige status al.",
+			"statusHintAdjust": "Kies de status die in het doelproject gebruikt moet worden.",
+			"action": "Taak verplaatsen",
+			"success": "Taak succesvol verplaatst",
+			"error": "Verplaatsen taak mislukt"
 		},
 		"popover": {
 			"status": {
@@ -4354,191 +4548,6 @@
 				"isAnyOf": "is een van"
 			}
 		},
-		"gantt": {
-			"pageTitle": "{{name}} – Gantt",
-			"title": "Gantt-tijdlijn",
-			"searchPlaceholder": "Taken zoeken...",
-			"hideTasks": "Taken verbergen",
-			"showTasks": "Taken tonen",
-			"noTasks": "Geen geplande taken",
-			"noTasksSubtitle": "Voeg een startdatum en/of einddatum toe aan taken om ze op de tijdlijn te plaatsen.",
-			"noTasksFound": "Geen taken gevonden",
-			"noTasksMatch": "Geen geplande taken die overeenkomen met \"{{query}}\"",
-			"taskHeader": "Taak",
-			"updateDatesError": "Bijwerken taakdatums mislukt",
-			"resizeStart": "Startdatum wijzigen",
-			"resizeDue": "Einddatum wijzigen",
-			"taskAriaLabel": "{{title}}: openen of slepen om te verplaatsen",
-			"jumpToToday": "Ga naar vandaag",
-			"previousPeriod": "Vorige periode",
-			"nextPeriod": "Volgende periode",
-			"periodStart": "Startdatum van de tijdlijn",
-			"showTaskDates": "Toon taakdata",
-			"dependencyConflict": "Begint of eindigt in de verkeerde volgorde ten opzichte van een afhankelijkheid",
-			"dragToSchedule": "{{title}} naar de tijdlijn slepen",
-			"noDates": "Geen datums",
-			"noDatesCount": "Geen datums · {{count}}",
-			"noDatesHint": "Sleep naar de tijdlijn of plan vanaf vandaag.",
-			"schedule": "Plannen",
-			"scheduleTask": "{{title}} vanaf vandaag plannen",
-			"zoom": "Tijdlijnzoom",
-			"zoomMonth": "Maand",
-			"zoomQuarter": "Kwartaal",
-			"zoomWeek": "Week"
-		},
-		"delete": {
-			"title": "Taak verwijderen?",
-			"description": "De taak en de subtaken ervan worden naar de prullenbak van het project verplaatst. Je kunt ze herstellen via Recent verwijderd in de projectinstellingen.",
-			"action": "Taak verwijderen",
-			"success": "Taak naar de prullenbak verplaatst",
-			"error": "Verwijderen taak mislukt"
-		},
-		"archive": {
-			"success": "{{count}} taken gearchiveerd",
-			"archived": "Taak gearchiveerd",
-			"badge": "Gearchiveerd",
-			"error": "Kan de taak niet archiveren",
-			"restore": "Herstellen",
-			"restored": "Taak hersteld",
-			"restoreError": "Kan de taak niet herstellen"
-		},
-		"listView": {
-			"addTask": "Taak toevoegen",
-			"archiveAllTooltip": "Alle voltooide taken archiveren",
-			"noTasks": "Geen taken"
-		},
-		"kanban": {
-			"addTask": "Taak toevoegen",
-			"stages": "Kolommen",
-			"emptyAction": "Een taak toevoegen",
-			"emptyTitle": "Nog geen taken"
-		},
-		"pr": {
-			"merged": "Samengevoegd",
-			"draft": "Concept",
-			"open": "Open",
-			"label": "Pull request",
-			"count_one": "{{count}} PR",
-			"count_other": "{{count}} PR's"
-		},
-		"assignee": {
-			"label": "Toegewezen personen",
-			"unassigned": "Niet toegewezen"
-		},
-		"dueDate": {
-			"label": "Einddatum",
-			"clear": "Datum wissen",
-			"updateSuccess": "Einddatum taak succesvol bijgewerkt",
-			"updateError": "Bijwerken einddatum mislukt",
-			"clearSuccess": "Einddatum taak verwijderd",
-			"clearError": "Verwijderen einddatum mislukt"
-		},
-		"update": {
-			"success": "Taak succesvol bijgewerkt",
-			"error": "Bijwerken taak mislukt"
-		},
-		"contextMenu": {
-			"copyLink": "Link kopiëren",
-			"copyLinkSuccess": "Taaklink gekopieerd",
-			"estimate": "Inschatting"
-		},
-		"actions": {
-			"archive": "Archiveren",
-			"markAsPlanned": "Markeren als gepland",
-			"delete": "Verwijderen...",
-			"copyKey": "Taaksleutel kopiëren",
-			"copyLink": "Link kopiëren",
-			"makeCopy": "Kopie maken…",
-			"moreActions": "Meer acties"
-		},
-		"bulk": {
-			"selectedCount": "{{count}} geselecteerd",
-			"moveToBacklog": "Naar Backlog verplaatsen",
-			"moveToBacklogSuccess": "{{count}} taken naar backlog verplaatst",
-			"moveToBacklogError": "Verplaatsen naar backlog mislukt",
-			"moveToBoard": "Naar bord verplaatsen",
-			"moveToBoardSuccess": "{{count}} taken naar bord verplaatst",
-			"moveToBoardError": "Verplaatsen naar bord mislukt",
-			"delete": "Taken verwijderen",
-			"deleteConfirm": "{{count}} taken naar de prullenbak verplaatsen? Je kunt ze herstellen via Recent verwijderd in de projectinstellingen.",
-			"deleteSuccess": "{{count}} taken verwijderd",
-			"deleteError": "Verwijderen taken mislukt",
-			"archive": "Taken archiveren",
-			"archiveSuccess": "{{count}} taken gearchiveerd",
-			"archiveError": "Archiveren taken mislukt",
-			"updateSuccess": "{{count}} taken bijgewerkt",
-			"updateError": "Bijwerken taken mislukt",
-			"setPriority": "Prioriteit instellen",
-			"updatePriorityError": "Bijwerken prioriteit mislukt",
-			"addLabel": "Label toevoegen",
-			"addLabelSuccess": "Label toegevoegd aan {{count}} taken",
-			"addLabelError": "Toevoegen label mislukt",
-			"setDueDate": "Deadline instellen",
-			"updateDueDateError": "Bijwerken einddatum mislukt",
-			"actions": "Acties",
-			"searchActions": "Acties zoeken...",
-			"noActionsFound": "Geen acties gevonden.",
-			"changeStatus": "Status wijzigen",
-			"removeLabel": "Label verwijderen",
-			"removeLabelSuccess": "Label verwijderd van {{count}} taken",
-			"removeLabelError": "Verwijderen label mislukt",
-			"unarchive": "Terugzetten uit archief",
-			"unarchiveSuccess": "{{count}} taken teruggezet",
-			"unarchiveNone": "Geen van de geselecteerde taken is gearchiveerd",
-			"unarchiveError": "Terugzetten taken mislukt",
-			"setDates": "Datums",
-			"dateField": "In te stellen datum",
-			"startDate": "Startdatum",
-			"dueDate": "Einddatum",
-			"clearStartDate": "Startdatum wissen",
-			"clearDueDate": "Einddatum wissen",
-			"updateStartDateError": "Bijwerken startdatum mislukt. Een startdatum kan niet na de einddatum van een taak liggen.",
-			"addAssignee": "Toegewezen persoon toevoegen",
-			"addAssigneeSuccess_one": "{{name}} toegevoegd aan {{count}} taak",
-			"addAssigneeSuccess_other": "{{name}} toegevoegd aan {{count}} taken",
-			"assigneesError": "Bijwerken van toegewezen personen mislukt",
-			"clearAssignees": "Toegewezen personen wissen",
-			"clearAssigneesSuccess_one": "Toegewezen personen gewist op {{count}} taak",
-			"clearAssigneesSuccess_other": "Toegewezen personen gewist op {{count}} taken",
-			"removeAssignee": "Toegewezen persoon verwijderen",
-			"removeAssigneeSuccess_one": "{{name}} verwijderd van {{count}} taak",
-			"removeAssigneeSuccess_other": "{{name}} verwijderd van {{count}} taken",
-			"clearSelection": "Selectie wissen"
-		},
-		"move": {
-			"title": "Taak verplaatsen",
-			"projectLabel": "Doelproject",
-			"projectPlaceholder": "Selecteer een project",
-			"statusLabel": "Doelstatus",
-			"statusHintKeep": "De workflow van dit project ondersteunt de huidige status al.",
-			"statusHintAdjust": "Kies de status die in het doelproject gebruikt moet worden.",
-			"action": "Taak verplaatsen",
-			"success": "Taak succesvol verplaatst",
-			"error": "Verplaatsen taak mislukt"
-		},
-		"editor": {
-			"table": {
-				"addColumnBefore": "Kolom links invoegen",
-				"addColumnAfter": "Kolom rechts invoegen",
-				"deleteColumn": "Kolom verwijderen",
-				"addRowBefore": "Rij erboven invoegen",
-				"addRowAfter": "Rij eronder invoegen",
-				"deleteRow": "Rij verwijderen",
-				"deleteTable": "Tabel verwijderen",
-				"moveRowUp": "Rij omhoog verplaatsen",
-				"moveRowDown": "Rij omlaag verplaatsen",
-				"moveColumnLeft": "Kolom naar links verplaatsen",
-				"moveColumnRight": "Kolom naar rechts verplaatsen",
-				"toggleHeaderRow": "Koprij",
-				"fullWidth": "Volledige breedte",
-				"dragRow": "Rij {{index}}",
-				"dragColumn": "Kolom {{index}}",
-				"dragRowHint": "Sleep om de rij te verplaatsen, of gebruik de pijltjestoetsen",
-				"dragColumnHint": "Sleep om de kolom te verplaatsen, of gebruik de pijltjestoetsen",
-				"insertRowHere": "Hier een rij invoegen",
-				"insertColumnHere": "Hier een kolom invoegen"
-			}
-		},
 		"calendar": {
 			"dayTasksAriaLabel": "Toon alle taken voor {{date}}",
 			"moreTasks": "+{{count}} meer",
@@ -4561,436 +4570,89 @@
 			"week": "Week",
 			"overdue": "Te laat"
 		},
-		"descriptionSearchLoading": "Volledige beschrijvingen doorzoeken…",
-		"descriptionSearchError": "Zoeken in beschrijvingen mislukt. Resultaten kunnen onvolledig zijn.",
-		"descriptionRetry": "Opnieuw proberen",
-		"descriptionLoading": "Beschrijving laden…",
-		"descriptionLoadError": "De beschrijving kon niet worden geladen. Probeer opnieuw om de huidige versie te laden.",
-		"columnGroups": {
-			"backlog": {
-				"description": "Vastgelegd, nog niet gepland",
-				"label": "Backlog"
+		"gantt": {
+			"pageTitle": "{{name}} – Gantt",
+			"title": "Gantt-tijdlijn",
+			"jumpToToday": "Ga naar vandaag",
+			"searchPlaceholder": "Taken zoeken...",
+			"hideTasks": "Taken verbergen",
+			"showTasks": "Taken tonen",
+			"noTasks": "Geen geplande taken",
+			"noTasksSubtitle": "Voeg een startdatum en/of einddatum toe aan taken om ze op de tijdlijn te plaatsen.",
+			"noTasksFound": "Geen taken gevonden",
+			"noTasksMatch": "Geen geplande taken die overeenkomen met \"{{query}}\"",
+			"taskHeader": "Taak",
+			"updateDatesError": "Bijwerken taakdatums mislukt",
+			"resizeStart": "Startdatum wijzigen",
+			"resizeDue": "Einddatum wijzigen",
+			"taskAriaLabel": "{{title}}: openen of slepen om te verplaatsen",
+			"previousPeriod": "Vorige periode",
+			"nextPeriod": "Volgende periode",
+			"periodStart": "Startdatum van de tijdlijn",
+			"showTaskDates": "Toon taakdata",
+			"zoom": "Tijdlijnzoom",
+			"zoomWeek": "Week",
+			"zoomMonth": "Maand",
+			"zoomQuarter": "Kwartaal",
+			"noDates": "Geen datums",
+			"noDatesCount": "Geen datums · {{count}}",
+			"noDatesHint": "Sleep naar de tijdlijn of plan vanaf vandaag.",
+			"schedule": "Plannen",
+			"scheduleTask": "{{title}} vanaf vandaag plannen",
+			"dragToSchedule": "{{title}} naar de tijdlijn slepen",
+			"dependencyConflict": "Begint of eindigt in de verkeerde volgorde ten opzichte van een afhankelijkheid",
+			"workspaceNoTasksSubtitle": "Voeg een startdatum en/of einddatum toe aan taken om ze op deze tijdlijn te zien.",
+			"showMoreTasks": "Meer taken tonen",
+			"blocked": "Geblokkeerd door een open taak",
+			"linkFrom": "{{title}} aan een andere taak koppelen",
+			"linkHint": "Sleep naar een andere taak om die op deze te laten wachten",
+			"link": {
+				"blocks": "{{source}} blokkeert {{target}}",
+				"startBefore": "{{source}} begint vóór {{target}}",
+				"finishBefore": "{{source}} eindigt vóór {{target}}",
+				"conflict": "De datums kloppen niet met deze koppeling."
 			},
-			"cancelled": {
-				"description": "Gesloten zonder het werk uit te voeren",
-				"label": "Geannuleerd"
+			"milestone": {
+				"add": "Mijlpaal",
+				"ariaLabel": "Mijlpaal {{title}}: openen of slepen om te verplaatsen",
+				"name": "Naam van de mijlpaal",
+				"namePlaceholder": "Naam van de mijlpaal",
+				"date": "Datum van de mijlpaal",
+				"create": "Mijlpaal toevoegen",
+				"createError": "De mijlpaal kon niet worden toegevoegd"
 			},
-			"completed": {
-				"description": "Gereed",
-				"label": "Voltooid"
-			},
-			"started": {
-				"description": "Werk in uitvoering",
-				"label": "Gestart"
-			},
-			"triage": {
-				"description": "Wacht op beoordeling in intake",
-				"label": "Triage"
-			},
-			"unstarted": {
-				"description": "Gepland, werk nog niet begonnen",
-				"label": "Niet gestart"
+			"cascade": {
+				"offer_one": "1 gekoppelde taak begint nu te vroeg",
+				"offer_other": "{{count}} gekoppelde taken beginnen nu te vroeg",
+				"reviewAction": "Datumwijzigingen bekijken",
+				"title_one": "1 gekoppelde taak verplaatsen?",
+				"title_other": "{{count}} gekoppelde taken verplaatsen?",
+				"description": "Deze taken zouden net zoveel later komen als nodig is om bij hun koppelingen te passen, en behouden hun duur. Er verandert niets totdat je bevestigt.",
+				"to": "naar",
+				"cancel": "Datums behouden",
+				"confirm_one": "1 taak verplaatsen",
+				"confirm_other": "{{count}} taken verplaatsen",
+				"moved_one": "1 taak verplaatst",
+				"moved_other": "{{count}} taken verplaatst",
+				"partial": "{{moved}} van {{total}} taken verplaatst. De rest heeft zijn datums behouden.",
+				"nothingToMove": "Voor deze koppeling hoeft geen open taak met datums te worden verplaatst."
 			}
 		},
-		"estimate": {
-			"bulk": {
-				"action": "Inschatting",
-				"error": "Kon de inschatting van de geselecteerde taken niet wijzigen",
-				"updated_one": "Inschatting van {{count}} taak bijgewerkt",
-				"updated_other": "Inschatting van {{count}} taken bijgewerkt"
-			},
-			"chart": {
-				"points": "Punten",
-				"pointsLeft": "Resterende punten",
-				"summaryPoints": "{{remaining}} van {{scope}} punten resterend, {{days}} dagen resterend",
-				"summaryTime": "{{remaining}} van {{scope}} resterend, {{days}} dagen resterend",
-				"tasks": "Taken",
-				"time": "Tijd",
-				"timeLeft": "Resterende tijd",
-				"unitAria": "Grafiekeenheid"
-			},
-			"duration": {
-				"hours": "{{hours}} u",
-				"hoursMinutes": "{{hours}} u {{minutes}} min",
-				"hourUnit": "h",
-				"minutes": "{{minutes}} min",
-				"minuteUnit": "m"
-			},
-			"label": "Inschatting",
-			"none": "Geen inschatting",
-			"pointsValue_one": "{{value}} pt",
-			"pointsValue_other": "{{value}} pt",
-			"setAria": "Inschatting instellen",
-			"totals": {
-				"estimated": "{{estimated}} van {{total}} taken ingeschat",
-				"points_one": "{{completed}} / {{total}} pt",
-				"points_other": "{{completed}} / {{total}} pt",
-				"time": "{{completed}} / {{total}}"
-			},
-			"updateError": "Bijwerken van de inschatting mislukt"
+		"delete": {
+			"title": "Taak verwijderen?",
+			"description": "De taak en de subtaken ervan worden naar de prullenbak van het project verplaatst. Je kunt ze herstellen via Recent verwijderd in de projectinstellingen.",
+			"action": "Taak verwijderen",
+			"success": "Taak naar de prullenbak verplaatst",
+			"error": "Verwijderen taak mislukt"
 		},
-		"assignees": {
-			"clear": "Toegewezen personen wissen",
-			"formerMember": "Niet langer een lid",
-			"formerMemberSuffix": "{{name}} (niet langer een lid)",
-			"label": "Toegewezen personen",
-			"limitReached": "Een taak kan maximaal {{count}} toegewezen personen hebben",
-			"more": "+{{count}}",
-			"nameAndMore": "{{name}} +{{count}}",
-			"noMatches": "Geen overeenkomende personen",
-			"noMembers": "Nog geen leden om toe te wijzen",
-			"searchPlaceholder": "Personen zoeken...",
-			"stackAria": "Toegewezen aan {{names}}",
-			"unknownPerson": "Onbekende persoon",
-			"updateError": "Bijwerken van toegewezen personen mislukt",
-			"you": "{{name}} (jij)"
-		},
-		"attachments": {
-			"add": "Bestand bijvoegen",
-			"delete": "Verwijderen",
-			"deleteConfirmDescription": "Het bestand wordt voor iedereen verwijderd. Dit kan niet ongedaan worden gemaakt.",
-			"deleteConfirmTitle": "{{filename}} verwijderen?",
-			"download": "Downloaden",
-			"dropHere": "Sleep bestanden hierheen of klik om te bladeren",
-			"dropToAttach": "Sleep bestanden om bij te voegen",
-			"loadError": "Laden van bijlagen mislukt",
-			"meta": "{{size}} · {{name}} · {{time}}",
-			"metaNoUser": "{{size}} · {{time}}",
-			"open": "Openen",
-			"title": "Bijlagen",
-			"toast": {
-				"attached_one": "{{count}} bestand bijgevoegd",
-				"attached_other": "{{count}} bestanden bijgevoegd",
-				"deleted": "Bijlage verwijderd",
-				"deleteError": "Verwijderen van bijlage mislukt",
-				"empty": "{{filename}} is leeg",
-				"failed": "Bijvoegen van {{filename}} mislukt: {{reason}}",
-				"notConfigured": "Bestandsuploads zijn niet ingesteld op deze server. Vraag je beheerder om opslag te configureren.",
-				"storageError": "opslag heeft de upload geweigerd",
-				"tooMany": "Je kunt maximaal {{count}} bestanden tegelijk bijvoegen",
-				"unknownError": "er is iets misgegaan"
-			},
-			"uploading": "Uploaden…"
-		},
-		"copy": {
-			"alwaysCopied": "Status en prioriteit worden altijd meegekopieerd.",
-			"cancel": "Annuleren",
-			"includeLabel": "Meenemen",
-			"options": {
-				"assignees": "Toegewezen personen",
-				"attachments": "Bijlagen",
-				"customFields": "Waarden van aangepaste velden",
-				"dates": "Start- en einddatum",
-				"description": "Beschrijving",
-				"labels": "Labels",
-				"links": "Links",
-				"parent": "Bovenliggende taak",
-				"planning": "Cyclus, modules en inschatting"
-			},
-			"otherProjectHint": "Status wordt afgestemd op de kolommen van het nieuwe project. Aangepaste velden, bovenliggende taak en planning worden niet meegekopieerd naar een ander project.",
-			"projectLabel": "Project",
-			"submit": "Kopie maken",
-			"title": "Kopie maken van {{key}}",
-			"titleLabel": "Titel",
-			"titleRequired": "Titel is verplicht",
-			"titleSuffix": "{{title}} (kopie)",
-			"toast": {
-				"error": "Maken van kopie mislukt",
-				"open": "Openen",
-				"skipped": "Niet gekopieerd: {{list}}",
-				"success": "Kopie aangemaakt: {{key}}"
-			}
-		},
-		"detailActions": {
-			"addLink": "Link toevoegen",
-			"addRelation": "Relatie toevoegen",
-			"addSubtask": "Subtaak toevoegen",
-			"attachFile": "Bestand bijvoegen"
-		},
-		"links": {
-			"add": "Link toevoegen",
-			"addedAt": "Toegevoegd op {{date}}",
-			"addedBy": "Toegevoegd door {{name}} · {{date}}",
-			"addTitle": "Link toevoegen",
-			"cancel": "Annuleren",
-			"copyUrl": "URL kopiëren",
-			"edit": "Bewerken",
-			"editTitle": "Link bewerken",
-			"errors": {
-				"credentials": "Links mogen geen gebruikersnaam of wachtwoord bevatten",
-				"duplicate": "Deze link staat al op deze taak",
-				"invalid": "Voer een geldige http- of https-URL in",
-				"required": "URL is verplicht",
-				"titleTooLong": "Titels mogen maximaal 255 tekens bevatten",
-				"tooLong": "Links mogen maximaal 2.048 tekens bevatten"
-			},
-			"linkTitle": "Titel",
-			"loadError": "Laden van links mislukt",
-			"moreActions": "Linkacties",
-			"remove": "Verwijderen",
-			"removeConfirmDescription": "Deze wordt voor iedereen van de taak verwijderd.",
-			"removeConfirmTitle": "Deze link verwijderen?",
-			"retry": "Opnieuw proberen",
-			"save": "Opslaan",
-			"title": "Links",
-			"titlePlaceholder": "Optionele weergavetitel",
-			"toast": {
-				"added": "Link toegevoegd",
-				"copied": "Link gekopieerd",
-				"error": "Opslaan van link mislukt",
-				"removed": "Link verwijderd",
-				"updated": "Link bijgewerkt"
-			},
-			"url": "URL",
-			"urlPlaceholder": "https://example.com"
-		},
-		"create": {
-			"similarTitle": "Vergelijkbare open taken",
-			"similarDismiss": "Vergelijkbare taken verbergen",
-			"similarOpen": "Openen",
-			"similarOpenLabel": "{{key}} {{title}} openen in een nieuw tabblad"
-		},
-		"parent": {
-			"add": "Bovenliggende taak toevoegen",
-			"chip": "Bovenliggend",
-			"label": "Bovenliggende taak",
-			"noTasks": "Geen taken gevonden",
-			"remove": "Bovenliggende taak verwijderen",
-			"search": "Taken zoeken…",
-			"tasksInProject": "Taken in dit project",
-			"toast": {
-				"error": "Wijzigen van bovenliggende taak mislukt",
-				"removed": "Bovenliggende taak verwijderd",
-				"set": "Bovenliggende taak ingesteld op {{key}}"
-			},
-			"tooltip": "Bovenliggende taak: {{key}} {{title}}"
-		},
-		"taskKey": {
-			"clipboardError": "Kopiëren naar klembord mislukt",
-			"copied": "{{key}} gekopieerd",
-			"copyTooltip": "Taaksleutel kopiëren"
-		},
-		"display": {
-			"button": "Weergave",
-			"columns": "Kolommen",
-			"groupBy": "Groeperen op",
-			"groups": {
-				"assignee": "Toegewezen persoon",
-				"createdBy": "Aangemaakt door",
-				"cycle": "Cyclus",
-				"estimate": "Schatting",
-				"group": "Groep",
-				"label": "Label",
-				"module": "Module",
-				"priority": "Prioriteit",
-				"project": "Project",
-				"status": "Status"
-			},
-			"none": "Geen",
-			"order": {
-				"assignee": "Toegewezen persoon",
-				"completedAt": "Voltooiingsdatum",
-				"createdAt": "Laatst aangemaakt",
-				"cycle": "Cyclus",
-				"dueDate": "Einddatum",
-				"estimate": "Schatting",
-				"label": "Label",
-				"manual": "Handmatig",
-				"module": "Module",
-				"number": "Taaksleutel",
-				"priority": "Prioriteit",
-				"startDate": "Startdatum",
-				"status": "Status",
-				"subTaskCount": "Subtaken",
-				"title": "Titel",
-				"updatedAt": "Laatst bijgewerkt",
-				"archivedAt": "Archiefdatum"
-			},
-			"orderBy": "Sorteren op",
-			"properties": "Eigenschappen",
-			"props": {
-				"assignee": "Toegewezen personen",
-				"checklist": "Checklist",
-				"createdAt": "Aangemaakt",
-				"cycle": "Cyclus",
-				"dueDate": "Einddatum",
-				"estimate": "Schatting",
-				"key": "Sleutel",
-				"labels": "Labels",
-				"modules": "Modules",
-				"priority": "Prioriteit",
-				"startDate": "Startdatum",
-				"status": "Status",
-				"subTaskCount": "Subtaken",
-				"updatedAt": "Bijgewerkt"
-			},
-			"showEmptyGroups": "Lege groepen tonen",
-			"showSubTasks": "Subtaken tonen",
-			"subGroupBy": "Subgroeperen op"
-		},
-		"filters": {
-			"apply": "Toepassen",
-			"applyError": "Kan de filters niet toepassen",
-			"archived": {
-				"exclude": "Gearchiveerde verbergen",
-				"include": "Ook gearchiveerde tonen",
-				"label": "Gearchiveerd",
-				"only": "Alleen gearchiveerde"
-			},
-			"button": "Filteren",
-			"clearAll": "Alle filters wissen",
-			"dates": {
-				"amount": "Aantal",
-				"custom": "Aangepaste datum…",
-				"emptyTab": "Leeg",
-				"exact": "Exacte datum",
-				"future": "Na vandaag",
-				"lastMonth": "Vorige maand",
-				"lastWeek": "Vorige week",
-				"nextMonth": "Volgende maand",
-				"nextWeek": "Volgende week",
-				"overdue": "Achterstallig",
-				"past": "Vóór vandaag",
-				"presets": "Voorinstellingen",
-				"rolling": "Voortschrijdend",
-				"rollingValue": "{{amount}} {{unit}}",
-				"thisMonth": "Deze maand",
-				"thisWeek": "Deze week",
-				"today": "Vandaag",
-				"tomorrow": "Morgen",
-				"units": {
-					"days": "dagen",
-					"months": "maanden",
-					"weeks": "weken"
-				},
-				"yesterday": "Gisteren"
-			},
-			"matchAll": "Alles moet kloppen",
-			"matchAny": "Eén moet kloppen",
-			"mobileSummary_one": "{{count}} filter",
-			"mobileSummary_other": "{{count}} filters",
-			"nestedReadOnly": "Deze weergave gebruikt geavanceerde filters die hier niet bewerkt kunnen worden",
-			"noOptions": "Geen opties",
-			"operators": {
-				"between": "tussen",
-				"is": "is",
-				"isEmpty": "is leeg",
-				"isNoneOf": "is geen van",
-				"isNot": "is niet",
-				"isNotEmpty": "is niet leeg",
-				"moreThanAgo": "meer dan … geleden",
-				"moreThanAhead": "over meer dan …",
-				"on": "op",
-				"onOrAfter": "op of na",
-				"onOrBefore": "op of vóór",
-				"withinLast": "in de afgelopen",
-				"withinNext": "in de komende"
-			},
-			"removeFilter": "Filter {{subject}} verwijderen",
-			"retry": "Opnieuw proberen",
-			"searchOptions": "Opties zoeken",
-			"subjects": {
-				"completed": "Voltooid",
-				"created": "Aangemaakt",
-				"createdBy": "Aangemaakt door",
-				"cycle": "Cyclus",
-				"group": "Groep",
-				"mentions": "Vermeldingen",
-				"module": "Module",
-				"parent": "Bovenliggend",
-				"project": "Project",
-				"startDate": "Startdatum",
-				"subscribed": "Gevolgd",
-				"updated": "Bijgewerkt"
-			},
-			"tooMany": "Te veel resultaten om hier te filteren; open de spreadsheet",
-			"values": {
-				"currentCycle": "Huidige cyclus",
-				"false": "Onwaar",
-				"me": "Ik",
-				"noAssignee": "Geen toegewezen persoon",
-				"noCreator": "Geen maker",
-				"noCycle": "Geen cyclus",
-				"noEstimate": "Geen schatting",
-				"noLabel": "Geen label",
-				"noModule": "Geen module",
-				"none": "Geen",
-				"noParent": "Geen bovenliggende taak",
-				"true": "Waar"
-			}
-		},
-		"groups": {
-			"all": "Alle taken",
-			"hiddenGroups_one": "{{count}} andere groep niet getoond",
-			"hiddenGroups_other": "{{count}} andere groepen niet getoond",
-			"loadMore": "Meer laden ({{count}})",
-			"moduleCount_one": "{{count}} module",
-			"moduleCount_other": "{{count}} modules",
-			"moveError": "Kan de taak niet verplaatsen",
-			"noAssignee": "Geen toegewezen persoon",
-			"noCreator": "Geen maker",
-			"noCycle": "Geen cyclus",
-			"noEstimate": "Geen schatting",
-			"noLabel": "Geen label",
-			"noModule": "Geen module",
-			"planned": "Gepland"
-		},
-		"queryEmpty": {
-			"clear": "Filters wissen",
-			"description": "Probeer een of twee filters te verwijderen.",
-			"title": "Geen taken komen overeen met deze filters"
-		},
-		"spreadsheet": {
-			"clearSort": "Sortering wissen",
-			"collapseSubTasks": "Subtaken verbergen",
-			"expandSubTasks": "Subtaken tonen",
-			"hideColumn": "Kolom verbergen",
-			"loadError": "Kan taken niet laden",
-			"selectTask": "{{key}} selecteren",
-			"sortAsc": "Oplopend sorteren",
-			"sortDesc": "Aflopend sorteren",
-			"task": "Taak"
-		},
-		"subscription": {
-			"count_one": "{{count}} persoon volgt",
-			"count_other": "{{count}} personen volgen",
-			"error": "Kan je abonnement niet bijwerken",
-			"mutedAssignee": "De taak is aan jou toegewezen, maar je volgt hem niet. Bij vermeldingen word je nog steeds op de hoogte gebracht.",
-			"notSubscribed": "Ontvang updates over statuswijzigingen, reacties en andere wijzigingen.",
-			"reasons": {
-				"assignee": "Je volgt deze taak omdat hij aan jou is toegewezen.",
-				"commenter": "Je volgt deze taak omdat je hebt gereageerd.",
-				"creator": "Je volgt deze taak omdat je hem hebt aangemaakt.",
-				"manual": "Je volgt deze taak.",
-				"mention": "Je volgt deze taak omdat je bent genoemd."
-			},
-			"subscribe": "Volgen",
-			"toastSubscribed": "Je volgt deze taak nu",
-			"toastUnsubscribed": "Ontvolgd. Bij vermeldingen word je nog steeds op de hoogte gebracht.",
-			"unsubscribe": "Ontvolgen"
-		},
-		"timeTracking": {
-			"duration": "Duur",
-			"durationInvalid": "Voer een duur in tussen 1 minuut en 24 uur, zoals 1h 30m.",
-			"durationPlaceholder": "bijv. 1h 30m",
-			"empty": "Nog geen tijd geregistreerd",
-			"entries": "Tijdregistraties",
-			"formerMember": "Oud-lid",
-			"hours": "{{hours}} u",
-			"hoursMinutes": "{{hours}} u {{minutes}} min",
-			"label": "Bestede tijd",
-			"logError": "De tijd kon niet worden geregistreerd",
-			"logged": "Tijd geregistreerd",
-			"logTime": "Tijd registreren",
-			"minutes": "{{minutes}} min",
-			"note": "Notitie (optioneel)",
-			"running": "Actief",
-			"spentAria": "Bestede tijd: {{total}}. Tijd registreren",
-			"submit": "Tijd registreren",
-			"deleteConfirm": "Deze registratie verwijderen?",
-			"deleted": "Tijdregistratie verwijderd",
-			"deleteEntry": "Tijdregistratie van {{date}} verwijderen",
-			"deleteError": "De tijdregistratie kon niet worden verwijderd"
+		"archive": {
+			"success": "{{count}} taken gearchiveerd",
+			"archived": "Taak gearchiveerd",
+			"badge": "Gearchiveerd",
+			"error": "Kan de taak niet archiveren",
+			"restore": "Herstellen",
+			"restored": "Taak hersteld",
+			"restoreError": "Kan de taak niet herstellen"
 		},
 		"archivedBanner": {
 			"message": "Deze taak is {{time}} gearchiveerd.",
@@ -5063,8 +4725,604 @@
 			},
 			"untitled": "Naamloos concept"
 		},
+		"listView": {
+			"addTask": "Taak toevoegen",
+			"archiveAllTooltip": "Alle voltooide taken archiveren",
+			"noTasks": "Geen taken"
+		},
+		"kanban": {
+			"addTask": "Taak toevoegen",
+			"stages": "Kolommen",
+			"emptyAction": "Een taak toevoegen",
+			"emptyTitle": "Nog geen taken"
+		},
+		"pr": {
+			"merged": "Samengevoegd",
+			"draft": "Concept",
+			"open": "Open",
+			"label": "Pull request",
+			"count_one": "{{count}} PR",
+			"count_other": "{{count}} PR's"
+		},
+		"assignee": {
+			"label": "Toegewezen personen",
+			"unassigned": "Niet toegewezen"
+		},
+		"assignees": {
+			"label": "Toegewezen personen",
+			"searchPlaceholder": "Personen zoeken...",
+			"noMatches": "Geen overeenkomende personen",
+			"noMembers": "Nog geen leden om toe te wijzen",
+			"you": "{{name}} (jij)",
+			"clear": "Toegewezen personen wissen",
+			"more": "+{{count}}",
+			"nameAndMore": "{{name}} +{{count}}",
+			"stackAria": "Toegewezen aan {{names}}",
+			"formerMember": "Niet langer een lid",
+			"formerMemberSuffix": "{{name}} (niet langer een lid)",
+			"limitReached": "Een taak kan maximaal {{count}} toegewezen personen hebben",
+			"updateError": "Bijwerken van toegewezen personen mislukt",
+			"unknownPerson": "Onbekende persoon",
+			"noAccess": "Geen toegang tot dit project",
+			"noAccessSuffix": "{{name}} (geen toegang tot dit project)"
+		},
+		"dueDate": {
+			"label": "Einddatum",
+			"clear": "Datum wissen",
+			"updateSuccess": "Einddatum taak succesvol bijgewerkt",
+			"updateError": "Bijwerken einddatum mislukt",
+			"clearSuccess": "Einddatum taak verwijderd",
+			"clearError": "Verwijderen einddatum mislukt"
+		},
+		"update": {
+			"success": "Taak succesvol bijgewerkt",
+			"error": "Bijwerken taak mislukt"
+		},
+		"contextMenu": {
+			"copyLink": "Link kopiëren",
+			"copyLinkSuccess": "Taaklink gekopieerd",
+			"estimate": "Inschatting"
+		},
+		"actions": {
+			"archive": "Archiveren",
+			"markAsPlanned": "Markeren als gepland",
+			"delete": "Verwijderen...",
+			"copyKey": "Taaksleutel kopiëren",
+			"copyLink": "Link kopiëren",
+			"makeCopy": "Kopie maken…",
+			"moreActions": "Meer acties"
+		},
+		"commands": {
+			"assignedSelf": "Aan jou toegewezen",
+			"assignees": "Toegewezen personen wijzigen…",
+			"assignSelf": "Aan mij toewijzen",
+			"copyTitle": "Titel kopiëren",
+			"cycle": "Cyclus wijzigen…",
+			"dueDate": "Einddatum wijzigen…",
+			"estimate": "Inschatting wijzigen…",
+			"group": "Deze taak",
+			"labels": "Labels wijzigen…",
+			"module": "Modules wijzigen…",
+			"priority": "Prioriteit wijzigen…",
+			"status": "Status wijzigen…",
+			"titleCopied": "Taaktitel gekopieerd",
+			"unassignedSelf": "Je bent niet meer toegewezen",
+			"unassignSelf": "Mijn toewijzing verwijderen"
+		},
+		"readableLink": {
+			"goHome": "Naar Home",
+			"notFound": "Geen taak met de sleutel {{key}} in deze werkruimte, of je kunt hem niet zien."
+		},
+		"timeTracking": {
+			"label": "Bestede tijd",
+			"logTime": "Tijd registreren",
+			"spentAria": "Bestede tijd: {{total}}. Tijd registreren",
+			"duration": "Duur",
+			"durationPlaceholder": "bijv. 1h 30m",
+			"durationInvalid": "Voer een duur in tussen 1 minuut en 24 uur, zoals 1h 30m.",
+			"note": "Notitie (optioneel)",
+			"submit": "Tijd registreren",
+			"logged": "Tijd geregistreerd",
+			"logError": "De tijd kon niet worden geregistreerd",
+			"empty": "Nog geen tijd geregistreerd",
+			"entries": "Tijdregistraties",
+			"running": "Actief",
+			"formerMember": "Oud-lid",
+			"hours": "{{hours}} u",
+			"minutes": "{{minutes}} min",
+			"hoursMinutes": "{{hours}} u {{minutes}} min",
+			"deleteEntry": "Tijdregistratie van {{date}} verwijderen",
+			"deleteConfirm": "Deze registratie verwijderen?",
+			"deleted": "Tijdregistratie verwijderd",
+			"deleteError": "De tijdregistratie kon niet worden verwijderd",
+			"startTimer": "Timer starten",
+			"startHere": "Stoppen en hier starten",
+			"stopTimer": "Stoppen",
+			"timerRunning": "Timer loopt",
+			"timerRunningOn": "Timer loopt op {{task}}",
+			"timerStarted": "Timer gestart",
+			"timerSwitched": "Timer gestart. Je andere timer is gestopt.",
+			"timerStopped": "Timer gestopt. {{total}} geregistreerd.",
+			"timerStartError": "De timer kon niet worden gestart",
+			"timerStopError": "De timer kon niet worden gestopt",
+			"loadError": "De tijdregistraties konden niet worden geladen",
+			"editEntry": "Tijdregistratie van {{date}} bewerken",
+			"editStart": "Begin",
+			"editEnd": "Einde",
+			"editEndRunningHint": "Laat leeg om de timer door te laten lopen.",
+			"editEndRequired": "Voer in wanneer deze tijd eindigde.",
+			"editStartInvalid": "Voer in wanneer deze tijd begon.",
+			"editEndBeforeStart": "Het einde kan niet vóór het begin liggen.",
+			"editSave": "Opslaan",
+			"edited": "Tijdregistratie bijgewerkt",
+			"editError": "De tijdregistratie kon niet worden bijgewerkt"
+		},
+		"bulk": {
+			"selectedCount": "{{count}} geselecteerd",
+			"moveToBacklog": "Naar Backlog verplaatsen",
+			"clearSelection": "Selectie wissen",
+			"moveToBacklogSuccess": "{{count}} taken naar backlog verplaatst",
+			"moveToBacklogError": "Verplaatsen naar backlog mislukt",
+			"moveToBoard": "Naar bord verplaatsen",
+			"moveToBoardSuccess": "{{count}} taken naar bord verplaatst",
+			"moveToBoardError": "Verplaatsen naar bord mislukt",
+			"delete": "Taken verwijderen",
+			"deleteConfirm": "{{count}} taken naar de prullenbak verplaatsen? Je kunt ze herstellen via Recent verwijderd in de projectinstellingen.",
+			"deleteSuccess": "{{count}} taken verwijderd",
+			"deleteError": "Verwijderen taken mislukt",
+			"archive": "Taken archiveren",
+			"archiveSuccess": "{{count}} taken gearchiveerd",
+			"archiveError": "Archiveren taken mislukt",
+			"updateSuccess": "{{count}} taken bijgewerkt",
+			"updateError": "Bijwerken taken mislukt",
+			"addAssignee": "Toegewezen persoon toevoegen",
+			"removeAssignee": "Toegewezen persoon verwijderen",
+			"clearAssignees": "Toegewezen personen wissen",
+			"addAssigneeSuccess_one": "{{name}} toegevoegd aan {{count}} taak",
+			"addAssigneeSuccess_other": "{{name}} toegevoegd aan {{count}} taken",
+			"removeAssigneeSuccess_one": "{{name}} verwijderd van {{count}} taak",
+			"removeAssigneeSuccess_other": "{{name}} verwijderd van {{count}} taken",
+			"clearAssigneesSuccess_one": "Toegewezen personen gewist op {{count}} taak",
+			"clearAssigneesSuccess_other": "Toegewezen personen gewist op {{count}} taken",
+			"assigneesError": "Bijwerken van toegewezen personen mislukt",
+			"setPriority": "Prioriteit instellen",
+			"updatePriorityError": "Bijwerken prioriteit mislukt",
+			"addLabel": "Label toevoegen",
+			"addLabelSuccess": "Label toegevoegd aan {{count}} taken",
+			"addLabelError": "Toevoegen label mislukt",
+			"setDueDate": "Deadline instellen",
+			"updateDueDateError": "Bijwerken einddatum mislukt",
+			"actions": "Acties",
+			"searchActions": "Acties zoeken...",
+			"noActionsFound": "Geen acties gevonden.",
+			"changeStatus": "Status wijzigen",
+			"removeLabel": "Label verwijderen",
+			"removeLabelSuccess": "Label verwijderd van {{count}} taken",
+			"removeLabelError": "Verwijderen label mislukt",
+			"unarchive": "Terugzetten uit archief",
+			"unarchiveSuccess": "{{count}} taken teruggezet",
+			"unarchiveNone": "Geen van de geselecteerde taken is gearchiveerd",
+			"unarchiveError": "Terugzetten taken mislukt",
+			"setDates": "Datums",
+			"dateField": "In te stellen datum",
+			"startDate": "Startdatum",
+			"dueDate": "Einddatum",
+			"clearStartDate": "Startdatum wissen",
+			"clearDueDate": "Einddatum wissen",
+			"updateStartDateError": "Bijwerken startdatum mislukt. Een startdatum kan niet na de einddatum van een taak liggen.",
+			"selectTask": "{{title}} selecteren",
+			"moveToProject": "Naar project verplaatsen",
+			"moveToProjectTitle_one": "{{count}} taak naar {{name}} verplaatsen?",
+			"moveToProjectTitle_other": "{{count}} taken naar {{name}} verplaatsen?",
+			"moveToProjectRule": "Ze krijgen nieuwe taaksleutels. Elke taak behoudt haar status als het project die heeft, anders gaat ze naar de eerste kolom. Labels en toegewezen personen blijven behouden. Cyclussen, modules en inschattingen worden gewist. Waarden van aangepaste velden blijven alleen behouden als het project een veld met dezelfde naam en hetzelfde type heeft.",
+			"moveToProjectConfirm": "Taken verplaatsen",
+			"moveToProjectSuccess_one": "{{count}} taak naar {{name}} verplaatst",
+			"moveToProjectSuccess_other": "{{count}} taken naar {{name}} verplaatst",
+			"moveToProjectNone": "Deze taken staan al in {{name}}",
+			"moveToProjectError": "De taken konden niet worden verplaatst"
+		},
+		"editor": {
+			"table": {
+				"addColumnBefore": "Kolom links invoegen",
+				"addColumnAfter": "Kolom rechts invoegen",
+				"deleteColumn": "Kolom verwijderen",
+				"addRowBefore": "Rij erboven invoegen",
+				"addRowAfter": "Rij eronder invoegen",
+				"deleteRow": "Rij verwijderen",
+				"deleteTable": "Tabel verwijderen",
+				"moveRowUp": "Rij omhoog verplaatsen",
+				"moveRowDown": "Rij omlaag verplaatsen",
+				"moveColumnLeft": "Kolom naar links verplaatsen",
+				"moveColumnRight": "Kolom naar rechts verplaatsen",
+				"toggleHeaderRow": "Koprij",
+				"fullWidth": "Volledige breedte",
+				"dragRow": "Rij {{index}}",
+				"dragColumn": "Kolom {{index}}",
+				"dragRowHint": "Sleep om de rij te verplaatsen, of gebruik de pijltjestoetsen",
+				"dragColumnHint": "Sleep om de kolom te verplaatsen, of gebruik de pijltjestoetsen",
+				"insertRowHere": "Hier een rij invoegen",
+				"insertColumnHere": "Hier een kolom invoegen"
+			}
+		},
+		"descriptionSearchLoading": "Volledige beschrijvingen doorzoeken…",
+		"descriptionSearchError": "Zoeken in beschrijvingen mislukt. Resultaten kunnen onvolledig zijn.",
+		"descriptionRetry": "Opnieuw proberen",
+		"descriptionLoading": "Beschrijving laden…",
+		"descriptionLoadError": "De beschrijving kon niet worden geladen. Probeer opnieuw om de huidige versie te laden.",
+		"descriptionHistory": {
+			"cancel": "Annuleren",
+			"description": "Opgeslagen versies van deze beschrijving, nieuwste eerst. Bewerkingen door één persoon binnen 10 minuten vormen samen één versie; de laatste 50 worden bewaard.",
+			"earlierVersion": "Eerdere versie",
+			"empty": "Nog geen opgeslagen versies. Versies worden bewaard vanaf de volgende bewerking.",
+			"emptyVersion": "Deze versie heeft geen beschrijving.",
+			"latest": "Nieuwste",
+			"list": "Opgeslagen versies",
+			"loadError": "Kan de geschiedenis niet laden",
+			"open": "Geschiedenis",
+			"previewTitle": "Versie van {{date}}",
+			"restore": "Herstellen",
+			"restoreConfirmDescription": "De beschrijving wordt vervangen door deze versie. De huidige tekst blijft in de geschiedenis.",
+			"restoreConfirmTitle": "Deze versie herstellen?",
+			"restored": "Beschrijving hersteld",
+			"restoreError": "Kan deze versie niet herstellen",
+			"retry": "Opnieuw proberen",
+			"size_one": "{{count}} teken",
+			"size_other": "{{count}} tekens",
+			"title": "Beschrijvingsgeschiedenis",
+			"viewOnly": "Alleen bekijken"
+		},
+		"estimate": {
+			"bulk": {
+				"action": "Inschatting",
+				"error": "Kon de inschatting van de geselecteerde taken niet wijzigen",
+				"updated_one": "Inschatting van {{count}} taak bijgewerkt",
+				"updated_other": "Inschatting van {{count}} taken bijgewerkt"
+			},
+			"chart": {
+				"points": "Punten",
+				"pointsLeft": "Resterende punten",
+				"summaryPoints": "{{remaining}} van {{scope}} punten resterend, {{days}} dagen resterend",
+				"summaryTime": "{{remaining}} van {{scope}} resterend, {{days}} dagen resterend",
+				"tasks": "Taken",
+				"time": "Tijd",
+				"timeLeft": "Resterende tijd",
+				"unitAria": "Grafiekeenheid"
+			},
+			"duration": {
+				"hours": "{{hours}} u",
+				"hoursMinutes": "{{hours}} u {{minutes}} min",
+				"hourUnit": "h",
+				"minutes": "{{minutes}} min",
+				"minuteUnit": "m"
+			},
+			"label": "Inschatting",
+			"none": "Geen inschatting",
+			"pointsValue_one": "{{value}} pt",
+			"pointsValue_other": "{{value}} pt",
+			"setAria": "Inschatting instellen",
+			"totals": {
+				"estimated": "{{estimated}} van {{total}} taken ingeschat",
+				"points_one": "{{completed}} / {{total}} pt",
+				"points_other": "{{completed}} / {{total}} pt",
+				"time": "{{completed}} / {{total}}"
+			},
+			"updateError": "Bijwerken van de inschatting mislukt"
+		},
+		"detailActions": {
+			"addLink": "Link toevoegen",
+			"addRelation": "Relatie toevoegen",
+			"addSubtask": "Subtaak toevoegen",
+			"attachFile": "Bestand bijvoegen"
+		},
+		"taskKey": {
+			"clipboardError": "Kopiëren naar klembord mislukt",
+			"copied": "{{key}} gekopieerd",
+			"copyTooltip": "Taaksleutel kopiëren"
+		},
 		"pageReferences": {
 			"title": "Genoemd in pagina's"
+		},
+		"links": {
+			"add": "Link toevoegen",
+			"addedAt": "Toegevoegd op {{date}}",
+			"addedBy": "Toegevoegd door {{name}} · {{date}}",
+			"addTitle": "Link toevoegen",
+			"cancel": "Annuleren",
+			"copyUrl": "URL kopiëren",
+			"edit": "Bewerken",
+			"editTitle": "Link bewerken",
+			"errors": {
+				"credentials": "Links mogen geen gebruikersnaam of wachtwoord bevatten",
+				"duplicate": "Deze link staat al op deze taak",
+				"invalid": "Voer een geldige http- of https-URL in",
+				"required": "URL is verplicht",
+				"titleTooLong": "Titels mogen maximaal 255 tekens bevatten",
+				"tooLong": "Links mogen maximaal 2.048 tekens bevatten"
+			},
+			"linkTitle": "Titel",
+			"loadError": "Laden van links mislukt",
+			"moreActions": "Linkacties",
+			"remove": "Verwijderen",
+			"removeConfirmDescription": "Deze wordt voor iedereen van de taak verwijderd.",
+			"removeConfirmTitle": "Deze link verwijderen?",
+			"retry": "Opnieuw proberen",
+			"save": "Opslaan",
+			"title": "Links",
+			"titlePlaceholder": "Optionele weergavetitel",
+			"toast": {
+				"added": "Link toegevoegd",
+				"copied": "Link gekopieerd",
+				"error": "Opslaan van link mislukt",
+				"removed": "Link verwijderd",
+				"updated": "Link bijgewerkt"
+			},
+			"url": "URL",
+			"urlPlaceholder": "https://example.com"
+		},
+		"attachments": {
+			"add": "Bestand bijvoegen",
+			"delete": "Verwijderen",
+			"deleteConfirmDescription": "Het bestand wordt voor iedereen verwijderd. Dit kan niet ongedaan worden gemaakt.",
+			"deleteConfirmTitle": "{{filename}} verwijderen?",
+			"download": "Downloaden",
+			"dropHere": "Sleep bestanden hierheen of klik om te bladeren",
+			"dropToAttach": "Sleep bestanden om bij te voegen",
+			"loadError": "Laden van bijlagen mislukt",
+			"meta": "{{size}} · {{name}} · {{time}}",
+			"metaNoUser": "{{size}} · {{time}}",
+			"open": "Openen",
+			"title": "Bijlagen",
+			"toast": {
+				"attached_one": "{{count}} bestand bijgevoegd",
+				"attached_other": "{{count}} bestanden bijgevoegd",
+				"deleted": "Bijlage verwijderd",
+				"deleteError": "Verwijderen van bijlage mislukt",
+				"empty": "{{filename}} is leeg",
+				"failed": "Bijvoegen van {{filename}} mislukt: {{reason}}",
+				"notConfigured": "Bestandsuploads zijn niet ingesteld op deze server. Vraag je beheerder om opslag te configureren.",
+				"storageError": "opslag heeft de upload geweigerd",
+				"tooMany": "Je kunt maximaal {{count}} bestanden tegelijk bijvoegen",
+				"unknownError": "er is iets misgegaan"
+			},
+			"uploading": "Uploaden…"
+		},
+		"create": {
+			"similarTitle": "Vergelijkbare open taken",
+			"similarDismiss": "Vergelijkbare taken verbergen",
+			"similarOpen": "Openen",
+			"similarOpenLabel": "{{key}} {{title}} openen in een nieuw tabblad"
+		},
+		"parent": {
+			"add": "Bovenliggende taak toevoegen",
+			"chip": "Bovenliggend",
+			"label": "Bovenliggende taak",
+			"noTasks": "Geen taken gevonden",
+			"remove": "Bovenliggende taak verwijderen",
+			"search": "Taken zoeken…",
+			"tasksInProject": "Taken in dit project",
+			"toast": {
+				"error": "Wijzigen van bovenliggende taak mislukt",
+				"removed": "Bovenliggende taak verwijderd",
+				"set": "Bovenliggende taak ingesteld op {{key}}"
+			},
+			"tooltip": "Bovenliggende taak: {{key}} {{title}}"
+		},
+		"copy": {
+			"alwaysCopied": "Status en prioriteit worden altijd meegekopieerd.",
+			"cancel": "Annuleren",
+			"includeLabel": "Meenemen",
+			"options": {
+				"assignees": "Toegewezen personen",
+				"attachments": "Bijlagen",
+				"customFields": "Waarden van aangepaste velden",
+				"dates": "Start- en einddatum",
+				"description": "Beschrijving",
+				"labels": "Labels",
+				"links": "Links",
+				"parent": "Bovenliggende taak",
+				"planning": "Cyclus, modules en inschatting"
+			},
+			"otherProjectHint": "Status wordt afgestemd op de kolommen van het nieuwe project. Aangepaste velden, bovenliggende taak en planning worden niet meegekopieerd naar een ander project.",
+			"projectLabel": "Project",
+			"submit": "Kopie maken",
+			"title": "Kopie maken van {{key}}",
+			"titleLabel": "Titel",
+			"titleRequired": "Titel is verplicht",
+			"titleSuffix": "{{title}} (kopie)",
+			"toast": {
+				"error": "Maken van kopie mislukt",
+				"open": "Openen",
+				"skipped": "Niet gekopieerd: {{list}}",
+				"success": "Kopie aangemaakt: {{key}}"
+			}
+		},
+		"filters": {
+			"button": "Filteren",
+			"searchOptions": "Opties zoeken",
+			"noOptions": "Geen opties",
+			"matchAll": "Alles moet kloppen",
+			"matchAny": "Eén moet kloppen",
+			"applyError": "Kan de filters niet toepassen",
+			"retry": "Opnieuw proberen",
+			"tooMany": "Te veel resultaten om hier te filteren; open de spreadsheet",
+			"nestedReadOnly": "Deze weergave gebruikt geavanceerde filters die hier niet bewerkt kunnen worden",
+			"clearAll": "Alle filters wissen",
+			"apply": "Toepassen",
+			"mobileSummary_one": "{{count}} filter",
+			"mobileSummary_other": "{{count}} filters",
+			"removeFilter": "Filter {{subject}} verwijderen",
+			"subjects": {
+				"group": "Groep",
+				"createdBy": "Aangemaakt door",
+				"cycle": "Cyclus",
+				"module": "Module",
+				"startDate": "Startdatum",
+				"created": "Aangemaakt",
+				"updated": "Bijgewerkt",
+				"completed": "Voltooid",
+				"parent": "Bovenliggend",
+				"project": "Project",
+				"subscribed": "Gevolgd",
+				"mentions": "Vermeldingen",
+				"blocked": "Geblokkeerd"
+			},
+			"operators": {
+				"between": "tussen",
+				"is": "is",
+				"isEmpty": "is leeg",
+				"isNoneOf": "is geen van",
+				"isNot": "is niet",
+				"isNotEmpty": "is niet leeg",
+				"moreThanAgo": "meer dan … geleden",
+				"moreThanAhead": "over meer dan …",
+				"on": "op",
+				"onOrAfter": "op of na",
+				"onOrBefore": "op of vóór",
+				"withinLast": "in de afgelopen",
+				"withinNext": "in de komende"
+			},
+			"values": {
+				"me": "Ik",
+				"none": "Geen",
+				"noAssignee": "Geen toegewezen persoon",
+				"noCreator": "Geen maker",
+				"noLabel": "Geen label",
+				"noCycle": "Geen cyclus",
+				"noModule": "Geen module",
+				"noEstimate": "Geen schatting",
+				"noParent": "Geen bovenliggende taak",
+				"currentCycle": "Huidige cyclus",
+				"true": "Waar",
+				"false": "Onwaar",
+				"blockedYes": "Ja",
+				"blockedNo": "Nee"
+			},
+			"dates": {
+				"amount": "Aantal",
+				"custom": "Aangepaste datum…",
+				"emptyTab": "Leeg",
+				"exact": "Exacte datum",
+				"future": "Na vandaag",
+				"lastMonth": "Vorige maand",
+				"lastWeek": "Vorige week",
+				"nextMonth": "Volgende maand",
+				"nextWeek": "Volgende week",
+				"overdue": "Achterstallig",
+				"past": "Vóór vandaag",
+				"presets": "Voorinstellingen",
+				"rolling": "Voortschrijdend",
+				"rollingValue": "{{amount}} {{unit}}",
+				"thisMonth": "Deze maand",
+				"thisWeek": "Deze week",
+				"today": "Vandaag",
+				"tomorrow": "Morgen",
+				"units": {
+					"days": "dagen",
+					"months": "maanden",
+					"weeks": "weken"
+				},
+				"yesterday": "Gisteren"
+			},
+			"archived": {
+				"exclude": "Gearchiveerde verbergen",
+				"include": "Ook gearchiveerde tonen",
+				"label": "Gearchiveerd",
+				"only": "Alleen gearchiveerde"
+			},
+			"myTasks": "Mijn taken"
+		},
+		"display": {
+			"button": "Weergave",
+			"columns": "Kolommen",
+			"groupBy": "Groeperen op",
+			"groups": {
+				"status": "Status",
+				"group": "Groep",
+				"priority": "Prioriteit",
+				"assignee": "Toegewezen persoon",
+				"createdBy": "Aangemaakt door",
+				"label": "Label",
+				"cycle": "Cyclus",
+				"module": "Module",
+				"estimate": "Schatting",
+				"project": "Project",
+				"customField": "Aangepast veld"
+			},
+			"none": "Geen",
+			"order": {
+				"manual": "Handmatig",
+				"createdAt": "Laatst aangemaakt",
+				"updatedAt": "Laatst bijgewerkt",
+				"completedAt": "Voltooiingsdatum",
+				"startDate": "Startdatum",
+				"dueDate": "Einddatum",
+				"priority": "Prioriteit",
+				"title": "Titel",
+				"number": "Taaksleutel",
+				"status": "Status",
+				"assignee": "Toegewezen persoon",
+				"label": "Label",
+				"cycle": "Cyclus",
+				"module": "Module",
+				"estimate": "Schatting",
+				"subTaskCount": "Subtaken",
+				"archivedAt": "Archiefdatum",
+				"customField": "Aangepast veld"
+			},
+			"orderBy": "Sorteren op",
+			"properties": "Eigenschappen",
+			"props": {
+				"assignee": "Toegewezen personen",
+				"checklist": "Checklist",
+				"createdAt": "Aangemaakt",
+				"cycle": "Cyclus",
+				"dueDate": "Einddatum",
+				"estimate": "Schatting",
+				"key": "Sleutel",
+				"labels": "Labels",
+				"modules": "Modules",
+				"priority": "Prioriteit",
+				"startDate": "Startdatum",
+				"status": "Status",
+				"subTaskCount": "Subtaken",
+				"updatedAt": "Bijgewerkt"
+			},
+			"showEmptyGroups": "Lege groepen tonen",
+			"showSubTasks": "Subtaken tonen",
+			"subGroupBy": "Subgroeperen op"
+		},
+		"groups": {
+			"all": "Alle taken",
+			"planned": "Gepland",
+			"noAssignee": "Geen toegewezen persoon",
+			"noCreator": "Geen maker",
+			"noLabel": "Geen label",
+			"noCycle": "Geen cyclus",
+			"noModule": "Geen module",
+			"noEstimate": "Geen schatting",
+			"loadMore": "Meer laden ({{count}})",
+			"hiddenGroups_one": "{{count}} andere groep niet getoond",
+			"hiddenGroups_other": "{{count}} andere groepen niet getoond",
+			"moduleCount_one": "{{count}} module",
+			"moduleCount_other": "{{count}} modules",
+			"moveError": "Kan de taak niet verplaatsen",
+			"noFieldValue": "Geen waarde"
+		},
+		"spreadsheet": {
+			"clearSort": "Sortering wissen",
+			"collapseSubTasks": "Subtaken verbergen",
+			"expandSubTasks": "Subtaken tonen",
+			"hideColumn": "Kolom verbergen",
+			"loadError": "Kan taken niet laden",
+			"selectTask": "{{key}} selecteren",
+			"sortAsc": "Oplopend sorteren",
+			"sortDesc": "Aflopend sorteren",
+			"task": "Taak"
+		},
+		"queryEmpty": {
+			"clear": "Filters wissen",
+			"description": "Probeer een of twee filters te verwijderen.",
+			"title": "Geen taken komen overeen met deze filters"
 		},
 		"capture": {
 			"ariaLabel": "Taak toevoegen aan {{column}}",
@@ -5090,48 +5348,33 @@
 			"changePriority": "Prioriteit: {{priority}}",
 			"changeStatus": "Status: {{status}}"
 		},
-		"commands": {
-			"assignedSelf": "Aan jou toegewezen",
-			"assignees": "Toegewezen personen wijzigen…",
-			"assignSelf": "Aan mij toewijzen",
-			"copyTitle": "Titel kopiëren",
-			"cycle": "Cyclus wijzigen…",
-			"dueDate": "Einddatum wijzigen…",
-			"estimate": "Inschatting wijzigen…",
-			"group": "Deze taak",
-			"labels": "Labels wijzigen…",
-			"module": "Modules wijzigen…",
-			"priority": "Prioriteit wijzigen…",
-			"status": "Status wijzigen…",
-			"titleCopied": "Taaktitel gekopieerd",
-			"unassignedSelf": "Je bent niet meer toegewezen",
-			"unassignSelf": "Mijn toewijzing verwijderen"
+		"boardSearchOpen": "Taken zoeken",
+		"customFieldValue": {
+			"clear": "Waarde wissen",
+			"edit": "{{name}} bewerken",
+			"removedOption": "{{value}} (verwijderde optie)",
+			"saveError": "Dit veld kon niet worden opgeslagen.",
+			"placeholder": "Nieuwe waarde",
+			"true": "Waar",
+			"false": "Onwaar"
 		},
-		"readableLink": {
-			"goHome": "Naar Home",
-			"notFound": "Geen taak met de sleutel {{key}} in deze werkruimte, of je kunt hem niet zien."
+		"customFieldBulk": {
+			"action": "Aangepast veld",
+			"chooseField": "Kies een veld",
+			"apply": "Toepassen",
+			"updated_one": "{{count}} taak bijgewerkt",
+			"updated_other": "{{count}} taken bijgewerkt",
+			"error": "De geselecteerde taken konden niet worden bijgewerkt."
 		},
-		"descriptionHistory": {
-			"cancel": "Annuleren",
-			"description": "Opgeslagen versies van deze beschrijving, nieuwste eerst. Bewerkingen door één persoon binnen 10 minuten vormen samen één versie; de laatste 50 worden bewaard.",
-			"earlierVersion": "Eerdere versie",
-			"empty": "Nog geen opgeslagen versies. Versies worden bewaard vanaf de volgende bewerking.",
-			"emptyVersion": "Deze versie heeft geen beschrijving.",
-			"latest": "Nieuwste",
-			"list": "Opgeslagen versies",
-			"loadError": "Kan de geschiedenis niet laden",
-			"open": "Geschiedenis",
-			"previewTitle": "Versie van {{date}}",
-			"restore": "Herstellen",
-			"restoreConfirmDescription": "De beschrijving wordt vervangen door deze versie. De huidige tekst blijft in de geschiedenis.",
-			"restoreConfirmTitle": "Deze versie herstellen?",
-			"restored": "Beschrijving hersteld",
-			"restoreError": "Kan deze versie niet herstellen",
-			"retry": "Opnieuw proberen",
-			"size_one": "{{count}} teken",
-			"size_other": "{{count}} tekens",
-			"title": "Beschrijvingsgeschiedenis",
-			"viewOnly": "Alleen bekijken"
+		"milestone": {
+			"label": "Mijlpaal",
+			"hint": "Markeert één datum. De tijdlijn toont die als een ruit op de einddatum.",
+			"updateError": "De mijlpaal kon niet worden bijgewerkt"
+		},
+		"scheduleField": {
+			"label": "Veld dat op taken wordt getoond",
+			"none": "Geen veld",
+			"value": "{{name}}: {{value}}"
 		}
 	},
 	"invitations": {
@@ -5180,6 +5423,7 @@
 			"status": "Status",
 			"emptyTitle": "Nog geen projecten",
 			"emptyDescription": "Begin met het maken van je eerste project.",
+			"emptyDescriptionReadOnly": "Er zijn nog geen projecten in deze werkruimte. Vraag een beheerder om er een aan te maken.",
 			"projectStatus": {
 				"notStarted": "Niet gestart",
 				"complete": "Voltooid",
@@ -5187,7 +5431,7 @@
 			},
 			"noDueDate": "Geen einddatum",
 			"reorderError": "Projecten opnieuw ordenen mislukt",
-			"emptyDescriptionReadOnly": "Er zijn nog geen projecten in deze werkruimte. Vraag een beheerder om er een aan te maken."
+			"emptyDescriptionGuest": "Je bent nog niet aan een project toegevoegd. Vraag de persoon die je heeft uitgenodigd om je toe te voegen."
 		},
 		"search": {
 			"pageTitle": "Zoeken",
@@ -5295,7 +5539,8 @@
 			"owner": "Eigenaar",
 			"admin": "Beheerder",
 			"member": "Lid",
-			"viewer": "Kijker"
+			"viewer": "Kijker",
+			"guest": "Gast"
 		},
 		"members": {
 			"pageTitle": "Leden",
@@ -5331,7 +5576,13 @@
 			"sentSome": "{{sent}} van {{total}} uitnodigingen verstuurd.",
 			"failedTitle": "Niet verstuurd",
 			"rateLimited": "Te veel uitnodigingen tegelijk. Wacht een minuut en verstuur dan de rest.",
-			"shareLinksDescription": "Deel elke link met de juiste persoon zodat die lid kan worden van de werkruimte."
+			"shareLinksDescription": "Deel elke link met de juiste persoon zodat die lid kan worden van de werkruimte.",
+			"guestRoleHint": "Gasten zien alleen de projecten waaraan je ze toevoegt, en verder niets in de werkruimte.",
+			"guestProjectsLabel": "Projecten",
+			"guestProjectsHint": "Zodra ze accepteren, worden ze lid van de projecten die je aanvinkt, met de projectrol die je kiest. Als Kijker kunnen ze alleen lezen.",
+			"guestProjectsEmpty": "Er is geen project dat je kunt delen. Voeg ze aan projecten toe nadat ze lid zijn geworden.",
+			"guestProjectRoleFor": "Projectrol in {{project}}",
+			"guestProjectsFailed": "De uitnodiging is verstuurd, maar de projecten ervan konden niet worden toegevoegd: {{message}}"
 		},
 		"membersTable": {
 			"emptyTitle": "Nog geen teamleden",
@@ -5341,6 +5592,7 @@
 				"role": "Rol",
 				"joined": "Lid sinds"
 			},
+			"ariaInvitationActions": "Uitnodigingsacties",
 			"ariaRemoveMember": "Lid verwijderen",
 			"removeDialogTitle": "Teamlid verwijderen?",
 			"removeDialogDescription": "{{name}} wordt uit de werkruimte verwijderd en verliest de toegang tot de projecten en taken ervan.",
@@ -5352,11 +5604,11 @@
 			"removeError": "Verwijderen teamlid mislukt",
 			"cancelInviteSuccess": "Uitnodiging succesvol geannuleerd",
 			"cancelInviteError": "Annuleren uitnodiging mislukt",
-			"ariaInvitationActions": "Uitnodigingsacties",
 			"roleUpdateSuccess": "Rol bijgewerkt",
 			"roleUpdateError": "Bijwerken rol mislukt",
 			"ariaInvitationRole": "Rol voor {{email}}",
-			"invitationRoleUpdateSuccess": "Rol van uitnodiging bijgewerkt"
+			"invitationRoleUpdateSuccess": "Rol van uitnodiging bijgewerkt",
+			"removeDialogAccessNote": "Als dit hun enige werkruimte is, worden ze ook uitgelogd en werken hun API-sleutels niet meer."
 		},
 		"profile": {
 			"emptyActivity": "Nog geen activiteit",
@@ -6383,7 +6635,7 @@
 					"visibility": "Zichtbaarheid",
 					"workflow": "Workflow"
 				},
-				"purgeOn": "Wordt definitief verwijderd op {{date}}",
+				"purgeOn": "Wordt op {{date}} definitief verwijderd",
 				"restore": "Herstellen",
 				"restored": "Taak hersteld",
 				"search": "Verwijderde taken zoeken",
@@ -7842,6 +8094,29 @@
 		}
 	},
 	"home": {
+		"pageTitle": "Home",
+		"greeting": {
+			"afternoon": "Goedemiddag, {{name}}",
+			"dateTime": "{{date}} · {{time}}",
+			"evening": "Goedenavond, {{name}}",
+			"morning": "Goedemorgen, {{name}}"
+		},
+		"manageWidgets": "Widgets beheren",
+		"widgets": {
+			"quickLinks": "Snelkoppelingen",
+			"recents": "Recent",
+			"stickies": "Plaknotities",
+			"risks": "Risico's",
+			"myBrief": "Mijn overzicht",
+			"pinnedReports": "Vastgezette rapporten"
+		},
+		"manage": {
+			"description": "Kies wat er op je home staat en sleep om de volgorde te wijzigen. Alleen jij ziet deze instellingen.",
+			"reorder": "{{widget}} herschikken",
+			"saveError": "Kan je home-instellingen niet opslaan",
+			"title": "Widgets beheren",
+			"toggle": "{{widget}} tonen"
+		},
 		"empty": {
 			"description": "Alle widgets staan uit. Zet er een paar aan om hier je links, recente bezoeken en plaknotities te zien.",
 			"title": "Je home is leeg"
@@ -7871,21 +8146,6 @@
 			},
 			"title": "Aan de slag"
 		},
-		"greeting": {
-			"afternoon": "Goedemiddag, {{name}}",
-			"dateTime": "{{date}} · {{time}}",
-			"evening": "Goedenavond, {{name}}",
-			"morning": "Goedemorgen, {{name}}"
-		},
-		"manage": {
-			"description": "Kies wat er op je home staat en sleep om de volgorde te wijzigen. Alleen jij ziet deze instellingen.",
-			"reorder": "{{widget}} herschikken",
-			"saveError": "Kan je home-instellingen niet opslaan",
-			"title": "Widgets beheren",
-			"toggle": "{{widget}} tonen"
-		},
-		"manageWidgets": "Widgets beheren",
-		"pageTitle": "Home",
 		"quickLinks": {
 			"add": "Link toevoegen",
 			"copy": "Link kopiëren",
@@ -7942,24 +8202,32 @@
 			"visited": "Bezocht {{time}}"
 		},
 		"retry": "Opnieuw proberen",
-		"widgets": {
-			"quickLinks": "Snelkoppelingen",
-			"recents": "Recent",
-			"stickies": "Plaknotities",
-			"risks": "Risico's",
-			"myBrief": "Mijn overzicht"
-		},
 		"focus": {
-			"caughtUp": "Helemaal bij",
-			"inbox": "Inbox",
 			"label": "Ga verder waar je was",
+			"inbox": "Inbox",
 			"myWork": "Jouw werk",
+			"stickies": "Plaknotities",
+			"caughtUp": "Helemaal bij",
 			"overdue_one": "{{count}} te laat",
 			"overdue_other": "{{count}} te laat",
-			"stickies": "Plaknotities",
 			"stickiesHint": "Privénotities, alleen voor jou",
+			"unreadCaption": "ongelezen",
 			"openCaption": "open",
-			"unreadCaption": "ongelezen"
+			"loadError": "Laden mislukt"
+		},
+		"dueToday": {
+			"title": "Deadline vandaag",
+			"empty": "Niets dat aan jou is toegewezen heeft vandaag als deadline.",
+			"loadError": "Je taken met deadline vandaag konden niet worden geladen",
+			"viewAll": "Alle {{total}} bekijken"
+		},
+		"pinnedReports": {
+			"empty": "Zet een opgeslagen rapport vast in Analyse om het hier te zien.",
+			"openAnalytics": "Analyse openen",
+			"loadError": "Je vastgezette rapporten konden niet worden geladen",
+			"chartError": "Dit rapport kon niet worden geladen",
+			"unpin": "{{name}} losmaken van Home",
+			"showing": "{{shown}} van {{total}} weergegeven. De rest staat in Analyse."
 		}
 	},
 	"intake": {
@@ -8251,14 +8519,111 @@
 		"viewAll": "Alles bekijken"
 	},
 	"analytics": {
-		"a11y": {
-			"barSummary": "{{metric}} per {{dimension}}: {{count}} groepen, hoogste is {{label}} met {{value}}",
-			"donutSummary": "{{total}} taken in {{count}} groepen",
-			"lineSummary": "{{series}} over {{count}} perioden"
+		"pageTitle": "Analyse",
+		"projectPageTitle": "{{project}} · Analyse",
+		"tabs": {
+			"overview": "Overzicht",
+			"tasks": "Taken",
+			"cycles": "Cyclussen",
+			"modules": "Modules",
+			"intake": "Intake",
+			"delivery": "Oplevering",
+			"time": "Tijd"
 		},
-		"breakdown": {
-			"groupRowsBy": "Rijen groeperen op",
-			"title": "Uitsplitsing"
+		"header": {
+			"allProjects": "Alle projecten",
+			"clearSelection": "Selectie wissen",
+			"noProjectsFound": "Geen projecten gevonden",
+			"projectsCount_one": "{{count}} project",
+			"projectsCount_other": "{{count}} projecten",
+			"refresh": "Vernieuwen",
+			"searchProjects": "Projecten zoeken",
+			"selectProjects": "Projecten selecteren",
+			"updatedAt": "Bijgewerkt {{time}}"
+		},
+		"openInAnalytics": "Openen in Analyse",
+		"context": {
+			"cycle": "Cyclus: {{name}}",
+			"module": "Module: {{name}}",
+			"remove": "{{name}} uit de filters verwijderen"
+		},
+		"states": {
+			"loadError": "Dit onderdeel kon niet worden geladen",
+			"newProject": "Nieuw project",
+			"noAccessDescription": "Vraag een beheerder van de werkruimte om de machtiging Analyse.",
+			"noAccessTitle": "Je hebt geen toegang tot analyse",
+			"noCycles": "Nog geen cyclussen",
+			"noModules": "Nog geen modules",
+			"noPeriodData": "Geen gegevens in deze periode",
+			"noProjectsDescription": "Analyse vat de taken in je projecten samen.",
+			"noProjectsTitle": "Maak een project aan om analyse te zien",
+			"noRequests": "Nog geen aanvragen",
+			"noTasks": "Geen taken komen overeen met deze filters",
+			"retry": "Opnieuw proberen",
+			"timeout": "Dit duurde te lang. Beperk de filters en probeer het opnieuw.",
+			"noRunningCycles": "Er zijn momenteel geen actieve cyclussen"
+		},
+		"view": {
+			"chart": "Grafiek",
+			"label": "Weergeven als",
+			"table": "Tabel"
+		},
+		"kpi": {
+			"accepted": "{{count}} geaccepteerd",
+			"completedTasks": "Voltooide taken",
+			"completion": "Voltooiing",
+			"completionDetail": "{{completed}} van {{committed}}",
+			"cyclesRunning": "Lopende cyclussen",
+			"members": "Leden",
+			"membersDetail": "{{admins}} beheerders · {{viewers}} kijkers",
+			"modulesInProgress": "Modules in uitvoering",
+			"modulesTotal": "{{count}} in totaal",
+			"openRequests": "Open aanvragen",
+			"openTasks": "Open taken",
+			"overdue": "{{count}} te laat",
+			"percentComplete": "{{percent}}% voltooid",
+			"projects": "Projecten",
+			"total": "Totaal",
+			"upcoming": "{{count}} gepland"
+		},
+		"overview": {
+			"projectProgress": "Voortgang van projecten",
+			"projectProgressSubtitle": "Eerst de projecten met de meeste open taken",
+			"open": "{{count}} open",
+			"showAll": "Alle {{count}} tonen",
+			"showLess": "Minder tonen",
+			"tasksByGroup": "Taken per groep",
+			"donutCenter_one": "{{count}} taak",
+			"donutCenter_other": "{{count}} taken",
+			"workload": "Werkdruk",
+			"workloadSubtitle": "Open taken per toegewezen persoon",
+			"workloadSubtitlePoints": "Open inschattingspunten per toegewezen persoon",
+			"overloaded_one": "{{names}} heeft meer open werk dan deze persoon gewoonlijk in {{weeks}} weken afrondt.",
+			"overloaded_other": "{{names}} hebben meer open werk dan ze gewoonlijk in {{weeks}} weken afronden.",
+			"overUsual": "Boven het gebruikelijke",
+			"overTooltip": "{{name}}: boven het gebruikelijke",
+			"usualHint": "Gebruikelijk is wat iemand in een doorsnee periode van {{usualWeeks}} weken afrondde, op basis van de afgelopen {{historyWeeks}} weken. Wie geen recente geschiedenis heeft, wordt niet beoordeeld.",
+			"checkColumn": "Ten opzichte van gebruikelijk",
+			"checkOverPoints": "Erboven: {{load}} punten, gebruikelijk {{usual}}",
+			"checkOverTasks": "Erboven: {{load}} taken, gebruikelijk {{usual}}",
+			"checkOkPoints": "{{load}} punten, gebruikelijk {{usual}}",
+			"checkOkTasks": "{{load}} taken, gebruikelijk {{usual}}",
+			"checkUnknown": "Geen recente geschiedenis"
+		},
+		"trend": {
+			"completed": "Voltooid",
+			"created": "Aangemaakt",
+			"help": "Aangemaakt telt taken op de dag waarop ze zijn aangemaakt. Voltooid telt taken op de dag waarop ze zijn voltooid, zolang ze nog voltooid zijn. Gearchiveerde taken blijven buiten beschouwing, tenzij je ze meeneemt.",
+			"period": "Periode",
+			"summary": "Aangemaakt {{created}} · Voltooid {{completed}} · Saldo {{net}}",
+			"title": "Aangemaakt versus voltooid"
+		},
+		"periods": {
+			"custom": "Aangepast bereik",
+			"last12m": "Laatste 12 maanden",
+			"last30": "Laatste 30 dagen",
+			"last6m": "Laatste 6 maanden",
+			"last90": "Laatste 90 dagen"
 		},
 		"bucket": {
 			"label": "Datums groeperen per",
@@ -8269,6 +8634,14 @@
 		"buckets": {
 			"range": "{{from}} – {{to}}",
 			"weekOf": "Week van {{date}}"
+		},
+		"metric": {
+			"label": "Meetwaarde",
+			"tasks": "Taken",
+			"points": "Inschattingspunten",
+			"pointsShort": "Punten",
+			"sum": "Som",
+			"sumOf": "Som van {{name}}"
 		},
 		"builder": {
 			"countSubTasks": "Subtaken meetellen",
@@ -8285,10 +8658,130 @@
 			"truncatedX": "Top {{shown}} van {{total}} {{dimension}} getoond",
 			"xAxis": "X-as"
 		},
-		"context": {
-			"cycle": "Cyclus: {{name}}",
-			"module": "Module: {{name}}",
-			"remove": "{{name}} uit de filters verwijderen"
+		"reports": {
+			"open": "Rapporten",
+			"listTitle": "Opgeslagen rapporten",
+			"loadError": "Opgeslagen rapporten konden niet worden geladen",
+			"empty": "Nog geen opgeslagen rapporten. Sla deze grafiek op om er later naar terug te keren.",
+			"sharedBy": "Gedeeld door {{name}}",
+			"actionsFor": "Acties voor {{name}}",
+			"rename": "Naam wijzigen",
+			"share": "Delen met werkruimte",
+			"makePrivate": "Privé maken",
+			"delete": "Verwijderen",
+			"save": "Opslaan",
+			"saveAsNew": "Opslaan als nieuw",
+			"update": "Rapport bijwerken",
+			"showing": "Rapport: {{name}}",
+			"unsaved": "Niet-opgeslagen wijzigingen",
+			"close": "Rapport sluiten",
+			"deleteTitle": "Dit rapport verwijderen?",
+			"deleteDescription": "“{{name}}” wordt verwijderd. Dit kan niet ongedaan worden gemaakt.",
+			"deleteSharedDescription": "“{{name}}” wordt voor iedereen in de werkruimte verwijderd. Dit kan niet ongedaan worden gemaakt.",
+			"visibility": {
+				"private": "Privé",
+				"privateHint": "Alleen jij kunt het zien.",
+				"workspace": "Gedeeld met werkruimte",
+				"workspaceHint": "Iedereen in deze werkruimte met toegang tot analyses kan het openen."
+			},
+			"dialog": {
+				"cancel": "Annuleren",
+				"createTitle": "Rapport opslaan",
+				"editTitle": "Rapport bewerken",
+				"name": "Naam",
+				"namePlaceholder": "bijv. Open bugs per toegewezen persoon",
+				"nameRequired": "Voer een naam in",
+				"save": "Opslaan",
+				"summary": "Slaat de grafiekinstellingen, de geselecteerde projecten en de filters op.",
+				"update": "Wijzigingen opslaan",
+				"visibility": "Wie kan het zien"
+			},
+			"notes": {
+				"allProjects": "Geen van de projecten van dit rapport is beschikbaar, dus alle projecten worden getoond.",
+				"builderReset": "Sommige grafiekinstellingen zijn niet beschikbaar voor deze projecten en zijn teruggezet.",
+				"dropped_one": "{{count}} project in dit rapport bestaat niet meer.",
+				"dropped_other": "{{count}} projecten in dit rapport bestaan niet meer.",
+				"leftOut_one": "{{count}} project in dit rapport is gearchiveerd en weggelaten.",
+				"leftOut_other": "{{count}} projecten in dit rapport zijn gearchiveerd en weggelaten.",
+				"otherProjects": "Dit rapport is opgeslagen voor andere projecten; hier toont het alleen dit project."
+			},
+			"toast": {
+				"saved": "“{{name}}” opgeslagen",
+				"updated": "Rapport bijgewerkt",
+				"shared": "Rapport gedeeld met de werkruimte",
+				"madePrivate": "Rapport is nu privé",
+				"deleted": "Rapport verwijderd",
+				"saveError": "Het rapport kon niet worden opgeslagen",
+				"deleteError": "Het rapport kon niet worden verwijderd",
+				"pinned": "Vastgezet op Home",
+				"unpinned": "Losgemaakt van Home",
+				"pinError": "Je Home kon niet worden bijgewerkt",
+				"pinLimit_one": "Je kunt maximaal {{count}} rapport vastzetten. Maak er eerst een los.",
+				"pinLimit_other": "Je kunt maximaal {{count}} rapporten vastzetten. Maak er eerst een los."
+			},
+			"pin": "Vastzetten op Home",
+			"unpin": "Losmaken van Home"
+		},
+		"dimensions": {
+			"status": "Status",
+			"group": "Groep",
+			"priority": "Prioriteit",
+			"assignee": "Toegewezen aan",
+			"createdBy": "Aangemaakt door",
+			"label": "Label",
+			"cycle": "Cyclus",
+			"module": "Module",
+			"estimate": "Inschatting",
+			"project": "Project",
+			"createdAt": "Aanmaakdatum",
+			"completedAt": "Voltooiingsdatum",
+			"startDate": "Startdatum",
+			"dueDate": "Vervaldatum",
+			"customField": "Aangepast veld"
+		},
+		"dimensionsPlural": {
+			"status": "statussen",
+			"assignee": "toegewezen personen",
+			"createdBy": "makers",
+			"label": "labels",
+			"cycle": "cyclussen",
+			"module": "modules",
+			"estimate": "inschattingen",
+			"project": "projecten",
+			"period": "perioden",
+			"customField": "waarden"
+		},
+		"none": {
+			"assignee": "Niet toegewezen",
+			"createdBy": "Onbekende maker",
+			"label": "Geen label",
+			"cycle": "Geen cyclus",
+			"module": "Geen module",
+			"estimate": "Geen inschatting",
+			"completedAt": "Niet voltooid",
+			"startDate": "Geen startdatum",
+			"dueDate": "Geen vervaldatum",
+			"customField": "Geen waarde"
+		},
+		"other": "Overig",
+		"table": {
+			"periodEnd": "Einde van periode",
+			"periodStart": "Begin van periode",
+			"progress": "Voortgang",
+			"showAll": "Alle {{count}} tonen",
+			"sortBy": "Sorteren op {{column}}",
+			"tasks": "Taken",
+			"total": "Totaal"
+		},
+		"breakdown": {
+			"groupRowsBy": "Rijen groeperen op",
+			"title": "Uitsplitsing"
+		},
+		"export": {
+			"button": "CSV exporteren",
+			"error": "Deze tabel kon niet worden geëxporteerd",
+			"success_one": "{{count}} rij geëxporteerd",
+			"success_other": "{{count}} rijen geëxporteerd"
 		},
 		"cycles": {
 			"averageCompleted": "Gem. voltooid (laatste 3)",
@@ -8321,49 +8814,15 @@
 				"running": "Nu actief"
 			}
 		},
-		"dimensions": {
-			"assignee": "Toegewezen aan",
-			"completedAt": "Voltooiingsdatum",
-			"createdAt": "Aanmaakdatum",
-			"createdBy": "Aangemaakt door",
-			"cycle": "Cyclus",
-			"dueDate": "Vervaldatum",
-			"estimate": "Inschatting",
-			"group": "Groep",
-			"label": "Label",
-			"module": "Module",
-			"priority": "Prioriteit",
-			"project": "Project",
-			"startDate": "Startdatum",
-			"status": "Status"
-		},
-		"dimensionsPlural": {
-			"assignee": "toegewezen personen",
-			"createdBy": "makers",
-			"cycle": "cyclussen",
-			"estimate": "inschattingen",
-			"label": "labels",
-			"module": "modules",
-			"period": "perioden",
-			"project": "projecten",
-			"status": "statussen"
-		},
-		"export": {
-			"button": "CSV exporteren",
-			"error": "Deze tabel kon niet worden geëxporteerd",
-			"success_one": "{{count}} rij geëxporteerd",
-			"success_other": "{{count}} rijen geëxporteerd"
-		},
-		"header": {
-			"allProjects": "Alle projecten",
-			"clearSelection": "Selectie wissen",
-			"noProjectsFound": "Geen projecten gevonden",
-			"projectsCount_one": "{{count}} project",
-			"projectsCount_other": "{{count}} projecten",
-			"refresh": "Vernieuwen",
-			"searchProjects": "Projecten zoeken",
-			"selectProjects": "Projecten selecteren",
-			"updatedAt": "Bijgewerkt {{time}}"
+		"modules": {
+			"overdue": "Te laat",
+			"table": {
+				"lead": "Verantwoordelijke",
+				"module": "Module",
+				"noLead": "Geen verantwoordelijke",
+				"targetDate": "Streefdatum",
+				"title": "Modules"
+			}
 		},
 		"intake": {
 			"accepted": "Geaccepteerd",
@@ -8381,176 +8840,24 @@
 			"submitted": "Ingediend",
 			"triaged": "Beoordeeld"
 		},
-		"kpi": {
-			"accepted": "{{count}} geaccepteerd",
-			"completedTasks": "Voltooide taken",
-			"completion": "Voltooiing",
-			"completionDetail": "{{completed}} van {{committed}}",
-			"cyclesRunning": "Lopende cyclussen",
-			"members": "Leden",
-			"membersDetail": "{{admins}} beheerders · {{viewers}} kijkers",
-			"modulesInProgress": "Modules in uitvoering",
-			"modulesTotal": "{{count}} in totaal",
-			"openRequests": "Open aanvragen",
-			"openTasks": "Open taken",
-			"overdue": "{{count}} te laat",
-			"percentComplete": "{{percent}}% voltooid",
-			"projects": "Projecten",
-			"total": "Totaal",
-			"upcoming": "{{count}} gepland"
+		"a11y": {
+			"barSummary": "{{metric}} per {{dimension}}: {{count}} groepen, hoogste is {{label}} met {{value}}",
+			"donutSummary": "{{total}} taken in {{count}} groepen",
+			"lineSummary": "{{series}} over {{count}} perioden"
 		},
-		"metric": {
-			"label": "Meetwaarde",
-			"points": "Inschattingspunten",
-			"pointsShort": "Punten",
-			"tasks": "Taken"
-		},
-		"modules": {
-			"overdue": "Te laat",
-			"table": {
-				"lead": "Verantwoordelijke",
-				"module": "Module",
-				"noLead": "Geen verantwoordelijke",
-				"targetDate": "Streefdatum",
-				"title": "Modules"
-			}
-		},
-		"none": {
-			"assignee": "Niet toegewezen",
-			"completedAt": "Niet voltooid",
-			"createdBy": "Onbekende maker",
-			"cycle": "Geen cyclus",
-			"dueDate": "Geen vervaldatum",
-			"estimate": "Geen inschatting",
-			"label": "Geen label",
-			"module": "Geen module",
-			"startDate": "Geen startdatum"
-		},
-		"openInAnalytics": "Openen in Analyse",
-		"other": "Overig",
-		"overview": {
-			"donutCenter_one": "{{count}} taak",
-			"donutCenter_other": "{{count}} taken",
-			"open": "{{count}} open",
-			"projectProgress": "Voortgang van projecten",
-			"projectProgressSubtitle": "Eerst de projecten met de meeste open taken",
-			"showAll": "Alle {{count}} tonen",
-			"showLess": "Minder tonen",
-			"tasksByGroup": "Taken per groep",
-			"workload": "Werkdruk",
-			"workloadSubtitle": "Open taken per toegewezen persoon"
-		},
-		"pageTitle": "Analyse",
-		"periods": {
-			"custom": "Aangepast bereik",
-			"last12m": "Laatste 12 maanden",
-			"last30": "Laatste 30 dagen",
-			"last6m": "Laatste 6 maanden",
-			"last90": "Laatste 90 dagen"
-		},
-		"projectPageTitle": "{{project}} · Analyse",
-		"states": {
-			"loadError": "Dit onderdeel kon niet worden geladen",
-			"newProject": "Nieuw project",
-			"noAccessDescription": "Vraag een beheerder van de werkruimte om de machtiging Analyse.",
-			"noAccessTitle": "Je hebt geen toegang tot analyse",
-			"noCycles": "Nog geen cyclussen",
-			"noModules": "Nog geen modules",
-			"noPeriodData": "Geen gegevens in deze periode",
-			"noProjectsDescription": "Analyse vat de taken in je projecten samen.",
-			"noProjectsTitle": "Maak een project aan om analyse te zien",
-			"noRequests": "Nog geen aanvragen",
-			"noTasks": "Geen taken komen overeen met deze filters",
-			"retry": "Opnieuw proberen",
-			"timeout": "Dit duurde te lang. Beperk de filters en probeer het opnieuw.",
-			"noRunningCycles": "Er zijn momenteel geen actieve cyclussen"
-		},
-		"table": {
-			"periodEnd": "Einde van periode",
-			"periodStart": "Begin van periode",
-			"progress": "Voortgang",
-			"showAll": "Alle {{count}} tonen",
-			"sortBy": "Sorteren op {{column}}",
-			"tasks": "Taken",
-			"total": "Totaal"
-		},
-		"tabs": {
-			"cycles": "Cyclussen",
-			"intake": "Intake",
-			"modules": "Modules",
-			"overview": "Overzicht",
-			"tasks": "Taken",
-			"delivery": "Oplevering"
-		},
-		"trend": {
-			"completed": "Voltooid",
-			"created": "Aangemaakt",
-			"help": "Aangemaakt telt taken op de dag waarop ze zijn aangemaakt. Voltooid telt taken op de dag waarop ze zijn voltooid, zolang ze nog voltooid zijn. Gearchiveerde taken blijven buiten beschouwing, tenzij je ze meeneemt.",
-			"period": "Periode",
-			"summary": "Aangemaakt {{created}} · Voltooid {{completed}} · Saldo {{net}}",
-			"title": "Aangemaakt versus voltooid"
-		},
-		"view": {
-			"chart": "Grafiek",
-			"label": "Weergeven als",
-			"table": "Tabel"
-		},
-		"reports": {
-			"actionsFor": "Acties voor {{name}}",
-			"close": "Rapport sluiten",
-			"delete": "Verwijderen",
-			"deleteDescription": "“{{name}}” wordt verwijderd. Dit kan niet ongedaan worden gemaakt.",
-			"deleteSharedDescription": "“{{name}}” wordt voor iedereen in de werkruimte verwijderd. Dit kan niet ongedaan worden gemaakt.",
-			"deleteTitle": "Dit rapport verwijderen?",
-			"dialog": {
-				"cancel": "Annuleren",
-				"createTitle": "Rapport opslaan",
-				"editTitle": "Rapport bewerken",
-				"name": "Naam",
-				"namePlaceholder": "bijv. Open bugs per toegewezen persoon",
-				"nameRequired": "Voer een naam in",
-				"save": "Opslaan",
-				"summary": "Slaat de grafiekinstellingen, de geselecteerde projecten en de filters op.",
-				"update": "Wijzigingen opslaan",
-				"visibility": "Wie kan het zien"
-			},
-			"empty": "Nog geen opgeslagen rapporten. Sla deze grafiek op om er later naar terug te keren.",
-			"listTitle": "Opgeslagen rapporten",
-			"loadError": "Opgeslagen rapporten konden niet worden geladen",
-			"makePrivate": "Privé maken",
-			"notes": {
-				"allProjects": "Geen van de projecten van dit rapport is beschikbaar, dus alle projecten worden getoond.",
-				"builderReset": "Sommige grafiekinstellingen zijn niet beschikbaar voor deze projecten en zijn teruggezet.",
-				"dropped_one": "{{count}} project in dit rapport bestaat niet meer.",
-				"dropped_other": "{{count}} projecten in dit rapport bestaan niet meer.",
-				"leftOut_one": "{{count}} project in dit rapport is gearchiveerd en weggelaten.",
-				"leftOut_other": "{{count}} projecten in dit rapport zijn gearchiveerd en weggelaten.",
-				"otherProjects": "Dit rapport is opgeslagen voor andere projecten; hier toont het alleen dit project."
-			},
-			"open": "Rapporten",
-			"rename": "Naam wijzigen",
-			"save": "Opslaan",
-			"saveAsNew": "Opslaan als nieuw",
-			"share": "Delen met werkruimte",
-			"sharedBy": "Gedeeld door {{name}}",
-			"showing": "Rapport: {{name}}",
-			"toast": {
-				"deleted": "Rapport verwijderd",
-				"deleteError": "Het rapport kon niet worden verwijderd",
-				"madePrivate": "Rapport is nu privé",
-				"saved": "“{{name}}” opgeslagen",
-				"saveError": "Het rapport kon niet worden opgeslagen",
-				"shared": "Rapport gedeeld met de werkruimte",
-				"updated": "Rapport bijgewerkt"
-			},
-			"unsaved": "Niet-opgeslagen wijzigingen",
-			"update": "Rapport bijwerken",
-			"visibility": {
-				"private": "Privé",
-				"privateHint": "Alleen jij kunt het zien.",
-				"workspace": "Gedeeld met werkruimte",
-				"workspaceHint": "Iedereen in deze werkruimte met toegang tot analyses kan het openen."
-			}
+		"time": {
+			"total": "Geregistreerde tijd",
+			"entries": "Registraties",
+			"people": "Personen",
+			"running": "Loopt nu",
+			"runningNote": "Lopende timers tellen mee in deze totalen zodra ze stoppen.",
+			"byPerson": "Per persoon",
+			"byProject": "Per project",
+			"person": "Persoon",
+			"project": "Project",
+			"hours": "Uren",
+			"formerMember": "Voormalig lid",
+			"empty": "Geen tijd geregistreerd in deze periode"
 		}
 	},
 	"pages": {
@@ -8631,6 +8938,59 @@
 			"file": "een bijgevoegd bestand",
 			"page": "een andere pagina"
 		},
+		"section": {
+			"title": "Pagina's"
+		},
+		"list": {
+			"documentTitle": "{{project}} · Pagina's",
+			"newPage": "Nieuwe pagina",
+			"tabs": {
+				"archived": "Gearchiveerd",
+				"private": "Privé",
+				"public": "Openbaar"
+			},
+			"searchPlaceholder": "Pagina's zoeken",
+			"clearFilters": "Filters wissen",
+			"sort": {
+				"created": "Aangemaakt",
+				"lastEdited": "Laatst bewerkt",
+				"name": "Naam"
+			},
+			"untitled": "Naamloos",
+			"inParent": "in {{path}}",
+			"ownedBy": "Eigenaar: {{name}}",
+			"access": {
+				"private": "Privé",
+				"public": "Openbaar"
+			},
+			"editedAgo": "Bewerkt {{time}}",
+			"archivedOn": "Gearchiveerd {{date}}",
+			"locked": "Vergrendeld",
+			"loadError": "De pagina's konden niet worden geladen",
+			"retry": "Opnieuw proberen",
+			"empty": {
+				"archived": {
+					"description": "Gearchiveerde pagina's verschijnen hier. Je kunt ze herstellen of verwijderen.",
+					"title": "Geen gearchiveerde pagina's"
+				},
+				"noMatch": {
+					"description": "Probeer een andere zoekopdracht of wis de filters.",
+					"title": "Geen overeenkomende pagina's"
+				},
+				"none": {
+					"description": "Pagina's bevatten specificaties, notities en documenten direct naast de taken van het project.",
+					"title": "Schrijf je eerste pagina"
+				},
+				"private": {
+					"description": "Privépagina's zijn alleen voor jou zichtbaar.",
+					"title": "Geen privépagina's"
+				},
+				"public": {
+					"title": "Geen openbare pagina's"
+				}
+			},
+			"recentlyDeleted": "Recent verwijderd"
+		},
 		"actions": {
 			"archive": "Archiveren",
 			"copyLink": "Link kopiëren",
@@ -8646,6 +9006,123 @@
 			"restore": "Herstellen",
 			"unlock": "Ontgrendelen"
 		},
+		"toasts": {
+			"accessError": "Kon niet wijzigen wie deze pagina kan zien",
+			"archived": "Pagina gearchiveerd",
+			"archiveError": "De pagina kon niet worden gearchiveerd",
+			"contentConflict": "Deze pagina is elders gewijzigd, dus je laatste bewerking is niet opgeslagen. De nieuwste versie wordt getoond.",
+			"contentSaveError": "De pagina kon niet worden opgeslagen",
+			"createError": "De pagina kon niet worden aangemaakt",
+			"deleted": "Pagina verwijderd",
+			"deleteError": "De pagina kon niet worden verwijderd",
+			"duplicated": "Pagina gedupliceerd",
+			"duplicateError": "De pagina kon niet worden gedupliceerd",
+			"fullWidthError": "De paginabreedte kon niet worden gewijzigd",
+			"linkCopied": "Link gekopieerd",
+			"locked": "Pagina vergrendeld",
+			"lockError": "De vergrendeling kon niet worden gewijzigd",
+			"logoError": "Het pictogram kon niet worden bijgewerkt",
+			"madePrivate": "Pagina is nu privé",
+			"madePublic": "Pagina is nu openbaar",
+			"moved": "Verplaatst naar {{project}}",
+			"moveError": "De pagina kon niet worden verplaatst",
+			"open": "Openen",
+			"restored": "Pagina hersteld",
+			"restoreError": "De pagina kon niet worden hersteld",
+			"titleError": "De titel kon niet worden opgeslagen",
+			"unlocked": "Pagina ontgrendeld"
+		},
+		"deleteDialog": {
+			"cancel": "Annuleren",
+			"confirm": "Verwijderen",
+			"description": "“{{title}}” gaat naar Recent verwijderd in de projectinstellingen, waar de pagina kan worden hersteld totdat ze permanent is verwijderd. De subpagina's gaan naar het hoogste niveau.",
+			"title": "Pagina verwijderen?"
+		},
+		"moveDialog": {
+			"cancel": "Annuleren",
+			"confirm": "Verplaatsen",
+			"description": "De pagina en de subpagina's worden naar het geselecteerde project verplaatst.",
+			"empty": "Bij geen enkel ander project zijn Pagina's ingeschakeld",
+			"searchPlaceholder": "Projecten zoeken",
+			"title": "Pagina verplaatsen"
+		},
+		"tree": {
+			"collapse": "{{title}} samenvouwen",
+			"dnd": {
+				"cancelled": "Verplaatsing geannuleerd.",
+				"dropped": "{{title}} verplaatst.",
+				"invalid": "{{title}} kan daar niet naartoe.",
+				"over": "{{title}} staat boven {{target}}.",
+				"pickedUp": "{{title}} opgepakt. Gebruik de pijltjestoetsen om te verplaatsen, Spatie om neer te zetten of Escape om te annuleren."
+			},
+			"empty": "Nog geen pagina's",
+			"expand": "{{title}} uitvouwen",
+			"newPage": "Nieuwe pagina",
+			"title": "Pagina's"
+		},
+		"crumb": {
+			"noMatches": "Geen overeenkomende pagina's",
+			"searchPlaceholder": "Pagina's zoeken"
+		},
+		"header": {
+			"copied": "Gekopieerd",
+			"copyLink": "Link kopiëren",
+			"locked": "Vergrendeld",
+			"lockPage": "Pagina vergrendelen",
+			"moreActions": "Pagina-acties",
+			"presence": "Mensen op deze pagina: {{names}}",
+			"presenceMore": "+{{count}}",
+			"togglePanel": "Zijpaneel in-/uitklappen",
+			"unlockHint": "Klik om te ontgrendelen",
+			"ancestors": "Bovenliggende pagina's"
+		},
+		"menu": {
+			"copyMarkdown": "Kopiëren als Markdown",
+			"downloadMarkdown": "Downloaden als Markdown",
+			"fullWidth": "Volledige breedte",
+			"markdownCopied": "Markdown gekopieerd",
+			"versionHistory": "Versiegeschiedenis",
+			"print": "Afdrukken / Opslaan als PDF"
+		},
+		"editor": {
+			"addIcon": "Pictogram toevoegen",
+			"ariaLabel": "Pagina-inhoud",
+			"pageLink": {
+				"unavailable": "Privépagina of verwijderde pagina"
+			},
+			"pageLinkPicker": {
+				"empty": "Geen pagina's gevonden",
+				"search": "Pagina's zoeken"
+			},
+			"placeholder": "Schrijf iets, of druk op / voor opdrachten",
+			"slash": {
+				"commands": {
+					"divider": "Scheidingslijn",
+					"heading-1": "Kop 1",
+					"heading-2": "Kop 2",
+					"heading-3": "Kop 3",
+					"page-link": "Link naar pagina"
+				}
+			},
+			"titleAria": "Paginatitel",
+			"titlePlaceholder": "Naamloos"
+		},
+		"logo": {
+			"categories": {
+				"activities": "Activiteiten",
+				"food": "Eten",
+				"nature": "Natuur",
+				"objects": "Voorwerpen",
+				"people": "Mensen",
+				"smileys": "Smileys",
+				"symbols": "Symbolen",
+				"travel": "Reizen"
+			},
+			"emoji": "Emoji",
+			"icon": "Pictogram",
+			"remove": "Verwijderen",
+			"search": "Emoji zoeken"
+		},
 		"banners": {
 			"archived": "Deze pagina is gearchiveerd. Herstel haar om te bewerken.",
 			"locked": "Deze pagina is vergrendeld. Ontgrendel haar om wijzigingen aan te brengen.",
@@ -8656,6 +9133,15 @@
 			"storedCopy": "De laatst opgeslagen versie wordt getoond. Live bewerken wordt hervat zodra de verbinding terug is.",
 			"tooLarge": "Deze pagina is te groot om te blijven synchroniseren. Kopieer je recente wijzigingen en laad de pagina daarna opnieuw.",
 			"unlock": "Ontgrendelen"
+		},
+		"sync": {
+			"cantConnect": "Verbinden niet mogelijk",
+			"notSaved": "Nog niet opgeslagen",
+			"notSavedHint": "We blijven het proberen. Sluit dit tabblad niet.",
+			"offline": "Offline",
+			"offlineHint": "Je kunt blijven bewerken. Wijzigingen worden gesynchroniseerd zodra de verbinding terug is.",
+			"retry": "Opnieuw proberen",
+			"saved": "Opgeslagen"
 		},
 		"collab": {
 			"deleted": "Deze pagina is verwijderd",
@@ -8668,6 +9154,62 @@
 			"restoredBy": "{{name}} heeft een eerdere versie hersteld",
 			"roomFull": "Er hebben nu te veel mensen deze pagina open. Probeer het zo meteen opnieuw.",
 			"signedOut": "Je sessie is beëindigd. Log opnieuw in om verder te bewerken."
+		},
+		"state": {
+			"notFound": {
+				"back": "Terug naar pagina's",
+				"description": "Ze is mogelijk verwijderd, of ze is privé.",
+				"title": "Pagina niet gevonden"
+			}
+		},
+		"panel": {
+			"outline": "Overzicht",
+			"info": "Info",
+			"history": "Geschiedenis",
+			"close": "Paneel sluiten",
+			"comments": "Reacties"
+		},
+		"outline": {
+			"empty": {
+				"description": "Voeg koppen toe om hier een overzicht te zien.",
+				"title": "Nog geen koppen"
+			}
+		},
+		"info": {
+			"characters": "Tekens",
+			"createdBy": "Aangemaakt door",
+			"lastEditedBy": "Laatst bewerkt door",
+			"lessThanMinute": "<1 min",
+			"linkedFrom": "Gelinkt vanaf",
+			"lockedBy": "Vergrendeld door",
+			"noBacklinks": "Nog geen pagina's linken hiernaartoe",
+			"paragraphs": "Alinea's",
+			"readingMinutes": "{{count}} min",
+			"readingTime": "Leestijd",
+			"words": "Woorden"
+		},
+		"history": {
+			"backToCurrent": "Terug naar huidige",
+			"current": "Huidige versie",
+			"empty": "Nog geen opgeslagen versies. Versies worden opgeslagen terwijl je bewerkt.",
+			"loadError": "Deze versie kon niet worden geladen",
+			"others_one": "+{{count}} andere",
+			"others_other": "+{{count}} anderen",
+			"previewTitle": "Versie van {{date}}",
+			"restore": "Herstellen",
+			"restoreCancel": "Annuleren",
+			"restoreConfirmDescription": "De huidige inhoud wordt eerst in de geschiedenis opgeslagen, zodat je dit ongedaan kunt maken.",
+			"restoreConfirmTitle": "Deze versie herstellen?",
+			"restored": "Versie hersteld",
+			"restoreError": "Deze versie kon niet worden hersteld",
+			"restoring": "Herstellen…",
+			"retry": "Opnieuw proberen",
+			"title": "Versiegeschiedenis",
+			"unknownUser": "Oud-lid",
+			"viewOnly": "Alleen bekijken"
+		},
+		"notification": {
+			"openPage": "Pagina openen"
 		},
 		"toolbar": {
 			"ariaLabel": "Opmaakwerkbalk",
@@ -8706,238 +9248,36 @@
 		"commandPalette": {
 			"createPage": "Pagina aanmaken"
 		},
-		"crumb": {
-			"noMatches": "Geen overeenkomende pagina's",
-			"searchPlaceholder": "Pagina's zoeken"
-		},
-		"deleteDialog": {
+		"comments": {
+			"placeholder": "Voeg een reactie toe…",
+			"add": "Reageren",
+			"save": "Opslaan",
 			"cancel": "Annuleren",
-			"confirm": "Verwijderen",
-			"description": "“{{title}}” wordt definitief verwijderd, samen met de versiegeschiedenis. De subpagina's gaan naar het hoogste niveau. Dit kan niet ongedaan worden gemaakt.",
-			"title": "Pagina verwijderen?"
-		},
-		"editor": {
-			"addIcon": "Pictogram toevoegen",
-			"ariaLabel": "Pagina-inhoud",
-			"pageLink": {
-				"unavailable": "Privépagina of verwijderde pagina"
-			},
-			"pageLinkPicker": {
-				"empty": "Geen pagina's gevonden",
-				"search": "Pagina's zoeken"
-			},
-			"placeholder": "Schrijf iets, of druk op / voor opdrachten",
-			"slash": {
-				"commands": {
-					"divider": "Scheidingslijn",
-					"heading-1": "Kop 1",
-					"heading-2": "Kop 2",
-					"heading-3": "Kop 3",
-					"page-link": "Link naar pagina"
-				}
-			},
-			"titleAria": "Paginatitel",
-			"titlePlaceholder": "Naamloos"
-		},
-		"header": {
-			"copied": "Gekopieerd",
-			"copyLink": "Link kopiëren",
-			"locked": "Vergrendeld",
-			"lockPage": "Pagina vergrendelen",
-			"moreActions": "Pagina-acties",
-			"presence": "Mensen op deze pagina: {{names}}",
-			"presenceMore": "+{{count}}",
-			"togglePanel": "Zijpaneel in-/uitklappen",
-			"unlockHint": "Klik om te ontgrendelen",
-			"ancestors": "Bovenliggende pagina's"
-		},
-		"history": {
-			"backToCurrent": "Terug naar huidige",
-			"current": "Huidige versie",
-			"empty": "Nog geen opgeslagen versies. Versies worden opgeslagen terwijl je bewerkt.",
-			"loadError": "Deze versie kon niet worden geladen",
-			"others_one": "+{{count}} andere",
-			"others_other": "+{{count}} anderen",
-			"previewTitle": "Versie van {{date}}",
-			"restore": "Herstellen",
-			"restoreCancel": "Annuleren",
-			"restoreConfirmDescription": "De huidige inhoud wordt eerst in de geschiedenis opgeslagen, zodat je dit ongedaan kunt maken.",
-			"restoreConfirmTitle": "Deze versie herstellen?",
-			"restored": "Versie hersteld",
-			"restoreError": "Deze versie kon niet worden hersteld",
-			"restoring": "Herstellen…",
+			"emptyTitle": "Nog geen reacties",
+			"emptyDescription": "Reacties hier blijven binnen de werkruimte. Openbare links tonen ze niet.",
+			"archivedNote": "Deze pagina is gearchiveerd. Herstel haar om te reageren.",
+			"loadError": "De reacties konden niet worden geladen",
 			"retry": "Opnieuw proberen",
-			"title": "Versiegeschiedenis",
-			"unknownUser": "Oud-lid",
-			"viewOnly": "Alleen bekijken"
-		},
-		"info": {
-			"characters": "Tekens",
-			"createdBy": "Aangemaakt door",
-			"lastEditedBy": "Laatst bewerkt door",
-			"lessThanMinute": "<1 min",
-			"linkedFrom": "Gelinkt vanaf",
-			"lockedBy": "Vergrendeld door",
-			"noBacklinks": "Nog geen pagina's linken hiernaartoe",
-			"paragraphs": "Alinea's",
-			"readingMinutes": "{{count}} min",
-			"readingTime": "Leestijd",
-			"words": "Woorden"
-		},
-		"list": {
-			"access": {
-				"private": "Privé",
-				"public": "Openbaar"
-			},
-			"archivedOn": "Gearchiveerd {{date}}",
-			"clearFilters": "Filters wissen",
-			"documentTitle": "{{project}} · Pagina's",
-			"editedAgo": "Bewerkt {{time}}",
-			"empty": {
-				"archived": {
-					"description": "Gearchiveerde pagina's verschijnen hier. Je kunt ze herstellen of verwijderen.",
-					"title": "Geen gearchiveerde pagina's"
-				},
-				"noMatch": {
-					"description": "Probeer een andere zoekopdracht of wis de filters.",
-					"title": "Geen overeenkomende pagina's"
-				},
-				"none": {
-					"description": "Pagina's bevatten specificaties, notities en documenten direct naast de taken van het project.",
-					"title": "Schrijf je eerste pagina"
-				},
-				"private": {
-					"description": "Privépagina's zijn alleen voor jou zichtbaar.",
-					"title": "Geen privépagina's"
-				},
-				"public": {
-					"title": "Geen openbare pagina's"
-				}
-			},
-			"inParent": "in {{path}}",
-			"loadError": "De pagina's konden niet worden geladen",
-			"locked": "Vergrendeld",
-			"newPage": "Nieuwe pagina",
-			"ownedBy": "Eigenaar: {{name}}",
-			"retry": "Opnieuw proberen",
-			"searchPlaceholder": "Pagina's zoeken",
-			"sort": {
-				"created": "Aangemaakt",
-				"lastEdited": "Laatst bewerkt",
-				"name": "Naam"
-			},
-			"tabs": {
-				"archived": "Gearchiveerd",
-				"private": "Privé",
-				"public": "Openbaar"
-			},
-			"untitled": "Naamloos"
-		},
-		"logo": {
-			"categories": {
-				"activities": "Activiteiten",
-				"food": "Eten",
-				"nature": "Natuur",
-				"objects": "Voorwerpen",
-				"people": "Mensen",
-				"smileys": "Smileys",
-				"symbols": "Symbolen",
-				"travel": "Reizen"
-			},
-			"emoji": "Emoji",
-			"icon": "Pictogram",
-			"remove": "Verwijderen",
-			"search": "Emoji zoeken"
-		},
-		"menu": {
-			"copyMarkdown": "Kopiëren als Markdown",
-			"downloadMarkdown": "Downloaden als Markdown",
-			"fullWidth": "Volledige breedte",
-			"markdownCopied": "Markdown gekopieerd",
-			"versionHistory": "Versiegeschiedenis",
-			"print": "Afdrukken / Opslaan als PDF"
-		},
-		"moveDialog": {
-			"cancel": "Annuleren",
-			"confirm": "Verplaatsen",
-			"description": "De pagina en de subpagina's worden naar het geselecteerde project verplaatst.",
-			"empty": "Bij geen enkel ander project zijn Pagina's ingeschakeld",
-			"searchPlaceholder": "Projecten zoeken",
-			"title": "Pagina verplaatsen"
-		},
-		"notification": {
-			"openPage": "Pagina openen"
-		},
-		"outline": {
-			"empty": {
-				"description": "Voeg koppen toe om hier een overzicht te zien.",
-				"title": "Nog geen koppen"
+			"deletedUser": "Verwijderde gebruiker",
+			"edited": "bewerkt",
+			"menuAria": "Meer acties voor deze reactie",
+			"edit": "Bewerken",
+			"delete": "Verwijderen",
+			"deleteTitle": "Deze reactie verwijderen?",
+			"deleteDescription": "Ze wordt voor iedereen verwijderd. Dit kan niet ongedaan worden gemaakt.",
+			"toasts": {
+				"empty": "Schrijf eerst iets",
+				"addError": "De reactie kon niet worden toegevoegd",
+				"saveError": "De reactie kon niet worden opgeslagen",
+				"deleteError": "De reactie kon niet worden verwijderd"
 			}
 		},
-		"panel": {
-			"close": "Paneel sluiten",
-			"history": "Geschiedenis",
-			"info": "Info",
-			"outline": "Overzicht"
-		},
-		"section": {
-			"title": "Pagina's"
-		},
-		"state": {
-			"notFound": {
-				"back": "Terug naar pagina's",
-				"description": "Ze is mogelijk verwijderd, of ze is privé.",
-				"title": "Pagina niet gevonden"
-			}
-		},
-		"sync": {
-			"cantConnect": "Verbinden niet mogelijk",
-			"notSaved": "Nog niet opgeslagen",
-			"notSavedHint": "We blijven het proberen. Sluit dit tabblad niet.",
-			"offline": "Offline",
-			"offlineHint": "Je kunt blijven bewerken. Wijzigingen worden gesynchroniseerd zodra de verbinding terug is.",
-			"retry": "Opnieuw proberen",
-			"saved": "Opgeslagen"
-		},
-		"toasts": {
-			"accessError": "Kon niet wijzigen wie deze pagina kan zien",
-			"archived": "Pagina gearchiveerd",
-			"archiveError": "De pagina kon niet worden gearchiveerd",
-			"contentConflict": "Deze pagina is elders gewijzigd, dus je laatste bewerking is niet opgeslagen. De nieuwste versie wordt getoond.",
-			"contentSaveError": "De pagina kon niet worden opgeslagen",
-			"createError": "De pagina kon niet worden aangemaakt",
-			"deleted": "Pagina verwijderd",
-			"deleteError": "De pagina kon niet worden verwijderd",
-			"duplicated": "Pagina gedupliceerd",
-			"duplicateError": "De pagina kon niet worden gedupliceerd",
-			"fullWidthError": "De paginabreedte kon niet worden gewijzigd",
-			"linkCopied": "Link gekopieerd",
-			"locked": "Pagina vergrendeld",
-			"lockError": "De vergrendeling kon niet worden gewijzigd",
-			"logoError": "Het pictogram kon niet worden bijgewerkt",
-			"madePrivate": "Pagina is nu privé",
-			"madePublic": "Pagina is nu openbaar",
-			"moved": "Verplaatst naar {{project}}",
-			"moveError": "De pagina kon niet worden verplaatst",
-			"open": "Openen",
-			"restored": "Pagina hersteld",
-			"restoreError": "De pagina kon niet worden hersteld",
-			"titleError": "De titel kon niet worden opgeslagen",
-			"unlocked": "Pagina ontgrendeld"
-		},
-		"tree": {
-			"collapse": "{{title}} samenvouwen",
-			"dnd": {
-				"cancelled": "Verplaatsing geannuleerd.",
-				"dropped": "{{title}} verplaatst.",
-				"invalid": "{{title}} kan daar niet naartoe.",
-				"over": "{{title}} staat boven {{target}}.",
-				"pickedUp": "{{title}} opgepakt. Gebruik de pijltjestoetsen om te verplaatsen, Spatie om neer te zetten of Escape om te annuleren."
-			},
-			"empty": "Nog geen pagina's",
-			"expand": "{{title}} uitvouwen",
-			"newPage": "Nieuwe pagina",
-			"title": "Pagina's"
+		"watch": {
+			"watch": "Pagina volgen",
+			"unwatch": "Niet meer volgen",
+			"watchHint": "Krijg meldingen over reacties en wijzigingen",
+			"watchingHint": "Je krijgt meldingen over reacties en wijzigingen",
+			"error": "Het volgen van deze pagina kon niet worden gewijzigd"
 		}
 	},
 	"accountSecurity": {
@@ -8996,7 +9336,9 @@
 				"sessionLifetime": "Sessieduur",
 				"sessionLifetimeHint": "Hoe lang een ongebruikte sessie geldig blijft. Gebruik verlengt haar.",
 				"hours": "uur",
-				"signInNotice": "Meld je aan met {{provider}}. Aanmelden met wachtwoord is alleen voor instantiebeheerders."
+				"signInNotice": "Meld je aan met {{provider}}. Aanmelden met wachtwoord is alleen voor instantiebeheerders.",
+				"requireTwoFactor": "Tweestapsverificatie verplichten",
+				"requireTwoFactorHint": "Elk account met een wachtwoord moet eerst tweestapsverificatie instellen voordat er iets anders kan, ook als het daarnaast via een provider of SAML inlogt, en de API-sleutels ervan werken pas weer als dat is gebeurd. E-maillinks en -codes worden uitgeschakeld, dus wie alleen die gebruikte, komt pas weer binnen met een wachtwoord: die stelt er zelf een in via “Wachtwoord vergeten?”, of jij stelt er een voor diegene in onder “Gebruikers” als e-mail niet is ingesteld. Accounts zonder wachtwoord volgen de regels van hun provider. Schakel het eerst in voor je eigen account."
 			},
 			"twoFactor": {
 				"title": "Tweestapsverificatie",
@@ -9023,7 +9365,11 @@
 				"done": "Klaar",
 				"enabled": "Tweestapsverificatie staat aan.",
 				"disabled": "Tweestapsverificatie staat uit.",
-				"error": "Er ging iets mis. Probeer het opnieuw."
+				"error": "Er ging iets mis. Probeer het opnieuw.",
+				"requiredHint": "Deze server vereist tweestapsverificatie, dus die kan niet worden uitgeschakeld. Als je je apparaat en herstelcodes kwijtraakt, kan een instantiebeheerder die opnieuw instellen.",
+				"setupRequiredTitle": "Stel tweestapsverificatie in om door te gaan",
+				"setupRequiredHint": "Deze server vereist tweestapsverificatie voor elk account met een wachtwoord. Je hebt een authenticator-app nodig.",
+				"signOutInstead": "In plaats daarvan uitloggen"
 			},
 			"challenge": {
 				"title": "Tweestapsverificatie",
@@ -9095,7 +9441,11 @@
 				"noPassword": "Niet ingesteld (meldt zich anders aan)",
 				"workspacesTitle": "Werkruimtes",
 				"noWorkspaces": "Geen lid van een werkruimte.",
-				"joined": "Lid sinds {{date}}"
+				"joined": "Lid sinds {{date}}",
+				"resetTwoFactor": "Tweestapsverificatie opnieuw instellen",
+				"resetTwoFactorTitle": "Tweestapsverificatie van {{name}} opnieuw instellen?",
+				"resetTwoFactorDescription": "Gebruik dit wanneer iemand zijn apparaat en herstelcodes kwijt is en je hebt gecontroleerd dat het echt om die persoon gaat. De tweestapsverificatie wordt verwijderd en de persoon wordt overal uitgelogd. Daarna kan die met alleen het wachtwoord inloggen en het opnieuw instellen.",
+				"twoFactorReset": "Tweestapsverificatie van {{name}} opnieuw ingesteld"
 			}
 		},
 		"password": {
@@ -9159,33 +9509,99 @@
 				"cliAdminPromoted": "Heeft een instantiebeheerder aangesteld (herstel-CLI)",
 				"cliAdminDemoted": "Heeft een instantiebeheerder verwijderd (herstel-CLI)",
 				"cliPasswordReset": "Heeft een wachtwoord opnieuw ingesteld (herstel-CLI)",
-				"cliUserUnbanned": "Heeft een blokkering opgeheven (herstel-CLI)"
+				"cliUserUnbanned": "Heeft een blokkering opgeheven (herstel-CLI)",
+				"userTwoFactorReset": "Heeft de tweestapsverificatie van een account opnieuw ingesteld",
+				"cliTwoFactorReset": "Heeft de tweestapsverificatie van een account opnieuw ingesteld (herstel-CLI)",
+				"scimConnectionCreated": "Heeft een identiteitsprovider gekoppeld voor automatische inrichting",
+				"scimTokenRotated": "Heeft een SCIM-token vervangen",
+				"scimConnectionDeleted": "Heeft een SCIM-verbinding verwijderd",
+				"scimUserProvisioned": "Heeft een account toegevoegd via automatische inrichting",
+				"scimUserDeactivated": "Heeft een account gedeactiveerd via automatische inrichting",
+				"scimUserReactivated": "Heeft een account opnieuw geactiveerd via automatische inrichting",
+				"scimUserRemoved": "Heeft iemand uit een werkruimte verwijderd via automatische inrichting",
+				"samlConnectionCreated": "Heeft een identiteitsprovider gekoppeld voor aanmelden",
+				"samlConnectionUpdated": "Heeft een SAML-verbinding gewijzigd",
+				"samlConnectionDeleted": "Heeft een SAML-verbinding verwijderd"
 			}
 		}
 	},
 	"instanceAdmin": {
-		"admins": {
-			"add": "Beheerder toevoegen",
-			"addConfirm": "Beheerder toevoegen",
-			"addDescription": "Instantiebeheerders kunnen elke instelling in dit gedeelte wijzigen en elke werkruimte openen.",
-			"added": "{{name}} is nu instantiebeheerder",
-			"addTitle": "Een instantiebeheerder toevoegen",
-			"columns": {
-				"email": "E-mail",
-				"name": "Naam"
-			},
+		"pageTitle": "Instantie · {{page}}",
+		"nav": {
+			"admins": "Beheerders",
+			"authentication": "Authenticatie",
 			"email": "E-mail",
-			"emailInvalid": "Voer een geldig e-mailadres in",
-			"emailPlaceholder": "naam@example.com",
-			"lastAdmin": "Er moet minstens één instantiebeheerder zijn",
-			"remove": "Beheerder verwijderen…",
-			"removeConfirm": "Verwijderen",
-			"removed": "{{name}} is geen instantiebeheerder meer",
-			"removeDescription": "Het account en de werkruimtes blijven behouden.",
-			"removeTitle": "{{name}} verwijderen als instantiebeheerder?",
-			"subtitle": "Instantiebeheerders kunnen elke instelling in dit gedeelte wijzigen en elke werkruimte openen.",
-			"title": "Beheerders",
-			"you": "Jij"
+			"general": "Algemeen",
+			"publicBoards": "Openbare borden",
+			"workspaces": "Werkruimtes",
+			"ai": "AI"
+		},
+		"lockedCallout": "Deze instellingen worden op deze server beheerd met omgevingsvariabelen. Wijzigingen hier zijn uitgeschakeld.",
+		"source": {
+			"default": "Standaard",
+			"environment": "Omgeving: {{variable}}",
+			"lockTooltip": "Verwijder {{variable}} en herstart om dit hier te beheren.",
+			"saved": "Hier opgeslagen",
+			"savedBy": "Opgeslagen door {{name}} op {{date}}"
+		},
+		"saved": "Instellingen opgeslagen",
+		"saveError": "De instellingen konden niet worden opgeslagen",
+		"loadError": "De instantie-instellingen konden niet worden geladen",
+		"retry": "Opnieuw proberen",
+		"save": "Opslaan",
+		"secret": {
+			"cancel": "Annuleren",
+			"clear": "Wissen",
+			"cleared": "Geheim gewist",
+			"placeholder": "Voer een nieuwe waarde in",
+			"replace": "Vervangen",
+			"saved": "Opgeslagen",
+			"unreadable": "Het opgeslagen geheim kan niet worden gelezen (de AUTH_SECRET van de server is gewijzigd). Voer het opnieuw in."
+		},
+		"general": {
+			"title": "Algemeen",
+			"subtitle": "Geef deze instantie een naam en controleer de status ervan.",
+			"instanceName": "Naam van de instantie",
+			"instanceNameHint": "Wordt getoond op het inlogscherm en op openbare borden",
+			"instanceNameRequired": "Voer een naam in",
+			"instanceNameTooLong": "Gebruik maximaal 80 tekens",
+			"homePage": "Startpagina",
+			"publicLanding": "Productpagina tonen",
+			"publicLandingHint": "Bezoekers die niet zijn ingelogd zien de productpagina op het hoofdadres. Staat dit uit, dan gaan ze direct naar inloggen.",
+			"overview": "Overzicht",
+			"version": "Versie",
+			"counts": {
+				"accounts": "Accounts",
+				"guests": "Gasten",
+				"projects": "Projecten",
+				"publishedBoards": "Openbare borden",
+				"workspaces": "Werkruimtes"
+			},
+			"server": {
+				"captcha": "Captcha",
+				"cloudMode": "Cloudmodus",
+				"configured": "Geconfigureerd",
+				"demoMode": "Demomodus",
+				"email": "E-mail",
+				"errorReporting": "Foutrapportage",
+				"fileStorage": "Bestandsopslag",
+				"notConfigured": "Niet geconfigureerd",
+				"off": "Uit",
+				"on": "Aan",
+				"realtime": "Realtime",
+				"realtimeMemory": "In het geheugen",
+				"realtimeRedis": "Redis ({{mode}})",
+				"title": "Server"
+			},
+			"deliveryFailures": {
+				"title": "Recente bezorgfouten",
+				"description": "Webhooks van werkruimtes die in de afgelopen 7 dagen al hun nieuwe pogingen hebben opgebruikt. Fouten bij e-mail en achtergrondtaken staan alleen in de serverlogs.",
+				"empty": "Geen mislukte bezorgingen in de afgelopen 7 dagen.",
+				"when": "Wanneer",
+				"workspace": "Werkruimte",
+				"webhook": "Webhook",
+				"response": "Antwoord"
+			}
 		},
 		"auth": {
 			"anyoneCanSignUp": "Iedereen kan zich registreren",
@@ -9225,6 +9641,31 @@
 			"title": "Authenticatie",
 			"toggle": "{{method}} in- of uitschakelen"
 		},
+		"oauth": {
+			"authorizationUrl": "Authorization-URL",
+			"autoSignIn": "Automatisch inloggen",
+			"autoSignInHint": "Sla het inlogscherm over en ga direct naar deze provider",
+			"buttonLabel": "Knoptekst",
+			"buttonLabelHint": "Wordt getoond op de inlogknop, bijvoorbeeld \"Doorgaan met Okta\"",
+			"callbackHint": "Voeg deze URL toe aan je OAuth-app",
+			"callbackUrl": "Callback-URL",
+			"clientId": "Client-ID",
+			"clientSecret": "Clientgeheim",
+			"copied": "Gekopieerd",
+			"copy": "Kopiëren",
+			"discoveryHint": "Of vul de drie endpoints hieronder in",
+			"discoveryUrl": "Discovery-URL",
+			"invalidUrl": "Voer een absolute http- of https-URL in",
+			"logoutUrl": "Logout-URL",
+			"managedByEnv": "Deze provider is geconfigureerd met omgevingsvariabelen ({{variables}}).",
+			"pkce": "PKCE gebruiken",
+			"scopes": "Scopes",
+			"scopesHint": "Gescheiden door komma's",
+			"sheetDescription": "Koppel een OAuth-app zodat mensen kunnen inloggen met {{provider}}.",
+			"sheetTitle": "Inloggen met {{provider}}",
+			"tokenUrl": "Token-URL",
+			"userInfoUrl": "Userinfo-URL"
+		},
 		"email": {
 			"from": "Afzender",
 			"fromHint": "Een adres, of een naam en een adres: Margaya <no-reply@example.com>",
@@ -9255,134 +9696,6 @@
 			"subtitle": "De SMTP-server waarmee Margaya inlogcodes, uitnodigingen en meldingen verstuurt.",
 			"title": "E-mail",
 			"username": "Gebruikersnaam"
-		},
-		"general": {
-			"counts": {
-				"accounts": "Accounts",
-				"guests": "Gasten",
-				"projects": "Projecten",
-				"publishedBoards": "Openbare borden",
-				"workspaces": "Werkruimtes"
-			},
-			"instanceName": "Naam van de instantie",
-			"instanceNameHint": "Wordt getoond op het inlogscherm en op openbare borden",
-			"instanceNameRequired": "Voer een naam in",
-			"instanceNameTooLong": "Gebruik maximaal 80 tekens",
-			"homePage": "Startpagina",
-			"publicLanding": "Productpagina tonen",
-			"publicLandingHint": "Bezoekers die niet zijn ingelogd zien de productpagina op het hoofdadres. Staat dit uit, dan gaan ze direct naar inloggen.",
-			"overview": "Overzicht",
-			"server": {
-				"captcha": "Captcha",
-				"cloudMode": "Cloudmodus",
-				"configured": "Geconfigureerd",
-				"demoMode": "Demomodus",
-				"email": "E-mail",
-				"errorReporting": "Foutrapportage",
-				"fileStorage": "Bestandsopslag",
-				"notConfigured": "Niet geconfigureerd",
-				"off": "Uit",
-				"on": "Aan",
-				"realtime": "Realtime",
-				"realtimeMemory": "In het geheugen",
-				"realtimeRedis": "Redis ({{mode}})",
-				"title": "Server"
-			},
-			"subtitle": "Geef deze instantie een naam en controleer de status ervan.",
-			"title": "Algemeen",
-			"version": "Versie"
-		},
-		"loadError": "De instantie-instellingen konden niet worden geladen",
-		"lockedCallout": "Deze instellingen worden op deze server beheerd met omgevingsvariabelen. Wijzigingen hier zijn uitgeschakeld.",
-		"nav": {
-			"admins": "Beheerders",
-			"authentication": "Authenticatie",
-			"email": "E-mail",
-			"general": "Algemeen",
-			"publicBoards": "Openbare borden",
-			"workspaces": "Werkruimtes",
-			"ai": "AI"
-		},
-		"oauth": {
-			"authorizationUrl": "Authorization-URL",
-			"autoSignIn": "Automatisch inloggen",
-			"autoSignInHint": "Sla het inlogscherm over en ga direct naar deze provider",
-			"buttonLabel": "Knoptekst",
-			"buttonLabelHint": "Wordt getoond op de inlogknop, bijvoorbeeld \"Doorgaan met Okta\"",
-			"callbackHint": "Voeg deze URL toe aan je OAuth-app",
-			"callbackUrl": "Callback-URL",
-			"clientId": "Client-ID",
-			"clientSecret": "Clientgeheim",
-			"copied": "Gekopieerd",
-			"copy": "Kopiëren",
-			"discoveryHint": "Of vul de drie endpoints hieronder in",
-			"discoveryUrl": "Discovery-URL",
-			"invalidUrl": "Voer een absolute http- of https-URL in",
-			"logoutUrl": "Logout-URL",
-			"managedByEnv": "Deze provider is geconfigureerd met omgevingsvariabelen ({{variables}}).",
-			"pkce": "PKCE gebruiken",
-			"scopes": "Scopes",
-			"scopesHint": "Gescheiden door komma's",
-			"sheetDescription": "Koppel een OAuth-app zodat mensen kunnen inloggen met {{provider}}.",
-			"sheetTitle": "Inloggen met {{provider}}",
-			"tokenUrl": "Token-URL",
-			"userInfoUrl": "Userinfo-URL"
-		},
-		"pageTitle": "Instantie · {{page}}",
-		"publicBoards": {
-			"actions": "Bordacties",
-			"allow": "Openbare borden toestaan",
-			"allowHint": "Als dit uit staat, antwoordt elke openbare link met \"niet gevonden\". Er wordt niets verwijderd.",
-			"columns": {
-				"features": "Functies",
-				"project": "Project",
-				"published": "Gepubliceerd",
-				"workspace": "Werkruimte"
-			},
-			"empty": "Geen openbare borden op deze server.",
-			"feature": {
-				"comments": "Reacties",
-				"guests": "Gasten",
-				"reactions": "Emoji-reacties",
-				"requests": "Aanvragen",
-				"votes": "Stemmen"
-			},
-			"listTitle": "Gepubliceerde borden",
-			"loadMore": "Meer laden",
-			"noMatches": "Geen openbare borden komen overeen met “{{query}}”",
-			"openBoard": "Bord openen",
-			"participation": "Openbare deelname toestaan",
-			"participationHint": "Als dit uit staat, zijn openbare borden alleen-lezen: geen reacties, emoji-reacties, stemmen of aanvragen.",
-			"projectSettings": "Projectinstellingen",
-			"search": "Borden zoeken",
-			"subtitle": "Beheer de openbare borden van deze instantie.",
-			"title": "Openbare borden",
-			"unpublish": "Publicatie ongedaan maken…",
-			"unpublishConfirm": "Publicatie ongedaan maken",
-			"unpublishDescription": "De link werkt niet meer totdat iemand het bord opnieuw publiceert. Instellingen, reacties, emoji-reacties en stemmen blijven bewaard.",
-			"unpublished": "Publicatie van bord ongedaan gemaakt",
-			"unpublishError": "De publicatie van het bord kon niet ongedaan worden gemaakt",
-			"unpublishTitle": "Publicatie van {{project}} ongedaan maken?"
-		},
-		"retry": "Opnieuw proberen",
-		"save": "Opslaan",
-		"saved": "Instellingen opgeslagen",
-		"saveError": "De instellingen konden niet worden opgeslagen",
-		"secret": {
-			"cancel": "Annuleren",
-			"clear": "Wissen",
-			"cleared": "Geheim gewist",
-			"placeholder": "Voer een nieuwe waarde in",
-			"replace": "Vervangen",
-			"saved": "Opgeslagen",
-			"unreadable": "Het opgeslagen geheim kan niet worden gelezen (de AUTH_SECRET van de server is gewijzigd). Voer het opnieuw in."
-		},
-		"source": {
-			"default": "Standaard",
-			"environment": "Omgeving: {{variable}}",
-			"lockTooltip": "Verwijder {{variable}} en herstart om dit hier te beheren.",
-			"saved": "Hier opgeslagen",
-			"savedBy": "Opgeslagen door {{name}} op {{date}}"
 		},
 		"testEmail": {
 			"codes": {
@@ -9425,6 +9738,132 @@
 			"search": "Werkruimtes zoeken",
 			"subtitle": "Alle werkruimtes op deze instantie.",
 			"title": "Werkruimtes"
+		},
+		"publicBoards": {
+			"actions": "Bordacties",
+			"allow": "Openbare borden toestaan",
+			"allowHint": "Als dit uit staat, antwoordt elke openbare link met \"niet gevonden\". Er wordt niets verwijderd.",
+			"columns": {
+				"features": "Functies",
+				"project": "Project",
+				"published": "Gepubliceerd",
+				"workspace": "Werkruimte"
+			},
+			"empty": "Geen openbare borden op deze server.",
+			"feature": {
+				"comments": "Reacties",
+				"guests": "Gasten",
+				"reactions": "Emoji-reacties",
+				"requests": "Aanvragen",
+				"votes": "Stemmen"
+			},
+			"listTitle": "Gepubliceerde borden",
+			"loadMore": "Meer laden",
+			"noMatches": "Geen openbare borden komen overeen met “{{query}}”",
+			"openBoard": "Bord openen",
+			"participation": "Openbare deelname toestaan",
+			"participationHint": "Als dit uit staat, zijn openbare borden alleen-lezen: geen reacties, emoji-reacties, stemmen of aanvragen.",
+			"projectSettings": "Projectinstellingen",
+			"search": "Borden zoeken",
+			"subtitle": "Beheer de openbare borden van deze instantie.",
+			"title": "Openbare borden",
+			"unpublish": "Publicatie ongedaan maken…",
+			"unpublishConfirm": "Publicatie ongedaan maken",
+			"unpublishDescription": "De link werkt niet meer totdat iemand het bord opnieuw publiceert. Instellingen, reacties, emoji-reacties en stemmen blijven bewaard.",
+			"unpublished": "Publicatie van bord ongedaan gemaakt",
+			"unpublishError": "De publicatie van het bord kon niet ongedaan worden gemaakt",
+			"unpublishTitle": "Publicatie van {{project}} ongedaan maken?"
+		},
+		"admins": {
+			"add": "Beheerder toevoegen",
+			"addConfirm": "Beheerder toevoegen",
+			"addDescription": "Instantiebeheerders kunnen elke instelling in dit gedeelte wijzigen en elke werkruimte openen.",
+			"added": "{{name}} is nu instantiebeheerder",
+			"addTitle": "Een instantiebeheerder toevoegen",
+			"columns": {
+				"email": "E-mail",
+				"name": "Naam"
+			},
+			"email": "E-mail",
+			"emailInvalid": "Voer een geldig e-mailadres in",
+			"emailPlaceholder": "naam@example.com",
+			"lastAdmin": "Er moet minstens één instantiebeheerder zijn",
+			"remove": "Beheerder verwijderen…",
+			"removeConfirm": "Verwijderen",
+			"removed": "{{name}} is geen instantiebeheerder meer",
+			"removeDescription": "Het account en de werkruimtes blijven behouden.",
+			"removeTitle": "{{name}} verwijderen als instantiebeheerder?",
+			"subtitle": "Instantiebeheerders kunnen elke instelling in dit gedeelte wijzigen en elke werkruimte openen.",
+			"title": "Beheerders",
+			"you": "Jij"
+		},
+		"identity": {
+			"name": "Naam",
+			"nameHint": "Hoe beheerders deze verbinding noemen, bijvoorbeeld naar de provider.",
+			"remove": "Verwijderen",
+			"removeTitle": "{{name}} verwijderen?",
+			"done": "Klaar",
+			"scim": {
+				"title": "Automatische inrichting (SCIM)",
+				"description": "Laat een identiteitsprovider mensen in één werkruimte toevoegen, wijzigen en verwijderen.",
+				"none": "Er is geen identiteitsprovider gekoppeld voor automatische inrichting.",
+				"connect": "Provider koppelen",
+				"connectDescription": "Maakt een token voor één werkruimte. Je ziet het één keer, na het koppelen.",
+				"connectConfirm": "Token maken",
+				"workspace": "Werkruimte",
+				"workspaceHint": "Mensen die deze provider toevoegt, worden lid van deze werkruimte.",
+				"workspacePlaceholder": "Kies een werkruimte",
+				"workspaceSearch": "Werkruimtes zoeken",
+				"baseUrl": "SCIM-basis-URL",
+				"token": "Bearer-token",
+				"tokenTitle": "Kopieer het token voor {{name}}",
+				"tokenDescription": "Dit is de enige keer dat je het ziet. Geef het alleen aan de identiteitsprovider: wie het heeft, kan mensen aan de werkruimte toevoegen en de mensen die via deze verbinding worden beheerd wijzigen of deactiveren.",
+				"rotate": "Token vervangen",
+				"rotateTitle": "Het token voor {{name}} vervangen?",
+				"rotateDescription": "Het huidige token werkt vanaf nu niet meer, dus de inrichting stopt totdat de identiteitsprovider het nieuwe heeft. Mensen blijven gekoppeld.",
+				"rotateConfirm": "Token vervangen",
+				"removeDescription": "Het token werkt vanaf nu niet meer. De mensen die ermee zijn toegevoegd, behouden hun accounts en lidmaatschappen, en niets werkt ze nog bij vanuit de provider.",
+				"removed": "{{name}} verwijderd",
+				"columns": {
+					"name": "Naam",
+					"workspace": "Werkruimte",
+					"people": "Mensen"
+				}
+			},
+			"saml": {
+				"title": "Bedrijfsaanmelding (SAML)",
+				"description": "Laat mensen met je e-maildomeinen inloggen via een identiteitsprovider.",
+				"none": "Er is geen identiteitsprovider gekoppeld voor aanmelden.",
+				"connect": "Provider koppelen",
+				"connectConfirm": "Koppelen",
+				"edit": "Bewerken",
+				"editTitle": "{{name}} bewerken",
+				"formDescription": "Wie deze identiteitsprovider beheert, kan iedereen op deze domeinen aanmelden van wie het adres hier is geverifieerd. Koppel dus alleen een provider die je daarvoor vertrouwt.",
+				"acsUrl": "Assertion Consumer Service-URL",
+				"entityId": "Entiteits-ID (audience)",
+				"addressesHint": "Voer deze twee in bij je identiteitsprovider. Ze veranderen later niet.",
+				"domains": "E-maildomeinen",
+				"domainsHint": "Scheid meerdere domeinen met komma's. Subdomeinen vallen eronder.",
+				"domainsInvalid": "Voer domeinen in zoals example.com, gescheiden door komma's.",
+				"issuer": "Entiteits-ID van de identiteitsprovider (issuer)",
+				"entryPoint": "Single sign-on-URL",
+				"entryPointInvalid": "Gebruik een https://-adres.",
+				"certificate": "Ondertekeningscertificaat",
+				"certificateHint": "Het openbare X.509-certificaat van de identiteitsprovider, als PEM of base64. Nooit een privésleutel.",
+				"certificateKeepHint": "Laat dit leeg om het huidige certificaat te behouden.",
+				"currentCertificate": "Huidige vingerafdruk: {{fingerprint}}",
+				"certificateExpired": "Verlopen",
+				"certificateExpiring": "Verloopt binnenkort",
+				"connected": "Identiteitsprovider gekoppeld",
+				"saved": "Verbinding opgeslagen",
+				"removeDescription": "Aanmelden via deze identiteitsprovider stopt nu. Accounts blijven bestaan en mensen melden zich op een andere manier aan.",
+				"removed": "{{name}} verwijderd",
+				"columns": {
+					"name": "Naam",
+					"domains": "E-maildomeinen",
+					"certificate": "Certificaat verloopt"
+				}
+			}
 		}
 	},
 	"press": {
@@ -9936,6 +10375,24 @@
 				"facts": "Projecten: {{projects}} · Personen: {{members}} · Cycli: {{cycles}}",
 				"memory": "Geheugennotities: {{count}}",
 				"history": "Eerdere berichten: {{count}}"
+			},
+			"undo": {
+				"button": "Plan ongedaan maken",
+				"pending": "Plan wordt ongedaan gemaakt…",
+				"hint": "Je kunt dit plan een uur lang ongedaan maken, zolang er niets in is gewijzigd.",
+				"lastPlan": "Je kunt je laatste plan nog ongedaan maken.",
+				"done": "Het plan is ongedaan gemaakt. Verwijderde items staan in de prullenbak.",
+				"archived_one": "{{count}} item is in plaats daarvan gearchiveerd, omdat je het niet kunt verwijderen.",
+				"archived_other": "{{count}} items zijn in plaats daarvan gearchiveerd, omdat je ze niet kunt verwijderen.",
+				"partial_one": "Ongedaan gemaakt, behalve {{count}} item:",
+				"partial_other": "Ongedaan gemaakt, behalve {{count}} items:",
+				"edited_one": "Er is niets ongedaan gemaakt: {{count}} item is gewijzigd nadat het plan was gemaakt. Verwijder het handmatig als je het toch weg wilt hebben.",
+				"edited_other": "Er is niets ongedaan gemaakt: {{count}} items zijn gewijzigd nadat het plan was gemaakt. Verwijder ze handmatig als je ze toch weg wilt hebben.",
+				"more_one": "en nog {{count}}",
+				"more_other": "en nog {{count}}",
+				"already": "Dit plan is al ongedaan gemaakt.",
+				"expired": "Dit plan kan niet meer ongedaan worden gemaakt: het uur is voorbij.",
+				"failed": "Dit plan kon niet ongedaan worden gemaakt."
 			}
 		},
 		"duplicates": {
@@ -11484,7 +11941,8 @@
 			"text": "Dit is een testmail van {{instanceName}}. Als je dit kunt lezen, werkt het versturen van e-mail."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Nieuwe reactie op {{taskTitle}}"
+			"commentWithoutPreview": "Nieuwe reactie op {{taskTitle}}",
+			"pushFixedLine": "Open Margaya om de details te bekijken."
 		}
 	}
 }

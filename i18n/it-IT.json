@@ -221,10 +221,29 @@
 			"errors": {
 				"account_not_linked": "Questa identità non può essere collegata all'account esistente. Accedi via email per verificare l'account, poi riprova con SSO. Se l'accesso via email non è disponibile, contatta l'amministratore.",
 				"oauth_code_verification_failed": "Verifica OAuth fallita. Riprova.",
-				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "La registrazione è attualmente disabilitata. Hai bisogno di un invito valido per creare un account."
+				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "La registrazione è attualmente disabilitata. Hai bisogno di un invito valido per creare un account.",
+				"unsolicited_response": "Avvia l'accesso aziendale da questa pagina. Gli accessi avviati dal tuo provider di identità non sono accettati.",
+				"invalid_saml_response": "Non è stato possibile accettare la risposta del tuo provider di identità. Riprova o chiedi al tuo amministratore di controllare la connessione.",
+				"replay_detected": "Questa risposta di accesso è già stata usata. Accedi di nuovo.",
+				"unable_to_create_user": "Non è stato possibile creare il tuo account. Chiedi l'accesso al tuo amministratore.",
+				"invalid_request": "Questa richiesta di accesso non era valida. Riprova.",
+				"invalid_state": "Questo link di accesso è scaduto. Riprova.",
+				"saml_deprecated_algorithm": "Il tuo provider di identità firma con un algoritmo non più accettato. Chiedi al tuo amministratore di passare a SHA-256.",
+				"this_identity_provider_cannot_sign_in_that_email_address_": "Questo provider di identità non consente l'accesso con questo indirizzo email.",
+				"new_accounts_on_this_server_must_use_an_approved_email_domain_": "I nuovi account su questo server devono usare un dominio email approvato.",
+				"banned_user": "Questo account è bloccato. Chiedi l'accesso al tuo amministratore.",
+				"unable_to_link_account": "Non è stato possibile collegare questa identità al tuo account. Chiedi aiuto al tuo amministratore.",
+				"saml_other_browser": "L'accesso aziendale deve concludersi nel browser in cui è stato avviato. Ricomincia da questa pagina e assicurati che i cookie siano consentiti."
 			},
 			"instanceStatusError": "Impossibile raggiungere il server. Riprova tra un momento.",
-			"titleWithInstance": "Accedi a {{name}}"
+			"titleWithInstance": "Accedi a {{name}}",
+			"continueWithSaml": "Continua con l'accesso aziendale",
+			"samlEmail": "Email di lavoro",
+			"samlSubmit": "Continua",
+			"samlNoConnection": "L'accesso aziendale non è configurato per questo dominio email.",
+			"samlError": "Impossibile avviare l'accesso aziendale. Riprova.",
+			"emailCodesOff": "I link e i codici di accesso via email sono disattivati su questo server. Se hai sempre usato solo quelli, non hai ancora una password: seleziona «Password dimenticata?» per impostarne una.",
+			"emailCodesOffNoEmail": "I link e i codici di accesso via email sono disattivati su questo server. Se hai sempre usato solo quelli, non hai ancora una password: chiedi a un amministratore dell'istanza di impostarne una per te."
 		},
 		"providers": {
 			"google": "Google",
@@ -420,6 +439,10 @@
 				"nameShort": "Il nome deve essere di almeno 2 caratteri"
 			}
 		},
+		"layout": {
+			"headline": "Vedi l'intero progetto. Passa all'attività successiva.",
+			"lede": "Gestione progetti self-hosted per i team che amano strumenti veloci e discreti."
+		},
 		"device": {
 			"approve": "Approva",
 			"approveFailed": "Impossibile approvare",
@@ -443,10 +466,6 @@
 			"subtitle": "Inserisci il codice dalla tua CLI o app per continuare.",
 			"title": "Collega un dispositivo"
 		},
-		"layout": {
-			"headline": "Vedi l'intero progetto. Passa all'attività successiva.",
-			"lede": "Gestione progetti self-hosted per i team che amano strumenti veloci e discreti."
-		},
 		"mcp": {
 			"approve": "Approva",
 			"clientFallback": "Client MCP",
@@ -463,22 +482,6 @@
 			"subtitle": "Controlla questa richiesta prima di concedere l'accesso al tuo account Margaya.",
 			"title": "Autorizza il client MCP",
 			"warning": "Questo client potrà agire a tuo nome e accedere ai tuoi workspace. Continua solo se hai avviato tu questa connessione."
-		},
-		"emailVerification": {
-			"codeLabel": "Codice di verifica",
-			"codeSent": "Abbiamo inviato un codice di 6 cifre a {{email}}. Scade tra 5 minuti.",
-			"invitationsDescription": "Verifica la tua email per vedere gli inviti inviati a {{email}}.",
-			"resend": "Invia un nuovo codice",
-			"sendCode": "Invia codice",
-			"sendFailed": "Impossibile inviare il codice. Riprova.",
-			"sending": "Invio in corso...",
-			"settingsDescription": "Verifica {{email}} affinché gli inviti ai workspace inviati a questo indirizzo compaiano in Margaya.",
-			"success": "Email verificata",
-			"title": "Verifica la tua email",
-			"verifiedBadge": "Verificata",
-			"verify": "Verifica",
-			"verifyFailed": "Il codice non è valido. Controllalo o richiedine uno nuovo.",
-			"verifying": "Verifica in corso..."
 		},
 		"forgotPassword": {
 			"backToSignIn": "Torna all'accesso",
@@ -507,6 +510,30 @@
 			"successDescription": "La nuova password è stata impostata e tutte le sessioni sono state disconnesse. Accedi con la nuova password.",
 			"successTitle": "Password aggiornata",
 			"title": "Imposta una nuova password"
+		},
+		"emailVerification": {
+			"codeLabel": "Codice di verifica",
+			"codeSent": "Abbiamo inviato un codice di 6 cifre a {{email}}. Scade tra 5 minuti.",
+			"invitationsDescription": "Verifica la tua email per vedere gli inviti inviati a {{email}}.",
+			"resend": "Invia un nuovo codice",
+			"sendCode": "Invia codice",
+			"sendFailed": "Impossibile inviare il codice. Riprova.",
+			"sending": "Invio in corso...",
+			"settingsDescription": "Verifica {{email}} affinché gli inviti ai workspace inviati a questo indirizzo compaiano in Margaya.",
+			"success": "Email verificata",
+			"title": "Verifica la tua email",
+			"verifiedBadge": "Verificata",
+			"verify": "Verifica",
+			"verifyFailed": "Il codice non è valido. Controllalo o richiedine uno nuovo.",
+			"verifying": "Verifica in corso..."
+		},
+		"complete": {
+			"pageTitle": "Accesso in corso",
+			"title": "Completamento dell'accesso",
+			"working": "Ti stiamo facendo accedere…",
+			"failedTitle": "Impossibile completare l'accesso",
+			"failed": "Non è stato possibile completare questo accesso. Il suo link funziona una sola volta, per un minuto, e solo nel browser con cui hai effettuato l'accesso. Accedi di nuovo.",
+			"backToSignIn": "Torna all'accesso"
 		}
 	},
 	"settings": {
@@ -534,8 +561,8 @@
 				"invalidEmail": "Inserisci un indirizzo email valido"
 			},
 			"avatar": {
-				"hint": "PNG, JPEG, or WebP. Cropped to a square and resized to 256x256.",
-				"remove": "Remove",
+				"hint": "Clicca sulla tua immagine per cambiarla o rimuoverla. Viene ritagliata in un quadrato e ridimensionata a 256x256.",
+				"remove": "Rimuovi avatar",
 				"removeError": "Rimozione immagine profilo fallita",
 				"removeSuccess": "Immagine profilo rimossa",
 				"updateError": "Aggiornamento immagine profilo fallito",
@@ -545,10 +572,10 @@
 			},
 			"deleteAccount": {
 				"confirm": "Elimina account",
-				"confirmLabel": "Confirm your email address",
+				"confirmLabel": "Digita {{email}} per confermare",
 				"description": "I workspace di cui fai parte solo tu vengono eliminati insieme al tuo account. Altrove, le tue attività restano e diventano non assegnate, e i tuoi commenti vengono rimossi.",
 				"error": "Eliminazione account fallita",
-				"modalDescription": "This cannot be undone. Type {{email}} to confirm.",
+				"modalDescription": "Questa azione elimina definitivamente il tuo account e non può essere annullata.",
 				"modalTitle": "Eliminare il tuo account?",
 				"sectionSubtitle": "Azioni permanenti che riguardano l'intero account.",
 				"sectionTitle": "Zona pericolosa",
@@ -608,6 +635,9 @@
 			"eventComments": "Commenti e menzioni",
 			"eventCommentsHint": "Include nuovi commenti sulle attività a te assegnate e @menzioni dirette.",
 			"eventStatusChanges": "Cambiamenti di stato",
+			"eventStatusChangesHint": "Sulle attività che ti sono assegnate o a cui sei iscritto.",
+			"eventTaskUpdates": "Altre modifiche alle attività",
+			"eventTaskUpdatesHint": "Modifiche a priorità, scadenza e titolo delle attività che segui.",
 			"eventDueDateReminders": "Promemoria scadenza",
 			"reminderLeadTimeLabel": "Ricordami prima della scadenza",
 			"reminderLeadTimeHint": "Tra 1 ora e 30 giorni prima. Le notifiche di scadenza sono inviate separatamente.",
@@ -615,6 +645,23 @@
 			"reminderLeadTimeUnitDays": "Giorni",
 			"reminderLeadTimeInvalid": "Inserisci un numero intero tra 1 e {{max}}.",
 			"saveEventPreferences": "Salva tipi di notifica",
+			"digestTitle": "Riepilogo via email",
+			"digestDescription": "Un'email di riepilogo con le tue attività aperte scadute o in scadenza entro 7 giorni, le nuove menzioni e gli elementi non letti della posta in arrivo. Usa il tuo fuso orario e non viene inviata quando non c'è nulla da segnalare.",
+			"digestFrequencyLabel": "Invia un riepilogo",
+			"digestFrequencyOff": "Disattivato",
+			"digestFrequencyDaily": "Giornaliero",
+			"digestFrequencyWeekly": "Settimanale",
+			"digestWeekdayLabel": "Giorno",
+			"digestWeekdaySunday": "Domenica",
+			"digestWeekdayMonday": "Lunedì",
+			"digestWeekdayTuesday": "Martedì",
+			"digestWeekdayWednesday": "Mercoledì",
+			"digestWeekdayThursday": "Giovedì",
+			"digestWeekdayFriday": "Venerdì",
+			"digestWeekdaySaturday": "Sabato",
+			"digestHourLabel": "Ora",
+			"digestNoEmail": "I riepiloghi richiedono un indirizzo email nell'account.",
+			"saveDigest": "Salva riepilogo",
 			"workspaceCardLabelEmail": "Email",
 			"workspaceCardLabelNtfy": "ntfy",
 			"workspaceCardLabelGotify": "Gotify",
@@ -642,28 +689,8 @@
 			"toastPreferencesSaveFailed": "Salvataggio preferenze notifiche fallito",
 			"toastRuleSavedGeneric": "Regola notifiche workspace salvata",
 			"toastRuleRemovedGeneric": "Regola notifiche workspace rimossa",
-			"eventStatusChangesHint": "Sulle attività che ti sono assegnate o a cui sei iscritto.",
-			"eventTaskUpdates": "Altre modifiche alle attività",
-			"eventTaskUpdatesHint": "Modifiche a priorità, scadenza e titolo delle attività che segui.",
-			"channelsDescription": "Dove Margaya invia le notifiche scelte sopra.",
 			"channelsTitle": "Canali di recapito",
-			"digestDescription": "Un'email di riepilogo con le tue attività aperte scadute o in scadenza entro 7 giorni, le nuove menzioni e gli elementi non letti della posta in arrivo. Usa il tuo fuso orario e non viene inviata quando non c'è nulla da segnalare.",
-			"digestFrequencyDaily": "Giornaliero",
-			"digestFrequencyLabel": "Invia un riepilogo",
-			"digestFrequencyOff": "Disattivato",
-			"digestFrequencyWeekly": "Settimanale",
-			"digestHourLabel": "Ora",
-			"digestNoEmail": "I riepiloghi richiedono un indirizzo email nell'account.",
-			"digestTitle": "Riepilogo via email",
-			"digestWeekdayFriday": "Venerdì",
-			"digestWeekdayLabel": "Giorno",
-			"digestWeekdayMonday": "Lunedì",
-			"digestWeekdaySaturday": "Sabato",
-			"digestWeekdaySunday": "Domenica",
-			"digestWeekdayThursday": "Giovedì",
-			"digestWeekdayTuesday": "Martedì",
-			"digestWeekdayWednesday": "Mercoledì",
-			"saveDigest": "Salva riepilogo",
+			"channelsDescription": "Dove Margaya invia le notifiche scelte sopra.",
 			"sound": {
 				"title": "Suoni",
 				"description": "Riproduci un suono quando arriva una notifica mentre Margaya è aperto nel tuo browser.",
@@ -694,7 +721,30 @@
 				"deviceMute": "Disattiva i suoni su questo dispositivo",
 				"deviceMuteDescription": "Silenzia solo questo browser; gli altri tuoi dispositivi continuano a riprodurre i suoni.",
 				"previewFailed": "Il browser non ha riprodotto il suono. Controlla che questa scheda o il sito non siano silenziati."
-			}
+			},
+			"pushTitle": "Notifiche push",
+			"pushDescription": "Avvisi sul telefono o sul computer, anche quando Margaya è chiuso. «Notificami su» decide cosa viene inviato e una regola del workspace qui sotto può limitarlo.",
+			"pushThisDevice": "Su questo dispositivo",
+			"pushOnHint": "Questo dispositivo riceve le notifiche push.",
+			"pushOffHint": "Il browser chiederà l'autorizzazione quando attivi questa opzione.",
+			"pushOffHintAllowed": "Le notifiche sono già consentite in questo browser.",
+			"pushNotSetUp": "Le notifiche push non sono configurate su questo server. Chiedi al tuo amministratore di impostare le chiavi VAPID.",
+			"pushInstallFirst": "Su iPhone e iPad, aggiungi prima Margaya alla schermata Home: tocca Condividi, poi Aggiungi alla schermata Home. Aprilo da lì e attiva questa opzione.",
+			"pushUnsupported": "Questo browser non può ricevere notifiche push qui. Le notifiche push richiedono un browser aggiornato e un indirizzo HTTPS.",
+			"pushBlocked": "Le notifiche sono bloccate per questo sito. Consentile nelle impostazioni del browser, poi ricarica questa pagina.",
+			"pushOtherDevices": "I tuoi altri dispositivi",
+			"pushRemoveDevice": "Rimuovi",
+			"pushRemoveDeviceLabel": "Rimuovi {{device}}",
+			"toastPushOn": "Le notifiche push sono attive su questo dispositivo.",
+			"toastPushOnFailed": "Impossibile attivare le notifiche push. Riprova.",
+			"toastPushOff": "Le notifiche push sono disattivate su questo dispositivo.",
+			"toastPushOffFailed": "Impossibile disattivare le notifiche push. Riprova.",
+			"toastPushDeviceRemoved": "Dispositivo rimosso.",
+			"toastPushDeviceRemoveFailed": "Impossibile rimuovere il dispositivo. Riprova.",
+			"workspaceCardLabelPush": "Notifiche push",
+			"pushChannelHintEnabled": "Invia le notifiche del workspace corrispondenti ai tuoi dispositivi.",
+			"pushChannelHintDisabled": "Attiva prima le notifiche push su un dispositivo.",
+			"pushLoadFailed": "Impossibile caricare le impostazioni delle notifiche push. Ricarica questa pagina per riprovare."
 		},
 		"preferencesPage": {
 			"title": "Preferenze",
@@ -899,7 +949,6 @@
 				"organization": "Amministrazione workspace",
 				"member": "Membri",
 				"invitation": "Inviti",
-				"team": "Team",
 				"ac": "Ruoli e permessi",
 				"cycle": "Cicli",
 				"module": "Moduli",
@@ -1023,20 +1072,6 @@
 					"cancel": {
 						"label": "Annulla inviti",
 						"description": "Revoca gli inviti al workspace in sospeso."
-					}
-				},
-				"team": {
-					"create": {
-						"label": "Crea team",
-						"description": "Crea team in questo workspace."
-					},
-					"update": {
-						"label": "Modifica team",
-						"description": "Cambia i team e l'appartenenza ai team."
-					},
-					"delete": {
-						"label": "Elimina team",
-						"description": "Elimina i team in questo workspace."
 					}
 				},
 				"ac": {
@@ -1942,7 +1977,10 @@
 				"pr_merged": "PR unita",
 				"issue_opened": "Issue aperta",
 				"issue_closed": "Issue chiusa"
-			}
+			},
+			"removeRule": "Rimuovi la regola per {{event}}",
+			"toastRemoved": "Regola flusso di lavoro rimossa",
+			"toastRemoveError": "Rimozione della regola fallita"
 		},
 		"externalLinks": {
 			"resources": "Risorse",
@@ -1990,28 +2028,43 @@
 			"webhookPlaceholder": "https://tuo-server-mattermost.com/hooks/..."
 		},
 		"customFields": {
-			"addButton": "Aggiungi",
-			"createError": "Creazione campo personalizzato fallita.",
-			"createSuccess": "Campo personalizzato creato.",
-			"defaultLabel": "Predefinito",
-			"defaultValuePlaceholder": "Valore predefinito",
-			"deleteButton": "Elimina",
-			"deleteError": "Eliminazione campo personalizzato fallita.",
-			"deleteSuccess": "Campo personalizzato eliminato.",
-			"empty": "Nessun campo personalizzato ancora configurato.",
-			"loading": "Caricamento campi personalizzati in corso...",
 			"namePlaceholder": "Nome campo",
+			"typePlaceholder": "Seleziona tipo di campo",
 			"noOptionsPlaceholder": "Nessuna opzione",
+			"defaultValuePlaceholder": "Valore predefinito",
 			"optionsPlaceholder": "Opzioni separate da virgole",
 			"required": "Obbligatorio",
-			"typePlaceholder": "Seleziona tipo di campo",
+			"addButton": "Aggiungi",
+			"loading": "Caricamento campi personalizzati in corso...",
+			"empty": "Nessun campo personalizzato ancora configurato.",
+			"defaultLabel": "Predefinito",
+			"createSuccess": "Campo personalizzato creato.",
+			"createError": "Creazione campo personalizzato fallita.",
+			"deleteButton": "Elimina",
+			"deleteSuccess": "Campo personalizzato eliminato.",
+			"deleteError": "Eliminazione campo personalizzato fallita.",
 			"types": {
 				"boolean": "Booleano",
 				"date": "Data",
 				"dropdown": "Menu a tendina",
 				"number": "Numero",
 				"text": "Testo"
-			}
+			},
+			"editButton": "Modifica",
+			"editTitle": "Modifica campo personalizzato",
+			"editDescription": "Il tipo di un campo e la sua obbligatorietà non possono essere modificati dopo la creazione.",
+			"nameLabel": "Nome",
+			"optionsLabel": "Opzioni",
+			"addOption": "Aggiungi opzione",
+			"removeOption": "Rimuovi opzione",
+			"optionPlaceholder": "Nome dell'opzione",
+			"optionsHint": "Rinominare un'opzione aggiorna tutte le attività, le viste salvate e le automazioni che la usano. Se la rimuovi, resta sulle attività che già la hanno finché qualcuno non la cambia, e non può più essere scelta.",
+			"duplicateOption": "Le opzioni devono essere diverse tra loro.",
+			"noDefault": "Nessun valore predefinito",
+			"saveButton": "Salva",
+			"cancelButton": "Annulla",
+			"updateSuccess": "Campo personalizzato aggiornato.",
+			"updateError": "Aggiornamento del campo personalizzato fallito."
 		},
 		"projectFeatures": {
 			"disableConfirmAction": "Disattiva",
@@ -2295,6 +2348,11 @@
 			}
 		},
 		"workspaceExports": {
+			"title": "Esportazioni",
+			"pageTitle": "Esportazioni",
+			"subtitle": "Esporta le attività in CSV, Excel o JSON. I file sono disponibili per il download per {{days}} giorni.",
+			"newExport": "Nuova esportazione",
+			"viewExports": "Vedi esportazioni",
 			"form": {
 				"activeGroup": "Attivi",
 				"allProjects": "Tutti i progetti",
@@ -2323,49 +2381,6 @@
 				"json": "JSON",
 				"xlsx": "Excel"
 			},
-			"history": {
-				"all": "Tutte le esportazioni",
-				"columns": {
-					"actions": "Azioni",
-					"created": "Creata",
-					"expires": "Disponibile",
-					"export": "Esportazione",
-					"requestedBy": "Richiesta da",
-					"size": "Dimensione",
-					"status": "Stato",
-					"tasks": "Attività"
-				},
-				"delete": "Elimina",
-				"deleteAria": "Elimina {{name}}",
-				"deleteDescription": "Il file viene eliminato per tutti. L'azione non può essere annullata.",
-				"deletedProject": "Progetto eliminato",
-				"deleteTitle": "Eliminare questa esportazione?",
-				"deleting": "Eliminazione in corso…",
-				"description": "Scarica le esportazioni completate o elimina quelle che non ti servono più.",
-				"download": "Scarica",
-				"downloadAria": "Scarica {{name}}",
-				"empty": "Nessuna esportazione per ora. Le esportazioni che avvii compaiono qui per {{days}} giorni.",
-				"expiredOn": "Scaduta il {{date}}",
-				"expiresOn": "Fino al {{date}}",
-				"loadMore": "Carica altro",
-				"mine": "Le mie esportazioni",
-				"scopeLabel": "Di chi sono le esportazioni",
-				"summaryProjects_many": "{{format}} · {{count}} progetti",
-				"summaryProjects_one": "{{format}} · {{name}}",
-				"summaryProjects_other": "{{format}} · {{count}} progetti",
-				"title": "Esportazioni precedenti"
-			},
-			"newExport": "Nuova esportazione",
-			"pageTitle": "Esportazioni",
-			"status": {
-				"completed": "Pronta",
-				"expired": "Scaduta",
-				"failed": "Non riuscita",
-				"processing": "In elaborazione",
-				"queued": "In coda"
-			},
-			"subtitle": "Esporta le attività in CSV, Excel o JSON. I file sono disponibili per il download per {{days}} giorni.",
-			"title": "Esportazioni",
 			"toast": {
 				"deleted": "Esportazione eliminata",
 				"deleteError": "Impossibile eliminare l'esportazione. Riprova.",
@@ -2377,7 +2392,63 @@
 				"ready": "La tua esportazione è pronta",
 				"started": "Esportazione avviata. Ti avviseremo quando sarà pronta."
 			},
-			"viewExports": "Vedi esportazioni"
+			"history": {
+				"title": "Esportazioni precedenti",
+				"description": "Scarica le esportazioni completate o elimina quelle che non ti servono più.",
+				"scopeLabel": "Di chi sono le esportazioni",
+				"mine": "Le mie esportazioni",
+				"all": "Tutte le esportazioni",
+				"empty": "Nessuna esportazione per ora. Le esportazioni che avvii compaiono qui per {{days}} giorni.",
+				"columns": {
+					"actions": "Azioni",
+					"created": "Creata",
+					"expires": "Disponibile",
+					"export": "Esportazione",
+					"requestedBy": "Richiesta da",
+					"size": "Dimensione",
+					"status": "Stato",
+					"tasks": "Attività"
+				},
+				"summaryProjects_one": "{{format}} · {{name}}",
+				"summaryProjects_many": "{{format}} · {{count}} progetti",
+				"summaryProjects_other": "{{format}} · {{count}} progetti",
+				"deletedProject": "Progetto eliminato",
+				"download": "Scarica",
+				"downloadAria": "Scarica {{name}}",
+				"delete": "Elimina",
+				"deleteAria": "Elimina {{name}}",
+				"deleting": "Eliminazione in corso…",
+				"deleteTitle": "Eliminare questa esportazione?",
+				"deleteDescription": "Il file viene eliminato per tutti. L'azione non può essere annullata.",
+				"expiredOn": "Scaduta il {{date}}",
+				"expiresOn": "Fino al {{date}}",
+				"loadMore": "Carica altro",
+				"summaryWorkspace": "Intero workspace",
+				"fileCount_one": "{{count}} file",
+				"fileCount_many": "{{count}} di file",
+				"fileCount_other": "{{count}} file",
+				"withoutFiles": "Senza file",
+				"missingFiles_one": "Mancava {{count}} file nello spazio di archiviazione",
+				"missingFiles_many": "Mancavano {{count}} di file nello spazio di archiviazione",
+				"missingFiles_other": "Mancavano {{count}} file nello spazio di archiviazione"
+			},
+			"status": {
+				"completed": "Pronta",
+				"expired": "Scaduta",
+				"failed": "Non riuscita",
+				"processing": "In elaborazione",
+				"queued": "In coda"
+			},
+			"whole": {
+				"title": "Intero workspace",
+				"description": "Scarica tutto in un unico ZIP: attività con tutti i commenti, pagine, impostazioni e file.",
+				"action": "Esporta workspace",
+				"dialogTitle": "Esporta l'intero workspace",
+				"dialogDescription": "L'archivio viene creato in background. Riceverai una notifica quando sarà pronto.",
+				"includeFiles": "Includi i file",
+				"includeFilesHint": "Disattiva questa opzione per un archivio molto più piccolo. Conterrà comunque l'elenco di tutti i file.",
+				"leftOut": "Segreti, pagine private, cestino e bozze non vengono mai inclusi. L'archivio contiene gli indirizzi email dei membri, quindi conservalo in un luogo sicuro."
+			}
 		},
 		"workspaceWebhooks": {
 			"actionsMenu": "Azioni del webhook",
@@ -2757,7 +2828,8 @@
 			"restrictedProject": "Progetto riservato",
 			"toastUpdated": "Accesso aggiornato",
 			"toastError": "Aggiornamento dell'accesso non riuscito",
-			"loadError": "Impossibile caricare le impostazioni di accesso. Ricarica la pagina per riprovare."
+			"loadError": "Impossibile caricare le impostazioni di accesso. Ricarica la pagina per riprovare.",
+			"guestsHint": "Gli ospiti accedono solo ai progetti a cui vengono aggiunti. Aggiungili qui; il ruolo nel progetto limita ciò che possono fare."
 		},
 		"projectPeople": {
 			"defaultAssigneeHint": "Precompilato quando crei un'attività e assegnato alle richieste accettate senza assegnatario.",
@@ -2875,47 +2947,47 @@
 				"workspacePublicPagesChanged": "Ha attivato o disattivato le pagine pubbliche",
 				"pagePublished": "Ha pubblicato una pagina tramite un link pubblico",
 				"pageUnpublished": "Ha revocato il link pubblico di una pagina",
-				"apiKeyCreated": "Ha creato una chiave API",
-				"apiKeyRevoked": "Ha revocato una chiave API",
-				"exportCreated": "Ha avviato un'esportazione",
-				"exportDownloaded": "Ha scaricato un'esportazione",
-				"importRun": "Ha importato attività",
-				"integrationConnected": "Ha collegato un'integrazione",
-				"integrationDisconnected": "Ha scollegato un'integrazione",
-				"integrationUpdated": "Ha modificato un'integrazione",
+				"memberInvited": "Ha invitato qualcuno nel workspace",
+				"memberInvitationRevoked": "Ha revocato un invito",
 				"memberInvitationAccepted": "Ha accettato un invito",
 				"memberInvitationDeclined": "Ha rifiutato un invito",
 				"memberInvitationRoleChanged": "Ha cambiato il ruolo di un invito in sospeso",
-				"memberInvitationRevoked": "Ha revocato un invito",
-				"memberInvited": "Ha invitato qualcuno nel workspace",
-				"memberLeft": "Ha abbandonato il workspace",
 				"memberRemoved": "Ha rimosso un membro",
+				"memberLeft": "Ha abbandonato il workspace",
 				"memberRoleChanged": "Ha cambiato il ruolo di un membro",
-				"projectArchived": "Ha archiviato un progetto",
-				"projectCreated": "Ha creato un progetto",
-				"projectFeatureToggled": "Ha attivato o disattivato funzionalità del progetto",
-				"projectPurged": "Ha eliminato definitivamente un progetto",
-				"projectRestored": "Ha ripristinato un progetto dal cestino",
-				"projectSettingsChanged": "Ha modificato le impostazioni del progetto",
-				"projectTrashed": "Ha spostato un progetto nel cestino",
-				"projectUnarchived": "Ha rimosso un progetto dall'archivio",
-				"publicBoardLinkRotated": "Ha sostituito il link di una board pubblica",
-				"publicBoardPublished": "Ha pubblicato una board pubblica",
-				"publicBoardSettingsChanged": "Ha modificato le impostazioni di una board pubblica",
-				"publicBoardUnpublished": "Ha annullato la pubblicazione di una board pubblica",
 				"roleCreated": "Ha creato un ruolo",
-				"roleDeleted": "Ha eliminato un ruolo",
 				"roleUpdated": "Ha modificato un ruolo",
-				"trashEmptied": "Ha svuotato il cestino di un progetto",
-				"trashPurged": "Ha eliminato definitivamente attività dal cestino",
-				"unknown": "{{action}}",
+				"roleDeleted": "Ha eliminato un ruolo",
+				"apiKeyCreated": "Ha creato una chiave API",
+				"apiKeyRevoked": "Ha revocato una chiave API",
 				"webhookCreated": "Ha creato un webhook",
+				"webhookUpdated": "Ha modificato un webhook",
 				"webhookDeleted": "Ha eliminato un webhook",
 				"webhookSecretRotated": "Ha rigenerato il segreto di firma di un webhook",
-				"webhookUpdated": "Ha modificato un webhook",
+				"integrationConnected": "Ha collegato un'integrazione",
+				"integrationUpdated": "Ha modificato un'integrazione",
+				"integrationDisconnected": "Ha scollegato un'integrazione",
 				"workspaceCreated": "Ha creato il workspace",
-				"workspaceOwnershipTransferred": "Ha trasferito la proprietà del workspace",
 				"workspaceUpdated": "Ha modificato le impostazioni del workspace",
+				"workspaceOwnershipTransferred": "Ha trasferito la proprietà del workspace",
+				"projectCreated": "Ha creato un progetto",
+				"projectTrashed": "Ha spostato un progetto nel cestino",
+				"projectRestored": "Ha ripristinato un progetto dal cestino",
+				"projectPurged": "Ha eliminato definitivamente un progetto",
+				"projectArchived": "Ha archiviato un progetto",
+				"projectUnarchived": "Ha rimosso un progetto dall'archivio",
+				"projectFeatureToggled": "Ha attivato o disattivato funzionalità del progetto",
+				"projectSettingsChanged": "Ha modificato le impostazioni del progetto",
+				"publicBoardPublished": "Ha pubblicato una board pubblica",
+				"publicBoardUnpublished": "Ha annullato la pubblicazione di una board pubblica",
+				"publicBoardLinkRotated": "Ha sostituito il link di una board pubblica",
+				"publicBoardSettingsChanged": "Ha modificato le impostazioni di una board pubblica",
+				"exportCreated": "Ha avviato un'esportazione",
+				"exportDownloaded": "Ha scaricato un'esportazione",
+				"importRun": "Ha importato attività",
+				"trashPurged": "Ha eliminato definitivamente attività dal cestino",
+				"trashEmptied": "Ha svuotato il cestino di un progetto",
+				"unknown": "{{action}}",
 				"aiSettingsUpdated": "Ha modificato le impostazioni dell'IA",
 				"aiTriageLabelsApplied": "Ha aggiunto automaticamente etichette suggerite",
 				"agentCreated": "Ha creato un agente",
@@ -2942,7 +3014,9 @@
 				"aiConnectorUpdated": "Ha modificato un connettore MCP",
 				"aiConnectorDeleted": "Ha eliminato un connettore MCP",
 				"agentIntakeTriggerUpdated": "Ha modificato l'attivatore delle richieste di un agente",
-				"agentIntakeTriggerDisabled": "Ha disattivato l'attivatore delle richieste di un agente"
+				"agentIntakeTriggerDisabled": "Ha disattivato l'attivatore delle richieste di un agente",
+				"memberProvisioned": "Ha aggiunto un membro tramite provisioning",
+				"memberInvitationProjectsChanged": "Ha cambiato i progetti di un invito in sospeso"
 			},
 			"actor": {
 				"apiKey": "Chiave API",
@@ -3035,53 +3109,62 @@
 			"title": "Registro di audit"
 		},
 		"trash": {
-			"deletedAt": "Eliminato {{time}}",
-			"deletedBy": "Eliminato da {{name}} {{time}}",
-			"deletePermanently": "Elimina definitivamente",
-			"emptyConfirmDescription": "Ogni attività nel cestino di questo progetto viene eliminata definitivamente, insieme a commenti, allegati e voci di tempo. Questa azione non può essere annullata.",
-			"emptyConfirmTitle": "Svuotare il cestino?",
-			"emptyProjectsDescription": "I progetti che elimini da questo workspace compaiono qui.",
-			"emptyProjectsTitle": "Nessun progetto eliminato",
-			"emptyTasksDescription": "Le attività che elimini da questo progetto compaiono qui.",
-			"emptyTasksTitle": "Nessuna attività eliminata",
-			"emptyTrash": "Svuota cestino",
-			"loadError": "Impossibile caricare il cestino",
-			"loadMore": "Carica altro",
-			"menuAria": "Altre azioni per {{name}}",
-			"noMatches": "Nessun risultato per la tua ricerca",
-			"projectSubtitle": "Le attività eliminate restano qui finché non vengono eliminate definitivamente. Ripristinando un'attività si recuperano anche le sotto-attività eliminate insieme a essa.",
 			"projectTitle": "Eliminati di recente",
-			"purgeOn": "Eliminazione definitiva il {{date}}",
-			"purgeProjectDescription": "“{{name}}” e tutto il suo contenuto vengono eliminati per tutti. Questa azione non può essere annullata.",
-			"purgeProjectTitle": "Eliminare definitivamente questo progetto?",
-			"purgeTaskDescription": "“{{name}}”, le sotto-attività eliminate insieme a essa, i commenti, gli allegati e le voci di tempo vengono eliminati per tutti. Questa azione non può essere annullata.",
-			"purgeTaskTitle": "Eliminare definitivamente questa attività?",
+			"projectSubtitle": "Le attività e le pagine eliminate restano qui finché non vengono eliminate definitivamente. Ripristinando un'attività si recuperano anche le sotto-attività eliminate insieme a essa; una pagina ripristinata torna in Archiviate.",
+			"workspaceTitle": "Progetti eliminati di recente",
+			"workspaceNav": "Eliminati di recente",
+			"workspaceSubtitle": "I progetti eliminati restano qui con le loro attività finché non vengono eliminati definitivamente.",
+			"searchTasks": "Cerca attività eliminate",
+			"searchProjects": "Cerca progetti eliminati",
+			"deletedBy": "Eliminato da {{name}} {{time}}",
+			"deletedAt": "Eliminato {{time}}",
+			"purgeOn": "Eliminazione definitiva prevista il {{date}}",
+			"withSubTasks_one": "con {{count}} sotto-attività",
+			"withSubTasks_many": "con {{count}} sotto-attività",
+			"withSubTasks_other": "con {{count}} sotto-attività",
+			"taskCount_one": "{{count}} attività",
+			"taskCount_many": "{{count}} attività",
+			"taskCount_other": "{{count}} attività",
 			"restore": "Ripristina",
 			"restoreAria": "Ripristina {{name}}",
+			"menuAria": "Altre azioni per {{name}}",
+			"deletePermanently": "Elimina definitivamente",
+			"emptyTrash": "Svuota cestino",
+			"emptyTasksTitle": "Nessuna attività eliminata",
+			"emptyTasksDescription": "Le attività che elimini da questo progetto compaiono qui.",
+			"emptyProjectsTitle": "Nessun progetto eliminato",
+			"emptyProjectsDescription": "I progetti che elimini da questo workspace compaiono qui.",
+			"noMatches": "Nessun risultato per la tua ricerca",
+			"loadError": "Impossibile caricare il cestino",
 			"retry": "Riprova",
-			"searchProjects": "Cerca progetti eliminati",
-			"searchTasks": "Cerca attività eliminate",
-			"taskCount_many": "{{count}} attività",
-			"taskCount_one": "{{count}} attività",
-			"taskCount_other": "{{count}} attività",
+			"loadMore": "Carica altro",
+			"purgeTaskTitle": "Eliminare definitivamente questa attività?",
+			"purgeTaskDescription": "“{{name}}”, le sotto-attività eliminate insieme a essa, i commenti, gli allegati e le voci di tempo vengono eliminati per tutti. Questa azione non può essere annullata.",
+			"emptyConfirmTitle": "Svuotare il cestino?",
+			"emptyConfirmDescription": "Ogni attività nel cestino di questo progetto viene eliminata definitivamente, insieme a commenti, allegati e voci di tempo. Questa azione non può essere annullata.",
+			"purgeProjectTitle": "Eliminare definitivamente questo progetto?",
+			"purgeProjectDescription": "“{{name}}” e tutto il suo contenuto vengono eliminati per tutti. Questa azione non può essere annullata.",
 			"toast": {
-				"emptied_many": "{{count}} attività eliminate definitivamente",
-				"emptied_one": "{{count}} attività eliminata definitivamente",
-				"emptied_other": "{{count}} attività eliminate definitivamente",
-				"projectPurged": "Progetto eliminato definitivamente",
+				"taskRestored": "Attività ripristinata",
 				"projectRestored": "Progetto ripristinato",
-				"purgeError": "Impossibile eliminare definitivamente",
 				"restoreBlocked": "Questa attività non può essere ripristinata da sola. Ripristina prima l'attività principale o il progetto.",
 				"restoreError": "Impossibile ripristinare",
 				"taskPurged": "Attività eliminata definitivamente",
-				"taskRestored": "Attività ripristinata"
+				"projectPurged": "Progetto eliminato definitivamente",
+				"emptied_one": "{{count}} attività eliminata definitivamente",
+				"emptied_many": "{{count}} attività eliminate definitivamente",
+				"emptied_other": "{{count}} attività eliminate definitivamente",
+				"purgeError": "Impossibile eliminare definitivamente",
+				"pageRestored": "Pagina ripristinata in Archiviate",
+				"pagePurged": "Pagina eliminata definitivamente"
 			},
-			"withSubTasks_many": "con {{count}} sotto-attività",
-			"withSubTasks_one": "con {{count}} sotto-attività",
-			"withSubTasks_other": "con {{count}} sotto-attività",
-			"workspaceNav": "Eliminati di recente",
-			"workspaceSubtitle": "I progetti eliminati restano qui con le loro attività finché non vengono eliminati definitivamente.",
-			"workspaceTitle": "Progetti eliminati di recente"
+			"tasksHeading": "Attività",
+			"pagesHeading": "Pagine",
+			"searchPages": "Cerca pagine eliminate",
+			"emptyPagesTitle": "Nessuna pagina eliminata",
+			"emptyPagesDescription": "Le pagine archiviate che elimini da questo progetto compaiono qui.",
+			"purgePageTitle": "Eliminare definitivamente questa pagina?",
+			"purgePageDescription": "“{{name}}”, i suoi commenti e la cronologia delle versioni vengono eliminati per tutti. Questa azione non può essere annullata."
 		},
 		"automationRules": {
 			"title": "Automazioni",
@@ -3408,11 +3491,11 @@
 				"boardView": "Passa a vista board",
 				"listView": "Passa a vista elenco",
 				"backlogView": "Passa a vista backlog",
+				"calendarView": "Passa a vista calendario",
 				"nextTask": "Attività successiva",
 				"prevTask": "Attività precedente",
 				"openTask": "Apri attività selezionata",
 				"quickSelectNumber": "Seleziona opzione per numero",
-				"calendarView": "Passa a vista calendario",
 				"goToSection": "Vai a {{section}}",
 				"goToAllTasks": "Vai a Tutte le attività",
 				"goToMyWork": "Vai a Il tuo lavoro",
@@ -3421,24 +3504,25 @@
 				"goToHome": "Vai a Home",
 				"goToStickies": "Vai a Note adesive",
 				"paletteActions": "Esegui un'azione",
+				"paletteTasks": "Trova un'attività per chiave o titolo",
 				"palettePeople": "Trova una persona",
 				"palettePlaces": "Vai a un luogo",
-				"paletteTasks": "Trova un'attività per chiave o titolo",
 				"captureTask": "Aggiungi un'attività nella board o nell'elenco",
 				"selectTask": "Seleziona l'attività in primo piano",
-				"triageAssignee": "Cambia gli assegnatari dell'attività in primo piano",
-				"triagePriority": "Cambia la priorità dell'attività in primo piano",
 				"triageStatus": "Cambia lo stato dell'attività in primo piano",
+				"triagePriority": "Cambia la priorità dell'attività in primo piano",
+				"triageAssignee": "Cambia gli assegnatari dell'attività in primo piano",
+				"taskStatus": "Cambia lo stato",
+				"taskPriority": "Cambia la priorità",
 				"taskAssignees": "Cambia gli assegnatari",
+				"taskLabels": "Cambia le etichette",
+				"taskDueDate": "Cambia la data di scadenza",
 				"taskAssignSelf": "Assegnati o rimuoviti",
 				"taskCopyKey": "Copia la chiave dell'attività",
 				"taskCopyLink": "Copia il link dell'attività",
+				"taskCopyBranch": "Copia il nome del ramo dell'attività",
 				"taskDelete": "Elimina l'attività",
-				"taskDueDate": "Cambia la data di scadenza",
-				"taskLabels": "Cambia le etichette",
-				"taskPriority": "Cambia la priorità",
-				"taskStatus": "Cambia lo stato",
-				"taskCopyBranch": "Copia il nome del ramo dell'attività"
+				"moveBetweenCards": "Spostati tra le card della board"
 			}
 		},
 		"favorites": {
@@ -3609,6 +3693,14 @@
 			"automation_notice": {
 				"title": "Automazione: {{ruleName}}",
 				"content": "{{taskKey}} {{taskTitle}}"
+			},
+			"page_comment": {
+				"title": "{{commenterName}} ha commentato",
+				"content": "{{commenterName}} ha commentato {{pageTitle}}: {{commentPreview}}"
+			},
+			"page_updated": {
+				"title": "{{editorName}} ha modificato una pagina",
+				"content": "{{editorName}} ha modificato {{pageTitle}}"
 			}
 		},
 		"inbox": {
@@ -3663,10 +3755,12 @@
 			"loadMore": "Carica altro",
 			"pageTitle": "Posta in arrivo",
 			"preview": {
-				"emptyDescription": "La sua attività si apre qui.",
 				"emptyTitle": "Seleziona una notifica",
+				"emptyDescription": "La sua attività si apre qui.",
 				"unavailable": "Questa attività non è più disponibile",
-				"label": "Pannello di lettura"
+				"label": "Pannello di lettura",
+				"showProperties": "Mostra proprietà",
+				"hideProperties": "Nascondi proprietà"
 			},
 			"retry": "Riprova",
 			"snooze": {
@@ -3714,27 +3808,31 @@
 				"subscribed": "Iscritto"
 			},
 			"verbs": {
-				"due_date_reminder": "Scade tra {{leadTime}}",
-				"task_assignee_changed": "ti ha assegnato l'attività",
-				"task_comment": "ha commentato",
 				"task_created": "ha creato questa attività",
+				"task_assignee_changed": "ti ha assegnato l'attività",
+				"task_status_changed": "l'ha spostata da {{oldStatus}} a {{newStatus}}",
+				"task_comment": "ha commentato",
 				"task_mention": "ti ha menzionato",
 				"task_mention_comment": "ti ha menzionato in un commento",
-				"task_overdue": "Scadenza superata",
-				"task_status_changed": "l'ha spostata da {{oldStatus}} a {{newStatus}}",
+				"time_entry_created": "ha registrato del tempo",
 				"task_updated": {
 					"dueDate": "ha cambiato la scadenza in {{newValue}}",
 					"dueDateCleared": "ha rimosso la scadenza",
 					"priority": "ha cambiato la priorità in {{newValue}}",
 					"title": "ha rinominato l'attività"
 				},
-				"time_entry_created": "ha registrato del tempo",
+				"due_date_reminder": "Scade tra {{leadTime}}",
+				"task_overdue": "Scadenza superata",
 				"intake_accepted": "ha accettato la tua richiesta",
 				"intake_declined": "ha rifiutato la tua richiesta",
 				"intake_duplicate": "ha segnato la tua richiesta come duplicato",
 				"page_mention": "ti ha menzionato in una pagina",
 				"page_mention_titled": "ti ha menzionato in {{pageTitle}}",
-				"task_comment_reply": "ha risposto a un commento"
+				"task_comment_reply": "ha risposto a un commento",
+				"page_comment": "ha commentato una pagina",
+				"page_comment_titled": "ha commentato {{pageTitle}}",
+				"page_updated": "ha modificato una pagina che segui",
+				"page_updated_titled": "ha modificato {{pageTitle}}"
 			},
 			"viewing": {
 				"archived": "Visualizzazione delle notifiche archiviate",
@@ -3765,8 +3863,21 @@
 		}
 	},
 	"activity": {
+		"feed": {
+			"all": "Tutta l'attività",
+			"comments": "Commenti",
+			"label": "Filtra e ordina l'attività",
+			"newest": "Prima i più recenti",
+			"noMatches": "Niente da mostrare con questo filtro.",
+			"oldest": "Prima i meno recenti",
+			"order": "Ordine",
+			"show": "Mostra",
+			"updates": "Aggiornamenti"
+		},
 		"assignedToSelf": "ha assegnato l'attività a sé stesso",
 		"unassigned": "ha rimosso l'assegnazione dell'attività",
+		"unassignedUser": "ha rimosso l'assegnazione di {{name}}",
+		"unassignedSelf": "ha rimosso la propria assegnazione",
 		"assignedTo": "ha assegnato l'attività a {{name}}",
 		"changedStatus": "ha cambiato lo stato da {{from}} a {{to}}",
 		"changedPriority": "ha cambiato la priorità da {{from}} a {{to}}",
@@ -3776,6 +3887,8 @@
 		"changedTitle": "ha cambiato il titolo da \"{{from}}\" a \"{{to}}\"",
 		"moved": "ha spostato l'attività da \"{{from}}\" a \"{{to}}\"",
 		"created": "ha creato questa attività",
+		"importedFromJira": "ha importato questa attività da Jira {{key}}",
+		"importedFromSource": "ha importato questa attività da {{source}} {{key}}",
 		"githubUser": "Utente GitHub",
 		"comment": {
 			"github": "GitHub",
@@ -3897,35 +4010,26 @@
 			"linkCopied": "Link del commento copiato"
 		},
 		"addedToCycle": "ha aggiunto l'attività al ciclo {{name}}",
-		"deletedCycle": "ha rimosso l'attività da un ciclo eliminato",
-		"movedCycle": "ha spostato l'attività dal ciclo {{from}} al ciclo {{to}}",
 		"removedFromCycle": "ha rimosso l'attività dal ciclo {{name}}",
+		"movedCycle": "ha spostato l'attività dal ciclo {{from}} al ciclo {{to}}",
+		"deletedCycle": "ha rimosso l'attività da un ciclo eliminato",
 		"addedToModule": "ha aggiunto l'attività al modulo {{name}}",
 		"removedFromModule": "ha rimosso l'attività dal modulo {{name}}",
+		"estimateSet": "ha impostato la stima a {{to}}",
 		"estimateChanged": "ha cambiato la stima da {{from}} a {{to}}",
+		"estimateRemoved": "ha rimosso la stima {{from}}",
 		"estimateReason": {
 			"point_deleted": "(valore di stima eliminato)",
 			"system_deleted": "(sistema di stima eliminato)",
 			"system_switched": "(sistema di stima cambiato)",
 			"task_moved": "(spostata in un altro progetto)"
 		},
-		"estimateRemoved": "ha rimosso la stima {{from}}",
-		"estimateSet": "ha impostato la stima a {{to}}",
-		"unassignedSelf": "ha rimosso la propria assegnazione",
-		"unassignedUser": "ha rimosso l'assegnazione di {{name}}",
-		"addedLabel": "ha aggiunto l'etichetta <label>{{name}}</label>",
-		"attachmentAdded": "ha allegato {{filename}}",
-		"attachmentRemoved": "ha rimosso l'allegato {{filename}}",
+		"setStartDate": "ha impostato la data di inizio al {{date}}",
 		"changedStartDate": "ha cambiato la data di inizio da {{from}} a {{to}}",
 		"clearedStartDate": "ha rimosso la data di inizio",
-		"copiedFrom": "ha creato questa attività come copia di <task>{{task}}</task>",
-		"copiedTo": "ha creato una copia di questa attività: <task>{{task}}</task>",
-		"linkAdded": "ha aggiunto il link {{title}}",
-		"linkRemoved": "ha rimosso il link {{title}}",
-		"linkUpdated": "ha aggiornato il link {{title}}",
-		"parentChanged": "ha cambiato l'attività principale da <from>{{from}}</from> a <to>{{to}}</to>",
-		"parentRemoved": "ha rimosso l'attività principale <task>{{task}}</task>",
-		"parentSet": "ha impostato l'attività principale su <task>{{task}}</task>",
+		"addedLabel": "ha aggiunto l'etichetta <label>{{name}}</label>",
+		"removedLabel": "ha rimosso l'etichetta <label>{{name}}</label>",
+		"updatedDescription": "ha aggiornato la descrizione",
 		"relationAdded": {
 			"blocked_by": "ha segnato questa attività come bloccata da <task>{{task}}</task>",
 			"blocking": "ha segnato questa attività come bloccante per <task>{{task}}</task>",
@@ -3937,12 +4041,36 @@
 			"start_before": "ha impostato questa attività per iniziare prima di <task>{{task}}</task>"
 		},
 		"relationRemoved": "ha rimosso la relazione «{{relation}}» con <task>{{task}}</task>",
-		"removedLabel": "ha rimosso l'etichetta <label>{{name}}</label>",
-		"setStartDate": "ha impostato la data di inizio al {{date}}",
+		"parentSet": "ha impostato l'attività principale su <task>{{task}}</task>",
+		"parentChanged": "ha cambiato l'attività principale da <from>{{from}}</from> a <to>{{to}}</to>",
+		"parentRemoved": "ha rimosso l'attività principale <task>{{task}}</task>",
 		"subtaskAdded": "ha aggiunto la sotto-attività <task>{{task}}</task>",
 		"subtaskRemoved": "ha rimosso la sotto-attività <task>{{task}}</task>",
-		"updatedDescription": "ha aggiornato la descrizione",
+		"linkAdded": "ha aggiunto il link {{title}}",
+		"linkUpdated": "ha aggiornato il link {{title}}",
+		"linkRemoved": "ha rimosso il link {{title}}",
+		"attachmentAdded": "ha allegato {{filename}}",
+		"attachmentRemoved": "ha rimosso l'allegato {{filename}}",
+		"copiedFrom": "ha creato questa attività come copia di <task>{{task}}</task>",
+		"copiedTo": "ha creato una copia di questa attività: <task>{{task}}</task>",
 		"archived": "ha archiviato questa attività",
+		"unarchived": "ha ripristinato questa attività",
+		"intake": {
+			"submitted": "ha inviato questa richiesta",
+			"submittedVia": "ha inviato questa richiesta tramite {{source}}",
+			"accepted": "ha accettato questa richiesta in {{column}}",
+			"acceptedBacklog": "ha accettato questa richiesta nel backlog",
+			"declined": "ha rifiutato questa richiesta",
+			"declinedWithReason": "ha rifiutato questa richiesta: {{note}}",
+			"snoozed": "ha posticipato questa richiesta fino al {{date}}",
+			"unsnoozed": "ha riportato questa richiesta in revisione",
+			"snoozeEnded": "Il posticipo è terminato e questa richiesta è di nuovo in revisione",
+			"duplicate": "ha segnato questa richiesta come duplicato di {{key}}",
+			"duplicateDeleted": "ha segnato questa richiesta come duplicato di un'attività eliminata",
+			"reopened": "ha riaperto questa richiesta",
+			"acceptedHidden": "ha accettato questa richiesta in un altro progetto",
+			"duplicateHidden": "ha segnato questa richiesta come duplicato di un'attività in un altro progetto"
+		},
 		"reactions": {
 			"add": "Aggiungi reazione",
 			"error": "Impossibile aggiornare la reazione",
@@ -3962,32 +4090,6 @@
 			"reactWith": "Reagisci con {{label}}",
 			"remove": "Rimuovi la reazione {{label}}",
 			"you": "Tu"
-		},
-		"unarchived": "ha ripristinato questa attività",
-		"intake": {
-			"accepted": "ha accettato questa richiesta in {{column}}",
-			"acceptedBacklog": "ha accettato questa richiesta nel backlog",
-			"declined": "ha rifiutato questa richiesta",
-			"declinedWithReason": "ha rifiutato questa richiesta: {{note}}",
-			"duplicate": "ha segnato questa richiesta come duplicato di {{key}}",
-			"duplicateDeleted": "ha segnato questa richiesta come duplicato di un'attività eliminata",
-			"reopened": "ha riaperto questa richiesta",
-			"snoozed": "ha posticipato questa richiesta fino al {{date}}",
-			"snoozeEnded": "Il posticipo è terminato e questa richiesta è di nuovo in revisione",
-			"submitted": "ha inviato questa richiesta",
-			"submittedVia": "ha inviato questa richiesta tramite {{source}}",
-			"unsnoozed": "ha riportato questa richiesta in revisione"
-		},
-		"automation": {
-			"actor": "Automazione",
-			"archived_many": "ha archiviato questa attività dopo {{count}} mesi senza aggiornamenti",
-			"archived_one": "ha archiviato questa attività dopo {{count}} mese senza aggiornamenti",
-			"archived_other": "ha archiviato questa attività dopo {{count}} mesi senza aggiornamenti",
-			"closed_many": "ha chiuso questa attività dopo {{count}} mesi senza aggiornamenti, spostandola in {{to}}",
-			"closed_one": "ha chiuso questa attività dopo {{count}} mese senza aggiornamenti, spostandola in {{to}}",
-			"closed_other": "ha chiuso questa attività dopo {{count}} mesi senza aggiornamenti, spostandola in {{to}}",
-			"rolledOver": "ha spostato questa attività da {{from}} a {{to}} al termine del ciclo",
-			"byRule": "tramite {{name}}"
 		},
 		"commentVisibility": {
 			"badgeExternal": "Esterno",
@@ -4014,21 +4116,51 @@
 			"summary": "▲ {{up}} · ▼ {{down}}",
 			"tooltip": "Voti dalla board pubblica"
 		},
-		"feed": {
-			"all": "Tutta l'attività",
-			"comments": "Commenti",
-			"label": "Filtra e ordina l'attività",
-			"newest": "Prima i più recenti",
-			"noMatches": "Niente da mostrare con questo filtro.",
-			"oldest": "Prima i meno recenti",
-			"order": "Ordine",
-			"show": "Mostra",
-			"updates": "Aggiornamenti"
+		"automation": {
+			"actor": "Automazione",
+			"archived_one": "ha archiviato questa attività dopo {{count}} mese senza aggiornamenti",
+			"archived_many": "ha archiviato questa attività dopo {{count}} mesi senza aggiornamenti",
+			"archived_other": "ha archiviato questa attività dopo {{count}} mesi senza aggiornamenti",
+			"closed_one": "ha chiuso questa attività dopo {{count}} mese senza aggiornamenti, spostandola in {{to}}",
+			"closed_many": "ha chiuso questa attività dopo {{count}} mesi senza aggiornamenti, spostandola in {{to}}",
+			"closed_other": "ha chiuso questa attività dopo {{count}} mesi senza aggiornamenti, spostandola in {{to}}",
+			"rolledOver": "ha spostato questa attività da {{from}} a {{to}} al termine del ciclo",
+			"byRule": "tramite {{name}}",
+			"rolledOverHidden": "ha spostato questa attività al ciclo successivo al termine del ciclo"
 		},
-		"importedFromJira": "ha importato questa attività da Jira {{key}}",
-		"importedFromSource": "ha importato questa attività da {{source}} {{key}}",
 		"movedToTrash": "ha spostato questa attività nel cestino",
-		"restoredFromTrash": "ha ripristinato questa attività dal cestino"
+		"restoredFromTrash": "ha ripristinato questa attività dal cestino",
+		"parentRemovedHidden": "ha rimosso un'attività principale in un altro progetto",
+		"subtaskAddedHidden": "ha aggiunto una sotto-attività in un altro progetto",
+		"subtaskRemovedHidden": "ha rimosso una sotto-attività in un altro progetto",
+		"copiedToHidden": "ha creato una copia di questa attività in un altro progetto",
+		"relationAddedHidden": {
+			"related": "ha segnato questa attività come correlata a un'attività in un altro progetto",
+			"blocking": "ha segnato questa attività come bloccante per un'attività in un altro progetto",
+			"blocked_by": "ha segnato questa attività come bloccata da un'attività in un altro progetto",
+			"duplicate": "ha segnato questa attività come duplicato di un'attività in un altro progetto",
+			"start_before": "ha impostato questa attività per iniziare prima di un'attività in un altro progetto",
+			"start_after": "ha impostato questa attività per iniziare dopo un'attività in un altro progetto",
+			"finish_before": "ha impostato questa attività per finire prima di un'attività in un altro progetto",
+			"finish_after": "ha impostato questa attività per finire dopo un'attività in un altro progetto"
+		},
+		"relationRemovedHidden": "ha rimosso la relazione «{{relation}}» con un'attività in un altro progetto",
+		"parentSetHidden": "ha impostato come attività principale un'attività in un altro progetto",
+		"parentChangedFromHidden": "ha cambiato l'attività principale da un'attività in un altro progetto a <to>{{to}}</to>",
+		"parentChangedToHidden": "ha cambiato l'attività principale da <from>{{from}}</from> a un'attività in un altro progetto",
+		"parentChangedBetweenHidden": "ha cambiato l'attività principale tra attività di altri progetti",
+		"copiedFromHidden": "ha creato questa attività come copia di un'attività in un altro progetto",
+		"movedFromHidden": "ha spostato l'attività da un altro progetto a \"{{to}}\"",
+		"movedToHidden": "ha spostato l'attività da \"{{from}}\" a un altro progetto",
+		"movedBetweenHidden": "ha spostato l'attività tra altri progetti",
+		"changedStatusHidden": "ha cambiato lo stato in un altro progetto",
+		"addedToHiddenCycle": "ha aggiunto l'attività a un ciclo",
+		"removedFromHiddenCycle": "ha rimosso l'attività da un ciclo",
+		"movedCycleFromHidden": "ha spostato l'attività da un altro ciclo al ciclo {{to}}",
+		"movedCycleToHidden": "ha spostato l'attività dal ciclo {{from}} a un altro ciclo",
+		"movedCycleBetweenHidden": "ha spostato l'attività tra cicli",
+		"addedToHiddenModule": "ha aggiunto l'attività a un modulo",
+		"removedFromHiddenModule": "ha rimosso l'attività da un modulo"
 	},
 	"tasks": {
 		"recurrence": {
@@ -4091,8 +4223,31 @@
 				"recurredFrom": "ha creato questa attività come ripetizione successiva di <task>{{task}}</task>",
 				"recurredFromScheduled": "Creata come da programma come ripetizione successiva di <task>{{task}}</task>",
 				"recurredTo": "ha completato questa attività, creando la ripetizione successiva <task>{{task}}</task>",
-				"recurredToScheduled": "La ripetizione successiva è stata creata come da programma: <task>{{task}}</task>"
+				"recurredToScheduled": "La ripetizione successiva è stata creata come da programma: <task>{{task}}</task>",
+				"recurredToHidden": "ha completato questa attività, creando la ripetizione successiva in un altro progetto",
+				"recurredToScheduledHidden": "La ripetizione successiva è stata creata come da programma in un altro progetto",
+				"recurredFromHidden": "ha creato questa attività come ripetizione successiva di un'attività in un altro progetto",
+				"recurredFromScheduledHidden": "Creata come da programma come ripetizione successiva di un'attività in un altro progetto"
 			}
+		},
+		"subscription": {
+			"count_many": "{{count}} persone iscritte",
+			"count_one": "{{count}} persona iscritta",
+			"count_other": "{{count}} persone iscritte",
+			"error": "Impossibile aggiornare la tua iscrizione",
+			"mutedAssignee": "L'attività ti è assegnata, ma hai annullato l'iscrizione. Riceverai comunque le menzioni.",
+			"notSubscribed": "Ricevi aggiornamenti su cambi di stato, commenti e altre modifiche.",
+			"reasons": {
+				"assignee": "Sei iscritto perché l'attività ti è assegnata.",
+				"commenter": "Sei iscritto perché hai commentato.",
+				"creator": "Sei iscritto perché hai creato questa attività.",
+				"manual": "Ti sei iscritto a questa attività.",
+				"mention": "Sei iscritto perché sei stato menzionato."
+			},
+			"subscribe": "Iscriviti",
+			"toastSubscribed": "Iscritto a questa attività",
+			"toastUnsubscribed": "Iscrizione annullata. Riceverai comunque una notifica se vieni menzionato.",
+			"unsubscribe": "Annulla iscrizione"
 		},
 		"status": {
 			"label": "Stato",
@@ -4103,6 +4258,32 @@
 			"archived": "Archiviato",
 			"planned": "Pianificato"
 		},
+		"columnGroups": {
+			"backlog": {
+				"description": "Registrate, non ancora pianificate",
+				"label": "Backlog"
+			},
+			"cancelled": {
+				"description": "Chiuse senza svolgere il lavoro",
+				"label": "Annullate"
+			},
+			"completed": {
+				"description": "Fatto",
+				"label": "Completate"
+			},
+			"started": {
+				"description": "Lavoro in corso",
+				"label": "Iniziate"
+			},
+			"triage": {
+				"description": "In attesa di revisione nell'intake",
+				"label": "Smistamento"
+			},
+			"unstarted": {
+				"description": "Pianificate, lavoro non iniziato",
+				"label": "Non iniziate"
+			}
+		},
 		"priority": {
 			"label": "Priorità",
 			"no-priority": "Nessuna priorità",
@@ -4111,7 +4292,7 @@
 			"high": "Alta",
 			"urgent": "Urgente"
 		},
-		"boardSearchPlaceholder": "Cerca ticket...",
+		"boardSearchPlaceholder": "Cerca attività...",
 		"view": {
 			"board": "Board",
 			"list": "Elenco",
@@ -4128,9 +4309,16 @@
 		},
 		"detail": {
 			"subtaskOf": "Sotto-attività di",
+			"customFieldUpdated": "Campo aggiornato",
+			"selectOption": "Seleziona opzione",
 			"activity": "Attività",
 			"noActivity": "Nessuna attività trovata",
 			"openInFullPage": "Apri a pagina intera",
+			"openOnBoard": "Apri nella board",
+			"sheetLabel": "Dettagli dell'attività",
+			"previousTask": "Attività precedente",
+			"nextTask": "Attività successiva",
+			"position": "{{position}} di {{total}}",
 			"titlePlaceholder": "Clicca per aggiungere un titolo",
 			"addDescription": "Aggiungi una descrizione...",
 			"editor": {
@@ -4260,13 +4448,11 @@
 					"toolbar": "Opzioni immagine"
 				}
 			},
-			"customFieldUpdated": "Campo aggiornato",
-			"selectOption": "Seleziona opzione",
-			"nextTask": "Attività successiva",
-			"openOnBoard": "Apri nella board",
-			"position": "{{position}} di {{total}}",
-			"previousTask": "Attività precedente",
-			"sheetLabel": "Dettagli dell'attività"
+			"saveError": {
+				"title": "Il titolo non è stato salvato. È ancora nel campo, quindi puoi riprovare.",
+				"description": "La descrizione non è stata salvata. È ancora nell'editor, quindi puoi riprovare.",
+				"retry": "Riprova"
+			}
 		},
 		"entity": {
 			"task": "Attività"
@@ -4434,184 +4620,6 @@
 				"isAnyOf": "è uno di"
 			}
 		},
-		"gantt": {
-			"pageTitle": "{{name}} – Gantt",
-			"title": "Timeline Gantt",
-			"searchPlaceholder": "Cerca attività...",
-			"hideTasks": "Nascondi attività",
-			"showTasks": "Mostra attività",
-			"noTasks": "Nessuna attività programmata",
-			"noTasksSubtitle": "Aggiungi una data di inizio, scadenza, o entrambe alle attività per posizionarle sulla cronologia del progetto.",
-			"noTasksFound": "Nessuna attività trovata",
-			"noTasksMatch": "Nessuna attività programmata corrisponde a \"{{query}}\"",
-			"taskHeader": "Attività",
-			"updateDatesError": "Aggiornamento date attività fallito",
-			"resizeStart": "Ridimensiona data inizio",
-			"resizeDue": "Ridimensiona data scadenza",
-			"taskAriaLabel": "{{title}}: apri o trascina per spostare",
-			"jumpToToday": "Vai a oggi",
-			"previousPeriod": "Periodo precedente",
-			"nextPeriod": "Periodo successivo",
-			"periodStart": "Data di inizio della cronologia",
-			"showTaskDates": "Mostra date attività",
-			"dependencyConflict": "Inizia o finisce in un ordine non compatibile con una dipendenza",
-			"dragToSchedule": "Trascina {{title}} sulla timeline",
-			"noDates": "Senza date",
-			"noDatesCount": "Senza date · {{count}}",
-			"noDatesHint": "Trascina sulla timeline o pianifica a partire da oggi.",
-			"schedule": "Pianifica",
-			"scheduleTask": "Pianifica {{title}} a partire da oggi",
-			"zoom": "Zoom della timeline",
-			"zoomMonth": "Mese",
-			"zoomQuarter": "Trimestre",
-			"zoomWeek": "Settimana"
-		},
-		"delete": {
-			"title": "Eliminare l'attività?",
-			"description": "L'attività e le sue sotto-attività vengono spostate nel cestino del progetto. Puoi ripristinarle da Eliminati di recente nelle impostazioni del progetto.",
-			"action": "Elimina attività",
-			"success": "Attività spostata nel cestino",
-			"error": "Eliminazione attività fallita"
-		},
-		"archive": {
-			"success": "{{count}} attività archiviate",
-			"archived": "Attività archiviata",
-			"badge": "Archiviata",
-			"error": "Impossibile archiviare l'attività",
-			"restore": "Ripristina",
-			"restored": "Attività ripristinata",
-			"restoreError": "Impossibile ripristinare l'attività"
-		},
-		"listView": {
-			"addTask": "Aggiungi attività",
-			"archiveAllTooltip": "Archivia tutte le attività completate",
-			"noTasks": "Nessuna attività"
-		},
-		"kanban": {
-			"addTask": "Aggiungi attività",
-			"stages": "Colonne",
-			"emptyAction": "Aggiungi un'attività",
-			"emptyTitle": "Ancora nessuna attività"
-		},
-		"pr": {
-			"merged": "Unito",
-			"draft": "Bozza",
-			"open": "Aperto",
-			"label": "Pull request",
-			"count_one": "{{count}} PR",
-			"count_other": "{{count}} PR",
-			"count_many": "{{count}} PR"
-		},
-		"assignee": {
-			"label": "Assegnatari",
-			"unassigned": "Non assegnato"
-		},
-		"dueDate": {
-			"label": "Data scadenza",
-			"clear": "Cancella data",
-			"updateSuccess": "Data scadenza attività aggiornata con successo",
-			"updateError": "Aggiornamento data scadenza attività fallito",
-			"clearSuccess": "Data scadenza attività cancellata",
-			"clearError": "Cancellazione data scadenza fallita"
-		},
-		"update": {
-			"success": "Attività aggiornata con successo",
-			"error": "Aggiornamento attività fallito"
-		},
-		"contextMenu": {
-			"copyLink": "Copia link",
-			"copyLinkSuccess": "Link dell'attività copiato",
-			"estimate": "Stima"
-		},
-		"actions": {
-			"archive": "Archivia",
-			"markAsPlanned": "Segna come pianificata",
-			"delete": "Elimina...",
-			"copyKey": "Copia chiave attività",
-			"copyLink": "Copia link",
-			"makeCopy": "Crea una copia…",
-			"moreActions": "Altre azioni"
-		},
-		"bulk": {
-			"selectedCount": "{{count}} selezionate",
-			"moveToBacklog": "Sposta in Backlog",
-			"moveToBacklogSuccess": "{{count}} attività spostate in backlog",
-			"moveToBacklogError": "Spostamento attività in backlog fallito",
-			"moveToBoard": "Sposta nella board",
-			"moveToBoardSuccess": "{{count}} attività spostate nella board",
-			"moveToBoardError": "Spostamento attività nella board fallito",
-			"delete": "Elimina attività",
-			"deleteConfirm": "Spostare {{count}} attività nel cestino? Puoi ripristinarle da Eliminati di recente nelle impostazioni del progetto.",
-			"deleteSuccess": "{{count}} attività eliminate",
-			"deleteError": "Eliminazione attività fallita",
-			"archive": "Archivia attività",
-			"archiveSuccess": "{{count}} attività archiviate",
-			"archiveError": "Archiviazione attività fallita",
-			"updateSuccess": "{{count}} attività aggiornate",
-			"updateError": "Aggiornamento attività fallito",
-			"setPriority": "Imposta la priorità",
-			"updatePriorityError": "Aggiornamento priorità fallito",
-			"addLabel": "Aggiungi etichetta",
-			"addLabelSuccess": "Etichetta aggiunta a {{count}} attività",
-			"addLabelError": "Aggiunta etichetta fallita",
-			"setDueDate": "Imposta la scadenza",
-			"updateDueDateError": "Aggiornamento data scadenza fallito",
-			"actions": "Azioni",
-			"searchActions": "Cerca azioni...",
-			"noActionsFound": "Nessuna azione trovata.",
-			"changeStatus": "Cambia stato",
-			"removeLabel": "Rimuovi etichetta",
-			"removeLabelSuccess": "Etichetta rimossa da {{count}} attività",
-			"removeLabelError": "Rimozione etichetta fallita",
-			"unarchive": "Ripristina dall'archivio",
-			"unarchiveSuccess": "{{count}} attività ripristinate",
-			"unarchiveNone": "Nessuna delle attività selezionate è archiviata",
-			"unarchiveError": "Ripristino attività fallito",
-			"setDates": "Date",
-			"dateField": "Data da impostare",
-			"startDate": "Data inizio",
-			"dueDate": "Data scadenza",
-			"clearStartDate": "Cancella data inizio",
-			"clearDueDate": "Cancella data scadenza",
-			"updateStartDateError": "Aggiornamento data inizio fallito. La data di inizio non può essere successiva alla data di scadenza di un'attività.",
-			"addAssignee": "Aggiungi assegnatario",
-			"addAssigneeSuccess_many": "{{name}} aggiunto a {{count}} attività",
-			"addAssigneeSuccess_one": "{{name}} aggiunto a {{count}} attività",
-			"addAssigneeSuccess_other": "{{name}} aggiunto a {{count}} attività",
-			"assigneesError": "Impossibile aggiornare gli assegnatari",
-			"clearAssignees": "Rimuovi tutti gli assegnatari",
-			"clearAssigneesSuccess_many": "Assegnatari rimossi da {{count}} attività",
-			"clearAssigneesSuccess_one": "Assegnatari rimossi da {{count}} attività",
-			"clearAssigneesSuccess_other": "Assegnatari rimossi da {{count}} attività",
-			"removeAssignee": "Rimuovi assegnatario",
-			"removeAssigneeSuccess_many": "{{name}} rimosso da {{count}} attività",
-			"removeAssigneeSuccess_one": "{{name}} rimosso da {{count}} attività",
-			"removeAssigneeSuccess_other": "{{name}} rimosso da {{count}} attività",
-			"clearSelection": "Cancella selezione"
-		},
-		"editor": {
-			"table": {
-				"addColumnBefore": "Inserisci colonna a sinistra",
-				"addColumnAfter": "Inserisci colonna a destra",
-				"deleteColumn": "Elimina colonna",
-				"addRowBefore": "Inserisci riga sopra",
-				"addRowAfter": "Inserisci riga sotto",
-				"deleteRow": "Elimina riga",
-				"deleteTable": "Elimina tabella",
-				"moveRowUp": "Sposta riga in alto",
-				"moveRowDown": "Sposta riga in basso",
-				"moveColumnLeft": "Sposta colonna a sinistra",
-				"moveColumnRight": "Sposta colonna a destra",
-				"toggleHeaderRow": "Riga di intestazione",
-				"fullWidth": "Larghezza piena",
-				"dragRow": "Riga {{index}}",
-				"dragColumn": "Colonna {{index}}",
-				"dragRowHint": "Trascina per spostare la riga, oppure usa i tasti freccia",
-				"dragColumnHint": "Trascina per spostare la colonna, oppure usa i tasti freccia",
-				"insertRowHere": "Inserisci una riga qui",
-				"insertColumnHere": "Inserisci una colonna qui"
-			}
-		},
 		"calendar": {
 			"dayTasksAriaLabel": "Mostra tutte le attività per {{date}}",
 			"moreTasks": "+{{count}} altre",
@@ -4634,444 +4642,93 @@
 			"week": "Settimana",
 			"overdue": "In ritardo"
 		},
-		"descriptionSearchLoading": "Ricerca nelle descrizioni complete…",
-		"descriptionSearchError": "Ricerca nella descrizione fallita. I risultati potrebbero essere incompleti.",
-		"descriptionRetry": "Riprova",
-		"descriptionLoading": "Caricamento descrizione…",
-		"descriptionLoadError": "Impossibile caricare la descrizione. Riprova per caricare la versione corrente.",
-		"columnGroups": {
-			"backlog": {
-				"description": "Registrate, non ancora pianificate",
-				"label": "Backlog"
+		"gantt": {
+			"pageTitle": "{{name}} – Gantt",
+			"title": "Timeline Gantt",
+			"jumpToToday": "Vai a oggi",
+			"searchPlaceholder": "Cerca attività...",
+			"hideTasks": "Nascondi attività",
+			"showTasks": "Mostra attività",
+			"noTasks": "Nessuna attività programmata",
+			"noTasksSubtitle": "Aggiungi una data di inizio, scadenza, o entrambe alle attività per posizionarle sulla cronologia del progetto.",
+			"noTasksFound": "Nessuna attività trovata",
+			"noTasksMatch": "Nessuna attività programmata corrisponde a \"{{query}}\"",
+			"taskHeader": "Attività",
+			"updateDatesError": "Aggiornamento date attività fallito",
+			"resizeStart": "Ridimensiona data inizio",
+			"resizeDue": "Ridimensiona data scadenza",
+			"taskAriaLabel": "{{title}}: apri o trascina per spostare",
+			"previousPeriod": "Periodo precedente",
+			"nextPeriod": "Periodo successivo",
+			"periodStart": "Data di inizio della cronologia",
+			"showTaskDates": "Mostra date attività",
+			"zoom": "Zoom della timeline",
+			"zoomWeek": "Settimana",
+			"zoomMonth": "Mese",
+			"zoomQuarter": "Trimestre",
+			"noDates": "Senza date",
+			"noDatesCount": "Senza date · {{count}}",
+			"noDatesHint": "Trascina sulla timeline o pianifica a partire da oggi.",
+			"schedule": "Pianifica",
+			"scheduleTask": "Pianifica {{title}} a partire da oggi",
+			"dragToSchedule": "Trascina {{title}} sulla timeline",
+			"dependencyConflict": "Inizia o finisce in un ordine non compatibile con una dipendenza",
+			"workspaceNoTasksSubtitle": "Aggiungi una data di inizio, una scadenza o entrambe alle attività per vederle su questa timeline.",
+			"showMoreTasks": "Mostra altre attività",
+			"blocked": "Bloccata da un'attività aperta",
+			"linkFrom": "Collega {{title}} a un'altra attività",
+			"linkHint": "Trascina su un'altra attività per farla attendere questa",
+			"link": {
+				"blocks": "{{source}} blocca {{target}}",
+				"startBefore": "{{source}} inizia prima di {{target}}",
+				"finishBefore": "{{source}} finisce prima di {{target}}",
+				"conflict": "Le date non rispettano questo collegamento."
 			},
-			"cancelled": {
-				"description": "Chiuse senza svolgere il lavoro",
-				"label": "Annullate"
+			"milestone": {
+				"add": "Traguardo",
+				"ariaLabel": "Traguardo {{title}}: apri o trascina per spostare",
+				"name": "Nome del traguardo",
+				"namePlaceholder": "Nome del traguardo",
+				"date": "Data del traguardo",
+				"create": "Aggiungi traguardo",
+				"createError": "Impossibile aggiungere il traguardo"
 			},
-			"completed": {
-				"description": "Fatto",
-				"label": "Completate"
-			},
-			"started": {
-				"description": "Lavoro in corso",
-				"label": "Iniziate"
-			},
-			"triage": {
-				"description": "In attesa di revisione nell'intake",
-				"label": "Smistamento"
-			},
-			"unstarted": {
-				"description": "Pianificate, lavoro non iniziato",
-				"label": "Non iniziate"
+			"cascade": {
+				"offer_one": "{{count}} attività collegata ora inizia troppo presto",
+				"offer_many": "{{count}} di attività collegate ora iniziano troppo presto",
+				"offer_other": "{{count}} attività collegate ora iniziano troppo presto",
+				"reviewAction": "Rivedi le modifiche alle date",
+				"title_one": "Spostare {{count}} attività collegata?",
+				"title_many": "Spostare {{count}} di attività collegate?",
+				"title_other": "Spostare {{count}} attività collegate?",
+				"description": "Queste attività verrebbero posticipate quanto basta per rispettare i collegamenti e manterrebbero la loro durata. Non cambia nulla finché non confermi.",
+				"to": "a",
+				"cancel": "Mantieni le date",
+				"confirm_one": "Sposta {{count}} attività",
+				"confirm_many": "Sposta {{count}} di attività",
+				"confirm_other": "Sposta {{count}} attività",
+				"moved_one": "{{count}} attività spostata",
+				"moved_many": "{{count}} di attività spostate",
+				"moved_other": "{{count}} attività spostate",
+				"partial": "Spostate {{moved}} di {{total}} attività. Le altre hanno mantenuto le loro date.",
+				"nothingToMove": "Nessuna attività aperta con date deve essere spostata per questo collegamento."
 			}
 		},
-		"estimate": {
-			"bulk": {
-				"action": "Stima",
-				"error": "Impossibile cambiare la stima delle attività selezionate",
-				"updated_many": "Aggiornata la stima di {{count}} attività",
-				"updated_one": "Aggiornata la stima di {{count}} attività",
-				"updated_other": "Aggiornata la stima di {{count}} attività"
-			},
-			"chart": {
-				"points": "Punti",
-				"pointsLeft": "Punti rimanenti",
-				"summaryPoints": "{{remaining}} di {{scope}} punti rimanenti, {{days}} giorni rimanenti",
-				"summaryTime": "{{remaining}} di {{scope}} rimanenti, {{days}} giorni rimanenti",
-				"tasks": "Attività",
-				"time": "Tempo",
-				"timeLeft": "Tempo rimanente",
-				"unitAria": "Unità del grafico"
-			},
-			"duration": {
-				"hours": "{{hours}} h",
-				"hoursMinutes": "{{hours}} h {{minutes}} min",
-				"hourUnit": "h",
-				"minutes": "{{minutes}} min",
-				"minuteUnit": "m"
-			},
-			"label": "Stima",
-			"none": "Nessuna stima",
-			"pointsValue_one": "{{value}} pt",
-			"pointsValue_many": "{{value}} pt",
-			"pointsValue_other": "{{value}} pt",
-			"setAria": "Imposta stima",
-			"totals": {
-				"estimated": "{{estimated}} di {{total}} attività stimate",
-				"points_one": "{{completed}} / {{total}} pt",
-				"points_many": "{{completed}} / {{total}} pt",
-				"points_other": "{{completed}} / {{total}} pt",
-				"time": "{{completed}} / {{total}}"
-			},
-			"updateError": "Aggiornamento della stima fallito"
+		"delete": {
+			"title": "Eliminare l'attività?",
+			"description": "L'attività e le sue sotto-attività vengono spostate nel cestino del progetto. Puoi ripristinarle da Eliminati di recente nelle impostazioni del progetto.",
+			"action": "Elimina attività",
+			"success": "Attività spostata nel cestino",
+			"error": "Eliminazione attività fallita"
 		},
-		"assignees": {
-			"clear": "Rimuovi tutti",
-			"formerMember": "Non più membro",
-			"formerMemberSuffix": "{{name}} (non più membro)",
-			"label": "Assegnatari",
-			"limitReached": "Un'attività può avere fino a {{count}} assegnatari",
-			"more": "+{{count}}",
-			"nameAndMore": "{{name}} +{{count}}",
-			"noMatches": "Nessuna persona corrispondente",
-			"noMembers": "Ancora nessun membro da assegnare",
-			"searchPlaceholder": "Cerca persone...",
-			"stackAria": "Assegnato a {{names}}",
-			"unknownPerson": "Persona sconosciuta",
-			"updateError": "Impossibile aggiornare gli assegnatari",
-			"you": "{{name}} (tu)"
-		},
-		"attachments": {
-			"add": "Allega file",
-			"delete": "Elimina",
-			"deleteConfirmDescription": "Il file viene rimosso per tutti. Questa azione non può essere annullata.",
-			"deleteConfirmTitle": "Eliminare {{filename}}?",
-			"download": "Scarica",
-			"dropHere": "Rilascia i file qui o fai clic per sfogliare",
-			"dropToAttach": "Rilascia i file per allegarli",
-			"loadError": "Impossibile caricare gli allegati",
-			"meta": "{{size}} · {{name}} · {{time}}",
-			"metaNoUser": "{{size}} · {{time}}",
-			"open": "Apri",
-			"title": "Allegati",
-			"toast": {
-				"attached_many": "{{count}} file allegati",
-				"attached_one": "{{count}} file allegato",
-				"attached_other": "{{count}} file allegati",
-				"deleted": "Allegato eliminato",
-				"deleteError": "Impossibile eliminare l'allegato",
-				"empty": "{{filename}} è vuoto",
-				"failed": "Impossibile allegare {{filename}}: {{reason}}",
-				"notConfigured": "I caricamenti di file non sono configurati su questo server. Chiedi al tuo amministratore di configurare l'archiviazione.",
-				"storageError": "l'archiviazione ha rifiutato il caricamento",
-				"tooMany": "Puoi allegare fino a {{count}} file alla volta",
-				"unknownError": "qualcosa è andato storto"
-			},
-			"uploading": "Caricamento…"
-		},
-		"copy": {
-			"alwaysCopied": "Stato e priorità vengono sempre copiati.",
-			"cancel": "Annulla",
-			"includeLabel": "Includi",
-			"options": {
-				"assignees": "Assegnatari",
-				"attachments": "Allegati",
-				"customFields": "Valori dei campi personalizzati",
-				"dates": "Date di inizio e scadenza",
-				"description": "Descrizione",
-				"labels": "Etichette",
-				"links": "Link",
-				"parent": "Attività principale",
-				"planning": "Ciclo, moduli e stima"
-			},
-			"otherProjectHint": "Lo stato viene associato alle colonne del nuovo progetto. Campi personalizzati, attività principale e pianificazione non vengono copiati tra progetti.",
-			"projectLabel": "Progetto",
-			"submit": "Crea una copia",
-			"title": "Crea una copia di {{key}}",
-			"titleLabel": "Titolo",
-			"titleRequired": "Il titolo è obbligatorio",
-			"titleSuffix": "{{title}} (copia)",
-			"toast": {
-				"error": "Impossibile creare la copia",
-				"open": "Apri",
-				"skipped": "Non copiato: {{list}}",
-				"success": "Copia creata: {{key}}"
-			}
-		},
-		"detailActions": {
-			"addLink": "Aggiungi link",
-			"addRelation": "Aggiungi relazione",
-			"addSubtask": "Aggiungi sotto-attività",
-			"attachFile": "Allega file"
-		},
-		"links": {
-			"add": "Aggiungi link",
-			"addedAt": "Aggiunto il {{date}}",
-			"addedBy": "Aggiunto da {{name}} · {{date}}",
-			"addTitle": "Aggiungi link",
-			"cancel": "Annulla",
-			"copyUrl": "Copia URL",
-			"edit": "Modifica",
-			"editTitle": "Modifica link",
-			"errors": {
-				"credentials": "I link non possono contenere un nome utente o una password",
-				"duplicate": "Questo link è già presente in questa attività",
-				"invalid": "Inserisci un URL http o https valido",
-				"required": "L'URL è obbligatorio",
-				"titleTooLong": "I titoli possono contenere al massimo 255 caratteri",
-				"tooLong": "I link possono contenere al massimo 2.048 caratteri"
-			},
-			"linkTitle": "Titolo",
-			"loadError": "Impossibile caricare i link",
-			"moreActions": "Azioni link",
-			"remove": "Rimuovi",
-			"removeConfirmDescription": "Verrà rimosso dall'attività per tutti.",
-			"removeConfirmTitle": "Rimuovere questo link?",
-			"retry": "Riprova",
-			"save": "Salva",
-			"title": "Link",
-			"titlePlaceholder": "Titolo visualizzato opzionale",
-			"toast": {
-				"added": "Link aggiunto",
-				"copied": "Link copiato",
-				"error": "Impossibile salvare il link",
-				"removed": "Link rimosso",
-				"updated": "Link aggiornato"
-			},
-			"url": "URL",
-			"urlPlaceholder": "https://example.com"
-		},
-		"create": {
-			"similarTitle": "Attività aperte simili",
-			"similarDismiss": "Nascondi attività simili",
-			"similarOpen": "Apri",
-			"similarOpenLabel": "Apri {{key}} {{title}} in una nuova scheda"
-		},
-		"parent": {
-			"add": "Aggiungi attività principale",
-			"chip": "Principale",
-			"label": "Attività principale",
-			"noTasks": "Nessuna attività trovata",
-			"remove": "Rimuovi attività principale",
-			"search": "Cerca attività…",
-			"tasksInProject": "Attività in questo progetto",
-			"toast": {
-				"error": "Impossibile modificare l'attività principale",
-				"removed": "Attività principale rimossa",
-				"set": "Attività principale impostata su {{key}}"
-			},
-			"tooltip": "Principale: {{key}} {{title}}"
-		},
-		"taskKey": {
-			"clipboardError": "Impossibile copiare negli appunti",
-			"copied": "{{key}} copiata",
-			"copyTooltip": "Copia chiave attività"
-		},
-		"display": {
-			"button": "Visualizzazione",
-			"columns": "Colonne",
-			"groupBy": "Raggruppa per",
-			"groups": {
-				"assignee": "Assegnatario",
-				"createdBy": "Creato da",
-				"cycle": "Ciclo",
-				"estimate": "Stima",
-				"group": "Gruppo",
-				"label": "Etichetta",
-				"module": "Modulo",
-				"priority": "Priorità",
-				"project": "Progetto",
-				"status": "Stato"
-			},
-			"none": "Nessuno",
-			"order": {
-				"assignee": "Assegnatario",
-				"completedAt": "Data di completamento",
-				"createdAt": "Ultima creazione",
-				"cycle": "Ciclo",
-				"dueDate": "Data scadenza",
-				"estimate": "Stima",
-				"label": "Etichetta",
-				"manual": "Manuale",
-				"module": "Modulo",
-				"number": "Chiave attività",
-				"priority": "Priorità",
-				"startDate": "Data di inizio",
-				"status": "Stato",
-				"subTaskCount": "Sotto-attività",
-				"title": "Titolo",
-				"updatedAt": "Ultimo aggiornamento",
-				"archivedAt": "Data di archiviazione"
-			},
-			"orderBy": "Ordina per",
-			"properties": "Proprietà",
-			"props": {
-				"assignee": "Assegnatari",
-				"checklist": "Checklist",
-				"createdAt": "Creato",
-				"cycle": "Ciclo",
-				"dueDate": "Data scadenza",
-				"estimate": "Stima",
-				"key": "Chiave",
-				"labels": "Etichette",
-				"modules": "Moduli",
-				"priority": "Priorità",
-				"startDate": "Data di inizio",
-				"status": "Stato",
-				"subTaskCount": "Sotto-attività",
-				"updatedAt": "Aggiornato"
-			},
-			"showEmptyGroups": "Mostra gruppi vuoti",
-			"showSubTasks": "Mostra sotto-attività",
-			"subGroupBy": "Sottoraggruppa per"
-		},
-		"filters": {
-			"apply": "Applica",
-			"applyError": "Impossibile applicare i filtri",
-			"archived": {
-				"exclude": "Nascondi archiviate",
-				"include": "Mostra anche archiviate",
-				"label": "Archiviate",
-				"only": "Solo archiviate"
-			},
-			"button": "Filtro",
-			"clearAll": "Cancella tutti i filtri",
-			"dates": {
-				"amount": "Quantità",
-				"custom": "Data personalizzata…",
-				"emptyTab": "Vuoto",
-				"exact": "Data esatta",
-				"future": "Dopo oggi",
-				"lastMonth": "Mese scorso",
-				"lastWeek": "Settimana scorsa",
-				"nextMonth": "Mese prossimo",
-				"nextWeek": "Settimana prossima",
-				"overdue": "In ritardo",
-				"past": "Prima di oggi",
-				"presets": "Preimpostazioni",
-				"rolling": "Mobile",
-				"rollingValue": "{{amount}} {{unit}}",
-				"thisMonth": "Questo mese",
-				"thisWeek": "Questa settimana",
-				"today": "Oggi",
-				"tomorrow": "Domani",
-				"units": {
-					"days": "giorni",
-					"months": "mesi",
-					"weeks": "settimane"
-				},
-				"yesterday": "Ieri"
-			},
-			"matchAll": "Tutte le condizioni",
-			"matchAny": "Almeno una condizione",
-			"mobileSummary_many": "{{count}} filtri",
-			"mobileSummary_one": "{{count}} filtro",
-			"mobileSummary_other": "{{count}} filtri",
-			"nestedReadOnly": "Questa vista usa filtri avanzati che non si possono modificare qui",
-			"noOptions": "Nessuna opzione",
-			"operators": {
-				"between": "tra",
-				"is": "è",
-				"isEmpty": "è vuoto",
-				"isNoneOf": "non è nessuno tra",
-				"isNot": "non è",
-				"isNotEmpty": "non è vuoto",
-				"moreThanAgo": "più di … fa",
-				"moreThanAhead": "tra più di …",
-				"on": "il",
-				"onOrAfter": "il o dopo il",
-				"onOrBefore": "il o prima del",
-				"withinLast": "negli ultimi",
-				"withinNext": "nei prossimi"
-			},
-			"removeFilter": "Rimuovi il filtro {{subject}}",
-			"retry": "Riprova",
-			"searchOptions": "Cerca opzioni",
-			"subjects": {
-				"completed": "Completato",
-				"created": "Creato",
-				"createdBy": "Creato da",
-				"cycle": "Ciclo",
-				"group": "Gruppo",
-				"mentions": "Menzioni",
-				"module": "Modulo",
-				"parent": "Genitore",
-				"project": "Progetto",
-				"startDate": "Data di inizio",
-				"subscribed": "Iscritto",
-				"updated": "Aggiornato"
-			},
-			"tooMany": "Troppi risultati per filtrare qui; apri il foglio di calcolo",
-			"values": {
-				"currentCycle": "Ciclo corrente",
-				"false": "Falso",
-				"me": "Io",
-				"noAssignee": "Nessun assegnatario",
-				"noCreator": "Nessun creatore",
-				"noCycle": "Nessun ciclo",
-				"noEstimate": "Nessuna stima",
-				"noLabel": "Nessuna etichetta",
-				"noModule": "Nessun modulo",
-				"none": "Nessuno",
-				"noParent": "Nessun genitore",
-				"true": "Vero"
-			}
-		},
-		"groups": {
-			"all": "Tutte le attività",
-			"hiddenGroups_many": "{{count}} altri gruppi non mostrati",
-			"hiddenGroups_one": "{{count}} altro gruppo non mostrato",
-			"hiddenGroups_other": "{{count}} altri gruppi non mostrati",
-			"loadMore": "Carica altro ({{count}})",
-			"moduleCount_many": "{{count}} moduli",
-			"moduleCount_one": "{{count}} modulo",
-			"moduleCount_other": "{{count}} moduli",
-			"moveError": "Impossibile spostare l'attività",
-			"noAssignee": "Nessun assegnatario",
-			"noCreator": "Nessun creatore",
-			"noCycle": "Nessun ciclo",
-			"noEstimate": "Nessuna stima",
-			"noLabel": "Nessuna etichetta",
-			"noModule": "Nessun modulo",
-			"planned": "Pianificate"
-		},
-		"queryEmpty": {
-			"clear": "Cancella filtri",
-			"description": "Prova a rimuovere uno o due filtri.",
-			"title": "Nessuna attività corrisponde a questi filtri"
-		},
-		"spreadsheet": {
-			"clearSort": "Rimuovi ordinamento",
-			"collapseSubTasks": "Nascondi sotto-attività",
-			"expandSubTasks": "Mostra sotto-attività",
-			"hideColumn": "Nascondi colonna",
-			"loadError": "Impossibile caricare le attività",
-			"selectTask": "Seleziona {{key}}",
-			"sortAsc": "Ordine crescente",
-			"sortDesc": "Ordine decrescente",
-			"task": "Attività"
-		},
-		"subscription": {
-			"count_many": "{{count}} persone iscritte",
-			"count_one": "{{count}} persona iscritta",
-			"count_other": "{{count}} persone iscritte",
-			"error": "Impossibile aggiornare la tua iscrizione",
-			"mutedAssignee": "L'attività ti è assegnata, ma hai annullato l'iscrizione. Riceverai comunque le menzioni.",
-			"notSubscribed": "Ricevi aggiornamenti su cambi di stato, commenti e altre modifiche.",
-			"reasons": {
-				"assignee": "Sei iscritto perché l'attività ti è assegnata.",
-				"commenter": "Sei iscritto perché hai commentato.",
-				"creator": "Sei iscritto perché hai creato questa attività.",
-				"manual": "Ti sei iscritto a questa attività.",
-				"mention": "Sei iscritto perché sei stato menzionato."
-			},
-			"subscribe": "Iscriviti",
-			"toastSubscribed": "Iscritto a questa attività",
-			"toastUnsubscribed": "Iscrizione annullata. Riceverai comunque una notifica se vieni menzionato.",
-			"unsubscribe": "Annulla iscrizione"
-		},
-		"timeTracking": {
-			"duration": "Durata",
-			"durationInvalid": "Inserisci una durata tra 1 minuto e 24 ore, ad esempio 1h 30m.",
-			"durationPlaceholder": "es. 1h 30m",
-			"empty": "Nessun tempo registrato per ora",
-			"entries": "Voci di tempo",
-			"formerMember": "Ex membro",
-			"hours": "{{hours}} h",
-			"hoursMinutes": "{{hours}} h {{minutes}} min",
-			"label": "Tempo impiegato",
-			"logError": "Impossibile registrare il tempo",
-			"logged": "Tempo registrato",
-			"logTime": "Registra tempo",
-			"minutes": "{{minutes}} min",
-			"note": "Nota (facoltativa)",
-			"running": "In corso",
-			"spentAria": "Tempo impiegato: {{total}}. Registra tempo",
-			"submit": "Registra tempo",
-			"deleteConfirm": "Eliminare questa voce?",
-			"deleted": "Voce di tempo eliminata",
-			"deleteEntry": "Elimina la voce di tempo del {{date}}",
-			"deleteError": "Impossibile eliminare la voce di tempo"
+		"archive": {
+			"success": "{{count}} attività archiviate",
+			"archived": "Attività archiviata",
+			"badge": "Archiviata",
+			"error": "Impossibile archiviare l'attività",
+			"restore": "Ripristina",
+			"restored": "Attività ripristinata",
+			"restoreError": "Impossibile ripristinare l'attività"
 		},
 		"archivedBanner": {
 			"message": "Questa attività è stata archiviata {{time}}.",
@@ -5144,8 +4801,618 @@
 			},
 			"untitled": "Bozza senza titolo"
 		},
+		"listView": {
+			"addTask": "Aggiungi attività",
+			"archiveAllTooltip": "Archivia tutte le attività completate",
+			"noTasks": "Nessuna attività"
+		},
+		"kanban": {
+			"addTask": "Aggiungi attività",
+			"stages": "Colonne",
+			"emptyAction": "Aggiungi un'attività",
+			"emptyTitle": "Ancora nessuna attività"
+		},
+		"pr": {
+			"merged": "Unito",
+			"draft": "Bozza",
+			"open": "Aperto",
+			"label": "Pull request",
+			"count_one": "{{count}} PR",
+			"count_other": "{{count}} PR",
+			"count_many": "{{count}} PR"
+		},
+		"assignee": {
+			"label": "Assegnatari",
+			"unassigned": "Non assegnato"
+		},
+		"assignees": {
+			"label": "Assegnatari",
+			"searchPlaceholder": "Cerca persone...",
+			"noMatches": "Nessuna persona corrispondente",
+			"noMembers": "Ancora nessun membro da assegnare",
+			"you": "{{name}} (tu)",
+			"clear": "Rimuovi tutti",
+			"more": "+{{count}}",
+			"nameAndMore": "{{name}} +{{count}}",
+			"stackAria": "Assegnato a {{names}}",
+			"formerMember": "Non più membro",
+			"formerMemberSuffix": "{{name}} (non più membro)",
+			"limitReached": "Un'attività può avere fino a {{count}} assegnatari",
+			"updateError": "Impossibile aggiornare gli assegnatari",
+			"unknownPerson": "Persona sconosciuta",
+			"noAccess": "Nessun accesso a questo progetto",
+			"noAccessSuffix": "{{name}} (nessun accesso a questo progetto)"
+		},
+		"dueDate": {
+			"label": "Data scadenza",
+			"clear": "Cancella data",
+			"updateSuccess": "Data scadenza attività aggiornata con successo",
+			"updateError": "Aggiornamento data scadenza attività fallito",
+			"clearSuccess": "Data scadenza attività cancellata",
+			"clearError": "Cancellazione data scadenza fallita"
+		},
+		"update": {
+			"success": "Attività aggiornata con successo",
+			"error": "Aggiornamento attività fallito"
+		},
+		"contextMenu": {
+			"copyLink": "Copia link",
+			"copyLinkSuccess": "Link dell'attività copiato",
+			"estimate": "Stima"
+		},
+		"actions": {
+			"archive": "Archivia",
+			"markAsPlanned": "Segna come pianificata",
+			"delete": "Elimina...",
+			"copyKey": "Copia chiave attività",
+			"copyLink": "Copia link",
+			"makeCopy": "Crea una copia…",
+			"moreActions": "Altre azioni"
+		},
+		"commands": {
+			"assignedSelf": "Assegnata a te",
+			"assignees": "Cambia assegnatari…",
+			"assignSelf": "Assegna a me",
+			"copyTitle": "Copia titolo",
+			"cycle": "Cambia ciclo…",
+			"dueDate": "Cambia data di scadenza…",
+			"estimate": "Cambia stima…",
+			"group": "Questa attività",
+			"labels": "Cambia etichette…",
+			"module": "Cambia moduli…",
+			"priority": "Cambia priorità…",
+			"status": "Cambia stato…",
+			"titleCopied": "Titolo dell'attività copiato",
+			"unassignedSelf": "Non sei più assegnato",
+			"unassignSelf": "Rimuovi la mia assegnazione"
+		},
+		"readableLink": {
+			"goHome": "Vai alla Home",
+			"notFound": "Nessuna attività con la chiave {{key}} in questo workspace, oppure non puoi vederla."
+		},
+		"timeTracking": {
+			"label": "Tempo impiegato",
+			"logTime": "Registra tempo",
+			"spentAria": "Tempo impiegato: {{total}}. Registra tempo",
+			"duration": "Durata",
+			"durationPlaceholder": "es. 1h 30m",
+			"durationInvalid": "Inserisci una durata tra 1 minuto e 24 ore, ad esempio 1h 30m.",
+			"note": "Nota (facoltativa)",
+			"submit": "Registra tempo",
+			"logged": "Tempo registrato",
+			"logError": "Impossibile registrare il tempo",
+			"empty": "Nessun tempo registrato per ora",
+			"entries": "Voci di tempo",
+			"running": "In corso",
+			"formerMember": "Ex membro",
+			"hours": "{{hours}} h",
+			"minutes": "{{minutes}} min",
+			"hoursMinutes": "{{hours}} h {{minutes}} min",
+			"deleteEntry": "Elimina la voce di tempo del {{date}}",
+			"deleteConfirm": "Eliminare questa voce?",
+			"deleted": "Voce di tempo eliminata",
+			"deleteError": "Impossibile eliminare la voce di tempo",
+			"startTimer": "Avvia timer",
+			"startHere": "Fermalo e avvia qui",
+			"stopTimer": "Ferma",
+			"timerRunning": "Timer in corso",
+			"timerRunningOn": "Timer in corso su {{task}}",
+			"timerStarted": "Timer avviato",
+			"timerSwitched": "Timer avviato. L'altro timer è stato fermato.",
+			"timerStopped": "Timer fermato. Registrato: {{total}}.",
+			"timerStartError": "Impossibile avviare il timer",
+			"timerStopError": "Impossibile fermare il timer",
+			"loadError": "Impossibile caricare le voci di tempo",
+			"editEntry": "Modifica la voce di tempo del {{date}}",
+			"editStart": "Inizio",
+			"editEnd": "Fine",
+			"editEndRunningHint": "Lascia vuoto per mantenerlo in corso.",
+			"editEndRequired": "Indica quando è terminato questo tempo.",
+			"editStartInvalid": "Indica quando è iniziato questo tempo.",
+			"editEndBeforeStart": "La fine non può essere precedente all'inizio.",
+			"editSave": "Salva",
+			"edited": "Voce di tempo aggiornata",
+			"editError": "Impossibile aggiornare la voce di tempo"
+		},
+		"bulk": {
+			"selectedCount": "{{count}} selezionate",
+			"moveToBacklog": "Sposta in Backlog",
+			"clearSelection": "Cancella selezione",
+			"moveToBacklogSuccess": "{{count}} attività spostate in backlog",
+			"moveToBacklogError": "Spostamento attività in backlog fallito",
+			"moveToBoard": "Sposta nella board",
+			"moveToBoardSuccess": "{{count}} attività spostate nella board",
+			"moveToBoardError": "Spostamento attività nella board fallito",
+			"delete": "Elimina attività",
+			"deleteConfirm": "Spostare {{count}} attività nel cestino? Puoi ripristinarle da Eliminati di recente nelle impostazioni del progetto.",
+			"deleteSuccess": "{{count}} attività eliminate",
+			"deleteError": "Eliminazione attività fallita",
+			"archive": "Archivia attività",
+			"archiveSuccess": "{{count}} attività archiviate",
+			"archiveError": "Archiviazione attività fallita",
+			"updateSuccess": "{{count}} attività aggiornate",
+			"updateError": "Aggiornamento attività fallito",
+			"addAssignee": "Aggiungi assegnatario",
+			"removeAssignee": "Rimuovi assegnatario",
+			"clearAssignees": "Rimuovi tutti gli assegnatari",
+			"addAssigneeSuccess_one": "{{name}} aggiunto a {{count}} attività",
+			"addAssigneeSuccess_many": "{{name}} aggiunto a {{count}} attività",
+			"addAssigneeSuccess_other": "{{name}} aggiunto a {{count}} attività",
+			"removeAssigneeSuccess_one": "{{name}} rimosso da {{count}} attività",
+			"removeAssigneeSuccess_many": "{{name}} rimosso da {{count}} attività",
+			"removeAssigneeSuccess_other": "{{name}} rimosso da {{count}} attività",
+			"clearAssigneesSuccess_one": "Assegnatari rimossi da {{count}} attività",
+			"clearAssigneesSuccess_many": "Assegnatari rimossi da {{count}} attività",
+			"clearAssigneesSuccess_other": "Assegnatari rimossi da {{count}} attività",
+			"assigneesError": "Impossibile aggiornare gli assegnatari",
+			"setPriority": "Imposta la priorità",
+			"updatePriorityError": "Aggiornamento priorità fallito",
+			"addLabel": "Aggiungi etichetta",
+			"addLabelSuccess": "Etichetta aggiunta a {{count}} attività",
+			"addLabelError": "Aggiunta etichetta fallita",
+			"setDueDate": "Imposta la scadenza",
+			"updateDueDateError": "Aggiornamento data scadenza fallito",
+			"actions": "Azioni",
+			"searchActions": "Cerca azioni...",
+			"noActionsFound": "Nessuna azione trovata.",
+			"changeStatus": "Cambia stato",
+			"removeLabel": "Rimuovi etichetta",
+			"removeLabelSuccess": "Etichetta rimossa da {{count}} attività",
+			"removeLabelError": "Rimozione etichetta fallita",
+			"unarchive": "Ripristina dall'archivio",
+			"unarchiveSuccess": "{{count}} attività ripristinate",
+			"unarchiveNone": "Nessuna delle attività selezionate è archiviata",
+			"unarchiveError": "Ripristino attività fallito",
+			"setDates": "Date",
+			"dateField": "Data da impostare",
+			"startDate": "Data inizio",
+			"dueDate": "Data scadenza",
+			"clearStartDate": "Cancella data inizio",
+			"clearDueDate": "Cancella data scadenza",
+			"updateStartDateError": "Aggiornamento data inizio fallito. La data di inizio non può essere successiva alla data di scadenza di un'attività.",
+			"selectTask": "Seleziona {{title}}",
+			"moveToProject": "Sposta in un progetto",
+			"moveToProjectTitle_one": "Spostare {{count}} attività in {{name}}?",
+			"moveToProjectTitle_many": "Spostare {{count}} di attività in {{name}}?",
+			"moveToProjectTitle_other": "Spostare {{count}} attività in {{name}}?",
+			"moveToProjectRule": "Ricevono nuove chiavi attività. Ogni attività mantiene il suo stato se il progetto lo prevede, altrimenti passa alla prima colonna. Etichette e assegnatari restano. Cicli, moduli e stime vengono azzerati. I valori dei campi personalizzati restano solo se il progetto ha un campo con lo stesso nome e tipo.",
+			"moveToProjectConfirm": "Sposta attività",
+			"moveToProjectSuccess_one": "{{count}} attività spostata in {{name}}",
+			"moveToProjectSuccess_many": "{{count}} di attività spostate in {{name}}",
+			"moveToProjectSuccess_other": "{{count}} attività spostate in {{name}}",
+			"moveToProjectNone": "Queste attività sono già in {{name}}",
+			"moveToProjectError": "Impossibile spostare le attività"
+		},
+		"editor": {
+			"table": {
+				"addColumnBefore": "Inserisci colonna a sinistra",
+				"addColumnAfter": "Inserisci colonna a destra",
+				"deleteColumn": "Elimina colonna",
+				"addRowBefore": "Inserisci riga sopra",
+				"addRowAfter": "Inserisci riga sotto",
+				"deleteRow": "Elimina riga",
+				"deleteTable": "Elimina tabella",
+				"moveRowUp": "Sposta riga in alto",
+				"moveRowDown": "Sposta riga in basso",
+				"moveColumnLeft": "Sposta colonna a sinistra",
+				"moveColumnRight": "Sposta colonna a destra",
+				"toggleHeaderRow": "Riga di intestazione",
+				"fullWidth": "Larghezza piena",
+				"dragRow": "Riga {{index}}",
+				"dragColumn": "Colonna {{index}}",
+				"dragRowHint": "Trascina per spostare la riga, oppure usa i tasti freccia",
+				"dragColumnHint": "Trascina per spostare la colonna, oppure usa i tasti freccia",
+				"insertRowHere": "Inserisci una riga qui",
+				"insertColumnHere": "Inserisci una colonna qui"
+			}
+		},
+		"descriptionSearchLoading": "Ricerca nelle descrizioni complete…",
+		"descriptionSearchError": "Ricerca nella descrizione fallita. I risultati potrebbero essere incompleti.",
+		"descriptionRetry": "Riprova",
+		"descriptionLoading": "Caricamento descrizione…",
+		"descriptionLoadError": "Impossibile caricare la descrizione. Riprova per caricare la versione corrente.",
+		"descriptionHistory": {
+			"cancel": "Annulla",
+			"description": "Versioni salvate di questa descrizione, dalla più recente. Le modifiche di una stessa persona entro 10 minuti condividono una versione; vengono conservate le ultime 50.",
+			"earlierVersion": "Versione precedente",
+			"empty": "Ancora nessuna versione salvata. Le versioni vengono conservate a partire dalla prossima modifica.",
+			"emptyVersion": "Questa versione non ha una descrizione.",
+			"latest": "Più recente",
+			"list": "Versioni salvate",
+			"loadError": "Impossibile caricare la cronologia",
+			"open": "Cronologia",
+			"previewTitle": "Versione del {{date}}",
+			"restore": "Ripristina",
+			"restoreConfirmDescription": "La descrizione verrà sostituita con questa versione. Il testo attuale resta nella cronologia.",
+			"restoreConfirmTitle": "Ripristinare questa versione?",
+			"restored": "Descrizione ripristinata",
+			"restoreError": "Impossibile ripristinare questa versione",
+			"retry": "Riprova",
+			"size_many": "{{count}} caratteri",
+			"size_one": "{{count}} carattere",
+			"size_other": "{{count}} caratteri",
+			"title": "Cronologia della descrizione",
+			"viewOnly": "Sola lettura"
+		},
+		"estimate": {
+			"bulk": {
+				"action": "Stima",
+				"error": "Impossibile cambiare la stima delle attività selezionate",
+				"updated_many": "Aggiornata la stima di {{count}} attività",
+				"updated_one": "Aggiornata la stima di {{count}} attività",
+				"updated_other": "Aggiornata la stima di {{count}} attività"
+			},
+			"chart": {
+				"points": "Punti",
+				"pointsLeft": "Punti rimanenti",
+				"summaryPoints": "{{remaining}} di {{scope}} punti rimanenti, {{days}} giorni rimanenti",
+				"summaryTime": "{{remaining}} di {{scope}} rimanenti, {{days}} giorni rimanenti",
+				"tasks": "Attività",
+				"time": "Tempo",
+				"timeLeft": "Tempo rimanente",
+				"unitAria": "Unità del grafico"
+			},
+			"duration": {
+				"hours": "{{hours}} h",
+				"hoursMinutes": "{{hours}} h {{minutes}} min",
+				"hourUnit": "h",
+				"minutes": "{{minutes}} min",
+				"minuteUnit": "m"
+			},
+			"label": "Stima",
+			"none": "Nessuna stima",
+			"pointsValue_one": "{{value}} pt",
+			"pointsValue_many": "{{value}} pt",
+			"pointsValue_other": "{{value}} pt",
+			"setAria": "Imposta stima",
+			"totals": {
+				"estimated": "{{estimated}} di {{total}} attività stimate",
+				"points_one": "{{completed}} / {{total}} pt",
+				"points_many": "{{completed}} / {{total}} pt",
+				"points_other": "{{completed}} / {{total}} pt",
+				"time": "{{completed}} / {{total}}"
+			},
+			"updateError": "Aggiornamento della stima fallito"
+		},
+		"detailActions": {
+			"addLink": "Aggiungi link",
+			"addRelation": "Aggiungi relazione",
+			"addSubtask": "Aggiungi sotto-attività",
+			"attachFile": "Allega file"
+		},
+		"taskKey": {
+			"clipboardError": "Impossibile copiare negli appunti",
+			"copied": "{{key}} copiata",
+			"copyTooltip": "Copia chiave attività"
+		},
 		"pageReferences": {
 			"title": "Menzionata nelle pagine"
+		},
+		"links": {
+			"add": "Aggiungi link",
+			"addedAt": "Aggiunto il {{date}}",
+			"addedBy": "Aggiunto da {{name}} · {{date}}",
+			"addTitle": "Aggiungi link",
+			"cancel": "Annulla",
+			"copyUrl": "Copia URL",
+			"edit": "Modifica",
+			"editTitle": "Modifica link",
+			"errors": {
+				"credentials": "I link non possono contenere un nome utente o una password",
+				"duplicate": "Questo link è già presente in questa attività",
+				"invalid": "Inserisci un URL http o https valido",
+				"required": "L'URL è obbligatorio",
+				"titleTooLong": "I titoli possono contenere al massimo 255 caratteri",
+				"tooLong": "I link possono contenere al massimo 2.048 caratteri"
+			},
+			"linkTitle": "Titolo",
+			"loadError": "Impossibile caricare i link",
+			"moreActions": "Azioni link",
+			"remove": "Rimuovi",
+			"removeConfirmDescription": "Verrà rimosso dall'attività per tutti.",
+			"removeConfirmTitle": "Rimuovere questo link?",
+			"retry": "Riprova",
+			"save": "Salva",
+			"title": "Link",
+			"titlePlaceholder": "Titolo visualizzato opzionale",
+			"toast": {
+				"added": "Link aggiunto",
+				"copied": "Link copiato",
+				"error": "Impossibile salvare il link",
+				"removed": "Link rimosso",
+				"updated": "Link aggiornato"
+			},
+			"url": "URL",
+			"urlPlaceholder": "https://example.com"
+		},
+		"attachments": {
+			"add": "Allega file",
+			"delete": "Elimina",
+			"deleteConfirmDescription": "Il file viene rimosso per tutti. Questa azione non può essere annullata.",
+			"deleteConfirmTitle": "Eliminare {{filename}}?",
+			"download": "Scarica",
+			"dropHere": "Rilascia i file qui o fai clic per sfogliare",
+			"dropToAttach": "Rilascia i file per allegarli",
+			"loadError": "Impossibile caricare gli allegati",
+			"meta": "{{size}} · {{name}} · {{time}}",
+			"metaNoUser": "{{size}} · {{time}}",
+			"open": "Apri",
+			"title": "Allegati",
+			"toast": {
+				"attached_many": "{{count}} file allegati",
+				"attached_one": "{{count}} file allegato",
+				"attached_other": "{{count}} file allegati",
+				"deleted": "Allegato eliminato",
+				"deleteError": "Impossibile eliminare l'allegato",
+				"empty": "{{filename}} è vuoto",
+				"failed": "Impossibile allegare {{filename}}: {{reason}}",
+				"notConfigured": "I caricamenti di file non sono configurati su questo server. Chiedi al tuo amministratore di configurare l'archiviazione.",
+				"storageError": "l'archiviazione ha rifiutato il caricamento",
+				"tooMany": "Puoi allegare fino a {{count}} file alla volta",
+				"unknownError": "qualcosa è andato storto"
+			},
+			"uploading": "Caricamento…"
+		},
+		"create": {
+			"similarTitle": "Attività aperte simili",
+			"similarDismiss": "Nascondi attività simili",
+			"similarOpen": "Apri",
+			"similarOpenLabel": "Apri {{key}} {{title}} in una nuova scheda"
+		},
+		"parent": {
+			"add": "Aggiungi attività principale",
+			"chip": "Principale",
+			"label": "Attività principale",
+			"noTasks": "Nessuna attività trovata",
+			"remove": "Rimuovi attività principale",
+			"search": "Cerca attività…",
+			"tasksInProject": "Attività in questo progetto",
+			"toast": {
+				"error": "Impossibile modificare l'attività principale",
+				"removed": "Attività principale rimossa",
+				"set": "Attività principale impostata su {{key}}"
+			},
+			"tooltip": "Principale: {{key}} {{title}}"
+		},
+		"copy": {
+			"alwaysCopied": "Stato e priorità vengono sempre copiati.",
+			"cancel": "Annulla",
+			"includeLabel": "Includi",
+			"options": {
+				"assignees": "Assegnatari",
+				"attachments": "Allegati",
+				"customFields": "Valori dei campi personalizzati",
+				"dates": "Date di inizio e scadenza",
+				"description": "Descrizione",
+				"labels": "Etichette",
+				"links": "Link",
+				"parent": "Attività principale",
+				"planning": "Ciclo, moduli e stima"
+			},
+			"otherProjectHint": "Lo stato viene associato alle colonne del nuovo progetto. Campi personalizzati, attività principale e pianificazione non vengono copiati tra progetti.",
+			"projectLabel": "Progetto",
+			"submit": "Crea una copia",
+			"title": "Crea una copia di {{key}}",
+			"titleLabel": "Titolo",
+			"titleRequired": "Il titolo è obbligatorio",
+			"titleSuffix": "{{title}} (copia)",
+			"toast": {
+				"error": "Impossibile creare la copia",
+				"open": "Apri",
+				"skipped": "Non copiato: {{list}}",
+				"success": "Copia creata: {{key}}"
+			}
+		},
+		"filters": {
+			"button": "Filtro",
+			"searchOptions": "Cerca opzioni",
+			"noOptions": "Nessuna opzione",
+			"matchAll": "Tutte le condizioni",
+			"matchAny": "Almeno una condizione",
+			"applyError": "Impossibile applicare i filtri",
+			"retry": "Riprova",
+			"tooMany": "Troppi risultati per filtrare qui; apri il foglio di calcolo",
+			"nestedReadOnly": "Questa vista usa filtri avanzati che non si possono modificare qui",
+			"clearAll": "Cancella tutti i filtri",
+			"apply": "Applica",
+			"mobileSummary_one": "{{count}} filtro",
+			"mobileSummary_many": "{{count}} filtri",
+			"mobileSummary_other": "{{count}} filtri",
+			"removeFilter": "Rimuovi il filtro {{subject}}",
+			"subjects": {
+				"group": "Gruppo",
+				"createdBy": "Creato da",
+				"cycle": "Ciclo",
+				"module": "Modulo",
+				"startDate": "Data di inizio",
+				"created": "Creato",
+				"updated": "Aggiornato",
+				"completed": "Completato",
+				"parent": "Genitore",
+				"project": "Progetto",
+				"subscribed": "Iscritto",
+				"mentions": "Menzioni",
+				"blocked": "Bloccata"
+			},
+			"operators": {
+				"between": "tra",
+				"is": "è",
+				"isEmpty": "è vuoto",
+				"isNoneOf": "non è nessuno tra",
+				"isNot": "non è",
+				"isNotEmpty": "non è vuoto",
+				"moreThanAgo": "più di … fa",
+				"moreThanAhead": "tra più di …",
+				"on": "il",
+				"onOrAfter": "il o dopo il",
+				"onOrBefore": "il o prima del",
+				"withinLast": "negli ultimi",
+				"withinNext": "nei prossimi"
+			},
+			"values": {
+				"me": "Io",
+				"none": "Nessuno",
+				"noAssignee": "Nessun assegnatario",
+				"noCreator": "Nessun creatore",
+				"noLabel": "Nessuna etichetta",
+				"noCycle": "Nessun ciclo",
+				"noModule": "Nessun modulo",
+				"noEstimate": "Nessuna stima",
+				"noParent": "Nessun genitore",
+				"currentCycle": "Ciclo corrente",
+				"true": "Vero",
+				"false": "Falso",
+				"blockedYes": "Sì",
+				"blockedNo": "No"
+			},
+			"dates": {
+				"amount": "Quantità",
+				"custom": "Data personalizzata…",
+				"emptyTab": "Vuoto",
+				"exact": "Data esatta",
+				"future": "Dopo oggi",
+				"lastMonth": "Mese scorso",
+				"lastWeek": "Settimana scorsa",
+				"nextMonth": "Mese prossimo",
+				"nextWeek": "Settimana prossima",
+				"overdue": "In ritardo",
+				"past": "Prima di oggi",
+				"presets": "Preimpostazioni",
+				"rolling": "Mobile",
+				"rollingValue": "{{amount}} {{unit}}",
+				"thisMonth": "Questo mese",
+				"thisWeek": "Questa settimana",
+				"today": "Oggi",
+				"tomorrow": "Domani",
+				"units": {
+					"days": "giorni",
+					"months": "mesi",
+					"weeks": "settimane"
+				},
+				"yesterday": "Ieri"
+			},
+			"archived": {
+				"exclude": "Nascondi archiviate",
+				"include": "Mostra anche archiviate",
+				"label": "Archiviate",
+				"only": "Solo archiviate"
+			},
+			"myTasks": "Le mie attività"
+		},
+		"display": {
+			"button": "Visualizzazione",
+			"columns": "Colonne",
+			"groupBy": "Raggruppa per",
+			"groups": {
+				"status": "Stato",
+				"group": "Gruppo",
+				"priority": "Priorità",
+				"assignee": "Assegnatario",
+				"createdBy": "Creato da",
+				"label": "Etichetta",
+				"cycle": "Ciclo",
+				"module": "Modulo",
+				"estimate": "Stima",
+				"project": "Progetto",
+				"customField": "Campo personalizzato"
+			},
+			"none": "Nessuno",
+			"order": {
+				"manual": "Manuale",
+				"createdAt": "Ultima creazione",
+				"updatedAt": "Ultimo aggiornamento",
+				"completedAt": "Data di completamento",
+				"startDate": "Data di inizio",
+				"dueDate": "Data scadenza",
+				"priority": "Priorità",
+				"title": "Titolo",
+				"number": "Chiave attività",
+				"status": "Stato",
+				"assignee": "Assegnatario",
+				"label": "Etichetta",
+				"cycle": "Ciclo",
+				"module": "Modulo",
+				"estimate": "Stima",
+				"subTaskCount": "Sotto-attività",
+				"archivedAt": "Data di archiviazione",
+				"customField": "Campo personalizzato"
+			},
+			"orderBy": "Ordina per",
+			"properties": "Proprietà",
+			"props": {
+				"assignee": "Assegnatari",
+				"checklist": "Checklist",
+				"createdAt": "Creato",
+				"cycle": "Ciclo",
+				"dueDate": "Data scadenza",
+				"estimate": "Stima",
+				"key": "Chiave",
+				"labels": "Etichette",
+				"modules": "Moduli",
+				"priority": "Priorità",
+				"startDate": "Data di inizio",
+				"status": "Stato",
+				"subTaskCount": "Sotto-attività",
+				"updatedAt": "Aggiornato"
+			},
+			"showEmptyGroups": "Mostra gruppi vuoti",
+			"showSubTasks": "Mostra sotto-attività",
+			"subGroupBy": "Sottoraggruppa per"
+		},
+		"groups": {
+			"all": "Tutte le attività",
+			"planned": "Pianificate",
+			"noAssignee": "Nessun assegnatario",
+			"noCreator": "Nessun creatore",
+			"noLabel": "Nessuna etichetta",
+			"noCycle": "Nessun ciclo",
+			"noModule": "Nessun modulo",
+			"noEstimate": "Nessuna stima",
+			"loadMore": "Carica altro ({{count}})",
+			"hiddenGroups_one": "{{count}} altro gruppo non mostrato",
+			"hiddenGroups_many": "{{count}} altri gruppi non mostrati",
+			"hiddenGroups_other": "{{count}} altri gruppi non mostrati",
+			"moduleCount_one": "{{count}} modulo",
+			"moduleCount_many": "{{count}} moduli",
+			"moduleCount_other": "{{count}} moduli",
+			"moveError": "Impossibile spostare l'attività",
+			"noFieldValue": "Nessun valore"
+		},
+		"spreadsheet": {
+			"clearSort": "Rimuovi ordinamento",
+			"collapseSubTasks": "Nascondi sotto-attività",
+			"expandSubTasks": "Mostra sotto-attività",
+			"hideColumn": "Nascondi colonna",
+			"loadError": "Impossibile caricare le attività",
+			"selectTask": "Seleziona {{key}}",
+			"sortAsc": "Ordine crescente",
+			"sortDesc": "Ordine decrescente",
+			"task": "Attività"
+		},
+		"queryEmpty": {
+			"clear": "Cancella filtri",
+			"description": "Prova a rimuovere uno o due filtri.",
+			"title": "Nessuna attività corrisponde a questi filtri"
 		},
 		"capture": {
 			"ariaLabel": "Aggiungi attività a {{column}}",
@@ -5171,49 +5438,34 @@
 			"changePriority": "Priorità: {{priority}}",
 			"changeStatus": "Stato: {{status}}"
 		},
-		"commands": {
-			"assignedSelf": "Assegnata a te",
-			"assignees": "Cambia assegnatari…",
-			"assignSelf": "Assegna a me",
-			"copyTitle": "Copia titolo",
-			"cycle": "Cambia ciclo…",
-			"dueDate": "Cambia data di scadenza…",
-			"estimate": "Cambia stima…",
-			"group": "Questa attività",
-			"labels": "Cambia etichette…",
-			"module": "Cambia moduli…",
-			"priority": "Cambia priorità…",
-			"status": "Cambia stato…",
-			"titleCopied": "Titolo dell'attività copiato",
-			"unassignedSelf": "Non sei più assegnato",
-			"unassignSelf": "Rimuovi la mia assegnazione"
+		"boardSearchOpen": "Cerca attività",
+		"customFieldValue": {
+			"clear": "Cancella valore",
+			"edit": "Modifica {{name}}",
+			"removedOption": "{{value}} (opzione rimossa)",
+			"saveError": "Impossibile salvare questo campo.",
+			"placeholder": "Nuovo valore",
+			"true": "Vero",
+			"false": "Falso"
 		},
-		"readableLink": {
-			"goHome": "Vai alla Home",
-			"notFound": "Nessuna attività con la chiave {{key}} in questo workspace, oppure non puoi vederla."
+		"customFieldBulk": {
+			"action": "Campo personalizzato",
+			"chooseField": "Scegli un campo",
+			"apply": "Applica",
+			"updated_one": "{{count}} attività aggiornata",
+			"updated_many": "{{count}} di attività aggiornate",
+			"updated_other": "{{count}} attività aggiornate",
+			"error": "Impossibile aggiornare le attività selezionate."
 		},
-		"descriptionHistory": {
-			"cancel": "Annulla",
-			"description": "Versioni salvate di questa descrizione, dalla più recente. Le modifiche di una stessa persona entro 10 minuti condividono una versione; vengono conservate le ultime 50.",
-			"earlierVersion": "Versione precedente",
-			"empty": "Ancora nessuna versione salvata. Le versioni vengono conservate a partire dalla prossima modifica.",
-			"emptyVersion": "Questa versione non ha una descrizione.",
-			"latest": "Più recente",
-			"list": "Versioni salvate",
-			"loadError": "Impossibile caricare la cronologia",
-			"open": "Cronologia",
-			"previewTitle": "Versione del {{date}}",
-			"restore": "Ripristina",
-			"restoreConfirmDescription": "La descrizione verrà sostituita con questa versione. Il testo attuale resta nella cronologia.",
-			"restoreConfirmTitle": "Ripristinare questa versione?",
-			"restored": "Descrizione ripristinata",
-			"restoreError": "Impossibile ripristinare questa versione",
-			"retry": "Riprova",
-			"size_many": "{{count}} caratteri",
-			"size_one": "{{count}} carattere",
-			"size_other": "{{count}} caratteri",
-			"title": "Cronologia della descrizione",
-			"viewOnly": "Sola lettura"
+		"milestone": {
+			"label": "Traguardo",
+			"hint": "Indica una sola data. La timeline lo mostra come un rombo alla sua scadenza.",
+			"updateError": "Impossibile aggiornare il traguardo"
+		},
+		"scheduleField": {
+			"label": "Campo mostrato sulle attività",
+			"none": "Nessun campo",
+			"value": "{{name}}: {{value}}"
 		}
 	},
 	"invitations": {
@@ -5269,7 +5521,8 @@
 				"inProgress": "In corso"
 			},
 			"noDueDate": "Nessuna scadenza",
-			"reorderError": "Impossibile riordinare i progetti"
+			"reorderError": "Impossibile riordinare i progetti",
+			"emptyDescriptionGuest": "Non sei ancora stato aggiunto a nessun progetto. Chiedi alla persona che ti ha invitato di aggiungerti."
 		},
 		"search": {
 			"pageTitle": "Cerca",
@@ -5382,7 +5635,8 @@
 			"owner": "Proprietario",
 			"admin": "Amministratore",
 			"member": "Membro",
-			"viewer": "Visualizzatore"
+			"viewer": "Visualizzatore",
+			"guest": "Ospite"
 		},
 		"members": {
 			"pageTitle": "Membri",
@@ -5418,7 +5672,13 @@
 			"sentSome": "Inviati {{sent}} inviti su {{total}}.",
 			"failedTitle": "Non inviati",
 			"rateLimited": "Troppi inviti in una volta. Attendi un minuto, poi invia gli altri.",
-			"shareLinksDescription": "Condividi ogni link con la rispettiva persona così potrà unirsi al workspace."
+			"shareLinksDescription": "Condividi ogni link con la rispettiva persona così potrà unirsi al workspace.",
+			"guestRoleHint": "Gli ospiti vedono solo i progetti a cui li aggiungi, e nient'altro del workspace.",
+			"guestProjectsLabel": "Progetti",
+			"guestProjectsHint": "Appena accettano, entrano nei progetti che selezioni, con il ruolo nel progetto che scegli. Come Visualizzatori possono solo leggere.",
+			"guestProjectsEmpty": "Non c'è nessun progetto che puoi condividere. Aggiungili ai progetti dopo che si sono uniti.",
+			"guestProjectRoleFor": "Ruolo nel progetto {{project}}",
+			"guestProjectsFailed": "L'invito è stato inviato, ma non è stato possibile aggiungere i suoi progetti: {{message}}"
 		},
 		"membersTable": {
 			"emptyTitle": "Nessun membro del team ancora",
@@ -5443,7 +5703,8 @@
 			"roleUpdateSuccess": "Ruolo aggiornato",
 			"roleUpdateError": "Aggiornamento ruolo fallito",
 			"ariaInvitationRole": "Ruolo per {{email}}",
-			"invitationRoleUpdateSuccess": "Ruolo dell'invito aggiornato"
+			"invitationRoleUpdateSuccess": "Ruolo dell'invito aggiornato",
+			"removeDialogAccessNote": "Se questo è il suo unico workspace, la persona viene anche disconnessa e le sue chiavi API smettono di funzionare."
 		},
 		"profile": {
 			"emptyActivity": "Ancora nessuna attività",
@@ -6472,7 +6733,7 @@
 					"visibility": "Visibilità",
 					"workflow": "Flusso di lavoro"
 				},
-				"purgeOn": "Eliminazione definitiva il {{date}}",
+				"purgeOn": "Eliminazione definitiva prevista il {{date}}",
 				"restore": "Ripristina",
 				"restored": "Attività ripristinata",
 				"search": "Cerca attività eliminate",
@@ -7957,6 +8218,29 @@
 		}
 	},
 	"home": {
+		"pageTitle": "Home",
+		"greeting": {
+			"afternoon": "Buon pomeriggio, {{name}}",
+			"dateTime": "{{date}} · {{time}}",
+			"evening": "Buonasera, {{name}}",
+			"morning": "Buongiorno, {{name}}"
+		},
+		"manageWidgets": "Gestisci widget",
+		"widgets": {
+			"quickLinks": "Link rapidi",
+			"recents": "Recenti",
+			"stickies": "Note adesive",
+			"risks": "Rischi",
+			"myBrief": "Il mio riepilogo",
+			"pinnedReports": "Report fissati"
+		},
+		"manage": {
+			"description": "Scegli cosa mostrare nella tua home e trascina per riordinare. Solo tu vedi queste impostazioni.",
+			"reorder": "Riordina {{widget}}",
+			"saveError": "Impossibile salvare le impostazioni della tua home",
+			"title": "Gestisci widget",
+			"toggle": "Mostra {{widget}}"
+		},
 		"empty": {
 			"description": "Tutti i widget sono disattivati. Attivane qualcuno per vedere qui i tuoi link, le visite recenti e le note adesive.",
 			"title": "La tua home è vuota"
@@ -7986,21 +8270,6 @@
 			},
 			"title": "Per iniziare"
 		},
-		"greeting": {
-			"afternoon": "Buon pomeriggio, {{name}}",
-			"dateTime": "{{date}} · {{time}}",
-			"evening": "Buonasera, {{name}}",
-			"morning": "Buongiorno, {{name}}"
-		},
-		"manage": {
-			"description": "Scegli cosa mostrare nella tua home e trascina per riordinare. Solo tu vedi queste impostazioni.",
-			"reorder": "Riordina {{widget}}",
-			"saveError": "Impossibile salvare le impostazioni della tua home",
-			"title": "Gestisci widget",
-			"toggle": "Mostra {{widget}}"
-		},
-		"manageWidgets": "Gestisci widget",
-		"pageTitle": "Home",
 		"quickLinks": {
 			"add": "Aggiungi link",
 			"copy": "Copia link",
@@ -8057,25 +8326,33 @@
 			"visited": "Visitato {{time}}"
 		},
 		"retry": "Riprova",
-		"widgets": {
-			"quickLinks": "Link rapidi",
-			"recents": "Recenti",
-			"stickies": "Note adesive",
-			"risks": "Rischi",
-			"myBrief": "Il mio riepilogo"
-		},
 		"focus": {
-			"caughtUp": "Sei in pari con tutto",
-			"inbox": "Posta in arrivo",
 			"label": "Riprendi da qui",
+			"inbox": "Posta in arrivo",
 			"myWork": "Il tuo lavoro",
-			"overdue_many": "{{count}} in ritardo",
-			"overdue_one": "{{count}} in ritardo",
-			"overdue_other": "{{count}} in ritardo",
 			"stickies": "Note adesive",
+			"caughtUp": "Sei in pari con tutto",
+			"overdue_one": "{{count}} in ritardo",
+			"overdue_many": "{{count}} in ritardo",
+			"overdue_other": "{{count}} in ritardo",
 			"stickiesHint": "Note private, solo per te",
+			"unreadCaption": "non lette",
 			"openCaption": "aperte",
-			"unreadCaption": "non lette"
+			"loadError": "Impossibile caricare"
+		},
+		"dueToday": {
+			"title": "In scadenza oggi",
+			"empty": "Oggi non scade nulla di ciò che ti è assegnato.",
+			"loadError": "Impossibile caricare le tue attività in scadenza oggi",
+			"viewAll": "Vedi tutte ({{total}})"
+		},
+		"pinnedReports": {
+			"empty": "Fissa un report salvato in Analisi per vederlo qui.",
+			"openAnalytics": "Apri Analisi",
+			"loadError": "Impossibile caricare i report fissati",
+			"chartError": "Impossibile caricare questo report",
+			"unpin": "Rimuovi {{name}} dalla Home",
+			"showing": "Visualizzati {{shown}} di {{total}}. Gli altri sono in Analisi."
 		}
 	},
 	"intake": {
@@ -8368,14 +8645,114 @@
 		"viewAll": "Vedi tutte"
 	},
 	"analytics": {
-		"a11y": {
-			"barSummary": "{{metric}} per {{dimension}}: {{count}} gruppi, il più alto è {{label}} con {{value}}",
-			"donutSummary": "{{total}} attività in {{count}} gruppi",
-			"lineSummary": "{{series}} su {{count}} periodi"
+		"pageTitle": "Analisi",
+		"projectPageTitle": "{{project}} · Analisi",
+		"tabs": {
+			"overview": "Panoramica",
+			"tasks": "Attività",
+			"cycles": "Cicli",
+			"modules": "Moduli",
+			"intake": "Richieste",
+			"delivery": "Consegna",
+			"time": "Tempo"
 		},
-		"breakdown": {
-			"groupRowsBy": "Raggruppa le righe per",
-			"title": "Dettaglio"
+		"header": {
+			"allProjects": "Tutti i progetti",
+			"clearSelection": "Cancella selezione",
+			"noProjectsFound": "Nessun progetto trovato",
+			"projectsCount_many": "{{count}} progetti",
+			"projectsCount_one": "{{count}} progetto",
+			"projectsCount_other": "{{count}} progetti",
+			"refresh": "Aggiorna",
+			"searchProjects": "Cerca progetti",
+			"selectProjects": "Seleziona progetti",
+			"updatedAt": "Aggiornato {{time}}"
+		},
+		"openInAnalytics": "Apri in Analisi",
+		"context": {
+			"cycle": "Ciclo: {{name}}",
+			"module": "Modulo: {{name}}",
+			"remove": "Rimuovi {{name}} dai filtri"
+		},
+		"states": {
+			"loadError": "Impossibile caricare questa sezione",
+			"newProject": "Nuovo progetto",
+			"noAccessDescription": "Chiedi a un amministratore del workspace il permesso Analisi.",
+			"noAccessTitle": "Non hai accesso alle analisi",
+			"noCycles": "Nessun ciclo per ora",
+			"noModules": "Nessun modulo per ora",
+			"noPeriodData": "Nessun dato in questo periodo",
+			"noProjectsDescription": "Le analisi riepilogano le attività dei tuoi progetti.",
+			"noProjectsTitle": "Crea un progetto per vedere le analisi",
+			"noRequests": "Nessuna richiesta per ora",
+			"noTasks": "Nessuna attività corrisponde a questi filtri",
+			"retry": "Riprova",
+			"timeout": "Ci è voluto troppo tempo. Restringi i filtri e riprova.",
+			"noRunningCycles": "Nessun ciclo in corso al momento"
+		},
+		"view": {
+			"chart": "Grafico",
+			"label": "Mostra come",
+			"table": "Tabella"
+		},
+		"kpi": {
+			"accepted": "{{count}} accettate",
+			"completedTasks": "Attività completate",
+			"completion": "Completamento",
+			"completionDetail": "{{completed}} su {{committed}}",
+			"cyclesRunning": "Cicli in corso",
+			"members": "Membri",
+			"membersDetail": "{{admins}} amministratori · {{viewers}} osservatori",
+			"modulesInProgress": "Moduli in corso",
+			"modulesTotal": "{{count}} in totale",
+			"openRequests": "Richieste aperte",
+			"openTasks": "Attività aperte",
+			"overdue": "{{count}} in ritardo",
+			"percentComplete": "{{percent}}% completato",
+			"projects": "Progetti",
+			"total": "Totale",
+			"upcoming": "{{count}} in arrivo"
+		},
+		"overview": {
+			"projectProgress": "Avanzamento dei progetti",
+			"projectProgressSubtitle": "Prima i progetti con più attività aperte",
+			"open": "{{count}} aperte",
+			"showAll": "Mostra tutti ({{count}})",
+			"showLess": "Mostra meno",
+			"tasksByGroup": "Attività per gruppo",
+			"donutCenter_one": "{{count}} attività",
+			"donutCenter_many": "{{count}} attività",
+			"donutCenter_other": "{{count}} attività",
+			"workload": "Carico di lavoro",
+			"workloadSubtitle": "Attività aperte per assegnatario",
+			"workloadSubtitlePoints": "Punti di stima aperti per assegnatario",
+			"overloaded_one": "{{names}} ha più lavoro aperto di quanto ne completi di solito in {{weeks}} settimane.",
+			"overloaded_many": "{{names}} hanno più lavoro aperto di quanto ne completino di solito in {{weeks}} settimane.",
+			"overloaded_other": "{{names}} hanno più lavoro aperto di quanto ne completino di solito in {{weeks}} settimane.",
+			"overUsual": "Oltre il carico abituale",
+			"overTooltip": "{{name}}: oltre il carico abituale",
+			"usualHint": "Il carico abituale è ciò che ogni persona ha completato in {{usualWeeks}} settimane tipiche, calcolato sulle ultime {{historyWeeks}} settimane. Chi non ha uno storico recente non viene valutato.",
+			"checkColumn": "Rispetto al carico abituale",
+			"checkOverPoints": "Oltre: {{load}} punti, di solito {{usual}}",
+			"checkOverTasks": "Oltre: {{load}} attività, di solito {{usual}}",
+			"checkOkPoints": "{{load}} punti, di solito {{usual}}",
+			"checkOkTasks": "{{load}} attività, di solito {{usual}}",
+			"checkUnknown": "Nessuno storico recente"
+		},
+		"trend": {
+			"completed": "Completate",
+			"created": "Create",
+			"help": "Create conta le attività per giorno di creazione. Completate conta le attività per giorno di completamento, finché restano completate. Le attività archiviate sono escluse, a meno che tu non le includa.",
+			"period": "Periodo",
+			"summary": "Create {{created}} · Completate {{completed}} · Saldo {{net}}",
+			"title": "Create e completate"
+		},
+		"periods": {
+			"custom": "Intervallo personalizzato",
+			"last12m": "Ultimi 12 mesi",
+			"last30": "Ultimi 30 giorni",
+			"last6m": "Ultimi 6 mesi",
+			"last90": "Ultimi 90 giorni"
 		},
 		"bucket": {
 			"label": "Raggruppa le date per",
@@ -8386,6 +8763,14 @@
 		"buckets": {
 			"range": "{{from}} – {{to}}",
 			"weekOf": "Settimana del {{date}}"
+		},
+		"metric": {
+			"label": "Metrica",
+			"tasks": "Attività",
+			"points": "Punti di stima",
+			"pointsShort": "Punti",
+			"sum": "Somma",
+			"sumOf": "Somma di {{name}}"
 		},
 		"builder": {
 			"countSubTasks": "Conta le sotto-attività",
@@ -8403,10 +8788,134 @@
 			"truncatedX": "Mostrati i primi {{shown}} di {{total}} {{dimension}}",
 			"xAxis": "Asse X"
 		},
-		"context": {
-			"cycle": "Ciclo: {{name}}",
-			"module": "Modulo: {{name}}",
-			"remove": "Rimuovi {{name}} dai filtri"
+		"reports": {
+			"open": "Report",
+			"listTitle": "Report salvati",
+			"loadError": "Impossibile caricare i report salvati",
+			"empty": "Nessun report salvato. Salva questo grafico per ritrovarlo in seguito.",
+			"sharedBy": "Condiviso da {{name}}",
+			"actionsFor": "Azioni per {{name}}",
+			"rename": "Rinomina",
+			"share": "Condividi con il workspace",
+			"makePrivate": "Rendi privato",
+			"delete": "Elimina",
+			"save": "Salva",
+			"saveAsNew": "Salva come nuovo",
+			"update": "Aggiorna report",
+			"showing": "Report: {{name}}",
+			"unsaved": "Modifiche non salvate",
+			"close": "Chiudi report",
+			"deleteTitle": "Eliminare questo report?",
+			"deleteDescription": "“{{name}}” verrà eliminato. L'azione non può essere annullata.",
+			"deleteSharedDescription": "“{{name}}” verrà eliminato per tutti nel workspace. L'azione non può essere annullata.",
+			"visibility": {
+				"private": "Privato",
+				"privateHint": "Solo tu puoi vederlo.",
+				"workspace": "Condiviso con il workspace",
+				"workspaceHint": "Chiunque abbia accesso alle analisi in questo workspace può aprirlo."
+			},
+			"dialog": {
+				"cancel": "Annulla",
+				"createTitle": "Salva report",
+				"editTitle": "Modifica report",
+				"name": "Nome",
+				"namePlaceholder": "es. Bug aperti per assegnatario",
+				"nameRequired": "Inserisci un nome",
+				"save": "Salva",
+				"summary": "Salva le impostazioni del grafico, i progetti inclusi e i filtri.",
+				"update": "Salva modifiche",
+				"visibility": "Chi può vederlo"
+			},
+			"notes": {
+				"allProjects": "Nessuno dei suoi progetti è disponibile, quindi vengono mostrati tutti i progetti.",
+				"builderReset": "Alcune impostazioni del grafico non sono disponibili per questi progetti e sono state reimpostate.",
+				"dropped_many": "{{count}} progetti di questo report non esistono più.",
+				"dropped_one": "{{count}} progetto di questo report non esiste più.",
+				"dropped_other": "{{count}} progetti di questo report non esistono più.",
+				"leftOut_many": "{{count}} progetti di questo report sono archiviati e sono stati esclusi.",
+				"leftOut_one": "{{count}} progetto di questo report è archiviato ed è stato escluso.",
+				"leftOut_other": "{{count}} progetti di questo report sono archiviati e sono stati esclusi.",
+				"otherProjects": "Questo report è stato salvato per altri progetti; qui mostra solo questo progetto."
+			},
+			"toast": {
+				"saved": "“{{name}}” salvato",
+				"updated": "Report aggiornato",
+				"shared": "Report condiviso con il workspace",
+				"madePrivate": "Il report ora è privato",
+				"deleted": "Report eliminato",
+				"saveError": "Impossibile salvare il report",
+				"deleteError": "Impossibile eliminare il report",
+				"pinned": "Fissato nella Home",
+				"unpinned": "Rimosso dalla Home",
+				"pinError": "Impossibile aggiornare la tua Home",
+				"pinLimit_one": "Puoi fissare fino a {{count}} report. Rimuovine prima uno.",
+				"pinLimit_many": "Puoi fissare fino a {{count}} di report. Rimuovine prima uno.",
+				"pinLimit_other": "Puoi fissare fino a {{count}} report. Rimuovine prima uno."
+			},
+			"pin": "Fissa nella Home",
+			"unpin": "Rimuovi dalla Home"
+		},
+		"dimensions": {
+			"status": "Stato",
+			"group": "Gruppo",
+			"priority": "Priorità",
+			"assignee": "Assegnatario",
+			"createdBy": "Creata da",
+			"label": "Etichetta",
+			"cycle": "Ciclo",
+			"module": "Modulo",
+			"estimate": "Stima",
+			"project": "Progetto",
+			"createdAt": "Data di creazione",
+			"completedAt": "Data di completamento",
+			"startDate": "Data di inizio",
+			"dueDate": "Scadenza",
+			"customField": "Campo personalizzato"
+		},
+		"dimensionsPlural": {
+			"status": "stati",
+			"assignee": "assegnatari",
+			"createdBy": "autori",
+			"label": "etichette",
+			"cycle": "cicli",
+			"module": "moduli",
+			"estimate": "stime",
+			"project": "progetti",
+			"period": "periodi",
+			"customField": "valori"
+		},
+		"none": {
+			"assignee": "Non assegnata",
+			"createdBy": "Autore sconosciuto",
+			"label": "Nessuna etichetta",
+			"cycle": "Nessun ciclo",
+			"module": "Nessun modulo",
+			"estimate": "Nessuna stima",
+			"completedAt": "Non completata",
+			"startDate": "Nessuna data di inizio",
+			"dueDate": "Nessuna scadenza",
+			"customField": "Nessun valore"
+		},
+		"other": "Altro",
+		"table": {
+			"periodEnd": "Fine periodo",
+			"periodStart": "Inizio periodo",
+			"progress": "Avanzamento",
+			"showAll": "Mostra tutti ({{count}})",
+			"sortBy": "Ordina per {{column}}",
+			"tasks": "Attività",
+			"total": "Totale"
+		},
+		"breakdown": {
+			"groupRowsBy": "Raggruppa le righe per",
+			"title": "Dettaglio"
+		},
+		"export": {
+			"button": "Esporta CSV",
+			"error": "Impossibile esportare questa tabella",
+			"success_many": "Esportate {{count}} righe",
+			"success_one": "Esportata {{count}} riga",
+			"success_other": "Esportate {{count}} righe"
 		},
 		"cycles": {
 			"averageCompleted": "Media completati (ultimi 3)",
@@ -8439,51 +8948,15 @@
 				"running": "In corso"
 			}
 		},
-		"dimensions": {
-			"assignee": "Assegnatario",
-			"completedAt": "Data di completamento",
-			"createdAt": "Data di creazione",
-			"createdBy": "Creata da",
-			"cycle": "Ciclo",
-			"dueDate": "Scadenza",
-			"estimate": "Stima",
-			"group": "Gruppo",
-			"label": "Etichetta",
-			"module": "Modulo",
-			"priority": "Priorità",
-			"project": "Progetto",
-			"startDate": "Data di inizio",
-			"status": "Stato"
-		},
-		"dimensionsPlural": {
-			"assignee": "assegnatari",
-			"createdBy": "autori",
-			"cycle": "cicli",
-			"estimate": "stime",
-			"label": "etichette",
-			"module": "moduli",
-			"period": "periodi",
-			"project": "progetti",
-			"status": "stati"
-		},
-		"export": {
-			"button": "Esporta CSV",
-			"error": "Impossibile esportare questa tabella",
-			"success_many": "Esportate {{count}} righe",
-			"success_one": "Esportata {{count}} riga",
-			"success_other": "Esportate {{count}} righe"
-		},
-		"header": {
-			"allProjects": "Tutti i progetti",
-			"clearSelection": "Cancella selezione",
-			"noProjectsFound": "Nessun progetto trovato",
-			"projectsCount_many": "{{count}} progetti",
-			"projectsCount_one": "{{count}} progetto",
-			"projectsCount_other": "{{count}} progetti",
-			"refresh": "Aggiorna",
-			"searchProjects": "Cerca progetti",
-			"selectProjects": "Seleziona progetti",
-			"updatedAt": "Aggiornato {{time}}"
+		"modules": {
+			"overdue": "In ritardo",
+			"table": {
+				"lead": "Responsabile",
+				"module": "Modulo",
+				"noLead": "Nessun responsabile",
+				"targetDate": "Data obiettivo",
+				"title": "Moduli"
+			}
 		},
 		"intake": {
 			"accepted": "Accettate",
@@ -8501,179 +8974,24 @@
 			"submitted": "Inviate",
 			"triaged": "Valutate"
 		},
-		"kpi": {
-			"accepted": "{{count}} accettate",
-			"completedTasks": "Attività completate",
-			"completion": "Completamento",
-			"completionDetail": "{{completed}} su {{committed}}",
-			"cyclesRunning": "Cicli in corso",
-			"members": "Membri",
-			"membersDetail": "{{admins}} amministratori · {{viewers}} osservatori",
-			"modulesInProgress": "Moduli in corso",
-			"modulesTotal": "{{count}} in totale",
-			"openRequests": "Richieste aperte",
-			"openTasks": "Attività aperte",
-			"overdue": "{{count}} in ritardo",
-			"percentComplete": "{{percent}}% completato",
-			"projects": "Progetti",
-			"total": "Totale",
-			"upcoming": "{{count}} in arrivo"
+		"a11y": {
+			"barSummary": "{{metric}} per {{dimension}}: {{count}} gruppi, il più alto è {{label}} con {{value}}",
+			"donutSummary": "{{total}} attività in {{count}} gruppi",
+			"lineSummary": "{{series}} su {{count}} periodi"
 		},
-		"metric": {
-			"label": "Metrica",
-			"points": "Punti di stima",
-			"pointsShort": "Punti",
-			"tasks": "Attività"
-		},
-		"modules": {
-			"overdue": "In ritardo",
-			"table": {
-				"lead": "Responsabile",
-				"module": "Modulo",
-				"noLead": "Nessun responsabile",
-				"targetDate": "Data obiettivo",
-				"title": "Moduli"
-			}
-		},
-		"none": {
-			"assignee": "Non assegnata",
-			"completedAt": "Non completata",
-			"createdBy": "Autore sconosciuto",
-			"cycle": "Nessun ciclo",
-			"dueDate": "Nessuna scadenza",
-			"estimate": "Nessuna stima",
-			"label": "Nessuna etichetta",
-			"module": "Nessun modulo",
-			"startDate": "Nessuna data di inizio"
-		},
-		"openInAnalytics": "Apri in Analisi",
-		"other": "Altro",
-		"overview": {
-			"donutCenter_many": "{{count}} attività",
-			"donutCenter_one": "{{count}} attività",
-			"donutCenter_other": "{{count}} attività",
-			"open": "{{count}} aperte",
-			"projectProgress": "Avanzamento dei progetti",
-			"projectProgressSubtitle": "Prima i progetti con più attività aperte",
-			"showAll": "Mostra tutti ({{count}})",
-			"showLess": "Mostra meno",
-			"tasksByGroup": "Attività per gruppo",
-			"workload": "Carico di lavoro",
-			"workloadSubtitle": "Attività aperte per assegnatario"
-		},
-		"pageTitle": "Analisi",
-		"periods": {
-			"custom": "Intervallo personalizzato",
-			"last12m": "Ultimi 12 mesi",
-			"last30": "Ultimi 30 giorni",
-			"last6m": "Ultimi 6 mesi",
-			"last90": "Ultimi 90 giorni"
-		},
-		"projectPageTitle": "{{project}} · Analisi",
-		"states": {
-			"loadError": "Impossibile caricare questa sezione",
-			"newProject": "Nuovo progetto",
-			"noAccessDescription": "Chiedi a un amministratore del workspace il permesso Analisi.",
-			"noAccessTitle": "Non hai accesso alle analisi",
-			"noCycles": "Nessun ciclo per ora",
-			"noModules": "Nessun modulo per ora",
-			"noPeriodData": "Nessun dato in questo periodo",
-			"noProjectsDescription": "Le analisi riepilogano le attività dei tuoi progetti.",
-			"noProjectsTitle": "Crea un progetto per vedere le analisi",
-			"noRequests": "Nessuna richiesta per ora",
-			"noTasks": "Nessuna attività corrisponde a questi filtri",
-			"retry": "Riprova",
-			"timeout": "Ci è voluto troppo tempo. Restringi i filtri e riprova.",
-			"noRunningCycles": "Nessun ciclo in corso al momento"
-		},
-		"table": {
-			"periodEnd": "Fine periodo",
-			"periodStart": "Inizio periodo",
-			"progress": "Avanzamento",
-			"showAll": "Mostra tutti ({{count}})",
-			"sortBy": "Ordina per {{column}}",
-			"tasks": "Attività",
-			"total": "Totale"
-		},
-		"tabs": {
-			"cycles": "Cicli",
-			"intake": "Richieste",
-			"modules": "Moduli",
-			"overview": "Panoramica",
-			"tasks": "Attività",
-			"delivery": "Consegna"
-		},
-		"trend": {
-			"completed": "Completate",
-			"created": "Create",
-			"help": "Create conta le attività per giorno di creazione. Completate conta le attività per giorno di completamento, finché restano completate. Le attività archiviate sono escluse, a meno che tu non le includa.",
-			"period": "Periodo",
-			"summary": "Create {{created}} · Completate {{completed}} · Saldo {{net}}",
-			"title": "Create e completate"
-		},
-		"view": {
-			"chart": "Grafico",
-			"label": "Mostra come",
-			"table": "Tabella"
-		},
-		"reports": {
-			"actionsFor": "Azioni per {{name}}",
-			"close": "Chiudi report",
-			"delete": "Elimina",
-			"deleteDescription": "“{{name}}” verrà eliminato. L'azione non può essere annullata.",
-			"deleteSharedDescription": "“{{name}}” verrà eliminato per tutti nel workspace. L'azione non può essere annullata.",
-			"deleteTitle": "Eliminare questo report?",
-			"dialog": {
-				"cancel": "Annulla",
-				"createTitle": "Salva report",
-				"editTitle": "Modifica report",
-				"name": "Nome",
-				"namePlaceholder": "es. Bug aperti per assegnatario",
-				"nameRequired": "Inserisci un nome",
-				"save": "Salva",
-				"summary": "Salva le impostazioni del grafico, i progetti inclusi e i filtri.",
-				"update": "Salva modifiche",
-				"visibility": "Chi può vederlo"
-			},
-			"empty": "Nessun report salvato. Salva questo grafico per ritrovarlo in seguito.",
-			"listTitle": "Report salvati",
-			"loadError": "Impossibile caricare i report salvati",
-			"makePrivate": "Rendi privato",
-			"notes": {
-				"allProjects": "Nessuno dei suoi progetti è disponibile, quindi vengono mostrati tutti i progetti.",
-				"builderReset": "Alcune impostazioni del grafico non sono disponibili per questi progetti e sono state reimpostate.",
-				"dropped_many": "{{count}} progetti di questo report non esistono più.",
-				"dropped_one": "{{count}} progetto di questo report non esiste più.",
-				"dropped_other": "{{count}} progetti di questo report non esistono più.",
-				"leftOut_many": "{{count}} progetti di questo report sono archiviati e sono stati esclusi.",
-				"leftOut_one": "{{count}} progetto di questo report è archiviato ed è stato escluso.",
-				"leftOut_other": "{{count}} progetti di questo report sono archiviati e sono stati esclusi.",
-				"otherProjects": "Questo report è stato salvato per altri progetti; qui mostra solo questo progetto."
-			},
-			"open": "Report",
-			"rename": "Rinomina",
-			"save": "Salva",
-			"saveAsNew": "Salva come nuovo",
-			"share": "Condividi con il workspace",
-			"sharedBy": "Condiviso da {{name}}",
-			"showing": "Report: {{name}}",
-			"toast": {
-				"deleted": "Report eliminato",
-				"deleteError": "Impossibile eliminare il report",
-				"madePrivate": "Il report ora è privato",
-				"saved": "“{{name}}” salvato",
-				"saveError": "Impossibile salvare il report",
-				"shared": "Report condiviso con il workspace",
-				"updated": "Report aggiornato"
-			},
-			"unsaved": "Modifiche non salvate",
-			"update": "Aggiorna report",
-			"visibility": {
-				"private": "Privato",
-				"privateHint": "Solo tu puoi vederlo.",
-				"workspace": "Condiviso con il workspace",
-				"workspaceHint": "Chiunque abbia accesso alle analisi in questo workspace può aprirlo."
-			}
+		"time": {
+			"total": "Tempo registrato",
+			"entries": "Voci",
+			"people": "Persone",
+			"running": "In corso ora",
+			"runningNote": "I timer in corso si aggiungono a questi totali quando vengono fermati.",
+			"byPerson": "Per persona",
+			"byProject": "Per progetto",
+			"person": "Persona",
+			"project": "Progetto",
+			"hours": "Ore",
+			"formerMember": "Ex membro",
+			"empty": "Nessun tempo registrato in questo periodo"
 		}
 	},
 	"pages": {
@@ -8754,6 +9072,59 @@
 			"file": "un file allegato",
 			"page": "un'altra pagina"
 		},
+		"section": {
+			"title": "Pagine"
+		},
+		"list": {
+			"documentTitle": "{{project}} · Pagine",
+			"newPage": "Nuova pagina",
+			"tabs": {
+				"archived": "Archiviate",
+				"private": "Private",
+				"public": "Pubbliche"
+			},
+			"searchPlaceholder": "Cerca pagine",
+			"clearFilters": "Cancella filtri",
+			"sort": {
+				"created": "Creazione",
+				"lastEdited": "Ultima modifica",
+				"name": "Nome"
+			},
+			"untitled": "Senza titolo",
+			"inParent": "in {{path}}",
+			"ownedBy": "Di {{name}}",
+			"access": {
+				"private": "Privata",
+				"public": "Pubblica"
+			},
+			"editedAgo": "Modificata {{time}}",
+			"archivedOn": "Archiviata {{date}}",
+			"locked": "Bloccata",
+			"loadError": "Impossibile caricare le pagine",
+			"retry": "Riprova",
+			"empty": {
+				"archived": {
+					"description": "Le pagine archiviate compaiono qui. Puoi ripristinarle o eliminarle.",
+					"title": "Nessuna pagina archiviata"
+				},
+				"noMatch": {
+					"description": "Prova una ricerca diversa o cancella i filtri.",
+					"title": "Nessuna pagina corrispondente"
+				},
+				"none": {
+					"description": "Le pagine contengono specifiche, appunti e documenti accanto alle attività del progetto.",
+					"title": "Scrivi la tua prima pagina"
+				},
+				"private": {
+					"description": "Le pagine private sono visibili solo a te.",
+					"title": "Nessuna pagina privata"
+				},
+				"public": {
+					"title": "Nessuna pagina pubblica"
+				}
+			},
+			"recentlyDeleted": "Eliminati di recente"
+		},
 		"actions": {
 			"archive": "Archivia",
 			"copyLink": "Copia link",
@@ -8769,6 +9140,123 @@
 			"restore": "Ripristina",
 			"unlock": "Sblocca"
 		},
+		"toasts": {
+			"accessError": "Impossibile cambiare chi può vedere questa pagina",
+			"archived": "Pagina archiviata",
+			"archiveError": "Impossibile archiviare la pagina",
+			"contentConflict": "Questa pagina è cambiata altrove, quindi la tua ultima modifica non è stata salvata. Viene mostrata l'ultima versione.",
+			"contentSaveError": "Impossibile salvare la pagina",
+			"createError": "Impossibile creare la pagina",
+			"deleted": "Pagina eliminata",
+			"deleteError": "Impossibile eliminare la pagina",
+			"duplicated": "Pagina duplicata",
+			"duplicateError": "Impossibile duplicare la pagina",
+			"fullWidthError": "Impossibile cambiare la larghezza della pagina",
+			"linkCopied": "Link copiato",
+			"locked": "Pagina bloccata",
+			"lockError": "Impossibile cambiare il blocco",
+			"logoError": "Impossibile aggiornare l'icona",
+			"madePrivate": "La pagina ora è privata",
+			"madePublic": "La pagina ora è pubblica",
+			"moved": "Spostata in {{project}}",
+			"moveError": "Impossibile spostare la pagina",
+			"open": "Apri",
+			"restored": "Pagina ripristinata",
+			"restoreError": "Impossibile ripristinare la pagina",
+			"titleError": "Impossibile salvare il titolo",
+			"unlocked": "Pagina sbloccata"
+		},
+		"deleteDialog": {
+			"cancel": "Annulla",
+			"confirm": "Elimina",
+			"description": "“{{title}}” viene spostata in Eliminati di recente nelle impostazioni del progetto, dove può essere ripristinata finché non viene eliminata definitivamente. Le sue sottopagine passano al livello principale.",
+			"title": "Eliminare la pagina?"
+		},
+		"moveDialog": {
+			"cancel": "Annulla",
+			"confirm": "Sposta",
+			"description": "La pagina e le sue sottopagine passano al progetto selezionato.",
+			"empty": "Nessun altro progetto ha le Pagine attive",
+			"searchPlaceholder": "Cerca progetti",
+			"title": "Sposta pagina"
+		},
+		"tree": {
+			"collapse": "Comprimi {{title}}",
+			"dnd": {
+				"cancelled": "Spostamento annullato.",
+				"dropped": "{{title}} spostata.",
+				"invalid": "{{title}} non può andare lì.",
+				"over": "{{title}} è sopra {{target}}.",
+				"pickedUp": "{{title}} sollevata. Usa i tasti freccia per spostarla, Spazio per rilasciarla o Esc per annullare."
+			},
+			"empty": "Nessuna pagina per ora",
+			"expand": "Espandi {{title}}",
+			"newPage": "Nuova pagina",
+			"title": "Pagine"
+		},
+		"crumb": {
+			"noMatches": "Nessuna pagina corrispondente",
+			"searchPlaceholder": "Cerca pagine"
+		},
+		"header": {
+			"copied": "Copiato",
+			"copyLink": "Copia link",
+			"locked": "Bloccata",
+			"lockPage": "Blocca pagina",
+			"moreActions": "Azioni della pagina",
+			"presence": "Persone su questa pagina: {{names}}",
+			"presenceMore": "+{{count}}",
+			"togglePanel": "Mostra/nascondi pannello laterale",
+			"unlockHint": "Clicca per sbloccare",
+			"ancestors": "Pagine superiori"
+		},
+		"menu": {
+			"copyMarkdown": "Copia come Markdown",
+			"downloadMarkdown": "Scarica come Markdown",
+			"fullWidth": "Larghezza intera",
+			"markdownCopied": "Markdown copiato",
+			"versionHistory": "Cronologia delle versioni",
+			"print": "Stampa / Salva come PDF"
+		},
+		"editor": {
+			"addIcon": "Aggiungi icona",
+			"ariaLabel": "Contenuto della pagina",
+			"pageLink": {
+				"unavailable": "Pagina privata o eliminata"
+			},
+			"pageLinkPicker": {
+				"empty": "Nessuna pagina trovata",
+				"search": "Cerca pagine"
+			},
+			"placeholder": "Scrivi qualcosa o premi / per i comandi",
+			"slash": {
+				"commands": {
+					"divider": "Divisore",
+					"heading-1": "Titolo 1",
+					"heading-2": "Titolo 2",
+					"heading-3": "Titolo 3",
+					"page-link": "Link a una pagina"
+				}
+			},
+			"titleAria": "Titolo della pagina",
+			"titlePlaceholder": "Senza titolo"
+		},
+		"logo": {
+			"categories": {
+				"activities": "Attività",
+				"food": "Cibo",
+				"nature": "Natura",
+				"objects": "Oggetti",
+				"people": "Persone",
+				"smileys": "Faccine",
+				"symbols": "Simboli",
+				"travel": "Viaggi"
+			},
+			"emoji": "Emoji",
+			"icon": "Icona",
+			"remove": "Rimuovi",
+			"search": "Cerca emoji"
+		},
 		"banners": {
 			"archived": "Questa pagina è archiviata. Ripristinala per modificarla.",
 			"locked": "Questa pagina è bloccata. Sbloccala per apportare modifiche.",
@@ -8779,6 +9267,15 @@
 			"storedCopy": "Viene mostrata l'ultima versione salvata. La modifica in tempo reale riprende quando la connessione torna.",
 			"tooLarge": "Questa pagina è troppo grande per continuare la sincronizzazione. Copia le tue modifiche recenti, poi ricarica.",
 			"unlock": "Sblocca"
+		},
+		"sync": {
+			"cantConnect": "Impossibile connettersi",
+			"notSaved": "Non ancora salvata",
+			"notSavedHint": "Continueremo a riprovare. Non chiudere questa scheda.",
+			"offline": "Offline",
+			"offlineHint": "Puoi continuare a modificare. Le modifiche si sincronizzano quando la connessione torna.",
+			"retry": "Riprova",
+			"saved": "Salvata"
 		},
 		"collab": {
 			"deleted": "Questa pagina è stata eliminata",
@@ -8791,6 +9288,63 @@
 			"restoredBy": "{{name}} ha ripristinato una versione precedente",
 			"roomFull": "Troppe persone hanno questa pagina aperta in questo momento. Riprova tra poco.",
 			"signedOut": "La tua sessione è terminata. Accedi di nuovo per continuare a modificare."
+		},
+		"state": {
+			"notFound": {
+				"back": "Torna alle pagine",
+				"description": "Potrebbe essere stata eliminata oppure è privata.",
+				"title": "Pagina non trovata"
+			}
+		},
+		"panel": {
+			"outline": "Struttura",
+			"info": "Info",
+			"history": "Cronologia",
+			"close": "Chiudi pannello",
+			"comments": "Commenti"
+		},
+		"outline": {
+			"empty": {
+				"description": "Aggiungi dei titoli per vedere qui la struttura.",
+				"title": "Nessun titolo per ora"
+			}
+		},
+		"info": {
+			"characters": "Caratteri",
+			"createdBy": "Creata da",
+			"lastEditedBy": "Ultima modifica di",
+			"lessThanMinute": "<1 min",
+			"linkedFrom": "Collegata da",
+			"lockedBy": "Bloccata da",
+			"noBacklinks": "Nessuna pagina rimanda qui per ora",
+			"paragraphs": "Paragrafi",
+			"readingMinutes": "{{count}} min",
+			"readingTime": "Tempo di lettura",
+			"words": "Parole"
+		},
+		"history": {
+			"backToCurrent": "Torna alla corrente",
+			"current": "Versione corrente",
+			"empty": "Nessuna versione salvata per ora. Le versioni vengono salvate mentre modifichi.",
+			"loadError": "Impossibile caricare questa versione",
+			"others_many": "+{{count}} altri",
+			"others_one": "+{{count}} altro",
+			"others_other": "+{{count}} altri",
+			"previewTitle": "Versione del {{date}}",
+			"restore": "Ripristina",
+			"restoreCancel": "Annulla",
+			"restoreConfirmDescription": "Il contenuto attuale viene prima salvato nella cronologia, così puoi annullare.",
+			"restoreConfirmTitle": "Ripristinare questa versione?",
+			"restored": "Versione ripristinata",
+			"restoreError": "Impossibile ripristinare questa versione",
+			"restoring": "Ripristino in corso…",
+			"retry": "Riprova",
+			"title": "Cronologia delle versioni",
+			"unknownUser": "Ex membro",
+			"viewOnly": "Sola lettura"
+		},
+		"notification": {
+			"openPage": "Apri pagina"
 		},
 		"toolbar": {
 			"ariaLabel": "Barra di formattazione",
@@ -8829,239 +9383,36 @@
 		"commandPalette": {
 			"createPage": "Crea pagina"
 		},
-		"crumb": {
-			"noMatches": "Nessuna pagina corrispondente",
-			"searchPlaceholder": "Cerca pagine"
-		},
-		"deleteDialog": {
+		"comments": {
+			"placeholder": "Aggiungi un commento…",
+			"add": "Commenta",
+			"save": "Salva",
 			"cancel": "Annulla",
-			"confirm": "Elimina",
-			"description": "“{{title}}” verrà eliminata definitivamente insieme alla cronologia delle versioni. Le sue sottopagine passano al livello principale. L'azione non può essere annullata.",
-			"title": "Eliminare la pagina?"
-		},
-		"editor": {
-			"addIcon": "Aggiungi icona",
-			"ariaLabel": "Contenuto della pagina",
-			"pageLink": {
-				"unavailable": "Pagina privata o eliminata"
-			},
-			"pageLinkPicker": {
-				"empty": "Nessuna pagina trovata",
-				"search": "Cerca pagine"
-			},
-			"placeholder": "Scrivi qualcosa o premi / per i comandi",
-			"slash": {
-				"commands": {
-					"divider": "Divisore",
-					"heading-1": "Titolo 1",
-					"heading-2": "Titolo 2",
-					"heading-3": "Titolo 3",
-					"page-link": "Link a una pagina"
-				}
-			},
-			"titleAria": "Titolo della pagina",
-			"titlePlaceholder": "Senza titolo"
-		},
-		"header": {
-			"copied": "Copiato",
-			"copyLink": "Copia link",
-			"locked": "Bloccata",
-			"lockPage": "Blocca pagina",
-			"moreActions": "Azioni della pagina",
-			"presence": "Persone su questa pagina: {{names}}",
-			"presenceMore": "+{{count}}",
-			"togglePanel": "Mostra/nascondi pannello laterale",
-			"unlockHint": "Clicca per sbloccare",
-			"ancestors": "Pagine superiori"
-		},
-		"history": {
-			"backToCurrent": "Torna alla corrente",
-			"current": "Versione corrente",
-			"empty": "Nessuna versione salvata per ora. Le versioni vengono salvate mentre modifichi.",
-			"loadError": "Impossibile caricare questa versione",
-			"others_many": "+{{count}} altri",
-			"others_one": "+{{count}} altro",
-			"others_other": "+{{count}} altri",
-			"previewTitle": "Versione del {{date}}",
-			"restore": "Ripristina",
-			"restoreCancel": "Annulla",
-			"restoreConfirmDescription": "Il contenuto attuale viene prima salvato nella cronologia, così puoi annullare.",
-			"restoreConfirmTitle": "Ripristinare questa versione?",
-			"restored": "Versione ripristinata",
-			"restoreError": "Impossibile ripristinare questa versione",
-			"restoring": "Ripristino in corso…",
+			"emptyTitle": "Ancora nessun commento",
+			"emptyDescription": "I commenti qui restano all'interno del workspace. I link pubblici non li mostrano.",
+			"archivedNote": "Questa pagina è archiviata. Ripristinala per commentare.",
+			"loadError": "Impossibile caricare i commenti",
 			"retry": "Riprova",
-			"title": "Cronologia delle versioni",
-			"unknownUser": "Ex membro",
-			"viewOnly": "Sola lettura"
-		},
-		"info": {
-			"characters": "Caratteri",
-			"createdBy": "Creata da",
-			"lastEditedBy": "Ultima modifica di",
-			"lessThanMinute": "<1 min",
-			"linkedFrom": "Collegata da",
-			"lockedBy": "Bloccata da",
-			"noBacklinks": "Nessuna pagina rimanda qui per ora",
-			"paragraphs": "Paragrafi",
-			"readingMinutes": "{{count}} min",
-			"readingTime": "Tempo di lettura",
-			"words": "Parole"
-		},
-		"list": {
-			"access": {
-				"private": "Privata",
-				"public": "Pubblica"
-			},
-			"archivedOn": "Archiviata {{date}}",
-			"clearFilters": "Cancella filtri",
-			"documentTitle": "{{project}} · Pagine",
-			"editedAgo": "Modificata {{time}}",
-			"empty": {
-				"archived": {
-					"description": "Le pagine archiviate compaiono qui. Puoi ripristinarle o eliminarle.",
-					"title": "Nessuna pagina archiviata"
-				},
-				"noMatch": {
-					"description": "Prova una ricerca diversa o cancella i filtri.",
-					"title": "Nessuna pagina corrispondente"
-				},
-				"none": {
-					"description": "Le pagine contengono specifiche, appunti e documenti accanto alle attività del progetto.",
-					"title": "Scrivi la tua prima pagina"
-				},
-				"private": {
-					"description": "Le pagine private sono visibili solo a te.",
-					"title": "Nessuna pagina privata"
-				},
-				"public": {
-					"title": "Nessuna pagina pubblica"
-				}
-			},
-			"inParent": "in {{path}}",
-			"loadError": "Impossibile caricare le pagine",
-			"locked": "Bloccata",
-			"newPage": "Nuova pagina",
-			"ownedBy": "Di {{name}}",
-			"retry": "Riprova",
-			"searchPlaceholder": "Cerca pagine",
-			"sort": {
-				"created": "Creazione",
-				"lastEdited": "Ultima modifica",
-				"name": "Nome"
-			},
-			"tabs": {
-				"archived": "Archiviate",
-				"private": "Private",
-				"public": "Pubbliche"
-			},
-			"untitled": "Senza titolo"
-		},
-		"logo": {
-			"categories": {
-				"activities": "Attività",
-				"food": "Cibo",
-				"nature": "Natura",
-				"objects": "Oggetti",
-				"people": "Persone",
-				"smileys": "Faccine",
-				"symbols": "Simboli",
-				"travel": "Viaggi"
-			},
-			"emoji": "Emoji",
-			"icon": "Icona",
-			"remove": "Rimuovi",
-			"search": "Cerca emoji"
-		},
-		"menu": {
-			"copyMarkdown": "Copia come Markdown",
-			"downloadMarkdown": "Scarica come Markdown",
-			"fullWidth": "Larghezza intera",
-			"markdownCopied": "Markdown copiato",
-			"versionHistory": "Cronologia delle versioni",
-			"print": "Stampa / Salva come PDF"
-		},
-		"moveDialog": {
-			"cancel": "Annulla",
-			"confirm": "Sposta",
-			"description": "La pagina e le sue sottopagine passano al progetto selezionato.",
-			"empty": "Nessun altro progetto ha le Pagine attive",
-			"searchPlaceholder": "Cerca progetti",
-			"title": "Sposta pagina"
-		},
-		"notification": {
-			"openPage": "Apri pagina"
-		},
-		"outline": {
-			"empty": {
-				"description": "Aggiungi dei titoli per vedere qui la struttura.",
-				"title": "Nessun titolo per ora"
+			"deletedUser": "Utente eliminato",
+			"edited": "modificato",
+			"menuAria": "Altre azioni per questo commento",
+			"edit": "Modifica",
+			"delete": "Elimina",
+			"deleteTitle": "Eliminare questo commento?",
+			"deleteDescription": "Viene eliminato per tutti. Questa azione non può essere annullata.",
+			"toasts": {
+				"empty": "Scrivi prima qualcosa",
+				"addError": "Impossibile aggiungere il commento",
+				"saveError": "Impossibile salvare il commento",
+				"deleteError": "Impossibile eliminare il commento"
 			}
 		},
-		"panel": {
-			"close": "Chiudi pannello",
-			"history": "Cronologia",
-			"info": "Info",
-			"outline": "Struttura"
-		},
-		"section": {
-			"title": "Pagine"
-		},
-		"state": {
-			"notFound": {
-				"back": "Torna alle pagine",
-				"description": "Potrebbe essere stata eliminata oppure è privata.",
-				"title": "Pagina non trovata"
-			}
-		},
-		"sync": {
-			"cantConnect": "Impossibile connettersi",
-			"notSaved": "Non ancora salvata",
-			"notSavedHint": "Continueremo a riprovare. Non chiudere questa scheda.",
-			"offline": "Offline",
-			"offlineHint": "Puoi continuare a modificare. Le modifiche si sincronizzano quando la connessione torna.",
-			"retry": "Riprova",
-			"saved": "Salvata"
-		},
-		"toasts": {
-			"accessError": "Impossibile cambiare chi può vedere questa pagina",
-			"archived": "Pagina archiviata",
-			"archiveError": "Impossibile archiviare la pagina",
-			"contentConflict": "Questa pagina è cambiata altrove, quindi la tua ultima modifica non è stata salvata. Viene mostrata l'ultima versione.",
-			"contentSaveError": "Impossibile salvare la pagina",
-			"createError": "Impossibile creare la pagina",
-			"deleted": "Pagina eliminata",
-			"deleteError": "Impossibile eliminare la pagina",
-			"duplicated": "Pagina duplicata",
-			"duplicateError": "Impossibile duplicare la pagina",
-			"fullWidthError": "Impossibile cambiare la larghezza della pagina",
-			"linkCopied": "Link copiato",
-			"locked": "Pagina bloccata",
-			"lockError": "Impossibile cambiare il blocco",
-			"logoError": "Impossibile aggiornare l'icona",
-			"madePrivate": "La pagina ora è privata",
-			"madePublic": "La pagina ora è pubblica",
-			"moved": "Spostata in {{project}}",
-			"moveError": "Impossibile spostare la pagina",
-			"open": "Apri",
-			"restored": "Pagina ripristinata",
-			"restoreError": "Impossibile ripristinare la pagina",
-			"titleError": "Impossibile salvare il titolo",
-			"unlocked": "Pagina sbloccata"
-		},
-		"tree": {
-			"collapse": "Comprimi {{title}}",
-			"dnd": {
-				"cancelled": "Spostamento annullato.",
-				"dropped": "{{title}} spostata.",
-				"invalid": "{{title}} non può andare lì.",
-				"over": "{{title}} è sopra {{target}}.",
-				"pickedUp": "{{title}} sollevata. Usa i tasti freccia per spostarla, Spazio per rilasciarla o Esc per annullare."
-			},
-			"empty": "Nessuna pagina per ora",
-			"expand": "Espandi {{title}}",
-			"newPage": "Nuova pagina",
-			"title": "Pagine"
+		"watch": {
+			"watch": "Segui la pagina",
+			"unwatch": "Non seguire più",
+			"watchHint": "Ricevi notifiche su commenti e modifiche",
+			"watchingHint": "Ricevi già notifiche su commenti e modifiche",
+			"error": "Impossibile aggiornare lo stato di «Segui» per questa pagina"
 		}
 	},
 	"accountSecurity": {
@@ -9120,7 +9471,9 @@
 				"sessionLifetime": "Durata della sessione",
 				"sessionLifetimeHint": "Quanto dura una sessione inutilizzata. Usarla la prolunga.",
 				"hours": "ore",
-				"signInNotice": "Accedi con {{provider}}. L'accesso con password è riservato agli amministratori dell'istanza."
+				"signInNotice": "Accedi con {{provider}}. L'accesso con password è riservato agli amministratori dell'istanza.",
+				"requireTwoFactor": "Richiedi l'autenticazione a due fattori",
+				"requireTwoFactorHint": "Ogni account con password deve configurare l'autenticazione a due fattori prima di poter fare altro, anche se accede pure tramite un provider o SAML, e le sue chiavi API smettono di funzionare finché non lo fa. I link e i codici via email vengono disattivati, quindi chi usava solo quelli non può entrare finché non ha una password: la imposta con «Password dimenticata?», oppure gliela imposti tu in «Utenti» se l'email non è configurata. Gli account senza password seguono le regole del loro provider. Attivala prima sul tuo account."
 			},
 			"twoFactor": {
 				"title": "Autenticazione a due fattori",
@@ -9147,7 +9500,11 @@
 				"done": "Fatto",
 				"enabled": "L'autenticazione a due fattori è attiva.",
 				"disabled": "L'autenticazione a due fattori è disattivata.",
-				"error": "Qualcosa è andato storto. Riprova."
+				"error": "Qualcosa è andato storto. Riprova.",
+				"requiredHint": "Questo server richiede l'autenticazione a due fattori, quindi non può essere disattivata. Se perdi il dispositivo e i codici di recupero, un amministratore dell'istanza può reimpostarla.",
+				"setupRequiredTitle": "Configura l'autenticazione a due fattori per continuare",
+				"setupRequiredHint": "Questo server richiede l'autenticazione a due fattori per ogni account con password. Ti servirà un'app di autenticazione.",
+				"signOutInstead": "Oppure disconnettiti"
 			},
 			"challenge": {
 				"title": "Autenticazione a due fattori",
@@ -9219,7 +9576,11 @@
 				"noPassword": "Non impostata (accede in altro modo)",
 				"workspacesTitle": "Workspace",
 				"noWorkspaces": "Non fa parte di nessun workspace.",
-				"joined": "Iscritto il {{date}}"
+				"joined": "Iscritto il {{date}}",
+				"resetTwoFactor": "Reimposta l'autenticazione a due fattori",
+				"resetTwoFactorTitle": "Reimpostare l'autenticazione a due fattori di {{name}}?",
+				"resetTwoFactorDescription": "Usa questa opzione quando la persona ha perso il dispositivo e i codici di recupero e hai verificato che sia davvero lei. La sua autenticazione a due fattori viene rimossa e la persona viene disconnessa ovunque. Potrà poi accedere con la sola password e configurarla di nuovo.",
+				"twoFactorReset": "Autenticazione a due fattori reimpostata per {{name}}"
 			}
 		},
 		"password": {
@@ -9283,33 +9644,99 @@
 				"cliAdminPromoted": "Ha nominato un amministratore dell'istanza (CLI di ripristino)",
 				"cliAdminDemoted": "Ha rimosso un amministratore dell'istanza (CLI di ripristino)",
 				"cliPasswordReset": "Ha reimpostato una password (CLI di ripristino)",
-				"cliUserUnbanned": "Ha revocato un blocco (CLI di ripristino)"
+				"cliUserUnbanned": "Ha revocato un blocco (CLI di ripristino)",
+				"userTwoFactorReset": "Ha reimpostato l'autenticazione a due fattori di un account",
+				"cliTwoFactorReset": "Ha reimpostato l'autenticazione a due fattori di un account (CLI di recupero)",
+				"scimConnectionCreated": "Ha collegato un provider di identità per il provisioning",
+				"scimTokenRotated": "Ha sostituito un token SCIM",
+				"scimConnectionDeleted": "Ha rimosso una connessione SCIM",
+				"scimUserProvisioned": "Ha aggiunto un account tramite provisioning",
+				"scimUserDeactivated": "Ha disattivato un account tramite provisioning",
+				"scimUserReactivated": "Ha riattivato un account tramite provisioning",
+				"scimUserRemoved": "Ha rimosso una persona da un workspace tramite provisioning",
+				"samlConnectionCreated": "Ha collegato un provider di identità per l'accesso",
+				"samlConnectionUpdated": "Ha modificato una connessione SAML",
+				"samlConnectionDeleted": "Ha rimosso una connessione SAML"
 			}
 		}
 	},
 	"instanceAdmin": {
-		"admins": {
-			"add": "Aggiungi amministratore",
-			"addConfirm": "Aggiungi amministratore",
-			"addDescription": "Gli amministratori dell'istanza possono modificare ogni impostazione di quest'area e aprire qualsiasi workspace.",
-			"added": "{{name}} ora è un amministratore dell'istanza",
-			"addTitle": "Aggiungi un amministratore dell'istanza",
-			"columns": {
-				"email": "Email",
-				"name": "Nome"
-			},
+		"pageTitle": "Istanza · {{page}}",
+		"nav": {
+			"admins": "Amministratori",
+			"authentication": "Autenticazione",
 			"email": "Email",
-			"emailInvalid": "Inserisci un indirizzo email valido",
-			"emailPlaceholder": "nome@example.com",
-			"lastAdmin": "Deve esserci almeno un amministratore dell'istanza",
-			"remove": "Rimuovi amministratore…",
-			"removeConfirm": "Rimuovi",
-			"removed": "{{name}} non è più un amministratore dell'istanza",
-			"removeDescription": "Mantiene il suo account e i suoi workspace.",
-			"removeTitle": "Rimuovere {{name}} come amministratore dell'istanza?",
-			"subtitle": "Gli amministratori dell'istanza possono modificare ogni impostazione di quest'area e aprire qualsiasi workspace.",
-			"title": "Amministratori",
-			"you": "Tu"
+			"general": "Generale",
+			"publicBoards": "Board pubbliche",
+			"workspaces": "Workspace",
+			"ai": "IA"
+		},
+		"lockedCallout": "Queste impostazioni sono gestite con variabili d'ambiente su questo server. Le modifiche qui sono disabilitate.",
+		"source": {
+			"default": "Predefinito",
+			"environment": "Ambiente: {{variable}}",
+			"lockTooltip": "Rimuovi {{variable}} e riavvia per gestirlo da qui.",
+			"saved": "Salvato qui",
+			"savedBy": "Salvato da {{name}} il {{date}}"
+		},
+		"saved": "Impostazioni salvate",
+		"saveError": "Impossibile salvare le impostazioni",
+		"loadError": "Impossibile caricare le impostazioni dell'istanza",
+		"retry": "Riprova",
+		"save": "Salva",
+		"secret": {
+			"cancel": "Annulla",
+			"clear": "Cancella",
+			"cleared": "Segreto cancellato",
+			"placeholder": "Inserisci un nuovo valore",
+			"replace": "Sostituisci",
+			"saved": "Salvato",
+			"unreadable": "Il segreto salvato non può essere letto (l'AUTH_SECRET del server è cambiato). Inseriscilo di nuovo."
+		},
+		"general": {
+			"title": "Generale",
+			"subtitle": "Dai un nome a questa istanza e controlla il suo stato di salute.",
+			"instanceName": "Nome dell'istanza",
+			"instanceNameHint": "Mostrato nella schermata di accesso e sulle board pubbliche",
+			"instanceNameRequired": "Inserisci un nome",
+			"instanceNameTooLong": "Usa al massimo 80 caratteri",
+			"homePage": "Pagina iniziale",
+			"publicLanding": "Mostra la pagina di presentazione del prodotto",
+			"publicLandingHint": "I visitatori non connessi vedono la pagina di presentazione all'indirizzo principale. Se disattivata, vanno direttamente all'accesso.",
+			"overview": "Panoramica",
+			"version": "Versione",
+			"counts": {
+				"accounts": "Account",
+				"guests": "Ospiti",
+				"projects": "Progetti",
+				"publishedBoards": "Board pubbliche",
+				"workspaces": "Workspace"
+			},
+			"server": {
+				"captcha": "Captcha",
+				"cloudMode": "Modalità cloud",
+				"configured": "Configurato",
+				"demoMode": "Modalità demo",
+				"email": "Email",
+				"errorReporting": "Segnalazione errori",
+				"fileStorage": "Archiviazione file",
+				"notConfigured": "Non configurato",
+				"off": "Disattivato",
+				"on": "Attivato",
+				"realtime": "Tempo reale",
+				"realtimeMemory": "In memoria",
+				"realtimeRedis": "Redis ({{mode}})",
+				"title": "Server"
+			},
+			"deliveryFailures": {
+				"title": "Consegne non riuscite di recente",
+				"description": "Webhook dei workspace che hanno esaurito i tentativi negli ultimi 7 giorni. Gli errori delle email e dei processi in background sono solo nei log del server.",
+				"empty": "Nessuna consegna non riuscita negli ultimi 7 giorni.",
+				"when": "Quando",
+				"workspace": "Workspace",
+				"webhook": "Webhook",
+				"response": "Risposta"
+			}
 		},
 		"auth": {
 			"anyoneCanSignUp": "Chiunque può registrarsi",
@@ -9349,6 +9776,31 @@
 			"title": "Autenticazione",
 			"toggle": "Attiva o disattiva {{method}}"
 		},
+		"oauth": {
+			"authorizationUrl": "URL di autorizzazione",
+			"autoSignIn": "Accedi automaticamente",
+			"autoSignInHint": "Salta la schermata di accesso e vai direttamente a questo provider",
+			"buttonLabel": "Etichetta del pulsante",
+			"buttonLabelHint": "Mostrata sul pulsante di accesso, ad esempio \"Continua con Okta\"",
+			"callbackHint": "Aggiungi questo URL alla tua app OAuth",
+			"callbackUrl": "URL di callback",
+			"clientId": "Client ID",
+			"clientSecret": "Client secret",
+			"copied": "Copiato",
+			"copy": "Copia",
+			"discoveryHint": "Oppure compila i tre endpoint qui sotto",
+			"discoveryUrl": "URL di discovery",
+			"invalidUrl": "Inserisci un URL http o https assoluto",
+			"logoutUrl": "URL di logout",
+			"managedByEnv": "Questo provider è configurato con variabili d'ambiente ({{variables}}).",
+			"pkce": "Usa PKCE",
+			"scopes": "Scope",
+			"scopesHint": "Separati da virgola",
+			"sheetDescription": "Collega un'app OAuth per consentire l'accesso con {{provider}}.",
+			"sheetTitle": "Accesso con {{provider}}",
+			"tokenUrl": "URL del token",
+			"userInfoUrl": "URL delle informazioni utente"
+		},
 		"email": {
 			"from": "Mittente",
 			"fromHint": "Un indirizzo, oppure un nome e un indirizzo: Margaya <no-reply@example.com>",
@@ -9379,134 +9831,6 @@
 			"subtitle": "Il server SMTP attraverso cui Margaya invia codici di accesso, inviti e notifiche.",
 			"title": "Email",
 			"username": "Nome utente"
-		},
-		"general": {
-			"counts": {
-				"accounts": "Account",
-				"guests": "Ospiti",
-				"projects": "Progetti",
-				"publishedBoards": "Board pubbliche",
-				"workspaces": "Workspace"
-			},
-			"instanceName": "Nome dell'istanza",
-			"instanceNameHint": "Mostrato nella schermata di accesso e sulle board pubbliche",
-			"instanceNameRequired": "Inserisci un nome",
-			"instanceNameTooLong": "Usa al massimo 80 caratteri",
-			"homePage": "Pagina iniziale",
-			"publicLanding": "Mostra la pagina di presentazione del prodotto",
-			"publicLandingHint": "I visitatori non connessi vedono la pagina di presentazione all'indirizzo principale. Se disattivata, vanno direttamente all'accesso.",
-			"overview": "Panoramica",
-			"server": {
-				"captcha": "Captcha",
-				"cloudMode": "Modalità cloud",
-				"configured": "Configurato",
-				"demoMode": "Modalità demo",
-				"email": "Email",
-				"errorReporting": "Segnalazione errori",
-				"fileStorage": "Archiviazione file",
-				"notConfigured": "Non configurato",
-				"off": "Disattivato",
-				"on": "Attivato",
-				"realtime": "Tempo reale",
-				"realtimeMemory": "In memoria",
-				"realtimeRedis": "Redis ({{mode}})",
-				"title": "Server"
-			},
-			"subtitle": "Dai un nome a questa istanza e controlla il suo stato di salute.",
-			"title": "Generale",
-			"version": "Versione"
-		},
-		"loadError": "Impossibile caricare le impostazioni dell'istanza",
-		"lockedCallout": "Queste impostazioni sono gestite con variabili d'ambiente su questo server. Le modifiche qui sono disabilitate.",
-		"nav": {
-			"admins": "Amministratori",
-			"authentication": "Autenticazione",
-			"email": "Email",
-			"general": "Generale",
-			"publicBoards": "Board pubbliche",
-			"workspaces": "Workspace",
-			"ai": "IA"
-		},
-		"oauth": {
-			"authorizationUrl": "URL di autorizzazione",
-			"autoSignIn": "Accedi automaticamente",
-			"autoSignInHint": "Salta la schermata di accesso e vai direttamente a questo provider",
-			"buttonLabel": "Etichetta del pulsante",
-			"buttonLabelHint": "Mostrata sul pulsante di accesso, ad esempio \"Continua con Okta\"",
-			"callbackHint": "Aggiungi questo URL alla tua app OAuth",
-			"callbackUrl": "URL di callback",
-			"clientId": "Client ID",
-			"clientSecret": "Client secret",
-			"copied": "Copiato",
-			"copy": "Copia",
-			"discoveryHint": "Oppure compila i tre endpoint qui sotto",
-			"discoveryUrl": "URL di discovery",
-			"invalidUrl": "Inserisci un URL http o https assoluto",
-			"logoutUrl": "URL di logout",
-			"managedByEnv": "Questo provider è configurato con variabili d'ambiente ({{variables}}).",
-			"pkce": "Usa PKCE",
-			"scopes": "Scope",
-			"scopesHint": "Separati da virgola",
-			"sheetDescription": "Collega un'app OAuth per consentire l'accesso con {{provider}}.",
-			"sheetTitle": "Accesso con {{provider}}",
-			"tokenUrl": "URL del token",
-			"userInfoUrl": "URL delle informazioni utente"
-		},
-		"pageTitle": "Istanza · {{page}}",
-		"publicBoards": {
-			"actions": "Azioni sulla board",
-			"allow": "Consenti board pubbliche",
-			"allowHint": "Se disattivato, ogni link pubblico risponde \"non trovato\". Non viene eliminato nulla.",
-			"columns": {
-				"features": "Funzionalità",
-				"project": "Progetto",
-				"published": "Pubblicata",
-				"workspace": "Workspace"
-			},
-			"empty": "Nessuna board pubblica su questo server.",
-			"feature": {
-				"comments": "Commenti",
-				"guests": "Ospiti",
-				"reactions": "Reazioni",
-				"requests": "Richieste",
-				"votes": "Voti"
-			},
-			"listTitle": "Board pubblicate",
-			"loadMore": "Carica altro",
-			"noMatches": "Nessuna board pubblica corrisponde a “{{query}}”",
-			"openBoard": "Apri board",
-			"participation": "Consenti la partecipazione pubblica",
-			"participationHint": "Se disattivato, le board pubbliche sono in sola lettura: niente commenti, reazioni, voti o richieste.",
-			"projectSettings": "Impostazioni del progetto",
-			"search": "Cerca board",
-			"subtitle": "Gestisci le board pubbliche di questa istanza.",
-			"title": "Board pubbliche",
-			"unpublish": "Annulla pubblicazione…",
-			"unpublishConfirm": "Annulla pubblicazione",
-			"unpublishDescription": "Il link smette di funzionare finché qualcuno non pubblica di nuovo la board. Impostazioni, commenti, reazioni e voti vengono conservati.",
-			"unpublished": "Pubblicazione della board annullata",
-			"unpublishError": "Impossibile annullare la pubblicazione della board",
-			"unpublishTitle": "Annullare la pubblicazione di {{project}}?"
-		},
-		"retry": "Riprova",
-		"save": "Salva",
-		"saved": "Impostazioni salvate",
-		"saveError": "Impossibile salvare le impostazioni",
-		"secret": {
-			"cancel": "Annulla",
-			"clear": "Cancella",
-			"cleared": "Segreto cancellato",
-			"placeholder": "Inserisci un nuovo valore",
-			"replace": "Sostituisci",
-			"saved": "Salvato",
-			"unreadable": "Il segreto salvato non può essere letto (l'AUTH_SECRET del server è cambiato). Inseriscilo di nuovo."
-		},
-		"source": {
-			"default": "Predefinito",
-			"environment": "Ambiente: {{variable}}",
-			"lockTooltip": "Rimuovi {{variable}} e riavvia per gestirlo da qui.",
-			"saved": "Salvato qui",
-			"savedBy": "Salvato da {{name}} il {{date}}"
 		},
 		"testEmail": {
 			"codes": {
@@ -9549,6 +9873,132 @@
 			"search": "Cerca workspace",
 			"subtitle": "Tutti i workspace di questa istanza.",
 			"title": "Workspace"
+		},
+		"publicBoards": {
+			"actions": "Azioni sulla board",
+			"allow": "Consenti board pubbliche",
+			"allowHint": "Se disattivato, ogni link pubblico risponde \"non trovato\". Non viene eliminato nulla.",
+			"columns": {
+				"features": "Funzionalità",
+				"project": "Progetto",
+				"published": "Pubblicata",
+				"workspace": "Workspace"
+			},
+			"empty": "Nessuna board pubblica su questo server.",
+			"feature": {
+				"comments": "Commenti",
+				"guests": "Ospiti",
+				"reactions": "Reazioni",
+				"requests": "Richieste",
+				"votes": "Voti"
+			},
+			"listTitle": "Board pubblicate",
+			"loadMore": "Carica altro",
+			"noMatches": "Nessuna board pubblica corrisponde a “{{query}}”",
+			"openBoard": "Apri board",
+			"participation": "Consenti la partecipazione pubblica",
+			"participationHint": "Se disattivato, le board pubbliche sono in sola lettura: niente commenti, reazioni, voti o richieste.",
+			"projectSettings": "Impostazioni del progetto",
+			"search": "Cerca board",
+			"subtitle": "Gestisci le board pubbliche di questa istanza.",
+			"title": "Board pubbliche",
+			"unpublish": "Annulla pubblicazione…",
+			"unpublishConfirm": "Annulla pubblicazione",
+			"unpublishDescription": "Il link smette di funzionare finché qualcuno non pubblica di nuovo la board. Impostazioni, commenti, reazioni e voti vengono conservati.",
+			"unpublished": "Pubblicazione della board annullata",
+			"unpublishError": "Impossibile annullare la pubblicazione della board",
+			"unpublishTitle": "Annullare la pubblicazione di {{project}}?"
+		},
+		"admins": {
+			"add": "Aggiungi amministratore",
+			"addConfirm": "Aggiungi amministratore",
+			"addDescription": "Gli amministratori dell'istanza possono modificare ogni impostazione di quest'area e aprire qualsiasi workspace.",
+			"added": "{{name}} ora è un amministratore dell'istanza",
+			"addTitle": "Aggiungi un amministratore dell'istanza",
+			"columns": {
+				"email": "Email",
+				"name": "Nome"
+			},
+			"email": "Email",
+			"emailInvalid": "Inserisci un indirizzo email valido",
+			"emailPlaceholder": "nome@example.com",
+			"lastAdmin": "Deve esserci almeno un amministratore dell'istanza",
+			"remove": "Rimuovi amministratore…",
+			"removeConfirm": "Rimuovi",
+			"removed": "{{name}} non è più un amministratore dell'istanza",
+			"removeDescription": "Mantiene il suo account e i suoi workspace.",
+			"removeTitle": "Rimuovere {{name}} come amministratore dell'istanza?",
+			"subtitle": "Gli amministratori dell'istanza possono modificare ogni impostazione di quest'area e aprire qualsiasi workspace.",
+			"title": "Amministratori",
+			"you": "Tu"
+		},
+		"identity": {
+			"name": "Nome",
+			"nameHint": "Come gli amministratori chiamano questa connessione, ad esempio il provider.",
+			"remove": "Rimuovi",
+			"removeTitle": "Rimuovere {{name}}?",
+			"done": "Fatto",
+			"scim": {
+				"title": "Provisioning (SCIM)",
+				"description": "Consenti a un provider di identità di aggiungere, modificare e rimuovere persone in un workspace.",
+				"none": "Nessun provider di identità collegato per il provisioning.",
+				"connect": "Collega provider",
+				"connectDescription": "Crea un token per un workspace. Lo vedrai una sola volta, dopo il collegamento.",
+				"connectConfirm": "Crea token",
+				"workspace": "Workspace",
+				"workspaceHint": "Le persone aggiunte da questo provider entrano in questo workspace come membri.",
+				"workspacePlaceholder": "Scegli un workspace",
+				"workspaceSearch": "Cerca workspace",
+				"baseUrl": "URL base SCIM",
+				"token": "Token bearer",
+				"tokenTitle": "Copia il token per {{name}}",
+				"tokenDescription": "È l'unica volta che lo vedrai. Dallo solo al provider di identità: chiunque lo possieda può aggiungere persone al workspace e modificare o disattivare le persone gestite da questa connessione.",
+				"rotate": "Sostituisci token",
+				"rotateTitle": "Sostituire il token per {{name}}?",
+				"rotateDescription": "Il token attuale smette subito di funzionare, quindi il provisioning si ferma finché il provider di identità non ha quello nuovo. Le persone restano collegate.",
+				"rotateConfirm": "Sostituisci token",
+				"removeDescription": "Il token smette subito di funzionare. Le persone che ha aggiunto mantengono i loro account e le loro appartenenze, e il provider non le aggiorna più.",
+				"removed": "{{name}} rimosso",
+				"columns": {
+					"name": "Nome",
+					"workspace": "Workspace",
+					"people": "Persone"
+				}
+			},
+			"saml": {
+				"title": "Accesso aziendale (SAML)",
+				"description": "Consenti alle persone dei tuoi domini email di accedere tramite un provider di identità.",
+				"none": "Nessun provider di identità collegato per l'accesso.",
+				"connect": "Collega provider",
+				"connectConfirm": "Collega",
+				"edit": "Modifica",
+				"editTitle": "Modifica {{name}}",
+				"formDescription": "Chi controlla questo provider di identità può far accedere chiunque su questi domini abbia un indirizzo verificato qui, quindi collega solo un provider di cui ti fidi per questi domini.",
+				"acsUrl": "URL del servizio consumer di asserzioni (ACS)",
+				"entityId": "ID entità (audience)",
+				"addressesHint": "Inserisci questi due valori nel tuo provider di identità. Non cambiano in seguito.",
+				"domains": "Domini email",
+				"domainsHint": "Separane più di uno con una virgola. I sottodomini sono inclusi.",
+				"domainsInvalid": "Inserisci domini come example.com, separati da virgole.",
+				"issuer": "ID entità del provider di identità (emittente)",
+				"entryPoint": "URL di single sign-on",
+				"entryPointInvalid": "Usa un indirizzo https://.",
+				"certificate": "Certificato di firma",
+				"certificateHint": "Il certificato X.509 pubblico del provider di identità, in formato PEM o base64. Mai una chiave privata.",
+				"certificateKeepHint": "Lascia vuoto per mantenere il certificato attuale.",
+				"currentCertificate": "Impronta digitale attuale: {{fingerprint}}",
+				"certificateExpired": "Scaduto",
+				"certificateExpiring": "Scade a breve",
+				"connected": "Provider di identità collegato",
+				"saved": "Connessione salvata",
+				"removeDescription": "L'accesso tramite questo provider di identità si interrompe subito. Gli account restano e le persone accedono in un altro modo.",
+				"removed": "{{name}} rimosso",
+				"columns": {
+					"name": "Nome",
+					"domains": "Domini email",
+					"certificate": "Scadenza del certificato"
+				}
+			}
 		}
 	},
 	"press": {
@@ -10082,6 +10532,28 @@
 				"facts": "Progetti: {{projects}} · Persone: {{members}} · Cicli: {{cycles}}",
 				"memory": "Note di memoria: {{count}}",
 				"history": "Messaggi precedenti: {{count}}"
+			},
+			"undo": {
+				"button": "Annulla il piano",
+				"pending": "Annullamento del piano…",
+				"hint": "Puoi annullare questo piano per un'ora, purché nulla al suo interno sia cambiato.",
+				"lastPlan": "Puoi ancora annullare il tuo ultimo piano.",
+				"done": "Il piano è stato annullato. Gli elementi eliminati sono nel cestino.",
+				"archived_one": "{{count}} elemento è stato invece archiviato, perché non puoi eliminarlo.",
+				"archived_many": "{{count}} di elementi sono stati invece archiviati, perché non puoi eliminarli.",
+				"archived_other": "{{count}} elementi sono stati invece archiviati, perché non puoi eliminarli.",
+				"partial_one": "Annullato, tranne {{count}} elemento:",
+				"partial_many": "Annullato, tranne {{count}} di elementi:",
+				"partial_other": "Annullato, tranne {{count}} elementi:",
+				"edited_one": "Non è stato annullato nulla: {{count}} elemento è cambiato dopo la creazione del piano. Rimuovilo a mano se vuoi ancora eliminarlo.",
+				"edited_many": "Non è stato annullato nulla: {{count}} di elementi sono cambiati dopo la creazione del piano. Rimuovili a mano se vuoi ancora eliminarli.",
+				"edited_other": "Non è stato annullato nulla: {{count}} elementi sono cambiati dopo la creazione del piano. Rimuovili a mano se vuoi ancora eliminarli.",
+				"more_one": "e {{count}} altro",
+				"more_many": "e altri {{count}}",
+				"more_other": "e altri {{count}}",
+				"already": "Questo piano è già stato annullato.",
+				"expired": "Questo piano non può più essere annullato: l'ora è trascorsa.",
+				"failed": "Impossibile annullare questo piano."
 			}
 		},
 		"duplicates": {
@@ -11656,7 +12128,8 @@
 			"text": "Questa è un'email di prova da {{instanceName}}. Se riesci a leggerla, l'invio delle email funziona."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Nuovo commento su {{taskTitle}}"
+			"commentWithoutPreview": "Nuovo commento su {{taskTitle}}",
+			"pushFixedLine": "Apri Margaya per vedere i dettagli."
 		}
 	}
 }
