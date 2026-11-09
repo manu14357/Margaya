@@ -84,6 +84,8 @@ Your pending invitations appear right away. The emailed invitation link works wh
 
 Select **Sign out** on a session you don't recognize, or **Sign out all other sessions** to keep only this one. Signed-out devices must sign in again. To end the current session, use **Sign out** in the account menu.
 
+**Sign out all other sessions** also ends [push notifications](/core/functional/account-notifications#push-notifications) on those devices. **Sign out** on a single session doesn't, because a session can't be matched to its push device: if you lost the device, also select **Remove** for it under **Your other devices** in your notification settings.
+
 ## Two-factor authentication
 
 If you sign in with a password, you can ask for a second step: a 6-digit code from an authenticator app (any app that supports TOTP, such as 1Password, Bitwarden, Google Authenticator or Authy).
@@ -100,6 +102,24 @@ From then on, password sign-in asks for a code. Select **Trust this device for 3
 <Note>
 While two-factor is on, Margaya doesn't send you sign-in links or sign-in codes by email, because they would skip the second step. On a server that signs in with email codes, select **Sign in with a password instead**. Signing in with GitHub, Google, Discord or single sign-on uses that provider's own checks.
 </Note>
+
+### When your server requires two-factor
+
+An instance admin can [require two-factor](/core/installation/instance-admin#require-two-factor) for accounts with a password. If yours doesn't have it yet, Margaya opens **Set up two-factor to continue** after you sign in, and nothing else works until you finish. Your API keys, and the CLI and MCP tools that use them, stop too. They start working again once two-factor is on.
+
+<Screenshot src="account/two-factor-required" alt="The Set up two-factor to continue screen, saying the server requires two-factor for every account with a password, with a field to confirm the password and a Sign out instead button" caption="The screen an account sees until it has two-factor." />
+
+1. Confirm your password and select **Continue**.
+2. Add the **setup key** to your authenticator app, type the code it shows and select **Verify**.
+3. Save your recovery codes and select **Done**. You go back to where you were.
+
+To leave without setting it up, select **Sign out instead**.
+
+While it's required, **Turn off** isn't offered, and sign-in links and codes by email are off for everyone. If you only ever signed in with an email code or link, you don't have a password, so you can't sign in until you set one: use **Forgot password?** on the sign-in screen. If your server can't send email, that link isn't there; ask an instance admin to set a password for you. Then sign in with it and set up two-factor.
+
+### If you lose your device
+
+Sign in with a recovery code. If you've lost those too, ask an instance admin to select **Reset two-factor** for your account under **Settings** > **Instance** > **Users**. You're signed out everywhere, and you can then sign in with just your password and set two-factor up again. See [Require two-factor](/core/installation/instance-admin#require-two-factor) for what to do if you're the only instance admin.
 
 ## API keys
 
@@ -127,6 +147,8 @@ The activity icon on a key opens its **request log**: the time, method, route (s
 2. Under **Danger zone**, select **Leave workspace** and confirm.
 
 You lose access to its projects, tasks and pages at once; someone has to invite you again for you to come back. Margaya then opens another of your workspaces, or workspace setup if you have none left.
+
+You stay signed in and your API keys keep working, except that a key limited to specific projects loses this workspace's projects. A key with no project left is deleted.
 
 The **only owner** of a workspace can't leave it. Transfer ownership to another member first (**Transfer ownership** on the same page), or delete the workspace.
 

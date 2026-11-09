@@ -3,7 +3,7 @@ title: Restricted Projects
 description: Limit a project to chosen members, give each member a project role, and keep everyone else out of its tasks, pages, search results and notifications
 ---
 
-Every project starts **open**: everyone in the workspace can reach it, as their workspace role allows. When a project holds work that only some people should see, such as hiring, finance or a confidential client, make it **restricted**. A restricted project is visible only to:
+Every project starts **open**: everyone in the workspace except [guests](/core/functional/guest-access) can reach it, as their workspace role allows. When a project holds work that only some people should see, such as hiring, finance or a confidential client, make it **restricted**. A restricted project is visible only to:
 
 - its **members**, the people you add to it;
 - workspace **Owners** and **Admins**, who can always see every project.
@@ -19,15 +19,15 @@ You can also restrict a project when you create it: tick **Restricted** in the *
 
 When you restrict a project, you and the project lead are added as members, so neither of you loses access. Everyone else who is not an Owner or Admin loses access at once: the project disappears from their sidebar and searches, and any board or page of it they had open stops updating.
 
-Turning **Restricted** off makes the project open again. Its member list is kept for the next time.
+Turning **Restricted** off makes the project open again. Its member list is kept for the next time. An open project also uses the list for [guests](/core/functional/guest-access), who reach only the projects they're added to.
 
 ### Who can change access
 
-Changing a project's visibility or members needs the **Share projects** permission (`project:share`), which Owners and Admins have by default, or being the project's lead.
+Changing a project's visibility or members needs the project **Share** permission (`project:share`), which Owners and Admins have by default, or being the project's lead. A guest can't manage access, even as the lead.
 
 ## Members and project roles
 
-While a project is restricted, the **Access** section lists its members. Use **Add member** to add someone from the workspace, the role menu to change their project role, and the remove button to take them off the project. A small lock icon marks restricted projects in the sidebar and the projects list.
+The **Access** section lists a project's members. Use **Add member** to add someone from the workspace, the role menu to change their project role, and the remove button to take them off the project. In an open project, **Add member** offers only guests, because everyone else already reaches it. A small lock icon marks restricted projects in the sidebar and the projects list.
 
 <Screenshot src="tasks/restricted-access" alt="The Access section of the Hiring project with Restricted turned on and four members: Elena Marsh and Priya Raman as Admin, Jonas Weber as Viewer and Sofia Duarte as Member, plus an Add member button" caption="A restricted project lists its members and their project roles." />
 
@@ -39,8 +39,16 @@ Each member has a **project role**: Viewer, Member, Admin or one of the workspac
 | Member | Member | Work as a normal workspace member |
 | Member | Admin | Still only what a workspace Member can do: a project role never adds rights |
 | Viewer | Admin | Only read, as a workspace Viewer |
+| Guest | Viewer | Read, in this project only |
+| Guest | Member | Add and edit tasks and comment, in this project only. See [Guest Access](/core/functional/guest-access) |
+
+Moving a task or page, or copying a task, takes these rights in both projects, and so does moving a label between tasks. Someone who only reads a restricted project can't put a task, page or label into it.
 
 Workspace Owners and Admins always keep their full workspace rights in every project, whether or not they are members.
+
+The app follows the same rule. Inside a project where your project role only reads, the board, list, task view, pages, cycles and modules show no edit, create or delete controls, and tasks have no comment box. Lists that span projects, such as **Your work** and workspace views, apply each task's own project role to its row. People pickers in a project, for assignees and @mentions, offer only the people who can see that project. Someone assigned to a task who can't see its project keeps their name and avatar on the task, with the hint **No access to this project**.
+
+Analytics follow project roles too. If your project role in a project doesn't include analytics, a workspace analytics view leaves that project out, and naming it in the project picker or an analytics API call is refused.
 
 ## What non-members see
 
@@ -54,6 +62,8 @@ For someone who is not a member, a restricted project behaves as if it did not e
 - favourites and recent items (they are kept and come back if access returns);
 - activity feeds, the archive, the trash, exports and the audit log;
 - realtime updates: their open connections to the project are closed when they lose access.
+
+A task they can see may have been linked to a task in a restricted project, moved out of one or copied from one. Its history then still shows that this happened, but reads "a task in another project" or "another project" instead of the key, title or project name, leaves out the restricted project's cycles, modules, statuses and automation rules, and search doesn't find the row by those words. Members of the restricted project still see the full text.
 
 The same rules apply to the API, the MCP tools and API keys, which always act as the person who owns them. A key limited to specific projects cannot be limited to a restricted project its owner cannot see.
 
@@ -70,5 +80,7 @@ A public board or a public page link is a deliberate share. Publishing one from 
 | `POST` | `/api/project/{id}/access/members` | Add a member with a project role |
 | `PATCH` | `/api/project/{id}/access/members/{userId}` | Change a member's project role |
 | `DELETE` | `/api/project/{id}/access/members/{userId}` | Remove a member |
+| `GET` | `/api/project/access/mine?workspaceId=` | The projects where a project role caps you, each with that role and what it grants |
+| `GET` | `/api/project/{id}/people` | The people who can see the project (id, name, avatar), for pickers |
 
 `POST /api/project` also accepts `"visibility": "restricted"` to create a restricted project. Every project in API responses carries its `visibility`.

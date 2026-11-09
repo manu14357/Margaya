@@ -1,6 +1,6 @@
 ---
 title: Account Notifications
-description: Choose notification sounds, and deliver your personal Margaya notifications by email (batched, with an optional digest), ntfy, Gotify, or a custom webhook with workspace and project scoping
+description: Choose notification sounds, and deliver your personal Margaya notifications as push notifications, by email (batched, with an optional digest), ntfy, Gotify, or a custom webhook with workspace and project scoping
 ---
 
 Margaya can keep the normal in-app notification inbox, play a sound when a notification arrives, and forward matching notifications to external channels for the signed-in user.
@@ -15,6 +15,7 @@ You can configure this under:
 
 Users can forward matching notifications through:
 
+- `Push notifications`
 - `Email`
 - `ntfy`
 - `Gotify`
@@ -85,6 +86,7 @@ Webhook signing secrets and ntfy and Gotify tokens are stored encrypted. Your in
 
 The **Delivery channels** section of the Notifications page includes separate connection cards for:
 
+- `Push notifications`
 - `Email`
 - `Gotify`
 - `ntfy`
@@ -92,7 +94,46 @@ The **Delivery channels** section of the Notifications page includes separate co
 
 Configure each channel once at the account level, then decide which workspaces are allowed to use it.
 
-<Screenshot src="account/delivery-channels" alt="The Delivery channels section with cards for Email, ntfy, Gotify and Custom webhook, each with its fields and a connect button" caption="Each channel is set up once for your account." />
+<Screenshot src="account/delivery-channels" alt="The Delivery channels section with the Push notifications card first, then cards for Email, Gotify, ntfy and Custom webhook, each with its fields and a connect button" caption="Each channel is set up once for your account." />
+
+### Push notifications
+
+Push sends alerts to your phone or computer, even when Margaya is closed. **Notify me about** decides what is sent.
+
+Push needs three things:
+
+- Your server has push set up. Without it, the card says "Push isn't set up on this server." If you run the server, see [Web push](/core/installation/environment-variables#web-push).
+- A current browser, on an HTTPS address.
+- On iPhone and iPad, Margaya added to your Home Screen. Tap Share, then Add to Home Screen, and open Margaya from there before you turn push on.
+
+To turn it on:
+
+1. On the device you want alerts on, open **Settings** > **Account** > **Notifications**.
+2. Under **Push notifications**, turn on **On this device**.
+3. Allow notifications when your browser asks. If you refuse, allow them in your browser's settings and reload the page.
+
+<Screenshot src="account/push-notifications" alt="The Push notifications card with the On this device switch and its hint, and Your other devices listing one phone with a Remove button" caption="Push is turned on per device." />
+
+Each device is separate. **Your other devices** lists the rest of your devices, and **Remove** stops push to one of them.
+
+- An account can have 10 devices. Adding another removes the oldest.
+- Signing out turns push off on that device, so the next person doesn't get your alerts.
+- Turning push on in a browser that another account had set up moves it to your account.
+
+Push also ends when your account is signed out elsewhere, so a lost device stops showing alerts:
+
+- **Sign out all other sessions**, changing your password with **Sign out other sessions** checked, and changing your email turn push off on your other devices. The device you did it on keeps push.
+- A forgotten-password reset, and an administrator signing you out everywhere, banning you, or resetting your password or two-factor, turn it off on all your devices.
+
+Turn push on again on any device you still use. Signing out a single session under **Active sessions** doesn't stop push, because Margaya can't tell which device that session was. Use **Remove** under **Your other devices** as well.
+
+No workspace rule is needed: push covers every workspace you have no [rule](#workspace-delivery-rules) for. Where you have a rule, it must be active and include the project, with **Push notifications** on.
+
+Page notifications reach the inbox and push, but not the other channels.
+
+A push shows a short title and one fixed line in your language, such as who commented on which task. It names the task or page, but leaves out anything someone wrote, because a push can show on a lock screen: comment text, an agent's answers and questions, what an approval is about, an automation's message and the reason a request was declined. Tapping it opens the task or page, or otherwise the inbox, where you can read the rest. **Quiet hours** only silence sounds, not push.
+
+Your browser may also offer to install Margaya as an app. Margaya has no install button of its own, and installing doesn't add offline use.
 
 ### Email
 
@@ -140,7 +181,7 @@ Notification emails are batched. Instead of one email per change, Margaya waits 
 
 - The wait is set by your administrator with `EMAIL_NOTIFICATION_BATCH_WINDOW_SECONDS` (5 minutes by default; `0` sends every email immediately). See [environment variables](/core/installation/environment-variables#notifications).
 - Your settings are checked again when the batch is sent. A notification type you turned off in the meantime, a task you unsubscribed from, a workspace you left, and a task that was deleted, archived or moved back to triage are all left out. If nothing is left, no email is sent.
-- Only email waits. The in-app inbox, live updates, ntfy, Gotify and webhooks are delivered immediately.
+- Only email waits. The in-app inbox, live updates, push, ntfy, Gotify and webhooks are delivered immediately.
 - Sign-in codes, password resets, invitations and security emails are never batched.
 
 ### Email digest
@@ -164,13 +205,13 @@ Below the global channel cards, Margaya shows workspace delivery rules.
 Each workspace rule can:
 
 - be active or paused
-- enable or disable `Email`, `Gotify`, `ntfy`, and `Custom webhook`
+- enable or disable `Email`, `Gotify`, `ntfy`, `Custom webhook` and `Push notifications`
 - apply to `All projects`
 - or apply to `Selected projects` only
 
 This lets a user receive notifications from one workspace in ntfy, another by email, and ignore the rest.
 
-<Screenshot src="account/workspace-rules" alt="The Workspace delivery rules section with the Studio North card, its switches for Email, ntfy, Gotify and Custom webhook, the project scope and Create rule" caption="A delivery rule per workspace; channels must be set up above first." />
+<Screenshot src="account/workspace-rules" alt="The Workspace delivery rules section with the Studio North card, its switches for Email, ntfy, Gotify, Custom webhook and Push notifications, the project scope and Create rule" caption="A delivery rule per workspace; channels must be set up above first." />
 
 ## Supported notification sources
 
@@ -225,6 +266,18 @@ Check that:
 - the workspace rule is active
 - the channel is enabled on that workspace rule
 - the project is included when using `Selected projects`
+
+### Push notifications don't arrive
+
+Check that:
+
+- the card doesn't say push isn't set up on this server, which only your administrator can fix
+- **On this device** is on, and notifications aren't blocked for this site in your browser
+- on iPhone and iPad, you opened Margaya from your Home Screen
+- **Notify me about** includes the event, and the task isn't muted
+- if the workspace has a delivery rule, the rule is active, **Push notifications** is on and the project is included
+- if your administrator replaced the server's push keys, you turned push on again
+- if your account was signed out everywhere, or you reset your password, you turned push on again
 
 ### No notification sound plays
 

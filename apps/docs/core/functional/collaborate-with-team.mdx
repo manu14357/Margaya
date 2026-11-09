@@ -12,12 +12,32 @@ In your workspace:
 1. Open **Settings** > **Members**.
 2. Click **Invite member**. The **Invite team member** dialog opens.
 3. Enter one or more email addresses, separated by commas, spaces or new lines.
-4. Pick a role: viewer, member, admin or one of your workspace's custom roles. You can only give a role up to your own: a role that grants any permission yours doesn't is not offered, and the server refuses it.
+4. Pick a role: viewer, member, admin, [guest](/core/functional/guest-access) or one of your workspace's custom roles. You can only give a role up to your own: a role that grants any permission yours doesn't is not offered, and the server refuses it.
 5. Click **Send invitation**. They go out one at a time; any that fail stay in the box with the reason, so you can fix them and send again.
 
 <Screenshot src="tasks/invite-member" alt="The Invite team member dialog with two email addresses, the Member role selected and the Send invitation button" caption="Invite several people at once, with one role." />
 6. Track active and pending members in the members table. To change what a pending invitation grants, pick a new role on its row.
 7. Click a member's name to open their [profile](/core/functional/member-profiles): their workload, assigned tasks and recent activity.
+
+### Remove a member
+
+In the members table, select the remove button on the person's row, then **Remove member**. You can't remove yourself this way, and removing members is for Owners and Admins by default.
+
+Removing someone ends their access to the workspace at once, whichever session or API key they use, because every request checks membership. Their open boards and pages stop updating, and their project memberships in this workspace are deleted, so inviting them again doesn't bring those back.
+
+What happens to their sessions and API keys depends on what's left:
+
+| Situation | Sessions | API keys |
+| --- | --- | --- |
+| This was their last workspace | Ended everywhere | All deleted |
+| They're still in another workspace | Stay signed in | Keep working in their other workspaces |
+| They're an instance admin | Stay signed in | Keep working |
+
+A key limited to specific projects loses this workspace's projects, and a key with no project left is deleted. A workspace's admins can't sign someone out of another workspace or break their keys there.
+
+Deleted keys appear in the [audit log](/core/functional/audit-log) as revoked. Ended sessions appear in the instance [audit trail](/core/installation/instance-admin#audit-trail).
+
+The account itself stays. To stop someone using the server at all, an instance admin can [ban the account](/core/installation/instance-admin#users), which signs them out everywhere and stops all their API keys.
 
 ## 2. Assign clear ownership
 

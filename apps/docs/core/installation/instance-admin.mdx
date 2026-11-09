@@ -7,7 +7,7 @@ Instance administration covers settings that belong to the whole installation ra
 
 ## Who is an instance admin
 
-The first account created on a new instance is its instance admin. Admins can add more admins on the [Admins](#admins) page. Guests and banned accounts can't be admins.
+The first account created on a new instance is its instance admin. Admins can add more admins on the [Admins](#admins) page. Anonymous guests and banned accounts can't be admins.
 
 Instance admins see an **Instance** tab in **Settings**. A person who has just been made an admin sees the tab once their browser refreshes its session, for example after they reload the page. The API checks the role on every request, so the tab is only a shortcut: non-admins who open an Instance page are sent back to their account settings.
 
@@ -48,7 +48,7 @@ The SMTP password and OAuth client secrets are never shown again after saving. A
 - **Replace** lets you type a new value.
 - **Clear** removes the saved value.
 
-Saved secrets are encrypted with a key derived from `AUTH_SECRET`. If you change `AUTH_SECRET`, the saved secrets can't be read any more: the field says so and you must enter them again.
+Saved secrets are encrypted with a key derived from `AUTH_SECRET`. If you change `AUTH_SECRET`, the saved secrets can't be read any more: the field says so and you must enter them again. Left blank, `AUTH_SECRET` is generated once and saved on the uploads volume. If there's no writable volume, a startup warning says saved secrets will be lost. See [what to back up](/core/installation/backup-and-restore#what-to-back-up).
 
 ### Changes take effect quickly
 
@@ -59,8 +59,9 @@ A saved change applies at once on the API instance that saved it, and within 10 
 - **Instance name** is shown on the sign-in screen and on public boards. It takes 1 to 80 characters. The default is `Margaya`.
 - **Show the product landing page** decides what signed-out visitors see when they open the app's root address. When it is on (the default), they see the Margaya landing page with links to sign in and sign up. When it is off, they go straight to sign-in. Signed-in people always go to their dashboard.
 - **Overview** shows the version, the number of accounts, guests, workspaces, projects and public boards, and which server services are set up: realtime (in memory or Redis), email, file storage, captcha, error reporting, cloud mode and demo mode. It never shows their values.
+- **Recent delivery failures** lists workspace webhooks that used up their retries in the last 7 days, up to 20, with the workspace, webhook, event and response. The destination URL and the message body stay in the workspace's own delivery log. Email and background job errors aren't listed; they're in the server logs.
 
-<Screenshot src="admin/general" alt="The General instance page with the instance name field, the Show the product landing page switch, and the Overview card listing version, counts and server services" caption="Each setting shows a badge for where its value comes from; here, Default." />
+<Screenshot src="admin/general" alt="The General instance page with the instance name field, the Show the product landing page switch, the Overview card listing version, counts and server services, and Recent delivery failures" caption="Each setting shows a badge for where its value comes from; here, Default." />
 
 ## Authentication
 
@@ -74,6 +75,10 @@ A saved change applies at once on the API instance that saved it, and within 10 
 | **Guest access** | Let people try Margaya without an account. It also needs open sign-up and email sign-in; a note appears when it is on but inactive for that reason. |
 
 <Screenshot src="admin/sign-up" alt="The Sign-up section with switches for Anyone can sign up, Email sign-up, Password sign-up for invited people and Guest access, each with a Default badge" caption="Sign-up switches on the Authentication page." />
+
+<Note>
+**Guest access** and the **Guests** count under **Overview** are about anonymous visitors without an account. The workspace [Guest role](/core/functional/guest-access) is separate: it belongs to a normal account limited to chosen projects.
+</Note>
 
 ### Sign-in methods
 
@@ -114,9 +119,45 @@ URLs must be absolute `http` or `https` URLs. For provider setup details, see [A
 
 - **Allowed email domains.** New accounts must use an address at one of these domains (exact match, no subdomains), whatever way they sign up, invitations included. Margaya also refuses to invite a new address outside the list. Existing accounts are not affected. Leave it empty to allow any domain.
 - **Required sign-in provider.** Everyone signs in through one provider you have set up and turned on. Other providers, passwords, email codes and magic links are refused, except that instance admins keep password sign-in (and password reset) as a way back in. Sessions that already exist keep working.
+- **Require two-factor.** Accounts with a password must set up two-factor before they can do anything else. See [Require two-factor](#require-two-factor).
 - **Session lifetime.** How long a session lasts without use, in hours (default 168, a week). Using a session extends it, at most once a day. New sessions use the new value.
 
-<Screenshot src="admin/sign-in-policy" alt="The Sign-in policy section with Allowed email domains, Required sign-in provider set to No requirement, and Session lifetime of 168 hours" caption="Sign-in policy applies to everyone on the instance." />
+<Screenshot src="admin/sign-in-policy" alt="The Sign-in policy section with Allowed email domains, Required sign-in provider set to No requirement, a Require two-factor switch, and Session lifetime of 168 hours" caption="Sign-in policy applies to everyone on the instance." />
+
+### Require two-factor
+
+Turn on **Require two-factor** under **Sign-in policy**, or set `REQUIRE_TWO_FACTOR=true` on the server, which locks the switch. It's off by default. If your own account has a password, [turn on two-factor](/core/functional/account-security#two-factor-authentication) for it first, or the change is refused. If it has no password and no sign-in provider or SAML connection that works, the change is refused too, because you could only sign in with the email codes it turns off: set a password first, with **Forgot password?** or **Reset password** on your own row under [Users](#users).
+
+**Who it covers:** every account with a password, including one that also signs in through a provider. It leaves out:
+
+- accounts without a password, such as those that only use a sign-in provider or SAML. They follow that provider's rules;
+- anonymous guests and AI agents;
+- everyone, while **Email and password** sign-in is turned off;
+- everyone except instance admins, while a [required sign-in provider](#sign-in-policy) is set.
+
+**While it's on:**
+
+- A covered account without two-factor can only set it up. It's sent to the **Set up two-factor to continue** screen, and the API refuses everything else with 403 and the code `TWO_FACTOR_REQUIRED`. That includes the account's API keys, so its CLI and MCP tools stop too. They work again once it's set up.
+- Sessions aren't ended. People already signed in are sent to the setup screen on their next request.
+- Nobody can turn off their own two-factor.
+- Sign-in links and codes by email are off for everyone, because they would skip the second step.
+
+<Warning>
+People who only ever signed in with an email code or link have no password, so they can't sign in at all while this is on. Their current sessions keep working until they end. To get back in, they set a password with **Forgot password?**, which needs [email](#email). Without email, select **Reset password** for them under [Users](#users) and set one. Either way, they then have to set up two-factor. The sign-in screen tells them what to do.
+</Warning>
+
+**If someone loses their authenticator and recovery codes:**
+
+1. Another instance admin selects **Reset two-factor** for them under [Users](#users).
+2. If no other admin can help, someone with shell access runs the [recovery CLI](#locked-out): `reset-two-factor <email>`.
+
+Either way their two-factor, recovery codes and trusted devices are removed, and they're signed out everywhere. They sign in with just their password and, while the setting is on, set two-factor up again.
+
+To turn the requirement off from the server, set `REQUIRE_TWO_FACTOR=false` and restart. That overrides a value saved in the app.
+
+### Company sign-in and provisioning
+
+**Company sign-in (SAML)** and **Provisioning (SCIM)** connect an identity provider, for sign-in and for adding and removing people in a workspace. See [SAML Sign-in and SCIM Provisioning](/core/social-providers/saml-and-scim).
 
 ## Email
 
@@ -179,8 +220,11 @@ The menu on each row can:
 - **Ban** an account, until you unban it or for 7 or 30 days, with an optional reason. The person is signed out everywhere at once and their API keys stop working.
 - **Unban** it.
 - **Reset password**: email a reset link (needs [email](#email)), or set a new password now, which signs the person out everywhere.
+- **Reset two-factor**, shown for accounts with two-factor on: remove it for someone who lost their device and recovery codes, after you've checked it's really them. They're signed out everywhere and can then sign in with just their password. You can't reset your own this way.
 - **Sign out everywhere**: end every session. Their API keys keep working; only the owner can revoke those.
 - **Make instance admin** or **Remove instance admin**.
+
+Banning, setting a new password, resetting two-factor and signing out everywhere also turn off [push notifications](/core/functional/account-notifications#push-notifications) on all the person's devices.
 
 <Screenshot src="admin/users" alt="The Users page listing accounts with status, workspace count, last activity and join date, with the actions menu open on one row showing View details, Reset password, Sign out everywhere, Make instance admin and Ban" caption="The actions menu on each account. View details opens the same panel as selecting the name." />
 
@@ -190,7 +234,7 @@ Each of these needs a recent sign-in ([Confirm it's you](#confirm-its-you)) and 
 
 The page lists every instance admin, and marks your own row.
 
-- **Add admin** makes an existing account an instance admin by email. It fails if no account uses that email, or if the account is a guest or banned.
+- **Add admin** makes an existing account an instance admin by email. It fails if no account uses that email, or if the account is an anonymous guest or banned.
 - **Remove admin** makes an admin a regular account again. They keep their account and their workspaces.
 
 <Warning>
@@ -207,7 +251,7 @@ An instance admin's API keys can't do any of this and only reach the workspaces 
 
 ### Audit trail
 
-Below the admin list, **Audit trail** shows instance changes newest first: who did it, when, and what changed. It records settings saved (which settings, never their values), admins added and removed, password confirmations, account actions from **Users** and the admin endpoints, and recovery CLI runs. Entries are kept for a year by default (`INSTANCE_AUDIT_LOG_RETENTION_DAYS`).
+Below the admin list, **Audit trail** shows instance changes newest first: who did it, when, and what changed. It records settings saved (which settings, never their values), admins added and removed, password confirmations, account actions from **Users** and the admin endpoints, two-factor resets, SAML and SCIM connections and the people a SCIM connection adds, deactivates or removes, and recovery CLI runs. Entries are kept for a year by default (`INSTANCE_AUDIT_LOG_RETENTION_DAYS`).
 
 ### Locked out
 
@@ -216,9 +260,12 @@ If no admin can sign in, someone with shell access to the server can use the rec
 ```bash
 docker compose exec margaya node apps/api/dist/cli/admin.js promote-admin you@example.com
 docker compose exec -e MARGAYA_NEW_PASSWORD='a long new passphrase' margaya node apps/api/dist/cli/admin.js reset-password you@example.com
+docker compose exec margaya node apps/api/dist/cli/admin.js reset-two-factor you@example.com
 ```
 
-It also has `list-admins`, `demote-admin` (never the last admin) and `unban-user`. Without `MARGAYA_NEW_PASSWORD`, `reset-password` prints a generated password once. On Kubernetes, run the same command with `kubectl exec` in the Margaya pod. Every run appears in the audit trail as **Recovery CLI**.
+It also has `list-admins`, `demote-admin` (never the last admin), `unban-user` and `reset-two-factor`, which removes two-factor from an account and signs it out everywhere. Without `MARGAYA_NEW_PASSWORD`, `reset-password` prints a generated password once. On Kubernetes, run the same command with `kubectl exec` in the Margaya pod. Every run that changes an account appears in the audit trail as **Recovery CLI**.
+
+The same CLI prints keys for web push with `generate-push-keys`. See [Web push](/core/installation/environment-variables#web-push).
 
 ## Environment variables
 
@@ -234,6 +281,7 @@ Setting one of these variables locks its setting in the app and shows it with an
 | Guest access | `DISABLE_GUEST_ACCESS` | `true` turns it off. |
 | Email and password sign-in | `DISABLE_LOGIN_FORM` | `true` turns it off. |
 | Email code sign-in | `DISABLE_EMAIL_OTP_SIGN_IN` | `true` turns it off. |
+| Require two-factor | `REQUIRE_TWO_FACTOR` | `true` turns it on. Any other value turns it off, whatever was saved. |
 | Restrict workspace creation | `DISABLE_WORKSPACE_CREATION` | `true` limits it to instance admins. |
 | GitHub | `GITHUB_OAUTH_CLIENT_ID`, `GITHUB_OAUTH_CLIENT_SECRET` | The older `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` also lock it. |
 | Google | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | |
@@ -245,6 +293,6 @@ Setting one of these variables locks its setting in the app and shows it with an
 | Public boards | `DISABLE_PUBLIC_BOARDS` | `true` turns them off. |
 | AI | `MARGAYA_AI_ENABLED`, `ANTHROPIC_API_KEY` and the other `MARGAYA_AI_*` variables | See [AI](/core/installation/environment-variables#ai). |
 
-These settings have no variable and are always managed in the app: each provider's on/off switch, the custom OAuth button label and public participation.
+These settings have no variable and are always managed in the app: each provider's on/off switch, the custom OAuth button label, public participation, and SAML and SCIM connections.
 
 For every variable, see [Environment variables](/core/installation/environment-variables).

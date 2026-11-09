@@ -18,6 +18,7 @@ The variables are split up into the following sections:
 - [Object Storage](#object-storage)
 - [Access Control](#access-control)
 - [Notifications](#notifications)
+- [Web push](#web-push)
 - [AI](#ai)
 - [GitHub SSO](#github-sso)
 - [GitHub integration](#github-integration)
@@ -39,12 +40,14 @@ Name | Description |
 | `MARGAYA_API_URL` | The URL of the API.
 
 The web container embeds only `MARGAYA_API_URL`, `MARGAYA_CLIENT_URL`,
-`MARGAYA_TURNSTILE_SITE_KEY`, and `MARGAYA_PUBLIC_SITE_URL` into browser assets at startup. These values are public;
+`MARGAYA_TURNSTILE_SITE_KEY`, `MARGAYA_PUBLIC_SITE_URL` and `MARGAYA_SENTRY_DSN` into browser assets at startup. These values are public;
 other `MARGAYA_*` variables are not substituted into frontend files. Values are
 encoded as JavaScript strings. The standalone web image serves its generated MCP
-discovery documents as JSON files, without modifying the nginx configuration.
-Configure actual public service URLs; escaping a value does not make an invalid
-URL usable. Recreate the container when changing its environment.
+discovery documents as JSON files, and no value ever enters the nginx
+configuration. nginx only gets the names of the build files that carry these
+values: browsers check those on every load, while other build files are cached
+for a year. Configure actual public service URLs; escaping a value does not make
+an invalid URL usable. Recreate the container when changing its environment.
 
 ### Database
 
@@ -63,7 +66,7 @@ This section will cover all the variables related to the authentication.
 
 Name | Description |
 --- | --- |
-| `AUTH_SECRET` | The secret key for the JWT token. **Must be at least 32 characters long**, use a long, random value in production. Example: use `openssl rand -base64 32` to generate a secure key in Linux/macOS.
+| `AUTH_SECRET` | Signs sessions and encrypts the SMTP passwords, OAuth client secrets, AI keys and webhook signing secrets saved in the app, so keep it stable. **Must be at least 32 characters long**. Example: use `openssl rand -base64 32` to generate a secure key in Linux/macOS. If blank, the bundled image generates one once and saves it on the uploads volume, with a startup warning if it can't; the separate API image refuses to start.
 | `COOKIE_DOMAIN` | **Optional.** Domain attribute for the sign-in cookies, such as `example.com`. Leave it unset for a bundled, same-origin deployment. Set it only when the web app and API run on different subdomains of one site and both must read the session cookie. |
 | `DEVICE_AUTH_CLIENT_IDS` | **Optional.** Comma-separated list of allowed device authorization client IDs. When unset, Margaya implicitly allows `margaya-cli` and `margaya-mcp` by default, so no extra configuration is required for the CLI or MCP. Override only when you need additional trusted clients, for example `margaya-cli,margaya-mcp,my-desktop-app`. |
 
@@ -157,6 +160,7 @@ Name | Description | Default |
 | `ALLOWED_EMAIL_DOMAINS` | Comma-separated domains new accounts must use, such as `example.com,example.org` (exact match, no subdomains). Covers every sign-up method, OAuth and invitations included. Empty allows any domain. Locks the setting in [Instance administration](/core/installation/instance-admin#sign-in-policy). | empty |
 | `ALLOW_INVITED_PASSWORD_REGISTRATION` | With password sign-up off, still let people with a valid invitation create a password account. | `false` |
 | `REQUIRED_SIGN_IN_PROVIDER` | `github`, `google`, `discord` or `custom`: everyone signs in through this provider, and other sign-in methods are refused. Instance admins keep password sign-in as a way back in. | empty |
+| `REQUIRE_TWO_FACTOR` | `true` makes accounts with a password set up two-factor before they can do anything else, and turns off sign-in links and codes by email. Any other value turns it off, even if it was saved as on in the app, so `REQUIRE_TWO_FACTOR=false` and a restart is a way back in. Locks the setting in [Instance administration](/core/installation/instance-admin#require-two-factor). | `false` |
 | `SESSION_LIFETIME_HOURS` | How long a session lasts without use (1 to 8760). Use extends it, at most once a day. | `168` |
 | `ALLOW_INSTANCE_ADMIN_API_KEYS` | Give an instance admin's API keys the admin's instance-wide reach (every workspace and Better Auth's `/api/auth/admin/*` endpoints). By default those keys act like any member's keys: only the workspaces the admin belongs to. | `false` |
 | `CUSTOM_OAUTH_AUTO_LOGIN` | Automatically redirect to the custom OAuth/OIDC provider instead of showing the sign-in page. When set to `true`, users are immediately redirected to your identity provider without seeing the login page. Requires a custom OAuth provider to be configured. | `false` |
@@ -190,8 +194,8 @@ Name | Description | Default |
 Name | Description | Default |
 --- | --- | --- |
 | `NOTIFICATION_SECRET_ENCRYPTION_KEY` | Key that encrypts the secrets people save in their [notification settings](/core/functional/account-notifications): webhook signing secrets and ntfy and Gotify tokens. Required to store any of them; use any long random value, for example `openssl rand -hex 32`. Without it, saving such a secret fails with HTTP 503 naming this variable, and the rest of the notification settings keep working. Keep it stable and back it up: after a change, stored secrets can no longer be read and people must enter them again. |  |
-| `EMAIL_NOTIFICATION_BATCH_WINDOW_SECONDS` | Seconds email notifications wait so the ones that arrive close together go out as one email per person, grouped by task (at most `86400`). `0` sends each notification email immediately. Only email is delayed; in-app, ntfy, Gotify and webhook notifications are immediate, and sign-in, password reset and invitation emails are never batched. See [batching and digests](/core/functional/account-notifications#batched-emails). | `300` |
-| `TRASH_RETENTION_DAYS` | Days a deleted task or project stays in the [trash](/core/functional/trash-and-restore), where it can be restored, before an hourly job deletes it permanently. `0` turns the automatic purge off. | `30` |
+| `EMAIL_NOTIFICATION_BATCH_WINDOW_SECONDS` | Seconds email notifications wait so the ones that arrive close together go out as one email per person, grouped by task (at most `86400`). `0` sends each notification email immediately. Only email is delayed; in-app, push, ntfy, Gotify and webhook notifications are immediate, and sign-in, password reset and invitation emails are never batched. See [batching and digests](/core/functional/account-notifications#batched-emails). | `300` |
+| `TRASH_RETENTION_DAYS` | Days a deleted task, page or project stays in the [trash](/core/functional/trash-and-restore), where it can be restored, before an hourly job deletes it permanently. `0` turns the automatic purge off. | `30` |
 | `WORKSPACE_DELETION_GRACE_DAYS` | Days a workspace scheduled for deletion stays read-only, with its API keys and webhooks paused, before an hourly job deletes it for good. Its owner can cancel until then. `0` deletes it at the next run. | `14` |
 | `AUDIT_LOG_RETENTION_DAYS` | Days [audit log](/core/functional/audit-log) entries are kept. `0` keeps them forever. Entries hold client IP addresses, so match your privacy policy. | `365` |
 | `INSTANCE_AUDIT_LOG_RETENTION_DAYS` | Days [instance audit trail](/core/installation/instance-admin) entries are kept. `0` keeps them forever. | `365` |
@@ -199,6 +203,40 @@ Name | Description | Default |
 | `API_REQUEST_LOG_ENABLED` | Set to `false` to stop logging API key requests. | `true` |
 | `MARGAYA_LINK_TITLE_FETCH` | Look up the page title of a task link added without one. The server fetches only public `http`/`https` pages on the standard ports (private, loopback, link-local and metadata addresses are refused after DNS resolution, on every redirect), reads at most 256 KB of HTML for 3 seconds, and never follows more than 3 redirects. Set to `false` on air-gapped installs or where outbound requests are not allowed. This setting is not affected by `MARGAYA_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS`. | `true` |
 | `MARGAYA_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS` | Allow outbound notification destinations (ntfy, Gotify, generic webhooks) that resolve to private or non-routable addresses. Off by default to prevent SSRF; the `http`/`https` requirement still applies. Only enable on a trusted, isolated deployment. | `false` |
+
+### Web push
+
+[Push notifications](/core/functional/account-notifications#push-notifications) are off until both keys are set. Set these on the API. The web container needs nothing.
+
+Name | Description | Default |
+--- | --- | --- |
+| `VAPID_PUBLIC_KEY` | The public half of the key pair that identifies your server to push services. Browsers receive it. |  |
+| `VAPID_PRIVATE_KEY` | The private half. Keep it secret. |  |
+| `VAPID_SUBJECT` | A contact for push services: a `mailto:` address you read, or an `https://` URL. Some push services, Apple's among them, may refuse anything else, including an example address. | `MARGAYA_CLIENT_URL` when it starts with `https://`, otherwise the example address `mailto:admin@example.com` |
+
+To turn push on:
+
+1. Generate the keys once. The command prints both keys for your `.env` file, and a comment that says which contact push services will see:
+
+   ```bash
+   # Docker Compose
+   docker compose exec margaya node apps/api/dist/cli/admin.js generate-push-keys
+
+   # Running from source
+   pnpm --filter @margaya/api admin generate-push-keys
+   ```
+
+2. Add `VAPID_PUBLIC_KEY` and `VAPID_PRIVATE_KEY` to `.env`. If `MARGAYA_CLIENT_URL` isn't your public `https://` address, also set `VAPID_SUBJECT` to a `mailto:` address you read. With the Helm chart, set them under `margaya.extraEnv`.
+3. Recreate the container so it reads the new values, with `docker compose up -d margaya`.
+4. Open **Settings** > **Account** > **Notifications**. **On this device** can now be turned on.
+
+Things to know:
+
+- **Push needs HTTPS.** Browsers only offer it on an HTTPS address. On iPhone and iPad, each person also has to add Margaya to their Home Screen.
+- **Keep the keys stable, and back them up with `.env`.** New keys turn push off on every device until people turn it on again.
+- **The API needs outbound HTTPS.** It sends each message to the push service of the person's browser, so a server without internet access can't deliver push.
+- **A bad key pair turns push off.** If only one key is set or the two don't match, the API logs a warning and push stays off.
+- **The API warns about a contact push services may refuse.** With push on, it logs a warning at startup while the contact is an example address such as `mailto:admin@example.com`, or isn't a `mailto:` address or an `https://` URL. Apple's push service may refuse it, and then alerts don't reach iPhone and iPad.
 
 ### AI
 
