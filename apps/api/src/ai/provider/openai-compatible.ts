@@ -8,6 +8,7 @@ import type {
   StopReason,
   TokenUsage,
 } from "../types";
+import { modelTokenFilter } from "./model-tokens";
 
 // One adapter for every server that speaks the OpenAI chat completions
 // protocol: OpenAI, Azure OpenAI, OpenRouter, LiteLLM, vLLM, LM Studio and
@@ -394,6 +395,8 @@ export function createOpenAiCompatibleProvider(
         signal,
       );
       const visible = thinkFilter();
+      // Tokens and tool calls a server printed as text instead of parsing.
+      const tokens = modelTokenFilter();
       if (!response.body) {
         throw new AiError("AI_PROVIDER_ERROR", "The AI endpoint sent nothing");
       }
@@ -418,9 +421,10 @@ export function createOpenAiCompatibleProvider(
           if (typeof thought === "string" && thought) {
             yield { type: "reasoning", text: thought };
           }
-          const text = choice.delta?.content
+          const shown = choice.delta?.content
             ? visible.push(choice.delta.content)
             : "";
+          const text = shown ? tokens.push(shown) : "";
           const tagged = visible.takeReasoning();
           if (tagged || (visible.thinking && choice.delta?.content)) {
             yield { type: "reasoning", text: tagged };
@@ -450,9 +454,10 @@ export function createOpenAiCompatibleProvider(
           };
         }
       }
-      const rest = visible.flush();
+      const shownRest = visible.flush();
       const unclosed = visible.takeReasoning();
       if (unclosed) yield { type: "reasoning", text: unclosed };
+      const rest = (shownRest ? tokens.push(shownRest) : "") + tokens.flush();
       if (rest) yield { type: "text", text: rest };
       for (const [index, call] of [...calls.entries()].sort(
         (a, b) => a[0] - b[0],
@@ -471,6 +476,14 @@ export function createOpenAiCompatibleProvider(
           call: { id: call.id || `call_${index}`, name: call.name, input },
         };
       }
+      const written = tokens.takeCalls();
+      for (const [index, call] of written.entries()) {
+        yield {
+          type: "tool_call",
+          call: { id: `call_text_${index}`, ...call },
+        };
+      }
+      if (written.length > 0 && reason === "end_turn") reason = "tool_use";
       yield {
         type: "usage",
         model,
