@@ -1,5 +1,33 @@
 import { z } from "../openapi";
 
+export const desktopConfigSchema = z
+  .object({
+    enabled: z.boolean().openapi({
+      description:
+        "Whether Margaya Desktop may sign in to this server through the system browser (DESKTOP_SIGN_IN_ENABLED, default true).",
+    }),
+    serverVersion: z.string().openapi({
+      description: "This server's version (MARGAYA_VERSION, or the release's).",
+      example: "1.0.0",
+    }),
+    minDesktopVersion: z.string().openapi({
+      description:
+        "The oldest Margaya Desktop version this server supports (DESKTOP_MIN_VERSION, default 0.1.0).",
+      example: "0.1.0",
+    }),
+    webUrl: z.string().openapi({
+      description: "The web app's public URL, which the desktop window loads.",
+      example: "https://margaya.example.com",
+    }),
+    apiUrl: z.string().openapi({
+      description: "The API's public origin.",
+      example: "https://margaya.example.com",
+    }),
+  })
+  .openapi("DesktopConfig", {
+    description: "What Margaya Desktop needs to connect to this server.",
+  });
+
 export const configSchema = z
   .object({
     disableRegistration: z.boolean(),
@@ -64,5 +92,6 @@ export const configSchema = z
         "Where people using this instance can get its source code, as the AGPL-3.0 requires: MARGAYA_SOURCE_URL, or the official repository.",
       example: "https://github.com/manu14357/Margaya",
     }),
+    desktop: desktopConfigSchema,
   })
   .openapi("Config");

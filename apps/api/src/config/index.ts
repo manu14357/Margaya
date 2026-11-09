@@ -1,5 +1,6 @@
 import { samlSignInAvailable } from "../identity/saml-policy";
 import { apiRouter, createRoute, jsonResponse } from "../openapi";
+import { desktopConfig } from "../utils/desktop-config";
 import getSettings from "../utils/get-settings";
 import { configSchema } from "./response";
 
@@ -12,7 +13,7 @@ const getConfigRoute = createRoute({
   tags: ["Config"],
   summary: "Get config",
   description:
-    "Public instance settings: which sign-in methods, registration paths, and features are enabled.",
+    "Public instance settings: which sign-in methods, registration paths, and features are enabled, and what Margaya Desktop needs to connect.",
   security: [],
   responses: {
     200: jsonResponse("Application settings", configSchema),
@@ -20,7 +21,14 @@ const getConfigRoute = createRoute({
 });
 
 const config = apiRouter().openapi(getConfigRoute, async (c) =>
-  c.json({ ...getSettings(), hasSamlSignIn: await samlSignInAvailable() }, 200),
+  c.json(
+    {
+      ...getSettings(),
+      hasSamlSignIn: await samlSignInAvailable(),
+      desktop: desktopConfig(),
+    },
+    200,
+  ),
 );
 
 export default config;
