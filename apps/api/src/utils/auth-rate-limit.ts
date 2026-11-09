@@ -25,6 +25,10 @@ const credentialRules: Record<string, RateLimitRule> = {
   "/request-password-reset": { window: 60, max: 3 },
   "/reset-password": { window: 60, max: 5 },
   "/change-password": { window: 60, max: 5 },
+  // Desktop sign-in (desktop-sign-in.ts): each start stores a code.
+  "/desktop/sign-in": { window: 60, max: 10 },
+  "/desktop/authorize": { window: 60, max: 10 },
+  "/desktop/token": { window: 60, max: 10 },
 };
 
 // The stricter sign-up and invite limits answer abuse seen on the hosted

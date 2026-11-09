@@ -103,6 +103,8 @@ import { resolveAuthSecret } from "./utils/auth-secret";
 import { checkRegistrationAllowed } from "./utils/check-registration-allowed";
 import { checkWorkspaceName } from "./utils/check-workspace-name";
 import { mapCustomOAuthProfileToUser } from "./utils/custom-oauth-profile";
+import { desktopSignIn } from "./utils/desktop-sign-in";
+import { getDeviceAuthClientIds } from "./utils/device-auth-client-ids";
 import { generateDemoName } from "./utils/generate-demo-name";
 import { getDefaultCookieAttributes } from "./utils/get-default-cookie-attributes";
 import { getInvitationEmailSubject } from "./utils/get-invitation-email-subject";
@@ -228,19 +230,6 @@ async function getUserLocale(email: string) {
 
 function getAuthEmailCopy(locale?: string | null) {
   return emailCopy(locale).authSubjects;
-}
-
-function getDeviceAuthClientIds(): Set<string> {
-  const raw = process.env.DEVICE_AUTH_CLIENT_IDS?.trim();
-  if (raw) {
-    return new Set(
-      raw
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean),
-    );
-  }
-  return new Set(["margaya-cli", "margaya-mcp"]);
 }
 
 function getDeviceAuthVerificationUri(): string {
@@ -855,6 +844,7 @@ function createAuthInstance(
         },
       }),
       authHandoff(),
+      desktopSignIn(),
       openAPI(),
     ],
     session: {

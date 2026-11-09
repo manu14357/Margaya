@@ -251,6 +251,33 @@ describe("SAML sign-in with the app on another site", () => {
     await expectRefused(await redeem(another, victim.handoff));
   });
 
+  it("won't take a desktop secret in place of the browser's mark", async () => {
+    const started = await startSaml("pat@acme.example");
+    const token = tokenIn(await finishSaml(started, "pat@acme.example"));
+    const response = await app.request("/api/auth/handoff/redeem", {
+      method: "POST",
+      headers: { "content-type": "application/json", Origin: APP },
+      body: JSON.stringify({ token, desktopSecret: "anything-at-all" }),
+    });
+    await expectRefused(response);
+  });
+
+  it("still redeems a browser token sent with a stray desktop secret", async () => {
+    const started = await startSaml("pat@acme.example");
+    const token = tokenIn(await finishSaml(started, "pat@acme.example"));
+    const response = await app.request("/api/auth/handoff/redeem", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        Origin: APP,
+        cookie: started.handoff.join("; "),
+      },
+      body: JSON.stringify({ token, desktopSecret: "anything-at-all" }),
+    });
+    expect(response.status, await response.clone().text()).toBe(200);
+    expect(await signedInAs(response)).toBe("pat@acme.example");
+  });
+
   it("leaves same-site and same-origin sign-in as it was", async () => {
     for (const site of ["same-site", "same-origin"]) {
       const started = await startSaml("pat@acme.example", site);

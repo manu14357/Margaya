@@ -1,4 +1,4 @@
-import { createHash, randomBytes } from "node:crypto";
+import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import {
   type BetterAuthPlugin,
   type GenericEndpointContext,
@@ -27,6 +27,12 @@ import { z } from "zod";
 //
 // Same-origin and same-site installs never take this path: a browser calls the
 // start request "cross-site" only when the app and API are on different sites.
+//
+// Margaya Desktop's window uses the same page on every install
+// (desktop-sign-in.ts). Its sign-in happened in the system browser, so its
+// window holds no mark. Instead its token comes with a secret the desktop app
+// keeps and hands only to its own window, which sends it along when it
+// redeems: a desktop token sent to someone as a link signs nobody in.
 
 const TOKEN_PREFIX = "auth-handoff:";
 const TOKEN_LIFETIME_MS = 60_000;
@@ -50,6 +56,12 @@ const endsOnTheApi = (path: string) =>
 
 const hash = (value: string) =>
   createHash("sha256").update(value).digest("base64url");
+
+function sameText(a: string, b: string) {
+  const left = Buffer.from(a);
+  const right = Buffer.from(b);
+  return left.length === right.length && timingSafeEqual(left, right);
+}
 
 type Context = Pick<GenericEndpointContext, "context">;
 
@@ -163,6 +175,30 @@ export async function handOffSession(
 }
 
 /**
+ * A one-time token that signs Margaya Desktop's window in to `sessionToken`
+ * through the app's /auth/complete page, redeemable only together with
+ * `secret`. Returns that page's URL.
+ */
+export async function createDesktopHandoff(
+  ctx: Context,
+  sessionToken: string,
+  clientUrl: string,
+  secret: string,
+) {
+  const token = randomBytes(32).toString("base64url");
+  await ctx.context.internalAdapter.createVerificationValue({
+    identifier: `${TOKEN_PREFIX}${hash(token)}`,
+    value: JSON.stringify({
+      session: sessionToken,
+      desktop: true,
+      secret: hash(secret),
+    }),
+    expiresAt: new Date(Date.now() + TOKEN_LIFETIME_MS),
+  });
+  return `${clientUrl.replace(/\/$/, "")}${HANDOFF_APP_PATH}#token=${token}`;
+}
+
+/**
  * Both copies of Better Auth's OAuth state cookie (its partitioned one and the
  * one markCrossSiteSignIn adds), which outlive the sign-in otherwise. Cleared
  * from the app's page, so the partitioned one is the app's own.
@@ -196,7 +232,11 @@ export const authHandoff = () =>
         "/handoff/redeem",
         {
           method: "POST",
-          body: z.object({ token: z.string().min(1).max(128) }),
+          body: z.object({
+            token: z.string().min(1).max(128),
+            // Margaya Desktop's window only (createDesktopHandoff).
+            desktopSecret: z.string().min(1).max(128).optional(),
+          }),
           metadata: {
             ...HIDE_METADATA,
             openapi: {
@@ -223,7 +263,13 @@ export const authHandoff = () =>
           if (!record || record.expiresAt.getTime() <= Date.now()) {
             throw refused(ctx);
           }
-          let stored: { session?: unknown; browser?: unknown; next?: unknown };
+          let stored: {
+            session?: unknown;
+            browser?: unknown;
+            next?: unknown;
+            desktop?: unknown;
+            secret?: unknown;
+          };
           try {
             stored = JSON.parse(record.value);
           } catch {
@@ -231,11 +277,14 @@ export const authHandoff = () =>
           }
           const cookie = browserCookie(ctx);
           const browser = ctx.getCookie(cookie.name);
-          if (
-            typeof stored.session !== "string" ||
-            !browser ||
-            stored.browser !== hash(browser)
-          ) {
+          const desktopSecret = ctx.body.desktopSecret;
+          const inThisBrowser =
+            stored.desktop === true
+              ? typeof stored.secret === "string" &&
+                typeof desktopSecret === "string" &&
+                sameText(hash(desktopSecret), stored.secret)
+              : Boolean(browser) && stored.browser === hash(browser as string);
+          if (typeof stored.session !== "string" || !inThisBrowser) {
             throw refused(ctx);
           }
           const session = await ctx.context.internalAdapter.findSession(

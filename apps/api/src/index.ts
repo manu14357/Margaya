@@ -61,6 +61,7 @@ import db, { getDatabase, schema } from "./database";
 import { prepareDatabaseStartup } from "./database/prepare-database-startup";
 import { waitForDatabase } from "./database/wait-for-database";
 import delivery from "./delivery";
+import { desktopSignInRoutes } from "./desktop-sign-in-openapi";
 import discordIntegration from "./discord-integration";
 import estimate from "./estimate";
 import { eventContext } from "./events";
@@ -743,6 +744,7 @@ export function createApp() {
     description: "API key or session token (Bearer)",
   });
   organizationRoutes(api.openAPIRegistry);
+  desktopSignInRoutes(api.openAPIRegistry);
 
   api.get("/openapi", (c) => {
     const document = api.getOpenAPI31Document({
