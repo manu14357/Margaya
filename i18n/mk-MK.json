@@ -221,10 +221,29 @@
 			"errors": {
 				"account_not_linked": "Овој идентитет не можеше да се поврзе со постоечката сметка. Најави се преку е-пошта за да ја потврдиш сметката, па обиди се повторно со SSO. Ако најавата преку е-пошта не е достапна, контактирај го твојот администратор.",
 				"oauth_code_verification_failed": "OAuth верификацијата не успеа. Обиди се повторно.",
-				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Регистрацијата е моментално оневозможена. Потребна ти е валидна покана за да креираш сметка."
+				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Регистрацијата е моментално оневозможена. Потребна ти е валидна покана за да креираш сметка.",
+				"unsolicited_response": "Започни ја компаниската најава од оваа страница. Најава што започнува кај давателот на идентитет не се прифаќа.",
+				"invalid_saml_response": "Одговорот од твојот давател на идентитет не можеше да се прифати. Обиди се повторно или побарај од администраторот да ја провери врската.",
+				"replay_detected": "Тој одговор за најава е веќе искористен. Најави се повторно.",
+				"unable_to_create_user": "Твојата сметка не можеше да се создаде. Побарај пристап од администраторот.",
+				"invalid_request": "Тоа барање за најава не беше валидно. Обиди се повторно.",
+				"invalid_state": "Таа врска за најава е истечена. Обиди се повторно.",
+				"saml_deprecated_algorithm": "Твојот давател на идентитет потпишува со алгоритам што веќе не се прифаќа. Побарај од администраторот да го префрли на SHA-256.",
+				"this_identity_provider_cannot_sign_in_that_email_address_": "Со овој давател на идентитет не може да се најавиш со таа адреса на е-пошта.",
+				"new_accounts_on_this_server_must_use_an_approved_email_domain_": "Новите сметки на овој сервер мора да користат одобрен домен за е-пошта.",
+				"banned_user": "Оваа сметка е блокирана. Побарај пристап од администраторот.",
+				"unable_to_link_account": "Овој идентитет не можеше да се поврзе со твојата сметка. Побарај помош од администраторот.",
+				"saml_other_browser": "Компаниската најава мора да заврши во прелистувачот во кој започнала. Започни одново од оваа страница и провери дали колачињата се дозволени."
 			},
 			"instanceStatusError": "Не можеше да се воспостави врска со серверот. Обиди се повторно за момент.",
-			"titleWithInstance": "Најави се на {{name}}"
+			"titleWithInstance": "Најави се на {{name}}",
+			"continueWithSaml": "Продолжи со компаниска најава",
+			"samlEmail": "Работна е-пошта",
+			"samlSubmit": "Продолжи",
+			"samlNoConnection": "Компаниската најава не е поставена за тој домен за е-пошта.",
+			"samlError": "Не успеа започнувањето на компаниската најава. Обиди се повторно.",
+			"emailCodesOff": "Врските и кодовите за најава по е-пошта се исклучени на овој сервер. Ако досега се најавуваше само така, сè уште немаш лозинка: избери „Ја заборави лозинката?“ за да поставиш лозинка.",
+			"emailCodesOffNoEmail": "Врските и кодовите за најава по е-пошта се исклучени на овој сервер. Ако досега се најавуваше само така, сè уште немаш лозинка: побарај од администратор на инстанцата да ти постави лозинка."
 		},
 		"providers": {
 			"google": "Google",
@@ -420,6 +439,10 @@
 				"nameShort": "Името мора да има најмалку 2 знаци"
 			}
 		},
+		"layout": {
+			"headline": "Види го целиот проект. Земи ја следната задача.",
+			"lede": "Самостојно хостирано управување со проекти за тимови што сакаат брзи и тивки алатки."
+		},
 		"device": {
 			"approve": "Одобри",
 			"approveFailed": "Не успеа одобрувањето",
@@ -443,10 +466,6 @@
 			"subtitle": "Внеси го кодот од твојот CLI или апликација за да продолжиш.",
 			"title": "Поврзи уред"
 		},
-		"layout": {
-			"headline": "Види го целиот проект. Земи ја следната задача.",
-			"lede": "Самостојно хостирано управување со проекти за тимови што сакаат брзи и тивки алатки."
-		},
 		"mcp": {
 			"approve": "Одобри",
 			"clientFallback": "MCP клиент",
@@ -463,22 +482,6 @@
 			"subtitle": "Прегледај го ова барање пред да доделиш пристап до твојата сметка на Margaya.",
 			"title": "Овласти MCP клиент",
 			"warning": "Овој клиент ќе може да дејствува во твое име и да пристапува до твоите работни простори. Продолжи само ако ти го започна ова поврзување."
-		},
-		"emailVerification": {
-			"codeLabel": "Код за потврда",
-			"codeSent": "Испративме 6-цифрен код на {{email}}. Истекува за 5 минути.",
-			"invitationsDescription": "Потврди ја е-поштата за да ги видиш поканите испратени на {{email}}.",
-			"resend": "Испрати нов код",
-			"sendCode": "Испрати код",
-			"sendFailed": "Не успеавме да го испратиме кодот. Обиди се повторно.",
-			"sending": "Се испраќа...",
-			"settingsDescription": "Потврди ја {{email}} за поканите во работни простори испратени на неа да се прикажуваат во Margaya.",
-			"success": "Е-поштата е потврдена",
-			"title": "Потврди ја е-поштата",
-			"verifiedBadge": "Потврдена",
-			"verify": "Потврди",
-			"verifyFailed": "Тој код не функционираше. Провери го или испрати нов.",
-			"verifying": "Се потврдува..."
 		},
 		"forgotPassword": {
 			"backToSignIn": "Назад кон најава",
@@ -507,6 +510,30 @@
 			"successDescription": "Новата лозинка е поставена и сите сесии се одјавени. Најави се со новата лозинка.",
 			"successTitle": "Лозинката е ажурирана",
 			"title": "Постави нова лозинка"
+		},
+		"emailVerification": {
+			"codeLabel": "Код за потврда",
+			"codeSent": "Испративме 6-цифрен код на {{email}}. Истекува за 5 минути.",
+			"invitationsDescription": "Потврди ја е-поштата за да ги видиш поканите испратени на {{email}}.",
+			"resend": "Испрати нов код",
+			"sendCode": "Испрати код",
+			"sendFailed": "Не успеавме да го испратиме кодот. Обиди се повторно.",
+			"sending": "Се испраќа...",
+			"settingsDescription": "Потврди ја {{email}} за поканите во работни простори испратени на неа да се прикажуваат во Margaya.",
+			"success": "Е-поштата е потврдена",
+			"title": "Потврди ја е-поштата",
+			"verifiedBadge": "Потврдена",
+			"verify": "Потврди",
+			"verifyFailed": "Тој код не функционираше. Провери го или испрати нов.",
+			"verifying": "Се потврдува..."
+		},
+		"complete": {
+			"pageTitle": "Најавување во тек",
+			"title": "Завршување на најавата",
+			"working": "Те најавуваме…",
+			"failedTitle": "Најавата не можеше да заврши",
+			"failed": "Оваа најава не можеше да заврши. Нејзината врска работи еднаш, една минута, и само во прелистувачот со кој се најави. Најави се повторно.",
+			"backToSignIn": "Назад кон најава"
 		}
 	},
 	"settings": {
@@ -534,8 +561,8 @@
 				"invalidEmail": "Внеси важечка адреса на е-пошта"
 			},
 			"avatar": {
-				"hint": "PNG, JPEG, or WebP. Cropped to a square and resized to 256x256.",
-				"remove": "Remove",
+				"hint": "Кликни на сликата за да ја промениш или да ја отстраниш. Се исекува во квадрат, а големината се прилагодува на 256x256.",
+				"remove": "Отстрани аватар",
 				"removeError": "Не успеа отстранувањето на профилната слика",
 				"removeSuccess": "Профилната слика е отстранета",
 				"updateError": "Не успеа ажурирањето на профилната слика",
@@ -545,10 +572,10 @@
 			},
 			"deleteAccount": {
 				"confirm": "Избриши ја сметката",
-				"confirmLabel": "Confirm your email address",
+				"confirmLabel": "Внеси {{email}} за да потврдиш",
 				"description": "Работните простори во кои си единствен член се бришат заедно со сметката. Во другите, твоите задачи остануваат недоделени, а твоите коментари се отстрануваат.",
 				"error": "Не успеа бришењето на сметката",
-				"modalDescription": "This cannot be undone. Type {{email}} to confirm.",
+				"modalDescription": "Ова трајно ја брише твојата сметка и не може да се врати.",
 				"modalTitle": "Да се избрише сметката?",
 				"sectionSubtitle": "Трајни дејства што влијаат на целата твоја сметка.",
 				"sectionTitle": "Опасна зона",
@@ -601,6 +628,40 @@
 			"workspaceRulesTitle": "Правила за достава по работен простор",
 			"workspaceRulesDescription": "Искористи ги твоите глобални канали, па одлучи кои работни простори и проекти смеат да испраќаат известувања за сметката.",
 			"workspaceCardHint": "Избери кои канали може да ги користи овој работен простор за известувања за сметката.",
+			"workspaceEnabledLabel": "Вклучи известувања за {{workspaceName}}",
+			"eventPreferencesTitle": "Извести ме за",
+			"eventPreferencesDescription": "Избери кои настани за задачи создаваат известувања во апликацијата и може да се доставуваат до твоите поврзани канали.",
+			"eventTaskAssignments": "Доделувања на задачи",
+			"eventComments": "Коментари и спомнувања",
+			"eventCommentsHint": "Вклучува нови коментари на задачи што ти се доделени и директни @спомнувања.",
+			"eventStatusChanges": "Промени на статус на задачи",
+			"eventStatusChangesHint": "За задачи што ти се доделени или на кои си претплатен.",
+			"eventTaskUpdates": "Други промени на задачи",
+			"eventTaskUpdatesHint": "Промени на приоритет, краен рок и наслов на задачи што ги следиш.",
+			"eventDueDateReminders": "Потсетници за краен рок",
+			"reminderLeadTimeLabel": "Потсети ме пред крајниот рок",
+			"reminderLeadTimeHint": "Помеѓу 1 час и 30 дена претходно. Известувањата за задоцнети задачи се испраќаат одделно.",
+			"reminderLeadTimeUnitHours": "Часови",
+			"reminderLeadTimeUnitDays": "Денови",
+			"reminderLeadTimeInvalid": "Внеси цел број помеѓу 1 и {{max}}.",
+			"saveEventPreferences": "Зачувај типови на известувања",
+			"digestTitle": "Преглед по е-пошта",
+			"digestDescription": "Е-порака со преглед на твоите отворени задачи што се задоцнети или со рок во следните 7 дена, новите спомнувања и непрочитаните ставки во приемното сандаче. Го користи твојата временска зона и не се испраќа кога нема ништо ново.",
+			"digestFrequencyLabel": "Испраќај преглед",
+			"digestFrequencyOff": "Исклучено",
+			"digestFrequencyDaily": "Дневно",
+			"digestFrequencyWeekly": "Неделно",
+			"digestWeekdayLabel": "Ден",
+			"digestWeekdaySunday": "Недела",
+			"digestWeekdayMonday": "Понеделник",
+			"digestWeekdayTuesday": "Вторник",
+			"digestWeekdayWednesday": "Среда",
+			"digestWeekdayThursday": "Четврток",
+			"digestWeekdayFriday": "Петок",
+			"digestWeekdaySaturday": "Сабота",
+			"digestHourLabel": "Време",
+			"digestNoEmail": "За прегледите е потребна адреса на е-пошта на сметката.",
+			"saveDigest": "Зачувај преглед",
 			"workspaceCardLabelEmail": "Е-пошта",
 			"workspaceCardLabelNtfy": "ntfy",
 			"workspaceCardLabelGotify": "Gotify",
@@ -628,42 +689,8 @@
 			"toastPreferencesSaveFailed": "Неуспешно зачувување на преференциите за известувања",
 			"toastRuleSavedGeneric": "Правилото за известувања на работниот простор е зачувано",
 			"toastRuleRemovedGeneric": "Правилото за известувања на работниот простор е отстрането",
-			"workspaceEnabledLabel": "Вклучи известувања за {{workspaceName}}",
-			"eventPreferencesTitle": "Извести ме за",
-			"eventPreferencesDescription": "Избери кои настани за задачи создаваат известувања во апликацијата и може да се доставуваат до твоите поврзани канали.",
-			"eventTaskAssignments": "Доделувања на задачи",
-			"eventComments": "Коментари и спомнувања",
-			"eventCommentsHint": "Вклучува нови коментари на задачи што ти се доделени и директни @спомнувања.",
-			"eventStatusChanges": "Промени на статус на задачи",
-			"eventDueDateReminders": "Потсетници за краен рок",
-			"reminderLeadTimeLabel": "Потсети ме пред крајниот рок",
-			"reminderLeadTimeHint": "Помеѓу 1 час и 30 дена претходно. Известувањата за задоцнети задачи се испраќаат одделно.",
-			"reminderLeadTimeUnitHours": "Часови",
-			"reminderLeadTimeUnitDays": "Денови",
-			"reminderLeadTimeInvalid": "Внеси цел број помеѓу 1 и {{max}}.",
-			"saveEventPreferences": "Зачувај типови на известувања",
-			"eventStatusChangesHint": "За задачи што ти се доделени или на кои си претплатен.",
-			"eventTaskUpdates": "Други промени на задачи",
-			"eventTaskUpdatesHint": "Промени на приоритет, краен рок и наслов на задачи што ги следиш.",
-			"channelsDescription": "Каде Margaya ги испраќа известувањата што ги избра погоре.",
 			"channelsTitle": "Канали за испорака",
-			"digestDescription": "Е-порака со преглед на твоите отворени задачи што се задоцнети или со рок во следните 7 дена, новите спомнувања и непрочитаните ставки во приемното сандаче. Го користи твојата временска зона и не се испраќа кога нема ништо ново.",
-			"digestFrequencyDaily": "Дневно",
-			"digestFrequencyLabel": "Испраќај преглед",
-			"digestFrequencyOff": "Исклучено",
-			"digestFrequencyWeekly": "Неделно",
-			"digestHourLabel": "Време",
-			"digestNoEmail": "За прегледите е потребна адреса на е-пошта на сметката.",
-			"digestTitle": "Преглед по е-пошта",
-			"digestWeekdayFriday": "Петок",
-			"digestWeekdayLabel": "Ден",
-			"digestWeekdayMonday": "Понеделник",
-			"digestWeekdaySaturday": "Сабота",
-			"digestWeekdaySunday": "Недела",
-			"digestWeekdayThursday": "Четврток",
-			"digestWeekdayTuesday": "Вторник",
-			"digestWeekdayWednesday": "Среда",
-			"saveDigest": "Зачувај преглед",
+			"channelsDescription": "Каде Margaya ги испраќа известувањата што ги избра погоре.",
 			"sound": {
 				"title": "Звуци",
 				"description": "Пушти звук кога ќе пристигне известување додека Margaya е отворена во твојот прелистувач.",
@@ -694,7 +721,30 @@
 				"deviceMute": "Исклучи ги звуците на овој уред",
 				"deviceMuteDescription": "Го стишува само овој прелистувач; другите твои уреди продолжуваат да пуштаат звуци.",
 				"previewFailed": "Прелистувачот не го пушти звукот. Провери дали овој таб или страницата не се стишени."
-			}
+			},
+			"pushTitle": "Push известувања",
+			"pushDescription": "Известувања на твојот телефон или компјутер, дури и кога Margaya е затворен. „Извести ме за“ одредува што се испраќа, а правило за работниот простор подолу може да го стесни тоа.",
+			"pushThisDevice": "На овој уред",
+			"pushOnHint": "Овој уред прима push известувања.",
+			"pushOffHint": "Прелистувачот ќе побара дозвола кога ќе го вклучиш ова.",
+			"pushOffHintAllowed": "Известувањата се веќе дозволени во овој прелистувач.",
+			"pushNotSetUp": "Push известувањата не се поставени на овој сервер. Побарај од администраторот да ги постави VAPID клучевите.",
+			"pushInstallFirst": "На iPhone и iPad прво додај го Margaya на почетниот екран: допри Сподели, па Додај на почетен екран. Отвори го оттаму и вклучи го ова.",
+			"pushUnsupported": "Овој прелистувач не може да прима push известувања тука. За нив е потребен актуелен прелистувач и HTTPS адреса.",
+			"pushBlocked": "Известувањата се блокирани за оваа страница. Дозволи ги во поставките на прелистувачот, па повторно вчитај ја оваа страница.",
+			"pushOtherDevices": "Твоите други уреди",
+			"pushRemoveDevice": "Отстрани",
+			"pushRemoveDeviceLabel": "Отстрани {{device}}",
+			"toastPushOn": "Push известувањата се вклучени на овој уред.",
+			"toastPushOnFailed": "Не успеа вклучувањето на push известувањата. Обиди се повторно.",
+			"toastPushOff": "Push известувањата се исклучени на овој уред.",
+			"toastPushOffFailed": "Не успеа исклучувањето на push известувањата. Обиди се повторно.",
+			"toastPushDeviceRemoved": "Уредот е отстранет.",
+			"toastPushDeviceRemoveFailed": "Не успеа отстранувањето на уредот. Обиди се повторно.",
+			"workspaceCardLabelPush": "Push известувања",
+			"pushChannelHintEnabled": "Испраќај соодветни известувања од работниот простор на твоите уреди.",
+			"pushChannelHintDisabled": "Прво вклучи push известувања на некој уред.",
+			"pushLoadFailed": "Не успеа вчитувањето на твоите push поставки. Повторно вчитај ја оваа страница за да се обидеш пак."
 		},
 		"preferencesPage": {
 			"title": "Преференции",
@@ -1544,6 +1594,8 @@
 			"createColumnsFirst": "Прво креирај колони за да конфигурираш правила за автоматизација.",
 			"githubHeading": "GitHub",
 			"githubHint": "Кога ќе се случи GitHub настан, премести ја поврзаната задача во колона.",
+			"giteaHeading": "Gitea",
+			"giteaHint": "Кога ќе се случи Gitea webhook настан, премести ја поврзаната задача во колона.",
 			"selectColumnPlaceholder": "Избери колона...",
 			"toastUpdated": "Правилото за работен тек е ажурирано",
 			"toastError": "Неуспешно ажурирање на правило",
@@ -1554,8 +1606,9 @@
 				"issue_opened": "Проблемот е отворен",
 				"issue_closed": "Проблемот е затворен"
 			},
-			"giteaHeading": "Gitea",
-			"giteaHint": "Кога ќе се случи Gitea webhook настан, премести ја поврзаната задача во колона."
+			"removeRule": "Отстрани го правилото за {{event}}",
+			"toastRemoved": "Правилото за работен тек е отстрането",
+			"toastRemoveError": "Не успеа отстранувањето на правилото"
 		},
 		"externalLinks": {
 			"resources": "Ресурси",
@@ -1604,7 +1657,6 @@
 				"organization": "Администрирање на работниот простор",
 				"member": "Членови",
 				"invitation": "Покани",
-				"team": "Тимови",
 				"ac": "Улоги и дозволи",
 				"cycle": "Циклуси",
 				"module": "Модули",
@@ -1728,20 +1780,6 @@
 					"cancel": {
 						"label": "Откажување покани",
 						"description": "Повлекување покани на чекање за работниот простор."
-					}
-				},
-				"team": {
-					"create": {
-						"label": "Креирање тимови",
-						"description": "Креирање тимови во овој работен простор."
-					},
-					"update": {
-						"label": "Уредување тимови",
-						"description": "Промена на тимовите и нивниот состав."
-					},
-					"delete": {
-						"label": "Бришење тимови",
-						"description": "Бришење тимови во овој работен простор."
 					}
 				},
 				"ac": {
@@ -1955,28 +1993,43 @@
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
 		"customFields": {
-			"addButton": "Додади",
-			"createError": "Не успеа креирањето на прилагоденото поле.",
-			"createSuccess": "Прилагоденото поле е креирано.",
-			"defaultLabel": "Стандардно",
-			"defaultValuePlaceholder": "Стандардна вредност",
-			"deleteButton": "Избриши",
-			"deleteError": "Не успеа бришењето на прилагоденото поле.",
-			"deleteSuccess": "Прилагоденото поле е избришано.",
-			"empty": "Сè уште нема конфигурирано прилагодени полиња.",
-			"loading": "Се вчитуваат прилагодените полиња...",
 			"namePlaceholder": "Име на полето",
+			"typePlaceholder": "Избери тип на поле",
 			"noOptionsPlaceholder": "Нема опции",
+			"defaultValuePlaceholder": "Стандардна вредност",
 			"optionsPlaceholder": "Опции одвоени со запирки",
 			"required": "Задолжително",
-			"typePlaceholder": "Избери тип на поле",
+			"addButton": "Додади",
+			"loading": "Се вчитуваат прилагодените полиња...",
+			"empty": "Сè уште нема конфигурирано прилагодени полиња.",
+			"defaultLabel": "Стандардно",
+			"createSuccess": "Прилагоденото поле е креирано.",
+			"createError": "Не успеа креирањето на прилагоденото поле.",
+			"deleteButton": "Избриши",
+			"deleteSuccess": "Прилагоденото поле е избришано.",
+			"deleteError": "Не успеа бришењето на прилагоденото поле.",
 			"types": {
 				"boolean": "Логичка вредност",
 				"date": "Датум",
 				"dropdown": "Паѓачка листа",
 				"number": "Број",
 				"text": "Текст"
-			}
+			},
+			"editButton": "Уреди",
+			"editTitle": "Уреди прилагодено поле",
+			"editDescription": "Типот на полето и дали е задолжително не може да се променат откако ќе се создаде.",
+			"nameLabel": "Име",
+			"optionsLabel": "Опции",
+			"addOption": "Додај опција",
+			"removeOption": "Отстрани опција",
+			"optionPlaceholder": "Име на опцијата",
+			"optionsHint": "Преименувањето опција ја ажурира секоја задача, зачуван приказ и автоматизација што ја користат. Отстранетата опција останува на задачите што веќе ја имаат додека некој не ја смени, и не може повторно да се избере.",
+			"duplicateOption": "Опциите мора да се разликуваат меѓу себе.",
+			"noDefault": "Без стандардна вредност",
+			"saveButton": "Зачувај",
+			"cancelButton": "Откажи",
+			"updateSuccess": "Прилагоденото поле е ажурирано.",
+			"updateError": "Не успеа ажурирањето на прилагоденото поле."
 		},
 		"projectFeatures": {
 			"disableConfirmAction": "Исклучи",
@@ -2250,6 +2303,11 @@
 			}
 		},
 		"workspaceExports": {
+			"title": "Извози",
+			"pageTitle": "Извози",
+			"subtitle": "Извезувај задачи во CSV, Excel или JSON. Датотеките се достапни за преземање {{days}} дена.",
+			"newExport": "Нов извоз",
+			"viewExports": "Прикажи извози",
 			"form": {
 				"activeGroup": "Активни",
 				"allProjects": "Сите проекти",
@@ -2277,48 +2335,6 @@
 				"json": "JSON",
 				"xlsx": "Excel"
 			},
-			"history": {
-				"all": "Сите извози",
-				"columns": {
-					"actions": "Дејства",
-					"created": "Креиран",
-					"expires": "Достапно",
-					"export": "Извоз",
-					"requestedBy": "Побарано од",
-					"size": "Големина",
-					"status": "Статус",
-					"tasks": "Задачи"
-				},
-				"delete": "Избриши",
-				"deleteAria": "Избриши {{name}}",
-				"deleteDescription": "Датотеката се брише за сите. Ова не може да се врати.",
-				"deletedProject": "Избришан проект",
-				"deleteTitle": "Да се избрише овој извоз?",
-				"deleting": "Се брише…",
-				"description": "Преземи готови извози или избриши ги оние што веќе не ти требаат.",
-				"download": "Преземи",
-				"downloadAria": "Преземи {{name}}",
-				"empty": "Сè уште нема извози. Извозите што ги започнуваш се појавуваат овде {{days}} дена.",
-				"expiredOn": "Истече на {{date}}",
-				"expiresOn": "До {{date}}",
-				"loadMore": "Вчитај повеќе",
-				"mine": "Мои извози",
-				"scopeLabel": "Чии извози",
-				"summaryProjects_one": "{{format}} · {{name}}",
-				"summaryProjects_other": "{{format}} · {{count}} проекти",
-				"title": "Претходни извози"
-			},
-			"newExport": "Нов извоз",
-			"pageTitle": "Извози",
-			"status": {
-				"completed": "Подготвен",
-				"expired": "Истечен",
-				"failed": "Неуспешно",
-				"processing": "Се обработува",
-				"queued": "Во редица"
-			},
-			"subtitle": "Извезувај задачи во CSV, Excel или JSON. Датотеките се достапни за преземање {{days}} дена.",
-			"title": "Извози",
 			"toast": {
 				"deleted": "Извозот е избришан",
 				"deleteError": "Извозот не може да се избрише. Обиди се повторно.",
@@ -2330,7 +2346,60 @@
 				"ready": "Твојот извоз е подготвен",
 				"started": "Извозот започна. Ќе те известиме кога ќе биде подготвен."
 			},
-			"viewExports": "Прикажи извози"
+			"history": {
+				"title": "Претходни извози",
+				"description": "Преземи готови извози или избриши ги оние што веќе не ти требаат.",
+				"scopeLabel": "Чии извози",
+				"mine": "Мои извози",
+				"all": "Сите извози",
+				"empty": "Сè уште нема извози. Извозите што ги започнуваш се појавуваат овде {{days}} дена.",
+				"columns": {
+					"actions": "Дејства",
+					"created": "Креиран",
+					"expires": "Достапно",
+					"export": "Извоз",
+					"requestedBy": "Побарано од",
+					"size": "Големина",
+					"status": "Статус",
+					"tasks": "Задачи"
+				},
+				"summaryProjects_one": "{{format}} · {{name}}",
+				"summaryProjects_other": "{{format}} · {{count}} проекти",
+				"deletedProject": "Избришан проект",
+				"download": "Преземи",
+				"downloadAria": "Преземи {{name}}",
+				"delete": "Избриши",
+				"deleteAria": "Избриши {{name}}",
+				"deleting": "Се брише…",
+				"deleteTitle": "Да се избрише овој извоз?",
+				"deleteDescription": "Датотеката се брише за сите. Ова не може да се врати.",
+				"expiredOn": "Истече на {{date}}",
+				"expiresOn": "До {{date}}",
+				"loadMore": "Вчитај повеќе",
+				"summaryWorkspace": "Целиот работен простор",
+				"fileCount_one": "{{count}} датотека",
+				"fileCount_other": "{{count}} датотеки",
+				"withoutFiles": "Без датотеки",
+				"missingFiles_one": "{{count}} датотека недостасуваше во складот",
+				"missingFiles_other": "{{count}} датотеки недостасуваа во складот"
+			},
+			"status": {
+				"completed": "Подготвен",
+				"expired": "Истечен",
+				"failed": "Неуспешно",
+				"processing": "Се обработува",
+				"queued": "Во редица"
+			},
+			"whole": {
+				"title": "Целиот работен простор",
+				"description": "Преземи сè како еден ZIP: задачи со сите нивни коментари, страници, поставки и датотеки.",
+				"action": "Извези го работниот простор",
+				"dialogTitle": "Извези го целиот работен простор",
+				"dialogDescription": "Архивата се гради во заднина. Ќе добиеш известување кога ќе биде готова.",
+				"includeFiles": "Вклучи датотеки",
+				"includeFilesHint": "Исклучи го ова за многу помала архива. Сепак ја наведува секоја датотека.",
+				"leftOut": "Тајните, приватните страници, корпата и нацртите никогаш не се вклучуваат. Архивата содржи адреси на е-пошта на членовите, па чувај ја на безбедно место."
+			}
 		},
 		"workspaceWebhooks": {
 			"actionsMenu": "Дејства за webhook",
@@ -2709,7 +2778,8 @@
 			"restrictedProject": "Ограничен проект",
 			"toastUpdated": "Пристапот е ажуриран",
 			"toastError": "Не успеа ажурирањето на пристапот",
-			"loadError": "Не може да се вчитаат поставките за пристап. Освежи ја страницата за да пробаш повторно."
+			"loadError": "Не може да се вчитаат поставките за пристап. Освежи ја страницата за да пробаш повторно.",
+			"guestsHint": "Гостите пристапуваат само до проектите во кои се додадени. Додај ги овде; улогата во проектот ограничува што можат да прават."
 		},
 		"projectPeople": {
 			"defaultAssigneeHint": "Се пополнува однапред кога креираш задача и се доделува на прифатените барања што немаат доделен.",
@@ -2827,47 +2897,47 @@
 				"workspacePublicPagesChanged": "Ги вклучи или исклучи јавните страници",
 				"pagePublished": "Објави страница преку јавна врска",
 				"pageUnpublished": "Ја поништи јавната врска на страница",
-				"apiKeyCreated": "Креира API клуч",
-				"apiKeyRevoked": "Повлече API клуч",
-				"exportCreated": "Започна извоз",
-				"exportDownloaded": "Презеде извоз",
-				"importRun": "Увезе задачи",
-				"integrationConnected": "Поврза интеграција",
-				"integrationDisconnected": "Откачи интеграција",
-				"integrationUpdated": "Промени интеграција",
+				"memberInvited": "Покани некого во работниот простор",
+				"memberInvitationRevoked": "Повлече покана",
 				"memberInvitationAccepted": "Прифати покана",
 				"memberInvitationDeclined": "Одби покана",
 				"memberInvitationRoleChanged": "Ја промени улогата на покана на чекање",
-				"memberInvitationRevoked": "Повлече покана",
-				"memberInvited": "Покани некого во работниот простор",
-				"memberLeft": "Го напушти работниот простор",
 				"memberRemoved": "Отстрани член",
+				"memberLeft": "Го напушти работниот простор",
 				"memberRoleChanged": "Ја промени улогата на член",
-				"projectArchived": "Архивира проект",
-				"projectCreated": "Креира проект",
-				"projectFeatureToggled": "Вклучи или исклучи функции на проектот",
-				"projectPurged": "Трајно избриша проект",
-				"projectRestored": "Врати проект од корпата",
-				"projectSettingsChanged": "Ги промени поставките на проектот",
-				"projectTrashed": "Премести проект во корпата",
-				"projectUnarchived": "Врати проект од архива",
-				"publicBoardLinkRotated": "Ја замени врската до јавна табла",
-				"publicBoardPublished": "Објави јавна табла",
-				"publicBoardSettingsChanged": "Ги промени поставките на јавна табла",
-				"publicBoardUnpublished": "Повлече јавна табла од објава",
 				"roleCreated": "Креира улога",
-				"roleDeleted": "Избриша улога",
 				"roleUpdated": "Промени улога",
-				"trashEmptied": "Ја испразни корпата на проект",
-				"trashPurged": "Трајно избриша задачи од корпата",
-				"unknown": "{{action}}",
+				"roleDeleted": "Избриша улога",
+				"apiKeyCreated": "Креира API клуч",
+				"apiKeyRevoked": "Повлече API клуч",
 				"webhookCreated": "Креира webhook",
+				"webhookUpdated": "Промени webhook",
 				"webhookDeleted": "Избриша webhook",
 				"webhookSecretRotated": "Ја замени тајната за потпишување на webhook",
-				"webhookUpdated": "Промени webhook",
+				"integrationConnected": "Поврза интеграција",
+				"integrationUpdated": "Промени интеграција",
+				"integrationDisconnected": "Откачи интеграција",
 				"workspaceCreated": "Го креира работниот простор",
-				"workspaceOwnershipTransferred": "Ја префрли сопственоста на работниот простор",
 				"workspaceUpdated": "Ги промени поставките на работниот простор",
+				"workspaceOwnershipTransferred": "Ја префрли сопственоста на работниот простор",
+				"projectCreated": "Креира проект",
+				"projectTrashed": "Премести проект во корпата",
+				"projectRestored": "Врати проект од корпата",
+				"projectPurged": "Трајно избриша проект",
+				"projectArchived": "Архивира проект",
+				"projectUnarchived": "Врати проект од архива",
+				"projectFeatureToggled": "Вклучи или исклучи функции на проектот",
+				"projectSettingsChanged": "Ги промени поставките на проектот",
+				"publicBoardPublished": "Објави јавна табла",
+				"publicBoardUnpublished": "Повлече јавна табла од објава",
+				"publicBoardLinkRotated": "Ја замени врската до јавна табла",
+				"publicBoardSettingsChanged": "Ги промени поставките на јавна табла",
+				"exportCreated": "Започна извоз",
+				"exportDownloaded": "Презеде извоз",
+				"importRun": "Увезе задачи",
+				"trashPurged": "Трајно избриша задачи од корпата",
+				"trashEmptied": "Ја испразни корпата на проект",
+				"unknown": "{{action}}",
 				"aiSettingsUpdated": "Ги промени AI поставките",
 				"aiTriageLabelsApplied": "Автоматски ги додаде предложените етикети",
 				"agentCreated": "Креира агент",
@@ -2894,7 +2964,9 @@
 				"aiConnectorUpdated": "Промени MCP-конектор",
 				"aiConnectorDeleted": "Избриша MCP-конектор",
 				"agentIntakeTriggerUpdated": "Го промени активаторот за влезни барања на агент",
-				"agentIntakeTriggerDisabled": "Го исклучи активаторот за влезни барања на агент"
+				"agentIntakeTriggerDisabled": "Го исклучи активаторот за влезни барања на агент",
+				"memberProvisioned": "Додаде член преку SCIM",
+				"memberInvitationProjectsChanged": "Ги промени проектите на покана на чекање"
 			},
 			"actor": {
 				"apiKey": "API клуч",
@@ -2987,50 +3059,59 @@
 			"title": "Ревизорски дневник"
 		},
 		"trash": {
-			"deletedAt": "Избришано {{time}}",
-			"deletedBy": "Избришано од {{name}} {{time}}",
-			"deletePermanently": "Избриши трајно",
-			"emptyConfirmDescription": "Секоја задача во корпата на овој проект се брише трајно, заедно со нејзините коментари, прилози и внесови на време. Ова не може да се врати.",
-			"emptyConfirmTitle": "Да се испразни корпата?",
-			"emptyProjectsDescription": "Проектите што ги бришеш од овој работен простор се појавуваат овде.",
-			"emptyProjectsTitle": "Нема избришани проекти",
-			"emptyTasksDescription": "Задачите што ги бришеш од овој проект се појавуваат овде.",
-			"emptyTasksTitle": "Нема избришани задачи",
-			"emptyTrash": "Испразни ја корпата",
-			"loadError": "Не успеавме да ја вчитаме корпата",
-			"loadMore": "Вчитај повеќе",
-			"menuAria": "Повеќе дејства за {{name}}",
-			"noMatches": "Ништо не одговара на пребарувањето",
-			"projectSubtitle": "Избришаните задачи остануваат овде додека не се избришат трајно. Враќањето задача ги враќа и подзадачите избришани заедно со неа.",
 			"projectTitle": "Неодамна избришани",
-			"purgeOn": "Трајно се брише на {{date}}",
-			"purgeProjectDescription": "„{{name}}“ и сè што е во него се бришат за сите. Ова не може да се врати.",
-			"purgeProjectTitle": "Да се избрише проектот трајно?",
-			"purgeTaskDescription": "„{{name}}“, подзадачите избришани со неа, коментарите, прилозите и внесовите на време се бришат за сите. Ова не може да се врати.",
-			"purgeTaskTitle": "Да се избрише задачата трајно?",
-			"restore": "Врати",
-			"restoreAria": "Врати {{name}}",
-			"retry": "Обиди се повторно",
-			"searchProjects": "Пребарај избришани проекти",
+			"projectSubtitle": "Избришаните задачи и страници остануваат овде додека не се избришат трајно. Враќањето задача ги враќа и подзадачите избришани заедно со неа; вратената страница се враќа во Архивирани.",
+			"workspaceTitle": "Неодамна избришани проекти",
+			"workspaceNav": "Неодамна избришани",
+			"workspaceSubtitle": "Избришаните проекти остануваат овде со нивните задачи додека не се избришат трајно.",
 			"searchTasks": "Пребарај избришани задачи",
+			"searchProjects": "Пребарај избришани проекти",
+			"deletedBy": "Избришано од {{name}} {{time}}",
+			"deletedAt": "Избришано {{time}}",
+			"purgeOn": "Ќе се избрише трајно на {{date}}",
+			"withSubTasks_one": "со {{count}} подзадача",
+			"withSubTasks_other": "со {{count}} подзадачи",
 			"taskCount_one": "{{count}} задача",
 			"taskCount_other": "{{count}} задачи",
+			"restore": "Врати",
+			"restoreAria": "Врати {{name}}",
+			"menuAria": "Повеќе дејства за {{name}}",
+			"deletePermanently": "Избриши трајно",
+			"emptyTrash": "Испразни ја корпата",
+			"emptyTasksTitle": "Нема избришани задачи",
+			"emptyTasksDescription": "Задачите што ги бришеш од овој проект се појавуваат овде.",
+			"emptyProjectsTitle": "Нема избришани проекти",
+			"emptyProjectsDescription": "Проектите што ги бришеш од овој работен простор се појавуваат овде.",
+			"noMatches": "Ништо не одговара на пребарувањето",
+			"loadError": "Не успеавме да ја вчитаме корпата",
+			"retry": "Обиди се повторно",
+			"loadMore": "Вчитај повеќе",
+			"purgeTaskTitle": "Да се избрише задачата трајно?",
+			"purgeTaskDescription": "„{{name}}“, подзадачите избришани со неа, коментарите, прилозите и внесовите на време се бришат за сите. Ова не може да се врати.",
+			"emptyConfirmTitle": "Да се испразни корпата?",
+			"emptyConfirmDescription": "Секоја задача во корпата на овој проект се брише трајно, заедно со нејзините коментари, прилози и внесови на време. Ова не може да се врати.",
+			"purgeProjectTitle": "Да се избрише проектот трајно?",
+			"purgeProjectDescription": "„{{name}}“ и сè што е во него се бришат за сите. Ова не може да се врати.",
 			"toast": {
-				"emptied_one": "{{count}} задача е трајно избришана",
-				"emptied_other": "{{count}} задачи се трајно избришани",
-				"projectPurged": "Проектот е трајно избришан",
+				"taskRestored": "Задачата е вратена",
 				"projectRestored": "Проектот е вратен",
-				"purgeError": "Не успеа трајното бришење",
 				"restoreBlocked": "Оваа задача не може да се врати сама. Прво врати ја нејзината родителска задача или проектот.",
 				"restoreError": "Не успеа враќањето",
 				"taskPurged": "Задачата е трајно избришана",
-				"taskRestored": "Задачата е вратена"
+				"projectPurged": "Проектот е трајно избришан",
+				"emptied_one": "{{count}} задача е трајно избришана",
+				"emptied_other": "{{count}} задачи се трајно избришани",
+				"purgeError": "Не успеа трајното бришење",
+				"pageRestored": "Страницата е вратена во Архивирани",
+				"pagePurged": "Страницата е трајно избришана"
 			},
-			"withSubTasks_one": "со {{count}} подзадача",
-			"withSubTasks_other": "со {{count}} подзадачи",
-			"workspaceNav": "Неодамна избришани",
-			"workspaceSubtitle": "Избришаните проекти остануваат овде со нивните задачи додека не се избришат трајно.",
-			"workspaceTitle": "Неодамна избришани проекти"
+			"tasksHeading": "Задачи",
+			"pagesHeading": "Страници",
+			"searchPages": "Пребарај избришани страници",
+			"emptyPagesTitle": "Нема избришани страници",
+			"emptyPagesDescription": "Архивираните страници што ги бришеш од овој проект се појавуваат овде.",
+			"purgePageTitle": "Да се избрише трајно оваа страница?",
+			"purgePageDescription": "„{{name}}“, нејзините коментари и историјата на верзии се бришат за сите. Ова не може да се врати."
 		},
 		"automationRules": {
 			"title": "Автоматизации",
@@ -3355,11 +3436,11 @@
 				"boardView": "Премини на приказ табла",
 				"listView": "Премини на приказ листа",
 				"backlogView": "Премини на приказ заостанати",
+				"calendarView": "Премини на приказ календар",
 				"nextTask": "Следна задача",
 				"prevTask": "Претходна задача",
 				"openTask": "Отвори избрана задача",
 				"quickSelectNumber": "Избери опција по број",
-				"calendarView": "Премини на приказ календар",
 				"goToSection": "Оди на {{section}}",
 				"goToAllTasks": "Оди на сите задачи",
 				"goToMyWork": "Оди на твојата работа",
@@ -3368,24 +3449,25 @@
 				"goToHome": "Оди на почетна",
 				"goToStickies": "Оди на лепенки",
 				"paletteActions": "Изврши дејство",
+				"paletteTasks": "Најди задача по клуч или наслов",
 				"palettePeople": "Најди личност",
 				"palettePlaces": "Оди на место",
-				"paletteTasks": "Најди задача по клуч или наслов",
 				"captureTask": "Додај задача на таблата или во списокот",
 				"selectTask": "Избери ја фокусираната задача",
-				"triageAssignee": "Промени ги задолжените за фокусираната задача",
-				"triagePriority": "Промени го приоритетот на фокусираната задача",
 				"triageStatus": "Промени го статусот на фокусираната задача",
+				"triagePriority": "Промени го приоритетот на фокусираната задача",
+				"triageAssignee": "Промени ги задолжените за фокусираната задача",
+				"taskStatus": "Промени го статусот",
+				"taskPriority": "Промени го приоритетот",
 				"taskAssignees": "Промени ги доделените",
+				"taskLabels": "Промени ги етикетите",
+				"taskDueDate": "Промени го крајниот рок",
 				"taskAssignSelf": "Додели се или отстрани се",
 				"taskCopyKey": "Копирај го клучот на задачата",
 				"taskCopyLink": "Копирај ја врската до задачата",
+				"taskCopyBranch": "Копирај го името на гранката на задачата",
 				"taskDelete": "Избриши ја задачата",
-				"taskDueDate": "Промени го крајниот рок",
-				"taskLabels": "Промени ги етикетите",
-				"taskPriority": "Промени го приоритетот",
-				"taskStatus": "Промени го статусот",
-				"taskCopyBranch": "Копирај го името на гранката на задачата"
+				"moveBetweenCards": "Движи се меѓу картичките на таблата"
 			}
 		},
 		"favorites": {
@@ -3477,11 +3559,6 @@
 				"title": "Задачата ти е доделена",
 				"content": "Ти е доделена задачата: {{taskTitle}}"
 			},
-			"time_entry_created": {
-				"title": "Следењето на време е започнато",
-				"contentWithTask": "Следењето на време е започнато на задачата: {{taskTitle}}",
-				"contentWithoutTask": "Следењето на време е започнато на задача"
-			},
 			"task_mention": {
 				"title": "{{mentionerName}} те спомна",
 				"content": "{{mentionerName}} те спомна во: {{taskTitle}}",
@@ -3500,6 +3577,11 @@
 			"task_overdue": {
 				"title": "Задачата е задоцнета",
 				"content": "{{taskTitle}} го помина крајниот рок"
+			},
+			"time_entry_created": {
+				"title": "Следењето на време е започнато",
+				"contentWithTask": "Следењето на време е започнато на задачата: {{taskTitle}}",
+				"contentWithoutTask": "Следењето на време е започнато на задача"
 			},
 			"task_updated": {
 				"dueDate": "Крајниот рок на „{{taskTitle}}“ е променет на {{newValue}}",
@@ -3542,6 +3624,14 @@
 			"automation_notice": {
 				"title": "Автоматизација: {{ruleName}}",
 				"content": "{{taskKey}} {{taskTitle}}"
+			},
+			"page_comment": {
+				"title": "{{commenterName}} коментираше",
+				"content": "{{commenterName}} коментираше на {{pageTitle}}: {{commentPreview}}"
+			},
+			"page_updated": {
+				"title": "{{editorName}} уреди страница",
+				"content": "{{editorName}} ја уреди {{pageTitle}}"
 			}
 		},
 		"reminderLeadTime": {
@@ -3604,10 +3694,12 @@
 			"loadMore": "Вчитај повеќе",
 			"pageTitle": "Приемно сандаче",
 			"preview": {
-				"emptyDescription": "Неговата задача се отвора тука.",
 				"emptyTitle": "Избери известување",
+				"emptyDescription": "Неговата задача се отвора тука.",
 				"unavailable": "Оваа задача повеќе не е достапна",
-				"label": "Панел за читање"
+				"label": "Панел за читање",
+				"showProperties": "Прикажи својства",
+				"hideProperties": "Сокриј својства"
 			},
 			"retry": "Обиди се повторно",
 			"snooze": {
@@ -3653,27 +3745,31 @@
 				"subscribed": "Претплатени"
 			},
 			"verbs": {
-				"due_date_reminder": "Рок за {{leadTime}}",
-				"task_assignee_changed": "ти ја додели задачата",
-				"task_comment": "коментираше",
 				"task_created": "ја креираше оваа задача",
+				"task_assignee_changed": "ти ја додели задачата",
+				"task_status_changed": "ја премести од {{oldStatus}} во {{newStatus}}",
+				"task_comment": "коментираше",
 				"task_mention": "те спомна",
 				"task_mention_comment": "те спомна во коментар",
-				"task_overdue": "Крајниот рок помина",
-				"task_status_changed": "ја премести од {{oldStatus}} во {{newStatus}}",
+				"time_entry_created": "запиша време",
 				"task_updated": {
 					"dueDate": "го промени крајниот рок на {{newValue}}",
 					"dueDateCleared": "го отстрани крајниот рок",
 					"priority": "го промени приоритетот на {{newValue}}",
 					"title": "ја преименуваше задачата"
 				},
-				"time_entry_created": "запиша време",
+				"due_date_reminder": "Рок за {{leadTime}}",
+				"task_overdue": "Крајниот рок помина",
 				"intake_accepted": "го прифати твоето барање",
 				"intake_declined": "го одби твоето барање",
 				"intake_duplicate": "го означи твоето барање како дупликат",
 				"page_mention": "те спомена на страница",
 				"page_mention_titled": "те спомена во {{pageTitle}}",
-				"task_comment_reply": "одговори на коментар"
+				"task_comment_reply": "одговори на коментар",
+				"page_comment": "коментираше на страница",
+				"page_comment_titled": "коментираше на {{pageTitle}}",
+				"page_updated": "уреди страница што ја следиш",
+				"page_updated_titled": "ја уреди {{pageTitle}}"
 			},
 			"viewing": {
 				"archived": "Прегледуваш архивирани известувања",
@@ -3704,8 +3800,21 @@
 		}
 	},
 	"activity": {
+		"feed": {
+			"all": "Сета активност",
+			"comments": "Коментари",
+			"label": "Филтрирај и подреди активност",
+			"newest": "Прво најновите",
+			"noMatches": "Нема што да се прикаже со овој филтер.",
+			"oldest": "Прво најстарите",
+			"order": "Редослед",
+			"show": "Прикажи",
+			"updates": "Ажурирања"
+		},
 		"assignedToSelf": "ја додели задачата на себеси",
 		"unassigned": "ја одзеде задачата",
+		"unassignedUser": "го одзеде доделувањето на {{name}}",
+		"unassignedSelf": "го одзеде доделувањето на себеси",
 		"assignedTo": "ја додели задачата на {{name}}",
 		"changedStatus": "го промени статусот од {{from}} во {{to}}",
 		"changedPriority": "го промени приоритетот од {{from}} во {{to}}",
@@ -3713,8 +3822,10 @@
 		"setDueDate": "го постави краениот рок на {{date}}",
 		"changedDueDate": "го промени краениот рок од {{from}} во {{to}}",
 		"changedTitle": "го промени насловот од \"{{from}}\" во \"{{to}}\"",
-		"created": "ја создаде задачата",
 		"moved": "ја премести задачата од \"{{from}}\" во \"{{to}}\"",
+		"created": "ја создаде задачата",
+		"importedFromJira": "ја увезе оваа задача од Jira {{key}}",
+		"importedFromSource": "ја увезе оваа задача од {{source}} {{key}}",
 		"githubUser": "GitHub корисник",
 		"comment": {
 			"github": "GitHub",
@@ -3835,35 +3946,26 @@
 			"linkCopied": "Врската до коментарот е копирана"
 		},
 		"addedToCycle": "ја додаде задачата во циклусот {{name}}",
-		"deletedCycle": "ја отстрани задачата од избришан циклус",
-		"movedCycle": "ја премести задачата од циклусот {{from}} во циклусот {{to}}",
 		"removedFromCycle": "ја отстрани задачата од циклусот {{name}}",
+		"movedCycle": "ја премести задачата од циклусот {{from}} во циклусот {{to}}",
+		"deletedCycle": "ја отстрани задачата од избришан циклус",
 		"addedToModule": "ја додаде задачата во модулот {{name}}",
 		"removedFromModule": "ја отстрани задачата од модулот {{name}}",
+		"estimateSet": "ја постави проценката на {{to}}",
 		"estimateChanged": "ја промени проценката од {{from}} во {{to}}",
+		"estimateRemoved": "ја отстрани проценката {{from}}",
 		"estimateReason": {
 			"point_deleted": "(вредноста на проценката е избришана)",
 			"system_deleted": "(системот за проценка е избришан)",
 			"system_switched": "(системот за проценка е сменет)",
 			"task_moved": "(преместено во друг проект)"
 		},
-		"estimateRemoved": "ја отстрани проценката {{from}}",
-		"estimateSet": "ја постави проценката на {{to}}",
-		"unassignedSelf": "го одзеде доделувањето на себеси",
-		"unassignedUser": "го одзеде доделувањето на {{name}}",
-		"addedLabel": "ја додаде етикетата <label>{{name}}</label>",
-		"attachmentAdded": "прикачи {{filename}}",
-		"attachmentRemoved": "го отстрани прилогот {{filename}}",
+		"setStartDate": "го постави почетниот датум на {{date}}",
 		"changedStartDate": "го промени почетниот датум од {{from}} во {{to}}",
 		"clearedStartDate": "го исчисти почетниот датум",
-		"copiedFrom": "ја креираше оваа задача како копија на <task>{{task}}</task>",
-		"copiedTo": "направи копија на оваа задача: <task>{{task}}</task>",
-		"linkAdded": "го додаде линкот {{title}}",
-		"linkRemoved": "го отстрани линкот {{title}}",
-		"linkUpdated": "го ажурираше линкот {{title}}",
-		"parentChanged": "ја промени родителската задача од <from>{{from}}</from> во <to>{{to}}</to>",
-		"parentRemoved": "ја отстрани родителската задача <task>{{task}}</task>",
-		"parentSet": "ја постави родителската задача на <task>{{task}}</task>",
+		"addedLabel": "ја додаде етикетата <label>{{name}}</label>",
+		"removedLabel": "ја отстрани етикетата <label>{{name}}</label>",
+		"updatedDescription": "го ажурираше описот",
 		"relationAdded": {
 			"blocked_by": "ја означи оваа задача како блокирана од <task>{{task}}</task>",
 			"blocking": "ја означи оваа задача како блокирачка за <task>{{task}}</task>",
@@ -3875,12 +3977,36 @@
 			"start_before": "постави дека оваа задача започнува пред <task>{{task}}</task>"
 		},
 		"relationRemoved": "ја отстрани релацијата „{{relation}}“ со <task>{{task}}</task>",
-		"removedLabel": "ја отстрани етикетата <label>{{name}}</label>",
-		"setStartDate": "го постави почетниот датум на {{date}}",
+		"parentSet": "ја постави родителската задача на <task>{{task}}</task>",
+		"parentChanged": "ја промени родителската задача од <from>{{from}}</from> во <to>{{to}}</to>",
+		"parentRemoved": "ја отстрани родителската задача <task>{{task}}</task>",
 		"subtaskAdded": "ја додаде подзадачата <task>{{task}}</task>",
 		"subtaskRemoved": "ја отстрани подзадачата <task>{{task}}</task>",
-		"updatedDescription": "го ажурираше описот",
+		"linkAdded": "го додаде линкот {{title}}",
+		"linkUpdated": "го ажурираше линкот {{title}}",
+		"linkRemoved": "го отстрани линкот {{title}}",
+		"attachmentAdded": "прикачи {{filename}}",
+		"attachmentRemoved": "го отстрани прилогот {{filename}}",
+		"copiedFrom": "ја креираше оваа задача како копија на <task>{{task}}</task>",
+		"copiedTo": "направи копија на оваа задача: <task>{{task}}</task>",
 		"archived": "ја архивираше оваа задача",
+		"unarchived": "ја врати оваа задача",
+		"intake": {
+			"submitted": "го поднесе ова барање",
+			"submittedVia": "го поднесе ова барање преку {{source}}",
+			"accepted": "го прифати ова барање во {{column}}",
+			"acceptedBacklog": "го прифати ова барање во backlog",
+			"declined": "го одби ова барање",
+			"declinedWithReason": "го одби ова барање: {{note}}",
+			"snoozed": "го одложи ова барање до {{date}}",
+			"unsnoozed": "го врати ова барање на разгледување",
+			"snoozeEnded": "Одложувањето заврши и ова барање е повторно на разгледување",
+			"duplicate": "го означи ова барање како дупликат на {{key}}",
+			"duplicateDeleted": "го означи ова барање како дупликат на избришана задача",
+			"reopened": "повторно го отвори ова барање",
+			"acceptedHidden": "го прифати ова барање во друг проект",
+			"duplicateHidden": "го означи ова барање како дупликат на задача во друг проект"
+		},
 		"reactions": {
 			"add": "Додади реакција",
 			"error": "Не успеав да ја ажурирам реакцијата",
@@ -3900,30 +4026,6 @@
 			"reactWith": "Реагирај со {{label}}",
 			"remove": "Отстрани ја реакцијата {{label}}",
 			"you": "Ти"
-		},
-		"unarchived": "ја врати оваа задача",
-		"intake": {
-			"accepted": "го прифати ова барање во {{column}}",
-			"acceptedBacklog": "го прифати ова барање во backlog",
-			"declined": "го одби ова барање",
-			"declinedWithReason": "го одби ова барање: {{note}}",
-			"duplicate": "го означи ова барање како дупликат на {{key}}",
-			"duplicateDeleted": "го означи ова барање како дупликат на избришана задача",
-			"reopened": "повторно го отвори ова барање",
-			"snoozed": "го одложи ова барање до {{date}}",
-			"snoozeEnded": "Одложувањето заврши и ова барање е повторно на разгледување",
-			"submitted": "го поднесе ова барање",
-			"submittedVia": "го поднесе ова барање преку {{source}}",
-			"unsnoozed": "го врати ова барање на разгледување"
-		},
-		"automation": {
-			"actor": "Автоматизација",
-			"archived_one": "ја архивираше оваа задача по {{count}} месец без ажурирања",
-			"archived_other": "ја архивираше оваа задача по {{count}} месеци без ажурирања",
-			"closed_one": "ја затвори оваа задача по {{count}} месец без ажурирања, преместувајќи ја во {{to}}",
-			"closed_other": "ја затвори оваа задача по {{count}} месеци без ажурирања, преместувајќи ја во {{to}}",
-			"rolledOver": "ја премести оваа задача од {{from}} во {{to}} кога заврши циклусот",
-			"byRule": "преку {{name}}"
 		},
 		"commentVisibility": {
 			"badgeExternal": "Надворешен",
@@ -3950,21 +4052,49 @@
 			"summary": "▲ {{up}} · ▼ {{down}}",
 			"tooltip": "Гласови од јавната табла"
 		},
-		"feed": {
-			"all": "Сета активност",
-			"comments": "Коментари",
-			"label": "Филтрирај и подреди активност",
-			"newest": "Прво најновите",
-			"noMatches": "Нема што да се прикаже со овој филтер.",
-			"oldest": "Прво најстарите",
-			"order": "Редослед",
-			"show": "Прикажи",
-			"updates": "Ажурирања"
+		"automation": {
+			"actor": "Автоматизација",
+			"archived_one": "ја архивираше оваа задача по {{count}} месец без ажурирања",
+			"archived_other": "ја архивираше оваа задача по {{count}} месеци без ажурирања",
+			"closed_one": "ја затвори оваа задача по {{count}} месец без ажурирања, преместувајќи ја во {{to}}",
+			"closed_other": "ја затвори оваа задача по {{count}} месеци без ажурирања, преместувајќи ја во {{to}}",
+			"rolledOver": "ја премести оваа задача од {{from}} во {{to}} кога заврши циклусот",
+			"byRule": "преку {{name}}",
+			"rolledOverHidden": "ја премести оваа задача во следниот циклус кога заврши циклусот"
 		},
-		"importedFromJira": "ја увезе оваа задача од Jira {{key}}",
-		"importedFromSource": "ја увезе оваа задача од {{source}} {{key}}",
 		"movedToTrash": "ја премести оваа задача во корпата",
-		"restoredFromTrash": "ја врати оваа задача од корпата"
+		"restoredFromTrash": "ја врати оваа задача од корпата",
+		"parentRemovedHidden": "отстрани родителска задача во друг проект",
+		"subtaskAddedHidden": "додаде подзадача во друг проект",
+		"subtaskRemovedHidden": "отстрани подзадача во друг проект",
+		"copiedToHidden": "направи копија на оваа задача во друг проект",
+		"relationAddedHidden": {
+			"related": "ја означи оваа задача како поврзана со задача во друг проект",
+			"blocking": "ја означи оваа задача како блокирачка за задача во друг проект",
+			"blocked_by": "ја означи оваа задача како блокирана од задача во друг проект",
+			"duplicate": "ја означи оваа задача како дупликат на задача во друг проект",
+			"start_before": "постави дека оваа задача започнува пред задача во друг проект",
+			"start_after": "постави дека оваа задача започнува по задача во друг проект",
+			"finish_before": "постави дека оваа задача завршува пред задача во друг проект",
+			"finish_after": "постави дека оваа задача завршува по задача во друг проект"
+		},
+		"relationRemovedHidden": "ја отстрани релацијата „{{relation}}“ со задача во друг проект",
+		"parentSetHidden": "постави родителска задача од друг проект",
+		"parentChangedFromHidden": "ја промени родителската задача од задача во друг проект во <to>{{to}}</to>",
+		"parentChangedToHidden": "ја промени родителската задача од <from>{{from}}</from> во задача од друг проект",
+		"parentChangedBetweenHidden": "ја промени родителската задача меѓу задачи во други проекти",
+		"copiedFromHidden": "ја креираше оваа задача како копија на задача во друг проект",
+		"movedFromHidden": "ја премести задачата од друг проект во \"{{to}}\"",
+		"movedToHidden": "ја премести задачата од \"{{from}}\" во друг проект",
+		"movedBetweenHidden": "ја премести задачата меѓу други проекти",
+		"changedStatusHidden": "го промени статусот во друг проект",
+		"addedToHiddenCycle": "ја додаде задачата во циклус",
+		"removedFromHiddenCycle": "ја отстрани задачата од циклус",
+		"movedCycleFromHidden": "ја премести задачата од друг циклус во циклусот {{to}}",
+		"movedCycleToHidden": "ја премести задачата од циклусот {{from}} во друг циклус",
+		"movedCycleBetweenHidden": "ја премести задачата меѓу циклуси",
+		"addedToHiddenModule": "ја додаде задачата во модул",
+		"removedFromHiddenModule": "ја отстрани задачата од модул"
 	},
 	"tasks": {
 		"recurrence": {
@@ -4022,8 +4152,30 @@
 				"recurredFrom": "ја создаде оваа задача како следно повторување на <task>{{task}}</task>",
 				"recurredFromScheduled": "Создадена според распоредот како следно повторување на <task>{{task}}</task>",
 				"recurredTo": "ја заврши оваа задача, со што се создаде следното повторување <task>{{task}}</task>",
-				"recurredToScheduled": "Следното повторување е создадено според распоредот: <task>{{task}}</task>"
+				"recurredToScheduled": "Следното повторување е создадено според распоредот: <task>{{task}}</task>",
+				"recurredToHidden": "ја заврши оваа задача, со што се создаде следното повторување во друг проект",
+				"recurredToScheduledHidden": "Следното повторување е создадено според распоредот во друг проект",
+				"recurredFromHidden": "ја создаде оваа задача како следно повторување на задача во друг проект",
+				"recurredFromScheduledHidden": "Создадена според распоредот како следно повторување на задача во друг проект"
 			}
+		},
+		"subscription": {
+			"count_one": "{{count}} претплатен",
+			"count_other": "{{count}} претплатени",
+			"error": "Не успеав да ја ажурирам претплатата",
+			"mutedAssignee": "Задачата ти е доделена, но не си претплатен. Сепак ќе добиваш известувања за спомнувања.",
+			"notSubscribed": "Добивај известувања за промени на статус, коментари и други промени.",
+			"reasons": {
+				"assignee": "Претплатен си бидејќи ти е доделена.",
+				"commenter": "Претплатен си бидејќи коментираше.",
+				"creator": "Претплатен си бидејќи ја креираше оваа задача.",
+				"manual": "Се претплати на оваа задача.",
+				"mention": "Претплатен си бидејќи те спомнаа."
+			},
+			"subscribe": "Претплати се",
+			"toastSubscribed": "Претплатен си на оваа задача",
+			"toastUnsubscribed": "Претплатата е откажана. Сепак ќе добиваш известувања за спомнувања.",
+			"unsubscribe": "Откажи претплата"
 		},
 		"status": {
 			"label": "Статус",
@@ -4034,6 +4186,32 @@
 			"archived": "Архивирано",
 			"planned": "Планирано"
 		},
+		"columnGroups": {
+			"backlog": {
+				"description": "Забележано, сè уште непланирано",
+				"label": "Беклог"
+			},
+			"cancelled": {
+				"description": "Затворено без да се изврши работата",
+				"label": "Откажано"
+			},
+			"completed": {
+				"description": "Готово",
+				"label": "Завршено"
+			},
+			"started": {
+				"description": "Работата е во тек",
+				"label": "Започнато"
+			},
+			"triage": {
+				"description": "Чека на преглед во приемот",
+				"label": "Тријажа"
+			},
+			"unstarted": {
+				"description": "Планирано, работата не е започната",
+				"label": "Не е започнато"
+			}
+		},
 		"priority": {
 			"label": "Приоритет",
 			"no-priority": "Без приоритет",
@@ -4042,7 +4220,7 @@
 			"high": "Висок",
 			"urgent": "Итен"
 		},
-		"boardSearchPlaceholder": "Пребарај тикети...",
+		"boardSearchPlaceholder": "Пребарај задачи...",
 		"view": {
 			"board": "Табла",
 			"list": "Листа",
@@ -4059,9 +4237,16 @@
 		},
 		"detail": {
 			"subtaskOf": "Подзадача на",
+			"customFieldUpdated": "Полето е ажурирано",
+			"selectOption": "Избери опција",
 			"activity": "Активност",
 			"noActivity": "Нема пронајдена активност",
 			"openInFullPage": "Отвори на цела страница",
+			"openOnBoard": "Отвори на таблата",
+			"sheetLabel": "Детали за задачата",
+			"previousTask": "Претходна задача",
+			"nextTask": "Следна задача",
+			"position": "{{position}} од {{total}}",
 			"titlePlaceholder": "Кликни за да додадеш наслов",
 			"addDescription": "Додади опис...",
 			"editor": {
@@ -4191,13 +4376,11 @@
 					"toolbar": "Опции за сликата"
 				}
 			},
-			"customFieldUpdated": "Полето е ажурирано",
-			"selectOption": "Избери опција",
-			"nextTask": "Следна задача",
-			"openOnBoard": "Отвори на таблата",
-			"position": "{{position}} од {{total}}",
-			"previousTask": "Претходна задача",
-			"sheetLabel": "Детали за задачата"
+			"saveError": {
+				"title": "Насловот не се зачува. Сè уште е во полето, па можеш да се обидеш повторно.",
+				"description": "Описот не се зачува. Сè уште е во уредувачот, па можеш да се обидеш повторно.",
+				"retry": "Обиди се повторно"
+			}
 		},
 		"entity": {
 			"task": "Задача"
@@ -4365,180 +4548,6 @@
 				"isAnyOf": "е било кој од"
 			}
 		},
-		"gantt": {
-			"pageTitle": "{{name}} – Гант",
-			"title": "Гантова временска линија",
-			"searchPlaceholder": "Пребарај задачи...",
-			"hideTasks": "Сокриј задачи",
-			"showTasks": "Прикажи задачи",
-			"noTasks": "Нема закажани задачи",
-			"noTasksSubtitle": "Додади почетен датум, краен рок, или двете на задачите за да ги поставиш на временската линија на проектот.",
-			"noTasksFound": "Не се пронајдени задачи",
-			"noTasksMatch": "Нема закажани задачи што одговараат на \"{{query}}\"",
-			"taskHeader": "Задача",
-			"updateDatesError": "Неуспешно ажурирање на датуми на задача",
-			"resizeStart": "Промени почетен датум",
-			"resizeDue": "Промени краен рок",
-			"taskAriaLabel": "{{title}}: отвори или повлечи за преместување",
-			"jumpToToday": "Оди на денес",
-			"previousPeriod": "Претходен период",
-			"nextPeriod": "Следен период",
-			"periodStart": "Датум на почеток на временската рамка",
-			"showTaskDates": "Прикажи ги датумите на задачите",
-			"dependencyConflict": "Почнува или завршува надвор од редоследот на зависноста",
-			"dragToSchedule": "Повлечи {{title}} на временската линија",
-			"noDates": "Без датуми",
-			"noDatesCount": "Без датуми · {{count}}",
-			"noDatesHint": "Повлечи на временската линија или закажи од денес.",
-			"schedule": "Закажи",
-			"scheduleTask": "Закажи {{title}} од денес",
-			"zoom": "Зумирање на временската линија",
-			"zoomMonth": "Месец",
-			"zoomQuarter": "Квартал",
-			"zoomWeek": "Недела"
-		},
-		"delete": {
-			"title": "Да се избрише задачата?",
-			"description": "Задачата и нејзините подзадачи се преместуваат во корпата на проектот. Можеш да ги вратиш од Неодамна избришани во поставките на проектот.",
-			"action": "Избриши задача",
-			"success": "Задачата е преместена во корпата",
-			"error": "Неуспешно бришење на задача"
-		},
-		"archive": {
-			"success": "Архивирани {{count}} задачи",
-			"archived": "Задачата е архивирана",
-			"badge": "Архивирано",
-			"error": "Не успеав да ја архивирам задачата",
-			"restore": "Врати",
-			"restored": "Задачата е вратена",
-			"restoreError": "Не успеав да ја вратам задачата"
-		},
-		"listView": {
-			"addTask": "Додади задача",
-			"archiveAllTooltip": "Архивирај ги сите завршени задачи",
-			"noTasks": "Нема задачи"
-		},
-		"kanban": {
-			"addTask": "Додади задача",
-			"stages": "Колони",
-			"emptyAction": "Додади задача",
-			"emptyTitle": "Сè уште нема задачи"
-		},
-		"pr": {
-			"merged": "Споен",
-			"draft": "Нацрт",
-			"open": "Отворен",
-			"label": "Pull request",
-			"count_one": "{{count}} PR",
-			"count_other": "{{count}} PR-а"
-		},
-		"assignee": {
-			"label": "Доделени",
-			"unassigned": "Недоделен"
-		},
-		"dueDate": {
-			"label": "Краен рок",
-			"clear": "Исчисти датум",
-			"updateSuccess": "Краениот рок на задачата е успешно ажуриран",
-			"updateError": "Неуспешно ажурирање на краен рок на задача",
-			"clearSuccess": "Краениот рок на задачата е исчистен",
-			"clearError": "Неуспешно чистење на краен рок"
-		},
-		"update": {
-			"success": "Задачата е успешно ажурирана",
-			"error": "Неуспешно ажурирање на задача"
-		},
-		"contextMenu": {
-			"copyLink": "Копирај линк",
-			"copyLinkSuccess": "Врската до задачата е копирана",
-			"estimate": "Проценка"
-		},
-		"actions": {
-			"archive": "Архивирај",
-			"markAsPlanned": "Означи како планирана",
-			"delete": "Избриши...",
-			"copyKey": "Копирај клуч на задача",
-			"copyLink": "Копирај линк",
-			"makeCopy": "Направи копија…",
-			"moreActions": "Повеќе акции"
-		},
-		"bulk": {
-			"selectedCount": "{{count}} избрани",
-			"moveToBacklog": "Премести во заостанати",
-			"moveToBacklogSuccess": "{{count}} задачи се преместени во заостанати",
-			"moveToBacklogError": "Неуспешно преместување на задачи во заостанати",
-			"moveToBoard": "Премести на табла",
-			"moveToBoardSuccess": "{{count}} задачи се преместени на табла",
-			"moveToBoardError": "Неуспешно преместување на задачи на табла",
-			"delete": "Избриши задачи",
-			"deleteConfirm": "Да се преместат {{count}} задачи во корпата? Можеш да ги вратиш од Неодамна избришани во поставките на проектот.",
-			"deleteSuccess": "{{count}} задачи се избришани",
-			"deleteError": "Неуспешно бришење на задачи",
-			"archive": "Архивирај задачи",
-			"archiveSuccess": "{{count}} задачи се архивирани",
-			"archiveError": "Неуспешно архивирање на задачи",
-			"updateSuccess": "{{count}} задачи се ажурирани",
-			"updateError": "Неуспешно ажурирање на задачи",
-			"setPriority": "Постави приоритет",
-			"updatePriorityError": "Неуспешно ажурирање на приоритет",
-			"addLabel": "Додај етикета",
-			"addLabelSuccess": "Етикетата е додадена на {{count}} задачи",
-			"addLabelError": "Неуспешно додавање на етикета",
-			"setDueDate": "Постави краен рок",
-			"updateDueDateError": "Неуспешно ажурирање на краен рок",
-			"actions": "Акции",
-			"searchActions": "Пребарај акции...",
-			"noActionsFound": "Не се пронајдени акции.",
-			"changeStatus": "Промени статус",
-			"removeLabel": "Отстрани етикета",
-			"removeLabelSuccess": "Етикетата е отстранета од задачи: {{count}}",
-			"removeLabelError": "Неуспешно отстранување на етикетата",
-			"unarchive": "Врати од архива",
-			"unarchiveSuccess": "Вратени задачи: {{count}}",
-			"unarchiveNone": "Ниту една од избраните задачи не е архивирана",
-			"unarchiveError": "Неуспешно враќање на задачите",
-			"setDates": "Датуми",
-			"dateField": "Кој датум да се постави",
-			"startDate": "Датум на почеток",
-			"dueDate": "Краен рок",
-			"clearStartDate": "Исчисти датум на почеток",
-			"clearDueDate": "Исчисти краен рок",
-			"updateStartDateError": "Неуспешно ажурирање на датумот на почеток. Датумот на почеток не може да биде по крајниот рок на задачата.",
-			"addAssignee": "Додади доделено лице",
-			"addAssigneeSuccess_one": "{{name}} е додаден на {{count}} задача",
-			"addAssigneeSuccess_other": "{{name}} е додаден на {{count}} задачи",
-			"assigneesError": "Неуспешно ажурирање на доделените лица",
-			"clearAssignees": "Исчисти доделени",
-			"clearAssigneesSuccess_one": "Доделените лица се исчистени на {{count}} задача",
-			"clearAssigneesSuccess_other": "Доделените лица се исчистени на {{count}} задачи",
-			"removeAssignee": "Отстрани доделено лице",
-			"removeAssigneeSuccess_one": "{{name}} е отстранет од {{count}} задача",
-			"removeAssigneeSuccess_other": "{{name}} е отстранет од {{count}} задачи",
-			"clearSelection": "Исчисти го изборот"
-		},
-		"editor": {
-			"table": {
-				"addColumnBefore": "Вметни колона лево",
-				"addColumnAfter": "Вметни колона десно",
-				"deleteColumn": "Избриши колона",
-				"addRowBefore": "Вметни ред над",
-				"addRowAfter": "Вметни ред под",
-				"deleteRow": "Избриши ред",
-				"deleteTable": "Избриши табела",
-				"moveRowUp": "Помести го редот нагоре",
-				"moveRowDown": "Помести го редот надолу",
-				"moveColumnLeft": "Помести ја колоната лево",
-				"moveColumnRight": "Помести ја колоната десно",
-				"toggleHeaderRow": "Ред за заглавие",
-				"fullWidth": "Цела ширина",
-				"dragRow": "Ред {{index}}",
-				"dragColumn": "Колона {{index}}",
-				"dragRowHint": "Повлечи за да го поместиш редот или користи ги стрелките",
-				"dragColumnHint": "Повлечи за да ја поместиш колоната или користи ги стрелките",
-				"insertRowHere": "Вметни ред тука",
-				"insertColumnHere": "Вметни колона тука"
-			}
-		},
 		"calendar": {
 			"dayTasksAriaLabel": "Прикажи ги сите задачи за {{date}}",
 			"moreTasks": "уште {{count}}",
@@ -4561,436 +4570,89 @@
 			"week": "Недела",
 			"overdue": "Задоцнето"
 		},
-		"descriptionSearchLoading": "Пребарување низ целосните описи…",
-		"descriptionSearchError": "Пребарувањето низ описот не успеа. Резултатите можеби се нецелосни.",
-		"descriptionRetry": "Обиди се повторно",
-		"descriptionLoading": "Се вчитува описот…",
-		"descriptionLoadError": "Описот не можеше да се вчита. Обидете се повторно за да ја вчитате тековната верзија.",
-		"columnGroups": {
-			"backlog": {
-				"description": "Забележано, сè уште непланирано",
-				"label": "Беклог"
+		"gantt": {
+			"pageTitle": "{{name}} – Гант",
+			"title": "Гантова временска линија",
+			"jumpToToday": "Оди на денес",
+			"searchPlaceholder": "Пребарај задачи...",
+			"hideTasks": "Сокриј задачи",
+			"showTasks": "Прикажи задачи",
+			"noTasks": "Нема закажани задачи",
+			"noTasksSubtitle": "Додади почетен датум, краен рок, или двете на задачите за да ги поставиш на временската линија на проектот.",
+			"noTasksFound": "Не се пронајдени задачи",
+			"noTasksMatch": "Нема закажани задачи што одговараат на \"{{query}}\"",
+			"taskHeader": "Задача",
+			"updateDatesError": "Неуспешно ажурирање на датуми на задача",
+			"resizeStart": "Промени почетен датум",
+			"resizeDue": "Промени краен рок",
+			"taskAriaLabel": "{{title}}: отвори или повлечи за преместување",
+			"previousPeriod": "Претходен период",
+			"nextPeriod": "Следен период",
+			"periodStart": "Датум на почеток на временската рамка",
+			"showTaskDates": "Прикажи ги датумите на задачите",
+			"zoom": "Зумирање на временската линија",
+			"zoomWeek": "Недела",
+			"zoomMonth": "Месец",
+			"zoomQuarter": "Квартал",
+			"noDates": "Без датуми",
+			"noDatesCount": "Без датуми · {{count}}",
+			"noDatesHint": "Повлечи на временската линија или закажи од денес.",
+			"schedule": "Закажи",
+			"scheduleTask": "Закажи {{title}} од денес",
+			"dragToSchedule": "Повлечи {{title}} на временската линија",
+			"dependencyConflict": "Почнува или завршува надвор од редоследот на зависноста",
+			"workspaceNoTasksSubtitle": "Додади почетен датум, краен рок, или двете на задачите за да ги видиш на оваа временска линија.",
+			"showMoreTasks": "Прикажи повеќе задачи",
+			"blocked": "Блокирана од отворена задача",
+			"linkFrom": "Поврзи {{title}} со друга задача",
+			"linkHint": "Повлечи на друга задача за таа да ја чека оваа",
+			"link": {
+				"blocks": "{{source}} ја блокира {{target}}",
+				"startBefore": "{{source}} започнува пред {{target}}",
+				"finishBefore": "{{source}} завршува пред {{target}}",
+				"conflict": "Датумите ја нарушуваат оваа врска."
 			},
-			"cancelled": {
-				"description": "Затворено без да се изврши работата",
-				"label": "Откажано"
+			"milestone": {
+				"add": "Клучна точка",
+				"ariaLabel": "Клучна точка {{title}}: отвори или повлечи за преместување",
+				"name": "Име на клучната точка",
+				"namePlaceholder": "Име на клучната точка",
+				"date": "Датум на клучната точка",
+				"create": "Додај клучна точка",
+				"createError": "Не успеа додавањето на клучната точка"
 			},
-			"completed": {
-				"description": "Готово",
-				"label": "Завршено"
-			},
-			"started": {
-				"description": "Работата е во тек",
-				"label": "Започнато"
-			},
-			"triage": {
-				"description": "Чека на преглед во приемот",
-				"label": "Тријажа"
-			},
-			"unstarted": {
-				"description": "Планирано, работата не е започната",
-				"label": "Не е започнато"
+			"cascade": {
+				"offer_one": "{{count}} поврзана задача сега започнува прерано",
+				"offer_other": "{{count}} поврзани задачи сега започнуваат прерано",
+				"reviewAction": "Прегледај ги промените на датумите",
+				"title_one": "Да се помести {{count}} поврзана задача?",
+				"title_other": "Да се поместат {{count}} поврзани задачи?",
+				"description": "Овие задачи би се поместиле подоцна, само колку што е потребно за да одговараат на врските, и би го задржале своето времетраење. Ништо не се менува додека не потврдиш.",
+				"to": "до",
+				"cancel": "Задржи ги датумите",
+				"confirm_one": "Помести {{count}} задача",
+				"confirm_other": "Помести {{count}} задачи",
+				"moved_one": "Поместена е {{count}} задача",
+				"moved_other": "Поместени се {{count}} задачи",
+				"partial": "Поместени се {{moved}} од {{total}} задачи. Останатите ги задржаа датумите.",
+				"nothingToMove": "Ниту една отворена задача со датуми не мора да се помести поради оваа врска."
 			}
 		},
-		"estimate": {
-			"bulk": {
-				"action": "Проценка",
-				"error": "Неуспешна промена на проценката на избраните задачи",
-				"updated_one": "Ажурирана е проценката на {{count}} задача",
-				"updated_other": "Ажурирана е проценката на {{count}} задачи"
-			},
-			"chart": {
-				"points": "Поени",
-				"pointsLeft": "Преостанати поени",
-				"summaryPoints": "Преостанати {{remaining}} од {{scope}} поени, {{days}} дена до крајот",
-				"summaryTime": "Преостанато {{remaining}} од {{scope}}, {{days}} дена до крајот",
-				"tasks": "Задачи",
-				"time": "Време",
-				"timeLeft": "Преостанато време",
-				"unitAria": "Единица на графиконот"
-			},
-			"duration": {
-				"hours": "{{hours}}ч",
-				"hoursMinutes": "{{hours}}ч {{minutes}}м",
-				"hourUnit": "h",
-				"minutes": "{{minutes}}м",
-				"minuteUnit": "m"
-			},
-			"label": "Проценка",
-			"none": "Без проценка",
-			"pointsValue_one": "{{value}} поен",
-			"pointsValue_other": "{{value}} поени",
-			"setAria": "Постави проценка",
-			"totals": {
-				"estimated": "{{estimated}} од {{total}} задачи проценети",
-				"points_one": "{{completed}} / {{total}} поен",
-				"points_other": "{{completed}} / {{total}} поени",
-				"time": "{{completed}} / {{total}}"
-			},
-			"updateError": "Неуспешно ажурирање на проценката"
+		"delete": {
+			"title": "Да се избрише задачата?",
+			"description": "Задачата и нејзините подзадачи се преместуваат во корпата на проектот. Можеш да ги вратиш од Неодамна избришани во поставките на проектот.",
+			"action": "Избриши задача",
+			"success": "Задачата е преместена во корпата",
+			"error": "Неуспешно бришење на задача"
 		},
-		"assignees": {
-			"clear": "Исчисти доделени",
-			"formerMember": "Веќе не е член",
-			"formerMemberSuffix": "{{name}} (веќе не е член)",
-			"label": "Доделени",
-			"limitReached": "Задача може да има најмногу {{count}} доделени лица",
-			"more": "+{{count}}",
-			"nameAndMore": "{{name}} +{{count}}",
-			"noMatches": "Нема соодветни луѓе",
-			"noMembers": "Сè уште нема членови за доделување",
-			"searchPlaceholder": "Пребарај луѓе...",
-			"stackAria": "Доделено на {{names}}",
-			"unknownPerson": "Непознато лице",
-			"updateError": "Неуспешно ажурирање на доделените лица",
-			"you": "{{name}} (ти)"
-		},
-		"attachments": {
-			"add": "Прикачи датотека",
-			"delete": "Избриши",
-			"deleteConfirmDescription": "Датотеката ќе биде отстранета за сите. Не можеш да ја вратиш оваа акција.",
-			"deleteConfirmTitle": "Избриши {{filename}}?",
-			"download": "Преземи",
-			"dropHere": "Спушти датотеки тука или кликни за да прегледаш",
-			"dropToAttach": "Спушти датотеки за да ги прикачиш",
-			"loadError": "Неуспешно вчитување на прилозите",
-			"meta": "{{size}} · {{name}} · {{time}}",
-			"metaNoUser": "{{size}} · {{time}}",
-			"open": "Отвори",
-			"title": "Прилози",
-			"toast": {
-				"attached_one": "Прикачена {{count}} датотека",
-				"attached_other": "Прикачени {{count}} датотеки",
-				"deleted": "Прилогот е избришан",
-				"deleteError": "Неуспешно бришење на прилогот",
-				"empty": "{{filename}} е празна",
-				"failed": "Неуспешно прикачување на {{filename}}: {{reason}}",
-				"notConfigured": "Прикачувањето на датотеки не е поставено на овој сервер. Побарај од администраторот да конфигурира складирање.",
-				"storageError": "складот одби прикачувањето",
-				"tooMany": "Можеш да прикачиш најмногу {{count}} датотеки истовремено",
-				"unknownError": "нешто тргна наопаку"
-			},
-			"uploading": "Се прикачува…"
-		},
-		"copy": {
-			"alwaysCopied": "Статусот и приоритетот секогаш се копираат.",
-			"cancel": "Откажи",
-			"includeLabel": "Вклучи",
-			"options": {
-				"assignees": "Доделени",
-				"attachments": "Прилози",
-				"customFields": "Вредности на прилагодени полиња",
-				"dates": "Почетен и краен датум",
-				"description": "Опис",
-				"labels": "Етикети",
-				"links": "Линкови",
-				"parent": "Родителска задача",
-				"planning": "Циклус, модули и проценка"
-			},
-			"otherProjectHint": "Статусот се усогласува со колоните на новиот проект. Прилагодените полиња, родителската задача и планирањето не се копираат меѓу проекти.",
-			"projectLabel": "Проект",
-			"submit": "Направи копија",
-			"title": "Направи копија на {{key}}",
-			"titleLabel": "Наслов",
-			"titleRequired": "Насловот е задолжителен",
-			"titleSuffix": "{{title}} (копија)",
-			"toast": {
-				"error": "Неуспешно креирање на копија",
-				"open": "Отвори",
-				"skipped": "Не е копирано: {{list}}",
-				"success": "Копијата е креирана: {{key}}"
-			}
-		},
-		"detailActions": {
-			"addLink": "Додади линк",
-			"addRelation": "Додади релација",
-			"addSubtask": "Додади подзадача",
-			"attachFile": "Прикачи датотека"
-		},
-		"links": {
-			"add": "Додади линк",
-			"addedAt": "Додадено на {{date}}",
-			"addedBy": "Додадено од {{name}} · {{date}}",
-			"addTitle": "Додади линк",
-			"cancel": "Откажи",
-			"copyUrl": "Копирај URL",
-			"edit": "Уреди",
-			"editTitle": "Уреди линк",
-			"errors": {
-				"credentials": "Линковите не можат да содржат корисничко име или лозинка",
-				"duplicate": "Овој линк веќе постои на оваа задача",
-				"invalid": "Внеси валиден http или https URL",
-				"required": "URL е задолжителен",
-				"titleTooLong": "Насловот може да има најмногу 255 карактери",
-				"tooLong": "Линкот може да има најмногу 2.048 карактери"
-			},
-			"linkTitle": "Наслов",
-			"loadError": "Неуспешно вчитување на линковите",
-			"moreActions": "Акции за линк",
-			"remove": "Отстрани",
-			"removeConfirmDescription": "Ќе биде отстранет од задачата за сите.",
-			"removeConfirmTitle": "Отстрани го овој линк?",
-			"retry": "Обиди се повторно",
-			"save": "Зачувај",
-			"title": "Линкови",
-			"titlePlaceholder": "Опционален прикажан наслов",
-			"toast": {
-				"added": "Линкот е додаден",
-				"copied": "Линкот е копиран",
-				"error": "Неуспешно зачувување на линкот",
-				"removed": "Линкот е отстранет",
-				"updated": "Линкот е ажуриран"
-			},
-			"url": "URL",
-			"urlPlaceholder": "https://example.com"
-		},
-		"create": {
-			"similarTitle": "Слични отворени задачи",
-			"similarDismiss": "Скриј ги сличните задачи",
-			"similarOpen": "Отвори",
-			"similarOpenLabel": "Отвори {{key}} {{title}} во нова картичка"
-		},
-		"parent": {
-			"add": "Додади родителска задача",
-			"chip": "Родителска",
-			"label": "Родителска задача",
-			"noTasks": "Не се пронајдени задачи",
-			"remove": "Отстрани родителска задача",
-			"search": "Пребарај задачи…",
-			"tasksInProject": "Задачи во овој проект",
-			"toast": {
-				"error": "Неуспешна промена на родителската задача",
-				"removed": "Родителската задача е отстранета",
-				"set": "Родителската задача е поставена на {{key}}"
-			},
-			"tooltip": "Родителска задача: {{key}} {{title}}"
-		},
-		"taskKey": {
-			"clipboardError": "Неуспешно копирање во клипборд",
-			"copied": "{{key}} е копиран",
-			"copyTooltip": "Копирај клуч на задача"
-		},
-		"display": {
-			"button": "Приказ",
-			"columns": "Колони",
-			"groupBy": "Групирај по",
-			"groups": {
-				"assignee": "Доделен",
-				"createdBy": "Креирано од",
-				"cycle": "Циклус",
-				"estimate": "Проценка",
-				"group": "Група",
-				"label": "Етикета",
-				"module": "Модул",
-				"priority": "Приоритет",
-				"project": "Проект",
-				"status": "Статус"
-			},
-			"none": "Нема",
-			"order": {
-				"assignee": "Доделен",
-				"completedAt": "Датум на завршување",
-				"createdAt": "Последно креирани",
-				"cycle": "Циклус",
-				"dueDate": "Краен рок",
-				"estimate": "Проценка",
-				"label": "Етикета",
-				"manual": "Рачно",
-				"module": "Модул",
-				"number": "Клуч на задача",
-				"priority": "Приоритет",
-				"startDate": "Почетен датум",
-				"status": "Статус",
-				"subTaskCount": "Подзадачи",
-				"title": "Наслов",
-				"updatedAt": "Последно ажурирани",
-				"archivedAt": "Датум на архивирање"
-			},
-			"orderBy": "Подреди по",
-			"properties": "Својства",
-			"props": {
-				"assignee": "Доделени",
-				"checklist": "Контролна листа",
-				"createdAt": "Креирано",
-				"cycle": "Циклус",
-				"dueDate": "Краен рок",
-				"estimate": "Проценка",
-				"key": "Клуч",
-				"labels": "Етикети",
-				"modules": "Модули",
-				"priority": "Приоритет",
-				"startDate": "Почетен датум",
-				"status": "Статус",
-				"subTaskCount": "Подзадачи",
-				"updatedAt": "Ажурирано"
-			},
-			"showEmptyGroups": "Прикажи празни групи",
-			"showSubTasks": "Прикажи подзадачи",
-			"subGroupBy": "Подгрупирај по"
-		},
-		"filters": {
-			"apply": "Примени",
-			"applyError": "Не успеав да ги применам филтрите",
-			"archived": {
-				"exclude": "Скриј ги архивираните",
-				"include": "Прикажи и архивирани",
-				"label": "Архивирано",
-				"only": "Само архивирани"
-			},
-			"button": "Филтер",
-			"clearAll": "Исчисти ги сите филтри",
-			"dates": {
-				"amount": "Количина",
-				"custom": "Прилагоден датум…",
-				"emptyTab": "Празно",
-				"exact": "Точен датум",
-				"future": "По денес",
-				"lastMonth": "Минатиот месец",
-				"lastWeek": "Минатата недела",
-				"nextMonth": "Следниот месец",
-				"nextWeek": "Следната недела",
-				"overdue": "Задоцнето",
-				"past": "Пред денес",
-				"presets": "Готови опсези",
-				"rolling": "Подвижен период",
-				"rollingValue": "{{amount}} {{unit}}",
-				"thisMonth": "Овој месец",
-				"thisWeek": "Оваа недела",
-				"today": "Денес",
-				"tomorrow": "Утре",
-				"units": {
-					"days": "дена",
-					"months": "месеци",
-					"weeks": "недели"
-				},
-				"yesterday": "Вчера"
-			},
-			"matchAll": "Сите услови",
-			"matchAny": "Кој било услов",
-			"mobileSummary_one": "{{count}} филтер",
-			"mobileSummary_other": "{{count}} филтри",
-			"nestedReadOnly": "Овој приказ користи напредни филтри што не можат да се уредуваат тука",
-			"noOptions": "Нема опции",
-			"operators": {
-				"between": "помеѓу",
-				"is": "е",
-				"isEmpty": "е празно",
-				"isNoneOf": "не е ниту едно од",
-				"isNot": "не е",
-				"isNotEmpty": "не е празно",
-				"moreThanAgo": "пред повеќе од …",
-				"moreThanAhead": "по повеќе од … од сега",
-				"on": "на",
-				"onOrAfter": "на или по",
-				"onOrBefore": "на или пред",
-				"withinLast": "во последните",
-				"withinNext": "во следните"
-			},
-			"removeFilter": "Отстрани го филтерот {{subject}}",
-			"retry": "Обиди се повторно",
-			"searchOptions": "Пребарај опции",
-			"subjects": {
-				"completed": "Завршено",
-				"created": "Креирано",
-				"createdBy": "Креирано од",
-				"cycle": "Циклус",
-				"group": "Група",
-				"mentions": "Спомнувања",
-				"module": "Модул",
-				"parent": "Родител",
-				"project": "Проект",
-				"startDate": "Почетен датум",
-				"subscribed": "Претплатени",
-				"updated": "Ажурирано"
-			},
-			"tooMany": "Премногу совпаѓања за филтрирање тука; отвори ја табелата",
-			"values": {
-				"currentCycle": "Тековен циклус",
-				"false": "Не",
-				"me": "Јас",
-				"noAssignee": "Без доделен",
-				"noCreator": "Без автор",
-				"noCycle": "Без циклус",
-				"noEstimate": "Без проценка",
-				"noLabel": "Без етикета",
-				"noModule": "Без модул",
-				"none": "Нема",
-				"noParent": "Без родител",
-				"true": "Да"
-			}
-		},
-		"groups": {
-			"all": "Сите задачи",
-			"hiddenGroups_one": "Уште {{count}} група не е прикажана",
-			"hiddenGroups_other": "Уште {{count}} групи не се прикажани",
-			"loadMore": "Вчитај повеќе ({{count}})",
-			"moduleCount_one": "{{count}} модул",
-			"moduleCount_other": "{{count}} модули",
-			"moveError": "Не успеав да ја преместам задачата",
-			"noAssignee": "Без доделен",
-			"noCreator": "Без автор",
-			"noCycle": "Без циклус",
-			"noEstimate": "Без проценка",
-			"noLabel": "Без етикета",
-			"noModule": "Без модул",
-			"planned": "Планирано"
-		},
-		"queryEmpty": {
-			"clear": "Исчисти ги филтрите",
-			"description": "Обиди се да отстраниш еден или два филтри.",
-			"title": "Нема задачи што одговараат на филтрите"
-		},
-		"spreadsheet": {
-			"clearSort": "Отстрани подредување",
-			"collapseSubTasks": "Скриј подзадачи",
-			"expandSubTasks": "Прикажи подзадачи",
-			"hideColumn": "Скриј колона",
-			"loadError": "Не успеав да ги вчитам задачите",
-			"selectTask": "Избери {{key}}",
-			"sortAsc": "Подреди растечки",
-			"sortDesc": "Подреди опаѓачки",
-			"task": "Задача"
-		},
-		"subscription": {
-			"count_one": "{{count}} претплатен",
-			"count_other": "{{count}} претплатени",
-			"error": "Не успеав да ја ажурирам претплатата",
-			"mutedAssignee": "Задачата ти е доделена, но не си претплатен. Сепак ќе добиваш известувања за спомнувања.",
-			"notSubscribed": "Добивај известувања за промени на статус, коментари и други промени.",
-			"reasons": {
-				"assignee": "Претплатен си бидејќи ти е доделена.",
-				"commenter": "Претплатен си бидејќи коментираше.",
-				"creator": "Претплатен си бидејќи ја креираше оваа задача.",
-				"manual": "Се претплати на оваа задача.",
-				"mention": "Претплатен си бидејќи те спомнаа."
-			},
-			"subscribe": "Претплати се",
-			"toastSubscribed": "Претплатен си на оваа задача",
-			"toastUnsubscribed": "Претплатата е откажана. Сепак ќе добиваш известувања за спомнувања.",
-			"unsubscribe": "Откажи претплата"
-		},
-		"timeTracking": {
-			"duration": "Времетраење",
-			"durationInvalid": "Внеси времетраење од 1 минута до 24 часа, на пример 1h 30m.",
-			"durationPlaceholder": "на пр. 1h 30m",
-			"empty": "Сè уште нема запишано време",
-			"entries": "Записи за време",
-			"formerMember": "Поранешен член",
-			"hours": "{{hours}}ч",
-			"hoursMinutes": "{{hours}}ч {{minutes}}м",
-			"label": "Потрошено време",
-			"logError": "Времето не може да се запише",
-			"logged": "Времето е запишано",
-			"logTime": "Запиши време",
-			"minutes": "{{minutes}}м",
-			"note": "Белешка (опционално)",
-			"running": "Во тек",
-			"spentAria": "Потрошено време: {{total}}. Запиши време",
-			"submit": "Запиши време",
-			"deleteConfirm": "Да се избрише овој запис?",
-			"deleted": "Записот за време е избришан",
-			"deleteEntry": "Избриши запис за време од {{date}}",
-			"deleteError": "Записот за време не може да се избрише"
+		"archive": {
+			"success": "Архивирани {{count}} задачи",
+			"archived": "Задачата е архивирана",
+			"badge": "Архивирано",
+			"error": "Не успеав да ја архивирам задачата",
+			"restore": "Врати",
+			"restored": "Задачата е вратена",
+			"restoreError": "Не успеав да ја вратам задачата"
 		},
 		"archivedBanner": {
 			"message": "Оваа задача е архивирана {{time}}.",
@@ -5063,8 +4725,604 @@
 			},
 			"untitled": "Нацрт без наслов"
 		},
+		"listView": {
+			"addTask": "Додади задача",
+			"archiveAllTooltip": "Архивирај ги сите завршени задачи",
+			"noTasks": "Нема задачи"
+		},
+		"kanban": {
+			"addTask": "Додади задача",
+			"stages": "Колони",
+			"emptyAction": "Додади задача",
+			"emptyTitle": "Сè уште нема задачи"
+		},
+		"pr": {
+			"merged": "Споен",
+			"draft": "Нацрт",
+			"open": "Отворен",
+			"label": "Pull request",
+			"count_one": "{{count}} PR",
+			"count_other": "{{count}} PR-а"
+		},
+		"assignee": {
+			"label": "Доделени",
+			"unassigned": "Недоделен"
+		},
+		"assignees": {
+			"label": "Доделени",
+			"searchPlaceholder": "Пребарај луѓе...",
+			"noMatches": "Нема соодветни луѓе",
+			"noMembers": "Сè уште нема членови за доделување",
+			"you": "{{name}} (ти)",
+			"clear": "Исчисти доделени",
+			"more": "+{{count}}",
+			"nameAndMore": "{{name}} +{{count}}",
+			"stackAria": "Доделено на {{names}}",
+			"formerMember": "Веќе не е член",
+			"formerMemberSuffix": "{{name}} (веќе не е член)",
+			"limitReached": "Задача може да има најмногу {{count}} доделени лица",
+			"updateError": "Неуспешно ажурирање на доделените лица",
+			"unknownPerson": "Непознато лице",
+			"noAccess": "Нема пристап до овој проект",
+			"noAccessSuffix": "{{name}} (нема пристап до овој проект)"
+		},
+		"dueDate": {
+			"label": "Краен рок",
+			"clear": "Исчисти датум",
+			"updateSuccess": "Краениот рок на задачата е успешно ажуриран",
+			"updateError": "Неуспешно ажурирање на краен рок на задача",
+			"clearSuccess": "Краениот рок на задачата е исчистен",
+			"clearError": "Неуспешно чистење на краен рок"
+		},
+		"update": {
+			"success": "Задачата е успешно ажурирана",
+			"error": "Неуспешно ажурирање на задача"
+		},
+		"contextMenu": {
+			"copyLink": "Копирај линк",
+			"copyLinkSuccess": "Врската до задачата е копирана",
+			"estimate": "Проценка"
+		},
+		"actions": {
+			"archive": "Архивирај",
+			"markAsPlanned": "Означи како планирана",
+			"delete": "Избриши...",
+			"copyKey": "Копирај клуч на задача",
+			"copyLink": "Копирај линк",
+			"makeCopy": "Направи копија…",
+			"moreActions": "Повеќе акции"
+		},
+		"commands": {
+			"assignedSelf": "Доделено на тебе",
+			"assignees": "Промени доделени…",
+			"assignSelf": "Додели ми",
+			"copyTitle": "Копирај наслов",
+			"cycle": "Промени циклус…",
+			"dueDate": "Промени краен рок…",
+			"estimate": "Промени проценка…",
+			"group": "Оваа задача",
+			"labels": "Промени етикети…",
+			"module": "Промени модули…",
+			"priority": "Промени приоритет…",
+			"status": "Промени статус…",
+			"titleCopied": "Насловот на задачата е копиран",
+			"unassignedSelf": "Повеќе не си доделен",
+			"unassignSelf": "Отстрани ме"
+		},
+		"readableLink": {
+			"goHome": "Оди на Почетна",
+			"notFound": "Нема задача со клучот {{key}} во овој работен простор или не можеш да ја видиш."
+		},
+		"timeTracking": {
+			"label": "Потрошено време",
+			"logTime": "Запиши време",
+			"spentAria": "Потрошено време: {{total}}. Запиши време",
+			"duration": "Времетраење",
+			"durationPlaceholder": "на пр. 1h 30m",
+			"durationInvalid": "Внеси времетраење од 1 минута до 24 часа, на пример 1h 30m.",
+			"note": "Белешка (опционално)",
+			"submit": "Запиши време",
+			"logged": "Времето е запишано",
+			"logError": "Времето не може да се запише",
+			"empty": "Сè уште нема запишано време",
+			"entries": "Записи за време",
+			"running": "Во тек",
+			"formerMember": "Поранешен член",
+			"hours": "{{hours}}ч",
+			"minutes": "{{minutes}}м",
+			"hoursMinutes": "{{hours}}ч {{minutes}}м",
+			"deleteEntry": "Избриши запис за време од {{date}}",
+			"deleteConfirm": "Да се избрише овој запис?",
+			"deleted": "Записот за време е избришан",
+			"deleteError": "Записот за време не може да се избрише",
+			"startTimer": "Стартувај тајмер",
+			"startHere": "Запри го и стартувај овде",
+			"stopTimer": "Запри",
+			"timerRunning": "Тајмерот работи",
+			"timerRunningOn": "Тајмерот работи на {{task}}",
+			"timerStarted": "Тајмерот е стартуван",
+			"timerSwitched": "Тајмерот е стартуван. Другиот твој тајмер е запрен.",
+			"timerStopped": "Тајмерот е запрен. Запишано: {{total}}.",
+			"timerStartError": "Не успеа стартувањето на тајмерот",
+			"timerStopError": "Не успеа запирањето на тајмерот",
+			"loadError": "Не успеа вчитувањето на записите за време",
+			"editEntry": "Уреди запис за време од {{date}}",
+			"editStart": "Почеток",
+			"editEnd": "Крај",
+			"editEndRunningHint": "Остави празно за да продолжи да работи.",
+			"editEndRequired": "Внеси кога заврши ова време.",
+			"editStartInvalid": "Внеси кога започна ова време.",
+			"editEndBeforeStart": "Крајот не може да биде пред почетокот.",
+			"editSave": "Зачувај",
+			"edited": "Записот за време е ажуриран",
+			"editError": "Не успеа ажурирањето на записот за време"
+		},
+		"bulk": {
+			"selectedCount": "{{count}} избрани",
+			"moveToBacklog": "Премести во заостанати",
+			"clearSelection": "Исчисти го изборот",
+			"moveToBacklogSuccess": "{{count}} задачи се преместени во заостанати",
+			"moveToBacklogError": "Неуспешно преместување на задачи во заостанати",
+			"moveToBoard": "Премести на табла",
+			"moveToBoardSuccess": "{{count}} задачи се преместени на табла",
+			"moveToBoardError": "Неуспешно преместување на задачи на табла",
+			"delete": "Избриши задачи",
+			"deleteConfirm": "Да се преместат {{count}} задачи во корпата? Можеш да ги вратиш од Неодамна избришани во поставките на проектот.",
+			"deleteSuccess": "{{count}} задачи се избришани",
+			"deleteError": "Неуспешно бришење на задачи",
+			"archive": "Архивирај задачи",
+			"archiveSuccess": "{{count}} задачи се архивирани",
+			"archiveError": "Неуспешно архивирање на задачи",
+			"updateSuccess": "{{count}} задачи се ажурирани",
+			"updateError": "Неуспешно ажурирање на задачи",
+			"addAssignee": "Додади доделено лице",
+			"removeAssignee": "Отстрани доделено лице",
+			"clearAssignees": "Исчисти доделени",
+			"addAssigneeSuccess_one": "{{name}} е додаден на {{count}} задача",
+			"addAssigneeSuccess_other": "{{name}} е додаден на {{count}} задачи",
+			"removeAssigneeSuccess_one": "{{name}} е отстранет од {{count}} задача",
+			"removeAssigneeSuccess_other": "{{name}} е отстранет од {{count}} задачи",
+			"clearAssigneesSuccess_one": "Доделените лица се исчистени на {{count}} задача",
+			"clearAssigneesSuccess_other": "Доделените лица се исчистени на {{count}} задачи",
+			"assigneesError": "Неуспешно ажурирање на доделените лица",
+			"setPriority": "Постави приоритет",
+			"updatePriorityError": "Неуспешно ажурирање на приоритет",
+			"addLabel": "Додај етикета",
+			"addLabelSuccess": "Етикетата е додадена на {{count}} задачи",
+			"addLabelError": "Неуспешно додавање на етикета",
+			"setDueDate": "Постави краен рок",
+			"updateDueDateError": "Неуспешно ажурирање на краен рок",
+			"actions": "Акции",
+			"searchActions": "Пребарај акции...",
+			"noActionsFound": "Не се пронајдени акции.",
+			"changeStatus": "Промени статус",
+			"removeLabel": "Отстрани етикета",
+			"removeLabelSuccess": "Етикетата е отстранета од задачи: {{count}}",
+			"removeLabelError": "Неуспешно отстранување на етикетата",
+			"unarchive": "Врати од архива",
+			"unarchiveSuccess": "Вратени задачи: {{count}}",
+			"unarchiveNone": "Ниту една од избраните задачи не е архивирана",
+			"unarchiveError": "Неуспешно враќање на задачите",
+			"setDates": "Датуми",
+			"dateField": "Кој датум да се постави",
+			"startDate": "Датум на почеток",
+			"dueDate": "Краен рок",
+			"clearStartDate": "Исчисти датум на почеток",
+			"clearDueDate": "Исчисти краен рок",
+			"updateStartDateError": "Неуспешно ажурирање на датумот на почеток. Датумот на почеток не може да биде по крајниот рок на задачата.",
+			"selectTask": "Избери {{title}}",
+			"moveToProject": "Премести во проект",
+			"moveToProjectTitle_one": "Да се премести {{count}} задача во {{name}}?",
+			"moveToProjectTitle_other": "Да се преместат {{count}} задачи во {{name}}?",
+			"moveToProjectRule": "Ќе добијат нови клучеви на задачи. Секоја задача го задржува статусот ако проектот го има, инаку оди во првата колона. Етикетите и доделените остануваат. Циклусите, модулите и проценките се бришат. Вредностите на прилагодените полиња остануваат само каде што проектот има поле со исто име и тип.",
+			"moveToProjectConfirm": "Премести задачи",
+			"moveToProjectSuccess_one": "Преместена е {{count}} задача во {{name}}",
+			"moveToProjectSuccess_other": "Преместени се {{count}} задачи во {{name}}",
+			"moveToProjectNone": "Овие задачи се веќе во {{name}}",
+			"moveToProjectError": "Не успеа преместувањето на задачите"
+		},
+		"editor": {
+			"table": {
+				"addColumnBefore": "Вметни колона лево",
+				"addColumnAfter": "Вметни колона десно",
+				"deleteColumn": "Избриши колона",
+				"addRowBefore": "Вметни ред над",
+				"addRowAfter": "Вметни ред под",
+				"deleteRow": "Избриши ред",
+				"deleteTable": "Избриши табела",
+				"moveRowUp": "Помести го редот нагоре",
+				"moveRowDown": "Помести го редот надолу",
+				"moveColumnLeft": "Помести ја колоната лево",
+				"moveColumnRight": "Помести ја колоната десно",
+				"toggleHeaderRow": "Ред за заглавие",
+				"fullWidth": "Цела ширина",
+				"dragRow": "Ред {{index}}",
+				"dragColumn": "Колона {{index}}",
+				"dragRowHint": "Повлечи за да го поместиш редот или користи ги стрелките",
+				"dragColumnHint": "Повлечи за да ја поместиш колоната или користи ги стрелките",
+				"insertRowHere": "Вметни ред тука",
+				"insertColumnHere": "Вметни колона тука"
+			}
+		},
+		"descriptionSearchLoading": "Пребарување низ целосните описи…",
+		"descriptionSearchError": "Пребарувањето низ описот не успеа. Резултатите можеби се нецелосни.",
+		"descriptionRetry": "Обиди се повторно",
+		"descriptionLoading": "Се вчитува описот…",
+		"descriptionLoadError": "Описот не можеше да се вчита. Обидете се повторно за да ја вчитате тековната верзија.",
+		"descriptionHistory": {
+			"cancel": "Откажи",
+			"description": "Зачувани верзии на овој опис, прво најновите. Измените на една личност во рок од 10 минути делат една верзија; се чуваат последните 50.",
+			"earlierVersion": "Претходна верзија",
+			"empty": "Сè уште нема зачувани верзии. Верзиите се чуваат од следната измена натаму.",
+			"emptyVersion": "Оваа верзија нема опис.",
+			"latest": "Најнова",
+			"list": "Зачувани верзии",
+			"loadError": "Не успеавме да ја вчитаме историјата",
+			"open": "Историја",
+			"previewTitle": "Верзија од {{date}}",
+			"restore": "Врати",
+			"restoreConfirmDescription": "Описот ќе се замени со оваа верзија. Тековниот текст останува во историјата.",
+			"restoreConfirmTitle": "Да се врати оваа верзија?",
+			"restored": "Описот е вратен",
+			"restoreError": "Не успеавме да ја вратиме оваа верзија",
+			"retry": "Обиди се повторно",
+			"size_one": "{{count}} знак",
+			"size_other": "{{count}} знаци",
+			"title": "Историја на описот",
+			"viewOnly": "Само за преглед"
+		},
+		"estimate": {
+			"bulk": {
+				"action": "Проценка",
+				"error": "Неуспешна промена на проценката на избраните задачи",
+				"updated_one": "Ажурирана е проценката на {{count}} задача",
+				"updated_other": "Ажурирана е проценката на {{count}} задачи"
+			},
+			"chart": {
+				"points": "Поени",
+				"pointsLeft": "Преостанати поени",
+				"summaryPoints": "Преостанати {{remaining}} од {{scope}} поени, {{days}} дена до крајот",
+				"summaryTime": "Преостанато {{remaining}} од {{scope}}, {{days}} дена до крајот",
+				"tasks": "Задачи",
+				"time": "Време",
+				"timeLeft": "Преостанато време",
+				"unitAria": "Единица на графиконот"
+			},
+			"duration": {
+				"hours": "{{hours}}ч",
+				"hoursMinutes": "{{hours}}ч {{minutes}}м",
+				"hourUnit": "h",
+				"minutes": "{{minutes}}м",
+				"minuteUnit": "m"
+			},
+			"label": "Проценка",
+			"none": "Без проценка",
+			"pointsValue_one": "{{value}} поен",
+			"pointsValue_other": "{{value}} поени",
+			"setAria": "Постави проценка",
+			"totals": {
+				"estimated": "{{estimated}} од {{total}} задачи проценети",
+				"points_one": "{{completed}} / {{total}} поен",
+				"points_other": "{{completed}} / {{total}} поени",
+				"time": "{{completed}} / {{total}}"
+			},
+			"updateError": "Неуспешно ажурирање на проценката"
+		},
+		"detailActions": {
+			"addLink": "Додади линк",
+			"addRelation": "Додади релација",
+			"addSubtask": "Додади подзадача",
+			"attachFile": "Прикачи датотека"
+		},
+		"taskKey": {
+			"clipboardError": "Неуспешно копирање во клипборд",
+			"copied": "{{key}} е копиран",
+			"copyTooltip": "Копирај клуч на задача"
+		},
 		"pageReferences": {
 			"title": "Спомнато на страници"
+		},
+		"links": {
+			"add": "Додади линк",
+			"addedAt": "Додадено на {{date}}",
+			"addedBy": "Додадено од {{name}} · {{date}}",
+			"addTitle": "Додади линк",
+			"cancel": "Откажи",
+			"copyUrl": "Копирај URL",
+			"edit": "Уреди",
+			"editTitle": "Уреди линк",
+			"errors": {
+				"credentials": "Линковите не можат да содржат корисничко име или лозинка",
+				"duplicate": "Овој линк веќе постои на оваа задача",
+				"invalid": "Внеси валиден http или https URL",
+				"required": "URL е задолжителен",
+				"titleTooLong": "Насловот може да има најмногу 255 карактери",
+				"tooLong": "Линкот може да има најмногу 2.048 карактери"
+			},
+			"linkTitle": "Наслов",
+			"loadError": "Неуспешно вчитување на линковите",
+			"moreActions": "Акции за линк",
+			"remove": "Отстрани",
+			"removeConfirmDescription": "Ќе биде отстранет од задачата за сите.",
+			"removeConfirmTitle": "Отстрани го овој линк?",
+			"retry": "Обиди се повторно",
+			"save": "Зачувај",
+			"title": "Линкови",
+			"titlePlaceholder": "Опционален прикажан наслов",
+			"toast": {
+				"added": "Линкот е додаден",
+				"copied": "Линкот е копиран",
+				"error": "Неуспешно зачувување на линкот",
+				"removed": "Линкот е отстранет",
+				"updated": "Линкот е ажуриран"
+			},
+			"url": "URL",
+			"urlPlaceholder": "https://example.com"
+		},
+		"attachments": {
+			"add": "Прикачи датотека",
+			"delete": "Избриши",
+			"deleteConfirmDescription": "Датотеката ќе биде отстранета за сите. Не можеш да ја вратиш оваа акција.",
+			"deleteConfirmTitle": "Избриши {{filename}}?",
+			"download": "Преземи",
+			"dropHere": "Спушти датотеки тука или кликни за да прегледаш",
+			"dropToAttach": "Спушти датотеки за да ги прикачиш",
+			"loadError": "Неуспешно вчитување на прилозите",
+			"meta": "{{size}} · {{name}} · {{time}}",
+			"metaNoUser": "{{size}} · {{time}}",
+			"open": "Отвори",
+			"title": "Прилози",
+			"toast": {
+				"attached_one": "Прикачена {{count}} датотека",
+				"attached_other": "Прикачени {{count}} датотеки",
+				"deleted": "Прилогот е избришан",
+				"deleteError": "Неуспешно бришење на прилогот",
+				"empty": "{{filename}} е празна",
+				"failed": "Неуспешно прикачување на {{filename}}: {{reason}}",
+				"notConfigured": "Прикачувањето на датотеки не е поставено на овој сервер. Побарај од администраторот да конфигурира складирање.",
+				"storageError": "складот одби прикачувањето",
+				"tooMany": "Можеш да прикачиш најмногу {{count}} датотеки истовремено",
+				"unknownError": "нешто тргна наопаку"
+			},
+			"uploading": "Се прикачува…"
+		},
+		"create": {
+			"similarTitle": "Слични отворени задачи",
+			"similarDismiss": "Скриј ги сличните задачи",
+			"similarOpen": "Отвори",
+			"similarOpenLabel": "Отвори {{key}} {{title}} во нова картичка"
+		},
+		"parent": {
+			"add": "Додади родителска задача",
+			"chip": "Родителска",
+			"label": "Родителска задача",
+			"noTasks": "Не се пронајдени задачи",
+			"remove": "Отстрани родителска задача",
+			"search": "Пребарај задачи…",
+			"tasksInProject": "Задачи во овој проект",
+			"toast": {
+				"error": "Неуспешна промена на родителската задача",
+				"removed": "Родителската задача е отстранета",
+				"set": "Родителската задача е поставена на {{key}}"
+			},
+			"tooltip": "Родителска задача: {{key}} {{title}}"
+		},
+		"copy": {
+			"alwaysCopied": "Статусот и приоритетот секогаш се копираат.",
+			"cancel": "Откажи",
+			"includeLabel": "Вклучи",
+			"options": {
+				"assignees": "Доделени",
+				"attachments": "Прилози",
+				"customFields": "Вредности на прилагодени полиња",
+				"dates": "Почетен и краен датум",
+				"description": "Опис",
+				"labels": "Етикети",
+				"links": "Линкови",
+				"parent": "Родителска задача",
+				"planning": "Циклус, модули и проценка"
+			},
+			"otherProjectHint": "Статусот се усогласува со колоните на новиот проект. Прилагодените полиња, родителската задача и планирањето не се копираат меѓу проекти.",
+			"projectLabel": "Проект",
+			"submit": "Направи копија",
+			"title": "Направи копија на {{key}}",
+			"titleLabel": "Наслов",
+			"titleRequired": "Насловот е задолжителен",
+			"titleSuffix": "{{title}} (копија)",
+			"toast": {
+				"error": "Неуспешно креирање на копија",
+				"open": "Отвори",
+				"skipped": "Не е копирано: {{list}}",
+				"success": "Копијата е креирана: {{key}}"
+			}
+		},
+		"filters": {
+			"button": "Филтер",
+			"searchOptions": "Пребарај опции",
+			"noOptions": "Нема опции",
+			"matchAll": "Сите услови",
+			"matchAny": "Кој било услов",
+			"applyError": "Не успеав да ги применам филтрите",
+			"retry": "Обиди се повторно",
+			"tooMany": "Премногу совпаѓања за филтрирање тука; отвори ја табелата",
+			"nestedReadOnly": "Овој приказ користи напредни филтри што не можат да се уредуваат тука",
+			"clearAll": "Исчисти ги сите филтри",
+			"apply": "Примени",
+			"mobileSummary_one": "{{count}} филтер",
+			"mobileSummary_other": "{{count}} филтри",
+			"removeFilter": "Отстрани го филтерот {{subject}}",
+			"subjects": {
+				"group": "Група",
+				"createdBy": "Креирано од",
+				"cycle": "Циклус",
+				"module": "Модул",
+				"startDate": "Почетен датум",
+				"created": "Креирано",
+				"updated": "Ажурирано",
+				"completed": "Завршено",
+				"parent": "Родител",
+				"project": "Проект",
+				"subscribed": "Претплатени",
+				"mentions": "Спомнувања",
+				"blocked": "Блокирани"
+			},
+			"operators": {
+				"between": "помеѓу",
+				"is": "е",
+				"isEmpty": "е празно",
+				"isNoneOf": "не е ниту едно од",
+				"isNot": "не е",
+				"isNotEmpty": "не е празно",
+				"moreThanAgo": "пред повеќе од …",
+				"moreThanAhead": "по повеќе од … од сега",
+				"on": "на",
+				"onOrAfter": "на или по",
+				"onOrBefore": "на или пред",
+				"withinLast": "во последните",
+				"withinNext": "во следните"
+			},
+			"values": {
+				"me": "Јас",
+				"none": "Нема",
+				"noAssignee": "Без доделен",
+				"noCreator": "Без автор",
+				"noLabel": "Без етикета",
+				"noCycle": "Без циклус",
+				"noModule": "Без модул",
+				"noEstimate": "Без проценка",
+				"noParent": "Без родител",
+				"currentCycle": "Тековен циклус",
+				"true": "Да",
+				"false": "Не",
+				"blockedYes": "Да",
+				"blockedNo": "Не"
+			},
+			"dates": {
+				"amount": "Количина",
+				"custom": "Прилагоден датум…",
+				"emptyTab": "Празно",
+				"exact": "Точен датум",
+				"future": "По денес",
+				"lastMonth": "Минатиот месец",
+				"lastWeek": "Минатата недела",
+				"nextMonth": "Следниот месец",
+				"nextWeek": "Следната недела",
+				"overdue": "Задоцнето",
+				"past": "Пред денес",
+				"presets": "Готови опсези",
+				"rolling": "Подвижен период",
+				"rollingValue": "{{amount}} {{unit}}",
+				"thisMonth": "Овој месец",
+				"thisWeek": "Оваа недела",
+				"today": "Денес",
+				"tomorrow": "Утре",
+				"units": {
+					"days": "дена",
+					"months": "месеци",
+					"weeks": "недели"
+				},
+				"yesterday": "Вчера"
+			},
+			"archived": {
+				"exclude": "Скриј ги архивираните",
+				"include": "Прикажи и архивирани",
+				"label": "Архивирано",
+				"only": "Само архивирани"
+			},
+			"myTasks": "Мои задачи"
+		},
+		"display": {
+			"button": "Приказ",
+			"columns": "Колони",
+			"groupBy": "Групирај по",
+			"groups": {
+				"status": "Статус",
+				"group": "Група",
+				"priority": "Приоритет",
+				"assignee": "Доделен",
+				"createdBy": "Креирано од",
+				"label": "Етикета",
+				"cycle": "Циклус",
+				"module": "Модул",
+				"estimate": "Проценка",
+				"project": "Проект",
+				"customField": "Прилагодено поле"
+			},
+			"none": "Нема",
+			"order": {
+				"manual": "Рачно",
+				"createdAt": "Последно креирани",
+				"updatedAt": "Последно ажурирани",
+				"completedAt": "Датум на завршување",
+				"startDate": "Почетен датум",
+				"dueDate": "Краен рок",
+				"priority": "Приоритет",
+				"title": "Наслов",
+				"number": "Клуч на задача",
+				"status": "Статус",
+				"assignee": "Доделен",
+				"label": "Етикета",
+				"cycle": "Циклус",
+				"module": "Модул",
+				"estimate": "Проценка",
+				"subTaskCount": "Подзадачи",
+				"archivedAt": "Датум на архивирање",
+				"customField": "Прилагодено поле"
+			},
+			"orderBy": "Подреди по",
+			"properties": "Својства",
+			"props": {
+				"assignee": "Доделени",
+				"checklist": "Контролна листа",
+				"createdAt": "Креирано",
+				"cycle": "Циклус",
+				"dueDate": "Краен рок",
+				"estimate": "Проценка",
+				"key": "Клуч",
+				"labels": "Етикети",
+				"modules": "Модули",
+				"priority": "Приоритет",
+				"startDate": "Почетен датум",
+				"status": "Статус",
+				"subTaskCount": "Подзадачи",
+				"updatedAt": "Ажурирано"
+			},
+			"showEmptyGroups": "Прикажи празни групи",
+			"showSubTasks": "Прикажи подзадачи",
+			"subGroupBy": "Подгрупирај по"
+		},
+		"groups": {
+			"all": "Сите задачи",
+			"planned": "Планирано",
+			"noAssignee": "Без доделен",
+			"noCreator": "Без автор",
+			"noLabel": "Без етикета",
+			"noCycle": "Без циклус",
+			"noModule": "Без модул",
+			"noEstimate": "Без проценка",
+			"loadMore": "Вчитај повеќе ({{count}})",
+			"hiddenGroups_one": "Уште {{count}} група не е прикажана",
+			"hiddenGroups_other": "Уште {{count}} групи не се прикажани",
+			"moduleCount_one": "{{count}} модул",
+			"moduleCount_other": "{{count}} модули",
+			"moveError": "Не успеав да ја преместам задачата",
+			"noFieldValue": "Нема вредност"
+		},
+		"spreadsheet": {
+			"clearSort": "Отстрани подредување",
+			"collapseSubTasks": "Скриј подзадачи",
+			"expandSubTasks": "Прикажи подзадачи",
+			"hideColumn": "Скриј колона",
+			"loadError": "Не успеав да ги вчитам задачите",
+			"selectTask": "Избери {{key}}",
+			"sortAsc": "Подреди растечки",
+			"sortDesc": "Подреди опаѓачки",
+			"task": "Задача"
+		},
+		"queryEmpty": {
+			"clear": "Исчисти ги филтрите",
+			"description": "Обиди се да отстраниш еден или два филтри.",
+			"title": "Нема задачи што одговараат на филтрите"
 		},
 		"capture": {
 			"ariaLabel": "Додај задача во „{{column}}“",
@@ -5090,48 +5348,33 @@
 			"changePriority": "Приоритет: {{priority}}",
 			"changeStatus": "Статус: {{status}}"
 		},
-		"commands": {
-			"assignedSelf": "Доделено на тебе",
-			"assignees": "Промени доделени…",
-			"assignSelf": "Додели ми",
-			"copyTitle": "Копирај наслов",
-			"cycle": "Промени циклус…",
-			"dueDate": "Промени краен рок…",
-			"estimate": "Промени проценка…",
-			"group": "Оваа задача",
-			"labels": "Промени етикети…",
-			"module": "Промени модули…",
-			"priority": "Промени приоритет…",
-			"status": "Промени статус…",
-			"titleCopied": "Насловот на задачата е копиран",
-			"unassignedSelf": "Повеќе не си доделен",
-			"unassignSelf": "Отстрани ме"
+		"boardSearchOpen": "Пребарај задачи",
+		"customFieldValue": {
+			"clear": "Исчисти вредност",
+			"edit": "Уреди {{name}}",
+			"removedOption": "{{value}} (отстранета опција)",
+			"saveError": "Не успеа зачувувањето на ова поле.",
+			"placeholder": "Нова вредност",
+			"true": "Точно",
+			"false": "Неточно"
 		},
-		"readableLink": {
-			"goHome": "Оди на Почетна",
-			"notFound": "Нема задача со клучот {{key}} во овој работен простор или не можеш да ја видиш."
+		"customFieldBulk": {
+			"action": "Прилагодено поле",
+			"chooseField": "Избери поле",
+			"apply": "Примени",
+			"updated_one": "Ажурирана е {{count}} задача",
+			"updated_other": "Ажурирани се {{count}} задачи",
+			"error": "Не успеа ажурирањето на избраните задачи."
 		},
-		"descriptionHistory": {
-			"cancel": "Откажи",
-			"description": "Зачувани верзии на овој опис, прво најновите. Измените на една личност во рок од 10 минути делат една верзија; се чуваат последните 50.",
-			"earlierVersion": "Претходна верзија",
-			"empty": "Сè уште нема зачувани верзии. Верзиите се чуваат од следната измена натаму.",
-			"emptyVersion": "Оваа верзија нема опис.",
-			"latest": "Најнова",
-			"list": "Зачувани верзии",
-			"loadError": "Не успеавме да ја вчитаме историјата",
-			"open": "Историја",
-			"previewTitle": "Верзија од {{date}}",
-			"restore": "Врати",
-			"restoreConfirmDescription": "Описот ќе се замени со оваа верзија. Тековниот текст останува во историјата.",
-			"restoreConfirmTitle": "Да се врати оваа верзија?",
-			"restored": "Описот е вратен",
-			"restoreError": "Не успеавме да ја вратиме оваа верзија",
-			"retry": "Обиди се повторно",
-			"size_one": "{{count}} знак",
-			"size_other": "{{count}} знаци",
-			"title": "Историја на описот",
-			"viewOnly": "Само за преглед"
+		"milestone": {
+			"label": "Клучна точка",
+			"hint": "Означува еден датум. Временската линија ја прикажува како дијамант на нејзиниот краен рок.",
+			"updateError": "Не успеа ажурирањето на клучната точка"
+		},
+		"scheduleField": {
+			"label": "Поле прикажано на задачите",
+			"none": "Без поле",
+			"value": "{{name}}: {{value}}"
 		}
 	},
 	"invitations": {
@@ -5180,6 +5423,7 @@
 			"status": "Статус",
 			"emptyTitle": "Нема проекти засега",
 			"emptyDescription": "Започни со креирање на твојот прв проект.",
+			"emptyDescriptionReadOnly": "Сè уште нема проекти во овој работен простор. Замоли администратор да креира еден.",
 			"projectStatus": {
 				"notStarted": "Не е започнат",
 				"complete": "Завршен",
@@ -5187,7 +5431,7 @@
 			},
 			"noDueDate": "Без краен рок",
 			"reorderError": "Прередувањето на проектите не успеа",
-			"emptyDescriptionReadOnly": "Сè уште нема проекти во овој работен простор. Замоли администратор да креира еден."
+			"emptyDescriptionGuest": "Сè уште не те додале во проект. Побарај од личноста што те покани да те додаде."
 		},
 		"search": {
 			"pageTitle": "Пребарување",
@@ -5295,7 +5539,8 @@
 			"owner": "Сопственик",
 			"admin": "Администратор",
 			"member": "Член",
-			"viewer": "Прегледувач"
+			"viewer": "Прегледувач",
+			"guest": "Гостин"
 		},
 		"members": {
 			"pageTitle": "Членови",
@@ -5331,7 +5576,13 @@
 			"sentSome": "Испратени {{sent}} од {{total}} покани.",
 			"failedTitle": "Не се испратени",
 			"rateLimited": "Премногу покани одеднаш. Почекајте една минута, па испратете ги останатите.",
-			"shareLinksDescription": "Споделете го секој линк со соодветното лице за да може да се приклучи на работниот простор."
+			"shareLinksDescription": "Споделете го секој линк со соодветното лице за да може да се приклучи на работниот простор.",
+			"guestRoleHint": "Гостите ги гледаат само проектите во кои ќе ги додадете, и ништо друго во работниот простор.",
+			"guestProjectsLabel": "Проекти",
+			"guestProjectsHint": "Штом ја прифатат поканата, се приклучуваат на проектите што ќе ги штиклирате, со улогата во проектот што ќе ја изберете. Како Прегледувачи можат само да читаат.",
+			"guestProjectsEmpty": "Нема проект што можете да го споделите. Додајте ги во проекти откако ќе се приклучат.",
+			"guestProjectRoleFor": "Улога во проектот {{project}}",
+			"guestProjectsFailed": "Поканата е испратена, но нејзините проекти не можеа да се додадат: {{message}}"
 		},
 		"membersTable": {
 			"emptyTitle": "Нема членови на тим засега",
@@ -5341,6 +5592,7 @@
 				"role": "Улога",
 				"joined": "Приклучен"
 			},
+			"ariaInvitationActions": "Акции за поканата",
 			"ariaRemoveMember": "Отстрани член",
 			"removeDialogTitle": "Да се отстрани членот на тимот?",
 			"removeDialogDescription": "{{name}} ќе биде отстранет од работниот простор и ќе го изгуби пристапот до неговите проекти и задачи.",
@@ -5352,11 +5604,11 @@
 			"removeError": "Неуспешно отстранување на член на тим",
 			"cancelInviteSuccess": "Поканата е успешно откажана",
 			"cancelInviteError": "Неуспешно откажување на покана",
-			"ariaInvitationActions": "Акции за поканата",
 			"roleUpdateSuccess": "Улогата е ажурирана",
 			"roleUpdateError": "Неуспешно ажурирање на улогата",
 			"ariaInvitationRole": "Улога за {{email}}",
-			"invitationRoleUpdateSuccess": "Улогата на поканата е ажурирана"
+			"invitationRoleUpdateSuccess": "Улогата на поканата е ажурирана",
+			"removeDialogAccessNote": "Ако ова е нивниот единствен работен простор, тие исто така се одјавуваат и нивните API клучеви престануваат да работат."
 		},
 		"profile": {
 			"emptyActivity": "Сè уште нема активност",
@@ -6383,7 +6635,7 @@
 					"visibility": "Видливост",
 					"workflow": "Работен тек"
 				},
-				"purgeOn": "Трајно бришење на {{date}}",
+				"purgeOn": "Ќе се избрише трајно на {{date}}",
 				"restore": "Врати",
 				"restored": "Задачата е вратена",
 				"search": "Пребарај избришани задачи",
@@ -7842,6 +8094,29 @@
 		}
 	},
 	"home": {
+		"pageTitle": "Почетна",
+		"greeting": {
+			"afternoon": "Добар ден, {{name}}",
+			"dateTime": "{{date}} · {{time}}",
+			"evening": "Добра вечер, {{name}}",
+			"morning": "Добро утро, {{name}}"
+		},
+		"manageWidgets": "Управувај со виџети",
+		"widgets": {
+			"quickLinks": "Брзи линкови",
+			"recents": "Скорашни",
+			"stickies": "Лепенки",
+			"risks": "Ризици",
+			"myBrief": "Мој преглед",
+			"pinnedReports": "Закачени извештаи"
+		},
+		"manage": {
+			"description": "Избери што се прикажува на почетната и повлечи за да го смениш редоследот. Овие поставки ги гледаш само ти.",
+			"reorder": "Промени редослед: {{widget}}",
+			"saveError": "Не успеав да ги зачувам поставките за почетната",
+			"title": "Управувај со виџети",
+			"toggle": "Прикажи: {{widget}}"
+		},
 		"empty": {
 			"description": "Сите виџети се исклучени. Вклучи некои за да ги видиш тука твоите линкови, скорашни посети и лепенки.",
 			"title": "Твојата почетна е празна"
@@ -7871,21 +8146,6 @@
 			},
 			"title": "Започни"
 		},
-		"greeting": {
-			"afternoon": "Добар ден, {{name}}",
-			"dateTime": "{{date}} · {{time}}",
-			"evening": "Добра вечер, {{name}}",
-			"morning": "Добро утро, {{name}}"
-		},
-		"manage": {
-			"description": "Избери што се прикажува на почетната и повлечи за да го смениш редоследот. Овие поставки ги гледаш само ти.",
-			"reorder": "Промени редослед: {{widget}}",
-			"saveError": "Не успеав да ги зачувам поставките за почетната",
-			"title": "Управувај со виџети",
-			"toggle": "Прикажи: {{widget}}"
-		},
-		"manageWidgets": "Управувај со виџети",
-		"pageTitle": "Почетна",
 		"quickLinks": {
 			"add": "Додади линк",
 			"copy": "Копирај линк",
@@ -7942,24 +8202,32 @@
 			"visited": "Посетено {{time}}"
 		},
 		"retry": "Обиди се повторно",
-		"widgets": {
-			"quickLinks": "Брзи линкови",
-			"recents": "Скорашни",
-			"stickies": "Лепенки",
-			"risks": "Ризици",
-			"myBrief": "Мој преглед"
-		},
 		"focus": {
-			"caughtUp": "Сè е прочитано",
-			"inbox": "Прием",
 			"label": "Врати се во работата",
+			"inbox": "Прием",
 			"myWork": "Твојата работа",
+			"stickies": "Лепливи белешки",
+			"caughtUp": "Сè е прочитано",
 			"overdue_one": "{{count}} задоцнета",
 			"overdue_other": "{{count}} задоцнети",
-			"stickies": "Лепливи белешки",
 			"stickiesHint": "Приватни белешки, само за тебе",
+			"unreadCaption": "непрочитани",
 			"openCaption": "отворени",
-			"unreadCaption": "непрочитани"
+			"loadError": "Не успеа вчитувањето"
+		},
+		"dueToday": {
+			"title": "Рок денес",
+			"empty": "Ништо доделено на тебе нема рок денес.",
+			"loadError": "Не успеа вчитувањето на твоите задачи со рок денес",
+			"viewAll": "Прикажи ги сите {{total}}"
+		},
+		"pinnedReports": {
+			"empty": "Закачи зачуван извештај во Аналитика за да го гледаш овде.",
+			"openAnalytics": "Отвори Аналитика",
+			"loadError": "Не успеа вчитувањето на закачените извештаи",
+			"chartError": "Не успеа вчитувањето на овој извештај",
+			"unpin": "Откачи {{name}} од Почетна",
+			"showing": "Прикажани се {{shown}} од {{total}}. Останатите се во Аналитика."
 		}
 	},
 	"intake": {
@@ -8251,14 +8519,111 @@
 		"viewAll": "Прикажи ги сите"
 	},
 	"analytics": {
-		"a11y": {
-			"barSummary": "{{metric}} по {{dimension}}: {{count}} групи, највисока {{label}} со {{value}}",
-			"donutSummary": "{{total}} задачи во {{count}} групи",
-			"lineSummary": "{{series}} низ {{count}} периоди"
+		"pageTitle": "Аналитика",
+		"projectPageTitle": "{{project}} · Аналитика",
+		"tabs": {
+			"overview": "Преглед",
+			"tasks": "Задачи",
+			"cycles": "Циклуси",
+			"modules": "Модули",
+			"intake": "Прием",
+			"delivery": "Испорака",
+			"time": "Време"
 		},
-		"breakdown": {
-			"groupRowsBy": "Групирај редови по",
-			"title": "Распределба"
+		"header": {
+			"allProjects": "Сите проекти",
+			"clearSelection": "Исчисти избор",
+			"noProjectsFound": "Нема пронајдени проекти",
+			"projectsCount_one": "{{count}} проект",
+			"projectsCount_other": "{{count}} проекти",
+			"refresh": "Освежи",
+			"searchProjects": "Пребарај проекти",
+			"selectProjects": "Избери проекти",
+			"updatedAt": "Ажурирано {{time}}"
+		},
+		"openInAnalytics": "Отвори во аналитика",
+		"context": {
+			"cycle": "Циклус: {{name}}",
+			"module": "Модул: {{name}}",
+			"remove": "Отстрани {{name}} од филтрите"
+		},
+		"states": {
+			"loadError": "Овој дел не може да се вчита",
+			"newProject": "Нов проект",
+			"noAccessDescription": "Побарај од администратор на работниот простор дозвола за Аналитика.",
+			"noAccessTitle": "Немаш пристап до аналитиката",
+			"noCycles": "Сè уште нема циклуси",
+			"noModules": "Сè уште нема модули",
+			"noPeriodData": "Нема податоци за овој период",
+			"noProjectsDescription": "Аналитиката ги сумира задачите во твоите проекти.",
+			"noProjectsTitle": "Креирај проект за да видиш аналитика",
+			"noRequests": "Сè уште нема барања",
+			"noTasks": "Ниту една задача не одговара на овие филтри",
+			"retry": "Обиди се повторно",
+			"timeout": "Ова траеше предолго. Стесни ги филтрите и обиди се повторно.",
+			"noRunningCycles": "Моментално нема активни циклуси"
+		},
+		"view": {
+			"chart": "Графикон",
+			"label": "Прикажи како",
+			"table": "Табела"
+		},
+		"kpi": {
+			"accepted": "{{count}} прифатени",
+			"completedTasks": "Завршени задачи",
+			"completion": "Завршеност",
+			"completionDetail": "{{completed}} од {{committed}}",
+			"cyclesRunning": "Активни циклуси",
+			"members": "Членови",
+			"membersDetail": "{{admins}} администратори · {{viewers}} гледачи",
+			"modulesInProgress": "Модули во тек",
+			"modulesTotal": "{{count}} вкупно",
+			"openRequests": "Отворени барања",
+			"openTasks": "Отворени задачи",
+			"overdue": "{{count}} задоцнети",
+			"percentComplete": "{{percent}}% завршено",
+			"projects": "Проекти",
+			"total": "Вкупно",
+			"upcoming": "{{count}} претстојни"
+		},
+		"overview": {
+			"projectProgress": "Напредок на проектите",
+			"projectProgressSubtitle": "Проектите со најмногу отворени задачи прво",
+			"open": "{{count}} отворени",
+			"showAll": "Прикажи ги сите {{count}}",
+			"showLess": "Прикажи помалку",
+			"tasksByGroup": "Задачи по група",
+			"donutCenter_one": "{{count}} задача",
+			"donutCenter_other": "{{count}} задачи",
+			"workload": "Оптовареност",
+			"workloadSubtitle": "Отворени задачи по доделен",
+			"workloadSubtitlePoints": "Отворени поени за проценка по доделен",
+			"overloaded_one": "{{names}} има повеќе отворена работа отколку што обично завршува за {{weeks}} недели.",
+			"overloaded_other": "{{names}} имаат повеќе отворена работа отколку што обично завршуваат за {{weeks}} недели.",
+			"overUsual": "Над вообичаеното",
+			"overTooltip": "{{name}}: над вообичаеното",
+			"usualHint": "Вообичаеното е она што секое лице го завршило во типични {{usualWeeks}} недели, од последните {{historyWeeks}} недели. Некој без скорешна историја не се оценува.",
+			"checkColumn": "Споредено со вообичаеното",
+			"checkOverPoints": "Над: {{load}} поени, обично {{usual}}",
+			"checkOverTasks": "Над: {{load}} задачи, обично {{usual}}",
+			"checkOkPoints": "{{load}} поени, обично {{usual}}",
+			"checkOkTasks": "{{load}} задачи, обично {{usual}}",
+			"checkUnknown": "Нема скорешна историја"
+		},
+		"trend": {
+			"completed": "Завршени",
+			"created": "Креирани",
+			"help": "Креирани ги брои задачите според денот кога се креирани. Завршени ги брои задачите според денот кога се завршени, сè додека се уште се завршени. Архивираните задачи се изоставени освен ако не ги вклучиш.",
+			"period": "Период",
+			"summary": "Креирани {{created}} · Завршени {{completed}} · Нето {{net}}",
+			"title": "Креирани наспроти завршени"
+		},
+		"periods": {
+			"custom": "Прилагоден опсег",
+			"last12m": "Последни 12 месеци",
+			"last30": "Последни 30 дена",
+			"last6m": "Последни 6 месеци",
+			"last90": "Последни 90 дена"
 		},
 		"bucket": {
 			"label": "Групирај датуми по",
@@ -8269,6 +8634,14 @@
 		"buckets": {
 			"range": "{{from}} – {{to}}",
 			"weekOf": "Недела од {{date}}"
+		},
+		"metric": {
+			"label": "Метрика",
+			"tasks": "Задачи",
+			"points": "Поени на проценка",
+			"pointsShort": "Поени",
+			"sum": "Збир",
+			"sumOf": "Збир на {{name}}"
 		},
 		"builder": {
 			"countSubTasks": "Бројај подзадачи",
@@ -8285,10 +8658,130 @@
 			"truncatedX": "Се прикажуваат првите {{shown}} од {{total}} {{dimension}}",
 			"xAxis": "X-оска"
 		},
-		"context": {
-			"cycle": "Циклус: {{name}}",
-			"module": "Модул: {{name}}",
-			"remove": "Отстрани {{name}} од филтрите"
+		"reports": {
+			"open": "Извештаи",
+			"listTitle": "Зачувани извештаи",
+			"loadError": "Не успеа вчитувањето на зачуваните извештаи",
+			"empty": "Сè уште нема зачувани извештаи. Зачувај го овој графикон за да се вратиш на него.",
+			"sharedBy": "Споделено од {{name}}",
+			"actionsFor": "Дејства за {{name}}",
+			"rename": "Преименувај",
+			"share": "Сподели со работниот простор",
+			"makePrivate": "Направи приватен",
+			"delete": "Избриши",
+			"save": "Зачувај",
+			"saveAsNew": "Зачувај како нов",
+			"update": "Ажурирај го извештајот",
+			"showing": "Извештај: {{name}}",
+			"unsaved": "Незачувани промени",
+			"close": "Затвори извештај",
+			"deleteTitle": "Да се избрише овој извештај?",
+			"deleteDescription": "„{{name}}“ ќе биде избришан. Ова не може да се врати.",
+			"deleteSharedDescription": "„{{name}}“ ќе биде избришан за сите во работниот простор. Ова не може да се врати.",
+			"visibility": {
+				"private": "Приватен",
+				"privateHint": "Само ти можеш да го гледаш.",
+				"workspace": "Споделен со работниот простор",
+				"workspaceHint": "Секој со пристап до аналитиката во овој работен простор може да го отвори."
+			},
+			"dialog": {
+				"cancel": "Откажи",
+				"createTitle": "Зачувај извештај",
+				"editTitle": "Уреди извештај",
+				"name": "Име",
+				"namePlaceholder": "на пр. Отворени грешки по доделен",
+				"nameRequired": "Внеси име",
+				"save": "Зачувај",
+				"summary": "Ги зачувува поставките на графиконот, опфатените проекти и филтрите.",
+				"update": "Зачувај ги промените",
+				"visibility": "Кој може да го гледа"
+			},
+			"notes": {
+				"allProjects": "Ниту еден од проектите на извештајот не е достапен, па се прикажуваат сите проекти.",
+				"builderReset": "Некои поставки на графиконот не се достапни за овие проекти и се ресетирани.",
+				"dropped_one": "{{count}} проект во овој извештај веќе не постои.",
+				"dropped_other": "{{count}} проекти во овој извештај веќе не постојат.",
+				"leftOut_one": "{{count}} проект во овој извештај е архивиран и е изоставен.",
+				"leftOut_other": "{{count}} проекти во овој извештај се архивирани и се изоставени.",
+				"otherProjects": "Овој извештај е зачуван за други проекти; тука го прикажува само овој проект."
+			},
+			"toast": {
+				"saved": "„{{name}}“ е зачуван",
+				"updated": "Извештајот е ажуриран",
+				"shared": "Извештајот е споделен со работниот простор",
+				"madePrivate": "Извештајот сега е приватен",
+				"deleted": "Извештајот е избришан",
+				"saveError": "Не успеа зачувувањето на извештајот",
+				"deleteError": "Не успеа бришењето на извештајот",
+				"pinned": "Закачено на Почетна",
+				"unpinned": "Откачено од Почетна",
+				"pinError": "Не успеа ажурирањето на твојата Почетна",
+				"pinLimit_one": "Можеш да закачиш најмногу {{count}} извештај. Прво откачи еден.",
+				"pinLimit_other": "Можеш да закачиш најмногу {{count}} извештаи. Прво откачи еден."
+			},
+			"pin": "Закачи на Почетна",
+			"unpin": "Откачи од Почетна"
+		},
+		"dimensions": {
+			"status": "Статус",
+			"group": "Група",
+			"priority": "Приоритет",
+			"assignee": "Доделен",
+			"createdBy": "Креирано од",
+			"label": "Етикета",
+			"cycle": "Циклус",
+			"module": "Модул",
+			"estimate": "Проценка",
+			"project": "Проект",
+			"createdAt": "Датум на креирање",
+			"completedAt": "Датум на завршување",
+			"startDate": "Почетен датум",
+			"dueDate": "Краен рок",
+			"customField": "Прилагодено поле"
+		},
+		"dimensionsPlural": {
+			"status": "статуси",
+			"assignee": "доделени",
+			"createdBy": "креатори",
+			"label": "етикети",
+			"cycle": "циклуси",
+			"module": "модули",
+			"estimate": "проценки",
+			"project": "проекти",
+			"period": "периоди",
+			"customField": "вредности"
+		},
+		"none": {
+			"assignee": "Недоделено",
+			"createdBy": "Непознат креатор",
+			"label": "Без етикета",
+			"cycle": "Без циклус",
+			"module": "Без модул",
+			"estimate": "Без проценка",
+			"completedAt": "Не е завршено",
+			"startDate": "Без почетен датум",
+			"dueDate": "Без краен рок",
+			"customField": "Нема вредност"
+		},
+		"other": "Други",
+		"table": {
+			"periodEnd": "Крај на период",
+			"periodStart": "Почеток на период",
+			"progress": "Напредок",
+			"showAll": "Прикажи ги сите {{count}}",
+			"sortBy": "Подреди по {{column}}",
+			"tasks": "Задачи",
+			"total": "Вкупно"
+		},
+		"breakdown": {
+			"groupRowsBy": "Групирај редови по",
+			"title": "Распределба"
+		},
+		"export": {
+			"button": "Извези CSV",
+			"error": "Оваа табела не може да се извезе",
+			"success_one": "Извезен е {{count}} ред",
+			"success_other": "Извезени се {{count}} редови"
 		},
 		"cycles": {
 			"averageCompleted": "Просек завршени (последни 3)",
@@ -8321,49 +8814,15 @@
 				"running": "Активни сега"
 			}
 		},
-		"dimensions": {
-			"assignee": "Доделен",
-			"completedAt": "Датум на завршување",
-			"createdAt": "Датум на креирање",
-			"createdBy": "Креирано од",
-			"cycle": "Циклус",
-			"dueDate": "Краен рок",
-			"estimate": "Проценка",
-			"group": "Група",
-			"label": "Етикета",
-			"module": "Модул",
-			"priority": "Приоритет",
-			"project": "Проект",
-			"startDate": "Почетен датум",
-			"status": "Статус"
-		},
-		"dimensionsPlural": {
-			"assignee": "доделени",
-			"createdBy": "креатори",
-			"cycle": "циклуси",
-			"estimate": "проценки",
-			"label": "етикети",
-			"module": "модули",
-			"period": "периоди",
-			"project": "проекти",
-			"status": "статуси"
-		},
-		"export": {
-			"button": "Извези CSV",
-			"error": "Оваа табела не може да се извезе",
-			"success_one": "Извезен е {{count}} ред",
-			"success_other": "Извезени се {{count}} редови"
-		},
-		"header": {
-			"allProjects": "Сите проекти",
-			"clearSelection": "Исчисти избор",
-			"noProjectsFound": "Нема пронајдени проекти",
-			"projectsCount_one": "{{count}} проект",
-			"projectsCount_other": "{{count}} проекти",
-			"refresh": "Освежи",
-			"searchProjects": "Пребарај проекти",
-			"selectProjects": "Избери проекти",
-			"updatedAt": "Ажурирано {{time}}"
+		"modules": {
+			"overdue": "Задоцнети",
+			"table": {
+				"lead": "Водач",
+				"module": "Модул",
+				"noLead": "Без водач",
+				"targetDate": "Целен датум",
+				"title": "Модули"
+			}
 		},
 		"intake": {
 			"accepted": "Прифатени",
@@ -8381,176 +8840,24 @@
 			"submitted": "Поднесени",
 			"triaged": "Обработени"
 		},
-		"kpi": {
-			"accepted": "{{count}} прифатени",
-			"completedTasks": "Завршени задачи",
-			"completion": "Завршеност",
-			"completionDetail": "{{completed}} од {{committed}}",
-			"cyclesRunning": "Активни циклуси",
-			"members": "Членови",
-			"membersDetail": "{{admins}} администратори · {{viewers}} гледачи",
-			"modulesInProgress": "Модули во тек",
-			"modulesTotal": "{{count}} вкупно",
-			"openRequests": "Отворени барања",
-			"openTasks": "Отворени задачи",
-			"overdue": "{{count}} задоцнети",
-			"percentComplete": "{{percent}}% завршено",
-			"projects": "Проекти",
-			"total": "Вкупно",
-			"upcoming": "{{count}} претстојни"
+		"a11y": {
+			"barSummary": "{{metric}} по {{dimension}}: {{count}} групи, највисока {{label}} со {{value}}",
+			"donutSummary": "{{total}} задачи во {{count}} групи",
+			"lineSummary": "{{series}} низ {{count}} периоди"
 		},
-		"metric": {
-			"label": "Метрика",
-			"points": "Поени на проценка",
-			"pointsShort": "Поени",
-			"tasks": "Задачи"
-		},
-		"modules": {
-			"overdue": "Задоцнети",
-			"table": {
-				"lead": "Водач",
-				"module": "Модул",
-				"noLead": "Без водач",
-				"targetDate": "Целен датум",
-				"title": "Модули"
-			}
-		},
-		"none": {
-			"assignee": "Недоделено",
-			"completedAt": "Не е завршено",
-			"createdBy": "Непознат креатор",
-			"cycle": "Без циклус",
-			"dueDate": "Без краен рок",
-			"estimate": "Без проценка",
-			"label": "Без етикета",
-			"module": "Без модул",
-			"startDate": "Без почетен датум"
-		},
-		"openInAnalytics": "Отвори во аналитика",
-		"other": "Други",
-		"overview": {
-			"donutCenter_one": "{{count}} задача",
-			"donutCenter_other": "{{count}} задачи",
-			"open": "{{count}} отворени",
-			"projectProgress": "Напредок на проектите",
-			"projectProgressSubtitle": "Проектите со најмногу отворени задачи прво",
-			"showAll": "Прикажи ги сите {{count}}",
-			"showLess": "Прикажи помалку",
-			"tasksByGroup": "Задачи по група",
-			"workload": "Оптовареност",
-			"workloadSubtitle": "Отворени задачи по доделен"
-		},
-		"pageTitle": "Аналитика",
-		"periods": {
-			"custom": "Прилагоден опсег",
-			"last12m": "Последни 12 месеци",
-			"last30": "Последни 30 дена",
-			"last6m": "Последни 6 месеци",
-			"last90": "Последни 90 дена"
-		},
-		"projectPageTitle": "{{project}} · Аналитика",
-		"states": {
-			"loadError": "Овој дел не може да се вчита",
-			"newProject": "Нов проект",
-			"noAccessDescription": "Побарај од администратор на работниот простор дозвола за Аналитика.",
-			"noAccessTitle": "Немаш пристап до аналитиката",
-			"noCycles": "Сè уште нема циклуси",
-			"noModules": "Сè уште нема модули",
-			"noPeriodData": "Нема податоци за овој период",
-			"noProjectsDescription": "Аналитиката ги сумира задачите во твоите проекти.",
-			"noProjectsTitle": "Креирај проект за да видиш аналитика",
-			"noRequests": "Сè уште нема барања",
-			"noTasks": "Ниту една задача не одговара на овие филтри",
-			"retry": "Обиди се повторно",
-			"timeout": "Ова траеше предолго. Стесни ги филтрите и обиди се повторно.",
-			"noRunningCycles": "Моментално нема активни циклуси"
-		},
-		"table": {
-			"periodEnd": "Крај на период",
-			"periodStart": "Почеток на период",
-			"progress": "Напредок",
-			"showAll": "Прикажи ги сите {{count}}",
-			"sortBy": "Подреди по {{column}}",
-			"tasks": "Задачи",
-			"total": "Вкупно"
-		},
-		"tabs": {
-			"cycles": "Циклуси",
-			"intake": "Прием",
-			"modules": "Модули",
-			"overview": "Преглед",
-			"tasks": "Задачи",
-			"delivery": "Испорака"
-		},
-		"trend": {
-			"completed": "Завршени",
-			"created": "Креирани",
-			"help": "Креирани ги брои задачите според денот кога се креирани. Завршени ги брои задачите според денот кога се завршени, сè додека се уште се завршени. Архивираните задачи се изоставени освен ако не ги вклучиш.",
-			"period": "Период",
-			"summary": "Креирани {{created}} · Завршени {{completed}} · Нето {{net}}",
-			"title": "Креирани наспроти завршени"
-		},
-		"view": {
-			"chart": "Графикон",
-			"label": "Прикажи како",
-			"table": "Табела"
-		},
-		"reports": {
-			"actionsFor": "Дејства за {{name}}",
-			"close": "Затвори извештај",
-			"delete": "Избриши",
-			"deleteDescription": "„{{name}}“ ќе биде избришан. Ова не може да се врати.",
-			"deleteSharedDescription": "„{{name}}“ ќе биде избришан за сите во работниот простор. Ова не може да се врати.",
-			"deleteTitle": "Да се избрише овој извештај?",
-			"dialog": {
-				"cancel": "Откажи",
-				"createTitle": "Зачувај извештај",
-				"editTitle": "Уреди извештај",
-				"name": "Име",
-				"namePlaceholder": "на пр. Отворени грешки по доделен",
-				"nameRequired": "Внеси име",
-				"save": "Зачувај",
-				"summary": "Ги зачувува поставките на графиконот, опфатените проекти и филтрите.",
-				"update": "Зачувај ги промените",
-				"visibility": "Кој може да го гледа"
-			},
-			"empty": "Сè уште нема зачувани извештаи. Зачувај го овој графикон за да се вратиш на него.",
-			"listTitle": "Зачувани извештаи",
-			"loadError": "Не успеа вчитувањето на зачуваните извештаи",
-			"makePrivate": "Направи приватен",
-			"notes": {
-				"allProjects": "Ниту еден од проектите на извештајот не е достапен, па се прикажуваат сите проекти.",
-				"builderReset": "Некои поставки на графиконот не се достапни за овие проекти и се ресетирани.",
-				"dropped_one": "{{count}} проект во овој извештај веќе не постои.",
-				"dropped_other": "{{count}} проекти во овој извештај веќе не постојат.",
-				"leftOut_one": "{{count}} проект во овој извештај е архивиран и е изоставен.",
-				"leftOut_other": "{{count}} проекти во овој извештај се архивирани и се изоставени.",
-				"otherProjects": "Овој извештај е зачуван за други проекти; тука го прикажува само овој проект."
-			},
-			"open": "Извештаи",
-			"rename": "Преименувај",
-			"save": "Зачувај",
-			"saveAsNew": "Зачувај како нов",
-			"share": "Сподели со работниот простор",
-			"sharedBy": "Споделено од {{name}}",
-			"showing": "Извештај: {{name}}",
-			"toast": {
-				"deleted": "Извештајот е избришан",
-				"deleteError": "Не успеа бришењето на извештајот",
-				"madePrivate": "Извештајот сега е приватен",
-				"saved": "„{{name}}“ е зачуван",
-				"saveError": "Не успеа зачувувањето на извештајот",
-				"shared": "Извештајот е споделен со работниот простор",
-				"updated": "Извештајот е ажуриран"
-			},
-			"unsaved": "Незачувани промени",
-			"update": "Ажурирај го извештајот",
-			"visibility": {
-				"private": "Приватен",
-				"privateHint": "Само ти можеш да го гледаш.",
-				"workspace": "Споделен со работниот простор",
-				"workspaceHint": "Секој со пристап до аналитиката во овој работен простор може да го отвори."
-			}
+		"time": {
+			"total": "Запишано време",
+			"entries": "Записи",
+			"people": "Луѓе",
+			"running": "Активни сега",
+			"runningNote": "Активните тајмери се додаваат на овие збирови откако ќе запрат.",
+			"byPerson": "По лице",
+			"byProject": "По проект",
+			"person": "Лице",
+			"project": "Проект",
+			"hours": "Часови",
+			"formerMember": "Поранешен член",
+			"empty": "Нема запишано време во овој период"
 		}
 	},
 	"pages": {
@@ -8631,6 +8938,59 @@
 			"file": "прикачена датотека",
 			"page": "друга страница"
 		},
+		"section": {
+			"title": "Страници"
+		},
+		"list": {
+			"documentTitle": "{{project}} · Страници",
+			"newPage": "Нова страница",
+			"tabs": {
+				"archived": "Архивирани",
+				"private": "Приватни",
+				"public": "Јавни"
+			},
+			"searchPlaceholder": "Пребарај страници",
+			"clearFilters": "Исчисти филтри",
+			"sort": {
+				"created": "Креирано",
+				"lastEdited": "Последно уредено",
+				"name": "Име"
+			},
+			"untitled": "Без наслов",
+			"inParent": "во {{path}}",
+			"ownedBy": "Сопственик: {{name}}",
+			"access": {
+				"private": "Приватна",
+				"public": "Јавна"
+			},
+			"editedAgo": "Уредено {{time}}",
+			"archivedOn": "Архивирано {{date}}",
+			"locked": "Заклучена",
+			"loadError": "Страниците не може да се вчитаат",
+			"retry": "Обиди се повторно",
+			"empty": {
+				"archived": {
+					"description": "Архивираните страници се појавуваат овде. Можеш да ги вратиш или избришеш.",
+					"title": "Нема архивирани страници"
+				},
+				"noMatch": {
+					"description": "Пробај со друго пребарување или исчисти ги филтрите.",
+					"title": "Нема страници што одговараат"
+				},
+				"none": {
+					"description": "Страниците содржат спецификации, белешки и документи веднаш до задачите на проектот.",
+					"title": "Напиши ја твојата прва страница"
+				},
+				"private": {
+					"description": "Приватните страници се видливи само за тебе.",
+					"title": "Нема приватни страници"
+				},
+				"public": {
+					"title": "Нема јавни страници"
+				}
+			},
+			"recentlyDeleted": "Неодамна избришани"
+		},
 		"actions": {
 			"archive": "Архивирај",
 			"copyLink": "Копирај врска",
@@ -8646,6 +9006,123 @@
 			"restore": "Врати",
 			"unlock": "Отклучи"
 		},
+		"toasts": {
+			"accessError": "Не може да се промени кој ја гледа оваа страница",
+			"archived": "Страницата е архивирана",
+			"archiveError": "Страницата не може да се архивира",
+			"contentConflict": "Оваа страница е променета на друго место, па твоето последно уредување не е зачувано. Се прикажува најновата верзија.",
+			"contentSaveError": "Страницата не може да се зачува",
+			"createError": "Страницата не може да се креира",
+			"deleted": "Страницата е избришана",
+			"deleteError": "Страницата не може да се избрише",
+			"duplicated": "Страницата е дуплирана",
+			"duplicateError": "Страницата не може да се дуплира",
+			"fullWidthError": "Ширината на страницата не може да се промени",
+			"linkCopied": "Врската е копирана",
+			"locked": "Страницата е заклучена",
+			"lockError": "Клучалката не може да се промени",
+			"logoError": "Иконата не може да се ажурира",
+			"madePrivate": "Страницата сега е приватна",
+			"madePublic": "Страницата сега е јавна",
+			"moved": "Преместено во {{project}}",
+			"moveError": "Страницата не може да се премести",
+			"open": "Отвори",
+			"restored": "Страницата е вратена",
+			"restoreError": "Страницата не може да се врати",
+			"titleError": "Насловот не може да се зачува",
+			"unlocked": "Страницата е отклучена"
+		},
+		"deleteDialog": {
+			"cancel": "Откажи",
+			"confirm": "Избриши",
+			"description": "„{{title}}“ се преместува во Неодамна избришани во поставките на проектот, од каде што може да се врати додека не се избрише трајно. Нејзините подстраници се префрлаат на највисоко ниво.",
+			"title": "Да се избрише страницата?"
+		},
+		"moveDialog": {
+			"cancel": "Откажи",
+			"confirm": "Премести",
+			"description": "Страницата и нејзините подстраници се преместуваат во избраниот проект.",
+			"empty": "Ниту еден друг проект нема вклучено Страници",
+			"searchPlaceholder": "Пребарај проекти",
+			"title": "Премести страница"
+		},
+		"tree": {
+			"collapse": "Собери {{title}}",
+			"dnd": {
+				"cancelled": "Преместувањето е откажано.",
+				"dropped": "{{title}} е преместена.",
+				"invalid": "{{title}} не може да оди таму.",
+				"over": "{{title}} е над {{target}}.",
+				"pickedUp": "Земена е {{title}}. Користи ги стрелките за преместување, Space за пуштање или Escape за откажување."
+			},
+			"empty": "Сè уште нема страници",
+			"expand": "Прошири {{title}}",
+			"newPage": "Нова страница",
+			"title": "Страници"
+		},
+		"crumb": {
+			"noMatches": "Нема страници што одговараат",
+			"searchPlaceholder": "Пребарај страници"
+		},
+		"header": {
+			"copied": "Копирано",
+			"copyLink": "Копирај врска",
+			"locked": "Заклучена",
+			"lockPage": "Заклучи страница",
+			"moreActions": "Дејства за страницата",
+			"presence": "Луѓе на оваа страница: {{names}}",
+			"presenceMore": "+{{count}}",
+			"togglePanel": "Прикажи/сокриј страничен панел",
+			"unlockHint": "Кликни за отклучување",
+			"ancestors": "Родителски страници"
+		},
+		"menu": {
+			"copyMarkdown": "Копирај како markdown",
+			"downloadMarkdown": "Преземи како markdown",
+			"fullWidth": "Полна ширина",
+			"markdownCopied": "Markdown е копиран",
+			"versionHistory": "Историја на верзии",
+			"print": "Печати / Зачувај како PDF"
+		},
+		"editor": {
+			"addIcon": "Додај икона",
+			"ariaLabel": "Содржина на страницата",
+			"pageLink": {
+				"unavailable": "Приватна или избришана страница"
+			},
+			"pageLinkPicker": {
+				"empty": "Не се пронајдени страници",
+				"search": "Пребарај страници"
+			},
+			"placeholder": "Напиши нешто или притисни / за команди",
+			"slash": {
+				"commands": {
+					"divider": "Разделник",
+					"heading-1": "Наслов 1",
+					"heading-2": "Наслов 2",
+					"heading-3": "Наслов 3",
+					"page-link": "Врска до страница"
+				}
+			},
+			"titleAria": "Наслов на страница",
+			"titlePlaceholder": "Без наслов"
+		},
+		"logo": {
+			"categories": {
+				"activities": "Активности",
+				"food": "Храна",
+				"nature": "Природа",
+				"objects": "Предмети",
+				"people": "Луѓе",
+				"smileys": "Смајли",
+				"symbols": "Симболи",
+				"travel": "Патувања"
+			},
+			"emoji": "Емоџи",
+			"icon": "Икона",
+			"remove": "Отстрани",
+			"search": "Пребарај емоџи"
+		},
 		"banners": {
 			"archived": "Оваа страница е архивирана. Врати ја за да ја уредуваш.",
 			"locked": "Оваа страница е заклучена. Отклучи ја за да правиш промени.",
@@ -8656,6 +9133,15 @@
 			"storedCopy": "Се прикажува последната зачувана верзија. Уредувањето во живо продолжува кога врската ќе се врати.",
 			"tooLarge": "Оваа страница е премногу голема за да продолжи синхронизацијата. Копирај ги твоите скорешни промени, па освежи.",
 			"unlock": "Отклучи"
+		},
+		"sync": {
+			"cantConnect": "Не може да се поврзе",
+			"notSaved": "Сè уште не е зачувано",
+			"notSavedHint": "Ќе продолжиме да се обидуваме. Не го затворај овој таб.",
+			"offline": "Офлајн",
+			"offlineHint": "Можеш да продолжиш со уредување. Промените се синхронизираат кога врската ќе се врати.",
+			"retry": "Обиди се повторно",
+			"saved": "Зачувано"
 		},
 		"collab": {
 			"deleted": "Оваа страница е избришана",
@@ -8668,6 +9154,62 @@
 			"restoredBy": "{{name}} врати претходна верзија",
 			"roomFull": "Премногу луѓе ја имаат отворено оваа страница во моментов. Обиди се повторно за малку.",
 			"signedOut": "Твојата сесија заврши. Најави се повторно за да продолжиш со уредување."
+		},
+		"state": {
+			"notFound": {
+				"back": "Назад кон страниците",
+				"description": "Можеби е избришана или е приватна.",
+				"title": "Страницата не е пронајдена"
+			}
+		},
+		"panel": {
+			"outline": "Структура",
+			"info": "Информации",
+			"history": "Историја",
+			"close": "Затвори панел",
+			"comments": "Коментари"
+		},
+		"outline": {
+			"empty": {
+				"description": "Додај наслови за да се прикаже структура овде.",
+				"title": "Сè уште нема наслови"
+			}
+		},
+		"info": {
+			"characters": "Знаци",
+			"createdBy": "Креирано од",
+			"lastEditedBy": "Последно уредено од",
+			"lessThanMinute": "<1 мин",
+			"linkedFrom": "Поврзано од",
+			"lockedBy": "Заклучено од",
+			"noBacklinks": "Сè уште ниту една страница не води овде",
+			"paragraphs": "Параграфи",
+			"readingMinutes": "{{count}} мин",
+			"readingTime": "Време за читање",
+			"words": "Зборови"
+		},
+		"history": {
+			"backToCurrent": "Назад кон тековната",
+			"current": "Тековна верзија",
+			"empty": "Сè уште нема зачувани верзии. Верзиите се зачувуваат додека уредуваш.",
+			"loadError": "Оваа верзија не може да се вчита",
+			"others_one": "+{{count}} друг",
+			"others_other": "+{{count}} други",
+			"previewTitle": "Верзија од {{date}}",
+			"restore": "Врати",
+			"restoreCancel": "Откажи",
+			"restoreConfirmDescription": "Тековната содржина прво се зачувува во историјата, па можеш да го поништиш ова.",
+			"restoreConfirmTitle": "Да се врати оваа верзија?",
+			"restored": "Верзијата е вратена",
+			"restoreError": "Оваа верзија не може да се врати",
+			"restoring": "Се враќа…",
+			"retry": "Обиди се повторно",
+			"title": "Историја на верзии",
+			"unknownUser": "Поранешен член",
+			"viewOnly": "Само за преглед"
+		},
+		"notification": {
+			"openPage": "Отвори страница"
 		},
 		"toolbar": {
 			"ariaLabel": "Лента за форматирање",
@@ -8706,238 +9248,36 @@
 		"commandPalette": {
 			"createPage": "Креирај страница"
 		},
-		"crumb": {
-			"noMatches": "Нема страници што одговараат",
-			"searchPlaceholder": "Пребарај страници"
-		},
-		"deleteDialog": {
+		"comments": {
+			"placeholder": "Додај коментар…",
+			"add": "Коментирај",
+			"save": "Зачувај",
 			"cancel": "Откажи",
-			"confirm": "Избриши",
-			"description": "„{{title}}“ ќе биде трајно избришана заедно со историјата на верзии. Нејзините подстраници се префрлаат на највисоко ниво. Ова не може да се врати.",
-			"title": "Да се избрише страницата?"
-		},
-		"editor": {
-			"addIcon": "Додај икона",
-			"ariaLabel": "Содржина на страницата",
-			"pageLink": {
-				"unavailable": "Приватна или избришана страница"
-			},
-			"pageLinkPicker": {
-				"empty": "Не се пронајдени страници",
-				"search": "Пребарај страници"
-			},
-			"placeholder": "Напиши нешто или притисни / за команди",
-			"slash": {
-				"commands": {
-					"divider": "Разделник",
-					"heading-1": "Наслов 1",
-					"heading-2": "Наслов 2",
-					"heading-3": "Наслов 3",
-					"page-link": "Врска до страница"
-				}
-			},
-			"titleAria": "Наслов на страница",
-			"titlePlaceholder": "Без наслов"
-		},
-		"header": {
-			"copied": "Копирано",
-			"copyLink": "Копирај врска",
-			"locked": "Заклучена",
-			"lockPage": "Заклучи страница",
-			"moreActions": "Дејства за страницата",
-			"presence": "Луѓе на оваа страница: {{names}}",
-			"presenceMore": "+{{count}}",
-			"togglePanel": "Прикажи/сокриј страничен панел",
-			"unlockHint": "Кликни за отклучување",
-			"ancestors": "Родителски страници"
-		},
-		"history": {
-			"backToCurrent": "Назад кон тековната",
-			"current": "Тековна верзија",
-			"empty": "Сè уште нема зачувани верзии. Верзиите се зачувуваат додека уредуваш.",
-			"loadError": "Оваа верзија не може да се вчита",
-			"others_one": "+{{count}} друг",
-			"others_other": "+{{count}} други",
-			"previewTitle": "Верзија од {{date}}",
-			"restore": "Врати",
-			"restoreCancel": "Откажи",
-			"restoreConfirmDescription": "Тековната содржина прво се зачувува во историјата, па можеш да го поништиш ова.",
-			"restoreConfirmTitle": "Да се врати оваа верзија?",
-			"restored": "Верзијата е вратена",
-			"restoreError": "Оваа верзија не може да се врати",
-			"restoring": "Се враќа…",
+			"emptyTitle": "Сè уште нема коментари",
+			"emptyDescription": "Коментарите овде остануваат во работниот простор. Јавните врски не ги прикажуваат.",
+			"archivedNote": "Оваа страница е архивирана. Врати ја за да коментираш.",
+			"loadError": "Не успеа вчитувањето на коментарите",
 			"retry": "Обиди се повторно",
-			"title": "Историја на верзии",
-			"unknownUser": "Поранешен член",
-			"viewOnly": "Само за преглед"
-		},
-		"info": {
-			"characters": "Знаци",
-			"createdBy": "Креирано од",
-			"lastEditedBy": "Последно уредено од",
-			"lessThanMinute": "<1 мин",
-			"linkedFrom": "Поврзано од",
-			"lockedBy": "Заклучено од",
-			"noBacklinks": "Сè уште ниту една страница не води овде",
-			"paragraphs": "Параграфи",
-			"readingMinutes": "{{count}} мин",
-			"readingTime": "Време за читање",
-			"words": "Зборови"
-		},
-		"list": {
-			"access": {
-				"private": "Приватна",
-				"public": "Јавна"
-			},
-			"archivedOn": "Архивирано {{date}}",
-			"clearFilters": "Исчисти филтри",
-			"documentTitle": "{{project}} · Страници",
-			"editedAgo": "Уредено {{time}}",
-			"empty": {
-				"archived": {
-					"description": "Архивираните страници се појавуваат овде. Можеш да ги вратиш или избришеш.",
-					"title": "Нема архивирани страници"
-				},
-				"noMatch": {
-					"description": "Пробај со друго пребарување или исчисти ги филтрите.",
-					"title": "Нема страници што одговараат"
-				},
-				"none": {
-					"description": "Страниците содржат спецификации, белешки и документи веднаш до задачите на проектот.",
-					"title": "Напиши ја твојата прва страница"
-				},
-				"private": {
-					"description": "Приватните страници се видливи само за тебе.",
-					"title": "Нема приватни страници"
-				},
-				"public": {
-					"title": "Нема јавни страници"
-				}
-			},
-			"inParent": "во {{path}}",
-			"loadError": "Страниците не може да се вчитаат",
-			"locked": "Заклучена",
-			"newPage": "Нова страница",
-			"ownedBy": "Сопственик: {{name}}",
-			"retry": "Обиди се повторно",
-			"searchPlaceholder": "Пребарај страници",
-			"sort": {
-				"created": "Креирано",
-				"lastEdited": "Последно уредено",
-				"name": "Име"
-			},
-			"tabs": {
-				"archived": "Архивирани",
-				"private": "Приватни",
-				"public": "Јавни"
-			},
-			"untitled": "Без наслов"
-		},
-		"logo": {
-			"categories": {
-				"activities": "Активности",
-				"food": "Храна",
-				"nature": "Природа",
-				"objects": "Предмети",
-				"people": "Луѓе",
-				"smileys": "Смајли",
-				"symbols": "Симболи",
-				"travel": "Патувања"
-			},
-			"emoji": "Емоџи",
-			"icon": "Икона",
-			"remove": "Отстрани",
-			"search": "Пребарај емоџи"
-		},
-		"menu": {
-			"copyMarkdown": "Копирај како markdown",
-			"downloadMarkdown": "Преземи како markdown",
-			"fullWidth": "Полна ширина",
-			"markdownCopied": "Markdown е копиран",
-			"versionHistory": "Историја на верзии",
-			"print": "Печати / Зачувај како PDF"
-		},
-		"moveDialog": {
-			"cancel": "Откажи",
-			"confirm": "Премести",
-			"description": "Страницата и нејзините подстраници се преместуваат во избраниот проект.",
-			"empty": "Ниту еден друг проект нема вклучено Страници",
-			"searchPlaceholder": "Пребарај проекти",
-			"title": "Премести страница"
-		},
-		"notification": {
-			"openPage": "Отвори страница"
-		},
-		"outline": {
-			"empty": {
-				"description": "Додај наслови за да се прикаже структура овде.",
-				"title": "Сè уште нема наслови"
+			"deletedUser": "Избришан корисник",
+			"edited": "уредено",
+			"menuAria": "Повеќе дејства за овој коментар",
+			"edit": "Уреди",
+			"delete": "Избриши",
+			"deleteTitle": "Да се избрише овој коментар?",
+			"deleteDescription": "Се отстранува за сите. Ова не може да се врати.",
+			"toasts": {
+				"empty": "Прво напиши нешто",
+				"addError": "Не успеа додавањето на коментарот",
+				"saveError": "Не успеа зачувувањето на коментарот",
+				"deleteError": "Не успеа бришењето на коментарот"
 			}
 		},
-		"panel": {
-			"close": "Затвори панел",
-			"history": "Историја",
-			"info": "Информации",
-			"outline": "Структура"
-		},
-		"section": {
-			"title": "Страници"
-		},
-		"state": {
-			"notFound": {
-				"back": "Назад кон страниците",
-				"description": "Можеби е избришана или е приватна.",
-				"title": "Страницата не е пронајдена"
-			}
-		},
-		"sync": {
-			"cantConnect": "Не може да се поврзе",
-			"notSaved": "Сè уште не е зачувано",
-			"notSavedHint": "Ќе продолжиме да се обидуваме. Не го затворај овој таб.",
-			"offline": "Офлајн",
-			"offlineHint": "Можеш да продолжиш со уредување. Промените се синхронизираат кога врската ќе се врати.",
-			"retry": "Обиди се повторно",
-			"saved": "Зачувано"
-		},
-		"toasts": {
-			"accessError": "Не може да се промени кој ја гледа оваа страница",
-			"archived": "Страницата е архивирана",
-			"archiveError": "Страницата не може да се архивира",
-			"contentConflict": "Оваа страница е променета на друго место, па твоето последно уредување не е зачувано. Се прикажува најновата верзија.",
-			"contentSaveError": "Страницата не може да се зачува",
-			"createError": "Страницата не може да се креира",
-			"deleted": "Страницата е избришана",
-			"deleteError": "Страницата не може да се избрише",
-			"duplicated": "Страницата е дуплирана",
-			"duplicateError": "Страницата не може да се дуплира",
-			"fullWidthError": "Ширината на страницата не може да се промени",
-			"linkCopied": "Врската е копирана",
-			"locked": "Страницата е заклучена",
-			"lockError": "Клучалката не може да се промени",
-			"logoError": "Иконата не може да се ажурира",
-			"madePrivate": "Страницата сега е приватна",
-			"madePublic": "Страницата сега е јавна",
-			"moved": "Преместено во {{project}}",
-			"moveError": "Страницата не може да се премести",
-			"open": "Отвори",
-			"restored": "Страницата е вратена",
-			"restoreError": "Страницата не може да се врати",
-			"titleError": "Насловот не може да се зачува",
-			"unlocked": "Страницата е отклучена"
-		},
-		"tree": {
-			"collapse": "Собери {{title}}",
-			"dnd": {
-				"cancelled": "Преместувањето е откажано.",
-				"dropped": "{{title}} е преместена.",
-				"invalid": "{{title}} не може да оди таму.",
-				"over": "{{title}} е над {{target}}.",
-				"pickedUp": "Земена е {{title}}. Користи ги стрелките за преместување, Space за пуштање или Escape за откажување."
-			},
-			"empty": "Сè уште нема страници",
-			"expand": "Прошири {{title}}",
-			"newPage": "Нова страница",
-			"title": "Страници"
+		"watch": {
+			"watch": "Следи страница",
+			"unwatch": "Престани да следиш",
+			"watchHint": "Добивај известувања за коментари и промени",
+			"watchingHint": "Добиваш известувања за коментари и промени",
+			"error": "Не успеа промената на следењето за оваа страница"
 		}
 	},
 	"accountSecurity": {
@@ -8996,7 +9336,9 @@
 				"sessionLifetime": "Траење на сесијата",
 				"sessionLifetimeHint": "Колку трае некористена сесија. Користењето ја продолжува.",
 				"hours": "часа",
-				"signInNotice": "Најави се со {{provider}}. Најавата со лозинка е само за администратори на инстанцата."
+				"signInNotice": "Најави се со {{provider}}. Најавата со лозинка е само за администратори на инстанцата.",
+				"requireTwoFactor": "Барај двофакторска автентикација",
+				"requireTwoFactorHint": "Секоја сметка со лозинка мора да постави двофакторска автентикација пред да може да прави што било друго, дури и ако се најавува и преку давател или SAML, а нејзините API клучеви не работат додека тоа не се направи. Врските и кодовите по е-пошта се исклучуваат, па тие што ги користеле само нив не можат да влезат додека немаат лозинка: ја поставуваат преку „Ја заборави лозинката?“, или ти им ја поставуваш во „Корисници“ ако е-поштата не е поставена. Сметките без лозинка ги следат правилата на својот давател. Прво вклучи ја за својата сметка."
 			},
 			"twoFactor": {
 				"title": "Двофакторска автентикација",
@@ -9023,7 +9365,11 @@
 				"done": "Готово",
 				"enabled": "Двофакторската автентикација е вклучена.",
 				"disabled": "Двофакторската автентикација е исклучена.",
-				"error": "Нешто тргна наопаку. Обиди се повторно."
+				"error": "Нешто тргна наопаку. Обиди се повторно.",
+				"requiredHint": "Овој сервер бара двофакторска автентикација, па не може да се исклучи. Ако го изгубиш уредот и кодовите за обновување, може да ја ресетира администратор на инстанцата.",
+				"setupRequiredTitle": "Постави двофакторска автентикација за да продолжиш",
+				"setupRequiredHint": "Овој сервер бара двофакторска автентикација за секоја сметка со лозинка. Ќе ти треба апликација за автентикација.",
+				"signOutInstead": "Наместо тоа, одјави се"
 			},
 			"challenge": {
 				"title": "Двофакторска автентикација",
@@ -9095,7 +9441,11 @@
 				"noPassword": "Не е поставена (се најавува поинаку)",
 				"workspacesTitle": "Работни простори",
 				"noWorkspaces": "Не членува во ниту еден работен простор.",
-				"joined": "Приклучен на {{date}}"
+				"joined": "Приклучен на {{date}}",
+				"resetTwoFactor": "Ресетирај двофакторска автентикација",
+				"resetTwoFactorTitle": "Да се ресетира двофакторската автентикација за {{name}}?",
+				"resetTwoFactorDescription": "Користи го ова кога лицето ги изгубило уредот и кодовите за обновување и откако ќе провериш дека навистина е тоа. Неговата двофакторска автентикација се отстранува и лицето се одјавува насекаде. Потоа може да се најави само со лозинката и да ја постави повторно.",
+				"twoFactorReset": "Двофакторската автентикација е ресетирана за {{name}}"
 			}
 		},
 		"password": {
@@ -9159,33 +9509,99 @@
 				"cliAdminPromoted": "Постави администратор на инстанцата (CLI за обновување)",
 				"cliAdminDemoted": "Отстрани администратор на инстанцата (CLI за обновување)",
 				"cliPasswordReset": "Ресетира лозинка (CLI за обновување)",
-				"cliUserUnbanned": "Укина блокада (CLI за обновување)"
+				"cliUserUnbanned": "Укина блокада (CLI за обновување)",
+				"userTwoFactorReset": "Ја ресетираше двофакторската автентикација на сметка",
+				"cliTwoFactorReset": "Ја ресетираше двофакторската автентикација на сметка (CLI за обновување)",
+				"scimConnectionCreated": "Поврза давател на идентитет за SCIM",
+				"scimTokenRotated": "Замени SCIM токен",
+				"scimConnectionDeleted": "Отстрани SCIM врска",
+				"scimUserProvisioned": "Додаде сметка преку SCIM",
+				"scimUserDeactivated": "Деактивираше сметка преку SCIM",
+				"scimUserReactivated": "Повторно активираше сметка преку SCIM",
+				"scimUserRemoved": "Отстрани лице од работен простор преку SCIM",
+				"samlConnectionCreated": "Поврза давател на идентитет за најава",
+				"samlConnectionUpdated": "Промени SAML врска",
+				"samlConnectionDeleted": "Отстрани SAML врска"
 			}
 		}
 	},
 	"instanceAdmin": {
-		"admins": {
-			"add": "Додади администратор",
-			"addConfirm": "Додади администратор",
-			"addDescription": "Администраторите на инстанцата можат да менуваат секоја поставка во оваа област и да отвораат кој било работен простор.",
-			"added": "{{name}} сега е администратор на инстанцата",
-			"addTitle": "Додади администратор на инстанцата",
-			"columns": {
-				"email": "Е-пошта",
-				"name": "Име"
-			},
+		"pageTitle": "Инстанца · {{page}}",
+		"nav": {
+			"admins": "Администратори",
+			"authentication": "Автентикација",
 			"email": "Е-пошта",
-			"emailInvalid": "Внеси валидна адреса на е-пошта",
-			"emailPlaceholder": "name@example.com",
-			"lastAdmin": "Мора да постои барем еден администратор на инстанцата",
-			"remove": "Отстрани администратор…",
-			"removeConfirm": "Отстрани",
-			"removed": "{{name}} повеќе не е администратор на инстанцата",
-			"removeDescription": "Ја задржуваат својата сметка и своите работни простори.",
-			"removeTitle": "Да се отстрани {{name}} како администратор на инстанцата?",
-			"subtitle": "Администраторите на инстанцата можат да менуваат секоја поставка во оваа област и да отвораат кој било работен простор.",
-			"title": "Администратори",
-			"you": "Ти"
+			"general": "Општо",
+			"publicBoards": "Јавни табли",
+			"workspaces": "Работни простори",
+			"ai": "AI"
+		},
+		"lockedCallout": "Овие поставки се управуваат со променливи на околината на овој сервер. Промените тука се оневозможени.",
+		"source": {
+			"default": "Стандардно",
+			"environment": "Околина: {{variable}}",
+			"lockTooltip": "Отстрани ја {{variable}} и рестартирај за да го управуваш ова тука.",
+			"saved": "Зачувано тука",
+			"savedBy": "Зачувано од {{name}} на {{date}}"
+		},
+		"saved": "Поставките се зачувани",
+		"saveError": "Поставките не може да се зачуваат",
+		"loadError": "Поставките на инстанцата не може да се вчитаат",
+		"retry": "Обиди се повторно",
+		"save": "Зачувај",
+		"secret": {
+			"cancel": "Откажи",
+			"clear": "Исчисти",
+			"cleared": "Тајната е исчистена",
+			"placeholder": "Внеси нова вредност",
+			"replace": "Замени",
+			"saved": "Зачувано",
+			"unreadable": "Зачуваната тајна не може да се прочита (AUTH_SECRET на серверот е променет). Внеси ја повторно."
+		},
+		"general": {
+			"title": "Општо",
+			"subtitle": "Именувај ја инстанцата и провери ја нејзината состојба.",
+			"instanceName": "Име на инстанца",
+			"instanceNameHint": "Се прикажува на екранот за најава и на јавните табли",
+			"instanceNameRequired": "Внеси име",
+			"instanceNameTooLong": "Користи најмногу 80 знаци",
+			"homePage": "Почетна страница",
+			"publicLanding": "Прикажи ја страницата за претставување на производот",
+			"publicLandingHint": "Посетителите што не се најавени ја гледаат страницата за претставување на основната адреса. Кога е исклучена, одат директно на најава.",
+			"overview": "Преглед",
+			"version": "Верзија",
+			"counts": {
+				"accounts": "Сметки",
+				"guests": "Гости",
+				"projects": "Проекти",
+				"publishedBoards": "Јавни табли",
+				"workspaces": "Работни простори"
+			},
+			"server": {
+				"captcha": "Captcha",
+				"cloudMode": "Облак режим",
+				"configured": "Конфигурирано",
+				"demoMode": "Демо режим",
+				"email": "Е-пошта",
+				"errorReporting": "Пријавување грешки",
+				"fileStorage": "Складирање датотеки",
+				"notConfigured": "Не е конфигурирано",
+				"off": "Исклучено",
+				"on": "Вклучено",
+				"realtime": "Во реално време",
+				"realtimeMemory": "Во меморија",
+				"realtimeRedis": "Redis ({{mode}})",
+				"title": "Сервер"
+			},
+			"deliveryFailures": {
+				"title": "Неодамнешни неуспешни испораки",
+				"description": "Webhooks на работни простори што ги потрошија повторните обиди во последните 7 дена. Грешките за е-пошта и за позадински задачи се само во логовите на серверот.",
+				"empty": "Нема неуспешни испораки во последните 7 дена.",
+				"when": "Кога",
+				"workspace": "Работен простор",
+				"webhook": "Webhook",
+				"response": "Одговор"
+			}
 		},
 		"auth": {
 			"anyoneCanSignUp": "Секој може да се регистрира",
@@ -9225,6 +9641,31 @@
 			"title": "Автентикација",
 			"toggle": "Вклучи или исклучи {{method}}"
 		},
+		"oauth": {
+			"authorizationUrl": "URL за овластување",
+			"autoSignIn": "Најави се автоматски",
+			"autoSignInHint": "Прескокни го екранот за најава и оди директно кај овој провајдер",
+			"buttonLabel": "Натпис на копчето",
+			"buttonLabelHint": "Се прикажува на копчето за најава, на пример „Продолжи со Okta“",
+			"callbackHint": "Додај го овој URL во твојата OAuth апликација",
+			"callbackUrl": "URL за повратен повик",
+			"clientId": "ID на клиентот",
+			"clientSecret": "Тајна на клиентот",
+			"copied": "Копирано",
+			"copy": "Копирај",
+			"discoveryHint": "Или пополни ги трите endpoint-и подолу",
+			"discoveryUrl": "URL за откривање",
+			"invalidUrl": "Внеси апсолутен http или https URL",
+			"logoutUrl": "URL за одјавување",
+			"managedByEnv": "Овој провајдер е конфигуриран со променливи на околината ({{variables}}).",
+			"pkce": "Користи PKCE",
+			"scopes": "Опсези (scopes)",
+			"scopesHint": "Одделени со запирка",
+			"sheetDescription": "Поврзи OAuth апликација за луѓето да можат да се најават со {{provider}}.",
+			"sheetTitle": "Најава со {{provider}}",
+			"tokenUrl": "URL на токенот",
+			"userInfoUrl": "URL за информации за корисникот"
+		},
 		"email": {
 			"from": "Од",
 			"fromHint": "Адреса, или име и адреса: Margaya <no-reply@example.com>",
@@ -9255,134 +9696,6 @@
 			"subtitle": "SMTP серверот преку кој Margaya испраќа кодови за најава, покани и известувања.",
 			"title": "Е-пошта",
 			"username": "Корисничко име"
-		},
-		"general": {
-			"counts": {
-				"accounts": "Сметки",
-				"guests": "Гости",
-				"projects": "Проекти",
-				"publishedBoards": "Јавни табли",
-				"workspaces": "Работни простори"
-			},
-			"instanceName": "Име на инстанца",
-			"instanceNameHint": "Се прикажува на екранот за најава и на јавните табли",
-			"instanceNameRequired": "Внеси име",
-			"instanceNameTooLong": "Користи најмногу 80 знаци",
-			"homePage": "Почетна страница",
-			"publicLanding": "Прикажи ја страницата за претставување на производот",
-			"publicLandingHint": "Посетителите што не се најавени ја гледаат страницата за претставување на основната адреса. Кога е исклучена, одат директно на најава.",
-			"overview": "Преглед",
-			"server": {
-				"captcha": "Captcha",
-				"cloudMode": "Облак режим",
-				"configured": "Конфигурирано",
-				"demoMode": "Демо режим",
-				"email": "Е-пошта",
-				"errorReporting": "Пријавување грешки",
-				"fileStorage": "Складирање датотеки",
-				"notConfigured": "Не е конфигурирано",
-				"off": "Исклучено",
-				"on": "Вклучено",
-				"realtime": "Во реално време",
-				"realtimeMemory": "Во меморија",
-				"realtimeRedis": "Redis ({{mode}})",
-				"title": "Сервер"
-			},
-			"subtitle": "Именувај ја инстанцата и провери ја нејзината состојба.",
-			"title": "Општо",
-			"version": "Верзија"
-		},
-		"loadError": "Поставките на инстанцата не може да се вчитаат",
-		"lockedCallout": "Овие поставки се управуваат со променливи на околината на овој сервер. Промените тука се оневозможени.",
-		"nav": {
-			"admins": "Администратори",
-			"authentication": "Автентикација",
-			"email": "Е-пошта",
-			"general": "Општо",
-			"publicBoards": "Јавни табли",
-			"workspaces": "Работни простори",
-			"ai": "AI"
-		},
-		"oauth": {
-			"authorizationUrl": "URL за овластување",
-			"autoSignIn": "Најави се автоматски",
-			"autoSignInHint": "Прескокни го екранот за најава и оди директно кај овој провајдер",
-			"buttonLabel": "Натпис на копчето",
-			"buttonLabelHint": "Се прикажува на копчето за најава, на пример „Продолжи со Okta“",
-			"callbackHint": "Додај го овој URL во твојата OAuth апликација",
-			"callbackUrl": "URL за повратен повик",
-			"clientId": "ID на клиентот",
-			"clientSecret": "Тајна на клиентот",
-			"copied": "Копирано",
-			"copy": "Копирај",
-			"discoveryHint": "Или пополни ги трите endpoint-и подолу",
-			"discoveryUrl": "URL за откривање",
-			"invalidUrl": "Внеси апсолутен http или https URL",
-			"logoutUrl": "URL за одјавување",
-			"managedByEnv": "Овој провајдер е конфигуриран со променливи на околината ({{variables}}).",
-			"pkce": "Користи PKCE",
-			"scopes": "Опсези (scopes)",
-			"scopesHint": "Одделени со запирка",
-			"sheetDescription": "Поврзи OAuth апликација за луѓето да можат да се најават со {{provider}}.",
-			"sheetTitle": "Најава со {{provider}}",
-			"tokenUrl": "URL на токенот",
-			"userInfoUrl": "URL за информации за корисникот"
-		},
-		"pageTitle": "Инстанца · {{page}}",
-		"publicBoards": {
-			"actions": "Дејства за табла",
-			"allow": "Дозволи јавни табли",
-			"allowHint": "Кога е исклучено, секоја јавна врска одговара „не е пронајдено“. Ништо не се брише.",
-			"columns": {
-				"features": "Функции",
-				"project": "Проект",
-				"published": "Објавено",
-				"workspace": "Работен простор"
-			},
-			"empty": "Нема јавни табли на овој сервер.",
-			"feature": {
-				"comments": "Коментари",
-				"guests": "Гости",
-				"reactions": "Реакции",
-				"requests": "Барања",
-				"votes": "Гласови"
-			},
-			"listTitle": "Објавени табли",
-			"loadMore": "Вчитај повеќе",
-			"noMatches": "Ниту една јавна табла не одговара на „{{query}}“",
-			"openBoard": "Отвори табла",
-			"participation": "Дозволи јавно учество",
-			"participationHint": "Кога е исклучено, јавните табли се само за читање: без коментари, реакции, гласови или барања.",
-			"projectSettings": "Поставки на проектот",
-			"search": "Пребарај табли",
-			"subtitle": "Контролирај ги јавните табли на оваа инстанца.",
-			"title": "Јавни табли",
-			"unpublish": "Повлечи објава…",
-			"unpublishConfirm": "Повлечи објава",
-			"unpublishDescription": "Врската не работи додека некој повторно не ја објави таблата. Поставките, коментарите, реакциите и гласовите се зачувуваат.",
-			"unpublished": "Објавата на таблата е повлечена",
-			"unpublishError": "Објавата на таблата не може да се повлече",
-			"unpublishTitle": "Да се повлече објавата на {{project}}?"
-		},
-		"retry": "Обиди се повторно",
-		"save": "Зачувај",
-		"saved": "Поставките се зачувани",
-		"saveError": "Поставките не може да се зачуваат",
-		"secret": {
-			"cancel": "Откажи",
-			"clear": "Исчисти",
-			"cleared": "Тајната е исчистена",
-			"placeholder": "Внеси нова вредност",
-			"replace": "Замени",
-			"saved": "Зачувано",
-			"unreadable": "Зачуваната тајна не може да се прочита (AUTH_SECRET на серверот е променет). Внеси ја повторно."
-		},
-		"source": {
-			"default": "Стандардно",
-			"environment": "Околина: {{variable}}",
-			"lockTooltip": "Отстрани ја {{variable}} и рестартирај за да го управуваш ова тука.",
-			"saved": "Зачувано тука",
-			"savedBy": "Зачувано од {{name}} на {{date}}"
 		},
 		"testEmail": {
 			"codes": {
@@ -9425,6 +9738,132 @@
 			"search": "Пребарај работни простори",
 			"subtitle": "Секој работен простор на оваа инстанца.",
 			"title": "Работни простори"
+		},
+		"publicBoards": {
+			"actions": "Дејства за табла",
+			"allow": "Дозволи јавни табли",
+			"allowHint": "Кога е исклучено, секоја јавна врска одговара „не е пронајдено“. Ништо не се брише.",
+			"columns": {
+				"features": "Функции",
+				"project": "Проект",
+				"published": "Објавено",
+				"workspace": "Работен простор"
+			},
+			"empty": "Нема јавни табли на овој сервер.",
+			"feature": {
+				"comments": "Коментари",
+				"guests": "Гости",
+				"reactions": "Реакции",
+				"requests": "Барања",
+				"votes": "Гласови"
+			},
+			"listTitle": "Објавени табли",
+			"loadMore": "Вчитај повеќе",
+			"noMatches": "Ниту една јавна табла не одговара на „{{query}}“",
+			"openBoard": "Отвори табла",
+			"participation": "Дозволи јавно учество",
+			"participationHint": "Кога е исклучено, јавните табли се само за читање: без коментари, реакции, гласови или барања.",
+			"projectSettings": "Поставки на проектот",
+			"search": "Пребарај табли",
+			"subtitle": "Контролирај ги јавните табли на оваа инстанца.",
+			"title": "Јавни табли",
+			"unpublish": "Повлечи објава…",
+			"unpublishConfirm": "Повлечи објава",
+			"unpublishDescription": "Врската не работи додека некој повторно не ја објави таблата. Поставките, коментарите, реакциите и гласовите се зачувуваат.",
+			"unpublished": "Објавата на таблата е повлечена",
+			"unpublishError": "Објавата на таблата не може да се повлече",
+			"unpublishTitle": "Да се повлече објавата на {{project}}?"
+		},
+		"admins": {
+			"add": "Додади администратор",
+			"addConfirm": "Додади администратор",
+			"addDescription": "Администраторите на инстанцата можат да менуваат секоја поставка во оваа област и да отвораат кој било работен простор.",
+			"added": "{{name}} сега е администратор на инстанцата",
+			"addTitle": "Додади администратор на инстанцата",
+			"columns": {
+				"email": "Е-пошта",
+				"name": "Име"
+			},
+			"email": "Е-пошта",
+			"emailInvalid": "Внеси валидна адреса на е-пошта",
+			"emailPlaceholder": "name@example.com",
+			"lastAdmin": "Мора да постои барем еден администратор на инстанцата",
+			"remove": "Отстрани администратор…",
+			"removeConfirm": "Отстрани",
+			"removed": "{{name}} повеќе не е администратор на инстанцата",
+			"removeDescription": "Ја задржуваат својата сметка и своите работни простори.",
+			"removeTitle": "Да се отстрани {{name}} како администратор на инстанцата?",
+			"subtitle": "Администраторите на инстанцата можат да менуваат секоја поставка во оваа област и да отвораат кој било работен простор.",
+			"title": "Администратори",
+			"you": "Ти"
+		},
+		"identity": {
+			"name": "Име",
+			"nameHint": "Како администраторите ја нарекуваат оваа врска, на пример според давателот.",
+			"remove": "Отстрани",
+			"removeTitle": "Да се отстрани {{name}}?",
+			"done": "Готово",
+			"scim": {
+				"title": "Автоматско управување со сметки (SCIM)",
+				"description": "Дозволи му на давател на идентитет да додава, менува и отстранува луѓе во еден работен простор.",
+				"none": "Нема поврзан давател на идентитет за SCIM.",
+				"connect": "Поврзи давател",
+				"connectDescription": "Создава токен за еден работен простор. Ќе го видиш еднаш, по поврзувањето.",
+				"connectConfirm": "Создај токен",
+				"workspace": "Работен простор",
+				"workspaceHint": "Луѓето што ги додава овој давател се приклучуваат на овој работен простор како членови.",
+				"workspacePlaceholder": "Избери работен простор",
+				"workspaceSearch": "Пребарај работни простори",
+				"baseUrl": "Основна URL за SCIM",
+				"token": "Bearer токен",
+				"tokenTitle": "Копирај го токенот за {{name}}",
+				"tokenDescription": "Ова е единствениот пат кога ќе го видиш. Дај го само на давателот на идентитет: кој и да го има може да додава луѓе во работниот простор и да ги менува или деактивира луѓето со кои управува оваа врска.",
+				"rotate": "Замени токен",
+				"rotateTitle": "Да се замени токенот за {{name}}?",
+				"rotateDescription": "Тековниот токен престанува да работи веднаш, па SCIM синхронизацијата запира додека давателот на идентитет не го добие новиот. Луѓето остануваат поврзани.",
+				"rotateConfirm": "Замени токен",
+				"removeDescription": "Токенот престанува да работи веднаш. Луѓето што ги додал ги задржуваат своите сметки и членства, но давателот повеќе не ги ажурира.",
+				"removed": "Отстрането: {{name}}",
+				"columns": {
+					"name": "Име",
+					"workspace": "Работен простор",
+					"people": "Луѓе"
+				}
+			},
+			"saml": {
+				"title": "Компаниска најава (SAML)",
+				"description": "Дозволи им на луѓето на твоите домени за е-пошта да се најавуваат преку давател на идентитет.",
+				"none": "Нема поврзан давател на идентитет за најава.",
+				"connect": "Поврзи давател",
+				"connectConfirm": "Поврзи",
+				"edit": "Уреди",
+				"editTitle": "Уреди {{name}}",
+				"formDescription": "Кој и да го контролира овој давател на идентитет може да го најави секого на овие домени чија адреса е потврдена овде, па поврзи само давател на кој му веруваш за тие луѓе.",
+				"acsUrl": "URL на Assertion Consumer Service (ACS)",
+				"entityId": "ID на ентитет (публика)",
+				"addressesHint": "Внеси ги овие две вредности кај твојот давател на идентитет. Подоцна не се менуваат.",
+				"domains": "Домени за е-пошта",
+				"domainsHint": "Одвој повеќе домени со запирки. Поддомените се вклучени.",
+				"domainsInvalid": "Внеси домени како example.com, одделени со запирки.",
+				"issuer": "ID на ентитет на давателот на идентитет (издавач)",
+				"entryPoint": "URL за единствена најава",
+				"entryPointInvalid": "Користи https:// адреса.",
+				"certificate": "Сертификат за потпишување",
+				"certificateHint": "Јавниот X.509 сертификат на давателот на идентитет, како PEM или base64. Никогаш приватен клуч.",
+				"certificateKeepHint": "Остави го ова празно за да го задржиш тековниот сертификат.",
+				"currentCertificate": "Тековен отпечаток: {{fingerprint}}",
+				"certificateExpired": "Истечен",
+				"certificateExpiring": "Наскоро истекува",
+				"connected": "Давателот на идентитет е поврзан",
+				"saved": "Врската е зачувана",
+				"removeDescription": "Најавата преку овој давател на идентитет запира веднаш. Сметките остануваат, а луѓето се најавуваат на друг начин.",
+				"removed": "Отстрането: {{name}}",
+				"columns": {
+					"name": "Име",
+					"domains": "Домени за е-пошта",
+					"certificate": "Сертификатот истекува"
+				}
+			}
 		}
 	},
 	"press": {
@@ -9936,6 +10375,24 @@
 				"facts": "Проекти: {{projects}} · Луѓе: {{members}} · Циклуси: {{cycles}}",
 				"memory": "Белешки во меморијата: {{count}}",
 				"history": "Претходни пораки: {{count}}"
+			},
+			"undo": {
+				"button": "Врати го планот",
+				"pending": "Планот се враќа…",
+				"hint": "Можете да го вратите овој план во рок од еден час, сè додека ништо во него не е променето.",
+				"lastPlan": "Сè уште можете да го вратите вашиот последен план.",
+				"done": "Планот е вратен. Избришаните ставки се во корпата.",
+				"archived_one": "{{count}} ставка наместо тоа е архивирана, бидејќи не можете да ја избришете.",
+				"archived_other": "{{count}} ставки наместо тоа се архивирани, бидејќи не можете да ги избришете.",
+				"partial_one": "Вратено, освен {{count}} ставка:",
+				"partial_other": "Вратено, освен {{count}} ставки:",
+				"edited_one": "Ништо не е вратено: {{count}} ставка е променета откако е создаден планот. Отстранете ја рачно ако сè уште сакате да ја нема.",
+				"edited_other": "Ништо не е вратено: {{count}} ставки се променети откако е создаден планот. Отстранете ги рачно ако сè уште сакате да ги нема.",
+				"more_one": "и уште {{count}}",
+				"more_other": "и уште {{count}}",
+				"already": "Овој план е веќе вратен.",
+				"expired": "Овој план повеќе не може да се врати: часот помина.",
+				"failed": "Не успеа враќањето на овој план."
 			}
 		},
 		"duplicates": {
@@ -11484,7 +11941,8 @@
 			"text": "Ова е тест-порака од {{instanceName}}. Ако можеш да ја прочиташ, испраќањето е-пошта работи."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Нов коментар на {{taskTitle}}"
+			"commentWithoutPreview": "Нов коментар на {{taskTitle}}",
+			"pushFixedLine": "Отвори ја Margaya за да ги видиш деталите."
 		}
 	}
 }

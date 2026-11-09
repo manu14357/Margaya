@@ -221,10 +221,29 @@
 			"errors": {
 				"account_not_linked": "Не удалось привязать эту учётную запись к существующему аккаунту. Войдите по электронной почте, чтобы подтвердить аккаунт, затем повторите вход через SSO. Если вход по почте недоступен, обратитесь к администратору.",
 				"oauth_code_verification_failed": "Не удалось выполнить проверку OAuth. Попробуйте ещё раз.",
-				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Регистрация в данный момент отключена. Для создания аккаунта требуется действительное приглашение."
+				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Регистрация в данный момент отключена. Для создания аккаунта требуется действительное приглашение.",
+				"unsolicited_response": "Начните корпоративный вход с этой страницы. Вход, начатый у провайдера удостоверений, не принимается.",
+				"invalid_saml_response": "Не удалось принять ответ вашего провайдера удостоверений. Попробуйте ещё раз или попросите администратора проверить подключение.",
+				"replay_detected": "Этот ответ на вход уже использован. Войдите снова.",
+				"unable_to_create_user": "Не удалось создать ваш аккаунт. Обратитесь к администратору за доступом.",
+				"invalid_request": "Этот запрос на вход недействителен. Попробуйте ещё раз.",
+				"invalid_state": "Срок действия этой ссылки для входа истёк. Попробуйте ещё раз.",
+				"saml_deprecated_algorithm": "Ваш провайдер удостоверений использует для подписи алгоритм, который больше не принимается. Попросите администратора переключить его на SHA-256.",
+				"this_identity_provider_cannot_sign_in_that_email_address_": "Через этого провайдера удостоверений нельзя войти с этим адресом электронной почты.",
+				"new_accounts_on_this_server_must_use_an_approved_email_domain_": "Новые аккаунты на этом сервере должны использовать одобренный почтовый домен.",
+				"banned_user": "Этот аккаунт заблокирован. Обратитесь к администратору за доступом.",
+				"unable_to_link_account": "Не удалось привязать эту учётную запись к вашему аккаунту. Обратитесь за помощью к администратору.",
+				"saml_other_browser": "Корпоративный вход должен завершиться в том же браузере, в котором он был начат. Начните заново с этой страницы и убедитесь, что файлы cookie разрешены."
 			},
 			"instanceStatusError": "Не удалось связаться с сервером. Повторите попытку чуть позже.",
-			"titleWithInstance": "Вход в {{name}}"
+			"titleWithInstance": "Вход в {{name}}",
+			"continueWithSaml": "Продолжить через корпоративный вход",
+			"samlEmail": "Рабочая почта",
+			"samlSubmit": "Продолжить",
+			"samlNoConnection": "Корпоративный вход не настроен для этого почтового домена.",
+			"samlError": "Не удалось начать корпоративный вход. Попробуйте ещё раз.",
+			"emailCodesOff": "Ссылки и коды для входа по электронной почте на этом сервере отключены. Если вы входили только так, пароля у вас ещё нет: нажмите «Забыли пароль?», чтобы задать его.",
+			"emailCodesOffNoEmail": "Ссылки и коды для входа по электронной почте на этом сервере отключены. Если вы входили только так, пароля у вас ещё нет: попросите администратора экземпляра задать его для вас."
 		},
 		"providers": {
 			"google": "Google",
@@ -420,6 +439,10 @@
 				"nameShort": "Имя должно содержать не менее 2 символов"
 			}
 		},
+		"layout": {
+			"headline": "Видите весь проект. Берите следующую задачу.",
+			"lede": "Самостоятельно размещаемое управление проектами для команд, которым нравятся быстрые и спокойные инструменты."
+		},
 		"device": {
 			"approve": "Одобрить",
 			"approveFailed": "Не удалось одобрить",
@@ -443,10 +466,6 @@
 			"subtitle": "Введите код из вашего CLI или приложения, чтобы продолжить.",
 			"title": "Подключение устройства"
 		},
-		"layout": {
-			"headline": "Видите весь проект. Берите следующую задачу.",
-			"lede": "Самостоятельно размещаемое управление проектами для команд, которым нравятся быстрые и спокойные инструменты."
-		},
 		"mcp": {
 			"approve": "Одобрить",
 			"clientFallback": "Клиент MCP",
@@ -463,22 +482,6 @@
 			"subtitle": "Проверьте этот запрос, прежде чем предоставлять доступ к своему аккаунту Margaya.",
 			"title": "Авторизация клиента MCP",
 			"warning": "Этот клиент сможет действовать от вашего имени и получит доступ к вашим рабочим областям. Продолжайте, только если подключение начали вы."
-		},
-		"emailVerification": {
-			"codeLabel": "Код подтверждения",
-			"codeSent": "Мы отправили 6-значный код на {{email}}. Он действует 5 минут.",
-			"invitationsDescription": "Подтвердите почту, чтобы увидеть приглашения, отправленные на {{email}}.",
-			"resend": "Отправить новый код",
-			"sendCode": "Отправить код",
-			"sendFailed": "Не удалось отправить код. Попробуйте ещё раз.",
-			"sending": "Отправка...",
-			"settingsDescription": "Подтвердите {{email}}, чтобы приглашения в рабочие области, отправленные на этот адрес, отображались в Margaya.",
-			"success": "Почта подтверждена",
-			"title": "Подтвердите почту",
-			"verifiedBadge": "Подтверждена",
-			"verify": "Подтвердить",
-			"verifyFailed": "Код не подошёл. Проверьте его или запросите новый.",
-			"verifying": "Проверка..."
 		},
 		"forgotPassword": {
 			"backToSignIn": "Вернуться ко входу",
@@ -507,6 +510,30 @@
 			"successDescription": "Новый пароль установлен, а все сеансы завершены. Войдите с новым паролем.",
 			"successTitle": "Пароль обновлён",
 			"title": "Установите новый пароль"
+		},
+		"emailVerification": {
+			"codeLabel": "Код подтверждения",
+			"codeSent": "Мы отправили 6-значный код на {{email}}. Он действует 5 минут.",
+			"invitationsDescription": "Подтвердите почту, чтобы увидеть приглашения, отправленные на {{email}}.",
+			"resend": "Отправить новый код",
+			"sendCode": "Отправить код",
+			"sendFailed": "Не удалось отправить код. Попробуйте ещё раз.",
+			"sending": "Отправка...",
+			"settingsDescription": "Подтвердите {{email}}, чтобы приглашения в рабочие области, отправленные на этот адрес, отображались в Margaya.",
+			"success": "Почта подтверждена",
+			"title": "Подтвердите почту",
+			"verifiedBadge": "Подтверждена",
+			"verify": "Подтвердить",
+			"verifyFailed": "Код не подошёл. Проверьте его или запросите новый.",
+			"verifying": "Проверка..."
+		},
+		"complete": {
+			"pageTitle": "Выполняется вход",
+			"title": "Завершение входа",
+			"working": "Выполняем вход…",
+			"failedTitle": "Не удалось завершить вход",
+			"failed": "Не удалось завершить этот вход. Ссылка для него работает один раз, в течение минуты и только в том браузере, в котором вы входили. Войдите снова.",
+			"backToSignIn": "Вернуться ко входу"
 		}
 	},
 	"settings": {
@@ -534,8 +561,8 @@
 				"invalidEmail": "Введите действительный адрес электронной почты"
 			},
 			"avatar": {
-				"hint": "PNG, JPEG, or WebP. Cropped to a square and resized to 256x256.",
-				"remove": "Remove",
+				"hint": "Нажмите на фото, чтобы изменить или удалить его. Оно будет обрезано до квадрата и приведено к размеру 256x256.",
+				"remove": "Удалить аватар",
 				"removeError": "Не удалось удалить фото профиля",
 				"removeSuccess": "Фото профиля удалено",
 				"updateError": "Не удалось обновить фото профиля",
@@ -545,10 +572,10 @@
 			},
 			"deleteAccount": {
 				"confirm": "Удалить учётную запись",
-				"confirmLabel": "Confirm your email address",
+				"confirmLabel": "Введите {{email}} для подтверждения",
 				"description": "Рабочие области, в которых состоите только вы, будут удалены вместе с вашей учётной записью. В остальных ваши задачи останутся, но станут неназначенными, а комментарии будут удалены.",
 				"error": "Не удалось удалить учётную запись",
-				"modalDescription": "This cannot be undone. Type {{email}} to confirm.",
+				"modalDescription": "Ваша учётная запись будет удалена навсегда. Это действие нельзя отменить.",
 				"modalTitle": "Удалить вашу учётную запись?",
 				"sectionSubtitle": "Необратимые действия, затрагивающие всю вашу учётную запись.",
 				"sectionTitle": "Опасная зона",
@@ -601,6 +628,40 @@
 			"workspaceRulesTitle": "Правила доставки для рабочих областей",
 			"workspaceRulesDescription": "Используйте глобальные каналы и определяйте, какие рабочие области и проекты могут отправлять уведомления.",
 			"workspaceCardHint": "Выберите, какие каналы может использовать эта рабочая область для уведомлений.",
+			"workspaceEnabledLabel": "Включить уведомления для {{workspaceName}}",
+			"eventPreferencesTitle": "Уведомлять меня о",
+			"eventPreferencesDescription": "Выберите, какие события задач создают уведомления в приложении и могут доставляться в подключённые каналы.",
+			"eventTaskAssignments": "Назначения задач",
+			"eventComments": "Комментарии и упоминания",
+			"eventCommentsHint": "Включает новые комментарии к назначенным вам задачам и прямые @упоминания.",
+			"eventStatusChanges": "Изменения статуса задач",
+			"eventStatusChangesHint": "По задачам, которые назначены вам или на которые вы подписаны.",
+			"eventTaskUpdates": "Другие изменения задач",
+			"eventTaskUpdatesHint": "Изменения приоритета, срока выполнения и названия задач, за которыми вы следите.",
+			"eventDueDateReminders": "Напоминания о сроках",
+			"reminderLeadTimeLabel": "Напоминать до наступления срока",
+			"reminderLeadTimeHint": "От 1 часа до 30 дней до срока. Уведомления о просроченных задачах отправляются отдельно.",
+			"reminderLeadTimeUnitHours": "Часы",
+			"reminderLeadTimeUnitDays": "Дни",
+			"reminderLeadTimeInvalid": "Введите целое число от 1 до {{max}}.",
+			"saveEventPreferences": "Сохранить типы уведомлений",
+			"digestTitle": "Дайджест по почте",
+			"digestDescription": "Письмо со сводкой: ваши открытые задачи, которые просрочены или должны быть выполнены в ближайшие 7 дней, новые упоминания и непрочитанные во «Входящих». Учитывает ваш часовой пояс и не отправляется, если сообщать не о чем.",
+			"digestFrequencyLabel": "Отправлять дайджест",
+			"digestFrequencyOff": "Выкл.",
+			"digestFrequencyDaily": "Ежедневно",
+			"digestFrequencyWeekly": "Еженедельно",
+			"digestWeekdayLabel": "День",
+			"digestWeekdaySunday": "Воскресенье",
+			"digestWeekdayMonday": "Понедельник",
+			"digestWeekdayTuesday": "Вторник",
+			"digestWeekdayWednesday": "Среда",
+			"digestWeekdayThursday": "Четверг",
+			"digestWeekdayFriday": "Пятница",
+			"digestWeekdaySaturday": "Суббота",
+			"digestHourLabel": "Время",
+			"digestNoEmail": "Для дайджеста нужен адрес электронной почты в аккаунте.",
+			"saveDigest": "Сохранить дайджест",
 			"workspaceCardLabelEmail": "Почта",
 			"workspaceCardLabelNtfy": "ntfy",
 			"workspaceCardLabelGotify": "Gotify",
@@ -628,42 +689,8 @@
 			"toastPreferencesSaveFailed": "Не удалось сохранить настройки уведомлений",
 			"toastRuleSavedGeneric": "Правило уведомлений для рабочей области сохранено",
 			"toastRuleRemovedGeneric": "Правило уведомлений для рабочей области удалено",
-			"workspaceEnabledLabel": "Включить уведомления для {{workspaceName}}",
-			"eventPreferencesTitle": "Уведомлять меня о",
-			"eventPreferencesDescription": "Выберите, какие события задач создают уведомления в приложении и могут доставляться в подключённые каналы.",
-			"eventTaskAssignments": "Назначения задач",
-			"eventComments": "Комментарии и упоминания",
-			"eventCommentsHint": "Включает новые комментарии к назначенным вам задачам и прямые @упоминания.",
-			"eventStatusChanges": "Изменения статуса задач",
-			"eventDueDateReminders": "Напоминания о сроках",
-			"reminderLeadTimeLabel": "Напоминать до наступления срока",
-			"reminderLeadTimeHint": "От 1 часа до 30 дней до срока. Уведомления о просроченных задачах отправляются отдельно.",
-			"reminderLeadTimeUnitHours": "Часы",
-			"reminderLeadTimeUnitDays": "Дни",
-			"reminderLeadTimeInvalid": "Введите целое число от 1 до {{max}}.",
-			"saveEventPreferences": "Сохранить типы уведомлений",
-			"eventStatusChangesHint": "По задачам, которые назначены вам или на которые вы подписаны.",
-			"eventTaskUpdates": "Другие изменения задач",
-			"eventTaskUpdatesHint": "Изменения приоритета, срока выполнения и названия задач, за которыми вы следите.",
-			"channelsDescription": "Куда Margaya отправляет уведомления, выбранные выше.",
 			"channelsTitle": "Каналы доставки",
-			"digestDescription": "Письмо со сводкой: ваши открытые задачи, которые просрочены или должны быть выполнены в ближайшие 7 дней, новые упоминания и непрочитанные во «Входящих». Учитывает ваш часовой пояс и не отправляется, если сообщать не о чем.",
-			"digestFrequencyDaily": "Ежедневно",
-			"digestFrequencyLabel": "Отправлять дайджест",
-			"digestFrequencyOff": "Выкл.",
-			"digestFrequencyWeekly": "Еженедельно",
-			"digestHourLabel": "Время",
-			"digestNoEmail": "Для дайджеста нужен адрес электронной почты в аккаунте.",
-			"digestTitle": "Дайджест по почте",
-			"digestWeekdayFriday": "Пятница",
-			"digestWeekdayLabel": "День",
-			"digestWeekdayMonday": "Понедельник",
-			"digestWeekdaySaturday": "Суббота",
-			"digestWeekdaySunday": "Воскресенье",
-			"digestWeekdayThursday": "Четверг",
-			"digestWeekdayTuesday": "Вторник",
-			"digestWeekdayWednesday": "Среда",
-			"saveDigest": "Сохранить дайджест",
+			"channelsDescription": "Куда Margaya отправляет уведомления, выбранные выше.",
 			"sound": {
 				"title": "Звуки",
 				"description": "Воспроизводить звук при получении уведомления, когда Margaya открыта в браузере.",
@@ -694,7 +721,30 @@
 				"deviceMute": "Отключить звуки на этом устройстве",
 				"deviceMuteDescription": "Звук отключается только в этом браузере, на других ваших устройствах он остаётся.",
 				"previewFailed": "Браузер не воспроизвёл звук. Проверьте, не отключён ли звук у этой вкладки или сайта."
-			}
+			},
+			"pushTitle": "Push-уведомления",
+			"pushDescription": "Оповещения на телефоне или компьютере, даже когда Margaya закрыта. Раздел «Уведомлять меня о» определяет, что отправляется, а правило рабочей области ниже может сузить этот выбор.",
+			"pushThisDevice": "На этом устройстве",
+			"pushOnHint": "Это устройство получает push-уведомления.",
+			"pushOffHint": "Браузер запросит разрешение, когда вы включите эту опцию.",
+			"pushOffHintAllowed": "Уведомления в этом браузере уже разрешены.",
+			"pushNotSetUp": "Push-уведомления не настроены на этом сервере. Попросите администратора задать ключи VAPID.",
+			"pushInstallFirst": "На iPhone и iPad сначала добавьте Margaya на экран «Домой»: нажмите «Поделиться», затем «На экран „Домой“». Откройте приложение оттуда и включите эту опцию.",
+			"pushUnsupported": "Этот браузер не может получать здесь push-уведомления. Для них нужен современный браузер и адрес HTTPS.",
+			"pushBlocked": "Уведомления для этого сайта заблокированы. Разрешите их в настройках браузера, затем перезагрузите эту страницу.",
+			"pushOtherDevices": "Другие ваши устройства",
+			"pushRemoveDevice": "Удалить",
+			"pushRemoveDeviceLabel": "Удалить {{device}}",
+			"toastPushOn": "Push-уведомления включены на этом устройстве.",
+			"toastPushOnFailed": "Не удалось включить push-уведомления. Попробуйте ещё раз.",
+			"toastPushOff": "Push-уведомления выключены на этом устройстве.",
+			"toastPushOffFailed": "Не удалось выключить push-уведомления. Попробуйте ещё раз.",
+			"toastPushDeviceRemoved": "Устройство удалено.",
+			"toastPushDeviceRemoveFailed": "Не удалось удалить устройство. Попробуйте ещё раз.",
+			"workspaceCardLabelPush": "Push-уведомления",
+			"pushChannelHintEnabled": "Отправлять подходящие уведомления рабочей области на ваши устройства.",
+			"pushChannelHintDisabled": "Сначала включите push-уведомления на устройстве.",
+			"pushLoadFailed": "Не удалось загрузить настройки push-уведомлений. Перезагрузите страницу, чтобы повторить попытку."
 		},
 		"preferencesPage": {
 			"title": "Настройки",
@@ -1631,7 +1681,10 @@
 				"pr_merged": "PR слит",
 				"issue_opened": "Задача открыта",
 				"issue_closed": "Задача закрыта"
-			}
+			},
+			"removeRule": "Удалить правило для {{event}}",
+			"toastRemoved": "Правило рабочего процесса удалено",
+			"toastRemoveError": "Не удалось удалить правило"
 		},
 		"externalLinks": {
 			"resources": "Ресурсы",
@@ -1682,7 +1735,6 @@
 				"organization": "Администрирование рабочей области",
 				"member": "Участники",
 				"invitation": "Приглашения",
-				"team": "Команды",
 				"ac": "Роли и права доступа",
 				"cycle": "Циклы",
 				"module": "Модули",
@@ -1806,20 +1858,6 @@
 					"cancel": {
 						"label": "Отмена приглашений",
 						"description": "Отзыв ожидающих приглашений в рабочую область."
-					}
-				},
-				"team": {
-					"create": {
-						"label": "Создание команд",
-						"description": "Создание команд в этой рабочей области."
-					},
-					"update": {
-						"label": "Редактирование команд",
-						"description": "Изменение команд и их состава."
-					},
-					"delete": {
-						"label": "Удаление команд",
-						"description": "Удаление команд в этой рабочей области."
 					}
 				},
 				"ac": {
@@ -2033,28 +2071,43 @@
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
 		"customFields": {
-			"addButton": "Добавить",
-			"createError": "Не удалось создать пользовательское поле.",
-			"createSuccess": "Пользовательское поле создано.",
-			"defaultLabel": "По умолчанию",
-			"defaultValuePlaceholder": "Значение по умолчанию",
-			"deleteButton": "Удалить",
-			"deleteError": "Не удалось удалить пользовательское поле.",
-			"deleteSuccess": "Пользовательское поле удалено.",
-			"empty": "Пользовательские поля ещё не настроены.",
-			"loading": "Загрузка пользовательских полей...",
 			"namePlaceholder": "Название поля",
+			"typePlaceholder": "Выберите тип поля",
 			"noOptionsPlaceholder": "Нет вариантов",
+			"defaultValuePlaceholder": "Значение по умолчанию",
 			"optionsPlaceholder": "Варианты, разделённые запятыми",
 			"required": "Обязательное",
-			"typePlaceholder": "Выберите тип поля",
+			"addButton": "Добавить",
+			"loading": "Загрузка пользовательских полей...",
+			"empty": "Пользовательские поля ещё не настроены.",
+			"defaultLabel": "По умолчанию",
+			"createSuccess": "Пользовательское поле создано.",
+			"createError": "Не удалось создать пользовательское поле.",
+			"deleteButton": "Удалить",
+			"deleteSuccess": "Пользовательское поле удалено.",
+			"deleteError": "Не удалось удалить пользовательское поле.",
 			"types": {
 				"boolean": "Логическое значение",
 				"date": "Дата",
 				"dropdown": "Выпадающий список",
 				"number": "Число",
 				"text": "Текст"
-			}
+			},
+			"editButton": "Изменить",
+			"editTitle": "Изменение пользовательского поля",
+			"editDescription": "Тип поля и его обязательность нельзя изменить после создания.",
+			"nameLabel": "Название",
+			"optionsLabel": "Варианты",
+			"addOption": "Добавить вариант",
+			"removeOption": "Удалить вариант",
+			"optionPlaceholder": "Название варианта",
+			"optionsHint": "Переименование варианта обновляет все задачи, сохранённые представления и автоматизации, которые его используют. Удалённый вариант остаётся в задачах, где он уже выбран, пока его кто-нибудь не изменит, и его больше нельзя выбрать.",
+			"duplicateOption": "Варианты должны отличаться друг от друга.",
+			"noDefault": "Без значения по умолчанию",
+			"saveButton": "Сохранить",
+			"cancelButton": "Отмена",
+			"updateSuccess": "Пользовательское поле обновлено.",
+			"updateError": "Не удалось обновить пользовательское поле."
 		},
 		"projectFeatures": {
 			"disableConfirmAction": "Отключить",
@@ -2348,6 +2401,11 @@
 			}
 		},
 		"workspaceExports": {
+			"title": "Экспорт",
+			"pageTitle": "Экспорт",
+			"subtitle": "Экспортируйте задачи в CSV, Excel или JSON. Файлы доступны для скачивания в течение {{days}} дн.",
+			"newExport": "Новый экспорт",
+			"viewExports": "Открыть экспорт",
 			"form": {
 				"activeGroup": "Активные",
 				"allProjects": "Все проекты",
@@ -2377,50 +2435,6 @@
 				"json": "JSON",
 				"xlsx": "Excel"
 			},
-			"history": {
-				"all": "Все экспорты",
-				"columns": {
-					"actions": "Действия",
-					"created": "Создан",
-					"expires": "Доступен",
-					"export": "Экспорт",
-					"requestedBy": "Запросил",
-					"size": "Размер",
-					"status": "Статус",
-					"tasks": "Задачи"
-				},
-				"delete": "Удалить",
-				"deleteAria": "Удалить {{name}}",
-				"deleteDescription": "Файл будет удалён для всех. Это действие нельзя отменить.",
-				"deletedProject": "Удалённый проект",
-				"deleteTitle": "Удалить этот экспорт?",
-				"deleting": "Удаление…",
-				"description": "Скачивайте готовые экспорты или удаляйте ненужные.",
-				"download": "Скачать",
-				"downloadAria": "Скачать {{name}}",
-				"empty": "Экспортов пока нет. Запущенные вами экспорты хранятся здесь {{days}} дн.",
-				"expiredOn": "Истёк {{date}}",
-				"expiresOn": "До {{date}}",
-				"loadMore": "Загрузить ещё",
-				"mine": "Мои экспорты",
-				"scopeLabel": "Чьи экспорты",
-				"summaryProjects_few": "{{format}} · {{count}} проекта",
-				"summaryProjects_many": "{{format}} · {{count}} проектов",
-				"summaryProjects_one": "{{format}} · {{name}}",
-				"summaryProjects_other": "{{format}} · проектов: {{count}}",
-				"title": "Предыдущие экспорты"
-			},
-			"newExport": "Новый экспорт",
-			"pageTitle": "Экспорт",
-			"status": {
-				"completed": "Готово",
-				"expired": "Истёк",
-				"failed": "Ошибка",
-				"processing": "Обработка",
-				"queued": "В очереди"
-			},
-			"subtitle": "Экспортируйте задачи в CSV, Excel или JSON. Файлы доступны для скачивания в течение {{days}} дн.",
-			"title": "Экспорт",
 			"toast": {
 				"deleted": "Экспорт удалён",
 				"deleteError": "Не удалось удалить экспорт. Повторите попытку.",
@@ -2432,7 +2446,66 @@
 				"ready": "Экспорт готов",
 				"started": "Экспорт запущен. Мы сообщим, когда он будет готов."
 			},
-			"viewExports": "Открыть экспорт"
+			"history": {
+				"title": "Предыдущие экспорты",
+				"description": "Скачивайте готовые экспорты или удаляйте ненужные.",
+				"scopeLabel": "Чьи экспорты",
+				"mine": "Мои экспорты",
+				"all": "Все экспорты",
+				"empty": "Экспортов пока нет. Запущенные вами экспорты хранятся здесь {{days}} дн.",
+				"columns": {
+					"actions": "Действия",
+					"created": "Создан",
+					"expires": "Доступен",
+					"export": "Экспорт",
+					"requestedBy": "Запросил",
+					"size": "Размер",
+					"status": "Статус",
+					"tasks": "Задачи"
+				},
+				"summaryProjects_one": "{{format}} · {{name}}",
+				"summaryProjects_few": "{{format}} · {{count}} проекта",
+				"summaryProjects_many": "{{format}} · {{count}} проектов",
+				"summaryProjects_other": "{{format}} · проектов: {{count}}",
+				"deletedProject": "Удалённый проект",
+				"download": "Скачать",
+				"downloadAria": "Скачать {{name}}",
+				"delete": "Удалить",
+				"deleteAria": "Удалить {{name}}",
+				"deleting": "Удаление…",
+				"deleteTitle": "Удалить этот экспорт?",
+				"deleteDescription": "Файл будет удалён для всех. Это действие нельзя отменить.",
+				"expiredOn": "Истёк {{date}}",
+				"expiresOn": "До {{date}}",
+				"loadMore": "Загрузить ещё",
+				"summaryWorkspace": "Вся рабочая область",
+				"fileCount_one": "{{count}} файл",
+				"fileCount_few": "{{count}} файла",
+				"fileCount_many": "{{count}} файлов",
+				"fileCount_other": "{{count}} файла",
+				"withoutFiles": "Без файлов",
+				"missingFiles_one": "В хранилище не найден {{count}} файл",
+				"missingFiles_few": "В хранилище не найдено {{count}} файла",
+				"missingFiles_many": "В хранилище не найдено {{count}} файлов",
+				"missingFiles_other": "В хранилище не найдено файлов: {{count}}"
+			},
+			"status": {
+				"completed": "Готово",
+				"expired": "Истёк",
+				"failed": "Ошибка",
+				"processing": "Обработка",
+				"queued": "В очереди"
+			},
+			"whole": {
+				"title": "Вся рабочая область",
+				"description": "Скачайте всё одним ZIP-архивом: задачи со всеми комментариями, страницы, настройки и файлы.",
+				"action": "Экспортировать рабочую область",
+				"dialogTitle": "Экспорт всей рабочей области",
+				"dialogDescription": "Архив создаётся в фоновом режиме. Вы получите уведомление, когда он будет готов.",
+				"includeFiles": "Включить файлы",
+				"includeFilesHint": "Отключите, чтобы архив был намного меньше. Список всех файлов в нём всё равно останется.",
+				"leftOut": "Секреты, личные страницы, корзина и черновики никогда не включаются. В архиве есть адреса электронной почты участников, поэтому храните его в надёжном месте."
+			}
 		},
 		"workspaceWebhooks": {
 			"actionsMenu": "Действия с вебхуком",
@@ -2813,7 +2886,8 @@
 			"restrictedProject": "Ограниченный проект",
 			"toastUpdated": "Доступ обновлён",
 			"toastError": "Не удалось обновить доступ",
-			"loadError": "Не удалось загрузить настройки доступа. Перезагрузите страницу и попробуйте снова."
+			"loadError": "Не удалось загрузить настройки доступа. Перезагрузите страницу и попробуйте снова.",
+			"guestsHint": "Гости видят только те проекты, в которые их добавили. Добавьте их здесь; роль в проекте ограничивает то, что они могут делать."
 		},
 		"projectPeople": {
 			"defaultAssigneeHint": "Подставляется при создании задачи и назначается на принятые заявки без исполнителя.",
@@ -2931,47 +3005,47 @@
 				"workspacePublicPagesChanged": "Включение или отключение публичных страниц",
 				"pagePublished": "Публикация страницы по публичной ссылке",
 				"pageUnpublished": "Отзыв публичной ссылки страницы",
-				"apiKeyCreated": "Создание API-ключа",
-				"apiKeyRevoked": "Отзыв API-ключа",
-				"exportCreated": "Запуск экспорта",
-				"exportDownloaded": "Скачивание экспорта",
-				"importRun": "Импорт задач",
-				"integrationConnected": "Подключение интеграции",
-				"integrationDisconnected": "Отключение интеграции",
-				"integrationUpdated": "Изменение интеграции",
+				"memberInvited": "Приглашение в рабочую область",
+				"memberInvitationRevoked": "Отзыв приглашения",
 				"memberInvitationAccepted": "Принятие приглашения",
 				"memberInvitationDeclined": "Отклонение приглашения",
 				"memberInvitationRoleChanged": "Изменение роли ожидающего приглашения",
-				"memberInvitationRevoked": "Отзыв приглашения",
-				"memberInvited": "Приглашение в рабочую область",
-				"memberLeft": "Выход из рабочей области",
 				"memberRemoved": "Удаление участника",
+				"memberLeft": "Выход из рабочей области",
 				"memberRoleChanged": "Изменение роли участника",
-				"projectArchived": "Архивирование проекта",
-				"projectCreated": "Создание проекта",
-				"projectFeatureToggled": "Включение или отключение функций проекта",
-				"projectPurged": "Безвозвратное удаление проекта",
-				"projectRestored": "Восстановление проекта из корзины",
-				"projectSettingsChanged": "Изменение настроек проекта",
-				"projectTrashed": "Перемещение проекта в корзину",
-				"projectUnarchived": "Возврат проекта из архива",
-				"publicBoardLinkRotated": "Замена ссылки на публичную доску",
-				"publicBoardPublished": "Публикация публичной доски",
-				"publicBoardSettingsChanged": "Изменение настроек публичной доски",
-				"publicBoardUnpublished": "Снятие публичной доски с публикации",
 				"roleCreated": "Создание роли",
-				"roleDeleted": "Удаление роли",
 				"roleUpdated": "Изменение роли",
-				"trashEmptied": "Очистка корзины проекта",
-				"trashPurged": "Безвозвратное удаление задач из корзины",
-				"unknown": "{{action}}",
+				"roleDeleted": "Удаление роли",
+				"apiKeyCreated": "Создание API-ключа",
+				"apiKeyRevoked": "Отзыв API-ключа",
 				"webhookCreated": "Создание вебхука",
+				"webhookUpdated": "Изменение вебхука",
 				"webhookDeleted": "Удаление вебхука",
 				"webhookSecretRotated": "Смена секрета подписи вебхука",
-				"webhookUpdated": "Изменение вебхука",
+				"integrationConnected": "Подключение интеграции",
+				"integrationUpdated": "Изменение интеграции",
+				"integrationDisconnected": "Отключение интеграции",
 				"workspaceCreated": "Создание рабочей области",
-				"workspaceOwnershipTransferred": "Передача прав владельца рабочей области",
 				"workspaceUpdated": "Изменение настроек рабочей области",
+				"workspaceOwnershipTransferred": "Передача прав владельца рабочей области",
+				"projectCreated": "Создание проекта",
+				"projectTrashed": "Перемещение проекта в корзину",
+				"projectRestored": "Восстановление проекта из корзины",
+				"projectPurged": "Безвозвратное удаление проекта",
+				"projectArchived": "Архивирование проекта",
+				"projectUnarchived": "Возврат проекта из архива",
+				"projectFeatureToggled": "Включение или отключение функций проекта",
+				"projectSettingsChanged": "Изменение настроек проекта",
+				"publicBoardPublished": "Публикация публичной доски",
+				"publicBoardUnpublished": "Снятие публичной доски с публикации",
+				"publicBoardLinkRotated": "Замена ссылки на публичную доску",
+				"publicBoardSettingsChanged": "Изменение настроек публичной доски",
+				"exportCreated": "Запуск экспорта",
+				"exportDownloaded": "Скачивание экспорта",
+				"importRun": "Импорт задач",
+				"trashPurged": "Безвозвратное удаление задач из корзины",
+				"trashEmptied": "Очистка корзины проекта",
+				"unknown": "{{action}}",
 				"aiSettingsUpdated": "Изменение настроек ИИ",
 				"aiTriageLabelsApplied": "Автоматическое добавление предложенных меток",
 				"agentCreated": "Создание агента",
@@ -2998,7 +3072,9 @@
 				"aiConnectorUpdated": "Изменил(а) MCP-коннектор",
 				"aiConnectorDeleted": "Удалил(а) MCP-коннектор",
 				"agentIntakeTriggerUpdated": "Изменил(а) триггер заявок агента",
-				"agentIntakeTriggerDisabled": "Отключил(а) триггер заявок агента"
+				"agentIntakeTriggerDisabled": "Отключил(а) триггер заявок агента",
+				"memberProvisioned": "Добавление участника через SCIM",
+				"memberInvitationProjectsChanged": "Изменение проектов ожидающего приглашения"
 			},
 			"actor": {
 				"apiKey": "API-ключ",
@@ -3091,56 +3167,65 @@
 			"title": "Журнал аудита"
 		},
 		"trash": {
-			"deletedAt": "Удалено {{time}}",
-			"deletedBy": "Удалено: {{name}}, {{time}}",
-			"deletePermanently": "Удалить безвозвратно",
-			"emptyConfirmDescription": "Все задачи в корзине этого проекта будут удалены безвозвратно вместе с комментариями, вложениями и записями времени. Это действие нельзя отменить.",
-			"emptyConfirmTitle": "Очистить корзину?",
-			"emptyProjectsDescription": "Здесь появятся проекты, удалённые из этой рабочей области.",
-			"emptyProjectsTitle": "Нет удалённых проектов",
-			"emptyTasksDescription": "Здесь появятся задачи, удалённые из этого проекта.",
-			"emptyTasksTitle": "Нет удалённых задач",
-			"emptyTrash": "Очистить корзину",
-			"loadError": "Не удалось загрузить корзину",
-			"loadMore": "Загрузить ещё",
-			"menuAria": "Другие действия для {{name}}",
-			"noMatches": "По вашему запросу ничего не найдено",
-			"projectSubtitle": "Удалённые задачи хранятся здесь, пока не будут удалены безвозвратно. При восстановлении задачи возвращаются и подзадачи, удалённые вместе с ней.",
 			"projectTitle": "Недавно удалённые",
-			"purgeOn": "Будет удалено безвозвратно {{date}}",
-			"purgeProjectDescription": "«{{name}}» и всё его содержимое будут удалены для всех. Это действие нельзя отменить.",
-			"purgeProjectTitle": "Удалить проект безвозвратно?",
-			"purgeTaskDescription": "«{{name}}», удалённые вместе с ней подзадачи, комментарии, вложения и записи времени будут удалены для всех. Это действие нельзя отменить.",
-			"purgeTaskTitle": "Удалить задачу безвозвратно?",
-			"restore": "Восстановить",
-			"restoreAria": "Восстановить {{name}}",
-			"retry": "Повторить",
-			"searchProjects": "Поиск удалённых проектов",
+			"projectSubtitle": "Удалённые задачи и страницы хранятся здесь, пока не будут удалены безвозвратно. При восстановлении задачи возвращаются и подзадачи, удалённые вместе с ней; восстановленная страница возвращается в раздел «В архиве».",
+			"workspaceTitle": "Недавно удалённые проекты",
+			"workspaceNav": "Недавно удалённые",
+			"workspaceSubtitle": "Удалённые проекты хранятся здесь вместе с задачами, пока не будут удалены безвозвратно.",
 			"searchTasks": "Поиск удалённых задач",
+			"searchProjects": "Поиск удалённых проектов",
+			"deletedBy": "Удалено: {{name}}, {{time}}",
+			"deletedAt": "Удалено {{time}}",
+			"purgeOn": "Удалится безвозвратно {{date}}",
+			"withSubTasks_one": "с {{count}} подзадачей",
+			"withSubTasks_few": "с {{count}} подзадачами",
+			"withSubTasks_many": "с {{count}} подзадачами",
+			"withSubTasks_other": "с подзадачами ({{count}})",
+			"taskCount_one": "{{count}} задача",
 			"taskCount_few": "{{count}} задачи",
 			"taskCount_many": "{{count}} задач",
-			"taskCount_one": "{{count}} задача",
 			"taskCount_other": "Задач: {{count}}",
+			"restore": "Восстановить",
+			"restoreAria": "Восстановить {{name}}",
+			"menuAria": "Другие действия для {{name}}",
+			"deletePermanently": "Удалить безвозвратно",
+			"emptyTrash": "Очистить корзину",
+			"emptyTasksTitle": "Нет удалённых задач",
+			"emptyTasksDescription": "Здесь появятся задачи, удалённые из этого проекта.",
+			"emptyProjectsTitle": "Нет удалённых проектов",
+			"emptyProjectsDescription": "Здесь появятся проекты, удалённые из этой рабочей области.",
+			"noMatches": "По вашему запросу ничего не найдено",
+			"loadError": "Не удалось загрузить корзину",
+			"retry": "Повторить",
+			"loadMore": "Загрузить ещё",
+			"purgeTaskTitle": "Удалить задачу безвозвратно?",
+			"purgeTaskDescription": "«{{name}}», удалённые вместе с ней подзадачи, комментарии, вложения и записи времени будут удалены для всех. Это действие нельзя отменить.",
+			"emptyConfirmTitle": "Очистить корзину?",
+			"emptyConfirmDescription": "Все задачи в корзине этого проекта будут удалены безвозвратно вместе с комментариями, вложениями и записями времени. Это действие нельзя отменить.",
+			"purgeProjectTitle": "Удалить проект безвозвратно?",
+			"purgeProjectDescription": "«{{name}}» и всё его содержимое будут удалены для всех. Это действие нельзя отменить.",
 			"toast": {
-				"emptied_few": "{{count}} задачи удалены безвозвратно",
-				"emptied_many": "{{count}} задач удалено безвозвратно",
-				"emptied_one": "{{count}} задача удалена безвозвратно",
-				"emptied_other": "Безвозвратно удалено задач: {{count}}",
-				"projectPurged": "Проект удалён безвозвратно",
+				"taskRestored": "Задача восстановлена",
 				"projectRestored": "Проект восстановлен",
-				"purgeError": "Не удалось удалить безвозвратно",
 				"restoreBlocked": "Эту задачу нельзя восстановить отдельно. Сначала восстановите родительскую задачу или проект.",
 				"restoreError": "Не удалось восстановить",
 				"taskPurged": "Задача удалена безвозвратно",
-				"taskRestored": "Задача восстановлена"
+				"projectPurged": "Проект удалён безвозвратно",
+				"emptied_one": "{{count}} задача удалена безвозвратно",
+				"emptied_few": "{{count}} задачи удалены безвозвратно",
+				"emptied_many": "{{count}} задач удалено безвозвратно",
+				"emptied_other": "Безвозвратно удалено задач: {{count}}",
+				"purgeError": "Не удалось удалить безвозвратно",
+				"pageRestored": "Страница восстановлена в раздел «В архиве»",
+				"pagePurged": "Страница удалена безвозвратно"
 			},
-			"withSubTasks_few": "с {{count}} подзадачами",
-			"withSubTasks_many": "с {{count}} подзадачами",
-			"withSubTasks_one": "с {{count}} подзадачей",
-			"withSubTasks_other": "с подзадачами ({{count}})",
-			"workspaceNav": "Недавно удалённые",
-			"workspaceSubtitle": "Удалённые проекты хранятся здесь вместе с задачами, пока не будут удалены безвозвратно.",
-			"workspaceTitle": "Недавно удалённые проекты"
+			"tasksHeading": "Задачи",
+			"pagesHeading": "Страницы",
+			"searchPages": "Поиск удалённых страниц",
+			"emptyPagesTitle": "Нет удалённых страниц",
+			"emptyPagesDescription": "Здесь появляются архивные страницы, удалённые из этого проекта.",
+			"purgePageTitle": "Удалить эту страницу безвозвратно?",
+			"purgePageDescription": "Страница «{{name}}», её комментарии и история версий будут удалены для всех. Это действие нельзя отменить."
 		},
 		"automationRules": {
 			"title": "Автоматизации",
@@ -3469,11 +3554,11 @@
 				"boardView": "Переключиться на доску",
 				"listView": "Переключиться на список",
 				"backlogView": "Переключиться на бэклог",
+				"calendarView": "Переключиться на календарь",
 				"nextTask": "Следующая задача",
 				"prevTask": "Предыдущая задача",
 				"openTask": "Открыть выбранную задачу",
 				"quickSelectNumber": "Выбрать вариант по номеру",
-				"calendarView": "Переключиться на календарь",
 				"goToSection": "Перейти в {{section}}",
 				"goToAllTasks": "Перейти ко всем задачам",
 				"goToMyWork": "Перейти к вашей работе",
@@ -3482,24 +3567,25 @@
 				"goToHome": "Перейти на главную",
 				"goToStickies": "Перейти к стикерам",
 				"paletteActions": "Выполнить действие",
+				"paletteTasks": "Найти задачу по ключу или названию",
 				"palettePeople": "Найти человека",
 				"palettePlaces": "Перейти к разделу",
-				"paletteTasks": "Найти задачу по ключу или названию",
 				"captureTask": "Добавить задачу на доске или в списке",
 				"selectTask": "Выбрать задачу в фокусе",
-				"triageAssignee": "Изменить исполнителей задачи в фокусе",
-				"triagePriority": "Изменить приоритет задачи в фокусе",
 				"triageStatus": "Изменить статус задачи в фокусе",
+				"triagePriority": "Изменить приоритет задачи в фокусе",
+				"triageAssignee": "Изменить исполнителей задачи в фокусе",
+				"taskStatus": "Изменить статус",
+				"taskPriority": "Изменить приоритет",
 				"taskAssignees": "Изменить исполнителей",
+				"taskLabels": "Изменить метки",
+				"taskDueDate": "Изменить срок выполнения",
 				"taskAssignSelf": "Назначить или снять себя",
 				"taskCopyKey": "Скопировать ключ задачи",
 				"taskCopyLink": "Скопировать ссылку на задачу",
+				"taskCopyBranch": "Скопировать название ветки задачи",
 				"taskDelete": "Удалить задачу",
-				"taskDueDate": "Изменить срок выполнения",
-				"taskLabels": "Изменить метки",
-				"taskPriority": "Изменить приоритет",
-				"taskStatus": "Изменить статус",
-				"taskCopyBranch": "Скопировать название ветки задачи"
+				"moveBetweenCards": "Перемещаться между карточками на доске"
 			}
 		},
 		"favorites": {
@@ -3593,11 +3679,6 @@
 				"title": "Задача назначена вам",
 				"content": "Вам назначена задача: {{taskTitle}}"
 			},
-			"time_entry_created": {
-				"title": "Трекинг времени начат",
-				"contentWithTask": "Трекинг времени начат для задачи: {{taskTitle}}",
-				"contentWithoutTask": "Трекинг времени начат для задачи"
-			},
 			"task_mention": {
 				"title": "{{mentionerName}} упомянул вас",
 				"content": "{{mentionerName}} упомянул вас в задаче: {{taskTitle}}",
@@ -3616,6 +3697,11 @@
 			"task_overdue": {
 				"title": "Задача просрочена",
 				"content": "Срок выполнения задачи «{{taskTitle}}» истёк"
+			},
+			"time_entry_created": {
+				"title": "Трекинг времени начат",
+				"contentWithTask": "Трекинг времени начат для задачи: {{taskTitle}}",
+				"contentWithoutTask": "Трекинг времени начат для задачи"
 			},
 			"task_updated": {
 				"dueDate": "Срок выполнения задачи «{{taskTitle}}» изменён на {{newValue}}",
@@ -3662,6 +3748,14 @@
 			"automation_notice": {
 				"title": "Автоматизация: {{ruleName}}",
 				"content": "{{taskKey}} {{taskTitle}}"
+			},
+			"page_comment": {
+				"title": "{{commenterName}} оставил комментарий",
+				"content": "{{commenterName}} прокомментировал страницу «{{pageTitle}}»: {{commentPreview}}"
+			},
+			"page_updated": {
+				"title": "{{editorName}} изменил страницу",
+				"content": "{{editorName}} изменил страницу «{{pageTitle}}»"
 			}
 		},
 		"reminderLeadTime": {
@@ -3730,10 +3824,12 @@
 			"loadMore": "Загрузить ещё",
 			"pageTitle": "Входящие",
 			"preview": {
-				"emptyDescription": "Его задача откроется здесь.",
 				"emptyTitle": "Выберите уведомление",
+				"emptyDescription": "Его задача откроется здесь.",
 				"unavailable": "Эта задача больше недоступна",
-				"label": "Панель чтения"
+				"label": "Панель чтения",
+				"showProperties": "Показать свойства",
+				"hideProperties": "Скрыть свойства"
 			},
 			"retry": "Повторить",
 			"snooze": {
@@ -3783,27 +3879,31 @@
 				"subscribed": "Подписки"
 			},
 			"verbs": {
-				"due_date_reminder": "Срок через {{leadTime}}",
-				"task_assignee_changed": "назначил вас исполнителем",
-				"task_comment": "прокомментировал",
 				"task_created": "создал эту задачу",
+				"task_assignee_changed": "назначил вас исполнителем",
+				"task_status_changed": "перенёс из «{{oldStatus}}» в «{{newStatus}}»",
+				"task_comment": "прокомментировал",
 				"task_mention": "упомянул вас",
 				"task_mention_comment": "упомянул вас в комментарии",
-				"task_overdue": "Срок выполнения истёк",
-				"task_status_changed": "перенёс из «{{oldStatus}}» в «{{newStatus}}»",
+				"time_entry_created": "записал время",
 				"task_updated": {
 					"dueDate": "изменил срок выполнения на {{newValue}}",
 					"dueDateCleared": "удалил срок выполнения",
 					"priority": "изменил приоритет на {{newValue}}",
 					"title": "переименовал задачу"
 				},
-				"time_entry_created": "записал время",
+				"due_date_reminder": "Срок через {{leadTime}}",
+				"task_overdue": "Срок выполнения истёк",
 				"intake_accepted": "принял вашу заявку",
 				"intake_declined": "отклонил вашу заявку",
 				"intake_duplicate": "пометил вашу заявку как дубликат",
 				"page_mention": "упомянул(а) вас на странице",
 				"page_mention_titled": "упомянул(а) вас на странице «{{pageTitle}}»",
-				"task_comment_reply": "ответил на комментарий"
+				"task_comment_reply": "ответил на комментарий",
+				"page_comment": "прокомментировал страницу",
+				"page_comment_titled": "прокомментировал «{{pageTitle}}»",
+				"page_updated": "изменил страницу, которую вы отслеживаете",
+				"page_updated_titled": "изменил «{{pageTitle}}»"
 			},
 			"viewing": {
 				"archived": "Просмотр архивных уведомлений",
@@ -3834,8 +3934,21 @@
 		}
 	},
 	"activity": {
+		"feed": {
+			"all": "Вся активность",
+			"comments": "Комментарии",
+			"label": "Фильтр и сортировка активности",
+			"newest": "Сначала новые",
+			"noMatches": "С этим фильтром ничего не найдено.",
+			"oldest": "Сначала старые",
+			"order": "Порядок",
+			"show": "Показать",
+			"updates": "Изменения"
+		},
 		"assignedToSelf": "назначил задачу себе",
 		"unassigned": "снял назначение с задачи",
+		"unassignedUser": "убрал {{name}} из исполнителей",
+		"unassignedSelf": "убрал себя из исполнителей",
 		"assignedTo": "назначил задачу на {{name}}",
 		"changedStatus": "изменил статус с {{from}} на {{to}}",
 		"changedPriority": "изменил приоритет с {{from}} на {{to}}",
@@ -3843,6 +3956,10 @@
 		"setDueDate": "установил срок выполнения: {{date}}",
 		"changedDueDate": "изменил срок выполнения с {{from}} на {{to}}",
 		"changedTitle": "изменил название с «{{from}}» на «{{to}}»",
+		"moved": "переместил задачу из «{{from}}» в «{{to}}»",
+		"created": "создал эту задачу",
+		"importedFromJira": "импортировал эту задачу из Jira {{key}}",
+		"importedFromSource": "импортировал эту задачу из {{source}} {{key}}",
 		"githubUser": "Пользователь GitHub",
 		"comment": {
 			"github": "GitHub",
@@ -3964,38 +4081,27 @@
 			"commentedAgo": "прокомментировал {{time}}",
 			"linkCopied": "Ссылка на комментарий скопирована"
 		},
-		"moved": "переместил задачу из «{{from}}» в «{{to}}»",
-		"created": "создал эту задачу",
 		"addedToCycle": "добавил задачу в цикл {{name}}",
-		"deletedCycle": "убрал задачу из удалённого цикла",
-		"movedCycle": "переместил задачу из цикла {{from}} в цикл {{to}}",
 		"removedFromCycle": "убрал задачу из цикла {{name}}",
+		"movedCycle": "переместил задачу из цикла {{from}} в цикл {{to}}",
+		"deletedCycle": "убрал задачу из удалённого цикла",
 		"addedToModule": "добавил задачу в модуль {{name}}",
 		"removedFromModule": "убрал задачу из модуля {{name}}",
+		"estimateSet": "установил оценку: {{to}}",
 		"estimateChanged": "изменил оценку с {{from}} на {{to}}",
+		"estimateRemoved": "убрал оценку {{from}}",
 		"estimateReason": {
 			"point_deleted": "(значение оценки удалено)",
 			"system_deleted": "(система оценки удалена)",
 			"system_switched": "(система оценки изменена)",
 			"task_moved": "(перемещено в другой проект)"
 		},
-		"estimateRemoved": "убрал оценку {{from}}",
-		"estimateSet": "установил оценку: {{to}}",
-		"unassignedSelf": "убрал себя из исполнителей",
-		"unassignedUser": "убрал {{name}} из исполнителей",
-		"addedLabel": "добавил метку <label>{{name}}</label>",
-		"attachmentAdded": "прикрепил файл {{filename}}",
-		"attachmentRemoved": "удалил вложение {{filename}}",
+		"setStartDate": "установил дату начала: {{date}}",
 		"changedStartDate": "изменил дату начала с {{from}} на {{to}}",
 		"clearedStartDate": "очистил дату начала",
-		"copiedFrom": "создал эту задачу как копию <task>{{task}}</task>",
-		"copiedTo": "создал копию этой задачи: <task>{{task}}</task>",
-		"linkAdded": "добавил ссылку {{title}}",
-		"linkRemoved": "удалил ссылку {{title}}",
-		"linkUpdated": "обновил ссылку {{title}}",
-		"parentChanged": "изменил родительскую задачу с <from>{{from}}</from> на <to>{{to}}</to>",
-		"parentRemoved": "удалил родительскую задачу <task>{{task}}</task>",
-		"parentSet": "установил родительскую задачу: <task>{{task}}</task>",
+		"addedLabel": "добавил метку <label>{{name}}</label>",
+		"removedLabel": "удалил метку <label>{{name}}</label>",
+		"updatedDescription": "обновил описание",
 		"relationAdded": {
 			"blocked_by": "отметил эту задачу как заблокированную задачей <task>{{task}}</task>",
 			"blocking": "отметил эту задачу как блокирующую <task>{{task}}</task>",
@@ -4007,12 +4113,36 @@
 			"start_before": "установил, что эта задача начинается до <task>{{task}}</task>"
 		},
 		"relationRemoved": "удалил связь «{{relation}}» с задачей <task>{{task}}</task>",
-		"removedLabel": "удалил метку <label>{{name}}</label>",
-		"setStartDate": "установил дату начала: {{date}}",
+		"parentSet": "установил родительскую задачу: <task>{{task}}</task>",
+		"parentChanged": "изменил родительскую задачу с <from>{{from}}</from> на <to>{{to}}</to>",
+		"parentRemoved": "удалил родительскую задачу <task>{{task}}</task>",
 		"subtaskAdded": "добавил подзадачу <task>{{task}}</task>",
 		"subtaskRemoved": "удалил подзадачу <task>{{task}}</task>",
-		"updatedDescription": "обновил описание",
+		"linkAdded": "добавил ссылку {{title}}",
+		"linkUpdated": "обновил ссылку {{title}}",
+		"linkRemoved": "удалил ссылку {{title}}",
+		"attachmentAdded": "прикрепил файл {{filename}}",
+		"attachmentRemoved": "удалил вложение {{filename}}",
+		"copiedFrom": "создал эту задачу как копию <task>{{task}}</task>",
+		"copiedTo": "создал копию этой задачи: <task>{{task}}</task>",
 		"archived": "архивировал эту задачу",
+		"unarchived": "восстановил эту задачу",
+		"intake": {
+			"submitted": "отправил эту заявку",
+			"submittedVia": "отправил эту заявку через {{source}}",
+			"accepted": "принял эту заявку в колонку {{column}}",
+			"acceptedBacklog": "принял эту заявку в бэклог",
+			"declined": "отклонил эту заявку",
+			"declinedWithReason": "отклонил эту заявку: {{note}}",
+			"snoozed": "отложил эту заявку до {{date}}",
+			"unsnoozed": "вернул эту заявку на рассмотрение",
+			"snoozeEnded": "Отсрочка закончилась, заявка снова на рассмотрении",
+			"duplicate": "пометил эту заявку как дубликат {{key}}",
+			"duplicateDeleted": "пометил эту заявку как дубликат удалённой задачи",
+			"reopened": "вновь открыл эту заявку",
+			"acceptedHidden": "принял эту заявку в другой проект",
+			"duplicateHidden": "пометил эту заявку как дубликат задачи в другом проекте"
+		},
 		"reactions": {
 			"add": "Добавить реакцию",
 			"error": "Не удалось обновить реакцию",
@@ -4032,34 +4162,6 @@
 			"reactWith": "Отреагировать: {{label}}",
 			"remove": "Убрать реакцию «{{label}}»",
 			"you": "Вы"
-		},
-		"unarchived": "восстановил эту задачу",
-		"intake": {
-			"accepted": "принял эту заявку в колонку {{column}}",
-			"acceptedBacklog": "принял эту заявку в бэклог",
-			"declined": "отклонил эту заявку",
-			"declinedWithReason": "отклонил эту заявку: {{note}}",
-			"duplicate": "пометил эту заявку как дубликат {{key}}",
-			"duplicateDeleted": "пометил эту заявку как дубликат удалённой задачи",
-			"reopened": "вновь открыл эту заявку",
-			"snoozed": "отложил эту заявку до {{date}}",
-			"snoozeEnded": "Отсрочка закончилась, заявка снова на рассмотрении",
-			"submitted": "отправил эту заявку",
-			"submittedVia": "отправил эту заявку через {{source}}",
-			"unsnoozed": "вернул эту заявку на рассмотрение"
-		},
-		"automation": {
-			"actor": "Автоматизация",
-			"archived_few": "архивировала эту задачу после {{count}} месяцев без обновлений",
-			"archived_many": "архивировала эту задачу после {{count}} месяцев без обновлений",
-			"archived_one": "архивировала эту задачу после {{count}} месяца без обновлений",
-			"archived_other": "архивировала эту задачу после {{count}} мес. без обновлений",
-			"closed_few": "закрыла эту задачу после {{count}} месяцев без обновлений и переместила её в «{{to}}»",
-			"closed_many": "закрыла эту задачу после {{count}} месяцев без обновлений и переместила её в «{{to}}»",
-			"closed_one": "закрыла эту задачу после {{count}} месяца без обновлений и переместила её в «{{to}}»",
-			"closed_other": "закрыла эту задачу после {{count}} мес. без обновлений и переместила её в «{{to}}»",
-			"rolledOver": "перенесла эту задачу из «{{from}}» в «{{to}}» по завершении цикла",
-			"byRule": "через «{{name}}»"
 		},
 		"commentVisibility": {
 			"badgeExternal": "Внешний",
@@ -4086,21 +4188,53 @@
 			"summary": "▲ {{up}} · ▼ {{down}}",
 			"tooltip": "Голоса с публичной доски"
 		},
-		"feed": {
-			"all": "Вся активность",
-			"comments": "Комментарии",
-			"label": "Фильтр и сортировка активности",
-			"newest": "Сначала новые",
-			"noMatches": "С этим фильтром ничего не найдено.",
-			"oldest": "Сначала старые",
-			"order": "Порядок",
-			"show": "Показать",
-			"updates": "Изменения"
+		"automation": {
+			"actor": "Автоматизация",
+			"archived_one": "архивировала эту задачу после {{count}} месяца без обновлений",
+			"archived_few": "архивировала эту задачу после {{count}} месяцев без обновлений",
+			"archived_many": "архивировала эту задачу после {{count}} месяцев без обновлений",
+			"archived_other": "архивировала эту задачу после {{count}} мес. без обновлений",
+			"closed_one": "закрыла эту задачу после {{count}} месяца без обновлений и переместила её в «{{to}}»",
+			"closed_few": "закрыла эту задачу после {{count}} месяцев без обновлений и переместила её в «{{to}}»",
+			"closed_many": "закрыла эту задачу после {{count}} месяцев без обновлений и переместила её в «{{to}}»",
+			"closed_other": "закрыла эту задачу после {{count}} мес. без обновлений и переместила её в «{{to}}»",
+			"rolledOver": "перенесла эту задачу из «{{from}}» в «{{to}}» по завершении цикла",
+			"byRule": "через «{{name}}»",
+			"rolledOverHidden": "перенесла эту задачу в следующий цикл по завершении цикла"
 		},
-		"importedFromJira": "импортировал эту задачу из Jira {{key}}",
-		"importedFromSource": "импортировал эту задачу из {{source}} {{key}}",
 		"movedToTrash": "переместил эту задачу в корзину",
-		"restoredFromTrash": "восстановил эту задачу из корзины"
+		"restoredFromTrash": "восстановил эту задачу из корзины",
+		"parentRemovedHidden": "удалил родительскую задачу в другом проекте",
+		"subtaskAddedHidden": "добавил подзадачу в другом проекте",
+		"subtaskRemovedHidden": "удалил подзадачу в другом проекте",
+		"copiedToHidden": "создал копию этой задачи в другом проекте",
+		"relationAddedHidden": {
+			"related": "отметил эту задачу как связанную с задачей в другом проекте",
+			"blocking": "отметил эту задачу как блокирующую задачу в другом проекте",
+			"blocked_by": "отметил эту задачу как заблокированную задачей в другом проекте",
+			"duplicate": "отметил эту задачу как дубликат задачи в другом проекте",
+			"start_before": "установил, что эта задача начинается до задачи в другом проекте",
+			"start_after": "установил, что эта задача начинается после задачи в другом проекте",
+			"finish_before": "установил, что эта задача завершается до задачи в другом проекте",
+			"finish_after": "установил, что эта задача завершается после задачи в другом проекте"
+		},
+		"relationRemovedHidden": "удалил связь «{{relation}}» с задачей в другом проекте",
+		"parentSetHidden": "установил родительскую задачу из другого проекта",
+		"parentChangedFromHidden": "изменил родительскую задачу с задачи в другом проекте на <to>{{to}}</to>",
+		"parentChangedToHidden": "изменил родительскую задачу с <from>{{from}}</from> на задачу в другом проекте",
+		"parentChangedBetweenHidden": "изменил родительскую задачу: и прежняя, и новая находятся в других проектах",
+		"copiedFromHidden": "создал эту задачу как копию задачи в другом проекте",
+		"movedFromHidden": "переместил задачу из другого проекта в «{{to}}»",
+		"movedToHidden": "переместил задачу из «{{from}}» в другой проект",
+		"movedBetweenHidden": "переместил задачу между другими проектами",
+		"changedStatusHidden": "изменил статус в другом проекте",
+		"addedToHiddenCycle": "добавил задачу в цикл",
+		"removedFromHiddenCycle": "убрал задачу из цикла",
+		"movedCycleFromHidden": "переместил задачу из другого цикла в цикл {{to}}",
+		"movedCycleToHidden": "переместил задачу из цикла {{from}} в другой цикл",
+		"movedCycleBetweenHidden": "переместил задачу между циклами",
+		"addedToHiddenModule": "добавил задачу в модуль",
+		"removedFromHiddenModule": "убрал задачу из модуля"
 	},
 	"tasks": {
 		"recurrence": {
@@ -4168,8 +4302,32 @@
 				"recurredFrom": "создал(а) эту задачу как следующий повтор <task>{{task}}</task>",
 				"recurredFromScheduled": "Создана по расписанию как следующий повтор <task>{{task}}</task>",
 				"recurredTo": "выполнил(а) эту задачу, и был создан следующий повтор <task>{{task}}</task>",
-				"recurredToScheduled": "Следующий повтор создан по расписанию: <task>{{task}}</task>"
+				"recurredToScheduled": "Следующий повтор создан по расписанию: <task>{{task}}</task>",
+				"recurredToHidden": "выполнил(а) эту задачу, и следующий повтор был создан в другом проекте",
+				"recurredToScheduledHidden": "Следующий повтор создан по расписанию в другом проекте",
+				"recurredFromHidden": "создал(а) эту задачу как следующий повтор задачи в другом проекте",
+				"recurredFromScheduledHidden": "Создана по расписанию как следующий повтор задачи в другом проекте"
 			}
+		},
+		"subscription": {
+			"count_few": "{{count}} подписчика",
+			"count_many": "{{count}} подписчиков",
+			"count_one": "{{count}} подписчик",
+			"count_other": "Подписчиков: {{count}}",
+			"error": "Не удалось обновить подписку",
+			"mutedAssignee": "Задача назначена вам, но вы отписаны. Об упоминаниях вы всё равно узнаете.",
+			"notSubscribed": "Получайте уведомления об изменениях статуса, комментариях и других изменениях.",
+			"reasons": {
+				"assignee": "Вы подписаны, потому что задача назначена вам.",
+				"commenter": "Вы подписаны, потому что оставили комментарий.",
+				"creator": "Вы подписаны, потому что создали эту задачу.",
+				"manual": "Вы подписались на эту задачу.",
+				"mention": "Вы подписаны, потому что вас упомянули."
+			},
+			"subscribe": "Подписаться",
+			"toastSubscribed": "Вы подписались на эту задачу",
+			"toastUnsubscribed": "Вы отписались. Об упоминаниях вы всё равно узнаете.",
+			"unsubscribe": "Отписаться"
 		},
 		"status": {
 			"label": "Статус",
@@ -4179,6 +4337,32 @@
 			"done": "Готово",
 			"archived": "В архиве",
 			"planned": "Запланировано"
+		},
+		"columnGroups": {
+			"backlog": {
+				"description": "Зафиксировано, но ещё не запланировано",
+				"label": "Бэклог"
+			},
+			"cancelled": {
+				"description": "Закрыто без выполнения работы",
+				"label": "Отменено"
+			},
+			"completed": {
+				"description": "Готово",
+				"label": "Завершено"
+			},
+			"started": {
+				"description": "Работа выполняется",
+				"label": "Начато"
+			},
+			"triage": {
+				"description": "Ожидает рассмотрения в очереди приёма",
+				"label": "Триаж"
+			},
+			"unstarted": {
+				"description": "Запланировано, работа не начата",
+				"label": "Не начато"
+			}
 		},
 		"priority": {
 			"label": "Приоритет",
@@ -4205,9 +4389,16 @@
 		},
 		"detail": {
 			"subtaskOf": "Подзадача",
+			"customFieldUpdated": "Поле обновлено",
+			"selectOption": "Выберите вариант",
 			"activity": "Активность",
 			"noActivity": "Активность не найдена",
 			"openInFullPage": "Открыть на полной странице",
+			"openOnBoard": "Открыть на доске",
+			"sheetLabel": "Сведения о задаче",
+			"previousTask": "Предыдущая задача",
+			"nextTask": "Следующая задача",
+			"position": "{{position}} из {{total}}",
 			"titlePlaceholder": "Нажмите, чтобы добавить название",
 			"addDescription": "Добавить описание...",
 			"editor": {
@@ -4337,13 +4528,11 @@
 					"toolbar": "Параметры изображения"
 				}
 			},
-			"customFieldUpdated": "Поле обновлено",
-			"selectOption": "Выберите вариант",
-			"nextTask": "Следующая задача",
-			"openOnBoard": "Открыть на доске",
-			"position": "{{position}} из {{total}}",
-			"previousTask": "Предыдущая задача",
-			"sheetLabel": "Сведения о задаче"
+			"saveError": {
+				"title": "Заголовок не сохранился. Он всё ещё в поле, так что можно попробовать снова.",
+				"description": "Описание не сохранилось. Оно всё ещё в редакторе, так что можно попробовать снова.",
+				"retry": "Повторить"
+			}
 		},
 		"entity": {
 			"task": "Задача"
@@ -4519,224 +4708,6 @@
 			},
 			"selectedCount": "{{count}} выбрано"
 		},
-		"gantt": {
-			"pageTitle": "{{name}} – Гант",
-			"title": "Диаграмма Ганта",
-			"searchPlaceholder": "Поиск задач...",
-			"hideTasks": "Скрыть задачи",
-			"showTasks": "Показать задачи",
-			"noTasks": "Нет запланированных задач",
-			"noTasksSubtitle": "Добавьте дату начала, срок выполнения или оба значения к задачам, чтобы разместить их на временной шкале проекта.",
-			"noTasksFound": "Задачи не найдены",
-			"noTasksMatch": "Нет запланированных задач, соответствующих «{{query}}»",
-			"taskHeader": "Задача",
-			"updateDatesError": "Не удалось обновить даты задачи",
-			"resizeStart": "Изменить дату начала",
-			"resizeDue": "Изменить срок выполнения",
-			"taskAriaLabel": "{{title}}: откройте или перетащите для перемещения",
-			"jumpToToday": "Перейти к сегодняшнему дню",
-			"previousPeriod": "Предыдущий период",
-			"nextPeriod": "Следующий период",
-			"periodStart": "Дата начала шкалы времени",
-			"showTaskDates": "Показывать даты задач",
-			"dependencyConflict": "Начало или окончание нарушает порядок зависимости",
-			"dragToSchedule": "Перетащите {{title}} на шкалу времени",
-			"noDates": "Без дат",
-			"noDatesCount": "Без дат · {{count}}",
-			"noDatesHint": "Перетащите на шкалу времени или запланируйте с сегодняшнего дня.",
-			"schedule": "Запланировать",
-			"scheduleTask": "Запланировать {{title}} с сегодняшнего дня",
-			"zoom": "Масштаб шкалы времени",
-			"zoomMonth": "Месяц",
-			"zoomQuarter": "Квартал",
-			"zoomWeek": "Неделя"
-		},
-		"delete": {
-			"title": "Удалить задачу?",
-			"description": "Задача и её подзадачи будут перемещены в корзину проекта. Их можно восстановить в разделе «Недавно удалённые» в настройках проекта.",
-			"action": "Удалить задачу",
-			"success": "Задача перемещена в корзину",
-			"error": "Не удалось удалить задачу"
-		},
-		"archive": {
-			"success_one": "{{count}} задача архивирована",
-			"success_few": "{{count}} задачи архивированы",
-			"success_many": "{{count}} задач архивировано",
-			"success_other": "{{count}} задач архивировано",
-			"success": "{{count}} задач архивировано",
-			"archived": "Задача архивирована",
-			"badge": "В архиве",
-			"error": "Не удалось архивировать задачу",
-			"restore": "Восстановить",
-			"restored": "Задача восстановлена",
-			"restoreError": "Не удалось восстановить задачу"
-		},
-		"listView": {
-			"addTask": "Добавить задачу",
-			"archiveAllTooltip": "Архивировать все завершённые задачи",
-			"noTasks": "Нет задач"
-		},
-		"kanban": {
-			"addTask": "Добавить задачу",
-			"stages": "Колонки",
-			"emptyAction": "Добавить задачу",
-			"emptyTitle": "Задач пока нет"
-		},
-		"pr": {
-			"merged": "Влит",
-			"draft": "Черновик",
-			"open": "Открыт",
-			"label": "Пул-реквест",
-			"count_one": "{{count}} PR",
-			"count_few": "{{count}} пул-реквеста",
-			"count_many": "{{count}} пул-реквестов",
-			"count_other": "{{count}} PR"
-		},
-		"assignee": {
-			"label": "Исполнители",
-			"unassigned": "Не назначено"
-		},
-		"dueDate": {
-			"label": "Срок выполнения",
-			"clear": "Очистить дату",
-			"updateSuccess": "Срок выполнения задачи успешно обновлён",
-			"updateError": "Не удалось обновить срок выполнения задачи",
-			"clearSuccess": "Срок выполнения задачи очищен",
-			"clearError": "Не удалось очистить срок выполнения"
-		},
-		"update": {
-			"success": "Задача успешно обновлена",
-			"error": "Не удалось обновить задачу"
-		},
-		"contextMenu": {
-			"copyLink": "Скопировать ссылку",
-			"copyLinkSuccess": "Ссылка на задачу скопирована",
-			"estimate": "Оценка"
-		},
-		"actions": {
-			"archive": "Архивировать",
-			"markAsPlanned": "Отметить как запланированную",
-			"delete": "Удалить...",
-			"copyKey": "Скопировать ключ задачи",
-			"copyLink": "Скопировать ссылку",
-			"makeCopy": "Создать копию…",
-			"moreActions": "Другие действия"
-		},
-		"bulk": {
-			"selectedCount_one": "{{count}} выбрана",
-			"selectedCount_few": "{{count}} выбраны",
-			"selectedCount_many": "{{count}} выбрано",
-			"selectedCount_other": "{{count}} выбрано",
-			"moveToBacklog": "Переместить в бэклог",
-			"moveToBacklogSuccess_one": "{{count}} задача перемещена в бэклог",
-			"moveToBacklogSuccess_few": "{{count}} задачи перемещены в бэклог",
-			"moveToBacklogSuccess_many": "{{count}} задач перемещено в бэклог",
-			"moveToBacklogSuccess_other": "{{count}} задач перемещено в бэклог",
-			"moveToBacklogError": "Не удалось переместить задачи в бэклог",
-			"moveToBoard": "Переместить на доску",
-			"moveToBoardSuccess_one": "{{count}} задача перемещена на доску",
-			"moveToBoardSuccess_few": "{{count}} задачи перемещены на доску",
-			"moveToBoardSuccess_many": "{{count}} задач перемещено на доску",
-			"moveToBoardSuccess_other": "{{count}} задач перемещено на доску",
-			"moveToBoardError": "Не удалось переместить задачи на доску",
-			"delete": "Удалить задачи",
-			"deleteConfirm_one": "Удалить {{count}} задачу? Это действие нельзя отменить.",
-			"deleteConfirm_few": "Удалить {{count}} задачи? Это действие нельзя отменить.",
-			"deleteConfirm_many": "Удалить {{count}} задач? Это действие нельзя отменить.",
-			"deleteConfirm_other": "Удалить {{count}} задач? Это действие нельзя отменить.",
-			"deleteSuccess_one": "{{count}} задача удалена",
-			"deleteSuccess_few": "{{count}} задачи удалены",
-			"deleteSuccess_many": "{{count}} задач удалено",
-			"deleteSuccess_other": "{{count}} задач удалено",
-			"deleteError": "Не удалось удалить задачи",
-			"archive": "Архивировать задачи",
-			"archiveSuccess_one": "{{count}} задача архивирована",
-			"archiveSuccess_few": "{{count}} задачи архивированы",
-			"archiveSuccess_many": "{{count}} задач архивировано",
-			"archiveSuccess_other": "{{count}} задач архивировано",
-			"archiveError": "Не удалось архивировать задачи",
-			"updateSuccess_one": "{{count}} задача обновлена",
-			"updateSuccess_few": "{{count}} задачи обновлены",
-			"updateSuccess_many": "{{count}} задач обновлено",
-			"updateSuccess_other": "{{count}} задач обновлено",
-			"updateError": "Не удалось обновить задачи",
-			"setPriority": "Задать приоритет",
-			"updatePriorityError": "Не удалось обновить приоритет",
-			"addLabel": "Добавить метку",
-			"addLabelSuccess_one": "Метка добавлена к {{count}} задаче",
-			"addLabelSuccess_few": "Метка добавлена к {{count}} задачам",
-			"addLabelSuccess_many": "Метка добавлена к {{count}} задачам",
-			"addLabelSuccess_other": "Метка добавлена к {{count}} задачам",
-			"addLabelError": "Не удалось добавить метку",
-			"setDueDate": "Задать срок выполнения",
-			"updateDueDateError": "Не удалось обновить срок выполнения",
-			"actions": "Действия",
-			"searchActions": "Поиск действий...",
-			"noActionsFound": "Действия не найдены.",
-			"changeStatus": "Изменить статус",
-			"removeLabel": "Удалить метку",
-			"removeLabelSuccess": "Метка удалена у задач: {{count}}",
-			"removeLabelError": "Не удалось удалить метку",
-			"unarchive": "Восстановить из архива",
-			"unarchiveSuccess": "Восстановлено задач: {{count}}",
-			"unarchiveNone": "Ни одна из выбранных задач не находится в архиве",
-			"unarchiveError": "Не удалось восстановить задачи",
-			"setDates": "Даты",
-			"dateField": "Какую дату задать",
-			"startDate": "Дата начала",
-			"dueDate": "Срок выполнения",
-			"clearStartDate": "Очистить дату начала",
-			"clearDueDate": "Очистить срок выполнения",
-			"updateStartDateError": "Не удалось обновить дату начала. Дата начала не может быть позже срока выполнения задачи.",
-			"selectedCount": "{{count}} выбрано",
-			"moveToBacklogSuccess": "{{count}} задач перемещено в бэклог",
-			"moveToBoardSuccess": "{{count}} задач перемещено на доску",
-			"deleteConfirm": "Переместить задачи в корзину ({{count}})? Их можно восстановить в разделе «Недавно удалённые» в настройках проекта.",
-			"deleteSuccess": "{{count}} задач удалено",
-			"archiveSuccess": "{{count}} задач архивировано",
-			"updateSuccess": "{{count}} задач обновлено",
-			"addLabelSuccess": "Метка добавлена к {{count}} задачам",
-			"addAssignee": "Добавить исполнителя",
-			"addAssigneeSuccess_few": "{{name}} добавлен к {{count}} задачам",
-			"addAssigneeSuccess_many": "{{name}} добавлен к {{count}} задачам",
-			"addAssigneeSuccess_one": "{{name}} добавлен к {{count}} задаче",
-			"addAssigneeSuccess_other": "{{name}} добавлен к {{count}} задачам",
-			"assigneesError": "Не удалось обновить исполнителей",
-			"clearAssignees": "Очистить исполнителей",
-			"clearAssigneesSuccess_few": "Исполнители очищены у {{count}} задач",
-			"clearAssigneesSuccess_many": "Исполнители очищены у {{count}} задач",
-			"clearAssigneesSuccess_one": "Исполнители очищены у {{count}} задачи",
-			"clearAssigneesSuccess_other": "Исполнители очищены у {{count}} задач",
-			"removeAssignee": "Удалить исполнителя",
-			"removeAssigneeSuccess_few": "{{name}} удалён из {{count}} задач",
-			"removeAssigneeSuccess_many": "{{name}} удалён из {{count}} задач",
-			"removeAssigneeSuccess_one": "{{name}} удалён из {{count}} задачи",
-			"removeAssigneeSuccess_other": "{{name}} удалён из {{count}} задач",
-			"clearSelection": "Снять выделение"
-		},
-		"editor": {
-			"table": {
-				"addColumnBefore": "Вставить столбец слева",
-				"addColumnAfter": "Вставить столбец справа",
-				"deleteColumn": "Удалить столбец",
-				"addRowBefore": "Вставить строку выше",
-				"addRowAfter": "Вставить строку ниже",
-				"deleteRow": "Удалить строку",
-				"deleteTable": "Удалить таблицу",
-				"moveRowUp": "Переместить строку вверх",
-				"moveRowDown": "Переместить строку вниз",
-				"moveColumnLeft": "Переместить столбец влево",
-				"moveColumnRight": "Переместить столбец вправо",
-				"toggleHeaderRow": "Строка заголовка",
-				"fullWidth": "На всю ширину",
-				"dragRow": "Строка {{index}}",
-				"dragColumn": "Столбец {{index}}",
-				"dragRowHint": "Перетащите, чтобы переместить строку, или используйте клавиши со стрелками",
-				"dragColumnHint": "Перетащите, чтобы переместить столбец, или используйте клавиши со стрелками",
-				"insertRowHere": "Вставить строку здесь",
-				"insertColumnHere": "Вставить столбец здесь"
-			}
-		},
 		"calendar": {
 			"dayTasksAriaLabel": "Показать все задачи за {{date}}",
 			"moreTasks": "ещё {{count}}",
@@ -4759,452 +4730,101 @@
 			"week": "Неделя",
 			"overdue": "Просрочено"
 		},
-		"descriptionSearchLoading": "Поиск по полным описаниям…",
-		"descriptionSearchError": "Не удалось выполнить поиск по описанию. Результаты могут быть неполными.",
-		"descriptionRetry": "Повторить",
-		"descriptionLoading": "Загрузка описания…",
-		"descriptionLoadError": "Не удалось загрузить описание. Повторите попытку, чтобы загрузить текущую версию.",
-		"columnGroups": {
-			"backlog": {
-				"description": "Зафиксировано, но ещё не запланировано",
-				"label": "Бэклог"
+		"gantt": {
+			"pageTitle": "{{name}} – Гант",
+			"title": "Диаграмма Ганта",
+			"jumpToToday": "Перейти к сегодняшнему дню",
+			"searchPlaceholder": "Поиск задач...",
+			"hideTasks": "Скрыть задачи",
+			"showTasks": "Показать задачи",
+			"noTasks": "Нет запланированных задач",
+			"noTasksSubtitle": "Добавьте дату начала, срок выполнения или оба значения к задачам, чтобы разместить их на временной шкале проекта.",
+			"noTasksFound": "Задачи не найдены",
+			"noTasksMatch": "Нет запланированных задач, соответствующих «{{query}}»",
+			"taskHeader": "Задача",
+			"updateDatesError": "Не удалось обновить даты задачи",
+			"resizeStart": "Изменить дату начала",
+			"resizeDue": "Изменить срок выполнения",
+			"taskAriaLabel": "{{title}}: откройте или перетащите для перемещения",
+			"previousPeriod": "Предыдущий период",
+			"nextPeriod": "Следующий период",
+			"periodStart": "Дата начала шкалы времени",
+			"showTaskDates": "Показывать даты задач",
+			"zoom": "Масштаб шкалы времени",
+			"zoomWeek": "Неделя",
+			"zoomMonth": "Месяц",
+			"zoomQuarter": "Квартал",
+			"noDates": "Без дат",
+			"noDatesCount": "Без дат · {{count}}",
+			"noDatesHint": "Перетащите на шкалу времени или запланируйте с сегодняшнего дня.",
+			"schedule": "Запланировать",
+			"scheduleTask": "Запланировать {{title}} с сегодняшнего дня",
+			"dragToSchedule": "Перетащите {{title}} на шкалу времени",
+			"dependencyConflict": "Начало или окончание нарушает порядок зависимости",
+			"workspaceNoTasksSubtitle": "Добавьте к задачам дату начала, срок выполнения или оба значения, чтобы увидеть их на этой временной шкале.",
+			"showMoreTasks": "Показать больше задач",
+			"blocked": "Заблокирована открытой задачей",
+			"linkFrom": "Связать {{title}} с другой задачей",
+			"linkHint": "Перетащите на другую задачу, чтобы она ждала эту",
+			"link": {
+				"blocks": "{{source}} блокирует {{target}}",
+				"startBefore": "{{source}} начинается раньше {{target}}",
+				"finishBefore": "{{source}} завершается раньше {{target}}",
+				"conflict": "Даты нарушают эту связь."
 			},
-			"cancelled": {
-				"description": "Закрыто без выполнения работы",
-				"label": "Отменено"
+			"milestone": {
+				"add": "Веха",
+				"ariaLabel": "Веха {{title}}: откройте или перетащите для перемещения",
+				"name": "Название вехи",
+				"namePlaceholder": "Название вехи",
+				"date": "Дата вехи",
+				"create": "Добавить веху",
+				"createError": "Не удалось добавить веху"
 			},
-			"completed": {
-				"description": "Готово",
-				"label": "Завершено"
-			},
-			"started": {
-				"description": "Работа выполняется",
-				"label": "Начато"
-			},
-			"triage": {
-				"description": "Ожидает рассмотрения в очереди приёма",
-				"label": "Триаж"
-			},
-			"unstarted": {
-				"description": "Запланировано, работа не начата",
-				"label": "Не начато"
+			"cascade": {
+				"offer_one": "{{count}} связанная задача теперь начинается слишком рано",
+				"offer_few": "{{count}} связанные задачи теперь начинаются слишком рано",
+				"offer_many": "{{count}} связанных задач теперь начинаются слишком рано",
+				"offer_other": "Связанных задач, начинающихся слишком рано: {{count}}",
+				"reviewAction": "Проверить изменения дат",
+				"title_one": "Перенести {{count}} связанную задачу?",
+				"title_few": "Перенести {{count}} связанные задачи?",
+				"title_many": "Перенести {{count}} связанных задач?",
+				"title_other": "Перенести связанные задачи: {{count}}?",
+				"description": "Эти задачи сдвинутся на более поздний срок — ровно настолько, чтобы соблюсти связи, — и сохранят свою длительность. Ничего не изменится, пока вы не подтвердите.",
+				"to": "до",
+				"cancel": "Оставить даты",
+				"confirm_one": "Перенести {{count}} задачу",
+				"confirm_few": "Перенести {{count}} задачи",
+				"confirm_many": "Перенести {{count}} задач",
+				"confirm_other": "Перенести задачи: {{count}}",
+				"moved_one": "Перенесена {{count}} задача",
+				"moved_few": "Перенесено {{count}} задачи",
+				"moved_many": "Перенесено {{count}} задач",
+				"moved_other": "Перенесено задач: {{count}}",
+				"partial": "Перенесено задач: {{moved}} из {{total}}. Остальные сохранили свои даты.",
+				"nothingToMove": "Ни одну открытую задачу с датами не нужно переносить из-за этой связи."
 			}
 		},
-		"estimate": {
-			"bulk": {
-				"action": "Оценка",
-				"error": "Не удалось изменить оценку выбранных задач",
-				"updated_few": "Оценка обновлена у {{count}} задач",
-				"updated_many": "Оценка обновлена у {{count}} задач",
-				"updated_one": "Оценка обновлена у {{count}} задачи",
-				"updated_other": "Оценка обновлена у {{count}} задач"
-			},
-			"chart": {
-				"points": "Баллы",
-				"pointsLeft": "Осталось баллов",
-				"summaryPoints": "Осталось {{remaining}} из {{scope}} баллов, осталось дней: {{days}}",
-				"summaryTime": "Осталось {{remaining}} из {{scope}}, осталось дней: {{days}}",
-				"tasks": "Задачи",
-				"time": "Время",
-				"timeLeft": "Осталось времени",
-				"unitAria": "Единица измерения диаграммы"
-			},
-			"duration": {
-				"hours": "{{hours}}ч",
-				"hoursMinutes": "{{hours}}ч {{minutes}}м",
-				"hourUnit": "h",
-				"minutes": "{{minutes}}м",
-				"minuteUnit": "m"
-			},
-			"label": "Оценка",
-			"none": "Без оценки",
-			"pointsValue_one": "{{value}} б.",
-			"pointsValue_few": "{{value}} б.",
-			"pointsValue_many": "{{value}} б.",
-			"pointsValue_other": "{{value}} б.",
-			"setAria": "Задать оценку",
-			"totals": {
-				"estimated": "Оценено {{estimated}} из {{total}} задач",
-				"points_one": "{{completed}} / {{total}} б.",
-				"points_few": "{{completed}} / {{total}} б.",
-				"points_many": "{{completed}} / {{total}} б.",
-				"points_other": "{{completed}} / {{total}} б.",
-				"time": "{{completed}} / {{total}}"
-			},
-			"updateError": "Не удалось обновить оценку"
+		"delete": {
+			"title": "Удалить задачу?",
+			"description": "Задача и её подзадачи будут перемещены в корзину проекта. Их можно восстановить в разделе «Недавно удалённые» в настройках проекта.",
+			"action": "Удалить задачу",
+			"success": "Задача перемещена в корзину",
+			"error": "Не удалось удалить задачу"
 		},
-		"assignees": {
-			"clear": "Очистить исполнителей",
-			"formerMember": "Больше не участник",
-			"formerMemberSuffix": "{{name}} (больше не участник)",
-			"label": "Исполнители",
-			"limitReached": "У задачи может быть не более {{count}} исполнителей",
-			"more": "+{{count}}",
-			"nameAndMore": "{{name}} +{{count}}",
-			"noMatches": "Совпадений не найдено",
-			"noMembers": "Пока нет участников для назначения",
-			"searchPlaceholder": "Поиск людей...",
-			"stackAria": "Назначено: {{names}}",
-			"unknownPerson": "Неизвестный пользователь",
-			"updateError": "Не удалось обновить исполнителей",
-			"you": "{{name}} (вы)"
-		},
-		"attachments": {
-			"add": "Прикрепить файл",
-			"delete": "Удалить",
-			"deleteConfirmDescription": "Файл будет удалён для всех. Это действие нельзя отменить.",
-			"deleteConfirmTitle": "Удалить {{filename}}?",
-			"download": "Скачать",
-			"dropHere": "Перетащите файлы сюда или нажмите, чтобы выбрать",
-			"dropToAttach": "Отпустите файлы, чтобы прикрепить",
-			"loadError": "Не удалось загрузить вложения",
-			"meta": "{{size}} · {{name}} · {{time}}",
-			"metaNoUser": "{{size}} · {{time}}",
-			"open": "Открыть",
-			"title": "Вложения",
-			"toast": {
-				"attached_few": "Прикреплены {{count}} файла",
-				"attached_many": "Прикреплено {{count}} файлов",
-				"attached_one": "Прикреплён {{count}} файл",
-				"attached_other": "Прикреплено {{count}} файлов",
-				"deleted": "Вложение удалено",
-				"deleteError": "Не удалось удалить вложение",
-				"empty": "{{filename}} пуст",
-				"failed": "Не удалось прикрепить {{filename}}: {{reason}}",
-				"notConfigured": "Загрузка файлов не настроена на этом сервере. Попросите администратора настроить хранилище.",
-				"storageError": "хранилище отклонило загрузку",
-				"tooMany": "Можно прикрепить не более {{count}} файлов за раз",
-				"unknownError": "что-то пошло не так"
-			},
-			"uploading": "Загрузка…"
-		},
-		"copy": {
-			"alwaysCopied": "Статус и приоритет копируются всегда.",
-			"cancel": "Отмена",
-			"includeLabel": "Включить",
-			"options": {
-				"assignees": "Исполнители",
-				"attachments": "Вложения",
-				"customFields": "Значения пользовательских полей",
-				"dates": "Дата начала и срок выполнения",
-				"description": "Описание",
-				"labels": "Метки",
-				"links": "Ссылки",
-				"parent": "Родительская задача",
-				"planning": "Цикл, модули и оценка"
-			},
-			"otherProjectHint": "Статус будет сопоставлен с колонками нового проекта. Пользовательские поля, родительская задача и параметры планирования не копируются между проектами.",
-			"projectLabel": "Проект",
-			"submit": "Создать копию",
-			"title": "Создать копию {{key}}",
-			"titleLabel": "Название",
-			"titleRequired": "Название обязательно",
-			"titleSuffix": "{{title}} (копия)",
-			"toast": {
-				"error": "Не удалось создать копию",
-				"open": "Открыть",
-				"skipped": "Не скопировано: {{list}}",
-				"success": "Копия создана: {{key}}"
-			}
-		},
-		"detailActions": {
-			"addLink": "Добавить ссылку",
-			"addRelation": "Добавить связь",
-			"addSubtask": "Добавить подзадачу",
-			"attachFile": "Прикрепить файл"
-		},
-		"links": {
-			"add": "Добавить ссылку",
-			"addedAt": "Добавлено {{date}}",
-			"addedBy": "Добавлено пользователем {{name}} · {{date}}",
-			"addTitle": "Добавить ссылку",
-			"cancel": "Отмена",
-			"copyUrl": "Скопировать URL",
-			"edit": "Изменить",
-			"editTitle": "Изменить ссылку",
-			"errors": {
-				"credentials": "Ссылки не могут содержать имя пользователя или пароль",
-				"duplicate": "Эта ссылка уже добавлена к задаче",
-				"invalid": "Введите корректный URL с http или https",
-				"required": "URL обязателен",
-				"titleTooLong": "Название может содержать не более 255 символов",
-				"tooLong": "Ссылка может содержать не более 2048 символов"
-			},
-			"linkTitle": "Название",
-			"loadError": "Не удалось загрузить ссылки",
-			"moreActions": "Действия со ссылкой",
-			"remove": "Удалить",
-			"removeConfirmDescription": "Она будет удалена из задачи для всех.",
-			"removeConfirmTitle": "Удалить эту ссылку?",
-			"retry": "Повторить",
-			"save": "Сохранить",
-			"title": "Ссылки",
-			"titlePlaceholder": "Необязательное отображаемое название",
-			"toast": {
-				"added": "Ссылка добавлена",
-				"copied": "Ссылка скопирована",
-				"error": "Не удалось сохранить ссылку",
-				"removed": "Ссылка удалена",
-				"updated": "Ссылка обновлена"
-			},
-			"url": "URL",
-			"urlPlaceholder": "https://example.com"
-		},
-		"create": {
-			"similarTitle": "Похожие открытые задачи",
-			"similarDismiss": "Скрыть похожие задачи",
-			"similarOpen": "Открыть",
-			"similarOpenLabel": "Открыть {{key}} {{title}} в новой вкладке"
-		},
-		"parent": {
-			"add": "Добавить родительскую задачу",
-			"chip": "Родительская",
-			"label": "Родительская задача",
-			"noTasks": "Задачи не найдены",
-			"remove": "Удалить родительскую задачу",
-			"search": "Поиск задач…",
-			"tasksInProject": "Задачи в этом проекте",
-			"toast": {
-				"error": "Не удалось изменить родительскую задачу",
-				"removed": "Родительская задача удалена",
-				"set": "Родительская задача установлена: {{key}}"
-			},
-			"tooltip": "Родительская задача: {{key}} {{title}}"
-		},
-		"taskKey": {
-			"clipboardError": "Не удалось скопировать в буфер обмена",
-			"copied": "{{key}} скопирован",
-			"copyTooltip": "Скопировать ключ задачи"
-		},
-		"display": {
-			"button": "Вид",
-			"columns": "Колонки",
-			"groupBy": "Группировать по",
-			"groups": {
-				"assignee": "Исполнитель",
-				"createdBy": "Автор",
-				"cycle": "Цикл",
-				"estimate": "Оценка",
-				"group": "Группа",
-				"label": "Метка",
-				"module": "Модуль",
-				"priority": "Приоритет",
-				"project": "Проект",
-				"status": "Статус"
-			},
-			"none": "Нет",
-			"order": {
-				"assignee": "Исполнитель",
-				"completedAt": "Дата завершения",
-				"createdAt": "Недавно созданные",
-				"cycle": "Цикл",
-				"dueDate": "Срок выполнения",
-				"estimate": "Оценка",
-				"label": "Метка",
-				"manual": "Вручную",
-				"module": "Модуль",
-				"number": "Ключ задачи",
-				"priority": "Приоритет",
-				"startDate": "Дата начала",
-				"status": "Статус",
-				"subTaskCount": "Подзадачи",
-				"title": "Название",
-				"updatedAt": "Недавно обновлённые",
-				"archivedAt": "Дата архивации"
-			},
-			"orderBy": "Сортировать по",
-			"properties": "Свойства",
-			"props": {
-				"assignee": "Исполнители",
-				"checklist": "Чек-лист",
-				"createdAt": "Создано",
-				"cycle": "Цикл",
-				"dueDate": "Срок выполнения",
-				"estimate": "Оценка",
-				"key": "Ключ",
-				"labels": "Метки",
-				"modules": "Модули",
-				"priority": "Приоритет",
-				"startDate": "Дата начала",
-				"status": "Статус",
-				"subTaskCount": "Подзадачи",
-				"updatedAt": "Обновлено"
-			},
-			"showEmptyGroups": "Показывать пустые группы",
-			"showSubTasks": "Показывать подзадачи",
-			"subGroupBy": "Подгруппировать по"
-		},
-		"filters": {
-			"apply": "Применить",
-			"applyError": "Не удалось применить фильтры",
-			"archived": {
-				"exclude": "Скрыть архивные",
-				"include": "Показать и архивные",
-				"label": "В архиве",
-				"only": "Только архивные"
-			},
-			"button": "Фильтр",
-			"clearAll": "Сбросить все фильтры",
-			"dates": {
-				"amount": "Количество",
-				"custom": "Своя дата…",
-				"emptyTab": "Пусто",
-				"exact": "Точная дата",
-				"future": "После сегодняшнего дня",
-				"lastMonth": "Прошлый месяц",
-				"lastWeek": "Прошлая неделя",
-				"nextMonth": "Следующий месяц",
-				"nextWeek": "Следующая неделя",
-				"overdue": "Просрочено",
-				"past": "До сегодняшнего дня",
-				"presets": "Пресеты",
-				"rolling": "Скользящий период",
-				"rollingValue": "{{amount}} {{unit}}",
-				"thisMonth": "Этот месяц",
-				"thisWeek": "Эта неделя",
-				"today": "Сегодня",
-				"tomorrow": "Завтра",
-				"units": {
-					"days": "дн.",
-					"months": "мес.",
-					"weeks": "нед."
-				},
-				"yesterday": "Вчера"
-			},
-			"matchAll": "Все условия",
-			"matchAny": "Любое условие",
-			"mobileSummary_few": "{{count}} фильтра",
-			"mobileSummary_many": "{{count}} фильтров",
-			"mobileSummary_one": "{{count}} фильтр",
-			"mobileSummary_other": "Фильтров: {{count}}",
-			"nestedReadOnly": "Это представление использует расширенные фильтры, которые нельзя изменить здесь",
-			"noOptions": "Нет вариантов",
-			"operators": {
-				"between": "между",
-				"is": "равно",
-				"isEmpty": "пусто",
-				"isNoneOf": "не входит в",
-				"isNot": "не равно",
-				"isNotEmpty": "не пусто",
-				"moreThanAgo": "больше … назад",
-				"moreThanAhead": "больше … вперёд",
-				"on": "в день",
-				"onOrAfter": "не раньше",
-				"onOrBefore": "не позже",
-				"withinLast": "за последние",
-				"withinNext": "в ближайшие"
-			},
-			"removeFilter": "Убрать фильтр {{subject}}",
-			"retry": "Повторить",
-			"searchOptions": "Поиск вариантов",
-			"subjects": {
-				"completed": "Завершено",
-				"created": "Создано",
-				"createdBy": "Автор",
-				"cycle": "Цикл",
-				"group": "Группа",
-				"mentions": "Упоминания",
-				"module": "Модуль",
-				"parent": "Родитель",
-				"project": "Проект",
-				"startDate": "Дата начала",
-				"subscribed": "Подписки",
-				"updated": "Обновлено"
-			},
-			"tooMany": "Слишком много совпадений для фильтрации здесь; откройте таблицу",
-			"values": {
-				"currentCycle": "Текущий цикл",
-				"false": "Нет",
-				"me": "Я",
-				"noAssignee": "Без исполнителя",
-				"noCreator": "Без автора",
-				"noCycle": "Без цикла",
-				"noEstimate": "Без оценки",
-				"noLabel": "Без метки",
-				"noModule": "Без модуля",
-				"none": "Нет",
-				"noParent": "Без родителя",
-				"true": "Да"
-			}
-		},
-		"groups": {
-			"all": "Все задачи",
-			"hiddenGroups_few": "Ещё {{count}} группы не показаны",
-			"hiddenGroups_many": "Ещё {{count}} групп не показано",
-			"hiddenGroups_one": "Ещё {{count}} группа не показана",
-			"hiddenGroups_other": "Ещё не показано групп: {{count}}",
-			"loadMore": "Загрузить ещё ({{count}})",
-			"moduleCount_few": "{{count}} модуля",
-			"moduleCount_many": "{{count}} модулей",
-			"moduleCount_one": "{{count}} модуль",
-			"moduleCount_other": "Модулей: {{count}}",
-			"moveError": "Не удалось переместить задачу",
-			"noAssignee": "Без исполнителя",
-			"noCreator": "Без автора",
-			"noCycle": "Без цикла",
-			"noEstimate": "Без оценки",
-			"noLabel": "Без метки",
-			"noModule": "Без модуля",
-			"planned": "Запланировано"
-		},
-		"queryEmpty": {
-			"clear": "Сбросить фильтры",
-			"description": "Попробуйте убрать один-два фильтра.",
-			"title": "Нет задач, подходящих под фильтры"
-		},
-		"spreadsheet": {
-			"clearSort": "Сбросить сортировку",
-			"collapseSubTasks": "Скрыть подзадачи",
-			"expandSubTasks": "Показать подзадачи",
-			"hideColumn": "Скрыть колонку",
-			"loadError": "Не удалось загрузить задачи",
-			"selectTask": "Выбрать {{key}}",
-			"sortAsc": "По возрастанию",
-			"sortDesc": "По убыванию",
-			"task": "Задача"
-		},
-		"subscription": {
-			"count_few": "{{count}} подписчика",
-			"count_many": "{{count}} подписчиков",
-			"count_one": "{{count}} подписчик",
-			"count_other": "Подписчиков: {{count}}",
-			"error": "Не удалось обновить подписку",
-			"mutedAssignee": "Задача назначена вам, но вы отписаны. Об упоминаниях вы всё равно узнаете.",
-			"notSubscribed": "Получайте уведомления об изменениях статуса, комментариях и других изменениях.",
-			"reasons": {
-				"assignee": "Вы подписаны, потому что задача назначена вам.",
-				"commenter": "Вы подписаны, потому что оставили комментарий.",
-				"creator": "Вы подписаны, потому что создали эту задачу.",
-				"manual": "Вы подписались на эту задачу.",
-				"mention": "Вы подписаны, потому что вас упомянули."
-			},
-			"subscribe": "Подписаться",
-			"toastSubscribed": "Вы подписались на эту задачу",
-			"toastUnsubscribed": "Вы отписались. Об упоминаниях вы всё равно узнаете.",
-			"unsubscribe": "Отписаться"
-		},
-		"timeTracking": {
-			"duration": "Длительность",
-			"durationInvalid": "Введите длительность от 1 минуты до 24 часов, например 1ч 30м.",
-			"durationPlaceholder": "напр. 1h 30m",
-			"empty": "Время пока не записано",
-			"entries": "Записи времени",
-			"formerMember": "Бывший участник",
-			"hours": "{{hours}} ч",
-			"hoursMinutes": "{{hours}} ч {{minutes}} мин",
-			"label": "Затраченное время",
-			"logError": "Не удалось записать время",
-			"logged": "Время записано",
-			"logTime": "Записать время",
-			"minutes": "{{minutes}} мин",
-			"note": "Заметка (необязательно)",
-			"running": "Идёт отсчёт",
-			"spentAria": "Затраченное время: {{total}}. Записать время",
-			"submit": "Записать время",
-			"deleteConfirm": "Удалить эту запись?",
-			"deleted": "Запись времени удалена",
-			"deleteEntry": "Удалить запись времени от {{date}}",
-			"deleteError": "Не удалось удалить запись времени"
+		"archive": {
+			"success_one": "{{count}} задача архивирована",
+			"success_few": "{{count}} задачи архивированы",
+			"success_many": "{{count}} задач архивировано",
+			"success_other": "{{count}} задач архивировано",
+			"success": "{{count}} задач архивировано",
+			"archived": "Задача архивирована",
+			"badge": "В архиве",
+			"error": "Не удалось архивировать задачу",
+			"restore": "Восстановить",
+			"restored": "Задача восстановлена",
+			"restoreError": "Не удалось восстановить задачу"
 		},
 		"archivedBanner": {
 			"message": "Эта задача была архивирована {{time}}.",
@@ -5277,8 +4897,664 @@
 			},
 			"untitled": "Черновик без названия"
 		},
+		"listView": {
+			"addTask": "Добавить задачу",
+			"archiveAllTooltip": "Архивировать все завершённые задачи",
+			"noTasks": "Нет задач"
+		},
+		"kanban": {
+			"addTask": "Добавить задачу",
+			"stages": "Колонки",
+			"emptyAction": "Добавить задачу",
+			"emptyTitle": "Задач пока нет"
+		},
+		"pr": {
+			"merged": "Влит",
+			"draft": "Черновик",
+			"open": "Открыт",
+			"label": "Пул-реквест",
+			"count_one": "{{count}} PR",
+			"count_few": "{{count}} пул-реквеста",
+			"count_many": "{{count}} пул-реквестов",
+			"count_other": "{{count}} PR"
+		},
+		"assignee": {
+			"label": "Исполнители",
+			"unassigned": "Не назначено"
+		},
+		"assignees": {
+			"label": "Исполнители",
+			"searchPlaceholder": "Поиск людей...",
+			"noMatches": "Совпадений не найдено",
+			"noMembers": "Пока нет участников для назначения",
+			"you": "{{name}} (вы)",
+			"clear": "Очистить исполнителей",
+			"more": "+{{count}}",
+			"nameAndMore": "{{name}} +{{count}}",
+			"stackAria": "Назначено: {{names}}",
+			"formerMember": "Больше не участник",
+			"formerMemberSuffix": "{{name}} (больше не участник)",
+			"limitReached": "У задачи может быть не более {{count}} исполнителей",
+			"updateError": "Не удалось обновить исполнителей",
+			"unknownPerson": "Неизвестный пользователь",
+			"noAccess": "Нет доступа к этому проекту",
+			"noAccessSuffix": "{{name}} (нет доступа к этому проекту)"
+		},
+		"dueDate": {
+			"label": "Срок выполнения",
+			"clear": "Очистить дату",
+			"updateSuccess": "Срок выполнения задачи успешно обновлён",
+			"updateError": "Не удалось обновить срок выполнения задачи",
+			"clearSuccess": "Срок выполнения задачи очищен",
+			"clearError": "Не удалось очистить срок выполнения"
+		},
+		"update": {
+			"success": "Задача успешно обновлена",
+			"error": "Не удалось обновить задачу"
+		},
+		"contextMenu": {
+			"copyLink": "Скопировать ссылку",
+			"copyLinkSuccess": "Ссылка на задачу скопирована",
+			"estimate": "Оценка"
+		},
+		"actions": {
+			"archive": "Архивировать",
+			"markAsPlanned": "Отметить как запланированную",
+			"delete": "Удалить...",
+			"copyKey": "Скопировать ключ задачи",
+			"copyLink": "Скопировать ссылку",
+			"makeCopy": "Создать копию…",
+			"moreActions": "Другие действия"
+		},
+		"commands": {
+			"assignedSelf": "Задача назначена на вас",
+			"assignees": "Изменить исполнителей…",
+			"assignSelf": "Назначить на меня",
+			"copyTitle": "Скопировать название",
+			"cycle": "Изменить цикл…",
+			"dueDate": "Изменить срок выполнения…",
+			"estimate": "Изменить оценку…",
+			"group": "Эта задача",
+			"labels": "Изменить метки…",
+			"module": "Изменить модули…",
+			"priority": "Изменить приоритет…",
+			"status": "Изменить статус…",
+			"titleCopied": "Название задачи скопировано",
+			"unassignedSelf": "Вы больше не исполнитель",
+			"unassignSelf": "Снять с меня"
+		},
+		"readableLink": {
+			"goHome": "На главную",
+			"notFound": "В этой рабочей области нет задачи с ключом {{key}}, или у вас нет к ней доступа."
+		},
+		"timeTracking": {
+			"label": "Затраченное время",
+			"logTime": "Записать время",
+			"spentAria": "Затраченное время: {{total}}. Записать время",
+			"duration": "Длительность",
+			"durationPlaceholder": "напр. 1h 30m",
+			"durationInvalid": "Введите длительность от 1 минуты до 24 часов, например 1ч 30м.",
+			"note": "Заметка (необязательно)",
+			"submit": "Записать время",
+			"logged": "Время записано",
+			"logError": "Не удалось записать время",
+			"empty": "Время пока не записано",
+			"entries": "Записи времени",
+			"running": "Идёт отсчёт",
+			"formerMember": "Бывший участник",
+			"hours": "{{hours}} ч",
+			"minutes": "{{minutes}} мин",
+			"hoursMinutes": "{{hours}} ч {{minutes}} мин",
+			"deleteEntry": "Удалить запись времени от {{date}}",
+			"deleteConfirm": "Удалить эту запись?",
+			"deleted": "Запись времени удалена",
+			"deleteError": "Не удалось удалить запись времени",
+			"startTimer": "Запустить таймер",
+			"startHere": "Остановить его и запустить здесь",
+			"stopTimer": "Остановить",
+			"timerRunning": "Таймер запущен",
+			"timerRunningOn": "Таймер запущен для задачи {{task}}",
+			"timerStarted": "Таймер запущен",
+			"timerSwitched": "Таймер запущен. Другой ваш таймер остановлен.",
+			"timerStopped": "Таймер остановлен. Записано: {{total}}.",
+			"timerStartError": "Не удалось запустить таймер",
+			"timerStopError": "Не удалось остановить таймер",
+			"loadError": "Не удалось загрузить записи времени",
+			"editEntry": "Изменить запись времени от {{date}}",
+			"editStart": "Начало",
+			"editEnd": "Конец",
+			"editEndRunningHint": "Оставьте пустым, чтобы таймер продолжал работать.",
+			"editEndRequired": "Укажите, когда закончилось это время.",
+			"editStartInvalid": "Укажите, когда началось это время.",
+			"editEndBeforeStart": "Конец не может быть раньше начала.",
+			"editSave": "Сохранить",
+			"edited": "Запись времени обновлена",
+			"editError": "Не удалось обновить запись времени"
+		},
+		"bulk": {
+			"selectedCount": "{{count}} выбрано",
+			"selectedCount_one": "{{count}} выбрана",
+			"selectedCount_few": "{{count}} выбраны",
+			"selectedCount_many": "{{count}} выбрано",
+			"selectedCount_other": "{{count}} выбрано",
+			"moveToBacklog": "Переместить в бэклог",
+			"clearSelection": "Снять выделение",
+			"moveToBacklogSuccess": "{{count}} задач перемещено в бэклог",
+			"moveToBacklogSuccess_one": "{{count}} задача перемещена в бэклог",
+			"moveToBacklogSuccess_few": "{{count}} задачи перемещены в бэклог",
+			"moveToBacklogSuccess_many": "{{count}} задач перемещено в бэклог",
+			"moveToBacklogSuccess_other": "{{count}} задач перемещено в бэклог",
+			"moveToBacklogError": "Не удалось переместить задачи в бэклог",
+			"moveToBoard": "Переместить на доску",
+			"moveToBoardSuccess": "{{count}} задач перемещено на доску",
+			"moveToBoardSuccess_one": "{{count}} задача перемещена на доску",
+			"moveToBoardSuccess_few": "{{count}} задачи перемещены на доску",
+			"moveToBoardSuccess_many": "{{count}} задач перемещено на доску",
+			"moveToBoardSuccess_other": "{{count}} задач перемещено на доску",
+			"moveToBoardError": "Не удалось переместить задачи на доску",
+			"delete": "Удалить задачи",
+			"deleteConfirm": "Переместить задачи в корзину ({{count}})? Их можно восстановить в разделе «Недавно удалённые» в настройках проекта.",
+			"deleteConfirm_one": "Удалить {{count}} задачу? Это действие нельзя отменить.",
+			"deleteConfirm_few": "Удалить {{count}} задачи? Это действие нельзя отменить.",
+			"deleteConfirm_many": "Удалить {{count}} задач? Это действие нельзя отменить.",
+			"deleteConfirm_other": "Удалить {{count}} задач? Это действие нельзя отменить.",
+			"deleteSuccess": "{{count}} задач удалено",
+			"deleteSuccess_one": "{{count}} задача удалена",
+			"deleteSuccess_few": "{{count}} задачи удалены",
+			"deleteSuccess_many": "{{count}} задач удалено",
+			"deleteSuccess_other": "{{count}} задач удалено",
+			"deleteError": "Не удалось удалить задачи",
+			"archive": "Архивировать задачи",
+			"archiveSuccess": "{{count}} задач архивировано",
+			"archiveSuccess_one": "{{count}} задача архивирована",
+			"archiveSuccess_few": "{{count}} задачи архивированы",
+			"archiveSuccess_many": "{{count}} задач архивировано",
+			"archiveSuccess_other": "{{count}} задач архивировано",
+			"archiveError": "Не удалось архивировать задачи",
+			"updateSuccess": "{{count}} задач обновлено",
+			"updateSuccess_one": "{{count}} задача обновлена",
+			"updateSuccess_few": "{{count}} задачи обновлены",
+			"updateSuccess_many": "{{count}} задач обновлено",
+			"updateSuccess_other": "{{count}} задач обновлено",
+			"updateError": "Не удалось обновить задачи",
+			"addAssignee": "Добавить исполнителя",
+			"removeAssignee": "Удалить исполнителя",
+			"clearAssignees": "Очистить исполнителей",
+			"addAssigneeSuccess_one": "{{name}} добавлен к {{count}} задаче",
+			"addAssigneeSuccess_few": "{{name}} добавлен к {{count}} задачам",
+			"addAssigneeSuccess_many": "{{name}} добавлен к {{count}} задачам",
+			"addAssigneeSuccess_other": "{{name}} добавлен к {{count}} задачам",
+			"removeAssigneeSuccess_one": "{{name}} удалён из {{count}} задачи",
+			"removeAssigneeSuccess_few": "{{name}} удалён из {{count}} задач",
+			"removeAssigneeSuccess_many": "{{name}} удалён из {{count}} задач",
+			"removeAssigneeSuccess_other": "{{name}} удалён из {{count}} задач",
+			"clearAssigneesSuccess_one": "Исполнители очищены у {{count}} задачи",
+			"clearAssigneesSuccess_few": "Исполнители очищены у {{count}} задач",
+			"clearAssigneesSuccess_many": "Исполнители очищены у {{count}} задач",
+			"clearAssigneesSuccess_other": "Исполнители очищены у {{count}} задач",
+			"assigneesError": "Не удалось обновить исполнителей",
+			"setPriority": "Задать приоритет",
+			"updatePriorityError": "Не удалось обновить приоритет",
+			"addLabel": "Добавить метку",
+			"addLabelSuccess": "Метка добавлена к {{count}} задачам",
+			"addLabelSuccess_one": "Метка добавлена к {{count}} задаче",
+			"addLabelSuccess_few": "Метка добавлена к {{count}} задачам",
+			"addLabelSuccess_many": "Метка добавлена к {{count}} задачам",
+			"addLabelSuccess_other": "Метка добавлена к {{count}} задачам",
+			"addLabelError": "Не удалось добавить метку",
+			"setDueDate": "Задать срок выполнения",
+			"updateDueDateError": "Не удалось обновить срок выполнения",
+			"actions": "Действия",
+			"searchActions": "Поиск действий...",
+			"noActionsFound": "Действия не найдены.",
+			"changeStatus": "Изменить статус",
+			"removeLabel": "Удалить метку",
+			"removeLabelSuccess": "Метка удалена у задач: {{count}}",
+			"removeLabelError": "Не удалось удалить метку",
+			"unarchive": "Восстановить из архива",
+			"unarchiveSuccess": "Восстановлено задач: {{count}}",
+			"unarchiveNone": "Ни одна из выбранных задач не находится в архиве",
+			"unarchiveError": "Не удалось восстановить задачи",
+			"setDates": "Даты",
+			"dateField": "Какую дату задать",
+			"startDate": "Дата начала",
+			"dueDate": "Срок выполнения",
+			"clearStartDate": "Очистить дату начала",
+			"clearDueDate": "Очистить срок выполнения",
+			"updateStartDateError": "Не удалось обновить дату начала. Дата начала не может быть позже срока выполнения задачи.",
+			"selectTask": "Выбрать {{title}}",
+			"moveToProject": "Переместить в проект",
+			"moveToProjectTitle_one": "Переместить {{count}} задачу в проект {{name}}?",
+			"moveToProjectTitle_few": "Переместить {{count}} задачи в проект {{name}}?",
+			"moveToProjectTitle_many": "Переместить {{count}} задач в проект {{name}}?",
+			"moveToProjectTitle_other": "Переместить задачи в проект {{name}}: {{count}}?",
+			"moveToProjectRule": "Они получат новые ключи задач. Каждая задача сохранит свой статус, если он есть в проекте, иначе попадёт в первую колонку. Метки и исполнители сохранятся. Циклы, модули и оценки будут очищены. Значения пользовательских полей сохранятся, только если в проекте есть поле с тем же названием и типом.",
+			"moveToProjectConfirm": "Переместить задачи",
+			"moveToProjectSuccess_one": "Перемещена {{count}} задача в проект {{name}}",
+			"moveToProjectSuccess_few": "Перемещено {{count}} задачи в проект {{name}}",
+			"moveToProjectSuccess_many": "Перемещено {{count}} задач в проект {{name}}",
+			"moveToProjectSuccess_other": "Перемещено задач в проект {{name}}: {{count}}",
+			"moveToProjectNone": "Эти задачи уже в проекте {{name}}",
+			"moveToProjectError": "Не удалось переместить задачи"
+		},
+		"editor": {
+			"table": {
+				"addColumnBefore": "Вставить столбец слева",
+				"addColumnAfter": "Вставить столбец справа",
+				"deleteColumn": "Удалить столбец",
+				"addRowBefore": "Вставить строку выше",
+				"addRowAfter": "Вставить строку ниже",
+				"deleteRow": "Удалить строку",
+				"deleteTable": "Удалить таблицу",
+				"moveRowUp": "Переместить строку вверх",
+				"moveRowDown": "Переместить строку вниз",
+				"moveColumnLeft": "Переместить столбец влево",
+				"moveColumnRight": "Переместить столбец вправо",
+				"toggleHeaderRow": "Строка заголовка",
+				"fullWidth": "На всю ширину",
+				"dragRow": "Строка {{index}}",
+				"dragColumn": "Столбец {{index}}",
+				"dragRowHint": "Перетащите, чтобы переместить строку, или используйте клавиши со стрелками",
+				"dragColumnHint": "Перетащите, чтобы переместить столбец, или используйте клавиши со стрелками",
+				"insertRowHere": "Вставить строку здесь",
+				"insertColumnHere": "Вставить столбец здесь"
+			}
+		},
+		"descriptionSearchLoading": "Поиск по полным описаниям…",
+		"descriptionSearchError": "Не удалось выполнить поиск по описанию. Результаты могут быть неполными.",
+		"descriptionRetry": "Повторить",
+		"descriptionLoading": "Загрузка описания…",
+		"descriptionLoadError": "Не удалось загрузить описание. Повторите попытку, чтобы загрузить текущую версию.",
+		"descriptionHistory": {
+			"cancel": "Отмена",
+			"description": "Сохранённые версии описания, сначала новые. Правки одного человека в течение 10 минут объединяются в одну версию; хранятся последние 50.",
+			"earlierVersion": "Предыдущая версия",
+			"empty": "Сохранённых версий пока нет. Версии начнут сохраняться со следующей правки.",
+			"emptyVersion": "В этой версии нет описания.",
+			"latest": "Последняя",
+			"list": "Сохранённые версии",
+			"loadError": "Не удалось загрузить историю",
+			"open": "История",
+			"previewTitle": "Версия от {{date}}",
+			"restore": "Восстановить",
+			"restoreConfirmDescription": "Описание будет заменено этой версией. Текущий текст останется в истории.",
+			"restoreConfirmTitle": "Восстановить эту версию?",
+			"restored": "Описание восстановлено",
+			"restoreError": "Не удалось восстановить эту версию",
+			"retry": "Повторить",
+			"size_few": "{{count}} символа",
+			"size_many": "{{count}} символов",
+			"size_one": "{{count}} символ",
+			"size_other": "Символов: {{count}}",
+			"title": "История описания",
+			"viewOnly": "Только просмотр"
+		},
+		"estimate": {
+			"bulk": {
+				"action": "Оценка",
+				"error": "Не удалось изменить оценку выбранных задач",
+				"updated_few": "Оценка обновлена у {{count}} задач",
+				"updated_many": "Оценка обновлена у {{count}} задач",
+				"updated_one": "Оценка обновлена у {{count}} задачи",
+				"updated_other": "Оценка обновлена у {{count}} задач"
+			},
+			"chart": {
+				"points": "Баллы",
+				"pointsLeft": "Осталось баллов",
+				"summaryPoints": "Осталось {{remaining}} из {{scope}} баллов, осталось дней: {{days}}",
+				"summaryTime": "Осталось {{remaining}} из {{scope}}, осталось дней: {{days}}",
+				"tasks": "Задачи",
+				"time": "Время",
+				"timeLeft": "Осталось времени",
+				"unitAria": "Единица измерения диаграммы"
+			},
+			"duration": {
+				"hours": "{{hours}}ч",
+				"hoursMinutes": "{{hours}}ч {{minutes}}м",
+				"hourUnit": "h",
+				"minutes": "{{minutes}}м",
+				"minuteUnit": "m"
+			},
+			"label": "Оценка",
+			"none": "Без оценки",
+			"pointsValue_one": "{{value}} б.",
+			"pointsValue_few": "{{value}} б.",
+			"pointsValue_many": "{{value}} б.",
+			"pointsValue_other": "{{value}} б.",
+			"setAria": "Задать оценку",
+			"totals": {
+				"estimated": "Оценено {{estimated}} из {{total}} задач",
+				"points_one": "{{completed}} / {{total}} б.",
+				"points_few": "{{completed}} / {{total}} б.",
+				"points_many": "{{completed}} / {{total}} б.",
+				"points_other": "{{completed}} / {{total}} б.",
+				"time": "{{completed}} / {{total}}"
+			},
+			"updateError": "Не удалось обновить оценку"
+		},
+		"detailActions": {
+			"addLink": "Добавить ссылку",
+			"addRelation": "Добавить связь",
+			"addSubtask": "Добавить подзадачу",
+			"attachFile": "Прикрепить файл"
+		},
+		"taskKey": {
+			"clipboardError": "Не удалось скопировать в буфер обмена",
+			"copied": "{{key}} скопирован",
+			"copyTooltip": "Скопировать ключ задачи"
+		},
 		"pageReferences": {
 			"title": "Упоминается на страницах"
+		},
+		"links": {
+			"add": "Добавить ссылку",
+			"addedAt": "Добавлено {{date}}",
+			"addedBy": "Добавлено пользователем {{name}} · {{date}}",
+			"addTitle": "Добавить ссылку",
+			"cancel": "Отмена",
+			"copyUrl": "Скопировать URL",
+			"edit": "Изменить",
+			"editTitle": "Изменить ссылку",
+			"errors": {
+				"credentials": "Ссылки не могут содержать имя пользователя или пароль",
+				"duplicate": "Эта ссылка уже добавлена к задаче",
+				"invalid": "Введите корректный URL с http или https",
+				"required": "URL обязателен",
+				"titleTooLong": "Название может содержать не более 255 символов",
+				"tooLong": "Ссылка может содержать не более 2048 символов"
+			},
+			"linkTitle": "Название",
+			"loadError": "Не удалось загрузить ссылки",
+			"moreActions": "Действия со ссылкой",
+			"remove": "Удалить",
+			"removeConfirmDescription": "Она будет удалена из задачи для всех.",
+			"removeConfirmTitle": "Удалить эту ссылку?",
+			"retry": "Повторить",
+			"save": "Сохранить",
+			"title": "Ссылки",
+			"titlePlaceholder": "Необязательное отображаемое название",
+			"toast": {
+				"added": "Ссылка добавлена",
+				"copied": "Ссылка скопирована",
+				"error": "Не удалось сохранить ссылку",
+				"removed": "Ссылка удалена",
+				"updated": "Ссылка обновлена"
+			},
+			"url": "URL",
+			"urlPlaceholder": "https://example.com"
+		},
+		"attachments": {
+			"add": "Прикрепить файл",
+			"delete": "Удалить",
+			"deleteConfirmDescription": "Файл будет удалён для всех. Это действие нельзя отменить.",
+			"deleteConfirmTitle": "Удалить {{filename}}?",
+			"download": "Скачать",
+			"dropHere": "Перетащите файлы сюда или нажмите, чтобы выбрать",
+			"dropToAttach": "Отпустите файлы, чтобы прикрепить",
+			"loadError": "Не удалось загрузить вложения",
+			"meta": "{{size}} · {{name}} · {{time}}",
+			"metaNoUser": "{{size}} · {{time}}",
+			"open": "Открыть",
+			"title": "Вложения",
+			"toast": {
+				"attached_few": "Прикреплены {{count}} файла",
+				"attached_many": "Прикреплено {{count}} файлов",
+				"attached_one": "Прикреплён {{count}} файл",
+				"attached_other": "Прикреплено {{count}} файлов",
+				"deleted": "Вложение удалено",
+				"deleteError": "Не удалось удалить вложение",
+				"empty": "{{filename}} пуст",
+				"failed": "Не удалось прикрепить {{filename}}: {{reason}}",
+				"notConfigured": "Загрузка файлов не настроена на этом сервере. Попросите администратора настроить хранилище.",
+				"storageError": "хранилище отклонило загрузку",
+				"tooMany": "Можно прикрепить не более {{count}} файлов за раз",
+				"unknownError": "что-то пошло не так"
+			},
+			"uploading": "Загрузка…"
+		},
+		"create": {
+			"similarTitle": "Похожие открытые задачи",
+			"similarDismiss": "Скрыть похожие задачи",
+			"similarOpen": "Открыть",
+			"similarOpenLabel": "Открыть {{key}} {{title}} в новой вкладке"
+		},
+		"parent": {
+			"add": "Добавить родительскую задачу",
+			"chip": "Родительская",
+			"label": "Родительская задача",
+			"noTasks": "Задачи не найдены",
+			"remove": "Удалить родительскую задачу",
+			"search": "Поиск задач…",
+			"tasksInProject": "Задачи в этом проекте",
+			"toast": {
+				"error": "Не удалось изменить родительскую задачу",
+				"removed": "Родительская задача удалена",
+				"set": "Родительская задача установлена: {{key}}"
+			},
+			"tooltip": "Родительская задача: {{key}} {{title}}"
+		},
+		"copy": {
+			"alwaysCopied": "Статус и приоритет копируются всегда.",
+			"cancel": "Отмена",
+			"includeLabel": "Включить",
+			"options": {
+				"assignees": "Исполнители",
+				"attachments": "Вложения",
+				"customFields": "Значения пользовательских полей",
+				"dates": "Дата начала и срок выполнения",
+				"description": "Описание",
+				"labels": "Метки",
+				"links": "Ссылки",
+				"parent": "Родительская задача",
+				"planning": "Цикл, модули и оценка"
+			},
+			"otherProjectHint": "Статус будет сопоставлен с колонками нового проекта. Пользовательские поля, родительская задача и параметры планирования не копируются между проектами.",
+			"projectLabel": "Проект",
+			"submit": "Создать копию",
+			"title": "Создать копию {{key}}",
+			"titleLabel": "Название",
+			"titleRequired": "Название обязательно",
+			"titleSuffix": "{{title}} (копия)",
+			"toast": {
+				"error": "Не удалось создать копию",
+				"open": "Открыть",
+				"skipped": "Не скопировано: {{list}}",
+				"success": "Копия создана: {{key}}"
+			}
+		},
+		"filters": {
+			"button": "Фильтр",
+			"searchOptions": "Поиск вариантов",
+			"noOptions": "Нет вариантов",
+			"matchAll": "Все условия",
+			"matchAny": "Любое условие",
+			"applyError": "Не удалось применить фильтры",
+			"retry": "Повторить",
+			"tooMany": "Слишком много совпадений для фильтрации здесь; откройте таблицу",
+			"nestedReadOnly": "Это представление использует расширенные фильтры, которые нельзя изменить здесь",
+			"clearAll": "Сбросить все фильтры",
+			"apply": "Применить",
+			"mobileSummary_one": "{{count}} фильтр",
+			"mobileSummary_few": "{{count}} фильтра",
+			"mobileSummary_many": "{{count}} фильтров",
+			"mobileSummary_other": "Фильтров: {{count}}",
+			"removeFilter": "Убрать фильтр {{subject}}",
+			"subjects": {
+				"group": "Группа",
+				"createdBy": "Автор",
+				"cycle": "Цикл",
+				"module": "Модуль",
+				"startDate": "Дата начала",
+				"created": "Создано",
+				"updated": "Обновлено",
+				"completed": "Завершено",
+				"parent": "Родитель",
+				"project": "Проект",
+				"subscribed": "Подписки",
+				"mentions": "Упоминания",
+				"blocked": "Заблокированные"
+			},
+			"operators": {
+				"between": "между",
+				"is": "равно",
+				"isEmpty": "пусто",
+				"isNoneOf": "не входит в",
+				"isNot": "не равно",
+				"isNotEmpty": "не пусто",
+				"moreThanAgo": "больше … назад",
+				"moreThanAhead": "больше … вперёд",
+				"on": "в день",
+				"onOrAfter": "не раньше",
+				"onOrBefore": "не позже",
+				"withinLast": "за последние",
+				"withinNext": "в ближайшие"
+			},
+			"values": {
+				"me": "Я",
+				"none": "Нет",
+				"noAssignee": "Без исполнителя",
+				"noCreator": "Без автора",
+				"noLabel": "Без метки",
+				"noCycle": "Без цикла",
+				"noModule": "Без модуля",
+				"noEstimate": "Без оценки",
+				"noParent": "Без родителя",
+				"currentCycle": "Текущий цикл",
+				"true": "Да",
+				"false": "Нет",
+				"blockedYes": "Да",
+				"blockedNo": "Нет"
+			},
+			"dates": {
+				"amount": "Количество",
+				"custom": "Своя дата…",
+				"emptyTab": "Пусто",
+				"exact": "Точная дата",
+				"future": "После сегодняшнего дня",
+				"lastMonth": "Прошлый месяц",
+				"lastWeek": "Прошлая неделя",
+				"nextMonth": "Следующий месяц",
+				"nextWeek": "Следующая неделя",
+				"overdue": "Просрочено",
+				"past": "До сегодняшнего дня",
+				"presets": "Пресеты",
+				"rolling": "Скользящий период",
+				"rollingValue": "{{amount}} {{unit}}",
+				"thisMonth": "Этот месяц",
+				"thisWeek": "Эта неделя",
+				"today": "Сегодня",
+				"tomorrow": "Завтра",
+				"units": {
+					"days": "дн.",
+					"months": "мес.",
+					"weeks": "нед."
+				},
+				"yesterday": "Вчера"
+			},
+			"archived": {
+				"exclude": "Скрыть архивные",
+				"include": "Показать и архивные",
+				"label": "В архиве",
+				"only": "Только архивные"
+			},
+			"myTasks": "Мои задачи"
+		},
+		"display": {
+			"button": "Вид",
+			"columns": "Колонки",
+			"groupBy": "Группировать по",
+			"groups": {
+				"status": "Статус",
+				"group": "Группа",
+				"priority": "Приоритет",
+				"assignee": "Исполнитель",
+				"createdBy": "Автор",
+				"label": "Метка",
+				"cycle": "Цикл",
+				"module": "Модуль",
+				"estimate": "Оценка",
+				"project": "Проект",
+				"customField": "Пользовательское поле"
+			},
+			"none": "Нет",
+			"order": {
+				"manual": "Вручную",
+				"createdAt": "Недавно созданные",
+				"updatedAt": "Недавно обновлённые",
+				"completedAt": "Дата завершения",
+				"startDate": "Дата начала",
+				"dueDate": "Срок выполнения",
+				"priority": "Приоритет",
+				"title": "Название",
+				"number": "Ключ задачи",
+				"status": "Статус",
+				"assignee": "Исполнитель",
+				"label": "Метка",
+				"cycle": "Цикл",
+				"module": "Модуль",
+				"estimate": "Оценка",
+				"subTaskCount": "Подзадачи",
+				"archivedAt": "Дата архивации",
+				"customField": "Пользовательское поле"
+			},
+			"orderBy": "Сортировать по",
+			"properties": "Свойства",
+			"props": {
+				"assignee": "Исполнители",
+				"checklist": "Чек-лист",
+				"createdAt": "Создано",
+				"cycle": "Цикл",
+				"dueDate": "Срок выполнения",
+				"estimate": "Оценка",
+				"key": "Ключ",
+				"labels": "Метки",
+				"modules": "Модули",
+				"priority": "Приоритет",
+				"startDate": "Дата начала",
+				"status": "Статус",
+				"subTaskCount": "Подзадачи",
+				"updatedAt": "Обновлено"
+			},
+			"showEmptyGroups": "Показывать пустые группы",
+			"showSubTasks": "Показывать подзадачи",
+			"subGroupBy": "Подгруппировать по"
+		},
+		"groups": {
+			"all": "Все задачи",
+			"planned": "Запланировано",
+			"noAssignee": "Без исполнителя",
+			"noCreator": "Без автора",
+			"noLabel": "Без метки",
+			"noCycle": "Без цикла",
+			"noModule": "Без модуля",
+			"noEstimate": "Без оценки",
+			"loadMore": "Загрузить ещё ({{count}})",
+			"hiddenGroups_one": "Ещё {{count}} группа не показана",
+			"hiddenGroups_few": "Ещё {{count}} группы не показаны",
+			"hiddenGroups_many": "Ещё {{count}} групп не показано",
+			"hiddenGroups_other": "Ещё не показано групп: {{count}}",
+			"moduleCount_one": "{{count}} модуль",
+			"moduleCount_few": "{{count}} модуля",
+			"moduleCount_many": "{{count}} модулей",
+			"moduleCount_other": "Модулей: {{count}}",
+			"moveError": "Не удалось переместить задачу",
+			"noFieldValue": "Нет значения"
+		},
+		"spreadsheet": {
+			"clearSort": "Сбросить сортировку",
+			"collapseSubTasks": "Скрыть подзадачи",
+			"expandSubTasks": "Показать подзадачи",
+			"hideColumn": "Скрыть колонку",
+			"loadError": "Не удалось загрузить задачи",
+			"selectTask": "Выбрать {{key}}",
+			"sortAsc": "По возрастанию",
+			"sortDesc": "По убыванию",
+			"task": "Задача"
+		},
+		"queryEmpty": {
+			"clear": "Сбросить фильтры",
+			"description": "Попробуйте убрать один-два фильтра.",
+			"title": "Нет задач, подходящих под фильтры"
 		},
 		"capture": {
 			"ariaLabel": "Добавить задачу в колонку «{{column}}»",
@@ -5304,50 +5580,35 @@
 			"changePriority": "Приоритет: {{priority}}",
 			"changeStatus": "Статус: {{status}}"
 		},
-		"commands": {
-			"assignedSelf": "Задача назначена на вас",
-			"assignees": "Изменить исполнителей…",
-			"assignSelf": "Назначить на меня",
-			"copyTitle": "Скопировать название",
-			"cycle": "Изменить цикл…",
-			"dueDate": "Изменить срок выполнения…",
-			"estimate": "Изменить оценку…",
-			"group": "Эта задача",
-			"labels": "Изменить метки…",
-			"module": "Изменить модули…",
-			"priority": "Изменить приоритет…",
-			"status": "Изменить статус…",
-			"titleCopied": "Название задачи скопировано",
-			"unassignedSelf": "Вы больше не исполнитель",
-			"unassignSelf": "Снять с меня"
+		"boardSearchOpen": "Поиск задач",
+		"customFieldValue": {
+			"clear": "Очистить значение",
+			"edit": "Изменить {{name}}",
+			"removedOption": "{{value}} (удалённый вариант)",
+			"saveError": "Не удалось сохранить это поле.",
+			"placeholder": "Новое значение",
+			"true": "Да",
+			"false": "Нет"
 		},
-		"readableLink": {
-			"goHome": "На главную",
-			"notFound": "В этой рабочей области нет задачи с ключом {{key}}, или у вас нет к ней доступа."
+		"customFieldBulk": {
+			"action": "Пользовательское поле",
+			"chooseField": "Выберите поле",
+			"apply": "Применить",
+			"updated_one": "Обновлена {{count}} задача",
+			"updated_few": "Обновлено {{count}} задачи",
+			"updated_many": "Обновлено {{count}} задач",
+			"updated_other": "Обновлено задач: {{count}}",
+			"error": "Не удалось обновить выбранные задачи."
 		},
-		"descriptionHistory": {
-			"cancel": "Отмена",
-			"description": "Сохранённые версии описания, сначала новые. Правки одного человека в течение 10 минут объединяются в одну версию; хранятся последние 50.",
-			"earlierVersion": "Предыдущая версия",
-			"empty": "Сохранённых версий пока нет. Версии начнут сохраняться со следующей правки.",
-			"emptyVersion": "В этой версии нет описания.",
-			"latest": "Последняя",
-			"list": "Сохранённые версии",
-			"loadError": "Не удалось загрузить историю",
-			"open": "История",
-			"previewTitle": "Версия от {{date}}",
-			"restore": "Восстановить",
-			"restoreConfirmDescription": "Описание будет заменено этой версией. Текущий текст останется в истории.",
-			"restoreConfirmTitle": "Восстановить эту версию?",
-			"restored": "Описание восстановлено",
-			"restoreError": "Не удалось восстановить эту версию",
-			"retry": "Повторить",
-			"size_few": "{{count}} символа",
-			"size_many": "{{count}} символов",
-			"size_one": "{{count}} символ",
-			"size_other": "Символов: {{count}}",
-			"title": "История описания",
-			"viewOnly": "Только просмотр"
+		"milestone": {
+			"label": "Веха",
+			"hint": "Отмечает одну дату. На временной шкале отображается ромбом в день срока выполнения.",
+			"updateError": "Не удалось обновить веху"
+		},
+		"scheduleField": {
+			"label": "Поле, показываемое на задачах",
+			"none": "Без поля",
+			"value": "{{name}}: {{value}}"
 		}
 	},
 	"invitations": {
@@ -5396,6 +5657,7 @@
 			"status": "Статус",
 			"emptyTitle": "Проектов пока нет",
 			"emptyDescription": "Начните с создания вашего первого проекта.",
+			"emptyDescriptionReadOnly": "В этой рабочей области пока нет проектов. Попросите администратора создать проект.",
 			"projectStatus": {
 				"notStarted": "Не начат",
 				"complete": "Завершён",
@@ -5403,7 +5665,7 @@
 			},
 			"noDueDate": "Без срока",
 			"reorderError": "Не удалось изменить порядок проектов",
-			"emptyDescriptionReadOnly": "В этой рабочей области пока нет проектов. Попросите администратора создать проект."
+			"emptyDescriptionGuest": "Вас ещё не добавили ни в один проект. Попросите об этом человека, который вас пригласил."
 		},
 		"search": {
 			"pageTitle": "Поиск",
@@ -5521,7 +5783,8 @@
 			"owner": "Владелец",
 			"admin": "Администратор",
 			"member": "Участник",
-			"viewer": "Наблюдатель"
+			"viewer": "Наблюдатель",
+			"guest": "Гость"
 		},
 		"members": {
 			"pageTitle": "Участники",
@@ -5557,7 +5820,13 @@
 			"sentSome": "Отправлено приглашений: {{sent}} из {{total}}.",
 			"failedTitle": "Не отправлено",
 			"rateLimited": "Слишком много приглашений сразу. Подождите минуту и отправьте остальные.",
-			"shareLinksDescription": "Поделитесь каждой ссылкой с её адресатом, чтобы он мог присоединиться к рабочей области."
+			"shareLinksDescription": "Поделитесь каждой ссылкой с её адресатом, чтобы он мог присоединиться к рабочей области.",
+			"guestRoleHint": "Гости видят только те проекты, в которые вы их добавите, и больше ничего в рабочей области.",
+			"guestProjectsLabel": "Проекты",
+			"guestProjectsHint": "Сразу после принятия приглашения они попадут в отмеченные проекты с выбранной ролью в проекте. С ролью «Наблюдатель» они могут только просматривать.",
+			"guestProjectsEmpty": "Нет проектов, которыми вы можете поделиться. Добавьте их в проекты после того, как они присоединятся.",
+			"guestProjectRoleFor": "Роль в проекте {{project}}",
+			"guestProjectsFailed": "Приглашение отправлено, но не удалось добавить его проекты: {{message}}"
 		},
 		"membersTable": {
 			"emptyTitle": "Участников команды пока нет",
@@ -5567,6 +5836,7 @@
 				"role": "Роль",
 				"joined": "Присоединился"
 			},
+			"ariaInvitationActions": "Действия с приглашением",
 			"ariaRemoveMember": "Удалить участника",
 			"removeDialogTitle": "Удалить участника?",
 			"removeDialogDescription": "{{name}} будет удалён(а) из рабочей области и потеряет доступ к её проектам и задачам.",
@@ -5578,11 +5848,11 @@
 			"removeError": "Не удалось удалить участника команды",
 			"cancelInviteSuccess": "Приглашение успешно отменено",
 			"cancelInviteError": "Не удалось отменить приглашение",
-			"ariaInvitationActions": "Действия с приглашением",
 			"roleUpdateSuccess": "Роль обновлена",
 			"roleUpdateError": "Не удалось обновить роль",
 			"ariaInvitationRole": "Роль для {{email}}",
-			"invitationRoleUpdateSuccess": "Роль приглашения обновлена"
+			"invitationRoleUpdateSuccess": "Роль приглашения обновлена",
+			"removeDialogAccessNote": "Если это их единственная рабочая область, они также выйдут из системы, а их ключи API перестанут работать."
 		},
 		"profile": {
 			"emptyActivity": "Активности пока нет",
@@ -6613,7 +6883,7 @@
 					"visibility": "Видимость",
 					"workflow": "Рабочий процесс"
 				},
-				"purgeOn": "Будет удалена навсегда {{date}}",
+				"purgeOn": "Удалится безвозвратно {{date}}",
 				"restore": "Восстановить",
 				"restored": "Задача восстановлена",
 				"search": "Поиск удалённых задач",
@@ -8124,6 +8394,29 @@
 		}
 	},
 	"home": {
+		"pageTitle": "Главная",
+		"greeting": {
+			"afternoon": "Добрый день, {{name}}",
+			"dateTime": "{{date}} · {{time}}",
+			"evening": "Добрый вечер, {{name}}",
+			"morning": "Доброе утро, {{name}}"
+		},
+		"manageWidgets": "Управление виджетами",
+		"widgets": {
+			"quickLinks": "Быстрые ссылки",
+			"recents": "Недавние",
+			"stickies": "Стикеры",
+			"risks": "Риски",
+			"myBrief": "Моя сводка",
+			"pinnedReports": "Закреплённые отчёты"
+		},
+		"manage": {
+			"description": "Выберите, что показывать на главной, и перетащите для изменения порядка. Эти настройки видите только вы.",
+			"reorder": "Изменить порядок: {{widget}}",
+			"saveError": "Не удалось сохранить настройки главной",
+			"title": "Управление виджетами",
+			"toggle": "Показывать: {{widget}}"
+		},
 		"empty": {
 			"description": "Все виджеты отключены. Включите их, чтобы видеть здесь свои ссылки, недавние посещения и стикеры.",
 			"title": "Ваша главная пуста"
@@ -8153,21 +8446,6 @@
 			},
 			"title": "Начало работы"
 		},
-		"greeting": {
-			"afternoon": "Добрый день, {{name}}",
-			"dateTime": "{{date}} · {{time}}",
-			"evening": "Добрый вечер, {{name}}",
-			"morning": "Доброе утро, {{name}}"
-		},
-		"manage": {
-			"description": "Выберите, что показывать на главной, и перетащите для изменения порядка. Эти настройки видите только вы.",
-			"reorder": "Изменить порядок: {{widget}}",
-			"saveError": "Не удалось сохранить настройки главной",
-			"title": "Управление виджетами",
-			"toggle": "Показывать: {{widget}}"
-		},
-		"manageWidgets": "Управление виджетами",
-		"pageTitle": "Главная",
 		"quickLinks": {
 			"add": "Добавить ссылку",
 			"copy": "Копировать ссылку",
@@ -8224,26 +8502,34 @@
 			"visited": "Открыто {{time}}"
 		},
 		"retry": "Повторить",
-		"widgets": {
-			"quickLinks": "Быстрые ссылки",
-			"recents": "Недавние",
-			"stickies": "Стикеры",
-			"risks": "Риски",
-			"myBrief": "Моя сводка"
-		},
 		"focus": {
-			"caughtUp": "Всё прочитано",
-			"inbox": "Входящие",
 			"label": "Вернуться к делам",
+			"inbox": "Входящие",
 			"myWork": "Ваша работа",
+			"stickies": "Стикеры",
+			"caughtUp": "Всё прочитано",
+			"overdue_one": "{{count}} просроченная",
 			"overdue_few": "{{count}} просроченные",
 			"overdue_many": "{{count}} просроченных",
-			"overdue_one": "{{count}} просроченная",
 			"overdue_other": "Просроченных: {{count}}",
-			"stickies": "Стикеры",
 			"stickiesHint": "Личные заметки, только для вас",
+			"unreadCaption": "непрочитанных",
 			"openCaption": "открытых",
-			"unreadCaption": "непрочитанных"
+			"loadError": "Не удалось загрузить"
+		},
+		"dueToday": {
+			"title": "Срок сегодня",
+			"empty": "На сегодня у вас нет задач со сроком.",
+			"loadError": "Не удалось загрузить ваши задачи со сроком на сегодня",
+			"viewAll": "Показать все ({{total}})"
+		},
+		"pinnedReports": {
+			"empty": "Закрепите сохранённый отчёт в разделе «Аналитика», чтобы видеть его здесь.",
+			"openAnalytics": "Открыть «Аналитику»",
+			"loadError": "Не удалось загрузить закреплённые отчёты",
+			"chartError": "Не удалось загрузить этот отчёт",
+			"unpin": "Открепить {{name}} от главной",
+			"showing": "Показано {{shown}} из {{total}}. Остальные — в разделе «Аналитика»."
 		}
 	},
 	"intake": {
@@ -8537,14 +8823,117 @@
 		"viewAll": "Показать все"
 	},
 	"analytics": {
-		"a11y": {
-			"barSummary": "{{metric}} по параметру «{{dimension}}»: интервалов — {{count}}, максимум — {{label}} ({{value}})",
-			"donutSummary": "Задач: {{total}}, групп: {{count}}",
-			"lineSummary": "{{series}} за периодов: {{count}}"
+		"pageTitle": "Аналитика",
+		"projectPageTitle": "{{project}} · Аналитика",
+		"tabs": {
+			"overview": "Обзор",
+			"tasks": "Задачи",
+			"cycles": "Циклы",
+			"modules": "Модули",
+			"intake": "Заявки",
+			"delivery": "Поставка",
+			"time": "Время"
 		},
-		"breakdown": {
-			"groupRowsBy": "Группировать строки по",
-			"title": "Детализация"
+		"header": {
+			"allProjects": "Все проекты",
+			"clearSelection": "Сбросить выбор",
+			"noProjectsFound": "Проекты не найдены",
+			"projectsCount_few": "{{count}} проекта",
+			"projectsCount_many": "{{count}} проектов",
+			"projectsCount_one": "{{count}} проект",
+			"projectsCount_other": "{{count}} проектов",
+			"refresh": "Обновить",
+			"searchProjects": "Поиск проектов",
+			"selectProjects": "Выберите проекты",
+			"updatedAt": "Обновлено {{time}}"
+		},
+		"openInAnalytics": "Открыть в аналитике",
+		"context": {
+			"cycle": "Цикл: {{name}}",
+			"module": "Модуль: {{name}}",
+			"remove": "Убрать «{{name}}» из фильтров"
+		},
+		"states": {
+			"loadError": "Не удалось загрузить этот раздел",
+			"newProject": "Новый проект",
+			"noAccessDescription": "Попросите администратора рабочей области выдать право «Аналитика».",
+			"noAccessTitle": "У вас нет доступа к аналитике",
+			"noCycles": "Циклов пока нет",
+			"noModules": "Модулей пока нет",
+			"noPeriodData": "Нет данных за этот период",
+			"noProjectsDescription": "Аналитика обобщает задачи ваших проектов.",
+			"noProjectsTitle": "Создайте проект, чтобы увидеть аналитику",
+			"noRequests": "Заявок пока нет",
+			"noTasks": "Нет задач, подходящих под эти фильтры",
+			"retry": "Повторить",
+			"timeout": "Это заняло слишком много времени. Сузьте фильтры и повторите попытку.",
+			"noRunningCycles": "Сейчас нет идущих циклов"
+		},
+		"view": {
+			"chart": "Диаграмма",
+			"label": "Показать как",
+			"table": "Таблица"
+		},
+		"kpi": {
+			"accepted": "Принято: {{count}}",
+			"completedTasks": "Завершённые задачи",
+			"completion": "Выполнение",
+			"completionDetail": "{{completed}} из {{committed}}",
+			"cyclesRunning": "Активные циклы",
+			"members": "Участники",
+			"membersDetail": "Администраторов: {{admins}} · наблюдателей: {{viewers}}",
+			"modulesInProgress": "Модули в работе",
+			"modulesTotal": "Всего: {{count}}",
+			"openRequests": "Открытые заявки",
+			"openTasks": "Открытые задачи",
+			"overdue": "Просрочено: {{count}}",
+			"percentComplete": "Завершено на {{percent}}%",
+			"projects": "Проекты",
+			"total": "Всего",
+			"upcoming": "Предстоит: {{count}}"
+		},
+		"overview": {
+			"projectProgress": "Прогресс проектов",
+			"projectProgressSubtitle": "Сначала проекты с наибольшим числом открытых задач",
+			"open": "Открыто: {{count}}",
+			"showAll": "Показать все ({{count}})",
+			"showLess": "Показать меньше",
+			"tasksByGroup": "Задачи по группам",
+			"donutCenter_one": "{{count}} задача",
+			"donutCenter_few": "{{count}} задачи",
+			"donutCenter_many": "{{count}} задач",
+			"donutCenter_other": "Задач: {{count}}",
+			"workload": "Нагрузка",
+			"workloadSubtitle": "Открытые задачи по исполнителям",
+			"workloadSubtitlePoints": "Открытые баллы оценки по исполнителям",
+			"overloaded_one": "{{names}}: открытой работы больше, чем обычно удаётся завершить за {{weeks}} нед.",
+			"overloaded_few": "{{names}}: открытой работы больше, чем обычно удаётся завершить за {{weeks}} нед.",
+			"overloaded_many": "{{names}}: открытой работы больше, чем обычно удаётся завершить за {{weeks}} нед.",
+			"overloaded_other": "{{names}}: открытой работы больше, чем обычно удаётся завершить за {{weeks}} нед.",
+			"overUsual": "Выше обычного",
+			"overTooltip": "{{name}}: выше обычного",
+			"usualHint": "Обычный уровень — это то, что человек завершает за типичные {{usualWeeks}} нед., по данным за последние {{historyWeeks}} нед. Тех, у кого нет недавней истории, не оценивают.",
+			"checkColumn": "Относительно обычного",
+			"checkOverPoints": "Выше: баллов — {{load}}, обычно — {{usual}}",
+			"checkOverTasks": "Выше: задач — {{load}}, обычно — {{usual}}",
+			"checkOkPoints": "Баллов — {{load}}, обычно — {{usual}}",
+			"checkOkTasks": "Задач — {{load}}, обычно — {{usual}}",
+			"checkUnknown": "Нет недавней истории"
+		},
+		"trend": {
+			"completed": "Завершено",
+			"created": "Создано",
+			"help": "«Создано» считает задачи по дню создания. «Завершено» считает задачи по дню завершения, пока они остаются завершёнными. Архивные задачи не учитываются, если не включить их.",
+			"period": "Период",
+			"summary": "Создано {{created}} · Завершено {{completed}} · Баланс {{net}}",
+			"title": "Созданные и завершённые"
+		},
+		"periods": {
+			"custom": "Свой период",
+			"last12m": "Последние 12 месяцев",
+			"last30": "Последние 30 дней",
+			"last6m": "Последние 6 месяцев",
+			"last90": "Последние 90 дней"
 		},
 		"bucket": {
 			"label": "Группировать даты по",
@@ -8555,6 +8944,14 @@
 		"buckets": {
 			"range": "{{from}} – {{to}}",
 			"weekOf": "Неделя с {{date}}"
+		},
+		"metric": {
+			"label": "Показатель",
+			"tasks": "Задачи",
+			"points": "Баллы оценки",
+			"pointsShort": "Баллы",
+			"sum": "Сумма",
+			"sumOf": "Сумма: {{name}}"
 		},
 		"builder": {
 			"countSubTasks": "Учитывать подзадачи",
@@ -8573,10 +8970,138 @@
 			"truncatedX": "Показаны первые {{shown}} из {{total}}: {{dimension}}",
 			"xAxis": "Ось X"
 		},
-		"context": {
-			"cycle": "Цикл: {{name}}",
-			"module": "Модуль: {{name}}",
-			"remove": "Убрать «{{name}}» из фильтров"
+		"reports": {
+			"open": "Отчёты",
+			"listTitle": "Сохранённые отчёты",
+			"loadError": "Не удалось загрузить сохранённые отчёты",
+			"empty": "Сохранённых отчётов пока нет. Сохраните эту диаграмму, чтобы вернуться к ней позже.",
+			"sharedBy": "Общий отчёт от {{name}}",
+			"actionsFor": "Действия для «{{name}}»",
+			"rename": "Переименовать",
+			"share": "Поделиться с рабочей областью",
+			"makePrivate": "Сделать личным",
+			"delete": "Удалить",
+			"save": "Сохранить",
+			"saveAsNew": "Сохранить как новый",
+			"update": "Обновить отчёт",
+			"showing": "Отчёт: {{name}}",
+			"unsaved": "Несохранённые изменения",
+			"close": "Закрыть отчёт",
+			"deleteTitle": "Удалить этот отчёт?",
+			"deleteDescription": "Отчёт «{{name}}» будет удалён. Это действие нельзя отменить.",
+			"deleteSharedDescription": "Отчёт «{{name}}» будет удалён для всех в рабочей области. Это действие нельзя отменить.",
+			"visibility": {
+				"private": "Личный",
+				"privateHint": "Виден только вам.",
+				"workspace": "Общий для рабочей области",
+				"workspaceHint": "Его может открыть любой в этой рабочей области, у кого есть доступ к аналитике."
+			},
+			"dialog": {
+				"cancel": "Отмена",
+				"createTitle": "Сохранить отчёт",
+				"editTitle": "Изменить отчёт",
+				"name": "Название",
+				"namePlaceholder": "например, Открытые баги по исполнителям",
+				"nameRequired": "Введите название",
+				"save": "Сохранить",
+				"summary": "Сохраняются настройки диаграммы, выбранные проекты и фильтры.",
+				"update": "Сохранить изменения",
+				"visibility": "Кто может видеть"
+			},
+			"notes": {
+				"allProjects": "Ни один из проектов отчёта недоступен, поэтому показаны все проекты.",
+				"builderReset": "Некоторые настройки диаграммы недоступны для этих проектов и были сброшены.",
+				"dropped_few": "{{count}} проекта из этого отчёта больше не существуют.",
+				"dropped_many": "{{count}} проектов из этого отчёта больше не существуют.",
+				"dropped_one": "{{count}} проект из этого отчёта больше не существует.",
+				"dropped_other": "Проектов из этого отчёта больше не существует: {{count}}.",
+				"leftOut_few": "{{count}} проекта из этого отчёта находятся в архиве и не учтены.",
+				"leftOut_many": "{{count}} проектов из этого отчёта находятся в архиве и не учтены.",
+				"leftOut_one": "{{count}} проект из этого отчёта находится в архиве и не учтён.",
+				"leftOut_other": "Архивные проекты из этого отчёта не учтены: {{count}}.",
+				"otherProjects": "Этот отчёт сохранён для других проектов; здесь он показывает только этот проект."
+			},
+			"toast": {
+				"saved": "Отчёт «{{name}}» сохранён",
+				"updated": "Отчёт обновлён",
+				"shared": "Отчёт доступен всей рабочей области",
+				"madePrivate": "Теперь отчёт личный",
+				"deleted": "Отчёт удалён",
+				"saveError": "Не удалось сохранить отчёт",
+				"deleteError": "Не удалось удалить отчёт",
+				"pinned": "Закреплено на главной",
+				"unpinned": "Откреплено от главной",
+				"pinError": "Не удалось обновить главную",
+				"pinLimit_one": "Можно закрепить не более {{count}} отчёта. Сначала открепите один.",
+				"pinLimit_few": "Можно закрепить не более {{count}} отчётов. Сначала открепите один.",
+				"pinLimit_many": "Можно закрепить не более {{count}} отчётов. Сначала открепите один.",
+				"pinLimit_other": "Можно закрепить не более {{count}} отчёта. Сначала открепите один."
+			},
+			"pin": "Закрепить на главной",
+			"unpin": "Открепить от главной"
+		},
+		"dimensions": {
+			"status": "Статус",
+			"group": "Группа",
+			"priority": "Приоритет",
+			"assignee": "Исполнитель",
+			"createdBy": "Автор",
+			"label": "Метка",
+			"cycle": "Цикл",
+			"module": "Модуль",
+			"estimate": "Оценка",
+			"project": "Проект",
+			"createdAt": "Дата создания",
+			"completedAt": "Дата завершения",
+			"startDate": "Дата начала",
+			"dueDate": "Срок выполнения",
+			"customField": "Пользовательское поле"
+		},
+		"dimensionsPlural": {
+			"status": "статусы",
+			"assignee": "исполнители",
+			"createdBy": "авторы",
+			"label": "метки",
+			"cycle": "циклы",
+			"module": "модули",
+			"estimate": "оценки",
+			"project": "проекты",
+			"period": "периоды",
+			"customField": "значения"
+		},
+		"none": {
+			"assignee": "Не назначено",
+			"createdBy": "Неизвестный автор",
+			"label": "Без метки",
+			"cycle": "Без цикла",
+			"module": "Без модуля",
+			"estimate": "Без оценки",
+			"completedAt": "Не завершено",
+			"startDate": "Без даты начала",
+			"dueDate": "Без срока",
+			"customField": "Нет значения"
+		},
+		"other": "Другое",
+		"table": {
+			"periodEnd": "Конец периода",
+			"periodStart": "Начало периода",
+			"progress": "Прогресс",
+			"showAll": "Показать все ({{count}})",
+			"sortBy": "Сортировать по: {{column}}",
+			"tasks": "Задачи",
+			"total": "Всего"
+		},
+		"breakdown": {
+			"groupRowsBy": "Группировать строки по",
+			"title": "Детализация"
+		},
+		"export": {
+			"button": "Экспорт в CSV",
+			"error": "Не удалось экспортировать таблицу",
+			"success_few": "Экспортированы {{count}} строки",
+			"success_many": "Экспортировано {{count}} строк",
+			"success_one": "Экспортирована {{count}} строка",
+			"success_other": "Экспортировано строк: {{count}}"
 		},
 		"cycles": {
 			"averageCompleted": "Среднее завершённых (последние 3)",
@@ -8609,53 +9134,15 @@
 				"running": "Идущие сейчас"
 			}
 		},
-		"dimensions": {
-			"assignee": "Исполнитель",
-			"completedAt": "Дата завершения",
-			"createdAt": "Дата создания",
-			"createdBy": "Автор",
-			"cycle": "Цикл",
-			"dueDate": "Срок выполнения",
-			"estimate": "Оценка",
-			"group": "Группа",
-			"label": "Метка",
-			"module": "Модуль",
-			"priority": "Приоритет",
-			"project": "Проект",
-			"startDate": "Дата начала",
-			"status": "Статус"
-		},
-		"dimensionsPlural": {
-			"assignee": "исполнители",
-			"createdBy": "авторы",
-			"cycle": "циклы",
-			"estimate": "оценки",
-			"label": "метки",
-			"module": "модули",
-			"period": "периоды",
-			"project": "проекты",
-			"status": "статусы"
-		},
-		"export": {
-			"button": "Экспорт в CSV",
-			"error": "Не удалось экспортировать таблицу",
-			"success_few": "Экспортированы {{count}} строки",
-			"success_many": "Экспортировано {{count}} строк",
-			"success_one": "Экспортирована {{count}} строка",
-			"success_other": "Экспортировано строк: {{count}}"
-		},
-		"header": {
-			"allProjects": "Все проекты",
-			"clearSelection": "Сбросить выбор",
-			"noProjectsFound": "Проекты не найдены",
-			"projectsCount_few": "{{count}} проекта",
-			"projectsCount_many": "{{count}} проектов",
-			"projectsCount_one": "{{count}} проект",
-			"projectsCount_other": "{{count}} проектов",
-			"refresh": "Обновить",
-			"searchProjects": "Поиск проектов",
-			"selectProjects": "Выберите проекты",
-			"updatedAt": "Обновлено {{time}}"
+		"modules": {
+			"overdue": "Просрочено",
+			"table": {
+				"lead": "Ответственный",
+				"module": "Модуль",
+				"noLead": "Без ответственного",
+				"targetDate": "Целевая дата",
+				"title": "Модули"
+			}
 		},
 		"intake": {
 			"accepted": "Принятые",
@@ -8673,182 +9160,24 @@
 			"submitted": "Отправлено",
 			"triaged": "Обработано"
 		},
-		"kpi": {
-			"accepted": "Принято: {{count}}",
-			"completedTasks": "Завершённые задачи",
-			"completion": "Выполнение",
-			"completionDetail": "{{completed}} из {{committed}}",
-			"cyclesRunning": "Активные циклы",
-			"members": "Участники",
-			"membersDetail": "Администраторов: {{admins}} · наблюдателей: {{viewers}}",
-			"modulesInProgress": "Модули в работе",
-			"modulesTotal": "Всего: {{count}}",
-			"openRequests": "Открытые заявки",
-			"openTasks": "Открытые задачи",
-			"overdue": "Просрочено: {{count}}",
-			"percentComplete": "Завершено на {{percent}}%",
-			"projects": "Проекты",
-			"total": "Всего",
-			"upcoming": "Предстоит: {{count}}"
+		"a11y": {
+			"barSummary": "{{metric}} по параметру «{{dimension}}»: интервалов — {{count}}, максимум — {{label}} ({{value}})",
+			"donutSummary": "Задач: {{total}}, групп: {{count}}",
+			"lineSummary": "{{series}} за периодов: {{count}}"
 		},
-		"metric": {
-			"label": "Показатель",
-			"points": "Баллы оценки",
-			"pointsShort": "Баллы",
-			"tasks": "Задачи"
-		},
-		"modules": {
-			"overdue": "Просрочено",
-			"table": {
-				"lead": "Ответственный",
-				"module": "Модуль",
-				"noLead": "Без ответственного",
-				"targetDate": "Целевая дата",
-				"title": "Модули"
-			}
-		},
-		"none": {
-			"assignee": "Не назначено",
-			"completedAt": "Не завершено",
-			"createdBy": "Неизвестный автор",
-			"cycle": "Без цикла",
-			"dueDate": "Без срока",
-			"estimate": "Без оценки",
-			"label": "Без метки",
-			"module": "Без модуля",
-			"startDate": "Без даты начала"
-		},
-		"openInAnalytics": "Открыть в аналитике",
-		"other": "Другое",
-		"overview": {
-			"donutCenter_few": "{{count}} задачи",
-			"donutCenter_many": "{{count}} задач",
-			"donutCenter_one": "{{count}} задача",
-			"donutCenter_other": "Задач: {{count}}",
-			"open": "Открыто: {{count}}",
-			"projectProgress": "Прогресс проектов",
-			"projectProgressSubtitle": "Сначала проекты с наибольшим числом открытых задач",
-			"showAll": "Показать все ({{count}})",
-			"showLess": "Показать меньше",
-			"tasksByGroup": "Задачи по группам",
-			"workload": "Нагрузка",
-			"workloadSubtitle": "Открытые задачи по исполнителям"
-		},
-		"pageTitle": "Аналитика",
-		"periods": {
-			"custom": "Свой период",
-			"last12m": "Последние 12 месяцев",
-			"last30": "Последние 30 дней",
-			"last6m": "Последние 6 месяцев",
-			"last90": "Последние 90 дней"
-		},
-		"projectPageTitle": "{{project}} · Аналитика",
-		"states": {
-			"loadError": "Не удалось загрузить этот раздел",
-			"newProject": "Новый проект",
-			"noAccessDescription": "Попросите администратора рабочей области выдать право «Аналитика».",
-			"noAccessTitle": "У вас нет доступа к аналитике",
-			"noCycles": "Циклов пока нет",
-			"noModules": "Модулей пока нет",
-			"noPeriodData": "Нет данных за этот период",
-			"noProjectsDescription": "Аналитика обобщает задачи ваших проектов.",
-			"noProjectsTitle": "Создайте проект, чтобы увидеть аналитику",
-			"noRequests": "Заявок пока нет",
-			"noTasks": "Нет задач, подходящих под эти фильтры",
-			"retry": "Повторить",
-			"timeout": "Это заняло слишком много времени. Сузьте фильтры и повторите попытку.",
-			"noRunningCycles": "Сейчас нет идущих циклов"
-		},
-		"table": {
-			"periodEnd": "Конец периода",
-			"periodStart": "Начало периода",
-			"progress": "Прогресс",
-			"showAll": "Показать все ({{count}})",
-			"sortBy": "Сортировать по: {{column}}",
-			"tasks": "Задачи",
-			"total": "Всего"
-		},
-		"tabs": {
-			"cycles": "Циклы",
-			"intake": "Заявки",
-			"modules": "Модули",
-			"overview": "Обзор",
-			"tasks": "Задачи",
-			"delivery": "Поставка"
-		},
-		"trend": {
-			"completed": "Завершено",
-			"created": "Создано",
-			"help": "«Создано» считает задачи по дню создания. «Завершено» считает задачи по дню завершения, пока они остаются завершёнными. Архивные задачи не учитываются, если не включить их.",
-			"period": "Период",
-			"summary": "Создано {{created}} · Завершено {{completed}} · Баланс {{net}}",
-			"title": "Созданные и завершённые"
-		},
-		"view": {
-			"chart": "Диаграмма",
-			"label": "Показать как",
-			"table": "Таблица"
-		},
-		"reports": {
-			"actionsFor": "Действия для «{{name}}»",
-			"close": "Закрыть отчёт",
-			"delete": "Удалить",
-			"deleteDescription": "Отчёт «{{name}}» будет удалён. Это действие нельзя отменить.",
-			"deleteSharedDescription": "Отчёт «{{name}}» будет удалён для всех в рабочей области. Это действие нельзя отменить.",
-			"deleteTitle": "Удалить этот отчёт?",
-			"dialog": {
-				"cancel": "Отмена",
-				"createTitle": "Сохранить отчёт",
-				"editTitle": "Изменить отчёт",
-				"name": "Название",
-				"namePlaceholder": "например, Открытые баги по исполнителям",
-				"nameRequired": "Введите название",
-				"save": "Сохранить",
-				"summary": "Сохраняются настройки диаграммы, выбранные проекты и фильтры.",
-				"update": "Сохранить изменения",
-				"visibility": "Кто может видеть"
-			},
-			"empty": "Сохранённых отчётов пока нет. Сохраните эту диаграмму, чтобы вернуться к ней позже.",
-			"listTitle": "Сохранённые отчёты",
-			"loadError": "Не удалось загрузить сохранённые отчёты",
-			"makePrivate": "Сделать личным",
-			"notes": {
-				"allProjects": "Ни один из проектов отчёта недоступен, поэтому показаны все проекты.",
-				"builderReset": "Некоторые настройки диаграммы недоступны для этих проектов и были сброшены.",
-				"dropped_few": "{{count}} проекта из этого отчёта больше не существуют.",
-				"dropped_many": "{{count}} проектов из этого отчёта больше не существуют.",
-				"dropped_one": "{{count}} проект из этого отчёта больше не существует.",
-				"dropped_other": "Проектов из этого отчёта больше не существует: {{count}}.",
-				"leftOut_few": "{{count}} проекта из этого отчёта находятся в архиве и не учтены.",
-				"leftOut_many": "{{count}} проектов из этого отчёта находятся в архиве и не учтены.",
-				"leftOut_one": "{{count}} проект из этого отчёта находится в архиве и не учтён.",
-				"leftOut_other": "Архивные проекты из этого отчёта не учтены: {{count}}.",
-				"otherProjects": "Этот отчёт сохранён для других проектов; здесь он показывает только этот проект."
-			},
-			"open": "Отчёты",
-			"rename": "Переименовать",
-			"save": "Сохранить",
-			"saveAsNew": "Сохранить как новый",
-			"share": "Поделиться с рабочей областью",
-			"sharedBy": "Общий отчёт от {{name}}",
-			"showing": "Отчёт: {{name}}",
-			"toast": {
-				"deleted": "Отчёт удалён",
-				"deleteError": "Не удалось удалить отчёт",
-				"madePrivate": "Теперь отчёт личный",
-				"saved": "Отчёт «{{name}}» сохранён",
-				"saveError": "Не удалось сохранить отчёт",
-				"shared": "Отчёт доступен всей рабочей области",
-				"updated": "Отчёт обновлён"
-			},
-			"unsaved": "Несохранённые изменения",
-			"update": "Обновить отчёт",
-			"visibility": {
-				"private": "Личный",
-				"privateHint": "Виден только вам.",
-				"workspace": "Общий для рабочей области",
-				"workspaceHint": "Его может открыть любой в этой рабочей области, у кого есть доступ к аналитике."
-			}
+		"time": {
+			"total": "Записанное время",
+			"entries": "Записи",
+			"people": "Люди",
+			"running": "Запущено сейчас",
+			"runningNote": "Запущенные таймеры войдут в эти итоги после остановки.",
+			"byPerson": "По людям",
+			"byProject": "По проектам",
+			"person": "Человек",
+			"project": "Проект",
+			"hours": "Часы",
+			"formerMember": "Бывший участник",
+			"empty": "За этот период время не записано"
 		}
 	},
 	"pages": {
@@ -8929,6 +9258,59 @@
 			"file": "прикреплённый файл",
 			"page": "другая страница"
 		},
+		"section": {
+			"title": "Страницы"
+		},
+		"list": {
+			"documentTitle": "{{project}} · Страницы",
+			"newPage": "Новая страница",
+			"tabs": {
+				"archived": "В архиве",
+				"private": "Личные",
+				"public": "Публичные"
+			},
+			"searchPlaceholder": "Поиск страниц",
+			"clearFilters": "Сбросить фильтры",
+			"sort": {
+				"created": "По дате создания",
+				"lastEdited": "По дате изменения",
+				"name": "По названию"
+			},
+			"untitled": "Без названия",
+			"inParent": "в {{path}}",
+			"ownedBy": "Владелец: {{name}}",
+			"access": {
+				"private": "Личная",
+				"public": "Публичная"
+			},
+			"editedAgo": "Изменена {{time}}",
+			"archivedOn": "Архивирована {{date}}",
+			"locked": "Заблокирована",
+			"loadError": "Не удалось загрузить страницы",
+			"retry": "Повторить",
+			"empty": {
+				"archived": {
+					"description": "Здесь появятся архивные страницы. Их можно восстановить или удалить.",
+					"title": "Нет архивных страниц"
+				},
+				"noMatch": {
+					"description": "Измените запрос или сбросьте фильтры.",
+					"title": "Подходящих страниц нет"
+				},
+				"none": {
+					"description": "Страницы хранят спецификации, заметки и документы рядом с задачами проекта.",
+					"title": "Напишите свою первую страницу"
+				},
+				"private": {
+					"description": "Личные страницы видны только вам.",
+					"title": "Нет личных страниц"
+				},
+				"public": {
+					"title": "Нет публичных страниц"
+				}
+			},
+			"recentlyDeleted": "Недавно удалённые"
+		},
 		"actions": {
 			"archive": "Архивировать",
 			"copyLink": "Копировать ссылку",
@@ -8944,6 +9326,123 @@
 			"restore": "Восстановить",
 			"unlock": "Разблокировать"
 		},
+		"toasts": {
+			"accessError": "Не удалось изменить доступ к странице",
+			"archived": "Страница архивирована",
+			"archiveError": "Не удалось архивировать страницу",
+			"contentConflict": "Эта страница была изменена в другом месте, поэтому ваша последняя правка не сохранена. Показана актуальная версия.",
+			"contentSaveError": "Не удалось сохранить страницу",
+			"createError": "Не удалось создать страницу",
+			"deleted": "Страница удалена",
+			"deleteError": "Не удалось удалить страницу",
+			"duplicated": "Страница продублирована",
+			"duplicateError": "Не удалось продублировать страницу",
+			"fullWidthError": "Не удалось изменить ширину страницы",
+			"linkCopied": "Ссылка скопирована",
+			"locked": "Страница заблокирована",
+			"lockError": "Не удалось изменить блокировку",
+			"logoError": "Не удалось обновить значок",
+			"madePrivate": "Страница теперь личная",
+			"madePublic": "Страница теперь публичная",
+			"moved": "Перемещено в проект «{{project}}»",
+			"moveError": "Не удалось переместить страницу",
+			"open": "Открыть",
+			"restored": "Страница восстановлена",
+			"restoreError": "Не удалось восстановить страницу",
+			"titleError": "Не удалось сохранить название",
+			"unlocked": "Страница разблокирована"
+		},
+		"deleteDialog": {
+			"cancel": "Отмена",
+			"confirm": "Удалить",
+			"description": "Страница «{{title}}» будет перемещена в раздел «Недавно удалённые» в настройках проекта, откуда её можно восстановить, пока она не удалена безвозвратно. Её подстраницы переместятся на верхний уровень.",
+			"title": "Удалить страницу?"
+		},
+		"moveDialog": {
+			"cancel": "Отмена",
+			"confirm": "Переместить",
+			"description": "Страница и её подстраницы будут перемещены в выбранный проект.",
+			"empty": "Ни в одном другом проекте не включены страницы",
+			"searchPlaceholder": "Поиск проектов",
+			"title": "Переместить страницу"
+		},
+		"tree": {
+			"collapse": "Свернуть «{{title}}»",
+			"dnd": {
+				"cancelled": "Перемещение отменено.",
+				"dropped": "Страница «{{title}}» перемещена.",
+				"invalid": "Страницу «{{title}}» нельзя переместить сюда.",
+				"over": "«{{title}}» над «{{target}}».",
+				"pickedUp": "Страница «{{title}}» захвачена. Перемещайте её стрелками, отпустите клавишей Space или отмените клавишей Escape."
+			},
+			"empty": "Страниц пока нет",
+			"expand": "Развернуть «{{title}}»",
+			"newPage": "Новая страница",
+			"title": "Страницы"
+		},
+		"crumb": {
+			"noMatches": "Подходящих страниц нет",
+			"searchPlaceholder": "Поиск страниц"
+		},
+		"header": {
+			"copied": "Скопировано",
+			"copyLink": "Копировать ссылку",
+			"locked": "Заблокирована",
+			"lockPage": "Заблокировать страницу",
+			"moreActions": "Действия со страницей",
+			"presence": "Сейчас на странице: {{names}}",
+			"presenceMore": "+{{count}}",
+			"togglePanel": "Показать или скрыть боковую панель",
+			"unlockHint": "Нажмите, чтобы разблокировать",
+			"ancestors": "Родительские страницы"
+		},
+		"menu": {
+			"copyMarkdown": "Копировать как Markdown",
+			"downloadMarkdown": "Скачать как Markdown",
+			"fullWidth": "На всю ширину",
+			"markdownCopied": "Markdown скопирован",
+			"versionHistory": "История версий",
+			"print": "Печать / Сохранить как PDF"
+		},
+		"editor": {
+			"addIcon": "Добавить значок",
+			"ariaLabel": "Содержимое страницы",
+			"pageLink": {
+				"unavailable": "Личная или удалённая страница"
+			},
+			"pageLinkPicker": {
+				"empty": "Страницы не найдены",
+				"search": "Поиск страниц"
+			},
+			"placeholder": "Начните писать или нажмите / для команд",
+			"slash": {
+				"commands": {
+					"divider": "Разделитель",
+					"heading-1": "Заголовок 1",
+					"heading-2": "Заголовок 2",
+					"heading-3": "Заголовок 3",
+					"page-link": "Ссылка на страницу"
+				}
+			},
+			"titleAria": "Название страницы",
+			"titlePlaceholder": "Без названия"
+		},
+		"logo": {
+			"categories": {
+				"activities": "Активности",
+				"food": "Еда",
+				"nature": "Природа",
+				"objects": "Предметы",
+				"people": "Люди",
+				"smileys": "Смайлики",
+				"symbols": "Символы",
+				"travel": "Путешествия"
+			},
+			"emoji": "Эмодзи",
+			"icon": "Значок",
+			"remove": "Удалить",
+			"search": "Поиск эмодзи"
+		},
 		"banners": {
 			"archived": "Страница в архиве. Восстановите её, чтобы редактировать.",
 			"locked": "Страница заблокирована. Разблокируйте её, чтобы вносить изменения.",
@@ -8954,6 +9453,15 @@
 			"storedCopy": "Показана последняя сохранённая версия. Совместное редактирование возобновится после восстановления соединения.",
 			"tooLarge": "Страница слишком велика для дальнейшей синхронизации. Скопируйте свои последние изменения и перезагрузите страницу.",
 			"unlock": "Разблокировать"
+		},
+		"sync": {
+			"cantConnect": "Не удаётся подключиться",
+			"notSaved": "Ещё не сохранено",
+			"notSavedHint": "Мы продолжим попытки. Не закрывайте эту вкладку.",
+			"offline": "Нет сети",
+			"offlineHint": "Можно продолжать редактирование. Изменения синхронизируются после восстановления соединения.",
+			"retry": "Повторить",
+			"saved": "Сохранено"
 		},
 		"collab": {
 			"deleted": "Эта страница была удалена",
@@ -8966,6 +9474,64 @@
 			"restoredBy": "{{name}} восстановил(а) предыдущую версию",
 			"roomFull": "Сейчас эту страницу открыло слишком много людей. Повторите попытку чуть позже.",
 			"signedOut": "Сеанс завершён. Войдите снова, чтобы продолжить редактирование."
+		},
+		"state": {
+			"notFound": {
+				"back": "К страницам",
+				"description": "Возможно, она удалена или является личной.",
+				"title": "Страница не найдена"
+			}
+		},
+		"panel": {
+			"outline": "Структура",
+			"info": "Сведения",
+			"history": "История",
+			"close": "Закрыть панель",
+			"comments": "Комментарии"
+		},
+		"outline": {
+			"empty": {
+				"description": "Добавьте заголовки, чтобы увидеть здесь структуру.",
+				"title": "Заголовков пока нет"
+			}
+		},
+		"info": {
+			"characters": "Символы",
+			"createdBy": "Автор",
+			"lastEditedBy": "Последним изменил(а)",
+			"lessThanMinute": "<1 мин",
+			"linkedFrom": "Ссылаются",
+			"lockedBy": "Заблокировал(а)",
+			"noBacklinks": "Пока нет страниц со ссылками сюда",
+			"paragraphs": "Абзацы",
+			"readingMinutes": "{{count}} мин",
+			"readingTime": "Время чтения",
+			"words": "Слова"
+		},
+		"history": {
+			"backToCurrent": "Вернуться к текущей",
+			"current": "Текущая версия",
+			"empty": "Сохранённых версий пока нет. Версии сохраняются по мере редактирования.",
+			"loadError": "Не удалось загрузить эту версию",
+			"others_few": "+{{count}} других",
+			"others_many": "+{{count}} других",
+			"others_one": "+{{count}} другой",
+			"others_other": "+{{count}} других",
+			"previewTitle": "Версия от {{date}}",
+			"restore": "Восстановить",
+			"restoreCancel": "Отмена",
+			"restoreConfirmDescription": "Сначала текущее содержимое сохраняется в истории, так что это действие можно отменить.",
+			"restoreConfirmTitle": "Восстановить эту версию?",
+			"restored": "Версия восстановлена",
+			"restoreError": "Не удалось восстановить эту версию",
+			"restoring": "Восстановление…",
+			"retry": "Повторить",
+			"title": "История версий",
+			"unknownUser": "Бывший участник",
+			"viewOnly": "Только просмотр"
+		},
+		"notification": {
+			"openPage": "Открыть страницу"
 		},
 		"toolbar": {
 			"ariaLabel": "Панель форматирования",
@@ -9004,240 +9570,36 @@
 		"commandPalette": {
 			"createPage": "Создать страницу"
 		},
-		"crumb": {
-			"noMatches": "Подходящих страниц нет",
-			"searchPlaceholder": "Поиск страниц"
-		},
-		"deleteDialog": {
+		"comments": {
+			"placeholder": "Добавьте комментарий…",
+			"add": "Комментировать",
+			"save": "Сохранить",
 			"cancel": "Отмена",
-			"confirm": "Удалить",
-			"description": "Страница «{{title}}» будет удалена навсегда вместе с историей версий. Её подстраницы переместятся на верхний уровень. Это действие нельзя отменить.",
-			"title": "Удалить страницу?"
-		},
-		"editor": {
-			"addIcon": "Добавить значок",
-			"ariaLabel": "Содержимое страницы",
-			"pageLink": {
-				"unavailable": "Личная или удалённая страница"
-			},
-			"pageLinkPicker": {
-				"empty": "Страницы не найдены",
-				"search": "Поиск страниц"
-			},
-			"placeholder": "Начните писать или нажмите / для команд",
-			"slash": {
-				"commands": {
-					"divider": "Разделитель",
-					"heading-1": "Заголовок 1",
-					"heading-2": "Заголовок 2",
-					"heading-3": "Заголовок 3",
-					"page-link": "Ссылка на страницу"
-				}
-			},
-			"titleAria": "Название страницы",
-			"titlePlaceholder": "Без названия"
-		},
-		"header": {
-			"copied": "Скопировано",
-			"copyLink": "Копировать ссылку",
-			"locked": "Заблокирована",
-			"lockPage": "Заблокировать страницу",
-			"moreActions": "Действия со страницей",
-			"presence": "Сейчас на странице: {{names}}",
-			"presenceMore": "+{{count}}",
-			"togglePanel": "Показать или скрыть боковую панель",
-			"unlockHint": "Нажмите, чтобы разблокировать",
-			"ancestors": "Родительские страницы"
-		},
-		"history": {
-			"backToCurrent": "Вернуться к текущей",
-			"current": "Текущая версия",
-			"empty": "Сохранённых версий пока нет. Версии сохраняются по мере редактирования.",
-			"loadError": "Не удалось загрузить эту версию",
-			"others_few": "+{{count}} других",
-			"others_many": "+{{count}} других",
-			"others_one": "+{{count}} другой",
-			"others_other": "+{{count}} других",
-			"previewTitle": "Версия от {{date}}",
-			"restore": "Восстановить",
-			"restoreCancel": "Отмена",
-			"restoreConfirmDescription": "Сначала текущее содержимое сохраняется в истории, так что это действие можно отменить.",
-			"restoreConfirmTitle": "Восстановить эту версию?",
-			"restored": "Версия восстановлена",
-			"restoreError": "Не удалось восстановить эту версию",
-			"restoring": "Восстановление…",
+			"emptyTitle": "Комментариев пока нет",
+			"emptyDescription": "Комментарии здесь остаются внутри рабочей области. По публичным ссылкам они не видны.",
+			"archivedNote": "Эта страница в архиве. Восстановите её, чтобы оставить комментарий.",
+			"loadError": "Не удалось загрузить комментарии",
 			"retry": "Повторить",
-			"title": "История версий",
-			"unknownUser": "Бывший участник",
-			"viewOnly": "Только просмотр"
-		},
-		"info": {
-			"characters": "Символы",
-			"createdBy": "Автор",
-			"lastEditedBy": "Последним изменил(а)",
-			"lessThanMinute": "<1 мин",
-			"linkedFrom": "Ссылаются",
-			"lockedBy": "Заблокировал(а)",
-			"noBacklinks": "Пока нет страниц со ссылками сюда",
-			"paragraphs": "Абзацы",
-			"readingMinutes": "{{count}} мин",
-			"readingTime": "Время чтения",
-			"words": "Слова"
-		},
-		"list": {
-			"access": {
-				"private": "Личная",
-				"public": "Публичная"
-			},
-			"archivedOn": "Архивирована {{date}}",
-			"clearFilters": "Сбросить фильтры",
-			"documentTitle": "{{project}} · Страницы",
-			"editedAgo": "Изменена {{time}}",
-			"empty": {
-				"archived": {
-					"description": "Здесь появятся архивные страницы. Их можно восстановить или удалить.",
-					"title": "Нет архивных страниц"
-				},
-				"noMatch": {
-					"description": "Измените запрос или сбросьте фильтры.",
-					"title": "Подходящих страниц нет"
-				},
-				"none": {
-					"description": "Страницы хранят спецификации, заметки и документы рядом с задачами проекта.",
-					"title": "Напишите свою первую страницу"
-				},
-				"private": {
-					"description": "Личные страницы видны только вам.",
-					"title": "Нет личных страниц"
-				},
-				"public": {
-					"title": "Нет публичных страниц"
-				}
-			},
-			"inParent": "в {{path}}",
-			"loadError": "Не удалось загрузить страницы",
-			"locked": "Заблокирована",
-			"newPage": "Новая страница",
-			"ownedBy": "Владелец: {{name}}",
-			"retry": "Повторить",
-			"searchPlaceholder": "Поиск страниц",
-			"sort": {
-				"created": "По дате создания",
-				"lastEdited": "По дате изменения",
-				"name": "По названию"
-			},
-			"tabs": {
-				"archived": "В архиве",
-				"private": "Личные",
-				"public": "Публичные"
-			},
-			"untitled": "Без названия"
-		},
-		"logo": {
-			"categories": {
-				"activities": "Активности",
-				"food": "Еда",
-				"nature": "Природа",
-				"objects": "Предметы",
-				"people": "Люди",
-				"smileys": "Смайлики",
-				"symbols": "Символы",
-				"travel": "Путешествия"
-			},
-			"emoji": "Эмодзи",
-			"icon": "Значок",
-			"remove": "Удалить",
-			"search": "Поиск эмодзи"
-		},
-		"menu": {
-			"copyMarkdown": "Копировать как Markdown",
-			"downloadMarkdown": "Скачать как Markdown",
-			"fullWidth": "На всю ширину",
-			"markdownCopied": "Markdown скопирован",
-			"versionHistory": "История версий",
-			"print": "Печать / Сохранить как PDF"
-		},
-		"moveDialog": {
-			"cancel": "Отмена",
-			"confirm": "Переместить",
-			"description": "Страница и её подстраницы будут перемещены в выбранный проект.",
-			"empty": "Ни в одном другом проекте не включены страницы",
-			"searchPlaceholder": "Поиск проектов",
-			"title": "Переместить страницу"
-		},
-		"notification": {
-			"openPage": "Открыть страницу"
-		},
-		"outline": {
-			"empty": {
-				"description": "Добавьте заголовки, чтобы увидеть здесь структуру.",
-				"title": "Заголовков пока нет"
+			"deletedUser": "Удалённый пользователь",
+			"edited": "изменено",
+			"menuAria": "Другие действия с этим комментарием",
+			"edit": "Изменить",
+			"delete": "Удалить",
+			"deleteTitle": "Удалить этот комментарий?",
+			"deleteDescription": "Он будет удалён для всех. Это действие нельзя отменить.",
+			"toasts": {
+				"empty": "Сначала напишите что-нибудь",
+				"addError": "Не удалось добавить комментарий",
+				"saveError": "Не удалось сохранить комментарий",
+				"deleteError": "Не удалось удалить комментарий"
 			}
 		},
-		"panel": {
-			"close": "Закрыть панель",
-			"history": "История",
-			"info": "Сведения",
-			"outline": "Структура"
-		},
-		"section": {
-			"title": "Страницы"
-		},
-		"state": {
-			"notFound": {
-				"back": "К страницам",
-				"description": "Возможно, она удалена или является личной.",
-				"title": "Страница не найдена"
-			}
-		},
-		"sync": {
-			"cantConnect": "Не удаётся подключиться",
-			"notSaved": "Ещё не сохранено",
-			"notSavedHint": "Мы продолжим попытки. Не закрывайте эту вкладку.",
-			"offline": "Нет сети",
-			"offlineHint": "Можно продолжать редактирование. Изменения синхронизируются после восстановления соединения.",
-			"retry": "Повторить",
-			"saved": "Сохранено"
-		},
-		"toasts": {
-			"accessError": "Не удалось изменить доступ к странице",
-			"archived": "Страница архивирована",
-			"archiveError": "Не удалось архивировать страницу",
-			"contentConflict": "Эта страница была изменена в другом месте, поэтому ваша последняя правка не сохранена. Показана актуальная версия.",
-			"contentSaveError": "Не удалось сохранить страницу",
-			"createError": "Не удалось создать страницу",
-			"deleted": "Страница удалена",
-			"deleteError": "Не удалось удалить страницу",
-			"duplicated": "Страница продублирована",
-			"duplicateError": "Не удалось продублировать страницу",
-			"fullWidthError": "Не удалось изменить ширину страницы",
-			"linkCopied": "Ссылка скопирована",
-			"locked": "Страница заблокирована",
-			"lockError": "Не удалось изменить блокировку",
-			"logoError": "Не удалось обновить значок",
-			"madePrivate": "Страница теперь личная",
-			"madePublic": "Страница теперь публичная",
-			"moved": "Перемещено в проект «{{project}}»",
-			"moveError": "Не удалось переместить страницу",
-			"open": "Открыть",
-			"restored": "Страница восстановлена",
-			"restoreError": "Не удалось восстановить страницу",
-			"titleError": "Не удалось сохранить название",
-			"unlocked": "Страница разблокирована"
-		},
-		"tree": {
-			"collapse": "Свернуть «{{title}}»",
-			"dnd": {
-				"cancelled": "Перемещение отменено.",
-				"dropped": "Страница «{{title}}» перемещена.",
-				"invalid": "Страницу «{{title}}» нельзя переместить сюда.",
-				"over": "«{{title}}» над «{{target}}».",
-				"pickedUp": "Страница «{{title}}» захвачена. Перемещайте её стрелками, отпустите клавишей Space или отмените клавишей Escape."
-			},
-			"empty": "Страниц пока нет",
-			"expand": "Развернуть «{{title}}»",
-			"newPage": "Новая страница",
-			"title": "Страницы"
+		"watch": {
+			"watch": "Отслеживать страницу",
+			"unwatch": "Перестать отслеживать",
+			"watchHint": "Получать уведомления о комментариях и изменениях",
+			"watchingHint": "Вы получаете уведомления о комментариях и изменениях",
+			"error": "Не удалось изменить отслеживание этой страницы"
 		}
 	},
 	"accountSecurity": {
@@ -9296,7 +9658,9 @@
 				"sessionLifetime": "Время жизни сеанса",
 				"sessionLifetimeHint": "Сколько длится неиспользуемый сеанс. Использование продлевает его.",
 				"hours": "ч",
-				"signInNotice": "Войдите через {{provider}}. Вход по паролю доступен только администраторам экземпляра."
+				"signInNotice": "Войдите через {{provider}}. Вход по паролю доступен только администраторам экземпляра.",
+				"requireTwoFactor": "Требовать двухфакторную аутентификацию",
+				"requireTwoFactorHint": "Каждый аккаунт с паролем должен настроить двухфакторную аутентификацию, прежде чем сможет делать что-либо ещё, даже если он также входит через провайдера или SAML, а до этого его ключи API не работают. Вход по ссылкам и кодам из писем отключается, поэтому те, кто входил только так, не смогут войти, пока у них нет пароля: они задают его через «Забыли пароль?», а если почта не настроена, вы задаёте его для них в разделе «Пользователи». Аккаунты без пароля следуют правилам своего провайдера. Сначала включите её для своего аккаунта."
 			},
 			"twoFactor": {
 				"title": "Двухфакторная аутентификация",
@@ -9323,7 +9687,11 @@
 				"done": "Готово",
 				"enabled": "Двухфакторная аутентификация включена.",
 				"disabled": "Двухфакторная аутентификация выключена.",
-				"error": "Что-то пошло не так. Попробуйте снова."
+				"error": "Что-то пошло не так. Попробуйте снова.",
+				"requiredHint": "Этот сервер требует двухфакторную аутентификацию, поэтому её нельзя выключить. Если вы потеряете устройство и коды восстановления, её может сбросить администратор экземпляра.",
+				"setupRequiredTitle": "Настройте двухфакторную аутентификацию, чтобы продолжить",
+				"setupRequiredHint": "Этот сервер требует двухфакторную аутентификацию для каждого аккаунта с паролем. Вам понадобится приложение-аутентификатор.",
+				"signOutInstead": "Вместо этого выйти"
 			},
 			"challenge": {
 				"title": "Двухфакторная аутентификация",
@@ -9395,7 +9763,11 @@
 				"noPassword": "Не задан (входит иначе)",
 				"workspacesTitle": "Рабочие области",
 				"noWorkspaces": "Не состоит ни в одной рабочей области.",
-				"joined": "С {{date}}"
+				"joined": "С {{date}}",
+				"resetTwoFactor": "Сбросить двухфакторную аутентификацию",
+				"resetTwoFactorTitle": "Сбросить двухфакторную аутентификацию пользователя {{name}}?",
+				"resetTwoFactorDescription": "Используйте это, когда человек потерял устройство и коды восстановления, а вы убедились, что это действительно он. Его двухфакторная аутентификация будет удалена, и все его сеансы завершатся. После этого он сможет войти только с паролем и настроить её заново.",
+				"twoFactorReset": "Двухфакторная аутентификация пользователя {{name}} сброшена"
 			}
 		},
 		"password": {
@@ -9459,33 +9831,99 @@
 				"cliAdminPromoted": "Назначил(а) администратора экземпляра (CLI восстановления)",
 				"cliAdminDemoted": "Удалил(а) администратора экземпляра (CLI восстановления)",
 				"cliPasswordReset": "Сбросил(а) пароль (CLI восстановления)",
-				"cliUserUnbanned": "Снял(а) блокировку (CLI восстановления)"
+				"cliUserUnbanned": "Снял(а) блокировку (CLI восстановления)",
+				"userTwoFactorReset": "Сбросил(а) двухфакторную аутентификацию аккаунта",
+				"cliTwoFactorReset": "Сбросил(а) двухфакторную аутентификацию аккаунта (CLI восстановления)",
+				"scimConnectionCreated": "Подключил(а) провайдера удостоверений для SCIM",
+				"scimTokenRotated": "Заменил(а) токен SCIM",
+				"scimConnectionDeleted": "Удалил(а) подключение SCIM",
+				"scimUserProvisioned": "Добавил(а) аккаунт через SCIM",
+				"scimUserDeactivated": "Деактивировал(а) аккаунт через SCIM",
+				"scimUserReactivated": "Повторно активировал(а) аккаунт через SCIM",
+				"scimUserRemoved": "Удалил(а) человека из рабочей области через SCIM",
+				"samlConnectionCreated": "Подключил(а) провайдера удостоверений для входа",
+				"samlConnectionUpdated": "Изменил(а) подключение SAML",
+				"samlConnectionDeleted": "Удалил(а) подключение SAML"
 			}
 		}
 	},
 	"instanceAdmin": {
-		"admins": {
-			"add": "Добавить администратора",
-			"addConfirm": "Добавить администратора",
-			"addDescription": "Администраторы экземпляра могут менять любые настройки в этом разделе и открывать любую рабочую область.",
-			"added": "{{name}} теперь администратор экземпляра",
-			"addTitle": "Добавление администратора экземпляра",
-			"columns": {
-				"email": "Электронная почта",
-				"name": "Имя"
-			},
+		"pageTitle": "Экземпляр · {{page}}",
+		"nav": {
+			"admins": "Администраторы",
+			"authentication": "Аутентификация",
 			"email": "Электронная почта",
-			"emailInvalid": "Введите корректный адрес электронной почты",
-			"emailPlaceholder": "name@example.com",
-			"lastAdmin": "Должен остаться хотя бы один администратор экземпляра",
-			"remove": "Убрать администратора…",
-			"removeConfirm": "Убрать",
-			"removed": "{{name}} больше не администратор экземпляра",
-			"removeDescription": "Аккаунт и рабочие области пользователя сохранятся.",
-			"removeTitle": "Убрать {{name}} из администраторов экземпляра?",
-			"subtitle": "Администраторы экземпляра могут менять любые настройки в этом разделе и открывать любую рабочую область.",
-			"title": "Администраторы",
-			"you": "Вы"
+			"general": "Основное",
+			"publicBoards": "Публичные доски",
+			"workspaces": "Рабочие области",
+			"ai": "ИИ"
+		},
+		"lockedCallout": "Эти настройки управляются переменными окружения на этом сервере. Изменение здесь отключено.",
+		"source": {
+			"default": "По умолчанию",
+			"environment": "Окружение: {{variable}}",
+			"lockTooltip": "Удалите {{variable}} и перезапустите сервер, чтобы управлять этим здесь.",
+			"saved": "Сохранено здесь",
+			"savedBy": "Сохранил(а) {{name}}, {{date}}"
+		},
+		"saved": "Настройки сохранены",
+		"saveError": "Не удалось сохранить настройки",
+		"loadError": "Не удалось загрузить настройки экземпляра",
+		"retry": "Повторить",
+		"save": "Сохранить",
+		"secret": {
+			"cancel": "Отмена",
+			"clear": "Очистить",
+			"cleared": "Секрет очищен",
+			"placeholder": "Введите новое значение",
+			"replace": "Заменить",
+			"saved": "Сохранено",
+			"unreadable": "Сохранённый секрет не удаётся прочитать (изменился AUTH_SECRET сервера). Введите его снова."
+		},
+		"general": {
+			"title": "Основное",
+			"subtitle": "Задайте название экземпляра и проверьте его состояние.",
+			"instanceName": "Название экземпляра",
+			"instanceNameHint": "Отображается на экране входа и на публичных досках",
+			"instanceNameRequired": "Введите название",
+			"instanceNameTooLong": "Используйте не более 80 символов",
+			"homePage": "Главная страница",
+			"publicLanding": "Показывать страницу о продукте",
+			"publicLandingHint": "Посетители без входа видят страницу о продукте по корневому адресу. Если она выключена, они сразу попадают на страницу входа.",
+			"overview": "Обзор",
+			"version": "Версия",
+			"counts": {
+				"accounts": "Аккаунты",
+				"guests": "Гости",
+				"projects": "Проекты",
+				"publishedBoards": "Публичные доски",
+				"workspaces": "Рабочие области"
+			},
+			"server": {
+				"captcha": "Капча",
+				"cloudMode": "Облачный режим",
+				"configured": "Настроено",
+				"demoMode": "Демо-режим",
+				"email": "Электронная почта",
+				"errorReporting": "Отчёты об ошибках",
+				"fileStorage": "Хранилище файлов",
+				"notConfigured": "Не настроено",
+				"off": "Выключено",
+				"on": "Включено",
+				"realtime": "Реальное время",
+				"realtimeMemory": "В памяти",
+				"realtimeRedis": "Redis ({{mode}})",
+				"title": "Сервер"
+			},
+			"deliveryFailures": {
+				"title": "Недавние сбои доставки",
+				"description": "Вебхуки рабочих областей, исчерпавшие повторные попытки за последние 7 дней. Ошибки почты и фоновых заданий есть только в журналах сервера.",
+				"empty": "За последние 7 дней сбоев доставки не было.",
+				"when": "Когда",
+				"workspace": "Рабочая область",
+				"webhook": "Вебхук",
+				"response": "Ответ"
+			}
 		},
 		"auth": {
 			"anyoneCanSignUp": "Регистрация открыта для всех",
@@ -9525,6 +9963,31 @@
 			"title": "Аутентификация",
 			"toggle": "Включить или выключить: {{method}}"
 		},
+		"oauth": {
+			"authorizationUrl": "URL авторизации",
+			"autoSignIn": "Входить автоматически",
+			"autoSignInHint": "Пропускать экран входа и сразу переходить к этому провайдеру",
+			"buttonLabel": "Подпись кнопки",
+			"buttonLabelHint": "Отображается на кнопке входа, например «Продолжить через Okta»",
+			"callbackHint": "Добавьте этот URL в ваше приложение OAuth",
+			"callbackUrl": "URL обратного вызова",
+			"clientId": "ID клиента",
+			"clientSecret": "Секрет клиента",
+			"copied": "Скопировано",
+			"copy": "Копировать",
+			"discoveryHint": "Или заполните три эндпоинта ниже",
+			"discoveryUrl": "URL обнаружения",
+			"invalidUrl": "Введите абсолютный URL с http или https",
+			"logoutUrl": "URL выхода",
+			"managedByEnv": "Этот провайдер настроен через переменные окружения ({{variables}}).",
+			"pkce": "Использовать PKCE",
+			"scopes": "Области доступа (scopes)",
+			"scopesHint": "Через запятую",
+			"sheetDescription": "Подключите приложение OAuth, чтобы люди могли входить через {{provider}}.",
+			"sheetTitle": "Вход через {{provider}}",
+			"tokenUrl": "URL токена",
+			"userInfoUrl": "URL сведений о пользователе"
+		},
 		"email": {
 			"from": "Отправитель",
 			"fromHint": "Адрес либо имя и адрес: Margaya <no-reply@example.com>",
@@ -9555,134 +10018,6 @@
 			"subtitle": "SMTP-сервер, через который Margaya отправляет коды входа, приглашения и уведомления.",
 			"title": "Электронная почта",
 			"username": "Имя пользователя"
-		},
-		"general": {
-			"counts": {
-				"accounts": "Аккаунты",
-				"guests": "Гости",
-				"projects": "Проекты",
-				"publishedBoards": "Публичные доски",
-				"workspaces": "Рабочие области"
-			},
-			"instanceName": "Название экземпляра",
-			"instanceNameHint": "Отображается на экране входа и на публичных досках",
-			"instanceNameRequired": "Введите название",
-			"instanceNameTooLong": "Используйте не более 80 символов",
-			"homePage": "Главная страница",
-			"publicLanding": "Показывать страницу о продукте",
-			"publicLandingHint": "Посетители без входа видят страницу о продукте по корневому адресу. Если она выключена, они сразу попадают на страницу входа.",
-			"overview": "Обзор",
-			"server": {
-				"captcha": "Капча",
-				"cloudMode": "Облачный режим",
-				"configured": "Настроено",
-				"demoMode": "Демо-режим",
-				"email": "Электронная почта",
-				"errorReporting": "Отчёты об ошибках",
-				"fileStorage": "Хранилище файлов",
-				"notConfigured": "Не настроено",
-				"off": "Выключено",
-				"on": "Включено",
-				"realtime": "Реальное время",
-				"realtimeMemory": "В памяти",
-				"realtimeRedis": "Redis ({{mode}})",
-				"title": "Сервер"
-			},
-			"subtitle": "Задайте название экземпляра и проверьте его состояние.",
-			"title": "Основное",
-			"version": "Версия"
-		},
-		"loadError": "Не удалось загрузить настройки экземпляра",
-		"lockedCallout": "Эти настройки управляются переменными окружения на этом сервере. Изменение здесь отключено.",
-		"nav": {
-			"admins": "Администраторы",
-			"authentication": "Аутентификация",
-			"email": "Электронная почта",
-			"general": "Основное",
-			"publicBoards": "Публичные доски",
-			"workspaces": "Рабочие области",
-			"ai": "ИИ"
-		},
-		"oauth": {
-			"authorizationUrl": "URL авторизации",
-			"autoSignIn": "Входить автоматически",
-			"autoSignInHint": "Пропускать экран входа и сразу переходить к этому провайдеру",
-			"buttonLabel": "Подпись кнопки",
-			"buttonLabelHint": "Отображается на кнопке входа, например «Продолжить через Okta»",
-			"callbackHint": "Добавьте этот URL в ваше приложение OAuth",
-			"callbackUrl": "URL обратного вызова",
-			"clientId": "ID клиента",
-			"clientSecret": "Секрет клиента",
-			"copied": "Скопировано",
-			"copy": "Копировать",
-			"discoveryHint": "Или заполните три эндпоинта ниже",
-			"discoveryUrl": "URL обнаружения",
-			"invalidUrl": "Введите абсолютный URL с http или https",
-			"logoutUrl": "URL выхода",
-			"managedByEnv": "Этот провайдер настроен через переменные окружения ({{variables}}).",
-			"pkce": "Использовать PKCE",
-			"scopes": "Области доступа (scopes)",
-			"scopesHint": "Через запятую",
-			"sheetDescription": "Подключите приложение OAuth, чтобы люди могли входить через {{provider}}.",
-			"sheetTitle": "Вход через {{provider}}",
-			"tokenUrl": "URL токена",
-			"userInfoUrl": "URL сведений о пользователе"
-		},
-		"pageTitle": "Экземпляр · {{page}}",
-		"publicBoards": {
-			"actions": "Действия с доской",
-			"allow": "Разрешить публичные доски",
-			"allowHint": "Если выключено, любая публичная ссылка отвечает «не найдено». Ничего не удаляется.",
-			"columns": {
-				"features": "Возможности",
-				"project": "Проект",
-				"published": "Опубликована",
-				"workspace": "Рабочая область"
-			},
-			"empty": "На этом сервере нет публичных досок.",
-			"feature": {
-				"comments": "Комментарии",
-				"guests": "Гости",
-				"reactions": "Реакции",
-				"requests": "Заявки",
-				"votes": "Голоса"
-			},
-			"listTitle": "Опубликованные доски",
-			"loadMore": "Загрузить ещё",
-			"noMatches": "Нет публичных досок по запросу «{{query}}»",
-			"openBoard": "Открыть доску",
-			"participation": "Разрешить публичное участие",
-			"participationHint": "Если выключено, публичные доски доступны только для чтения: без комментариев, реакций, голосов и заявок.",
-			"projectSettings": "Настройки проекта",
-			"search": "Поиск досок",
-			"subtitle": "Управление публичными досками на всём экземпляре.",
-			"title": "Публичные доски",
-			"unpublish": "Снять с публикации…",
-			"unpublishConfirm": "Снять с публикации",
-			"unpublishDescription": "Ссылка не будет работать, пока кто-нибудь не опубликует доску снова. Настройки, комментарии, реакции и голоса сохраняются.",
-			"unpublished": "Доска снята с публикации",
-			"unpublishError": "Не удалось снять доску с публикации",
-			"unpublishTitle": "Снять с публикации «{{project}}»?"
-		},
-		"retry": "Повторить",
-		"save": "Сохранить",
-		"saved": "Настройки сохранены",
-		"saveError": "Не удалось сохранить настройки",
-		"secret": {
-			"cancel": "Отмена",
-			"clear": "Очистить",
-			"cleared": "Секрет очищен",
-			"placeholder": "Введите новое значение",
-			"replace": "Заменить",
-			"saved": "Сохранено",
-			"unreadable": "Сохранённый секрет не удаётся прочитать (изменился AUTH_SECRET сервера). Введите его снова."
-		},
-		"source": {
-			"default": "По умолчанию",
-			"environment": "Окружение: {{variable}}",
-			"lockTooltip": "Удалите {{variable}} и перезапустите сервер, чтобы управлять этим здесь.",
-			"saved": "Сохранено здесь",
-			"savedBy": "Сохранил(а) {{name}}, {{date}}"
 		},
 		"testEmail": {
 			"codes": {
@@ -9725,6 +10060,132 @@
 			"search": "Поиск рабочих областей",
 			"subtitle": "Все рабочие области этого экземпляра.",
 			"title": "Рабочие области"
+		},
+		"publicBoards": {
+			"actions": "Действия с доской",
+			"allow": "Разрешить публичные доски",
+			"allowHint": "Если выключено, любая публичная ссылка отвечает «не найдено». Ничего не удаляется.",
+			"columns": {
+				"features": "Возможности",
+				"project": "Проект",
+				"published": "Опубликована",
+				"workspace": "Рабочая область"
+			},
+			"empty": "На этом сервере нет публичных досок.",
+			"feature": {
+				"comments": "Комментарии",
+				"guests": "Гости",
+				"reactions": "Реакции",
+				"requests": "Заявки",
+				"votes": "Голоса"
+			},
+			"listTitle": "Опубликованные доски",
+			"loadMore": "Загрузить ещё",
+			"noMatches": "Нет публичных досок по запросу «{{query}}»",
+			"openBoard": "Открыть доску",
+			"participation": "Разрешить публичное участие",
+			"participationHint": "Если выключено, публичные доски доступны только для чтения: без комментариев, реакций, голосов и заявок.",
+			"projectSettings": "Настройки проекта",
+			"search": "Поиск досок",
+			"subtitle": "Управление публичными досками на всём экземпляре.",
+			"title": "Публичные доски",
+			"unpublish": "Снять с публикации…",
+			"unpublishConfirm": "Снять с публикации",
+			"unpublishDescription": "Ссылка не будет работать, пока кто-нибудь не опубликует доску снова. Настройки, комментарии, реакции и голоса сохраняются.",
+			"unpublished": "Доска снята с публикации",
+			"unpublishError": "Не удалось снять доску с публикации",
+			"unpublishTitle": "Снять с публикации «{{project}}»?"
+		},
+		"admins": {
+			"add": "Добавить администратора",
+			"addConfirm": "Добавить администратора",
+			"addDescription": "Администраторы экземпляра могут менять любые настройки в этом разделе и открывать любую рабочую область.",
+			"added": "{{name}} теперь администратор экземпляра",
+			"addTitle": "Добавление администратора экземпляра",
+			"columns": {
+				"email": "Электронная почта",
+				"name": "Имя"
+			},
+			"email": "Электронная почта",
+			"emailInvalid": "Введите корректный адрес электронной почты",
+			"emailPlaceholder": "name@example.com",
+			"lastAdmin": "Должен остаться хотя бы один администратор экземпляра",
+			"remove": "Убрать администратора…",
+			"removeConfirm": "Убрать",
+			"removed": "{{name}} больше не администратор экземпляра",
+			"removeDescription": "Аккаунт и рабочие области пользователя сохранятся.",
+			"removeTitle": "Убрать {{name}} из администраторов экземпляра?",
+			"subtitle": "Администраторы экземпляра могут менять любые настройки в этом разделе и открывать любую рабочую область.",
+			"title": "Администраторы",
+			"you": "Вы"
+		},
+		"identity": {
+			"name": "Название",
+			"nameHint": "Как администраторы называют это подключение, например по имени провайдера.",
+			"remove": "Удалить",
+			"removeTitle": "Удалить {{name}}?",
+			"done": "Готово",
+			"scim": {
+				"title": "Автоматическое управление аккаунтами (SCIM)",
+				"description": "Позвольте провайдеру удостоверений добавлять, изменять и удалять людей в одной рабочей области.",
+				"none": "Для SCIM не подключён ни один провайдер удостоверений.",
+				"connect": "Подключить провайдера",
+				"connectDescription": "Создаёт токен для одной рабочей области. Вы увидите его один раз, после подключения.",
+				"connectConfirm": "Создать токен",
+				"workspace": "Рабочая область",
+				"workspaceHint": "Люди, добавленные этим провайдером, присоединяются к этой рабочей области как участники.",
+				"workspacePlaceholder": "Выберите рабочую область",
+				"workspaceSearch": "Поиск рабочих областей",
+				"baseUrl": "Базовый URL SCIM",
+				"token": "Bearer-токен",
+				"tokenTitle": "Скопируйте токен для {{name}}",
+				"tokenDescription": "Вы видите его только сейчас. Передайте его только провайдеру удостоверений: любой, у кого он есть, может добавлять людей в рабочую область, а также изменять или деактивировать людей, которыми управляет это подключение.",
+				"rotate": "Заменить токен",
+				"rotateTitle": "Заменить токен для {{name}}?",
+				"rotateDescription": "Текущий токен сразу перестанет работать, поэтому синхронизация через SCIM остановится, пока провайдер удостоверений не получит новый. Люди останутся связанными.",
+				"rotateConfirm": "Заменить токен",
+				"removeDescription": "Токен сразу перестанет работать. Добавленные им люди сохранят аккаунты и членство, но провайдер больше не будет их обновлять.",
+				"removed": "Удалено: {{name}}",
+				"columns": {
+					"name": "Название",
+					"workspace": "Рабочая область",
+					"people": "Люди"
+				}
+			},
+			"saml": {
+				"title": "Корпоративный вход (SAML)",
+				"description": "Позвольте людям с ваших почтовых доменов входить через провайдера удостоверений.",
+				"none": "Для входа не подключён ни один провайдер удостоверений.",
+				"connect": "Подключить провайдера",
+				"connectConfirm": "Подключить",
+				"edit": "Изменить",
+				"editTitle": "Изменить {{name}}",
+				"formDescription": "Тот, кто контролирует этого провайдера удостоверений, может выполнить вход за любого человека с этих доменов, чей адрес здесь подтверждён, поэтому подключайте только того провайдера, которому доверяете в отношении этих людей.",
+				"acsUrl": "URL службы Assertion Consumer Service (ACS)",
+				"entityId": "Идентификатор сущности (аудитория)",
+				"addressesHint": "Введите эти два значения у своего провайдера удостоверений. Позже они не меняются.",
+				"domains": "Почтовые домены",
+				"domainsHint": "Разделяйте несколько доменов запятыми. Поддомены включаются.",
+				"domainsInvalid": "Введите домены вида example.com через запятую.",
+				"issuer": "Идентификатор сущности провайдера удостоверений (издатель)",
+				"entryPoint": "URL единого входа",
+				"entryPointInvalid": "Используйте адрес https://.",
+				"certificate": "Сертификат подписи",
+				"certificateHint": "Открытый сертификат X.509 провайдера удостоверений в формате PEM или base64. Ни в коем случае не закрытый ключ.",
+				"certificateKeepHint": "Оставьте пустым, чтобы сохранить текущий сертификат.",
+				"currentCertificate": "Текущий отпечаток: {{fingerprint}}",
+				"certificateExpired": "Истёк",
+				"certificateExpiring": "Скоро истекает",
+				"connected": "Провайдер удостоверений подключён",
+				"saved": "Подключение сохранено",
+				"removeDescription": "Вход через этого провайдера удостоверений сразу прекратится. Аккаунты останутся, а люди будут входить другим способом.",
+				"removed": "Удалено: {{name}}",
+				"columns": {
+					"name": "Название",
+					"domains": "Почтовые домены",
+					"certificate": "Сертификат истекает"
+				}
+			}
 		}
 	},
 	"press": {
@@ -10280,6 +10741,32 @@
 				"facts": "Проекты: {{projects}} · Люди: {{members}} · Циклы: {{cycles}}",
 				"memory": "Заметки памяти: {{count}}",
 				"history": "Предыдущие сообщения: {{count}}"
+			},
+			"undo": {
+				"button": "Отменить план",
+				"pending": "Отменяем план…",
+				"hint": "Этот план можно отменить в течение часа, если в нём ничего не изменилось.",
+				"lastPlan": "Вы ещё можете отменить свой последний план.",
+				"done": "План отменён. Удалённые элементы находятся в корзине.",
+				"archived_one": "{{count}} элемент вместо этого архивирован, так как вы не можете его удалить.",
+				"archived_few": "{{count}} элемента вместо этого архивированы, так как вы не можете их удалить.",
+				"archived_many": "{{count}} элементов вместо этого архивировано, так как вы не можете их удалить.",
+				"archived_other": "Вместо удаления архивировано элементов: {{count}}, так как вы не можете их удалить.",
+				"partial_one": "Отменено, кроме {{count}} элемента:",
+				"partial_few": "Отменено, кроме {{count}} элементов:",
+				"partial_many": "Отменено, кроме {{count}} элементов:",
+				"partial_other": "Отменено, кроме {{count}} элемента:",
+				"edited_one": "Ничего не отменено: {{count}} элемент изменился после создания плана. Удалите его вручную, если он вам больше не нужен.",
+				"edited_few": "Ничего не отменено: {{count}} элемента изменились после создания плана. Удалите их вручную, если они вам больше не нужны.",
+				"edited_many": "Ничего не отменено: {{count}} элементов изменились после создания плана. Удалите их вручную, если они вам больше не нужны.",
+				"edited_other": "Ничего не отменено: элементов, изменённых после создания плана: {{count}}. Удалите их вручную, если они вам больше не нужны.",
+				"more_one": "и ещё {{count}}",
+				"more_few": "и ещё {{count}}",
+				"more_many": "и ещё {{count}}",
+				"more_other": "и ещё {{count}}",
+				"already": "Этот план уже отменён.",
+				"expired": "Этот план больше нельзя отменить: час прошёл.",
+				"failed": "Не удалось отменить этот план."
 			}
 		},
 		"duplicates": {
@@ -11880,7 +12367,8 @@
 			"text": "Это тестовое письмо от {{instanceName}}. Если вы его читаете, отправка почты работает."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Новый комментарий к задаче «{{taskTitle}}»"
+			"commentWithoutPreview": "Новый комментарий к задаче «{{taskTitle}}»",
+			"pushFixedLine": "Откройте Margaya, чтобы посмотреть подробности."
 		}
 	}
 }

@@ -221,10 +221,29 @@
 			"errors": {
 				"account_not_linked": "Не вдалося пов'язати цей ідентифікатор з наявним обліковим записом. Увійдіть за допомогою електронної пошти, щоб підтвердити обліковий запис, а потім спробуйте SSO знову. Якщо вхід через пошту недоступний, зверніться до свого адміністратора.",
 				"oauth_code_verification_failed": "Не вдалося пройти перевірку OAuth. Спробуйте ще раз.",
-				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Реєстрацію наразі вимкнено. Для створення облікового запису потрібне дійсне запрошення."
+				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Реєстрацію наразі вимкнено. Для створення облікового запису потрібне дійсне запрошення.",
+				"unsolicited_response": "Почніть корпоративний вхід із цієї сторінки. Вхід, розпочатий у провайдера ідентифікації, не приймається.",
+				"invalid_saml_response": "Не вдалося прийняти відповідь вашого провайдера ідентифікації. Спробуйте ще раз або попросіть адміністратора перевірити підключення.",
+				"replay_detected": "Цю відповідь на вхід уже використано. Увійдіть знову.",
+				"unable_to_create_user": "Не вдалося створити ваш обліковий запис. Зверніться до адміністратора по доступ.",
+				"invalid_request": "Цей запит на вхід недійсний. Спробуйте ще раз.",
+				"invalid_state": "Термін дії цього посилання для входу минув. Спробуйте ще раз.",
+				"saml_deprecated_algorithm": "Ваш провайдер ідентифікації підписує алгоритмом, який більше не приймається. Попросіть адміністратора переключити його на SHA-256.",
+				"this_identity_provider_cannot_sign_in_that_email_address_": "Через цього провайдера ідентифікації не можна увійти з цією адресою електронної пошти.",
+				"new_accounts_on_this_server_must_use_an_approved_email_domain_": "Нові облікові записи на цьому сервері мають використовувати схвалений поштовий домен.",
+				"banned_user": "Цей обліковий запис заблоковано. Зверніться до адміністратора, щоб отримати доступ.",
+				"unable_to_link_account": "Не вдалося пов'язати цей ідентифікатор із вашим обліковим записом. Зверніться по допомогу до адміністратора.",
+				"saml_other_browser": "Корпоративний вхід має завершитися в тому самому браузері, у якому його розпочато. Почніть заново з цієї сторінки та переконайтеся, що файли cookie дозволено."
 			},
 			"instanceStatusError": "Не вдалося зв'язатися із сервером. Повторіть спробу за мить.",
-			"titleWithInstance": "Вхід до {{name}}"
+			"titleWithInstance": "Вхід до {{name}}",
+			"continueWithSaml": "Продовжити через корпоративний вхід",
+			"samlEmail": "Робоча пошта",
+			"samlSubmit": "Продовжити",
+			"samlNoConnection": "Корпоративний вхід не налаштовано для цього поштового домену.",
+			"samlError": "Не вдалося розпочати корпоративний вхід. Спробуйте ще раз.",
+			"emailCodesOff": "Посилання й коди для входу електронною поштою на цьому сервері вимкнено. Якщо ви входили лише так, пароля у вас ще немає: натисніть «Забули пароль?», щоб його задати.",
+			"emailCodesOffNoEmail": "Посилання й коди для входу електронною поштою на цьому сервері вимкнено. Якщо ви входили лише так, пароля у вас ще немає: попросіть адміністратора екземпляра задати його для вас."
 		},
 		"providers": {
 			"google": "Google",
@@ -420,6 +439,10 @@
 				"nameShort": "Ім'я має містити щонайменше 2 символи"
 			}
 		},
+		"layout": {
+			"headline": "Бачте весь проєкт. Беріть наступне завдання.",
+			"lede": "Самостійно розміщуване керування проєктами для команд, яким подобаються швидкі й спокійні інструменти."
+		},
 		"device": {
 			"approve": "Схвалити",
 			"approveFailed": "Не вдалося схвалити",
@@ -443,10 +466,6 @@
 			"subtitle": "Введіть код із вашого CLI або застосунку, щоб продовжити.",
 			"title": "Підключення пристрою"
 		},
-		"layout": {
-			"headline": "Бачте весь проєкт. Беріть наступне завдання.",
-			"lede": "Самостійно розміщуване керування проєктами для команд, яким подобаються швидкі й спокійні інструменти."
-		},
 		"mcp": {
 			"approve": "Схвалити",
 			"clientFallback": "Клієнт MCP",
@@ -463,22 +482,6 @@
 			"subtitle": "Перегляньте цей запит, перш ніж надавати доступ до свого облікового запису Margaya.",
 			"title": "Авторизація клієнта MCP",
 			"warning": "Цей клієнт зможе діяти від вашого імені та матиме доступ до ваших робочих просторів. Продовжуйте, лише якщо підключення розпочали ви."
-		},
-		"emailVerification": {
-			"codeLabel": "Код підтвердження",
-			"codeSent": "Ми надіслали 6-значний код на {{email}}. Він діє 5 хвилин.",
-			"invitationsDescription": "Підтвердьте пошту, щоб побачити запрошення, надіслані на {{email}}.",
-			"resend": "Надіслати новий код",
-			"sendCode": "Надіслати код",
-			"sendFailed": "Не вдалося надіслати код. Спробуйте ще раз.",
-			"sending": "Надсилання...",
-			"settingsDescription": "Підтвердьте {{email}}, щоб запрошення до робочих просторів, надіслані на цю адресу, з'являлися в Margaya.",
-			"success": "Пошту підтверджено",
-			"title": "Підтвердьте пошту",
-			"verifiedBadge": "Підтверджено",
-			"verify": "Підтвердити",
-			"verifyFailed": "Код не підійшов. Перевірте його або надішліть новий.",
-			"verifying": "Перевірка..."
 		},
 		"forgotPassword": {
 			"backToSignIn": "Повернутися до входу",
@@ -507,6 +510,30 @@
 			"successDescription": "Новий пароль встановлено, а всі сеанси завершено. Увійдіть із новим паролем.",
 			"successTitle": "Пароль оновлено",
 			"title": "Встановіть новий пароль"
+		},
+		"emailVerification": {
+			"codeLabel": "Код підтвердження",
+			"codeSent": "Ми надіслали 6-значний код на {{email}}. Він діє 5 хвилин.",
+			"invitationsDescription": "Підтвердьте пошту, щоб побачити запрошення, надіслані на {{email}}.",
+			"resend": "Надіслати новий код",
+			"sendCode": "Надіслати код",
+			"sendFailed": "Не вдалося надіслати код. Спробуйте ще раз.",
+			"sending": "Надсилання...",
+			"settingsDescription": "Підтвердьте {{email}}, щоб запрошення до робочих просторів, надіслані на цю адресу, з'являлися в Margaya.",
+			"success": "Пошту підтверджено",
+			"title": "Підтвердьте пошту",
+			"verifiedBadge": "Підтверджено",
+			"verify": "Підтвердити",
+			"verifyFailed": "Код не підійшов. Перевірте його або надішліть новий.",
+			"verifying": "Перевірка..."
+		},
+		"complete": {
+			"pageTitle": "Виконується вхід",
+			"title": "Завершення входу",
+			"working": "Виконуємо вхід…",
+			"failedTitle": "Не вдалося завершити вхід",
+			"failed": "Не вдалося завершити цей вхід. Посилання для нього працює один раз, протягом хвилини й лише в тому браузері, у якому ви входили. Увійдіть знову.",
+			"backToSignIn": "Повернутися до входу"
 		}
 	},
 	"settings": {
@@ -534,8 +561,8 @@
 				"invalidEmail": "Введіть дійсну адресу електронної пошти"
 			},
 			"avatar": {
-				"hint": "PNG, JPEG, or WebP. Cropped to a square and resized to 256x256.",
-				"remove": "Remove",
+				"hint": "Натисніть на фото, щоб змінити або видалити його. Його буде обрізано до квадрата та приведено до розміру 256x256.",
+				"remove": "Видалити аватар",
 				"removeError": "Не вдалося видалити фото профілю",
 				"removeSuccess": "Фото профілю видалено",
 				"updateError": "Не вдалося оновити фото профілю",
@@ -545,10 +572,10 @@
 			},
 			"deleteAccount": {
 				"confirm": "Видалити обліковий запис",
-				"confirmLabel": "Confirm your email address",
+				"confirmLabel": "Введіть {{email}} для підтвердження",
 				"description": "Робочі простори, де перебуваєте лише ви, буде видалено разом з обліковим записом. В інших ваші завдання залишаться, але стануть непризначеними, а ваші коментарі буде видалено.",
 				"error": "Не вдалося видалити обліковий запис",
-				"modalDescription": "This cannot be undone. Type {{email}} to confirm.",
+				"modalDescription": "Ваш обліковий запис буде видалено назавжди. Цю дію не можна скасувати.",
 				"modalTitle": "Видалити обліковий запис?",
 				"sectionSubtitle": "Незворотні дії, що впливають на весь ваш обліковий запис.",
 				"sectionTitle": "Небезпечна зона",
@@ -601,6 +628,40 @@
 			"workspaceRulesTitle": "Правила доставки по робочих просторах",
 			"workspaceRulesDescription": "Використовуйте ваші глобальні канали, а потім визначте, які робочі простори та проєкти можуть надсилати сповіщення облікового запису.",
 			"workspaceCardHint": "Оберіть, які канали цей робочий простір може використовувати для сповіщень облікового запису.",
+			"workspaceEnabledLabel": "Увімкнути сповіщення для {{workspaceName}}",
+			"eventPreferencesTitle": "Сповіщати мене про",
+			"eventPreferencesDescription": "Оберіть, які події завдань створюють сповіщення в застосунку та можуть надсилатися на підключені канали.",
+			"eventTaskAssignments": "Призначення завдань",
+			"eventComments": "Коментарі та згадки",
+			"eventCommentsHint": "Включає нові коментарі до призначених вам завдань та прямі @-згадки.",
+			"eventStatusChanges": "Зміни статусу завдань",
+			"eventStatusChangesHint": "Для завдань, призначених вам або на які ви підписані.",
+			"eventTaskUpdates": "Інші зміни завдань",
+			"eventTaskUpdatesHint": "Зміни пріоритету, дати завершення та назви завдань, за якими ви стежите.",
+			"eventDueDateReminders": "Нагадування про дату завершення",
+			"reminderLeadTimeLabel": "Нагадувати мені перед датою завершення",
+			"reminderLeadTimeHint": "Від 1 години до 30 днів заздалегідь. Сповіщення про прострочені завдання надсилаються окремо.",
+			"reminderLeadTimeUnitHours": "Години",
+			"reminderLeadTimeUnitDays": "Дні",
+			"reminderLeadTimeInvalid": "Введіть ціле число від 1 до {{max}}.",
+			"saveEventPreferences": "Зберегти типи сповіщень",
+			"digestTitle": "Дайджест поштою",
+			"digestDescription": "Лист зі зведенням: ваші відкриті завдання, які прострочені або мають бути виконані протягом 7 днів, нові згадки та непрочитане у «Вхідних». Враховує ваш часовий пояс і не надсилається, якщо повідомляти нема про що.",
+			"digestFrequencyLabel": "Надсилати дайджест",
+			"digestFrequencyOff": "Вимк.",
+			"digestFrequencyDaily": "Щодня",
+			"digestFrequencyWeekly": "Щотижня",
+			"digestWeekdayLabel": "День",
+			"digestWeekdaySunday": "Неділя",
+			"digestWeekdayMonday": "Понеділок",
+			"digestWeekdayTuesday": "Вівторок",
+			"digestWeekdayWednesday": "Середа",
+			"digestWeekdayThursday": "Четвер",
+			"digestWeekdayFriday": "П'ятниця",
+			"digestWeekdaySaturday": "Субота",
+			"digestHourLabel": "Час",
+			"digestNoEmail": "Для дайджесту потрібна адреса електронної пошти в обліковому записі.",
+			"saveDigest": "Зберегти дайджест",
 			"workspaceCardLabelEmail": "Пошта",
 			"workspaceCardLabelNtfy": "ntfy",
 			"workspaceCardLabelGotify": "Gotify",
@@ -628,42 +689,8 @@
 			"toastPreferencesSaveFailed": "Не вдалося зберегти налаштування сповіщень",
 			"toastRuleSavedGeneric": "Правило сповіщень робочого простору збережено",
 			"toastRuleRemovedGeneric": "Правило сповіщень робочого простору видалено",
-			"workspaceEnabledLabel": "Увімкнути сповіщення для {{workspaceName}}",
-			"eventPreferencesTitle": "Сповіщати мене про",
-			"eventPreferencesDescription": "Оберіть, які події завдань створюють сповіщення в застосунку та можуть надсилатися на підключені канали.",
-			"eventTaskAssignments": "Призначення завдань",
-			"eventComments": "Коментарі та згадки",
-			"eventCommentsHint": "Включає нові коментарі до призначених вам завдань та прямі @-згадки.",
-			"eventStatusChanges": "Зміни статусу завдань",
-			"eventDueDateReminders": "Нагадування про дату завершення",
-			"reminderLeadTimeLabel": "Нагадувати мені перед датою завершення",
-			"reminderLeadTimeHint": "Від 1 години до 30 днів заздалегідь. Сповіщення про прострочені завдання надсилаються окремо.",
-			"reminderLeadTimeUnitHours": "Години",
-			"reminderLeadTimeUnitDays": "Дні",
-			"reminderLeadTimeInvalid": "Введіть ціле число від 1 до {{max}}.",
-			"saveEventPreferences": "Зберегти типи сповіщень",
-			"eventStatusChangesHint": "Для завдань, призначених вам або на які ви підписані.",
-			"eventTaskUpdates": "Інші зміни завдань",
-			"eventTaskUpdatesHint": "Зміни пріоритету, дати завершення та назви завдань, за якими ви стежите.",
-			"channelsDescription": "Куди Margaya надсилає сповіщення, вибрані вище.",
 			"channelsTitle": "Канали доставки",
-			"digestDescription": "Лист зі зведенням: ваші відкриті завдання, які прострочені або мають бути виконані протягом 7 днів, нові згадки та непрочитане у «Вхідних». Враховує ваш часовий пояс і не надсилається, якщо повідомляти нема про що.",
-			"digestFrequencyDaily": "Щодня",
-			"digestFrequencyLabel": "Надсилати дайджест",
-			"digestFrequencyOff": "Вимк.",
-			"digestFrequencyWeekly": "Щотижня",
-			"digestHourLabel": "Час",
-			"digestNoEmail": "Для дайджесту потрібна адреса електронної пошти в обліковому записі.",
-			"digestTitle": "Дайджест поштою",
-			"digestWeekdayFriday": "П'ятниця",
-			"digestWeekdayLabel": "День",
-			"digestWeekdayMonday": "Понеділок",
-			"digestWeekdaySaturday": "Субота",
-			"digestWeekdaySunday": "Неділя",
-			"digestWeekdayThursday": "Четвер",
-			"digestWeekdayTuesday": "Вівторок",
-			"digestWeekdayWednesday": "Середа",
-			"saveDigest": "Зберегти дайджест",
+			"channelsDescription": "Куди Margaya надсилає сповіщення, вибрані вище.",
 			"sound": {
 				"title": "Звуки",
 				"description": "Відтворювати звук, коли надходить сповіщення, а Margaya відкрито в браузері.",
@@ -694,7 +721,30 @@
 				"deviceMute": "Вимкнути звуки на цьому пристрої",
 				"deviceMuteDescription": "Звук вимикається лише в цьому браузері, на інших ваших пристроях він лишається.",
 				"previewFailed": "Браузер не відтворив звук. Перевірте, чи не вимкнено звук у цій вкладці або на сайті."
-			}
+			},
+			"pushTitle": "Push-сповіщення",
+			"pushDescription": "Оповіщення на телефоні чи комп'ютері, навіть коли Margaya закрита. Розділ «Сповіщати мене про» визначає, що надсилається, а правило робочого простору нижче може це звузити.",
+			"pushThisDevice": "На цьому пристрої",
+			"pushOnHint": "Цей пристрій отримує push-сповіщення.",
+			"pushOffHint": "Браузер запитає дозвіл, коли ви це ввімкнете.",
+			"pushOffHintAllowed": "Сповіщення в цьому браузері вже дозволено.",
+			"pushNotSetUp": "Push-сповіщення не налаштовано на цьому сервері. Попросіть адміністратора задати ключі VAPID.",
+			"pushInstallFirst": "На iPhone та iPad спочатку додайте Margaya на початковий екран: торкніться «Поширити», а потім «На початковий екран». Відкрийте застосунок звідти й увімкніть цю опцію.",
+			"pushUnsupported": "Цей браузер не може отримувати тут push-сповіщення. Для них потрібен сучасний браузер та адреса HTTPS.",
+			"pushBlocked": "Сповіщення для цього сайту заблоковано. Дозвольте їх у налаштуваннях браузера, а потім перезавантажте цю сторінку.",
+			"pushOtherDevices": "Інші ваші пристрої",
+			"pushRemoveDevice": "Вилучити",
+			"pushRemoveDeviceLabel": "Вилучити {{device}}",
+			"toastPushOn": "Push-сповіщення ввімкнено на цьому пристрої.",
+			"toastPushOnFailed": "Не вдалося ввімкнути push-сповіщення. Спробуйте ще раз.",
+			"toastPushOff": "Push-сповіщення вимкнено на цьому пристрої.",
+			"toastPushOffFailed": "Не вдалося вимкнути push-сповіщення. Спробуйте ще раз.",
+			"toastPushDeviceRemoved": "Пристрій вилучено.",
+			"toastPushDeviceRemoveFailed": "Не вдалося вилучити пристрій. Спробуйте ще раз.",
+			"workspaceCardLabelPush": "Push-сповіщення",
+			"pushChannelHintEnabled": "Надсилати відповідні сповіщення робочого простору на ваші пристрої.",
+			"pushChannelHintDisabled": "Спочатку ввімкніть push-сповіщення на пристрої.",
+			"pushLoadFailed": "Не вдалося завантажити налаштування push-сповіщень. Перезавантажте цю сторінку, щоб спробувати ще раз."
 		},
 		"preferencesPage": {
 			"title": "Налаштування",
@@ -1623,7 +1673,10 @@
 				"pr_merged": "PR злито",
 				"issue_opened": "Завдання відкрито",
 				"issue_closed": "Завдання закрито"
-			}
+			},
+			"removeRule": "Вилучити правило для {{event}}",
+			"toastRemoved": "Правило робочого процесу вилучено",
+			"toastRemoveError": "Не вдалося вилучити правило"
 		},
 		"externalLinks": {
 			"resources": "Ресурси",
@@ -1674,7 +1727,6 @@
 				"organization": "Адміністрування робочого простору",
 				"member": "Учасники",
 				"invitation": "Запрошення",
-				"team": "Команди",
 				"ac": "Ролі та права доступу",
 				"cycle": "Цикли",
 				"module": "Модулі",
@@ -1798,20 +1850,6 @@
 					"cancel": {
 						"label": "Скасування запрошень",
 						"description": "Відкликання неприйнятих запрошень до робочого простору."
-					}
-				},
-				"team": {
-					"create": {
-						"label": "Створення команд",
-						"description": "Створення команд у цьому робочому просторі."
-					},
-					"update": {
-						"label": "Зміна команд",
-						"description": "Зміна команд та їх складу."
-					},
-					"delete": {
-						"label": "Видалення команд",
-						"description": "Видалення команд у цьому робочому просторі."
 					}
 				},
 				"ac": {
@@ -2025,28 +2063,43 @@
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
 		"customFields": {
-			"addButton": "Додати",
-			"createError": "Не вдалося створити власне поле.",
-			"createSuccess": "Власне поле створено.",
-			"defaultLabel": "За замовчуванням",
-			"defaultValuePlaceholder": "Значення за замовчуванням",
-			"deleteButton": "Видалити",
-			"deleteError": "Не вдалося видалити власне поле.",
-			"deleteSuccess": "Власне поле видалено.",
-			"empty": "Власні поля ще не налаштовано.",
-			"loading": "Завантаження власних полів...",
 			"namePlaceholder": "Назва поля",
+			"typePlaceholder": "Виберіть тип поля",
 			"noOptionsPlaceholder": "Немає варіантів",
+			"defaultValuePlaceholder": "Значення за замовчуванням",
 			"optionsPlaceholder": "Варіанти через кому",
 			"required": "Обов'язкове",
-			"typePlaceholder": "Виберіть тип поля",
+			"addButton": "Додати",
+			"loading": "Завантаження власних полів...",
+			"empty": "Власні поля ще не налаштовано.",
+			"defaultLabel": "За замовчуванням",
+			"createSuccess": "Власне поле створено.",
+			"createError": "Не вдалося створити власне поле.",
+			"deleteButton": "Видалити",
+			"deleteSuccess": "Власне поле видалено.",
+			"deleteError": "Не вдалося видалити власне поле.",
 			"types": {
 				"boolean": "Логічне",
 				"date": "Дата",
 				"dropdown": "Розкривний список",
 				"number": "Число",
 				"text": "Текст"
-			}
+			},
+			"editButton": "Редагувати",
+			"editTitle": "Редагування власного поля",
+			"editDescription": "Тип поля та його обов'язковість не можна змінити після створення.",
+			"nameLabel": "Назва",
+			"optionsLabel": "Варіанти",
+			"addOption": "Додати варіант",
+			"removeOption": "Вилучити варіант",
+			"optionPlaceholder": "Назва варіанта",
+			"optionsHint": "Перейменування варіанта оновлює всі завдання, збережені перегляди й автоматизації, що його використовують. Вилучений варіант залишається в завданнях, де його вже вибрано, доки хтось його не змінить, і його більше не можна вибрати.",
+			"duplicateOption": "Варіанти мають відрізнятися один від одного.",
+			"noDefault": "Без значення за замовчуванням",
+			"saveButton": "Зберегти",
+			"cancelButton": "Скасувати",
+			"updateSuccess": "Власне поле оновлено.",
+			"updateError": "Не вдалося оновити власне поле."
 		},
 		"projectFeatures": {
 			"disableConfirmAction": "Вимкнути",
@@ -2340,6 +2393,11 @@
 			}
 		},
 		"workspaceExports": {
+			"title": "Експорт",
+			"pageTitle": "Експорт",
+			"subtitle": "Експортуйте завдання у CSV, Excel або JSON. Файли доступні для завантаження протягом {{days}} дн.",
+			"newExport": "Новий експорт",
+			"viewExports": "Відкрити експорти",
 			"form": {
 				"activeGroup": "Активні",
 				"allProjects": "Усі проєкти",
@@ -2369,50 +2427,6 @@
 				"json": "JSON",
 				"xlsx": "Excel"
 			},
-			"history": {
-				"all": "Усі експорти",
-				"columns": {
-					"actions": "Дії",
-					"created": "Створено",
-					"expires": "Доступний",
-					"export": "Експорт",
-					"requestedBy": "Замовив",
-					"size": "Розмір",
-					"status": "Статус",
-					"tasks": "Завдання"
-				},
-				"delete": "Видалити",
-				"deleteAria": "Видалити {{name}}",
-				"deleteDescription": "Файл буде видалено для всіх. Цю дію неможливо скасувати.",
-				"deletedProject": "Видалений проєкт",
-				"deleteTitle": "Видалити цей експорт?",
-				"deleting": "Видалення…",
-				"description": "Завантажуйте готові експорти або видаляйте непотрібні.",
-				"download": "Завантажити",
-				"downloadAria": "Завантажити {{name}}",
-				"empty": "Експортів поки немає. Запущені вами експорти зберігаються тут {{days}} дн.",
-				"expiredOn": "Закінчився {{date}}",
-				"expiresOn": "До {{date}}",
-				"loadMore": "Завантажити ще",
-				"mine": "Мої експорти",
-				"scopeLabel": "Чиї експорти",
-				"summaryProjects_few": "{{format}} · {{count}} проєкти",
-				"summaryProjects_many": "{{format}} · {{count}} проєктів",
-				"summaryProjects_one": "{{format}} · {{name}}",
-				"summaryProjects_other": "{{format}} · проєктів: {{count}}",
-				"title": "Попередні експорти"
-			},
-			"newExport": "Новий експорт",
-			"pageTitle": "Експорт",
-			"status": {
-				"completed": "Готово",
-				"expired": "Термін минув",
-				"failed": "Помилка",
-				"processing": "Обробка",
-				"queued": "У черзі"
-			},
-			"subtitle": "Експортуйте завдання у CSV, Excel або JSON. Файли доступні для завантаження протягом {{days}} дн.",
-			"title": "Експорт",
 			"toast": {
 				"deleted": "Експорт видалено",
 				"deleteError": "Не вдалося видалити експорт. Повторіть спробу.",
@@ -2424,7 +2438,66 @@
 				"ready": "Експорт готовий",
 				"started": "Експорт запущено. Ми повідомимо, коли він буде готовий."
 			},
-			"viewExports": "Відкрити експорти"
+			"history": {
+				"title": "Попередні експорти",
+				"description": "Завантажуйте готові експорти або видаляйте непотрібні.",
+				"scopeLabel": "Чиї експорти",
+				"mine": "Мої експорти",
+				"all": "Усі експорти",
+				"empty": "Експортів поки немає. Запущені вами експорти зберігаються тут {{days}} дн.",
+				"columns": {
+					"actions": "Дії",
+					"created": "Створено",
+					"expires": "Доступний",
+					"export": "Експорт",
+					"requestedBy": "Замовив",
+					"size": "Розмір",
+					"status": "Статус",
+					"tasks": "Завдання"
+				},
+				"summaryProjects_one": "{{format}} · {{name}}",
+				"summaryProjects_few": "{{format}} · {{count}} проєкти",
+				"summaryProjects_many": "{{format}} · {{count}} проєктів",
+				"summaryProjects_other": "{{format}} · проєктів: {{count}}",
+				"deletedProject": "Видалений проєкт",
+				"download": "Завантажити",
+				"downloadAria": "Завантажити {{name}}",
+				"delete": "Видалити",
+				"deleteAria": "Видалити {{name}}",
+				"deleting": "Видалення…",
+				"deleteTitle": "Видалити цей експорт?",
+				"deleteDescription": "Файл буде видалено для всіх. Цю дію неможливо скасувати.",
+				"expiredOn": "Закінчився {{date}}",
+				"expiresOn": "До {{date}}",
+				"loadMore": "Завантажити ще",
+				"summaryWorkspace": "Увесь робочий простір",
+				"fileCount_one": "{{count}} файл",
+				"fileCount_few": "{{count}} файли",
+				"fileCount_many": "{{count}} файлів",
+				"fileCount_other": "{{count}} файлу",
+				"withoutFiles": "Без файлів",
+				"missingFiles_one": "У сховищі не знайдено {{count}} файл",
+				"missingFiles_few": "У сховищі не знайдено {{count}} файли",
+				"missingFiles_many": "У сховищі не знайдено {{count}} файлів",
+				"missingFiles_other": "У сховищі не знайдено файлів: {{count}}"
+			},
+			"status": {
+				"completed": "Готово",
+				"expired": "Термін минув",
+				"failed": "Помилка",
+				"processing": "Обробка",
+				"queued": "У черзі"
+			},
+			"whole": {
+				"title": "Увесь робочий простір",
+				"description": "Завантажте все одним ZIP-архівом: завдання з усіма коментарями, сторінки, налаштування й файли.",
+				"action": "Експортувати робочий простір",
+				"dialogTitle": "Експорт усього робочого простору",
+				"dialogDescription": "Архів створюється у фоновому режимі. Ви отримаєте сповіщення, коли він буде готовий.",
+				"includeFiles": "Включити файли",
+				"includeFilesHint": "Вимкніть, щоб архів був значно меншим. Список усіх файлів у ньому все одно залишиться.",
+				"leftOut": "Секрети, особисті сторінки, кошик і чернетки ніколи не включаються. Архів містить адреси електронної пошти учасників, тому зберігайте його в надійному місці."
+			}
 		},
 		"workspaceWebhooks": {
 			"actionsMenu": "Дії з вебхуком",
@@ -2805,7 +2878,8 @@
 			"restrictedProject": "Обмежений проєкт",
 			"toastUpdated": "Доступ оновлено",
 			"toastError": "Не вдалося оновити доступ",
-			"loadError": "Не вдалося завантажити налаштування доступу. Перезавантажте сторінку та спробуйте ще раз."
+			"loadError": "Не вдалося завантажити налаштування доступу. Перезавантажте сторінку та спробуйте ще раз.",
+			"guestsHint": "Гості бачать лише ті проєкти, до яких їх додано. Додайте їх тут; роль у проєкті обмежує те, що вони можуть робити."
 		},
 		"projectPeople": {
 			"defaultAssigneeHint": "Підставляється під час створення завдання та призначається на прийняті запити без виконавця.",
@@ -2923,47 +2997,47 @@
 				"workspacePublicPagesChanged": "Увімкнення або вимкнення публічних сторінок",
 				"pagePublished": "Публікація сторінки за публічним посиланням",
 				"pageUnpublished": "Відкликання публічного посилання сторінки",
-				"apiKeyCreated": "Створення API-ключа",
-				"apiKeyRevoked": "Відкликання API-ключа",
-				"exportCreated": "Запуск експорту",
-				"exportDownloaded": "Завантаження експорту",
-				"importRun": "Імпорт завдань",
-				"integrationConnected": "Підключення інтеграції",
-				"integrationDisconnected": "Від'єднання інтеграції",
-				"integrationUpdated": "Зміна інтеграції",
+				"memberInvited": "Запрошення до робочого простору",
+				"memberInvitationRevoked": "Відкликання запрошення",
 				"memberInvitationAccepted": "Прийняття запрошення",
 				"memberInvitationDeclined": "Відхилення запрошення",
 				"memberInvitationRoleChanged": "Зміна ролі запрошення, що очікує",
-				"memberInvitationRevoked": "Відкликання запрошення",
-				"memberInvited": "Запрошення до робочого простору",
-				"memberLeft": "Вихід із робочого простору",
 				"memberRemoved": "Видалення учасника",
+				"memberLeft": "Вихід із робочого простору",
 				"memberRoleChanged": "Зміна ролі учасника",
-				"projectArchived": "Архівування проєкту",
-				"projectCreated": "Створення проєкту",
-				"projectFeatureToggled": "Увімкнення або вимкнення функцій проєкту",
-				"projectPurged": "Остаточне видалення проєкту",
-				"projectRestored": "Відновлення проєкту з кошика",
-				"projectSettingsChanged": "Зміна налаштувань проєкту",
-				"projectTrashed": "Переміщення проєкту в кошик",
-				"projectUnarchived": "Повернення проєкту з архіву",
-				"publicBoardLinkRotated": "Заміна посилання на публічну дошку",
-				"publicBoardPublished": "Публікація публічної дошки",
-				"publicBoardSettingsChanged": "Зміна налаштувань публічної дошки",
-				"publicBoardUnpublished": "Зняття публічної дошки з публікації",
 				"roleCreated": "Створення ролі",
-				"roleDeleted": "Видалення ролі",
 				"roleUpdated": "Зміна ролі",
-				"trashEmptied": "Очищення кошика проєкту",
-				"trashPurged": "Остаточне видалення завдань із кошика",
-				"unknown": "{{action}}",
+				"roleDeleted": "Видалення ролі",
+				"apiKeyCreated": "Створення API-ключа",
+				"apiKeyRevoked": "Відкликання API-ключа",
 				"webhookCreated": "Створення вебхука",
+				"webhookUpdated": "Зміна вебхука",
 				"webhookDeleted": "Видалення вебхука",
 				"webhookSecretRotated": "Зміна секрету підпису вебхука",
-				"webhookUpdated": "Зміна вебхука",
+				"integrationConnected": "Підключення інтеграції",
+				"integrationUpdated": "Зміна інтеграції",
+				"integrationDisconnected": "Від'єднання інтеграції",
 				"workspaceCreated": "Створення робочого простору",
-				"workspaceOwnershipTransferred": "Передача прав власника робочого простору",
 				"workspaceUpdated": "Зміна налаштувань робочого простору",
+				"workspaceOwnershipTransferred": "Передача прав власника робочого простору",
+				"projectCreated": "Створення проєкту",
+				"projectTrashed": "Переміщення проєкту в кошик",
+				"projectRestored": "Відновлення проєкту з кошика",
+				"projectPurged": "Остаточне видалення проєкту",
+				"projectArchived": "Архівування проєкту",
+				"projectUnarchived": "Повернення проєкту з архіву",
+				"projectFeatureToggled": "Увімкнення або вимкнення функцій проєкту",
+				"projectSettingsChanged": "Зміна налаштувань проєкту",
+				"publicBoardPublished": "Публікація публічної дошки",
+				"publicBoardUnpublished": "Зняття публічної дошки з публікації",
+				"publicBoardLinkRotated": "Заміна посилання на публічну дошку",
+				"publicBoardSettingsChanged": "Зміна налаштувань публічної дошки",
+				"exportCreated": "Запуск експорту",
+				"exportDownloaded": "Завантаження експорту",
+				"importRun": "Імпорт завдань",
+				"trashPurged": "Остаточне видалення завдань із кошика",
+				"trashEmptied": "Очищення кошика проєкту",
+				"unknown": "{{action}}",
 				"aiSettingsUpdated": "Зміна налаштувань ШІ",
 				"aiTriageLabelsApplied": "Автоматичне додавання запропонованих міток",
 				"agentCreated": "Створення агента",
@@ -2990,7 +3064,9 @@
 				"aiConnectorUpdated": "Змінив(-ла) MCP-конектор",
 				"aiConnectorDeleted": "Видалив(-ла) MCP-конектор",
 				"agentIntakeTriggerUpdated": "Змінив(ла) тригер прийому агента",
-				"agentIntakeTriggerDisabled": "Вимкнув(ла) тригер прийому агента"
+				"agentIntakeTriggerDisabled": "Вимкнув(ла) тригер прийому агента",
+				"memberProvisioned": "Додавання учасника через SCIM",
+				"memberInvitationProjectsChanged": "Зміна проєктів запрошення, що очікує"
 			},
 			"actor": {
 				"apiKey": "API-ключ",
@@ -3083,56 +3159,65 @@
 			"title": "Журнал аудиту"
 		},
 		"trash": {
-			"deletedAt": "Видалено {{time}}",
-			"deletedBy": "Видалено: {{name}}, {{time}}",
-			"deletePermanently": "Видалити остаточно",
-			"emptyConfirmDescription": "Усі завдання в кошику цього проєкту буде видалено остаточно разом із коментарями, вкладеннями та записами часу. Цю дію неможливо скасувати.",
-			"emptyConfirmTitle": "Очистити кошик?",
-			"emptyProjectsDescription": "Тут з'являтимуться проєкти, видалені з цього робочого простору.",
-			"emptyProjectsTitle": "Немає видалених проєктів",
-			"emptyTasksDescription": "Тут з'являтимуться завдання, видалені з цього проєкту.",
-			"emptyTasksTitle": "Немає видалених завдань",
-			"emptyTrash": "Очистити кошик",
-			"loadError": "Не вдалося завантажити кошик",
-			"loadMore": "Завантажити ще",
-			"menuAria": "Інші дії для {{name}}",
-			"noMatches": "За вашим запитом нічого не знайдено",
-			"projectSubtitle": "Видалені завдання зберігаються тут, доки їх не буде видалено остаточно. Під час відновлення завдання повертаються й підзавдання, видалені разом із ним.",
 			"projectTitle": "Нещодавно видалені",
-			"purgeOn": "Буде видалено остаточно {{date}}",
-			"purgeProjectDescription": "«{{name}}» і весь його вміст буде видалено для всіх. Цю дію неможливо скасувати.",
-			"purgeProjectTitle": "Видалити проєкт остаточно?",
-			"purgeTaskDescription": "«{{name}}», видалені разом із ним підзавдання, коментарі, вкладення та записи часу буде видалено для всіх. Цю дію неможливо скасувати.",
-			"purgeTaskTitle": "Видалити завдання остаточно?",
-			"restore": "Відновити",
-			"restoreAria": "Відновити {{name}}",
-			"retry": "Повторити",
-			"searchProjects": "Пошук видалених проєктів",
+			"projectSubtitle": "Видалені завдання та сторінки зберігаються тут, доки їх не буде видалено остаточно. Під час відновлення завдання повертаються й підзавдання, видалені разом із ним; відновлена сторінка повертається до розділу «В архіві».",
+			"workspaceTitle": "Нещодавно видалені проєкти",
+			"workspaceNav": "Нещодавно видалені",
+			"workspaceSubtitle": "Видалені проєкти зберігаються тут разом із завданнями, доки їх не буде видалено остаточно.",
 			"searchTasks": "Пошук видалених завдань",
+			"searchProjects": "Пошук видалених проєктів",
+			"deletedBy": "Видалено: {{name}}, {{time}}",
+			"deletedAt": "Видалено {{time}}",
+			"purgeOn": "Буде остаточно видалено {{date}}",
+			"withSubTasks_one": "з {{count}} підзавданням",
+			"withSubTasks_few": "з {{count}} підзавданнями",
+			"withSubTasks_many": "з {{count}} підзавданнями",
+			"withSubTasks_other": "з підзавданнями ({{count}})",
+			"taskCount_one": "{{count}} завдання",
 			"taskCount_few": "{{count}} завдання",
 			"taskCount_many": "{{count}} завдань",
-			"taskCount_one": "{{count}} завдання",
 			"taskCount_other": "Завдань: {{count}}",
+			"restore": "Відновити",
+			"restoreAria": "Відновити {{name}}",
+			"menuAria": "Інші дії для {{name}}",
+			"deletePermanently": "Видалити остаточно",
+			"emptyTrash": "Очистити кошик",
+			"emptyTasksTitle": "Немає видалених завдань",
+			"emptyTasksDescription": "Тут з'являтимуться завдання, видалені з цього проєкту.",
+			"emptyProjectsTitle": "Немає видалених проєктів",
+			"emptyProjectsDescription": "Тут з'являтимуться проєкти, видалені з цього робочого простору.",
+			"noMatches": "За вашим запитом нічого не знайдено",
+			"loadError": "Не вдалося завантажити кошик",
+			"retry": "Повторити",
+			"loadMore": "Завантажити ще",
+			"purgeTaskTitle": "Видалити завдання остаточно?",
+			"purgeTaskDescription": "«{{name}}», видалені разом із ним підзавдання, коментарі, вкладення та записи часу буде видалено для всіх. Цю дію неможливо скасувати.",
+			"emptyConfirmTitle": "Очистити кошик?",
+			"emptyConfirmDescription": "Усі завдання в кошику цього проєкту буде видалено остаточно разом із коментарями, вкладеннями та записами часу. Цю дію неможливо скасувати.",
+			"purgeProjectTitle": "Видалити проєкт остаточно?",
+			"purgeProjectDescription": "«{{name}}» і весь його вміст буде видалено для всіх. Цю дію неможливо скасувати.",
 			"toast": {
-				"emptied_few": "{{count}} завдання видалено остаточно",
-				"emptied_many": "{{count}} завдань видалено остаточно",
-				"emptied_one": "{{count}} завдання видалено остаточно",
-				"emptied_other": "Остаточно видалено завдань: {{count}}",
-				"projectPurged": "Проєкт видалено остаточно",
+				"taskRestored": "Завдання відновлено",
 				"projectRestored": "Проєкт відновлено",
-				"purgeError": "Не вдалося видалити остаточно",
 				"restoreBlocked": "Це завдання не можна відновити окремо. Спочатку відновіть батьківське завдання або проєкт.",
 				"restoreError": "Не вдалося відновити",
 				"taskPurged": "Завдання видалено остаточно",
-				"taskRestored": "Завдання відновлено"
+				"projectPurged": "Проєкт видалено остаточно",
+				"emptied_one": "{{count}} завдання видалено остаточно",
+				"emptied_few": "{{count}} завдання видалено остаточно",
+				"emptied_many": "{{count}} завдань видалено остаточно",
+				"emptied_other": "Остаточно видалено завдань: {{count}}",
+				"purgeError": "Не вдалося видалити остаточно",
+				"pageRestored": "Сторінку відновлено до розділу «В архіві»",
+				"pagePurged": "Сторінку видалено остаточно"
 			},
-			"withSubTasks_few": "з {{count}} підзавданнями",
-			"withSubTasks_many": "з {{count}} підзавданнями",
-			"withSubTasks_one": "з {{count}} підзавданням",
-			"withSubTasks_other": "з підзавданнями ({{count}})",
-			"workspaceNav": "Нещодавно видалені",
-			"workspaceSubtitle": "Видалені проєкти зберігаються тут разом із завданнями, доки їх не буде видалено остаточно.",
-			"workspaceTitle": "Нещодавно видалені проєкти"
+			"tasksHeading": "Завдання",
+			"pagesHeading": "Сторінки",
+			"searchPages": "Пошук видалених сторінок",
+			"emptyPagesTitle": "Немає видалених сторінок",
+			"emptyPagesDescription": "Тут з'являються архівні сторінки, видалені з цього проєкту.",
+			"purgePageTitle": "Видалити цю сторінку остаточно?",
+			"purgePageDescription": "Сторінку «{{name}}», її коментарі та історію версій буде видалено для всіх. Цю дію неможливо скасувати."
 		},
 		"automationRules": {
 			"title": "Автоматизації",
@@ -3461,11 +3546,11 @@
 				"boardView": "Перемкнути на вигляд дошки",
 				"listView": "Перемкнути на вигляд списку",
 				"backlogView": "Перемкнути на вигляд беклогу",
+				"calendarView": "Перемкнутися на календар",
 				"nextTask": "Наступне завдання",
 				"prevTask": "Попереднє завдання",
 				"openTask": "Відкрити обране завдання",
 				"quickSelectNumber": "Обрати варіант за номером",
-				"calendarView": "Перемкнутися на календар",
 				"goToSection": "Перейти до {{section}}",
 				"goToAllTasks": "Перейти до всіх завдань",
 				"goToMyWork": "Перейти до вашої роботи",
@@ -3474,24 +3559,25 @@
 				"goToHome": "Перейти на головну",
 				"goToStickies": "Перейти до стікерів",
 				"paletteActions": "Виконати дію",
+				"paletteTasks": "Знайти завдання за ключем або назвою",
 				"palettePeople": "Знайти людину",
 				"palettePlaces": "Перейти до розділу",
-				"paletteTasks": "Знайти завдання за ключем або назвою",
 				"captureTask": "Додати завдання на дошці або в списку",
 				"selectTask": "Вибрати завдання у фокусі",
-				"triageAssignee": "Змінити виконавців завдання у фокусі",
-				"triagePriority": "Змінити пріоритет завдання у фокусі",
 				"triageStatus": "Змінити статус завдання у фокусі",
+				"triagePriority": "Змінити пріоритет завдання у фокусі",
+				"triageAssignee": "Змінити виконавців завдання у фокусі",
+				"taskStatus": "Змінити статус",
+				"taskPriority": "Змінити пріоритет",
 				"taskAssignees": "Змінити виконавців",
+				"taskLabels": "Змінити мітки",
+				"taskDueDate": "Змінити дату завершення",
 				"taskAssignSelf": "Призначити або зняти себе",
 				"taskCopyKey": "Скопіювати ключ завдання",
 				"taskCopyLink": "Скопіювати посилання на завдання",
+				"taskCopyBranch": "Копіювати назву гілки завдання",
 				"taskDelete": "Видалити завдання",
-				"taskDueDate": "Змінити дату завершення",
-				"taskLabels": "Змінити мітки",
-				"taskPriority": "Змінити пріоритет",
-				"taskStatus": "Змінити статус",
-				"taskCopyBranch": "Копіювати назву гілки завдання"
+				"moveBetweenCards": "Переміщатися між картками на дошці"
 			}
 		},
 		"favorites": {
@@ -3585,11 +3671,6 @@
 				"title": "Завдання призначено вам",
 				"content": "Вас призначено на завдання: {{taskTitle}}"
 			},
-			"time_entry_created": {
-				"title": "Відлік часу розпочато",
-				"contentWithTask": "Відлік часу розпочато для завдання: {{taskTitle}}",
-				"contentWithoutTask": "Відлік часу розпочато для завдання"
-			},
 			"task_mention": {
 				"title": "{{mentionerName}} згадав вас",
 				"content": "{{mentionerName}} згадав вас у: {{taskTitle}}",
@@ -3608,6 +3689,11 @@
 			"task_overdue": {
 				"title": "Завдання прострочено",
 				"content": "Дата завершення {{taskTitle}} вже минула"
+			},
+			"time_entry_created": {
+				"title": "Відлік часу розпочато",
+				"contentWithTask": "Відлік часу розпочато для завдання: {{taskTitle}}",
+				"contentWithoutTask": "Відлік часу розпочато для завдання"
 			},
 			"task_updated": {
 				"dueDate": "Дату завершення завдання «{{taskTitle}}» змінено на {{newValue}}",
@@ -3654,6 +3740,14 @@
 			"automation_notice": {
 				"title": "Автоматизація: {{ruleName}}",
 				"content": "{{taskKey}} {{taskTitle}}"
+			},
+			"page_comment": {
+				"title": "{{commenterName}} залишив коментар",
+				"content": "{{commenterName}} прокоментував сторінку «{{pageTitle}}»: {{commentPreview}}"
+			},
+			"page_updated": {
+				"title": "{{editorName}} відредагував сторінку",
+				"content": "{{editorName}} відредагував сторінку «{{pageTitle}}»"
 			}
 		},
 		"reminderLeadTime": {
@@ -3722,10 +3816,12 @@
 			"loadMore": "Завантажити ще",
 			"pageTitle": "Вхідні",
 			"preview": {
-				"emptyDescription": "Його завдання відкриється тут.",
 				"emptyTitle": "Виберіть сповіщення",
+				"emptyDescription": "Його завдання відкриється тут.",
 				"unavailable": "Це завдання більше недоступне",
-				"label": "Панель читання"
+				"label": "Панель читання",
+				"showProperties": "Показати властивості",
+				"hideProperties": "Сховати властивості"
 			},
 			"retry": "Повторити",
 			"snooze": {
@@ -3775,27 +3871,31 @@
 				"subscribed": "Підписки"
 			},
 			"verbs": {
-				"due_date_reminder": "Термін через {{leadTime}}",
-				"task_assignee_changed": "призначив вас виконавцем",
-				"task_comment": "прокоментував",
 				"task_created": "створив це завдання",
+				"task_assignee_changed": "призначив вас виконавцем",
+				"task_status_changed": "перемістив з «{{oldStatus}}» до «{{newStatus}}»",
+				"task_comment": "прокоментував",
 				"task_mention": "згадав вас",
 				"task_mention_comment": "згадав вас у коментарі",
-				"task_overdue": "Термін минув",
-				"task_status_changed": "перемістив з «{{oldStatus}}» до «{{newStatus}}»",
+				"time_entry_created": "записав час",
 				"task_updated": {
 					"dueDate": "змінив дату завершення на {{newValue}}",
 					"dueDateCleared": "видалив дату завершення",
 					"priority": "змінив пріоритет на {{newValue}}",
 					"title": "перейменував завдання"
 				},
-				"time_entry_created": "записав час",
+				"due_date_reminder": "Термін через {{leadTime}}",
+				"task_overdue": "Термін минув",
 				"intake_accepted": "прийняв ваш запит",
 				"intake_declined": "відхилив ваш запит",
 				"intake_duplicate": "позначив ваш запит як дублікат",
 				"page_mention": "згадав(ла) вас на сторінці",
 				"page_mention_titled": "згадав(ла) вас на сторінці «{{pageTitle}}»",
-				"task_comment_reply": "відповів на коментар"
+				"task_comment_reply": "відповів на коментар",
+				"page_comment": "прокоментував сторінку",
+				"page_comment_titled": "прокоментував «{{pageTitle}}»",
+				"page_updated": "відредагував сторінку, за якою ви стежите",
+				"page_updated_titled": "відредагував «{{pageTitle}}»"
 			},
 			"viewing": {
 				"archived": "Перегляд архівованих сповіщень",
@@ -3826,8 +3926,21 @@
 		}
 	},
 	"activity": {
+		"feed": {
+			"all": "Уся активність",
+			"comments": "Коментарі",
+			"label": "Фільтр і сортування активності",
+			"newest": "Спочатку нові",
+			"noMatches": "З цим фільтром нічого не знайдено.",
+			"oldest": "Спочатку старі",
+			"order": "Порядок",
+			"show": "Показати",
+			"updates": "Зміни"
+		},
 		"assignedToSelf": "призначив завдання собі",
 		"unassigned": "зняв призначення завдання",
+		"unassignedUser": "зняв {{name}} з виконавців",
+		"unassignedSelf": "зняв себе з виконавців",
 		"assignedTo": "призначив завдання на {{name}}",
 		"changedStatus": "змінив статус з {{from}} на {{to}}",
 		"changedPriority": "змінив пріоритет з {{from}} на {{to}}",
@@ -3835,6 +3948,10 @@
 		"setDueDate": "встановив дату завершення на {{date}}",
 		"changedDueDate": "змінив дату завершення з {{from}} на {{to}}",
 		"changedTitle": "змінив назву з «{{from}}» на «{{to}}»",
+		"moved": "перемістив завдання з «{{from}}» до «{{to}}»",
+		"created": "створив це завдання",
+		"importedFromJira": "імпортував це завдання з Jira {{key}}",
+		"importedFromSource": "імпортував це завдання з {{source}} {{key}}",
 		"githubUser": "Користувач GitHub",
 		"comment": {
 			"github": "GitHub",
@@ -3956,38 +4073,27 @@
 			"commentedAgo": "прокоментував {{time}}",
 			"linkCopied": "Посилання на коментар скопійовано"
 		},
-		"moved": "перемістив завдання з «{{from}}» до «{{to}}»",
-		"created": "створив це завдання",
 		"addedToCycle": "додав завдання до циклу {{name}}",
-		"deletedCycle": "прибрав завдання з видаленого циклу",
-		"movedCycle": "переніс завдання з циклу {{from}} до циклу {{to}}",
 		"removedFromCycle": "прибрав завдання з циклу {{name}}",
+		"movedCycle": "переніс завдання з циклу {{from}} до циклу {{to}}",
+		"deletedCycle": "прибрав завдання з видаленого циклу",
 		"addedToModule": "додав завдання до модуля {{name}}",
 		"removedFromModule": "прибрав завдання з модуля {{name}}",
+		"estimateSet": "встановив оцінку: {{to}}",
 		"estimateChanged": "змінив оцінку з {{from}} на {{to}}",
+		"estimateRemoved": "прибрав оцінку {{from}}",
 		"estimateReason": {
 			"point_deleted": "(значення оцінки видалено)",
 			"system_deleted": "(систему оцінки видалено)",
 			"system_switched": "(систему оцінки змінено)",
 			"task_moved": "(перенесено до іншого проєкту)"
 		},
-		"estimateRemoved": "прибрав оцінку {{from}}",
-		"estimateSet": "встановив оцінку: {{to}}",
-		"unassignedSelf": "зняв себе з виконавців",
-		"unassignedUser": "зняв {{name}} з виконавців",
-		"addedLabel": "додав мітку <label>{{name}}</label>",
-		"attachmentAdded": "прикріпив файл {{filename}}",
-		"attachmentRemoved": "видалив вкладення {{filename}}",
+		"setStartDate": "встановив дату початку на {{date}}",
 		"changedStartDate": "змінив дату початку з {{from}} на {{to}}",
 		"clearedStartDate": "очистив дату початку",
-		"copiedFrom": "створив це завдання як копію <task>{{task}}</task>",
-		"copiedTo": "створив копію цього завдання: <task>{{task}}</task>",
-		"linkAdded": "додав посилання {{title}}",
-		"linkRemoved": "видалив посилання {{title}}",
-		"linkUpdated": "оновив посилання {{title}}",
-		"parentChanged": "змінив батьківське завдання з <from>{{from}}</from> на <to>{{to}}</to>",
-		"parentRemoved": "видалив батьківське завдання <task>{{task}}</task>",
-		"parentSet": "встановив батьківське завдання: <task>{{task}}</task>",
+		"addedLabel": "додав мітку <label>{{name}}</label>",
+		"removedLabel": "видалив мітку <label>{{name}}</label>",
+		"updatedDescription": "оновив опис",
 		"relationAdded": {
 			"blocked_by": "позначив це завдання як заблоковане <task>{{task}}</task>",
 			"blocking": "позначив це завдання як таке, що блокує <task>{{task}}</task>",
@@ -3999,12 +4105,36 @@
 			"start_before": "встановив, що це завдання починається до <task>{{task}}</task>"
 		},
 		"relationRemoved": "видалив зв'язок «{{relation}}» із завданням <task>{{task}}</task>",
-		"removedLabel": "видалив мітку <label>{{name}}</label>",
-		"setStartDate": "встановив дату початку на {{date}}",
+		"parentSet": "встановив батьківське завдання: <task>{{task}}</task>",
+		"parentChanged": "змінив батьківське завдання з <from>{{from}}</from> на <to>{{to}}</to>",
+		"parentRemoved": "видалив батьківське завдання <task>{{task}}</task>",
 		"subtaskAdded": "додав підзавдання <task>{{task}}</task>",
 		"subtaskRemoved": "видалив підзавдання <task>{{task}}</task>",
-		"updatedDescription": "оновив опис",
+		"linkAdded": "додав посилання {{title}}",
+		"linkUpdated": "оновив посилання {{title}}",
+		"linkRemoved": "видалив посилання {{title}}",
+		"attachmentAdded": "прикріпив файл {{filename}}",
+		"attachmentRemoved": "видалив вкладення {{filename}}",
+		"copiedFrom": "створив це завдання як копію <task>{{task}}</task>",
+		"copiedTo": "створив копію цього завдання: <task>{{task}}</task>",
 		"archived": "архівував це завдання",
+		"unarchived": "відновив це завдання",
+		"intake": {
+			"submitted": "надіслав цей запит",
+			"submittedVia": "надіслав цей запит через {{source}}",
+			"accepted": "прийняв цей запит до колонки {{column}}",
+			"acceptedBacklog": "прийняв цей запит до беклогу",
+			"declined": "відхилив цей запит",
+			"declinedWithReason": "відхилив цей запит: {{note}}",
+			"snoozed": "відклав цей запит до {{date}}",
+			"unsnoozed": "повернув цей запит на розгляд",
+			"snoozeEnded": "Відкладення завершилося, запит знову на розгляді",
+			"duplicate": "позначив цей запит як дублікат {{key}}",
+			"duplicateDeleted": "позначив цей запит як дублікат видаленого завдання",
+			"reopened": "знову відкрив цей запит",
+			"acceptedHidden": "прийняв цей запит до іншого проєкту",
+			"duplicateHidden": "позначив цей запит як дублікат завдання в іншому проєкті"
+		},
 		"reactions": {
 			"add": "Додати реакцію",
 			"error": "Не вдалося оновити реакцію",
@@ -4024,34 +4154,6 @@
 			"reactWith": "Відреагувати: {{label}}",
 			"remove": "Прибрати реакцію «{{label}}»",
 			"you": "Ви"
-		},
-		"unarchived": "відновив це завдання",
-		"intake": {
-			"accepted": "прийняв цей запит до колонки {{column}}",
-			"acceptedBacklog": "прийняв цей запит до беклогу",
-			"declined": "відхилив цей запит",
-			"declinedWithReason": "відхилив цей запит: {{note}}",
-			"duplicate": "позначив цей запит як дублікат {{key}}",
-			"duplicateDeleted": "позначив цей запит як дублікат видаленого завдання",
-			"reopened": "знову відкрив цей запит",
-			"snoozed": "відклав цей запит до {{date}}",
-			"snoozeEnded": "Відкладення завершилося, запит знову на розгляді",
-			"submitted": "надіслав цей запит",
-			"submittedVia": "надіслав цей запит через {{source}}",
-			"unsnoozed": "повернув цей запит на розгляд"
-		},
-		"automation": {
-			"actor": "Автоматизація",
-			"archived_few": "архівувала це завдання після {{count}} місяців без оновлень",
-			"archived_many": "архівувала це завдання після {{count}} місяців без оновлень",
-			"archived_one": "архівувала це завдання після {{count}} місяця без оновлень",
-			"archived_other": "архівувала це завдання після {{count}} міс. без оновлень",
-			"closed_few": "закрила це завдання після {{count}} місяців без оновлень і перемістила його до «{{to}}»",
-			"closed_many": "закрила це завдання після {{count}} місяців без оновлень і перемістила його до «{{to}}»",
-			"closed_one": "закрила це завдання після {{count}} місяця без оновлень і перемістила його до «{{to}}»",
-			"closed_other": "закрила це завдання після {{count}} міс. без оновлень і перемістила його до «{{to}}»",
-			"rolledOver": "перенесла це завдання з «{{from}}» до «{{to}}» після завершення циклу",
-			"byRule": "за правилом «{{name}}»"
 		},
 		"commentVisibility": {
 			"badgeExternal": "Зовнішній",
@@ -4078,21 +4180,53 @@
 			"summary": "▲ {{up}} · ▼ {{down}}",
 			"tooltip": "Голоси з публічної дошки"
 		},
-		"feed": {
-			"all": "Уся активність",
-			"comments": "Коментарі",
-			"label": "Фільтр і сортування активності",
-			"newest": "Спочатку нові",
-			"noMatches": "З цим фільтром нічого не знайдено.",
-			"oldest": "Спочатку старі",
-			"order": "Порядок",
-			"show": "Показати",
-			"updates": "Зміни"
+		"automation": {
+			"actor": "Автоматизація",
+			"archived_one": "архівувала це завдання після {{count}} місяця без оновлень",
+			"archived_few": "архівувала це завдання після {{count}} місяців без оновлень",
+			"archived_many": "архівувала це завдання після {{count}} місяців без оновлень",
+			"archived_other": "архівувала це завдання після {{count}} міс. без оновлень",
+			"closed_one": "закрила це завдання після {{count}} місяця без оновлень і перемістила його до «{{to}}»",
+			"closed_few": "закрила це завдання після {{count}} місяців без оновлень і перемістила його до «{{to}}»",
+			"closed_many": "закрила це завдання після {{count}} місяців без оновлень і перемістила його до «{{to}}»",
+			"closed_other": "закрила це завдання після {{count}} міс. без оновлень і перемістила його до «{{to}}»",
+			"rolledOver": "перенесла це завдання з «{{from}}» до «{{to}}» після завершення циклу",
+			"byRule": "за правилом «{{name}}»",
+			"rolledOverHidden": "перенесла це завдання до наступного циклу після завершення циклу"
 		},
-		"importedFromJira": "імпортував це завдання з Jira {{key}}",
-		"importedFromSource": "імпортував це завдання з {{source}} {{key}}",
 		"movedToTrash": "перемістив це завдання в кошик",
-		"restoredFromTrash": "відновив це завдання з кошика"
+		"restoredFromTrash": "відновив це завдання з кошика",
+		"parentRemovedHidden": "видалив батьківське завдання в іншому проєкті",
+		"subtaskAddedHidden": "додав підзавдання в іншому проєкті",
+		"subtaskRemovedHidden": "видалив підзавдання в іншому проєкті",
+		"copiedToHidden": "створив копію цього завдання в іншому проєкті",
+		"relationAddedHidden": {
+			"related": "позначив це завдання як пов'язане із завданням в іншому проєкті",
+			"blocking": "позначив це завдання як таке, що блокує завдання в іншому проєкті",
+			"blocked_by": "позначив це завдання як заблоковане завданням в іншому проєкті",
+			"duplicate": "позначив це завдання як дублікат завдання в іншому проєкті",
+			"start_before": "встановив, що це завдання починається до завдання в іншому проєкті",
+			"start_after": "встановив, що це завдання починається після завдання в іншому проєкті",
+			"finish_before": "встановив, що це завдання завершується до завдання в іншому проєкті",
+			"finish_after": "встановив, що це завдання завершується після завдання в іншому проєкті"
+		},
+		"relationRemovedHidden": "видалив зв'язок «{{relation}}» із завданням в іншому проєкті",
+		"parentSetHidden": "встановив батьківське завдання з іншого проєкту",
+		"parentChangedFromHidden": "змінив батьківське завдання із завдання в іншому проєкті на <to>{{to}}</to>",
+		"parentChangedToHidden": "змінив батьківське завдання з <from>{{from}}</from> на завдання в іншому проєкті",
+		"parentChangedBetweenHidden": "змінив батьківське завдання: і попереднє, і нове перебувають в інших проєктах",
+		"copiedFromHidden": "створив це завдання як копію завдання в іншому проєкті",
+		"movedFromHidden": "перемістив завдання з іншого проєкту до «{{to}}»",
+		"movedToHidden": "перемістив завдання з «{{from}}» до іншого проєкту",
+		"movedBetweenHidden": "перемістив завдання між іншими проєктами",
+		"changedStatusHidden": "змінив статус в іншому проєкті",
+		"addedToHiddenCycle": "додав завдання до циклу",
+		"removedFromHiddenCycle": "прибрав завдання з циклу",
+		"movedCycleFromHidden": "переніс завдання з іншого циклу до циклу {{to}}",
+		"movedCycleToHidden": "переніс завдання з циклу {{from}} до іншого циклу",
+		"movedCycleBetweenHidden": "переніс завдання між циклами",
+		"addedToHiddenModule": "додав завдання до модуля",
+		"removedFromHiddenModule": "прибрав завдання з модуля"
 	},
 	"tasks": {
 		"recurrence": {
@@ -4160,8 +4294,32 @@
 				"recurredFrom": "створив(-ла) це завдання як наступне повторення <task>{{task}}</task>",
 				"recurredFromScheduled": "Створено за розкладом як наступне повторення <task>{{task}}</task>",
 				"recurredTo": "виконав(-ла) це завдання, і було створено наступне повторення <task>{{task}}</task>",
-				"recurredToScheduled": "Наступне повторення створено за розкладом: <task>{{task}}</task>"
+				"recurredToScheduled": "Наступне повторення створено за розкладом: <task>{{task}}</task>",
+				"recurredToHidden": "виконав(-ла) це завдання, і наступне повторення було створено в іншому проєкті",
+				"recurredToScheduledHidden": "Наступне повторення створено за розкладом в іншому проєкті",
+				"recurredFromHidden": "створив(-ла) це завдання як наступне повторення завдання в іншому проєкті",
+				"recurredFromScheduledHidden": "Створено за розкладом як наступне повторення завдання в іншому проєкті"
 			}
+		},
+		"subscription": {
+			"count_few": "{{count}} підписники",
+			"count_many": "{{count}} підписників",
+			"count_one": "{{count}} підписник",
+			"count_other": "Підписників: {{count}}",
+			"error": "Не вдалося оновити підписку",
+			"mutedAssignee": "Завдання призначено вам, але ви відписані. Про згадки ви все одно дізнаєтеся.",
+			"notSubscribed": "Отримуйте оновлення про зміни статусу, коментарі та інші зміни.",
+			"reasons": {
+				"assignee": "Ви підписані, бо завдання призначено вам.",
+				"commenter": "Ви підписані, бо залишили коментар.",
+				"creator": "Ви підписані, бо створили це завдання.",
+				"manual": "Ви підписалися на це завдання.",
+				"mention": "Ви підписані, бо вас згадали."
+			},
+			"subscribe": "Підписатися",
+			"toastSubscribed": "Ви підписалися на це завдання",
+			"toastUnsubscribed": "Ви відписалися. Про згадки ви все одно дізнаєтеся.",
+			"unsubscribe": "Відписатися"
 		},
 		"status": {
 			"label": "Статус",
@@ -4172,6 +4330,32 @@
 			"archived": "Архівовано",
 			"planned": "Заплановано"
 		},
+		"columnGroups": {
+			"backlog": {
+				"description": "Зафіксовано, але ще не заплановано",
+				"label": "Беклог"
+			},
+			"cancelled": {
+				"description": "Закрито без виконання роботи",
+				"label": "Скасовано"
+			},
+			"completed": {
+				"description": "Готово",
+				"label": "Завершено"
+			},
+			"started": {
+				"description": "Робота виконується",
+				"label": "Розпочато"
+			},
+			"triage": {
+				"description": "Очікує на розгляд у черзі прийому",
+				"label": "Тріаж"
+			},
+			"unstarted": {
+				"description": "Заплановано, робота не розпочата",
+				"label": "Не розпочато"
+			}
+		},
 		"priority": {
 			"label": "Пріоритет",
 			"no-priority": "Без пріоритету",
@@ -4180,7 +4364,7 @@
 			"high": "Високий",
 			"urgent": "Терміновий"
 		},
-		"boardSearchPlaceholder": "Пошук тікетів...",
+		"boardSearchPlaceholder": "Пошук завдань...",
 		"view": {
 			"board": "Дошка",
 			"list": "Список",
@@ -4197,9 +4381,16 @@
 		},
 		"detail": {
 			"subtaskOf": "Підзавдання",
+			"customFieldUpdated": "Поле оновлено",
+			"selectOption": "Виберіть варіант",
 			"activity": "Активність",
 			"noActivity": "Активність не знайдено",
 			"openInFullPage": "Відкрити на повну сторінку",
+			"openOnBoard": "Відкрити на дошці",
+			"sheetLabel": "Подробиці завдання",
+			"previousTask": "Попереднє завдання",
+			"nextTask": "Наступне завдання",
+			"position": "{{position}} з {{total}}",
 			"titlePlaceholder": "Натисніть, щоб додати назву",
 			"addDescription": "Додати опис...",
 			"editor": {
@@ -4329,13 +4520,11 @@
 					"toolbar": "Параметри зображення"
 				}
 			},
-			"customFieldUpdated": "Поле оновлено",
-			"selectOption": "Виберіть варіант",
-			"nextTask": "Наступне завдання",
-			"openOnBoard": "Відкрити на дошці",
-			"position": "{{position}} з {{total}}",
-			"previousTask": "Попереднє завдання",
-			"sheetLabel": "Подробиці завдання"
+			"saveError": {
+				"title": "Заголовок не збережено. Він досі в полі, тож можна спробувати ще раз.",
+				"description": "Опис не збережено. Він досі в редакторі, тож можна спробувати ще раз.",
+				"retry": "Спробувати ще раз"
+			}
 		},
 		"entity": {
 			"task": "Завдання"
@@ -4503,188 +4692,6 @@
 				"isAnyOf": "є будь-яким з"
 			}
 		},
-		"gantt": {
-			"pageTitle": "{{name}} – Ґант",
-			"title": "Діаграма Ганта",
-			"searchPlaceholder": "Пошук завдань...",
-			"hideTasks": "Сховати завдання",
-			"showTasks": "Показати завдання",
-			"noTasks": "Немає запланованих завдань",
-			"noTasksSubtitle": "Додайте дату початку, дату завершення або обидві до завдань, щоб розмістити їх на часовій шкалі проєкту.",
-			"noTasksFound": "Завдання не знайдено",
-			"noTasksMatch": "Жодне заплановане завдання не відповідає «{{query}}»",
-			"taskHeader": "Завдання",
-			"updateDatesError": "Не вдалося оновити дати завдання",
-			"resizeStart": "Змінити дату початку",
-			"resizeDue": "Змінити дату завершення",
-			"taskAriaLabel": "{{title}}: відкрити або перетягнути для переміщення",
-			"jumpToToday": "Перейти до сьогодні",
-			"previousPeriod": "Попередній період",
-			"nextPeriod": "Наступний період",
-			"periodStart": "Дата початку шкали часу",
-			"showTaskDates": "Показувати дати завдань",
-			"dependencyConflict": "Початок або завершення порушує порядок залежності",
-			"dragToSchedule": "Перетягніть {{title}} на шкалу часу",
-			"noDates": "Без дат",
-			"noDatesCount": "Без дат · {{count}}",
-			"noDatesHint": "Перетягніть на шкалу часу або заплануйте від сьогодні.",
-			"schedule": "Запланувати",
-			"scheduleTask": "Запланувати {{title}} від сьогодні",
-			"zoom": "Масштаб шкали часу",
-			"zoomMonth": "Місяць",
-			"zoomQuarter": "Квартал",
-			"zoomWeek": "Тиждень"
-		},
-		"delete": {
-			"title": "Видалити завдання?",
-			"description": "Завдання та його підзавдання буде переміщено в кошик проєкту. Їх можна відновити в розділі «Нещодавно видалені» в налаштуваннях проєкту.",
-			"action": "Видалити завдання",
-			"success": "Завдання переміщено в кошик",
-			"error": "Не вдалося видалити завдання"
-		},
-		"archive": {
-			"success": "Архівовано {{count}} завдань",
-			"archived": "Завдання архівовано",
-			"badge": "Архівовано",
-			"error": "Не вдалося архівувати завдання",
-			"restore": "Відновити",
-			"restored": "Завдання відновлено",
-			"restoreError": "Не вдалося відновити завдання"
-		},
-		"listView": {
-			"addTask": "Додати завдання",
-			"archiveAllTooltip": "Архівувати всі завершені завдання",
-			"noTasks": "Немає завдань"
-		},
-		"kanban": {
-			"addTask": "Додати завдання",
-			"stages": "Колонки",
-			"emptyAction": "Додати завдання",
-			"emptyTitle": "Завдань поки немає"
-		},
-		"pr": {
-			"merged": "Змерджено",
-			"draft": "Чернетка",
-			"open": "Відкрито",
-			"label": "Пул-реквест",
-			"count_one": "{{count}} PR",
-			"count_few": "{{count}} пул-реквести",
-			"count_many": "{{count}} пул-реквестів",
-			"count_other": "{{count}} PR"
-		},
-		"assignee": {
-			"label": "Виконавці",
-			"unassigned": "Не призначено"
-		},
-		"dueDate": {
-			"label": "Дата завершення",
-			"clear": "Очистити дату",
-			"updateSuccess": "Дату завершення завдання успішно оновлено",
-			"updateError": "Не вдалося оновити дату завершення завдання",
-			"clearSuccess": "Дату завершення завдання очищено",
-			"clearError": "Не вдалося очистити дату завершення"
-		},
-		"update": {
-			"success": "Завдання успішно оновлено",
-			"error": "Не вдалося оновити завдання"
-		},
-		"contextMenu": {
-			"copyLink": "Копіювати посилання",
-			"copyLinkSuccess": "Посилання на завдання скопійовано",
-			"estimate": "Оцінка"
-		},
-		"actions": {
-			"archive": "Архівувати",
-			"markAsPlanned": "Позначити як заплановане",
-			"delete": "Видалити...",
-			"copyKey": "Копіювати ключ завдання",
-			"copyLink": "Копіювати посилання",
-			"makeCopy": "Створити копію…",
-			"moreActions": "Інші дії"
-		},
-		"bulk": {
-			"selectedCount": "{{count}} обрано",
-			"moveToBacklog": "Перемістити до беклогу",
-			"moveToBacklogSuccess": "{{count}} завдань переміщено до беклогу",
-			"moveToBacklogError": "Не вдалося перемістити завдання до беклогу",
-			"moveToBoard": "Перемістити на дошку",
-			"moveToBoardSuccess": "{{count}} завдань переміщено на дошку",
-			"moveToBoardError": "Не вдалося перемістити завдання на дошку",
-			"delete": "Видалити завдання",
-			"deleteConfirm": "Перемістити завдання в кошик ({{count}})? Їх можна відновити в розділі «Нещодавно видалені» в налаштуваннях проєкту.",
-			"deleteSuccess": "{{count}} завдань видалено",
-			"deleteError": "Не вдалося видалити завдання",
-			"archive": "Архівувати завдання",
-			"archiveSuccess": "{{count}} завдань архівовано",
-			"archiveError": "Не вдалося архівувати завдання",
-			"updateSuccess": "{{count}} завдань оновлено",
-			"updateError": "Не вдалося оновити завдання",
-			"setPriority": "Задати пріоритет",
-			"updatePriorityError": "Не вдалося оновити пріоритет",
-			"addLabel": "Додати мітку",
-			"addLabelSuccess": "Мітку додано до {{count}} завдань",
-			"addLabelError": "Не вдалося додати мітку",
-			"setDueDate": "Задати термін виконання",
-			"updateDueDateError": "Не вдалося оновити дату завершення",
-			"actions": "Дії",
-			"searchActions": "Пошук дій...",
-			"noActionsFound": "Дій не знайдено.",
-			"changeStatus": "Змінити статус",
-			"removeLabel": "Видалити мітку",
-			"removeLabelSuccess": "Мітку видалено із завдань: {{count}}",
-			"removeLabelError": "Не вдалося видалити мітку",
-			"unarchive": "Відновити з архіву",
-			"unarchiveSuccess": "Відновлено завдань: {{count}}",
-			"unarchiveNone": "Жодне з вибраних завдань не перебуває в архіві",
-			"unarchiveError": "Не вдалося відновити завдання",
-			"setDates": "Дати",
-			"dateField": "Яку дату задати",
-			"startDate": "Дата початку",
-			"dueDate": "Дата завершення",
-			"clearStartDate": "Очистити дату початку",
-			"clearDueDate": "Очистити дату завершення",
-			"updateStartDateError": "Не вдалося оновити дату початку. Дата початку не може бути пізнішою за дату завершення завдання.",
-			"addAssignee": "Додати виконавця",
-			"addAssigneeSuccess_few": "{{name}} додано до {{count}} завдань",
-			"addAssigneeSuccess_many": "{{name}} додано до {{count}} завдань",
-			"addAssigneeSuccess_one": "{{name}} додано до {{count}} завдання",
-			"addAssigneeSuccess_other": "{{name}} додано до {{count}} завдань",
-			"assigneesError": "Не вдалося оновити виконавців",
-			"clearAssignees": "Очистити виконавців",
-			"clearAssigneesSuccess_few": "Виконавців очищено в {{count}} завданнях",
-			"clearAssigneesSuccess_many": "Виконавців очищено в {{count}} завданнях",
-			"clearAssigneesSuccess_one": "Виконавців очищено в {{count}} завданні",
-			"clearAssigneesSuccess_other": "Виконавців очищено в {{count}} завданнях",
-			"removeAssignee": "Видалити виконавця",
-			"removeAssigneeSuccess_few": "{{name}} видалено з {{count}} завдань",
-			"removeAssigneeSuccess_many": "{{name}} видалено з {{count}} завдань",
-			"removeAssigneeSuccess_one": "{{name}} видалено з {{count}} завдання",
-			"removeAssigneeSuccess_other": "{{name}} видалено з {{count}} завдань",
-			"clearSelection": "Зняти виділення"
-		},
-		"editor": {
-			"table": {
-				"addColumnBefore": "Вставити колонку ліворуч",
-				"addColumnAfter": "Вставити колонку праворуч",
-				"deleteColumn": "Видалити колонку",
-				"addRowBefore": "Вставити рядок вище",
-				"addRowAfter": "Вставити рядок нижче",
-				"deleteRow": "Видалити рядок",
-				"deleteTable": "Видалити таблицю",
-				"moveRowUp": "Перемістити рядок угору",
-				"moveRowDown": "Перемістити рядок униз",
-				"moveColumnLeft": "Перемістити стовпець ліворуч",
-				"moveColumnRight": "Перемістити стовпець праворуч",
-				"toggleHeaderRow": "Рядок заголовка",
-				"fullWidth": "На всю ширину",
-				"dragRow": "Рядок {{index}}",
-				"dragColumn": "Стовпець {{index}}",
-				"dragRowHint": "Перетягніть, щоб перемістити рядок, або скористайтеся клавішами зі стрілками",
-				"dragColumnHint": "Перетягніть, щоб перемістити стовпець, або скористайтеся клавішами зі стрілками",
-				"insertRowHere": "Вставити рядок тут",
-				"insertColumnHere": "Вставити стовпець тут"
-			}
-		},
 		"calendar": {
 			"dayTasksAriaLabel": "Показати всі завдання за {{date}}",
 			"moreTasks": "ще {{count}}",
@@ -4707,452 +4714,97 @@
 			"week": "Тиждень",
 			"overdue": "Прострочено"
 		},
-		"descriptionSearchLoading": "Пошук у повних описах…",
-		"descriptionSearchError": "Не вдалося виконати пошук за описом. Результати можуть бути неповними.",
-		"descriptionRetry": "Повторити",
-		"descriptionLoading": "Завантаження опису…",
-		"descriptionLoadError": "Не вдалося завантажити опис. Повторіть спробу, щоб завантажити поточну версію.",
-		"columnGroups": {
-			"backlog": {
-				"description": "Зафіксовано, але ще не заплановано",
-				"label": "Беклог"
+		"gantt": {
+			"pageTitle": "{{name}} – Ґант",
+			"title": "Діаграма Ганта",
+			"jumpToToday": "Перейти до сьогодні",
+			"searchPlaceholder": "Пошук завдань...",
+			"hideTasks": "Сховати завдання",
+			"showTasks": "Показати завдання",
+			"noTasks": "Немає запланованих завдань",
+			"noTasksSubtitle": "Додайте дату початку, дату завершення або обидві до завдань, щоб розмістити їх на часовій шкалі проєкту.",
+			"noTasksFound": "Завдання не знайдено",
+			"noTasksMatch": "Жодне заплановане завдання не відповідає «{{query}}»",
+			"taskHeader": "Завдання",
+			"updateDatesError": "Не вдалося оновити дати завдання",
+			"resizeStart": "Змінити дату початку",
+			"resizeDue": "Змінити дату завершення",
+			"taskAriaLabel": "{{title}}: відкрити або перетягнути для переміщення",
+			"previousPeriod": "Попередній період",
+			"nextPeriod": "Наступний період",
+			"periodStart": "Дата початку шкали часу",
+			"showTaskDates": "Показувати дати завдань",
+			"zoom": "Масштаб шкали часу",
+			"zoomWeek": "Тиждень",
+			"zoomMonth": "Місяць",
+			"zoomQuarter": "Квартал",
+			"noDates": "Без дат",
+			"noDatesCount": "Без дат · {{count}}",
+			"noDatesHint": "Перетягніть на шкалу часу або заплануйте від сьогодні.",
+			"schedule": "Запланувати",
+			"scheduleTask": "Запланувати {{title}} від сьогодні",
+			"dragToSchedule": "Перетягніть {{title}} на шкалу часу",
+			"dependencyConflict": "Початок або завершення порушує порядок залежності",
+			"workspaceNoTasksSubtitle": "Додайте до завдань дату початку, дату завершення або обидві, щоб побачити їх на цій часовій шкалі.",
+			"showMoreTasks": "Показати більше завдань",
+			"blocked": "Заблоковано відкритим завданням",
+			"linkFrom": "Пов'язати {{title}} з іншим завданням",
+			"linkHint": "Перетягніть на інше завдання, щоб воно чекало на це",
+			"link": {
+				"blocks": "{{source}} блокує {{target}}",
+				"startBefore": "{{source}} починається раніше за {{target}}",
+				"finishBefore": "{{source}} завершується раніше за {{target}}",
+				"conflict": "Дати порушують цей зв'язок."
 			},
-			"cancelled": {
-				"description": "Закрито без виконання роботи",
-				"label": "Скасовано"
+			"milestone": {
+				"add": "Віха",
+				"ariaLabel": "Віха {{title}}: відкрити або перетягнути для переміщення",
+				"name": "Назва віхи",
+				"namePlaceholder": "Назва віхи",
+				"date": "Дата віхи",
+				"create": "Додати віху",
+				"createError": "Не вдалося додати віху"
 			},
-			"completed": {
-				"description": "Готово",
-				"label": "Завершено"
-			},
-			"started": {
-				"description": "Робота виконується",
-				"label": "Розпочато"
-			},
-			"triage": {
-				"description": "Очікує на розгляд у черзі прийому",
-				"label": "Тріаж"
-			},
-			"unstarted": {
-				"description": "Заплановано, робота не розпочата",
-				"label": "Не розпочато"
+			"cascade": {
+				"offer_one": "{{count}} пов'язане завдання тепер починається надто рано",
+				"offer_few": "{{count}} пов'язані завдання тепер починаються надто рано",
+				"offer_many": "{{count}} пов'язаних завдань тепер починаються надто рано",
+				"offer_other": "Пов'язаних завдань, що починаються надто рано: {{count}}",
+				"reviewAction": "Переглянути зміни дат",
+				"title_one": "Перенести {{count}} пов'язане завдання?",
+				"title_few": "Перенести {{count}} пов'язані завдання?",
+				"title_many": "Перенести {{count}} пов'язаних завдань?",
+				"title_other": "Перенести пов'язані завдання: {{count}}?",
+				"description": "Ці завдання зсунуться на пізніший час — рівно настільки, щоб дотриматися зв'язків, — і збережуть свою тривалість. Нічого не зміниться, доки ви не підтвердите.",
+				"to": "до",
+				"cancel": "Залишити дати",
+				"confirm_one": "Перенести {{count}} завдання",
+				"confirm_few": "Перенести {{count}} завдання",
+				"confirm_many": "Перенести {{count}} завдань",
+				"confirm_other": "Перенести завдання: {{count}}",
+				"moved_one": "Перенесено {{count}} завдання",
+				"moved_few": "Перенесено {{count}} завдання",
+				"moved_many": "Перенесено {{count}} завдань",
+				"moved_other": "Перенесено завдань: {{count}}",
+				"partial": "Перенесено завдань: {{moved}} із {{total}}. Решта зберегли свої дати.",
+				"nothingToMove": "Жодне відкрите завдання з датами не потрібно переносити через цей зв'язок."
 			}
 		},
-		"estimate": {
-			"bulk": {
-				"action": "Оцінка",
-				"error": "Не вдалося змінити оцінку вибраних завдань",
-				"updated_few": "Оцінку оновлено в {{count}} завдань",
-				"updated_many": "Оцінку оновлено в {{count}} завдань",
-				"updated_one": "Оцінку оновлено в {{count}} завдання",
-				"updated_other": "Оцінку оновлено в {{count}} завдань"
-			},
-			"chart": {
-				"points": "Бали",
-				"pointsLeft": "Залишилося балів",
-				"summaryPoints": "Залишилося {{remaining}} із {{scope}} балів, днів до кінця: {{days}}",
-				"summaryTime": "Залишилося {{remaining}} із {{scope}}, днів до кінця: {{days}}",
-				"tasks": "Завдання",
-				"time": "Час",
-				"timeLeft": "Залишилося часу",
-				"unitAria": "Одиниця вимірювання діаграми"
-			},
-			"duration": {
-				"hours": "{{hours}} год",
-				"hoursMinutes": "{{hours}} год {{minutes}} хв",
-				"hourUnit": "h",
-				"minutes": "{{minutes}} хв",
-				"minuteUnit": "m"
-			},
-			"label": "Оцінка",
-			"none": "Без оцінки",
-			"pointsValue_one": "{{value}} б.",
-			"pointsValue_few": "{{value}} б.",
-			"pointsValue_many": "{{value}} б.",
-			"pointsValue_other": "{{value}} б.",
-			"setAria": "Задати оцінку",
-			"totals": {
-				"estimated": "Оцінено {{estimated}} із {{total}} завдань",
-				"points_one": "{{completed}} / {{total}} б.",
-				"points_few": "{{completed}} / {{total}} б.",
-				"points_many": "{{completed}} / {{total}} б.",
-				"points_other": "{{completed}} / {{total}} б.",
-				"time": "{{completed}} / {{total}}"
-			},
-			"updateError": "Не вдалося оновити оцінку"
+		"delete": {
+			"title": "Видалити завдання?",
+			"description": "Завдання та його підзавдання буде переміщено в кошик проєкту. Їх можна відновити в розділі «Нещодавно видалені» в налаштуваннях проєкту.",
+			"action": "Видалити завдання",
+			"success": "Завдання переміщено в кошик",
+			"error": "Не вдалося видалити завдання"
 		},
-		"assignees": {
-			"clear": "Очистити виконавців",
-			"formerMember": "Більше не учасник",
-			"formerMemberSuffix": "{{name}} (більше не учасник)",
-			"label": "Виконавці",
-			"limitReached": "Завдання може мати не більше {{count}} виконавців",
-			"more": "+{{count}}",
-			"nameAndMore": "{{name}} +{{count}}",
-			"noMatches": "Немає відповідних людей",
-			"noMembers": "Ще немає учасників для призначення",
-			"searchPlaceholder": "Пошук людей...",
-			"stackAria": "Призначено: {{names}}",
-			"unknownPerson": "Невідома особа",
-			"updateError": "Не вдалося оновити виконавців",
-			"you": "{{name}} (ви)"
-		},
-		"attachments": {
-			"add": "Прикріпити файл",
-			"delete": "Видалити",
-			"deleteConfirmDescription": "Файл буде видалено для всіх. Цю дію неможливо скасувати.",
-			"deleteConfirmTitle": "Видалити {{filename}}?",
-			"download": "Завантажити",
-			"dropHere": "Перетягніть файли сюди або натисніть, щоб обрати",
-			"dropToAttach": "Відпустіть файли, щоб прикріпити",
-			"loadError": "Не вдалося завантажити вкладення",
-			"meta": "{{size}} · {{name}} · {{time}}",
-			"metaNoUser": "{{size}} · {{time}}",
-			"open": "Відкрити",
-			"title": "Вкладення",
-			"toast": {
-				"attached_few": "Прикріплено {{count}} файли",
-				"attached_many": "Прикріплено {{count}} файлів",
-				"attached_one": "Прикріплено {{count}} файл",
-				"attached_other": "Прикріплено {{count}} файлів",
-				"deleted": "Вкладення видалено",
-				"deleteError": "Не вдалося видалити вкладення",
-				"empty": "{{filename}} порожній",
-				"failed": "Не вдалося прикріпити {{filename}}: {{reason}}",
-				"notConfigured": "Завантаження файлів не налаштовано на цьому сервері. Попросіть адміністратора налаштувати сховище.",
-				"storageError": "сховище відхилило завантаження",
-				"tooMany": "Можна прикріпити не більше {{count}} файлів одночасно",
-				"unknownError": "щось пішло не так"
-			},
-			"uploading": "Завантаження…"
-		},
-		"copy": {
-			"alwaysCopied": "Статус і пріоритет копіюються завжди.",
-			"cancel": "Скасувати",
-			"includeLabel": "Включити",
-			"options": {
-				"assignees": "Виконавці",
-				"attachments": "Вкладення",
-				"customFields": "Значення власних полів",
-				"dates": "Дата початку та завершення",
-				"description": "Опис",
-				"labels": "Мітки",
-				"links": "Посилання",
-				"parent": "Батьківське завдання",
-				"planning": "Цикл, модулі та оцінка"
-			},
-			"otherProjectHint": "Статус буде зіставлено з колонками нового проєкту. Власні поля, батьківське завдання та планування не копіюються між проєктами.",
-			"projectLabel": "Проєкт",
-			"submit": "Створити копію",
-			"title": "Створити копію {{key}}",
-			"titleLabel": "Назва",
-			"titleRequired": "Назва є обов'язковою",
-			"titleSuffix": "{{title}} (копія)",
-			"toast": {
-				"error": "Не вдалося створити копію",
-				"open": "Відкрити",
-				"skipped": "Не скопійовано: {{list}}",
-				"success": "Копію створено: {{key}}"
-			}
-		},
-		"detailActions": {
-			"addLink": "Додати посилання",
-			"addRelation": "Додати зв'язок",
-			"addSubtask": "Додати підзавдання",
-			"attachFile": "Прикріпити файл"
-		},
-		"links": {
-			"add": "Додати посилання",
-			"addedAt": "Додано {{date}}",
-			"addedBy": "Додано користувачем {{name}} · {{date}}",
-			"addTitle": "Додати посилання",
-			"cancel": "Скасувати",
-			"copyUrl": "Копіювати URL",
-			"edit": "Редагувати",
-			"editTitle": "Редагувати посилання",
-			"errors": {
-				"credentials": "Посилання не можуть містити ім'я користувача або пароль",
-				"duplicate": "Це посилання вже додано до цього завдання",
-				"invalid": "Введіть дійсний URL з http або https",
-				"required": "URL є обов'язковим",
-				"titleTooLong": "Назва може містити не більше 255 символів",
-				"tooLong": "Посилання може містити не більше 2048 символів"
-			},
-			"linkTitle": "Назва",
-			"loadError": "Не вдалося завантажити посилання",
-			"moreActions": "Дії з посиланням",
-			"remove": "Видалити",
-			"removeConfirmDescription": "Його буде видалено із завдання для всіх.",
-			"removeConfirmTitle": "Видалити це посилання?",
-			"retry": "Повторити",
-			"save": "Зберегти",
-			"title": "Посилання",
-			"titlePlaceholder": "Необов'язкова назва для відображення",
-			"toast": {
-				"added": "Посилання додано",
-				"copied": "Посилання скопійовано",
-				"error": "Не вдалося зберегти посилання",
-				"removed": "Посилання видалено",
-				"updated": "Посилання оновлено"
-			},
-			"url": "URL",
-			"urlPlaceholder": "https://example.com"
-		},
-		"create": {
-			"similarTitle": "Схожі відкриті завдання",
-			"similarDismiss": "Сховати схожі завдання",
-			"similarOpen": "Відкрити",
-			"similarOpenLabel": "Відкрити {{key}} {{title}} у новій вкладці"
-		},
-		"parent": {
-			"add": "Додати батьківське завдання",
-			"chip": "Батьківське",
-			"label": "Батьківське завдання",
-			"noTasks": "Завдання не знайдено",
-			"remove": "Видалити батьківське завдання",
-			"search": "Пошук завдань…",
-			"tasksInProject": "Завдання в цьому проєкті",
-			"toast": {
-				"error": "Не вдалося змінити батьківське завдання",
-				"removed": "Батьківське завдання видалено",
-				"set": "Батьківське завдання встановлено: {{key}}"
-			},
-			"tooltip": "Батьківське завдання: {{key}} {{title}}"
-		},
-		"taskKey": {
-			"clipboardError": "Не вдалося скопіювати в буфер обміну",
-			"copied": "{{key}} скопійовано",
-			"copyTooltip": "Копіювати ключ завдання"
-		},
-		"display": {
-			"button": "Вигляд",
-			"columns": "Колонки",
-			"groupBy": "Групувати за",
-			"groups": {
-				"assignee": "Виконавець",
-				"createdBy": "Автор",
-				"cycle": "Цикл",
-				"estimate": "Оцінка",
-				"group": "Група",
-				"label": "Мітка",
-				"module": "Модуль",
-				"priority": "Пріоритет",
-				"project": "Проєкт",
-				"status": "Статус"
-			},
-			"none": "Немає",
-			"order": {
-				"assignee": "Виконавець",
-				"completedAt": "Дата завершення",
-				"createdAt": "Нещодавно створені",
-				"cycle": "Цикл",
-				"dueDate": "Дата завершення",
-				"estimate": "Оцінка",
-				"label": "Мітка",
-				"manual": "Вручну",
-				"module": "Модуль",
-				"number": "Ключ завдання",
-				"priority": "Пріоритет",
-				"startDate": "Дата початку",
-				"status": "Статус",
-				"subTaskCount": "Підзавдання",
-				"title": "Назва",
-				"updatedAt": "Нещодавно оновлені",
-				"archivedAt": "Дата архівації"
-			},
-			"orderBy": "Сортувати за",
-			"properties": "Властивості",
-			"props": {
-				"assignee": "Виконавці",
-				"checklist": "Чекліст",
-				"createdAt": "Створено",
-				"cycle": "Цикл",
-				"dueDate": "Дата завершення",
-				"estimate": "Оцінка",
-				"key": "Ключ",
-				"labels": "Мітки",
-				"modules": "Модулі",
-				"priority": "Пріоритет",
-				"startDate": "Дата початку",
-				"status": "Статус",
-				"subTaskCount": "Підзавдання",
-				"updatedAt": "Оновлено"
-			},
-			"showEmptyGroups": "Показувати порожні групи",
-			"showSubTasks": "Показувати підзавдання",
-			"subGroupBy": "Підгрупувати за"
-		},
-		"filters": {
-			"apply": "Застосувати",
-			"applyError": "Не вдалося застосувати фільтри",
-			"archived": {
-				"exclude": "Приховати архівовані",
-				"include": "Показати й архівовані",
-				"label": "Архівовані",
-				"only": "Лише архівовані"
-			},
-			"button": "Фільтр",
-			"clearAll": "Скинути всі фільтри",
-			"dates": {
-				"amount": "Кількість",
-				"custom": "Власна дата…",
-				"emptyTab": "Порожньо",
-				"exact": "Точна дата",
-				"future": "Після сьогодні",
-				"lastMonth": "Минулий місяць",
-				"lastWeek": "Минулий тиждень",
-				"nextMonth": "Наступний місяць",
-				"nextWeek": "Наступний тиждень",
-				"overdue": "Прострочено",
-				"past": "До сьогодні",
-				"presets": "Пресети",
-				"rolling": "Ковзний період",
-				"rollingValue": "{{amount}} {{unit}}",
-				"thisMonth": "Цей місяць",
-				"thisWeek": "Цей тиждень",
-				"today": "Сьогодні",
-				"tomorrow": "Завтра",
-				"units": {
-					"days": "дн.",
-					"months": "міс.",
-					"weeks": "тиж."
-				},
-				"yesterday": "Учора"
-			},
-			"matchAll": "Усі умови",
-			"matchAny": "Будь-яка умова",
-			"mobileSummary_few": "{{count}} фільтри",
-			"mobileSummary_many": "{{count}} фільтрів",
-			"mobileSummary_one": "{{count}} фільтр",
-			"mobileSummary_other": "Фільтрів: {{count}}",
-			"nestedReadOnly": "Цей перегляд використовує розширені фільтри, які тут не можна змінити",
-			"noOptions": "Немає варіантів",
-			"operators": {
-				"between": "між",
-				"is": "дорівнює",
-				"isEmpty": "порожнє",
-				"isNoneOf": "не входить до",
-				"isNot": "не дорівнює",
-				"isNotEmpty": "не порожнє",
-				"moreThanAgo": "більше ніж … тому",
-				"moreThanAhead": "більше ніж … наперед",
-				"on": "у день",
-				"onOrAfter": "не раніше",
-				"onOrBefore": "не пізніше",
-				"withinLast": "за останні",
-				"withinNext": "протягом наступних"
-			},
-			"removeFilter": "Прибрати фільтр {{subject}}",
-			"retry": "Повторити",
-			"searchOptions": "Пошук варіантів",
-			"subjects": {
-				"completed": "Завершено",
-				"created": "Створено",
-				"createdBy": "Автор",
-				"cycle": "Цикл",
-				"group": "Група",
-				"mentions": "Згадки",
-				"module": "Модуль",
-				"parent": "Батьківське",
-				"project": "Проєкт",
-				"startDate": "Дата початку",
-				"subscribed": "Підписки",
-				"updated": "Оновлено"
-			},
-			"tooMany": "Забагато збігів для фільтрації тут; відкрийте таблицю",
-			"values": {
-				"currentCycle": "Поточний цикл",
-				"false": "Ні",
-				"me": "Я",
-				"noAssignee": "Без виконавця",
-				"noCreator": "Без автора",
-				"noCycle": "Без циклу",
-				"noEstimate": "Без оцінки",
-				"noLabel": "Без мітки",
-				"noModule": "Без модуля",
-				"none": "Немає",
-				"noParent": "Без батьківського",
-				"true": "Так"
-			}
-		},
-		"groups": {
-			"all": "Усі завдання",
-			"hiddenGroups_few": "Ще {{count}} групи не показано",
-			"hiddenGroups_many": "Ще {{count}} груп не показано",
-			"hiddenGroups_one": "Ще {{count}} групу не показано",
-			"hiddenGroups_other": "Ще не показано груп: {{count}}",
-			"loadMore": "Завантажити ще ({{count}})",
-			"moduleCount_few": "{{count}} модулі",
-			"moduleCount_many": "{{count}} модулів",
-			"moduleCount_one": "{{count}} модуль",
-			"moduleCount_other": "Модулів: {{count}}",
-			"moveError": "Не вдалося перемістити завдання",
-			"noAssignee": "Без виконавця",
-			"noCreator": "Без автора",
-			"noCycle": "Без циклу",
-			"noEstimate": "Без оцінки",
-			"noLabel": "Без мітки",
-			"noModule": "Без модуля",
-			"planned": "Заплановано"
-		},
-		"queryEmpty": {
-			"clear": "Скинути фільтри",
-			"description": "Спробуйте прибрати один-два фільтри.",
-			"title": "Немає завдань, що відповідають фільтрам"
-		},
-		"spreadsheet": {
-			"clearSort": "Скинути сортування",
-			"collapseSubTasks": "Приховати підзавдання",
-			"expandSubTasks": "Показати підзавдання",
-			"hideColumn": "Приховати колонку",
-			"loadError": "Не вдалося завантажити завдання",
-			"selectTask": "Вибрати {{key}}",
-			"sortAsc": "За зростанням",
-			"sortDesc": "За спаданням",
-			"task": "Завдання"
-		},
-		"subscription": {
-			"count_few": "{{count}} підписники",
-			"count_many": "{{count}} підписників",
-			"count_one": "{{count}} підписник",
-			"count_other": "Підписників: {{count}}",
-			"error": "Не вдалося оновити підписку",
-			"mutedAssignee": "Завдання призначено вам, але ви відписані. Про згадки ви все одно дізнаєтеся.",
-			"notSubscribed": "Отримуйте оновлення про зміни статусу, коментарі та інші зміни.",
-			"reasons": {
-				"assignee": "Ви підписані, бо завдання призначено вам.",
-				"commenter": "Ви підписані, бо залишили коментар.",
-				"creator": "Ви підписані, бо створили це завдання.",
-				"manual": "Ви підписалися на це завдання.",
-				"mention": "Ви підписані, бо вас згадали."
-			},
-			"subscribe": "Підписатися",
-			"toastSubscribed": "Ви підписалися на це завдання",
-			"toastUnsubscribed": "Ви відписалися. Про згадки ви все одно дізнаєтеся.",
-			"unsubscribe": "Відписатися"
-		},
-		"timeTracking": {
-			"duration": "Тривалість",
-			"durationInvalid": "Введіть тривалість від 1 хвилини до 24 годин, наприклад 1г 30хв.",
-			"durationPlaceholder": "напр. 1h 30m",
-			"empty": "Час поки не записано",
-			"entries": "Записи часу",
-			"formerMember": "Колишній учасник",
-			"hours": "{{hours}} год",
-			"hoursMinutes": "{{hours}} год {{minutes}} хв",
-			"label": "Витрачений час",
-			"logError": "Не вдалося записати час",
-			"logged": "Час записано",
-			"logTime": "Записати час",
-			"minutes": "{{minutes}} хв",
-			"note": "Нотатка (необов'язково)",
-			"running": "Триває відлік",
-			"spentAria": "Витрачений час: {{total}}. Записати час",
-			"submit": "Записати час",
-			"deleteConfirm": "Видалити цей запис?",
-			"deleted": "Запис часу видалено",
-			"deleteEntry": "Видалити запис часу від {{date}}",
-			"deleteError": "Не вдалося видалити запис часу"
+		"archive": {
+			"success": "Архівовано {{count}} завдань",
+			"archived": "Завдання архівовано",
+			"badge": "Архівовано",
+			"error": "Не вдалося архівувати завдання",
+			"restore": "Відновити",
+			"restored": "Завдання відновлено",
+			"restoreError": "Не вдалося відновити завдання"
 		},
 		"archivedBanner": {
 			"message": "Це завдання було архівовано {{time}}.",
@@ -5225,8 +4877,632 @@
 			},
 			"untitled": "Чернетка без назви"
 		},
+		"listView": {
+			"addTask": "Додати завдання",
+			"archiveAllTooltip": "Архівувати всі завершені завдання",
+			"noTasks": "Немає завдань"
+		},
+		"kanban": {
+			"addTask": "Додати завдання",
+			"stages": "Колонки",
+			"emptyAction": "Додати завдання",
+			"emptyTitle": "Завдань поки немає"
+		},
+		"pr": {
+			"merged": "Змерджено",
+			"draft": "Чернетка",
+			"open": "Відкрито",
+			"label": "Пул-реквест",
+			"count_one": "{{count}} PR",
+			"count_few": "{{count}} пул-реквести",
+			"count_many": "{{count}} пул-реквестів",
+			"count_other": "{{count}} PR"
+		},
+		"assignee": {
+			"label": "Виконавці",
+			"unassigned": "Не призначено"
+		},
+		"assignees": {
+			"label": "Виконавці",
+			"searchPlaceholder": "Пошук людей...",
+			"noMatches": "Немає відповідних людей",
+			"noMembers": "Ще немає учасників для призначення",
+			"you": "{{name}} (ви)",
+			"clear": "Очистити виконавців",
+			"more": "+{{count}}",
+			"nameAndMore": "{{name}} +{{count}}",
+			"stackAria": "Призначено: {{names}}",
+			"formerMember": "Більше не учасник",
+			"formerMemberSuffix": "{{name}} (більше не учасник)",
+			"limitReached": "Завдання може мати не більше {{count}} виконавців",
+			"updateError": "Не вдалося оновити виконавців",
+			"unknownPerson": "Невідома особа",
+			"noAccess": "Немає доступу до цього проєкту",
+			"noAccessSuffix": "{{name}} (немає доступу до цього проєкту)"
+		},
+		"dueDate": {
+			"label": "Дата завершення",
+			"clear": "Очистити дату",
+			"updateSuccess": "Дату завершення завдання успішно оновлено",
+			"updateError": "Не вдалося оновити дату завершення завдання",
+			"clearSuccess": "Дату завершення завдання очищено",
+			"clearError": "Не вдалося очистити дату завершення"
+		},
+		"update": {
+			"success": "Завдання успішно оновлено",
+			"error": "Не вдалося оновити завдання"
+		},
+		"contextMenu": {
+			"copyLink": "Копіювати посилання",
+			"copyLinkSuccess": "Посилання на завдання скопійовано",
+			"estimate": "Оцінка"
+		},
+		"actions": {
+			"archive": "Архівувати",
+			"markAsPlanned": "Позначити як заплановане",
+			"delete": "Видалити...",
+			"copyKey": "Копіювати ключ завдання",
+			"copyLink": "Копіювати посилання",
+			"makeCopy": "Створити копію…",
+			"moreActions": "Інші дії"
+		},
+		"commands": {
+			"assignedSelf": "Завдання призначено вам",
+			"assignees": "Змінити виконавців…",
+			"assignSelf": "Призначити мені",
+			"copyTitle": "Скопіювати назву",
+			"cycle": "Змінити цикл…",
+			"dueDate": "Змінити дату завершення…",
+			"estimate": "Змінити оцінку…",
+			"group": "Це завдання",
+			"labels": "Змінити мітки…",
+			"module": "Змінити модулі…",
+			"priority": "Змінити пріоритет…",
+			"status": "Змінити статус…",
+			"titleCopied": "Назву завдання скопійовано",
+			"unassignedSelf": "Ви більше не виконавець",
+			"unassignSelf": "Зняти з мене"
+		},
+		"readableLink": {
+			"goHome": "На головну",
+			"notFound": "У цьому робочому просторі немає завдання з ключем {{key}}, або у вас немає до нього доступу."
+		},
+		"timeTracking": {
+			"label": "Витрачений час",
+			"logTime": "Записати час",
+			"spentAria": "Витрачений час: {{total}}. Записати час",
+			"duration": "Тривалість",
+			"durationPlaceholder": "напр. 1h 30m",
+			"durationInvalid": "Введіть тривалість від 1 хвилини до 24 годин, наприклад 1г 30хв.",
+			"note": "Нотатка (необов'язково)",
+			"submit": "Записати час",
+			"logged": "Час записано",
+			"logError": "Не вдалося записати час",
+			"empty": "Час поки не записано",
+			"entries": "Записи часу",
+			"running": "Триває відлік",
+			"formerMember": "Колишній учасник",
+			"hours": "{{hours}} год",
+			"minutes": "{{minutes}} хв",
+			"hoursMinutes": "{{hours}} год {{minutes}} хв",
+			"deleteEntry": "Видалити запис часу від {{date}}",
+			"deleteConfirm": "Видалити цей запис?",
+			"deleted": "Запис часу видалено",
+			"deleteError": "Не вдалося видалити запис часу",
+			"startTimer": "Запустити таймер",
+			"startHere": "Зупинити його й запустити тут",
+			"stopTimer": "Зупинити",
+			"timerRunning": "Таймер запущено",
+			"timerRunningOn": "Таймер запущено для завдання {{task}}",
+			"timerStarted": "Таймер запущено",
+			"timerSwitched": "Таймер запущено. Інший ваш таймер зупинено.",
+			"timerStopped": "Таймер зупинено. Записано: {{total}}.",
+			"timerStartError": "Не вдалося запустити таймер",
+			"timerStopError": "Не вдалося зупинити таймер",
+			"loadError": "Не вдалося завантажити записи часу",
+			"editEntry": "Редагувати запис часу від {{date}}",
+			"editStart": "Початок",
+			"editEnd": "Кінець",
+			"editEndRunningHint": "Залиште порожнім, щоб таймер продовжував працювати.",
+			"editEndRequired": "Вкажіть, коли закінчився цей час.",
+			"editStartInvalid": "Вкажіть, коли почався цей час.",
+			"editEndBeforeStart": "Кінець не може бути раніше за початок.",
+			"editSave": "Зберегти",
+			"edited": "Запис часу оновлено",
+			"editError": "Не вдалося оновити запис часу"
+		},
+		"bulk": {
+			"selectedCount": "{{count}} обрано",
+			"moveToBacklog": "Перемістити до беклогу",
+			"clearSelection": "Зняти виділення",
+			"moveToBacklogSuccess": "{{count}} завдань переміщено до беклогу",
+			"moveToBacklogError": "Не вдалося перемістити завдання до беклогу",
+			"moveToBoard": "Перемістити на дошку",
+			"moveToBoardSuccess": "{{count}} завдань переміщено на дошку",
+			"moveToBoardError": "Не вдалося перемістити завдання на дошку",
+			"delete": "Видалити завдання",
+			"deleteConfirm": "Перемістити завдання в кошик ({{count}})? Їх можна відновити в розділі «Нещодавно видалені» в налаштуваннях проєкту.",
+			"deleteSuccess": "{{count}} завдань видалено",
+			"deleteError": "Не вдалося видалити завдання",
+			"archive": "Архівувати завдання",
+			"archiveSuccess": "{{count}} завдань архівовано",
+			"archiveError": "Не вдалося архівувати завдання",
+			"updateSuccess": "{{count}} завдань оновлено",
+			"updateError": "Не вдалося оновити завдання",
+			"addAssignee": "Додати виконавця",
+			"removeAssignee": "Видалити виконавця",
+			"clearAssignees": "Очистити виконавців",
+			"addAssigneeSuccess_one": "{{name}} додано до {{count}} завдання",
+			"addAssigneeSuccess_few": "{{name}} додано до {{count}} завдань",
+			"addAssigneeSuccess_many": "{{name}} додано до {{count}} завдань",
+			"addAssigneeSuccess_other": "{{name}} додано до {{count}} завдань",
+			"removeAssigneeSuccess_one": "{{name}} видалено з {{count}} завдання",
+			"removeAssigneeSuccess_few": "{{name}} видалено з {{count}} завдань",
+			"removeAssigneeSuccess_many": "{{name}} видалено з {{count}} завдань",
+			"removeAssigneeSuccess_other": "{{name}} видалено з {{count}} завдань",
+			"clearAssigneesSuccess_one": "Виконавців очищено в {{count}} завданні",
+			"clearAssigneesSuccess_few": "Виконавців очищено в {{count}} завданнях",
+			"clearAssigneesSuccess_many": "Виконавців очищено в {{count}} завданнях",
+			"clearAssigneesSuccess_other": "Виконавців очищено в {{count}} завданнях",
+			"assigneesError": "Не вдалося оновити виконавців",
+			"setPriority": "Задати пріоритет",
+			"updatePriorityError": "Не вдалося оновити пріоритет",
+			"addLabel": "Додати мітку",
+			"addLabelSuccess": "Мітку додано до {{count}} завдань",
+			"addLabelError": "Не вдалося додати мітку",
+			"setDueDate": "Задати термін виконання",
+			"updateDueDateError": "Не вдалося оновити дату завершення",
+			"actions": "Дії",
+			"searchActions": "Пошук дій...",
+			"noActionsFound": "Дій не знайдено.",
+			"changeStatus": "Змінити статус",
+			"removeLabel": "Видалити мітку",
+			"removeLabelSuccess": "Мітку видалено із завдань: {{count}}",
+			"removeLabelError": "Не вдалося видалити мітку",
+			"unarchive": "Відновити з архіву",
+			"unarchiveSuccess": "Відновлено завдань: {{count}}",
+			"unarchiveNone": "Жодне з вибраних завдань не перебуває в архіві",
+			"unarchiveError": "Не вдалося відновити завдання",
+			"setDates": "Дати",
+			"dateField": "Яку дату задати",
+			"startDate": "Дата початку",
+			"dueDate": "Дата завершення",
+			"clearStartDate": "Очистити дату початку",
+			"clearDueDate": "Очистити дату завершення",
+			"updateStartDateError": "Не вдалося оновити дату початку. Дата початку не може бути пізнішою за дату завершення завдання.",
+			"selectTask": "Вибрати {{title}}",
+			"moveToProject": "Перемістити до проєкту",
+			"moveToProjectTitle_one": "Перемістити {{count}} завдання до проєкту {{name}}?",
+			"moveToProjectTitle_few": "Перемістити {{count}} завдання до проєкту {{name}}?",
+			"moveToProjectTitle_many": "Перемістити {{count}} завдань до проєкту {{name}}?",
+			"moveToProjectTitle_other": "Перемістити завдання до проєкту {{name}}: {{count}}?",
+			"moveToProjectRule": "Вони отримають нові ключі завдань. Кожне завдання збереже свій статус, якщо він є в проєкті, інакше потрапить до першої колонки. Мітки й виконавці залишаться. Цикли, модулі й оцінки буде очищено. Значення власних полів залишаться, лише якщо в проєкті є поле з такою самою назвою і типом.",
+			"moveToProjectConfirm": "Перемістити завдання",
+			"moveToProjectSuccess_one": "Переміщено {{count}} завдання до проєкту {{name}}",
+			"moveToProjectSuccess_few": "Переміщено {{count}} завдання до проєкту {{name}}",
+			"moveToProjectSuccess_many": "Переміщено {{count}} завдань до проєкту {{name}}",
+			"moveToProjectSuccess_other": "Переміщено завдань до проєкту {{name}}: {{count}}",
+			"moveToProjectNone": "Ці завдання вже в проєкті {{name}}",
+			"moveToProjectError": "Не вдалося перемістити завдання"
+		},
+		"editor": {
+			"table": {
+				"addColumnBefore": "Вставити колонку ліворуч",
+				"addColumnAfter": "Вставити колонку праворуч",
+				"deleteColumn": "Видалити колонку",
+				"addRowBefore": "Вставити рядок вище",
+				"addRowAfter": "Вставити рядок нижче",
+				"deleteRow": "Видалити рядок",
+				"deleteTable": "Видалити таблицю",
+				"moveRowUp": "Перемістити рядок угору",
+				"moveRowDown": "Перемістити рядок униз",
+				"moveColumnLeft": "Перемістити стовпець ліворуч",
+				"moveColumnRight": "Перемістити стовпець праворуч",
+				"toggleHeaderRow": "Рядок заголовка",
+				"fullWidth": "На всю ширину",
+				"dragRow": "Рядок {{index}}",
+				"dragColumn": "Стовпець {{index}}",
+				"dragRowHint": "Перетягніть, щоб перемістити рядок, або скористайтеся клавішами зі стрілками",
+				"dragColumnHint": "Перетягніть, щоб перемістити стовпець, або скористайтеся клавішами зі стрілками",
+				"insertRowHere": "Вставити рядок тут",
+				"insertColumnHere": "Вставити стовпець тут"
+			}
+		},
+		"descriptionSearchLoading": "Пошук у повних описах…",
+		"descriptionSearchError": "Не вдалося виконати пошук за описом. Результати можуть бути неповними.",
+		"descriptionRetry": "Повторити",
+		"descriptionLoading": "Завантаження опису…",
+		"descriptionLoadError": "Не вдалося завантажити опис. Повторіть спробу, щоб завантажити поточну версію.",
+		"descriptionHistory": {
+			"cancel": "Скасувати",
+			"description": "Збережені версії опису, спочатку нові. Правки однієї особи протягом 10 хвилин об'єднуються в одну версію; зберігаються останні 50.",
+			"earlierVersion": "Попередня версія",
+			"empty": "Збережених версій поки немає. Версії почнуть зберігатися з наступної правки.",
+			"emptyVersion": "У цій версії немає опису.",
+			"latest": "Остання",
+			"list": "Збережені версії",
+			"loadError": "Не вдалося завантажити історію",
+			"open": "Історія",
+			"previewTitle": "Версія від {{date}}",
+			"restore": "Відновити",
+			"restoreConfirmDescription": "Опис буде замінено цією версією. Поточний текст залишиться в історії.",
+			"restoreConfirmTitle": "Відновити цю версію?",
+			"restored": "Опис відновлено",
+			"restoreError": "Не вдалося відновити цю версію",
+			"retry": "Повторити",
+			"size_few": "{{count}} символи",
+			"size_many": "{{count}} символів",
+			"size_one": "{{count}} символ",
+			"size_other": "Символів: {{count}}",
+			"title": "Історія опису",
+			"viewOnly": "Лише перегляд"
+		},
+		"estimate": {
+			"bulk": {
+				"action": "Оцінка",
+				"error": "Не вдалося змінити оцінку вибраних завдань",
+				"updated_few": "Оцінку оновлено в {{count}} завдань",
+				"updated_many": "Оцінку оновлено в {{count}} завдань",
+				"updated_one": "Оцінку оновлено в {{count}} завдання",
+				"updated_other": "Оцінку оновлено в {{count}} завдань"
+			},
+			"chart": {
+				"points": "Бали",
+				"pointsLeft": "Залишилося балів",
+				"summaryPoints": "Залишилося {{remaining}} із {{scope}} балів, днів до кінця: {{days}}",
+				"summaryTime": "Залишилося {{remaining}} із {{scope}}, днів до кінця: {{days}}",
+				"tasks": "Завдання",
+				"time": "Час",
+				"timeLeft": "Залишилося часу",
+				"unitAria": "Одиниця вимірювання діаграми"
+			},
+			"duration": {
+				"hours": "{{hours}} год",
+				"hoursMinutes": "{{hours}} год {{minutes}} хв",
+				"hourUnit": "h",
+				"minutes": "{{minutes}} хв",
+				"minuteUnit": "m"
+			},
+			"label": "Оцінка",
+			"none": "Без оцінки",
+			"pointsValue_one": "{{value}} б.",
+			"pointsValue_few": "{{value}} б.",
+			"pointsValue_many": "{{value}} б.",
+			"pointsValue_other": "{{value}} б.",
+			"setAria": "Задати оцінку",
+			"totals": {
+				"estimated": "Оцінено {{estimated}} із {{total}} завдань",
+				"points_one": "{{completed}} / {{total}} б.",
+				"points_few": "{{completed}} / {{total}} б.",
+				"points_many": "{{completed}} / {{total}} б.",
+				"points_other": "{{completed}} / {{total}} б.",
+				"time": "{{completed}} / {{total}}"
+			},
+			"updateError": "Не вдалося оновити оцінку"
+		},
+		"detailActions": {
+			"addLink": "Додати посилання",
+			"addRelation": "Додати зв'язок",
+			"addSubtask": "Додати підзавдання",
+			"attachFile": "Прикріпити файл"
+		},
+		"taskKey": {
+			"clipboardError": "Не вдалося скопіювати в буфер обміну",
+			"copied": "{{key}} скопійовано",
+			"copyTooltip": "Копіювати ключ завдання"
+		},
 		"pageReferences": {
 			"title": "Згадується на сторінках"
+		},
+		"links": {
+			"add": "Додати посилання",
+			"addedAt": "Додано {{date}}",
+			"addedBy": "Додано користувачем {{name}} · {{date}}",
+			"addTitle": "Додати посилання",
+			"cancel": "Скасувати",
+			"copyUrl": "Копіювати URL",
+			"edit": "Редагувати",
+			"editTitle": "Редагувати посилання",
+			"errors": {
+				"credentials": "Посилання не можуть містити ім'я користувача або пароль",
+				"duplicate": "Це посилання вже додано до цього завдання",
+				"invalid": "Введіть дійсний URL з http або https",
+				"required": "URL є обов'язковим",
+				"titleTooLong": "Назва може містити не більше 255 символів",
+				"tooLong": "Посилання може містити не більше 2048 символів"
+			},
+			"linkTitle": "Назва",
+			"loadError": "Не вдалося завантажити посилання",
+			"moreActions": "Дії з посиланням",
+			"remove": "Видалити",
+			"removeConfirmDescription": "Його буде видалено із завдання для всіх.",
+			"removeConfirmTitle": "Видалити це посилання?",
+			"retry": "Повторити",
+			"save": "Зберегти",
+			"title": "Посилання",
+			"titlePlaceholder": "Необов'язкова назва для відображення",
+			"toast": {
+				"added": "Посилання додано",
+				"copied": "Посилання скопійовано",
+				"error": "Не вдалося зберегти посилання",
+				"removed": "Посилання видалено",
+				"updated": "Посилання оновлено"
+			},
+			"url": "URL",
+			"urlPlaceholder": "https://example.com"
+		},
+		"attachments": {
+			"add": "Прикріпити файл",
+			"delete": "Видалити",
+			"deleteConfirmDescription": "Файл буде видалено для всіх. Цю дію неможливо скасувати.",
+			"deleteConfirmTitle": "Видалити {{filename}}?",
+			"download": "Завантажити",
+			"dropHere": "Перетягніть файли сюди або натисніть, щоб обрати",
+			"dropToAttach": "Відпустіть файли, щоб прикріпити",
+			"loadError": "Не вдалося завантажити вкладення",
+			"meta": "{{size}} · {{name}} · {{time}}",
+			"metaNoUser": "{{size}} · {{time}}",
+			"open": "Відкрити",
+			"title": "Вкладення",
+			"toast": {
+				"attached_few": "Прикріплено {{count}} файли",
+				"attached_many": "Прикріплено {{count}} файлів",
+				"attached_one": "Прикріплено {{count}} файл",
+				"attached_other": "Прикріплено {{count}} файлів",
+				"deleted": "Вкладення видалено",
+				"deleteError": "Не вдалося видалити вкладення",
+				"empty": "{{filename}} порожній",
+				"failed": "Не вдалося прикріпити {{filename}}: {{reason}}",
+				"notConfigured": "Завантаження файлів не налаштовано на цьому сервері. Попросіть адміністратора налаштувати сховище.",
+				"storageError": "сховище відхилило завантаження",
+				"tooMany": "Можна прикріпити не більше {{count}} файлів одночасно",
+				"unknownError": "щось пішло не так"
+			},
+			"uploading": "Завантаження…"
+		},
+		"create": {
+			"similarTitle": "Схожі відкриті завдання",
+			"similarDismiss": "Сховати схожі завдання",
+			"similarOpen": "Відкрити",
+			"similarOpenLabel": "Відкрити {{key}} {{title}} у новій вкладці"
+		},
+		"parent": {
+			"add": "Додати батьківське завдання",
+			"chip": "Батьківське",
+			"label": "Батьківське завдання",
+			"noTasks": "Завдання не знайдено",
+			"remove": "Видалити батьківське завдання",
+			"search": "Пошук завдань…",
+			"tasksInProject": "Завдання в цьому проєкті",
+			"toast": {
+				"error": "Не вдалося змінити батьківське завдання",
+				"removed": "Батьківське завдання видалено",
+				"set": "Батьківське завдання встановлено: {{key}}"
+			},
+			"tooltip": "Батьківське завдання: {{key}} {{title}}"
+		},
+		"copy": {
+			"alwaysCopied": "Статус і пріоритет копіюються завжди.",
+			"cancel": "Скасувати",
+			"includeLabel": "Включити",
+			"options": {
+				"assignees": "Виконавці",
+				"attachments": "Вкладення",
+				"customFields": "Значення власних полів",
+				"dates": "Дата початку та завершення",
+				"description": "Опис",
+				"labels": "Мітки",
+				"links": "Посилання",
+				"parent": "Батьківське завдання",
+				"planning": "Цикл, модулі та оцінка"
+			},
+			"otherProjectHint": "Статус буде зіставлено з колонками нового проєкту. Власні поля, батьківське завдання та планування не копіюються між проєктами.",
+			"projectLabel": "Проєкт",
+			"submit": "Створити копію",
+			"title": "Створити копію {{key}}",
+			"titleLabel": "Назва",
+			"titleRequired": "Назва є обов'язковою",
+			"titleSuffix": "{{title}} (копія)",
+			"toast": {
+				"error": "Не вдалося створити копію",
+				"open": "Відкрити",
+				"skipped": "Не скопійовано: {{list}}",
+				"success": "Копію створено: {{key}}"
+			}
+		},
+		"filters": {
+			"button": "Фільтр",
+			"searchOptions": "Пошук варіантів",
+			"noOptions": "Немає варіантів",
+			"matchAll": "Усі умови",
+			"matchAny": "Будь-яка умова",
+			"applyError": "Не вдалося застосувати фільтри",
+			"retry": "Повторити",
+			"tooMany": "Забагато збігів для фільтрації тут; відкрийте таблицю",
+			"nestedReadOnly": "Цей перегляд використовує розширені фільтри, які тут не можна змінити",
+			"clearAll": "Скинути всі фільтри",
+			"apply": "Застосувати",
+			"mobileSummary_one": "{{count}} фільтр",
+			"mobileSummary_few": "{{count}} фільтри",
+			"mobileSummary_many": "{{count}} фільтрів",
+			"mobileSummary_other": "Фільтрів: {{count}}",
+			"removeFilter": "Прибрати фільтр {{subject}}",
+			"subjects": {
+				"group": "Група",
+				"createdBy": "Автор",
+				"cycle": "Цикл",
+				"module": "Модуль",
+				"startDate": "Дата початку",
+				"created": "Створено",
+				"updated": "Оновлено",
+				"completed": "Завершено",
+				"parent": "Батьківське",
+				"project": "Проєкт",
+				"subscribed": "Підписки",
+				"mentions": "Згадки",
+				"blocked": "Заблоковані"
+			},
+			"operators": {
+				"between": "між",
+				"is": "дорівнює",
+				"isEmpty": "порожнє",
+				"isNoneOf": "не входить до",
+				"isNot": "не дорівнює",
+				"isNotEmpty": "не порожнє",
+				"moreThanAgo": "більше ніж … тому",
+				"moreThanAhead": "більше ніж … наперед",
+				"on": "у день",
+				"onOrAfter": "не раніше",
+				"onOrBefore": "не пізніше",
+				"withinLast": "за останні",
+				"withinNext": "протягом наступних"
+			},
+			"values": {
+				"me": "Я",
+				"none": "Немає",
+				"noAssignee": "Без виконавця",
+				"noCreator": "Без автора",
+				"noLabel": "Без мітки",
+				"noCycle": "Без циклу",
+				"noModule": "Без модуля",
+				"noEstimate": "Без оцінки",
+				"noParent": "Без батьківського",
+				"currentCycle": "Поточний цикл",
+				"true": "Так",
+				"false": "Ні",
+				"blockedYes": "Так",
+				"blockedNo": "Ні"
+			},
+			"dates": {
+				"amount": "Кількість",
+				"custom": "Власна дата…",
+				"emptyTab": "Порожньо",
+				"exact": "Точна дата",
+				"future": "Після сьогодні",
+				"lastMonth": "Минулий місяць",
+				"lastWeek": "Минулий тиждень",
+				"nextMonth": "Наступний місяць",
+				"nextWeek": "Наступний тиждень",
+				"overdue": "Прострочено",
+				"past": "До сьогодні",
+				"presets": "Пресети",
+				"rolling": "Ковзний період",
+				"rollingValue": "{{amount}} {{unit}}",
+				"thisMonth": "Цей місяць",
+				"thisWeek": "Цей тиждень",
+				"today": "Сьогодні",
+				"tomorrow": "Завтра",
+				"units": {
+					"days": "дн.",
+					"months": "міс.",
+					"weeks": "тиж."
+				},
+				"yesterday": "Учора"
+			},
+			"archived": {
+				"exclude": "Приховати архівовані",
+				"include": "Показати й архівовані",
+				"label": "Архівовані",
+				"only": "Лише архівовані"
+			},
+			"myTasks": "Мої завдання"
+		},
+		"display": {
+			"button": "Вигляд",
+			"columns": "Колонки",
+			"groupBy": "Групувати за",
+			"groups": {
+				"status": "Статус",
+				"group": "Група",
+				"priority": "Пріоритет",
+				"assignee": "Виконавець",
+				"createdBy": "Автор",
+				"label": "Мітка",
+				"cycle": "Цикл",
+				"module": "Модуль",
+				"estimate": "Оцінка",
+				"project": "Проєкт",
+				"customField": "Власне поле"
+			},
+			"none": "Немає",
+			"order": {
+				"manual": "Вручну",
+				"createdAt": "Нещодавно створені",
+				"updatedAt": "Нещодавно оновлені",
+				"completedAt": "Дата завершення",
+				"startDate": "Дата початку",
+				"dueDate": "Дата завершення",
+				"priority": "Пріоритет",
+				"title": "Назва",
+				"number": "Ключ завдання",
+				"status": "Статус",
+				"assignee": "Виконавець",
+				"label": "Мітка",
+				"cycle": "Цикл",
+				"module": "Модуль",
+				"estimate": "Оцінка",
+				"subTaskCount": "Підзавдання",
+				"archivedAt": "Дата архівації",
+				"customField": "Власне поле"
+			},
+			"orderBy": "Сортувати за",
+			"properties": "Властивості",
+			"props": {
+				"assignee": "Виконавці",
+				"checklist": "Чекліст",
+				"createdAt": "Створено",
+				"cycle": "Цикл",
+				"dueDate": "Дата завершення",
+				"estimate": "Оцінка",
+				"key": "Ключ",
+				"labels": "Мітки",
+				"modules": "Модулі",
+				"priority": "Пріоритет",
+				"startDate": "Дата початку",
+				"status": "Статус",
+				"subTaskCount": "Підзавдання",
+				"updatedAt": "Оновлено"
+			},
+			"showEmptyGroups": "Показувати порожні групи",
+			"showSubTasks": "Показувати підзавдання",
+			"subGroupBy": "Підгрупувати за"
+		},
+		"groups": {
+			"all": "Усі завдання",
+			"planned": "Заплановано",
+			"noAssignee": "Без виконавця",
+			"noCreator": "Без автора",
+			"noLabel": "Без мітки",
+			"noCycle": "Без циклу",
+			"noModule": "Без модуля",
+			"noEstimate": "Без оцінки",
+			"loadMore": "Завантажити ще ({{count}})",
+			"hiddenGroups_one": "Ще {{count}} групу не показано",
+			"hiddenGroups_few": "Ще {{count}} групи не показано",
+			"hiddenGroups_many": "Ще {{count}} груп не показано",
+			"hiddenGroups_other": "Ще не показано груп: {{count}}",
+			"moduleCount_one": "{{count}} модуль",
+			"moduleCount_few": "{{count}} модулі",
+			"moduleCount_many": "{{count}} модулів",
+			"moduleCount_other": "Модулів: {{count}}",
+			"moveError": "Не вдалося перемістити завдання",
+			"noFieldValue": "Немає значення"
+		},
+		"spreadsheet": {
+			"clearSort": "Скинути сортування",
+			"collapseSubTasks": "Приховати підзавдання",
+			"expandSubTasks": "Показати підзавдання",
+			"hideColumn": "Приховати колонку",
+			"loadError": "Не вдалося завантажити завдання",
+			"selectTask": "Вибрати {{key}}",
+			"sortAsc": "За зростанням",
+			"sortDesc": "За спаданням",
+			"task": "Завдання"
+		},
+		"queryEmpty": {
+			"clear": "Скинути фільтри",
+			"description": "Спробуйте прибрати один-два фільтри.",
+			"title": "Немає завдань, що відповідають фільтрам"
 		},
 		"capture": {
 			"ariaLabel": "Додати завдання до колонки «{{column}}»",
@@ -5252,50 +5528,35 @@
 			"changePriority": "Пріоритет: {{priority}}",
 			"changeStatus": "Статус: {{status}}"
 		},
-		"commands": {
-			"assignedSelf": "Завдання призначено вам",
-			"assignees": "Змінити виконавців…",
-			"assignSelf": "Призначити мені",
-			"copyTitle": "Скопіювати назву",
-			"cycle": "Змінити цикл…",
-			"dueDate": "Змінити дату завершення…",
-			"estimate": "Змінити оцінку…",
-			"group": "Це завдання",
-			"labels": "Змінити мітки…",
-			"module": "Змінити модулі…",
-			"priority": "Змінити пріоритет…",
-			"status": "Змінити статус…",
-			"titleCopied": "Назву завдання скопійовано",
-			"unassignedSelf": "Ви більше не виконавець",
-			"unassignSelf": "Зняти з мене"
+		"boardSearchOpen": "Пошук завдань",
+		"customFieldValue": {
+			"clear": "Очистити значення",
+			"edit": "Редагувати {{name}}",
+			"removedOption": "{{value}} (вилучений варіант)",
+			"saveError": "Не вдалося зберегти це поле.",
+			"placeholder": "Нове значення",
+			"true": "Істина",
+			"false": "Хибність"
 		},
-		"readableLink": {
-			"goHome": "На головну",
-			"notFound": "У цьому робочому просторі немає завдання з ключем {{key}}, або у вас немає до нього доступу."
+		"customFieldBulk": {
+			"action": "Власне поле",
+			"chooseField": "Виберіть поле",
+			"apply": "Застосувати",
+			"updated_one": "Оновлено {{count}} завдання",
+			"updated_few": "Оновлено {{count}} завдання",
+			"updated_many": "Оновлено {{count}} завдань",
+			"updated_other": "Оновлено завдань: {{count}}",
+			"error": "Не вдалося оновити вибрані завдання."
 		},
-		"descriptionHistory": {
-			"cancel": "Скасувати",
-			"description": "Збережені версії опису, спочатку нові. Правки однієї особи протягом 10 хвилин об'єднуються в одну версію; зберігаються останні 50.",
-			"earlierVersion": "Попередня версія",
-			"empty": "Збережених версій поки немає. Версії почнуть зберігатися з наступної правки.",
-			"emptyVersion": "У цій версії немає опису.",
-			"latest": "Остання",
-			"list": "Збережені версії",
-			"loadError": "Не вдалося завантажити історію",
-			"open": "Історія",
-			"previewTitle": "Версія від {{date}}",
-			"restore": "Відновити",
-			"restoreConfirmDescription": "Опис буде замінено цією версією. Поточний текст залишиться в історії.",
-			"restoreConfirmTitle": "Відновити цю версію?",
-			"restored": "Опис відновлено",
-			"restoreError": "Не вдалося відновити цю версію",
-			"retry": "Повторити",
-			"size_few": "{{count}} символи",
-			"size_many": "{{count}} символів",
-			"size_one": "{{count}} символ",
-			"size_other": "Символів: {{count}}",
-			"title": "Історія опису",
-			"viewOnly": "Лише перегляд"
+		"milestone": {
+			"label": "Віха",
+			"hint": "Позначає одну дату. На часовій шкалі показується ромбом у дату завершення.",
+			"updateError": "Не вдалося оновити віху"
+		},
+		"scheduleField": {
+			"label": "Поле, що показується на завданнях",
+			"none": "Без поля",
+			"value": "{{name}}: {{value}}"
 		}
 	},
 	"invitations": {
@@ -5344,6 +5605,7 @@
 			"status": "Статус",
 			"emptyTitle": "Проєктів ще немає",
 			"emptyDescription": "Почніть зі створення вашого першого проєкту.",
+			"emptyDescriptionReadOnly": "У цьому робочому просторі ще немає проєктів. Попросіть адміністратора створити проєкт.",
 			"projectStatus": {
 				"notStarted": "Не розпочато",
 				"complete": "Завершено",
@@ -5351,7 +5613,7 @@
 			},
 			"noDueDate": "Без дати завершення",
 			"reorderError": "Не вдалося змінити порядок проєктів",
-			"emptyDescriptionReadOnly": "У цьому робочому просторі ще немає проєктів. Попросіть адміністратора створити проєкт."
+			"emptyDescriptionGuest": "Вас ще не додали до жодного проєкту. Попросіть про це людину, яка вас запросила."
 		},
 		"search": {
 			"pageTitle": "Пошук",
@@ -5469,7 +5731,8 @@
 			"owner": "Власник",
 			"admin": "Адміністратор",
 			"member": "Учасник",
-			"viewer": "Спостерігач"
+			"viewer": "Спостерігач",
+			"guest": "Гість"
 		},
 		"members": {
 			"pageTitle": "Учасники",
@@ -5505,7 +5768,13 @@
 			"sentSome": "Надіслано запрошень: {{sent}} з {{total}}.",
 			"failedTitle": "Не надіслано",
 			"rateLimited": "Забагато запрошень одразу. Зачекайте хвилину й надішліть решту.",
-			"shareLinksDescription": "Поділіться кожним посиланням з його адресатом, щоб він міг приєднатися до робочого простору."
+			"shareLinksDescription": "Поділіться кожним посиланням з його адресатом, щоб він міг приєднатися до робочого простору.",
+			"guestRoleHint": "Гості бачать лише ті проєкти, до яких ви їх додасте, і більше нічого в робочому просторі.",
+			"guestProjectsLabel": "Проєкти",
+			"guestProjectsHint": "Щойно вони приймуть запрошення, то приєднаються до позначених проєктів із вибраною роллю в проєкті. З роллю «Спостерігач» вони можуть лише переглядати.",
+			"guestProjectsEmpty": "Немає проєктів, якими ви можете поділитися. Додайте їх до проєктів після того, як вони приєднаються.",
+			"guestProjectRoleFor": "Роль у проєкті {{project}}",
+			"guestProjectsFailed": "Запрошення надіслано, але не вдалося додати його проєкти: {{message}}"
 		},
 		"membersTable": {
 			"emptyTitle": "Учасників команди ще немає",
@@ -5515,6 +5784,7 @@
 				"role": "Роль",
 				"joined": "Приєднався"
 			},
+			"ariaInvitationActions": "Дії із запрошенням",
 			"ariaRemoveMember": "Видалити учасника",
 			"removeDialogTitle": "Видалити учасника?",
 			"removeDialogDescription": "{{name}} буде видалено з робочого простору, і доступ до його проєктів і завдань буде втрачено.",
@@ -5526,11 +5796,11 @@
 			"removeError": "Не вдалося видалити учасника команди",
 			"cancelInviteSuccess": "Запрошення успішно скасовано",
 			"cancelInviteError": "Не вдалося скасувати запрошення",
-			"ariaInvitationActions": "Дії із запрошенням",
 			"roleUpdateSuccess": "Роль оновлено",
 			"roleUpdateError": "Не вдалося оновити роль",
 			"ariaInvitationRole": "Роль для {{email}}",
-			"invitationRoleUpdateSuccess": "Роль запрошення оновлено"
+			"invitationRoleUpdateSuccess": "Роль запрошення оновлено",
+			"removeDialogAccessNote": "Якщо це їхній єдиний робочий простір, вони також вийдуть із системи, а їхні ключі API перестануть працювати."
 		},
 		"profile": {
 			"emptyActivity": "Активності поки немає",
@@ -8072,6 +8342,29 @@
 		}
 	},
 	"home": {
+		"pageTitle": "Головна",
+		"greeting": {
+			"afternoon": "Добрий день, {{name}}",
+			"dateTime": "{{date}} · {{time}}",
+			"evening": "Добрий вечір, {{name}}",
+			"morning": "Доброго ранку, {{name}}"
+		},
+		"manageWidgets": "Керування віджетами",
+		"widgets": {
+			"quickLinks": "Швидкі посилання",
+			"recents": "Нещодавні",
+			"stickies": "Стікери",
+			"risks": "Ризики",
+			"myBrief": "Мій підсумок",
+			"pinnedReports": "Закріплені звіти"
+		},
+		"manage": {
+			"description": "Виберіть, що показувати на головній, і перетягніть, щоб змінити порядок. Ці налаштування бачите лише ви.",
+			"reorder": "Змінити порядок: {{widget}}",
+			"saveError": "Не вдалося зберегти налаштування головної",
+			"title": "Керування віджетами",
+			"toggle": "Показувати: {{widget}}"
+		},
 		"empty": {
 			"description": "Усі віджети вимкнено. Увімкніть їх, щоб бачити тут свої посилання, нещодавні відвідування та стікери.",
 			"title": "Ваша головна порожня"
@@ -8101,21 +8394,6 @@
 			},
 			"title": "Початок роботи"
 		},
-		"greeting": {
-			"afternoon": "Добрий день, {{name}}",
-			"dateTime": "{{date}} · {{time}}",
-			"evening": "Добрий вечір, {{name}}",
-			"morning": "Доброго ранку, {{name}}"
-		},
-		"manage": {
-			"description": "Виберіть, що показувати на головній, і перетягніть, щоб змінити порядок. Ці налаштування бачите лише ви.",
-			"reorder": "Змінити порядок: {{widget}}",
-			"saveError": "Не вдалося зберегти налаштування головної",
-			"title": "Керування віджетами",
-			"toggle": "Показувати: {{widget}}"
-		},
-		"manageWidgets": "Керування віджетами",
-		"pageTitle": "Головна",
 		"quickLinks": {
 			"add": "Додати посилання",
 			"copy": "Копіювати посилання",
@@ -8172,26 +8450,34 @@
 			"visited": "Відкрито {{time}}"
 		},
 		"retry": "Повторити",
-		"widgets": {
-			"quickLinks": "Швидкі посилання",
-			"recents": "Нещодавні",
-			"stickies": "Стікери",
-			"risks": "Ризики",
-			"myBrief": "Мій підсумок"
-		},
 		"focus": {
-			"caughtUp": "Усе прочитано",
-			"inbox": "Вхідні",
 			"label": "Повернутися до справ",
+			"inbox": "Вхідні",
 			"myWork": "Ваша робота",
+			"stickies": "Стікери",
+			"caughtUp": "Усе прочитано",
+			"overdue_one": "{{count}} прострочене",
 			"overdue_few": "{{count}} прострочені",
 			"overdue_many": "{{count}} прострочених",
-			"overdue_one": "{{count}} прострочене",
 			"overdue_other": "Прострочених: {{count}}",
-			"stickies": "Стікери",
 			"stickiesHint": "Особисті нотатки, лише для вас",
+			"unreadCaption": "непрочитаних",
 			"openCaption": "відкритих",
-			"unreadCaption": "непрочитаних"
+			"loadError": "Не вдалося завантажити"
+		},
+		"dueToday": {
+			"title": "Термін сьогодні",
+			"empty": "На сьогодні у вас немає завдань із терміном.",
+			"loadError": "Не вдалося завантажити ваші завдання з терміном на сьогодні",
+			"viewAll": "Показати всі ({{total}})"
+		},
+		"pinnedReports": {
+			"empty": "Закріпіть збережений звіт у розділі «Аналітика», щоб бачити його тут.",
+			"openAnalytics": "Відкрити «Аналітику»",
+			"loadError": "Не вдалося завантажити закріплені звіти",
+			"chartError": "Не вдалося завантажити цей звіт",
+			"unpin": "Відкріпити {{name}} від головної",
+			"showing": "Показано {{shown}} із {{total}}. Решта — у розділі «Аналітика»."
 		}
 	},
 	"intake": {
@@ -8485,14 +8771,117 @@
 		"viewAll": "Показати всі"
 	},
 	"analytics": {
-		"a11y": {
-			"barSummary": "{{metric}} за параметром «{{dimension}}»: інтервалів — {{count}}, максимум — {{label}} ({{value}})",
-			"donutSummary": "Завдань: {{total}}, груп: {{count}}",
-			"lineSummary": "{{series}} за періодів: {{count}}"
+		"pageTitle": "Аналітика",
+		"projectPageTitle": "{{project}} · Аналітика",
+		"tabs": {
+			"overview": "Огляд",
+			"tasks": "Завдання",
+			"cycles": "Цикли",
+			"modules": "Модулі",
+			"intake": "Запити",
+			"delivery": "Постачання",
+			"time": "Час"
 		},
-		"breakdown": {
-			"groupRowsBy": "Групувати рядки за",
-			"title": "Деталізація"
+		"header": {
+			"allProjects": "Усі проєкти",
+			"clearSelection": "Скинути вибір",
+			"noProjectsFound": "Проєкти не знайдено",
+			"projectsCount_few": "{{count}} проєкти",
+			"projectsCount_many": "{{count}} проєктів",
+			"projectsCount_one": "{{count}} проєкт",
+			"projectsCount_other": "{{count}} проєктів",
+			"refresh": "Оновити",
+			"searchProjects": "Пошук проєктів",
+			"selectProjects": "Виберіть проєкти",
+			"updatedAt": "Оновлено {{time}}"
+		},
+		"openInAnalytics": "Відкрити в аналітиці",
+		"context": {
+			"cycle": "Цикл: {{name}}",
+			"module": "Модуль: {{name}}",
+			"remove": "Вилучити «{{name}}» з фільтрів"
+		},
+		"states": {
+			"loadError": "Не вдалося завантажити цей розділ",
+			"newProject": "Новий проєкт",
+			"noAccessDescription": "Попросіть адміністратора робочого простору надати право «Аналітика».",
+			"noAccessTitle": "У вас немає доступу до аналітики",
+			"noCycles": "Циклів поки немає",
+			"noModules": "Модулів поки немає",
+			"noPeriodData": "Немає даних за цей період",
+			"noProjectsDescription": "Аналітика узагальнює завдання ваших проєктів.",
+			"noProjectsTitle": "Створіть проєкт, щоб побачити аналітику",
+			"noRequests": "Запитів поки немає",
+			"noTasks": "Немає завдань, що відповідають цим фільтрам",
+			"retry": "Повторити",
+			"timeout": "Це тривало надто довго. Звузьте фільтри та повторіть спробу.",
+			"noRunningCycles": "Зараз немає активних циклів"
+		},
+		"view": {
+			"chart": "Діаграма",
+			"label": "Показати як",
+			"table": "Таблиця"
+		},
+		"kpi": {
+			"accepted": "Прийнято: {{count}}",
+			"completedTasks": "Завершені завдання",
+			"completion": "Виконання",
+			"completionDetail": "{{completed}} з {{committed}}",
+			"cyclesRunning": "Активні цикли",
+			"members": "Учасники",
+			"membersDetail": "Адміністраторів: {{admins}} · спостерігачів: {{viewers}}",
+			"modulesInProgress": "Модулі в роботі",
+			"modulesTotal": "Усього: {{count}}",
+			"openRequests": "Відкриті запити",
+			"openTasks": "Відкриті завдання",
+			"overdue": "Прострочено: {{count}}",
+			"percentComplete": "Завершено на {{percent}}%",
+			"projects": "Проєкти",
+			"total": "Усього",
+			"upcoming": "Попереду: {{count}}"
+		},
+		"overview": {
+			"projectProgress": "Прогрес проєктів",
+			"projectProgressSubtitle": "Спочатку проєкти з найбільшою кількістю відкритих завдань",
+			"open": "Відкрито: {{count}}",
+			"showAll": "Показати всі ({{count}})",
+			"showLess": "Показати менше",
+			"tasksByGroup": "Завдання за групами",
+			"donutCenter_one": "{{count}} завдання",
+			"donutCenter_few": "{{count}} завдання",
+			"donutCenter_many": "{{count}} завдань",
+			"donutCenter_other": "Завдань: {{count}}",
+			"workload": "Навантаження",
+			"workloadSubtitle": "Відкриті завдання за виконавцями",
+			"workloadSubtitlePoints": "Відкриті бали оцінки за виконавцями",
+			"overloaded_one": "{{names}}: відкритої роботи більше, ніж зазвичай вдається завершити за {{weeks}} тиж.",
+			"overloaded_few": "{{names}}: відкритої роботи більше, ніж зазвичай вдається завершити за {{weeks}} тиж.",
+			"overloaded_many": "{{names}}: відкритої роботи більше, ніж зазвичай вдається завершити за {{weeks}} тиж.",
+			"overloaded_other": "{{names}}: відкритої роботи більше, ніж зазвичай вдається завершити за {{weeks}} тиж.",
+			"overUsual": "Вище за звичайне",
+			"overTooltip": "{{name}}: вище за звичайне",
+			"usualHint": "Звичайний рівень — це те, що людина завершує за типові {{usualWeeks}} тиж., за даними останніх {{historyWeeks}} тиж. Тих, хто не має недавньої історії, не оцінюють.",
+			"checkColumn": "Порівняно зі звичайним",
+			"checkOverPoints": "Вище: балів — {{load}}, зазвичай — {{usual}}",
+			"checkOverTasks": "Вище: завдань — {{load}}, зазвичай — {{usual}}",
+			"checkOkPoints": "Балів — {{load}}, зазвичай — {{usual}}",
+			"checkOkTasks": "Завдань — {{load}}, зазвичай — {{usual}}",
+			"checkUnknown": "Немає недавньої історії"
+		},
+		"trend": {
+			"completed": "Завершено",
+			"created": "Створено",
+			"help": "«Створено» враховує завдання за днем створення. «Завершено» враховує завдання за днем завершення, доки вони залишаються завершеними. Архівні завдання не враховуються, якщо їх не включити.",
+			"period": "Період",
+			"summary": "Створено {{created}} · Завершено {{completed}} · Баланс {{net}}",
+			"title": "Створені та завершені"
+		},
+		"periods": {
+			"custom": "Власний період",
+			"last12m": "Останні 12 місяців",
+			"last30": "Останні 30 днів",
+			"last6m": "Останні 6 місяців",
+			"last90": "Останні 90 днів"
 		},
 		"bucket": {
 			"label": "Групувати дати за",
@@ -8503,6 +8892,14 @@
 		"buckets": {
 			"range": "{{from}} – {{to}}",
 			"weekOf": "Тиждень з {{date}}"
+		},
+		"metric": {
+			"label": "Показник",
+			"tasks": "Завдання",
+			"points": "Бали оцінки",
+			"pointsShort": "Бали",
+			"sum": "Сума",
+			"sumOf": "Сума: {{name}}"
 		},
 		"builder": {
 			"countSubTasks": "Враховувати підзавдання",
@@ -8521,10 +8918,138 @@
 			"truncatedX": "Показано перші {{shown}} із {{total}}: {{dimension}}",
 			"xAxis": "Вісь X"
 		},
-		"context": {
-			"cycle": "Цикл: {{name}}",
-			"module": "Модуль: {{name}}",
-			"remove": "Вилучити «{{name}}» з фільтрів"
+		"reports": {
+			"open": "Звіти",
+			"listTitle": "Збережені звіти",
+			"loadError": "Не вдалося завантажити збережені звіти",
+			"empty": "Збережених звітів ще немає. Збережіть цю діаграму, щоб повернутися до неї.",
+			"sharedBy": "Поширено користувачем {{name}}",
+			"actionsFor": "Дії для {{name}}",
+			"rename": "Перейменувати",
+			"share": "Поділитися з робочим простором",
+			"makePrivate": "Зробити особистим",
+			"delete": "Видалити",
+			"save": "Зберегти",
+			"saveAsNew": "Зберегти як новий",
+			"update": "Оновити звіт",
+			"showing": "Звіт: {{name}}",
+			"unsaved": "Незбережені зміни",
+			"close": "Закрити звіт",
+			"deleteTitle": "Видалити цей звіт?",
+			"deleteDescription": "«{{name}}» буде видалено. Цю дію неможливо скасувати.",
+			"deleteSharedDescription": "«{{name}}» буде видалено для всіх у робочому просторі. Цю дію неможливо скасувати.",
+			"visibility": {
+				"private": "Особистий",
+				"privateHint": "Бачите лише ви.",
+				"workspace": "Доступний робочому простору",
+				"workspaceHint": "Його може відкрити будь-хто з доступом до аналітики в цьому робочому просторі."
+			},
+			"dialog": {
+				"cancel": "Скасувати",
+				"createTitle": "Зберегти звіт",
+				"editTitle": "Редагувати звіт",
+				"name": "Назва",
+				"namePlaceholder": "напр., Відкриті помилки за виконавцем",
+				"nameRequired": "Введіть назву",
+				"save": "Зберегти",
+				"summary": "Зберігає налаштування діаграми, охоплені проєкти та фільтри.",
+				"update": "Зберегти зміни",
+				"visibility": "Хто може бачити"
+			},
+			"notes": {
+				"allProjects": "Жоден із його проєктів недоступний, тому показано всі проєкти.",
+				"builderReset": "Деякі налаштування діаграми недоступні для цих проєктів, тому їх скинуто.",
+				"dropped_few": "{{count}} проєкти з цього звіту більше не існують.",
+				"dropped_many": "{{count}} проєктів із цього звіту більше не існують.",
+				"dropped_one": "{{count}} проєкт із цього звіту більше не існує.",
+				"dropped_other": "Проєктів із цього звіту, яких більше не існує: {{count}}.",
+				"leftOut_few": "{{count}} проєкти з цього звіту заархівовано, тому їх не враховано.",
+				"leftOut_many": "{{count}} проєктів із цього звіту заархівовано, тому їх не враховано.",
+				"leftOut_one": "{{count}} проєкт із цього звіту заархівовано, тому його не враховано.",
+				"leftOut_other": "Заархівованих проєктів із цього звіту, які не враховано: {{count}}.",
+				"otherProjects": "Цей звіт збережено для інших проєктів; тут він показує лише цей проєкт."
+			},
+			"toast": {
+				"saved": "«{{name}}» збережено",
+				"updated": "Звіт оновлено",
+				"shared": "Звіт тепер доступний робочому простору",
+				"madePrivate": "Звіт тепер особистий",
+				"deleted": "Звіт видалено",
+				"saveError": "Не вдалося зберегти звіт",
+				"deleteError": "Не вдалося видалити звіт",
+				"pinned": "Закріплено на головній",
+				"unpinned": "Відкріплено від головної",
+				"pinError": "Не вдалося оновити головну",
+				"pinLimit_one": "Можна закріпити щонайбільше {{count}} звіт. Спочатку відкріпіть один.",
+				"pinLimit_few": "Можна закріпити щонайбільше {{count}} звіти. Спочатку відкріпіть один.",
+				"pinLimit_many": "Можна закріпити щонайбільше {{count}} звітів. Спочатку відкріпіть один.",
+				"pinLimit_other": "Можна закріпити щонайбільше {{count}} звіту. Спочатку відкріпіть один."
+			},
+			"pin": "Закріпити на головній",
+			"unpin": "Відкріпити від головної"
+		},
+		"dimensions": {
+			"status": "Статус",
+			"group": "Група",
+			"priority": "Пріоритет",
+			"assignee": "Виконавець",
+			"createdBy": "Автор",
+			"label": "Мітка",
+			"cycle": "Цикл",
+			"module": "Модуль",
+			"estimate": "Оцінка",
+			"project": "Проєкт",
+			"createdAt": "Дата створення",
+			"completedAt": "Дата виконання",
+			"startDate": "Дата початку",
+			"dueDate": "Дата завершення",
+			"customField": "Власне поле"
+		},
+		"dimensionsPlural": {
+			"status": "статуси",
+			"assignee": "виконавці",
+			"createdBy": "автори",
+			"label": "мітки",
+			"cycle": "цикли",
+			"module": "модулі",
+			"estimate": "оцінки",
+			"project": "проєкти",
+			"period": "періоди",
+			"customField": "значення"
+		},
+		"none": {
+			"assignee": "Не призначено",
+			"createdBy": "Невідомий автор",
+			"label": "Без мітки",
+			"cycle": "Без циклу",
+			"module": "Без модуля",
+			"estimate": "Без оцінки",
+			"completedAt": "Не завершено",
+			"startDate": "Без дати початку",
+			"dueDate": "Без терміну",
+			"customField": "Немає значення"
+		},
+		"other": "Інше",
+		"table": {
+			"periodEnd": "Кінець періоду",
+			"periodStart": "Початок періоду",
+			"progress": "Прогрес",
+			"showAll": "Показати всі ({{count}})",
+			"sortBy": "Сортувати за: {{column}}",
+			"tasks": "Завдання",
+			"total": "Усього"
+		},
+		"breakdown": {
+			"groupRowsBy": "Групувати рядки за",
+			"title": "Деталізація"
+		},
+		"export": {
+			"button": "Експорт у CSV",
+			"error": "Не вдалося експортувати таблицю",
+			"success_few": "Експортовано {{count}} рядки",
+			"success_many": "Експортовано {{count}} рядків",
+			"success_one": "Експортовано {{count}} рядок",
+			"success_other": "Експортовано рядків: {{count}}"
 		},
 		"cycles": {
 			"averageCompleted": "Середнє завершених (останні 3)",
@@ -8557,53 +9082,15 @@
 				"running": "Активні зараз"
 			}
 		},
-		"dimensions": {
-			"assignee": "Виконавець",
-			"completedAt": "Дата виконання",
-			"createdAt": "Дата створення",
-			"createdBy": "Автор",
-			"cycle": "Цикл",
-			"dueDate": "Дата завершення",
-			"estimate": "Оцінка",
-			"group": "Група",
-			"label": "Мітка",
-			"module": "Модуль",
-			"priority": "Пріоритет",
-			"project": "Проєкт",
-			"startDate": "Дата початку",
-			"status": "Статус"
-		},
-		"dimensionsPlural": {
-			"assignee": "виконавці",
-			"createdBy": "автори",
-			"cycle": "цикли",
-			"estimate": "оцінки",
-			"label": "мітки",
-			"module": "модулі",
-			"period": "періоди",
-			"project": "проєкти",
-			"status": "статуси"
-		},
-		"export": {
-			"button": "Експорт у CSV",
-			"error": "Не вдалося експортувати таблицю",
-			"success_few": "Експортовано {{count}} рядки",
-			"success_many": "Експортовано {{count}} рядків",
-			"success_one": "Експортовано {{count}} рядок",
-			"success_other": "Експортовано рядків: {{count}}"
-		},
-		"header": {
-			"allProjects": "Усі проєкти",
-			"clearSelection": "Скинути вибір",
-			"noProjectsFound": "Проєкти не знайдено",
-			"projectsCount_few": "{{count}} проєкти",
-			"projectsCount_many": "{{count}} проєктів",
-			"projectsCount_one": "{{count}} проєкт",
-			"projectsCount_other": "{{count}} проєктів",
-			"refresh": "Оновити",
-			"searchProjects": "Пошук проєктів",
-			"selectProjects": "Виберіть проєкти",
-			"updatedAt": "Оновлено {{time}}"
+		"modules": {
+			"overdue": "Прострочено",
+			"table": {
+				"lead": "Відповідальний",
+				"module": "Модуль",
+				"noLead": "Без відповідального",
+				"targetDate": "Цільова дата",
+				"title": "Модулі"
+			}
 		},
 		"intake": {
 			"accepted": "Прийняті",
@@ -8621,182 +9108,24 @@
 			"submitted": "Надіслано",
 			"triaged": "Опрацьовано"
 		},
-		"kpi": {
-			"accepted": "Прийнято: {{count}}",
-			"completedTasks": "Завершені завдання",
-			"completion": "Виконання",
-			"completionDetail": "{{completed}} з {{committed}}",
-			"cyclesRunning": "Активні цикли",
-			"members": "Учасники",
-			"membersDetail": "Адміністраторів: {{admins}} · спостерігачів: {{viewers}}",
-			"modulesInProgress": "Модулі в роботі",
-			"modulesTotal": "Усього: {{count}}",
-			"openRequests": "Відкриті запити",
-			"openTasks": "Відкриті завдання",
-			"overdue": "Прострочено: {{count}}",
-			"percentComplete": "Завершено на {{percent}}%",
-			"projects": "Проєкти",
-			"total": "Усього",
-			"upcoming": "Попереду: {{count}}"
+		"a11y": {
+			"barSummary": "{{metric}} за параметром «{{dimension}}»: інтервалів — {{count}}, максимум — {{label}} ({{value}})",
+			"donutSummary": "Завдань: {{total}}, груп: {{count}}",
+			"lineSummary": "{{series}} за періодів: {{count}}"
 		},
-		"metric": {
-			"label": "Показник",
-			"points": "Бали оцінки",
-			"pointsShort": "Бали",
-			"tasks": "Завдання"
-		},
-		"modules": {
-			"overdue": "Прострочено",
-			"table": {
-				"lead": "Відповідальний",
-				"module": "Модуль",
-				"noLead": "Без відповідального",
-				"targetDate": "Цільова дата",
-				"title": "Модулі"
-			}
-		},
-		"none": {
-			"assignee": "Не призначено",
-			"completedAt": "Не завершено",
-			"createdBy": "Невідомий автор",
-			"cycle": "Без циклу",
-			"dueDate": "Без терміну",
-			"estimate": "Без оцінки",
-			"label": "Без мітки",
-			"module": "Без модуля",
-			"startDate": "Без дати початку"
-		},
-		"openInAnalytics": "Відкрити в аналітиці",
-		"other": "Інше",
-		"overview": {
-			"donutCenter_few": "{{count}} завдання",
-			"donutCenter_many": "{{count}} завдань",
-			"donutCenter_one": "{{count}} завдання",
-			"donutCenter_other": "Завдань: {{count}}",
-			"open": "Відкрито: {{count}}",
-			"projectProgress": "Прогрес проєктів",
-			"projectProgressSubtitle": "Спочатку проєкти з найбільшою кількістю відкритих завдань",
-			"showAll": "Показати всі ({{count}})",
-			"showLess": "Показати менше",
-			"tasksByGroup": "Завдання за групами",
-			"workload": "Навантаження",
-			"workloadSubtitle": "Відкриті завдання за виконавцями"
-		},
-		"pageTitle": "Аналітика",
-		"periods": {
-			"custom": "Власний період",
-			"last12m": "Останні 12 місяців",
-			"last30": "Останні 30 днів",
-			"last6m": "Останні 6 місяців",
-			"last90": "Останні 90 днів"
-		},
-		"projectPageTitle": "{{project}} · Аналітика",
-		"states": {
-			"loadError": "Не вдалося завантажити цей розділ",
-			"newProject": "Новий проєкт",
-			"noAccessDescription": "Попросіть адміністратора робочого простору надати право «Аналітика».",
-			"noAccessTitle": "У вас немає доступу до аналітики",
-			"noCycles": "Циклів поки немає",
-			"noModules": "Модулів поки немає",
-			"noPeriodData": "Немає даних за цей період",
-			"noProjectsDescription": "Аналітика узагальнює завдання ваших проєктів.",
-			"noProjectsTitle": "Створіть проєкт, щоб побачити аналітику",
-			"noRequests": "Запитів поки немає",
-			"noTasks": "Немає завдань, що відповідають цим фільтрам",
-			"retry": "Повторити",
-			"timeout": "Це тривало надто довго. Звузьте фільтри та повторіть спробу.",
-			"noRunningCycles": "Зараз немає активних циклів"
-		},
-		"table": {
-			"periodEnd": "Кінець періоду",
-			"periodStart": "Початок періоду",
-			"progress": "Прогрес",
-			"showAll": "Показати всі ({{count}})",
-			"sortBy": "Сортувати за: {{column}}",
-			"tasks": "Завдання",
-			"total": "Усього"
-		},
-		"tabs": {
-			"cycles": "Цикли",
-			"intake": "Запити",
-			"modules": "Модулі",
-			"overview": "Огляд",
-			"tasks": "Завдання",
-			"delivery": "Постачання"
-		},
-		"trend": {
-			"completed": "Завершено",
-			"created": "Створено",
-			"help": "«Створено» враховує завдання за днем створення. «Завершено» враховує завдання за днем завершення, доки вони залишаються завершеними. Архівні завдання не враховуються, якщо їх не включити.",
-			"period": "Період",
-			"summary": "Створено {{created}} · Завершено {{completed}} · Баланс {{net}}",
-			"title": "Створені та завершені"
-		},
-		"view": {
-			"chart": "Діаграма",
-			"label": "Показати як",
-			"table": "Таблиця"
-		},
-		"reports": {
-			"actionsFor": "Дії для {{name}}",
-			"close": "Закрити звіт",
-			"delete": "Видалити",
-			"deleteDescription": "«{{name}}» буде видалено. Цю дію неможливо скасувати.",
-			"deleteSharedDescription": "«{{name}}» буде видалено для всіх у робочому просторі. Цю дію неможливо скасувати.",
-			"deleteTitle": "Видалити цей звіт?",
-			"dialog": {
-				"cancel": "Скасувати",
-				"createTitle": "Зберегти звіт",
-				"editTitle": "Редагувати звіт",
-				"name": "Назва",
-				"namePlaceholder": "напр., Відкриті помилки за виконавцем",
-				"nameRequired": "Введіть назву",
-				"save": "Зберегти",
-				"summary": "Зберігає налаштування діаграми, охоплені проєкти та фільтри.",
-				"update": "Зберегти зміни",
-				"visibility": "Хто може бачити"
-			},
-			"empty": "Збережених звітів ще немає. Збережіть цю діаграму, щоб повернутися до неї.",
-			"listTitle": "Збережені звіти",
-			"loadError": "Не вдалося завантажити збережені звіти",
-			"makePrivate": "Зробити особистим",
-			"notes": {
-				"allProjects": "Жоден із його проєктів недоступний, тому показано всі проєкти.",
-				"builderReset": "Деякі налаштування діаграми недоступні для цих проєктів, тому їх скинуто.",
-				"dropped_few": "{{count}} проєкти з цього звіту більше не існують.",
-				"dropped_many": "{{count}} проєктів із цього звіту більше не існують.",
-				"dropped_one": "{{count}} проєкт із цього звіту більше не існує.",
-				"dropped_other": "Проєктів із цього звіту, яких більше не існує: {{count}}.",
-				"leftOut_few": "{{count}} проєкти з цього звіту заархівовано, тому їх не враховано.",
-				"leftOut_many": "{{count}} проєктів із цього звіту заархівовано, тому їх не враховано.",
-				"leftOut_one": "{{count}} проєкт із цього звіту заархівовано, тому його не враховано.",
-				"leftOut_other": "Заархівованих проєктів із цього звіту, які не враховано: {{count}}.",
-				"otherProjects": "Цей звіт збережено для інших проєктів; тут він показує лише цей проєкт."
-			},
-			"open": "Звіти",
-			"rename": "Перейменувати",
-			"save": "Зберегти",
-			"saveAsNew": "Зберегти як новий",
-			"share": "Поділитися з робочим простором",
-			"sharedBy": "Поширено користувачем {{name}}",
-			"showing": "Звіт: {{name}}",
-			"toast": {
-				"deleted": "Звіт видалено",
-				"deleteError": "Не вдалося видалити звіт",
-				"madePrivate": "Звіт тепер особистий",
-				"saved": "«{{name}}» збережено",
-				"saveError": "Не вдалося зберегти звіт",
-				"shared": "Звіт тепер доступний робочому простору",
-				"updated": "Звіт оновлено"
-			},
-			"unsaved": "Незбережені зміни",
-			"update": "Оновити звіт",
-			"visibility": {
-				"private": "Особистий",
-				"privateHint": "Бачите лише ви.",
-				"workspace": "Доступний робочому простору",
-				"workspaceHint": "Його може відкрити будь-хто з доступом до аналітики в цьому робочому просторі."
-			}
+		"time": {
+			"total": "Записаний час",
+			"entries": "Записи",
+			"people": "Люди",
+			"running": "Запущено зараз",
+			"runningNote": "Запущені таймери ввійдуть до цих підсумків після зупинки.",
+			"byPerson": "За людьми",
+			"byProject": "За проєктами",
+			"person": "Людина",
+			"project": "Проєкт",
+			"hours": "Години",
+			"formerMember": "Колишній учасник",
+			"empty": "За цей період час не записано"
 		}
 	},
 	"pages": {
@@ -8877,6 +9206,59 @@
 			"file": "прикріплений файл",
 			"page": "інша сторінка"
 		},
+		"section": {
+			"title": "Сторінки"
+		},
+		"list": {
+			"documentTitle": "{{project}} · Сторінки",
+			"newPage": "Нова сторінка",
+			"tabs": {
+				"archived": "В архіві",
+				"private": "Особисті",
+				"public": "Публічні"
+			},
+			"searchPlaceholder": "Пошук сторінок",
+			"clearFilters": "Скинути фільтри",
+			"sort": {
+				"created": "За датою створення",
+				"lastEdited": "За датою зміни",
+				"name": "За назвою"
+			},
+			"untitled": "Без назви",
+			"inParent": "у {{path}}",
+			"ownedBy": "Власник: {{name}}",
+			"access": {
+				"private": "Особиста",
+				"public": "Публічна"
+			},
+			"editedAgo": "Змінено {{time}}",
+			"archivedOn": "Архівовано {{date}}",
+			"locked": "Заблоковано",
+			"loadError": "Не вдалося завантажити сторінки",
+			"retry": "Повторити",
+			"empty": {
+				"archived": {
+					"description": "Тут з'являтимуться архівні сторінки. Їх можна відновити або видалити.",
+					"title": "Немає архівних сторінок"
+				},
+				"noMatch": {
+					"description": "Змініть запит або скиньте фільтри.",
+					"title": "Відповідних сторінок немає"
+				},
+				"none": {
+					"description": "Сторінки зберігають специфікації, нотатки та документи поруч із завданнями проєкту.",
+					"title": "Напишіть свою першу сторінку"
+				},
+				"private": {
+					"description": "Особисті сторінки видимі лише вам.",
+					"title": "Немає особистих сторінок"
+				},
+				"public": {
+					"title": "Немає публічних сторінок"
+				}
+			},
+			"recentlyDeleted": "Нещодавно видалені"
+		},
 		"actions": {
 			"archive": "Архівувати",
 			"copyLink": "Копіювати посилання",
@@ -8892,6 +9274,123 @@
 			"restore": "Відновити",
 			"unlock": "Розблокувати"
 		},
+		"toasts": {
+			"accessError": "Не вдалося змінити доступ до сторінки",
+			"archived": "Сторінку архівовано",
+			"archiveError": "Не вдалося архівувати сторінку",
+			"contentConflict": "Цю сторінку змінили в іншому місці, тому вашу останню правку не збережено. Показано актуальну версію.",
+			"contentSaveError": "Не вдалося зберегти сторінку",
+			"createError": "Не вдалося створити сторінку",
+			"deleted": "Сторінку видалено",
+			"deleteError": "Не вдалося видалити сторінку",
+			"duplicated": "Сторінку продубльовано",
+			"duplicateError": "Не вдалося продублювати сторінку",
+			"fullWidthError": "Не вдалося змінити ширину сторінки",
+			"linkCopied": "Посилання скопійовано",
+			"locked": "Сторінку заблоковано",
+			"lockError": "Не вдалося змінити блокування",
+			"logoError": "Не вдалося оновити значок",
+			"madePrivate": "Сторінка тепер особиста",
+			"madePublic": "Сторінка тепер публічна",
+			"moved": "Переміщено до проєкту «{{project}}»",
+			"moveError": "Не вдалося перемістити сторінку",
+			"open": "Відкрити",
+			"restored": "Сторінку відновлено",
+			"restoreError": "Не вдалося відновити сторінку",
+			"titleError": "Не вдалося зберегти назву",
+			"unlocked": "Сторінку розблоковано"
+		},
+		"deleteDialog": {
+			"cancel": "Скасувати",
+			"confirm": "Видалити",
+			"description": "Сторінку «{{title}}» буде переміщено до розділу «Нещодавно видалені» в налаштуваннях проєкту, звідки її можна відновити, доки її не буде видалено остаточно. Її підсторінки переміщуться на верхній рівень.",
+			"title": "Видалити сторінку?"
+		},
+		"moveDialog": {
+			"cancel": "Скасувати",
+			"confirm": "Перемістити",
+			"description": "Сторінку та її підсторінки буде переміщено до вибраного проєкту.",
+			"empty": "В інших проєктах не ввімкнено сторінки",
+			"searchPlaceholder": "Пошук проєктів",
+			"title": "Перемістити сторінку"
+		},
+		"tree": {
+			"collapse": "Згорнути «{{title}}»",
+			"dnd": {
+				"cancelled": "Переміщення скасовано.",
+				"dropped": "Сторінку «{{title}}» переміщено.",
+				"invalid": "Сторінку «{{title}}» не можна перемістити сюди.",
+				"over": "«{{title}}» над «{{target}}».",
+				"pickedUp": "Сторінку «{{title}}» захоплено. Переміщуйте її стрілками, відпустіть клавішею Space або скасуйте клавішею Escape."
+			},
+			"empty": "Сторінок поки немає",
+			"expand": "Розгорнути «{{title}}»",
+			"newPage": "Нова сторінка",
+			"title": "Сторінки"
+		},
+		"crumb": {
+			"noMatches": "Відповідних сторінок немає",
+			"searchPlaceholder": "Пошук сторінок"
+		},
+		"header": {
+			"copied": "Скопійовано",
+			"copyLink": "Копіювати посилання",
+			"locked": "Заблоковано",
+			"lockPage": "Заблокувати сторінку",
+			"moreActions": "Дії зі сторінкою",
+			"presence": "Зараз на сторінці: {{names}}",
+			"presenceMore": "+{{count}}",
+			"togglePanel": "Показати або приховати бічну панель",
+			"unlockHint": "Натисніть, щоб розблокувати",
+			"ancestors": "Батьківські сторінки"
+		},
+		"menu": {
+			"copyMarkdown": "Копіювати як Markdown",
+			"downloadMarkdown": "Завантажити як Markdown",
+			"fullWidth": "На всю ширину",
+			"markdownCopied": "Markdown скопійовано",
+			"versionHistory": "Історія версій",
+			"print": "Друк / Зберегти як PDF"
+		},
+		"editor": {
+			"addIcon": "Додати значок",
+			"ariaLabel": "Вміст сторінки",
+			"pageLink": {
+				"unavailable": "Особиста або видалена сторінка"
+			},
+			"pageLinkPicker": {
+				"empty": "Сторінки не знайдено",
+				"search": "Пошук сторінок"
+			},
+			"placeholder": "Почніть писати або натисніть / для команд",
+			"slash": {
+				"commands": {
+					"divider": "Роздільник",
+					"heading-1": "Заголовок 1",
+					"heading-2": "Заголовок 2",
+					"heading-3": "Заголовок 3",
+					"page-link": "Посилання на сторінку"
+				}
+			},
+			"titleAria": "Назва сторінки",
+			"titlePlaceholder": "Без назви"
+		},
+		"logo": {
+			"categories": {
+				"activities": "Активності",
+				"food": "Їжа",
+				"nature": "Природа",
+				"objects": "Предмети",
+				"people": "Люди",
+				"smileys": "Смайлики",
+				"symbols": "Символи",
+				"travel": "Подорожі"
+			},
+			"emoji": "Емодзі",
+			"icon": "Значок",
+			"remove": "Вилучити",
+			"search": "Пошук емодзі"
+		},
 		"banners": {
 			"archived": "Сторінка в архіві. Відновіть її, щоб редагувати.",
 			"locked": "Сторінку заблоковано. Розблокуйте її, щоб вносити зміни.",
@@ -8902,6 +9401,15 @@
 			"storedCopy": "Показано останню збережену версію. Спільне редагування відновиться після відновлення з'єднання.",
 			"tooLarge": "Сторінка надто велика для подальшої синхронізації. Скопіюйте свої останні зміни та перезавантажте сторінку.",
 			"unlock": "Розблокувати"
+		},
+		"sync": {
+			"cantConnect": "Не вдається підключитися",
+			"notSaved": "Ще не збережено",
+			"notSavedHint": "Ми продовжимо спроби. Не закривайте цю вкладку.",
+			"offline": "Немає мережі",
+			"offlineHint": "Можна продовжувати редагування. Зміни синхронізуються після відновлення з'єднання.",
+			"retry": "Повторити",
+			"saved": "Збережено"
 		},
 		"collab": {
 			"deleted": "Цю сторінку було видалено",
@@ -8914,6 +9422,64 @@
 			"restoredBy": "{{name}} відновив(ла) попередню версію",
 			"roomFull": "Зараз цю сторінку відкрило надто багато людей. Повторіть спробу трохи згодом.",
 			"signedOut": "Сеанс завершено. Увійдіть знову, щоб продовжити редагування."
+		},
+		"state": {
+			"notFound": {
+				"back": "До сторінок",
+				"description": "Можливо, її видалено або вона особиста.",
+				"title": "Сторінку не знайдено"
+			}
+		},
+		"panel": {
+			"outline": "Структура",
+			"info": "Відомості",
+			"history": "Історія",
+			"close": "Закрити панель",
+			"comments": "Коментарі"
+		},
+		"outline": {
+			"empty": {
+				"description": "Додайте заголовки, щоб побачити тут структуру.",
+				"title": "Заголовків поки немає"
+			}
+		},
+		"info": {
+			"characters": "Символи",
+			"createdBy": "Автор",
+			"lastEditedBy": "Востаннє змінив(ла)",
+			"lessThanMinute": "<1 хв",
+			"linkedFrom": "Посилаються",
+			"lockedBy": "Заблокував(ла)",
+			"noBacklinks": "Поки немає сторінок із посиланнями сюди",
+			"paragraphs": "Абзаци",
+			"readingMinutes": "{{count}} хв",
+			"readingTime": "Час читання",
+			"words": "Слова"
+		},
+		"history": {
+			"backToCurrent": "Повернутися до поточної",
+			"current": "Поточна версія",
+			"empty": "Збережених версій поки немає. Версії зберігаються в міру редагування.",
+			"loadError": "Не вдалося завантажити цю версію",
+			"others_few": "+{{count}} інші",
+			"others_many": "+{{count}} інших",
+			"others_one": "+{{count}} інший",
+			"others_other": "+{{count}} інших",
+			"previewTitle": "Версія від {{date}}",
+			"restore": "Відновити",
+			"restoreCancel": "Скасувати",
+			"restoreConfirmDescription": "Спершу поточний вміст зберігається в історії, тож цю дію можна скасувати.",
+			"restoreConfirmTitle": "Відновити цю версію?",
+			"restored": "Версію відновлено",
+			"restoreError": "Не вдалося відновити цю версію",
+			"restoring": "Відновлення…",
+			"retry": "Повторити",
+			"title": "Історія версій",
+			"unknownUser": "Колишній учасник",
+			"viewOnly": "Лише перегляд"
+		},
+		"notification": {
+			"openPage": "Відкрити сторінку"
 		},
 		"toolbar": {
 			"ariaLabel": "Панель форматування",
@@ -8952,240 +9518,36 @@
 		"commandPalette": {
 			"createPage": "Створити сторінку"
 		},
-		"crumb": {
-			"noMatches": "Відповідних сторінок немає",
-			"searchPlaceholder": "Пошук сторінок"
-		},
-		"deleteDialog": {
+		"comments": {
+			"placeholder": "Додайте коментар…",
+			"add": "Коментувати",
+			"save": "Зберегти",
 			"cancel": "Скасувати",
-			"confirm": "Видалити",
-			"description": "Сторінку «{{title}}» буде видалено назавжди разом з історією версій. Її підсторінки переміщуться на верхній рівень. Цю дію неможливо скасувати.",
-			"title": "Видалити сторінку?"
-		},
-		"editor": {
-			"addIcon": "Додати значок",
-			"ariaLabel": "Вміст сторінки",
-			"pageLink": {
-				"unavailable": "Особиста або видалена сторінка"
-			},
-			"pageLinkPicker": {
-				"empty": "Сторінки не знайдено",
-				"search": "Пошук сторінок"
-			},
-			"placeholder": "Почніть писати або натисніть / для команд",
-			"slash": {
-				"commands": {
-					"divider": "Роздільник",
-					"heading-1": "Заголовок 1",
-					"heading-2": "Заголовок 2",
-					"heading-3": "Заголовок 3",
-					"page-link": "Посилання на сторінку"
-				}
-			},
-			"titleAria": "Назва сторінки",
-			"titlePlaceholder": "Без назви"
-		},
-		"header": {
-			"copied": "Скопійовано",
-			"copyLink": "Копіювати посилання",
-			"locked": "Заблоковано",
-			"lockPage": "Заблокувати сторінку",
-			"moreActions": "Дії зі сторінкою",
-			"presence": "Зараз на сторінці: {{names}}",
-			"presenceMore": "+{{count}}",
-			"togglePanel": "Показати або приховати бічну панель",
-			"unlockHint": "Натисніть, щоб розблокувати",
-			"ancestors": "Батьківські сторінки"
-		},
-		"history": {
-			"backToCurrent": "Повернутися до поточної",
-			"current": "Поточна версія",
-			"empty": "Збережених версій поки немає. Версії зберігаються в міру редагування.",
-			"loadError": "Не вдалося завантажити цю версію",
-			"others_few": "+{{count}} інші",
-			"others_many": "+{{count}} інших",
-			"others_one": "+{{count}} інший",
-			"others_other": "+{{count}} інших",
-			"previewTitle": "Версія від {{date}}",
-			"restore": "Відновити",
-			"restoreCancel": "Скасувати",
-			"restoreConfirmDescription": "Спершу поточний вміст зберігається в історії, тож цю дію можна скасувати.",
-			"restoreConfirmTitle": "Відновити цю версію?",
-			"restored": "Версію відновлено",
-			"restoreError": "Не вдалося відновити цю версію",
-			"restoring": "Відновлення…",
+			"emptyTitle": "Коментарів ще немає",
+			"emptyDescription": "Коментарі тут залишаються всередині робочого простору. За публічними посиланнями їх не видно.",
+			"archivedNote": "Цю сторінку заархівовано. Відновіть її, щоб залишити коментар.",
+			"loadError": "Не вдалося завантажити коментарі",
 			"retry": "Повторити",
-			"title": "Історія версій",
-			"unknownUser": "Колишній учасник",
-			"viewOnly": "Лише перегляд"
-		},
-		"info": {
-			"characters": "Символи",
-			"createdBy": "Автор",
-			"lastEditedBy": "Востаннє змінив(ла)",
-			"lessThanMinute": "<1 хв",
-			"linkedFrom": "Посилаються",
-			"lockedBy": "Заблокував(ла)",
-			"noBacklinks": "Поки немає сторінок із посиланнями сюди",
-			"paragraphs": "Абзаци",
-			"readingMinutes": "{{count}} хв",
-			"readingTime": "Час читання",
-			"words": "Слова"
-		},
-		"list": {
-			"access": {
-				"private": "Особиста",
-				"public": "Публічна"
-			},
-			"archivedOn": "Архівовано {{date}}",
-			"clearFilters": "Скинути фільтри",
-			"documentTitle": "{{project}} · Сторінки",
-			"editedAgo": "Змінено {{time}}",
-			"empty": {
-				"archived": {
-					"description": "Тут з'являтимуться архівні сторінки. Їх можна відновити або видалити.",
-					"title": "Немає архівних сторінок"
-				},
-				"noMatch": {
-					"description": "Змініть запит або скиньте фільтри.",
-					"title": "Відповідних сторінок немає"
-				},
-				"none": {
-					"description": "Сторінки зберігають специфікації, нотатки та документи поруч із завданнями проєкту.",
-					"title": "Напишіть свою першу сторінку"
-				},
-				"private": {
-					"description": "Особисті сторінки видимі лише вам.",
-					"title": "Немає особистих сторінок"
-				},
-				"public": {
-					"title": "Немає публічних сторінок"
-				}
-			},
-			"inParent": "у {{path}}",
-			"loadError": "Не вдалося завантажити сторінки",
-			"locked": "Заблоковано",
-			"newPage": "Нова сторінка",
-			"ownedBy": "Власник: {{name}}",
-			"retry": "Повторити",
-			"searchPlaceholder": "Пошук сторінок",
-			"sort": {
-				"created": "За датою створення",
-				"lastEdited": "За датою зміни",
-				"name": "За назвою"
-			},
-			"tabs": {
-				"archived": "В архіві",
-				"private": "Особисті",
-				"public": "Публічні"
-			},
-			"untitled": "Без назви"
-		},
-		"logo": {
-			"categories": {
-				"activities": "Активності",
-				"food": "Їжа",
-				"nature": "Природа",
-				"objects": "Предмети",
-				"people": "Люди",
-				"smileys": "Смайлики",
-				"symbols": "Символи",
-				"travel": "Подорожі"
-			},
-			"emoji": "Емодзі",
-			"icon": "Значок",
-			"remove": "Вилучити",
-			"search": "Пошук емодзі"
-		},
-		"menu": {
-			"copyMarkdown": "Копіювати як Markdown",
-			"downloadMarkdown": "Завантажити як Markdown",
-			"fullWidth": "На всю ширину",
-			"markdownCopied": "Markdown скопійовано",
-			"versionHistory": "Історія версій",
-			"print": "Друк / Зберегти як PDF"
-		},
-		"moveDialog": {
-			"cancel": "Скасувати",
-			"confirm": "Перемістити",
-			"description": "Сторінку та її підсторінки буде переміщено до вибраного проєкту.",
-			"empty": "В інших проєктах не ввімкнено сторінки",
-			"searchPlaceholder": "Пошук проєктів",
-			"title": "Перемістити сторінку"
-		},
-		"notification": {
-			"openPage": "Відкрити сторінку"
-		},
-		"outline": {
-			"empty": {
-				"description": "Додайте заголовки, щоб побачити тут структуру.",
-				"title": "Заголовків поки немає"
+			"deletedUser": "Видалений користувач",
+			"edited": "змінено",
+			"menuAria": "Інші дії з цим коментарем",
+			"edit": "Редагувати",
+			"delete": "Видалити",
+			"deleteTitle": "Видалити цей коментар?",
+			"deleteDescription": "Його буде видалено для всіх. Цю дію неможливо скасувати.",
+			"toasts": {
+				"empty": "Спочатку щось напишіть",
+				"addError": "Не вдалося додати коментар",
+				"saveError": "Не вдалося зберегти коментар",
+				"deleteError": "Не вдалося видалити коментар"
 			}
 		},
-		"panel": {
-			"close": "Закрити панель",
-			"history": "Історія",
-			"info": "Відомості",
-			"outline": "Структура"
-		},
-		"section": {
-			"title": "Сторінки"
-		},
-		"state": {
-			"notFound": {
-				"back": "До сторінок",
-				"description": "Можливо, її видалено або вона особиста.",
-				"title": "Сторінку не знайдено"
-			}
-		},
-		"sync": {
-			"cantConnect": "Не вдається підключитися",
-			"notSaved": "Ще не збережено",
-			"notSavedHint": "Ми продовжимо спроби. Не закривайте цю вкладку.",
-			"offline": "Немає мережі",
-			"offlineHint": "Можна продовжувати редагування. Зміни синхронізуються після відновлення з'єднання.",
-			"retry": "Повторити",
-			"saved": "Збережено"
-		},
-		"toasts": {
-			"accessError": "Не вдалося змінити доступ до сторінки",
-			"archived": "Сторінку архівовано",
-			"archiveError": "Не вдалося архівувати сторінку",
-			"contentConflict": "Цю сторінку змінили в іншому місці, тому вашу останню правку не збережено. Показано актуальну версію.",
-			"contentSaveError": "Не вдалося зберегти сторінку",
-			"createError": "Не вдалося створити сторінку",
-			"deleted": "Сторінку видалено",
-			"deleteError": "Не вдалося видалити сторінку",
-			"duplicated": "Сторінку продубльовано",
-			"duplicateError": "Не вдалося продублювати сторінку",
-			"fullWidthError": "Не вдалося змінити ширину сторінки",
-			"linkCopied": "Посилання скопійовано",
-			"locked": "Сторінку заблоковано",
-			"lockError": "Не вдалося змінити блокування",
-			"logoError": "Не вдалося оновити значок",
-			"madePrivate": "Сторінка тепер особиста",
-			"madePublic": "Сторінка тепер публічна",
-			"moved": "Переміщено до проєкту «{{project}}»",
-			"moveError": "Не вдалося перемістити сторінку",
-			"open": "Відкрити",
-			"restored": "Сторінку відновлено",
-			"restoreError": "Не вдалося відновити сторінку",
-			"titleError": "Не вдалося зберегти назву",
-			"unlocked": "Сторінку розблоковано"
-		},
-		"tree": {
-			"collapse": "Згорнути «{{title}}»",
-			"dnd": {
-				"cancelled": "Переміщення скасовано.",
-				"dropped": "Сторінку «{{title}}» переміщено.",
-				"invalid": "Сторінку «{{title}}» не можна перемістити сюди.",
-				"over": "«{{title}}» над «{{target}}».",
-				"pickedUp": "Сторінку «{{title}}» захоплено. Переміщуйте її стрілками, відпустіть клавішею Space або скасуйте клавішею Escape."
-			},
-			"empty": "Сторінок поки немає",
-			"expand": "Розгорнути «{{title}}»",
-			"newPage": "Нова сторінка",
-			"title": "Сторінки"
+		"watch": {
+			"watch": "Стежити за сторінкою",
+			"unwatch": "Припинити стеження",
+			"watchHint": "Отримувати сповіщення про коментарі та зміни",
+			"watchingHint": "Ви отримуєте сповіщення про коментарі та зміни",
+			"error": "Не вдалося змінити стеження за цією сторінкою"
 		}
 	},
 	"accountSecurity": {
@@ -9244,7 +9606,9 @@
 				"sessionLifetime": "Тривалість сеансу",
 				"sessionLifetimeHint": "Скільки триває невикористаний сеанс. Використання подовжує його.",
 				"hours": "год",
-				"signInNotice": "Увійдіть через {{provider}}. Вхід за паролем доступний лише адміністраторам екземпляра."
+				"signInNotice": "Увійдіть через {{provider}}. Вхід за паролем доступний лише адміністраторам екземпляра.",
+				"requireTwoFactor": "Вимагати двофакторну автентифікацію",
+				"requireTwoFactorHint": "Кожен обліковий запис із паролем має налаштувати двофакторну автентифікацію, перш ніж зможе робити щось інше, навіть якщо він також входить через провайдера або SAML, а доти його ключі API не працюють. Вхід за посиланнями й кодами з листів вимикається, тож ті, хто входив лише так, не зможуть увійти, доки не матимуть пароля: вони задають його через «Забули пароль?», а якщо пошту не налаштовано, ви задаєте його для них у розділі «Користувачі». Облікові записи без пароля дотримуються правил свого провайдера. Спочатку ввімкніть її для власного облікового запису."
 			},
 			"twoFactor": {
 				"title": "Двофакторна автентифікація",
@@ -9271,7 +9635,11 @@
 				"done": "Готово",
 				"enabled": "Двофакторну автентифікацію увімкнено.",
 				"disabled": "Двофакторну автентифікацію вимкнено.",
-				"error": "Щось пішло не так. Спробуйте ще раз."
+				"error": "Щось пішло не так. Спробуйте ще раз.",
+				"requiredHint": "Цей сервер вимагає двофакторну автентифікацію, тому її не можна вимкнути. Якщо ви втратите пристрій і коди відновлення, її може скинути адміністратор екземпляра.",
+				"setupRequiredTitle": "Налаштуйте двофакторну автентифікацію, щоб продовжити",
+				"setupRequiredHint": "Цей сервер вимагає двофакторну автентифікацію для кожного облікового запису з паролем. Вам знадобиться застосунок-автентифікатор.",
+				"signOutInstead": "Натомість вийти"
 			},
 			"challenge": {
 				"title": "Двофакторна автентифікація",
@@ -9343,7 +9711,11 @@
 				"noPassword": "Не задано (входить інакше)",
 				"workspacesTitle": "Робочі простори",
 				"noWorkspaces": "Не є учасником жодного робочого простору.",
-				"joined": "З {{date}}"
+				"joined": "З {{date}}",
+				"resetTwoFactor": "Скинути двофакторну автентифікацію",
+				"resetTwoFactorTitle": "Скинути двофакторну автентифікацію для {{name}}?",
+				"resetTwoFactorDescription": "Використовуйте це, коли людина втратила пристрій і коди відновлення, а ви переконалися, що це справді вона. Її двофакторну автентифікацію буде вилучено, а всі її сеанси завершено. Потім вона зможе увійти лише за паролем і налаштувати її знову.",
+				"twoFactorReset": "Двофакторну автентифікацію для {{name}} скинуто"
 			}
 		},
 		"password": {
@@ -9407,33 +9779,99 @@
 				"cliAdminPromoted": "Призначив(-ла) адміністратора екземпляра (CLI відновлення)",
 				"cliAdminDemoted": "Видалив(-ла) адміністратора екземпляра (CLI відновлення)",
 				"cliPasswordReset": "Скинув(-ла) пароль (CLI відновлення)",
-				"cliUserUnbanned": "Зняв(-ла) блокування (CLI відновлення)"
+				"cliUserUnbanned": "Зняв(-ла) блокування (CLI відновлення)",
+				"userTwoFactorReset": "Скинув(-ла) двофакторну автентифікацію облікового запису",
+				"cliTwoFactorReset": "Скинув(-ла) двофакторну автентифікацію облікового запису (CLI відновлення)",
+				"scimConnectionCreated": "Підключив(-ла) провайдера ідентифікації для SCIM",
+				"scimTokenRotated": "Замінив(-ла) токен SCIM",
+				"scimConnectionDeleted": "Видалив(-ла) підключення SCIM",
+				"scimUserProvisioned": "Додав(-ла) обліковий запис через SCIM",
+				"scimUserDeactivated": "Деактивував(-ла) обліковий запис через SCIM",
+				"scimUserReactivated": "Повторно активував(-ла) обліковий запис через SCIM",
+				"scimUserRemoved": "Вилучив(-ла) людину з робочого простору через SCIM",
+				"samlConnectionCreated": "Підключив(-ла) провайдера ідентифікації для входу",
+				"samlConnectionUpdated": "Змінив(-ла) підключення SAML",
+				"samlConnectionDeleted": "Видалив(-ла) підключення SAML"
 			}
 		}
 	},
 	"instanceAdmin": {
-		"admins": {
-			"add": "Додати адміністратора",
-			"addConfirm": "Додати адміністратора",
-			"addDescription": "Адміністратори інстансу можуть змінювати будь-які налаштування в цьому розділі та відкривати будь-який робочий простір.",
-			"added": "{{name}} тепер адміністратор інстансу",
-			"addTitle": "Додавання адміністратора інстансу",
-			"columns": {
-				"email": "Електронна пошта",
-				"name": "Ім'я"
-			},
+		"pageTitle": "Інстанс · {{page}}",
+		"nav": {
+			"admins": "Адміністратори",
+			"authentication": "Автентифікація",
 			"email": "Електронна пошта",
-			"emailInvalid": "Введіть дійсну адресу електронної пошти",
-			"emailPlaceholder": "name@example.com",
-			"lastAdmin": "Має залишитися принаймні один адміністратор інстансу",
-			"remove": "Вилучити адміністратора…",
-			"removeConfirm": "Вилучити",
-			"removed": "{{name}} більше не адміністратор інстансу",
-			"removeDescription": "Обліковий запис і робочі простори користувача збережуться.",
-			"removeTitle": "Вилучити {{name}} з адміністраторів інстансу?",
-			"subtitle": "Адміністратори інстансу можуть змінювати будь-які налаштування в цьому розділі та відкривати будь-який робочий простір.",
-			"title": "Адміністратори",
-			"you": "Ви"
+			"general": "Загальні",
+			"publicBoards": "Публічні дошки",
+			"workspaces": "Робочі простори",
+			"ai": "ШІ"
+		},
+		"lockedCallout": "Ці налаштування керуються змінними середовища на цьому сервері. Зміни тут вимкнено.",
+		"source": {
+			"default": "За замовчуванням",
+			"environment": "Середовище: {{variable}}",
+			"lockTooltip": "Видаліть {{variable}} і перезапустіть сервер, щоб керувати цим тут.",
+			"saved": "Збережено тут",
+			"savedBy": "Зберіг(ла) {{name}}, {{date}}"
+		},
+		"saved": "Налаштування збережено",
+		"saveError": "Не вдалося зберегти налаштування",
+		"loadError": "Не вдалося завантажити налаштування інстансу",
+		"retry": "Повторити",
+		"save": "Зберегти",
+		"secret": {
+			"cancel": "Скасувати",
+			"clear": "Очистити",
+			"cleared": "Секрет очищено",
+			"placeholder": "Введіть нове значення",
+			"replace": "Замінити",
+			"saved": "Збережено",
+			"unreadable": "Збережений секрет неможливо прочитати (змінився AUTH_SECRET сервера). Введіть його знову."
+		},
+		"general": {
+			"title": "Загальні",
+			"subtitle": "Задайте назву інстансу та перевірте його стан.",
+			"instanceName": "Назва інстансу",
+			"instanceNameHint": "Відображається на екрані входу та на публічних дошках",
+			"instanceNameRequired": "Введіть назву",
+			"instanceNameTooLong": "Використовуйте не більше 80 символів",
+			"homePage": "Головна сторінка",
+			"publicLanding": "Показувати сторінку про продукт",
+			"publicLandingHint": "Відвідувачі без входу бачать сторінку про продукт за кореневою адресою. Якщо її вимкнено, вони одразу потрапляють на сторінку входу.",
+			"overview": "Огляд",
+			"version": "Версія",
+			"counts": {
+				"accounts": "Облікові записи",
+				"guests": "Гості",
+				"projects": "Проєкти",
+				"publishedBoards": "Публічні дошки",
+				"workspaces": "Робочі простори"
+			},
+			"server": {
+				"captcha": "Капча",
+				"cloudMode": "Хмарний режим",
+				"configured": "Налаштовано",
+				"demoMode": "Демо-режим",
+				"email": "Електронна пошта",
+				"errorReporting": "Звіти про помилки",
+				"fileStorage": "Сховище файлів",
+				"notConfigured": "Не налаштовано",
+				"off": "Вимкнено",
+				"on": "Увімкнено",
+				"realtime": "Реальний час",
+				"realtimeMemory": "У пам'яті",
+				"realtimeRedis": "Redis ({{mode}})",
+				"title": "Сервер"
+			},
+			"deliveryFailures": {
+				"title": "Нещодавні збої доставки",
+				"description": "Вебхуки робочих просторів, які вичерпали повторні спроби за останні 7 днів. Помилки пошти та фонових завдань є лише в журналах сервера.",
+				"empty": "За останні 7 днів збоїв доставки не було.",
+				"when": "Коли",
+				"workspace": "Робочий простір",
+				"webhook": "Вебхук",
+				"response": "Відповідь"
+			}
 		},
 		"auth": {
 			"anyoneCanSignUp": "Реєстрація відкрита для всіх",
@@ -9473,6 +9911,31 @@
 			"title": "Автентифікація",
 			"toggle": "Увімкнути або вимкнути: {{method}}"
 		},
+		"oauth": {
+			"authorizationUrl": "URL авторизації",
+			"autoSignIn": "Входити автоматично",
+			"autoSignInHint": "Пропускати екран входу й одразу переходити до цього провайдера",
+			"buttonLabel": "Підпис кнопки",
+			"buttonLabelHint": "Відображається на кнопці входу, наприклад «Продовжити через Okta»",
+			"callbackHint": "Додайте цей URL до вашого застосунку OAuth",
+			"callbackUrl": "URL зворотного виклику",
+			"clientId": "ID клієнта",
+			"clientSecret": "Секрет клієнта",
+			"copied": "Скопійовано",
+			"copy": "Копіювати",
+			"discoveryHint": "Або заповніть три кінцеві точки нижче",
+			"discoveryUrl": "URL виявлення",
+			"invalidUrl": "Введіть абсолютний URL з http або https",
+			"logoutUrl": "URL виходу",
+			"managedByEnv": "Цього провайдера налаштовано через змінні середовища ({{variables}}).",
+			"pkce": "Використовувати PKCE",
+			"scopes": "Області доступу (scopes)",
+			"scopesHint": "Через кому",
+			"sheetDescription": "Підключіть застосунок OAuth, щоб люди могли входити через {{provider}}.",
+			"sheetTitle": "Вхід через {{provider}}",
+			"tokenUrl": "URL токена",
+			"userInfoUrl": "URL відомостей про користувача"
+		},
 		"email": {
 			"from": "Відправник",
 			"fromHint": "Адреса або ім'я та адреса: Margaya <no-reply@example.com>",
@@ -9503,134 +9966,6 @@
 			"subtitle": "SMTP-сервер, через який Margaya надсилає коди входу, запрошення та сповіщення.",
 			"title": "Електронна пошта",
 			"username": "Ім'я користувача"
-		},
-		"general": {
-			"counts": {
-				"accounts": "Облікові записи",
-				"guests": "Гості",
-				"projects": "Проєкти",
-				"publishedBoards": "Публічні дошки",
-				"workspaces": "Робочі простори"
-			},
-			"instanceName": "Назва інстансу",
-			"instanceNameHint": "Відображається на екрані входу та на публічних дошках",
-			"instanceNameRequired": "Введіть назву",
-			"instanceNameTooLong": "Використовуйте не більше 80 символів",
-			"homePage": "Головна сторінка",
-			"publicLanding": "Показувати сторінку про продукт",
-			"publicLandingHint": "Відвідувачі без входу бачать сторінку про продукт за кореневою адресою. Якщо її вимкнено, вони одразу потрапляють на сторінку входу.",
-			"overview": "Огляд",
-			"server": {
-				"captcha": "Капча",
-				"cloudMode": "Хмарний режим",
-				"configured": "Налаштовано",
-				"demoMode": "Демо-режим",
-				"email": "Електронна пошта",
-				"errorReporting": "Звіти про помилки",
-				"fileStorage": "Сховище файлів",
-				"notConfigured": "Не налаштовано",
-				"off": "Вимкнено",
-				"on": "Увімкнено",
-				"realtime": "Реальний час",
-				"realtimeMemory": "У пам'яті",
-				"realtimeRedis": "Redis ({{mode}})",
-				"title": "Сервер"
-			},
-			"subtitle": "Задайте назву інстансу та перевірте його стан.",
-			"title": "Загальні",
-			"version": "Версія"
-		},
-		"loadError": "Не вдалося завантажити налаштування інстансу",
-		"lockedCallout": "Ці налаштування керуються змінними середовища на цьому сервері. Зміни тут вимкнено.",
-		"nav": {
-			"admins": "Адміністратори",
-			"authentication": "Автентифікація",
-			"email": "Електронна пошта",
-			"general": "Загальні",
-			"publicBoards": "Публічні дошки",
-			"workspaces": "Робочі простори",
-			"ai": "ШІ"
-		},
-		"oauth": {
-			"authorizationUrl": "URL авторизації",
-			"autoSignIn": "Входити автоматично",
-			"autoSignInHint": "Пропускати екран входу й одразу переходити до цього провайдера",
-			"buttonLabel": "Підпис кнопки",
-			"buttonLabelHint": "Відображається на кнопці входу, наприклад «Продовжити через Okta»",
-			"callbackHint": "Додайте цей URL до вашого застосунку OAuth",
-			"callbackUrl": "URL зворотного виклику",
-			"clientId": "ID клієнта",
-			"clientSecret": "Секрет клієнта",
-			"copied": "Скопійовано",
-			"copy": "Копіювати",
-			"discoveryHint": "Або заповніть три кінцеві точки нижче",
-			"discoveryUrl": "URL виявлення",
-			"invalidUrl": "Введіть абсолютний URL з http або https",
-			"logoutUrl": "URL виходу",
-			"managedByEnv": "Цього провайдера налаштовано через змінні середовища ({{variables}}).",
-			"pkce": "Використовувати PKCE",
-			"scopes": "Області доступу (scopes)",
-			"scopesHint": "Через кому",
-			"sheetDescription": "Підключіть застосунок OAuth, щоб люди могли входити через {{provider}}.",
-			"sheetTitle": "Вхід через {{provider}}",
-			"tokenUrl": "URL токена",
-			"userInfoUrl": "URL відомостей про користувача"
-		},
-		"pageTitle": "Інстанс · {{page}}",
-		"publicBoards": {
-			"actions": "Дії з дошкою",
-			"allow": "Дозволити публічні дошки",
-			"allowHint": "Якщо вимкнено, будь-яке публічне посилання відповідає «не знайдено». Нічого не видаляється.",
-			"columns": {
-				"features": "Можливості",
-				"project": "Проєкт",
-				"published": "Опубліковано",
-				"workspace": "Робочий простір"
-			},
-			"empty": "На цьому сервері немає публічних дошок.",
-			"feature": {
-				"comments": "Коментарі",
-				"guests": "Гості",
-				"reactions": "Реакції",
-				"requests": "Запити",
-				"votes": "Голоси"
-			},
-			"listTitle": "Опубліковані дошки",
-			"loadMore": "Завантажити ще",
-			"noMatches": "Немає публічних дошок за запитом «{{query}}»",
-			"openBoard": "Відкрити дошку",
-			"participation": "Дозволити публічну участь",
-			"participationHint": "Якщо вимкнено, публічні дошки доступні лише для читання: без коментарів, реакцій, голосів і запитів.",
-			"projectSettings": "Налаштування проєкту",
-			"search": "Пошук дошок",
-			"subtitle": "Керування публічними дошками на всьому інстансі.",
-			"title": "Публічні дошки",
-			"unpublish": "Зняти з публікації…",
-			"unpublishConfirm": "Зняти з публікації",
-			"unpublishDescription": "Посилання не працюватиме, доки хтось не опублікує дошку знову. Налаштування, коментарі, реакції та голоси зберігаються.",
-			"unpublished": "Дошку знято з публікації",
-			"unpublishError": "Не вдалося зняти дошку з публікації",
-			"unpublishTitle": "Зняти з публікації «{{project}}»?"
-		},
-		"retry": "Повторити",
-		"save": "Зберегти",
-		"saved": "Налаштування збережено",
-		"saveError": "Не вдалося зберегти налаштування",
-		"secret": {
-			"cancel": "Скасувати",
-			"clear": "Очистити",
-			"cleared": "Секрет очищено",
-			"placeholder": "Введіть нове значення",
-			"replace": "Замінити",
-			"saved": "Збережено",
-			"unreadable": "Збережений секрет неможливо прочитати (змінився AUTH_SECRET сервера). Введіть його знову."
-		},
-		"source": {
-			"default": "За замовчуванням",
-			"environment": "Середовище: {{variable}}",
-			"lockTooltip": "Видаліть {{variable}} і перезапустіть сервер, щоб керувати цим тут.",
-			"saved": "Збережено тут",
-			"savedBy": "Зберіг(ла) {{name}}, {{date}}"
 		},
 		"testEmail": {
 			"codes": {
@@ -9673,6 +10008,132 @@
 			"search": "Пошук робочих просторів",
 			"subtitle": "Усі робочі простори цього інстансу.",
 			"title": "Робочі простори"
+		},
+		"publicBoards": {
+			"actions": "Дії з дошкою",
+			"allow": "Дозволити публічні дошки",
+			"allowHint": "Якщо вимкнено, будь-яке публічне посилання відповідає «не знайдено». Нічого не видаляється.",
+			"columns": {
+				"features": "Можливості",
+				"project": "Проєкт",
+				"published": "Опубліковано",
+				"workspace": "Робочий простір"
+			},
+			"empty": "На цьому сервері немає публічних дошок.",
+			"feature": {
+				"comments": "Коментарі",
+				"guests": "Гості",
+				"reactions": "Реакції",
+				"requests": "Запити",
+				"votes": "Голоси"
+			},
+			"listTitle": "Опубліковані дошки",
+			"loadMore": "Завантажити ще",
+			"noMatches": "Немає публічних дошок за запитом «{{query}}»",
+			"openBoard": "Відкрити дошку",
+			"participation": "Дозволити публічну участь",
+			"participationHint": "Якщо вимкнено, публічні дошки доступні лише для читання: без коментарів, реакцій, голосів і запитів.",
+			"projectSettings": "Налаштування проєкту",
+			"search": "Пошук дошок",
+			"subtitle": "Керування публічними дошками на всьому інстансі.",
+			"title": "Публічні дошки",
+			"unpublish": "Зняти з публікації…",
+			"unpublishConfirm": "Зняти з публікації",
+			"unpublishDescription": "Посилання не працюватиме, доки хтось не опублікує дошку знову. Налаштування, коментарі, реакції та голоси зберігаються.",
+			"unpublished": "Дошку знято з публікації",
+			"unpublishError": "Не вдалося зняти дошку з публікації",
+			"unpublishTitle": "Зняти з публікації «{{project}}»?"
+		},
+		"admins": {
+			"add": "Додати адміністратора",
+			"addConfirm": "Додати адміністратора",
+			"addDescription": "Адміністратори інстансу можуть змінювати будь-які налаштування в цьому розділі та відкривати будь-який робочий простір.",
+			"added": "{{name}} тепер адміністратор інстансу",
+			"addTitle": "Додавання адміністратора інстансу",
+			"columns": {
+				"email": "Електронна пошта",
+				"name": "Ім'я"
+			},
+			"email": "Електронна пошта",
+			"emailInvalid": "Введіть дійсну адресу електронної пошти",
+			"emailPlaceholder": "name@example.com",
+			"lastAdmin": "Має залишитися принаймні один адміністратор інстансу",
+			"remove": "Вилучити адміністратора…",
+			"removeConfirm": "Вилучити",
+			"removed": "{{name}} більше не адміністратор інстансу",
+			"removeDescription": "Обліковий запис і робочі простори користувача збережуться.",
+			"removeTitle": "Вилучити {{name}} з адміністраторів інстансу?",
+			"subtitle": "Адміністратори інстансу можуть змінювати будь-які налаштування в цьому розділі та відкривати будь-який робочий простір.",
+			"title": "Адміністратори",
+			"you": "Ви"
+		},
+		"identity": {
+			"name": "Назва",
+			"nameHint": "Як адміністратори називають це підключення, наприклад за назвою провайдера.",
+			"remove": "Вилучити",
+			"removeTitle": "Вилучити {{name}}?",
+			"done": "Готово",
+			"scim": {
+				"title": "Автоматичне керування обліковими записами (SCIM)",
+				"description": "Дозвольте провайдеру ідентифікації додавати, змінювати й вилучати людей в одному робочому просторі.",
+				"none": "Для SCIM не підключено жодного провайдера ідентифікації.",
+				"connect": "Підключити провайдера",
+				"connectDescription": "Створює токен для одного робочого простору. Ви побачите його один раз, після підключення.",
+				"connectConfirm": "Створити токен",
+				"workspace": "Робочий простір",
+				"workspaceHint": "Люди, яких додає цей провайдер, приєднуються до цього робочого простору як учасники.",
+				"workspacePlaceholder": "Виберіть робочий простір",
+				"workspaceSearch": "Пошук робочих просторів",
+				"baseUrl": "Базовий URL SCIM",
+				"token": "Bearer-токен",
+				"tokenTitle": "Скопіюйте токен для {{name}}",
+				"tokenDescription": "Ви бачите його лише зараз. Передайте його тільки провайдеру ідентифікації: будь-хто, хто його має, може додавати людей до робочого простору, а також змінювати чи деактивувати людей, якими керує це підключення.",
+				"rotate": "Замінити токен",
+				"rotateTitle": "Замінити токен для {{name}}?",
+				"rotateDescription": "Поточний токен одразу перестане працювати, тому синхронізація через SCIM зупиниться, доки провайдер ідентифікації не отримає новий. Люди залишаться пов'язаними.",
+				"rotateConfirm": "Замінити токен",
+				"removeDescription": "Токен одразу перестане працювати. Додані ним люди збережуть облікові записи й членство, але провайдер більше не оновлюватиме їх.",
+				"removed": "Вилучено: {{name}}",
+				"columns": {
+					"name": "Назва",
+					"workspace": "Робочий простір",
+					"people": "Люди"
+				}
+			},
+			"saml": {
+				"title": "Корпоративний вхід (SAML)",
+				"description": "Дозвольте людям із ваших поштових доменів входити через провайдера ідентифікації.",
+				"none": "Для входу не підключено жодного провайдера ідентифікації.",
+				"connect": "Підключити провайдера",
+				"connectConfirm": "Підключити",
+				"edit": "Редагувати",
+				"editTitle": "Редагувати {{name}}",
+				"formDescription": "Той, хто контролює цього провайдера ідентифікації, може виконати вхід за будь-яку людину з цих доменів, чию адресу тут підтверджено, тому підключайте лише того провайдера, якому довіряєте щодо цих людей.",
+				"acsUrl": "URL служби Assertion Consumer Service (ACS)",
+				"entityId": "Ідентифікатор сутності (аудиторія)",
+				"addressesHint": "Введіть ці два значення у свого провайдера ідентифікації. Пізніше вони не змінюються.",
+				"domains": "Поштові домени",
+				"domainsHint": "Розділяйте кілька доменів комами. Піддомени включено.",
+				"domainsInvalid": "Введіть домени на зразок example.com через кому.",
+				"issuer": "Ідентифікатор сутності провайдера ідентифікації (видавець)",
+				"entryPoint": "URL єдиного входу",
+				"entryPointInvalid": "Використовуйте адресу https://.",
+				"certificate": "Сертифікат підпису",
+				"certificateHint": "Відкритий сертифікат X.509 провайдера ідентифікації у форматі PEM або base64. У жодному разі не закритий ключ.",
+				"certificateKeepHint": "Залиште порожнім, щоб зберегти поточний сертифікат.",
+				"currentCertificate": "Поточний відбиток: {{fingerprint}}",
+				"certificateExpired": "Термін минув",
+				"certificateExpiring": "Термін скоро мине",
+				"connected": "Провайдера ідентифікації підключено",
+				"saved": "Підключення збережено",
+				"removeDescription": "Вхід через цього провайдера ідентифікації одразу припиниться. Облікові записи залишаться, а люди входитимуть в інший спосіб.",
+				"removed": "Вилучено: {{name}}",
+				"columns": {
+					"name": "Назва",
+					"domains": "Поштові домени",
+					"certificate": "Сертифікат спливає"
+				}
+			}
 		}
 	},
 	"press": {
@@ -10228,6 +10689,32 @@
 				"facts": "Проєкти: {{projects}} · Люди: {{members}} · Цикли: {{cycles}}",
 				"memory": "Нотатки пам’яті: {{count}}",
 				"history": "Попередні повідомлення: {{count}}"
+			},
+			"undo": {
+				"button": "Скасувати план",
+				"pending": "Скасовуємо план…",
+				"hint": "Цей план можна скасувати протягом години, якщо в ньому нічого не змінилося.",
+				"lastPlan": "Ви ще можете скасувати свій останній план.",
+				"done": "План скасовано. Видалені елементи в кошику.",
+				"archived_one": "{{count}} елемент натомість заархівовано, бо ви не можете його видалити.",
+				"archived_few": "{{count}} елементи натомість заархівовано, бо ви не можете їх видалити.",
+				"archived_many": "{{count}} елементів натомість заархівовано, бо ви не можете їх видалити.",
+				"archived_other": "Натомість заархівовано елементів: {{count}}, бо ви не можете їх видалити.",
+				"partial_one": "Скасовано, крім {{count}} елемента:",
+				"partial_few": "Скасовано, крім {{count}} елементів:",
+				"partial_many": "Скасовано, крім {{count}} елементів:",
+				"partial_other": "Скасовано, крім {{count}} елемента:",
+				"edited_one": "Нічого не скасовано: {{count}} елемент змінився після створення плану. Вилучіть його вручну, якщо він вам більше не потрібен.",
+				"edited_few": "Нічого не скасовано: {{count}} елементи змінилися після створення плану. Вилучіть їх вручну, якщо вони вам більше не потрібні.",
+				"edited_many": "Нічого не скасовано: {{count}} елементів змінилося після створення плану. Вилучіть їх вручну, якщо вони вам більше не потрібні.",
+				"edited_other": "Нічого не скасовано: елементів, змінених після створення плану: {{count}}. Вилучіть їх вручну, якщо вони вам більше не потрібні.",
+				"more_one": "і ще {{count}}",
+				"more_few": "і ще {{count}}",
+				"more_many": "і ще {{count}}",
+				"more_other": "і ще {{count}}",
+				"already": "Цей план уже скасовано.",
+				"expired": "Цей план більше не можна скасувати: година минула.",
+				"failed": "Не вдалося скасувати цей план."
 			}
 		},
 		"duplicates": {
@@ -11828,7 +12315,8 @@
 			"text": "Це тестовий лист від {{instanceName}}. Якщо ви його читаєте, надсилання пошти працює."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "Новий коментар до {{taskTitle}}"
+			"commentWithoutPreview": "Новий коментар до {{taskTitle}}",
+			"pushFixedLine": "Відкрийте Margaya, щоб переглянути деталі."
 		}
 	}
 }

@@ -221,10 +221,29 @@
 			"errors": {
 				"account_not_linked": "Bu kimliyi mövcud hesabla əlaqələndirmək mümkün olmadı. Hesabı təsdiqləmək üçün e-poçtla daxil olun, sonra SSO ilə yenidən cəhd edin. E-poçtla giriş mümkün deyilsə, inzibatçınızla əlaqə saxlayın.",
 				"oauth_code_verification_failed": "OAuth doğrulaması alınmadı. Yenidən cəhd edin.",
-				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Qeydiyyat hazırda söndürülüb. Hesab yaratmaq üçün etibarlı dəvətiniz olmalıdır."
+				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Qeydiyyat hazırda söndürülüb. Hesab yaratmaq üçün etibarlı dəvətiniz olmalıdır.",
+				"unsolicited_response": "Şirkət girişini bu səhifədən başladın. Kimlik provayderinizdə başladılan girişlər qəbul edilmir.",
+				"invalid_saml_response": "Kimlik provayderinizin cavabı qəbul edilə bilmədi. Yenidən cəhd edin və ya inzibatçınızdan bağlantını yoxlamasını xahiş edin.",
+				"replay_detected": "Bu giriş cavabı artıq istifadə olunub. Yenidən daxil olun.",
+				"unable_to_create_user": "Hesabınız yaradıla bilmədi. Giriş üçün inzibatçınıza müraciət edin.",
+				"invalid_request": "Bu giriş sorğusu etibarlı deyildi. Yenidən cəhd edin.",
+				"invalid_state": "Bu giriş keçidinin müddəti bitib. Yenidən cəhd edin.",
+				"saml_deprecated_algorithm": "Kimlik provayderiniz artıq qəbul edilməyən alqoritmlə imzalayır. İnzibatçınızdan onu SHA-256-ya keçirməsini xahiş edin.",
+				"this_identity_provider_cannot_sign_in_that_email_address_": "Bu kimlik provayderi ilə həmin e-poçt ünvanından istifadə edərək daxil olmaq mümkün deyil.",
+				"new_accounts_on_this_server_must_use_an_approved_email_domain_": "Bu serverdəki yeni hesablar təsdiqlənmiş e-poçt domenindən istifadə etməlidir.",
+				"banned_user": "Bu hesab bloklanıb. Giriş üçün inzibatçınıza müraciət edin.",
+				"unable_to_link_account": "Bu kimliyi hesabınızla əlaqələndirmək mümkün olmadı. Kömək üçün inzibatçınıza müraciət edin.",
+				"saml_other_browser": "Şirkət girişi başladığı brauzerdə tamamlanmalıdır. Bu səhifədən yenidən başlayın və cookie-lərə icazə verildiyinə əmin olun."
 			},
 			"instanceStatusError": "Serverə çatmaq mümkün olmadı. Bir az sonra yenidən cəhd edin.",
-			"titleWithInstance": "{{name}} hesabına daxil olun"
+			"titleWithInstance": "{{name}} hesabına daxil olun",
+			"continueWithSaml": "Şirkət girişi ilə davam et",
+			"samlEmail": "İş e-poçtu",
+			"samlSubmit": "Davam et",
+			"samlNoConnection": "Bu e-poçt domeni üçün şirkət girişi quraşdırılmayıb.",
+			"samlError": "Şirkət girişini başlatmaq mümkün olmadı. Yenidən cəhd edin.",
+			"emailCodesOff": "Bu serverdə e-poçtla göndərilən giriş keçidləri və kodları söndürülüb. Əgər yalnız onlardan istifadə etmisinizsə, hələ parolunuz yoxdur: parol təyin etmək üçün “Parolu unutmusunuz?” seçin.",
+			"emailCodesOffNoEmail": "Bu serverdə e-poçtla göndərilən giriş keçidləri və kodları söndürülüb. Əgər yalnız onlardan istifadə etmisinizsə, hələ parolunuz yoxdur: instans adminindən sizin üçün parol təyin etməsini xahiş edin."
 		},
 		"providers": {
 			"google": "Google",
@@ -420,6 +439,10 @@
 				"nameShort": "Ad ən azı 2 simvoldan ibarət olmalıdır"
 			}
 		},
+		"layout": {
+			"headline": "Bütün layihəni görün. Növbəti tapşırığı götürün.",
+			"lede": "Alətlərinin sürətli və sakit olmasını istəyən komandalar üçün özünüz yerləşdirdiyiniz layihə idarəetməsi."
+		},
 		"device": {
 			"approve": "Təsdiqlə",
 			"approveFailed": "Təsdiqləmək alınmadı",
@@ -443,10 +466,6 @@
 			"subtitle": "Davam etmək üçün CLI-nizdəki və ya tətbiqinizdəki kodu daxil edin.",
 			"title": "Cihaz qoş"
 		},
-		"layout": {
-			"headline": "Bütün layihəni görün. Növbəti tapşırığı götürün.",
-			"lede": "Alətlərinin sürətli və sakit olmasını istəyən komandalar üçün özünüz yerləşdirdiyiniz layihə idarəetməsi."
-		},
 		"mcp": {
 			"approve": "Təsdiqlə",
 			"clientFallback": "MCP müştərisi",
@@ -463,22 +482,6 @@
 			"subtitle": "Margaya hesabınıza giriş verməzdən əvvəl bu sorğuya baxın.",
 			"title": "MCP müştərisini səlahiyyətləndir",
 			"warning": "Bu müştəri sizin adınızdan fəaliyyət göstərə və iş sahələrinizə daxil ola biləcək. Yalnız bu bağlantını özünüz başlatmısınızsa davam edin."
-		},
-		"emailVerification": {
-			"codeLabel": "Təsdiq kodu",
-			"codeSent": "{{email}} ünvanına 6 rəqəmli kod göndərdik. Kod 5 dəqiqə ərzində etibarlıdır.",
-			"invitationsDescription": "{{email}} ünvanına göndərilən dəvətləri görmək üçün e-poçtunuzu təsdiqləyin.",
-			"resend": "Yeni kod göndər",
-			"sendCode": "Kod göndər",
-			"sendFailed": "Kodu göndərmək mümkün olmadı. Yenidən cəhd edin.",
-			"sending": "Göndərilir...",
-			"settingsDescription": "{{email}} ünvanını təsdiqləyin ki, ona göndərilən iş sahəsi dəvətləri Margaya-da görünsün.",
-			"success": "E-poçt təsdiqləndi",
-			"title": "E-poçtunuzu təsdiqləyin",
-			"verifiedBadge": "Təsdiqlənib",
-			"verify": "Təsdiqlə",
-			"verifyFailed": "Bu kod işləmədi. Onu yoxlayın və ya yenisini göndərin.",
-			"verifying": "Təsdiqlənir..."
 		},
 		"forgotPassword": {
 			"backToSignIn": "Girişə qayıt",
@@ -507,6 +510,30 @@
 			"successDescription": "Yeni parolunuz təyin edildi və bütün sessiyalardan çıxış edildi. Yeni parolunuzla daxil olun.",
 			"successTitle": "Parol yeniləndi",
 			"title": "Yeni parol təyin edin"
+		},
+		"emailVerification": {
+			"codeLabel": "Təsdiq kodu",
+			"codeSent": "{{email}} ünvanına 6 rəqəmli kod göndərdik. Kod 5 dəqiqə ərzində etibarlıdır.",
+			"invitationsDescription": "{{email}} ünvanına göndərilən dəvətləri görmək üçün e-poçtunuzu təsdiqləyin.",
+			"resend": "Yeni kod göndər",
+			"sendCode": "Kod göndər",
+			"sendFailed": "Kodu göndərmək mümkün olmadı. Yenidən cəhd edin.",
+			"sending": "Göndərilir...",
+			"settingsDescription": "{{email}} ünvanını təsdiqləyin ki, ona göndərilən iş sahəsi dəvətləri Margaya-da görünsün.",
+			"success": "E-poçt təsdiqləndi",
+			"title": "E-poçtunuzu təsdiqləyin",
+			"verifiedBadge": "Təsdiqlənib",
+			"verify": "Təsdiqlə",
+			"verifyFailed": "Bu kod işləmədi. Onu yoxlayın və ya yenisini göndərin.",
+			"verifying": "Təsdiqlənir..."
+		},
+		"complete": {
+			"pageTitle": "Daxil olunur",
+			"title": "Giriş tamamlanır",
+			"working": "Hesabınıza daxil olunur…",
+			"failedTitle": "Girişi tamamlamaq mümkün olmadı",
+			"failed": "Bu girişi tamamlamaq mümkün olmadı. Onun keçidi yalnız bir dəfə, bir dəqiqə ərzində və yalnız daxil olduğunuz brauzerdə işləyir. Yenidən daxil olun.",
+			"backToSignIn": "Girişə qayıt"
 		}
 	},
 	"settings": {
@@ -608,6 +635,9 @@
 			"eventComments": "Şərhlər və xatırlatmalar",
 			"eventCommentsHint": "Sizə təyin olunmuş tapşırıqlara yeni şərhləri və birbaşa @xatırlatmaları əhatə edir.",
 			"eventStatusChanges": "Tapşırıq vəziyyətinin dəyişməsi",
+			"eventStatusChangesHint": "Sizə təyin edilmiş və ya izlədiyiniz tapşırıqlar üzrə.",
+			"eventTaskUpdates": "Digər tapşırıq dəyişiklikləri",
+			"eventTaskUpdatesHint": "İzlədiyiniz tapşırıqlarda prioritet, son tarix və başlıq dəyişiklikləri.",
 			"eventDueDateReminders": "Son tarix xatırlatmaları",
 			"reminderLeadTimeLabel": "Son tarixdən əvvəl mənə xatırlat",
 			"reminderLeadTimeHint": "Son tarixə 1 saatdan 30 günədək qalmış. Vaxtı keçmiş tapşırıqların bildirişləri ayrıca göndərilir.",
@@ -615,6 +645,23 @@
 			"reminderLeadTimeUnitDays": "Gün",
 			"reminderLeadTimeInvalid": "1 ilə {{max}} arasında tam ədəd daxil edin.",
 			"saveEventPreferences": "Bildiriş növlərini yadda saxla",
+			"digestTitle": "E-poçt xülasəsi",
+			"digestDescription": "Vaxtı keçmiş və ya 7 gün ərzində bitən açıq tapşırıqlarınız, yeni xatırlatmalar və oxunmamış gələnlər barədə xülasə məktubu. Sizin saat qurşağınıza görə göndərilir və bildiriləcək heç nə olmadıqda ötürülür.",
+			"digestFrequencyLabel": "Xülasə göndər",
+			"digestFrequencyOff": "Söndürülüb",
+			"digestFrequencyDaily": "Gündəlik",
+			"digestFrequencyWeekly": "Həftəlik",
+			"digestWeekdayLabel": "Gün",
+			"digestWeekdaySunday": "Bazar",
+			"digestWeekdayMonday": "Bazar ertəsi",
+			"digestWeekdayTuesday": "Çərşənbə axşamı",
+			"digestWeekdayWednesday": "Çərşənbə",
+			"digestWeekdayThursday": "Cümə axşamı",
+			"digestWeekdayFriday": "Cümə",
+			"digestWeekdaySaturday": "Şənbə",
+			"digestHourLabel": "Vaxt",
+			"digestNoEmail": "Xülasələr üçün hesabın e-poçt ünvanı lazımdır.",
+			"saveDigest": "Xülasəni saxla",
 			"workspaceCardLabelEmail": "E-poçt",
 			"workspaceCardLabelNtfy": "ntfy",
 			"workspaceCardLabelGotify": "Gotify",
@@ -642,28 +689,8 @@
 			"toastPreferencesSaveFailed": "Bildiriş tərcihlərini yadda saxlamaq alınmadı",
 			"toastRuleSavedGeneric": "İş sahəsinin bildiriş qaydası yadda saxlanıldı",
 			"toastRuleRemovedGeneric": "İş sahəsinin bildiriş qaydası çıxarıldı",
-			"eventStatusChangesHint": "Sizə təyin edilmiş və ya izlədiyiniz tapşırıqlar üzrə.",
-			"eventTaskUpdates": "Digər tapşırıq dəyişiklikləri",
-			"eventTaskUpdatesHint": "İzlədiyiniz tapşırıqlarda prioritet, son tarix və başlıq dəyişiklikləri.",
-			"channelsDescription": "Margaya yuxarıda seçdiyiniz bildirişləri hara göndərir.",
 			"channelsTitle": "Çatdırılma kanalları",
-			"digestDescription": "Vaxtı keçmiş və ya 7 gün ərzində bitən açıq tapşırıqlarınız, yeni xatırlatmalar və oxunmamış gələnlər barədə xülasə məktubu. Sizin saat qurşağınıza görə göndərilir və bildiriləcək heç nə olmadıqda ötürülür.",
-			"digestFrequencyDaily": "Gündəlik",
-			"digestFrequencyLabel": "Xülasə göndər",
-			"digestFrequencyOff": "Söndürülüb",
-			"digestFrequencyWeekly": "Həftəlik",
-			"digestHourLabel": "Vaxt",
-			"digestNoEmail": "Xülasələr üçün hesabın e-poçt ünvanı lazımdır.",
-			"digestTitle": "E-poçt xülasəsi",
-			"digestWeekdayFriday": "Cümə",
-			"digestWeekdayLabel": "Gün",
-			"digestWeekdayMonday": "Bazar ertəsi",
-			"digestWeekdaySaturday": "Şənbə",
-			"digestWeekdaySunday": "Bazar",
-			"digestWeekdayThursday": "Cümə axşamı",
-			"digestWeekdayTuesday": "Çərşənbə axşamı",
-			"digestWeekdayWednesday": "Çərşənbə",
-			"saveDigest": "Xülasəni saxla",
+			"channelsDescription": "Margaya yuxarıda seçdiyiniz bildirişləri hara göndərir.",
 			"sound": {
 				"title": "Səslər",
 				"description": "Margaya brauzerinizdə açıq olarkən bildiriş gəldikdə səs çalınsın.",
@@ -694,7 +721,30 @@
 				"deviceMute": "Bu cihazda səsləri söndür",
 				"deviceMuteDescription": "Yalnız bu brauzerin səsi söndürülür; digər cihazlarınızda səslər çalınmağa davam edir.",
 				"previewFailed": "Brauzeriniz səsi çalmadı. Bu tabın və ya saytın səsinin söndürülmədiyini yoxlayın."
-			}
+			},
+			"pushTitle": "Push bildirişləri",
+			"pushDescription": "Margaya bağlı olsa belə telefonunuza və ya kompüterinizə gələn xəbərdarlıqlar. Nəyin göndəriləcəyini “Mənə bunlar barədə bildir” müəyyən edir, aşağıdakı iş sahəsi qaydası isə bunu daralda bilər.",
+			"pushThisDevice": "Bu cihazda",
+			"pushOnHint": "Bu cihaz push bildirişləri alır.",
+			"pushOffHint": "Bunu aktivləşdirdikdə brauzeriniz icazə istəyəcək.",
+			"pushOffHintAllowed": "Bu brauzerdə bildirişlərə artıq icazə verilib.",
+			"pushNotSetUp": "Push bu serverdə quraşdırılmayıb. İnzibatçınızdan VAPID açarlarını təyin etməsini xahiş edin.",
+			"pushInstallFirst": "iPhone və iPad-də əvvəlcə Margaya-nı Ana ekrana əlavə edin: Paylaş, sonra Ana ekrana əlavə et düyməsinə toxunun. Tətbiqi oradan açın və bu ayarı aktivləşdirin.",
+			"pushUnsupported": "Bu brauzer burada push bildirişləri ala bilmir. Push üçün son versiyalı brauzer və HTTPS ünvanı lazımdır.",
+			"pushBlocked": "Bu sayt üçün bildirişlər bloklanıb. Brauzerinizin parametrlərində icazə verin, sonra bu səhifəni yeniləyin.",
+			"pushOtherDevices": "Digər cihazlarınız",
+			"pushRemoveDevice": "Çıxar",
+			"pushRemoveDeviceLabel": "{{device}} cihazını çıxar",
+			"toastPushOn": "Bu cihaz üçün push bildirişləri aktivdir.",
+			"toastPushOnFailed": "Push bildirişlərini aktivləşdirmək mümkün olmadı. Yenidən cəhd edin.",
+			"toastPushOff": "Bu cihaz üçün push bildirişləri deaktivdir.",
+			"toastPushOffFailed": "Push bildirişlərini söndürmək mümkün olmadı. Yenidən cəhd edin.",
+			"toastPushDeviceRemoved": "Cihaz çıxarıldı.",
+			"toastPushDeviceRemoveFailed": "Cihazı çıxarmaq mümkün olmadı. Yenidən cəhd edin.",
+			"workspaceCardLabelPush": "Push bildirişləri",
+			"pushChannelHintEnabled": "Uyğun iş sahəsi bildirişlərini cihazlarınıza göndərin.",
+			"pushChannelHintDisabled": "Əvvəlcə bir cihaz üçün push-u aktivləşdirin.",
+			"pushLoadFailed": "Push parametrlərinizi yükləmək mümkün olmadı. Yenidən cəhd etmək üçün bu səhifəni yeniləyin."
 		},
 		"preferencesPage": {
 			"title": "Tərcihlər",
@@ -899,7 +949,6 @@
 				"organization": "İş sahəsinin idarəetməsi",
 				"member": "Üzvlər",
 				"invitation": "Dəvətlər",
-				"team": "Komandalar",
 				"ac": "Rollar və icazələr",
 				"cycle": "Dövrlər",
 				"module": "Modullar",
@@ -1023,20 +1072,6 @@
 					"cancel": {
 						"label": "Dəvətləri ləğv et",
 						"description": "Gözləmədə olan iş sahəsi dəvətlərini geri çağırın."
-					}
-				},
-				"team": {
-					"create": {
-						"label": "Komanda yarat",
-						"description": "Bu iş sahəsində komandalar yaradın."
-					},
-					"update": {
-						"label": "Komandaları redaktə et",
-						"description": "Komandaları və komanda üzvlüyünü dəyişdirin."
-					},
-					"delete": {
-						"label": "Komandaları sil",
-						"description": "Bu iş sahəsindəki komandaları silin."
 					}
 				},
 				"ac": {
@@ -1944,7 +1979,10 @@
 				"pr_merged": "PR birləşdirildi",
 				"issue_opened": "Issue açıldı",
 				"issue_closed": "Issue bağlandı"
-			}
+			},
+			"removeRule": "{{event}} qaydasını çıxar",
+			"toastRemoved": "İş axını qaydası çıxarıldı",
+			"toastRemoveError": "Qaydanı çıxarmaq alınmadı"
 		},
 		"externalLinks": {
 			"resources": "Resurslar",
@@ -1955,28 +1993,43 @@
 			"open": "Açıq"
 		},
 		"customFields": {
-			"addButton": "Əlavə et",
-			"createError": "Xüsusi sahə yaradıla bilmədi.",
-			"createSuccess": "Xüsusi sahə yaradıldı.",
-			"defaultLabel": "Standart",
-			"defaultValuePlaceholder": "Standart dəyər",
-			"deleteButton": "Sil",
-			"deleteError": "Xüsusi sahə silinə bilmədi.",
-			"deleteSuccess": "Xüsusi sahə silindi.",
-			"empty": "Hələ heç bir xüsusi sahə konfiqurasiya edilməyib.",
-			"loading": "Xüsusi sahələr yüklənir...",
 			"namePlaceholder": "Sahə adı",
+			"typePlaceholder": "Sahə növünü seçin",
 			"noOptionsPlaceholder": "Seçim yoxdur",
+			"defaultValuePlaceholder": "Standart dəyər",
 			"optionsPlaceholder": "Vergüllə ayrılmış seçimlər",
 			"required": "Məcburi",
-			"typePlaceholder": "Sahə növünü seçin",
+			"addButton": "Əlavə et",
+			"loading": "Xüsusi sahələr yüklənir...",
+			"empty": "Hələ heç bir xüsusi sahə konfiqurasiya edilməyib.",
+			"defaultLabel": "Standart",
+			"createSuccess": "Xüsusi sahə yaradıldı.",
+			"createError": "Xüsusi sahə yaradıla bilmədi.",
+			"deleteButton": "Sil",
+			"deleteSuccess": "Xüsusi sahə silindi.",
+			"deleteError": "Xüsusi sahə silinə bilmədi.",
 			"types": {
 				"boolean": "Məntiqi",
 				"date": "Tarix",
 				"dropdown": "Açılan siyahı",
 				"number": "Rəqəm",
 				"text": "Mətn"
-			}
+			},
+			"editButton": "Redaktə et",
+			"editTitle": "Xüsusi sahəni redaktə et",
+			"editDescription": "Sahənin növü və məcburi olub-olmaması yaradıldıqdan sonra dəyişdirilə bilməz.",
+			"nameLabel": "Ad",
+			"optionsLabel": "Seçimlər",
+			"addOption": "Seçim əlavə et",
+			"removeOption": "Seçimi çıxar",
+			"optionPlaceholder": "Seçimin adı",
+			"optionsHint": "Seçimin adını dəyişmək ondan istifadə edən bütün tapşırıqları, saxlanılmış görünüşləri və avtomatlaşdırmaları yeniləyir. Çıxarılan seçim kimsə dəyişənə qədər onu artıq daşıyan tapşırıqlarda qalır və yenidən seçilə bilməz.",
+			"duplicateOption": "Seçimlər bir-birindən fərqli olmalıdır.",
+			"noDefault": "Standart yoxdur",
+			"saveButton": "Yadda saxla",
+			"cancelButton": "Ləğv et",
+			"updateSuccess": "Xüsusi sahə yeniləndi.",
+			"updateError": "Xüsusi sahə yenilənə bilmədi."
 		},
 		"projectFeatures": {
 			"disableConfirmAction": "Deaktiv et",
@@ -2250,6 +2303,11 @@
 			}
 		},
 		"workspaceExports": {
+			"title": "İxraclar",
+			"pageTitle": "İxraclar",
+			"subtitle": "Tapşırıqları CSV, Excel və ya JSON formatında ixrac edin. Fayllar {{days}} gün ərzində yüklənə bilər.",
+			"newExport": "Yeni ixrac",
+			"viewExports": "İxraclara bax",
 			"form": {
 				"activeGroup": "Aktiv",
 				"allProjects": "Bütün layihələr",
@@ -2277,48 +2335,6 @@
 				"json": "JSON",
 				"xlsx": "Excel"
 			},
-			"history": {
-				"all": "Bütün ixraclar",
-				"columns": {
-					"actions": "Əməliyyatlar",
-					"created": "Yaradılıb",
-					"expires": "Mövcuddur",
-					"export": "İxrac",
-					"requestedBy": "Tələb edən",
-					"size": "Ölçü",
-					"status": "Vəziyyət",
-					"tasks": "Tapşırıqlar"
-				},
-				"delete": "Sil",
-				"deleteAria": "{{name}} faylını sil",
-				"deleteDescription": "Fayl hamı üçün silinir. Bu əməliyyat geri qaytarıla bilməz.",
-				"deletedProject": "Silinmiş layihə",
-				"deleteTitle": "Bu ixrac silinsin?",
-				"deleting": "Silinir…",
-				"description": "Tamamlanmış ixracları yükləyin və ya artıq lazım olmayanları silin.",
-				"download": "Yüklə",
-				"downloadAria": "{{name}} faylını yüklə",
-				"empty": "Hələ ixrac yoxdur. Başlatdığınız ixraclar burada {{days}} gün görünür.",
-				"expiredOn": "{{date}} tarixində müddəti bitdi",
-				"expiresOn": "{{date}} tarixinədək",
-				"loadMore": "Daha çox yüklə",
-				"mine": "Mənim ixraclarım",
-				"scopeLabel": "Kimin ixracları",
-				"summaryProjects_one": "{{format}} · {{name}}",
-				"summaryProjects_other": "{{format}} · {{count}} layihə",
-				"title": "Əvvəlki ixraclar"
-			},
-			"newExport": "Yeni ixrac",
-			"pageTitle": "İxraclar",
-			"status": {
-				"completed": "Hazırdır",
-				"expired": "Müddəti bitib",
-				"failed": "Uğursuz oldu",
-				"processing": "Emal olunur",
-				"queued": "Növbədədir"
-			},
-			"subtitle": "Tapşırıqları CSV, Excel və ya JSON formatında ixrac edin. Fayllar {{days}} gün ərzində yüklənə bilər.",
-			"title": "İxraclar",
 			"toast": {
 				"deleted": "İxrac silindi",
 				"deleteError": "İxrac silinə bilmədi. Yenidən cəhd edin.",
@@ -2330,7 +2346,60 @@
 				"ready": "İxracınız hazırdır",
 				"started": "İxrac başladı. Hazır olduqda sizə xəbər verəcəyik."
 			},
-			"viewExports": "İxraclara bax"
+			"history": {
+				"title": "Əvvəlki ixraclar",
+				"description": "Tamamlanmış ixracları yükləyin və ya artıq lazım olmayanları silin.",
+				"scopeLabel": "Kimin ixracları",
+				"mine": "Mənim ixraclarım",
+				"all": "Bütün ixraclar",
+				"empty": "Hələ ixrac yoxdur. Başlatdığınız ixraclar burada {{days}} gün görünür.",
+				"columns": {
+					"actions": "Əməliyyatlar",
+					"created": "Yaradılıb",
+					"expires": "Mövcuddur",
+					"export": "İxrac",
+					"requestedBy": "Tələb edən",
+					"size": "Ölçü",
+					"status": "Vəziyyət",
+					"tasks": "Tapşırıqlar"
+				},
+				"summaryProjects_one": "{{format}} · {{name}}",
+				"summaryProjects_other": "{{format}} · {{count}} layihə",
+				"deletedProject": "Silinmiş layihə",
+				"download": "Yüklə",
+				"downloadAria": "{{name}} faylını yüklə",
+				"delete": "Sil",
+				"deleteAria": "{{name}} faylını sil",
+				"deleting": "Silinir…",
+				"deleteTitle": "Bu ixrac silinsin?",
+				"deleteDescription": "Fayl hamı üçün silinir. Bu əməliyyat geri qaytarıla bilməz.",
+				"expiredOn": "{{date}} tarixində müddəti bitdi",
+				"expiresOn": "{{date}} tarixinədək",
+				"loadMore": "Daha çox yüklə",
+				"summaryWorkspace": "Bütün iş sahəsi",
+				"fileCount_one": "{{count}} fayl",
+				"fileCount_other": "{{count}} fayl",
+				"withoutFiles": "Fayllar olmadan",
+				"missingFiles_one": "Anbarda {{count}} fayl tapılmadı",
+				"missingFiles_other": "Anbarda {{count}} fayl tapılmadı"
+			},
+			"status": {
+				"completed": "Hazırdır",
+				"expired": "Müddəti bitib",
+				"failed": "Uğursuz oldu",
+				"processing": "Emal olunur",
+				"queued": "Növbədədir"
+			},
+			"whole": {
+				"title": "Bütün iş sahəsi",
+				"description": "Hər şeyi bir ZIP kimi yükləyin: bütün şərhləri ilə tapşırıqlar, səhifələr, parametrlər və fayllar.",
+				"action": "İş sahəsini ixrac et",
+				"dialogTitle": "Bütün iş sahəsini ixrac et",
+				"dialogDescription": "Arxiv arxa planda yaradılır. Hazır olduqda bildiriş alacaqsınız.",
+				"includeFiles": "Faylları daxil et",
+				"includeFilesHint": "Xeyli kiçik arxiv üçün bunu söndürün. Hər fayl yenə də siyahıda göstərilir.",
+				"leftOut": "Sirlər, şəxsi səhifələr, zibil qutusu və qaralamalar heç vaxt daxil edilmir. Arxivdə üzvlərin e-poçt ünvanları var, ona görə onu təhlükəsiz yerdə saxlayın."
+			}
 		},
 		"workspaceWebhooks": {
 			"actionsMenu": "Webhook əməliyyatları",
@@ -2709,7 +2778,8 @@
 			"restrictedProject": "Məhdud layihə",
 			"toastUpdated": "Giriş yeniləndi",
 			"toastError": "Girişi yeniləmək alınmadı",
-			"loadError": "Giriş ayarlarını yükləmək alınmadı. Yenidən cəhd etmək üçün səhifəni yeniləyin."
+			"loadError": "Giriş ayarlarını yükləmək alınmadı. Yenidən cəhd etmək üçün səhifəni yeniləyin.",
+			"guestsHint": "Qonaqlar yalnız əlavə olunduqları layihələrə daxil ola bilər. Onları burada əlavə edin; nə edə biləcəklərini layihə rolu məhdudlaşdırır."
 		},
 		"projectPeople": {
 			"defaultAssigneeHint": "Tapşırıq yaradarkən avtomatik doldurulur və icraçısı olmayan qəbul edilmiş sorğulara təyin olunur.",
@@ -2827,47 +2897,47 @@
 				"workspacePublicPagesChanged": "İctimai səhifələri aktiv və ya deaktiv etdi",
 				"pagePublished": "Səhifəni ictimai keçidlə dərc etdi",
 				"pageUnpublished": "Səhifənin ictimai keçidini ləğv etdi",
-				"apiKeyCreated": "API açarı yaratdı",
-				"apiKeyRevoked": "API açarını ləğv etdi",
-				"exportCreated": "İxrac başlatdı",
-				"exportDownloaded": "İxracı endirdi",
-				"importRun": "Tapşırıqları idxal etdi",
-				"integrationConnected": "İnteqrasiya qoşdu",
-				"integrationDisconnected": "İnteqrasiyanı ayırdı",
-				"integrationUpdated": "İnteqrasiyanı dəyişdi",
+				"memberInvited": "Kimisə iş sahəsinə dəvət etdi",
+				"memberInvitationRevoked": "Dəvəti ləğv etdi",
 				"memberInvitationAccepted": "Dəvəti qəbul etdi",
 				"memberInvitationDeclined": "Dəvəti rədd etdi",
 				"memberInvitationRoleChanged": "Gözləyən dəvətin rolunu dəyişdi",
-				"memberInvitationRevoked": "Dəvəti ləğv etdi",
-				"memberInvited": "Kimisə iş sahəsinə dəvət etdi",
-				"memberLeft": "İş sahəsini tərk etdi",
 				"memberRemoved": "Üzvü çıxardı",
+				"memberLeft": "İş sahəsini tərk etdi",
 				"memberRoleChanged": "Üzvün rolunu dəyişdi",
-				"projectArchived": "Layihəni arxivlədi",
-				"projectCreated": "Layihə yaratdı",
-				"projectFeatureToggled": "Layihə imkanlarını aktiv və ya deaktiv etdi",
-				"projectPurged": "Layihəni həmişəlik sildi",
-				"projectRestored": "Layihəni zibil qutusundan bərpa etdi",
-				"projectSettingsChanged": "Layihə parametrlərini dəyişdi",
-				"projectTrashed": "Layihəni zibil qutusuna köçürdü",
-				"projectUnarchived": "Layihəni arxivdən çıxardı",
-				"publicBoardLinkRotated": "İctimai lövhə keçidini dəyişdi",
-				"publicBoardPublished": "İctimai lövhə dərc etdi",
-				"publicBoardSettingsChanged": "İctimai lövhə parametrlərini dəyişdi",
-				"publicBoardUnpublished": "İctimai lövhəni dərcdən çıxardı",
 				"roleCreated": "Rol yaratdı",
-				"roleDeleted": "Rolu sildi",
 				"roleUpdated": "Rolu dəyişdi",
-				"trashEmptied": "Layihənin zibil qutusunu boşaltdı",
-				"trashPurged": "Tapşırıqları zibil qutusundan həmişəlik sildi",
-				"unknown": "{{action}}",
+				"roleDeleted": "Rolu sildi",
+				"apiKeyCreated": "API açarı yaratdı",
+				"apiKeyRevoked": "API açarını ləğv etdi",
 				"webhookCreated": "Webhook yaratdı",
+				"webhookUpdated": "Webhook-u dəyişdi",
 				"webhookDeleted": "Webhook-u sildi",
 				"webhookSecretRotated": "Webhook-un imza sirrini yenilədi",
-				"webhookUpdated": "Webhook-u dəyişdi",
+				"integrationConnected": "İnteqrasiya qoşdu",
+				"integrationUpdated": "İnteqrasiyanı dəyişdi",
+				"integrationDisconnected": "İnteqrasiyanı ayırdı",
 				"workspaceCreated": "İş sahəsini yaratdı",
-				"workspaceOwnershipTransferred": "İş sahəsinin sahibliyini ötürdü",
 				"workspaceUpdated": "İş sahəsi parametrlərini dəyişdi",
+				"workspaceOwnershipTransferred": "İş sahəsinin sahibliyini ötürdü",
+				"projectCreated": "Layihə yaratdı",
+				"projectTrashed": "Layihəni zibil qutusuna köçürdü",
+				"projectRestored": "Layihəni zibil qutusundan bərpa etdi",
+				"projectPurged": "Layihəni həmişəlik sildi",
+				"projectArchived": "Layihəni arxivlədi",
+				"projectUnarchived": "Layihəni arxivdən çıxardı",
+				"projectFeatureToggled": "Layihə imkanlarını aktiv və ya deaktiv etdi",
+				"projectSettingsChanged": "Layihə parametrlərini dəyişdi",
+				"publicBoardPublished": "İctimai lövhə dərc etdi",
+				"publicBoardUnpublished": "İctimai lövhəni dərcdən çıxardı",
+				"publicBoardLinkRotated": "İctimai lövhə keçidini dəyişdi",
+				"publicBoardSettingsChanged": "İctimai lövhə parametrlərini dəyişdi",
+				"exportCreated": "İxrac başlatdı",
+				"exportDownloaded": "İxracı endirdi",
+				"importRun": "Tapşırıqları idxal etdi",
+				"trashPurged": "Tapşırıqları zibil qutusundan həmişəlik sildi",
+				"trashEmptied": "Layihənin zibil qutusunu boşaltdı",
+				"unknown": "{{action}}",
 				"aiSettingsUpdated": "Sİ parametrlərini dəyişdi",
 				"aiTriageLabelsApplied": "Təklif olunan etiketləri avtomatik əlavə etdi",
 				"agentCreated": "Agent yaratdı",
@@ -2894,7 +2964,9 @@
 				"aiConnectorUpdated": "MCP konnektorunu dəyişdi",
 				"aiConnectorDeleted": "MCP konnektorunu sildi",
 				"agentIntakeTriggerUpdated": "Agentin qəbul tətikləyicisini dəyişdi",
-				"agentIntakeTriggerDisabled": "Agentin qəbul tətikləyicisini söndürdü"
+				"agentIntakeTriggerDisabled": "Agentin qəbul tətikləyicisini söndürdü",
+				"memberProvisioned": "Avtomatik təminatla üzv əlavə etdi",
+				"memberInvitationProjectsChanged": "Gözləyən dəvətin layihələrini dəyişdi"
 			},
 			"actor": {
 				"apiKey": "API açarı",
@@ -2987,50 +3059,59 @@
 			"title": "Audit jurnalı"
 		},
 		"trash": {
-			"deletedAt": "Silinib: {{time}}",
-			"deletedBy": "{{name}} tərəfindən silinib, {{time}}",
-			"deletePermanently": "Həmişəlik sil",
-			"emptyConfirmDescription": "Bu layihənin zibil qutusundakı hər tapşırıq şərhləri, qoşmaları və vaxt qeydləri ilə birlikdə həmişəlik silinir. Bu əməliyyat geri qaytarıla bilməz.",
-			"emptyConfirmTitle": "Zibil qutusu boşaldılsın?",
-			"emptyProjectsDescription": "Bu iş sahəsindən sildiyiniz layihələr burada görünür.",
-			"emptyProjectsTitle": "Silinmiş layihə yoxdur",
-			"emptyTasksDescription": "Bu layihədən sildiyiniz tapşırıqlar burada görünür.",
-			"emptyTasksTitle": "Silinmiş tapşırıq yoxdur",
-			"emptyTrash": "Zibil qutusunu boşalt",
-			"loadError": "Zibil qutusunu yükləmək mümkün olmadı",
-			"loadMore": "Daha çox yüklə",
-			"menuAria": "{{name}} üçün digər əməliyyatlar",
-			"noMatches": "Axtarışınıza uyğun heç nə yoxdur",
-			"projectSubtitle": "Silinmiş tapşırıqlar həmişəlik silinənə qədər burada qalır. Tapşırığı bərpa etdikdə onunla birlikdə silinmiş alt tapşırıqlar da geri qayıdır.",
 			"projectTitle": "Son silinənlər",
-			"purgeOn": "{{date}} tarixində həmişəlik silinəcək",
-			"purgeProjectDescription": "“{{name}}” və içindəki hər şey hamı üçün silinir. Bu əməliyyat geri qaytarıla bilməz.",
-			"purgeProjectTitle": "Bu layihə həmişəlik silinsin?",
-			"purgeTaskDescription": "“{{name}}”, onunla birlikdə silinmiş alt tapşırıqlar, şərhlər, qoşmalar və vaxt qeydləri hamı üçün silinir. Bu əməliyyat geri qaytarıla bilməz.",
-			"purgeTaskTitle": "Bu tapşırıq həmişəlik silinsin?",
-			"restore": "Bərpa et",
-			"restoreAria": "{{name}} bərpa et",
-			"retry": "Yenidən cəhd et",
-			"searchProjects": "Silinmiş layihələrdə axtar",
+			"projectSubtitle": "Silinmiş tapşırıqlar və səhifələr həmişəlik silinənə qədər burada qalır. Tapşırığı bərpa etdikdə onunla birlikdə silinmiş alt tapşırıqlar da geri qayıdır; bərpa edilmiş səhifə Arxivlənmiş bölməsinə qayıdır.",
+			"workspaceTitle": "Son silinən layihələr",
+			"workspaceNav": "Son silinənlər",
+			"workspaceSubtitle": "Silinmiş layihələr tapşırıqları ilə birlikdə həmişəlik silinənə qədər burada qalır.",
 			"searchTasks": "Silinmiş tapşırıqlarda axtar",
+			"searchProjects": "Silinmiş layihələrdə axtar",
+			"deletedBy": "{{name}} tərəfindən silinib, {{time}}",
+			"deletedAt": "Silinib: {{time}}",
+			"purgeOn": "{{date}} tarixində həmişəlik silinəcək",
+			"withSubTasks_one": "{{count}} alt tapşırıqla",
+			"withSubTasks_other": "{{count}} alt tapşırıqla",
 			"taskCount_one": "{{count}} tapşırıq",
 			"taskCount_other": "{{count}} tapşırıq",
+			"restore": "Bərpa et",
+			"restoreAria": "{{name}} bərpa et",
+			"menuAria": "{{name}} üçün digər əməliyyatlar",
+			"deletePermanently": "Həmişəlik sil",
+			"emptyTrash": "Zibil qutusunu boşalt",
+			"emptyTasksTitle": "Silinmiş tapşırıq yoxdur",
+			"emptyTasksDescription": "Bu layihədən sildiyiniz tapşırıqlar burada görünür.",
+			"emptyProjectsTitle": "Silinmiş layihə yoxdur",
+			"emptyProjectsDescription": "Bu iş sahəsindən sildiyiniz layihələr burada görünür.",
+			"noMatches": "Axtarışınıza uyğun heç nə yoxdur",
+			"loadError": "Zibil qutusunu yükləmək mümkün olmadı",
+			"retry": "Yenidən cəhd et",
+			"loadMore": "Daha çox yüklə",
+			"purgeTaskTitle": "Bu tapşırıq həmişəlik silinsin?",
+			"purgeTaskDescription": "“{{name}}”, onunla birlikdə silinmiş alt tapşırıqlar, şərhlər, qoşmalar və vaxt qeydləri hamı üçün silinir. Bu əməliyyat geri qaytarıla bilməz.",
+			"emptyConfirmTitle": "Zibil qutusu boşaldılsın?",
+			"emptyConfirmDescription": "Bu layihənin zibil qutusundakı hər tapşırıq şərhləri, qoşmaları və vaxt qeydləri ilə birlikdə həmişəlik silinir. Bu əməliyyat geri qaytarıla bilməz.",
+			"purgeProjectTitle": "Bu layihə həmişəlik silinsin?",
+			"purgeProjectDescription": "“{{name}}” və içindəki hər şey hamı üçün silinir. Bu əməliyyat geri qaytarıla bilməz.",
 			"toast": {
-				"emptied_one": "{{count}} tapşırıq həmişəlik silindi",
-				"emptied_other": "{{count}} tapşırıq həmişəlik silindi",
-				"projectPurged": "Layihə həmişəlik silindi",
+				"taskRestored": "Tapşırıq bərpa edildi",
 				"projectRestored": "Layihə bərpa edildi",
-				"purgeError": "Həmişəlik silmək mümkün olmadı",
 				"restoreBlocked": "Bu tapşırığı ayrıca bərpa etmək olmaz. Əvvəlcə onun ana tapşırığını və ya layihəsini bərpa edin.",
 				"restoreError": "Bərpa etmək mümkün olmadı",
 				"taskPurged": "Tapşırıq həmişəlik silindi",
-				"taskRestored": "Tapşırıq bərpa edildi"
+				"projectPurged": "Layihə həmişəlik silindi",
+				"emptied_one": "{{count}} tapşırıq həmişəlik silindi",
+				"emptied_other": "{{count}} tapşırıq həmişəlik silindi",
+				"purgeError": "Həmişəlik silmək mümkün olmadı",
+				"pageRestored": "Səhifə Arxivlənmiş bölməsinə bərpa edildi",
+				"pagePurged": "Səhifə həmişəlik silindi"
 			},
-			"withSubTasks_one": "{{count}} alt tapşırıqla",
-			"withSubTasks_other": "{{count}} alt tapşırıqla",
-			"workspaceNav": "Son silinənlər",
-			"workspaceSubtitle": "Silinmiş layihələr tapşırıqları ilə birlikdə həmişəlik silinənə qədər burada qalır.",
-			"workspaceTitle": "Son silinən layihələr"
+			"tasksHeading": "Tapşırıqlar",
+			"pagesHeading": "Səhifələr",
+			"searchPages": "Silinmiş səhifələrdə axtar",
+			"emptyPagesTitle": "Silinmiş səhifə yoxdur",
+			"emptyPagesDescription": "Bu layihədən sildiyiniz arxivlənmiş səhifələr burada görünür.",
+			"purgePageTitle": "Bu səhifə həmişəlik silinsin?",
+			"purgePageDescription": "“{{name}}”, onun şərhləri və versiya tarixçəsi hamı üçün silinir. Bu əməliyyat geri qaytarıla bilməz."
 		},
 		"automationRules": {
 			"title": "Avtomatlaşdırmalar",
@@ -3368,24 +3449,25 @@
 				"goToHome": "Ana səhifəyə keç",
 				"goToStickies": "Yapışqan qeydlərə keç",
 				"paletteActions": "Əməliyyat icra et",
+				"paletteTasks": "Tapşırığı açar və ya başlığa görə tap",
 				"palettePeople": "Şəxs tap",
 				"palettePlaces": "Yerə keç",
-				"paletteTasks": "Tapşırığı açar və ya başlığa görə tap",
 				"captureTask": "Lövhədə və ya siyahıda tapşırıq əlavə et",
 				"selectTask": "Fokusdakı tapşırığı seç",
-				"triageAssignee": "Fokusdakı tapşırığın icraçılarını dəyiş",
-				"triagePriority": "Fokusdakı tapşırığın prioritetini dəyiş",
 				"triageStatus": "Fokusdakı tapşırığın vəziyyətini dəyiş",
+				"triagePriority": "Fokusdakı tapşırığın prioritetini dəyiş",
+				"triageAssignee": "Fokusdakı tapşırığın icraçılarını dəyiş",
+				"taskStatus": "Vəziyyəti dəyiş",
+				"taskPriority": "Prioriteti dəyiş",
 				"taskAssignees": "İcraçıları dəyiş",
+				"taskLabels": "Etiketləri dəyiş",
+				"taskDueDate": "Son tarixi dəyiş",
 				"taskAssignSelf": "Özünü təyin et və ya təyinatı ləğv et",
 				"taskCopyKey": "Tapşırıq açarını kopyala",
 				"taskCopyLink": "Tapşırıq keçidini kopyala",
+				"taskCopyBranch": "Tapşırığın budaq adını kopyala",
 				"taskDelete": "Tapşırığı sil",
-				"taskDueDate": "Son tarixi dəyiş",
-				"taskLabels": "Etiketləri dəyiş",
-				"taskPriority": "Prioriteti dəyiş",
-				"taskStatus": "Vəziyyəti dəyiş",
-				"taskCopyBranch": "Tapşırığın budaq adını kopyala"
+				"moveBetweenCards": "Lövhədəki kartlar arasında keçid et"
 			}
 		},
 		"favorites": {
@@ -3550,6 +3632,14 @@
 			"automation_notice": {
 				"title": "Avtomatlaşdırma: {{ruleName}}",
 				"content": "{{taskKey}} {{taskTitle}}"
+			},
+			"page_comment": {
+				"title": "{{commenterName}} şərh yazdı",
+				"content": "{{commenterName}} {{pageTitle}} səhifəsinə şərh yazdı: {{commentPreview}}"
+			},
+			"page_updated": {
+				"title": "{{editorName}} səhifəni redaktə etdi",
+				"content": "{{editorName}} {{pageTitle}} səhifəsini redaktə etdi"
 			}
 		},
 		"inbox": {
@@ -3604,10 +3694,12 @@
 			"loadMore": "Daha çox yüklə",
 			"pageTitle": "Gələnlər",
 			"preview": {
-				"emptyDescription": "Onun tapşırığı burada açılır.",
 				"emptyTitle": "Bildiriş seçin",
+				"emptyDescription": "Onun tapşırığı burada açılır.",
 				"unavailable": "Bu tapşırıq artıq əlçatan deyil",
-				"label": "Oxuma paneli"
+				"label": "Oxuma paneli",
+				"showProperties": "Xüsusiyyətləri göstər",
+				"hideProperties": "Xüsusiyyətləri gizlət"
 			},
 			"retry": "Yenidən cəhd et",
 			"snooze": {
@@ -3653,27 +3745,31 @@
 				"subscribed": "İzlədiklərim"
 			},
 			"verbs": {
-				"due_date_reminder": "Son tarixə {{leadTime}} qalıb",
-				"task_assignee_changed": "tapşırığı sizə təyin etdi",
-				"task_comment": "şərh yazdı",
 				"task_created": "bu tapşırığı yaratdı",
+				"task_assignee_changed": "tapşırığı sizə təyin etdi",
+				"task_status_changed": "tapşırığı {{oldStatus}} vəziyyətindən {{newStatus}} vəziyyətinə keçirdi",
+				"task_comment": "şərh yazdı",
 				"task_mention": "sizi xatırlatdı",
 				"task_mention_comment": "şərhdə sizi xatırlatdı",
-				"task_overdue": "Son tarix keçib",
-				"task_status_changed": "tapşırığı {{oldStatus}} vəziyyətindən {{newStatus}} vəziyyətinə keçirdi",
+				"time_entry_created": "vaxt qeyd etdi",
 				"task_updated": {
 					"dueDate": "son tarixi {{newValue}} olaraq dəyişdi",
 					"dueDateCleared": "son tarixi sildi",
 					"priority": "prioriteti {{newValue}} olaraq dəyişdi",
 					"title": "tapşırığın adını dəyişdi"
 				},
-				"time_entry_created": "vaxt qeyd etdi",
+				"due_date_reminder": "Son tarixə {{leadTime}} qalıb",
+				"task_overdue": "Son tarix keçib",
 				"intake_accepted": "sorğunuzu qəbul etdi",
 				"intake_declined": "sorğunuzu rədd etdi",
 				"intake_duplicate": "sorğunuzu təkrar kimi işarələdi",
 				"page_mention": "sizi səhifədə qeyd etdi",
 				"page_mention_titled": "sizi {{pageTitle}} səhifəsində qeyd etdi",
-				"task_comment_reply": "şərhə cavab yazdı"
+				"task_comment_reply": "şərhə cavab yazdı",
+				"page_comment": "səhifəyə şərh yazdı",
+				"page_comment_titled": "{{pageTitle}} səhifəsinə şərh yazdı",
+				"page_updated": "izlədiyiniz səhifəni redaktə etdi",
+				"page_updated_titled": "{{pageTitle}} səhifəsini redaktə etdi"
 			},
 			"viewing": {
 				"archived": "Arxivlənmiş bildirişlərə baxılır",
@@ -3704,8 +3800,21 @@
 		}
 	},
 	"activity": {
+		"feed": {
+			"all": "Bütün fəaliyyət",
+			"comments": "Şərhlər",
+			"label": "Fəaliyyəti süz və sırala",
+			"newest": "Əvvəlcə yenilər",
+			"noMatches": "Bu süzgəclə göstəriləcək heç nə yoxdur.",
+			"oldest": "Əvvəlcə köhnələr",
+			"order": "Sıra",
+			"show": "Göstər",
+			"updates": "Yeniləmələr"
+		},
 		"assignedToSelf": "Tapşırığı özünə təyin etdi",
 		"unassigned": "Tapşırığın icraçısını çıxardı",
+		"unassignedUser": "{{name}} adlı şəxsi icraçılardan çıxardı",
+		"unassignedSelf": "Özünü icraçılardan çıxardı",
 		"assignedTo": "Tapşırığı {{name}} adlı şəxsə təyin etdi",
 		"changedStatus": "Vəziyyəti {{from}} vəziyyətindən {{to}} vəziyyətinə dəyişdi",
 		"changedPriority": "Prioriteti {{from}} səviyyəsindən {{to}} səviyyəsinə dəyişdi",
@@ -3715,6 +3824,8 @@
 		"changedTitle": "Başlığı \"{{from}}\" əvəzinə \"{{to}}\" etdi",
 		"moved": "Tapşırığı \"{{from}}\" bölməsindən \"{{to}}\" bölməsinə köçürdü",
 		"created": "Bu tapşırığı yaratdı",
+		"importedFromJira": "bu tapşırığı Jira-dan idxal etdi: {{key}}",
+		"importedFromSource": "bu tapşırığı {{source}} xidmətindən idxal etdi: {{key}}",
 		"githubUser": "GitHub istifadəçisi",
 		"comment": {
 			"github": "GitHub",
@@ -3835,35 +3946,26 @@
 			"linkCopied": "Şərh keçidi kopyalandı"
 		},
 		"addedToCycle": "tapşırığı {{name}} dövrünə əlavə etdi",
-		"deletedCycle": "tapşırığı silinmiş dövrdən çıxardı",
-		"movedCycle": "tapşırığı {{from}} dövründən {{to}} dövrünə köçürdü",
 		"removedFromCycle": "tapşırığı {{name}} dövründən çıxardı",
+		"movedCycle": "tapşırığı {{from}} dövründən {{to}} dövrünə köçürdü",
+		"deletedCycle": "tapşırığı silinmiş dövrdən çıxardı",
 		"addedToModule": "tapşırığı {{name}} moduluna əlavə etdi",
 		"removedFromModule": "tapşırığı {{name}} modulundan çıxardı",
+		"estimateSet": "qiymətləndirməni {{to}} olaraq təyin etdi",
 		"estimateChanged": "qiymətləndirməni {{from}}-dan {{to}}-a dəyişdi",
+		"estimateRemoved": "{{from}} qiymətləndirməsini sildi",
 		"estimateReason": {
 			"point_deleted": "(qiymətləndirmə dəyəri silinib)",
 			"system_deleted": "(qiymətləndirmə sistemi silinib)",
 			"system_switched": "(qiymətləndirmə sistemi dəyişdirilib)",
 			"task_moved": "(başqa layihəyə köçürülüb)"
 		},
-		"estimateRemoved": "{{from}} qiymətləndirməsini sildi",
-		"estimateSet": "qiymətləndirməni {{to}} olaraq təyin etdi",
-		"unassignedSelf": "Özünü icraçılardan çıxardı",
-		"unassignedUser": "{{name}} adlı şəxsi icraçılardan çıxardı",
-		"addedLabel": "<label>{{name}}</label> etiketini əlavə etdi",
-		"attachmentAdded": "{{filename}} faylını əlavə etdi",
-		"attachmentRemoved": "{{filename}} əlavəsini çıxardı",
+		"setStartDate": "Başlama tarixini {{date}} olaraq təyin etdi",
 		"changedStartDate": "Başlama tarixini {{from}} tarixindən {{to}} tarixinə dəyişdi",
 		"clearedStartDate": "Başlama tarixini təmizlədi",
-		"copiedFrom": "Bu tapşırığı <task>{{task}}</task>-ın surəti kimi yaratdı",
-		"copiedTo": "Bu tapşırığın surətini yaratdı: <task>{{task}}</task>",
-		"linkAdded": "{{title}} keçidini əlavə etdi",
-		"linkRemoved": "{{title}} keçidini çıxardı",
-		"linkUpdated": "{{title}} keçidini yenilədi",
-		"parentChanged": "Valideyn tapşırığı <from>{{from}}</from>-dan <to>{{to}}</to>-a dəyişdi",
-		"parentRemoved": "Valideyn tapşırıq <task>{{task}}</task>-ı çıxardı",
-		"parentSet": "Valideyn tapşırığı <task>{{task}}</task> olaraq təyin etdi",
+		"addedLabel": "<label>{{name}}</label> etiketini əlavə etdi",
+		"removedLabel": "<label>{{name}}</label> etiketini çıxardı",
+		"updatedDescription": "Təsviri yenilədi",
 		"relationAdded": {
 			"blocked_by": "Bu tapşırığı <task>{{task}}</task> tərəfindən maneə törədilən kimi işarələdi",
 			"blocking": "Bu tapşırığı <task>{{task}}</task>-a mane olan kimi işarələdi",
@@ -3875,12 +3977,36 @@
 			"start_before": "Bu tapşırığın <task>{{task}}</task>-dan əvvəl başlamasını təyin etdi"
 		},
 		"relationRemoved": "<task>{{task}}</task> ilə olan «{{relation}}» əlaqəsini çıxardı",
-		"removedLabel": "<label>{{name}}</label> etiketini çıxardı",
-		"setStartDate": "Başlama tarixini {{date}} olaraq təyin etdi",
+		"parentSet": "Valideyn tapşırığı <task>{{task}}</task> olaraq təyin etdi",
+		"parentChanged": "Valideyn tapşırığı <from>{{from}}</from>-dan <to>{{to}}</to>-a dəyişdi",
+		"parentRemoved": "Valideyn tapşırıq <task>{{task}}</task>-ı çıxardı",
 		"subtaskAdded": "Alt tapşırıq <task>{{task}}</task>-ı əlavə etdi",
 		"subtaskRemoved": "Alt tapşırıq <task>{{task}}</task>-ı çıxardı",
-		"updatedDescription": "Təsviri yenilədi",
+		"linkAdded": "{{title}} keçidini əlavə etdi",
+		"linkUpdated": "{{title}} keçidini yenilədi",
+		"linkRemoved": "{{title}} keçidini çıxardı",
+		"attachmentAdded": "{{filename}} faylını əlavə etdi",
+		"attachmentRemoved": "{{filename}} əlavəsini çıxardı",
+		"copiedFrom": "Bu tapşırığı <task>{{task}}</task>-ın surəti kimi yaratdı",
+		"copiedTo": "Bu tapşırığın surətini yaratdı: <task>{{task}}</task>",
 		"archived": "bu tapşırığı arxivlədi",
+		"unarchived": "bu tapşırığı bərpa etdi",
+		"intake": {
+			"submitted": "bu sorğunu göndərdi",
+			"submittedVia": "bu sorğunu {{source}} vasitəsilə göndərdi",
+			"accepted": "bu sorğunu {{column}} sütununa qəbul etdi",
+			"acceptedBacklog": "bu sorğunu backlog-a qəbul etdi",
+			"declined": "bu sorğunu rədd etdi",
+			"declinedWithReason": "bu sorğunu rədd etdi: {{note}}",
+			"snoozed": "bu sorğunu {{date}} tarixinədək təxirə saldı",
+			"unsnoozed": "bu sorğunu yenidən baxışa qaytardı",
+			"snoozeEnded": "Təxirə salma bitdi və bu sorğu yenidən baxışdadır",
+			"duplicate": "bu sorğunu {{key}} ilə təkrar kimi işarələdi",
+			"duplicateDeleted": "bu sorğunu silinmiş tapşırığın təkrarı kimi işarələdi",
+			"reopened": "bu sorğunu yenidən açdı",
+			"acceptedHidden": "bu sorğunu başqa layihəyə qəbul etdi",
+			"duplicateHidden": "bu sorğunu başqa layihədəki tapşırığın təkrarı kimi işarələdi"
+		},
 		"reactions": {
 			"add": "Reaksiya əlavə et",
 			"error": "Reaksiyanı yeniləmək mümkün olmadı",
@@ -3900,30 +4026,6 @@
 			"reactWith": "{{label}} ilə reaksiya ver",
 			"remove": "{{label}} reaksiyasını sil",
 			"you": "Siz"
-		},
-		"unarchived": "bu tapşırığı bərpa etdi",
-		"intake": {
-			"accepted": "bu sorğunu {{column}} sütununa qəbul etdi",
-			"acceptedBacklog": "bu sorğunu backlog-a qəbul etdi",
-			"declined": "bu sorğunu rədd etdi",
-			"declinedWithReason": "bu sorğunu rədd etdi: {{note}}",
-			"duplicate": "bu sorğunu {{key}} ilə təkrar kimi işarələdi",
-			"duplicateDeleted": "bu sorğunu silinmiş tapşırığın təkrarı kimi işarələdi",
-			"reopened": "bu sorğunu yenidən açdı",
-			"snoozed": "bu sorğunu {{date}} tarixinədək təxirə saldı",
-			"snoozeEnded": "Təxirə salma bitdi və bu sorğu yenidən baxışdadır",
-			"submitted": "bu sorğunu göndərdi",
-			"submittedVia": "bu sorğunu {{source}} vasitəsilə göndərdi",
-			"unsnoozed": "bu sorğunu yenidən baxışa qaytardı"
-		},
-		"automation": {
-			"actor": "Avtomatlaşdırma",
-			"archived_one": "bu tapşırığı {{count}} ay yenilənmədiyi üçün arxivlədi",
-			"archived_other": "bu tapşırığı {{count}} ay yenilənmədiyi üçün arxivlədi",
-			"closed_one": "bu tapşırığı {{count}} ay yenilənmədiyi üçün bağladı və {{to}} sütununa köçürdü",
-			"closed_other": "bu tapşırığı {{count}} ay yenilənmədiyi üçün bağladı və {{to}} sütununa köçürdü",
-			"rolledOver": "dövr bitdikdə bu tapşırığı {{from}} dövründən {{to}} dövrünə köçürdü",
-			"byRule": "{{name}} vasitəsilə"
 		},
 		"commentVisibility": {
 			"badgeExternal": "Xarici",
@@ -3950,21 +4052,49 @@
 			"summary": "▲ {{up}} · ▼ {{down}}",
 			"tooltip": "İctimai lövhədən gələn səslər"
 		},
-		"feed": {
-			"all": "Bütün fəaliyyət",
-			"comments": "Şərhlər",
-			"label": "Fəaliyyəti süz və sırala",
-			"newest": "Əvvəlcə yenilər",
-			"noMatches": "Bu süzgəclə göstəriləcək heç nə yoxdur.",
-			"oldest": "Əvvəlcə köhnələr",
-			"order": "Sıra",
-			"show": "Göstər",
-			"updates": "Yeniləmələr"
+		"automation": {
+			"actor": "Avtomatlaşdırma",
+			"archived_one": "bu tapşırığı {{count}} ay yenilənmədiyi üçün arxivlədi",
+			"archived_other": "bu tapşırığı {{count}} ay yenilənmədiyi üçün arxivlədi",
+			"closed_one": "bu tapşırığı {{count}} ay yenilənmədiyi üçün bağladı və {{to}} sütununa köçürdü",
+			"closed_other": "bu tapşırığı {{count}} ay yenilənmədiyi üçün bağladı və {{to}} sütununa köçürdü",
+			"rolledOver": "dövr bitdikdə bu tapşırığı {{from}} dövründən {{to}} dövrünə köçürdü",
+			"byRule": "{{name}} vasitəsilə",
+			"rolledOverHidden": "dövr bitdikdə bu tapşırığı növbəti dövrə köçürdü"
 		},
-		"importedFromJira": "bu tapşırığı Jira-dan idxal etdi: {{key}}",
-		"importedFromSource": "bu tapşırığı {{source}} xidmətindən idxal etdi: {{key}}",
 		"movedToTrash": "bu tapşırığı zibil qutusuna köçürdü",
-		"restoredFromTrash": "bu tapşırığı zibil qutusundan bərpa etdi"
+		"restoredFromTrash": "bu tapşırığı zibil qutusundan bərpa etdi",
+		"parentRemovedHidden": "Başqa layihədəki valideyn tapşırığı çıxardı",
+		"subtaskAddedHidden": "Başqa layihədə alt tapşırıq əlavə etdi",
+		"subtaskRemovedHidden": "Başqa layihədəki alt tapşırığı çıxardı",
+		"copiedToHidden": "Bu tapşırığın surətini başqa layihədə yaratdı",
+		"relationAddedHidden": {
+			"related": "Bu tapşırığı başqa layihədəki bir tapşırıqla əlaqəli olaraq işarələdi",
+			"blocking": "Bu tapşırığı başqa layihədəki bir tapşırığa mane olan kimi işarələdi",
+			"blocked_by": "Bu tapşırığı başqa layihədəki bir tapşırıq tərəfindən maneə törədilən kimi işarələdi",
+			"duplicate": "Bu tapşırığı başqa layihədəki bir tapşırığın təkrarı kimi işarələdi",
+			"start_before": "Bu tapşırığın başqa layihədəki bir tapşırıqdan əvvəl başlamasını təyin etdi",
+			"start_after": "Bu tapşırığın başqa layihədəki bir tapşırıqdan sonra başlamasını təyin etdi",
+			"finish_before": "Bu tapşırığın başqa layihədəki bir tapşırıqdan əvvəl bitməsini təyin etdi",
+			"finish_after": "Bu tapşırığın başqa layihədəki bir tapşırıqdan sonra bitməsini təyin etdi"
+		},
+		"relationRemovedHidden": "Başqa layihədəki bir tapşırıqla olan «{{relation}}» əlaqəsini çıxardı",
+		"parentSetHidden": "Valideyn tapşırığı başqa layihədəki bir tapşırıq olaraq təyin etdi",
+		"parentChangedFromHidden": "Valideyn tapşırığı başqa layihədəki bir tapşırıqdan <to>{{to}}</to>-a dəyişdi",
+		"parentChangedToHidden": "Valideyn tapşırığı <from>{{from}}</from>-dan başqa layihədəki bir tapşırığa dəyişdi",
+		"parentChangedBetweenHidden": "Valideyn tapşırığı digər layihələrdəki tapşırıqlar arasında dəyişdi",
+		"copiedFromHidden": "Bu tapşırığı başqa layihədəki bir tapşırığın surəti kimi yaratdı",
+		"movedFromHidden": "Tapşırığı başqa layihədən \"{{to}}\" bölməsinə köçürdü",
+		"movedToHidden": "Tapşırığı \"{{from}}\" bölməsindən başqa layihəyə köçürdü",
+		"movedBetweenHidden": "Tapşırığı digər layihələr arasında köçürdü",
+		"changedStatusHidden": "Başqa layihədə vəziyyəti dəyişdi",
+		"addedToHiddenCycle": "tapşırığı bir dövrə əlavə etdi",
+		"removedFromHiddenCycle": "tapşırığı bir dövrdən çıxardı",
+		"movedCycleFromHidden": "tapşırığı başqa dövrdən {{to}} dövrünə köçürdü",
+		"movedCycleToHidden": "tapşırığı {{from}} dövründən başqa dövrə köçürdü",
+		"movedCycleBetweenHidden": "tapşırığı dövrlər arasında köçürdü",
+		"addedToHiddenModule": "tapşırığı bir modula əlavə etdi",
+		"removedFromHiddenModule": "tapşırığı bir moduldan çıxardı"
 	},
 	"tasks": {
 		"recurrence": {
@@ -4022,8 +4152,30 @@
 				"recurredFrom": "bu tapşırığı <task>{{task}}</task> tapşırığının növbəti təkrarı kimi yaratdı",
 				"recurredFromScheduled": "Plana uyğun olaraq <task>{{task}}</task> tapşırığının növbəti təkrarı kimi yaradıldı",
 				"recurredTo": "bu tapşırığı tamamladı və növbəti təkrar <task>{{task}}</task> yaradıldı",
-				"recurredToScheduled": "Növbəti təkrar plana uyğun olaraq yaradıldı: <task>{{task}}</task>"
+				"recurredToScheduled": "Növbəti təkrar plana uyğun olaraq yaradıldı: <task>{{task}}</task>",
+				"recurredToHidden": "bu tapşırığı tamamladı və növbəti təkrar başqa layihədə yaradıldı",
+				"recurredToScheduledHidden": "Növbəti təkrar plana uyğun olaraq başqa layihədə yaradıldı",
+				"recurredFromHidden": "bu tapşırığı başqa layihədəki bir tapşırığın növbəti təkrarı kimi yaratdı",
+				"recurredFromScheduledHidden": "Plana uyğun olaraq başqa layihədəki bir tapşırığın növbəti təkrarı kimi yaradıldı"
 			}
+		},
+		"subscription": {
+			"count_one": "{{count}} nəfər izləyir",
+			"count_other": "{{count}} nəfər izləyir",
+			"error": "İzləmə vəziyyətini yeniləmək mümkün olmadı",
+			"mutedAssignee": "Tapşırıq sizə təyin edilib, lakin izləməni dayandırmısınız. Xatırlatmalardan yenə də xəbərdar olacaqsınız.",
+			"notSubscribed": "Vəziyyət dəyişiklikləri, şərhlər və digər dəyişikliklər barədə yenilik alın.",
+			"reasons": {
+				"assignee": "Tapşırıq sizə təyin edildiyi üçün izləyirsiniz.",
+				"commenter": "Şərh yazdığınız üçün izləyirsiniz.",
+				"creator": "Bu tapşırığı yaratdığınız üçün izləyirsiniz.",
+				"manual": "Bu tapşırığı izləyirsiniz.",
+				"mention": "Sizi xatırlatdıqları üçün izləyirsiniz."
+			},
+			"subscribe": "İzlə",
+			"toastSubscribed": "Bu tapşırığı izləyirsiniz",
+			"toastUnsubscribed": "İzləmə dayandırıldı. Xatırladıldıqda yenə də bildiriş alacaqsınız.",
+			"unsubscribe": "İzləməni dayandır"
 		},
 		"status": {
 			"label": "Vəziyyət",
@@ -4033,6 +4185,32 @@
 			"done": "Hazırdır",
 			"archived": "Arxivlənmiş",
 			"planned": "Planlaşdırılmış"
+		},
+		"columnGroups": {
+			"backlog": {
+				"description": "Qeydə alınıb, hələ planlaşdırılmayıb",
+				"label": "Backlog"
+			},
+			"cancelled": {
+				"description": "İş görülmədən bağlanıb",
+				"label": "Ləğv edilmiş"
+			},
+			"completed": {
+				"description": "Hazırdır",
+				"label": "Tamamlanmış"
+			},
+			"started": {
+				"description": "İş davam edir",
+				"label": "Başlanıb"
+			},
+			"triage": {
+				"description": "Qəbulda baxılmasını gözləyir",
+				"label": "Nəzərdən keçirmə"
+			},
+			"unstarted": {
+				"description": "Planlaşdırılıb, iş hələ başlanmayıb",
+				"label": "Başlanmayıb"
+			}
 		},
 		"priority": {
 			"label": "Prioritet",
@@ -4059,9 +4237,16 @@
 		},
 		"detail": {
 			"subtaskOf": "Əsas tapşırıq",
+			"customFieldUpdated": "Sahə yeniləndi",
+			"selectOption": "Seçim et",
 			"activity": "Fəaliyyət",
 			"noActivity": "Fəaliyyət tapılmadı",
 			"openInFullPage": "Tam səhifədə aç",
+			"openOnBoard": "Lövhədə aç",
+			"sheetLabel": "Tapşırığın təfərrüatları",
+			"previousTask": "Əvvəlki tapşırıq",
+			"nextTask": "Növbəti tapşırıq",
+			"position": "{{position}}/{{total}}",
 			"titlePlaceholder": "Başlıq əlavə etmək üçün klikləyin",
 			"addDescription": "Təsvir əlavə et...",
 			"editor": {
@@ -4191,13 +4376,11 @@
 					"toolbar": "Şəkil seçimləri"
 				}
 			},
-			"customFieldUpdated": "Sahə yeniləndi",
-			"selectOption": "Seçim et",
-			"nextTask": "Növbəti tapşırıq",
-			"openOnBoard": "Lövhədə aç",
-			"position": "{{position}}/{{total}}",
-			"previousTask": "Əvvəlki tapşırıq",
-			"sheetLabel": "Tapşırığın təfərrüatları"
+			"saveError": {
+				"title": "Başlığınız yadda saxlanmadı. Hələ də sahədədir, yenidən cəhd edə bilərsiniz.",
+				"description": "Təsviriniz yadda saxlanmadı. Hələ də redaktordadır, yenidən cəhd edə bilərsiniz.",
+				"retry": "Yenidən cəhd edin"
+			}
 		},
 		"entity": {
 			"task": "Tapşırıq"
@@ -4407,17 +4590,53 @@
 			"nextPeriod": "Növbəti dövr",
 			"periodStart": "Zaman xəttinin başlanğıc tarixi",
 			"showTaskDates": "Tapşırıq tarixlərini göstər",
-			"dependencyConflict": "Asılılıqla ardıcıllığı pozaraq başlayır və ya bitir",
-			"dragToSchedule": "{{title}} tapşırığını zaman şkalasına sürüklə",
+			"zoom": "Zaman şkalasının miqyası",
+			"zoomWeek": "Həftə",
+			"zoomMonth": "Ay",
+			"zoomQuarter": "Rüb",
 			"noDates": "Tarix yoxdur",
 			"noDatesCount": "Tarix yoxdur · {{count}}",
 			"noDatesHint": "Zaman şkalasına sürükləyin və ya bu gündən planlaşdırın.",
 			"schedule": "Planlaşdır",
 			"scheduleTask": "{{title}} tapşırığını bu gündən planlaşdır",
-			"zoom": "Zaman şkalasının miqyası",
-			"zoomMonth": "Ay",
-			"zoomQuarter": "Rüb",
-			"zoomWeek": "Həftə"
+			"dragToSchedule": "{{title}} tapşırığını zaman şkalasına sürüklə",
+			"dependencyConflict": "Asılılıqla ardıcıllığı pozaraq başlayır və ya bitir",
+			"workspaceNoTasksSubtitle": "Tapşırıqları bu zaman xəttində görmək üçün onlara başlama tarixi, son tarix və ya hər ikisini əlavə edin.",
+			"showMoreTasks": "Daha çox tapşırıq göstər",
+			"blocked": "Açıq tapşırıq tərəfindən bloklanıb",
+			"linkFrom": "{{title}} tapşırığını başqa tapşırıqla əlaqələndir",
+			"linkHint": "Bu tapşırığı gözləməsi üçün başqa tapşırığın üzərinə sürükləyin",
+			"link": {
+				"blocks": "{{source}} {{target}} tapşırığına mane olur",
+				"startBefore": "{{source}} {{target}} tapşırığından əvvəl başlayır",
+				"finishBefore": "{{source}} {{target}} tapşırığından əvvəl bitir",
+				"conflict": "Tarixlər bu əlaqəni pozur."
+			},
+			"milestone": {
+				"add": "Mərhələ",
+				"ariaLabel": "Mərhələ {{title}}: açın və ya köçürmək üçün sürükləyin",
+				"name": "Mərhələnin adı",
+				"namePlaceholder": "Mərhələnin adı",
+				"date": "Mərhələnin tarixi",
+				"create": "Mərhələ əlavə et",
+				"createError": "Mərhələni əlavə etmək mümkün olmadı"
+			},
+			"cascade": {
+				"offer_one": "{{count}} əlaqəli tapşırıq indi çox tez başlayır",
+				"offer_other": "{{count}} əlaqəli tapşırıq indi çox tez başlayır",
+				"reviewAction": "Tarix dəyişikliklərinə bax",
+				"title_one": "{{count}} əlaqəli tapşırıq köçürülsün?",
+				"title_other": "{{count}} əlaqəli tapşırıq köçürülsün?",
+				"description": "Bu tapşırıqlar əlaqələrinə uyğun gələcək qədər sonraya keçiriləcək və müddətlərini saxlayacaq. Siz təsdiqləyənə qədər heç nə dəyişmir.",
+				"to": "əvəzinə",
+				"cancel": "Tarixləri saxla",
+				"confirm_one": "{{count}} tapşırığı köçür",
+				"confirm_other": "{{count}} tapşırığı köçür",
+				"moved_one": "{{count}} tapşırıq köçürüldü",
+				"moved_other": "{{count}} tapşırıq köçürüldü",
+				"partial": "{{total}} tapşırıqdan {{moved}} köçürüldü. Qalanları tarixlərini saxladı.",
+				"nothingToMove": "Bu əlaqə üçün tarixli heç bir açıq tapşırığı köçürmək lazım deyil."
+			}
 		},
 		"delete": {
 			"title": "Tapşırıq silinsin?",
@@ -4434,563 +4653,6 @@
 			"restore": "Bərpa et",
 			"restored": "Tapşırıq bərpa edildi",
 			"restoreError": "Tapşırığı bərpa etmək mümkün olmadı"
-		},
-		"listView": {
-			"addTask": "Tapşırıq əlavə et",
-			"archiveAllTooltip": "Bütün tamamlanmış tapşırıqları arxivlə",
-			"noTasks": "Tapşırıq yoxdur"
-		},
-		"kanban": {
-			"addTask": "Tapşırıq əlavə et",
-			"stages": "Sütunlar",
-			"emptyAction": "Tapşırıq əlavə et",
-			"emptyTitle": "Hələ tapşırıq yoxdur"
-		},
-		"pr": {
-			"merged": "Birləşdirilib",
-			"draft": "Qaralama",
-			"open": "Açıq",
-			"label": "Birləşdirmə sorğusu",
-			"count_one": "{{count}} birləşdirmə sorğusu",
-			"count_other": "{{count}} birləşdirmə sorğusu"
-		},
-		"assignee": {
-			"label": "İcraçılar",
-			"unassigned": "Təyin olunmayıb"
-		},
-		"dueDate": {
-			"label": "Son tarix",
-			"clear": "Tarixi təmizlə",
-			"updateSuccess": "Tapşırığın son tarixi uğurla yeniləndi",
-			"updateError": "Tapşırığın son tarixini yeniləmək alınmadı",
-			"clearSuccess": "Tapşırığın son tarixi təmizləndi",
-			"clearError": "Son tarixi təmizləmək alınmadı"
-		},
-		"update": {
-			"success": "Tapşırıq uğurla yeniləndi",
-			"error": "Tapşırığı yeniləmək alınmadı"
-		},
-		"contextMenu": {
-			"copyLink": "Keçidi kopyala",
-			"copyLinkSuccess": "Tapşırıq keçidi kopyalandı",
-			"estimate": "Qiymətləndirmə"
-		},
-		"actions": {
-			"archive": "Arxivlə",
-			"markAsPlanned": "Planlaşdırılmış kimi işarələ",
-			"delete": "Sil...",
-			"copyKey": "Tapşırığın açarını kopyala",
-			"copyLink": "Keçidi kopyala",
-			"makeCopy": "Surət yarat…",
-			"moreActions": "Digər əməliyyatlar"
-		},
-		"bulk": {
-			"selectedCount": "{{count}} seçilib",
-			"moveToBacklog": "Gözləyən tapşırıqlara köçür",
-			"moveToBacklogSuccess": "{{count}} tapşırıq gözləyən tapşırıqlara köçürüldü",
-			"moveToBacklogError": "Tapşırıqları gözləyən tapşırıqlara köçürmək alınmadı",
-			"moveToBoard": "Lövhəyə köçür",
-			"moveToBoardSuccess": "{{count}} tapşırıq lövhəyə köçürüldü",
-			"moveToBoardError": "Tapşırıqları lövhəyə köçürmək alınmadı",
-			"delete": "Tapşırıqları sil",
-			"deleteConfirm": "{{count}} tapşırıq zibil qutusuna köçürülsün? Onları layihə parametrlərindəki Son silinənlər bölməsindən bərpa edə bilərsiniz.",
-			"deleteSuccess": "{{count}} tapşırıq silindi",
-			"deleteError": "Tapşırıqları silmək alınmadı",
-			"archive": "Tapşırıqları arxivlə",
-			"archiveSuccess": "{{count}} tapşırıq arxivləndi",
-			"archiveError": "Tapşırıqları arxivləmək alınmadı",
-			"updateSuccess": "{{count}} tapşırıq yeniləndi",
-			"updateError": "Tapşırıqları yeniləmək alınmadı",
-			"setPriority": "Prioritet təyin et",
-			"updatePriorityError": "Prioriteti yeniləmək alınmadı",
-			"addLabel": "Etiket əlavə et",
-			"addLabelSuccess": "{{count}} tapşırığa etiket əlavə edildi",
-			"addLabelError": "Etiket əlavə etmək alınmadı",
-			"setDueDate": "Son tarix təyin et",
-			"updateDueDateError": "Son tarixi yeniləmək alınmadı",
-			"actions": "Əməliyyatlar",
-			"searchActions": "Əməliyyatları axtar...",
-			"noActionsFound": "Əməliyyat tapılmadı.",
-			"changeStatus": "Vəziyyəti dəyiş",
-			"removeLabel": "Etiketi çıxar",
-			"removeLabelSuccess": "Etiket {{count}} tapşırıqdan çıxarıldı",
-			"removeLabelError": "Etiketi çıxarmaq alınmadı",
-			"unarchive": "Arxivdən bərpa et",
-			"unarchiveSuccess": "{{count}} tapşırıq bərpa edildi",
-			"unarchiveNone": "Seçilmiş tapşırıqların heç biri arxivlənməyib",
-			"unarchiveError": "Tapşırıqları bərpa etmək alınmadı",
-			"setDates": "Tarixlər",
-			"dateField": "Təyin ediləcək tarix",
-			"startDate": "Başlama tarixi",
-			"dueDate": "Son tarix",
-			"clearStartDate": "Başlama tarixini təmizlə",
-			"clearDueDate": "Son tarixi təmizlə",
-			"updateStartDateError": "Başlama tarixini yeniləmək alınmadı. Başlama tarixi tapşırığın son tarixindən sonra ola bilməz.",
-			"addAssignee": "İcraçı əlavə et",
-			"addAssigneeSuccess_one": "{{name}} {{count}} tapşırığa əlavə edildi",
-			"addAssigneeSuccess_other": "{{name}} {{count}} tapşırığa əlavə edildi",
-			"assigneesError": "İcraçıları yeniləmək alınmadı",
-			"clearAssignees": "İcraçıları təmizlə",
-			"clearAssigneesSuccess_one": "{{count}} tapşırıqda icraçılar təmizləndi",
-			"clearAssigneesSuccess_other": "{{count}} tapşırıqda icraçılar təmizləndi",
-			"removeAssignee": "İcraçını çıxar",
-			"removeAssigneeSuccess_one": "{{name}} {{count}} tapşırıqdan çıxarıldı",
-			"removeAssigneeSuccess_other": "{{name}} {{count}} tapşırıqdan çıxarıldı",
-			"clearSelection": "Seçimi təmizlə"
-		},
-		"editor": {
-			"table": {
-				"addColumnBefore": "Sola sütun daxil et",
-				"addColumnAfter": "Sağa sütun daxil et",
-				"deleteColumn": "Sütunu sil",
-				"addRowBefore": "Yuxarıya sətir daxil et",
-				"addRowAfter": "Aşağıya sətir daxil et",
-				"deleteRow": "Sətri sil",
-				"deleteTable": "Cədvəli sil",
-				"moveRowUp": "Sətri yuxarı köçür",
-				"moveRowDown": "Sətri aşağı köçür",
-				"moveColumnLeft": "Sütunu sola köçür",
-				"moveColumnRight": "Sütunu sağa köçür",
-				"toggleHeaderRow": "Başlıq sətri",
-				"fullWidth": "Tam en",
-				"dragRow": "Sətir {{index}}",
-				"dragColumn": "Sütun {{index}}",
-				"dragRowHint": "Sətri köçürmək üçün sürüşdürün və ya ox düymələrindən istifadə edin",
-				"dragColumnHint": "Sütunu köçürmək üçün sürüşdürün və ya ox düymələrindən istifadə edin",
-				"insertRowHere": "Bura sətir əlavə et",
-				"insertColumnHere": "Bura sütun əlavə et"
-			}
-		},
-		"descriptionSearchLoading": "Tam təsvirlər axtarılır…",
-		"descriptionSearchError": "Təsvir axtarışı uğursuz oldu. Nəticələr natamam ola bilər.",
-		"descriptionRetry": "Yenidən cəhd et",
-		"descriptionLoading": "Təsvir yüklənir…",
-		"descriptionLoadError": "Təsviri yükləmək mümkün olmadı. Cari versiyanı yükləmək üçün yenidən cəhd edin.",
-		"columnGroups": {
-			"backlog": {
-				"description": "Qeydə alınıb, hələ planlaşdırılmayıb",
-				"label": "Backlog"
-			},
-			"cancelled": {
-				"description": "İş görülmədən bağlanıb",
-				"label": "Ləğv edilmiş"
-			},
-			"completed": {
-				"description": "Hazırdır",
-				"label": "Tamamlanmış"
-			},
-			"started": {
-				"description": "İş davam edir",
-				"label": "Başlanıb"
-			},
-			"triage": {
-				"description": "Qəbulda baxılmasını gözləyir",
-				"label": "Nəzərdən keçirmə"
-			},
-			"unstarted": {
-				"description": "Planlaşdırılıb, iş hələ başlanmayıb",
-				"label": "Başlanmayıb"
-			}
-		},
-		"estimate": {
-			"bulk": {
-				"action": "Qiymətləndirmə",
-				"error": "Seçilmiş tapşırıqların qiymətləndirməsini dəyişmək mümkün olmadı",
-				"updated_one": "{{count}} tapşırığın qiymətləndirməsi yeniləndi",
-				"updated_other": "{{count}} tapşırığın qiymətləndirməsi yeniləndi"
-			},
-			"chart": {
-				"points": "Xallar",
-				"pointsLeft": "Qalan xallar",
-				"summaryPoints": "{{scope}} xaldan {{remaining}} qalıb, {{days}} gün qalıb",
-				"summaryTime": "{{scope}}-dan {{remaining}} qalıb, {{days}} gün qalıb",
-				"tasks": "Tapşırıqlar",
-				"time": "Vaxt",
-				"timeLeft": "Qalan vaxt",
-				"unitAria": "Qrafik vahidi"
-			},
-			"duration": {
-				"hours": "{{hours}} saat",
-				"hoursMinutes": "{{hours}} saat {{minutes}} dəq",
-				"hourUnit": "h",
-				"minutes": "{{minutes}} dəq",
-				"minuteUnit": "m"
-			},
-			"label": "Qiymətləndirmə",
-			"none": "Qiymətləndirmə yoxdur",
-			"pointsValue_one": "{{value}} xal",
-			"pointsValue_other": "{{value}} xal",
-			"setAria": "Qiymətləndirmə təyin et",
-			"totals": {
-				"estimated": "{{total}} tapşırıqdan {{estimated}} qiymətləndirilib",
-				"points_one": "{{completed}} / {{total}} xal",
-				"points_other": "{{completed}} / {{total}} xal",
-				"time": "{{completed}} / {{total}}"
-			},
-			"updateError": "Qiymətləndirməni yeniləmək alınmadı"
-		},
-		"assignees": {
-			"clear": "İcraçıları təmizlə",
-			"formerMember": "Artıq üzv deyil",
-			"formerMemberSuffix": "{{name}} (artıq üzv deyil)",
-			"label": "İcraçılar",
-			"limitReached": "Bir tapşırığın ən çox {{count}} icraçısı ola bilər",
-			"more": "+{{count}}",
-			"nameAndMore": "{{name}} +{{count}}",
-			"noMatches": "Uyğun şəxs tapılmadı",
-			"noMembers": "Təyin etmək üçün hələ üzv yoxdur",
-			"searchPlaceholder": "İnsanları axtar...",
-			"stackAria": "{{names}}-ə təyin edilib",
-			"unknownPerson": "Naməlum şəxs",
-			"updateError": "İcraçıları yeniləmək alınmadı",
-			"you": "{{name}} (siz)"
-		},
-		"attachments": {
-			"add": "Fayl əlavə et",
-			"delete": "Sil",
-			"deleteConfirmDescription": "Fayl hamı üçün silinəcək. Bu əməliyyatı geri qaytara bilməzsiniz.",
-			"deleteConfirmTitle": "{{filename}} silinsin?",
-			"download": "Yüklə",
-			"dropHere": "Faylları buraya atın və ya seçmək üçün klikləyin",
-			"dropToAttach": "Əlavə etmək üçün faylları atın",
-			"loadError": "Əlavələri yükləmək alınmadı",
-			"meta": "{{size}} · {{name}} · {{time}}",
-			"metaNoUser": "{{size}} · {{time}}",
-			"open": "Aç",
-			"title": "Əlavələr",
-			"toast": {
-				"attached_one": "{{count}} fayl əlavə edildi",
-				"attached_other": "{{count}} fayl əlavə edildi",
-				"deleted": "Əlavə silindi",
-				"deleteError": "Əlavəni silmək alınmadı",
-				"empty": "{{filename}} boşdur",
-				"failed": "{{filename}} əlavə edilmədi: {{reason}}",
-				"notConfigured": "Bu serverdə fayl yükləmə qurulmayıb. Anbarı konfiqurasiya etmək üçün administratorunuzdan xahiş edin.",
-				"storageError": "anbar yükləməni rədd etdi",
-				"tooMany": "Bir dəfəyə ən çox {{count}} fayl əlavə edə bilərsiniz",
-				"unknownError": "nəsə səhv getdi"
-			},
-			"uploading": "Yüklənir…"
-		},
-		"copy": {
-			"alwaysCopied": "Vəziyyət və prioritet həmişə kopyalanır.",
-			"cancel": "Ləğv et",
-			"includeLabel": "Daxil et",
-			"options": {
-				"assignees": "İcraçılar",
-				"attachments": "Əlavələr",
-				"customFields": "Xüsusi sahə dəyərləri",
-				"dates": "Başlama və son tarixlər",
-				"description": "Təsvir",
-				"labels": "Etiketlər",
-				"links": "Keçidlər",
-				"parent": "Valideyn tapşırıq",
-				"planning": "Dövr, modullar və qiymətləndirmə"
-			},
-			"otherProjectHint": "Vəziyyət yeni layihənin sütunlarına uyğunlaşdırılır. Xüsusi sahələr, valideyn tapşırıq və planlaşdırma layihələr arasında kopyalanmır.",
-			"projectLabel": "Layihə",
-			"submit": "Surət yarat",
-			"title": "{{key}}-in surətini yarat",
-			"titleLabel": "Başlıq",
-			"titleRequired": "Başlıq tələb olunur",
-			"titleSuffix": "{{title}} (surət)",
-			"toast": {
-				"error": "Surət yaratmaq alınmadı",
-				"open": "Aç",
-				"skipped": "Kopyalanmadı: {{list}}",
-				"success": "Surət yaradıldı: {{key}}"
-			}
-		},
-		"detailActions": {
-			"addLink": "Keçid əlavə et",
-			"addRelation": "Əlaqə əlavə et",
-			"addSubtask": "Alt tapşırıq əlavə et",
-			"attachFile": "Fayl əlavə et"
-		},
-		"links": {
-			"add": "Keçid əlavə et",
-			"addedAt": "{{date}} tarixində əlavə edilib",
-			"addedBy": "{{name}} tərəfindən əlavə edilib · {{date}}",
-			"addTitle": "Keçid əlavə et",
-			"cancel": "Ləğv et",
-			"copyUrl": "URL-i kopyala",
-			"edit": "Redaktə et",
-			"editTitle": "Keçidi redaktə et",
-			"errors": {
-				"credentials": "Keçidlər istifadəçi adı və ya parol ehtiva edə bilməz",
-				"duplicate": "Bu keçid artıq bu tapşırıqdadır",
-				"invalid": "Düzgün http və ya https URL-i daxil edin",
-				"required": "URL tələb olunur",
-				"titleTooLong": "Başlıq ən çox 255 simvoldan ibarət ola bilər",
-				"tooLong": "Keçid ən çox 2048 simvoldan ibarət ola bilər"
-			},
-			"linkTitle": "Başlıq",
-			"loadError": "Keçidləri yükləmək alınmadı",
-			"moreActions": "Keçid əməliyyatları",
-			"remove": "Çıxar",
-			"removeConfirmDescription": "O, hamı üçün tapşırıqdan çıxarılacaq.",
-			"removeConfirmTitle": "Bu keçid çıxarılsın?",
-			"retry": "Yenidən cəhd et",
-			"save": "Yadda saxla",
-			"title": "Keçidlər",
-			"titlePlaceholder": "İstəyə bağlı görünən başlıq",
-			"toast": {
-				"added": "Keçid əlavə edildi",
-				"copied": "Keçid kopyalandı",
-				"error": "Keçidi yadda saxlamaq alınmadı",
-				"removed": "Keçid çıxarıldı",
-				"updated": "Keçid yeniləndi"
-			},
-			"url": "URL",
-			"urlPlaceholder": "https://example.com"
-		},
-		"create": {
-			"similarTitle": "Oxşar açıq tapşırıqlar",
-			"similarDismiss": "Oxşar tapşırıqları gizlət",
-			"similarOpen": "Aç",
-			"similarOpenLabel": "{{key}} {{title}} tapşırığını yeni tabda aç"
-		},
-		"parent": {
-			"add": "Valideyn tapşırıq əlavə et",
-			"chip": "Valideyn",
-			"label": "Valideyn tapşırıq",
-			"noTasks": "Tapşırıq tapılmadı",
-			"remove": "Valideyn tapşırığı çıxar",
-			"search": "Tapşırıqları axtar…",
-			"tasksInProject": "Bu layihədəki tapşırıqlar",
-			"toast": {
-				"error": "Valideyn tapşırığı dəyişmək alınmadı",
-				"removed": "Valideyn tapşırıq çıxarıldı",
-				"set": "Valideyn tapşırıq {{key}} olaraq təyin edildi"
-			},
-			"tooltip": "Valideyn tapşırıq: {{key}} {{title}}"
-		},
-		"taskKey": {
-			"clipboardError": "Mübadilə buferinə kopyalamaq alınmadı",
-			"copied": "{{key}} kopyalandı",
-			"copyTooltip": "Tapşırığın açarını kopyala"
-		},
-		"display": {
-			"button": "Görünüş",
-			"columns": "Sütunlar",
-			"groupBy": "Qruplaşdır",
-			"groups": {
-				"assignee": "İcraçı",
-				"createdBy": "Yaradan",
-				"cycle": "Dövr",
-				"estimate": "Qiymətləndirmə",
-				"group": "Qrup",
-				"label": "Etiket",
-				"module": "Modul",
-				"priority": "Prioritet",
-				"project": "Layihə",
-				"status": "Vəziyyət"
-			},
-			"none": "Yoxdur",
-			"order": {
-				"assignee": "İcraçı",
-				"completedAt": "Tamamlanma tarixi",
-				"createdAt": "Ən son yaradılan",
-				"cycle": "Dövr",
-				"dueDate": "Son tarix",
-				"estimate": "Qiymətləndirmə",
-				"label": "Etiket",
-				"manual": "Əl ilə",
-				"module": "Modul",
-				"number": "Tapşırıq açarı",
-				"priority": "Prioritet",
-				"startDate": "Başlanğıc tarixi",
-				"status": "Vəziyyət",
-				"subTaskCount": "Alt tapşırıqlar",
-				"title": "Başlıq",
-				"updatedAt": "Ən son yenilənən",
-				"archivedAt": "Arxivləmə tarixi"
-			},
-			"orderBy": "Sırala",
-			"properties": "Xüsusiyyətlər",
-			"props": {
-				"assignee": "İcraçılar",
-				"checklist": "Yoxlama siyahısı",
-				"createdAt": "Yaradılıb",
-				"cycle": "Dövr",
-				"dueDate": "Son tarix",
-				"estimate": "Qiymətləndirmə",
-				"key": "Açar",
-				"labels": "Etiketlər",
-				"modules": "Modullar",
-				"priority": "Prioritet",
-				"startDate": "Başlanğıc tarixi",
-				"status": "Vəziyyət",
-				"subTaskCount": "Alt tapşırıqlar",
-				"updatedAt": "Yenilənib"
-			},
-			"showEmptyGroups": "Boş qrupları göstər",
-			"showSubTasks": "Alt tapşırıqları göstər",
-			"subGroupBy": "Alt qruplaşdır"
-		},
-		"filters": {
-			"apply": "Tətbiq et",
-			"applyError": "Süzgəcləri tətbiq etmək mümkün olmadı",
-			"archived": {
-				"exclude": "Arxivlənənləri gizlət",
-				"include": "Arxivlənənləri də göstər",
-				"label": "Arxivlənənlər",
-				"only": "Yalnız arxivlənənlər"
-			},
-			"button": "Süzgəc",
-			"clearAll": "Bütün süzgəcləri təmizlə",
-			"dates": {
-				"amount": "Miqdar",
-				"custom": "Fərdi tarix…",
-				"emptyTab": "Boş",
-				"exact": "Dəqiq tarix",
-				"future": "Bu gündən sonra",
-				"lastMonth": "Keçən ay",
-				"lastWeek": "Keçən həftə",
-				"nextMonth": "Gələn ay",
-				"nextWeek": "Gələn həftə",
-				"overdue": "Vaxtı keçmiş",
-				"past": "Bu gündən əvvəl",
-				"presets": "Hazır seçimlər",
-				"rolling": "Sürüşən müddət",
-				"rollingValue": "{{amount}} {{unit}}",
-				"thisMonth": "Bu ay",
-				"thisWeek": "Bu həftə",
-				"today": "Bu gün",
-				"tomorrow": "Sabah",
-				"units": {
-					"days": "gün",
-					"months": "ay",
-					"weeks": "həftə"
-				},
-				"yesterday": "Dünən"
-			},
-			"matchAll": "Hamısına uyğun",
-			"matchAny": "İstənilənə uyğun",
-			"mobileSummary_one": "{{count}} süzgəc",
-			"mobileSummary_other": "{{count}} süzgəc",
-			"nestedReadOnly": "Bu görünüş burada redaktə edilə bilməyən qabaqcıl süzgəclərdən istifadə edir",
-			"noOptions": "Seçim yoxdur",
-			"operators": {
-				"between": "arasında",
-				"is": "bərabərdir",
-				"isEmpty": "boşdur",
-				"isNoneOf": "heç biri deyil",
-				"isNot": "bərabər deyil",
-				"isNotEmpty": "boş deyil",
-				"moreThanAgo": "… əvvəldən çox",
-				"moreThanAhead": "indidən … sonradan çox",
-				"on": "bu tarixdə",
-				"onOrAfter": "bu tarixdə və ya sonra",
-				"onOrBefore": "bu tarixdə və ya əvvəl",
-				"withinLast": "son",
-				"withinNext": "növbəti"
-			},
-			"removeFilter": "{{subject}} süzgəcini sil",
-			"retry": "Yenidən cəhd et",
-			"searchOptions": "Seçimlərdə axtar",
-			"subjects": {
-				"completed": "Tamamlanıb",
-				"created": "Yaradılıb",
-				"createdBy": "Yaradan",
-				"cycle": "Dövr",
-				"group": "Qrup",
-				"mentions": "Xatırlatmalar",
-				"module": "Modul",
-				"parent": "Ana tapşırıq",
-				"project": "Layihə",
-				"startDate": "Başlanğıc tarixi",
-				"subscribed": "İzlənənlər",
-				"updated": "Yenilənib"
-			},
-			"tooMany": "Burada süzmək üçün çox uyğunluq var; cədvəli açın",
-			"values": {
-				"currentCycle": "Cari dövr",
-				"false": "Xeyr",
-				"me": "Mən",
-				"noAssignee": "İcraçı yoxdur",
-				"noCreator": "Yaradan yoxdur",
-				"noCycle": "Dövr yoxdur",
-				"noEstimate": "Qiymətləndirmə yoxdur",
-				"noLabel": "Etiket yoxdur",
-				"noModule": "Modul yoxdur",
-				"none": "Yoxdur",
-				"noParent": "Ana tapşırıq yoxdur",
-				"true": "Bəli"
-			}
-		},
-		"groups": {
-			"all": "Bütün tapşırıqlar",
-			"hiddenGroups_one": "Daha {{count}} qrup göstərilmir",
-			"hiddenGroups_other": "Daha {{count}} qrup göstərilmir",
-			"loadMore": "Daha çox yüklə ({{count}})",
-			"moduleCount_one": "{{count}} modul",
-			"moduleCount_other": "{{count}} modul",
-			"moveError": "Tapşırığı köçürmək mümkün olmadı",
-			"noAssignee": "İcraçı yoxdur",
-			"noCreator": "Yaradan yoxdur",
-			"noCycle": "Dövr yoxdur",
-			"noEstimate": "Qiymətləndirmə yoxdur",
-			"noLabel": "Etiket yoxdur",
-			"noModule": "Modul yoxdur",
-			"planned": "Planlaşdırılıb"
-		},
-		"queryEmpty": {
-			"clear": "Süzgəcləri təmizlə",
-			"description": "Bir-iki süzgəci silməyə çalışın.",
-			"title": "Bu süzgəclərə uyğun tapşırıq yoxdur"
-		},
-		"spreadsheet": {
-			"clearSort": "Sıralamanı təmizlə",
-			"collapseSubTasks": "Alt tapşırıqları gizlət",
-			"expandSubTasks": "Alt tapşırıqları göstər",
-			"hideColumn": "Sütunu gizlət",
-			"loadError": "Tapşırıqları yükləmək mümkün olmadı",
-			"selectTask": "{{key}} seç",
-			"sortAsc": "Artan sırala",
-			"sortDesc": "Azalan sırala",
-			"task": "Tapşırıq"
-		},
-		"subscription": {
-			"count_one": "{{count}} nəfər izləyir",
-			"count_other": "{{count}} nəfər izləyir",
-			"error": "İzləmə vəziyyətini yeniləmək mümkün olmadı",
-			"mutedAssignee": "Tapşırıq sizə təyin edilib, lakin izləməni dayandırmısınız. Xatırlatmalardan yenə də xəbərdar olacaqsınız.",
-			"notSubscribed": "Vəziyyət dəyişiklikləri, şərhlər və digər dəyişikliklər barədə yenilik alın.",
-			"reasons": {
-				"assignee": "Tapşırıq sizə təyin edildiyi üçün izləyirsiniz.",
-				"commenter": "Şərh yazdığınız üçün izləyirsiniz.",
-				"creator": "Bu tapşırığı yaratdığınız üçün izləyirsiniz.",
-				"manual": "Bu tapşırığı izləyirsiniz.",
-				"mention": "Sizi xatırlatdıqları üçün izləyirsiniz."
-			},
-			"subscribe": "İzlə",
-			"toastSubscribed": "Bu tapşırığı izləyirsiniz",
-			"toastUnsubscribed": "İzləmə dayandırıldı. Xatırladıldıqda yenə də bildiriş alacaqsınız.",
-			"unsubscribe": "İzləməni dayandır"
-		},
-		"timeTracking": {
-			"duration": "Müddət",
-			"durationInvalid": "1 dəqiqə ilə 24 saat arasında müddət daxil edin, məsələn 1h 30m.",
-			"durationPlaceholder": "məs. 1h 30m",
-			"empty": "Hələ qeyd edilmiş vaxt yoxdur",
-			"entries": "Vaxt qeydləri",
-			"formerMember": "Keçmiş üzv",
-			"hours": "{{hours}}s",
-			"hoursMinutes": "{{hours}}s {{minutes}}d",
-			"label": "Sərf olunan vaxt",
-			"logError": "Vaxt qeyd edilə bilmədi",
-			"logged": "Vaxt qeyd edildi",
-			"logTime": "Vaxt qeyd et",
-			"minutes": "{{minutes}}d",
-			"note": "Qeyd (istəyə bağlı)",
-			"running": "İşləyir",
-			"spentAria": "Sərf olunan vaxt: {{total}}. Vaxt qeyd et",
-			"submit": "Vaxt qeyd et",
-			"deleteConfirm": "Bu qeyd silinsin?",
-			"deleted": "Vaxt qeydi silindi",
-			"deleteEntry": "{{date}} tarixli vaxt qeydini sil",
-			"deleteError": "Vaxt qeydi silinə bilmədi"
 		},
 		"archivedBanner": {
 			"message": "Bu tapşırıq {{time}} arxivlənib.",
@@ -5063,8 +4725,604 @@
 			},
 			"untitled": "Başlıqsız qaralama"
 		},
+		"listView": {
+			"addTask": "Tapşırıq əlavə et",
+			"archiveAllTooltip": "Bütün tamamlanmış tapşırıqları arxivlə",
+			"noTasks": "Tapşırıq yoxdur"
+		},
+		"kanban": {
+			"addTask": "Tapşırıq əlavə et",
+			"stages": "Sütunlar",
+			"emptyAction": "Tapşırıq əlavə et",
+			"emptyTitle": "Hələ tapşırıq yoxdur"
+		},
+		"pr": {
+			"merged": "Birləşdirilib",
+			"draft": "Qaralama",
+			"open": "Açıq",
+			"label": "Birləşdirmə sorğusu",
+			"count_one": "{{count}} birləşdirmə sorğusu",
+			"count_other": "{{count}} birləşdirmə sorğusu"
+		},
+		"assignee": {
+			"label": "İcraçılar",
+			"unassigned": "Təyin olunmayıb"
+		},
+		"assignees": {
+			"label": "İcraçılar",
+			"searchPlaceholder": "İnsanları axtar...",
+			"noMatches": "Uyğun şəxs tapılmadı",
+			"noMembers": "Təyin etmək üçün hələ üzv yoxdur",
+			"you": "{{name}} (siz)",
+			"clear": "İcraçıları təmizlə",
+			"more": "+{{count}}",
+			"nameAndMore": "{{name}} +{{count}}",
+			"stackAria": "{{names}}-ə təyin edilib",
+			"formerMember": "Artıq üzv deyil",
+			"formerMemberSuffix": "{{name}} (artıq üzv deyil)",
+			"limitReached": "Bir tapşırığın ən çox {{count}} icraçısı ola bilər",
+			"updateError": "İcraçıları yeniləmək alınmadı",
+			"unknownPerson": "Naməlum şəxs",
+			"noAccess": "Bu layihəyə girişi yoxdur",
+			"noAccessSuffix": "{{name}} (bu layihəyə girişi yoxdur)"
+		},
+		"dueDate": {
+			"label": "Son tarix",
+			"clear": "Tarixi təmizlə",
+			"updateSuccess": "Tapşırığın son tarixi uğurla yeniləndi",
+			"updateError": "Tapşırığın son tarixini yeniləmək alınmadı",
+			"clearSuccess": "Tapşırığın son tarixi təmizləndi",
+			"clearError": "Son tarixi təmizləmək alınmadı"
+		},
+		"update": {
+			"success": "Tapşırıq uğurla yeniləndi",
+			"error": "Tapşırığı yeniləmək alınmadı"
+		},
+		"contextMenu": {
+			"copyLink": "Keçidi kopyala",
+			"copyLinkSuccess": "Tapşırıq keçidi kopyalandı",
+			"estimate": "Qiymətləndirmə"
+		},
+		"actions": {
+			"archive": "Arxivlə",
+			"markAsPlanned": "Planlaşdırılmış kimi işarələ",
+			"delete": "Sil...",
+			"copyKey": "Tapşırığın açarını kopyala",
+			"copyLink": "Keçidi kopyala",
+			"makeCopy": "Surət yarat…",
+			"moreActions": "Digər əməliyyatlar"
+		},
+		"commands": {
+			"assignedSelf": "Sizə təyin edildi",
+			"assignees": "İcraçıları dəyiş…",
+			"assignSelf": "Mənə təyin et",
+			"copyTitle": "Başlığı kopyala",
+			"cycle": "Dövrü dəyiş…",
+			"dueDate": "Son tarixi dəyiş…",
+			"estimate": "Qiymətləndirməni dəyiş…",
+			"group": "Bu tapşırıq",
+			"labels": "Etiketləri dəyiş…",
+			"module": "Modulları dəyiş…",
+			"priority": "Prioriteti dəyiş…",
+			"status": "Vəziyyəti dəyiş…",
+			"titleCopied": "Tapşırıq başlığı kopyalandı",
+			"unassignedSelf": "Artıq sizə təyin olunmayıb",
+			"unassignSelf": "Təyinatımı ləğv et"
+		},
+		"readableLink": {
+			"goHome": "Ana səhifəyə keç",
+			"notFound": "Bu iş sahəsində {{key}} açarlı tapşırıq yoxdur və ya onu görə bilmirsiniz."
+		},
+		"timeTracking": {
+			"label": "Sərf olunan vaxt",
+			"logTime": "Vaxt qeyd et",
+			"spentAria": "Sərf olunan vaxt: {{total}}. Vaxt qeyd et",
+			"duration": "Müddət",
+			"durationPlaceholder": "məs. 1h 30m",
+			"durationInvalid": "1 dəqiqə ilə 24 saat arasında müddət daxil edin, məsələn 1h 30m.",
+			"note": "Qeyd (istəyə bağlı)",
+			"submit": "Vaxt qeyd et",
+			"logged": "Vaxt qeyd edildi",
+			"logError": "Vaxt qeyd edilə bilmədi",
+			"empty": "Hələ qeyd edilmiş vaxt yoxdur",
+			"entries": "Vaxt qeydləri",
+			"running": "İşləyir",
+			"formerMember": "Keçmiş üzv",
+			"hours": "{{hours}}s",
+			"minutes": "{{minutes}}d",
+			"hoursMinutes": "{{hours}}s {{minutes}}d",
+			"deleteEntry": "{{date}} tarixli vaxt qeydini sil",
+			"deleteConfirm": "Bu qeyd silinsin?",
+			"deleted": "Vaxt qeydi silindi",
+			"deleteError": "Vaxt qeydi silinə bilmədi",
+			"startTimer": "Taymeri başlat",
+			"startHere": "Onu dayandır və burada başlat",
+			"stopTimer": "Dayandır",
+			"timerRunning": "Taymer işləyir",
+			"timerRunningOn": "Taymer bu tapşırıqda işləyir: {{task}}",
+			"timerStarted": "Taymer başladıldı",
+			"timerSwitched": "Taymer başladıldı. Digər taymeriniz dayandırıldı.",
+			"timerStopped": "Taymer dayandırıldı. {{total}} qeyd edildi.",
+			"timerStartError": "Taymeri başlatmaq mümkün olmadı",
+			"timerStopError": "Taymeri dayandırmaq mümkün olmadı",
+			"loadError": "Vaxt qeydlərini yükləmək mümkün olmadı",
+			"editEntry": "{{date}} tarixli vaxt qeydini redaktə et",
+			"editStart": "Başlanğıc",
+			"editEnd": "Son",
+			"editEndRunningHint": "İşləməyə davam etməsi üçün boş saxlayın.",
+			"editEndRequired": "Bu vaxtın nə vaxt bitdiyini daxil edin.",
+			"editStartInvalid": "Bu vaxtın nə vaxt başladığını daxil edin.",
+			"editEndBeforeStart": "Son başlanğıcdan əvvəl ola bilməz.",
+			"editSave": "Yadda saxla",
+			"edited": "Vaxt qeydi yeniləndi",
+			"editError": "Vaxt qeydini yeniləmək mümkün olmadı"
+		},
+		"bulk": {
+			"selectedCount": "{{count}} seçilib",
+			"moveToBacklog": "Gözləyən tapşırıqlara köçür",
+			"clearSelection": "Seçimi təmizlə",
+			"moveToBacklogSuccess": "{{count}} tapşırıq gözləyən tapşırıqlara köçürüldü",
+			"moveToBacklogError": "Tapşırıqları gözləyən tapşırıqlara köçürmək alınmadı",
+			"moveToBoard": "Lövhəyə köçür",
+			"moveToBoardSuccess": "{{count}} tapşırıq lövhəyə köçürüldü",
+			"moveToBoardError": "Tapşırıqları lövhəyə köçürmək alınmadı",
+			"delete": "Tapşırıqları sil",
+			"deleteConfirm": "{{count}} tapşırıq zibil qutusuna köçürülsün? Onları layihə parametrlərindəki Son silinənlər bölməsindən bərpa edə bilərsiniz.",
+			"deleteSuccess": "{{count}} tapşırıq silindi",
+			"deleteError": "Tapşırıqları silmək alınmadı",
+			"archive": "Tapşırıqları arxivlə",
+			"archiveSuccess": "{{count}} tapşırıq arxivləndi",
+			"archiveError": "Tapşırıqları arxivləmək alınmadı",
+			"updateSuccess": "{{count}} tapşırıq yeniləndi",
+			"updateError": "Tapşırıqları yeniləmək alınmadı",
+			"addAssignee": "İcraçı əlavə et",
+			"removeAssignee": "İcraçını çıxar",
+			"clearAssignees": "İcraçıları təmizlə",
+			"addAssigneeSuccess_one": "{{name}} {{count}} tapşırığa əlavə edildi",
+			"addAssigneeSuccess_other": "{{name}} {{count}} tapşırığa əlavə edildi",
+			"removeAssigneeSuccess_one": "{{name}} {{count}} tapşırıqdan çıxarıldı",
+			"removeAssigneeSuccess_other": "{{name}} {{count}} tapşırıqdan çıxarıldı",
+			"clearAssigneesSuccess_one": "{{count}} tapşırıqda icraçılar təmizləndi",
+			"clearAssigneesSuccess_other": "{{count}} tapşırıqda icraçılar təmizləndi",
+			"assigneesError": "İcraçıları yeniləmək alınmadı",
+			"setPriority": "Prioritet təyin et",
+			"updatePriorityError": "Prioriteti yeniləmək alınmadı",
+			"addLabel": "Etiket əlavə et",
+			"addLabelSuccess": "{{count}} tapşırığa etiket əlavə edildi",
+			"addLabelError": "Etiket əlavə etmək alınmadı",
+			"setDueDate": "Son tarix təyin et",
+			"updateDueDateError": "Son tarixi yeniləmək alınmadı",
+			"actions": "Əməliyyatlar",
+			"searchActions": "Əməliyyatları axtar...",
+			"noActionsFound": "Əməliyyat tapılmadı.",
+			"changeStatus": "Vəziyyəti dəyiş",
+			"removeLabel": "Etiketi çıxar",
+			"removeLabelSuccess": "Etiket {{count}} tapşırıqdan çıxarıldı",
+			"removeLabelError": "Etiketi çıxarmaq alınmadı",
+			"unarchive": "Arxivdən bərpa et",
+			"unarchiveSuccess": "{{count}} tapşırıq bərpa edildi",
+			"unarchiveNone": "Seçilmiş tapşırıqların heç biri arxivlənməyib",
+			"unarchiveError": "Tapşırıqları bərpa etmək alınmadı",
+			"setDates": "Tarixlər",
+			"dateField": "Təyin ediləcək tarix",
+			"startDate": "Başlama tarixi",
+			"dueDate": "Son tarix",
+			"clearStartDate": "Başlama tarixini təmizlə",
+			"clearDueDate": "Son tarixi təmizlə",
+			"updateStartDateError": "Başlama tarixini yeniləmək alınmadı. Başlama tarixi tapşırığın son tarixindən sonra ola bilməz.",
+			"selectTask": "Seç: {{title}}",
+			"moveToProject": "Layihəyə köçür",
+			"moveToProjectTitle_one": "{{count}} tapşırıq {{name}} layihəsinə köçürülsün?",
+			"moveToProjectTitle_other": "{{count}} tapşırıq {{name}} layihəsinə köçürülsün?",
+			"moveToProjectRule": "Tapşırıqlar yeni tapşırıq açarları alır. Layihədə həmin vəziyyət varsa, hər tapşırıq vəziyyətini saxlayır, əks halda ilk sütuna keçir. Etiketlər və icraçılar qalır. Dövrlər, modullar və qiymətləndirmələr təmizlənir. Fərdi sahə dəyərləri yalnız layihədə eyni ad və növdə sahə olduqda qalır.",
+			"moveToProjectConfirm": "Tapşırıqları köçür",
+			"moveToProjectSuccess_one": "{{count}} tapşırıq {{name}} layihəsinə köçürüldü",
+			"moveToProjectSuccess_other": "{{count}} tapşırıq {{name}} layihəsinə köçürüldü",
+			"moveToProjectNone": "Bu tapşırıqlar artıq {{name}} daxilindədir",
+			"moveToProjectError": "Tapşırıqları köçürmək mümkün olmadı"
+		},
+		"editor": {
+			"table": {
+				"addColumnBefore": "Sola sütun daxil et",
+				"addColumnAfter": "Sağa sütun daxil et",
+				"deleteColumn": "Sütunu sil",
+				"addRowBefore": "Yuxarıya sətir daxil et",
+				"addRowAfter": "Aşağıya sətir daxil et",
+				"deleteRow": "Sətri sil",
+				"deleteTable": "Cədvəli sil",
+				"moveRowUp": "Sətri yuxarı köçür",
+				"moveRowDown": "Sətri aşağı köçür",
+				"moveColumnLeft": "Sütunu sola köçür",
+				"moveColumnRight": "Sütunu sağa köçür",
+				"toggleHeaderRow": "Başlıq sətri",
+				"fullWidth": "Tam en",
+				"dragRow": "Sətir {{index}}",
+				"dragColumn": "Sütun {{index}}",
+				"dragRowHint": "Sətri köçürmək üçün sürüşdürün və ya ox düymələrindən istifadə edin",
+				"dragColumnHint": "Sütunu köçürmək üçün sürüşdürün və ya ox düymələrindən istifadə edin",
+				"insertRowHere": "Bura sətir əlavə et",
+				"insertColumnHere": "Bura sütun əlavə et"
+			}
+		},
+		"descriptionSearchLoading": "Tam təsvirlər axtarılır…",
+		"descriptionSearchError": "Təsvir axtarışı uğursuz oldu. Nəticələr natamam ola bilər.",
+		"descriptionRetry": "Yenidən cəhd et",
+		"descriptionLoading": "Təsvir yüklənir…",
+		"descriptionLoadError": "Təsviri yükləmək mümkün olmadı. Cari versiyanı yükləmək üçün yenidən cəhd edin.",
+		"descriptionHistory": {
+			"cancel": "Ləğv et",
+			"description": "Bu təsvirin saxlanılmış versiyaları, əvvəlcə yenilər. Bir nəfərin 10 dəqiqə ərzindəki redaktələri bir versiyada birləşir; son 50 versiya saxlanılır.",
+			"earlierVersion": "Əvvəlki versiya",
+			"empty": "Hələ saxlanılmış versiya yoxdur. Versiyalar növbəti redaktədən etibarən saxlanılır.",
+			"emptyVersion": "Bu versiyada təsvir yoxdur.",
+			"latest": "Ən son",
+			"list": "Saxlanılmış versiyalar",
+			"loadError": "Tarixçəni yükləmək mümkün olmadı",
+			"open": "Tarixçə",
+			"previewTitle": "{{date}} tarixli versiya",
+			"restore": "Bərpa et",
+			"restoreConfirmDescription": "Təsvir bu versiya ilə əvəz olunacaq. Cari mətn tarixçədə qalır.",
+			"restoreConfirmTitle": "Bu versiya bərpa edilsin?",
+			"restored": "Təsvir bərpa edildi",
+			"restoreError": "Bu versiyanı bərpa etmək mümkün olmadı",
+			"retry": "Yenidən cəhd et",
+			"size_one": "{{count}} simvol",
+			"size_other": "{{count}} simvol",
+			"title": "Təsvir tarixçəsi",
+			"viewOnly": "Yalnız baxış"
+		},
+		"estimate": {
+			"bulk": {
+				"action": "Qiymətləndirmə",
+				"error": "Seçilmiş tapşırıqların qiymətləndirməsini dəyişmək mümkün olmadı",
+				"updated_one": "{{count}} tapşırığın qiymətləndirməsi yeniləndi",
+				"updated_other": "{{count}} tapşırığın qiymətləndirməsi yeniləndi"
+			},
+			"chart": {
+				"points": "Xallar",
+				"pointsLeft": "Qalan xallar",
+				"summaryPoints": "{{scope}} xaldan {{remaining}} qalıb, {{days}} gün qalıb",
+				"summaryTime": "{{scope}}-dan {{remaining}} qalıb, {{days}} gün qalıb",
+				"tasks": "Tapşırıqlar",
+				"time": "Vaxt",
+				"timeLeft": "Qalan vaxt",
+				"unitAria": "Qrafik vahidi"
+			},
+			"duration": {
+				"hours": "{{hours}} saat",
+				"hoursMinutes": "{{hours}} saat {{minutes}} dəq",
+				"hourUnit": "h",
+				"minutes": "{{minutes}} dəq",
+				"minuteUnit": "m"
+			},
+			"label": "Qiymətləndirmə",
+			"none": "Qiymətləndirmə yoxdur",
+			"pointsValue_one": "{{value}} xal",
+			"pointsValue_other": "{{value}} xal",
+			"setAria": "Qiymətləndirmə təyin et",
+			"totals": {
+				"estimated": "{{total}} tapşırıqdan {{estimated}} qiymətləndirilib",
+				"points_one": "{{completed}} / {{total}} xal",
+				"points_other": "{{completed}} / {{total}} xal",
+				"time": "{{completed}} / {{total}}"
+			},
+			"updateError": "Qiymətləndirməni yeniləmək alınmadı"
+		},
+		"detailActions": {
+			"addLink": "Keçid əlavə et",
+			"addRelation": "Əlaqə əlavə et",
+			"addSubtask": "Alt tapşırıq əlavə et",
+			"attachFile": "Fayl əlavə et"
+		},
+		"taskKey": {
+			"clipboardError": "Mübadilə buferinə kopyalamaq alınmadı",
+			"copied": "{{key}} kopyalandı",
+			"copyTooltip": "Tapşırığın açarını kopyala"
+		},
 		"pageReferences": {
 			"title": "Səhifələrdə qeyd olunub"
+		},
+		"links": {
+			"add": "Keçid əlavə et",
+			"addedAt": "{{date}} tarixində əlavə edilib",
+			"addedBy": "{{name}} tərəfindən əlavə edilib · {{date}}",
+			"addTitle": "Keçid əlavə et",
+			"cancel": "Ləğv et",
+			"copyUrl": "URL-i kopyala",
+			"edit": "Redaktə et",
+			"editTitle": "Keçidi redaktə et",
+			"errors": {
+				"credentials": "Keçidlər istifadəçi adı və ya parol ehtiva edə bilməz",
+				"duplicate": "Bu keçid artıq bu tapşırıqdadır",
+				"invalid": "Düzgün http və ya https URL-i daxil edin",
+				"required": "URL tələb olunur",
+				"titleTooLong": "Başlıq ən çox 255 simvoldan ibarət ola bilər",
+				"tooLong": "Keçid ən çox 2048 simvoldan ibarət ola bilər"
+			},
+			"linkTitle": "Başlıq",
+			"loadError": "Keçidləri yükləmək alınmadı",
+			"moreActions": "Keçid əməliyyatları",
+			"remove": "Çıxar",
+			"removeConfirmDescription": "O, hamı üçün tapşırıqdan çıxarılacaq.",
+			"removeConfirmTitle": "Bu keçid çıxarılsın?",
+			"retry": "Yenidən cəhd et",
+			"save": "Yadda saxla",
+			"title": "Keçidlər",
+			"titlePlaceholder": "İstəyə bağlı görünən başlıq",
+			"toast": {
+				"added": "Keçid əlavə edildi",
+				"copied": "Keçid kopyalandı",
+				"error": "Keçidi yadda saxlamaq alınmadı",
+				"removed": "Keçid çıxarıldı",
+				"updated": "Keçid yeniləndi"
+			},
+			"url": "URL",
+			"urlPlaceholder": "https://example.com"
+		},
+		"attachments": {
+			"add": "Fayl əlavə et",
+			"delete": "Sil",
+			"deleteConfirmDescription": "Fayl hamı üçün silinəcək. Bu əməliyyatı geri qaytara bilməzsiniz.",
+			"deleteConfirmTitle": "{{filename}} silinsin?",
+			"download": "Yüklə",
+			"dropHere": "Faylları buraya atın və ya seçmək üçün klikləyin",
+			"dropToAttach": "Əlavə etmək üçün faylları atın",
+			"loadError": "Əlavələri yükləmək alınmadı",
+			"meta": "{{size}} · {{name}} · {{time}}",
+			"metaNoUser": "{{size}} · {{time}}",
+			"open": "Aç",
+			"title": "Əlavələr",
+			"toast": {
+				"attached_one": "{{count}} fayl əlavə edildi",
+				"attached_other": "{{count}} fayl əlavə edildi",
+				"deleted": "Əlavə silindi",
+				"deleteError": "Əlavəni silmək alınmadı",
+				"empty": "{{filename}} boşdur",
+				"failed": "{{filename}} əlavə edilmədi: {{reason}}",
+				"notConfigured": "Bu serverdə fayl yükləmə qurulmayıb. Anbarı konfiqurasiya etmək üçün administratorunuzdan xahiş edin.",
+				"storageError": "anbar yükləməni rədd etdi",
+				"tooMany": "Bir dəfəyə ən çox {{count}} fayl əlavə edə bilərsiniz",
+				"unknownError": "nəsə səhv getdi"
+			},
+			"uploading": "Yüklənir…"
+		},
+		"create": {
+			"similarTitle": "Oxşar açıq tapşırıqlar",
+			"similarDismiss": "Oxşar tapşırıqları gizlət",
+			"similarOpen": "Aç",
+			"similarOpenLabel": "{{key}} {{title}} tapşırığını yeni tabda aç"
+		},
+		"parent": {
+			"add": "Valideyn tapşırıq əlavə et",
+			"chip": "Valideyn",
+			"label": "Valideyn tapşırıq",
+			"noTasks": "Tapşırıq tapılmadı",
+			"remove": "Valideyn tapşırığı çıxar",
+			"search": "Tapşırıqları axtar…",
+			"tasksInProject": "Bu layihədəki tapşırıqlar",
+			"toast": {
+				"error": "Valideyn tapşırığı dəyişmək alınmadı",
+				"removed": "Valideyn tapşırıq çıxarıldı",
+				"set": "Valideyn tapşırıq {{key}} olaraq təyin edildi"
+			},
+			"tooltip": "Valideyn tapşırıq: {{key}} {{title}}"
+		},
+		"copy": {
+			"alwaysCopied": "Vəziyyət və prioritet həmişə kopyalanır.",
+			"cancel": "Ləğv et",
+			"includeLabel": "Daxil et",
+			"options": {
+				"assignees": "İcraçılar",
+				"attachments": "Əlavələr",
+				"customFields": "Xüsusi sahə dəyərləri",
+				"dates": "Başlama və son tarixlər",
+				"description": "Təsvir",
+				"labels": "Etiketlər",
+				"links": "Keçidlər",
+				"parent": "Valideyn tapşırıq",
+				"planning": "Dövr, modullar və qiymətləndirmə"
+			},
+			"otherProjectHint": "Vəziyyət yeni layihənin sütunlarına uyğunlaşdırılır. Xüsusi sahələr, valideyn tapşırıq və planlaşdırma layihələr arasında kopyalanmır.",
+			"projectLabel": "Layihə",
+			"submit": "Surət yarat",
+			"title": "{{key}}-in surətini yarat",
+			"titleLabel": "Başlıq",
+			"titleRequired": "Başlıq tələb olunur",
+			"titleSuffix": "{{title}} (surət)",
+			"toast": {
+				"error": "Surət yaratmaq alınmadı",
+				"open": "Aç",
+				"skipped": "Kopyalanmadı: {{list}}",
+				"success": "Surət yaradıldı: {{key}}"
+			}
+		},
+		"filters": {
+			"button": "Süzgəc",
+			"searchOptions": "Seçimlərdə axtar",
+			"noOptions": "Seçim yoxdur",
+			"matchAll": "Hamısına uyğun",
+			"matchAny": "İstənilənə uyğun",
+			"applyError": "Süzgəcləri tətbiq etmək mümkün olmadı",
+			"retry": "Yenidən cəhd et",
+			"tooMany": "Burada süzmək üçün çox uyğunluq var; cədvəli açın",
+			"nestedReadOnly": "Bu görünüş burada redaktə edilə bilməyən qabaqcıl süzgəclərdən istifadə edir",
+			"clearAll": "Bütün süzgəcləri təmizlə",
+			"apply": "Tətbiq et",
+			"mobileSummary_one": "{{count}} süzgəc",
+			"mobileSummary_other": "{{count}} süzgəc",
+			"removeFilter": "{{subject}} süzgəcini sil",
+			"subjects": {
+				"group": "Qrup",
+				"createdBy": "Yaradan",
+				"cycle": "Dövr",
+				"module": "Modul",
+				"startDate": "Başlanğıc tarixi",
+				"created": "Yaradılıb",
+				"updated": "Yenilənib",
+				"completed": "Tamamlanıb",
+				"parent": "Ana tapşırıq",
+				"project": "Layihə",
+				"subscribed": "İzlənənlər",
+				"mentions": "Xatırlatmalar",
+				"blocked": "Bloklanmış"
+			},
+			"operators": {
+				"between": "arasında",
+				"is": "bərabərdir",
+				"isEmpty": "boşdur",
+				"isNoneOf": "heç biri deyil",
+				"isNot": "bərabər deyil",
+				"isNotEmpty": "boş deyil",
+				"moreThanAgo": "… əvvəldən çox",
+				"moreThanAhead": "indidən … sonradan çox",
+				"on": "bu tarixdə",
+				"onOrAfter": "bu tarixdə və ya sonra",
+				"onOrBefore": "bu tarixdə və ya əvvəl",
+				"withinLast": "son",
+				"withinNext": "növbəti"
+			},
+			"values": {
+				"me": "Mən",
+				"none": "Yoxdur",
+				"noAssignee": "İcraçı yoxdur",
+				"noCreator": "Yaradan yoxdur",
+				"noLabel": "Etiket yoxdur",
+				"noCycle": "Dövr yoxdur",
+				"noModule": "Modul yoxdur",
+				"noEstimate": "Qiymətləndirmə yoxdur",
+				"noParent": "Ana tapşırıq yoxdur",
+				"currentCycle": "Cari dövr",
+				"true": "Bəli",
+				"false": "Xeyr",
+				"blockedYes": "Bəli",
+				"blockedNo": "Xeyr"
+			},
+			"dates": {
+				"amount": "Miqdar",
+				"custom": "Fərdi tarix…",
+				"emptyTab": "Boş",
+				"exact": "Dəqiq tarix",
+				"future": "Bu gündən sonra",
+				"lastMonth": "Keçən ay",
+				"lastWeek": "Keçən həftə",
+				"nextMonth": "Gələn ay",
+				"nextWeek": "Gələn həftə",
+				"overdue": "Vaxtı keçmiş",
+				"past": "Bu gündən əvvəl",
+				"presets": "Hazır seçimlər",
+				"rolling": "Sürüşən müddət",
+				"rollingValue": "{{amount}} {{unit}}",
+				"thisMonth": "Bu ay",
+				"thisWeek": "Bu həftə",
+				"today": "Bu gün",
+				"tomorrow": "Sabah",
+				"units": {
+					"days": "gün",
+					"months": "ay",
+					"weeks": "həftə"
+				},
+				"yesterday": "Dünən"
+			},
+			"archived": {
+				"exclude": "Arxivlənənləri gizlət",
+				"include": "Arxivlənənləri də göstər",
+				"label": "Arxivlənənlər",
+				"only": "Yalnız arxivlənənlər"
+			},
+			"myTasks": "Tapşırıqlarım"
+		},
+		"display": {
+			"button": "Görünüş",
+			"columns": "Sütunlar",
+			"groupBy": "Qruplaşdır",
+			"groups": {
+				"status": "Vəziyyət",
+				"group": "Qrup",
+				"priority": "Prioritet",
+				"assignee": "İcraçı",
+				"createdBy": "Yaradan",
+				"label": "Etiket",
+				"cycle": "Dövr",
+				"module": "Modul",
+				"estimate": "Qiymətləndirmə",
+				"project": "Layihə",
+				"customField": "Fərdi sahə"
+			},
+			"none": "Yoxdur",
+			"order": {
+				"manual": "Əl ilə",
+				"createdAt": "Ən son yaradılan",
+				"updatedAt": "Ən son yenilənən",
+				"completedAt": "Tamamlanma tarixi",
+				"startDate": "Başlanğıc tarixi",
+				"dueDate": "Son tarix",
+				"priority": "Prioritet",
+				"title": "Başlıq",
+				"number": "Tapşırıq açarı",
+				"status": "Vəziyyət",
+				"assignee": "İcraçı",
+				"label": "Etiket",
+				"cycle": "Dövr",
+				"module": "Modul",
+				"estimate": "Qiymətləndirmə",
+				"subTaskCount": "Alt tapşırıqlar",
+				"archivedAt": "Arxivləmə tarixi",
+				"customField": "Fərdi sahə"
+			},
+			"orderBy": "Sırala",
+			"properties": "Xüsusiyyətlər",
+			"props": {
+				"assignee": "İcraçılar",
+				"checklist": "Yoxlama siyahısı",
+				"createdAt": "Yaradılıb",
+				"cycle": "Dövr",
+				"dueDate": "Son tarix",
+				"estimate": "Qiymətləndirmə",
+				"key": "Açar",
+				"labels": "Etiketlər",
+				"modules": "Modullar",
+				"priority": "Prioritet",
+				"startDate": "Başlanğıc tarixi",
+				"status": "Vəziyyət",
+				"subTaskCount": "Alt tapşırıqlar",
+				"updatedAt": "Yenilənib"
+			},
+			"showEmptyGroups": "Boş qrupları göstər",
+			"showSubTasks": "Alt tapşırıqları göstər",
+			"subGroupBy": "Alt qruplaşdır"
+		},
+		"groups": {
+			"all": "Bütün tapşırıqlar",
+			"planned": "Planlaşdırılıb",
+			"noAssignee": "İcraçı yoxdur",
+			"noCreator": "Yaradan yoxdur",
+			"noLabel": "Etiket yoxdur",
+			"noCycle": "Dövr yoxdur",
+			"noModule": "Modul yoxdur",
+			"noEstimate": "Qiymətləndirmə yoxdur",
+			"loadMore": "Daha çox yüklə ({{count}})",
+			"hiddenGroups_one": "Daha {{count}} qrup göstərilmir",
+			"hiddenGroups_other": "Daha {{count}} qrup göstərilmir",
+			"moduleCount_one": "{{count}} modul",
+			"moduleCount_other": "{{count}} modul",
+			"moveError": "Tapşırığı köçürmək mümkün olmadı",
+			"noFieldValue": "Dəyər yoxdur"
+		},
+		"spreadsheet": {
+			"clearSort": "Sıralamanı təmizlə",
+			"collapseSubTasks": "Alt tapşırıqları gizlət",
+			"expandSubTasks": "Alt tapşırıqları göstər",
+			"hideColumn": "Sütunu gizlət",
+			"loadError": "Tapşırıqları yükləmək mümkün olmadı",
+			"selectTask": "{{key}} seç",
+			"sortAsc": "Artan sırala",
+			"sortDesc": "Azalan sırala",
+			"task": "Tapşırıq"
+		},
+		"queryEmpty": {
+			"clear": "Süzgəcləri təmizlə",
+			"description": "Bir-iki süzgəci silməyə çalışın.",
+			"title": "Bu süzgəclərə uyğun tapşırıq yoxdur"
 		},
 		"capture": {
 			"ariaLabel": "“{{column}}” sütununa tapşırıq əlavə et",
@@ -5090,48 +5348,33 @@
 			"changePriority": "Prioritet: {{priority}}",
 			"changeStatus": "Vəziyyət: {{status}}"
 		},
-		"commands": {
-			"assignedSelf": "Sizə təyin edildi",
-			"assignees": "İcraçıları dəyiş…",
-			"assignSelf": "Mənə təyin et",
-			"copyTitle": "Başlığı kopyala",
-			"cycle": "Dövrü dəyiş…",
-			"dueDate": "Son tarixi dəyiş…",
-			"estimate": "Qiymətləndirməni dəyiş…",
-			"group": "Bu tapşırıq",
-			"labels": "Etiketləri dəyiş…",
-			"module": "Modulları dəyiş…",
-			"priority": "Prioriteti dəyiş…",
-			"status": "Vəziyyəti dəyiş…",
-			"titleCopied": "Tapşırıq başlığı kopyalandı",
-			"unassignedSelf": "Artıq sizə təyin olunmayıb",
-			"unassignSelf": "Təyinatımı ləğv et"
+		"boardSearchOpen": "Tapşırıqları axtar",
+		"customFieldValue": {
+			"clear": "Dəyəri təmizlə",
+			"edit": "Redaktə et: {{name}}",
+			"removedOption": "{{value}} (çıxarılmış seçim)",
+			"saveError": "Bu sahəni yadda saxlamaq mümkün olmadı.",
+			"placeholder": "Yeni dəyər",
+			"true": "Doğru",
+			"false": "Yanlış"
 		},
-		"readableLink": {
-			"goHome": "Ana səhifəyə keç",
-			"notFound": "Bu iş sahəsində {{key}} açarlı tapşırıq yoxdur və ya onu görə bilmirsiniz."
+		"customFieldBulk": {
+			"action": "Fərdi sahə",
+			"chooseField": "Sahə seçin",
+			"apply": "Tətbiq et",
+			"updated_one": "{{count}} tapşırıq yeniləndi",
+			"updated_other": "{{count}} tapşırıq yeniləndi",
+			"error": "Seçilmiş tapşırıqları yeniləmək mümkün olmadı."
 		},
-		"descriptionHistory": {
-			"cancel": "Ləğv et",
-			"description": "Bu təsvirin saxlanılmış versiyaları, əvvəlcə yenilər. Bir nəfərin 10 dəqiqə ərzindəki redaktələri bir versiyada birləşir; son 50 versiya saxlanılır.",
-			"earlierVersion": "Əvvəlki versiya",
-			"empty": "Hələ saxlanılmış versiya yoxdur. Versiyalar növbəti redaktədən etibarən saxlanılır.",
-			"emptyVersion": "Bu versiyada təsvir yoxdur.",
-			"latest": "Ən son",
-			"list": "Saxlanılmış versiyalar",
-			"loadError": "Tarixçəni yükləmək mümkün olmadı",
-			"open": "Tarixçə",
-			"previewTitle": "{{date}} tarixli versiya",
-			"restore": "Bərpa et",
-			"restoreConfirmDescription": "Təsvir bu versiya ilə əvəz olunacaq. Cari mətn tarixçədə qalır.",
-			"restoreConfirmTitle": "Bu versiya bərpa edilsin?",
-			"restored": "Təsvir bərpa edildi",
-			"restoreError": "Bu versiyanı bərpa etmək mümkün olmadı",
-			"retry": "Yenidən cəhd et",
-			"size_one": "{{count}} simvol",
-			"size_other": "{{count}} simvol",
-			"title": "Təsvir tarixçəsi",
-			"viewOnly": "Yalnız baxış"
+		"milestone": {
+			"label": "Mərhələ",
+			"hint": "Bir tarixi qeyd edir. Zaman xətti onu son tarixində romb kimi göstərir.",
+			"updateError": "Mərhələni yeniləmək mümkün olmadı"
+		},
+		"scheduleField": {
+			"label": "Tapşırıqlarda göstərilən sahə",
+			"none": "Sahə yoxdur",
+			"value": "{{name}}: {{value}}"
 		}
 	},
 	"invitations": {
@@ -5187,7 +5430,8 @@
 				"inProgress": "İcra olunur"
 			},
 			"noDueDate": "Son tarix yoxdur",
-			"reorderError": "Layihələrin sırasını dəyişmək alınmadı"
+			"reorderError": "Layihələrin sırasını dəyişmək alınmadı",
+			"emptyDescriptionGuest": "Hələ heç bir layihəyə əlavə edilməmisiniz. Sizi dəvət edən şəxsdən sizi əlavə etməsini xahiş edin."
 		},
 		"search": {
 			"pageTitle": "Axtarış",
@@ -5295,7 +5539,8 @@
 			"owner": "Sahib",
 			"admin": "İnzibatçı",
 			"member": "Üzv",
-			"viewer": "Baxışçı"
+			"viewer": "Baxışçı",
+			"guest": "Qonaq"
 		},
 		"members": {
 			"pageTitle": "Üzvlər",
@@ -5331,7 +5576,13 @@
 			"sentSome": "{{total}} dəvətdən {{sent}} göndərildi.",
 			"failedTitle": "Göndərilmədi",
 			"rateLimited": "Eyni anda çox dəvət. Bir dəqiqə gözləyin, sonra qalanını göndərin.",
-			"shareLinksDescription": "Hər keçidi aid olduğu şəxslə paylaşın ki, iş sahəsinə qoşula bilsin."
+			"shareLinksDescription": "Hər keçidi aid olduğu şəxslə paylaşın ki, iş sahəsinə qoşula bilsin.",
+			"guestRoleHint": "Qonaqlar yalnız əlavə etdiyiniz layihələri görür və iş sahəsində başqa heç nə görmür.",
+			"guestProjectsLabel": "Layihələr",
+			"guestProjectsHint": "Dəvəti qəbul edən kimi işarələdiyiniz layihələrə seçdiyiniz layihə rolu ilə qoşulurlar. Baxışçı kimi yalnız oxuya bilərlər.",
+			"guestProjectsEmpty": "Paylaşa biləcəyiniz layihə yoxdur. Qoşulduqdan sonra onları layihələrə əlavə edin.",
+			"guestProjectRoleFor": "{{project}} layihəsində rol",
+			"guestProjectsFailed": "Dəvət göndərildi, lakin onun layihələrini əlavə etmək mümkün olmadı: {{message}}"
 		},
 		"membersTable": {
 			"emptyTitle": "Hələ komanda üzvü yoxdur",
@@ -5356,7 +5607,8 @@
 			"roleUpdateSuccess": "Rol yeniləndi",
 			"roleUpdateError": "Rolu yeniləmək alınmadı",
 			"ariaInvitationRole": "{{email}} üçün rol",
-			"invitationRoleUpdateSuccess": "Dəvətin rolu yeniləndi"
+			"invitationRoleUpdateSuccess": "Dəvətin rolu yeniləndi",
+			"removeDialogAccessNote": "Bu onların yeganə iş sahəsidirsə, sessiyalarından da çıxış edilir və API açarları işləməyi dayandırır."
 		},
 		"profile": {
 			"emptyActivity": "Hələ fəaliyyət yoxdur",
@@ -7842,6 +8094,29 @@
 		}
 	},
 	"home": {
+		"pageTitle": "Ana səhifə",
+		"greeting": {
+			"afternoon": "Günortanız xeyir, {{name}}",
+			"dateTime": "{{date}} · {{time}}",
+			"evening": "Axşamınız xeyir, {{name}}",
+			"morning": "Sabahınız xeyir, {{name}}"
+		},
+		"manageWidgets": "Vidcetləri idarə et",
+		"widgets": {
+			"quickLinks": "Sürətli linklər",
+			"recents": "Sonuncular",
+			"stickies": "Yapışqan qeydlər",
+			"risks": "Risklər",
+			"myBrief": "Xülasəm",
+			"pinnedReports": "Bərkidilmiş hesabatlar"
+		},
+		"manage": {
+			"description": "Ana səhifənizdə nələrin göstəriləcəyini seçin və sırasını dəyişmək üçün sürüşdürün. Bu ayarları yalnız siz görürsünüz.",
+			"reorder": "{{widget}} sırasını dəyiş",
+			"saveError": "Ana səhifə ayarlarınızı saxlamaq mümkün olmadı",
+			"title": "Vidcetləri idarə et",
+			"toggle": "{{widget}} göstər"
+		},
 		"empty": {
 			"description": "Bütün vidcetlər söndürülüb. Linklərinizi, son ziyarətlərinizi və yapışqan qeydlərinizi burada görmək üçün bəzilərini aktivləşdirin.",
 			"title": "Ana səhifəniz boşdur"
@@ -7871,21 +8146,6 @@
 			},
 			"title": "Başlayın"
 		},
-		"greeting": {
-			"afternoon": "Günortanız xeyir, {{name}}",
-			"dateTime": "{{date}} · {{time}}",
-			"evening": "Axşamınız xeyir, {{name}}",
-			"morning": "Sabahınız xeyir, {{name}}"
-		},
-		"manage": {
-			"description": "Ana səhifənizdə nələrin göstəriləcəyini seçin və sırasını dəyişmək üçün sürüşdürün. Bu ayarları yalnız siz görürsünüz.",
-			"reorder": "{{widget}} sırasını dəyiş",
-			"saveError": "Ana səhifə ayarlarınızı saxlamaq mümkün olmadı",
-			"title": "Vidcetləri idarə et",
-			"toggle": "{{widget}} göstər"
-		},
-		"manageWidgets": "Vidcetləri idarə et",
-		"pageTitle": "Ana səhifə",
 		"quickLinks": {
 			"add": "Link əlavə et",
 			"copy": "Linki kopyala",
@@ -7942,24 +8202,32 @@
 			"visited": "Ziyarət: {{time}}"
 		},
 		"retry": "Yenidən cəhd et",
-		"widgets": {
-			"quickLinks": "Sürətli linklər",
-			"recents": "Sonuncular",
-			"stickies": "Yapışqan qeydlər",
-			"risks": "Risklər",
-			"myBrief": "Xülasəm"
-		},
 		"focus": {
-			"caughtUp": "Hamısı oxunub",
-			"inbox": "Gələnlər",
 			"label": "Yenidən işə qayıdın",
+			"inbox": "Gələnlər",
 			"myWork": "Sizin işiniz",
+			"stickies": "Yapışqanlı qeydlər",
+			"caughtUp": "Hamısı oxunub",
 			"overdue_one": "{{count}} gecikmiş",
 			"overdue_other": "{{count}} gecikmiş",
-			"stickies": "Yapışqanlı qeydlər",
 			"stickiesHint": "Şəxsi qeydlər, yalnız sizin üçün",
+			"unreadCaption": "oxunmamış",
 			"openCaption": "açıq",
-			"unreadCaption": "oxunmamış"
+			"loadError": "Yüklənmədi"
+		},
+		"dueToday": {
+			"title": "Son tarixi bu gün olanlar",
+			"empty": "Sizə təyin olunmuş heç bir işin son tarixi bu gün deyil.",
+			"loadError": "Son tarixi bu gün olan tapşırıqlarınızı yükləmək mümkün olmadı",
+			"viewAll": "Hamısına bax ({{total}})"
+		},
+		"pinnedReports": {
+			"empty": "Burada görmək üçün Analitikada yadda saxlanmış hesabatı bərkidin.",
+			"openAnalytics": "Analitikanı aç",
+			"loadError": "Bərkidilmiş hesabatlarınızı yükləmək mümkün olmadı",
+			"chartError": "Bu hesabatı yükləmək mümkün olmadı",
+			"unpin": "{{name}} hesabatının Ana səhifədə bərkidilməsini ləğv et",
+			"showing": "{{total}} hesabatdan {{shown}} göstərilir. Qalanları Analitikadadır."
 		}
 	},
 	"intake": {
@@ -8251,14 +8519,111 @@
 		"viewAll": "Hamısına bax"
 	},
 	"analytics": {
-		"a11y": {
-			"barSummary": "{{dimension}} üzrə {{metric}}: {{count}} qrup, ən yüksəyi {{label}} ({{value}})",
-			"donutSummary": "{{count}} qrupda {{total}} tapşırıq",
-			"lineSummary": "{{count}} dövr üzrə {{series}}"
+		"pageTitle": "Analitika",
+		"projectPageTitle": "{{project}} · Analitika",
+		"tabs": {
+			"overview": "İcmal",
+			"tasks": "Tapşırıqlar",
+			"cycles": "Dövrlər",
+			"modules": "Modullar",
+			"intake": "Qəbul",
+			"delivery": "Təhvil",
+			"time": "Vaxt"
 		},
-		"breakdown": {
-			"groupRowsBy": "Sətirləri buna görə qruplaşdır",
-			"title": "Bölgü"
+		"header": {
+			"allProjects": "Bütün layihələr",
+			"clearSelection": "Seçimi təmizlə",
+			"noProjectsFound": "Layihə tapılmadı",
+			"projectsCount_one": "{{count}} layihə",
+			"projectsCount_other": "{{count}} layihə",
+			"refresh": "Yenilə",
+			"searchProjects": "Layihələri axtar",
+			"selectProjects": "Layihələri seçin",
+			"updatedAt": "Yenilənib {{time}}"
+		},
+		"openInAnalytics": "Analitikada aç",
+		"context": {
+			"cycle": "Dövr: {{name}}",
+			"module": "Modul: {{name}}",
+			"remove": "{{name}} elementini filtrlərdən çıxar"
+		},
+		"states": {
+			"loadError": "Bu bölmə yüklənə bilmədi",
+			"newProject": "Yeni layihə",
+			"noAccessDescription": "İş sahəsi admindən Analitika icazəsini istəyin.",
+			"noAccessTitle": "Analitikaya girişiniz yoxdur",
+			"noCycles": "Hələ dövr yoxdur",
+			"noModules": "Hələ modul yoxdur",
+			"noPeriodData": "Bu dövrdə məlumat yoxdur",
+			"noProjectsDescription": "Analitika layihələrinizdəki tapşırıqları ümumiləşdirir.",
+			"noProjectsTitle": "Analitikanı görmək üçün layihə yaradın",
+			"noRequests": "Hələ sorğu yoxdur",
+			"noTasks": "Bu filtrlərə uyğun tapşırıq yoxdur",
+			"retry": "Yenidən cəhd et",
+			"timeout": "Bu çox uzun çəkdi. Filtrləri daraldın və yenidən cəhd edin.",
+			"noRunningCycles": "Hazırda davam edən dövr yoxdur"
+		},
+		"view": {
+			"chart": "Diaqram",
+			"label": "Bu şəkildə göstər",
+			"table": "Cədvəl"
+		},
+		"kpi": {
+			"accepted": "{{count}} qəbul edilib",
+			"completedTasks": "Tamamlanmış tapşırıqlar",
+			"completion": "Tamamlanma",
+			"completionDetail": "{{committed}} içindən {{completed}}",
+			"cyclesRunning": "Davam edən dövrlər",
+			"members": "Üzvlər",
+			"membersDetail": "{{admins}} admin · {{viewers}} izləyici",
+			"modulesInProgress": "Davam edən modullar",
+			"modulesTotal": "Cəmi {{count}}",
+			"openRequests": "Açıq sorğular",
+			"openTasks": "Açıq tapşırıqlar",
+			"overdue": "{{count}} gecikmiş",
+			"percentComplete": "{{percent}}% tamamlanıb",
+			"projects": "Layihələr",
+			"total": "Cəmi",
+			"upcoming": "{{count}} yaxınlaşan"
+		},
+		"overview": {
+			"projectProgress": "Layihə irəliləyişi",
+			"projectProgressSubtitle": "Ən çox açıq tapşırığı olan layihələr əvvəldə",
+			"open": "{{count}} açıq",
+			"showAll": "Hamısını göstər ({{count}})",
+			"showLess": "Daha az göstər",
+			"tasksByGroup": "Qrupa görə tapşırıqlar",
+			"donutCenter_one": "{{count}} tapşırıq",
+			"donutCenter_other": "{{count}} tapşırıq",
+			"workload": "İş yükü",
+			"workloadSubtitle": "Təyin olunana görə açıq tapşırıqlar",
+			"workloadSubtitlePoints": "Təyin olunana görə açıq qiymətləndirmə xalları",
+			"overloaded_one": "{{names}} adətən {{weeks}} həftədə bitirdiyindən daha çox açıq işə malikdir.",
+			"overloaded_other": "{{names}} adətən {{weeks}} həftədə bitirdiklərindən daha çox açıq işə malikdir.",
+			"overUsual": "Adi həddindən yuxarı",
+			"overTooltip": "{{name}}: adi həddindən yuxarı",
+			"usualHint": "Adi hədd hər bir şəxsin son {{historyWeeks}} həftəyə əsasən tipik {{usualWeeks}} həftədə bitirdiyi işdir. Yaxın tarixçəsi olmayan şəxs qiymətləndirilmir.",
+			"checkColumn": "Adi həddə görə",
+			"checkOverPoints": "Artıq: {{load}} xal, adətən {{usual}}",
+			"checkOverTasks": "Artıq: {{load}} tapşırıq, adətən {{usual}}",
+			"checkOkPoints": "{{load}} xal, adətən {{usual}}",
+			"checkOkTasks": "{{load}} tapşırıq, adətən {{usual}}",
+			"checkUnknown": "Yaxın tarixçə yoxdur"
+		},
+		"trend": {
+			"completed": "Tamamlanan",
+			"created": "Yaradılan",
+			"help": "Yaradılan tapşırıqları yaradıldığı günə görə sayır. Tamamlanan tapşırıqları, hələ də tamamlanmış olmaq şərti ilə, tamamlandığı günə görə sayır. Daxil etməsəniz, arxivlənmiş tapşırıqlar nəzərə alınmır.",
+			"period": "Dövr",
+			"summary": "Yaradılan {{created}} · Tamamlanan {{completed}} · Xalis {{net}}",
+			"title": "Yaradılan və tamamlanan"
+		},
+		"periods": {
+			"custom": "Fərdi aralıq",
+			"last12m": "Son 12 ay",
+			"last30": "Son 30 gün",
+			"last6m": "Son 6 ay",
+			"last90": "Son 90 gün"
 		},
 		"bucket": {
 			"label": "Tarixləri buna görə qruplaşdır",
@@ -8269,6 +8634,14 @@
 		"buckets": {
 			"range": "{{from}} – {{to}}",
 			"weekOf": "{{date}} həftəsi"
+		},
+		"metric": {
+			"label": "Metrik",
+			"tasks": "Tapşırıqlar",
+			"points": "Qiymətləndirmə xalları",
+			"pointsShort": "Xal",
+			"sum": "Cəm",
+			"sumOf": "{{name}} cəmi"
 		},
 		"builder": {
 			"countSubTasks": "Alt tapşırıqları say",
@@ -8285,10 +8658,130 @@
 			"truncatedX": "{{total}} {{dimension}} içindən ilk {{shown}} göstərilir",
 			"xAxis": "X oxu"
 		},
-		"context": {
-			"cycle": "Dövr: {{name}}",
-			"module": "Modul: {{name}}",
-			"remove": "{{name}} elementini filtrlərdən çıxar"
+		"reports": {
+			"open": "Hesabatlar",
+			"listTitle": "Yadda saxlanmış hesabatlar",
+			"loadError": "Yadda saxlanmış hesabatlar yüklənə bilmədi",
+			"empty": "Hələ yadda saxlanmış hesabat yoxdur. Sonra ona qayıtmaq üçün bu diaqramı yadda saxlayın.",
+			"sharedBy": "{{name}} paylaşıb",
+			"actionsFor": "{{name}} üçün əməliyyatlar",
+			"rename": "Adını dəyiş",
+			"share": "İş sahəsi ilə paylaş",
+			"makePrivate": "Şəxsi et",
+			"delete": "Sil",
+			"save": "Yadda saxla",
+			"saveAsNew": "Yeni kimi yadda saxla",
+			"update": "Hesabatı yenilə",
+			"showing": "Hesabat: {{name}}",
+			"unsaved": "Yadda saxlanılmamış dəyişikliklər",
+			"close": "Hesabatı bağla",
+			"deleteTitle": "Bu hesabat silinsin?",
+			"deleteDescription": "“{{name}}” silinəcək. Bu əməliyyatı geri qaytarmaq mümkün deyil.",
+			"deleteSharedDescription": "“{{name}}” iş sahəsindəki hər kəs üçün silinəcək. Bu əməliyyatı geri qaytarmaq mümkün deyil.",
+			"visibility": {
+				"private": "Şəxsi",
+				"privateHint": "Yalnız siz görə bilərsiniz.",
+				"workspace": "İş sahəsi ilə paylaşılıb",
+				"workspaceHint": "Bu iş sahəsində analitikaya girişi olan hər kəs onu aça bilər."
+			},
+			"dialog": {
+				"cancel": "Ləğv et",
+				"createTitle": "Hesabatı yadda saxla",
+				"editTitle": "Hesabatı redaktə et",
+				"name": "Ad",
+				"namePlaceholder": "məs. İcraçılara görə açıq xətalar",
+				"nameRequired": "Ad daxil edin",
+				"save": "Yadda saxla",
+				"summary": "Diaqram parametrlərini, əhatə olunan layihələri və filtrləri yadda saxlayır.",
+				"update": "Dəyişiklikləri yadda saxla",
+				"visibility": "Kim görə bilər"
+			},
+			"notes": {
+				"allProjects": "Onun layihələrindən heç biri əlçatan deyil, buna görə bütün layihələr göstərilir.",
+				"builderReset": "Bəzi diaqram parametrləri bu layihələr üçün əlçatan deyil və sıfırlandı.",
+				"dropped_one": "Bu hesabatdakı {{count}} layihə artıq mövcud deyil.",
+				"dropped_other": "Bu hesabatdakı {{count}} layihə artıq mövcud deyil.",
+				"leftOut_one": "Bu hesabatdakı {{count}} layihə arxivlənib və kənarda saxlanılıb.",
+				"leftOut_other": "Bu hesabatdakı {{count}} layihə arxivlənib və kənarda saxlanılıb.",
+				"otherProjects": "Bu hesabat başqa layihələr üçün yadda saxlanılıb; burada yalnız bu layihəni göstərir."
+			},
+			"toast": {
+				"saved": "“{{name}}” yadda saxlanıldı",
+				"updated": "Hesabat yeniləndi",
+				"shared": "Hesabat iş sahəsi ilə paylaşıldı",
+				"madePrivate": "Hesabat indi şəxsidir",
+				"deleted": "Hesabat silindi",
+				"saveError": "Hesabat yadda saxlanıla bilmədi",
+				"deleteError": "Hesabat silinə bilmədi",
+				"pinned": "Ana səhifəyə bərkidildi",
+				"unpinned": "Ana səhifədən bərkitmə ləğv edildi",
+				"pinError": "Ana səhifənizi yeniləmək mümkün olmadı",
+				"pinLimit_one": "Ən çoxu {{count}} hesabat bərkidə bilərsiniz. Əvvəlcə birinin bərkidilməsini ləğv edin.",
+				"pinLimit_other": "Ən çoxu {{count}} hesabat bərkidə bilərsiniz. Əvvəlcə birinin bərkidilməsini ləğv edin."
+			},
+			"pin": "Ana səhifəyə bərkit",
+			"unpin": "Ana səhifədən bərkitməni ləğv et"
+		},
+		"dimensions": {
+			"status": "Vəziyyət",
+			"group": "Qrup",
+			"priority": "Prioritet",
+			"assignee": "Təyin olunan",
+			"createdBy": "Yaradan",
+			"label": "Etiket",
+			"cycle": "Dövr",
+			"module": "Modul",
+			"estimate": "Qiymətləndirmə",
+			"project": "Layihə",
+			"createdAt": "Yaradılma tarixi",
+			"completedAt": "Tamamlanma tarixi",
+			"startDate": "Başlanğıc tarixi",
+			"dueDate": "Bitmə tarixi",
+			"customField": "Fərdi sahə"
+		},
+		"dimensionsPlural": {
+			"status": "statuslar",
+			"assignee": "təyin olunanlar",
+			"createdBy": "yaradanlar",
+			"label": "etiketlər",
+			"cycle": "dövrlər",
+			"module": "modullar",
+			"estimate": "qiymətləndirmələr",
+			"project": "layihələr",
+			"period": "dövrlər",
+			"customField": "dəyərlər"
+		},
+		"none": {
+			"assignee": "Təyin edilməyib",
+			"createdBy": "Naməlum yaradan",
+			"label": "Etiket yoxdur",
+			"cycle": "Dövr yoxdur",
+			"module": "Modul yoxdur",
+			"estimate": "Qiymətləndirmə yoxdur",
+			"completedAt": "Tamamlanmayıb",
+			"startDate": "Başlanğıc tarixi yoxdur",
+			"dueDate": "Bitmə tarixi yoxdur",
+			"customField": "Dəyər yoxdur"
+		},
+		"other": "Digər",
+		"table": {
+			"periodEnd": "Dövrün sonu",
+			"periodStart": "Dövrün başlanğıcı",
+			"progress": "İrəliləyiş",
+			"showAll": "Hamısını göstər ({{count}})",
+			"sortBy": "{{column}} üzrə sırala",
+			"tasks": "Tapşırıqlar",
+			"total": "Cəmi"
+		},
+		"breakdown": {
+			"groupRowsBy": "Sətirləri buna görə qruplaşdır",
+			"title": "Bölgü"
+		},
+		"export": {
+			"button": "CSV ixrac et",
+			"error": "Bu cədvəl ixrac edilə bilmədi",
+			"success_one": "{{count}} sətir ixrac edildi",
+			"success_other": "{{count}} sətir ixrac edildi"
 		},
 		"cycles": {
 			"averageCompleted": "Orta tamamlanmış (son 3)",
@@ -8321,49 +8814,15 @@
 				"running": "Hazırda davam edənlər"
 			}
 		},
-		"dimensions": {
-			"assignee": "Təyin olunan",
-			"completedAt": "Tamamlanma tarixi",
-			"createdAt": "Yaradılma tarixi",
-			"createdBy": "Yaradan",
-			"cycle": "Dövr",
-			"dueDate": "Bitmə tarixi",
-			"estimate": "Qiymətləndirmə",
-			"group": "Qrup",
-			"label": "Etiket",
-			"module": "Modul",
-			"priority": "Prioritet",
-			"project": "Layihə",
-			"startDate": "Başlanğıc tarixi",
-			"status": "Vəziyyət"
-		},
-		"dimensionsPlural": {
-			"assignee": "təyin olunanlar",
-			"createdBy": "yaradanlar",
-			"cycle": "dövrlər",
-			"estimate": "qiymətləndirmələr",
-			"label": "etiketlər",
-			"module": "modullar",
-			"period": "dövrlər",
-			"project": "layihələr",
-			"status": "statuslar"
-		},
-		"export": {
-			"button": "CSV ixrac et",
-			"error": "Bu cədvəl ixrac edilə bilmədi",
-			"success_one": "{{count}} sətir ixrac edildi",
-			"success_other": "{{count}} sətir ixrac edildi"
-		},
-		"header": {
-			"allProjects": "Bütün layihələr",
-			"clearSelection": "Seçimi təmizlə",
-			"noProjectsFound": "Layihə tapılmadı",
-			"projectsCount_one": "{{count}} layihə",
-			"projectsCount_other": "{{count}} layihə",
-			"refresh": "Yenilə",
-			"searchProjects": "Layihələri axtar",
-			"selectProjects": "Layihələri seçin",
-			"updatedAt": "Yenilənib {{time}}"
+		"modules": {
+			"overdue": "Gecikmiş",
+			"table": {
+				"lead": "Rəhbər",
+				"module": "Modul",
+				"noLead": "Rəhbər yoxdur",
+				"targetDate": "Hədəf tarix",
+				"title": "Modullar"
+			}
 		},
 		"intake": {
 			"accepted": "Qəbul edilən",
@@ -8381,176 +8840,24 @@
 			"submitted": "Göndərilən",
 			"triaged": "Nəzərdən keçirilən"
 		},
-		"kpi": {
-			"accepted": "{{count}} qəbul edilib",
-			"completedTasks": "Tamamlanmış tapşırıqlar",
-			"completion": "Tamamlanma",
-			"completionDetail": "{{committed}} içindən {{completed}}",
-			"cyclesRunning": "Davam edən dövrlər",
-			"members": "Üzvlər",
-			"membersDetail": "{{admins}} admin · {{viewers}} izləyici",
-			"modulesInProgress": "Davam edən modullar",
-			"modulesTotal": "Cəmi {{count}}",
-			"openRequests": "Açıq sorğular",
-			"openTasks": "Açıq tapşırıqlar",
-			"overdue": "{{count}} gecikmiş",
-			"percentComplete": "{{percent}}% tamamlanıb",
-			"projects": "Layihələr",
-			"total": "Cəmi",
-			"upcoming": "{{count}} yaxınlaşan"
+		"a11y": {
+			"barSummary": "{{dimension}} üzrə {{metric}}: {{count}} qrup, ən yüksəyi {{label}} ({{value}})",
+			"donutSummary": "{{count}} qrupda {{total}} tapşırıq",
+			"lineSummary": "{{count}} dövr üzrə {{series}}"
 		},
-		"metric": {
-			"label": "Metrik",
-			"points": "Qiymətləndirmə xalları",
-			"pointsShort": "Xal",
-			"tasks": "Tapşırıqlar"
-		},
-		"modules": {
-			"overdue": "Gecikmiş",
-			"table": {
-				"lead": "Rəhbər",
-				"module": "Modul",
-				"noLead": "Rəhbər yoxdur",
-				"targetDate": "Hədəf tarix",
-				"title": "Modullar"
-			}
-		},
-		"none": {
-			"assignee": "Təyin edilməyib",
-			"completedAt": "Tamamlanmayıb",
-			"createdBy": "Naməlum yaradan",
-			"cycle": "Dövr yoxdur",
-			"dueDate": "Bitmə tarixi yoxdur",
-			"estimate": "Qiymətləndirmə yoxdur",
-			"label": "Etiket yoxdur",
-			"module": "Modul yoxdur",
-			"startDate": "Başlanğıc tarixi yoxdur"
-		},
-		"openInAnalytics": "Analitikada aç",
-		"other": "Digər",
-		"overview": {
-			"donutCenter_one": "{{count}} tapşırıq",
-			"donutCenter_other": "{{count}} tapşırıq",
-			"open": "{{count}} açıq",
-			"projectProgress": "Layihə irəliləyişi",
-			"projectProgressSubtitle": "Ən çox açıq tapşırığı olan layihələr əvvəldə",
-			"showAll": "Hamısını göstər ({{count}})",
-			"showLess": "Daha az göstər",
-			"tasksByGroup": "Qrupa görə tapşırıqlar",
-			"workload": "İş yükü",
-			"workloadSubtitle": "Təyin olunana görə açıq tapşırıqlar"
-		},
-		"pageTitle": "Analitika",
-		"periods": {
-			"custom": "Fərdi aralıq",
-			"last12m": "Son 12 ay",
-			"last30": "Son 30 gün",
-			"last6m": "Son 6 ay",
-			"last90": "Son 90 gün"
-		},
-		"projectPageTitle": "{{project}} · Analitika",
-		"states": {
-			"loadError": "Bu bölmə yüklənə bilmədi",
-			"newProject": "Yeni layihə",
-			"noAccessDescription": "İş sahəsi admindən Analitika icazəsini istəyin.",
-			"noAccessTitle": "Analitikaya girişiniz yoxdur",
-			"noCycles": "Hələ dövr yoxdur",
-			"noModules": "Hələ modul yoxdur",
-			"noPeriodData": "Bu dövrdə məlumat yoxdur",
-			"noProjectsDescription": "Analitika layihələrinizdəki tapşırıqları ümumiləşdirir.",
-			"noProjectsTitle": "Analitikanı görmək üçün layihə yaradın",
-			"noRequests": "Hələ sorğu yoxdur",
-			"noTasks": "Bu filtrlərə uyğun tapşırıq yoxdur",
-			"retry": "Yenidən cəhd et",
-			"timeout": "Bu çox uzun çəkdi. Filtrləri daraldın və yenidən cəhd edin.",
-			"noRunningCycles": "Hazırda davam edən dövr yoxdur"
-		},
-		"table": {
-			"periodEnd": "Dövrün sonu",
-			"periodStart": "Dövrün başlanğıcı",
-			"progress": "İrəliləyiş",
-			"showAll": "Hamısını göstər ({{count}})",
-			"sortBy": "{{column}} üzrə sırala",
-			"tasks": "Tapşırıqlar",
-			"total": "Cəmi"
-		},
-		"tabs": {
-			"cycles": "Dövrlər",
-			"intake": "Qəbul",
-			"modules": "Modullar",
-			"overview": "İcmal",
-			"tasks": "Tapşırıqlar",
-			"delivery": "Təhvil"
-		},
-		"trend": {
-			"completed": "Tamamlanan",
-			"created": "Yaradılan",
-			"help": "Yaradılan tapşırıqları yaradıldığı günə görə sayır. Tamamlanan tapşırıqları, hələ də tamamlanmış olmaq şərti ilə, tamamlandığı günə görə sayır. Daxil etməsəniz, arxivlənmiş tapşırıqlar nəzərə alınmır.",
-			"period": "Dövr",
-			"summary": "Yaradılan {{created}} · Tamamlanan {{completed}} · Xalis {{net}}",
-			"title": "Yaradılan və tamamlanan"
-		},
-		"view": {
-			"chart": "Diaqram",
-			"label": "Bu şəkildə göstər",
-			"table": "Cədvəl"
-		},
-		"reports": {
-			"actionsFor": "{{name}} üçün əməliyyatlar",
-			"close": "Hesabatı bağla",
-			"delete": "Sil",
-			"deleteDescription": "“{{name}}” silinəcək. Bu əməliyyatı geri qaytarmaq mümkün deyil.",
-			"deleteSharedDescription": "“{{name}}” iş sahəsindəki hər kəs üçün silinəcək. Bu əməliyyatı geri qaytarmaq mümkün deyil.",
-			"deleteTitle": "Bu hesabat silinsin?",
-			"dialog": {
-				"cancel": "Ləğv et",
-				"createTitle": "Hesabatı yadda saxla",
-				"editTitle": "Hesabatı redaktə et",
-				"name": "Ad",
-				"namePlaceholder": "məs. İcraçılara görə açıq xətalar",
-				"nameRequired": "Ad daxil edin",
-				"save": "Yadda saxla",
-				"summary": "Diaqram parametrlərini, əhatə olunan layihələri və filtrləri yadda saxlayır.",
-				"update": "Dəyişiklikləri yadda saxla",
-				"visibility": "Kim görə bilər"
-			},
-			"empty": "Hələ yadda saxlanmış hesabat yoxdur. Sonra ona qayıtmaq üçün bu diaqramı yadda saxlayın.",
-			"listTitle": "Yadda saxlanmış hesabatlar",
-			"loadError": "Yadda saxlanmış hesabatlar yüklənə bilmədi",
-			"makePrivate": "Şəxsi et",
-			"notes": {
-				"allProjects": "Onun layihələrindən heç biri əlçatan deyil, buna görə bütün layihələr göstərilir.",
-				"builderReset": "Bəzi diaqram parametrləri bu layihələr üçün əlçatan deyil və sıfırlandı.",
-				"dropped_one": "Bu hesabatdakı {{count}} layihə artıq mövcud deyil.",
-				"dropped_other": "Bu hesabatdakı {{count}} layihə artıq mövcud deyil.",
-				"leftOut_one": "Bu hesabatdakı {{count}} layihə arxivlənib və kənarda saxlanılıb.",
-				"leftOut_other": "Bu hesabatdakı {{count}} layihə arxivlənib və kənarda saxlanılıb.",
-				"otherProjects": "Bu hesabat başqa layihələr üçün yadda saxlanılıb; burada yalnız bu layihəni göstərir."
-			},
-			"open": "Hesabatlar",
-			"rename": "Adını dəyiş",
-			"save": "Yadda saxla",
-			"saveAsNew": "Yeni kimi yadda saxla",
-			"share": "İş sahəsi ilə paylaş",
-			"sharedBy": "{{name}} paylaşıb",
-			"showing": "Hesabat: {{name}}",
-			"toast": {
-				"deleted": "Hesabat silindi",
-				"deleteError": "Hesabat silinə bilmədi",
-				"madePrivate": "Hesabat indi şəxsidir",
-				"saved": "“{{name}}” yadda saxlanıldı",
-				"saveError": "Hesabat yadda saxlanıla bilmədi",
-				"shared": "Hesabat iş sahəsi ilə paylaşıldı",
-				"updated": "Hesabat yeniləndi"
-			},
-			"unsaved": "Yadda saxlanılmamış dəyişikliklər",
-			"update": "Hesabatı yenilə",
-			"visibility": {
-				"private": "Şəxsi",
-				"privateHint": "Yalnız siz görə bilərsiniz.",
-				"workspace": "İş sahəsi ilə paylaşılıb",
-				"workspaceHint": "Bu iş sahəsində analitikaya girişi olan hər kəs onu aça bilər."
-			}
+		"time": {
+			"total": "Qeyd edilmiş vaxt",
+			"entries": "Qeydlər",
+			"people": "İnsanlar",
+			"running": "İndi işləyən",
+			"runningNote": "İşləyən taymerlər dayandıqdan sonra bu cəmlərə əlavə olunur.",
+			"byPerson": "Şəxsə görə",
+			"byProject": "Layihəyə görə",
+			"person": "Şəxs",
+			"project": "Layihə",
+			"hours": "Saat",
+			"formerMember": "Keçmiş üzv",
+			"empty": "Bu müddətdə qeyd edilmiş vaxt yoxdur"
 		}
 	},
 	"pages": {
@@ -8631,6 +8938,59 @@
 			"file": "əlavə edilmiş fayl",
 			"page": "başqa səhifə"
 		},
+		"section": {
+			"title": "Səhifələr"
+		},
+		"list": {
+			"documentTitle": "{{project}} · Səhifələr",
+			"newPage": "Yeni səhifə",
+			"tabs": {
+				"archived": "Arxivlənmiş",
+				"private": "Şəxsi",
+				"public": "İctimai"
+			},
+			"searchPlaceholder": "Səhifələri axtar",
+			"clearFilters": "Filtrləri təmizlə",
+			"sort": {
+				"created": "Yaradılma",
+				"lastEdited": "Son redaktə",
+				"name": "Ad"
+			},
+			"untitled": "Başlıqsız",
+			"inParent": "{{path}} daxilində",
+			"ownedBy": "Sahibi: {{name}}",
+			"access": {
+				"private": "Şəxsi",
+				"public": "İctimai"
+			},
+			"editedAgo": "Redaktə edilib {{time}}",
+			"archivedOn": "Arxivlənib {{date}}",
+			"locked": "Kilidlənib",
+			"loadError": "Səhifələr yüklənə bilmədi",
+			"retry": "Yenidən cəhd et",
+			"empty": {
+				"archived": {
+					"description": "Arxivlənmiş səhifələr burada görünür. Onları bərpa edə və ya silə bilərsiniz.",
+					"title": "Arxivlənmiş səhifə yoxdur"
+				},
+				"noMatch": {
+					"description": "Başqa axtarış cəhd edin və ya filtrləri təmizləyin.",
+					"title": "Uyğun səhifə yoxdur"
+				},
+				"none": {
+					"description": "Səhifələr spesifikasiyaları, qeydləri və sənədləri layihənin tapşırıqlarının yanında saxlayır.",
+					"title": "İlk səhifənizi yazın"
+				},
+				"private": {
+					"description": "Şəxsi səhifələr yalnız sizə görünür.",
+					"title": "Şəxsi səhifə yoxdur"
+				},
+				"public": {
+					"title": "İctimai səhifə yoxdur"
+				}
+			},
+			"recentlyDeleted": "Son silinənlər"
+		},
 		"actions": {
 			"archive": "Arxivlə",
 			"copyLink": "Keçidi kopyala",
@@ -8646,6 +9006,123 @@
 			"restore": "Bərpa et",
 			"unlock": "Kilidi aç"
 		},
+		"toasts": {
+			"accessError": "Bu səhifəni kimin görə biləcəyi dəyişdirilə bilmədi",
+			"archived": "Səhifə arxivləndi",
+			"archiveError": "Səhifə arxivlənə bilmədi",
+			"contentConflict": "Bu səhifə başqa yerdə dəyişdirilib, ona görə son redaktəniz saxlanılmadı. Ən son versiya göstərilir.",
+			"contentSaveError": "Səhifə saxlanıla bilmədi",
+			"createError": "Səhifə yaradıla bilmədi",
+			"deleted": "Səhifə silindi",
+			"deleteError": "Səhifə silinə bilmədi",
+			"duplicated": "Səhifə dublikat edildi",
+			"duplicateError": "Səhifə dublikat edilə bilmədi",
+			"fullWidthError": "Səhifənin eni dəyişdirilə bilmədi",
+			"linkCopied": "Keçid kopyalandı",
+			"locked": "Səhifə kilidləndi",
+			"lockError": "Kilid dəyişdirilə bilmədi",
+			"logoError": "Nişan yenilənə bilmədi",
+			"madePrivate": "Səhifə artıq şəxsidir",
+			"madePublic": "Səhifə artıq ictimaidir",
+			"moved": "{{project}} layihəsinə köçürüldü",
+			"moveError": "Səhifə köçürülə bilmədi",
+			"open": "Aç",
+			"restored": "Səhifə bərpa edildi",
+			"restoreError": "Səhifə bərpa edilə bilmədi",
+			"titleError": "Başlıq saxlanıla bilmədi",
+			"unlocked": "Səhifənin kilidi açıldı"
+		},
+		"deleteDialog": {
+			"cancel": "Ləğv et",
+			"confirm": "Sil",
+			"description": "“{{title}}” layihə parametrlərindəki Son silinənlər bölməsinə köçürülür; həmişəlik silinənə qədər oradan bərpa edilə bilər. Alt səhifələri ən üst səviyyəyə köçürülür.",
+			"title": "Səhifə silinsin?"
+		},
+		"moveDialog": {
+			"cancel": "Ləğv et",
+			"confirm": "Köçür",
+			"description": "Səhifə və alt səhifələri seçilmiş layihəyə köçürülür.",
+			"empty": "Başqa heç bir layihədə Səhifələr aktiv deyil",
+			"searchPlaceholder": "Layihələri axtar",
+			"title": "Səhifəni köçür"
+		},
+		"tree": {
+			"collapse": "{{title}} elementini yığ",
+			"dnd": {
+				"cancelled": "Köçürmə ləğv edildi.",
+				"dropped": "{{title}} köçürüldü.",
+				"invalid": "{{title}} ora yerləşdirilə bilməz.",
+				"over": "{{title}}, {{target}} üzərindədir.",
+				"pickedUp": "{{title}} götürüldü. Köçürmək üçün ox düymələrindən, buraxmaq üçün Space, ləğv etmək üçün Escape düyməsindən istifadə edin."
+			},
+			"empty": "Hələ səhifə yoxdur",
+			"expand": "{{title}} elementini aç",
+			"newPage": "Yeni səhifə",
+			"title": "Səhifələr"
+		},
+		"crumb": {
+			"noMatches": "Uyğun səhifə yoxdur",
+			"searchPlaceholder": "Səhifələri axtar"
+		},
+		"header": {
+			"copied": "Kopyalandı",
+			"copyLink": "Keçidi kopyala",
+			"locked": "Kilidlənib",
+			"lockPage": "Səhifəni kilidlə",
+			"moreActions": "Səhifə əməliyyatları",
+			"presence": "Bu səhifədəki şəxslər: {{names}}",
+			"presenceMore": "+{{count}}",
+			"togglePanel": "Yan paneli aç/bağla",
+			"unlockHint": "Kilidi açmaq üçün klikləyin",
+			"ancestors": "Üst səhifələr"
+		},
+		"menu": {
+			"copyMarkdown": "Markdown kimi kopyala",
+			"downloadMarkdown": "Markdown kimi yüklə",
+			"fullWidth": "Tam en",
+			"markdownCopied": "Markdown kopyalandı",
+			"versionHistory": "Versiya tarixçəsi",
+			"print": "Çap et / PDF kimi saxla"
+		},
+		"editor": {
+			"addIcon": "Nişan əlavə et",
+			"ariaLabel": "Səhifə məzmunu",
+			"pageLink": {
+				"unavailable": "Şəxsi və ya silinmiş səhifə"
+			},
+			"pageLinkPicker": {
+				"empty": "Səhifə tapılmadı",
+				"search": "Səhifələri axtar"
+			},
+			"placeholder": "Nəsə yazın və ya komandalar üçün / basın",
+			"slash": {
+				"commands": {
+					"divider": "Ayırıcı",
+					"heading-1": "Başlıq 1",
+					"heading-2": "Başlıq 2",
+					"heading-3": "Başlıq 3",
+					"page-link": "Səhifəyə keçid"
+				}
+			},
+			"titleAria": "Səhifə başlığı",
+			"titlePlaceholder": "Başlıqsız"
+		},
+		"logo": {
+			"categories": {
+				"activities": "Fəaliyyətlər",
+				"food": "Yemək",
+				"nature": "Təbiət",
+				"objects": "Əşyalar",
+				"people": "İnsanlar",
+				"smileys": "Smaylilər",
+				"symbols": "Simvollar",
+				"travel": "Səyahət"
+			},
+			"emoji": "Emoji",
+			"icon": "Nişan",
+			"remove": "Sil",
+			"search": "Emoji axtar"
+		},
 		"banners": {
 			"archived": "Bu səhifə arxivlənib. Redaktə etmək üçün bərpa edin.",
 			"locked": "Bu səhifə kilidlənib. Dəyişiklik etmək üçün kilidi açın.",
@@ -8656,6 +9133,15 @@
 			"storedCopy": "Son saxlanılmış versiya göstərilir. Bağlantı bərpa olunanda canlı redaktə davam edir.",
 			"tooLarge": "Bu səhifə sinxronizasiyanı davam etdirmək üçün çox böyükdür. Son dəyişikliklərinizi kopyalayın, sonra yeniləyin.",
 			"unlock": "Kilidi aç"
+		},
+		"sync": {
+			"cantConnect": "Qoşulmaq mümkün deyil",
+			"notSaved": "Hələ saxlanılmayıb",
+			"notSavedHint": "Cəhd etməyə davam edəcəyik. Bu tabı bağlamayın.",
+			"offline": "Oflayn",
+			"offlineHint": "Redaktəyə davam edə bilərsiniz. Dəyişikliklər bağlantı bərpa olunanda sinxronlaşır.",
+			"retry": "Yenidən cəhd et",
+			"saved": "Saxlanıldı"
 		},
 		"collab": {
 			"deleted": "Bu səhifə silindi",
@@ -8668,6 +9154,62 @@
 			"restoredBy": "{{name}} əvvəlki versiyanı bərpa etdi",
 			"roomFull": "Hazırda çox adam bu səhifəni açıb. Bir azdan yenidən cəhd edin.",
 			"signedOut": "Sessiyanız başa çatdı. Redaktəyə davam etmək üçün yenidən daxil olun."
+		},
+		"state": {
+			"notFound": {
+				"back": "Səhifələrə qayıt",
+				"description": "Silinmiş və ya şəxsi ola bilər.",
+				"title": "Səhifə tapılmadı"
+			}
+		},
+		"panel": {
+			"outline": "Struktur",
+			"info": "Məlumat",
+			"history": "Tarixçə",
+			"close": "Paneli bağla",
+			"comments": "Şərhlər"
+		},
+		"outline": {
+			"empty": {
+				"description": "Burada struktur görmək üçün başlıqlar əlavə edin.",
+				"title": "Hələ başlıq yoxdur"
+			}
+		},
+		"info": {
+			"characters": "Simvollar",
+			"createdBy": "Yaradan",
+			"lastEditedBy": "Son redaktə edən",
+			"lessThanMinute": "<1 dəq",
+			"linkedFrom": "Keçid verənlər",
+			"lockedBy": "Kilidləyən",
+			"noBacklinks": "Hələ bura keçid verən səhifə yoxdur",
+			"paragraphs": "Abzaslar",
+			"readingMinutes": "{{count}} dəq",
+			"readingTime": "Oxuma vaxtı",
+			"words": "Sözlər"
+		},
+		"history": {
+			"backToCurrent": "Cari versiyaya qayıt",
+			"current": "Cari versiya",
+			"empty": "Hələ saxlanılmış versiya yoxdur. Versiyalar redaktə etdikcə saxlanılır.",
+			"loadError": "Bu versiya yüklənə bilmədi",
+			"others_one": "+{{count}} nəfər də",
+			"others_other": "+{{count}} nəfər də",
+			"previewTitle": "{{date}} tarixli versiya",
+			"restore": "Bərpa et",
+			"restoreCancel": "Ləğv et",
+			"restoreConfirmDescription": "Cari məzmun əvvəlcə tarixçəyə saxlanılır, beləliklə bunu geri qaytara bilərsiniz.",
+			"restoreConfirmTitle": "Bu versiya bərpa edilsin?",
+			"restored": "Versiya bərpa edildi",
+			"restoreError": "Bu versiya bərpa edilə bilmədi",
+			"restoring": "Bərpa edilir…",
+			"retry": "Yenidən cəhd et",
+			"title": "Versiya tarixçəsi",
+			"unknownUser": "Keçmiş üzv",
+			"viewOnly": "Yalnız baxış"
+		},
+		"notification": {
+			"openPage": "Səhifəni aç"
 		},
 		"toolbar": {
 			"ariaLabel": "Formatlama alətlər paneli",
@@ -8706,238 +9248,36 @@
 		"commandPalette": {
 			"createPage": "Səhifə yarat"
 		},
-		"crumb": {
-			"noMatches": "Uyğun səhifə yoxdur",
-			"searchPlaceholder": "Səhifələri axtar"
-		},
-		"deleteDialog": {
+		"comments": {
+			"placeholder": "Şərh əlavə edin…",
+			"add": "Şərh yaz",
+			"save": "Yadda saxla",
 			"cancel": "Ləğv et",
-			"confirm": "Sil",
-			"description": "“{{title}}” versiya tarixçəsi ilə birlikdə həmişəlik silinəcək. Alt səhifələri ən üst səviyyəyə köçürülür. Bu əməliyyat geri qaytarıla bilməz.",
-			"title": "Səhifə silinsin?"
-		},
-		"editor": {
-			"addIcon": "Nişan əlavə et",
-			"ariaLabel": "Səhifə məzmunu",
-			"pageLink": {
-				"unavailable": "Şəxsi və ya silinmiş səhifə"
-			},
-			"pageLinkPicker": {
-				"empty": "Səhifə tapılmadı",
-				"search": "Səhifələri axtar"
-			},
-			"placeholder": "Nəsə yazın və ya komandalar üçün / basın",
-			"slash": {
-				"commands": {
-					"divider": "Ayırıcı",
-					"heading-1": "Başlıq 1",
-					"heading-2": "Başlıq 2",
-					"heading-3": "Başlıq 3",
-					"page-link": "Səhifəyə keçid"
-				}
-			},
-			"titleAria": "Səhifə başlığı",
-			"titlePlaceholder": "Başlıqsız"
-		},
-		"header": {
-			"copied": "Kopyalandı",
-			"copyLink": "Keçidi kopyala",
-			"locked": "Kilidlənib",
-			"lockPage": "Səhifəni kilidlə",
-			"moreActions": "Səhifə əməliyyatları",
-			"presence": "Bu səhifədəki şəxslər: {{names}}",
-			"presenceMore": "+{{count}}",
-			"togglePanel": "Yan paneli aç/bağla",
-			"unlockHint": "Kilidi açmaq üçün klikləyin",
-			"ancestors": "Üst səhifələr"
-		},
-		"history": {
-			"backToCurrent": "Cari versiyaya qayıt",
-			"current": "Cari versiya",
-			"empty": "Hələ saxlanılmış versiya yoxdur. Versiyalar redaktə etdikcə saxlanılır.",
-			"loadError": "Bu versiya yüklənə bilmədi",
-			"others_one": "+{{count}} nəfər də",
-			"others_other": "+{{count}} nəfər də",
-			"previewTitle": "{{date}} tarixli versiya",
-			"restore": "Bərpa et",
-			"restoreCancel": "Ləğv et",
-			"restoreConfirmDescription": "Cari məzmun əvvəlcə tarixçəyə saxlanılır, beləliklə bunu geri qaytara bilərsiniz.",
-			"restoreConfirmTitle": "Bu versiya bərpa edilsin?",
-			"restored": "Versiya bərpa edildi",
-			"restoreError": "Bu versiya bərpa edilə bilmədi",
-			"restoring": "Bərpa edilir…",
+			"emptyTitle": "Hələ şərh yoxdur",
+			"emptyDescription": "Buradakı şərhlər iş sahəsi daxilində qalır. İctimai keçidlərdə göstərilmir.",
+			"archivedNote": "Bu səhifə arxivlənib. Şərh yazmaq üçün onu bərpa edin.",
+			"loadError": "Şərhləri yükləmək mümkün olmadı",
 			"retry": "Yenidən cəhd et",
-			"title": "Versiya tarixçəsi",
-			"unknownUser": "Keçmiş üzv",
-			"viewOnly": "Yalnız baxış"
-		},
-		"info": {
-			"characters": "Simvollar",
-			"createdBy": "Yaradan",
-			"lastEditedBy": "Son redaktə edən",
-			"lessThanMinute": "<1 dəq",
-			"linkedFrom": "Keçid verənlər",
-			"lockedBy": "Kilidləyən",
-			"noBacklinks": "Hələ bura keçid verən səhifə yoxdur",
-			"paragraphs": "Abzaslar",
-			"readingMinutes": "{{count}} dəq",
-			"readingTime": "Oxuma vaxtı",
-			"words": "Sözlər"
-		},
-		"list": {
-			"access": {
-				"private": "Şəxsi",
-				"public": "İctimai"
-			},
-			"archivedOn": "Arxivlənib {{date}}",
-			"clearFilters": "Filtrləri təmizlə",
-			"documentTitle": "{{project}} · Səhifələr",
-			"editedAgo": "Redaktə edilib {{time}}",
-			"empty": {
-				"archived": {
-					"description": "Arxivlənmiş səhifələr burada görünür. Onları bərpa edə və ya silə bilərsiniz.",
-					"title": "Arxivlənmiş səhifə yoxdur"
-				},
-				"noMatch": {
-					"description": "Başqa axtarış cəhd edin və ya filtrləri təmizləyin.",
-					"title": "Uyğun səhifə yoxdur"
-				},
-				"none": {
-					"description": "Səhifələr spesifikasiyaları, qeydləri və sənədləri layihənin tapşırıqlarının yanında saxlayır.",
-					"title": "İlk səhifənizi yazın"
-				},
-				"private": {
-					"description": "Şəxsi səhifələr yalnız sizə görünür.",
-					"title": "Şəxsi səhifə yoxdur"
-				},
-				"public": {
-					"title": "İctimai səhifə yoxdur"
-				}
-			},
-			"inParent": "{{path}} daxilində",
-			"loadError": "Səhifələr yüklənə bilmədi",
-			"locked": "Kilidlənib",
-			"newPage": "Yeni səhifə",
-			"ownedBy": "Sahibi: {{name}}",
-			"retry": "Yenidən cəhd et",
-			"searchPlaceholder": "Səhifələri axtar",
-			"sort": {
-				"created": "Yaradılma",
-				"lastEdited": "Son redaktə",
-				"name": "Ad"
-			},
-			"tabs": {
-				"archived": "Arxivlənmiş",
-				"private": "Şəxsi",
-				"public": "İctimai"
-			},
-			"untitled": "Başlıqsız"
-		},
-		"logo": {
-			"categories": {
-				"activities": "Fəaliyyətlər",
-				"food": "Yemək",
-				"nature": "Təbiət",
-				"objects": "Əşyalar",
-				"people": "İnsanlar",
-				"smileys": "Smaylilər",
-				"symbols": "Simvollar",
-				"travel": "Səyahət"
-			},
-			"emoji": "Emoji",
-			"icon": "Nişan",
-			"remove": "Sil",
-			"search": "Emoji axtar"
-		},
-		"menu": {
-			"copyMarkdown": "Markdown kimi kopyala",
-			"downloadMarkdown": "Markdown kimi yüklə",
-			"fullWidth": "Tam en",
-			"markdownCopied": "Markdown kopyalandı",
-			"versionHistory": "Versiya tarixçəsi",
-			"print": "Çap et / PDF kimi saxla"
-		},
-		"moveDialog": {
-			"cancel": "Ləğv et",
-			"confirm": "Köçür",
-			"description": "Səhifə və alt səhifələri seçilmiş layihəyə köçürülür.",
-			"empty": "Başqa heç bir layihədə Səhifələr aktiv deyil",
-			"searchPlaceholder": "Layihələri axtar",
-			"title": "Səhifəni köçür"
-		},
-		"notification": {
-			"openPage": "Səhifəni aç"
-		},
-		"outline": {
-			"empty": {
-				"description": "Burada struktur görmək üçün başlıqlar əlavə edin.",
-				"title": "Hələ başlıq yoxdur"
+			"deletedUser": "Silinmiş istifadəçi",
+			"edited": "redaktə edilib",
+			"menuAria": "Bu şərh üçün digər əməliyyatlar",
+			"edit": "Redaktə et",
+			"delete": "Sil",
+			"deleteTitle": "Bu şərh silinsin?",
+			"deleteDescription": "Hamı üçün silinir. Bu əməliyyat geri qaytarıla bilməz.",
+			"toasts": {
+				"empty": "Əvvəlcə nəsə yazın",
+				"addError": "Şərhi əlavə etmək mümkün olmadı",
+				"saveError": "Şərhi yadda saxlamaq mümkün olmadı",
+				"deleteError": "Şərhi silmək mümkün olmadı"
 			}
 		},
-		"panel": {
-			"close": "Paneli bağla",
-			"history": "Tarixçə",
-			"info": "Məlumat",
-			"outline": "Struktur"
-		},
-		"section": {
-			"title": "Səhifələr"
-		},
-		"state": {
-			"notFound": {
-				"back": "Səhifələrə qayıt",
-				"description": "Silinmiş və ya şəxsi ola bilər.",
-				"title": "Səhifə tapılmadı"
-			}
-		},
-		"sync": {
-			"cantConnect": "Qoşulmaq mümkün deyil",
-			"notSaved": "Hələ saxlanılmayıb",
-			"notSavedHint": "Cəhd etməyə davam edəcəyik. Bu tabı bağlamayın.",
-			"offline": "Oflayn",
-			"offlineHint": "Redaktəyə davam edə bilərsiniz. Dəyişikliklər bağlantı bərpa olunanda sinxronlaşır.",
-			"retry": "Yenidən cəhd et",
-			"saved": "Saxlanıldı"
-		},
-		"toasts": {
-			"accessError": "Bu səhifəni kimin görə biləcəyi dəyişdirilə bilmədi",
-			"archived": "Səhifə arxivləndi",
-			"archiveError": "Səhifə arxivlənə bilmədi",
-			"contentConflict": "Bu səhifə başqa yerdə dəyişdirilib, ona görə son redaktəniz saxlanılmadı. Ən son versiya göstərilir.",
-			"contentSaveError": "Səhifə saxlanıla bilmədi",
-			"createError": "Səhifə yaradıla bilmədi",
-			"deleted": "Səhifə silindi",
-			"deleteError": "Səhifə silinə bilmədi",
-			"duplicated": "Səhifə dublikat edildi",
-			"duplicateError": "Səhifə dublikat edilə bilmədi",
-			"fullWidthError": "Səhifənin eni dəyişdirilə bilmədi",
-			"linkCopied": "Keçid kopyalandı",
-			"locked": "Səhifə kilidləndi",
-			"lockError": "Kilid dəyişdirilə bilmədi",
-			"logoError": "Nişan yenilənə bilmədi",
-			"madePrivate": "Səhifə artıq şəxsidir",
-			"madePublic": "Səhifə artıq ictimaidir",
-			"moved": "{{project}} layihəsinə köçürüldü",
-			"moveError": "Səhifə köçürülə bilmədi",
-			"open": "Aç",
-			"restored": "Səhifə bərpa edildi",
-			"restoreError": "Səhifə bərpa edilə bilmədi",
-			"titleError": "Başlıq saxlanıla bilmədi",
-			"unlocked": "Səhifənin kilidi açıldı"
-		},
-		"tree": {
-			"collapse": "{{title}} elementini yığ",
-			"dnd": {
-				"cancelled": "Köçürmə ləğv edildi.",
-				"dropped": "{{title}} köçürüldü.",
-				"invalid": "{{title}} ora yerləşdirilə bilməz.",
-				"over": "{{title}}, {{target}} üzərindədir.",
-				"pickedUp": "{{title}} götürüldü. Köçürmək üçün ox düymələrindən, buraxmaq üçün Space, ləğv etmək üçün Escape düyməsindən istifadə edin."
-			},
-			"empty": "Hələ səhifə yoxdur",
-			"expand": "{{title}} elementini aç",
-			"newPage": "Yeni səhifə",
-			"title": "Səhifələr"
+		"watch": {
+			"watch": "Səhifəni izlə",
+			"unwatch": "İzləməyi dayandır",
+			"watchHint": "Şərhlər və dəyişikliklər barədə bildiriş alın",
+			"watchingHint": "Şərhlər və dəyişikliklər barədə bildiriş alırsınız",
+			"error": "Bu səhifənin izlənmə vəziyyətini dəyişmək mümkün olmadı"
 		}
 	},
 	"accountSecurity": {
@@ -8996,7 +9336,9 @@
 				"sessionLifetime": "Sessiya müddəti",
 				"sessionLifetimeHint": "İstifadə olunmayan sessiyanın nə qədər qüvvədə qaldığı. İstifadə onu uzadır.",
 				"hours": "saat",
-				"signInNotice": "{{provider}} ilə daxil olun. Parolla giriş yalnız instans adminləri üçündür."
+				"signInNotice": "{{provider}} ilə daxil olun. Parolla giriş yalnız instans adminləri üçündür.",
+				"requireTwoFactor": "İki faktorlu autentifikasiyanı məcburi et",
+				"requireTwoFactorHint": "Parolu olan hər hesab, provayder və ya SAML vasitəsilə də daxil olsa belə, başqa bir iş görməzdən əvvəl iki faktorlu autentifikasiyanı quraşdırmalıdır və quraşdırana qədər onun API açarları işləmir. E-poçt keçidləri və kodları söndürülür, ona görə də yalnız onlardan istifadə edənlər parolları olana qədər daxil ola bilməz: onlar parolu “Parolu unutmusunuz?” vasitəsilə özləri təyin edir, e-poçt quraşdırılmayıbsa isə “İstifadəçilər” bölməsində siz onlar üçün təyin edirsiniz. Parolu olmayan hesablar öz provayderlərinin qaydalarına tabedir. Əvvəlcə öz hesabınız üçün aktivləşdirin."
 			},
 			"twoFactor": {
 				"title": "İki faktorlu autentifikasiya",
@@ -9023,7 +9365,11 @@
 				"done": "Hazırdır",
 				"enabled": "İki faktorlu autentifikasiya aktivdir.",
 				"disabled": "İki faktorlu autentifikasiya deaktivdir.",
-				"error": "Nəsə səhv getdi. Yenidən cəhd edin."
+				"error": "Nəsə səhv getdi. Yenidən cəhd edin.",
+				"requiredHint": "Bu server iki faktorlu autentifikasiyanı tələb edir, ona görə onu söndürmək olmaz. Cihazınızı və bərpa kodlarınızı itirsəniz, instans admini onu sıfırlaya bilər.",
+				"setupRequiredTitle": "Davam etmək üçün iki faktorlu autentifikasiyanı quraşdırın",
+				"setupRequiredHint": "Bu server parolu olan hər hesab üçün iki faktorlu autentifikasiyanı tələb edir. Sizə autentifikator tətbiqi lazım olacaq.",
+				"signOutInstead": "Bunun əvəzinə çıxış et"
 			},
 			"challenge": {
 				"title": "İki faktorlu autentifikasiya",
@@ -9095,7 +9441,11 @@
 				"noPassword": "Təyin edilməyib (başqa yolla daxil olur)",
 				"workspacesTitle": "İş sahələri",
 				"noWorkspaces": "Heç bir iş sahəsinin üzvü deyil.",
-				"joined": "Qoşulub: {{date}}"
+				"joined": "Qoşulub: {{date}}",
+				"resetTwoFactor": "İki faktorlu autentifikasiyanı sıfırla",
+				"resetTwoFactorTitle": "{{name}} üçün iki faktorlu autentifikasiya sıfırlansın?",
+				"resetTwoFactorDescription": "Bundan şəxs cihazını və bərpa kodlarını itirdikdə və həqiqətən o olduğunu yoxladıqdan sonra istifadə edin. Onun iki faktorlu autentifikasiyası silinir və bütün sessiyalardan çıxış edilir. Sonra yalnız parolu ilə daxil olub onu yenidən quraşdıra bilər.",
+				"twoFactorReset": "{{name}} üçün iki faktorlu autentifikasiya sıfırlandı"
 			}
 		},
 		"password": {
@@ -9159,33 +9509,99 @@
 				"cliAdminPromoted": "Instans admini təyin etdi (bərpa CLI)",
 				"cliAdminDemoted": "Instans adminini çıxardı (bərpa CLI)",
 				"cliPasswordReset": "Parolu sıfırladı (bərpa CLI)",
-				"cliUserUnbanned": "Bloku götürdü (bərpa CLI)"
+				"cliUserUnbanned": "Bloku götürdü (bərpa CLI)",
+				"userTwoFactorReset": "Hesabın iki faktorlu autentifikasiyasını sıfırladı",
+				"cliTwoFactorReset": "Hesabın iki faktorlu autentifikasiyasını sıfırladı (bərpa CLI-si)",
+				"scimConnectionCreated": "Avtomatik təminat üçün kimlik provayderi qoşdu",
+				"scimTokenRotated": "SCIM giriş nişanını əvəzlədi",
+				"scimConnectionDeleted": "SCIM bağlantısını çıxardı",
+				"scimUserProvisioned": "Avtomatik təminatla hesab əlavə etdi",
+				"scimUserDeactivated": "Avtomatik təminatla hesabı deaktiv etdi",
+				"scimUserReactivated": "Avtomatik təminatla hesabı yenidən aktivləşdirdi",
+				"scimUserRemoved": "Avtomatik təminatla kimisə iş sahəsindən çıxardı",
+				"samlConnectionCreated": "Giriş üçün kimlik provayderi qoşdu",
+				"samlConnectionUpdated": "SAML bağlantısını dəyişdi",
+				"samlConnectionDeleted": "SAML bağlantısını çıxardı"
 			}
 		}
 	},
 	"instanceAdmin": {
-		"admins": {
-			"add": "Admin əlavə et",
-			"addConfirm": "Admin əlavə et",
-			"addDescription": "Quraşdırma adminləri bu sahədəki hər parametri dəyişə və istənilən iş sahəsini aça bilər.",
-			"added": "{{name}} artıq quraşdırma adminidir",
-			"addTitle": "Quraşdırma admini əlavə et",
-			"columns": {
-				"email": "E-poçt",
-				"name": "Ad"
-			},
+		"pageTitle": "Quraşdırma · {{page}}",
+		"nav": {
+			"admins": "Adminlər",
+			"authentication": "Autentifikasiya",
 			"email": "E-poçt",
-			"emailInvalid": "Düzgün e-poçt ünvanı daxil edin",
-			"emailPlaceholder": "name@example.com",
-			"lastAdmin": "Ən azı bir quraşdırma admini olmalıdır",
-			"remove": "Admini sil…",
-			"removeConfirm": "Sil",
-			"removed": "{{name}} artıq quraşdırma admini deyil",
-			"removeDescription": "Onlar hesablarını və iş sahələrini saxlayır.",
-			"removeTitle": "{{name}} quraşdırma adminliyindən çıxarılsın?",
-			"subtitle": "Quraşdırma adminləri bu sahədəki hər parametri dəyişə və istənilən iş sahəsini aça bilər.",
-			"title": "Adminlər",
-			"you": "Siz"
+			"general": "Ümumi",
+			"publicBoards": "İctimai lövhələr",
+			"workspaces": "İş sahələri",
+			"ai": "Sİ"
+		},
+		"lockedCallout": "Bu parametrlər bu serverdə mühit dəyişənləri ilə idarə olunur. Buradakı dəyişikliklər deaktivdir.",
+		"source": {
+			"default": "Defolt",
+			"environment": "Mühit: {{variable}}",
+			"lockTooltip": "Bunu burada idarə etmək üçün {{variable}} dəyişənini silin və yenidən başladın.",
+			"saved": "Burada saxlanılıb",
+			"savedBy": "{{name}} tərəfindən {{date}} tarixində saxlanılıb"
+		},
+		"saved": "Parametrlər saxlanıldı",
+		"saveError": "Parametrlər saxlanıla bilmədi",
+		"loadError": "Quraşdırma parametrləri yüklənə bilmədi",
+		"retry": "Yenidən cəhd et",
+		"save": "Saxla",
+		"secret": {
+			"cancel": "Ləğv et",
+			"clear": "Təmizlə",
+			"cleared": "Sirr təmizləndi",
+			"placeholder": "Yeni dəyər daxil edin",
+			"replace": "Əvəz et",
+			"saved": "Saxlanılıb",
+			"unreadable": "Saxlanılmış sirr oxuna bilmir (serverin AUTH_SECRET dəyəri dəyişib). Onu yenidən daxil edin."
+		},
+		"general": {
+			"title": "Ümumi",
+			"subtitle": "Bu quraşdırmaya ad verin və vəziyyətini yoxlayın.",
+			"instanceName": "Quraşdırma adı",
+			"instanceNameHint": "Giriş ekranında və ictimai lövhələrdə göstərilir",
+			"instanceNameRequired": "Ad daxil edin",
+			"instanceNameTooLong": "Ən çox 80 simvol istifadə edin",
+			"homePage": "Ana səhifə",
+			"publicLanding": "Məhsulun açılış səhifəsini göstər",
+			"publicLandingHint": "Daxil olmamış ziyarətçilər kök ünvanda açılış səhifəsini görür. Söndürüldükdə birbaşa girişə yönləndirilirlər.",
+			"overview": "İcmal",
+			"version": "Versiya",
+			"counts": {
+				"accounts": "Hesablar",
+				"guests": "Qonaqlar",
+				"projects": "Layihələr",
+				"publishedBoards": "İctimai lövhələr",
+				"workspaces": "İş sahələri"
+			},
+			"server": {
+				"captcha": "Captcha",
+				"cloudMode": "Bulud rejimi",
+				"configured": "Konfiqurasiya edilib",
+				"demoMode": "Demo rejimi",
+				"email": "E-poçt",
+				"errorReporting": "Xəta hesabatı",
+				"fileStorage": "Fayl saxlama",
+				"notConfigured": "Konfiqurasiya edilməyib",
+				"off": "Söndürülüb",
+				"on": "Qoşulub",
+				"realtime": "Real vaxt",
+				"realtimeMemory": "Yaddaşda",
+				"realtimeRedis": "Redis ({{mode}})",
+				"title": "Server"
+			},
+			"deliveryFailures": {
+				"title": "Son çatdırılma xətaları",
+				"description": "Son 7 gündə təkrar cəhdlərini tükətmiş iş sahəsi webhook-ları. E-poçt və arxa plan işi xətaları yalnız server jurnallarındadır.",
+				"empty": "Son 7 gündə uğursuz çatdırılma yoxdur.",
+				"when": "Nə vaxt",
+				"workspace": "İş sahəsi",
+				"webhook": "Webhook",
+				"response": "Cavab"
+			}
 		},
 		"auth": {
 			"anyoneCanSignUp": "Hər kəs qeydiyyatdan keçə bilər",
@@ -9225,6 +9641,31 @@
 			"title": "Autentifikasiya",
 			"toggle": "{{method}} üsulunu aç və ya söndür"
 		},
+		"oauth": {
+			"authorizationUrl": "Səlahiyyətləndirmə URL-i",
+			"autoSignIn": "Avtomatik daxil ol",
+			"autoSignInHint": "Giriş ekranını keçib birbaşa bu provayderə get",
+			"buttonLabel": "Düymə yazısı",
+			"buttonLabelHint": "Giriş düyməsində göstərilir, məsələn “Okta ilə davam et”",
+			"callbackHint": "Bu URL-i OAuth tətbiqinizə əlavə edin",
+			"callbackUrl": "Geri çağırış URL-i",
+			"clientId": "Müştəri ID-si",
+			"clientSecret": "Müştəri sirri",
+			"copied": "Kopyalandı",
+			"copy": "Kopyala",
+			"discoveryHint": "Və ya aşağıdakı üç son nöqtəni doldurun",
+			"discoveryUrl": "Kəşf URL-i",
+			"invalidUrl": "Mütləq http və ya https URL-i daxil edin",
+			"logoutUrl": "Çıxış URL-i",
+			"managedByEnv": "Bu provayder mühit dəyişənləri ilə konfiqurasiya edilib ({{variables}}).",
+			"pkce": "PKCE istifadə et",
+			"scopes": "Scope-lar",
+			"scopesHint": "Vergüllə ayrılmış",
+			"sheetDescription": "İnsanların {{provider}} ilə daxil ola bilməsi üçün OAuth tətbiqini qoşun.",
+			"sheetTitle": "{{provider}} ilə giriş",
+			"tokenUrl": "Token URL-i",
+			"userInfoUrl": "İstifadəçi məlumatı URL-i"
+		},
 		"email": {
 			"from": "Kimdən",
 			"fromHint": "Ünvan və ya ad və ünvan: Margaya <no-reply@example.com>",
@@ -9255,134 +9696,6 @@
 			"subtitle": "Margaya-nın giriş kodlarını, dəvətləri və bildirişləri göndərdiyi SMTP serveri.",
 			"title": "E-poçt",
 			"username": "İstifadəçi adı"
-		},
-		"general": {
-			"counts": {
-				"accounts": "Hesablar",
-				"guests": "Qonaqlar",
-				"projects": "Layihələr",
-				"publishedBoards": "İctimai lövhələr",
-				"workspaces": "İş sahələri"
-			},
-			"instanceName": "Quraşdırma adı",
-			"instanceNameHint": "Giriş ekranında və ictimai lövhələrdə göstərilir",
-			"instanceNameRequired": "Ad daxil edin",
-			"instanceNameTooLong": "Ən çox 80 simvol istifadə edin",
-			"homePage": "Ana səhifə",
-			"publicLanding": "Məhsulun açılış səhifəsini göstər",
-			"publicLandingHint": "Daxil olmamış ziyarətçilər kök ünvanda açılış səhifəsini görür. Söndürüldükdə birbaşa girişə yönləndirilirlər.",
-			"overview": "İcmal",
-			"server": {
-				"captcha": "Captcha",
-				"cloudMode": "Bulud rejimi",
-				"configured": "Konfiqurasiya edilib",
-				"demoMode": "Demo rejimi",
-				"email": "E-poçt",
-				"errorReporting": "Xəta hesabatı",
-				"fileStorage": "Fayl saxlama",
-				"notConfigured": "Konfiqurasiya edilməyib",
-				"off": "Söndürülüb",
-				"on": "Qoşulub",
-				"realtime": "Real vaxt",
-				"realtimeMemory": "Yaddaşda",
-				"realtimeRedis": "Redis ({{mode}})",
-				"title": "Server"
-			},
-			"subtitle": "Bu quraşdırmaya ad verin və vəziyyətini yoxlayın.",
-			"title": "Ümumi",
-			"version": "Versiya"
-		},
-		"loadError": "Quraşdırma parametrləri yüklənə bilmədi",
-		"lockedCallout": "Bu parametrlər bu serverdə mühit dəyişənləri ilə idarə olunur. Buradakı dəyişikliklər deaktivdir.",
-		"nav": {
-			"admins": "Adminlər",
-			"authentication": "Autentifikasiya",
-			"email": "E-poçt",
-			"general": "Ümumi",
-			"publicBoards": "İctimai lövhələr",
-			"workspaces": "İş sahələri",
-			"ai": "Sİ"
-		},
-		"oauth": {
-			"authorizationUrl": "Səlahiyyətləndirmə URL-i",
-			"autoSignIn": "Avtomatik daxil ol",
-			"autoSignInHint": "Giriş ekranını keçib birbaşa bu provayderə get",
-			"buttonLabel": "Düymə yazısı",
-			"buttonLabelHint": "Giriş düyməsində göstərilir, məsələn “Okta ilə davam et”",
-			"callbackHint": "Bu URL-i OAuth tətbiqinizə əlavə edin",
-			"callbackUrl": "Geri çağırış URL-i",
-			"clientId": "Müştəri ID-si",
-			"clientSecret": "Müştəri sirri",
-			"copied": "Kopyalandı",
-			"copy": "Kopyala",
-			"discoveryHint": "Və ya aşağıdakı üç son nöqtəni doldurun",
-			"discoveryUrl": "Kəşf URL-i",
-			"invalidUrl": "Mütləq http və ya https URL-i daxil edin",
-			"logoutUrl": "Çıxış URL-i",
-			"managedByEnv": "Bu provayder mühit dəyişənləri ilə konfiqurasiya edilib ({{variables}}).",
-			"pkce": "PKCE istifadə et",
-			"scopes": "Scope-lar",
-			"scopesHint": "Vergüllə ayrılmış",
-			"sheetDescription": "İnsanların {{provider}} ilə daxil ola bilməsi üçün OAuth tətbiqini qoşun.",
-			"sheetTitle": "{{provider}} ilə giriş",
-			"tokenUrl": "Token URL-i",
-			"userInfoUrl": "İstifadəçi məlumatı URL-i"
-		},
-		"pageTitle": "Quraşdırma · {{page}}",
-		"publicBoards": {
-			"actions": "Lövhə əməliyyatları",
-			"allow": "İctimai lövhələrə icazə ver",
-			"allowHint": "Söndürülübsə, hər ictimai keçid “tapılmadı” cavabı verir. Heç nə silinmir.",
-			"columns": {
-				"features": "Xüsusiyyətlər",
-				"project": "Layihə",
-				"published": "Dərc edilib",
-				"workspace": "İş sahəsi"
-			},
-			"empty": "Bu serverdə ictimai lövhə yoxdur.",
-			"feature": {
-				"comments": "Şərhlər",
-				"guests": "Qonaqlar",
-				"reactions": "Reaksiyalar",
-				"requests": "Sorğular",
-				"votes": "Səslər"
-			},
-			"listTitle": "Dərc edilmiş lövhələr",
-			"loadMore": "Daha çox yüklə",
-			"noMatches": "“{{query}}” sorğusuna uyğun ictimai lövhə yoxdur",
-			"openBoard": "Lövhəni aç",
-			"participation": "İctimai iştiraka icazə ver",
-			"participationHint": "Söndürülübsə, ictimai lövhələr yalnız oxunaqlıdır: şərh, reaksiya, səs və ya sorğu yoxdur.",
-			"projectSettings": "Layihə parametrləri",
-			"search": "Lövhələri axtar",
-			"subtitle": "Bu quraşdırmadakı ictimai lövhələri idarə edin.",
-			"title": "İctimai lövhələr",
-			"unpublish": "Dərcdən çıxar…",
-			"unpublishConfirm": "Dərcdən çıxar",
-			"unpublishDescription": "Kimsə lövhəni yenidən dərc edənə qədər keçid işləməyəcək. Parametrlər, şərhlər, reaksiyalar və səslər saxlanılır.",
-			"unpublished": "Lövhə dərcdən çıxarıldı",
-			"unpublishError": "Lövhə dərcdən çıxarıla bilmədi",
-			"unpublishTitle": "{{project}} dərcdən çıxarılsın?"
-		},
-		"retry": "Yenidən cəhd et",
-		"save": "Saxla",
-		"saved": "Parametrlər saxlanıldı",
-		"saveError": "Parametrlər saxlanıla bilmədi",
-		"secret": {
-			"cancel": "Ləğv et",
-			"clear": "Təmizlə",
-			"cleared": "Sirr təmizləndi",
-			"placeholder": "Yeni dəyər daxil edin",
-			"replace": "Əvəz et",
-			"saved": "Saxlanılıb",
-			"unreadable": "Saxlanılmış sirr oxuna bilmir (serverin AUTH_SECRET dəyəri dəyişib). Onu yenidən daxil edin."
-		},
-		"source": {
-			"default": "Defolt",
-			"environment": "Mühit: {{variable}}",
-			"lockTooltip": "Bunu burada idarə etmək üçün {{variable}} dəyişənini silin və yenidən başladın.",
-			"saved": "Burada saxlanılıb",
-			"savedBy": "{{name}} tərəfindən {{date}} tarixində saxlanılıb"
 		},
 		"testEmail": {
 			"codes": {
@@ -9425,6 +9738,132 @@
 			"search": "İş sahələrini axtar",
 			"subtitle": "Bu quraşdırmadakı bütün iş sahələri.",
 			"title": "İş sahələri"
+		},
+		"publicBoards": {
+			"actions": "Lövhə əməliyyatları",
+			"allow": "İctimai lövhələrə icazə ver",
+			"allowHint": "Söndürülübsə, hər ictimai keçid “tapılmadı” cavabı verir. Heç nə silinmir.",
+			"columns": {
+				"features": "Xüsusiyyətlər",
+				"project": "Layihə",
+				"published": "Dərc edilib",
+				"workspace": "İş sahəsi"
+			},
+			"empty": "Bu serverdə ictimai lövhə yoxdur.",
+			"feature": {
+				"comments": "Şərhlər",
+				"guests": "Qonaqlar",
+				"reactions": "Reaksiyalar",
+				"requests": "Sorğular",
+				"votes": "Səslər"
+			},
+			"listTitle": "Dərc edilmiş lövhələr",
+			"loadMore": "Daha çox yüklə",
+			"noMatches": "“{{query}}” sorğusuna uyğun ictimai lövhə yoxdur",
+			"openBoard": "Lövhəni aç",
+			"participation": "İctimai iştiraka icazə ver",
+			"participationHint": "Söndürülübsə, ictimai lövhələr yalnız oxunaqlıdır: şərh, reaksiya, səs və ya sorğu yoxdur.",
+			"projectSettings": "Layihə parametrləri",
+			"search": "Lövhələri axtar",
+			"subtitle": "Bu quraşdırmadakı ictimai lövhələri idarə edin.",
+			"title": "İctimai lövhələr",
+			"unpublish": "Dərcdən çıxar…",
+			"unpublishConfirm": "Dərcdən çıxar",
+			"unpublishDescription": "Kimsə lövhəni yenidən dərc edənə qədər keçid işləməyəcək. Parametrlər, şərhlər, reaksiyalar və səslər saxlanılır.",
+			"unpublished": "Lövhə dərcdən çıxarıldı",
+			"unpublishError": "Lövhə dərcdən çıxarıla bilmədi",
+			"unpublishTitle": "{{project}} dərcdən çıxarılsın?"
+		},
+		"admins": {
+			"add": "Admin əlavə et",
+			"addConfirm": "Admin əlavə et",
+			"addDescription": "Quraşdırma adminləri bu sahədəki hər parametri dəyişə və istənilən iş sahəsini aça bilər.",
+			"added": "{{name}} artıq quraşdırma adminidir",
+			"addTitle": "Quraşdırma admini əlavə et",
+			"columns": {
+				"email": "E-poçt",
+				"name": "Ad"
+			},
+			"email": "E-poçt",
+			"emailInvalid": "Düzgün e-poçt ünvanı daxil edin",
+			"emailPlaceholder": "name@example.com",
+			"lastAdmin": "Ən azı bir quraşdırma admini olmalıdır",
+			"remove": "Admini sil…",
+			"removeConfirm": "Sil",
+			"removed": "{{name}} artıq quraşdırma admini deyil",
+			"removeDescription": "Onlar hesablarını və iş sahələrini saxlayır.",
+			"removeTitle": "{{name}} quraşdırma adminliyindən çıxarılsın?",
+			"subtitle": "Quraşdırma adminləri bu sahədəki hər parametri dəyişə və istənilən iş sahəsini aça bilər.",
+			"title": "Adminlər",
+			"you": "Siz"
+		},
+		"identity": {
+			"name": "Ad",
+			"nameHint": "Adminlərin bu bağlantıya verdiyi ad, məsələn, provayderin adı.",
+			"remove": "Çıxar",
+			"removeTitle": "{{name}} çıxarılsın?",
+			"done": "Hazırdır",
+			"scim": {
+				"title": "Avtomatik təminat (SCIM)",
+				"description": "Kimlik provayderinə bir iş sahəsində insanları əlavə etməyə, dəyişməyə və çıxarmağa icazə verin.",
+				"none": "Avtomatik təminat üçün qoşulmuş kimlik provayderi yoxdur.",
+				"connect": "Provayder qoş",
+				"connectDescription": "Bir iş sahəsi üçün giriş nişanı yaradır. Onu qoşulduqdan sonra bir dəfə görəcəksiniz.",
+				"connectConfirm": "Giriş nişanı yarat",
+				"workspace": "İş sahəsi",
+				"workspaceHint": "Bu provayderin əlavə etdiyi insanlar bu iş sahəsinə üzv kimi qoşulur.",
+				"workspacePlaceholder": "İş sahəsi seçin",
+				"workspaceSearch": "İş sahələrində axtar",
+				"baseUrl": "SCIM əsas URL-i",
+				"token": "Daşıyıcı giriş nişanı",
+				"tokenTitle": "{{name}} üçün giriş nişanını kopyalayın",
+				"tokenDescription": "Onu yalnız bu dəfə görəcəksiniz. Yalnız kimlik provayderinə verin: ona sahib olan hər kəs iş sahəsinə insan əlavə edə, bu bağlantının idarə etdiyi insanları dəyişə və ya deaktiv edə bilər.",
+				"rotate": "Giriş nişanını əvəzlə",
+				"rotateTitle": "{{name}} üçün giriş nişanı əvəzlənsin?",
+				"rotateDescription": "Cari giriş nişanı dərhal işləməyi dayandırır, ona görə kimlik provayderi yenisini alana qədər avtomatik təminat dayanır. İnsanlar əlaqəli qalır.",
+				"rotateConfirm": "Giriş nişanını əvəzlə",
+				"removeDescription": "Giriş nişanı dərhal işləməyi dayandırır. Onun əlavə etdiyi insanlar hesablarını və üzvlüklərini saxlayır, provayderdən isə artıq yenilənmirlər.",
+				"removed": "{{name}} çıxarıldı",
+				"columns": {
+					"name": "Ad",
+					"workspace": "İş sahəsi",
+					"people": "İnsanlar"
+				}
+			},
+			"saml": {
+				"title": "Şirkət girişi (SAML)",
+				"description": "E-poçt domenlərinizdəki insanlara kimlik provayderi vasitəsilə daxil olmağa icazə verin.",
+				"none": "Giriş üçün qoşulmuş kimlik provayderi yoxdur.",
+				"connect": "Provayder qoş",
+				"connectConfirm": "Qoşul",
+				"edit": "Redaktə et",
+				"editTitle": "Redaktə et: {{name}}",
+				"formDescription": "Bu kimlik provayderinə nəzarət edən şəxs, ünvanı burada təsdiqlənmiş bu domenlərdəki hər kəsin adından daxil ola bilər, ona görə yalnız bu domenlər üçün etibar etdiyiniz provayderi qoşun.",
+				"acsUrl": "Təsdiq İstehlakçı Xidməti (ACS) URL-i",
+				"entityId": "Obyekt identifikatoru (auditoriya)",
+				"addressesHint": "Bu ikisini kimlik provayderinizdə daxil edin. Sonradan dəyişmirlər.",
+				"domains": "E-poçt domenləri",
+				"domainsHint": "Bir neçəsini vergüllə ayırın. Alt domenlər daxildir.",
+				"domainsInvalid": "example.com kimi domenləri vergüllə ayıraraq daxil edin.",
+				"issuer": "Kimlik provayderinin obyekt identifikatoru (emitent)",
+				"entryPoint": "Vahid giriş URL-i",
+				"entryPointInvalid": "https:// ünvanından istifadə edin.",
+				"certificate": "İmzalama sertifikatı",
+				"certificateHint": "Kimlik provayderinin PEM və ya base64 formatında açıq X.509 sertifikatı. Heç vaxt məxfi açar deyil.",
+				"certificateKeepHint": "Cari sertifikatı saxlamaq üçün bunu boş saxlayın.",
+				"currentCertificate": "Cari barmaq izi: {{fingerprint}}",
+				"certificateExpired": "Müddəti bitib",
+				"certificateExpiring": "Müddəti tezliklə bitir",
+				"connected": "Kimlik provayderi qoşuldu",
+				"saved": "Bağlantı yadda saxlanıldı",
+				"removeDescription": "Bu kimlik provayderi vasitəsilə giriş dərhal dayanır. Hesablar qalır, insanlar başqa yolla daxil olur.",
+				"removed": "{{name}} çıxarıldı",
+				"columns": {
+					"name": "Ad",
+					"domains": "E-poçt domenləri",
+					"certificate": "Sertifikatın bitmə tarixi"
+				}
+			}
 		}
 	},
 	"press": {
@@ -9936,6 +10375,24 @@
 				"facts": "Layihələr: {{projects}} · İnsanlar: {{members}} · Dövrlər: {{cycles}}",
 				"memory": "Yaddaş qeydləri: {{count}}",
 				"history": "Əvvəlki mesajlar: {{count}}"
+			},
+			"undo": {
+				"button": "Planı geri al",
+				"pending": "Plan geri alınır…",
+				"hint": "İçindəki heç nə dəyişməyibsə, bu planı bir saat ərzində geri ala bilərsiniz.",
+				"lastPlan": "Son planınızı hələ də geri ala bilərsiniz.",
+				"done": "Plan geri alındı. Silinmiş elementlər zibil qutusundadır.",
+				"archived_one": "{{count}} element silə bilmədiyiniz üçün bunun əvəzinə arxivləndi.",
+				"archived_other": "{{count}} element silə bilmədiyiniz üçün bunun əvəzinə arxivləndi.",
+				"partial_one": "{{count}} element istisna olmaqla geri alındı:",
+				"partial_other": "{{count}} element istisna olmaqla geri alındı:",
+				"edited_one": "Heç nə geri alınmadı: plan yaradıldıqdan sonra {{count}} element dəyişib. Hələ də silinməsini istəyirsinizsə, onu əllə çıxarın.",
+				"edited_other": "Heç nə geri alınmadı: plan yaradıldıqdan sonra {{count}} element dəyişib. Hələ də silinmələrini istəyirsinizsə, onları əllə çıxarın.",
+				"more_one": "və daha {{count}} element",
+				"more_other": "və daha {{count}} element",
+				"already": "Bu plan artıq geri alınıb.",
+				"expired": "Bu planı artıq geri almaq olmaz: bir saatlıq müddət bitib.",
+				"failed": "Bu planı geri almaq mümkün olmadı."
 			}
 		},
 		"duplicates": {
@@ -11484,7 +11941,8 @@
 			"text": "Bu, {{instanceName}} tərəfindən göndərilən test məktubudur. Onu oxuya bilirsinizsə, e-poçt göndərişi işləyir."
 		},
 		"notificationText": {
-			"commentWithoutPreview": "{{taskTitle}} tapşırığına yeni şərh"
+			"commentWithoutPreview": "{{taskTitle}} tapşırığına yeni şərh",
+			"pushFixedLine": "Təfərrüatları görmək üçün Margaya-nı açın."
 		}
 	}
 }
