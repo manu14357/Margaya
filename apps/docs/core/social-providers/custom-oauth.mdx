@@ -205,3 +205,7 @@ On existing installations, local accounts created before this requirement may st
 - Keep your client secret secure and never commit it to version control
 - Enable PKCE when possible for enhanced security
 - Use the most restrictive scopes necessary for your use case
+
+## App and API on different sites
+
+When the app and API are on two different sites over HTTPS, such as `app.example.com` and `api.example.net`, sign-in through OAuth or SAML ends on the API, where the browser keeps the session apart from the app. So the API hands it over: it sends the browser to the app's `/auth/complete` page with a one-time link, and the app exchanges it for the session. The link works once, for a minute, and only in the browser that signed in, so a link sent to someone else signs nobody in. This needs the browser to keep the API's cookies on the app's pages, which browsers that block third-party cookies don't. With the app and API on one address, or on subdomains of one domain, sign-in works as usual and none of this applies.
