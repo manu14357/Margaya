@@ -1,6 +1,7 @@
 import { type PropsWithChildren, useEffect, useMemo } from "react";
 import { I18nextProvider } from "react-i18next";
 import useAuth from "@/components/providers/auth-provider/hooks/use-auth";
+import { loadDayPickerLocale } from "./day-picker-locale";
 import {
   getPreferredGuestLocale,
   i18n,
@@ -20,6 +21,8 @@ export function AppI18nProvider({ children }: PropsWithChildren) {
     void i18n
       .changeLanguage(resolvedLocale)
       .then(() => preloadNamespaces(resolvedLocale));
+    // Ready before a date picker first opens, so it never flashes English.
+    void loadDayPickerLocale(resolvedLocale);
     document.documentElement.lang = resolvedLocale;
   }, [resolvedLocale]);
 

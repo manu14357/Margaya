@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import {
   Archive,
   Boxes,
@@ -14,6 +13,7 @@ import { LabelChips } from "@/components/shared/label-chips";
 import { cn } from "@/lib/cn";
 import { dueDateStatusColors, getDueDateStatus } from "@/lib/due-date-status";
 import { formatEstimateValue } from "@/lib/estimate/format";
+import { formatDateShort } from "@/lib/format";
 import type { DisplayProperties } from "@/lib/task-query/model";
 import { isRowCompleted } from "@/lib/task-query/row-task";
 import type { TaskQueryMeta, TaskQueryRow } from "@/types/task-query";
@@ -39,7 +39,7 @@ export function DueDateChip({ row }: { row: TaskQueryRow }) {
       )}
     >
       <Icon className="size-3" />
-      <span>{format(new Date(row.dueDate), "MMM d")}</span>
+      <span>{formatDateShort(new Date(row.dueDate))}</span>
     </span>
   );
 }

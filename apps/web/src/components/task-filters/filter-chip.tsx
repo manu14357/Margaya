@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import { type ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -6,6 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { formatDateMedium } from "@/lib/format";
 import {
   DATE_OPERATOR_LABEL_KEYS,
   DATE_PRESET_LABEL_KEYS,
@@ -30,7 +30,7 @@ type FilterChipProps = {
 
 function formatDay(value: string | undefined): string {
   const date = fromDayString(value);
-  return date ? format(date, "MMM d, yyyy") : (value ?? "");
+  return date ? formatDateMedium(date) : (value ?? "");
 }
 
 export function useConditionText() {

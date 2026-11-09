@@ -7,8 +7,11 @@ import {
 } from "lucide-react";
 import type * as React from "react";
 import { DayPicker } from "react-day-picker";
+import { useTranslation } from "react-i18next";
 
 import { cn } from "@/lib/cn";
+import { formatDate } from "@/lib/format";
+import { useDayPickerLocale } from "@/lib/i18n/day-picker-locale";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 
 const buttonClassNames =
@@ -25,6 +28,9 @@ function Calendar({
   const preferredWeekStartsOn = useUserPreferencesStore(
     (state) => state.weekStartsOn,
   );
+  // Without an i18n instance (a bare mock), the picker stays in English.
+  const { i18n } = useTranslation();
+  const locale = useDayPickerLocale(i18n?.resolvedLanguage ?? i18n?.language);
   const defaultClassNames = {
     button_next: buttonClassNames,
     button_previous: buttonClassNames,
@@ -129,9 +135,15 @@ function Calendar({
       components={mergedComponents}
       data-slot="calendar"
       formatters={{
-        formatMonthDropdown: (date) =>
-          date.toLocaleString("default", { month: "short" }),
+        // The picker's own language (the app's), not the browser's default.
+        formatMonthDropdown: (month, dateLib) =>
+          formatDate(
+            month,
+            { month: "short" },
+            dateLib?.options.locale?.code ?? "en-US",
+          ),
       }}
+      locale={locale}
       mode="single"
       showOutsideDays={showOutsideDays}
       weekStartsOn={weekStartsOnProp ?? preferredWeekStartsOn}
