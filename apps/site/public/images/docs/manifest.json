@@ -28,7 +28,7 @@
 		},
 		"account/delivery-channels": {
 			"width": 744,
-			"height": 1306,
+			"height": 1459,
 			"format": "webp"
 		},
 		"account/display-options": {
@@ -66,9 +66,19 @@
 			"height": 524,
 			"format": "webp"
 		},
+		"account/push-notifications": {
+			"width": 744,
+			"height": 237,
+			"format": "webp"
+		},
 		"account/sessions": {
 			"width": 744,
 			"height": 275,
+			"format": "webp"
+		},
+		"account/two-factor-required": {
+			"width": 433,
+			"height": 428,
 			"format": "webp"
 		},
 		"account/two-factor-setup": {
@@ -78,7 +88,7 @@
 		},
 		"account/workspace-rules": {
 			"width": 744,
-			"height": 613,
+			"height": 665,
 			"format": "webp"
 		},
 		"admin/admins": {
@@ -93,7 +103,7 @@
 		},
 		"admin/general": {
 			"width": 768,
-			"height": 714,
+			"height": 944,
 			"format": "webp"
 		},
 		"admin/oauth-custom": {
@@ -121,6 +131,16 @@
 			"height": 468,
 			"format": "webp"
 		},
+		"admin/saml-connect": {
+			"width": 512,
+			"height": 920,
+			"format": "webp"
+		},
+		"admin/scim-connections": {
+			"width": 752,
+			"height": 243,
+			"format": "webp"
+		},
 		"admin/sign-in-methods": {
 			"width": 752,
 			"height": 534,
@@ -128,7 +148,7 @@
 		},
 		"admin/sign-in-policy": {
 			"width": 752,
-			"height": 310,
+			"height": 403,
 			"format": "webp"
 		},
 		"admin/sign-up": {
@@ -228,7 +248,7 @@
 		},
 		"ai/stakeholder-brief": {
 			"width": 484,
-			"height": 502,
+			"height": 506,
 			"format": "webp"
 		},
 		"ai/summary-card": {
@@ -256,9 +276,19 @@
 			"height": 713,
 			"format": "webp"
 		},
+		"analytics/custom-field-chart": {
+			"width": 1080,
+			"height": 516,
+			"format": "webp"
+		},
+		"analytics/home-pinned-report": {
+			"width": 1080,
+			"height": 383,
+			"format": "webp"
+		},
 		"analytics/overview": {
 			"width": 1128,
-			"height": 810,
+			"height": 845,
 			"format": "webp"
 		},
 		"analytics/save-report-dialog": {
@@ -274,6 +304,16 @@
 		"analytics/tasks-tab": {
 			"width": 1128,
 			"height": 690,
+			"format": "webp"
+		},
+		"analytics/time-report": {
+			"width": 1128,
+			"height": 560,
+			"format": "webp"
+		},
+		"analytics/workload": {
+			"width": 1080,
+			"height": 350,
 			"format": "webp"
 		},
 		"backlog/backlog-view": {
@@ -383,12 +423,12 @@
 		},
 		"data/previous-exports": {
 			"width": 768,
-			"height": 379,
+			"height": 453,
 			"format": "webp"
 		},
 		"data/project-trash": {
 			"width": 768,
-			"height": 329,
+			"height": 543,
 			"format": "webp"
 		},
 		"data/trello-map": {
@@ -508,7 +548,7 @@
 		},
 		"getting-around/home-manage-widgets": {
 			"width": 384,
-			"height": 316,
+			"height": 442,
 			"format": "webp"
 		},
 		"getting-around/inbox": {
@@ -558,7 +598,7 @@
 		},
 		"getting-around/your-work-assigned": {
 			"width": 1128,
-			"height": 440,
+			"height": 449,
 			"format": "webp"
 		},
 		"getting-around/your-work-summary": {
@@ -691,9 +731,14 @@
 			"height": 640,
 			"format": "webp"
 		},
+		"pages/page-comments": {
+			"width": 1128,
+			"height": 640,
+			"format": "webp"
+		},
 		"pages/page-menu": {
 			"width": 281,
-			"height": 437,
+			"height": 433,
 			"format": "webp"
 		},
 		"pages/pages-list": {
@@ -737,11 +782,21 @@
 			"format": "webp"
 		},
 		"tasks/board-filter": {
-			"width": 244,
-			"height": 772,
+			"width": 248,
+			"height": 813,
 			"format": "webp"
 		},
 		"tasks/board-view": {
+			"width": 1128,
+			"height": 900,
+			"format": "webp"
+		},
+		"tasks/bulk-move-dialog": {
+			"width": 512,
+			"height": 220,
+			"format": "webp"
+		},
+		"tasks/bulk-toolbar": {
 			"width": 1128,
 			"height": 900,
 			"format": "webp"
@@ -761,6 +816,26 @@
 			"height": 604,
 			"format": "webp"
 		},
+		"tasks/custom-field-calendar": {
+			"width": 1128,
+			"height": 521,
+			"format": "webp"
+		},
+		"tasks/custom-field-edit": {
+			"width": 448,
+			"height": 600,
+			"format": "webp"
+		},
+		"tasks/custom-field-group": {
+			"width": 1128,
+			"height": 680,
+			"format": "webp"
+		},
+		"tasks/custom-fields": {
+			"width": 752,
+			"height": 326,
+			"format": "webp"
+		},
 		"tasks/description-history": {
 			"width": 896,
 			"height": 379,
@@ -771,9 +846,19 @@
 			"height": 862,
 			"format": "webp"
 		},
+		"tasks/guest-access": {
+			"width": 752,
+			"height": 285,
+			"format": "webp"
+		},
+		"tasks/invite-guest": {
+			"width": 448,
+			"height": 648,
+			"format": "webp"
+		},
 		"tasks/invite-member": {
 			"width": 448,
-			"height": 338,
+			"height": 360,
 			"format": "webp"
 		},
 		"tasks/list-view": {
@@ -836,6 +921,11 @@
 			"height": 234,
 			"format": "webp"
 		},
+		"tasks/time-tracking-popover": {
+			"width": 292,
+			"height": 459,
+			"format": "webp"
+		},
 		"tasks/use-template": {
 			"width": 672,
 			"height": 518,
@@ -868,12 +958,27 @@
 		},
 		"views/filter-menu": {
 			"width": 248,
-			"height": 781,
+			"height": 813,
+			"format": "webp"
+		},
+		"views/gantt-date-cascade": {
+			"width": 512,
+			"height": 252,
 			"format": "webp"
 		},
 		"views/gantt-layout": {
 			"width": 1128,
 			"height": 900,
+			"format": "webp"
+		},
+		"views/gantt-link-popover": {
+			"width": 568,
+			"height": 390,
+			"format": "webp"
+		},
+		"views/gantt-milestone": {
+			"width": 1128,
+			"height": 574,
 			"format": "webp"
 		},
 		"views/save-view-dialog": {
@@ -889,6 +994,11 @@
 		"views/views-list": {
 			"width": 1128,
 			"height": 320,
+			"format": "webp"
+		},
+		"views/workspace-timeline": {
+			"width": 1128,
+			"height": 1208,
 			"format": "webp"
 		}
 	}
