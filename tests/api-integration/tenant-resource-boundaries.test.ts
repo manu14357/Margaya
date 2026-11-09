@@ -113,6 +113,7 @@ describe("tenant resource boundaries", () => {
     const foreign = await context();
     const forged = await label(own.workspace.id, foreign.task.id);
     mockAuthenticatedSession(own.user);
+    const statuses: Record<string, number> = {};
     for (const [suffix, method, body] of [
       ["", "GET", undefined],
       ["", "DELETE", undefined],
@@ -120,10 +121,19 @@ describe("tenant resource boundaries", () => {
       ["/task", "DELETE", undefined],
       ["/task", "PUT", { taskId: own.task.id }],
     ] as const) {
-      expect(
-        (await request(`/label/${forged.id}${suffix}`, method, body)).status,
-      ).toBe(400);
+      statuses[`${method} ${suffix || "/"}`] = (
+        await request(`/label/${forged.id}${suffix}`, method, body)
+      ).status;
     }
+    // A label whose workspace can't be resolved is reported as not found,
+    // so the caller learns nothing about rows outside their workspace.
+    expect(statuses).toEqual({
+      "GET /": 404,
+      "DELETE /": 404,
+      "PUT /": 404,
+      "DELETE /task": 404,
+      "PUT /task": 404,
+    });
     await expect(deleteLabel(forged.id, own.user.id)).rejects.toMatchObject({
       status: 404,
     });

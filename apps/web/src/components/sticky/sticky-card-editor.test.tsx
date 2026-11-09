@@ -129,7 +129,8 @@ beforeAll(async () => {
 }, 120_000);
 
 beforeEach(() => {
-  mocks.save.mockReset();
+  // Like the real mutateAsync, a save always returns a promise.
+  mocks.save.mockReset().mockResolvedValue(undefined);
   mocks.editors.length = 0;
 });
 afterEach(cleanup);
