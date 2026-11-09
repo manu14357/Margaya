@@ -39,11 +39,31 @@ Board view is best for flow-based execution:
 2. Drag tasks across columns as status changes.
 3. Open a task to edit details without losing board context.
 
-<Screenshot src="tasks/board-view" alt="The Website relaunch board with tasks in the Backlog, To Do, In Progress and In Review columns" caption="Board view: each column is a workflow status." />
+<Screenshot src="tasks/board-view" alt="The Website relaunch board with tasks in the Backlog, To Do, In Progress and In Review columns, under the project tabs Backlog, Board, List, Spreadsheet, Calendar and Gantt, with Filter, My tasks, the search button and Display above the columns" caption="Board view: each column is a workflow status." />
+
+Moving a card only changes its column and position, so it can't undo an edit someone else just made to the task.
+
+Cards only show a priority chip when the task has a priority.
+
+### Select many tasks
+
+Hover a card or row and tick its checkbox, or hold **Ctrl** (**⌘** on macOS) and click. A bar at the bottom then changes the selected tasks together, and can move them to another project. See [Edit many tasks at once](/core/functional/bulk-edit-tasks).
+
+### Use the board from the keyboard
+
+Tab to a card, or press `j` to reach one, then:
+
+- `↑` and `↓` move within the column, and `←` and `→` move to the next column that has cards.
+- `j` and `k` walk through every card. They don't open the task, but if the side sheet is open it follows along.
+- `Enter` opens the task.
+- `x` selects the task for [bulk editing](/core/functional/bulk-edit-tasks).
+- `Space` picks the card up to drag it. Move it with the arrow keys, drop it with `Space` or `Enter`, or cancel with `Esc`.
 
 ## 4. Switch to List view for dense review
 
-List view is useful when you need to scan many tasks quickly.
+List has its own tab next to **Board**, and the tab always matches what's on screen. Margaya remembers your choice between the two and reopens the project on it.
+
+List view is useful when you need to scan many tasks quickly. A column has the same color here and on the board.
 
 Typical uses:
 
@@ -55,17 +75,25 @@ Typical uses:
 
 ## 5. Use filters to focus
 
-The **Filter** button above the board filters by status, column group, priority, assignee, creator, labels, cycle, module, estimate, start and due dates, when tasks were created, updated or completed, parent, subscription and mentions. The same menu shows or hides archived tasks.
+The **Filter** button above the board filters by status, column group, priority, assignee, creator, labels, cycle, module, estimate, start and due dates, when tasks were created, updated or completed, parent, subscription, mentions, [custom fields](/core/functional/custom-fields) and [whether a task is blocked](/core/functional/views#find-blocked-tasks). The same menu shows or hides archived tasks.
 
-<Screenshot src="tasks/board-filter" alt="The Filter menu open above the board, listing Status, Group, Priority, Assignee, Created by, Labels, Cycle, Module, Estimate, dates, Parent, Subscribed and Mentions, and the archived options" caption="Filter by any task property." />
+<Screenshot src="tasks/board-filter" alt="The Filter menu open above the board, listing task properties such as Status, Priority, Assignee, Labels, Cycle and the dates, and the archived options" caption="Filter by any task property." />
 
 Use filters aggressively during standups, planning, and triage.
+
+**My tasks**, next to **Filter** on a project's task lists, shows only the tasks assigned to you with one click. Click it again to turn it off. It replaces any other assignee filter you had set.
+
+To search the board or list, click the search button above it or press **Ctrl+F** (**⌘F** on macOS). It matches task keys, titles and descriptions. **Escape** on an empty field closes it.
 
 ## 6. Open full task page when needed
 
 From the task sheet, use **Open in full page** (the expand icon at the top of the sheet) for deeper edits and focused context.
 
 <Screenshot src="tasks/task-sheet" alt="The task sheet for WEB-1 Redesign the pricing page, with its description, the History button and the properties panel" caption="The task sheet keeps the board behind it." />
+
+The properties panel also holds [time tracking](/core/functional/time-tracking) under **Time spent**, and the task has a section for its [custom fields](/core/functional/custom-fields) when the project uses them.
+
+If a title or description can't be saved, an error says so, your text stays where it is, and **Try again** sends it again. Closing the tab while an edit is still saving asks you to confirm first.
 
 ## 7. Work on the open task from the keyboard
 
@@ -88,5 +116,7 @@ Choose **Reply** under a comment to answer it in a thread; replies sit indented 
 ## Next
 
 - [Plan work in Backlog](/core/functional/backlog-planning)
+- [Edit many tasks at once](/core/functional/bulk-edit-tasks)
+- [Track time on tasks](/core/functional/time-tracking)
 - [Keyboard shortcuts](/core/functional/keyboard-shortcuts)
 - [Configure project workflows](/core/functional/configure-workflows)

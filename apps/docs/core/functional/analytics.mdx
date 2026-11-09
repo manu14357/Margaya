@@ -1,6 +1,6 @@
 ---
 title: Understand Your Work with Analytics
-description: See how many tasks are open, created and completed, break work down by assignee, label or cycle, and export any table as CSV
+description: See how many tasks are open, created and completed, who holds too much work, and where time went, and export any table as CSV
 ---
 
 Analytics summarizes the tasks in your projects as headline numbers, charts and tables. It is read-only: nothing you do here changes a task.
@@ -20,6 +20,7 @@ Analytics needs the workspace **Analytics** permission (**read**) and task read 
 - **Member**, **Admin** and **Owner** have it.
 - **Viewer** does not by default. Ask a workspace admin to grant it, or add it to a custom role.
 - Without it, the sidebar entry is hidden and the page tells you to ask an admin.
+- In a [restricted project](/core/functional/restricted-projects), your project role counts too. Where it doesn't include analytics, for example a project where you are a **Viewer**, workspace analytics leave that project out, and picking it alone is refused.
 
 Some tabs need more, and each one appears only when it applies:
 
@@ -30,6 +31,7 @@ Some tabs need more, and each one appears only when it applies:
 | **Cycles** | A project in scope has **Cycles** on, and you can read cycles |
 | **Modules** | A project in scope has **Modules** on, and you can read modules |
 | **Intake** | A project in scope has **Intake** on, and you can read intake |
+| **Time** | A project in scope has **Time tracking** on |
 
 Turn features on under **Settings** > **Projects** > **Features**; see [Turn on project features](/core/functional/project-features-and-column-groups). Every built-in role can read cycles, modules and intake.
 
@@ -40,9 +42,30 @@ The workspace's first tab shows:
 - Tiles for **Members**, **Projects**, **Open tasks** (with how many are overdue) and **Completed tasks** (with the percentage complete). Tiles for **Cycles running**, **Modules in progress** and **Open requests** appear when the matching feature is on and you can read it.
 - **Project progress**, with the projects that have the most open tasks first.
 - **Tasks by group**, a donut of backlog, unstarted, started, completed and cancelled tasks.
-- **Workload**, the open tasks of each assignee. It shows the ten busiest assignees, plus tasks without one.
+- **Workload**, the open work of each assignee. See [Workload](#workload).
 
 <Screenshot src="analytics/overview" alt="The workspace Analytics overview with tiles for members, projects, open and completed tasks, cycles, modules and open requests, a Project progress list, a Tasks by group donut and a Workload chart" caption="The Overview tab across every project in the workspace." />
+
+### Workload
+
+**Workload** shows who holds how much open work, split into backlog, not started and started. It follows the projects in the header's project picker, and only counts projects you can see.
+
+- **The unit** is estimate points when a project in scope has a points system and at least half of the open tasks are sized. Otherwise it counts tasks. The subtitle says which: **Open estimate points by assignee** or **Open tasks by assignee**.
+- **The chart** lists the ten heaviest people, anyone over their usual even past those, and then unassigned work.
+- **The table** lists everyone with open work. Switch to it with the toggle on the card, where **Export CSV** also appears.
+
+A task with several assignees counts in full for each of them, so the table has no total row.
+
+The card also compares each person's open work with what they usually finish. Everyone who can open analytics sees this comparison, just like the rest of the card.
+
+- **Usual** is what the person finished in a typical 4 weeks, based on the last 8 weeks, in the same projects as the card. Work they finished in a project you can't see doesn't count. It's what they actually did, not a target or a set capacity.
+- A warning names anyone whose open work is above their usual, and a warning icon marks them in the chart. The table's **Against usual** column reads, for example, **Over: 7 tasks, usually 3**.
+- Someone who finished nothing in those 8 weeks shows **No recent history** and is never counted as over.
+- A person whose own open work is mostly unsized is checked by task count, even when the card shows points, so unestimated work can't hide an overload.
+
+Workload only looks at tasks and estimates. It doesn't know about holidays, working hours or the time logged on tasks, so use it as a prompt for a conversation.
+
+<Screenshot src="analytics/workload" alt="The Workload card in its table view, with a warning naming who has more open work than they usually finish in 4 weeks, one row per assignee with backlog, not started and started counts, and the Against usual column" caption="The table compares each person's open work with what they usually finish." />
 
 ## Tasks
 
@@ -68,12 +91,23 @@ This chart plots tasks created and tasks completed per week or month, with a **C
 
 **Custom chart** compares tasks by whatever you choose:
 
-- **X-axis**: status (only with a single project), group, priority, assignee, created by, label, cycle, module, estimate, project, or a date: created, completed, start or due. Cycle, module and estimate appear only when a project in scope uses them, and project only when several projects are in scope.
-- **Metric**: **Tasks**, or **Estimate points** where available.
-- **Segment**: split each bar by a second category. Dates can only be on the X-axis.
+- **X-axis**: status (only with a single project), group, priority, assignee, created by, label, cycle, module, estimate, project, a dropdown custom field, or a date: created, completed, start or due. Cycle, module and estimate appear only when a project in scope uses them, and project only when several projects are in scope.
+- **Metric**: **Tasks**, **Estimate points** where available, or **Sum of** a number custom field, such as **Sum of Budget**.
+- **Segment**: split each bar by a second category, a dropdown custom field included. Dates can only be on the X-axis.
 - **Options**: **Show tasks with no value**, **Sort by value** and **Count sub-tasks**.
 
 The filters above also apply to the chart. The chart has its own table and **Export CSV** button.
+
+#### Chart custom fields
+
+With exactly one project in scope, its custom fields join the builder:
+
+- **Dropdown** fields appear under **X-axis** and **Segment** by their own names. Bars follow the order of the field's options, a removed option that tasks still hold comes after them, and **No value** is last. To count open and completed tasks per option, pick the field as the X-axis and **Group** as the segment. For tasks created or completed per option, pick **Created date** or **Completed date** as the X-axis and the field as the segment.
+- **Number** fields appear under **Metric** as **Sum of** the field. A task without a number adds 0, and the table adds a **Tasks** column with how many tasks each bar holds. Analytics sums numbers but doesn't average them.
+
+<Screenshot src="analytics/custom-field-chart" alt="The Custom chart card of the Hiring project with Seniority as the X-axis and Group as the segment: bars for Junior, Mid-level, Senior, Lead and No value split into Not started, Started and Completed, above a table with each option's tasks, group counts and progress" caption="A dropdown field on the X-axis, segmented by group." />
+
+Other field types can't be charted. With several projects in scope the builder doesn't offer custom fields, since each field belongs to one project. A saved report on a field that was deleted since, or opened where several projects are in scope, falls back to the default chart.
 
 ### Save a report
 
@@ -91,9 +125,13 @@ A report stores the chart settings, the projects in scope and the filters. While
 
 Reports are always shown with the viewer's own access: if a project in a report was deleted or archived, it is left out and the card says so, and the numbers come from what the viewer may see. Time zone and week start come from whoever opens the report.
 
+### Pin a report to Home
+
+Keep a report you check often on your [Home page](/core/functional/home#pinned-reports). Click **Reports**, open the **...** menu of the report, and choose **Pin to Home**. **Unpin from Home** takes it off again. You can pin any report you can see, and up to 6 at a time. Pins are personal, so nobody else's Home changes.
+
 ### Breakdown
 
-**Breakdown** is a table with one row per **Group rows by** choice (project, assignee, label, priority, cycle, module or created by), a column per workflow group, a **Progress** bar and a **Total** row. Click a column header to sort.
+**Breakdown** is a table with one row per **Group rows by** choice (project, assignee, label, priority, cycle, module, created by, or a dropdown custom field when one project is in scope), a column per workflow group, a **Progress** bar and a **Total** row. Click a column header to sort.
 
 ## Cycles
 
@@ -109,14 +147,19 @@ The **Modules** tab lists each module that is not archived with its status, lead
 
 The **Intake** tab shows how many requests are **Open**, **Snoozed**, **Accepted**, **Declined** or **Duplicate**, and the **Median time to triage**. **Requests over time** plots **Submitted** and **Triaged** per week or month, with the same period and **Week**/**Month** controls as Tasks. **Triaged** counts a request on the day of its latest decision. With several projects in scope, a **By project** table is added. See [Review requests with Intake](/core/functional/intake).
 
+## Time
+
+The **Time** tab shows the time logged by person and by project over a period, with **Export CSV** on each table. See [See time reports](/core/functional/time-tracking#see-time-reports) for how it's counted and what it leaves out.
+
 ## How numbers are counted
 
 - **Totals count distinct tasks.** A task with several assignees, labels or modules counts once in each of their buckets, so the buckets can add up to more than the total. The chart says so when this applies.
-- **None buckets.** Tasks without a value fall into a bucket such as **Unassigned**, **No label**, **No cycle**, **No module**, **No estimate** or **No due date**. Turn off **Show tasks with no value** to hide it in the custom chart. A feature that is off in a project counts as none.
+- **None buckets.** Tasks without a value fall into a bucket such as **Unassigned**, **No label**, **No cycle**, **No module**, **No estimate**, **No due date** or, for a custom field, **No value**. Turn off **Show tasks with no value** to hide it in the custom chart. A feature that is off in a project counts as none.
 - **Left out.** Archived tasks are excluded unless you choose **Show archived too** or **Only archived**. Tasks still waiting in Intake never count.
 - **Completion %** is completed tasks divided by all tasks except cancelled ones.
 - **Completed** counts the day a task was completed, and only while it is still completed. A reopened task stops counting.
 - **Points** come only from projects that have Estimates on with an active points system. Time and category estimates never add points, and other projects contribute 0.
+- **Sums of a number field** add each task's value once per bar. Tasks without a value add 0.
 - **Weeks and months** follow your browser's time zone and the week start in your account preferences. Two people in different time zones can see a task land in different buckets.
 - **Top categories.** A chart shows at most 50 categories, keeping the ones with the most; a note such as "Showing the top 50 of 73 labels" says so. A segment keeps its top 5 values (8 for labels) and folds the rest into **Other**.
 
@@ -134,4 +177,5 @@ If a section says **This took too long. Narrow the filters and try again.**, nar
 
 - [Save and share views](/core/functional/views)
 - [Plan work with cycles](/core/functional/cycles)
+- [Track time on tasks](/core/functional/time-tracking)
 - [Review requests with Intake](/core/functional/intake)

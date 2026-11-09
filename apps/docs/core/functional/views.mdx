@@ -1,6 +1,6 @@
 ---
 title: Save and Share Views
-description: Filter, group and lay out tasks, save the result as a view, and work in the spreadsheet or with archived tasks
+description: Filter, group and lay out tasks, plan on a timeline with links and milestones, save the result as a view, and work in the spreadsheet or with archived tasks
 ---
 
 A view is a saved set of filters, display options and shown properties. Save the lists you check every day, such as "My open bugs" or "Due this week", and share them with the team or keep them private.
@@ -29,12 +29,19 @@ Built-in views can't be changed or deleted. Adjust one and use **Save as new vie
 
 ## Filter tasks
 
-Click **Filter** and pick a property: status or group, priority, assignee, created by, labels, cycle, module, estimate, parent, project, custom fields, subscribed, mentions, or one of the dates (start, due, created, updated, completed).
+Click **Filter** and pick a property: status or group, priority, assignee, created by, labels, cycle, module, estimate, parent, project, custom fields, subscribed, mentions, blocked, or one of the dates (start, due, created, updated, completed).
 
 - Set conditions use **is**, **is not** or **is none of**. **Me** always means whoever opens the view, so one shared view works for everyone.
 - Date conditions accept presets (**Today**, **This week**, **Overdue** and more), an exact date, a range, or a rolling window such as "in the last 2 weeks".
 - **Match all** and **Match any** decide how conditions combine.
 - **Clear all filters** starts over.
+- [Custom fields](/core/functional/custom-fields) can only be filtered in a project's lists, because each field belongs to one project.
+
+### Find blocked tasks
+
+The **Blocked** filter works on every layout and in saved views. **Yes** finds open tasks that another open task still blocks, and **No** finds the rest. A blocker that is completed, cancelled, archived or in the trash no longer counts. A blocker in a project you can't see does count, though you won't see its name. For a [guest](/core/functional/guest-access), only blockers in the projects they were added to count.
+
+Blocking is information only. It never stops anyone from changing a blocked task's status or dates. Only the task list of the **Gantt** layout marks blocked tasks with an icon; board cards and list rows have no marker, so use the filter there.
 
 ### Describe a filter in your own words
 
@@ -42,11 +49,11 @@ When AI is on, the ✦ **Describe a filter…** button next to **Filter** turns 
 
 It works in every task list, board, spreadsheet, calendar, timeline and view, and only uses statuses, labels, people, cycles, modules and projects you can see. Status and module need a single project. Each use counts toward your AI limits as **Natural-language filters**. Over the API, use `POST /api/ai/filters/parse`.
 
-<Screenshot src="views/filter-menu" alt="The Filter menu listing Status, Group, Priority, Assignee, Created by, Labels, Cycle, Module, Estimate, the date properties, Parent, Subscribed and Mentions, with the Archived options below" caption="Filter by any task property, or show archived tasks." />
+<Screenshot src="views/filter-menu" alt="The Filter menu listing Status, Group, Priority, Assignee, Created by, Labels, Cycle, Module, Estimate, the date properties, Parent, Subscribed, Mentions and Blocked, with the Archived options below" caption="Filter by any task property, or show archived tasks." />
 
 ## Change the layout and display
 
-Pick a layout from the toolbar. Project views can use **List**, **Board**, **Spreadsheet**, **Calendar** or **Gantt**; workspace views use **List**, **Board** or **Spreadsheet**. Status belongs to a single project, so workspace views can't filter or group by status.
+Pick a layout from the toolbar. Project views can use **List**, **Board**, **Spreadsheet**, **Calendar** or **Gantt**; workspace views use **List**, **Board**, **Spreadsheet** or **Gantt**, which shows [a timeline across projects](#see-a-timeline-across-projects). In a project view the toolbar shows the layouts as icons, because the project's tabs already name them. Status belongs to a single project, so workspace views can't filter or group by status.
 
 Open **Display** to choose:
 
@@ -55,6 +62,8 @@ Open **Display** to choose:
 - **Show sub-tasks** and **Show empty groups**
 - **Properties** - what each row or card shows, such as key, labels, estimate or dates
 
+In a project's **List** and **Board** layouts you can also group and order by a [custom field](/core/functional/custom-fields#filter-group-and-sort).
+
 <Screenshot src="views/display-menu" alt="The Display panel with Group by Status, Sub-group by None, Order by Manual, the Show sub-tasks and Show empty groups switches and the Properties chips" caption="Display controls grouping, order and the properties each task shows." />
 
 ## Work in the spreadsheet
@@ -62,21 +71,21 @@ Open **Display** to choose:
 The **Spreadsheet** layout shows one row per task and one column per property:
 
 - Click a column header to **Sort ascending**, **Sort descending**, **Clear sort** or **Hide column**. Choose the columns under **Display** > **Columns**.
-- Edit a property directly in its cell. Custom field values are read-only here.
+- Edit a property directly in its cell, including [custom fields](/core/functional/custom-fields#fill-in-values) you add as columns in a project's lists. Across projects, custom fields aren't available.
 - Type in the **New task** row and press Enter to add a task.
-- Expand a task's sub-tasks with **Show sub-tasks**, and select rows to update many tasks at once.
+- Expand a task's sub-tasks with **Show sub-tasks**, and select rows to [update many tasks at once](/core/functional/bulk-edit-tasks).
 
 ## Plan in the calendar
 
 The **Calendar** layout places every task that has a start date, a due date or both. A task with both dates spans the days between them. The filters you set on the project's other layouts apply here too.
 
-<Screenshot src="views/calendar-layout" alt="The Launch calendar view in the Month layout for October 2026, with tasks spanning their start and due dates and +N more links on busy days" caption="The calendar layout of a saved view." />
+<Screenshot src="views/calendar-layout" alt="The Launch calendar view in the Month layout, with tasks spanning their start and due dates and +N more links on busy days" caption="The calendar layout of a saved view." />
 
 - Switch between **Month** and **Week**. Week shows one week with more room for each day. Weeks start on the day chosen in your preferences.
 - Turn off **Show weekends** to hide Saturday and Sunday. Your browser remembers this choice and the Month or Week choice.
 - Drag a task to another day to reschedule it. A task with only a due date moves to the day you drop it on. A task with a start date keeps its length, and both dates move by the same number of days. If the change can't be saved, the task goes back to its old day.
 - Hover over a day, or tab to it, and click **+** to create a task due that day.
-- When a day has more tasks than fit, click **+N more** to see them all.
+- When a day has more tasks than fit, click **+N more** to see them all. Open tasks are placed first, so a finished task never pushes one into the overflow.
 
 You need permission to edit tasks to drag them, and permission to create tasks to use **+**. Without a mouse, open the task and change its dates in the task panel.
 
@@ -84,14 +93,80 @@ You need permission to edit tasks to drag them, and permission to create tasks t
 
 The **Gantt** layout draws each dated task as a bar from its start date to its due date.
 
-<Screenshot src="views/gantt-layout" alt="The Release timeline view in the Gantt layout, with each task as a bar on a Month timeline, the today line and dependency lines" caption="The Gantt layout with the Month zoom." />
+<Screenshot src="views/gantt-layout" alt="The Release timeline view in the Gantt layout, with each task as a bar on a Month timeline, the Milestone button, the today line and dependency lines" caption="The Gantt layout with the Month zoom." />
 
 - Drag a bar to move it, or drag either end to change its start or due date.
-- Choose a zoom level: **Week**, **Month** (the default) or **Quarter**. Your browser remembers it. Use the arrows or the date field to move through time, and **Jump to today** to come back.
+- Choose a zoom level: **Week**, **Month** (the default) or **Quarter**. Your browser remembers it. Use the arrows, or select the start date and pick a day from the calendar, to move through time, and **Jump to today** to come back.
 - Tasks that match your filters but have no dates are listed under **No dates**. Drag one onto the timeline to start it on the day you drop it, with a one-week span. Or click **Schedule** to start it today with a one-week span.
-- Lines connect related tasks whose bars are both on screen: **blocks** relations, and **starts before** and **finishes before** relations. A line turns red when the dates break it, for example when a blocking task ends after the task it blocks starts. That task also shows a warning icon in the list. Dates are never changed for you; move the bars yourself to resolve it.
+- Lines connect related tasks whose bars are both on screen: **blocks** relations, and **starts before** and **finishes before** relations. A line turns red when the dates break it, for example when a blocking task ends after the task it blocks starts. That task also shows a warning icon in the list.
+- A task another open task still blocks shows an octagon icon in the list. Hover it to read **Blocked by an open task**. See [Find blocked tasks](#find-blocked-tasks).
 
 Changes other people make to task dates show up in both layouts right away.
+
+### Link tasks on the chart
+
+Linking needs **task:update**. Without it, bars have no handle and lines can't be clicked.
+
+1. Hover a bar or a milestone until a small round handle appears at its end. On touch screens the handle is always there.
+2. Drag from the handle to another task's row. The row lights up while you're over it.
+3. Let go to make the link. The task you dragged from now blocks the other one.
+
+**Escape** cancels, and letting go on the same task or on empty space does nothing. If a link can't be made, for example because the tasks are already related or it would make a loop, a message says why.
+
+A drawn link is always a **blocks** relation. For the other relation types, or a task that isn't on the chart, press **Enter** on the handle or tap it to open the task picker, which starts on **blocking**.
+
+<Note>The chart doesn't scroll by itself while you drag a link, so you can only reach rows that are on screen. Use the task picker for tasks that are far apart.</Note>
+
+Click a line to read what it means, such as "Write the docs blocks Launch". **Remove relation** deletes the link. From the keyboard, use the task's **Relations** list instead.
+
+<Screenshot src="views/gantt-link-popover" alt="A red dependency line on the Gantt chart with a popover saying Redesign the pricing page blocks Fix hero video autoplay on Safari and The dates break this link, with Review date changes and Remove relation buttons" caption="Click a line to see what it means, review dates or remove it." />
+
+### Move linked tasks to fit
+
+Margaya never changes dates on its own, and blocking never stops a move. When you drag a bar or draw a link and that leaves linked tasks starting too early, a message offers to fix it, such as "2 linked tasks now start too early".
+
+1. Click **Review date changes** in the message. You can also click a red line and choose it there.
+2. Check the list, which shows each task's old and new dates.
+3. Click **Move 2 tasks** to apply them, or **Keep dates** to change nothing.
+
+<Screenshot src="views/gantt-date-cascade" alt="The dialog asking Move 1 linked task?, listing the task's key and title with its current dates and its new dates, with Keep dates and Move 1 task buttons" caption="Nothing moves until you confirm the preview." />
+
+Each task moves later by just enough to fit its link and keeps its length, and tasks linked to it follow in turn. Tasks only ever move later. The task you changed stays where it is, and completed or cancelled tasks keep their dates. Only tasks in this project move. Tasks hidden by your filters can still be in the list.
+
+The message only appears after a change on the chart. If dates change anywhere else, such as in the task or the calendar, click the red line to review them. Tasks are saved one at a time, so if some fail you see how many moved, and the rest keep their dates.
+
+### Add a milestone
+
+A milestone marks one date, such as a launch. It's an ordinary task with a flag, and the **Gantt** layout draws it as a diamond on its due date.
+
+- **On the chart:** click **Milestone** in the toolbar, enter a **Milestone name** and a **Milestone date**, and click **Add milestone**. The new task goes in the project's entry column, with that date as both its start and due date.
+- **On an existing task:** open the task and turn on **Milestone** in its properties. Its stored dates don't change, and turning it off makes it a regular bar again.
+
+Drag a diamond to move it, or click it to open the task. A diamond has no ends to resize. A milestone without dates is listed under **No dates**, and scheduling it gives it a single day.
+
+<Screenshot src="views/gantt-milestone" alt="The Gantt layout of the Platform API project with a diamond for the milestone Public API v2 launch, a line from the task that blocks it, and blocked icons in the task list" caption="A milestone is a diamond on its due date; blocked tasks show an icon in the list." />
+
+Only the **Gantt** layout of a project shows the diamond. On boards, lists, spreadsheets and calendars a milestone looks like any other task, and it counts as one in progress and analytics.
+
+The chart doesn't calculate a critical path.
+
+## See a timeline across projects
+
+The **Gantt** layout of a workspace view shows the dated tasks of every project you can see, with one section per project. Use it for a status check across projects.
+
+1. Open **All tasks** in the sidebar, or a workspace view.
+2. Pick **Gantt** in the toolbar's layouts.
+3. To keep this timeline, [save it as a view](#save-a-view).
+
+<Screenshot src="views/workspace-timeline" alt="The All tasks page on the Gantt layout, with sections for Website relaunch, Mobile app and Platform API, each listing its tasks with bars on a Month timeline and a today line" caption="One timeline, with a section for each project." />
+
+- **Filter** works as in the other layouts. Tasks with no dates are left out, and so are projects with nothing to show. Restricted projects only appear for people in them.
+- **Display** still chooses what else is included, such as sub-tasks, but the timeline always groups by project and sorts by date.
+- Each project shows its first 50 tasks, and **Show more tasks** loads more of that project. The number beside a project's name counts all of its dated tasks that match.
+- **Week**, **Month** and **Quarter**, the arrows, the start date and **Jump to today** work as in the project's chart. **Show task dates** moves the timeline to a task outside the visible range.
+- Click a bar or a row to open the task in a side panel.
+
+This timeline is read-only. To change dates, open the task or use the project's own **Gantt** layout. It draws no dependency lines and doesn't mark blocked tasks, though the **Blocked** filter works. A milestone appears as a plain bar here, so one with both a start and a due date spans the days between them. You can't select tasks here to [edit them in bulk](/core/functional/bulk-edit-tasks).
 
 ## Save a view
 

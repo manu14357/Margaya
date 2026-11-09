@@ -67,11 +67,15 @@
 								"pages": [
 									"core/functional/plan-and-execute-tasks",
 									"core/functional/multiple-assignees",
+									"core/functional/bulk-edit-tasks",
+									"core/functional/custom-fields",
+									"core/functional/time-tracking",
 									"core/functional/description-history",
 									"core/functional/collaborate-with-team",
 									"core/functional/configure-workflows",
 									"core/functional/project-features-and-column-groups",
 									"core/functional/restricted-projects",
+									"core/functional/guest-access",
 									"core/functional/manage-workspace-labels",
 									"core/functional/automations",
 									"core/functional/task-templates",
@@ -122,6 +126,7 @@
 									"core/functional/import-from-linear",
 									"core/functional/import-from-asana",
 									"core/functional/export-tasks",
+									"core/functional/export-workspace",
 									"core/functional/archives",
 									"core/functional/trash-and-restore",
 									"core/functional/audit-log",
@@ -149,7 +154,8 @@
 							"core/installation/environment-variables",
 							"core/installation/instance-admin",
 							"core/installation/start-services",
-							"core/installation/migration"
+							"core/installation/migration",
+							"core/installation/backup-and-restore"
 						]
 					},
 					{
@@ -187,7 +193,8 @@
 							"core/social-providers/github",
 							"core/social-providers/google",
 							"core/social-providers/discord",
-							"core/social-providers/custom-oauth"
+							"core/social-providers/custom-oauth",
+							"core/social-providers/saml-and-scim"
 						]
 					},
 					{
@@ -227,6 +234,8 @@
 							"api-reference/endpoints/projects/getProjectAutomations",
 							"api-reference/endpoints/projects/updateProjectAutomations",
 							"api-reference/endpoints/projects/getProjectAccess",
+							"api-reference/endpoints/projects/getMyProjectRights",
+							"api-reference/endpoints/projects/getProjectPeople",
 							"api-reference/endpoints/projects/updateProjectVisibility",
 							"api-reference/endpoints/projects/addProjectMember",
 							"api-reference/endpoints/projects/updateProjectMember",
@@ -257,12 +266,15 @@
 							"api-reference/endpoints/tasks/previewExternalImport",
 							"api-reference/endpoints/tasks/importExternalItems",
 							"api-reference/endpoints/tasks/updateTaskStatus",
+							"api-reference/endpoints/tasks/updateTaskPosition",
+							"api-reference/endpoints/tasks/updateTaskMilestone",
 							"api-reference/endpoints/tasks/updateTaskPriority",
 							"api-reference/endpoints/tasks/updateTaskEstimate",
 							"api-reference/endpoints/tasks/updateTaskAssignee",
 							"api-reference/endpoints/tasks/setTaskAssignees",
 							"api-reference/endpoints/tasks/updateTaskAssignees",
 							"api-reference/endpoints/tasks/updateTaskDueDate",
+							"api-reference/endpoints/tasks/updateTaskDates",
 							"api-reference/endpoints/tasks/updateTaskTitle",
 							"api-reference/endpoints/tasks/createTaskImageUpload",
 							"api-reference/endpoints/tasks/finalizeTaskImageUpload",
@@ -411,6 +423,13 @@
 							"api-reference/endpoints/pages/getPageVersion",
 							"api-reference/endpoints/pages/restorePageVersion",
 							"api-reference/endpoints/pages/listPageBacklinks",
+							"api-reference/endpoints/pages/listPageComments",
+							"api-reference/endpoints/pages/createPageComment",
+							"api-reference/endpoints/pages/updatePageComment",
+							"api-reference/endpoints/pages/deletePageComment",
+							"api-reference/endpoints/pages/getPageSubscription",
+							"api-reference/endpoints/pages/subscribeToPage",
+							"api-reference/endpoints/pages/unsubscribeFromPage",
 							"api-reference/endpoints/pages/createPageAssetUpload",
 							"api-reference/endpoints/pages/finalizePageAssetUpload",
 							"api-reference/endpoints/pages/listPageTemplates",
@@ -449,6 +468,7 @@
 							"api-reference/endpoints/analytics/getAnalyticsCycles",
 							"api-reference/endpoints/analytics/getAnalyticsModules",
 							"api-reference/endpoints/analytics/getAnalyticsIntake",
+							"api-reference/endpoints/analytics/getAnalyticsWorkload",
 							"api-reference/endpoints/analytics/listAnalyticsReports",
 							"api-reference/endpoints/analytics/getAnalyticsReport",
 							"api-reference/endpoints/analytics/createAnalyticsReport",
@@ -460,6 +480,7 @@
 						"group": "Exports",
 						"pages": [
 							"api-reference/endpoints/exports/createTaskExport",
+							"api-reference/endpoints/exports/createWorkspaceExport",
 							"api-reference/endpoints/exports/listTaskExports",
 							"api-reference/endpoints/exports/getTaskExport",
 							"api-reference/endpoints/exports/downloadTaskExport",
@@ -536,8 +557,10 @@
 							"api-reference/endpoints/custom-fields/getCustomFieldValuesByTask",
 							"api-reference/endpoints/custom-fields/getCustomFieldFilterValues",
 							"api-reference/endpoints/custom-fields/createCustomField",
+							"api-reference/endpoints/custom-fields/updateCustomField",
 							"api-reference/endpoints/custom-fields/reorderCustomFields",
 							"api-reference/endpoints/custom-fields/setCustomFieldValue",
+							"api-reference/endpoints/custom-fields/bulkSetCustomFieldValue",
 							"api-reference/endpoints/custom-fields/deleteCustomField"
 						]
 					},
@@ -600,7 +623,10 @@
 							"api-reference/endpoints/time-entries/getTimeEntry",
 							"api-reference/endpoints/time-entries/updateTimeEntry",
 							"api-reference/endpoints/time-entries/createTimeEntry",
-							"api-reference/endpoints/time-entries/deleteTimeEntry"
+							"api-reference/endpoints/time-entries/deleteTimeEntry",
+							"api-reference/endpoints/time-entries/stopTimeEntry",
+							"api-reference/endpoints/time-entries/getRunningTimeEntry",
+							"api-reference/endpoints/time-entries/getTimeReport"
 						]
 					},
 					{
@@ -715,6 +741,7 @@
 							"api-reference/endpoints/ai/aiDuplicateCheck",
 							"api-reference/endpoints/ai/aiBuildProposal",
 							"api-reference/endpoints/ai/aiBuildApply",
+							"api-reference/endpoints/ai/aiBuildUndo",
 							"api-reference/endpoints/ai/aiEditorAssist",
 							"api-reference/endpoints/ai/aiSummarize",
 							"api-reference/endpoints/ai/aiSpecDraft",
@@ -826,7 +853,10 @@
 							"api-reference/endpoints/trash/purgeTask",
 							"api-reference/endpoints/trash/listProjectTrash",
 							"api-reference/endpoints/trash/restoreProject",
-							"api-reference/endpoints/trash/purgeProject"
+							"api-reference/endpoints/trash/purgeProject",
+							"api-reference/endpoints/trash/listPageTrash",
+							"api-reference/endpoints/trash/restoreDeletedPage",
+							"api-reference/endpoints/trash/purgePage"
 						]
 					},
 					{
@@ -868,7 +898,10 @@
 							"api-reference/endpoints/notification-preferences/getNotificationPreferences",
 							"api-reference/endpoints/notification-preferences/updateNotificationPreferences",
 							"api-reference/endpoints/notification-preferences/upsertNotificationPreferenceWorkspaceRule",
-							"api-reference/endpoints/notification-preferences/deleteNotificationPreferenceWorkspaceRule"
+							"api-reference/endpoints/notification-preferences/deleteNotificationPreferenceWorkspaceRule",
+							"api-reference/endpoints/notification-preferences/getPushStatus",
+							"api-reference/endpoints/notification-preferences/savePushSubscription",
+							"api-reference/endpoints/notification-preferences/deletePushSubscription"
 						]
 					},
 					{
@@ -876,7 +909,8 @@
 						"pages": [
 							"api-reference/endpoints/invitations/getUserPendingInvitations",
 							"api-reference/endpoints/invitations/getInvitationDetails",
-							"api-reference/endpoints/invitations/updateInvitationRole"
+							"api-reference/endpoints/invitations/updateInvitationRole",
+							"api-reference/endpoints/invitations/setInvitationProjects"
 						]
 					},
 					{
@@ -972,7 +1006,10 @@
 					},
 					{
 						"group": "Instance",
-						"pages": ["api-reference/endpoints/instance/getInstanceStatus"]
+						"pages": [
+							"api-reference/endpoints/instance/getInstanceStatus",
+							"api-reference/endpoints/instance/getReadiness"
+						]
 					},
 					{
 						"group": "Instance Admin",
@@ -993,7 +1030,18 @@
 							"api-reference/endpoints/instance-admin/unbanInstanceUser",
 							"api-reference/endpoints/instance-admin/revokeInstanceUserSessions",
 							"api-reference/endpoints/instance-admin/resetInstanceUserPassword",
-							"api-reference/endpoints/instance-admin/listInstanceAuditLog"
+							"api-reference/endpoints/instance-admin/resetInstanceUserTwoFactor",
+							"api-reference/endpoints/instance-admin/listInstanceAuditLog",
+							"api-reference/endpoints/instance-admin/listInstanceDeliveryFailures",
+							"api-reference/endpoints/instance-admin/listScimConnections",
+							"api-reference/endpoints/instance-admin/createScimConnection",
+							"api-reference/endpoints/instance-admin/rotateScimConnectionToken",
+							"api-reference/endpoints/instance-admin/deleteScimConnection",
+							"api-reference/endpoints/instance-admin/listSamlConnections",
+							"api-reference/endpoints/instance-admin/draftSamlConnection",
+							"api-reference/endpoints/instance-admin/createSamlConnection",
+							"api-reference/endpoints/instance-admin/updateSamlConnection",
+							"api-reference/endpoints/instance-admin/deleteSamlConnection"
 						]
 					},
 					{
@@ -1034,12 +1082,10 @@
 						"group": "Organization Management",
 						"pages": [
 							"api-reference/endpoints/organization-management/acceptOrganizationInvitation",
-							"api-reference/endpoints/organization-management/addOrganizationTeamMember",
 							"api-reference/endpoints/organization-management/cancelOrganizationInvitation",
 							"api-reference/endpoints/organization-management/checkOrganizationSlug",
 							"api-reference/endpoints/organization-management/createOrganization",
 							"api-reference/endpoints/organization-management/createOrganizationRole",
-							"api-reference/endpoints/organization-management/createOrganizationTeam",
 							"api-reference/endpoints/organization-management/deleteOrganization",
 							"api-reference/endpoints/organization-management/deleteOrganizationRole",
 							"api-reference/endpoints/organization-management/getOrganizationActiveMember",
@@ -1054,20 +1100,13 @@
 							"api-reference/endpoints/organization-management/listOrganizationInvitations",
 							"api-reference/endpoints/organization-management/listOrganizationMembers",
 							"api-reference/endpoints/organization-management/listOrganizationRoles",
-							"api-reference/endpoints/organization-management/listOrganizationTeamMembers",
-							"api-reference/endpoints/organization-management/listOrganizationTeams",
 							"api-reference/endpoints/organization-management/listOrganizationUserInvitations",
-							"api-reference/endpoints/organization-management/listOrganizationUserTeams",
 							"api-reference/endpoints/organization-management/rejectOrganizationInvitation",
 							"api-reference/endpoints/organization-management/removeOrganizationMember",
-							"api-reference/endpoints/organization-management/removeOrganizationTeam",
-							"api-reference/endpoints/organization-management/removeOrganizationTeamMember",
 							"api-reference/endpoints/organization-management/setOrganizationActive",
-							"api-reference/endpoints/organization-management/setOrganizationActiveTeam",
 							"api-reference/endpoints/organization-management/updateOrganization",
 							"api-reference/endpoints/organization-management/updateOrganizationMemberRole",
-							"api-reference/endpoints/organization-management/updateOrganizationRole",
-							"api-reference/endpoints/organization-management/updateOrganizationTeam"
+							"api-reference/endpoints/organization-management/updateOrganizationRole"
 						]
 					}
 				]
