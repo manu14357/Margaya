@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import TaskToolbar from "@/components/task-filters/task-toolbar";
 import { Card } from "@/components/ui/card";
 import { useAnalyticsChart } from "@/hooks/queries/analytics/use-analytics-chart";
+import useGetCustomFieldsByProject from "@/hooks/queries/custom-field/use-get-custom-fields-by-project";
 import useGetCycle from "@/hooks/queries/cycle/use-get-cycle";
 import useGetModule from "@/hooks/queries/module/use-get-module";
 import { useTaskQueryState } from "@/hooks/use-task-query-state";
@@ -129,9 +130,18 @@ export default function TasksTab({
       timeZone,
     ],
   );
+  // With one project in scope, its custom fields can be charted too.
+  const fieldsQuery = useGetCustomFieldsByProject(
+    scope.projects.length === 1 ? (scope.projects[0]?.id ?? "") : "",
+  );
+  const fieldRows = fieldsQuery.isError ? [] : fieldsQuery.data;
   const availability = useMemo(
-    () => availabilityOf(scope.projects),
-    [scope.projects],
+    () =>
+      availabilityOf(
+        scope.projects,
+        fieldRows?.map(({ id, name, type }) => ({ id, name, type })),
+      ),
+    [scope.projects, fieldRows],
   );
   const pointsPossible = availability.features.estimates;
 

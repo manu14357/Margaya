@@ -49,6 +49,25 @@ describe("BuilderControls", () => {
     expect(screen.getByText("analytics:metric.label")).toBeInTheDocument();
   });
 
+  it("offers a sum of each number field and names fields by their own name", () => {
+    renderControls({
+      state: {
+        ...defaultBuilderState("customField:tier"),
+        segment: "group",
+        metric: "customField:budget",
+      },
+      dimensions: ["group", "customField:tier"],
+      fields: [
+        { id: "tier", name: "Tier", type: "dropdown" },
+        { id: "budget", name: "Budget", type: "number" },
+      ],
+    });
+    // The metric shows for a number field even without points.
+    expect(screen.getByText("analytics:metric.label")).toBeInTheDocument();
+    expect(screen.getByText("analytics:metric.sumOf")).toBeInTheDocument();
+    expect(screen.getByText("Tier")).toBeInTheDocument();
+  });
+
   it("names the current x-axis and segment", () => {
     renderControls({
       state: { ...defaultBuilderState("priority"), segment: "group" },

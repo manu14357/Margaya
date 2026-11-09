@@ -43,8 +43,15 @@ vi.mock("@/hooks/queries/analytics/use-analytics-chart", () => ({
 
 const base = { workspaceId: "ws-1", context: { timeZone: "UTC" } };
 const projects = [{ id: "p1" }, { id: "p2", cyclesEnabled: true }];
+const fields = [
+  { id: "tier", name: "Tier", type: "dropdown" },
+  { id: "budget", name: "Budget", type: "number" },
+];
 
-function renderCard(kind: AnalyticsScope["kind"] = "workspace") {
+function renderCard(
+  kind: AnalyticsScope["kind"] = "workspace",
+  customFields?: typeof fields,
+) {
   const scope: AnalyticsScope = {
     kind,
     workspaceId: "ws-1",
@@ -58,6 +65,7 @@ function renderCard(kind: AnalyticsScope["kind"] = "workspace") {
         base={base}
         availability={availabilityOf(
           kind === "workspace" ? projects : [projects[0]],
+          customFields,
         )}
       />
     </AnalyticsScopeProvider>,
@@ -101,6 +109,74 @@ describe("breakdown options", () => {
     expect(single).not.toContain("project");
     expect(single).not.toContain("cycle");
     expect(defaultBreakdown("project", single)).toBe("assignee");
+  });
+});
+
+describe("breakdown by a custom field", () => {
+  it("offers the project's dropdowns with one project only", () => {
+    expect(breakdownOptions(availabilityOf([projects[0]], fields))).toEqual([
+      "assignee",
+      "label",
+      "priority",
+      "createdBy",
+      "customField:tier",
+    ]);
+    expect(breakdownOptions(availabilityOf(projects, fields))).not.toContain(
+      "customField:tier",
+    );
+  });
+
+  it("groups rows by a dropdown and exports them under its name", async () => {
+    m.result = makeChartResult({
+      xAxis: "customField:tier",
+      multiValued: { x: false, segment: false },
+      buckets: [
+        {
+          key: "value:Gold",
+          value: 2,
+          taskCount: 2,
+          cells: { started: 1, completed: 1 },
+          progress: 50,
+        },
+        {
+          key: "none",
+          value: 1,
+          taskCount: 1,
+          cells: { unstarted: 1 },
+          progress: 0,
+        },
+      ],
+      meta: {
+        ...makeChartResult().meta,
+        customFields: [{ id: "tier", name: "Tier", type: "dropdown" }],
+      },
+    });
+    renderCard("project", fields);
+
+    fireEvent.click(
+      screen.getByRole("combobox", { name: "analytics:breakdown.groupRowsBy" }),
+    );
+    const tier = await screen.findByRole("option", { name: "Tier" });
+    fireEvent.pointerDown(tier, { pointerType: "mouse" });
+    fireEvent.click(tier);
+    expect(m.requests.at(-1)).toMatchObject({
+      xAxis: "customField:tier",
+      segment: "group",
+    });
+    expect(nameColumn()).toEqual([
+      "Gold",
+      "analytics:none.customField",
+      "analytics:table.total",
+    ]);
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /analytics:export.button/ }),
+    );
+    const [fileName, text] = m.download.mock.calls[0] as [string, string];
+    expect(fileName).toBe(`acme-analytics-breakdown-tier-${localToday()}.csv`);
+    const lines = text.slice(1).trim().split("\r\n");
+    expect(lines[0]?.startsWith('"Tier"')).toBe(true);
+    expect(lines[1]).toContain('"Gold"');
   });
 });
 

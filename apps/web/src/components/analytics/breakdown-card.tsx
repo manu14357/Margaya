@@ -10,8 +10,11 @@ import {
 } from "@/components/ui/select";
 import { useAnalyticsChart } from "@/hooks/queries/analytics/use-analytics-chart";
 import {
-  DIMENSIONS,
+  type CustomFieldDimension,
+  customFieldDimensions,
   type DimensionAvailability,
+  dimensionLabel,
+  isCustomFieldDimension,
   isDimensionAvailable,
 } from "@/lib/analytics/dimensions";
 import {
@@ -41,15 +44,23 @@ const BREAKDOWN_DIMENSIONS = [
   "createdBy",
 ] as const satisfies readonly AnalyticsDimension[];
 
-export type BreakdownDimension = (typeof BREAKDOWN_DIMENSIONS)[number];
+export type BreakdownDimension =
+  | (typeof BREAKDOWN_DIMENSIONS)[number]
+  | CustomFieldDimension;
 
-/** "Group rows by" choices of a scope; Project only with several projects. */
+/**
+ * "Group rows by" choices of a scope; Project only with several projects,
+ * the project's dropdown fields only with one.
+ */
 export function breakdownOptions(
   availability: DimensionAvailability,
 ): BreakdownDimension[] {
-  return BREAKDOWN_DIMENSIONS.filter((dimension) =>
-    isDimensionAvailable(dimension, availability),
-  );
+  return [
+    ...BREAKDOWN_DIMENSIONS.filter((dimension) =>
+      isDimensionAvailable(dimension, availability),
+    ),
+    ...customFieldDimensions(availability),
+  ];
 }
 
 /** Project in a workspace with several projects, else Assignee. */
@@ -100,12 +111,18 @@ export default function BreakdownCard({
       result
         ? breakdownTableModel(result, {
             t,
-            dimensionLabel: t(DIMENSIONS[result.xAxis].labelKey),
+            dimensionLabel: dimensionLabel(
+              result.xAxis,
+              t,
+              result.meta.customFields,
+            ),
             labelOf,
           })
         : null,
     [result, t, labelOf],
   );
+  const optionLabel = (option: BreakdownDimension) =>
+    dimensionLabel(option, t, availability.customFields);
   const table = useSortedTable(tableModel);
 
   return (
@@ -129,12 +146,12 @@ export default function BreakdownCard({
                 className="w-36 min-w-0"
                 aria-labelledby={labelId}
               >
-                <SelectValue>{t(DIMENSIONS[dimension].labelKey)}</SelectValue>
+                <SelectValue>{optionLabel(dimension)}</SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {options.map((option) => (
                   <SelectItem key={option} value={option}>
-                    {t(DIMENSIONS[option].labelKey)}
+                    {optionLabel(option)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -142,7 +159,11 @@ export default function BreakdownCard({
           </div>
           <ExportCsvButton
             model={table.model}
-            section={`breakdown-${dimension}`}
+            section={`breakdown-${
+              isCustomFieldDimension(dimension)
+                ? optionLabel(dimension)
+                : dimension
+            }`}
           />
         </>
       }

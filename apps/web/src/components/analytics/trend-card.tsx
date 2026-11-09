@@ -12,7 +12,7 @@ import {
 } from "@/lib/charts/series-colors";
 import { formatNumber } from "@/lib/format";
 import type {
-  AnalyticsMetric,
+  AnalyticsCountMetric,
   AnalyticsTaskSet,
   AnalyticsTrendRequest,
 } from "@/types/analytics";
@@ -28,8 +28,8 @@ export function MetricToggle({
   value,
   onChange,
 }: {
-  value: AnalyticsMetric;
-  onChange: (metric: AnalyticsMetric) => void;
+  value: AnalyticsCountMetric;
+  onChange: (metric: AnalyticsCountMetric) => void;
 }) {
   const { t } = useTranslation();
   return (
@@ -69,7 +69,7 @@ export default function TrendCard({
 }: TrendCardProps) {
   const { t } = useTranslation();
   const period = usePeriodState(initialRange);
-  const [metric, setMetric] = useState<AnalyticsMetric>("taskCount");
+  const [metric, setMetric] = useState<AnalyticsCountMetric>("taskCount");
   const [view, setView] = useState<SectionView>("chart");
 
   const request = useMemo<AnalyticsTrendRequest>(

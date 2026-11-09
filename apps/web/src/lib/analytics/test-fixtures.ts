@@ -12,6 +12,7 @@ export const EMPTY_META: AnalyticsMeta = {
   cycles: [],
   modules: [],
   estimates: [],
+  customFields: [],
 };
 
 export function makeChartResult(

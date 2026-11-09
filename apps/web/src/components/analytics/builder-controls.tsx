@@ -17,12 +17,15 @@ import { Switch } from "@/components/ui/switch";
 import { Toggle, ToggleGroup } from "@/components/ui/toggle-group";
 import { type BuilderState, withXAxis } from "@/lib/analytics/builder-state";
 import {
+  type AnalyticsField,
   type CategoryDimension,
-  DIMENSIONS,
+  customFieldDimension,
+  dimensionLabel,
   isAnalyticsDimension,
   isDateDimension,
 } from "@/lib/analytics/dimensions";
-import type { AnalyticsDimension } from "@/types/analytics";
+import { metricLabel } from "@/lib/analytics/labels";
+import type { AnalyticsDimension, AnalyticsMetric } from "@/types/analytics";
 
 const NONE = "__none__";
 
@@ -73,6 +76,8 @@ type BuilderControlsProps = {
   /** Segment choices for the current x-axis. */
   segments: readonly CategoryDimension[];
   pointsAvailable: boolean;
+  /** The scope's custom fields: their names, and numbers to sum. */
+  fields?: readonly AnalyticsField[];
 };
 
 /** X-axis, metric, segment, date bucket and options, in one wrapping row. */
@@ -82,10 +87,20 @@ export default function BuilderControls({
   dimensions,
   segments,
   pointsAvailable,
+  fields = [],
 }: BuilderControlsProps) {
   const { t } = useTranslation();
   const ids = useId();
   const dateX = isDateDimension(state.xAxis);
+  const labelOf = (dimension: AnalyticsDimension) =>
+    dimensionLabel(dimension, t, fields);
+  const metrics: AnalyticsMetric[] = [
+    "taskCount",
+    ...(pointsAvailable ? (["estimatePoints"] as const) : []),
+    ...fields
+      .filter((field) => field.type === "number")
+      .map((field) => customFieldDimension(field.id)),
+  ];
 
   return (
     <>
@@ -101,26 +116,25 @@ export default function BuilderControls({
             className="w-36 min-w-0"
             aria-labelledby={`${ids}-x`}
           >
-            <SelectValue>{t(DIMENSIONS[state.xAxis].labelKey)}</SelectValue>
+            <SelectValue>{labelOf(state.xAxis)}</SelectValue>
           </SelectTrigger>
           <SelectContent>
             {dimensions.map((dimension) => (
               <SelectItem key={dimension} value={dimension}>
-                {t(DIMENSIONS[dimension].labelKey)}
+                {labelOf(dimension)}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
       </Labeled>
 
-      {pointsAvailable && (
+      {metrics.length > 1 && (
         <Labeled label={t("analytics:metric.label")} id={`${ids}-metric`}>
           <Select
             value={state.metric}
             onValueChange={(value) => {
-              if (value === "taskCount" || value === "estimatePoints") {
-                onChange({ ...state, metric: value });
-              }
+              const next = metrics.find((metric) => metric === value);
+              if (next) onChange({ ...state, metric: next });
             }}
           >
             <SelectTrigger
@@ -128,19 +142,14 @@ export default function BuilderControls({
               className="w-36 min-w-0"
               aria-labelledby={`${ids}-metric`}
             >
-              <SelectValue>
-                {state.metric === "estimatePoints"
-                  ? t("analytics:metric.points")
-                  : t("analytics:metric.tasks")}
-              </SelectValue>
+              <SelectValue>{metricLabel(state.metric, t, fields)}</SelectValue>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="taskCount">
-                {t("analytics:metric.tasks")}
-              </SelectItem>
-              <SelectItem value="estimatePoints">
-                {t("analytics:metric.points")}
-              </SelectItem>
+              {metrics.map((metric) => (
+                <SelectItem key={metric} value={metric}>
+                  {metricLabel(metric, t, fields)}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </Labeled>
@@ -166,7 +175,7 @@ export default function BuilderControls({
           >
             <SelectValue>
               {state.segment
-                ? t(DIMENSIONS[state.segment].labelKey)
+                ? labelOf(state.segment)
                 : t("analytics:builder.segmentNone")}
             </SelectValue>
           </SelectTrigger>
@@ -176,7 +185,7 @@ export default function BuilderControls({
             </SelectItem>
             {segments.map((dimension) => (
               <SelectItem key={dimension} value={dimension}>
-                {t(DIMENSIONS[dimension].labelKey)}
+                {labelOf(dimension)}
               </SelectItem>
             ))}
           </SelectContent>

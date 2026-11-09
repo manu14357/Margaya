@@ -5,20 +5,25 @@ import { useAnalyticsChart } from "@/hooks/queries/analytics/use-analytics-chart
 import { useAnalyticsReports } from "@/hooks/queries/analytics-report/use-analytics-reports";
 import {
   type BuilderState,
+  builderAvailabilityOf,
   loadBuilderState,
   normalizeBuilderState,
   saveBuilderState,
+  usesCustomField,
 } from "@/lib/analytics/builder-state";
 import { buildBarModel } from "@/lib/analytics/chart-model";
 import {
   availableDimensions,
-  DIMENSIONS,
   type DimensionAvailability,
+  dimensionInfo,
+  dimensionLabel,
+  fieldsPending,
+  isCustomFieldDimension,
   isDateDimension,
   orientationOf,
   segmentOptions,
 } from "@/lib/analytics/dimensions";
-import { periodTitle } from "@/lib/analytics/labels";
+import { metricLabel as metricName, periodTitle } from "@/lib/analytics/labels";
 import {
   builderStateOfReport,
   isSameReportConfig,
@@ -55,7 +60,7 @@ export function useChartNotes(
   if (!result) return [];
   const notes: string[] = [];
   const pluralOf = (dimension: AnalyticsDimension) => {
-    const key = DIMENSIONS[dimension].pluralKey;
+    const key = dimensionInfo(dimension).pluralKey;
     return key ? t(key) : t("analytics:dimensionsPlural.period");
   };
   if (result.truncated.x) {
@@ -125,7 +130,13 @@ export default function CustomChartCard({
     [availability],
   );
   const pointsAvailable = pointsPossible && pointsKnown !== false;
-  const state = normalizeBuilderState(raw, { dimensions, pointsAvailable });
+  const state = normalizeBuilderState(
+    raw,
+    builderAvailabilityOf(availability, pointsAvailable),
+  );
+  // A stored custom field waits for the project's fields to confirm it.
+  const waitingForFields =
+    fieldsPending(availability) && usesCustomField(state);
   const update = (next: BuilderState) => {
     setStored({ scopeKey, raw: next });
     saveBuilderState(scopeKey, next);
@@ -151,10 +162,13 @@ export default function CustomChartCard({
   const openReport = (report: AnalyticsReport) => {
     if (!reports) return;
     const target = reports.onOpen(report);
-    const { state: next, reset } = builderStateOfReport(report.config, {
-      dimensions: availableDimensions(target.availability),
-      pointsAvailable: target.availability.features.estimates,
-    });
+    const { state: next, reset } = builderStateOfReport(
+      report.config,
+      builderAvailabilityOf(
+        target.availability,
+        target.availability.features.estimates,
+      ),
+    );
     // The builder of the scope the report opens in, which may be another
     // scope than this one until the page switches to it.
     setStored({ scopeKey: target.scopeKey, raw: next });
@@ -190,17 +204,21 @@ export default function CustomChartCard({
       state.includeNone,
     ],
   );
-  const query = useAnalyticsChart(request);
+  const query = useAnalyticsChart(request, { enabled: !waitingForFields });
   const result = query.data;
   useEffect(() => {
     if (result) setPointsKnown(result.pointsProjectIds.length > 0);
   }, [result]);
 
   const labelOf = useLabelOf(result);
-  const metricLabel =
-    result?.metric === "estimatePoints"
-      ? t("analytics:metric.points")
-      : t("analytics:metric.tasks");
+  const metricLabel = metricName(
+    result?.metric ?? "taskCount",
+    t,
+    result?.meta.customFields,
+  );
+  const xLabel = result
+    ? dimensionLabel(result.xAxis, t, result.meta.customFields)
+    : "";
   const buckets = useMemo(() => {
     if (!result) return [];
     return state.sortByValue && !isDateDimension(result.xAxis)
@@ -217,13 +235,13 @@ export default function CustomChartCard({
       result
         ? chartTableModel(result, {
             t,
-            dimensionLabel: t(DIMENSIONS[result.xAxis].labelKey),
+            dimensionLabel: xLabel,
             metricLabel,
             labelOf,
             buckets,
           })
         : null,
-    [result, t, metricLabel, labelOf, buckets],
+    [result, t, xLabel, metricLabel, labelOf, buckets],
   );
   const table = useSortedTable(tableModel);
   const notes = useChartNotes(result);
@@ -261,7 +279,11 @@ export default function CustomChartCard({
           )}
           <ExportCsvButton
             model={table.model}
-            section={`tasks-by-${state.xAxis}`}
+            section={`tasks-by-${
+              isCustomFieldDimension(state.xAxis)
+                ? dimensionLabel(state.xAxis, t, availability.customFields)
+                : state.xAxis
+            }`}
           />
         </>
       }
@@ -273,6 +295,7 @@ export default function CustomChartCard({
             dimensions={dimensions}
             segments={segmentOptions(state.xAxis, availability)}
             pointsAvailable={pointsAvailable}
+            fields={availability.customFields}
           />
           {openedReport && (
             <ReportStatus
@@ -284,7 +307,7 @@ export default function CustomChartCard({
           )}
         </>
       }
-      isLoading={query.isLoading}
+      isLoading={query.isLoading || waitingForFields}
       error={query.error}
       onRetry={() => void query.refetch()}
       isEmpty={!result || result.totalCount === 0}
@@ -312,7 +335,7 @@ export default function CustomChartCard({
             }}
             ariaLabel={t("analytics:a11y.barSummary", {
               metric: metricLabel,
-              dimension: t(DIMENSIONS[result.xAxis].labelKey),
+              dimension: xLabel,
               count: buckets.length,
               label: top ? labelOf(result.xAxis, top.key) : "",
               value: top?.value ?? 0,

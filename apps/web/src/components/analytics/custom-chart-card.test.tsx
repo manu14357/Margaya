@@ -29,7 +29,9 @@ const m = vi.hoisted(() => ({
     dimensions: readonly AnalyticsDimension[];
     segments: readonly CategoryDimension[];
     pointsAvailable: boolean;
+    fields?: ControlsProps["fields"];
   } | null,
+  chartEnabled: [] as boolean[],
   state: null as ControlsProps["state"] | null,
   orientation: "" as string,
   reports: [] as AnalyticsReport[],
@@ -45,13 +47,16 @@ vi.mock("react-i18next", async (importOriginal) => ({
 }));
 vi.mock("@/lib/toast", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 vi.mock("@/hooks/queries/analytics/use-analytics-chart", () => ({
-  useAnalyticsChart: () => ({
-    data: m.result ?? undefined,
-    isLoading: false,
-    error: null,
-    isPlaceholderData: false,
-    refetch: vi.fn(),
-  }),
+  useAnalyticsChart: (_request: unknown, options?: { enabled?: boolean }) => {
+    m.chartEnabled.push(options?.enabled ?? true);
+    return {
+      data: m.result ?? undefined,
+      isLoading: false,
+      error: null,
+      isPlaceholderData: false,
+      refetch: vi.fn(),
+    };
+  },
 }));
 vi.mock("@/components/charts/bar-chart", () => ({
   default: ({ orientation }: { orientation: string }) => {
@@ -65,6 +70,7 @@ vi.mock("./builder-controls", () => ({
       dimensions: props.dimensions,
       segments: props.segments,
       pointsAvailable: props.pointsAvailable,
+      fields: props.fields,
     };
     m.state = props.state;
     return null;
@@ -109,15 +115,19 @@ function renderCard(
   {
     pointsPossible = false,
     reports,
+    fields,
+    scopeKey,
   }: {
     pointsPossible?: boolean;
     reports?: ComponentProps<typeof CustomChartCard>["reports"];
+    fields?: Parameters<typeof availabilityOf>[1];
+    scopeKey?: string;
   } = {},
 ) {
   const scope: AnalyticsScope = {
     kind: "workspace",
     workspaceId: "ws-1",
-    scopeKey: `test-${projects.length}-${Math.random()}`,
+    scopeKey: scopeKey ?? `test-${projects.length}-${Math.random()}`,
     projects: [],
     slug: "acme",
   };
@@ -125,7 +135,7 @@ function renderCard(
     <AnalyticsScopeProvider value={scope}>
       <CustomChartCard
         base={base}
-        availability={availabilityOf(projects)}
+        availability={availabilityOf(projects, fields)}
         pointsPossible={pointsPossible}
         reports={reports}
       />
@@ -142,7 +152,94 @@ afterEach(() => {
   m.orientation = "";
   m.reports = [];
   m.actions = null;
+  m.chartEnabled = [];
   window.localStorage.clear();
+});
+
+describe("CustomChartCard with custom fields", () => {
+  const fields = [
+    { id: "tier", name: "Tier", type: "dropdown" },
+    { id: "budget", name: "Budget", type: "number" },
+  ];
+  const tierResult = () =>
+    makeChartResult({
+      xAxis: "customField:tier",
+      segment: null,
+      segments: [],
+      metric: "customField:budget",
+      multiValued: { x: false, segment: false },
+      buckets: [
+        { key: "value:Gold", value: 300.5, taskCount: 2, progress: null },
+        { key: "none", value: 0, taskCount: 1, progress: null },
+      ],
+      meta: {
+        ...makeChartResult().meta,
+        customFields: [
+          { id: "budget", name: "Budget", type: "number" },
+          { id: "tier", name: "Tier", type: "dropdown" },
+        ],
+      },
+    });
+
+  it("offers a dropdown with one project, and hands the fields to the controls", () => {
+    m.result = makeChartResult();
+    renderCard(one, { fields });
+    expect(m.controls?.dimensions).toContain("customField:tier");
+    expect(m.controls?.segments).toContain("customField:tier");
+    expect(m.controls?.fields).toEqual(fields);
+    cleanup();
+
+    renderCard(two, { fields });
+    expect(m.controls?.dimensions).not.toContain("customField:tier");
+  });
+
+  it("tables a dropdown's values with the field's and the sum's names", () => {
+    m.result = tierResult();
+    const scopeKey = "custom-fields";
+    window.localStorage.setItem(
+      `margaya:analytics:builder:${scopeKey}`,
+      JSON.stringify({
+        xAxis: "customField:tier",
+        metric: "customField:budget",
+      }),
+    );
+    renderCard(one, { fields, scopeKey });
+    expect(m.state).toMatchObject({
+      xAxis: "customField:tier",
+      metric: "customField:budget",
+    });
+    const headers = screen
+      .getAllByRole("columnheader")
+      .map((header) => header.textContent);
+    expect(headers).toEqual([
+      "Tier",
+      'analytics:metric.sumOf {"name":"Budget"}',
+      "analytics:table.tasks",
+    ]);
+    expect(screen.getAllByText("Gold").length).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText("analytics:none.customField").length,
+    ).toBeGreaterThan(0);
+  });
+
+  it("waits for the project's fields before charting a stored field", () => {
+    m.result = tierResult();
+    const scopeKey = "custom-fields-loading";
+    window.localStorage.setItem(
+      `margaya:analytics:builder:${scopeKey}`,
+      JSON.stringify({ xAxis: "customField:tier" }),
+    );
+    renderCard(one, { scopeKey });
+    expect(m.state?.xAxis).toBe("customField:tier");
+    expect(m.chartEnabled.at(-1)).toBe(false);
+    expect(screen.queryByTestId("bar-chart")).toBeNull();
+    cleanup();
+
+    // Loaded without it: the field was deleted, so the default x-axis shows.
+    renderCard(one, { scopeKey, fields: [] });
+    expect(m.state?.xAxis).toBe("priority");
+    expect(m.chartEnabled.at(-1)).toBe(true);
+  });
 });
 
 describe("CustomChartCard", () => {

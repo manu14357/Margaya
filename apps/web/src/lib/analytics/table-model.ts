@@ -87,7 +87,8 @@ export function chartTableModel(
 ): TableModel {
   const { t, labelOf } = options;
   const isDate = isDateDimension(result.xAxis);
-  const isPoints = result.metric === "estimatePoints";
+  // Points or a summed field: the task count gets its own column.
+  const isPoints = result.metric !== "taskCount";
   const segment = result.segment;
   const withProgress = segment === "group";
 

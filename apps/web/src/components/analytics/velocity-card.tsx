@@ -5,7 +5,7 @@ import { entityTableModel } from "@/lib/analytics/table-model";
 import { highestBar } from "@/lib/charts/bar-layout";
 import { GROUP_CHART_COLORS } from "@/lib/charts/series-colors";
 import { formatNumber } from "@/lib/format";
-import type { AnalyticsCycles, AnalyticsMetric } from "@/types/analytics";
+import type { AnalyticsCountMetric, AnalyticsCycles } from "@/types/analytics";
 import AnalyticsDataTable, { useSortedTable } from "./analytics-data-table";
 import AnalyticsSection, {
   SectionEmpty,
@@ -30,7 +30,7 @@ export default function VelocityCard({
   onRetry,
 }: VelocityCardProps) {
   const { t } = useTranslation();
-  const [metric, setMetric] = useState<AnalyticsMetric>("taskCount");
+  const [metric, setMetric] = useState<AnalyticsCountMetric>("taskCount");
   const [view, setView] = useState<SectionView>("chart");
   const velocity = data?.velocity ?? null;
   const pointsAvailable =

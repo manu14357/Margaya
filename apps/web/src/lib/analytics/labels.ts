@@ -8,11 +8,18 @@ import type {
   AnalyticsDateBucket,
   AnalyticsDimension,
   AnalyticsMeta,
+  AnalyticsMetric,
 } from "@/types/analytics";
-import { DIMENSIONS, isDateDimension } from "./dimensions";
+import {
+  dimensionInfo,
+  fieldIdOfDimension,
+  isCustomFieldDimension,
+  isDateDimension,
+} from "./dimensions";
 
 // Display names for analytics keys. Keys come from the API (ids, slugs,
-// `name:<label>`, `<type>:<value>`, bucket days, `none`, `other`); names
+// `name:<label>`, `<type>:<value>`, `value:<option>` for custom fields,
+// bucket days, `none`, `other`); names
 // come from the response's meta and from i18n. Bucket days are parsed with
 // parseISO (local midnight), never `new Date(key)`, which would read them as
 // UTC and show the previous day west of Greenwich.
@@ -25,6 +32,8 @@ export type Translate = (
 export const NONE_KEY = "none";
 export const OTHER_KEY = "other";
 export const LABEL_KEY_PREFIX = "name:";
+/** A custom field value's key: its text after the prefix. */
+export const FIELD_VALUE_KEY_PREFIX = "value:";
 
 const DAY_KEY = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -112,8 +121,13 @@ export function bucketLabel(
   const { t, meta } = context;
   if (key === OTHER_KEY) return t("analytics:other");
   if (key === NONE_KEY) {
-    const noneKey = DIMENSIONS[dimension].noneKey;
+    const noneKey = dimensionInfo(dimension).noneKey;
     return noneKey ? t(noneKey) : key;
+  }
+  if (isCustomFieldDimension(dimension)) {
+    return key.startsWith(FIELD_VALUE_KEY_PREFIX)
+      ? key.slice(FIELD_VALUE_KEY_PREFIX.length)
+      : key;
   }
   if (isDateDimension(dimension)) {
     return isDayKey(key)
@@ -151,6 +165,23 @@ export function bucketLabel(
     default:
       return key;
   }
+}
+
+/** "Tasks", "Estimate points" or "Sum of Budget". */
+export function metricLabel(
+  metric: AnalyticsMetric,
+  t: Translate,
+  fields?: readonly { id: string; name: string }[],
+): string {
+  if (metric === "estimatePoints") return t("analytics:metric.points");
+  if (isCustomFieldDimension(metric)) {
+    const id = fieldIdOfDimension(metric);
+    const name = fields?.find((field) => field.id === id)?.name;
+    return name
+      ? t("analytics:metric.sumOf", { name })
+      : t("analytics:metric.sum");
+  }
+  return t("analytics:metric.tasks");
 }
 
 /** Label keys' own colors, resolved to CSS colors for the charts. */
