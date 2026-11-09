@@ -18,6 +18,8 @@ BEGIN {
     values["MARGAYA_CLIENT_URL"] = ENVIRON["MARGAYA_CLIENT_URL"]
     values["MARGAYA_TURNSTILE_SITE_KEY"] = ENVIRON["MARGAYA_TURNSTILE_SITE_KEY"]
     values["MARGAYA_PUBLIC_SITE_URL"] = ENVIRON["MARGAYA_PUBLIC_SITE_URL"]
+    # A browser Sentry DSN is a public client key, not a secret.
+    values["MARGAYA_SENTRY_DSN"] = ENVIRON["MARGAYA_SENTRY_DSN"]
 
     if (mode == "resource" || mode == "authorization") {
         base = values["MARGAYA_API_URL"]
@@ -41,16 +43,25 @@ BEGIN {
     # again, so a value containing another placeholder remains literal data.
     # Vite can fold a static path suffix into the same literal (for example
     # MARGAYA_CLIENT_URL/auth/sign-in). Only accept an unescaped static path.
-    while (match(rest, /["'`]MARGAYA_(API_URL|CLIENT_URL|TURNSTILE_SITE_KEY|PUBLIC_SITE_URL)(\/[-A-Za-z0-9_.\/]*)?["'`]/)) {
+    while (match(rest, /["'`]MARGAYA_(API_URL|CLIENT_URL|TURNSTILE_SITE_KEY|PUBLIC_SITE_URL|SENTRY_DSN)(\/[-A-Za-z0-9_.\/]*)?["'`]/)) {
         token = substr(rest, RSTART, RLENGTH)
         key = substr(token, 2, length(token) - 2)
         suffix = ""
         slash = index(key, "/")
         if (slash) { suffix = substr(key, slash); key = substr(key, 1, slash - 1) }
         output = output substr(rest, 1, RSTART - 1)
-        if (substr(token, 1, 1) == substr(token, length(token), 1)) output = output json(values[key] suffix)
+        if (substr(token, 1, 1) == substr(token, length(token), 1)) {
+            output = output json(values[key] suffix)
+            replaced = 1
+        }
         else output = output token
         rest = substr(rest, RSTART + RLENGTH)
     }
     print output rest
+}
+
+# env.sh tells nginx which files now carry this deployment's values. The path
+# comes through ENVIRON, so awk never reads escapes in it.
+END {
+    if (replaced && ENVIRON["MARGAYA_ENV_MARKER"] != "") printf "" > ENVIRON["MARGAYA_ENV_MARKER"]
 }
