@@ -5,6 +5,10 @@ import { TopBar } from "@/components/common/header/top-bar";
 import { PageHeader } from "@/components/common/page-header";
 import { SplitView } from "@/components/common/split-view";
 import { ViewTabs } from "@/components/common/view-tabs";
+import {
+  useDesktopDragRegion,
+  useDesktopTitleBar,
+} from "@/components/desktop/desktop-title-bar";
 import { cn } from "@/lib/cn";
 
 type LayoutProps = {
@@ -27,10 +31,16 @@ type ContentProps = {
  * the command field); this stays for pages that compose their own row.
  */
 function LayoutHeader({ children, className }: HeaderProps) {
+  // The desktop app's title bar line, as in TopBar.
+  const titleBar = useDesktopTitleBar();
+  const dragRegion = useDesktopDragRegion();
   return (
     <header
+      {...dragRegion}
       className={cn(
         "flex h-12 shrink-0 items-center gap-2 border-border/80 border-b bg-background px-2 md:px-3",
+        titleBar &&
+          "pe-[calc(var(--desktop-controls-width,0px)+0.5rem)] max-md:ps-[max(0.5rem,var(--desktop-inset-left,0px))]",
         className,
       )}
       data-slot="layout-header"

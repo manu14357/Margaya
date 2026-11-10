@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-router";
 import { RefreshCw } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { DesktopTitleBar } from "@/components/desktop/desktop-title-bar";
 import { WanderingPathIllustration } from "@/components/illustrations/wandering-path";
 import { cn } from "@/lib/cn";
 import { Button } from "./button";
@@ -52,13 +53,17 @@ export function CrashFallback({
 }) {
   const { t } = useTranslation();
   return (
-    <ErrorDisplay
-      className="min-h-svh bg-background"
-      description={t("common:states.crash.description")}
-      error={error}
-      errorId={errorId}
-      title={t("common:states.crash.title")}
-    />
+    <>
+      {/* The router is gone, and with it the root's title bar. */}
+      <DesktopTitleBar />
+      <ErrorDisplay
+        className="min-h-svh bg-background"
+        description={t("common:states.crash.description")}
+        error={error}
+        errorId={errorId}
+        title={t("common:states.crash.title")}
+      />
+    </>
   );
 }
 

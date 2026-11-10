@@ -1,0 +1,91 @@
+/*
+ * Margaya Desktop's frameless window (components/desktop/desktop-title-bar.tsx,
+ * lib/desktop.ts). Nothing here applies in a browser: every rule hangs off an
+ * attribute the desktop code sets on <html>.
+ */
+
+/* The Windows close button's red is the system's, in both themes. */
+:root {
+  --titlebar-close-hover: #c42b1c;
+  --titlebar-close-active: #b0271a;
+  --titlebar-close-foreground: #ffffff;
+}
+
+.dark {
+  --titlebar-close-hover: #c42b1c;
+  --titlebar-close-active: #b0271a;
+  --titlebar-close-foreground: #ffffff;
+}
+
+/* App chrome selects like an app, not like page text. */
+html[data-desktop-app]
+  :is(
+    [data-slot="top-bar"],
+    [data-slot="layout-header"],
+    [data-slot="app-rail"],
+    [data-slot="context-panel-header"],
+    [data-slot="view-tabs"],
+    [data-slot="mobile-tab-bar"],
+    [data-slot="desktop-title-bar"],
+    [data-slot="window-controls"]
+  ) {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/*
+ * Pages without the app shell sit under the slim title bar, so a page that
+ * fills the viewport fills what is left under the bar instead.
+ */
+html[data-desktop-slim-bar] :is(.h-svh, .h-dvh, .h-screen) {
+  height: calc(100svh - var(--desktop-slim-bar-height, 0px));
+}
+
+html[data-desktop-slim-bar] :is(.min-h-svh, .min-h-dvh, .min-h-screen) {
+  min-height: calc(100svh - var(--desktop-slim-bar-height, 0px));
+}
+
+@media (width >= 64rem) {
+  html[data-desktop-slim-bar] .lg\:h-svh {
+    height: calc(100svh - var(--desktop-slim-bar-height, 0px));
+  }
+}
+
+/*
+ * Overlays start under the title bar line (--desktop-frame-top: the shell's
+ * top bar or the slim bar), so the window buttons, the traffic lights and
+ * the bar stay visible and in reach while a sheet, dialog or the palette is
+ * open, the way native windows keep their title bar above their dialogs.
+ */
+html[data-desktop-titlebar]
+  :is(
+    [data-slot="sheet-backdrop"],
+    [data-slot="sheet-viewport"],
+    [data-slot="dialog-backdrop"],
+    [data-slot="dialog-viewport"],
+    [data-slot="alert-dialog-backdrop"],
+    [data-slot="alert-dialog-viewport"],
+    [data-slot="command-dialog-backdrop"],
+    [data-slot="command-dialog-viewport"]
+  ) {
+  top: var(--desktop-frame-top, 0px);
+}
+
+/* Ask fills the window on narrow screens; it too stays under the bar. */
+@media (width < 40rem) {
+  html[data-desktop-titlebar] [data-slot="ask-panel"]:not([data-full-page]) {
+    top: var(--desktop-frame-top, 0px);
+  }
+}
+
+html:has(
+    :is(
+      [data-slot="sheet-backdrop"],
+      [data-slot="dialog-backdrop"],
+      [data-slot="alert-dialog-backdrop"],
+      [data-slot="command-dialog-backdrop"]
+    )
+  )
+  [data-slot="desktop-overlay-drag"] {
+  display: block;
+}
