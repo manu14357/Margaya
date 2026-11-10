@@ -1,5 +1,5 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   AlertTriangle,
   CheckCircle,
@@ -42,6 +42,8 @@ import { useUpdateGithubIntegration } from "@/hooks/mutations/github-integration
 import useGetGithubIntegration from "@/hooks/queries/github-integration/use-get-github-integration";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/cn";
+import { continueInSystemBrowser } from "@/lib/desktop";
+import { linkSocialAccount } from "@/lib/link-social-account";
 import { toast } from "@/lib/toast";
 
 type GithubIntegrationFormValues = {
@@ -61,15 +63,18 @@ export function GitHubIntegrationSettings({
     queryFn: getGitHubAppInfo,
     enabled: Boolean(session?.user.id),
   });
+  const queryClient = useQueryClient();
   const [isLinkingAccount, setIsLinkingAccount] = React.useState(false);
   const linkAccount = async () => {
     setIsLinkingAccount(true);
     try {
-      const result = await authClient.linkSocial({
-        provider: "github",
-        callbackURL: window.location.href,
+      // In the desktop app GitHub's page opens in the app's sign-in popup
+      // and this page stays put: refresh the linked account once it closes.
+      await linkSocialAccount("github", window.location.href, () => {
+        void queryClient.invalidateQueries({
+          queryKey: ["github-app-info"],
+        });
       });
-      if (result.error) throw new Error(result.error.message);
     } catch (error) {
       toast.error(
         error instanceof Error
@@ -79,6 +84,19 @@ export function GitHubIntegrationSettings({
     } finally {
       setIsLinkingAccount(false);
     }
+  };
+  // Installing the GitHub App or changing its permissions happens on
+  // GitHub. The desktop app sends it to the browser, with a note to come
+  // back and check again.
+  const openOnGithub = (url: string | null | undefined) => {
+    if (!url) return;
+    if (continueInSystemBrowser(url)) {
+      toast.info(t("settings:continueInBrowser.title"), {
+        description: t("settings:continueInBrowser.githubApp"),
+      });
+      return;
+    }
+    window.open(url, "_blank");
   };
   const githubIntegrationSchema = React.useMemo(
     () =>
@@ -670,10 +688,7 @@ export function GitHubIntegrationSettings({
                               variant="outline"
                               size="sm"
                               onClick={() =>
-                                window.open(
-                                  verificationResult.settingsUrl,
-                                  "_blank",
-                                )
+                                openOnGithub(verificationResult.settingsUrl)
                               }
                               className="gap-2"
                             >
@@ -695,10 +710,7 @@ export function GitHubIntegrationSettings({
                             variant="outline"
                             size="sm"
                             onClick={() =>
-                              window.open(
-                                verificationResult.installationUrl,
-                                "_blank",
-                              )
+                              openOnGithub(verificationResult.installationUrl)
                             }
                             className="gap-2"
                           >
