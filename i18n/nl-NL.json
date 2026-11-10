@@ -159,6 +159,15 @@
 			"restored": "Project hersteld",
 			"viewInArchives": "Bekijken in archieven"
 		},
+		"linkDialog": {
+			"addTitle": "Link toevoegen",
+			"editTitle": "Link bewerken",
+			"description": "Koppel de geselecteerde tekst aan een webadres of een e-mailadres.",
+			"urlLabel": "Linkadres",
+			"invalid": "Voer een webadres in, zoals example.com, of een mailto:-link.",
+			"apply": "Toepassen",
+			"remove": "Link verwijderen"
+		},
 		"states": {
 			"crash": {
 				"description": "Opnieuw laden lost het meestal op. Je opgeslagen werk is veilig.",
@@ -243,7 +252,9 @@
 			"samlNoConnection": "Bedrijfsaanmelding is niet ingesteld voor dit e-maildomein.",
 			"samlError": "Bedrijfsaanmelding kon niet worden gestart. Probeer het opnieuw.",
 			"emailCodesOff": "Inloglinks en -codes per e-mail staan uit op deze server. Heb je alleen die ooit gebruikt, dan heb je nog geen wachtwoord: kies “Wachtwoord vergeten?” om er een in te stellen.",
-			"emailCodesOffNoEmail": "Inloglinks en -codes per e-mail staan uit op deze server. Heb je alleen die ooit gebruikt, dan heb je nog geen wachtwoord: vraag een instantiebeheerder om er een voor je in te stellen."
+			"emailCodesOffNoEmail": "Inloglinks en -codes per e-mail staan uit op deze server. Heb je alleen die ooit gebruikt, dan heb je nog geen wachtwoord: vraag een instantiebeheerder om er een voor je in te stellen.",
+			"desktopBrowserHint": "Deze opties gaan verder in je browser en brengen je daarna terug naar de app.",
+			"desktopBrowserStarted": "Ga verder in je browser om het inloggen af te ronden."
 		},
 		"providers": {
 			"google": "Google",
@@ -534,6 +545,31 @@
 			"failedTitle": "Inloggen kon niet worden afgerond",
 			"failed": "Deze inlogpoging kon niet worden afgerond. De link ervan werkt één keer, één minuut lang, en alleen in de browser waarmee je hebt ingelogd. Log opnieuw in.",
 			"backToSignIn": "Terug naar inloggen"
+		},
+		"desktop": {
+			"pageTitle": "Inloggen in de desktop-app",
+			"title": "Inloggen in de desktop-app",
+			"confirm": "Inloggen in de Margaya-desktop-app als {{account}} op {{server}}?",
+			"warning": "Ga alleen verder als je dit zelf hebt gestart vanuit de Margaya-desktop-app op deze computer. Heeft iemand je deze link gestuurd, annuleer dan.",
+			"allow": "Toestaan",
+			"cancel": "Annuleren",
+			"tryAgain": "Opnieuw proberen",
+			"doneTitle": "Je kunt teruggaan naar de desktop-app",
+			"doneHint": "Is de app niet geopend? Open hem dan hier opnieuw.",
+			"openAgain": "Desktop-app openen",
+			"codeTitle": "Je inlogcode",
+			"codeHint": "Plak deze code in de desktop-app. Hij werkt één keer en verloopt na een minuut.",
+			"copy": "Code kopiëren",
+			"copied": "Code gekopieerd",
+			"copyFailed": "De code kon niet worden gekopieerd. Selecteer en kopieer hem zelf.",
+			"cancelledTitle": "Inloggen geannuleerd",
+			"cancelledHint": "De desktop-app is niet ingelogd. Je kunt dit tabblad sluiten.",
+			"invalidTitle": "Deze inloglink is niet geldig",
+			"invalidHint": "Begin opnieuw met inloggen vanuit de desktop-app.",
+			"expired": "Dit inlogverzoek is verlopen of niet geldig. Begin opnieuw vanuit de desktop-app.",
+			"disabled": "Inloggen via de desktop-app staat uit op deze server. Vraag het een instantiebeheerder.",
+			"rateLimited": "Te veel pogingen. Wacht een minuut en probeer het dan opnieuw.",
+			"failed": "Inloggen in de desktop-app is mislukt. Probeer het opnieuw."
 		}
 	},
 	"settings": {
@@ -1470,7 +1506,9 @@
 				"quietTo": "Tot",
 				"deviceMute": "Geluiden dempen op dit apparaat",
 				"deviceMuteDescription": "Dempt alleen deze browser. Je andere apparaten blijven geluid afspelen.",
-				"previewFailed": "Je browser heeft het geluid niet afgespeeld. Controleer of dit tabblad of deze site niet gedempt is."
+				"previewFailed": "Je browser heeft het geluid niet afgespeeld. Controleer of dit tabblad of deze site niet gedempt is.",
+				"desktopDescription": "In de desktop-app speelt een melding het Margaya-geluid af dat je hier hebt gekozen, op jouw volume, wanneer deze instellingen daarom vragen. Niet storen dempt het.",
+				"deviceMuteDescriptionDesktop": "Dempt alleen deze desktop-app. Je andere apparaten blijven geluid afspelen."
 			},
 			"pushTitle": "Pushmeldingen",
 			"pushDescription": "Meldingen op je telefoon of computer, ook als Margaya gesloten is. “Stuur mij meldingen over” bepaalt wat er wordt verstuurd, en een werkruimteregel hieronder kan dat beperken.",
@@ -1494,7 +1532,8 @@
 			"workspaceCardLabelPush": "Pushmeldingen",
 			"pushChannelHintEnabled": "Stuur passende werkruimtemeldingen naar je apparaten.",
 			"pushChannelHintDisabled": "Schakel push eerst in voor een apparaat.",
-			"pushLoadFailed": "Je pushinstellingen konden niet worden geladen. Laad deze pagina opnieuw om het nog eens te proberen."
+			"pushLoadFailed": "Je pushinstellingen konden niet worden geladen. Laad deze pagina opnieuw om het nog eens te proberen.",
+			"pushDesktopApp": "De desktop-app toont meldingen op dit apparaat, dus browserpush is hier niet nodig."
 		},
 		"workspaceRoles": {
 			"pageTitle": "Rollen",
@@ -3271,6 +3310,11 @@
 				"agentPromptPlaceholder": "Bijvoorbeeld: beoordeel deze taak en stel een prioriteit voor.",
 				"agentHint": "De agent handelt namens wie deze regel opslaat, met hoogstens diens rechten. Hij start nooit bij wijzigingen die een agent maakte."
 			}
+		},
+		"continueInBrowser": {
+			"title": "Ga verder in je browser",
+			"billing": "Rond het af in het browservenster dat net is geopend en kom daarna terug naar Margaya. Je abonnement wordt bijgewerkt zodra je terug bent.",
+			"githubApp": "Rond het af op GitHub in je browser, kom daarna terug naar Margaya en controleer de installatie opnieuw."
 		}
 	},
 	"navigation": {
@@ -3389,7 +3433,9 @@
 			"settings": "Instellingen",
 			"signingOut": "Uitloggen...",
 			"logOut": "Uitloggen",
-			"instanceSettings": "Instantie-instellingen"
+			"instanceSettings": "Instantie-instellingen",
+			"getDesktopApp": "Download de desktop-app",
+			"switchServer": "Server wisselen"
 		},
 		"workspaceSwitcher": {
 			"workspaces": "Werkruimtes",
@@ -3532,6 +3578,12 @@
 			"whatsNew": "Wat is er nieuw",
 			"sourceCode": "Broncode",
 			"workspaceAnalytics": "Werkruimte"
+		},
+		"desktopWindow": {
+			"minimize": "Minimaliseren",
+			"maximize": "Maximaliseren",
+			"restore": "Vorige grootte",
+			"close": "Sluiten"
 		}
 	},
 	"notifications": {
@@ -3849,7 +3901,6 @@
 				"imageUploaded": "Afbeelding geüpload",
 				"fileAttached": "Bestand bijgevoegd",
 				"failedToUploadFile": "Uploaden bestand mislukt",
-				"enterUrl": "URL invoeren",
 				"plaintext": "Platte tekst",
 				"autoDetect": "Automatisch detecteren",
 				"slashGroupText": "Tekst",
@@ -4253,7 +4304,6 @@
 				"ariaLabel": "Taakbeschrijving editor",
 				"placeholder": "Schrijf een beschrijving...",
 				"previewImage": "Voorbeeld afbeelding",
-				"enterUrl": "URL invoeren",
 				"autoDetect": "Automatisch detecteren",
 				"copyCode": "Code kopiëren",
 				"copy": "Kopiëren",
@@ -4505,7 +4555,6 @@
 		"backlog": {
 			"pageTitle": "Backlog van {{name}}",
 			"noTasksToMove": "Geen geplande taken om te verplaatsen",
-			"moveAllConfirm": "Alle {{count}} geplande taken verplaatsen naar {{column}}?",
 			"moveAllSuccess": "{{count}} taken verplaatst naar {{column}}",
 			"plan": "Plannen",
 			"moveAllTooltip": "Alle geplande taken verplaatsen naar {{column}}",
@@ -4515,7 +4564,12 @@
 				"planned": "Gepland",
 				"archived": "Gearchiveerd"
 			},
-			"noTasksInSection": "Geen {{section}} taken"
+			"noTasksInSection": "Geen {{section}} taken",
+			"moveAllConfirmTitle_one": "{{count}} geplande taak verplaatsen naar {{column}}?",
+			"moveAllConfirmTitle_other": "Alle {{count}} geplande taken verplaatsen naar {{column}}?",
+			"moveAllConfirmDescription_one": "De taak verlaat de backlog en verschijnt op het bord.",
+			"moveAllConfirmDescription_other": "De taken verlaten de backlog en verschijnen op het bord.",
+			"moveAllConfirmAction": "Taken verplaatsen"
 		},
 		"sort": {
 			"label": "Sorteren",
@@ -4867,8 +4921,6 @@
 			"moveToBoardSuccess": "{{count}} taken naar bord verplaatst",
 			"moveToBoardError": "Verplaatsen naar bord mislukt",
 			"delete": "Taken verwijderen",
-			"deleteConfirm": "{{count}} taken naar de prullenbak verplaatsen? Je kunt ze herstellen via Recent verwijderd in de projectinstellingen.",
-			"deleteSuccess": "{{count}} taken verwijderd",
 			"deleteError": "Verwijderen taken mislukt",
 			"archive": "Taken archiveren",
 			"archiveSuccess": "{{count}} taken gearchiveerd",
@@ -4919,7 +4971,14 @@
 			"moveToProjectSuccess_one": "{{count}} taak naar {{name}} verplaatst",
 			"moveToProjectSuccess_other": "{{count}} taken naar {{name}} verplaatst",
 			"moveToProjectNone": "Deze taken staan al in {{name}}",
-			"moveToProjectError": "De taken konden niet worden verplaatst"
+			"moveToProjectError": "De taken konden niet worden verplaatst",
+			"deleteConfirmTitle_one": "{{count}} taak naar de prullenbak verplaatsen?",
+			"deleteConfirmTitle_other": "{{count}} taken naar de prullenbak verplaatsen?",
+			"deleteConfirmDescription_one": "Je kunt deze herstellen via Recent verwijderd in de projectinstellingen.",
+			"deleteConfirmDescription_other": "Je kunt ze herstellen via Recent verwijderd in de projectinstellingen.",
+			"deleteConfirmAction": "Naar de prullenbak",
+			"deleteSuccess_one": "{{count}} taak naar de prullenbak verplaatst",
+			"deleteSuccess_other": "{{count}} taken naar de prullenbak verplaatst"
 		},
 		"editor": {
 			"table": {
@@ -6991,7 +7050,8 @@
 				"signIn": "Inloggen",
 				"explore": "Ontdekken",
 				"featuresIntro": "Zes korte rondleidingen door Margaya. Elk heeft een live demo die je zelf kunt overnemen.",
-				"newTab": "(opent in een nieuw tabblad)"
+				"newTab": "(opent in een nieuw tabblad)",
+				"download": "Downloaden"
 			},
 			"ownIt": {
 				"cta": "Lees de installatiegids",
@@ -7109,6 +7169,7 @@
 				"product": {
 					"changelog": "Wijzigingslog",
 					"roadmap": "Roadmap",
+					"download": "Desktop-app",
 					"title": "Product"
 				},
 				"resources": {
@@ -11943,6 +12004,307 @@
 		"notificationText": {
 			"commentWithoutPreview": "Nieuwe reactie op {{taskTitle}}",
 			"pushFixedLine": "Open Margaya om de details te bekijken."
+		}
+	},
+	"download": {
+		"title": "Download de desktop-app",
+		"description": "Margaya voor macOS, Windows en Linux: je eigen Margaya-server in een eigen venster, met systeemmeldingen, een badge voor ongelezen items en snel toevoegen vanaf elke plek.",
+		"eyebrow": "Desktop-app",
+		"headline": "Margaya op je computer",
+		"intro": "Je eigen Margaya-server in een eigen venster, met systeemmeldingen, een badge voor ongelezen items en snel toevoegen vanaf elke plek. Voor macOS, Windows en Linux.",
+		"onThisPage": "Op deze pagina",
+		"picker": {
+			"mac": "Downloaden voor Mac",
+			"windows": "Downloaden voor Windows",
+			"appleSilicon": "Apple Silicon",
+			"intel": "Intel",
+			"windowsDetail": "64-bits installatieprogramma",
+			"otherMacArm": "Mac met Apple Silicon? Download die versie",
+			"otherMacIntel": "Mac met een Intel-processor? Download die versie",
+			"unsupported": "De desktop-app werkt op macOS, Windows en Linux. Open je Margaya-server op dit apparaat gewoon in de browser.",
+			"linux": "Downloaden voor Linux",
+			"linuxDetail": "AppImage, x86_64",
+			"linuxArmDetail": "AppImage, ARM64",
+			"otherPlatforms": "Andere platforms en formaten"
+		},
+		"comingSoon": {
+			"title": "Binnenkort beschikbaar",
+			"body": "De eerste desktopversie komt eraan. De installatieprogramma's verschijnen hier en op de releasepagina van GitHub zodra die is gepubliceerd.",
+			"action": "GitHub-releases openen"
+		},
+		"files": {
+			"title": "Alle downloads",
+			"description": "Kies je platform en formaat. Elk bestand hangt ook aan de GitHub-release.",
+			"macArm": {
+				"name": "Apple Silicon",
+				"detail": "Macs met een chip uit de M-serie."
+			},
+			"macIntel": {
+				"name": "Intel",
+				"detail": "Macs met een Intel-processor."
+			},
+			"windowsExe": {
+				"name": "Installatieprogramma",
+				"detail": "Installeert voor je eigen account, zonder beheerdersrechten."
+			},
+			"windowsMsi": {
+				"name": "MSI-pakket",
+				"detail": "Voor IT-teams die uitrollen met Intune, Groepsbeleid of vergelijkbare tools."
+			},
+			"checksum": "SHA-256",
+			"noChecksum": "Voor dit bestand is geen checksum gepubliceerd.",
+			"copied": "Gekopieerd",
+			"download": "Downloaden",
+			"missing": "Niet beschikbaar in deze release.",
+			"linuxAppImage": {
+				"name": "AppImage",
+				"detail": "Werkt op de meeste distributies zonder installatie en werkt zichzelf bij."
+			},
+			"linuxDeb": {
+				"name": "Debian-pakket",
+				"detail": "Debian, Ubuntu, Linux Mint en Pop!_OS."
+			},
+			"linuxRpm": {
+				"name": "RPM-pakket",
+				"detail": "Fedora, RHEL, Rocky Linux, AlmaLinux en openSUSE."
+			},
+			"architecture": "Architectuur",
+			"x64": "x86_64 (Intel, AMD)",
+			"arm": "ARM64",
+			"recommended": "Aanbevolen",
+			"copyChecksumFor": "SHA-256-checksum van {{name}} kopiëren",
+			"downloadFile": "{{name}} downloaden"
+		},
+		"requirements": {
+			"title": "Systeemvereisten",
+			"macos": {
+				"name": "macOS",
+				"value": "macOS 14 Sonoma of nieuwer, op Apple Silicon of Intel."
+			},
+			"windows": {
+				"name": "Windows",
+				"value": "Windows 10 of 11, 64-bit."
+			},
+			"server": {
+				"name": "Server",
+				"value": "Elke app maakt verbinding met een Margaya-server die je kunt bereiken en past altijd bij de versie ervan."
+			},
+			"linux": {
+				"name": "Linux",
+				"value": "x86_64 of ARM64 met WebKitGTK 4.1 (Ubuntu 22.04, Debian 12, Fedora 38 of nieuwer) en een sleutelbos."
+			}
+		},
+		"firstLaunch": {
+			"title": "Installeren en eerste keer openen",
+			"description": "Je systeem vraagt één keer om bevestiging voordat het een app van internet opent. Daarna start Margaya zoals elke andere app.",
+			"macos": {
+				"step1": "Open het gedownloade .dmg-bestand en sleep Margaya naar “Apps”.",
+				"step2": "Open Margaya vanuit “Apps”. Vraagt macOS naar een app van internet, klik dan op “Open”.",
+				"step3": "Zegt macOS dat het de app niet kan controleren? Open dan Systeeminstellingen › Privacy en beveiliging en klik op “Open toch”.",
+				"note": "Start Margaya vanuit “Apps”, niet vanuit de schijfkopie, zodat links uit je browser de app kunnen openen."
+			},
+			"windows": {
+				"step1": "Voer het gedownloade installatieprogramma uit.",
+				"step2": "Toont Windows “Windows heeft uw pc beschermd”? Klik dan op “Meer informatie” en daarna op “Toch uitvoeren”. Het installatieprogramma is nog niet ondertekend.",
+				"step3": "Volg het installatieprogramma. Margaya opent als het klaar is en verschijnt in het menu Start.",
+				"note": "Updates worden vanuit de app geïnstalleerd en tonen deze waarschuwing niet opnieuw."
+			},
+			"linux": {
+				"intro": "Gebruik de AppImage op elke distributie, of installeer het pakket voor de jouwe. Voer de opdrachten uit in de map waarin je hebt gedownload.",
+				"appImage": "AppImage, elke distributie",
+				"deb": "Debian, Ubuntu, Linux Mint, Pop!_OS",
+				"rpm": "Fedora, RHEL, Rocky Linux, AlmaLinux",
+				"note": "Margaya bewaart je inloggegevens in de sleutelbos van het systeem, dus GNOME Keyring of KWallet moet actief zijn. Om een .deb of .rpm bij te werken, installeer je het pakket van de volgende versie.",
+				"opensuse": "openSUSE"
+			},
+			"guide": "Volledige installatiehandleiding",
+			"troubleshooting": "Probleemoplossing"
+		},
+		"verify": {
+			"title": "Controleer je download",
+			"description": "Voer de opdracht voor je systeem uit en vergelijk het resultaat met de SHA-256 van het bestand hierboven. Ze moeten precies overeenkomen.",
+			"macos": "Op macOS, in Terminal",
+			"windows": "Op Windows, in PowerShell",
+			"linux": "Op Linux, in een terminal"
+		},
+		"help": {
+			"title": "Volgende stappen",
+			"guide": {
+				"title": "Handleiding voor de desktop-app",
+				"body": "Servers toevoegen, inloggen, meldingen, snel toevoegen en updates.",
+				"link": "Handleiding lezen"
+			},
+			"admin": {
+				"title": "Voor beheerders",
+				"body": "Serverinstellingen, reverse proxy's en bedrijfsbrede uitrol.",
+				"link": "Beheerdershandleiding lezen"
+			},
+			"releases": {
+				"title": "GitHub-releases",
+				"body": "Elke versie met de releaseopmerkingen en alle bestanden.",
+				"link": "GitHub-releases openen"
+			}
+		},
+		"platforms": {
+			"label": "Platform kiezen",
+			"macos": "macOS",
+			"windows": "Windows",
+			"linux": "Linux",
+			"detected": "je systeem"
+		},
+		"code": {
+			"copy": "Kopiëren",
+			"copied": "Gekopieerd",
+			"copyLabel": "Opdrachten kopiëren: {{label}}"
+		},
+		"meta": {
+			"version": "Versie {{version}}",
+			"released": "Uitgebracht op {{date}}",
+			"releaseNotes": "Release-opmerkingen",
+			"allReleases": "Alle releases op GitHub"
+		}
+	},
+	"desktop": {
+		"launcher": {
+			"servers": {
+				"heading": "Servers",
+				"empty": "Voeg je Margaya-server toe om te beginnen.",
+				"open": "Openen",
+				"rename": "Naam wijzigen",
+				"remove": "Verwijderen",
+				"save": "Opslaan",
+				"cancel": "Annuleren",
+				"nameLabel": "Servernaam",
+				"removeConfirm": "{{name}} verwijderen? Je wordt op deze computer uitgelogd bij deze server.",
+				"signedIn": "Ingelogd",
+				"signedOut": "Niet ingelogd",
+				"signIn": "Inloggen via browser",
+				"signOut": "Uitloggen",
+				"unread_one": "{{count}} ongelezen",
+				"unread_other": "{{count}} ongelezen",
+				"insecure": "Niet beveiligd (http)"
+			},
+			"add": {
+				"heading": "Server toevoegen",
+				"urlLabel": "Serveradres",
+				"urlPlaceholder": "margaya.example.com",
+				"connect": "Verbinden",
+				"connecting": "Verbinden…",
+				"nameLabel": "Naam",
+				"submit": "Server toevoegen",
+				"found": "Margaya {{version}} gevonden op {{url}}",
+				"httpWarning": "Deze server gebruikt onversleuteld http://. Beveiligde cookies en sommige browserfuncties vereisen https://. Ga alleen verder op een netwerk dat je vertrouwt.",
+				"confirmHttp": "Toch toevoegen"
+			},
+			"errors": {
+				"invalidUrl": "Voer een serveradres in, zoals margaya.example.com.",
+				"unreachable": "Deze server is niet bereikbaar. Controleer het adres en je netwerkverbinding.",
+				"notMargaya": "Dit adres lijkt geen Margaya-server te zijn.",
+				"serverTooOld": "Deze Margaya-server ondersteunt de desktop-app nog niet. Vraag je beheerder om hem bij te werken.",
+				"disabled": "Inloggen via de desktop-app staat uit op deze server.",
+				"desktopTooOld": "Deze server vereist Margaya Desktop {{version}} of nieuwer. Werk de app bij om verbinding te maken.",
+				"tlsUntrusted": "Je computer vertrouwt het certificaat van deze server niet.",
+				"tlsHelp": "Zo vertrouw je een bedrijfscertificaat",
+				"duplicate": "Deze server staat al in je lijst.",
+				"notSignedIn": "Log eerst in op deze server.",
+				"signInFailed": "Het inloggen is niet afgerond. Probeer het opnieuw.",
+				"codeInvalid": "Die code werkte niet. Codes verlopen na een minuut, dus begin opnieuw.",
+				"quickAddFailed": "De taak kon niet worden aangemaakt.",
+				"generic": "Er ging iets mis: {{message}}",
+				"keychainUnavailable": "Je inloggegevens konden niet in de sleutelbos van het systeem worden opgeslagen. Controleer op Linux of GNOME Keyring of KWallet actief is en probeer het opnieuw."
+			},
+			"signIn": {
+				"waiting": "Rond het inloggen af in je browser…",
+				"pasteHint": "Kwam de browser niet hier terug? Toon dan een code en plak die hieronder.",
+				"showCode": "Code tonen",
+				"codeLabel": "Inlogcode",
+				"submit": "Doorgaan",
+				"cancel": "Annuleren",
+				"done": "Ingelogd op {{name}}"
+			},
+			"deepLink": {
+				"addTitle": "Deze server toevoegen?",
+				"addBody": "Een link wilde {{url}} openen, maar die staat niet in je serverlijst. Voeg alleen servers toe die je vertrouwt.",
+				"check": "Server controleren",
+				"ignore": "Negeren"
+			},
+			"settings": {
+				"heading": "Instellingen",
+				"openAtLogin": "Openen bij inloggen",
+				"copyDiagnostics": "Diagnosegegevens kopiëren",
+				"copied": "Diagnosegegevens naar het klembord gekopieerd.",
+				"version": "Versie {{version}}",
+				"checkUpdates": "Zoeken naar updates",
+				"checking": "Zoeken…",
+				"upToDate": "Je hebt de nieuwste versie.",
+				"updateAvailable": "Versie {{version}} is beschikbaar.",
+				"updateInstall": "Opnieuw starten om bij te werken",
+				"updating": "Bijwerken…",
+				"updatePackage": "Versie {{version}} is beschikbaar. Download het nieuwe pakket om bij te werken.",
+				"updateDownload": "Downloaden"
+			},
+			"quickAdd": {
+				"title": "Snel toevoegen",
+				"server": "Server",
+				"project": "Project",
+				"taskTitle": "Taaknaam",
+				"placeholder": "Wat moet er gebeuren?",
+				"create": "Taak aanmaken",
+				"creating": "Aanmaken…",
+				"created": "Taak aangemaakt.",
+				"open": "Taak openen",
+				"noServers": "Log in op een server om taken toe te voegen.",
+				"noProjects": "Er zijn geen projecten waaraan je taken kunt toevoegen.",
+				"loading": "Laden…"
+			},
+			"downloads": {
+				"finished": "{{file}} gedownload",
+				"failed": "Kan {{file}} niet downloaden"
+			},
+			"menu": {
+				"about": "Over Margaya",
+				"checkUpdates": "Zoek naar updates…",
+				"hide": "Verberg Margaya",
+				"hideOthers": "Verberg andere",
+				"showAll": "Toon alles",
+				"quit": "Stop Margaya",
+				"edit": "Wijzig",
+				"undo": "Herstel",
+				"redo": "Opnieuw",
+				"cut": "Knip",
+				"copy": "Kopieer",
+				"paste": "Plak",
+				"selectAll": "Selecteer alles",
+				"view": "Weergave",
+				"reload": "Laad opnieuw",
+				"servers": "Serverlijst",
+				"quickAdd": "Snel toevoegen…",
+				"window": "Venster",
+				"minimize": "Minimaliseer",
+				"closeWindow": "Sluit venster",
+				"help": "Help",
+				"copyDiagnostics": "Kopieer diagnosegegevens",
+				"openLogs": "Open logboekmap"
+			},
+			"tray": {
+				"open": "Margaya openen",
+				"openServer": "{{name}} openen",
+				"quickAdd": "Snel toevoegen…",
+				"updateReady": "Start opnieuw om bij te werken naar {{version}}",
+				"quit": "Stop",
+				"servers": "Server wisselen…",
+				"updateDownload": "Versie {{version}} downloaden…"
+			},
+			"offline": {
+				"title": "{{name}} is niet bereikbaar",
+				"body": "Margaya blijft het op de achtergrond proberen. Controleer je netwerkverbinding of schakel over naar een andere server.",
+				"lastError": "Laatste fout: {{error}}",
+				"retry": "Opnieuw proberen",
+				"retrying": "Opnieuw proberen…",
+				"retryIn_one": "Opnieuw proberen over {{count}} seconde",
+				"retryIn_other": "Opnieuw proberen over {{count}} seconden",
+				"switchServer": "Server wisselen"
+			}
 		}
 	}
 }

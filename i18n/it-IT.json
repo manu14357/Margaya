@@ -159,6 +159,15 @@
 			"restored": "Progetto ripristinato",
 			"viewInArchives": "Vedi negli archivi"
 		},
+		"linkDialog": {
+			"addTitle": "Aggiungi link",
+			"editTitle": "Modifica link",
+			"description": "Collega il testo selezionato a un indirizzo web o a un indirizzo email.",
+			"urlLabel": "Indirizzo del link",
+			"invalid": "Inserisci un indirizzo web, come example.com, o un link mailto:.",
+			"apply": "Applica",
+			"remove": "Rimuovi link"
+		},
 		"states": {
 			"crash": {
 				"description": "Di solito basta ricaricare. Il lavoro salvato è al sicuro.",
@@ -243,7 +252,9 @@
 			"samlNoConnection": "L'accesso aziendale non è configurato per questo dominio email.",
 			"samlError": "Impossibile avviare l'accesso aziendale. Riprova.",
 			"emailCodesOff": "I link e i codici di accesso via email sono disattivati su questo server. Se hai sempre usato solo quelli, non hai ancora una password: seleziona «Password dimenticata?» per impostarne una.",
-			"emailCodesOffNoEmail": "I link e i codici di accesso via email sono disattivati su questo server. Se hai sempre usato solo quelli, non hai ancora una password: chiedi a un amministratore dell'istanza di impostarne una per te."
+			"emailCodesOffNoEmail": "I link e i codici di accesso via email sono disattivati su questo server. Se hai sempre usato solo quelli, non hai ancora una password: chiedi a un amministratore dell'istanza di impostarne una per te.",
+			"desktopBrowserHint": "Queste opzioni proseguono nel browser e poi ti riportano all'app.",
+			"desktopBrowserStarted": "Prosegui nel browser per completare l'accesso."
 		},
 		"providers": {
 			"google": "Google",
@@ -534,6 +545,31 @@
 			"failedTitle": "Impossibile completare l'accesso",
 			"failed": "Non è stato possibile completare questo accesso. Il suo link funziona una sola volta, per un minuto, e solo nel browser con cui hai effettuato l'accesso. Accedi di nuovo.",
 			"backToSignIn": "Torna all'accesso"
+		},
+		"desktop": {
+			"pageTitle": "Accesso all'app desktop",
+			"title": "Accedi all'app desktop",
+			"confirm": "Accedere all'app desktop di Margaya come {{account}} su {{server}}?",
+			"warning": "Continua solo se hai avviato tu questa operazione dall'app desktop di Margaya su questo computer. Se qualcuno ti ha inviato questo link, annulla.",
+			"allow": "Consenti",
+			"cancel": "Annulla",
+			"tryAgain": "Riprova",
+			"doneTitle": "Puoi tornare all'app desktop",
+			"doneHint": "Se l'app non si è aperta, riaprila da qui.",
+			"openAgain": "Apri l'app desktop",
+			"codeTitle": "Il tuo codice di accesso",
+			"codeHint": "Incolla questo codice nell'app desktop. Funziona una sola volta e scade dopo un minuto.",
+			"copy": "Copia codice",
+			"copied": "Codice copiato",
+			"copyFailed": "Impossibile copiare il codice. Selezionalo e copialo manualmente.",
+			"cancelledTitle": "Accesso annullato",
+			"cancelledHint": "L'app desktop non ha effettuato l'accesso. Puoi chiudere questa scheda.",
+			"invalidTitle": "Questo link di accesso non è valido",
+			"invalidHint": "Ricomincia l'accesso dall'app desktop.",
+			"expired": "Questa richiesta di accesso è scaduta o non è valida. Ricomincia dall'app desktop.",
+			"disabled": "L'accesso dall'app desktop è disattivato su questo server. Chiedi a un amministratore dell'istanza.",
+			"rateLimited": "Troppi tentativi. Attendi un minuto, poi riprova.",
+			"failed": "Impossibile accedere all'app desktop. Riprova."
 		}
 	},
 	"settings": {
@@ -720,7 +756,9 @@
 				"quietTo": "Alle",
 				"deviceMute": "Disattiva i suoni su questo dispositivo",
 				"deviceMuteDescription": "Silenzia solo questo browser; gli altri tuoi dispositivi continuano a riprodurre i suoni.",
-				"previewFailed": "Il browser non ha riprodotto il suono. Controlla che questa scheda o il sito non siano silenziati."
+				"previewFailed": "Il browser non ha riprodotto il suono. Controlla che questa scheda o il sito non siano silenziati.",
+				"desktopDescription": "Nell'app desktop, una notifica riproduce il suono di Margaya che hai scelto qui, al tuo volume, quando queste impostazioni lo prevedono. «Non disturbare» lo silenzia.",
+				"deviceMuteDescriptionDesktop": "Silenzia solo questa app desktop; gli altri tuoi dispositivi continuano a riprodurre i suoni."
 			},
 			"pushTitle": "Notifiche push",
 			"pushDescription": "Avvisi sul telefono o sul computer, anche quando Margaya è chiuso. «Notificami su» decide cosa viene inviato e una regola del workspace qui sotto può limitarlo.",
@@ -744,7 +782,8 @@
 			"workspaceCardLabelPush": "Notifiche push",
 			"pushChannelHintEnabled": "Invia le notifiche del workspace corrispondenti ai tuoi dispositivi.",
 			"pushChannelHintDisabled": "Attiva prima le notifiche push su un dispositivo.",
-			"pushLoadFailed": "Impossibile caricare le impostazioni delle notifiche push. Ricarica questa pagina per riprovare."
+			"pushLoadFailed": "Impossibile caricare le impostazioni delle notifiche push. Ricarica questa pagina per riprovare.",
+			"pushDesktopApp": "L'app desktop mostra le notifiche su questo dispositivo, quindi qui le notifiche push del browser non servono."
 		},
 		"preferencesPage": {
 			"title": "Preferenze",
@@ -3326,6 +3365,11 @@
 			},
 			"summary_many": "Quando {{trigger}} · {{count}} azioni",
 			"lastRun_many": "{{count}} esecuzioni, l'ultima {{time}}"
+		},
+		"continueInBrowser": {
+			"title": "Continua nel browser",
+			"billing": "Completa l'operazione nella finestra del browser appena aperta, poi torna su Margaya. Il tuo piano si aggiorna al tuo ritorno.",
+			"githubApp": "Completa l'operazione su GitHub nel browser, poi torna su Margaya e verifica di nuovo l'installazione."
 		}
 	},
 	"navigation": {
@@ -3444,7 +3488,9 @@
 			"settings": "Impostazioni",
 			"signingOut": "Disconnessione in corso...",
 			"logOut": "Esci",
-			"instanceSettings": "Impostazioni istanza"
+			"instanceSettings": "Impostazioni istanza",
+			"getDesktopApp": "Scarica l'app desktop",
+			"switchServer": "Cambia server"
 		},
 		"workspaceSwitcher": {
 			"workspaces": "Workspace",
@@ -3588,6 +3634,12 @@
 			"whatsNew": "Novità",
 			"sourceCode": "Codice sorgente",
 			"workspaceAnalytics": "Workspace"
+		},
+		"desktopWindow": {
+			"minimize": "Riduci a icona",
+			"maximize": "Ingrandisci",
+			"restore": "Ripristina",
+			"close": "Chiudi"
 		}
 	},
 	"notifications": {
@@ -3912,7 +3964,6 @@
 				"imageUploaded": "Immagine caricata",
 				"fileAttached": "File allegato",
 				"failedToUploadFile": "Caricamento file fallito",
-				"enterUrl": "Inserisci URL",
 				"plaintext": "Testo semplice",
 				"autoDetect": "Rilevamento automatico",
 				"slashGroupText": "Testo",
@@ -4325,7 +4376,6 @@
 				"ariaLabel": "Editor descrizione attività",
 				"placeholder": "Scrivi una descrizione...",
 				"previewImage": "Anteprima immagine",
-				"enterUrl": "Inserisci URL",
 				"autoDetect": "Rilevamento automatico",
 				"copyCode": "Copia codice",
 				"copy": "Copia",
@@ -4577,7 +4627,6 @@
 		"backlog": {
 			"pageTitle": "Backlog di {{name}}",
 			"noTasksToMove": "Nessuna attività pianificata da spostare",
-			"moveAllConfirm": "Spostare tutte le {{count}} attività pianificate in {{column}}?",
 			"moveAllSuccess": "{{count}} attività spostate in {{column}}",
 			"plan": "Pianifica",
 			"moveAllTooltip": "Sposta tutte le attività pianificate in {{column}}",
@@ -4587,7 +4636,14 @@
 				"planned": "Pianificate",
 				"archived": "Archiviate"
 			},
-			"noTasksInSection": "Nessuna attività {{section}}"
+			"noTasksInSection": "Nessuna attività {{section}}",
+			"moveAllConfirmTitle_one": "Spostare {{count}} attività pianificata in {{column}}?",
+			"moveAllConfirmTitle_many": "Spostare tutti i {{count}} di attività pianificate in {{column}}?",
+			"moveAllConfirmTitle_other": "Spostare tutte le {{count}} attività pianificate in {{column}}?",
+			"moveAllConfirmDescription_one": "Esce dal backlog e compare sulla board.",
+			"moveAllConfirmDescription_many": "Escono dal backlog e compaiono sulla board.",
+			"moveAllConfirmDescription_other": "Escono dal backlog e compaiono sulla board.",
+			"moveAllConfirmAction": "Sposta attività"
 		},
 		"sort": {
 			"label": "Ordina",
@@ -4944,8 +5000,6 @@
 			"moveToBoardSuccess": "{{count}} attività spostate nella board",
 			"moveToBoardError": "Spostamento attività nella board fallito",
 			"delete": "Elimina attività",
-			"deleteConfirm": "Spostare {{count}} attività nel cestino? Puoi ripristinarle da Eliminati di recente nelle impostazioni del progetto.",
-			"deleteSuccess": "{{count}} attività eliminate",
 			"deleteError": "Eliminazione attività fallita",
 			"archive": "Archivia attività",
 			"archiveSuccess": "{{count}} attività archiviate",
@@ -5001,7 +5055,17 @@
 			"moveToProjectSuccess_many": "{{count}} di attività spostate in {{name}}",
 			"moveToProjectSuccess_other": "{{count}} attività spostate in {{name}}",
 			"moveToProjectNone": "Queste attività sono già in {{name}}",
-			"moveToProjectError": "Impossibile spostare le attività"
+			"moveToProjectError": "Impossibile spostare le attività",
+			"deleteConfirmTitle_one": "Spostare {{count}} attività nel cestino?",
+			"deleteConfirmTitle_many": "Spostare {{count}} di attività nel cestino?",
+			"deleteConfirmTitle_other": "Spostare {{count}} attività nel cestino?",
+			"deleteConfirmDescription_one": "Puoi ripristinarla da Eliminati di recente nelle impostazioni del progetto.",
+			"deleteConfirmDescription_many": "Puoi ripristinarle da Eliminati di recente nelle impostazioni del progetto.",
+			"deleteConfirmDescription_other": "Puoi ripristinarle da Eliminati di recente nelle impostazioni del progetto.",
+			"deleteConfirmAction": "Sposta nel cestino",
+			"deleteSuccess_one": "{{count}} attività spostata nel cestino",
+			"deleteSuccess_many": "{{count}} di attività spostate nel cestino",
+			"deleteSuccess_other": "{{count}} attività spostate nel cestino"
 		},
 		"editor": {
 			"table": {
@@ -7089,7 +7153,8 @@
 				"signIn": "Accedi",
 				"explore": "Esplora",
 				"featuresIntro": "Sei brevi tour di Margaya. Ognuno ha una demo dal vivo che puoi usare in prima persona.",
-				"newTab": "(si apre in una nuova scheda)"
+				"newTab": "(si apre in una nuova scheda)",
+				"download": "Scarica"
 			},
 			"ownIt": {
 				"cta": "Leggi la guida all'installazione",
@@ -7207,6 +7272,7 @@
 				"product": {
 					"changelog": "Registro delle modifiche",
 					"roadmap": "Roadmap",
+					"download": "App desktop",
 					"title": "Prodotto"
 				},
 				"resources": {
@@ -12130,6 +12196,309 @@
 		"notificationText": {
 			"commentWithoutPreview": "Nuovo commento su {{taskTitle}}",
 			"pushFixedLine": "Apri Margaya per vedere i dettagli."
+		}
+	},
+	"download": {
+		"title": "Scarica l'app desktop",
+		"description": "Margaya per macOS, Windows e Linux: il tuo server Margaya in una finestra dedicata, con notifiche native, un badge dei non letti e l'aggiunta rapida da qualsiasi punto.",
+		"eyebrow": "App desktop",
+		"headline": "Margaya sul tuo computer",
+		"intro": "Il tuo server Margaya in una finestra dedicata, con notifiche native, un badge dei non letti e l'aggiunta rapida da qualsiasi punto. Per macOS, Windows e Linux.",
+		"onThisPage": "In questa pagina",
+		"picker": {
+			"mac": "Scarica per Mac",
+			"windows": "Scarica per Windows",
+			"appleSilicon": "Apple Silicon",
+			"intel": "Intel",
+			"windowsDetail": "Programma di installazione a 64 bit",
+			"otherMacArm": "Mac con Apple Silicon? Scarica quella versione",
+			"otherMacIntel": "Mac con processore Intel? Scarica quella versione",
+			"unsupported": "L'app desktop funziona su macOS, Windows e Linux. Su questo dispositivo, apri invece il tuo server Margaya nel browser.",
+			"linux": "Scarica per Linux",
+			"linuxDetail": "AppImage, x86_64",
+			"linuxArmDetail": "AppImage, ARM64",
+			"otherPlatforms": "Altre piattaforme e formati"
+		},
+		"comingSoon": {
+			"title": "Presto disponibile",
+			"body": "La prima versione desktop è in arrivo. I programmi di installazione compariranno qui e nella pagina delle release di GitHub non appena sarà pubblicata.",
+			"action": "Apri le release su GitHub"
+		},
+		"files": {
+			"title": "Tutti i download",
+			"description": "Scegli piattaforma e formato. Ogni file è allegato anche alla release su GitHub.",
+			"macArm": {
+				"name": "Apple Silicon",
+				"detail": "Mac con chip della serie M."
+			},
+			"macIntel": {
+				"name": "Intel",
+				"detail": "Mac con processore Intel."
+			},
+			"windowsExe": {
+				"name": "Programma di installazione",
+				"detail": "Si installa per il tuo account, senza diritti di amministratore."
+			},
+			"windowsMsi": {
+				"name": "Pacchetto MSI",
+				"detail": "Per i team IT che distribuiscono con Intune, Criteri di gruppo o strumenti simili."
+			},
+			"checksum": "SHA-256",
+			"noChecksum": "Nessun checksum pubblicato per questo file.",
+			"copied": "Copiato",
+			"download": "Scarica",
+			"missing": "Non disponibile in questa versione.",
+			"linuxAppImage": {
+				"name": "AppImage",
+				"detail": "Funziona sulla maggior parte delle distribuzioni senza installazione e si aggiorna da sola."
+			},
+			"linuxDeb": {
+				"name": "Pacchetto Debian",
+				"detail": "Debian, Ubuntu, Linux Mint e Pop!_OS."
+			},
+			"linuxRpm": {
+				"name": "Pacchetto RPM",
+				"detail": "Fedora, RHEL, Rocky Linux, AlmaLinux e openSUSE."
+			},
+			"architecture": "Architettura",
+			"x64": "x86_64 (Intel, AMD)",
+			"arm": "ARM64",
+			"recommended": "Consigliato",
+			"copyChecksumFor": "Copia il checksum SHA-256 di {{name}}",
+			"downloadFile": "Scarica {{name}}"
+		},
+		"requirements": {
+			"title": "Requisiti di sistema",
+			"macos": {
+				"name": "macOS",
+				"value": "macOS 14 Sonoma o versioni successive, su Apple Silicon o Intel."
+			},
+			"windows": {
+				"name": "Windows",
+				"value": "Windows 10 o 11, a 64 bit."
+			},
+			"server": {
+				"name": "Server",
+				"value": "Ogni app si collega a un server Margaya raggiungibile e corrisponde sempre alla sua versione."
+			},
+			"linux": {
+				"name": "Linux",
+				"value": "x86_64 o ARM64 con WebKitGTK 4.1 (Ubuntu 22.04, Debian 12, Fedora 38 o versioni successive) e un portachiavi."
+			}
+		},
+		"firstLaunch": {
+			"title": "Installazione e primo avvio",
+			"description": "Il sistema chiede conferma una sola volta prima di aprire un'app scaricata da internet. Poi Margaya si avvia come qualsiasi altra app.",
+			"macos": {
+				"step1": "Apri il .dmg scaricato e trascina Margaya in «Applicazioni».",
+				"step2": "Apri Margaya da «Applicazioni». Quando macOS chiede conferma per un'app scaricata da internet, fai clic su «Apri».",
+				"step3": "Se macOS dice che non può verificare l'app, apri Impostazioni di Sistema › Privacy e sicurezza e fai clic su «Apri comunque».",
+				"note": "Avvia Margaya da «Applicazioni», non dall'immagine disco, così i link dal browser possono aprirla."
+			},
+			"windows": {
+				"step1": "Esegui il programma di installazione scaricato.",
+				"step2": "Se Windows mostra «PC protetto da Windows», fai clic su «Ulteriori informazioni», poi su «Esegui comunque». Il programma di installazione non ha ancora una firma digitale.",
+				"step3": "Segui il programma di installazione. Al termine Margaya si apre e compare nel menu Start.",
+				"note": "Gli aggiornamenti si installano dall'app e non mostrano più questo avviso."
+			},
+			"linux": {
+				"intro": "Usa l'AppImage su qualsiasi distribuzione o installa il pacchetto per la tua. Esegui i comandi nella cartella in cui hai scaricato il file.",
+				"appImage": "AppImage, qualsiasi distribuzione",
+				"deb": "Debian, Ubuntu, Linux Mint, Pop!_OS",
+				"rpm": "Fedora, RHEL, Rocky Linux, AlmaLinux",
+				"note": "Margaya conserva l'accesso nel portachiavi di sistema, quindi GNOME Keyring o KWallet deve essere in esecuzione. Per aggiornare un .deb o un .rpm, installa il pacchetto della versione successiva.",
+				"opensuse": "openSUSE"
+			},
+			"guide": "Guida completa all'installazione",
+			"troubleshooting": "Risoluzione dei problemi"
+		},
+		"verify": {
+			"title": "Verifica il download",
+			"description": "Esegui il comando per il tuo sistema e confronta il risultato con lo SHA-256 del file indicato sopra. Devono corrispondere esattamente.",
+			"macos": "Su macOS, nel Terminale",
+			"windows": "Su Windows, in PowerShell",
+			"linux": "Su Linux, in un terminale"
+		},
+		"help": {
+			"title": "Passaggi successivi",
+			"guide": {
+				"title": "Guida all'app desktop",
+				"body": "Aggiunta dei server, accesso, notifiche, aggiunta rapida e aggiornamenti.",
+				"link": "Leggi la guida"
+			},
+			"admin": {
+				"title": "Per gli amministratori",
+				"body": "Impostazioni del server, reverse proxy e distribuzione in tutta l'azienda.",
+				"link": "Leggi la guida per amministratori"
+			},
+			"releases": {
+				"title": "Release su GitHub",
+				"body": "Ogni versione con le note di rilascio e tutti i file.",
+				"link": "Apri le release su GitHub"
+			}
+		},
+		"platforms": {
+			"label": "Piattaforma",
+			"macos": "macOS",
+			"windows": "Windows",
+			"linux": "Linux",
+			"detected": "il tuo sistema"
+		},
+		"code": {
+			"copy": "Copia",
+			"copied": "Copiato",
+			"copyLabel": "Copia i comandi: {{label}}"
+		},
+		"meta": {
+			"version": "Versione {{version}}",
+			"released": "Pubblicata il {{date}}",
+			"releaseNotes": "Note di rilascio",
+			"allReleases": "Tutte le versioni su GitHub"
+		}
+	},
+	"desktop": {
+		"launcher": {
+			"servers": {
+				"heading": "Server",
+				"empty": "Aggiungi il tuo server Margaya per iniziare.",
+				"open": "Apri",
+				"rename": "Rinomina",
+				"remove": "Rimuovi",
+				"save": "Salva",
+				"cancel": "Annulla",
+				"nameLabel": "Nome del server",
+				"removeConfirm": "Rimuovere {{name}}? Verrai disconnesso da questo server su questo computer.",
+				"signedIn": "Accesso effettuato",
+				"signedOut": "Accesso non effettuato",
+				"signIn": "Accedi con il browser",
+				"signOut": "Esci",
+				"unread_one": "{{count}} non letto",
+				"unread_many": "{{count}} non letti",
+				"unread_other": "{{count}} non letti",
+				"insecure": "Non sicuro (http)"
+			},
+			"add": {
+				"heading": "Aggiungi un server",
+				"urlLabel": "Indirizzo del server",
+				"urlPlaceholder": "margaya.example.com",
+				"connect": "Connetti",
+				"connecting": "Connessione…",
+				"nameLabel": "Nome",
+				"submit": "Aggiungi server",
+				"found": "Trovato Margaya {{version}} su {{url}}",
+				"httpWarning": "Questo server usa http:// non cifrato. I cookie sicuri e alcune funzioni del browser richiedono https://. Continua solo su una rete di cui ti fidi.",
+				"confirmHttp": "Aggiungi comunque"
+			},
+			"errors": {
+				"invalidUrl": "Inserisci l'indirizzo di un server, ad esempio margaya.example.com.",
+				"unreachable": "Impossibile raggiungere questo server. Controlla l'indirizzo e la connessione di rete.",
+				"notMargaya": "Questo indirizzo non sembra un server Margaya.",
+				"serverTooOld": "Questo server Margaya non supporta ancora l'app desktop. Chiedi al tuo amministratore di aggiornarlo.",
+				"disabled": "L'accesso dall'app desktop è disattivato su questo server.",
+				"desktopTooOld": "Questo server richiede Margaya Desktop {{version}} o successivo. Aggiorna l'app per connetterti.",
+				"tlsUntrusted": "Il tuo computer non considera attendibile il certificato di questo server.",
+				"tlsHelp": "Come rendere attendibile un certificato aziendale",
+				"duplicate": "Questo server è già nel tuo elenco.",
+				"notSignedIn": "Prima accedi a questo server.",
+				"signInFailed": "L'accesso non è stato completato. Riprova.",
+				"codeInvalid": "Quel codice non ha funzionato. I codici scadono dopo un minuto, quindi ricomincia.",
+				"quickAddFailed": "Impossibile creare l'attività.",
+				"generic": "Si è verificato un problema: {{message}}",
+				"keychainUnavailable": "Impossibile salvare l'accesso nel portachiavi di sistema. Su Linux, assicurati che GNOME Keyring o KWallet sia in esecuzione, poi riprova."
+			},
+			"signIn": {
+				"waiting": "Completa l'accesso nel browser…",
+				"pasteHint": "Il browser non ti ha riportato qui? Mostra invece un codice e incollalo qui sotto.",
+				"showCode": "Mostra un codice",
+				"codeLabel": "Codice di accesso",
+				"submit": "Continua",
+				"cancel": "Annulla",
+				"done": "Accesso effettuato su {{name}}"
+			},
+			"deepLink": {
+				"addTitle": "Aggiungere questo server?",
+				"addBody": "Un link ha chiesto di aprire {{url}}, che non è nel tuo elenco di server. Aggiungi solo server di cui ti fidi.",
+				"check": "Verifica server",
+				"ignore": "Ignora"
+			},
+			"settings": {
+				"heading": "Impostazioni",
+				"openAtLogin": "Apri al login",
+				"copyDiagnostics": "Copia diagnostica",
+				"copied": "Diagnostica copiata negli appunti.",
+				"version": "Versione {{version}}",
+				"checkUpdates": "Controlla aggiornamenti",
+				"checking": "Controllo in corso…",
+				"upToDate": "Hai la versione più recente.",
+				"updateAvailable": "È disponibile la versione {{version}}.",
+				"updateInstall": "Riavvia per aggiornare",
+				"updating": "Aggiornamento in corso…",
+				"updatePackage": "È disponibile la versione {{version}}. Scarica il nuovo pacchetto per aggiornare.",
+				"updateDownload": "Scarica"
+			},
+			"quickAdd": {
+				"title": "Aggiunta rapida",
+				"server": "Server",
+				"project": "Progetto",
+				"taskTitle": "Titolo attività",
+				"placeholder": "Cosa c'è da fare?",
+				"create": "Crea attività",
+				"creating": "Creazione…",
+				"created": "Attività creata.",
+				"open": "Apri attività",
+				"noServers": "Accedi a un server per aggiungere attività.",
+				"noProjects": "Non ci sono progetti a cui puoi aggiungere attività.",
+				"loading": "Caricamento…"
+			},
+			"downloads": {
+				"finished": "{{file}} scaricato",
+				"failed": "Impossibile scaricare {{file}}"
+			},
+			"menu": {
+				"about": "Informazioni su Margaya",
+				"checkUpdates": "Controlla aggiornamenti…",
+				"hide": "Nascondi Margaya",
+				"hideOthers": "Nascondi altre",
+				"showAll": "Mostra tutte",
+				"quit": "Esci da Margaya",
+				"edit": "Modifica",
+				"undo": "Annulla",
+				"redo": "Ripeti",
+				"cut": "Taglia",
+				"copy": "Copia",
+				"paste": "Incolla",
+				"selectAll": "Seleziona tutto",
+				"view": "Vista",
+				"reload": "Ricarica",
+				"servers": "Elenco server",
+				"quickAdd": "Aggiunta rapida…",
+				"window": "Finestra",
+				"minimize": "Riduci a icona",
+				"closeWindow": "Chiudi finestra",
+				"help": "Aiuto",
+				"copyDiagnostics": "Copia diagnostica",
+				"openLogs": "Apri cartella dei log"
+			},
+			"tray": {
+				"open": "Apri Margaya",
+				"openServer": "Apri {{name}}",
+				"quickAdd": "Aggiunta rapida…",
+				"updateReady": "Riavvia per aggiornare alla versione {{version}}",
+				"quit": "Esci",
+				"servers": "Cambia server…",
+				"updateDownload": "Scarica la versione {{version}}…"
+			},
+			"offline": {
+				"title": "Impossibile raggiungere {{name}}",
+				"body": "Margaya continua a riprovare in background. Controlla la connessione di rete o passa a un altro server.",
+				"lastError": "Ultimo errore: {{error}}",
+				"retry": "Riprova",
+				"retrying": "Nuovo tentativo…",
+				"retryIn_one": "Nuovo tentativo tra {{count}} secondo",
+				"retryIn_many": "Nuovo tentativo tra {{count}} di secondi",
+				"retryIn_other": "Nuovo tentativo tra {{count}} secondi",
+				"switchServer": "Cambia server"
+			}
 		}
 	}
 }
