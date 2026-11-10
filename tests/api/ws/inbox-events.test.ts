@@ -54,7 +54,7 @@ describe("inbox, subscription and reaction events", () => {
     removeUserConnection("user-n", conn);
   });
 
-  it("maps notification.created to NOTIFICATION_CREATED with its type and flags only", async () => {
+  it("maps notification.created to NOTIFICATION_CREATED with its id, type and flags only", async () => {
     const ws = makeFakeWs();
     const conn = addUserConnection("user-c", ws);
     await publishEvent("notification.created", {
@@ -69,6 +69,7 @@ describe("inbox, subscription and reaction events", () => {
     });
     expect(lastMessage(ws)).toEqual({
       type: "NOTIFICATION_CREATED",
+      notificationId: "n-1",
       notificationType: "ai_agent_reply",
       reply: false,
       needsInput: true,

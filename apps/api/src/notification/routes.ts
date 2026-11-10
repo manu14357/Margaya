@@ -2,6 +2,7 @@ import { createRoute, errorResponse, jsonResponse } from "../openapi";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import {
   bulkResultSchema,
+  desktopNotificationSchema,
   inboxCountsSchema,
   inboxPageSchema,
   notificationListSchema,
@@ -10,6 +11,7 @@ import {
 import {
   clearAllQuery,
   createNotificationBody,
+  desktopNotificationQuery,
   inboxCountsQuery,
   inboxQuery,
   markAllReadQuery,
@@ -203,5 +205,22 @@ export const snoozeRoute = createRoute({
       "Invalid date-time, less than a minute ahead, or more than a year ahead",
     ),
     404: errorResponse("Notification not found"),
+  },
+});
+
+export const desktopNotificationRoute = createRoute({
+  method: "get",
+  operationId: "getDesktopNotification",
+  path: "/{id}/desktop",
+  tags: ["Notifications"],
+  summary: "Get desktop alert",
+  description:
+    "The text Margaya Desktop shows for one of the current user's notifications, after the user socket's NOTIFICATION_CREATED hint names it. The same title and line as Web Push, in the user's language, with an absolute link into the web app. Works with the session cookie or a bearer session token.",
+  request: { params: notificationParam, query: desktopNotificationQuery },
+  responses: {
+    200: jsonResponse("The alert", desktopNotificationSchema),
+    404: errorResponse(
+      "No such notification, it belongs to someone else, or its task or page is no longer visible to the user",
+    ),
   },
 });

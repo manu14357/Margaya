@@ -1,4 +1,5 @@
 import { nullableResponseTimestamp, responseTimestamp, z } from "../openapi";
+import { NOTIFICATION_SOUNDS } from "../user/schema";
 
 export const notificationSchema = z
   .object({
@@ -110,3 +111,41 @@ export const inboxCountsSchema = z
     }),
   })
   .openapi("InboxCounts");
+
+export const desktopNotificationSchema = z
+  .object({
+    id: z.string(),
+    title: z.string().openapi({
+      description: "The Web Push title, in the user's language.",
+    }),
+    body: z.string().openapi({
+      description:
+        "One fixed line for the type, naming at most the task or page. Never what someone wrote.",
+    }),
+    url: z.string().openapi({
+      description: "Where clicking it goes: an absolute URL of the web app.",
+      example:
+        "https://margaya.example.com/dashboard/workspace/ws_1/project/pr_1/task/tk_1",
+    }),
+    tag: z.string().openapi({
+      description: "Replaces an earlier alert with the same tag.",
+    }),
+    sound: z.boolean().openapi({
+      description:
+        "Whether the alert makes a sound: the user's notification sound settings (on, volume above 0, a sound chosen for this kind of notification, outside quiet hours) call for one now. True exactly when `soundName` is set; kept for desktop apps that predate `soundName`.",
+    }),
+    soundName: z
+      .enum(NOTIFICATION_SOUNDS)
+      .exclude(["none"])
+      .nullable()
+      .openapi({
+        description:
+          "The Margaya sound the user chose for this kind of notification, which the desktop app plays itself instead of the web app; null when the alert stays silent.",
+        example: "chime",
+      }),
+    volume: z.number().int().min(0).max(100).openapi({
+      description: "The user's notification sound volume, 0 to 100.",
+      example: 70,
+    }),
+  })
+  .openapi("DesktopNotification");

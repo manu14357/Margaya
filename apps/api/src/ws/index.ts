@@ -802,13 +802,16 @@ for (const [eventName, type] of [
   });
 }
 
-// The type and flags (no content) let the recipient's tabs choose a sound.
+// The type and flags (no content) let the recipient's tabs choose a sound;
+// the id lets Margaya Desktop fetch the alert's text
+// (GET /api/notification/{id}/desktop).
 subscribeToEvent<NotificationCreatedEvent>(
   "notification.created",
   async (data) => {
     if (data.userId) {
       broadcastToUser(data.userId, {
         type: "NOTIFICATION_CREATED",
+        notificationId: data.notificationId ?? null,
         notificationType: data.notificationType ?? null,
         reply: data.reply === true,
         needsInput: data.needsInput === true,

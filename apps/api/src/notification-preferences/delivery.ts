@@ -16,10 +16,13 @@ import {
   userTable,
   workspaceTable,
 } from "../database/schema";
+import { desktopSound, validTimeZone } from "../notification/desktop-sound";
 import { canReceiveResourceNotification } from "../notification/resource-access";
 import { getEmailBatchWindowSeconds } from "../notification-email/batch-window";
 import { enqueueNotificationEmail } from "../notification-email/queue";
 import { liveTaskCondition } from "../task/scope";
+import { cleanPreferences } from "../user/controllers/user-preferences";
+import { publicWebUrl } from "../utils/desktop-config";
 import {
   safeOutboundError,
   sendOutboundRequest,
@@ -490,6 +493,79 @@ function buildPushMessage(
     body: (rendered?.body ?? line).slice(0, MAX_PUSH_BODY_LENGTH),
     url: path,
     tag: notificationId,
+  };
+}
+
+/**
+ * What Margaya Desktop shows for one of the user's notifications: the Web Push
+ * text in their locale, with an absolute link to the web app. Null when the
+ * notification isn't theirs or its resource is no longer theirs to see.
+ */
+export async function buildDesktopNotification(
+  notificationId: string,
+  userId: string,
+  deviceTimeZone?: string | null,
+) {
+  const notification = await db.query.notificationTable.findFirst({
+    where: and(
+      eq(notificationTable.id, notificationId),
+      eq(notificationTable.userId, userId),
+    ),
+  });
+  if (
+    !notification ||
+    !(await canReceiveResourceNotification(
+      userId,
+      notification.resourceId,
+      notification.resourceType,
+    ))
+  ) {
+    return null;
+  }
+
+  const [context, [user]] = await Promise.all([
+    resolveNotificationContext(notification),
+    db
+      .select({
+        locale: userTable.locale,
+        timezone: userTable.timezone,
+        preferences: userTable.preferences,
+      })
+      .from(userTable)
+      .where(eq(userTable.id, userId))
+      .limit(1),
+  ]);
+  const message = buildPushMessage(
+    notification.id,
+    {
+      type: notification.type,
+      title: notification.title ?? null,
+      content: notification.content ?? null,
+      eventData:
+        notification.eventData && typeof notification.eventData === "object"
+          ? (notification.eventData as Record<string, unknown>)
+          : null,
+    },
+    user?.locale,
+    // Notifications without a resource still show in every inbox.
+    context?.path ?? "/dashboard",
+  );
+  const sound = desktopSound({
+    preference: cleanPreferences(user?.preferences).notificationSound,
+    notification,
+    now: new Date(),
+    timeZone: validTimeZone(user?.timezone) ?? validTimeZone(deviceTimeZone),
+  });
+  return {
+    id: notification.id,
+    title: message.title,
+    body: message.body,
+    url: `${publicWebUrl()}${message.url}`,
+    tag: message.tag,
+    // Kept for desktop apps that predate `soundName`.
+    sound: sound.soundName !== null,
+    soundName: sound.soundName,
+    volume: sound.volume,
   };
 }
 

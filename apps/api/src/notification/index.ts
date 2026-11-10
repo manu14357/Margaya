@@ -1,3 +1,5 @@
+import { HTTPException } from "hono/http-exception";
+import { buildDesktopNotification } from "../notification-preferences/delivery";
 import { apiRouter } from "../openapi";
 import clearNotifications from "./controllers/clear-notifications";
 import createNotification from "./controllers/create-notification";
@@ -11,6 +13,7 @@ import {
   archiveRoute,
   clearAllRoute,
   createNotificationRoute,
+  desktopNotificationRoute,
   inboxCountsRoute,
   inboxRoute,
   listNotificationsRoute,
@@ -149,6 +152,17 @@ const notification = apiRouter()
       }),
       200,
     ),
-  );
+  )
+  .openapi(desktopNotificationRoute, async (c) => {
+    const alert = await buildDesktopNotification(
+      c.req.valid("param").id,
+      c.get("userId"),
+      c.req.valid("query").timeZone,
+    );
+    if (!alert) {
+      throw new HTTPException(404, { message: "Notification not found" });
+    }
+    return c.json(alert, 200);
+  });
 
 export default notification;
