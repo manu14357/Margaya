@@ -36,6 +36,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { Highlighter } from "shiki";
 import { calloutSlashCommand } from "@/components/editor/callout-slash-command";
+import { useEditorLinkDialog } from "@/components/editor/editor-link-dialog";
 import { Callout } from "@/components/editor/extensions/callout";
 import { EditorImage } from "@/components/editor/extensions/editor-image";
 import { useImagePreview } from "@/components/editor/image-preview-dialog";
@@ -1091,20 +1092,11 @@ export default function CommentEditor({
     });
   }, [editor, value]);
 
+  const { openLinkDialog, linkDialog } = useEditorLinkDialog();
   const setLink = useCallback(() => {
     if (readOnly || disabled || !editor) return;
-    const previousUrl = editor.getAttributes("link").href as string | undefined;
-    const url = window.prompt(
-      t("activity:comment.editor.enterUrl"),
-      previousUrl || "",
-    );
-    if (url === null) return;
-    if (!url.trim()) {
-      editor.chain().focus().extendMarkRange("link").unsetLink().run();
-      return;
-    }
-    editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
-  }, [disabled, editor, readOnly, t]);
+    openLinkDialog(editor);
+  }, [disabled, editor, openLinkDialog, readOnly]);
 
   const resolveCodeBlockNodeData = useCallback(
     (pos: number) => {
@@ -1960,6 +1952,7 @@ export default function CommentEditor({
         </div>
       )}
       {imagePreview.dialog}
+      {linkDialog}
     </section>
   );
 }

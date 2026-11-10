@@ -302,7 +302,7 @@ export default function PageFormatToolbar({
       disabled: inCode,
       shortcut: [MOD, "K"],
       run: () => {
-        if (editor) promptForLink(editor, t);
+        if (editor) promptForLink(editor);
       },
     },
     {

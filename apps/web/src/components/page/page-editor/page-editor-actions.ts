@@ -1,5 +1,4 @@
 import type { Editor } from "@tiptap/core";
-import type { TFunction } from "i18next";
 
 // Actions that live inside a mounted page editor (its hidden file input) but
 // are started from outside it, by the formatting toolbar above the canvas.
@@ -21,16 +20,24 @@ export function openFilePicker(editor: Editor): boolean {
   return true;
 }
 
+const linkDialogs = new WeakMap<Editor, () => void>();
+
+/** The page editor registers its link dialog for the toolbar to open. */
+export function registerLinkDialog(editor: Editor, open: () => void) {
+  linkDialogs.set(editor, open);
+  return () => {
+    if (linkDialogs.get(editor) === open) linkDialogs.delete(editor);
+  };
+}
+
 /**
- * Asks for a link address and applies it to the selection (an empty
- * answer removes the link), as the bubble menu does.
+ * Opens the page editor's link dialog for the selection, as the bubble menu
+ * does; false when the editor is read-only or has no dialog.
  */
-export function promptForLink(editor: Editor, t: TFunction) {
-  if (!editor.isEditable) return;
-  const previous = editor.getAttributes("link").href as string | undefined;
-  const url = window.prompt(t("tasks:detail.editor.enterUrl"), previous || "");
-  if (url === null) return;
-  const chain = editor.chain().focus().extendMarkRange("link");
-  if (url.trim() === "") chain.unsetLink().run();
-  else chain.setLink({ href: url }).run();
+export function promptForLink(editor: Editor): boolean {
+  if (!editor.isEditable) return false;
+  const open = linkDialogs.get(editor);
+  if (!open) return false;
+  open();
+  return true;
 }

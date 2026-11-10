@@ -16,6 +16,7 @@ import { useEditorAi } from "@/components/editor/ai/use-editor-ai";
 import BlockHandle from "@/components/editor/block-handle";
 import { useCodeBlockToolbar } from "@/components/editor/code-block-toolbar";
 import EditorBubbleMenu from "@/components/editor/editor-bubble-menu";
+import { useEditorLinkDialog } from "@/components/editor/editor-link-dialog";
 import { useEmbedComposer } from "@/components/editor/embed-composer";
 import { useImagePreview } from "@/components/editor/image-preview-dialog";
 import SlashMenu from "@/components/editor/slash-menu";
@@ -42,7 +43,11 @@ import {
 import { parsePageUrl } from "@/lib/pages/page-paths";
 import { uploadPageAsset } from "@/lib/pages/upload-page-asset";
 import type { PageSummary } from "@/types/page";
-import { promptForLink, registerFilePicker } from "./page-editor-actions";
+import {
+  promptForLink,
+  registerFilePicker,
+  registerLinkDialog,
+} from "./page-editor-actions";
 import {
   createPageEditorExtensions,
   type PageCollaborationBinding,
@@ -378,10 +383,19 @@ export default function PageEditor({
     toShikiLanguage,
   });
 
+  const { openLinkDialog, linkDialog } = useEditorLinkDialog();
   const setLink = useCallback(() => {
     if (!editableRef.current || !editor) return;
-    promptForLink(editor, t);
-  }, [editor, t]);
+    promptForLink(editor);
+  }, [editor]);
+
+  // The formatting toolbar above the canvas opens this editor's link dialog.
+  useEffect(() => {
+    if (!editor) return;
+    return registerLinkDialog(editor, () => {
+      if (editableRef.current) openLinkDialog(editor);
+    });
+  }, [editor, openLinkDialog]);
 
   // The formatting toolbar above the canvas inserts images through this
   // editor's file input.
@@ -491,6 +505,7 @@ export default function PageEditor({
         </div>
       )}
       {imagePreview.dialog}
+      {linkDialog}
     </section>
   );
 }

@@ -51,6 +51,7 @@ import { EditorAiBubbleButton } from "@/components/editor/ai/editor-ai-menu";
 import EditorAiPreview from "@/components/editor/ai/editor-ai-preview";
 import { useEditorAi } from "@/components/editor/ai/use-editor-ai";
 import { calloutSlashCommand } from "@/components/editor/callout-slash-command";
+import { useEditorLinkDialog } from "@/components/editor/editor-link-dialog";
 import { Callout } from "@/components/editor/extensions/callout";
 import { EditorImage } from "@/components/editor/extensions/editor-image";
 import { MargayaEditorTable } from "@/components/editor/extensions/table-tools";
@@ -909,29 +910,13 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
     slashMenuRef.current = slashMenu;
   }, [slashMenu]);
 
+  const { openLinkDialog, linkDialog } = useEditorLinkDialog();
   const setLink = useCallback(
     (prefilledUrl?: string) => {
       if (!canEditRef.current || !editor) return;
-      const previousUrl = editor.getAttributes("link").href as
-        | string
-        | undefined;
-      const url = window.prompt(
-        t("tasks:detail.editor.enterUrl"),
-        prefilledUrl || previousUrl || "",
-      );
-      if (url === null) return;
-      if (url.trim() === "") {
-        editor.chain().focus().extendMarkRange("link").unsetLink().run();
-        return;
-      }
-      editor
-        .chain()
-        .focus()
-        .extendMarkRange("link")
-        .setLink({ href: url })
-        .run();
+      openLinkDialog(editor, prefilledUrl);
     },
-    [editor, t],
+    [editor, openLinkDialog],
   );
 
   const filteredSlashCommands = useMemo(() => {
@@ -1990,6 +1975,7 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
         </div>
       )}
       {imagePreview.dialog}
+      {linkDialog}
     </section>
   );
 }
