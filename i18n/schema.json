@@ -731,6 +731,42 @@
 						}
 					},
 					"required": ["message", "restore", "viewInArchives", "restored"]
+				},
+				"linkDialog": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"addTitle": {
+							"type": "string"
+						},
+						"editTitle": {
+							"type": "string"
+						},
+						"description": {
+							"type": "string"
+						},
+						"urlLabel": {
+							"type": "string"
+						},
+						"invalid": {
+							"type": "string"
+						},
+						"apply": {
+							"type": "string"
+						},
+						"remove": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"addTitle",
+						"editTitle",
+						"description",
+						"urlLabel",
+						"invalid",
+						"apply",
+						"remove"
+					]
 				}
 			},
 			"required": [
@@ -748,7 +784,8 @@
 				"featureDisabled",
 				"formats",
 				"modals",
-				"projectArchived"
+				"projectArchived",
+				"linkDialog"
 			]
 		},
 		"auth": {
@@ -916,6 +953,12 @@
 						},
 						"emailCodesOffNoEmail": {
 							"type": "string"
+						},
+						"desktopBrowserHint": {
+							"type": "string"
+						},
+						"desktopBrowserStarted": {
+							"type": "string"
 						}
 					},
 					"required": [
@@ -949,7 +992,9 @@
 						"samlNoConnection",
 						"samlError",
 						"emailCodesOff",
-						"emailCodesOffNoEmail"
+						"emailCodesOffNoEmail",
+						"desktopBrowserHint",
+						"desktopBrowserStarted"
 					]
 				},
 				"providers": {
@@ -2090,6 +2135,106 @@
 						"failed",
 						"backToSignIn"
 					]
+				},
+				"desktop": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"pageTitle": {
+							"type": "string"
+						},
+						"title": {
+							"type": "string"
+						},
+						"confirm": {
+							"type": "string"
+						},
+						"warning": {
+							"type": "string"
+						},
+						"allow": {
+							"type": "string"
+						},
+						"cancel": {
+							"type": "string"
+						},
+						"tryAgain": {
+							"type": "string"
+						},
+						"doneTitle": {
+							"type": "string"
+						},
+						"doneHint": {
+							"type": "string"
+						},
+						"openAgain": {
+							"type": "string"
+						},
+						"codeTitle": {
+							"type": "string"
+						},
+						"codeHint": {
+							"type": "string"
+						},
+						"copy": {
+							"type": "string"
+						},
+						"copied": {
+							"type": "string"
+						},
+						"copyFailed": {
+							"type": "string"
+						},
+						"cancelledTitle": {
+							"type": "string"
+						},
+						"cancelledHint": {
+							"type": "string"
+						},
+						"invalidTitle": {
+							"type": "string"
+						},
+						"invalidHint": {
+							"type": "string"
+						},
+						"expired": {
+							"type": "string"
+						},
+						"disabled": {
+							"type": "string"
+						},
+						"rateLimited": {
+							"type": "string"
+						},
+						"failed": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"pageTitle",
+						"title",
+						"confirm",
+						"warning",
+						"allow",
+						"cancel",
+						"tryAgain",
+						"doneTitle",
+						"doneHint",
+						"openAgain",
+						"codeTitle",
+						"codeHint",
+						"copy",
+						"copied",
+						"copyFailed",
+						"cancelledTitle",
+						"cancelledHint",
+						"invalidTitle",
+						"invalidHint",
+						"expired",
+						"disabled",
+						"rateLimited",
+						"failed"
+					]
 				}
 			},
 			"required": [
@@ -2111,7 +2256,8 @@
 				"forgotPassword",
 				"resetPassword",
 				"emailVerification",
-				"complete"
+				"complete",
+				"desktop"
 			]
 		},
 		"settings": {
@@ -2712,6 +2858,12 @@
 								},
 								"previewFailed": {
 									"type": "string"
+								},
+								"desktopDescription": {
+									"type": "string"
+								},
+								"deviceMuteDescriptionDesktop": {
+									"type": "string"
 								}
 							},
 							"required": [
@@ -2743,7 +2895,9 @@
 								"quietTo",
 								"deviceMute",
 								"deviceMuteDescription",
-								"previewFailed"
+								"previewFailed",
+								"desktopDescription",
+								"deviceMuteDescriptionDesktop"
 							]
 						},
 						"pushTitle": {
@@ -2813,6 +2967,9 @@
 							"type": "string"
 						},
 						"pushLoadFailed": {
+							"type": "string"
+						},
+						"pushDesktopApp": {
 							"type": "string"
 						}
 					},
@@ -2946,7 +3103,8 @@
 						"workspaceCardLabelPush",
 						"pushChannelHintEnabled",
 						"pushChannelHintDisabled",
-						"pushLoadFailed"
+						"pushLoadFailed",
+						"pushDesktopApp"
 					]
 				},
 				"preferencesPage": {
@@ -13438,6 +13596,22 @@
 						"history",
 						"editor"
 					]
+				},
+				"continueInBrowser": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"billing": {
+							"type": "string"
+						},
+						"githubApp": {
+							"type": "string"
+						}
+					},
+					"required": ["title", "billing", "githubApp"]
 				}
 			},
 			"required": [
@@ -13488,7 +13662,8 @@
 				"security",
 				"securityPage",
 				"trash",
-				"automationRules"
+				"automationRules",
+				"continueInBrowser"
 			]
 		},
 		"navigation": {
@@ -14054,6 +14229,12 @@
 						},
 						"instanceSettings": {
 							"type": "string"
+						},
+						"getDesktopApp": {
+							"type": "string"
+						},
+						"switchServer": {
+							"type": "string"
 						}
 					},
 					"required": [
@@ -14063,7 +14244,9 @@
 						"settings",
 						"signingOut",
 						"logOut",
-						"instanceSettings"
+						"instanceSettings",
+						"getDesktopApp",
+						"switchServer"
 					]
 				},
 				"workspaceSwitcher": {
@@ -14531,6 +14714,25 @@
 						"workspaceAnalytics",
 						"backlog"
 					]
+				},
+				"desktopWindow": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"minimize": {
+							"type": "string"
+						},
+						"maximize": {
+							"type": "string"
+						},
+						"restore": {
+							"type": "string"
+						},
+						"close": {
+							"type": "string"
+						}
+					},
+					"required": ["minimize", "maximize", "restore", "close"]
 				}
 			},
 			"required": [
@@ -14549,7 +14751,8 @@
 				"page",
 				"projectSettings",
 				"keyboardShortcuts",
-				"shell"
+				"shell",
+				"desktopWindow"
 			]
 		},
 		"notifications": {
@@ -15784,9 +15987,6 @@
 								"failedToUploadFile": {
 									"type": "string"
 								},
-								"enterUrl": {
-									"type": "string"
-								},
 								"plaintext": {
 									"type": "string"
 								},
@@ -16047,7 +16247,6 @@
 								"imageUploaded",
 								"fileAttached",
 								"failedToUploadFile",
-								"enterUrl",
 								"plaintext",
 								"autoDetect",
 								"slashGroupText",
@@ -17498,9 +17697,6 @@
 								"previewImage": {
 									"type": "string"
 								},
-								"enterUrl": {
-									"type": "string"
-								},
 								"autoDetect": {
 									"type": "string"
 								},
@@ -17962,7 +18158,6 @@
 								"ariaLabel",
 								"placeholder",
 								"previewImage",
-								"enterUrl",
 								"autoDetect",
 								"copyCode",
 								"copy",
@@ -18493,27 +18688,6 @@
 						"noTasksToMove": {
 							"type": "string"
 						},
-						"moveAllConfirm": {
-							"type": "string"
-						},
-						"moveAllConfirm_zero": {
-							"type": "string"
-						},
-						"moveAllConfirm_one": {
-							"type": "string"
-						},
-						"moveAllConfirm_two": {
-							"type": "string"
-						},
-						"moveAllConfirm_few": {
-							"type": "string"
-						},
-						"moveAllConfirm_many": {
-							"type": "string"
-						},
-						"moveAllConfirm_other": {
-							"type": "string"
-						},
 						"moveAllSuccess": {
 							"type": "string"
 						},
@@ -18562,6 +18736,45 @@
 						},
 						"noTasksInSection": {
 							"type": "string"
+						},
+						"moveAllConfirmTitle_one": {
+							"type": "string"
+						},
+						"moveAllConfirmTitle_zero": {
+							"type": "string"
+						},
+						"moveAllConfirmTitle_two": {
+							"type": "string"
+						},
+						"moveAllConfirmTitle_few": {
+							"type": "string"
+						},
+						"moveAllConfirmTitle_many": {
+							"type": "string"
+						},
+						"moveAllConfirmTitle_other": {
+							"type": "string"
+						},
+						"moveAllConfirmDescription_one": {
+							"type": "string"
+						},
+						"moveAllConfirmDescription_zero": {
+							"type": "string"
+						},
+						"moveAllConfirmDescription_two": {
+							"type": "string"
+						},
+						"moveAllConfirmDescription_few": {
+							"type": "string"
+						},
+						"moveAllConfirmDescription_many": {
+							"type": "string"
+						},
+						"moveAllConfirmDescription_other": {
+							"type": "string"
+						},
+						"moveAllConfirmAction": {
+							"type": "string"
 						}
 					},
 					"required": [
@@ -18572,7 +18785,8 @@
 						"moveAll",
 						"addTask",
 						"sections",
-						"noTasksInSection"
+						"noTasksInSection",
+						"moveAllConfirmAction"
 					]
 				},
 				"sort": {
@@ -20139,48 +20353,6 @@
 						"delete": {
 							"type": "string"
 						},
-						"deleteConfirm": {
-							"type": "string"
-						},
-						"deleteConfirm_zero": {
-							"type": "string"
-						},
-						"deleteConfirm_one": {
-							"type": "string"
-						},
-						"deleteConfirm_two": {
-							"type": "string"
-						},
-						"deleteConfirm_few": {
-							"type": "string"
-						},
-						"deleteConfirm_many": {
-							"type": "string"
-						},
-						"deleteConfirm_other": {
-							"type": "string"
-						},
-						"deleteSuccess": {
-							"type": "string"
-						},
-						"deleteSuccess_zero": {
-							"type": "string"
-						},
-						"deleteSuccess_one": {
-							"type": "string"
-						},
-						"deleteSuccess_two": {
-							"type": "string"
-						},
-						"deleteSuccess_few": {
-							"type": "string"
-						},
-						"deleteSuccess_many": {
-							"type": "string"
-						},
-						"deleteSuccess_other": {
-							"type": "string"
-						},
 						"deleteError": {
 							"type": "string"
 						},
@@ -20483,6 +20655,63 @@
 						},
 						"moveToProjectError": {
 							"type": "string"
+						},
+						"deleteConfirmTitle_one": {
+							"type": "string"
+						},
+						"deleteConfirmTitle_zero": {
+							"type": "string"
+						},
+						"deleteConfirmTitle_two": {
+							"type": "string"
+						},
+						"deleteConfirmTitle_few": {
+							"type": "string"
+						},
+						"deleteConfirmTitle_many": {
+							"type": "string"
+						},
+						"deleteConfirmTitle_other": {
+							"type": "string"
+						},
+						"deleteConfirmDescription_one": {
+							"type": "string"
+						},
+						"deleteConfirmDescription_zero": {
+							"type": "string"
+						},
+						"deleteConfirmDescription_two": {
+							"type": "string"
+						},
+						"deleteConfirmDescription_few": {
+							"type": "string"
+						},
+						"deleteConfirmDescription_many": {
+							"type": "string"
+						},
+						"deleteConfirmDescription_other": {
+							"type": "string"
+						},
+						"deleteConfirmAction": {
+							"type": "string"
+						},
+						"deleteSuccess_one": {
+							"type": "string"
+						},
+						"deleteSuccess_zero": {
+							"type": "string"
+						},
+						"deleteSuccess_two": {
+							"type": "string"
+						},
+						"deleteSuccess_few": {
+							"type": "string"
+						},
+						"deleteSuccess_many": {
+							"type": "string"
+						},
+						"deleteSuccess_other": {
+							"type": "string"
 						}
 					},
 					"required": [
@@ -20527,7 +20756,8 @@
 						"moveToProjectRule",
 						"moveToProjectConfirm",
 						"moveToProjectNone",
-						"moveToProjectError"
+						"moveToProjectError",
+						"deleteConfirmAction"
 					]
 				},
 				"editor": {
@@ -29917,6 +30147,9 @@
 								},
 								"newTab": {
 									"type": "string"
+								},
+								"download": {
+									"type": "string"
 								}
 							},
 							"required": [
@@ -29933,7 +30166,8 @@
 								"items",
 								"explore",
 								"featuresIntro",
-								"newTab"
+								"newTab",
+								"download"
 							]
 						},
 						"footer": {
@@ -29961,9 +30195,12 @@
 										},
 										"roadmap": {
 											"type": "string"
+										},
+										"download": {
+											"type": "string"
 										}
 									},
-									"required": ["title", "changelog", "roadmap"]
+									"required": ["title", "changelog", "roadmap", "download"]
 								},
 								"resources": {
 									"type": "object",
@@ -49654,6 +49891,1168 @@
 				"testEmail",
 				"notificationText"
 			]
+		},
+		"download": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"title": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"eyebrow": {
+					"type": "string"
+				},
+				"headline": {
+					"type": "string"
+				},
+				"intro": {
+					"type": "string"
+				},
+				"onThisPage": {
+					"type": "string"
+				},
+				"picker": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"mac": {
+							"type": "string"
+						},
+						"windows": {
+							"type": "string"
+						},
+						"appleSilicon": {
+							"type": "string"
+						},
+						"intel": {
+							"type": "string"
+						},
+						"windowsDetail": {
+							"type": "string"
+						},
+						"otherMacArm": {
+							"type": "string"
+						},
+						"otherMacIntel": {
+							"type": "string"
+						},
+						"unsupported": {
+							"type": "string"
+						},
+						"linux": {
+							"type": "string"
+						},
+						"linuxDetail": {
+							"type": "string"
+						},
+						"linuxArmDetail": {
+							"type": "string"
+						},
+						"otherPlatforms": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"mac",
+						"windows",
+						"appleSilicon",
+						"intel",
+						"windowsDetail",
+						"otherMacArm",
+						"otherMacIntel",
+						"unsupported",
+						"linux",
+						"linuxDetail",
+						"linuxArmDetail",
+						"otherPlatforms"
+					]
+				},
+				"comingSoon": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"body": {
+							"type": "string"
+						},
+						"action": {
+							"type": "string"
+						}
+					},
+					"required": ["title", "body", "action"]
+				},
+				"files": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"description": {
+							"type": "string"
+						},
+						"macArm": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"detail": {
+									"type": "string"
+								}
+							},
+							"required": ["name", "detail"]
+						},
+						"macIntel": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"detail": {
+									"type": "string"
+								}
+							},
+							"required": ["name", "detail"]
+						},
+						"windowsExe": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"detail": {
+									"type": "string"
+								}
+							},
+							"required": ["name", "detail"]
+						},
+						"windowsMsi": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"detail": {
+									"type": "string"
+								}
+							},
+							"required": ["name", "detail"]
+						},
+						"checksum": {
+							"type": "string"
+						},
+						"noChecksum": {
+							"type": "string"
+						},
+						"copied": {
+							"type": "string"
+						},
+						"download": {
+							"type": "string"
+						},
+						"missing": {
+							"type": "string"
+						},
+						"linuxAppImage": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"detail": {
+									"type": "string"
+								}
+							},
+							"required": ["name", "detail"]
+						},
+						"linuxDeb": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"detail": {
+									"type": "string"
+								}
+							},
+							"required": ["name", "detail"]
+						},
+						"linuxRpm": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"detail": {
+									"type": "string"
+								}
+							},
+							"required": ["name", "detail"]
+						},
+						"architecture": {
+							"type": "string"
+						},
+						"x64": {
+							"type": "string"
+						},
+						"arm": {
+							"type": "string"
+						},
+						"recommended": {
+							"type": "string"
+						},
+						"copyChecksumFor": {
+							"type": "string"
+						},
+						"downloadFile": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"title",
+						"description",
+						"macArm",
+						"macIntel",
+						"windowsExe",
+						"windowsMsi",
+						"checksum",
+						"noChecksum",
+						"copied",
+						"download",
+						"missing",
+						"linuxAppImage",
+						"linuxDeb",
+						"linuxRpm",
+						"architecture",
+						"x64",
+						"arm",
+						"recommended",
+						"copyChecksumFor",
+						"downloadFile"
+					]
+				},
+				"requirements": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"macos": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"value": {
+									"type": "string"
+								}
+							},
+							"required": ["name", "value"]
+						},
+						"windows": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"value": {
+									"type": "string"
+								}
+							},
+							"required": ["name", "value"]
+						},
+						"server": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"value": {
+									"type": "string"
+								}
+							},
+							"required": ["name", "value"]
+						},
+						"linux": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"value": {
+									"type": "string"
+								}
+							},
+							"required": ["name", "value"]
+						}
+					},
+					"required": ["title", "macos", "windows", "server", "linux"]
+				},
+				"firstLaunch": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"description": {
+							"type": "string"
+						},
+						"macos": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"step1": {
+									"type": "string"
+								},
+								"step2": {
+									"type": "string"
+								},
+								"step3": {
+									"type": "string"
+								},
+								"note": {
+									"type": "string"
+								}
+							},
+							"required": ["step1", "step2", "step3", "note"]
+						},
+						"windows": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"step1": {
+									"type": "string"
+								},
+								"step2": {
+									"type": "string"
+								},
+								"step3": {
+									"type": "string"
+								},
+								"note": {
+									"type": "string"
+								}
+							},
+							"required": ["step1", "step2", "step3", "note"]
+						},
+						"linux": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"intro": {
+									"type": "string"
+								},
+								"appImage": {
+									"type": "string"
+								},
+								"deb": {
+									"type": "string"
+								},
+								"rpm": {
+									"type": "string"
+								},
+								"note": {
+									"type": "string"
+								},
+								"opensuse": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"intro",
+								"appImage",
+								"deb",
+								"rpm",
+								"note",
+								"opensuse"
+							]
+						},
+						"guide": {
+							"type": "string"
+						},
+						"troubleshooting": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"title",
+						"description",
+						"macos",
+						"windows",
+						"linux",
+						"guide",
+						"troubleshooting"
+					]
+				},
+				"verify": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"description": {
+							"type": "string"
+						},
+						"macos": {
+							"type": "string"
+						},
+						"windows": {
+							"type": "string"
+						},
+						"linux": {
+							"type": "string"
+						}
+					},
+					"required": ["title", "description", "macos", "windows", "linux"]
+				},
+				"help": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"guide": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"title": {
+									"type": "string"
+								},
+								"body": {
+									"type": "string"
+								},
+								"link": {
+									"type": "string"
+								}
+							},
+							"required": ["title", "body", "link"]
+						},
+						"admin": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"title": {
+									"type": "string"
+								},
+								"body": {
+									"type": "string"
+								},
+								"link": {
+									"type": "string"
+								}
+							},
+							"required": ["title", "body", "link"]
+						},
+						"releases": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"title": {
+									"type": "string"
+								},
+								"body": {
+									"type": "string"
+								},
+								"link": {
+									"type": "string"
+								}
+							},
+							"required": ["title", "body", "link"]
+						}
+					},
+					"required": ["title", "guide", "admin", "releases"]
+				},
+				"platforms": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"label": {
+							"type": "string"
+						},
+						"macos": {
+							"type": "string"
+						},
+						"windows": {
+							"type": "string"
+						},
+						"linux": {
+							"type": "string"
+						},
+						"detected": {
+							"type": "string"
+						}
+					},
+					"required": ["label", "macos", "windows", "linux", "detected"]
+				},
+				"code": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"copy": {
+							"type": "string"
+						},
+						"copied": {
+							"type": "string"
+						},
+						"copyLabel": {
+							"type": "string"
+						}
+					},
+					"required": ["copy", "copied", "copyLabel"]
+				},
+				"meta": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"version": {
+							"type": "string"
+						},
+						"released": {
+							"type": "string"
+						},
+						"releaseNotes": {
+							"type": "string"
+						},
+						"allReleases": {
+							"type": "string"
+						}
+					},
+					"required": ["version", "released", "releaseNotes", "allReleases"]
+				}
+			},
+			"required": [
+				"title",
+				"description",
+				"eyebrow",
+				"headline",
+				"intro",
+				"onThisPage",
+				"picker",
+				"comingSoon",
+				"files",
+				"requirements",
+				"firstLaunch",
+				"verify",
+				"help",
+				"platforms",
+				"code",
+				"meta"
+			]
+		},
+		"desktop": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"launcher": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"servers": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"heading": {
+									"type": "string"
+								},
+								"empty": {
+									"type": "string"
+								},
+								"open": {
+									"type": "string"
+								},
+								"rename": {
+									"type": "string"
+								},
+								"remove": {
+									"type": "string"
+								},
+								"save": {
+									"type": "string"
+								},
+								"cancel": {
+									"type": "string"
+								},
+								"nameLabel": {
+									"type": "string"
+								},
+								"removeConfirm": {
+									"type": "string"
+								},
+								"signedIn": {
+									"type": "string"
+								},
+								"signedOut": {
+									"type": "string"
+								},
+								"signIn": {
+									"type": "string"
+								},
+								"signOut": {
+									"type": "string"
+								},
+								"unread_one": {
+									"type": "string"
+								},
+								"unread_zero": {
+									"type": "string"
+								},
+								"unread_two": {
+									"type": "string"
+								},
+								"unread_few": {
+									"type": "string"
+								},
+								"unread_many": {
+									"type": "string"
+								},
+								"unread_other": {
+									"type": "string"
+								},
+								"insecure": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"heading",
+								"empty",
+								"open",
+								"rename",
+								"remove",
+								"save",
+								"cancel",
+								"nameLabel",
+								"removeConfirm",
+								"signedIn",
+								"signedOut",
+								"signIn",
+								"signOut",
+								"insecure"
+							]
+						},
+						"add": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"heading": {
+									"type": "string"
+								},
+								"urlLabel": {
+									"type": "string"
+								},
+								"urlPlaceholder": {
+									"type": "string"
+								},
+								"connect": {
+									"type": "string"
+								},
+								"connecting": {
+									"type": "string"
+								},
+								"nameLabel": {
+									"type": "string"
+								},
+								"submit": {
+									"type": "string"
+								},
+								"found": {
+									"type": "string"
+								},
+								"httpWarning": {
+									"type": "string"
+								},
+								"confirmHttp": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"heading",
+								"urlLabel",
+								"urlPlaceholder",
+								"connect",
+								"connecting",
+								"nameLabel",
+								"submit",
+								"found",
+								"httpWarning",
+								"confirmHttp"
+							]
+						},
+						"errors": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"invalidUrl": {
+									"type": "string"
+								},
+								"unreachable": {
+									"type": "string"
+								},
+								"notMargaya": {
+									"type": "string"
+								},
+								"serverTooOld": {
+									"type": "string"
+								},
+								"disabled": {
+									"type": "string"
+								},
+								"desktopTooOld": {
+									"type": "string"
+								},
+								"tlsUntrusted": {
+									"type": "string"
+								},
+								"tlsHelp": {
+									"type": "string"
+								},
+								"duplicate": {
+									"type": "string"
+								},
+								"notSignedIn": {
+									"type": "string"
+								},
+								"signInFailed": {
+									"type": "string"
+								},
+								"codeInvalid": {
+									"type": "string"
+								},
+								"quickAddFailed": {
+									"type": "string"
+								},
+								"generic": {
+									"type": "string"
+								},
+								"keychainUnavailable": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"invalidUrl",
+								"unreachable",
+								"notMargaya",
+								"serverTooOld",
+								"disabled",
+								"desktopTooOld",
+								"tlsUntrusted",
+								"tlsHelp",
+								"duplicate",
+								"notSignedIn",
+								"signInFailed",
+								"codeInvalid",
+								"quickAddFailed",
+								"generic",
+								"keychainUnavailable"
+							]
+						},
+						"signIn": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"waiting": {
+									"type": "string"
+								},
+								"pasteHint": {
+									"type": "string"
+								},
+								"showCode": {
+									"type": "string"
+								},
+								"codeLabel": {
+									"type": "string"
+								},
+								"submit": {
+									"type": "string"
+								},
+								"cancel": {
+									"type": "string"
+								},
+								"done": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"waiting",
+								"pasteHint",
+								"showCode",
+								"codeLabel",
+								"submit",
+								"cancel",
+								"done"
+							]
+						},
+						"deepLink": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"addTitle": {
+									"type": "string"
+								},
+								"addBody": {
+									"type": "string"
+								},
+								"check": {
+									"type": "string"
+								},
+								"ignore": {
+									"type": "string"
+								}
+							},
+							"required": ["addTitle", "addBody", "check", "ignore"]
+						},
+						"settings": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"heading": {
+									"type": "string"
+								},
+								"openAtLogin": {
+									"type": "string"
+								},
+								"copyDiagnostics": {
+									"type": "string"
+								},
+								"copied": {
+									"type": "string"
+								},
+								"version": {
+									"type": "string"
+								},
+								"checkUpdates": {
+									"type": "string"
+								},
+								"checking": {
+									"type": "string"
+								},
+								"upToDate": {
+									"type": "string"
+								},
+								"updateAvailable": {
+									"type": "string"
+								},
+								"updateInstall": {
+									"type": "string"
+								},
+								"updating": {
+									"type": "string"
+								},
+								"updatePackage": {
+									"type": "string"
+								},
+								"updateDownload": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"heading",
+								"openAtLogin",
+								"copyDiagnostics",
+								"copied",
+								"version",
+								"checkUpdates",
+								"checking",
+								"upToDate",
+								"updateAvailable",
+								"updateInstall",
+								"updating",
+								"updatePackage",
+								"updateDownload"
+							]
+						},
+						"quickAdd": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"title": {
+									"type": "string"
+								},
+								"server": {
+									"type": "string"
+								},
+								"project": {
+									"type": "string"
+								},
+								"taskTitle": {
+									"type": "string"
+								},
+								"placeholder": {
+									"type": "string"
+								},
+								"create": {
+									"type": "string"
+								},
+								"creating": {
+									"type": "string"
+								},
+								"created": {
+									"type": "string"
+								},
+								"open": {
+									"type": "string"
+								},
+								"noServers": {
+									"type": "string"
+								},
+								"noProjects": {
+									"type": "string"
+								},
+								"loading": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"title",
+								"server",
+								"project",
+								"taskTitle",
+								"placeholder",
+								"create",
+								"creating",
+								"created",
+								"open",
+								"noServers",
+								"noProjects",
+								"loading"
+							]
+						},
+						"downloads": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"finished": {
+									"type": "string"
+								},
+								"failed": {
+									"type": "string"
+								}
+							},
+							"required": ["finished", "failed"]
+						},
+						"menu": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"about": {
+									"type": "string"
+								},
+								"checkUpdates": {
+									"type": "string"
+								},
+								"hide": {
+									"type": "string"
+								},
+								"hideOthers": {
+									"type": "string"
+								},
+								"showAll": {
+									"type": "string"
+								},
+								"quit": {
+									"type": "string"
+								},
+								"edit": {
+									"type": "string"
+								},
+								"undo": {
+									"type": "string"
+								},
+								"redo": {
+									"type": "string"
+								},
+								"cut": {
+									"type": "string"
+								},
+								"copy": {
+									"type": "string"
+								},
+								"paste": {
+									"type": "string"
+								},
+								"selectAll": {
+									"type": "string"
+								},
+								"view": {
+									"type": "string"
+								},
+								"reload": {
+									"type": "string"
+								},
+								"servers": {
+									"type": "string"
+								},
+								"quickAdd": {
+									"type": "string"
+								},
+								"window": {
+									"type": "string"
+								},
+								"minimize": {
+									"type": "string"
+								},
+								"closeWindow": {
+									"type": "string"
+								},
+								"help": {
+									"type": "string"
+								},
+								"copyDiagnostics": {
+									"type": "string"
+								},
+								"openLogs": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"about",
+								"checkUpdates",
+								"hide",
+								"hideOthers",
+								"showAll",
+								"quit",
+								"edit",
+								"undo",
+								"redo",
+								"cut",
+								"copy",
+								"paste",
+								"selectAll",
+								"view",
+								"reload",
+								"servers",
+								"quickAdd",
+								"window",
+								"minimize",
+								"closeWindow",
+								"help",
+								"copyDiagnostics",
+								"openLogs"
+							]
+						},
+						"tray": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"open": {
+									"type": "string"
+								},
+								"openServer": {
+									"type": "string"
+								},
+								"quickAdd": {
+									"type": "string"
+								},
+								"updateReady": {
+									"type": "string"
+								},
+								"quit": {
+									"type": "string"
+								},
+								"servers": {
+									"type": "string"
+								},
+								"updateDownload": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"open",
+								"openServer",
+								"quickAdd",
+								"updateReady",
+								"quit",
+								"servers",
+								"updateDownload"
+							]
+						},
+						"offline": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"title": {
+									"type": "string"
+								},
+								"body": {
+									"type": "string"
+								},
+								"lastError": {
+									"type": "string"
+								},
+								"retry": {
+									"type": "string"
+								},
+								"retrying": {
+									"type": "string"
+								},
+								"retryIn_one": {
+									"type": "string"
+								},
+								"retryIn_zero": {
+									"type": "string"
+								},
+								"retryIn_two": {
+									"type": "string"
+								},
+								"retryIn_few": {
+									"type": "string"
+								},
+								"retryIn_many": {
+									"type": "string"
+								},
+								"retryIn_other": {
+									"type": "string"
+								},
+								"switchServer": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"title",
+								"body",
+								"lastError",
+								"retry",
+								"retrying",
+								"switchServer"
+							]
+						}
+					},
+					"required": [
+						"servers",
+						"add",
+						"errors",
+						"signIn",
+						"deepLink",
+						"settings",
+						"quickAdd",
+						"downloads",
+						"menu",
+						"tray",
+						"offline"
+					]
+				}
+			},
+			"required": ["launcher"]
 		}
 	},
 	"required": [
@@ -49686,6 +51085,8 @@
 		"delivery",
 		"ai",
 		"insight",
-		"emails"
+		"emails",
+		"download",
+		"desktop"
 	]
 }

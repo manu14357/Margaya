@@ -1,6 +1,6 @@
 # i18n
 
-Locale files for the web app (`apps/web`), the landing package (`packages/landing`) and the public site (`apps/site`). `en-US.json` is the source of truth; the 19 other `<locale>.json` files mirror its keys. Follow the root [AGENTS.md](../AGENTS.md); skill: `i18n`.
+Locale files for the web app (`apps/web`), the landing package (`packages/landing`), the public site (`apps/site`) and the desktop launcher (`apps/desktop`, keys under `desktop.launcher.*`). `en-US.json` is the source of truth; the 19 other `<locale>.json` files mirror its keys. Follow the root [AGENTS.md](../AGENTS.md); skill: `i18n`.
 
 ## Structure
 
@@ -20,7 +20,7 @@ Locale files for the web app (`apps/web`), the landing package (`packages/landin
 - `pnpm i18n:check`: every locale has exactly the `en-US` keys, with the right plural forms. CI runs it. Pass a locale (`node scripts/i18n/check.mjs de-DE`) to check one file.
 - `pnpm i18n:check:fix` adds missing keys by copying the English value (or the locale's existing plural wording). Its output is a to-do list, not a result: translate every inserted value afterwards.
 - `pnpm i18n:report`: keys used in `apps/web/src` but missing from `en-US`, keys it thinks are unused, dynamic `t()` calls, and values still identical to `en-US` per locale. Use the "Untranslated" section to find English copies you left behind (some identical values, such as brand names, are legitimate).
-- `pnpm i18n:report:fix` deletes the keys `pnpm i18n:report` lists as unused, from every locale. The report scans `apps/web/src` (including keys built as `` `ns:prefix.${x}` `` and through a file's own string constants) and never counts the `emails`, `landing`, `press` and `invitations.email` copy, which the email package, `apps/site`, `packages/landing` and the API read as whole objects. Read the unused list before running `--fix`; a key reached some other way needs adding to `externallyReadPrefixes` in `scripts/i18n/report.mjs`.
+- `pnpm i18n:report:fix` deletes the keys `pnpm i18n:report` lists as unused, from every locale. The report scans `apps/web/src` (including keys built as `` `ns:prefix.${x}` `` and through a file's own string constants) and never counts the `emails`, `landing`, `press`, `download`, `desktop.launcher` and `invitations.email` copy, which the email package, `apps/site` (including its Download page), `packages/landing`, the desktop launcher and the API read as whole objects. Read the unused list before running `--fix`; a key reached some other way needs adding to `externallyReadPrefixes` in `scripts/i18n/report.mjs`.
 
 ## Verify
 
