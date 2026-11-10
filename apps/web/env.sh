@@ -53,8 +53,13 @@ find "$asset_root" -type f -name '*.js' -exec sh -eu -c '
 
 # Serve JSON as static content. It must never become an nginx configuration
 # string, where quotes, backslashes, and dollar signs have another meaning.
-for mode in resource authorization; do
-  target="$asset_root/mcp-oauth-$mode.json"
+# margaya-desktop.json is the desktop app's discovery document; nginx serves
+# it at /.well-known/margaya-desktop.json.
+for mode in resource authorization desktop; do
+  case "$mode" in
+    desktop) target="$asset_root/margaya-desktop.json" ;;
+    *) target="$asset_root/mcp-oauth-$mode.json" ;;
+  esac
   temporary=$(mktemp "${target}.XXXXXX")
   trap 'rm -f "$temporary"' EXIT HUP INT TERM
   LC_ALL=C awk -v mode="$mode" -f "$MARGAYA_ENV_RENDERER" > "$temporary"

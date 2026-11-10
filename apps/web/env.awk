@@ -21,13 +21,16 @@ BEGIN {
     # A browser Sentry DSN is a public client key, not a secret.
     values["MARGAYA_SENTRY_DSN"] = ENVIRON["MARGAYA_SENTRY_DSN"]
 
-    if (mode == "resource" || mode == "authorization") {
+    if (mode == "resource" || mode == "authorization" || mode == "desktop") {
         base = values["MARGAYA_API_URL"]
         if (base == "") { print "{}"; exit }
         sub(/[?#].*$/, "", base)
         sub(/\/*$/, "", base)
         sub(/\/api$/, "", base)
-        if (mode == "resource") {
+        if (mode == "desktop") {
+            # The desktop app's discovery document: the API origin, no /api.
+            print "{\"apiUrl\":" json(base) "}"
+        } else if (mode == "resource") {
             print "{\"resource\":" json(base "/api/mcp") ",\"authorization_servers\":[" json(base "/api") "]}"
         } else {
             print "{\"issuer\":" json(base "/api") ",\"authorization_endpoint\":" json(base "/api/mcp/authorize") ",\"token_endpoint\":" json(base "/api/mcp/token") ",\"registration_endpoint\":" json(base "/api/mcp/register") ",\"response_types_supported\":[\"code\"],\"grant_types_supported\":[\"authorization_code\"],\"code_challenge_methods_supported\":[\"S256\"],\"token_endpoint_auth_methods_supported\":[\"none\"]}"

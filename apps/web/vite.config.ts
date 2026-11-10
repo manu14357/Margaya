@@ -4,13 +4,49 @@ import { sentryVitePlugin } from "@sentry/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import packageJson from "../../package.json";
+import {
+  DESKTOP_DISCOVERY_FILE,
+  desktopDiscoveryDocument,
+} from "./src/lib/desktop-discovery";
 
 const sentryAuthToken = process.env.SENTRY_AUTH_TOKEN;
 const sentryOrg = process.env.SENTRY_ORG;
 const sentryProject = process.env.SENTRY_PROJECT;
 const uploadSourceMaps = Boolean(sentryAuthToken && sentryOrg && sentryProject);
+
+/**
+ * Serves and emits /.well-known/margaya-desktop.json from VITE_API_URL, so the
+ * desktop app can find a separately hosted API from the web address.
+ */
+function desktopDiscovery(): Plugin {
+  let document: string | null = null;
+  return {
+    name: "margaya-desktop-discovery",
+    configResolved(config) {
+      document = desktopDiscoveryDocument(config.env.VITE_API_URL);
+    },
+    configureServer(server) {
+      server.middlewares.use(
+        `/${DESKTOP_DISCOVERY_FILE}`,
+        (_req, res, next) => {
+          if (!document) return next();
+          res.setHeader("Content-Type", "application/json");
+          res.end(document);
+        },
+      );
+    },
+    generateBundle() {
+      if (!document) return;
+      this.emitFile({
+        type: "asset",
+        fileName: DESKTOP_DISCOVERY_FILE,
+        source: document,
+      });
+    },
+  };
+}
 
 const dependency = (names: string) =>
   new RegExp(`[\\\\/]node_modules[\\\\/](?:${names})[\\\\/]`);
@@ -29,6 +65,7 @@ export default defineConfig({
     tailwindcss(),
     react(),
     babel({ presets: [reactCompilerPreset()] }),
+    desktopDiscovery(),
     // Hidden when Sentry env vars are absent so local dev does not depend on it.
     ...(uploadSourceMaps
       ? [

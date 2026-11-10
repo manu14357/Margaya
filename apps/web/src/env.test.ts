@@ -94,3 +94,32 @@ describe("runtime environment replacement", () => {
     expect(unset.value).toBe("");
   });
 });
+
+describe("desktop discovery document", () => {
+  function renderDesktop(apiUrl: string) {
+    return execFileSync(
+      "awk",
+      ["-v", "mode=desktop", "-f", resolve(import.meta.dirname, "../env.awk")],
+      {
+        input: "",
+        encoding: "utf8",
+        env: { ...process.env, MARGAYA_API_URL: apiUrl },
+      },
+    );
+  }
+
+  it("names the API origin without /api", () => {
+    expect(JSON.parse(renderDesktop("https://api.example.test/api/"))).toEqual({
+      apiUrl: "https://api.example.test",
+    });
+  });
+
+  it("keeps punctuation as JSON data", () => {
+    const apiUrl = 'https://api.example.test/"x\\';
+    expect(JSON.parse(renderDesktop(apiUrl))).toEqual({ apiUrl });
+  });
+
+  it("is empty when the API address is unset", () => {
+    expect(JSON.parse(renderDesktop(""))).toEqual({});
+  });
+});
