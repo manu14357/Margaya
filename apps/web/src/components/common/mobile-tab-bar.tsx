@@ -47,7 +47,7 @@ function DestinationTab({ id }: { id: ShellDestination }) {
 }
 
 /**
- * The bottom tab bar under 768px: Home, Your work, Create, Inbox and Menu
+ * The bottom tab bar under 520px (`RAIL_BREAKPOINT`): Home, Your work, Create, Inbox and Menu
  * (the context-panel drawer, which also lists every destination).
  */
 export default function MobileTabBar() {
@@ -57,7 +57,7 @@ export default function MobileTabBar() {
   return (
     <nav
       aria-label={t("navigation:shell.primary")}
-      className="grid shrink-0 grid-cols-5 items-center border-t bg-card px-1.5 pb-[env(safe-area-inset-bottom)] md:hidden"
+      className="grid shrink-0 grid-cols-5 items-center border-t bg-card px-1.5 pb-[env(safe-area-inset-bottom)] min-[520px]:hidden"
       data-slot="mobile-tab-bar"
     >
       <DestinationTab id="home" />
@@ -69,9 +69,9 @@ export default function MobileTabBar() {
             <button
               type="button"
               aria-label={t("navigation:shell.create")}
-              className="flex size-11 cursor-pointer items-center justify-center rounded-xl bg-primary text-primary-foreground outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="relative flex size-9 cursor-pointer items-center justify-center rounded-[10px] bg-primary text-primary-foreground shadow-[0_1px_1px_--theme(--color-black/8%)] outline-hidden transition-[scale] duration-150 ease-out after:absolute after:-inset-1 active:scale-[0.96] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:active:scale-100"
             >
-              <Plus className="size-5" />
+              <Plus className="size-4.5" strokeWidth={2.25} />
             </button>
           }
         />

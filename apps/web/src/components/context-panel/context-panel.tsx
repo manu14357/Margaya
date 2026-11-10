@@ -20,6 +20,7 @@ import { MyWorkPanel } from "@/components/context-panel/my-work-panel";
 import { PagesPanel } from "@/components/context-panel/pages-panel";
 import { ProjectsPanel } from "@/components/context-panel/projects-panel";
 import { SettingsPanel } from "@/components/context-panel/settings-panel";
+import { useDesktopDragRegion } from "@/components/desktop/desktop-title-bar";
 import { TrialCard } from "@/components/trial-card";
 import { Button } from "@/components/ui/button";
 import { KbdSequence } from "@/components/ui/kbd";
@@ -66,7 +67,7 @@ function DestinationBody({
   }
 }
 
-/** Under 768px the rail is gone; the drawer lists every destination. */
+/** Without the rail (under 520px) the drawer lists every destination. */
 function DrawerDestinations() {
   const { t } = useTranslation();
   const shell = useShell();
@@ -76,7 +77,7 @@ function DrawerDestinations() {
   return (
     <nav
       aria-label={t("navigation:shell.primary")}
-      className="grid grid-cols-4 gap-1 border-b px-2 py-2 md:hidden"
+      className="grid grid-cols-4 gap-1 border-b px-2 py-2 min-[520px]:hidden"
     >
       {[...destinations, "settings" as const].map((id) => {
         const meta = DESTINATION_META[id];
@@ -116,6 +117,8 @@ function PanelContents({
   const shell = useShell();
   const { data: workspace } = useActiveWorkspace();
   const slotRef = useRef<HTMLDivElement>(null);
+  // Part of the desktop app's title bar line (a no-op in a browser).
+  const dragRegion = useDesktopDragRegion();
 
   // Ref callbacks would re-run on every render; report the slot once.
   useEffect(() => {
@@ -129,13 +132,17 @@ function PanelContents({
   return (
     <div className="flex h-full min-h-0 flex-col">
       {drawer && (
-        <div className="border-b p-2 md:hidden">
+        <div className="border-b p-2 min-[520px]:hidden">
           <WorkspaceSwitcher variant="row" />
         </div>
       )}
       {drawer && <DrawerDestinations />}
 
-      <div className="flex h-12 shrink-0 items-center gap-2 ps-4 pe-2">
+      <div
+        {...dragRegion}
+        className="flex h-12 shrink-0 items-center gap-2 ps-4 pe-2"
+        data-slot="context-panel-header"
+      >
         <span
           aria-hidden
           className="flex size-6 shrink-0 items-center justify-center rounded-md [&>svg]:size-3.5"
@@ -188,7 +195,7 @@ function PanelContents({
       <div className="flex shrink-0 flex-col gap-2 p-2 empty:hidden">
         <TrialCard />
         {drawer && (
-          <div className="flex items-center justify-between md:hidden">
+          <div className="flex items-center justify-between min-[520px]:hidden">
             <UserMenu
               side="top"
               trigger={
@@ -262,7 +269,7 @@ export function ContextPanel({
         side="left"
         showCloseButton={false}
         className={cn(
-          "w-72 max-w-[86vw] bg-card p-0 text-sidebar-foreground md:ms-16",
+          "w-72 max-w-[86vw] bg-card p-0 text-sidebar-foreground min-[520px]:ms-16",
         )}
         data-slot="context-panel"
       >

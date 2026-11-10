@@ -140,3 +140,11 @@ export function destinationPath(
 export function projectIdFromPath(pathname: string): string | undefined {
   return pathname.match(/\/project\/([^/]+)/)?.[1];
 }
+
+/**
+ * From this viewport width the 64px rail stays on screen (the context panel
+ * opens beside it as a drawer); below it the bottom tab bar and the drawer's
+ * own destination grid take over. Tailwind classes use `min-[520px]:` /
+ * `max-[519px]:` to match.
+ */
+export const RAIL_BREAKPOINT = 520;

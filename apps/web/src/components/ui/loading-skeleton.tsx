@@ -225,7 +225,7 @@ type LoadingSkeletonProps = {
 export function LoadingSkeleton({ className }: LoadingSkeletonProps) {
   return (
     <LoadingRegion className={cn("flex h-svh w-full bg-background", className)}>
-      <div className="hidden w-16 shrink-0 flex-col items-center gap-3 border-r bg-sidebar py-3 md:flex">
+      <div className="hidden w-16 shrink-0 flex-col items-center gap-3 border-r bg-sidebar py-3 min-[520px]:flex">
         <Skeleton className={cn("size-9 rounded-xl", bone)} />
         <div className="mt-2 flex flex-col items-center gap-3">
           {["home", "inbox", "work", "projects", "pages", "analytics"].map(
@@ -275,7 +275,7 @@ export function LoadingSkeleton({ className }: LoadingSkeletonProps) {
         <div className="flex flex-1 gap-3 overflow-hidden p-4">
           <BoardColumns />
         </div>
-        <div className="flex h-14 shrink-0 items-center justify-around border-t bg-sidebar md:hidden">
+        <div className="flex h-14 shrink-0 items-center justify-around border-t bg-sidebar min-[520px]:hidden">
           {["home", "work", "create", "inbox", "menu"].map((item) => (
             <Skeleton
               key={item}

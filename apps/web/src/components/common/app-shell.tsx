@@ -12,6 +12,7 @@ import {
 } from "@/components/common/shell-destinations";
 import { ContextPanel } from "@/components/context-panel/context-panel";
 import { DemoAlert } from "@/components/demo-alert";
+import { useDesktopShellFrame } from "@/components/desktop/desktop-title-bar";
 import { SidebarProvider, useSidebar } from "@/components/ui/sidebar";
 import WorkspaceDeletionBanner from "@/components/workspace/workspace-deletion-banner";
 import { isProjectFeatureEnabled } from "@/constants/project-features";
@@ -26,9 +27,10 @@ import { useUserPreferencesStore } from "@/store/user-preferences";
 /**
  * The authenticated app shell, mounted once by the dashboard route:
  *
- *   rail (64px, md+) | context panel (248px, pinned on lg+, a drawer below)
+ *   rail (64px, from 520px) | context panel (248px, pinned on lg+, a
+ *   drawer below)
  *   | main column (pages render their own TopBar, tabs and content)
- *   + a bottom tab bar under 768px.
+ *   + a bottom tab bar under 520px (`RAIL_BREAKPOINT`).
  *
  * Pages never render the shell themselves; they render a page frame
  * (Layout / WorkspaceLayout / ProjectLayout, see components/common/README.md).
@@ -40,6 +42,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   // User-scoped WebSocket (notifications, exports, Home): the shell is
   // mounted for the whole authenticated dashboard, so it owns the socket.
   useUserWebSocket();
+  // In the desktop app's frameless window, the top bar is the title bar.
+  useDesktopShellFrame();
 
   return (
     <SidebarProvider
@@ -143,8 +147,11 @@ function ShellFrame({ children }: { children: ReactNode }) {
       <AppRail />
       <ContextPanel onSlotChange={setPanelSlot} />
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-        {isDemoMode && <DemoAlert />}
-        {workspaceId && <WorkspaceDeletionBanner workspaceId={workspaceId} />}
+        {/* Clear of the desktop app's window buttons (0 in a browser). */}
+        <div className="pe-(--desktop-controls-width,0px)">
+          {isDemoMode && <DemoAlert />}
+          {workspaceId && <WorkspaceDeletionBanner workspaceId={workspaceId} />}
+        </div>
         <main
           ref={setMainColumn}
           className="relative flex min-h-0 flex-1 flex-col overflow-hidden"

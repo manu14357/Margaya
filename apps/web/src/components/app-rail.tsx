@@ -13,6 +13,11 @@ import {
   UserMenu,
 } from "@/components/common/shell-menus";
 import { useInboxBadge } from "@/components/common/use-shell-badges";
+import {
+  SHELL_BAR_HEIGHT,
+  useDesktopDragRegion,
+  useDesktopTitleBar,
+} from "@/components/desktop/desktop-title-bar";
 import { WorkspaceSwitcher } from "@/components/workspace-switcher";
 import { shortcuts } from "@/constants/shortcuts";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
@@ -124,22 +129,38 @@ function RailIconButton(props: ComponentProps<"button">) {
 
 /**
  * The 64px rail: the workspace, the global destinations, then Create, Help,
- * Settings and the avatar. Hidden under 768px, where the bottom tab bar and
- * the panel drawer take over.
+ * Settings and the avatar. Hidden under 520px (`RAIL_BREAKPOINT`), where the
+ * bottom tab bar and the panel drawer take over; it scrolls when the window
+ * is too short for every item.
  */
 export function AppRail() {
   const { t } = useTranslation();
   const shell = useShell();
   const destinations = useRailDestinations();
   const inbox = useInboxBadge();
+  // Desktop app, frameless window: the rail's empty space moves the window,
+  // the avatar moves to the top bar, and on macOS the traffic lights sit in
+  // a top row of their own, as wide as they need.
+  const titleBar = useDesktopTitleBar();
+  const dragRegion = useDesktopDragRegion();
+  const macFrame = titleBar?.platform === "macos";
 
   if (!shell) return null;
   const { destination, selectDestination } = shell;
 
   return (
     <nav
+      {...dragRegion}
       aria-label={t("navigation:shell.primary")}
-      className="hidden w-16 shrink-0 flex-col items-center gap-1 border-sidebar-border border-r bg-sidebar py-2.5 text-sidebar-foreground md:flex"
+      className="hidden w-16 shrink-0 flex-col items-center gap-1 overflow-y-auto border-sidebar-border border-r bg-sidebar py-2.5 text-sidebar-foreground [scrollbar-width:none] *:shrink-0 min-[520px]:flex [&::-webkit-scrollbar]:hidden"
+      style={
+        macFrame
+          ? {
+              width: Math.max(64, titleBar.leftInset),
+              paddingTop: SHELL_BAR_HEIGHT,
+            }
+          : undefined
+      }
       data-slot="app-rail"
     >
       <div className="mb-2">
@@ -189,17 +210,19 @@ export function AppRail() {
         active={destination === "settings"}
         onSelect={() => selectDestination("settings")}
       />
-      <UserMenu
-        trigger={
-          <button
-            type="button"
-            aria-label={t("navigation:shell.account")}
-            className="mt-1 cursor-pointer rounded-full outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            <ShellUserAvatar />
-          </button>
-        }
-      />
+      {!titleBar && (
+        <UserMenu
+          trigger={
+            <button
+              type="button"
+              aria-label={t("navigation:shell.account")}
+              className="mt-1 cursor-pointer rounded-full outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <ShellUserAvatar />
+            </button>
+          }
+        />
+      )}
     </nav>
   );
 }
