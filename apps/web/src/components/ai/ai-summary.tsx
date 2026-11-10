@@ -18,6 +18,8 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
+import { TopBarLabel } from "@/components/common/header/top-bar-label";
+import { TopBarCollapsible } from "@/components/common/header/top-bar-overflow";
 import AiFeedbackButtons from "@/components/editor/ai/ai-feedback-buttons";
 import { useAiLocale } from "@/components/editor/ai/use-editor-ai";
 import { Button } from "@/components/ui/button";
@@ -72,21 +74,32 @@ export function AiSummaryButton({
 
   return (
     <>
-      <Button
-        type="button"
-        variant="outline"
-        size="xs"
-        className={cn("gap-1", className)}
-        aria-label={t(LABEL_KEY[kind])}
-        title={t(LABEL_KEY[kind])}
-        aria-expanded={open}
-        onClick={() => setOpen((value) => !value)}
+      {/* In a crowded top bar the button waits in its "More" menu; the
+          card below stays mounted either way. */}
+      <TopBarCollapsible
+        item={{
+          id: `summary-${kind}-${id}`,
+          label: t(LABEL_KEY[kind]),
+          icon: <Sparkles aria-hidden />,
+          onSelect: () => setOpen(true),
+        }}
       >
-        <Sparkles className="size-3 text-muted-foreground" />
-        <span className="hidden md:inline">
-          {t("ai:writing.summary.button")}
-        </span>
-      </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="xs"
+          className={cn("gap-1", className)}
+          aria-label={t(LABEL_KEY[kind])}
+          title={t(LABEL_KEY[kind])}
+          aria-expanded={open}
+          onClick={() => setOpen((value) => !value)}
+        >
+          <Sparkles className="size-3 text-muted-foreground" />
+          <TopBarLabel className="hidden md:inline">
+            {t("ai:writing.summary.button")}
+          </TopBarLabel>
+        </Button>
+      </TopBarCollapsible>
       {open && (
         <AiSummaryPanel
           kind={kind}

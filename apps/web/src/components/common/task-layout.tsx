@@ -2,6 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import TaskCrumbSelect from "@/components/common/header/task-crumb-select";
+import { TopBarRoomy } from "@/components/common/header/top-bar-label";
 import Layout from "@/components/common/layout";
 import { ProjectTile } from "@/components/context-panel/panel-primitives";
 import useGetProject from "@/hooks/queries/project/use-get-project";
@@ -52,29 +53,33 @@ export default function TaskLayout({
       <Layout.TopBar
         place={
           <>
-            <ProjectTile
-              icon={project?.icon}
-              seed={project?.id}
-              className="size-6"
-            />
-            <button
-              type="button"
-              onClick={() =>
-                navigate({
-                  to: "/dashboard/workspace/$workspaceId/project/$projectId/board",
-                  params: { workspaceId, projectId },
-                })
-              }
-              className="hidden max-w-40 truncate rounded-md px-1.5 py-1 text-left font-medium text-[13px] text-foreground outline-hidden hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring sm:block"
-            >
-              {project?.name || t("navigation:sidebar.projects")}
-            </button>
-            <span
-              aria-hidden
-              className="hidden text-muted-foreground/60 sm:inline"
-            >
-              ·
-            </span>
+            <TopBarRoomy hideWhen="tight">
+              <ProjectTile
+                icon={project?.icon}
+                seed={project?.id}
+                className="size-6"
+              />
+            </TopBarRoomy>
+            <TopBarRoomy>
+              <button
+                type="button"
+                onClick={() =>
+                  navigate({
+                    to: "/dashboard/workspace/$workspaceId/project/$projectId/board",
+                    params: { workspaceId, projectId },
+                  })
+                }
+                className="hidden max-w-40 truncate rounded-md px-1.5 py-1 text-left font-medium text-[13px] text-foreground outline-hidden hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring sm:block"
+              >
+                {project?.name || t("navigation:sidebar.projects")}
+              </button>
+              <span
+                aria-hidden
+                className="hidden text-muted-foreground/60 sm:inline"
+              >
+                ·
+              </span>
+            </TopBarRoomy>
             <TaskCrumbSelect
               projectId={projectId}
               taskId={taskId}

@@ -1,6 +1,7 @@
 import { LayoutDashboard, SlidersHorizontal } from "lucide-react";
 import { type ComponentType, lazy, Suspense, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { TopBarCollapsible } from "@/components/common/header/top-bar-overflow";
 import Layout from "@/components/common/layout";
 import HomeRisksWidget from "@/components/delivery/home-risks-widget";
 import MyBriefWidget from "@/components/insight/my-brief-widget";
@@ -110,17 +111,26 @@ export default function HomePage({
         <Layout.TopBar
           title={t("home:pageTitle")}
           actions={
-            <Button
-              variant="outline"
-              size="xs"
-              className="gap-1"
-              onClick={() => setManageOpen(true)}
-              aria-label={manageLabel}
-              title={manageLabel}
+            <TopBarCollapsible
+              item={{
+                id: "manage-widgets",
+                label: manageLabel,
+                icon: <SlidersHorizontal aria-hidden />,
+                onSelect: () => setManageOpen(true),
+              }}
             >
-              <SlidersHorizontal className="size-3" />
-              <span className="hidden sm:inline">{manageLabel}</span>
-            </Button>
+              <Button
+                variant="outline"
+                size="xs"
+                className="gap-1"
+                onClick={() => setManageOpen(true)}
+                aria-label={manageLabel}
+                title={manageLabel}
+              >
+                <SlidersHorizontal className="size-3" />
+                <span className="hidden sm:inline">{manageLabel}</span>
+              </Button>
+            </TopBarCollapsible>
           }
         />
         <Layout.ContentArea width="wide" className="space-y-6 md:py-6">

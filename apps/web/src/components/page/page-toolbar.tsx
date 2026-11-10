@@ -20,6 +20,8 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useTopBarDensity } from "@/components/common/header/top-bar-density";
+import { useTopBarOverflowHost } from "@/components/common/header/top-bar-overflow";
 import FavoriteButton from "@/components/favorite/favorite-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -52,7 +54,7 @@ import type { Page } from "@/types/page";
 import PageSyncBadge from "./collab/page-sync-badge";
 import PresenceStack, { type PresenceMember } from "./collab/presence-stack";
 import type { PageCollaboration } from "./collab/use-page-collaboration";
-import PageWatchButton from "./page-watch-button";
+import PageWatchButton, { PageWatchMenuItem } from "./page-watch-button";
 import PublishPageDialog from "./publish-page-dialog";
 import SaveTemplateDialog from "./save-template-dialog";
 import type { PageActions } from "./use-page-actions";
@@ -148,6 +150,16 @@ export default function PageHeaderActions({
   const title = page.title.trim() || t("pages:list.untitled");
   const isPrivate = page.access === "private";
   const justUnlocked = useJustUnlocked(page.isLocked);
+  // A crowded top bar keeps favorite, watch, lock and copy link in the menu.
+  const roomy = useTopBarDensity() === "full";
+  const favoritePlaceholder = {
+    name: title,
+    projectId: page.projectId,
+    icon: page.logoValue,
+    feature: "pages" as const,
+  };
+  // ...as are Ask and Summarize: this menu stands in for the bar's "More".
+  const overflow = useTopBarOverflowHost();
   useLightThemeWhilePrinting();
 
   useEffect(
@@ -237,7 +249,7 @@ export default function PageHeaderActions({
             {t("pages:detail.unlocked")}
           </span>
         )}
-        {!page.isLocked && capabilities.canLock && (
+        {roomy && !page.isLocked && capabilities.canLock && (
           <Tooltip>
             <TooltipTrigger
               render={
@@ -255,42 +267,43 @@ export default function PageHeaderActions({
             <TooltipContent>{t("pages:header.lockPage")}</TooltipContent>
           </Tooltip>
         )}
-        <FavoriteButton
-          workspaceId={workspaceId}
-          entityType="page"
-          entityId={page.id}
-          placeholder={{
-            name: title,
-            projectId: page.projectId,
-            icon: page.logoValue,
-            feature: "pages",
-          }}
-        />
-        <PageWatchButton pageId={page.id} />
-        <Tooltip>
-          <TooltipTrigger
-            render={
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label={
-                  copied ? t("pages:header.copied") : t("pages:header.copyLink")
-                }
-                className="text-muted-foreground"
-                onClick={() => void copyLink()}
-              />
-            }
-          >
-            {copied ? (
-              <Check className="size-3.5 text-success-foreground" />
-            ) : (
-              <Link2 className="size-3.5" />
-            )}
-          </TooltipTrigger>
-          <TooltipContent>
-            {copied ? t("pages:header.copied") : t("pages:header.copyLink")}
-          </TooltipContent>
-        </Tooltip>
+        {roomy && (
+          <FavoriteButton
+            workspaceId={workspaceId}
+            entityType="page"
+            entityId={page.id}
+            placeholder={favoritePlaceholder}
+          />
+        )}
+        {roomy && <PageWatchButton pageId={page.id} />}
+        {roomy && (
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label={
+                    copied
+                      ? t("pages:header.copied")
+                      : t("pages:header.copyLink")
+                  }
+                  className="text-muted-foreground"
+                  onClick={() => void copyLink()}
+                />
+              }
+            >
+              {copied ? (
+                <Check className="size-3.5 text-success-foreground" />
+              ) : (
+                <Link2 className="size-3.5" />
+              )}
+            </TooltipTrigger>
+            <TooltipContent>
+              {copied ? t("pages:header.copied") : t("pages:header.copyLink")}
+            </TooltipContent>
+          </Tooltip>
+        )}
         <DropdownMenu>
           <DropdownMenuTrigger
             render={
@@ -305,6 +318,45 @@ export default function PageHeaderActions({
             <MoreHorizontal className="size-4" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-64">
+            {overflow?.map((item) => (
+              <DropdownMenuItem key={item.id} onClick={item.onSelect}>
+                {item.icon}
+                {item.label}
+              </DropdownMenuItem>
+            ))}
+            {!roomy && (
+              <>
+                <FavoriteButton
+                  variant="menu-item"
+                  className="h-auto items-center text-base sm:text-sm"
+                  workspaceId={workspaceId}
+                  entityType="page"
+                  entityId={page.id}
+                  placeholder={favoritePlaceholder}
+                />
+                <PageWatchMenuItem pageId={page.id} />
+                {!page.isLocked && capabilities.canLock && (
+                  <DropdownMenuItem onClick={actions.toggleLock}>
+                    <Lock />
+                    {t("pages:header.lockPage")}
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuItem
+                  onClick={async () => {
+                    const ok = await copyToClipboard(
+                      generateLink(
+                        pagePath(workspaceId, page.projectId ?? "", page.id),
+                      ),
+                    );
+                    if (ok) toast.success(t("pages:header.copied"));
+                  }}
+                >
+                  <Link2 />
+                  {t("pages:header.copyLink")}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+              </>
+            )}
             {capabilities.canEdit && (
               <>
                 <DropdownMenuCheckboxItem

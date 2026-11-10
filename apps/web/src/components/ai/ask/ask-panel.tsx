@@ -743,6 +743,7 @@ export default function AskPanel() {
         : { role: "dialog", "aria-modal": "false" as const })}
       aria-labelledby={titleId}
       data-testid="ask-panel"
+      data-slot="ask-panel"
       data-expanded={expanded || undefined}
       data-full-page={fullPage || undefined}
       aria-busy={streaming}

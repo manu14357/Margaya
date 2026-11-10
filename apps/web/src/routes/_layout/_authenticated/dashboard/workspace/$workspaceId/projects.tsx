@@ -28,6 +28,8 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
+import { TopBarLabel } from "@/components/common/header/top-bar-label";
+import { TopBarCollapsible } from "@/components/common/header/top-bar-overflow";
 import WorkspaceLayout from "@/components/common/workspace-layout";
 import PageTitle from "@/components/page-title";
 import CreateProjectModal from "@/components/shared/modals/create-project-modal";
@@ -226,31 +228,42 @@ function RouteComponent() {
     });
   };
 
+  const openArchives = () =>
+    navigate({
+      to: "/dashboard/workspace/$workspaceId/archives",
+      params: { workspaceId },
+    });
+
   const headerActions = (
     <>
-      <Button
-        variant="ghost"
-        size="xs"
-        className="gap-1"
-        onClick={() =>
-          navigate({
-            to: "/dashboard/workspace/$workspaceId/archives",
-            params: { workspaceId },
-          })
-        }
+      <TopBarCollapsible
+        item={{
+          id: "archives",
+          label: t("workspace:archives.open"),
+          icon: <Archive aria-hidden />,
+          onSelect: openArchives,
+        }}
       >
-        <Archive className="w-3 h-3" />
-        {t("workspace:archives.open")}
-      </Button>
+        <Button
+          variant="ghost"
+          size="xs"
+          className="gap-1"
+          onClick={openArchives}
+        >
+          <Archive className="w-3 h-3" />
+          {t("workspace:archives.open")}
+        </Button>
+      </TopBarCollapsible>
       {canCreate && (
         <Button
           variant="outline"
           size="xs"
           onClick={handleCreateProject}
           className="gap-1"
+          title={t("workspace:projects.createProject")}
         >
           <Plus className="w-3 h-3" />
-          {t("workspace:projects.createProject")}
+          <TopBarLabel>{t("workspace:projects.createProject")}</TopBarLabel>
         </Button>
       )}
     </>

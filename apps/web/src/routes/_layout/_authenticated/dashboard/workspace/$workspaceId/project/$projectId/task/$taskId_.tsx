@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { PanelRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { TopBarRoomy } from "@/components/common/header/top-bar-label";
 import TaskLayout from "@/components/common/task-layout";
 import PageTitle from "@/components/page-title";
 import TaskActionsMenu from "@/components/task/task-actions-menu";
@@ -127,30 +128,34 @@ function RouteComponent() {
       headerActions={
         !isLoading && task ? (
           <div className="flex items-center gap-0.5">
-            <TaskStepper
-              projectId={projectId}
-              taskId={taskId}
-              onNavigate={goToTask}
-              fetch
-              showPosition={false}
-              className="mr-1 hidden md:flex"
-            />
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    className="hidden text-foreground md:inline-flex"
-                    aria-label={t("tasks:detail.openOnBoard")}
-                    onClick={openOnBoard}
-                  >
-                    <PanelRight className="size-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>{t("tasks:detail.openOnBoard")}</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <TopBarRoomy>
+              <TaskStepper
+                projectId={projectId}
+                taskId={taskId}
+                onNavigate={goToTask}
+                fetch
+                showPosition={false}
+                className="mr-1 hidden md:flex"
+              />
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      className="hidden text-foreground md:inline-flex"
+                      aria-label={t("tasks:detail.openOnBoard")}
+                      onClick={openOnBoard}
+                    >
+                      <PanelRight className="size-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    {t("tasks:detail.openOnBoard")}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </TopBarRoomy>
             <TaskSubscribeButton taskId={taskId} size="icon" />
             <TaskActionsMenu
               taskId={taskId}

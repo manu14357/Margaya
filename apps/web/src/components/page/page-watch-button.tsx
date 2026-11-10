@@ -1,6 +1,7 @@
 import { Bell, BellRing } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { DropdownMenuItem } from "@/components/ui/menu";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Tooltip,
@@ -49,5 +50,29 @@ export default function PageWatchButton({ pageId }: { pageId: string }) {
         {watching ? t("pages:watch.watchingHint") : t("pages:watch.watchHint")}
       </TooltipContent>
     </Tooltip>
+  );
+}
+
+/** The same toggle as an entry in the page menu (a crowded top bar). */
+export function PageWatchMenuItem({ pageId }: { pageId: string }) {
+  const { t } = useTranslation();
+  const { data } = usePageSubscription(pageId);
+  const toggle = useTogglePageSubscription(pageId);
+  if (!data) return null;
+
+  const watching = data.subscribed;
+  const Icon = watching ? BellRing : Bell;
+  return (
+    <DropdownMenuItem
+      onClick={() => {
+        if (toggle.isPending) return;
+        toggle.mutate(!watching, {
+          onError: () => toast.error(t("pages:watch.error")),
+        });
+      }}
+    >
+      <Icon />
+      {watching ? t("pages:watch.unwatch") : t("pages:watch.watch")}
+    </DropdownMenuItem>
   );
 }

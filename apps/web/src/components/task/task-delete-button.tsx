@@ -1,6 +1,7 @@
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { TopBarLabel } from "@/components/common/header/top-bar-label";
 import {
   AlertDialog,
   AlertDialogClose,
@@ -75,7 +76,9 @@ export default function TaskDeleteButton({
       >
         <Trash2 className="size-4" />
         {!iconOnly && (
-          <span className="hidden sm:inline">{t("tasks:delete.action")}</span>
+          <TopBarLabel className="hidden sm:inline">
+            {t("tasks:delete.action")}
+          </TopBarLabel>
         )}
       </AlertDialogTrigger>
       <AlertDialogContent>

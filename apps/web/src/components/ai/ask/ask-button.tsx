@@ -8,6 +8,18 @@ import {
 import { openAsk } from "./ask-store";
 import { useAskAvailability, useRouteProjectId } from "./use-ask-availability";
 
+/** Ask as a menu entry (the crowded top bar's "More" menu), or null while AI is off. */
+export function useAskAction() {
+  const { t } = useTranslation();
+  const routeProjectId = useRouteProjectId();
+  const { available, projectId } = useAskAvailability(routeProjectId);
+  if (!available) return null;
+  return {
+    label: t("ai:ask.title"),
+    onSelect: () => openAsk({ projectId }),
+  };
+}
+
 /** The top bar's small sparkle that opens Ask. Hidden while AI is off. */
 export function AskButton() {
   const { t } = useTranslation();

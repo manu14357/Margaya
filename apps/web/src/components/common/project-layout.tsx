@@ -3,6 +3,7 @@ import { type ReactNode, useState } from "react";
 import { AiSummaryButton } from "@/components/ai/ai-summary";
 import ProjectArchivedNotice from "@/components/archives/project-archived-notice";
 import ProjectCrumbSelect from "@/components/common/header/project-crumb-select";
+import { TopBarRoomy } from "@/components/common/header/top-bar-label";
 import Layout from "@/components/common/layout";
 import {
   type ProjectLayoutView,
@@ -157,11 +158,13 @@ export default function ProjectLayout({
       <Layout.TopBar
         place={
           <>
-            <ProjectTile
-              icon={project?.icon}
-              seed={project?.id}
-              className="size-6"
-            />
+            <TopBarRoomy hideWhen="tight">
+              <ProjectTile
+                icon={project?.icon}
+                seed={project?.id}
+                className="size-6"
+              />
+            </TopBarRoomy>
             <ProjectCrumbSelect
               workspaceId={workspaceId}
               projectId={projectId}
@@ -170,35 +173,37 @@ export default function ProjectLayout({
               onAddProject={() => setIsCreateProjectModalOpen(true)}
             />
             {project && (
-              <span className="hidden items-center gap-1 sm:flex">
-                <FavoriteButton
-                  workspaceId={workspaceId}
-                  entityType="project"
-                  entityId={projectId}
-                  placeholder={{
-                    name: project.name,
-                    icon: project.icon,
-                    key: project.slug,
-                  }}
-                />
-                <ProjectPublicBadge
-                  projectId={projectId}
-                  isPublic={Boolean(project.isPublic)}
-                />
-                <ProjectLeadBadge
-                  workspaceId={workspaceId}
-                  leadUserId={project.leadUserId}
-                />
-                {isTasksSection && (
-                  <AiSummaryButton
-                    kind="project"
-                    id={projectId}
-                    projectId={projectId}
+              <TopBarRoomy>
+                <span className="hidden items-center gap-1 sm:flex">
+                  <FavoriteButton
                     workspaceId={workspaceId}
-                    name={project.name}
+                    entityType="project"
+                    entityId={projectId}
+                    placeholder={{
+                      name: project.name,
+                      icon: project.icon,
+                      key: project.slug,
+                    }}
                   />
-                )}
-              </span>
+                  <ProjectPublicBadge
+                    projectId={projectId}
+                    isPublic={Boolean(project.isPublic)}
+                  />
+                  <ProjectLeadBadge
+                    workspaceId={workspaceId}
+                    leadUserId={project.leadUserId}
+                  />
+                  {isTasksSection && (
+                    <AiSummaryButton
+                      kind="project"
+                      id={projectId}
+                      projectId={projectId}
+                      workspaceId={workspaceId}
+                      name={project.name}
+                    />
+                  )}
+                </span>
+              </TopBarRoomy>
             )}
             {/* Below xl the top bar has no room for them beside the actions. */}
             {extraCrumbs && (

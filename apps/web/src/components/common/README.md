@@ -5,8 +5,8 @@ The authenticated app runs inside one shell, mounted once by
 the shell; they render a **page frame** inside it.
 
 ```
-rail (64px, md+) | context panel (248px; pinned lg+, drawer below) | page frame
-                                                   bottom tab bar (< 768px)
+rail (64px, from 520px) | context panel (248px; pinned lg+, drawer below) | page frame
+                                                   bottom tab bar (< 520px)
 ```
 
 - **Rail** (`components/app-rail.tsx`): workspace tile, Home, Inbox (unread
@@ -42,7 +42,7 @@ Every piece is also a named export from its own file.
 
 | Component | Props | Use |
 | --- | --- | --- |
-| `TopBar` (`header/top-bar.tsx`) | `title?`, `place?` (replaces title: tile, switcher, `· context`), `actions?` (the one primary action), `className?` | 48px bar: panel toggle, place, centred command field, notifications, actions. No breadcrumbs. |
+| `TopBar` (`header/top-bar.tsx`) | `title?`, `place?` (replaces title: tile, switcher, `· context`), `actions?` (the one primary action), `className?` | 48px bar: panel toggle, place, centred command field, notifications, actions. No breadcrumbs. Never wraps: it measures itself (`header/top-bar-density.ts`) and goes `full` → `compact` (search icon, no bell) → `tight` (no Ask, no tile). In `place`/`actions`, wrap button text in `TopBarLabel` (icon-only when crowded) and secondary items in `TopBarRoomy` (`header/top-bar-label.tsx`); read the density with `useTopBarDensity()`. |
 | `ViewTabs` (`view-tabs.tsx`) | `tabs: ViewTab[]` (`value`, `label`, `icon?`, `badge?`, `onSelect`, `separated?`), `value: string \| null`, `label` (aria), `trailing?` | Underline tab row under the top bar; scrolls sideways on phones. |
 | `FilterBar` (`filter-bar.tsx`) | `children` (chips, Filter button), `trailing?` (Display, Sort), `className?` | The lens bar; only where filtering applies. |
 | `PageHeader` (`page-header.tsx`) | `title`, `description?`, `icon?`, `actions?`, `children?` | Heading block at the top of the content. |

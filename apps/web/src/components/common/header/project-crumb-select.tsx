@@ -37,7 +37,7 @@ export default function ProjectCrumbSelect({
           <Button
             variant="ghost"
             size="xs"
-            className="h-7 justify-between gap-2.5 px-2 text-xs text-foreground"
+            className="h-7 min-w-0 shrink justify-between gap-2.5 px-2 text-xs text-foreground"
           />
         }
       >

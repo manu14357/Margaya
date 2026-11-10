@@ -40,7 +40,7 @@ export default function TaskCrumbSelect({
           <Button
             variant="ghost"
             size="xs"
-            className="h-7 max-w-56 justify-between gap-1.5 px-2 text-xs text-foreground"
+            className="h-7 min-w-0 max-w-56 shrink justify-between gap-1.5 px-2 text-xs text-foreground"
           />
         }
       >
