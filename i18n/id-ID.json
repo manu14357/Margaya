@@ -159,6 +159,15 @@
 			"restored": "Proyek dipulihkan",
 			"viewInArchives": "Lihat di Arsip"
 		},
+		"linkDialog": {
+			"addTitle": "Tambah tautan",
+			"editTitle": "Edit tautan",
+			"description": "Tautkan teks yang dipilih ke alamat web atau alamat email.",
+			"urlLabel": "Alamat tautan",
+			"invalid": "Masukkan alamat web, seperti example.com, atau tautan mailto:.",
+			"apply": "Terapkan",
+			"remove": "Hapus tautan"
+		},
 		"states": {
 			"crash": {
 				"description": "Memuat ulang biasanya menyelesaikannya. Pekerjaan Anda yang tersimpan aman.",
@@ -243,7 +252,9 @@
 			"samlNoConnection": "Masuk perusahaan belum diatur untuk domain email tersebut.",
 			"samlError": "Tidak dapat memulai masuk perusahaan. Silakan coba lagi.",
 			"emailCodesOff": "Tautan dan kode masuk lewat email dinonaktifkan di server ini. Jika selama ini Anda hanya menggunakannya, Anda belum punya kata sandi: pilih “Lupa kata sandi?” untuk membuatnya.",
-			"emailCodesOffNoEmail": "Tautan dan kode masuk lewat email dinonaktifkan di server ini. Jika selama ini Anda hanya menggunakannya, Anda belum punya kata sandi: minta admin instans untuk membuatkannya untuk Anda."
+			"emailCodesOffNoEmail": "Tautan dan kode masuk lewat email dinonaktifkan di server ini. Jika selama ini Anda hanya menggunakannya, Anda belum punya kata sandi: minta admin instans untuk membuatkannya untuk Anda.",
+			"desktopBrowserHint": "Opsi ini dilanjutkan di browser Anda, lalu membawa Anda kembali ke aplikasi.",
+			"desktopBrowserStarted": "Lanjutkan di browser untuk menyelesaikan proses masuk."
 		},
 		"providers": {
 			"google": "Google",
@@ -534,6 +545,31 @@
 			"failedTitle": "Tidak dapat menyelesaikan proses masuk",
 			"failed": "Proses masuk ini tidak dapat diselesaikan. Tautannya hanya berfungsi sekali, selama satu menit, dan hanya di browser yang Anda gunakan untuk masuk. Silakan masuk lagi.",
 			"backToSignIn": "Kembali ke halaman masuk"
+		},
+		"desktop": {
+			"pageTitle": "Masuk ke aplikasi desktop",
+			"title": "Masuk ke aplikasi desktop",
+			"confirm": "Masuk ke aplikasi desktop Margaya sebagai {{account}} di {{server}}?",
+			"warning": "Lanjutkan hanya jika Anda sendiri yang memulai ini dari aplikasi desktop Margaya di komputer ini. Jika seseorang mengirimkan tautan ini kepada Anda, batalkan.",
+			"allow": "Izinkan",
+			"cancel": "Batal",
+			"tryAgain": "Coba lagi",
+			"doneTitle": "Anda dapat kembali ke aplikasi desktop",
+			"doneHint": "Jika aplikasi tidak terbuka, buka lagi dari sini.",
+			"openAgain": "Buka aplikasi desktop",
+			"codeTitle": "Kode masuk Anda",
+			"codeHint": "Tempel kode ini di aplikasi desktop. Kode hanya berfungsi sekali dan kedaluwarsa dalam satu menit.",
+			"copy": "Salin kode",
+			"copied": "Kode disalin",
+			"copyFailed": "Tidak dapat menyalin kode. Pilih kode lalu salin sendiri.",
+			"cancelledTitle": "Proses masuk dibatalkan",
+			"cancelledHint": "Aplikasi desktop tidak masuk. Anda dapat menutup tab ini.",
+			"invalidTitle": "Tautan masuk ini tidak valid",
+			"invalidHint": "Mulai proses masuk lagi dari aplikasi desktop.",
+			"expired": "Permintaan masuk ini sudah kedaluwarsa atau tidak valid. Mulai lagi dari aplikasi desktop.",
+			"disabled": "Masuk lewat aplikasi desktop dinonaktifkan di server ini. Hubungi admin instans.",
+			"rateLimited": "Terlalu banyak percobaan. Tunggu satu menit, lalu coba lagi.",
+			"failed": "Tidak dapat masuk ke aplikasi desktop. Coba lagi."
 		}
 	},
 	"settings": {
@@ -720,7 +756,9 @@
 				"quietTo": "Sampai",
 				"deviceMute": "Bisukan suara di perangkat ini",
 				"deviceMuteDescription": "Hanya membisukan browser ini; perangkat Anda yang lain tetap memutar suara.",
-				"previewFailed": "Browser Anda tidak memutar suara. Pastikan tab atau situs ini tidak dibisukan."
+				"previewFailed": "Browser Anda tidak memutar suara. Pastikan tab atau situs ini tidak dibisukan.",
+				"desktopDescription": "Di aplikasi desktop, notifikasi memutar suara Margaya yang Anda pilih di sini, dengan volume Anda, saat pengaturan ini memintanya. “Jangan Ganggu” membisukannya.",
+				"deviceMuteDescriptionDesktop": "Hanya membisukan aplikasi desktop ini; perangkat Anda yang lain tetap memutar suara."
 			},
 			"pushTitle": "Notifikasi push",
 			"pushDescription": "Peringatan di ponsel atau komputer Anda, bahkan saat Margaya ditutup. “Beri tahu saya tentang” menentukan apa yang dikirim, dan aturan ruang kerja di bawah dapat mempersempitnya.",
@@ -744,7 +782,8 @@
 			"workspaceCardLabelPush": "Notifikasi push",
 			"pushChannelHintEnabled": "Kirim notifikasi ruang kerja yang sesuai ke perangkat Anda.",
 			"pushChannelHintDisabled": "Aktifkan push untuk perangkat terlebih dahulu.",
-			"pushLoadFailed": "Tidak dapat memuat pengaturan push Anda. Muat ulang halaman untuk mencoba lagi."
+			"pushLoadFailed": "Tidak dapat memuat pengaturan push Anda. Muat ulang halaman untuk mencoba lagi.",
+			"pushDesktopApp": "Aplikasi desktop menampilkan notifikasi di perangkat ini, jadi push browser tidak diperlukan di sini."
 		},
 		"preferencesPage": {
 			"title": "Preferensi",
@@ -3218,6 +3257,11 @@
 				"agentPromptPlaceholder": "Misalnya: lakukan triase pada tugas ini dan sarankan prioritas.",
 				"agentHint": "Agen bertindak atas nama orang yang menyimpan aturan ini, dengan hak paling banyak sebesar haknya. Agen tidak pernah berjalan karena perubahan yang dibuat agen."
 			}
+		},
+		"continueInBrowser": {
+			"title": "Lanjutkan di browser Anda",
+			"billing": "Selesaikan di jendela browser yang baru saja terbuka, lalu kembali ke Margaya. Paket Anda diperbarui saat Anda kembali.",
+			"githubApp": "Selesaikan di GitHub melalui browser Anda, lalu kembali ke Margaya dan periksa pemasangan lagi."
 		}
 	},
 	"navigation": {
@@ -3336,7 +3380,9 @@
 			"settings": "Pengaturan",
 			"signingOut": "Keluar...",
 			"logOut": "Keluar",
-			"instanceSettings": "Pengaturan instans"
+			"instanceSettings": "Pengaturan instans",
+			"getDesktopApp": "Dapatkan aplikasi desktop",
+			"switchServer": "Ganti server"
 		},
 		"workspaceSwitcher": {
 			"workspaces": "Ruang kerja",
@@ -3478,6 +3524,12 @@
 			"whatsNew": "Yang baru",
 			"sourceCode": "Kode sumber",
 			"workspaceAnalytics": "Ruang kerja"
+		},
+		"desktopWindow": {
+			"minimize": "Minimalkan",
+			"maximize": "Maksimalkan",
+			"restore": "Pulihkan",
+			"close": "Tutup"
 		}
 	},
 	"notifications": {
@@ -3788,7 +3840,6 @@
 				"imageUploaded": "Gambar diunggah",
 				"fileAttached": "File dilampirkan",
 				"failedToUploadFile": "Gagal mengunggah file",
-				"enterUrl": "Masukkan URL",
 				"plaintext": "Teks biasa",
 				"autoDetect": "Deteksi otomatis",
 				"slashGroupText": "Teks",
@@ -4183,7 +4234,6 @@
 				"ariaLabel": "Editor deskripsi tugas",
 				"placeholder": "Tulis deskripsi...",
 				"previewImage": "Pratinjau gambar",
-				"enterUrl": "Masukkan URL",
 				"autoDetect": "Deteksi otomatis",
 				"copyCode": "Salin kode",
 				"copy": "Salin",
@@ -4435,7 +4485,6 @@
 		"backlog": {
 			"pageTitle": "Backlog {{name}}",
 			"noTasksToMove": "Tidak ada tugas terencana untuk dipindahkan",
-			"moveAllConfirm": "Pindahkan semua {{count}} tugas yang direncanakan ke {{column}}?",
 			"moveAllSuccess": "Memindahkan {{count}} tugas ke {{column}}",
 			"plan": "Rencanakan",
 			"moveAllTooltip": "Pindahkan semua tugas yang direncanakan ke {{column}}",
@@ -4445,7 +4494,10 @@
 				"planned": "Direncanakan",
 				"archived": "Diarsipkan"
 			},
-			"noTasksInSection": "Tidak ada tugas {{section}}"
+			"noTasksInSection": "Tidak ada tugas {{section}}",
+			"moveAllConfirmTitle_other": "Pindahkan {{count}} tugas yang direncanakan ke {{column}}?",
+			"moveAllConfirmDescription_other": "Tugas akan keluar dari backlog dan muncul di papan.",
+			"moveAllConfirmAction": "Pindahkan tugas"
 		},
 		"sort": {
 			"label": "Urutkan",
@@ -4792,8 +4844,6 @@
 			"moveToBoardSuccess": "{{count}} tugas dipindahkan ke papan",
 			"moveToBoardError": "Gagal memindahkan tugas ke papan",
 			"delete": "Hapus tugas",
-			"deleteConfirm": "Pindahkan {{count}} tugas ke sampah? Anda dapat memulihkannya dari Baru dihapus di pengaturan proyek.",
-			"deleteSuccess": "{{count}} tugas dihapus",
 			"deleteError": "Gagal menghapus tugas",
 			"archive": "Arsipkan tugas",
 			"archiveSuccess": "{{count}} tugas diarsipkan",
@@ -4839,7 +4889,11 @@
 			"moveToProjectConfirm": "Pindahkan tugas",
 			"moveToProjectSuccess_other": "{{count}} tugas dipindahkan ke {{name}}",
 			"moveToProjectNone": "Tugas-tugas ini sudah ada di {{name}}",
-			"moveToProjectError": "Tidak dapat memindahkan tugas"
+			"moveToProjectError": "Tidak dapat memindahkan tugas",
+			"deleteConfirmTitle_other": "Pindahkan {{count}} tugas ke sampah?",
+			"deleteConfirmDescription_other": "Anda dapat memulihkannya dari Baru dihapus di pengaturan proyek.",
+			"deleteConfirmAction": "Pindahkan ke sampah",
+			"deleteSuccess_other": "{{count}} tugas dipindahkan ke sampah"
 		},
 		"editor": {
 			"table": {
@@ -6895,7 +6949,8 @@
 				"signIn": "Masuk",
 				"explore": "Jelajahi",
 				"featuresIntro": "Enam tur singkat tentang Margaya. Masing-masing punya demo langsung yang bisa Anda coba sendiri.",
-				"newTab": "(terbuka di tab baru)"
+				"newTab": "(terbuka di tab baru)",
+				"download": "Unduh"
 			},
 			"ownIt": {
 				"cta": "Baca panduan instalasi",
@@ -7013,6 +7068,7 @@
 				"product": {
 					"changelog": "Log perubahan",
 					"roadmap": "Peta jalan",
+					"download": "Aplikasi desktop",
 					"title": "Produk"
 				},
 				"resources": {
@@ -11759,6 +11815,305 @@
 		"notificationText": {
 			"commentWithoutPreview": "Komentar baru pada {{taskTitle}}",
 			"pushFixedLine": "Buka Margaya untuk melihat detailnya."
+		}
+	},
+	"download": {
+		"title": "Unduh aplikasi desktop",
+		"description": "Margaya untuk macOS, Windows, dan Linux: server Margaya Anda sendiri di jendelanya sendiri, dengan notifikasi native, lencana belum dibaca, dan tambah cepat dari mana saja.",
+		"eyebrow": "Aplikasi desktop",
+		"headline": "Margaya di desktop Anda",
+		"intro": "Server Margaya Anda sendiri di jendelanya sendiri, dengan notifikasi native, lencana belum dibaca, dan tambah cepat dari mana saja. Untuk macOS, Windows, dan Linux.",
+		"onThisPage": "Di halaman ini",
+		"picker": {
+			"mac": "Unduh untuk Mac",
+			"windows": "Unduh untuk Windows",
+			"appleSilicon": "Apple Silicon",
+			"intel": "Intel",
+			"windowsDetail": "Penginstal 64-bit",
+			"otherMacArm": "Mac dengan Apple Silicon? Dapatkan versi itu",
+			"otherMacIntel": "Mac dengan prosesor Intel? Dapatkan versi itu",
+			"unsupported": "Aplikasi desktop berjalan di macOS, Windows, dan Linux. Di perangkat ini, buka server Margaya Anda di browser saja.",
+			"linux": "Unduh untuk Linux",
+			"linuxDetail": "AppImage, x86_64",
+			"linuxArmDetail": "AppImage, ARM64",
+			"otherPlatforms": "Platform dan format lain"
+		},
+		"comingSoon": {
+			"title": "Segera hadir",
+			"body": "Rilis desktop pertama sedang disiapkan. Penginstal akan muncul di sini dan di halaman rilis GitHub begitu dipublikasikan.",
+			"action": "Buka Rilis GitHub"
+		},
+		"files": {
+			"title": "Semua unduhan",
+			"description": "Pilih platform dan format Anda. Setiap file juga dilampirkan ke rilis GitHub.",
+			"macArm": {
+				"name": "Apple Silicon",
+				"detail": "Mac dengan chip seri M."
+			},
+			"macIntel": {
+				"name": "Intel",
+				"detail": "Mac dengan prosesor Intel."
+			},
+			"windowsExe": {
+				"name": "Penginstal",
+				"detail": "Terinstal untuk akun Anda, tanpa hak administrator."
+			},
+			"windowsMsi": {
+				"name": "Paket MSI",
+				"detail": "Untuk tim TI yang menerapkan dengan Intune, Kebijakan Grup, atau alat serupa."
+			},
+			"checksum": "SHA-256",
+			"noChecksum": "Tidak ada checksum yang dipublikasikan untuk file ini.",
+			"copied": "Disalin",
+			"download": "Unduh",
+			"missing": "Tidak tersedia di rilis ini.",
+			"linuxAppImage": {
+				"name": "AppImage",
+				"detail": "Berjalan di sebagian besar distribusi tanpa instalasi, dan memperbarui dirinya sendiri."
+			},
+			"linuxDeb": {
+				"name": "Paket Debian",
+				"detail": "Debian, Ubuntu, Linux Mint, dan Pop!_OS."
+			},
+			"linuxRpm": {
+				"name": "Paket RPM",
+				"detail": "Fedora, RHEL, Rocky Linux, AlmaLinux, dan openSUSE."
+			},
+			"architecture": "Arsitektur",
+			"x64": "x86_64 (Intel, AMD)",
+			"arm": "ARM64",
+			"recommended": "Direkomendasikan",
+			"copyChecksumFor": "Salin checksum SHA-256 {{name}}",
+			"downloadFile": "Unduh {{name}}"
+		},
+		"requirements": {
+			"title": "Persyaratan sistem",
+			"macos": {
+				"name": "macOS",
+				"value": "macOS 14 Sonoma atau yang lebih baru, di Apple Silicon atau Intel."
+			},
+			"windows": {
+				"name": "Windows",
+				"value": "Windows 10 atau 11, 64-bit."
+			},
+			"server": {
+				"name": "Server",
+				"value": "Setiap aplikasi terhubung ke server Margaya yang dapat Anda akses, dan selalu sesuai dengan versinya."
+			},
+			"linux": {
+				"name": "Linux",
+				"value": "x86_64 atau ARM64 dengan WebKitGTK 4.1 (Ubuntu 22.04, Debian 12, Fedora 38 atau yang lebih baru) dan penyimpanan kunci."
+			}
+		},
+		"firstLaunch": {
+			"title": "Instalasi dan pembukaan pertama",
+			"description": "Sistem Anda bertanya sekali sebelum membuka aplikasi dari internet. Setelah itu, Margaya berjalan seperti aplikasi lainnya.",
+			"macos": {
+				"step1": "Buka .dmg yang diunduh dan seret Margaya ke “Aplikasi”.",
+				"step2": "Buka Margaya dari “Aplikasi”. Saat macOS menanyakan tentang aplikasi dari internet, klik “Buka”.",
+				"step3": "Jika macOS menyatakan tidak dapat memeriksa aplikasi, buka Pengaturan Sistem › Privasi & Keamanan, lalu klik “Tetap Buka”.",
+				"note": "Jalankan Margaya dari “Aplikasi”, bukan dari image disk, agar tautan dari browser Anda dapat membukanya."
+			},
+			"windows": {
+				"step1": "Jalankan penginstal yang diunduh.",
+				"step2": "Jika Windows menampilkan “Windows melindungi PC Anda”, klik “Info selengkapnya”, lalu “Tetap jalankan”. Penginstal belum ditandatangani kodenya.",
+				"step3": "Ikuti penginstal. Margaya terbuka setelah selesai dan muncul di menu Mulai.",
+				"note": "Pembaruan dipasang dari dalam aplikasi dan tidak menampilkan peringatan ini lagi."
+			},
+			"linux": {
+				"intro": "Gunakan AppImage di distribusi apa pun, atau instal paket untuk distribusi Anda. Jalankan perintahnya di folder tempat Anda mengunduh.",
+				"appImage": "AppImage, distribusi apa pun",
+				"deb": "Debian, Ubuntu, Linux Mint, Pop!_OS",
+				"rpm": "Fedora, RHEL, Rocky Linux, AlmaLinux",
+				"note": "Margaya menyimpan info masuk Anda di penyimpanan kunci sistem, jadi GNOME Keyring atau KWallet harus berjalan. Untuk memperbarui .deb atau .rpm, instal paket versi berikutnya.",
+				"opensuse": "openSUSE"
+			},
+			"guide": "Panduan instalasi lengkap",
+			"troubleshooting": "Pemecahan masalah"
+		},
+		"verify": {
+			"title": "Periksa unduhan Anda",
+			"description": "Jalankan perintah untuk sistem Anda dan bandingkan hasilnya dengan SHA-256 file di atas. Keduanya harus sama persis.",
+			"macos": "macOS, di Terminal",
+			"windows": "Windows, di PowerShell",
+			"linux": "Linux, di terminal"
+		},
+		"help": {
+			"title": "Langkah berikutnya",
+			"guide": {
+				"title": "Panduan aplikasi desktop",
+				"body": "Menambahkan server, masuk, notifikasi, tambah cepat, dan pembaruan.",
+				"link": "Baca panduan"
+			},
+			"admin": {
+				"title": "Untuk administrator",
+				"body": "Pengaturan server, reverse proxy, dan penerapan di seluruh perusahaan.",
+				"link": "Baca panduan admin"
+			},
+			"releases": {
+				"title": "Rilis GitHub",
+				"body": "Setiap versi beserta catatan rilis dan semua filenya.",
+				"link": "Buka Rilis GitHub"
+			}
+		},
+		"platforms": {
+			"label": "Pilih platform",
+			"macos": "macOS",
+			"windows": "Windows",
+			"linux": "Linux",
+			"detected": "sistem Anda"
+		},
+		"code": {
+			"copy": "Salin",
+			"copied": "Disalin",
+			"copyLabel": "Salin perintah: {{label}}"
+		},
+		"meta": {
+			"version": "Versi {{version}}",
+			"released": "Dirilis {{date}}",
+			"releaseNotes": "Catatan rilis",
+			"allReleases": "Semua rilis di GitHub"
+		}
+	},
+	"desktop": {
+		"launcher": {
+			"servers": {
+				"heading": "Server",
+				"empty": "Tambahkan server Margaya Anda untuk memulai.",
+				"open": "Buka",
+				"rename": "Ganti nama",
+				"remove": "Hapus",
+				"save": "Simpan",
+				"cancel": "Batal",
+				"nameLabel": "Nama server",
+				"removeConfirm": "Hapus {{name}}? Anda akan dikeluarkan dari server itu di komputer ini.",
+				"signedIn": "Sudah masuk",
+				"signedOut": "Belum masuk",
+				"signIn": "Masuk dengan browser",
+				"signOut": "Keluar",
+				"unread_other": "{{count}} belum dibaca",
+				"insecure": "Tidak aman (http)"
+			},
+			"add": {
+				"heading": "Tambah server",
+				"urlLabel": "Alamat server",
+				"urlPlaceholder": "margaya.example.com",
+				"connect": "Hubungkan",
+				"connecting": "Menghubungkan…",
+				"nameLabel": "Nama",
+				"submit": "Tambah server",
+				"found": "Margaya {{version}} ditemukan di {{url}}",
+				"httpWarning": "Server ini memakai http:// biasa tanpa enkripsi. Cookie aman dan beberapa fitur browser memerlukan https://. Lanjutkan hanya di jaringan yang Anda percayai.",
+				"confirmHttp": "Tetap tambahkan"
+			},
+			"errors": {
+				"invalidUrl": "Masukkan alamat server, misalnya margaya.example.com.",
+				"unreachable": "Tidak dapat menjangkau server ini. Periksa alamat dan koneksi jaringan Anda.",
+				"notMargaya": "Alamat ini sepertinya bukan server Margaya.",
+				"serverTooOld": "Server Margaya ini belum mendukung aplikasi desktop. Minta administrator Anda untuk memperbaruinya.",
+				"disabled": "Masuk lewat aplikasi desktop dinonaktifkan di server ini.",
+				"desktopTooOld": "Server ini memerlukan Margaya Desktop {{version}} atau yang lebih baru. Perbarui aplikasi untuk terhubung.",
+				"tlsUntrusted": "Komputer Anda tidak memercayai sertifikat server ini.",
+				"tlsHelp": "Cara memercayai sertifikat perusahaan",
+				"duplicate": "Server ini sudah ada di daftar Anda.",
+				"notSignedIn": "Masuk ke server ini terlebih dahulu.",
+				"signInFailed": "Proses masuk tidak selesai. Coba lagi.",
+				"codeInvalid": "Kode itu tidak berfungsi. Kode kedaluwarsa setelah satu menit, jadi mulai lagi.",
+				"quickAddFailed": "Tidak dapat membuat tugas.",
+				"generic": "Terjadi kesalahan: {{message}}",
+				"keychainUnavailable": "Tidak dapat menyimpan info masuk Anda di penyimpanan kunci sistem. Di Linux, pastikan GNOME Keyring atau KWallet sedang berjalan, lalu coba lagi."
+			},
+			"signIn": {
+				"waiting": "Selesaikan proses masuk di browser Anda…",
+				"pasteHint": "Browser tidak kembali ke sini? Tampilkan kode dan tempelkan di bawah.",
+				"showCode": "Tampilkan kode",
+				"codeLabel": "Kode masuk",
+				"submit": "Lanjutkan",
+				"cancel": "Batal",
+				"done": "Sudah masuk ke {{name}}"
+			},
+			"deepLink": {
+				"addTitle": "Tambahkan server ini?",
+				"addBody": "Sebuah tautan meminta untuk membuka {{url}}, yang tidak ada di daftar server Anda. Tambahkan hanya server yang Anda percayai.",
+				"check": "Periksa server",
+				"ignore": "Abaikan"
+			},
+			"settings": {
+				"heading": "Pengaturan",
+				"openAtLogin": "Buka saat login",
+				"copyDiagnostics": "Salin diagnostik",
+				"copied": "Diagnostik disalin ke papan klip.",
+				"version": "Versi {{version}}",
+				"checkUpdates": "Periksa pembaruan",
+				"checking": "Memeriksa…",
+				"upToDate": "Aplikasi Anda sudah yang terbaru.",
+				"updateAvailable": "Versi {{version}} tersedia.",
+				"updateInstall": "Mulai ulang untuk memperbarui",
+				"updating": "Memperbarui…",
+				"updatePackage": "Versi {{version}} tersedia. Unduh paket baru untuk memperbarui.",
+				"updateDownload": "Unduh"
+			},
+			"quickAdd": {
+				"title": "Tambah cepat",
+				"server": "Server",
+				"project": "Proyek",
+				"taskTitle": "Judul tugas",
+				"placeholder": "Apa yang perlu dikerjakan?",
+				"create": "Buat tugas",
+				"creating": "Membuat…",
+				"created": "Tugas dibuat.",
+				"open": "Buka tugas",
+				"noServers": "Masuk ke server untuk menambahkan tugas.",
+				"noProjects": "Tidak ada proyek yang dapat Anda tambahi tugas.",
+				"loading": "Memuat…"
+			},
+			"downloads": {
+				"finished": "{{file}} telah diunduh",
+				"failed": "Tidak dapat mengunduh {{file}}"
+			},
+			"menu": {
+				"about": "Tentang Margaya",
+				"checkUpdates": "Periksa pembaruan…",
+				"hide": "Sembunyikan Margaya",
+				"hideOthers": "Sembunyikan Lainnya",
+				"showAll": "Tampilkan Semua",
+				"quit": "Keluar dari Margaya",
+				"edit": "Edit",
+				"undo": "Urungkan",
+				"redo": "Ulangi",
+				"cut": "Potong",
+				"copy": "Salin",
+				"paste": "Tempel",
+				"selectAll": "Pilih Semua",
+				"view": "Tampilan",
+				"reload": "Muat ulang",
+				"servers": "Daftar server",
+				"quickAdd": "Tambah cepat…",
+				"window": "Jendela",
+				"minimize": "Minimalkan",
+				"closeWindow": "Tutup jendela",
+				"help": "Bantuan",
+				"copyDiagnostics": "Salin diagnostik",
+				"openLogs": "Buka folder log"
+			},
+			"tray": {
+				"open": "Buka Margaya",
+				"openServer": "Buka {{name}}",
+				"quickAdd": "Tambah cepat…",
+				"updateReady": "Mulai ulang untuk memperbarui ke {{version}}",
+				"quit": "Keluar",
+				"servers": "Ganti server…",
+				"updateDownload": "Unduh versi {{version}}…"
+			},
+			"offline": {
+				"title": "Tidak dapat menjangkau {{name}}",
+				"body": "Margaya terus mencoba di latar belakang. Periksa koneksi jaringan Anda, atau beralih ke server lain.",
+				"lastError": "Kesalahan terakhir: {{error}}",
+				"retry": "Coba lagi",
+				"retrying": "Mencoba lagi…",
+				"retryIn_other": "Mencoba lagi dalam {{count}} detik",
+				"switchServer": "Ganti server"
+			}
 		}
 	}
 }

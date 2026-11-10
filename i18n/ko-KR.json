@@ -159,6 +159,15 @@
 			"restored": "프로젝트를 복원했습니다",
 			"viewInArchives": "보관함에서 보기"
 		},
+		"linkDialog": {
+			"addTitle": "링크 추가",
+			"editTitle": "링크 편집",
+			"description": "선택한 텍스트를 웹 주소나 이메일 주소에 연결합니다.",
+			"urlLabel": "링크 주소",
+			"invalid": "example.com 같은 웹 주소나 mailto: 링크를 입력하세요.",
+			"apply": "적용",
+			"remove": "링크 제거"
+		},
 		"states": {
 			"crash": {
 				"description": "새로고침하면 대부분 해결됩니다. 저장된 작업은 안전합니다.",
@@ -243,7 +252,9 @@
 			"samlNoConnection": "해당 이메일 도메인에는 회사 로그인이 설정되어 있지 않습니다.",
 			"samlError": "회사 로그인을 시작할 수 없습니다. 다시 시도하세요.",
 			"emailCodesOff": "이 서버에서는 이메일 로그인 링크와 코드가 꺼져 있습니다. 지금까지 이 방법만 사용했다면 아직 비밀번호가 없습니다. '비밀번호를 잊으셨나요?'를 선택해 비밀번호를 설정하세요.",
-			"emailCodesOffNoEmail": "이 서버에서는 이메일 로그인 링크와 코드가 꺼져 있습니다. 지금까지 이 방법만 사용했다면 아직 비밀번호가 없습니다. 인스턴스 관리자에게 비밀번호를 설정해 달라고 요청하세요."
+			"emailCodesOffNoEmail": "이 서버에서는 이메일 로그인 링크와 코드가 꺼져 있습니다. 지금까지 이 방법만 사용했다면 아직 비밀번호가 없습니다. 인스턴스 관리자에게 비밀번호를 설정해 달라고 요청하세요.",
+			"desktopBrowserHint": "이 옵션은 브라우저에서 계속 진행된 후 앱으로 돌아옵니다.",
+			"desktopBrowserStarted": "브라우저에서 계속 진행해 로그인을 완료하세요."
 		},
 		"providers": {
 			"google": "Google",
@@ -534,6 +545,31 @@
 			"failedTitle": "로그인을 완료하지 못했습니다",
 			"failed": "이 로그인을 완료하지 못했습니다. 로그인 링크는 한 번만, 1분 동안, 로그인한 브라우저에서만 작동합니다. 다시 로그인하세요.",
 			"backToSignIn": "로그인으로 돌아가기"
+		},
+		"desktop": {
+			"pageTitle": "데스크톱 앱 로그인",
+			"title": "데스크톱 앱에 로그인",
+			"confirm": "{{server}}에서 {{account}}(으)로 Margaya 데스크톱 앱에 로그인할까요?",
+			"warning": "이 컴퓨터의 Margaya 데스크톱 앱에서 직접 시작한 경우에만 계속하세요. 누군가 이 링크를 보내 준 것이라면 취소하세요.",
+			"allow": "허용",
+			"cancel": "취소",
+			"tryAgain": "다시 시도",
+			"doneTitle": "이제 데스크톱 앱으로 돌아가도 됩니다",
+			"doneHint": "앱이 열리지 않았다면 여기서 다시 여세요.",
+			"openAgain": "데스크톱 앱 열기",
+			"codeTitle": "로그인 코드",
+			"codeHint": "이 코드를 데스크톱 앱에 붙여 넣으세요. 한 번만 사용할 수 있으며 1분 후 만료됩니다.",
+			"copy": "코드 복사",
+			"copied": "코드를 복사했습니다",
+			"copyFailed": "코드를 복사하지 못했습니다. 코드를 선택해 직접 복사하세요.",
+			"cancelledTitle": "로그인이 취소되었습니다",
+			"cancelledHint": "데스크톱 앱은 로그인되지 않았습니다. 이 탭을 닫아도 됩니다.",
+			"invalidTitle": "유효하지 않은 로그인 링크입니다",
+			"invalidHint": "데스크톱 앱에서 로그인을 다시 시작하세요.",
+			"expired": "이 로그인 요청이 만료되었거나 유효하지 않습니다. 데스크톱 앱에서 다시 시작하세요.",
+			"disabled": "이 서버에서는 데스크톱 앱 로그인이 꺼져 있습니다. 인스턴스 관리자에게 문의하세요.",
+			"rateLimited": "시도 횟수가 너무 많습니다. 1분 기다린 후 다시 시도하세요.",
+			"failed": "데스크톱 앱에 로그인하지 못했습니다. 다시 시도하세요."
 		}
 	},
 	"settings": {
@@ -720,7 +756,9 @@
 				"quietTo": "종료",
 				"deviceMute": "이 기기에서 소리 끄기",
 				"deviceMuteDescription": "이 브라우저에서만 소리가 꺼지며, 다른 기기에서는 계속 재생됩니다.",
-				"previewFailed": "브라우저에서 소리를 재생하지 못했습니다. 이 탭이나 사이트가 음소거되어 있지 않은지 확인하세요."
+				"previewFailed": "브라우저에서 소리를 재생하지 못했습니다. 이 탭이나 사이트가 음소거되어 있지 않은지 확인하세요.",
+				"desktopDescription": "데스크톱 앱에서는 이 설정에 따라 소리가 필요할 때 알림이 여기에서 선택한 Margaya 사운드를 설정한 음량으로 재생합니다. 방해 금지 모드에서는 소리가 나지 않습니다.",
+				"deviceMuteDescriptionDesktop": "이 데스크톱 앱에서만 소리가 꺼지며, 다른 기기에서는 계속 재생됩니다."
 			},
 			"pushTitle": "푸시 알림",
 			"pushDescription": "Margaya가 닫혀 있어도 휴대폰이나 컴퓨터로 알림을 받습니다. 전송되는 내용은 '알림 받을 항목'에서 정해지며, 아래의 워크스페이스 규칙으로 범위를 좁힐 수 있습니다.",
@@ -744,7 +782,8 @@
 			"workspaceCardLabelPush": "푸시 알림",
 			"pushChannelHintEnabled": "조건에 맞는 워크스페이스 알림을 내 기기로 보냅니다.",
 			"pushChannelHintDisabled": "먼저 기기에서 푸시를 켜세요.",
-			"pushLoadFailed": "푸시 설정을 불러오지 못했습니다. 페이지를 새로고침한 후 다시 시도하세요."
+			"pushLoadFailed": "푸시 설정을 불러오지 못했습니다. 페이지를 새로고침한 후 다시 시도하세요.",
+			"pushDesktopApp": "이 기기에서는 데스크톱 앱이 알림을 표시하므로 브라우저 푸시가 필요하지 않습니다."
 		},
 		"preferencesPage": {
 			"title": "환경설정",
@@ -3218,6 +3257,11 @@
 				"agentPromptPlaceholder": "예: 이 작업을 분류하고 우선순위를 제안해 줘.",
 				"agentHint": "에이전트는 이 규칙을 저장한 사람을 대신해, 그 사람의 권한을 넘지 않게 동작합니다. 에이전트가 만든 변경에는 절대 실행되지 않습니다."
 			}
+		},
+		"continueInBrowser": {
+			"title": "브라우저에서 계속하세요",
+			"billing": "방금 열린 브라우저 창에서 완료한 후 Margaya로 돌아오세요. 돌아오면 요금제가 업데이트됩니다.",
+			"githubApp": "브라우저에서 GitHub 작업을 마친 후 Margaya로 돌아와 설치를 다시 확인하세요."
 		}
 	},
 	"navigation": {
@@ -3336,7 +3380,9 @@
 			"settings": "설정",
 			"signingOut": "로그아웃 중...",
 			"logOut": "로그아웃",
-			"instanceSettings": "인스턴스 설정"
+			"instanceSettings": "인스턴스 설정",
+			"getDesktopApp": "데스크톱 앱 받기",
+			"switchServer": "서버 전환"
 		},
 		"workspaceSwitcher": {
 			"workspaces": "워크스페이스",
@@ -3478,6 +3524,12 @@
 			"whatsNew": "새로운 소식",
 			"sourceCode": "소스 코드",
 			"workspaceAnalytics": "워크스페이스"
+		},
+		"desktopWindow": {
+			"minimize": "최소화",
+			"maximize": "최대화",
+			"restore": "이전 크기로",
+			"close": "닫기"
 		}
 	},
 	"notifications": {
@@ -3788,7 +3840,6 @@
 				"imageUploaded": "이미지가 업로드되었습니다",
 				"fileAttached": "파일이 첨부되었습니다",
 				"failedToUploadFile": "파일 업로드에 실패했습니다",
-				"enterUrl": "URL 입력",
 				"plaintext": "일반 텍스트",
 				"autoDetect": "자동 감지",
 				"slashGroupText": "텍스트",
@@ -4183,7 +4234,6 @@
 				"ariaLabel": "작업 설명 편집기",
 				"placeholder": "설명을 작성하세요...",
 				"previewImage": "이미지 미리보기",
-				"enterUrl": "URL 입력",
 				"autoDetect": "자동 감지",
 				"copyCode": "코드 복사",
 				"copy": "복사",
@@ -4435,7 +4485,6 @@
 		"backlog": {
 			"pageTitle": "{{name}}님의 백로그",
 			"noTasksToMove": "이동할 계획된 작업이 없습니다",
-			"moveAllConfirm": "계획된 작업 {{count}}건을 모두 {{column}}으로 이동할까요?",
 			"moveAllSuccess": "{{count}}건의 작업을 {{column}}으로 이동했습니다",
 			"plan": "계획",
 			"moveAllTooltip": "계획된 작업을 모두 {{column}}으로 이동",
@@ -4445,7 +4494,10 @@
 				"planned": "계획됨",
 				"archived": "보관됨"
 			},
-			"noTasksInSection": "{{section}} 작업이 없습니다"
+			"noTasksInSection": "{{section}} 작업이 없습니다",
+			"moveAllConfirmTitle_other": "계획된 작업 {{count}}건을 {{column}}(으)로 이동할까요?",
+			"moveAllConfirmDescription_other": "작업이 백로그에서 빠지고 보드에 표시됩니다.",
+			"moveAllConfirmAction": "작업 이동"
 		},
 		"sort": {
 			"label": "정렬",
@@ -4792,8 +4844,6 @@
 			"moveToBoardSuccess": "작업 {{count}}개를 보드로 이동했습니다",
 			"moveToBoardError": "작업을 보드로 이동하지 못했습니다",
 			"delete": "작업 삭제",
-			"deleteConfirm": "작업 {{count}}개를 휴지통으로 이동할까요? 프로젝트 설정의 최근 삭제됨에서 복원할 수 있습니다.",
-			"deleteSuccess": "작업 {{count}}개가 삭제되었습니다",
 			"deleteError": "작업 삭제에 실패했습니다",
 			"archive": "작업 보관",
 			"archiveSuccess": "작업 {{count}}개가 보관되었습니다",
@@ -4839,7 +4889,11 @@
 			"moveToProjectConfirm": "작업 이동",
 			"moveToProjectSuccess_other": "작업 {{count}}개를 {{name}}(으)로 이동했습니다",
 			"moveToProjectNone": "이 작업들은 이미 {{name}}에 있습니다",
-			"moveToProjectError": "작업을 이동하지 못했습니다"
+			"moveToProjectError": "작업을 이동하지 못했습니다",
+			"deleteConfirmTitle_other": "작업 {{count}}개를 휴지통으로 이동할까요?",
+			"deleteConfirmDescription_other": "프로젝트 설정의 최근 삭제됨에서 복원할 수 있습니다.",
+			"deleteConfirmAction": "휴지통으로 이동",
+			"deleteSuccess_other": "작업 {{count}}개를 휴지통으로 이동했습니다"
 		},
 		"editor": {
 			"table": {
@@ -6895,7 +6949,8 @@
 				"signIn": "로그인",
 				"explore": "둘러보기",
 				"featuresIntro": "Margaya를 둘러보는 짧은 투어 여섯 가지입니다. 각 투어에는 직접 조작해 볼 수 있는 라이브 데모가 있습니다.",
-				"newTab": "(새 탭에서 열림)"
+				"newTab": "(새 탭에서 열림)",
+				"download": "다운로드"
 			},
 			"ownIt": {
 				"cta": "설치 가이드 읽기",
@@ -7013,6 +7068,7 @@
 				"product": {
 					"changelog": "변경 내역",
 					"roadmap": "로드맵",
+					"download": "데스크톱 앱",
 					"title": "제품"
 				},
 				"resources": {
@@ -11759,6 +11815,305 @@
 		"notificationText": {
 			"commentWithoutPreview": "{{taskTitle}}에 새 댓글이 달렸습니다",
 			"pushFixedLine": "Margaya를 열어 세부 정보를 확인하세요."
+		}
+	},
+	"download": {
+		"title": "데스크톱 앱 다운로드",
+		"description": "macOS, Windows 및 Linux용 Margaya: 내 Margaya 서버를 전용 창에서 열고, 네이티브 알림, 읽지 않음 배지, 어디서나 쓸 수 있는 빠른 추가를 제공합니다.",
+		"eyebrow": "데스크톱 앱",
+		"headline": "데스크톱에서 만나는 Margaya",
+		"intro": "내 Margaya 서버를 전용 창에서 열고, 네이티브 알림, 읽지 않음 배지, 어디서나 쓸 수 있는 빠른 추가를 제공합니다. macOS, Windows 및 Linux용.",
+		"onThisPage": "이 페이지의 내용",
+		"picker": {
+			"mac": "Mac용 다운로드",
+			"windows": "Windows용 다운로드",
+			"appleSilicon": "Apple 실리콘",
+			"intel": "Intel",
+			"windowsDetail": "64비트 설치 프로그램",
+			"otherMacArm": "Apple 실리콘 Mac을 사용하시나요? 해당 버전 받기",
+			"otherMacIntel": "Intel 프로세서 Mac을 사용하시나요? 해당 버전 받기",
+			"unsupported": "데스크톱 앱은 macOS, Windows, Linux에서 실행됩니다. 이 기기에서는 브라우저로 Margaya 서버를 여세요.",
+			"linux": "Linux용 다운로드",
+			"linuxDetail": "AppImage, x86_64",
+			"linuxArmDetail": "AppImage, ARM64",
+			"otherPlatforms": "다른 플랫폼 및 형식"
+		},
+		"comingSoon": {
+			"title": "곧 출시",
+			"body": "첫 데스크톱 릴리스를 준비하고 있습니다. 게시되는 즉시 설치 프로그램이 이곳과 GitHub 릴리스 페이지에 표시됩니다.",
+			"action": "GitHub 릴리스 열기"
+		},
+		"files": {
+			"title": "모든 다운로드",
+			"description": "플랫폼과 형식을 고르세요. 모든 파일은 GitHub 릴리스에도 첨부되어 있습니다.",
+			"macArm": {
+				"name": "Apple Silicon",
+				"detail": "M 시리즈 칩이 탑재된 Mac."
+			},
+			"macIntel": {
+				"name": "Intel",
+				"detail": "Intel 프로세서가 탑재된 Mac."
+			},
+			"windowsExe": {
+				"name": "설치 프로그램",
+				"detail": "관리자 권한 없이 내 계정에 설치됩니다."
+			},
+			"windowsMsi": {
+				"name": "MSI 패키지",
+				"detail": "Intune, 그룹 정책 또는 유사한 도구로 배포하는 IT 팀용입니다."
+			},
+			"checksum": "SHA-256",
+			"noChecksum": "이 파일에 대해 게시된 체크섬이 없습니다.",
+			"copied": "복사됨",
+			"download": "다운로드",
+			"missing": "이 릴리스에서는 제공되지 않습니다.",
+			"linuxAppImage": {
+				"name": "AppImage",
+				"detail": "대부분의 배포판에서 설치 없이 실행되며 스스로 업데이트됩니다."
+			},
+			"linuxDeb": {
+				"name": "Debian 패키지",
+				"detail": "Debian, Ubuntu, Linux Mint 및 Pop!_OS."
+			},
+			"linuxRpm": {
+				"name": "RPM 패키지",
+				"detail": "Fedora, RHEL, Rocky Linux, AlmaLinux 및 openSUSE."
+			},
+			"architecture": "아키텍처",
+			"x64": "x86_64 (Intel, AMD)",
+			"arm": "ARM64",
+			"recommended": "권장",
+			"copyChecksumFor": "{{name}}의 SHA-256 체크섬 복사",
+			"downloadFile": "{{name}} 다운로드"
+		},
+		"requirements": {
+			"title": "시스템 요구 사항",
+			"macos": {
+				"name": "macOS",
+				"value": "macOS 14 Sonoma 이상, Apple Silicon 또는 Intel."
+			},
+			"windows": {
+				"name": "Windows",
+				"value": "Windows 10 또는 11, 64비트."
+			},
+			"server": {
+				"name": "서버",
+				"value": "모든 앱은 접속할 수 있는 Margaya 서버에 연결되며 항상 서버 버전과 일치합니다."
+			},
+			"linux": {
+				"name": "Linux",
+				"value": "WebKitGTK 4.1이 있는 x86_64 또는 ARM64(Ubuntu 22.04, Debian 12, Fedora 38 이상)와 키링."
+			}
+		},
+		"firstLaunch": {
+			"title": "설치 및 처음 실행하기",
+			"description": "인터넷에서 받은 앱을 열기 전에 시스템이 한 번 확인합니다. 그 후에는 Margaya가 다른 앱처럼 실행됩니다.",
+			"macos": {
+				"step1": "다운로드한 .dmg를 열고 Margaya를 '응용 프로그램'으로 드래그하세요.",
+				"step2": "'응용 프로그램'에서 Margaya를 여세요. 인터넷에서 받은 앱에 대해 macOS가 물으면 '열기'를 클릭하세요.",
+				"step3": "macOS에서 앱을 확인할 수 없다고 표시되면 시스템 설정 › 개인정보 보호 및 보안을 열고 '그래도 열기'를 클릭하세요.",
+				"note": "브라우저의 링크로 Margaya를 열 수 있도록 디스크 이미지가 아닌 '응용 프로그램'에서 실행하세요."
+			},
+			"windows": {
+				"step1": "다운로드한 설치 프로그램을 실행하세요.",
+				"step2": "Windows에 'Windows의 PC 보호'가 표시되면 '추가 정보'를 클릭한 다음 '실행'을 클릭하세요. 설치 프로그램에는 아직 코드 서명이 없습니다.",
+				"step3": "설치 프로그램의 안내를 따르세요. 완료되면 Margaya가 열리고 시작 메뉴에 표시됩니다.",
+				"note": "업데이트는 앱 안에서 설치되며 이 경고가 다시 표시되지 않습니다."
+			},
+			"linux": {
+				"intro": "AppImage는 모든 배포판에서 사용할 수 있으며, 사용 중인 배포판용 패키지를 설치할 수도 있습니다. 명령은 다운로드한 폴더에서 실행하세요.",
+				"appImage": "AppImage, 모든 배포판",
+				"deb": "Debian, Ubuntu, Linux Mint, Pop!_OS",
+				"rpm": "Fedora, RHEL, Rocky Linux, AlmaLinux",
+				"note": "Margaya는 로그인 정보를 시스템 키링에 보관하므로 GNOME Keyring 또는 KWallet이 실행 중이어야 합니다. .deb 또는 .rpm을 업데이트하려면 다음 버전의 패키지를 설치하세요.",
+				"opensuse": "openSUSE"
+			},
+			"guide": "전체 설치 가이드",
+			"troubleshooting": "문제 해결"
+		},
+		"verify": {
+			"title": "다운로드 확인",
+			"description": "사용 중인 시스템의 명령을 실행하고 결과를 위에 나온 파일의 SHA-256과 비교하세요. 정확히 일치해야 합니다.",
+			"macos": "macOS, 터미널에서",
+			"windows": "Windows, PowerShell에서",
+			"linux": "Linux, 터미널에서"
+		},
+		"help": {
+			"title": "다음 단계",
+			"guide": {
+				"title": "데스크톱 앱 가이드",
+				"body": "서버 추가, 로그인, 알림, 빠른 추가 및 업데이트.",
+				"link": "가이드 읽기"
+			},
+			"admin": {
+				"title": "관리자용",
+				"body": "서버 설정, 리버스 프록시 및 회사 전체 배포.",
+				"link": "관리자 가이드 읽기"
+			},
+			"releases": {
+				"title": "GitHub 릴리스",
+				"body": "모든 버전과 릴리스 노트, 전체 파일.",
+				"link": "GitHub 릴리스 열기"
+			}
+		},
+		"platforms": {
+			"label": "플랫폼",
+			"macos": "macOS",
+			"windows": "Windows",
+			"linux": "Linux",
+			"detected": "내 시스템"
+		},
+		"code": {
+			"copy": "복사",
+			"copied": "복사됨",
+			"copyLabel": "명령 복사: {{label}}"
+		},
+		"meta": {
+			"version": "버전 {{version}}",
+			"released": "{{date}} 출시",
+			"releaseNotes": "릴리스 노트",
+			"allReleases": "GitHub의 모든 릴리스"
+		}
+	},
+	"desktop": {
+		"launcher": {
+			"servers": {
+				"heading": "서버",
+				"empty": "시작하려면 Margaya 서버를 추가하세요.",
+				"open": "열기",
+				"rename": "이름 바꾸기",
+				"remove": "제거",
+				"save": "저장",
+				"cancel": "취소",
+				"nameLabel": "서버 이름",
+				"removeConfirm": "{{name}}을(를) 제거할까요? 이 컴퓨터에서 해당 서버에서 로그아웃됩니다.",
+				"signedIn": "로그인됨",
+				"signedOut": "로그인 안 됨",
+				"signIn": "브라우저로 로그인",
+				"signOut": "로그아웃",
+				"unread_other": "읽지 않음 {{count}}개",
+				"insecure": "안전하지 않음(http)"
+			},
+			"add": {
+				"heading": "서버 추가",
+				"urlLabel": "서버 주소",
+				"urlPlaceholder": "margaya.example.com",
+				"connect": "연결",
+				"connecting": "연결 중…",
+				"nameLabel": "이름",
+				"submit": "서버 추가",
+				"found": "{{url}}에서 Margaya {{version}}을(를) 찾았습니다",
+				"httpWarning": "이 서버는 암호화되지 않은 http://를 사용합니다. 보안 쿠키와 일부 브라우저 기능에는 https://가 필요합니다. 신뢰할 수 있는 네트워크에서만 계속하세요.",
+				"confirmHttp": "그래도 추가"
+			},
+			"errors": {
+				"invalidUrl": "margaya.example.com과 같은 서버 주소를 입력하세요.",
+				"unreachable": "이 서버에 연결할 수 없습니다. 주소와 네트워크 연결을 확인하세요.",
+				"notMargaya": "이 주소는 Margaya 서버가 아닌 것 같습니다.",
+				"serverTooOld": "이 Margaya 서버는 아직 데스크톱 앱을 지원하지 않습니다. 관리자에게 업데이트를 요청하세요.",
+				"disabled": "이 서버에서는 데스크톱 로그인이 꺼져 있습니다.",
+				"desktopTooOld": "이 서버에는 Margaya Desktop {{version}} 이상이 필요합니다. 연결하려면 앱을 업데이트하세요.",
+				"tlsUntrusted": "이 컴퓨터는 이 서버의 인증서를 신뢰하지 않습니다.",
+				"tlsHelp": "회사 인증서를 신뢰하는 방법",
+				"duplicate": "이 서버는 이미 목록에 있습니다.",
+				"notSignedIn": "먼저 이 서버에 로그인하세요.",
+				"signInFailed": "로그인이 완료되지 않았습니다. 다시 시도하세요.",
+				"codeInvalid": "코드가 작동하지 않았습니다. 코드는 1분 후 만료되므로 처음부터 다시 시작하세요.",
+				"quickAddFailed": "작업을 만들지 못했습니다.",
+				"generic": "문제가 발생했습니다: {{message}}",
+				"keychainUnavailable": "시스템 키링에 로그인 정보를 저장하지 못했습니다. Linux에서는 GNOME Keyring 또는 KWallet이 실행 중인지 확인한 후 다시 시도하세요."
+			},
+			"signIn": {
+				"waiting": "브라우저에서 로그인을 완료하세요…",
+				"pasteHint": "브라우저에서 이곳으로 돌아오지 않았나요? 대신 코드를 표시하고 아래에 붙여 넣으세요.",
+				"showCode": "코드 표시",
+				"codeLabel": "로그인 코드",
+				"submit": "계속",
+				"cancel": "취소",
+				"done": "{{name}}에 로그인했습니다"
+			},
+			"deepLink": {
+				"addTitle": "이 서버를 추가할까요?",
+				"addBody": "링크가 서버 목록에 없는 {{url}}을(를) 열려고 했습니다. 신뢰할 수 있는 서버만 추가하세요.",
+				"check": "서버 확인",
+				"ignore": "무시"
+			},
+			"settings": {
+				"heading": "설정",
+				"openAtLogin": "로그인 시 열기",
+				"copyDiagnostics": "진단 정보 복사",
+				"copied": "진단 정보를 클립보드에 복사했습니다.",
+				"version": "버전 {{version}}",
+				"checkUpdates": "업데이트 확인",
+				"checking": "확인 중…",
+				"upToDate": "최신 버전입니다.",
+				"updateAvailable": "버전 {{version}}을(를) 사용할 수 있습니다.",
+				"updateInstall": "다시 시작하여 업데이트",
+				"updating": "업데이트 중…",
+				"updatePackage": "버전 {{version}}을(를) 사용할 수 있습니다. 새 패키지를 다운로드하여 업데이트하세요.",
+				"updateDownload": "다운로드"
+			},
+			"quickAdd": {
+				"title": "빠른 추가",
+				"server": "서버",
+				"project": "프로젝트",
+				"taskTitle": "작업 제목",
+				"placeholder": "무엇을 해야 하나요?",
+				"create": "작업 만들기",
+				"creating": "만드는 중…",
+				"created": "작업을 만들었습니다.",
+				"open": "작업 열기",
+				"noServers": "작업을 추가하려면 서버에 로그인하세요.",
+				"noProjects": "작업을 추가할 수 있는 프로젝트가 없습니다.",
+				"loading": "불러오는 중…"
+			},
+			"downloads": {
+				"finished": "{{file}} 다운로드 완료",
+				"failed": "{{file}} 다운로드에 실패했습니다"
+			},
+			"menu": {
+				"about": "Margaya에 관하여",
+				"checkUpdates": "업데이트 확인…",
+				"hide": "Margaya 가리기",
+				"hideOthers": "기타 가리기",
+				"showAll": "모두 보기",
+				"quit": "Margaya 종료",
+				"edit": "편집",
+				"undo": "실행 취소",
+				"redo": "실행 복귀",
+				"cut": "오려두기",
+				"copy": "복사하기",
+				"paste": "붙여넣기",
+				"selectAll": "모두 선택",
+				"view": "보기",
+				"reload": "새로고침",
+				"servers": "서버 목록",
+				"quickAdd": "빠른 추가…",
+				"window": "윈도우",
+				"minimize": "최소화",
+				"closeWindow": "윈도우 닫기",
+				"help": "도움말",
+				"copyDiagnostics": "진단 정보 복사",
+				"openLogs": "로그 폴더 열기"
+			},
+			"tray": {
+				"open": "Margaya 열기",
+				"openServer": "{{name}} 열기",
+				"quickAdd": "빠른 추가…",
+				"updateReady": "다시 시작하여 {{version}}(으)로 업데이트",
+				"quit": "종료",
+				"servers": "서버 전환…",
+				"updateDownload": "버전 {{version}} 다운로드…"
+			},
+			"offline": {
+				"title": "{{name}}에 연결할 수 없습니다",
+				"body": "Margaya가 백그라운드에서 계속 시도합니다. 네트워크 연결을 확인하거나 다른 서버로 전환하세요.",
+				"lastError": "마지막 오류: {{error}}",
+				"retry": "다시 시도",
+				"retrying": "다시 시도하는 중…",
+				"retryIn_other": "{{count}}초 후 다시 시도합니다",
+				"switchServer": "서버 전환"
+			}
 		}
 	}
 }

@@ -159,6 +159,15 @@
 			"restored": "プロジェクトを復元しました",
 			"viewInArchives": "アーカイブで表示"
 		},
+		"linkDialog": {
+			"addTitle": "リンクを追加",
+			"editTitle": "リンクを編集",
+			"description": "選択したテキストを Web アドレスまたはメールアドレスにリンクします。",
+			"urlLabel": "リンク先アドレス",
+			"invalid": "example.com のような Web アドレス、または mailto: リンクを入力してください。",
+			"apply": "適用",
+			"remove": "リンクを削除"
+		},
 		"states": {
 			"crash": {
 				"description": "再読み込みすると直ることがほとんどです。保存済みの作業は安全です。",
@@ -243,7 +252,9 @@
 			"samlNoConnection": "このメールドメインでは企業サインインが設定されていません。",
 			"samlError": "企業サインインを開始できませんでした。もう一度お試しください。",
 			"emailCodesOff": "このサーバーでは、メールによるサインインリンクとコードがオフになっています。これまでそれらだけを使っていた場合は、まだパスワードがありません。「パスワードをお忘れですか？」を選択してパスワードを設定してください。",
-			"emailCodesOffNoEmail": "このサーバーでは、メールによるサインインリンクとコードがオフになっています。これまでそれらだけを使っていた場合は、まだパスワードがありません。インスタンス管理者にパスワードの設定を依頼してください。"
+			"emailCodesOffNoEmail": "このサーバーでは、メールによるサインインリンクとコードがオフになっています。これまでそれらだけを使っていた場合は、まだパスワードがありません。インスタンス管理者にパスワードの設定を依頼してください。",
+			"desktopBrowserHint": "これらの方法はブラウザーで続行し、完了するとアプリに戻ります。",
+			"desktopBrowserStarted": "ブラウザーで続行してサインインを完了してください。"
 		},
 		"providers": {
 			"google": "Google",
@@ -534,6 +545,31 @@
 			"failedTitle": "サインインを完了できませんでした",
 			"failed": "このサインインを完了できませんでした。リンクは 1 回だけ、1 分間、サインインに使用したブラウザーでのみ有効です。もう一度サインインしてください。",
 			"backToSignIn": "サインインに戻る"
+		},
+		"desktop": {
+			"pageTitle": "デスクトップアプリのサインイン",
+			"title": "デスクトップアプリにサインイン",
+			"confirm": "{{server}} の {{account}} として Margaya デスクトップアプリにサインインしますか？",
+			"warning": "このコンピューターの Margaya デスクトップアプリから自分で開始した場合にのみ続行してください。誰かからこのリンクが送られてきた場合はキャンセルしてください。",
+			"allow": "許可",
+			"cancel": "キャンセル",
+			"tryAgain": "もう一度試す",
+			"doneTitle": "デスクトップアプリに戻れます",
+			"doneHint": "アプリが開かなかった場合は、ここからもう一度開いてください。",
+			"openAgain": "デスクトップアプリを開く",
+			"codeTitle": "サインインコード",
+			"codeHint": "このコードをデスクトップアプリに貼り付けてください。使用できるのは 1 回だけで、1 分で期限切れになります。",
+			"copy": "コードをコピー",
+			"copied": "コードをコピーしました",
+			"copyFailed": "コードをコピーできませんでした。コードを選択して手動でコピーしてください。",
+			"cancelledTitle": "サインインをキャンセルしました",
+			"cancelledHint": "デスクトップアプリはサインインしていません。このタブは閉じてかまいません。",
+			"invalidTitle": "このサインインリンクは無効です",
+			"invalidHint": "デスクトップアプリからもう一度サインインを開始してください。",
+			"expired": "このサインインリクエストは期限切れか無効です。デスクトップアプリからやり直してください。",
+			"disabled": "このサーバーではデスクトップアプリのサインインがオフになっています。インスタンス管理者に問い合わせてください。",
+			"rateLimited": "試行回数が多すぎます。1 分待ってからもう一度お試しください。",
+			"failed": "デスクトップアプリにサインインできませんでした。もう一度お試しください。"
 		}
 	},
 	"settings": {
@@ -720,7 +756,9 @@
 				"quietTo": "終了",
 				"deviceMute": "このデバイスでサウンドをミュート",
 				"deviceMuteDescription": "このブラウザだけをミュートします。ほかのデバイスでは引き続き再生されます。",
-				"previewFailed": "ブラウザでサウンドを再生できませんでした。このタブまたはサイトがミュートになっていないか確認してください。"
+				"previewFailed": "ブラウザでサウンドを再生できませんでした。このタブまたはサイトがミュートになっていないか確認してください。",
+				"desktopDescription": "デスクトップアプリでは、これらの設定でサウンドを鳴らす場合に、ここで選んだ Margaya のサウンドが設定した音量で再生されます。おやすみモード（応答不可）がオンのときは鳴りません。",
+				"deviceMuteDescriptionDesktop": "このデスクトップアプリだけをミュートします。ほかのデバイスでは引き続き再生されます。"
 			},
 			"pushTitle": "プッシュ通知",
 			"pushDescription": "Margaya を閉じていても、スマートフォンやパソコンに通知が届きます。送信される内容は「通知を受け取るイベント」で決まり、下のワークスペースのルールでさらに絞り込めます。",
@@ -744,7 +782,8 @@
 			"workspaceCardLabelPush": "プッシュ通知",
 			"pushChannelHintEnabled": "条件に合うワークスペースの通知をデバイスに送信します。",
 			"pushChannelHintDisabled": "先にデバイスのプッシュ通知をオンにしてください。",
-			"pushLoadFailed": "プッシュ通知の設定を読み込めませんでした。ページを再読み込みしてもう一度お試しください。"
+			"pushLoadFailed": "プッシュ通知の設定を読み込めませんでした。ページを再読み込みしてもう一度お試しください。",
+			"pushDesktopApp": "このデバイスではデスクトップアプリが通知を表示するため、ここではブラウザーのプッシュ通知は必要ありません。"
 		},
 		"preferencesPage": {
 			"title": "環境設定",
@@ -3218,6 +3257,11 @@
 				"agentPromptPlaceholder": "例: このタスクをトリアージして優先度を提案して。",
 				"agentHint": "エージェントはこのルールを保存した人の代わりに、その人の権限の範囲内で動作します。エージェントが行った変更では実行されません。"
 			}
+		},
+		"continueInBrowser": {
+			"title": "ブラウザーで続行してください",
+			"billing": "開いたブラウザーウインドウで手続きを完了してから、Margaya に戻ってください。戻るとプランが更新されます。",
+			"githubApp": "ブラウザーで GitHub での手続きを完了してから Margaya に戻り、インストールをもう一度確認してください。"
 		}
 	},
 	"navigation": {
@@ -3336,7 +3380,9 @@
 			"settings": "設定",
 			"signingOut": "サインアウト中...",
 			"logOut": "ログアウト",
-			"instanceSettings": "インスタンス設定"
+			"instanceSettings": "インスタンス設定",
+			"getDesktopApp": "デスクトップアプリを入手",
+			"switchServer": "サーバーを切り替え"
 		},
 		"workspaceSwitcher": {
 			"workspaces": "ワークスペース",
@@ -3478,6 +3524,12 @@
 			"whatsNew": "新機能",
 			"sourceCode": "ソースコード",
 			"workspaceAnalytics": "ワークスペース"
+		},
+		"desktopWindow": {
+			"minimize": "最小化",
+			"maximize": "最大化",
+			"restore": "元のサイズに戻す",
+			"close": "閉じる"
 		}
 	},
 	"notifications": {
@@ -3788,7 +3840,6 @@
 				"imageUploaded": "画像をアップロードしました",
 				"fileAttached": "ファイルを添付しました",
 				"failedToUploadFile": "ファイルのアップロードに失敗しました",
-				"enterUrl": "URLを入力",
 				"plaintext": "プレーンテキスト",
 				"autoDetect": "自動検出",
 				"slashGroupText": "テキスト",
@@ -4183,7 +4234,6 @@
 				"ariaLabel": "タスク説明エディター",
 				"placeholder": "説明を入力...",
 				"previewImage": "画像をプレビュー",
-				"enterUrl": "URLを入力",
 				"autoDetect": "自動検出",
 				"copyCode": "コードをコピー",
 				"copy": "コピー",
@@ -4435,7 +4485,6 @@
 		"backlog": {
 			"pageTitle": "{{name}} のバックログ",
 			"noTasksToMove": "移動できる計画中のタスクはありません",
-			"moveAllConfirm": "計画済みの{{count}}件のタスクをすべて{{column}}に移動しますか？",
 			"moveAllSuccess": "{{count}} 件のタスクを{{column}}に移動しました",
 			"plan": "計画",
 			"moveAllTooltip": "計画済みのタスクをすべて{{column}}に移動",
@@ -4445,7 +4494,10 @@
 				"planned": "計画中",
 				"archived": "アーカイブ済み"
 			},
-			"noTasksInSection": "{{section}} のタスクはありません"
+			"noTasksInSection": "{{section}} のタスクはありません",
+			"moveAllConfirmTitle_other": "計画済みのタスク {{count}} 件を{{column}}に移動しますか？",
+			"moveAllConfirmDescription_other": "タスクはバックログから外れ、ボードに表示されます。",
+			"moveAllConfirmAction": "タスクを移動"
 		},
 		"sort": {
 			"label": "並び替え",
@@ -4792,8 +4844,6 @@
 			"moveToBoardSuccess": "{{count}} 件のタスクをボードに移動しました",
 			"moveToBoardError": "ボードへの移動に失敗しました",
 			"delete": "タスクを削除",
-			"deleteConfirm": "{{count}} 件のタスクをゴミ箱に移動しますか？プロジェクト設定の「最近削除した項目」から復元できます。",
-			"deleteSuccess": "{{count}} 件のタスクを削除しました",
 			"deleteError": "タスクの削除に失敗しました",
 			"archive": "タスクをアーカイブ",
 			"archiveSuccess": "{{count}} 件のタスクをアーカイブしました",
@@ -4839,7 +4889,11 @@
 			"moveToProjectConfirm": "タスクを移動",
 			"moveToProjectSuccess_other": "{{count}} 件のタスクを {{name}} に移動しました",
 			"moveToProjectNone": "これらのタスクはすでに {{name}} にあります",
-			"moveToProjectError": "タスクを移動できませんでした"
+			"moveToProjectError": "タスクを移動できませんでした",
+			"deleteConfirmTitle_other": "{{count}} 件のタスクをゴミ箱に移動しますか？",
+			"deleteConfirmDescription_other": "プロジェクト設定の「最近削除した項目」から復元できます。",
+			"deleteConfirmAction": "ゴミ箱に移動",
+			"deleteSuccess_other": "{{count}} 件のタスクをゴミ箱に移動しました"
 		},
 		"editor": {
 			"table": {
@@ -6895,7 +6949,8 @@
 				"signIn": "サインイン",
 				"explore": "詳しく見る",
 				"featuresIntro": "Margaya を紹介する 6 つの短いツアーです。どれもライブデモを実際に操作できます。",
-				"newTab": "（新しいタブで開きます）"
+				"newTab": "（新しいタブで開きます）",
+				"download": "ダウンロード"
 			},
 			"ownIt": {
 				"cta": "インストールガイドを読む",
@@ -7013,6 +7068,7 @@
 				"product": {
 					"changelog": "変更履歴",
 					"roadmap": "ロードマップ",
+					"download": "デスクトップアプリ",
 					"title": "製品"
 				},
 				"resources": {
@@ -11759,6 +11815,305 @@
 		"notificationText": {
 			"commentWithoutPreview": "「{{taskTitle}}」に新しいコメントがあります",
 			"pushFixedLine": "詳細を確認するには Margaya を開いてください。"
+		}
+	},
+	"download": {
+		"title": "デスクトップアプリをダウンロード",
+		"description": "macOS、Windows、Linux 向けの Margaya。自分の Margaya サーバーを専用ウインドウで開き、ネイティブ通知、未読バッジ、どこからでも使えるクイック追加を備えています。",
+		"eyebrow": "デスクトップアプリ",
+		"headline": "デスクトップで Margaya を",
+		"intro": "自分の Margaya サーバーを専用ウインドウで開き、ネイティブ通知、未読バッジ、どこからでも使えるクイック追加を備えています。macOS、Windows、Linux に対応。",
+		"onThisPage": "このページの内容",
+		"picker": {
+			"mac": "Mac 版をダウンロード",
+			"windows": "Windows 版をダウンロード",
+			"appleSilicon": "Appleシリコン",
+			"intel": "Intel",
+			"windowsDetail": "64 ビット版インストーラー",
+			"otherMacArm": "Appleシリコン搭載の Mac をお使いですか？そちらのバージョンを入手",
+			"otherMacIntel": "Intel プロセッサー搭載の Mac をお使いですか？そちらのバージョンを入手",
+			"unsupported": "デスクトップアプリは macOS、Windows、Linux で動作します。このデバイスでは、ブラウザーで Margaya サーバーを開いてください。",
+			"linux": "Linux 版をダウンロード",
+			"linuxDetail": "AppImage、x86_64",
+			"linuxArmDetail": "AppImage、ARM64",
+			"otherPlatforms": "その他のプラットフォームと形式"
+		},
+		"comingSoon": {
+			"title": "近日公開",
+			"body": "最初のデスクトップ版を準備中です。公開され次第、インストーラーはここと GitHub のリリースページに表示されます。",
+			"action": "GitHub リリースを開く"
+		},
+		"files": {
+			"title": "すべてのダウンロード",
+			"description": "プラットフォームと形式を選んでください。各ファイルは GitHub のリリースにも添付されています。",
+			"macArm": {
+				"name": "Apple Silicon",
+				"detail": "M シリーズチップ搭載の Mac。"
+			},
+			"macIntel": {
+				"name": "Intel",
+				"detail": "Intel プロセッサー搭載の Mac。"
+			},
+			"windowsExe": {
+				"name": "インストーラー",
+				"detail": "管理者権限なしで、自分のアカウントにインストールします。"
+			},
+			"windowsMsi": {
+				"name": "MSI パッケージ",
+				"detail": "Intune、グループ ポリシーなどのツールで展開する IT チーム向け。"
+			},
+			"checksum": "SHA-256",
+			"noChecksum": "このファイルのチェックサムは公開されていません。",
+			"copied": "コピーしました",
+			"download": "ダウンロード",
+			"missing": "このリリースには含まれていません。",
+			"linuxAppImage": {
+				"name": "AppImage",
+				"detail": "ほとんどのディストリビューションでインストールせずに動作し、自動でアップデートされます。"
+			},
+			"linuxDeb": {
+				"name": "Debian パッケージ",
+				"detail": "Debian、Ubuntu、Linux Mint、Pop!_OS。"
+			},
+			"linuxRpm": {
+				"name": "RPM パッケージ",
+				"detail": "Fedora、RHEL、Rocky Linux、AlmaLinux、openSUSE。"
+			},
+			"architecture": "アーキテクチャ",
+			"x64": "x86_64（Intel、AMD）",
+			"arm": "ARM64",
+			"recommended": "推奨",
+			"copyChecksumFor": "{{name}} の SHA-256 チェックサムをコピー",
+			"downloadFile": "{{name}} をダウンロード"
+		},
+		"requirements": {
+			"title": "システム要件",
+			"macos": {
+				"name": "macOS",
+				"value": "macOS 14 Sonoma 以降（Apple Silicon または Intel）。"
+			},
+			"windows": {
+				"name": "Windows",
+				"value": "Windows 10 または 11（64 ビット）。"
+			},
+			"server": {
+				"name": "サーバー",
+				"value": "各アプリはアクセスできる Margaya サーバーに接続し、常にそのバージョンと一致します。"
+			},
+			"linux": {
+				"name": "Linux",
+				"value": "WebKitGTK 4.1 を備えた x86_64 または ARM64（Ubuntu 22.04、Debian 12、Fedora 38 以降）とキーリング。"
+			}
+		},
+		"firstLaunch": {
+			"title": "インストールと初回起動",
+			"description": "インターネットから入手したアプリを開く前に、システムが一度だけ確認します。その後は、ほかのアプリと同じように Margaya を起動できます。",
+			"macos": {
+				"step1": "ダウンロードした .dmg を開き、Margaya を「アプリケーション」にドラッグします。",
+				"step2": "「アプリケーション」から Margaya を開きます。インターネットから入手したアプリについて macOS が確認してきたら、「開く」をクリックします。",
+				"step3": "アプリを検証できないと macOS に表示された場合は、システム設定 › プライバシーとセキュリティを開き、「このまま開く」をクリックします。",
+				"note": "ブラウザーのリンクから開けるように、Margaya はディスクイメージからではなく「アプリケーション」から起動してください。"
+			},
+			"windows": {
+				"step1": "ダウンロードしたインストーラーを実行します。",
+				"step2": "Windows に「Windows によって PC が保護されました」と表示された場合は、「詳細情報」をクリックし、「実行」をクリックします。インストーラーはまだコード署名されていません。",
+				"step3": "インストーラーの指示に従います。完了すると Margaya が開き、スタート メニューに表示されます。",
+				"note": "アップデートはアプリ内からインストールされ、この警告は再び表示されません。"
+			},
+			"linux": {
+				"intro": "AppImage はどのディストリビューションでも使えます。お使いのディストリビューション用のパッケージをインストールすることもできます。コマンドはダウンロード先のフォルダーで実行してください。",
+				"appImage": "AppImage、すべてのディストリビューション",
+				"deb": "Debian、Ubuntu、Linux Mint、Pop!_OS",
+				"rpm": "Fedora, RHEL, Rocky Linux, AlmaLinux",
+				"note": "Margaya はサインイン情報をシステムのキーリングに保存するため、GNOME Keyring または KWallet が実行されている必要があります。.deb または .rpm をアップデートするには、次のバージョンのパッケージをインストールします。",
+				"opensuse": "openSUSE"
+			},
+			"guide": "インストールガイド（完全版）",
+			"troubleshooting": "トラブルシューティング"
+		},
+		"verify": {
+			"title": "ダウンロードを確認する",
+			"description": "お使いのシステム用のコマンドを実行し、結果を上に記載されたファイルの SHA-256 と比較してください。完全に一致している必要があります。",
+			"macos": "macOS（ターミナル）",
+			"windows": "Windows（PowerShell）",
+			"linux": "Linux（ターミナル）"
+		},
+		"help": {
+			"title": "次のステップ",
+			"guide": {
+				"title": "デスクトップアプリガイド",
+				"body": "サーバーの追加、サインイン、通知、クイック追加、アップデート。",
+				"link": "ガイドを読む"
+			},
+			"admin": {
+				"title": "管理者向け",
+				"body": "サーバー設定、リバースプロキシ、全社への展開。",
+				"link": "管理者ガイドを読む"
+			},
+			"releases": {
+				"title": "GitHub リリース",
+				"body": "すべてのバージョンと、そのリリースノートおよび全ファイル。",
+				"link": "GitHub リリースを開く"
+			}
+		},
+		"platforms": {
+			"label": "プラットフォーム",
+			"macos": "macOS",
+			"windows": "Windows",
+			"linux": "Linux",
+			"detected": "お使いのシステム"
+		},
+		"code": {
+			"copy": "コピー",
+			"copied": "コピーしました",
+			"copyLabel": "コマンドをコピー: {{label}}"
+		},
+		"meta": {
+			"version": "バージョン {{version}}",
+			"released": "{{date}} リリース",
+			"releaseNotes": "リリースノート",
+			"allReleases": "GitHub のすべてのリリース"
+		}
+	},
+	"desktop": {
+		"launcher": {
+			"servers": {
+				"heading": "サーバー",
+				"empty": "Margaya サーバーを追加して始めましょう。",
+				"open": "開く",
+				"rename": "名前を変更",
+				"remove": "削除",
+				"save": "保存",
+				"cancel": "キャンセル",
+				"nameLabel": "サーバー名",
+				"removeConfirm": "{{name}} を削除しますか？このコンピューターでは、このサーバーからサインアウトされます。",
+				"signedIn": "サインイン済み",
+				"signedOut": "未サインイン",
+				"signIn": "ブラウザーでサインイン",
+				"signOut": "サインアウト",
+				"unread_other": "未読 {{count}} 件",
+				"insecure": "安全ではありません (http)"
+			},
+			"add": {
+				"heading": "サーバーを追加",
+				"urlLabel": "サーバーのアドレス",
+				"urlPlaceholder": "margaya.example.com",
+				"connect": "接続",
+				"connecting": "接続中…",
+				"nameLabel": "名前",
+				"submit": "サーバーを追加",
+				"found": "{{url}} で Margaya {{version}} が見つかりました",
+				"httpWarning": "このサーバーは暗号化されていない http:// を使用しています。セキュアな Cookie や一部のブラウザー機能には https:// が必要です。信頼できるネットワークでのみ続行してください。",
+				"confirmHttp": "このまま追加"
+			},
+			"errors": {
+				"invalidUrl": "margaya.example.com のようなサーバーのアドレスを入力してください。",
+				"unreachable": "このサーバーに接続できませんでした。アドレスとネットワーク接続を確認してください。",
+				"notMargaya": "このアドレスは Margaya サーバーではないようです。",
+				"serverTooOld": "この Margaya サーバーはまだデスクトップアプリに対応していません。管理者にアップデートを依頼してください。",
+				"disabled": "このサーバーではデスクトップアプリのサインインがオフになっています。",
+				"desktopTooOld": "このサーバーには Margaya Desktop {{version}} 以降が必要です。接続するにはアプリをアップデートしてください。",
+				"tlsUntrusted": "このコンピューターはこのサーバーの証明書を信頼していません。",
+				"tlsHelp": "会社の証明書を信頼する方法",
+				"duplicate": "このサーバーはすでにリストにあります。",
+				"notSignedIn": "まずこのサーバーにサインインしてください。",
+				"signInFailed": "サインインが完了しませんでした。もう一度お試しください。",
+				"codeInvalid": "そのコードは使用できませんでした。コードは 1 分で期限切れになるため、最初からやり直してください。",
+				"quickAddFailed": "タスクを作成できませんでした。",
+				"generic": "問題が発生しました: {{message}}",
+				"keychainUnavailable": "サインイン情報をシステムのキーリングに保存できませんでした。Linux では GNOME Keyring または KWallet が実行中であることを確認してから、もう一度お試しください。"
+			},
+			"signIn": {
+				"waiting": "ブラウザーでサインインを完了してください…",
+				"pasteHint": "ブラウザーからここに戻らない場合は、代わりにコードを表示して下に貼り付けてください。",
+				"showCode": "コードを表示",
+				"codeLabel": "サインインコード",
+				"submit": "続行",
+				"cancel": "キャンセル",
+				"done": "{{name}} にサインインしました"
+			},
+			"deepLink": {
+				"addTitle": "このサーバーを追加しますか？",
+				"addBody": "リンクが {{url}} を開こうとしましたが、このサーバーはリストにありません。信頼できるサーバーだけを追加してください。",
+				"check": "サーバーを確認",
+				"ignore": "無視"
+			},
+			"settings": {
+				"heading": "設定",
+				"openAtLogin": "ログイン時に開く",
+				"copyDiagnostics": "診断情報をコピー",
+				"copied": "診断情報をクリップボードにコピーしました。",
+				"version": "バージョン {{version}}",
+				"checkUpdates": "アップデートを確認",
+				"checking": "確認中…",
+				"upToDate": "最新の状態です。",
+				"updateAvailable": "バージョン {{version}} を利用できます。",
+				"updateInstall": "再起動してアップデート",
+				"updating": "アップデート中…",
+				"updatePackage": "バージョン {{version}} を利用できます。新しいパッケージをダウンロードしてアップデートしてください。",
+				"updateDownload": "ダウンロード"
+			},
+			"quickAdd": {
+				"title": "クイック追加",
+				"server": "サーバー",
+				"project": "プロジェクト",
+				"taskTitle": "タスク名",
+				"placeholder": "何をする必要がありますか？",
+				"create": "タスクを作成",
+				"creating": "作成中…",
+				"created": "タスクを作成しました。",
+				"open": "タスクを開く",
+				"noServers": "タスクを追加するには、サーバーにサインインしてください。",
+				"noProjects": "タスクを追加できるプロジェクトがありません。",
+				"loading": "読み込み中…"
+			},
+			"downloads": {
+				"finished": "{{file}} をダウンロードしました",
+				"failed": "{{file}} をダウンロードできませんでした"
+			},
+			"menu": {
+				"about": "Margaya について",
+				"checkUpdates": "アップデートを確認…",
+				"hide": "Margaya を隠す",
+				"hideOthers": "ほかを隠す",
+				"showAll": "すべてを表示",
+				"quit": "Margaya を終了",
+				"edit": "編集",
+				"undo": "取り消す",
+				"redo": "やり直す",
+				"cut": "カット",
+				"copy": "コピー",
+				"paste": "ペースト",
+				"selectAll": "すべてを選択",
+				"view": "表示",
+				"reload": "再読み込み",
+				"servers": "サーバーリスト",
+				"quickAdd": "クイック追加…",
+				"window": "ウインドウ",
+				"minimize": "最小化",
+				"closeWindow": "ウインドウを閉じる",
+				"help": "ヘルプ",
+				"copyDiagnostics": "診断情報をコピー",
+				"openLogs": "ログフォルダーを開く"
+			},
+			"tray": {
+				"open": "Margaya を開く",
+				"openServer": "{{name}} を開く",
+				"quickAdd": "クイック追加…",
+				"updateReady": "再起動して {{version}} にアップデート",
+				"quit": "終了",
+				"servers": "サーバーを切り替え…",
+				"updateDownload": "バージョン {{version}} をダウンロード…"
+			},
+			"offline": {
+				"title": "{{name}} に接続できません",
+				"body": "Margaya はバックグラウンドで再試行を続けます。ネットワーク接続を確認するか、別のサーバーに切り替えてください。",
+				"lastError": "最後のエラー: {{error}}",
+				"retry": "もう一度試す",
+				"retrying": "再試行中…",
+				"retryIn_other": "{{count}} 秒後に再試行します",
+				"switchServer": "サーバーを切り替え"
+			}
 		}
 	}
 }

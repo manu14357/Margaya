@@ -159,6 +159,15 @@
 			"restored": "Đã khôi phục dự án",
 			"viewInArchives": "Xem trong Kho lưu trữ"
 		},
+		"linkDialog": {
+			"addTitle": "Thêm liên kết",
+			"editTitle": "Sửa liên kết",
+			"description": "Liên kết văn bản đã chọn tới một địa chỉ web hoặc địa chỉ email.",
+			"urlLabel": "Địa chỉ liên kết",
+			"invalid": "Nhập địa chỉ web, chẳng hạn example.com, hoặc liên kết mailto:.",
+			"apply": "Áp dụng",
+			"remove": "Gỡ liên kết"
+		},
 		"states": {
 			"crash": {
 				"description": "Tải lại thường sẽ khắc phục được. Những gì bạn đã lưu vẫn an toàn.",
@@ -243,7 +252,9 @@
 			"samlNoConnection": "Đăng nhập doanh nghiệp chưa được thiết lập cho tên miền email đó.",
 			"samlError": "Không thể bắt đầu đăng nhập doanh nghiệp. Vui lòng thử lại.",
 			"emailCodesOff": "Liên kết và mã đăng nhập qua email đã bị tắt trên máy chủ này. Nếu trước giờ bạn chỉ dùng những cách đó, bạn chưa có mật khẩu: hãy chọn “Quên mật khẩu?” để đặt mật khẩu.",
-			"emailCodesOffNoEmail": "Liên kết và mã đăng nhập qua email đã bị tắt trên máy chủ này. Nếu trước giờ bạn chỉ dùng những cách đó, bạn chưa có mật khẩu: hãy nhờ quản trị viên phiên bản đặt mật khẩu cho bạn."
+			"emailCodesOffNoEmail": "Liên kết và mã đăng nhập qua email đã bị tắt trên máy chủ này. Nếu trước giờ bạn chỉ dùng những cách đó, bạn chưa có mật khẩu: hãy nhờ quản trị viên phiên bản đặt mật khẩu cho bạn.",
+			"desktopBrowserHint": "Các tùy chọn này sẽ tiếp tục trong trình duyệt, rồi đưa bạn trở lại ứng dụng.",
+			"desktopBrowserStarted": "Hãy tiếp tục trong trình duyệt để hoàn tất đăng nhập."
 		},
 		"providers": {
 			"google": "Google",
@@ -534,6 +545,31 @@
 			"failedTitle": "Không thể hoàn tất đăng nhập",
 			"failed": "Không thể hoàn tất lần đăng nhập này. Liên kết của nó chỉ dùng được một lần, trong một phút và chỉ trên trình duyệt bạn đã dùng để đăng nhập. Hãy đăng nhập lại.",
 			"backToSignIn": "Quay lại đăng nhập"
+		},
+		"desktop": {
+			"pageTitle": "Đăng nhập ứng dụng máy tính",
+			"title": "Đăng nhập vào ứng dụng máy tính",
+			"confirm": "Đăng nhập vào ứng dụng Margaya cho máy tính với tài khoản {{account}} trên {{server}}?",
+			"warning": "Chỉ tiếp tục nếu chính bạn đã bắt đầu thao tác này từ ứng dụng Margaya cho máy tính trên máy này. Nếu ai đó gửi cho bạn liên kết này, hãy hủy.",
+			"allow": "Cho phép",
+			"cancel": "Hủy",
+			"tryAgain": "Thử lại",
+			"doneTitle": "Bạn có thể quay lại ứng dụng máy tính",
+			"doneHint": "Nếu ứng dụng chưa mở, hãy mở lại từ đây.",
+			"openAgain": "Mở ứng dụng máy tính",
+			"codeTitle": "Mã đăng nhập của bạn",
+			"codeHint": "Dán mã này vào ứng dụng máy tính. Mã chỉ dùng được một lần và hết hạn sau một phút.",
+			"copy": "Sao chép mã",
+			"copied": "Đã sao chép mã",
+			"copyFailed": "Không thể sao chép mã. Hãy chọn mã và tự sao chép.",
+			"cancelledTitle": "Đã hủy đăng nhập",
+			"cancelledHint": "Ứng dụng máy tính chưa được đăng nhập. Bạn có thể đóng thẻ này.",
+			"invalidTitle": "Liên kết đăng nhập này không hợp lệ",
+			"invalidHint": "Hãy bắt đầu đăng nhập lại từ ứng dụng máy tính.",
+			"expired": "Yêu cầu đăng nhập này đã hết hạn hoặc không hợp lệ. Hãy bắt đầu lại từ ứng dụng máy tính.",
+			"disabled": "Đăng nhập bằng ứng dụng máy tính đã bị tắt trên máy chủ này. Hãy liên hệ quản trị viên phiên bản.",
+			"rateLimited": "Quá nhiều lần thử. Hãy đợi một phút rồi thử lại.",
+			"failed": "Không thể đăng nhập vào ứng dụng máy tính. Hãy thử lại."
 		}
 	},
 	"settings": {
@@ -720,7 +756,9 @@
 				"quietTo": "Đến",
 				"deviceMute": "Tắt tiếng trên thiết bị này",
 				"deviceMuteDescription": "Chỉ tắt tiếng trình duyệt này; các thiết bị khác của bạn vẫn phát âm thanh.",
-				"previewFailed": "Trình duyệt của bạn không phát được âm thanh. Hãy kiểm tra xem tab hoặc trang web này có đang bị tắt tiếng không."
+				"previewFailed": "Trình duyệt của bạn không phát được âm thanh. Hãy kiểm tra xem tab hoặc trang web này có đang bị tắt tiếng không.",
+				"desktopDescription": "Trong ứng dụng máy tính, thông báo sẽ phát âm thanh Margaya bạn đã chọn ở đây, theo mức âm lượng của bạn, khi các cài đặt này yêu cầu. Chế độ Không làm phiền sẽ tắt tiếng âm thanh này.",
+				"deviceMuteDescriptionDesktop": "Chỉ tắt tiếng ứng dụng máy tính này; các thiết bị khác của bạn vẫn phát âm thanh."
 			},
 			"pushTitle": "Thông báo đẩy",
 			"pushDescription": "Cảnh báo trên điện thoại hoặc máy tính, ngay cả khi Margaya đã đóng. Mục “Thông báo cho tôi về” quyết định nội dung được gửi, và quy tắc không gian làm việc bên dưới có thể thu hẹp thêm.",
@@ -744,7 +782,8 @@
 			"workspaceCardLabelPush": "Thông báo đẩy",
 			"pushChannelHintEnabled": "Gửi các thông báo không gian làm việc phù hợp đến thiết bị của bạn.",
 			"pushChannelHintDisabled": "Hãy bật thông báo đẩy cho một thiết bị trước.",
-			"pushLoadFailed": "Không thể tải cài đặt thông báo đẩy. Hãy tải lại trang để thử lại."
+			"pushLoadFailed": "Không thể tải cài đặt thông báo đẩy. Hãy tải lại trang để thử lại.",
+			"pushDesktopApp": "Ứng dụng máy tính hiển thị thông báo trên thiết bị này, nên không cần thông báo đẩy của trình duyệt ở đây."
 		},
 		"preferencesPage": {
 			"title": "Tùy chọn",
@@ -3218,6 +3257,11 @@
 				"agentPromptPlaceholder": "Ví dụ: phân loại công việc này và đề xuất mức ưu tiên.",
 				"agentHint": "Tác tử hành động thay mặt người lưu quy tắc này, với quyền không vượt quá quyền của người đó. Nó không bao giờ chạy vì thay đổi do tác tử thực hiện."
 			}
+		},
+		"continueInBrowser": {
+			"title": "Tiếp tục trong trình duyệt",
+			"billing": "Hãy hoàn tất trong cửa sổ trình duyệt vừa mở, rồi quay lại Margaya. Gói của bạn sẽ được cập nhật khi bạn quay lại.",
+			"githubApp": "Hãy hoàn tất trên GitHub trong trình duyệt, rồi quay lại Margaya và kiểm tra lại cài đặt."
 		}
 	},
 	"navigation": {
@@ -3336,7 +3380,9 @@
 			"settings": "Cài đặt",
 			"signingOut": "Đang đăng xuất...",
 			"logOut": "Đăng xuất",
-			"instanceSettings": "Cài đặt phiên bản"
+			"instanceSettings": "Cài đặt phiên bản",
+			"getDesktopApp": "Tải ứng dụng máy tính",
+			"switchServer": "Chuyển máy chủ"
 		},
 		"workspaceSwitcher": {
 			"workspaces": "Không gian làm việc",
@@ -3478,6 +3524,12 @@
 			"whatsNew": "Có gì mới",
 			"sourceCode": "Mã nguồn",
 			"workspaceAnalytics": "Không gian làm việc"
+		},
+		"desktopWindow": {
+			"minimize": "Thu nhỏ",
+			"maximize": "Phóng to",
+			"restore": "Khôi phục",
+			"close": "Đóng"
 		}
 	},
 	"notifications": {
@@ -3788,7 +3840,6 @@
 				"imageUploaded": "Đã tải ảnh lên",
 				"fileAttached": "Đã đính kèm file",
 				"failedToUploadFile": "Không thể tải file lên",
-				"enterUrl": "Nhập URL",
 				"plaintext": "Văn bản thuần",
 				"autoDetect": "Tự động nhận diện",
 				"slashGroupText": "Văn bản",
@@ -4183,7 +4234,6 @@
 				"ariaLabel": "Trình soạn thảo mô tả công việc",
 				"placeholder": "Viết mô tả...",
 				"previewImage": "Xem trước ảnh",
-				"enterUrl": "Nhập URL",
 				"autoDetect": "Tự động nhận diện",
 				"copyCode": "Sao chép mã",
 				"copy": "Sao chép",
@@ -4435,7 +4485,6 @@
 		"backlog": {
 			"pageTitle": "Backlog của {{name}}",
 			"noTasksToMove": "Không có công việc đã lên kế hoạch để di chuyển",
-			"moveAllConfirm": "Chuyển tất cả {{count}} công việc đã lên kế hoạch sang {{column}}?",
 			"moveAllSuccess": "Đã chuyển {{count}} công việc sang {{column}}",
 			"plan": "Lên kế hoạch",
 			"moveAllTooltip": "Chuyển tất cả công việc đã lên kế hoạch sang {{column}}",
@@ -4445,7 +4494,10 @@
 				"planned": "Đã lên kế hoạch",
 				"archived": "Đã lưu trữ"
 			},
-			"noTasksInSection": "Không có công việc {{section}}"
+			"noTasksInSection": "Không có công việc {{section}}",
+			"moveAllConfirmTitle_other": "Chuyển {{count}} công việc đã lên kế hoạch sang {{column}}?",
+			"moveAllConfirmDescription_other": "Công việc sẽ rời khỏi backlog và hiển thị trên bảng.",
+			"moveAllConfirmAction": "Chuyển công việc"
 		},
 		"sort": {
 			"label": "Sắp xếp",
@@ -4792,8 +4844,6 @@
 			"moveToBoardSuccess": "Đã chuyển {{count}} công việc sang bảng",
 			"moveToBoardError": "Không thể chuyển công việc sang bảng",
 			"delete": "Xóa công việc",
-			"deleteConfirm": "Chuyển {{count}} công việc vào thùng rác? Bạn có thể khôi phục chúng từ mục Đã xóa gần đây trong cài đặt dự án.",
-			"deleteSuccess": "Đã xóa {{count}} công việc",
 			"deleteError": "Không thể xóa công việc",
 			"archive": "Lưu trữ công việc",
 			"archiveSuccess": "Đã lưu trữ {{count}} công việc",
@@ -4839,7 +4889,11 @@
 			"moveToProjectConfirm": "Chuyển công việc",
 			"moveToProjectSuccess_other": "Đã chuyển {{count}} công việc sang {{name}}",
 			"moveToProjectNone": "Các công việc này đã ở trong {{name}}",
-			"moveToProjectError": "Không thể chuyển công việc"
+			"moveToProjectError": "Không thể chuyển công việc",
+			"deleteConfirmTitle_other": "Chuyển {{count}} công việc vào thùng rác?",
+			"deleteConfirmDescription_other": "Bạn có thể khôi phục từ mục Đã xóa gần đây trong cài đặt dự án.",
+			"deleteConfirmAction": "Chuyển vào thùng rác",
+			"deleteSuccess_other": "Đã chuyển {{count}} công việc vào thùng rác"
 		},
 		"editor": {
 			"table": {
@@ -6895,7 +6949,8 @@
 				"signIn": "Đăng nhập",
 				"explore": "Khám phá",
 				"featuresIntro": "Sáu chuyến tham quan ngắn về Margaya. Mỗi chuyến đều có bản demo trực tiếp mà bạn có thể tự điều khiển.",
-				"newTab": "(mở trong thẻ mới)"
+				"newTab": "(mở trong thẻ mới)",
+				"download": "Tải xuống"
 			},
 			"ownIt": {
 				"cta": "Đọc hướng dẫn cài đặt",
@@ -7013,6 +7068,7 @@
 				"product": {
 					"changelog": "Nhật ký thay đổi",
 					"roadmap": "Lộ trình",
+					"download": "Ứng dụng máy tính",
 					"title": "Sản phẩm"
 				},
 				"resources": {
@@ -11759,6 +11815,305 @@
 		"notificationText": {
 			"commentWithoutPreview": "Bình luận mới trên {{taskTitle}}",
 			"pushFixedLine": "Mở Margaya để xem chi tiết."
+		}
+	},
+	"download": {
+		"title": "Tải ứng dụng máy tính",
+		"description": "Margaya cho macOS, Windows và Linux: máy chủ Margaya của riêng bạn trong cửa sổ riêng, với thông báo gốc của hệ thống, huy hiệu chưa đọc và thêm nhanh từ bất cứ đâu.",
+		"eyebrow": "Ứng dụng máy tính",
+		"headline": "Margaya trên máy tính của bạn",
+		"intro": "Máy chủ Margaya của riêng bạn trong cửa sổ riêng, với thông báo gốc của hệ thống, huy hiệu chưa đọc và thêm nhanh từ bất cứ đâu. Dành cho macOS, Windows và Linux.",
+		"onThisPage": "Trên trang này",
+		"picker": {
+			"mac": "Tải xuống cho Mac",
+			"windows": "Tải xuống cho Windows",
+			"appleSilicon": "Apple Silicon",
+			"intel": "Intel",
+			"windowsDetail": "Trình cài đặt 64 bit",
+			"otherMacArm": "Dùng Mac chip Apple Silicon? Tải phiên bản đó",
+			"otherMacIntel": "Dùng Mac bộ xử lý Intel? Tải phiên bản đó",
+			"unsupported": "Ứng dụng máy tính chạy trên macOS, Windows và Linux. Trên thiết bị này, hãy mở máy chủ Margaya trong trình duyệt.",
+			"linux": "Tải xuống cho Linux",
+			"linuxDetail": "AppImage, x86_64",
+			"linuxArmDetail": "AppImage, ARM64",
+			"otherPlatforms": "Nền tảng và định dạng khác"
+		},
+		"comingSoon": {
+			"title": "Sắp ra mắt",
+			"body": "Bản phát hành đầu tiên cho máy tính đang trên đường đến. Trình cài đặt sẽ xuất hiện ở đây và trên trang phát hành GitHub ngay khi được công bố.",
+			"action": "Mở trang phát hành GitHub"
+		},
+		"files": {
+			"title": "Tất cả bản tải xuống",
+			"description": "Chọn nền tảng và định dạng của bạn. Mỗi tệp cũng được đính kèm vào bản phát hành trên GitHub.",
+			"macArm": {
+				"name": "Apple Silicon",
+				"detail": "Máy Mac dùng chip dòng M."
+			},
+			"macIntel": {
+				"name": "Intel",
+				"detail": "Máy Mac dùng bộ xử lý Intel."
+			},
+			"windowsExe": {
+				"name": "Trình cài đặt",
+				"detail": "Cài cho tài khoản của bạn, không cần quyền quản trị viên."
+			},
+			"windowsMsi": {
+				"name": "Gói MSI",
+				"detail": "Dành cho đội IT triển khai bằng Intune, Chính sách nhóm hoặc công cụ tương tự."
+			},
+			"checksum": "SHA-256",
+			"noChecksum": "Chưa có mã kiểm tra nào được công bố cho tệp này.",
+			"copied": "Đã sao chép",
+			"download": "Tải xuống",
+			"missing": "Không có trong bản phát hành này.",
+			"linuxAppImage": {
+				"name": "AppImage",
+				"detail": "Chạy trên hầu hết các bản phân phối mà không cần cài đặt và tự cập nhật."
+			},
+			"linuxDeb": {
+				"name": "Gói Debian",
+				"detail": "Debian, Ubuntu, Linux Mint và Pop!_OS."
+			},
+			"linuxRpm": {
+				"name": "Gói RPM",
+				"detail": "Fedora, RHEL, Rocky Linux, AlmaLinux và openSUSE."
+			},
+			"architecture": "Kiến trúc",
+			"x64": "x86_64 (Intel, AMD)",
+			"arm": "ARM64",
+			"recommended": "Khuyên dùng",
+			"copyChecksumFor": "Sao chép mã kiểm tra SHA-256 của {{name}}",
+			"downloadFile": "Tải xuống {{name}}"
+		},
+		"requirements": {
+			"title": "Yêu cầu hệ thống",
+			"macos": {
+				"name": "macOS",
+				"value": "macOS 14 Sonoma trở lên, trên Apple Silicon hoặc Intel."
+			},
+			"windows": {
+				"name": "Windows",
+				"value": "Windows 10 hoặc 11, 64-bit."
+			},
+			"server": {
+				"name": "Máy chủ",
+				"value": "Mỗi ứng dụng kết nối với một máy chủ Margaya mà bạn truy cập được và luôn khớp với phiên bản của máy chủ đó."
+			},
+			"linux": {
+				"name": "Linux",
+				"value": "x86_64 hoặc ARM64 với WebKitGTK 4.1 (Ubuntu 22.04, Debian 12, Fedora 38 trở lên) và một chuỗi khóa."
+			}
+		},
+		"firstLaunch": {
+			"title": "Cài đặt và lần mở đầu tiên",
+			"description": "Hệ thống sẽ hỏi một lần trước khi mở ứng dụng tải từ internet. Sau đó, Margaya khởi động như mọi ứng dụng khác.",
+			"macos": {
+				"step1": "Mở tệp .dmg đã tải xuống và kéo Margaya vào “Ứng dụng”.",
+				"step2": "Mở Margaya từ “Ứng dụng”. Khi macOS hỏi về ứng dụng tải từ internet, bấm “Mở”.",
+				"step3": "Nếu macOS báo không thể kiểm tra ứng dụng, hãy mở Cài đặt hệ thống › Quyền riêng tư & Bảo mật rồi bấm “Vẫn mở”.",
+				"note": "Hãy khởi động Margaya từ “Ứng dụng”, không phải từ ảnh đĩa, để các liên kết từ trình duyệt có thể mở ứng dụng."
+			},
+			"windows": {
+				"step1": "Chạy trình cài đặt đã tải xuống.",
+				"step2": "Nếu Windows hiển thị “Windows đã bảo vệ PC của bạn”, bấm “Thông tin thêm”, rồi bấm “Vẫn chạy”. Trình cài đặt chưa được ký mã.",
+				"step3": "Làm theo trình cài đặt. Margaya sẽ mở khi hoàn tất và xuất hiện trong menu Start.",
+				"note": "Các bản cập nhật được cài từ bên trong ứng dụng và sẽ không hiện lại cảnh báo này."
+			},
+			"linux": {
+				"intro": "Dùng AppImage trên mọi bản phân phối, hoặc cài gói dành cho bản phân phối của bạn. Chạy các lệnh trong thư mục bạn đã tải tệp về.",
+				"appImage": "AppImage, mọi bản phân phối",
+				"deb": "Debian, Ubuntu, Linux Mint, Pop!_OS",
+				"rpm": "Fedora, RHEL, Rocky Linux, AlmaLinux",
+				"note": "Margaya lưu thông tin đăng nhập của bạn trong chuỗi khóa của hệ thống, vì vậy GNOME Keyring hoặc KWallet phải đang chạy. Để cập nhật gói .deb hoặc .rpm, hãy cài gói của phiên bản tiếp theo.",
+				"opensuse": "openSUSE"
+			},
+			"guide": "Hướng dẫn cài đặt đầy đủ",
+			"troubleshooting": "Khắc phục sự cố"
+		},
+		"verify": {
+			"title": "Kiểm tra tệp tải xuống",
+			"description": "Chạy lệnh cho hệ thống của bạn và so sánh kết quả với mã SHA-256 của tệp ở trên. Hai mã phải khớp hoàn toàn.",
+			"macos": "macOS, trong Terminal",
+			"windows": "Windows, trong PowerShell",
+			"linux": "Linux, trong cửa sổ dòng lệnh"
+		},
+		"help": {
+			"title": "Bước tiếp theo",
+			"guide": {
+				"title": "Hướng dẫn ứng dụng máy tính",
+				"body": "Thêm máy chủ, đăng nhập, thông báo, thêm nhanh và cập nhật.",
+				"link": "Đọc hướng dẫn"
+			},
+			"admin": {
+				"title": "Dành cho quản trị viên",
+				"body": "Cài đặt máy chủ, reverse proxy và triển khai trong toàn công ty.",
+				"link": "Đọc hướng dẫn cho quản trị viên"
+			},
+			"releases": {
+				"title": "Bản phát hành trên GitHub",
+				"body": "Mọi phiên bản cùng ghi chú phát hành và tất cả tệp.",
+				"link": "Mở trang phát hành GitHub"
+			}
+		},
+		"platforms": {
+			"label": "Nền tảng",
+			"macos": "macOS",
+			"windows": "Windows",
+			"linux": "Linux",
+			"detected": "hệ thống của bạn"
+		},
+		"code": {
+			"copy": "Sao chép",
+			"copied": "Đã sao chép",
+			"copyLabel": "Sao chép lệnh: {{label}}"
+		},
+		"meta": {
+			"version": "Phiên bản {{version}}",
+			"released": "Phát hành ngày {{date}}",
+			"releaseNotes": "Ghi chú phát hành",
+			"allReleases": "Tất cả bản phát hành trên GitHub"
+		}
+	},
+	"desktop": {
+		"launcher": {
+			"servers": {
+				"heading": "Máy chủ",
+				"empty": "Thêm máy chủ Margaya của bạn để bắt đầu.",
+				"open": "Mở",
+				"rename": "Đổi tên",
+				"remove": "Gỡ bỏ",
+				"save": "Lưu",
+				"cancel": "Hủy",
+				"nameLabel": "Tên máy chủ",
+				"removeConfirm": "Gỡ bỏ {{name}}? Bạn sẽ bị đăng xuất khỏi máy chủ đó trên máy tính này.",
+				"signedIn": "Đã đăng nhập",
+				"signedOut": "Chưa đăng nhập",
+				"signIn": "Đăng nhập bằng trình duyệt",
+				"signOut": "Đăng xuất",
+				"unread_other": "{{count}} chưa đọc",
+				"insecure": "Không an toàn (http)"
+			},
+			"add": {
+				"heading": "Thêm máy chủ",
+				"urlLabel": "Địa chỉ máy chủ",
+				"urlPlaceholder": "margaya.example.com",
+				"connect": "Kết nối",
+				"connecting": "Đang kết nối…",
+				"nameLabel": "Tên",
+				"submit": "Thêm máy chủ",
+				"found": "Đã tìm thấy Margaya {{version}} tại {{url}}",
+				"httpWarning": "Máy chủ này dùng http:// không mã hóa. Cookie bảo mật và một số tính năng của trình duyệt cần https://. Chỉ tiếp tục trên mạng mà bạn tin cậy.",
+				"confirmHttp": "Vẫn thêm"
+			},
+			"errors": {
+				"invalidUrl": "Nhập địa chỉ máy chủ, ví dụ margaya.example.com.",
+				"unreachable": "Không thể kết nối tới máy chủ này. Hãy kiểm tra địa chỉ và kết nối mạng.",
+				"notMargaya": "Địa chỉ này có vẻ không phải là máy chủ Margaya.",
+				"serverTooOld": "Máy chủ Margaya này chưa hỗ trợ ứng dụng máy tính. Hãy nhờ quản trị viên cập nhật máy chủ.",
+				"disabled": "Đăng nhập bằng ứng dụng máy tính đã bị tắt trên máy chủ này.",
+				"desktopTooOld": "Máy chủ này cần Margaya Desktop {{version}} trở lên. Hãy cập nhật ứng dụng để kết nối.",
+				"tlsUntrusted": "Máy tính của bạn không tin cậy chứng chỉ của máy chủ này.",
+				"tlsHelp": "Cách tin cậy chứng chỉ của công ty",
+				"duplicate": "Máy chủ này đã có trong danh sách của bạn.",
+				"notSignedIn": "Hãy đăng nhập vào máy chủ này trước.",
+				"signInFailed": "Đăng nhập chưa hoàn tất. Hãy thử lại.",
+				"codeInvalid": "Mã đó không dùng được. Mã hết hạn sau một phút, vì vậy hãy bắt đầu lại.",
+				"quickAddFailed": "Không thể tạo công việc.",
+				"generic": "Đã xảy ra lỗi: {{message}}",
+				"keychainUnavailable": "Không thể lưu thông tin đăng nhập vào chuỗi khóa của hệ thống. Trên Linux, hãy đảm bảo GNOME Keyring hoặc KWallet đang chạy, rồi thử lại."
+			},
+			"signIn": {
+				"waiting": "Hãy hoàn tất đăng nhập trong trình duyệt…",
+				"pasteHint": "Trình duyệt không quay lại đây? Hãy hiện mã và dán vào bên dưới.",
+				"showCode": "Hiện mã",
+				"codeLabel": "Mã đăng nhập",
+				"submit": "Tiếp tục",
+				"cancel": "Hủy",
+				"done": "Đã đăng nhập vào {{name}}"
+			},
+			"deepLink": {
+				"addTitle": "Thêm máy chủ này?",
+				"addBody": "Một liên kết yêu cầu mở {{url}}, vốn không có trong danh sách máy chủ của bạn. Chỉ thêm những máy chủ bạn tin cậy.",
+				"check": "Kiểm tra máy chủ",
+				"ignore": "Bỏ qua"
+			},
+			"settings": {
+				"heading": "Cài đặt",
+				"openAtLogin": "Mở khi đăng nhập máy",
+				"copyDiagnostics": "Sao chép thông tin chẩn đoán",
+				"copied": "Đã sao chép thông tin chẩn đoán vào bảng nhớ tạm.",
+				"version": "Phiên bản {{version}}",
+				"checkUpdates": "Kiểm tra bản cập nhật",
+				"checking": "Đang kiểm tra…",
+				"upToDate": "Bạn đang dùng bản mới nhất.",
+				"updateAvailable": "Đã có phiên bản {{version}}.",
+				"updateInstall": "Khởi động lại để cập nhật",
+				"updating": "Đang cập nhật…",
+				"updatePackage": "Đã có phiên bản {{version}}. Hãy tải gói mới xuống để cập nhật.",
+				"updateDownload": "Tải xuống"
+			},
+			"quickAdd": {
+				"title": "Thêm nhanh",
+				"server": "Máy chủ",
+				"project": "Dự án",
+				"taskTitle": "Tiêu đề công việc",
+				"placeholder": "Cần làm gì?",
+				"create": "Tạo công việc",
+				"creating": "Đang tạo…",
+				"created": "Đã tạo công việc.",
+				"open": "Mở công việc",
+				"noServers": "Hãy đăng nhập vào một máy chủ để thêm công việc.",
+				"noProjects": "Không có dự án nào mà bạn có thể thêm công việc.",
+				"loading": "Đang tải…"
+			},
+			"downloads": {
+				"finished": "Đã tải xuống {{file}}",
+				"failed": "Không thể tải xuống {{file}}"
+			},
+			"menu": {
+				"about": "Giới thiệu về Margaya",
+				"checkUpdates": "Kiểm tra bản cập nhật…",
+				"hide": "Ẩn Margaya",
+				"hideOthers": "Ẩn mục khác",
+				"showAll": "Hiển thị tất cả",
+				"quit": "Thoát Margaya",
+				"edit": "Sửa",
+				"undo": "Hoàn tác",
+				"redo": "Làm lại",
+				"cut": "Cắt",
+				"copy": "Sao chép",
+				"paste": "Dán",
+				"selectAll": "Chọn tất cả",
+				"view": "Xem",
+				"reload": "Tải lại",
+				"servers": "Danh sách máy chủ",
+				"quickAdd": "Thêm nhanh…",
+				"window": "Cửa sổ",
+				"minimize": "Thu nhỏ",
+				"closeWindow": "Đóng cửa sổ",
+				"help": "Trợ giúp",
+				"copyDiagnostics": "Sao chép thông tin chẩn đoán",
+				"openLogs": "Mở thư mục nhật ký"
+			},
+			"tray": {
+				"open": "Mở Margaya",
+				"openServer": "Mở {{name}}",
+				"quickAdd": "Thêm nhanh…",
+				"updateReady": "Khởi động lại để cập nhật lên {{version}}",
+				"quit": "Thoát",
+				"servers": "Chuyển máy chủ…",
+				"updateDownload": "Tải xuống phiên bản {{version}}…"
+			},
+			"offline": {
+				"title": "Không thể kết nối tới {{name}}",
+				"body": "Margaya vẫn tiếp tục thử lại ở chế độ nền. Hãy kiểm tra kết nối mạng hoặc chuyển sang máy chủ khác.",
+				"lastError": "Lỗi gần nhất: {{error}}",
+				"retry": "Thử lại",
+				"retrying": "Đang thử lại…",
+				"retryIn_other": "Thử lại sau {{count}} giây",
+				"switchServer": "Chuyển máy chủ"
+			}
 		}
 	}
 }

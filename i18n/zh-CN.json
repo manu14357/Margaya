@@ -159,6 +159,15 @@
 			"restored": "项目已恢复",
 			"viewInArchives": "在归档中查看"
 		},
+		"linkDialog": {
+			"addTitle": "添加链接",
+			"editTitle": "编辑链接",
+			"description": "将所选文本链接到网址或电子邮件地址。",
+			"urlLabel": "链接地址",
+			"invalid": "请输入网址（如 example.com）或 mailto: 链接。",
+			"apply": "应用",
+			"remove": "移除链接"
+		},
 		"states": {
 			"crash": {
 				"description": "重新加载通常就能解决。已保存的内容是安全的。",
@@ -243,7 +252,9 @@
 			"samlNoConnection": "该邮箱域名尚未设置企业登录。",
 			"samlError": "无法发起企业登录。请重试。",
 			"emailCodesOff": "此服务器已关闭通过邮件发送的登录链接和验证码。如果你一直只用这些方式登录，你还没有密码：请选择“忘记密码？”来设置密码。",
-			"emailCodesOffNoEmail": "此服务器已关闭通过邮件发送的登录链接和验证码。如果你一直只用这些方式登录，你还没有密码：请让实例管理员为你设置一个。"
+			"emailCodesOffNoEmail": "此服务器已关闭通过邮件发送的登录链接和验证码。如果你一直只用这些方式登录，你还没有密码：请让实例管理员为你设置一个。",
+			"desktopBrowserHint": "这些方式会在浏览器中继续，完成后再带你回到应用。",
+			"desktopBrowserStarted": "请在浏览器中继续以完成登录。"
 		},
 		"providers": {
 			"google": "Google",
@@ -534,6 +545,31 @@
 			"failedTitle": "无法完成登录",
 			"failed": "此次登录无法完成。其链接只能使用一次，有效期一分钟，且只能在你登录时使用的浏览器中打开。请重新登录。",
 			"backToSignIn": "返回登录"
+		},
+		"desktop": {
+			"pageTitle": "桌面应用登录",
+			"title": "登录桌面应用",
+			"confirm": "要以 {{account}} 的身份在 {{server}} 上登录 Margaya 桌面应用吗？",
+			"warning": "仅当你是在这台电脑上的 Margaya 桌面应用中发起此操作时才继续。如果是别人发给你的链接，请取消。",
+			"allow": "允许",
+			"cancel": "取消",
+			"tryAgain": "重试",
+			"doneTitle": "你可以返回桌面应用了",
+			"doneHint": "如果应用没有打开，请从这里再次打开。",
+			"openAgain": "打开桌面应用",
+			"codeTitle": "你的登录码",
+			"codeHint": "将此代码粘贴到桌面应用中。它只能使用一次，一分钟后过期。",
+			"copy": "复制代码",
+			"copied": "代码已复制",
+			"copyFailed": "无法复制代码。请选中后自行复制。",
+			"cancelledTitle": "已取消登录",
+			"cancelledHint": "桌面应用未登录。你可以关闭此标签页。",
+			"invalidTitle": "此登录链接无效",
+			"invalidHint": "请从桌面应用重新开始登录。",
+			"expired": "此登录请求已过期或无效。请从桌面应用重新开始。",
+			"disabled": "此服务器已关闭桌面应用登录。请联系实例管理员。",
+			"rateLimited": "尝试次数过多。请等待一分钟后重试。",
+			"failed": "无法登录桌面应用。请重试。"
 		}
 	},
 	"settings": {
@@ -720,7 +756,9 @@
 				"quietTo": "至",
 				"deviceMute": "在此设备上静音",
 				"deviceMuteDescription": "只静音此浏览器，你的其他设备仍会播放声音。",
-				"previewFailed": "浏览器未能播放声音。请检查此标签页或网站是否已静音。"
+				"previewFailed": "浏览器未能播放声音。请检查此标签页或网站是否已静音。",
+				"desktopDescription": "在桌面应用中，当这些设置需要提示音时，通知会以你设置的音量播放你在此处选择的 Margaya 提示音。开启勿扰模式时不会发出声音。",
+				"deviceMuteDescriptionDesktop": "只静音此桌面应用，你的其他设备仍会播放声音。"
 			},
 			"pushTitle": "推送通知",
 			"pushDescription": "即使 Margaya 已关闭，也能在手机或电脑上收到提醒。“通知我关于”决定发送哪些内容，下方的工作区规则可以进一步缩小范围。",
@@ -744,7 +782,8 @@
 			"workspaceCardLabelPush": "推送通知",
 			"pushChannelHintEnabled": "将符合条件的工作区通知发送到你的设备。",
 			"pushChannelHintDisabled": "请先为某台设备开启推送。",
-			"pushLoadFailed": "无法加载推送设置。请刷新页面重试。"
+			"pushLoadFailed": "无法加载推送设置。请刷新页面重试。",
+			"pushDesktopApp": "桌面应用会在此设备上显示通知，因此这里不需要浏览器推送。"
 		},
 		"preferencesPage": {
 			"title": "偏好设置",
@@ -3218,6 +3257,11 @@
 				"agentPromptPlaceholder": "例如：对此任务进行分诊并建议优先级。",
 				"agentHint": "智能体代表保存此规则的人行事，权限不超过此人。智能体所做的更改永远不会触发它。"
 			}
+		},
+		"continueInBrowser": {
+			"title": "请在浏览器中继续",
+			"billing": "请在刚打开的浏览器窗口中完成操作，然后返回 Margaya。返回后，你的套餐会随之更新。",
+			"githubApp": "请在浏览器中完成 GitHub 上的操作，然后返回 Margaya 并重新检查安装。"
 		}
 	},
 	"navigation": {
@@ -3336,7 +3380,9 @@
 			"settings": "设置",
 			"signingOut": "正在退出…",
 			"logOut": "退出登录",
-			"instanceSettings": "实例设置"
+			"instanceSettings": "实例设置",
+			"getDesktopApp": "获取桌面应用",
+			"switchServer": "切换服务器"
 		},
 		"workspaceSwitcher": {
 			"workspaces": "工作区",
@@ -3478,6 +3524,12 @@
 			"whatsNew": "更新内容",
 			"sourceCode": "源代码",
 			"workspaceAnalytics": "工作区"
+		},
+		"desktopWindow": {
+			"minimize": "最小化",
+			"maximize": "最大化",
+			"restore": "还原",
+			"close": "关闭"
 		}
 	},
 	"notifications": {
@@ -3788,7 +3840,6 @@
 				"imageUploaded": "图片已上传",
 				"fileAttached": "文件已附加",
 				"failedToUploadFile": "上传文件失败",
-				"enterUrl": "输入 URL",
 				"plaintext": "纯文本",
 				"autoDetect": "自动检测",
 				"slashGroupText": "文本",
@@ -4183,7 +4234,6 @@
 				"ariaLabel": "任务描述编辑器",
 				"placeholder": "编写描述…",
 				"previewImage": "预览图片",
-				"enterUrl": "输入 URL",
 				"autoDetect": "自动检测",
 				"copyCode": "复制代码",
 				"copy": "复制",
@@ -4435,7 +4485,6 @@
 		"backlog": {
 			"pageTitle": "{{name}} 的待办",
 			"noTasksToMove": "没有可移动的已计划任务",
-			"moveAllConfirm": "要将全部 {{count}} 个已计划任务移动到{{column}}吗？",
 			"moveAllSuccess": "已将 {{count}} 个任务移动到{{column}}",
 			"plan": "计划",
 			"moveAllTooltip": "将所有已计划任务移动到{{column}}",
@@ -4445,7 +4494,10 @@
 				"planned": "已计划",
 				"archived": "已归档"
 			},
-			"noTasksInSection": "无 {{section}} 任务"
+			"noTasksInSection": "无 {{section}} 任务",
+			"moveAllConfirmTitle_other": "要将 {{count}} 个已计划任务移动到{{column}}吗？",
+			"moveAllConfirmDescription_other": "任务将移出待办，并显示在看板上。",
+			"moveAllConfirmAction": "移动任务"
 		},
 		"sort": {
 			"label": "排序",
@@ -4792,8 +4844,6 @@
 			"moveToBoardSuccess": "{{count}} 个任务已移至看板",
 			"moveToBoardError": "将任务移至看板失败",
 			"delete": "删除任务",
-			"deleteConfirm": "将 {{count}} 个任务移至回收站？你可以在项目设置的“最近删除”中恢复它们。",
-			"deleteSuccess": "已删除 {{count}} 个任务",
 			"deleteError": "删除任务失败",
 			"archive": "归档任务",
 			"archiveSuccess": "已归档 {{count}} 个任务",
@@ -4839,7 +4889,11 @@
 			"moveToProjectConfirm": "移动任务",
 			"moveToProjectSuccess_other": "已将 {{count}} 个任务移至 {{name}}",
 			"moveToProjectNone": "这些任务已在 {{name}} 中",
-			"moveToProjectError": "无法移动任务"
+			"moveToProjectError": "无法移动任务",
+			"deleteConfirmTitle_other": "将 {{count}} 个任务移至回收站？",
+			"deleteConfirmDescription_other": "你可以在项目设置的“最近删除”中恢复。",
+			"deleteConfirmAction": "移至回收站",
+			"deleteSuccess_other": "已将 {{count}} 个任务移至回收站"
 		},
 		"editor": {
 			"table": {
@@ -6895,7 +6949,8 @@
 				"signIn": "登录",
 				"explore": "探索",
 				"featuresIntro": "六个简短的 Margaya 导览，每个都附带可亲自上手操作的在线演示。",
-				"newTab": "（在新标签页中打开）"
+				"newTab": "（在新标签页中打开）",
+				"download": "下载"
 			},
 			"ownIt": {
 				"cta": "阅读安装指南",
@@ -7013,6 +7068,7 @@
 				"product": {
 					"changelog": "更新日志",
 					"roadmap": "路线图",
+					"download": "桌面应用",
 					"title": "产品"
 				},
 				"resources": {
@@ -11759,6 +11815,305 @@
 		"notificationText": {
 			"commentWithoutPreview": "{{taskTitle}} 有新评论",
 			"pushFixedLine": "打开 Margaya 查看详情。"
+		}
+	},
+	"download": {
+		"title": "下载桌面应用",
+		"description": "适用于 macOS、Windows 和 Linux 的 Margaya：在独立窗口中打开你自己的 Margaya 服务器，支持原生通知、未读标记，并可随时随地快速添加。",
+		"eyebrow": "桌面应用",
+		"headline": "桌面上的 Margaya",
+		"intro": "在独立窗口中打开你自己的 Margaya 服务器，支持原生通知、未读标记，并可随时随地快速添加。适用于 macOS、Windows 和 Linux。",
+		"onThisPage": "本页内容",
+		"picker": {
+			"mac": "下载 Mac 版",
+			"windows": "下载 Windows 版",
+			"appleSilicon": "Apple 芯片",
+			"intel": "Intel",
+			"windowsDetail": "64 位安装程序",
+			"otherMacArm": "使用 Apple 芯片的 Mac？获取该版本",
+			"otherMacIntel": "使用 Intel 处理器的 Mac？获取该版本",
+			"unsupported": "桌面应用可在 macOS、Windows 和 Linux 上运行。在此设备上，请改用浏览器打开你的 Margaya 服务器。",
+			"linux": "下载 Linux 版",
+			"linuxDetail": "AppImage，x86_64",
+			"linuxArmDetail": "AppImage，ARM64",
+			"otherPlatforms": "其他平台和格式"
+		},
+		"comingSoon": {
+			"title": "即将推出",
+			"body": "首个桌面版本即将发布。发布后，安装程序会立即出现在这里和 GitHub 发布页面上。",
+			"action": "打开 GitHub 发布页"
+		},
+		"files": {
+			"title": "全部下载",
+			"description": "选择你的平台和格式。每个文件也都附在 GitHub 发布中。",
+			"macArm": {
+				"name": "Apple Silicon",
+				"detail": "搭载 M 系列芯片的 Mac。"
+			},
+			"macIntel": {
+				"name": "Intel",
+				"detail": "搭载 Intel 处理器的 Mac。"
+			},
+			"windowsExe": {
+				"name": "安装程序",
+				"detail": "为你的账户安装，无需管理员权限。"
+			},
+			"windowsMsi": {
+				"name": "MSI 安装包",
+				"detail": "适用于使用 Intune、组策略或类似工具进行部署的 IT 团队。"
+			},
+			"checksum": "SHA-256",
+			"noChecksum": "此文件未发布校验和。",
+			"copied": "已复制",
+			"download": "下载",
+			"missing": "此版本中未提供。",
+			"linuxAppImage": {
+				"name": "AppImage",
+				"detail": "无需安装即可在大多数发行版上运行，并会自动更新。"
+			},
+			"linuxDeb": {
+				"name": "Debian 软件包",
+				"detail": "Debian、Ubuntu、Linux Mint 和 Pop!_OS。"
+			},
+			"linuxRpm": {
+				"name": "RPM 软件包",
+				"detail": "Fedora、RHEL、Rocky Linux、AlmaLinux 和 openSUSE。"
+			},
+			"architecture": "架构",
+			"x64": "x86_64（Intel、AMD）",
+			"arm": "ARM64",
+			"recommended": "推荐",
+			"copyChecksumFor": "复制 {{name}} 的 SHA-256 校验和",
+			"downloadFile": "下载 {{name}}"
+		},
+		"requirements": {
+			"title": "系统要求",
+			"macos": {
+				"name": "macOS",
+				"value": "macOS 14 Sonoma 或更高版本，搭载 Apple Silicon 或 Intel 芯片。"
+			},
+			"windows": {
+				"name": "Windows",
+				"value": "Windows 10 或 11，64 位。"
+			},
+			"server": {
+				"name": "服务器",
+				"value": "每个应用都连接到一台你可以访问的 Margaya 服务器，并始终与其版本一致。"
+			},
+			"linux": {
+				"name": "Linux",
+				"value": "x86_64 或 ARM64，需 WebKitGTK 4.1（Ubuntu 22.04、Debian 12、Fedora 38 或更高版本）和密钥环。"
+			}
+		},
+		"firstLaunch": {
+			"title": "安装与首次启动",
+			"description": "打开来自互联网的应用前，系统会询问一次。之后，Margaya 会像其他应用一样启动。",
+			"macos": {
+				"step1": "打开下载的 .dmg，将 Margaya 拖到“应用程序”中。",
+				"step2": "从“应用程序”中打开 Margaya。当 macOS 询问是否打开来自互联网的应用时，点按“打开”。",
+				"step3": "如果 macOS 提示无法验证该应用，请打开系统设置 › 隐私与安全性，然后点按“仍要打开”。",
+				"note": "请从“应用程序”而不是磁盘映像启动 Margaya，这样浏览器中的链接才能打开它。"
+			},
+			"windows": {
+				"step1": "运行下载的安装程序。",
+				"step2": "如果 Windows 显示“Windows 已保护你的电脑”，请点击“更多信息”，然后点击“仍要运行”。安装程序尚未进行代码签名。",
+				"step3": "按照安装程序操作。完成后 Margaya 会自动打开，并出现在“开始”菜单中。",
+				"note": "更新会在应用内安装，不会再显示此警告。"
+			},
+			"linux": {
+				"intro": "AppImage 适用于任何发行版，你也可以安装适合你的发行版的软件包。请在下载文件所在的文件夹中运行命令。",
+				"appImage": "AppImage，适用于任何发行版",
+				"deb": "Debian、Ubuntu、Linux Mint、Pop!_OS",
+				"rpm": "Fedora, RHEL, Rocky Linux, AlmaLinux",
+				"note": "Margaya 将你的登录信息保存在系统密钥环中，因此 GNOME Keyring 或 KWallet 必须正在运行。要更新 .deb 或 .rpm，请安装下一版本的软件包。",
+				"opensuse": "openSUSE"
+			},
+			"guide": "完整安装指南",
+			"troubleshooting": "故障排除"
+		},
+		"verify": {
+			"title": "校验下载文件",
+			"description": "运行适用于你系统的命令，并将结果与上方该文件的 SHA-256 进行比较。两者必须完全一致。",
+			"macos": "macOS，在“终端”中",
+			"windows": "Windows，在 PowerShell 中",
+			"linux": "Linux，在终端中"
+		},
+		"help": {
+			"title": "后续步骤",
+			"guide": {
+				"title": "桌面应用指南",
+				"body": "添加服务器、登录、通知、快速添加和更新。",
+				"link": "阅读指南"
+			},
+			"admin": {
+				"title": "管理员指南",
+				"body": "服务器设置、反向代理和全公司部署。",
+				"link": "阅读管理员指南"
+			},
+			"releases": {
+				"title": "GitHub 发布页",
+				"body": "每个版本及其发行说明和全部文件。",
+				"link": "打开 GitHub 发布页"
+			}
+		},
+		"platforms": {
+			"label": "平台",
+			"macos": "macOS",
+			"windows": "Windows",
+			"linux": "Linux",
+			"detected": "你的系统"
+		},
+		"code": {
+			"copy": "复制",
+			"copied": "已复制",
+			"copyLabel": "复制命令：{{label}}"
+		},
+		"meta": {
+			"version": "版本 {{version}}",
+			"released": "发布于 {{date}}",
+			"releaseNotes": "发布说明",
+			"allReleases": "GitHub 上的所有版本"
+		}
+	},
+	"desktop": {
+		"launcher": {
+			"servers": {
+				"heading": "服务器",
+				"empty": "添加你的 Margaya 服务器以开始使用。",
+				"open": "打开",
+				"rename": "重命名",
+				"remove": "移除",
+				"save": "保存",
+				"cancel": "取消",
+				"nameLabel": "服务器名称",
+				"removeConfirm": "要移除 {{name}} 吗？你将在这台电脑上退出该服务器的登录。",
+				"signedIn": "已登录",
+				"signedOut": "未登录",
+				"signIn": "使用浏览器登录",
+				"signOut": "退出登录",
+				"unread_other": "{{count}} 条未读",
+				"insecure": "不安全 (http)"
+			},
+			"add": {
+				"heading": "添加服务器",
+				"urlLabel": "服务器地址",
+				"urlPlaceholder": "margaya.example.com",
+				"connect": "连接",
+				"connecting": "正在连接…",
+				"nameLabel": "名称",
+				"submit": "添加服务器",
+				"found": "在 {{url}} 找到 Margaya {{version}}",
+				"httpWarning": "此服务器使用未加密的 http://。安全 Cookie 和部分浏览器功能需要 https://。请仅在你信任的网络中继续。",
+				"confirmHttp": "仍然添加"
+			},
+			"errors": {
+				"invalidUrl": "请输入服务器地址，例如 margaya.example.com。",
+				"unreachable": "无法连接到此服务器。请检查地址和网络连接。",
+				"notMargaya": "此地址看起来不是 Margaya 服务器。",
+				"serverTooOld": "此 Margaya 服务器尚不支持桌面应用。请让管理员更新服务器。",
+				"disabled": "此服务器已关闭桌面应用登录。",
+				"desktopTooOld": "此服务器需要 Margaya Desktop {{version}} 或更高版本。请更新应用后再连接。",
+				"tlsUntrusted": "你的电脑不信任此服务器的证书。",
+				"tlsHelp": "如何信任公司证书",
+				"duplicate": "此服务器已在你的列表中。",
+				"notSignedIn": "请先登录此服务器。",
+				"signInFailed": "登录未完成。请重试。",
+				"codeInvalid": "该代码无效。代码会在一分钟后过期，请重新开始。",
+				"quickAddFailed": "无法创建任务。",
+				"generic": "出现问题：{{message}}",
+				"keychainUnavailable": "无法将你的登录信息保存到系统密钥环。在 Linux 上，请确认 GNOME Keyring 或 KWallet 正在运行，然后重试。"
+			},
+			"signIn": {
+				"waiting": "请在浏览器中完成登录…",
+				"pasteHint": "浏览器没有返回这里？改为显示代码，然后粘贴到下方。",
+				"showCode": "显示代码",
+				"codeLabel": "登录码",
+				"submit": "继续",
+				"cancel": "取消",
+				"done": "已登录 {{name}}"
+			},
+			"deepLink": {
+				"addTitle": "添加此服务器？",
+				"addBody": "某个链接请求打开 {{url}}，但它不在你的服务器列表中。只添加你信任的服务器。",
+				"check": "检查服务器",
+				"ignore": "忽略"
+			},
+			"settings": {
+				"heading": "设置",
+				"openAtLogin": "登录时打开",
+				"copyDiagnostics": "复制诊断信息",
+				"copied": "诊断信息已复制到剪贴板。",
+				"version": "版本 {{version}}",
+				"checkUpdates": "检查更新",
+				"checking": "正在检查…",
+				"upToDate": "已是最新版本。",
+				"updateAvailable": "版本 {{version}} 现已推出。",
+				"updateInstall": "重启以更新",
+				"updating": "正在更新…",
+				"updatePackage": "版本 {{version}} 现已推出。请下载新的软件包进行更新。",
+				"updateDownload": "下载"
+			},
+			"quickAdd": {
+				"title": "快速添加",
+				"server": "服务器",
+				"project": "项目",
+				"taskTitle": "任务标题",
+				"placeholder": "需要做什么？",
+				"create": "创建任务",
+				"creating": "正在创建…",
+				"created": "任务已创建。",
+				"open": "打开任务",
+				"noServers": "登录服务器后才能添加任务。",
+				"noProjects": "没有你可以添加任务的项目。",
+				"loading": "正在加载…"
+			},
+			"downloads": {
+				"finished": "已下载 {{file}}",
+				"failed": "无法下载 {{file}}"
+			},
+			"menu": {
+				"about": "关于 Margaya",
+				"checkUpdates": "检查更新…",
+				"hide": "隐藏 Margaya",
+				"hideOthers": "隐藏其他",
+				"showAll": "全部显示",
+				"quit": "退出 Margaya",
+				"edit": "编辑",
+				"undo": "撤销",
+				"redo": "重做",
+				"cut": "剪切",
+				"copy": "拷贝",
+				"paste": "粘贴",
+				"selectAll": "全选",
+				"view": "显示",
+				"reload": "重新载入",
+				"servers": "服务器列表",
+				"quickAdd": "快速添加…",
+				"window": "窗口",
+				"minimize": "最小化",
+				"closeWindow": "关闭窗口",
+				"help": "帮助",
+				"copyDiagnostics": "复制诊断信息",
+				"openLogs": "打开日志文件夹"
+			},
+			"tray": {
+				"open": "打开 Margaya",
+				"openServer": "打开 {{name}}",
+				"quickAdd": "快速添加…",
+				"updateReady": "重启以更新到 {{version}}",
+				"quit": "退出",
+				"servers": "切换服务器…",
+				"updateDownload": "下载版本 {{version}}…"
+			},
+			"offline": {
+				"title": "无法连接到 {{name}}",
+				"body": "Margaya 会在后台持续重试。请检查网络连接，或切换到其他服务器。",
+				"lastError": "最近一次错误：{{error}}",
+				"retry": "重试",
+				"retrying": "正在重试…",
+				"retryIn_other": "{{count}} 秒后重试",
+				"switchServer": "切换服务器"
+			}
 		}
 	}
 }
