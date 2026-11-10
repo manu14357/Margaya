@@ -159,6 +159,15 @@
 			"restored": "Layihə bərpa edildi",
 			"viewInArchives": "Arxivdə bax"
 		},
+		"linkDialog": {
+			"addTitle": "Keçid əlavə et",
+			"editTitle": "Keçidi redaktə et",
+			"description": "Seçilmiş mətni veb ünvana və ya e-poçt ünvanına bağlayın.",
+			"urlLabel": "Keçid ünvanı",
+			"invalid": "example.com kimi veb ünvan və ya mailto: keçidi daxil edin.",
+			"apply": "Tətbiq et",
+			"remove": "Keçidi sil"
+		},
 		"states": {
 			"crash": {
 				"description": "Yenidən yükləmək adətən kömək edir. Yadda saxlanmış işiniz təhlükəsizdir.",
@@ -243,7 +252,9 @@
 			"samlNoConnection": "Bu e-poçt domeni üçün şirkət girişi quraşdırılmayıb.",
 			"samlError": "Şirkət girişini başlatmaq mümkün olmadı. Yenidən cəhd edin.",
 			"emailCodesOff": "Bu serverdə e-poçtla göndərilən giriş keçidləri və kodları söndürülüb. Əgər yalnız onlardan istifadə etmisinizsə, hələ parolunuz yoxdur: parol təyin etmək üçün “Parolu unutmusunuz?” seçin.",
-			"emailCodesOffNoEmail": "Bu serverdə e-poçtla göndərilən giriş keçidləri və kodları söndürülüb. Əgər yalnız onlardan istifadə etmisinizsə, hələ parolunuz yoxdur: instans adminindən sizin üçün parol təyin etməsini xahiş edin."
+			"emailCodesOffNoEmail": "Bu serverdə e-poçtla göndərilən giriş keçidləri və kodları söndürülüb. Əgər yalnız onlardan istifadə etmisinizsə, hələ parolunuz yoxdur: instans adminindən sizin üçün parol təyin etməsini xahiş edin.",
+			"desktopBrowserHint": "Bu seçimlər brauzerinizdə davam edir, sonra sizi tətbiqə qaytarır.",
+			"desktopBrowserStarted": "Girişi tamamlamaq üçün brauzerinizdə davam edin."
 		},
 		"providers": {
 			"google": "Google",
@@ -534,6 +545,31 @@
 			"failedTitle": "Girişi tamamlamaq mümkün olmadı",
 			"failed": "Bu girişi tamamlamaq mümkün olmadı. Onun keçidi yalnız bir dəfə, bir dəqiqə ərzində və yalnız daxil olduğunuz brauzerdə işləyir. Yenidən daxil olun.",
 			"backToSignIn": "Girişə qayıt"
+		},
+		"desktop": {
+			"pageTitle": "Masaüstü tətbiqinə giriş",
+			"title": "Masaüstü tətbiqinə daxil olun",
+			"confirm": "Margaya masaüstü tətbiqinə {{server}} serverində {{account}} kimi daxil olunsun?",
+			"warning": "Yalnız bunu bu kompüterdəki Margaya masaüstü tətbiqindən özünüz başlatmısınızsa davam edin. Bu keçidi sizə kimsə göndəribsə, ləğv edin.",
+			"allow": "İcazə ver",
+			"cancel": "Ləğv et",
+			"tryAgain": "Yenidən cəhd edin",
+			"doneTitle": "Masaüstü tətbiqinə qayıda bilərsiniz",
+			"doneHint": "Tətbiq açılmayıbsa, onu buradan yenidən açın.",
+			"openAgain": "Masaüstü tətbiqini aç",
+			"codeTitle": "Giriş kodunuz",
+			"codeHint": "Bu kodu masaüstü tətbiqinə yapışdırın. O, yalnız bir dəfə işləyir və bir dəqiqəyə etibarsız olur.",
+			"copy": "Kodu kopyala",
+			"copied": "Kod kopyalandı",
+			"copyFailed": "Kodu kopyalamaq mümkün olmadı. Onu seçib özünüz kopyalayın.",
+			"cancelledTitle": "Giriş ləğv edildi",
+			"cancelledHint": "Masaüstü tətbiqinə giriş edilmədi. Bu vərəqi bağlaya bilərsiniz.",
+			"invalidTitle": "Bu giriş keçidi etibarlı deyil",
+			"invalidHint": "Girişi masaüstü tətbiqindən yenidən başladın.",
+			"expired": "Bu giriş sorğusunun vaxtı bitib və ya o etibarlı deyil. Masaüstü tətbiqindən yenidən başlayın.",
+			"disabled": "Bu serverdə masaüstü tətbiqi ilə giriş söndürülüb. İnstans admininə müraciət edin.",
+			"rateLimited": "Həddindən çox cəhd edildi. Bir dəqiqə gözləyin, sonra yenidən cəhd edin.",
+			"failed": "Masaüstü tətbiqinə daxil olmaq mümkün olmadı. Yenidən cəhd edin."
 		}
 	},
 	"settings": {
@@ -720,7 +756,9 @@
 				"quietTo": "Son",
 				"deviceMute": "Bu cihazda səsləri söndür",
 				"deviceMuteDescription": "Yalnız bu brauzerin səsi söndürülür; digər cihazlarınızda səslər çalınmağa davam edir.",
-				"previewFailed": "Brauzeriniz səsi çalmadı. Bu tabın və ya saytın səsinin söndürülmədiyini yoxlayın."
+				"previewFailed": "Brauzeriniz səsi çalmadı. Bu tabın və ya saytın səsinin söndürülmədiyini yoxlayın.",
+				"desktopDescription": "Masaüstü tətbiqində bildiriş, bu ayarlar tələb etdikdə burada seçdiyiniz Margaya səsini sizin səs səviyyənizdə çalır. “Narahat etməyin” rejimi onu səssizləşdirir.",
+				"deviceMuteDescriptionDesktop": "Yalnız bu masaüstü tətbiqinin səsi söndürülür; digər cihazlarınızda səslər çalınmağa davam edir."
 			},
 			"pushTitle": "Push bildirişləri",
 			"pushDescription": "Margaya bağlı olsa belə telefonunuza və ya kompüterinizə gələn xəbərdarlıqlar. Nəyin göndəriləcəyini “Mənə bunlar barədə bildir” müəyyən edir, aşağıdakı iş sahəsi qaydası isə bunu daralda bilər.",
@@ -744,7 +782,8 @@
 			"workspaceCardLabelPush": "Push bildirişləri",
 			"pushChannelHintEnabled": "Uyğun iş sahəsi bildirişlərini cihazlarınıza göndərin.",
 			"pushChannelHintDisabled": "Əvvəlcə bir cihaz üçün push-u aktivləşdirin.",
-			"pushLoadFailed": "Push parametrlərinizi yükləmək mümkün olmadı. Yenidən cəhd etmək üçün bu səhifəni yeniləyin."
+			"pushLoadFailed": "Push parametrlərinizi yükləmək mümkün olmadı. Yenidən cəhd etmək üçün bu səhifəni yeniləyin.",
+			"pushDesktopApp": "Bu cihazda bildirişləri masaüstü tətbiqi göstərir, ona görə də burada brauzer push bildirişlərinə ehtiyac yoxdur."
 		},
 		"preferencesPage": {
 			"title": "Tərcihlər",
@@ -3271,6 +3310,11 @@
 				"agentPromptPlaceholder": "Məsələn: bu tapşırığı çeşidlə və prioritet təklif et.",
 				"agentHint": "Agent bu qaydanı yadda saxlayan şəxsin adından və ən çoxu onun hüquqları ilə işləyir. Agentin etdiyi dəyişikliklər üçün heç vaxt işə düşmür."
 			}
+		},
+		"continueInBrowser": {
+			"title": "Brauzerinizdə davam edin",
+			"billing": "Yenicə açılan brauzer pəncərəsində prosesi tamamlayın, sonra Margaya-ya qayıdın. Qayıtdığınızda planınız yenilənəcək.",
+			"githubApp": "Brauzerinizdə GitHub-da prosesi tamamlayın, sonra Margaya-ya qayıdın və quraşdırmanı yenidən yoxlayın."
 		}
 	},
 	"navigation": {
@@ -3389,7 +3433,9 @@
 			"settings": "Parametrlər",
 			"signingOut": "Çıxış edilir...",
 			"logOut": "Çıxış et",
-			"instanceSettings": "Quraşdırma parametrləri"
+			"instanceSettings": "Quraşdırma parametrləri",
+			"getDesktopApp": "Masaüstü tətbiqini əldə edin",
+			"switchServer": "Serveri dəyiş"
 		},
 		"workspaceSwitcher": {
 			"workspaces": "İş sahələri",
@@ -3532,6 +3578,12 @@
 			"whatsNew": "Yeniliklər",
 			"sourceCode": "Mənbə kodu",
 			"workspaceAnalytics": "İş sahəsi"
+		},
+		"desktopWindow": {
+			"minimize": "Kiçilt",
+			"maximize": "Böyüt",
+			"restore": "Bərpa et",
+			"close": "Bağla"
 		}
 	},
 	"notifications": {
@@ -3849,7 +3901,6 @@
 				"imageUploaded": "Şəkil yükləndi",
 				"fileAttached": "Fayl əlavə edildi",
 				"failedToUploadFile": "Faylı yükləmək alınmadı",
-				"enterUrl": "URL daxil edin",
 				"plaintext": "Sadə mətn",
 				"autoDetect": "Avtomatik müəyyən et",
 				"slashGroupText": "Mətn",
@@ -4253,7 +4304,6 @@
 				"ariaLabel": "Tapşırıq təsviri redaktoru",
 				"placeholder": "Təsvir yazın...",
 				"previewImage": "Şəklə önbaxış",
-				"enterUrl": "URL daxil edin",
 				"autoDetect": "Avtomatik müəyyən et",
 				"copyCode": "Kodu kopyala",
 				"copy": "Kopyala",
@@ -4505,7 +4555,6 @@
 		"backlog": {
 			"pageTitle": "{{name}} — gözləyən tapşırıqlar",
 			"noTasksToMove": "Köçürüləcək planlaşdırılmış tapşırıq yoxdur",
-			"moveAllConfirm": "Bütün {{count}} planlaşdırılmış tapşırıq «{{column}}» bölməsinə köçürülsün?",
 			"moveAllSuccess": "{{count}} tapşırıq «{{column}}» bölməsinə köçürüldü",
 			"plan": "Planlaşdır",
 			"moveAllTooltip": "Bütün planlaşdırılmış tapşırıqları «{{column}}» bölməsinə köçür",
@@ -4515,7 +4564,12 @@
 				"planned": "Planlaşdırılmış",
 				"archived": "Arxivlənmiş"
 			},
-			"noTasksInSection": "{{section}} bölməsində tapşırıq yoxdur"
+			"noTasksInSection": "{{section}} bölməsində tapşırıq yoxdur",
+			"moveAllConfirmTitle_one": "{{count}} planlaşdırılmış tapşırıq «{{column}}» bölməsinə köçürülsün?",
+			"moveAllConfirmTitle_other": "Bütün {{count}} planlaşdırılmış tapşırıq «{{column}}» bölməsinə köçürülsün?",
+			"moveAllConfirmDescription_one": "Tapşırıq backlogdan çıxacaq və lövhədə görünəcək.",
+			"moveAllConfirmDescription_other": "Tapşırıqlar backlogdan çıxacaq və lövhədə görünəcək.",
+			"moveAllConfirmAction": "Tapşırıqları köçür"
 		},
 		"sort": {
 			"label": "Sırala",
@@ -4867,8 +4921,6 @@
 			"moveToBoardSuccess": "{{count}} tapşırıq lövhəyə köçürüldü",
 			"moveToBoardError": "Tapşırıqları lövhəyə köçürmək alınmadı",
 			"delete": "Tapşırıqları sil",
-			"deleteConfirm": "{{count}} tapşırıq zibil qutusuna köçürülsün? Onları layihə parametrlərindəki Son silinənlər bölməsindən bərpa edə bilərsiniz.",
-			"deleteSuccess": "{{count}} tapşırıq silindi",
 			"deleteError": "Tapşırıqları silmək alınmadı",
 			"archive": "Tapşırıqları arxivlə",
 			"archiveSuccess": "{{count}} tapşırıq arxivləndi",
@@ -4919,7 +4971,14 @@
 			"moveToProjectSuccess_one": "{{count}} tapşırıq {{name}} layihəsinə köçürüldü",
 			"moveToProjectSuccess_other": "{{count}} tapşırıq {{name}} layihəsinə köçürüldü",
 			"moveToProjectNone": "Bu tapşırıqlar artıq {{name}} daxilindədir",
-			"moveToProjectError": "Tapşırıqları köçürmək mümkün olmadı"
+			"moveToProjectError": "Tapşırıqları köçürmək mümkün olmadı",
+			"deleteConfirmTitle_one": "{{count}} tapşırıq zibil qutusuna köçürülsün?",
+			"deleteConfirmTitle_other": "{{count}} tapşırıq zibil qutusuna köçürülsün?",
+			"deleteConfirmDescription_one": "Onu layihə parametrlərindəki Son silinənlər bölməsindən bərpa edə bilərsiniz.",
+			"deleteConfirmDescription_other": "Onları layihə parametrlərindəki Son silinənlər bölməsindən bərpa edə bilərsiniz.",
+			"deleteConfirmAction": "Zibil qutusuna köçür",
+			"deleteSuccess_one": "{{count}} tapşırıq zibil qutusuna köçürüldü",
+			"deleteSuccess_other": "{{count}} tapşırıq zibil qutusuna köçürüldü"
 		},
 		"editor": {
 			"table": {
@@ -6991,7 +7050,8 @@
 				"signIn": "Daxil ol",
 				"explore": "Kəşf et",
 				"featuresIntro": "Margaya üzrə altı qısa tur. Hər birində idarəsini öz üzərinizə götürə biləcəyiniz canlı demo var.",
-				"newTab": "(yeni vərəqdə açılır)"
+				"newTab": "(yeni vərəqdə açılır)",
+				"download": "Yüklə"
 			},
 			"ownIt": {
 				"cta": "Quraşdırma təlimatını oxuyun",
@@ -7109,6 +7169,7 @@
 				"product": {
 					"changelog": "Dəyişikliklər jurnalı",
 					"roadmap": "Yol xəritəsi",
+					"download": "Masaüstü tətbiqi",
 					"title": "Məhsul"
 				},
 				"resources": {
@@ -11943,6 +12004,307 @@
 		"notificationText": {
 			"commentWithoutPreview": "{{taskTitle}} tapşırığına yeni şərh",
 			"pushFixedLine": "Təfərrüatları görmək üçün Margaya-nı açın."
+		}
+	},
+	"download": {
+		"title": "Masaüstü tətbiqini yükləyin",
+		"description": "macOS, Windows və Linux üçün Margaya: öz Margaya serveriniz ayrıca pəncərədə, yerli bildirişlər, oxunmamış nişanı və istənilən yerdən sürətli əlavə ilə.",
+		"eyebrow": "Masaüstü tətbiqi",
+		"headline": "Margaya masaüstünüzdə",
+		"intro": "Öz Margaya serveriniz ayrıca pəncərədə: yerli bildirişlər, oxunmamış nişanı və istənilən yerdən sürətli əlavə ilə. macOS, Windows və Linux üçün.",
+		"onThisPage": "Bu səhifədə",
+		"picker": {
+			"mac": "Mac üçün yüklə",
+			"windows": "Windows üçün yüklə",
+			"appleSilicon": "Apple Silicon",
+			"intel": "Intel",
+			"windowsDetail": "64 bitlik quraşdırıcı",
+			"otherMacArm": "Apple Silicon prosessorlu Mac? O versiyanı yükləyin",
+			"otherMacIntel": "Intel prosessorlu Mac? O versiyanı yükləyin",
+			"unsupported": "Masaüstü tətbiqi macOS, Windows və Linux-da işləyir. Bu cihazda Margaya serverinizi brauzerdə açın.",
+			"linux": "Linux üçün yüklə",
+			"linuxDetail": "AppImage, x86_64",
+			"linuxArmDetail": "AppImage, ARM64",
+			"otherPlatforms": "Digər platformalar və formatlar"
+		},
+		"comingSoon": {
+			"title": "Tezliklə",
+			"body": "İlk masaüstü buraxılışı yoldadır. Dərc olunan kimi quraşdırıcılar burada və GitHub buraxılışlar səhifəsində görünəcək.",
+			"action": "GitHub buraxılışlarını aç"
+		},
+		"files": {
+			"title": "Bütün yükləmələr",
+			"description": "Platformanızı və formatı seçin. Hər fayl həm də GitHub buraxılışına əlavə olunub.",
+			"macArm": {
+				"name": "Apple Silicon",
+				"detail": "M seriyalı çipli Mac-lər."
+			},
+			"macIntel": {
+				"name": "Intel",
+				"detail": "Intel prosessorlu Mac-lər."
+			},
+			"windowsExe": {
+				"name": "Quraşdırıcı",
+				"detail": "Administrator hüquqları olmadan hesabınız üçün quraşdırılır."
+			},
+			"windowsMsi": {
+				"name": "MSI paketi",
+				"detail": "Intune, Qrup Siyasəti və ya oxşar alətlərlə yerləşdirmə edən İT komandaları üçün."
+			},
+			"checksum": "SHA-256",
+			"noChecksum": "Bu fayl üçün yoxlama cəmi dərc olunmayıb.",
+			"copied": "Kopyalandı",
+			"download": "Yüklə",
+			"missing": "Bu buraxılışda mövcud deyil.",
+			"linuxAppImage": {
+				"name": "AppImage",
+				"detail": "Quraşdırılmadan əksər distributivlərdə işləyir və özünü yeniləyir."
+			},
+			"linuxDeb": {
+				"name": "Debian paketi",
+				"detail": "Debian, Ubuntu, Linux Mint və Pop!_OS."
+			},
+			"linuxRpm": {
+				"name": "RPM paketi",
+				"detail": "Fedora, RHEL, Rocky Linux, AlmaLinux və openSUSE."
+			},
+			"architecture": "Arxitektura",
+			"x64": "x86_64 (Intel, AMD)",
+			"arm": "ARM64",
+			"recommended": "Tövsiyə olunur",
+			"copyChecksumFor": "SHA-256 yoxlama cəmini kopyala: {{name}}",
+			"downloadFile": "Yüklə: {{name}}"
+		},
+		"requirements": {
+			"title": "Sistem tələbləri",
+			"macos": {
+				"name": "macOS",
+				"value": "macOS 14 Sonoma və ya daha yeni, Apple Silicon və ya Intel üzərində."
+			},
+			"windows": {
+				"name": "Windows",
+				"value": "Windows 10 və ya 11, 64 bit."
+			},
+			"server": {
+				"name": "Server",
+				"value": "Hər tətbiq əlçatan olduğunuz Margaya serverinə qoşulur və həmişə onun versiyasına uyğun gəlir."
+			},
+			"linux": {
+				"name": "Linux",
+				"value": "WebKitGTK 4.1 olan x86_64 və ya ARM64 (Ubuntu 22.04, Debian 12, Fedora 38 və ya daha yeni) və açar dəsti."
+			}
+		},
+		"firstLaunch": {
+			"title": "Quraşdırma və ilk açılış",
+			"description": "Sisteminiz internetdən yüklənmiş tətbiqi açmazdan əvvəl bir dəfə soruşur. Bundan sonra Margaya digər tətbiqlər kimi açılır.",
+			"macos": {
+				"step1": "Yüklənmiş .dmg faylını açın və Margaya-nı “Applications” qovluğuna sürükləyin.",
+				"step2": "Margaya-nı “Applications” qovluğundan açın. macOS internetdən yüklənmiş tətbiq barədə soruşduqda “Open” düyməsinə klikləyin.",
+				"step3": "macOS tətbiqi yoxlaya bilmədiyini bildirsə, “System Settings” › “Privacy & Security” bölməsini açın və “Open Anyway” düyməsinə klikləyin.",
+				"note": "Brauzerinizdəki keçidlərin onu aça bilməsi üçün Margaya-nı disk təsvirindən deyil, “Applications” qovluğundan başladın."
+			},
+			"windows": {
+				"step1": "Yüklənmiş quraşdırıcını işə salın.",
+				"step2": "Windows “Windows protected your PC” xəbərdarlığını göstərsə, “More info”, sonra isə “Run anyway” düyməsinə klikləyin. Quraşdırıcı hələ kod imzalı deyil.",
+				"step3": "Quraşdırıcının addımlarını izləyin. Bitdikdə Margaya açılır və Start menyusunda görünür.",
+				"note": "Yeniləmələr tətbiqin içindən quraşdırılır və bu xəbərdarlığı bir daha göstərmir."
+			},
+			"linux": {
+				"intro": "AppImage-i istənilən distributivdə istifadə edin və ya öz distributiviniz üçün paketi quraşdırın. Əmrləri faylı yüklədiyiniz qovluqda icra edin.",
+				"appImage": "AppImage, istənilən distributiv",
+				"deb": "Debian, Ubuntu, Linux Mint, Pop!_OS",
+				"rpm": "Fedora, RHEL, Rocky Linux, AlmaLinux",
+				"note": "Margaya giriş məlumatlarınızı sistemin açar dəstində saxlayır, ona görə GNOME Keyring və ya KWallet işləməlidir. .deb və ya .rpm paketini yeniləmək üçün növbəti versiyanın paketini quraşdırın.",
+				"opensuse": "openSUSE"
+			},
+			"guide": "Tam quraşdırma bələdçisi",
+			"troubleshooting": "Problemlərin həlli"
+		},
+		"verify": {
+			"title": "Yükləməni yoxlayın",
+			"description": "Sisteminiz üçün əmri icra edin və nəticəni yuxarıdakı faylın SHA-256 dəyəri ilə müqayisə edin. Onlar tam üst-üstə düşməlidir.",
+			"macos": "macOS, Terminal-da",
+			"windows": "Windows, PowerShell-də",
+			"linux": "Linux, terminalda"
+		},
+		"help": {
+			"title": "Növbəti addımlar",
+			"guide": {
+				"title": "Masaüstü tətbiqi üzrə bələdçi",
+				"body": "Server əlavə etmək, giriş, bildirişlər, sürətli əlavə və yeniləmələr.",
+				"link": "Bələdçini oxuyun"
+			},
+			"admin": {
+				"title": "Administratorlar üçün",
+				"body": "Server parametrləri, əks proksilər və şirkət miqyasında yerləşdirmə.",
+				"link": "Administrator bələdçisini oxuyun"
+			},
+			"releases": {
+				"title": "GitHub buraxılışları",
+				"body": "Hər versiya buraxılış qeydləri və bütün faylları ilə.",
+				"link": "GitHub buraxılışlarını aç"
+			}
+		},
+		"platforms": {
+			"label": "Platforma",
+			"macos": "macOS",
+			"windows": "Windows",
+			"linux": "Linux",
+			"detected": "sisteminiz"
+		},
+		"code": {
+			"copy": "Kopyala",
+			"copied": "Kopyalandı",
+			"copyLabel": "Əmrləri kopyala: {{label}}"
+		},
+		"meta": {
+			"version": "Versiya {{version}}",
+			"released": "Buraxılış tarixi: {{date}}",
+			"releaseNotes": "Buraxılış qeydləri",
+			"allReleases": "GitHub-da bütün buraxılışlar"
+		}
+	},
+	"desktop": {
+		"launcher": {
+			"servers": {
+				"heading": "Serverlər",
+				"empty": "Başlamaq üçün Margaya serverinizi əlavə edin.",
+				"open": "Aç",
+				"rename": "Adını dəyiş",
+				"remove": "Çıxar",
+				"save": "Yadda saxla",
+				"cancel": "Ləğv et",
+				"nameLabel": "Server adı",
+				"removeConfirm": "{{name}} çıxarılsın? Bu kompüterdə həmin serverdən çıxış edəcəksiniz.",
+				"signedIn": "Daxil olunub",
+				"signedOut": "Daxil olunmayıb",
+				"signIn": "Brauzerlə daxil ol",
+				"signOut": "Çıxış et",
+				"unread_one": "{{count}} oxunmamış",
+				"unread_other": "{{count}} oxunmamış",
+				"insecure": "Təhlükəsiz deyil (http)"
+			},
+			"add": {
+				"heading": "Server əlavə et",
+				"urlLabel": "Server ünvanı",
+				"urlPlaceholder": "margaya.example.com",
+				"connect": "Qoşul",
+				"connecting": "Qoşulur…",
+				"nameLabel": "Ad",
+				"submit": "Server əlavə et",
+				"found": "{{url}} ünvanında Margaya {{version}} tapıldı",
+				"httpWarning": "Bu server şifrələnməmiş http:// istifadə edir. Təhlükəsiz kukilər və bəzi brauzer funksiyaları https:// tələb edir. Yalnız etibar etdiyiniz şəbəkədə davam edin.",
+				"confirmHttp": "Yenə də əlavə et"
+			},
+			"errors": {
+				"invalidUrl": "Server ünvanını daxil edin, məsələn, margaya.example.com.",
+				"unreachable": "Bu serverə qoşulmaq mümkün olmadı. Ünvanı və şəbəkə bağlantınızı yoxlayın.",
+				"notMargaya": "Bu ünvan Margaya serverinə oxşamır.",
+				"serverTooOld": "Bu Margaya serveri hələ masaüstü tətbiqini dəstəkləmir. Administratorunuzdan onu yeniləməsini xahiş edin.",
+				"disabled": "Bu serverdə masaüstü girişi söndürülüb.",
+				"desktopTooOld": "Bu server Margaya Desktop {{version}} və ya daha yeni versiya tələb edir. Qoşulmaq üçün tətbiqi yeniləyin.",
+				"tlsUntrusted": "Kompüteriniz bu serverin sertifikatına etibar etmir.",
+				"tlsHelp": "Şirkət sertifikatına necə etibar etmək olar",
+				"duplicate": "Bu server artıq siyahınızdadır.",
+				"notSignedIn": "Əvvəlcə bu serverə daxil olun.",
+				"signInFailed": "Giriş tamamlanmadı. Yenidən cəhd edin.",
+				"codeInvalid": "Həmin kod işləmədi. Kodların vaxtı bir dəqiqəyə bitir, ona görə də yenidən başlayın.",
+				"quickAddFailed": "Tapşırığı yaratmaq mümkün olmadı.",
+				"generic": "Nəsə səhv getdi: {{message}}",
+				"keychainUnavailable": "Giriş məlumatlarınızı sistemin açar dəstində saxlamaq mümkün olmadı. Linux-da GNOME Keyring və ya KWallet-in işlədiyinə əmin olun, sonra yenidən cəhd edin."
+			},
+			"signIn": {
+				"waiting": "Girişi brauzerinizdə tamamlayın…",
+				"pasteHint": "Brauzer bura qayıtmadı? Əvəzində kodu göstərin və aşağıya yapışdırın.",
+				"showCode": "Kodu göstər",
+				"codeLabel": "Giriş kodu",
+				"submit": "Davam et",
+				"cancel": "Ləğv et",
+				"done": "{{name}} serverinə daxil olundu"
+			},
+			"deepLink": {
+				"addTitle": "Bu server əlavə edilsin?",
+				"addBody": "Bir keçid server siyahınızda olmayan {{url}} ünvanını açmaq istədi. Yalnız etibar etdiyiniz serverləri əlavə edin.",
+				"check": "Serveri yoxla",
+				"ignore": "Nəzərə alma"
+			},
+			"settings": {
+				"heading": "Parametrlər",
+				"openAtLogin": "Sistemə girişdə aç",
+				"copyDiagnostics": "Diaqnostikanı kopyala",
+				"copied": "Diaqnostika mübadilə buferinə kopyalandı.",
+				"version": "Versiya {{version}}",
+				"checkUpdates": "Yeniləmələri yoxla",
+				"checking": "Yoxlanılır…",
+				"upToDate": "Ən son versiyadasınız.",
+				"updateAvailable": "{{version}} versiyası mövcuddur.",
+				"updateInstall": "Yeniləmək üçün yenidən başlat",
+				"updating": "Yenilənir…",
+				"updatePackage": "{{version}} versiyası mövcuddur. Yeniləmək üçün yeni paketi yükləyin.",
+				"updateDownload": "Yüklə"
+			},
+			"quickAdd": {
+				"title": "Sürətli əlavə",
+				"server": "Server",
+				"project": "Layihə",
+				"taskTitle": "Tapşırığın başlığı",
+				"placeholder": "Nə edilməlidir?",
+				"create": "Tapşırıq yarat",
+				"creating": "Yaradılır…",
+				"created": "Tapşırıq yaradıldı.",
+				"open": "Tapşırığı aç",
+				"noServers": "Tapşırıq əlavə etmək üçün serverə daxil olun.",
+				"noProjects": "Tapşırıq əlavə edə biləcəyiniz layihə yoxdur.",
+				"loading": "Yüklənir…"
+			},
+			"downloads": {
+				"finished": "{{file}} yükləndi",
+				"failed": "{{file}} yüklənə bilmədi"
+			},
+			"menu": {
+				"about": "Margaya haqqında",
+				"checkUpdates": "Yeniləmələri yoxla…",
+				"hide": "Margaya-nı gizlət",
+				"hideOthers": "Digərlərini gizlət",
+				"showAll": "Hamısını göstər",
+				"quit": "Margaya-dan çıx",
+				"edit": "Redaktə",
+				"undo": "Geri al",
+				"redo": "Təkrarla",
+				"cut": "Kəs",
+				"copy": "Kopyala",
+				"paste": "Yapışdır",
+				"selectAll": "Hamısını seç",
+				"view": "Görünüş",
+				"reload": "Yenidən yüklə",
+				"servers": "Server siyahısı",
+				"quickAdd": "Sürətli əlavə…",
+				"window": "Pəncərə",
+				"minimize": "Kiçilt",
+				"closeWindow": "Pəncərəni bağla",
+				"help": "Kömək",
+				"copyDiagnostics": "Diaqnostikanı kopyala",
+				"openLogs": "Jurnal qovluğunu aç"
+			},
+			"tray": {
+				"open": "Margaya-nı aç",
+				"openServer": "{{name}} aç",
+				"quickAdd": "Sürətli əlavə…",
+				"updateReady": "{{version}} versiyasına yeniləmək üçün yenidən başlat",
+				"quit": "Çıx",
+				"servers": "Serveri dəyiş…",
+				"updateDownload": "{{version}} versiyasını yüklə…"
+			},
+			"offline": {
+				"title": "{{name}} serverinə qoşulmaq mümkün deyil",
+				"body": "Margaya arxa planda cəhd etməyə davam edir. Şəbəkə bağlantınızı yoxlayın və ya başqa serverə keçin.",
+				"lastError": "Son xəta: {{error}}",
+				"retry": "Yenidən cəhd edin",
+				"retrying": "Yenidən cəhd edilir…",
+				"retryIn_one": "{{count}} saniyə sonra yenidən cəhd ediləcək",
+				"retryIn_other": "{{count}} saniyə sonra yenidən cəhd ediləcək",
+				"switchServer": "Serveri dəyiş"
+			}
 		}
 	}
 }

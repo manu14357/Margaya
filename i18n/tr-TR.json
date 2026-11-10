@@ -159,6 +159,15 @@
 			"restored": "Proje geri yüklendi",
 			"viewInArchives": "Arşivde görüntüle"
 		},
+		"linkDialog": {
+			"addTitle": "Bağlantı ekle",
+			"editTitle": "Bağlantıyı düzenle",
+			"description": "Seçili metni bir web adresine veya e-posta adresine bağlayın.",
+			"urlLabel": "Bağlantı adresi",
+			"invalid": "example.com gibi bir web adresi veya bir mailto: bağlantısı girin.",
+			"apply": "Uygula",
+			"remove": "Bağlantıyı kaldır"
+		},
 		"states": {
 			"crash": {
 				"description": "Yeniden yüklemek genellikle sorunu çözer. Kaydedilmiş çalışmanız güvende.",
@@ -243,7 +252,9 @@
 			"samlNoConnection": "Bu e-posta alan adı için şirket girişi ayarlanmamış.",
 			"samlError": "Şirket girişi başlatılamadı. Lütfen tekrar deneyin.",
 			"emailCodesOff": "Bu sunucuda e-postayla gönderilen giriş bağlantıları ve kodları kapalı. Yalnızca bunları kullandıysanız henüz bir parolanız yok: parola belirlemek için “Parolanızı mı unuttunuz?” seçeneğini seçin.",
-			"emailCodesOffNoEmail": "Bu sunucuda e-postayla gönderilen giriş bağlantıları ve kodları kapalı. Yalnızca bunları kullandıysanız henüz bir parolanız yok: bir örnek yöneticisinden sizin için parola belirlemesini isteyin."
+			"emailCodesOffNoEmail": "Bu sunucuda e-postayla gönderilen giriş bağlantıları ve kodları kapalı. Yalnızca bunları kullandıysanız henüz bir parolanız yok: bir örnek yöneticisinden sizin için parola belirlemesini isteyin.",
+			"desktopBrowserHint": "Bu seçenekler tarayıcınızda devam eder, ardından sizi uygulamaya geri getirir.",
+			"desktopBrowserStarted": "Girişi tamamlamak için tarayıcınızda devam edin."
 		},
 		"providers": {
 			"google": "Google",
@@ -534,6 +545,31 @@
 			"failedTitle": "Giriş tamamlanamadı",
 			"failed": "Bu giriş tamamlanamadı. Bağlantısı yalnızca bir kez, bir dakika boyunca ve yalnızca giriş yaptığınız tarayıcıda çalışır. Tekrar giriş yapın.",
 			"backToSignIn": "Girişe dön"
+		},
+		"desktop": {
+			"pageTitle": "Masaüstü uygulamasında giriş",
+			"title": "Masaüstü uygulamasında giriş yapın",
+			"confirm": "Margaya masaüstü uygulamasında {{server}} üzerinde {{account}} olarak giriş yapılsın mı?",
+			"warning": "Yalnızca bu işlemi bu bilgisayardaki Margaya masaüstü uygulamasından kendiniz başlattıysanız devam edin. Bu bağlantıyı size biri gönderdiyse iptal edin.",
+			"allow": "İzin ver",
+			"cancel": "İptal",
+			"tryAgain": "Tekrar dene",
+			"doneTitle": "Masaüstü uygulamasına dönebilirsiniz",
+			"doneHint": "Uygulama açılmadıysa buradan yeniden açın.",
+			"openAgain": "Masaüstü uygulamasını aç",
+			"codeTitle": "Giriş kodunuz",
+			"codeHint": "Bu kodu masaüstü uygulamasına yapıştırın. Yalnızca bir kez çalışır ve bir dakika sonra geçerliliğini yitirir.",
+			"copy": "Kodu kopyala",
+			"copied": "Kod kopyalandı",
+			"copyFailed": "Kod kopyalanamadı. Kodu seçip kendiniz kopyalayın.",
+			"cancelledTitle": "Giriş iptal edildi",
+			"cancelledHint": "Masaüstü uygulamasında giriş yapılmadı. Bu sekmeyi kapatabilirsiniz.",
+			"invalidTitle": "Bu giriş bağlantısı geçerli değil",
+			"invalidHint": "Girişi masaüstü uygulamasından yeniden başlatın.",
+			"expired": "Bu giriş isteğinin süresi doldu veya geçerli değil. Masaüstü uygulamasından yeniden başlayın.",
+			"disabled": "Bu sunucuda masaüstü uygulamasıyla giriş kapalı. Bir örnek yöneticisine başvurun.",
+			"rateLimited": "Çok fazla deneme yapıldı. Bir dakika bekleyip tekrar deneyin.",
+			"failed": "Masaüstü uygulamasında giriş yapılamadı. Tekrar deneyin."
 		}
 	},
 	"settings": {
@@ -720,7 +756,9 @@
 				"quietTo": "Bitiş",
 				"deviceMute": "Bu cihazda sesleri kapat",
 				"deviceMuteDescription": "Yalnızca bu tarayıcının sesi kapanır; diğer cihazlarınız ses çalmaya devam eder.",
-				"previewFailed": "Tarayıcınız sesi çalamadı. Bu sekmenin veya sitenin sessize alınmadığından emin olun."
+				"previewFailed": "Tarayıcınız sesi çalamadı. Bu sekmenin veya sitenin sessize alınmadığından emin olun.",
+				"desktopDescription": "Masaüstü uygulamasında bildirim, bu ayarlar gerektirdiğinde burada seçtiğiniz Margaya sesini sizin ses düzeyinizde çalar. “Rahatsız Etmeyin” modu bu sesi kapatır.",
+				"deviceMuteDescriptionDesktop": "Yalnızca bu masaüstü uygulamasının sesi kapanır; diğer cihazlarınız ses çalmaya devam eder."
 			},
 			"pushTitle": "Anlık bildirimler",
 			"pushDescription": "Margaya kapalıyken bile telefonunuza veya bilgisayarınıza gelen uyarılar. Neyin gönderileceğini “Bana bildirim gönder” belirler; aşağıdaki bir çalışma alanı kuralı bunu daraltabilir.",
@@ -744,7 +782,8 @@
 			"workspaceCardLabelPush": "Anlık bildirimler",
 			"pushChannelHintEnabled": "Eşleşen çalışma alanı bildirimlerini cihazlarınıza gönderin.",
 			"pushChannelHintDisabled": "Önce bir cihaz için anlık bildirimleri açın.",
-			"pushLoadFailed": "Anlık bildirim ayarlarınız yüklenemedi. Tekrar denemek için bu sayfayı yenileyin."
+			"pushLoadFailed": "Anlık bildirim ayarlarınız yüklenemedi. Tekrar denemek için bu sayfayı yenileyin.",
+			"pushDesktopApp": "Bu cihazda bildirimleri masaüstü uygulaması gösterir, bu yüzden burada tarayıcı anlık bildirimlerine gerek yok."
 		},
 		"preferencesPage": {
 			"title": "Tercihler",
@@ -3271,6 +3310,11 @@
 				"agentPromptPlaceholder": "Örneğin: bu görevi değerlendir ve bir öncelik öner.",
 				"agentHint": "Ajan, bu kuralı kaydeden kişi adına ve en fazla onun yetkileriyle çalışır. Bir ajanın yaptığı değişiklikler için asla çalışmaz."
 			}
+		},
+		"continueInBrowser": {
+			"title": "Tarayıcınızda devam edin",
+			"billing": "Az önce açılan tarayıcı penceresinde işlemi tamamlayın, ardından Margaya'ya dönün. Döndüğünüzde planınız güncellenir.",
+			"githubApp": "Tarayıcınızda GitHub'daki işlemi tamamlayın, ardından Margaya'ya dönün ve kurulumu tekrar kontrol edin."
 		}
 	},
 	"navigation": {
@@ -3389,7 +3433,9 @@
 			"settings": "Ayarlar",
 			"signingOut": "Çıkış yapılıyor...",
 			"logOut": "Çıkış yap",
-			"instanceSettings": "Örnek ayarları"
+			"instanceSettings": "Örnek ayarları",
+			"getDesktopApp": "Masaüstü uygulamasını edinin",
+			"switchServer": "Sunucu değiştir"
 		},
 		"workspaceSwitcher": {
 			"workspaces": "Çalışma Alanları",
@@ -3532,6 +3578,12 @@
 			"whatsNew": "Yenilikler",
 			"sourceCode": "Kaynak kod",
 			"workspaceAnalytics": "Çalışma alanı"
+		},
+		"desktopWindow": {
+			"minimize": "Simge Durumuna Küçült",
+			"maximize": "Ekranı Kapla",
+			"restore": "Geri Yükle",
+			"close": "Kapat"
 		}
 	},
 	"notifications": {
@@ -3849,7 +3901,6 @@
 				"imageUploaded": "Görsel yüklendi",
 				"fileAttached": "Dosya eklendi",
 				"failedToUploadFile": "Dosya yüklenemedi",
-				"enterUrl": "URL girin",
 				"plaintext": "Düz metin",
 				"autoDetect": "Otomatik algıla",
 				"slashGroupText": "Metin",
@@ -4253,7 +4304,6 @@
 				"ariaLabel": "Görev açıklama düzenleyici",
 				"placeholder": "Açıklama yazın...",
 				"previewImage": "Önizleme görseli",
-				"enterUrl": "URL girin",
 				"autoDetect": "Otomatik algıla",
 				"copyCode": "Kodu kopyala",
 				"copy": "Kopyala",
@@ -4505,7 +4555,6 @@
 		"backlog": {
 			"pageTitle": "{{name}} backlog",
 			"noTasksToMove": "Taşınacak planlanmış görev yok",
-			"moveAllConfirm": "Tüm {{count}} planlanmış görev {{column}}'a taşınsın mı?",
 			"moveAllSuccess": "{{count}} görev {{column}}'a taşındı",
 			"plan": "Planla",
 			"moveAllTooltip": "Tüm planlanmış görevleri {{column}}'a taşı",
@@ -4515,7 +4564,12 @@
 				"planned": "Planlandı",
 				"archived": "Arşivlendi"
 			},
-			"noTasksInSection": "{{section}} görevi yok"
+			"noTasksInSection": "{{section}} görevi yok",
+			"moveAllConfirmTitle_one": "{{count}} planlanmış görev {{column}} sütununa taşınsın mı?",
+			"moveAllConfirmTitle_other": "Tüm {{count}} planlanmış görev {{column}} sütununa taşınsın mı?",
+			"moveAllConfirmDescription_one": "Görev backlog'dan çıkar ve panoda görünür.",
+			"moveAllConfirmDescription_other": "Görevler backlog'dan çıkar ve panoda görünür.",
+			"moveAllConfirmAction": "Görevleri taşı"
 		},
 		"sort": {
 			"label": "Sırala",
@@ -4867,8 +4921,6 @@
 			"moveToBoardSuccess": "{{count}} görev panoya taşındı",
 			"moveToBoardError": "Görevler panoya taşınamadı",
 			"delete": "Görevleri sil",
-			"deleteConfirm": "{{count}} görev çöp kutusuna taşınsın mı? Bunları proje ayarlarındaki Son silinenler bölümünden geri yükleyebilirsiniz.",
-			"deleteSuccess": "{{count}} görev silindi",
 			"deleteError": "Görevler silinemedi",
 			"archive": "Görevleri arşivle",
 			"archiveSuccess": "{{count}} görev arşivlendi",
@@ -4919,7 +4971,14 @@
 			"moveToProjectSuccess_one": "{{count}} görev {{name}} projesine taşındı",
 			"moveToProjectSuccess_other": "{{count}} görev {{name}} projesine taşındı",
 			"moveToProjectNone": "Bu görevler zaten {{name}} içinde",
-			"moveToProjectError": "Görevler taşınamadı"
+			"moveToProjectError": "Görevler taşınamadı",
+			"deleteConfirmTitle_one": "{{count}} görev çöp kutusuna taşınsın mı?",
+			"deleteConfirmTitle_other": "{{count}} görev çöp kutusuna taşınsın mı?",
+			"deleteConfirmDescription_one": "Bunu proje ayarlarındaki Son silinenler bölümünden geri yükleyebilirsiniz.",
+			"deleteConfirmDescription_other": "Bunları proje ayarlarındaki Son silinenler bölümünden geri yükleyebilirsiniz.",
+			"deleteConfirmAction": "Çöp kutusuna taşı",
+			"deleteSuccess_one": "{{count}} görev çöp kutusuna taşındı",
+			"deleteSuccess_other": "{{count}} görev çöp kutusuna taşındı"
 		},
 		"editor": {
 			"table": {
@@ -6991,7 +7050,8 @@
 				"signIn": "Giriş yap",
 				"explore": "Keşfet",
 				"featuresIntro": "Margaya'da altı kısa tur. Her birinde kontrolü devralabileceğiniz canlı bir demo var.",
-				"newTab": "(yeni sekmede açılır)"
+				"newTab": "(yeni sekmede açılır)",
+				"download": "İndir"
 			},
 			"ownIt": {
 				"cta": "Kurulum kılavuzunu okuyun",
@@ -7109,6 +7169,7 @@
 				"product": {
 					"changelog": "Değişiklik günlüğü",
 					"roadmap": "Yol haritası",
+					"download": "Masaüstü uygulaması",
 					"title": "Ürün"
 				},
 				"resources": {
@@ -11943,6 +12004,307 @@
 		"notificationText": {
 			"commentWithoutPreview": "{{taskTitle}} talebine yeni yorum",
 			"pushFixedLine": "Ayrıntıları görmek için Margaya'yı açın."
+		}
+	},
+	"download": {
+		"title": "Masaüstü uygulamasını indirin",
+		"description": "macOS, Windows ve Linux için Margaya: kendi Margaya sunucunuz kendi penceresinde; yerel bildirimler, okunmamış rozeti ve her yerden hızlı ekleme ile.",
+		"eyebrow": "Masaüstü uygulaması",
+		"headline": "Masaüstünüzde Margaya",
+		"intro": "Kendi Margaya sunucunuz kendi penceresinde; yerel bildirimler, okunmamış rozeti ve her yerden hızlı ekleme ile. macOS, Windows ve Linux için.",
+		"onThisPage": "Bu sayfada",
+		"picker": {
+			"mac": "Mac için indir",
+			"windows": "Windows için indir",
+			"appleSilicon": "Apple Silicon",
+			"intel": "Intel",
+			"windowsDetail": "64 bit yükleyici",
+			"otherMacArm": "Apple Silicon'lı bir Mac mi kullanıyorsunuz? O sürümü edinin",
+			"otherMacIntel": "Intel işlemcili bir Mac mi kullanıyorsunuz? O sürümü edinin",
+			"unsupported": "Masaüstü uygulaması macOS, Windows ve Linux'ta çalışır. Bu cihazda Margaya sunucunuzu tarayıcıda açın.",
+			"linux": "Linux için indir",
+			"linuxDetail": "AppImage, x86_64",
+			"linuxArmDetail": "AppImage, ARM64",
+			"otherPlatforms": "Diğer platformlar ve biçimler"
+		},
+		"comingSoon": {
+			"title": "Çok yakında",
+			"body": "İlk masaüstü sürümü yolda. Yayınlanır yayınlanmaz yükleyiciler burada ve GitHub sürümler sayfasında görünecek.",
+			"action": "GitHub sürümlerini aç"
+		},
+		"files": {
+			"title": "Tüm indirmeler",
+			"description": "Platformunuzu ve biçimi seçin. Her dosya GitHub sürümüne de eklenmiştir.",
+			"macArm": {
+				"name": "Apple Silicon",
+				"detail": "M serisi çipli Mac'ler."
+			},
+			"macIntel": {
+				"name": "Intel",
+				"detail": "Intel işlemcili Mac'ler."
+			},
+			"windowsExe": {
+				"name": "Yükleyici",
+				"detail": "Yönetici hakları gerekmeden kendi hesabınıza yüklenir."
+			},
+			"windowsMsi": {
+				"name": "MSI paketi",
+				"detail": "Intune, Grup İlkesi veya benzeri araçlarla dağıtım yapan BT ekipleri için."
+			},
+			"checksum": "SHA-256",
+			"noChecksum": "Bu dosya için sağlama toplamı yayınlanmadı.",
+			"copied": "Kopyalandı",
+			"download": "İndir",
+			"missing": "Bu sürümde mevcut değil.",
+			"linuxAppImage": {
+				"name": "AppImage",
+				"detail": "Kurulum gerektirmeden çoğu dağıtımda çalışır ve kendini günceller."
+			},
+			"linuxDeb": {
+				"name": "Debian paketi",
+				"detail": "Debian, Ubuntu, Linux Mint ve Pop!_OS."
+			},
+			"linuxRpm": {
+				"name": "RPM paketi",
+				"detail": "Fedora, RHEL, Rocky Linux, AlmaLinux ve openSUSE."
+			},
+			"architecture": "Mimari",
+			"x64": "x86_64 (Intel, AMD)",
+			"arm": "ARM64",
+			"recommended": "Önerilen",
+			"copyChecksumFor": "SHA-256 sağlama toplamını kopyala: {{name}}",
+			"downloadFile": "İndir: {{name}}"
+		},
+		"requirements": {
+			"title": "Sistem gereksinimleri",
+			"macos": {
+				"name": "macOS",
+				"value": "macOS 14 Sonoma veya üzeri, Apple Silicon ya da Intel'de."
+			},
+			"windows": {
+				"name": "Windows",
+				"value": "Windows 10 veya 11, 64 bit."
+			},
+			"server": {
+				"name": "Sunucu",
+				"value": "Her uygulama erişebildiğiniz bir Margaya sunucusuna bağlanır ve her zaman onun sürümüyle uyumludur."
+			},
+			"linux": {
+				"name": "Linux",
+				"value": "WebKitGTK 4.1 bulunan x86_64 veya ARM64 (Ubuntu 22.04, Debian 12, Fedora 38 veya üzeri) ve bir anahtarlık."
+			}
+		},
+		"firstLaunch": {
+			"title": "Kurulum ve ilk açılış",
+			"description": "Sisteminiz internetten gelen bir uygulamayı açmadan önce bir kez sorar. Sonrasında Margaya diğer uygulamalar gibi açılır.",
+			"macos": {
+				"step1": "İndirilen .dmg dosyasını açın ve Margaya'yı “Uygulamalar” klasörüne sürükleyin.",
+				"step2": "Margaya'yı “Uygulamalar” klasöründen açın. macOS internetten gelen bir uygulama hakkında sorduğunda “Aç”ı tıklayın.",
+				"step3": "macOS uygulamayı denetleyemediğini söylerse Sistem Ayarları › Gizlilik ve Güvenlik'i açın ve “Yine de Aç”ı tıklayın.",
+				"note": "Tarayıcınızdaki bağlantıların Margaya'yı açabilmesi için uygulamayı disk görüntüsünden değil, “Uygulamalar” klasöründen başlatın."
+			},
+			"windows": {
+				"step1": "İndirilen yükleyiciyi çalıştırın.",
+				"step2": "Windows “Windows bilgisayarınızı korudu” uyarısını gösterirse “Ek bilgi”ye, ardından “Yine de çalıştır”a tıklayın. Yükleyici henüz kod imzalı değil.",
+				"step3": "Yükleyicideki adımları izleyin. İşlem bitince Margaya açılır ve Başlat menüsünde görünür.",
+				"note": "Güncellemeler uygulamanın içinden yüklenir ve bu uyarıyı bir daha göstermez."
+			},
+			"linux": {
+				"intro": "AppImage'ı herhangi bir dağıtımda kullanın veya kendi dağıtımınızın paketini kurun. Komutları dosyayı indirdiğiniz klasörde çalıştırın.",
+				"appImage": "AppImage, tüm dağıtımlar",
+				"deb": "Debian, Ubuntu, Linux Mint, Pop!_OS",
+				"rpm": "Fedora, RHEL, Rocky Linux, AlmaLinux",
+				"note": "Margaya oturum bilgilerinizi sistem anahtarlığında saklar, bu yüzden GNOME Keyring veya KWallet çalışıyor olmalıdır. Bir .deb veya .rpm paketini güncellemek için sonraki sürümün paketini kurun.",
+				"opensuse": "openSUSE"
+			},
+			"guide": "Tam kurulum kılavuzu",
+			"troubleshooting": "Sorun giderme"
+		},
+		"verify": {
+			"title": "İndirmenizi doğrulayın",
+			"description": "Sisteminize uygun komutu çalıştırın ve sonucu yukarıdaki dosyanın SHA-256 değeriyle karşılaştırın. Tam olarak eşleşmeleri gerekir.",
+			"macos": "macOS, Terminal'de",
+			"windows": "Windows, PowerShell'de",
+			"linux": "Linux, bir terminalde"
+		},
+		"help": {
+			"title": "Sonraki adımlar",
+			"guide": {
+				"title": "Masaüstü uygulaması kılavuzu",
+				"body": "Sunucu ekleme, giriş, bildirimler, hızlı ekleme ve güncellemeler.",
+				"link": "Kılavuzu okuyun"
+			},
+			"admin": {
+				"title": "Yöneticiler için",
+				"body": "Sunucu ayarları, ters proxy'ler ve şirket genelinde dağıtım.",
+				"link": "Yönetici kılavuzunu okuyun"
+			},
+			"releases": {
+				"title": "GitHub sürümleri",
+				"body": "Her sürüm, sürüm notları ve tüm dosyalarıyla.",
+				"link": "GitHub sürümlerini aç"
+			}
+		},
+		"platforms": {
+			"label": "Platform seçimi",
+			"macos": "macOS",
+			"windows": "Windows",
+			"linux": "Linux",
+			"detected": "sisteminiz"
+		},
+		"code": {
+			"copy": "Kopyala",
+			"copied": "Kopyalandı",
+			"copyLabel": "Komutları kopyala: {{label}}"
+		},
+		"meta": {
+			"version": "Sürüm {{version}}",
+			"released": "Yayınlanma: {{date}}",
+			"releaseNotes": "Sürüm notları",
+			"allReleases": "GitHub'daki tüm sürümler"
+		}
+	},
+	"desktop": {
+		"launcher": {
+			"servers": {
+				"heading": "Sunucular",
+				"empty": "Başlamak için Margaya sunucunuzu ekleyin.",
+				"open": "Aç",
+				"rename": "Yeniden adlandır",
+				"remove": "Kaldır",
+				"save": "Kaydet",
+				"cancel": "İptal",
+				"nameLabel": "Sunucu adı",
+				"removeConfirm": "{{name}} kaldırılsın mı? Bu bilgisayarda bu sunucudaki oturumunuz kapatılır.",
+				"signedIn": "Giriş yapıldı",
+				"signedOut": "Giriş yapılmadı",
+				"signIn": "Tarayıcıyla giriş yap",
+				"signOut": "Oturumu kapat",
+				"unread_one": "{{count}} okunmamış",
+				"unread_other": "{{count}} okunmamış",
+				"insecure": "Güvenli değil (http)"
+			},
+			"add": {
+				"heading": "Sunucu ekle",
+				"urlLabel": "Sunucu adresi",
+				"urlPlaceholder": "margaya.example.com",
+				"connect": "Bağlan",
+				"connecting": "Bağlanılıyor…",
+				"nameLabel": "Ad",
+				"submit": "Sunucu ekle",
+				"found": "{{url}} adresinde Margaya {{version}} bulundu",
+				"httpWarning": "Bu sunucu şifrelenmemiş http:// kullanıyor. Güvenli çerezler ve bazı tarayıcı özellikleri https:// gerektirir. Yalnızca güvendiğiniz bir ağda devam edin.",
+				"confirmHttp": "Yine de ekle"
+			},
+			"errors": {
+				"invalidUrl": "margaya.example.com gibi bir sunucu adresi girin.",
+				"unreachable": "Bu sunucuya ulaşılamadı. Adresi ve ağ bağlantınızı kontrol edin.",
+				"notMargaya": "Bu adres bir Margaya sunucusu gibi görünmüyor.",
+				"serverTooOld": "Bu Margaya sunucusu henüz masaüstü uygulamasını desteklemiyor. Yöneticinizden sunucuyu güncellemesini isteyin.",
+				"disabled": "Bu sunucuda masaüstü girişi kapalı.",
+				"desktopTooOld": "Bu sunucu Margaya Desktop {{version}} veya daha yeni bir sürüm gerektiriyor. Bağlanmak için uygulamayı güncelleyin.",
+				"tlsUntrusted": "Bilgisayarınız bu sunucunun sertifikasına güvenmiyor.",
+				"tlsHelp": "Bir şirket sertifikasına nasıl güvenilir",
+				"duplicate": "Bu sunucu zaten listenizde.",
+				"notSignedIn": "Önce bu sunucuda giriş yapın.",
+				"signInFailed": "Giriş tamamlanmadı. Tekrar deneyin.",
+				"codeInvalid": "Bu kod çalışmadı. Kodların süresi bir dakikada dolar, bu yüzden baştan başlayın.",
+				"quickAddFailed": "Görev oluşturulamadı.",
+				"generic": "Bir sorun oluştu: {{message}}",
+				"keychainUnavailable": "Oturum bilgileriniz sistem anahtarlığına kaydedilemedi. Linux'ta GNOME Keyring veya KWallet'ın çalıştığından emin olun, ardından tekrar deneyin."
+			},
+			"signIn": {
+				"waiting": "Girişi tarayıcınızda tamamlayın…",
+				"pasteHint": "Tarayıcı buraya geri dönmedi mi? Bunun yerine bir kod gösterin ve aşağıya yapıştırın.",
+				"showCode": "Kod göster",
+				"codeLabel": "Giriş kodu",
+				"submit": "Devam",
+				"cancel": "İptal",
+				"done": "{{name}} sunucusunda giriş yapıldı"
+			},
+			"deepLink": {
+				"addTitle": "Bu sunucu eklensin mi?",
+				"addBody": "Bir bağlantı, sunucu listenizde olmayan {{url}} adresini açmak istedi. Yalnızca güvendiğiniz sunucuları ekleyin.",
+				"check": "Sunucuyu denetle",
+				"ignore": "Yok say"
+			},
+			"settings": {
+				"heading": "Ayarlar",
+				"openAtLogin": "Oturum açıldığında başlat",
+				"copyDiagnostics": "Tanılama bilgilerini kopyala",
+				"copied": "Tanılama bilgileri panoya kopyalandı.",
+				"version": "Sürüm {{version}}",
+				"checkUpdates": "Güncellemeleri denetle",
+				"checking": "Denetleniyor…",
+				"upToDate": "Güncelsiniz.",
+				"updateAvailable": "{{version}} sürümü kullanılabilir.",
+				"updateInstall": "Güncellemek için yeniden başlat",
+				"updating": "Güncelleniyor…",
+				"updatePackage": "{{version}} sürümü kullanılabilir. Güncellemek için yeni paketi indirin.",
+				"updateDownload": "İndir"
+			},
+			"quickAdd": {
+				"title": "Hızlı ekle",
+				"server": "Sunucu",
+				"project": "Proje",
+				"taskTitle": "Görev başlığı",
+				"placeholder": "Ne yapılması gerekiyor?",
+				"create": "Görev oluştur",
+				"creating": "Oluşturuluyor…",
+				"created": "Görev oluşturuldu.",
+				"open": "Görevi aç",
+				"noServers": "Görev eklemek için bir sunucuda giriş yapın.",
+				"noProjects": "Görev ekleyebileceğiniz bir proje yok.",
+				"loading": "Yükleniyor…"
+			},
+			"downloads": {
+				"finished": "{{file}} indirildi",
+				"failed": "{{file}} indirilemedi"
+			},
+			"menu": {
+				"about": "Margaya Hakkında",
+				"checkUpdates": "Güncellemeleri denetle…",
+				"hide": "Margaya'yı Gizle",
+				"hideOthers": "Diğerlerini Gizle",
+				"showAll": "Tümünü Göster",
+				"quit": "Margaya'dan Çık",
+				"edit": "Düzen",
+				"undo": "Geri Al",
+				"redo": "Yinele",
+				"cut": "Kes",
+				"copy": "Kopyala",
+				"paste": "Yapıştır",
+				"selectAll": "Tümünü Seç",
+				"view": "Görüntü",
+				"reload": "Yeniden yükle",
+				"servers": "Sunucu listesi",
+				"quickAdd": "Hızlı ekle…",
+				"window": "Pencere",
+				"minimize": "Simge Durumuna Küçült",
+				"closeWindow": "Pencereyi Kapat",
+				"help": "Yardım",
+				"copyDiagnostics": "Tanılama bilgilerini kopyala",
+				"openLogs": "Günlük klasörünü aç"
+			},
+			"tray": {
+				"open": "Margaya'yı aç",
+				"openServer": "{{name}} aç",
+				"quickAdd": "Hızlı ekle…",
+				"updateReady": "{{version}} sürümüne güncellemek için yeniden başlat",
+				"quit": "Çık",
+				"servers": "Sunucu değiştir…",
+				"updateDownload": "{{version}} sürümünü indir…"
+			},
+			"offline": {
+				"title": "{{name}} sunucusuna ulaşılamıyor",
+				"body": "Margaya arka planda denemeye devam ediyor. Ağ bağlantınızı kontrol edin veya başka bir sunucuya geçin.",
+				"lastError": "Son hata: {{error}}",
+				"retry": "Tekrar dene",
+				"retrying": "Yeniden deneniyor…",
+				"retryIn_one": "{{count}} saniye içinde yeniden denenecek",
+				"retryIn_other": "{{count}} saniye içinde yeniden denenecek",
+				"switchServer": "Sunucu değiştir"
+			}
 		}
 	}
 }
