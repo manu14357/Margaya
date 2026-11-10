@@ -7,6 +7,7 @@ import type { GetConfigResponse } from "@/fetchers/config/get-config";
 import { customOAuthLabel } from "@/lib/auth-branding";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/cn";
+import { getDesktopBrowserSignIn } from "@/lib/desktop";
 import { toast } from "@/lib/toast";
 
 type Props = {
@@ -24,17 +25,29 @@ export function SSOProviders({
   callbackURL,
   errorCallbackURL,
   lastLoginMethod,
-  disabled = false,
+  disabled: captchaPending = false,
   turnstileToken,
   onAttemptComplete,
 }: Props) {
   const { t } = useTranslation();
   const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
+  // In the desktop app these providers finish in the system browser, so the
+  // captcha in this window doesn't apply to them.
+  const [desktopSignIn] = useState(getDesktopBrowserSignIn);
+  const [browserSignInStarted, setBrowserSignInStarted] = useState(false);
+  const disabled = captchaPending && !desktopSignIn;
+  const continueInBrowser = () => {
+    if (!desktopSignIn) return false;
+    desktopSignIn();
+    setBrowserSignInStarted(true);
+    return true;
+  };
 
   const handleSocial = async (
     provider: "google" | "github" | "discord",
     errorKey: string,
   ) => {
+    if (continueInBrowser()) return;
     if (disabled) return;
     setLoadingProvider(provider);
     try {
@@ -60,6 +73,7 @@ export function SSOProviders({
   };
 
   const handleCustomOAuth = async () => {
+    if (continueInBrowser()) return;
     if (disabled) return;
     setLoadingProvider("custom");
     try {
@@ -167,6 +181,16 @@ export function SSOProviders({
           loadingLabel={t("auth:signIn.signingIn")}
           icon={<KeyRound className="w-5 h-5 mr-2" />}
         />
+      )}
+      {desktopSignIn && (
+        <p
+          aria-live="polite"
+          className="text-center text-xs text-muted-foreground"
+        >
+          {browserSignInStarted
+            ? t("auth:signIn.desktopBrowserStarted")
+            : t("auth:signIn.desktopBrowserHint")}
+        </p>
       )}
     </div>
   );

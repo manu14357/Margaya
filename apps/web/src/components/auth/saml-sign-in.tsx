@@ -15,6 +15,8 @@ type SamlSignInProps = {
   disabled?: boolean;
   turnstileToken?: string | null;
   onAttemptComplete?: () => void;
+  /** Set in the desktop app: the system browser asks for the address there. */
+  onBrowserSignIn?: () => void;
 };
 
 /**
@@ -31,6 +33,7 @@ export function SamlSignIn({
   disabled = false,
   turnstileToken,
   onAttemptComplete,
+  onBrowserSignIn,
 }: SamlSignInProps) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -76,7 +79,7 @@ export function SamlSignIn({
         className="w-full"
         data-provider="saml"
         disabled={disabled}
-        onClick={() => setOpen(true)}
+        onClick={() => (onBrowserSignIn ? onBrowserSignIn() : setOpen(true))}
       >
         <Building2 className="w-5 h-5 mr-2" />
         {t("auth:signIn.continueWithSaml")}

@@ -16,6 +16,8 @@ import useInstanceStatus from "@/hooks/queries/instance/use-instance-status";
 import { customInstanceName, customOAuthLabel } from "@/lib/auth-branding";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/cn";
+import { getDesktopBrowserSignIn } from "@/lib/desktop";
+import { desktopAuthorizeRedirect } from "@/lib/desktop-authorize";
 import { HttpError } from "@/lib/http-error";
 import { toast } from "@/lib/toast";
 import { AuthDivider } from "../../components/auth/divider";
@@ -114,6 +116,18 @@ function SignIn() {
   const defaultEmail = search.email;
   const captchaConfigured = Boolean(TURNSTILE_SITE_KEY);
   const captchaPending = captchaConfigured && !turnstileToken;
+  // In the desktop app, providers that redirect (social, OIDC, SAML) sign in
+  // through the system browser, which identity providers trust and which
+  // keeps the person's existing sessions. Password and email codes stay here.
+  const [desktopSignIn] = useState(getDesktopBrowserSignIn);
+  const [browserSignInStarted, setBrowserSignInStarted] = useState(false);
+  const providerCaptchaPending = captchaPending && !desktopSignIn;
+  const continueInBrowser = useCallback(() => {
+    if (!desktopSignIn) return false;
+    desktopSignIn();
+    setBrowserSignInStarted(true);
+    return true;
+  }, [desktopSignIn]);
 
   const handleTurnstileVerify = useCallback((token: string) => {
     setTurnstileToken(token);
@@ -143,6 +157,7 @@ function SignIn() {
   }, [invitationId, getSafeRedirectPath]);
 
   const handleCustomOAuth = useCallback(async () => {
+    if (continueInBrowser()) return;
     if (captchaPending) return;
     setIsCustomOAuthLoading(true);
     try {
@@ -170,9 +185,17 @@ function SignIn() {
       setIsCustomOAuthLoading(false);
       resetCaptcha();
     }
-  }, [getCallbackUrl, t, captchaPending, turnstileToken, resetCaptcha]);
+  }, [
+    getCallbackUrl,
+    t,
+    captchaPending,
+    turnstileToken,
+    resetCaptcha,
+    continueInBrowser,
+  ]);
 
   const handleSignInGoogle = async () => {
+    if (continueInBrowser()) return;
     if (captchaPending) return;
     setIsGoogleLoading(true);
     try {
@@ -202,6 +225,7 @@ function SignIn() {
   };
 
   const handleSignInGithub = async () => {
+    if (continueInBrowser()) return;
     if (captchaPending) return;
     setIsGithubLoading(true);
     try {
@@ -231,6 +255,7 @@ function SignIn() {
   };
 
   const handleSignInDiscord = async () => {
+    if (continueInBrowser()) return;
     if (captchaPending) return;
     setIsDiscordLoading(true);
     try {
@@ -261,7 +286,11 @@ function SignIn() {
 
   const handleSignInSuccess = () => {
     const redirectPath = getSafeRedirectPath();
-    if (redirectPath) {
+    const desktopAuthorize = desktopAuthorizeRedirect(redirectPath);
+    if (desktopAuthorize) {
+      // `href`, not `to`: its query carries the desktop app's request.
+      navigate({ href: desktopAuthorize });
+    } else if (redirectPath) {
       navigate({ to: redirectPath });
     } else if (invitationId) {
       navigate({ to: `/invitation/accept/${invitationId}` });
@@ -306,6 +335,7 @@ function SignIn() {
   useEffect(() => {
     if (
       !captchaConfigured &&
+      !desktopSignIn &&
       config?.customOAuthAutoLogin &&
       config?.hasCustomOAuth &&
       !autoLoginTriggered.current &&
@@ -314,7 +344,13 @@ function SignIn() {
       autoLoginTriggered.current = true;
       handleCustomOAuth();
     }
-  }, [config, handleCustomOAuth, search.error, captchaConfigured]);
+  }, [
+    config,
+    handleCustomOAuth,
+    search.error,
+    captchaConfigured,
+    desktopSignIn,
+  ]);
 
   // Treat "no users yet" as still loading so the skeleton stays visible
   // while the useEffect above redirects to /auth/sign-up. Otherwise the
@@ -324,6 +360,7 @@ function SignIn() {
     isInstanceStatusLoading ||
     instanceStatus?.hasUsers === false ||
     (!captchaConfigured &&
+      !desktopSignIn &&
       config?.customOAuthAutoLogin &&
       config?.hasCustomOAuth &&
       !autoLoginFailed)
@@ -401,7 +438,7 @@ function SignIn() {
                     <Button
                       variant="outline"
                       onClick={handleSignInGoogle}
-                      disabled={isGoogleLoading || captchaPending}
+                      disabled={isGoogleLoading || providerCaptchaPending}
                       className={cn(
                         "w-full",
                         lastLoginMethod === "google" && "border-primary/50!",
@@ -436,7 +473,7 @@ function SignIn() {
                     <Button
                       variant="outline"
                       onClick={handleSignInGithub}
-                      disabled={isGithubLoading || captchaPending}
+                      disabled={isGithubLoading || providerCaptchaPending}
                       className={cn(
                         "w-full",
                         lastLoginMethod === "github" && "border-primary/50!",
@@ -460,7 +497,7 @@ function SignIn() {
                     <Button
                       variant="outline"
                       onClick={handleSignInDiscord}
-                      disabled={isDiscordLoading || captchaPending}
+                      disabled={isDiscordLoading || providerCaptchaPending}
                       className={cn(
                         "w-full",
                         lastLoginMethod === "discord" && "border-primary/50!",
@@ -493,7 +530,7 @@ function SignIn() {
                     <Button
                       variant="outline"
                       onClick={handleCustomOAuth}
-                      disabled={isCustomOAuthLoading || captchaPending}
+                      disabled={isCustomOAuthLoading || providerCaptchaPending}
                       className={cn(
                         "w-full",
                         lastLoginMethod === "custom" && "border-primary/50!",
@@ -518,7 +555,10 @@ function SignIn() {
                     callbackURL={getCallbackUrl()}
                     errorCallbackURL={`${import.meta.env.VITE_CLIENT_URL}/auth/sign-in`}
                     defaultEmail={defaultEmail}
-                    disabled={captchaPending}
+                    disabled={providerCaptchaPending}
+                    onBrowserSignIn={
+                      desktopSignIn ? continueInBrowser : undefined
+                    }
                     turnstileToken={turnstileToken}
                     onAttemptComplete={resetCaptcha}
                   />
@@ -538,6 +578,22 @@ function SignIn() {
                   </Button>
                 )}
               </div>
+
+              {desktopSignIn &&
+                (config?.hasGoogleSignIn ||
+                  config?.hasGithubSignIn ||
+                  config?.hasDiscordSignIn ||
+                  config?.hasCustomOAuth ||
+                  config?.hasSamlSignIn) && (
+                  <p
+                    aria-live="polite"
+                    className="mt-3 text-center text-xs text-muted-foreground"
+                  >
+                    {browserSignInStarted
+                      ? t("auth:signIn.desktopBrowserStarted")
+                      : t("auth:signIn.desktopBrowserHint")}
+                  </p>
+                )}
 
               {!config?.disableLoginForm && <AuthDivider />}
             </>

@@ -70,6 +70,7 @@ beforeEach(() => {
 
 afterEach(() => {
   cleanup();
+  Reflect.deleteProperty(window, "__MARGAYA_DESKTOP__");
   vi.unstubAllGlobals();
   vi.restoreAllMocks();
 });
@@ -140,5 +141,61 @@ describe("finishing a provider sign-in in the app", () => {
     render(<Complete />);
     expect(await screen.findByRole("alert")).toBeInTheDocument();
     expect($fetch).not.toHaveBeenCalled();
+  });
+});
+
+describe("finishing a desktop app sign-in in its window", () => {
+  function enterDesktopApp(bridge: Record<string, unknown>) {
+    Object.defineProperty(window, "__MARGAYA_DESKTOP__", {
+      configurable: true,
+      value: { version: "0.1.0", platform: "windows", ...bridge },
+    });
+  }
+
+  it("sends the app's handoff secret with the token", async () => {
+    const takeHandoffSecret = vi.fn(async () => "app-secret");
+    enterDesktopApp({ takeHandoffSecret });
+    $fetch.mockResolvedValue({
+      data: { redirectTo: "/dashboard" },
+      error: null,
+    });
+    arriveAt("/auth/complete#token=one-time-token");
+    const Complete = await page();
+    render(<Complete />);
+
+    await waitFor(() => expect(replace).toHaveBeenCalledWith("/dashboard"));
+    expect(takeHandoffSecret).toHaveBeenCalledOnce();
+    expect($fetch).toHaveBeenCalledWith("/handoff/redeem", {
+      method: "POST",
+      body: { token: "one-time-token", desktopSecret: "app-secret" },
+    });
+  });
+
+  it.each([
+    ["has no such method", {}],
+    ["has no secret", { takeHandoffSecret: async () => null }],
+    [
+      "fails to give one",
+      {
+        takeHandoffSecret: async () => {
+          throw new Error("ipc");
+        },
+      },
+    ],
+  ])("sends the token alone when the app %s", async (_name, bridge) => {
+    enterDesktopApp(bridge);
+    $fetch.mockResolvedValue({
+      data: { redirectTo: "/dashboard" },
+      error: null,
+    });
+    arriveAt("/auth/complete#token=one-time-token");
+    const Complete = await page();
+    render(<Complete />);
+
+    await waitFor(() => expect(replace).toHaveBeenCalledWith("/dashboard"));
+    expect($fetch).toHaveBeenCalledWith("/handoff/redeem", {
+      method: "POST",
+      body: { token: "one-time-token" },
+    });
   });
 });

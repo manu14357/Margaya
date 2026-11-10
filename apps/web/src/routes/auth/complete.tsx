@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import PageTitle from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
+import { takeDesktopHandoffSecret } from "@/lib/desktop";
 import { AuthLayout } from "../../components/auth/layout";
 
 export const Route = createFileRoute("/auth/complete")({
@@ -45,9 +46,14 @@ async function redeem(): Promise<string | null> {
   const token = takeToken();
   if (!token) return null;
   try {
+    // Inside the desktop app, the token only works with the app's secret.
+    const desktopSecret = await takeDesktopHandoffSecret();
     const { data, error } = await authClient.$fetch<{ redirectTo?: unknown }>(
       "/handoff/redeem",
-      { method: "POST", body: { token } },
+      {
+        method: "POST",
+        body: desktopSecret ? { token, desktopSecret } : { token },
+      },
     );
     return error || !data ? null : destination(data.redirectTo);
   } catch {
