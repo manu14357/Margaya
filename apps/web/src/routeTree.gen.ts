@@ -23,6 +23,7 @@ import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-passw
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 import { Route as AuthSignUpRouteImport } from './routes/auth/sign-up'
 import { Route as AuthVerifyOtpRouteImport } from './routes/auth/verify-otp'
+import { Route as DesktopAuthorizeRouteImport } from './routes/desktop.authorize'
 import { Route as DeviceIndexRouteImport } from './routes/device/index'
 import { Route as DeviceApproveRouteImport } from './routes/device/approve'
 import { Route as McpAuthorizeRouteImport } from './routes/mcp.authorize'
@@ -178,6 +179,11 @@ const AuthVerifyOtpRoute = AuthVerifyOtpRouteImport.update({
   id: '/verify-otp',
   path: '/verify-otp',
   getParentRoute: () => AuthRoute,
+} as any)
+const DesktopAuthorizeRoute = DesktopAuthorizeRouteImport.update({
+  id: '/desktop/authorize',
+  path: '/desktop/authorize',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const DeviceIndexRoute = DeviceIndexRouteImport.update({
   id: '/',
@@ -787,6 +793,7 @@ export interface FileRoutesByFullPath {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/auth/verify-otp': typeof AuthVerifyOtpRoute
+  '/desktop/authorize': typeof DesktopAuthorizeRoute
   '/device/approve': typeof DeviceApproveRoute
   '/mcp/authorize': typeof McpAuthorizeRoute
   '/public-page/$token': typeof PublicPageTokenRoute
@@ -887,6 +894,7 @@ export interface FileRoutesByTo {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/auth/verify-otp': typeof AuthVerifyOtpRoute
+  '/desktop/authorize': typeof DesktopAuthorizeRoute
   '/device/approve': typeof DeviceApproveRoute
   '/mcp/authorize': typeof McpAuthorizeRoute
   '/public-page/$token': typeof PublicPageTokenRoute
@@ -988,6 +996,7 @@ export interface FileRoutesById {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/auth/verify-otp': typeof AuthVerifyOtpRoute
+  '/desktop/authorize': typeof DesktopAuthorizeRoute
   '/device/approve': typeof DeviceApproveRoute
   '/mcp/authorize': typeof McpAuthorizeRoute
   '/public-page/$token': typeof PublicPageTokenRoute
@@ -1091,6 +1100,7 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/auth/verify-otp'
+    | '/desktop/authorize'
     | '/device/approve'
     | '/mcp/authorize'
     | '/public-page/$token'
@@ -1191,6 +1201,7 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/auth/verify-otp'
+    | '/desktop/authorize'
     | '/device/approve'
     | '/mcp/authorize'
     | '/public-page/$token'
@@ -1291,6 +1302,7 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/auth/verify-otp'
+    | '/desktop/authorize'
     | '/device/approve'
     | '/mcp/authorize'
     | '/public-page/$token'
@@ -1387,6 +1399,7 @@ export interface RootRouteChildren {
   DeviceRoute: typeof DeviceRouteWithChildren
   TestErrorRoute: typeof TestErrorRoute
   TwoFactorSetupRoute: typeof TwoFactorSetupRoute
+  DesktopAuthorizeRoute: typeof DesktopAuthorizeRoute
   McpAuthorizeRoute: typeof McpAuthorizeRoute
   PublicPageTokenRoute: typeof PublicPageTokenRoute
   PublicProjectTokenRoute: typeof PublicProjectTokenRoute
@@ -1492,6 +1505,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/verify-otp'
       preLoaderRoute: typeof AuthVerifyOtpRouteImport
       parentRoute: typeof AuthRoute
+    }
+    '/desktop/authorize': {
+      id: '/desktop/authorize'
+      path: '/desktop/authorize'
+      fullPath: '/desktop/authorize'
+      preLoaderRoute: typeof DesktopAuthorizeRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/device/': {
       id: '/device/'
@@ -2491,6 +2511,7 @@ const rootRouteChildren: RootRouteChildren = {
   DeviceRoute: DeviceRouteWithChildren,
   TestErrorRoute: TestErrorRoute,
   TwoFactorSetupRoute: TwoFactorSetupRoute,
+  DesktopAuthorizeRoute: DesktopAuthorizeRoute,
   McpAuthorizeRoute: McpAuthorizeRoute,
   PublicPageTokenRoute: PublicPageTokenRoute,
   PublicProjectTokenRoute: PublicProjectTokenRoute,
