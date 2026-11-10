@@ -1650,6 +1650,9 @@
             "type": "string",
             "description": "Where people using this instance can get its source code, as the AGPL-3.0 requires: MARGAYA_SOURCE_URL, or the official repository.",
             "example": "https://github.com/manu14357/Margaya"
+          },
+          "desktop": {
+            "$ref": "#/components/schemas/DesktopConfig"
           }
         },
         "required": [
@@ -1678,8 +1681,46 @@
           "passwordSignUpForInvitations",
           "requiredSignInProvider",
           "requireTwoFactor",
-          "sourceCodeUrl"
+          "sourceCodeUrl",
+          "desktop"
         ]
+      },
+      "DesktopConfig": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether Margaya Desktop may sign in to this server through the system browser (DESKTOP_SIGN_IN_ENABLED, default true)."
+          },
+          "serverVersion": {
+            "type": "string",
+            "description": "This server's version (MARGAYA_VERSION, or the release's).",
+            "example": "1.0.0"
+          },
+          "minDesktopVersion": {
+            "type": "string",
+            "description": "The oldest Margaya Desktop version this server supports (DESKTOP_MIN_VERSION, default 0.1.0).",
+            "example": "0.1.0"
+          },
+          "webUrl": {
+            "type": "string",
+            "description": "The web app's public URL, which the desktop window loads.",
+            "example": "https://margaya.example.com"
+          },
+          "apiUrl": {
+            "type": "string",
+            "description": "The API's public origin.",
+            "example": "https://margaya.example.com"
+          }
+        },
+        "required": [
+          "enabled",
+          "serverVersion",
+          "minDesktopVersion",
+          "webUrl",
+          "apiUrl"
+        ],
+        "description": "What Margaya Desktop needs to connect to this server."
       },
       "McpClientRegistration": {
         "type": "object",
@@ -3712,6 +3753,69 @@
         },
         "required": [
           "success"
+        ]
+      },
+      "DesktopNotification": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "description": "The Web Push title, in the user's language."
+          },
+          "body": {
+            "type": "string",
+            "description": "One fixed line for the type, naming at most the task or page. Never what someone wrote."
+          },
+          "url": {
+            "type": "string",
+            "description": "Where clicking it goes: an absolute URL of the web app.",
+            "example": "https://margaya.example.com/dashboard/workspace/ws_1/project/pr_1/task/tk_1"
+          },
+          "tag": {
+            "type": "string",
+            "description": "Replaces an earlier alert with the same tag."
+          },
+          "sound": {
+            "type": "boolean",
+            "description": "Whether the alert makes a sound: the user's notification sound settings (on, volume above 0, a sound chosen for this kind of notification, outside quiet hours) call for one now. True exactly when `soundName` is set; kept for desktop apps that predate `soundName`."
+          },
+          "soundName": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "chime",
+              "pop",
+              "ding",
+              "bell",
+              "knock",
+              "marimba",
+              null
+            ],
+            "description": "The Margaya sound the user chose for this kind of notification, which the desktop app plays itself instead of the web app; null when the alert stays silent.",
+            "example": "chime"
+          },
+          "volume": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "The user's notification sound volume, 0 to 100.",
+            "example": 70
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "body",
+          "url",
+          "tag",
+          "sound",
+          "soundName",
+          "volume"
         ]
       },
       "PushStatus": {
@@ -34268,7 +34372,7 @@
           "Config"
         ],
         "summary": "Get config",
-        "description": "Public instance settings: which sign-in methods, registration paths, and features are enabled.",
+        "description": "Public instance settings: which sign-in methods, registration paths, and features are enabled, and what Margaya Desktop needs to connect.",
         "security": [],
         "responses": {
           "200": {
@@ -35685,6 +35789,335 @@
           },
           "401": {
             "description": "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/auth/desktop/sign-in": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "startDesktopSignIn",
+        "summary": "Start desktop sign-in",
+        "description": "Opened by Margaya Desktop in the system browser. Always redirects to the web app's `/desktop/authorize` page with the same query. That page asks the person to confirm (signing in first if needed) and mints the code through `POST /auth/desktop/authorize`; this route never mints one, so a link to it hands no code to anything.",
+        "security": [],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "The app's own random value, 8-256 unreserved characters (A-Z a-z 0-9 . _ ~ -). It comes back unchanged in the callback."
+            },
+            "required": true,
+            "description": "The app's own random value, 8-256 unreserved characters (A-Z a-z 0-9 . _ ~ -). It comes back unchanged in the callback.",
+            "name": "state",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "description": "BASE64URL(SHA-256(code_verifier)) without padding: 43 characters."
+            },
+            "required": true,
+            "description": "BASE64URL(SHA-256(code_verifier)) without padding: 43 characters.",
+            "name": "code_challenge",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "S256"
+              ]
+            },
+            "required": true,
+            "name": "code_challenge_method",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "code"
+              ],
+              "description": "Show the code to paste instead of opening the app."
+            },
+            "required": false,
+            "description": "Show the code to paste instead of opening the app.",
+            "name": "display",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "To the web app's `/desktop/authorize` page"
+          },
+          "400": {
+            "description": "Missing or malformed query"
+          },
+          "404": {
+            "description": "Desktop sign-in is turned off on this server"
+          }
+        }
+      }
+    },
+    "/auth/desktop/authorize": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "authorizeDesktopSignIn",
+        "summary": "Authorize desktop sign-in",
+        "description": "Called by the web app's `/desktop/authorize` page with the person's session, after they confirm. Mints a one-time code (a minute, single use) bound to the PKCE challenge and state, and returns it with the desktop callback URL to open: `com.margaya.desktop://auth/callback?code=…&state=…&server=<API origin>`. API keys and impersonation sessions are refused. Its own origin's session works on every install, including ones where the API and web app are on different sites.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "type": "string",
+                    "description": "The app's own random value, 8-256 unreserved characters (A-Z a-z 0-9 . _ ~ -). It comes back unchanged in the callback."
+                  },
+                  "code_challenge": {
+                    "type": "string",
+                    "description": "BASE64URL(SHA-256(code_verifier)) without padding: 43 characters."
+                  },
+                  "code_challenge_method": {
+                    "type": "string",
+                    "enum": [
+                      "S256"
+                    ]
+                  }
+                },
+                "required": [
+                  "state",
+                  "code_challenge",
+                  "code_challenge_method"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The code, and the callback URL that opens the app",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "redirectTo": {
+                      "type": "string",
+                      "example": "com.margaya.desktop://auth/callback?code=…&state=…&server=https%3A%2F%2Fmargaya.example.com"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "redirectTo"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body"
+          },
+          "401": {
+            "description": "Not signed in, or signed in with an API key"
+          },
+          "403": {
+            "description": "Request from an untrusted origin"
+          },
+          "404": {
+            "description": "Desktop sign-in is turned off on this server"
+          }
+        }
+      }
+    },
+    "/auth/desktop/token": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "exchangeDesktopSignInCode",
+        "summary": "Exchange desktop sign-in code",
+        "description": "Trades the one-time code and its PKCE verifier for a new bearer session of the person who signed in, plus a one-time URL and secret that sign the app's window in through the web app's `/auth/complete` page. The code is used up by the first try, right or wrong. Send `Authorization: Bearer <token>` on later calls, including the `/api/ws/user` socket.",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string"
+                  },
+                  "code_verifier": {
+                    "type": "string",
+                    "description": "43-128 unreserved characters."
+                  },
+                  "state": {
+                    "type": "string",
+                    "description": "When sent, it must be the state the code was minted for."
+                  }
+                },
+                "required": [
+                  "code",
+                  "code_verifier"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The desktop session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "Bearer session token. Keep it in the OS keychain."
+                    },
+                    "webviewUrl": {
+                      "type": "string",
+                      "description": "`<web app>/auth/complete#token=…`; works once, for a minute, and only with webviewSecret."
+                    },
+                    "webviewSecret": {
+                      "type": "string",
+                      "description": "Hand it to the window's /auth/complete page through the desktop bridge; the page sends it to `/auth/handoff/redeem` as `desktopSecret`. Never put it in a URL."
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "image": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "email",
+                        "image"
+                      ]
+                    },
+                    "expiresAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "token",
+                    "webviewUrl",
+                    "webviewSecret",
+                    "user",
+                    "expiresAt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body"
+          },
+          "401": {
+            "description": "Unknown, expired or used code, a verifier that doesn't match, or a different state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The account is banned"
+          },
+          "404": {
+            "description": "Desktop sign-in is turned off on this server"
+          }
+        }
+      }
+    },
+    "/auth/desktop/sign-out": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "signOutDesktop",
+        "summary": "Sign out desktop session",
+        "description": "Ends the session named by the bearer token; the browser's own session is not touched. A cookie alone is refused.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Signed out",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No bearer session token, or not a valid one"
+          },
+          "403": {
+            "description": "A bearer value that is neither a session nor an API key",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -43590,6 +44023,63 @@
           },
           "404": {
             "description": "Notification not found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notification/{id}/desktop": {
+      "get": {
+        "operationId": "getDesktopNotification",
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Get desktop alert",
+        "description": "The text Margaya Desktop shows for one of the current user's notifications, after the user socket's NOTIFICATION_CREATED hint names it. The same title and line as Web Push, in the user's language, with an absolute link into the web app. Works with the session cookie or a bearer session token.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 64,
+              "description": "The device's IANA time zone, for quiet hours when the account has none.",
+              "example": "Europe/Berlin"
+            },
+            "required": false,
+            "description": "The device's IANA time zone, for quiet hours when the account has none.",
+            "name": "timeZone",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The alert",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DesktopNotification"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "404": {
+            "description": "No such notification, it belongs to someone else, or its task or page is no longer visible to the user",
             "content": {
               "text/plain": {
                 "schema": {
