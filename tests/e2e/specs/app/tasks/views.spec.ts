@@ -174,11 +174,12 @@ test.describe("backlog", () => {
       .toBe("in-progress");
 
     // Move All sends the rest to the first open column after a confirmation.
-    page.once("dialog", (confirm) => {
-      expect(confirm.message()).toMatch(/^Move all 3 planned tasks to To Do\?/);
-      void confirm.accept();
-    });
     await page.getByRole("button", { name: "Move all" }).click();
+    const confirm = page.getByRole("alertdialog");
+    await expect(
+      confirm.getByText("Move all 3 planned tasks to To Do?"),
+    ).toBeVisible();
+    await confirm.getByRole("button", { name: "Move tasks" }).click();
     await expect(
       page.getByRole("button", { name: /^Planned 0/ }),
     ).toBeVisible();

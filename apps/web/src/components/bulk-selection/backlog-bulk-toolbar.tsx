@@ -59,6 +59,7 @@ import { Button } from "../ui/button";
 import { Toolbar, ToolbarGroup, ToolbarSeparator } from "../ui/toolbar";
 import { BulkBarFrame } from "./bulk-bar-frame";
 import { useBulkAssigneeGroups } from "./use-bulk-assignee-groups";
+import { useBulkDelete } from "./use-bulk-delete";
 import { useBulkMoveToProject } from "./use-bulk-move-to-project";
 
 type BacklogActionItem = {
@@ -94,7 +95,6 @@ function BacklogBulkToolbar() {
   const { project } = useProjectStore();
   const {
     bulkMoveToBoard,
-    bulkDelete,
     bulkArchive,
     bulkPriority,
     bulkAddLabel,
@@ -141,7 +141,12 @@ function BacklogBulkToolbar() {
         selectAll();
       }
 
-      if (e.key === "Escape") {
+      // Escape inside a dialog (the actions palette, a confirmation) closes
+      // that dialog only; the selection stays.
+      if (
+        e.key === "Escape" &&
+        !target?.closest('[role="dialog"], [role="alertdialog"]')
+      ) {
         e.preventDefault();
         clearSelection();
       }
@@ -169,21 +174,6 @@ function BacklogBulkToolbar() {
     [bulkMoveToBoard, selectedTaskIds, selectedCount, clearSelection, t],
   );
 
-  const handleBulkDelete = useCallback(async () => {
-    if (!confirm(t("tasks:bulk.deleteConfirm", { count: selectedCount }))) {
-      return;
-    }
-
-    try {
-      await bulkDelete(Array.from(selectedTaskIds));
-      toast.success(t("tasks:bulk.deleteSuccess", { count: selectedCount }));
-      clearSelection();
-      setIsActionsOpen(false);
-    } catch (_error) {
-      toast.error(t("tasks:bulk.deleteError"));
-    }
-  }, [bulkDelete, selectedTaskIds, selectedCount, clearSelection, t]);
-
   const handleBulkArchive = useCallback(async () => {
     try {
       await bulkArchive(Array.from(selectedTaskIds));
@@ -207,6 +197,10 @@ function BacklogBulkToolbar() {
     onDone: finishAssigneeAction,
   });
   const closeActions = useCallback(() => setIsActionsOpen(false), []);
+  const { requestDelete, dialog: deleteDialog } = useBulkDelete({
+    selectedTaskIds,
+    onDone: clearSelection,
+  });
   const { groups: moveGroups, dialog: moveDialog } = useBulkMoveToProject({
     workspaceId: workspace?.id ?? "",
     currentProjectId: project?.id ?? null,
@@ -283,7 +277,8 @@ function BacklogBulkToolbar() {
                   label: t("tasks:bulk.delete"),
                   icon: <Trash2 className="h-4 w-4 text-muted-foreground" />,
                   onRun: () => {
-                    void handleBulkDelete();
+                    setIsActionsOpen(false);
+                    requestDelete();
                   },
                 },
               ]
@@ -348,7 +343,7 @@ function BacklogBulkToolbar() {
     moveGroups,
     assigneeGroups,
     uniqueLabels,
-    handleBulkDelete,
+    requestDelete,
     handleBulkArchive,
     handleBulkPriority,
     handleBulkAddLabel,
@@ -515,6 +510,7 @@ function BacklogBulkToolbar() {
         </CommandDialogPopup>
       </CommandDialog>
       {moveDialog}
+      {deleteDialog}
     </BulkBarFrame>
   );
 }

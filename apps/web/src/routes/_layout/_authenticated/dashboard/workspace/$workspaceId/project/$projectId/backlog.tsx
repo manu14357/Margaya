@@ -10,6 +10,14 @@ import CreateTaskModal from "@/components/shared/modals/create-task-modal";
 import TaskDetailsSheet from "@/components/task/task-details-sheet";
 import TaskToolbar from "@/components/task-filters/task-toolbar";
 import { useDisplayConfig } from "@/components/task-filters/use-display-config";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { shortcuts } from "@/constants/shortcuts";
 import { useUpdateTaskStatus } from "@/hooks/mutations/task/use-update-task-status";
@@ -156,27 +164,26 @@ function RouteComponent() {
   // else the first open one.
   const entryColumn = getEntryColumn(project?.columns ?? []);
 
+  // Planned tasks counted when the user asked; the dialog states it.
+  const [moveAllCount, setMoveAllCount] = useState<number | null>(null);
+
   const handleMoveAllPlannedToTodo = () => {
+    if (!project || !entryColumn) return;
+    const plannedCount = project.plannedTasks?.length ?? 0;
+    if (plannedCount === 0) {
+      toast.info(t("tasks:backlog.noTasksToMove"));
+      return;
+    }
+    setMoveAllCount(plannedCount);
+  };
+
+  const moveAllPlannedToEntryColumn = () => {
+    setMoveAllCount(null);
     if (!project || !entryColumn) return;
     const entrySlug = entryColumn.slug;
 
     const plannedTasks = project.plannedTasks || [];
-
-    if (plannedTasks.length === 0) {
-      toast.info(t("tasks:backlog.noTasksToMove"));
-      return;
-    }
-
-    if (
-      !confirm(
-        t("tasks:backlog.moveAllConfirm", {
-          count: plannedTasks.length,
-          column: entryColumn.name,
-        }),
-      )
-    ) {
-      return;
-    }
+    if (plannedTasks.length === 0) return;
 
     for (const task of plannedTasks) {
       updateTaskStatus({
@@ -287,6 +294,41 @@ function RouteComponent() {
           workspaceId={workspaceId}
           onClose={handleCloseTaskSheet}
         />
+
+        <AlertDialog
+          open={moveAllCount !== null}
+          onOpenChange={(open) => {
+            if (!open) setMoveAllCount(null);
+          }}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                {t("tasks:backlog.moveAllConfirmTitle", {
+                  count: moveAllCount ?? 0,
+                  column: entryColumn?.name ?? "",
+                })}
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                {t("tasks:backlog.moveAllConfirmDescription", {
+                  count: moveAllCount ?? 0,
+                })}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setMoveAllCount(null)}
+              >
+                {t("common:actions.cancel")}
+              </Button>
+              <Button size="sm" onClick={moveAllPlannedToEntryColumn}>
+                {t("tasks:backlog.moveAllConfirmAction")}
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </ProjectLayout>
   );

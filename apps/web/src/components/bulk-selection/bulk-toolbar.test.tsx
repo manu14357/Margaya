@@ -238,6 +238,74 @@ describe("BulkToolbar", () => {
     expect(useBulkSelectionStore.getState().selectedTaskIds.size).toBe(2);
   });
 
+  it("asks in an in-app dialog before moving the selection to the trash", async () => {
+    mocks.ops.bulkDelete.mockResolvedValue(undefined);
+    const nativeConfirm = vi.spyOn(window, "confirm");
+    render(<BulkToolbar projectId={null} />);
+    openActions();
+    fireEvent.click(await screen.findByText("tasks:bulk.delete"));
+
+    const dialog = await screen.findByRole("alertdialog");
+    expect(dialog).toHaveTextContent("tasks:bulk.deleteConfirmTitle(2)");
+    expect(dialog).toHaveTextContent("tasks:bulk.deleteConfirmDescription(2)");
+    expect(mocks.ops.bulkDelete).not.toHaveBeenCalled();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "tasks:bulk.deleteConfirmAction" }),
+    );
+
+    await waitFor(() =>
+      expect(mocks.ops.bulkDelete).toHaveBeenCalledWith(["t1", "t2"]),
+    );
+    await waitFor(() =>
+      expect(mocks.toast.success).toHaveBeenCalledWith(
+        "tasks:bulk.deleteSuccess(2)",
+      ),
+    );
+    expect(useBulkSelectionStore.getState().selectedTaskIds.size).toBe(0);
+    expect(nativeConfirm).not.toHaveBeenCalled();
+    nativeConfirm.mockRestore();
+  });
+
+  it("deletes nothing and keeps the selection when the delete is cancelled", async () => {
+    render(<BulkToolbar projectId={null} />);
+    openActions();
+    fireEvent.click(await screen.findByText("tasks:bulk.delete"));
+
+    fireEvent.click(
+      await screen.findByRole("button", { name: "common:actions.cancel" }),
+    );
+    await waitFor(() => expect(screen.queryByRole("alertdialog")).toBeNull());
+
+    // Escape in the dialog cancels it too, without clearing the selection.
+    openActions();
+    fireEvent.click(await screen.findByText("tasks:bulk.delete"));
+    const dialog = await screen.findByRole("alertdialog");
+    fireEvent.keyDown(dialog, { key: "Escape" });
+    await waitFor(() => expect(screen.queryByRole("alertdialog")).toBeNull());
+
+    expect(mocks.ops.bulkDelete).not.toHaveBeenCalled();
+    expect(useBulkSelectionStore.getState().selectedTaskIds.size).toBe(2);
+  });
+
+  it("keeps the dialog and the selection when the delete fails", async () => {
+    mocks.ops.bulkDelete.mockRejectedValue(new Error("refused"));
+    render(<BulkToolbar projectId={null} />);
+    openActions();
+    fireEvent.click(await screen.findByText("tasks:bulk.delete"));
+    fireEvent.click(
+      await screen.findByRole("button", {
+        name: "tasks:bulk.deleteConfirmAction",
+      }),
+    );
+
+    await waitFor(() =>
+      expect(mocks.toast.error).toHaveBeenCalledWith("tasks:bulk.deleteError"),
+    );
+    expect(screen.getByRole("alertdialog")).toBeTruthy();
+    expect(useBulkSelectionStore.getState().selectedTaskIds.size).toBe(2);
+  });
+
   it("keeps the due date as the default date field", async () => {
     mocks.ops.bulkDueDate.mockResolvedValue({ updatedCount: 2 });
     render(<BulkToolbar projectId={null} />);
