@@ -491,6 +491,41 @@
 			"height": 234,
 			"format": "webp"
 		},
+		"desktop/browser-sign-in": {
+			"width": 449,
+			"height": 310,
+			"format": "webp"
+		},
+		"desktop/download-page": {
+			"width": 1440,
+			"height": 833,
+			"format": "webp"
+		},
+		"desktop/notification-sounds": {
+			"width": 744,
+			"height": 567,
+			"format": "webp"
+		},
+		"desktop/offline": {
+			"width": 760,
+			"height": 480,
+			"format": "webp"
+		},
+		"desktop/quick-add": {
+			"width": 520,
+			"height": 207,
+			"format": "webp"
+		},
+		"desktop/server-list": {
+			"width": 760,
+			"height": 760,
+			"format": "webp"
+		},
+		"desktop/server-window": {
+			"width": 1280,
+			"height": 820,
+			"format": "webp"
+		},
 		"drafts/drafts-list": {
 			"width": 1128,
 			"height": 290,
