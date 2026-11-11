@@ -1,0 +1,102 @@
+---
+title: Desktop app for administrators
+description: What your Margaya server needs for the desktop app, the settings that control it, reverse proxy notes and how to deploy it to company computers with the MSI, .deb or .rpm
+---
+
+[Margaya Desktop](/core/functional/desktop-app) for macOS, Windows and Linux opens your server's own web app in a window and adds native notifications, an unread badge and quick add. It talks only to your server: there is no Margaya cloud service in between. A current Margaya server supports it with no extra setup; this page covers the settings and the network details that matter.
+
+## What the server needs
+
+- **A Margaya version with desktop support.** Older servers make the app answer **This Margaya server doesn't support the desktop app yet**.
+- **Correct public addresses.** The app discovers your server through `GET /api/config`, which reports the web app's address from `MARGAYA_CLIENT_URL` and the API's address from `MARGAYA_API_URL`. Both must be the addresses people actually use, as described in [Environment variables](/core/installation/environment-variables).
+- **HTTPS.** The app warns people about plain `http://` servers (except `localhost`), and secure cookies need HTTPS anyway.
+
+People can type either the web address or the API address. With the bundled image, both are the same origin. When the web app and API are hosted separately, the web app answers `/.well-known/margaya-desktop.json` with the API's address, so typing the web address still works. The Docker images write that file when the container starts, from `MARGAYA_API_URL`.
+
+## Settings
+
+Set these on the API (or the bundled Margaya container).
+
+Name | Description | Default |
+--- | --- | --- |
+| `DESKTOP_SIGN_IN_ENABLED` | Set to `false` to turn the desktop app off for this server. `/api/config` then reports it as off, and the app refuses to connect with **Desktop sign-in is turned off on this server**. People keep using the browser as before. | `true` |
+| `DESKTOP_MIN_VERSION` | The oldest desktop app version this server accepts, such as `1.4.0`. Older apps ask the user to update before they connect. Raise it when you need everyone on a fixed release. Values that aren't a version are ignored. | `0.1.0` |
+| `DEVICE_AUTH_CLIENT_IDS` | Device authorization clients. Unset, it allows `margaya-cli`, `margaya-mcp` and `margaya-desktop`. If you set it, include `margaya-desktop`. | See description |
+
+## How sign-in works
+
+The app never asks for a password itself. **Sign in with browser** opens your server's sign-in page in the user's default browser, so your identity provider, its conditional access rules, passkeys and device certificates apply exactly as for the web app:
+
+1. The app opens `/api/auth/desktop/sign-in` on your API with a one-time challenge.
+2. After sign-in, the server redirects the browser to `com.margaya.desktop://auth/callback` with a single-use code that expires after 60 seconds.
+3. The app exchanges that code, together with the secret only it knows, for a session at `/api/auth/desktop/token`, and stores the session token in the macOS Keychain, the Windows Credential Manager or, on Linux, the Secret Service (GNOME Keyring or KWallet).
+
+Single sign-on needs no change at your identity provider: its redirect still points at your Margaya server, not at the app. When a company blocks custom app links, users can choose **Show a code** and paste the code into the app instead.
+
+A desktop session is an ordinary Margaya session. It appears among the user's sessions and ends when the user signs out of the app, or when you revoke it or remove the user.
+
+## Reverse proxy
+
+The defaults in the [Nginx guide](/core/reverse-proxy/nginx) work. If you use your own proxy, check that it:
+
+- Forwards the `Authorization` header to the API. The app's background connection, notification lookups and quick add use `Authorization: Bearer` instead of a cookie.
+- Passes WebSocket upgrades on `/api/ws/` (`Upgrade` and `Connection` headers), and keeps idle WebSockets open for at least a few minutes. The app holds one connection per signed-in server for notifications.
+- Serves `/.well-known/margaya-desktop.json` from the web app when the web app and API are on different origins. Don't block `/.well-known/` in front of it.
+- Does not rewrite redirects to other schemes. Sign-in ends with a redirect to `com.margaya.desktop://`.
+
+A proxy or firewall that requires its own sign-in page in front of Margaya will stop the app from discovering the server. Let `/api/config` and `/.well-known/margaya-desktop.json` through, or have users connect over the network or VPN that skips it.
+
+## Private certificates
+
+The app uses the operating system's trusted certificates and can't trust a single server on its own. If your server uses a certificate from a company certificate authority, deploy that root certificate to company computers through your device management or Group Policy, into the macOS System keychain, the Windows **Trusted Root Certification Authorities** store, or the Linux system store (`update-ca-certificates` on Debian, Ubuntu and openSUSE, `update-ca-trust` on Fedora and RHEL). The [user guide](/core/functional/desktop-app#private-or-company-certificates) explains the manual steps.
+
+## Deploy the MSI
+
+For company computers, use `Margaya_<version>_x64_en-US.msi` from the [download page](https://margaya.app/download) or the [GitHub release](https://github.com/manu14357/Margaya/releases). Check it against `SHA256SUMS.txt` on the release before you distribute it.
+
+<Screenshot src="desktop/download-page" alt="The Download page with the Windows tab of All downloads open, listing the installer and the MSI package for IT teams, each with its size, SHA-256 checksum and a Download button" caption="The MSI is listed under Windows, with its checksum." />
+
+Install it silently, for example from Intune (as a line-of-business app), Configuration Manager or a Group Policy software installation:
+
+```powershell
+msiexec /i Margaya_<version>_x64_en-US.msi /qn /norestart
+```
+
+Remove it with `msiexec /x Margaya_<version>_x64_en-US.msi /qn`, or by the product code your management tool shows.
+
+<Warning>
+The Windows installers aren't code-signed yet. SmartScreen warns on the first run of the `.exe`, and policies that only allow signed software block both installers. Allow the file by its hash in your policy, or deploy it through your management tool, which runs it without the SmartScreen prompt.
+</Warning>
+
+The app checks for updates and installs them itself. If your users can't install software, plan to roll out each new MSI through your management tool, and use `DESKTOP_MIN_VERSION` to make sure nobody stays on an old release.
+
+For macOS, distribute the `.dmg` (or the app inside it) with your device management tool. The app runs on macOS 14 Sonoma or later, on Apple Silicon and Intel.
+
+## Deploy on Linux
+
+For managed Linux computers, use the `.deb` (Debian, Ubuntu, Linux Mint, Pop!_OS) or the `.rpm` (Fedora, RHEL-compatible, openSUSE) from the [download page](https://margaya.app/download) or the [GitHub release](https://github.com/manu14357/Margaya/releases), for x86_64 (`amd64`, `x86_64`) or ARM64 (`arm64`, `aarch64`). Check each file against `SHA256SUMS.txt` before you distribute it. The packages install the app as `/usr/bin/margaya-desktop` with its menu entry and icons, register the `com.margaya.desktop://` and `margaya://` links, and depend on WebKitGTK 4.1 and the Ayatana AppIndicator library, which the package manager installs.
+
+Install them non-interactively, for example from Ansible, Salt, Puppet or a shell script:
+
+```bash
+# Debian, Ubuntu
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ./Margaya_<version>_amd64.deb
+# Fedora, RHEL-compatible
+sudo dnf install -y ./Margaya-<version>-1.x86_64.rpm
+# openSUSE
+sudo zypper --non-interactive install --allow-unsigned-rpm ./Margaya-<version>-1.x86_64.rpm
+```
+
+Remove them with `apt-get remove margaya`, `dnf remove margaya` or `zypper remove margaya`. Each user's server list and sign-ins stay in their home directory.
+
+<Warning>
+The .deb and .rpm aren't GPG-signed. To serve them from an internal apt or dnf repository, check them against `SHA256SUMS.txt` and sign the repository with your own key, the way you would for other software you package in-house.
+</Warning>
+
+Packaged installs don't update themselves: when a new version is out, the app tells the user and points to the download page. Roll out each new package through your tooling, and use `DESKTOP_MIN_VERSION` to make sure nobody stays on an old release. The AppImage updates itself, but suits personal machines better than managed ones.
+
+Every user needs a running Secret Service (GNOME Keyring or KWallet) for the app to keep its sign-in; standard GNOME, KDE Plasma and Cinnamon sessions start one. On GNOME, the tray icon needs the AppIndicator extension (`gnome-shell-extension-appindicator`), which Ubuntu includes. Without a tray, closing a window still keeps the app running, and starting it again brings the window back.
+
+## Turn the desktop app off
+
+Set `DESKTOP_SIGN_IN_ENABLED=false` and restart the API. Apps that are already signed in lose access when their sessions end or when you revoke them; new connections are refused. Nothing else about the server changes.

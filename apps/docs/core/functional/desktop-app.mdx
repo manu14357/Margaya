@@ -1,0 +1,343 @@
+---
+title: Desktop app
+description: Use Margaya as an app on macOS, Windows and Linux, with native notifications, an unread badge, quick add and sign-in through your browser
+---
+
+Margaya Desktop is a small app for macOS, Windows and Linux. It opens your Margaya server's own web app in its own window, so everything works exactly as it does in the browser and always matches your server's version. On top of that it adds what a browser tab can't:
+
+- Native notifications, even when the window is closed.
+- An unread count on the Dock icon, the taskbar button or, on Linux, the dock and the tray icon.
+- **Quick add** for new tasks, from the tray or menu bar, without opening the app.
+- Sign-in through your usual browser, so single sign-on works as it does there.
+- Several servers side by side, each with its own sign-in.
+- Updates that install themselves (on Linux, for the AppImage).
+
+The app is a free download from the Margaya website. It isn't sold in any app store.
+
+## Download and install
+
+Go to [margaya.app/download](https://margaya.app/download). The page picks the right file for your computer and lists every other file, with its size and SHA-256 checksum. All files are also on the project's [GitHub releases page](https://github.com/manu14357/Margaya/releases).
+
+<Screenshot src="desktop/download-page" alt="The Download page on a Windows computer: a Download for Windows button with the version, installer type and size, the release date with Release notes and Other platforms and formats, and All downloads with the Windows tab open, listing the installer and the MSI package with their sizes, checksums and Download buttons" caption="The Download page offers the file for your system first; the other platforms are one tab away." />
+
+| System | File | Requirements |
+| --- | --- | --- |
+| Mac with Apple Silicon | `Margaya_<version>_aarch64.dmg` | macOS 14 Sonoma or later |
+| Mac with an Intel processor | `Margaya_<version>_x64.dmg` | macOS 14 Sonoma or later |
+| Windows | `Margaya_<version>_x64-setup.exe` | Windows 10 or 11, 64-bit |
+| Windows, company rollout | `Margaya_<version>_x64_en-US.msi` | See [Desktop app for administrators](/core/installation/desktop-app) |
+| Linux, any distribution | `Margaya_<version>_amd64.AppImage` (ARM64: `_aarch64.AppImage`) | See [Linux requirements](#linux-requirements) |
+| Debian, Ubuntu, Linux Mint, Pop!_OS | `Margaya_<version>_amd64.deb` (ARM64: `_arm64.deb`) | Ubuntu 22.04 or Debian 12 or later |
+| Fedora, RHEL, Rocky, AlmaLinux, openSUSE | `Margaya-<version>-1.x86_64.rpm` (ARM64: `.aarch64.rpm`) | Fedora 38 or openSUSE Leap 15.6 or later; RHEL-compatible systems that provide WebKitGTK 4.1 |
+
+<Tabs>
+<Tab title="macOS">
+
+<Steps>
+<Step title="Install">
+Open the downloaded `.dmg` file and drag **Margaya** into the **Applications** folder.
+</Step>
+<Step title="Open it the first time">
+Open Margaya from **Applications**. macOS asks whether you want to open an app downloaded from the internet. Click **Open**.
+
+If macOS says it can't check the app for malicious software, open **System Settings**, go to **Privacy & Security**, scroll to the message about Margaya and click **Open Anyway**.
+</Step>
+</Steps>
+
+<Note>
+Always start Margaya from **Applications**, not from the disk image. macOS only passes links from your browser (used for sign-in) to an app in **Applications**.
+</Note>
+
+</Tab>
+<Tab title="Windows">
+
+<Steps>
+<Step title="Install">
+Run `Margaya_<version>_x64-setup.exe`. It installs Margaya for your Windows account, without administrator rights, and adds it to the Start menu.
+</Step>
+<Step title="Get past SmartScreen">
+The installer isn't code-signed yet, so Windows may show **Windows protected your PC**. Click **More info**, check that the app is Margaya, then click **Run anyway**. You only see this for the installer: updates that the app installs itself don't show it.
+</Step>
+</Steps>
+
+</Tab>
+<Tab title="Linux">
+
+Pick one format. The **AppImage** runs on any distribution without installing and updates itself. The **.deb** and **.rpm** install Margaya like any other package: it appears among your applications, and you update it by installing the next version's package.
+
+<Steps>
+<Step title="Install">
+- **AppImage:** make the file executable and run it. In your file manager this is **Properties** > **Allow executing file as program**; in a terminal:
+  ```bash
+  chmod +x Margaya_<version>_amd64.AppImage
+  ./Margaya_<version>_amd64.AppImage
+  ```
+  Keep it in a fixed place, such as `~/Applications`, because Margaya registers its links for the file where it is. On Ubuntu 22.04 and later, an AppImage needs `libfuse2` (`sudo apt install libfuse2`, or `libfuse2t64` on Ubuntu 24.04).
+- **Debian, Ubuntu, Linux Mint, Pop!_OS:**
+  ```bash
+  sudo apt install ./Margaya_<version>_amd64.deb
+  ```
+- **Fedora, RHEL, Rocky Linux, AlmaLinux:**
+  ```bash
+  sudo dnf install ./Margaya-<version>-1.x86_64.rpm
+  ```
+- **openSUSE:** the package isn't GPG-signed, so tell zypper to accept it after you checked its checksum:
+  ```bash
+  sudo zypper install --allow-unsigned-rpm ./Margaya-<version>-1.x86_64.rpm
+  ```
+</Step>
+<Step title="Open it">
+Open **Margaya** from your applications (the .deb and .rpm), or run the AppImage. The first start shows the server list.
+</Step>
+</Steps>
+
+### Linux requirements
+
+- **A recent distribution.** Margaya uses WebKitGTK 4.1: Ubuntu 22.04, Debian 12, Fedora 38, openSUSE Leap 15.6 or later, a rolling distribution, or an RHEL-compatible release that provides WebKitGTK 4.1 (`webkit2gtk4.1`). The .deb and .rpm pull in what they need; the AppImage brings its own libraries.
+- **A keyring.** Margaya keeps your sign-in in the system's secure storage through the Secret Service, so **GNOME Keyring** or **KWallet** must be running. GNOME, Ubuntu, KDE Plasma, Cinnamon and most other desktops start one at login. On a minimal window manager, start `gnome-keyring-daemon` (or KeePassXC with its Secret Service integration) in your session.
+- **A tray.** Closing a window keeps Margaya in the tray. GNOME needs the [AppIndicator and KStatusNotifierItem Support](https://extensions.gnome.org/extension/615/appindicator-support/) extension for that; Ubuntu includes it. KDE Plasma, Cinnamon, XFCE and MATE show the icon as they are.
+
+Margaya works on Wayland and X11.
+
+</Tab>
+</Tabs>
+
+<Tip>
+To check a download, compare its checksum with the one on the download page or in `SHA256SUMS.txt` on the release page: `shasum -a 256 <file>` in Terminal on macOS, `Get-FileHash <file>` in PowerShell on Windows, or `sha256sum <file>` on Linux.
+</Tip>
+
+## Add a server
+
+The first time you open Margaya, it asks for a server.
+
+1. Under **Add a server**, enter your server's address in **Server address**, for example `margaya.example.com`. The address you use in the browser works, and so does the API's address if your administrator gave you that one.
+2. Click **Connect**. The app checks the server and shows **Found Margaya** with its version and address.
+3. Change the **Name** if you like, then click **Add server**.
+
+The server appears in the **Servers** list. Click **Open** to open it in its own window. To add another server, use **Add a server** again: each server keeps its own sign-in, cookies and window, so work and personal servers never mix. **Rename** and **Remove** are in the server's row.
+
+<Screenshot src="desktop/server-list" alt="The Margaya window listing two servers: Studio North, signed in with 3 unread, and Personal, not signed in with a Sign in with browser button, each with Open, Rename and Remove; below them Add a server with the Server address field and Connect, and Settings with Open at login, Copy diagnostics and Check for updates" caption="The server list, with Add a server and the app's settings below it." />
+ Removing a server signs you out of it on this computer.
+
+After the first time, Margaya opens straight into the server windows you had open when you last used it. The server list only appears when no server window was open. To get back to it, choose **Switch server…** from the tray or menu bar icon, or **Switch server** in the user menu of a server window.
+
+A server on plain `http://` shows a warning and **Not secure (http)** in the list, except `localhost`. Only use one on a network you trust.
+
+## Sign in
+
+Click **Sign in with browser** next to the server. Your default browser opens the server's sign-in page:
+
+1. Sign in the way you always do: password, email code, Google, GitHub, your company's single sign-on or SAML. If the browser is already signed in to that server, this step is skipped.
+2. The browser shows **Sign in to the desktop app** with your account and the server's address. Check them and click **Allow**. If you didn't start this from the app on this computer, click **Cancel**.
+3. The browser asks whether to open Margaya. Allow it.
+4. The app shows **Signed in** and opens the server's window, already signed in.
+
+<Screenshot src="desktop/browser-sign-in" alt="The Sign in to the desktop app page in the browser, asking to sign in to the Margaya desktop app as Elena Marsh on margaya.studionorth.example, with a warning to continue only if you started this from the app, and Allow and Cancel buttons" caption="The browser asks you to confirm before it hands the sign-in to the app." />
+
+Signing in through the browser means your password manager, passkeys and your company's sign-in rules work as usual, and the app never sees your password. Inside a server's window you can also sign in with a password or an email code directly; single sign-on buttons there hand over to the browser.
+
+If the browser doesn't come back to the app, for example because a company policy blocks app links, choose **Show a code** in the app. The browser then shows a sign-in code instead: paste it into **Sign-in code** and click **Continue**. A code works once and expires after a minute.
+
+The app keeps your sign-in in the system's secure storage (the macOS Keychain, the Windows Credential Manager, or on Linux GNOME Keyring or KWallet), never in a plain file. On Linux without a running keyring, signing in stops with **Couldn't save your sign-in in the system keychain**: see [Linux requirements](#linux-requirements). **Sign out** in the server's row signs this app out of that server and removes the stored sign-in. Signing out inside a server's window does the same: the app is signed out of that server too, and its notifications stop until you sign in again.
+
+## Work in the app
+
+A server's window looks like Margaya in the browser, without the browser around it:
+
+- **Title bar.** On Windows and Linux, the minimize, maximize and close buttons sit at the right end of Margaya's own top bar (round buttons on Linux). Drag an empty part of the bar to move the window, and double-click it to maximize. On Linux, drag the window's edges to resize it. On macOS, the window buttons sit inside the top bar. A server that runs an older version of Margaya's web app shows the normal window frame instead.
+- **Closing a window** hides it to the tray (Windows, Linux) or the menu bar (macOS), so notifications and quick add keep working. To quit, choose **Quit** from the tray or menu bar icon. On Linux, the tray icon opens its menu on any click; **Open Margaya** is at the top.
+- **More windows.** <Kbd>Ctrl</Kbd>-click (<Kbd>⌘</Kbd>-click on macOS) a link, or choose to open it in a new tab, to open it in a second window of the app.
+- **Attachments.** Images and PDFs open in a viewer window inside the app. Other files download to your **Downloads** folder, and a notification tells you when the download has finished, or if it failed.
+- **Other sites.** Links to other websites open in your browser. Linking your GitHub account opens a small sign-in window inside the app. Billing and installing the GitHub App continue in your browser.
+- **Keyboard.** <Kbd>Ctrl</Kbd> + <Kbd>,</Kbd> (<Kbd>⌘</Kbd> + <Kbd>,</Kbd> on macOS) opens Margaya's settings. On Windows, <Kbd>Ctrl</Kbd> + <Kbd>+</Kbd> and <Kbd>Ctrl</Kbd> + <Kbd>−</Kbd> zoom in and out. The browser's right-click menu and its back and forward shortcuts are switched off, so Margaya's own [keyboard shortcuts](/core/functional/keyboard-shortcuts) and menus work as expected.
+
+<Screenshot src="desktop/server-window" alt="A Studio North server window on Windows showing the Website relaunch board, with Margaya's own top bar as the title bar and the minimize, maximize and close buttons at its right end" caption="On Windows, the window buttons sit at the right of Margaya's top bar." />
+
+### When the server is offline
+
+If a server can't be reached, its window shows an offline screen instead of an error page. The app tries again on its own, after 2, 5, 10, 20 and 30 seconds and then every minute, and opens the server as soon as it answers. Click **Try again** to try right away, or **Switch server** to open another one.
+
+<Screenshot src="desktop/offline" alt="The offline screen: Can't reach Studio North, the server's address, the last error, a countdown to the next try, and Try again and Switch server buttons" caption="The window keeps trying on its own while the server is offline." />
+
+## Notifications and the unread badge
+
+Once you're signed in, the app shows Margaya notifications as native system notifications, with the same text you'd see in the browser. Clicking one brings Margaya to the front and opens the task or page in that server's window, without reloading it. On Windows this also works from the notification centre, and even after you quit Margaya: the click starts it and opens the page. On Linux, clicks work while Margaya is running; when you quit it, your desktop removes its notifications. On Wayland, some desktops announce **Margaya is ready** instead of bringing the window to the front: click that to switch to it. Notifications keep arriving while the window is closed, as long as Margaya is running in the tray or menu bar. A newer notification about the same thing replaces the older one, and when you use more than one server each notification names its server.
+
+The Dock icon (macOS) or the taskbar button (Windows) shows how many unread notifications you have, added up across all your servers. Linux has no common badge: the count appears next to the tray icon, and on the dock icon in docks that support it (Ubuntu Dock, Dash to Dock, KDE Plasma's task manager and Plank). The **Servers** list shows the count for each one.
+
+### Notification sound
+
+Each new notification makes at most one sound, and a burst of notifications makes one. It follows your [notification sound settings](/core/functional/account-notifications#notification-sounds) in Margaya: it plays only when sounds are on, the volume isn't zero, a sound is chosen for that kind of notification and it isn't quiet hours. **Mute sounds on this device**, set inside the app's window, silences the app's notifications on this computer.
+
+<Screenshot src="desktop/notification-sounds" alt="The Sounds section of the notification settings inside the desktop app, explaining that the app plays the chosen Margaya sound at your volume, with Play sounds, Volume at 70%, a sound for each kind of notification, Quiet hours and Mute sounds on this device" caption="Inside the app, the Sounds settings describe what the app plays." />
+
+- **Windows**: the app plays the Margaya sound you chose for that kind of notification (Chime, Pop, Ding, Soft bell, Knock or Marimba) at your volume, instead of the Windows notification sound. It comes out louder than the preview in the settings: at volume 70 it is at least as loud as the Windows notification sound. It stays silent while Do Not Disturb is on, during a full-screen game or presentation, and when notifications for Margaya are turned off in Windows Settings. Windows' own **Play a sound** switch for Margaya doesn't apply to it; use **Mute sounds on this device** instead.
+- **macOS**: the notification plays your system's notification sound. Focus and your per-app sound setting silence it as for any other app.
+- **Linux**: the app plays the same Margaya sounds as on Windows, through your desktop's sound system (PipeWire or PulseAudio, using `paplay` or `pw-play`, or ALSA's `aplay`), at your desktop's alert volume. It stays silent while GNOME's **Do Not Disturb** is on. Other desktops' Do Not Disturb modes still hide the notification, but the app can't read them; use **Mute sounds on this device** then.
+
+A server older than this version doesn't name a sound; the app then plays Chime at volume 70.
+
+Which events notify you is still set in Margaya, under [your notification settings](/core/functional/account-notifications). Inside the desktop app, browser push notifications are switched off, so you don't get everything twice. To silence the app completely, turn off notifications for Margaya in your system's notification settings.
+
+## Quick add
+
+Create a task without opening a server's window:
+
+1. Press <Kbd>Ctrl</Kbd> + <Kbd>Shift</Kbd> + <Kbd>Space</Kbd> on Windows and Linux or <Kbd>⌘</Kbd> + <Kbd>Shift</Kbd> + <Kbd>Space</Kbd> on macOS, from any app. You can also choose **Quick add…** from the tray or menu bar icon, where the shortcut is shown next to it.
+2. Pick the **Server** and the **Project**, and type the **Task title**.
+3. Click **Create task**. **Open task** takes you straight to it.
+
+<Screenshot src="desktop/quick-add" alt="The Quick add window with Send the launch checklist to the agency in Task title, Studio North as the Server, Website relaunch as the Project, and Create task" caption="Quick add, with a task ready to create." />
+
+Quick add only lists projects in which you can create tasks.
+
+If another app already uses the same shortcut, Margaya can't claim it, and the shortcut does nothing. Quick add still works from the tray or menu bar icon. On Linux the shortcut works on X11; most Wayland desktops don't let apps take shortcuts from other apps, so there it works only while a Margaya window is in front. Use the tray's **Quick add…** instead.
+
+## Open Margaya links in the app
+
+Links that start with `margaya://open` open in the app, in the right server's window. If a link points at a server that isn't in your list, the app asks **Add this server?** first. Only add servers you trust; choose **Ignore** for anything you don't recognise.
+
+## Updates
+
+Margaya checks for updates on its own. When one is ready, the tray menu shows **Restart to update to** with the new version. You can also check yourself under **Settings** with **Check for updates**. Every update is signed, and the app refuses one that isn't.
+
+On Linux, the AppImage updates itself the same way. A .deb or .rpm belongs to your package manager, so Margaya only tells you about the new version: **Download version …** in the tray, or **Download** in **Settings**, opens the download page. Install the new package over the old one with the same command you installed it with; your servers and sign-ins stay.
+
+A server may need a newer app than yours. Then connecting shows **This server needs Margaya Desktop … or newer**: update the app and try again.
+
+## Settings
+
+Open the settings with <Kbd>Ctrl</Kbd> + <Kbd>,</Kbd> (<Kbd>⌘</Kbd> + <Kbd>,</Kbd> on macOS).
+
+- **Open at login** starts Margaya when you sign in to your computer, so notifications and quick add are ready. On Linux it adds Margaya to `~/.config/autostart`.
+- **Copy diagnostics** copies the app version, your system and recent errors (no passwords or sign-in tokens) for a bug report. **Open logs folder** in the **Help** menu shows the log files.
+
+## Uninstall
+
+<Tabs>
+<Tab title="macOS">
+
+Quit Margaya (**Quit** in the menu bar icon), then drag **Margaya** from **Applications** to the Trash. Your server list and window data stay in `~/Library/Application Support/com.margaya.desktop`; delete that folder too if you want them gone. Sign out of each server first to remove its stored sign-in from the Keychain.
+
+</Tab>
+<Tab title="Windows">
+
+Sign out of each server first, then open **Settings**, go to **Apps** > **Installed apps**, and choose **Uninstall** next to **Margaya**. To remove your server list and window data as well, delete `%APPDATA%\com.margaya.desktop` (the server list) and `%LOCALAPPDATA%\com.margaya.desktop` (each server's window data, under `profiles`).
+
+</Tab>
+<Tab title="Linux">
+
+Sign out of each server first, so its sign-in leaves your keyring, and quit Margaya. Then:
+
+- **AppImage:** delete the file, and `~/.local/share/applications/margaya-desktop-handler.desktop` (its link handler).
+- **.deb:** `sudo apt remove margaya`
+- **.rpm:** `sudo dnf remove margaya`, or `sudo zypper remove margaya` on openSUSE.
+
+To remove your server list and window data as well, delete `~/.config/com.margaya.desktop` (the server list), `~/.local/share/com.margaya.desktop` (each server's window data, under `profiles`, and the logs) and `~/.cache/com.margaya.desktop`.
+
+</Tab>
+</Tabs>
+
+## Private or company certificates
+
+If the app says **Your computer doesn't trust this server's certificate**, the server uses a certificate from your company's own certificate authority, or a self-signed one. The app uses your system's list of trusted certificates and can't trust one server on its own.
+
+Install the company's root certificate on your computer, then restart Margaya:
+
+- **macOS:** open the certificate file in **Keychain Access**, add it to the **System** keychain, open it, and under **Trust** set **When using this certificate** to **Always Trust**.
+- **Windows:** open the certificate file, click **Install Certificate**, choose **Local Machine**, and place it in **Trusted Root Certification Authorities**.
+- **Linux:** add it to the system's certificate store. On Debian and Ubuntu, copy the certificate (PEM, ending in `.crt`) to `/usr/local/share/ca-certificates/` and run `sudo update-ca-certificates`. On Fedora and RHEL, copy it to `/etc/pki/ca-trust/source/anchors/` and run `sudo update-ca-trust`. On openSUSE, copy it to `/etc/pki/trust/anchors/` and run `sudo update-ca-certificates`.
+
+On company computers your IT team usually installs this certificate for you, through device management or Group Policy. Never trust a certificate you don't know the origin of.
+
+## Troubleshooting
+
+<AccordionGroup>
+<Accordion title="Couldn't reach this server">
+
+Check the address and your network. Open the same address in your browser: if it doesn't load there either, the server is down or only reachable on a company network or VPN.
+
+</Accordion>
+<Accordion title="This address doesn't look like a Margaya server">
+
+The address answered, but not like a Margaya server. Use the address you open Margaya with in your browser, or ask your administrator for the server's API address. If the server sits behind a sign-in portal, connect to the network or VPN that skips it.
+
+</Accordion>
+<Accordion title="This Margaya server doesn't support the desktop app yet">
+
+The server runs a version from before the desktop app. Ask your administrator to update it.
+
+</Accordion>
+<Accordion title="Desktop sign-in is turned off on this server">
+
+Your administrator has turned the desktop app off for this server. Keep using it in the browser.
+
+</Accordion>
+<Accordion title="The browser didn't come back to the app after sign-in">
+
+On macOS, make sure Margaya runs from **Applications**, not from the disk image. Then use **Show a code** and paste the code into the app. If the code is refused, it has expired or was already used: start again, codes last one minute.
+
+</Accordion>
+<Accordion title="Your computer doesn't trust this server's certificate">
+
+See [Private or company certificates](#private-or-company-certificates).
+
+</Accordion>
+<Accordion title="Windows blocks the installer">
+
+Some company computers only allow signed installers. Ask your IT team to deploy the MSI for you, as described in [Desktop app for administrators](/core/installation/desktop-app).
+
+</Accordion>
+<Accordion title="Notifications don't appear">
+
+Check that Margaya is running (its icon is in the tray or menu bar), that you're signed in to the server (signing out in the server's window also stops its notifications), and that notifications for Margaya are allowed in your system settings, including Focus or Do Not Disturb. Then check which events notify you in [your notification settings](/core/functional/account-notifications).
+
+</Accordion>
+<Accordion title="A server window shows the offline screen">
+
+The app can't reach that server right now. It keeps trying on its own, so the window recovers once your network or VPN is back. If it stays offline, check the server in your browser, or use **Switch server** to work on another one.
+
+</Accordion>
+<Accordion title="The window has the normal Windows frame">
+
+That server runs an older version of Margaya's web app, which doesn't draw its own title bar yet. Everything else works; the title bar changes once your administrator updates the server.
+
+</Accordion>
+<Accordion title="The quick add shortcut does nothing">
+
+Another app is using the same shortcut, so Margaya couldn't claim it. Use **Quick add…** from the tray or menu bar icon, or free the shortcut in the other app and restart Margaya.
+
+</Accordion>
+<Accordion title="I closed the window and Margaya is still running">
+
+That's intended: closing a window hides it, so notifications and quick add keep working. Open it again from the tray or menu bar icon, or choose **Quit** there to stop Margaya.
+
+</Accordion>
+<Accordion title="Linux: there's no tray icon">
+
+On GNOME, install and turn on the [AppIndicator and KStatusNotifierItem Support](https://extensions.gnome.org/extension/615/appindicator-support/) extension, then start Margaya again. Without a tray, open Margaya again from your applications or by running the AppImage: a second start brings back the window you used last.
+
+</Accordion>
+<Accordion title="Linux: Couldn't save your sign-in in the system keychain">
+
+No keyring service answered. Check that GNOME Keyring or KWallet runs in your session (on KDE Plasma, KWallet's Secret Service must be turned on in **System Settings** > **KDE Wallet**), unlock it if it asks, then sign in again. Margaya never stores your sign-in in a plain file instead.
+
+</Accordion>
+<Accordion title="Linux: the window stays blank or white">
+
+This happens with some graphics drivers, most often NVIDIA's on Wayland. Start Margaya once with `WEBKIT_DISABLE_DMABUF_RENDERER=1` set, for example `WEBKIT_DISABLE_DMABUF_RENDERER=1 ./Margaya_<version>_amd64.AppImage` or `WEBKIT_DISABLE_DMABUF_RENDERER=1 margaya-desktop`. If that helps, add the variable to the app's launcher or your session. If it doesn't, try X11 with `GDK_BACKEND=x11`.
+
+</Accordion>
+<Accordion title="Linux: the AppImage doesn't start">
+
+Make sure the file is executable (`chmod +x`). On Ubuntu 22.04 and later, install `libfuse2` (`libfuse2t64` on 24.04), or run it with `--appimage-extract-and-run`. Start it from a terminal to see the error.
+
+</Accordion>
+<Accordion title="Linux: sign-in links don't come back to the app">
+
+The .deb and .rpm register Margaya for its links when they install. An AppImage registers itself each time it starts, with `xdg-mime` from `xdg-utils`, which desktops include, so start it once after moving it. To check, run `xdg-mime query default x-scheme-handler/com.margaya.desktop`: it should name a Margaya `.desktop` file. Otherwise use **Show a code**.
+
+</Accordion>
+</AccordionGroup>
+
+If none of this helps, choose **Copy diagnostics** and include it in an issue on [GitHub](https://github.com/manu14357/Margaya/issues).

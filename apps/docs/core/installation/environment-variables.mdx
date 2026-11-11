@@ -68,7 +68,10 @@ Name | Description |
 --- | --- |
 | `AUTH_SECRET` | Signs sessions and encrypts the SMTP passwords, OAuth client secrets, AI keys and webhook signing secrets saved in the app, so keep it stable. **Must be at least 32 characters long**. Example: use `openssl rand -base64 32` to generate a secure key in Linux/macOS. If blank, the bundled image generates one once and saves it on the uploads volume, with a startup warning if it can't; the separate API image refuses to start.
 | `COOKIE_DOMAIN` | **Optional.** Domain attribute for the sign-in cookies, such as `example.com`. Leave it unset for a bundled, same-origin deployment. Set it only when the web app and API run on different subdomains of one site and both must read the session cookie. |
-| `DEVICE_AUTH_CLIENT_IDS` | **Optional.** Comma-separated list of allowed device authorization client IDs. When unset, Margaya implicitly allows `margaya-cli` and `margaya-mcp` by default, so no extra configuration is required for the CLI or MCP. Override only when you need additional trusted clients, for example `margaya-cli,margaya-mcp,my-desktop-app`. |
+| `DEVICE_AUTH_CLIENT_IDS` | **Optional.** Comma-separated list of allowed device authorization client IDs. When unset, Margaya implicitly allows `margaya-cli`, `margaya-mcp` and `margaya-desktop` by default, so no extra configuration is required for the CLI, MCP or the [desktop app](/core/installation/desktop-app). Override only when you need additional trusted clients, and keep the defaults you use in the list, for example `margaya-cli,margaya-mcp,margaya-desktop,my-client`. |
+| `DESKTOP_SIGN_IN_ENABLED` | **Optional.** Set to `false` to turn Margaya Desktop off for this server: `/api/config` reports it as off and the app refuses to connect. Default `true`. See [Desktop app for administrators](/core/installation/desktop-app). |
+| `DESKTOP_MIN_VERSION` | **Optional.** The oldest Margaya Desktop version this server accepts, such as `1.4.0`; older apps ask the user to update. Default `0.1.0`. |
+| `MARGAYA_VERSION` | **Optional.** The server version `/api/config` reports to Margaya Desktop. Defaults to the `version` in the root `package.json` of the build. Set it to the release version (for example from the release tag) when you build an image. |
 
 
 ## Optional variables
@@ -394,7 +397,7 @@ When upgrading, remove `SMTP_IGNORE_TLS=true` and verify delivery with the corre
 - If you enable Discord SSO, you need to set up the Discord application which is used to authenticate users in the [Discord Developer Portal](https://discord.com/developers/applications). See the [Discord SSO guide](/core/social-providers/discord).
 - If you enable Custom OAuth/OIDC, you need to configure your identity provider with the appropriate redirect URI. See the [Custom OAuth/OIDC guide](/core/social-providers/custom-oauth).
 - If you have enabled SMTP, sign-in uses email verification codes by default. Set `DISABLE_EMAIL_OTP_SIGN_IN=true` to use email/password sign-in instead.
-- If you need device authorization for clients beyond the defaults (`margaya-cli`, `margaya-mcp` when `DEVICE_AUTH_CLIENT_IDS` is unset), set `DEVICE_AUTH_CLIENT_IDS` to the full comma-separated list of trusted client IDs for your deployment.
+- If you need device authorization for clients beyond the defaults (`margaya-cli`, `margaya-mcp` and `margaya-desktop` when `DEVICE_AUTH_CLIENT_IDS` is unset), set `DEVICE_AUTH_CLIENT_IDS` to the full comma-separated list of trusted client IDs for your deployment.
 
 ## Authentication CAPTCHA
 

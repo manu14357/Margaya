@@ -59,6 +59,7 @@
 									"core/functional/inbox",
 									"core/functional/favorites-and-recent-items",
 									"core/functional/keyboard-shortcuts",
+									"core/functional/desktop-app",
 									"core/functional/member-profiles"
 								]
 							},
@@ -153,6 +154,7 @@
 							"core/installation/storage-backends",
 							"core/installation/environment-variables",
 							"core/installation/instance-admin",
+							"core/installation/desktop-app",
 							"core/installation/start-services",
 							"core/installation/migration",
 							"core/installation/backup-and-restore"
@@ -889,7 +891,8 @@
 							"api-reference/endpoints/notifications/archiveNotification",
 							"api-reference/endpoints/notifications/unarchiveNotification",
 							"api-reference/endpoints/notifications/snoozeNotification",
-							"api-reference/endpoints/notifications/unsnoozeNotification"
+							"api-reference/endpoints/notifications/unsnoozeNotification",
+							"api-reference/endpoints/notifications/getDesktopNotification"
 						]
 					},
 					{
@@ -1054,7 +1057,11 @@
 							"api-reference/authentication",
 							"api-reference/endpoints/authentication/getSession",
 							"api-reference/endpoints/authentication/getDeviceAuthorizationPage",
-							"api-reference/endpoints/authentication/getOAuthIdToken"
+							"api-reference/endpoints/authentication/getOAuthIdToken",
+							"api-reference/endpoints/authentication/startDesktopSignIn",
+							"api-reference/endpoints/authentication/authorizeDesktopSignIn",
+							"api-reference/endpoints/authentication/exchangeDesktopSignInCode",
+							"api-reference/endpoints/authentication/signOutDesktop"
 						]
 					},
 					{
