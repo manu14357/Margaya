@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name={{name}}
+{{#if comment}}
+Comment={{comment}}
+{{/if}}
+Exec={{exec}} %u
+Icon={{icon}}
+Terminal=false
+Categories=Office;ProjectManagement;
+StartupWMClass={{exec}}
+{{#if mime_type}}
+MimeType={{mime_type}};
+{{/if}}
