@@ -1,0 +1,79 @@
+{
+	"$schema": "https://schema.tauri.app/config/2",
+	"productName": "Margaya",
+	"version": "0.1.0",
+	"identifier": "com.margaya.desktop",
+	"build": {
+		"beforeDevCommand": "pnpm dev",
+		"devUrl": "http://localhost:1420",
+		"beforeBuildCommand": "pnpm build",
+		"frontendDist": "../dist"
+	},
+	"app": {
+		"withGlobalTauri": false,
+		"windows": [
+			{
+				"label": "main",
+				"title": "Margaya",
+				"width": 760,
+				"height": 760,
+				"minWidth": 480,
+				"minHeight": 520,
+				"center": true,
+				"visible": false
+			}
+		],
+		"security": {
+			"csp": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; connect-src ipc: http://ipc.localhost",
+			"capabilities": ["launcher", "offline"]
+		}
+	},
+	"bundle": {
+		"active": true,
+		"targets": ["nsis", "msi", "dmg", "app", "appimage", "deb", "rpm"],
+		"createUpdaterArtifacts": true,
+		"publisher": "Margaya",
+		"homepage": "https://margaya.app",
+		"category": "Productivity",
+		"shortDescription": "Margaya Desktop",
+		"longDescription": "Margaya Desktop opens your Margaya servers in their own windows, with native notifications, a quick-add shortcut and sign-in through your browser.",
+		"license": "AGPL-3.0-only",
+		"icon": [
+			"icons/32x32.png",
+			"icons/128x128.png",
+			"icons/256x256.png",
+			"icons/icon.png",
+			"icons/icon.icns",
+			"icons/icon.ico"
+		],
+		"macOS": {
+			"minimumSystemVersion": "14.0"
+		},
+		"windows": {
+			"nsis": {
+				"installMode": "currentUser"
+			}
+		},
+		"linux": {
+			"deb": {
+				"desktopTemplate": "linux/margaya.desktop"
+			},
+			"rpm": {
+				"desktopTemplate": "linux/margaya.desktop"
+			}
+		}
+	},
+	"plugins": {
+		"deep-link": {
+			"desktop": {
+				"schemes": ["com.margaya.desktop", "margaya"]
+			}
+		},
+		"updater": {
+			"pubkey": "TODO-REPLACE-WITH-THE-UPDATER-PUBLIC-KEY (see apps/desktop/AGENTS.md)",
+			"endpoints": [
+				"https://github.com/manu14357/Margaya/releases/latest/download/latest.json"
+			]
+		}
+	}
+}
