@@ -9,4 +9,7 @@ export const PUBLIC_SITE_URL = resolvePublicSiteUrl(
 
 export const DOCS_URL = getDocsUrl(PUBLIC_SITE_URL);
 
+/** The desktop app's download page on the public site. */
+export const DESKTOP_DOWNLOAD_URL = `${PUBLIC_SITE_URL}/download`;
+
 export const GITHUB_REPOSITORY_URL = "https://github.com/manu14357/Margaya";

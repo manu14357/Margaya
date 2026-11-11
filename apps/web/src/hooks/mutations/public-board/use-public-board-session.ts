@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { publicBoardKeys } from "@/hooks/queries/public-board/public-board-keys";
 import { authClient } from "@/lib/auth-client";
+import { notifyDesktopSignedOut } from "@/lib/desktop";
 
 /**
  * Continue as a guest in place (no navigation) and sign out from the
@@ -45,6 +46,8 @@ export function usePublicBoardSession(token: string) {
     mutationFn: async () => {
       const result = await authClient.signOut();
       if (result.error) throw new Error(result.error.message ?? "");
+      // Same session as the app's: the desktop app signs out too.
+      notifyDesktopSignedOut();
     },
     onSuccess: () => void refresh(),
     meta: { refreshTaskQueries: false },

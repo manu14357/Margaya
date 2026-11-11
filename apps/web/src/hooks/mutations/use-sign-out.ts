@@ -3,6 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { getIdToken } from "@/fetchers/oauth/get-id-token";
 import { releasePushOnSignOut } from "@/hooks/mutations/notification-preferences/use-push-subscription";
 import { AUTH_BASE_URL, authClient } from "@/lib/auth-client";
+import { notifyDesktopSignedOut } from "@/lib/desktop";
 import { beginSignOut, endSignOut } from "@/lib/sign-out";
 
 // Instance-wide data the sign-in page reads; it does not belong to the user.
@@ -128,6 +129,8 @@ function useSignOut(idpLogoutUrl?: string | null) {
               !PUBLIC_QUERY_ROOTS.has(String(query.queryKey[0])),
           });
           authClient.$store.notify("$sessionSignal");
+          // The desktop app signs this server out too (a no-op elsewhere).
+          notifyDesktopSignedOut();
 
           if (idpLogoutUrl) {
             const redirectUri = `${window.location.origin}/auth/sign-in`;

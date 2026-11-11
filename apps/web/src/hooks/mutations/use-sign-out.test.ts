@@ -155,6 +155,45 @@ describe("closing the tab while signing out", () => {
     await waitFor(() => expect(result.current.isError).toBe(true));
   });
 
+  it("signs the desktop app out too, once the session has ended", async () => {
+    const signedOut = vi.fn(() => {
+      // The web session ends first; the app follows.
+      expect(stores.signOut).toHaveBeenCalled();
+    });
+    Object.defineProperty(window, "__MARGAYA_DESKTOP__", {
+      configurable: true,
+      value: { signedOut },
+    });
+    try {
+      const { result, settle } = signingOut();
+      settle();
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+      expect(signedOut).toHaveBeenCalledOnce();
+    } finally {
+      Reflect.deleteProperty(window, "__MARGAYA_DESKTOP__");
+    }
+  });
+
+  it("keeps the desktop app signed in when the sign-out is refused", async () => {
+    const signedOut = vi.fn();
+    Object.defineProperty(window, "__MARGAYA_DESKTOP__", {
+      configurable: true,
+      value: { signedOut },
+    });
+    stores.signOut.mockResolvedValueOnce({
+      data: null,
+      error: { message: "refused" },
+    });
+    try {
+      const { result, settle } = signingOut();
+      settle();
+      await waitFor(() => expect(result.current.isError).toBe(true));
+      expect(signedOut).not.toHaveBeenCalled();
+    } finally {
+      Reflect.deleteProperty(window, "__MARGAYA_DESKTOP__");
+    }
+  });
+
   it("sends nothing extra once the sign-out has been done", async () => {
     const { result, settle } = signingOut();
     settle();

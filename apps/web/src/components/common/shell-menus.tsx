@@ -7,7 +7,9 @@ import {
   FolderPlus,
   Keyboard,
   LogOut,
+  MonitorDown,
   PanelsLeftRight,
+  ServerCog,
   Settings,
   ShieldCheck,
   Sparkles,
@@ -36,12 +38,17 @@ import {
 } from "@/components/ui/menu";
 import { APP_VERSION, CHANGELOG_URL } from "@/components/version-display";
 import { shortcuts } from "@/constants/shortcuts";
-import { DOCS_URL, GITHUB_REPOSITORY_URL } from "@/constants/urls";
+import {
+  DESKTOP_DOWNLOAD_URL,
+  DOCS_URL,
+  GITHUB_REPOSITORY_URL,
+} from "@/constants/urls";
 import useSignOut from "@/hooks/mutations/use-sign-out";
 import useGetConfig from "@/hooks/queries/config/use-get-config";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { authClient } from "@/lib/auth-client";
+import { getDesktopShowServers, isDesktopApp } from "@/lib/desktop";
 import { getInitials } from "@/lib/get-initials";
 import { toast } from "@/lib/toast";
 import useProjectStore from "@/store/project";
@@ -227,6 +234,8 @@ export function UserMenu({ trigger, side = "right" }: ShellMenuProps) {
   const openCustomizeSidebar = useCustomizeSidebarDialog(
     (state) => state.setOpen,
   );
+  const inDesktopApp = isDesktopApp();
+  const showServers = getDesktopShowServers();
 
   if (!user) return null;
 
@@ -279,6 +288,26 @@ export function UserMenu({ trigger, side = "right" }: ShellMenuProps) {
           <PanelsLeftRight />
           {t("navigation:customize.open")}
         </DropdownMenuItem>
+        {!inDesktopApp && (
+          <DropdownMenuItem
+            render={
+              <a
+                href={DESKTOP_DOWNLOAD_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              />
+            }
+          >
+            <MonitorDown />
+            {t("navigation:userMenu.getDesktopApp")}
+          </DropdownMenuItem>
+        )}
+        {showServers && (
+          <DropdownMenuItem onClick={showServers}>
+            <ServerCog />
+            {t("navigation:userMenu.switchServer")}
+          </DropdownMenuItem>
+        )}
         {isInstanceAdmin && (
           <DropdownMenuItem
             onClick={() =>

@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { authClient } from "@/lib/auth-client";
+import { notifyDesktopSignedOut } from "@/lib/desktop";
 
 export const SESSION_TOO_OLD = "SESSION_TOO_OLD";
 
@@ -16,6 +17,8 @@ function useDeleteAccount() {
         throw new Error(error.message || "Failed to delete account");
       }
 
+      // The account and its sessions are gone: so is the desktop sign-in.
+      notifyDesktopSignedOut();
       return data;
     },
   });
