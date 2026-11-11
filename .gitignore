@@ -103,3 +103,6 @@ creds.md
 
 # Social media drafts and assets (never commit)
 social-media/
+
+# Desktop release signing keys (local only, never commit)
+desktop-release-keys.md
