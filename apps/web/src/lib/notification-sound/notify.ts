@@ -1,3 +1,7 @@
+import {
+  desktopPlaysNotificationSound,
+  notifyDesktopSoundMuted,
+} from "@/lib/desktop";
 import { useNotificationSoundDevice } from "@/store/notification-sound-device";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 import { audioReady, isVoiceActive, playSound } from "./player";
@@ -60,6 +64,8 @@ export async function playForNotification(
   hint: NotificationHint,
   now = new Date(),
 ): Promise<boolean> {
+  // In the desktop app the native notification makes the one sound.
+  if (desktopPlaysNotificationSound()) return false;
   if (useNotificationSoundDevice.getState().muted || isVoiceActive()) {
     return false;
   }
@@ -70,4 +76,17 @@ export async function playForNotification(
   if (!sound) return false;
   if (!(await claimSoundSlot(now.getTime()))) return false;
   return playSound(sound, settings.volume);
+}
+
+/**
+ * In the desktop app, keeps its native notifications as quiet as this
+ * device's mute: sends the setting now and on every change. Returns the
+ * unsubscribe.
+ */
+export function syncDesktopSoundMute(): () => void {
+  if (!desktopPlaysNotificationSound()) return () => {};
+  notifyDesktopSoundMuted(useNotificationSoundDevice.getState().muted);
+  return useNotificationSoundDevice.subscribe((state, previous) => {
+    if (state.muted !== previous.muted) notifyDesktopSoundMuted(state.muted);
+  });
 }

@@ -1,7 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useNotificationSoundDevice } from "@/store/notification-sound-device";
 import { useUserPreferencesStore } from "@/store/user-preferences";
-import { claimSoundSlot, playForNotification, SOUND_WINDOW_MS } from "./notify";
+import {
+  claimSoundSlot,
+  playForNotification,
+  SOUND_WINDOW_MS,
+  syncDesktopSoundMute,
+} from "./notify";
 import { DEFAULT_NOTIFICATION_SOUND } from "./settings";
 
 const player = vi.hoisted(() => ({
@@ -127,5 +132,58 @@ describe("playForNotification", () => {
     expect(await playForNotification(mention, noonUtc)).toBe(false);
     useUserPreferencesStore.setState({ timeZone: "UTC" });
     expect(await playForNotification(mention, noonUtc)).toBe(true);
+  });
+});
+
+describe("in the desktop app", () => {
+  const bridge = { notificationSound: "system", setSoundMuted: vi.fn() };
+  beforeEach(() => {
+    localStorage.clear();
+    vi.stubGlobal("navigator", {});
+    player.ready = true;
+    player.voice = false;
+    player.playSound.mockClear();
+    bridge.setSoundMuted.mockClear();
+    useNotificationSoundDevice.setState({ muted: false });
+    useUserPreferencesStore.setState({
+      notificationSound: DEFAULT_NOTIFICATION_SOUND,
+      timeZone: "UTC",
+    });
+  });
+  afterEach(() => {
+    delete (window as { __MARGAYA_DESKTOP__?: unknown }).__MARGAYA_DESKTOP__;
+    vi.unstubAllGlobals();
+  });
+
+  it("leaves the one sound to the app's native notification", async () => {
+    (window as { __MARGAYA_DESKTOP__?: unknown }).__MARGAYA_DESKTOP__ = bridge;
+    expect(await playForNotification(mention, noonUtc)).toBe(false);
+    expect(player.playSound).not.toHaveBeenCalled();
+  });
+
+  it("still plays in an app version that doesn't sound its notifications", async () => {
+    (window as { __MARGAYA_DESKTOP__?: unknown }).__MARGAYA_DESKTOP__ = {
+      setBadge: vi.fn(),
+    };
+    expect(await playForNotification(mention, noonUtc)).toBe(true);
+  });
+
+  it("tells the app about this device's mute, now and on change", () => {
+    (window as { __MARGAYA_DESKTOP__?: unknown }).__MARGAYA_DESKTOP__ = bridge;
+    useNotificationSoundDevice.setState({ muted: true });
+    const stop = syncDesktopSoundMute();
+    expect(bridge.setSoundMuted).toHaveBeenLastCalledWith(true);
+    useNotificationSoundDevice.setState({ muted: false });
+    expect(bridge.setSoundMuted).toHaveBeenLastCalledWith(false);
+    stop();
+    useNotificationSoundDevice.setState({ muted: true });
+    expect(bridge.setSoundMuted).toHaveBeenCalledTimes(2);
+  });
+
+  it("sends nothing in a browser", () => {
+    const stop = syncDesktopSoundMute();
+    useNotificationSoundDevice.setState({ muted: true });
+    stop();
+    expect(bridge.setSoundMuted).not.toHaveBeenCalled();
   });
 });

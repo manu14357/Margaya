@@ -65,6 +65,7 @@ afterEach(() => {
     maxTouchPoints: 0,
   });
   Reflect.deleteProperty(navigator, "standalone");
+  Reflect.deleteProperty(window, "__MARGAYA_DESKTOP__");
   vi.restoreAllMocks();
 });
 
@@ -99,6 +100,32 @@ describe("getPushSupport", () => {
   it("is unsupported elsewhere without the APIs, as on plain http", () => {
     clearPushApis();
     expect(getPushSupport()).toBe("unsupported");
+  });
+});
+
+describe("inside the desktop app", () => {
+  function enterDesktopApp() {
+    Object.defineProperty(window, "__MARGAYA_DESKTOP__", {
+      configurable: true,
+      value: { version: "0.1.0", platform: "windows" },
+    });
+  }
+
+  it("is not offered even when the webview has the APIs", () => {
+    stubPushApis();
+    enterDesktopApp();
+    expect(getPushSupport()).toBe("desktop-app");
+  });
+
+  it("never subscribes or reads a subscription", async () => {
+    const { pushManager, serviceWorker } = stubPushApis();
+    enterDesktopApp();
+    await expect(subscribeBrowser(KEY)).rejects.toMatchObject({
+      name: "NotSupportedError",
+    });
+    await expect(getBrowserSubscription()).resolves.toBeNull();
+    expect(serviceWorker.register).not.toHaveBeenCalled();
+    expect(pushManager.subscribe).not.toHaveBeenCalled();
   });
 });
 

@@ -1,9 +1,15 @@
 import { getApiUrl } from "@/fetchers/get-api-url";
+import { isDesktopApp } from "@/lib/desktop";
 
 // The browser's side of web push: its service worker and subscription. What the
 // server knows about this device goes through fetchers/notification-preferences.
 
-export type PushSupport = "supported" | "install-required" | "unsupported";
+export type PushSupport =
+  | "supported"
+  | "install-required"
+  | "unsupported"
+  // The desktop app delivers this device's notifications itself.
+  | "desktop-app";
 
 function isIos() {
   return (
@@ -21,6 +27,7 @@ function isStandalone() {
 }
 
 export function getPushSupport(): PushSupport {
+  if (isDesktopApp()) return "desktop-app";
   if (
     "serviceWorker" in navigator &&
     "PushManager" in window &&
@@ -72,6 +79,9 @@ function usesKey(subscription: PushSubscription, key: Uint8Array) {
  * Rejects with a NotAllowedError when the person refuses.
  */
 export async function subscribeBrowser(publicKey: string) {
+  if (getPushSupport() !== "supported") {
+    throw new DOMException("Push is not offered here.", "NotSupportedError");
+  }
   await registerPushWorker();
   const registration = await navigator.serviceWorker.ready;
   const applicationServerKey = decodeKey(publicKey);

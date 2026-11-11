@@ -7,7 +7,10 @@ import { taskDraftQueryKeys } from "@/hooks/queries/task-draft/task-draft-query-
 import { handleAgentUserMessage } from "@/lib/ai/agent-realtime";
 import { authClient } from "@/lib/auth-client";
 import { handleHomeUserMessage } from "@/lib/home-realtime";
-import { playForNotification } from "@/lib/notification-sound/notify";
+import {
+  playForNotification,
+  syncDesktopSoundMute,
+} from "@/lib/notification-sound/notify";
 import { installAudioUnlock } from "@/lib/notification-sound/player";
 import { onWake, reconnectDelay } from "@/lib/realtime-reconnect";
 import { onSignOut } from "@/lib/sign-out";
@@ -34,6 +37,8 @@ export function useUserWebSocket() {
     if (!session?.user?.id) return;
     // Audio may only start after a click or key press on the page.
     installAudioUnlock();
+    // The desktop app plays the sound with its own notifications.
+    const stopMuteSync = syncDesktopSoundMute();
 
     // A previous session's delayed socket events must not control this session.
     let disposed = false;
@@ -198,6 +203,7 @@ export function useUserWebSocket() {
     connect();
 
     return () => {
+      stopMuteSync();
       stopWake();
       stopOnSignOut();
       dispose();

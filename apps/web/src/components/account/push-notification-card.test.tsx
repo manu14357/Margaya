@@ -168,6 +168,13 @@ describe("PushNotificationCard", () => {
       "pushUnsupported",
     ],
     ["permission is blocked", {}, "supported", "denied", "pushBlocked"],
+    [
+      "the desktop app delivers notifications",
+      {},
+      "desktop-app",
+      "default",
+      "pushDesktopApp",
+    ],
   ])(
     "explains and disables the switch when %s",
     (_name, overrides, support, permission, key) => {
@@ -185,6 +192,15 @@ describe("PushNotificationCard", () => {
       expect(mocks.turnOn).not.toHaveBeenCalled();
     },
   );
+
+  it("offers no browser push inside the desktop app, even without server keys", () => {
+    mocks.support = "desktop-app";
+    mocks.status = status({ available: false, publicKey: null });
+    render(<PushNotificationCard />);
+    expect(screen.getByText(`${prefix}.pushDesktopApp`)).toBeTruthy();
+    expect(screen.queryByText(`${prefix}.pushNotSetUp`)).toBeNull();
+    expect(mocks.register).not.toHaveBeenCalled();
+  });
 
   it("says so when the status can't load, rather than that push isn't set up", () => {
     mocks.status = undefined;

@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
+import { desktopPlaysNotificationSound } from "@/lib/desktop";
 import { previewSound } from "@/lib/notification-sound/player";
 import {
   isNotificationSound,
@@ -122,7 +123,11 @@ export function NotificationSoundSettings() {
   return (
     <SettingsSection
       title={t("settings:notificationsPage.sound.title")}
-      description={t("settings:notificationsPage.sound.description")}
+      description={
+        desktopPlaysNotificationSound()
+          ? t("settings:notificationsPage.sound.desktopDescription")
+          : t("settings:notificationsPage.sound.description")
+      }
     >
       <SettingsGroup>
         <SettingsRow
@@ -266,9 +271,13 @@ export function NotificationSoundSettings() {
 
         <SettingsRow
           label={t("settings:notificationsPage.sound.deviceMute")}
-          description={t(
-            "settings:notificationsPage.sound.deviceMuteDescription",
-          )}
+          description={
+            desktopPlaysNotificationSound()
+              ? t(
+                  "settings:notificationsPage.sound.deviceMuteDescriptionDesktop",
+                )
+              : t("settings:notificationsPage.sound.deviceMuteDescription")
+          }
           htmlFor={ids.device}
         >
           <Switch

@@ -42,6 +42,9 @@ export function PushNotificationCard() {
 
   const hint = () => {
     if (isError) return t("settings:notificationsPage.pushLoadFailed");
+    if (support === "desktop-app") {
+      return t("settings:notificationsPage.pushDesktopApp");
+    }
     if (!status?.available) return t("settings:notificationsPage.pushNotSetUp");
     if (support === "install-required") {
       return t("settings:notificationsPage.pushInstallFirst");
