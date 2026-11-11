@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="21.33 21.33 93.34 93.34">
+  <!-- macOS menu bar template image (tray-template.png, 44 px for 22 pt):
+       black only; macOS tints it. The face is cut out. -->
+  <path fill-rule="evenodd" d="M30 58V26l24 18c9-3 19-3 28 0l24-18v32c0 30-16 52-38 52S30 88 30 58ZM47 72a7 9 0 1 0 14 0a7 9 0 1 0-14 0ZM75 72a7 9 0 1 0 14 0a7 9 0 1 0-14 0ZM63 86h10l-5 6Z" fill="#000000"/>
+</svg>

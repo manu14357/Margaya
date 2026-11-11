@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="21.33 21.33 93.34 93.34">
+  <!-- Margaya Desktop app icon: the Margaya cat on a transparent background,
+       about 90% of the canvas, in the Canopy primary green (#047857). The
+       eyes and nose are white, so the face reads on light and dark taskbars.
+       Regenerate the icons from a 1024 px render of this file with the
+       Tauri CLI icon command (see apps/desktop/AGENTS.md). -->
+  <path d="M30 58V26l24 18c9-3 19-3 28 0l24-18v32c0 30-16 52-38 52S30 88 30 58Z" fill="#047857"/>
+  <path d="M47 72a7 9 0 1 0 14 0a7 9 0 1 0-14 0ZM75 72a7 9 0 1 0 14 0a7 9 0 1 0-14 0ZM63 86h10l-5 6Z" fill="#ffffff"/>
+</svg>
