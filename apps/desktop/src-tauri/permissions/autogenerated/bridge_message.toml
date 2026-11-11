@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-bridge-message"
+description = "Enables the bridge_message command without any pre-configured scope."
+commands.allow = ["bridge_message"]
+
+[[permission]]
+identifier = "deny-bridge-message"
+description = "Denies the bridge_message command without any pre-configured scope."
+commands.deny = ["bridge_message"]

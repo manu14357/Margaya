@@ -1,0 +1,30 @@
+{
+	"$schema": "../gen/schemas/desktop-schema.json",
+	"identifier": "launcher",
+	"description": "The bundled launcher and quick-add windows.",
+	"windows": ["main", "quick-add"],
+	"permissions": [
+		"core:default",
+		"allow-list-servers",
+		"allow-discover-server",
+		"allow-add-server",
+		"allow-rename-server",
+		"allow-remove-server",
+		"allow-open-server",
+		"allow-start-sign-in",
+		"allow-submit-sign-in-code",
+		"allow-cancel-sign-in",
+		"allow-sign-out",
+		"allow-open-external",
+		"allow-take-launcher-prompt",
+		"allow-get-settings",
+		"allow-set-autostart",
+		"allow-copy-diagnostics",
+		"allow-check-for-update",
+		"allow-install-update",
+		"allow-quick-add-targets",
+		"allow-quick-add-create",
+		"allow-quick-add-open",
+		"allow-close-quick-add"
+	]
+}

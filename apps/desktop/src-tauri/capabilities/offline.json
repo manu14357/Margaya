@@ -1,0 +1,12 @@
+{
+	"$schema": "../gen/schemas/desktop-schema.json",
+	"identifier": "offline",
+	"description": "The bundled offline page (index.html#offline), shown on the app's own origin inside a server window when its server can't be reached. Local pages only: remote server pages never get these. Rust also answers only the window that is showing the offline page.",
+	"windows": ["server-*"],
+	"local": true,
+	"permissions": [
+		"allow-offline-state",
+		"allow-offline-retry",
+		"allow-show-servers"
+	]
+}

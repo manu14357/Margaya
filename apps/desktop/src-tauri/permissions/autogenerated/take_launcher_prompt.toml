@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-take-launcher-prompt"
+description = "Enables the take_launcher_prompt command without any pre-configured scope."
+commands.allow = ["take_launcher_prompt"]
+
+[[permission]]
+identifier = "deny-take-launcher-prompt"
+description = "Denies the take_launcher_prompt command without any pre-configured scope."
+commands.deny = ["take_launcher_prompt"]
