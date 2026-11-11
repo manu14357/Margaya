@@ -12,7 +12,10 @@ vi.mock("@/lib/auth-client", () => ({
   authClient: { useSession: () => ({ data: { user: { id: "user-a" } } }) },
 }));
 vi.mock("@margaya/libs", () => ({ windowId: "this-tab" }));
-vi.mock("@/lib/notification-sound/notify", () => ({ playForNotification }));
+vi.mock("@/lib/notification-sound/notify", () => ({
+  playForNotification,
+  syncDesktopSoundMute: () => () => {},
+}));
 vi.mock("@/lib/notification-sound/player", () => ({ installAudioUnlock }));
 
 class TestSocket {
