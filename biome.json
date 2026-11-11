@@ -7,6 +7,7 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
+		"maxSize": 2097152,
 		"includes": [
 			"**",
 			"!**/coverage",
@@ -15,6 +16,8 @@
 			"!**/messages.generated.ts",
 			"!**/next-env.d.ts",
 			"!**/dist",
+			"!**/src-tauri/target",
+			"!**/src-tauri/gen",
 			"!**/cache",
 			"!**/*.css",
 			"!**/*.svg",
@@ -81,6 +84,16 @@
 				"rules": {
 					"suspicious": {
 						"noUndeclaredEnvVars": "off"
+					}
+				}
+			}
+		},
+		{
+			"includes": ["apps/web/src/**"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noAlert": "error"
 					}
 				}
 			}
