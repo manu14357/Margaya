@@ -69,6 +69,8 @@ Smaller example for single-call fetchers: `apps/web/src/fetchers/label/*.ts` wit
    - user hints (notifications, favorites, drafts) in `apps/web/src/hooks/use-user-websocket.ts`.
    Hints carry ids, not data. The initiating tab is excluded from project broadcasts (`excludeInitiatorId`), so step 5 must refresh the author's own cache; the socket only updates other tabs and users. With Redis the same message goes through `redis-broadcast-adapter.ts`; nothing in the web app changes.
 
+   **Desktop shell.** The same build runs inside the desktop app, which injects `window.__MARGAYA_DESKTOP__`. Feature-detect it only through `apps/web/src/lib/desktop.ts` (`getDesktopBridge`, `isDesktopApp`, `getDesktopBrowserSignIn`, `takeDesktopHandoffSecret`), never assume it exists, and never call a method it does not define. Inside the shell the web app skips Web Push subscription UI, hides PWA install prompts and "Get the desktop app", and routes social, SSO and SAML sign-in to `startBrowserSignIn()`. Test both states (bridge present and absent). Contract: `desktop-app` skill.
+
 8. **Test.** Next to the file under test:
    - fetcher: mock `@margaya/libs` like `fetchers/label/delete-label.test.ts`;
    - mutation invalidation: mock `@tanstack/react-query` like `hooks/mutations/label/use-update-label.test.tsx`;

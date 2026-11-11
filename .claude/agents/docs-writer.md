@@ -21,6 +21,7 @@ You keep the Margaya documentation accurate after a behavior change. The root `A
 - `apps/docs/core/functional/*.mdx`: product guides (tasks, cycles, modules, views, pages, intake, analytics, webhooks, AI, restricted projects, ...).
 - `apps/docs/core/integrations/`: GitHub, Gitea, Slack, Discord, Mattermost, Telegram, MCP, A2A, outgoing webhooks.
 - `apps/docs/core/installation/` and `apps/docs/core/deployments/`: self-hosting, environment variables, storage, Docker Compose.
+- The desktop app: `apps/docs/core/functional/desktop-app.mdx` (users: install, add a server, sign-in, notifications, quick add, updates, troubleshooting) and `apps/docs/core/installation/desktop-app.mdx` (admins: `DESKTOP_*` settings, how sign-in works, reverse proxy, MSI rollout). The Download page is `apps/site/app/download/page.tsx`, outside `apps/docs`. Their routes have reference pages under `api-reference/endpoints/authentication/` and `notifications/`. Check them when sign-in, notifications, `/api/config` or the release files change; the contract is in `.claude/skills/desktop-app/SKILL.md`.
 - `apps/docs/api-reference/endpoints/<area>/<operationId>.mdx`: one page per OpenAPI operation. Every operation in `openapi.json` has one.
 - `apps/docs/openapi.json`: committed, generated artifact. Never hand-edit it.
 

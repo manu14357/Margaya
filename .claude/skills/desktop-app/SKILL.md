@@ -1,0 +1,178 @@
+---
+name: desktop-app
+description: Work on Margaya Desktop (apps/desktop), the Tauri 2 shell for Windows, macOS and Linux - the bundled launcher, quick-add window and offline page, server windows (custom title bar, popups, hide-on-close, in-app navigation, outside opens), server discovery through /api/config, system-browser sign-in with PKCE and deep links, bearer tokens in the OS keychain, the Rust core's user WebSocket, native notifications and badge, the window.__MARGAYA_DESKTOP__ bridge and its feature detection in apps/web, cargo and launcher tests, installers, the updater and desktop-release.yml. Use when changing the desktop app, or when an API, web, auth, notification or /api/config change could break it.
+---
+
+# Desktop app
+
+Purpose: keep the desktop shell thin and safe. It loads each server's own web UI in its own window, so almost every feature reaches it for free; only the small contract below is desktop-specific. Root rules: [AGENTS.md](../../../AGENTS.md); folder rules: `apps/desktop/AGENTS.md`. Related skills: `api-endpoint`, `realtime-events`, `web-data-flow`, `i18n`, `testing`, `commit-and-release`.
+
+Fixed decisions: Tauri 2 only. Windows (NSIS `.exe` by default, plus MSI), macOS 14 or newer (DMG) and Linux on x86_64 and ARM64 (AppImage, which updates itself, plus `.deb` and `.rpm`; WebKitGTK 4.1, so Ubuntu 22.04+, Debian 12+, Fedora 38+, openSUSE Leap 15.6+/Tumbleweed). Distributed only as downloads from the website (`apps/site/app/download/page.tsx`), through GitHub Releases; no app stores, Flatpak or Snap. Identifier `com.margaya.desktop`, product name `Margaya`, main binary and Linux package `margaya-desktop`.
+
+## Layout
+
+| Part | Where | Job |
+| --- | --- | --- |
+| Launcher, quick add, offline page | `apps/desktop/src/` (React + Vite, dev port 1420) | Add a server, server list, connection and TLS errors. The same bundle serves quick add (`index.html#quick-add[=<serverId>]`) and the offline page shown inside a server window (`index.html#offline`) |
+| Launcher copy | `apps/desktop/scripts/desktop-i18n.ts` | Vite virtual module with `desktop.launcher` from every `i18n/*.json`, read at build time |
+| Rust core | `apps/desktop/src-tauri/src/` | `servers.rs` (server list), `discovery.rs`, `auth.rs` + `signin.rs` (PKCE, single-use state, deep links), `tokens.rs` (keychain), `windows.rs` (server windows, popups, data stores, downloads, hide-on-close), `routing.rs` (pure decisions: new windows, navigation, the in-app navigate script, offline backoff), `opener.rs` (every outside open), `titlebar.rs`, `offline.rs`, `bridge.rs`, `socket.rs` + `api.rs` (bearer calls, user socket), `notify.rs` (native notifications: Windows toasts, click links, the sound decision), `sound.rs` (Margaya's notification sounds: recipes, WAV rendering, Windows playback), `badge.rs` + `badge_view.rs` (unread badge, drawn per window at its monitor scale), `menus.rs` (tray, quick-add shortcut `CommandOrControl+Shift+Space`), `updates.rs`, `diagnostics.rs`, `i18n.rs` (native copy) |
+| Capabilities | `apps/desktop/src-tauri/capabilities/` + `src-tauri/src/acl.rs` | `launcher.json` (the `main` and `quick-add` windows); `offline.json` (`server-*` windows, local pages, only `offline_state`, `offline_retry`, `show_servers`). Server windows get no static capability: `acl.rs` adds one per server at runtime (`Manager::add_capability`, Tauri feature `dynamic-acl`) for `server-<id>` and `server-<id>-*` on that server's exact web origin, granting only `allow-bridge-message` |
+| Web side | `apps/web/src/lib/desktop.ts`, `components/desktop/desktop-title-bar.tsx`, `styles/desktop.css` | Bridge detection, title bar and window controls, in-app navigation, app-like behaviour |
+| Config | `apps/desktop/src-tauri/tauri.conf.json` | Bundle targets, updater endpoint and public key, deep-link schemes |
+| Package | `apps/desktop/package.json` (`@margaya/desktop`) | Scripts `dev`, `build`, `tauri`, `test` (vitest), `typecheck`, `lint` (read-only Biome check) |
+
+Each server is a profile keyed by a generated UUID, not its URL, with its own webview data store (`data_directory` on Windows and Linux, `data_store_identifier` on macOS 14+). On Windows the server list is `%APPDATA%\com.margaya.desktop\servers.json` and the profiles are `%LOCALAPPDATA%\com.margaya.desktop\profiles\<uuid>`; on Linux `~/.config/com.margaya.desktop/servers.json` and `~/.local/share/com.margaya.desktop/profiles/<uuid>` (a WebKitGTK `WebsiteDataManager` per directory, cookies in `<uuid>/cookies`). Secrets never go in either. Keychain entry names derive from the app identifier too.
+
+Windows and lifecycle:
+- Window labels: the main server window `server-<id>`; additional windows on the same profile `server-<id>-<n>` (Ctrl-click, `target=_blank`, viewing a server file); sign-in popups `popup-<id>-<n>` for account linking with an identity provider, which have **no IPC** and close once the flow returns to the server's web UI. The launcher is `main`, quick add is `quick-add`.
+- Closing a main server window hides it (an additional window closes); the app keeps running in the tray, and tray **Quit** exits. At start the app reopens the servers marked `reopen` in `servers.json` (else the launcher); a second launch focuses the last server window. Window state is remembered.
+- Title bar: on Windows server windows use `decorations(false)` with a shadow, and the web app draws the controls at the right of its own top bar; on Linux the same without a shadow (GTK has none for undecorated windows), with round GNOME-like controls, moving through `start_dragging` (works on Wayland and X11 while the button is held) and Tauri's 5 px resize borders for undecorated windows; on macOS the title bar is an overlay with the traffic lights at (16, 17) and the web app reserves `leftInset` 80. A server that never sends `ready` keeps a native frame. The launcher keeps native decorations. The window manager's button layout (left-side buttons, close only) isn't followed.
+- Windows stay hidden until the first page loads (with a timeout), on a theme-matched background, so there is no white flash. A load failure shows the offline page (Retry, Switch server, last error) and retries with backoff.
+- Window titles follow the page title. Zoom hotkeys work on Windows (WebView2's own zoom); on macOS and Linux they are off, because the zoom permission takes any window label and would let a page zoom other windows.
+- Linux tray: Ayatana AppIndicator (StatusNotifierItem). It has no click events, so the menu (first item **Open Margaya**) is the only way in, and no tooltip, so the unread count is the tray label. GNOME needs the AppIndicator extension (Ubuntu ships it). The library is `dlopen`ed by the tray code and its absence aborts the start, so the .deb and .rpm depend on it and the AppImage bundles it.
+
+## The contract
+
+Names below are shared with `apps/api` and `apps/web`. Renaming one means changing every side in the same change.
+
+1. **Discovery** (Rust side, `discovery.rs`, because `/api/config` sends no CORS headers; it uses the OS trust store). The core calls `<typed URL>/api/config`. Its public `desktop` block is `{ enabled, serverVersion, minDesktopVersion, webUrl, apiUrl }` (env `DESKTOP_SIGN_IN_ENABLED`, default true; `DESKTOP_MIN_VERSION`, default `0.1.0`; `MARGAYA_VERSION`). If the response is not JSON, it tries `<typed URL>/.well-known/margaya-desktop.json` (`{ "apiUrl": "..." }`, served and emitted by the `desktopDiscovery` Vite plugin in `apps/web/vite.config.ts` from `apps/web/src/lib/desktop-discovery.ts`, and written by the Docker image's `env.sh` at container start) and then `<apiUrl>/api/config`. It refuses a server with `enabled: false` and asks the user to update when the app is older than `minDesktopVersion`. Plain `http://` servers get a warning, except `localhost`.
+2. **Desktop sign-in** (Better Auth plugin `apps/api/src/utils/desktop-sign-in.ts`, OpenAPI entries in `apps/api/src/desktop-sign-in-openapi.ts`, under `/api/auth`):
+   - The core makes a single-use `state` and a PKCE verifier, then opens `GET /api/auth/desktop/sign-in?state=…&code_challenge=…&code_challenge_method=S256` in the **system browser**. It always answers 302 to the web page `<webUrl>/desktop/authorize` (`apps/web/src/routes/desktop.authorize.tsx`) and mints nothing, so a link alone never hands out a code.
+   - On that page the person signs in if needed and confirms. The page calls `POST /api/auth/desktop/authorize` (cookie session, trusted `Origin`), which mints a hashed code (60 seconds, used up on the first try, right or wrong) bound to the S256 challenge and state, and returns `{ code, redirectTo }` with `redirectTo` = `com.margaya.desktop://auth/callback?code=…&state=…&server=<apiUrl>`. With `&display=code` the page shows the code for manual paste instead.
+   - The core checks `state` against its pending request, then calls `POST /api/auth/desktop/token` with `{ code, code_verifier, state }` and gets `{ token, webviewUrl, webviewSecret, user, expiresAt }`. 400 is a bad body; 401 is a bad, expired or used code, or a verifier or state mismatch.
+   - It stores `token` in the OS keychain and navigates the server window to `webviewUrl` (`<webUrl>/auth/complete#token=…`). The web app reads `webviewSecret` through the bridge's `takeHandoffSecret()` and sends it as `desktopSecret` to `/handoff/redeem`, which requires it for desktop window tokens and then sets a first-party cookie.
+   - Sign-out: `POST /api/auth/desktop/sign-out` with the bearer token.
+   - Fallback when deep links are blocked: device authorization with client id `margaya-desktop` (in the default `DEVICE_AUTH_CLIENT_IDS`).
+   - Password and email-code sign-in stay inside the window, because the page is first-party. Social, OIDC and SAML sign-in always go to the system browser.
+3. **Bearer calls from the Rust core** (`api.rs`, `socket.rs`; `Authorization: Bearer <token>`, no `Origin` header; the socket reconnects with 1–60 s backoff):
+   - `GET /api/ws/user` WebSocket upgrade: one socket per signed-in server.
+   - On a `NOTIFICATION_CREATED` hint, `GET /api/notification/{id}/desktop?timeZone=<device IANA zone>` with the hint's `notificationId`. It returns `{ id, title, body, url, tag, sound, soundName, volume }`, built with `buildPushMessage` in the user's locale, so desktop text matches Web Push text; 404 when the notification is not the caller's. `desktopSound` (`apps/api/src/notification/desktop-sound.ts`, the web app's rules from `apps/web/src/lib/notification-sound/settings.ts`; keep them in step) picks the sound the user's synced settings call for now: on, volume above 0, a sound chosen for the kind, outside quiet hours (account zone, else `timeZone`, else UTC). `soundName` is that sound id (`chime`, `pop`, `ding`, `bell`, `knock`, `marimba`) or null, `volume` the user's 0–100, and `sound` stays as `soundName !== null` for older apps. A server without `soundName` but `sound: true` gets Chime at 70; one without `sound` at all gets silence, and its web app plays its own sound.
+   - Badge: `GET /api/notification/counts?workspaceId=…` for each workspace from the organization list, summed across servers.
+   - Quick add: `GET /api/project?workspaceId=…`, `GET /api/column/{projectId}`, `POST /api/task/{projectId}`.
+4. **Bridge** (`bridge.rs`). An initialization script on the server's web origin defines `window.__MARGAYA_DESKTOP__`:
+   ```ts
+   {
+     version, platform,                       // platform: "windows" | "macos" | "linux"
+     startBrowserSignIn(), openExternal(url), setBadge(count), showQuickAdd(), takeHandoffSecret(),
+     showServers(),                           // opens the launcher / server switcher
+     openSignInPopup(url),                    // announces an account-linking OAuth URL; see Security rules
+     signedOut(),                             // the web app signed out: Rust revokes the bearer and stops the socket
+     notificationSound: "system",             // static: the app sounds its own notifications; the page plays none
+     setSoundMuted(muted),                    // sends { kind: "soundMuted", muted }: "Mute sounds on this device", kept per server
+     ready({ navigate, titleBar }),           // sends { kind: "ready", navigate, titleBar } once at startup
+     navigateAck: true,
+     titleBar: { style: "custom" | "native", platform, leftInset, rightInset },   // static
+     window: { minimize(), toggleMaximize(), close(), startDragging(), isMaximized(), onStateChange(cb) },
+   }
+   ```
+   Everything posts through the single `bridge_message` command (`{ kind, ... }`); Rust accepts a message only from one of that server's own windows (`server-<id>` or `server-<id>-<n>`, never a popup) on the server's web origin, and `window.*` acts only on the window that sent it (`close()` hides a main window and closes an additional one).
+   - `apps/web` detects the bridge only through `apps/web/src/lib/desktop.ts` (`getDesktopBridge`, `isDesktopApp`, `getDesktopBrowserSignIn`, `takeDesktopHandoffSecret`, `getDesktopTitleBar`, `getDesktopWindow`, `getDesktopShowServers`, `notifyDesktopSignedOut`) and never assumes it, or any optional member, exists.
+   - When present, the web app skips Web Push subscription UI, hides PWA install prompts and "Get the desktop app", and routes social, SSO and SAML buttons to `startBrowserSignIn()`. Billing and app-install flows say "continue in your browser" (`continueInSystemBrowser`).
+   - With `titleBar.style === "custom"`, `components/desktop/desktop-title-bar.tsx` turns the app's top bar into the drag area (empty space and background only, never buttons, inputs, menus or links; double-click toggles maximize) and draws the controls at its right (Windows 11 caption buttons, 138 px; Linux round buttons, 108 px; `windowControlsWidth`), or leaves `leftInset` for the macOS traffic lights. An unknown `platform` gets the Windows controls (`desktopPlatform`). Styles: `styles/desktop.css`. Linux keys behave like Windows (Alt+arrows blocked, Ctrl+, for settings).
+   - `installDesktopAppBehaviour` makes the page behave like an app: no browser context menu outside inputs, editors and selected text, `user-select: none` on chrome, no browser history or save/print accelerators, and Ctrl/Cmd+, for settings. `installDesktopExternalLinks` sends outside links to `openExternal` once, skipping anchors inside editors.
+   - Every web sign-out path calls `signedOut()` (through `notifyDesktopSignedOut`, e.g. from `hooks/mutations/use-sign-out.ts`).
+   - With `notificationSound === "system"` (`desktopPlaysNotificationSound`), `playForNotification` stays silent, and `syncDesktopSoundMute` (started by `use-user-websocket.ts`) sends the device mute through `setSoundMuted` at start and on every change. Without it (an older app), the page plays its in-app sound as in a browser.
+5. **Events into the page.** Rust dispatches `window` `CustomEvent`s:
+   - `margaya:window-state` with `{ maximized, focused, fullscreen }`; `window.onStateChange` subscribes to it and returns an unsubscribe function.
+   - `margaya:navigate` with `{ path, id }` (a same-origin path, query and hash) for notification clicks, `margaya://open` and quick add's "Open". The web app navigates with its router, without a reload (`installDesktopNavigation`). Rust sends the event only after the page said `ready({ navigate: true })` (or set `data-margaya-navigate="1"` on `<html>`); otherwise it falls back to an ordinary navigation.
+6. **Deep links.** `com.margaya.desktop://auth/callback?...` finishes sign-in. The `margaya://open?server=<apiUrl>&path=/…` alias opens that path in that server's window. On Windows and Linux a second process receives the link, so single-instance (on Linux over the D-Bus session bus) registers first and forwards it. On Linux the .deb and .rpm declare both schemes as `MimeType=x-scheme-handler/…` in their .desktop file; an AppImage calls `register_all()` at every start (a `~/.local/share/applications/margaya-desktop-handler.desktop` plus `xdg-mime default`), which follows the file when it moves.
+
+## Notifications, sound and badge
+
+- **Windows toasts** (`notify.rs`) are WinRT `ToastNotification`s under the AppUserModelID, which is the app identifier: the NSIS and MSI installers put it on the Start menu shortcut, so Windows shows "Margaya" with the app icon. Debug and `e2e` builds run from `target/` without a shortcut, so they register `HKCU\Software\Classes\AppUserModelId\<identifier>` (DisplayName, IconUri) at start. Tag = the server's `tag` (hashed past 64 characters), group = the server id, so a newer alert with the same tag replaces the older. The server's name is shown as attribution when more than one server is listed.
+- **Click** = protocol activation: the toast's `launch` is `margaya://open?server=<apiUrl>&path=<page path>`. Windows starts the registered app with the link; single-instance hands it to the running app (the second process first calls `AllowSetForegroundWindow`), and the deep-link handler shows that server's window and sends `margaya:navigate`. It works on screen, from the notification centre and after the app was quit. Don't use in-process `Activated` handlers: they only fire while the toast object lives in this process, which is what made clicks do nothing. macOS and Linux keep the notification plugin and its `tap` handler (`socket::on_notification_click`).
+- **Linux notifications**: the plugin (2.8+) sends `Notify` over D-Bus to the desktop's notification server on one long-lived connection, with a `default` action while an action handler exists, so a click comes back as `tap`. Clicks work while Margaya runs; GNOME drops the app's notifications when it quits. The icon is the 128 px PNG written to the cache dir (`notify::linux_icon`), because an AppImage's icon isn't in the system theme. On Wayland, raising the window after a click depends on the compositor's focus rules (GNOME may show "Margaya is ready" instead).
+- **Sound** has one owner, the native alert. It sounds when the server's `sound` is true, the server isn't muted on this device (`soundMuted` in `servers.json`) and no alert sounded in the last 4 s (`notify::decide_sound`).
+  - Windows: the toast is always `<audio silent="true"/>` (an unpackaged Win32 app's toast can only use `ms-winsoundevent:` sounds, which were too soft to hear). `sound.rs` renders the named sound from a Rust port of the web app's `SOUND_RECIPES` (same notes, envelopes and gains; keep them in step) to a 16-bit mono 44.1 kHz WAV in memory and plays it with `PlaySoundW(SND_MEMORY | SND_ASYNC | SND_NODEFAULT)` on the blocking pool after the toast shows. The buffer stays in a static until the next sound has stopped this one. Desktop gain is `DESKTOP_GAIN` times the web's `volumeGain` (with a ceiling below full scale), so at volume 70 every sound is at least as loud as Windows' own notification sound (file RMS -22.0 to -23.6 dBFS vs -24.7 for `Windows Notify System Generic.wav`; on the endpoint peak meter -7.1 to -11.5 dBFS vs -17.7); the settings preview inside the window still plays at web gain. No sound when `ToastNotifier.Setting` isn't `Enabled`, or when Windows holds notifications back (`SHQueryUserNotificationState` not accepting, or the Do Not Disturb profile from WNF `WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED` is on). Windows' per-app **Play a sound** switch doesn't apply; the device mute does.
+  - Linux: the same rendered WAV, written to a new 0600 file in `$XDG_RUNTIME_DIR` (else the temp dir) and played by the first player that works (`sound::LINUX_PLAYERS`: `paplay` as an `event` stream, then `pw-play`, then `aplay`), on the blocking pool; the file is removed after. Spawning a player keeps audio libraries out of the build and runtime, works with PulseAudio, PipeWire and bare ALSA, and leaves device choice and per-app volume to the sound server. No sound while GNOME's Do Not Disturb is on (`gsettings get org.gnome.desktop.notifications show-banners` is `false`); other desktops' Do Not Disturb can't be read.
+  - macOS keeps `sound("default")` on the notification plugin (the system sound).
+  - The log says `showing a notification (sound: On | OffBySettings | OffServerSilent | MutedOnDevice | OffBurst[, <Sound> at <volume>])`, never the text. `MARGAYA_SOUND_SAMPLES=<dir> cargo test sound` writes every sound as a WAV with `levels.tsv`; `MARGAYA_SOUND_PLAY=<name>[:<volume>]` plays one from `cargo test plays_a_sample`.
+- **Badge**: on Windows each window gets an overlay drawn at `16 x scale` px (`badge::overlay_size`, redrawn on `ScaleFactorChanged`): a plain deep brand-green disc (#035C42, white text above 7:1, no ring), regular-weight anti-aliased stroke digits, the count up to 99 and "99+" from 100. macOS uses the Dock badge count. Linux has no standard badge: `badge_view` emits `com.canonical.Unity.LauncherEntry.Update` (`count`, `count-visible`) for `application://margaya-desktop.desktop` on one zbus session connection kept open (docks drop the count when it closes), which Ubuntu Dock, Dash to Dock, KDE Plasma's task manager and Plank show, and sets the tray label to the same text as Windows (`badge::badge_text`). Tauri's own `set_badge_count` needs libunity and isn't used. `MARGAYA_BADGE_SAMPLES=<dir> cargo test badge` writes sample PNGs.
+- **Icons** come from `src-tauri/icons/source.svg` (the cat on transparent, about 90% of the canvas, Canopy green #047857 with white eyes and nose). Render it to a 1024 px PNG, run `pnpm --filter @margaya/desktop tauri icon <png> -o <tmp>`, and copy only `32x32.png`, `64x64.png`, `128x128.png`, `128x128@2x.png`, `icon.png`, `icon.ico` (16 to 256 px) and `icon.icns`. `256x256.png` is a copy of `128x128@2x.png`, so Linux gets a plain 256 px hicolor icon; `icon.png` is the 512 px one. The Windows and Linux trays use `32x32.png`; the macOS menu bar uses `tray-template.png` (from `tray-template.svg`, black, 44 px) as a template image. The Linux .deb and .rpm use `src-tauri/linux/margaya.desktop` (Categories `Office;ProjectManagement;`, `StartupWMClass`, the scheme `MimeType`s).
+
+## Security rules
+
+- The bridge exposes nothing beyond the list above: no filesystem, no shell, no arbitrary IPC. Any customer server, including a compromised one, gets whatever the bridge offers. Server windows may call only `bridge_message`, through the per-server runtime capability in `acl.rs` (exact web origin); a new command needs its name in `src-tauri/build.rs` (`COMMANDS`) and an `allow-…` entry in the right capability.
+- Rust drops any bridge message whose page is not the server's web origin in one of that server's own windows (`server-<id>`, `server-<id>-<n>`). Sign-in popups (`popup-<id>-<n>`) get no IPC at all.
+- A popup never opens from the shape of a URL. The web app announces an account-linking URL with `openSignInPopup(url)` (after `linkSocial({ disableRedirect: true })`, `apps/web/src/lib/link-social-account.ts`); Rust accepts it only with a `client_id` and exactly one `redirect_uri` on this server's API origin at `/api/auth/callback/<provider>` or `/api/auth/oauth2/callback/<provider>`, remembers that exact URL for 10 s, and uses it once. Everything else, including sized `window.open` calls and middle-clicks, goes to the system browser. The popup title is fixed to "<current host> — <server label>", never the page's title.
+- Deep-link paths (`margaya://open`) must be web pages of that server, never `/api/...`. Download names are cleaned of bidi and other format characters and Windows device names. A page may open at most 5 outside links per 10 s.
+- The offline page is the app's own origin inside a server window. It may call only `offline_state`, `offline_retry` and `show_servers` (`capabilities/offline.json`, local pages only), and only from the window that is showing it; a server page can never load the app's own pages.
+- Each window stays on its server's web or API origin. A new-window request for the server's origin opens another `server-<id>-<n>` window and never moves the original; anything else goes outside, and `openExternal` accepts only `http(s)` URLs.
+- Open anything outside the app only through `opener::open_outside`: off the UI thread (COM initialised, `ShellExecuteExW` on Windows), with the same URL per server ignored within 1 s. Never open from the UI thread or a webview callback, and create windows from tray, shortcut and deep-link handlers through `windows::spawn_ui`; the sign-in popup from `on_new_window` is the only synchronous exception. Breaking this freezes the app.
+- Never add a server from a deep link without the launcher's confirmation: a link can point at a phishing server.
+- `state` is single-use and checked on every callback; each verifier is used once.
+- Bearer tokens live only in the OS keychain (Windows Credential Manager, macOS Keychain, the Linux Secret Service through `keyring`'s `sync-secret-service` + `crypto-rust`: GNOME Keyring or KWallet must be running), one entry per server UUID. Without one, sign-in fails with `keychainUnavailable`; never fall back to a file or the kernel keyring (it forgets on reboot). Never put a token, code, verifier or `webviewSecret` in `servers.json`, logs, diagnostics, URLs other than the one-time callback, or the webview.
+- The API side follows the root boundaries: hints and the notification endpoint return only the caller's own data. Use the `authz-reviewer` agent after changing any of it.
+
+## Run it locally
+
+Prerequisites: Rust (stable, through rustup; if `rustc --version` fails, add `$USERPROFILE/.cargo/bin` to `PATH`), plus the MSVC build tools and WebView2 on Windows, the Xcode Command Line Tools on macOS 14+, or on Linux (Debian/Ubuntu names) `libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev libssl-dev libdbus-1-dev libxdo-dev pkg-config build-essential`, plus `patchelf file` for bundles. CI and normal contributor machines use these.
+
+No Linux machine: build in Docker. An `ubuntu:22.04` image (the release runner's base) with those packages, `rustup`, Node 24 and `npm i -g @tauri-apps/cli@<the version in package.json>`; mount the repo, keep `CARGO_TARGET_DIR` in a named volume, set `CARGO_BUILD_JOBS=2`, build the launcher's `dist/` on the host first and pass `--config '{"build":{"beforeBuildCommand":""}}'`. Set `APPIMAGE_EXTRACT_AND_RUN=1`, because linuxdeploy is itself an AppImage and containers have no FUSE. To smoke-run the binary, start `dbus-run-session -- xvfb-run -a target/release/margaya-desktop` and check for the launcher window with `xwininfo -root -tree` (`x11-utils`). Remove only the containers and volumes you created.
+
+Fallback only for a Windows machine without admin rights, where the MSVC build tools cannot be installed: the Rust GNU toolchain with a portable MinGW-w64 installed in user scope and on `PATH`. Select it per command with `RUSTUP_TOOLCHAIN=stable-x86_64-pc-windows-gnu` and pass `--target x86_64-pc-windows-gnu` (for `tauri dev`/`tauri build`, after `--`). Never commit a toolchain override; release builds stay on MSVC in CI.
+
+1. Start the API and web app as in the `local-stack` skill (API :1337, web :5173).
+2. Run the shell (the launcher's Vite dev server runs on port 1420):
+   ```sh
+   pnpm --filter @margaya/desktop tauri dev
+   ```
+3. In the launcher, add `http://localhost:1337`. Its `/api/config` returns `webUrl` `http://localhost:5173`, which the server window loads. Typing `http://localhost:5173` also works through the `.well-known` file the web dev server emits.
+
+Deep links: installers register the schemes; a Windows or Linux development build registers them itself at start, so links reach `tauri dev`. On macOS they work only from the installed bundle in `/Applications`, so test browser sign-in on a built app, or use the `&display=code` paste fallback in dev.
+
+Record the PID of `tauri dev` and stop only that process.
+
+## Tests
+
+```sh
+pnpm --filter @margaya/desktop build                           # the Rust build embeds the launcher's dist/
+cargo test --manifest-path apps/desktop/src-tauri/Cargo.toml   # Rust core
+pnpm --filter @margaya/desktop test                            # launcher and quick add (vitest)
+pnpm --filter @margaya/desktop typecheck
+```
+
+**Test builds, never the installed app.** The person may have Margaya installed and running. Never attach a debugger to it, drive it, or stop it; test only builds and processes you started (record their PIDs). For a build you drive, turn on the `e2e` cargo feature, which writes would-be outside opens to the file named by `MARGAYA_E2E_OPEN_LOG` instead of opening the browser (`MARGAYA_E2E_OPEN_DELAY_MS` simulates a slow shell), and appends each native notification's `{ server, tag, sound, soundName, volume, link }` to `MARGAYA_E2E_NOTIFY_LOG`. To click a toast without the person's mouse, start the test build a second time with that `link` as its argument: that is what Windows does, and single-instance forwards it to the running test build. Give it its own identifier, so it gets its own data directories, single-instance lock and keychain entries:
+```sh
+pnpm --filter @margaya/desktop tauri build --features e2e --config '{"identifier":"com.margaya.desktop.e2e"}'
+```
+Never ship the `e2e` feature; release CI does not enable it.
+
+CI's `desktop` job in `ci.yml` runs the launcher typecheck, tests and build, then `cargo test --locked` on Ubuntu, which also runs the Linux-only tests (sound file, dock badge). Linux ships, so gate platform APIs with `cfg` and keep Windows-only code compiling there. On Windows without MSVC, run the GNU variant too (see Run it locally) so a Linux change doesn't break Windows. The server side is tested where it lives: the sign-in plugin, bearer WebSocket upgrade and notification text in `tests/api` and `tests/api-integration`, the routes in `tests/e2e/specs/api/desktop.spec.ts`, and bridge feature detection in `apps/web` tests. See the `testing` skill.
+
+## Build installers
+
+```sh
+pnpm --filter @margaya/desktop tauri build
+```
+
+Output: `apps/desktop/src-tauri/target/[<triple>/]release/bundle/{nsis,msi,dmg,macos,appimage,deb,rpm}`. The updater public key in `tauri.conf.json` stays a `TODO-…` placeholder in the repository (CI stamps the real one from `TAURI_UPDATER_PUBKEY`); while it is, the app skips update checks. A local build that creates updater artifacts needs `TAURI_SIGNING_PRIVATE_KEY` set, or it fails at updater signing after the bundles are built; a throwaway key is fine for testing. Local builds are unsigned and must never be published.
+
+## Release
+
+- `.github/workflows/desktop-release.yml` runs when a release is published (`v*` tags, not prereleases) after semantic-release creates it, or by `workflow_dispatch` with a tag. Jobs: `plan`, `build` (matrix: `macos-15` aarch64 and x86_64, `windows-latest` MSVC, `ubuntu-22.04` x86_64 and `ubuntu-22.04-arm` aarch64 with the Tauri Linux libraries and `APPIMAGE_EXTRACT_AND_RUN=1`; environment `desktop-release`), `checksums` (`SHA256SUMS.txt`), `site` (rebuilds the Download page). Linux builds on 22.04 for the oldest glibc (2.35) and WebKitGTK 4.1 baseline.
+- Assets on the GitHub Release: `Margaya_<ver>_aarch64.dmg`, `Margaya_<ver>_x64.dmg`, `Margaya_<ver>_x64-setup.exe`, `Margaya_<ver>_x64_en-US.msi`, `Margaya_<ver>_amd64.AppImage`, `Margaya_<ver>_amd64.deb`, `Margaya-<ver>-1.x86_64.rpm`, `Margaya_<ver>_aarch64.AppImage`, `Margaya_<ver>_arm64.deb`, `Margaya-<ver>-1.aarch64.rpm`, `latest.json`, the `.sig` files and `SHA256SUMS.txt`. `apps/site/lib/desktop-release.ts` matches these names. The updater reads `https://github.com/manu14357/Margaya/releases/latest/download/latest.json`; its `linux-x86_64` and `linux-aarch64` entries are the AppImages. .deb and .rpm installs check it too but only offer the download page (`updates::self_update_supported`, from `tauri::utils::platform::bundle_type()`).
+- The Linux packages are not GPG-signed. Their integrity comes from HTTPS, the SHA-256 on the Download page and `SHA256SUMS.txt`; the AppImage's updates are signed with the updater key like every other platform's.
+- **The updater key must never be lost or rotated casually.** Installed copies trust only its public key (variable `TAURI_UPDATER_PUBKEY`); losing the private key (`TAURI_SIGNING_PRIVATE_KEY`, `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`) strands every installed copy. Keep an offline backup. It lives in CI secrets, never in the repo.
+- macOS builds are signed with a Developer ID certificate and notarized when the Apple secrets exist: `APPLE_CERTIFICATE`, `APPLE_CERTIFICATE_PASSWORD`, `APPLE_SIGNING_IDENTITY`, `APPLE_API_ISSUER`, `APPLE_API_KEY`, `APPLE_API_PRIVATE_KEY` (the workflow writes the `.p8` file and sets `APPLE_API_KEY_PATH`). Use an Apple API key, never an account password. Without all six, the Mac build is ad-hoc signed and not notarized.
+- Windows builds are unsigned until an OV code-signing certificate is bought, so SmartScreen warns on first run; the Download page explains the step. Updates applied by the app itself are not affected.
+- Signing secrets belong to the protected `desktop-release` environment, which pull-request workflows cannot read.
+- Never trigger a release or the workflow yourself. Commit scope for this app is `desktop` (`commit-and-release` skill).
+
+## i18n
+
+Launcher, quick-add, offline-page and native copy (menus, tray, notification fallbacks) use static keys under `desktop.launcher.*` in the same `i18n/<locale>.json` files as the web app, with `i18n/en-US.json` as the source of truth and real translations in all 19 other locales (`i18n` skill). The launcher reads them through the virtual module at build time and the Rust core embeds them through `build.rs`; both pick the system locale (exact match, then language only, then en-US). `scripts/i18n/report.mjs` lists `desktop:launcher.` in `externallyReadPrefixes`, so the report never counts these keys as unused. Text inside the server windows, including the title bar and window-control labels, is the server's own web UI in the web namespaces, and notification text comes from the server in the user's locale.
+
+## Done when
+
+- [ ] Contract names (config fields, routes, schemes, bridge methods, `notificationId`) are unchanged, or every side changed together and the change is reported.
+- [ ] The bridge exposes no new capability, or the new one is narrow, origin-checked, listed in `build.rs` and the capability file, and reviewed.
+- [ ] No token, code, verifier or secret is written outside the OS keychain or printed in logs or diagnostics.
+- [ ] No outside open or window creation runs on the UI thread or in a webview callback; popups still have no IPC.
+- [ ] Driven tests used an `e2e` build with its own identifier; the installed app was never touched.
+- [ ] `cargo test`, `pnpm --filter @margaya/desktop test` and `typecheck` pass; `tauri build` produces bundles when config, capabilities or bundling changed.
+- [ ] API and web sides of any contract change have their own tests (`testing` skill), and `apps/web` still works when the bridge is absent.
+- [ ] New launcher copy is a `desktop.launcher.*` key translated in every locale; `pnpm i18n:check` passes.
+- [ ] `apps/docs/core/functional/desktop-app.mdx` (users) and `apps/docs/core/installation/desktop-app.mdx` (admins) match the behaviour (`docs-and-openapi` skill).
+- [ ] Linux: `cargo test` passes on Linux (CI or Docker), and a bundling change was checked with a real `tauri build` of the .deb, .rpm and AppImage (`dpkg-deb -I`, `rpm -qpR`, the .desktop file).
+- [ ] You say what you could not run (no Rust toolchain, no Mac, no Linux desktop session, no signing secrets) instead of implying it passed.

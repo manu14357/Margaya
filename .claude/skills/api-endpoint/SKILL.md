@@ -91,6 +91,7 @@ Each operation needs a page. `tests/e2e/specs/docs-site/api-reference.spec.ts` f
 - Gate UI with `useWorkspacePermission()` (`apps/web/src/hooks/use-workspace-permission.ts`). That only hides UI; the route stays the authority.
 - User-facing copy uses static i18n keys from `i18n/en-US.json`, translated in every locale file (`pnpm i18n:check`).
 - If MCP clients should reach the route, see the [mcp-tool](../mcp-tool/SKILL.md) skill.
+- Native clients: the desktop app's Rust core calls some routes with `Authorization: Bearer <token>` instead of a cookie (`/api/ws/user`, `/api/notification/{id}/desktop`, `/api/notification/counts`, and `/api/project`, `/api/column/{projectId}` and `POST /api/task/{projectId}` for quick add). When you change one of those, or `/api/config`, keep bearer auth working, keep the response shape stable for installed shells, and add an integration test that sends the header. See the [desktop-app](../desktop-app/SKILL.md) skill.
 
 ## 8. Tests
 

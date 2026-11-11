@@ -55,6 +55,7 @@ Mounting a new router in `src/index.ts` takes three edits: `const fooApi = api.r
 - Declaring a non-2xx response widens an untagged `InferResponseType` in the web app; those call sites must use `InferResponseType<T, 200>`.
 - Read-only API keys may only use safe methods plus the POST paths in `READ_ONLY_POSTS` (`src/api-key/scope.ts`). A new read-style POST must be listed there.
 - `apiRouter()`'s `defaultHook` turns validation failures into a 400 text body `field: message`, not JSON. `HTTPException` responses are text too; only unexpected errors become a JSON 500.
+- The desktop app's Rust core authenticates with `Authorization: Bearer <token>`, not cookies, for `/api/ws/user`, `/api/notification/{id}/desktop` and the few routes it calls. Keep bearer auth and those response shapes working for installed shells, and keep `/api/config`'s `desktop` block public-safe. Skill: `desktop-app`.
 - Register literal paths before parameter paths on the same router (`/ws/user` precedes `/ws/:projectId` in `src/index.ts`), or the parameter route captures them.
 
 ## Checks

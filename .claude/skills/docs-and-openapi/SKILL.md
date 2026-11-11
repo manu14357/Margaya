@@ -39,7 +39,7 @@ How it fits together:
 
 ## C. User guides
 
-1. Guides live in `apps/docs/core/**` (`functional/` for product features, `installation/`, `integrations/`, `deployments/`, ...). Copy the shape of `apps/docs/core/functional/trash-and-restore.mdx`.
+1. Guides live in `apps/docs/core/**` (`functional/` for product features, `installation/`, `integrations/`, `deployments/`, ...). Copy the shape of `apps/docs/core/functional/trash-and-restore.mdx`. The desktop app has two guides, `apps/docs/core/functional/desktop-app.mdx` (users) and `apps/docs/core/installation/desktop-app.mdx` (admins, `DESKTOP_*` settings); update them when the `desktop-app` contract or its download files change. The Download page itself is `apps/site/app/download/page.tsx`.
 2. Frontmatter: `title` (required; the build throws without it) and `description`. `mode: landing` is used only by `apps/docs/index.mdx`.
 3. Add the page id (path without `.mdx`) to the right group in `apps/docs/docs.json`. Every id listed there must exist, or the site build throws. Unlisted pages still render but are missing from the sidebar. When moving a page, add an entry to `redirects` in docs.json.
 4. Components the renderer supports (`apps/site/lib/docs/markdown.ts`): `Note`, `Info`, `Tip`, `Check`, `Warning`, `Danger`, `Steps`/`Step`, `Card`, `CardGroup`, `Columns`, `AccordionGroup`/`Accordion`, `Frame`, `Screenshot`, `Kbd`, `ButtonGroup`/`Button`, `CodeGroup`, `Tabs`/`Tab`. Anything else will not render as you expect.
@@ -48,7 +48,8 @@ How it fits together:
 ## D. Screenshots
 
 1. Reference one in MDX with `<Screenshot src="data/project-trash" alt="..." caption="..." />`. `src` is a name in `apps/site/public/images/docs/manifest.json`; an unknown name fails the site build (`requireDocsShot` in `apps/site/lib/docs/screenshots.ts`).
-2. Shots are defined in `apps/site/scripts/docs-shots/specs/<section>.mjs` (`admin-integrations`, `ai`, `data-account`, `getting-around`, `planning`, `tasks`). Copy an existing entry, e.g. `name: "data/project-trash"` in `data-account.mjs`. The header of `capture.mjs` documents every field.
+2. Shots are defined in `apps/site/scripts/docs-shots/specs/<section>.mjs` (`admin-integrations`, `ai`, `data-account`, `desktop`, `getting-around`, `planning`, `tasks`). Copy an existing entry, e.g. `name: "data/project-trash"` in `data-account.mjs`. The header of `capture.mjs` documents every field.
+   The `desktop` section shoots Margaya Desktop without the installed app: its own windows (server list, quick add, offline page) come from the launcher bundle, so run `pnpm --filter @margaya/desktop build` first; the spec serves `apps/desktop/dist` at `http://tauri.localhost` with a stand-in `window.__TAURI_INTERNALS__` that answers with fictional servers. Server windows are the web app with a do-nothing `window.__MARGAYA_DESKTOP__` bridge injected before load. `desktop/download-page` reads the site at `DOCS_SHOTS_SITE_URL` (default http://localhost:3001); run its `next dev` with `DESKTOP_RELEASES_FILE` set to a saved Releases response with fictional files, and open it as `localhost`, not 127.0.0.1. See the header of `specs/desktop.mjs`.
 3. Capture (LOCAL DEVELOPMENT ONLY): it needs the API on :1337 and web on :5173 (see `local-stack`), Microsoft Edge, and Playwright from `tests/e2e`. It seeds fictional demo data into that instance through `apps/site/scripts/press/seed-demo.mjs`, so point it only at a disposable local database, never a shared or production one.
    ```sh
    node apps/site/scripts/docs-shots/capture.mjs data-account                     # whole section

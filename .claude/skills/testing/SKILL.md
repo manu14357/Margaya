@@ -17,6 +17,7 @@ Purpose: pick the smallest proof for the change, run just that, then widen only 
 | Shared package | that package's `src/**/*.test.ts` | `packages/libs/src/hono.test.ts` |
 | Full user flow, realtime between users, emails, webhooks | `tests/e2e/specs/**.spec.ts` | `tests/e2e/specs/app/tasks/trash.spec.ts` |
 | S3 presigned upload contract | `tests/storage-integration` | `presigned-upload.test.ts` |
+| Desktop shell (Rust core, launcher) | `cargo test` and the launcher's vitest in `apps/desktop` | below |
 | Types across packages | turbo typecheck | below |
 
 ## API unit tests (`tests/api`)
@@ -73,6 +74,22 @@ Disposable MinIO on loopback only, with the fixed test credentials in `tests/sto
 MARGAYA_STORAGE_TEST_ENDPOINT=http://127.0.0.1:59039 pnpm --filter @margaya/api exec vitest run --config vitest.storage.config.ts
 ```
 Stop the container you started afterwards.
+
+## Desktop app (`apps/desktop`)
+
+The Rust tests need a Rust toolchain (see the `desktop-app` skill). None of these needs a running server:
+```sh
+pnpm --filter @margaya/desktop test                            # launcher and quick add (vitest)
+pnpm --filter @margaya/desktop build                           # the Rust build embeds the launcher's dist/
+cargo test --manifest-path apps/desktop/src-tauri/Cargo.toml
+```
+CI's `desktop` job runs the same, with `cargo test --locked` on Ubuntu; Linux is a shipping platform, and Linux-only tests (the sound file, the dock badge) run only there. On a Windows machine, a Rust change needs both: the native (or GNU) `cargo test`, and a Linux run in Docker (`ubuntu:22.04` with the Tauri libraries; the `desktop-app` skill has the recipe). A bundling change (tauri.conf.json, icons, the .desktop template) also needs a real `tauri build` of the AppImage, .deb and .rpm there, checked with `dpkg-deb -I`/`-c`, `rpm -qpR` and the bundled .desktop file. The server half of the desktop contract (desktop sign-in, bearer `/api/ws/user`, notification text, `/api/config`) is tested in `tests/api`, `tests/api-integration` and `tests/e2e/specs/api/desktop.spec.ts`, and bridge feature detection and the title bar in `apps/web` tests (`src/lib/desktop.test.ts`, `src/components/desktop/desktop-title-bar.test.tsx`). Without Rust installed, report the desktop tests under what did not run.
+
+To drive a real desktop build, never use the installed app (the person may be running it; do not attach to, drive or stop it). Build your own with the `e2e` feature and a separate identifier, so outside opens go to a log file instead of the browser and the build has its own data, single-instance lock and keychain entries:
+```sh
+pnpm --filter @margaya/desktop tauri build --features e2e --config '{"identifier":"com.margaya.desktop.e2e"}'
+# run it with MARGAYA_E2E_OPEN_LOG=<file>; record its PID and stop only that
+```
 
 ## Typecheck
 

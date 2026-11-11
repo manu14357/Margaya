@@ -53,7 +53,7 @@ Report which of these you ran and which you did not.
 
 `commitlint.config.js` extends `@commitlint/config-conventional`: `type(scope): subject`, lowercase type, subject without a trailing period and not in sentence/Pascal/upper case, header at most 100 characters. Allowed types: `build`, `chore`, `ci`, `docs`, `feat`, `fix`, `perf`, `refactor`, `revert`, `style`, `test`.
 
-Scopes in this repo's history are the app or feature area: `web`, `api`, `db`, `ai`, `site`, `i18n`, `mcp`, `landing`, `task`, `project`, `cycle`, `module`, `page`, `trash`, `e2e`, `permissions`, `libs`, ... Check recent ones with:
+Scopes in this repo's history are the app or feature area: `web`, `api`, `db`, `ai`, `site`, `i18n`, `mcp`, `landing`, `task`, `project`, `cycle`, `module`, `page`, `trash`, `e2e`, `permissions`, `libs`, ... Use `desktop` for `apps/desktop` and its release workflow. Check recent ones with:
 ```sh
 git log --format=%s -n 50
 ```
@@ -79,6 +79,7 @@ Pull requests (only when asked): the title must also pass commitlint (`.github/w
 - `release.config.js` (semantic-release) releases from `main` only. Version bump comes from conventional commits (`conventionalcommits` preset) unless `RELEASE_TYPE` forces `patch`/`minor`/`major`.
 - `scripts/release/notes.mjs` groups notes by pull request (Features, Bug Fixes, Performance Improvements, Reverts, Code Refactoring, Documentation); `scripts/release/apply-version.mjs` stamps the version; the release commit is `chore(release): vX.Y.Z [skip ci]` and updates `CHANGELOG.md`, `package.json` and `charts/margaya/Chart.yaml`.
 - `.github/workflows/release.yml` is manual (`workflow_dispatch`, with a dry-run input) and builds images and the Helm chart. `nightly.yml`, `docker.yml` and `deploy-site.yml` are manual too; `publish-mcp.yml` runs on a published release.
+- `desktop-release.yml` runs when a release is published (`v*` tags, not prereleases) or by manual dispatch with a tag. It builds the desktop installers and attaches them, with the updater's `latest.json`, the `.sig` files and `SHA256SUMS.txt`, to that GitHub Release, then rebuilds the site's Download page. Its signing secrets live in the `desktop-release` environment and are never needed locally; see the `desktop-app` skill. CI's `desktop` job in `ci.yml` runs the launcher typecheck, tests and build plus `cargo test --locked`.
 - `feat` and `fix` commits change the next version, so choose the type honestly.
 
 ## Done when

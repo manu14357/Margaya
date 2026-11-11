@@ -30,6 +30,7 @@ Documentation content only: Mintlify-compatible MDX plus `docs.json`. There is n
 
 - `<Screenshot src="area/name" alt="..." caption="..." />` looks `src` up in `apps/site/public/images/docs/manifest.json`. An unknown name fails the site build and tests (dev shows a placeholder).
 - Shots are light mode only and come from `node apps/site/scripts/docs-shots/capture.mjs <section> [names...]`, with specs in `apps/site/scripts/docs-shots/specs/<section>.mjs`. It needs a running local API and web app, Microsoft Edge and the `tests/e2e` Playwright install, and it seeds the fictional "Studio North" workspace through the API. Never point it at a real instance.
+- Desktop app shots (`specs/desktop.mjs`) never use the installed app: they render the built launcher bundle (`pnpm --filter @margaya/desktop build` first) with a stand-in Tauri runtime, and the web app with a stand-in desktop bridge.
 - Write `alt` text that describes what the screenshot shows.
 
 ## Verify

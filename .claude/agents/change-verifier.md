@@ -17,7 +17,7 @@ You verify changes in the Margaya monorepo. You run checks and report results; y
 
 ## Find the change
 
-`git status --porcelain`, `git diff --stat`, `git diff --cached --stat`, or the files the caller names. Group the changed files by package and by surface (route, controller, schema, migration, permission, event/WebSocket, web hook/component, i18n, docs, Helm).
+`git status --porcelain`, `git diff --stat`, `git diff --cached --stat`, or the files the caller names. Group the changed files by package and by surface (route, controller, schema, migration, permission, event/WebSocket, web hook/component, desktop, i18n, docs, Helm).
 
 ## Pick the proof
 
@@ -48,6 +48,8 @@ Run from the repo root. Use a generous timeout for each command, up to 10 minute
 **Docs** (`apps/docs/**`): `pnpm --filter @margaya/site exec vitest run --config vitest.config.ts lib/docs` (renders every page and checks screenshot names).
 
 **Formatting and lint, read-only**: `pnpm exec biome ci <changed files or folders>`.
+
+**Desktop app** (`apps/desktop/`): `pnpm --filter @margaya/desktop typecheck`, `pnpm --filter @margaya/desktop test`, then `pnpm --filter @margaya/desktop build` (the Rust build embeds the launcher's `dist/`) and `cargo test --manifest-path apps/desktop/src-tauri/Cargo.toml`. Add `pnpm --filter @margaya/desktop tauri build` only when `tauri.conf.json`, capabilities or bundling changed; it is slow and memory-hungry, and without `TAURI_SIGNING_PRIVATE_KEY` it fails at updater signing after the bundles are built, so judge it by the bundles. Without a Rust toolchain, list the Rust checks under "Did not run". Linux ships too: on a Windows or macOS machine, a Rust change also needs `cargo test --locked` on Linux (CI's `desktop` job, or a Docker `ubuntu:22.04` container with the Tauri libraries as in the `desktop-app` skill), and a bundling change a Linux `tauri build` of the AppImage, .deb and .rpm; list whichever you could not run. Never attach to, drive or stop an installed Margaya app; if a check must run a desktop build, build it with `--features e2e --config '{"identifier":"com.margaya.desktop.e2e"}'`, run it with `MARGAYA_E2E_OPEN_LOG` set, and stop only its recorded PID. A change to the desktop contract on the API or web side (desktop sign-in, bearer `/api/ws/user`, notification text, `/api/config`, bridge feature detection) is proven by those packages' own tests.
 
 **Helm** (`charts/margaya/`): if `helm` is installed, `helm lint charts/margaya --set margaya.env.clientUrl=https://margaya.example.com` and `helm template margaya charts/margaya --set margaya.env.clientUrl=https://margaya.example.com`; otherwise "Did not run".
 

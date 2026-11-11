@@ -26,6 +26,7 @@ This is an operating guide, not a README. Its rules are good defaults. Explicit 
 - `apps/web`: React/Vite UI, TanStack Router and Query, fetchers, hooks and realtime cache updates.
 - `apps/docs`: product and API documentation content.
 - `apps/site`: the public Next.js site, which also hosts the documentation.
+- `apps/desktop`: the Tauri 2 desktop shell for Windows, macOS and Linux. It loads each server's own web UI and is distributed only as website downloads.
 - `packages/libs`: the shared typed Hono client and URL helpers.
 - `packages/permissions`: the canonical permission vocabulary and built-in roles.
 - `packages/email`: transactional email templates and delivery.
@@ -50,6 +51,7 @@ Before calling a behavior change complete, decide which of these surfaces apply:
 - API route, validator, controller, authorization, error behavior and OpenAPI description. Route middleware declared via `createRoute({ middleware })` runs BEFORE the request validators, so middleware must read the raw request rather than `c.req.valid()`.
 - Typed client, web fetcher, query or mutation hook, cache invalidation and UI states.
 - Events, project- or user-scoped WebSockets, and optional Redis fan-out.
+- Native clients: the desktop shell signs in with bearer tokens and holds its own user WebSocket, so changes to auth, `/api/ws/user`, notifications or `/api/config` must keep it working.
 - Permission definitions, API enforcement and UI capability checks.
 - MCP, API keys, webhooks and relevant external integrations.
 - Schema, relations, generated migration, indexes, cascades and existing data.
@@ -102,11 +104,11 @@ Run repository-wide checks when a change crosses packages broadly, before a requ
 
 ## Folder guides, skills and agents
 
-- Folders with their own rules have an `AGENTS.md`: `apps/api`, `apps/web`, `apps/docs`, `apps/site`, `packages/libs`, `packages/permissions`, `packages/mcp`, `packages/email`, `tests`, `charts/margaya` and `i18n`. Read the one for the folder you change.
+- Folders with their own rules have an `AGENTS.md`: `apps/api`, `apps/web`, `apps/desktop`, `apps/docs`, `apps/site`, `packages/libs`, `packages/permissions`, `packages/mcp`, `packages/email`, `tests`, `charts/margaya` and `i18n`. Read the one for the folder you change.
 - Step-by-step workflows live in `.claude/skills/<name>/SKILL.md`:
   - API and data: `api-endpoint`, `database-migration`, `realtime-events`, `permissions`, `integration-plugin`, `ai-feature`, `mcp-tool`.
   - Web, text and docs: `web-data-flow`, `i18n`, `docs-and-openapi`.
-  - Running and shipping: `testing`, `local-stack`, `commit-and-release`.
+  - Running and shipping: `testing`, `local-stack`, `commit-and-release`, `desktop-app`.
 - Review and helper agents live in `.claude/agents/`: `authz-reviewer`, `migration-reviewer`, `i18n-translator`, `docs-writer` and `change-verifier`.
 
 ## Glossary

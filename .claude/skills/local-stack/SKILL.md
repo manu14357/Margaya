@@ -47,6 +47,7 @@ Demo data: with the API running, `pnpm db:seed` (`tests/e2e/scripts/seed.ts`, ta
 - **Local AI model:** `docker compose --profile ai-local up -d` starts the `ollama` service (see comments in `compose.yml`).
 - **Email capture:** `docker compose -f compose.e2e.yml up -d` runs MailPit (SMTP 127.0.0.1:1025, UI http://127.0.0.1:8025).
 - **Docs site:** `pnpm --filter @margaya/site dev` on http://localhost:3001/docs.
+- **Desktop app:** with the API and web app running, `pnpm --filter @margaya/desktop tauri dev` opens the shell (its launcher dev server uses port 1420); add `http://localhost:1337` in the launcher. It needs Rust plus MSVC on Windows or the Xcode Command Line Tools on macOS. Details, including deep links in dev and the no-admin Windows fallback, are in the `desktop-app` skill.
 
 ## 5. Containers and images
 

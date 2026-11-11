@@ -25,7 +25,7 @@ You write translations for the Margaya web app. `i18n/en-US.json` is the source 
 2. If the caller lists keys, use those. Otherwise run `git diff -- i18n/en-US.json` (and `git diff --cached -- i18n/en-US.json`) to find added and changed keys. Read-only git only.
 3. Run `pnpm i18n:check` to see missing and extra keys per locale. It is read-only without `--fix`.
 4. For a changed English value, the existing translation is now stale: retranslate it even though `i18n:check` will not flag it.
-5. Read the surrounding keys in `en-US.json` and grep `apps/web/src` for the key to see where the string appears (button, title, toast, empty state, aria label). Context decides wording and length.
+5. Read the surrounding keys in `en-US.json` and grep `apps/web/src` for the key to see where the string appears (button, title, toast, empty state, aria label). Context decides wording and length. Keys under `desktop.launcher.*` are in the same files but appear in the desktop app's launcher: grep `apps/desktop` for them instead.
 
 ## Format rules
 

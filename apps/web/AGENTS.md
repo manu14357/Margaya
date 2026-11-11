@@ -28,6 +28,10 @@ Example chain, task detail page:
 - The API skips the initiating tab when it broadcasts (`excludeInitiatorId` in `apps/api/src/ws/index.ts`, matched by window id). The tab that made a change must refresh itself in the mutation's `onSuccess`; the socket only updates other tabs and users.
 - A new message type needs a branch in the right socket hook, and a test next to it (see `use-project-websocket.test.ts`). When a project socket reopens, `catchUpProject` refetches what it covers; extend it for new project-scoped data. Skill: `realtime-events`.
 
+## Desktop shell
+
+The same build runs inside the desktop app (`apps/desktop`), which injects `window.__MARGAYA_DESKTOP__`. Detect it only through `lib/desktop.ts` and never assume it, or any optional member, exists; behaviour without it must not change. Inside the shell: no Web Push subscription UI, no PWA install prompts, no "Get the desktop app" link, and social, SSO and SAML sign-in call `startBrowserSignIn()`. `components/desktop/desktop-title-bar.tsx` and `styles/desktop.css` draw the custom title bar (only interactive elements opt out of the drag area), `installDesktopAppBehaviour` and `installDesktopNavigation` make the page act like an app and handle `margaya:navigate`, and every sign-out path calls `notifyDesktopSignedOut()`. Skill: `desktop-app`.
+
 ## Capabilities are not authorization
 
 - `useWorkspacePermission()` (`hooks/use-workspace-permission.ts`) asks the server through `authClient.organization.hasPermission`, so custom roles work. Gate UI with its `can*()` helpers, never with `role`, `isOwner` or `isAdmin`.
