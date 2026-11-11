@@ -228,3 +228,65 @@ jobs:
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  # The desktop shell (apps/desktop): launcher typecheck and tests, and the
+  # Rust core's unit tests. Rust runs on Linux, where the runner is cheapest
+  # and which is a shipping platform too: the core's logic (origin checks,
+  # deep links, PKCE, discovery) is platform-neutral, and the Linux-only parts
+  # (sound file, dock badge) run here. The cached build keeps the job to a
+  # few minutes. Installers for every platform are built in
+  # desktop-release.yml; the libraries below match its Linux build.
+  desktop:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          version: 10.32.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24.19.0
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck the launcher
+        run: pnpm --filter @margaya/desktop typecheck
+
+      - name: Test the launcher
+        run: pnpm --filter @margaya/desktop test
+
+      # The Rust build embeds the launcher, so it has to exist first. This is
+      # the launcher's Vite build only: CI never runs `tauri build`, which
+      # needs the updater signing keys.
+      - name: Build the launcher
+        run: pnpm --filter @margaya/desktop build
+
+      - name: Install Tauri system libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev \
+            libssl-dev libdbus-1-dev libxdo-dev pkg-config
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
+        with:
+          toolchain: stable
+
+      - name: Cache Rust build
+        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+        with:
+          workspaces: apps/desktop/src-tauri -> target
+
+      - name: Test the Rust core
+        run: cargo test --locked --manifest-path apps/desktop/src-tauri/Cargo.toml

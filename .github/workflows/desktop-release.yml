@@ -1,0 +1,327 @@
+name: Desktop Release
+
+# Builds Margaya Desktop (apps/desktop) for macOS (Apple Silicon and Intel),
+# Windows and Linux (x86_64 and ARM64: AppImage, .deb, .rpm), and attaches the
+# installers, the updater manifest (latest.json), the updater signatures and
+# SHA256SUMS.txt to the GitHub Release that semantic-release just published.
+# Then it rebuilds the website so the Download page lists the new files.
+#
+# Linux builds run on Ubuntu 22.04, the oldest supported base (glibc 2.35,
+# WebKitGTK 4.1), so the packages also run on newer distributions. Only the
+# AppImage updates itself (latest.json's linux-* entries point at it); .deb
+# and .rpm installs are updated by installing the next package.
+#
+# Secrets live only in the `desktop-release` environment (give it required
+# reviewers and limit it to tags), so pull-request workflows never see them:
+#   TAURI_SIGNING_PRIVATE_KEY, TAURI_SIGNING_PRIVATE_KEY_PASSWORD (required:
+#     every update must be signed; losing this key strands installed copies)
+#   TAURI_UPDATER_PUBKEY, the matching public key (required; an environment
+#     variable, or a secret), stamped into tauri.conf.json at build time
+#   APPLE_CERTIFICATE (base64 .p12), APPLE_CERTIFICATE_PASSWORD,
+#   APPLE_SIGNING_IDENTITY, APPLE_API_ISSUER, APPLE_API_KEY (key ID) and
+#   APPLE_API_PRIVATE_KEY (the .p8 contents; written to APPLE_API_KEY_PATH)
+#     (optional: without all of them the Mac build is ad-hoc signed and not
+#     notarized)
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag to build and upload to, for example v1.4.0"
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: desktop-release-${{ github.event.release.tag_name || inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    name: Plan
+    # mcp-v* releases belong to publish-mcp.yml.
+    if: ${{ github.event_name == 'workflow_dispatch' || (startsWith(github.event.release.tag_name, 'v') && !github.event.release.prerelease) }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      tag: ${{ steps.plan.outputs.tag }}
+      version: ${{ steps.plan.outputs.version }}
+      draft: ${{ steps.plan.outputs.draft }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Resolve the release
+        id: plan
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+        run: |
+          set -euo pipefail
+          # Plain x.y.z only: MSI versions can't carry a pre-release suffix.
+          if ! printf '%s' "$TAG" | grep -Eq '^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'; then
+            echo "::error::Expected a release tag like v1.4.0, got '$TAG'."
+            exit 1
+          fi
+          draft=$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft)
+          # Only build what has been reviewed into main.
+          git merge-base --is-ancestor "refs/tags/$TAG" refs/remotes/origin/main
+          {
+            echo "tag=$TAG"
+            echo "version=${TAG#v}"
+            echo "draft=$draft"
+          } >> "$GITHUB_OUTPUT"
+
+  build:
+    name: Build (${{ matrix.name }})
+    needs: plan
+    environment: desktop-release
+    permissions:
+      contents: write # upload release assets
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: macOS Apple Silicon
+            runner: macos-15
+            target: aarch64-apple-darwin
+          - name: macOS Intel
+            runner: macos-15
+            target: x86_64-apple-darwin
+          - name: Windows x64
+            runner: windows-latest
+            target: x86_64-pc-windows-msvc
+          - name: Linux x64
+            runner: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+          - name: Linux ARM64
+            runner: ubuntu-22.04-arm
+            target: aarch64-unknown-linux-gnu
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout the release tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/tags/${{ needs.plan.outputs.tag }}
+          persist-credentials: false
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          version: 10.32.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24.19.0
+          cache: pnpm
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
+        with:
+          toolchain: stable
+          targets: ${{ matrix.target }}
+
+      - name: Cache Rust build
+        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+        with:
+          workspaces: apps/desktop/src-tauri -> target
+          key: ${{ matrix.target }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # WebKitGTK 4.1, the tray (Ayatana AppIndicator), SVG icons, libdbus
+      # (keychain, single instance), and what the AppImage and .deb bundlers
+      # call (patchelf, file, xdg-open).
+      - name: Install Linux build libraries
+        if: ${{ runner.os == 'Linux' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev \
+            libssl-dev libdbus-1-dev libxdo-dev pkg-config \
+            patchelf file xdg-utils
+
+      - name: Require the updater keys
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_UPDATER_PUBKEY: ${{ vars.TAURI_UPDATER_PUBKEY || secrets.TAURI_UPDATER_PUBKEY }}
+        run: |
+          missing=0
+          if [ -z "$TAURI_SIGNING_PRIVATE_KEY" ]; then
+            echo "::error::TAURI_SIGNING_PRIVATE_KEY is missing from the desktop-release environment; installed apps would reject this update."
+            missing=1
+          fi
+          if [ -z "$TAURI_UPDATER_PUBKEY" ]; then
+            echo "::error::TAURI_UPDATER_PUBKEY (the updater public key) is missing; set it as a variable or secret of the desktop-release environment. See apps/desktop/AGENTS.md, Releasing."
+            missing=1
+          fi
+          exit "$missing"
+
+      # The installers, the updater manifest and the server's minimum-version
+      # check all use the release version, and the app trusts only updates
+      # signed for this public key. Both are stamped here, in the runner only;
+      # the committed tauri.conf.json keeps a placeholder key.
+      - name: Stamp the release version and updater key
+        env:
+          VERSION: ${{ needs.plan.outputs.version }}
+          TAURI_UPDATER_PUBKEY: ${{ vars.TAURI_UPDATER_PUBKEY || secrets.TAURI_UPDATER_PUBKEY }}
+        run: |
+          node -e '
+            const fs = require("node:fs");
+            const env = process.env;
+            for (const file of ["apps/desktop/src-tauri/tauri.conf.json", "apps/desktop/package.json"]) {
+              const json = JSON.parse(fs.readFileSync(file, "utf8"));
+              json.version = env.VERSION;
+              if (file.endsWith("tauri.conf.json")) {
+                json.plugins = json.plugins || {};
+                json.plugins.updater = json.plugins.updater || {};
+                json.plugins.updater.pubkey = env.TAURI_UPDATER_PUBKEY.trim();
+              }
+              fs.writeFileSync(file, JSON.stringify(json, null, 2) + "\n");
+              console.log(file + " -> " + env.VERSION);
+            }
+          '
+
+      # Signs and notarizes only when every Apple secret is present. Otherwise
+      # the app is ad-hoc signed ("-"), so it still runs on Apple Silicon, and
+      # macOS asks users to confirm it under Privacy & Security on first launch.
+      - name: Configure macOS signing
+        if: ${{ runner.os == 'macOS' }}
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
+          APPLE_API_PRIVATE_KEY: ${{ secrets.APPLE_API_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -n "$APPLE_CERTIFICATE" ] && [ -n "$APPLE_CERTIFICATE_PASSWORD" ] && \
+             [ -n "$APPLE_SIGNING_IDENTITY" ] && [ -n "$APPLE_API_ISSUER" ] && \
+             [ -n "$APPLE_API_KEY" ] && [ -n "$APPLE_API_PRIVATE_KEY" ]; then
+            key_path="$RUNNER_TEMP/AuthKey_${APPLE_API_KEY}.p8"
+            printf '%s\n' "$APPLE_API_PRIVATE_KEY" > "$key_path"
+            chmod 600 "$key_path"
+            delimiter="EOF_$(openssl rand -hex 16)"
+            {
+              echo "APPLE_CERTIFICATE<<$delimiter"
+              echo "$APPLE_CERTIFICATE"
+              echo "$delimiter"
+              echo "APPLE_CERTIFICATE_PASSWORD=$APPLE_CERTIFICATE_PASSWORD"
+              echo "APPLE_SIGNING_IDENTITY=$APPLE_SIGNING_IDENTITY"
+              echo "APPLE_API_ISSUER=$APPLE_API_ISSUER"
+              echo "APPLE_API_KEY=$APPLE_API_KEY"
+              echo "APPLE_API_KEY_PATH=$key_path"
+            } >> "$GITHUB_ENV"
+            echo "Signing with Developer ID and notarizing."
+          else
+            echo "APPLE_SIGNING_IDENTITY=-" >> "$GITHUB_ENV"
+            echo "::warning::Apple signing secrets are not all set; this macOS build is ad-hoc signed and not notarized."
+          fi
+
+      # Windows builds are unsigned for now, so SmartScreen warns on first run
+      # (the Download page explains it). When an OV code-signing certificate on
+      # a cloud HSM is bought, add its credentials to the desktop-release
+      # environment and sign here, for example by setting
+      # bundle.windows.signCommand in tauri.conf.json to the HSM vendor's
+      # signing tool and passing its secrets through this step's env. Sign
+      # every release with the same certificate so SmartScreen reputation
+      # carries over.
+
+      - name: Build and upload
+        uses: tauri-apps/tauri-action@1deb371b0cd8bd54025b384f1cd735e725c4060f # v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          # The AppImage tools are AppImages themselves; runners may lack FUSE.
+          APPIMAGE_EXTRACT_AND_RUN: ${{ runner.os == 'Linux' && '1' || '' }}
+        with:
+          projectPath: apps/desktop
+          # Explicit, so latest.json points at this tag's files rather than
+          # releases/latest/download, which can be another release.
+          tagName: ${{ needs.plan.outputs.tag }}
+          releaseDraft: ${{ needs.plan.outputs.draft }}
+          args: --target ${{ matrix.target }}
+          updaterJsonPreferNsis: true
+          retryAttempts: 1
+
+      - name: Remove the App Store Connect key
+        if: ${{ always() && runner.os == 'macOS' }}
+        run: rm -f "$RUNNER_TEMP"/AuthKey_*.p8
+
+  checksums:
+    name: Checksums
+    needs: [plan, build]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write # upload SHA256SUMS.txt
+    steps:
+      - name: Attach SHA256SUMS.txt
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.plan.outputs.tag }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/assets"
+          cd "$RUNNER_TEMP/assets"
+          # RPMs are named Margaya-<version>-1.<arch>.rpm, the rest Margaya_*.
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" \
+            --pattern 'Margaya_*' --pattern 'Margaya-*' --pattern 'latest.json'
+          sha256sum -- * | sort -k 2 > "$RUNNER_TEMP/SHA256SUMS.txt"
+          cat "$RUNNER_TEMP/SHA256SUMS.txt"
+          for file in \
+            "Margaya_${TAG#v}_aarch64.dmg" \
+            "Margaya_${TAG#v}_x64.dmg" \
+            "Margaya_${TAG#v}_x64-setup.exe" \
+            "Margaya_${TAG#v}_x64_en-US.msi" \
+            "Margaya_${TAG#v}_amd64.AppImage" \
+            "Margaya_${TAG#v}_amd64.deb" \
+            "Margaya-${TAG#v}-1.x86_64.rpm" \
+            "Margaya_${TAG#v}_aarch64.AppImage" \
+            "Margaya_${TAG#v}_arm64.deb" \
+            "Margaya-${TAG#v}-1.aarch64.rpm" \
+            latest.json; do
+            if [ ! -f "$file" ]; then
+              echo "::warning::$file is missing from release $TAG."
+            fi
+          done
+          gh release upload "$TAG" "$RUNNER_TEMP/SHA256SUMS.txt" \
+            --repo "$GITHUB_REPOSITORY" --clobber
+
+  site:
+    name: Rebuild the website
+    needs: [plan, checksums]
+    if: ${{ needs.plan.outputs.draft == 'false' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      actions: write # dispatch deploy-site.yml
+      pages: read # check that GitHub Pages is set up
+    steps:
+      # deploy-site.yml stays manual until GitHub Pages is configured; until
+      # then this only reports that it skipped the rebuild.
+      - name: Dispatch the site deploy
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if ! gh api "repos/$GITHUB_REPOSITORY/pages" --silent 2>/dev/null; then
+            echo "::notice::GitHub Pages is not configured; skipping the site rebuild. Run deploy-site.yml by hand once it is."
+            exit 0
+          fi
+          gh workflow run deploy-site.yml --repo "$GITHUB_REPOSITORY" --ref main

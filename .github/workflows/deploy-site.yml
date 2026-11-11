@@ -39,7 +39,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # The Download page reads the latest desktop release from the GitHub
+      # API at build time; the token avoids the shared anonymous rate limit.
       - name: Build @margaya/site
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: pnpm --filter @margaya/site build
 
       - name: Upload Pages artifact
