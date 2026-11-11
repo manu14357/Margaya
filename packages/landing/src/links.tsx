@@ -30,14 +30,15 @@ export type LandingLinks = {
     selfHost: string;
   };
   /**
-   * Public-website pages the navbar and footer list (guides, press, legal,
-   * licensing).
+   * Public-website pages the navbar and footer list (desktop download,
+   * guides, press, legal, licensing).
    * Optional: a link that is not given is left out.
    */
   site?: Partial<Record<LandingSiteLink, string>>;
 };
 
 export type LandingSiteLink =
+  | "download"
   | "changelog"
   | "roadmap"
   | "guides"

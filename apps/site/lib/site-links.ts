@@ -22,6 +22,7 @@ export const siteLinks: LandingLinks = {
     selfHost: featurePath("self-host"),
   },
   site: {
+    download: "/download",
     changelog: `${GITHUB_URL}/releases`,
     roadmap: `${GITHUB_URL}/issues`,
     guides: "/guides",

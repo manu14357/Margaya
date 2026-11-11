@@ -155,7 +155,10 @@ type NavItem = { label: string; href?: string; external?: boolean };
 function useNavItems(): NavItem[] {
   const nav = useLandingCopy().home.nav;
   const links = useLandingLinks();
-  return [{ label: nav.docs, href: links.docs }].filter((item) => item.href);
+  return [
+    { label: nav.docs, href: links.docs },
+    { label: nav.download, href: links.site?.download },
+  ].filter((item) => item.href);
 }
 
 function MobileMenu({

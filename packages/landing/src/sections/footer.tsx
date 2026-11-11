@@ -38,6 +38,7 @@ export function LandingFooter() {
         { label: nav.items.docs.title, href: links.features.docs },
         { label: nav.items.automate.title, href: links.features.automate },
         { label: nav.items.selfHost.title, href: links.features.selfHost },
+        { label: footer.product.download, href: site.download },
         {
           label: footer.product.changelog,
           href: site.changelog,
