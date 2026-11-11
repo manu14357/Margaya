@@ -4,6 +4,7 @@ import {
   fireEvent,
   render,
   screen,
+  waitFor,
 } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Offline } from "./offline";
@@ -39,7 +40,8 @@ describe("Offline", () => {
     expect(screen.getByText("https://pm.example")).toBeTruthy();
     expect(screen.getByText("offline.lastError")).toBeTruthy();
     expect(screen.getByRole("status").textContent).toBe("offline.retryIn");
-    expect(document.title).toBe("Work");
+    // The page sets the window title in an effect after it renders.
+    await waitFor(() => expect(document.title).toBe("Work"));
   });
 
   it("retries on its own and keeps waiting while the server is down", async () => {
