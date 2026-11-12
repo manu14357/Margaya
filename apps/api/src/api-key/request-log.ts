@@ -9,7 +9,7 @@ import {
   encodeKeyset,
   timeKey,
 } from "../publication/keyset";
-import { withJobLease } from "../scheduler/leader-lock";
+import { HOURLY_JOB_HOLD_MS, withJobLease } from "../scheduler/leader-lock";
 
 // The API request log (4.10): one row per REST request made with an API key,
 // for its owner. Metadata only: the method, the route template (never the
@@ -228,6 +228,6 @@ export async function runApiRequestLogRetention(
     API_REQUEST_LOG_RETENTION_LEASE,
     () => purgeOnce(now, limits),
     () => ({ degraded: false, deleted: 0 }),
-    LEASE_MS,
+    { leaseMs: LEASE_MS, holdMs: HOURLY_JOB_HOLD_MS },
   );
 }

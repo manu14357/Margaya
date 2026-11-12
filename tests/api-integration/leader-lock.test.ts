@@ -143,6 +143,106 @@ describe("withJobLease", () => {
     await clearLease();
   });
 
+  it("holds the lease after a run so another replica skips the slot", async () => {
+    await clearLease();
+
+    const first = await withJobLease(
+      LEASE,
+      async () => "ran",
+      () => "skipped",
+      { leaseMs: 60_000, holdMs: 30 * 60_000 },
+    );
+    expect(first).toBe("ran");
+
+    const held = await db.execute(sql`
+      SELECT "owner",
+             extract(epoch from ("expires_at" - now())) AS "seconds_left"
+      FROM job_lease WHERE "name" = ${LEASE};
+    `);
+    const row = held.rows[0] as { owner: string; seconds_left: string };
+    expect(row.owner.endsWith(":held")).toBe(true);
+    // About 30 minutes from the claim, well past the 1-minute run lease.
+    expect(Number(row.seconds_left)).toBeGreaterThan(29 * 60);
+    expect(Number(row.seconds_left)).toBeLessThanOrEqual(30 * 60);
+
+    // Another replica's finished run holds the same way and blocks this one.
+    await db.execute(sql`
+      UPDATE job_lease SET "owner" = 'other-replica:held'
+      WHERE "name" = ${LEASE};
+    `);
+    const elsewhere = await withJobLease(
+      LEASE,
+      async () => "ran",
+      () => "skipped",
+      { holdMs: 30 * 60_000 },
+    );
+    expect(elsewhere).toBe("skipped");
+
+    await clearLease();
+  });
+
+  it("lets the same instance run again while it holds the lease", async () => {
+    await clearLease();
+    const options = { holdMs: 30 * 60_000 };
+
+    const first = await withJobLease(
+      LEASE,
+      async () => "ran",
+      () => "skipped",
+      options,
+    );
+    const second = await withJobLease(
+      LEASE,
+      async () => "ran",
+      () => "skipped",
+      options,
+    );
+
+    expect(first).toBe("ran");
+    expect(second).toBe("ran");
+    await clearLease();
+  });
+
+  it("releases a held lease when the run fails", async () => {
+    await clearLease();
+
+    await expect(
+      withJobLease(
+        LEASE,
+        async () => {
+          throw new Error("job blew up");
+        },
+        () => "skipped",
+        { holdMs: 30 * 60_000 },
+      ),
+    ).rejects.toThrow("job blew up");
+
+    expect(await readLease()).toBeUndefined();
+  });
+
+  it("frees the lease when the hold has already passed", async () => {
+    await clearLease();
+
+    await withJobLease(
+      LEASE,
+      async () => "ran",
+      () => "skipped",
+      { leaseMs: 60_000, holdMs: 1 },
+    );
+    await db.execute(sql`
+      UPDATE job_lease SET "owner" = 'other-replica:held'
+      WHERE "name" = ${LEASE};
+    `);
+    await new Promise((resolve) => setTimeout(resolve, 20));
+
+    const next = await withJobLease(
+      LEASE,
+      async () => "ran",
+      () => "skipped",
+    );
+    expect(next).toBe("ran");
+  });
+
   it("does not block a different lease name", async () => {
     await clearLease();
 

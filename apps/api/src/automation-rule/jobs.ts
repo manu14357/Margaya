@@ -7,7 +7,11 @@ import {
   projectTable,
   taskTable,
 } from "../database/schema";
-import { withJobLease } from "../scheduler/leader-lock";
+import {
+  DAILY_JOB_HOLD_MS,
+  HOURLY_JOB_HOLD_MS,
+  withJobLease,
+} from "../scheduler/leader-lock";
 import { handleTrigger } from "./engine";
 
 // Scheduled parts of the engine, one instance at a time:
@@ -103,7 +107,7 @@ export async function runAutomationDueDates(now: Date = new Date()) {
     AUTOMATION_DUE_LEASE,
     () => dueDatePassedOnce(now),
     () => ({ degraded: false, fired: 0 }),
-    LEASE_MS,
+    { leaseMs: LEASE_MS, holdMs: HOURLY_JOB_HOLD_MS },
   );
 }
 
@@ -137,6 +141,6 @@ export async function runAutomationRunRetention(
     AUTOMATION_RETENTION_LEASE,
     () => purgeOnce(now, batch),
     () => ({ degraded: false, deleted: 0 }),
-    LEASE_MS,
+    { leaseMs: LEASE_MS, holdMs: DAILY_JOB_HOLD_MS },
   );
 }

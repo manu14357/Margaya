@@ -1,7 +1,7 @@
 import { and, asc, eq, isNotNull, isNull, lt } from "drizzle-orm";
 import db from "../database";
 import { pageTable, projectTable, taskTable } from "../database/schema";
-import { withJobLease } from "../scheduler/leader-lock";
+import { HOURLY_JOB_HOLD_MS, withJobLease } from "../scheduler/leader-lock";
 import { hardDeleteTasks } from "./hard-delete";
 import { hardDeletePage } from "./page-trash";
 import { hardDeleteProject } from "./project-trash";
@@ -149,6 +149,6 @@ export async function runTrashPurge(
     TRASH_PURGE_LEASE,
     () => purgeOnce(cutoff, limits),
     () => ({ ...NOTHING }),
-    LEASE_MS,
+    { leaseMs: LEASE_MS, holdMs: HOURLY_JOB_HOLD_MS },
   );
 }

@@ -1,7 +1,7 @@
 import { and, asc, eq, lt, ne, notInArray } from "drizzle-orm";
 import db from "../database";
 import { taskExportTable } from "../database/schema";
-import { withJobLease } from "../scheduler/leader-lock";
+import { HOURLY_JOB_HOLD_MS, withJobLease } from "../scheduler/leader-lock";
 import { sweepAbandonedArchives } from "../workspace-export/build";
 import { publishExportStatus } from "./events";
 import { deleteExportFileQuietly } from "./storage";
@@ -152,6 +152,6 @@ export async function runExportCleanup(
     TASK_EXPORT_CLEANUP_LEASE,
     () => cleanupOnce(now, limits),
     () => ({ degraded: false, expired: 0, deleted: 0 }),
-    LEASE_MS,
+    { leaseMs: LEASE_MS, holdMs: HOURLY_JOB_HOLD_MS },
   );
 }

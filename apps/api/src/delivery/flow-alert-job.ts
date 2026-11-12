@@ -9,7 +9,7 @@ import {
 } from "../database/schema";
 import { notifySystem } from "../notification/system";
 import { hiddenProjectIdsAnywhere } from "../project/visibility";
-import { withJobLease } from "../scheduler/leader-lock";
+import { HOURLY_JOB_HOLD_MS, withJobLease } from "../scheduler/leader-lock";
 import { listDays, shiftDate, todayUtc } from "../utils/calendar-date";
 import {
   localDateString,
@@ -337,6 +337,6 @@ export function runFlowAlerts(
     FLOW_ALERTS_LEASE,
     () => runOnce(now, limits),
     () => ({ degraded: false, projects: 0, alerts: 0 }),
-    LEASE_MS,
+    { leaseMs: LEASE_MS, holdMs: HOURLY_JOB_HOLD_MS },
   );
 }

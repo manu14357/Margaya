@@ -1,7 +1,7 @@
 import { asc, inArray, lt } from "drizzle-orm";
 import db from "../database";
 import { assetTable, storageUploadTable } from "../database/schema";
-import { withJobLease } from "../scheduler/leader-lock";
+import { HOURLY_JOB_HOLD_MS, withJobLease } from "../scheduler/leader-lock";
 import { InvalidStorageKeyError, sweepLocalTempFiles } from "./local";
 import { deleteS3Object, storageDriver } from "./s3";
 
@@ -115,6 +115,6 @@ export async function sweepAbandonedUploads(
     STORAGE_UPLOAD_SWEEP_LEASE,
     () => runSweep(now),
     () => ({ removed: 0, finalized: 0, degraded: false }),
-    LEASE_MS,
+    { leaseMs: LEASE_MS, holdMs: HOURLY_JOB_HOLD_MS },
   );
 }

@@ -25,7 +25,7 @@ import {
 } from "../database/schema";
 import { publishEvent } from "../events";
 import { notifySystem } from "../notification/system";
-import { withJobLease } from "../scheduler/leader-lock";
+import { HOURLY_JOB_HOLD_MS, withJobLease } from "../scheduler/leader-lock";
 import { shiftDate, todayUtc } from "../utils/calendar-date";
 import { resolveTimezone, todayInTimezone } from "../utils/zoned-date";
 
@@ -346,6 +346,6 @@ export async function runCycleRollover(
     CYCLE_ROLLOVER_LEASE,
     () => runOnce(now, limits),
     () => ({ degraded: false, cycles: 0, moved: 0 }),
-    LEASE_MS,
+    { leaseMs: LEASE_MS, holdMs: HOURLY_JOB_HOLD_MS },
   );
 }

@@ -18,10 +18,11 @@ import {
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import createComment from "./controllers/create-comment";
 import deleteComment from "./controllers/delete-comment";
-import getComments from "./controllers/get-comments";
+import getComments, { getCommentPage } from "./controllers/get-comments";
 import updateComment from "./controllers/update-comment";
-import { commentListSchema } from "./response";
+import { commentListSchema, commentPageSchema } from "./response";
 import {
+  commentPageQuery,
   commentParam,
   createCommentBody,
   taskIdParam,
@@ -40,6 +41,24 @@ const getTaskCommentsRoute = createRoute({
   request: { params: taskIdParam },
   responses: {
     200: jsonResponse("List of comments for the task", commentListSchema),
+    403: errorResponse("No access to the task's workspace"),
+    404: lookupNotFound("task"),
+  },
+});
+
+const getTaskCommentPageRoute = createRoute({
+  method: "get",
+  operationId: "getTaskCommentPage",
+  path: "/{taskId}/page",
+  tags: ["Comments"],
+  summary: "Get a page of task comments",
+  description:
+    "The same comments as GET /comment/{taskId}, oldest first, one page at a time. Pass nextCursor back as cursor to read on. A reply is always newer than the comment it answers, so reading in order meets each thread's top-level comment first. Prefer this on tasks with long discussions.",
+  middleware: [workspaceAccess.fromTaskId()] as const,
+  request: { params: taskIdParam, query: commentPageQuery },
+  responses: {
+    200: jsonResponse("A page of the task's comments", commentPageSchema),
+    400: errorResponse("Invalid limit or cursor"),
     403: errorResponse("No access to the task's workspace"),
     404: lookupNotFound("task"),
   },
@@ -130,10 +149,22 @@ const comment = apiRouter()
   .openapi(getTaskCommentsRoute, async (c) =>
     c.json(await getComments(c.req.valid("param").taskId), 200),
   )
+  .openapi(getTaskCommentPageRoute, async (c) =>
+    c.json(
+      await getCommentPage(c.req.valid("param").taskId, c.req.valid("query")),
+      200,
+    ),
+  )
   .openapi(createTaskCommentRoute, async (c) => {
     const { taskId } = c.req.valid("param");
-    const { content, externalUserName, externalSource, visibility, parentId } =
-      c.req.valid("json");
+    const {
+      content,
+      externalUserName,
+      externalSource,
+      visibility,
+      parentId,
+      aiAssist,
+    } = c.req.valid("json");
     if (visibility === "public" && !(await publicCommentsOpenForTask(taskId))) {
       throw new HTTPException(409, { message: MODERATION_MESSAGES.needsBoard });
     }
@@ -157,14 +188,18 @@ const comment = apiRouter()
       await createComment(taskId, c.get("userId"), content, external, {
         visibility: visibility ?? "internal",
         parentId,
+        aiAssist,
       }),
       200,
     );
   })
   .openapi(updateTaskCommentRoute, async (c) => {
     const { id } = c.req.valid("param");
-    const { content } = c.req.valid("json");
-    return c.json(await updateComment(c.get("userId"), id, content), 200);
+    const { content, aiAssist } = c.req.valid("json");
+    return c.json(
+      await updateComment(c.get("userId"), id, content, { aiAssist }),
+      200,
+    );
   })
   .openapi(deleteTaskCommentRoute, async (c) =>
     c.json(await deleteComment(c.get("userId"), c.req.valid("param").id), 200),

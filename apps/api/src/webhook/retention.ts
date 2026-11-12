@@ -4,7 +4,7 @@ import {
   webhookDeliveryTable,
   workspaceWebhookTable,
 } from "../database/schema";
-import { withJobLease } from "../scheduler/leader-lock";
+import { HOURLY_JOB_HOLD_MS, withJobLease } from "../scheduler/leader-lock";
 import { webhookRetentionDays } from "./settings";
 
 // Hourly, on one instance at a time (K15): the delivery log older than
@@ -75,6 +75,6 @@ export async function runWebhookRetention(
     WEBHOOK_RETENTION_LEASE,
     () => retentionOnce(now, limits),
     () => ({ degraded: false, deleted: 0, secretsCleared: 0 }),
-    LEASE_MS,
+    { leaseMs: LEASE_MS, holdMs: HOURLY_JOB_HOLD_MS },
   );
 }

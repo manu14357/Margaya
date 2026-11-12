@@ -1,7 +1,7 @@
 import { sql } from "drizzle-orm";
 import db from "../database";
 import { instanceAuditLogTable } from "../database/schema";
-import { withJobLease } from "../scheduler/leader-lock";
+import { HOURLY_JOB_HOLD_MS, withJobLease } from "../scheduler/leader-lock";
 
 // Hourly, on one instance at a time: instance audit entries older than
 // INSTANCE_AUDIT_LOG_RETENTION_DAYS (default 365) are deleted in bounded
@@ -63,6 +63,6 @@ export async function runInstanceAuditRetention(
     INSTANCE_AUDIT_RETENTION_LEASE,
     () => purgeOnce(now, limits),
     () => ({ degraded: false, deleted: 0 }),
-    LEASE_MS,
+    { leaseMs: LEASE_MS, holdMs: HOURLY_JOB_HOLD_MS },
   );
 }

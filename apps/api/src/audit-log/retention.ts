@@ -1,7 +1,7 @@
 import { sql } from "drizzle-orm";
 import db from "../database";
 import { auditLogTable } from "../database/schema";
-import { withJobLease } from "../scheduler/leader-lock";
+import { HOURLY_JOB_HOLD_MS, withJobLease } from "../scheduler/leader-lock";
 import { auditLogRetentionDays } from "./settings";
 
 // Hourly, on one instance at a time: entries older than
@@ -55,6 +55,6 @@ export async function runAuditLogRetention(
     AUDIT_LOG_RETENTION_LEASE,
     () => purgeOnce(now, limits),
     () => ({ degraded: false, deleted: 0 }),
-    LEASE_MS,
+    { leaseMs: LEASE_MS, holdMs: HOURLY_JOB_HOLD_MS },
   );
 }

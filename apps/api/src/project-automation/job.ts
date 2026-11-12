@@ -9,7 +9,7 @@ import {
   workspaceTable,
 } from "../database/schema";
 import { publishEvent } from "../events";
-import { withJobLease } from "../scheduler/leader-lock";
+import { HOURLY_JOB_HOLD_MS, withJobLease } from "../scheduler/leader-lock";
 import type { Transaction } from "../task/assignee-writes";
 import {
   MAX_TASK_POSITION,
@@ -342,6 +342,6 @@ export async function runProjectAutomations(
     PROJECT_AUTOMATIONS_LEASE,
     () => runOnce(now, limits),
     () => ({ degraded: false, projects: 0, archived: 0, closed: 0 }),
-    LEASE_MS,
+    { leaseMs: LEASE_MS, holdMs: HOURLY_JOB_HOLD_MS },
   );
 }

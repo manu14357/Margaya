@@ -1,3 +1,4 @@
+import { aiProvenanceField } from "../ai/provenance";
 import { responseTimestamp, z } from "../openapi";
 
 const commentAuthorSchema = z
@@ -33,7 +34,17 @@ export const commentSchema = z
       description:
         "The author, or null when their account (a person or an agent) was deleted; the comment stays.",
     }),
+    aiProvenance: aiProvenanceField,
   })
   .openapi("Comment");
 
 export const commentListSchema = z.array(commentSchema);
+
+export const commentPageSchema = z
+  .object({
+    items: z.array(commentSchema),
+    nextCursor: z.string().nullable().openapi({
+      description: "Pass as cursor for the next page; null on the last page.",
+    }),
+  })
+  .openapi("CommentPage");

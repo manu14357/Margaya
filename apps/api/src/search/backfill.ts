@@ -67,6 +67,8 @@ export async function backfillSearchIndex(): Promise<SearchBackfillResult> {
 /**
  * The boot and hourly job: one instance at a time. Once everything is
  * indexed, each pass is three index lookups on empty partial indexes.
+ * The lease is released, not held: a repeat pass is harmless, and holding it
+ * would skip the boot pass after a quick restart.
  */
 export async function runSearchIndexBackfill(): Promise<void> {
   await withJobLease(

@@ -7,7 +7,11 @@ import {
   workspaceBillingTable,
   workspaceUserTable,
 } from "../database/schema";
-import { SEAT_RECONCILIATION_LEASE, withJobLease } from "./leader-lock";
+import {
+  HOURLY_JOB_HOLD_MS,
+  SEAT_RECONCILIATION_LEASE,
+  withJobLease,
+} from "./leader-lock";
 
 const BATCH_SIZE = 100;
 
@@ -49,9 +53,12 @@ export async function reconcileWorkspaceSeats(): Promise<{
     return { degraded: false };
   }
 
-  return withJobLease(SEAT_RECONCILIATION_LEASE, runReconciliation, () => ({
-    degraded: false,
-  }));
+  return withJobLease(
+    SEAT_RECONCILIATION_LEASE,
+    runReconciliation,
+    () => ({ degraded: false }),
+    { holdMs: HOURLY_JOB_HOLD_MS },
+  );
 }
 
 async function runReconciliation(): Promise<{ degraded: boolean }> {

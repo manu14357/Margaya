@@ -2,7 +2,7 @@ import { and, asc, eq, isNotNull, lte } from "drizzle-orm";
 import db from "../database";
 import { assetTable, workspaceTable } from "../database/schema";
 import { recordInstanceAudit } from "../instance-admin/audit";
-import { withJobLease } from "../scheduler/leader-lock";
+import { HOURLY_JOB_HOLD_MS, withJobLease } from "../scheduler/leader-lock";
 import { deleteS3Keys } from "../storage/cleanup-assets";
 import { purgeWorkspaceExports } from "../task-export/storage";
 
@@ -101,6 +101,6 @@ export async function runWorkspaceDeletionPurge(
     WORKSPACE_DELETION_LEASE,
     () => purgeDue(now),
     () => ({ degraded: false, purged: 0 }),
-    LEASE_MS,
+    { leaseMs: LEASE_MS, holdMs: HOURLY_JOB_HOLD_MS },
   );
 }

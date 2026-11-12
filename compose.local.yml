@@ -25,6 +25,10 @@ services:
     environment:
       # Attachments and images when no S3 bucket is configured.
       MARGAYA_STORAGE_DIR: ${MARGAYA_STORAGE_DIR:-/app/apps/api/data/uploads}
+      # Database connections per instance and the longest a query may run
+      # (ms, 0 = the server's setting). Startup migrations have no limit.
+      DATABASE_POOL_MAX: ${DATABASE_POOL_MAX:-10}
+      DATABASE_STATEMENT_TIMEOUT_MS: ${DATABASE_STATEMENT_TIMEOUT_MS:-300000}
     volumes:
       - uploads_data:/app/apps/api/data/uploads
     depends_on:
