@@ -1,5 +1,5 @@
 import { Monitor, Smartphone } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   SettingsGroup,
@@ -22,9 +22,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import type { UserSession } from "@/fetchers/user/get-account-security";
 import useRevokeOtherSessions from "@/hooks/mutations/user/use-revoke-other-sessions";
 import useRevokeSession from "@/hooks/mutations/user/use-revoke-session";
+import { isDesktopApp } from "@/lib/desktop";
 import { formatDateTime, formatRelativeTime } from "@/lib/format";
 import { toast } from "@/lib/toast";
-import { summarizeUserAgent } from "@/lib/user-agent";
+import { isDesktopAppUserAgent, summarizeUserAgent } from "@/lib/user-agent";
+
+// Longer lists fold, so the page doesn't become a wall of old sessions.
+const VISIBLE_SESSIONS = 5;
 
 type ActiveSessionsSectionProps = {
   sessions: UserSession[] | undefined;
@@ -40,12 +44,38 @@ export function ActiveSessionsSection({
 }: ActiveSessionsSectionProps) {
   const { t } = useTranslation();
   const [confirmOthers, setConfirmOthers] = useState(false);
+  const [showAll, setShowAll] = useState(false);
   const revokeSession = useRevokeSession();
   const revokeOthers = useRevokeOtherSessions();
   const otherCount = sessions?.filter((session) => !session.current).length;
 
+  // This device first, then the most recently used.
+  const ordered = useMemo(
+    () =>
+      sessions
+        ? [...sessions].sort((a, b) => {
+            if (a.current !== b.current) return a.current ? -1 : 1;
+            return (
+              new Date(b.lastActiveAt ?? 0).getTime() -
+              new Date(a.lastActiveAt ?? 0).getTime()
+            );
+          })
+        : undefined,
+    [sessions],
+  );
+  const visible =
+    ordered && !showAll ? ordered.slice(0, VISIBLE_SESSIONS) : ordered;
+  const hidden = (ordered?.length ?? 0) - VISIBLE_SESSIONS;
+
   const deviceLabel = (session: UserSession) => {
-    const { browser, os } = summarizeUserAgent(session.userAgent);
+    const summary = summarizeUserAgent(session.userAgent);
+    const { os } = summary;
+    // The app's own sign-in, and this window when it runs inside the app.
+    const browser =
+      isDesktopAppUserAgent(session.userAgent) ||
+      (session.current && isDesktopApp())
+        ? t("settings:securityPage.sessions.desktopApp")
+        : summary.browser;
     if (browser && os)
       return t("settings:securityPage.sessions.deviceLabel", { browser, os });
     return browser ?? os ?? t("settings:securityPage.sessions.unknownDevice");
@@ -92,12 +122,12 @@ export function ActiveSessionsSection({
             <Skeleton className="h-10 w-full" />
             <Skeleton className="h-10 w-full" />
           </div>
-        ) : isError || !sessions ? (
+        ) : isError || !visible ? (
           <SettingsGroupMessage tone="error">
             {t("settings:securityPage.sessions.loadError")}
           </SettingsGroupMessage>
         ) : (
-          sessions.map((session) => {
+          visible.map((session) => {
             const { mobile } = summarizeUserAgent(session.userAgent);
             const Icon = mobile ? Smartphone : Monitor;
             const label = deviceLabel(session);
@@ -162,6 +192,22 @@ export function ActiveSessionsSection({
           })
         )}
       </SettingsGroup>
+      {hidden > 0 && (
+        <div>
+          <Button
+            variant="ghost"
+            size="sm"
+            aria-expanded={showAll}
+            onClick={() => setShowAll((value) => !value)}
+          >
+            {showAll
+              ? t("settings:securityPage.sessions.showFewer")
+              : t("settings:securityPage.sessions.showAll", {
+                  count: ordered?.length ?? 0,
+                })}
+          </Button>
+        </div>
+      )}
 
       <AlertDialog open={confirmOthers} onOpenChange={setConfirmOthers}>
         <AlertDialogContent>

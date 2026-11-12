@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { summarizeUserAgent } from "./user-agent";
+import { isDesktopAppUserAgent, summarizeUserAgent } from "./user-agent";
 
 describe("summarizeUserAgent", () => {
   it.each([
@@ -42,5 +42,17 @@ describe("summarizeUserAgent", () => {
       os: null,
       mobile: false,
     });
+  });
+});
+
+describe("isDesktopAppUserAgent", () => {
+  it("knows the desktop app's own requests", () => {
+    expect(isDesktopAppUserAgent("MargayaDesktop/0.1.0")).toBe(true);
+    expect(
+      isDesktopAppUserAgent(
+        "Mozilla/5.0 (Windows NT 10.0) Chrome/130.0 Safari/537.36 Edg/130.0",
+      ),
+    ).toBe(false);
+    expect(isDesktopAppUserAgent(null)).toBe(false);
   });
 });

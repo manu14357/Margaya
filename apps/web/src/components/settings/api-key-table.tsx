@@ -1,6 +1,8 @@
-import { Activity, Trash2 } from "lucide-react";
+import { Activity, KeyRound, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { SettingsEmptyState } from "@/components/settings-layout";
+import { Skeleton } from "@/components/ui/skeleton";
 import useDeleteApiKey from "@/hooks/mutations/api-key/use-delete-api-key";
 import { cn } from "@/lib/cn";
 import { formatDateTime, formatRelativeTime } from "@/lib/format";
@@ -17,7 +19,7 @@ import {
 } from "../ui/alert-dialog";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { Frame, FramePanel } from "../ui/frame";
+import { Frame } from "../ui/frame";
 import {
   Table,
   TableBody,
@@ -151,25 +153,20 @@ export function ApiKeyTable({ apiKeys, isLoading }: ApiKeyTableProps) {
 
   if (isLoading) {
     return (
-      <Frame>
-        <FramePanel className="p-8">
-          <p className="text-sm text-muted-foreground text-center">
-            {t("settings:apiKey.table.loading")}
-          </p>
-        </FramePanel>
-      </Frame>
+      <div className="space-y-2 rounded-lg border bg-card p-4" aria-busy="true">
+        <span className="sr-only">{t("settings:apiKey.table.loading")}</span>
+        <Skeleton className="h-9 w-full" />
+        <Skeleton className="h-9 w-full" />
+      </div>
     );
   }
 
   if (apiKeys.length === 0) {
     return (
-      <Frame>
-        <FramePanel className="p-8">
-          <p className="text-sm text-muted-foreground text-center">
-            {t("settings:apiKey.table.empty")}
-          </p>
-        </FramePanel>
-      </Frame>
+      <SettingsEmptyState
+        icon={<KeyRound />}
+        title={t("settings:apiKey.table.empty")}
+      />
     );
   }
 

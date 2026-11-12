@@ -13,7 +13,6 @@ import {
   SettingsGroup,
   SettingsPage,
   SettingsRow,
-  SettingsSection,
 } from "@/components/settings-layout";
 import {
   AlertDialog,
@@ -295,144 +294,137 @@ function RouteComponent() {
       documentTitle={t("settings:informationPage.pageTitle")}
       description={t("settings:informationPage.subtitle")}
     >
-      <SettingsSection
-        title={t("settings:informationPage.sectionTitle")}
-        description={t("settings:informationPage.sectionSubtitle")}
-      >
-        <SettingsGroup>
-          <SettingsRow
-            label={t("settings:informationPage.profilePicture")}
-            description={t("settings:informationPage.avatar.hint")}
-          >
-            <input
-              ref={avatarInputRef}
-              type="file"
-              accept={ACCEPTED_AVATAR_TYPES}
-              className="hidden"
-              onChange={handleAvatarSelected}
-            />
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <button
-                    type="button"
-                    aria-label={t("settings:informationPage.avatar.edit")}
-                    disabled={isUploadingAvatar || isRemovingAvatar}
-                    className="group relative rounded-full outline-none transition-transform duration-150 ease-out active:scale-97 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
-                  />
-                }
-              >
-                <Avatar className="h-10 w-10">
-                  <AvatarImage src={user?.image ?? ""} alt={user?.name || ""} />
-                  <AvatarFallback className="text-xs font-medium border border-border/30">
-                    {getInitials(user?.name)}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-full bg-black/55 text-white opacity-0 transition-opacity duration-150 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 group-data-[popup-open]:opacity-100 group-disabled:opacity-100">
-                  {isUploadingAvatar || isRemovingAvatar ? (
-                    <Loader2 className="size-4 animate-spin" />
-                  ) : (
-                    <Pencil className="size-3.5" />
-                  )}
-                </span>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" side="bottom">
-                <DropdownMenuItem
-                  onClick={() => avatarInputRef.current?.click()}
-                >
-                  <Pencil />
-                  {t("settings:informationPage.avatar.change")}
-                </DropdownMenuItem>
-                {user?.image ? (
-                  <DropdownMenuItem onClick={handleAvatarRemoved}>
-                    <X />
-                    {t("settings:informationPage.avatar.remove")}
-                  </DropdownMenuItem>
-                ) : null}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SettingsRow>
-
-          <Form {...profileForm}>
-            <form
-              className="flex flex-col divide-y divide-border"
-              onSubmit={(event) => event.preventDefault()}
+      <SettingsGroup>
+        <SettingsRow
+          label={t("settings:informationPage.profilePicture")}
+          description={t("settings:informationPage.avatar.hint")}
+        >
+          <input
+            ref={avatarInputRef}
+            type="file"
+            accept={ACCEPTED_AVATAR_TYPES}
+            className="hidden"
+            onChange={handleAvatarSelected}
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={
+                <button
+                  type="button"
+                  aria-label={t("settings:informationPage.avatar.edit")}
+                  disabled={isUploadingAvatar || isRemovingAvatar}
+                  className="group relative rounded-full outline-none transition-transform duration-150 ease-out active:scale-97 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                />
+              }
             >
-              <FormField
-                control={profileForm.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem className="space-y-0">
-                    <SettingsRow
-                      label={
-                        <FormLabel className="text-sm font-medium">
-                          {t("settings:informationPage.fullName")}
-                        </FormLabel>
-                      }
-                    >
-                      <div className="w-full space-y-1.5 sm:w-64">
-                        <FormControl>
-                          <Input
-                            placeholder={t(
-                              "settings:informationPage.fullNamePlaceholder",
-                            )}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </div>
-                    </SettingsRow>
-                  </FormItem>
+              <Avatar className="h-10 w-10">
+                <AvatarImage src={user?.image ?? ""} alt={user?.name || ""} />
+                <AvatarFallback className="text-xs font-medium border border-border/30">
+                  {getInitials(user?.name)}
+                </AvatarFallback>
+              </Avatar>
+              <span className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-full bg-black/55 text-white opacity-0 transition-opacity duration-150 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 group-data-[popup-open]:opacity-100 group-disabled:opacity-100">
+                {isUploadingAvatar || isRemovingAvatar ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <Pencil className="size-3.5" />
                 )}
-              />
+              </span>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" side="bottom">
+              <DropdownMenuItem onClick={() => avatarInputRef.current?.click()}>
+                <Pencil />
+                {t("settings:informationPage.avatar.change")}
+              </DropdownMenuItem>
+              {user?.image ? (
+                <DropdownMenuItem onClick={handleAvatarRemoved}>
+                  <X />
+                  {t("settings:informationPage.avatar.remove")}
+                </DropdownMenuItem>
+              ) : null}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </SettingsRow>
 
-              <FormField
-                control={profileForm.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem className="space-y-0">
-                    <SettingsRow
-                      label={
-                        <FormLabel className="text-sm font-medium">
-                          {t("settings:informationPage.email")}
-                        </FormLabel>
-                      }
-                    >
-                      <div className="w-full space-y-1.5 sm:w-64">
-                        <FormControl>
-                          <Input
-                            placeholder={t(
-                              "settings:informationPage.emailPlaceholder",
-                            )}
-                            {...field}
-                            disabled
-                            value={user?.email || ""}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                        {canChangeEmail ? (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="xs"
-                            onClick={() => setIsChangeEmailOpen(true)}
-                          >
-                            {t("accountSecurity:emailChange.action")}
-                          </Button>
-                        ) : isGuest ? null : (
-                          <p className="text-xs text-muted-foreground">
-                            {t("accountSecurity:emailChange.unavailable")}
-                          </p>
-                        )}
-                      </div>
-                    </SettingsRow>
-                  </FormItem>
-                )}
-              />
-            </form>
-          </Form>
-        </SettingsGroup>
-      </SettingsSection>
+        <Form {...profileForm}>
+          <form
+            className="flex flex-col divide-y divide-border"
+            onSubmit={(event) => event.preventDefault()}
+          >
+            <FormField
+              control={profileForm.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="space-y-0">
+                  <SettingsRow
+                    label={
+                      <FormLabel className="text-sm font-medium">
+                        {t("settings:informationPage.fullName")}
+                      </FormLabel>
+                    }
+                  >
+                    <div className="w-full space-y-1.5 sm:w-64">
+                      <FormControl>
+                        <Input
+                          placeholder={t(
+                            "settings:informationPage.fullNamePlaceholder",
+                          )}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </div>
+                  </SettingsRow>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={profileForm.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="space-y-0">
+                  <SettingsRow
+                    label={
+                      <FormLabel className="text-sm font-medium">
+                        {t("settings:informationPage.email")}
+                      </FormLabel>
+                    }
+                  >
+                    <div className="w-full space-y-1.5 sm:w-64">
+                      <FormControl>
+                        <Input
+                          placeholder={t(
+                            "settings:informationPage.emailPlaceholder",
+                          )}
+                          {...field}
+                          disabled
+                          value={user?.email || ""}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                      {canChangeEmail ? (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="xs"
+                          onClick={() => setIsChangeEmailOpen(true)}
+                        >
+                          {t("accountSecurity:emailChange.action")}
+                        </Button>
+                      ) : isGuest ? null : (
+                        <p className="text-xs text-muted-foreground">
+                          {t("accountSecurity:emailChange.unavailable")}
+                        </p>
+                      )}
+                    </div>
+                  </SettingsRow>
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
+      </SettingsGroup>
 
       <ChangeEmailDialog
         open={isChangeEmailOpen}

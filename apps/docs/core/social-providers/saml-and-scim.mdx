@@ -144,7 +144,7 @@ A provisioned account has no password. The person signs in with SAML, with a sig
 
 ### Limits
 
-- **Everyone joins as a Member.** There is no role or group mapping. Change a person's role under **Settings** > **Members**. To limit them to chosen projects, see [Guest Access](/core/functional/guest-access).
+- **Everyone joins as a Member.** There is no role or group mapping. Change a person's role under **Settings** > **Workspace** > **Members**. To limit them to chosen projects, see [Guest Access](/core/functional/guest-access).
 - **Users only.** There are no SCIM groups, bulk requests, sorting or ETags. A filter takes one `eq` condition on `userName` or `externalId`, such as `userName eq "pat@example.com"`.
 - **Only some attributes are kept:** the address, the name, `active` and `externalId`. A change to anything else, such as a job title, is accepted and ignored.
 - **A person counts as a seat** where the workspace is billed per seat.

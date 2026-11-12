@@ -41,7 +41,7 @@ Drag a row by its handle, or use the up and down arrow buttons, which work with 
 
 ## Set your time zone
 
-**Time zone** in **Account -> Preferences** is used for times the server writes for you: due-date reminders (which mention the due day) and email digests. Choose **Automatic (browser)** to save the time zone your browser reports, or pick one from the searchable list. Until you choose, the server uses UTC. Task filters such as "due today" or "overdue", and analytics, count days in this time zone once you have chosen one (otherwise in your browser's). Times on screen stay in your browser's time zone.
+**Time zone** in **Account -> Preferences** is used for times the server writes for you: due-date reminders (which mention the due day) and email digests. Choose **Automatic (this device)** to save the time zone your device reports, or pick one from the searchable list. Until you choose, the server uses UTC. Task filters such as "due today" or "overdue", and analytics, count days in this time zone once you have chosen one (otherwise in your device's). Times on screen stay in this device's time zone.
 
 ## Configure task display options
 
@@ -66,6 +66,8 @@ Also review:
 - **Settings -> Projects -> General** for each project's **Project lead** and **Default assignee** (see below)
 - **Settings -> Projects** for project general, visibility, integrations, and workflow (see [Outgoing webhooks](/core/integrations/outgoing-webhooks))
 
+**Settings -> Workspace** lists **General**, **Members**, **Roles**, **Labels**, **Webhooks** and **Billing**, then a **Data** group (**Exports**, **Recently deleted**, **Audit log**) and an **AI** group (**AI settings**, **Agents**, **AI skills**, **AI memory**). You only see the pages your role and the server allow: for example **Webhooks** needs permission to manage webhooks, **Billing** appears only when billing is on, and the **AI** group only once AI is allowed on the instance. **Members** keeps its own address, so existing links and bookmarks still open it.
+
 ## Workspace time zone
 
 Workspace admins set **Time zone** in **Settings -> Workspace -> General** (it needs the same permission as the other workspace settings). It defines "today" for everything the server works out by day:
@@ -75,7 +77,7 @@ Workspace admins set **Time zone** in **Settings -> Workspace -> General** (it n
 - [repeating tasks](/core/functional/repeating-tasks) that are created on their date
 - analytics, when a request does not name its own time zone
 
-Pick a zone from the searchable list, or use the suggested browser time zone shown under it. Nothing changes until you save. Dates without a time, such as cycle start and end dates, keep their stored values.
+Pick a zone from the searchable list, or select **Use this device's time zone** under it. Nothing changes until you save. Dates without a time, such as cycle start and end dates, keep their stored values.
 
 Existing workspaces start on **UTC**, which is exactly how Margaya behaved before time zones existed.
 

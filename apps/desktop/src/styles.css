@@ -354,17 +354,103 @@ select {
   gap: 8px;
 }
 
-.toggle {
+/* Settings: rows like the web app's settings pages. */
+.settings-group {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
+  flex-direction: column;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
 }
 
-.toggle input {
+.settings-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 12px 16px;
+}
+
+.settings-row + .settings-row {
+  border-top: 1px solid var(--border);
+}
+
+.settings-row.highlight {
+  background: var(--accent);
+}
+
+.settings-text {
+  display: flex;
+  flex: 1 1 220px;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.settings-label {
+  font-weight: 500;
+}
+
+.settings-hint {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.success-text {
+  color: var(--success-foreground);
+}
+
+.settings-error {
+  margin-top: 8px;
+}
+
+/* A checkbox drawn as a switch (role="switch"). */
+.switch {
+  position: relative;
+  flex: none;
+  width: 36px;
+  height: 20px;
+  margin: 0;
+  background: var(--input);
+  border-radius: 999px;
+  appearance: none;
+  cursor: pointer;
+  transition: background-color 150ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.switch::before {
+  position: absolute;
+  top: 2px;
+  left: 2px;
   width: 16px;
   height: 16px;
-  accent-color: var(--primary);
+  background: #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
+  content: "";
+  transition: transform 150ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.switch:checked {
+  background: var(--primary);
+}
+
+.switch:checked::before {
+  transform: translateX(16px);
+}
+
+.switch:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+@media (pointer: coarse) {
+  .switch::after {
+    position: absolute;
+    inset: -12px -4px;
+    content: "";
+  }
 }
 
 .quick-add {

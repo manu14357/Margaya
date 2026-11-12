@@ -1,5 +1,7 @@
+import { FileDown } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { SettingsEmptyState } from "@/components/settings-layout";
 import {
   AlertDialog,
   AlertDialogClose,
@@ -11,7 +13,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { ErrorDisplay } from "@/components/ui/error-display";
-import { Frame, FramePanel } from "@/components/ui/frame";
+import { Frame } from "@/components/ui/frame";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
@@ -96,13 +98,11 @@ export function ExportHistory({
   let body: React.ReactNode;
   if (history.isLoading) {
     body = (
-      <Frame>
-        <FramePanel className="space-y-3 p-4">
-          {[0, 1, 2].map((index) => (
-            <Skeleton key={index} className="h-6 w-full" />
-          ))}
-        </FramePanel>
-      </Frame>
+      <div className="space-y-3 rounded-lg border bg-card p-4" aria-busy="true">
+        {[0, 1, 2].map((index) => (
+          <Skeleton key={index} className="h-6 w-full" />
+        ))}
+      </div>
     );
   } else if (history.isError) {
     body = (
@@ -113,15 +113,12 @@ export function ExportHistory({
     );
   } else if (rows.length === 0) {
     body = (
-      <Frame>
-        <FramePanel className="p-8">
-          <p className="text-center text-muted-foreground text-sm">
-            {t("settings:workspaceExports.history.empty", {
-              days: retentionDays,
-            })}
-          </p>
-        </FramePanel>
-      </Frame>
+      <SettingsEmptyState
+        icon={<FileDown />}
+        title={t("settings:workspaceExports.history.empty", {
+          days: retentionDays,
+        })}
+      />
     );
   } else {
     body = (

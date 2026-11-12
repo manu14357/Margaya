@@ -1,6 +1,10 @@
+import { Eye } from "lucide-react";
 import { type ReactNode, useId } from "react";
+import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/common/page-header";
 import PageTitle from "@/components/page-title";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/cn";
 
@@ -17,6 +21,10 @@ import { cn } from "@/lib/cn";
  *     </SettingsSection>
  *     <SettingsDangerZone title=… description=…>…rows…</SettingsDangerZone>
  *   </SettingsPage>
+ *
+ * Saving: a switch or a menu saves at once (with a toast); a group of text
+ * fields or several choices that belong together ends in <SettingsSaveFooter>,
+ * whose Save button wakes up only when something changed.
  */
 
 type SettingsPageProps = {
@@ -177,6 +185,9 @@ export function SettingsRow({
         "grid min-w-0 gap-2 px-4 py-3",
         !stacked &&
           "sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-x-6",
+        // A switch stays beside its label on narrow screens too.
+        !stacked &&
+          "has-[>[data-slot=settings-row-control]>[data-slot=switch]]:grid-cols-[minmax(0,1fr)_auto] has-[>[data-slot=settings-row-control]>[data-slot=switch]]:items-center has-[>[data-slot=settings-row-control]>[data-slot=switch]]:gap-x-4",
         className,
       )}
       data-slot="settings-row"
@@ -203,6 +214,7 @@ export function SettingsRow({
       </div>
       {children !== undefined && (
         <div
+          data-slot="settings-row-control"
           className={cn(
             "flex min-w-0 flex-wrap items-center gap-2",
             !stacked && "sm:justify-end",
@@ -249,5 +261,99 @@ export function SettingsGroupMessage({
     >
       {children}
     </p>
+  );
+}
+
+/**
+ * The end of a group that saves together: "Unsaved changes" while it differs
+ * from what is saved, and a Save button that is enabled only then.
+ */
+export function SettingsSaveFooter({
+  dirty,
+  saving = false,
+  disabled = false,
+  saveLabel,
+  onSave,
+  className,
+}: {
+  dirty: boolean;
+  saving?: boolean;
+  /** Something is invalid: Save stays off even with changes. */
+  disabled?: boolean;
+  saveLabel?: ReactNode;
+  onSave: () => void | Promise<void>;
+  className?: string;
+}) {
+  const { t } = useTranslation();
+  return (
+    <div
+      className={cn(
+        "flex flex-wrap items-center justify-end gap-x-3 gap-y-2 border-t px-4 py-2.5",
+        className,
+      )}
+      data-slot="settings-save-footer"
+    >
+      {dirty && (
+        <span
+          className="me-auto text-muted-foreground text-xs"
+          role="status"
+          aria-live="polite"
+        >
+          {t("settings:unsavedChanges")}
+        </span>
+      )}
+      <Button
+        size="sm"
+        type="button"
+        loading={saving}
+        disabled={!dirty || disabled || saving}
+        onClick={() => void onSave()}
+      >
+        {saveLabel ?? t("settings:save")}
+      </Button>
+    </div>
+  );
+}
+
+/** Says why the controls below are read-only for this person. */
+export function SettingsReadOnlyNotice({ children }: { children: ReactNode }) {
+  return (
+    <Alert variant="info">
+      <Eye />
+      <AlertDescription>{children}</AlertDescription>
+    </Alert>
+  );
+}
+
+/** An empty list inside a section: a muted icon, one sentence, one action. */
+export function SettingsEmptyState({
+  icon,
+  title,
+  description,
+  action,
+}: {
+  icon?: ReactNode;
+  title: ReactNode;
+  description?: ReactNode;
+  action?: ReactNode;
+}) {
+  return (
+    <div
+      className="flex flex-col items-center gap-2 rounded-lg border border-dashed bg-card/60 px-4 py-8 text-center"
+      data-slot="settings-empty"
+    >
+      {icon && (
+        <div className="flex size-9 items-center justify-center rounded-lg bg-muted text-muted-foreground [&_svg]:size-4.5">
+          {icon}
+        </div>
+      )}
+      <p className="font-medium text-sm">{title}</p>
+      {description && (
+        <p className="max-w-sm text-muted-foreground text-xs leading-4.5">
+          {description}
+        </p>
+      )}
+      {action && <div className="mt-2">{action}</div>}
+    </div>
   );
 }

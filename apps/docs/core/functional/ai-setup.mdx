@@ -6,7 +6,7 @@ description: Turn on AI for your server and workspaces, choose Claude, an OpenAI
 Margaya's AI features are optional and **off by default**. Nothing changes for anyone until three switches are on:
 
 1. An **instance admin** allows AI and sets up a provider (**Settings** > **Instance** > **AI**).
-2. A **workspace admin** turns AI on for the workspace (**Settings** > **Workspace** > **AI**).
+2. A **workspace admin** turns AI on for the workspace (**Settings** > **Workspace** > **AI settings**).
 3. Each **project** keeps AI on, or turns it off under **Settings** > **Projects** > **Features**.
 
 People also need the **Use AI** permission (`ai:use`). Members, Admins and Owners have it by default; Viewers do not. **Manage AI** (`ai:manage`) lets Admins and Owners change the workspace's AI settings and see its usage. Both can be granted to custom roles under **Settings** > **Workspace** > **Roles**.
@@ -80,7 +80,7 @@ If the only allowed destination is a local model and none is set up, the request
 
 ## Turn on AI for a workspace
 
-Open **Settings** > **Workspace** > **AI** (needs **Manage AI**).
+Open **Settings** > **Workspace** > **AI settings** (needs **Manage AI**).
 
 - **Turn on AI**: the workspace opt-in. It is only available once the server allows AI.
 - **Limits**:
@@ -111,7 +111,7 @@ These instance settings live under **Settings** > **Instance** > **AI**, in the 
 - **Search provider**: **SearXNG** (enter your SearXNG base URL; its JSON output must be enabled), **Brave Search** or **Tavily** (enter the API key). Only a person's question is sent to the provider, never workspace content. A SearXNG URL must be a public address like other outbound calls; for one on your own network set `MARGAYA_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS=true`.
 - **Speech to text**: choose the **API format**. **OpenAI-compatible** posts to `<endpoint>/audio/transcriptions` with a model, for example a local Whisper server, `https://api.openai.com/v1` with `whisper-1`, or `https://api.groq.com/openai/v1` with `whisper-large-v3`. **Fish Audio** posts to the endpoint exactly as entered, `https://api.fish.audio/v1/asr`; its model (`transcribe-1-pro` or `transcribe-1`) is optional and sent as a header. Fish Audio answers 402 when the account has no API credit left. **Test speech to text** sends one second of silence and shows the URL it called when something is wrong. An endpoint on your own network counts as local. Only **Local only** (on the instance or a workspace) keeps recordings off a cloud endpoint; the private-data route chooses the model, not the speech service, so a local model and a cloud speech service such as Groq can be combined. Transcriptions appear in usage as **Speech to text**.
 
-Each workspace then decides under **Settings** > **Workspace** > **AI**, in the **Ask AI chat** section:
+Each workspace then decides under **Settings** > **Workspace** > **AI settings**, in the **Ask AI chat** section:
 
 - **Web search** lets people turn on web search for a question (only once the server has a provider).
 - **Keep chat history on the server** stores Ask conversations for each person so they can reopen, rename and pin them on any device. Off by default: history then stays in the browser.
@@ -136,7 +136,7 @@ It needs two things on the server.
 
 The **Embeddings** section shows **pgvector ready**, **pgvector available** or **pgvector not available**.
 
-Then a workspace admin turns on **Semantic search** under **Settings** > **Workspace** > **AI**. The first time, Margaya creates the extension and its `ai_embedding` table. This happens at runtime, not in a migration, so a database without pgvector is never changed. Existing content is then indexed in the background, and the setting shows how many items are indexed.
+Then a workspace admin turns on **Semantic search** under **Settings** > **Workspace** > **AI settings**. The first time, Margaya creates the extension and its `ai_embedding` table. This happens at runtime, not in a migration, so a database without pgvector is never changed. Existing content is then indexed in the background, and the setting shows how many items are indexed.
 
 <Info>
 Semantic search follows the same rules as every other AI request:
@@ -157,7 +157,7 @@ How the index stays current:
 
 Every AI request is recorded in the AI usage ledger: the feature, the person, the model, the tokens used and the cost by list price. **Prompts and answers are never stored**, only these counts.
 
-- Workspace admins see usage by feature, person, model and day under **Settings** > **Workspace** > **AI** > **Usage**, with the thumbs up and down people gave per feature, and can export it as CSV (one row per day, feature, model and person).
+- Workspace admins see usage by feature, person, model and day under **Settings** > **Workspace** > **AI settings** > **Usage**, with the thumbs up and down people gave per feature, and can export it as CSV (one row per day, feature, model and person).
 - Instance admins see the total across workspaces under **Settings** > **Instance** > **AI**.
 
 <Screenshot src="ai/usage" alt="The Usage section for this month: 569 calls, 1.7M tokens and 6.42 US dollars, a calls-per-day chart, and breakdowns by feature, person and model" caption="Usage keeps counts and costs, never prompts or answers." />

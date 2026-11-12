@@ -13,6 +13,7 @@ import {
   SettingsDangerZone,
   SettingsGroup,
   SettingsPage,
+  SettingsReadOnlyNotice,
   SettingsRow,
   SettingsSection,
 } from "@/components/settings-layout";
@@ -133,8 +134,12 @@ function RouteComponent() {
   const { mutateAsync: updateWorkspace } = useUpdateWorkspace();
   const { mutateAsync: transferOwnership, isPending: isTransferring } =
     useTransferWorkspaceOwnership();
-  const { canManageWorkspace, canDeleteWorkspace, isOwner } =
-    useWorkspacePermission();
+  const {
+    canManageWorkspace,
+    canDeleteWorkspace,
+    isOwner,
+    isCheckingPermissions,
+  } = useWorkspacePermission();
   const canEdit = canManageWorkspace();
   const canDelete = canDeleteWorkspace();
   const workspaceDescription = getWorkspaceDescription(workspace);
@@ -314,6 +319,13 @@ function RouteComponent() {
       title={t("settings:workspaceGeneral.title")}
       documentTitle={t("settings:workspaceGeneral.pageTitle")}
       description={t("settings:workspaceGeneral.subtitle")}
+      notice={
+        !isCheckingPermissions && !canEdit ? (
+          <SettingsReadOnlyNotice>
+            {t("settings:readOnly.workspace")}
+          </SettingsReadOnlyNotice>
+        ) : undefined
+      }
     >
       <SettingsSection
         title={t("settings:workspaceGeneral.workspaceInfoTitle")}

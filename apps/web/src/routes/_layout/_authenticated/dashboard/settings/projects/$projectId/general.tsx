@@ -17,6 +17,7 @@ import {
   SettingsDangerZone,
   SettingsGroup,
   SettingsPage,
+  SettingsReadOnlyNotice,
   SettingsRow,
   SettingsSection,
 } from "@/components/settings-layout";
@@ -161,8 +162,12 @@ function RouteComponent() {
   const { mutateAsync: updateProject } = useUpdateProject();
   const { mutateAsync: deleteProject, isPending: isDeleting } =
     useDeleteProject();
-  const { canManageProjects, canDeleteProjects, canUpdateProjects } =
-    useWorkspacePermission();
+  const {
+    canManageProjects,
+    canDeleteProjects,
+    canUpdateProjects,
+    isCheckingPermissions,
+  } = useWorkspacePermission();
   const canEdit = canManageProjects();
   const canDelete = canDeleteProjects();
   const canArchive = canUpdateProjects();
@@ -366,6 +371,13 @@ function RouteComponent() {
           : t("settings:projectGeneral.pageTitle")
       }
       description={t("settings:projectGeneral.subtitle")}
+      notice={
+        !isCheckingPermissions && !canEdit ? (
+          <SettingsReadOnlyNotice>
+            {t("settings:readOnly.project")}
+          </SettingsReadOnlyNotice>
+        ) : undefined
+      }
     >
       <SettingsSection
         title={t("settings:projectGeneral.projectInfoTitle")}

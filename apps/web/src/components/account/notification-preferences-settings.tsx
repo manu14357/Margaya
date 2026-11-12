@@ -4,7 +4,10 @@ import { useTranslation } from "react-i18next";
 import { EmailDigestSettings } from "@/components/account/email-digest-settings";
 import { PushNotificationCard } from "@/components/account/push-notification-card";
 import MyBriefEmailSetting from "@/components/insight/my-brief-email-setting";
-import { SettingsSection } from "@/components/settings-layout";
+import {
+  SettingsSaveFooter,
+  SettingsSection,
+} from "@/components/settings-layout";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -116,15 +119,18 @@ function ChannelCard({
   channel,
   children,
   description,
+  expanded = true,
   headerRight,
   title,
 }: {
   channel: "email" | "gotify" | "ntfy" | "webhook";
   title: React.ReactNode;
   description: React.ReactNode;
+  /** Off and never set up: only the header, so the page stays short. */
+  expanded?: boolean;
   headerRight: React.ReactNode;
-  children: React.ReactNode;
-  actions: React.ReactNode;
+  children?: React.ReactNode;
+  actions?: React.ReactNode;
 }) {
   return (
     <div
@@ -138,8 +144,12 @@ function ChannelCard({
         </div>
         {headerRight}
       </div>
-      <div className="space-y-4 border-t px-4 py-4">{children}</div>
-      <div className="flex justify-end border-t px-4 py-2.5">{actions}</div>
+      {expanded && children ? (
+        <div className="space-y-4 border-t px-4 py-4">{children}</div>
+      ) : null}
+      {expanded && actions ? (
+        <div className="flex justify-end border-t px-4 py-2.5">{actions}</div>
+      ) : null}
     </div>
   );
 }
@@ -273,7 +283,7 @@ function WorkspaceRuleCard({
         <div className="flex shrink-0 items-center gap-3">
           {isConnected ? (
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <CheckCircle className="size-4 text-green-600" />
+              <CheckCircle className="size-4 text-success" />
               <span>
                 {state.isActive
                   ? t("settings:notificationsPage.statusConnected")
@@ -294,214 +304,229 @@ function WorkspaceRuleCard({
         </div>
       </div>
 
-      <Separator />
+      {isConnected || state.isActive ? (
+        <>
+          <Separator />
 
-      {/* A channel that can't deliver reads as off; the saved choice is kept
+          {/* A channel that can't deliver reads as off; the saved choice is kept
           and applies again once the channel is on. */}
-      <div className="space-y-3">
-        <ChannelToggle
-          checked={hasEmailChannel && state.emailEnabled}
-          disabled={!hasEmailChannel || isBusy}
-          hint={
-            hasEmailChannel
-              ? t("settings:notificationsPage.emailChannelHintEnabled")
-              : t("settings:notificationsPage.emailChannelHintDisabled")
-          }
-          label={t("settings:notificationsPage.workspaceCardLabelEmail")}
-          onCheckedChange={(checked) =>
-            setState((current) => ({ ...current, emailEnabled: checked }))
-          }
-        />
-        <ChannelToggle
-          checked={hasNtfyChannel && state.ntfyEnabled}
-          disabled={!hasNtfyChannel || isBusy}
-          hint={
-            hasNtfyChannel
-              ? t("settings:notificationsPage.ntfyChannelHintEnabled")
-              : t("settings:notificationsPage.ntfyChannelHintDisabled")
-          }
-          label={t("settings:notificationsPage.workspaceCardLabelNtfy")}
-          onCheckedChange={(checked) =>
-            setState((current) => ({ ...current, ntfyEnabled: checked }))
-          }
-        />
-        <ChannelToggle
-          checked={hasGotifyChannel && state.gotifyEnabled}
-          disabled={!hasGotifyChannel || isBusy}
-          hint={
-            hasGotifyChannel
-              ? t("settings:notificationsPage.gotifyChannelHintEnabled")
-              : t("settings:notificationsPage.gotifyChannelHintDisabled")
-          }
-          label={t("settings:notificationsPage.workspaceCardLabelGotify")}
-          onCheckedChange={(checked) =>
-            setState((current) => ({ ...current, gotifyEnabled: checked }))
-          }
-        />
-        <ChannelToggle
-          checked={hasWebhookChannel && state.webhookEnabled}
-          disabled={!hasWebhookChannel || isBusy}
-          hint={
-            hasWebhookChannel
-              ? t("settings:notificationsPage.webhookChannelHintEnabled")
-              : t("settings:notificationsPage.webhookChannelHintDisabled")
-          }
-          label={t("settings:notificationsPage.workspaceCardLabelWebhook")}
-          onCheckedChange={(checked) =>
-            setState((current) => ({ ...current, webhookEnabled: checked }))
-          }
-        />
-        <ChannelToggle
-          checked={hasPushChannel && state.pushEnabled}
-          disabled={!hasPushChannel || isBusy}
-          hint={
-            hasPushChannel
-              ? t("settings:notificationsPage.pushChannelHintEnabled")
-              : t("settings:notificationsPage.pushChannelHintDisabled")
-          }
-          label={t("settings:notificationsPage.workspaceCardLabelPush")}
-          onCheckedChange={(checked) =>
-            setState((current) => ({ ...current, pushEnabled: checked }))
-          }
-        />
-      </div>
-
-      <Separator />
-
-      <div className="space-y-3">
-        <div className="space-y-0.5">
-          <Label className="text-sm font-medium">
-            {t("settings:notificationsPage.projectScope")}
-          </Label>
-          <p className="text-xs text-muted-foreground">
-            {t("settings:notificationsPage.projectScopeDescription")}
-          </p>
-        </div>
-
-        <RadioGroup
-          className="gap-2"
-          value={state.projectMode}
-          onValueChange={(value) =>
-            setState((current) => ({
-              ...current,
-              projectMode: value === "selected" ? "selected" : "all",
-            }))
-          }
-        >
-          <label
-            className="flex items-start gap-3"
-            htmlFor={`${workspace.id}-project-scope-all`}
-          >
-            <Radio
-              className="mt-0.5"
-              id={`${workspace.id}-project-scope-all`}
-              value="all"
-            />
-            <div className="min-w-0 space-y-0.5">
-              <p className="text-sm font-medium">
-                {t("settings:notificationsPage.allProjects")}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {t("settings:notificationsPage.allProjectsDescription")}
-              </p>
-            </div>
-          </label>
-
-          <label
-            className="flex items-start gap-3"
-            htmlFor={`${workspace.id}-project-scope-selected`}
-          >
-            <Radio
-              className="mt-0.5"
-              id={`${workspace.id}-project-scope-selected`}
-              value="selected"
-            />
-            <div className="min-w-0 space-y-0.5">
-              <p className="text-sm font-medium">
-                {t("settings:notificationsPage.selectedProjects")}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {t("settings:notificationsPage.selectedProjectsDescription")}
-              </p>
-            </div>
-          </label>
-        </RadioGroup>
-
-        {state.projectMode === "selected" ? (
-          <div className="space-y-2 border border-dashed border-border/80 rounded-md px-3 py-3">
-            {!projects?.length ? (
-              <p className="text-sm text-muted-foreground">
-                {t("settings:notificationsPage.noProjectsInWorkspace")}
-              </p>
-            ) : (
-              projects.map((project) => {
-                const checked = state.selectedProjectIds.includes(project.id);
-
-                return (
-                  <label
-                    key={project.id}
-                    className="flex items-center gap-3"
-                    htmlFor={`${workspace.id}-project-${project.id}`}
-                  >
-                    <Checkbox
-                      checked={checked}
-                      id={`${workspace.id}-project-${project.id}`}
-                      onCheckedChange={(value) =>
-                        toggleProject(project.id, Boolean(value))
-                      }
-                    />
-                    <span className="text-sm font-medium">{project.name}</span>
-                  </label>
-                );
-              })
-            )}
-          </div>
-        ) : null}
-      </div>
-
-      <Separator />
-
-      <div className="flex flex-wrap gap-2">
-        <Button
-          disabled={isBusy}
-          onClick={async () => {
-            setIsSaving(true);
-            try {
-              await onSave(workspace.id, state);
-            } finally {
-              setIsSaving(false);
-            }
-          }}
-          type="button"
-        >
-          {isConnected
-            ? t("settings:notificationsPage.saveChanges")
-            : t("settings:notificationsPage.createRule")}
-        </Button>
-        {isConnected ? (
-          <Button
-            disabled={isBusy}
-            onClick={async () => {
-              setIsDeleting(true);
-              try {
-                await onDelete(workspace.id);
-              } finally {
-                setIsDeleting(false);
+          <div className="space-y-3">
+            <ChannelToggle
+              checked={hasEmailChannel && state.emailEnabled}
+              disabled={!hasEmailChannel || isBusy}
+              hint={
+                hasEmailChannel
+                  ? t("settings:notificationsPage.emailChannelHintEnabled")
+                  : t("settings:notificationsPage.emailChannelHintDisabled")
               }
-            }}
-            type="button"
-            variant="outline"
-          >
-            <Trash2 className="size-4" />
-            {t("settings:notificationsPage.removeRule")}
-          </Button>
-        ) : null}
-      </div>
+              label={t("settings:notificationsPage.workspaceCardLabelEmail")}
+              onCheckedChange={(checked) =>
+                setState((current) => ({ ...current, emailEnabled: checked }))
+              }
+            />
+            <ChannelToggle
+              checked={hasNtfyChannel && state.ntfyEnabled}
+              disabled={!hasNtfyChannel || isBusy}
+              hint={
+                hasNtfyChannel
+                  ? t("settings:notificationsPage.ntfyChannelHintEnabled")
+                  : t("settings:notificationsPage.ntfyChannelHintDisabled")
+              }
+              label={t("settings:notificationsPage.workspaceCardLabelNtfy")}
+              onCheckedChange={(checked) =>
+                setState((current) => ({ ...current, ntfyEnabled: checked }))
+              }
+            />
+            <ChannelToggle
+              checked={hasGotifyChannel && state.gotifyEnabled}
+              disabled={!hasGotifyChannel || isBusy}
+              hint={
+                hasGotifyChannel
+                  ? t("settings:notificationsPage.gotifyChannelHintEnabled")
+                  : t("settings:notificationsPage.gotifyChannelHintDisabled")
+              }
+              label={t("settings:notificationsPage.workspaceCardLabelGotify")}
+              onCheckedChange={(checked) =>
+                setState((current) => ({ ...current, gotifyEnabled: checked }))
+              }
+            />
+            <ChannelToggle
+              checked={hasWebhookChannel && state.webhookEnabled}
+              disabled={!hasWebhookChannel || isBusy}
+              hint={
+                hasWebhookChannel
+                  ? t("settings:notificationsPage.webhookChannelHintEnabled")
+                  : t("settings:notificationsPage.webhookChannelHintDisabled")
+              }
+              label={t("settings:notificationsPage.workspaceCardLabelWebhook")}
+              onCheckedChange={(checked) =>
+                setState((current) => ({ ...current, webhookEnabled: checked }))
+              }
+            />
+            <ChannelToggle
+              checked={hasPushChannel && state.pushEnabled}
+              disabled={!hasPushChannel || isBusy}
+              hint={
+                hasPushChannel
+                  ? t("settings:notificationsPage.pushChannelHintEnabled")
+                  : t("settings:notificationsPage.pushChannelHintDisabled")
+              }
+              label={t("settings:notificationsPage.workspaceCardLabelPush")}
+              onCheckedChange={(checked) =>
+                setState((current) => ({ ...current, pushEnabled: checked }))
+              }
+            />
+          </div>
+
+          <Separator />
+
+          <div className="space-y-3">
+            <div className="space-y-0.5">
+              <Label className="text-sm font-medium">
+                {t("settings:notificationsPage.projectScope")}
+              </Label>
+              <p className="text-xs text-muted-foreground">
+                {t("settings:notificationsPage.projectScopeDescription")}
+              </p>
+            </div>
+
+            <RadioGroup
+              className="gap-2"
+              value={state.projectMode}
+              onValueChange={(value) =>
+                setState((current) => ({
+                  ...current,
+                  projectMode: value === "selected" ? "selected" : "all",
+                }))
+              }
+            >
+              <label
+                className="flex items-start gap-3"
+                htmlFor={`${workspace.id}-project-scope-all`}
+              >
+                <Radio
+                  className="mt-0.5"
+                  id={`${workspace.id}-project-scope-all`}
+                  value="all"
+                />
+                <div className="min-w-0 space-y-0.5">
+                  <p className="text-sm font-medium">
+                    {t("settings:notificationsPage.allProjects")}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {t("settings:notificationsPage.allProjectsDescription")}
+                  </p>
+                </div>
+              </label>
+
+              <label
+                className="flex items-start gap-3"
+                htmlFor={`${workspace.id}-project-scope-selected`}
+              >
+                <Radio
+                  className="mt-0.5"
+                  id={`${workspace.id}-project-scope-selected`}
+                  value="selected"
+                />
+                <div className="min-w-0 space-y-0.5">
+                  <p className="text-sm font-medium">
+                    {t("settings:notificationsPage.selectedProjects")}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {t(
+                      "settings:notificationsPage.selectedProjectsDescription",
+                    )}
+                  </p>
+                </div>
+              </label>
+            </RadioGroup>
+
+            {state.projectMode === "selected" ? (
+              <div className="space-y-2 border border-dashed border-border/80 rounded-md px-3 py-3">
+                {!projects?.length ? (
+                  <p className="text-sm text-muted-foreground">
+                    {t("settings:notificationsPage.noProjectsInWorkspace")}
+                  </p>
+                ) : (
+                  projects.map((project) => {
+                    const checked = state.selectedProjectIds.includes(
+                      project.id,
+                    );
+
+                    return (
+                      <label
+                        key={project.id}
+                        className="flex items-center gap-3"
+                        htmlFor={`${workspace.id}-project-${project.id}`}
+                      >
+                        <Checkbox
+                          checked={checked}
+                          id={`${workspace.id}-project-${project.id}`}
+                          onCheckedChange={(value) =>
+                            toggleProject(project.id, Boolean(value))
+                          }
+                        />
+                        <span className="text-sm font-medium">
+                          {project.name}
+                        </span>
+                      </label>
+                    );
+                  })
+                )}
+              </div>
+            ) : null}
+          </div>
+
+          <Separator />
+
+          <div className="flex flex-wrap gap-2">
+            <Button
+              disabled={isBusy}
+              onClick={async () => {
+                setIsSaving(true);
+                try {
+                  await onSave(workspace.id, state);
+                } finally {
+                  setIsSaving(false);
+                }
+              }}
+              type="button"
+            >
+              {isConnected
+                ? t("settings:notificationsPage.saveChanges")
+                : t("settings:notificationsPage.createRule")}
+            </Button>
+            {isConnected ? (
+              <Button
+                disabled={isBusy}
+                onClick={async () => {
+                  setIsDeleting(true);
+                  try {
+                    await onDelete(workspace.id);
+                  } finally {
+                    setIsDeleting(false);
+                  }
+                }}
+                type="button"
+                variant="outline"
+              >
+                <Trash2 className="size-4" />
+                {t("settings:notificationsPage.removeRule")}
+              </Button>
+            ) : null}
+          </div>
+        </>
+      ) : null}
     </div>
   );
 }
 
-export function NotificationPreferencesSettings() {
+export function NotificationPreferencesSettings({
+  sounds,
+}: {
+  /** The sound settings, placed after the delivery channels. */
+  sounds?: React.ReactNode;
+} = {}) {
   const { t } = useTranslation();
   const { data: preferences, isLoading } = useGetNotificationPreferences();
   const { data: workspacesData } = useGetWorkspaces();
@@ -579,6 +604,22 @@ export function NotificationPreferencesSettings() {
     });
   }, [preferences]);
 
+  const savedLeadMinutes = preferences?.dueDateReminderLeadTimeMinutes;
+  const eventPrefsDirty = Boolean(
+    preferences &&
+      (eventPrefs.taskAssignmentEnabled !== preferences.taskAssignmentEnabled ||
+        eventPrefs.taskCommentEnabled !== preferences.taskCommentEnabled ||
+        eventPrefs.taskStatusChangeEnabled !==
+          preferences.taskStatusChangeEnabled ||
+        eventPrefs.taskUpdateEnabled !==
+          (preferences.taskUpdateEnabled ?? true) ||
+        eventPrefs.dueDateReminderEnabled !==
+          preferences.dueDateReminderEnabled ||
+        (eventPrefs.dueDateReminderEnabled &&
+          eventPrefs.dueDateReminderLeadAmount *
+            (eventPrefs.dueDateReminderLeadUnit === "days" ? 1440 : 60) !==
+            savedLeadMinutes)),
+  );
   const leadTimeMax = eventPrefs.dueDateReminderLeadUnit === "days" ? 30 : 720;
   const leadTimeValid =
     Number.isInteger(eventPrefs.dueDateReminderLeadAmount) &&
@@ -739,36 +780,31 @@ export function NotificationPreferencesSettings() {
             )}
           </div>
 
-          <div className="flex justify-end border-t pt-4">
-            <Button
-              size="sm"
-              disabled={
-                isSavingPreferences ||
-                (eventPrefs.dueDateReminderEnabled && !leadTimeValid)
-              }
-              onClick={async () => {
-                await updatePreferences({
-                  taskAssignmentEnabled: eventPrefs.taskAssignmentEnabled,
-                  taskCommentEnabled: eventPrefs.taskCommentEnabled,
-                  taskStatusChangeEnabled: eventPrefs.taskStatusChangeEnabled,
-                  taskUpdateEnabled: eventPrefs.taskUpdateEnabled,
-                  dueDateReminderEnabled: eventPrefs.dueDateReminderEnabled,
-                  ...(eventPrefs.dueDateReminderEnabled
-                    ? {
-                        dueDateReminderLeadTimeMinutes:
-                          eventPrefs.dueDateReminderLeadAmount *
-                          (eventPrefs.dueDateReminderLeadUnit === "days"
-                            ? 1440
-                            : 60),
-                      }
-                    : {}),
-                });
-              }}
-              type="button"
-            >
-              {t("settings:notificationsPage.saveEventPreferences")}
-            </Button>
-          </div>
+          <SettingsSaveFooter
+            className="-mx-4 -mb-4"
+            dirty={eventPrefsDirty}
+            saving={isSavingPreferences}
+            disabled={eventPrefs.dueDateReminderEnabled && !leadTimeValid}
+            saveLabel={t("settings:notificationsPage.saveEventPreferences")}
+            onSave={async () => {
+              await updatePreferences({
+                taskAssignmentEnabled: eventPrefs.taskAssignmentEnabled,
+                taskCommentEnabled: eventPrefs.taskCommentEnabled,
+                taskStatusChangeEnabled: eventPrefs.taskStatusChangeEnabled,
+                taskUpdateEnabled: eventPrefs.taskUpdateEnabled,
+                dueDateReminderEnabled: eventPrefs.dueDateReminderEnabled,
+                ...(eventPrefs.dueDateReminderEnabled
+                  ? {
+                      dueDateReminderLeadTimeMinutes:
+                        eventPrefs.dueDateReminderLeadAmount *
+                        (eventPrefs.dueDateReminderLeadUnit === "days"
+                          ? 1440
+                          : 60),
+                    }
+                  : {}),
+              });
+            }}
+          />
         </div>
       </SettingsSection>
 
@@ -779,59 +815,46 @@ export function NotificationPreferencesSettings() {
         <PushNotificationCard />
 
         <ChannelCard
-          actions={
-            <div className="flex gap-2">
-              <Button
-                disabled={isSavingPreferences || !preferences?.emailAddress}
-                onClick={async () => {
-                  await updatePreferences({
-                    emailEnabled: globalPrefs.emailEnabled,
-                  });
-                }}
-                type="button"
-              >
-                {t("settings:notificationsPage.saveChanges")}
-              </Button>
-            </div>
-          }
           channel="email"
-          description={t("settings:notificationsPage.emailDescription")}
+          description={
+            <>
+              {t("settings:notificationsPage.emailDescription")}{" "}
+              {preferences?.emailAddress
+                ? t("settings:notificationsPage.emailSendsTo", {
+                    email: preferences.emailAddress,
+                  })
+                : t("settings:notificationsPage.accountEmailNoAddress")}
+            </>
+          }
           headerRight={
             <div className="flex items-center gap-3">
               {preferences?.emailEnabled ? (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <CheckCircle className="size-4 text-green-600" />
+                  <CheckCircle className="size-4 text-success" />
                   <span>{t("settings:notificationsPage.statusConnected")}</span>
                 </div>
               ) : null}
               <Switch
+                aria-label={t("settings:notificationsPage.emailTitle")}
                 checked={globalPrefs.emailEnabled}
                 disabled={isSavingPreferences || !preferences?.emailAddress}
-                onCheckedChange={(checked) =>
-                  setGlobalPrefs((prev) => ({ ...prev, emailEnabled: checked }))
-                }
+                onCheckedChange={(checked) => {
+                  setGlobalPrefs((prev) => ({
+                    ...prev,
+                    emailEnabled: checked,
+                  }));
+                  void updatePreferences({ emailEnabled: checked }).catch(() =>
+                    setGlobalPrefs((prev) => ({
+                      ...prev,
+                      emailEnabled: !checked,
+                    })),
+                  );
+                }}
               />
             </div>
           }
           title={t("settings:notificationsPage.emailTitle")}
-        >
-          <div className="space-y-1">
-            <Label className="text-sm font-medium">
-              {t("settings:notificationsPage.accountEmailLabel")}
-            </Label>
-            <Input
-              disabled
-              readOnly
-              value={
-                preferences?.emailAddress ??
-                t("settings:notificationsPage.accountEmailNoAddress")
-              }
-            />
-            <p className="text-xs text-muted-foreground">
-              {t("settings:notificationsPage.accountEmailHint")}
-            </p>
-          </div>
-        </ChannelCard>
+        />
 
         <ChannelCard
           actions={
@@ -885,12 +908,15 @@ export function NotificationPreferencesSettings() {
             </div>
           }
           channel="gotify"
+          expanded={
+            globalPrefs.gotify.enabled || Boolean(preferences?.gotifyConfigured)
+          }
           description={t("settings:notificationsPage.gotifyDescription")}
           headerRight={
             <div className="flex items-center gap-3">
               {preferences?.gotifyConfigured ? (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <CheckCircle className="size-4 text-green-600" />
+                  <CheckCircle className="size-4 text-success" />
                   <span>
                     {preferences.gotifyEnabled
                       ? t("settings:notificationsPage.statusConnected")
@@ -899,6 +925,7 @@ export function NotificationPreferencesSettings() {
                 </div>
               ) : null}
               <Switch
+                aria-label={t("settings:notificationsPage.gotifyTitle")}
                 checked={globalPrefs.gotify.enabled}
                 disabled={isSavingPreferences}
                 onCheckedChange={(checked) =>
@@ -1015,12 +1042,15 @@ export function NotificationPreferencesSettings() {
             </div>
           }
           channel="ntfy"
+          expanded={
+            globalPrefs.ntfy.enabled || Boolean(preferences?.ntfyConfigured)
+          }
           description={t("settings:notificationsPage.ntfyDescription")}
           headerRight={
             <div className="flex items-center gap-3">
               {preferences?.ntfyConfigured ? (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <CheckCircle className="size-4 text-green-600" />
+                  <CheckCircle className="size-4 text-success" />
                   <span>
                     {preferences.ntfyEnabled
                       ? t("settings:notificationsPage.statusConnected")
@@ -1029,6 +1059,7 @@ export function NotificationPreferencesSettings() {
                 </div>
               ) : null}
               <Switch
+                aria-label={t("settings:notificationsPage.ntfyTitle")}
                 checked={globalPrefs.ntfy.enabled}
                 disabled={isSavingPreferences}
                 onCheckedChange={(checked) =>
@@ -1160,12 +1191,16 @@ export function NotificationPreferencesSettings() {
             </div>
           }
           channel="webhook"
+          expanded={
+            globalPrefs.webhook.enabled ||
+            Boolean(preferences?.webhookConfigured)
+          }
           description={t("settings:notificationsPage.webhookDescription")}
           headerRight={
             <div className="flex items-center gap-3">
               {preferences?.webhookConfigured ? (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <CheckCircle className="size-4 text-green-600" />
+                  <CheckCircle className="size-4 text-success" />
                   <span>
                     {preferences.webhookEnabled
                       ? t("settings:notificationsPage.statusConnected")
@@ -1174,6 +1209,7 @@ export function NotificationPreferencesSettings() {
                 </div>
               ) : null}
               <Switch
+                aria-label={t("settings:notificationsPage.webhookTitle")}
                 checked={globalPrefs.webhook.enabled}
                 disabled={isSavingPreferences}
                 onCheckedChange={(checked) =>
@@ -1246,6 +1282,8 @@ export function NotificationPreferencesSettings() {
         preferences={preferences}
       />
       <MyBriefEmailSetting />
+
+      {sounds}
 
       <SettingsSection
         title={t("settings:notificationsPage.workspaceRulesTitle")}

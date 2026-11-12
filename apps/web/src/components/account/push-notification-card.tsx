@@ -42,9 +42,6 @@ export function PushNotificationCard() {
 
   const hint = () => {
     if (isError) return t("settings:notificationsPage.pushLoadFailed");
-    if (support === "desktop-app") {
-      return t("settings:notificationsPage.pushDesktopApp");
-    }
     if (!status?.available) return t("settings:notificationsPage.pushNotSetUp");
     if (support === "install-required") {
       return t("settings:notificationsPage.pushInstallFirst");
@@ -71,6 +68,10 @@ export function PushNotificationCard() {
   };
 
   const isBusy = turnOn.isPending || turnOff.isPending;
+  // Inside Margaya Desktop the app itself shows notifications: no browser
+  // push to switch on, only the account's other devices to manage.
+  const inDesktopApp = support === "desktop-app";
+  const otherDevices = status?.otherDevices ?? [];
 
   return (
     <div
@@ -80,75 +81,83 @@ export function PushNotificationCard() {
       <div className="flex items-start justify-between gap-4 px-4 py-3">
         <div className="min-w-0 space-y-0.5">
           <h3 className="font-medium text-sm">
-            {t("settings:notificationsPage.pushTitle")}
+            {inDesktopApp
+              ? t("settings:notificationsPage.pushDesktopTitle")
+              : t("settings:notificationsPage.pushTitle")}
           </h3>
           <p className="text-muted-foreground text-xs">
-            {t("settings:notificationsPage.pushDescription")}
+            {inDesktopApp
+              ? t("settings:notificationsPage.pushDesktopDescription")
+              : t("settings:notificationsPage.pushDescription")}
           </p>
         </div>
         {isOn ? (
           <div className="flex shrink-0 items-center gap-2 text-sm text-muted-foreground">
-            <CheckCircle className="size-4 text-green-600" />
+            <CheckCircle className="size-4 text-success" />
             <span>{t("settings:notificationsPage.statusConnected")}</span>
           </div>
         ) : null}
       </div>
-      <div className="space-y-4 border-t px-4 py-4">
-        <div className="flex items-center justify-between gap-4">
-          <div className="min-w-0 space-y-0.5">
-            <Label className="text-sm font-medium" htmlFor={switchId}>
-              {t("settings:notificationsPage.pushThisDevice")}
-            </Label>
-            <p className="text-xs text-muted-foreground">
-              {isLoading ? null : hint()}
-            </p>
-          </div>
-          <Switch
-            checked={isOn}
-            disabled={!canSubscribe || isBlocked || isBusy}
-            id={switchId}
-            onCheckedChange={(checked) => {
-              if (!checked) turnOff.mutate();
-              else if (status?.publicKey) turnOn.mutate(status.publicKey);
-            }}
-          />
-        </div>
+      {inDesktopApp && otherDevices.length === 0 ? null : (
+        <div className="space-y-4 border-t px-4 py-4">
+          {inDesktopApp ? null : (
+            <div className="flex items-center justify-between gap-4">
+              <div className="min-w-0 space-y-0.5">
+                <Label className="text-sm font-medium" htmlFor={switchId}>
+                  {t("settings:notificationsPage.pushThisDevice")}
+                </Label>
+                <p className="text-xs text-muted-foreground">
+                  {isLoading ? null : hint()}
+                </p>
+              </div>
+              <Switch
+                checked={isOn}
+                disabled={!canSubscribe || isBlocked || isBusy}
+                id={switchId}
+                onCheckedChange={(checked) => {
+                  if (!checked) turnOff.mutate();
+                  else if (status?.publicKey) turnOn.mutate(status.publicKey);
+                }}
+              />
+            </div>
+          )}
 
-        {status?.otherDevices.length ? (
-          <div className="space-y-2">
-            <p className="text-sm font-medium">
-              {t("settings:notificationsPage.pushOtherDevices")}
-            </p>
-            <ul className="space-y-1">
-              {status.otherDevices.map((device) => {
-                const label = deviceLabel(device);
-                return (
-                  <li
-                    className="flex items-center justify-between gap-4 text-sm"
-                    key={device.id}
-                  >
-                    <span className="min-w-0 truncate">{label}</span>
-                    <Button
-                      aria-label={t(
-                        "settings:notificationsPage.pushRemoveDeviceLabel",
-                        { device: label },
-                      )}
-                      disabled={removeDevice.isPending}
-                      onClick={() => removeDevice.mutate(device.id)}
-                      size="sm"
-                      type="button"
-                      variant="outline"
+          {otherDevices.length ? (
+            <div className="space-y-2">
+              <p className="text-sm font-medium">
+                {t("settings:notificationsPage.pushOtherDevices")}
+              </p>
+              <ul className="space-y-1">
+                {otherDevices.map((device) => {
+                  const label = deviceLabel(device);
+                  return (
+                    <li
+                      className="flex items-center justify-between gap-4 text-sm"
+                      key={device.id}
                     >
-                      <Trash2 className="size-4" />
-                      {t("settings:notificationsPage.pushRemoveDevice")}
-                    </Button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        ) : null}
-      </div>
+                      <span className="min-w-0 truncate">{label}</span>
+                      <Button
+                        aria-label={t(
+                          "settings:notificationsPage.pushRemoveDeviceLabel",
+                          { device: label },
+                        )}
+                        disabled={removeDevice.isPending}
+                        onClick={() => removeDevice.mutate(device.id)}
+                        size="sm"
+                        type="button"
+                        variant="outline"
+                      >
+                        <Trash2 className="size-4" />
+                        {t("settings:notificationsPage.pushRemoveDevice")}
+                      </Button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ) : null}
+        </div>
+      )}
     </div>
   );
 }

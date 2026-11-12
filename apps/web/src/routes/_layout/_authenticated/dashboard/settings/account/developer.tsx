@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { ApiKeyCreatedModal } from "@/components/settings/api-key-created-modal";
 import { ApiKeyTable } from "@/components/settings/api-key-table";
 import { CreateApiKeyDialog } from "@/components/settings/create-api-key-dialog";
-import { SettingsPage, SettingsSection } from "@/components/settings-layout";
+import { SettingsPage } from "@/components/settings-layout";
 import { Button } from "@/components/ui/button";
 import useGetApiKeys from "@/hooks/queries/use-get-api-keys";
 import type { CreateApiKeyResponse } from "@/types/api-key";
@@ -48,12 +48,7 @@ function RouteComponent() {
         </Button>
       }
     >
-      <SettingsSection
-        title={t("settings:developerPage.apiKeysCardTitle")}
-        description={t("settings:developerPage.apiKeysCardDescription")}
-      >
-        <ApiKeyTable apiKeys={apiKeys} isLoading={isLoading} />
-      </SettingsSection>
+      <ApiKeyTable apiKeys={apiKeys} isLoading={isLoading} />
 
       <CreateApiKeyDialog
         open={createDialogOpen}

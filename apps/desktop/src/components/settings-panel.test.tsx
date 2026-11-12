@@ -16,6 +16,8 @@ function answer(settings: Record<string, unknown>) {
       return { version: "1.4.0", autostart: false, ...settings };
     if (command === "check_for_update") return "1.5.0";
     if (command === "install_update") return null;
+    if (command === "set_autostart") return null;
+    if (command === "copy_diagnostics") return null;
     throw new Error(`unexpected command ${command}`);
   });
 }
@@ -63,5 +65,34 @@ describe("SettingsPanel updates", () => {
     );
     // Nothing restarts: the button stays ready for another try.
     expect((download as HTMLButtonElement).disabled).toBe(false);
+  });
+
+  it("turns open at login on from its switch", async () => {
+    answer({ platform: "windows", selfUpdate: true });
+    render(<SettingsPanel />);
+    const toggle = await screen.findByRole("switch", {
+      name: "settings.openAtLogin",
+    });
+    await vi.waitFor(() =>
+      expect((toggle as HTMLInputElement).disabled).toBe(false),
+    );
+    fireEvent.click(toggle);
+    await vi.waitFor(() =>
+      expect(invoke).toHaveBeenCalledWith("set_autostart", { enabled: true }),
+    );
+    await vi.waitFor(() =>
+      expect((toggle as HTMLInputElement).checked).toBe(true),
+    );
+  });
+
+  it("says when diagnostics were copied", async () => {
+    answer({ platform: "windows", selfUpdate: true });
+    render(<SettingsPanel />);
+    fireEvent.click(
+      await screen.findByRole("button", { name: "settings.copyDiagnostics" }),
+    );
+    expect((await screen.findByRole("status")).textContent).toBe(
+      "settings.copied",
+    );
   });
 });

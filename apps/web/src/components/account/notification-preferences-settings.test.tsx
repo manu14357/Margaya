@@ -188,6 +188,53 @@ describe("NotificationPreferencesSettings", () => {
     );
   });
 
+  it("saves the email channel as soon as its switch moves", async () => {
+    render(<NotificationPreferencesSettings />);
+    fireEvent.click(
+      screen.getByRole("switch", {
+        name: "settings:notificationsPage.emailTitle",
+      }),
+    );
+    await waitFor(() =>
+      expect(updatePreferences).toHaveBeenCalledWith({ emailEnabled: true }),
+    );
+  });
+
+  it("keeps a channel's setup folded until it is switched on", () => {
+    render(<NotificationPreferencesSettings />);
+    expect(
+      screen.queryByRole("button", {
+        name: "settings:notificationsPage.connectGotify",
+      }),
+    ).toBeNull();
+    fireEvent.click(
+      screen.getByRole("switch", {
+        name: "settings:notificationsPage.gotifyTitle",
+      }),
+    );
+    expect(
+      screen.getByRole("button", {
+        name: "settings:notificationsPage.connectGotify",
+      }),
+    ).toBeTruthy();
+  });
+
+  it("offers Save for notification types only after a change", () => {
+    render(<NotificationPreferencesSettings />);
+    const save = () =>
+      screen.getByRole("button", {
+        name: "settings:notificationsPage.saveEventPreferences",
+      });
+    expect(save()).toHaveProperty("disabled", true);
+    fireEvent.click(
+      screen.getByRole("switch", {
+        name: "settings:notificationsPage.eventTaskAssignments",
+      }),
+    );
+    expect(save()).toHaveProperty("disabled", false);
+    expect(screen.getByText("settings:unsavedChanges")).toBeTruthy();
+  });
+
   it("saves event preferences and a configurable reminder lead time", async () => {
     render(<NotificationPreferencesSettings />);
 

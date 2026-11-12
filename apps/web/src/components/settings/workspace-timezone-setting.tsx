@@ -60,7 +60,7 @@ export default function WorkspaceTimezoneSetting({
             type="button"
             variant="link"
             size="sm"
-            className="h-auto self-start p-0 text-xs"
+            className="h-auto self-start p-0 text-primary text-xs"
             disabled={isPending}
             onClick={() => save(suggestion)}
           >

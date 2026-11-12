@@ -168,13 +168,6 @@ describe("PushNotificationCard", () => {
       "pushUnsupported",
     ],
     ["permission is blocked", {}, "supported", "denied", "pushBlocked"],
-    [
-      "the desktop app delivers notifications",
-      {},
-      "desktop-app",
-      "default",
-      "pushDesktopApp",
-    ],
   ])(
     "explains and disables the switch when %s",
     (_name, overrides, support, permission, key) => {
@@ -197,9 +190,22 @@ describe("PushNotificationCard", () => {
     mocks.support = "desktop-app";
     mocks.status = status({ available: false, publicKey: null });
     render(<PushNotificationCard />);
-    expect(screen.getByText(`${prefix}.pushDesktopApp`)).toBeTruthy();
+    expect(screen.getByText(`${prefix}.pushDesktopTitle`)).toBeTruthy();
+    expect(screen.getByText(`${prefix}.pushDesktopDescription`)).toBeTruthy();
+    expect(screen.queryByRole("switch")).toBeNull();
     expect(screen.queryByText(`${prefix}.pushNotSetUp`)).toBeNull();
     expect(mocks.register).not.toHaveBeenCalled();
+  });
+
+  it("still lists the account's other devices inside the desktop app", () => {
+    mocks.support = "desktop-app";
+    mocks.status = status({
+      subscriptions: [otherDevice],
+      otherDevices: [otherDevice],
+    });
+    render(<PushNotificationCard />);
+    expect(screen.getByText(`${prefix}.pushOtherDevices`)).toBeTruthy();
+    expect(screen.queryByRole("switch")).toBeNull();
   });
 
   it("says so when the status can't load, rather than that push isn't set up", () => {

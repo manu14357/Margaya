@@ -47,7 +47,7 @@ test.describe("profile", () => {
     const { page, user, workspace } = await newUserWithWorkspace(pageAs);
     await openSettings(page, workspace.id, "information");
     await expect(
-      page.getByRole("heading", { name: "Personal information" }),
+      page.getByRole("heading", { name: "Profile", exact: true }),
     ).toBeVisible();
     const name = page.getByLabel("Full name");
     await expect(name).toHaveValue(user.name);
@@ -202,9 +202,9 @@ test.describe("notifications", () => {
         page.getByText(channel, { exact: true }).first(),
       ).toBeVisible();
     }
-    // The account email is the read-only value of the "Account email" field.
+    // The email channel says which address it sends to.
     await expect(
-      page.locator(`input[value="${user.email}"]`).first(),
+      page.getByText(`Sent to ${user.email}.`, { exact: false }),
     ).toBeVisible();
 
     const assignments = page.getByRole("switch", { name: "Task assignments" });
@@ -246,7 +246,7 @@ test.describe("developer", () => {
       });
     await openSettings(page, workspace.id, "developer");
     await expect(
-      page.getByRole("heading", { name: "Developer settings" }),
+      page.getByRole("heading", { name: "API keys", exact: true }),
     ).toBeVisible();
     await expect(
       page.getByText("No API keys yet. Create one to get started."),

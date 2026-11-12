@@ -208,6 +208,44 @@ describe("ActiveSessionsSection", () => {
     ).toBeNull();
   });
 
+  it("lists this device first and folds a long list", () => {
+    const many = Array.from({ length: 8 }, (_, index) => ({
+      ...sessions[1],
+      id: `session-${index}`,
+      userAgent: index === 7 ? "MargayaDesktop/0.1.0" : sessions[1].userAgent,
+      lastActiveAt: `2026-10-${String(10 + index).padStart(2, "0")}T10:00:00.000Z`,
+    }));
+    renderWithQuery(
+      <ActiveSessionsSection
+        sessions={[...many, sessions[0]]}
+        isLoading={false}
+        isError={false}
+      />,
+    );
+
+    const rows = () => document.querySelectorAll('[data-slot="settings-row"]');
+    expect(rows()).toHaveLength(5);
+    expect(rows()[0]).toHaveTextContent(
+      "settings:securityPage.sessions.thisDevice",
+    );
+    // The most recent other session is the desktop app's own sign-in.
+    expect(rows()[1]).toHaveTextContent(
+      "settings:securityPage.sessions.desktopApp",
+    );
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "settings:securityPage.sessions.showAll",
+      }),
+    );
+    expect(rows()).toHaveLength(9);
+    expect(
+      screen.getByRole("button", {
+        name: "settings:securityPage.sessions.showFewer",
+      }),
+    ).toHaveAttribute("aria-expanded", "true");
+  });
+
   it("says so when the sessions can't load", () => {
     renderWithQuery(
       <ActiveSessionsSection sessions={undefined} isLoading={false} isError />,

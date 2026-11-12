@@ -205,7 +205,7 @@ test("a CSV import maps columns, shows its warnings and creates the tasks", asyn
 
 type StoredKey = { name: string; expiresAt: string | null };
 
-/** Opens Developer settings as a brand-new user who owns a workspace. */
+/** Opens API keys as a brand-new user who owns a workspace. */
 async function openDeveloperSettings(
   pageAs: Parameters<typeof newUserWithWorkspace>[0],
 ) {
@@ -217,7 +217,7 @@ async function openDeveloperSettings(
   await page.goto(workspacePath(workspace.id));
   await page.goto("/dashboard/settings/account/developer");
   await expect(
-    page.getByRole("heading", { name: "Developer settings" }),
+    page.getByRole("heading", { name: "API keys", exact: true }),
   ).toBeVisible({ timeout: 90_000 });
   return session;
 }

@@ -1,12 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { errorMessage } from "../lib/errors";
 import { useT } from "../lib/i18n";
 import { api, events, type Settings } from "../lib/ipc";
 
 type UpdateState = "idle" | "checking" | "upToDate" | "installing";
 
+/**
+ * The app's own settings, as rows like the web app's settings pages: what a
+ * setting is on the left, its control on the right.
+ */
 export function SettingsPanel() {
   const t = useT();
+  const ids = { autostart: useId(), autostartHint: useId() };
   const [settings, setSettings] = useState<Settings | null>(null);
   const [update, setUpdate] = useState<string | null>(null);
   const [updateState, setUpdateState] = useState<UpdateState>("idle");
@@ -35,6 +40,7 @@ export function SettingsPanel() {
 
   const copyDiagnostics = async () => {
     setError(null);
+    setNotice(null);
     try {
       await api.copyDiagnostics();
       setNotice(t("settings.copied"));
@@ -71,72 +77,106 @@ export function SettingsPanel() {
   };
 
   return (
-    <section className="card" aria-labelledby="settings-heading">
-      <h2 id="settings-heading">{t("settings.heading")}</h2>
-      <label className="toggle">
-        <input
-          type="checkbox"
-          checked={settings?.autostart ?? false}
-          disabled={!settings}
-          onChange={(event) => void toggleAutostart(event.target.checked)}
-        />
-        <span>{t("settings.openAtLogin")}</span>
-      </label>
-      {update ? (
-        <div className="message success row">
-          <span className="grow">
-            {selfUpdate
-              ? t("settings.updateAvailable", { version: update })
-              : t("settings.updatePackage", { version: update })}
-          </span>
+    <section aria-labelledby="settings-heading">
+      <h2 id="settings-heading" className="section-title">
+        {t("settings.heading")}
+      </h2>
+      <div className="settings-group">
+        <div className="settings-row">
+          <div className="settings-text">
+            <label htmlFor={ids.autostart} className="settings-label">
+              {t("settings.openAtLogin")}
+            </label>
+            <p id={ids.autostartHint} className="settings-hint">
+              {t("settings.openAtLoginHint")}
+            </p>
+          </div>
+          <input
+            id={ids.autostart}
+            type="checkbox"
+            role="switch"
+            className="switch"
+            aria-describedby={ids.autostartHint}
+            aria-checked={settings?.autostart ?? false}
+            checked={settings?.autostart ?? false}
+            disabled={!settings}
+            onChange={(event) => void toggleAutostart(event.target.checked)}
+          />
+        </div>
+
+        <div className="settings-row">
+          <div className="settings-text">
+            <span className="settings-label">{t("settings.updatesLabel")}</span>
+            <p className="settings-hint">
+              {settings
+                ? t("settings.version", { version: settings.version })
+                : null}
+            </p>
+            {updateState === "upToDate" && !update ? (
+              <p className="settings-hint success-text" role="status">
+                {t("settings.upToDate")}
+              </p>
+            ) : null}
+          </div>
           <button
             type="button"
-            className="button primary"
-            disabled={updateState === "installing"}
-            onClick={() => void installUpdate()}
+            className="button"
+            disabled={updateState === "checking"}
+            onClick={() => void checkForUpdate()}
           >
-            {!selfUpdate
-              ? t("settings.updateDownload")
-              : updateState === "installing"
-                ? t("settings.updating")
-                : t("settings.updateInstall")}
+            {updateState === "checking"
+              ? t("settings.checking")
+              : t("settings.checkUpdates")}
           </button>
         </div>
-      ) : null}
-      <div className="row">
-        <button
-          type="button"
-          className="button"
-          onClick={() => void copyDiagnostics()}
-        >
-          {t("settings.copyDiagnostics")}
-        </button>
-        <button
-          type="button"
-          className="button"
-          disabled={updateState === "checking"}
-          onClick={() => void checkForUpdate()}
-        >
-          {updateState === "checking"
-            ? t("settings.checking")
-            : t("settings.checkUpdates")}
-        </button>
-        <span className="muted grow end-text">
-          {settings
-            ? t("settings.version", { version: settings.version })
-            : null}
-        </span>
+
+        {update ? (
+          <div className="settings-row highlight">
+            <div className="settings-text">
+              <span className="settings-label">
+                {selfUpdate
+                  ? t("settings.updateAvailable", { version: update })
+                  : t("settings.updatePackage", { version: update })}
+              </span>
+            </div>
+            <button
+              type="button"
+              className="button primary"
+              disabled={updateState === "installing"}
+              onClick={() => void installUpdate()}
+            >
+              {!selfUpdate
+                ? t("settings.updateDownload")
+                : updateState === "installing"
+                  ? t("settings.updating")
+                  : t("settings.updateInstall")}
+            </button>
+          </div>
+        ) : null}
+
+        <div className="settings-row">
+          <div className="settings-text">
+            <span className="settings-label">
+              {t("settings.diagnosticsLabel")}
+            </span>
+            <p className="settings-hint">{t("settings.diagnosticsHint")}</p>
+            {notice ? (
+              <p className="settings-hint success-text" role="status">
+                {notice}
+              </p>
+            ) : null}
+          </div>
+          <button
+            type="button"
+            className="button"
+            onClick={() => void copyDiagnostics()}
+          >
+            {t("settings.copyDiagnostics")}
+          </button>
+        </div>
       </div>
-      {updateState === "upToDate" ? (
-        <p className="muted">{t("settings.upToDate")}</p>
-      ) : null}
-      {notice ? (
-        <p className="muted" role="status">
-          {notice}
-        </p>
-      ) : null}
       {error ? (
-        <p className="message error" role="alert">
+        <p className="message error settings-error" role="alert">
           {errorMessage(t, error)}
         </p>
       ) : null}

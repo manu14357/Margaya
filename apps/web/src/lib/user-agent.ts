@@ -32,3 +32,10 @@ export function summarizeUserAgent(
   const os = SYSTEMS.find(([pattern]) => pattern.test(ua))?.[1] ?? null;
   return { browser, os, mobile: /Mobi|iPhone|iPad|Android/.test(ua) };
 }
+
+/** The Margaya Desktop app's own requests (its sign-in and live updates). */
+export function isDesktopAppUserAgent(
+  userAgent: string | null | undefined,
+): boolean {
+  return /\bMargayaDesktop\//.test(userAgent ?? "");
+}
