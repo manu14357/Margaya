@@ -19,6 +19,7 @@ import {
   unique,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
+import type { AiProvenance } from "../ai/provenance-types";
 import type {
   BriefAudience,
   BriefScopeType,
@@ -31,6 +32,7 @@ import type {
   RecentVisitEntityType,
 } from "../entity-reference/types";
 import type { EstimateType } from "../estimate/types";
+import type { FeedbackFeature, FeedbackPageType } from "../feedback/constants";
 import type { GitHubImportState } from "../github-integration/import-state";
 import type { ModuleStatus } from "../module/types";
 import type {
@@ -38,6 +40,10 @@ import type {
   PageLogoKind,
   PageReferenceType,
 } from "../page/types";
+import type {
+  ProjectUpdateFacts,
+  ProjectUpdateHealth,
+} from "../project-update/types";
 import type {
   TaskExportFormat,
   TaskExportKind,
@@ -443,6 +449,9 @@ export const projectTable = pgTable(
     // AI features (ai/): effective only while the instance and the workspace
     // have AI on. Off excludes the project from AI context and AI routes.
     aiEnabled: boolean("ai_enabled").notNull().default(true),
+    // Project status updates (project-update/): opt-in, off for every
+    // existing project.
+    updatesEnabled: boolean("updates_enabled").notNull().default(false),
     // Triage Copilot (ai-triage/): apply suggested labels at once, each
     // application audited. Off: people accept every suggestion themselves.
     aiTriageAutoApplyLabels: boolean("ai_triage_auto_apply_labels")
@@ -678,6 +687,9 @@ export const taskTable = pgTable(
       onUpdate: "cascade",
     }),
     trashBatchId: text("trash_batch_id"),
+    // Set when AI wrote the description (ai/provenance.ts); null for
+    // human-written text.
+    aiProvenance: jsonb("ai_provenance").$type<AiProvenance>(),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { mode: "date" })
       .defaultNow()
@@ -876,6 +888,8 @@ export const activityTable = pgTable(
     // A reply's top-level comment (one level of threads); null for
     // top-level comments and every other activity type.
     parentId: text("parent_id"),
+    // Comments only: set when AI wrote the text (ai/provenance.ts).
+    aiProvenance: jsonb("ai_provenance").$type<AiProvenance>(),
   },
   (table) => [
     // Deleting a comment keeps its replies: they move up into the feed as
@@ -1212,6 +1226,38 @@ export const notificationEmailQueueTable = pgTable(
   ],
 );
 
+// Deliveries held back by quiet hours or focus mode: one row per held
+// notification, naming the channels (push, email, desktop, ntfy, gotify,
+// webhook) it skipped. When the user's quiet time ends, the release job
+// sends one summary per channel and deletes the rows.
+export const notificationDeliveryHoldTable = pgTable(
+  "notification_delivery_hold",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    notificationId: text("notification_id")
+      .notNull()
+      .unique()
+      .references(() => notificationTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    channels: text("channels").array().notNull(),
+    claimedAt: timestamp("claimed_at", { mode: "date", withTimezone: true }),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [index("notification_delivery_hold_user_idx").on(table.userId)],
+);
+
 export const userNotificationWorkspaceRuleTable = pgTable(
   "user_notification_workspace_rule",
   {
@@ -1363,6 +1409,88 @@ export const integrationTable = pgTable(
     index("integration_projectId_idx").on(table.projectId),
     index("integration_type_idx").on(table.type),
     unique("integration_project_type_unique").on(table.projectId, table.type),
+  ],
+);
+
+// Two-way Slack (#10): one bot connection per workspace. Tokens and the
+// signing secret are sealed with the secret box (slack-app/secrets.ts) and
+// never leave the server. `mode` is "socket" (an outbound WebSocket, no
+// public URL needed) or "http" (signed Events and Interactivity requests).
+export const slackConnectionTable = pgTable(
+  "slack_connection",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    mode: text("mode").notNull().default("socket"),
+    botToken: text("bot_token").notNull(),
+    appToken: text("app_token"),
+    signingSecret: text("signing_secret"),
+    teamId: text("team_id"),
+    teamName: text("team_name"),
+    botUserId: text("bot_user_id"),
+    defaultProjectId: text("default_project_id").references(
+      () => projectTable.id,
+      { onDelete: "set null", onUpdate: "cascade" },
+    ),
+    expandTaskKeys: boolean("expand_task_keys").notNull().default(false),
+    isActive: boolean("is_active").notNull().default(true),
+    lastConnectedAt: timestamp("last_connected_at", { mode: "date" }),
+    lastError: text("last_error"),
+    createdBy: text("created_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    unique("slack_connection_workspace_unique").on(table.workspaceId),
+    index("slack_connection_team_idx").on(table.teamId),
+  ],
+);
+
+// A Slack user acting as a Margaya user in one workspace. Every Slack action
+// runs as `userId` through the normal API authorization.
+export const slackUserLinkTable = pgTable(
+  "slack_user_link",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    slackTeamId: text("slack_team_id").notNull(),
+    slackUserId: text("slack_user_id").notNull(),
+    slackUserName: text("slack_user_name"),
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (table) => [
+    unique("slack_user_link_identity_unique").on(
+      table.workspaceId,
+      table.slackTeamId,
+      table.slackUserId,
+    ),
+    index("slack_user_link_user_idx").on(table.userId),
   ],
 );
 
@@ -1589,6 +1717,60 @@ export const apiRequestLogTable = pgTable(
       table.id.desc(),
     ),
     index("api_request_log_created_idx").on(table.createdAt),
+  ],
+);
+
+// Read-only iCalendar subscription feeds (calendar-feed/). Each row is one
+// person's feed of one scope ("my_tasks" or "planning" for a workspace,
+// "project" for one project) with its own secret URL token. Only a SHA-256
+// hash of the token is stored, so the URL is shown once; regenerating
+// replaces the hash and revoking deletes the row. Every fetch re-checks
+// membership and project visibility.
+export const calendarFeedTable = pgTable(
+  "calendar_feed",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id, { onDelete: "cascade" }),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, { onDelete: "cascade" }),
+    // Set only for kind "project".
+    projectId: text("project_id").references(() => projectTable.id, {
+      onDelete: "cascade",
+    }),
+    kind: text("kind").$type<"my_tasks" | "planning" | "project">().notNull(),
+    // The calendar's display name (X-WR-CALNAME), in the creator's language.
+    name: text("name").notNull(),
+    tokenHash: text("token_hash").notNull().unique(),
+    // The token's first characters, to tell feeds apart; never enough to use.
+    tokenStart: text("token_start").notNull(),
+    lastUsedAt: timestamp("last_used_at", { mode: "date", withTimezone: true }),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    // One feed per person and scope; creating again regenerates its token.
+    uniqueIndex("calendar_feed_user_workspace_kind_unique")
+      .on(table.userId, table.workspaceId, table.kind)
+      .where(sql`${table.projectId} is null`),
+    uniqueIndex("calendar_feed_user_project_unique")
+      .on(table.userId, table.projectId)
+      .where(sql`${table.projectId} is not null`),
+    index("calendar_feed_userId_idx").on(table.userId),
+    index("calendar_feed_workspaceId_userId_idx").on(
+      table.workspaceId,
+      table.userId,
+    ),
+    index("calendar_feed_projectId_idx").on(table.projectId),
   ],
 );
 
@@ -2591,6 +2773,10 @@ export const intakeItemTable = pgTable(
       onDelete: "set null",
       onUpdate: "cascade",
     }),
+    // Who sent an email or form request; they have no Margaya account.
+    // Only triagers see it (intake:read), never the public form.
+    submitterEmail: text("submitter_email"),
+    submitterName: text("submitter_name"),
     triagedBy: text("triaged_by").references(() => userTable.id, {
       onDelete: "set null",
       onUpdate: "cascade",
@@ -2621,6 +2807,159 @@ export const intakeItemTable = pgTable(
     index("intake_item_project_triagedAt_idx")
       .on(table.projectId, table.triagedAt)
       .where(sql`${table.triagedAt} is not null`),
+  ],
+);
+
+// Email intake (#8): one row per project. Mail reaches the project through
+// the instance mailbox or webhook (plus-address `<base>+<addressToken>@...`)
+// or through the project's own IMAP mailbox. The IMAP password is sealed
+// with the secret box (purpose "intake-imap").
+export const intakeEmailSettingsTable = pgTable(
+  "intake_email_settings",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    enabled: boolean("enabled").notNull().default(false),
+    addressToken: text("address_token").notNull(),
+    allowedDomains: jsonb("allowed_domains")
+      .$type<string[]>()
+      .notNull()
+      .default([]),
+    blockedDomains: jsonb("blocked_domains")
+      .$type<string[]>()
+      .notNull()
+      .default([]),
+    imapEnabled: boolean("imap_enabled").notNull().default(false),
+    imapHost: text("imap_host"),
+    imapPort: integer("imap_port"),
+    imapSecurity: text("imap_security")
+      .$type<"tls" | "starttls">()
+      .notNull()
+      .default("tls"),
+    imapUsername: text("imap_username"),
+    imapPassword: text("imap_password"),
+    imapFolder: text("imap_folder").notNull().default("INBOX"),
+    lastPolledAt: timestamp("last_polled_at", {
+      mode: "date",
+      withTimezone: true,
+    }),
+    lastReceivedAt: timestamp("last_received_at", {
+      mode: "date",
+      withTimezone: true,
+    }),
+    lastError: text("last_error"),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    unique("intake_email_settings_project_unique").on(table.projectId),
+    unique("intake_email_settings_address_token_unique").on(table.addressToken),
+    index("intake_email_settings_imap_idx")
+      .on(table.projectId)
+      .where(sql`${table.enabled} and ${table.imapEnabled}`),
+    check(
+      "intake_email_settings_imap_security_check",
+      sql`${table.imapSecurity} in ('tls', 'starttls')`,
+    ),
+  ],
+);
+
+// Every inbound message filed into a project (#8): skips a message seen
+// twice and threads replies (In-Reply-To / References) onto their request.
+export const intakeEmailMessageTable = pgTable(
+  "intake_email_message",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    intakeItemId: text("intake_item_id")
+      .notNull()
+      .references(() => intakeItemTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    messageId: text("message_id").notNull(),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    unique("intake_email_message_project_message_unique").on(
+      table.projectId,
+      table.messageId,
+    ),
+    index("intake_email_message_item_idx").on(table.intakeItemId),
+  ],
+);
+
+// Public request form (#8): one per project, reached by its link token.
+// Field modes are off, optional or required.
+export const intakeFormTable = pgTable(
+  "intake_form",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    enabled: boolean("enabled").notNull().default(false),
+    token: text("token").notNull(),
+    title: text("title"),
+    intro: text("intro"),
+    descriptionField: text("description_field")
+      .$type<"off" | "optional" | "required">()
+      .notNull()
+      .default("optional"),
+    emailField: text("email_field")
+      .$type<"off" | "optional" | "required">()
+      .notNull()
+      .default("required"),
+    nameField: text("name_field")
+      .$type<"off" | "optional" | "required">()
+      .notNull()
+      .default("optional"),
+    customFieldIds: jsonb("custom_field_ids")
+      .$type<string[]>()
+      .notNull()
+      .default([]),
+    confirmationMessage: text("confirmation_message"),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    unique("intake_form_project_unique").on(table.projectId),
+    unique("intake_form_token_unique").on(table.token),
+    check(
+      "intake_form_field_modes_check",
+      sql`${table.descriptionField} in ('off', 'optional', 'required') and ${table.emailField} in ('off', 'optional', 'required') and ${table.nameField} in ('off', 'optional', 'required')`,
+    ),
   ],
 );
 
@@ -3018,6 +3357,9 @@ export const pageTable = pgTable(
     contentMarkdown: text("content_markdown").notNull().default(""),
     contentText: text("content_text").notNull().default(""),
     contentVersion: integer("content_version").notNull().default(0),
+    // Set when AI wrote or added to the content (ai/provenance.ts). Pages
+    // are collaborative, so this marks the page, not single blocks.
+    aiProvenance: jsonb("ai_provenance").$type<AiProvenance>(),
     createdById: text("created_by_id").references(() => userTable.id, {
       onDelete: "set null",
       onUpdate: "cascade",
@@ -4019,6 +4361,206 @@ export const aiBriefTable = pgTable(
   ],
 );
 
+// Project status updates (project-update/): a dated post on a project's
+// update timeline with a health value. `facts` keeps the computed numbers
+// the update was drafted from (never model output), so readers can trace it
+// back to tasks. `ai_provenance` labels text a model drafted before a person
+// posted it (ai/provenance.ts), as on tasks, comments and pages.
+export const projectUpdateTable = pgTable(
+  "project_update",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    authorId: text("author_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    health: text("health").$type<ProjectUpdateHealth>().notNull(),
+    summary: text("summary").notNull(),
+    highlights: text("highlights"),
+    blockers: text("blockers"),
+    nextSteps: text("next_steps"),
+    aiProvenance: jsonb("ai_provenance").$type<AiProvenance>(),
+    facts: jsonb("facts").$type<ProjectUpdateFacts>(),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    // The timeline and "latest update per project" read newest first.
+    index("project_update_project_created_idx").on(
+      table.projectId,
+      table.createdAt.desc(),
+    ),
+    index("project_update_workspace_created_idx").on(
+      table.workspaceId,
+      table.createdAt.desc(),
+    ),
+    index("project_update_author_idx").on(table.authorId),
+    check(
+      "project_update_health_check",
+      sql`${table.health} in ('on_track', 'at_risk', 'off_track')`,
+    ),
+  ],
+);
+
+export const projectUpdateCommentTable = pgTable(
+  "project_update_comment",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    updateId: text("update_id")
+      .notNull()
+      .references(() => projectUpdateTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    userId: text("user_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    content: text("content").notNull(),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("project_update_comment_update_created_idx").on(
+      table.updateId,
+      table.createdAt,
+    ),
+    index("project_update_comment_user_idx").on(table.userId),
+  ],
+);
+
+// Emoji reactions on an update; rows are only inserted and deleted.
+export const projectUpdateReactionTable = pgTable(
+  "project_update_reaction",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    updateId: text("update_id")
+      .notNull()
+      .references(() => projectUpdateTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    emoji: text("emoji").notNull(),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    unique("project_update_reaction_unique").on(
+      table.updateId,
+      table.userId,
+      table.emoji,
+    ),
+    index("project_update_reaction_user_idx").on(table.userId),
+  ],
+);
+
+// Who follows a project's updates: subscribed rows plus the project lead,
+// minus muted rows (`subscribed = false` is an explicit unfollow).
+export const projectUpdateSubscriberTable = pgTable(
+  "project_update_subscriber",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    subscribed: boolean("subscribed").notNull().default(true),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    unique("project_update_subscriber_project_user_unique").on(
+      table.projectId,
+      table.userId,
+    ),
+    index("project_update_subscriber_user_idx").on(table.userId),
+  ],
+);
+
+// The optional weekly reminder to the project lead to post an update. No
+// row means off. `last_reminded_at` keeps the job to one reminder a week.
+export const projectUpdateReminderTable = pgTable(
+  "project_update_reminder",
+  {
+    projectId: text("project_id")
+      .primaryKey()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    enabled: boolean("enabled").notNull().default(false),
+    // 0 = Sunday ... 6 = Saturday, in the workspace's time zone.
+    weekday: smallint("weekday").notNull().default(5),
+    lastRemindedAt: timestamp("last_reminded_at", {
+      mode: "date",
+      withTimezone: true,
+    }),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("project_update_reminder_enabled_idx")
+      .on(table.enabled)
+      .where(sql`${table.enabled}`),
+    check(
+      "project_update_reminder_weekday_check",
+      sql`${table.weekday} between 0 and 6`,
+    ),
+  ],
+);
+
 // AI agents (ai-agent/): one row per agent, 1:1 with its `user` row
 // (kind 'agent'), which is also the agent's workspace_member row and role.
 // Instructions are written by workspace admins, so they are trusted.
@@ -4595,6 +5137,62 @@ export const a2aTaskTable = pgTable(
   ],
 );
 
+// A2A push notification configs: where to POST a task's state changes
+// (a2a/push.ts). The caller's token and credentials are sealed with
+// secret-box and never returned. ref_kind / ref_id copy the task's mapping
+// so a run or intake event finds its configs through one index.
+export const a2aPushConfigTable = pgTable(
+  "a2a_push_config",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    a2aTaskId: text("a2a_task_id")
+      .notNull()
+      .references(() => a2aTaskTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    refKind: text("ref_kind").$type<"intake" | "ai_run">().notNull(),
+    refId: text("ref_id").notNull(),
+    url: text("url").notNull(),
+    tokenSealed: text("token_sealed"),
+    authScheme: text("auth_scheme"),
+    authCredentialsSealed: text("auth_credentials_sealed"),
+    // The last state delivered, so each change is sent once.
+    lastState: text("last_state"),
+    lastDeliveredAt: timestamp("last_delivered_at", {
+      mode: "date",
+      withTimezone: true,
+    }),
+    // An HTTP status or a short reason; never a response body.
+    lastError: text("last_error"),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("a2a_push_config_task_idx").on(table.a2aTaskId),
+    index("a2a_push_config_ref_idx").on(table.refKind, table.refId),
+  ],
+);
+
 // --- AI chat, memory, skills, schedules and connectors (2026-10-26) ---
 
 /**
@@ -4633,6 +5231,87 @@ export const aiFeedbackTable = pgTable(
     ),
   ],
 );
+
+// Product feedback for the instance's admins (feedback/): "Send feedback",
+// the occasional survey and feature thumbs. It never leaves the instance.
+// Context is coarse on purpose: a page type and the app version, never ids,
+// titles or task content. Deleted with the account.
+export const feedbackTable = pgTable(
+  "feedback",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    // general (Send feedback), survey (the micro-survey) or feature (thumbs).
+    kind: text("kind").$type<"general" | "survey" | "feature">().notNull(),
+    // faces3 1-3, faces5 1-5, stars 1-5, nps 0-10, thumbs 0-1.
+    format: text("format")
+      .$type<"faces3" | "faces5" | "stars" | "nps" | "thumbs">()
+      .notNull(),
+    // Null when "Send feedback" carries only a comment.
+    score: smallint("score"),
+    comment: text("comment"),
+    pageType: text("page_type").$type<FeedbackPageType>(),
+    feature: text("feature").$type<FeedbackFeature>(),
+    appVersion: text("app_version"),
+    client: text("client").$type<"web" | "desktop">(),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    check(
+      "feedback_kind_check",
+      sql`${table.kind} in ('general', 'survey', 'feature')`,
+    ),
+    check(
+      "feedback_format_check",
+      sql`${table.format} in ('faces3', 'faces5', 'stars', 'nps', 'thumbs')`,
+    ),
+    check(
+      "feedback_content_check",
+      sql`${table.score} is not null or ${table.comment} is not null`,
+    ),
+    index("feedback_created_idx").on(table.createdAt.desc(), table.id.desc()),
+    index("feedback_format_created_idx").on(table.format, table.createdAt),
+    index("feedback_user_idx").on(table.userId),
+  ],
+);
+
+// When the micro-survey may ask someone again (feedback/eligibility.ts). One
+// row per person, created on their first check. Deleted with the account.
+export const feedbackSurveyStateTable = pgTable("feedback_survey_state", {
+  userId: text("user_id")
+    .primaryKey()
+    .references(() => userTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+  // Days with the app open since the survey last asked.
+  activeDays: integer("active_days").notNull().default(0),
+  lastActiveOn: date("last_active_on", { mode: "string" }),
+  lastShownAt: timestamp("last_shown_at", { mode: "date", withTimezone: true }),
+  lastAnsweredAt: timestamp("last_answered_at", {
+    mode: "date",
+    withTimezone: true,
+  }),
+  snoozedUntil: timestamp("snoozed_until", {
+    mode: "date",
+    withTimezone: true,
+  }),
+  // "Don't ask again"; Send feedback stays available.
+  optedOut: boolean("opted_out").notNull().default(false),
+  updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
 
 /** Ask conversations kept on the server when the workspace opts in. */
 export const aiConversationTable = pgTable(

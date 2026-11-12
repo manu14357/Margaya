@@ -1,6 +1,7 @@
 import { config } from "dotenv-mono";
 import { drizzle } from "drizzle-orm/node-postgres";
-import { Pool } from "pg";
+import { Client, Pool } from "pg";
+import { resolveDatabasePoolSettings } from "./pool-config";
 import {
   accountTableRelations,
   activityTableRelations,
@@ -323,13 +324,16 @@ let dbInstance: DatabaseInstance | undefined;
 
 export function getDatabasePool(): Pool {
   if (!pool) {
+    const settings = resolveDatabasePoolSettings();
     pool = new Pool({
       connectionString: resolveDatabaseConnectionString(),
       // Fail fast when Railway's internal network is slow rather than hanging
       // indefinitely and blocking every API request.
       connectionTimeoutMillis: 5_000,
       idleTimeoutMillis: 30_000,
-      max: 10,
+      max: settings.max,
+      // 0 leaves the database server's own setting in place.
+      statement_timeout: settings.statementTimeoutMs || undefined,
     });
     // pg emits this when an idle connection drops. Unhandled, it would end
     // the process on any database restart; the pool reconnects on its own.
@@ -339,6 +343,21 @@ export function getDatabasePool(): Pool {
   }
 
   return pool;
+}
+
+/** A single connection outside the pool, for work that must hold a session. */
+export async function connectDatabaseClient(): Promise<Client> {
+  const client = new Client({
+    connectionString: resolveDatabaseConnectionString(),
+    connectionTimeoutMillis: 5_000,
+  });
+  // A dropped connection fails the query in flight; this keeps the event
+  // from ending the process on its own.
+  client.on("error", (error) => {
+    console.error("Lost a database session connection:", error.message);
+  });
+  await client.connect();
+  return client;
 }
 
 export function getDatabase(): DatabaseInstance {

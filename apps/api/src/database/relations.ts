@@ -11,6 +11,7 @@ import {
   assetTable,
   automationRuleTable,
   automationRunTable,
+  calendarFeedTable,
   columnTable,
   commentTable,
   customFieldDefinitionTable,
@@ -21,10 +22,14 @@ import {
   estimateTable,
   externalLinkTable,
   favoriteTable,
+  feedbackTable,
   flowAlertTable,
   githubIntegrationTable,
   homePreferenceTable,
   instanceSettingTable,
+  intakeEmailMessageTable,
+  intakeEmailSettingsTable,
+  intakeFormTable,
   intakeItemTable,
   integrationTable,
   invitationTable,
@@ -447,6 +452,24 @@ export const apikeyTableRelations = relations(apikeyTable, ({ one }) => ({
   }),
 }));
 
+export const calendarFeedTableRelations = relations(
+  calendarFeedTable,
+  ({ one }) => ({
+    user: one(userTable, {
+      fields: [calendarFeedTable.userId],
+      references: [userTable.id],
+    }),
+    workspace: one(workspaceTable, {
+      fields: [calendarFeedTable.workspaceId],
+      references: [workspaceTable.id],
+    }),
+    project: one(projectTable, {
+      fields: [calendarFeedTable.projectId],
+      references: [projectTable.id],
+    }),
+  }),
+);
+
 export const integrationTableRelations = relations(
   integrationTable,
   ({ one, many }) => ({
@@ -815,6 +838,40 @@ export const savedViewTableRelations = relations(savedViewTable, ({ one }) => ({
     references: [userTable.id],
   }),
 }));
+
+export const intakeEmailSettingsTableRelations = relations(
+  intakeEmailSettingsTable,
+  ({ one }) => ({
+    project: one(projectTable, {
+      fields: [intakeEmailSettingsTable.projectId],
+      references: [projectTable.id],
+    }),
+  }),
+);
+
+export const intakeEmailMessageTableRelations = relations(
+  intakeEmailMessageTable,
+  ({ one }) => ({
+    project: one(projectTable, {
+      fields: [intakeEmailMessageTable.projectId],
+      references: [projectTable.id],
+    }),
+    intakeItem: one(intakeItemTable, {
+      fields: [intakeEmailMessageTable.intakeItemId],
+      references: [intakeItemTable.id],
+    }),
+  }),
+);
+
+export const intakeFormTableRelations = relations(
+  intakeFormTable,
+  ({ one }) => ({
+    project: one(projectTable, {
+      fields: [intakeFormTable.projectId],
+      references: [projectTable.id],
+    }),
+  }),
+);
 
 export const intakeItemTableRelations = relations(
   intakeItemTable,
@@ -1204,6 +1261,13 @@ export const automationRuleTableRelations = relations(
     runs: many(automationRunTable),
   }),
 );
+
+export const feedbackTableRelations = relations(feedbackTable, ({ one }) => ({
+  user: one(userTable, {
+    fields: [feedbackTable.userId],
+    references: [userTable.id],
+  }),
+}));
 
 export const automationRunTableRelations = relations(
   automationRunTable,
