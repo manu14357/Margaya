@@ -297,6 +297,22 @@ input:-webkit-autofill:active {
   body {
     @apply bg-background font-sans text-foreground antialiased;
   }
+  /*
+   * The signed-in app and the desktop app's windows behave like an app, not
+   * a document: their panes scroll, the page never does. Without this a
+   * touchpad swipe at a pane's edge rubber-bands the whole document (the
+   * shell slides away from fixed chrome such as the desktop window buttons)
+   * or swipes back and forward through history.
+   */
+  html:is([data-app-shell], [data-desktop-app]),
+  html:is([data-app-shell], [data-desktop-app]) body {
+    overscroll-behavior: none;
+  }
+  html[data-app-shell],
+  html[data-app-shell] body {
+    height: 100%;
+    overflow: hidden;
+  }
   h1,
   h2,
   h3,

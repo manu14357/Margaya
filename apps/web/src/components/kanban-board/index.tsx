@@ -246,7 +246,7 @@ function KanbanBoard({
     >
       <div className="flex h-full w-full flex-col">
         <BoardStageStrip columns={project.columns} />
-        <div className="min-h-0 flex-1 snap-x snap-mandatory overflow-x-auto [-webkit-overflow-scrolling:touch] md:snap-none">
+        <div className="min-h-0 flex-1 snap-x snap-mandatory overflow-x-auto overscroll-contain [-webkit-overflow-scrolling:touch] md:snap-none">
           <div className="flex h-full min-w-max gap-2 px-2 py-2 md:gap-3 md:px-3 md:py-3">
             {project.columns?.map((column) => (
               <div

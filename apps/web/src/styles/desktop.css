@@ -25,12 +25,25 @@ html[data-desktop-app]
     [data-slot="app-rail"],
     [data-slot="context-panel-header"],
     [data-slot="view-tabs"],
+    [data-slot="filter-bar"],
+    [data-slot="board-column-header"],
     [data-slot="mobile-tab-bar"],
     [data-slot="desktop-title-bar"],
     [data-slot="window-controls"]
   ) {
   -webkit-user-select: none;
   user-select: none;
+}
+
+/*
+ * The Button primitive shows a pointer, but plain <button>s fall back to the
+ * arrow, so the window mixed both. In the base layer, so an explicit cursor
+ * utility (grab, text, not-allowed) still wins.
+ */
+@layer base {
+  html[data-desktop-app] :is(button, [role="tab"], summary):not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 /*
@@ -75,6 +88,18 @@ html[data-desktop-titlebar]
 @media (width < 40rem) {
   html[data-desktop-titlebar] [data-slot="ask-panel"]:not([data-full-page]) {
     top: var(--desktop-frame-top, 0px);
+  }
+}
+
+/*
+ * From 40rem Ask floats at the bottom right, as tall as the window allows.
+ * In a short window, or expanded, that put its header (history, new chat,
+ * pop-out, expand, close) under the window buttons; it now stops half a
+ * rem under the title bar line (its bottom sits 1rem above the window's).
+ */
+@media (width >= 40rem) {
+  html[data-desktop-titlebar] [data-slot="ask-panel"]:not([data-full-page]) {
+    max-height: calc(100dvh - var(--desktop-frame-top, 0px) - 1.5rem);
   }
 }
 

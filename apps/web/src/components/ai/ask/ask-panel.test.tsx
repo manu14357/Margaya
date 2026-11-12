@@ -1190,4 +1190,54 @@ describe("Ask history: names, pins, search and the server", () => {
     act(() => useAskPanel.setState({ slot: null }));
     slot.remove();
   });
+
+  it("keeps the full page's header clear of the desktop window buttons", () => {
+    // The full page has no top bar: in the desktop app's frameless window
+    // its header is the window's top row, so it moves the window and keeps
+    // its buttons out from under the minimize, maximize and close buttons.
+    const startDragging = vi.fn();
+    Object.defineProperty(window, "__MARGAYA_DESKTOP__", {
+      configurable: true,
+      value: {
+        platform: "windows",
+        titleBar: {
+          style: "custom",
+          platform: "windows",
+          leftInset: 0,
+          rightInset: 0,
+        },
+        window: { startDragging },
+      },
+    });
+    const slot = document.createElement("div");
+    document.body.appendChild(slot);
+    try {
+      render(<AskPanel />);
+      act(() => useAskPanel.setState({ slot }));
+      const header = slot.querySelector("header");
+      expect(header?.className).toContain(
+        "pe-[calc(var(--desktop-controls-width,0px)+0.75rem)]",
+      );
+      expect(header).toHaveAttribute("data-window-drag");
+      fireEvent.mouseDown(header as HTMLElement, { button: 0, detail: 1 });
+      expect(startDragging).toHaveBeenCalledTimes(1);
+      fireEvent.mouseDown(
+        screen.getByRole("button", { name: "common:actions.close" }),
+        { button: 0, detail: 1 },
+      );
+      expect(startDragging).toHaveBeenCalledTimes(1);
+    } finally {
+      act(() => useAskPanel.setState({ slot: null }));
+      slot.remove();
+      Reflect.deleteProperty(window, "__MARGAYA_DESKTOP__");
+    }
+  });
+
+  it("leaves the docked window's header alone", () => {
+    render(<AskPanel />);
+    act(() => openAsk({ projectId: null }));
+    const header = screen.getByTestId("ask-panel").querySelector("header");
+    expect(header?.className).not.toContain("--desktop-controls-width");
+    expect(header).not.toHaveAttribute("data-window-drag");
+  });
 });

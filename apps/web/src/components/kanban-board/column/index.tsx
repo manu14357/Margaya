@@ -60,7 +60,7 @@ function Column({
           onAddTask={() => setIsTaskModalOpen(true)}
         />
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-1.5 pb-1 [-webkit-overflow-scrolling:touch]">
+      <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-y-contain px-1.5 pb-1 [-webkit-overflow-scrolling:touch]">
         <ColumnDropzone
           column={column}
           disableDragDrop={disableDragDrop}

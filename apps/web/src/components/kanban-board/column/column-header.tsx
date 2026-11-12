@@ -63,7 +63,10 @@ export function ColumnHeader({
   };
 
   return (
-    <div className="flex h-7 items-center justify-between gap-1.5">
+    <div
+      data-slot="board-column-header"
+      className="flex h-7 items-center justify-between gap-1.5"
+    >
       <div className="flex min-w-0 items-center gap-1.5">
         {column.icon ? (
           <span className="flex shrink-0 text-muted-foreground">

@@ -516,7 +516,7 @@ function ListView({
           };
         }}
       />
-      <div className="h-full w-full overflow-auto bg-background pb-24">
+      <div className="h-full w-full overflow-auto overscroll-contain bg-background pb-24">
         {project.columns.map((column) => (
           <ListGroup
             key={column.id}
