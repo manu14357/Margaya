@@ -80,7 +80,7 @@ export async function getAnalyticsIntake(
     const perProject = new Map(enabled.map((id) => [id, emptyCounts()]));
     const submitted = new Map<string, number>();
     const decided = new Map<string, number>();
-    const bySource = { in_app: 0, api: 0, public_board: 0 };
+    const bySource = { in_app: 0, api: 0, public_board: 0, email: 0, form: 0 };
     const medians = new Map<string | null, number | null>();
 
     if (enabled.length > 0) {

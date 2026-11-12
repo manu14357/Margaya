@@ -5,6 +5,7 @@ import {
   type IntakePriority,
   type IntakeSortField,
   type IntakeSortOrder,
+  type IntakeSource,
   type IntakeStatus,
   type IntakeTab,
 } from "@/types/intake";
@@ -21,11 +22,20 @@ export const INTAKE_PRIORITIES = [
   "no-priority",
 ] as const satisfies readonly IntakePriority[];
 
+export const INTAKE_SOURCES = [
+  "in_app",
+  "api",
+  "public_board",
+  "email",
+  "form",
+] as const satisfies readonly IntakeSource[];
+
 export type IntakeSearch = {
   tab?: IntakeTab;
   item?: string;
   status?: IntakeStatus[];
   priority?: IntakePriority[];
+  source?: IntakeSource[];
   submittedBy?: string;
   q?: string;
   sortBy?: IntakeSortField;
@@ -59,6 +69,7 @@ export function validateIntakeSearch(
   const tab: IntakeTab = search.tab === "closed" ? "closed" : "open";
   const statuses = pick(tabStatuses(tab), search.status);
   const priorities = pick(INTAKE_PRIORITIES, search.priority);
+  const sources = pick(INTAKE_SOURCES, search.source);
   const sortBy = INTAKE_SORT_FIELDS.find((field) => field === search.sortBy);
   return {
     tab: tab === "closed" ? "closed" : undefined,
@@ -68,6 +79,7 @@ export function validateIntakeSearch(
         ? statuses
         : undefined,
     priority: priorities.length > 0 ? priorities : undefined,
+    source: sources.length > 0 ? sources : undefined,
     submittedBy: text(search.submittedBy, 200),
     q: text(search.q, 100),
     sortBy: sortBy && sortBy !== "createdAt" ? sortBy : undefined,
@@ -83,6 +95,7 @@ export function resolveIntakeFilters(search: IntakeSearch): IntakeFilters {
       ? search.status
       : [...defaultTabStatuses(tab)],
     priorities: search.priority ?? [],
+    sources: search.source ?? [],
     submittedBy: search.submittedBy,
     q: search.q,
     sortBy: search.sortBy ?? "createdAt",
@@ -96,6 +109,7 @@ export function toIntakeSearch(filters: IntakeFilters): IntakeSearch {
     tab: filters.tab,
     status: filters.statuses,
     priority: filters.priorities,
+    source: filters.sources,
     submittedBy: filters.submittedBy,
     q: filters.q,
     sortBy: filters.sortBy,
@@ -108,6 +122,7 @@ export function hasActiveIntakeFilters(filters: IntakeFilters): boolean {
   return (
     !sameSet(filters.statuses, defaultTabStatuses(filters.tab)) ||
     filters.priorities.length > 0 ||
+    (filters.sources?.length ?? 0) > 0 ||
     Boolean(filters.submittedBy)
   );
 }

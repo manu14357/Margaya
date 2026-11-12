@@ -15,9 +15,10 @@ import { useGetActiveWorkspaceUsers } from "@/hooks/queries/workspace-users/use-
 import { cn } from "@/lib/cn";
 import { getPriorityLabel } from "@/lib/i18n/domain";
 import { INTAKE_STATUS_META, tabStatuses } from "@/lib/intake";
-import { INTAKE_PRIORITIES } from "@/lib/intake-search";
+import { INTAKE_PRIORITIES, INTAKE_SOURCES } from "@/lib/intake-search";
 import { getPriorityIcon } from "@/lib/priority";
 import type { IntakeFilters } from "@/types/intake";
+import IntakeSourceIcon, { intakeSourceLabel } from "./intake-source-icon";
 
 const rowClassName =
   "inline-flex h-7 w-full items-center gap-1.5 rounded-md px-2 text-left text-xs";
@@ -148,6 +149,30 @@ export default function IntakeFilterMenu({
                 <CheckSlot checked={checked} />
                 {getPriorityIcon(priority)}
                 {getPriorityLabel(priority)}
+              </button>
+            );
+          })}
+        </FilterSubmenu>
+        <FilterSubmenu
+          label={t("intake:filters.source")}
+          count={filters.sources?.length ?? 0}
+        >
+          {INTAKE_SOURCES.map((source) => {
+            const selected = filters.sources ?? [];
+            const checked = selected.includes(source);
+            return (
+              <button
+                key={source}
+                type="button"
+                className={cn(rowClassName, rowState(checked))}
+                onClick={() => onChange({ sources: toggle(selected, source) })}
+              >
+                <CheckSlot checked={checked} />
+                <IntakeSourceIcon
+                  source={source}
+                  className="size-3.5 text-muted-foreground"
+                />
+                {intakeSourceLabel(t, source)}
               </button>
             );
           })}

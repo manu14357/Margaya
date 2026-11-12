@@ -362,6 +362,8 @@ export const analyticsIntakeSchema = z
       in_app: z.number().int(),
       api: z.number().int(),
       public_board: z.number().int(),
+      email: z.number().int(),
+      form: z.number().int(),
     }),
     byProject: z
       .array(

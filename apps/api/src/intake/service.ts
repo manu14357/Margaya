@@ -33,6 +33,8 @@ export async function submitIntakeItem({
   description,
   priority,
   source,
+  submitter,
+  customFieldValues = [],
 }: {
   projectId: string;
   submittedBy: string | null;
@@ -40,6 +42,10 @@ export async function submitIntakeItem({
   description?: string;
   priority?: string;
   source: IntakeSource;
+  /** An email or form sender without an account (#8). */
+  submitter?: { email: string | null; name: string | null };
+  /** Validated values from a request form; they win over the defaults. */
+  customFieldValues?: { fieldId: string; value: string }[];
 }): Promise<IntakeItemResponse> {
   const [project] = await db
     .select({
@@ -106,13 +112,21 @@ export async function submitIntakeItem({
       });
     if (!task) throw new HTTPException(500, { message: "Failed to submit" });
 
-    const values = defaults
-      .map(({ fieldId, value }) => ({
+    const given = new Set(customFieldValues.map((row) => row.fieldId));
+    const values = [
+      ...defaults
+        .filter(({ fieldId }) => !given.has(fieldId))
+        .map(({ fieldId, value }) => ({
+          taskId: task.id,
+          fieldId,
+          value: value?.trim() ?? "",
+        })),
+      ...customFieldValues.map(({ fieldId, value }) => ({
         taskId: task.id,
         fieldId,
-        value: value?.trim() ?? "",
-      }))
-      .filter((row) => row.value !== "");
+        value: value.trim(),
+      })),
+    ].filter((row) => row.value !== "");
     if (values.length > 0) {
       await tx.insert(customFieldValueTable).values(values);
     }
@@ -125,6 +139,8 @@ export async function submitIntakeItem({
         status: "pending",
         source,
         submittedBy,
+        submitterEmail: submitter?.email ?? null,
+        submitterName: submitter?.name ?? null,
       })
       .returning({ id: intakeItemTable.id });
     if (!item) throw new HTTPException(500, { message: "Failed to submit" });

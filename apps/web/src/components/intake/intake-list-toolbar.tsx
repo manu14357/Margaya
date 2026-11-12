@@ -10,6 +10,7 @@ import { hasActiveIntakeFilters } from "@/lib/intake-search";
 import type { IntakeCounts, IntakeFilters, IntakeTab } from "@/types/intake";
 import IntakeFilterMenu from "./intake-filter-menu";
 import IntakeSortMenu from "./intake-sort-menu";
+import { intakeSourceLabel } from "./intake-source-icon";
 
 function CountChip({ count }: { count: number | undefined }) {
   if (!count) return null;
@@ -130,7 +131,7 @@ export default function IntakeListToolbar({
       </div>
       <div className="flex items-center gap-1.5 px-2 pb-2">
         <div className="relative min-w-0 flex-1">
-          <Search className="-translate-y-1/2 pointer-events-none absolute top-1/2 left-2.5 size-3.5 text-muted-foreground" />
+          <Search className="-translate-y-1/2 pointer-events-none absolute top-1/2 left-2.5 z-10 size-3.5 text-muted-foreground" />
           <Input
             value={query}
             maxLength={100}
@@ -169,6 +170,15 @@ export default function IntakeListToolbar({
               subject={t("intake:filters.priority")}
               value={filters.priorities.map(getPriorityLabel).join(", ")}
               onRemove={() => onChange({ priorities: [] })}
+            />
+          )}
+          {(filters.sources?.length ?? 0) > 0 && (
+            <FilterChip
+              subject={t("intake:filters.source")}
+              value={(filters.sources ?? [])
+                .map((source) => intakeSourceLabel(t, source))
+                .join(", ")}
+              onRemove={() => onChange({ sources: [] })}
             />
           )}
           {filters.submittedBy && (

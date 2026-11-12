@@ -4,6 +4,7 @@ import { assertVisible, type IntakeVisibility } from "../access";
 import {
   classifySearch,
   resolvePriorityFilter,
+  resolveSourceFilter,
   resolveStatusFilter,
   resolveSubmitterFilter,
 } from "../list-filters";
@@ -31,6 +32,7 @@ export async function listIntakeItems({
     tab?: IntakeTab;
     status?: string;
     priority?: string;
+    source?: string;
     submittedBy?: string;
     search?: string;
     sortBy?: "createdAt" | "updatedAt" | "number";
@@ -44,6 +46,7 @@ export async function listIntakeItems({
     projectId,
     statuses: resolveStatusFilter(tab, query.status),
     priorities: resolvePriorityFilter(query.priority),
+    sources: resolveSourceFilter(query.source),
     submitter: resolveSubmitterFilter(
       query.submittedBy,
       userId,

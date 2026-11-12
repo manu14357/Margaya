@@ -1,0 +1,118 @@
+---
+title: Set up email intake
+description: Give every project a forwarding address by connecting a mailbox or a mail provider's inbound webhook, so incoming mail becomes Intake requests.
+---
+
+Projects with [Intake](/core/functional/intake) can turn incoming email into requests. You choose how mail reaches Margaya:
+
+- **A shared mailbox (IMAP)**: Margaya checks one mailbox every two minutes. It connects out to the mail server, so it works behind a VPN, NAT or firewall with no open port.
+- **An inbound webhook**: your mail provider, or a script on your mail server, posts each message to Margaya as it arrives.
+- **A project's own mailbox**: project admins connect a mailbox in the project's **Intake sources** settings. Nothing is needed on the server.
+
+The first two use one base address for the whole instance. Each project gets its own forwarding address by plus addressing: with `requests@example.com`, a project's address looks like `requests+k3v9x2m4q8w1z7b5n0c6@example.com`. Your mail server must deliver plus addresses to the base mailbox, which most do.
+
+## Use a shared mailbox
+
+1. Create a mailbox for the base address, for example `requests@example.com`, with IMAP access over TLS.
+2. Add to `.env`:
+
+   ```bash
+   INTAKE_EMAIL_ADDRESS=requests@example.com
+   INTAKE_IMAP_HOST=imap.example.com
+   INTAKE_IMAP_USER=requests@example.com
+   INTAKE_IMAP_PASSWORD=your-mailbox-password
+   # INTAKE_IMAP_PORT=993
+   # INTAKE_IMAP_SECURITY=tls        # or starttls (port 143)
+   # INTAKE_IMAP_FOLDER=INBOX
+   ```
+
+3. Restart the API.
+
+Every two minutes Margaya reads up to 50 unread messages, files each into the project whose forwarding address it was sent to, and marks it as read. Mail that matches no project is marked as read and ignored. A message that fails to process is retried up to three times. With several API instances, one at a time does the polling.
+
+<Note>
+Use a mailbox only Margaya reads. Messages you read in a mail client are no longer unread, so Margaya skips them.
+</Note>
+
+## Use an inbound webhook
+
+1. Set the base address and a long random secret in `.env`, then restart the API:
+
+   ```bash
+   INTAKE_EMAIL_ADDRESS=requests@example.com
+   INTAKE_EMAIL_WEBHOOK_SECRET=a-random-string-of-at-least-16-characters
+   ```
+
+2. Point your provider's inbound mail route for the base address, including plus addresses, at:
+
+   ```text
+   https://margaya.example.com/api/intake-email/inbound
+   ```
+
+3. Authenticate it in one of three ways: the secret as a Bearer token (`Authorization: Bearer <secret>`), as the Basic auth password (`https://mail:<secret>@margaya.example.com/...`), or as an HMAC-SHA256 signature of the request body in `X-Margaya-Signature: sha256=<hex>`.
+
+The webhook accepts:
+
+- **Raw messages**: the whole message with `Content-Type: message/rfc822`.
+- **JSON with the raw message**: `{ "raw": "<base64 message>", "recipients": ["requests+...@example.com"] }`.
+- **Parsed JSON**: `from`, `to`, `cc`, `recipients`, `subject`, `text`, `html`, `messageId`, `inReplyTo`, `references`, `headers`, `spamScore` and `attachments` (each with `filename`, `contentType` and base64 `content`).
+
+It answers `200` with what became of the message, including ignored ones (status `ignored` and a reason such as `auto_reply`, `spam` or `rate_limited`), so your provider doesn't retry them. While no secret is set, the route answers `404`. See [receiveIntakeEmail](/api-reference/endpoints/intake-email/receiveIntakeEmail).
+
+To feed it from your own mail server, pipe each message to `curl`:
+
+```bash
+curl -fsS -X POST https://margaya.example.com/api/intake-email/inbound \
+  -H "Authorization: Bearer $INTAKE_EMAIL_WEBHOOK_SECRET" \
+  -H "Content-Type: message/rfc822" \
+  --data-binary @-
+```
+
+## Project mailboxes
+
+Project admins can connect a mailbox of their own in **Settings** > **Projects** > the project > **Intake sources** > **Project mailbox**. Every unread message there goes to that project. Passwords are stored encrypted with the server's `AUTH_SECRET`, so keep that secret in your [backups](/core/installation/backup-and-restore).
+
+For safety, project mailboxes on private or loopback addresses are refused, as for webhooks. If your mail server is on your own network, set `MARGAYA_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS=true`, or use the shared mailbox instead.
+
+### Use an existing email account
+
+A project mailbox doesn't need a domain or mail server of your own. Any email account with IMAP access works, for example a support address your team already has, or a new free account created for requests:
+
+1. Turn on IMAP access in the account's settings, if your provider requires it.
+2. If the account uses two-step sign-in, create an app password for Margaya in the account's security settings. Margaya signs in with a password, not through the provider's sign-in page.
+3. In **Intake sources** > **Project mailbox**, enter the provider's IMAP server (for example `imap.example.com`), port `993` with **TLS**, the full email address as the user name, and the app password.
+
+## Check that it works
+
+1. For a project mailbox, select **Test connection** under **Project mailbox**. Margaya signs in and shows "Connected" with the number of unread messages, or the mail server's error, for example `Invalid login/password`.
+2. Send an email to the project's **Forwarding address**, or to the project mailbox.
+3. Within two minutes, the email appears in the project's Intake list as an **Email** request, with the sender's name and address and any attachments.
+
+Under **Project mailbox**, Margaya also shows when it last checked the mailbox, and **Last check failed** with the server's error when a check goes wrong, for example after a password change.
+
+### Mail servers with their own certificate
+
+Margaya always connects over TLS and checks the server's certificate. If your mail server uses a certificate from your own certificate authority, rather than a public one, add that authority to the API's trust store: set `NODE_EXTRA_CA_CERTS` to the path of its PEM file, then restart the API. Turning certificate checks off isn't supported.
+
+## Protection
+
+The same checks apply whichever way mail arrives:
+
+| Check | What happens |
+| --- | --- |
+| Auto-replies and loops | Messages with `Auto-Submitted`, `X-Autoreply` or `Precedence: bulk`, `list`, `junk` or `auto_reply`, bounces and delivery reports, and mail from the intake address or `SMTP_FROM` are ignored. Margaya never sends replies to incoming mail. |
+| Spam | Messages with `X-Spam-Flag: YES`, `X-Spam-Status: Yes`, or a spam score of 5 or more are ignored. Run your usual spam filter in front of Margaya. |
+| Sender domains | Each project can allow only some domains and block others. |
+| Rate limits | 10 messages an hour per sender and 200 an hour per project. Without Redis, each API instance counts on its own. |
+| Repeats | A message already filed (same Message-ID) is ignored. |
+| Size | Messages over `INTAKE_EMAIL_MAX_BYTES` (25 MB) are skipped. At most `INTAKE_EMAIL_MAX_ATTACHMENTS` (10) attachments of `INTAKE_EMAIL_MAX_ATTACHMENT_BYTES` (10 MB) each are kept; the request lists the rest. |
+
+<Warning>
+Attachments are not scanned for malware. If your users need that, scan mail before it reaches the intake mailbox.
+</Warning>
+
+Attachments are stored like other task attachments, so [file storage](/core/installation/object-storage-and-image-uploads) must be on. Senders' names and email addresses are kept on the request and shown only to people who can read the whole Intake queue. Deleting the request deletes them.
+
+## Replies
+
+When the original sender replies to their own thread, Margaya matches the reply by its `In-Reply-To` and `References` headers and adds it to the request as a comment, without the quoted text. Replies from anyone else become new requests.

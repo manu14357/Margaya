@@ -18,6 +18,7 @@ async function getIntakeItems(
       priority: filters.priorities.length
         ? filters.priorities.join(",")
         : undefined,
+      source: filters.sources?.length ? filters.sources.join(",") : undefined,
       submittedBy: filters.submittedBy,
       search: filters.q,
       sortBy: filters.sortBy,

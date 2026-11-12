@@ -66,6 +66,13 @@ export const intakeItemSchema = z
     submittedBy: intakePersonSchema.nullable().openapi({
       description: "Null once the requester's account is deleted.",
     }),
+    externalSubmitter: z
+      .object({ email: z.string().nullable(), name: z.string().nullable() })
+      .nullable()
+      .openapi({
+        description:
+          "The sender of an email or request-form submission, who has no account. Null for requests filed by members or public board visitors.",
+      }),
     triagedBy: intakePersonSchema.nullable().openapi({
       description: "Who made the latest triage decision.",
     }),

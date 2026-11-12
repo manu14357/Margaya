@@ -98,4 +98,28 @@ describe("IntakeListRow", () => {
     renderRow(intakeItem({ submittedBy: null }));
     expect(screen.getByText("common:people.someone")).toBeInTheDocument();
   });
+
+  it("shows the source and the outside sender of an email request", () => {
+    renderRow(
+      intakeItem({
+        source: "email",
+        submittedBy: null,
+        externalSubmitter: { email: "zoe@example.org", name: "Zoe" },
+      }),
+    );
+    expect(screen.getByText("intake:source.email")).toBeInTheDocument();
+    expect(screen.getByText("Zoe")).toBeInTheDocument();
+  });
+
+  it("names a form sender by address when they gave no name", () => {
+    renderRow(
+      intakeItem({
+        source: "form",
+        submittedBy: null,
+        externalSubmitter: { email: "zoe@example.org", name: null },
+      }),
+    );
+    expect(screen.getByText("intake:source.form")).toBeInTheDocument();
+    expect(screen.getByText("zoe@example.org")).toBeInTheDocument();
+  });
 });

@@ -16,6 +16,7 @@ export function intakeItem(
     source: "in_app",
     resolutionNote: null,
     submittedBy: { id: "user-ana", name: "Ana", image: null },
+    externalSubmitter: null,
     triagedBy: null,
     triagedAt: null,
     duplicateOf: null,

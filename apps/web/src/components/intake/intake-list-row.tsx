@@ -7,7 +7,9 @@ import { effectiveIntakeStatus, formatIntakeKey } from "@/lib/intake";
 import { formatSnoozeDay } from "@/lib/intake-snooze";
 import { getPriorityIcon } from "@/lib/priority";
 import type { IntakeItem } from "@/types/intake";
+import IntakeSourceIcon, { intakeSourceLabel } from "./intake-source-icon";
 import IntakeStatusBadge from "./intake-status-badge";
+import { intakeSubmitterName } from "./intake-submitter";
 
 type IntakeListRowProps = {
   item: IntakeItem;
@@ -24,7 +26,8 @@ export default function IntakeListRow({
   const { t } = useTranslation();
   const status = effectiveIntakeStatus(item);
   const submitter = item.submittedBy;
-  const submitterName = submitter?.name ?? t("common:people.someone");
+  const submitterName = intakeSubmitterName(item, t("common:people.someone"));
+  const sourceLabel = intakeSourceLabel(t, item.source);
 
   let detail = formatRelativeTime(item.createdAt);
   if (status === "snoozed" && item.snoozedUntil) {
@@ -54,6 +57,15 @@ export default function IntakeListRow({
             {formatIntakeKey(item.task.key)}
           </span>
           {status !== "pending" && <IntakeStatusBadge status={status} />}
+          {item.source !== "in_app" && (
+            <span
+              className="inline-flex items-center gap-1 text-muted-foreground text-xs"
+              title={t("intake:detail.via", { source: sourceLabel })}
+            >
+              <IntakeSourceIcon source={item.source} className="size-3" />
+              {sourceLabel}
+            </span>
+          )}
           <span className="ms-auto flex shrink-0 items-center">
             {getPriorityIcon(item.task.priority)}
           </span>

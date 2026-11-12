@@ -3,6 +3,8 @@ import { TASK_SHORT_ID_PATTERN } from "../search/task-short-id";
 import { VALID_PRIORITIES } from "../task/validate-task-fields";
 import {
   defaultTabStatuses,
+  INTAKE_SOURCES,
+  type IntakeSource,
   type IntakeStatus,
   type IntakeTab,
   tabStatuses,
@@ -50,6 +52,18 @@ export function resolvePriorityFilter(value: string | undefined): string[] {
     }
   }
   return requested;
+}
+
+export function resolveSourceFilter(value: string | undefined): IntakeSource[] {
+  const requested = splitList(value);
+  for (const source of requested) {
+    if (!(INTAKE_SOURCES as readonly string[]).includes(source)) {
+      throw new HTTPException(400, {
+        message: `Invalid source "${source}". Valid values: ${INTAKE_SOURCES.join(", ")}`,
+      });
+    }
+  }
+  return requested as IntakeSource[];
 }
 
 export type IntakeSearch =

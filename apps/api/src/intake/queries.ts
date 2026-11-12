@@ -62,6 +62,8 @@ const itemSelection = {
   submitterId: submitter.id,
   submitterName: submitter.name,
   submitterImage: submitter.image,
+  submitterEmail: intakeItemTable.submitterEmail,
+  submitterExternalName: intakeItemTable.submitterName,
   triagerId: triager.id,
   triagerName: triager.name,
   triagerImage: triager.image,
@@ -125,6 +127,13 @@ export function toIntakeItem(row: ItemRow) {
       : "in_app",
     resolutionNote: row.resolutionNote,
     submittedBy: person(row.submitterId, row.submitterName, row.submitterImage),
+    externalSubmitter:
+      row.submitterEmail || row.submitterExternalName
+        ? {
+            email: row.submitterEmail,
+            name: row.submitterExternalName,
+          }
+        : null,
     triagedBy: person(row.triagerId, row.triagerName, row.triagerImage),
     triagedAt: row.triagedAt,
     duplicateOf: row.duplicateId
@@ -189,6 +198,8 @@ export type IntakeListFilters = {
   projectId: string;
   statuses: readonly IntakeStatus[];
   priorities: readonly string[];
+  /** Empty: every source. */
+  sources?: readonly IntakeSource[];
   submitter: SubmitterFilter | { kind: "nobody" };
   search: IntakeSearch;
   sortBy: "createdAt" | "updatedAt" | "number";
@@ -207,6 +218,10 @@ function baseConditions(filters: IntakeListFilters): SQL[] {
 
   if (filters.priorities.length > 0) {
     conditions.push(inArray(taskTable.priority, [...filters.priorities]));
+  }
+
+  if (filters.sources && filters.sources.length > 0) {
+    conditions.push(inArray(intakeItemTable.source, [...filters.sources]));
   }
 
   if (filters.submitter.kind === "nobody") {
@@ -260,7 +275,7 @@ function emptyCounts(): IntakeCounts {
 export async function countIntakeItems(
   filters: Pick<
     IntakeListFilters,
-    "projectId" | "priorities" | "submitter" | "search"
+    "projectId" | "priorities" | "submitter" | "search" | "sources"
   >,
 ): Promise<IntakeCounts> {
   const rows = await db

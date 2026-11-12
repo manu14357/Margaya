@@ -79,6 +79,7 @@ describe("resolveIntakeFilters", () => {
       tab: "open",
       statuses: ["pending"],
       priorities: [],
+      sources: [],
       submittedBy: undefined,
       q: undefined,
       sortBy: "createdAt",
@@ -152,6 +153,18 @@ describe("intakeEmptyKind", () => {
     ).toBe(true);
     expect(
       hasActiveIntakeFilters(resolveIntakeFilters({ submittedBy: "me" })),
+    ).toBe(true);
+  });
+});
+
+describe("source filter (#8)", () => {
+  it("keeps known sources in the URL and the filters", () => {
+    const search = validateIntakeSearch({ source: "email,fax,form" });
+    expect(search.source).toEqual(["email", "form"]);
+    expect(resolveIntakeFilters(search).sources).toEqual(["email", "form"]);
+    expect(validateIntakeSearch({}).source).toBeUndefined();
+    expect(
+      hasActiveIntakeFilters(resolveIntakeFilters({ source: ["email"] })),
     ).toBe(true);
   });
 });

@@ -53,6 +53,8 @@ export type IntakeFilters = {
   tab: IntakeTab;
   statuses: IntakeStatus[];
   priorities: IntakePriority[];
+  /** Where requests came from; empty or absent means every source. */
+  sources?: IntakeSource[];
   submittedBy: string | undefined;
   q: string | undefined;
   sortBy: IntakeSortField;

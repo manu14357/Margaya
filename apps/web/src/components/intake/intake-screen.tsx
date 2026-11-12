@@ -177,6 +177,7 @@ export default function IntakeScreen({
         ...filters,
         statuses: [],
         priorities: [],
+        sources: [],
         submittedBy: undefined,
         q: undefined,
       }),

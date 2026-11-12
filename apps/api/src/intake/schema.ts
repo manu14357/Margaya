@@ -31,6 +31,10 @@ export const listIntakeQuery = z.object({
   priority: z.string().max(200).optional().openapi({
     description: "Comma-separated task priorities.",
   }),
+  source: z.string().max(200).optional().openapi({
+    description:
+      "Comma-separated sources: in_app, api, public_board, email or form.",
+  }),
   submittedBy: z.string().max(200).optional().openapi({
     description: "`me` or a user id.",
   }),

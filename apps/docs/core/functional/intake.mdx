@@ -22,7 +22,7 @@ The project gets an **Intake** tab. Its badge shows how many requests are waitin
 
 <Screenshot src="intake/new-request-dialog" alt="The New request dialog with the title field What do you need?, a details field, a Priority button, the Create more switch and Submit request" caption="Describe the request and submit it for review." />
 
-While a request is open, its requester can still **Edit request** or **Withdraw request**. Requests can also be submitted through the [API](/api-reference/endpoints/intake/createIntakeItem); they show "via API".
+While a request is open, its requester can still **Edit request** or **Withdraw request**. Requests can also be submitted through the [API](/api-reference/endpoints/intake/createIntakeItem); they show "via API". People outside the workspace can send requests [by email](#receive-requests-by-email) or through a [public request form](#share-a-public-request-form).
 
 ### Paste screenshots
 
@@ -55,9 +55,49 @@ Capture needs the **Use AI** permission (`ai:use`) and Intake **create**. Adding
 
 An [AI agent](/core/functional/ai-agents#new-intake-requests) can also run on every new request, for example to comment with a short triage before anyone looks. It never accepts, declines or moves a request.
 
+## Receive requests by email
+
+Each project with Intake can have its own forwarding address. Mail sent or forwarded there becomes a pending request: the subject is the title, the message is the description, and attachments are kept as task attachments. When the original sender replies to the same thread, the reply is added to the request as a comment instead of opening a new one.
+
+1. Go to **Settings**, open **Projects** and select your project.
+2. Open **Intake sources**.
+3. Under **Email**, turn on **Accept requests by email**.
+4. Copy the **Forwarding address** and share it, or forward a shared inbox such as support@ to it.
+
+<Screenshot src="intake/intake-sources-email" alt="The Email section of Intake sources for Mobile app with Accept requests by email on, the forwarding address with Copy and New address, Only accept these domains listing two domains, Never accept these domains listing one, Save, and the size limits" caption="The project's forwarding address and the domains it accepts." />
+
+The address appears when your server has an intake mailbox; your administrator sets it up as described in [Set up email intake](/core/installation/email-intake). Without one, connect the project's own mailbox under **Project mailbox**: enter the IMAP server, user name and password, click **Save**, use **Test connection**, then turn on **Check this mailbox**. Margaya checks it every two minutes and files every unread message into this project. The password is stored encrypted and is never shown again.
+
+To keep the queue clean, Margaya ignores:
+
+- auto-replies, out-of-office notices, bounces and bulk or mailing-list mail, so it never answers itself in a loop;
+- messages your mail server already marked as spam;
+- senders from **Never accept these domains**, and, when **Only accept these domains** is filled in, every other domain;
+- the same message twice, more than 10 messages an hour from one sender, and more than 200 an hour for the project;
+- messages over the size limit (25 MB by default). Attachments over the per-file limit, or beyond the maximum count, are listed in the request instead of attached.
+
+Email requests show "via Email" with the sender's name and address, which only people who can read the whole queue see. **New address** replaces the forwarding address if it leaks; mail to the old one is no longer filed. Attachments aren't scanned for malware, so open them with the same care as any email attachment.
+
+## Share a public request form
+
+A request form is a public page where anyone with the link can send a request, without an account. It shows only the heading, text and fields you choose, never your workspace, project or tasks.
+
+1. Go to **Settings**, open **Projects**, select your project and open **Intake sources**.
+2. Under **Request form**, set the **Heading**, an **Introduction** and the **Confirmation message** people see after sending.
+3. Choose whether **Description**, **Email address** and **Name** are optional, required or hidden, and tick any **Custom fields** the form should ask for. Their names and options become public. Click **Save**.
+4. Turn on **Open the form** and share the **Form link**.
+
+<Screenshot src="intake/intake-sources-form" alt="The Request form section of Intake sources with Open the form on, the Form link with Copy, Open and New link, the heading Report a problem with the Mobile app, an introduction, Description and Name optional, Email address required, no custom fields, and a confirmation message" caption="Choose what the form shows and asks, then share the link." />
+
+<Screenshot src="intake/public-request-form" alt="The public request form Report a problem with the Mobile app, with its introduction, a filled-in Title, an empty Description and Your name, a filled-in Your email marked required, and Send request" caption="What people see when they open the form link." />
+
+Submissions land in Intake as pending requests marked "via Form". The form keeps bots out without a captcha: a hidden trap field that people never see, a minimum time to fill it in, and limits of 10 requests an hour and 30 a day per network, and 100 an hour per form. **New link** replaces the link; the old one stops working. The form is unavailable while the server turns public sharing off, Intake is off, or the project is archived.
+
+Managing intake sources needs the **project:share** permission, the same one that publishes a public board.
+
 ## Review the queue
 
-The **Open** tab lists requests waiting for a decision; **Closed** lists accepted, declined and duplicate ones. Search by title, **Filter** by status, priority or who submitted it, and **Sort** by submission date, last activity or task key.
+The **Open** tab lists requests waiting for a decision; **Closed** lists accepted, declined and duplicate ones. Search by title, **Filter** by status, priority, source (in app, API, public board, email or form) or who submitted it, and **Sort** by submission date, last activity or task key. Requests that came from outside the app show their source in the list.
 
 Each request has a status:
 
@@ -105,3 +145,4 @@ Deleting someone else's request needs **task:delete**, and editing it needs **ta
 - [Turn on project features and column groups](/core/functional/project-features-and-column-groups)
 - [Plan work in Backlog](/core/functional/backlog-planning)
 - [Stay on top of your inbox](/core/functional/inbox)
+- [Set up email intake on your server](/core/installation/email-intake)

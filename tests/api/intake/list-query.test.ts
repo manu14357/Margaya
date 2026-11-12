@@ -121,3 +121,14 @@ describe("resolveSubmitterFilter", () => {
     });
   });
 });
+
+describe("resolveSourceFilter (#8)", () => {
+  it("accepts known sources, email and form included", async () => {
+    const { resolveSourceFilter } = await import(
+      "../../../apps/api/src/intake/list-filters"
+    );
+    expect(resolveSourceFilter(undefined)).toEqual([]);
+    expect(resolveSourceFilter("email, form,email")).toEqual(["email", "form"]);
+    expect(() => resolveSourceFilter("fax")).toThrow(/Invalid source/);
+  });
+});
