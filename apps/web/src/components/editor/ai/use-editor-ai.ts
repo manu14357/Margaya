@@ -103,10 +103,13 @@ export function useEditorAi({
   editor,
   workspaceId,
   target,
+  onApplied,
 }: {
   editor: Editor | null;
   workspaceId: string;
   target: EditorAiTarget | null;
+  /** AI text reached the document (the host labels its next save). */
+  onApplied?: () => void;
 }) {
   const locale = useAiLocale();
   const stream = useAiTextStream();
@@ -116,6 +119,8 @@ export function useEditorAi({
   const [session, setSession] = useState<EditorAiSession | null>(null);
   const sessionRef = useRef(session);
   sessionRef.current = session;
+  const onAppliedRef = useRef(onApplied);
+  onAppliedRef.current = onApplied;
 
   const active = session !== null;
 
@@ -245,6 +250,9 @@ export function useEditorAi({
           ? replaceWithSuggestion(editor, current.range, markdown)
           : insertSuggestionBelow(editor, current.range, markdown);
       if (applied) {
+        // Hosts save on a debounce, so the label is in place before the
+        // save that carries this text.
+        onAppliedRef.current?.();
         stream.reset();
         setSession(null);
       }

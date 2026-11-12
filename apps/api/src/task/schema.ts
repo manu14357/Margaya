@@ -1,3 +1,4 @@
+import { aiAssistInput } from "../ai/provenance";
 import { z } from "../openapi";
 import { MAX_TASK_ASSIGNEES, TOO_MANY_ASSIGNEES } from "./assignee-rules";
 import { MAX_TASK_POSITION } from "./controllers/next-task-position";
@@ -127,6 +128,7 @@ export const createTaskBody = z.object({
     description:
       "Creates the task as a milestone, which the timeline draws on its due date.",
   }),
+  aiAssist: aiAssistInput,
 });
 
 export const updateTaskBody = z.object({
@@ -149,6 +151,7 @@ export const updateTaskBody = z.object({
     description:
       "Deprecated. Echoing the current first assignee keeps every assignee; another id replaces them all; omitting it or sending an empty string clears them.",
   }),
+  aiAssist: aiAssistInput,
 });
 
 export const moveTaskBody = z.object({
@@ -256,7 +259,10 @@ export const updateDatesBody = z
     { message: "Send startDate, dueDate or both" },
   );
 export const updateTitleBody = z.object({ title: z.string() });
-export const updateDescriptionBody = z.object({ description: z.string() });
+export const updateDescriptionBody = z.object({
+  description: z.string(),
+  aiAssist: aiAssistInput,
+});
 
 const surface = z.enum(["description", "comment"]).openapi({
   description: "Where the image is used, which decides how it is scoped.",

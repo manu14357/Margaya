@@ -28,6 +28,7 @@ import {
 import { useShiki, useShikiRefresh } from "@/components/editor/use-shiki";
 import { useSlashMenu } from "@/components/editor/use-slash-menu";
 import type { MentionMember } from "@/components/task/extensions/mention-list";
+import { useMarkPageAi } from "@/hooks/mutations/page/use-mark-page-ai";
 import { useAiAvailability } from "@/hooks/queries/ai/use-ai";
 import { useGetPages } from "@/hooks/queries/page/use-get-pages";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
@@ -327,9 +328,22 @@ export default function PageEditor({
     () => ({ kind: "page" as const, id: pageId }),
     [pageId],
   );
-  const ai = useEditorAi({ editor, workspaceId, target: aiTarget });
+  // Accepted AI text labels the page AI-generated (EU AI Act Article 50).
+  const markPageAi = useMarkPageAi(pageId);
+  const labelAiText = () => markPageAi.mutate("editor_assist");
+  const ai = useEditorAi({
+    editor,
+    workspaceId,
+    target: aiTarget,
+    onApplied: labelAiText,
+  });
   const aiEnabled = aiAvailable && editable;
-  const aiBlock = useAiBlock({ editor, workspaceId, pageId });
+  const aiBlock = useAiBlock({
+    editor,
+    workspaceId,
+    pageId,
+    onApplied: labelAiText,
+  });
   const openAiBlock = aiBlock.open;
 
   const embed = useEmbedComposer({

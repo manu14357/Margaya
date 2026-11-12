@@ -1,6 +1,11 @@
 import { markdownToJson } from "@margaya/editor-schema";
 import { eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
+import {
+  type AiAssistInput,
+  type AiProvenance,
+  aiWriteProvenance,
+} from "../../ai/provenance";
 import db from "../../database";
 import { pageTable } from "../../database/schema";
 import { publishEvent } from "../../events";
@@ -87,18 +92,64 @@ export async function replacePageContent({
   pageId,
   markdown,
   caller,
+  aiAssist,
 }: {
   pageId: string;
   markdown: string;
   caller: PageCaller;
+  aiAssist?: AiAssistInput;
 }) {
   const page = await loadVisiblePage(db, pageId, caller);
   assertCanEdit(page, caller);
-  await applyServerChange({
+  const { changed } = await applyServerChange({
     kind: "replace",
     pageId,
     actorId: caller.userId,
     target: markdownToJson(markdown),
   });
+  // After the persist, which marks a person's change to AI-written content:
+  // AI-written content replaces that with its own label.
+  if (changed) {
+    const aiProvenance = await aiWriteProvenance({
+      workspaceId: page.workspaceId,
+      userId: caller.userId,
+      assist: aiAssist,
+    });
+    if (aiProvenance) {
+      await db
+        .update(pageTable)
+        .set({ aiProvenance })
+        .where(eq(pageTable.id, pageId));
+    }
+  }
   return getPageResponse(pageId, caller);
+}
+
+/**
+ * Labels the page AI-generated after a person accepted AI-written text in
+ * the live editor (the text itself arrives through the collaboration
+ * socket). Answers the stored provenance.
+ */
+export async function markPageAiAssisted({
+  pageId,
+  feature,
+  caller,
+}: {
+  pageId: string;
+  feature: NonNullable<AiAssistInput>["feature"];
+  caller: PageCaller;
+}): Promise<{ aiProvenance: AiProvenance }> {
+  const page = await loadVisiblePage(db, pageId, caller);
+  assertCanEdit(page, caller);
+  const aiProvenance = await aiWriteProvenance({
+    workspaceId: page.workspaceId,
+    userId: caller.userId,
+    assist: { feature },
+  });
+  if (!aiProvenance) throw new Error("No AI provenance for an assisted edit");
+  await db
+    .update(pageTable)
+    .set({ aiProvenance })
+    .where(eq(pageTable.id, pageId));
+  return { aiProvenance };
 }

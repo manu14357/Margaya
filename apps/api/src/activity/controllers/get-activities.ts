@@ -1,4 +1,5 @@
 import { desc, eq } from "drizzle-orm";
+import { commentAiProvenance } from "../../ai/provenance";
 import db from "../../database";
 import { activityTable } from "../../database/schema";
 import { redactActivityRows } from "../../task-activity/redact";
@@ -22,10 +23,14 @@ async function getActivitiesFromTaskId(
     }
   });
 
-  return redactActivityRows(activities, {
+  const rows = await redactActivityRows(activities, {
     workspaceIds: [reader.workspaceId],
     hidden: reader.hidden,
   });
+  return rows.map((row) => ({
+    ...row,
+    aiProvenance: row.type === "comment" ? commentAiProvenance(row) : null,
+  }));
 }
 
 export default getActivitiesFromTaskId;

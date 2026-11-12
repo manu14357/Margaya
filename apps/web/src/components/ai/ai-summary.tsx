@@ -222,6 +222,7 @@ function AiSummaryCard({
         projectId,
         title: t("ai:writing.summary.pageTitle", { name: name.slice(0, 200) }),
         content: text,
+        aiAssist: { feature: "summarize" },
       },
       {
         onSuccess: (page) => {
@@ -244,7 +245,7 @@ function AiSummaryCard({
   // A task summary saved as a comment, which the activity feed shows.
   const saveAsComment = () => {
     createComment.mutate(
-      { taskId: id, comment: text },
+      { taskId: id, comment: text, aiAssist: { feature: "summarize" } },
       {
         onSuccess: () => {
           void queryClient.invalidateQueries({ queryKey: ["activities", id] });

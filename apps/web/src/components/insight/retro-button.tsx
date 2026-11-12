@@ -145,6 +145,8 @@ export function RetroCard({
         projectId: cycle.projectId,
         title: t("insight:retro.pageTitle", { name: cycle.name.slice(0, 160) }),
         content: retroMarkdown(sheet, t, narrative),
+        // Without the AI narrative the page holds only computed facts.
+        ...(narrative ? { aiAssist: { feature: "retro" as const } } : {}),
       },
       {
         onSuccess: (page) => {

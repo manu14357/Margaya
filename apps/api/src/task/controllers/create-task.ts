@@ -1,5 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
+import type { AiProvenance } from "../../ai/provenance-types";
 import db from "../../database";
 import {
   columnTable,
@@ -84,6 +85,8 @@ export type CreateTaskInput = {
   /** Makes the new task a subtask of this one, in the create's transaction. */
   parentId?: string;
   isMilestone?: boolean;
+  /** Set when AI wrote the task (ai/provenance.ts). */
+  aiProvenance?: AiProvenance | null;
 };
 
 /** Everything a create needs once validated, before the transaction. */
@@ -104,6 +107,7 @@ export type PreparedTaskCreate = {
   customFields: CustomFieldInput[];
   estimatePointId: string | null;
   isMilestone?: boolean;
+  aiProvenance?: AiProvenance | null;
 };
 
 /**
@@ -263,6 +267,7 @@ export async function insertTaskInTransaction(
       position: nextPosition,
       estimatePointId,
       isMilestone: prepared.isMilestone ?? false,
+      aiProvenance: prepared.aiProvenance ?? null,
     })
     .returning();
 
@@ -339,7 +344,10 @@ async function lockParentForCreate(
 }
 
 async function createTask(input: CreateTaskInput) {
-  const prepared = await prepareTaskCreate(input);
+  const prepared = {
+    ...(await prepareTaskCreate(input)),
+    aiProvenance: input.aiProvenance ?? null,
+  };
   const { parentId } = input;
   if (parentId && prepared.column?.group === "triage") {
     throw new HTTPException(400, { message: TRIAGE_LINK_MESSAGE });

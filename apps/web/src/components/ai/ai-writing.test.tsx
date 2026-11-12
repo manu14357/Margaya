@@ -174,6 +174,8 @@ describe("one-click summaries", () => {
         projectId: "p-1",
         title: 'ai:writing.summary.pageTitle {"name":"Sprint 9"}',
         content: m.reply,
+        // Saved AI text carries the AI-generated label.
+        aiAssist: { feature: "summarize" },
       },
     ]);
 
@@ -221,7 +223,13 @@ describe("task summaries", () => {
     fireEvent.click(
       screen.getByRole("button", { name: /ai:writing.summary.saveAsComment/ }),
     );
-    expect(m.comments).toEqual([{ taskId: "task-1", comment: m.reply }]);
+    expect(m.comments).toEqual([
+      {
+        taskId: "task-1",
+        comment: m.reply,
+        aiAssist: { feature: "summarize" },
+      },
+    ]);
     expect(m.invalidated).toContainEqual({
       queryKey: ["activities", "task-1"],
     });

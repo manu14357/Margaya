@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
+import { aiWriteProvenance } from "../ai/provenance";
 import { requireEntitlement } from "../billing/require-entitlement-middleware";
 import db from "../database";
 import {
@@ -928,6 +929,7 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
       estimatePointId,
       parentId,
       isMilestone,
+      aiAssist,
     } = c.req.valid("json");
 
     // Linking the new task under a parent changes the parent's subtasks,
@@ -969,6 +971,11 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
       estimatePointId,
       parentId,
       isMilestone,
+      aiProvenance: await aiWriteProvenance({
+        workspaceId: c.get("workspaceId"),
+        userId: c.get("userId"),
+        assist: aiAssist,
+      }),
     });
 
     return c.json(task, 200);
@@ -1016,6 +1023,7 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
       position,
       userId,
       assigneeIds,
+      aiAssist,
     } = c.req.valid("json");
 
     const currentUserId = c.get("userId");
@@ -1044,6 +1052,7 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
       userId,
       currentUserId,
       assigneeIds,
+      { workspaceId: c.get("workspaceId"), assist: aiAssist },
     );
 
     return c.json(task, 200);
@@ -1390,13 +1399,14 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
   })
   .openapi(updateTaskDescriptionRoute, async (c) => {
     const { id } = c.req.valid("param");
-    const { description } = c.req.valid("json");
+    const { description, aiAssist } = c.req.valid("json");
     const currentUserId = c.get("userId");
 
     const task = await updateTaskDescription({
       id,
       description,
       currentUserId,
+      ai: { workspaceId: c.get("workspaceId"), assist: aiAssist },
     });
 
     return c.json(task, 200);

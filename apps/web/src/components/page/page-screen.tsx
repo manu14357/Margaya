@@ -11,6 +11,7 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
+import { AiContentLabel } from "@/components/ai/ai-content-label";
 import { AiSummaryButton } from "@/components/ai/ai-summary";
 import DescriptionTranslation from "@/components/ai/translate/description-translation";
 import ProjectLayout from "@/components/common/project-layout";
@@ -42,6 +43,7 @@ import { pageQueryKeys } from "@/hooks/queries/page/page-query-keys";
 import { useGetPage } from "@/hooks/queries/page/use-get-page";
 import { useGetPages } from "@/hooks/queries/page/use-get-pages";
 import { useProjectFeatures } from "@/hooks/use-project-features";
+import { provenanceOf } from "@/lib/ai/provenance";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/cn";
 import { HttpError } from "@/lib/http-error";
@@ -592,6 +594,10 @@ export default function PageScreen({
                             editor={editor}
                             canEdit={page.capabilities.canEdit}
                             className="-mt-2 mb-1"
+                          />
+                          <AiContentLabel
+                            provenance={provenanceOf(page.aiProvenance)}
+                            className="mb-2"
                           />
                         </header>
                         {page.contentMarkdown ? (

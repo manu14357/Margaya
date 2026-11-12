@@ -1,5 +1,6 @@
 import { client } from "@margaya/libs";
 import type { InferRequestType } from "hono/client";
+import type { AiAssist } from "@/lib/ai/provenance";
 import { HttpError } from "@/lib/http-error";
 import type Task from "@/types/task";
 
@@ -13,6 +14,8 @@ export type UpdateTaskInput = Task & {
    * other caller echoes `userId`, the first assignee, which keeps them all.
    */
   replaceAssigneeIds?: string[];
+  /** The description holds text accepted from AI (AI-generated label). */
+  aiAssist?: AiAssist;
 };
 
 async function updateTask(taskId: string, task: UpdateTaskInput) {
@@ -37,6 +40,7 @@ async function updateTask(taskId: string, task: UpdateTaskInput) {
       dueDate: task.dueDate?.toString(),
       position: task.position ?? 0,
       projectId: task.projectId,
+      ...(task.aiAssist ? { aiAssist: task.aiAssist } : {}),
     },
   });
 

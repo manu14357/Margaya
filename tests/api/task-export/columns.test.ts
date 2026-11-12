@@ -123,6 +123,7 @@ describe("columns", () => {
       "Link count",
       "Attachment count",
       "Time logged (minutes)",
+      "AI generated",
     ]);
   });
 

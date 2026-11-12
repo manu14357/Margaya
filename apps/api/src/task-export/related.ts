@@ -1,5 +1,6 @@
 import { and, asc, eq, isNotNull, isNull, lte, ne, sql } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
+import { type AiProvenance, commentAiProvenance } from "../ai/provenance";
 import db from "../database";
 import {
   activityTable,
@@ -35,6 +36,8 @@ export type ExportComment = {
   author: string | null;
   createdAt: Date;
   text: string;
+  /** Set when AI wrote the comment (EU AI Act Article 50 marking). */
+  aiProvenance?: AiProvenance | null;
 };
 export type ExportRelation = {
   type: string;
@@ -302,6 +305,8 @@ export async function loadComments(
       createdAt: activityTable.createdAt,
       authorName: userTable.name,
       externalName: activityTable.externalUserName,
+      aiProvenance: activityTable.aiProvenance,
+      eventData: activityTable.eventData,
       rank: sql<number>`row_number() over (partition by ${activityTable.taskId} order by ${activityTable.createdAt} desc, ${activityTable.id} desc)`
         .mapWith(Number)
         .as("rank"),
@@ -336,6 +341,7 @@ export async function loadComments(
       author: row.authorName ?? row.externalName ?? null,
       createdAt: row.createdAt,
       text: row.content ?? "",
+      aiProvenance: commentAiProvenance(row),
     });
     comments.set(row.taskId, list);
   }

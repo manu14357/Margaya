@@ -15,6 +15,7 @@ import {
 import type { ReactNode, Ref } from "react";
 import { useTranslation } from "react-i18next";
 import { AgentBadge } from "@/components/ai/agents/agent-badge";
+import { AiContentLabel } from "@/components/ai/ai-content-label";
 import EstimateActivityText from "@/components/estimate/estimate-activity-text";
 import {
   getIntakeActivityIcon,
@@ -25,6 +26,7 @@ import {
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import useGetWorkspaceUsers from "@/hooks/queries/workspace-users/use-get-workspace-users";
 import { agentViaOf } from "@/lib/ai/agents";
+import { provenanceOf } from "@/lib/ai/provenance";
 import { cn } from "@/lib/cn";
 import { formatDateMedium, formatRelativeTime } from "@/lib/format";
 import { getInitials } from "@/lib/get-initials";
@@ -66,6 +68,8 @@ type ActivityItem = {
   visibility?: "internal" | "public";
   /** Replies only: the top-level comment of their thread. */
   parentId?: string | null;
+  /** Comments only: set when AI wrote the text (AI-generated label). */
+  aiProvenance?: unknown;
 };
 
 /** A comment author as the comment list reports them (B12 §3.3). */
@@ -766,6 +770,7 @@ function CommentActivityCard({
   const isExternalComment = Boolean(activity.externalSource);
   const actorName = user?.user?.name || t("common:people.someone");
   const via = agentViaOf(activity.eventData);
+  const aiProvenance = provenanceOf(activity.aiProvenance);
 
   // Public board authors are usually outsiders, missing from the members.
   const author = commentAuthors?.get(activity.id);
@@ -825,7 +830,14 @@ function CommentActivityCard({
       publicBoard={publicBoard}
       parentVisibility={parentVisibility}
       variant={variant}
-      badges={via ? <AgentViaLine eventData={activity.eventData} /> : null}
+      badges={
+        via || aiProvenance ? (
+          <>
+            {via ? <AgentViaLine eventData={activity.eventData} /> : null}
+            <AiContentLabel provenance={aiProvenance} />
+          </>
+        ) : null
+      }
       onReply={onReply}
       replyLabel={replyLabel}
       replyButtonRef={replyButtonRef}

@@ -73,6 +73,7 @@ import useGetTask from "@/hooks/queries/task/use-get-task";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useMentionMembers } from "@/hooks/use-mention-members";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
+import { aiTextKeys, markAiText } from "@/lib/ai/provenance";
 import { cn } from "@/lib/cn";
 import { parseTaskListMarkdownToNodes } from "@/lib/editor-task-list-paste";
 import {
@@ -903,6 +904,9 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
     editor,
     workspaceId: activeWorkspace?.id ?? "",
     target: aiTarget,
+    // The next description save carries the AI-generated label.
+    onApplied: () =>
+      markAiText(aiTextKeys.taskDescription(taskId), "editor_assist"),
   });
   const aiEnabled = aiAvailable && canEdit && Boolean(task?.projectId);
 

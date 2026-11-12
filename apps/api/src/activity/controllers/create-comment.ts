@@ -1,6 +1,7 @@
 import { and, eq, isNotNull, or } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 import { HTTPException } from "hono/http-exception";
+import { type AiAssistInput, aiWriteProvenance } from "../../ai/provenance";
 import { withAgentVia } from "../../ai-agent/attribution";
 import { withAutomationMarker } from "../../automation-rule/context";
 import db from "../../database";
@@ -31,6 +32,10 @@ export type CreateCommentOptions = {
    * reply to a reply joins its top-level comment's thread.
    */
   parentId?: string;
+  /** The caller accepted AI-written text (ai/provenance.ts). */
+  aiAssist?: AiAssistInput;
+  /** Narrows the AI label's model lookup to the request's workspace. */
+  workspaceId?: string;
 };
 
 const PARENT_NOT_FOUND = "Parent comment not found";
@@ -141,6 +146,8 @@ async function createComment(
     origin = "app",
     parseMentions = true,
     parentId: requestedParentId,
+    aiAssist,
+    workspaceId,
   }: CreateCommentOptions = {},
 ) {
   const parent = requestedParentId
@@ -154,6 +161,9 @@ async function createComment(
     });
   }
   const parentId = parent?.id ?? null;
+  const aiProvenance = external
+    ? null
+    : await aiWriteProvenance({ workspaceId, userId, assist: aiAssist });
 
   const [activity] = await db
     .insert(activityTable)
@@ -167,6 +177,7 @@ async function createComment(
       // An agent's comment says who it acted for (AI-generated marker); an
       // automation rule's comment carries the "Automation" marker.
       eventData: withAutomationMarker(withAgentVia(null)),
+      aiProvenance,
       ...(external
         ? {
             externalUserName: external.userName,

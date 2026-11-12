@@ -1,3 +1,4 @@
+import { aiProvenanceField, aiProvenanceSchema } from "../ai/provenance";
 import { nullableResponseTimestamp, responseTimestamp, z } from "../openapi";
 import { PAGE_ACCESS, PAGE_LOGO_KINDS } from "./types";
 
@@ -101,8 +102,13 @@ export const pageSchema = z
     ancestors: z.array(pageAncestorSchema).openapi({
       description: "Root first. Ancestors the caller can't see are left out.",
     }),
+    aiProvenance: aiProvenanceField,
   })
   .openapi("Page");
+
+export const pageAiProvenanceSchema = z
+  .object({ aiProvenance: aiProvenanceSchema })
+  .openapi("PageAiProvenance");
 
 export const deletedPageSchema = z
   .object({ id: z.string(), projectId: z.string().nullable() })

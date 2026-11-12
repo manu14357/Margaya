@@ -35,6 +35,7 @@ async function getTask(taskId: string) {
       cycleId: cycleTable.id,
       cyclesEnabled: projectTable.cyclesEnabled,
       estimatePointId: taskTable.estimatePointId,
+      aiProvenance: taskTable.aiProvenance,
     })
     .from(taskTable)
     .leftJoin(userTable, eq(taskTable.userId, userTable.id))

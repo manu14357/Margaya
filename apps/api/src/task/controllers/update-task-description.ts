@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
+import { type AiAssistInput, nextAiProvenance } from "../../ai/provenance";
 import db from "../../database";
 import { taskTable } from "../../database/schema";
 import { publishEvent } from "../../events";
@@ -13,10 +14,13 @@ async function updateTaskDescription({
   description,
   currentUserId,
   forceNewVersion = false,
+  ai,
 }: {
   id: string;
   description: string;
   currentUserId: string;
+  /** The request's workspace and its AI claim, for the AI content label. */
+  ai?: { workspaceId?: string; assist?: AiAssistInput };
   /** A restore: always a new history version, never merged into one. */
   forceNewVersion?: boolean;
 }) {
@@ -30,9 +34,20 @@ async function updateTaskDescription({
     });
   }
 
+  const aiProvenance = await nextAiProvenance({
+    existing: existingTask.aiProvenance,
+    changed: (existingTask.description ?? "") !== description,
+    workspaceId: ai?.workspaceId,
+    userId: currentUserId,
+    assist: ai?.assist,
+  });
+
   const [updatedTask] = await db
     .update(taskTable)
-    .set({ description })
+    .set({
+      description,
+      ...(aiProvenance !== undefined ? { aiProvenance } : {}),
+    })
     .where(eq(taskTable.id, id))
     .returning();
 

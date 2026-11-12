@@ -1,3 +1,4 @@
+import { aiProvenanceField } from "../ai/provenance";
 import { columnGroupSchema } from "../column/response";
 import { nullableResponseTimestamp, responseTimestamp, z } from "../openapi";
 
@@ -80,6 +81,7 @@ export const taskSchema = z
     customFields: z
       .array(z.object({ fieldId: z.string(), value: z.string() }))
       .optional(),
+    aiProvenance: aiProvenanceField,
   })
   .openapi("Task");
 

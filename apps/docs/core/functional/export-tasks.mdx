@@ -16,7 +16,7 @@ Exports turn the tasks of your projects into a file you can open in a spreadshee
 
 <Screenshot src="data/new-export-dialog" alt="The New export dialog with the project picker, the CSV, Excel and JSON formats, One file per project and Include archived tasks" caption="A new export: choose projects, a format and the options." />
 
-From a project's settings (**Settings** > **Projects** > a project > **General settings**), the **Export tasks** menu under **Import and export** also starts a **CSV (spreadsheet)** or **Excel (.xlsx)** export of that project only. Its **JSON (for re-import)** choice downloads a file right away that the project import reads back.
+From a project's settings (**Settings** > **Projects** > a project > **General**), the **Export tasks** menu under **Import and export** also starts a **CSV (spreadsheet)** or **Excel (.xlsx)** export of that project only. Its **JSON (for re-import)** choice downloads a file right away that the project import reads back.
 
 You get a notification in the app when the file is ready, with a **Download** button. The **Previous exports** table shows each export's status: **Queued**, **Processing**, **Ready**, **Failed** or **Expired**, with its number of tasks, its size and how long it stays available.
 
@@ -36,6 +36,7 @@ Every task on a board of the chosen projects, in project order and then by task 
 | **Estimate**, **Labels**, **Cycle**, **Modules** | Empty for a project that has the feature turned off |
 | **Links**, **Relations**, **Comments** | JSON text; comments are the newest 200, newest first |
 | **Sub-tasks**, **Link count**, **Attachment count**, **Time logged (minutes)** | Counts; time is empty when time tracking is off |
+| **AI generated** | Empty when a person wrote the description; otherwise who wrote it, such as `agent: Triage bot (model)` or `assist: editor_assist (model)`, plus `; edited by` and a name after a person changed it. See [AI transparency](/core/functional/ai-overview#ai-transparency) |
 | **Custom: {field}** | One column per custom field name, at most 50 |
 
 JSON files carry the same data as structured values, with every custom field. CSV files are UTF-8 with a byte-order mark, so spreadsheets read accents correctly, and text that a spreadsheet could run as a formula is prefixed with an apostrophe.

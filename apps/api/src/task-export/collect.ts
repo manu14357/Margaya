@@ -1,5 +1,6 @@
 import { and, asc, eq, isNull, type SQL, sql } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
+import type { AiProvenance } from "../ai/provenance-types";
 import type { ColumnGroup } from "../column/groups";
 import db from "../database";
 import {
@@ -98,6 +99,8 @@ export type ExportTask = {
   attachmentCount: number;
   timeLoggedMinutes: number | null;
   customFields: ExportFieldValue[];
+  /** Set when AI wrote the description (EU AI Act Article 50 marking). */
+  aiProvenance?: AiProvenance | null;
 };
 
 export const EXPORT_PAGE_SIZE = 500;
@@ -232,6 +235,7 @@ async function loadBaseRows(
       archivedAt: taskTable.archivedAt,
       createdBy: taskTable.createdBy,
       estimatePointId: taskTable.estimatePointId,
+      aiProvenance: taskTable.aiProvenance,
       cycleId: cycleIdSql,
       parentId: parentIdSql,
       subTaskCount: sql<number>`${subTaskCountSql}`.mapWith(Number),
@@ -354,6 +358,7 @@ async function hydratePage(
       attachmentCount: row.attachmentCount,
       timeLoggedMinutes: timeLogged ? (timeLogged.get(row.id) ?? 0) : null,
       customFields: fieldValues.get(row.id) ?? [],
+      aiProvenance: row.aiProvenance,
     };
   });
 }

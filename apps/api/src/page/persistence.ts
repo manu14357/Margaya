@@ -9,8 +9,9 @@ import {
 } from "@margaya/editor-schema";
 import { eq, sql } from "drizzle-orm";
 import * as Y from "yjs";
+import { type AiProvenance, markHumanEdit } from "../ai/provenance";
 import db from "../database";
-import { pageTable, projectTable } from "../database/schema";
+import { pageTable, projectTable, userTable } from "../database/schema";
 import { publishEvent } from "../events";
 import type { PageRecord, Transaction } from "./controllers/shared";
 import { syncPageReferences } from "./references";
@@ -73,6 +74,50 @@ export type PersistOutcome =
   | { status: "gone" }
   /** Pages are off for the project (close rooms with 4404). */
   | { status: "feature-off" };
+
+/**
+ * Saves this soon after an AI label are part of the AI write: the accepted
+ * text reaches the room (and its debounced persist) around the same time
+ * the label is recorded.
+ */
+export const AI_LABEL_GRACE_MS = 15_000;
+
+/**
+ * The page's AI label after a person's content change: unchanged inside the
+ * grace window, else naming them as the last editor. Undefined: no change.
+ */
+export async function pageProvenanceAfterEdit(
+  reader: Transaction | typeof db,
+  existing: AiProvenance | null,
+  actorId: string | null,
+  now: Date,
+): Promise<AiProvenance | undefined> {
+  if (!existing || !actorId) return undefined;
+  const generatedAt = Date.parse(existing.generatedAt);
+  if (
+    Number.isFinite(generatedAt) &&
+    now.getTime() - generatedAt < AI_LABEL_GRACE_MS
+  ) {
+    return undefined;
+  }
+  if (existing.editedById === actorId) {
+    return markHumanEdit(
+      existing,
+      { id: actorId, name: existing.editedByName },
+      now,
+    );
+  }
+  const [person] = await reader
+    .select({ name: userTable.name })
+    .from(userTable)
+    .where(eq(userTable.id, actorId))
+    .limit(1);
+  return markHumanEdit(
+    existing,
+    { id: actorId, name: person?.name ?? null },
+    now,
+  );
+}
 
 function isFragmentEmpty(doc: Y.Doc): boolean {
   return doc.getXmlFragment("default").length === 0;
@@ -169,6 +214,9 @@ export async function persistPageDocument(
     const changed =
       markdown !== row.contentMarkdown ||
       JSON.stringify(json) !== JSON.stringify(previousJson);
+    const aiProvenance = changed
+      ? await pageProvenanceAfterEdit(tx, row.aiProvenance, input.actorId, now)
+      : undefined;
 
     const [page] = await tx
       .update(pageTable)
@@ -178,6 +226,7 @@ export async function persistPageDocument(
         contentText: jsonToPlainText(json),
         contentVersion: sql`${pageTable.contentVersion} + 1`,
         ...(changed ? { updatedAt: now, updatedById: input.actorId } : {}),
+        ...(aiProvenance ? { aiProvenance } : {}),
       })
       .where(eq(pageTable.id, row.id))
       .returning();

@@ -87,16 +87,21 @@ export function useAiBlock({
   editor,
   workspaceId,
   pageId,
+  onApplied,
 }: {
   editor: Editor | null;
   workspaceId: string;
   pageId: string;
+  /** The AI block reached the document (the page gets its AI label). */
+  onApplied?: () => void;
 }) {
   const locale = useAiLocale();
   const stream = useAiTextStream();
   const [session, setSession] = useState<AiBlockSession | null>(null);
   const sessionRef = useRef(session);
   sessionRef.current = session;
+  const onAppliedRef = useRef(onApplied);
+  onAppliedRef.current = onApplied;
   // Our own insert on Accept is not someone else's change.
   const applyingRef = useRef(false);
   const active = session !== null;
@@ -183,6 +188,7 @@ export function useAiBlock({
       applyingRef.current = false;
     }
     if (applied) {
+      onAppliedRef.current?.();
       stream.reset();
       setSession(null);
     }

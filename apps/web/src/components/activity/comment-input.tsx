@@ -48,11 +48,16 @@ export default function CommentInput({
   const { available: aiAvailable } = useAiAvailability(projectId ?? null);
   const contentRef = useRef(content);
   contentRef.current = content;
+  // The draft holds text accepted from AI: the comment is labelled.
+  const aiUsedRef = useRef(false);
   const commentAi = useCommentAi({
     workspaceId: workspace?.id ?? "",
     taskId,
     getDraft: () => contentRef.current,
-    onApply: setContent,
+    onApply: (markdown) => {
+      aiUsedRef.current = true;
+      setContent(markdown);
+    },
   });
   const showAi = Boolean(projectId && aiAvailable && workspace?.id);
 
@@ -69,8 +74,12 @@ export default function CommentInput({
         ...(publicCommentsOpen && visibility === "public"
           ? { visibility }
           : {}),
+        ...(aiUsedRef.current
+          ? { aiAssist: { feature: "editor_assist" as const } }
+          : {}),
       });
 
+      aiUsedRef.current = false;
       setContent("");
       // Every comment starts internal again.
       setVisibility("internal");

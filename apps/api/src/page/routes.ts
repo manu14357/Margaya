@@ -19,6 +19,7 @@ import {
   deletedPageSchema,
   finalizedAssetSchema,
   imageUploadSchema,
+  pageAiProvenanceSchema,
   pageSchema,
   pageSummaryListSchema,
   pageSummarySchema,
@@ -28,6 +29,7 @@ import {
 import {
   createPageBody,
   finalizePageAssetUploadBody,
+  markPageAiBody,
   movePageInTreeBody,
   movePageToProjectBody,
   pageAssetUploadBody,
@@ -167,6 +169,27 @@ export const replacePageContentRoute = createRoute({
     404: errorResponse(NOT_FOUND),
     409: errorResponse(LOCKED),
     413: errorResponse("The content is too large"),
+  },
+});
+
+export const markPageAiRoute = createRoute({
+  method: "post",
+  operationId: "markPageAiGenerated",
+  path: "/{id}/ai-provenance",
+  tags: TAGS,
+  summary: "Label page content as AI-generated",
+  description:
+    "Records that the caller added AI-written text to the page in the live editor, so the page carries an AI-generated label (aiProvenance). The text itself arrives through the collaboration socket. A person's later edits keep the label and name them as the last editor.",
+  middleware: [...pageRoute("update")] as const,
+  request: { params: pageParam, body: jsonBody(markPageAiBody) },
+  responses: {
+    200: jsonResponse("The page's AI provenance", pageAiProvenanceSchema),
+    400: errorResponse("Invalid body"),
+    403: errorResponse(
+      `Missing page:update, not editable by the caller, or ${FEATURE_OFF}`,
+    ),
+    404: errorResponse(NOT_FOUND),
+    409: errorResponse(LOCKED),
   },
 });
 

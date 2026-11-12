@@ -150,6 +150,7 @@ function AiSpecDraftDialog({
           taskKey,
           markdown: text,
         }),
+        aiAssist: { feature: "spec_draft" },
       },
       {
         onSuccess: (page) => {

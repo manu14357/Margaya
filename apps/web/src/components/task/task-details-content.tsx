@@ -19,6 +19,7 @@ import {
 import CommentInput from "@/components/activity/comment-input";
 import { AgentRunButton } from "@/components/ai/agents/agent-run-button";
 import { TaskAgentWaiting } from "@/components/ai/agents/task-agent-waiting";
+import { AiContentLabel } from "@/components/ai/ai-content-label";
 import { AiSpecDraftButton } from "@/components/ai/ai-spec-draft";
 import { AiSummaryButton } from "@/components/ai/ai-summary";
 import DescriptionTranslation from "@/components/ai/translate/description-translation";
@@ -69,6 +70,7 @@ import useTaskReactions from "@/hooks/queries/reaction/use-task-reactions";
 import useGetTask from "@/hooks/queries/task/use-get-task";
 import useGetTaskRelations from "@/hooks/queries/task-relation/use-get-task-relations";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
+import { provenanceOf } from "@/lib/ai/provenance";
 import { cn } from "@/lib/cn";
 import { formatDateMedium } from "@/lib/format";
 import { publicCommentsOpen } from "@/lib/publication/settings";
@@ -321,6 +323,7 @@ export default function TaskDetailsContent({
       </header>
 
       <div className="flex flex-col gap-2">
+        <AiContentLabel provenance={provenanceOf(task?.aiProvenance)} />
         <TaskDescription taskId={taskId} />
         {task?.description ? (
           <DescriptionTranslation

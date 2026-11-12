@@ -1,6 +1,7 @@
 import { markdownToJson } from "@margaya/editor-schema";
 import { createId } from "@paralleldrive/cuid2";
 import { HTTPException } from "hono/http-exception";
+import { aiWriteProvenance } from "../../ai/provenance";
 import db from "../../database";
 import { pageTable } from "../../database/schema";
 import { publishEvent } from "../../events";
@@ -61,6 +62,11 @@ async function createPage({
     template ? template.contentMarkdown : (input.content ?? ""),
   );
   const content = buildPageContent(json);
+  const aiProvenance = await aiWriteProvenance({
+    workspaceId,
+    userId: caller.userId,
+    assist: input.aiAssist,
+  });
 
   const { page, newlyMentionedUserIds } = await db.transaction(async (tx) => {
     await lockPageTree(tx, projectId);
@@ -124,6 +130,7 @@ async function createPage({
         isFullWidth: input.isFullWidth ?? false,
         ...content,
         contentVersion: 1,
+        aiProvenance,
         createdById: caller.userId,
         updatedById: caller.userId,
         createdAt: now,

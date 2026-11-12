@@ -1,5 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
+import { type AiAssistInput, nextAiProvenance } from "../../ai/provenance";
 import db from "../../database";
 import { activityTable, taskTable } from "../../database/schema";
 import { publishEvent } from "../../events";
@@ -17,7 +18,15 @@ async function updateComment(
   {
     parseMentions = true,
     origin = "app",
-  }: { parseMentions?: boolean; origin?: "app" | "public_board" } = {},
+    aiAssist,
+    workspaceId,
+  }: {
+    parseMentions?: boolean;
+    origin?: "app" | "public_board";
+    /** The caller accepted AI-written text (ai/provenance.ts). */
+    aiAssist?: AiAssistInput;
+    workspaceId?: string;
+  } = {},
 ) {
   const [existing] = await db
     .select({
@@ -25,6 +34,7 @@ async function updateComment(
       content: activityTable.content,
       taskId: activityTable.taskId,
       userId: activityTable.userId,
+      aiProvenance: activityTable.aiProvenance,
     })
     .from(activityTable)
     .where(and(eq(activityTable.id, id), eq(activityTable.type, "comment")))
@@ -41,9 +51,20 @@ async function updateComment(
     });
   }
 
+  const aiProvenance = await nextAiProvenance({
+    existing: existing.aiProvenance,
+    changed: existing.content !== content,
+    workspaceId,
+    userId,
+    assist: aiAssist,
+  });
+
   const [updated] = await db
     .update(activityTable)
-    .set({ content })
+    .set({
+      content,
+      ...(aiProvenance !== undefined ? { aiProvenance } : {}),
+    })
     .where(
       and(
         eq(activityTable.id, id),

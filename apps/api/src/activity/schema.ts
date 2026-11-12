@@ -1,3 +1,4 @@
+import { aiAssistInput } from "../ai/provenance";
 import { z } from "../openapi";
 
 export const taskIdParam = z.object({ taskId: z.string() });
@@ -40,11 +41,14 @@ export const createCommentBody = z.object({
     description:
       "Reply in a thread: the id of a comment on the same task. A reply to a reply joins the top-level comment's thread (threads are one level deep). 404 when the comment is not on this task.",
   }),
+
+  aiAssist: aiAssistInput,
 });
 
 export const updateCommentBody = z.object({
   activityId: z.string(),
   comment: z.string().max(10_000),
+  aiAssist: aiAssistInput,
 });
 
 export const deleteCommentBody = z.object({ activityId: z.string() });

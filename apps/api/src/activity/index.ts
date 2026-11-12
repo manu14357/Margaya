@@ -275,18 +275,23 @@ const activity = apiRouter<BaseVariables & { workspaceId: string }>()
     );
   })
   .openapi(createCommentRoute, async (c) => {
-    const { taskId, comment, parentId } = c.req.valid("json");
+    const { taskId, comment, parentId, aiAssist } = c.req.valid("json");
     return c.json(
       await createComment(taskId, c.get("userId"), comment, undefined, {
         parentId,
+        aiAssist,
+        workspaceId: c.get("workspaceId"),
       }),
       200,
     );
   })
   .openapi(updateCommentRoute, async (c) => {
-    const { activityId, comment } = c.req.valid("json");
+    const { activityId, comment, aiAssist } = c.req.valid("json");
     return c.json(
-      await updateComment(c.get("userId"), activityId, comment),
+      await updateComment(c.get("userId"), activityId, comment, {
+        aiAssist,
+        workspaceId: c.get("workspaceId"),
+      }),
       200,
     );
   })

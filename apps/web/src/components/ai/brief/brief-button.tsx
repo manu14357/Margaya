@@ -177,6 +177,7 @@ export function BriefCard({
           date: formatDateMedium(new Date()),
         }),
         content: absolute(),
+        aiAssist: { feature: "brief" },
       },
       {
         onSuccess: (page) => {

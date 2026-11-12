@@ -14,6 +14,7 @@ async function createComment({
   comment,
   visibility,
   parentId,
+  aiAssist,
 }: CreateCommentRequest) {
   // Only the comment route takes a visibility; both create the same row.
   // `parentId` makes it a reply in that comment's thread.
@@ -21,13 +22,14 @@ async function createComment({
     visibility === "public"
       ? await client.comment[":taskId"].$post({
           param: { taskId },
-          json: { content: comment, visibility, parentId },
+          json: { content: comment, visibility, parentId, aiAssist },
         })
       : await client.activity.comment.$post({
           json: {
             taskId,
             comment,
             parentId,
+            aiAssist,
           },
         });
 

@@ -192,6 +192,7 @@ export async function getPageResponse(
     ...toPageSummary(page, caller, parentOf),
     contentMarkdown: page.contentMarkdown,
     contentVersion: page.contentVersion,
+    aiProvenance: page.aiProvenance,
     ancestors: ancestorIds
       .map((id) => byId.get(id))
       .filter(

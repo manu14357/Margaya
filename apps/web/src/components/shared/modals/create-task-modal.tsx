@@ -333,6 +333,12 @@ function CreateTaskModalContent({
   const [description, setDescription] = useState(
     initialValues?.description ?? prefill?.description ?? "",
   );
+  // The description holds text from "Write with AI": the task is labelled.
+  const aiDescriptionRef = useRef(false);
+  const aiDescription = () =>
+    aiDescriptionRef.current
+      ? { aiAssist: { feature: "editor_assist" as const } }
+      : {};
   const [priority, setPriority] = useState<Priority>(
     ((initialValues?.priority ?? prefill?.priority) as Priority | undefined) ??
       "no-priority",
@@ -890,6 +896,7 @@ function CreateTaskModalContent({
               description: description.trim() || "",
               userId: assigneeIds[0] ?? null,
               replaceAssigneeIds: assigneeIds,
+              ...aiDescription(),
               status: taskStatus,
               priority,
               startDate: startDate ? startDate.toISOString() : null,
@@ -904,6 +911,7 @@ function CreateTaskModalContent({
             await createTask({
               title: title.trim(),
               description: description.trim() || "",
+              ...aiDescription(),
               assigneeIds,
               priority,
               projectId: resolvedProjectId,
@@ -1001,6 +1009,7 @@ function CreateTaskModalContent({
           : t("common:modals.createTask.successCreated"),
       );
 
+      aiDescriptionRef.current = false;
       if (createMore) {
         setTitle("");
         setSimilarDismissed(false);
@@ -1405,6 +1414,7 @@ function CreateTaskModalContent({
                 title={title}
                 description={description}
                 onUse={(markdown) => {
+                  aiDescriptionRef.current = true;
                   setDescription(markdown);
                   // The editor takes its value on mount.
                   setEditorVersion((version) => version + 1);

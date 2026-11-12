@@ -1,3 +1,4 @@
+import type { AiProvenance } from "../ai/provenance-types";
 import type { EstimateType } from "../estimate/types";
 import type { ExportCustomField, ExportTask } from "./collect";
 import type { CellValue } from "./encoders/cell";
@@ -32,6 +33,26 @@ export function formatEstimate(
   if (!Number.isFinite(number)) return estimate.value;
   if (estimate.type === "time") return formatMinutes(number);
   return String(Math.round(number * 100) / 100);
+}
+
+/**
+ * The AI label as one cell: "agent: Triage bot (model)" or
+ * "assist: editor_assist (model)", plus "; edited by Ada" after a person's
+ * change. Empty for human-written text.
+ */
+export function formatAiProvenance(
+  provenance: AiProvenance | null | undefined,
+): string {
+  if (!provenance) return "";
+  const who =
+    provenance.source === "agent"
+      ? `agent: ${provenance.agentName ?? provenance.agentId ?? ""}`
+      : `assist: ${provenance.feature ?? ""}`;
+  const model = provenance.model ? ` (${provenance.model})` : "";
+  const edited = provenance.editedById
+    ? `; edited by ${provenance.editedByName ?? provenance.editedById}`
+    : "";
+  return `${who}${model}${edited}`;
 }
 
 const FIXED_COLUMNS: readonly Column[] = [
@@ -70,6 +91,7 @@ const FIXED_COLUMNS: readonly Column[] = [
         author: comment.author,
         createdAt: comment.createdAt.toISOString(),
         text: comment.text,
+        ...(comment.aiProvenance ? { aiGenerated: true } : {}),
       })),
   },
   { header: "Sub-tasks", value: (task) => task.subTaskCount },
@@ -78,6 +100,10 @@ const FIXED_COLUMNS: readonly Column[] = [
   {
     header: "Time logged (minutes)",
     value: (task) => task.timeLoggedMinutes,
+  },
+  {
+    header: "AI generated",
+    value: (task) => formatAiProvenance(task.aiProvenance),
   },
 ];
 
@@ -178,5 +204,6 @@ export function taskJson(task: ExportTask): Record<string, unknown> {
     attachmentCount: task.attachmentCount,
     timeLoggedMinutes: task.timeLoggedMinutes,
     customFields: task.customFields,
+    aiProvenance: task.aiProvenance ?? null,
   };
 }

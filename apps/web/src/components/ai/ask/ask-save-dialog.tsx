@@ -56,7 +56,12 @@ export function AskSaveDialog({
     event.preventDefault();
     if (!projectId || !title.trim()) return;
     createPage.mutate(
-      { projectId, title: title.trim(), content },
+      {
+        projectId,
+        title: title.trim(),
+        content,
+        aiAssist: { feature: "ask" },
+      },
       {
         onSuccess: (page) => {
           onClose();

@@ -28,6 +28,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
+import { useDesktopDragRegion } from "@/components/desktop/desktop-title-bar";
 import { useAiLocale } from "@/components/editor/ai/use-editor-ai";
 import useAuth from "@/components/providers/auth-provider/hooks/use-auth";
 import CreateTaskModal from "@/components/shared/modals/lazy-create-task-modal";
@@ -202,6 +203,7 @@ export default function AskPanel() {
   const [draft, setDraft] = useState("");
   const [view, setView] = useState<"chat" | "history">("chat");
   const [expanded, setExpanded] = useState(false);
+  const dragRegion = useDesktopDragRegion();
   const [mode, setMode] = useState<AskMode>("ask");
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [renaming, setRenaming] = useState(false);
@@ -762,7 +764,16 @@ export default function AskPanel() {
             ],
       )}
     >
-      <header className="flex shrink-0 items-center gap-2 border-b px-3 py-2.5">
+      <header
+        {...(fullPage ? dragRegion : {})}
+        className={cn(
+          "flex shrink-0 items-center gap-2 border-b px-3 py-2.5",
+          // The full page has no top bar, so this is the window's top row:
+          // clear of the desktop app's window buttons and traffic lights.
+          fullPage &&
+            "min-h-12 pe-[calc(var(--desktop-controls-width,0px)+0.75rem)] max-[519px]:ps-[max(0.75rem,var(--desktop-inset-left,0px))]",
+        )}
+      >
         <AskAvatar />
         <div className="flex min-w-0 flex-1 flex-col">
           {renaming && conversationId ? (
@@ -973,7 +984,7 @@ export default function AskPanel() {
         historyList
       ) : (
         <>
-          <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4">
             <div
               className={cn(
                 "flex min-h-full flex-col",
@@ -1108,7 +1119,8 @@ export default function AskPanel() {
               onSendToAgent={(payload) => void sendToAgent(payload)}
             />
             <p className="mt-1.5 px-1 text-center text-[11px] text-muted-foreground leading-4">
-              {t("ai:ask.disclaimer")}
+              {/* EU AI Act Article 50: say plainly that this is AI. */}
+              {t("ai:disclosure.chat")} {t("ai:ask.disclaimer")}
             </p>
           </div>
         </>

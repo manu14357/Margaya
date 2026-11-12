@@ -1,4 +1,5 @@
 import { and, asc, eq, gt, isNotNull, isNull, or, sql } from "drizzle-orm";
+import type { AiProvenance } from "../ai/provenance-types";
 import db from "../database";
 import {
   assetTable,
@@ -312,6 +313,7 @@ export async function* exportPageBatches(
       createdAt: Date;
       updatedAt: Date;
       markdown: string;
+      aiProvenance: AiProvenance | null;
     }[] = await db
       .select({
         id: pageTable.id,
@@ -331,6 +333,7 @@ export async function* exportPageBatches(
         createdAt: pageTable.createdAt,
         updatedAt: pageTable.updatedAt,
         markdown: pageTable.contentMarkdown,
+        aiProvenance: pageTable.aiProvenance,
       })
       .from(pageTable)
       .where(
@@ -394,6 +397,8 @@ export async function* exportPageBatches(
       createdAt: row.createdAt,
       updatedAt: row.updatedAt,
       markdown: row.markdown,
+      // Null unless AI wrote content on the page (EU AI Act Article 50).
+      aiProvenance: row.aiProvenance,
       comments: comments
         .filter((comment) => comment.pageId === row.id)
         .map((comment) => ({

@@ -1,4 +1,5 @@
 import { and, eq, getTableColumns, inArray } from "drizzle-orm";
+import { commentAiProvenance } from "../ai/provenance";
 import { getCycleResponse } from "../cycle/controllers/shared";
 import db from "../database";
 import {
@@ -124,6 +125,8 @@ export async function taskSnapshot(taskId: string): Promise<Snapshot | null> {
     projectId: task.projectId,
     title: task.title,
     description: task.description,
+    // Null unless AI wrote the description (EU AI Act Article 50 marking).
+    aiProvenance: task.aiProvenance ?? null,
     status: task.status,
     statusName: row.columnName ?? task.status,
     group,
@@ -160,6 +163,8 @@ export async function commentSnapshot(
       externalUserName: activityTable.externalUserName,
       visibility: activityTable.visibility,
       parentId: activityTable.parentId,
+      aiProvenance: activityTable.aiProvenance,
+      eventData: activityTable.eventData,
       createdAt: activityTable.createdAt,
       updatedAt: activityTable.updatedAt,
       number: taskTable.number,
@@ -179,6 +184,8 @@ export async function commentSnapshot(
     taskId: row.taskId,
     taskKey: formatTaskKey(row.slug, row.number),
     content: row.content,
+    // Null unless AI wrote the comment (EU AI Act Article 50 marking).
+    aiProvenance: commentAiProvenance(row),
     visibility: row.visibility,
     // The thread's top-level comment when this is a reply, else null.
     parentId: row.parentId,

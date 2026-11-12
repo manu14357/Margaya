@@ -26,6 +26,7 @@ import {
 } from "./controllers/shared";
 import {
   assertCanEdit,
+  markPageAiAssisted,
   replacePageContent,
   updatePage,
 } from "./controllers/update-page";
@@ -43,6 +44,7 @@ import {
   listPageVersionsRoute,
   listTaskPageReferencesRoute,
   lockPageRoute,
+  markPageAiRoute,
   movePageInTreeRoute,
   movePageToProjectRoute,
   replacePageContentRoute,
@@ -164,6 +166,17 @@ const page = apiRouter<PageVariables>()
       await replacePageContent({
         pageId: c.req.valid("param").id,
         markdown: c.req.valid("json").markdown,
+        aiAssist: c.req.valid("json").aiAssist,
+        caller: await pageCallerOf(c),
+      }),
+      200,
+    ),
+  )
+  .openapi(markPageAiRoute, async (c) =>
+    c.json(
+      await markPageAiAssisted({
+        pageId: c.req.valid("param").id,
+        feature: c.req.valid("json").feature,
         caller: await pageCallerOf(c),
       }),
       200,

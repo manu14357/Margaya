@@ -1,5 +1,6 @@
 import { and, eq, getTableColumns, sql } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
+import { type AiAssistInput, nextAiProvenance } from "../../ai/provenance";
 import db from "../../database";
 import {
   columnTable,
@@ -51,6 +52,7 @@ async function updateTask(
   userId?: string,
   currentUserId?: string,
   assigneeIds?: string[],
+  ai?: { workspaceId?: string; assist?: AiAssistInput },
 ) {
   assertTaskPosition(position);
 
@@ -65,6 +67,7 @@ async function updateTask(
       dueDate: taskTable.dueDate,
       archivedAt: taskTable.archivedAt,
       updatedAt: taskTable.updatedAt,
+      aiProvenance: taskTable.aiProvenance,
       inTriage: sql<boolean>`${inTriageColumnSql}`,
     })
     .from(taskTable)
@@ -120,6 +123,19 @@ async function updateTask(
   const newStartDate = startDate || null;
   const newDueDate = dueDate || null;
   const dueDateChanged = !sameInstant(existingTask.dueDate, newDueDate);
+  // Clients echo a missing description as "", which is no change.
+  const descriptionChanged =
+    description !== undefined &&
+    (existingTask.description ?? "") !== description;
+  const aiProvenance = currentUserId
+    ? await nextAiProvenance({
+        existing: existingTask.aiProvenance,
+        changed: descriptionChanged,
+        workspaceId: ai?.workspaceId,
+        userId: currentUserId,
+        assist: ai?.assist,
+      })
+    : undefined;
 
   // The fields and the assignees change together or not at all. The UPDATE
   // locks the task row, so the assignees read after it are current.
@@ -142,6 +158,7 @@ async function updateTask(
           description,
           priority,
           position,
+          ...(aiProvenance !== undefined ? { aiProvenance } : {}),
         })
         .where(eq(taskTable.id, id))
         .returning({

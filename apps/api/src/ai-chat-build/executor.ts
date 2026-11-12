@@ -366,6 +366,8 @@ export async function applyActions(input: {
             {
               title: params.title,
               description: params.description ?? "",
+              // The model wrote the task: it carries the AI-generated label.
+              aiAssist: { feature: "build_chat" },
               priority: params.priority ?? "no-priority",
               status,
               ...(params.assigneeIds
@@ -443,6 +445,7 @@ export async function applyActions(input: {
           must(
             await call("PUT", `/task/description/${enc(taskId)}`, {
               description: fields.description,
+              aiAssist: { feature: "build_chat" },
             }),
           );
         }

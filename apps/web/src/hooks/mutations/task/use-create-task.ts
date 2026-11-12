@@ -21,6 +21,7 @@ function useCreateTask() {
       customFields,
       parentId,
       isMilestone,
+      aiAssist,
     }: CreateTaskRequest) =>
       createTask(
         title,
@@ -34,6 +35,7 @@ function useCreateTask() {
         customFields,
         parentId,
         isMilestone,
+        aiAssist,
       ),
     onSuccess: (data, variables) => {
       void queryClient.invalidateQueries({

@@ -276,6 +276,8 @@ export async function applyBuild(input: {
     const created = await call<Created>("POST", `/task/${projectId}`, {
       title: task.title,
       description: task.description,
+      // The model wrote the task: it carries the AI-generated label.
+      aiAssist: { feature: "talk_to_build" },
       priority: task.priority,
       status:
         (task.column && slugByName.get(task.column.toLowerCase())) || entrySlug,
@@ -326,6 +328,7 @@ export async function applyBuild(input: {
       const child = await call<Created>("POST", `/task/${projectId}`, {
         title: subtask.title,
         description: "",
+        aiAssist: { feature: "talk_to_build" },
         priority: "no-priority",
         status: entrySlug,
         parentId: taskId,

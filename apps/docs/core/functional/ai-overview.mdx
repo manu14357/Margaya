@@ -10,7 +10,7 @@ Margaya's AI features are optional and **off by default**. Each one proposes or 
 AI features appear only when every level allows them:
 
 1. **Instance.** An instance admin selects **Allow AI** and sets up a provider under **Settings** > **Instance** > **AI**.
-2. **Workspace.** A workspace admin turns on **Turn on AI** under **Settings** > **Workspace** > **AI**.
+2. **Workspace.** A workspace admin turns on **Turn on AI** under **Settings** > **Workspace** > **AI settings**.
 3. **Project.** Each project keeps **AI** on, or turns it off under its **Features**. Off keeps the project out of AI entirely.
 4. **Person.** People need the **Use AI** permission. Members, Admins and Owners have it by default; Viewers do not.
 
@@ -63,6 +63,18 @@ Some features need one more switch, listed in the tables below. See [AI Setup](/
 | **A2A** | **Agent-to-agent (A2A)** in the workspace's general settings, off by default. Asking questions and running agents over A2A need AI. | [A2A](/core/integrations/a2a) |
 | **MCP server** | `/api/mcp` and the `@margaya/mcp` package let outside AI clients work in Margaya as you. Needs no AI settings. | [Margaya MCP Server](/core/integrations/mcp) |
 
+## AI transparency
+
+Margaya tells people when they are dealing with AI, as the EU AI Act's transparency rules (Article 50) ask. There is nothing to turn on.
+
+- **Chat says it is AI.** The Ask AI panel says under its question box that you are chatting with an AI assistant, not a person, and that answers can be wrong. An agent's answer in your inbox carries an **AI-generated** label.
+- **AI-written content is labelled.** A task description, comment or page that AI wrote shows a small **AI-generated** label. Hover it, or read it with a screen reader, to see how it was written: by which agent, or with which AI feature, and with which model when that is known.
+- **What counts.** Text an agent writes, and text a person accepts from an AI feature: **Writing help** in descriptions, comments and pages (including **AI block**), **Write with AI** in **Create task**, summaries saved as a comment or page, spec drafts, Ask answers saved as a page, stakeholder briefs, retrospectives with an AI narrative, and the tasks that **Build with AI** and Build mode create. A page is labelled as a whole, because several people can edit it at once.
+- **People's edits stay visible.** When a person changes AI-written text, the label reads **Edited by** and their name, **originally AI-generated**. When AI writes the text again, the label starts over.
+- **Machines can read it too.** Tasks, comments and pages carry an `aiProvenance` field in API responses, MCP results, outgoing webhooks (task and comment payloads) and exports: null for text a person wrote, otherwise `source` (`assist` or `agent`), `feature`, `model`, `agentId`, `agentName`, `requestedById`, `generatedAt` and, after a person's change, `editedById`, `editedByName` and `editedAt`. CSV and Excel exports add an **AI generated** column.
+
+Apps that write AI-generated text through the API label it by sending `aiAssist` with the feature name when they create or update a task, description, comment or page. Writes made by Margaya's own agents are labelled without it. Text a person writes, or text an outside tool sends without `aiAssist`, is not labelled.
+
 ## Usage and limits
 
-Every AI request is counted by feature, person and model, with its tokens and cost. Workspace admins see it under **Settings** > **Workspace** > **AI** > **Usage** and can set a monthly budget and a daily token limit per person. See [AI Setup](/core/functional/ai-setup#usage-and-costs).
+Every AI request is counted by feature, person and model, with its tokens and cost. Workspace admins see it under **Settings** > **Workspace** > **AI settings** > **Usage** and can set a monthly budget and a daily token limit per person. See [AI Setup](/core/functional/ai-setup#usage-and-costs).

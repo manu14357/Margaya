@@ -1,3 +1,5 @@
+import { AI_FEATURES } from "../ai/features";
+import { aiAssistInput } from "../ai/provenance";
 import { z } from "../openapi";
 import { PAGE_MESSAGES } from "./rules";
 import { PAGE_ACCESS, PAGE_LIMITS, PAGE_LOGO_KINDS } from "./types";
@@ -84,6 +86,7 @@ export const createPageBody = z
       description:
         "Start from a saved template of this project or of the workspace: its content (and logo, unless one is given) is copied, and its name is the title unless title is given. Not together with content.",
     }),
+    aiAssist: aiAssistInput,
   })
   .strict()
   .refine(
@@ -107,9 +110,19 @@ export const updatePageBody = z
   .openapi("UpdatePageInput");
 
 export const replacePageContentBody = z
-  .object({ markdown })
+  .object({ markdown, aiAssist: aiAssistInput })
   .strict()
   .openapi("ReplacePageContentInput");
+
+export const markPageAiBody = z
+  .object({
+    feature: z.enum(AI_FEATURES).openapi({
+      description:
+        "The AI feature whose text was added, e.g. editor_assist or summarize.",
+    }),
+  })
+  .strict()
+  .openapi("MarkPageAiInput");
 
 export const movePageInTreeBody = z
   .object({

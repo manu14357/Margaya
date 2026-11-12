@@ -19,6 +19,7 @@ async function createTask(
   customFields?: { fieldId: string; value: string }[],
   parentId?: string,
   isMilestone?: boolean,
+  aiAssist?: CreateTaskRequest["aiAssist"],
 ) {
   if (!projectId) {
     throw new Error("No project selected for task creation");
@@ -38,6 +39,7 @@ async function createTask(
       customFields,
       parentId: parentId || undefined,
       ...(isMilestone ? { isMilestone } : {}),
+      ...(aiAssist ? { aiAssist } : {}),
     },
     param: { projectId },
   });
