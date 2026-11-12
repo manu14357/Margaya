@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useMcpAuthorizationDecision } from "@/hooks/mutations/mcp/use-authorization-decision";
 import { useMcpAuthorizationRequest } from "@/hooks/queries/mcp/use-authorization-request";
 import { authClient } from "@/lib/auth-client";
+import { isLoopbackRedirect } from "@/lib/mcp-redirect";
 
 const authorizationSearchSchema = z.object({
   request_id: z.string().optional(),
@@ -116,6 +117,16 @@ function McpAuthorizePage() {
                 {request.data?.clientName ?? t("auth:mcp.clientFallback")}
               </dd>
             </div>
+            {request.data?.metadataHost && (
+              <div className="space-y-1 p-3">
+                <dt className="text-xs font-medium text-muted-foreground">
+                  {t("auth:mcp.metadataHost")}
+                </dt>
+                <dd className="break-all font-mono text-xs text-foreground">
+                  {request.data.metadataHost}
+                </dd>
+              </div>
+            )}
             <div className="space-y-1 p-3">
               <dt className="text-xs font-medium text-muted-foreground">
                 {t("auth:mcp.redirectUri")}
@@ -128,6 +139,11 @@ function McpAuthorizePage() {
           <Alert variant="warning">
             <AlertDescription>{t("auth:mcp.warning")}</AlertDescription>
           </Alert>
+          {isLoopbackRedirect(request.data?.redirectUri) && (
+            <Alert variant="warning">
+              <AlertDescription>{t("auth:mcp.localRedirect")}</AlertDescription>
+            </Alert>
+          )}
           <div className="flex gap-2">
             <Button
               type="button"

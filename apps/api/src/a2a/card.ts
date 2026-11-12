@@ -94,7 +94,7 @@ export function buildAgentCard(input: {
     documentationUrl: DOCS_URL,
     capabilities: {
       streaming: true,
-      pushNotifications: false,
+      pushNotifications: true,
       extendedAgentCard: true,
     },
     securitySchemes: {

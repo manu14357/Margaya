@@ -35,6 +35,7 @@ import {
   clientRegistrationSchema,
   oauthErrorSchema,
 } from "./schemas";
+import { handleTaskRequest, TASK_METHODS } from "./tasks";
 import { registerMcpTools, toMcpToolRegistrar } from "./tools";
 
 const publicApiUrl = publicApiOrigin();
@@ -99,6 +100,29 @@ export async function authenticateMcpRequest(
 
   if (!session?.user?.id) return null;
   return { userId: session.user.id, token: bearer };
+}
+
+/** A JSON-RPC request for a Tasks-extension method, or null. */
+async function taskMethodMessage(
+  req: Request,
+): Promise<{ id?: unknown; method: string; params?: unknown } | null> {
+  const method = req.headers.get("mcp-method");
+  // The 2026-07-28 transport names the method in a header; check the body
+  // only when it says this is a task method.
+  if (!method || !TASK_METHODS.has(method)) return null;
+  try {
+    const body = (await req.clone().json()) as {
+      jsonrpc?: unknown;
+      method?: unknown;
+      id?: unknown;
+      params?: unknown;
+    };
+    if (body?.jsonrpc !== "2.0" || typeof body.method !== "string") return null;
+    if (!TASK_METHODS.has(body.method)) return null;
+    return { id: body.id, method: body.method, params: body.params };
+  } catch {
+    return null;
+  }
 }
 
 const mcp = apiRouter();
@@ -302,6 +326,14 @@ mcp.all("/mcp", async (c) => {
   }
 
   if (!(await isLegacyRequest(c.req.raw.clone()))) {
+    // The Tasks extension's methods have no SDK runtime; they are served
+    // here, over the caller's agent runs (tasks.ts).
+    const message = await taskMethodMessage(c.req.raw);
+    if (message) {
+      return c.json(
+        await handleTaskRequest(message, authResult.token, internalApiUrl),
+      );
+    }
     const modern = createModernMcpHandler(authResult.token, internalApiUrl);
     return modern.fetch(c.req.raw);
   }
@@ -360,7 +392,8 @@ mcp.post("/mcp/token", async (c) => {
     code.length > 128 ||
     typeof client_id !== "string" ||
     !client_id ||
-    client_id.length > 128 ||
+    // Metadata document clients use their document's URL as the id.
+    client_id.length > 2048 ||
     typeof code_verifier !== "string" ||
     !code_verifier ||
     code_verifier.length > 128 ||

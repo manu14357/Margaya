@@ -128,6 +128,14 @@ const WITH_NETWORK =
 
 type Step = typeof aiRunStepTable.$inferInsert;
 
+/** After a task is created: its id, so later tool calls can name it. */
+function createdTaskHint(change: Change, ref: AppliedRef): string {
+  return (change.op === "create_task" || change.op === "create_subtask") &&
+    ref.taskId
+    ? ` The new task's id is ${ref.taskId}.`
+    : "";
+}
+
 /** After a page write: how to link the page in a comment. */
 function pageLinkHint(
   workspaceId: string,
@@ -924,7 +932,7 @@ export async function executeRun(run: AiRunRow): Promise<void> {
           results.push({
             type: "tool_result",
             toolUseId: call.id,
-            content: `Done: ${describeChange(change)}.${pageLinkHint(run.workspaceId, change, ref)}`,
+            content: `Done: ${describeChange(change)}.${pageLinkHint(run.workspaceId, change, ref)}${createdTaskHint(change, ref)}`,
           });
         } catch (error) {
           if (error instanceof NothingToChange) {

@@ -36,6 +36,16 @@ import {
   tenantParams,
   versionSupported,
 } from "./protocol";
+import {
+  createPushConfig,
+  createPushConfigParams,
+  deletePushConfig,
+  getPushConfig,
+  listPushConfigParams,
+  listPushConfigs,
+  pushConfigIdParams,
+} from "./push";
+import { AGENT_CARD_JWKS_PATH, agentCardJwks, signAgentCard } from "./signing";
 
 // Margaya as an A2A server (A2A 1.0, JSON-RPC binding). Off until a
 // workspace turns it on; the card is not served before any workspace does.
@@ -73,23 +83,40 @@ function rpcError(id: RpcId, error: A2aError) {
   };
 }
 
+/** A card signed with the instance's key (JWS over its JCS form). */
+function signedCard(card: ReturnType<typeof buildAgentCard>) {
+  return signAgentCard(card, `${publicApiOrigin()}/api${AGENT_CARD_JWKS_PATH}`);
+}
+
 async function agentCard(c: Context) {
   if (!(await anyWorkspaceAllowsA2a())) {
     return c.json({ error: "not_found" }, 404);
   }
   c.header("Cache-Control", "public, max-age=60");
   return c.json(
-    buildAgentCard({
-      baseUrl: publicApiOrigin(),
-      aiEnabled: getAiInstanceConfig().enabled,
-    }),
+    signedCard(
+      buildAgentCard({
+        baseUrl: publicApiOrigin(),
+        aiEnabled: getAiInstanceConfig().enabled,
+      }),
+    ),
   );
+}
+
+/** The public key set that verifies card signatures. */
+async function agentCardKeys(c: Context) {
+  if (!(await anyWorkspaceAllowsA2a())) {
+    return c.json({ error: "not_found" }, 404);
+  }
+  c.header("Cache-Control", "public, max-age=300");
+  return c.json(agentCardJwks());
 }
 
 /** The card at the domain root, for deployments that serve the API there. */
 export function a2aWellKnownRoutes() {
   const wellKnown = new Hono();
   wellKnown.get("/.well-known/agent-card.json", agentCard);
+  wellKnown.get(AGENT_CARD_JWKS_PATH, agentCardKeys);
   return wellKnown;
 }
 
@@ -150,6 +177,7 @@ function streamTask(
 const a2a = apiRouter();
 
 a2a.get("/.well-known/agent-card.json", agentCard);
+a2a.get(AGENT_CARD_JWKS_PATH, agentCardKeys);
 
 a2a.use("/a2a", boundedRequestBody(MAX_BODY_BYTES));
 
@@ -215,18 +243,14 @@ a2a.post("/a2a", async (c) => {
       return c.json(
         rpcResult(
           id,
-          buildAgentCard({
-            baseUrl,
-            aiEnabled: getAiInstanceConfig().enabled,
-            tenants: tenants.map((tenant) => tenant.slug),
-          }),
+          signedCard(
+            buildAgentCard({
+              baseUrl,
+              aiEnabled: getAiInstanceConfig().enabled,
+              tenants: tenants.map((tenant) => tenant.slug),
+            }),
+          ),
         ),
-      );
-    }
-    if (PUSH_METHODS.has(method)) {
-      throw new A2aError(
-        A2A_ERRORS.pushNotificationNotSupported,
-        "Push notifications are not supported",
       );
     }
 
@@ -237,6 +261,7 @@ a2a.post("/a2a", async (c) => {
       "ListTasks",
       "CancelTask",
       "SubscribeToTask",
+      ...PUSH_METHODS,
     ];
     if (!known.includes(method)) {
       throw new A2aError(A2A_ERRORS.methodNotFound, "Method not found");
@@ -286,6 +311,31 @@ a2a.post("/a2a", async (c) => {
             await listTasks(ctx, parseParams(listTasksParams, params)),
           ),
         );
+      }
+      case "CreateTaskPushNotificationConfig": {
+        const input = parseParams(createPushConfigParams, params);
+        const row = await readA2aRow(ctx, input.taskId);
+        return c.json(
+          rpcResult(id, {
+            ...(await createPushConfig(ctx, row, input.config)),
+            ...(tenant ? { tenant } : {}),
+          }),
+        );
+      }
+      case "GetTaskPushNotificationConfig": {
+        const input = parseParams(pushConfigIdParams, params);
+        const row = await readA2aRow(ctx, input.taskId);
+        return c.json(rpcResult(id, await getPushConfig(row, input.id)));
+      }
+      case "ListTaskPushNotificationConfigs": {
+        const input = parseParams(listPushConfigParams, params);
+        const row = await readA2aRow(ctx, input.taskId);
+        return c.json(rpcResult(id, await listPushConfigs(row)));
+      }
+      case "DeleteTaskPushNotificationConfig": {
+        const input = parseParams(pushConfigIdParams, params);
+        const row = await readA2aRow(ctx, input.taskId);
+        return c.json(rpcResult(id, await deletePushConfig(row, input.id)));
       }
       case "SubscribeToTask": {
         const { id: taskId } = parseParams(taskIdParams, params);

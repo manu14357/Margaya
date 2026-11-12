@@ -74,6 +74,24 @@ An authenticated agent can call `GetExtendedAgentCard`. That card lists one
 interface for each workspace the person may hand work to, with the workspace
 slug as its `tenant`.
 
+### Signed cards
+
+Both cards carry a signature in `signatures`, so an agent can check that a card
+really comes from your instance and wasn't changed on the way. The signature
+is a JSON Web Signature (`EdDSA`, Ed25519) over the card's
+[JCS](https://www.rfc-editor.org/rfc/rfc8785) form, without the `signatures`
+field. Its protected header names the key with `kid` and points to the public
+keys with `jku`:
+
+```
+https://your-margaya-instance.com/api/.well-known/agent-card-jwks.json
+```
+
+The key set is also served at `/.well-known/agent-card-jwks.json`. The signing
+key is derived from your instance's `AUTH_SECRET`, so every API instance signs
+with the same key and nothing else needs configuring. Changing `AUTH_SECRET`
+changes the key; agents that pinned the old key must fetch the key set again.
+
 ## Skills
 
 Each message chooses a skill with a JSON data part
@@ -126,9 +144,10 @@ Margaya supports these methods:
 - `CancelTask`
 - `SubscribeToTask`
 - `GetExtendedAgentCard`
+- `CreateTaskPushNotificationConfig`, `GetTaskPushNotificationConfig`,
+  `ListTaskPushNotificationConfigs` and `DeleteTaskPushNotificationConfig`
 
-Push notifications are not supported (`-32003`). Poll `GetTask`, or stream the
-task instead.
+Poll `GetTask`, stream the task, or ask for push notifications (below).
 
 Margaya reads each task's state from the work it maps to:
 
@@ -174,6 +193,48 @@ The `status` filter applies to the tasks on the returned page. Tasks the person
 can no longer see are left out. Margaya doesn't keep message history, so tasks
 have no `history`.
 
+## Push notifications
+
+Instead of polling, an agent can give Margaya a webhook for a task. Send it
+with the message in `configuration.taskPushNotificationConfig`, or add it
+later with `CreateTaskPushNotificationConfig`:
+
+```json
+{
+  "taskId": "<the A2A task id>",
+  "url": "https://agent.example.com/a2a/notify",
+  "token": "a-token-only-you-know",
+  "authentication": { "scheme": "Bearer", "credentials": "<secret>" }
+}
+```
+
+Each time the work behind the task changes state (an agent run finishes, a
+request is triaged), Margaya sends one `POST` to the URL:
+
+- `Content-Type: application/a2a+json`;
+- `Authorization: <scheme> <credentials>` when you gave `authentication`;
+- `X-A2A-Notification-Token` with your `token`, so you can tell the request
+  is yours;
+- a body with only the new status:
+  `{"statusUpdate": {"taskId", "contextId", "status": {"state", "timestamp"}}}`.
+  Call `GetTask` for the summary and artifacts.
+
+Each state is sent once. A failed delivery is retried twice, after one and
+four seconds. Push works for the tasks that change later: `triage_request` and
+`run_agent`. A task that is already complete refuses a config.
+
+Rules:
+
+- The URL must be `https`, without credentials or a fragment, and reach a
+  public address. Margaya refuses private and loopback addresses and doesn't
+  follow redirects, as for [outgoing webhooks](/core/integrations/outgoing-webhooks).
+- A task takes up to five configs, and only the person who sent the task can
+  manage them.
+- The `token` and `credentials` are stored encrypted and are never returned.
+  `GetTaskPushNotificationConfig` shows only the `url` and the scheme.
+- Notifications stop when the person leaves the workspace or the workspace
+  turns A2A off. Deleting the task's configs is safe to repeat.
+
 ## Audit and privacy
 
 - Every task received over A2A is recorded in the
@@ -190,6 +251,4 @@ have no `history`.
 
 - Calling external A2A agents from Margaya agents. Today, Margaya receives
   work but doesn't delegate it outward.
-- Signed Agent Cards.
 - The HTTP+JSON and gRPC bindings. Only JSON-RPC is served.
-- Push notifications.

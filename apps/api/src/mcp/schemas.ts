@@ -1,27 +1,6 @@
 import { z } from "../openapi";
 import { isMargayaResource } from "./metadata";
-
-// Redirect URIs are attacker-supplied during dynamic client registration, so
-// anything that could turn into script execution or credential leakage is
-// rejected: fragments, embedded credentials, and script-bearing schemes.
-// Plain http is allowed only for loopback, per OAuth 2.1 for native apps.
-function isValidRedirectUri(value: string): boolean {
-  try {
-    const url = new URL(value);
-    if (url.hash || url.username || url.password) return false;
-    if (["javascript:", "data:", "file:", "vbscript:"].includes(url.protocol)) {
-      return false;
-    }
-    if (url.protocol === "http:") {
-      return ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname);
-    }
-    return (
-      url.protocol === "https:" || /^[a-z][a-z0-9+.-]*:$/.test(url.protocol)
-    );
-  } catch {
-    return false;
-  }
-}
+import { isValidRedirectUri } from "./redirect-uri";
 
 const redirectUriSchema = z
   .string()
@@ -51,7 +30,10 @@ export const clientRegistrationSchema = z.object({
 
 export const authorizationQuerySchema = z.object({
   response_type: z.literal("code"),
-  client_id: z.string().min(1).max(128),
+  client_id: z.string().min(1).max(2048).openapi({
+    description:
+      "The client's id: one from dynamic registration, or an https URL of the client's metadata document (Client ID Metadata Documents), which Margaya fetches and checks.",
+  }),
   redirect_uri: redirectUriSchema,
   code_challenge: z
     .string()
@@ -97,7 +79,14 @@ export const clientRegistrationResponseSchema = z
   .openapi("McpClientRegistration");
 
 export const authorizationRequestResponseSchema = z
-  .object({ client_name: z.string(), redirect_uri: z.string() })
+  .object({
+    client_name: z.string(),
+    redirect_uri: z.string(),
+    client_metadata_host: z.string().optional().openapi({
+      description:
+        "For a client identified by a metadata document URL: the host that published it. The client name comes from that document.",
+    }),
+  })
   .openapi("McpAuthorizationRequest");
 
 export const authorizationDecisionResponseSchema = z

@@ -181,10 +181,11 @@ describe("A2A authentication and negotiation", () => {
     expect(old.error?.code).toBe(-32009);
     expect(old.error?.data).toEqual({ supportedVersions: ["1.0"] });
     expect((await rpc(s, mia.headers, "DoMagic")).error?.code).toBe(-32601);
+    // Push configs are supported; one without a task is invalid.
     expect(
       (await rpc(s, mia.headers, "CreateTaskPushNotificationConfig")).error
         ?.code,
-    ).toBe(-32003);
+    ).toBe(-32602);
   });
 
   it("does nothing while the workspace has A2A off", async () => {

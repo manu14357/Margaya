@@ -46,6 +46,37 @@ export type Change =
     })
   | (TaskRef & { op: "delete_task" })
   | {
+      // A top-level task in a project (no parent).
+      op: "create_task";
+      projectId: string;
+      taskId: null;
+      /** The project's name. */
+      taskLabel: string;
+      title: string;
+      description: string;
+      status: string;
+      priority: string;
+    }
+  | (TaskRef & {
+      // Null cycleId: the task is in no cycle.
+      op: "set_cycle";
+      before: { cycleId: string | null; cycleName: string | null };
+      after: { cycleId: string | null; cycleName: string | null };
+    })
+  | (TaskRef & {
+      op: "set_modules";
+      added: { id: string; name: string }[];
+      removed: { id: string; name: string }[];
+    })
+  | (TaskRef & {
+      // Null value: no value (the API stores it as an empty string).
+      op: "set_custom_field";
+      fieldId: string;
+      fieldName: string;
+      before: { value: string | null };
+      after: { value: string | null };
+    })
+  | {
       op: "create_page";
       projectId: string;
       /** Null: a project page linked to no task (scheduled reports). */
@@ -238,6 +269,42 @@ export async function applyChange(
     case "delete_task":
       must(await api("DELETE", `/task/${enc(change.taskId)}`));
       return {};
+    case "create_task": {
+      const task = must(
+        await api<{ id: string }>("POST", `/task/${enc(change.projectId)}`, {
+          title: change.title,
+          description: change.description,
+          priority: change.priority,
+          status: change.status,
+          assigneeIds: [],
+        }),
+      );
+      return { taskId: task.id };
+    }
+    case "set_cycle":
+      must(
+        await api("PUT", `/cycle/task/${enc(change.taskId)}`, {
+          cycleId: change.after.cycleId,
+        }),
+      );
+      return {};
+    case "set_modules":
+      must(
+        await api("PUT", `/module/task/${enc(change.taskId)}`, {
+          addModuleIds: change.added.map((module) => module.id),
+          removeModuleIds: change.removed.map((module) => module.id),
+        }),
+      );
+      return {};
+    case "set_custom_field":
+      must(
+        await api("PUT", "/custom-field/value", {
+          taskId: change.taskId,
+          fieldId: change.fieldId,
+          value: change.after.value ?? "",
+        }),
+      );
+      return {};
     case "create_page": {
       // The task link makes the page show under the task's "Mentioned in
       // pages", as a drafted spec does.
@@ -339,6 +406,37 @@ export async function undoChange(
     case "delete_task":
       must(await api("POST", `/trash/task/${enc(change.taskId)}/restore`));
       return;
+    case "create_task":
+      // Archived rather than trashed: undoing then needs task:update, which
+      // members have, instead of task:delete, which they don't. The task
+      // stays restorable from the project's archive.
+      if (!ref.taskId) throw new ChangeError("Nothing to undo", 409);
+      must(await api("POST", `/task/archive/${enc(ref.taskId)}`));
+      return;
+    case "set_cycle":
+      must(
+        await api("PUT", `/cycle/task/${enc(change.taskId)}`, {
+          cycleId: change.before.cycleId,
+        }),
+      );
+      return;
+    case "set_modules":
+      must(
+        await api("PUT", `/module/task/${enc(change.taskId)}`, {
+          addModuleIds: change.removed.map((module) => module.id),
+          removeModuleIds: change.added.map((module) => module.id),
+        }),
+      );
+      return;
+    case "set_custom_field":
+      must(
+        await api("PUT", "/custom-field/value", {
+          taskId: change.taskId,
+          fieldId: change.fieldId,
+          value: change.before.value ?? "",
+        }),
+      );
+      return;
     case "create_page":
       // Archived, not deleted: it can still be restored from the page list.
       if (!ref.pageId) throw new ChangeError("Nothing to undo", 409);
@@ -401,6 +499,14 @@ export function changePermissions(
         : { task: ["delete"] };
     case "delete_task":
       return { task: ["delete"] };
+    case "create_task":
+      return direction === "apply"
+        ? { task: ["create"] }
+        : { task: ["update"] };
+    case "set_cycle":
+      return { cycle: ["update"] };
+    case "set_modules":
+      return { module: ["update"] };
     case "create_page":
       return direction === "apply"
         ? { page: ["create"] }
@@ -438,6 +544,27 @@ export function describeChange(change: Change): string {
       return `Link ${change.taskLabel} (${change.relationType}) ${change.targetLabel}`;
     case "delete_task":
       return `Delete ${change.taskLabel}`;
+    case "create_task":
+      return `Create task "${change.title}" in ${change.taskLabel}`;
+    case "set_cycle":
+      return change.after.cycleName
+        ? `Put ${change.taskLabel} in cycle ${change.after.cycleName}`
+        : `Take ${change.taskLabel} out of cycle ${change.before.cycleName ?? ""}`.trimEnd();
+    case "set_modules": {
+      const parts = [
+        change.added.length
+          ? `add to ${change.added.map((m) => m.name).join(", ")}`
+          : "",
+        change.removed.length
+          ? `remove from ${change.removed.map((m) => m.name).join(", ")}`
+          : "",
+      ].filter(Boolean);
+      return `Modules of ${change.taskLabel}: ${parts.join("; ")}`;
+    }
+    case "set_custom_field":
+      return change.after.value === null
+        ? `Clear ${change.fieldName} of ${change.taskLabel}`
+        : `Set ${change.fieldName} of ${change.taskLabel} to ${change.after.value}`;
     case "create_page":
       return `Create page "${change.title}" for ${change.taskLabel}`;
     case "update_page":

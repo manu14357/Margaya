@@ -46,7 +46,7 @@ describe("A2A Agent Card", () => {
     ]);
     expect(card.capabilities).toEqual({
       streaming: true,
-      pushNotifications: false,
+      pushNotifications: true,
       extendedAgentCard: true,
     });
     for (const skill of card.skills) {

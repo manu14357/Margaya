@@ -68,7 +68,7 @@ export function changeLinks(
       ? `${base}/pages/${ref.pageId}`
       : c.op === "update_page" && text(c.pageId)
         ? `${base}/pages/${c.pageId}`
-        : c.op === "create_subtask"
+        : c.op === "create_subtask" || c.op === "create_task"
           ? taskPath(text(ref.taskId))
           : c.op === "link_tasks"
             ? taskPath(text(c.targetTaskId))

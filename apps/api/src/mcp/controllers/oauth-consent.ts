@@ -105,6 +105,9 @@ export async function getMcpAuthorizationRequest(requestId: string) {
   return {
     client_name: client.clientName ?? "MCP client",
     redirect_uri: request.redirectUri,
+    ...(client.metadataHost
+      ? { client_metadata_host: client.metadataHost }
+      : {}),
   };
 }
 

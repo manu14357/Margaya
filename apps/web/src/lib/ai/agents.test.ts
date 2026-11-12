@@ -112,6 +112,82 @@ describe("changeDiff", () => {
       },
     ]);
   });
+
+  it("previews planning changes: new task, cycle, modules and custom field", () => {
+    expect(
+      changeDiff(
+        {
+          op: "create_task",
+          taskLabel: "Website",
+          taskId: null,
+          title: "Write release notes",
+          status: "to-do",
+        },
+        labels,
+      ).lines,
+    ).toEqual([
+      {
+        labelKey: "ai:agents.change.fields.task",
+        before: null,
+        after: "Write release notes",
+      },
+      {
+        labelKey: "ai:agents.change.fields.status",
+        before: null,
+        after: "S:to-do",
+      },
+    ]);
+    expect(
+      changeDiff(
+        {
+          op: "set_cycle",
+          before: { cycleId: null, cycleName: null },
+          after: { cycleId: "c1", cycleName: "Sprint 4" },
+        },
+        labels,
+      ).lines,
+    ).toEqual([
+      {
+        labelKey: "ai:agents.change.fields.cycle",
+        before: null,
+        after: "Sprint 4",
+      },
+    ]);
+    expect(
+      changeDiff(
+        {
+          op: "set_modules",
+          added: [{ id: "m1", name: "Billing" }],
+          removed: [],
+        },
+        labels,
+      ).lines,
+    ).toEqual([
+      {
+        labelKey: "ai:agents.change.fields.modulesAdded",
+        before: null,
+        after: "Billing",
+      },
+    ]);
+    expect(
+      changeDiff(
+        {
+          op: "set_custom_field",
+          fieldName: "Effort",
+          before: { value: "3" },
+          after: { value: null },
+        },
+        labels,
+      ).lines,
+    ).toEqual([
+      {
+        labelKey: "ai:agents.change.fields.customField",
+        labelValues: { field: "Effort" },
+        before: "3",
+        after: null,
+      },
+    ]);
+  });
 });
 
 describe("agent attribution", () => {

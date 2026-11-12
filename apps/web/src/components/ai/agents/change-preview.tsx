@@ -20,6 +20,7 @@ const OPEN_KEYS: Record<string, string> = {
   create_page: "ai:agents.change.openPage",
   update_page: "ai:agents.change.openPage",
   create_subtask: "ai:agents.change.openSubtask",
+  create_task: "ai:agents.change.openTask",
   link_tasks: "ai:agents.change.openLinked",
 };
 

@@ -27,6 +27,13 @@ import {
   splitTitle,
   type TaskState,
 } from "./protocol";
+import {
+  assertPushUrl,
+  createPushConfig,
+  type PushConfigInput,
+  parsePushConfig,
+  pushable,
+} from "./push";
 
 // The A2A task broker: turns an external agent's message into Margaya work
 // (a task, an intake request, an answer or an agent run) through the API's
@@ -40,6 +47,8 @@ export type BrokerContext = {
   userId: string;
   apiKeyId: string | null;
   workspace: { id: string; slug: string };
+  /** A push config sent with the message, saved with the task. */
+  push?: PushConfigInput;
 };
 
 /** How long a blocking SendMessage waits for an agent run to finish. */
@@ -254,6 +263,8 @@ async function record(
     })
     .returning();
   if (!row) throw new A2aError(A2A_ERRORS.internal, "Could not record task");
+  // Before any waiting, so no state change is missed.
+  if (ctx.push && pushable(row)) await createPushConfig(ctx, row, ctx.push);
   // The work itself is audited by the routes that made it; this entry says
   // it came in over A2A, from whom and as what.
   await recordAudit({
@@ -506,15 +517,14 @@ export async function waitForTask(
 
 /** SendMessage: does what the message asks and returns the A2A task. */
 export async function sendMessage(
-  ctx: BrokerContext,
+  baseCtx: BrokerContext,
   params: SendMessageParams,
 ): Promise<{ task: A2aTask; row: A2aRow }> {
-  if (params.configuration?.taskPushNotificationConfig !== undefined) {
-    throw new A2aError(
-      A2A_ERRORS.pushNotificationNotSupported,
-      "Push notifications are not supported; poll GetTask or stream",
-    );
-  }
+  const pushInput = params.configuration?.taskPushNotificationConfig;
+  const push = pushInput === undefined ? undefined : parsePushConfig(pushInput);
+  // Checked before any work is done, so a bad URL changes nothing.
+  if (push) await assertPushUrl(push.url);
+  const ctx: BrokerContext = push ? { ...baseCtx, push } : baseCtx;
   if (params.message.taskId) {
     throw new A2aError(
       A2A_ERRORS.unsupportedOperation,

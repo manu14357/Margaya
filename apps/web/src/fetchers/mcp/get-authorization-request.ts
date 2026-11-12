@@ -3,6 +3,8 @@ import { client } from "@margaya/libs";
 export type McpAuthorizationRequest = {
   clientName: string;
   redirectUri: string;
+  /** Set when the client is identified by a metadata document URL. */
+  metadataHost?: string;
 };
 
 export async function getMcpAuthorizationRequest(
@@ -20,5 +22,8 @@ export async function getMcpAuthorizationRequest(
   return {
     clientName: body.client_name,
     redirectUri: body.redirect_uri,
+    ...(body.client_metadata_host
+      ? { metadataHost: body.client_metadata_host }
+      : {}),
   };
 }

@@ -110,8 +110,8 @@ If a mention or assignment ends without a comment on the task, for example becau
 
 | Kind | Tools |
 |---|---|
-| Read | Read a task with its latest comments, read a project and its statuses, read a page, search the workspace. |
-| Change | Comment, update a task's title, priority, due date or description, change its status, create a sub-task, link two tasks, create a project page linked to the task, edit a page (replace its content, add a section or rename it). |
+| Read | Read a task with its latest comments, read a project with its statuses, cycles, modules and custom fields, read a page, search the workspace. |
+| Change | Comment, update a task's title, priority, due date or description, change its status, create a task in a project or a sub-task, put a task in a cycle or take it out, add a task to modules or remove it, set or clear a custom field, link two tasks, create a project page linked to the task, edit a page (replace its content, add a section or rename it). |
 | Destructive | Move a task to the trash, change the status of several tasks at once. These always wait for approval. |
 | Ask | Ask the person a question and pause until they answer. |
 | Outside (web access only) | Search the web; read from and act in connected services. Actions in a connected service always wait for approval and can't be undone. |
@@ -145,8 +145,8 @@ Task descriptions, comments, pages and search results can be written by anyone, 
 
 Every change a run makes is part of its **change set**: what it changed, with the values before and after.
 
-- **Applied right away, with Undo.** By default, ordinary changes (comments, field updates, status changes, sub-tasks, links, pages) apply at once. **Undo** reverts one change: old values come back, a comment, sub-task or link the agent created is removed, a page it created is archived, a page it edited gets its old title and content back, a trashed task is restored. Undoing a sub-task needs permission to delete tasks. A page edit can be undone only while nobody has changed the page since; after that, restore an earlier version from the page's history.
-- **Waiting for approval.** Destructive changes always wait. In **Settings → Workspace → AI**, **Approve AI changes** makes every agent change wait. A waiting change appears in the inbox of the person who asked, with a before/after preview and **Approve** or **Reject**. Approving applies it with your current rights; rejecting discards it. Approvals expire after 24 hours.
+- **Applied right away, with Undo.** By default, ordinary changes (comments, field updates, status changes, tasks and sub-tasks, cycles, modules, custom fields, links, pages) apply at once. **Undo** reverts one change: old values come back (including the previous cycle, modules and custom field value), a comment or link the agent created is removed, a task it created is archived, a sub-task it created moves to the trash, a page it created is archived, a page it edited gets its old title and content back, a trashed task is restored. Undoing a sub-task needs permission to delete tasks. Cycle and module changes need the cycle or module permission and the feature turned on in the project. A page edit can be undone only while nobody has changed the page since; after that, restore an earlier version from the page's history.
+- **Waiting for approval.** Destructive changes always wait. In **Settings → Workspace → AI settings**, **Approve AI changes** makes every agent change wait. A waiting change appears in the inbox of the person who asked, with a before/after preview and **Approve** or **Reject**. Approving applies it with your current rights; rejecting discards it. Approvals expire after 24 hours.
 
 Once nothing in a run waits any more, the run ends: it **succeeded** if it changed something, it is **cancelled** if you rejected everything it proposed, and it **failed** if its proposals expired. Its summary gets a line saying what was approved, rejected or expired.
 
@@ -187,4 +187,10 @@ You see your own runs; people with **Manage AI** see every run in the workspace.
 
 ## For external agents (MCP)
 
-Agents you connect through [MCP](/core/integrations/mcp) are separate from the agents on this page, but get the same safety signals: every MCP tool says whether it only reads (`readOnlyHint`) or may make destructive changes (`destructiveHint`), so your MCP client can ask before risky calls.
+Agents you connect through [MCP](/core/integrations/mcp) are separate from the agents on this page, but get the same safety signals: every MCP tool says whether it only reads (`readOnlyHint`) or may make destructive changes (`destructiveHint`), so your MCP client can ask before risky calls. Clients that support it are also asked to confirm deletes and bulk changes before they run.
+
+An external agent can also start the agents on this page: `run_agent` over MCP, or the `run_agent` skill over [A2A](/core/integrations/a2a). Over MCP, a client that supports the Tasks extension follows the run as a task and can approve its held changes and answer its questions from the client (see [Follow an agent run as a task](/core/integrations/mcp#follow-an-agent-run-as-a-task)). The run's rights are capped at the person behind the credential, as here.
+
+## Measuring agent reliability
+
+Margaya's test suite includes an agent evaluation: scripted scenarios that run agents through the real API, permissions, approvals and undo, and judge each run by the database rows it changed, not by what the model wrote. A run passes only when every expected change happened and nothing else changed. Each scenario runs several times and must pass every time (pass^k), because routine automation needs an agent that is right every time, not on average. The scenarios cover creating and planning tasks, triage with modules and custom fields, moving cycles, no-op requests, read-only agents and approvals.

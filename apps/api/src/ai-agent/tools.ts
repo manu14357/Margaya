@@ -18,6 +18,12 @@ import db from "../database";
 import {
   activityTable,
   columnTable,
+  customFieldDefinitionTable,
+  customFieldValueTable,
+  cycleTable,
+  cycleTaskTable,
+  moduleTable,
+  moduleTaskTable,
   pageReferenceTable,
   pageTable,
   projectTable,
@@ -224,6 +230,185 @@ async function assertColumn(projectId: string, status: string) {
   return match.slug;
 }
 
+/** Where a new task starts: the first open "unstarted" or backlog column. */
+async function defaultColumn(projectId: string): Promise<string> {
+  const columns = await db
+    .select({
+      slug: columnTable.slug,
+      group: columnTable.group,
+      isFinal: columnTable.isFinal,
+    })
+    .from(columnTable)
+    .where(eq(columnTable.projectId, projectId))
+    .orderBy(asc(columnTable.position));
+  const open = columns.filter((column) => !column.isFinal);
+  const column =
+    open.find((c) => c.group === "unstarted") ??
+    open.find((c) => c.group === "backlog") ??
+    open[0] ??
+    columns[0];
+  if (!column) throw new ToolError("The project has no statuses");
+  return column.slug;
+}
+
+async function projectInfo(projectId: string) {
+  const [project] = await db
+    .select({
+      name: projectTable.name,
+      cyclesEnabled: projectTable.cyclesEnabled,
+      modulesEnabled: projectTable.modulesEnabled,
+    })
+    .from(projectTable)
+    .where(eq(projectTable.id, projectId))
+    .limit(1);
+  if (!project) throw new ToolError("Project not found");
+  return project;
+}
+
+const sameName = (a: string, b: string) =>
+  a.trim().toLowerCase() === b.trim().toLowerCase();
+
+async function projectCycles(projectId: string) {
+  return db
+    .select({
+      id: cycleTable.id,
+      name: cycleTable.name,
+      startDate: cycleTable.startDate,
+      endDate: cycleTable.endDate,
+    })
+    .from(cycleTable)
+    .where(
+      and(eq(cycleTable.projectId, projectId), isNull(cycleTable.archivedAt)),
+    )
+    .orderBy(asc(cycleTable.sortOrder), asc(cycleTable.createdAt))
+    .limit(50);
+}
+
+async function projectModules(projectId: string) {
+  return db
+    .select({ id: moduleTable.id, name: moduleTable.name })
+    .from(moduleTable)
+    .where(
+      and(eq(moduleTable.projectId, projectId), isNull(moduleTable.archivedAt)),
+    )
+    .orderBy(asc(moduleTable.position), asc(moduleTable.createdAt))
+    .limit(100);
+}
+
+async function projectCustomFields(projectId: string) {
+  return db
+    .select({
+      id: customFieldDefinitionTable.id,
+      name: customFieldDefinitionTable.name,
+      type: customFieldDefinitionTable.type,
+      required: customFieldDefinitionTable.required,
+      options: customFieldDefinitionTable.options,
+    })
+    .from(customFieldDefinitionTable)
+    .where(eq(customFieldDefinitionTable.projectId, projectId))
+    .orderBy(asc(customFieldDefinitionTable.position))
+    .limit(50);
+}
+
+function fieldOptions(options: unknown): string[] {
+  return Array.isArray(options)
+    ? options.filter((option): option is string => typeof option === "string")
+    : [];
+}
+
+/**
+ * The cycles, modules and custom fields of a project, for read_project:
+ * names are workspace data, so they stay inside an untrusted block.
+ */
+async function planningNote(projectId: string): Promise<string> {
+  const project = await projectInfo(projectId);
+  const lines: string[] = [];
+  if (project.cyclesEnabled) {
+    const cycles = await projectCycles(projectId);
+    lines.push(
+      cycles.length
+        ? `Cycles: ${cycles
+            .map(
+              (c) =>
+                `${c.name} (id ${c.id}${c.startDate ? `, ${c.startDate} to ${c.endDate}` : ""})`,
+            )
+            .join("; ")}`
+        : "Cycles: none",
+    );
+  } else {
+    lines.push("Cycles are turned off in this project.");
+  }
+  if (project.modulesEnabled) {
+    const modules = await projectModules(projectId);
+    lines.push(
+      modules.length
+        ? `Modules: ${modules.map((m) => `${m.name} (id ${m.id})`).join("; ")}`
+        : "Modules: none",
+    );
+  } else {
+    lines.push("Modules are turned off in this project.");
+  }
+  const fields = await projectCustomFields(projectId);
+  lines.push(
+    fields.length
+      ? `Custom fields: ${fields
+          .map((f) => {
+            const options = fieldOptions(f.options);
+            return `${f.name} (id ${f.id}, ${f.type}${f.required ? ", required" : ""}${options.length ? `, options: ${options.join(" | ")}` : ""})`;
+          })
+          .join("; ")}`
+      : "Custom fields: none",
+  );
+  return wrapUntrusted({
+    source: `project:${projectId}:planning`,
+    text: lines.join("\n"),
+    maxChars: 6_000,
+  });
+}
+
+/** A custom field value as the API stores it, or a ToolError. */
+function normalizeFieldValue(
+  field: { name: string; type: string; options: unknown },
+  value: string,
+): string {
+  const trimmed = value.trim();
+  switch (field.type) {
+    case "number":
+      if (!Number.isFinite(Number(trimmed)) || trimmed === "") {
+        throw new ToolError("The field takes a number");
+      }
+      return trimmed;
+    case "boolean": {
+      const lower = trimmed.toLowerCase();
+      if (lower !== "true" && lower !== "false") {
+        throw new ToolError("The field takes true or false");
+      }
+      return lower;
+    }
+    case "date":
+      if (
+        !/^\d{4}-\d{2}-\d{2}$/.test(trimmed) ||
+        Number.isNaN(Date.parse(trimmed))
+      ) {
+        throw new ToolError("The field takes a date (YYYY-MM-DD)");
+      }
+      return trimmed;
+    case "dropdown": {
+      const options = fieldOptions(field.options);
+      const match = options.find((option) => sameName(option, trimmed));
+      if (!match) {
+        // Options are workspace text: read_project shows them wrapped.
+        throw new ToolError(
+          "Not one of the field's options. read_project lists them.",
+        );
+      }
+      return match;
+    }
+    default:
+      return trimmed;
+  }
+}
+
 /** The invoker's restricted-project role must allow it too. */
 async function assertPrincipalMay(
   ctx: ToolContext,
@@ -356,7 +541,7 @@ export const AGENT_TOOLS: ToolDef[] = [
   tool({
     name: "read_project",
     description:
-      "Read a project's name, description and its statuses (columns). Takes the project id or its key (WEB for WEB-12).",
+      "Read a project's name, description, statuses (columns), cycles, modules and custom fields with their ids. Takes the project id or its key (WEB for WEB-12).",
     risk: "read",
     requires: { project: ["read"] },
     schema: z.object({ projectId: z.string().trim().min(1).max(100) }).strict(),
@@ -368,6 +553,7 @@ export const AGENT_TOOLS: ToolDef[] = [
       return [
         renderContext(items, { maxChars: 8_000 }),
         `Statuses: ${columns.map((c) => `${c.slug} (${c.name})`).join(", ")}`,
+        await planningNote(projectId),
       ].join("\n");
     },
   }),
@@ -584,6 +770,227 @@ export const AGENT_TOOLS: ToolDef[] = [
         title: args.title,
         description: args.description ?? "",
         status: parent.status,
+      };
+    },
+  }),
+  tool({
+    name: "create_task",
+    description:
+      "Create a top-level task in a project (default: the project you work in), unassigned. Status is a column slug or name (default: the project's first open status); priority defaults to no-priority. For work under an existing task use create_subtask instead.",
+    risk: "write",
+    requires: { task: ["create"] },
+    schema: z
+      .object({
+        project: z
+          .string()
+          .trim()
+          .min(1)
+          .max(100)
+          .optional()
+          .describe("A project id or key"),
+        title: z.string().trim().min(1).max(500),
+        description: z.string().max(10_000).optional(),
+        status: z.string().trim().min(1).max(100).optional(),
+        priority: z.enum(VALID_PRIORITIES).optional(),
+      })
+      .strict(),
+    async plan(ctx, args) {
+      const projectId = await findProjectId(ctx, args.project ?? ctx.projectId);
+      await assertPrincipalMay(ctx, projectId, { task: ["create"] });
+      const project = await projectInfo(projectId);
+      const status = args.status
+        ? await assertColumn(projectId, args.status)
+        : await defaultColumn(projectId);
+      return {
+        op: "create_task",
+        projectId,
+        taskId: null,
+        taskLabel: project.name,
+        title: args.title,
+        description: args.description ?? "",
+        status,
+        priority: args.priority ?? "no-priority",
+      };
+    },
+  }),
+  tool({
+    name: "set_task_cycle",
+    description:
+      "Put a task in a cycle of its project (by cycle id or name), or pass null to take it out of its cycle. read_project lists the cycles.",
+    risk: "write",
+    requires: { cycle: ["update"] },
+    schema: z
+      .object({
+        task: taskRef,
+        cycle: z.string().trim().min(1).max(200).nullable(),
+      })
+      .strict(),
+    async plan(ctx, args) {
+      const task = await findTask(ctx, args.task);
+      await assertPrincipalMay(ctx, task.projectId, { cycle: ["update"] });
+      const project = await projectInfo(task.projectId);
+      if (!project.cyclesEnabled) {
+        throw new ToolError("Cycles are turned off in this project");
+      }
+      const [current] = await db
+        .select({ id: cycleTable.id, name: cycleTable.name })
+        .from(cycleTaskTable)
+        .innerJoin(cycleTable, eq(cycleTable.id, cycleTaskTable.cycleId))
+        .where(eq(cycleTaskTable.taskId, task.id))
+        .limit(1);
+      let target: { id: string; name: string } | null = null;
+      if (args.cycle !== null) {
+        const ref = args.cycle;
+        const cycles = await projectCycles(task.projectId);
+        target =
+          cycles.find((c) => c.id === ref) ??
+          cycles.find((c) => sameName(c.name, ref)) ??
+          null;
+        if (!target) {
+          throw new ToolError("Cycle not found. read_project lists them.");
+        }
+      }
+      if ((current?.id ?? null) === (target?.id ?? null)) {
+        throw new NothingToChange(
+          target
+            ? "Nothing to change: the task is already in that cycle."
+            : "Nothing to change: the task is in no cycle.",
+        );
+      }
+      return {
+        op: "set_cycle",
+        taskId: task.id,
+        projectId: task.projectId,
+        taskLabel: taskLabel(task),
+        before: {
+          cycleId: current?.id ?? null,
+          cycleName: current?.name ?? null,
+        },
+        after: { cycleId: target?.id ?? null, cycleName: target?.name ?? null },
+      };
+    },
+  }),
+  tool({
+    name: "set_task_modules",
+    description:
+      "Add a task to modules of its project and/or remove it from modules (module ids or names, up to 10 each). read_project lists the modules.",
+    risk: "write",
+    requires: { module: ["update"] },
+    schema: z
+      .object({
+        task: taskRef,
+        add: z.array(z.string().trim().min(1).max(200)).max(10).optional(),
+        remove: z.array(z.string().trim().min(1).max(200)).max(10).optional(),
+      })
+      .strict()
+      .refine(
+        (args) => (args.add?.length ?? 0) + (args.remove?.length ?? 0) > 0,
+        {
+          message: "Give modules to add, remove or both",
+        },
+      ),
+    async plan(ctx, args) {
+      const task = await findTask(ctx, args.task);
+      await assertPrincipalMay(ctx, task.projectId, { module: ["update"] });
+      const project = await projectInfo(task.projectId);
+      if (!project.modulesEnabled) {
+        throw new ToolError("Modules are turned off in this project");
+      }
+      const modules = await projectModules(task.projectId);
+      const resolve = (ref: string) => {
+        const match =
+          modules.find((m) => m.id === ref) ??
+          modules.find((m) => sameName(m.name, ref));
+        if (!match) {
+          throw new ToolError("Module not found. read_project lists them.");
+        }
+        return match;
+      };
+      const memberships = await db
+        .select({ moduleId: moduleTaskTable.moduleId })
+        .from(moduleTaskTable)
+        .where(eq(moduleTaskTable.taskId, task.id));
+      const inModule = new Set(memberships.map((row) => row.moduleId));
+      const unique = (list: { id: string; name: string }[]) => [
+        ...new Map(list.map((m) => [m.id, m])).values(),
+      ];
+      const add = unique((args.add ?? []).map(resolve));
+      const remove = unique((args.remove ?? []).map(resolve));
+      if (add.some((m) => remove.some((r) => r.id === m.id))) {
+        throw new ToolError("A module can't be added and removed at once");
+      }
+      const added = add.filter((m) => !inModule.has(m.id));
+      const removed = remove.filter((m) => inModule.has(m.id));
+      if (added.length === 0 && removed.length === 0) {
+        throw new NothingToChange(
+          "Nothing to change: the task's modules already match.",
+        );
+      }
+      return {
+        op: "set_modules",
+        taskId: task.id,
+        projectId: task.projectId,
+        taskLabel: taskLabel(task),
+        added,
+        removed,
+      };
+    },
+  }),
+  tool({
+    name: "set_custom_field",
+    description:
+      "Set a custom field of a task (by field id or name), or pass null to clear it. Values: text; a number; true or false; a date as YYYY-MM-DD; or one of a dropdown's options. read_project lists the fields.",
+    risk: "write",
+    requires: { task: ["update"] },
+    schema: z
+      .object({
+        task: taskRef,
+        field: z.string().trim().min(1).max(255),
+        value: z.string().max(2_000).nullable(),
+      })
+      .strict(),
+    async plan(ctx, args) {
+      const task = await findTask(ctx, args.task);
+      await assertPrincipalMay(ctx, task.projectId, { task: ["update"] });
+      const fields = await projectCustomFields(task.projectId);
+      const field =
+        fields.find((f) => f.id === args.field) ??
+        fields.find((f) => sameName(f.name, args.field));
+      if (!field) {
+        throw new ToolError("Custom field not found. read_project lists them.");
+      }
+      const next =
+        args.value === null || args.value.trim() === ""
+          ? null
+          : normalizeFieldValue(field, args.value);
+      if (next === null && field.required) {
+        throw new ToolError("This field is required and can't be cleared");
+      }
+      const [stored] = await db
+        .select({ value: customFieldValueTable.value })
+        .from(customFieldValueTable)
+        .where(
+          and(
+            eq(customFieldValueTable.taskId, task.id),
+            eq(customFieldValueTable.fieldId, field.id),
+          ),
+        )
+        .limit(1);
+      const current = stored?.value ? stored.value : null;
+      if (current === next) {
+        throw new NothingToChange(
+          "Nothing to change: the field already has this value.",
+        );
+      }
+      return {
+        op: "set_custom_field",
+        taskId: task.id,
+        projectId: task.projectId,
+        taskLabel: taskLabel(task),
+        fieldId: field.id,
+        fieldName: field.name.slice(0, 200),
+        before: { value: current },
+        after: { value: next },
       };
     },
   }),

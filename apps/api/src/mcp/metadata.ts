@@ -62,5 +62,8 @@ export function authorizationServerMetadata(baseUrl: string) {
     token_endpoint_auth_methods_supported: ["none"],
     // The authorization response carries `iss` (RFC 9207).
     authorization_response_iss_parameter_supported: true,
+    // An https client_id names the client's metadata document (MCP
+    // 2026-07-28); registration_endpoint stays for older clients.
+    client_id_metadata_document_supported: true,
   };
 }

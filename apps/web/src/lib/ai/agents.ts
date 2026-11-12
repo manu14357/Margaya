@@ -35,6 +35,10 @@ export const TOOL_KEYS: Record<string, string> = {
   update_task: "ai:agents.tools.update_task",
   move_status: "ai:agents.tools.move_status",
   create_subtask: "ai:agents.tools.create_subtask",
+  create_task: "ai:agents.tools.create_task",
+  set_task_cycle: "ai:agents.tools.set_task_cycle",
+  set_task_modules: "ai:agents.tools.set_task_modules",
+  set_custom_field: "ai:agents.tools.set_custom_field",
   create_page: "ai:agents.tools.create_page",
   update_page: "ai:agents.tools.update_page",
   link_tasks: "ai:agents.tools.link_tasks",
@@ -185,6 +189,77 @@ export function changeDiff(
             labelKey: "ai:agents.change.fields.subtask",
             before: null,
             after: text(change.title),
+          },
+        ],
+      };
+    case "create_task":
+      return {
+        taskLabel,
+        lines: [
+          {
+            labelKey: "ai:agents.change.fields.task",
+            before: null,
+            after: text(change.title),
+          },
+          {
+            labelKey: "ai:agents.change.fields.status",
+            before: null,
+            after: labels.status(String(change.status ?? "")),
+          },
+        ],
+      };
+    case "set_cycle":
+      return {
+        taskLabel,
+        lines: [
+          {
+            labelKey: "ai:agents.change.fields.cycle",
+            before: text(before.cycleName),
+            after: text(after.cycleName),
+          },
+        ],
+      };
+    case "set_modules": {
+      const names = (value: unknown) =>
+        Array.isArray(value)
+          ? value
+              .map((item) => text((item as { name?: unknown })?.name))
+              .filter((name): name is string => name !== null)
+              .join(", ")
+          : "";
+      return {
+        taskLabel,
+        lines: [
+          ...(names(change.added)
+            ? [
+                {
+                  labelKey: "ai:agents.change.fields.modulesAdded",
+                  before: null,
+                  after: names(change.added),
+                },
+              ]
+            : []),
+          ...(names(change.removed)
+            ? [
+                {
+                  labelKey: "ai:agents.change.fields.modulesRemoved",
+                  before: names(change.removed),
+                  after: null,
+                },
+              ]
+            : []),
+        ],
+      };
+    }
+    case "set_custom_field":
+      return {
+        taskLabel,
+        lines: [
+          {
+            labelKey: "ai:agents.change.fields.customField",
+            labelValues: { field: String(change.fieldName ?? "") },
+            before: text(before.value),
+            after: text(after.value),
           },
         ],
       };
