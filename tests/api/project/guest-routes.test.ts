@@ -26,6 +26,8 @@ describe("guestWorkspaceRouteAllowed", () => {
       ["GET", "/api/view/built-in"],
       ["GET", "/api/workspace/w1/settings"],
       ["GET", "/api/ai/availability"],
+      ["GET", "/api/calendar-feed/workspace/w1"],
+      ["POST", "/api/calendar-feed/workspace/w1"],
     ] as const) {
       expect(allowed(method, path), `${method} ${path}`).toBe(true);
     }
@@ -49,6 +51,8 @@ describe("guestWorkspaceRouteAllowed", () => {
       ["GET", "/api/projects"],
       ["GET", "/api/project/extra"],
       ["DELETE", "/api/recent-visit"],
+      ["DELETE", "/api/calendar-feed/workspace/w1"],
+      ["GET", "/api/calendar-feed/workspace/w1/extra"],
     ] as const) {
       expect(allowed(method, path), `${method} ${path}`).toBe(false);
     }

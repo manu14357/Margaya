@@ -1,0 +1,81 @@
+---
+title: Calendar Feeds
+description: Subscribe to your tasks, milestones and cycles from any calendar app with a private, read-only link
+---
+
+Calendar feeds put your Margaya dates next to your meetings. Each feed is a private link in the standard iCalendar format, so any calendar app that can subscribe to a calendar from a URL can show it. Feeds are read-only: you plan in Margaya, and your calendar follows.
+
+## The feeds you can subscribe to
+
+| Feed | What it shows |
+| --- | --- |
+| **My tasks** | Tasks assigned to you that have a start or due date, across every project of the workspace you can see. |
+| **Milestones and cycles** | Milestone tasks and cycle date ranges from every project of the workspace you can see. |
+| **A project** | Every dated task, milestone and cycle of one project. |
+
+Each feed belongs to you and to one workspace. Your teammates can make their own; nobody can see or manage yours.
+
+## Subscribe to your tasks or milestones
+
+<Screenshot src="account/calendar-feeds" alt="The Subscribe in calendar section of Preferences: My tasks with an active link, its first characters and creation date, and New link and Revoke buttons; Milestones and cycles with No link yet and a Create link button" caption="One feed in use and one without a link." />
+
+<Steps>
+  <Step title="Open your preferences">
+    Go to **Settings** → **Account** → **Preferences** and find **Subscribe in calendar**.
+  </Step>
+  <Step title="Create a link">
+    Next to **My tasks** or **Milestones and cycles**, click **Create link**.
+  </Step>
+  <Step title="Copy the link">
+    Copy the link from the dialog. It is shown only once; if you lose it, create a new link.
+  </Step>
+  <Step title="Add it to your calendar app">
+    In your calendar app, choose the option to add or subscribe to a calendar from a URL, and paste the link. In a browser you can also click **Open in calendar app**, which hands the link to the calendar app your system uses for calendar subscriptions.
+  </Step>
+</Steps>
+
+<Screenshot src="account/calendar-feed-link" alt="The Your calendar link dialog for My tasks · Studio North, with the subscription link and a Copy button, a note that it is shown only once, the three How to add it steps, the privacy note, and Open in calendar app and Done" caption="Copy the link now: Margaya shows it only once." />
+
+## Subscribe to a project
+
+In the **Projects** side panel, open a project's **⋯** menu and choose **Subscribe in calendar**, then click **Create link** and add the link to your calendar app the same way.
+
+<Screenshot src="getting-around/project-calendar-feed" alt="The Subscribe in calendar dialog for Website relaunch, saying it follows every dated task, milestone and cycle of the project, with No link yet, a Create link button and a note that all calendar links are in Account → Preferences" caption="A project feed, opened from the project's menu in the side panel." />
+
+## How tasks appear
+
+- Every task is an **all-day event**. Margaya dates have no time of day, so a task with only a due date is one day long, and a task with a start and a due date spans every day between them.
+- Days are counted in **your account time zone** (**Settings** → **Account** → **Preferences** → **Time zone**), or the workspace's time zone when you haven't chosen one.
+- Milestones start with **◆**, cycles with **↻**, and finished tasks with **✓**.
+- Each event links back to its task or cycle in Margaya, and lists the task's key and project.
+- Feeds cover the last 90 days and the next year, up to 2,000 events, and leave out archived tasks and anything in the trash.
+- Events don't block time: calendar apps show them as free.
+
+Calendar apps refresh subscriptions on their own schedule, often every few hours. Margaya suggests hourly, but a change can take longer to show up in your calendar than in Margaya.
+
+## Keep your links private
+
+Anyone with a feed link can read the task titles and dates in it, without signing in. Treat it like a password.
+
+- **New link** gives a feed a new address. The old link stops working at once, and calendars that use it stop updating until you add the new one.
+- **Revoke** deletes the feed. Its link stops working at once.
+- Settings show each link's first characters, when it was created, and when a calendar last read it, so you can spot a link you don't use any more.
+
+You can see and revoke all your feeds of a workspace under **Settings** → **Account** → **Preferences**, including project feeds you made from the project menu.
+
+## What the feed respects
+
+A feed only ever shows what you could see in Margaya at that moment. Each time a calendar app reads it, Margaya checks again:
+
+- If you leave the workspace or are removed from it, its feeds stop working and are deleted. Joining again doesn't bring the old links back.
+- [Restricted projects](/core/functional/restricted-projects) you are not a member of are left out, and a project feed stops working if the project becomes hidden from you or moves to the trash.
+- [Guests](/core/functional/guest-access) see only the projects they were added to.
+- Cycles appear only for projects that have the Cycles feature turned on.
+
+<Note>
+Feeds are one-way. Moving or editing an event in your calendar app doesn't change the task in Margaya.
+</Note>
+
+## For developers
+
+Feeds are managed through the [Calendar feeds API](/api-reference/endpoints/calendar-feeds/listCalendarFeeds). Creating and revoking feeds needs a signed-in session; API keys can't create feed links. The feed itself is served at `/api/calendar-feed/{token}/feed.ics` with `text/calendar` content, an `ETag`, and `Cache-Control: private`. Margaya stores only a hash of each link's token.

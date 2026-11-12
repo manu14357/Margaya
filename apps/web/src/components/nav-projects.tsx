@@ -24,6 +24,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate, useParams } from "@tanstack/react-router";
 import {
   Archive,
+  CalendarPlus,
   ChevronRight,
   Folder,
   Forward,
@@ -37,6 +38,7 @@ import {
 import { type CSSProperties, type ReactNode, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
+import { ProjectCalendarFeedDialog } from "@/components/calendar-feed/project-calendar-feed";
 import {
   ProjectTile,
   panelRowActionClass,
@@ -255,6 +257,11 @@ export function NavProjects({ filter = "" }: NavProjectsProps) {
   const [projectToDeleteId, setProjectToDeleteID] = useState<string | null>(
     null,
   );
+  // The project whose "Subscribe in calendar" dialog is open.
+  const [calendarProject, setCalendarProject] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
   const [draggingProjectId, setDraggingProjectId] = useState<string | null>(
     null,
   );
@@ -474,6 +481,18 @@ export function NavProjects({ filter = "" }: NavProjectsProps) {
                               {t("navigation:projectList.shareProject")}
                             </span>
                           </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="h-7 cursor-pointer items-start text-sm"
+                            onClick={() =>
+                              setCalendarProject({
+                                id: project.id,
+                                name: project.name,
+                              })
+                            }
+                          >
+                            <CalendarPlus className="text-muted-foreground" />
+                            <span>{t("settings:calendarFeed.menuItem")}</span>
+                          </DropdownMenuItem>
                           <FavoriteButton
                             variant="menu-item"
                             workspaceId={workspace.id}
@@ -595,6 +614,18 @@ export function NavProjects({ filter = "" }: NavProjectsProps) {
         open={isCreateProjectModalOpen}
         onClose={() => setIsCreateProjectModalOpen(false)}
       />
+
+      {workspace && calendarProject && (
+        <ProjectCalendarFeedDialog
+          open
+          onOpenChange={(open) => {
+            if (!open) setCalendarProject(null);
+          }}
+          workspaceId={workspace.id}
+          workspaceName={workspace.name}
+          project={calendarProject}
+        />
+      )}
 
       <AlertDialog
         open={isDeleteProjectModalOpen}

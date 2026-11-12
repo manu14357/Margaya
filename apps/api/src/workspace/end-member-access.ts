@@ -4,6 +4,7 @@ import { recordAudit } from "../audit-log/record";
 import db from "../database";
 import {
   apikeyTable,
+  calendarFeedTable,
   projectMemberTable,
   projectTable,
   pushSubscriptionTable,
@@ -62,6 +63,16 @@ export async function endMemberAccess({
               .from(projectTable)
               .where(eq(projectTable.workspaceId, workspaceId)),
           ),
+        ),
+      );
+    // Their calendar feed URLs of this workspace: fetches already fail while
+    // they are out, and a later re-invitation must not revive old URLs.
+    await tx
+      .delete(calendarFeedTable)
+      .where(
+        and(
+          eq(calendarFeedTable.workspaceId, workspaceId),
+          eq(calendarFeedTable.userId, userId),
         ),
       );
     await tx
