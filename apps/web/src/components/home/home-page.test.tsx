@@ -49,6 +49,9 @@ vi.mock("@/components/insight/my-brief-widget", () => ({
 vi.mock("./pinned-reports-widget", () => ({
   default: () => <section>widget:pinned-reports</section>,
 }));
+vi.mock("@/components/project-update/project-updates-widget", () => ({
+  default: () => <section>widget:project-updates</section>,
+}));
 vi.mock("@/components/task/task-details-sheet", () => ({
   default: ({ taskId }: { taskId?: string }) =>
     taskId ? <aside>sheet:{taskId}</aside> : null,

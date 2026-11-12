@@ -18,6 +18,7 @@ describe("project feature catalog", () => {
       "estimatesEnabled",
       "timeTrackingEnabled",
       "aiEnabled",
+      "updatesEnabled",
     ]);
     for (const feature of PROJECT_FEATURE_KEYS) {
       expect(projectTable[projectFeatureField(feature)]).toBeDefined();
@@ -49,6 +50,8 @@ describe("project feature catalog", () => {
       estimates: false,
       timeTracking: true,
       ai: true,
+      // Status updates are opt-in, so existing projects look unchanged.
+      updates: false,
     });
   });
 });

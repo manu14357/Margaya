@@ -19,6 +19,8 @@ export const AI_FEATURES = [
   "triage",
   "translate",
   "brief",
+  // Draft with AI on a project status update.
+  "project_update",
   // C: agents and the rule compiler.
   "agent_run",
   "rule_compiler",

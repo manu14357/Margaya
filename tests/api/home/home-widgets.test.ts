@@ -16,6 +16,7 @@ describe("home widgets", () => {
       { key: "risks", enabled: true },
       { key: "my-brief", enabled: false },
       { key: "pinned-reports", enabled: false },
+      { key: "project-updates", enabled: false },
     ]);
     expect(normalizeHomeWidgets([])).toEqual(DEFAULT_HOME_WIDGETS);
     expect(normalizeHomeWidgets(null)).toEqual(DEFAULT_HOME_WIDGETS);
@@ -38,6 +39,7 @@ describe("home widgets", () => {
       { key: "risks", enabled: true },
       { key: "my-brief", enabled: false },
       { key: "pinned-reports", enabled: false },
+      { key: "project-updates", enabled: false },
     ]);
   });
 
@@ -56,6 +58,7 @@ describe("home widgets", () => {
         { key: "risks" },
         { key: "my-brief" },
         { key: "pinned-reports" },
+        { key: "project-updates" },
       ]),
     ).toBe(true);
     expect(
@@ -76,6 +79,7 @@ describe("home widgets", () => {
         { key: "risks" },
         { key: "my-brief" },
         { key: "pinned-reports" },
+        { key: "project-updates" },
         { key: "tour" },
       ]),
     ).toBe(false);

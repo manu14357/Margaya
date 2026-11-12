@@ -60,6 +60,7 @@ export function preferenceKeyForType(
     case "task_mention":
     case "page_mention":
     case "page_comment":
+    case "project_update_comment":
       return "taskCommentEnabled";
     case "task_status_changed":
     // A requester's intake outcomes are status changes of their request.

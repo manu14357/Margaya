@@ -40,6 +40,7 @@ export const projectSchema = z
     aiEnabled: featureFlag(
       "AI (effective only while the instance and the workspace have AI on)",
     ),
+    updatesEnabled: featureFlag("Status updates"),
     leadUserId: z.string().nullable().openapi({
       description:
         "The project lead, a workspace member; null when none. Cleared when the member leaves the workspace.",

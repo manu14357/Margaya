@@ -109,6 +109,9 @@ export const updateProjectFeaturesBody = z
     aiEnabled: featureFlag(
       "AI features for this project (when the workspace has AI on). Off keeps the project out of AI context.",
     ),
+    updatesEnabled: featureFlag(
+      "Project status updates: a timeline of health and progress posts.",
+    ),
   })
   .openapi({
     minProperties: 1,

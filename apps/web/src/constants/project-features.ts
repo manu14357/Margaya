@@ -5,6 +5,7 @@ import {
   Inbox,
   IterationCw,
   Layers,
+  Megaphone,
   Ruler,
   Sparkles,
   Timer,
@@ -24,6 +25,7 @@ export const PROJECT_FEATURE_KEYS = [
   "estimates",
   "timeTracking",
   "ai",
+  "updates",
 ] as const;
 
 export type ProjectFeatureKey = (typeof PROJECT_FEATURE_KEYS)[number];
@@ -36,7 +38,8 @@ export type ProjectFeatureField =
   | "intakeEnabled"
   | "estimatesEnabled"
   | "timeTrackingEnabled"
-  | "aiEnabled";
+  | "aiEnabled"
+  | "updatesEnabled";
 
 export type ProjectFeatureFlags = Record<ProjectFeatureField, boolean>;
 
@@ -113,6 +116,14 @@ export const PROJECT_FEATURES: readonly ProjectFeatureDefinition[] = [
     titleKey: "settings:projectFeatures.items.ai.title",
     descriptionKey: "settings:projectFeatures.items.ai.description",
     icon: Sparkles,
+    isAvailable: true,
+  },
+  {
+    key: "updates",
+    field: "updatesEnabled",
+    titleKey: "settings:projectFeatures.items.updates.title",
+    descriptionKey: "settings:projectFeatures.items.updates.description",
+    icon: Megaphone,
     isAvailable: true,
   },
 ];

@@ -1,6 +1,7 @@
 import type {
   DigestBrief,
   DigestMention,
+  DigestProjectUpdate,
   DigestTask,
   DigestWorkspace,
 } from "@margaya/email";
@@ -21,6 +22,8 @@ import {
   columnTable,
   notificationTable,
   projectTable,
+  projectUpdateSubscriberTable,
+  projectUpdateTable,
   taskAssigneeTable,
   taskTable,
   userNotificationWorkspaceRuleTable,
@@ -190,6 +193,57 @@ async function mentionsOf(userId: string, workspaceIds: string[], since: Date) {
     .limit(MAX_MENTION_ROWS);
 }
 
+const MAX_PROJECT_UPDATES_LISTED = 5;
+const PROJECT_UPDATE_SUMMARY_CHARS = 160;
+
+/**
+ * Status updates posted since the last digest on projects the user follows
+ * (a subscribed row, or the lead without a muted row) and can see. Following
+ * is the opt-in: people who follow no project get no section.
+ */
+async function projectUpdatesOf(
+  userId: string,
+  workspaceIds: string[],
+  since: Date,
+) {
+  return db
+    .select({
+      id: projectUpdateTable.id,
+      projectId: projectUpdateTable.projectId,
+      workspaceId: projectUpdateTable.workspaceId,
+      projectName: projectTable.name,
+      health: projectUpdateTable.health,
+      summary: projectUpdateTable.summary,
+    })
+    .from(projectUpdateTable)
+    .innerJoin(projectTable, eq(projectTable.id, projectUpdateTable.projectId))
+    .leftJoin(
+      projectUpdateSubscriberTable,
+      and(
+        eq(projectUpdateSubscriberTable.projectId, projectTable.id),
+        eq(projectUpdateSubscriberTable.userId, userId),
+      ),
+    )
+    .where(
+      and(
+        inArray(projectUpdateTable.workspaceId, workspaceIds),
+        gt(projectUpdateTable.createdAt, since),
+        sql`${projectUpdateTable.authorId} is distinct from ${userId}`,
+        eq(projectTable.updatesEnabled, true),
+        isNull(projectTable.deletedAt),
+        projectVisibleSql(projectTable.id, userId),
+        sql`coalesce(${projectUpdateSubscriberTable.subscribed}, ${projectTable.leadUserId} = ${userId}, false)`,
+      ),
+    )
+    .orderBy(desc(projectUpdateTable.createdAt), desc(projectUpdateTable.id))
+    .limit(MAX_PROJECT_UPDATES_LISTED * 10);
+}
+
+function projectUpdatesUrl(workspaceId: string, projectId: string) {
+  const clientUrl = process.env.MARGAYA_CLIENT_URL || "http://localhost:5173";
+  return `${clientUrl}/dashboard/workspace/${workspaceId}/project/${projectId}/updates`;
+}
+
 async function unreadCountsOf(
   userId: string,
   workspaceIds: string[],
@@ -265,10 +319,11 @@ export async function buildDigestWorkspaces(
   if (workspaces.length === 0) return [];
   const ids = workspaces.map((workspace) => workspace.id);
 
-  const [dueRows, mentionRows, unread] = await Promise.all([
+  const [dueRows, mentionRows, unread, updateRows] = await Promise.all([
     dueTasksOf(input.userId, ids, input.now),
     mentionsOf(input.userId, ids, input.since),
     unreadCountsOf(input.userId, ids, input.since, input.now),
+    projectUpdatesOf(input.userId, ids, input.since),
   ]);
   const formatDue = dueLabelFormatter(input.timeZone, input.locale);
 
@@ -308,6 +363,18 @@ export async function buildDigestWorkspaces(
         };
       });
     const unreadCount = unread.get(workspace.id) ?? 0;
+    const projectUpdates: DigestProjectUpdate[] = updateRows
+      .filter((row) => row.workspaceId === workspace.id)
+      .slice(0, MAX_PROJECT_UPDATES_LISTED)
+      .map((row) => ({
+        projectName: row.projectName,
+        health: row.health,
+        summary:
+          row.summary.length > PROJECT_UPDATE_SUMMARY_CHARS
+            ? `${row.summary.slice(0, PROJECT_UPDATE_SUMMARY_CHARS)}…`
+            : row.summary,
+        url: projectUpdatesUrl(workspace.id, row.projectId),
+      }));
     const brief = input.includeBrief
       ? await briefSection(
           input.userId,
@@ -322,7 +389,8 @@ export async function buildDigestWorkspaces(
       dueTasks.length === 0 &&
       mentions.length === 0 &&
       unreadCount === 0 &&
-      !brief
+      !brief &&
+      projectUpdates.length === 0
     ) {
       continue;
     }
@@ -335,6 +403,7 @@ export async function buildDigestWorkspaces(
       mentionCount: mentions.length,
       unreadCount,
       ...(brief ? { brief } : {}),
+      ...(projectUpdates.length > 0 ? { projectUpdates } : {}),
     });
   }
   return result;

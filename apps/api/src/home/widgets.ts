@@ -7,6 +7,7 @@ export const HOME_WIDGET_KEYS = [
   "risks",
   "my-brief",
   "pinned-reports",
+  "project-updates",
 ] as const;
 
 export type HomeWidgetKey = (typeof HOME_WIDGET_KEYS)[number];
@@ -24,6 +25,7 @@ export const MAX_PINNED_REPORTS = 6;
 export const OPT_IN_HOME_WIDGETS: ReadonlySet<HomeWidgetKey> = new Set([
   "my-brief",
   "pinned-reports",
+  "project-updates",
 ]);
 
 export const DEFAULT_HOME_WIDGETS: readonly HomeWidget[] = HOME_WIDGET_KEYS.map(

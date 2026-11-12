@@ -1,0 +1,78 @@
+---
+title: Project Updates
+description: Post dated status updates with a health value, drafted from live project data, and keep everyone who follows the project informed
+---
+
+A project update is a short, dated status post on a project's **Updates** timeline. Each update has:
+
+- a **health** value: **On track**, **At risk** or **Off track**;
+- a **summary** of a few sentences;
+- optional **Highlights**, **Blockers and risks** and **Next steps**.
+
+People can comment on an update and react to it. Followers are notified when a new one is posted.
+
+Updates are off until you turn them on, so projects that don't use them look exactly as before.
+
+<Screenshot src="project-updates/timeline" alt="The Updates tab of Platform API with Follow updates, the Weekly reminder switch and New update, and an update by Elena Marsh marked AI-generated and At risk, with its summary, Highlights, Blockers and risks, Next steps, Data at posting opened to two blocked tasks, thumbs-up and eyes reactions and 1 comment" caption="The latest update, with the numbers it was posted with." />
+
+## Turn on Updates
+
+1. Open **Settings**, then the project, then **Features**.
+2. Turn on **Updates**.
+
+The project now has an **Updates** tab next to its other sections. Turning it off again hides the tab and the updates. Nothing is deleted, and they come back when you turn it on again.
+
+## Post an update
+
+1. Open the project's **Updates** tab and click **New update**.
+2. Pick the health and write a summary. Fill in the other sections if they help.
+3. Click **Post update**.
+
+You need to be able to edit tasks in the project to post an update or comment. Viewers can read updates, react to them and follow them.
+
+### Draft from project data
+
+Click **Draft with AI**, or **Draft from project data** when AI is off, to fill the form for you. Margaya reads the project as it is now and counts changes since the last update, or over the last 7 days if there is none:
+
+- tasks completed, and tasks moved between columns;
+- overdue tasks;
+- progress of the active cycles;
+- risks from the [risk radar](/core/functional/forecast-and-risk), and blocked tasks;
+- the delivery forecast.
+
+The numbers always come from Margaya, never from a model. With [AI](/core/functional/ai-overview) on for the workspace and the project, the model writes the text around those numbers. It goes through the same AI gateway, switches and budgets as every other AI feature. Without AI, or when AI is unavailable, a fixed template fills the same fields. Either way you review and edit the draft before posting.
+
+<Screenshot src="project-updates/composer" alt="The New project update form after Draft with AI: health set to At risk, an AI-generated label, the line From live data: 0 completed, 0 moved, 0 overdue, 2 blocked, the summary, Highlights, Blockers and risks and Next steps filled in, and Cancel and Post update" caption="Review the draft, then post it. The numbers come from Margaya, not the model." />
+
+An update whose text AI drafted carries an **AI-generated** label.
+
+### Facts behind an update
+
+Each posted update keeps the numbers it was posted with. Open **Data at posting** under an update to see them, with links to the overdue, blocked and completed tasks behind them.
+
+## Edit or delete an update
+
+Open the **⋯** menu on an update and choose **Edit** or **Delete**. The author can change their own updates. People who can manage the project (admins by default) can change any update. Deleting an update also removes its comments and reactions.
+
+## Follow updates
+
+Click **Follow updates** on the Updates tab to be notified of new updates. The project lead follows automatically and can unfollow. Followers:
+
+- get an inbox notification, plus email, push or desktop alerts as set in their [notification settings](/core/functional/account-notifications);
+- see new updates in their **email digest**, under **Updates on projects you follow**, when the digest is on.
+
+The author of an update, and everyone who commented on it, is notified of new comments.
+
+## Weekly reminder
+
+People who can manage the project can turn on **Weekly reminder to the project lead** on the Updates tab and pick a day. On that day, from 9:00 in the workspace's time zone, the [project lead](/core/functional/collaborate-with-team) gets a reminder to post an update. Nobody is reminded if the project has no lead, or if an update was posted in the last 6 days.
+
+## Home widget
+
+Turn on **Project updates** in Home's **Manage widgets** to see the latest update of each project you can see, with its health.
+
+<Screenshot src="home/project-updates-widget" alt="The Project updates widget on Home with the latest update of Mobile app, On track, by Priya Raman, and of Platform API, AI-generated and At risk, by Elena Marsh" caption="The latest update of each project, newest first." />
+
+## API and agents
+
+Updates are available through the [REST API](/api-reference/endpoints/project-updates/listProjectUpdates). The draft endpoint returns the computed facts plus a draft, so scripts and agents can post updates on the same data.

@@ -38,6 +38,8 @@ const DIRECT_TYPES = new Set(
 );
 
 const actorUser = alias(userTable, "email_batch_actor");
+// A project-level notification's own project (project status updates).
+const resourceProject = alias(projectTable, "email_batch_resource_project");
 
 export type BatchRecipient = { email: string; locale: string | null };
 
@@ -108,8 +110,13 @@ export async function loadEligibleBatchItems(
       taskTitle: taskTable.title,
       taskVisible: sql<boolean>`(${visibleTaskCondition} and ${isNull(projectTable.deletedAt)})`,
       taskMuted: sql<boolean>`not ${notMutedSql(taskTable.id, sql`${userId}`)}`,
-      projectId: projectTable.id,
-      projectName: projectTable.name,
+      projectId: sql<
+        string | null
+      >`coalesce(${projectTable.id}, ${resourceProject.id})`,
+      projectName: sql<
+        string | null
+      >`coalesce(${projectTable.name}, ${resourceProject.name})`,
+      resourceProjectLive: sql<boolean>`(${resourceProject.id} is not null and ${resourceProject.deletedAt} is null)`,
       workspaceId: workspaceTable.id,
       workspaceName: workspaceTable.name,
       actorName: actorUser.name,
@@ -124,10 +131,17 @@ export async function loadEligibleBatchItems(
     )
     .leftJoin(projectTable, eq(projectTable.id, taskTable.projectId))
     .leftJoin(
+      resourceProject,
+      and(
+        eq(notificationTable.resourceType, "project"),
+        eq(resourceProject.id, notificationTable.resourceId),
+      ),
+    )
+    .leftJoin(
       workspaceTable,
       eq(
         workspaceTable.id,
-        sql`coalesce(${projectTable.workspaceId}, case when ${notificationTable.resourceType} = 'workspace' then ${notificationTable.resourceId} end)`,
+        sql`coalesce(${projectTable.workspaceId}, ${resourceProject.workspaceId}, case when ${notificationTable.resourceType} = 'workspace' then ${notificationTable.resourceId} end)`,
       ),
     )
     .leftJoin(actorUser, eq(actorUser.id, notificationTable.actorId))
@@ -143,7 +157,9 @@ export async function loadEligibleBatchItems(
     if (!row.accessible || !row.workspaceId || !row.workspaceName) continue;
     const isTask = row.resourceType === "task";
     if (isTask && (!row.taskId || !row.taskVisible || !row.projectId)) continue;
-    if (!isTask && row.resourceType !== "workspace") continue;
+    const isProject = row.resourceType === "project";
+    if (isProject && !row.resourceProjectLive) continue;
+    if (!isTask && !isProject && row.resourceType !== "workspace") continue;
 
     const key = preferenceKeyForType(row.type);
     if (key && preference[key] === false) continue;

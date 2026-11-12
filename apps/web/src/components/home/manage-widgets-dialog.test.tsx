@@ -90,6 +90,7 @@ describe("ManageWidgetsDialog", () => {
           { key: "risks", enabled: true },
           { key: "my-brief", enabled: false },
           { key: "pinned-reports", enabled: false },
+          { key: "project-updates", enabled: false },
         ],
       }),
     );
@@ -125,6 +126,7 @@ describe("ManageWidgetsDialog", () => {
           { key: "risks", enabled: true },
           { key: "my-brief", enabled: false },
           { key: "pinned-reports", enabled: false },
+          { key: "project-updates", enabled: false },
         ],
       }),
     );

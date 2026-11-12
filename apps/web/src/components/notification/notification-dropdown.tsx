@@ -44,6 +44,7 @@ import {
   getNotificationMarkdown,
   getNotificationTitle,
   getPageNotificationTarget,
+  getProjectUpdateTarget,
   markdownToPlainText,
   pageNotificationSearch,
 } from "@/lib/notification-text";
@@ -149,6 +150,17 @@ const NotificationDropdown = forwardRef<NotificationDropdownRef>(
             to: "/dashboard/workspace/$workspaceId/project/$projectId/analytics",
             params: { workspaceId: taskWorkspaceId, projectId: flow.projectId },
             search: { tab: "delivery" },
+          });
+          return;
+        }
+        const updates = getProjectUpdateTarget(notification);
+        if (updates && taskWorkspaceId) {
+          navigate({
+            to: "/dashboard/workspace/$workspaceId/project/$projectId/updates",
+            params: {
+              workspaceId: taskWorkspaceId,
+              projectId: updates.projectId,
+            },
           });
           return;
         }

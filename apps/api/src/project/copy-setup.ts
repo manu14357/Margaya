@@ -79,6 +79,7 @@ export async function copiedProjectFields(
     intakeEnabled: source.intakeEnabled,
     estimatesEnabled: source.estimatesEnabled,
     timeTrackingEnabled: source.timeTrackingEnabled,
+    updatesEnabled: source.updatesEnabled,
     leadUserId: member(source.leadUserId),
     defaultAssigneeUserId: member(source.defaultAssigneeUserId),
   };

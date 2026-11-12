@@ -25,6 +25,13 @@ export function notificationResourceAccess(
         AND notification_project.deleted_at IS NULL
         AND ${projectVisibleSql(sql`notification_project.id`, userId)}
     ))
+    OR (${resourceType}::text = 'project' AND EXISTS (
+      SELECT 1 FROM project AS notification_res_project
+      JOIN workspace_member AS notification_member ON notification_member.workspace_id = notification_res_project.workspace_id
+      WHERE notification_res_project.id = ${resourceId} AND notification_member.user_id = ${userId}
+        AND notification_res_project.deleted_at IS NULL
+        AND ${projectVisibleSql(sql`notification_res_project.id`, userId)}
+    ))
     OR (${resourceType}::text = 'workspace' AND EXISTS (
       SELECT 1 FROM workspace_member AS notification_member
       WHERE notification_member.workspace_id = ${resourceId} AND notification_member.user_id = ${userId}

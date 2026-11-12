@@ -36,6 +36,8 @@ const ACTOR_TYPES = new Set([
   "page_updated",
   "ai_approval_requested",
   "ai_agent_reply",
+  "project_update_posted",
+  "project_update_comment",
 ]);
 
 /** Notifications about a page; they open the page. */
@@ -58,6 +60,9 @@ const TITLE_KEYS: Record<string, string> = {
   page_mention: "notifications:events.page_mention.title",
   page_comment: "notifications:events.page_comment.title",
   page_updated: "notifications:events.page_updated.title",
+  project_update_posted: "projectUpdates:notifications.posted.title",
+  project_update_comment: "projectUpdates:notifications.comment.title",
+  project_update_reminder: "projectUpdates:notifications.reminder.title",
   cycle_rollover: "notifications:events.cycle_rollover.title",
   flow_anomaly: "notifications:events.flow_anomaly.title",
   automation_notice: "notifications:events.automation_notice.title",
@@ -67,6 +72,7 @@ const TITLE_KEYS: Record<string, string> = {
 };
 
 const CONTENT_KEYS: Record<string, string> = {
+  project_update_reminder: "projectUpdates:notifications.reminder.content",
   page_mention: "notifications:events.page_mention.content",
   page_comment: "notifications:events.page_comment.content",
   page_updated: "notifications:events.page_updated.content",
@@ -297,6 +303,24 @@ function getFlowAnomalyContent(
   });
 }
 
+/** Project status update notifications open the project's Updates. */
+const PROJECT_UPDATE_TYPES = new Set([
+  "project_update_posted",
+  "project_update_comment",
+  "project_update_reminder",
+]);
+
+export function getProjectUpdateTarget(
+  notification: NotificationTextSource,
+): { projectId: string } | null {
+  if (!PROJECT_UPDATE_TYPES.has(notification.type)) return null;
+  const projectId = stringField(
+    getEventDataRecord(notification.eventData),
+    "projectId",
+  );
+  return projectId ? { projectId } : null;
+}
+
 /** A flow alert opens the project's Delivery analytics. */
 export function getFlowAnomalyTarget(
   notification: NotificationTextSource,
@@ -468,6 +492,14 @@ export function getNotificationVerb(
         ? t("notifications:inbox.verbs.page_comment_titled", { pageTitle })
         : t("notifications:inbox.verbs.page_comment");
     }
+    case "project_update_posted":
+      return t("projectUpdates:notifications.posted.verb", {
+        projectName: stringField(eventData, "projectName") ?? "",
+      });
+    case "project_update_comment":
+      return t("projectUpdates:notifications.comment.verb", {
+        projectName: stringField(eventData, "projectName") ?? "",
+      });
     case "page_updated": {
       const pageTitle = getPageMentionTitle(notification);
       return pageTitle

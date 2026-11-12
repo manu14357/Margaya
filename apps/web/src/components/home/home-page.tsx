@@ -6,6 +6,7 @@ import Layout from "@/components/common/layout";
 import HomeRisksWidget from "@/components/delivery/home-risks-widget";
 import MyBriefWidget from "@/components/insight/my-brief-widget";
 import PageTitle from "@/components/page-title";
+import ProjectUpdatesWidget from "@/components/project-update/project-updates-widget";
 import QuickLinksWidget from "@/components/quick-link/quick-links-widget";
 import StickiesWidget from "@/components/sticky/stickies-widget";
 import { Button } from "@/components/ui/button";
@@ -50,6 +51,7 @@ const WIDGET_COMPONENTS: Record<HomeWidgetKey, ComponentType<WidgetProps>> = {
   risks: HomeRisksWidget,
   "my-brief": MyBriefWidget,
   "pinned-reports": PinnedReportsWidget,
+  "project-updates": ProjectUpdatesWidget,
 };
 
 function WidgetsSkeleton() {

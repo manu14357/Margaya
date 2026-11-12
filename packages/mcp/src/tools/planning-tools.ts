@@ -1134,6 +1134,99 @@ function registerAutomationTools<Result>({
   );
 }
 
+const projectUpdateHealthSchema = z.enum(["on_track", "at_risk", "off_track"]);
+
+function registerProjectUpdateTools<Result>({
+  register,
+  client,
+  run,
+}: PlanningToolAdapters<Result>) {
+  register(
+    "list_project_updates",
+    {
+      description:
+        "List a project's status updates, newest first: health (on_track, at_risk, off_track), summary, highlights, blockers, next steps, the facts each was posted with, and comment and reaction counts. Pass the returned nextCursor to page. Needs the project's Updates feature on.",
+      inputSchema: z.object({
+        projectId: nonEmptyString,
+        cursor: optionalNonEmptyString,
+      }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(
+          withQuery(`/api/project-update/project/${id(args.projectId)}`, {
+            cursor: args.cursor,
+          }),
+        ),
+      ),
+  );
+
+  register(
+    "get_project_update",
+    {
+      description: "Get one project status update with its comments.",
+      inputSchema: z.object({ id: nonEmptyString }),
+    },
+    async (args) =>
+      run(() => client.json(`/api/project-update/${id(args.id)}`)),
+  );
+
+  register(
+    "draft_project_update",
+    {
+      description:
+        "Compute a project's facts since its last update (completed and moved tasks, overdue and blocked work, active cycles, risks, forecast) and get a draft update from them. Saves nothing. useAi (default true) lets Margaya's AI write the text when AI is on; otherwise a template does. Post it with create_project_update.",
+      inputSchema: z.object({
+        projectId: nonEmptyString,
+        useAi: z.boolean().optional(),
+      }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(
+          `/api/project-update/project/${id(args.projectId)}/draft`,
+          jsonBody("POST", defined({ useAi: args.useAi })),
+        ),
+      ),
+  );
+
+  register(
+    "create_project_update",
+    {
+      description:
+        "Post a status update to a project's timeline; the project's followers are notified. Set aiDrafted when AI wrote the text, so it is labelled AI-generated (an agent's posts are labelled anyway). Needs task:update.",
+      inputSchema: z.object({
+        projectId: nonEmptyString,
+        health: projectUpdateHealthSchema,
+        summary: z.string().trim().min(1).max(2000),
+        highlights: z.string().max(4000).optional(),
+        blockers: z.string().max(4000).optional(),
+        nextSteps: z.string().max(4000).optional(),
+        aiDrafted: z.boolean().optional(),
+      }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(
+          `/api/project-update/project/${id(args.projectId)}`,
+          jsonBody(
+            "POST",
+            defined({
+              health: args.health,
+              summary: args.summary,
+              highlights: args.highlights,
+              blockers: args.blockers,
+              nextSteps: args.nextSteps,
+              aiAssist: args.aiDrafted
+                ? { feature: "project_update" }
+                : undefined,
+            }),
+          ),
+        ),
+      ),
+  );
+}
+
 /** The tools this module registers, in order (for tests and docs). */
 export const PLANNING_TOOL_NAMES = [
   "list_cycles",
@@ -1176,11 +1269,16 @@ export const PLANNING_TOOL_NAMES = [
   "remove_task_recurrence",
   "list_automation_rules",
   "set_automation_rule_enabled",
+  "list_project_updates",
+  "get_project_update",
+  "draft_project_update",
+  "create_project_update",
 ] as const;
 
 /**
  * Registers the cycle (9), module (11), page (7), intake (6), task
- * template (2), task repeat (3) and automation rule (2) tools.
+ * template (2), task repeat (3), automation rule (2) and project update (4)
+ * tools.
  */
 export function registerPlanningTools<Result>(
   adapters: PlanningToolAdapters<Result>,
@@ -1192,4 +1290,5 @@ export function registerPlanningTools<Result>(
   registerTemplateTools(adapters);
   registerRecurrenceTools(adapters);
   registerAutomationTools(adapters);
+  registerProjectUpdateTools(adapters);
 }

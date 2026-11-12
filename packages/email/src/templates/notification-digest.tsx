@@ -46,6 +46,15 @@ export type DigestBrief = {
   moreFollowing: number;
 };
 
+/** A status update posted on a project the reader follows. */
+export type DigestProjectUpdate = {
+  projectName: string;
+  health: "on_track" | "at_risk" | "off_track";
+  /** The summary, shortened. */
+  summary: string;
+  url: string;
+};
+
 export type DigestWorkspace = {
   name: string;
   inboxUrl: string;
@@ -59,7 +68,26 @@ export type DigestWorkspace = {
   unreadCount: number;
   /** Present when the reader added My brief to the digest. */
   brief?: DigestBrief;
+  /** Updates on projects the reader follows, newest first. */
+  projectUpdates?: DigestProjectUpdate[];
 };
+
+// Project update copy, read loosely: locales generated before these keys
+// existed fall back to English.
+type ProjectUpdateCopy = {
+  projectUpdatesHeading?: string;
+  health?: Partial<Record<DigestProjectUpdate["health"], string>>;
+};
+
+function projectUpdateCopy(lang: string): Required<ProjectUpdateCopy> {
+  const own = emailCopy(lang).notificationDigest as ProjectUpdateCopy;
+  const english = emailCopy("en-US").notificationDigest as ProjectUpdateCopy;
+  return {
+    projectUpdatesHeading:
+      own.projectUpdatesHeading ?? english.projectUpdatesHeading ?? "",
+    health: { ...english.health, ...own.health },
+  };
+}
 
 export type NotificationDigestEmailProps = {
   frequency: "daily" | "weekly";
@@ -101,6 +129,7 @@ const NotificationDigestEmail = ({
 }: NotificationDigestEmailProps) => {
   const lang = resolveEmailLocale(locale);
   const copy = emailCopy(lang).notificationDigest;
+  const updateCopy = projectUpdateCopy(lang);
 
   return (
     <EmailShell
@@ -217,6 +246,24 @@ const NotificationDigestEmail = ({
                     {plural(copy, "more", lang, workspace.brief.moreFollowing)}
                   </Text>
                 ) : null}
+              </>
+            ) : null}
+            {workspace.projectUpdates && workspace.projectUpdates.length > 0 ? (
+              <>
+                <Text style={sectionHeading}>
+                  {updateCopy.projectUpdatesHeading}
+                </Text>
+                {workspace.projectUpdates.map((update) => (
+                  <Text key={update.url} style={line}>
+                    {"• "}
+                    <Link href={update.url} style={{ color: "#047857" }}>
+                      {update.projectName}
+                    </Link>
+                    <span style={{ color: "#5f6b65" }}>
+                      {` · ${updateCopy.health[update.health] ?? update.health} · ${update.summary}`}
+                    </span>
+                  </Text>
+                ))}
               </>
             ) : null}
             {workspace.unreadCount > 0 ? (

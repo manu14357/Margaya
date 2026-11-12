@@ -13,6 +13,7 @@ import "@/components/estimate/estimate-registrations";
 import "@/components/intake/intake-registrations";
 import "@/components/page/page-registrations";
 import "@/components/project/custom-field-registrations";
+import "@/components/project-update/project-update-registrations";
 import "@/components/task/register-task-parent-slot";
 import "@/components/time-entry/time-entry-registrations";
 import "@/components/view/view-registrations";

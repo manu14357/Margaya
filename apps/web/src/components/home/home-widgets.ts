@@ -8,6 +8,7 @@ export const HOME_WIDGET_KEYS = [
   "risks",
   "my-brief",
   "pinned-reports",
+  "project-updates",
 ] as const;
 
 export type HomeWidgetKey = (typeof HOME_WIDGET_KEYS)[number];
@@ -28,12 +29,14 @@ export const HOME_WIDGET_LABEL_KEYS: Record<HomeWidgetKey, string> = {
   risks: "home:widgets.risks",
   "my-brief": "home:widgets.myBrief",
   "pinned-reports": "home:widgets.pinnedReports",
+  "project-updates": "projectUpdates:widget.title",
 };
 
 /** Opt-in widgets stay hidden until the person turns them on (My brief). */
 export const OPT_IN_HOME_WIDGETS: ReadonlySet<HomeWidgetKey> = new Set([
   "my-brief",
   "pinned-reports",
+  "project-updates",
 ]);
 
 export const DEFAULT_HOME_WIDGETS: readonly HomeWidget[] = HOME_WIDGET_KEYS.map(

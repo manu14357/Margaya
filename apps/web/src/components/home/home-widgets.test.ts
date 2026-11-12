@@ -32,13 +32,15 @@ describe("normalizeHomeWidgets", () => {
       { key: "risks", enabled: true },
       { key: "my-brief", enabled: false },
       { key: "pinned-reports", enabled: false },
+      { key: "project-updates", enabled: false },
     ]);
   });
 
   it("keeps opt-in widgets off until turned on", () => {
-    expect(DEFAULT_HOME_WIDGETS.slice(-2)).toEqual([
+    expect(DEFAULT_HOME_WIDGETS.slice(-3)).toEqual([
       { key: "my-brief", enabled: false },
       { key: "pinned-reports", enabled: false },
+      { key: "project-updates", enabled: false },
     ]);
     expect(
       normalizeHomeWidgets([{ key: "my-brief", enabled: true }])[0],
@@ -110,6 +112,7 @@ describe("widget list edits", () => {
       { key: "risks", enabled: true },
       { key: "my-brief", enabled: false },
       { key: "pinned-reports", enabled: false },
+      { key: "project-updates", enabled: false },
     ]);
   });
 
@@ -125,6 +128,7 @@ describe("widget list edits", () => {
       "risks",
       "my-brief",
       "pinned-reports",
+      "project-updates",
     ]);
     expect(
       moveWidget(DEFAULT_HOME_WIDGETS, "stickies", "unknown").map(
@@ -137,6 +141,7 @@ describe("widget list edits", () => {
       "risks",
       "my-brief",
       "pinned-reports",
+      "project-updates",
     ]);
   });
 });

@@ -46,6 +46,7 @@ import {
   getNotificationMarkdown,
   getNotificationTitle,
   getPageNotificationTarget,
+  getProjectUpdateTarget,
   pageNotificationSearch,
 } from "@/lib/notification-text";
 import type { InboxNotification } from "@/types/notification";
@@ -375,6 +376,7 @@ function NoticePreview({
   const content = getNotificationContent(notification, t);
   const markdown = getNotificationMarkdown(notification, t);
   const page = getPageNotificationTarget(notification);
+  const updates = getProjectUpdateTarget(notification);
   // An agent's question from a run without a task (a schedule, the Agent
   // Desk): answered right here, as on a task.
   const reply = agentReplyOf(notification);
@@ -433,6 +435,21 @@ function NoticePreview({
               }
             >
               {t("pages:notification.openPage")}
+            </Button>
+          )}
+          {updates && (
+            <Button
+              variant="outline"
+              size="xs"
+              className="mt-1 w-fit"
+              onClick={() =>
+                navigate({
+                  to: "/dashboard/workspace/$workspaceId/project/$projectId/updates",
+                  params: { workspaceId, projectId: updates.projectId },
+                })
+              }
+            >
+              {t("projectUpdates:notifications.open")}
             </Button>
           )}
         </div>

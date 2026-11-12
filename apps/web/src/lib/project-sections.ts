@@ -36,6 +36,7 @@ export const PROJECT_SECTION_ORDER = [
   "views",
   "pages",
   "intake",
+  "updates",
   "analytics",
 ] as const;
 
