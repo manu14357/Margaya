@@ -15,6 +15,16 @@
 {{- fail (printf "%s must be a string; quote numeric values in YAML (for example password: \"12345678\")" $field) -}}
 {{- end -}}
 {{- end -}}
+{{- if .Values.metrics.serviceMonitor.enabled -}}
+{{- if not .Values.metrics.enabled -}}
+{{- fail "metrics.serviceMonitor.enabled needs metrics.enabled=true" -}}
+{{- end -}}
+{{- end -}}
+{{- with .Values.metrics.token.existingSecret -}}
+{{- if and .name (not .key) -}}
+{{- fail "metrics.token.existingSecret.key must be set when metrics.token.existingSecret.name is set" -}}
+{{- end -}}
+{{- end -}}
 {{- with .Values.margaya.env.redis -}}
 {{- if and .existingSecret.name (not .existingSecret.key) -}}
 {{- fail "margaya.env.redis.existingSecret.key must be set when margaya.env.redis.existingSecret.name is set" -}}

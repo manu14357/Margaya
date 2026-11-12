@@ -52,3 +52,13 @@ export type InstanceUserDetail = InferResponseType<
   200
 >;
 export type InstanceUserStatus = "all" | "admins" | "banned";
+
+export type InstanceHealth = InferResponseType<Routes["health"]["$get"], 200>;
+export type InstanceHealthCheck = InstanceHealth["checks"][number];
+export type InstanceJobStatus = InstanceHealth["jobs"][number];
+export type InstanceRecentFailure = InstanceHealth["failures"][number];
+
+export type InstanceUpdateStatus = InferResponseType<
+  Routes["update-status"]["$get"],
+  200
+>;

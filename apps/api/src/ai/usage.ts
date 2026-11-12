@@ -7,6 +7,8 @@ import {
   userTable,
   workspaceTable,
 } from "../database/schema";
+import { aiCalls, aiCost, aiTokens } from "../observability/instruments";
+import { recordFailure } from "../observability/jobs";
 import { CSV_BOM, csvLine } from "../task-export/encoders/csv";
 import { AiError } from "./errors";
 import type { AiFeature } from "./features";
@@ -35,7 +37,22 @@ export type UsageRecord = {
   durationMs: number;
 };
 
+/** The ledger row's counts as metrics; never a workspace, user or model. */
+function countAiUsage(record: UsageRecord): void {
+  const provider = record.provider;
+  aiCalls.inc({ feature: record.feature, provider, status: record.status });
+  aiTokens.inc({ provider, kind: "input" }, record.usage.input);
+  aiTokens.inc({ provider, kind: "output" }, record.usage.output);
+  aiTokens.inc({ provider, kind: "cache_read" }, record.usage.cacheRead);
+  aiTokens.inc({ provider, kind: "cache_write" }, record.usage.cacheWrite);
+  aiCost.inc({ provider }, record.costMicros);
+  if (record.status === "error") {
+    recordFailure("ai", `${record.feature} (${provider})`);
+  }
+}
+
 export async function recordAiUsage(record: UsageRecord): Promise<void> {
+  countAiUsage(record);
   await db.insert(aiUsageTable).values({
     workspaceId: record.workspaceId,
     userId: record.userId,

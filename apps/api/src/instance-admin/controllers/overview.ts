@@ -8,6 +8,7 @@ import {
 } from "../../database/schema";
 import { getInstanceSettings } from "../../instance-settings/snapshot";
 import { isRedisConfigured, resolveRedisMode } from "../../redis";
+import { storageDriver } from "../../storage/s3";
 import { appVersion } from "../../utils/app-version";
 import { isCloud } from "../../utils/is-cloud";
 
@@ -54,7 +55,8 @@ export async function getInstanceOverview() {
     server: {
       realtime: realtimeMode(),
       email: settings.derived.smtpConfigured,
-      fileStorage: isSet("S3_ENDPOINT") && isSet("S3_BUCKET"),
+      // The built-in local store counts: uploads work without S3.
+      fileStorage: storageDriver() !== "none",
       captcha: isSet("TURNSTILE_SECRET_KEY"),
       errorReporting: isSet("SENTRY_DSN"),
       cloudMode: isCloud(),

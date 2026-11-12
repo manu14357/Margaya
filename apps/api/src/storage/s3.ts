@@ -1,9 +1,11 @@
-import { createReadStream } from "node:fs";
+import { createReadStream, constants as fsConstants } from "node:fs";
+import { access, mkdir } from "node:fs/promises";
 import { Readable } from "node:stream";
 import {
   CopyObjectCommand,
   DeleteObjectCommand,
   GetObjectCommand,
+  HeadBucketCommand,
   HeadObjectCommand,
   type HeadObjectCommandOutput,
   PutObjectCommand,
@@ -18,6 +20,7 @@ import { normalizeApiServerUrl } from "../utils/openapi-spec";
 import {
   copyLocalObject,
   deleteLocalObject,
+  localStorageRoot,
   readLocalObject,
   statLocalObject,
   writeLocalObject,
@@ -754,5 +757,56 @@ export async function putPrivateObjectFromFile(
     );
   } catch {
     throw new Error("Unable to store the object.");
+  }
+}
+
+export type StorageHealth = {
+  driver: StorageDriver;
+  status: "ok" | "warning" | "error" | "off";
+  code: "s3" | "local" | "none" | "unreachable" | "denied" | "not_writable";
+  latencyMs: number | null;
+};
+
+/**
+ * The health page's storage check: S3 answers HeadBucket, or the local
+ * store's folder is writable. Never returns endpoints, buckets or paths.
+ */
+export async function checkStorageHealth(
+  timeoutMs = 5_000,
+): Promise<StorageHealth> {
+  const driver = storageDriver();
+  if (driver === "none") {
+    return { driver, status: "off", code: "none", latencyMs: null };
+  }
+  const started = performance.now();
+  const elapsed = () => Math.round(performance.now() - started);
+  if (driver === "local") {
+    try {
+      const root = localStorageRoot();
+      await mkdir(root, { recursive: true });
+      await access(root, fsConstants.W_OK);
+      return { driver, status: "ok", code: "local", latencyMs: elapsed() };
+    } catch {
+      return { driver, status: "error", code: "not_writable", latencyMs: null };
+    }
+  }
+  try {
+    const config = getStorageConfig();
+    await getClient(config).send(
+      new HeadBucketCommand({ Bucket: config.bucket }),
+      {
+        abortSignal: AbortSignal.timeout(timeoutMs),
+      },
+    );
+    return { driver, status: "ok", code: "s3", latencyMs: elapsed() };
+  } catch (error) {
+    const status = (error as { $metadata?: { httpStatusCode?: number } })
+      ?.$metadata?.httpStatusCode;
+    // A bucket policy may allow objects but not HeadBucket; uploads can
+    // still work, so this is a warning rather than an outage.
+    if (status === 403) {
+      return { driver, status: "warning", code: "denied", latencyMs: null };
+    }
+    return { driver, status: "error", code: "unreachable", latencyMs: null };
   }
 }

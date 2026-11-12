@@ -2,7 +2,7 @@ import { once } from "node:events";
 import { createServer, type Socket } from "node:net";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { setSmtpConfigProvider } from "./smtp-config";
-import { sendTestEmail } from "./test-email";
+import { sendTestEmail, verifySmtpConnection } from "./test-email";
 
 // A loopback-only SMTP sink that answers every command with `replies`.
 async function relay(replies: Record<string, string>) {
@@ -137,5 +137,38 @@ describe("sendTestEmail", () => {
       instanceName: "Acme",
     });
     expect(result).toMatchObject({ sent: false, code: "unknown" });
+  });
+});
+
+describe("verifySmtpConnection", () => {
+  it("signs in without sending a message", async () => {
+    const sink = await relay({ AUTH: "235 ok\r\n" });
+    useRelay(sink.port);
+    try {
+      const result = await verifySmtpConnection();
+      expect(result).toMatchObject({ ok: true, code: "ok" });
+      expect(sink.subjects).toEqual([]);
+    } finally {
+      await sink.close();
+    }
+  });
+
+  it("classifies a rejected login", async () => {
+    const sink = await relay({ AUTH: "535 5.7.8 bad credentials\r\n" });
+    useRelay(sink.port);
+    try {
+      await expect(verifySmtpConnection()).resolves.toEqual({
+        ok: false,
+        code: "auth",
+        latencyMs: null,
+      });
+    } finally {
+      await sink.close();
+    }
+  });
+
+  it("answers null when email is not set up", async () => {
+    setSmtpConfigProvider(() => null);
+    await expect(verifySmtpConnection()).resolves.toBeNull();
   });
 });

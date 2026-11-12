@@ -1,5 +1,9 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
+  getInstanceHealth,
+  getInstanceUpdateStatus,
+} from "@/fetchers/instance-admin/instance-health";
+import {
   getInstanceUser,
   listInstanceAdmins,
   listInstanceAuditLog,
@@ -26,6 +30,8 @@ export const instanceAdminKeys = {
   admins: () => ["instance-admin", "admins"] as const,
   auditLog: () => ["instance-admin", "audit-log"] as const,
   deliveryFailures: () => ["instance-admin", "delivery-failures"] as const,
+  health: () => ["instance-admin", "health"] as const,
+  updateStatus: () => ["instance-admin", "update-status"] as const,
   users: () => ["instance-admin", "users"] as const,
   userList: (q: string, status: InstanceUserStatus) =>
     ["instance-admin", "users", "list", q, status] as const,
@@ -47,6 +53,29 @@ export function useInstanceDeliveryFailures() {
     queryKey: instanceAdminKeys.deliveryFailures(),
     queryFn: listInstanceDeliveryFailures,
     refetchOnWindowFocus: true,
+  });
+}
+
+/** Runs live checks (SMTP, storage), so it refreshes on demand, not on focus. */
+export function useInstanceHealth() {
+  return useQuery({
+    queryKey: instanceAdminKeys.health(),
+    queryFn: getInstanceHealth,
+    staleTime: 30_000,
+  });
+}
+
+/**
+ * The update notice. The server checks at most once a day; `enabled` keeps
+ * everyone but instance admins from asking.
+ */
+export function useInstanceUpdateStatus(enabled: boolean) {
+  return useQuery({
+    queryKey: instanceAdminKeys.updateStatus(),
+    queryFn: getInstanceUpdateStatus,
+    enabled,
+    staleTime: 60 * 60 * 1000,
+    retry: false,
   });
 }
 

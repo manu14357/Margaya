@@ -78,3 +78,14 @@ same pod. Set margaya.env.redis.url or margaya.env.redis.existingSecret.
 File uploads are off: set margaya.env.s3 to enable attachments and images.
 {{- end }}
 {{- end }}
+{{- if and .Values.podDisruptionBudget.enabled (kindIs "invalid" .Values.podDisruptionBudget.maxUnavailable) (not .Values.autoscaling.enabled) (le (int .Values.replicaCount) (int (.Values.podDisruptionBudget.minAvailable | default 1))) }}
+
+WARNING: the PodDisruptionBudget asks for at least {{ .Values.podDisruptionBudget.minAvailable | default 1 }} pod(s) while
+replicaCount is {{ .Values.replicaCount }}, so node drains wait until you scale up. Raise
+replicaCount or set podDisruptionBudget.maxUnavailable instead.
+{{- end }}
+{{- if .Values.metrics.enabled }}
+
+Prometheus metrics are served on port {{ .Values.metrics.port }} (path /metrics) of each pod
+and on the Service's "metrics" port. Keep that port inside the cluster.
+{{- end }}

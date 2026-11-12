@@ -20,7 +20,7 @@ export const instanceOverviewSchema = z
     server: z.object({
       realtime: z.enum(["memory", "standalone", "sentinel", "cluster"]),
       email: yes("Outgoing email is configured."),
-      fileStorage: yes("S3 storage is configured."),
+      fileStorage: yes("File storage is on: S3, or the built-in local store."),
       captcha: yes("Turnstile captcha is configured."),
       errorReporting: yes("Error reporting is configured."),
       cloudMode: z.boolean(),
@@ -278,3 +278,105 @@ export const instanceUserActionSchema = z
     method: z.enum(["email", "set"]).optional(),
   })
   .openapi("InstanceUserActionResult");
+
+const checkStatus = z.enum(["ok", "warning", "error", "off"]);
+
+export const instanceHealthSchema = z
+  .object({
+    version: z.string(),
+    nodeVersion: z.string(),
+    startedAt: responseTimestamp,
+    uptimeSeconds: z.number().int(),
+    migrations: z.object({
+      status: z.enum(["ok", "pending", "unknown"]).openapi({
+        description:
+          "pending: this build ships migrations the database hasn't run; unknown: the migration table or the shipped journal can't be read.",
+      }),
+      applied: z.number().int(),
+      available: z.number().int(),
+      pending: z.number().int(),
+      latest: z.string().nullable().openapi({
+        description: "The newest shipped migration the database has.",
+      }),
+      latestAppliedAt: nullableResponseTimestamp,
+    }),
+    checks: z.array(
+      z.object({
+        id: z.enum(["database", "redis", "storage", "email", "ai"]),
+        status: checkStatus,
+        code: z.string().nullable().openapi({
+          description:
+            "A short reason: unreachable, timeout, disabled, not_configured, s3, local, none, denied, not_writable, recent_errors, or an SMTP code (auth, connection, tls, sender, recipient, unknown). Never server text.",
+        }),
+        latencyMs: z.number().int().nullable(),
+        count: z.number().int().nullable().openapi({
+          description: "ai: failed calls in the last 24 hours.",
+        }),
+      }),
+    ),
+    jobs: z
+      .array(
+        z.object({
+          name: z.string(),
+          running: z.boolean(),
+          lastRunAt: nullableResponseTimestamp,
+          lastOutcome: z.enum(["ok", "degraded", "failed"]).nullable(),
+          lastDurationMs: z.number().int().nullable(),
+          lastSuccessAt: nullableResponseTimestamp,
+          lastFailureAt: nullableResponseTimestamp,
+          runs: z.number().int(),
+          failures: z.number().int(),
+        }),
+      )
+      .openapi({
+        description:
+          "Scheduled jobs on the instance that answered, since it started.",
+      }),
+    failures: z
+      .array(
+        z.object({
+          source: z.enum(["job", "ai", "email"]),
+          name: z.string(),
+          message: z.string().nullable().openapi({
+            description:
+              "The error class and the start of its message; details are in the server log.",
+          }),
+          at: responseTimestamp,
+        }),
+      )
+      .openapi({
+        description:
+          "The newest 20 failures recorded by the instance that answered, since it started.",
+      }),
+    queues: z
+      .object({
+        emailBacklog: z.number().int(),
+        webhookPending: z.number().int(),
+        webhookFailed24h: z.number().int(),
+      })
+      .nullable(),
+    connections: z.object({
+      project: z.number().int(),
+      user: z.number().int(),
+      pageRooms: z.number().int(),
+    }),
+    metrics: z.object({
+      enabled: yes("MARGAYA_METRICS_ENABLED is true."),
+      token: yes("MARGAYA_METRICS_TOKEN is set (never returned)."),
+      port: z.number().int().nullable(),
+    }),
+  })
+  .openapi("InstanceHealth");
+
+export const instanceUpdateStatusSchema = z
+  .object({
+    enabled: yes("The update check is on (off by default)."),
+    currentVersion: z.string(),
+    latestVersion: z.string().nullable(),
+    updateAvailable: z.boolean(),
+    releaseUrl: z.string().nullable(),
+    publishedAt: nullableResponseTimestamp,
+    checkedAt: nullableResponseTimestamp,
+    error: z.enum(["unreachable", "invalid_response"]).nullable(),
+  })
+  .openapi("InstanceUpdateStatus");

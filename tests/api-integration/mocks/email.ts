@@ -108,3 +108,10 @@ export async function sendTestEmail(
 ): Promise<TestEmailResult> {
   return nextTestEmailResult;
 }
+
+/** The health page's SMTP check: no server in these tests. */
+export async function verifySmtpConnection(_options?: {
+  timeoutMs?: number;
+}): Promise<{ ok: boolean; code: string; latencyMs: number | null } | null> {
+  return null;
+}

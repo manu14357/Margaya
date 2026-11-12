@@ -1,4 +1,5 @@
 import { getInstanceSettings } from "../instance-settings/snapshot";
+import { getUpdateStatus } from "../observability/update-check";
 import {
   apiRouter,
   createRoute,
@@ -7,6 +8,7 @@ import {
   z,
 } from "../openapi";
 import { setPublicBoardInstanceState } from "../public-board/instance-state";
+import { enforceRateLimits } from "../utils/rate-limit";
 import { requireUserSession } from "../utils/require-user-session";
 import { listInstanceAudit } from "./audit";
 import {
@@ -15,6 +17,7 @@ import {
   removeInstanceAdmin,
 } from "./controllers/admins";
 import { listRecentDeliveryFailures } from "./controllers/failures";
+import { getInstanceHealth } from "./controllers/health";
 import {
   listInstancePublicBoards,
   listInstanceWorkspaces,
@@ -34,17 +37,20 @@ import {
   revokeInstanceUserSessions,
   unbanInstanceUser,
 } from "./controllers/users";
+import { healthLimiter } from "./limits";
 import { requireInstanceAdmin } from "./middleware";
 import { confirmAdminPassword, requireRecentAuth } from "./reauth";
 import {
   instanceAdminSchema,
   instanceAuditPageSchema,
   instanceDeliveryFailuresSchema,
+  instanceHealthSchema,
   instanceOverviewSchema,
   instancePublicBoardPageSchema,
   instanceReauthRequiredSchema,
   instanceReauthResultSchema,
   instanceSettingsSchema,
+  instanceUpdateStatusSchema,
   instanceUserActionSchema,
   instanceUserDetailSchema,
   instanceUserPageSchema,
@@ -314,6 +320,35 @@ const listDeliveryFailuresRoute = createRoute({
   },
 });
 
+const getHealthRoute = createRoute({
+  method: "get",
+  operationId: "getInstanceHealth",
+  path: "/health",
+  tags: TAGS,
+  summary: "Get instance health",
+  description: `Version, uptime and the migration state; database, Redis, storage, email (an SMTP sign-in without sending) and AI checks, each with a 5-second limit; scheduled job runs, recent failures, queue backlogs and open sockets. Jobs, failures and sockets are those of the instance that answered, since it started. Answers carry states and short codes, never hosts, paths or server text. Limited to 20 a minute per admin.${ADMIN_NOTE}`,
+  middleware: [requireUserSession, requireInstanceAdmin],
+  responses: {
+    200: jsonResponse("The health report", instanceHealthSchema),
+    403: forbidden,
+    429: tooOften,
+  },
+});
+
+const getUpdateStatusRoute = createRoute({
+  method: "get",
+  operationId: "getInstanceUpdateStatus",
+  path: "/update-status",
+  tags: TAGS,
+  summary: "Get the update notice",
+  description: `Whether a newer release than the running version is out. Off by default: with the general.updateCheck setting (MARGAYA_UPDATE_CHECK) on, the server reads the public release feed at most once a day, sending nothing about the instance; otherwise enabled is false and nothing is fetched.${ADMIN_NOTE}`,
+  middleware: [requireUserSession, requireInstanceAdmin],
+  responses: {
+    200: jsonResponse("The update status", instanceUpdateStatusSchema),
+    403: forbidden,
+  },
+});
+
 const listUsersRoute = createRoute({
   method: "get",
   operationId: "listInstanceUsers",
@@ -563,6 +598,13 @@ const instanceAdmin = apiRouter()
   })
   .openapi(listDeliveryFailuresRoute, async (c) =>
     c.json(await listRecentDeliveryFailures(), 200),
+  )
+  .openapi(getHealthRoute, async (c) => {
+    await enforceRateLimits([[healthLimiter, c.get("userId")]]);
+    return c.json(await getInstanceHealth(), 200);
+  })
+  .openapi(getUpdateStatusRoute, async (c) =>
+    c.json(await getUpdateStatus(), 200),
   );
 
 export default instanceAdmin;

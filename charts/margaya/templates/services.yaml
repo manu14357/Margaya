@@ -13,6 +13,12 @@ spec:
       targetPort: margaya
       protocol: TCP
       name: http
+    {{- if .Values.metrics.enabled }}
+    - port: {{ .Values.metrics.port }}
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+    {{- end }}
   selector:
     {{- include "margaya.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: margaya

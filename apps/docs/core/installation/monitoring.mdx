@@ -1,0 +1,144 @@
+---
+title: Monitoring
+description: Prometheus metrics, health and readiness endpoints, request IDs, the access log and JSON logs for a self-hosted Margaya server
+---
+
+Margaya can be watched like any other service: a readiness probe, Prometheus metrics, a request ID on every response, and optional structured logs. Everything on this page except the health endpoints and request IDs is **off by default**. For a view in the app, see the [Health page](/core/installation/health-page).
+
+## Health endpoints
+
+| Endpoint | Answers | Use it for |
+| --- | --- | --- |
+| `GET /api/health` | `200` while the process runs, even when the database is down. | Liveness: restart a stuck process, not a healthy one waiting for its database. |
+| `GET /api/health/ready` | `200` when the database answers; `503` when it doesn't, or while the server shuts down. | Readiness and uptime checks. |
+
+The readiness answer looks like this:
+
+```json
+{
+  "status": "ready",
+  "checks": { "database": "ok", "redis": "disabled", "draining": false }
+}
+```
+
+`checks.redis` is `ok`, `unavailable` or `disabled` (none configured). A Redis outage is reported but never fails the probe: Redis only relays realtime updates between servers, and failing every replica at once would take the whole instance down. `draining` is `true` once the server has received a stop signal, so a load balancer stops sending it requests before it exits.
+
+## Prometheus metrics
+
+Metrics use the Prometheus text format, which Prometheus and other OpenMetrics-compatible scrapers read. Turn them on with `MARGAYA_METRICS_ENABLED=true` and choose how they are reached. Without one of these, nothing serves them:
+
+- **A separate port** (recommended): `MARGAYA_METRICS_PORT=9464` serves `GET /metrics` on its own port, bound to `MARGAYA_METRICS_HOST` (default `0.0.0.0`). Let only your scraper reach it.
+- **A token**: `MARGAYA_METRICS_TOKEN` (at least 16 characters) serves `GET /api/metrics` on the normal port, behind your proxy. The scraper sends `Authorization: Bearer <token>`. An API key doesn't work here. When a port is set too, the port asks for the token as well.
+
+<Warning>
+Don't publish the metrics port to the internet. The metrics name no users, workspaces or records, but they show how busy and healthy the server is.
+</Warning>
+
+### Docker Compose
+
+Set the variables in `.env`, then publish the port to the host only:
+
+```yaml
+services:
+  margaya:
+    ports:
+      - "5173:5173"
+      - "127.0.0.1:9464:9464"
+```
+
+```env
+MARGAYA_METRICS_ENABLED=true
+MARGAYA_METRICS_PORT=9464
+```
+
+A Prometheus scrape job for it:
+
+```yaml
+scrape_configs:
+  - job_name: margaya
+    static_configs:
+      - targets: ["127.0.0.1:9464"]
+```
+
+To scrape through the public address instead, set `MARGAYA_METRICS_TOKEN` and use `metrics_path: /api/metrics` with `authorization: { credentials: <token> }`.
+
+### Kubernetes (Helm)
+
+`metrics.enabled=true` adds the port to each pod and a `metrics` port to the Service. Nothing routes it through the ingress or gateway. With the Prometheus Operator, `metrics.serviceMonitor.enabled=true` creates a `ServiceMonitor`. The chart also has an optional `PodDisruptionBudget`. See the chart's README for the values.
+
+### What is measured
+
+| Metric | Type | Labels |
+| --- | --- | --- |
+| `margaya_http_requests_total` | counter | `method`, `route` (the route template, such as `/api/task/:id`), `status` |
+| `margaya_http_request_duration_seconds` | histogram | `method`, `route` |
+| `margaya_websocket_connections` | gauge | `kind`: `project` (boards), `user` (app) |
+| `margaya_page_collab_rooms` | gauge | |
+| `margaya_db_pool_connections` | gauge | `state`: `total`, `idle`, `waiting`, `max` |
+| `margaya_job_runs_total` | counter | `job`, `outcome`: `ok`, `degraded`, `failed` |
+| `margaya_job_duration_seconds` | histogram | `job` |
+| `margaya_job_last_success_timestamp_seconds` | gauge | `job` |
+| `margaya_queue_backlog` | gauge | `queue`: `email`, `webhook_pending`, `webhook_failed_24h` |
+| `margaya_failures_total` | counter | `source`: `job`, `ai` |
+| `margaya_ai_calls_total` | counter | `feature`, `provider`, `status` |
+| `margaya_ai_tokens_total` | counter | `provider`, `kind`: `input`, `output`, `cache_read`, `cache_write` |
+| `margaya_ai_cost_usd_micros_total` | counter | `provider` (the estimate the AI ledger records) |
+| `margaya_build_info` | gauge | `version`, `node` |
+| `process_cpu_user_seconds_total`, `process_cpu_system_seconds_total` | counter | |
+| `process_resident_memory_bytes`, `process_start_time_seconds` | gauge | |
+| `nodejs_heap_size_bytes` | gauge | `state`: `used`, `total` |
+| `nodejs_external_memory_bytes` | gauge | |
+| `nodejs_eventloop_lag_seconds` | gauge | `quantile`: `p50`, `p99`, `max` since the last scrape |
+
+Each server reports its own requests, connections, jobs and process. The queue backlogs come from the shared database, so every server reports the same numbers: use `max`, not `sum`, across servers. Counters start at zero when a server restarts.
+
+Labels never name a user, workspace, project, task, model or other record, and paths are reported as route templates, so the number of series stays small.
+
+### Example alerts
+
+```yaml
+groups:
+  - name: margaya
+    rules:
+      - alert: MargayaHighErrorRate
+        expr: sum(rate(margaya_http_requests_total{status=~"5.."}[5m])) / sum(rate(margaya_http_requests_total[5m])) > 0.05
+        for: 10m
+      - alert: MargayaJobFailing
+        expr: increase(margaya_job_runs_total{outcome="failed"}[1h]) > 0
+      - alert: MargayaWebhookBacklog
+        expr: max(margaya_queue_backlog{queue="webhook_pending"}) > 500
+        for: 15m
+      - alert: MargayaDatabasePoolExhausted
+        expr: margaya_db_pool_connections{state="waiting"} > 0
+        for: 5m
+```
+
+## Request IDs
+
+Every response carries an `X-Request-Id` header. When your proxy already sends one (8 to 128 letters, digits and `. _ : @ -`), Margaya keeps it, so one ID follows a request through your logs. Otherwise it makes a new one.
+
+The ID appears in:
+
+- the response header, readable by the web app across origins;
+- every server log line written while handling that request, as `[req <id>]` (or a `requestId` field in JSON logs);
+- the body of an unexpected `500` answer: `{ "message": "Internal Server Error", "requestId": "..." }`.
+
+When someone reports an error, ask for the request ID and search the server log for it.
+
+## Access log
+
+`MARGAYA_ACCESS_LOG=true` writes one JSON line per request to standard output:
+
+```json
+{"type":"access","time":"2026-11-13T10:15:02.120Z","requestId":"3f0c…","method":"GET","route":"/api/task/:id","status":200,"durationMs":14}
+```
+
+It logs the route template, never the path, query string, headers or body, so tokens and record ids in URLs stay out of the log. It doesn't log the client address either.
+
+## JSON logs
+
+`MARGAYA_LOG_FORMAT=json` writes every server log line as one JSON object with `time`, `level`, `requestId` (when there is one) and `msg`. The default, `text`, keeps plain lines. Use JSON when a log collector parses the output.
+
+## Error reporting
+
+Sentry error reporting and job check-ins are separate and also opt-in. See [Environment variables](/core/installation/environment-variables).

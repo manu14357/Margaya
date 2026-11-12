@@ -26,10 +26,14 @@ test(
     );
     expect(status).toEqual({ hasUsers: true, hasAdmin: true });
 
-    const readiness = await expectJson<{ status: string }>(
-      await anonymous.get("/api/health/ready"),
-    );
-    expect(readiness).toEqual({ status: "ready" });
+    const readiness = await expectJson<{
+      status: string;
+      checks: Record<string, unknown>;
+    }>(await anonymous.get("/api/health/ready"));
+    expect(readiness).toMatchObject({
+      status: "ready",
+      checks: { database: "ok", draining: false },
+    });
 
     const config = await expectJson<Record<string, unknown>>(
       await anonymous.get("/api/config"),

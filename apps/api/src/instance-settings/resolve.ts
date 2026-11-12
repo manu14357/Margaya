@@ -56,6 +56,8 @@ export type SmtpSecurity = "tls" | "starttls" | "none";
 export type EffectiveSettings = {
   instanceName: string;
   publicLanding: boolean;
+  /** Opt-in check for a newer release (off by default). */
+  updateCheck: boolean;
   inviteOnly: boolean;
   emailSignUp: boolean;
   guestAccess: boolean;
@@ -336,6 +338,7 @@ export function resolveInstanceSettings({
   const effective: EffectiveSettings = {
     instanceName: str(settings, "general.instanceName"),
     publicLanding: flag(settings, "general.publicLanding"),
+    updateCheck: flag(settings, "general.updateCheck"),
     inviteOnly: flag(settings, "auth.inviteOnly"),
     emailSignUp: flag(settings, "auth.emailSignUp"),
     guestAccess: flag(settings, "auth.guestAccess"),

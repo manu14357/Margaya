@@ -1,0 +1,66 @@
+---
+title: Health page
+description: Check the database, Redis, storage, email and AI, see background jobs and recent failures, and turn on the opt-in update notice in Settings > Instance > Health
+---
+
+The **Health** page shows whether the server and the services it depends on are working. Instance admins open it from **Settings > Instance > Health**. Other people can't see it, and the API refuses it to them.
+
+<Screenshot src="admin/health" alt="The Health page with the summary card (version, uptime, start time, Node.js version and migrations up to date), the Services list with Database, Redis, File storage, Email and AI provider each showing a status badge, and the Update notice switch" caption="Each check runs when the page opens. Select Check again to run them again." />
+
+## Summary
+
+- **Version**: the Margaya version this server runs.
+- **Uptime** and **Started**: how long this server process has been running.
+- **Node.js**: the runtime version.
+- **Database migrations**: whether the database has every migration this version ships. Migrations run when the server starts, so **Pending** usually means another server with an older version started last, or a migration failed. The server log says which.
+
+## Services
+
+Each check runs when you open the page, and again when you select **Check again**, with a limit of 5 seconds each. A slow service can't hold up the others.
+
+| Check | What it does |
+| --- | --- |
+| **Database** | Runs a trivial query and shows how long it took. |
+| **Redis** | Pings the realtime Redis when one is configured. **Off** means none is configured, which is fine for a single server. |
+| **File storage** | For S3-compatible storage, asks the bucket whether it is reachable. For the built-in local store, checks that its folder is writable. **Off** means uploads are turned off. |
+| **Email** | Connects and signs in to the SMTP server **without sending a message**. To send one, use **Send test email** on the [Email](/core/installation/instance-admin#email) page. |
+| **AI provider** | Checks that AI is on and a provider is set up, and counts failed AI calls in the last 24 hours. It doesn't call the model, so it costs nothing. Use **Test connection** on the AI page for a live call. |
+
+Each check shows **OK**, **Warning**, **Problem** or **Off**, with a short reason. The page never shows hosts, bucket names, paths, user names or server error text. Those stay in the server log.
+
+<Note>
+If you run several servers, the page shows the server that answered. Background jobs, recent failures and open connections are that server's own; database, storage, email and AI checks and the queue counts are the same for all.
+</Note>
+
+## Queues and connections
+
+- **Emails waiting**: notification emails waiting for their batch window or a retry.
+- **Webhooks waiting** and **Webhooks failed (24 h)**: workspace webhook deliveries not yet delivered, and those that used up their retries in the last day. Recent webhook failures, with their workspace and response, are on the [General](/core/installation/instance-admin#general) page.
+- **Board connections**, **App connections** and **Pages being co-edited**: open realtime connections on this server.
+- **Prometheus metrics**: whether [metrics](/core/installation/monitoring) are on and how they are served.
+
+## Background jobs
+
+Every scheduled job (reminders, digests, webhook retries, retention, the trash purge and others) with its last run, its last result, and how many runs and failures it had since the server started. A job that has not run yet shows **Not run yet**; hourly and daily jobs can take a while after a restart.
+
+- **OK**: the run finished without errors.
+- **Warning**: the run finished but some items failed. It handles them one at a time, so the rest went through. Details are in the server log.
+- **Problem**: the run failed.
+
+## Recent failures
+
+The newest 20 failed or partly failed job runs and failed AI calls on this server since it started. A failed run shows the error's type and the start of its message; the full error is in the server log. An AI failure names the feature and the provider, never the prompt or the workspace.
+
+These lists live in memory, so they are empty again after a restart.
+
+## Update notice
+
+Turn on **Check for new versions** to hear about new releases. It is **off by default**.
+
+When it is on, the server reads Margaya's public release list once a day. The request carries nothing about your instance: no name, address, version, account or usage count. The answer stays on your server. When a newer version is out, instance admins see a banner at the top of the app with a link to the release notes. Other people never see it. **Dismiss** hides the banner until the next version.
+
+Set `MARGAYA_UPDATE_CHECK=true` or `false` to manage the switch from the environment instead; it then shows an **Environment** badge and can't be changed here. With no internet access the page says the release list can't be reached, and the server tries again within an hour.
+
+## Readiness probe
+
+Load balancers and orchestrators should use `GET /api/health/ready`. It answers `200` when the database answers and `503` when it doesn't, or while the server shuts down. Its `checks` also report Redis, but a Redis outage never makes it fail. `GET /api/health` only reports that the process runs; use it for liveness. See [Monitoring](/core/installation/monitoring#health-endpoints).

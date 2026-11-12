@@ -20,3 +20,10 @@ export const settingsWriteLimiter = createRateLimiter({
   windowSeconds: 60,
   max: 30,
 });
+
+// The health page connects to SMTP and storage on every load.
+export const healthLimiter = createRateLimiter({
+  name: "admin-health",
+  windowSeconds: 60,
+  max: 20,
+});

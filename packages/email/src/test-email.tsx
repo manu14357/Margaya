@@ -92,3 +92,40 @@ export async function sendTestEmail(
     transport.close();
   }
 }
+
+export type SmtpVerifyResult = Pick<SmtpTestResult, "code"> & {
+  ok: boolean;
+  latencyMs: number | null;
+};
+
+/**
+ * Connects and authenticates with the current settings without sending
+ * anything (the health page's email check). Uses its own transport, and
+ * returns only the classified code, never server text.
+ */
+export async function verifySmtpConnection(
+  options: { timeoutMs?: number } = {},
+): Promise<SmtpVerifyResult | null> {
+  const config = currentSmtpConfig();
+  if (!config || !isSmtpConfigComplete(config)) return null;
+  const timeoutMs = options.timeoutMs ?? 5_000;
+  const transport = nodemailer.createTransport({
+    ...smtpTransportOptions(config),
+    connectionTimeout: timeoutMs,
+    greetingTimeout: timeoutMs,
+    socketTimeout: timeoutMs,
+  });
+  const started = performance.now();
+  try {
+    await withTimeout(transport.verify(), timeoutMs + 500);
+    return {
+      ok: true,
+      code: "ok",
+      latencyMs: Math.round(performance.now() - started),
+    };
+  } catch (error) {
+    return { ok: false, code: classifySmtpError(error).code, latencyMs: null };
+  } finally {
+    transport.close();
+  }
+}
