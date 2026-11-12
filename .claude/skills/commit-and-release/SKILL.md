@@ -45,6 +45,7 @@ Use the `testing` skill for the focused proof. Before a commit the user asked fo
 | unit | `node --test scripts/security/*.test.mjs` (CI first pulls `nginx:1.29.5-alpine` with Docker for it) and `pnpm test` with `NODE_OPTIONS=--no-experimental-webstorage` |
 | build | `pnpm build` |
 | integration | `pnpm test:integration` (needs Postgres; see `testing`) |
+| e2e | `pnpm e2e specs/smoke` (Playwright smoke specs; needs Postgres, MailPit and Edge; see `testing`) |
 | docker-build | builds `Dockerfile.margaya` |
 
 Report which of these you ran and which you did not.
@@ -78,7 +79,7 @@ Pull requests (only when asked): the title must also pass commitlint (`.github/w
 
 - `release.config.js` (semantic-release) releases from `main` only. Version bump comes from conventional commits (`conventionalcommits` preset) unless `RELEASE_TYPE` forces `patch`/`minor`/`major`.
 - `scripts/release/notes.mjs` groups notes by pull request (Features, Bug Fixes, Performance Improvements, Reverts, Code Refactoring, Documentation); `scripts/release/apply-version.mjs` stamps the version; the release commit is `chore(release): vX.Y.Z [skip ci]` and updates `CHANGELOG.md`, `package.json` and `charts/margaya/Chart.yaml`.
-- `.github/workflows/release.yml` is manual (`workflow_dispatch`, with a dry-run input) and builds images and the Helm chart. `nightly.yml`, `docker.yml` and `deploy-site.yml` are manual too; `publish-mcp.yml` runs on a published release.
+- `.github/workflows/release.yml` is manual (`workflow_dispatch`, with a dry-run input) and builds images and the Helm chart. `build-images.yml` and `helm-chart.yml` sign them keylessly with cosign and attest SLSA provenance (the calling jobs must grant `id-token`, `attestations` and `artifact-metadata: write`), and its `assets` job attaches the SBOMs, `image-digests.txt` and `SHA256SUMS-sbom.txt` to the GitHub Release. How users check them: `apps/docs/core/installation/verify-a-release.mdx`. `nightly.yml`, `docker.yml` and `deploy-site.yml` are manual too; `publish-mcp.yml` runs on a published release.
 - `desktop-release.yml` runs when a release is published (`v*` tags, not prereleases) or by manual dispatch with a tag. It builds the desktop installers and attaches them, with the updater's `latest.json`, the `.sig` files and `SHA256SUMS.txt`, to that GitHub Release, then rebuilds the site's Download page. Its signing secrets live in the `desktop-release` environment and are never needed locally; see the `desktop-app` skill. CI's `desktop` job in `ci.yml` runs the launcher typecheck, tests and build plus `cargo test --locked`.
 - `feat` and `fix` commits change the next version, so choose the type honestly.
 

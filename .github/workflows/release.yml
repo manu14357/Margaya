@@ -101,6 +101,9 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write # signs and attests the images
+      attestations: write
+      artifact-metadata: write
     uses: ./.github/workflows/build-images.yml
     secrets: inherit
     with:
@@ -192,14 +195,22 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # Copies the published manifest, so :latest is the exact bytes released.
+      # The cosign signature and attestations are keyed to that digest, so
+      # they only cover :latest while the digests match.
       - name: Tag images as latest
         env:
           OWNER: ${{ github.repository_owner }}
           VERSION: ${{ needs.plan.outputs.version }}
         run: |
+          set -euo pipefail
           for image in margaya web api; do
             ref="ghcr.io/${OWNER,,}/${image}"
             docker buildx imagetools create --tag "${ref}:latest" "${ref}:${VERSION}"
+            released=$(docker buildx imagetools inspect --raw "${ref}:${VERSION}" | sha256sum)
+            latest=$(docker buildx imagetools inspect --raw "${ref}:latest" | sha256sum)
+            if [ "$released" != "$latest" ]; then
+              echo "::warning::${ref}:latest has a different digest from ${ref}:${VERSION}, so its signature does not verify; verify by version tag."
+            fi
           done
 
   chart-publish:
@@ -208,6 +219,76 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write # signs and attests the chart
+      attestations: write
+      artifact-metadata: write
     uses: ./.github/workflows/helm-chart.yml
     with:
       version: ${{ needs.plan.outputs.version }}
+
+  # Attaches the SBOMs, the image digests and a checksum file to the GitHub
+  # Release that semantic-release just published. desktop-release.yml adds
+  # the installers with their own SHA256SUMS.txt and provenance.
+  assets:
+    name: Release assets
+    needs: [plan, release]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write # upload release assets
+      id-token: write # attest the files below
+      attestations: write
+    steps:
+      - name: Checkout the release tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/tags/v${{ needs.plan.outputs.version }}
+          persist-credentials: false
+
+      # Written by build-images.yml: one SPDX SBOM per image and platform,
+      # and each image's digest.
+      - name: Collect the image SBOMs
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: sbom-image-*
+          merge-multiple: true
+          path: ${{ runner.temp }}/release-assets
+
+      - name: Install Syft
+        id: syft
+        uses: anchore/sbom-action/download-syft@66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c # v0.24.3
+
+      # Every npm dependency (pnpm-lock.yaml) and cargo dependency
+      # (apps/desktop/src-tauri/Cargo.lock) at the release tag. The desktop
+      # app has no other dependencies, so this is its SBOM too.
+      - name: Generate the source SBOMs
+        env:
+          SYFT: ${{ steps.syft.outputs.cmd }}
+          VERSION: ${{ needs.plan.outputs.version }}
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/release-assets"
+          "$SYFT" scan dir:. --source-name margaya --source-version "$VERSION" \
+            -o "cyclonedx-json=$out/margaya-$VERSION-source.cdx.json" \
+            -o "spdx-json=$out/margaya-$VERSION-source.spdx.json"
+
+      - name: Write the checksums
+        working-directory: ${{ runner.temp }}/release-assets
+        run: |
+          set -euo pipefail
+          cat image-*.digest.txt | sort > image-digests.txt
+          rm image-*.digest.txt
+          sha256sum -- *.json image-digests.txt | sort -k 2 > SHA256SUMS-sbom.txt
+          cat image-digests.txt SHA256SUMS-sbom.txt
+
+      - name: Attest the release assets
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-checksums: ${{ runner.temp }}/release-assets/SHA256SUMS-sbom.txt
+
+      - name: Attach them to the release
+        working-directory: ${{ runner.temp }}/release-assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: v${{ needs.plan.outputs.version }}
+        run: gh release upload "$TAG" ./* --repo "$GITHUB_REPOSITORY" --clobber

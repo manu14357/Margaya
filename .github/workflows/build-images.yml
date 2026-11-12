@@ -27,9 +27,14 @@ jobs:
     if: github.ref == 'refs/heads/main'
     name: ${{ matrix.name }}
     runs-on: ubuntu-24.04
+    # Callers must grant the same: a reusable workflow's job can't hold more
+    # than the calling job.
     permissions:
       contents: read
       packages: write
+      id-token: write # keyless cosign signing and attestations (GitHub OIDC)
+      attestations: write
+      artifact-metadata: write
     strategy:
       fail-fast: false
       matrix:
@@ -102,7 +107,10 @@ jobs:
           printf '%s' "$SENTRY_AUTH_TOKEN" > /tmp/sentry-build-secrets/SENTRY_AUTH_TOKEN
           chmod 600 /tmp/sentry-build-secrets/SENTRY_AUTH_TOKEN
 
+      # sbom and provenance store an SPDX SBOM and SLSA provenance per platform
+      # inside the image index, so the cosign signature below covers them too.
       - name: Build and push
+        id: build
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7
         with:
           context: .
@@ -113,9 +121,83 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          sbom: true
+          provenance: mode=max
           build-args: |
             SENTRY_ORG=${{ vars.SENTRY_ORG }}
             SENTRY_PROJECT=${{ vars.SENTRY_PROJECT }}
           # secret-files mounts the file contents; 'secrets:' would pass the
           # path string as the value.
           secret-files: ${{ matrix.name == 'web' && 'SENTRY_AUTH_TOKEN=/tmp/sentry-build-secrets/SENTRY_AUTH_TOKEN' || '' }}
+
+      - name: Resolve the pushed image
+        id: image
+        env:
+          IMAGE: ${{ matrix.image }}
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          set -euo pipefail
+          if ! printf '%s' "$DIGEST" | grep -Eq '^sha256:[0-9a-f]{64}$'; then
+            echo "::error::The image build returned no digest."
+            exit 1
+          fi
+          {
+            echo "name=${IMAGE,,}"
+            echo "ref=${IMAGE,,}@$DIGEST"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@756fe2d284c7292c4e9b62c8a28f1e5629c59532 # v4.1.3
+
+      # Keyless: the Sigstore certificate names this workflow, ref and commit
+      # through GitHub's OIDC token, so there is no signing key to store or
+      # leak. The signature is on the digest, so it also covers every tag that
+      # points at it, including the :latest that release.yml promotes.
+      - name: Sign the image
+        env:
+          REF: ${{ steps.image.outputs.ref }}
+        run: cosign sign --yes "$REF"
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-name: ${{ steps.image.outputs.name }}
+          subject-digest: ${{ steps.build.outputs.digest }}
+          push-to-registry: true
+
+      # Copies the SPDX SBOMs BuildKit stored in the index out to files, which
+      # release.yml attaches to the GitHub Release. Nightly builds keep theirs
+      # in the registry only.
+      - name: Export the SBOMs
+        if: inputs.version != ''
+        env:
+          REF: ${{ steps.image.outputs.ref }}
+          NAME: ${{ matrix.name }}
+          VERSION: ${{ inputs.version }}
+          PLATFORMS: ${{ inputs.platforms }}
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/sbom"
+          mkdir -p "$out"
+          docker buildx imagetools inspect "$REF" --format '{{ json .SBOM }}' > "$RUNNER_TEMP/index-sbom.json"
+          # One platform prints {"SPDX": ...}; several print one entry per
+          # platform, {"linux/amd64": {"SPDX": ...}, ...}.
+          if jq -e 'has("SPDX")' "$RUNNER_TEMP/index-sbom.json" > /dev/null; then
+            jq -e '.SPDX' "$RUNNER_TEMP/index-sbom.json" > "$out/image-$NAME-$VERSION-${PLATFORMS//\//-}.spdx.json"
+          else
+            for platform in $(jq -r 'keys[]' "$RUNNER_TEMP/index-sbom.json"); do
+              jq -e --arg platform "$platform" '.[$platform].SPDX' "$RUNNER_TEMP/index-sbom.json" \
+                > "$out/image-$NAME-$VERSION-${platform//\//-}.spdx.json"
+            done
+          fi
+          printf '%s\n' "$REF" > "$out/image-$NAME-$VERSION.digest.txt"
+          ls -l "$out"
+
+      - name: Keep the SBOMs for the release
+        if: inputs.version != ''
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: sbom-image-${{ matrix.name }}
+          path: ${{ runner.temp }}/sbom/
+          if-no-files-found: error
+          retention-days: 7

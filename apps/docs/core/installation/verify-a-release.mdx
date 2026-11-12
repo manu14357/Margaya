@@ -1,0 +1,144 @@
+---
+title: Verify a release
+description: Check that a Margaya image, Helm chart or desktop installer came from the project's own release workflow, and read its software bill of materials (SBOM).
+---
+
+Every Margaya release is built in GitHub Actions from a reviewed commit on `main`, and it publishes proof of that next to the release. You can check it before you deploy, or let your cluster check it for you.
+
+## What a release publishes
+
+| Artifact | Signature | Build provenance | SBOM |
+| --- | --- | --- | --- |
+| Docker images `ghcr.io/manu14357/margaya`, `api` and `web` | Keyless cosign signature in the registry | SLSA provenance in the registry and on GitHub | SPDX, per platform, in the registry and on the GitHub Release |
+| Helm chart `oci://ghcr.io/manu14357/charts/margaya` | Keyless cosign signature in the registry | SLSA provenance in the registry and on GitHub | Covered by the image SBOMs |
+| Desktop installers | `SHA256SUMS.txt` on the GitHub Release | SLSA provenance on GitHub | Covered by the source SBOM |
+| Source dependencies (npm and cargo) | `SHA256SUMS-sbom.txt` on the GitHub Release | SLSA provenance on GitHub | CycloneDX and SPDX on the GitHub Release |
+
+"Keyless" means there is no long-lived signing key to steal. Each signature carries a short-lived certificate that names the GitHub workflow, repository and commit that made it, issued against GitHub's own identity token and logged in a public transparency log.
+
+<Note>
+Releases published before signing was added have no signatures, provenance or SBOM files. Upgrade to a newer release to verify it.
+</Note>
+
+## What you need
+
+- [cosign](https://docs.sigstore.dev/cosign/system_config/installation/) 3 or newer, to check signatures.
+- The [GitHub CLI](https://cli.github.com/) 2.49 or newer, to check build provenance with `gh attestation verify`.
+- Docker with Buildx, to read the SBOMs stored with an image.
+
+None of these need a GitHub account or registry login for public images.
+
+## Verify an image signature
+
+Check the version you're about to run. The identity is the workflow that builds every Margaya image:
+
+```bash
+cosign verify ghcr.io/manu14357/margaya:1.2.0 \
+  --certificate-identity https://github.com/manu14357/Margaya/.github/workflows/build-images.yml@refs/heads/main \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com
+```
+
+A good result prints `The cosign claims were validated` and a JSON list that includes the image digest and the commit it was built from. Any other output, or an error, means the image wasn't signed by Margaya's release workflow: don't run it.
+
+Swap `margaya` for `api` or `web` to check the split images. The signature belongs to the image digest, so it also covers `latest` and any other tag that points at the same digest.
+
+To be sure later pulls get exactly what you verified, pin the digest in `compose.yml`. Each release lists its digests in `image-digests.txt`:
+
+```yaml
+services:
+  margaya:
+    image: ghcr.io/manu14357/margaya:1.2.0@sha256:<digest from image-digests.txt>
+```
+
+## Verify the Helm chart
+
+The chart is signed by the chart workflow:
+
+```bash
+cosign verify ghcr.io/manu14357/charts/margaya:1.2.0 \
+  --certificate-identity https://github.com/manu14357/Margaya/.github/workflows/helm-chart.yml@refs/heads/main \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com
+```
+
+If your cluster runs an admission controller that checks Sigstore signatures, give it the same identity and issuer to refuse unsigned Margaya images and charts.
+
+## Verify build provenance
+
+Build provenance records which workflow run built the artifact, from which commit, with which inputs. Check it with the GitHub CLI:
+
+```bash
+# An image
+gh attestation verify oci://ghcr.io/manu14357/margaya:1.2.0 --repo manu14357/Margaya
+
+# A desktop installer or any file from the GitHub Release
+gh attestation verify Margaya_1.2.0_x64-setup.exe --repo manu14357/Margaya
+```
+
+Add `--format json` to see the full provenance, including the commit SHA and the workflow run.
+
+## Check a desktop installer
+
+Each release has a `SHA256SUMS.txt` file listing every installer. Download it next to your installer, then compare:
+
+<Tabs>
+<Tab title="Linux and macOS">
+
+```bash
+sha256sum --check --ignore-missing SHA256SUMS.txt
+```
+
+On macOS without GNU coreutils, use `shasum -a 256 --check --ignore-missing SHA256SUMS.txt`.
+
+</Tab>
+<Tab title="Windows">
+
+```powershell
+Get-FileHash .\Margaya_1.2.0_x64-setup.exe -Algorithm SHA256
+```
+
+Compare the hash with the installer's line in `SHA256SUMS.txt`.
+
+</Tab>
+</Tabs>
+
+A checksum only proves the file matches the list. `gh attestation verify` above also proves the release workflow built it.
+
+## Read the SBOMs
+
+An SBOM lists every package inside an artifact, with its version, licence and hashes. Use it to answer "are we affected by this CVE?" without pulling the image apart, or hand it to your security team.
+
+**From the GitHub Release.** Each release attaches:
+
+- `margaya-<version>-source.cdx.json` and `margaya-<version>-source.spdx.json`: every npm and cargo dependency in the source, which also covers the desktop app.
+- `image-<name>-<version>-linux-amd64.spdx.json` and `-linux-arm64.spdx.json`: everything in each image, operating system packages included.
+- `image-digests.txt`: the digest of each image.
+- `SHA256SUMS-sbom.txt`: checksums for the files above.
+
+Check them before you use them:
+
+```bash
+sha256sum --check SHA256SUMS-sbom.txt
+gh attestation verify margaya-1.2.0-source.cdx.json --repo manu14357/Margaya
+```
+
+**From the registry.** The same image SBOMs, and the provenance, are stored with the image itself:
+
+```bash
+# The SPDX SBOM for one platform
+docker buildx imagetools inspect ghcr.io/manu14357/margaya:1.2.0 \
+  --format '{{ json (index .SBOM "linux/amd64").SPDX }}' > margaya-amd64.spdx.json
+
+# The SLSA provenance for one platform
+docker buildx imagetools inspect ghcr.io/manu14357/margaya:1.2.0 \
+  --format '{{ json (index .Provenance "linux/amd64").SLSA }}'
+```
+
+Any vulnerability scanner or dependency tool that reads SPDX or CycloneDX can take these files. For a quick look, list the packages with `jq`:
+
+```bash
+jq -r '.packages[] | "\(.name) \(.versionInfo)"' margaya-amd64.spdx.json | sort
+```
+
+## Reporting a problem
+
+If a signature or attestation fails for an image you pulled from `ghcr.io/manu14357`, don't run it, and report it privately as described in the [security policy](https://github.com/manu14357/Margaya/security/policy). It also says how long each release is supported and how vulnerabilities are handled.

@@ -210,6 +210,89 @@ jobs:
       - name: Run API integration tests
         run: pnpm test:integration
 
+  # The Playwright smoke specs (tests/e2e/specs/smoke): password sign-in and
+  # sign-out, a seeded board, the public API per role, and no AI entry points
+  # without a provider. They run against the real API, a production web build,
+  # PostgreSQL and MailPit, so they catch what unit and integration tests
+  # can't: a broken build, boot, migration or routing path. The full suite
+  # takes far longer and stays a local run (tests/e2e/README.md).
+  e2e:
+    name: e2e (smoke)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      # Same image as compose.e2e.yml; global-setup.ts finds it on 8025.
+      mailpit:
+        image: axllent/mailpit:v1.31.2
+        env:
+          MP_SMTP_AUTH_ACCEPT_ANY: "true"
+          MP_SMTP_AUTH_ALLOW_INSECURE: "true"
+        ports:
+          - 1025:1025
+          - 8025:8025
+    env:
+      # The suite creates margaya_e2e on this server before the API boots.
+      E2E_DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/margaya_e2e
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          version: 10.32.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24.19.0
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The API and web app import these packages from their dist/ builds.
+      - name: Build the workspace packages
+        run: pnpm exec turbo run build --filter=@margaya/api^... --filter=@margaya/web^...
+
+      # The suite drives Microsoft Edge, which the Ubuntu runner image ships.
+      - name: Check Microsoft Edge
+        run: |
+          if ! command -v microsoft-edge > /dev/null; then
+            pnpm --filter @margaya/e2e exec playwright install --with-deps msedge
+          fi
+          microsoft-edge --version
+
+      # CI=true makes Playwright start fresh servers, run one worker and
+      # retry a failed test once (tests/e2e/playwright.config.ts).
+      - name: Run the smoke specs
+        run: pnpm e2e specs/smoke
+
+      - name: Upload the Playwright report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: e2e-report
+          path: |
+            tests/e2e/playwright-report/
+            tests/e2e/test-results/
+          retention-days: 7
+
   docker-build:
     runs-on: ubuntu-24.04
     steps:

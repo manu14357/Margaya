@@ -3,7 +3,8 @@ name: Desktop Release
 # Builds Margaya Desktop (apps/desktop) for macOS (Apple Silicon and Intel),
 # Windows and Linux (x86_64 and ARM64: AppImage, .deb, .rpm), and attaches the
 # installers, the updater manifest (latest.json), the updater signatures and
-# SHA256SUMS.txt to the GitHub Release that semantic-release just published.
+# SHA256SUMS.txt to the GitHub Release that semantic-release just published,
+# and records SLSA build provenance for every file in SHA256SUMS.txt.
 # Then it rebuilds the website so the Download page lists the new files.
 #
 # Linux builds run on Ubuntu 22.04, the oldest supported base (glibc 2.35,
@@ -270,6 +271,8 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: write # upload SHA256SUMS.txt
+      id-token: write # attest the installers (GitHub OIDC)
+      attestations: write
     steps:
       - name: Attach SHA256SUMS.txt
         env:
@@ -302,6 +305,14 @@ jobs:
           done
           gh release upload "$TAG" "$RUNNER_TEMP/SHA256SUMS.txt" \
             --repo "$GITHUB_REPOSITORY" --clobber
+
+      # SLSA build provenance for every file in SHA256SUMS.txt, tying each
+      # installer to this workflow run, tag and commit. Verify one with
+      # `gh attestation verify <file> --repo <owner>/Margaya`.
+      - name: Attest the installers
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-checksums: ${{ runner.temp }}/SHA256SUMS.txt
 
   site:
     name: Rebuild the website

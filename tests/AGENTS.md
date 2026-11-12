@@ -9,7 +9,7 @@ Cross-app test suites. Web, site and package unit tests live next to their sourc
 | `e2e/` | Playwright against a real API and web build | `e2e/playwright.config.ts` | `pnpm e2e` |
 | `storage-integration/` | S3 contract tests against local MinIO | `apps/api/vitest.storage.config.ts` | see its `README.md` |
 
-`pnpm test` runs every unit suite except e2e. CI runs `pnpm test:integration` against a Postgres service.
+`pnpm test` runs every unit suite except e2e. CI runs `pnpm test:integration` against a Postgres service, and the e2e smoke specs (`pnpm e2e specs/smoke`) against Postgres and MailPit services.
 
 ## Shared rules
 

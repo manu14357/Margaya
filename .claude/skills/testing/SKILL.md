@@ -65,7 +65,7 @@ pnpm e2e specs/api                                          # one folder
 pnpm --filter @margaya/e2e db:reset                         # after migrations change under margaya_e2e
 pnpm --filter @margaya/e2e report                           # last HTML report
 ```
-`pnpm test` at the root excludes e2e; CI's `ci.yml` does not run it.
+`pnpm test` at the root excludes e2e. CI's `e2e` job in `ci.yml` runs only `pnpm e2e specs/smoke`, against `postgres:16` and MailPit service containers with `E2E_DATABASE_URL` pointing at the service; every other spec is a local run, so run the specs your change touches yourself.
 
 ## Storage contract tests
 
