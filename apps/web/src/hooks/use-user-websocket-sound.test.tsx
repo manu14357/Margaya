@@ -72,6 +72,16 @@ describe("user WebSocket notification sounds", () => {
     });
   });
 
+  it("refetches preferences changed on another tab or device, not its own echo", () => {
+    renderHook(useUserWebSocket);
+    deliver({ type: "PREFERENCES_UPDATED", originWindowId: "this-tab" });
+    expect(client.invalidateQueries).not.toHaveBeenCalled();
+    deliver({ type: "PREFERENCES_UPDATED", originWindowId: null });
+    expect(client.invalidateQueries).toHaveBeenCalledWith({
+      queryKey: ["user", "preferences"],
+    });
+  });
+
   it("stays silent when inbox state merely changes", () => {
     renderHook(useUserWebSocket);
     deliver({ type: "NOTIFICATIONS_UPDATED", workspaceId: "ws-1" });

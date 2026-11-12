@@ -7,8 +7,6 @@ import {
   SettingsSection,
 } from "@/components/settings-layout";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -91,17 +89,14 @@ function categoryText(
 
 /**
  * Sounds for in-app notifications: on or off, volume, a sound per kind of
- * notification, quiet hours (synced with the account) and a mute for this
- * device only.
+ * notification and a mute for this device only. Quiet hours live in
+ * QuietHoursSettings.
  */
 export function NotificationSoundSettings() {
   const { t } = useTranslation();
   const ids = {
     enabled: useId(),
     volume: useId(),
-    quiet: useId(),
-    quietStart: useId(),
-    quietEnd: useId(),
     device: useId(),
   };
   const stored = useUserPreferencesStore((state) => state.notificationSound);
@@ -117,7 +112,11 @@ export function NotificationSoundSettings() {
     if (sound === "none") return;
     const played = await previewSound(sound, settings.volume || 50);
     if (!played)
-      toast.error(t("settings:notificationsPage.sound.previewFailed"));
+      toast.error(
+        desktopPlaysNotificationSound()
+          ? t("settings:notificationsPage.sound.previewFailedDesktop")
+          : t("settings:notificationsPage.sound.previewFailed"),
+      );
   }
 
   return (
@@ -213,61 +212,6 @@ export function NotificationSoundSettings() {
             </SettingsRow>
           );
         })}
-
-        <SettingsRow
-          label={t("settings:notificationsPage.sound.quietHours")}
-          description={t(
-            "settings:notificationsPage.sound.quietHoursDescription",
-          )}
-          htmlFor={ids.quiet}
-        >
-          <Switch
-            id={ids.quiet}
-            checked={settings.quietHours}
-            disabled={off}
-            onCheckedChange={(quietHours) => setSound({ quietHours })}
-          />
-        </SettingsRow>
-        {settings.quietHours && (
-          <div className="flex flex-wrap items-center gap-3 px-4 py-3">
-            <div className="flex items-center gap-2">
-              <Label htmlFor={ids.quietStart}>
-                {t("settings:notificationsPage.sound.quietFrom")}
-              </Label>
-              <Input
-                id={ids.quietStart}
-                type="time"
-                size="sm"
-                className="w-32"
-                value={settings.quietStart}
-                disabled={off}
-                onChange={(event) => {
-                  if (event.target.value) {
-                    setSound({ quietStart: event.target.value });
-                  }
-                }}
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <Label htmlFor={ids.quietEnd}>
-                {t("settings:notificationsPage.sound.quietTo")}
-              </Label>
-              <Input
-                id={ids.quietEnd}
-                type="time"
-                size="sm"
-                className="w-32"
-                value={settings.quietEnd}
-                disabled={off}
-                onChange={(event) => {
-                  if (event.target.value) {
-                    setSound({ quietEnd: event.target.value });
-                  }
-                }}
-              />
-            </div>
-          </div>
-        )}
 
         <SettingsRow
           label={t("settings:notificationsPage.sound.deviceMute")}

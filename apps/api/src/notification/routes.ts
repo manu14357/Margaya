@@ -215,7 +215,7 @@ export const desktopNotificationRoute = createRoute({
   tags: ["Notifications"],
   summary: "Get desktop alert",
   description:
-    "The text Margaya Desktop shows for one of the current user's notifications, after the user socket's NOTIFICATION_CREATED hint names it. The same title and line as Web Push, in the user's language, with an absolute link into the web app. Works with the session cookie or a bearer session token.",
+    "The text Margaya Desktop shows for one of the current user's notifications, after the user socket's NOTIFICATION_CREATED hint names it. The same title and line as Web Push, in the user's language, with an absolute link into the web app, and whether quiet hours or focus mode hold it (`held`) or silence it. Works with the session cookie or a bearer session token.",
   request: { params: notificationParam, query: desktopNotificationQuery },
   responses: {
     200: jsonResponse("The alert", desktopNotificationSchema),

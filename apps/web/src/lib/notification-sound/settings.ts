@@ -97,6 +97,12 @@ export type NotificationHint = {
   notificationType?: string | null;
   reply?: boolean;
   needsInput?: boolean;
+  /**
+   * The server's quiet-time call: quiet hours or focus mode, minus the
+   * bypasses the user chose. Absent from older servers, where only the
+   * local quiet hours count.
+   */
+  quiet?: boolean;
 };
 
 /**
@@ -166,7 +172,7 @@ export function soundFor(
   nowMinutes: number,
 ): NotificationSoundId | null {
   if (!settings.enabled || settings.volume === 0) return null;
-  if (isQuietTime(settings, nowMinutes)) return null;
+  if (hint.quiet ?? isQuietTime(settings, nowMinutes)) return null;
   const sound = settings[soundCategory(hint)];
   return sound === "none" ? null : sound;
 }

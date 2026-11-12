@@ -21,6 +21,7 @@ import {
   useDesktopDragRegion,
   useDesktopTitleBar,
 } from "@/components/desktop/desktop-title-bar";
+import { FocusStatusButton } from "@/components/notification/focus-mode";
 import NotificationDropdown from "@/components/notification/notification-dropdown";
 import { KbdSequence } from "@/components/ui/kbd";
 import { SidebarTrigger, useIsBelowWidth } from "@/components/ui/sidebar";
@@ -171,6 +172,8 @@ export function TopBar({ title, place, actions, className }: TopBarProps) {
           >
             {!full && <CommandField compact />}
             {full && <AskButton />}
+            {/* Shown only while focus mode or quiet hours pause notifications. */}
+            <FocusStatusButton compact={!full} />
             {full && (
               <div className="hidden sm:block">
                 <NotificationDropdown />

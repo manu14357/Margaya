@@ -11,6 +11,14 @@ You can configure this under:
 2. Open **Account**
 3. Open **Notifications**
 
+The page runs from what you're told about to how it reaches you:
+
+1. **Notify me about**: which events notify you.
+2. **Delivery channels**: where notifications are delivered.
+3. **Email digest**: an optional summary email.
+4. **Sounds**: what plays when a notification arrives.
+5. **Workspace delivery rules**: which channels each workspace may use.
+
 ## Available channels
 
 Users can forward matching notifications through:
@@ -33,40 +41,9 @@ These settings are personal to the signed-in account. They do not change notific
 - **Other task changes**: priority, due date and title changes on tasks you follow
 - **Due-date reminders**, with **Remind me before the due date** set between 1 hour and 30 days
 
-Select **Save notification types** to apply your choices.
+Select **Save notification types** to apply your choices. Until you do, the section shows **Unsaved changes**.
 
 <Screenshot src="account/notify-me-about" alt="The Notify me about section with switches for task assignments, comments and mentions, status changes, other task changes and due-date reminders, and the reminder lead time" caption="Choose which task events notify you." />
-
-## Notification sounds
-
-**Sounds** at the top of the page plays a short sound when a new notification reaches you while Margaya is open in your browser, in any tab, even in the background.
-
-- **Play sounds** turns them on or off for your account. They are on by default, for the notifications that need you.
-- **Volume** applies to every sound.
-- Pick a sound for each kind of notification, or **None** for silence. Choosing a sound plays it, and the play button next to it plays it again.
-
-| Kind | What it covers | Default |
-| --- | --- | --- |
-| **Mentions and assignments** | someone @mentions you or assigns you a task | Chime |
-| **Agent needs you** | an AI agent asks you a question or waits for your approval | Knock |
-| **Replies to you** | replies in comment threads you're in, and an agent's answer to your request | Pop |
-| **Everything else** | other comments, status changes, reminders and updates | None |
-
-The built-in sounds are Chime, Pop, Ding, Soft bell, Knock and Marimba. They are generated in the browser, so they need no downloads and work the same on self-hosted installs.
-
-- **Quiet hours** silences sounds between two times in your account's time zone. The range can cross midnight, for example 22:00 to 08:00.
-- **Mute sounds on this device** silences only the browser you're using, for example a work laptop in meetings. Every other setting here is saved to your account and follows you to every browser; this one stays on the device.
-
-In the [desktop app](/core/functional/desktop-app#notification-sound), the same settings decide whether a notification makes a sound, and the app plays it with the native notification instead of the page, so you hear it once. On Windows and Linux that's the sound picked here, at your volume; on macOS it's your system's notification sound.
-
-To keep sounds calm:
-
-- a burst of notifications (a bulk change, for example) plays one sound, then sounds pause for a few seconds;
-- with several Margaya tabs open, only one of them plays;
-- nothing plays while voice mode listens or speaks;
-- notifications that arrive while you're offline are added to the inbox without a sound when you reconnect.
-
-Sounds follow **Notify me about** and muted tasks: a notification you turned off never sounds. The inbox and its unread badge update as before, so sound is never the only signal.
 
 ## How it works
 
@@ -96,7 +73,9 @@ The **Delivery channels** section of the Notifications page includes separate co
 
 Configure each channel once at the account level, then decide which workspaces are allowed to use it.
 
-<Screenshot src="account/delivery-channels" alt="The Delivery channels section with the Push notifications card first, then cards for Email, Gotify, ntfy and Custom webhook, each with its fields and a connect button" caption="Each channel is set up once for your account." />
+**Gotify**, **ntfy** and **Custom webhook** stay folded, showing only their name and switch, until you turn the switch on or have set them up. Turn the switch on to see their fields.
+
+<Screenshot src="account/delivery-channels" alt="The Delivery channels section with the Push notifications card first, then Email with the address it sends to, and Gotify, ntfy and Custom webhook folded to their name and switch" caption="Each channel is set up once for your account." />
 
 ### Push notifications
 
@@ -133,13 +112,17 @@ No workspace rule is needed: push covers every workspace you have no [rule](#wor
 
 Page notifications reach the inbox and push, but not the other channels.
 
-A push shows a short title and one fixed line in your language, such as who commented on which task. It names the task or page, but leaves out anything someone wrote, because a push can show on a lock screen: comment text, an agent's answers and questions, what an approval is about, an automation's message and the reason a request was declined. Tapping it opens the task or page, or otherwise the inbox, where you can read the rest. **Quiet hours** only silence sounds, not push.
+A push shows a short title and one fixed line in your language, such as who commented on which task. It names the task or page, but leaves out anything someone wrote, because a push can show on a lock screen: comment text, an agent's answers and questions, what an approval is about, an automation's message and the reason a request was declined. Tapping it opens the task or page, or otherwise the inbox, where you can read the rest. During [quiet hours and focus mode](#quiet-hours-and-focus-mode) push waits, and you get one summary when they end.
 
 Your browser may also offer to install Margaya as an app. Margaya has no install button of its own, and installing doesn't add offline use.
 
+Inside the [desktop app](/core/functional/desktop-app#notifications-and-the-unread-badge), this card is called **Desktop notifications** and has no **On this device** switch: the app shows notifications on that computer itself, even when its window is closed. To turn them off or change how they look, use your system's notification settings. **Your other devices** still lists your browsers and phones with push.
+
 ### Email
 
-Email delivery uses the signed-in account email address.
+Email delivery uses the signed-in account email address. The card shows it as **Sent to** followed by your address.
+
+Turn the **Email** switch on or off; it saves as soon as you flip it, with no separate save button.
 
 Requirements:
 
@@ -200,9 +183,70 @@ Only tasks and notifications you can still see are included, and workspaces you 
 
 The digest is separate from the email channel switch: you can turn per-notification emails off and still receive a daily digest. It needs an email address on your account and SMTP on the server.
 
+## Notification sounds
+
+**Sounds**, below the email digest, plays a short sound when a new notification reaches you while Margaya is open in your browser, in any tab, even in the background.
+
+- **Play sounds** turns them on or off for your account. They are on by default, for the notifications that need you.
+- **Volume** applies to every sound.
+- Pick a sound for each kind of notification, or **None** for silence. Choosing a sound plays it, and the play button next to it plays it again.
+
+| Kind | What it covers | Default |
+| --- | --- | --- |
+| **Mentions and assignments** | someone @mentions you or assigns you a task | Chime |
+| **Agent needs you** | an AI agent asks you a question or waits for your approval | Knock |
+| **Replies to you** | replies in comment threads you're in, and an agent's answer to your request | Pop |
+| **Everything else** | other comments, status changes, reminders and updates | None |
+
+The built-in sounds are Chime, Pop, Ding, Soft bell, Knock and Marimba. They are generated in the browser, so they need no downloads and work the same on self-hosted installs.
+
+- [Quiet hours and focus mode](#quiet-hours-and-focus-mode) silence every sound, except for the notifications you let through.
+- **Mute sounds on this device** silences only the browser you're using, for example a work laptop in meetings. Every other setting here is saved to your account and follows you to every browser; this one stays on the device.
+
+In the [desktop app](/core/functional/desktop-app#notification-sound), the same settings decide whether a notification makes a sound, and the app plays it with the native notification instead of the page, so you hear it once. On Windows and Linux that's the sound picked here, at your volume; on macOS it's your system's notification sound.
+
+To keep sounds calm:
+
+- a burst of notifications (a bulk change, for example) plays one sound, then sounds pause for a few seconds;
+- with several Margaya tabs open, only one of them plays;
+- nothing plays while voice mode listens or speaks;
+- notifications that arrive while you're offline are added to the inbox without a sound when you reconnect.
+
+Sounds follow **Notify me about** and muted tasks: a notification you turned off never sounds. The inbox and its unread badge update as before, so sound is never the only signal.
+
+## Quiet hours and focus mode
+
+**Quiet hours and focus**, above **Sounds**, pauses notifications on every channel without losing any. While notifications are paused, new ones still land in your inbox and its unread badge, but nothing makes a sound, and the channels you chose wait.
+
+- **Quiet hours** pause notifications every day between two times, in your account's time zone. The range can cross midnight, for example 22:00 to 08:00. If your account has no time zone yet, quiet hours follow UTC, and the section offers to use your browser's zone.
+- **Focus mode** pauses notifications from now: for 30 minutes, 1 hour, 2 hours, until tomorrow morning (when your quiet hours end, otherwise 09:00), or until a time you pick within the next 7 days. Start it from **Pause notifications** in the account menu, from the command palette (search for **Focus mode**), or in this section. Focus mode ends on its own; **Resume notifications** ends it early.
+
+<Screenshot src="account/quiet-hours" alt="The Quiet hours and focus section with Focus mode presets, the Quiet hours switch with its times, the Hold these channels checkboxes and the Let these through checkboxes" caption="Choose which channels wait and what still comes through." />
+
+While either is on, the top bar shows **Focus until …** or **Quiet hours until …**. Click it to resume, extend or open these settings. Your choice follows your account: starting focus on one device pauses notifications on all of them, including the [desktop app](/core/functional/desktop-app#notifications-and-the-unread-badge).
+
+**Hold these channels** chooses which channels wait: push, email, the desktop app, ntfy, Gotify and your webhook. All of them wait by default. An unticked channel keeps delivering, without a sound.
+
+**Let these through** lists the notifications that arrive right away, with their sound, even while notifications are paused:
+
+- **Direct mentions** of you in a task or page
+- **Tasks assigned to you with urgent priority**
+- **Agents waiting for your approval or answer**. Approval requests expire after 24 hours, so let these through if you use long focus sessions.
+
+None of them is on by default.
+
+When quiet hours or focus end, each channel that held something gets one summary within a minute:
+
+| Channel | What you get |
+| --- | --- |
+| Email | one email listing everything held, checked again before sending (a muted task or a lost access drops out) |
+| Push, ntfy, Gotify | one message saying how many notifications arrived while they were paused |
+| Desktop app | one alert with the same count; a click opens the server's window |
+| Custom webhook | each held payload, oldest first, exactly as it would have been sent |
+
 ## Workspace delivery rules
 
-Below the global channel cards, Margaya shows workspace delivery rules.
+Workspace delivery rules come last on the page, after **Sounds**. Each workspace you belong to has a card. A workspace without a rule shows only its name and switch; turn the switch on to choose its channels and projects, then select **Create rule**.
 
 Each workspace rule can:
 
@@ -213,7 +257,7 @@ Each workspace rule can:
 
 This lets a user receive notifications from one workspace in ntfy, another by email, and ignore the rest.
 
-<Screenshot src="account/workspace-rules" alt="The Workspace delivery rules section with the Studio North card, its switches for Email, ntfy, Gotify, Custom webhook and Push notifications, the project scope and Create rule" caption="A delivery rule per workspace; channels must be set up above first." />
+<Screenshot src="account/workspace-rules" alt="The Workspace delivery rules section with the Studio North card folded to its name and switch" caption="A delivery rule per workspace; channels must be set up above first." />
 
 ## Supported notification sources
 
@@ -286,7 +330,7 @@ Check that:
 Browsers allow sound only after you've clicked or pressed a key on the page, so a tab you just opened stays silent until you interact with it. Check that:
 
 - **Play sounds** is on, the kind of notification has a sound other than **None**, and the volume is above 0
-- **Mute sounds on this device** is off, and you're outside your quiet hours
+- **Mute sounds on this device** is off, and neither quiet hours nor focus mode is on (the top bar says so when one is)
 - the browser tab or site isn't muted, and the system volume is up
 - **Notify me about** includes the event, and the task isn't muted
 

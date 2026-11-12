@@ -15,7 +15,7 @@ import { deliverNotification } from "../notification-preferences/delivery";
 import { assigneeIdsOfTasks } from "../task/assignees";
 import { formatTaskKey } from "../task-activity/task-snapshot";
 import { safeOutboundError } from "../utils/outbound-request";
-import { notificationCreatedEvent } from "./created-event";
+import { notificationCreatedPayload } from "./load-quiet-decision";
 import {
   buildCandidates,
   type Candidate,
@@ -209,7 +209,10 @@ export async function writeTaskNotifications(input: {
     .returning();
 
   for (const row of rows) {
-    await publishEvent("notification.created", notificationCreatedEvent(row));
+    await publishEvent(
+      "notification.created",
+      await notificationCreatedPayload(row),
+    );
     void deliverNotification(row.id).catch((error) => {
       console.error("Failed to deliver notification", {
         notificationId: row.id,

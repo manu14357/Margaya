@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { NotificationPreferencesSettings } from "@/components/account/notification-preferences-settings";
 import { NotificationSoundSettings } from "@/components/account/notification-sound-settings";
+import { QuietHoursSettings } from "@/components/account/quiet-hours-settings";
 import { SettingsPage } from "@/components/settings-layout";
 
 export const Route = createFileRoute(
@@ -19,10 +20,15 @@ function RouteComponent() {
       documentTitle={t("settings:notificationsPage.pageTitle")}
       description={t("settings:notificationsPage.subtitle")}
     >
-      <div className="flex flex-col gap-8">
-        <NotificationSoundSettings />
-        <NotificationPreferencesSettings />
-      </div>
+      {/* What, then where, then when and how it sounds; per-workspace rules last. */}
+      <NotificationPreferencesSettings
+        sounds={
+          <>
+            <QuietHoursSettings />
+            <NotificationSoundSettings />
+          </>
+        }
+      />
     </SettingsPage>
   );
 }

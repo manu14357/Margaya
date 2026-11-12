@@ -116,7 +116,7 @@ The first time you open Margaya, it asks for a server.
 
 The server appears in the **Servers** list. Click **Open** to open it in its own window. To add another server, use **Add a server** again: each server keeps its own sign-in, cookies and window, so work and personal servers never mix. **Rename** and **Remove** are in the server's row.
 
-<Screenshot src="desktop/server-list" alt="The Margaya window listing two servers: Studio North, signed in with 3 unread, and Personal, not signed in with a Sign in with browser button, each with Open, Rename and Remove; below them Add a server with the Server address field and Connect, and Settings with Open at login, Copy diagnostics and Check for updates" caption="The server list, with Add a server and the app's settings below it." />
+<Screenshot src="desktop/server-list" alt="The Margaya window listing two servers: Studio North, signed in with 3 unread, and Personal, not signed in with a Sign in with browser button, each with Open, Rename and Remove; below them Add a server with the Server address field and Connect, and Settings with an Open at login switch, Updates with the version and Check for updates, and Diagnostics with Copy diagnostics" caption="The server list, with Add a server and the app's settings below it." />
  Removing a server signs you out of it on this computer.
 
 After the first time, Margaya opens straight into the server windows you had open when you last used it. The server list only appears when no server window was open. To get back to it, choose **Switch server…** from the tray or menu bar icon, or **Switch server** in the user menu of a server window.
@@ -165,11 +165,13 @@ Once you're signed in, the app shows Margaya notifications as native system noti
 
 The Dock icon (macOS) or the taskbar button (Windows) shows how many unread notifications you have, added up across all your servers. Linux has no common badge: the count appears next to the tray icon, and on the dock icon in docks that support it (Ubuntu Dock, Dash to Dock, KDE Plasma's task manager and Plank). The **Servers** list shows the count for each one.
 
+While [quiet hours or focus mode](/core/functional/account-notifications#quiet-hours-and-focus-mode) hold the desktop app, new notifications only update the badge. When they end, one silent alert says how many arrived meanwhile. Focus mode started on any device, or from **Pause notifications** in the account menu inside the app, pauses the app's alerts too.
+
 ### Notification sound
 
-Each new notification makes at most one sound, and a burst of notifications makes one. It follows your [notification sound settings](/core/functional/account-notifications#notification-sounds) in Margaya: it plays only when sounds are on, the volume isn't zero, a sound is chosen for that kind of notification and it isn't quiet hours. **Mute sounds on this device**, set inside the app's window, silences the app's notifications on this computer.
+Each new notification makes at most one sound, and a burst of notifications makes one. It follows your [notification sound settings](/core/functional/account-notifications#notification-sounds) in Margaya: it plays only when sounds are on, the volume isn't zero, a sound is chosen for that kind of notification and neither quiet hours nor focus mode is on (unless the notification is one you let through). **Mute sounds on this device**, set inside the app's window, silences the app's notifications on this computer.
 
-<Screenshot src="desktop/notification-sounds" alt="The Sounds section of the notification settings inside the desktop app, explaining that the app plays the chosen Margaya sound at your volume, with Play sounds, Volume at 70%, a sound for each kind of notification, Quiet hours and Mute sounds on this device" caption="Inside the app, the Sounds settings describe what the app plays." />
+<Screenshot src="desktop/notification-sounds" alt="The Sounds section of the notification settings inside the desktop app, explaining that the app plays the chosen Margaya sound at your volume, with Play sounds, Volume at 70%, a sound for each kind of notification and Mute sounds on this device" caption="Inside the app, the Sounds settings describe what the app plays." />
 
 - **Windows**: the app plays the Margaya sound you chose for that kind of notification (Chime, Pop, Ding, Soft bell, Knock or Marimba) at your volume, instead of the Windows notification sound. It comes out louder than the preview in the settings: at volume 70 it is at least as loud as the Windows notification sound. It stays silent while Do Not Disturb is on, during a full-screen game or presentation, and when notifications for Margaya are turned off in Windows Settings. Windows' own **Play a sound** switch for Margaya doesn't apply to it; use **Mute sounds on this device** instead.
 - **macOS**: the notification plays your system's notification sound. Focus and your per-app sound setting silence it as for any other app.
@@ -177,7 +179,7 @@ Each new notification makes at most one sound, and a burst of notifications make
 
 A server older than this version doesn't name a sound; the app then plays Chime at volume 70.
 
-Which events notify you is still set in Margaya, under [your notification settings](/core/functional/account-notifications). Inside the desktop app, browser push notifications are switched off, so you don't get everything twice. To silence the app completely, turn off notifications for Margaya in your system's notification settings.
+Which events notify you is still set in Margaya, under [your notification settings](/core/functional/account-notifications). Inside the desktop app, browser push notifications are switched off, so you don't get everything twice: the **Push notifications** card is replaced by **Desktop notifications**, which explains that the app shows them on this computer. To silence the app completely, or change how its notifications look, use your system's notification settings.
 
 ## Quick add
 
@@ -209,8 +211,9 @@ A server may need a newer app than yours. Then connecting shows **This server ne
 
 Open the settings with <Kbd>Ctrl</Kbd> + <Kbd>,</Kbd> (<Kbd>⌘</Kbd> + <Kbd>,</Kbd> on macOS).
 
-- **Open at login** starts Margaya when you sign in to your computer, so notifications and quick add are ready. On Linux it adds Margaya to `~/.config/autostart`.
-- **Copy diagnostics** copies the app version, your system and recent errors (no passwords or sign-in tokens) for a bug report. **Open logs folder** in the **Help** menu shows the log files.
+- **Open at login** is a switch that starts Margaya in the background when you sign in to your computer, so notifications and quick add are ready. On Linux it adds Margaya to `~/.config/autostart`.
+- **Updates** shows the version you have. **Check for updates** looks for a newer one; when there is one, **Restart to update** (or **Download** for a Linux .deb or .rpm) appears below it. See [Updates](#updates).
+- **Diagnostics**: **Copy diagnostics** copies the app version, your system, your server list and recent log lines for a bug report. Sign-in tokens are never included. **Open logs folder** in the **Help** menu shows the log files.
 
 ## Uninstall
 

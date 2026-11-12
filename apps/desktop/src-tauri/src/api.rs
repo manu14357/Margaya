@@ -95,6 +95,10 @@ pub struct DesktopNotification {
     /// The user's notification volume, 0 to 100.
     #[serde(default)]
     pub volume: Option<u32>,
+    /// Quiet hours or focus mode hold desktop alerts: show nothing now.
+    /// Absent (false) on servers older than this field.
+    #[serde(default)]
+    pub held: bool,
 }
 
 /// The device's IANA time zone, for quiet hours when the account has none.

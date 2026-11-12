@@ -134,4 +134,25 @@ describe("soundFor", () => {
       ),
     ).toBeNull();
   });
+
+  it("follows the server's quiet-time call when the hint carries one", () => {
+    const quietNow = {
+      ...s,
+      quietHours: true,
+      quietStart: "11:00",
+      quietEnd: "13:00",
+    };
+    // Focus mode or quiet hours on the server.
+    expect(
+      soundFor(s, { notificationType: "task_mention", quiet: true }, noon),
+    ).toBeNull();
+    // A bypassed mention sounds even inside the local quiet hours.
+    expect(
+      soundFor(
+        quietNow,
+        { notificationType: "task_mention", quiet: false },
+        noon,
+      ),
+    ).toBe("chime");
+  });
 });

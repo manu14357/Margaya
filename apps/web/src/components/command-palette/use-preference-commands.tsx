@@ -1,13 +1,20 @@
 import type { AppLocale } from "@i18n/resources";
 import { useQuery } from "@tanstack/react-query";
-import { CalendarDays, Check, Globe, Languages } from "lucide-react";
+import { BellOff, CalendarDays, Check, Globe, Languages } from "lucide-react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  focusPresetLabel,
+  formatUntil,
+  useFocusDialog,
+  useFocusMode,
+} from "@/components/notification/focus-mode";
 import getUserTimezone from "@/fetchers/user/get-user-timezone";
 import useUpdateUserTimezone from "@/hooks/mutations/user/use-update-user-timezone";
 import { userTimezoneQueryKey } from "@/hooks/queries/user/use-user-timezone";
 import { GUEST_LOCALES } from "@/hooks/use-guest-locale";
 import { useLocale } from "@/hooks/use-locale";
+import { FOCUS_PRESETS } from "@/lib/quiet-time";
 import { browserTimeZone, listTimeZones } from "@/lib/timezones";
 import { toast } from "@/lib/toast";
 import {
@@ -49,6 +56,8 @@ export function usePreferenceCommands({
     enabled: open,
   });
   const { mutateAsync: saveTimezone } = useUpdateUserTimezone();
+  const focus = useFocusMode();
+  const openFocusDialog = useFocusDialog((state) => state.setOpen);
 
   return useMemo(() => {
     const languageName =
@@ -76,7 +85,49 @@ export function usePreferenceCommands({
           ),
       );
 
+    const focusHint = focus.status
+      ? focus.focusing
+        ? t("navigation:focus.focusUntil", {
+            time: formatUntil(focus.status.until, focus.now, focus.timeZone),
+          })
+        : t("navigation:focus.quietUntil", {
+            time: formatUntil(focus.status.until, focus.now, focus.timeZone),
+          })
+      : undefined;
+
     return [
+      {
+        value: "preference-focus",
+        label: t("navigation:focus.paletteLabel"),
+        hint: focusHint,
+        icon: <BellOff aria-hidden className={ICON} />,
+        onRun: () => {},
+        submenu: () => ({
+          label: t("navigation:focus.paletteLabel"),
+          items: [
+            ...(focus.focusing
+              ? [
+                  {
+                    value: "focus:resume",
+                    label: t("navigation:focus.resume"),
+                    onRun: focus.end,
+                  },
+                ]
+              : []),
+            ...FOCUS_PRESETS.map((preset) => ({
+              value: `focus:${preset}`,
+              label: focusPresetLabel(t, preset),
+              onRun: () => focus.start(preset),
+            })),
+            {
+              value: "focus:custom",
+              label: t("navigation:focus.custom"),
+              afterClose: true,
+              onRun: () => openFocusDialog(true),
+            },
+          ],
+        }),
+      },
       {
         value: "preference-language",
         label: t("settings:preferencesPage.language"),
@@ -146,5 +197,7 @@ export function usePreferenceCommands({
     setWeekStartsOn,
     timezone?.timezone,
     saveTimezone,
+    focus,
+    openFocusDialog,
   ]);
 }

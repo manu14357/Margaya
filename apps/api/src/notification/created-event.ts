@@ -24,4 +24,9 @@ export function notificationCreatedEvent(row: {
 
 export type NotificationCreatedEvent = ReturnType<
   typeof notificationCreatedEvent
->;
+> & {
+  /** Quiet hours or focus mode silence it (no bypass applies). */
+  quiet?: boolean;
+  /** Quiet time holds the desktop channel: no native alert for it. */
+  desktopHeld?: boolean;
+};

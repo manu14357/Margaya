@@ -101,6 +101,7 @@ describe("GET /api/notification/{id}/desktop", () => {
     const alert = (await byBearer.json()) as Record<string, string>;
     expect(Object.keys(alert).sort()).toEqual([
       "body",
+      "held",
       "id",
       "sound",
       "soundName",
@@ -213,6 +214,47 @@ describe("GET /api/notification/{id}/desktop", () => {
     expect(await sound("?timeZone=UTC")).toBe(true);
   });
 
+  it("holds the alert during focus mode unless the notification bypasses it", async () => {
+    const until = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+    const setPreferences = (preferences: Record<string, unknown>) =>
+      db
+        .update(schema.userTable)
+        .set({ preferences })
+        .where(eq(schema.userTable.id, pat.id));
+    const alertOf = async (id: string) => {
+      const response = await alertFor(id, {
+        authorization: `Bearer ${pat.token}`,
+      });
+      expect(response.status).toBe(200);
+      return (await response.json()) as { held: boolean; sound: boolean };
+    };
+    const created = await notify(pat.id);
+    if (!created) throw new Error("Notification muted");
+    expect((await alertOf(created.id)).held).toBe(false);
+
+    await setPreferences({ focusUntil: until });
+    expect(await alertOf(created.id)).toMatchObject({
+      held: true,
+      sound: false,
+    });
+
+    // Desktop not among the held channels: shown, but still silent.
+    await setPreferences({
+      focusUntil: until,
+      quietDelivery: { channels: ["push"], bypass: [] },
+    });
+    expect(await alertOf(created.id)).toMatchObject({
+      held: false,
+      sound: false,
+    });
+
+    // An expired focus session holds nothing.
+    await setPreferences({
+      focusUntil: new Date(Date.now() - 1000).toISOString(),
+    });
+    expect((await alertOf(created.id)).held).toBe(false);
+  });
+
   it("answers 404 for someone else's notification, an unknown one and signed out 401", async () => {
     const created = await notify(pat.id);
     if (!created) throw new Error("Notification muted");
@@ -303,12 +345,36 @@ describe("the user socket with a bearer session", () => {
       notificationType: "info",
       reply: false,
       needsInput: false,
+      quiet: false,
     });
 
     const alert = await alertFor(hint.notificationId, {
       authorization: `Bearer ${pat.token}`,
     });
     expect(alert.status).toBe(200);
+  });
+
+  it("leaves the id out while focus mode holds desktop alerts", async () => {
+    await db
+      .update(schema.userTable)
+      .set({
+        preferences: {
+          focusUntil: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+        },
+      })
+      .where(eq(schema.userTable.id, pat.id));
+    const { socket } = await connect({ authorization: `Bearer ${pat.token}` });
+    const message = once(socket, "message");
+    const created = await notify(pat.id);
+    if (!created) throw new Error("Notification muted");
+    expect(JSON.parse((await message)[0].toString())).toEqual({
+      type: "NOTIFICATION_CREATED",
+      notificationId: null,
+      notificationType: "info",
+      reply: false,
+      needsInput: false,
+      quiet: true,
+    });
   });
 
   it("refuses a bearer token that is no session, and one sent from a foreign page", async () => {

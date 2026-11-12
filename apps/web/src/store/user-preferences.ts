@@ -5,6 +5,12 @@ import {
   type NotificationSoundSettings,
   normalizeNotificationSound,
 } from "@/lib/notification-sound/settings";
+import {
+  DEFAULT_QUIET_DELIVERY,
+  normalizeFocusUntil,
+  normalizeQuietDelivery,
+  type QuietDelivery,
+} from "@/lib/quiet-time";
 import type { SidebarLayout } from "@/lib/sidebar-layout";
 
 export const WEEK_START_DAYS = [0, 1, 6] as const;
@@ -93,6 +99,14 @@ type UserPreferencesStore = {
   notificationSound: NotificationSoundSettings;
   setNotificationSound: (changes: Partial<NotificationSoundSettings>) => void;
 
+  /** Which channels quiet hours and focus mode hold, and what bypasses them. */
+  quietDelivery: QuietDelivery;
+  setQuietDelivery: (changes: Partial<QuietDelivery>) => void;
+
+  /** Focus mode: notifications are paused until this ISO instant. */
+  focusUntil: string | null;
+  setFocusUntil: (focusUntil: string | null) => void;
+
   /**
    * The account time zone (IANA), cached from the server; null until known
    * or when never chosen. Task queries prefer it over the browser's zone.
@@ -120,6 +134,8 @@ export const DEFAULT_USER_PREFERENCES = {
   activitySort: "newest" as ActivitySort,
   pagesFormatToolbar: true,
   notificationSound: DEFAULT_NOTIFICATION_SOUND,
+  quietDelivery: DEFAULT_QUIET_DELIVERY,
+  focusUntil: null as string | null,
 };
 
 export const useUserPreferencesStore = create<UserPreferencesStore>()(
@@ -220,6 +236,19 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
           }),
         })),
 
+      quietDelivery: DEFAULT_USER_PREFERENCES.quietDelivery,
+      setQuietDelivery: (changes) =>
+        set((state) => ({
+          quietDelivery: normalizeQuietDelivery({
+            ...state.quietDelivery,
+            ...changes,
+          }),
+        })),
+
+      focusUntil: null,
+      setFocusUntil: (focusUntil) =>
+        set({ focusUntil: normalizeFocusUntil(focusUntil) }),
+
       timeZone: null,
       setTimeZone: (timeZone) => set({ timeZone }),
     }),
@@ -243,6 +272,8 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
           state.setNotificationSound(
             normalizeNotificationSound(state.notificationSound),
           );
+          state.setQuietDelivery(normalizeQuietDelivery(state.quietDelivery));
+          state.setFocusUntil(normalizeFocusUntil(state.focusUntil));
         }
       },
     },

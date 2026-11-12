@@ -73,8 +73,61 @@ describe("inbox, subscription and reaction events", () => {
       notificationType: "ai_agent_reply",
       reply: false,
       needsInput: true,
+      quiet: false,
     });
     removeUserConnection("user-c", conn);
+  });
+
+  it("keeps the tabs silent and leaves the id out while quiet time holds desktop alerts", async () => {
+    const ws = makeFakeWs();
+    const conn = addUserConnection("user-q", ws);
+    await publishEvent("notification.created", {
+      notificationId: "n-2",
+      userId: "user-q",
+      notificationType: "task_comment",
+      reply: false,
+      needsInput: false,
+      quiet: true,
+      desktopHeld: true,
+    });
+    await vi.waitFor(() => expect((ws as FakeWs).send).toHaveBeenCalled(), {
+      timeout: 300,
+    });
+    expect(lastMessage(ws)).toEqual({
+      type: "NOTIFICATION_CREATED",
+      notificationId: null,
+      notificationType: "task_comment",
+      reply: false,
+      needsInput: false,
+      quiet: true,
+    });
+    removeUserConnection("user-q", conn);
+  });
+
+  it("maps quiet-time releases and preference changes to user hints", async () => {
+    const ws = makeFakeWs();
+    const conn = addUserConnection("user-r", ws);
+    await publishEvent("notification.deliveries_released", {
+      userId: "user-r",
+      count: 4,
+    });
+    await vi.waitFor(() => expect((ws as FakeWs).send).toHaveBeenCalled(), {
+      timeout: 300,
+    });
+    expect(lastMessage(ws)).toEqual({
+      type: "NOTIFICATIONS_RELEASED",
+      count: 4,
+    });
+    await publishEvent("user.preferences_changed", { userId: "user-r" });
+    await vi.waitFor(
+      () => expect((ws as FakeWs).send).toHaveBeenCalledTimes(2),
+      { timeout: 300 },
+    );
+    expect(lastMessage(ws)).toEqual({
+      type: "PREFERENCES_UPDATED",
+      originWindowId: null,
+    });
+    removeUserConnection("user-r", conn);
   });
 
   it("maps task.subscription_changed to SUBSCRIPTION_UPDATED for that user", async () => {

@@ -68,6 +68,23 @@ export const NOTIFICATION_SOUNDS = [
 const notificationSoundChoice = z.enum(NOTIFICATION_SOUNDS);
 const clockTime = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);
 
+/** Outbound channels quiet hours and focus mode may hold back. */
+export const QUIET_CHANNELS = [
+  "push",
+  "email",
+  "desktop",
+  "ntfy",
+  "gotify",
+  "webhook",
+] as const;
+
+/** Notifications that may still come through during quiet time. */
+export const QUIET_BYPASS = ["mentions", "urgent", "approvals"] as const;
+
+// Focus mode ends at most this far ahead; a longer pause would let agent
+// approvals (24 hours) and due-date reminders lapse unseen for too long.
+export const MAX_FOCUS_MS = 7 * 24 * 60 * 60 * 1000;
+
 export const userPreferencesShape = {
   theme: z.enum(USER_THEMES).openapi({
     description:
@@ -109,7 +126,28 @@ export const userPreferencesShape = {
     .strict()
     .openapi({
       description:
-        "Sounds for in-app notifications. `mentions` covers mentions and assignments, `agents` an agent's question or approval request, `replies` replies in your threads and agents' answers, `other` everything else. Quiet hours (HH:MM, in the account time zone) silence them; a range may cross midnight.",
+        "Sounds for in-app notifications. `mentions` covers mentions and assignments, `agents` an agent's question or approval request, `replies` replies in your threads and agents' answers, `other` everything else. Quiet hours (HH:MM, in the account time zone) silence them and hold the channels in `quietDelivery`; a range may cross midnight.",
+    }),
+  quietDelivery: z
+    .object({
+      channels: z.array(z.enum(QUIET_CHANNELS)).max(QUIET_CHANNELS.length),
+      bypass: z.array(z.enum(QUIET_BYPASS)).max(QUIET_BYPASS.length),
+    })
+    .strict()
+    .openapi({
+      description:
+        "What quiet hours and focus mode hold back. `channels` are held until quiet time ends, then each gets one summary (webhooks get each held payload). `bypass` lets `mentions` (task and page mentions), `urgent` (being assigned an urgent task) and `approvals` (an agent's approval request or question) through. Left unset, every channel is held and nothing bypasses. The in-app inbox always fills.",
+    }),
+  focusUntil: z.iso
+    .datetime({ offset: true })
+    .refine((value) => Date.parse(value) <= Date.now() + MAX_FOCUS_MS, {
+      message: "Focus can last at most 7 days",
+    })
+    .nullable()
+    .openapi({
+      description:
+        "Focus mode: until this instant, notifications are held and silenced like quiet hours. Null or a past instant means off. At most 7 days ahead.",
+      example: "2026-11-13T15:30:00Z",
     }),
   calendarMode: z.enum(["month", "week"]),
   calendarShowWeekends: z.boolean(),

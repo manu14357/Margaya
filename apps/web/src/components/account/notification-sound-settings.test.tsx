@@ -73,31 +73,16 @@ describe("NotificationSoundSettings", () => {
     );
   });
 
-  it("shows the quiet hours times only when quiet hours are on", () => {
-    render(<NotificationSoundSettings />);
-    expect(
-      screen.queryByLabelText("settings:notificationsPage.sound.quietFrom"),
-    ).toBeNull();
-    fireEvent.click(switchFor("settings:notificationsPage.sound.quietHours"));
-    const from = screen.getByLabelText(
-      "settings:notificationsPage.sound.quietFrom",
-    );
-    fireEvent.change(from, { target: { value: "21:30" } });
-    expect(useUserPreferencesStore.getState().notificationSound).toMatchObject({
-      quietHours: true,
-      quietStart: "21:30",
-      quietEnd: "08:00",
-    });
-  });
-
   it("disables the choices while sounds are off", () => {
     useUserPreferencesStore.setState({
       notificationSound: { ...DEFAULT_NOTIFICATION_SOUND, enabled: false },
     });
     render(<NotificationSoundSettings />);
-    expect(
-      switchFor("settings:notificationsPage.sound.quietHours"),
-    ).toHaveAttribute("aria-disabled", "true");
+    for (const play of screen.getAllByRole("button", {
+      name: "settings:notificationsPage.sound.preview",
+    })) {
+      expect(play).toBeDisabled();
+    }
     // The device mute stays usable.
     expect(
       switchFor("settings:notificationsPage.sound.deviceMute"),

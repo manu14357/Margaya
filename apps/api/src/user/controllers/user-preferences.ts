@@ -2,6 +2,7 @@ import { eq, sql } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { userTable } from "../../database/schema";
+import { publishEvent } from "../../events";
 import type { z } from "../../openapi";
 import {
   type UserPreferenceKey,
@@ -56,5 +57,7 @@ export async function updateUserPreferences(
     .where(eq(userTable.id, userId))
     .returning({ preferences: userTable.preferences });
   if (!row) throw new HTTPException(404, { message: "User not found" });
+  // The user's other tabs and devices (focus mode, quiet hours) follow.
+  await publishEvent("user.preferences_changed", { userId });
   return { preferences: cleanPreferences(row.preferences) };
 }
