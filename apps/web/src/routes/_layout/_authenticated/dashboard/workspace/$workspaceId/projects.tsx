@@ -286,10 +286,10 @@ function RouteComponent() {
                 <TableHead className="text-foreground font-medium">
                   {t("workspace:projects.progress")}
                 </TableHead>
-                <TableHead className="text-foreground font-medium">
-                  {t("workspace:projects.targetDate")}
+                <TableHead className="hidden font-medium text-foreground sm:table-cell">
+                  {t("workspace:projects.dueDate")}
                 </TableHead>
-                <TableHead className="text-foreground font-medium">
+                <TableHead className="hidden font-medium text-foreground sm:table-cell">
                   {t("workspace:projects.status")}
                 </TableHead>
               </TableRow>
@@ -306,10 +306,10 @@ function RouteComponent() {
                   <TableCell className="py-3">
                     <Skeleton className="h-2 w-20" />
                   </TableCell>
-                  <TableCell className="py-3">
+                  <TableCell className="hidden py-3 sm:table-cell">
                     <Skeleton className="h-4 w-20" />
                   </TableCell>
-                  <TableCell className="py-3">
+                  <TableCell className="hidden py-3 sm:table-cell">
                     <Skeleton className="h-5 w-16" />
                   </TableCell>
                 </TableRow>
@@ -388,10 +388,10 @@ function RouteComponent() {
                 <TableHead className="text-foreground font-medium">
                   {t("workspace:projects.progress")}
                 </TableHead>
-                <TableHead className="text-foreground font-medium">
+                <TableHead className="hidden font-medium text-foreground sm:table-cell">
                   {t("workspace:projects.dueDate")}
                 </TableHead>
-                <TableHead className="text-foreground font-medium">
+                <TableHead className="hidden font-medium text-foreground sm:table-cell">
                   {t("workspace:projects.status")}
                 </TableHead>
               </TableRow>
@@ -455,14 +455,14 @@ function RouteComponent() {
                           </span>
                         </div>
                       </TableCell>
-                      <TableCell className="py-3">
+                      <TableCell className="hidden py-3 sm:table-cell">
                         <span className="text-sm text-muted-foreground">
                           {project.statistics.dueDate
                             ? formatDateMedium(project.statistics.dueDate)
                             : t("workspace:projects.noDueDate")}
                         </span>
                       </TableCell>
-                      <TableCell className="py-3">
+                      <TableCell className="hidden py-3 sm:table-cell">
                         <Badge variant={getStatusVariant()}>
                           {getStatusText()}
                         </Badge>

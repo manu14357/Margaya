@@ -3,6 +3,7 @@ import { Plus, Search } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FilterBar } from "@/components/common/filter-bar";
+import { TopBarLabel } from "@/components/common/header/top-bar-label";
 import ProjectLayout from "@/components/common/project-layout";
 import PageTitle from "@/components/page-title";
 import ProjectFeatureGate from "@/components/project/project-feature-gate";
@@ -61,7 +62,9 @@ export default function ModulesPage({
       onClick={() => setIsCreateOpen(true)}
     >
       <Plus className="size-3" />
-      <span className="hidden sm:inline">{t("modules:page.newModule")}</span>
+      <TopBarLabel className="hidden sm:inline">
+        {t("modules:page.newModule")}
+      </TopBarLabel>
     </Button>
   ) : null;
 

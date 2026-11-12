@@ -2,6 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { ChevronDown, LayoutTemplate, Plus } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { TopBarLabel } from "@/components/common/header/top-bar-label";
 import ProjectLayout from "@/components/common/project-layout";
 import { ContextPanelSlot } from "@/components/context-panel/panel-slot";
 import PageTitle from "@/components/page-title";
@@ -98,7 +99,7 @@ export default function PagesScreen({
               onClick={() => handleCreate()}
             >
               <Plus className="size-3" />
-              {t("pages:list.newPage")}
+              <TopBarLabel>{t("pages:list.newPage")}</TopBarLabel>
             </Button>
             <GroupSeparator />
             <DropdownMenu>

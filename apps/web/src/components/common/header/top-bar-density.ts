@@ -89,6 +89,24 @@ function spill(element: HTMLElement | null) {
   return element ? Math.max(0, element.scrollWidth - element.clientWidth) : 0;
 }
 
+/**
+ * How far a cluster reaches past the end of the bar's content box, in px.
+ * The bar's end padding (which keeps clear of the desktop app's window
+ * buttons) is not scrollable overflow, so `scrollWidth` never sees actions
+ * that slide into it.
+ */
+export function clusterOverflow(bar: HTMLElement, cluster: HTMLElement | null) {
+  if (!cluster) return 0;
+  const style = getComputedStyle(bar);
+  const box = bar.getBoundingClientRect();
+  const rect = cluster.getBoundingClientRect();
+  const overflow =
+    style.direction === "rtl"
+      ? box.left + (Number.parseFloat(style.paddingLeft) || 0) - rect.left
+      : rect.right - (box.right - (Number.parseFloat(style.paddingRight) || 0));
+  return Math.max(0, overflow);
+}
+
 /** A first guess before the bar is measured (and in tests, which have no layout). */
 function initialDensity(): TopBarDensity {
   if (typeof window === "undefined" || typeof window.innerWidth !== "number") {
@@ -113,7 +131,12 @@ export function useMeasuredTopBarDensity() {
   const measure = useCallback(() => {
     if (!bar || bar.clientWidth <= 0) return;
     const width = contentWidth(bar);
-    const overflow = Math.max(spill(bar), spill(place), spill(trailing));
+    const overflow = Math.max(
+      spill(bar),
+      spill(place),
+      spill(trailing),
+      clusterOverflow(bar, trailing),
+    );
     const next = nextTopBarDensity({
       current: densityRef.current,
       width,

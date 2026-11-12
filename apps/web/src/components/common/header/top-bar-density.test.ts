@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  clusterOverflow,
   densityForWidth,
   nextTopBarDensity,
   TOP_BAR_COMPACT_WIDTH,
@@ -91,5 +92,39 @@ describe("nextTopBarDensity", () => {
     });
     expect(tight.density).toBe("tight");
     expect(tight.needs).toEqual({});
+  });
+});
+
+describe("clusterOverflow", () => {
+  // A bar 968px wide whose end padding keeps clear of the desktop window
+  // buttons: its content box ends at 1130px.
+  function bar(direction: "ltr" | "rtl" = "ltr") {
+    const element = document.createElement("header");
+    element.style.paddingLeft = "12px";
+    element.style.paddingRight = "150px";
+    element.style.direction = direction;
+    element.getBoundingClientRect = () =>
+      ({ left: 312, right: 1280, width: 968 }) as DOMRect;
+    return element;
+  }
+  function cluster(left: number, right: number) {
+    const element = document.createElement("div");
+    element.getBoundingClientRect = () =>
+      ({ left, right, width: right - left }) as DOMRect;
+    return element;
+  }
+
+  it("counts actions that run into the bar's end padding", () => {
+    // The padding is not scrollable overflow, so scrollWidth misses this.
+    expect(clusterOverflow(bar(), cluster(778, 1156))).toBe(26);
+  });
+
+  it("is zero while the actions end inside the content box", () => {
+    expect(clusterOverflow(bar(), cluster(700, 1130))).toBe(0);
+    expect(clusterOverflow(bar(), null)).toBe(0);
+  });
+
+  it("measures from the start edge in right-to-left layouts", () => {
+    expect(clusterOverflow(bar("rtl"), cluster(300, 600))).toBe(24);
   });
 });

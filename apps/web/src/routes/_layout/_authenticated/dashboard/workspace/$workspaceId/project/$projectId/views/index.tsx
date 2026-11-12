@@ -3,6 +3,7 @@ import { Plus, Search } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FilterBar } from "@/components/common/filter-bar";
+import { TopBarLabel } from "@/components/common/header/top-bar-label";
 import ProjectLayout from "@/components/common/project-layout";
 import PageTitle from "@/components/page-title";
 import ProjectFeatureGate from "@/components/project/project-feature-gate";
@@ -80,7 +81,7 @@ function RouteComponent() {
       }
     >
       <div className="relative w-full max-w-64">
-        <Search className="-translate-y-1/2 pointer-events-none absolute top-1/2 left-2.5 size-3.5 text-muted-foreground" />
+        <Search className="-translate-y-1/2 pointer-events-none absolute top-1/2 left-2.5 z-10 size-3.5 text-muted-foreground" />
         <Input
           value={q ?? ""}
           maxLength={100}
@@ -103,7 +104,7 @@ function RouteComponent() {
       onClick={() => setIsCreateOpen(true)}
     >
       <Plus className="size-3" />
-      {t("views:list.newView")}
+      <TopBarLabel>{t("views:list.newView")}</TopBarLabel>
     </Button>
   ) : null;
 

@@ -1,11 +1,50 @@
+import { HttpError } from "./http-error";
+
 export type ApiError = {
   message: string;
-  type: "network" | "cors" | "auth" | "server" | "unknown";
+  type: "network" | "cors" | "auth" | "server" | "notFound" | "unknown";
   status?: number;
   originalError?: Error;
 };
 
 export function parseApiError(error: unknown): ApiError {
+  // The server answered: its status says what went wrong. Fetchers throw
+  // messages like "Failed to fetch tasks", which the checks below would
+  // read as a connection or CORS failure.
+  if (error instanceof HttpError) {
+    const { status } = error;
+    if (status === 401) {
+      return {
+        message: "common:error.messages.auth",
+        type: "auth",
+        status,
+        originalError: error,
+      };
+    }
+    if (status === 404) {
+      return {
+        message: "common:states.notFound.description",
+        type: "notFound",
+        status,
+        originalError: error,
+      };
+    }
+    if (status >= 500) {
+      return {
+        message: "common:error.messages.server",
+        type: "server",
+        status,
+        originalError: error,
+      };
+    }
+    return {
+      message: "common:error.messages.unknown",
+      type: "unknown",
+      status,
+      originalError: error,
+    };
+  }
+
   if (error instanceof Error) {
     if (
       error.message.includes("Failed to fetch") ||

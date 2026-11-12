@@ -236,7 +236,7 @@ function RouteComponent() {
 
   const boardSearch = isBoardSearchOpen ? (
     <div className="relative w-36 sm:w-60">
-      <Search className="-translate-y-1/2 pointer-events-none absolute top-1/2 left-2.5 h-3.5 w-3.5 text-muted-foreground" />
+      <Search className="-translate-y-1/2 pointer-events-none absolute top-1/2 left-2.5 z-10 h-3.5 w-3.5 text-muted-foreground" />
       <Input
         ref={setBoardSearchInput}
         value={boardSearchQuery}

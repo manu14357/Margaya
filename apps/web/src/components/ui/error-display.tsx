@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FallenBranchIllustration } from "@/components/illustrations/fallen-branch";
 import { OfflineCloudIllustration } from "@/components/illustrations/offline-cloud";
+import { WanderingPathIllustration } from "@/components/illustrations/wandering-path";
 import { DOCS_URL } from "@/constants/urls";
 import { cn } from "@/lib/cn";
 import {
@@ -129,7 +130,9 @@ export function ErrorDisplay({
     title ??
     (offline
       ? t("common:states.offline.title")
-      : t("common:states.error.title"));
+      : parsedError.type === "notFound"
+        ? t("common:states.notFound.title")
+        : t("common:states.error.title"));
   const resolvedDescription =
     description ??
     (offline
@@ -148,7 +151,9 @@ export function ErrorDisplay({
 
   const Illustration = connection
     ? OfflineCloudIllustration
-    : FallenBranchIllustration;
+    : parsedError.type === "notFound"
+      ? WanderingPathIllustration
+      : FallenBranchIllustration;
 
   return (
     <EmptyState

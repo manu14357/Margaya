@@ -621,7 +621,7 @@ export default function ProjectGantt({
           <h1 className="sr-only">{t("tasks:gantt.title")}</h1>
 
           <div className="relative w-full sm:w-56">
-            <Search className="pointer-events-none absolute top-1/2 left-2.5 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+            <Search className="pointer-events-none absolute top-1/2 left-2.5 z-10 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
             <Input
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}

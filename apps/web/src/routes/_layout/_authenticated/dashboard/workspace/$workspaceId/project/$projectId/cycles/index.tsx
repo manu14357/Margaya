@@ -3,6 +3,7 @@ import { Plus, Search } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FilterBar } from "@/components/common/filter-bar";
+import { TopBarLabel } from "@/components/common/header/top-bar-label";
 import ProjectLayout from "@/components/common/project-layout";
 import CycleFormDialog from "@/components/cycle/cycle-form-dialog";
 import CycleList from "@/components/cycle/cycle-list";
@@ -51,7 +52,7 @@ function RouteComponent() {
   const headerActions = canCreate ? (
     <Button size="xs" className="gap-1" onClick={() => setIsCreateOpen(true)}>
       <Plus className="size-3" />
-      {t("cycles:page.newCycle")}
+      <TopBarLabel>{t("cycles:page.newCycle")}</TopBarLabel>
     </Button>
   ) : null;
 

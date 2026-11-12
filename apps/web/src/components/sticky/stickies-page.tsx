@@ -1,6 +1,7 @@
 import { Lock, Plus, Search, StickyNote } from "lucide-react";
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { TopBarLabel } from "@/components/common/header/top-bar-label";
 import Layout from "@/components/common/layout";
 import PageTitle from "@/components/page-title";
 import { Button } from "@/components/ui/button";
@@ -131,7 +132,7 @@ export default function StickiesPage({
       disabled={isPending}
     >
       {isPending ? <Spinner className="size-3" /> : <Plus className="size-3" />}
-      {t("stickies:add")}
+      <TopBarLabel>{t("stickies:add")}</TopBarLabel>
     </Button>
   );
 

@@ -154,7 +154,11 @@ export default function PageTreeItem({
                 aria-label={t("pages:list.access.private")}
               />
             )}
-            <span className="flex shrink-0 items-center opacity-0 group-focus-within/tree-row:opacity-100 group-hover/tree-row:opacity-100 pointer-coarse:opacity-100">
+            {/*
+              With a mouse the actions float over the end of the row, so
+              titles use the whole width until the row is hovered.
+            */}
+            <span className="flex shrink-0 items-center opacity-0 group-focus-within/tree-row:opacity-100 group-hover/tree-row:opacity-100 pointer-fine:absolute pointer-fine:inset-y-0 pointer-fine:end-0 pointer-fine:rounded-e-md pointer-fine:bg-sidebar-accent pointer-fine:pe-1 pointer-fine:ps-0.5 pointer-coarse:opacity-100">
               {page.capabilities.canCreateSubpage && (
                 <Button
                   variant="ghost"

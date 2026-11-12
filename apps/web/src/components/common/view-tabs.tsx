@@ -1,5 +1,10 @@
 import type { LucideIcon } from "lucide-react";
-import type { ReactNode } from "react";
+import {
+  type ReactNode,
+  useLayoutEffect,
+  useRef,
+  type WheelEvent,
+} from "react";
 import { Tabs, TabsList, TabsTab } from "@/components/ui/tabs";
 import { cn } from "@/lib/cn";
 
@@ -28,8 +33,8 @@ export type ViewTabsProps = {
 
 /**
  * The underline tab row under the top bar: a page's views or sections.
- * It scrolls sideways when it runs out of room (phones), and on touch screens
- * the tabs and the row grow to a 44px target.
+ * It scrolls sideways when it runs out of room (phones, narrow windows), and
+ * on touch screens the tabs and the row grow to a 44px target.
  */
 export function ViewTabs({
   tabs,
@@ -38,6 +43,35 @@ export function ViewTabs({
   trailing,
   className,
 }: ViewTabsProps) {
+  const scroller = useRef<HTMLDivElement>(null);
+
+  // The row hides its scrollbar, so the selected tab must never start out of
+  // sight (Analytics in a narrow window). Sections can arrive after the
+  // first render (project features load), so the tab list is a dependency.
+  const tabKeys = tabs.map((tab) => tab.value).join(" ");
+  // biome-ignore lint/correctness/useExhaustiveDependencies: re-run when tabs arrive
+  useLayoutEffect(() => {
+    const row = scroller.current;
+    const active = row?.querySelector<HTMLElement>(
+      '[role="tab"][aria-selected="true"]',
+    );
+    if (!row || !active || value === null) return;
+    const box = row.getBoundingClientRect();
+    const tab = active.getBoundingClientRect();
+    const room = 16;
+    if (tab.right > box.right) row.scrollLeft += tab.right - box.right + room;
+    else if (tab.left < box.left) row.scrollLeft -= box.left - tab.left + room;
+  }, [value, tabKeys]);
+
+  // A mouse wheel only scrolls vertically; with no scrollbar to drag, it
+  // moves the row sideways instead. Touchpads already scroll sideways.
+  const onWheel = (event: WheelEvent<HTMLDivElement>) => {
+    const row = event.currentTarget;
+    if (row.scrollWidth <= row.clientWidth) return;
+    if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+    row.scrollLeft += event.deltaY;
+  };
+
   return (
     <nav
       aria-label={label}
@@ -47,7 +81,12 @@ export function ViewTabs({
       )}
       data-slot="view-tabs"
     >
-      <div className="-mb-px min-w-0 flex-1 overflow-x-auto [scrollbar-width:none]">
+      <div
+        ref={scroller}
+        onWheel={onWheel}
+        className="-mb-px min-w-0 flex-1 overflow-x-auto [scrollbar-width:none]"
+        data-slot="view-tabs-scroller"
+      >
         <Tabs value={value}>
           <TabsList
             variant="underline"

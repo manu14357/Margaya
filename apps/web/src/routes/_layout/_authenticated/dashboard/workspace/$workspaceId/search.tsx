@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, Loader2, Search } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { TopBarLabel } from "@/components/common/header/top-bar-label";
 import WorkspaceLayout from "@/components/common/workspace-layout";
 import PageTitle from "@/components/page-title";
 import { HighlightedSnippet } from "@/components/shared/highlighted-snippet";
@@ -71,23 +72,31 @@ function SearchComponent() {
       <WorkspaceLayout
         title={t("workspace:search.pageTitle")}
         headerActions={
-          <Link to="/dashboard/workspace/$workspaceId" params={{ workspaceId }}>
-            <Button variant="ghost" size="sm" className="gap-2">
-              <ArrowLeft className="w-4 h-4" />
-              {t("workspace:search.backToDashboard")}
-            </Button>
-          </Link>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-2"
+            render={
+              <Link
+                to="/dashboard/workspace/$workspaceId"
+                params={{ workspaceId }}
+              />
+            }
+          >
+            <ArrowLeft className="size-4" />
+            <TopBarLabel>{t("workspace:search.backToDashboard")}</TopBarLabel>
+          </Button>
         }
       >
-        <div className="space-y-6">
+        <div className="mx-auto w-full max-w-3xl space-y-6 px-4 pt-5 pb-16 sm:px-6">
           <div>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+              <Search className="pointer-events-none absolute top-1/2 left-3 z-10 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder={t("workspace:search.placeholder")}
                 value={searchInput}
                 onChange={(e) => handleInputChange(e.target.value)}
-                className="pl-10 h-12 text-lg"
+                className="h-12 text-base [&_[data-slot=input]]:h-full [&_[data-slot=input]]:ps-10"
                 autoFocus
               />
               {showLoading && (

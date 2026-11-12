@@ -231,7 +231,7 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="ps-6 text-foreground font-medium">
+            <TableHead className="ps-4 sm:ps-6 text-foreground font-medium">
               {t("team:membersTable.columns.name", {
                 defaultValue: "Member",
               })}
@@ -239,12 +239,12 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
             <TableHead className="text-foreground font-medium">
               {t("team:membersTable.columns.role", { defaultValue: "Role" })}
             </TableHead>
-            <TableHead className="text-foreground font-medium">
+            <TableHead className="hidden text-foreground font-medium sm:table-cell">
               {t("team:membersTable.columns.joined", {
                 defaultValue: "Joined",
               })}
             </TableHead>
-            <TableHead className="w-px pe-6" />
+            <TableHead className="w-px pe-4 sm:pe-6" />
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -255,7 +255,7 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
             const tone = toneFor(member.user.email);
             return (
               <TableRow key={member.user.email}>
-                <TableCell className="ps-6 py-3">
+                <TableCell className="ps-4 sm:ps-6 py-3">
                   <div className="flex items-center gap-3">
                     <Avatar className={cn("size-8", tone)}>
                       <AvatarImage
@@ -341,10 +341,10 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
                     </Badge>
                   )}
                 </TableCell>
-                <TableCell className="py-3 text-sm text-muted-foreground tabular-nums">
+                <TableCell className="hidden py-3 text-sm text-muted-foreground tabular-nums sm:table-cell">
                   {member.createdAt ? formatDateMedium(member.createdAt) : "–"}
                 </TableCell>
-                <TableCell className="pe-6 py-3 text-right">
+                <TableCell className="pe-4 sm:pe-6 py-3 text-right">
                   {!isSelf && canRemove ? (
                     <Menu>
                       <MenuTrigger
@@ -374,7 +374,7 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
 
           {pendingInvitations.map((invitation) => (
             <TableRow key={`invite-${invitation.id}`}>
-              <TableCell className="ps-6 py-3">
+              <TableCell className="ps-4 sm:ps-6 py-3">
                 <div className="flex items-center gap-3">
                   <div className="flex size-8 items-center justify-center rounded-full bg-muted text-muted-foreground">
                     <MailIcon className="size-4" />
@@ -429,10 +429,10 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
                   </Badge>
                 )}
               </TableCell>
-              <TableCell className="py-3 text-sm text-muted-foreground">
+              <TableCell className="hidden py-3 text-sm text-muted-foreground sm:table-cell">
                 –
               </TableCell>
-              <TableCell className="pe-6 py-3 text-right">
+              <TableCell className="pe-4 sm:pe-6 py-3 text-right">
                 {canInvite ? (
                   <Menu>
                     <MenuTrigger

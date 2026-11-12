@@ -1,5 +1,6 @@
 import { CopyPlus, Ellipsis, Hash, Link as LinkIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useTopBarOverflowHost } from "@/components/common/header/top-bar-overflow";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -38,6 +39,9 @@ export default function TaskActionsMenu({
   const { canCreateTasks } = useWorkspacePermission();
   const openCopyDialog = useCopyTaskDialog((state) => state.open);
   const slug = project?.id === ownProjectId ? project.slug : undefined;
+  // In a crowded top bar this menu also holds what the bar's own "More"
+  // would, so the page shows one "…" rather than two side by side.
+  const overflow = useTopBarOverflowHost();
 
   return (
     <DropdownMenu>
@@ -55,6 +59,21 @@ export default function TaskActionsMenu({
         <Ellipsis className="size-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
+        {overflow && overflow.length > 0 && (
+          <>
+            {overflow.map((item) => (
+              <DropdownMenuItem
+                key={item.id}
+                className="gap-2"
+                onClick={item.onSelect}
+              >
+                {item.icon}
+                {item.label}
+              </DropdownMenuItem>
+            ))}
+            <DropdownMenuSeparator />
+          </>
+        )}
         <DropdownMenuItem
           className="gap-2"
           onClick={() =>
