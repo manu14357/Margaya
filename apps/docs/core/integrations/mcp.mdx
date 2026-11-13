@@ -26,7 +26,7 @@ https://your-margaya-instance.com/api/mcp
 
 On first connect, you will be redirected to Margaya to sign in and explicitly approve the MCP client. The page names the client and the address it will send you back to; select **Approve** only if you started the connection. After approval, all MCP tools run as your authenticated user.
 
-<Screenshot src="mcp/consent" alt="The Margaya MCP consent page showing the client name Cursor and its local redirect URI, a warning, and Approve and Deny buttons" caption="Approve the MCP client once; its tools then act as you." />
+<Screenshot src="mcp/consent" alt="The Margaya MCP consent page showing the client name Cursor and its local redirect URI, a warning about acting as you, a second warning that the client returns to an app on this computer, and Approve and Deny buttons" caption="Approve the MCP client once; its tools then act as you." />
 
 ### Use an API key instead
 
@@ -74,12 +74,33 @@ Margaya follows MCP revision `2026-07-28`, the current revision as of October
   (`/api/mcp`, `/api/a2a` or `/api`), or the request fails with `invalid_target`.
   If the token request repeats the resource, it must name the same one as the
   authorization request. Dynamic client registration accepts `application_type`.
+- **Client ID Metadata Documents.** A client can use an `https` URL as its
+  `client_id`, and the authorization server metadata says so with
+  `client_id_metadata_document_supported`. Margaya fetches the document when
+  the client starts an authorization and checks that its `client_id` is that
+  exact URL, that it lists the redirect URI and that it has a
+  `client_name`. The document must be at most 5 KB of JSON, reachable
+  without redirects, and on a public address. Margaya keeps it for as long as
+  its `Cache-Control` allows, between one minute and a day. The consent page
+  shows which host published the document, and warns when the client sends
+  you back to an app on your own computer. Dynamic client registration still
+  works for older clients.
+- **Confirmations.** Tools that delete something or replace many things at
+  once (`delete_*`, `remove_task_recurrence`, `update_cycle_tasks`,
+  `transfer_cycle_tasks`, `update_module_tasks`) first ask you to confirm. If
+  your client supports form elicitation, the call returns `input_required`
+  with a yes/no question, and only a retry that carries your "yes" runs the
+  tool. Clients without elicitation are not asked; they can use the
+  `destructiveHint` annotation instead. A confirmation is not a permission:
+  the API still checks every call.
+- **Tasks extension.** The server advertises `io.modelcontextprotocol/tasks`.
+  When your client declares it, `run_agent` returns a task handle instead of
+  waiting for the agent. See [Follow an agent run as a task](#follow-an-agent-run-as-a-task).
 
 Some parts of the revision are not implemented yet:
 
-- The Tasks extension for long-running operations.
 - MCP Apps.
-- Client ID Metadata Documents. Dynamic client registration still works.
+- `subscriptions/listen` notifications for tasks. Poll `tasks/get` instead.
 - Audience-restricted access tokens. A token works across the whole instance
   with your permissions.
 - Paginated `tools/list`. The full catalog fits in one response.
@@ -196,6 +217,8 @@ Both the HTTP endpoint and stdio package expose the same tools:
 - Task templates: `list_task_templates`, `create_task_from_template` (see [Task templates](/core/functional/task-templates))
 - Repeating tasks: `get_task_recurrence`, `set_task_recurrence`, `remove_task_recurrence` (see [Repeating tasks](/core/functional/repeating-tasks))
 - Automations: `list_automation_rules`, `set_automation_rule_enabled` (turning a rule on or off needs permission to update projects; see [Automate your workflow](/core/functional/automations))
+- Project updates: `list_project_updates`, `get_project_update`, `draft_project_update`, `create_project_update` (needs the project's Updates feature on; see [Project updates](/core/functional/project-updates))
+- Agents: `list_agents`, `run_agent`, `get_agent_run` (needs AI to be on for the workspace; see [AI agents](/core/functional/ai-agents))
 
 `list_project_columns` is worth calling first when setting a status: the column
 slugs it returns are exactly the values `create_task` and `update_task_status`
@@ -213,6 +236,35 @@ endpoint too, with its owner's permissions.
 
 To hand work to Margaya from another agent instead of calling tools one by one,
 see [A2A](/core/integrations/a2a).
+
+## Follow an agent run as a task
+
+`run_agent` starts one of your workspace's [agents](/core/functional/ai-agents)
+on a task. The run works with at most your rights, and changes that need
+approval wait for you.
+
+- **Without the Tasks extension** (and always on the stdio package),
+  `run_agent` returns the run's `id` and `status`. Poll `get_agent_run` until
+  the status is `succeeded`, `failed` or `cancelled`. Approve held changes and
+  answer the agent's questions in Margaya.
+- **With the Tasks extension** (HTTP endpoint, client declares
+  `io.modelcontextprotocol/tasks`), `run_agent` returns a task with
+  `resultType: "task"` and a `taskId`. Then:
+  - `tasks/get` returns the run as a task: `working` while it runs,
+    `input_required` while it waits for you, then `completed` with the agent's
+    summary as the tool result (a failed run completes with `isError: true`),
+    or `cancelled`.
+  - While the task is `input_required`, `inputRequests` holds one yes/no
+    question per change waiting for your approval (keys `approval:<id>`), or
+    the agent's question (key `answer`). Send your answers with `tasks/update`
+    and `inputResponses`. Only approvals that wait for you appear, and Margaya
+    ignores answers for anything else.
+  - `tasks/cancel` stops the run. Changes already applied stay; undo them in
+    Margaya.
+
+Task handles hold no secrets. Every call checks your credential again, so a
+handle is useless to anyone who can't see the run in Margaya. The state lives
+in the database, so any API instance can answer.
 
 ## Debugging
 

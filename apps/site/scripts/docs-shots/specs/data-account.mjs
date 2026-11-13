@@ -8,7 +8,9 @@
  * ensureDataDemo() creates them through the public API the first time and
  * reuses them afterwards. Import previews read small sample files built
  * below; only the CSV result shot really imports, into a throwaway project
- * of the owner account's own workspace, never into Studio North.
+ * of the owner account's own workspace, never into Studio North. The quiet
+ * hours shot turns quiet hours on for the press account, and the calendar
+ * shots keep one "My tasks" calendar link for it.
  */
 
 process.env.PRESS_API_URL ??= "http://127.0.0.1:1337";
@@ -852,6 +854,62 @@ const pushSetUp =
     );
   };
 
+/** Turns a switch on, unless it already is. */
+async function switchOn(page, name) {
+  const control = page.getByRole("switch", { name, exact: true });
+  if ((await control.getAttribute("aria-checked")) !== "true") {
+    await control.click();
+  }
+}
+
+/** Ticks a checkbox, unless it already is. */
+async function tick(page, name) {
+  const box = page.getByRole("checkbox", { name, exact: true });
+  if (!(await box.isChecked())) await box.click();
+}
+
+/**
+ * The press account's "My tasks" calendar link, created once so the section
+ * shows one feed in use and one without a link.
+ */
+async function ensureMyTasksFeed(page, seed) {
+  const request = page.context().request;
+  const path = `${API_URL}/api/calendar-feed/workspace/${seed.workspace.id}`;
+  const feeds = await (await request.get(path)).json();
+  if (!feeds.some((feed) => feed.kind === "my_tasks")) {
+    const created = await request.post(path, {
+      data: { kind: "my_tasks", name: "My tasks · Studio North" },
+      headers: { Origin: CLIENT_URL },
+    });
+    if (!created.ok()) throw new Error(`Calendar link: ${created.status()}`);
+  }
+}
+
+/**
+ * A new calendar link shows its secret URL once. The capture server's own
+ * address is swapped for a public-looking one before the app sees it.
+ */
+async function publicFeedUrls(page) {
+  await page.route(
+    (url) => url.pathname.startsWith("/api/calendar-feed/"),
+    async (route) => {
+      if (route.request().method() !== "POST") return route.fallback();
+      const response = await route.fetch();
+      const body = await response.json();
+      const swap = (value) =>
+        value?.replace(
+          /^(https?|webcal):\/\/[^/]+/,
+          (_, scheme) =>
+            `${scheme === "webcal" ? "webcal" : "https"}://margaya.studionorth.example`,
+        );
+      await route.fulfill({
+        response,
+        json: { ...body, url: swap(body.url), webcalUrl: swap(body.webcalUrl) },
+      });
+    },
+  );
+}
+
 export default [
   // --- Imports --------------------------------------------------------
   shot({
@@ -1217,29 +1275,82 @@ export default [
     name: "account/sessions",
     url: "/dashboard/settings/account/security",
     ready: "Active sessions",
-    prepare: async (page) => {
-      // Every capture run signs in again, so the demo account collects
-      // dozens of sessions. Show this device and two others, as a person
-      // with a laptop and a phone would see it.
-      await page.evaluate(() => {
-        const badge = [...document.querySelectorAll("section *")].find(
-          (el) => el.children.length === 0 && el.textContent === "This device",
-        );
-        let row = badge;
-        while (row?.parentElement && row.parentElement.children.length < 3) {
-          row = row.parentElement;
-        }
-        if (!row?.parentElement) return;
-        const others = [...row.parentElement.children].filter(
-          (el) => el !== row && el.textContent.includes("Edge on"),
-        );
-        const keep = new Set([row, ...others.slice(0, 2)]);
-        for (const el of row.parentElement.children) {
-          if (!keep.has(el)) el.style.display = "none";
-        }
+    // Every capture run signs in again, so the demo account collects dozens
+    // of sessions from one local address. Show this device plus fictional
+    // ones instead: enough that the list folds behind "Show all sessions".
+    before: async (page) => {
+      await page.route("**/api/user/security", async (route) => {
+        const response = await route.fetch();
+        const body = await response.json();
+        const now = Date.now();
+        const at = (minutes) => new Date(now - minutes * 60_000).toISOString();
+        const expires = new Date(now + 7 * 86_400_000).toISOString();
+        const current = body.sessions.find((s) => s.current);
+        const other = (id, userAgent, ipAddress, activeMinutes, startDays) => ({
+          id: `docs-shot-${id}`,
+          userAgent,
+          ipAddress,
+          createdAt: at(startDays * 1440),
+          lastActiveAt: at(activeMinutes),
+          expiresAt: expires,
+          current: false,
+        });
+        const WIN =
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36";
+        await route.fulfill({
+          response,
+          json: {
+            ...body,
+            sessions: [
+              { ...current, ipAddress: "203.0.113.24" },
+              other(
+                "desktop",
+                `${WIN} MargayaDesktop/1.4.0`,
+                "203.0.113.24",
+                12,
+                3,
+              ),
+              other(
+                "phone",
+                "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
+                "198.51.100.7",
+                95,
+                6,
+              ),
+              other(
+                "laptop",
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:144.0) Gecko/20100101 Firefox/144.0",
+                "198.51.100.42",
+                60 * 26,
+                9,
+              ),
+              other(
+                "office",
+                `${WIN} Edg/142.0.0.0`,
+                "203.0.113.80",
+                60 * 50,
+                12,
+              ),
+              other(
+                "tablet",
+                "Mozilla/5.0 (Linux; Android 15; Pixel Tablet) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+                "198.51.100.19",
+                60 * 24 * 4,
+                15,
+              ),
+              other(
+                "old",
+                `${WIN} Edg/141.0.0.0`,
+                "203.0.113.80",
+                60 * 24 * 6,
+                20,
+              ),
+            ],
+          },
+        });
       });
-      await reveal(page, section("Active sessions"));
     },
+    prepare: (page) => reveal(page, section("Active sessions")),
     clip: { selector: section("Active sessions"), pad: 12 },
     viewport: TALL,
   }),
@@ -1328,6 +1439,68 @@ export default [
     prepare: (page) => reveal(page, section("Workspace delivery rules")),
     clip: { selector: section("Workspace delivery rules"), pad: 12 },
     viewport: TALL,
+  }),
+  shot({
+    name: "account/quiet-hours",
+    url: "/dashboard/settings/account/notifications",
+    ready: "Quiet hours and focus",
+    // The page offers the browser's time zone; this one stands in for the
+    // capture machine's.
+    before: (page) =>
+      page.addInitScript(() => {
+        const resolved = Intl.DateTimeFormat.prototype.resolvedOptions;
+        Intl.DateTimeFormat.prototype.resolvedOptions = function () {
+          return { ...resolved.call(this), timeZone: "Europe/Berlin" };
+        };
+      }),
+    // Quiet hours on, with direct mentions let through, for the press
+    // account; both are its own preferences.
+    prepare: async (page) => {
+      await reveal(page, section("Quiet hours and focus"));
+      await switchOn(page, "Quiet hours");
+      await tick(page, "Direct mentions");
+      await page.getByText("Hold these channels").waitFor();
+    },
+    clip: { selector: section("Quiet hours and focus"), pad: 12 },
+    viewport: { width: 1440, height: 2400 },
+  }),
+  shot({
+    name: "account/calendar-feeds",
+    url: "/dashboard/settings/account/preferences",
+    ready: "Subscribe in calendar",
+    before: ensureMyTasksFeed,
+    prepare: (page) => reveal(page, section("Subscribe in calendar")),
+    clip: { selector: section("Subscribe in calendar"), pad: 12 },
+    viewport: TALL,
+  }),
+  shot({
+    name: "account/calendar-feed-link",
+    url: "/dashboard/settings/account/preferences",
+    ready: "Subscribe in calendar",
+    // A new link for My tasks: the old one stops working, which only
+    // matters to the capture server.
+    before: async (page, seed) => {
+      await ensureMyTasksFeed(page, seed);
+      await publicFeedUrls(page);
+    },
+    prepare: async (page) => {
+      await reveal(page, section("Subscribe in calendar"));
+      await page
+        .getByRole("button", {
+          name: "Create a new calendar link for My tasks",
+        })
+        .click();
+      await page.getByRole("button", { name: "Create new link" }).click();
+      await page.getByText("Your calendar link").waitFor();
+      // The dialog selects the link for copying; the picture shows it plain.
+      await page.evaluate(() => {
+        const input = document.querySelector("[role=dialog] input");
+        input?.setSelectionRange?.(0, 0);
+        window.getSelection()?.removeAllRanges();
+      });
+    },
+    clip: { selector: DIALOG, pad: 0 },
+    viewport: { width: 1440, height: 1000 },
   }),
   shot({
     name: "account/preferences-appearance",

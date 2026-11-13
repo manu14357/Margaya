@@ -1,7 +1,9 @@
 /**
  * Screenshots for the "getting around" docs: Home, Your work, Inbox,
- * favorites, keyboard shortcuts, member profiles and creating a workspace
- * or project (apps/docs/core/functional).
+ * favorites, keyboard shortcuts, member profiles, creating a workspace or
+ * project, a project's calendar feed, and Send feedback and the survey card
+ * (apps/docs/core/functional). The survey card's config and check are
+ * answered in the browser.
  *
  * LOCAL DEVELOPMENT ONLY. Everything comes from the Studio North seed. The
  * favorites shot stars a few items for the press account and the inbox shot
@@ -226,6 +228,88 @@ const shots = [
     url: (seed) => `${ws(seed)}/project/${web(seed).id}/board`,
     ready: "Annual billing toggle",
     clip: { x: 312, y: 0, width: 1128, height: 128 },
+  },
+  {
+    name: "getting-around/project-calendar-feed",
+    url: (seed) => `${ws(seed)}/project/${web(seed).id}/board`,
+    ready: "Annual billing toggle",
+    // Opens the dialog only; no link is created.
+    prepare: async (page) => {
+      const row = page
+        .locator("li[data-sidebar=menu-item]")
+        .filter({
+          has: page.getByRole("button", {
+            name: "Website relaunch",
+            exact: true,
+          }),
+        })
+        .first();
+      await row.hover();
+      await row.getByRole("button", { name: "More" }).first().click();
+      await page
+        .getByRole("menuitem", { name: "Subscribe in calendar" })
+        .click();
+      await page
+        .getByRole("dialog")
+        .getByText("Website relaunch", { exact: false })
+        .first()
+        .waitFor();
+    },
+    clip: { selector: "[role=dialog]", pad: 0 },
+  },
+
+  // ------------------------------------------------------------- feedback
+  {
+    name: "feedback/send-feedback",
+    url: "/dashboard/settings/account/preferences",
+    ready: "Subscribe in calendar",
+    // Filled for the picture and never sent.
+    prepare: async (page) => {
+      await page
+        .getByRole("button", { name: "Send feedback", exact: true })
+        .first()
+        .click();
+      const dialog = page.getByRole("dialog");
+      await dialog.getByRole("radio", { name: "Happy", exact: true }).click();
+      await dialog
+        .getByRole("textbox")
+        .fill("Cycles keep our sprints honest. A burndown chart would help.");
+    },
+    clip: { selector: "[role=dialog]", pad: 0 },
+  },
+  {
+    name: "feedback/survey-card",
+    url: (seed) => `${ws(seed)}/project/${web(seed).id}/board`,
+    ready: "Annual billing toggle",
+    // The survey asks a while after the app opens, and only when the server
+    // says this account is due: both are answered here, and the clock runs
+    // ahead so the card shows now.
+    before: async (page) => {
+      await page.clock.install();
+      await page.route(
+        (url) => url.pathname === "/api/feedback/config",
+        (route) =>
+          route.fulfill({
+            status: 200,
+            json: {
+              enabled: true,
+              survey: { enabled: true, format: "faces5", optedOut: false },
+            },
+          }),
+      );
+      await page.route(
+        (url) => url.pathname === "/api/feedback/survey/check",
+        (route) =>
+          route.fulfill({
+            status: 200,
+            json: { show: true, format: "faces5" },
+          }),
+      );
+    },
+    prepare: async (page) => {
+      await page.clock.fastForward("03:00");
+      await page.getByText("How is Margaya working for you?").waitFor();
+    },
   },
 
   {

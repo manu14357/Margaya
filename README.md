@@ -59,10 +59,11 @@ Open source under the [GNU AGPL-3.0](LICENSE), with a [commercial license](COMME
 - **Cycles**: time-boxed sprints with burndown and carryover
 - **Modules**: track a bigger feature across many tasks
 - **Estimates**: points, sizes or time
-- **Intake**: a review queue for incoming requests
+- **Intake**: a review queue for incoming requests, filled in the app, by API, by email (IMAP or inbound webhook) or through a public request form
 - **Pages**: docs and specs next to your tasks, edited together live, with comments and version history
 - **Analytics**: open, created and completed work, with CSV export
 - **Forecast and risk**: when work will likely finish and what could make it slip
+- **Project updates**: dated status posts with a health value, drafted from live project data, with followers, comments and a weekly reminder
 
 ### Automation
 
@@ -85,20 +86,24 @@ Works with Claude, or with your own local model through any OpenAI-compatible se
 - **Coding agents**: send a task to Claude Code, GitHub Copilot or Codex as an issue, and follow the pull request back
 - **Skills and memory**: teach the AI your team's way of working
 - **Privacy controls**: choose what may leave your server, or keep everything local
+- **AI transparency**: AI-written descriptions, comments and pages carry a visible label and a machine-readable `aiProvenance` field (EU AI Act Article 50)
 
 ### Notifications and sharing
 
 - **Inbox** with snooze and archive, plus email notifications and digests
+- **Quiet hours and focus mode** hold push, email, desktop, ntfy, Gotify and webhook deliveries, then send one summary
 - **Realtime updates**: everyone sees changes instantly
+- **Calendar feeds**: subscribe to your tasks, a project, or milestones and cycles from any calendar app with a private, revocable link
 - **Public boards and pages**: share a project or page with anyone; public boards can also take moderated comments
 
 ### Integrations
 
 - **GitHub** and **Gitea**: connect repositories and keep issues and pull requests in sync with tasks
 - **Slack, Discord, Mattermost and Telegram** notifications
+- **Two-way Slack app**: search and capture with `/margaya`, turn messages into tasks or intake requests, task link previews and buttons, each running as the person's own linked account; Socket Mode needs no public URL
 - **Webhooks**: send workspace events to your own services as signed requests
-- **MCP server**: let AI tools like Claude and Cursor manage your tasks
-- **A2A**: let other AI agents work with Margaya
+- **MCP server**: let AI tools like Claude and Cursor manage your tasks and follow agent runs (MCP 2026-07-28, Tasks extension, Client ID Metadata Documents)
+- **A2A**: let other AI agents work with Margaya, with a signed Agent Card and push notifications
 - **REST API** with OpenAPI docs and scoped API keys
 
 ### Import and export
@@ -114,6 +119,9 @@ Works with Claude, or with your own local model through any OpenAI-compatible se
 - **Audit log** of important changes
 - Safe **workspace deletion** with a grace period
 - An **instance admin** area for server-wide settings
+- **In-app feedback**: Send feedback any time, an optional, rarely shown survey, and charts for admins; it never leaves your server
+- A **health page**, opt-in **Prometheus metrics**, request IDs and an opt-in update notice for operators
+- **Signed releases:** signed images and Helm chart, build provenance and SBOMs you can [verify](https://margaya.app/docs/core/installation/verify-a-release)
 
 ### For everyone
 

@@ -13,7 +13,17 @@
 		},
 		"account/api-keys": {
 			"width": 768,
-			"height": 345,
+			"height": 291,
+			"format": "webp"
+		},
+		"account/calendar-feed-link": {
+			"width": 512,
+			"height": 468,
+			"format": "webp"
+		},
+		"account/calendar-feeds": {
+			"width": 744,
+			"height": 269,
 			"format": "webp"
 		},
 		"account/customize-sidebar": {
@@ -28,7 +38,7 @@
 		},
 		"account/delivery-channels": {
 			"width": 744,
-			"height": 1459,
+			"height": 535,
 			"format": "webp"
 		},
 		"account/display-options": {
@@ -43,12 +53,12 @@
 		},
 		"account/information": {
 			"width": 768,
-			"height": 592,
+			"height": 538,
 			"format": "webp"
 		},
 		"account/notify-me-about": {
 			"width": 744,
-			"height": 517,
+			"height": 505,
 			"format": "webp"
 		},
 		"account/password": {
@@ -68,12 +78,17 @@
 		},
 		"account/push-notifications": {
 			"width": 744,
-			"height": 237,
+			"height": 249,
+			"format": "webp"
+		},
+		"account/quiet-hours": {
+			"width": 744,
+			"height": 670,
 			"format": "webp"
 		},
 		"account/sessions": {
 			"width": 744,
-			"height": 275,
+			"height": 444,
 			"format": "webp"
 		},
 		"account/two-factor-required": {
@@ -88,7 +103,7 @@
 		},
 		"account/workspace-rules": {
 			"width": 744,
-			"height": 665,
+			"height": 150,
 			"format": "webp"
 		},
 		"admin/admins": {
@@ -104,6 +119,11 @@
 		"admin/general": {
 			"width": 768,
 			"height": 944,
+			"format": "webp"
+		},
+		"admin/health": {
+			"width": 768,
+			"height": 840,
 			"format": "webp"
 		},
 		"admin/oauth-custom": {
@@ -503,7 +523,7 @@
 		},
 		"desktop/notification-sounds": {
 			"width": 744,
-			"height": 567,
+			"height": 506,
 			"format": "webp"
 		},
 		"desktop/offline": {
@@ -518,7 +538,7 @@
 		},
 		"desktop/server-list": {
 			"width": 760,
-			"height": 760,
+			"height": 860,
 			"format": "webp"
 		},
 		"desktop/server-window": {
@@ -544,6 +564,21 @@
 		"estimates/new-system-dialog": {
 			"width": 608,
 			"height": 578,
+			"format": "webp"
+		},
+		"feedback/admin-feedback": {
+			"width": 768,
+			"height": 1652,
+			"format": "webp"
+		},
+		"feedback/send-feedback": {
+			"width": 448,
+			"height": 416,
+			"format": "webp"
+		},
+		"feedback/survey-card": {
+			"width": 1440,
+			"height": 900,
 			"format": "webp"
 		},
 		"getting-around/command-bar": {
@@ -616,6 +651,11 @@
 			"height": 132,
 			"format": "webp"
 		},
+		"getting-around/project-calendar-feed": {
+			"width": 512,
+			"height": 239,
+			"format": "webp"
+		},
 		"getting-around/project-views": {
 			"width": 1128,
 			"height": 128,
@@ -639,6 +679,11 @@
 		"getting-around/your-work-summary": {
 			"width": 1128,
 			"height": 900,
+			"format": "webp"
+		},
+		"home/project-updates-widget": {
+			"width": 1080,
+			"height": 224,
 			"format": "webp"
 		},
 		"insight/cycle-capacity": {
@@ -681,9 +726,24 @@
 			"height": 620,
 			"format": "webp"
 		},
+		"intake/intake-sources-email": {
+			"width": 744,
+			"height": 625,
+			"format": "webp"
+		},
+		"intake/intake-sources-form": {
+			"width": 744,
+			"height": 939,
+			"format": "webp"
+		},
 		"intake/new-request-dialog": {
 			"width": 704,
 			"height": 480,
+			"format": "webp"
+		},
+		"intake/public-request-form": {
+			"width": 640,
+			"height": 568,
 			"format": "webp"
 		},
 		"integrations/a2a-toggle": {
@@ -718,12 +778,22 @@
 		},
 		"integrations/overview": {
 			"width": 768,
-			"height": 663,
+			"height": 724,
 			"format": "webp"
 		},
 		"integrations/slack": {
 			"width": 734,
-			"height": 870,
+			"height": 1082,
+			"format": "webp"
+		},
+		"integrations/slack-app": {
+			"width": 768,
+			"height": 1166,
+			"format": "webp"
+		},
+		"integrations/slack-app-link": {
+			"width": 768,
+			"height": 522,
 			"format": "webp"
 		},
 		"integrations/telegram": {
@@ -732,8 +802,8 @@
 			"format": "webp"
 		},
 		"mcp/consent": {
-			"width": 470,
-			"height": 415,
+			"width": 433,
+			"height": 530,
 			"format": "webp"
 		},
 		"mcp/create-api-key": {
@@ -794,6 +864,16 @@
 		"pages/template-picker": {
 			"width": 480,
 			"height": 447,
+			"format": "webp"
+		},
+		"project-updates/composer": {
+			"width": 752,
+			"height": 572,
+			"format": "webp"
+		},
+		"project-updates/timeline": {
+			"width": 1128,
+			"height": 620,
 			"format": "webp"
 		},
 		"tasks/assignee-picker": {
@@ -903,7 +983,7 @@
 		},
 		"tasks/project-features": {
 			"width": 752,
-			"height": 542,
+			"height": 607,
 			"format": "webp"
 		},
 		"tasks/public-board": {

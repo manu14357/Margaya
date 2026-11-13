@@ -4,10 +4,13 @@
  * (apps/docs/core/installation, integrations, social-providers, deployments).
  *
  * LOCAL DEVELOPMENT ONLY. Admin screens use the owner account (an instance
- * admin); everything else uses the Studio North press account. Nothing is
- * saved: forms are filled for the picture and panels are opened, never
- * submitted. The MCP consent and device shots create short-lived pending
- * requests that expire on their own. Rows for accounts outside the
+ * admin); everything else uses the Studio North press account. Forms are
+ * filled for the picture and panels are opened, never submitted. Two shots
+ * write: the Feedback page turns the survey on and files ten fictional
+ * answers from the demo accounts, once. The MCP consent and device shots
+ * create short-lived pending requests that expire on their own. A connected
+ * Slack app and a Slack link prompt are answered in the browser, since real
+ * ones need live Slack tokens. Rows for accounts outside the
  * margaya.test demo domain are hidden so no real person appears in the docs.
  */
 
@@ -201,6 +204,190 @@ function mockGet(page, path, json) {
   );
 }
 
+/**
+ * Marks the settings page from its title down to the bottom of the section
+ * titled `lastTitle`, so a long page can be cropped after that section.
+ */
+async function markPageThrough(page, lastTitle) {
+  await page.evaluate((lastTitle) => {
+    document.getElementById("docs-shot-clip")?.remove();
+    const root = document.querySelector("[data-slot=settings-page]");
+    const heading = [...document.querySelectorAll("h2")].find(
+      (element) => element.textContent?.trim() === lastTitle,
+    );
+    const last = heading?.closest("section");
+    if (!root || !last) throw new Error(`No section "${lastTitle}"`);
+    const outer = root.getBoundingClientRect();
+    const inner = last.getBoundingClientRect();
+    const mark = document.createElement("div");
+    mark.id = "docs-shot-clip";
+    Object.assign(mark.style, {
+      position: "fixed",
+      left: `${outer.left}px`,
+      top: `${outer.top}px`,
+      width: `${outer.width}px`,
+      height: `${inner.bottom - outer.top + 16}px`,
+      pointerEvents: "none",
+    });
+    document.body.append(mark);
+  }, lastTitle);
+}
+
+const OWNER = { email: "owner@margaya.test", password: "Margaya-Owner-2026!" };
+const DEMO_PASSWORD = "Margaya-Press-Demo-2026!";
+
+/** Signs a demo account in with plain fetch and returns its cookie header. */
+async function demoCookie(email) {
+  const response = await fetch(`${API}/api/auth/sign-in/email`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Origin: CLIENT },
+    body: JSON.stringify({ email, password: DEMO_PASSWORD }),
+  });
+  if (!response.ok) throw new Error(`Sign-in ${email}: ${response.status}`);
+  return response.headers
+    .getSetCookie()
+    .map((cookie) => cookie.split(";")[0])
+    .join("; ");
+}
+
+/** Fictional answers on the 5-face scale: [account, kind, score, comment?]. */
+const FEEDBACK = [
+  ["press", "survey", 5, "The board is fast even with a few hundred tasks."],
+  ["press", "general", 4, null],
+  ["priya.raman", "survey", 4, "Cycles are great. I'd like a burndown chart."],
+  ["priya.raman", "general", 5, null],
+  ["jonas.weber", "survey", 3, "Search sometimes misses older tasks."],
+  ["jonas.weber", "general", 4, null],
+  ["theo.okafor", "survey", 5, null],
+  ["theo.okafor", "general", 2, "Notifications on my phone arrive late."],
+  [
+    "sofia.duarte",
+    "survey",
+    4,
+    "Love the page editor. Tables are a bit fiddly.",
+  ],
+  ["sofia.duarte", "general", 5, null],
+];
+
+/**
+ * Turns the survey on and files the fictional answers above, once. Admin
+ * changes need a recent sign-in, so the owner confirms the password first.
+ */
+async function ensureFeedbackDemo(page) {
+  const request = page.context().request;
+  const headers = { Origin: CLIENT };
+  await request.post(`${API}/api/instance-admin/reauth`, {
+    data: { password: OWNER.password },
+    headers,
+  });
+  const saved = await request.patch(`${API}/api/instance-admin/settings`, {
+    data: { values: { "feedback.survey.enabled": true } },
+    headers,
+  });
+  if (!saved.ok()) throw new Error(`Survey setting: ${saved.status()}`);
+  const existing = await request.get(
+    `${API}/api/instance-admin/feedback?limit=100`,
+  );
+  // Each answer is filed once, matched by person, kind and score.
+  const filed = ((await existing.json()).items ?? []).map(
+    (item) => `${item.user.email}|${item.kind}|${item.score}`,
+  );
+  const cookies = {};
+  for (const [account, kind, score, comment] of FEEDBACK) {
+    const email = `${account}@margaya.test`;
+    if (filed.includes(`${email}|${kind}|${score}`)) continue;
+    cookies[email] ??= await demoCookie(email);
+    const response = await fetch(`${API}/api/feedback`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Origin: CLIENT,
+        Cookie: cookies[email],
+      },
+      body: JSON.stringify({
+        kind,
+        format: "faces5",
+        score,
+        ...(comment ? { comment } : {}),
+        pageType: kind === "survey" ? "board" : "home",
+        client: "web",
+      }),
+    });
+    if (!response.ok) {
+      throw new Error(`Feedback from ${email}: ${response.status}`);
+    }
+  }
+}
+
+/**
+ * A connected Slack app, answered in the browser: connecting a real one
+ * needs live Slack tokens. The setup part is the server's own, with a public
+ * host so the localhost link-preview warning stays out of the picture.
+ */
+function mockSlackApp(page, seed) {
+  return page.route(
+    (url) => url.pathname === `/api/slack-app/workspace/${seed.workspace.id}`,
+    async (route) => {
+      if (route.request().method() !== "GET") return route.fallback();
+      const response = await route.fetch();
+      const body = await response.json();
+      await route.fulfill({
+        response,
+        json: {
+          connection: {
+            id: "docs-shot-slack-app",
+            workspaceId: seed.workspace.id,
+            mode: "socket",
+            teamId: "T0DOCSSHOT",
+            teamName: "Studio North",
+            botUserId: "U0DOCSBOT",
+            botTokenConfigured: true,
+            maskedBotToken: "xoxb-…k2Qf",
+            appTokenConfigured: true,
+            maskedAppToken: "xapp-…7RtA",
+            signingSecretConfigured: false,
+            maskedSigningSecret: "",
+            credentialsReadable: true,
+            defaultProjectId: seed.projects.web.id,
+            expandTaskKeys: true,
+            isActive: true,
+            lastConnectedAt: new Date(Date.now() - 6 * 60_000).toISOString(),
+            lastError: null,
+            createdAt: "2026-10-02T09:00:00.000Z",
+            updatedAt: "2026-10-02T09:00:00.000Z",
+          },
+          setup: {
+            ...body.setup,
+            eventsUrl:
+              "https://margaya.studionorth.example/api/slack-app/events",
+            unfurlDomain: "margaya.studionorth.example",
+          },
+        },
+      });
+    },
+  );
+}
+
+/** The link prompt /margaya link opens, answered in the browser. */
+async function mockSlackLink(page, seed) {
+  await page.route(
+    (url) => url.pathname === "/api/slack-app/links/preview",
+    (route) =>
+      route.fulfill({
+        status: 200,
+        json: {
+          workspaceId: seed.workspace.id,
+          workspaceName: "Studio North",
+          teamName: "Studio North",
+          slackUserName: "elena.marsh",
+          linkedToYou: false,
+          linkedToSomeoneElse: false,
+        },
+      }),
+  );
+  await mockGet(page, "/slack-app/links", []);
+}
+
 const shots = [
   // ---------------------------------------------------------------- admin
   {
@@ -209,6 +396,27 @@ const shots = [
     url: instance("general"),
     ready: "Instance name",
     viewport: tall,
+    // The capture server's own failures pile up from every seeded webhook,
+    // so the list shows two typical ones instead.
+    before: (page) => {
+      const failedAt = new Date(Date.now() - 3 * 3_600_000).toISOString();
+      const failure = (id, webhookName) => ({
+        id,
+        workspaceName: "Studio North",
+        webhookName,
+        event: "task.created",
+        error: "Timed out after 10 seconds",
+        responseStatus: null,
+        attemptCount: 5,
+        failedAt,
+      });
+      return mockGet(page, "/instance-admin/delivery-failures", {
+        items: [
+          failure("docs-shot-failure-1", "Support desk sync"),
+          failure("docs-shot-failure-2", "Release notifier"),
+        ],
+      });
+    },
     clip: { selector: "[data-slot=settings-page]" },
   },
   {
@@ -378,6 +586,33 @@ const shots = [
     prepare: hideOutsiders,
     clip: { selector: "[data-slot=settings-page]" },
   },
+  {
+    name: "admin/health",
+    account: "owner",
+    url: instance("health"),
+    ready: "Database migrations",
+    viewport: tall,
+    // Summary, Services and the Update notice; the queue counts, jobs and
+    // failures below only describe this capture server.
+    prepare: async (page) => {
+      await page.getByText("Answering.").first().waitFor();
+      await markPageThrough(page, "Update notice");
+    },
+    clip: { selector: "#docs-shot-clip" },
+  },
+  {
+    name: "feedback/admin-feedback",
+    account: "owner",
+    url: instance("feedback"),
+    ready: "Occasional survey",
+    viewport: { width: 1440, height: 1700 },
+    // The survey is turned on and the answers filed before the page loads.
+    before: ensureFeedbackDemo,
+    prepare: async (page) => {
+      await page.getByText("Search sometimes misses older tasks.").waitFor();
+    },
+    clip: { selector: "[data-slot=settings-page]" },
+  },
 
   // ---------------------------------------------------- first sign-up
   {
@@ -394,7 +629,7 @@ const shots = [
   {
     name: "integrations/overview",
     url: integrations,
-    ready: "Project integrations",
+    ready: "GitHub integration",
     clip: { selector: "[data-slot=settings-page]" },
   },
   {
@@ -460,6 +695,29 @@ const shots = [
     clip: { selector: integration("Slack integration"), pad: 8 },
   },
   {
+    name: "integrations/slack-app",
+    url: "/dashboard/settings/workspace/slack",
+    ready: "Slack app on",
+    before: mockSlackApp,
+    viewport: { width: 1440, height: 2000 },
+    prepare: async (page) => {
+      // The manifest box is resizable; a short one keeps all four steps in
+      // the picture.
+      await page
+        .getByLabel("Slack app manifest")
+        .evaluate((box) => Object.assign(box.style, { height: "9rem" }));
+      await markPageThrough(page, "Set up");
+    },
+    clip: { selector: "#docs-shot-clip" },
+  },
+  {
+    name: "integrations/slack-app-link",
+    url: "/dashboard/settings/account/slack?link=docs-shot-link",
+    ready: "Link your Slack account",
+    before: mockSlackLink,
+    clip: { selector: "[data-slot=settings-page]" },
+  },
+  {
     name: "integrations/mattermost",
     url: integrations,
     ready: "Mattermost integration",
@@ -519,16 +777,29 @@ const shots = [
   {
     name: "mcp/consent",
     url: "/dashboard/settings/account/developer",
-    ready: "Developer settings",
+    ready: "Create API key",
     prepare: async (page) => {
       await goto(page, await mcpConsentUrl(page), "Cursor");
+      // The card from its title to the buttons; its height depends on how
+      // many warnings it shows.
+      await page.getByRole("button", { name: "Deny" }).evaluate((deny) => {
+        let card = deny.parentElement;
+        while (
+          card &&
+          !card.textContent?.includes("Review this request before granting")
+        ) {
+          card = card.parentElement;
+        }
+        card?.setAttribute("data-docs-shot", "");
+      });
     },
-    clip: { x: 815, y: 245, width: 470, height: 415 },
+    viewport: { width: 1440, height: 1100 },
+    clip: { selector: "[data-docs-shot]", pad: 24 },
   },
   {
     name: "mcp/device-approve",
     url: "/dashboard/settings/account/developer",
-    ready: "Developer settings",
+    ready: "Create API key",
     prepare: async (page) => {
       const code = await mcpDeviceCode(page);
       await goto(
@@ -542,7 +813,7 @@ const shots = [
   {
     name: "mcp/create-api-key",
     url: "/dashboard/settings/account/developer",
-    ready: "Developer settings",
+    ready: "Create API key",
     prepare: async (page) => {
       await page.getByRole("button", { name: "Create API key" }).click();
       const dialog = page.locator("[role=dialog]");

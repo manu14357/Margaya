@@ -49,6 +49,7 @@ To install the published chart with the release name `my-margaya`:
 ```bash
 helm install my-margaya oci://ghcr.io/manu14357/charts/margaya
 ```
+Each released chart is signed with keyless cosign and has SLSA build provenance. To check it before installing, see [Verify a release](https://margaya.app/docs/core/installation/verify-a-release).
 To install from a local checkout instead:
 ```bash
 helm install my-margaya ./charts/margaya
@@ -135,6 +136,8 @@ When CPU autoscaling is enabled, set `margaya.resources.requests.cpu`; Kubernete
 | `margaya.env.s3.existingSecret.name` | Secret with the access key pair; empty uses the pod's IAM role / IRSA                                            | `""`                            |
 | `margaya.env.s3.existingSecret.accessKeyIdKey` | Key holding `S3_ACCESS_KEY_ID`                                                                          | `access-key-id`                 |
 | `margaya.env.s3.existingSecret.secretAccessKeyKey` | Key holding `S3_SECRET_ACCESS_KEY`                                                                  | `secret-access-key`             |
+| `margaya.env.database.poolMax` | Database connections per pod (`DATABASE_POOL_MAX`). Keep pods × this below the server's `max_connections` | `10` |
+| `margaya.env.database.statementTimeoutMs` | Longest a single query may run, in ms (`DATABASE_STATEMENT_TIMEOUT_MS`); `0` leaves the server's setting. Startup migrations have no limit | `300000` |
 | `margaya.env.database.external.enabled` | Use external PostgreSQL database (set postgresql.enabled to false)                                               | `false`                         |
 | `margaya.env.database.external.host` | External PostgreSQL host                                                                                           | `""`                            |
 | `margaya.env.database.external.port` | External PostgreSQL port                                                                                           | `5432`                          |
@@ -166,6 +169,23 @@ When CPU autoscaling is enabled, set `margaya.resources.requests.cpu`; Kubernete
 | `gateway.parentRefs`                | Parent Gateway listener references for attaching the `HTTPRoute`                                                   | `[]`                            |
 | `gateway.hostnames`                 | Hostnames exposed by the `HTTPRoute`                                                                               | `[]`                            |
 | `gateway.rules`                     | Gateway API routing rules mapping paths to the chart services                                                      | See `values.yaml`               |
+### Monitoring parameters
+| Name | Description | Value |
+| ---- | ----------- | ----- |
+| `metrics.enabled` | Serve Prometheus metrics on a separate container port and add a `metrics` port to the Service | `false` |
+| `metrics.port` | Metrics port (`MARGAYA_METRICS_PORT`) | `9464` |
+| `metrics.token.existingSecret.name` | Secret with a bearer token for the metrics port; it also opens `GET /api/metrics` on the public port | `""` |
+| `metrics.token.existingSecret.key` | Key holding the token (`MARGAYA_METRICS_TOKEN`, at least 16 characters) | `metrics-token` |
+| `metrics.serviceMonitor.enabled` | Create a Prometheus Operator `ServiceMonitor` (needs `metrics.enabled` and the operator's CRDs) | `false` |
+| `metrics.serviceMonitor.interval` | Scrape interval | `30s` |
+| `metrics.serviceMonitor.scrapeTimeout` | Scrape timeout | `10s` |
+| `metrics.serviceMonitor.labels` | Extra labels, such as the one your Prometheus selects on | `{}` |
+| `podDisruptionBudget.enabled` | Create a `PodDisruptionBudget` for the Margaya pods | `false` |
+| `podDisruptionBudget.minAvailable` | Pods that must stay up during voluntary disruptions (used when `maxUnavailable` is empty) | `1` |
+| `podDisruptionBudget.maxUnavailable` | Pods that may be down at once; wins over `minAvailable` when set | `null` |
+| `margaya.env.observability.accessLog` | One JSON line per request on stdout (`MARGAYA_ACCESS_LOG`) | `false` |
+| `margaya.env.observability.logFormat` | `json` writes every log line as JSON (`MARGAYA_LOG_FORMAT`) | `text` |
+| `margaya.env.observability.updateCheck` | `"true"`/`"false"` locks the daily update check (`MARGAYA_UPDATE_CHECK`); empty leaves it to instance admins (off) | `""` |
 ## Configuration Examples
 ### Minimal Configuration
 ```yaml
@@ -338,7 +358,25 @@ Leave `existingSecret.name` empty on EKS to use the service account's IAM role. 
 
 ### Health checks
 
-`margaya.livenessProbe` uses `/api/health`, which only reports that the process is running, so a database outage doesn't restart the pods. `margaya.readinessProbe` uses `/api/health/ready`, which also tests the database: while it answers `503`, the pod gets no traffic. If you pin `margaya.image.tag` to an image older than this check, set `margaya.readinessProbe.httpGet.path` back to `/api/health`.
+`margaya.livenessProbe` uses `/api/health`, which only reports that the process is running, so a database outage doesn't restart the pods. `margaya.readinessProbe` uses `/api/health/ready`, which also tests the database: while it answers `503`, the pod gets no traffic. If you pin `margaya.image.tag` to an image older than this check, set `margaya.readinessProbe.httpGet.path` back to `/api/health`. Readiness also answers `503` while a pod shuts down, so the Service stops sending it requests first. It reports Redis in `checks.redis` but never fails on it: Redis only relays realtime updates between pods.
+
+### Metrics and disruption budgets
+
+```yaml
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    labels:
+      release: kube-prometheus-stack
+podDisruptionBudget:
+  enabled: true
+  maxUnavailable: 1
+```
+
+Each pod then serves Prometheus metrics on port `9464` at `/metrics`. Nothing routes that port through the ingress or gateway. The metric list is on the [Monitoring](https://margaya.app/docs/core/installation/monitoring) docs page. Labels name route templates and job names, never users, workspaces or other records.
+
+With one replica, `podDisruptionBudget.minAvailable: 1` blocks node drains until you scale up; `maxUnavailable: 1` doesn't.
 
 ### Using an Existing Secret for Sensitive Data
 For production environments, it's recommended to store sensitive data like the auth secret and database credentials in Kubernetes Secrets:

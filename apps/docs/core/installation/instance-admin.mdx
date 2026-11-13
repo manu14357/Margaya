@@ -11,6 +11,8 @@ The first account created on a new instance is its instance admin. Admins can ad
 
 Instance admins see an **Instance** tab in **Settings**. A person who has just been made an admin sees the tab once their browser refreshes its session, for example after they reload the page. The API checks the role on every request, so the tab is only a shortcut: non-admins who open an Instance page are sent back to their account settings.
 
+The Instance pages are **General**, **Users**, **Admins**, **Workspaces** and **Public boards**, then a **Server** group with **Authentication**, **Email**, **AI** and **Health**.
+
 <Info>
 Instance settings are separate from workspace roles. Being an instance admin doesn't change a person's role in any workspace.
 </Info>
@@ -58,10 +60,10 @@ A saved change applies at once on the API instance that saved it, and within 10 
 
 - **Instance name** is shown on the sign-in screen and on public boards. It takes 1 to 80 characters. The default is `Margaya`.
 - **Show the product landing page** decides what signed-out visitors see when they open the app's root address. When it is on (the default), they see the Margaya landing page with links to sign in and sign up. When it is off, they go straight to sign-in. Signed-in people always go to their dashboard.
-- **Overview** shows the version, the number of accounts, guests, workspaces, projects and public boards, and which server services are set up: realtime (in memory or Redis), email, file storage, captcha, error reporting, cloud mode and demo mode. It never shows their values.
-- **Recent delivery failures** lists workspace webhooks that used up their retries in the last 7 days, up to 20, with the workspace, webhook, event and response. The destination URL and the message body stay in the workspace's own delivery log. Email and background job errors aren't listed; they're in the server logs.
+- **Overview** shows the version, the number of accounts, guests, workspaces, projects and public boards, and which server services are set up: realtime (in memory or Redis), email, file storage (S3 or the built-in local store), captcha, error reporting, cloud mode and demo mode. It never shows their values.
+- **Recent delivery failures** lists workspace webhooks that used up their retries in the last 7 days, up to 20, with the workspace, webhook, event and response. The destination URL and the message body stay in the workspace's own delivery log. Failed background jobs and AI calls are on the [Health](/core/installation/health-page) page.
 
-<Screenshot src="admin/general" alt="The General instance page with the instance name field, the Show the product landing page switch, the Overview card listing version, counts and server services, and Recent delivery failures" caption="Each setting shows a badge for where its value comes from; here, Default." />
+<Screenshot src="admin/general" alt="The General instance page with the instance name field, the Show the product landing page switch, the Overview card listing version, counts and server services with File storage Configured, and Recent delivery failures with two webhooks that timed out" caption="Each setting shows a badge for where its value comes from; here, Default." />
 
 ## Authentication
 
@@ -211,6 +213,10 @@ If it fails, the dialog shows one of these categories. Server error text is neve
 
 AI is off until you turn it on. Under **AI**, select **Allow AI**, choose a provider and models, optionally add a local model, and decide where each kind of data may go. The page also holds the **Chat**, **Web search**, **Speech to text** and **Embeddings** settings, and **Usage across workspaces** (counts and costs only). Each workspace must then turn AI on for itself. See [AI Setup](/core/functional/ai-setup) for every setting, and [Environment variables](/core/installation/environment-variables#ai) for the `MARGAYA_AI_*` variables that lock them.
 
+## Health
+
+The **Health** page checks the server's services and shows background jobs, recent failures and the opt-in update notice. See [Health page](/core/installation/health-page).
+
 ## Users
 
 **Users** lists every account on the server (guests excepted), newest first, with its status (admin, banned, two-factor), workspace count and last activity. Search by name or email, or show only admins or banned accounts. Select a name to see the workspaces the person belongs to, their role in each, and their active sessions.
@@ -276,6 +282,7 @@ Setting one of these variables locks its setting in the app and shows it with an
 | Global lock | `MARGAYA_LOCK_INSTANCE_SETTINGS` | `true` makes every page read-only. |
 | Instance name | `MARGAYA_INSTANCE_NAME` | |
 | Show the product landing page | `MARGAYA_PUBLIC_LANDING` | `false` sends signed-out visitors straight to sign-in. |
+| Allow feedback | `MARGAYA_FEEDBACK_ENABLED` | `false` hides Send feedback and the survey. See [Feedback](/core/functional/feedback). |
 | Anyone can sign up | `DISABLE_REGISTRATION` | `true` means invitation only. |
 | Email sign-up | `DISABLE_PASSWORD_REGISTRATION` | `true` turns it off. |
 | Guest access | `DISABLE_GUEST_ACCESS` | `true` turns it off. |
@@ -291,6 +298,7 @@ Setting one of these variables locks its setting in the app and shows it with an
 | Custom OAuth logout URL | `CUSTOM_OAUTH_LOGOUT_URL` | Locks only this field. |
 | SMTP | `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM` | These lock as a group when `SMTP_HOST` is set. |
 | Public boards | `DISABLE_PUBLIC_BOARDS` | `true` turns them off. |
+| Check for new versions | `MARGAYA_UPDATE_CHECK` | `true` turns the daily update check on; `false` keeps it off. |
 | AI | `MARGAYA_AI_ENABLED`, `ANTHROPIC_API_KEY` and the other `MARGAYA_AI_*` variables | See [AI](/core/installation/environment-variables#ai). |
 
 These settings have no variable and are always managed in the app: each provider's on/off switch, the custom OAuth button label, public participation, and SAML and SCIM connections.

@@ -59,6 +59,8 @@ Name | Description |
 | `POSTGRES_DB` | The name of the PostgreSQL database. Example: `margaya`.
 | `POSTGRES_USER` | The username for the PostgreSQL database. Example: `margaya`.
 | `POSTGRES_PASSWORD` | The password for the PostgreSQL database. Use a strong value in production.
+| `DATABASE_POOL_MAX` | Optional. Database connections each Margaya instance keeps open. Default: `10`. With several instances, the instance count times this value must stay below the server's `max_connections` (100 by default), with one connection per instance to spare for startup migrations.
+| `DATABASE_STATEMENT_TIMEOUT_MS` | Optional. The longest a single query may run, in milliseconds, before PostgreSQL cancels it. Default: `300000` (5 minutes). `0` leaves the database server's own setting. Startup migrations have no limit.
 
 ### Authentication
 
@@ -160,6 +162,7 @@ Name | Description | Default |
 | `DISABLE_EMAIL_OTP_SIGN_IN` | When SMTP is configured, sign-in uses email verification codes by default. Set to `true` to use email/password sign-in instead. Workspace invitation emails still use SMTP. | `false` |
 | `DISABLE_LOGIN_FORM` | Hide the email/password login form on the sign-in page. When set to `true`, only SSO/OAuth buttons are shown. Useful when you want to enforce authentication exclusively through an external identity provider. | `false` |
 | `MARGAYA_PUBLIC_LANDING` | Show signed-out visitors the product landing page when they open the web app's root address. Set to `false` to send them straight to sign-in. Signed-in users always go to their dashboard. Setting it locks the switch in [Instance administration](/core/installation/instance-admin#general). | `true` |
+| `MARGAYA_FEEDBACK_ENABLED` | In-app feedback: **Send feedback** and the optional survey. Answers stay on this server for its admins. Set to `false` to turn it off. Setting it locks the switch under Instance settings → [Feedback](/core/functional/feedback). | `true` |
 | `ALLOWED_EMAIL_DOMAINS` | Comma-separated domains new accounts must use, such as `example.com,example.org` (exact match, no subdomains). Covers every sign-up method, OAuth and invitations included. Empty allows any domain. Locks the setting in [Instance administration](/core/installation/instance-admin#sign-in-policy). | empty |
 | `ALLOW_INVITED_PASSWORD_REGISTRATION` | With password sign-up off, still let people with a valid invitation create a password account. | `false` |
 | `REQUIRED_SIGN_IN_PROVIDER` | `github`, `google`, `discord` or `custom`: everyone signs in through this provider, and other sign-in methods are refused. Instance admins keep password sign-in as a way back in. | empty |
@@ -336,11 +339,12 @@ Name | Description |
 
 Margaya supports Redis for horizontal scaling of WebSocket broadcasts. When any Redis mode is configured, multiple API instances can relay real-time updates via Redis Pub/Sub. When none are set, an in-memory adapter is used (single-instance only). Valkey works as a drop-in replacement.
 
-Redis carries three kinds of live traffic between instances: project updates (boards, lists, cycles, pages), user updates (inbox, notifications, favorites, drafts, exports) and page co-editing (Yjs edits and presence). Run Redis whenever more than one API instance serves traffic; without it, a change made through one instance only reaches people connected to that same instance. Nothing is stored in Redis, so it needs no persistence or backups.
+Redis carries three kinds of live traffic between instances: project updates (boards, lists, cycles, pages), user updates (inbox, notifications, favorites, drafts, exports, and workspace-wide changes such as a member's profile, the workspace's name and logo, the project list, labels and workspace views) and page co-editing (Yjs edits and presence). Run Redis whenever more than one API instance serves traffic; without it, a change made through one instance only reaches people connected to that same instance. Nothing is stored in Redis, so it needs no persistence or backups.
 
 Redis is not used for the rest, which works the same with one or many instances:
 
-- **Scheduled jobs** coordinate through a lease row in PostgreSQL. Two instances never run the same job at the same time, and each job claims its rows, so a reminder, digest or purge is never applied twice.
+- **Scheduled jobs** coordinate through a lease row in PostgreSQL. Two instances never run the same job at the same time, and each job claims its rows, so a reminder, digest or purge is never applied twice. An hourly or daily job keeps its lease for half its interval after it finishes, so an instance whose clock fires a little later skips that hour instead of running it again.
+- **Startup migrations** take a PostgreSQL advisory lock, so instances that start together migrate one at a time; the others wait and then find nothing left to do.
 - **Instance settings** saved in the admin panel reach other instances within 10 seconds through PostgreSQL.
 - **Sign-in and API key rate limits** are counted in memory by each instance, so with several instances each one allows the full limit.
 
@@ -373,6 +377,20 @@ Name | Description |
 --- | --- |
 | `REDIS_PASSWORD` | Password for the Redis data nodes (used by both Sentinel and Cluster modes, not for Sentinel auth itself; use `REDIS_SENTINEL_PASSWORD` for that).
 
+### Monitoring
+
+All off by default. See [Monitoring](/core/installation/monitoring) for scrape setup and the metric list.
+
+Name | Description | Default |
+--- | --- | --- |
+| `MARGAYA_METRICS_ENABLED` | `true` turns on Prometheus metrics. They are served only when `MARGAYA_METRICS_TOKEN` or `MARGAYA_METRICS_PORT` is set too. | `false` |
+| `MARGAYA_METRICS_TOKEN` | At least 16 characters. Serves `GET /api/metrics`, which then needs `Authorization: Bearer <token>`. The metrics port asks for it too. | |
+| `MARGAYA_METRICS_PORT` | Serves `GET /metrics` on its own port, for scrapers inside your network. | |
+| `MARGAYA_METRICS_HOST` | Address the metrics port binds to. | `0.0.0.0` |
+| `MARGAYA_ACCESS_LOG` | `true` writes one JSON line per request: request ID, method, route template, status and duration. | `false` |
+| `MARGAYA_LOG_FORMAT` | `json` writes every log line as a JSON object with time, level and request ID. | `text` |
+| `MARGAYA_UPDATE_CHECK` | `true` checks once a day for a newer release and shows instance admins a notice; `false` keeps it off. Either value locks the switch on the [Health page](/core/installation/health-page). | |
+
 ### SMTP Configuration
 
 Name | Description |
@@ -388,6 +406,24 @@ Name | Description |
 | `NODE_EXTRA_CA_CERTS` | Path to a trusted CA PEM file for a private SMTP certificate authority. Set before starting the API; certificate expiry and hostname checks remain enabled.
 
 When upgrading, remove `SMTP_IGNORE_TLS=true` and verify delivery with the corrected certificate trust configuration before rollout. Fix invalid certificates instead of disabling validation. [Nodemailer documents the difference between STARTTLS and certificate validation](https://nodemailer.com/smtp#tls-options).
+
+### Email intake
+
+Optional. See [Set up email intake](/core/installation/email-intake).
+
+Name | Description | Default |
+--- | --- | --- |
+| `INTAKE_EMAIL_ADDRESS` | The instance's base intake address, for example `requests@example.com`. Each project's forwarding address is `requests+<token>@example.com`. | |
+| `INTAKE_IMAP_HOST` | IMAP server of the mailbox that receives the base address. With `INTAKE_IMAP_USER` and `INTAKE_IMAP_PASSWORD`, Margaya checks it every two minutes. | |
+| `INTAKE_IMAP_PORT` | IMAP port. | `993` (`143` with STARTTLS) |
+| `INTAKE_IMAP_SECURITY` | `tls` or `starttls`. Plain connections aren't supported. | `tls` |
+| `INTAKE_IMAP_USER` | IMAP user name. | |
+| `INTAKE_IMAP_PASSWORD` | IMAP password. | |
+| `INTAKE_IMAP_FOLDER` | The folder to read. | `INBOX` |
+| `INTAKE_EMAIL_WEBHOOK_SECRET` | Turns on the inbound mail webhook `POST /api/intake-email/inbound`; at least 16 characters. | |
+| `INTAKE_EMAIL_MAX_BYTES` | Largest message accepted, in bytes. | `26214400` (25 MB) |
+| `INTAKE_EMAIL_MAX_ATTACHMENT_BYTES` | Largest attachment kept, in bytes. | `10485760` (10 MB) |
+| `INTAKE_EMAIL_MAX_ATTACHMENTS` | Most attachments kept per message. | `10` |
 
 ## Key points
 

@@ -58,6 +58,7 @@
 									"core/functional/your-work",
 									"core/functional/inbox",
 									"core/functional/favorites-and-recent-items",
+									"core/functional/calendar-feeds",
 									"core/functional/keyboard-shortcuts",
 									"core/functional/desktop-app",
 									"core/functional/member-profiles"
@@ -94,7 +95,8 @@
 									"core/functional/views",
 									"core/functional/intake",
 									"core/functional/analytics",
-									"core/functional/forecast-and-risk"
+									"core/functional/forecast-and-risk",
+									"core/functional/project-updates"
 								]
 							},
 							{
@@ -140,6 +142,7 @@
 									"core/functional/manage-your-account",
 									"core/functional/account-security",
 									"core/functional/account-notifications",
+									"core/functional/feedback",
 									"core/functional/personalize-your-workspace"
 								]
 							}
@@ -153,11 +156,15 @@
 							"core/installation/object-storage-and-image-uploads",
 							"core/installation/storage-backends",
 							"core/installation/environment-variables",
+							"core/installation/email-intake",
 							"core/installation/instance-admin",
+							"core/installation/health-page",
+							"core/installation/monitoring",
 							"core/installation/desktop-app",
 							"core/installation/start-services",
 							"core/installation/migration",
-							"core/installation/backup-and-restore"
+							"core/installation/backup-and-restore",
+							"core/installation/verify-a-release"
 						]
 					},
 					{
@@ -184,6 +191,7 @@
 							"core/integrations/a2a",
 							"core/integrations/discord",
 							"core/integrations/slack",
+							"core/integrations/slack-app",
 							"core/integrations/mattermost",
 							"core/integrations/telegram",
 							"core/integrations/outgoing-webhooks"
@@ -404,6 +412,26 @@
 						]
 					},
 					{
+						"group": "Intake email",
+						"pages": [
+							"api-reference/endpoints/intake-email/getIntakeEmailSettings",
+							"api-reference/endpoints/intake-email/updateIntakeEmailSettings",
+							"api-reference/endpoints/intake-email/rotateIntakeEmailAddress",
+							"api-reference/endpoints/intake-email/testIntakeEmailMailbox",
+							"api-reference/endpoints/intake-email/receiveIntakeEmail"
+						]
+					},
+					{
+						"group": "Request forms",
+						"pages": [
+							"api-reference/endpoints/request-forms/getIntakeFormSettings",
+							"api-reference/endpoints/request-forms/updateIntakeFormSettings",
+							"api-reference/endpoints/request-forms/rotateIntakeFormLink",
+							"api-reference/endpoints/request-forms/getPublicIntakeForm",
+							"api-reference/endpoints/request-forms/submitPublicIntakeForm"
+						]
+					},
+					{
 						"group": "Pages",
 						"pages": [
 							"api-reference/endpoints/pages/listPages",
@@ -413,6 +441,7 @@
 							"api-reference/endpoints/pages/updatePage",
 							"api-reference/endpoints/pages/deletePage",
 							"api-reference/endpoints/pages/replacePageContent",
+							"api-reference/endpoints/pages/markPageAiGenerated",
 							"api-reference/endpoints/pages/movePageInTree",
 							"api-reference/endpoints/pages/lockPage",
 							"api-reference/endpoints/pages/unlockPage",
@@ -567,6 +596,26 @@
 						]
 					},
 					{
+						"group": "Project updates",
+						"pages": [
+							"api-reference/endpoints/project-updates/listProjectUpdates",
+							"api-reference/endpoints/project-updates/createProjectUpdate",
+							"api-reference/endpoints/project-updates/draftProjectUpdate",
+							"api-reference/endpoints/project-updates/getProjectUpdate",
+							"api-reference/endpoints/project-updates/updateProjectUpdate",
+							"api-reference/endpoints/project-updates/deleteProjectUpdate",
+							"api-reference/endpoints/project-updates/createProjectUpdateComment",
+							"api-reference/endpoints/project-updates/deleteProjectUpdateComment",
+							"api-reference/endpoints/project-updates/addProjectUpdateReaction",
+							"api-reference/endpoints/project-updates/removeProjectUpdateReaction",
+							"api-reference/endpoints/project-updates/getProjectUpdateFollow",
+							"api-reference/endpoints/project-updates/setProjectUpdateFollow",
+							"api-reference/endpoints/project-updates/getProjectUpdateReminder",
+							"api-reference/endpoints/project-updates/setProjectUpdateReminder",
+							"api-reference/endpoints/project-updates/listLatestProjectUpdates"
+						]
+					},
+					{
 						"group": "Labels",
 						"pages": [
 							"api-reference/endpoints/labels/getTaskLabels",
@@ -595,6 +644,7 @@
 						"group": "Comments",
 						"pages": [
 							"api-reference/endpoints/comments/getTaskComments",
+							"api-reference/endpoints/comments/getTaskCommentPage",
 							"api-reference/endpoints/comments/createTaskComment",
 							"api-reference/endpoints/comments/updateTaskComment",
 							"api-reference/endpoints/comments/deleteTaskComment"
@@ -870,6 +920,16 @@
 						]
 					},
 					{
+						"group": "Calendar feeds",
+						"pages": [
+							"api-reference/endpoints/calendar-feeds/listCalendarFeeds",
+							"api-reference/endpoints/calendar-feeds/createWorkspaceCalendarFeed",
+							"api-reference/endpoints/calendar-feeds/createProjectCalendarFeed",
+							"api-reference/endpoints/calendar-feeds/revokeCalendarFeed",
+							"api-reference/endpoints/calendar-feeds/getCalendarFeed"
+						]
+					},
+					{
 						"group": "Workflow Rules",
 						"pages": [
 							"api-reference/endpoints/workflow-rules/getWorkflowRules",
@@ -963,6 +1023,20 @@
 						]
 					},
 					{
+						"group": "Slack app",
+						"pages": [
+							"api-reference/endpoints/slack-app/getSlackApp",
+							"api-reference/endpoints/slack-app/connectSlackApp",
+							"api-reference/endpoints/slack-app/updateSlackApp",
+							"api-reference/endpoints/slack-app/disconnectSlackApp",
+							"api-reference/endpoints/slack-app/testSlackApp",
+							"api-reference/endpoints/slack-app/listSlackLinks",
+							"api-reference/endpoints/slack-app/previewSlackLink",
+							"api-reference/endpoints/slack-app/confirmSlackLink",
+							"api-reference/endpoints/slack-app/deleteSlackLink"
+						]
+					},
+					{
 						"group": "Discord",
 						"pages": [
 							"api-reference/endpoints/discord/getDiscordIntegration",
@@ -1011,7 +1085,8 @@
 						"group": "Instance",
 						"pages": [
 							"api-reference/endpoints/instance/getInstanceStatus",
-							"api-reference/endpoints/instance/getReadiness"
+							"api-reference/endpoints/instance/getReadiness",
+							"api-reference/endpoints/instance/getMetrics"
 						]
 					},
 					{
@@ -1036,6 +1111,8 @@
 							"api-reference/endpoints/instance-admin/resetInstanceUserTwoFactor",
 							"api-reference/endpoints/instance-admin/listInstanceAuditLog",
 							"api-reference/endpoints/instance-admin/listInstanceDeliveryFailures",
+							"api-reference/endpoints/instance-admin/getInstanceHealth",
+							"api-reference/endpoints/instance-admin/getInstanceUpdateStatus",
 							"api-reference/endpoints/instance-admin/listScimConnections",
 							"api-reference/endpoints/instance-admin/createScimConnection",
 							"api-reference/endpoints/instance-admin/rotateScimConnectionToken",
@@ -1044,7 +1121,24 @@
 							"api-reference/endpoints/instance-admin/draftSamlConnection",
 							"api-reference/endpoints/instance-admin/createSamlConnection",
 							"api-reference/endpoints/instance-admin/updateSamlConnection",
-							"api-reference/endpoints/instance-admin/deleteSamlConnection"
+							"api-reference/endpoints/instance-admin/deleteSamlConnection",
+							"api-reference/endpoints/instance-admin/getInstanceFeedbackSummary",
+							"api-reference/endpoints/instance-admin/listInstanceFeedback",
+							"api-reference/endpoints/instance-admin/exportInstanceFeedback",
+							"api-reference/endpoints/instance-admin/deleteInstanceFeedback",
+							"api-reference/endpoints/instance-admin/purgeInstanceFeedback"
+						]
+					},
+					{
+						"group": "Feedback",
+						"pages": [
+							"api-reference/endpoints/feedback/getFeedbackConfig",
+							"api-reference/endpoints/feedback/submitFeedback",
+							"api-reference/endpoints/feedback/checkFeedbackSurvey",
+							"api-reference/endpoints/feedback/snoozeFeedbackSurvey",
+							"api-reference/endpoints/feedback/setFeedbackSurveyPreference",
+							"api-reference/endpoints/feedback/listOwnFeedback",
+							"api-reference/endpoints/feedback/deleteOwnFeedback"
 						]
 					},
 					{

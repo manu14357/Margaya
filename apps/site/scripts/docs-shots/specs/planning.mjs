@@ -1,10 +1,13 @@
 /**
  * Screenshots for the planning docs (apps/docs/core/functional): backlog,
- * cycles, modules, estimates, views, intake, analytics, pages and drafts.
+ * cycles, modules, estimates, views, intake and its sources, project
+ * updates, analytics, pages and drafts.
  *
  * LOCAL DEVELOPMENT ONLY. Besides the Studio North seed, these screens need
- * backlog tasks, saved views, intake requests, a saved analytics report,
- * drafts, a sub-page, a page template, page comments and a milestone.
+ * backlog tasks, saved views, intake requests, email intake and a public
+ * request form on Mobile app, project updates on Platform API and Mobile app,
+ * a saved analytics report, drafts, a sub-page, a page template, page
+ * comments and a milestone.
  * ensurePlanningDemo() creates them through the public API the first time and
  * reuses them afterwards. A few shots answer one request in the browser instead,
  * where real data would change the press user's inbox or other shots.
@@ -94,6 +97,66 @@ const SUB_PAGE = {
     "",
     "Migration runs during Sprint 15 and finishes before launch.",
   ].join("\n"),
+};
+
+const INTAKE_FORM = {
+  enabled: true,
+  title: "Report a problem with the Mobile app",
+  intro:
+    "Tell the Mobile app team what went wrong or what you need. We read every request on weekdays.",
+  emailField: "required",
+  nameField: "optional",
+  confirmationMessage:
+    "Thanks! The Mobile app team will look at your request this week.",
+};
+
+/** Platform API status updates, oldest first; the latest is AI-drafted. */
+const PROJECT_UPDATES = [
+  {
+    health: "on_track",
+    summary:
+      "The v2 endpoints are on track, and work on the reference docs has started.",
+    highlights: "- Cursor pagination on every list endpoint",
+    nextSteps: "- Write the reference docs for the new endpoints",
+  },
+  {
+    health: "at_risk",
+    summary:
+      "The v2 launch is at risk: the reference docs are behind and two endpoints still lack rate limits.",
+    highlights:
+      "- Webhook retries are live\n- Error responses now share one format",
+    blockers:
+      "- Public API v2 reference docs are about a week behind\n- Rate limits are missing on the search and export endpoints",
+    nextSteps:
+      "- Theo pairs with Priya on the docs this week\n- Confirm the launch date at Friday's review",
+    aiAssist: { feature: "project_update" },
+  },
+];
+/** What the composer shot's "Draft with AI" fills in. */
+const AI_DRAFT = {
+  health: "at_risk",
+  summary:
+    "Most v2 endpoints are done, but the reference docs and rate limits put the launch date at risk.",
+  highlights:
+    "- Search and export endpoints merged\n- Webhook retries running in production",
+  blockers:
+    "- Public API v2 reference docs: 4 of 11 pages written\n- Rate limits still missing on export",
+  nextSteps:
+    "- Finish the docs for the search endpoints\n- Agree the launch date at Friday's review",
+};
+const UPDATE_REACTIONS = [
+  ["priya", "thumbs_up"],
+  ["jonas", "thumbs_up"],
+  ["sofia", "eyes"],
+];
+const UPDATE_COMMENT =
+  "I can take the rate limits on search tomorrow, so the docs get Priya's full week.";
+const MOBILE_UPDATE = {
+  health: "on_track",
+  summary:
+    "Beta 0.9 is with testers, and crash reports are down by half since last week.",
+  highlights: "- Push notifications open the right screen",
+  nextSteps: "- Ship beta 1.0 to the store review",
 };
 
 const TEMPLATE_NAME = "Migration notes";
@@ -369,7 +432,72 @@ async function ensurePlanningDemo() {
   );
   const marketing = modules.find((m) => m.name === "Marketing site");
 
+  // Intake sources on the mobile project: the forwarding address (the capture
+  // server needs INTAKE_EMAIL_ADDRESS) with domain lists, and a public form.
+  await press.call("PUT", `/intake-email/project/${mobile.id}`, {
+    enabled: true,
+    allowedDomains: ["studionorth.example", "northwind-retail.example"],
+    blockedDomains: ["newsletters.example"],
+  });
+  await press.call("PUT", `/intake-form/project/${mobile.id}`, INTAKE_FORM);
+  const form = await press.get(`/intake-form/project/${mobile.id}`);
+
+  // Project updates: a history on Platform API and one on Mobile app, for
+  // the Updates tab and the Home widget.
+  const platformApi = bySlug("API");
+  for (const project of [platformApi, mobile]) {
+    if (!project.updatesEnabled) {
+      await press.call("PATCH", `/project/${project.id}/features`, {
+        updatesEnabled: true,
+      });
+    }
+  }
+  const apiUpdates = await press.get(
+    `/project-update/project/${platformApi.id}`,
+  );
+  if (apiUpdates.updates.length === 0) {
+    const [first, latest] = PROJECT_UPDATES;
+    await press.call(
+      "POST",
+      `/project-update/project/${platformApi.id}`,
+      first,
+    );
+    const posted = await press.call(
+      "POST",
+      `/project-update/project/${platformApi.id}`,
+      latest,
+    );
+    for (const [who, emoji] of UPDATE_REACTIONS) {
+      await s[who].call(
+        "PUT",
+        `/project-update/${posted.id}/reaction/${emoji}`,
+      );
+    }
+    await s.theo.call("POST", `/project-update/${posted.id}/comment`, {
+      content: UPDATE_COMMENT,
+    });
+  }
+  const mobileUpdates = await press.get(`/project-update/project/${mobile.id}`);
+  if (mobileUpdates.updates.length === 0) {
+    await s.priya.call(
+      "POST",
+      `/project-update/project/${mobile.id}`,
+      MOBILE_UPDATE,
+    );
+  }
+  // Posts and comments notify the press user; archive those so the inbox
+  // shots keep their seeded list. Notifications are written just after.
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+  const inbox = await press.get("/notification/inbox", { workspaceId });
+  for (const item of inbox.items ?? []) {
+    if (item.type?.startsWith("project_update")) {
+      await press.call("PATCH", `/notification/${item.id}/archive`);
+    }
+  }
+
   return {
+    requestForm: form.path,
+    platformApi: platformApi.id,
     workspaceId,
     module: marketing?.id,
     report: report.id,
@@ -812,6 +940,218 @@ export default [
       await click(page, "Accept");
     },
     clip: dialog,
+  },
+
+  // Intake sources and the public request form
+  {
+    name: "intake/intake-sources-email",
+    url: (seed) =>
+      `/dashboard/settings/projects/${seed.projects.mobile.id}/intake`,
+    ready: "Forwarding address",
+    // The address and the domain lists, down to the size limits; the
+    // optional project mailbox below has its own paragraph in the docs.
+    prepare: async (page) => {
+      await page.evaluate(() => {
+        const heading = [...document.querySelectorAll("h2")].find(
+          (h) => h.textContent?.trim() === "Email",
+        );
+        const section = heading?.closest("section");
+        const note = [...(section?.querySelectorAll("p") ?? [])].find((p) =>
+          p.textContent?.startsWith("Messages over"),
+        );
+        if (!section || !note) throw new Error("No Email section");
+        const outer = section.getBoundingClientRect();
+        const box = document.createElement("div");
+        box.setAttribute("data-docs-shot-box", "");
+        Object.assign(box.style, {
+          position: "fixed",
+          left: `${outer.left - 12}px`,
+          top: `${outer.top - 12}px`,
+          width: `${outer.width + 24}px`,
+          height: `${note.getBoundingClientRect().bottom - outer.top + 24}px`,
+          pointerEvents: "none",
+        });
+        document.body.append(box);
+      });
+    },
+    clip: { selector: "[data-docs-shot-box]" },
+    viewport: { width: 1440, height: 1400 },
+  },
+  {
+    name: "intake/intake-sources-form",
+    url: (seed) =>
+      `/dashboard/settings/projects/${seed.projects.mobile.id}/intake`,
+    ready: "Forwarding address",
+    prepare: async (page) => {
+      await page
+        .locator('section:has(h2:text-is("Request form"))')
+        .scrollIntoViewIfNeeded();
+      // The link starts with the capture server's address; show a public one.
+      await page.evaluate(() => {
+        for (const input of document.querySelectorAll("input")) {
+          if (input.value.includes("/request-form/")) {
+            input.value = input.value.replace(
+              /^https?:\/\/[^/]+/,
+              "https://margaya.studionorth.example",
+            );
+          }
+        }
+      });
+    },
+    clip: { selector: 'section:has(h2:text-is("Request form"))', pad: 12 },
+    viewport: { width: 1440, height: 2000 },
+  },
+  {
+    name: "intake/public-request-form",
+    url: () => demo.requestForm,
+    ready: "Report a problem with the Mobile app",
+    // Filled for the picture and never sent.
+    prepare: async (page) => {
+      await page
+        .getByLabel("Title")
+        .fill("The app logs me out after every update");
+      await page
+        .getByLabel(/email/i)
+        .first()
+        .fill("sam@northwind-retail.example");
+      await markUnion(page, [
+        page.getByRole("heading", {
+          name: "Report a problem with the Mobile app",
+        }),
+        page.getByLabel("Title"),
+        page.getByRole("button", { name: "Send request" }),
+      ]);
+    },
+    clip: { selector: "[data-docs-shot-box]", pad: 32 },
+    viewport: { width: 1440, height: 1000 },
+  },
+
+  // Project updates
+  {
+    name: "project-updates/timeline",
+    url: (seed) => `${ws(seed)}/project/${demo.platformApi}/updates`,
+    ready: "The v2 launch is at risk",
+    prepare: async (page) => {
+      const latest = page.getByLabel("Update by Elena Marsh").first();
+      await latest.getByText(/^Data at posting/).click();
+      await latest
+        .getByText(/^Forecast|^Overdue|^Blocked|^Completed/)
+        .first()
+        .waitFor();
+      // The content column from the top bar down to the latest update.
+      const card = await latest.boundingBox();
+      await page.evaluate(
+        ([left, height]) => {
+          document.querySelector("[data-docs-shot-box]")?.remove();
+          const box = document.createElement("div");
+          box.setAttribute("data-docs-shot-box", "");
+          Object.assign(box.style, {
+            position: "fixed",
+            left: `${left}px`,
+            top: "0px",
+            width: `${window.innerWidth - left}px`,
+            height: `${height}px`,
+            pointerEvents: "none",
+          });
+          document.body.append(box);
+        },
+        [CONTENT, Math.ceil(card.y + card.height + 16)],
+      );
+    },
+    clip: { selector: "[data-docs-shot-box]" },
+    viewport: { width: 1440, height: 1400 },
+  },
+  {
+    name: "project-updates/composer",
+    url: (seed) => `${ws(seed)}/project/${demo.platformApi}/updates`,
+    ready: "The v2 launch is at risk",
+    // The AI draft is answered here: no AI provider is needed, and the facts
+    // under it are the server's own.
+    before: async (page) => {
+      await page.route(
+        (url) => url.pathname === "/api/ai/availability",
+        (route) =>
+          route.fulfill({
+            status: 200,
+            json: {
+              available: true,
+              instanceEnabled: true,
+              configured: true,
+              workspaceEnabled: true,
+              projectEnabled: true,
+              canUse: true,
+              canManage: true,
+              destination: "cloud",
+              provider: "anthropic",
+              zeroRetention: false,
+              requireApprovalForWrites: false,
+              autoTranslateComments: false,
+            },
+          }),
+      );
+      await page.route(
+        (url) => url.pathname.endsWith("/draft"),
+        async (route) => {
+          if (route.request().method() !== "POST") return route.fallback();
+          const response = await route.fetch();
+          const body = await response.json();
+          await route.fulfill({
+            response,
+            json: {
+              ...body,
+              aiDrafted: true,
+              aiUnavailable: null,
+              draft: AI_DRAFT,
+            },
+          });
+        },
+      );
+    },
+    prepare: async (page) => {
+      await click(page, "New update");
+      await click(page, "Draft with AI");
+      await page.getByText("AI-generated").first().waitFor();
+    },
+    clip: { selector: 'form[aria-label="New project update"]', pad: 8 },
+    viewport: { width: 1440, height: 1400 },
+  },
+  {
+    name: "home/project-updates-widget",
+    url: (seed) => ws(seed),
+    ready: "Project updates",
+    // Answered here, so the widget isn't turned on for every other shot of Home.
+    before: (page, seed) =>
+      page.route(
+        (url) => url.pathname === "/api/home/preferences",
+        (route) =>
+          route.request().method() === "GET"
+            ? route.fulfill({
+                status: 200,
+                json: {
+                  workspaceId: seed.workspace.id,
+                  updatedAt: null,
+                  widgets: [
+                    { key: "project-updates", enabled: true },
+                    { key: "quick-links", enabled: true },
+                    { key: "recents", enabled: true },
+                    { key: "stickies", enabled: true },
+                    { key: "risks", enabled: false },
+                    { key: "my-brief", enabled: false },
+                    { key: "pinned-reports", enabled: false },
+                  ],
+                },
+              })
+            : route.fallback(),
+      ),
+    prepare: async (page) => {
+      const widget = page.getByRole("region", { name: "Project updates" });
+      await widget
+        .getByText("Beta 0.9 is with testers", { exact: false })
+        .waitFor();
+      await widget.evaluate((el) => el.setAttribute("data-docs-shot", ""));
+    },
+    clip: { selector: "[data-docs-shot]", pad: 0 },
+    viewport: { width: 1440, height: 1200 },
   },
 
   // Analytics

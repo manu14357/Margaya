@@ -242,7 +242,9 @@ const shots = [
     url: launcher(),
     before: launcherSetUp(),
     ready: "Personal",
-    viewport: { width: 760, height: 760 },
+    // Taller than the default window, which scrolls, so the shot shows every
+    // Settings row.
+    viewport: { width: 760, height: 860 },
   },
   {
     name: "desktop/quick-add",
