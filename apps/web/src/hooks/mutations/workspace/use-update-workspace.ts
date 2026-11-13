@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { authClient } from "@/lib/auth-client";
 import { createSlug } from "@/lib/utils/create-slug";
 
@@ -12,6 +12,7 @@ type UpdateWorkspaceRequest = {
 };
 
 function useUpdateWorkspace() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({
       workspaceId,
@@ -63,6 +64,13 @@ function useUpdateWorkspace() {
 
       return data;
     },
+    // Better Auth refreshes the workspace list and the active workspace
+    // itself; the members page reads the full workspace through the cache.
+    onSuccess: (_data, { workspaceId }) =>
+      queryClient.invalidateQueries({
+        queryKey: ["workspace", "full", workspaceId],
+      }),
+    meta: { refreshTaskQueries: false },
   });
 }
 

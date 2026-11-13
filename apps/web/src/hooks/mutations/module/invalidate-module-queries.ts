@@ -1,5 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
 import { invalidateDeliveryQueries } from "@/hooks/mutations/delivery/invalidate-delivery-queries";
+import { archiveQueryKeys } from "@/hooks/queries/archive/archive-query-keys";
 import { moduleQueryKeys } from "@/hooks/queries/module/module-query-keys";
 
 /**
@@ -16,7 +17,12 @@ export function invalidateModuleQueries(
   // forecast and risks read its target date and its tasks.
   invalidateDeliveryQueries(queryClient, projectId);
   // Favorites show module names and drop archived or deleted modules.
-  if (favorites) queryClient.invalidateQueries({ queryKey: ["favorites"] });
+  // Recents too, and the Archives page lists archived ones.
+  if (favorites) {
+    queryClient.invalidateQueries({ queryKey: ["favorites"] });
+    queryClient.invalidateQueries({ queryKey: ["recent-visits"] });
+    queryClient.invalidateQueries({ queryKey: archiveQueryKeys.all() });
+  }
 }
 
 /**

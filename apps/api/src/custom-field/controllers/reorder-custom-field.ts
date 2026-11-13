@@ -2,6 +2,7 @@ import { and, eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { customFieldDefinitionTable } from "../../database/schema";
+import { publishEvent } from "../../events";
 
 async function reorderCustomFields(
   projectId: string,
@@ -33,6 +34,7 @@ async function reorderCustomFields(
     orderBy: (columns, { asc }) => [asc(columns.position)],
   });
 
+  await publishEvent("custom_field.reordered", { projectId });
   return updated;
 }
 

@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { userTable } from "../../database/schema";
+import { publishEvent } from "../../events";
 import { isValidTimezone, normalizeTimezone } from "../../utils/timezone";
 
 export const INVALID_TIMEZONE = "Unknown time zone";
@@ -28,5 +29,7 @@ export async function setUserTimezone(userId: string, timezone: string | null) {
     .update(userTable)
     .set({ timezone: next })
     .where(eq(userTable.id, userId));
+  // Member profiles show local time; the person's other devices follow.
+  await publishEvent("user.profile_changed", { userId });
   return { timezone: next };
 }

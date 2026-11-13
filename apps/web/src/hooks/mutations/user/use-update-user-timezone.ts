@@ -8,6 +8,8 @@ function useUpdateUserTimezone() {
     mutationFn: updateUserTimezone,
     onSuccess: (saved) => {
       queryClient.setQueryData(userTimezoneQueryKey, saved);
+      // Member profiles show each person's local time.
+      void queryClient.invalidateQueries({ queryKey: ["workspace-member"] });
     },
   });
 }

@@ -78,6 +78,11 @@ function useUpdateProjectFeatures() {
         queryKey: ["projects", workspaceId],
         exact: true,
       });
+      // Favorites and recents hide items of a feature turned off.
+      queryClient.invalidateQueries({ queryKey: ["favorites", workspaceId] });
+      queryClient.invalidateQueries({
+        queryKey: ["recent-visits", workspaceId],
+      });
     },
   });
 }

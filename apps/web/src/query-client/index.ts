@@ -116,7 +116,11 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      refetchOnMount: false,
+      // Cached data is reused on mount, unless a mutation or a realtime hint
+      // invalidated it while it was off screen: then it refetches, or a
+      // change made elsewhere (a renamed member, project or label) would
+      // stay stale until a reload.
+      refetchOnMount: (query) => query.state.isInvalidated,
       retry: (failureCount, error) =>
         isNetworkError(error) ||
         isUnauthorizedError(error) ||

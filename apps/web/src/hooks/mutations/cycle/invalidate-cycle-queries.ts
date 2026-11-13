@@ -1,5 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
 import { invalidateDeliveryQueries } from "@/hooks/mutations/delivery/invalidate-delivery-queries";
+import { archiveQueryKeys } from "@/hooks/queries/archive/archive-query-keys";
 import { cycleQueryKeys } from "@/hooks/queries/cycle/cycle-query-keys";
 
 /** Lists, details and progress of the project's cycles, and the forecasts. */
@@ -13,7 +14,12 @@ export function invalidateCycleQueries(
   // forecast and risks read its end date and its tasks.
   invalidateDeliveryQueries(queryClient, projectId);
   // Favorites show cycle names and hide archived cycles.
-  if (favorites) queryClient.invalidateQueries({ queryKey: ["favorites"] });
+  // Recents too, and the Archives page lists archived ones.
+  if (favorites) {
+    queryClient.invalidateQueries({ queryKey: ["favorites"] });
+    queryClient.invalidateQueries({ queryKey: ["recent-visits"] });
+    queryClient.invalidateQueries({ queryKey: archiveQueryKeys.all() });
+  }
 }
 
 /** After tasks change cycle: the board, forecasts, each task and its activity. */

@@ -2,9 +2,10 @@ import { and, eq, isNotNull, isNull } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { labelTable } from "../../database/schema";
+import { publishEvent } from "../../events";
 
 async function updateLabel(id: string, name: string, color: string) {
-  return db.transaction(async (tx) => {
+  const updated = await db.transaction(async (tx) => {
     const label = await tx.query.labelTable.findFirst({
       where: (label, { eq }) => eq(label.id, id),
     });
@@ -46,6 +47,11 @@ async function updateLabel(id: string, name: string, color: string) {
 
     return updatedLabel;
   });
+  // Every task copy changed with it, in every project of the workspace.
+  if (updated.workspaceId) {
+    await publishEvent("label.changed", { workspaceId: updated.workspaceId });
+  }
+  return updated;
 }
 
 export default updateLabel;

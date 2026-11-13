@@ -146,6 +146,7 @@ import {
   WORKSPACE_LOCKED_MESSAGE,
 } from "./workspace-deletion/lock";
 import { isWorkspaceDeletionDue } from "./workspace-deletion/service";
+import { publishProfileChanged } from "./ws/workspace-hints";
 
 config();
 
@@ -669,6 +670,16 @@ function createAuthInstance(
           beforeUpdateOrganization: async ({ member }) => {
             await assertOrganizationWritable(member?.organizationId);
           },
+          // Name, slug and logo show in every member's switcher and header.
+          afterUpdateOrganization: async ({ organization, member }) => {
+            const workspaceId = organization?.id ?? member?.organizationId;
+            if (workspaceId) {
+              void publishEvent("workspace.updated", {
+                workspaceId,
+                userId: member?.userId ?? null,
+              });
+            }
+          },
           beforeCreateInvitation: async ({ invitation }) => {
             await assertOrganizationWritable(invitation?.organizationId);
             await refuseAgentInvitation(invitation?.email);
@@ -918,6 +929,13 @@ function createAuthInstance(
             }
 
             await promoteInitialAdministrator(user.id);
+          },
+        },
+        // Profile edits (name, avatar, email, locale), admin and SCIM
+        // updates: the person's devices and co-members refresh.
+        update: {
+          after: async (user) => {
+            if (user?.id) void publishProfileChanged(user.id);
           },
         },
       },

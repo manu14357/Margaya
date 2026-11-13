@@ -73,6 +73,13 @@ function useUpdateProject() {
         queryKey: ["tasks", project.id],
         exact: true,
       });
+      // Favorites and recents show the project's name and icon.
+      void queryClient.invalidateQueries({
+        queryKey: ["favorites", project.workspaceId],
+      });
+      void queryClient.invalidateQueries({
+        queryKey: ["recent-visits", project.workspaceId],
+      });
     },
   });
 }

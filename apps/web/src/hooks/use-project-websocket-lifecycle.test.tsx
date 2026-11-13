@@ -198,6 +198,8 @@ describe("project WebSocket lifecycle", () => {
     });
     runBatchedRefreshes();
     expect(client.invalidateQueries.mock.calls.map(([arg]) => arg)).toEqual([
+      // A deleted column's archived tasks move to another column.
+      { queryKey: ["archives"] },
       { queryKey: ["columns", "project-a"] },
       { queryKey: ["projects"] },
       // Task query results follow the project's changes (B4).
@@ -233,8 +235,39 @@ describe("project WebSocket lifecycle", () => {
       // The workspace's trashed projects (C7).
       { queryKey: ["trash"] },
       { queryKey: ["projects"] },
-      // Favorites hide archived projects.
+      // Favorites and recents hide archived projects.
       { queryKey: ["favorites"] },
+      { queryKey: ["recent-visits"] },
+    ]);
+    // Board cards show the project's key.
+    runBatchedRefreshes();
+    expect(client.invalidateQueries).toHaveBeenLastCalledWith({
+      queryKey: ["tasks", "project-a"],
+    });
+    unmount();
+  });
+
+  it("refetches the project's custom field values on CUSTOM_FIELD_VALUES_UPDATED", () => {
+    const { unmount } = renderHook(() => useProjectWebSocket("project-a"));
+    const socket = TestSocket.instances[0];
+    act(() => {
+      socket.open();
+      for (let i = 0; i < 3; i += 1) {
+        socket.onmessage?.({
+          data: JSON.stringify({
+            type: "CUSTOM_FIELD_VALUES_UPDATED",
+            projectId: "project-a",
+          }),
+        });
+      }
+    });
+    expect(client.invalidateQueries).not.toHaveBeenCalled();
+    runBatchedRefreshes();
+    // Board cards and backlog rows read the project's values; a burst of
+    // edits refreshes them once.
+    expect(client.invalidateQueries.mock.calls.map(([arg]) => arg)).toEqual([
+      { queryKey: ["custom-field-values", "project-a"] },
+      { queryKey: ["custom-field-filter-values", "project-a"] },
     ]);
     unmount();
   });

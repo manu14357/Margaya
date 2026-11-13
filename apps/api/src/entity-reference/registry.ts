@@ -5,6 +5,7 @@ import {
   projectTable,
   recentVisitTable,
 } from "../database/schema";
+import { publishEvent } from "../events";
 import { projectFeatureField } from "../project/features";
 import { hiddenProjectIds, isWorkspaceGuest } from "../project/visibility";
 import { resolveCycles } from "./resolvers/cycle";
@@ -185,7 +186,8 @@ export async function partitionReferenceRows<T extends ReferenceRow>(
 
 /**
  * Deletes favorites and recent visits of entities that no longer exist.
- * Slices that delete cycles, modules, views or pages call this.
+ * Slices that delete cycles, modules, views or pages call this. The people
+ * who held a removed row get a refresh hint (ws/workspace-hints.ts).
  */
 export async function removeEntityReferences(
   entityType: EntityType,
@@ -193,22 +195,38 @@ export async function removeEntityReferences(
 ) {
   if (entityIds.length === 0) return;
 
+  const holders: { userId: string; workspaceId: string }[] = [];
   if (isFavoriteEntityType(entityType)) {
-    await db
-      .delete(favoriteTable)
+    holders.push(
+      ...(await db
+        .delete(favoriteTable)
+        .where(
+          and(
+            eq(favoriteTable.entityType, entityType),
+            inArray(favoriteTable.entityId, entityIds),
+          ),
+        )
+        .returning({
+          userId: favoriteTable.userId,
+          workspaceId: favoriteTable.workspaceId,
+        })),
+    );
+  }
+  holders.push(
+    ...(await db
+      .delete(recentVisitTable)
       .where(
         and(
-          eq(favoriteTable.entityType, entityType),
-          inArray(favoriteTable.entityId, entityIds),
+          eq(recentVisitTable.entityType, entityType),
+          inArray(recentVisitTable.entityId, entityIds),
         ),
-      );
+      )
+      .returning({
+        userId: recentVisitTable.userId,
+        workspaceId: recentVisitTable.workspaceId,
+      })),
+  );
+  if (holders.length > 0) {
+    await publishEvent("entity_reference.removed", { entityType, holders });
   }
-  await db
-    .delete(recentVisitTable)
-    .where(
-      and(
-        eq(recentVisitTable.entityType, entityType),
-        inArray(recentVisitTable.entityId, entityIds),
-      ),
-    );
 }

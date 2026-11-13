@@ -123,6 +123,13 @@ async function deleteLabel(
       .where(eq(labelTable.id, id))
       .returning();
     if (!deleted) throw new HTTPException(404, { message: "Label not found" });
+    // Pickers drop it everywhere, including where no task used it.
+    if (deleted.workspaceId) {
+      await publishEvent("label.changed", {
+        workspaceId: deleted.workspaceId,
+        userId,
+      });
+    }
     return deleted;
   });
 }

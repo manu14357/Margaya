@@ -11,6 +11,7 @@ import {
   restoreTask,
 } from "@/fetchers/trash/task-trash";
 import { invalidatePageQueries } from "@/hooks/mutations/page/invalidate-page-queries";
+import { invalidateProjectListQueries } from "@/hooks/mutations/project/invalidate-project-list-queries";
 import { invalidatePlanningProgress } from "@/hooks/mutations/task/invalidate-planning-progress";
 import { archiveQueryKeys } from "@/hooks/queries/archive/archive-query-keys";
 import { trashQueryKeys } from "@/hooks/queries/trash/trash-query-keys";
@@ -30,10 +31,7 @@ export function refreshAfterTaskChange(
 }
 
 function refreshAfterProjectChange(queryClient: QueryClient) {
-  void queryClient.invalidateQueries({ queryKey: trashQueryKeys.all() });
-  void queryClient.invalidateQueries({ queryKey: ["projects"] });
-  void queryClient.invalidateQueries({ queryKey: ["favorites"] });
-  void queryClient.invalidateQueries({ queryKey: archiveQueryKeys.all() });
+  invalidateProjectListQueries(queryClient);
 }
 
 export function useRestoreTask(projectId: string) {

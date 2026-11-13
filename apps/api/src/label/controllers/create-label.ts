@@ -86,6 +86,8 @@ async function createLabel(
         label: { name, color },
         type: "label_created",
       });
+      // Workspace label lists include labels on tasks.
+      await publishEvent("label.changed", { workspaceId, userId });
     }
     return label;
   }
@@ -113,6 +115,7 @@ async function createLabel(
     throw new Error("Failed to create or resolve label");
   }
 
+  if (inserted) await publishEvent("label.changed", { workspaceId, userId });
   return label;
 }
 

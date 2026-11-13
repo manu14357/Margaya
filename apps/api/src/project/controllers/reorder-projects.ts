@@ -2,6 +2,7 @@ import { asc, eq, sql } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { projectTable } from "../../database/schema";
+import { publishEvent } from "../../events";
 
 async function reorderProjects(
   workspaceId: string,
@@ -22,7 +23,7 @@ async function reorderProjects(
     });
   }
 
-  return db.transaction(async (tx) => {
+  const reordered = await db.transaction(async (tx) => {
     // Serialize ordering writes per workspace so a concurrent create (which
     // appends at max(position) + 1) cannot interleave with a renumber.
     // `createProject` takes the same lock with the same key.
@@ -102,6 +103,9 @@ async function reorderProjects(
     });
     return reordered.filter((project) => !hiddenIds.has(project.id));
   });
+  // The order is shared: every member's sidebar follows it.
+  await publishEvent("project.reordered", { workspaceId });
+  return reordered;
 }
 
 export default reorderProjects;
