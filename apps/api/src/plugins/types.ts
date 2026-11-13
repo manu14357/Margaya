@@ -116,6 +116,29 @@ export type TaskUnassignedEvent = {
   assigneeIds?: string[];
 };
 
+/** An intake request was accepted, declined or marked a duplicate. */
+export type IntakeDecidedEvent = {
+  taskId: string;
+  projectId: string;
+  /** Who decided. */
+  userId: string | null;
+  decision: "accepted" | "declined" | "duplicate";
+  title: string;
+  taskKey: string;
+  /** The column an accepted request went to. */
+  columnName: string | null;
+  duplicateKey: string | null;
+};
+
+/** A project status update was posted. Load it by id; never trust payloads. */
+export type ProjectUpdatePostedEvent = {
+  /** Unused by project-level events; kept so handlers share one shape. */
+  taskId: string;
+  projectId: string;
+  userId: string | null;
+  updateId: string;
+};
+
 export type TaskEvent =
   | TaskCreatedEvent
   | TaskStatusChangedEvent
@@ -127,7 +150,9 @@ export type TaskEvent =
   | TaskMovedEvent
   | TaskDueDateChangedEvent
   | TaskAssigneeChangedEvent
-  | TaskUnassignedEvent;
+  | TaskUnassignedEvent
+  | IntakeDecidedEvent
+  | ProjectUpdatePostedEvent;
 
 export type ExternalMetadata = {
   type: "issue" | "pull_request" | "branch";
@@ -173,6 +198,8 @@ export type IntegrationPlugin = {
   onTaskDueDateChanged?: TaskEventHandler<TaskDueDateChangedEvent>;
   onTaskAssigneeChanged?: TaskEventHandler<TaskAssigneeChangedEvent>;
   onTaskUnassigned?: TaskEventHandler<TaskUnassignedEvent>;
+  onIntakeDecided?: TaskEventHandler<IntakeDecidedEvent>;
+  onProjectUpdatePosted?: TaskEventHandler<ProjectUpdatePostedEvent>;
 
   handleWebhook?: WebhookHandler;
   getTaskMetadata?: MetadataProvider;

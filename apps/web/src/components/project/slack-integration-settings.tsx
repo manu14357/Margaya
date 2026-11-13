@@ -32,6 +32,9 @@ type SlackIntegrationFormValues = {
   taskTitleChanged: boolean;
   taskDescriptionChanged: boolean;
   taskCommentCreated: boolean;
+  taskDueDateChanged: boolean;
+  intakeDecision: boolean;
+  projectUpdate: boolean;
 };
 
 function EventToggle({
@@ -48,6 +51,9 @@ function EventToggle({
     | "taskTitleChanged"
     | "taskDescriptionChanged"
     | "taskCommentCreated"
+    | "taskDueDateChanged"
+    | "intakeDecision"
+    | "projectUpdate"
   >;
   label: string;
 }) {
@@ -92,6 +98,9 @@ export function SlackIntegrationSettings({ projectId }: { projectId: string }) {
         taskTitleChanged: z.boolean(),
         taskDescriptionChanged: z.boolean(),
         taskCommentCreated: z.boolean(),
+        taskDueDateChanged: z.boolean(),
+        intakeDecision: z.boolean(),
+        projectUpdate: z.boolean(),
       }),
     [],
   );
@@ -114,6 +123,9 @@ export function SlackIntegrationSettings({ projectId }: { projectId: string }) {
       taskDescriptionChanged:
         integration?.events?.taskDescriptionChanged ?? false,
       taskCommentCreated: integration?.events?.taskCommentCreated ?? true,
+      taskDueDateChanged: integration?.events?.taskDueDateChanged ?? false,
+      intakeDecision: integration?.events?.intakeDecision ?? false,
+      projectUpdate: integration?.events?.projectUpdate ?? false,
     }),
     [integration],
   );
@@ -129,6 +141,9 @@ export function SlackIntegrationSettings({ projectId }: { projectId: string }) {
       taskTitleChanged: false,
       taskDescriptionChanged: false,
       taskCommentCreated: true,
+      taskDueDateChanged: false,
+      intakeDecision: false,
+      projectUpdate: false,
     },
   });
   const { reset } = form;
@@ -157,6 +172,9 @@ export function SlackIntegrationSettings({ projectId }: { projectId: string }) {
         taskTitleChanged: values.taskTitleChanged,
         taskDescriptionChanged: values.taskDescriptionChanged,
         taskCommentCreated: values.taskCommentCreated,
+        taskDueDateChanged: values.taskDueDateChanged,
+        intakeDecision: values.intakeDecision,
+        projectUpdate: values.projectUpdate,
       };
 
       if (!isConnected) {
@@ -239,6 +257,9 @@ export function SlackIntegrationSettings({ projectId }: { projectId: string }) {
         taskTitleChanged: false,
         taskDescriptionChanged: false,
         taskCommentCreated: true,
+        taskDueDateChanged: false,
+        intakeDecision: false,
+        projectUpdate: false,
       });
       toast.success(t("settings:slackIntegration.toast.removed"));
     } catch (error) {
@@ -396,6 +417,24 @@ export function SlackIntegrationSettings({ projectId }: { projectId: string }) {
               label={t("settings:slackIntegration.events.taskCommentCreated")}
               name="taskCommentCreated"
             />
+            <EventToggle
+              control={form.control}
+              label={t("settings:slackIntegration.events.taskDueDateChanged")}
+              name="taskDueDateChanged"
+            />
+            <EventToggle
+              control={form.control}
+              label={t("settings:slackIntegration.events.intakeDecision")}
+              name="intakeDecision"
+            />
+            <EventToggle
+              control={form.control}
+              label={t("settings:slackIntegration.events.projectUpdate")}
+              name="projectUpdate"
+            />
+            <p className="text-xs text-muted-foreground">
+              {t("settings:slackIntegration.buttonsHint")}
+            </p>
           </div>
 
           <div className="flex flex-wrap gap-2">

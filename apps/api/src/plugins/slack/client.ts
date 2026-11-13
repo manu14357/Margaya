@@ -18,7 +18,8 @@ export type SlackBlock =
 
 export type SlackMessage = {
   text: string;
-  blocks?: SlackBlock[];
+  /** Typed blocks, or Block Kit built by the Slack app (slack-app/blocks.ts). */
+  blocks?: Array<SlackBlock | Record<string, unknown>>;
 };
 
 const SLACK_TIMEOUT_MS = 10_000;

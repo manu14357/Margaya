@@ -1,0 +1,128 @@
+---
+title: Slack app (two-way)
+description: Search, capture and update Margaya tasks from Slack with a slash command, a message shortcut, link previews and buttons. Works over Socket Mode with no public URL.
+---
+
+The Slack app brings Margaya into Slack. Once it is connected to your workspace, people can:
+
+- search tasks and capture new ones with `/margaya`;
+- turn any Slack message into a task, or into an intake request, with the **Create Margaya task** message shortcut;
+- see a preview when someone pastes a Margaya task link (and, if you turn it on, when a message mentions a task key such as `WEB-12`);
+- use **Assign to me**, **Change status** and **Open** buttons on the messages Margaya posts to a channel.
+
+<Info>
+Every action runs as the person's own Margaya account, through the same permission checks as the web app. The app never acts as a bot with workspace-wide rights. Each person links their Slack account once; until then, Slack asks them to link and does nothing for them.
+</Info>
+
+This is separate from the [Slack notifications](/core/integrations/slack) set up per project with an incoming webhook. You can use either or both; with both, the posted messages get buttons.
+
+## Choose a connection mode
+
+| | Socket Mode (default) | HTTP requests |
+| --- | --- | --- |
+| How Slack reaches Margaya | Margaya opens an outbound WebSocket to Slack | Slack sends signed HTTPS requests to Margaya |
+| Public URL needed | No. Works behind a VPN, a firewall or a reverse proxy | Yes. Slack must reach `https://<your API>/api/slack/events/<workspace ID>` |
+| Credentials | Bot token (`xoxb-`) and app-level token (`xapp-`) | Bot token (`xoxb-`) and signing secret |
+
+Pick Socket Mode unless you already expose Margaya on the internet and prefer plain HTTPS. In HTTP mode, Margaya checks Slack's signature on every request and refuses any request whose timestamp is more than five minutes old, so a captured request can't be replayed.
+
+<Note>
+With several API replicas in Socket Mode, each replica keeps its own connection and Slack hands every event to one of them. Slack allows up to ten connections per app, so no extra setup is needed. Redis is not required.
+</Note>
+
+## Set it up
+
+You need **Manage settings** in the Margaya workspace, and permission to install apps in your Slack workspace.
+
+<Steps>
+<Step title="Open the Slack app settings">
+In Margaya, select **Settings**, then **Workspace**, then **Slack app**. Under **Set up**, choose **Socket Mode** or **HTTP requests**.
+</Step>
+<Step title="Create the Slack app from the manifest">
+Select **Copy manifest**. In Slack, open [api.slack.com/apps](https://api.slack.com/apps), select **Create New App**, then **From a manifest**, pick your Slack workspace and paste it. Review and create the app, then select **Install to Workspace**. Slack asks for a channel: that is where the app's incoming webhook posts, if you want one (see [Buttons on posted messages](#buttons-on-posted-messages)).
+
+The manifest adds the `/margaya` command, the **Create Margaya task** shortcut, link previews for your Margaya address and the scopes these need. In HTTP mode it also holds the Request URL, which Slack checks when you save the app, so Margaya must already be reachable.
+</Step>
+<Step title="Copy the tokens">
+- **Bot User OAuth Token** (`xoxb-…`): **OAuth & Permissions** in the Slack app. It appears once the app is installed.
+- Socket Mode: an **app-level token** (`xapp-…`). Under **Basic Information**, **App-Level Tokens**, select **Generate Token and Scopes**, add the `connections:write` scope and generate it.
+- HTTP mode: the **Signing Secret**, under **Basic Information**, **App Credentials**.
+
+<Warning>
+Copy the tokens from the app's own pages. The **Your App Configuration Tokens** box on the Slack apps list gives `xoxe.xoxp-…` and `xoxe-…` tokens: they manage app definitions, expire after 12 hours and don't work here.
+</Warning>
+</Step>
+<Step title="Connect and test">
+Paste the tokens into Margaya and select **Connect and test**. The test checks the bot token with Slack (and records your Slack workspace's name) and, in Socket Mode, the app-level token. A failed check shows Slack's error code, for example `invalid_auth` for a wrong or revoked token.
+</Step>
+<Step title="Link accounts">
+Each person runs `/margaya link` in Slack once. Slack shows them a private **Link account** button; it opens Margaya, where they sign in if needed and confirm which Slack account will act as them. The link prompt works for 15 minutes.
+</Step>
+<Step title="Invite the app to channels">
+In each channel where you want task key previews, run `/invite @Margaya` (use your app's name). The `/margaya` command and the message shortcut work in any channel without this.
+</Step>
+</Steps>
+
+<Tip>
+Socket Mode also works with Margaya running on your own computer, for example to try the app before rolling it out. Everything works except link previews, which Slack only shows for a domain name.
+</Tip>
+
+Tokens and the signing secret are stored encrypted and are never shown again; the settings page shows only a masked hint such as `xoxb-…a1b2`. To change one, paste the new value and save; empty fields keep the saved value. They are encrypted with a key derived from `AUTH_SECRET`, so changing `AUTH_SECRET` means entering them again.
+
+<Screenshot src="integrations/slack-app" alt="The Slack app page for a connected Slack workspace: Studio North marked Active in Socket Mode with Test connection and the Slack app on switch, then the four setup steps with the connection mode, the manifest with Copy manifest and Open Slack apps, the masked bot and app-level tokens with Save and test, and Link accounts" caption="A connected Slack app. The setup steps stay below the connection, for changing the mode or the tokens." />
+
+## Options
+
+- **Default project**: where `/margaya add` puts a task when the text doesn't start with a project key, and the project the message shortcut preselects.
+- **Preview task keys in messages**: off by default. When on, a message that mentions task keys gets a thread reply with previews of up to three tasks. This needs the `channels:history` and `groups:history` scopes, so copy the manifest again after turning it on and update the Slack app.
+- **Slack app on**: turn the app off without removing it. Margaya then ignores commands, shortcuts and buttons from Slack.
+
+## Using it in Slack
+
+### The `/margaya` command
+
+| Command | What it does |
+| --- | --- |
+| `/margaya search login bug` | Lists up to eight tasks you can see that match. Text without a keyword searches too. |
+| `/margaya WEB-12` | Shows a preview of the task, with buttons. |
+| `/margaya add WEB Fix the login @ana #bug !high friday` | Creates a task. It reads the same tokens as the quick capture bar: `@` for an assignee, `#` for a label, `!` for a priority and date words such as `tomorrow`, `friday`, `next week` or `12 Oct` for the due date. A leading project key picks the project; otherwise the default project is used. |
+| `/margaya link`, `/margaya unlink` | Link or unlink your Margaya account. |
+| `/margaya help` | Shows these commands. |
+
+Replies are visible only to you. Due dates are read in the Margaya server's time zone.
+
+### Create a task from a message
+
+Open a message's **More actions** menu and choose **Create Margaya task**. A form opens with the first line as the title and the message, quoted, as the description, ending with a link back to the message in Slack. Pick a project and select **Create**. Check **Send to intake for review** to submit it as an intake request instead; the project needs [Intake](/core/functional/intake) turned on.
+
+### Link previews
+
+When someone posts a link to a Margaya task in this workspace, Slack shows a preview with the task's project, status, priority, due date and assignees. The poster's own permissions decide: if they haven't linked their account, or can't see the task, no preview appears at all. Slack shows a preview to everyone in the channel, so anyone who can read the channel sees what the poster could see.
+
+Slack can only preview links on a domain name. If `MARGAYA_CLIENT_URL` is `localhost` or an IP address, the manifest leaves link previews out.
+
+### Buttons on posted messages
+
+When the workspace's Slack app is connected, the messages a project's [Slack notifications](/core/integrations/slack) post carry **Assign to me**, **Change status** and **Open**. Slack sends a click to the app that owns the webhook, so create the webhook from this same Slack app (**Incoming Webhooks** in the Slack app's settings). The click runs as the clicking person's linked account; if they aren't linked, or aren't allowed, only they see a message saying so.
+
+## Accounts and permissions
+
+- A link connects one Slack user to one Margaya account in one workspace. You see and remove your links under **Settings**, **Account**, **Slack**.
+
+<Screenshot src="integrations/slack-app-link" alt="The Slack page of account settings asking to link a Slack account: Slack user elena.marsh in Studio North will act as you in Studio North, a warning to continue only if that Slack account is yours, Link account and Cancel, and an empty Linked Slack accounts list" caption="Confirm that the Slack account is yours before linking it." />
+- Linking needs a signed-in session in the browser, not an API key, and membership of the workspace. Guests can't link.
+- If a Slack user who is already linked to someone else links again, the link moves to the new person.
+- Actions run with a short-lived key for the linked account that can only read projects, create and update tasks, add labels, assign and submit intake requests. It never exceeds the person's own role, and it is deleted after each action. Audit log entries for these actions show the API key **Slack**.
+- Disconnecting the Slack app removes the stored tokens but keeps the links, so reconnecting the same Slack workspace needs no relinking.
+
+## Troubleshooting
+
+| Symptom | What to check |
+| --- | --- |
+| The test shows `invalid_auth` | The token is wrong or was revoked. Reinstall the Slack app if needed, then paste the current token. |
+| Margaya refuses the token you pasted | A bot token starts with `xoxb-` and an app-level token with `xapp-`. Tokens starting with `xoxe` or `xoxp` are configuration or user tokens; see [Copy the tokens](#set-it-up). |
+| Task keys in messages get no preview | Turn on **Preview task keys in messages**, update the Slack app with the new manifest, invite the app to the channel, and link your account. A request still waiting in [Intake](/core/functional/intake) has no preview until it is accepted. |
+| Socket Mode test fails on the app-level token | The `xapp-` token needs the `connections:write` scope, and Socket Mode must be on in the Slack app (the manifest turns it on). |
+| `/margaya` says "dispatch_failed" in HTTP mode | Slack can't reach the Request URL, or the signing secret in Margaya doesn't match the app's. |
+| Buttons say the app isn't configured | The webhook belongs to a different Slack app. Create it from the Margaya Slack app. |
+| No link previews | The poster hasn't linked their account, can't see the task, or `MARGAYA_CLIENT_URL` is not a domain name. |

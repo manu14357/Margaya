@@ -1,5 +1,5 @@
 import { APIError } from "better-auth/api";
-import { and, desc, eq, inArray, isNull, or } from "drizzle-orm";
+import { and, desc, eq, inArray, isNull, ne, or } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import { recordAudit } from "../audit-log/record";
 import { workspacesOf } from "../audit-log/snapshots";
@@ -80,7 +80,13 @@ export async function listApiKeys(userId: string) {
       permissions: apikeyTable.permissions,
     })
     .from(apikeyTable)
-    .where(ownedBy(userId))
+    .where(
+      and(
+        ownedBy(userId),
+        // A Slack action's key lives for one action (slack-app/acting-user.ts).
+        or(isNull(apikeyTable.prefix), ne(apikeyTable.prefix, "mgslack_")),
+      ),
+    )
     .orderBy(desc(apikeyTable.createdAt), desc(apikeyTable.id));
   const scopes = await scopeViews(rows.map((row) => row.permissions));
   return rows.map(({ permissions: _permissions, ...row }, index) => ({

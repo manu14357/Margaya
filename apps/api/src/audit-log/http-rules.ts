@@ -537,6 +537,46 @@ const integrationRules: HttpRule[] = [
   integrationRule("DELETE", "integration.disconnected"),
 ];
 
+// The workspace's two-way Slack app (slack-app/). Never the credentials:
+// only which fields a request set.
+function slackAppRule(method: string, action: AuditAction): HttpRule {
+  return {
+    method,
+    path: /^\/api\/slack-app\/workspace\/([^/]+)$/,
+    readBody: method === "PATCH",
+    after: async ({ match, body }) => {
+      const workspaceId = match[1];
+      if (!workspaceId) return null;
+      const fields =
+        method === "PATCH"
+          ? Object.keys(body).filter((key) =>
+              [
+                "mode",
+                "botToken",
+                "appToken",
+                "signingSecret",
+                "defaultProjectId",
+                "expandTaskKeys",
+                "isActive",
+              ].includes(key),
+            )
+          : undefined;
+      return {
+        workspaceId,
+        action,
+        target: { type: "integration", id: workspaceId, label: "Slack app" },
+        metadata: { provider: "slack-app", ...(fields ? { fields } : {}) },
+      };
+    },
+  };
+}
+
+const slackAppRules: HttpRule[] = [
+  slackAppRule("POST", "integration.connected"),
+  slackAppRule("PATCH", "integration.updated"),
+  slackAppRule("DELETE", "integration.disconnected"),
+];
+
 /** Top-level numbers of an import's answer: its counts. */
 function counts(response: Json) {
   const source = obj(response.results ?? response.summary ?? response);
@@ -756,6 +796,7 @@ export const HTTP_RULES: HttpRule[] = [
   ...workspaceRules,
   ...webhookRules,
   ...integrationRules,
+  ...slackAppRules,
   ...transferRules,
 ];
 

@@ -7,6 +7,10 @@ Margaya can post task activity to a Slack channel whenever events occur in a pro
 
 ## Create a Slack webhook
 
+If you have connected the workspace's [Slack app](/core/integrations/slack-app), don't create a second app: open that app at [api.slack.com/apps](https://api.slack.com/apps), go to **Incoming Webhooks** and start at step 4. Installing the app from its manifest may already have created a webhook for the channel you picked; copy that URL. Using the same app is what makes the buttons on posted messages work.
+
+Otherwise:
+
 1. Go to [api.slack.com/apps](https://api.slack.com/apps) and click **Create New App** then **From scratch**.
 2. Name your app (e.g. "Margaya") and select your workspace.
 3. In the app settings, go to **Incoming Webhooks** and toggle it **On**.
@@ -25,14 +29,14 @@ If your Slack workspace restricts app installations, you may need a workspace ad
 ## Connect Slack in Margaya
 
 1. Select **Settings** at the bottom of the left rail, then **Projects**.
-2. Pick the project in the project switcher and open **Project integrations**.
+2. Pick the project in the project switcher and open **Integrations**.
 3. Expand **Slack integration**.
 4. Paste the URL into **Incoming webhook URL**.
 5. Optionally fill in **Channel name**, a label for your own reference. Slack itself decides the destination channel from the webhook.
 6. Under **Event notifications**, choose which events to post (see below).
 7. Select **Connect Slack**.
 
-<Screenshot src="integrations/slack" alt="The Slack integration expanded in project integrations, with a webhook URL and channel name filled in and the six event toggles" caption="Paste the webhook URL, pick the events, then connect." />
+<Screenshot src="integrations/slack" alt="The Slack integration expanded in project integrations, with a webhook URL and channel name filled in, the nine event toggles and a note on the buttons the workspace's Slack app adds" caption="Paste the webhook URL, pick the events, then connect." />
 
 Once connected, the section shows **Connected**. You can turn the integration off and on with its switch, update event subscriptions, or disconnect entirely.
 
@@ -46,8 +50,15 @@ Once connected, the section shows **Connected**. You can turn the integration of
 | **Title changes** | Off | A task's title is edited |
 | **Description changes** | Off | A task's description is edited |
 | **New comments** | On | A new comment is added to a task |
+| **Due date changes** | Off | A task's due date is set, changed or cleared |
+| **Intake decisions** | Off | An intake request is accepted, declined or closed as a duplicate |
+| **Project updates** | Off | A project status update is posted (labelled when drafted with AI) |
 
-You can toggle any combination of these events in the integration settings at any time.
+You can toggle any combination of these events in the integration settings at any time. Requests still waiting in intake are never posted.
+
+<Tip>
+To search, capture and update tasks from Slack, and to get **Assign to me**, **Change status** and **Open** buttons on these messages, connect the workspace's [Slack app](/core/integrations/slack-app). Create this webhook from that same Slack app so the buttons reach Margaya.
+</Tip>
 
 ## Message format
 

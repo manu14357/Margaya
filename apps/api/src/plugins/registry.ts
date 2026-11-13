@@ -2,10 +2,16 @@ import { and, eq } from "drizzle-orm";
 import db from "../database";
 import { columnTable, integrationTable } from "../database/schema";
 import { subscribeToEvent } from "../events";
+import {
+  INTAKE_ITEM_UPDATED,
+  type IntakeItemUpdatedEvent,
+} from "../intake/events";
 import { triageTaskIds } from "../intake/guards";
 import type {
+  IntakeDecidedEvent,
   IntegrationPlugin,
   PluginContext,
+  ProjectUpdatePostedEvent,
   TaskAssigneeChangedEvent,
   TaskCommentCreatedEvent,
   TaskCreatedEvent,
@@ -244,6 +250,42 @@ export function initializeEventSubscriptions(): void {
       oldAssigneeId: data.oldAssigneeId,
       oldAssignee: data.oldAssignee,
       assigneeIds: data.assigneeIds,
+    });
+  });
+
+  subscribeToEvent<IntakeItemUpdatedEvent>(
+    INTAKE_ITEM_UPDATED,
+    async (data) => {
+      if (
+        data.action !== "accepted" &&
+        data.action !== "declined" &&
+        data.action !== "duplicate"
+      ) {
+        return;
+      }
+      await broadcastIntakeDecided({
+        taskId: data.taskId,
+        projectId: data.projectId,
+        userId: data.userId,
+        decision: data.action,
+        title: data.taskTitle,
+        taskKey: data.taskKey,
+        columnName: data.columnName ?? null,
+        duplicateKey: data.duplicateKey ?? null,
+      });
+    },
+  );
+
+  subscribeToEvent<{
+    updateId: string;
+    projectId: string;
+    userId: string | null;
+  }>("project_update.created", async (data) => {
+    await broadcastProjectUpdatePosted({
+      taskId: "",
+      projectId: data.projectId,
+      userId: data.userId ?? null,
+      updateId: data.updateId,
     });
   });
 
@@ -538,6 +580,50 @@ export async function broadcastTaskUnassigned(
       await plugin.onTaskUnassigned(event, context);
     } catch (error) {
       console.error(`Plugin ${plugin.type} error on task.unassigned:`, error);
+    }
+  }
+}
+
+/**
+ * A decision on an intake request. Not filtered by triage: a declined
+ * request stays in triage, and the decision is what the channel asked for.
+ * Plugins opt in per event (off by default).
+ */
+export async function broadcastIntakeDecided(
+  event: IntakeDecidedEvent,
+): Promise<void> {
+  const integrations = await getActiveIntegrations(event.projectId);
+
+  for (const integration of integrations) {
+    const plugin = getPlugin(integration.type);
+    if (!plugin?.onIntakeDecided) continue;
+
+    const context = createContext(integration);
+
+    try {
+      await plugin.onIntakeDecided(event, context);
+    } catch (error) {
+      console.error(`Plugin ${plugin.type} error on intake decision:`, error);
+    }
+  }
+}
+
+/** A posted project status update (project_update.created). */
+export async function broadcastProjectUpdatePosted(
+  event: ProjectUpdatePostedEvent,
+): Promise<void> {
+  const integrations = await getActiveIntegrations(event.projectId);
+
+  for (const integration of integrations) {
+    const plugin = getPlugin(integration.type);
+    if (!plugin?.onProjectUpdatePosted) continue;
+
+    const context = createContext(integration);
+
+    try {
+      await plugin.onProjectUpdatePosted(event, context);
+    } catch (error) {
+      console.error(`Plugin ${plugin.type} error on project update:`, error);
     }
   }
 }

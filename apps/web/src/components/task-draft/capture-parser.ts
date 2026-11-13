@@ -1,20 +1,40 @@
-import {
-  addDays,
-  addWeeks,
-  format,
-  getDay,
-  isBefore,
-  parseISO,
-  startOfDay,
-  startOfWeek,
-} from "date-fns";
-
 /**
- * The capture bar's token parser (DESIGN-SYSTEM §7.3, §13). Client-side only:
- * `@name` picks an assignee, `#label` a label, `!urgent` a priority and date
- * words a due date. Whatever does not match stays in the title, and every
- * date is a local calendar day ("yyyy-MM-dd"), so no timezone shifts it.
+ * The capture bar's token parser (DESIGN-SYSTEM §7.3, §13): `@name` picks an
+ * assignee, `#label` a label, `!urgent` a priority and date words a due date.
+ * Whatever does not match stays in the title, and every date is a local
+ * calendar day ("yyyy-MM-dd"), so no timezone shifts it.
+ *
+ * The API's Slack command parses with the same rules, so this file is copied
+ * byte for byte to apps/api/src/slack-app/capture-parser.ts and has no
+ * dependencies; tests/api/slack-app/capture-parser.test.ts keeps them equal.
  */
+
+function startOfDay(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+function addDays(date: Date, days: number): Date {
+  const next = new Date(date);
+  next.setDate(next.getDate() + days);
+  return next;
+}
+
+function addWeeks(date: Date, weeks: number): Date {
+  return addDays(date, weeks * 7);
+}
+
+function getDay(date: Date): number {
+  return date.getDay();
+}
+
+function isBefore(date: Date, other: Date): boolean {
+  return date.getTime() < other.getTime();
+}
+
+/** Monday of the date's week, at local midnight. */
+function startOfIsoWeek(date: Date): Date {
+  return addDays(startOfDay(date), -((getDay(date) + 6) % 7));
+}
 
 export type CapturePriority = "urgent" | "high" | "medium" | "low";
 
@@ -144,7 +164,9 @@ export function compactName(name: string): string {
 }
 
 function toDay(date: Date): string {
-  return format(date, "yyyy-MM-dd");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${date.getFullYear()}-${month}-${day}`;
 }
 
 /** The next given weekday strictly after today (1 to 7 days ahead). */
@@ -190,35 +212,45 @@ function matchDate(
   index: number,
   today: Date,
 ): DateMatch | null {
-  const first = bare(words[index].text);
-  const second = words[index + 1] ? bare(words[index + 1].text) : undefined;
-  const third = words[index + 2] ? bare(words[index + 2].text) : undefined;
+  const word = words[index];
+  if (!word) return null;
+  const first = bare(word.text);
+  const next = words[index + 1];
+  const after = words[index + 2];
+  const second = next ? bare(next.text) : undefined;
+  const third = after ? bare(after.text) : undefined;
 
   if (first === "today") return { date: today, words: 1 };
   if (first === "tomorrow") return { date: addDays(today, 1), words: 1 };
   if (first === "next" && second === "week") {
     return {
-      date: startOfWeek(addWeeks(today, 1), { weekStartsOn: 1 }),
+      date: startOfIsoWeek(addWeeks(today, 1)),
       words: 2,
     };
   }
-  if (first in WEEKDAYS) {
-    return { date: nextWeekday(today, WEEKDAYS[first]), words: 1 };
+  const weekday = Object.hasOwn(WEEKDAYS, first) ? WEEKDAYS[first] : undefined;
+  if (weekday !== undefined) {
+    return { date: nextWeekday(today, weekday), words: 1 };
   }
 
   // "12 Oct", "12 October 2027"
   const day = dayNumber(first);
-  if (day !== null && second !== undefined && second in MONTHS) {
+  const secondMonth =
+    second !== undefined && Object.hasOwn(MONTHS, second)
+      ? MONTHS[second]
+      : undefined;
+  if (day !== null && secondMonth !== undefined) {
     const year = yearNumber(third);
-    const date = dayOfMonth(today, MONTHS[second], day, year);
+    const date = dayOfMonth(today, secondMonth, day, year);
     if (date) return { date, words: year === undefined ? 2 : 3 };
   }
   // "Oct 12", "Oct 12 2027"
-  if (first in MONTHS && second !== undefined) {
+  const firstMonth = Object.hasOwn(MONTHS, first) ? MONTHS[first] : undefined;
+  if (firstMonth !== undefined && second !== undefined) {
     const monthDay = dayNumber(second);
     if (monthDay !== null) {
       const year = yearNumber(third);
-      const date = dayOfMonth(today, MONTHS[first], monthDay, year);
+      const date = dayOfMonth(today, firstMonth, monthDay, year);
       if (date) return { date, words: year === undefined ? 2 : 3 };
     }
   }
@@ -238,14 +270,14 @@ function matchMember(
     );
   };
   const exact = members.filter((member) => keysOf(member).includes(wanted));
-  if (exact.length === 1) return exact[0];
+  if (exact.length === 1) return exact[0] ?? null;
   if (exact.length > 1) return null;
   // A unique prefix ("@an" for Ana) also counts, from two letters on.
   if (wanted.length < 2) return null;
   const prefixed = members.filter((member) =>
     keysOf(member).some((key) => key.startsWith(wanted)),
   );
-  return prefixed.length === 1 ? prefixed[0] : null;
+  return prefixed.length === 1 ? (prefixed[0] ?? null) : null;
 }
 
 function matchPriority(query: string): CapturePriority | null {
@@ -283,6 +315,7 @@ export function parseCapture(
 
   for (let index = 0; index < words.length; index += 1) {
     const word = words[index];
+    if (!word) continue;
     const sigil = word.text[0];
     const body = bare(word.text.slice(1));
 
@@ -340,7 +373,7 @@ export function parseCapture(
     if (dueDate === null) {
       const match = matchDate(words, index, today);
       if (match) {
-        const last = words[index + match.words - 1];
+        const last = words[index + match.words - 1] ?? word;
         const raw = input.slice(word.start, last.end);
         const key = `due:${bare(raw)}`;
         if (!ignored.has(key)) {
@@ -379,5 +412,8 @@ export function parseCapture(
 
 /** The API's timestamp for a parsed due day: local midnight of that day. */
 export function dueDateToIso(day: string): string {
-  return parseISO(day).toISOString();
+  const [year = Number.NaN, month = Number.NaN, date = Number.NaN] = day
+    .split("-")
+    .map(Number);
+  return new Date(year, month - 1, date).toISOString();
 }
